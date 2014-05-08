@@ -1,0 +1,136 @@
+.wp-list-table th#asker, .wp-list-table th#answerer {
+    width: 60px;
+}
+
+.wp-list-table th#answers {
+    width: 30px;
+}
+.wp-list-table th#question_category,.wp-list-table th#question_tags {
+    width: 100px;
+}
+.wp-list-table th#vote {
+    width: 60px;
+}
+
+.wp-list-table th#status {
+    width: 60px;
+}
+
+.wp-list-table th#parent_question{
+	width: 30%;
+}
+.wp-list-table th#flag{
+	width: 40px;
+}
+
+.question-status {
+    background: none repeat scroll 0 0 #DDDDDD;
+    border-radius: 3px;
+    color: #FFFFFF;
+    display: block;
+    font-size: 11px;
+    padding: 1px 5px;
+    text-align: center;
+}
+
+.question-status.duplicate{
+	background:	#fe9610;
+}
+.question-status.publish {
+    background: #00bfdd;
+}
+.question-status.solved {
+    background: #8dca35;
+}
+.question-status.closed {
+    background: #e65243;
+}
+
+
+
+
+.wp-list-table .type-question .ans-count {
+    display: block;
+    padding: 2px 0;
+    text-align: center;
+}
+.wp-list-table .vote-count{
+	text-align:center;
+}
+
+
+.wp-list-table .type-answer .answerer{
+	width:50px;
+}
+
+.form-table .flag-note{
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+}
+
+.wp-list-table .type-question .flag-count, .wp-list-table .type-answer .flag-count {
+    background: #ddd;
+    border-radius: 3px;
+    color: #FFFFFF;
+    display: block;
+    margin-top: 6px;
+    padding: 2px 0;
+    text-align: center;
+    width: 21px;
+}
+.wp-list-table .type-question .flag-count.flagged, .wp-list-table .type-answer .flag-count.flagged{
+	background: #ec5858;
+}
+
+
+/* Option Tabs */
+
+#ap_opt_nav {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    margin-bottom: 0;
+}
+
+#ap_opt_nav li{
+    display: inline-block;
+    margin-bottom: 0;
+}
+#ap_opt_nav li.active a{
+    background: none repeat scroll 0 0 #FFFFFF;
+    color: #666666;
+	border-bottom-color:#fff;
+}
+
+#ap_opt_nav li a{
+    background: none repeat scroll 0 0 #EEEEEE;
+    border: 1px solid #DDDDDD;
+    border-radius: 4px 4px 0 0;
+    color: #AAAAAA;
+    display: block;
+    font-size: 13px;
+    font-weight: bold;
+    padding: 7px 15px;
+    text-decoration: none;
+}
+
+.tab-content {
+    background: none repeat scroll 0 0 #FFFFFF;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    margin-top: -2px;
+    padding: 5px 15px;
+}
+.tab-content .tab-pane{
+	display:none;
+}
+
+.tab-content .tab-pane.active{
+	display:block;
+}
+
+.flag-note-item{
+
+}
+.ap-option-section{
+    border-bottom: 1px dotted #EEEEEE;
+    margin: 5px 0 0;
+    padding: 10px 0;	
+}
