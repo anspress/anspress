@@ -29,23 +29,23 @@ function ap_tab(){
 		
 	});
 }
+if(typeof wpNavMenu != 'undefined'){
+	wpNavMenu.addApLink = function( processMethod ) {
+		var $checked = jQuery('.aplinks ul .menu-item-title input[type="radio"]:checked');
+		var url = $checked.data('url'),
+			label = $checked.data('title');
 
-wpNavMenu.addApLink = function( processMethod ) {
-	var $checked = jQuery('.aplinks ul .menu-item-title input[type="radio"]:checked');
-	var url = $checked.data('url'),
-		label = $checked.data('title');
 
+		processMethod = wpNavMenu.addMenuItemToBottom;
 
-	processMethod = wpNavMenu.addMenuItemToBottom;
-
-	// Show the ajax spinner
-	jQuery('.aplinks .spinner').show();
-	this.addLinkToMenu( url, label, processMethod, function() {
-		// Remove the ajax spinner
-		jQuery('.aplinks .spinner').hide();
-	});
-};
-
+		// Show the ajax spinner
+		jQuery('.aplinks .spinner').show();
+		this.addLinkToMenu( url, label, processMethod, function() {
+			// Remove the ajax spinner
+			jQuery('.aplinks .spinner').hide();
+		});
+	};
+}
 function ap_submit_menu(){
 	// Show the ajax spinner
 	jQuery('.aplinks #submit-aplinks').click(function(){
