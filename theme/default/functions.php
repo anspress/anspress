@@ -9,8 +9,7 @@ function init_scripts_front(){
 	wp_enqueue_script( 'ap-js', ap_get_theme_url('js/ap.js'), 'jquery', AP_VERSION);	
 	wp_enqueue_script( 'ap-site-js', ANSPRESS_URL.'assets/ap-site.js', 'jquery', AP_VERSION);	
 	wp_enqueue_script( 'bootstrap-js', ap_get_theme_url('js/bootstrap.min.js'), array(), AP_VERSION);	
-	
-	wp_enqueue_style( 'simple-grid', ap_get_theme_url('css/simplegrid.css'), array(), AP_VERSION);
+
 	wp_enqueue_style( 'ap-style', ap_get_theme_url('css/ap.css'), array(), AP_VERSION);
 	wp_enqueue_style( 'ap-fonts', ap_get_theme_url('fonts/style.css'), array(), AP_VERSION);
 	?>
@@ -20,44 +19,6 @@ function init_scripts_front(){
 	<?php
 }
 
-
-// register sidebars
-add_action( 'widgets_init', 'ap_register_sidebar' );
-function ap_register_sidebar(){
-	register_sidebar(
-		array(
-			'name'=>'AnsPress List Right',
-			'id'  => 'ap-list-right',
-			'description' => 'These widgets will appear in the right sidebar of question list',
-			'before_widget' => '<div class="widget">',
-			'after_widget' => '</div>',
-			'before_title' => '<h3>',
-			'after_title' => '</h3>'
-		)
-	);		
-	register_sidebar(
-		array(
-			'name'=>'AnsPress Single',
-			'id'  => 'ap-single',
-			'description' => 'These widgets will appear in the right side question page',
-			'before_widget' => '<div class="widget">',
-			'after_widget' => '</div>',
-			'before_title' => '<h3>',
-			'after_title' => '</h3>'
-		)
-	);		
-
-	register_sidebar(
-		array(
-			'name'=>'Askme Top 1',
-			'description' => 'These widgets will appear at the top of ap',
-			'before_widget' => '<div class="widget">',
-			'after_widget' => '</div>',
-			'before_title' => '<h3>',
-			'after_title' => '</h3>'
-		)
-	);
-}
 
 if ( ! function_exists( 'ap_comment' ) ) :
 	function ap_comment( $comment, $args, $depth ) {

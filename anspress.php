@@ -15,7 +15,7 @@
  * Plugin URI:        http://rahularyan.com
  * Description:       A most advance community question and answer system for WordPress
  * Donate link: https://www.paypal.com/cgi-bin/webscr?business=rah12@live.com&cmd=_xclick&item_name=Donation%20to%20AnsPress%20development
- * Version:           0.1.4
+ * Version:           0.1.5
  * Author:            Rahul Aryan
  * Author URI:        http://rahularyan.com
  * Text Domain:       ap

@@ -243,7 +243,7 @@ function ap_post_favourite($postid = false){
 function ap_vote_html($post_id){
 	$post = get_post($post_id);
 	$nonce = wp_create_nonce( 'vote_'.$post_id );
-	var_dump($post);
+
 	?>
 		<div data-vote="vote" class="ap-voting net-vote">
 			<a class="aicon-thumbs-up vote-up<?php echo ($post->user_voted ==1) ? ' voted' :''; echo ($post->user_voted ==-1) ? ' disable' :''; ?>" data-args="up-<?php echo $post->ID.'-'.$nonce; ?>" href="#" title="<?php _e('Up vote this post', 'ap'); ?>"></a>
