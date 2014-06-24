@@ -10,7 +10,7 @@
 				</div>					
 				<div class="user-meta">
 					<?php 
-						printf( __( '%s <span class="when">answered about %s ago</span>	', 'ap' ), ap_user_display_name_point() , ap_human_time( get_the_time('U')));
+						printf( __( '%s <span class="when">answered about %s ago</span>	', 'ap' ), ap_user_display_name() , ap_human_time( get_the_time('U')));
 					?>							
 				</div>
 				
