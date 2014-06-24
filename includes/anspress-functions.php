@@ -111,12 +111,12 @@ function ap_please_login(){
 	echo apply_filters('ap_please_login', $o);
 }
 
-function ap_user_display_name_point($id = false){
+function ap_user_display_name($id = false){
 	if(!$id)
 		$id = get_the_author_meta('ID');
 	
 	$user = get_userdata($id);
-	return '<span class="who">'.$user->display_name.' ('.ap_get_points($id).' '.__('Points', 'ap').')</span>';
+	return '<span class="who">'.$user->display_name.'</span>';
 }
 /* Check if a user can ask a question */
 function ap_user_can_ask(){
@@ -422,7 +422,8 @@ function ap_get_all_users(){
 	ap_pagination(ceil( $total_terms / $per_page ), $range = 1, $paged);
 }
 function is_anspress(){
-	if( get_the_ID() ==  ap_opt('base_page'))
+	$queried_object = get_queried_object();
+	if( $queried_object->ID ==  ap_opt('base_page'))
 		return true;
 		
 	return false;

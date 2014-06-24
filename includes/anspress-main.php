@@ -203,22 +203,6 @@ class anspress {
 			$slug. "([^/]+)/page/?([0-9]{1,})/?$" => "index.php?page_id=".$base_page_id."&ap_page=".$wp_rewrite->preg_index(1)."&paged=".$wp_rewrite->preg_index(2),  
 			
 			$slug. "([^/]+)/?" => "index.php?page_id=".$base_page_id."&ap_page=".$wp_rewrite->preg_index(1),
-			
-			
-			
-		//$slug.$tags_page->post_name."/page/?([0-9]{1,})/?$" => "index.php?page_id=".ap_opt('tags_page')."&paged=".$wp_rewrite->preg_index(1),  
-		
-		// paged in base page
-		/* $slug."([^/]+)/page/?([0-9]{1,})/?$" => "index.php?question=".$wp_rewrite->preg_index(1)."&paged=".$wp_rewrite->preg_index(2),  
-
-		$slug."category/([^/]+)/page/?([0-9]{1,})/?$" => "index.php?question_category=".$wp_rewrite->preg_index(1)."&paged=".$wp_rewrite->preg_index(2),  
-
-		$slug."tag/([^/]+)/page/?([0-9]{1,})/?" => "index.php?question_tags=".$wp_rewrite->preg_index(1)."&paged=".$wp_rewrite->preg_index(2),		
-
-		$slug."question/([^/]+)/?" => "index.php?question=".$wp_rewrite->preg_index(1), 
-
-		$slug."category/([^/]+)/?" => "index.php?question_category=".$wp_rewrite->preg_index(1),  
-		$slug."tag/([^/]+)/?" => "index.php?question_tags=".$wp_rewrite->preg_index(1) */
 
 		);  
 		return $wp_rewrite->rules = $new_rules + $wp_rewrite->rules;  

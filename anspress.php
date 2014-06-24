@@ -51,7 +51,7 @@ define('ANSPRESS_FLAG_META', '_ap_flag');
 /*----------------------------------------------------------------------------*
  * Public-Facing Functionality
  *----------------------------------------------------------------------------*/
-require_once( plugin_dir_path( __FILE__ ) . 'activate.php' );
+
 require_once( plugin_dir_path( __FILE__ ) . 'includes/anspress-functions.php' );
 require_once( plugin_dir_path( __FILE__ ) . 'includes/anspress-posts.php' );
 require_once( plugin_dir_path( __FILE__ ) . 'includes/anspress-vote.php' );
@@ -60,8 +60,8 @@ require_once( plugin_dir_path( __FILE__ ) . 'includes/anspress-theme.php' );
 require_once( plugin_dir_path( __FILE__ ) . 'includes/anspress-main.php' );
 require_once( plugin_dir_path( __FILE__ ) . 'includes/anspress-form.php' );
 require_once( plugin_dir_path( __FILE__ ) . 'includes/anspress-ajax.php' );
-require_once( plugin_dir_path( __FILE__ ) . 'includes/anspress-points.php' );
 require_once( plugin_dir_path( __FILE__ ) . 'includes/anspress-shortcodes.php' );
+require_once( plugin_dir_path( __FILE__ ) . 'activate.php' );
 
 
 /*
@@ -80,7 +80,6 @@ add_action( 'plugins_loaded', array( 'anspress_view', 'get_instance' ) );
 add_action( 'plugins_loaded', array( 'anspress_form', 'get_instance' ) );
 add_action( 'plugins_loaded', array( 'anspress_theme', 'get_instance' ) );
 add_action( 'plugins_loaded', array( 'anspress_ajax', 'get_instance' ) );
-add_action( 'plugins_loaded', array( 'anspress_points', 'get_instance' ) );
 add_action( 'plugins_loaded', array( 'anspress_shortcodes', 'get_instance' ) );
 
 

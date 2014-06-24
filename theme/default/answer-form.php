@@ -18,7 +18,7 @@
 			?>
 		</div>					
 		<div class="user-meta">
-			<?php echo ap_user_display_name_point($current_user->ID); ?>								
+			<?php echo ap_user_display_name($current_user->ID); ?>								
 		</div>						
 	</div>
 	

@@ -177,8 +177,7 @@ class anspress_admin {
 		}
 	}
 	
-public function ap_menu_metaboxes()
-	{
+public function ap_menu_metaboxes(){
 		/* $anspress_menu = array(
 			'id' => 'add-anspress',
 			'title' => 'AnsPress',
@@ -196,6 +195,7 @@ public function ap_menu_metaboxes()
 
 		$_nav_menu_placeholder = 0 > $_nav_menu_placeholder ? $_nav_menu_placeholder - 1 : -1;
 		$base_page = ap_opt('base_page');
+		
 		?>
 		<div class="aplinks" id="aplinks">
 			<input type="hidden" value="custom" name="menu-item[<?php echo $_nav_menu_placeholder; ?>][menu-item-type]" />
@@ -207,22 +207,22 @@ public function ap_menu_metaboxes()
 				</li>
 				<li>
 					<label class="menu-item-title">
-						<input type="radio" value="" name="menu-item[<?php echo $_nav_menu_placeholder; ?>][menu-item-url]" class="menu-item-checkbox" data-url="<?php echo get_permalink( $base_page ); ?>&ap_page=ask" data-title="<?php _e('Ask', 'ap'); ?>"> <?php _e('Ask', 'ap'); ?>
+						<input type="radio" value="" name="menu-item[<?php echo $_nav_menu_placeholder; ?>][menu-item-url]" class="menu-item-checkbox" data-url="<?php echo get_permalink( $base_page ); ?>ask" data-title="<?php _e('Ask', 'ap'); ?>"> <?php _e('Ask', 'ap'); ?>
 					</label>
 				</li>				
 				<li>
 					<label class="menu-item-title">
-						<input type="radio" value="" name="menu-item[<?php echo $_nav_menu_placeholder; ?>][menu-item-url]" class="menu-item-checkbox" data-url="<?php echo get_permalink( $base_page ); ?>&ap_page=categories" data-title="<?php _e('Categories', 'ap'); ?>"> <?php _e('Categories', 'ap'); ?>
+						<input type="radio" value="" name="menu-item[<?php echo $_nav_menu_placeholder; ?>][menu-item-url]" class="menu-item-checkbox" data-url="<?php echo get_permalink( $base_page ); ?>categories" data-title="<?php _e('Categories', 'ap'); ?>"> <?php _e('Categories', 'ap'); ?>
 					</label>
 				</li>
 				<li>
 					<label class="menu-item-title">
-						<input type="radio" value="" name="menu-item[<?php echo $_nav_menu_placeholder; ?>][menu-item-url]" class="menu-item-checkbox" data-url="<?php echo get_permalink( $base_page ); ?>&ap_page=tags" data-title="<?php _e('Tags', 'ap'); ?>"> <?php _e('Tags', 'ap'); ?>						
+						<input type="radio" value="" name="menu-item[<?php echo $_nav_menu_placeholder; ?>][menu-item-url]" class="menu-item-checkbox" data-url="<?php echo get_permalink( $base_page ); ?>tags" data-title="<?php _e('Tags', 'ap'); ?>"> <?php _e('Tags', 'ap'); ?>						
 					</label>
 				</li>
 				<li>
 					<label class="menu-item-title">
-						<input type="radio" value="" name="menu-item[<?php echo $_nav_menu_placeholder ; ?>][menu-item-url]" class="menu-item-checkbox" data-url="<?php echo get_permalink( $base_page ); ?>&ap_page=users" data-title="<?php _e('Users', 'ap'); ?>"> <?php _e('Users', 'ap'); ?>
+						<input type="radio" value="" name="menu-item[<?php echo $_nav_menu_placeholder ; ?>][menu-item-url]" class="menu-item-checkbox" data-url="<?php echo get_permalink( $base_page ); ?>users" data-title="<?php _e('Users', 'ap'); ?>"> <?php _e('Users', 'ap'); ?>
 					</label>
 				</li>
 			</ul>

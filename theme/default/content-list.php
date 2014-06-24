@@ -26,7 +26,7 @@
 									'<span class="when">%s ago</span>',
 									ap_human_time(get_the_time('U'))
 								); 
-								ap_user_display_name_point();
+								ap_user_display_name();
 							?>
 						</div>						
 						<?php ap_question_categories(true); ?>

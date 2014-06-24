@@ -25,7 +25,6 @@ if ( ! isset( $_REQUEST['updated'] ) )
 		  <li><a href="#ap-answers" data-toggle="tab"><?php _e('Answers', 'ap'); ?></a></li>
 		  <li><a href="#ap-theme" data-toggle="tab"><?php _e('Theme', 'ap'); ?></a></li>
 		  <li><a href="#ap-pages" data-toggle="tab"><?php _e('Pages', 'ap'); ?></a></li>
-		  <li><a href="#ap-points" data-toggle="tab"><?php _e('Points', 'ap'); ?></a></li>
 		  <li><a href="#ap-misc" data-toggle="tab"><?php _e('Misc', 'ap'); ?></a></li>
 		</ul>
 
@@ -95,45 +94,7 @@ if ( ! isset( $_REQUEST['updated'] ) )
 					</tr>
 				</table>
 			</div>
-			<div class="tab-pane" id="ap-points">		
-				<table class="form-table">
-					<tr valign="top">
-						<th scope="row"><label for="theme"><?php _e('Question Point', 'ap'); ?></label></th>
-						<td>
-							<input type="text" name="anspress_opt[question_points]" id="question_points" value="<?php echo $settings['question_points'] ; ?>" />						
-							<p class="description"><?php _e('Asking question', 'ap'); ?></p>
-						</td>
-					</tr>					
-					<tr valign="top">
-						<th scope="row"><label for="theme"><?php _e('Answer Point', 'ap'); ?></label></th>
-						<td>
-							<input type="text" name="anspress_opt[answer_points]" id="answer_points" value="<?php echo $settings['answer_points'] ; ?>" />						
-							<p class="description"><?php _e('Answering question', 'ap'); ?></p>
-						</td>
-					</tr>					
-					<tr valign="top">
-						<th scope="row"><label for="theme"><?php _e('Comment Point', 'ap'); ?></label></th>
-						<td>
-							<input type="text" name="anspress_opt[comment_points]" id="comment_points" value="<?php echo $settings['comment_points'] ; ?>" />						
-							<p class="description"><?php _e('Post a comment', 'ap'); ?></p>
-						</td>
-					</tr>					
-					<tr valign="top">
-						<th scope="row"><label for="theme"><?php _e('Vote up', 'ap'); ?></label></th>
-						<td>
-							<input type="text" name="anspress_opt[up_vote_points]" id="up_vote_points" value="<?php echo $settings['up_vote_points'] ; ?>" />						
-							<p class="description"><?php _e('Receive upvote', 'ap'); ?></p>
-						</td>
-					</tr>					
-					<tr valign="top">
-						<th scope="row"><label for="theme"><?php _e('Down vote', 'ap'); ?></label></th>
-						<td>
-							<input type="text" name="anspress_opt[down_vote_points]" id="down_vote_points" value="<?php echo $settings['down_vote_points'] ; ?>" />						
-							<p class="description"><?php _e('Receive down vote', 'ap'); ?></p>
-						</td>
-					</tr>
-				</table>
-			</div>				
+						
 			<div class="tab-pane" id="ap-misc">	
 				<h3 class="title">Flag Notes</h3>
 				<p class="description"><?php _e('Default notes when flagging the posts', 'ap'); ?></p>

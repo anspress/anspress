@@ -10,7 +10,7 @@ while ( $question->have_posts() ) : $question->the_post();
 			<div class="question-meta clearfix">
 				<span class="question-status <?php echo ap_get_question_status(); ?>"><?php echo ap_get_question_status(); ?></span>
 				<span class="views-count">
-					<?php echo ap_get_qa_views(get_question_id()) .' '. __('Views', 'ap'); ?>
+					<?php echo ap_get_qa_views(get_the_ID()) .' '. __('Views', 'ap'); ?>
 				</span>
 				<?php ap_question_categories(); ?>
 				<?php ap_question_tags(); ?>
@@ -26,7 +26,7 @@ while ( $question->have_posts() ) : $question->the_post();
 					</div>					
 					<div class="user-meta">
 						<?php 
-							printf( __( '%s <span class="when">asked about %s ago</span>	', 'ap' ), ap_user_display_name_point() , ap_human_time( get_the_time('U')));
+							printf( __( '%s <span class="when">asked about %s ago</span>	', 'ap' ), ap_user_display_name() , ap_human_time( get_the_time('U')));
 						?>							
 					</div>						
 				</div>
@@ -35,7 +35,7 @@ while ( $question->have_posts() ) : $question->the_post();
 				</div>					
 				<ul class="user-actions clearfix">											
 					<li>
-						<a href="<?php echo ap_question_edit_link(get_question_id()); ?>" class="btn edit-btn aicon-edit" title="<?php _e('Edit this question', 'ap'); ?>"><?php _e('Edit', 'ap') ; ?></a>
+						<a href="<?php echo ap_question_edit_link(get_the_ID()); ?>" class="btn edit-btn aicon-edit" title="<?php _e('Edit this question', 'ap'); ?>"><?php _e('Edit', 'ap') ; ?></a>
 					</li>				
 					<li><?php ap_comment_btn_html(); ?></li>					
 					<li><?php ap_change_status_btn_html(); ?></li>					
