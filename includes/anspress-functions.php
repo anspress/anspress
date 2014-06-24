@@ -11,10 +11,14 @@
 
 
 // AnsPress options
-function ap_opt($key = false){
+function ap_opt($key = false, $value = false){
 
 	$settings = get_option( 'anspress_opt');
-	
+	if($value){
+		$settings[$key] = $value;
+		update_option( 'anspress_opt', $settings);
+		return;
+	}	
 	if(!$key)
 		return $settings;
 		

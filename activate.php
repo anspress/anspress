@@ -89,8 +89,12 @@ class anspress_activate {
 			$post['post_title']   = 'AnsPress';
 			$postid = wp_insert_post ($post);
 			
-			if($postid)
+			if($postid){
 				update_option('ap_base_page_created', $postid);	
+				$post = get_post($postid);
+				ap_opt('base_page_slug', $post->post_name);
+				ap_opt('base_page', $postid);
+			}
 			
 			
 		}

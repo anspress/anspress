@@ -52,7 +52,7 @@ class anspress_vote
 	}
 		
 	function ap_append_vote_count($post){
-		if($post->post_type == 'question' || $post->post_type == 'question'){
+		if($post->post_type == 'question' || $post->post_type == 'answer'){
 			global $wpdb;
 			
 			//voted up count
