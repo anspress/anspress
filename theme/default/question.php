@@ -1,13 +1,11 @@
 <?php
-	global $post; 
-	setup_postdata($question);
-
+while ( $question->have_posts() ) : $question->the_post(); 
 ?>
 <div id="ap-single" class="ap-container clearfix">
 	<div id="question" role="main" class="ap-content">	
 
 			<h3 class="question-title">
-				<a href="<?php get_permalink($question->ID); ?>" rel="bookmark"><?php echo $question->post_title; ?></a>
+				<a href="<?php get_permalink(); ?>" rel="bookmark"><?php echo the_title(); ?></a>
 			</h3>	
 			<div class="question-meta clearfix">
 				<span class="question-status <?php echo ap_get_question_status(); ?>"><?php echo ap_get_question_status(); ?></span>
@@ -18,7 +16,7 @@
 				<?php ap_question_tags(); ?>
 			</div>				
 			<div class="vote-single pull-left">
-				<?php ap_vote_html($question->ID); ?>					
+				<?php ap_vote_html(); ?>					
 			</div>				
 			<div class="content-inner">
 				<div class="user-header clearfix">
@@ -48,15 +46,15 @@
 			<?php comments_template(); ?>				
 
 	</div>	
-	<?php if(ap_have_ans(get_question_id())){ ?>
+	<?php if(ap_have_ans(get_the_ID())){ ?>
 		<div id="answers">
-			<h2 class="answer-count"><span><?php echo ap_count_ans(get_question_id()); ?></span> <?php _e('Answers', 'ap'); ?></h2>
+			<h2 class="answer-count"><span><?php echo ap_count_ans(get_the_ID()); ?></span> <?php _e('Answers', 'ap'); ?></h2>
 			<?php 
 
 				$ans_args=array(
 				  'post_type' => 'answer',
 				  'post_status' => 'publish',
-				  'post_parent' => get_question_id(),
+				  'post_parent' => get_the_ID(),
 				  'showposts' => -1
 				);
 				$ans = new WP_Query($ans_args);
@@ -75,4 +73,7 @@
 	?>
 
 </div>
-<?php wp_reset_postdata(); ?>
+<?php 
+	endwhile ;
+	wp_reset_query(); 
+?>

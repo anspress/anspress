@@ -35,7 +35,7 @@ class anspress_vote
      */
     public function __construct()
     {
-		add_action( 'pre_get_post', array($this, 'ap_append_vote_count') );
+		add_action( 'the_post', array($this, 'ap_append_vote_count') );
 		add_action( 'wp_ajax_ap_vote_on_post', array($this, 'ap_vote_on_post') ); 
 		add_action( 'wp_ajax_ap_add_to_favourite', array($this, 'ap_add_to_favourite') ); 
 		add_action( 'wp_ajax_nopriv_ap_add_to_favourite', array($this, 'ap_add_to_favourite_nopriv') ); 
@@ -51,38 +51,39 @@ class anspress_vote
 		}
 	}
 		
-	function ap_append_vote_count(){
-		global $post;
-		global $wpdb;
-var_dump($post);
-		//voted up count
-		if(is_object($post)){
-			$post->voted_up = $wpdb->get_var( "SELECT IFNULL(count(*), 0) FROM " .$wpdb->prefix ."ap_vote where (type = 'vote_post' and `value` = '1') and actionid = $post->ID");
-			//voted down count
-			$post->voted_down = $wpdb->get_var( "SELECT IFNULL(count(*), 0) FROM " .$wpdb->prefix ."ap_vote where (type = 'vote_post' and `value` = '-1') and actionid = $post->ID");
+	function ap_append_vote_count($post){
+		if($post->post_type == 'question' || $post->post_type == 'question'){
+			global $wpdb;
 			
-			// net vote
-			$post->net_vote = $post->voted_up - $post->voted_down;
-			
-			//closed count
-			$post->closed = ap_post_close_vote();
-			
-			//flagged count
-			$post->flag = ap_post_flag_count();
-			
-			//favourite count
-			$post->favourite = ap_post_favourite();
-			
-			$post->voted_closed = ap_is_user_voted_closed();
+			//voted up count
+			if(is_object($post)){
+				$post->voted_up = $wpdb->get_var( "SELECT IFNULL(count(*), 0) FROM " .$wpdb->prefix ."ap_vote where (type = 'vote_post' and `value` = '1') and actionid = $post->ID");
+				//voted down count
+				$post->voted_down = $wpdb->get_var( "SELECT IFNULL(count(*), 0) FROM " .$wpdb->prefix ."ap_vote where (type = 'vote_post' and `value` = '-1') and actionid = $post->ID");
 				
-			$post->flagged = ap_is_user_flagged();
-			
-			$post->favourited = $wpdb->get_var( "SELECT count(*) FROM " .$wpdb->prefix ."ap_vote where (type = 'favourite' and `value` = '1') and (`userid` = ".get_current_user_id()." and actionid = $post->ID)");
+				// net vote
+				$post->net_vote = $post->voted_up - $post->voted_down;
 				
-			//if current logged in user voted
-			if(is_user_logged_in()){		
-				$user_voted = $wpdb->get_var( "SELECT `value` FROM " .$wpdb->prefix ."ap_vote where `type` = 'vote_post' and ( `userid` = ".get_current_user_id()." and `actionid` = $post->ID)");
-				$post->user_voted = strlen($user_voted) ? $user_voted : 0;		
+				//closed count
+				$post->closed = ap_post_close_vote();
+				
+				//flagged count
+				$post->flag = ap_post_flag_count();
+				
+				//favourite count
+				$post->favourite = ap_post_favourite();
+				
+				$post->voted_closed = ap_is_user_voted_closed();
+					
+				$post->flagged = ap_is_user_flagged();
+				
+				$post->favourited = $wpdb->get_var( "SELECT count(*) FROM " .$wpdb->prefix ."ap_vote where (type = 'favourite' and `value` = '1') and (`userid` = ".get_current_user_id()." and actionid = $post->ID)");
+					
+				//if current logged in user voted
+				if(is_user_logged_in()){		
+					$user_voted = $wpdb->get_var( "SELECT `value` FROM " .$wpdb->prefix ."ap_vote where `type` = 'vote_post' and ( `userid` = ".get_current_user_id()." and `actionid` = $post->ID)");
+					$post->user_voted = strlen($user_voted) ? $user_voted : 0;		
+				}
 			}
 		}
 	}
@@ -191,9 +192,11 @@ function ap_down_vote($echo = false){
 }
 
 // get $post net votes
-function ap_net_vote($post, $echo = false){
-	if($echo) echo $post->net_vote;
-	else return $post->net_vote;
+function ap_net_vote($post =false){
+	if(!$post)
+		global $post;
+	$net= $post->net_vote;
+	return $net ? $net : 0;
 }
 
 function ap_post_votes($postid){
@@ -240,14 +243,16 @@ function ap_post_favourite($postid = false){
 
 
 // voting html
-function ap_vote_html($post_id){
-	$post = get_post($post_id);
-	$nonce = wp_create_nonce( 'vote_'.$post_id );
+function ap_vote_html($post = false){
+	if(!$post_id)
+		global $post;
+		
+	$nonce = wp_create_nonce( 'vote_'.$post->ID );
 
 	?>
 		<div data-vote="vote" class="ap-voting net-vote">
 			<a class="aicon-thumbs-up vote-up<?php echo ($post->user_voted ==1) ? ' voted' :''; echo ($post->user_voted ==-1) ? ' disable' :''; ?>" data-args="up-<?php echo $post->ID.'-'.$nonce; ?>" href="#" title="<?php _e('Up vote this post', 'ap'); ?>"></a>
-			<span class="net-vote-count"><?php ap_net_vote($post, true); ?></span>
+			<span class="net-vote-count"><?php echo ap_net_vote(); ?></span>
 			<a class="aicon-thumbs-up2 vote-down<?php echo ($post->user_voted == -1) ? ' voted' :''; echo ($post->user_voted == 1) ? ' disable' :''; ?>" data-args="down-<?php echo $post->ID.'-'.$nonce; ?>" href="#" title="<?php _e('Down vote this post', 'ap'); ?>"></a>
 		</div>
 	<?php

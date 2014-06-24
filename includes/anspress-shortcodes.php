@@ -35,8 +35,13 @@ class anspress_shortcodes {
 	}
 
 	public function ap_base_page_sc( $atts, $content="" ) {
+		
 		if(is_question()){
-			$question = get_post( get_question_id());
+			$args = array(
+					'p'=> get_question_id(), 
+					'post_type'=>'question'				
+				);
+			$question = new WP_Query( $args );
 		}elseif(is_question_tag()){
 			$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
 			$args = array(
@@ -66,7 +71,6 @@ class anspress_shortcodes {
 				);
 			$question = new WP_Query( $args );
 		}
-
 		include ap_get_theme_location(ap_get_current_page_template());
 		
 		if(is_question() || is_tag())

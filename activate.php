@@ -176,6 +176,7 @@ class anspress_activate {
 		}
 		
 		add_option('ap_flush', true); 
+		flush_rewrite_rules();
 	}
 	
 	/**

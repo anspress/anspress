@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?business=rah12@live.com&cmd=_
 Tags: question, answer, q&a, forum, community
 Requires at least: 3.5.1
 Tested up to: 3.9
-Stable tag: 0.1.3
+Stable tag: 0.1.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -16,6 +16,15 @@ A most advance community question and answer system for WordPress (Still under d
 
 Follow me on twitter to get update of next stable version @nerdaryan.
 
+Please help me by reporting any AnsPress bugs and issues here: https://github.com/rahularyan/anspress
+
+**How to Setup**
+
+* After installing plugin create a new page and add this shortcode `[anspress]`
+* Now set this newly created page as base page from WP-Admin -> Settings -> AnsPress Options.
+* Head to Menu editor (WP-Admin -> Appearance -> Menus ) and assign Anspress menu to your nav.
+* if anspress permalink won't work, then save your permalinks once from WP-Admin -> Settings -> permalinks.
+ 
 
 **New features**
 
@@ -41,7 +50,8 @@ Here are some features which we have recently added to AnsPress:
 
 **Page Shortcodes**
 
-Page shortcode has been removed
+Use this shortcode in base to AnsPress work properly
+`[anspress]`
 
 **New features coming soon in v1.0**
 
@@ -63,27 +73,12 @@ We are working hard to make this plugin much better, and here are some features 
 
 Its very easy to install the plugin.
 
-= Using The WordPress Dashboard =
+= Using WordPress method =
 
-1. Navigate to the 'Add New' in the plugins dashboard
-2. Search for 'AnsPress'
-3. Click 'Install Now'
-4. Activate the AnsPress on the Plugin dashboard
-
-= Uploading in WordPress Dashboard =
-
-1. Navigate to the 'Add New' in the plugins dashboard
-2. Navigate to the 'Upload' area
-3. Select `anspress.zip` from your computer
-4. Click 'Install Now'
-5. Activate the AnsPress in the Plugin dashboard
-
-= Using FTP =
-
-1. Download `anspress.zip`
-2. Extract the `anspress` directory to your computer
-3. Upload the `anspress` directory to the `/wp-content/plugins/` directory
-4. Activate the AnsPress in the Plugin dashboard
+* After installing plugin create a new page and add this shortcode `[anspress]`
+* Now set this newly created page as base page from WP-Admin -> Settings -> AnsPress Options.
+* Head to Menu editor (WP-Admin -> Appearance -> Menus ) and assign Anspress menu to your nav.
+* if anspress permalink won't work, then save your permalinks once from WP-Admin -> Settings -> permalinks.
 
 
 == Frequently Asked Questions ==
