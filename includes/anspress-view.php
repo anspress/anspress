@@ -69,12 +69,12 @@ function ap_insert_views($data_id, $type){
 			) 
 		);	
 		$view = ap_get_views_db($data_id);
-		update_post_meta( $data_id, '_views', apply_filters('ap_insert_views', $view + 1 ));
+		update_post_meta( $data_id, ANSPRESS_VIEW_META, apply_filters('ap_insert_views', $view + 1 ));
 	}
 }
 
 function ap_get_qa_views($id){	
-	$views = get_post_meta( $id, '_views', true );	
+	$views = get_post_meta( $id, ANSPRESS_VIEW_META, true );	
 	$views = empty($views) ? 1 : $views;
 	
 	return apply_filters('ap_get_views', $views);

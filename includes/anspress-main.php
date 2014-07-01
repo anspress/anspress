@@ -169,6 +169,7 @@ class anspress {
 		$query_vars[] = 'qcat';
 		$query_vars[] = 'qtag_id';
 		$query_vars[] = 'qtag';
+		$query_vars[] = 'sort';
 		
 		return $query_vars;
 	}

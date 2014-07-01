@@ -149,18 +149,28 @@ class anspress_vote
 				$counts = ap_post_favourite($args[0]);
 				//update post meta
 				update_post_meta($args[0], ANSPRESS_FAV_META, $counts);
-				
-				echo $row.'_'.'removed_'.$counts.'_'.__('Add to favourite list', 'ap') ;				
+				$title = __('Add to favourite list', 'ap');
+				$action = 'removed';			
 			}else{
 				$row = $wpdb->insert( $wpdb->prefix.'ap_vote', array('userid'=> get_current_user_id(), 'actionid' =>$args[0], 'type'=> 'favourite', 'value' => 1), array('%d', '%d', '%s', '%d') );
 				$counts = ap_post_favourite($args[0]);
 				//update post meta
 				update_post_meta($args[0], ANSPRESS_FAV_META, $counts);
-				echo $row.'_'.'added_'.$counts.'_'.__('Remove from favourite list', 'ap') ;	
+				$title = __('Remove from favourite list', 'ap');
+				$action = 'added';
 			}
+			if( $counts =='1' && $action == 'added')
+				$text = __('You favorited this question', 'ap'); 
+			elseif($action == 'added')
+				$text = sprintf( __( 'You and %s people favorited this question', 'ap' ), ($counts -1));
+			else
+				$text =  sprintf( __( '%s people favorited this question', 'ap' ), $counts);
+			
+			$result = json_encode(array('row' => $row, 'action' => $action, 'count' => $counts, 'title' => $title, 'text' => $text));
+			echo $result;
 			
 		}else{
-			echo '0_'.__('Please try again', 'ap');	
+			echo json_encode(array('action'=> false, 'title' =>__('Please try again', 'ap')));	
 		}
 		
 		die();
@@ -250,10 +260,10 @@ function ap_vote_html($post = false){
 	$nonce = wp_create_nonce( 'vote_'.$post->ID );
 
 	?>
-		<div data-vote="vote" class="ap-voting net-vote">
-			<a class="aicon-thumbs-up vote-up<?php echo ($post->user_voted ==1) ? ' voted' :''; echo ($post->user_voted ==-1) ? ' disable' :''; ?>" data-args="up-<?php echo $post->ID.'-'.$nonce; ?>" href="#" title="<?php _e('Up vote this post', 'ap'); ?>"></a>
+		<div data-action="vote" class="ap-voting net-vote">
+			<a class="vote-up<?php echo ($post->user_voted ==1) ? ' voted' :''; echo ($post->user_voted ==-1) ? ' disable' :''; ?>" data-args="up-<?php echo $post->ID.'-'.$nonce; ?>" href="#" title="<?php _e('Up vote this post', 'ap'); ?>">&#9650;</a>
 			<span class="net-vote-count"><?php echo ap_net_vote(); ?></span>
-			<a class="aicon-thumbs-up2 vote-down<?php echo ($post->user_voted == -1) ? ' voted' :''; echo ($post->user_voted == 1) ? ' disable' :''; ?>" data-args="down-<?php echo $post->ID.'-'.$nonce; ?>" href="#" title="<?php _e('Down vote this post', 'ap'); ?>"></a>
+			<a class="vote-down<?php echo ($post->user_voted == -1) ? ' voted' :''; echo ($post->user_voted == 1) ? ' disable' :''; ?>" data-args="down-<?php echo $post->ID.'-'.$nonce; ?>" href="#" title="<?php _e('Down vote this post', 'ap'); ?>">&#9660;</a>
 		</div>
 	<?php
 }
@@ -263,13 +273,25 @@ function ap_vote_html($post = false){
 ---------- Favourite button---------------------------- */
 
 // favourite button
-function ap_favourite_html(){
-	global $post;
+function ap_favourite_html($post = false){
+	if(!$post)
+		global $post;
+		
 	$nonce = wp_create_nonce( 'favourite_'.$post->ID );
 	$title = (!$post->favourited) ? (__('Add to favourite list', 'ap')) : (__('Remove from favourite list', 'ap'));
 	?>
 		<div class="favourite-c">
-			<a id="<?php echo 'favourite_'.$post->ID; ?>" class="favourite-btn aicon-star<?php echo ($post->favourited) ? ' added' :''; ?>" data-args="<?php echo $post->ID.'-'.$nonce; ?>" href="#"title="<?php echo $title; ?>"><?php echo $post->favourite; ?></a>	
+			<a id="<?php echo 'favourite_'.$post->ID; ?>" class="btn btn-default btn-xs favourite-btn aicon-star<?php echo ($post->favourited) ? ' added' :''; ?>" data-args="<?php echo $post->ID.'-'.$nonce; ?>" href="#"title="<?php echo $title; ?>"><?php echo $post->favourite; ?></a>
+			<span> 
+				<?php  
+					if( $post->favourite =='1' && $post->favourited)
+						_e('You favorited this question', 'ap'); 
+					elseif($post->favourited)
+						printf( __( 'You and %s people favorited this question', 'ap' ), ($post->favourite -1));
+					else
+						printf( __( '%s people favorited this question', 'ap' ), $post->favourite); 
+				?>
+			</span>
 		</div>
 	<?php
 }
@@ -304,7 +326,7 @@ function ap_close_vote_html(){
 	$nonce = wp_create_nonce( 'close_'.$post->ID );
 	$title = (!$post->voted_closed) ? (__('Vote for closing', 'ap')) : (__('Undo your vote', 'ap'));
 	?>
-		<a id="<?php echo 'close_'.$post->ID; ?>" class="btn close-btn aicon-close <?php echo ($post->voted_closed) ? ' closed' :''; ?>" data-args="<?php echo $post->ID.'-'.$nonce; ?>" href="#" title="<?php echo $title; ?>"><?php echo ($post->voted_closed > 0 ? '<span>'.$post->voted_closed.'</span>' : ''); ?></a>	
+		<a id="<?php echo 'close_'.$post->ID; ?>" class="close-btn<?php echo ($post->voted_closed) ? ' closed' :''; ?>" data-args="<?php echo $post->ID.'-'.$nonce; ?>" href="#" title="<?php echo $title; ?>"><?php _e('Close ', 'ap'); echo ($post->voted_closed > 0 ? '<span>'.$post->voted_closed.'</span>' : ''); ?></a>	
 	<?php
 }
 
@@ -368,7 +390,7 @@ function ap_flag_btn_html(){
 	$nonce = wp_create_nonce( 'flag_'.$post->ID );
 	$title = (!$post->flagged) ? (__('Flag this post', 'ap')) : (__('You have flagged this post', 'ap'));
 	?>
-		<a id="<?php echo 'flag_'.$post->ID; ?>" class="btn flag-btn aicon-flag<?php echo (!$post->flagged) ? ' can-flagged' :''; ?>" data-args="<?php echo $post->ID.'-'.$nonce; ?>" href="#<?php echo 'flag_modal_'.$post->ID; ?>" title="<?php echo $title; ?>"><?php echo ($post->flag > 0 ? '<span>'.$post->flag.'</span>':''); ?></a>
+		<a id="<?php echo 'flag_'.$post->ID; ?>" class="flag-btn<?php echo (!$post->flagged) ? ' can-flagged' :''; ?>" data-args="<?php echo $post->ID.'-'.$nonce; ?>" href="#<?php echo 'flag_modal_'.$post->ID; ?>" title="<?php echo $title; ?>"><?php _e('Flag ', 'ap'); echo ($post->flag > 0 ? '<span>'.$post->flag.'</span>':''); ?></a>
 	<?php
 }
 

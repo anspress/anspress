@@ -85,7 +85,7 @@ function ap_question_content(){
 function ap_question_tags($list = true){
 	global $post;
 	if($list)
-		$o =	get_the_term_list( $post->ID, ANSPRESS_TAG_TAX, '<ul class="question-tags aicon-tags"><li>', '</li><li>', '</li></ul>' );
+		$o =	get_the_term_list( $post->ID, ANSPRESS_TAG_TAX, '<ul class="question-tags"><li>', '</li><li>', '</li></ul>' );
 	else 
 		$o =	get_the_term_list( $post->ID, ANSPRESS_TAG_TAX, '', '', '' );
 		
@@ -119,12 +119,17 @@ function ap_user_display_name($id = false){
 	if(!$id)
 		$id = get_the_author_meta('ID');
 	
-	$user = get_userdata($id);
-	return '<span class="who">'.$user->display_name.'</span>';
+	if ($id > 0){
+		$user = get_userdata($id);
+		return '<span class="who">'.$user->display_name.'</span>';
+	}
+	
+	return '<span class="who">'.__('Anonymous', 'ap').'</span>';
 }
 /* Check if a user can ask a question */
 function ap_user_can_ask(){
-	if(current_user_can('add_question') || is_super_admin())
+	$is_loggedin = (is_user_logged_in()? true : (ap_opt('allow_non_loggedin') ? true : false));
+	if(current_user_can('add_question') || is_super_admin() || $is_loggedin)
 		return true;
 	
 	return false;
@@ -132,11 +137,9 @@ function ap_user_can_ask(){
 
 /* Check if a user can answer on a question */
 function ap_user_can_answer($question_id){
-	if(current_user_can('add_answer') || is_super_admin()){
-		global $current_user;
-		$user_id		= $current_user->ID;
-
-		if(!ap_opt('multiple_answers') && ap_is_user_answered($question_id, $user_id))
+	$is_loggedin = (is_user_logged_in()? true : (ap_opt('allow_non_loggedin') ? true : false));
+	if(current_user_can('add_answer') || is_super_admin() || $is_loggedin ){
+		if(!ap_opt('multiple_answers') && ap_is_user_answered($question_id, get_current_user_id()) && get_current_user_id() != '0')
 			return false;
 		else
 			return true;
@@ -149,7 +152,6 @@ function ap_is_user_answered($question_id, $user_id){
 	global $wpdb;
 	
 	$count = $wpdb->get_var( "SELECT COUNT(*) FROM $wpdb->posts where post_parent = $question_id AND ( post_author = $user_id AND post_type = 'answer')");
-	
 	if($count)	
 		return true;	
 	return false;
@@ -194,7 +196,7 @@ function ap_user_can_change_status(){
 }
 
 function ap_user_can_comment(){
-	if(is_super_admin() || current_user_can('add_comment'))
+	if(is_super_admin() || current_user_can('add_comment') || ap_opt('anonymous_comment'))
 		return true;
 
 	return false;
@@ -261,9 +263,6 @@ function ap_have_ans($id){
 	return false;
 }
 
-
-
-
 // link to asnwers
 function ap_answers_link(){
 	return get_permalink().'#answers';
@@ -272,7 +271,7 @@ function ap_answers_link(){
 function ap_comment_btn_html(){
 	$action = get_post_type(get_the_ID()).'-'.get_the_ID();
 	$nonce = wp_create_nonce( $action );
-	echo '<a href="#comments-'.get_the_ID().'" class="btn comment-btn aicon-bubble" data-form="comment" data-args="'. get_the_ID().'-'. $nonce .'" title="'.__('Add comment', 'ap').'">'.__('Comment', 'ap').'</a>';
+	echo '<a href="#comments-'.get_the_ID().'" class="comment-btn" data-form="comment" data-args="'. get_the_ID().'-'. $nonce .'" title="'.__('Add comment', 'ap').'">'.__('Comment', 'ap').'</a>';
 }
 
 
@@ -294,7 +293,7 @@ function ap_edit_a_btn_html(){
 		$nonce = wp_create_nonce( $action );
 		$edit_link = add_query_arg( array('edit_a' => $post_id, 'ap_nonce' => $nonce), get_permalink( ap_opt('a_edit_page')) );
 		
-		echo '<a href="'.$edit_link.'" class="btn edit-btn aicon-edit" title="'.__('Edit Answer', 'ap').'">'.__('Edit', 'ap').'</a>';
+		echo '<a href="'.$edit_link.'" class="btn btn-xs edit-btn aicon-edit" title="'.__('Edit Answer', 'ap').'">'.__('Edit', 'ap').'</a>';
 	}
 	return;
 }
@@ -317,10 +316,10 @@ function ap_change_status_btn_html($post_id = null){
 		$action = get_post_type($post_id).'-'.$post_id;
 		$nonce = wp_create_nonce( $action );
 		$status = ap_get_question_status($post_id);
-		echo '<ul id="change-status">';
+		echo '<ul id="change-status" class="btn-group">';
 			echo '<li>';
-				echo '<a data-action="change-status" href="#" class="status-btn '.$status.'" title="'.__('Current status of question', 'ap').'">'.$status.' <i class="aicon-arrow-down"></i></a>';
-				echo '<ul>';
+				echo '<a data-action="change-status" href="#" class="dropdown-toggle status-btn '.$status.'" title="'.__('Current status of question', 'ap').'" data-toggle="dropdown">'.$status.'</a>';
+				echo '<ul class="dropdown-menu">';
 					foreach (ap_status_type() as $type){
 						if ($status != $type )
 							echo '<li><a data-action="set-status" href="#" data-args="'.$post_id.'-'.$nonce.'-'.$type.'" class="'.$type.'" title="'.__('Mark as ','ap').$type.'">'.$type.'</a></li>';
@@ -543,7 +542,7 @@ function ap_get_current_page_template(){
 }
 
 function ap_editor_content($content){
-	wp_editor( apply_filters('the_content', $content), 'post_content', array('media_buttons' => false, 'quicktags' => false, 'textarea_rows' => 15, 'teeny' => true)); 
+	wp_editor( apply_filters('the_content', $content), 'post_content', array('media_buttons' => false, 'quicktags' => false, 'textarea_rows' => 5, 'teeny' => true, 'statusbar' => false)); 
 	remove_filter('the_content', $post->post_content);
 }
 
@@ -556,4 +555,58 @@ function ap_base_page_slug(){
 	$slug = ((ap_opt('base_page') !== get_option('page_on_front')) ? $base_page_slug.'/' : '');
 	
 	return apply_filters('ap_base_page_slug', $slug) ;
+}
+
+function ap_ans_query($question_id, $order = 'voted'){
+	if(is_question()){
+		$order = get_query_var('sort');
+		if(empty($order ))
+			$order = 'voted';
+	}
+	
+	if($order == 'voted'){
+		$ans_args=array(
+			'post_type' => 'answer',
+			'post_status' => 'publish',
+			'post_parent' => get_the_ID(),
+			'showposts' => -1,
+			'orderby' => 'meta_value_num',
+			'meta_key' => ANSPRESS_VOTE_META,
+		);
+	}elseif($order == 'oldest'){
+		$ans_args=array(
+			'post_type' => 'answer',
+			'post_status' => 'publish',
+			'post_parent' => get_the_ID(),
+			'showposts' => -1,
+			'orderby' => 'date',
+			'order' => 'ASC'
+		);
+	}else{
+		$ans_args=array(
+			'post_type' => 'answer',
+			'post_status' => 'publish',
+			'post_parent' => get_the_ID(),
+			'showposts' => -1,
+			'orderby' => 'date',
+			'order' => 'DESC'
+		);
+	}
+	return new WP_Query($ans_args);
+}
+
+function ap_ans_tab(){
+$order = get_query_var('sort');
+if(empty($order ))
+	$order = 'voted';
+	
+	$link = get_permalink( get_the_ID() ).'?sort=';
+?>
+	<ul class="nav nav-tabs" role="tablist">
+		<li><h2 class="ap-answer-count"><span><?php echo ap_count_ans(get_the_ID()); ?></span> <?php _e('Answers', 'ap'); ?></h2></li>
+		<li class="pull-right<?php echo $order == 'newest' ? ' active' : ''; ?>"><a href="<?php echo $link.'newest'; ?>"><?php _e('Newest', 'ap'); ?></a></li>
+		<li class="pull-right<?php echo $order == 'oldest' ? ' active' : ''; ?>"><a href="<?php echo $link.'oldest'; ?>"><?php _e('Oldest', 'ap'); ?></a></li>
+		<li class="pull-right<?php echo $order == 'voted' ? ' active' : ''; ?>"><a href="<?php echo $link.'voted'; ?>"><?php _e('Voted', 'ap'); ?></a></li>
+	</ul>
+<?php
 }

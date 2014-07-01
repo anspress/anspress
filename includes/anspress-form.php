@@ -39,6 +39,7 @@ class anspress_form
 		add_action( 'init', array($this, 'process_answer_form') );
 		add_action( 'init', array($this, 'process_edit_question_form') );
 		add_action( 'init', array($this, 'process_edit_answer_form') );
+		add_action('comment_form', array($this, 'comment_button') );
 		add_action( 'wp_ajax_ap_load_comment_form', array($this, 'load_ajax_commentform') ); 
 		add_action( 'wp_ajax_nopriv_ap_load_comment_form', array($this, 'load_ajax_commentform') ); 
 		add_action( 'wp_ajax_nopriv_ap_not_logged_in_messgae', array($this, 'ap_not_logged_in_messgae') ); 
@@ -49,9 +50,6 @@ class anspress_form
 	
 	public function process_ask_form(){	
 		if(isset($_POST['is_question']) && isset($_POST['submitted']) && isset($_POST['ask_form']) && wp_verify_nonce($_POST['ask_form'], 'post_nonce')) {
-
-			if ( !is_user_logged_in() )
-				return;
 			
 			if(!ap_user_can_ask())
 				return;
@@ -62,10 +60,27 @@ class anspress_form
 
 			do_action('process_ask_form');
 			
-			global $current_user;
-			$user_id		= $current_user->ID;
-			
-
+			$user_id = get_current_user_id();
+			if(!is_user_logged_in()){
+				// create user
+				$user_id = wp_create_user( $_POST['username'], $_POST['password'], $_POST['email'] );
+				
+				// return if there is any error
+				if(is_object($user_id))
+					return;
+				
+				// auto login user if enabled			
+				if(ap_opt('login_after_signup')){
+					$creds = array();
+					$creds['user_login'] = $_POST['username'];
+					$creds['user_password'] = $_POST['password'];
+					$creds['remember'] = true;
+					$user = wp_signon( $creds, false );
+					if ( is_wp_error($user) )
+					   return $user->get_error_message();
+				}
+			}			
+				
 			$question_array = array(
 				'post_title'	=> sanitize_text_field($_POST['post_title']),
 				'post_author'	=> $user_id,
@@ -80,6 +95,11 @@ class anspress_form
 				// Update Custom Meta
 				wp_set_post_terms( $post_id, sanitize_text_field($_POST['category']), 'question_category' );
 				wp_set_post_terms( $post_id, sanitize_text_field($_POST['tags']), 'question_tags' );
+				add_post_meta($post_id, ANSPRESS_VOTE_META, '0');
+				add_post_meta($post_id, ANSPRESS_FAV_META, '0');
+				add_post_meta($post_id, ANSPRESS_CLOSE_META, '0');
+				add_post_meta($post_id, ANSPRESS_FLAG_META, '0');
+				add_post_meta($post_id, ANSPRESS_VIEW_META, '0');
 				ap_set_question_status($post_id);
 				// Redirect
 				wp_redirect( get_permalink($post_id) ); exit;
@@ -91,25 +111,41 @@ class anspress_form
 
 		if(isset($_POST['is_answer']) && isset($_POST['submitted']) && isset($_POST['answer_form']) && wp_verify_nonce($_POST['answer_form'], 'post_nonce')) {
 			
-			if ( !is_user_logged_in() )
-				return;
-			
 			$validate = ap_validate_form();
 			if($validate['has_error'])
 				return;
 				
-			if(!isset($_POST['form_question_id']) && (!is_int($_POST['form_question_id'])) && ('question' !== get_post_type( $_POST['form_question_id'] )))
+			if(!isset($_POST['form_question_id']) && (!is_int($_POST['form_question_id'])) && ('question' !== get_post_type( sanitize_text_field($_POST['form_question_id'] ))))
 				return;
 			
-			$post = get_post($_POST['form_question_id']);
-			global $current_user;
-			$user_id		= $current_user->ID;
+			$post = get_post(sanitize_text_field($_POST['form_question_id']));
 			
 			if(!ap_user_can_answer($post->ID) )
 				return;
 			
 			do_action('process_answer_form');
 			
+			$user_id = get_current_user_id();
+			if(!is_user_logged_in()){
+				// create user
+				$user_id = wp_create_user( $_POST['username'], $_POST['password'], $_POST['email'] );
+				
+				// return if there is any error
+				if(is_object($user_id))
+					return;
+				
+				// auto login user if enabled			
+				if(ap_opt('login_after_signup')){
+					$creds = array();
+					$creds['user_login'] = $_POST['username'];
+					$creds['user_password'] = $_POST['password'];
+					$creds['remember'] = true;
+					$user = wp_signon( $creds, false );
+					if ( is_wp_error($user) )
+					   return $user->get_error_message();
+				}
+			}	
+				
 			$ans_array = array(
 				'post_author'	=> $user_id,
 				'post_content' 	=> wp_kses($_POST['post_content'], ap_form_allowed_tags()),
@@ -119,6 +155,9 @@ class anspress_form
 			);
 
 			$post_id = wp_insert_post($ans_array);
+			
+			// set default value for meta
+			add_post_meta($post_id, ANSPRESS_VOTE_META, '0');
 		}
 	}
 	
@@ -142,13 +181,9 @@ class anspress_form
 
 			do_action('process_ask_form');
 			
-			global $current_user;
-			$user_id		= $current_user->ID;
-			
 			$question_array = array(
 				'ID'			=> $post_id,
 				'post_title'	=> sanitize_text_field($_POST['post_title']),
-				//'post_author'	=> $user_id,
 				'post_content' 	=>  wp_kses($_POST['post_content'], ap_form_allowed_tags()),
 				'post_status' 	=> 'publish'
 			);
@@ -206,6 +241,9 @@ class anspress_form
 		}
 	}
 	
+    public function comment_button() {
+		echo '<button class="btn btn-default" type="submit">' . __( 'Submit' ) . '</button>';
+    }
 	public function load_ajax_commentform(){
 		if(!ap_user_can_comment()){
 			_e('No Permission', 'ap');
@@ -218,11 +256,18 @@ class anspress_form
 			$comment_args = array(
 				'title_reply' => '',
 				'logged_in_as' => '',
-				'comment_field' => '<textarea id="anspress-comment" name="comment" cols="45" rows="2" aria-required="true"></textarea>',
+				'comment_field' => '<textarea id="anspress-comment" name="comment" cols="45" rows="2" aria-required="true" class="form-control"></textarea>',
 				'comment_notes_after' => ''
 			);
-			
-			comment_form($comment_args, $args[0] );
+			$current_user = get_userdata( get_current_user_id() );
+			echo '<div class="comment-form-c">';
+				echo '<div class="ap-user">';
+					echo get_avatar( $current_user->user_email, ap_opt('avatar_size_question') ); 
+				echo '</div>';
+				echo '<div class="ap-content-inner">';
+					comment_form($comment_args, $args[0] );
+				echo '</div>';
+			echo '</div>';
 
 		}
 		die();
@@ -240,8 +285,8 @@ class anspress_form
 		if(wp_verify_nonce( $args[1], $action )){
 			$comment = get_comment( $args[0] );
 			echo '<form id="edit-comment-'. $args[0].'" class="inline-edit-comment">';
-			echo '<textarea name="content">'.$comment->comment_content.'</textarea>';
-			echo '<button class="btn" data-action="save-inline-comment" data-elem="#edit-comment-'. $args[0].'">'.__('Save', 'ap').'</button>';
+			echo '<textarea class="form-control" name="content">'.$comment->comment_content.'</textarea>';
+			echo '<button class="btn btn-default" data-action="save-inline-comment" data-elem="#edit-comment-'. $args[0].'">'.__('Save', 'ap').'</button>';
 			echo '<input type="hidden" name="comment_id" value="'.$args[0].'"/>';
 			wp_nonce_field('save-comment-'.$args[0], 'nonce');
 			echo '</form>';
@@ -317,43 +362,55 @@ function ap_form_allowed_tags(){
 }
 
 function ap_ask_form(){
-	global $post;
-	global $current_user;
+
 	$validate = ap_validate_form();
 	
-	if(isset($validate['has_error']) && $validate['has_error']){
-		echo '<div class="alert alert-danger">'. implode(', ', $validate['message']) .'</div>';
+	if(!empty($validate['has_error'])){
+		echo '<div class="alert alert-danger" data-dismiss="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>'. __('Problem submitting form, please recheck form', 'ap') .'</div>';
 	}
 	
 	if( ap_user_can_ask()){
 		?>
 		<form action="" id="ask_question_form" method="POST">
 			<?php do_action('ap_ask_form_top'); ?>
-			<div class="ap-form-group">
-				<label for="post_title"><?php _e('Title', 'ap') ?></label>				
-				<input type="text" name="post_title" id="post_title" value="" class="form-control" placeholder="<?php _e('Question in one sentence', 'ap'); ?>" />
-			</div>
-			<div class="ap-form-group">						
-				<label for="post_content"><?php _e('Content', 'ap') ?></label>
-				<?php 
-					wp_editor( '', 'post_content', array('media_buttons' => false, 'quicktags' => false, 'textarea_rows' => 7, 'teeny' => true)); 
-				?>
-			</div>
-
-			<div class="ap-form-group">
-				<label for="category"><?php _e('Category', 'ap') ?></label>
-				<select class="form-control" name="category" id="industries">
+			<div class="form-groups">
+				<div class="form-group<?php echo isset($validate['post_title']) ? ' has-error' : ''; ?>">
+					<label for="post_title"><?php _e('Title', 'ap') ?></label>				
+					<input type="text" name="post_title" id="post_title" value="" class="form-control" placeholder="<?php _e('Question in one sentence', 'ap'); ?>" />
+					<?php echo isset($validate['post_title']) ? '<span class="help-block">'. $validate['post_title'] .'</span>' : ''; ?>
+				</div>
+				<div class="form-group<?php echo isset($validate['post_content']) ? ' has-error' : ''; ?>">						
+					<label for="post_content"><?php _e('Content', 'ap') ?></label>
 					<?php 
-					$taxonomies = get_terms( 'question_category', 'orderby=count&hide_empty=0' );
-					foreach($taxonomies as $cat)
-							echo '<option value="'.$cat->term_id.'">'.$cat->name.'</option>';
+						wp_editor( '', 'post_content', array('media_buttons' => false, 'quicktags' => false, 'textarea_rows' => 7, 'teeny' => true)); 
 					?>
-				</select>
+					<?php echo isset($validate['post_content']) ? '<span class="help-block">'. $validate['post_content'] .'</span>' : ''; ?>
+				</div>
+
+				<div class="form-group<?php echo isset($validate['category']) ? ' has-error' : ''; ?>">
+					<label for="category"><?php _e('Category', 'ap') ?></label>
+					<select class="form-control" name="category" id="category">
+						<option value=""></option>
+						<?php 
+						$taxonomies = get_terms( 'question_category', 'orderby=count&hide_empty=0' );
+						foreach($taxonomies as $cat)
+								echo '<option value="'.$cat->term_id.'">'.$cat->name.'</option>';
+						?>
+					</select>
+					<?php echo isset($validate['category']) ? '<span class="help-block">'. $validate['category'] .'</span>' : ''; ?>
+				</div>
+				<div class="form-group<?php echo isset($validate['tags']) ? ' has-error' : ''; ?>">
+					<label for="tags"><?php _e('Tags', 'ap') ?></label>
+					<input type="text" value="" tabindex="5" name="tags" id="tags" class="form-control" />
+					<?php echo isset($validate['tags']) ? '<span class="help-block">'. $validate['tags'] .'</span>' : ''; ?>
+				</div>
 			</div>
-			<div class="ap-form-group">
-				<label for="tags"><?php _e('Tags', 'ap') ?></label>
-				<input type="text" value="" tabindex="5" name="tags" id="tags" class="form-control" />
-			</div>
+			
+			<?php 
+				if(ap_opt('show_signup'))
+					ap_signup_fields(); 
+			?>
+			
 			<?php do_action('ap_ask_form_bottom'); ?>
 			<?php ap_ask_form_hidden_input(); ?>
 			
@@ -367,18 +424,17 @@ function ap_validate_form(){
 		$error 		= array();
 		$has_error 	= false;
 		if(trim($_POST['post_title']) === '') {
-			$error[] = __('Please enter a title', 'ap');
-			$has_error = true;
+			$error['post_title'] = __('Please enter a title', 'ap');
+			$error['has_error'] = true;
 		}	
 		
 		if(trim($_POST['post_content']) === '') {
-			$error[] = __('Please enter content of question', 'ap');
-			$has_error = true;
+			$error['post_content'] = __('Please enter content of question', 'ap');
+			$error['has_error'] = true;
 		}
 		
-		do_action('ap_validate_ask_form');
+		return apply_filters('ap_validate_ask_form', $error);		
 		
-		return array('has_error' => $has_error, 'message' => $error);	
 	}elseif(isset($_POST['is_answer']) && isset($_POST['submitted'])) {
 		$error 		= array();
 		$has_error 	= false;
@@ -400,7 +456,7 @@ function ap_ask_form_hidden_input(){
 	wp_nonce_field('post_nonce', 'ask_form');
 	echo '<input type="hidden" name="is_question" value="true" />';
 	echo '<input type="hidden" name="submitted" value="true" />';
-	echo '<button type="submit">'. __('Ask Question', 'ap'). '</button>';
+	echo '<button class="btn btn-primary" type="submit">'. __('Ask Question', 'ap'). '</button>';
 }
 
 function ap_answer_form_hidden_input($question_id){
@@ -410,7 +466,7 @@ function ap_answer_form_hidden_input($question_id){
 	echo '<input type="hidden" name="is_answer" value="true" />';
 	echo '<input type="hidden" name="submitted" value="true" />';
 	echo '<input type="hidden" name="form_question_id" value="'.$question_id.'" />';
-	echo '<button type="submit">'. __('Submit Answer', 'ap'). '</button>';
+	echo '<button type="submit" class="btn btn-primary">'. __('Submit Answer', 'ap'). '</button>';
 }
 
 
@@ -420,7 +476,7 @@ function ap_edit_question_form_hidden_input($post_id){
 	echo '<input type="hidden" name="question_id" value="'.$post_id.'" />';
 	echo '<input type="hidden" name="edited" value="true" />';
 	echo '<input type="hidden" name="submitted" value="true" />';
-	echo '<button type="submit">'. __('Update question', 'ap'). '</button>';
+	echo '<button type="submit" class="btn btn-primary">'. __('Update question', 'ap'). '</button>';
 }
 
 
@@ -473,5 +529,38 @@ function ap_edit_answer_form_hidden_input($post_id){
 	echo '<input type="hidden" name="answer_id" value="'.$post_id.'" />';
 	echo '<input type="hidden" name="edited" value="true" />';
 	echo '<input type="hidden" name="submitted" value="true" />';
-	echo '<button type="submit">'. __('Update Answer', 'ap'). '</button>';
+	echo '<button type="submit" class="btn btn-primary">'. __('Update Answer', 'ap'). '</button>';
+}
+
+function ap_signup_fields(){
+	if(!is_user_logged_in()):
+	?>
+
+		<div class="for-non-logged-in">
+			<strong class="ap-sign-up-label"><?php _e('Quick signup form', 'ap') ;?></strong>
+			<div class="row">
+				<div class="col-md-6">
+					<div class="form-group">
+						<label for="tags"><?php _e('Username', 'ap') ?></label>
+						<input type="text" value="" tabindex="5" name="username" id="username" class="form-control" placeholder="<?php _e('Username', 'ap') ?>" />
+					</div>						
+					<div class="form-group">
+						<label for="tags"><?php _e('Password', 'ap') ?></label>
+						<input type="password" value="" tabindex="5" name="password" id="password" class="form-control" placeholder="<?php _e('Password', 'ap') ?>" />
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="form-group">
+						<label for="tags"><?php _e('Email', 'ap') ?></label>
+						<input type="text" value="" tabindex="5" name="email" id="email" class="form-control" placeholder="<?php _e('name@domain.com', 'ap') ?>" />
+					</div>
+					<div class="form-group">
+						<label for="tags"><?php _e('Password', 'ap') ?></label>
+						<input type="password" value="" tabindex="5" name="password1" id="password1" class="form-control" placeholder="<?php _e('Repeat password', 'ap') ?>" />
+					</div>
+				</div>
+			</div>
+		</div>
+	<?php
+	endif;
 }

@@ -26,6 +26,7 @@ if ( ! isset( $_REQUEST['updated'] ) )
 		  <li><a href="#ap-theme" data-toggle="tab"><?php _e('Theme', 'ap'); ?></a></li>
 		  <li><a href="#ap-pages" data-toggle="tab"><?php _e('Pages', 'ap'); ?></a></li>
 		  <li><a href="#ap-misc" data-toggle="tab"><?php _e('Misc', 'ap'); ?></a></li>
+		  <li><a href="#ap-maintenance" data-toggle="tab"><?php _e('Maintenance', 'ap'); ?></a></li>
 		</ul>
 
 		<!-- Tab panes -->
@@ -43,10 +44,27 @@ if ( ! isset( $_REQUEST['updated'] ) )
 				
 
 				<tr valign="top">
+					<th scope="row">Allow non loggedin to see question & answer form</th>
+					<td>
+						<fieldset>
+							<input type="checkbox" id="allow_non_loggedin" name="anspress_opt[allow_non_loggedin]" value="1" <?php checked( true, $settings['allow_non_loggedin'] ); ?> />
+							<label for="allow_non_loggedin">Allow non logged in (but still they need to signup or login)</label>
+						</fieldset>
+						<fieldset>
+							<input type="checkbox" id="show_signup" name="anspress_opt[show_signup]" value="1" <?php checked( true, $settings['show_signup'] ); ?> />
+							<label for="show_signup">Show signup form</label>
+						</fieldset>
+						<fieldset>
+							<input type="checkbox" id="login_after_signup" name="anspress_opt[login_after_signup]" value="1" <?php checked( true, $settings['login_after_signup'] ); ?> />
+							<label for="login_after_signup">Automatically login after signup</label>
+						</fieldset>						
+					</td>
+				</tr>
+				<tr valign="top">
 					<th scope="row">Author Credits</th>
 					<td>
 						<input type="checkbox" id="author_credits" name="anspress_opt[author_credits]" value="1" <?php checked( true, $settings['author_credits'] ); ?> />
-						<label for="author_credits">Show Author Credits</label>
+						<label for="author_credits">Hide Author Credits</label>
 					</td>
 				</tr>
 
@@ -77,6 +95,20 @@ if ( ! isset( $_REQUEST['updated'] ) )
 								?>									
 							</select>
 							<p class="description"><?php _e('Set the theme you want to use', 'ap'); ?></p>
+						</td>
+					</tr>
+					<tr valign="top">
+						<th scope="row"><label for="theme"><?php _e('Include bootstrap', 'ap'); ?></label></th>
+						<td>
+							<input type="checkbox" id="bootstrap" name="anspress_opt[bootstrap]" value="1" <?php checked( true, $settings['bootstrap'] ); ?> />
+							<p class="description"><?php _e('If your theme does not use bootstrap then include it.', 'ap'); ?></p>
+						</td>
+					</tr>
+					<tr valign="top">
+						<th scope="row"><label for="theme"><?php _e('Avatar size in question page', 'ap'); ?></label></th>
+						<td>
+							<input type="text" name="anspress_opt[avatar_size_question]" id="avatar_size_question" value="<?php echo $settings['avatar_size_question'] ; ?>" />
+							<p class="description"><?php _e('User avatar size for question and answer.', 'ap'); ?></p>
 						</td>
 					</tr>
 				</table>
@@ -143,6 +175,37 @@ if ( ! isset( $_REQUEST['updated'] ) )
 				</table>
 				<?php endif; ?>
 				<a id="add-flag-note" href="#">Add more notes</a>
+			</div>
+			<div class="tab-pane" id="ap-maintenance">
+				<h3 class="ap-option-section"><?php _e('Recount Views', 'ap'); ?></h3>
+				<table class="form-table">
+					<tr valign="top">
+						<th scope="row"><label for="recount_views"><?php _e('Recount metas', 'ap'); ?></label></th>
+						<td>
+							<fieldset>
+								<a href="#" data-action="recount-views" class="button-default"><?php _e('Recount views', 'ap'); ?></a>							
+								<p class="description"><?php _e('This will recheck views count', 'ap'); ?></p>
+							</fieldset>
+							<fieldset>
+								<a href="#" data-action="recount-votes" class="button-default"><?php _e('Recount votes', 'ap'); ?></a>							
+								<p class="description"><?php _e('This will recheck vote count', 'ap'); ?></p>
+							</fieldset>
+							<fieldset>
+								<a href="#" data-action="recount-fav" class="button-default"><?php _e('Recount favourites', 'ap'); ?></a>							
+								<p class="description"><?php _e('This will recheck favourite count', 'ap'); ?></p>
+							</fieldset>
+							<fieldset>
+								<a href="#" data-action="recount-flag" class="button-default"><?php _e('Recount flag', 'ap'); ?></a>							
+								<p class="description"><?php _e('This will recheck flag count', 'ap'); ?></p>
+							</fieldset>
+							<fieldset>
+								<a href="#" data-action="recount-flag" class="button-default"><?php _e('Recount close', 'ap'); ?></a>							
+								<p class="description"><?php _e('This will recheck close count', 'ap'); ?></p>
+							</fieldset>
+						</td>
+					</tr>
+
+				</table>
 			</div>
 		</div>
 		<p class="submit"><input type="submit" class="button-primary" value="Save Options" /></p>

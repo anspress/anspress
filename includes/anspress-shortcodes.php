@@ -72,7 +72,13 @@ class anspress_shortcodes {
 			$question = new WP_Query( $args );
 		}
 		include ap_get_theme_location(ap_get_current_page_template());
-		
+		if(!ap_opt('author_credits')){
+			?>
+				<div class="ap-footer">
+					<p class="ap-author-credit"><?php _e('Coded with &hearts; by', 'ap'); ?> <a href="https://rahularyan.com">Rahul Aryan</a> | AnsPress Version <?php echo AP_VERSION; ?></p>
+				</div>
+			<?php
+		}
 		if(is_question() || is_tag())
 			wp_reset_postdata();
 	}

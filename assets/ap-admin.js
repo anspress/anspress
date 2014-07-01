@@ -1,4 +1,105 @@
+/* on start */
+jQuery(function() {
+     
+    /* create document */
+    APjs.admin = new APjs.admin();
+    /* need to call init manually with jQuery */
+    APjs.admin.initialize();
+ 
+});
+ 
+/* namespace */
+window.APjs = {};
+APjs.admin = function() {};
+ 
 
+APjs.admin.prototype = {
+	
+	/* automatically called */
+	initialize: function() {
+		this.recountVotes();
+		this.recountViews();
+		this.recountFav();
+		this.recountFlag();
+		this.recountClose();
+	},
+	
+	recountVotes:function(){
+		jQuery('[data-action="recount-votes"]').click(function(e){
+			jQuery.ajax({  
+				type: 'POST',  
+				url: ajaxurl,  
+				data: {  
+					action: 'recount_votes' 
+				},  
+				context:this,
+				success: function(data){ 
+					jQuery(this).after('<p>'+data+'</p>')
+				} 
+			});
+		});
+	},
+	recountViews:function(){
+		jQuery('[data-action="recount-views"]').click(function(e){
+			jQuery.ajax({  
+				type: 'POST',  
+				url: ajaxurl,  
+				data: {  
+					action: 'recount_views' 
+				},  
+				context:this,
+				success: function(data){ 
+					jQuery(this).after('<p>'+data+'</p>')
+				} 
+			});
+		});
+	},
+	recountFav:function(){
+		jQuery('[data-action="recount-fav"]').click(function(e){
+			jQuery.ajax({  
+				type: 'POST',  
+				url: ajaxurl,  
+				data: {  
+					action: 'recount_fav' 
+				},  
+				context:this,
+				success: function(data){ 
+					jQuery(this).after('<p>'+data+'</p>')
+				} 
+			});
+		});
+	},
+	recountFlag:function(){
+		jQuery('[data-action="recount-flag"]').click(function(e){
+			jQuery.ajax({  
+				type: 'POST',  
+				url: ajaxurl,  
+				data: {  
+					action: 'recount_flag' 
+				},  
+				context:this,
+				success: function(data){ 
+					jQuery(this).after('<p>'+data+'</p>')
+				} 
+			});
+		});
+	},
+	recountClose:function(){
+		jQuery('[data-action="recount-close"]').click(function(e){
+			jQuery.ajax({  
+				type: 'POST',  
+				url: ajaxurl,  
+				data: {  
+					action: 'recount_close' 
+				},  
+				context:this,
+				success: function(data){ 
+					jQuery(this).after('<p>'+data+'</p>')
+				} 
+			});
+		});
+	}
+}
 
 function ap_option_flag_note(){
 	jQuery('#add-flag-note').click(function(e){

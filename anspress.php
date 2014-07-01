@@ -15,7 +15,7 @@
  * Plugin URI:        http://rahularyan.com
  * Description:       A most advance community question and answer system for WordPress
  * Donate link: https://www.paypal.com/cgi-bin/webscr?business=rah12@live.com&cmd=_xclick&item_name=Donation%20to%20AnsPress%20development
- * Version:           0.1.7
+ * Version:           0.1.8
  * Author:            Rahul Aryan
  * Author URI:        http://rahularyan.com
  * Text Domain:       ap
@@ -30,7 +30,7 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 // define	
-define('AP_VERSION', '0.1.7');
+define('AP_VERSION', '0.1.8');
 define('AP_DB_VERSION', '3');
 
 define('ANSPRESS_DIR', plugin_dir_path( __FILE__ ));
@@ -45,6 +45,7 @@ define('ANSPRESS_VOTE_META', '_ap_vote');
 define('ANSPRESS_FAV_META', '_ap_favourite');
 define('ANSPRESS_CLOSE_META', '_ap_close');
 define('ANSPRESS_FLAG_META', '_ap_flag');
+define('ANSPRESS_VIEW_META', '_views');
 
 
 

@@ -108,12 +108,10 @@ class anspress_admin {
 			'author_credits' 	=> false,
 			'clear_databse' 	=> false,
 			'multiple_answers' 	=> false,
-			'question_points' 	=> 10,
-			'answer_points' 	=> 20,
-			'comment_points' 	=> 5,
-			'up_vote_points' 	=> 3,
+			'avatar_size_question' => '40',
 			'down_vote_points' 	=> -1,
 			'flag_note' => array(0 => array('title' => 'it is spam', 'description' => 'This question is effectively an advertisement with no disclosure. It is not useful or relevant, but promotional.')),			
+			'bootstrap' 			=> true,
 			'tags_per_page' 			=> '20',
 		);
 	}
