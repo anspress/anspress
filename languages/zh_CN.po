@@ -1,427 +1,428 @@
 # Copyright (C) 2013 TODO
 # This file is distributed under the same license as the TODO package.
+# Guo Yunhe <guoyunhebarve@gmail.com>, 2014.
 msgid ""
 msgstr ""
 "Project-Id-Version: TODO 1.0.0\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/plugins/plugin-name\n"
-"POT-Creation-Date: 2013-05-10 11:23:19+00:00\n"
-"PO-Revision-Date: 2013-05-10 10:37-0500\n"
-"Last-Translator: FULL NAME <email@example.com>\n"
-"Language-Team: LANGUAGE <translations@example.com >\n"
+"POT-Creation-Date: 2013-06-01 11:23:19+00:00\n"
+"PO-Revision-Date: 2014-06-01 22:15+0800\n"
+"Last-Translator: Guo Yunhe <guoyunhebarve@gmail.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.5.7\n"
+"X-Generator: Lokalize 1.5\n"
 "X-Poedit-KeywordsList: __;_e;_n;_x;esc_html_e;esc_html__;esc_attr_e;"
 "esc_attr__;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2;_x:1,2c;_n:1,2\n"
 "X-Poedit-Basepath: ../\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Poedit-SearchPath-0: .\n"
+"Language: zh_CN\n"
 
 #: class-plugin-name-admin.php:170
 msgid "Page Title"
-msgstr ""
+msgstr "页面标题"
 
 #: class-plugin-name-admin.php:171
 msgid "Menu Text"
-msgstr ""
+msgstr "菜单文本"
 
 #: class-plugin-name-admin.php:197
 msgid "Settings"
-msgstr ""
+msgstr "设置"
 
 #: include/anspress-form.php:274
 #: theme/default/functions.php:43
 msgid "ago"
-msgstr ""
+msgstr "前"
 
 #: include/anspress-form.php:276
 msgid "edit"
-msgstr ""
+msgstr "编辑"
 
 #: include/anspress-form.php:287
 msgid "No Permission"
-msgstr ""
+msgstr "没有权限"
 
 #: include/anspress-form.php:334
 msgid "Question in one sentence"
-msgstr ""
+msgstr "一句话描述您的问题"
 
 #: include/anspress-form.php:334
 #: include/anspress-posts.php:265
 msgid "Content"
-msgstr ""
+msgstr "内容"
 
 #: include/anspress-form.php:344
 #: include/anspress-posts.php:190
 #: include/anspress-posts.php:247
 msgid "Category"
-msgstr ""
+msgstr "分类"
 
 #: include/anspress-form.php:370
 msgid "Please enter a title"
-msgstr ""
+msgstr "请输入标题"
 
 #: include/anspress-form.php:375
 msgid "Please enter content of question"
-msgstr ""
+msgstr "请输入问题内容"
 
 #: include/anspress-form.php:375
 msgid "Please enter some content"
-msgstr ""
+msgstr "请输入内容"
 
 #: include/anspress-form.php:403
 msgid "Ask Question"
-msgstr ""
+msgstr "提出问题"
 
 #: include/anspress-form.php:413
 msgid "Submit Answer"
-msgstr ""
+msgstr "提交答案"
 
 #: include/anspress-form.php:423
 msgid "Update question"
-msgstr ""
+msgstr "更新问题"
 
 #: include/anspress-form.php:431
 #: theme/default/edit-question.php:5
 msgid "You don't have permission to access this page."
-msgstr ""
+msgstr "您没有权限访问此页面"
 
 #: include/anspress-form.php:457
 #: theme/default/answer-form.php:11
 msgid "Your Answer"
-msgstr ""
+msgstr "您的答案"
 
 #: include/anspress-form.php:476
 msgid "Update Answer"
-msgstr ""
+msgstr "更新答案"
 
 #: include/anspress-functions.php:108
 msgid "Please login or register to continue this action."
-msgstr ""
+msgstr "请先登陆或注册再进行操作."
 
 #: include/anspress-functions.php:119
 msgid "Points"
-msgstr ""
+msgstr "积分"
 
 #: include/anspress-functions.php:271
 msgid "Add comment"
-msgstr ""
+msgstr "添加评论"
 
 #: include/anspress-functions.php:271
 msgid "Comment"
-msgstr ""
+msgstr "评论"
 
 #: include/anspress-functions.php:293
 msgid "Edit Answer"
-msgstr ""
+msgstr "编辑答案"
 
 #: include/anspress-functions.php:293
 #: include/anspress-posts.php:415
 #: theme/default/answer.php:23
 #: theme/default/functions.php:46
 msgid "Edit"
-msgstr ""
+msgstr "编辑"
 
 #: include/anspress-functions.php:318
 msgid "Current status of question"
-msgstr ""
+msgstr "问题的当前状态"
 
 #: include/anspress-functions.php:322
 msgid "Mark as "
-msgstr ""
+msgstr "标记为 "
 
 #: include/anspress-functions.php:362
 #: include/anspress-posts.php:98
 #: theme/default/categories.php:24
 msgid "Questions"
-msgstr ""
+msgstr "问题"
 
 #: include/anspress-posts.php:96
 msgid "Questions[Post Type General Name]"
-msgstr ""
+msgstr "问题"
 
 #: include/anspress-posts.php:97
 msgid "Question[Post Type Singular Name]"
-msgstr ""
+msgstr "问题"
 
 #: include/anspress-posts.php:99
 msgid "Parent Question"
-msgstr ""
+msgstr "父问题"
 
 #: include/anspress-posts.php:100
 msgid "All Question"
-msgstr ""
+msgstr "所有问题"
 
 #: include/anspress-posts.php:101
 msgid "View Question"
-msgstr ""
+msgstr "查看问题"
 
 #: include/anspress-posts.php:102
 msgid "Add New Question"
-msgstr ""
+msgstr "新建问题"
 
 #: include/anspress-posts.php:103
 msgid "New Question"
-msgstr ""
+msgstr "新问题"
 
 #: include/anspress-posts.php:104
 msgid "Edit Question"
-msgstr ""
+msgstr "编辑问题"
 
 #: include/anspress-posts.php:105
 msgid "Update Question"
-msgstr ""
+msgstr "更新问题"
 
 #: include/anspress-posts.php:106
 msgid "Search question"
-msgstr ""
+msgstr "搜索问题"
 
 #: include/anspress-posts.php:107
 msgid "No question found"
-msgstr ""
+msgstr "没有找到问题"
 
 #: include/anspress-posts.php:108
 msgid "No questions found in Trash"
-msgstr ""
+msgstr "没有在回收站中找到问题"
 
 #: include/anspress-posts.php:113
 msgid "question"
-msgstr ""
+msgstr "问题"
 
 #: include/anspress-posts.php:114
 #: include/anspress-posts.php:264
 msgid "Question"
-msgstr ""
+msgstr "问题"
 
 #: include/anspress-posts.php:145
 msgid "Answers[Post Type General Name]"
-msgstr ""
+msgstr "答案"
 
 #: include/anspress-posts.php:146
 msgid "Answer[Post Type Singular Name]"
-msgstr ""
+msgstr "答案"
 
 #: include/anspress-posts.php:147
 #: theme/default/question.php:53
 msgid "Answers"
-msgstr ""
+msgstr "答案"
 
 #: include/anspress-posts.php:148
 msgid "Parent Answer"
-msgstr ""
+msgstr "父答案"
 
 #: include/anspress-posts.php:149
 msgid "All Answers"
-msgstr ""
+msgstr "所有答案"
 
 #: include/anspress-posts.php:150
 msgid "View Answer"
-msgstr ""
+msgstr "查看答案"
 
 #: include/anspress-posts.php:151
 msgid "Add New Answer"
-msgstr ""
+msgstr "新建答案"
 
 #: include/anspress-posts.php:152
 msgid "New Answer"
-msgstr ""
+msgstr "新答案"
 
 #: include/anspress-posts.php:153
 msgid "Edit answer"
-msgstr ""
+msgstr "编辑答案"
 
 #: include/anspress-posts.php:154
 msgid "Update answer"
-msgstr ""
+msgstr "更新答案"
 
 #: include/anspress-posts.php:155
 msgid "Search answer"
-msgstr ""
+msgstr "搜索答案"
 
 #: include/anspress-posts.php:156
 msgid "No answer found"
-msgstr ""
+msgstr "没有找到答案"
 
 #: include/anspress-posts.php:157
 msgid "No answer found in Trash"
-msgstr ""
+msgstr "没有在回收站中找到答案"
 
 #: include/anspress-posts.php:162
 msgid "answer"
-msgstr ""
+msgstr "答案"
 
 #: include/anspress-posts.php:163
 msgid "Answer"
-msgstr ""
+msgstr "答案"
 
 #: include/anspress-posts.php:189
 msgid "Question Categories"
-msgstr ""
+msgstr "问题分类"
 
 #: include/anspress-posts.php:191
 msgid "All Categories"
-msgstr ""
+msgstr "所有分类"
 
 #: include/anspress-posts.php:192
 msgid "Add New Category"
-msgstr ""
+msgstr "新建分类"
 
 #: include/anspress-posts.php:193
 msgid "Edit Category"
-msgstr ""
+msgstr "编辑分类"
 
 #: include/anspress-posts.php:194
 msgid "New Category"
-msgstr ""
+msgstr "新分类"
 
 #: include/anspress-posts.php:195
 msgid "View Category"
-msgstr ""
+msgstr "查看分类"
 
 #: include/anspress-posts.php:196
 msgid "Search Category"
-msgstr ""
+msgstr "搜索分类"
 
 #: include/anspress-posts.php:197
 #: include/anspress-posts.php:210
 msgid "Nothing Found"
-msgstr ""
+msgstr "没有找到"
 
 #: include/anspress-posts.php:198
 #: include/anspress-posts.php:211
 msgid "Nothing found in Trash"
-msgstr ""
+msgstr "没有在回收站中找到"
 
 #: include/anspress-posts.php:202
 msgid "Question Tags"
-msgstr ""
+msgstr "问题标签"
 
 #: include/anspress-posts.php:203
 msgid "Tag"
-msgstr ""
+msgstr "标签"
 
 #: include/anspress-posts.php:204
 msgid "All Tags"
-msgstr ""
+msgstr "所有标签"
 
 #: include/anspress-posts.php:205
 msgid "Add New Tag"
-msgstr ""
+msgstr "新建标签"
 
 #: include/anspress-posts.php:206
 msgid "Edit Tag"
-msgstr ""
+msgstr "编辑标签"
 
 #: include/anspress-posts.php:207
 msgid "New Tag"
-msgstr ""
+msgstr "新标签"
 
 #: include/anspress-posts.php:208
 msgid "View Tag"
-msgstr ""
+msgstr "查看标签"
 
 #: include/anspress-posts.php:209
 msgid "Search Tag"
-msgstr ""
+msgstr "搜索标签"
 
 #: include/anspress-posts.php:244
 msgid "Asker"
-msgstr ""
+msgstr "提问者"
 
 #: include/anspress-posts.php:245
 msgid "Status"
-msgstr ""
+msgstr "状态"
 
 #: include/anspress-posts.php:246
 msgid "Title"
-msgstr ""
+msgstr "标题"
 
 #: include/anspress-posts.php:248
 msgid "Tags"
-msgstr ""
+msgstr "标签"
 
 #: include/anspress-posts.php:249
 #: theme/default/content-list.php:40
 msgid "Ans"
-msgstr ""
+msgstr "答案"
 
 #: include/anspress-posts.php:250
 #: include/anspress-posts.php:266
 msgid "Comments"
-msgstr ""
+msgstr "评论"
 
 #: include/anspress-posts.php:251
 #: include/anspress-posts.php:267
 msgid "Vote"
-msgstr ""
+msgstr "赞同"
 
 #: include/anspress-posts.php:252
 #: include/anspress-posts.php:268
 msgid "Flag"
-msgstr ""
+msgstr "标记"
 
 #: include/anspress-posts.php:253
 #: include/anspress-posts.php:269
 msgid "Date"
-msgstr ""
+msgstr "日期"
 
 #: include/anspress-posts.php:263
 msgid "Answerer"
-msgstr ""
+msgstr "回答者"
 
 #: include/anspress-posts.php:336
 msgid "answers"
-msgstr ""
+msgstr "答案"
 
 #: include/anspress-posts.php:406
 msgid "Restore this item from the Trash"
-msgstr ""
+msgstr "从回收站中恢复"
 
 #: include/anspress-posts.php:406
 msgid "Restore"
-msgstr ""
+msgstr "恢复"
 
 #: include/anspress-posts.php:409
 msgid "Move this item to the Trash"
-msgstr ""
+msgstr "移动到回收站"
 
 #: include/anspress-posts.php:409
 msgid "Trash"
-msgstr ""
+msgstr "回收站"
 
 #: include/anspress-posts.php:412
 msgid "Delete this item permanently"
-msgstr ""
+msgstr "永久删除此项"
 
 #: include/anspress-posts.php:412
 msgid "Delete Permanently"
-msgstr ""
+msgstr "永久删除"
 
 #: include/anspress-posts.php:415
 #: include/anspress-posts.php:424
 msgid "Preview &#8220;%s&#8221;"
-msgstr ""
+msgstr "预览 &#8220;%s&#8221;"
 
 #: include/anspress-posts.php:424
 msgid "Preview"
-msgstr ""
+msgstr "预览"
 
 #: include/anspress-posts.php:427
 msgid "View &#8220;%s&#8221; question"
-msgstr ""
+msgstr "查看 &#8220;%s&#8221; 问题"
 
 #: include/anspress-posts.php:427
 msgid "View"
-msgstr ""
+msgstr "查看"
 
 #: include/anspress-posts.php:477
 msgid "Please fill parent question field, Answer was not saved!"
-msgstr ""
+msgstr "请填写父问题区域, 答案尚未保存!"
 
 #: include/anspress-vote.php:110
 msgid "Please undo your previous vote"
-msgstr ""
+msgstr "请撤销您之前的赞同"
 
 #: include/anspress-vote.php:129
 #: include/anspress-vote.php:162
@@ -429,148 +430,151 @@ msgstr ""
 #: include/anspress-vote.php:415
 #: include/anspress-vote.php:448
 msgid "Please try again"
-msgstr ""
+msgstr "请重试"
 
 #: include/anspress-vote.php:152
 #: include/anspress-vote.php:264
 msgid "Add to favourite list"
-msgstr ""
+msgstr "添加到收藏列表"
 
 #: include/anspress-vote.php:158
 #: include/anspress-vote.php:264
 msgid "Remove from favourite list"
-msgstr ""
+msgstr "从收藏列表移除"
 
 #: include/anspress-vote.php:170
 msgid "Please login or register to add this question to favourite"
-msgstr ""
+msgstr "添加收藏前, 请先登录或注册"
 
 #: include/anspress-vote.php:249
 msgid "Up vote this post"
-msgstr ""
+msgstr "赞同"
 
 #: include/anspress-vote.php:249
 msgid "Down vote this post"
-msgstr ""
+msgstr "不赞同"
 
 #: include/anspress-vote.php:300
 #: include/anspress-vote.php:321
 msgid "Vote for closing"
-msgstr ""
+msgstr "赞成关闭"
 
 #: include/anspress-vote.php:300
 #: include/anspress-vote.php:327
 msgid "Undo your vote"
-msgstr ""
+msgstr "撤销赞同"
 
 #: include/anspress-vote.php:321
 #: include/anspress-vote.php:327
 msgid "close"
-msgstr ""
+msgstr "关闭"
 
 #: include/anspress-vote.php:364
 msgid "Flag this post"
-msgstr ""
+msgstr "标记"
 
 #: include/anspress-vote.php:364
 #: include/anspress-vote.php:434
 #: include/anspress-vote.php:444
 msgid "You have flagged this post"
-msgstr ""
+msgstr "您已经标记过它"
 
 #: include/anspress-vote.php:382
 msgid "I am flagging this post because"
-msgstr ""
+msgstr "我标记它是因为"
 
 #: include/anspress-vote.php:400
 msgid "Other (needs moderator attention)"
-msgstr ""
+msgstr "其他 (需要管理员注意)"
 
 #: include/anspress-vote.php:401
-msgid "This post needs a moderator's attention. Please describe exactly what's wrong. "
-msgstr ""
+msgid ""
+"This post needs a moderator's attention. Please describe exactly what's "
+"wrong. "
+msgstr "此文需要需要管理员注意, 请准确描述问题."
 
 #: include/anspress-vote.php:407
 msgid "Flag post"
-msgstr ""
+msgstr "标记此文"
 
 #: include/anspress-vote.php:444
 msgid "flag"
-msgstr ""
+msgstr "标记"
 
 #: theme/default/answer.php:13
 msgid "%s <span class=\"when\">answered about %s ago</span>	"
-msgstr ""
+msgstr "%s <span class=\"when\">回答于 %s 前</span>	"
 
 #: theme/default/answer.php:23
+#: theme/default/question.php:40
 msgid "Edit this question"
-msgstr ""
+msgstr "编辑此问题"
 
 #: theme/default/categories.php:22
 msgid "Sub Categories"
-msgstr ""
+msgstr "子分类"
 
 #: theme/default/comments.php:15
 msgid "Comment navigation"
-msgstr ""
+msgstr "评论导航"
 
 #: theme/default/comments.php:16
 msgid "&larr; Older Comments"
-msgstr ""
+msgstr "&larr; 更早的评论"
 
 #: theme/default/comments.php:17
 msgid "Newer Comments &rarr;"
-msgstr ""
+msgstr "更新的评论 &rarr;"
 
 #: theme/default/content-list.php:10
 msgid "Featured post"
-msgstr ""
+msgstr "特色问答"
 
 #: theme/default/content-list.php:44
 #: theme/default/question.php:15
 msgid "Views"
-msgstr ""
+msgstr "查看"
 
 #: theme/default/content-none.php:9
 msgid "No question asked yet!, be the first to ask a question."
-msgstr ""
+msgstr "还没有问题. 成为第一个提问的人吧!"
 
 #: theme/default/edit-question.php:11
 msgid "Trying to cheat? huh!."
-msgstr ""
+msgstr "骗不了人的, 呵呵!"
 
 #: theme/default/functions.php:34
 msgid "Your comment is awaiting moderation."
-msgstr ""
+msgstr "您的评论正在等待审核."
 
 #: theme/default/functions.php:49
 msgid "Are you sure? It cannot be undone!"
-msgstr ""
+msgstr "您确定吗? 此操作不能撤销."
 
 #: theme/default/functions.php:49
 msgid "Delete"
-msgstr ""
+msgstr "删除"
 
 #: theme/default/pagination.php:26
 msgid "First"
-msgstr ""
+msgstr "第1页"
 
 #: theme/default/pagination.php:27
 msgid "Previous"
-msgstr ""
+msgstr "上一页"
 
 #: theme/default/pagination.php:33
 msgid "Go to page "
-msgstr ""
+msgstr "跳转到页"
 
 #: theme/default/pagination.php:37
 msgid "Next"
-msgstr ""
+msgstr "下一页"
 
 #: theme/default/pagination.php:38
 msgid "Last"
-msgstr ""
+msgstr "最后1页"
 
 #: theme/default/question.php:31
 msgid "%s <span class=\"when\">asked about %s ago</span>"
-msgstr ""
+msgstr "%s <span class=\"when\">提出于 %s 前</span>"

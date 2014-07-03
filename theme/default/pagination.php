@@ -35,7 +35,7 @@ function ap_pagination($pages = '', $range = 1, $paged = false, $wp_query = fals
          }
  
          if ($paged < $pages && $showitems < $pages) echo "<li><a href=\"".get_pagenum_link($paged + 1)."\">Next &rsaquo;</a></li>"; 
-         if ($paged < $pages-1 &&  $paged+$range-1 < $pages && $showitems < $pages) echo "<li><a href='".get_pagenum_link($pages)."'>Last &raquo;</a></li>";
+         if ($paged < $pages-1 &&  $paged+$range-1 < $pages && $showitems < $pages) echo "<li><a href='".get_pagenum_link($pages)." title='".__('Last', 'ap')."'>&raquo;</a></li>";
          echo "</ul>";
      }
 }
