@@ -1,0 +1,39 @@
+<?php //var_dump(ap_get_user_page_user()); ?>
+<div id="ap-profile" class="clearfix">
+	<div class="ap-profile-cover clearfix">
+		<div class="ap-cover-bg"></div>
+		<div class="ap-profile-head clearfix">
+			<div class="ap-user-image">
+				<?php echo get_avatar( $user->user_email, 105 ); ?>
+			</div>
+			<div class="ap-user-summery">
+				<?php ap_follow_btn_html($userid); ?>
+				<a class="btn ap-btn ap-follow-btn ap-icon-plus" href="#" data-action="ap-follow" data-user="<?php echo $userid; ?>"><?php _e('Message', 'ap') ?></a>
+				<h1 class="ap-user-name"><?php echo $display_name; ?></h1>
+				<span class="ap-user-rank"><?php echo ap_get_rank_title($userid); ?></span>			
+			</div>
+			<div class="ap-cover-bottom">
+				<ul class="ap-user-ffp ap-inline-list clearfix">
+					<li><a href="#"><b data-view="ap-followers"><?php echo ap_get_current_user_meta('followers') ?></b><span><?php _e('Followers', 'ap') ?></span></a></li>
+					<li><a href="#"><b data-view="ap-following"><?php echo ap_get_current_user_meta('following') ?></b><span><?php _e('Following', 'ap') ?></span></a></li>
+					<li><a href="#"><b data-view="ap-points"><?php echo ap_get_points($userid, true); ?></b><span><?php _e('Points', 'ap') ?></span></a></li>
+				</ul>
+			</div>
+		</div>		
+	</div>
+	<div class="ap-profile-lr">
+		<div class="ap-profile-nav">
+			<?php ap_user_menu(); ?>
+		</div>
+		<div class="ap-profile-right clearfix">
+			<div class="ap-user-tm clearfix">
+				<h2 class="ap-page-title"><?php echo ap_page_title(); ?></h2>
+				<?php ap_user_personal_menu(); ?>
+			</div>
+			<?php 
+				/* include proper user template */
+				ap_user_template(); 
+			?>
+		</div>
+	</div>
+</div>

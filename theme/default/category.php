@@ -1,8 +1,18 @@
-
 <div id="ap-lists" class="clearfix">
+	<div class="ap-tax-description">		
+		<h2 class="ap-catgory-name"><?php printf(__('Category: %s', 'ap'), $category->name); ?> <span class="ap-tax-item-count"><?php printf( _n('1 Question', '%s Questions', $category->count, 'ap'),  $category->count); ?></span></h2>
+		
+		<?php if($category->description !=''): ?>
+			<p class="ap-category-description"><?php echo $category->description; ?></p>
+		<?php else: ?>
+			<p class="ap-category-description"><?php _e('-- No description --', 'ap'); ?></p>
+		<?php endif; ?>
+	</div>
 	<?php if ( $question->have_posts() ) : ?>
 		<div class="question-list">
 	<?php
+		ap_questions_tab();
+		
 		/* Start the Loop */
 		while ( $question->have_posts() ) : $question->the_post();
 			include(ap_get_theme_location('content-list.php'));

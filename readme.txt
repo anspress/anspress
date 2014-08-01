@@ -1,18 +1,18 @@
-=== AnsPress - Question & answer system ===
-Contributors: nerdaryan
+=== AnsPress - Question and answer plugin ===
+Contributors: nerdaryan, mertskaplan
 Donate link: https://www.paypal.com/cgi-bin/webscr?business=rah12@live.com&cmd=_xclick&item_name=Donation%20to%20AnsPress%20development
 Tags: question, answer, q&a, forum, community
 Requires at least: 3.5.1
 Tested up to: 3.9.1
-Stable tag: 0.1.8
+Stable tag: 0.1.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-A most advance community question and answer system for WordPress (still under development)
+A most advance community question and answer system for WordPress, a live example can be seen here: https://rahularyan.com/support
 
 == Description ==
 
-A most advance community question and answer system for WordPress (Still under development).
+A most advance community question and answer system for WordPress.
 
 Follow me on twitter to get update of next stable version @nerdaryan.
 
@@ -62,7 +62,6 @@ Use this shortcode in base to AnsPress work properly
 
 We are working hard to make this plugin much better, and here are some features which will available in future version 1.0:
 
-* Better voting system
 * Better admin interface
 * User profile
 * Choose Best Answer for Question
@@ -121,6 +120,19 @@ Yes, you can override the theme file easily. Simply follow below steps:
 
 
 == Changelog ==
+
+= 0.1.9 =
+
+* Added sorting for answers
+* Added pagination for answers
+* Ajax notification for each action
+* Removed bootstrap
+* Improved layout
+* Fixed rewrite rules
+* Set question per page from settings
+* Improved vote, close, flag and other buttons
+* Improved tag and category page
+* Removed font icons
 
 = 0.1.8 =
 

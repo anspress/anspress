@@ -1,4 +1,5 @@
-<div id="ap-categories" class="ap-container clearfix">
+<?php if(ap_opt('enable_categories')): ?>
+<div id="ap-categories" class="clearfix">
     <?php 
 	$categories = get_terms( array('taxonomy' => 'question_category'), array( 'hide_empty' => false )); 
 		
@@ -36,3 +37,8 @@
 	echo'</ul>';
 	?>
 </div>
+<?php else: ?>
+	<div class="ap-tax-disabled">
+		<?php _e('Categories are disabled', 'ap'); ?>
+	</div>
+<?php endif; ?>

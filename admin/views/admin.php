@@ -1,29 +1,31 @@
 <?php
 $options = get_option('anspress_opt');
-$settings = $options + $this->default_options();
+$settings = $options  + ap_default_options();
 
-
-if ( ! isset( $_REQUEST['updated'] ) )
-	$_REQUEST['updated'] = false; // This checks whether the form has just been submitted. ?>
+if ( ! isset( $_REQUEST['settings-updated'] ) )
+	$_REQUEST['settings-updated'] = false; // This checks whether the form has just been submitted. ?>
 
 <div class="wrap">
 	<?php screen_icon(); echo '<h2>' . __( 'AnsPress Options' ) . '</h2>';
 	// This shows the page's name and an icon if one has been provided ?>
 			
-	<?php if ( false !== $_REQUEST['updated'] ) : ?>
+	<?php if ( false !== $_REQUEST['settings-updated'] ) : ?>
 	<div class="updated fade"><p><strong><?php _e( 'Options saved' ); ?></strong></p></div>
 	<?php endif; // If the form has just been submitted, this shows the notification ?>
-
-	<form method="post" action="options.php">
-
-	<?php settings_fields( 'anspress_options' );
-		/* This function outputs some hidden fields required by the form,
-		including a nonce, a unique number used to ensure the form has been submitted from the admin page
-		and not somewhere else, very important for security */ ?>
+	
+	<div class="get-support">
+		<strong>Need more help ? feel free to ask for support. </strong>
+		<a href="http://open-wp.com">Support Forum</a>
+	</div>
+	
+	<form method="post" action="" id="ap-options">
 		<ul id="ap_opt_nav" class="nav nav-tabs">
 		  <li class="active"><a href="#ap-general" data-toggle="tab"><?php _e('General', 'ap'); ?></a></li>
+		  <li><a href="#ap-question" data-toggle="tab"><?php _e('Question', 'ap'); ?></a></li>
 		  <li><a href="#ap-answers" data-toggle="tab"><?php _e('Answers', 'ap'); ?></a></li>
 		  <li><a href="#ap-theme" data-toggle="tab"><?php _e('Theme', 'ap'); ?></a></li>
+		  <li><a href="#ap-categories" data-toggle="tab"><?php _e('Categories', 'ap'); ?></a></li>
+		  <li><a href="#ap-tags" data-toggle="tab"><?php _e('Tags', 'ap'); ?></a></li>
 		  <li><a href="#ap-pages" data-toggle="tab"><?php _e('Pages', 'ap'); ?></a></li>
 		  <li><a href="#ap-misc" data-toggle="tab"><?php _e('Misc', 'ap'); ?></a></li>
 		  <li><a href="#ap-maintenance" data-toggle="tab"><?php _e('Maintenance', 'ap'); ?></a></li>
@@ -70,6 +72,24 @@ if ( ! isset( $_REQUEST['updated'] ) )
 
 			</table>
 			</div>
+			<div class="tab-pane" id="ap-question">		
+				<table class="form-table">
+					<tr valign="top">
+						<th scope="row"><label for="minimum_qtitle_length"><?php _e('Minimum words in title', 'ap'); ?></label></th>
+						<td>
+							<input type="text" name="anspress_opt[minimum_qtitle_length]" id="minimum_qtitle_length" value="<?php echo $settings['minimum_qtitle_length'] ; ?>" />
+							<p class="description"><?php _e('Minimum words for question title.', 'ap'); ?></p>
+						</td>
+					</tr>
+					<tr valign="top">
+						<th scope="row"><label for="minimum_question_length"><?php _e('Minimum words in question', 'ap'); ?></label></th>
+						<td>
+							<input type="text" name="anspress_opt[minimum_question_length]" id="minimum_question_length" value="<?php echo $settings['minimum_question_length'] ; ?>" />
+							<p class="description"><?php _e('Set minimum question word limit.', 'ap'); ?></p>
+						</td>
+					</tr>
+				</table>
+			</div>
 			<div class="tab-pane" id="ap-answers">		
 				<table class="form-table">
 
@@ -78,6 +98,20 @@ if ( ! isset( $_REQUEST['updated'] ) )
 						<td>
 							<input type="checkbox" id="multiple_answers" name="anspress_opt[multiple_answers]" value="1" <?php checked( true, $settings['multiple_answers'] ); ?> />
 							<label><?php _e('Allow an user to submit multiple answers on a single question', 'ap'); ?></label>
+						</td>
+					</tr>
+					<tr valign="top">
+						<th scope="row"><label for="minimum_ans_length"><?php _e('Minimum words in answer', 'ap'); ?></label></th>
+						<td>
+							<input type="text" name="anspress_opt[minimum_ans_length]" id="minimum_ans_length" value="<?php echo $settings['minimum_ans_length'] ; ?>" />
+							<p class="description"><?php _e('Set minimum answer word limit.', 'ap'); ?></p>
+						</td>
+					</tr>
+					<tr valign="top">
+						<th scope="row"><label for="close_selected"><?php _e('Close after selecting answer', 'ap'); ?></label></th>
+						<td>
+							<input type="checkbox" id="close_selected" name="anspress_opt[close_selected]" value="1" <?php checked( true, $settings['close_selected'] ); ?> />
+							<p class="description"><?php _e('Do not allow new answer after selecting answer.', 'ap'); ?></p>
 						</td>
 					</tr>
 				</table>
@@ -98,30 +132,123 @@ if ( ! isset( $_REQUEST['updated'] ) )
 						</td>
 					</tr>
 					<tr valign="top">
-						<th scope="row"><label for="theme"><?php _e('Include bootstrap', 'ap'); ?></label></th>
-						<td>
-							<input type="checkbox" id="bootstrap" name="anspress_opt[bootstrap]" value="1" <?php checked( true, $settings['bootstrap'] ); ?> />
-							<p class="description"><?php _e('If your theme does not use bootstrap then include it.', 'ap'); ?></p>
-						</td>
-					</tr>
-					<tr valign="top">
 						<th scope="row"><label for="theme"><?php _e('Avatar size in question page', 'ap'); ?></label></th>
 						<td>
 							<input type="text" name="anspress_opt[avatar_size_question]" id="avatar_size_question" value="<?php echo $settings['avatar_size_question'] ; ?>" />
 							<p class="description"><?php _e('User avatar size for question and answer.', 'ap'); ?></p>
 						</td>
 					</tr>
+					<tr valign="top">
+						<th scope="row"><label for="comment_avatar_size"><?php _e('Avatar size in question page', 'ap'); ?></label></th>
+						<td>
+							<input type="text" name="anspress_opt[comment_avatar_size]" id="comment_avatar_size" value="<?php echo $settings['comment_avatar_size'] ; ?>" />
+							<p class="description"><?php _e('User avatar size for comments.', 'ap'); ?></p>
+						</td>
+					</tr>
 				</table>
 			</div>			
 			
-			<div class="tab-pane" id="ap-pages">
-				<h3 class="ap-option-section"><?php _e('Tags Page', 'ap'); ?></h3>
+			<div class="tab-pane" id="ap-tags">		
 				<table class="form-table">
+					<tr valign="top">
+						<th scope="row"><label for="enable_tags"><?php _e('Enable tags', 'ap'); ?></label></th>
+						<td>
+							<input type="checkbox" id="enable_tags" name="anspress_opt[enable_tags]" value="1" <?php checked( true, $settings['enable_tags'] ); ?> />
+							<p class="description"><?php _e('Enable or disable tags system', 'ap'); ?></p>
+						</td>
+					</tr>
+					<tr valign="top">
+						<th scope="row"><label for="max_tags"><?php _e('Maximum tags', 'ap'); ?></label></th>
+						<td>
+							<input type="text" id="max_tags" name="anspress_opt[max_tags]" value="<?php echo $settings['max_tags']; ?>" />
+							<p class="description"><?php _e('Maximum numbers of user can add when asking.', 'ap'); ?></p>
+						</td>
+					</tr>
+				</table>
+			</div>
+			
+			<div class="tab-pane" id="ap-categories">		
+				<table class="form-table">
+					<tr valign="top">
+						<th scope="row"><label for="enable_categories"><?php _e('Enable categories', 'ap'); ?></label></th>
+						<td>
+							<input type="checkbox" id="enable_categories" name="anspress_opt[enable_categories]" value="1" <?php checked( true, $settings['enable_categories'] ); ?> />
+							<p class="description"><?php _e('Enable or disable categories system', 'ap'); ?></p>
+						</td>
+					</tr>
+					
+				</table>
+			</div>
+			
+			<div class="tab-pane" id="ap-pages">
+				<h3 class="ap-option-section"><?php _e('Item per page', 'ap'); ?></h3>
+				<table class="form-table">
+					<tr valign="top">
+						<th scope="row"><label for="question_per_page"><?php _e('Question per page', 'ap'); ?></label></th>
+						<td>
+							<input type="text" name="anspress_opt[question_per_page]" id="question_per_page" value="<?php echo $settings['question_per_page'] ; ?>" />								
+							<p class="description"><?php _e('Question to show per page', 'ap'); ?></p>
+						</td>
+					</tr>
+					<tr valign="top">
+						<th scope="row"><label for="answers_per_page"><?php _e('Answers per page', 'ap'); ?></label></th>
+						<td>
+							<input type="text" name="anspress_opt[answers_per_page]" id="answers_per_page" value="<?php echo $settings['answers_per_page'] ; ?>" />								
+							<p class="description"><?php _e('Answers to show per page in question page', 'ap'); ?></p>
+						</td>
+					</tr>					
 					<tr valign="top">
 						<th scope="row"><label for="tags_per_page"><?php _e('Tags per page', 'ap'); ?></label></th>
 						<td>
 							<input type="text" name="anspress_opt[tags_per_page]" id="tags_per_page" value="<?php echo $settings['tags_per_page'] ; ?>" />								
 							<p class="description"><?php _e('Tags to show per page', 'ap'); ?></p>
+						</td>
+					</tr>
+				</table>
+				<h3 class="ap-option-section"><?php _e('Sorting & Ordering', 'ap'); ?></h3>
+				<table class="form-table">
+					<tr valign="top">
+						<th scope="row"><label for="answers_sort"><?php _e('Default sorting of answers', 'ap'); ?></label></th>
+						<td>
+							<select name="anspress_opt[answers_sort]" id="answers_sort">
+								<option value="voted"<?php echo $settings['answers_sort']=='voted' ? ' selected="selected"' : '' ?>>Voted</option>
+								<option value="oldest"<?php echo $settings['answers_sort']=='oldest' ? ' selected="selected"' : '' ?>>Oldest</option>
+								<option value="newest"<?php echo $settings['answers_sort']=='newest' ? ' selected="selected"' : '' ?>>Newest</option>
+							</select>
+							<p class="description"><?php _e('Default active tab for answers list', 'ap'); ?></p>
+						</td>
+					</tr>
+				</table>
+				<h3 class="ap-option-section"><?php _e('Page titles', 'ap'); ?></h3>
+				<table class="form-table">
+					<tr valign="top">
+						<th scope="row"><label for="base_page_title"><?php _e('Base page title', 'ap'); ?></label></th>
+						<td>
+							<input type="text" name="anspress_opt[base_page_title]" id="base_page_title" value="<?php echo $settings['base_page_title'] ; ?>" />
+						</td>
+					</tr>
+					<tr valign="top">
+						<th scope="row"><label for="ask_page_title"><?php _e('Ask page title', 'ap'); ?></label></th>
+						<td>
+							<input type="text" name="anspress_opt[ask_page_title]" id="ask_page_title" value="<?php echo $settings['ask_page_title'] ; ?>" />
+						</td>
+					</tr>
+					<tr valign="top">
+						<th scope="row"><label for="categories_page_title"><?php _e('Categories page title', 'ap'); ?></label></th>
+						<td>
+							<input type="text" name="anspress_opt[categories_page_title]" id="categories_page_title" value="<?php echo $settings['categories_page_title'] ; ?>" />
+						</td>
+					</tr>
+					<tr valign="top">
+						<th scope="row"><label for="tags_page_title"><?php _e('Tags page title', 'ap'); ?></label></th>
+						<td>
+							<input type="text" name="anspress_opt[tags_page_title]" id="tags_page_title" value="<?php echo $settings['tags_page_title'] ; ?>" />
+						</td>
+					</tr>
+					<tr valign="top">
+						<th scope="row"><label for="users_page_title"><?php _e('Users page title', 'ap'); ?></label></th>
+						<td>
+							<input type="text" name="anspress_opt[users_page_title]" id="users_page_title" value="<?php echo $settings['users_page_title'] ; ?>" />
 						</td>
 					</tr>
 				</table>
@@ -191,8 +318,8 @@ if ( ! isset( $_REQUEST['updated'] ) )
 								<p class="description"><?php _e('This will recheck vote count', 'ap'); ?></p>
 							</fieldset>
 							<fieldset>
-								<a href="#" data-action="recount-fav" class="button-default"><?php _e('Recount favourites', 'ap'); ?></a>							
-								<p class="description"><?php _e('This will recheck favourite count', 'ap'); ?></p>
+								<a href="#" data-action="recount-fav" class="button-default"><?php _e('Recount favorites', 'ap'); ?></a>							
+								<p class="description"><?php _e('This will recheck favorite count', 'ap'); ?></p>
 							</fieldset>
 							<fieldset>
 								<a href="#" data-action="recount-flag" class="button-default"><?php _e('Recount flag', 'ap'); ?></a>							
@@ -207,8 +334,8 @@ if ( ! isset( $_REQUEST['updated'] ) )
 
 				</table>
 			</div>
-		</div>
-		<p class="submit"><input type="submit" class="button-primary" value="Save Options" /></p>
-
+			<p class="submit"><input type="submit" class="button-primary" value="Save Options" /></p>
+		</div>		
+		<input type="hidden" value="ap_save_options" name="action"/>
 	</form>
 </div>

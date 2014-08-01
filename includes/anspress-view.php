@@ -50,30 +50,16 @@ class anspress_view {
 
 function ap_insert_views($data_id, $type){
 	if($type == 'question'){
-		global $wpdb;
-		$wpdb->insert( 
-			$wpdb->base_prefix.'ap_views', 
-			array( 
-				'uid' 		=> get_current_user_id(), 
-				'data_id' 	=> $data_id, 
-				'type' 		=> $type, 
-				'ip_addres' =>  $_SERVER['REMOTE_ADDR'], 
-				'view' 		=> apply_filters('ap_insert_views', 1 )
-			), 
-			array( 
-				'%d', 
-				'%d', 
-				'%s', 
-				'%s', 
-				'%d'
-			) 
-		);	
+		$userid = get_current_user_id();
+		$row = ap_add_meta($userid, 'post_view', $data_id, $_SERVER['REMOTE_ADDR'] );
+		
 		$view = ap_get_views_db($data_id);
 		update_post_meta( $data_id, ANSPRESS_VIEW_META, apply_filters('ap_insert_views', $view + 1 ));
 	}
 }
 
-function ap_get_qa_views($id){	
+function ap_get_qa_views($id = false){	
+	if(!$id) $id = get_the_ID();
 	$views = get_post_meta( $id, ANSPRESS_VIEW_META, true );	
 	$views = empty($views) ? 1 : $views;
 	
@@ -81,13 +67,10 @@ function ap_get_qa_views($id){
 }
 
 function ap_get_views_db($id){
-	global $wpdb;
-	return $wpdb->get_var( "SELECT COUNT(*) FROM ".$wpdb->base_prefix."ap_views WHERE data_id = $id ");
+	return ap_meta_total_count('post_view', $id);
 }
 
 function ap_is_already_viewed($user_id, $data_id, $type ='question'){
-	global $wpdb;
-	$ip = $_SERVER['REMOTE_ADDR'];
-	$count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM ".$wpdb->base_prefix."ap_views WHERE uid = %d AND type = %s AND data_id = %d", $user_id, $type, $data_id ));
-	return apply_filters('ap_is_already_viewed', $count);
+	$done = ap_meta_user_done('post_view', $user_id, $data_id);
+	return $done > 0 ? true : false;
 }

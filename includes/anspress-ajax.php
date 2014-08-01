@@ -35,7 +35,6 @@ class anspress_ajax
      */
     public function __construct()
     {
-		add_action('wp_ajax_ap_set_status', array($this, 'ap_set_status'));
 		add_action('wp_ajax_nopriv_ap_check_username', array($this, 'check_username'));
 		add_action('wp_ajax_nopriv_ap_check_email', array($this, 'check_email'));
 		add_action('wp_ajax_recount_votes', array($this, 'recount_votes'));
@@ -43,22 +42,13 @@ class anspress_ajax
 		add_action('wp_ajax_recount_fav', array($this, 'recount_fav'));
 		add_action('wp_ajax_recount_flag', array($this, 'recount_flag'));
 		add_action('wp_ajax_recount_close', array($this, 'recount_close'));
-    }
-	
-	public function ap_set_status(){
-		if(!is_user_logged_in())
-			die('not_logged_in');
 		
-		if(ap_user_can_change_status()){
-			$args = explode('-', sanitize_text_field($_REQUEST['args']));
-			$action = 'question-'.$args[0];	
-			if(wp_verify_nonce( $args[1], $action )){		
-				ap_set_question_status($args[0], $args[2]);
-			}
-		}
-		//ap_change_status_btn_html($args[0]);
-		die();		
-	}
+		add_action('wp_ajax_ap_suggest_tags', array($this, 'ap_suggest_tags'));
+		add_action('wp_ajax_nopriv_ap_suggest_tags', array($this, 'ap_suggest_tags'));
+		
+		add_action('wp_ajax_ap_set_best_answer', array($this, 'ap_set_best_answer'));
+    }
+
 	
 	public function check_username(){
 	   $username = sanitize_text_field($_POST['username']);
@@ -246,4 +236,56 @@ class anspress_ajax
 		die();
 	}
 	
+	public function ap_suggest_tags(){
+		$keyword = sanitize_text_field($_POST['q']);
+		$tags = get_terms( 'question_tags', array(
+			'orderby'   	=> 'count',
+			'order' 		=> 'DESC',
+			'hide_empty' 	=> false,
+			'search' 		=> $keyword,
+			'number' 		=> 8
+		));
+		
+		
+		if($tags){
+			$items = array();
+			foreach ($tags as $k => $t){
+				$items[$k]['id'] 		= $t->slug;
+				$items[$k]['name'] 		= $t->name;
+				$items[$k]['count'] 	= $t->count;
+				$items[$k]['description'] = ap_truncate_chars($t->description, 80);
+			}
+			$result = array('status' => true, 'items' => $items);
+		}else{
+			$result = array('status' => false, 'message' => __('No related tags found', 'ap'));
+		}
+		
+		die(json_encode($result));
+	}
+	
+	public function ap_set_best_answer(){
+		$args = explode('-', sanitize_text_field($_POST['args']));
+		
+		if(wp_verify_nonce( $args[1], 'answer-'.$args[0] )){
+			$post = get_post($args[0]);
+			$user_id = get_current_user_id();
+			if(ap_is_answer_selected($post->post_parent)){
+				ap_do_event('unselect_answer', $user_id, $post->post_parent, $post->ID);
+				update_post_meta($post->ID, ANSPRESS_BEST_META, 0);
+				update_post_meta($post->post_parent, ANSPRESS_SELECTED_META, false);
+				$html = ap_select_answer_btn_html($args[0]);
+				$result	= array('action' => 'unselected', 'message' => __('Uselected the answer', 'ap'), 'html' => $html);
+			}else{
+				ap_do_event('select_answer', $user_id, $post->post_parent, $post->ID);
+				update_post_meta($post->ID, ANSPRESS_BEST_META, 1);
+				update_post_meta($post->post_parent, ANSPRESS_SELECTED_META, $post->ID);
+				$html = ap_select_answer_btn_html($args[0]);
+				$result	= array('action' => 'selected', 'message' => __('Thank you for awarding best answer', 'ap'), 'html' => $html);
+			}
+			
+		}else{
+			$result	= array('action' => false, 'message' => __('Please try again', 'ap'));
+		}
+		die(json_encode($result));
+	}
 }

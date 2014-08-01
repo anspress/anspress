@@ -35,35 +35,157 @@ class anspress_form
      */
     public function __construct()
     {
-		add_action( 'init', array($this, 'process_ask_form') );
-		add_action( 'init', array($this, 'process_answer_form') );
-		add_action( 'init', array($this, 'process_edit_question_form') );
-		add_action( 'init', array($this, 'process_edit_answer_form') );
+		add_action( 'init', array($this, 'process_forms') );
 		add_action('comment_form', array($this, 'comment_button') );
 		add_action( 'wp_ajax_ap_load_comment_form', array($this, 'load_ajax_commentform') ); 
-		add_action( 'wp_ajax_nopriv_ap_load_comment_form', array($this, 'load_ajax_commentform') ); 
+		add_action( 'wp_ajax_nopriv_ap_load_comment_form', array($this, 'load_ajax_commentform') );
+		
+		// Send all comment submissions through my "ajaxComment" method
+		add_action('comment_post', array($this, 'save_comment'), 20, 2);
+	
+		add_action( 'wp_ajax_ap_update_comment', array($this, 'update_comment_form') ); 
+		add_action( 'wp_ajax_ap_delete_comment', array($this, 'delete_comment') ); 
+		
 		add_action( 'wp_ajax_nopriv_ap_not_logged_in_messgae', array($this, 'ap_not_logged_in_messgae') ); 
 		add_action( 'wp_ajax_ap_edit_comment_form', array($this, 'edit_comment_form') ); 
-		add_action( 'wp_ajax_ap_save_comment_form', array($this, 'save_comment_form') ); 
-		add_action( 'wp_ajax_ap_delete_comment', array($this, 'delete_comment') ); 
+		
+		add_action( 'wp_ajax_ap_submit_question', array($this, 'ajax_question_submit') ); 
+		add_action( 'wp_ajax_nopriv_ap_submit_question', array($this, 'ajax_question_submit') ); 
+		
+		add_action( 'wp_ajax_ap_submit_answer', array($this, 'ajax_answer_submit') ); 
+		add_action( 'wp_ajax_nopriv_ap_submit_answer', array($this, 'ajax_answer_submit') ); 
+				
+		add_action('wp_insert_comment', array($this, 'comment_inserted'), 99, 2);
+		add_action('pre_comment_approved', array($this, 'pre_comment_approved'), 99, 2);
+		
+		// add ask form fields
+		add_action('ap_ask_form_fields', array($this, 'ask_from_title_field'));
+		add_action('ap_ask_form_fields', array($this, 'ask_from_content_field'));
+		add_action('ap_ask_form_fields', array($this, 'ask_from_category_field'));
+		add_action('ap_ask_form_fields', array($this, 'ask_from_tags_field'));
+		
+		// edit question form fields
+		add_action('ap_edit_question_form_fields', array($this, 'edit_question_from_title_field'), 10, 2);
+		add_action('ap_edit_question_form_fields', array($this, 'edit_question_from_content_field'), 10, 2);
+		add_action('ap_edit_question_form_fields', array($this, 'edit_question_from_category_field'), 10, 2);
+		add_action('ap_edit_question_form_fields', array($this, 'edit_question_from_tags_field'), 10, 2);
+		
+		add_action('ap_answer_fields', array($this, 'answer_from_content_field'), 10, 2);
+		add_action('ap_edit_answer_fields', array($this, 'edit_answer_from_content_field'), 10, 2);
+		
+		add_filter('ap_save_question_filds', array($this, 'signup_fields'));
+		add_filter('ap_save_answer_filds', array($this, 'signup_fields'));		
+		
+		add_action( 'wp_ajax_ap_toggle_login_signup', array($this, 'ap_toggle_login_signup') ); 
+		add_action( 'wp_ajax_nopriv_ap_toggle_login_signup', array($this, 'ap_toggle_login_signup') ); 
+		
+		add_filter( 'ap_question_form_validation', array($this, 'ap_signup_login_validation') ); 
+		add_filter( 'ap_answer_form_validation', array($this, 'ap_signup_login_validation') );
+		
+		add_action( 'wp_ajax_ap_delete_post', array($this, 'ap_delete_post') ); 
+		
+		add_action( 'wp_ajax_ap_load_edit_form', array($this, 'ap_load_edit_form') ); 
     }
+	
+	public function process_forms(){
+		/* 
+		*	check if its a ajax posting, if yes do not do from here. 
+		*	else it will create multiple posts 
+		*/
+		if(isset($_POST['action']) && $_POST['action'] != 'ap_submit_question'){
+			$this->process_ask_form();
+			$this->process_edit_question_form();
+		}
+		
+		if(isset($_POST['action']) && $_POST['action'] != 'ap_submit_answer'){
+			$this->process_answer_form();
+			$this->process_edit_answer_form();
+		}	
+
+	}
+	
+	public function get_question_fields_to_process(){
+		$fields = array(
+			'post_title' 	=> sanitize_text_field($_POST['post_title']),
+			'post_content' 	=> preg_replace('/[ \t]+/', ' ', preg_replace("/[\r\n]+/", "\n", $_POST['post_content'])),
+		);
+		
+		if(isset($_POST['category']))
+			$fields['category']	= sanitize_text_field($_POST['category']);
+		
+		if(isset($_POST['tags']))
+			$fields['tags']	= sanitize_text_field($_POST['tags']);
+		
+		return apply_filters('ap_save_question_filds', $fields);
+		
+	}
+	
+	public function validate_question_form(){
+		global $ap_question_form_validation;
+		$error = array();
+		$error['has_error'] 	= false;
+
+		if(str_word_count($_POST['post_title']) < ap_opt('minimum_qtitle_length')){
+			$error['post_title'] 	= sprintf(__('Question title must have %d words or more.', 'ap'), ap_opt('minimum_qtitle_length'));
+			$error['has_error'] 	= true;
+		}
+		if(str_word_count($_POST['post_content']) < ap_opt('minimum_question_length')){
+			$error['post_content'] 	= sprintf(__('Question content must have %d words or more.', 'ap'), ap_opt('minimum_question_length'));
+			$error['has_error'] 	= true;
+		}
+		
+		if(ap_opt('enable_categories') && $_POST['category'] === ''){
+			$error['category'] 	= __('You must select a category.', 'ap');
+			$error['has_error'] 	= true;
+		}
+		if(ap_opt('enable_tags') && $_POST['tags'] === ''){
+			$error['tags'] 	= __('You must add at least one tag.', 'ap');
+			$error['has_error'] 	= true;
+		}
+		
+		if(ap_opt('enable_tags') && $_POST['tags'] !=='' ){
+			$tags = explode(',', $_POST['tags']);
+			if(count($tags) > ap_opt('max_tags')){
+				$error['tags'] 	= sprintf(__('Maximum tags limit for a question is %d', 'ap'), ap_opt('max_tags'));
+				$error['has_error'] 	= true;
+			}
+		}
+		
+		$ap_question_form_validation = $error;
+		
+		$ap_question_form_validation = apply_filters('ap_question_form_validation', $ap_question_form_validation);
+		
+		return $ap_question_form_validation;
+	}
 	
 	public function process_ask_form(){	
 		if(isset($_POST['is_question']) && isset($_POST['submitted']) && isset($_POST['ask_form']) && wp_verify_nonce($_POST['ask_form'], 'post_nonce')) {
+		
+			$fields = $this->get_question_fields_to_process();
 			
 			if(!ap_user_can_ask())
 				return;
 			
-			$validate = ap_validate_form();
-			if($validate['has_error'])
+			$validate = $this->validate_question_form();
+			if($validate['has_error']){
+				if($_POST['action'] == 'ap_submit_question'){
+					$result = array(
+								'action' 		=> 'validation_falied',								
+								'message' 		=> __('Question not submitted, please check the form fields.','ap'),
+								'error' => $validate
+							);
+					return json_encode($result) ;
+				}
+				
 				return;
+			}
 
 			do_action('process_ask_form');
 			
 			$user_id = get_current_user_id();
 			if(!is_user_logged_in()){
 				// create user
-				$user_id = wp_create_user( $_POST['username'], $_POST['password'], $_POST['email'] );
+				$user_id = wp_create_user( $fields['username'], $fields['password'], $fields['email'] );
 				
 				// return if there is any error
 				if(is_object($user_id))
@@ -72,8 +194,8 @@ class anspress_form
 				// auto login user if enabled			
 				if(ap_opt('login_after_signup')){
 					$creds = array();
-					$creds['user_login'] = $_POST['username'];
-					$creds['user_password'] = $_POST['password'];
+					$creds['user_login'] = $fields['username'];
+					$creds['user_password'] = $fields['password'];
 					$creds['remember'] = true;
 					$user = wp_signon( $creds, false );
 					if ( is_wp_error($user) )
@@ -82,9 +204,9 @@ class anspress_form
 			}			
 				
 			$question_array = array(
-				'post_title'	=> sanitize_text_field($_POST['post_title']),
+				'post_title'	=> $fields['post_title'],
 				'post_author'	=> $user_id,
-				'post_content' 	=>  wp_kses($_POST['post_content'], ap_form_allowed_tags()),
+				'post_content' 	=>  wp_kses($fields['post_content'], ap_form_allowed_tags()),
 				'post_type' 	=> 'question',
 				'post_status' 	=> 'publish'
 			);
@@ -92,43 +214,115 @@ class anspress_form
 			$post_id = wp_insert_post($question_array);
 			
 			if($post_id){
+				do_action('ap_after_inserting_question', $post_id);
+				ap_do_event('new_question', $post_id, $user_id);
 				// Update Custom Meta
-				wp_set_post_terms( $post_id, sanitize_text_field($_POST['category']), 'question_category' );
-				wp_set_post_terms( $post_id, sanitize_text_field($_POST['tags']), 'question_tags' );
-				add_post_meta($post_id, ANSPRESS_VOTE_META, '0');
-				add_post_meta($post_id, ANSPRESS_FAV_META, '0');
-				add_post_meta($post_id, ANSPRESS_CLOSE_META, '0');
-				add_post_meta($post_id, ANSPRESS_FLAG_META, '0');
-				add_post_meta($post_id, ANSPRESS_VIEW_META, '0');
-				ap_set_question_status($post_id);
-				// Redirect
-				wp_redirect( get_permalink($post_id) ); exit;
+				if(isset($fields['category']))
+					wp_set_post_terms( $post_id, $fields['category'], 'question_category' );
+				if(isset($fields['tags']))
+					wp_set_post_terms( $post_id, $fields['tags'], 'question_tags' );
+					
+				update_post_meta($post_id, ANSPRESS_VOTE_META, '0');
+				update_post_meta($post_id, ANSPRESS_FAV_META, '0');
+				update_post_meta($post_id, ANSPRESS_CLOSE_META, '0');
+				update_post_meta($post_id, ANSPRESS_FLAG_META, '0');
+				update_post_meta($post_id, ANSPRESS_VIEW_META, '0');
+				update_post_meta($post_id, ANSPRESS_UPDATED_META, current_time( 'mysql' ));
+				update_post_meta($post_id, ANSPRESS_SELECTED_META, false);
+				
+				//ap_add_history($user_id, $post_id, 'asked');
+				ap_add_parti($post_id, $user_id, 'question');
+				
+				//update answer count
+				update_post_meta($post_id, ANSPRESS_ANS_META, '0');
+				
+				///ap_set_question_status($post_id);
+				
+				if($_POST['action'] == 'ap_submit_question'){
+					$result = apply_filters('ap_ajax_question_submit_result', 
+						array(
+							'action' 		=> 'new_question',
+							'message'		=> __('Question submitted successfully', 'ap'),
+							'redirect_to'	=> get_permalink($post_id)
+						)
+					);
+
+					
+					return json_encode($result) ;
+				}else{
+					// Redirect
+					wp_redirect( get_permalink($post_id) ); exit;
+				}
 			}
 		}	
 	}	
 	
-	public function process_answer_form(){
+	public function get_answer_fields_to_process(){
+		$fields = array(			
+			'is_answer' 	=> sanitize_text_field($_POST['is_answer']),
+			'submitted' 	=> sanitize_text_field($_POST['submitted']),
+			'nonce' 		=> $_POST['nonce'],
+			'content' 		=> preg_replace('/[ \t]+/', ' ',  preg_replace("/[\r\n]+/", "\n", $_POST['post_content']))
+		);
+		
+		if(isset($_POST['form_question_id']))
+			$fields['question_id'] 	= sanitize_text_field($_POST['form_question_id']);
+		
+		return apply_filters('ap_save_answer_filds', $fields);
+		
+	}
+	
+	public function validate_ans_form(){
+		global $ap_answer_form_validation;
+		$error = array();
+		$error['has_error'] 	= false;
 
-		if(isset($_POST['is_answer']) && isset($_POST['submitted']) && isset($_POST['answer_form']) && wp_verify_nonce($_POST['answer_form'], 'post_nonce')) {
+		if(str_word_count($_POST['post_content']) < ap_opt('minimum_ans_length')){
+			$error['post_content'] 	= sprintf(__('Your answer must have %d words or more.', 'ap'), ap_opt('minimum_ans_length'));
+			$error['has_error'] 	= true;
+		}
+		$ap_answer_form_validation = $error;
+		
+		$ap_answer_form_validation = apply_filters('ap_answer_form_validation', $ap_answer_form_validation);
+		
+		return $ap_answer_form_validation;
+	}
+	
+	public function process_answer_form( ){		
+		if(isset($_POST['is_answer']) && isset($_POST['submitted']) && isset($_POST['nonce']) && wp_verify_nonce($_POST['nonce'], 'post_nonce_'.$_POST['form_question_id'])) {
+			$fields = $this->get_answer_fields_to_process();	
 			
-			$validate = ap_validate_form();
-			if($validate['has_error'])
-				return;
+			$validate = $this->validate_ans_form();
+			
+			if($validate['has_error']){
+				if($_POST['action'] == 'ap_submit_answer'){
+					$result = array(
+								'action' 		=> 'validation_falied',								
+								'message' 		=> __('Answer not submitted, please check the form fields.','ap'),
+								'error' => $validate
+							);
+					return json_encode($result) ;
+				}
 				
-			if(!isset($_POST['form_question_id']) && (!is_int($_POST['form_question_id'])) && ('question' !== get_post_type( sanitize_text_field($_POST['form_question_id'] ))))
+				return;
+			}
+			
+			if(!isset($fields['question_id']) && (!is_int($fields['question_id'])) && ('question' !== get_post_type( $fields['question_id'] )))
 				return;
 			
-			$post = get_post(sanitize_text_field($_POST['form_question_id']));
+			$question = get_post( $fields['question_id'] );
 			
-			if(!ap_user_can_answer($post->ID) )
+			if(!ap_user_can_answer($question->ID) )
 				return;
 			
 			do_action('process_answer_form');
 			
+			$logged_in = false;
+			
 			$user_id = get_current_user_id();
-			if(!is_user_logged_in()){
+			if(!is_user_logged_in() && $_POST['user-form'] == 'signup'){
 				// create user
-				$user_id = wp_create_user( $_POST['username'], $_POST['password'], $_POST['email'] );
+				$user_id = wp_create_user( $fields['username'], $fields['password'], $fields['email'] );
 				
 				// return if there is any error
 				if(is_object($user_id))
@@ -137,112 +331,252 @@ class anspress_form
 				// auto login user if enabled			
 				if(ap_opt('login_after_signup')){
 					$creds = array();
-					$creds['user_login'] = $_POST['username'];
-					$creds['user_password'] = $_POST['password'];
-					$creds['remember'] = true;
-					$user = wp_signon( $creds, false );
+					$creds['user_login'] 	= $fields['username'];
+					$creds['user_password'] = $fields['password'];
+					$creds['remember'] 		= true;
+					$user 					= wp_signon( $creds, false );
+					
+					$logged_in 				= true;
+					
 					if ( is_wp_error($user) )
 					   return $user->get_error_message();
 				}
-			}	
-				
+			}
+			if(!is_user_logged_in() && $_POST['user-form'] == 'login'){
+				$creds = array();
+				$creds['user_login'] 	= $fields['username'];
+				$creds['user_password'] = $fields['password'];
+				$creds['remember'] 		= true;
+				$user 					= wp_signon( $creds, false );
+				$user_id 				= $user->ID;
+				$logged_in 				= true;
+			}
+			
 			$ans_array = array(
 				'post_author'	=> $user_id,
-				'post_content' 	=> wp_kses($_POST['post_content'], ap_form_allowed_tags()),
+				'post_content' 	=> wp_kses($fields['content'], ap_form_allowed_tags()),
 				'post_type' 	=> 'answer',
 				'post_status' 	=> 'publish',
-				'post_parent' 	=> sanitize_text_field($_POST['form_question_id'])
+				'post_parent' 	=> $question->ID
 			);
 
 			$post_id = wp_insert_post($ans_array);
 			
-			// set default value for meta
-			add_post_meta($post_id, ANSPRESS_VOTE_META, '0');
+			if($post_id){
+				do_action('ap_after_inserting_answer', $post_id);
+				ap_do_event('new_answer', $post_id, $user_id, $question->ID);
+				// set default value for meta
+				update_post_meta($post_id, ANSPRESS_VOTE_META, '0');
+				
+				// set updated meta for sorting purpose
+				update_post_meta($question->ID, ANSPRESS_UPDATED_META, current_time( 'mysql' ));
+				
+				ap_add_parti($question->ID, $user_id, 'answer');			
+				
+				// get existing answer count
+				$current_ans = ap_count_ans($question->ID);
+				
+				//update answer count
+				update_post_meta($question->ID, ANSPRESS_ANS_META, $current_ans);
+				
+				update_post_meta($post_id, ANSPRESS_BEST_META, 0);
+				
+				// redirect if just logged in
+				if($logged_in && $_POST['action'] != 'ap_submit_answer'){
+					wp_redirect( get_permalink($question->ID) ); exit;
+				}
+				
+				if($_POST['action'] == 'ap_submit_answer'){
+
+					if($current_ans == 1){
+						global $post;
+						$post = $question;
+						setup_postdata($post);
+					}else{
+						global $post;
+						$post = get_post($post_id);
+						setup_postdata($post);
+					}
+					
+					ob_start();
+					if($current_ans == 1)								
+						ap_answers_list($post->ID, 'voted');
+					else
+						include(ap_get_theme_location('answer.php'));
+					
+					$html = ob_get_clean();
+					
+					$count_label = sprintf( _n('1 Answer', '%d Answers', $current_ans, 'ap'), $current_ans);
+					
+					$result = apply_filters('ap_ajax_answer_submit_result', 
+						array(
+							'postid' 		=> $post_id, 
+							'action' 		=> 'new_answer',
+							'div_id' 		=> '#answer_'.get_the_ID(),
+							'count' 		=> $current_ans,
+							'count_label' 	=> $count_label,
+							'can_answer' 	=> ap_user_can_answer($post->ID),
+							'html' 			=> $html,
+							'message' 		=> __('Answer submitted successfully!','ap')
+						)
+					);
+					
+					if($logged_in)
+						$result['redirect_to'] = get_permalink($post->ID);
+					
+					return json_encode($result) ;
+				}
+			}
+		}elseif($_POST['action'] == 'ap_submit_answer'){
+			$result = array('postid' => $post_id, 'action' => false, 'message' => __('Please try again, answer submission failed!','ap'));
+			return json_encode($result) ;
 		}
+		
 	}
 	
 	public function process_edit_question_form(){
 		
 		if(isset($_POST['is_question']) && isset($_POST['submitted']) && isset($_POST['edited']) && wp_verify_nonce($_POST['edit_question'], 'post_nonce-'.$_POST['question_id'])) {
 			
-			$post_id = $_POST['question_id'];
+			$post_id = sanitize_text_field($_POST['question_id']);
+			$fields = $this->get_question_fields_to_process();
 			
 			$post = get_post($post_id);
 			
 			if( !ap_user_can_edit_question($post->ID))
 				return;
 			
-			if(!ap_user_can_ask())
+			$validate = $this->validate_question_form();
+			if($validate['has_error']){
+				if($_POST['action'] == 'ap_submit_question'){
+					$result = array(
+								'action' 		=> 'validation_falied',								
+								'message' 		=> __('Question not updated, please check the form fields.','ap'),
+								'error' => $validate
+							);
+					return json_encode($result) ;
+				}
+				
 				return;
+			}
 			
-			$validate = ap_validate_form();
-			if($validate['has_error'])
-				return;
-
 			do_action('process_ask_form');
 			
+			$user_id = get_current_user_id();
 			$question_array = array(
 				'ID'			=> $post_id,
-				'post_title'	=> sanitize_text_field($_POST['post_title']),
-				'post_content' 	=>  wp_kses($_POST['post_content'], ap_form_allowed_tags()),
+				'post_title'	=> sanitize_text_field($fields['post_title']),
+				'post_name'		=> sanitize_title($fields['post_title']),
+				'post_content' 	=> wp_kses($fields['post_content'], ap_form_allowed_tags()),
 				'post_status' 	=> 'publish'
 			);
 
 			$post_id = wp_update_post($question_array);
 			
 			if($post_id){
+				do_action('ap_after_editing_question', $post_id);
+				ap_do_event('edit_question', $post_id, $user_id);
 				// Update Custom Meta
 				wp_set_post_terms( $post_id, sanitize_text_field($_POST['category']), 'question_category' );
 				wp_set_post_terms( $post_id, sanitize_text_field($_POST['tags']), 'question_tags' );
+				
+				// set updated meta for sorting purpose
+				update_post_meta($post_id, ANSPRESS_UPDATED_META, current_time( 'mysql' ));
+				
+				if($_POST['action'] == 'ap_submit_question'){
+					$result = apply_filters('ap_ajax_edit_question_submit_result', 
+						array(
+							'action' 		=> 'edited_question',
+							'message'		=> __('Question updated successfully', 'ap'),
+							'redirect_to'	=> get_permalink($post_id)
+						)
+					);
 
-				// Redirect
-				wp_redirect( get_permalink($post_id) ); exit;
+					
+					return json_encode($result) ;
+				}else{
+					// Redirect
+					wp_redirect( get_permalink($post_id) ); exit;
+				}
 			}
 		}
 	}	
-	public function process_edit_answer_form(){
-		
-		if(isset($_POST['is_answer']) && isset($_POST['submitted']) && isset($_POST['edited']) && wp_verify_nonce($_POST['edit_answer'], 'post_nonce-'.$_POST['answer_id'])) {
+	
+	public function process_edit_answer_form(){		
+		if(isset($_POST['is_answer']) && isset($_POST['submitted']) && isset($_POST['edited']) && wp_verify_nonce($_POST['nonce'], 'post_nonce-'.$_POST['answer_id'])) {
+			$fields = $this->get_answer_fields_to_process();	
+
+			$validate = $this->validate_ans_form();
 			
-			$post_id = $_POST['answer_id'];
+			if($validate['has_error']){
+				if($_POST['action'] == 'ap_submit_answer'){
+					$result = array(
+								'action' 		=> 'validation_falied',								
+								'message' 		=> __('Answer not updated, please check the form fields.','ap'),
+								'error' => $validate
+							);
+					return json_encode($result) ;
+				}
+				
+				return;
+			}
+			
+			$post_id = sanitize_text_field($_POST['answer_id']);
 			
 			$post = get_post($post_id);
 			
-			if( !ap_user_can_edit_ans($post->ID))
+			if( !ap_user_can_edit_ans($post->ID)){
+				if($_POST['action'] == 'ap_submit_answer'){
+					$result = array(
+								'action' 		=> 'false',								
+								'message' 		=> __('You do not have permission to edit this answer.','ap')
+							);
+					return json_encode($result) ;
+				}
 				return;
-			
-			$validate = ap_validate_form();
-			if($validate['has_error'])
-				return;
-
+			}
 			
 			global $current_user;
 			$user_id		= $current_user->ID;
 			
-
 			$answer_array = array(
 				'ID'			=> $post_id,
 				//'post_author'	=> $user_id,
-				'post_content' 	=>  wp_kses($_POST['post_content'], ap_form_allowed_tags()),
+				'post_content' 	=>  wp_kses($fields['content'], ap_form_allowed_tags()),
 				'post_status' 	=> 'publish'
 			);
 
 			$post_id = wp_update_post($answer_array);
 			
 			if($post_id){
-				// Update Custom Meta
-				wp_set_post_terms( $post_id, sanitize_text_field($_POST['category']), 'question_category' );
-				wp_set_post_terms( $post_id, sanitize_text_field($_POST['tags']), 'question_tags' );
-
-				$cur_post = get_post($post_id);
-				// Redirect
-				wp_redirect( get_permalink($cur_post->post_parent) ); exit;
+				do_action('ap_after_editing_answer', $post_id);
+				ap_do_event('edit_answer', $post_id, $user_id, $post->ID);	
+				// set updated meta for sorting purpose
+				update_post_meta($post->post_parent, ANSPRESS_UPDATED_META, current_time( 'mysql' ));
+				ap_add_history($user_id, $post->ID, 'edited_answer');
+				
+				if($_POST['action'] == 'ap_submit_answer'){
+					$result = apply_filters('ap_ajax_answer_edit_result', 
+						array(
+							'action' 		=> 'answer_edited',
+							'message'		=> __('Answer updated successfully', 'ap'),
+							'redirect_to'	=> get_permalink($post->post_parent)
+						)
+					);
+					
+					return json_encode($result) ;
+				}else{
+					// Redirect
+					wp_redirect( get_permalink($post->post_parent) ); exit;
+				}
 			}
 		}
 	}
 	
-    public function comment_button() {
-		echo '<button class="btn btn-default" type="submit">' . __( 'Submit' ) . '</button>';
+    public function comment_button($post_id) {
+		$post_type = get_post_type( $post_id );
+		if($post_type == 'question' || $post_type =='answer')
+			echo '<div class="ap-comment-sc"><button class="ap-btn-comment ap-btn ap-btn-small" type="submit">' . __( 'Submit' ) . '</button></div>';
     }
 	public function load_ajax_commentform(){
 		if(!ap_user_can_comment()){
@@ -256,14 +590,11 @@ class anspress_form
 			$comment_args = array(
 				'title_reply' => '',
 				'logged_in_as' => '',
-				'comment_field' => '<textarea id="anspress-comment" name="comment" cols="45" rows="2" aria-required="true" class="form-control"></textarea>',
+				'comment_field' => '<div class="ap-comment-ta"><textarea name="comment" rows="1" aria-required="true" class="form-control"></textarea></div>',
 				'comment_notes_after' => ''
 			);
 			$current_user = get_userdata( get_current_user_id() );
 			echo '<div class="comment-form-c">';
-				echo '<div class="ap-user">';
-					echo get_avatar( $current_user->user_email, ap_opt('avatar_size_question') ); 
-				echo '</div>';
 				echo '<div class="ap-content-inner">';
 					comment_form($comment_args, $args[0] );
 				echo '</div>';
@@ -271,7 +602,27 @@ class anspress_form
 
 		}
 		die();
-	}	
+	}
+	
+	public function save_comment($comment_ID, $comment_status){
+		// If it's an AJAX-submitted comment
+		if(isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest'){
+			// Get the comment data
+			$comment = get_comment($comment_ID);
+			// Allow the email to the author to be sent
+			wp_notify_postauthor($comment_ID, $comment->comment_type);
+			// Get the comment HTML from my custom comment HTML function
+
+			ob_start();
+			ap_comment($comment);		
+			$html = ob_get_clean();
+			
+			$result = json_encode(array('status' => true, 'comment_ID' => $comment->comment_ID, 'comment_post_ID' => $comment->comment_post_ID, 'comment_content' => $comment->comment_content, 'html' => $html, 'message' => __('Comment submitted successfully', 'ap')));
+			
+			echo $result;
+			die();
+		}
+	}
 	
 	public function edit_comment_form(){
 		$args = explode('-', sanitize_text_field($_REQUEST['args']));
@@ -284,7 +635,7 @@ class anspress_form
 		$action = 'comment-'.$args[0];	
 		if(wp_verify_nonce( $args[1], $action )){
 			$comment = get_comment( $args[0] );
-			echo '<form id="edit-comment-'. $args[0].'" class="inline-edit-comment">';
+			echo '<form id="edit-comment-'. $args[0].'" class="inline-edit-comment" data-action="ap-edit-comment">';
 			echo '<textarea class="form-control" name="content">'.$comment->comment_content.'</textarea>';
 			echo '<button class="btn btn-default" data-action="save-inline-comment" data-elem="#edit-comment-'. $args[0].'">'.__('Save', 'ap').'</button>';
 			echo '<input type="hidden" name="comment_id" value="'.$args[0].'"/>';
@@ -294,12 +645,12 @@ class anspress_form
 		die();
 	}
 	
-	public function save_comment_form(){
+	public function update_comment_form(){
 		$args = wp_parse_args($_REQUEST['args']);
 		$comment_id = sanitize_text_field($args['comment_id']);
 		if(!ap_user_can_edit_comment($comment_id)){
-			_e('No Permission', 'ap');
-			die();
+			$result = json_encode(array('status' => false, 'message' => __('You do not ahve permission to edit this comment.', 'ap')));
+			die($result);
 		}		
 		$action = 'save-comment-'.$comment_id;	
 		
@@ -311,37 +662,352 @@ class anspress_form
 			$comment_saved = wp_update_comment( $comment_data );
 			if($comment_saved){
 				$comment = get_comment( $args['comment_id'] );
-				printf( '<div class="comment-meta"> %1$s <a href="%2$s"><time datetime="%3$s">%4$s %5$s</time></a> <a href="#" data-action="edit-comment" data-args="%6$s">%7$s</a></div>',
-					ap_user_display_name_point($comment->user_id),
-					esc_url( get_comment_link( $comment->comment_ID ) ),
-					get_comment_date( 'c', $comment->comment_ID ),
-					ap_human_time(get_comment_date('U', $comment->comment_ID)),
-					__('ago', 'ap'),
-					$comment->comment_ID.'-'.wp_create_nonce( 'comment-'.$comment->comment_ID ),
-					__('edit', 'ap')
-				);
-				echo '<p class="comment-texts">'.$comment->comment_content.'</p>';
+				ob_start();
+				ap_comment($comment);
+				$html = ob_get_clean();
+				
+				$result = json_encode(array('status' => true, 'comment_ID' => $comment->comment_ID, 'comment_post_ID' => $comment->comment_post_ID, 'comment_content' => $comment->comment_content, 'html' => $html, 'message' => __('Comment updated successfully', 'ap')));
+			}else{
+				$result = json_encode(array('status' => false, 'message' => __('Comment not updated, please retry', 'ap')));
 			}
+		}else{
+			$result = json_encode(array('status' => false, 'message' => __('Comment not updated, please retry', 'ap')));
 		}
-		die();
+		die( $result);
 	}
 	
 	public function delete_comment(){
 		$args = $args = explode('-', sanitize_text_field($_REQUEST['args']));
 		if(!ap_user_can_delete_comment($args[0])){
-			_e('No Permission', 'ap');
-			die();
+			$result = array('status' => false, 'message' => __('You do not have permission to delete this comment', 'ap'));
+			
+			die(json_encode($result));
 		}		
 		$action = 'delete-comment-'.$args[0];		
 		if(wp_verify_nonce( $args[1], $action )){
 			wp_delete_comment( $args[0], true );
+			$result = array('status' => true, 'message' => __('Comment deleted successfully', 'ap'));
 		}
-		die();
+		die(json_encode($result));
 	}
 	
 	public function ap_not_logged_in_messgae(){
 		ap_please_login();
 		die();
+	}
+	
+	public function ajax_question_submit(){
+		if(isset($_POST['is_question']) && isset($_POST['edited']))
+			echo $this->process_edit_question_form( true );
+		elseif(isset($_POST['is_question']))
+			echo $this->process_ask_form( true );
+		die();
+	}
+	
+	public function ajax_answer_submit(){
+		if(isset($_POST['is_answer']) && isset($_POST['edited']))
+			echo $this->process_edit_answer_form( true );
+		elseif(isset($_POST['is_answer']))
+			echo $this->process_answer_form( true );
+		die();
+	}
+	
+	public function comment_inserted($comment_id, $comment_object) {
+		if($comment_object->comment_approved =='1' ){
+			$post_type = get_post_type( $comment_object->comment_post_ID );			
+			
+			if ($post_type == 'question') {
+				ap_do_event('new_comment', $comment_object, 'question');
+				// set updated meta for sorting purpose
+				update_post_meta($comment_object->comment_post_ID, ANSPRESS_UPDATED_META, current_time( 'mysql' ));
+				
+				// add participant	
+				ap_add_parti($comment_object->comment_post_ID, $comment_object->user_id, 'comment', $comment_id);
+			}elseif($post_type == 'answer'){
+				ap_do_event('new_comment', $comment_object, 'answer');
+				$post_id = wp_get_post_parent_id($comment_object->comment_post_ID);
+				// set updated meta for sorting purpose
+				update_post_meta($post_id, ANSPRESS_UPDATED_META, current_time( 'mysql' ));
+				
+				// add participant only			
+				ap_add_parti($post_id, $comment_object->user_id, 'comment', $comment_id);
+			}
+		}
+	}
+	
+	public function pre_comment_approved($approved , $commentdata){
+		if($approved =='1' ){
+			$post_type = get_post_type( $commentdata->comment_post_ID );
+			
+			if ($post_type == 'question') {
+				// set updated meta for sorting purpose
+				update_post_meta($commentdata->comment_post_ID, ANSPRESS_UPDATED_META, current_time( 'mysql' ));
+				
+				// add participant	
+				//ap_add_parti($commentdata->comment_post_ID, $commentdata->user_ID, 'comment');
+					
+			}elseif($post_type == 'answer'){
+				$post_id = wp_get_post_parent_id($commentdata->comment_post_ID);
+				// set updated meta for sorting purpose
+				update_post_meta($post_id, ANSPRESS_UPDATED_META, current_time( 'mysql' ));
+				// add participant only			
+				//ap_add_parti($post_id, $commentdata->user_ID, 'comment');
+			}
+		}
+	}
+	
+	public function ask_from_title_field($validate){
+		?>
+			<div class="form-group<?php echo isset($validate['post_title']) ? ' has-error' : ''; ?>">
+				<label for="post_title" class="ap-form-label"><?php _e('Title', 'ap') ?></label>
+				<div class="no-overflow">
+					<input type="text" name="post_title" id="post_title" value="" class="form-control" placeholder="<?php _e('Question in one sentence', 'ap'); ?>" />
+					<?php echo isset($validate['post_title']) ? '<span class="help-block">'. $validate['post_title'] .'</span>' : ''; ?>
+				</div>
+			</div>
+		<?php
+	}	
+	
+	public function ask_from_content_field($validate){
+		?>
+			<div class="form-group<?php echo isset($validate['post_content']) ? ' has-error' : ''; ?>">
+				<?php 
+					wp_editor( '', 'post_content', array('media_buttons' => false, 'quicktags' => false, 'textarea_rows' => 7, 'teeny' => true, 'statusbar' => false)); 
+				?>
+				<?php echo isset($validate['post_content']) ? '<span class="help-block">'. $validate['post_content'] .'</span>' : ''; ?>
+			</div>
+		<?php
+	}	
+	
+	public function ask_from_category_field($validate){
+		if(ap_opt('enable_categories')):
+			?>
+				<div class="form-group<?php echo isset($validate['category']) ? ' has-error' : ''; ?>">
+					<label for="category"><?php _e('Category', 'ap') ?></label>
+					<select class="form-control" name="category" id="category">
+						<option value=""></option>
+						<?php 
+						$taxonomies = get_terms( 'question_category', 'orderby=count&hide_empty=0' );
+						foreach($taxonomies as $cat)
+								echo '<option value="'.$cat->term_id.'">'.$cat->name.'</option>';
+						?>
+					</select>
+					<?php echo isset($validate['category']) ? '<span class="help-block">'. $validate['category'] .'</span>' : ''; ?>
+				</div>
+			<?php
+		endif;
+	}	
+	
+	public function ask_from_tags_field($validate){
+		if(ap_opt('enable_tags')):
+		?>
+			<div class="form-group<?php echo isset($validate['tags']) ? ' has-error' : ''; ?>">
+				<label for="tags"><?php _e('Tags', 'ap') ?></label>
+				<input data-role="ap-tagsinput" type="text" value="" tabindex="5" name="tags" id="tags" class="form-control" />
+				<?php echo isset($validate['tags']) ? '<span class="help-block">'. $validate['tags'] .'</span>' : ''; ?>
+			</div>
+		<?php
+		endif;
+	}	
+	
+	public function answer_from_content_field($question_id, $validate){
+		?>
+			<div class="form-group">
+				<?php ap_editor_content(''); ?>
+			</div>
+		<?php
+	}
+	
+	public function edit_answer_from_content_field($answer, $validate){
+		?>
+			<div class="form-group">
+				<?php ap_editor_content($answer->post_content); ?>
+			</div>
+		<?php
+	}
+	
+	public function edit_question_from_title_field($question, $validate){
+		?>
+			<div class="form-group<?php echo isset($validate['post_title']) ? ' has-error' : ''; ?>">
+				<label for="post_title" class="ap-form-label"><?php _e('Title', 'ap') ?></label>
+				<div class="no-overflow">
+					<input type="text" name="post_title" id="post_title" value="<?php echo $question->post_title; ?>" class="form-control" placeholder="<?php _e('Question in one sentence', 'ap'); ?>" />
+					<?php echo isset($validate['post_title']) ? '<span class="help-block">'. $validate['post_title'] .'</span>' : ''; ?>
+				</div>
+			</div>
+		<?php
+	}
+	
+	public function edit_question_from_content_field($question, $validate){
+		?>
+			<div class="form-group<?php echo isset($validate['post_content']) ? ' has-error' : ''; ?>">
+				<?php
+					ap_editor_content($question->post_content); 
+				?>
+				<?php echo isset($validate['post_content']) ? '<span class="help-block">'. $validate['post_content'] .'</span>' : ''; ?>
+			</div>
+		<?php
+	}
+	
+	public function edit_question_from_category_field($question, $validate){
+		if(ap_opt('enable_categories')):
+			$cats_t = get_the_terms( $question->ID, 'question_category' );
+
+			if(isset($cats_t) && is_array($cats_t)){
+				foreach($cats_t as $c)
+					$category = $c->term_id;
+			}
+
+			?>
+				<div class="form-group<?php echo isset($validate['category']) ? ' has-error' : ''; ?>">
+					<label for="category"><?php _e('Category', 'ap') ?></label>
+					<select class="form-control" name="category" id="category" autocomplete="off">
+						<option value=""></option>
+						<?php 
+						$taxonomies = get_terms( 'question_category', 'orderby=count&hide_empty=0' );
+						foreach($taxonomies as $cat)
+							echo '<option value="'.$cat->term_id.'"'.(( $category == $cat->term_id ) ? ' selected="selected"' : '').'>'.$cat->name.'</option>';
+						?>
+					</select>
+					<?php echo isset($validate['category']) ? '<span class="help-block">'. $validate['category'] .'</span>' : ''; ?>
+				</div>
+			<?php
+		endif;
+	}
+	
+	public function edit_question_from_tags_field($question, $validate){
+		if(ap_opt('enable_tags')):
+			$tags_t = get_the_terms( $question->ID, 'question_tags' );
+			$tags ='';
+			
+			if($tags_t){
+				foreach($tags_t as $t){
+					$tags .= $t->name.', ';
+				}
+			}
+			
+			?>
+				<div class="form-group<?php echo isset($validate['tags']) ? ' has-error' : ''; ?>">
+					<label for="tags"><?php _e('Tags', 'ap') ?></label>
+					<input type="text" data-role="ap-tagsinput" value="<?php echo $tags; ?>" tabindex="5" name="tags" id="tags" class="form-control" />
+					<?php echo isset($validate['tags']) ? '<span class="help-block">'. $validate['tags'] .'</span>' : ''; ?>
+				</div>
+			<?php
+		endif;
+	}
+	
+	public function signup_fields($fields){
+		if(isset($_POST['username']))
+			$fields['username'] = $_POST['username'];
+		
+		if(isset($_POST['password']))
+			$fields['password'] = $_POST['password'];
+		
+		if(isset($_POST['password1']))
+			$fields['password1'] = $_POST['password1'];
+		
+		if(isset($_POST['email']))
+			$fields['email'] = $_POST['email'];
+		
+		return $fields;
+	}
+	
+	public function ap_toggle_login_signup(){
+		if($_POST['args'] == 'signup')
+			ap_login_fields();
+		else
+			ap_signup_fields();
+			
+		die();
+	}
+	
+	public function ap_signup_login_validation($error){
+		if(isset($_POST['user-form']) && $_POST['user-form'] == 'signup' && ap_opt('show_signup') && !is_user_logged_in()){
+			if($_POST['username'] === ''){
+				$error['username'] 	= __('Username field cannot be left blank.', 'ap');
+				$error['has_error'] 	= true;
+			}
+			if($_POST['password'] === ''){
+				$error['password'] 	= __('Password field cannot be left blank.', 'ap');
+				$error['has_error'] 	= true;
+			}
+			if($_POST['password1'] != $_POST['password']){
+				$error['password1'] 	= __('Password not matching.', 'ap');
+				$error['has_error'] 	= true;
+			}
+			if($_POST['email'] === ''){
+				$error['email'] 		= __('Email field cannot be left blank.', 'ap');
+				$error['has_error'] 	= true;
+			}
+		}elseif(isset($_POST['user-form']) && $_POST['user-form'] == 'login' && ap_opt('show_login') && !is_user_logged_in()){
+			if($_POST['username'] === ''){
+				$error['username'] 	= __('Username field cannot be left blank.', 'ap');
+				$error['has_error'] 	= true;
+			}
+			if($_POST['password'] === ''){
+				$error['password'] 	= __('Password field cannot be left blank.', 'ap');
+				$error['has_error'] 	= true;
+			}
+		}
+		
+		return $error;
+	}
+	
+	public function ap_delete_post(){
+		$args = explode('-', sanitize_text_field($_REQUEST['args']));
+		$action = 'delete_post_'.$args[0];	
+		
+		if(!ap_user_can_delete($args[0])){
+			$result = array('action' => false, 'message' => __('No Permission', 'ap'));			
+		}elseif(wp_verify_nonce( $args[1], $action )){
+			$post = get_post( $args[0] );
+			wp_trash_post($args[0]);
+			if($post->post_type == 'question'){
+				$result = array('action' => 'question', 'redirect_to' => get_permalink(ap_opt('base_page')), 'message' => __('Question deleted successfully.', 'ap'));
+			}else{
+				$current_ans = ap_count_ans($post->post_parent);
+				$count_label = sprintf( _n('1 Answer', '%d Answers', $current_ans, 'ap'), $current_ans);
+				$remove = (!$current_ans ? true : false);
+				$result = array(
+					'action' 		=> 'answer', 
+					'div' 			=> '#answer_'.$args[0],
+					'count' 		=> $current_ans,
+					'count_label' 	=> $count_label,
+					'remove' 		=> $remove, 
+					'message' 		=> __('Answer deleted successfully.', 'ap'));
+			}
+		}
+		die(json_encode($result));
+	}
+	
+	public function ap_load_edit_form(){
+		$nonce 			= sanitize_text_field($_POST['nonce']);
+		$post_id 	= sanitize_text_field($_POST['id']);
+		$type 			= sanitize_text_field($_POST['type']);		
+		
+		if(wp_verify_nonce( $nonce, $type.'-'.$post_id )){
+			$post = get_post($post_id);
+
+			if( ap_user_can_edit_question($post_id) && $post->post_type == 'question'){
+				ob_start();
+				ap_edit_question_form($post_id);
+				$html = ob_get_clean();
+				
+				$result = array('action' => true, 'type' => 'question', 'message' => __('Form loaded.', 'ap'), 'html' => $html);
+			}elseif( ap_user_can_edit_answer($post_id) && $post->post_type == 'answer'){
+				ob_start();
+				ap_edit_answer_form($post_id);
+				$html = ob_get_clean();
+				
+				$result = array('action' => true, 'type' => 'answer', 'message' => __('Form loaded.', 'ap'), 'html' => $html);
+			}else{
+				$result = array('action' => false, 'message' => __('You do not have permission to edit this question.', 'ap'));
+			}
+		}else{
+			$result = array('action' => false, 'message' => __('Something went wrong, please try again.', 'ap'));
+		}
+		
+		die(json_encode($result));
 	}
 }
 
@@ -371,44 +1037,18 @@ function ap_ask_form(){
 	
 	if( ap_user_can_ask()){
 		?>
-		<form action="" id="ask_question_form" method="POST">
-			<?php do_action('ap_ask_form_top'); ?>
+		<form action="" id="ask_question_form" method="POST" data-action="ap-submit-question">			
 			<div class="form-groups">
-				<div class="form-group<?php echo isset($validate['post_title']) ? ' has-error' : ''; ?>">
-					<label for="post_title"><?php _e('Title', 'ap') ?></label>				
-					<input type="text" name="post_title" id="post_title" value="" class="form-control" placeholder="<?php _e('Question in one sentence', 'ap'); ?>" />
-					<?php echo isset($validate['post_title']) ? '<span class="help-block">'. $validate['post_title'] .'</span>' : ''; ?>
-				</div>
-				<div class="form-group<?php echo isset($validate['post_content']) ? ' has-error' : ''; ?>">						
-					<label for="post_content"><?php _e('Content', 'ap') ?></label>
-					<?php 
-						wp_editor( '', 'post_content', array('media_buttons' => false, 'quicktags' => false, 'textarea_rows' => 7, 'teeny' => true)); 
-					?>
-					<?php echo isset($validate['post_content']) ? '<span class="help-block">'. $validate['post_content'] .'</span>' : ''; ?>
-				</div>
-
-				<div class="form-group<?php echo isset($validate['category']) ? ' has-error' : ''; ?>">
-					<label for="category"><?php _e('Category', 'ap') ?></label>
-					<select class="form-control" name="category" id="category">
-						<option value=""></option>
-						<?php 
-						$taxonomies = get_terms( 'question_category', 'orderby=count&hide_empty=0' );
-						foreach($taxonomies as $cat)
-								echo '<option value="'.$cat->term_id.'">'.$cat->name.'</option>';
-						?>
-					</select>
-					<?php echo isset($validate['category']) ? '<span class="help-block">'. $validate['category'] .'</span>' : ''; ?>
-				</div>
-				<div class="form-group<?php echo isset($validate['tags']) ? ' has-error' : ''; ?>">
-					<label for="tags"><?php _e('Tags', 'ap') ?></label>
-					<input type="text" value="" tabindex="5" name="tags" id="tags" class="form-control" />
-					<?php echo isset($validate['tags']) ? '<span class="help-block">'. $validate['tags'] .'</span>' : ''; ?>
-				</div>
+				<div class="ap-fom-group-label"><?php _e('Ask question', 'ap'); ?></div>
+				<?php do_action('ap_ask_form_fields', $validate); ?>
 			</div>
 			
 			<?php 
-				if(ap_opt('show_signup'))
-					ap_signup_fields(); 
+				if(ap_opt('show_signup')){
+					echo '<div id="ap-login-signup">';
+					ap_login_fields();
+					echo '</div>';
+				}
 			?>
 			
 			<?php do_action('ap_ask_form_bottom'); ?>
@@ -416,6 +1056,32 @@ function ap_ask_form(){
 			
 		</form>
 		<?php
+	}
+}
+function ap_answer_form($question_id){
+	global $ap_answer_form_validation;
+	$validate = $ap_answer_form_validation;
+	
+	if(!empty($validate['has_error'])){
+		echo '<div class="alert alert-danger" data-dismiss="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>'. __('Problem submitting form, please recheck form', 'ap') .'</div>';
+	}
+	
+	if(ap_user_can_answer($question_id) ){
+		echo '<form action="" id="answer_form" class="ap-content-inner" method="POST" data-action="ap-submit-answer">';
+		
+		echo '<div class="form-groups">';
+		echo '<div class="ap-fom-group-label">'.__('Your answer', 'ap').'</div>';
+		do_action('ap_answer_fields', $question_id, $validate);
+		echo '</div>';
+		
+		if(ap_opt('show_signup')){
+			echo '<div id="ap-login-signup">';
+			ap_login_fields();
+			echo '</div>';
+		}
+			
+		ap_answer_form_hidden_input($question_id);
+		echo '</form>';
 	}
 }
 
@@ -456,17 +1122,17 @@ function ap_ask_form_hidden_input(){
 	wp_nonce_field('post_nonce', 'ask_form');
 	echo '<input type="hidden" name="is_question" value="true" />';
 	echo '<input type="hidden" name="submitted" value="true" />';
-	echo '<button class="btn btn-primary" type="submit">'. __('Ask Question', 'ap'). '</button>';
+	echo '<button class="btn ap-btn ap-success btn-submit-ask" type="submit">'. __('Ask Question', 'ap'). '</button>';
 }
 
 function ap_answer_form_hidden_input($question_id){
 	do_action('ap_answer_form_bottom');
 	
-	wp_nonce_field('post_nonce', 'answer_form');
+	wp_nonce_field('post_nonce_'.$question_id, 'nonce');
 	echo '<input type="hidden" name="is_answer" value="true" />';
 	echo '<input type="hidden" name="submitted" value="true" />';
 	echo '<input type="hidden" name="form_question_id" value="'.$question_id.'" />';
-	echo '<button type="submit" class="btn btn-primary">'. __('Submit Answer', 'ap'). '</button>';
+	echo '<button type="submit" class="btn-submit-ans btn ap-btn ap-success">'. __('Submit Answer', 'ap'). '</button>';
 }
 
 
@@ -476,55 +1142,40 @@ function ap_edit_question_form_hidden_input($post_id){
 	echo '<input type="hidden" name="question_id" value="'.$post_id.'" />';
 	echo '<input type="hidden" name="edited" value="true" />';
 	echo '<input type="hidden" name="submitted" value="true" />';
-	echo '<button type="submit" class="btn btn-primary">'. __('Update question', 'ap'). '</button>';
+	echo '<button type="submit" class="btn-submit-ans btn ap-btn ap-success">'. __('Update question', 'ap'). '</button>';
 }
 
 
 
 function ap_edit_answer_form($post_id){
-
-	if( !ap_user_can_edit_ans($post_id)){
-		echo '<p>'.__('You don\'t have permission to access this page.', 'ap').'</p>';
-		return;
-	}
-
-	$action = get_post_type($post_id).'-'.$post_id;	
-
+	global $ap_answer_form_validation;
+	$validate = $ap_answer_form_validation;
 	
-	if(!isset($_REQUEST['ap_nonce']) || !wp_verify_nonce($_REQUEST['ap_nonce'], $action)){
-		echo '<p>'.__('Trying to cheat? huh!.', 'ap').'</p>';
-		return;
-	}
-	
-	global $current_user;
 	$post = get_post($post_id);
 	
-	$validate = ap_validate_form();
+	if( !ap_user_can_edit_ans($post_id)){
+		echo '<p>'.__('You don\'t have permission to edit this answer.', 'ap').'</p>';
+		return;
+	}
 	
-	if(isset($validate['has_error']) && $validate['has_error']){
-		echo '<div class="alert alert-danger">'. implode(', ', $validate['message']) .'</div>';
-	}	
-
-	?>
-	<form action="" id="ask_question_form" method="POST">
-		<?php do_action('ap_ask_form_top'); ?>
-
-		<div class="form-group">						
-			<label for="post_content"><?php _e('Your Answer', 'ap') ?></label>
-			<?php 
-				wp_editor( apply_filters('the_content', $post->post_content), 'post_content', array('media_buttons' => false, 'quicktags' => false, 'textarea_rows' => 15, 'teeny' => true)); 
-			?>
-		</div>
-
-		<?php do_action('ap_edit_question_form_bottom'); ?>
-		<?php ap_edit_answer_form_hidden_input($post_id); ?>
+	if(!empty($validate['has_error'])){
+		echo '<div class="alert alert-danger" data-dismiss="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>'. __('Problem submitting form, please recheck form', 'ap') .'</div>';
+	}
+	
+	if(ap_user_can_edit_ans($post->ID) ){
+		echo '<form action="" id="answer_form" class="ap-content-inner" method="POST" data-action="ap-submit-answer">';
 		
-	</form>
-	<?php
-
+		echo '<div class="form-groups">';
+		echo '<div class="ap-fom-group-label">'.__('Edit answer', 'ap').'</div>';
+		do_action('ap_edit_answer_fields', $post, $validate);
+		echo '</div>';
+			
+		ap_edit_answer_form_hidden_input($post->ID);
+		echo '</form>';
+	}
 }
 function ap_edit_answer_form_hidden_input($post_id){
-	wp_nonce_field('post_nonce-'.$post_id, 'edit_answer');
+	wp_nonce_field('post_nonce-'.$post_id, 'nonce');
 	echo '<input type="hidden" name="is_answer" value="true" />';
 	echo '<input type="hidden" name="answer_id" value="'.$post_id.'" />';
 	echo '<input type="hidden" name="edited" value="true" />';
@@ -536,31 +1187,109 @@ function ap_signup_fields(){
 	if(!is_user_logged_in()):
 	?>
 
-		<div class="for-non-logged-in">
-			<strong class="ap-sign-up-label"><?php _e('Quick signup form', 'ap') ;?></strong>
-			<div class="row">
-				<div class="col-md-6">
-					<div class="form-group">
-						<label for="tags"><?php _e('Username', 'ap') ?></label>
-						<input type="text" value="" tabindex="5" name="username" id="username" class="form-control" placeholder="<?php _e('Username', 'ap') ?>" />
-					</div>						
-					<div class="form-group">
-						<label for="tags"><?php _e('Password', 'ap') ?></label>
-						<input type="password" value="" tabindex="5" name="password" id="password" class="form-control" placeholder="<?php _e('Password', 'ap') ?>" />
-					</div>
+		<div class="for-non-logged-in ap-signup-fields">
+			<div class="ap-fom-group-label"><?php _e('Quick signup form', 'ap') ;?>
+				<span><?php _e('I already have an account.', 'ap') ;?><a href="#" data-toggle="ap-signup-form" class="ap-btn ap-btn-small" data-args="signup"><?php _e('Login', 'ap') ;?></a></span>
+			</div>
+			<div class="form-group">
+				<label for="username" class="ap-form-label"><?php _e('Username', 'ap') ?></label>
+				<div class="no-overflow">
+					<input type="text" value="" tabindex="5" name="username" id="username" class="form-control" placeholder="<?php _e('Username', 'ap') ?>" />
 				</div>
-				<div class="col-md-6">
-					<div class="form-group">
-						<label for="tags"><?php _e('Email', 'ap') ?></label>
-						<input type="text" value="" tabindex="5" name="email" id="email" class="form-control" placeholder="<?php _e('name@domain.com', 'ap') ?>" />
-					</div>
-					<div class="form-group">
-						<label for="tags"><?php _e('Password', 'ap') ?></label>
-						<input type="password" value="" tabindex="5" name="password1" id="password1" class="form-control" placeholder="<?php _e('Repeat password', 'ap') ?>" />
-					</div>
+			</div>	
+			<div class="form-group">
+				<label for="email" class="ap-form-label"><?php _e('Email', 'ap') ?></label>
+				<div class="no-overflow">
+					<input type="text" value="" tabindex="5" name="email" id="email" class="form-control" placeholder="<?php _e('name@domain.com', 'ap') ?>" />
+				</div>
+			</div>				
+			<div class="form-group">
+				<label for="password" class="ap-form-label"><?php _e('Password', 'ap') ?></label>
+				<div class="no-overflow">
+					<input type="password" value="" tabindex="5" name="password" id="password" class="form-control" placeholder="<?php _e('Password', 'ap') ?>" />
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="password1" class="ap-form-label"><?php _e('Password', 'ap') ?></label>
+				<div class="no-overflow">
+					<input type="password" value="" tabindex="5" name="password1" id="password1" class="form-control" placeholder="<?php _e('Repeat password', 'ap') ?>" />
 				</div>
 			</div>
 		</div>
+		<input type="hidden" name="user-form" value="signup" />
 	<?php
 	endif;
+}
+
+function ap_login_fields(){
+
+	if(!is_user_logged_in()){
+	?>
+		<div class="for-non-logged-in ap-login-fields">
+			<div class="ap-fom-group-label">
+				<?php _e('Quick login form', 'ap') ;?>
+				<span><?php _e('I do not have account yet', 'ap') ;?><a href="#" data-toggle="ap-signup-form" class="ap-btn ap-btn-small" data-args="login"><?php _e('Sign Up', 'ap') ;?></a></span>
+			</div>
+			<div class="form-group">
+				<label for="username" class="ap-form-label"><?php _e('Username', 'ap') ?></label>
+				<div class="no-overflow">
+					<input type="text" value="" tabindex="5" name="username" id="username" class="form-control" placeholder="<?php _e('Enter your username', 'ap') ?>" />
+				</div>
+			</div>	
+			<div class="form-group">
+				<label for="password" class="ap-form-label"><?php _e('Password', 'ap') ?></label>
+				<div class="no-overflow">
+					<input type="password" value="" tabindex="5" name="password" id="password" class="form-control" placeholder="<?php _e('Enter your password', 'ap') ?>" />
+				</div>
+			</div>
+		</div>
+		<input type="hidden" name="user-form" value="login" />
+	<?php
+	}
+}
+
+function ap_edit_question_form($question_id = false){
+	if(!$question_id)
+		$question_id = get_edit_question_id();
+		
+	if( !ap_user_can_edit_question($question_id)){
+		echo '<p>'.__('You don\'t have permission to access this page.', 'ap').'</p>';
+		return;
+	}
+	$validate = ap_validate_form();
+	
+	$question 	= get_post($question_id);
+	
+	if(!$question)
+		return;
+		
+	$action 	= $question->post_type.'-'.$question_id;	
+
+	if(!isset($_REQUEST['nonce']) || !wp_verify_nonce($_REQUEST['nonce'], $action)){
+		echo '<p>'.__('Trying to cheat? huh!.', 'ap').'</p>';
+		return;
+	}
+	
+
+	?>
+	<form action="" id="ask_question_form" method="POST" data-action="ap-submit-question">			
+		<div class="form-groups">
+			<div class="ap-fom-group-label"><?php _e('Edit question', 'ap'); ?></div>
+			<?php do_action('ap_edit_question_form_fields', $question, $validate); ?>
+		</div>
+		
+		<?php 
+			if(ap_opt('show_signup')){
+				echo '<div id="ap-login-signup">';
+				ap_login_fields();
+				echo '</div>';
+			}
+		?>
+		
+		<?php do_action('ap_ask_form_bottom'); ?>
+		<?php ap_edit_question_form_hidden_input($question->ID); ?>
+		
+	</form>
+	<?php
+
 }

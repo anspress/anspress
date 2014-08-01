@@ -1,3 +1,10 @@
+.clearfix:before,
+.clearfix:after{
+  display: table;
+  content: " ";
+  clear:both;
+}
+
 .wp-list-table th#asker, .wp-list-table th#answerer {
     width: 60px;
 }
@@ -22,9 +29,17 @@
 .wp-list-table th#flag{
 	width: 40px;
 }
+th.column-question_status {
+    width: 50px;
+}
+td.column-vote_note strong, td.column-post_title > a {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 0.2em;
+}
 
 .question-status {
-    background: none repeat scroll 0 0 #DDDDDD;
+    background: #DDDDDD;
     border-radius: 3px;
     color: #FFFFFF;
     display: block;
@@ -33,17 +48,20 @@
     text-align: center;
 }
 
+.question-status.open{
+	background:	#8FC61B;
+}
 .question-status.duplicate{
-	background:	#fe9610;
+	background:	#F7BA36;
 }
 .question-status.publish {
     background: #00bfdd;
 }
 .question-status.solved {
-    background: #8dca35;
+    background: #4AC1FF;
 }
 .question-status.closed {
-    background: #e65243;
+    background:#F64D55;
 }
 
 
@@ -68,7 +86,7 @@
     padding-bottom: 20px;
 }
 
-.wp-list-table .type-question .flag-count, .wp-list-table .type-answer .flag-count {
+.wp-list-table .flag-count, .wp-list-table .flag-count {
     background: #ddd;
     border-radius: 3px;
     color: #FFFFFF;
@@ -78,7 +96,7 @@
     text-align: center;
     width: 21px;
 }
-.wp-list-table .type-question .flag-count.flagged, .wp-list-table .type-answer .flag-count.flagged{
+.wp-list-table .flag-count.flagged, .wp-list-table .flag-count.flagged{
 	background: #ec5858;
 }
 
@@ -86,36 +104,38 @@
 /* Option Tabs */
 
 #ap_opt_nav {
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    float: left;
     margin-bottom: 0;
+    margin-right: 15px;
+    margin-top: 0;
+    width: 200px;
 }
 
 #ap_opt_nav li{
-    display: inline-block;
     margin-bottom: 0;
 }
 #ap_opt_nav li.active a{
-    background: none repeat scroll 0 0 #FFFFFF;
+    background: #FFFFFF;
     color: #666666;
-	border-bottom-color:#fff;
 }
 
 #ap_opt_nav li a{
-    background: none repeat scroll 0 0 #EEEEEE;
-    border: 1px solid #DDDDDD;
-    border-radius: 4px 4px 0 0;
-    color: #AAAAAA;
+    background: #eeeeee;
+    border-bottom: 1px solid #dddddd;
+    color: #666;
     display: block;
     font-size: 13px;
     font-weight: bold;
-    padding: 7px 15px;
+    padding: 10px 15px;
     text-decoration: none;
 }
 
 .tab-content {
-    background: none repeat scroll 0 0 #FFFFFF;
+    background: #ffffff;
     border: 1px solid rgba(0, 0, 0, 0.1);
     margin-top: -2px;
+    overflow: hidden;
     padding: 5px 15px;
 }
 .tab-content .tab-pane{
@@ -133,4 +153,60 @@
     border-bottom: 1px dotted #EEEEEE;
     margin: 5px 0 0;
     padding: 10px 0;	
+}
+
+th.column-category {
+    width: 100px;
+}
+
+#ap_flag_meta_box .flag-item, #ap_answers_meta_box .answer {
+    border-bottom: 1px solid #eee;
+    margin-bottom: 5px;
+    padding-bottom: 5px;
+}
+#ap_flag_meta_box .flag-item:last-child, #ap_answers_meta_box .answer:last-child{
+	border-bottom:none;
+}
+#ap_flag_meta_box .flagger, #ap_answers_meta_box .author {
+    float: left;
+    margin-right: 5px;
+    margin-top: 4px;
+    width: 200px;
+}
+#ap_flag_meta_box .flag-message strong{
+	display:block;
+}
+#ap_flag_meta_box .flag-item:hover .row-actions, #ap_answers_meta_box .answer:hover .row-actions {
+	visibility:visible;
+}
+
+#ap_flag_meta_box .flag-item  .flag-message, #ap_answers_meta_box .answer .answer-content{
+	overflow:hidden;
+}
+.ap-label-color-field .wp-picker-container{
+	position:absolute;
+}
+.get-support {
+    margin-bottom: 20px;
+}
+
+#anspress-points-table .column-points .point {
+    background: #419efd;
+    border-radius: 2px;
+    color: #fff;
+    display: table;
+    font-weight: bold;
+    padding: 0 5px;
+    text-align: center;
+}
+#anspress-points-table .column-points .point.negative{
+	background: #f45a5a;
+}
+#ap-point-edit {
+    background: #fff;
+    border: 1px solid #ddd;
+    padding: 0 15px;
+}
+#ap-point-edit .button-primary{
+	margin-bottom:10px;
 }

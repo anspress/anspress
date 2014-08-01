@@ -33,7 +33,10 @@ class anspress {
 	private function __construct() {
 
 		// Load plugin text domain
-		add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
+		add_action( 'wp_loaded', array( $this, 'flush_rules' ) );
+		add_action( 'after_setup_theme', array( $this, 'load_plugin_textdomain' ) );
+		
+		add_action( 'wp', array( $this, 'remove_head_items' ) );
 
 		// Activate plugin when new blog is added
 		add_action( 'wpmu_new_blog', array( $this, 'activate_new_site' ) );
@@ -42,6 +45,11 @@ class anspress {
 		
 		add_action('post_type_link', array( $this, 'answer_link'),10,2);
 		add_action('generate_rewrite_rules', array( $this, 'rewrites'));
+		
+		// Add specific CSS class by filter
+		add_filter('body_class', array($this, 'body_class'));
+		
+		
 		
 	}
 
@@ -54,6 +62,25 @@ class anspress {
 	 */
 	public function get_plugin_slug() {
 		return $this->plugin_slug;
+	}
+	
+	public function flush_rules(){
+
+		// Check the option we set on activation.
+		if (get_option('ap_flush')) {
+			flush_rewrite_rules( false );
+			delete_option('ap_flush');
+		}
+	}
+	
+	public function remove_head_items(){
+		if(is_page(ap_opt('base_page'))){
+			remove_action('wp_head', 'rsd_link');
+			remove_action('wp_head', 'wlwmanifest_link');
+			remove_action('wp_head', 'adjacent_posts_rel_link_wp_head', 10, 0 );
+			remove_action('wp_head', 'rel_canonical');
+			remove_action( 'wp_head', 'wp_shortlink_wp_head', 10, 0 );
+		}
 	}
 
 	/**
@@ -144,13 +171,7 @@ class anspress {
 	 * @since    1.0.0
 	 */
 	public function load_plugin_textdomain() {
-
-		$domain = $this->plugin_slug;
-		$locale = apply_filters( 'plugin_locale', get_locale(), $domain );
-
-		load_textdomain( $domain, trailingslashit( WP_LANG_DIR ) . $domain . '/' . $domain . '-' . $locale . '.mo' );
-		
-		add_rewrite_tag('%question_id%','([^&]+)');
+		load_plugin_textdomain('ap', false, dirname(plugin_basename(__FILE__)) . '/languages/');
 	}
 	
 	//add author_more to query vars
@@ -170,16 +191,17 @@ class anspress {
 		$query_vars[] = 'qtag_id';
 		$query_vars[] = 'qtag';
 		$query_vars[] = 'sort';
+		$query_vars[] = 'label';
+		$query_vars[] = 'user';
+		$query_vars[] = 'user_page';
 		
 		return $query_vars;
 	}
 	
 	/* Answer link */	
-	public function answer_link($link,$post) {
-		$post_type = 'answer';
-		if ($post->post_type==$post_type) {
-			$post_data = get_post($post->post_parent);
-			$link = get_post_type_archive_link('question').$post_data->post_name ."#answer_{$post->ID}";
+	public function answer_link($link, $post) {
+		if (isset($post) && $post->post_type== 'answer') {
+			$link = get_permalink($post->post_parent) ."#answer_{$post->ID}";
 		}
 		return $link;
 	}
@@ -196,20 +218,38 @@ class anspress {
 
 		
 		$slug = ap_base_page_slug();
-		$new_rules = array(  	
+		$new_rules = array(  
+			$slug. "question/([^/]+)/([^/]+)/page/?([0-9]{1,})/?$" => "index.php?page_id=".$base_page_id."&question=".$wp_rewrite->preg_index(1)."&question_id=".$wp_rewrite->preg_index(2)."&paged=".$wp_rewrite->preg_index(3),
 			
-			$slug. "question/([^/]+)/?" => "index.php?page_id=".$base_page_id."&question_id=".$wp_rewrite->preg_index(1),  
+			$slug. "question/([^/]+)/([^/]+)/?" => "index.php?page_id=".$base_page_id."&question=".$wp_rewrite->preg_index(1)."&question_id=".$wp_rewrite->preg_index(2),			
+			
+			$slug. "category/([^/]+)/page/?([0-9]{1,})/?$" => "index.php?page_id=".$base_page_id."&question_category=".$wp_rewrite->preg_index(1)."&paged=".$wp_rewrite->preg_index(2),   
+			
+			$slug. "tag/([^/]+)/page/?([0-9]{1,})/?$" => "index.php?page_id=".$base_page_id."&question_tags=".$wp_rewrite->preg_index(1)."&paged=".$wp_rewrite->preg_index(2), 
+			
+			$slug. "category/([^/]+)/?" => "index.php?page_id=".$base_page_id."&question_category=".$wp_rewrite->preg_index(1),
+			$slug. "tag/([^/]+)/?" => "index.php?page_id=".$base_page_id."&question_tags=".$wp_rewrite->preg_index(1),
+			
 			$slug. "page/?([0-9]{1,})/?$" => "index.php?page_id=".$base_page_id."&paged=".$wp_rewrite->preg_index(1),  
-		
+			
+			
 			$slug. "([^/]+)/page/?([0-9]{1,})/?$" => "index.php?page_id=".$base_page_id."&ap_page=".$wp_rewrite->preg_index(1)."&paged=".$wp_rewrite->preg_index(2),  
 			
-			$slug. "([^/]+)/?" => "index.php?page_id=".$base_page_id."&ap_page=".$wp_rewrite->preg_index(1),
+			$slug. "([^/]+)/([^/]+)/([^/]+)/?" => "index.php?page_id=".$base_page_id."&ap_page=".$wp_rewrite->preg_index(1)."&user=". $wp_rewrite->preg_index(2)."&user_page=". $wp_rewrite->preg_index(3),
+			
+			$slug. "([^/]+)/([^/]+)/?" => "index.php?page_id=".$base_page_id."&ap_page=".$wp_rewrite->preg_index(1)."&user=".$wp_rewrite->preg_index(2),			
+			
+			$slug. "([^/]+)/?" => "index.php?page_id=".$base_page_id."&ap_page=".$wp_rewrite->preg_index(1),			
 
 		);  
 		return $wp_rewrite->rules = $new_rules + $wp_rewrite->rules;  
 	}  
 	
-
-	
+	public function body_class($classes){
+		// add anspress class to body
+		$classes[] = 'anspress';
+		// return the $classes array
+		return $classes;
+	}
 
 }

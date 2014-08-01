@@ -1,4 +1,5 @@
-<div id="ap-tags" class="ap-container clearfix">
+<?php if(ap_opt('enable_tags')) : ?>
+<div id="ap-tags" class="clearfix">
 <?php
 
 	$paged 			= (get_query_var('paged')) ? get_query_var('paged') : 1;
@@ -34,3 +35,8 @@
 ?>
 
 </div>
+<?php else: ?>
+	<div class="ap-tax-disabled">
+		<?php _e('Tags are disabled', 'ap'); ?>
+	</div>
+<?php endif; ?>
