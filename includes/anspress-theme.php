@@ -365,3 +365,10 @@ function ap_get_current_page_template(){
 	}
 	return 'content-none.php';
 }
+
+function is_my_profile(){
+	if(ap_get_user_page_user() == get_current_user_id())
+		return true;
+	
+	return false;
+}

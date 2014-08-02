@@ -116,6 +116,7 @@ class anspress_shortcodes {
 			$category = $question->get_queried_object();
 		}elseif(is_ap_user()){
 			global $current_user_meta;
+			global $user;
 			$user 			= get_userdata( ap_get_user_page_user() );
 			$userid 		= $user->data->ID;
 			$display_name 	= $user->data->display_name;

@@ -40,6 +40,8 @@ class AP_User {
 		//add_filter( 'pre_user_query', array($this, 'following_query') );
 		add_action('wp_ajax_ap_cover_upload', array($this, 'cover_upload'));
 		add_action( 'after_setup_theme', array($this, 'cover_size') );
+		add_action( 'ap_edit_profile_fields', array($this, 'user_fields'), 10, 2 );
+		add_action( 'wp_ajax_ap_save_profile', array($this, 'ap_save_profile'));
 	}
 	
 	/* For modifying WP_User_Query, if passed with a var is_followers */
@@ -69,6 +71,8 @@ class AP_User {
 				}   
 			}
 			$userid = get_current_user_id();	
+			$previous_cover = get_user_meta($userid, '_ap_cover', true);
+			wp_delete_attachment( $previous_cover, true );
 			update_user_meta($userid, '_ap_cover', $attach_id);
 
 			$result = array('status' => true, 'message' => __('Cover uploaded successfully.', 'ap'), 'background-image' => 'background-image:url('.ap_get_user_cover($userid).')');
@@ -81,7 +85,176 @@ class AP_User {
 	}
 	
 	public function cover_size(){
-		add_image_size( 'ap_cover', ap_opt('cover_width'), ap_opt('cover_height'), array( 'center', 'center' ) );
+		add_image_size( 'ap_cover', ap_opt('cover_width'), ap_opt('cover_height'), array( 'top', 'center' ) );
+	}
+	
+	public function user_fields($user, $meta){
+		?>
+		<div class="form-groups">
+			<div class="ap-fom-group-label"><?php _e('Name', 'ap'); ?></div>
+			<div class="form-group">
+				<label for="username" class="ap-form-label"><?php _e('User name', 'ap') ?></label>
+				<div class="no-overflow">
+					<input type="text" name="username" id="username" value="" class="form-control" placeholder="<?php _e('Username', 'ap'); ?>" disabled />
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="first_name" class="ap-form-label"><?php _e('First name', 'ap') ?></label>
+				<div class="no-overflow">
+					<input type="text" name="first_name" id="first_name" value="<?php echo @$meta['first_name']; ?>" class="form-control" placeholder="<?php _e('Your first name, i.e. Rahul', 'ap'); ?>" />
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="last_name" class="ap-form-label"><?php _e('Last name', 'ap') ?></label>
+				<div class="no-overflow">
+					<input type="text" name="last_name" id="last_name" value="<?php echo @$meta['last_name']; ?>" class="form-control" placeholder="<?php _e('Your last name, i.e. Aryan', 'ap'); ?>" />
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="nick_name" class="ap-form-label"><?php _e('Nickname', 'ap') ?></label>
+				<div class="no-overflow">
+					<input type="text" name="nick_name" id="nick_name" value="<?php echo @$meta['nickname']; ?>" class="form-control" placeholder="<?php _e('Your nick name, i.e. nerdaryan', 'ap'); ?>" />
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="display_name" class="ap-form-label"><?php _e('Display Name', 'ap') ?></label>
+				<div class="no-overflow">
+					<select name="display_name" id="display_name"><br/>
+						<?php
+						$public_display = array();
+						$public_display['display_nickname'] = $user->nickname;
+						$public_display['display_username'] = $user->user_login;
+						 
+						if ( !empty($user->first_name) )
+							$public_display['display_firstname'] = $user->first_name;
+						 
+						if ( !empty($user->last_name) )
+							$public_display['display_lastname'] = $user->last_name;
+						 
+						if ( !empty($user->first_name) && !empty($user->last_name) ) {
+							$public_display['display_firstlast'] = $user->first_name . ' ' . $user->last_name;
+							$public_display['display_lastfirst'] = $user->last_name . ' ' . $user->first_name;
+						}
+						 
+						foreach ( $public_display as $id => $item ) {
+							echo '<option '.selected( $user->display_name, $item ).'>'.$item.'</option>';
+						}
+						
+						?>
+					</select>
+				</div>
+			</div>
+		</div>
+		<div class="form-groups">
+			<div class="ap-fom-group-label"><?php _e('Contact Information', 'ap'); ?></div>
+			<div class="form-group">
+				<label for="url" class="ap-form-label"><?php _e('Website', 'ap') ?></label>
+				<div class="no-overflow">
+					<input type="text" name="url" id="url" value="<?php echo $user->data->user_url; ?>" class="form-control" placeholder="<?php _e('http://open-wp.com', 'ap'); ?>" />
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="facebook" class="ap-form-label"><?php _e('Facebook', 'ap') ?></label>
+				<div class="no-overflow">
+					<input type="text" name="facebook" id="facebook" value="<?php echo @$meta['facebook']; ?>" class="form-control" placeholder="<?php _e('i.e. http://facebook.com/openwp', 'ap'); ?>" />
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="twitter" class="ap-form-label"><?php _e('Twitter', 'ap') ?></label>
+				<div class="no-overflow">
+					<input type="text" name="twitter" id="twitter" value="<?php echo @$meta['twitter']; ?>" class="form-control" placeholder="<?php _e('i.e. https://twitter.com/openwp', 'ap'); ?>" />
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="google" class="ap-form-label"><?php _e('Google+', 'ap') ?></label>
+				<div class="no-overflow">
+					<input type="text" name="google" id="twitter" value="<?php echo @$meta['google']; ?>" class="form-control" placeholder="<?php _e('i.e. https://plus.google.com/+OpenwpCom', 'ap'); ?>" />
+				</div>
+			</div>
+		</div>
+		<div class="form-groups">
+			<div class="ap-fom-group-label"><?php _e('Account', 'ap'); ?></div>
+			<div class="form-group">
+				<label for="email" class="ap-form-label"><?php _e('Email', 'ap') ?></label>
+				<div class="no-overflow">
+					<input type="text" name="email" id="email" value="<?php echo $user->data->user_email; ?>" class="form-control" placeholder="<?php _e('myemail@mydoamin.com', 'ap'); ?>" disabled />
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="password" class="ap-form-label"><?php _e('Password', 'ap') ?></label>
+				<div class="no-overflow">
+					<input type="password" name="password" id="password" value="" class="form-control" placeholder="<?php _e('Your password', 'ap'); ?>" />
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="password1" class="ap-form-label"><?php _e('Repeat password', 'ap') ?></label>
+				<div class="no-overflow">
+					<input type="password" name="password1" id="password1" value="" class="form-control" placeholder="<?php _e('Repeat your password.', 'ap'); ?>" />
+				</div>
+			</div>
+		</div>
+		<?php
+	}
+	
+	public function ap_save_profile(){
+		global $current_user, $wp_roles;
+		get_currentuserinfo();
+		
+		if(is_user_logged_in() && wp_verify_nonce( $_POST['nonce'], 'edit_profile' )){
+
+			$validation = ap_profile_fields_validation();
+			
+			if(isset($validation['has_error'])){
+				$result =  array(
+					'status' => 'validation_falied',
+					'message' => __('Failed to update, please check form.', 'ap'),
+					'error' => $validation,
+				);
+				die(json_encode($result));
+			}
+			
+			$fields = ap_profile_fields_to_process();
+			
+			if (isset($fields['password']))
+				wp_update_user( array( 'ID' => $current_user->ID, 'user_pass' => esc_attr( $_POST['password'] ) ) );
+			
+			if (isset($fields['first_name']))
+				update_user_meta( $current_user->ID, 'first_name', $fields['first_name']);
+				
+			if ( isset($fields['last_name']) )
+				update_user_meta($current_user->ID, 'last_name', $fields['last_name']);
+			
+			if ( isset($fields['nick_name']) )
+				update_user_meta($current_user->ID, 'nickname', $fields['nick_name']);
+			
+			if ( isset($fields['display_name']) )
+				wp_update_user(array('ID' => $current_user->ID, 'display_name' => $fields['display_name']));
+		
+			if(isset($fields['url']))
+				update_user_meta( $current_user->ID, 'user_url', $fields['url'] );
+			
+			if(isset($fields['facebook']))
+				update_user_meta( $current_user->ID, 'facebook', $fields['facebook'] );
+			
+			if(isset($fields['twitter']))
+				update_user_meta( $current_user->ID, 'twitter', $fields['twitter'] );
+			
+			if(isset($fields['google']))
+				update_user_meta( $current_user->ID, 'google', $fields['google'] );
+			
+			do_action('ap_save_profile', $fields);
+			
+			$result =  array(
+				'status' => true,
+				'message' => __('Successfully updated your profile.', 'ap'),
+			);
+		}else{
+			$result =  array(
+				'status' => false,
+				'message' => __('Failed to save profile.', 'ap'),
+			);
+		}
+		die(json_encode($result));
 	}
 }
 
@@ -184,6 +357,9 @@ function ap_user_menu(){
 }
 
 function ap_user_personal_menu(){
+	if(!is_my_profile())
+		return;
+		
 	$userid = ap_get_user_page_user();
 	$user_page = get_query_var('user_page');
 	$user_page = $user_page ? $user_page : 'profile';
@@ -228,6 +404,8 @@ function ap_user_template(){
 		$followers = $followers_query->results;
 	}
 	
+	global $user;
+	global $current_user_meta;
 	include ap_get_theme_location(ap_get_current_user_page_template());
 }
 
@@ -285,4 +463,81 @@ function ap_user_cover_style($userid){
 	
 	if($image)
 		echo 'style="background-image:url('.ap_get_user_cover($userid).')"';
+}
+
+function ap_edit_profile_nav(){
+	$menu = array(
+		'ap-about-me' => array('name' => __('About me', 'ap'), 'title' => __('Edit your "about me" section', 'ap'), 'active' => true),
+		'ap-account' => array('name' => __('Account', 'ap'), 'title' => __('Edit your account information', 'ap')),
+	);
+	$menu =  apply_filters('ap_edit_profile_nav', $menu);
+	?>
+	<ul class="ap-edit-profile-nav ap-nav">
+		<?php 
+			foreach($menu as $k => $m)
+				echo '<li><a href="#'.$k.'" data-load="ap-profile-edit-fields"'.(isset($m['active']) ? ' class="active"' : '').' title="'.$m['title'].'">'. $m['name'] .'</a></li>';
+		?>
+	</ul>
+	<?php
+}
+function ap_edit_profile_form(){
+	if(!is_my_profile())
+		return;
+		
+	global $current_user_meta;
+	global $user;
+	?>
+		<form method="POST" data-action="ap-edit-profile">
+			<?php do_action('ap_edit_profile_fields', $user, $current_user_meta); ?>
+			<button class="btn ap-btn ap-success btn-submit-ask" type="submit"><?php _e('Save profile', 'ap'); ?></button>
+			<input type="hidden" name="action" value="ap_save_profile" />
+			<input type="hidden" name="nonce" value="<?php echo wp_create_nonce( 'edit_profile' ); ?>" />
+		</form>
+	<?php
+}
+
+function ap_profile_fields_to_process(){
+	$fields = array();
+	
+	if ( !empty($_POST['first_name'] ))
+		$fields['first_name'] = esc_attr(sanitize_text_field($_POST['first_name']));
+		
+	if ( !empty($_POST['last_name'] ))
+		$fields['last_name'] = esc_attr(sanitize_text_field($_POST['last_name']));
+	
+	if ( !empty($_POST['nick_name'] ))
+		$fields['nick_name'] = esc_attr(sanitize_text_field($_POST['nick_name']));
+	
+	if ( !empty($_POST['display_name'] ))
+		$fields['display_name'] = esc_attr(sanitize_text_field($_POST['display_name']));
+	
+	if ( !empty($_POST['url'] ))
+		$fields['url'] = esc_url($_POST['url']);
+	
+	if ( !empty($_POST['facebook'] ))
+		$fields['facebook'] = esc_url($_POST['facebook']);	
+	
+	if ( !empty($_POST['twitter'] ))
+		$fields['twitter'] = esc_url($_POST['twitter']);	
+	
+	if ( !empty($_POST['google'] ))
+		$fields['google'] = esc_url($_POST['google']);
+	
+	if ( !empty($_POST['password'] ))
+		$fields['password'] = sanitize_text_field($_POST['password']);
+	
+	return $fields;
+}
+
+function ap_profile_fields_validation(){
+	$error = array();
+	if ( !empty($_POST['password'] ) && empty( $_POST['password1'] ) ) {
+        if ( $_POST['password'] != $_POST['password1']){
+			$error['has_error'] = true;
+            $error['password1'] = __('The passwords you entered do not match.  Your password was not updated.', 'ap');
+		}
+    }
+	
+	$error = apply_filters('ap_profile_fields_validation', $error);
+	return $error;
 }

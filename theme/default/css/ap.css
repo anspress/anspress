@@ -1478,12 +1478,10 @@ ul.ap-pagination{
     float: right;
     padding: 1px 4px;
 }
-#ask_question_form .form-groups {
+.form-groups {
     border: 1px solid #ddd;
     border-radius: 5px;
     padding: 10px;
-}
-.form-groups {
     margin-bottom: 10px;
 }
 .for-non-logged-in {	
@@ -2146,7 +2144,7 @@ a.ap-btn:visited{
 	overflow:hidden;
 }
 .ap-form-label {
-    min-width: 100px;
+    min-width: 125px;
     padding: 7px 0;
 	float:left;
 }
@@ -2328,4 +2326,23 @@ form .checkbox{
 	right: 0;
 	text-align: right;
 	top: 0;
+}
+.ap-edit_profile .ap-edit-profile-nav {
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    float: left;
+    margin-right: 20px;
+    width: 150px;
+}
+.ap-edit_profile .ap-edit-profile-nav li {
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 0;
+}
+.ap-edit_profile .ap-edit-profile-nav a {
+    color: #777;
+    display: block;
+    padding: 5px 10px;
+}
+.ap-edit_profile .ap-user-fields {
+    overflow: hidden;
 }

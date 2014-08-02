@@ -56,6 +56,7 @@ APjs.site.prototype = {
 		this.tagsSuggestion();
 		this.addTag();
 		this.uploadCover();
+		this.saveProfile();
 		
 		
 		jQuery('body').delegate('.ap-modal-bg, .ap-modal-close', 'click', function () {
@@ -1074,6 +1075,31 @@ APjs.site.prototype = {
 			});
 			
 			return false
+		});
+	},
+	saveProfile: function(){
+		var self = this;
+		jQuery('[data-action="ap-edit-profile"]').submit(function(){
+			jQuery(this).ajaxSubmit({
+				beforeSubmit:  function(){
+					self.showLoading(aplang.saving_profile);
+				},
+				success: function(data){
+					self.hideLoading();
+					if(data['status']){
+						self.addMessage(data['message'], 'success');
+					}else if(responce['action'] == 'validation_falied'){
+						self.clearError('#ask_question_form');
+						self.addMessage(responce['message'], 'error');
+						self.appendFormError('#ask_question_form', responce['error']);				
+					}else{
+						self.addMessage(data['message'], 'error');
+					}
+				},
+				url:ajaxurl,
+				dataType:'json'
+			});
+			return false;
 		});
 	}
 };
