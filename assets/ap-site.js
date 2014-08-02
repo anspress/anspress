@@ -55,6 +55,7 @@ APjs.site.prototype = {
 		this.tagsScript();
 		this.tagsSuggestion();
 		this.addTag();
+		this.uploadCover();
 		
 		
 		jQuery('body').delegate('.ap-modal-bg, .ap-modal-close', 'click', function () {
@@ -111,7 +112,7 @@ APjs.site.prototype = {
 	},
 	
 	isEmail : function (email) {
-	  var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+	  var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+jQuery/;
 	  return regex.test(email);
 	},
 	
@@ -1047,6 +1048,33 @@ APjs.site.prototype = {
 			jQuery('[data-role="ap-tagsinput"]').tagsinput('input').val('');
 			jQuery('#tags-suggestion').hide();
 		});
+	},
+	uploadCover: function(){
+		var self = this;
+		jQuery('#cover-upload-input').change(function(){
+			jQuery('#ap-cover-upload-form').submit();
+		});
+		
+		jQuery('#ap-cover-upload-form').submit(function(){
+			jQuery(this).ajaxSubmit({
+				beforeSubmit:  function(){
+					self.showLoading(aplang.uploading_cover);
+				},
+				success: function(data){
+					self.hideLoading();
+					if(data['status']){
+						self.addMessage(data['message'], 'success');
+						jQuery('[data-view="cover"]').attr('style', data['background-image']);
+					}else{
+						self.addMessage(data['message'], 'error');
+					}
+				},
+				url:ajaxurl,
+				dataType:'json'
+			});
+			
+			return false
+		});
 	}
 };
 
@@ -1070,4 +1098,3 @@ jQuery(document).ready(function (){
 		jQuery(this).parent().slideToggle();
 	});
 }); 
-

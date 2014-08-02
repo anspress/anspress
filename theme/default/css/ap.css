@@ -2008,7 +2008,9 @@ ul.ap-pagination{
     margin-bottom: 20px;
 }
 .ap-cover-bg {
-    background: url("../images/default_cover.jpg") no-repeat scroll center center / cover #eee;
+    background-image: url("../images/default_cover.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
     border-radius: 5px 5px 0 0;
     display: block;
     height: 200px;
@@ -2025,7 +2027,7 @@ ul.ap-pagination{
     font-size: 12px;
     height: 32px;
     line-height: 30px;
-    margin: 0 7px 0 0;
+    margin: 0;
     padding: 0 12px;
     text-align: center;
     text-decoration: none;
@@ -2306,4 +2308,24 @@ form .checkbox{
 .ap-tax-disabled {
     font-size: 22px;
     text-align: center;
+}
+.cover-upload-o {
+    float: right;
+    margin-right: 10px;
+    margin-top: 20px;
+    overflow: hidden;
+    position: relative;
+}
+#cover-upload-input{
+	cursor: inherit;
+	display: block;
+	font-size: 999px;
+	filter: alpha(opacity=0);
+	min-height: 100%;
+	min-width: 100%;
+	opacity: 0;
+	position: absolute;
+	right: 0;
+	text-align: right;
+	top: 0;
 }

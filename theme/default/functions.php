@@ -8,6 +8,10 @@ function init_scripts_front(){
 	if(is_anspress()){
 		wp_enqueue_script( 'jquery');				
 		wp_enqueue_script( 'tagsinput', ap_get_theme_url('js/bootstrap-tagsinput.min.js'), 'jquery', AP_VERSION);
+		
+		if(is_ap_user())
+			wp_enqueue_script( 'jquery-form', array('jquery'), false, true );
+			
 		wp_enqueue_script( 'ap-site-js', ANSPRESS_URL.'assets/ap-site.js', 'jquery', AP_VERSION);		
 		wp_enqueue_script( 'ap-js', ap_get_theme_url('js/ap.js'), 'jquery', AP_VERSION);
 		wp_enqueue_style( 'tagsinput', ap_get_theme_url('css/bootstrap-tagsinput.css'), array(), AP_VERSION);
@@ -41,6 +45,7 @@ function init_scripts_front(){
 			'loading_form' 					=> __( 'Loading form', 'ap' ),
 			'saving_labels' 				=> __( 'Saving labels', 'ap' ),
 			'loading_suggestions' 			=> __( 'Loading suggestions', 'ap' ),
+			'uploading_cover' 				=> __( 'Uploading cover', 'ap' ),
 		) );
 	}
 }

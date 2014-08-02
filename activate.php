@@ -35,6 +35,8 @@ class anspress_activate {
 			'vote_down'				=> true,
 			'vote_flag'				=> true,
 			'vote_close'			=> true,
+			
+			'upload_cover'			=> true,
 		);
 		
 		$editor_cap = array(
@@ -61,6 +63,8 @@ class anspress_activate {
 			'edit_others_question'	=> true,
 			'edit_others_answer'	=> true,
 			'edit_others_comment'	=> true,
+			
+			'upload_cover'			=> true,
 		);
 		
 		$mod_cap = array(
@@ -97,6 +101,8 @@ class anspress_activate {
 			'delete_others_comment'		=> true,
 			
 			'change_label'			=> true,
+			
+			'upload_cover'			=> true,
 		);
 		
 		add_role('ap_participant',	__( 'Participant', 'ap' ), $parti_cap);

@@ -71,7 +71,9 @@ function ap_default_options(){
 		'enable_tags' 			=> true,
 		'max_tags'				=> 5,
 		
-		'enable_categories'		=> true
+		'enable_categories'		=> true,
+		'cover_width'			=> '878',
+		'cover_height'			=> '200',
 	);
 }
 

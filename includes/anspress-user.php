@@ -38,6 +38,8 @@ class AP_User {
 	private function __construct() {
 		add_filter( 'pre_user_query', array($this, 'follower_query') );
 		//add_filter( 'pre_user_query', array($this, 'following_query') );
+		add_action('wp_ajax_ap_cover_upload', array($this, 'cover_upload'));
+		add_action( 'after_setup_theme', array($this, 'cover_size') );
 	}
 	
 	/* For modifying WP_User_Query, if passed with a var is_followers */
@@ -50,6 +52,36 @@ class AP_User {
 			$query->query_where = $query->query_where." AND M.apmeta_type = 'follow' AND M.apmeta_actionid = $userid";
 		}
 		return $query;
+	}
+	
+	public function cover_upload(){
+		if(ap_user_can_upload_cover() && wp_verify_nonce( $_POST['nonce'], 'upload_cover' )){
+			require_once(ABSPATH . "wp-admin" . '/includes/image.php');
+			require_once(ABSPATH . "wp-admin" . '/includes/file.php');
+			require_once(ABSPATH . "wp-admin" . '/includes/media.php');
+			if ($_FILES) {
+				foreach ($_FILES as $file => $array) {
+					if ($_FILES[$file]['error'] !== UPLOAD_ERR_OK) {
+						echo "upload error : " . $_FILES[$file]['error'];
+						die();
+					}
+					$attach_id = media_handle_upload( $file, 0 );
+				}   
+			}
+			$userid = get_current_user_id();	
+			update_user_meta($userid, '_ap_cover', $attach_id);
+
+			$result = array('status' => true, 'message' => __('Cover uploaded successfully.', 'ap'), 'background-image' => 'background-image:url('.ap_get_user_cover($userid).')');
+	  }else{
+		$result = array('status' => false, 'message' => __('Unable to upload cover.', 'ap'));
+	  }
+	  echo json_encode($result);
+	  
+	  die();
+	}
+	
+	public function cover_size(){
+		add_image_size( 'ap_cover', ap_opt('cover_width'), ap_opt('cover_height'), array( 'center', 'center' ) );
 	}
 }
 
@@ -226,4 +258,31 @@ function ap_followers_query(){
 
 	return $followers;
 	
+}
+
+function ap_cover_upload_form(){
+	if(ap_user_can_upload_cover() && ap_get_user_page_user() == get_current_user_id()){
+		?>
+		<form id="ap-cover-upload-form" method="post" action="#" enctype="multipart/form-data" >
+			<div class="ap-btn cover-upload-o">
+				<span><?php _e('Upload cover', 'ap'); ?></span>
+				<input type="file" name="thumbnail" id="cover-upload-input">
+			</div>
+			<input type='hidden' value='<?php echo wp_create_nonce( 'upload_cover' ); ?>' name='nonce' />
+			<input type="hidden" name="action" id="action" value="ap_cover_upload">
+		<form>
+		<?php
+	}
+}
+
+function ap_get_user_cover($userid){
+	$image_a =  wp_get_attachment_image_src( get_user_meta($userid, '_ap_cover', true), 'ap_cover');
+	return $image_a[0];
+}
+
+function ap_user_cover_style($userid){
+	$image = ap_get_user_cover($userid);
+	
+	if($image)
+		echo 'style="background-image:url('.ap_get_user_cover($userid).')"';
 }

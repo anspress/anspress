@@ -201,3 +201,10 @@ function ap_user_can_delete($postid){
 
 	return false;
 }
+
+function ap_user_can_upload_cover(){
+	if(is_super_admin() || current_user_can('upload_cover'))
+		return true;
+	
+	return false;
+}

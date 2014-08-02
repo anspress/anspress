@@ -1,7 +1,7 @@
 <?php //var_dump(ap_get_user_page_user()); ?>
 <div id="ap-profile" class="clearfix">
 	<div class="ap-profile-cover clearfix">
-		<div class="ap-cover-bg"></div>
+		<div data-view="cover" class="ap-cover-bg" <?php ap_user_cover_style($userid); ?>><?php ap_cover_upload_form(); ?></div>
 		<div class="ap-profile-head clearfix">
 			<div class="ap-user-image">
 				<?php echo get_avatar( $user->user_email, 105 ); ?>

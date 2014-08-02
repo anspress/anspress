@@ -26,6 +26,7 @@ if ( ! isset( $_REQUEST['settings-updated'] ) )
 		  <li><a href="#ap-theme" data-toggle="tab"><?php _e('Theme', 'ap'); ?></a></li>
 		  <li><a href="#ap-categories" data-toggle="tab"><?php _e('Categories', 'ap'); ?></a></li>
 		  <li><a href="#ap-tags" data-toggle="tab"><?php _e('Tags', 'ap'); ?></a></li>
+		  <li><a href="#ap-user" data-toggle="tab"><?php _e('User', 'ap'); ?></a></li>
 		  <li><a href="#ap-pages" data-toggle="tab"><?php _e('Pages', 'ap'); ?></a></li>
 		  <li><a href="#ap-misc" data-toggle="tab"><?php _e('Misc', 'ap'); ?></a></li>
 		  <li><a href="#ap-maintenance" data-toggle="tab"><?php _e('Maintenance', 'ap'); ?></a></li>
@@ -177,6 +178,25 @@ if ( ! isset( $_REQUEST['settings-updated'] ) )
 						</td>
 					</tr>
 					
+				</table>
+			</div>
+			
+			<div class="tab-pane" id="ap-user">
+				<table class="form-table">
+					<tr valign="top">
+						<th scope="row"><label for="cover_width"><?php _e('Cover width', 'ap'); ?></label></th>
+						<td>
+							<input type="text" name="anspress_opt[cover_width]" id="cover_width" value="<?php echo $settings['cover_width'] ; ?>" placeholder="800px" />								
+							<p class="description"><?php _e('Width of of the cover image.', 'ap'); ?></p>
+						</td>
+					</tr>
+					<tr valign="top">
+						<th scope="row"><label for="cover_height"><?php _e('Cover height', 'ap'); ?></label></th>
+						<td>
+							<input type="text" name="anspress_opt[cover_height]" id="cover_height" value="<?php echo $settings['cover_height'] ; ?>" placeholder="200px" />								
+							<p class="description"><?php _e('Height of the cover image.', 'ap'); ?></p>
+						</td>
+					</tr>
 				</table>
 			</div>
 			
