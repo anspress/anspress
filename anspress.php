@@ -31,7 +31,7 @@ if ( ! defined( 'WPINC' ) ) {
 
 // define	
 define('AP_VERSION', '1.0');
-define('AP_DB_VERSION', '5');
+define('AP_DB_VERSION', '6');
 
 define('ANSPRESS_DIR', plugin_dir_path( __FILE__ ));
 define('ANSPRESS_URL', plugin_dir_url( __FILE__ ));
@@ -84,6 +84,7 @@ require_once( plugin_dir_path( __FILE__ ) . 'activate.php' );
 require_once( plugin_dir_path( __FILE__ ) . 'includes/anspress-points.php' );
 require_once( plugin_dir_path( __FILE__ ) . 'includes/anspress-history.php' );
 require_once( plugin_dir_path( __FILE__ ) . 'includes/anspress-addons.php' );
+require_once( plugin_dir_path( __FILE__ ) . 'includes/anspress-messages.php' );
 
 
 /*
@@ -94,7 +95,7 @@ require_once( plugin_dir_path( __FILE__ ) . 'includes/anspress-addons.php' );
 register_activation_hook( __FILE__, array( 'anspress_activate', 'activate' ) );
 
 register_deactivation_hook( __FILE__, array( 'anspress', 'deactivate' ) );
-
+add_action( 'plugins_loaded', array( 'AP_Addons', 'get_instance' ) );
 add_action( 'plugins_loaded', array( 'anspress', 'get_instance' ) );
 add_action( 'plugins_loaded', array( 'AP_Roles_Permission', 'get_instance' ) );
 add_action( 'plugins_loaded', array( 'anspress_posts', 'get_instance' ) );
@@ -114,7 +115,8 @@ add_action( 'plugins_loaded', array( 'AP_Ranks', 'get_instance' ) );
 add_action( 'plugins_loaded', array( 'AP_Badges', 'get_instance' ) );
 add_action( 'plugins_loaded', array( 'AP_Points', 'get_instance' ) );
 add_action( 'plugins_loaded', array( 'AP_History', 'get_instance' ) );
-add_action( 'plugins_loaded', array( 'AP_Addons', 'get_instance' ) );
+add_action( 'plugins_loaded', array( 'AP_Messages', 'get_instance' ) );
+
 
 
 /*----------------------------------------------------------------------------*

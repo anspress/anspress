@@ -118,6 +118,12 @@ class anspress_shortcodes {
 			global $current_user_meta;
 			global $user;
 			$user 			= get_userdata( ap_get_user_page_user() );
+			
+			if($user === FALSE){
+				echo '<div class="user-not-found">'. __('User not found', 'ap') .'</div>';
+				return;
+			}
+			
 			$userid 		= $user->data->ID;
 			$display_name 	= $user->data->display_name;
 			$username 		= $user->data->user_login;

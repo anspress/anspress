@@ -181,6 +181,16 @@ class anspress_activate {
 					  PRIMARY KEY (`apmeta_id`)
 					)".$charset_collate.";";
 			
+			$sql[] = "CREATE TABLE IF NOT EXISTS " . $wpdb->prefix ."ap_messages (
+					`message_id` bigint(20) NOT NULL auto_increment,
+					`message_content` text NOT NULL,
+					`message_sender` bigint(20) NOT NULL,
+					`message_recipient` bigint(20) NOT NULL,
+					`message_date` datetime NOT NULL,
+					`message_read` tinyint(1) NOT NULL,
+					PRIMARY KEY (`message_id`)
+				  )".$charset_collate.";";
+			
 			require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 			dbDelta ($sql);
 			
