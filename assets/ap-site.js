@@ -57,6 +57,10 @@ APjs.site.prototype = {
 		this.addTag();
 		this.uploadCover();
 		this.saveProfile();
+		this.sendMessage();
+		this.showConversation();
+		this.newMessageButton();
+		this.userSuggestion();
 		
 		
 		jQuery('body').delegate('.ap-modal-bg, .ap-modal-close', 'click', function () {
@@ -991,7 +995,7 @@ APjs.site.prototype = {
 		this.tagsquery;
 		var self = this;
 		
-		jQuery('.anspress').delegate('.bootstrap-tagsinput input', 'keyup', function(){
+		jQuery('.anspress').delegate('#ask_question_form .bootstrap-tagsinput input', 'keyup', function(){
 			var value = jQuery(this).val();
 			
 			if(value.length == 0)
@@ -1101,7 +1105,146 @@ APjs.site.prototype = {
 			});
 			return false;
 		});
-	}
+	},
+	sendMessage:function(){
+		var self = this;
+		jQuery('.anspress').delegate('[data-action="ap-send-message"]', 'submit', function(){
+			jQuery(this).ajaxSubmit({
+				beforeSubmit:  function(){
+					self.showLoading(aplang.sending_message);
+				},
+				success: function(data){
+					self.hideLoading();
+					/* if(data['status']){
+						self.addMessage(data['message'], 'success');
+					}else if(responce['action'] == 'validation_falied'){
+						self.clearError('#ask_question_form');
+						self.addMessage(responce['message'], 'error');
+						self.appendFormError('#ask_question_form', responce['error']);				
+					}else{
+						self.addMessage(data['message'], 'error');
+					} */
+				},
+				url:ajaxurl,
+				dataType:'json',
+				clearForm:true
+			});
+			return false;
+		});
+	},
+	showConversation:function(){
+		var self = this;
+		jQuery('.anspress').delegate('[data-action="ap-show-conversation"]', 'click', function(e){
+			e.preventDefault();
+			self.showLoading(aplang.loading_conversation);
+			jQuery.ajax({
+				type: 'POST',			
+				url: ajaxurl,
+				data: {
+					action:'ap_show_conversation',
+					id: jQuery(this).data('id')
+				},
+				context:this,
+				dataType:'json',				
+				success: function(data){
+					self.hideLoading();
+					if(data['status']){
+						jQuery('[data-view="conversation"]').html(data['html']);
+					}
+					
+				}
+			});
+		});
+	},
+	newMessageButton: function(){
+		var self = this;
+		jQuery('.anspress').delegate('[data-button="ap-new-message"]', 'click', function(e){
+			e.preventDefault();
+			self.showLoading(aplang.loading_new_message_form);
+			jQuery.ajax({
+				type: 'POST',			
+				url: ajaxurl,
+				data: {
+					action:'ap_new_message_form'
+				},
+				context:this,
+				dataType:'json',				
+				success: function(data){
+					self.hideLoading();
+					if(data['status']){
+						jQuery('[data-view="conversation"]').html(data['html']);
+						jQuery('[data-action="ap-suggest-user"]').tagsinput({
+							freeInput: false,
+							maxTags: 1,
+							itemValue: 'value',
+							itemText: 'text',
+						});
+					}
+					
+				}
+			});
+		});
+	},
+	userSuggestion: function(){
+		this.usersquery;
+		var self = this;
+		
+		jQuery('.anspress').delegate('[data-action="ap-add-user"]', 'click', function(){
+			jQuery('[data-action="ap-suggest-user"]').tagsinput('add', { "value": jQuery(this).data('id'), "text": jQuery(this).data('name')});
+			jQuery('[data-action="ap-suggest-user"]').tagsinput('input').val('');
+			jQuery('#tags-suggestion').hide();
+		});
+		
+		jQuery('.anspress').delegate('#ap-new-message .bootstrap-tagsinput input', 'keyup', function(){
+			var value = jQuery(this).val();
+			
+			if(value.length == 0)
+				return;
+				
+			/* abort previous ajax request */
+			if(typeof self.usersquery !== 'undefined'){
+				self.usersquery.abort();
+			}
+			
+			self.showLoading(aplang.loading_suggestions);	
+			self.usersquery = jQuery.ajax({
+				type: 'POST',			
+				url: ajaxurl,
+				data: {
+					action:'ap_search_users',
+					q: value
+				},
+				context:this,
+				dataType:'json',				
+				success: function(data){
+					self.hideLoading();
+					var container = jQuery(this).closest('.bootstrap-tagsinput'),
+						position = container.offset();
+					
+					if(jQuery('#tags-suggestion').length ==0)
+						jQuery('.anspress').append('<div id="tags-suggestion" class="ap-tags-suggestions" style="display:none"></div>');
+					
+					if(data['items']){
+						self.userItems(data['items']);
+						
+						jQuery('#tags-suggestion').html(self.useritems).css({'top': (position.top + container.height() + 20), 'left': position.left, 'width': container.width()}).show();
+					}
+					
+				}
+			});
+		});
+
+	},
+	userItems: function(items){
+		this.useritems = '';
+		var self = this;
+		jQuery.each(items, function(i){
+			self.useritems += '<div class="ap-suggestion-user" data-action="ap-add-user" data-name="'+ this.name +'" data-id="'+ this.id +'"><div class="ap-tag-item-inner">';
+			self.useritems += '<div class="suggestion-avatar">'+ this.avatar +'</strong>';			
+			self.useritems += '<span class="name">'+ this.name +'</strong>';			
+			self.useritems += '</div></div>';
+		});
+	},
 };
 
 function ap_toggle_sub_cat(){

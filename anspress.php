@@ -31,7 +31,7 @@ if ( ! defined( 'WPINC' ) ) {
 
 // define	
 define('AP_VERSION', '1.0');
-define('AP_DB_VERSION', '6');
+define('AP_DB_VERSION', '7');
 
 define('ANSPRESS_DIR', plugin_dir_path( __FILE__ ));
 define('ANSPRESS_URL', plugin_dir_url( __FILE__ ));

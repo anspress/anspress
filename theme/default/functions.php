@@ -45,6 +45,9 @@ function init_scripts_front(){
 			'loading_suggestions' 			=> __( 'Loading suggestions', 'ap' ),
 			'uploading_cover' 				=> __( 'Uploading cover', 'ap' ),
 			'saving_profile' 				=> __( 'Saving profile', 'ap' ),
+			'sending_message' 				=> __( 'Sending message', 'ap' ),
+			'loading_conversation' 			=> __( 'Loading conversation', 'ap' ),
+			'loading_new_message_form' 		=> __( 'Loading new message form', 'ap' ),
 		) );
 	}
 }

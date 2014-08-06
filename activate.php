@@ -183,6 +183,7 @@ class anspress_activate {
 			
 			$sql[] = "CREATE TABLE IF NOT EXISTS " . $wpdb->prefix ."ap_messages (
 					`message_id` bigint(20) NOT NULL auto_increment,
+					`message_conversation` bigint(20) DEFAULT NULL,
 					`message_content` text NOT NULL,
 					`message_sender` bigint(20) NOT NULL,
 					`message_recipient` bigint(20) NOT NULL,

@@ -372,3 +372,9 @@ function is_my_profile(){
 	
 	return false;
 }
+
+function ap_current_user_page_is($page){
+	if (get_query_var('user_page') == $page)
+		return true;
+	return false;
+}

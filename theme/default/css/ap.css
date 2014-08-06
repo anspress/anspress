@@ -1955,7 +1955,7 @@ ul.ap-pagination{
 }
 .ap-profile-nav > ul > li > a:before {
     display: block;
-    font-size: 40px;
+    font-size: 30px;
 }
 .ap-profile-nav > ul > li > a {
     border-bottom: 1px solid #eee;
@@ -2345,4 +2345,78 @@ form .checkbox{
 }
 .ap-edit_profile .ap-user-fields {
     overflow: hidden;
+}
+#ap-messages {
+    border: 1px solid #ddd;
+    display: table;
+    width: 100%;
+}
+
+.ap-messages-left {
+    border-right: 1px solid #ddd;
+    display: table-cell;
+    vertical-align: top;
+    width: 325px;
+}
+.ap-message-search {
+    background: none repeat scroll 0 0 #fdfdfd;
+    border-bottom: 1px solid #ddd;
+    padding: 10px;
+}
+.ap-messages-right{
+	display: table-cell;
+	vertical-align: bottom;
+}
+.ap-senders {
+    min-height: 300px;
+    width: 325px;
+}
+.anspress .ap-senders > li {
+    border-bottom: 1px solid #eee;
+    margin: 0;
+    padding: 5px;
+	cursor:pointer;
+}
+.anspress .ap-senders > li:hover {
+    background: none repeat scroll 0 0 #fcfcfc;
+}
+
+.ap-message-summery {
+    overflow: hidden;
+}
+.ap-message-summery > strong{
+    display: block;
+    font-size: 12px;
+    margin-bottom: 3px;
+}
+.ap-message-summery > span {
+    color: #9197a3;
+    display: block;
+    font-size: 12px;
+    line-height: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+}
+.anspress .ap-message-log {
+    padding: 10px;
+}
+.anspress .ap-message-log li {
+    border-bottom: 1px solid #eee;
+    margin-bottom: 10px;
+}
+.anspress .ap-message-log li:last-child{
+	border-bottom:none;
+	margin:0;
+}
+.anspress .ap-message {
+    font-size: 13px;
+}
+.ap-messages-right > form {
+    background: none repeat scroll 0 0 #f4f4f4;
+    border-top: 1px solid #ddd;
+    display: block;
+    padding: 10px;
+}
+.ap-message .who {
+    display: block;
 }

@@ -326,7 +326,10 @@ function ap_user_link($userid=false, $sub = false){
 		$userid = get_the_author_meta('ID');
 		
 	$user = get_userdata($userid);
-	return get_permalink( ap_opt('base_page') ).'user/'.$user->user_login. ($sub ? '/'.$sub : '');
+	if($user)
+		return get_permalink( ap_opt('base_page') ).'user/'.$user->user_login. ($sub ? '/'.$sub : '');
+	
+	return false;
 }
 
 function ap_user_menu(){
@@ -336,12 +339,15 @@ function ap_user_menu(){
 	
 	$menus = array(
 		'profile' => array( 'name' => __('Profile', 'ap'), 'link' => ap_user_link($userid), 'icon' => 'ap-icon-user'),
+		'messages' => array( 'name' => __('Messages', 'ap'), 'link' => ap_user_link($userid, 'messages'), 'icon' => 'ap-icon-mail'),
 		'questions' => array( 'name' => __('Questions', 'ap'), 'link' => ap_user_link($userid, 'questions'), 'icon' => 'ap-icon-question'),
 		'answers' => array( 'name' => __('Answers', 'ap'), 'link' => ap_user_link($userid, 'answers'), 'icon' => 'ap-icon-answer'),
 		'activity' => array( 'name' => __('Activity', 'ap'), 'link' => ap_user_link($userid, 'activity'), 'icon' => 'ap-icon-history'),
 		'favorites' => array( 'name' => __('Favorites', 'ap'), 'link' => ap_user_link($userid, 'favorites'), 'icon' => 'ap-icon-star'),
 		'followers' => array( 'name' => __('Followers', 'ap'), 'link' => ap_user_link($userid, 'followers'), 'icon' => 'ap-icon-users'),
 		'following' => array( 'name' => __('Following', 'ap'), 'link' => ap_user_link($userid, 'following'), 'icon' => 'ap-icon-users'),
+		'edit_profile' => array( 'name' => __('Edit Profile', 'ap'), 'link' => ap_user_link($userid, 'edit_profile'), 'icon' => 'ap-icon-pencil'),
+		'settings' => array( 'name' => __('Settings', 'ap'), 'link' => ap_user_link($userid, 'settings'), 'icon' => 'ap-icon-cog'),		
 	);
 	
 	/* filter for overriding menu */
@@ -356,7 +362,7 @@ function ap_user_menu(){
 	echo $o;
 }
 
-function ap_user_personal_menu(){
+function ap_user_page_menu(){
 	if(!is_my_profile())
 		return;
 		
@@ -364,18 +370,14 @@ function ap_user_personal_menu(){
 	$user_page = get_query_var('user_page');
 	$user_page = $user_page ? $user_page : 'profile';
 	
-	$menus = array(
-		'edit_profile' => array( 'name' => __('Edit Profile', 'ap'), 'link' => ap_user_link($userid, 'edit_profile'), 'icon' => 'ap-icon-pencil'),
-		'settings' => array( 'name' => __('Settings', 'ap'), 'link' => ap_user_link($userid, 'settings'), 'icon' => 'ap-icon-cog'),
-		'messages' => array( 'name' => __('Messages', 'ap'), 'link' => ap_user_link($userid, 'messages'), 'icon' => 'ap-icon-mail'),
-	);
+	$menus = array();
 	
 	/* filter for overriding menu */
-	$menus = apply_filters('ap_user_personal_menu', $menus);
+	$menus = apply_filters('ap_user_page_menu', $menus, $userid);
 	
 	$o ='<ul class="ap-user-personal-menu ap-inline-list clearfix">';
 	foreach($menus as $k => $m){
-		$o .= '<li'.( $user_page == $k ? ' class="active"' : '' ).'><a href="'. $m['link'] .'" class="'.$m['icon'].' ap-user-menu-'.$k.'">'.$m['name'].'</a></li>';
+		$o .= '<li'.( $user_page == $k ? ' class="active"' : '' ).'><a href="'. $m['link'] .'" class="'.$m['icon'].' ap-user-menu-'.$k.'"'.(isset($m['attributes']) ? ' '.$m['attributes'] : '' ).'>'.$m['name'].'</a></li>';
 	}
 	$o .= '</ul>';
 	
@@ -448,7 +450,7 @@ function ap_cover_upload_form(){
 			</div>
 			<input type='hidden' value='<?php echo wp_create_nonce( 'upload_cover' ); ?>' name='nonce' />
 			<input type="hidden" name="action" id="action" value="ap_cover_upload">
-		<form>
+		</form>
 		<?php
 	}
 }
@@ -487,11 +489,11 @@ function ap_edit_profile_form(){
 	global $current_user_meta;
 	global $user;
 	?>
-		<form method="POST" data-action="ap-edit-profile">
+		<form method="POST" data-action="ap-edit-profile" action="">
 			<?php do_action('ap_edit_profile_fields', $user, $current_user_meta); ?>
 			<button class="btn ap-btn ap-success btn-submit-ask" type="submit"><?php _e('Save profile', 'ap'); ?></button>
-			<input type="hidden" name="action" value="ap_save_profile" />
-			<input type="hidden" name="nonce" value="<?php echo wp_create_nonce( 'edit_profile' ); ?>" />
+			<input type="hidden" name="action" value="ap_save_profile">
+			<input type="hidden" name="nonce" value="<?php echo wp_create_nonce( 'edit_profile' ); ?>">
 		</form>
 	<?php
 }
@@ -540,4 +542,14 @@ function ap_profile_fields_validation(){
 	
 	$error = apply_filters('ap_profile_fields_validation', $error);
 	return $error;
+}
+
+function ap_user_avatar($userid = false){
+	if(!$userid)
+		$userid = get_the_author_meta( 'ID' );
+	?>
+		<a href="<?php echo ap_user_link($userid); ?>" class="ap-avatar-link">
+			<?php echo get_avatar( $userid, 35 ); ?>
+		</a>
+	<?php
 }
