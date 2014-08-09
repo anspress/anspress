@@ -11,8 +11,12 @@ function init_scripts_front(){
 		wp_enqueue_script( 'jquery-form', array('jquery'), false, true );
 			
 		wp_enqueue_script( 'ap-site-js', ANSPRESS_URL.'assets/ap-site.js', 'jquery', AP_VERSION);		
+		wp_enqueue_script( 'tooltipster', ap_get_theme_url('js/jquery.tooltipster.min.js'), 'jquery', AP_VERSION);
+		wp_enqueue_script( 'perfect-scrollbar', ap_get_theme_url('js/perfect-scrollbar.min.js'), 'jquery', AP_VERSION);
 		wp_enqueue_script( 'ap-js', ap_get_theme_url('js/ap.js'), 'jquery', AP_VERSION);
 		wp_enqueue_style( 'tagsinput', ap_get_theme_url('css/bootstrap-tagsinput.css'), array(), AP_VERSION);
+		wp_enqueue_style( 'tooltipster', ap_get_theme_url('css/tooltipster.css'), array(), AP_VERSION);
+		wp_enqueue_style( 'perfect-scrollbar', ap_get_theme_url('css/perfect-scrollbar.min.css'), array(), AP_VERSION);
 		wp_enqueue_style( 'ap-style', ap_get_theme_url('css/ap.css'), array(), AP_VERSION);
 		
 		wp_enqueue_style( 'ap-fonts', ap_get_theme_url('fonts/style.css'), array(), AP_VERSION);
@@ -48,6 +52,11 @@ function init_scripts_front(){
 			'sending_message' 				=> __( 'Sending message', 'ap' ),
 			'loading_conversation' 			=> __( 'Loading conversation', 'ap' ),
 			'loading_new_message_form' 		=> __( 'Loading new message form', 'ap' ),
+			'loading_more_conversations' 	=> __( 'Loading more conversations', 'ap' ),
+			'searching_conversations' 		=> __( 'Searching conversations', 'ap' ),
+			'loading_message_edit_form' 	=> __( 'Loading message form', 'ap' ),
+			'updating_message' 				=> __( 'Updating message', 'ap' ),
+			'deleting_message' 				=> __( 'Deleting message', 'ap' ),
 		) );
 	}
 }

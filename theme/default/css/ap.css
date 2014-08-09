@@ -1687,6 +1687,14 @@ ul.ap-pagination{
 .ap-container .open .ap-dropdown-menu{
 	display:block;
 }
+.ap-container .open .ap-dropdown-menu > li{
+	display:block;
+	margin:0;
+	padding:0;
+}
+.ap-container .open .ap-dropdown-menu > li a{
+	display:block;
+}
 .ap-container .ap_status{
 	position:relative;
 }
@@ -2266,7 +2274,7 @@ form .checkbox{
 }
 
 /* Tags suggestion */
-.ap-tags-suggestions {
+.ap-suggestions {
     background: none repeat scroll 0 0 #fff;
     border: 1px solid #ddd;
     box-shadow: 0 0 5px #ddd;
@@ -2274,34 +2282,48 @@ form .checkbox{
     padding: 10px;
     position: absolute;
 }
-.ap-tags-suggestions .ap-tag-item {
+.ap-suggestions .ap-tag-item {
     display: block;
     float: left;
     width: 25%;
 }
-.ap-tags-suggestions .ap-tag-item-inner {
+.ap-suggestions .ap-tag-item-inner {
     background: none repeat scroll 0 0 #eee;
     margin: 5px;
     padding: 5px;
 }
-.ap-tags-suggestions  .tag-title{
+.ap-suggestions  .tag-title{
 	display: block;
 }
-.ap-tags-suggestions .tag-title strong{
+.ap-suggestions .tag-title strong{
 	display: inline-block;
 }
-.ap-tags-suggestions .tag-title span {
+.ap-suggestions .tag-title span {
     background: none repeat scroll 0 0 #aaa;
     color: #fff;
     font-size: 11px;
     padding: 1px 5px;
 }
-.ap-tags-suggestions  .tag-description{
+.ap-suggestions  .tag-description{
     color: #666;
     display: block;
     font-size: 11px;
     line-height: 16px;
     margin-top: 6px;
+}
+.ap-suggestions.user-suggestions {
+    padding: 0;
+    width: 200px;
+}
+.ap-suggestions.user-suggestions .ap-user-item-inner {
+    border-bottom: 1px solid #f8f8f8;
+    display: block;
+    margin: 0 5px;
+    padding: 5px;
+}
+.ap-suggestions.user-suggestions .suggestion-avatar {
+    float: left;
+    margin-right: 10px;
 }
 .ap-tax-disabled {
     font-size: 22px;
@@ -2347,37 +2369,43 @@ form .checkbox{
     overflow: hidden;
 }
 #ap-messages {
-    border: 1px solid #ddd;
     display: table;
     width: 100%;
 }
 
 .ap-messages-left {
-    border-right: 1px solid #ddd;
-    display: table-cell;
+	display: table-cell;
     vertical-align: top;
     width: 325px;
+}
+.ap-messages-left-c{
+    border: 1px solid #ddd;
+    border-radius: 5px;    
+    overflow: hidden;
 }
 .ap-message-search {
     background: none repeat scroll 0 0 #fdfdfd;
     border-bottom: 1px solid #ddd;
     padding: 10px;
 }
-.ap-messages-right{
-	display: table-cell;
-	vertical-align: bottom;
+.ap-messages-right {
+    display: table-cell;
+    padding-left: 20px;
+    vertical-align: top;
 }
-.ap-senders {
-    min-height: 300px;
+.ap-conversations {
     width: 325px;
 }
-.anspress .ap-senders > li {
+.anspress .ap-conversations > li {
     border-bottom: 1px solid #eee;
-    margin: 0;
-    padding: 5px;
-	cursor:pointer;
+    cursor: pointer;
+    margin: 0 10px;
+    padding: 12px 5px;
 }
-.anspress .ap-senders > li:hover {
+.anspress .ap-conversations > li.active {
+    background: none repeat scroll 0 0 #f6f6f6;
+}
+.anspress .ap-conversations > li:hover {
     background: none repeat scroll 0 0 #fcfcfc;
 }
 
@@ -2387,7 +2415,7 @@ form .checkbox{
 .ap-message-summery > strong{
     display: block;
     font-size: 12px;
-    margin-bottom: 3px;
+    margin-bottom: 5px;
 }
 .ap-message-summery > span {
     color: #9197a3;
@@ -2398,11 +2426,13 @@ form .checkbox{
     white-space: nowrap;
 }
 .anspress .ap-message-log {
+    border: 1px solid #ddd;
     padding: 10px;
 }
-.anspress .ap-message-log li {
+.anspress .ap-message-log > li {
     border-bottom: 1px solid #eee;
     margin-bottom: 10px;
+    padding-bottom: 10px;
 }
 .anspress .ap-message-log li:last-child{
 	border-bottom:none;
@@ -2419,4 +2449,102 @@ form .checkbox{
 }
 .ap-message .who {
     display: block;
+}
+.ap-conversations .ap-avatar{
+	margin-top: 4px;
+}
+.ap-group-icon {
+    background: none repeat scroll 0 0 #aaa;
+    border-radius: 2px;
+    color: #fff;
+    display: block;
+    line-height: 220%;
+    text-align: center;
+}
+#ap-messages time {
+    color: #aaa;
+    display: block;
+    float: right;
+    font-size: 12px;
+}
+#ap-tip {
+    background: none repeat scroll 0 0 #111;
+    border-radius: 3px;
+    color: #fff;
+    font-size: 12px;
+    padding: 5px;
+    position: fixed;
+}
+#ap-conversation-scroll{
+    box-shadow: 0 0 5px #ddd inset;
+    max-height: 600px;
+    overflow: hidden;
+    position: relative;
+}
+.ap-no-more-message {
+    text-align: center;
+}
+.ap-conversation-users {
+	background:#fafafa;
+    border-color: #ddd #ddd transparent;
+    border-image: none;
+    border-radius: 5px 5px 0 0;
+    border-style: solid solid none;
+    border-width: 1px 1px medium;
+    padding: 10px;
+}
+.ap-conversation-users > strong{
+    display: block;
+    font-size: 12px;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+}
+.ap-conversation-users .ap-user {
+    background: none repeat scroll 0 0 #fff;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    font-size: 12px;
+    margin-bottom: 8px;
+    padding: 2px 10px 0 2px;
+}
+.ap-conversation-users .avatar {
+    border-radius: 3px;
+    box-shadow: none;
+    display: block;
+    float: left;
+    margin-right: 8px;
+}
+.ap-conversation-users .who  a{
+    white-space: nowrap;
+}
+.ap-message-btns {
+    float: right;
+}
+.ap-message-btns .ap-dropdown-toggle {
+    border-color: #ccc;
+    border-radius: 50%;
+    height: 16px;
+    line-height: 17px;
+    margin-left: 5px;
+    padding: 0;
+    text-align: center;
+    width: 16px;
+}
+.ap-message-btns .ap-btn:before {
+    margin-right: 0;
+}
+.ap-container .ap-message-btns .ap-dropdown-menu{
+	right:0;
+}
+.ap-container .ap-message-btns .ap-dropdown-menu {
+    font-size: 11px;
+    min-width: 100px;
+    padding: 0;
+}
+.ap-message-btns .ap-dropdown-menu > li {
+    border-bottom: 1px solid #eee;
+}
+.ap-message-btns .ap-dropdown-menu a {
+    display: block;
+    padding: 0 5px;
 }

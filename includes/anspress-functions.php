@@ -133,7 +133,10 @@ function ap_question_content(){
 
 
 
-function ap_human_time($time){
+function ap_human_time($time, $unix = true){
+	if(!$unix)
+		$time = strtotime($time);
+		
 	return human_time_diff( $time, current_time('timestamp') );
 }
 
@@ -572,4 +575,8 @@ function ap_short_num($num, $precision = 2) {
 		$n_format = $num;
 	}
 	return $n_format;
+}
+
+function sanitize_comma_delimited($str){
+	return implode(",", array_map("intval", explode(",", $str)));
 }

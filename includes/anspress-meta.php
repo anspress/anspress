@@ -71,7 +71,10 @@ function ap_add_meta($userid=false, $type=NULL, $actionid =NULL, $value=NULL, $p
 		) 
 	);
 	
-	return $row;
+	if($row === false)
+		return false;
+		
+	return  $wpdb->insert_id;
 }
 
 function ap_update_meta($data, $where){

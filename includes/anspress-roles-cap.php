@@ -208,3 +208,10 @@ function ap_user_can_upload_cover(){
 	
 	return false;
 }
+
+function ap_user_can_message(){
+	if(is_super_admin() || current_user_can('message'))
+		return true;
+	
+	return false;
+}

@@ -194,7 +194,7 @@ class anspress_form
 				// auto login user if enabled			
 				if(ap_opt('login_after_signup')){
 					$creds = array();
-					$creds['user_login'] = $fields['username'];
+					$creds['user_login'] = sanitize_user($fields['username']);
 					$creds['user_password'] = $fields['password'];
 					$creds['remember'] = true;
 					$user = wp_signon( $creds, false );
@@ -331,7 +331,7 @@ class anspress_form
 				// auto login user if enabled			
 				if(ap_opt('login_after_signup')){
 					$creds = array();
-					$creds['user_login'] 	= $fields['username'];
+					$creds['user_login'] 	= sanitize_user($fields['username']);
 					$creds['user_password'] = $fields['password'];
 					$creds['remember'] 		= true;
 					$user 					= wp_signon( $creds, false );
@@ -344,7 +344,7 @@ class anspress_form
 			}
 			if(!is_user_logged_in() && $_POST['user-form'] == 'login'){
 				$creds = array();
-				$creds['user_login'] 	= $fields['username'];
+				$creds['user_login'] 	= sanitize_user($fields['username']);
 				$creds['user_password'] = $fields['password'];
 				$creds['remember'] 		= true;
 				$user 					= wp_signon( $creds, false );
@@ -898,16 +898,16 @@ class anspress_form
 	
 	public function signup_fields($fields){
 		if(isset($_POST['username']))
-			$fields['username'] = $_POST['username'];
+			$fields['username'] = sanitize_user($_POST['username']);
 		
 		if(isset($_POST['password']))
-			$fields['password'] = $_POST['password'];
+			$fields['password'] = esc_sql($_POST['password']);
 		
 		if(isset($_POST['password1']))
-			$fields['password1'] = $_POST['password1'];
+			$fields['password1'] = esc_sql($_POST['password1']);
 		
 		if(isset($_POST['email']))
-			$fields['email'] = $_POST['email'];
+			$fields['email'] =  sanitize_email($_POST['email']);
 		
 		return $fields;
 	}

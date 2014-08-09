@@ -309,15 +309,21 @@ function ap_get_user_question_list($user_id, $limit = 5, $title_limit = 50){
 	return $o;
 }
 
-function ap_user_display_name($id = false){
+function ap_user_display_name($id = false, $no_html = false){
 	if(!$id)
 		$id = get_the_author_meta('ID');
 	
 	if ($id > 0){
 		$user = get_userdata($id);
+		
+		if($no_html)
+			return $user->display_name;
+			
 		return '<span class="who"><a href="'.ap_user_link($id).'">'.$user->display_name.'</a></span>';
 	}
 	
+	if($no_html)
+			return __('Anonymous', 'ap');		
 	return '<span class="who">'.__('Anonymous', 'ap').'</span>';
 }
 
@@ -544,12 +550,15 @@ function ap_profile_fields_validation(){
 	return $error;
 }
 
-function ap_user_avatar($userid = false){
+function ap_user_avatar($userid = false, $return = false){
 	if(!$userid)
 		$userid = get_the_author_meta( 'ID' );
-	?>
-		<a href="<?php echo ap_user_link($userid); ?>" class="ap-avatar-link">
-			<?php echo get_avatar( $userid, 35 ); ?>
-		</a>
-	<?php
+	
+	$o = '<a href="'.ap_user_link($userid).'" class="ap-avatar-link">'.get_avatar( $userid, 35 ).'</a>';
+	
+	if($return)
+		return $o;
+	
+	echo $o;
+
 }

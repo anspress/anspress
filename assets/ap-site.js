@@ -61,6 +61,9 @@ APjs.site.prototype = {
 		this.showConversation();
 		this.newMessageButton();
 		this.userSuggestion();
+		this.searchMessage();
+		this.editMessage();
+		this.deleteMessage();
 		
 		
 		jQuery('body').delegate('.ap-modal-bg, .ap-modal-close', 'click', function () {
@@ -281,7 +284,19 @@ APjs.site.prototype = {
 			});
 		});			
 	},
-	
+	doAjaxForm: function(data, callback, context){
+		context 	= typeof context !== 'undefined' ? context : false;
+		callback 	= typeof callback !== 'undefined' ? callback : false;
+		
+		return jQuery.ajax({  
+			type: 		'POST',  
+			url: 		ajaxurl,  
+			data: 		data,
+			dataType: 	'json',
+			context: 	context,
+			success: 	callback 
+		});	
+	},
 	castVote:function() {
 		var self = this;
 		jQuery('.anspress').delegate('[data-action="vote"] a', 'click', function(e){
@@ -531,9 +546,13 @@ APjs.site.prototype = {
 	},
 	
 	dropdown:function(){
-		jQuery('.ap-dropdown-toggle').on('click', function(e){
+		jQuery('.anspress').delegate('.ap-dropdown-toggle', 'click', function(e){
 			e.preventDefault();
 			jQuery(this).closest('.ap-dropdown').toggleClass('open');
+		});
+		
+		jQuery('.anspress').delegate('.ap-dropdown-menu a', 'click', function(e){
+			jQuery(this).closest('.ap-dropdown').removeClass('open');
 		});
 	},
 	dropdownClose:function(){
@@ -975,6 +994,7 @@ APjs.site.prototype = {
 		});
 	},
 	tagsScript:function(){
+		
 		if(jQuery('[data-role="ap-tagsinput"]').length > 0){
 			jQuery('[data-role="ap-tagsinput"]').tagsinput({
 				freeInput: false,
@@ -982,7 +1002,7 @@ APjs.site.prototype = {
 			});
 			jQuery('[data-role="ap-tagsinput"]').tagsinput('input').blur(function(e){
 				jQuery(document).mouseup(function (e){
-					var container = jQuery('#tags-suggestion');
+					var container = jQuery('#ap-suggestions');
 
 					if (!container.is(e.target)	&& container.has(e.target).length === 0){
 						container.hide();
@@ -1021,13 +1041,13 @@ APjs.site.prototype = {
 					var container = jQuery(this).closest('.bootstrap-tagsinput'),
 						position = container.offset();
 					
-					if(jQuery('#tags-suggestion').length ==0)
-						jQuery('.anspress').append('<div id="tags-suggestion" class="ap-tags-suggestions" style="display:none"></div>');
+					if(jQuery('#ap-suggestions').length ==0)
+						jQuery('.anspress').append('<div id="ap-suggestions" class="ap-suggestions" style="display:none"></div>');
 					
 					if(data['items']){
 						self.tagItems(data['items']);
 						
-						jQuery('#tags-suggestion').html(self.tagsitems).css({'top': (position.top + container.height() + 20), 'left': position.left, 'width': container.width()}).show();
+						jQuery('#ap-suggestions').html(self.tagsitems).css({'top': (position.top + container.height() + 20), 'left': position.left, 'width': container.width()}).show();
 					}
 					
 				}
@@ -1051,7 +1071,7 @@ APjs.site.prototype = {
 		jQuery('.anspress').delegate('[data-action="ap-add-tag"]', 'click', function(){
 			jQuery('[data-role="ap-tagsinput"]').tagsinput('add', jQuery(this).data('name'));
 			jQuery('[data-role="ap-tagsinput"]').tagsinput('input').val('');
-			jQuery('#tags-suggestion').hide();
+			jQuery('#ap-suggestions').hide();
 		});
 	},
 	uploadCover: function(){
@@ -1115,34 +1135,49 @@ APjs.site.prototype = {
 				},
 				success: function(data){
 					self.hideLoading();
-					/* if(data['status']){
+					if(data['status'] == true){
 						self.addMessage(data['message'], 'success');
-					}else if(responce['action'] == 'validation_falied'){
-						self.clearError('#ask_question_form');
-						self.addMessage(responce['message'], 'error');
-						self.appendFormError('#ask_question_form', responce['error']);				
+						var container = jQuery('[data-view="conversation"] > ul');
+						
+						if(container.length == 0){
+							jQuery('[data-view="conversation"]').html(jQuery(data['html']).hide());
+							jQuery('[data-view="conversation"] > ul').slideDown(200);
+							jQuery('[data-view="conversation"] > form').slideDown(200);
+						}else{	
+							container.append(jQuery(data['html']).hide());
+							container.find('li:last-child').slideDown(200);
+						}
+						jQuery('textarea.autogrow').autogrow({onInitialize: true});						
+					}else if(data['status'] == 'validation_falied'){
+						self.clearError(this);
+						self.addMessage(data['message'], 'error');
+						self.appendFormError(this, data['error']);				
 					}else{
 						self.addMessage(data['message'], 'error');
-					} */
+					}
 				},
 				url:ajaxurl,
 				dataType:'json',
-				clearForm:true
+				clearForm:true,
+				context:this
 			});
 			return false;
 		});
 	},
 	showConversation:function(){
 		var self = this;
+		
 		jQuery('.anspress').delegate('[data-action="ap-show-conversation"]', 'click', function(e){
 			e.preventDefault();
 			self.showLoading(aplang.loading_conversation);
+			jQuery(this).parent().find('li.active').removeClass('active');
+			jQuery(this).addClass('active');
 			jQuery.ajax({
 				type: 'POST',			
 				url: ajaxurl,
 				data: {
 					action:'ap_show_conversation',
-					id: jQuery(this).data('id')
+					args: jQuery(this).data('args')
 				},
 				context:this,
 				dataType:'json',				
@@ -1150,11 +1185,17 @@ APjs.site.prototype = {
 					self.hideLoading();
 					if(data['status']){
 						jQuery('[data-view="conversation"]').html(data['html']);
+						self.addMessage(data['message'], 'success');
+					}
+					else{
+						self.addMessage(data['message'], 'error');
 					}
 					
 				}
 			});
 		});
+		
+		jQuery('[data-action="ap-show-conversation"].active').click();
 	},
 	newMessageButton: function(){
 		var self = this;
@@ -1173,11 +1214,21 @@ APjs.site.prototype = {
 					self.hideLoading();
 					if(data['status']){
 						jQuery('[data-view="conversation"]').html(data['html']);
+						jQuery('textarea.autogrow').autogrow({onInitialize: true});
 						jQuery('[data-action="ap-suggest-user"]').tagsinput({
 							freeInput: false,
-							maxTags: 1,
 							itemValue: 'value',
 							itemText: 'text',
+						});
+						
+						jQuery('[data-action="ap-suggest-user"]').tagsinput('input').blur(function(e){
+							jQuery(document).mouseup(function (e){
+								var container = jQuery('#ap-suggestions');
+
+								if (!container.is(e.target)	&& container.has(e.target).length === 0){
+									container.hide();
+								}
+							});
 						});
 					}
 					
@@ -1192,7 +1243,7 @@ APjs.site.prototype = {
 		jQuery('.anspress').delegate('[data-action="ap-add-user"]', 'click', function(){
 			jQuery('[data-action="ap-suggest-user"]').tagsinput('add', { "value": jQuery(this).data('id'), "text": jQuery(this).data('name')});
 			jQuery('[data-action="ap-suggest-user"]').tagsinput('input').val('');
-			jQuery('#tags-suggestion').hide();
+			jQuery('#ap-suggestions').hide();
 		});
 		
 		jQuery('.anspress').delegate('#ap-new-message .bootstrap-tagsinput input', 'keyup', function(){
@@ -1206,32 +1257,26 @@ APjs.site.prototype = {
 				self.usersquery.abort();
 			}
 			
-			self.showLoading(aplang.loading_suggestions);	
-			self.usersquery = jQuery.ajax({
-				type: 'POST',			
-				url: ajaxurl,
-				data: {
-					action:'ap_search_users',
-					q: value
-				},
-				context:this,
-				dataType:'json',				
-				success: function(data){
+			self.showLoading(aplang.loading_suggestions);
+			
+			self.usersquery = self.doAjaxForm(
+				{action:'ap_search_users', q: value},
+				function(data){
 					self.hideLoading();
 					var container = jQuery(this).closest('.bootstrap-tagsinput'),
 						position = container.offset();
 					
-					if(jQuery('#tags-suggestion').length ==0)
-						jQuery('.anspress').append('<div id="tags-suggestion" class="ap-tags-suggestions" style="display:none"></div>');
+					if(jQuery('#ap-suggestions').length ==0)
+						jQuery('.anspress').append('<div id="ap-suggestions" class="ap-suggestions user-suggestions" style="display:none"></div>');
 					
 					if(data['items']){
 						self.userItems(data['items']);
 						
-						jQuery('#tags-suggestion').html(self.useritems).css({'top': (position.top + container.height() + 20), 'left': position.left, 'width': container.width()}).show();
-					}
-					
-				}
-			});
+						jQuery('#ap-suggestions').html(self.useritems).css({'top': (position.top + container.height() + 20), 'left': position.left}).show();
+					}					
+				},
+				this
+			);
 		});
 
 	},
@@ -1239,12 +1284,139 @@ APjs.site.prototype = {
 		this.useritems = '';
 		var self = this;
 		jQuery.each(items, function(i){
-			self.useritems += '<div class="ap-suggestion-user" data-action="ap-add-user" data-name="'+ this.name +'" data-id="'+ this.id +'"><div class="ap-tag-item-inner">';
-			self.useritems += '<div class="suggestion-avatar">'+ this.avatar +'</strong>';			
+			self.useritems += '<div class="ap-suggestion-user" data-action="ap-add-user" data-name="'+ this.name +'" data-id="'+ this.id +'"><div class="ap-user-item-inner clearfix">';
+			self.useritems += '<div class="suggestion-avatar">'+ this.avatar +'</div>';			
 			self.useritems += '<span class="name">'+ this.name +'</strong>';			
 			self.useritems += '</div></div>';
 		});
 	},
+	loadMoreConversations:function(elem){
+		var self = this;
+		self.showLoading(aplang.loading_more_conversations);
+		var offset = jQuery(elem).attr('data-offset');
+		
+		if(typeof offset !== 'undefined')
+		self.doAjaxForm(
+			{action:'ap_load_conversations', offset: offset, args: jQuery(elem).attr('data-args')}, 
+			function(data){
+				self.hideLoading();				
+				if(data['status']){
+					self.addMessage(data['message'], 'success');
+					jQuery(elem).attr('data-offset', parseInt(offset)+1);
+					jQuery('#ap-conversation-scroll ul').append(jQuery(data['html']).html());
+					jQuery('#ap-conversation-scroll').perfectScrollbar('update');
+				}else{
+					self.addMessage(data['message'], 'error');
+				}
+			}
+		);
+	},
+	searchMessage: function(){
+		var self = this;
+		
+		jQuery('.anspress').delegate('[data-action="ap-search-conversations"]', 'keyup', function(){
+			var value = jQuery(this).val();
+			
+			if(value.length == 0)
+				return;
+				
+			/* abort previous ajax request */
+			if(typeof self.messageSearchXhr !== 'undefined'){
+				self.messageSearchXhr.abort();
+			}
+			
+			jQuery(this).closest('form').submit();
+		});
+		
+		jQuery('[data-role="ap-search-conversations"]').submit(function(){
+			self.messageSearch = jQuery(this).ajaxSubmit({
+				beforeSubmit:  function(){
+					self.showLoading(aplang.searching_conversations);
+				},
+				success: function(data){
+					self.hideLoading();
+					if(data['status']){
+						jQuery(this).removeAttr('data-offset');
+						jQuery('#ap-conversation-scroll ul').html(jQuery(data['html']).html());
+						jQuery('#ap-conversation-scroll').perfectScrollbar('update');
+					}else{
+						self.addMessage(data['message'], 'error');
+					}
+				},
+				url:ajaxurl,
+				dataType:'json',
+				type: 'GET'
+			});
+			self.messageSearchXhr = self.messageSearch.data('jqxhr');
+			return false;
+		});
+	},
+	editMessage: function(){
+		var self = this;
+		jQuery('.anspress').delegate('[data-button="ap-edit-message"]', 'click', function(e){
+			e.preventDefault();
+			self.showLoading(aplang.loading_message_edit_form);
+			self.doAjaxForm(
+				{action:'ap_message_edit_form', args: jQuery(this).data('args')}, 
+				function(data){
+					self.hideLoading();				
+					if(data['status']){
+						self.addMessage(data['message'], 'success');
+						jQuery(this).closest('.ap-message').find('[data-view="ap-message-content"]').html(data['html']);
+						jQuery('textarea.autogrow').autogrow({onInitialize: true});
+					}else{
+						self.addMessage(data['message'], 'error');
+					}
+				},
+				this
+			);
+		});
+		
+		jQuery('.anspress').delegate('[data-action="ap-edit-message"]', 'submit', function(){
+			jQuery(this).ajaxSubmit({
+				beforeSubmit:  function(){
+					self.showLoading(aplang.updating_message);
+				},
+				success: function(data){
+					self.hideLoading();
+					if(data['status']){
+						self.addMessage(data['message'], 'success');
+						jQuery(this).after(data['html']);
+						jQuery(this).remove();
+					}else{
+						self.addMessage(data['message'], 'error');
+					}
+				},
+				url:ajaxurl,
+				dataType:'json',
+				type: 'POST',
+				context:this
+			});
+
+			return false;
+		});
+	},
+	deleteMessage:function(){
+		var self = this;
+		jQuery('.anspress').delegate('[data-button="ap-delete-message"]', 'click', function(e){
+			e.preventDefault();
+			self.showLoading(aplang.deleting_message);
+			self.doAjaxForm(
+				{action:'ap_delete_message', args: jQuery(this).data('args')}, 
+				function(data){
+					self.hideLoading();				
+					if(data['status']){
+						self.addMessage(data['message'], 'success');
+						jQuery(this).closest('.ap-message').remove();
+					}else{
+						self.addMessage(data['message'], 'error');
+					}
+				},
+				this
+			);
+		});
+	}
+	
 };
 
 function ap_toggle_sub_cat(){
@@ -1263,7 +1435,8 @@ jQuery(document).ready(function (){
 
 	ap_toggle_sub_cat();
 	
-	jQuery('body').delegate('#please-login button', 'click' ,function(){
+	/* jQuery('body').delegate('#please-login button', 'click' ,function(){
 		jQuery(this).parent().slideToggle();
-	});
+	}); */
+	
 }); 

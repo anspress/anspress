@@ -37,6 +37,7 @@ class anspress_activate {
 			'vote_close'			=> true,
 			
 			'upload_cover'			=> true,
+			'message'				=> true,
 		);
 		
 		$editor_cap = array(
@@ -65,6 +66,7 @@ class anspress_activate {
 			'edit_others_comment'	=> true,
 			
 			'upload_cover'			=> true,
+			'message'				=> true,
 		);
 		
 		$mod_cap = array(
@@ -103,6 +105,7 @@ class anspress_activate {
 			'change_label'			=> true,
 			
 			'upload_cover'			=> true,
+			'message'				=> true,
 		);
 		
 		add_role('ap_participant',	__( 'Participant', 'ap' ), $parti_cap);
@@ -182,19 +185,11 @@ class anspress_activate {
 			
 			$sql[] = "CREATE TABLE IF NOT EXISTS " . $wpdb->prefix ."ap_messages (
 					`message_id` bigint(20) NOT NULL auto_increment,
-					`message_conversation` bigint(20) DEFAULT NULL,
 					`message_content` text NOT NULL,
 					`message_sender` bigint(20) NOT NULL,
 					`message_date` datetime NOT NULL,
 					`message_read` tinyint(1) NOT NULL,
 					PRIMARY KEY (`message_id`)
-				  )".$charset_collate.";";
-				  
-			$sql[] = "CREATE TABLE IF NOT EXISTS " . $wpdb->prefix ."ap_relations (
-					`r_id` bigint(20) NOT NULL auto_increment,
-					`r_type` varchar(256) DEFAULT NULL,
-					`r_relation` bigint(20) NOT NULL,
-					PRIMARY KEY (`r_id`)
 				  )".$charset_collate.";";
 			
 			require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
