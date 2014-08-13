@@ -8,7 +8,6 @@
 	<div class="no-questions">
 		<?php _e('No question asked yet!, be the first to ask a question.', 'ap'); ?>
 		
-		<h2><?php _e('Ask question', 'ap'); ?></h2>
-		<?php ap_ask_form(); ?>
+		<a href="<?php echo ap_get_link_to('ask'); ?>" class="ap-btn ap-success"><?php _e('Ask question', 'ap'); ?></a>
 	</div>
 </article><!-- list item -->

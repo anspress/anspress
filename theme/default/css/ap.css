@@ -315,9 +315,7 @@ select[multiple].input-lg {
 .anspress a{
 	text-decoration:none;
 }
-.anspress a:visited{
-	color:inherit;
-}
+
 .anspress a:hover{
 
 }
@@ -2047,8 +2045,8 @@ ul.ap-pagination{
     margin: 0;
     padding: 0 7px;
 }
-a.ap-btn:visited{
-	color: #333;
+a.ap-btn.ap-success:visited{
+	color: #fff;
 }
 .ap-btn:before{
 	margin-right:5px;
@@ -2559,4 +2557,13 @@ form .checkbox{
 .ap-ans-action > a {
     font-size: 12px;
     margin-right: 5px;
+}
+.no-questions {
+    display: block;
+    font-size: 25px;
+    text-align: center;
+}
+.no-questions > .ap-btn {
+    display: table;
+    margin: 15px auto 0;
 }

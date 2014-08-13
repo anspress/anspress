@@ -12,7 +12,7 @@
 	<?php ap_pagination('', 2, $paged, $question); ?>
 	<?php
 		else : 
-			include(ap_get_theme_location('content-none.php'));
+			_e('No favourite questions', 'ap');
 		endif; 
 	?>
 </div>

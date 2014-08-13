@@ -195,6 +195,11 @@ function ap_answers_link(){
 	return get_permalink().'#answers';
 }
 
+function ap_get_link_to($page){
+	$relative = ltrim(str_replace(home_url(), '', get_permalink(ap_opt('base_page'))), '/'); 
+	return home_url($relative.$page);
+}
+
 function ap_comment_btn_html(){
 	$action = get_post_type(get_the_ID()).'-'.get_the_ID();
 	$nonce = wp_create_nonce( $action );
