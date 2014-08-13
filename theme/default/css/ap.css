@@ -313,7 +313,6 @@ select[multiple].input-lg {
 	margin-top:0;
 }
 .anspress a{
-	color:inherit;
 	text-decoration:none;
 }
 .anspress a:visited{
@@ -2545,4 +2544,19 @@ form .checkbox{
 .ap-message-btns .ap-dropdown-menu a {
     display: block;
     padding: 0 5px;
+}
+
+.ap-answer-title {
+    display: block;
+}
+#ap-user-answer .ap-user-meta {
+    font-size: 12px;
+    margin-bottom: 0;
+}
+#ap-user-answer .answer-content {
+    overflow: hidden;
+}
+.ap-ans-action > a {
+    font-size: 12px;
+    margin-right: 5px;
 }

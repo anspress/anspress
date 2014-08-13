@@ -1,1 +1,3 @@
-User favorites
+<div id="ap-user-favorites">
+
+</div>

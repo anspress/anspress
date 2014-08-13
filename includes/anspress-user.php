@@ -461,11 +461,89 @@ function ap_user_template(){
 		
 		$question_args = apply_filters('ap_user_question_args', $question_args);
 		$question = new WP_Query( $question_args );
+	}elseif(ap_current_user_page_is('answers')){
+		$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
+
+		$order = get_query_var('sort');
+		if(empty($order ))
+			$order = ap_opt('answers_sort');
+
+		
+		if($order == 'voted'){
+			$ans_args=array(
+				'author' => ap_get_user_page_user(),
+				'ap_query' => 'answer_sort_voted',
+				'post_type' => 'answer',
+				'post_status' => 'publish',
+				'showposts' => ap_opt('answers_per_page'),
+				'paged' => $paged,
+				'orderby' => 'meta_value_num',
+				'meta_key' => ANSPRESS_VOTE_META,
+				'meta_query'=>array(
+					'relation' => 'OR',
+					array(
+						'key' => ANSPRESS_BEST_META,
+						'compare' => '=',
+						'value' => '1'
+					),
+					array(
+						'key' => ANSPRESS_BEST_META,
+						'compare' => 'NOT EXISTS'
+					)
+				)
+			);
+		}elseif($order == 'oldest'){
+			$ans_args=array(
+				'author' => ap_get_user_page_user(),
+				'ap_query' => 'answer_sort_newest',
+				'post_type' => 'answer',
+				'post_status' => 'publish',
+				'showposts' => ap_opt('answers_per_page'),
+				'paged' => $paged,
+				'orderby' => 'meta_value date',
+				'meta_key' => ANSPRESS_BEST_META,
+				'order' => 'ASC',
+				'meta_query'=>array(
+					'relation' => 'OR',
+					array(
+						'key' => ANSPRESS_BEST_META,
+						'compare' => 'NOT EXISTS'
+					)
+				)
+			);
+		}else{
+			$ans_args=array(
+				'author' => ap_get_user_page_user(),
+				'ap_query' => 'answer_sort_newest',
+				'post_type' => 'answer',
+				'post_status' => 'publish',
+				'showposts' => ap_opt('answers_per_page'),
+				'paged' 	=> $paged,			
+				'orderby' 	=> 'meta_value date',
+				'meta_key' => ANSPRESS_BEST_META,
+				'order' 	=> 'DESC',
+				'meta_query'=>array(
+					'relation' => 'OR',
+					array(
+						'key' => ANSPRESS_BEST_META,
+						'compare' => 'NOT EXISTS'
+					)
+				)
+			);
+		}
+		
+		$ans_args = apply_filters('ap_user_answers_args', $ans_args);
+		
+		$answer = new WP_Query($ans_args);	
 	}
 	
 	global $user;
 	global $current_user_meta;
 	include ap_get_theme_location(ap_get_current_user_page_template());
+	
+	// Restore original Post Data
+	if(ap_current_user_page_is('questions') || ap_current_user_page_is('answers'))
+	wp_reset_postdata();
 }
 
 function ap_get_current_user_meta($meta){
