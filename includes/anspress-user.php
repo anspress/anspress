@@ -86,6 +86,7 @@ class AP_User {
 	
 	public function cover_size(){
 		add_image_size( 'ap_cover', ap_opt('cover_width'), ap_opt('cover_height'), array( 'top', 'center' ) );
+		add_image_size( 'ap_cover_small', ap_opt('cover_width_small'), ap_opt('cover_height'), array( 'top', 'center' ), true );
 	}
 	
 	public function user_fields($user, $meta){
@@ -605,18 +606,29 @@ function ap_cover_upload_form(){
 	}
 }
 
-function ap_get_user_cover($userid){
-	$image_a =  wp_get_attachment_image_src( get_user_meta($userid, '_ap_cover', true), 'ap_cover');
+function ap_get_user_cover($userid, $small = false){
+	if(!$small)
+		$image_a =  wp_get_attachment_image_src( get_user_meta($userid, '_ap_cover', true), 'ap_cover');
+	else
+		$image_a =  wp_get_attachment_image_src( get_user_meta($userid, '_ap_cover', true), 'ap_cover_small');
+		
 	return $image_a[0];
 }
 
 function ap_user_cover_style($userid, $small = false){
 	$image = ap_get_user_cover($userid);
 	
-	if($image)
-		echo 'style="background-image:url('.ap_get_user_cover($userid).')"';
-	else
-		echo 'style="background-image:url('.ap_get_theme_url('images/default_cover_s.jpg').')"';
+	if($small){
+		if($image)
+			echo 'style="background-image:url('.ap_get_user_cover($userid, true).')"';
+		else
+			echo 'style="background-image:url('.ap_get_theme_url('images/default_cover_s.jpg').')"';
+	}else{
+		if($image)
+			echo 'style="background-image:url('.ap_get_user_cover($userid).')"';
+		else
+			echo 'style="background-image:url('.ap_get_theme_url('images/default_cover.jpg').')"';
+	}
 }
 
 function ap_edit_profile_nav(){

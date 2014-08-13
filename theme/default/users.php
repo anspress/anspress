@@ -6,7 +6,7 @@
 		foreach ( $users->results as $f ) {
 			$data = $f->data;
 			$current_user_meta = array_map( function( $a ){ return $a[0]; }, get_user_meta($f->ID));
-		
+		ap_get_user_cover($f->ID);
 		?>
 			<div class="ap-user-card" data-id="<?php echo $f->ID; ?>">
 				<div class="ap-user-inner clearfix">

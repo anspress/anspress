@@ -76,6 +76,8 @@ function ap_default_options(){
 		'cover_height'			=> '200',
 		'default_rank'			=> '0',
 		'users_per_page'		=> 15,
+		'cover_width_small'		=> 275,
+		'cover_height_small'	=> 80,
 	);
 }
 

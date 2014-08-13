@@ -185,6 +185,7 @@ class anspress_activate {
 					`message_id` bigint(20) NOT NULL auto_increment,
 					`message_content` text NOT NULL,
 					`message_sender` bigint(20) NOT NULL,
+					`message_conversation` bigint(20) NOT NULL,
 					`message_date` datetime NOT NULL,
 					`message_read` tinyint(1) NOT NULL,
 					PRIMARY KEY (`message_id`)

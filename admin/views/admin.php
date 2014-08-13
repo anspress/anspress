@@ -186,15 +186,29 @@ if ( ! isset( $_REQUEST['settings-updated'] ) )
 					<tr valign="top">
 						<th scope="row"><label for="cover_width"><?php _e('Cover width', 'ap'); ?></label></th>
 						<td>
-							<input type="text" name="anspress_opt[cover_width]" id="cover_width" value="<?php echo $settings['cover_width'] ; ?>" placeholder="800px" />								
+							<input type="text" name="anspress_opt[cover_width]" id="cover_width" value="<?php echo $settings['cover_width'] ; ?>" placeholder="800" />								
 							<p class="description"><?php _e('Width of of the cover image.', 'ap'); ?></p>
 						</td>
 					</tr>
 					<tr valign="top">
 						<th scope="row"><label for="cover_height"><?php _e('Cover height', 'ap'); ?></label></th>
 						<td>
-							<input type="text" name="anspress_opt[cover_height]" id="cover_height" value="<?php echo $settings['cover_height'] ; ?>" placeholder="200px" />								
+							<input type="text" name="anspress_opt[cover_height]" id="cover_height" value="<?php echo $settings['cover_height'] ; ?>" placeholder="200" />								
 							<p class="description"><?php _e('Height of the cover image.', 'ap'); ?></p>
+						</td>
+					</tr>
+					<tr valign="top">
+						<th scope="row"><label for="cover_width_small"><?php _e('Small cover width', 'ap'); ?></label></th>
+						<td>
+							<input type="text" name="anspress_opt[cover_width_small]" id="cover_width_small" value="<?php echo $settings['cover_width_small'] ; ?>" placeholder="800" />								
+							<p class="description"><?php _e('Width of of the small cover image.', 'ap'); ?></p>
+						</td>
+					</tr>
+					<tr valign="top">
+						<th scope="row"><label for="cover_height_small"><?php _e('Small cover height', 'ap'); ?></label></th>
+						<td>
+							<input type="text" name="anspress_opt[cover_height_small]" id="cover_height_small" value="<?php echo $settings['cover_height_small'] ; ?>" placeholder="200" />								
+							<p class="description"><?php _e('Height of the small cover image.', 'ap'); ?></p>
 						</td>
 					</tr>
 					<tr valign="top">
