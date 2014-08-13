@@ -74,6 +74,8 @@ function ap_default_options(){
 		'enable_categories'		=> true,
 		'cover_width'			=> '878',
 		'cover_height'			=> '200',
+		'default_rank'			=> '0',
+		'users_per_page'		=> 15,
 	);
 }
 

@@ -1931,7 +1931,7 @@ ul.ap-pagination{
     font-weight: normal;
     text-transform: uppercase;
 }
-.ap-btn.ap-follow-btn {
+#ap-profile .ap-follow-btn {
     float: right;
     margin-right: 15px;
     margin-top: 10px;
@@ -2566,4 +2566,93 @@ form .checkbox{
 .no-questions > .ap-btn {
     display: table;
     margin: 15px auto 0;
+}
+.ap-user-card {
+    display: block;
+    float: left;
+    padding: 8px;
+    width: 293px;
+}
+.ap-user-card .ap-user-inner {
+    border: 1px solid #dddddd;
+    border-radius: 5px;
+    overflow: hidden;
+}
+.ap-user-card .ap-cover{
+    background-color: #eee;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    border-radius: 5px 5px 0 0;
+    display: block;
+    height: 80px;
+	position:relative;
+}
+.ap-user-card .ap-user-summary {
+    height: 60px;
+    padding: 10px;
+    position: relative;
+}
+.ap-user-card .ap-user-avatar {
+    display: block;
+    float: left;
+    margin-right: 15px;
+}
+.ap-user-card .ap-user-avatar img {
+    border: 1px solid #aaaaaa;
+    box-shadow: none;
+    display: block;
+}
+.ap-cover-layer {
+    background: none repeat scroll 0 0 rgba(82, 172, 85, 0.7);
+    display: block;
+    height: 100%;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+}
+.ap-user-card .user-name {
+    color: #666666;
+    font-size: 15px;
+    font-weight: bold;
+}
+.ap-user-card .user-name:visited{
+	color:#333;
+}
+.ap-user-card .ap-user-rank {
+    color: #777777;
+    display: block;
+    font-size: 12px;
+    line-height: 100%;
+}
+.ap-user-card .ap-point-ff {
+    border-top: 1px solid #dddddd;
+}
+.ap-user-card .ap-point-ff li {
+    margin: 0;
+    width: 33.33%;
+}
+.ap-user-card .ap-point-ff li > a {
+    border-right: 1px solid #dddddd;
+    display: block;
+    padding: 5px;
+    text-align: center;
+}
+.ap-user-card .ap-point-ff li:last-child > a{
+	border:none;
+}
+.ap-user-card .ap-point-ff li > a > b {
+    color: #777;
+    display: block;
+    line-height: 100%;
+}
+.ap-user-card .ap-point-ff li > a > span {
+    color: #666666;
+    display: block;
+    font-size: 11px;
+    line-height: 16px;
+}
+.ap-user-card .ap-follow-btn {
+    float: right;
 }

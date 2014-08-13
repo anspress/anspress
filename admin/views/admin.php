@@ -197,6 +197,27 @@ if ( ! isset( $_REQUEST['settings-updated'] ) )
 							<p class="description"><?php _e('Height of the cover image.', 'ap'); ?></p>
 						</td>
 					</tr>
+					<tr valign="top">
+						<th scope="row"><label for="default_rank"><?php _e('Default rank', 'ap'); ?></label></th>
+						<td>
+							<?php
+								$terms = get_terms( 'rank', array( 'hide_empty' => false, 'orderby' => 'id' ) );
+								if ( !empty( $terms ) ) {
+									echo '<select name="anspress_opt[default_rank]">';
+									foreach ( $terms as $term ) { ?>
+										<option value="<?php echo esc_attr( $term->slug ); ?>" <?php selected( true, $settings['default_rank'] ); ?>><?php echo esc_attr( $term->name ); ?></option>
+									<?php }
+									echo '</select>';
+								}
+
+								/* If there are no rank terms, display a message. */
+								else {
+									_e( 'There are no ranks available.', 'ap' );
+								}
+							?>
+							<p class="description"><?php _e('Assign a default rank for newly registedred user', 'ap'); ?></p>
+						</td>
+					</tr>
 				</table>
 			</div>
 			
@@ -222,6 +243,13 @@ if ( ! isset( $_REQUEST['settings-updated'] ) )
 						<td>
 							<input type="text" name="anspress_opt[tags_per_page]" id="tags_per_page" value="<?php echo $settings['tags_per_page'] ; ?>" />								
 							<p class="description"><?php _e('Tags to show per page', 'ap'); ?></p>
+						</td>
+					</tr>
+					<tr valign="top">
+						<th scope="row"><label for="users_per_page"><?php _e('Users per page', 'ap'); ?></label></th>
+						<td>
+							<input type="text" name="anspress_opt[users_per_page]" id="users_per_page" value="<?php echo $settings['users_per_page'] ; ?>" />								
+							<p class="description"><?php _e('Users to show per page on users page', 'ap'); ?></p>
 						</td>
 					</tr>
 				</table>

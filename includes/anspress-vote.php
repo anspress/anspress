@@ -289,7 +289,7 @@ class anspress_vote
 				
 				
 				
-				$result = apply_filters('ap_follow_result', array('row' => $row, 'action' => $action, 'text' => $text, 'title' => $title, 'message' => $message, 'following_count' => $following, 'followers_count' => $followers ));
+				$result = apply_filters('ap_follow_result', array('row' => $row, 'action' => $action, 'text' => $text, 'id' => $userid, 'title' => $title, 'message' => $message, 'following_count' => $following, 'followers_count' => $followers ));
 				
 				echo json_encode($result);
 			}else{
@@ -597,6 +597,9 @@ function ap_flag_note_modal(){
 }
 
 function ap_follow_btn_html($userid){
+	if(get_current_user_id() == $userid)
+		return;
+		
 	$followed = ap_is_user_voted($userid, 'follow', get_current_user_id());
 	$text = $followed ? __('Unfollow', 'ap') : __('Follow', 'ap');
 	echo '<a class="btn ap-btn ap-follow-btn '.($followed ? 'ap-unfollow ap-icon-minus' : 'ap-icon-plus').'" href="#" data-action="ap-follow" data-args=\''.json_encode(array('user' => $userid, 'nonce' => wp_create_nonce( 'follow_'.$userid))).'\'>'.$text.'</a>';

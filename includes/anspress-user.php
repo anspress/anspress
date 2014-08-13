@@ -35,7 +35,7 @@ class AP_User {
 	 * Initialize the plugin by setting localization and loading public scripts
 	 * and styles.
 	 */
-	private function __construct() {
+	private function __construct() {		
 		add_filter( 'pre_user_query', array($this, 'follower_query') );
 		//add_filter( 'pre_user_query', array($this, 'following_query') );
 		add_action('wp_ajax_ap_cover_upload', array($this, 'cover_upload'));
@@ -610,11 +610,13 @@ function ap_get_user_cover($userid){
 	return $image_a[0];
 }
 
-function ap_user_cover_style($userid){
+function ap_user_cover_style($userid, $small = false){
 	$image = ap_get_user_cover($userid);
 	
 	if($image)
 		echo 'style="background-image:url('.ap_get_user_cover($userid).')"';
+	else
+		echo 'style="background-image:url('.ap_get_theme_url('images/default_cover_s.jpg').')"';
 }
 
 function ap_edit_profile_nav(){

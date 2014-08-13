@@ -170,7 +170,7 @@ APjs.site.prototype = {
 		jQuery('.anspress').delegate('form #email', 'keyup', function(){
 			var field = jQuery(this);		
 			var parent = jQuery(field).closest('.form-group');
-			alert(self.isEmail(field.val()));
+
 			if (!self.isEmail(field.val())){
 				self.fieldValidationClass(parent, 'has-error');
 				if(parent.find('.help-block').length == 0)
@@ -525,14 +525,14 @@ APjs.site.prototype = {
 						jQuery(this).attr('title', data['title']);
 						jQuery(this).removeClass('ap-icon-plus');
 						jQuery(this).addClass('ap-unfollow ap-icon-minus');
-						jQuery('[data-view="ap-followers"]').text(data['followers_count']);
+						jQuery('[data-id="'+data['id']+'"] [data-view="ap-followers"]').text(data['followers_count']);
 						self.addMessage(data['message'], 'success');
 					}else if(data['action'] == 'unfollow'){
 						jQuery(this).text(data['text']);
 						jQuery(this).attr('title', data['title']);
 						jQuery(this).removeClass('ap-unfollow ap-icon-minus');
 						jQuery(this).addClass('ap-icon-plus');
-						jQuery('[data-view="ap-followers"]').text(data['followers_count']);
+						jQuery('[data-id="'+data['id']+'"] [data-view="ap-followers"]').text(data['followers_count']);
 						self.addMessage(data['message'], 'success');
 					}else{
 						self.addMessage(data['message'], 'error');

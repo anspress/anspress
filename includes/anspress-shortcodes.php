@@ -114,6 +114,36 @@ class anspress_shortcodes {
 			
 			$question = new WP_Query( $question_args );
 			$category = $question->get_queried_object();
+		}elseif(is_ap_users()){
+			global $current_user_meta;
+			
+			$count_args  = array(
+				'role'      => 'Subscriber',
+				'fields'    => 'all_with_meta',
+				'number'    => 999999      
+			);
+			$user_count_query = new WP_User_Query($count_args);
+			$user_count = $user_count_query->get_results();
+			// count the number of users found in the query
+			$total_users = $user_count ? count($user_count) : 1;
+
+			// how many users to show per page
+			$users_per_page = ap_opt('users_per_page');
+			
+			// grab the current page number and set to 1 if no page number is set
+			$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
+			
+			// calculate the total number of pages.
+			$total_pages = 1;
+			$offset = $users_per_page * ($paged - 1);
+			$total_pages = ceil($total_users / $users_per_page);
+			
+			$args = array(
+				'number'    => $users_per_page,
+				'offset'    => $offset
+			);
+			// The Query
+			$users = new WP_User_Query( $args );
 		}elseif(is_ap_user()){
 			global $current_user_meta;
 			global $user;
@@ -134,6 +164,29 @@ class anspress_shortcodes {
 		
 		echo '<div class="ap-container">';
 		include ap_get_theme_location(ap_get_current_page_template());
+		
+		if(is_ap_users()){
+			$base = ap_get_link_to('users') . '/%_%';
+			$user_pagi = paginate_links( array(
+				'base' => $base, // the base URL, including query arg
+				'format' => 'paged/%#%', // this defines the query parameter that will be used, in this case "p"
+				'prev_text' => __('&laquo; Previous', 'ap'), // text for previous page
+				'next_text' => __('Next &raquo;', 'ap'), // text for next page
+				'total' => $total_pages, // the total number of pages we have
+				'current' => $paged, // the current page
+				'end_size' => 1,
+				'mid_size' => 5,
+				'type' => 'array'
+			));
+			if($user_pagi){
+				echo '<ul class="ap-pagination clearfix">';
+					echo '<li><span class="page-count">'. sprintf(__('Page %d of %d', 'ap'), $paged, $total_pages) .'</span></li>';
+					foreach($user_pagi as $pagi){
+						echo '<li>'. $pagi .'</li>';
+					}
+				echo '</ul>';
+			}
+		}
 		
 		if(!ap_opt('author_credits')){
 			?>

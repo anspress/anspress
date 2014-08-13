@@ -51,6 +51,8 @@ class AP_Ranks
 		/* Update the rank terms when the edit user page is updated. */
 		add_action( 'personal_options_update', array($this, 'save_user_rank_terms') );
 		add_action( 'edit_user_profile_update', array($this, 'save_user_rank_terms') );
+		
+		add_action( 'user_register', array($this, 'default_user_meta'), 10, 1 );
     }
 	
 	public function user_taxonomy() {
@@ -78,6 +80,7 @@ class AP_Ranks
 				'update_count_callback' => array($this, 'rank_count') // Use a custom function to update the count.
 			)
 		);
+
 	}
 	
 
@@ -168,6 +171,10 @@ class AP_Ranks
 		wp_set_object_terms( $user_id, array( $term ), 'rank', false);
 
 		clean_object_term_cache( $user_id, 'rank' );
+	}
+	public function default_user_meta($user_id){
+		if(ap_opt('default_rank') !==false)
+			wp_set_object_terms( $user_id, array( ap_opt('default_rank') ), 'rank', false);
 	}
 }
 

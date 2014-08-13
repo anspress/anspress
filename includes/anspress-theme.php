@@ -101,7 +101,7 @@ class anspress_theme {
 		if(is_anspress()){
 			$new_title = ap_page_title();
 		
-			$new_title = str_replace('[anspress-title]', $new_title, $title);
+			$new_title = str_replace('[anspress]', $new_title, $title);
 			$new_title = apply_filters('ap_title', $new_title);
 			
 			return $new_title;
@@ -222,6 +222,12 @@ function is_question_categories(){
 }
 function is_question_tags(){
 	if(is_anspress() && get_query_var('ap_page')=='tags')
+		return true;
+		
+	return false;
+}
+function is_ap_users(){
+	if(is_anspress() && get_query_var('ap_page')=='users')
 		return true;
 		
 	return false;
@@ -355,6 +361,8 @@ function ap_current_page_is(){
 			$template = 'edit-question';
 		elseif(is_answer_edit())
 			$template = 'edit-answer';
+		elseif(is_ap_users())
+			$template = 'users';
 		elseif(is_ap_user())
 			$template = 'user';
 		else
