@@ -9,4 +9,5 @@
 			?>
 		</div>
 	<?php ap_pagination('', 2, $paged, $answer); ?>
+	</div>
 </div>

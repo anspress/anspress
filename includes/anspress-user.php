@@ -535,6 +535,21 @@ function ap_user_template(){
 		$ans_args = apply_filters('ap_user_answers_args', $ans_args);
 		
 		$answer = new WP_Query($ans_args);	
+	}elseif(ap_current_user_page_is('favorites')){
+		$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
+		$args=array(
+				'author' => ap_get_user_page_user(),
+				'ap_query' => 'user_favorites',
+				'post_type' => 'question',
+				'post_status' => 'publish',
+				'showposts' => ap_opt('answers_per_page'),
+				'paged' 	=> $paged,			
+				'orderby' 	=> 'date',
+				'order' 	=> 'DESC'
+			);
+		$args = apply_filters('ap_user_favorites_args', $args);
+		
+		$question = new WP_Query($args);
 	}
 	
 	global $user;
@@ -542,7 +557,7 @@ function ap_user_template(){
 	include ap_get_theme_location(ap_get_current_user_page_template());
 	
 	// Restore original Post Data
-	if(ap_current_user_page_is('questions') || ap_current_user_page_is('answers'))
+	if(ap_current_user_page_is('questions') || ap_current_user_page_is('answers') || ap_current_user_page_is('favorites'))
 	wp_reset_postdata();
 }
 

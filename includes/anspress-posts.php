@@ -71,6 +71,7 @@ class anspress_posts
 		add_filter('get_pagenum_link', array($this, 'custom_page_link'));
 		
 		add_action( 'posts_clauses', array($this, 'answer_sort_newest'), 10, 2 );
+		add_action( 'posts_clauses', array($this, 'user_favorites'), 10, 2 );
 
     }
 	public function init_actions(){
@@ -661,10 +662,20 @@ class anspress_posts
 	}
 	
 	public function answer_sort_newest($sql, $query){
+		global $wpdb;
 		if(isset($query->query['ap_query']) && $query->query['ap_query'] == 'answer_sort_newest'){		
-			$sql['orderby'] = 'IF(wp_postmeta.meta_key = "'.ANSPRESS_BEST_META.'" AND wp_postmeta.meta_value = 1, 0, 1), '.$sql['orderby'];
+			$sql['orderby'] = 'IF('.$wpdb->prefix.'postmeta.meta_key = "'.ANSPRESS_BEST_META.'" AND '.$wpdb->prefix.'postmeta.meta_value = 1, 0, 1), '.$sql['orderby'];
 		}elseif(isset($query->query['ap_query']) && $query->query['ap_query'] == 'answer_sort_voted'){	
 			$sql['orderby'] = 'IF(mt2.meta_value = 1, 0, 1), '.$sql['orderby'];
+		}
+		return $sql;
+	}
+	
+	public function user_favorites($sql, $query){
+		global $wpdb;
+		if(isset($query->query['ap_query']) && $query->query['ap_query'] == 'user_favorites'){			
+			$sql['join'] = 'LEFT JOIN '.$wpdb->prefix.'ap_meta apmeta ON apmeta.apmeta_actionid = ID '.$sql['join'];
+			$sql['where'] = 'AND apmeta.apmeta_userid = post_author AND apmeta.apmeta_type ="favorite" '.$sql['where'];
 		}
 		return $sql;
 	}
