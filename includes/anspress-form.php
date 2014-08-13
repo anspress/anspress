@@ -917,6 +917,7 @@ class anspress_form
 	}
 	
 	public function ap_toggle_login_signup(){
+
 		if($_POST['args'] == 'signup')
 			ap_login_fields();
 		else

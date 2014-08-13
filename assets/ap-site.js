@@ -120,7 +120,7 @@ APjs.site.prototype = {
 	},
 	
 	isEmail : function (email) {
-	  var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+jQuery/;
+	  var regex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 	  return regex.test(email);
 	},
 	
@@ -170,7 +170,7 @@ APjs.site.prototype = {
 		jQuery('.anspress').delegate('form #email', 'keyup', function(){
 			var field = jQuery(this);		
 			var parent = jQuery(field).closest('.form-group');
-			
+			alert(self.isEmail(field.val()));
 			if (!self.isEmail(field.val())){
 				self.fieldValidationClass(parent, 'has-error');
 				if(parent.find('.help-block').length == 0)

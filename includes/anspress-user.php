@@ -410,6 +410,57 @@ function ap_user_template(){
 	if(is_ap_followers()){
 		$followers_query = ap_followers_query();
 		$followers = $followers_query->results;
+	}elseif(ap_current_user_page_is('questions')){
+		$order = get_query_var('sort');
+		$label = sanitize_text_field(get_query_var('label'));
+		if(empty($order ))
+			$order = 'active';//ap_opt('answers_sort');
+			
+		if(empty($label ))
+			$label = '';
+			
+		$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
+		
+		$question_args=array(
+			'author' => ap_get_user_page_user(),
+			'post_type' => 'question',
+			'post_status' => 'publish',
+			'showposts' => ap_opt('question_per_page'),
+			'paged' => $paged
+		);
+		
+		if($order == 'active'){				
+			$question_args['orderby'] = 'meta_value';
+			$question_args['meta_key'] = ANSPRESS_UPDATED_META;	
+			
+		}elseif($order == 'voted'){
+			$question_args['orderby'] = 'meta_value_num';
+			$question_args['meta_key'] = ANSPRESS_VOTE_META;
+		}elseif($order == 'answers'){
+			$question_args['orderby'] = 'meta_value_num';
+			$question_args['meta_key'] = ANSPRESS_ANS_META;
+		}elseif($order == 'unanswered'){
+			$question_args['orderby'] = 'meta_value';
+			$question_args['meta_key'] = ANSPRESS_ANS_META;
+			$question_args['meta_value'] = '0';
+
+		}elseif($order == 'oldest'){
+			$question_args['orderby'] = 'date';
+			$question_args['order'] = 'ASC';
+		}
+		
+		if ($label != ''){
+			$question_args['tax_query'] = array(
+				array(
+					'taxonomy' => 'question_label',
+					'field' => 'slug',
+					'terms' => $label
+				)
+			);				
+		}
+		
+		$question_args = apply_filters('ap_user_question_args', $question_args);
+		$question = new WP_Query( $question_args );
 	}
 	
 	global $user;
