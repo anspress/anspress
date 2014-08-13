@@ -364,6 +364,27 @@ if ( ! isset( $_REQUEST['settings-updated'] ) )
 				</table>
 				<?php endif; ?>
 				<a id="add-flag-note" href="#">Add more notes</a>
+				<h3 class="ap-option-section"><?php _e('Moderation', 'ap'); ?></h3>
+				<table class="form-table">
+					<tr valign="top">
+						<th scope="row"><label for="moderate_new_question"><?php _e('New question', 'ap'); ?></label></th>
+						<td>
+							<select name="anspress_opt[moderate_new_question]" id="moderate_new_question">
+								<option value="no_mod" <?php selected($settings['moderate_new_question'], 'no_mod') ; ?>><?php _e('No moderation', 'ap'); ?></option>
+								<option value="pending" <?php selected($settings['moderate_new_question'], 'pending') ; ?>><?php _e('Hold for review', 'ap'); ?></option>
+								<option value="point" <?php selected($settings['moderate_new_question'], 'point') ; ?>><?php _e('Point required', 'ap'); ?></option>
+							</select>
+							<p class="description"><?php _e('Hold new question for moderation. If you select "Point required" then you can must enter point below.', 'ap'); ?></p>
+						</td>
+					</tr>
+					<tr valign="top">
+						<th scope="row"><label for="mod_question_point"><?php _e('Point required for question', 'ap'); ?></label></th>
+						<td>
+							<input type="text" class="regular-text" name="anspress_opt[mod_question_point]" value="<?php echo $settings['mod_question_point']; ?>" />
+							<p class="description"><?php _e('Point required for directly publish new question.', 'ap'); ?></p>
+						</td>
+					</tr>
+				</table>
 				<h3 class="ap-option-section"><?php _e('reCaptcha', 'ap'); ?></h3>
 				<table class="form-table">
 					<tr valign="top">

@@ -1,5 +1,6 @@
 <?php
-while ( $question->have_posts() ) : $question->the_post(); 
+while ( $question->have_posts() ) : $question->the_post();
+if($question->post->post_status == 'publish'){
 ?>
 <div id="ap-single" class="clearfix">
 	<h2 class="question-title">
@@ -132,6 +133,9 @@ while ( $question->have_posts() ) : $question->the_post();
 	</div>
 </div>
 <?php 
-	endwhile ;
+}else{
+	echo '<div class="ap-pending-notice ap-icon-clock">'.__('This question is being reviewed by moderator, will be published after review.').'</div>';
+}
+endwhile ;
 
 ?>

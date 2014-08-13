@@ -80,6 +80,8 @@ function ap_default_options(){
 		'cover_height_small'	=> 80,
 		'captcha_ask'			=> true,
 		'captcha_answer'		=> true,
+		'moderate_new_question'	=> 'no_mod',
+		'mod_question_point'	=> 10,
 	);
 }
 

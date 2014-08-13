@@ -72,6 +72,7 @@ class anspress_posts
 		
 		add_action( 'posts_clauses', array($this, 'answer_sort_newest'), 10, 2 );
 		add_action( 'posts_clauses', array($this, 'user_favorites'), 10, 2 );
+		add_action('admin_footer-post.php', array($this, 'append_post_status_list'));
 
     }
 	public function init_actions(){
@@ -188,6 +189,14 @@ class anspress_posts
         );
 		// register CPT answer
         register_post_type('answer', $ans_args);
+		
+		register_post_status( 'moderate', array(
+			  'label'                     => __( 'Moderate', 'ap' ),
+			  'public'                    => true,
+			  'show_in_admin_all_list'    => false,
+			  'show_in_admin_status_list' => true,
+			  'label_count'               => _n_noop( 'Moderate <span class="count">(%s)</span>', 'Moderate <span class="count">(%s)</span>' )
+		 ) );
         
     }
     
@@ -679,4 +688,28 @@ class anspress_posts
 		}
 		return $sql;
 	}
+	
+	public function append_post_status_list(){
+		 global $post;
+		 $complete = '';
+		 $label = '';
+		
+		 if($post->post_type == 'question'){
+			var_dump($post->post_status);
+			  if($post->post_status == 'moderate'){
+				   $complete = ' selected=\'selected\'';
+				   $label = '<span id=\'post-status-display\'>'.__('Moderate', 'ap').'</span>';
+			  }
+			  ?>
+			  
+			  <?php
+			  echo '<script>
+					  jQuery(document).ready(function(){
+						   jQuery("select#post_status").append("<option value=\'moderate\' '.$complete.'>'.__('Moderate', 'ap').'</option>");
+						   jQuery(".misc-pub-section label").append("'.$label.'");
+					  });
+			  </script>';
+		 }
+	}
+
 }

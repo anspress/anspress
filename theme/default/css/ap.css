@@ -2657,5 +2657,18 @@ form .checkbox{
     float: right;
 }
 #recaptcha > div {
-    max-width: 300px;
+    max-width: 500px;
+}
+.ap-pending-notice {
+    border: 2px solid #fab227;
+    border-radius: 4px;
+    display: block;
+    font-size: 18px;
+    padding: 25px 10px;
+    text-align: center;
+}
+.ap-pending-notice:before {
+    display: block;
+    font-size: 50px;
+    margin-bottom: 10px;
 }

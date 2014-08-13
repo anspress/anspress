@@ -202,14 +202,19 @@ class anspress_form
 					if ( is_wp_error($user) )
 					   return $user->get_error_message();
 				}
-			}			
+			}
+			
+			$status = 'publish';
+			
+			if(ap_opt('moderate_new_question') == 'pending' || (ap_opt('moderate_new_question') == 'point' && ap_get_points($user_id) < ap_opt('mod_question_point')))
+				$status = 'moderate';
 				
 			$question_array = array(
 				'post_title'	=> $fields['post_title'],
 				'post_author'	=> $user_id,
 				'post_content' 	=>  wp_kses($fields['post_content'], ap_form_allowed_tags()),
 				'post_type' 	=> 'question',
-				'post_status' 	=> 'publish'
+				'post_status' 	=> $status
 			);
 
 			$post_id = wp_insert_post($question_array);

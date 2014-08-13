@@ -89,7 +89,8 @@ class anspress_shortcodes {
 		if(is_question()){
 			$args = array(
 					'p'=> get_question_id(), 
-					'post_type'=>'question'				
+					'post_type'=>'question',			
+					'post_status'=> array('moderate', 'publish'),
 				);
 			$question = new WP_Query( $args );
 		}elseif(is_question_tag()){
