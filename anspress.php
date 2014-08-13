@@ -31,10 +31,13 @@ if ( ! defined( 'WPINC' ) ) {
 
 // define	
 define('AP_VERSION', '1.0');
-define('AP_DB_VERSION', '7');
+define('AP_DB_VERSION', '10');
 
+define('DS', DIRECTORY_SEPARATOR);
 define('ANSPRESS_DIR', plugin_dir_path( __FILE__ ));
 define('ANSPRESS_URL', plugin_dir_url( __FILE__ ));
+define('ANSPRESS_ADDON_DIR', ANSPRESS_DIR.'addons'.DS);
+define('ANSPRESS_ADDON_URL', ANSPRESS_URL.'addons/');
 define('ANSPRESS_THEME_DIR', plugin_dir_path( __FILE__ ).'theme');
 define('ANSPRESS_THEME_URL', plugin_dir_url( __FILE__ ).'theme');
 define('ANSPRESS_CAT_TAX', 'question_category');
@@ -64,6 +67,7 @@ define('AP_FOLLOWING_META', '_ap_following');
 require_once( plugin_dir_path( __FILE__ ) . 'includes/anspress-functions.php' );
 require_once( plugin_dir_path( __FILE__ ) . 'includes/anspress-roles-cap.php' );
 require_once( plugin_dir_path( __FILE__ ) . 'includes/anspress-events.php' );
+require_once( plugin_dir_path( __FILE__ ) . 'includes/anspress-addons.php' );
 require_once( plugin_dir_path( __FILE__ ) . 'includes/anspress-posts.php' );
 require_once( plugin_dir_path( __FILE__ ) . 'includes/anspress-categories.php' );
 require_once( plugin_dir_path( __FILE__ ) . 'includes/anspress-tags.php' );
@@ -83,7 +87,6 @@ require_once( plugin_dir_path( __FILE__ ) . 'includes/anspress-badges.php' );
 require_once( plugin_dir_path( __FILE__ ) . 'activate.php' );
 require_once( plugin_dir_path( __FILE__ ) . 'includes/anspress-points.php' );
 require_once( plugin_dir_path( __FILE__ ) . 'includes/anspress-history.php' );
-require_once( plugin_dir_path( __FILE__ ) . 'includes/anspress-addons.php' );
 require_once( plugin_dir_path( __FILE__ ) . 'includes/anspress-messages.php' );
 
 
@@ -116,7 +119,6 @@ add_action( 'plugins_loaded', array( 'AP_Badges', 'get_instance' ) );
 add_action( 'plugins_loaded', array( 'AP_Points', 'get_instance' ) );
 add_action( 'plugins_loaded', array( 'AP_History', 'get_instance' ) );
 add_action( 'plugins_loaded', array( 'AP_Messages', 'get_instance' ) );
-
 
 
 /*----------------------------------------------------------------------------*

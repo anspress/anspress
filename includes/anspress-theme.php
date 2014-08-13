@@ -335,33 +335,42 @@ function is_ap_followers(){
 	return false;
 }
 
-
-function ap_get_current_page_template(){
+function ap_current_page_is(){
 
 	if(is_anspress()){
 		
 		if(is_question())
-			$template = 'question.php';
+			$template = 'question';
 		elseif(is_ask())
-			$template = 'ask.php';
+			$template = 'ask';
 		elseif(is_question_categories())
-			$template = 'categories.php';
+			$template = 'categories';
 		elseif(is_question_tags())
-			$template = 'tags.php';
+			$template = 'tags';
 		elseif(is_question_tag())
-			$template = 'tag.php';
+			$template = 'tag';
 		elseif(is_question_cat())
-			$template = 'category.php';
+			$template = 'category';
 		elseif(is_question_edit())
-			$template = 'edit-question.php';
+			$template = 'edit-question';
 		elseif(is_answer_edit())
-			$template = 'edit-answer.php';
+			$template = 'edit-answer';
 		elseif(is_ap_user())
-			$template = 'user.php';
+			$template = 'user';
 		else
-			$template = 'base.php';
+			$template = 'base';
 		
-		return apply_filters('ap_current_page_template', $template);
+		return apply_filters('ap_current_page_is', $template);
+	}
+	return false;
+}
+
+function ap_get_current_page_template(){
+
+	if(is_anspress()){
+			$template = ap_current_page_is();
+		
+		return apply_filters('ap_current_page_template', $template.'.php');
 	}
 	return 'content-none.php';
 }

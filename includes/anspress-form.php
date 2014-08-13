@@ -364,7 +364,7 @@ class anspress_form
 			
 			if($post_id){
 				do_action('ap_after_inserting_answer', $post_id);
-				ap_do_event('new_answer', $post_id, $user_id, $question->ID);
+				
 				// set default value for meta
 				update_post_meta($post_id, ANSPRESS_VOTE_META, '0');
 				
@@ -385,6 +385,8 @@ class anspress_form
 				if($logged_in && $_POST['action'] != 'ap_submit_answer'){
 					wp_redirect( get_permalink($question->ID) ); exit;
 				}
+				
+				$result = array();
 				
 				if($_POST['action'] == 'ap_submit_answer'){
 
@@ -423,9 +425,11 @@ class anspress_form
 					
 					if($logged_in)
 						$result['redirect_to'] = get_permalink($post->ID);
-					
-					return json_encode($result) ;
 				}
+				ap_do_event('new_answer', $post_id, $user_id, $question->ID, $result);
+				
+				if($_POST['action'] == 'ap_submit_answer')
+					return json_encode($result) ;
 			}
 		}elseif($_POST['action'] == 'ap_submit_answer'){
 			$result = array('postid' => $post_id, 'action' => false, 'message' => __('Please try again, answer submission failed!','ap'));

@@ -769,7 +769,7 @@ APjs.site.prototype = {
 			jQuery.post(jQuery(this).attr('action'), fields, function(responce){
 				self.hideLoading();
 				form[0].reset();
-				if(responce['status']){
+				if(responce['status'] && jQuery('#li-comment-'+obj['comment_ID']).length ==0){
 					jQuery('#comments-'+responce['comment_post_ID']+' ul.commentlist').append(jQuery(responce['html']).hide().slideDown(300));
 					
 					self.addMessage(responce['message'], 'success');

@@ -109,7 +109,7 @@ class anspress_vote
 					
 					//update post meta
 					update_post_meta($args[1], ANSPRESS_VOTE_META, $counts['net_vote']);
-					ap_do_event('undo_'.$type, $args[1], $counts);
+					
 					do_action('ap_undo_vote', $args[1], $counts, $value);
 					
 					$action = 'undo';
@@ -117,6 +117,8 @@ class anspress_vote
 					$message = __('Your vote has been removed', 'ap');
 					
 					$result = apply_filters('ap_undo_vote_result', array('row' => $row, 'action' => $action, 'type' => $args[0], 'count' => $count, 'message' => $message));
+					
+					ap_do_event('undo_'.$type, $args[1], $counts);
 
 				}else{
 					$result = array('action' => false, 'message' => __('Undo your vote first', 'ap'));
@@ -128,9 +130,7 @@ class anspress_vote
 				$counts = ap_post_votes($args[1]);
 				
 				//update post meta
-				update_post_meta($args[1], ANSPRESS_VOTE_META, $counts['net_vote']);
-
-				ap_do_event($type, $args[1], $counts);
+				update_post_meta($args[1], ANSPRESS_VOTE_META, $counts['net_vote']);				
 				do_action('ap_voted_'.$type, $args[1], $counts);
 				
 					
@@ -139,6 +139,7 @@ class anspress_vote
 				$message = __('Thank you for voting', 'ap');
 				
 				$result = apply_filters('ap_cast_vote_result', array('row' => $row, 'action' => $action, 'type' => $args[0], 'count' => $count, 'message' => $message));
+				ap_do_event($type, $args[1], $counts);
 			}			
 			
 		}else{
@@ -435,9 +436,9 @@ function ap_vote_html($post = false){
 	$nonce = wp_create_nonce( 'vote_'.$post->ID );
 
 	?>
-		<div data-action="vote" class="ap-voting net-vote">
+		<div data-action="vote" data-id="<?php echo $post->ID; ?>" class="ap-voting net-vote">
 			<a class="vote-up<?php echo ($post->user_voted_up) ? ' voted' :''; echo $post->user_voted_down ? ' disable' :''; ?>" data-args="up-<?php echo $post->ID.'-'.$nonce; ?>" href="#" title="<?php _e('Up vote this post', 'ap'); ?>">&#9650;</a>
-			<span class="net-vote-count"><?php echo ap_net_vote(); ?></span>
+			<span class="net-vote-count" data-view="ap-net-vote"><?php echo ap_net_vote(); ?></span>
 			<a class="vote-down<?php echo ($post->user_voted_down) ? ' voted' :''; echo ($post->user_voted_up) ? ' disable' :''; ?>" data-args="down-<?php echo $post->ID.'-'.$nonce; ?>" href="#" title="<?php _e('Down vote this post', 'ap'); ?>">&#9660;</a>
 		</div>
 	<?php

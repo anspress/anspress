@@ -20,6 +20,9 @@ function init_scripts_front(){
 		wp_enqueue_style( 'ap-style', ap_get_theme_url('css/ap.css'), array(), AP_VERSION);
 		
 		wp_enqueue_style( 'ap-fonts', ap_get_theme_url('fonts/style.css'), array(), AP_VERSION);
+		
+		do_action('ap_enqueue');
+		
 		?>
 			<script type="text/javascript">
 				var ajaxurl = '<?php echo admin_url('admin-ajax.php'); ?>',

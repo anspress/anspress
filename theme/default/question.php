@@ -9,7 +9,7 @@ while ( $question->have_posts() ) : $question->the_post();
 	<div class="ap-question-lr">		
 		<div class="ap-question-left ap-tab-content">
 			<div id="discussion" class="active">
-				<div id="question" role="main" class="ap-content question">
+				<div id="question" role="main" class="ap-content question" data-id="<?php echo get_the_ID(); ?>">
 					<div class="ap-question-cells clearfix">
 						<div class="ap-single-vote"><?php ap_vote_html(); ?></div>
 									

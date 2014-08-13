@@ -1,4 +1,4 @@
-<div id="answer_<?php echo get_the_ID(); ?>" class="answer<?php echo ap_is_best_answer(get_the_ID()) ? ' selected' : ''; ?>">
+<div id="answer_<?php echo get_the_ID(); ?>" class="answer<?php echo ap_is_best_answer(get_the_ID()) ? ' selected' : ''; ?>" data-id="<?php echo get_the_ID(); ?>">
 	<div class="ap-content clearfix">		
 		<div class="ap-single-vote">
 			<?php ap_vote_html(); ?>

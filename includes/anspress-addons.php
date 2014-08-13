@@ -35,7 +35,14 @@ class AP_Addons
      */
     public function __construct()
     {
-		
+		$addons = ap_read_addons();
+		if(!empty($addons))
+			foreach($addons as $addon){
+				$include = ANSPRESS_ADDON_DIR.$addon['folder']. DS .$addon['file'];
+				
+				if(file_exists($include))
+					require_once( $include );
+			}
     }
 
 }
@@ -76,7 +83,8 @@ function ap_get_file_data( $file) {
 		'version' 			=> 'Version',
 		'description' 		=> 'Description',
 		'author' 			=> 'Author',
-		'author_uri' 		=> 'Author URI'
+		'author_uri' 		=> 'Author URI',
+		'addon_uri' 		=> 'Addon URI'
 	));
 
 	return $metadata;

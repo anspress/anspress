@@ -169,10 +169,8 @@ class anspress_activate {
 		
 			if ( !empty($wpdb->charset) )
 				$charset_collate = "DEFAULT CHARACTER SET ".$wpdb->charset;
-					
-			$sql = array();
-			
-			$sql[] = "CREATE TABLE IF NOT EXISTS `".$wpdb->base_prefix."ap_meta` (
+
+			$meta_table = "CREATE TABLE IF NOT EXISTS `".$wpdb->base_prefix."ap_meta` (
 					  `apmeta_id` bigint(20) NOT NULL AUTO_INCREMENT,
 					  `apmeta_userid` bigint(20) DEFAULT NULL,
 					  `apmeta_type` varchar(256) DEFAULT NULL,
@@ -182,8 +180,8 @@ class anspress_activate {
 					  `apmeta_date` timestamp NULL DEFAULT NULL,
 					  PRIMARY KEY (`apmeta_id`)
 					)".$charset_collate.";";
-			
-			$sql[] = "CREATE TABLE IF NOT EXISTS " . $wpdb->prefix ."ap_messages (
+
+			$message_table = "CREATE TABLE IF NOT EXISTS " . $wpdb->prefix ."ap_messages (
 					`message_id` bigint(20) NOT NULL auto_increment,
 					`message_content` text NOT NULL,
 					`message_sender` bigint(20) NOT NULL,
@@ -193,7 +191,8 @@ class anspress_activate {
 				  )".$charset_collate.";";
 			
 			require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
-			dbDelta ($sql);
+			dbDelta ($meta_table);
+			dbDelta ($message_table);
 			
 			update_option ('ap_db_version', AP_DB_VERSION);
 		}
