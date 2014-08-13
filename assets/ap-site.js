@@ -703,7 +703,7 @@ APjs.site.prototype = {
 			jQuery.post(ajaxurl, fields+'&action=ap_submit_question', function(responce){
 				btn.removeAttr('disabled').removeClass('disabled');				
 				self.hideLoading();
-				
+					
 				if(responce['action'] == 'new_question' || responce['action'] == 'edited_question'){
 					form[0].reset();
 					self.addMessage(responce['message'], 'success');
@@ -713,10 +713,15 @@ APjs.site.prototype = {
 					self.clearError('#ask_question_form');
 					self.addMessage(responce['message'], 'error');
 					self.appendFormError('#ask_question_form', responce['error']);
-				
+					if(typeof responce['error']['recaptcha_response_field'] !== 'undefined'){
+						var errorString = "&error=" + encodeURIComponent(responce['error']['recaptcha_response_field']);
+						Recaptcha.create(recaptch_public+errorString, "recaptcha", { theme: "clean",callback: Recaptcha.focus_response_field});
+						console.log(errorString);
+					}
 				}else{
 					self.addMessage(responce['message'], 'error');
 				}
+				jQuery(this).trigger('submitQuestion', responce);
 			}, 'json');			
 			
 			

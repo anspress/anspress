@@ -28,7 +28,7 @@ if ( ! isset( $_REQUEST['settings-updated'] ) )
 		  <li><a href="#ap-tags" data-toggle="tab"><?php _e('Tags', 'ap'); ?></a></li>
 		  <li><a href="#ap-user" data-toggle="tab"><?php _e('User', 'ap'); ?></a></li>
 		  <li><a href="#ap-pages" data-toggle="tab"><?php _e('Pages', 'ap'); ?></a></li>
-		  <li><a href="#ap-misc" data-toggle="tab"><?php _e('Misc', 'ap'); ?></a></li>
+		  <li><a href="#ap-misc" data-toggle="tab"><?php _e('Spam', 'ap'); ?></a></li>
 		  <li><a href="#ap-maintenance" data-toggle="tab"><?php _e('Maintenance', 'ap'); ?></a></li>
 		</ul>
 
@@ -317,7 +317,7 @@ if ( ! isset( $_REQUEST['settings-updated'] ) )
 			</div>
 						
 			<div class="tab-pane" id="ap-misc">	
-				<h3 class="title">Flag Notes</h3>
+				<h3 class="title"><?php _e('Spam', 'ap'); ?></h3>
 				<p class="description"><?php _e('Default notes when flagging the posts', 'ap'); ?></p>
 				<?php if(isset($settings['flag_note']) && is_array($settings['flag_note'])) : ?>
 				
@@ -364,6 +364,33 @@ if ( ! isset( $_REQUEST['settings-updated'] ) )
 				</table>
 				<?php endif; ?>
 				<a id="add-flag-note" href="#">Add more notes</a>
+				<h3 class="ap-option-section"><?php _e('reCaptcha', 'ap'); ?></h3>
+				<table class="form-table">
+					<tr valign="top">
+						<th scope="row"><label for="recaptcha_public_key"><?php _e('Public Key', 'ap'); ?></label></th>
+						<td>
+							<input type="text" name="anspress_opt[recaptcha_public_key]" id="recaptcha_public_key" value="<?php echo $settings['recaptcha_public_key'] ; ?>" />
+						</td>
+					</tr>
+					<tr valign="top">
+						<th scope="row"><label for="recaptcha_private_key"><?php _e('Private Key', 'ap'); ?></label></th>
+						<td>
+							<input type="text" name="anspress_opt[recaptcha_private_key]" id="recaptcha_private_key" value="<?php echo $settings['recaptcha_private_key'] ; ?>" />
+						</td>
+					</tr>
+					<tr valign="top">
+						<th scope="row"><label for="captcha_ask"><?php _e('Enable in ask form', 'ap'); ?></label></th>
+						<td>
+							<input type="checkbox" name="anspress_opt[captcha_ask]" id="captcha_ask" value="<?php echo $settings['captcha_ask'] ; ?>" <?php checked(true, $settings['captcha_ask']); ?> />
+						</td>
+					</tr>
+					<tr valign="top">
+						<th scope="row"><label for="captcha_answer"><?php _e('Enable in answer form', 'ap'); ?></label></th>
+						<td>
+							<input type="checkbox" name="anspress_opt[captcha_answer]" id="captcha_answer" value="<?php echo $settings['captcha_answer'] ; ?>" <?php checked(true, $settings['captcha_answer']); ?> />
+						</td>
+					</tr>
+				</table>
 			</div>
 			<div class="tab-pane" id="ap-maintenance">
 				<h3 class="ap-option-section"><?php _e('Recount Views', 'ap'); ?></h3>

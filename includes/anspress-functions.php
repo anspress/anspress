@@ -78,6 +78,8 @@ function ap_default_options(){
 		'users_per_page'		=> 15,
 		'cover_width_small'		=> 275,
 		'cover_height_small'	=> 80,
+		'captcha_ask'			=> true,
+		'captcha_answer'		=> true,
 	);
 }
 

@@ -2656,3 +2656,6 @@ form .checkbox{
 .ap-user-card .ap-follow-btn {
     float: right;
 }
+#recaptcha > div {
+    max-width: 300px;
+}

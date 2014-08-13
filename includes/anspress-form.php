@@ -80,6 +80,7 @@ class anspress_form
 		add_action( 'wp_ajax_nopriv_ap_toggle_login_signup', array($this, 'ap_toggle_login_signup') ); 
 		
 		add_filter( 'ap_question_form_validation', array($this, 'ap_signup_login_validation') ); 
+		 
 		add_filter( 'ap_answer_form_validation', array($this, 'ap_signup_login_validation') );
 		
 		add_action( 'wp_ajax_ap_delete_post', array($this, 'ap_delete_post') ); 
@@ -1084,7 +1085,7 @@ function ap_answer_form($question_id){
 			ap_login_fields();
 			echo '</div>';
 		}
-			
+		do_action('ap_answer_form_bottom');	
 		ap_answer_form_hidden_input($question_id);
 		echo '</form>';
 	}
@@ -1130,9 +1131,7 @@ function ap_ask_form_hidden_input(){
 	echo '<button class="btn ap-btn ap-success btn-submit-ask" type="submit">'. __('Ask Question', 'ap'). '</button>';
 }
 
-function ap_answer_form_hidden_input($question_id){
-	do_action('ap_answer_form_bottom');
-	
+function ap_answer_form_hidden_input($question_id){	
 	wp_nonce_field('post_nonce_'.$question_id, 'nonce');
 	echo '<input type="hidden" name="is_answer" value="true" />';
 	echo '<input type="hidden" name="submitted" value="true" />';
