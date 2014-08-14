@@ -1,10 +1,10 @@
 <?php if(ap_opt('enable_tags')) : ?>
 	<div id="ap-tags" class="clearfix">
-		<ul class="ap-tags-list ap-inline-list">
+		<ul class="ap-term-list ap-inline-list">
 			<?php foreach($tags as $key => $tag) : ?>
 				<li>
-					<div class="tag-list-inner">
-						<a class="ap-tags" href="<?php echo get_category_link( $tag );?>"><span>
+					<div class="ap-term-list-inner">
+						<a class="term-title" href="<?php echo get_category_link( $tag );?>"><span>
 							<?php echo $tag->name; ?>
 						</span></a>
 						

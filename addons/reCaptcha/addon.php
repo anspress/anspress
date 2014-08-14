@@ -56,6 +56,7 @@ class AP_ReCaptcha_Addon
 		$publickey = ap_opt('recaptcha_public_key');
 		$privatekey = ap_opt('recaptcha_private_key');
 		# was there a reCAPTCHA response?
+		if(!is_super_admin() && (ap_opt('captcha_ask') || ap_opt('captcha_answer')))
 		if ((isset($_POST["recaptcha_response_field"]) && $_POST["recaptcha_response_field"]) || empty($_POST["recaptcha_response_field"])) {
 			$resp = recaptcha_check_answer ($privatekey, $_SERVER["REMOTE_ADDR"], $_POST["recaptcha_challenge_field"], $_POST["recaptcha_response_field"]);
 

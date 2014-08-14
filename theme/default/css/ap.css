@@ -1237,138 +1237,6 @@ ul.ap-pagination{
     text-decoration: none;
 }
 
-/* ------ Categories Page -------- */
-
-#ap-categories{
-
-}
-#ap-categories .ap-term-list{
-    list-style: none outside none;
-    margin: 0;
-    padding: 0;
-}
-#ap-categories .ap-term-list li{
-    display: inline-block;
-    margin: 0;
-    width: 50%;
-}
-#ap-categories .ap-term-list li .ap-taxo-inner{
-    background: none repeat scroll 0 0 #F9F9F9;
-    border-bottom: 1px solid #EDEDED;
-    border-radius: 4px;
-    display: block;
-    margin: 5px;
-    padding: 15px;
-    position: relative;
-}
-
-#ap-categories .ap-term-list li .ap-taxo-body {
-
-}
-#ap-categories .ap-term-list li a.taxo-title{
-    display: block;
-    font-size: 14px;
-    font-weight: 600;
-}
-#ap-categories .ap-term-list li .desc{
-    color: #777777;
-    font-size: 13px;
-    margin-top: 5px;
-}
-#ap-categories .ap-term-list li .taxo-footer{
-    margin-top: 10px;
-    padding-top: 10px;
-}
-#ap-categories .ap-term-list li .taxo-footer > ul.child{
-    background: none repeat scroll 0 0 #FFFFFF;
-    border: 1px solid #E9F2F7;
-    display: none;
-    left: 0;
-    list-style: none outside none;
-    position: absolute;
-    top: 100%;
-    width: 100%;
-    z-index: 99;
-}
-#ap-categories .ap-term-list li .taxo-footer > ul.child li{
-    display: block;
-    float: none;
-    width: auto;
-}
-#ap-categories .ap-term-list li .taxo-footer > ul.child li a{
-    border-bottom: 1px solid #F3F3F3;
-    color: #888888;
-    display: block;
-    font-size: 13px;
-    padding: 10px 15px;
-}
-#ap-categories .ap-term-list li .taxo-footer > ul.child li a:hover{
-	background:#edfbfd;
-}
-
-#ap-categories .ap-term-list li .taxo-footer > ul.child li a span{
-    background: none repeat scroll 0 0 #EEEEEE;
-    border-radius: 6px;
-    display: block;
-    float: right;
-    line-height: 18px;
-    margin-top: 1px;
-    padding: 0 12px;
-}
-#ap-categories .ap-term-list li .taxo-footer > ul.child li a:hover span{
-	background:#A5D887;
-	color:#fff;
-}
-#ap-categories .ap-term-list li .taxo-status{
-	list-style:none;
-}
-#ap-categories .ap-term-list li .taxo-status li{
-    background: none repeat scroll 0 0 #EEEEEE;
-    border-radius: 2px;
-    color: #FFFFFF;
-    display: block;
-    float: left;
-    font-size: 10px;
-    margin-right: 5px;
-    padding: 1px 6px;
-    width: auto;
-}
-#ap-categories .ap-term-list li .taxo-status li.cat-feed {
-    float: right;
-    margin: 0;
-    padding: 0;
-}
-#ap-categories .ap-term-list li .taxo-status li.cat-feed a{
-    font-size: 17px;
-    line-height: 25px;
-    margin: 0;
-    padding: 0 4px;
-}
-#ap-categories .ap-term-list li .taxo-status li.question-count{
-	background:#E45840;
-}
-#ap-categories .ap-term-list li .taxo-status li.sub-cat-count{
-	background:#8fc61b;
-}
-#ap-categories .ap-term-list li .taxo-status li.sub-cat-count a{
-	color:#fff;
-}
-#ap-categories .ap-term-list li .taxo-status li.sub-cat-count i{
-    display: block;
-    float: right;
-    font-size: 14px;
-    line-height: 100%;
-    margin-left: 5px;
-    margin-top: 2px;
-}
-#ap-categories .ap-term-list li .taxo-status li span{
-    background: #F1F1F1;
-    border-radius: 7px;
-    float: right;
-    line-height: 20px;
-    padding: 0 14px;
-}
-
 .ap-taxo-detail{
     border: 1px solid #ECECEC;
     border-radius: 4px;
@@ -1427,18 +1295,26 @@ ul.ap-pagination{
 }
 
 /* ------Tags Page-------- */
-#ap-tags .ap-tags-list li{
+.ap-container .ap-term-list.ap-inline-list li{
     border-bottom: 1px dotted #dddddd;
     display: inline-block;
     margin: 0;
     vertical-align: top;
     width: 33.33%;
 }
-#ap-tags .ap-tags-list li .tag-list-inner{
+#ap-categories .ap-term-list.ap-inline-list li {
+    border: medium none;
+}
+.ap-container .ap-term-list li .ap-term-list-inner{
     display: block;
     margin: 10px;
 }
-#ap-tags .ap-tags-list li .tag-list-inner a.ap-tags{
+#ap-categories .ap-term-list.ap-inline-list li .ap-term-list-inner {
+    border: 1px solid #eeeeee;
+    border-radius: 5px;
+    padding: 10px;
+}
+.ap-container .ap-term-list li .ap-term-list-inner a.term-title{
     background: none repeat scroll 0 0 #aaaaaa;
     border-radius: 2px;
     color: #ffffff;
@@ -1450,26 +1326,50 @@ ul.ap-pagination{
     text-transform: capitalize;
 }
 
-#ap-tags .ap-tags-list li .tag-list-inner a span{
+.ap-container .ap-term-list li .ap-term-list-inner a span{
 	position:relative;
 }
-.anspress .has-error .mce-container iframe{
+.ap-container .has-error .mce-container iframe{
 	border-color:#a94442;
 }
 
-#ap-tags .ap-tags-list li .tag-list-inner p{
+.ap-container .ap-term-list li .ap-term-list-inner p{
     color: #777777;
     font-size: 13px;
+    margin-bottom: 5px;
     margin-top: 5px;
 }
-#ap-tags .ap-tags-list li .tag-list-inner .feed-link{
-    background: none repeat scroll 0 0 #F1A34F;
-    border-radius: 2px;
-    color: #FFFFFF;
+.ap-container .ap-term-list .ap-term-sub {
+    border-top: 1px solid #eeeeee;
+    display: block;
+    margin: 10px -10px -10px;
+}
+.sub-cat-count {
+    border-bottom: 1px solid #eeeeee;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 5px 10px;
+}
+.ap-container .ap-term-list .ap-term-sub li {
+    border-bottom: medium none;
+    width: 50%;
+}
+.ap-container .ap-term-list .ap-term-sub li a {
+    display: block;
+    padding: 5px 10px;
+}
+.ap-container .ap-term-list .ap-term-sub li a span {
+    background: none repeat scroll 0 0 #eeeeee;
+    border-radius: 5px;
+    color: #333333;
     display: block;
     float: right;
-    padding: 1px 4px;
+    font-size: 12px;
+    line-height: 20px;
+    margin-left: 10px;
+    padding: 0 6px;
 }
+
 .form-groups {
     border: 1px solid #ddd;
     border-radius: 5px;

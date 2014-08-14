@@ -105,6 +105,7 @@ function ap_question_categories_html($post_id = false, $list = true){
 			echo $o;
 		}
 	}
+
 }
 
 
@@ -136,4 +137,15 @@ function ap_category_details(){
 			endforeach;
 		echo'</ul>';
 	endif;	
+}
+function ap_child_cat_list($parent){
+	$categories = get_terms( array('taxonomy' => 'question_category'), array( 'parent' => $parent, 'hide_empty' => false ));
+	
+	if($categories){
+		echo '<ul class="child clearfix">';	
+		foreach	($categories as $cat){
+			echo '<li><a href="'.get_category_link( $cat ).'">' .$cat->name.'<span>'.$cat->count.'</span></a></li>';
+		}
+		echo '</ul>';
+	}
 }

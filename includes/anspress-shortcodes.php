@@ -129,6 +129,21 @@ class anspress_shortcodes {
 			);
 
 			$tags = get_terms( 'question_tags' , $args); 
+		}elseif(is_question_categories()){
+			$paged 			= (get_query_var('paged')) ? get_query_var('paged') : 1;
+			$per_page    	= ap_opt('categories_per_page');
+			$total_terms 	= wp_count_terms('question_category'); 	
+			$offset      	= $per_page * ( $paged - 1) ;
+			$cat_args = array(
+				'parent' 		=> 0,
+				'number'		=> $per_page,
+				'offset'       	=> $offset,
+				'hide_empty'    => false,
+				'orderby'       => 'count',
+				'order'         => 'DESC',
+			);
+
+			$categories = get_terms( 'question_category' , $cat_args); 
 		}elseif(is_ap_users()){
 			global $current_user_meta;
 			
@@ -186,6 +201,9 @@ class anspress_shortcodes {
 		
 		if(is_question_tags())
 			ap_pagi(ap_get_link_to('tags') . '/%_%', ceil( $total_terms / $per_page ), $paged);
+		
+		if(is_question_categories())
+			ap_pagi(ap_get_link_to('categories') . '/%_%', ceil( $total_terms / $per_page ), $paged);
 			
 		
 		if(!ap_opt('author_credits')){

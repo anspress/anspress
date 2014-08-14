@@ -82,6 +82,7 @@ function ap_default_options(){
 		'captcha_answer'		=> true,
 		'moderate_new_question'	=> 'no_mod',
 		'mod_question_point'	=> 10,
+		'categories_per_page'	=> 20,
 	);
 }
 
@@ -255,20 +256,6 @@ function ap_truncate_chars($text, $limit, $ellipsis = '...') {
     }
     return $text;
 }
-
-
-function ap_child_cat_list($parent){
-	$categories = get_terms( array('taxonomy' => 'question_category'), array( 'parent' => $parent, 'hide_empty' => false ));
-	
-	if($categories){
-		echo '<ul class="child clearfix">';	
-		foreach	($categories as $cat){
-			echo '<li><a href="'.get_category_link( $cat ).'">' .$cat->name.'<span>'.$cat->count.'</span></a></li>';
-		}
-		echo '</ul>';
-	}
-}
-
 
 
 function ap_get_all_users(){
