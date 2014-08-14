@@ -1,4 +1,5 @@
 <?php
+print_r(get_super_admins());
 while ( $question->have_posts() ) : $question->the_post();
 if($question->post->post_status == 'publish'){
 ?>

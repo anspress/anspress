@@ -220,8 +220,7 @@ class anspress_form
 			$post_id = wp_insert_post($question_array);
 			
 			if($post_id){
-				do_action('ap_after_inserting_question', $post_id);
-				ap_do_event('new_question', $post_id, $user_id);
+				
 				// Update Custom Meta
 				if(isset($fields['category']))
 					wp_set_post_terms( $post_id, $fields['category'], 'question_category' );
@@ -243,6 +242,9 @@ class anspress_form
 				update_post_meta($post_id, ANSPRESS_ANS_META, '0');
 				
 				///ap_set_question_status($post_id);
+				
+				do_action('ap_after_inserting_question', $post_id);
+				ap_do_event('new_question', $post_id, $user_id);
 				
 				if($_POST['action'] == 'ap_submit_question'){
 					$result = apply_filters('ap_ajax_question_submit_result', 
@@ -368,8 +370,7 @@ class anspress_form
 
 			$post_id = wp_insert_post($ans_array);
 			
-			if($post_id){
-				do_action('ap_after_inserting_answer', $post_id);
+			if($post_id){				
 				
 				// set default value for meta
 				update_post_meta($post_id, ANSPRESS_VOTE_META, '0');
@@ -432,6 +433,7 @@ class anspress_form
 					if($logged_in)
 						$result['redirect_to'] = get_permalink($post->ID);
 				}
+				do_action('ap_after_inserting_answer', $post_id);
 				ap_do_event('new_answer', $post_id, $user_id, $question->ID, $result);
 				
 				if($_POST['action'] == 'ap_submit_answer')

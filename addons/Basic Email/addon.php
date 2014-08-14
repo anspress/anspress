@@ -35,8 +35,47 @@ class AP_Basic_Email_Addon
      */
     public function __construct()
     {
-	
+		add_action( 'ap_after_inserting_question', 'new_question_email' );
+		add_action( 'ap_after_inserting_answer', 'new_answer_email' );
     }
+	
+	/* Notify admin about new questions */
+	public function new_question_email( $post_id ) {
+		// lets check if post is not revision
+		if ( !wp_is_post_revision( $post_id ) ) {
+			$post_url = get_permalink( $post_id );
+			$post = get_post($post_id); 
+			$subject = 'AnsPress: '.__('New Question: ', 'ap'). $post->post_title;		
+			$message = sprintf(__('Hello! Admin, \n\n A new question is posted by %s \n\n', 'ap'), ap_user_display_name($post->post_author, true));
+			$message .= ap_truncate_chars($post->post_content, 100);
+			$message .= "\n\n<a href='". $post_url. "'>'.__('View question', 'ap').'</a>\n\n";
+			//sends email
+			wp_mail(get_option( 'admin_email' ), $subject, $message );
+		}
+	}
+	
+	public function new_answer_email( $post_id ) {
+		// lets check if post is not revision
+		if ( !wp_is_post_revision( $post_id ) ) {
+
+			$post = get_post($post_id); 
+			$parent = get_post($post->post_parent);
+			$subject = 'AnsPress: '.__('New Answer: ', 'ap'). $parent->post_title;	
+			$message = sprintf(__('Hello!, \n\n A new answer is posted by %s \n\n', 'ap'), ap_user_display_name($post->post_author, true));			
+			$message .= ap_truncate_chars($post->post_content, 100);
+			$message .= "\n\n<a href='". get_permalink($parent->ID)."#".$post->ID. "'>'.__('View Answer', 'ap').'</a>\n\n";
+			
+			//sends email
+			
+			if($post->post_author != $parent->post_author){
+				$email = get_the_author_meta( 'user_email', $parent->post_author);
+				wp_mail($email, $subject, $message );
+			}
+			
+			if(!in_array($post->post_author, get_super_admins()))
+				wp_mail(get_option( 'admin_email' ), $subject, $message );
+		}
+	}
 
 }
 
