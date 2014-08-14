@@ -9,12 +9,21 @@ if ( ! class_exists( 'WP_List_Table' ) ) {
 }
 
 
-class AP_Moderate_Table extends WP_List_Table {
+class AP_Flagged_Table extends WP_List_Table {
 
 
 	public $per_page = 20;
 
+	public $total_count;
+	public $published_count;
+	public $pending_count;
+	public $trash_count;
+	public $draft_count;
 	public $moderate_count;
+	
+	public $current_status;
+
+
 
 	public function __construct() {
 
@@ -69,11 +78,22 @@ class AP_Moderate_Table extends WP_List_Table {
 	 * @return array $views All the views available
 	 */
 	public function get_views() {
+
+		$current        = isset( $_GET['status'] ) ? $_GET['status'] : 'publish';
+		$total_count    = '&nbsp;<span class="count">(' . $this->total_count    . ')</span>';
+		$published_count = '&nbsp;<span class="count">(' . $this->published_count . ')</span>';
+		$pending_count  = '&nbsp;<span class="count">(' . $this->pending_count  . ')</span>';
+		$draft_count = '&nbsp;<span class="count">(' . $this->draft_count . ')</span>';
+		$trash_count   = '&nbsp;<span class="count">(' . $this->trash_count   . ')</span>';
 		$moderate_count   = '&nbsp;<span class="count">(' . $this->moderate_count   . ')</span>';
 		
 
 		$views = array(
-			'moderate'	=> sprintf( '<a href="%s"%s>%s</a>', add_query_arg( array( 'status' => 'moderate', 'paged' => FALSE ) ), $current === 'moderate' ? ' class="current"' : '', __('Moderate', 'ap') . $moderate_count )
+			'publish'	=> sprintf( '<a href="%s"%s>%s</a>', add_query_arg( array( 'status' => 'publish', 'paged' => FALSE ) ), $current === 'publish' ? ' class="current"' : '', __('Publish', 'ap') . $published_count ),
+			'pending'	=> sprintf( '<a href="%s"%s>%s</a>', add_query_arg( array( 'status' => 'pending', 'paged' => FALSE ) ), $current === 'pending' ? ' class="current"' : '', __('Pending', 'ap') . $pending_count ),
+			'moderate'	=> sprintf( '<a href="%s"%s>%s</a>', add_query_arg( array( 'status' => 'moderate', 'paged' => FALSE ) ), $current === 'moderate' ? ' class="current"' : '', __('Moderate', 'ap') . $moderate_count ),
+			'draft'	=> sprintf( '<a href="%s"%s>%s</a>', add_query_arg( array( 'status' => 'draft', 'paged' => FALSE ) ), $current === 'draft' ? ' class="current"' : '', __('Draft', 'ap') . $draft_count ),
+			'trash'	=> sprintf( '<a href="%s"%s>%s</a>', add_query_arg( array( 'status' => 'trash', 'paged' => FALSE ) ), $current === 'trash' ? ' class="current"' : '', __('Trash', 'ap') . $trash_count )
 		);
 
 		return apply_filters( 'ap_moderate_table_views', $views );
@@ -85,7 +105,7 @@ class AP_Moderate_Table extends WP_List_Table {
 	public function get_columns() {
 		$columns = array(
 			'cb'        		=> '<input type="checkbox" />', //Render a checkbox instead of text		
-			'question_status'  	=> __( 'Status', 'ap' ),
+			'post_type'  		=> __( 'Type', 'ap' ),
 			'post_title'  		=> __( 'Title', 'ap' ),
 			'flag'  			=> __( 'Flag', 'ap' ),
 			'category'  		=> __( 'Category', 'ap' )
@@ -130,9 +150,11 @@ class AP_Moderate_Table extends WP_List_Table {
 		);
 	}
 	
-	public function column_question_status( $post ) {
+	public function column_post_type( $post ) {
 		if($post->post_type == 'question')
-			return $post->post_status;
+			return __('Question', 'ap');
+		
+		return __('Answer', 'ap');
 	}
 	
 	public function column_post_title( $post ) {
@@ -261,19 +283,17 @@ class AP_Moderate_Table extends WP_List_Table {
 	 * Retrieve the posts counts
 	 */
 	public function get_posts_counts() {
-		$num_posts = wp_count_posts( 'question', 'readable' );
-		$status = "moderate";
-		$mod_count = 0;
-		$count = '';
-		
-		if ( !empty($num_posts->$status) )
-			$mod_count = $num_posts->$status;
+		global $wp_query;
+		$counts        			= ap_flagged_posts_count();
+		$this->published_count 	= $counts->publish;
+		$this->pending_count  	= $counts->pending;
+		$this->trash_count   	= $counts->trash;
+		$this->draft_count  	= $counts->draft;
+		$this->moderate_count  	= $counts->moderate;
 
-
-		$this->moderate_count  	= $mod_count;
-
-		$this->total_count = $mod_count;
-		
+		foreach( $counts as $count ) {
+			$this->total_count += $count;
+		}
 	}
 
 	public function posts_data() {
@@ -283,7 +303,7 @@ class AP_Moderate_Table extends WP_List_Table {
 		$paged = isset( $_GET['paged'] ) ? sanitize_text_field($_GET['paged']) : 1;
 		
 		// Preparing your query
-        $query = "SELECT * FROM $wpdb->posts WHERE (post_type = 'answer' OR post_type = 'question') AND post_status = 'moderate' ";
+        $query = "SELECT p.*, v.apmeta_userid as vote_user, v.apmeta_value as vote_value, v.apmeta_param as vote_note, v.apmeta_date FROM $wpdb->posts p INNER JOIN ".$wpdb->prefix."ap_meta v ON v.apmeta_actionid = p.ID AND v.apmeta_type='flag' WHERE (p.post_type = 'answer' OR p.post_type = 'question') AND p.post_status = '$status' ";
 		
 		//adjust the query to take pagination
 		if(!empty($paged) && !empty($this->per_page)){
@@ -308,11 +328,24 @@ class AP_Moderate_Table extends WP_List_Table {
 		$hidden   = array(); // No hidden columns
 		$sortable = $this->get_sortable_columns();
 		$data     = $this->posts_data();
+		$status   = isset( $_GET['status'] ) ? $_GET['status'] : 'publish';
 
 		$this->_column_headers = array( $columns, $hidden, $sortable );
 
-		$total_items = $this->moderate_count;
-
+		switch ( $status ) {
+			case 'publish':
+				$total_items = $this->published_count;
+				break;
+			case 'pending':
+				$total_items = $this->pending_count;
+				break;
+			case 'draft':
+				$total_items = $this->draft_count;
+				break;
+			case 'trash':
+				$total_items = $this->trash_count;
+				break;
+		}
 
 		$this->items = $data;
 

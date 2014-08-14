@@ -85,6 +85,7 @@ class anspress_admin {
 		add_action( 'wp_ajax_ap_save_points', array($this, 'ap_save_points') );
 		add_action( 'wp_ajax_ap_new_point_form', array($this, 'ap_new_point_form') );
 		add_action( 'wp_ajax_ap_delete_point', array($this, 'ap_delete_point') );
+		add_action( 'admin_menu', array($this, 'change_post_menu_label') );
 
 
 	}
@@ -123,8 +124,29 @@ class anspress_admin {
 	 * Register the administration menu for this plugin into the WordPress Dashboard menu.
 	 */
 	public function add_plugin_admin_menu() {
+		$flagged_count = ap_flagged_posts_count();
+		$flagged_count = $flagged_count->total > 0 ? $flagged_count->total : 0;
 		
-		add_menu_page( 'AnsPress', 'AnsPress', 'manage_options', 'anspress', array($this, 'dashboard_page'), ANSPRESS_URL . '/assets/answer.png', 6 );
+		$num_posts = wp_count_posts( 'question', 'readable' );
+		$status = "moderate";
+		$mod_count = 0;
+		$count = '';
+		
+		if ( !empty($num_posts->$status) )
+			$mod_count = $num_posts->$status;
+		
+		$total = $flagged_count + $mod_count;
+		
+		if($total > 0)
+			$Totalcount = ' <span class="update-plugins count"><span class="plugin-count">'.number_format_i18n($total).'</span></span>';
+		
+		if($flagged_count > 0)
+			$Flagcount = ' <span class="update-plugins count"><span class="plugin-count">'.number_format_i18n($flagged_count).'</span></span>';
+			
+		if($mod_count > 0)
+			$Modcount = ' <span class="update-plugins count"><span class="plugin-count">'.number_format_i18n($mod_count).'</span></span>';
+			
+		add_menu_page( 'AnsPress', 'AnsPress'.$Totalcount, 'manage_options', 'anspress', array($this, 'dashboard_page'), ANSPRESS_URL . '/assets/answer.png', 6 );
 		
 		add_submenu_page('anspress', __( 'All Questions', 'ap' ), __( 'All Questions', 'ap' ),	'manage_options', 'edit.php?post_type=question', '');
 		
@@ -132,13 +154,15 @@ class anspress_admin {
 		
 		add_submenu_page('anspress', __( 'All Answers', 'ap' ), __( 'All Answers', 'ap' ),	'manage_options', 'edit.php?post_type=answer', '');
 		
+		add_submenu_page('anspress', __( 'Moderate question & answer', 'ap' ), __( 'Moderate', 'ap' ).$Modcount,	'manage_options', 'anspress_moderate', array( $this, 'display_moderate_page' ));
+		
+		add_submenu_page('anspress', __( 'Flagged question & answer', 'ap' ), __( 'Flagged', 'ap' ).$Flagcount,	'manage_options', 'anspress_flagged', array( $this, 'display_flagged_page' ));
+		
 		add_submenu_page('anspress', 'Questions Category', 'Category', 'manage_options', 'edit-tags.php?taxonomy=question_category');
 		
 		add_submenu_page('anspress', 'Questions Tags', 'Tags', 'manage_options', 'edit-tags.php?taxonomy=question_tags');
 		
 		add_submenu_page('anspress', 'Questions Label', 'Label', 'manage_options', 'edit-tags.php?taxonomy=question_label');
-		
-		add_submenu_page('anspress', __( 'Moderate question & answer', 'ap' ), __( 'Moderate', 'ap' ),	'manage_options', 'anspress_moderate', array( $this, 'display_moderate_page' ));
 		
 		do_action('ap_admin_menu');
 		
@@ -194,7 +218,25 @@ class anspress_admin {
 		?>
 		<div class="wrap">        
 			<div id="icon-users" class="icon32"><br/></div>
-			<h2><?php _e('Posts need moderation', 'ap'); ?></h2>
+			<h2><?php _e('Posts waiting moderation', 'ap'); ?></h2>
+			<form id="moderate-filter" method="get">
+				<input type="hidden" name="page" value="<?php echo $_REQUEST['page'] ?>" />
+				<?php $moderate_table->views() ?>
+				<?php $moderate_table->advanced_filters(); ?>
+				<?php $moderate_table->display() ?>
+			</form>
+		</div>
+		<?php
+	}
+	
+	public function display_flagged_page() {
+		include_once('flagged.php');
+		$moderate_table = new AP_Flagged_Table();
+		$moderate_table->prepare_items();
+		?>
+		<div class="wrap">        
+			<div id="icon-users" class="icon32"><br/></div>
+			<h2><?php _e('Flagged question & answer', 'ap'); ?></h2>
 			<form id="moderate-filter" method="get">
 				<input type="hidden" name="page" value="<?php echo $_REQUEST['page'] ?>" />
 				<?php $moderate_table->views() ?>
@@ -475,4 +517,11 @@ public function ap_menu_metaboxes(){
 		
 		die();
 	}
+	
+	public function change_post_menu_label() {
+		global $menu;
+		global $submenu;
+		$submenu['anspress'][0][0] = 'AnsPress';
+	}
+
 }
