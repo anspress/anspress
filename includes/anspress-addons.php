@@ -40,7 +40,7 @@ class AP_Addons
 			foreach($addons as $addon){
 				$include = ANSPRESS_ADDON_DIR.$addon['folder']. DS .$addon['file'];
 				
-				if(file_exists($include))
+				if(ap_is_addon_active($addon['name']) && file_exists($include))
 					require_once( $include );
 			}
     }
@@ -48,6 +48,12 @@ class AP_Addons
 }
 
 function ap_read_addons(){
+	$option = get_option('ap_addons');
+	$cache = wp_cache_get('ap_addons_list', 'array');
+	
+	if($cache !== FALSE)
+		return $cache;
+		
 	$addons = array();
 	//load files from addons folder
 	$files=glob(ANSPRESS_DIR.'/addons/*/addon.php');
@@ -56,8 +62,10 @@ function ap_read_addons(){
 		$data = ap_get_addon_data($file);
 		$data['folder'] = basename(dirname($file));
 		$data['file'] = basename($file);
-		$addons[] = $data;
+		$data['active'] = (isset($option[$data['name']]) && $option[$data['name']]) ? true : false;
+		$addons[$data['name']] = $data;
 	}
+	wp_cache_set( 'ap_addons_list', $addons, 'array');
 	return $addons;
 }
 
@@ -98,4 +106,16 @@ function ap_addon_metadata($contents, $fields){
 			$metadata[$key]=trim($matches[1]);
 	
 	return $metadata;
+}
+
+function ap_addon_counts(){
+	return count(ap_read_addons());
+}
+
+function ap_is_addon_active($name){
+	$option = get_option('ap_addons');
+	if(isset($option[$name]) && $option[$name])
+		return true;
+	
+	return false;
 }

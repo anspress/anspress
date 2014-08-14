@@ -87,7 +87,7 @@ class anspress_admin {
 		add_action( 'wp_ajax_ap_delete_point', array($this, 'ap_delete_point') );
 		add_action( 'admin_menu', array($this, 'change_post_menu_label') );
 
-
+		add_action( 'wp_ajax_ap_toggle_addon', array($this, 'ap_toggle_addon') );
 	}
 
 	/**
@@ -170,6 +170,8 @@ class anspress_admin {
 		
 		add_submenu_page('anspress', __( 'AnsPress Options', 'ap' ), __( 'Options', 'ap' ),	'manage_options', 'anspress_options', array( $this, 'display_plugin_admin_page' ));
 		
+		add_submenu_page('anspress', __( 'Addons', 'ap' ), __( 'Addons', 'ap' ),	'manage_options', 'anspress_addons', array( $this, 'display_plugin_addons_page' ));
+		
 	}
 	
 	// highlight the proper top level menu
@@ -186,6 +188,10 @@ class anspress_admin {
 	 */
 	public function display_plugin_admin_page() {
 		include_once( 'views/admin.php' );
+	}
+	
+	public function display_plugin_addons_page() {
+		include_once( 'views/addons.php' );
 	}
 	
 	public function display_points_page() {
@@ -522,6 +528,29 @@ public function ap_menu_metaboxes(){
 		global $menu;
 		global $submenu;
 		$submenu['anspress'][0][0] = 'AnsPress';
+	}
+	
+	public function ap_toggle_addon(){
+		if(current_user_can('manage_options')){
+			$args = explode('-', sanitize_text_field($_POST['args']));
+			if(wp_verify_nonce($args[1], 'toggle_addon')){
+				$option = get_option('ap_addons');
+
+				if(isset($option[$args[0]]) && $option[$args[0]]){
+					$active = $option[$args[0]];
+					if($active)
+						$option[$args[0]] = false;
+					
+					$result = array('status' => 'deactivate', 'html' => '<a data-action="ap-toggle-addon" data-args="'.$args[0].'-'.wp_create_nonce('toggle_addon').'-activate'.'" href="#" class="button button-primary activate">'.__('Activate', 'ap').'</a>', 'message' => '<div id="ap-message" class="updated fade"><p><strong>'.sprintf(__( '%s disabled successfully.', 'ap' ), $args[0]).'</strong></p></div>');
+				}else{
+					$option[$args[0]] = true;
+					$result = array('status' => 'activate', 'html' => '<a data-action="ap-toggle-addon" data-args="'.$args[0].'-'.wp_create_nonce('toggle_addon').'-deactivate'.'" href="#" class="button button-primary activate">'.__('Deactivate', 'ap').'</a>', 'message' => '<div id="ap-message" class="updated fade"><p><strong>'.sprintf(__( '%s activated successfully.', 'ap' ), $args[0]).'</strong></p></div>');
+				}
+				
+				update_option('ap_addons', $option);
+			}
+		}
+		die(json_encode($result));
 	}
 
 }

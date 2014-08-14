@@ -73,6 +73,7 @@ APjs.admin.prototype = {
 		this.savePoints();
 		this.newPointForm();
 		this.deletePoint();
+		this.toggleAddons();
 	},
 	
 	recountVotes:function(){
@@ -252,6 +253,37 @@ APjs.admin.prototype = {
 				dataType:'json',
 				success: function(data){
 					jQuery(this).closest('tr').slideUp(200);
+				}
+			});
+			
+			return false;
+		});
+	},
+	toggleAddons:function(){
+		jQuery('.wp-admin').delegate('[data-action="ap-toggle-addon"]', 'click', function(e){
+			e.preventDefault();
+			var args = jQuery(this).data('args');
+			jQuery.ajax({
+				type: 'POST',  
+				url: ajaxurl,  
+				data:  {
+					action: 'ap_toggle_addon',
+					args: args
+				},
+				context:this,
+				dataType:'json',
+				success: function(data){
+					if(jQuery('#ap-message').length > 0)
+						jQuery('#ap-message').remove();
+						
+					if(data['status'] == 'activate'){
+						jQuery(this).closest('.theme').find('.ap-addon-status').show();
+					}else if(data['status'] == 'deactivate'){
+						jQuery(this).closest('.theme').find('.ap-addon-status').hide();
+					}
+					jQuery(this).parent().html(data['html']);
+					jQuery('#wpbody .wrap').prepend(data['message']);
+					jQuery('#ap-message').slideDown().delay(5000).queue(function(next) {jQuery(this).remove(); next(); });
 				}
 			});
 			

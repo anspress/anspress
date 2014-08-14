@@ -210,3 +210,22 @@ th.column-category {
 #ap-point-edit .button-primary{
 	margin-bottom:10px;
 }
+.addon-count {
+    background: none repeat scroll 0 0 #333333;
+    border-radius: 50%;
+    color: #ffffff;
+    display: inline-block;
+    font-size: 16px;
+    height: 25px;
+    line-height: 22px;
+    text-align: center;
+    width: 25px;
+}
+.ap-addon-status {
+    background: none repeat scroll 0 0 rgba(0, 0, 0, 0.7);
+    color: #ffffff;
+    padding: 5px 14px 5px 10px;
+    position: absolute;
+    top: 5px;
+    z-index: 9;
+}
