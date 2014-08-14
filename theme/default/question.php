@@ -1,5 +1,4 @@
 <?php
-print_r(get_super_admins());
 while ( $question->have_posts() ) : $question->the_post();
 if($question->post->post_status == 'publish'){
 ?>
@@ -60,10 +59,7 @@ if($question->post->post_status == 'publish'){
 		</div>
 		<div class="ap-question-right">
 			<div class="ap-question-right-inner">
-				<ul class="ap-question-extra-nav" data-action="ap-tab">
-					<li class="active"><a class="ap-icon-flow-tree" href="#discussion"><?php _e('Discussion', 'ap'); ?></a></li>
-					<li><a class="ap-icon-history" href="#timeline"><?php _e('Timeline', 'ap'); ?></a></li>
-				</ul>
+				<?php ap_question_side_tab(get_question_id()); ?>
 				<!-- Start Views and Answers -->
 				<div class="ap-question-side">			
 					<ul class="ap-question-meta">

@@ -68,7 +68,7 @@ class AP_ReCaptcha_Addon
 		return $error;
 	}
 	public function ap_ask_form_bottom(){
-		if(ap_opt('captcha_ask') || ap_opt('captcha_answer')): ?>
+		if(!is_super_admin() && (ap_opt('captcha_ask') || ap_opt('captcha_answer'))): ?>
 			<div class="form-group">
 				<div id="recaptcha"><?php ap_recaptch_html(); ?></div>
 			</div>
@@ -82,8 +82,9 @@ function ap_recaptch_html(){
 	$resp = null;
 	# the error code from reCAPTCHA, if any
 	$error = null;
-	
-	echo recaptcha_get_html(ap_opt('recaptcha_public_key'), $error);
+
+	if(!is_super_admin() && (ap_opt('captcha_ask') || ap_opt('captcha_answer')))
+		echo recaptcha_get_html(ap_opt('recaptcha_public_key'), $error);
 }
 
 AP_ReCaptcha_Addon::get_instance();

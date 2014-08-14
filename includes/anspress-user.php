@@ -270,6 +270,23 @@ class AP_User {
 	}
 }
 
+function ap_count_user_posts_by_type( $userid, $post_type = 'question' ) {
+	global $wpdb;
+
+	$where = get_posts_by_author_sql( $post_type, true, $userid );
+
+	$count = $wpdb->get_var( "SELECT COUNT(*) FROM $wpdb->posts $where" );
+
+  	return apply_filters( 'ap_get_usernumposts', $count, $userid );
+}
+
+function ap_user_question_count($userid){
+	return ap_count_user_posts_by_type( $userid, $post_type = 'question' );
+}
+
+function ap_user_answer_count($userid){
+	return ap_count_user_posts_by_type( $userid, $post_type = 'answer' );
+}
 
 function ap_get_user_answers_list($user_id, $limit = 5, $title_limit = 50){
 	$ans_args =array(
@@ -357,15 +374,14 @@ function ap_user_menu(){
 	
 	$menus = array(
 		'profile' => array( 'name' => __('Profile', 'ap'), 'link' => ap_user_link($userid), 'icon' => 'ap-icon-user'),
-		'messages' => array( 'name' => __('Messages', 'ap'), 'link' => ap_user_link($userid, 'messages'), 'icon' => 'ap-icon-mail'),
+		'messages' => array( 'name' => __('Messages', 'ap'), 'link' => ap_user_link($userid, 'messages'), 'icon' => 'ap-icon-mail', 'own' => true),
 		'questions' => array( 'name' => __('Questions', 'ap'), 'link' => ap_user_link($userid, 'questions'), 'icon' => 'ap-icon-question'),
-		'answers' => array( 'name' => __('Answers', 'ap'), 'link' => ap_user_link($userid, 'answers'), 'icon' => 'ap-icon-answer'),
-		'activity' => array( 'name' => __('Activity', 'ap'), 'link' => ap_user_link($userid, 'activity'), 'icon' => 'ap-icon-history'),
+		'answers' => array( 'name' => __('Answers', 'ap'), 'link' => ap_user_link($userid, 'answers'), 'icon' => 'ap-icon-answer'),		
 		'favorites' => array( 'name' => __('Favorites', 'ap'), 'link' => ap_user_link($userid, 'favorites'), 'icon' => 'ap-icon-star'),
 		'followers' => array( 'name' => __('Followers', 'ap'), 'link' => ap_user_link($userid, 'followers'), 'icon' => 'ap-icon-users'),
 		'following' => array( 'name' => __('Following', 'ap'), 'link' => ap_user_link($userid, 'following'), 'icon' => 'ap-icon-users'),
 		'edit_profile' => array( 'name' => __('Edit Profile', 'ap'), 'link' => ap_user_link($userid, 'edit_profile'), 'icon' => 'ap-icon-pencil'),
-		'settings' => array( 'name' => __('Settings', 'ap'), 'link' => ap_user_link($userid, 'settings'), 'icon' => 'ap-icon-cog'),		
+		//'settings' => array( 'name' => __('Settings', 'ap'), 'link' => ap_user_link($userid, 'settings'), 'icon' => 'ap-icon-cog'),		
 	);
 	
 	/* filter for overriding menu */
@@ -373,7 +389,8 @@ function ap_user_menu(){
 	
 	$o ='<ul class="ap-user-menu clearfix">';
 	foreach($menus as $k => $m){
-		$o .= '<li'.( $user_page == $k ? ' class="active"' : '' ).'><a href="'. $m['link'] .'" class="'.$m['icon'].' ap-user-menu-'.$k.'">'.$m['name'].'</a></li>';
+		if(!((isset($m['own']) && $m['own']) && $userid != get_current_user_id()))
+			$o .= '<li'.( $user_page == $k ? ' class="active"' : '' ).'><a href="'. $m['link'] .'" class="'.$m['icon'].' ap-user-menu-'.$k.'">'.$m['name'].'</a></li>';
 	}
 	$o .= '</ul>';
 	
@@ -611,6 +628,11 @@ function ap_user_template(){
 		$args = apply_filters('ap_user_favorites_args', $args);
 		
 		$question = new WP_Query($args);
+	}elseif(ap_current_user_page_is('messages')){
+		if(ap_get_user_page_user() != get_current_user_id()){
+			_e('You do not have access here', 'ap');
+			return;
+		}
 	}
 	
 	global $user;

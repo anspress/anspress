@@ -631,3 +631,19 @@ function ap_pagi($base, $total_pages, $paged, $end_size = 1, $mid_size = 5){
 		echo '</ul>';
 	}
 }
+
+function ap_question_side_tab(){
+	$links = array (
+		'discussion' => array('icon' => 'ap-icon-flow-tree', 'title' => __('Discussion', 'ap'), 'url' => '#discussion')
+	);
+	$links = apply_filters('ap_question_tab', $links);
+	$i = 1;
+	if(count($links) > 1){
+		echo '<ul class="ap-question-extra-nav" data-action="ap-tab">';
+			foreach($links as $link){
+				echo '<li'.($i == 1 ? ' class="active"' : '').'><a class="'.$link['icon'].'" href="'.$link['url'].'">'.$link['title'].'</a></li>';
+				$i++;
+			}
+		echo '</ul>';
+	}
+}
