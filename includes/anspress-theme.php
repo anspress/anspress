@@ -37,6 +37,7 @@ class anspress_theme {
 		//add_filter( 'comments_open', array($this, 'disable_comment_form'), 10 , 2 );
 
 		add_filter('wp_title', array($this, 'ap_title'), 10, 2);
+		add_filter( 'the_title', array($this, 'the_title'), 10, 2 );
 	}
 	
 	// include required theme files
@@ -107,6 +108,16 @@ class anspress_theme {
 			return $new_title;
 		}
 		
+		return $title;
+	}
+	
+	public function the_title( $title, $id ) {		
+			
+		if ( $id == ap_opt('base_page') ) {
+			if(is_ap_user() || is_question())
+				return '';
+			return ap_page_title();
+		}
 		return $title;
 	}
 	

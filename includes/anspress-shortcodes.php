@@ -157,18 +157,18 @@ class anspress_shortcodes {
 			$total_users = $user_count ? count($user_count) : 1;
 
 			// how many users to show per page
-			$users_per_page = ap_opt('users_per_page');
+			$per_page = ap_opt('users_per_page');
 			
 			// grab the current page number and set to 1 if no page number is set
 			$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
 			
 			// calculate the total number of pages.
 			$total_pages = 1;
-			$offset = $users_per_page * ($paged - 1);
-			$total_pages = ceil($total_users / $users_per_page);
+			$offset = $per_page * ($paged - 1);
+			$total_pages = ceil($total_users / $per_page);
 			
 			$args = array(
-				'number'    => $users_per_page,
+				'number'    => $per_page,
 				'offset'    => $offset
 			);
 			// The Query
