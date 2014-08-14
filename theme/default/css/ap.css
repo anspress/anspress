@@ -1428,27 +1428,24 @@ ul.ap-pagination{
 
 /* ------Tags Page-------- */
 #ap-tags .ap-tags-list li{
+    border-bottom: 1px dotted #dddddd;
     display: inline-block;
+    margin: 0;
     vertical-align: top;
-    width: 50%;
+    width: 33.33%;
 }
 #ap-tags .ap-tags-list li .tag-list-inner{
-    background: none repeat scroll 0 0 #F5F5F5;
-    border-bottom: 1px solid #EDEDED;
-    border-radius: 4px;
     display: block;
-    margin: 5px;
-    padding: 15px;
+    margin: 10px;
 }
 #ap-tags .ap-tags-list li .tag-list-inner a.ap-tags{
-    background: none repeat scroll 0 0 #8FC61B;
+    background: none repeat scroll 0 0 #aaaaaa;
     border-radius: 2px;
-    color: #FFFFFF;
+    color: #ffffff;
     display: inline-block;
-    font-size: 11px;
+    font-size: 13px;
     font-weight: bold;
-    line-height: 18px;
-    padding: 0 7px;
+    padding: 1px 10px;
     position: relative;
     text-transform: capitalize;
 }

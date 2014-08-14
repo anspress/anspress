@@ -115,6 +115,20 @@ class anspress_shortcodes {
 			
 			$question = new WP_Query( $question_args );
 			$category = $question->get_queried_object();
+		}elseif(is_question_tags()){
+			$paged 			= (get_query_var('paged')) ? get_query_var('paged') : 1;
+			$per_page    	= ap_opt('tags_per_page');
+			$total_terms 	= wp_count_terms('question_tags'); 	
+			$offset      	= $per_page * ( $paged - 1) ;
+			$args = array(
+				'number'		=> $per_page,
+				'offset'       	=> $offset,
+				'hide_empty'    => false,
+				'orderby'       => 'count',
+				'order'         => 'DESC',
+			);
+
+			$tags = get_terms( 'question_tags' , $args); 
 		}elseif(is_ap_users()){
 			global $current_user_meta;
 			
@@ -167,26 +181,12 @@ class anspress_shortcodes {
 		
 		if(is_ap_users()){
 			$base = ap_get_link_to('users') . '/%_%';
-			$user_pagi = paginate_links( array(
-				'base' => $base, // the base URL, including query arg
-				'format' => 'paged/%#%', // this defines the query parameter that will be used, in this case "p"
-				'prev_text' => __('&laquo; Previous', 'ap'), // text for previous page
-				'next_text' => __('Next &raquo;', 'ap'), // text for next page
-				'total' => $total_pages, // the total number of pages we have
-				'current' => $paged, // the current page
-				'end_size' => 1,
-				'mid_size' => 5,
-				'type' => 'array'
-			));
-			if($user_pagi){
-				echo '<ul class="ap-pagination clearfix">';
-					echo '<li><span class="page-count">'. sprintf(__('Page %d of %d', 'ap'), $paged, $total_pages) .'</span></li>';
-					foreach($user_pagi as $pagi){
-						echo '<li>'. $pagi .'</li>';
-					}
-				echo '</ul>';
-			}
+			ap_pagi($base, ceil( $total_terms / $per_page ), $paged);			
 		}
+		
+		if(is_question_tags())
+			ap_pagi(ap_get_link_to('tags') . '/%_%', ceil( $total_terms / $per_page ), $paged);
+			
 		
 		if(!ap_opt('author_credits')){
 			?>

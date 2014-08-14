@@ -1,10 +1,10 @@
 @font-face {
 	font-family: 'anspress';
-	src:url('fonts/anspress.eot?rp5khq');
-	src:url('fonts/anspress.eot?#iefixrp5khq') format('embedded-opentype'),
-		url('fonts/anspress.woff?rp5khq') format('woff'),
-		url('fonts/anspress.ttf?rp5khq') format('truetype'),
-		url('fonts/anspress.svg?rp5khq#anspress') format('svg');
+	src:url('fonts/anspress.eot?-7wtcym');
+	src:url('fonts/anspress.eot?#iefix-7wtcym') format('embedded-opentype'),
+		url('fonts/anspress.woff?-7wtcym') format('woff'),
+		url('fonts/anspress.ttf?-7wtcym') format('truetype'),
+		url('fonts/anspress.svg?-7wtcym#anspress') format('svg');
 	font-weight: normal;
 	font-style: normal;
 }
@@ -23,6 +23,9 @@
 	-moz-osx-font-smoothing: grayscale;
 }
 
+.ap-icon-feed:before {
+	content: "\e640";
+}
 .ap-icon-checkbox-checked:before {
 	content: "\e63b";
 }
