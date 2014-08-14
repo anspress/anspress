@@ -1,3 +1,49 @@
+(function ($) {
+	/* 
+	* for getting unchecked fields
+	* source: http://tdanemar.wordpress.com/2010/08/24/jquery-serialize-method-and-checkboxes/ 
+	*/
+     $.fn.serialize = function (options) {
+         return $.param(this.serializeArray(options));
+     };
+ 
+     $.fn.serializeArray = function (options) {
+         var o = $.extend({
+         checkboxesAsBools: false
+     }, options || {});
+ 
+     var rselectTextarea = /select|textarea/i;
+     var rinput = /text|hidden|password|search/i;
+ 
+     return this.map(function () {
+         return this.elements ? $.makeArray(this.elements) : this;
+     })
+     .filter(function () {
+         return this.name && !this.disabled &&
+             (this.checked
+             || (o.checkboxesAsBools && this.type === 'checkbox')
+             || rselectTextarea.test(this.nodeName)
+             || rinput.test(this.type));
+         })
+         .map(function (i, elem) {
+             var val = $(this).val();
+             return val == null ?
+             null :
+             $.isArray(val) ?
+             $.map(val, function (val, i) {
+                 return { name: elem.name, value: val };
+             }) :
+             {
+                 name: elem.name,
+                 value: (o.checkboxesAsBools && this.type === 'checkbox') ? //moar ternaries!
+                        (this.checked ? '1' : '0') :
+                        val
+             };
+         }).get();
+     };
+ 
+})(jQuery);
+
 /* on start */
 jQuery(function() {
      
@@ -22,6 +68,12 @@ APjs.admin.prototype = {
 		this.recountFav();
 		this.recountFlag();
 		this.recountClose();
+		this.saveOptions();
+		this.editPoints();
+		this.savePoints();
+		this.newPointForm();
+		this.deletePoint();
+		this.toggleAddons();
 	},
 	
 	recountVotes:function(){
@@ -97,6 +149,145 @@ APjs.admin.prototype = {
 					jQuery(this).after('<p>'+data+'</p>')
 				} 
 			});
+		});
+	},
+	saveOptions: function(){
+		jQuery('#ap-options').submit(function(){
+			jQuery.ajax({  
+				type: 'POST',  
+				url: ajaxurl,  
+				data: jQuery(this).serialize({ checkboxesAsBools: true }),  
+				context:this,
+				dataType:'json',
+				success: function(data){
+					if(data['status']){
+						jQuery('.wrap').prepend(data['html']);
+						jQuery('html, body').animate({
+							scrollTop: 0
+						}, 300);
+						jQuery('.wrap .updated').delay(500).slideDown(300);
+					}
+				} 
+			});
+			return false;
+		});
+	},
+	editPoints:function(){
+		jQuery('.wp-admin').delegate('[data-action="ap-edit-point"]', 'click', function(e){
+			e.preventDefault();
+			var id = jQuery(this).attr('href');
+			jQuery.ajax({
+				type: 'POST',  
+				url: ajaxurl,  
+				data: {
+					action: 'ap_edit_points',
+					id: id
+				},  
+				context:this,
+				dataType:'json',
+				success: function(data){
+					if(data['status']){
+						jQuery('#ap-point-edit').remove();
+						jQuery('#anspress-points-table').hide();
+						jQuery('#anspress-points-table').after(data['html']);
+					}
+				}
+			});
+		});
+	},
+	savePoints:function(){
+		jQuery('.wp-admin').delegate('[data-action="ap-save-point"]', 'submit', function(e){
+			e.preventDefault();
+			jQuery('.button-primary', this).attr('disabled', 'disabled');
+			var id = jQuery(this).attr('href');
+			jQuery.ajax({
+				type: 'POST',  
+				url: ajaxurl,  
+				data:  jQuery(this).serialize({ checkboxesAsBools: true }),
+				context:this,
+				dataType:'json',
+				success: function(data){
+					if(data['status']){
+						jQuery('.wrap').empty().html(data['html']);
+					}
+				}
+			});
+			
+			return false;
+		});
+	},
+	newPointForm:function(){
+		jQuery('.wp-admin').delegate('[data-button="ap-new-point"]', 'click', function(e){
+			e.preventDefault();
+			jQuery.ajax({
+				type: 'POST',  
+				url: ajaxurl,  
+				data:  {
+					action: 'ap_new_point_form'
+				},
+				context:this,
+				dataType:'json',
+				success: function(data){
+					jQuery('#ap-point-edit').remove();
+					jQuery('#anspress-points-table').hide();
+					jQuery('#anspress-points-table').after(data['html']);
+				}
+			});
+			
+			return false;
+		});
+	},
+	deletePoint:function(){
+		jQuery('.wp-admin').delegate('[data-button="ap-delete-point"]', 'click', function(e){
+			e.preventDefault();
+			var id = jQuery(this).attr('href');
+			var args = jQuery(this).data('args');
+			jQuery.ajax({
+				type: 'POST',  
+				url: ajaxurl,  
+				data:  {
+					action: 'ap_delete_point',
+					args: args
+				},
+				context:this,
+				dataType:'json',
+				success: function(data){
+					jQuery(this).closest('tr').slideUp(200);
+				}
+			});
+			
+			return false;
+		});
+	},
+	toggleAddons:function(){
+		jQuery('.wp-admin').delegate('[data-action="ap-toggle-addon"]', 'click', function(e){
+			e.preventDefault();
+			var args = jQuery(this).data('args');
+			jQuery.ajax({
+				type: 'POST',  
+				url: ajaxurl,  
+				data:  {
+					action: 'ap_toggle_addon',
+					args: args
+				},
+				context:this,
+				dataType:'json',
+				success: function(data){
+					if(jQuery('#ap-message').length > 0)
+						jQuery('#ap-message').remove();
+						
+					if(data['status'] == 'activate'){
+						jQuery(this).closest('.theme').find('.ap-addon-status').show();
+					}else if(data['status'] == 'deactivate'){
+						jQuery(this).closest('.theme').find('.ap-addon-status').hide();
+					}
+					jQuery(this).parent().html(data['html']);
+					jQuery('#wpbody .wrap').prepend(data['message']);
+					jQuery('#ap-message').slideDown().delay(5000).queue(function(next) {jQuery(this).remove(); next(); });
+				}
+			});
+			
+			return false;
 		});
 	}
 }

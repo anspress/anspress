@@ -1,13 +1,8 @@
-<?php
-	$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
-	$args = array('post_type'=>'question', 'paged' => $paged);
-	$question = new WP_Query( $args );
-?>
-
 <div id="ap-lists" class="clearfix">
 	<?php if ( $question->have_posts() ) : ?>
 		<div class="question-list">
 	<?php
+		ap_questions_tab();
 		/* Start the Loop */
 		while ( $question->have_posts() ) : $question->the_post();
 			include(ap_get_theme_location('content-list.php'));
@@ -21,8 +16,5 @@
 		endif; 
 	?>	
 </div>
-<?php
-	/* Restore original Post Data */
-	wp_reset_postdata();
 
 

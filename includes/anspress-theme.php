@@ -97,11 +97,301 @@ class anspress_theme {
 		return $open;
 	}
 	
-	public function ap_title( $title, $sep ) {
-		if ( is_question() ) {
-			return get_the_title(get_question_id()).' '.$sep;
+	public function ap_title( $title) {
+		if(is_anspress()){
+			$new_title = ap_page_title();
+		
+			$new_title = str_replace('[anspress]', $new_title, $title);
+			$new_title = apply_filters('ap_title', $new_title);
+			
+			return $new_title;
 		}
+		
 		return $title;
 	}
+	
 
+}
+
+function ap_page_title() {
+	if(is_question())
+		$new_title = get_the_title(get_question_id());
+	elseif(is_ask())
+		$new_title = ap_opt('ask_page_title');
+	elseif(is_question_categories())
+		$new_title = ap_opt('categories_page_title');
+	elseif(is_question_tags())
+		$new_title = ap_opt('tags_page_title');
+	elseif(is_question_tag()){
+		$tag = get_term_by('slug', get_query_var('question_tags'), 'question_tags');
+		$new_title = sprintf(__('Question tag: %s', 'ap'), $tag->name);
+	}elseif(is_question_cat()){
+		$category = get_term_by('slug', get_query_var('question_category'), 'question_category');
+		$new_title = sprintf(__('Question category: %s', 'ap'), $category->name);
+	}elseif(is_question_edit())
+		$new_title = __('Edit question ', 'ap'). get_the_title(get_question_id());
+	elseif(is_answer_edit())
+		$new_title = __('Edit answer', 'ap');
+	elseif(is_ap_user())
+		$new_title = ap_user_page_title();
+	else
+		$new_title = ap_opt('base_page_title');
+
+	$new_title = apply_filters('ap_page_title', $new_title);
+	
+	return $new_title;
+}
+
+function ap_user_page_title(){
+	if(is_ap_user()){
+		$userid = ap_get_user_page_user();
+		$user = get_userdata($userid);
+		$user_page = get_query_var('user_page');
+		$user_page = $user_page ? $user_page : 'profile';
+		
+		$name = $user->data->display_name;
+		
+		if(get_current_user_id() == $userid)
+			$name = __('You', 'ap');
+		
+		if( 'profile' == $user_page){
+			if(get_current_user_id() == $userid)
+				$title = __('Your profile', 'ap');
+			else
+				$title = sprintf(__('%s\'s profile', 'ap'), $name);
+		}elseif( 'questions' == $user_page ){
+			$title = sprintf(__('Questions asked by %s', 'ap'), $name);
+		}elseif( 'answers' == $user_page ){
+			$title = sprintf(__('Answers posted by %s', 'ap'), $name);
+		}elseif( 'activity' == $user_page ){
+			if(get_current_user_id() == $userid)
+				$title = __('Yours activity', 'ap');
+			else
+				$title = sprintf(__('%s\'s activity', 'ap'), $name);
+		}elseif( 'favorites' == $user_page ){
+			$title = sprintf(__('Favorites questions of %s', 'ap'), $name);
+		}elseif( 'followers' == $user_page ){
+			$title = sprintf(__('Users following %s', 'ap'), $name);
+		}elseif( 'following' == $user_page ){
+			$title = sprintf(__('Users being followed by %s', 'ap'), $name);
+		}elseif( 'edit_profile' == $user_page ){
+			$title = __('Edit your profile', 'ap');
+		}elseif( 'settings' == $user_page ){
+			$title = __('Your settings', 'ap');
+		}elseif( 'messages' == $user_page ){
+			$title = __('Your messages', 'ap');
+		}
+		$title = apply_filters('ap_user_page_title', $title);
+		
+		return $title;
+	}
+	
+	return __('Page not found', 'ap');
+}
+
+function is_anspress(){
+	$queried_object = get_queried_object();
+	
+	if(!isset($queried_object->ID)) 
+		return false;
+
+	if( $queried_object->ID ==  ap_opt('base_page'))
+		return true;
+		
+	return false;
+}
+
+function is_question(){
+	if(is_anspress() && get_query_var('question_id') || get_query_var('question'))
+		return true;
+		
+	return false;
+}
+
+function is_ask(){
+	if(is_anspress() && get_query_var('ap_page')=='ask')
+		return true;
+		
+	return false;
+}
+function is_question_categories(){
+	if(is_anspress() && get_query_var('ap_page')=='categories')
+		return true;
+		
+	return false;
+}
+function is_question_tags(){
+	if(is_anspress() && get_query_var('ap_page')=='tags')
+		return true;
+		
+	return false;
+}
+function is_ap_users(){
+	if(is_anspress() && get_query_var('ap_page')=='users')
+		return true;
+		
+	return false;
+}
+function is_question_tag(){
+	if(is_anspress() && (get_query_var('qtag_id') || get_query_var('question_tags')))
+		return true;
+		
+	return false;
+}
+
+function is_question_cat(){
+	if(is_anspress() && (get_query_var('qcat_id') || get_query_var('question_category')))
+		return true;
+		
+	return false;
+}
+
+
+function get_question_id(){
+	if(is_question() && get_query_var('question_id'))
+		$id = get_query_var('question_id');
+	elseif(is_question() && get_query_var('question'))
+		$id = get_query_var('question');
+	elseif(get_query_var('edit_q'))
+		$id = get_query_var('edit_q');
+	return $id;
+	
+	return false;
+}
+
+function get_question_tag_id(){
+	
+	if(is_question_tag() && get_option('permalink_structure')){
+		$term = get_term_by('slug', get_query_var('question_tags'), 'question_tags');
+		return $term->term_id;
+	}else
+		return get_query_var('qtag_id');
+		
+	return false;
+}
+function get_question_cat_id(){
+	if(is_question_cat() && get_option('permalink_structure')){
+		$term = get_term_by('slug', get_query_var('question_category'), 'question_category');
+		return $term->term_id;
+	}else
+		return get_query_var('qcat_id');
+		
+	return false;
+}
+
+function get_edit_question_id(){
+	if(is_anspress() && get_query_var('edit_q'))
+		return get_query_var('edit_q');
+		
+	return false;
+}
+function is_answer_edit(){
+	if(is_anspress() && get_query_var('edit_a'))
+		return true;
+		
+	return false;
+}
+function is_question_edit(){
+	if(is_anspress() && get_query_var('edit_q'))
+		return true;
+		
+	return false;
+}
+function get_edit_answer_id(){
+	if(is_anspress() && get_query_var('edit_a'))
+		return get_query_var('edit_a');
+		
+	return false;
+}
+
+function is_ap_user(){
+	if(is_anspress() && get_query_var('ap_page') == 'user')
+		return true;
+		
+	return false;
+}
+
+function ap_get_user_page_user(){
+	if(is_ap_user()){
+		$user = get_query_var('user');
+		if($user){
+			if(!is_int($user)){
+				$user = get_userdatabylogin($user);
+				return $user->ID;
+			}
+			return $user;
+		}else{
+			return get_current_user_id();
+		}
+	}	
+		
+	return false;
+}
+
+function is_ap_profile(){
+	if(is_anspress() && get_query_var('ap_page') == 'profile')
+		return true;
+		
+	return false;
+}
+function is_ap_followers(){
+	if(is_ap_user() && get_query_var('user_page') == 'followers')
+		return true;
+		
+	return false;
+}
+
+function ap_current_page_is(){
+
+	if(is_anspress()){
+		
+		if(is_question())
+			$template = 'question';
+		elseif(is_ask())
+			$template = 'ask';
+		elseif(is_question_categories())
+			$template = 'categories';
+		elseif(is_question_tags())
+			$template = 'tags';
+		elseif(is_question_tag())
+			$template = 'tag';
+		elseif(is_question_cat())
+			$template = 'category';
+		elseif(is_question_edit())
+			$template = 'edit-question';
+		elseif(is_answer_edit())
+			$template = 'edit-answer';
+		elseif(is_ap_users())
+			$template = 'users';
+		elseif(is_ap_user())
+			$template = 'user';
+		else
+			$template = 'base';
+		
+		return apply_filters('ap_current_page_is', $template);
+	}
+	return false;
+}
+
+function ap_get_current_page_template(){
+
+	if(is_anspress()){
+			$template = ap_current_page_is();
+		
+		return apply_filters('ap_current_page_template', $template.'.php');
+	}
+	return 'content-none.php';
+}
+
+function is_my_profile(){
+	if(ap_get_user_page_user() == get_current_user_id())
+		return true;
+	
+	return false;
+}
+
+function ap_current_user_page_is($page){
+	if (get_query_var('user_page') == $page)
+		return true;
+	return false;
 }

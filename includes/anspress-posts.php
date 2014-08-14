@@ -61,25 +61,27 @@ class anspress_posts
         add_filter('wp_insert_post_data', array($this, 'post_data_check'), 99);
         add_filter('post_updated_messages', array($this,'post_custom_message'));
 		
-		add_action('post_type_link',array($this, 'ans_post_type_link'),10,2);
+		//add_action('post_type_link',array($this, 'ans_post_type_link'),10,2);
 		
 		add_action( 'admin_init', array( $this, 'init_actions' ) ); 
 		add_action( 'init', array($this, 'ap_make_post_parent_public') );
 		add_action( 'save_post', array($this, 'ans_parent_post'), 0, 2 );	
 		add_action('wp_ajax_search_questions', array($this, 'suggest_questions'));
-		add_filter( 'post_type_link', array($this, 'custom_question_link'), 10, 2 );
-		add_filter('term_link', array($this, 'custom_category_link'), 10, 3);
-		add_filter('term_link', array($this, 'custom_tags_link'), 10, 3);
+		add_filter( 'post_type_link', array($this, 'custom_question_link'), 10, 2 );		
 		add_filter('get_pagenum_link', array($this, 'custom_page_link'));
+		
+		add_action( 'posts_clauses', array($this, 'answer_sort_newest'), 10, 2 );
+		add_action( 'posts_clauses', array($this, 'user_favorites'), 10, 2 );
+		add_action('admin_footer-post.php', array($this, 'append_post_status_list'));
 
     }
 	public function init_actions(){
 		add_meta_box( 'ap_ans_parent_q','Parent Question', array($this, 'ans_parent_q_metabox'),'answer','side', 'high' );
-			
-		
-		add_action('wp_trash_post', array($this, 'trash_ans_on_question_trash'));
+		add_action('wp_trash_post', array($this, 'trash_post_action'));
 		add_action('untrash_post', array($this, 'untrash_ans_on_question_untrash'));
-		add_action('delete_post', array($this, 'delete_ans_on_question_delete'));		
+		//add_action('delete_post', array($this, 'delete_action'));		
+		add_action('after_delete_post', array($this, 'post_delete_action'));		
+		add_action('delete_comment', array($this, 'comment_delete_action'));		
 
 	}
     // Register Custom Post Type    
@@ -93,25 +95,25 @@ class anspress_posts
         
 		// question CPT labels
         $labels = array(
-            'name' 				=> _x('Questions', 'Post Type General Name', 'anspress'),
-            'singular_name' 	=> _x('Question', 'Post Type Singular Name', 'anspress'),
-            'menu_name' 		=> __('Questions', 'anspress'),
-            'parent_item_colon' => __('Parent Question:', 'anspress'),
-            'all_items' 		=> __('All Questions', 'anspress'),
-            'view_item' 		=> __('View Question', 'anspress'),
-            'add_new_item' 		=> __('Add New Question', 'anspress'),
-            'add_new' 			=> __('New Question', 'anspress'),
-            'edit_item' 		=> __('Edit Question', 'anspress'),
-            'update_item' 		=> __('Update Question', 'anspress'),
-            'search_items' 		=> __('Search question', 'anspress'),
-            'not_found' 		=> __('No question found', 'anspress'),
-            'not_found_in_trash' => __('No questions found in Trash', 'anspress')
+            'name' 				=> _x('Questions', 'Post Type General Name', 'ap'),
+            'singular_name' 	=> _x('Question', 'Post Type Singular Name', 'ap'),
+            'menu_name' 		=> __('Questions', 'ap'),
+            'parent_item_colon' => __('Parent Question:', 'ap'),
+            'all_items' 		=> __('All Questions', 'ap'),
+            'view_item' 		=> __('View Question', 'ap'),
+            'add_new_item' 		=> __('Add New Question', 'ap'),
+            'add_new' 			=> __('New Question', 'ap'),
+            'edit_item' 		=> __('Edit Question', 'ap'),
+            'update_item' 		=> __('Update Question', 'ap'),
+            'search_items' 		=> __('Search question', 'ap'),
+            'not_found' 		=> __('No question found', 'ap'),
+            'not_found_in_trash' => __('No questions found in Trash', 'ap')
         );
 		
 		// question CPT arguments
         $args   = array(
-            'label' => __('question', 'anspress'),
-            'description' => __('Question', 'anspress'),
+            'label' => __('question', 'ap'),
+            'description' => __('Question', 'ap'),
             'labels' => $labels,
             'supports' => array(
                 'title',
@@ -125,10 +127,11 @@ class anspress_posts
             'hierarchical' => false,
             'public' => true,
             'show_ui' => true,
-            'show_in_menu' => true,
-            'show_in_nav_menus' => true,
+            'show_in_menu' => false,
+            'show_in_nav_menus' => false,
             'show_in_admin_bar' => true,
             'menu_icon' => ANSPRESS_URL . '/assets/question.png',
+			//'show_in_menu' => 'anspress',
             'can_export' => true,
             'has_archive' => true,
             'exclude_from_search' => false,
@@ -142,25 +145,25 @@ class anspress_posts
         
 		// Answer CPT labels
         $ans_labels = array(
-            'name' 			=> _x('Answers', 'Post Type General Name', 'anspress'),
-            'singular_name' => _x('Answer', 'Post Type Singular Name', 'anspress'),
-            'menu_name' => __('Answers', 'anspress'),
-            'parent_item_colon' => __('Parent Answer:', 'anspress'),
-            'all_items' => __('All Answers', 'anspress'),
-            'view_item' => __('View Answer', 'anspress'),
-            'add_new_item' => __('Add New Answer', 'anspress'),
-            'add_new' => __('New answer', 'anspress'),
-            'edit_item' => __('Edit answer', 'anspress'),
-            'update_item' => __('Update answer', 'anspress'),
-            'search_items' => __('Search answer', 'anspress'),
-            'not_found' => __('No answer found', 'anspress'),
-            'not_found_in_trash' => __('No answer found in Trash', 'anspress')
+            'name' 			=> _x('Answers', 'Post Type General Name', 'ap'),
+            'singular_name' => _x('Answer', 'Post Type Singular Name', 'ap'),
+            'menu_name' => __('Answers', 'ap'),
+            'parent_item_colon' => __('Parent Answer:', 'ap'),
+            'all_items' => __('All Answers', 'ap'),
+            'view_item' => __('View Answer', 'ap'),
+            'add_new_item' => __('Add New Answer', 'ap'),
+            'add_new' => __('New answer', 'ap'),
+            'edit_item' => __('Edit answer', 'ap'),
+            'update_item' => __('Update answer', 'ap'),
+            'search_items' => __('Search answer', 'ap'),
+            'not_found' => __('No answer found', 'ap'),
+            'not_found_in_trash' => __('No answer found in Trash', 'ap')
         );
 		
 		// Answers CPT arguments
         $ans_args   = array(
-            'label' => __('answer', 'anspress'),
-            'description' => __('Answer', 'anspress'),
+            'label' => __('answer', 'ap'),
+            'description' => __('Answer', 'ap'),
             'labels' => $ans_labels,
             'supports' => array(
                 'editor',
@@ -172,67 +175,28 @@ class anspress_posts
             'hierarchical' => false,
             'public' => true,
             'show_ui' => true,
-            'show_in_menu' => true,
-            'show_in_nav_menus' => true,
+            'show_in_menu' => false,
+            'show_in_nav_menus' => false,
             'show_in_admin_bar' => false,
             'menu_icon' => ANSPRESS_URL . '/assets/answer.png',
+			//'show_in_menu' => 'anspress',
             'can_export' => true,
             'has_archive' => true,
             'exclude_from_search' => false,
             'publicly_queryable' => true,
-            'capability_type' => 'post'
+            'capability_type' => 'post',
+			'rewrite' => false
         );
 		// register CPT answer
         register_post_type('answer', $ans_args);
-        
-        $categories_labels = array(
-            'name' => __('Question Categories', 'anspress'),
-            'singular_name' => _x('Category', 'anspress'),
-            'all_items' => __('All Categories', 'anspress'),
-            'add_new_item' => _x('Add New Category', 'anspress'),
-            'edit_item' => __('Edit Category', 'anspress'),
-            'new_item' => __('New Category', 'anspress'),
-            'view_item' => __('View Category', 'anspress'),
-            'search_items' => __('Search Category', 'anspress'),
-            'not_found' => __('Nothing Found', 'anspress'),
-            'not_found_in_trash' => __('Nothing found in Trash', 'anspress'),
-            'parent_item_colon' => ''
-        );
-        $tags_labels       = array(
-            'name' => __('Question Tags', 'anspress'),
-            'singular_name' => _x('Tag', 'anspress'),
-            'all_items' => __('All Tags', 'anspress'),
-            'add_new_item' => _x('Add New Tag', 'anspress'),
-            'edit_item' => __('Edit Tag', 'anspress'),
-            'new_item' => __('New Tag', 'anspress'),
-            'view_item' => __('View Tag', 'anspress'),
-            'search_items' => __('Search Tag', 'anspress'),
-            'not_found' => __('Nothing Found', 'anspress'),
-            'not_found_in_trash' => __('Nothing found in Trash', 'anspress'),
-            'parent_item_colon' => ''
-        );
-        
-        register_taxonomy('question_category', array('question'), array(
-            'hierarchical' => true,
-            'labels' => $categories_labels,
-            'rewrite' => array(
-                'slug' => $slug . 'category',
-                'with_front' => true
-            )
-        ));
-        register_taxonomy('question_tags', array('question'), array(
-            'hierarchical' => false,
-            'labels' => $tags_labels,
-            'rewrite' => array(
-                'slug' => $slug . 'tag',
-                'with_front' => true
-            )
-        ));
-		 // Check the option we set on activation.
-		if (get_option('ap_flush') == 'true') {
-			flush_rewrite_rules();
-			delete_option('ap_flush');
-		}
+		
+		register_post_status( 'moderate', array(
+			  'label'                     => __( 'Moderate', 'ap' ),
+			  'public'                    => true,
+			  'show_in_admin_all_list'    => false,
+			  'show_in_admin_status_list' => true,
+			  'label_count'               => _n_noop( 'Moderate <span class="count">(%s)</span>', 'Moderate <span class="count">(%s)</span>' )
+		 ) );
         
     }
     
@@ -241,16 +205,16 @@ class anspress_posts
     {
         $columns = array(
             "cb" => "<input type=\"checkbox\" />",
-            "asker" => __('Asker', 'anspress'),
-            "status" => __('Status', 'anspress'),
-            "title" => __('Title', 'anspress'),
-            "question_category" => __('Category', 'anspress'),
-            "question_tags" => __('Tags', 'anspress'),
-            "answers" => __('Ans', 'anspress'),
-            "comments" => __('Comments', 'anspress'),
-            "vote" => __('Vote', 'anspress'),
-            "flag" => __('Flag', 'anspress'),
-            "date" => __('Date', 'anspress')
+            "asker" => __('Asker', 'ap'),
+            "status" => __('Status', 'ap'),
+            "title" => __('Title', 'ap'),
+            "question_category" => __('Category', 'ap'),
+            "question_tags" => __('Tags', 'ap'),
+            "answers" => __('Ans', 'ap'),
+            "comments" => __('Comments', 'ap'),
+            "vote" => __('Vote', 'ap'),
+            "flag" => __('Flag', 'ap'),
+            "date" => __('Date', 'ap')
         );
         return $columns;
     }
@@ -260,13 +224,13 @@ class anspress_posts
     {
         $columns = array(
             "cb" => "<input type=\"checkbox\" />",
-            "answerer" => __('Answerer', 'anspress'),
-            "parent_question" => __('Question', 'anspress'),
-            "answer_content" => __('Content', 'anspress'),
-            "comments" => __('Comments', 'anspress'),
-            "vote" => __('Vote', 'anspress'),
-            "flag" => __('Flag', 'anspress'),
-            "date" => __('Date', 'anspress')
+            "answerer" => __('Answerer', 'ap'),
+            "parent_question" => __('Question', 'ap'),
+            "answer_content" => __('Content', 'ap'),
+            "comments" => __('Comments', 'ap'),
+            "vote" => __('Vote', 'ap'),
+            "flag" => __('Flag', 'ap'),
+            "date" => __('Date', 'ap')
         );
         return $columns;
     }
@@ -333,7 +297,7 @@ class anspress_posts
             /* If terms were found. */
             if (!empty($a_count)) {
                 
-                echo '<a class="ans-count" title="' . $a_count . __('answers', 'anspress') . '" href="' . esc_url(add_query_arg(array(
+                echo '<a class="ans-count" title="' . $a_count . __('answers', 'ap') . '" href="' . esc_url(add_query_arg(array(
                     'post_type' => 'answer',
                     'post_parent' => $post->ID
                 ), 'edit.php')) . '">' . $a_count . '</a>';
@@ -341,7 +305,7 @@ class anspress_posts
             
             /* If no terms were found, output a default message. */
             else {
-                echo '<a class="ans-count" title="0' . __('answers', 'anspress') . '">0</a>';
+                echo '<a class="ans-count" title="0' . __('answers', 'ap') . '">0</a>';
             }
         } elseif ('parent_question' == $column) {
             echo '<a class="parent_question" href="' . esc_url(add_query_arg(array(
@@ -349,7 +313,7 @@ class anspress_posts
                 'action' => 'edit'
             ), 'post.php')) . '"><strong>' . get_the_title($post->post_parent) . '</strong></a>';
         } elseif ('status' == $column) {
-            echo '<span class="question-status ' . ap_get_question_status() . '">' . ap_get_question_status() . '</span>';
+            echo '<span class="question-status">' . ap_get_question_label() . '</span>';
         } elseif ('vote' == $column) {
             echo '<span class="vote-count' . ($post->flag ? ' zero' : '') . '">' . $post->net_vote . '</span>';
         } elseif ('flag' == $column) {
@@ -474,7 +438,7 @@ class anspress_posts
     public function ans_notice()
     {
         echo '<div class="error">
-           <p>' . __('Please fill parent question field, Answer was not saved!', 'anspress') . '</p>
+           <p>' . __('Please fill parent question field, Answer was not saved!', 'ap') . '</p>
         </div>';
     }
 	
@@ -515,9 +479,11 @@ class anspress_posts
 	
 	 
 	//if a question is sent to trash, send all ans as well
-	public function trash_ans_on_question_trash ($post_id) {
-		$post_type = get_post_type( $post_id );
-		if( $post_type == 'question') {
+	public function trash_post_action ($post_id) {
+		$post = get_post( $post_id );
+		if( $post->post_type == 'question') {
+			ap_do_event('delete_question', $post->ID, $post->post_author);
+			ap_remove_parti($post->ID, $post->post_author, 'question');
 			$arg = array(
 			  'post_type' => 'answer',
 			  'post_status' => 'publish',
@@ -527,16 +493,32 @@ class anspress_posts
 			);
 			$ans = get_posts($arg);
 			if($ans>0){
-				foreach( $ans as $p)
+				foreach( $ans as $p){
+					ap_do_event('delete_answer', $p->ID, $p->post_author);
+					ap_remove_parti($p->post_parent, $p->post_author, 'answer');
 					wp_trash_post($p->ID);
+				}
 			}
+		}
+
+		if( $post->post_type == 'answer') {
+			$ans = ap_count_ans($post->post_parent);
+			ap_do_event('delete_answer', $post->ID, $post->post_author);
+			ap_remove_parti($post->post_parent, $post->post_author, 'answer');
+			
+			//update answer count
+			update_post_meta($post->post_parent, ANSPRESS_ANS_META, $ans-1);
 		}
 	}
 
 	//if questions was restored then restore its answers as well	
 	public function untrash_ans_on_question_untrash ($post_id) {
-		$post_type = get_post_type( $post_id );
-		if( $post_type == 'question') {
+		$post = get_post( $post_id );
+		
+		if( $post->post_type == 'question') {
+			ap_do_event('untrash_question', $post->ID, $post->post_author);
+			ap_add_parti($post->ID, $post->post_author, 'question');
+			
 			$arg = array(
 			  'post_type' => 'answer',
 			  'post_status' => 'trash',
@@ -546,38 +528,103 @@ class anspress_posts
 			);
 			$ans = get_posts($arg);
 			if($ans>0){
-				foreach( $ans as $p)
+				foreach( $ans as $p){
+					ap_do_event('untrash_answer', $p->ID, $p->post_author);
+					ap_add_parti($p->ID, $p->post_author, 'answer');
 					wp_untrash_post($p->ID);
+				}
 			}
 		}
+		
+		if( $post->post_type == 'answer') {
+			$ans = ap_count_ans( $post->post_parent );
+			ap_do_event('untrash_answer', $post->ID, $post->post_author);
+			ap_add_parti($post->post_parent, $post->post_author, 'answer');
+			
+			//update answer count
+			update_post_meta($post->post_parent, ANSPRESS_ANS_META, $ans+1);
+		}
 	}
-
-	//if questions was deleted then delete its answers as well	
-	public function delete_ans_on_question_delete ($post_id) {
-		$post_type = get_post_type( $post_id );
+	
+	public function delete_action($post_id){
+		$post = get_post($post_id);
+		
+		if($post->post_type == 'question')
+			ap_do_event('delete_question', $post->ID, $post->post_author);
+		
+		elseif($post->post_type == 'answer')
+			ap_do_event('delete_answer', $post->ID, $post->post_author);
+	}
+	
+	/* Action to do right after deleting a post */
+	public function post_delete_action ($post_id) {
+		 
+		remove_action('after_delete_post', array($this, 'post_delete_action'));
+		 
+		/* trashed item post type is revison so we have to get its post parent */
+		$post = get_post($post_id );
+		/* if questions was deleted then delete its answers as well */
+		$post_type = get_post_type( $post->post_parent );
 		if( $post_type == 'question') {
+			ap_do_event('delete_question', $post->post_parent, $post->post_author);			
+			// remove question participant
+			ap_remove_parti($post->post_parent);
+			
 			$arg = array(
 			  'post_type' => 'answer',
 			  'post_status' => 'trash',
-			  'post_parent' => $post_id,
+			  'post_parent' => $post->post_parent,
 			  'showposts' => -1,
-			  'caller_get_posts'=> 1
+			  'caller_get_posts'=> 1,
+			  'post__not_in' => '',
 			);
 			$ans = get_posts($arg);
-			if($ans>0){
-				foreach( $ans as $p)
-					wp_delete_post($p->ID);
+			
+			if(count($ans)>0){
+				
+				foreach( $ans as $p){					
+					ap_remove_parti($p->post_parent, $p->post_author, 'answer');
+					ap_do_event('delete_answer', $ans->ID, $ans->post_author);
+					wp_delete_post($p->ID, true);					
+				}
+				
 			}
 		}
+		
+		/* remove participant answer */
+		if( $post_type == 'answer') {
+			$ans = get_post($post->post_parent );
+			ap_remove_parti($ans->post_parent, $ans->post_author, 'answer');
+			ap_do_event('delete_answer', $ans->ID, $ans->post_author);
+		}
+		
+		add_action('after_delete_post', array($this, 'post_delete_action'));
 	}
-	public function ans_post_type_link($link,$post) {
+	
+	/* actions to run after deleting a comment */
+	public function comment_delete_action($comment_id){
+		$comment = get_comment($comment_id);
+		
+		$post_type = get_post_type( $comment->comment_post_ID );
+		if ($post_type == 'question') {
+			ap_do_event('delete_comment', $comment, 'question');
+			//remove participant
+			ap_remove_parti($comment->comment_post_ID, $comment->user_id, 'comment');
+		}elseif($post_type == 'answer'){
+			ap_do_event('delete_comment', $comment, 'answer');
+			$post_id = wp_get_post_parent_id($comment->comment_post_ID);
+			ap_remove_parti($post_id, $comment->user_id, 'comment');
+		}
+	}
+	
+	public function ans_post_type_link($link, $post) {
 	  $post_type = 'answer';
 	  if ($post->post_type==$post_type) {
-		$post_data = get_post($post->post_parent);
-		$link = get_post_type_archive_link('question').$post_data->post_name ."#answer_{$post->ID}";
+		$link = get_permalink($post->post_parent) ."#answer_{$post->ID}";
 	  }
 	  return $link;
-	}	
+	}
+	
 	function suggest_questions() {
 		// Query for suggestions  
 		$posts = get_posts( array(  
@@ -609,27 +656,9 @@ class anspress_posts
 	public function custom_question_link( $url, $post ) {
 		if ( 'question' == get_post_type( $post ) ) {
 			if(get_option('permalink_structure'))
-				return str_replace('?apq=', ap_base_page_slug() .'question/'.$post->ID.'/', $url); 
+				return  trim(get_permalink(ap_opt('base_page')), '/').'/question/'.$post->post_name.'/'.$post->ID; 
 			else
 				return add_query_arg( array('apq' => false, 'page_id' => ap_opt('base_page'), 'question_id' =>$post->ID), $url );
-		}
-		return $url;
-	}
-	
-	public function custom_category_link($url, $term, $taxonomy){
-		
-	    if ( 'question_category' == $term->taxonomy ) {
-			if(get_option('permalink_structure'))
-				return add_query_arg( array('question_category' => false, 'page_id' => ap_opt('base_page'), 'qcat_id' =>$term->term_id), $url );
-			else
-				return add_query_arg( array('question_category' => false, 'page_id' => ap_opt('base_page'), 'qcat_id' =>$term->term_id), $url );
-		}
-		return $url;
-	}
-	
-	public function custom_tags_link($url, $term, $taxonomy){
-	    if ( 'question_tags' == $term->taxonomy ) {
-			return add_query_arg( array('question_tags' => false, 'p' => ap_opt('base_page'), 'qtag_id' =>$term->term_id), $url );
 		}
 		return $url;
 	}
@@ -641,5 +670,46 @@ class anspress_posts
 		return $result ;
 	}
 	
+	public function answer_sort_newest($sql, $query){
+		global $wpdb;
+		if(isset($query->query['ap_query']) && $query->query['ap_query'] == 'answer_sort_newest'){		
+			$sql['orderby'] = 'IF('.$wpdb->prefix.'postmeta.meta_key = "'.ANSPRESS_BEST_META.'" AND '.$wpdb->prefix.'postmeta.meta_value = 1, 0, 1), '.$sql['orderby'];
+		}elseif(isset($query->query['ap_query']) && $query->query['ap_query'] == 'answer_sort_voted'){	
+			$sql['orderby'] = 'IF(mt2.meta_value = 1, 0, 1), '.$sql['orderby'];
+		}
+		return $sql;
+	}
 	
+	public function user_favorites($sql, $query){
+		global $wpdb;
+		if(isset($query->query['ap_query']) && $query->query['ap_query'] == 'user_favorites'){			
+			$sql['join'] = 'LEFT JOIN '.$wpdb->prefix.'ap_meta apmeta ON apmeta.apmeta_actionid = ID '.$sql['join'];
+			$sql['where'] = 'AND apmeta.apmeta_userid = post_author AND apmeta.apmeta_type ="favorite" '.$sql['where'];
+		}
+		return $sql;
+	}
+	
+	public function append_post_status_list(){
+		 global $post;
+		 $complete = '';
+		 $label = '';
+		
+		 if($post->post_type == 'question'){
+			var_dump($post->post_status);
+			  if($post->post_status == 'moderate'){
+				   $complete = ' selected=\'selected\'';
+				   $label = '<span id=\'post-status-display\'>'.__('Moderate', 'ap').'</span>';
+			  }
+			  ?>
+			  
+			  <?php
+			  echo '<script>
+					  jQuery(document).ready(function(){
+						   jQuery("select#post_status").append("<option value=\'moderate\' '.$complete.'>'.__('Moderate', 'ap').'</option>");
+						   jQuery(".misc-pub-section label").append("'.$label.'");
+					  });
+			  </script>';
+		 }
+	}
+
 }

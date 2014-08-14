@@ -17,37 +17,100 @@ class anspress_activate {
 		
 		$parti_cap = array(
 			'read_question'         => true,
-			'add_question'         	=> true,
-			'add_answer'         	=> true,
-			'edit_question'   		=> true,
-			'edit_answer' 			=> true,
-			'delete_question' 		=> true,
-			'delete_answer' 		=> true,
-			'add_comment' 			=> true,
-			'edit_comment' 			=> true,
-			'delete_comment' 		=> true,
-			'cast_vote' 			=> true,
+			'read_answer'			=> true,
+			
+			'new_question'			=> true,
+			'new_answer'			=> true,
+			'new_comment'			=> true,
+			
+			'edit_question'			=> true,
+			'edit_answer'			=> true,
+			'edit_comment'			=> true,
+			
+			'hide_question'			=> true,
+			'hide_answer'			=> true,
+			'delete_comment'		=> true,
+			
+			'vote_up'				=> true,
+			'vote_down'				=> true,
+			'vote_flag'				=> true,
+			'vote_close'			=> true,
+			
+			'upload_cover'			=> true,
+			'message'				=> true,
+		);
+		
+		$editor_cap = array(
+			'read_question'         => true,
+			'read_answer'			=> true,
+			
+			'new_question'			=> true,
+			'new_answer'			=> true,
+			'new_comment'			=> true,
+			
+			'edit_question'			=> true,
+			'edit_answer'			=> true,
+			'edit_comment'			=> true,
+			
+			'delete_question'		=> true,
+			'delete_answer'			=> true,
+			'delete_comment'		=> true,
+			
+			'vote_up'				=> true,
+			'vote_down'				=> true,
+			'vote_flag'				=> true,
+			'vote_close'			=> true,
+			
+			'edit_others_question'	=> true,
+			'edit_others_answer'	=> true,
+			'edit_others_comment'	=> true,
+			
+			'upload_cover'			=> true,
+			'message'				=> true,
 		);
 		
 		$mod_cap = array(
 			'read_question'         => true,
-			'add_question'         	=> true,
-			'add_answer'         	=> true,
-			'edit_question'   		=> true,
-			'edit_answer' 			=> true,
-			'delete_question' 		=> true,
-			'delete_answer' 		=> true,
-			'add_comment' 			=> true,
-			'edit_comment' 			=> true,
-			'delete_comment' 		=> true,
-			'cast_vote' 			=> true,
-			'mod_question' 			=> true,
-			'mod_answer' 			=> true,
-			'mod_comment' 			=> true,
+			'read_answer'			=> true,
+			
+			'new_question'			=> true,
+			'new_answer'			=> true,
+			'new_comment'			=> true,
+			
+			'edit_question'			=> true,
+			'edit_answer'			=> true,
+			'edit_comment'			=> true,
+			
+			'delete_question'		=> true,
+			'delete_answer'			=> true,
+			'delete_comment'		=> true,
+			
+			'vote_up'				=> true,
+			'vote_down'				=> true,
+			'vote_flag'				=> true,
+			'vote_close'			=> true,
+			
+			'edit_others_question'	=> true,
+			'edit_others_answer'	=> true,
+			'edit_others_comment'	=> true,
+			
+			'hide_others_question'	=> true,
+			'hide_others_answer'	=> true,
+			'hide_others_comment'	=> true,
+			
+			'delete_others_question'	=> true,
+			'delete_others_answer'		=> true,
+			'delete_others_comment'		=> true,
+			
+			'change_label'			=> true,
+			
+			'upload_cover'			=> true,
+			'message'				=> true,
 		);
 		
-		add_role('participant',	__( 'Participant', 'ap' ), $parti_cap);
-		add_role('moderator', __( 'Moderator', 'ap' ), $mod_cap);
+		add_role('ap_participant',	__( 'Participant', 'ap' ), $parti_cap);
+		add_role('ap_editor', __( 'Editor', 'ap' ), $editor_cap);
+		add_role('ap_moderator', __( 'Moderator', 'ap' ), $mod_cap);
 		
 		// add capability to existing roles
 		$roles = array('administrator', 'subscriber');
@@ -64,6 +127,7 @@ class anspress_activate {
 				}
 		}
 	}
+	
 	/**
 	 * Fired when the plugin is activated.
 	 *
@@ -105,55 +169,40 @@ class anspress_activate {
 		
 			if ( !empty($wpdb->charset) )
 				$charset_collate = "DEFAULT CHARACTER SET ".$wpdb->charset;
-					
-			$sql = array();
-			
-			// table for voting
-			$sql[] = "CREATE TABLE ".$wpdb->base_prefix."ap_vote (
-						ID bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-						userid bigint(20) NOT NULL,
-						type varchar(256) NOT NULL,
-						actionid bigint(20) NOT NULL,
-						value tinyint(4) DEFAULT NULL,
-						note varchar(800) DEFAULT NULL,
-						voted_on timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-						PRIMARY KEY (ID)
-			) ".$charset_collate.";";			
-			
-			// table for points
-			$sql[] = "CREATE TABLE ".$wpdb->base_prefix."ap_points (
-				id bigint(20) NOT NULL AUTO_INCREMENT,
-				uid bigint(20) NOT NULL,
-				type varchar(256) NOT NULL,
-				data text NOT NULL,
-				points bigint(20) NOT NULL,
-				points_time timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-				UNIQUE KEY id (id)
-			) ".$charset_collate.";";
-			
-			// view table
-			$sql[] = "CREATE TABLE ".$wpdb->base_prefix."ap_views( 
-				id bigint(20) NOT NULL AUTO_INCREMENT,
-				uid bigint(20) NOT NULL,
-				data_id bigint(20) NOT NULL,
-				type varchar(256) NOT NULL,
-				ip_addres varchar( 60 ) NOT NULL,
-				view int( 10 ) NOT NULL,
-				view_time timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-				UNIQUE KEY id (id)
-			) ".$charset_collate.";";
+
+			$meta_table = "CREATE TABLE IF NOT EXISTS `".$wpdb->base_prefix."ap_meta` (
+					  `apmeta_id` bigint(20) NOT NULL AUTO_INCREMENT,
+					  `apmeta_userid` bigint(20) DEFAULT NULL,
+					  `apmeta_type` varchar(256) DEFAULT NULL,
+					  `apmeta_actionid` bigint(20) DEFAULT NULL,
+					  `apmeta_value` text,
+					  `apmeta_param` LONGTEXT DEFAULT NULL,
+					  `apmeta_date` timestamp NULL DEFAULT NULL,
+					  PRIMARY KEY (`apmeta_id`)
+					)".$charset_collate.";";
+
+			$message_table = "CREATE TABLE IF NOT EXISTS " . $wpdb->prefix ."ap_messages (
+					`message_id` bigint(20) NOT NULL auto_increment,
+					`message_content` text NOT NULL,
+					`message_sender` bigint(20) NOT NULL,
+					`message_conversation` bigint(20) NOT NULL,
+					`message_date` datetime NOT NULL,
+					`message_read` tinyint(1) NOT NULL,
+					PRIMARY KEY (`message_id`)
+				  )".$charset_collate.";";
 			
 			require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
-			dbDelta ($sql);
+			dbDelta ($meta_table);
+			dbDelta ($message_table);
 			
 			update_option ('ap_db_version', AP_DB_VERSION);
 		}
 
 		
 		if(!get_option('anspress_opt'))
-			update_option('anspress_opt', anspress_admin::default_options());
+			update_option('anspress_opt', ap_default_options());
 		else
-			update_option('anspress_opt', get_option('anspress_opt') + anspress_admin::default_options());
+			update_option('anspress_opt', get_option('anspress_opt') + ap_default_options());
 			
 		
 		if ( function_exists( 'is_multisite' ) && is_multisite() ) {
@@ -180,7 +229,7 @@ class anspress_activate {
 		}
 		
 		add_option('ap_flush', true); 
-		flush_rewrite_rules();
+		flush_rewrite_rules( false );
 	}
 	
 	/**

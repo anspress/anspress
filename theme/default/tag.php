@@ -1,8 +1,17 @@
-
 <div id="ap-lists" class="clearfix">
+	<div class="ap-tax-description">		
+		<h2 class="ap-tag-name"><?php printf(__('Tag: %s', 'ap'), $tag->name); ?> <span class="ap-tax-item-count"><?php printf( _n('1 Question', '%s Questions', $tag->count, 'ap'),  $tag->count); ?></span></h2>
+		<?php if($tag->description !=''): ?>
+			<p class="ap-tag-description"><?php echo $tag->description; ?></p>
+		<?php else: ?>
+			<p class="ap-tag-description"><?php _e('-- No description --', 'ap'); ?></p>
+		<?php endif; ?>
+	</div>
+	
 	<?php if ( $question->have_posts() ) : ?>
 		<div class="question-list">
 	<?php
+		ap_questions_tab();
 		/* Start the Loop */
 		while ( $question->have_posts() ) : $question->the_post();
 			include(ap_get_theme_location('content-list.php'));
