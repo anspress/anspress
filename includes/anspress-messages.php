@@ -155,17 +155,7 @@ class AP_Messages
 		if(ap_user_can_message()){
 			$result = array( 
 			'status' => true,
-			'html' => '<form id="ap-new-message" method="post" action="" data-action="ap-send-message">
-				<div class="form-group">
-					<input type="text" id="recipient" class="form-control" placeholder="'.__('Type the name of user', 'ap').'" name="recipient" data-action="ap-suggest-user" />
-				</div>
-				<div class="form-group">
-					<textarea class="form-control autogrow" id="message-content" name="message-content" placeholder="'.__('Type your message', 'ap').'"></textarea>
-				</div>
-				<button type="submit" class="ap-btn">'.__('Send', 'ap').'</button>
-				<input type="hidden" name="action" value="ap_new_conversation" />
-				<input type="hidden" name="_nonce" value="'.wp_create_nonce('new_message').'" />
-			</form>'
+			'html' => ap_new_message_form()
 			);
 		}else{
 			$result = array(
@@ -374,6 +364,22 @@ function ap_get_recipient($conversation_id){
 function ap_get_conversation_id($recipient, $sender){
 	global $wpdb;
 	return $wpdb->get_var($wpdb->prepare('SELECT apmeta_id FROM '.$wpdb->prefix.'ap_meta WHERE (FIND_IN_SET(%d ,apmeta_value) OR FIND_IN_SET(%d, apmeta_value)) AND apmeta_type = "conversation"', $recipient, $sender));
+}
+
+function ap_new_message_form(){
+
+	return '<form id="ap-new-message" method="post" action="" data-action="ap-send-message">
+		<div class="form-group">
+			<input type="text" id="recipient" class="form-control" placeholder="'.__('Type the name of user', 'ap').'" name="recipient" data-action="ap-suggest-user" />
+		</div>
+		<div class="form-group">
+			<textarea class="form-control autogrow" id="message-content" name="message-content" placeholder="'.__('Type your message', 'ap').'"></textarea>
+		</div>
+		<button type="submit" class="ap-btn">'.__('Send', 'ap').'</button>
+		<input type="hidden" name="action" value="ap_new_conversation" />
+		<input type="hidden" name="_nonce" value="'.wp_create_nonce('new_message').'" />
+	</form>';
+
 }
 
 function ap_new_message($conversation = false, $content, $recipients = false, $sender =false, $date = false){
@@ -674,4 +680,8 @@ function ap_get_conversation_list($id){
 		</form>
 		<?php
 	}
+}
+
+function ap_message_btn_html($userid, $display_name){
+	echo '<a class="btn ap-btn ap-follow-btn ap-icon-paperplane" href="'.ap_user_link(get_current_user_id(), 'messages/?to='.$userid.'&dname='.$display_name).'">'.__('Message', 'ap').'</a>';
 }

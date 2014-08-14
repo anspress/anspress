@@ -1199,8 +1199,8 @@ APjs.site.prototype = {
 				}
 			});
 		});
-		
-		jQuery('[data-action="ap-show-conversation"].active').click();
+		if(!ap_url_string_value('to'))
+			jQuery('[data-action="ap-show-conversation"].active').click();
 	},
 	newMessageButton: function(){
 		var self = this;
@@ -1225,7 +1225,9 @@ APjs.site.prototype = {
 							itemValue: 'value',
 							itemText: 'text',
 						});
-						
+						if(window.location.search.match("to?=").length > 0)
+							jQuery('[data-action="ap-suggest-user"]').tagsinput('add', { "value": ap_url_string_value('to'), "text": ap_url_string_value('dname')});
+							
 						jQuery('[data-action="ap-suggest-user"]').tagsinput('input').blur(function(e){
 							jQuery(document).mouseup(function (e){
 								var container = jQuery('#ap-suggestions');
@@ -1240,6 +1242,9 @@ APjs.site.prototype = {
 				}
 			});
 		});
+	
+		if(ap_url_string_value('to'))
+			jQuery('[data-button="ap-new-message"]').click();
 	},
 	userSuggestion: function(){
 		this.usersquery;
@@ -1445,3 +1450,9 @@ jQuery(document).ready(function (){
 	}); */
 	
 }); 
+function ap_url_string_value(name) {
+    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+        results = regex.exec(location.search);
+    return results == null ? false : decodeURIComponent(results[1].replace(/\+/g, " "));
+}
