@@ -609,3 +609,25 @@ function ap_short_num($num, $precision = 2) {
 function sanitize_comma_delimited($str){
 	return implode(",", array_map("intval", explode(",", $str)));
 }
+
+function ap_pagi($base, $total_pages, $paged, $end_size = 1, $mid_size = 5){
+	$pagi_a = paginate_links( array(
+		'base' => $base, // the base URL, including query arg
+		'format' => 'page/%#%', // this defines the query parameter that will be used, in this case "p"
+		'prev_text' => __('&laquo; Previous', 'ap'), // text for previous page
+		'next_text' => __('Next &raquo;', 'ap'), // text for next page
+		'total' => $total_pages, // the total number of pages we have
+		'current' => $paged, // the current page
+		'end_size' => 1,
+		'mid_size' => 5,
+		'type' => 'array'
+	));
+	if($pagi_a){
+		echo '<ul class="ap-pagination clearfix">';
+			echo '<li><span class="page-count">'. sprintf(__('Page %d of %d', 'ap'), $paged, $total_pages) .'</span></li>';
+			foreach($pagi_a as $pagi){
+				echo '<li>'. $pagi .'</li>';
+			}
+		echo '</ul>';
+	}
+}

@@ -37,7 +37,7 @@ class AP_User {
 	 */
 	private function __construct() {		
 		add_filter( 'pre_user_query', array($this, 'follower_query') );
-		//add_filter( 'pre_user_query', array($this, 'following_query') );
+		add_filter( 'pre_user_query', array($this, 'following_query') );
 		add_action('wp_ajax_ap_cover_upload', array($this, 'cover_upload'));
 		add_action( 'after_setup_theme', array($this, 'cover_size') );
 		add_action( 'ap_edit_profile_fields', array($this, 'user_fields'), 10, 2 );
@@ -49,9 +49,20 @@ class AP_User {
 		if(isset($query->query_vars['ap_followers_query'])){
 			global $wpdb;
 		
-			$query->query_from = $query->query_from." JOIN ".$wpdb->prefix."ap_meta M ON $wpdb->users.ID = M.apmeta_userid";
+			$query->query_from = $query->query_from." LEFT JOIN ".$wpdb->prefix."ap_meta M ON $wpdb->users.ID = M.apmeta_userid";
 			$userid = $query->query_vars['userid'];
 			$query->query_where = $query->query_where." AND M.apmeta_type = 'follow' AND M.apmeta_actionid = $userid";
+		}
+		return $query;
+	}
+	
+	public function following_query ($query) {
+		if(isset($query->query_vars['ap_following_query'])){
+			global $wpdb;
+		
+			$query->query_from = $query->query_from." LEFT JOIN ".$wpdb->prefix."ap_meta M ON $wpdb->users.ID = M.apmeta_actionid";
+			$userid = $query->query_vars['userid'];
+			$query->query_where = $query->query_where." AND M.apmeta_type = 'follow' AND M.apmeta_userid = $userid";
 		}
 		return $query;
 	}
@@ -409,8 +420,57 @@ function ap_user_template(){
 	$user_meta = (object)  array_map( function( $a ){ return $a[0]; }, get_user_meta($userid));
 	
 	if(is_ap_followers()){
-		$followers_query = ap_followers_query();
+		$total_followers = ap_get_current_user_meta('followers');
+
+		// how many users to show per page
+		$users_per_page = 1;
+		
+		// grab the current page number and set to 1 if no page number is set
+		$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
+
+		// calculate the total number of pages.
+		$total_pages = 1;
+		$offset = $users_per_page * ($paged - 1);
+		$total_pages = ceil($total_followers / $users_per_page);
+		
+		$args = array(
+			'ap_followers_query' => true,
+			'number' => 10,
+			'userid' => ap_get_user_page_user()
+		);
+
+		// The Query
+		$followers_query = new WP_User_Query( $args );
+		
 		$followers = $followers_query->results;
+		$base = ap_user_link(ap_get_user_page_user(), 'followers') . '/%_%';
+	}elseif(ap_current_user_page_is('following')){
+
+		$total_following = ap_get_current_user_meta('following');
+
+		// how many users to show per page
+		$users_per_page = 4;
+		
+		// grab the current page number and set to 1 if no page number is set
+		$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
+
+		// calculate the total number of pages.
+		$total_pages = 1;
+		$offset = $users_per_page * ($paged - 1);
+		$total_pages = ceil($total_following / $users_per_page);
+		
+		$args = array(
+			'ap_following_query' => true,
+			'number' => $users_per_page,
+			'userid' => ap_get_user_page_user(),
+			'offset' => $offset
+		);
+
+		// The Query
+		$following_query = new WP_User_Query( $args );
+		$following = $following_query->results;
+		$base = ap_user_link(ap_get_user_page_user(), 'following') . '/%_%';
+		
 	}elseif(ap_current_user_page_is('questions')){
 		$order = get_query_var('sort');
 		$label = sanitize_text_field(get_query_var('label'));
@@ -557,7 +617,10 @@ function ap_user_template(){
 	global $current_user_meta;
 	include ap_get_theme_location(ap_get_current_user_page_template());
 	
-	// Restore original Post Data
+	if(ap_current_user_page_is('following') || ap_current_user_page_is('followers'))
+		ap_pagi($base, $total_pages, $paged);
+	
+	// Restore original Post Data	
 	if(ap_current_user_page_is('questions') || ap_current_user_page_is('answers') || ap_current_user_page_is('favorites'))
 	wp_reset_postdata();
 }
@@ -575,20 +638,6 @@ function ap_get_current_user_meta($meta){
 		return $current_user_meta[$meta];
 		
 	return false;
-}
-
-function ap_followers_query(){
-	$args = array(
-		'ap_followers_query' => true,
-		'number' => 10,
-		'userid' => ap_get_user_page_user()
-	);
-
-	// The Query
-	$followers = new WP_User_Query( $args );
-
-	return $followers;
-	
 }
 
 function ap_cover_upload_form(){

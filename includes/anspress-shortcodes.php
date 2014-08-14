@@ -119,7 +119,6 @@ class anspress_shortcodes {
 			global $current_user_meta;
 			
 			$count_args  = array(
-				'role'      => 'Subscriber',
 				'fields'    => 'all_with_meta',
 				'number'    => 999999      
 			);

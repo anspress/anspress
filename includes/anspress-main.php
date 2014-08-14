@@ -233,13 +233,13 @@ class anspress {
 			$slug. "page/?([0-9]{1,})/?$" => "index.php?page_id=".$base_page_id."&paged=".$wp_rewrite->preg_index(1),  
 			
 			
-			$slug. "([^/]+)/page/?([0-9]{1,})/?$" => "index.php?page_id=".$base_page_id."&ap_page=".$wp_rewrite->preg_index(1)."&paged=".$wp_rewrite->preg_index(2),  
+			$slug. "([^/]+)/page/?([0-9]{1,})/?$" => "index.php?page_id=".$base_page_id."&ap_page=".$wp_rewrite->preg_index(1)."&paged=".$wp_rewrite->preg_index(2),
 			
 			$slug. "([^/]+)/([^/]+)/([^/]+)/page/?([0-9]{1,})/?$" => "index.php?page_id=".$base_page_id."&ap_page=".$wp_rewrite->preg_index(1)."&user=". $wp_rewrite->preg_index(2)."&user_page=". $wp_rewrite->preg_index(3)."&paged=".$wp_rewrite->preg_index(4),
 			
 			$slug. "([^/]+)/([^/]+)/([^/]+)/?" => "index.php?page_id=".$base_page_id."&ap_page=".$wp_rewrite->preg_index(1)."&user=". $wp_rewrite->preg_index(2)."&user_page=". $wp_rewrite->preg_index(3),
 			
-			$slug. "([^/]+)/([^/]+)/?" => "index.php?page_id=".$base_page_id."&ap_page=".$wp_rewrite->preg_index(1)."&user=".$wp_rewrite->preg_index(2),			
+			$slug. "([^/]+)/([^/]+)/?" => "index.php?page_id=".$base_page_id."&ap_page=".$wp_rewrite->preg_index(1)."&user=".$wp_rewrite->preg_index(2),
 			
 			$slug. "([^/]+)/?" => "index.php?page_id=".$base_page_id."&ap_page=".$wp_rewrite->preg_index(1),			
 
