@@ -51,7 +51,9 @@ class anspress_admin {
 		 */
 		$plugin = anspress::get_instance();
 		$this->plugin_slug = $plugin->get_plugin_slug();
-
+		
+		add_action('current_screen', array($this, 'redirect_to_install_page'));
+		
 		// Load admin style sheet and JavaScript.
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_styles' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_scripts' ) );
@@ -88,6 +90,10 @@ class anspress_admin {
 		add_action( 'admin_menu', array($this, 'change_post_menu_label') );
 
 		add_action( 'wp_ajax_ap_toggle_addon', array($this, 'ap_toggle_addon') );
+		add_action( 'wp_ajax_ap_install_base_page', array($this, 'ap_install_base_page') );
+		add_action( 'wp_ajax_ap_install_data_table', array($this, 'ap_install_data_table') );
+		add_action( 'wp_ajax_ap_install_rewrite_rules', array($this, 'ap_install_rewrite_rules') );
+		add_action( 'wp_ajax_ap_install_finish', array($this, 'ap_install_finish') );
 	}
 
 	/**
@@ -137,12 +143,15 @@ class anspress_admin {
 		
 		$total = $flagged_count + $mod_count;
 		
+		$Totalcount = '';
 		if($total > 0)
 			$Totalcount = ' <span class="update-plugins count"><span class="plugin-count">'.number_format_i18n($total).'</span></span>';
 		
+		$Flagcount = '';
 		if($flagged_count > 0)
 			$Flagcount = ' <span class="update-plugins count"><span class="plugin-count">'.number_format_i18n($flagged_count).'</span></span>';
-			
+		
+		$Modcount =	'';	
 		if($mod_count > 0)
 			$Modcount = ' <span class="update-plugins count"><span class="plugin-count">'.number_format_i18n($mod_count).'</span></span>';
 			
@@ -172,6 +181,8 @@ class anspress_admin {
 		
 		add_submenu_page('anspress', __( 'Addons', 'ap' ), __( 'Addons', 'ap' ),	'manage_options', 'anspress_addons', array( $this, 'display_plugin_addons_page' ));
 		
+		add_submenu_page('ap_install', __( 'Install', 'ap' ), __( 'Install', 'ap' ),	'manage_options', 'anspress_install', array( $this, 'display_install_page' ));
+		
 	}
 	
 	// highlight the proper top level menu
@@ -188,6 +199,10 @@ class anspress_admin {
 	 */
 	public function display_plugin_admin_page() {
 		include_once( 'views/admin.php' );
+	}
+	
+	public function display_install_page() {
+		include_once( 'views/install.php' );
 	}
 	
 	public function display_plugin_addons_page() {
@@ -551,6 +566,49 @@ public function ap_menu_metaboxes(){
 			}
 		}
 		die(json_encode($result));
+	}
+	
+	public function redirect_to_install_page(){
+		$screen = get_current_screen();
+		/* Check current admin page. */
+		if($screen->id != 'admin_page_anspress_install' && !get_option('ap_installed')){
+			wp_redirect(admin_url('/admin.php?page=anspress_install'));
+			exit;
+		}
+	}
+	
+	public function ap_install_base_page(){
+		if(wp_verify_nonce($_POST['args'], 'anspress_install') && current_user_can('manage_options')){
+			// Update post 37
+			  $basepage = array(
+				  'ID'           => intval($_POST['base_page']),
+				  'post_content' => '[anspress]',
+				  'post_title' => '[anspress]'
+			  );
+
+			// Update the post into the database
+			  wp_update_post( $basepage );
+			  flush_rewrite_rules();
+		}
+		die(true);
+	}
+	public function ap_install_data_table(){
+		if(wp_verify_nonce($_POST['args'], 'anspress_install') && current_user_can('manage_options')){
+			
+		}
+		die(true);
+	}
+	public function ap_install_rewrite_rules(){
+		if(wp_verify_nonce($_POST['args'], 'anspress_install') && current_user_can('manage_options')){
+			flush_rewrite_rules();
+		}
+		die(true);
+	}
+	public function ap_install_finish(){
+		if(wp_verify_nonce($_POST['args'], 'anspress_install') && current_user_can('manage_options')){
+			update_option('ap_installed', true);
+		}
+		die(admin_url('/admin.php?page=anspress_options'));
 	}
 
 }
