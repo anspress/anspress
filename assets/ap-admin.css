@@ -323,3 +323,7 @@ th.column-category {
     font-size: 12px;
     margin-top: 6px;
 }
+.escape_install {
+    display: block;
+    text-align: center;
+}

@@ -570,8 +570,11 @@ public function ap_menu_metaboxes(){
 	
 	public function redirect_to_install_page(){
 		$screen = get_current_screen();
+
 		/* Check current admin page. */
-		if($screen->id != 'admin_page_anspress_install' && !get_option('ap_installed')){
+		if(isset($_GET['escape_install']) && wp_verify_nonce($_GET['nonce'], 'anspress_install')){
+			update_option('ap_installed', true);
+		}elseif($screen->id != 'admin_page_anspress_install' && !get_option('ap_installed')){
 			wp_redirect(admin_url('/admin.php?page=anspress_install'));
 			exit;
 		}

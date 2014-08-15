@@ -31,6 +31,7 @@
 				<button class="ap-continue"><?php _e('Finish', 'ap'); ?></button>
 			</li>
 		</ul>
+		<a class="escape_install" href="<?php echo admin_url('/admin.php?page=anspress_options&escape_install=true&nonce='.wp_create_nonce('anspress_install')); ?>"><?php _e('Escape installation', 'ap'); ?></a>
 	</div>
 
 <br class="clear"></div>
