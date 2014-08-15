@@ -35,8 +35,8 @@ class AP_Basic_Email_Addon
      */
     public function __construct()
     {
-		add_action( 'ap_after_inserting_question', 'new_question_email' );
-		add_action( 'ap_after_inserting_answer', 'new_answer_email' );
+		add_action( 'ap_after_inserting_question', array($this, 'new_question_email') );
+		add_action( 'ap_after_inserting_answer', array($this, 'new_answer_email') );
     }
 	
 	/* Notify admin about new questions */
