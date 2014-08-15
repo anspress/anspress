@@ -190,7 +190,7 @@ function ap_get_label_color($label_id){
 	return $tax_meta['color'];
 }
 
-function ap_get_question_label($post_id = NULL){	
+function ap_get_question_label($post_id = NULL, $bg = false){	
 	if(!$post_id) $post_id = get_the_ID();
 	$taxo = get_the_terms( $post_id, 'question_label' );
 
@@ -198,7 +198,12 @@ function ap_get_question_label($post_id = NULL){
 		$o = '<ul class="question-labels">';
 		foreach($taxo as $t){
 			$color = ap_get_label_color($t->term_id);
-			$o .='<li title="'.$t->name. ($t->description ? ' - '.$t->description : '').'"><span class="question-label-color '.$t->slug.'" style="background:'.$color.';"></span><i>'.$t->name.'</i></li>';
+			$o .= '<li title="'.$t->name. ($t->description ? ' - '.$t->description : '').'"'.($bg ?' style="background:'.$color.';" class="ap-label-name"' : '').'>';
+			if(!$bg)
+				$o .= '<span class="question-label-color '.$t->slug.'" style="background:'.$color.';"></span>';
+				
+			$o .= '<i>'.$t->name.'</i>
+				</li>';
 		}
 		$o .= '</ul>';
 		return $o;

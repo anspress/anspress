@@ -29,11 +29,9 @@
 				<div class="summery wrap-left">
 					<h3 class="question-title">
 						<a class="question-hyperlink" href="<?php the_permalink(); ?>" rel="bookmark"><?php the_title(); ?></a>
+						<?php echo ap_get_question_label(null, true); ?>
 					</h3>					
 					<ul class="list-taxo ap-inline-list clearfix">
-						<li>
-							<?php echo ap_get_question_label(); ?>
-						</li>
 						<li class="list-meta">	
 							
 							<?php 							

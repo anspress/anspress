@@ -389,9 +389,9 @@ select[multiple].input-lg {
 	margin-right:10px;
 }
 .ap-container .question-title {
-    font-size: 15px;
+    font-size: 16px;
     font-weight: 600;
-    line-height: 24px;
+    line-height: 30px;
     margin: 0;
 }
 .ap-container h2.question-title {
@@ -401,7 +401,8 @@ select[multiple].input-lg {
     margin-bottom: 10px;
 }
 .ap-container .question-title a {
-    color: #3e4457;
+    color: #656b7e;
+    display: inline-block;
     text-decoration: none;
 }
 .ap-question-cells {
@@ -1039,9 +1040,11 @@ body.modal-open {
 }
 
 .question-list .question-labels {
+    display: inline-block;
     list-style: none outside none;
     margin: 0;
     padding: 0;
+    vertical-align: text-bottom;
 }
 .question-list .question-labels li {
     float: left;
@@ -1050,7 +1053,13 @@ body.modal-open {
 }
 .question-list .question-labels li i {
 	font-style:normal;
-	display:none
+}
+.question-list .question-labels li.ap-label-name {
+    border-radius: 3px;
+    color: #ffffff;
+    font-size: 11px;
+    margin-right: 5px;
+    padding: 0 10px;
 }
 
 
@@ -1535,7 +1544,7 @@ ul.ap-pagination{
 .ap-container .ap-inline-list > li {
     float: left;
     list-style: none outside none;
-    margin: 0 5px 0 0;
+    margin: 0 10px 0 0;
     padding: 0;
 }
 
