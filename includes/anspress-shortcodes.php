@@ -47,15 +47,24 @@ class anspress_shortcodes {
 			$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
 			
 			$question_args=array(
-				'post_type' => 'question',
-				'post_status' => 'publish',
-				'showposts' => ap_opt('question_per_page'),
-				'paged' => $paged
+				'ap_query' 		=> 'main_questions',
+				'post_type' 	=> 'question',
+				'post_status' 	=> 'publish',
+				'showposts' 	=> ap_opt('question_per_page'),
+				'paged' 		=> $paged
 			);
 			
 			if($order == 'active'){				
+				$question_args['ap_query'] = 'main_questions_active';
 				$question_args['orderby'] = 'meta_value';
-				$question_args['meta_key'] = ANSPRESS_UPDATED_META;	
+				$question_args['meta_key'] = ANSPRESS_UPDATED_META;
+				$question_args['meta_query'] = array(
+					'relation' => 'OR',
+					array(
+						'key' => ANSPRESS_UPDATED_META,
+						'compare' => 'NOT EXISTS',
+					),
+				);	
 				
 			}elseif($order == 'voted'){
 				$question_args['orderby'] = 'meta_value_num';

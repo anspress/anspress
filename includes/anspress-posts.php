@@ -73,6 +73,8 @@ class anspress_posts
 		add_action( 'posts_clauses', array($this, 'answer_sort_newest'), 10, 2 );
 		add_action( 'posts_clauses', array($this, 'user_favorites'), 10, 2 );
 		add_action('admin_footer-post.php', array($this, 'append_post_status_list'));
+		
+		add_action( 'posts_clauses', array($this, 'main_question_query'), 10, 2 );
 
     }
 	public function init_actions(){
@@ -710,6 +712,15 @@ class anspress_posts
 					  });
 			  </script>';
 		 }
+	}
+	
+	public function main_question_query($sql, $query){
+		global $wpdb;
+		if(isset($query->query['ap_query']) && $query->query['ap_query'] == 'main_questions_active'){
+			$sql['orderby'] = 'case when mt1.post_id IS NULL then '.$wpdb->posts.'.post_date else '.$wpdb->postmeta.'.meta_value end DESC';
+			//var_dump($sql);
+		}
+		return $sql;
 	}
 
 }
