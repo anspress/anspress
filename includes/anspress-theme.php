@@ -36,8 +36,8 @@ class anspress_theme {
 		add_action( 'after_setup_theme', array($this, 'includes') );
 		//add_filter( 'comments_open', array($this, 'disable_comment_form'), 10 , 2 );
 
-		add_filter('wp_title', array($this, 'ap_title'), 10, 2);
-		add_filter( 'the_title', array($this, 'the_title'), 10, 2 );
+		add_filter('wp_title', array($this, 'ap_title'), 100, 2);
+		add_filter( 'the_title', array($this, 'the_title'), 100, 2 );
 	}
 	
 	// include required theme files
