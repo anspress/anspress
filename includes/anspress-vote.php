@@ -54,7 +54,7 @@ class anspress_vote
 
 		
 	function ap_append_vote_count($post){
-		if(!is_question() && $post->post_type == 'question' || $post->post_type == 'answer'){
+		if(!is_question() && ($post->post_type == 'question' || $post->post_type == 'answer')){
 			$post->net_vote = ap_net_vote_meta($post->ID);
 		}elseif($post->post_type == 'question' || $post->post_type == 'answer'){
 			
@@ -78,7 +78,7 @@ class anspress_vote
 				$post->voted_closed = ap_is_user_voted_closed();
 					
 				$post->flagged = ap_is_user_flagged();
-						
+
 				//if current logged in user voted
 				if(is_user_logged_in()){
 					$userid = get_current_user_id();
@@ -438,7 +438,9 @@ function ap_vote_html($post = false){
 	?>
 		<div data-action="vote" data-id="<?php echo $post->ID; ?>" class="ap-voting net-vote">
 			<a class="vote-up<?php echo ($post->user_voted_up) ? ' voted' :''; echo $post->user_voted_down ? ' disable' :''; ?>" data-args="up-<?php echo $post->ID.'-'.$nonce; ?>" href="#" title="<?php _e('Up vote this post', 'ap'); ?>">&#9650;</a>
+			
 			<span class="net-vote-count" data-view="ap-net-vote"><?php echo ap_net_vote(); ?></span>
+			
 			<a class="vote-down<?php echo ($post->user_voted_down) ? ' voted' :''; echo ($post->user_voted_up) ? ' disable' :''; ?>" data-args="down-<?php echo $post->ID.'-'.$nonce; ?>" href="#" title="<?php _e('Down vote this post', 'ap'); ?>">&#9660;</a>
 		</div>
 	<?php
