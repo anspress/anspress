@@ -2184,6 +2184,7 @@ form .checkbox{
     position: absolute;
 }
 .ap-suggestions .ap-tag-item {
+    cursor: pointer;
     display: block;
     float: left;
     width: 25%;

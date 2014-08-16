@@ -1073,7 +1073,7 @@ APjs.site.prototype = {
 	addTag: function(){
 		var self = this;
 		
-		jQuery('.anspress').delegate('[data-action="ap-add-tag"]', 'click', function(){
+		jQuery('.anspress').delegate('[data-action="ap-add-tag"]', 'click touchstart', function(){
 			jQuery('[data-role="ap-tagsinput"]').tagsinput('add', jQuery(this).data('name'));
 			jQuery('[data-role="ap-tagsinput"]').tagsinput('input').val('');
 			jQuery('#ap-suggestions').hide();
