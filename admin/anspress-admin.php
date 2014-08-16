@@ -275,7 +275,7 @@ class anspress_admin {
 
 		return array_merge(
 			array(
-				'settings' => '<a href="' . admin_url( 'options-general.php?page=anspress_options' ) . '">' . __( 'Settings', 'ap' ) . '</a>'
+				'settings' => '<a href="' . admin_url( 'admin.php?page=anspress_options' ) . '">' . __( 'Settings', 'ap' ) . '</a>'
 			),
 			$links
 		);
