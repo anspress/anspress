@@ -3,9 +3,6 @@ while ( $question->have_posts() ) : $question->the_post();
 if($question->post->post_status == 'publish'){
 ?>
 <div id="ap-single" class="clearfix">
-	<h2 class="question-title">
-		<a href="<?php get_permalink(); ?>" rel="bookmark"><?php echo the_title(); ?></a>
-	</h2>
 	<?php ap_favorite_html(); ?>
 	<div class="ap-question-lr">		
 		<div class="ap-question-left ap-tab-content">

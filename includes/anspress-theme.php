@@ -114,7 +114,7 @@ class anspress_theme {
 	public function the_title( $title, $id ) {		
 			
 		if ( $id == ap_opt('base_page') ) {
-			if(is_ap_user() || is_question())
+			if(is_ap_user())
 				return '';
 			return ap_page_title();
 		}
