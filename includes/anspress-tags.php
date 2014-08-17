@@ -69,7 +69,7 @@ class AP_Tags
 			if ( 'question_tags' == $term->taxonomy && !get_option('permalink_structure')) {
 				return add_query_arg( array('question_tags' => false, 'p' => ap_opt('base_page'), 'qtag_id' =>$term->term_id), $url );
 			}elseif('question_tags' == $term->taxonomy && get_option('permalink_structure')){
-				return trim(get_permalink(ap_opt('base_page')), '/').'/tag/'.$term->slug;
+				return ap_get_link_to('tag/'.$term->slug);
 			}
 		}
 		return $url;

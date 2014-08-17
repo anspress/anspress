@@ -361,8 +361,9 @@ function ap_user_link($userid=false, $sub = false){
 		$userid = get_the_author_meta('ID');
 		
 	$user = get_userdata($userid);
+	$user_link = rtrim(ap_get_link_to('user/'.$user->user_login), '/');
 	if($user)
-		return get_permalink( ap_opt('base_page') ).'user/'.$user->user_login. ($sub ? '/'.$sub : '');
+		return $user_link. ($sub ? '/'.$sub : '');
 	
 	return false;
 }

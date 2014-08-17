@@ -207,7 +207,7 @@ function ap_answers_link(){
 
 function ap_get_link_to($page){
 	$relative = ltrim(str_replace(home_url(), '', get_permalink(ap_opt('base_page'))), '/'); 
-	return home_url($relative.$page);
+	return home_url(rtrim($relative, '/') .'/'.$page);
 }
 
 function ap_comment_btn_html(){

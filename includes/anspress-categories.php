@@ -70,7 +70,7 @@ class AP_Categories
 				return add_query_arg( array('question_category' => false, 'page_id' => ap_opt('base_page'), 'qcat_id' =>$term->term_id), $url );
 				
 			}elseif('question_category' == $term->taxonomy && get_option('permalink_structure')){
-				return trim(get_permalink(ap_opt('base_page')), '/').'/category/'.$term->slug;
+				return ap_get_link_to('category/'.$term->slug);
 			}
 		}
 		return $url;
