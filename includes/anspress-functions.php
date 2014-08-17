@@ -119,7 +119,7 @@ function ap_get_theme_url($file){
 	// checks if the file exists in the theme first,
 	// otherwise serve the file from the plugin
 	if ( $theme_file = locate_template( array( 'anspress/'.$file ) ) ) {
-		$template_url = get_template_directory().'/anspress/'.$file;
+		$template_url = get_template_directory_uri().'/anspress/'.$file;
 	} else {
 		$template_url = ANSPRESS_THEME_URL .'/'.ap_get_theme().'/'.$file;
 	}

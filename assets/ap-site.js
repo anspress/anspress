@@ -1002,7 +1002,7 @@ APjs.site.prototype = {
 		
 		if(jQuery('[data-role="ap-tagsinput"]').length > 0){
 			jQuery('[data-role="ap-tagsinput"]').tagsinput({
-				freeInput: false,
+				freeInput: true,
 				maxTags: ap_max_tags
 			});
 			jQuery('[data-role="ap-tagsinput"]').tagsinput('input').blur(function(e){
