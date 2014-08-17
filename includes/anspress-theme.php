@@ -114,8 +114,6 @@ class anspress_theme {
 	public function the_title( $title, $id ) {		
 			
 		if ( $id == ap_opt('base_page') ) {
-			if(is_ap_user())
-				return '';
 			return ap_page_title();
 		}
 		return $title;
@@ -143,6 +141,8 @@ function ap_page_title() {
 		$new_title = __('Edit question ', 'ap'). get_the_title(get_question_id());
 	elseif(is_answer_edit())
 		$new_title = __('Edit answer', 'ap');
+	elseif(is_ap_users())
+		$new_title = ap_opt('users_page_title');
 	elseif(is_ap_user())
 		$new_title = ap_user_page_title();
 	else

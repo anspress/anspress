@@ -66,6 +66,7 @@ function ap_default_options(){
 		'ask_page_title' 		=> 'Ask a question',
 		'categories_page_title' => 'AnsPress Categories',
 		'tags_page_title' 		=> 'AnsPress Tags',
+		'users_page_title' 		=> 'AnsPress users',
 		
 		'close_selected' 		=> true,
 		'enable_tags' 			=> true,
@@ -435,28 +436,30 @@ function ap_questions_tab(){
 	$label_link = '?sort='.$order.'&label=';
 	
 	?>
+	<div class="ap-lists-tab clearfix">
 		<ul class="ap-tabs clearfix" role="tablist">			
 			<li class="<?php echo $order == 'active' ? ' active' : ''; ?>"><a href="<?php echo $link.'active'; ?>"><?php _e('Active', 'ap'); ?></a></li>
 			<li class="<?php echo $order == 'newest' ? ' active' : ''; ?>"><a href="<?php echo $link.'newest'; ?>"><?php _e('Newest', 'ap'); ?></a></li>			
 			<li class="<?php echo $order == 'voted' ? ' active' : ''; ?>"><a href="<?php echo $link.'voted'; ?>"><?php _e('Voted', 'ap'); ?></a></li>
 			<li class="<?php echo $order == 'answers' ? ' active' : ''; ?>"><a href="<?php echo $link.'answers'; ?>"><?php _e('Most answers', 'ap'); ?></a></li>
 			<li class="<?php echo $order == 'unanswered' ? ' active' : ''; ?>"><a href="<?php echo $link.'unanswered'; ?>"><?php _e('Unanswered', 'ap'); ?></a></li>
-			<li class="<?php echo $order == 'oldest' ? ' active' : ''; ?>"><a href="<?php echo $link.'oldest'; ?>"><?php _e('Oldest', 'ap'); ?></a></li>
-			<li class="pull-right">
-				<ul class="ap_status ap-dropdown">
-					<a href="#" class="btn ap-btn ap-dropdown-toggle"><?php _e('Label', 'ap'); ?> &#9662;</a>
-					<ul class="ap-dropdown-menu">
-						<?php
-							$labels = get_terms('question_label', array('orderby'=> 'name','hide_empty'=> true));
-							foreach($labels as $l){
-								$color = ap_get_label_color($l->term_id);
-								echo '<li'. ($label == $l->slug ? ' class="active" ' : '') .'><a href="'.$label_link.$l->slug.'" title="'.$l->description.'"><span class="question-label-color" style="background:'.$color.'"> </span>'.$l->name.'</a></li>';
-							}
-						?>
-					</ul>
-				</ul>
-			</li>
+			<li class="<?php echo $order == 'oldest' ? ' active' : ''; ?>"><a href="<?php echo $link.'oldest'; ?>"><?php _e('Oldest', 'ap'); ?></a></li>			
 		</ul>
+		<div class="pull-right">
+			<ul class="ap_status ap-dropdown">
+				<a href="#" class="btn ap-btn ap-dropdown-toggle"><?php _e('Label', 'ap'); ?> &#9662;</a>
+				<ul class="ap-dropdown-menu">
+					<?php
+						$labels = get_terms('question_label', array('orderby'=> 'name','hide_empty'=> true));
+						foreach($labels as $l){
+							$color = ap_get_label_color($l->term_id);
+							echo '<li'. ($label == $l->slug ? ' class="active" ' : '') .'><a href="'.$label_link.$l->slug.'" title="'.$l->description.'"><span class="question-label-color" style="background:'.$color.'"> </span>'.$l->name.'</a></li>';
+						}
+					?>
+				</ul>
+			</ul>
+		</div>
+	</div>
 	<?php
 }
 

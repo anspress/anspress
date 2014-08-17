@@ -1,8 +1,9 @@
 <div id="ap-lists" class="clearfix">
+	<?php ap_questions_tab(); ?>
 	<?php if ( $question->have_posts() ) : ?>
 		<div class="question-list">
 	<?php
-		ap_questions_tab();
+		
 		/* Start the Loop */
 		while ( $question->have_posts() ) : $question->the_post();
 			include(ap_get_theme_location('content-list.php'));

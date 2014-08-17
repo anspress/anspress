@@ -884,11 +884,12 @@ body.modal-open {
 
 
 /* list  */
-.ap-container .question-list .ap-tabs {
-    background: none repeat scroll 0 0 #f5f5f5;
-    border: 1px solid #ddd;
-    margin-bottom: 20px;
-    padding: 8px 8px 0;
+.ap-lists-tab {
+    border-bottom: 1px solid #dddddd;
+}
+#ap-lists .ap-tabs {
+    border-bottom: medium none;
+    float: left;
 }
 .summery.wrap-left {
     overflow: hidden;
@@ -897,7 +898,7 @@ body.modal-open {
     border-bottom: 1px solid #f8f8f8;
     display: block;
     margin: 8px 5px;
-    padding: 0 10px;
+    padding: 0;
 }
 .anspress .question-list {
     background: #fff;
@@ -960,9 +961,9 @@ body.modal-open {
 }
 
 .question-list .ap-answer-count, .question-list .ap-vote-count{
-    background: none repeat scroll 0 0 #f3f3f3;
-    border-radius: 50%;
-    color: #666;
+    border: 1px solid #dddddd;
+    border-radius: 2px;
+    color: #666666;
     display: block;
     float: left;
     font-size: 10px;
@@ -1596,8 +1597,9 @@ ul.ap-pagination{
 .ap-container .open .ap-dropdown-menu > li a{
 	display:block;
 }
-.ap-container .ap_status{
-	position:relative;
+.ap-container .ap_status {
+    margin: 0;
+    position: relative;
 }
 .ap-container .ap_status ul {
     margin: 0;

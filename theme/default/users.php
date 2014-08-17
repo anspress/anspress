@@ -1,4 +1,4 @@
-<div id="ap-user" class="clearfix">
+<div id="ap-users" class="clearfix">
 	<?php
 
 
