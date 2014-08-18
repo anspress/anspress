@@ -306,13 +306,16 @@ select[multiple].input-lg {
 }
 
 /* end bootstrap styles */
+.anspress {
+	line-height:1.6;
+} 
 .anspress .site-content ul{
 	padding:0;
 	margin:0;
 	list-style:none;
 }
 .anspress pre {
-    white-space: pre-line;
+    overflow-y:scroll;
 }
 .anspress .site-content{
 	margin-top:0;
@@ -902,7 +905,7 @@ body.modal-open {
 .ap-container .question-list .question {
     border-bottom: 1px solid #f8f8f8;
     display: block;
-    margin: 8px 5px;
+    margin: 8px 0;
     padding: 0;
 }
 .anspress .question-list {

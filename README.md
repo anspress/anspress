@@ -1,6 +1,6 @@
 AnsPress - A most advance community question and answer system for WordPress.
 =========
-
+Support forum: https://rahularyan.com/support
 AnsPress is a most complete question and answer system for WordPress. AnsPress is made with developers in mind, highly customizable. AnsPress provide an easy to use override system for theme. List of features:
 
   - Sorting question and answer by many options.
