@@ -229,7 +229,7 @@ if ( ! isset( $_REQUEST['settings-updated'] ) )
 									_e( 'There are no ranks available.', 'ap' );
 								}
 							?>
-							<p class="description"><?php _e('Assign a default rank for newly registedred user', 'ap'); ?></p>
+							<p class="description"><?php _e('Assign a default rank for newly registered user', 'ap'); ?></p>
 						</td>
 					</tr>
 				</table>

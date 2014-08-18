@@ -507,7 +507,7 @@ msgid "There are no ranks available."
 msgstr ""
 
 #: admin/views/admin.php:232
-msgid "Assign a default rank for newly registedred user"
+msgid "Assign a default rank for newly registered user"
 msgstr ""
 
 #: admin/views/admin.php:239
