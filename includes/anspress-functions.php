@@ -16,6 +16,7 @@ function ap_opt($key = false, $value = false){
 	
 	if($settings === false){
 		$settings = get_option( 'anspress_opt') + ap_default_options();
+		
 		wp_cache_set('ap_opt', $settings, 'options');
 	}	
 	if($value){

@@ -314,7 +314,7 @@ if ( ! isset( $_REQUEST['settings-updated'] ) )
 						</td>
 					</tr>
 				</table>
-			</div>
+			</div>				
 						
 			<div class="tab-pane" id="ap-misc">	
 				<h3 class="title"><?php _e('Spam', 'ap'); ?></h3>

@@ -395,6 +395,7 @@ public function ap_menu_metaboxes(){
 	
 	public function ap_save_options(){
 		if(current_user_can('manage_options')){
+			flush_rewrite_rules();
 			$options = $_POST['anspress_opt'];
 			update_option('anspress_opt', $options);
 			$result = array('status' => true, 'html' => '<div class="updated fade" style="display:none"><p><strong>'.__( 'AnsPress options updated successfully', 'ap' ).'</strong></p></div>');

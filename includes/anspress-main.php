@@ -182,6 +182,7 @@ class anspress {
 		$query_vars[] = 'edit_a';
 		$query_vars[] = 'question_id';
 		$query_vars[] = 'question';
+		$query_vars[] = 'question_name';
 		$query_vars[] = 'answer_id';
 		$query_vars[] = 'answer';
 		$query_vars[] = 'ask';
@@ -213,15 +214,15 @@ class anspress {
 		unset($wp_rewrite->extra_permastructs['question']); 
         unset($wp_rewrite->extra_permastructs['answer']); 
 		
-		$base_page_id = ap_opt('base_page');
-		$base_page_slug = ap_opt('base_page_slug');
-
+		$base_page_id 		= ap_opt('base_page');
+		$base_page_slug 	= ap_opt('base_page_slug');
+		$q_prefix 			= strlen(ap_opt('question_prefix')) > 0 ? ap_opt('question_prefix').'/' : '';
 		
 		$slug = ap_base_page_slug();
 		$new_rules = array(  
-			$slug. "question/([^/]+)/([^/]+)/page/?([0-9]{1,})/?$" => "index.php?page_id=".$base_page_id."&question=".$wp_rewrite->preg_index(1)."&question_id=".$wp_rewrite->preg_index(2)."&paged=".$wp_rewrite->preg_index(3),
+			$slug. "question/([^/]+)/([^/]+)/page/?([0-9]{1,})/?$" => "index.php?page_id=".$base_page_id."&question=".$wp_rewrite->preg_index(2)."&paged=".$wp_rewrite->preg_index(3),
 			
-			$slug. "question/([^/]+)/([^/]+)/?" => "index.php?page_id=".$base_page_id."&question=".$wp_rewrite->preg_index(1)."&question_id=".$wp_rewrite->preg_index(2),			
+			$slug. "question/([^/]+)/?" => "index.php?page_id=".$base_page_id."&question_name=".$wp_rewrite->preg_index(1),			
 			
 			$slug. "category/([^/]+)/page/?([0-9]{1,})/?$" => "index.php?page_id=".$base_page_id."&question_category=".$wp_rewrite->preg_index(1)."&paged=".$wp_rewrite->preg_index(2),   
 			

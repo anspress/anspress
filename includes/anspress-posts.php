@@ -658,7 +658,7 @@ class anspress_posts
 	public function custom_question_link( $url, $post ) {
 		if ( 'question' == get_post_type( $post ) ) {
 			if(get_option('permalink_structure'))
-				return  ap_get_link_to('question/'.$post->post_name.'/'.$post->ID); 
+				return  ap_get_link_to('question/'.$post->post_name); 
 			else
 				return add_query_arg( array('apq' => false, 'page_id' => ap_opt('base_page'), 'question_id' =>$post->ID), $url );
 		}
