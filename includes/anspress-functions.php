@@ -638,3 +638,64 @@ function ap_question_side_tab(){
 		echo '</ul>';
 	}
 }
+
+function ap_read_features($type = 'addon'){
+	$option = get_option('ap_addons');
+	$cache = wp_cache_get('ap_'.$type.'s_list', 'array');
+	
+	if($cache !== FALSE)
+		return $cache;
+		
+	$features = array();
+	//load files from addons folder
+	$files=glob(ANSPRESS_DIR.'/'.$type.'s/*/'.$type.'.php');
+	//print_r($files);
+	foreach ($files as $file){
+		$data = ap_get_features_data($file);
+		$data['folder'] = basename(dirname($file));
+		$data['file'] = basename($file);
+		$data['active'] = (isset($option[$data['name']]) && $option[$data['name']]) ? true : false;
+		$features[$data['name']] = $data;
+	}
+	wp_cache_set( 'ap_'.$type.'s_list', $features, 'array');
+	return $features;
+}
+
+
+function ap_get_features_data( $plugin_file) {
+	$plugin_data = ap_get_file_data( $plugin_file);
+
+	return $plugin_data;
+}
+
+function ap_get_file_data( $file) {
+	// We don't need to write to the file, so just open for reading.
+	$fp = fopen( $file, 'r' );
+
+	// Pull only the first 8kiB of the file in.
+	$file_data = fread( $fp, 1000 );
+
+	// PHP will close file handle, but we are good citizens.
+	fclose( $fp );
+
+	$metadata=ap_features_metadata($file_data, array(
+		'name' 				=> 'Name',
+		'version' 			=> 'Version',
+		'description' 		=> 'Description',
+		'author' 			=> 'Author',
+		'author_uri' 		=> 'Author URI',
+		'addon_uri' 		=> 'Addon URI'
+	));
+
+	return $metadata;
+}
+
+function ap_features_metadata($contents, $fields){
+	$metadata=array();
+
+	foreach ($fields as $key => $field)
+		if (preg_match('/'.str_replace(' ', '[ \t]*', preg_quote($field, '/')).':[ \t]*([^\n\f]*)[\n\f]/i', $contents, $matches))
+			$metadata[$key]=trim($matches[1]);
+	
+	return $metadata;
+}

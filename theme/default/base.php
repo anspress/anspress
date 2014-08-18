@@ -1,3 +1,4 @@
+<?php dynamic_sidebar( 'ap-top' ); ?>
 <div id="ap-lists" class="clearfix">
 	<?php ap_questions_tab(); ?>
 	<?php if ( $question->have_posts() ) : ?>

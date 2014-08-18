@@ -64,6 +64,7 @@ APjs.site.prototype = {
 		this.searchMessage();
 		this.editMessage();
 		this.deleteMessage();
+		this.questionSuggestion();
 		
 		
 		jQuery('body').delegate('.ap-modal-bg, .ap-modal-close', 'click', function () {
@@ -1425,16 +1426,63 @@ APjs.site.prototype = {
 				this
 			);
 		});
-	}
+	},
+	questionSuggestion: function(){
+		this.qquery;
+		var self = this;
+		
+		jQuery('.anspress').delegate('#ap-quick-ask-input', 'keyup', function(){
+			var value = jQuery(this).val();
+			
+			if(value.length == 0)
+				return;
+				
+			/* abort previous ajax request */
+			if(typeof self.qquery !== 'undefined'){
+				self.qquery.abort();
+			}
+			
+			self.showLoading(aplang.loading_suggestions);	
+			self.qquery = self.doAjaxForm(
+				{
+					action:'ap_suggest_questions',
+					q: value
+				},
+				function(data){
+					self.hideLoading();
+					var container = jQuery(this).closest('.ap-qaf-inner'),
+						position = container.offset();
+					
+					if(jQuery('#ap-qsuggestions').length ==0)
+						jQuery('.anspress').append('<div id="ap-qsuggestions" class="ap-qsuggestions" style="display:none"></div>');
+					
+					if(data['items']){
+						self.qsItems(data['items']);
+						
+						jQuery('#ap-qsuggestions').html(self.qsitems).css({'top': (position.top + container.height() + 10), 'left': position.left, 'width': container.width()}).show();
+					}
+					
+				},
+				this
+			);
+		});
+		
+		jQuery('.anspress').delegate('#ap-qsuggestions', 'click', function(e){
+			jQuery('#ap-qsuggestions').toggle();
+		});
+
+	},
+	qsItems: function(items){
+		this.qsitems = '';
+		var self = this;
+		jQuery.each(items, function(i){
+			self.qsitems += this.html;
+		});
+	},
 	
 };
 
-function ap_toggle_sub_cat(){
-	jQuery('.sub-cat-count').click(function(e){
-		e.preventDefault();
-		jQuery(this).closest('.taxo-footer').find('.child').slideToggle(200);
-	});
-}
+
 function ap_label_select_template(state) {
 	var color = jQuery(state.element).data('color');
 	if (!color) color = '#ddd'; // optgroup
@@ -1442,12 +1490,17 @@ function ap_label_select_template(state) {
 }
 		
 jQuery(document).ready(function (){  
-
-	ap_toggle_sub_cat();
 	
-	/* jQuery('body').delegate('#please-login button', 'click' ,function(){
-		jQuery(this).parent().slideToggle();
-	}); */
+	jQuery(document).mouseup(function (e)
+	{
+		var container = jQuery('#ap-qsuggestions');
+console.log(e.target);
+		if (!container.is(e.target) // if the target of the click isn't the container...
+			&& container.has(e.target).length === 0) // ... nor a descendant of the container
+		{
+			container.hide();
+		}
+	});
 	
 }); 
 function ap_url_string_value(name) {

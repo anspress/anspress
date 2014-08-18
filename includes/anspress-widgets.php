@@ -9,7 +9,7 @@
  * @copyright 2014 Rahul Aryan
  */
 
-class AP_Addons
+class AP_Widgets
 {
     /**
      * Instance of this class.
@@ -35,30 +35,8 @@ class AP_Addons
      */
     public function __construct()
     {
-		$addons = ap_read_addons();
-		if(!empty($addons))
-			foreach($addons as $addon){
-				$include = ANSPRESS_ADDON_DIR.$addon['folder']. DS .$addon['file'];
-				
-				if(ap_is_addon_active($addon['name']) && file_exists($include))
-					require_once( $include );
-			}
+		require_once( ANSPRESS_WIDGET_DIR. 'quick-ask.php' );
+		
     }
-
 }
 
-function ap_read_addons(){
-	return ap_read_features('addon');
-}
-
-function ap_addon_counts(){
-	return count(ap_read_addons());
-}
-
-function ap_is_addon_active($name){
-	$option = get_option('ap_addons');
-	if(isset($option[$name]) && $option[$name])
-		return true;
-	
-	return false;
-}

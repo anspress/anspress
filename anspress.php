@@ -36,6 +36,7 @@ define('AP_DB_VERSION', '10');
 define('DS', DIRECTORY_SEPARATOR);
 define('ANSPRESS_DIR', plugin_dir_path( __FILE__ ));
 define('ANSPRESS_URL', plugin_dir_url( __FILE__ ));
+define('ANSPRESS_WIDGET_DIR', ANSPRESS_DIR.'widgets'.DS);
 define('ANSPRESS_ADDON_DIR', ANSPRESS_DIR.'addons'.DS);
 define('ANSPRESS_ADDON_URL', ANSPRESS_URL.'addons/');
 define('ANSPRESS_THEME_DIR', plugin_dir_path( __FILE__ ).'theme');
@@ -88,6 +89,7 @@ require_once( plugin_dir_path( __FILE__ ) . 'activate.php' );
 require_once( plugin_dir_path( __FILE__ ) . 'includes/anspress-points.php' );
 require_once( plugin_dir_path( __FILE__ ) . 'includes/anspress-history.php' );
 require_once( plugin_dir_path( __FILE__ ) . 'includes/anspress-messages.php' );
+require_once( plugin_dir_path( __FILE__ ) . 'includes/anspress-widgets.php' );
 
 
 /*
@@ -119,6 +121,7 @@ add_action( 'plugins_loaded', array( 'AP_Badges', 'get_instance' ) );
 add_action( 'plugins_loaded', array( 'AP_Points', 'get_instance' ) );
 add_action( 'plugins_loaded', array( 'AP_History', 'get_instance' ) );
 add_action( 'plugins_loaded', array( 'AP_Messages', 'get_instance' ) );
+add_action( 'plugins_loaded', array( 'AP_Widgets', 'get_instance' ) );
 
 
 /*----------------------------------------------------------------------------*

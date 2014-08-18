@@ -47,6 +47,9 @@ class anspress_ajax
 		add_action('wp_ajax_nopriv_ap_suggest_tags', array($this, 'ap_suggest_tags'));
 		
 		add_action('wp_ajax_ap_set_best_answer', array($this, 'ap_set_best_answer'));
+		
+		add_action('wp_ajax_ap_suggest_questions', array($this, 'ap_suggest_questions'));
+		add_action('wp_ajax_nopriv_ap_suggest_questions', array($this, 'ap_suggest_questions'));
     }
 
 	
@@ -286,6 +289,28 @@ class anspress_ajax
 		}else{
 			$result	= array('action' => false, 'message' => __('Please try again', 'ap'));
 		}
+		die(json_encode($result));
+	}
+	public function ap_suggest_questions(){
+		$keyword = sanitize_text_field($_POST['q']);
+		$questions = get_posts(array(
+			'post_type'   	=> 'question',
+			'showposts'   	=> 10,
+			's' 			=> $keyword,
+		));
+		
+		
+		if($questions){
+			$items = array();
+			foreach ($questions as $k => $p){
+				$count = ap_count_ans_meta($p->ID);
+				$items[$k]['html'] 			= '<a class="ap-sqitem" href="'.get_permalink($p->ID).'">'.get_avatar($p->post_author, 40).'<div class="apqstitle">'.$p->post_title.'</div><span class="apsqcount">'. sprintf(_n('1 Answer', '%d Answers', $count, 'ap' ), $count) .'</span></a>';
+			}
+			$result = array('status' => true, 'items' => $items);
+		}else{
+			$result = array('status' => false, 'message' => __('No related questions found', 'ap'));
+		}
+		
 		die(json_encode($result));
 	}
 }

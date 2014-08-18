@@ -330,7 +330,7 @@ select[multiple].input-lg {
 .ap-container h2{
 	margin-top:0;
 }
-.ap-container{
+.anspress{
 	margin: 0;
 	font-family: 'helvetica neue',helvetica,arial,'lucida grande',sans-serif;
 	color:#4e5665;
@@ -894,6 +894,7 @@ body.modal-open {
 /* list  */
 .ap-lists-tab {
     border-bottom: 1px solid #dddddd;
+    margin-bottom: 15px;
 }
 #ap-lists .ap-tabs {
     border-bottom: medium none;
@@ -2605,4 +2606,62 @@ form .checkbox{
     float: left;
     margin: -4px 10px -4px -4px;
     padding: 10px;
+}
+
+.ap-widget-pos{
+	margin-bottom:20px;
+}
+
+.ap-quick-ask {
+    background: none repeat scroll 0 0 #fcfcfc;
+    border: 1px solid #dddddd;
+    border-radius: 5px;
+    margin-bottom: 30px;
+    padding: 20px;
+}
+.ap-qaf-inner{
+    display: table;
+    margin: 0 auto;
+}
+.ap-qaf-inner > .form-control {
+    float: left;
+    margin-right: 10px;
+    width: 450px;
+}
+.ap-qaf-inner > button{
+    background: none repeat scroll 0 0 #4db3f4;
+    border-color: rgba(0, 0, 0, 0.1);
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: bold;
+    padding: 10px 30px;
+}
+.ap-qsuggestions {
+    background: none repeat scroll 0 0 #ffffff;
+    border: 1px solid #dddddd;
+    border-radius: 3px;
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
+    display: block;
+    position: absolute;
+}
+.ap-sqitem {
+    border-bottom: 1px solid #efefef;
+    display: block;
+    font-size: 13px;
+    padding: 6px 10px;
+}
+.ap-sqitem :last-child{
+	border-bottom:none;
+}
+.apqstitle {
+    color: #52586b;
+    font-size: 14px;
+    font-weight: 600;
+}
+.apsqcount {
+    color: #999999;
+}
+.ap-sqitem .avatar {
+    float: left;
+    margin-right: 15px;
 }

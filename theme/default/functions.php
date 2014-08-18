@@ -103,4 +103,16 @@ if ( ! function_exists( 'ap_comment' ) ) :
 		<?php
 	}
 endif;
-?>
+
+add_action( 'widgets_init', 'ap_widgets_positions' );
+function ap_widgets_positions(){
+	register_sidebar( array(
+		'name'         	=> __( 'AP Lists Top', 'ap' ),
+		'id'           	=> 'ap-top',
+		'before_widget' => '<div id="ap-top-widget" class="ap-widget-pos">',
+		'after_widget' 	=> '</div>',
+		'description'  	=> __( 'Widgets in this area will be shown before questions list.', 'ap' ),
+		'before_title' 	=> '<h3 class="ap-widget-title">',
+		'after_title'  	=> '</h3>',
+	) );
+}
