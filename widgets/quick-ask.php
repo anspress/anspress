@@ -14,7 +14,7 @@ class AP_QuickAsk_Widget extends WP_Widget {
 			echo $args['before_title'] . $title . $args['after_title'];
 		}
 		?>
-			<form class="ap-quick-ask" action="<?php echo ap_get_link_to('ask'); ?>">
+			<form class="ap-quick-ask" action="<?php echo ap_get_link_to('ask'); ?>" method="POST">
 				<div class="ap-qaf-inner">
 					<input class="form-control" type="text" name="title" id="ap-quick-ask-input" placeholder="<?php _e('Ask a question', 'ap'); ?>" autocomplete="off" />
 					<button type="submit ap-btn" ><?php _e('Ask', 'ap'); ?></button>
