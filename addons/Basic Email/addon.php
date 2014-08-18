@@ -46,9 +46,9 @@ class AP_Basic_Email_Addon
 			$post_url = get_permalink( $post_id );
 			$post = get_post($post_id); 
 			$subject = 'AnsPress: '.__('New Question: ', 'ap'). $post->post_title;		
-			$message = sprintf(__('Hello! Admin, \n\n A new question is posted by %s \n\n', 'ap'), ap_user_display_name($post->post_author, true));
+			$message = sprintf(__('Hello! Admin, <br /><br /> A new question is posted by %s <br />', 'ap'), ap_user_display_name($post->post_author, true));
 			$message .= ap_truncate_chars($post->post_content, 100);
-			$message .= "\n\n<a href='". $post_url. "'>'.__('View question', 'ap').'</a>\n\n";
+			$message .= "<br /><br /><a href='". $post_url. "'>".__('View question', 'ap')."</a><br />";
 			//sends email
 			wp_mail(get_option( 'admin_email' ), $subject, $message );
 		}
@@ -61,9 +61,9 @@ class AP_Basic_Email_Addon
 			$post = get_post($post_id); 
 			$parent = get_post($post->post_parent);
 			$subject = 'AnsPress: '.__('New Answer: ', 'ap'). $parent->post_title;	
-			$message = sprintf(__('Hello!, \n\n A new answer is posted by %s \n\n', 'ap'), ap_user_display_name($post->post_author, true));			
+			$message = sprintf(__('Hello!,<br /><br /> A new answer is posted by %s <br />', 'ap'), ap_user_display_name($post->post_author, true));			
 			$message .= ap_truncate_chars($post->post_content, 100);
-			$message .= "\n\n<a href='". get_permalink($parent->ID)."#".$post->ID. "'>'.__('View Answer', 'ap').'</a>\n\n";
+			$message .= "<br /><br /><a href='". get_permalink($parent->ID)."#".$post->ID. "'>".__('View Answer', 'ap')."</a><br />";
 			
 			//sends email
 			
