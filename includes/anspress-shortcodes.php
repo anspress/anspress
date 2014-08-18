@@ -196,7 +196,7 @@ class anspress_shortcodes {
 			$userid 		= $user->data->ID;
 			$display_name 	= $user->data->display_name;
 			$username 		= $user->data->user_login;
-			$current_user_meta = array_map( function( $a ){ return $a[0]; }, get_user_meta($userid));
+			$current_user_meta = array_map(	'ap_meta_array_map', get_user_meta($userid));
 		}else{			
 			$question = new WP_Query( $question_args );		
 		}
@@ -229,4 +229,7 @@ class anspress_shortcodes {
 		wp_reset_postdata();
 	}
 	
+}
+function ap_meta_array_map( $a ){ 
+	return $a[0]; 
 }

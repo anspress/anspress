@@ -435,7 +435,7 @@ function ap_get_current_user_page_template(){
 
 function ap_user_template(){
 	$userid = ap_get_user_page_user();
-	$user_meta = (object)  array_map( function( $a ){ return $a[0]; }, get_user_meta($userid));
+	$user_meta = (object)  array_map( 'ap_meta_array_map', get_user_meta($userid));
 	
 	if(is_ap_followers()){
 		$total_followers = ap_get_current_user_meta('followers');
