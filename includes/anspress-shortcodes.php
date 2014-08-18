@@ -205,7 +205,7 @@ class anspress_shortcodes {
 		
 		if(is_ap_users()){
 			$base = ap_get_link_to('users') . '/%_%';
-			ap_pagi($base, ceil( $total_terms / $per_page ), $paged);			
+			ap_pagi($base, ceil( $total_users / $per_page ), $paged);			
 		}
 		
 		if(is_question_tags())

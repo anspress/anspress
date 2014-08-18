@@ -306,6 +306,11 @@ select[multiple].input-lg {
 }
 
 /* end bootstrap styles */
+.anspress .site-content ul{
+	padding:0;
+	margin:0;
+	list-style:none;
+}
 .anspress pre {
     white-space: pre-line;
 }
