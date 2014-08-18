@@ -5,7 +5,6 @@ $addons = ap_read_addons();
 <div class="wrap">
 	<h2>
 		<?php _e('AnsPress Addons'); ?> <span class="addon-count"><?php echo ap_addon_counts(); ?></span>
-		<a class="hide-if-no-js add-new-h2" href="http://localhost/wp-admin/theme-install.php">Add New</a>
 	</h2>
 
 <div class="theme-browser rendered">
