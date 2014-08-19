@@ -1,7 +1,7 @@
 AnsPress - A most advance community question and answer system for WordPress.
 =========
 
-![AnsPress Cover](http://plugins.svn.wordpress.org/anspress/assets/banner-1544x500.png "AnsPress cover image")
+![AnsPress Cover](https://raw.githubusercontent.com/open-wp/anspress/master/banner-1544x500.png "AnsPress cover image")
 
 Demo & support forum: http://open-wp.com/questions/
 
