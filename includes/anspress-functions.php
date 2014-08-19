@@ -207,7 +207,7 @@ function ap_answers_link(){
 }
 
 function ap_get_link_to($page){
-	$relative = ltrim(wp_make_link_relative(get_permalink(ap_opt('base_page'))), '/'); 
+	$relative = ltrim(str_replace(home_url(), '', get_permalink(ap_opt('base_page'))), '/'); 
 	return home_url(rtrim($relative, '/') .'/'.$page);
 }
 
