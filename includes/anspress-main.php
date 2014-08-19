@@ -52,6 +52,7 @@ class anspress {
 		
 		
 	}
+	
 
 	/**
 	 * Return the plugin slug.
@@ -195,6 +196,7 @@ class anspress {
 		$query_vars[] = 'label';
 		$query_vars[] = 'user';
 		$query_vars[] = 'user_page';
+		$query_vars[] = 'ap_s';
 		
 		return $query_vars;
 	}
@@ -220,7 +222,7 @@ class anspress {
 		
 		$slug = ap_base_page_slug();
 		$new_rules = array(  
-			$slug. "question/([^/]+)/([^/]+)/page/?([0-9]{1,})/?$" => "index.php?page_id=".$base_page_id."&question=".$wp_rewrite->preg_index(2)."&paged=".$wp_rewrite->preg_index(3),
+			$slug. "question/([^/]+)/([^/]+)/page/?([0-9]{1,})/?$" => "index.php?page_id=".$base_page_id."&question=".$wp_rewrite->preg_index(1)."&paged=".$wp_rewrite->preg_index(2),
 			
 			$slug. "question/([^/]+)/?" => "index.php?page_id=".$base_page_id."&question_name=".$wp_rewrite->preg_index(1),			
 			
@@ -236,11 +238,13 @@ class anspress {
 			
 			$slug. "([^/]+)/page/?([0-9]{1,})/?$" => "index.php?page_id=".$base_page_id."&ap_page=".$wp_rewrite->preg_index(1)."&paged=".$wp_rewrite->preg_index(2),
 			
-			$slug. "([^/]+)/([^/]+)/([^/]+)/page/?([0-9]{1,})/?$" => "index.php?page_id=".$base_page_id."&ap_page=".$wp_rewrite->preg_index(1)."&user=". $wp_rewrite->preg_index(2)."&user_page=". $wp_rewrite->preg_index(3)."&paged=".$wp_rewrite->preg_index(4),
+			$slug. "user/([^/]+)/([^/]+)/page/?([0-9]{1,})/?$" => "index.php?page_id=".$base_page_id."&ap_page=user&user=". $wp_rewrite->preg_index(1)."&user_page=". $wp_rewrite->preg_index(2)."&paged=".$wp_rewrite->preg_index(3),
 			
-			$slug. "([^/]+)/([^/]+)/([^/]+)/?" => "index.php?page_id=".$base_page_id."&ap_page=".$wp_rewrite->preg_index(1)."&user=". $wp_rewrite->preg_index(2)."&user_page=". $wp_rewrite->preg_index(3),
+			$slug. "user/([^/]+)/([^/]+)/?" => "index.php?page_id=".$base_page_id."&ap_page=user&user=". $wp_rewrite->preg_index(1)."&user_page=". $wp_rewrite->preg_index(2),
 			
-			$slug. "([^/]+)/([^/]+)/?" => "index.php?page_id=".$base_page_id."&ap_page=".$wp_rewrite->preg_index(1)."&user=".$wp_rewrite->preg_index(2),
+			$slug. "user/([^/]+)/?" => "index.php?page_id=".$base_page_id."&ap_page=user&user=".$wp_rewrite->preg_index(1),
+			
+			$slug. "search/([^/]+)/?" => "index.php?page_id=".$base_page_id."&ap_page=search&ap_s=". $wp_rewrite->preg_index(1),
 			
 			$slug. "([^/]+)/?" => "index.php?page_id=".$base_page_id."&ap_page=".$wp_rewrite->preg_index(1),			
 

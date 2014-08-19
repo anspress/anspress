@@ -145,6 +145,8 @@ function ap_page_title() {
 		$new_title = ap_opt('users_page_title');
 	elseif(is_ap_user())
 		$new_title = ap_user_page_title();
+	elseif(is_ap_search())
+		$new_title = sprintf(ap_opt('search_page_title'), get_query_var('ap_s'));
 	else
 		$new_title = ap_opt('base_page_title');
 
@@ -348,6 +350,14 @@ function is_ap_profile(){
 		
 	return false;
 }
+
+function is_ap_search(){
+	if(is_anspress() && get_query_var('ap_page') == 'search')
+		return true;
+		
+	return false;
+}
+
 function is_ap_followers(){
 	if(is_ap_user() && get_query_var('user_page') == 'followers')
 		return true;
@@ -379,6 +389,8 @@ function ap_current_page_is(){
 			$template = 'users';
 		elseif(is_ap_user())
 			$template = 'user';
+		elseif(is_ap_search())
+			$template = 'search';
 		else
 			$template = 'base';
 		

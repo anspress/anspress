@@ -68,6 +68,7 @@ function ap_default_options(){
 		'categories_page_title' => 'AnsPress Categories',
 		'tags_page_title' 		=> 'AnsPress Tags',
 		'users_page_title' 		=> 'AnsPress users',
+		'search_page_title' 	=> 'Search result for %s',
 		
 		'close_selected' 		=> true,
 		'enable_tags' 			=> true,
@@ -429,14 +430,19 @@ function ap_ans_list_tab(){
 function ap_questions_tab(){
 	$order = get_query_var('sort');
 	$label = sanitize_text_field(get_query_var('label'));
+	$search_q = sanitize_text_field(get_query_var('ap_s'));
 	if(empty($order ))
 		$order = 'active';//ap_opt('answers_sort');
 	
 	if(empty($status ))
 		$status = '';
+	
+	$search = '';
+	if(empty($status ))
+		$search = 'ap_s='.$search_q.'&';
 		
-	$link = '?sort=';
-	$label_link = '?sort='.$order.'&label=';
+	$link = '?'.$search.'sort=';
+	$label_link = '?'.$search.'sort='.$order.'&label=';
 	
 	?>
 	<div class="ap-lists-tab clearfix">

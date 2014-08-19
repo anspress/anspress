@@ -541,12 +541,7 @@ body.anspress{
     font-weight: bold;
     margin-bottom: 5px;
 }
-.anspress .ap-answer-count {
-    font-size: 20px;
-    line-height: 28px;
-    margin: 0;
-    padding: 5px 0;
-}
+
 #answers .answer {
     border-bottom: 1px solid #eee;
     padding-bottom: 10px;
@@ -1849,7 +1844,7 @@ ul.ap-pagination{
     background: none repeat scroll 0 0 #f9f9f9;
     border-top: 1px solid #ddd;
 }
-.ap-container .ap-user-ffp {
+.anspress .ap-container .ap-user-ffp {
     margin: 0 0 0 160px;
     padding: 7px;
 }

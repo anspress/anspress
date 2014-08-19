@@ -313,6 +313,12 @@ if ( ! isset( $_REQUEST['settings-updated'] ) )
 							<input type="text" name="anspress_opt[users_page_title]" id="users_page_title" value="<?php echo $settings['users_page_title'] ; ?>" />
 						</td>
 					</tr>
+					<tr valign="top">
+						<th scope="row"><label for="search_page_title"><?php _e('Search page title', 'ap'); ?></label></th>
+						<td>
+							<input type="text" name="anspress_opt[search_page_title]" id="search_page_title" value="<?php echo $settings['search_page_title'] ; ?>" />
+						</td>
+					</tr>
 				</table>
 			</div>				
 						

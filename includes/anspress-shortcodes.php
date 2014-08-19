@@ -197,10 +197,13 @@ class anspress_shortcodes {
 			$display_name 	= $user->data->display_name;
 			$username 		= $user->data->user_login;
 			$current_user_meta = array_map(	'ap_meta_array_map', get_user_meta($userid));
+		}elseif(is_ap_search()){
+			$question_args['s'] = sanitize_text_field(get_query_var('ap_s'));
+			$question = new WP_Query( $question_args );
 		}else{			
 			$question = new WP_Query( $question_args );		
 		}
-		
+
 		echo '<div class="ap-container">';
 		include ap_get_theme_location(ap_get_current_page_template());
 		
