@@ -399,12 +399,14 @@ function ap_ans_tab(){
 		$link = '?sort=';
 		$ans_count = ap_count_ans(get_the_ID());
 	?>
-		<ul class="ap-ans-tab ap-tabs clearfix" role="tablist">
-			<li><h2 class="ap-answer-count" data-view="ap-answer-count-label"><?php printf(_n('<span>1 Answer</span>', '<span>%d Answers</span>', $ans_count, 'ap'), $ans_count); ?></h2></li>
-			<li class="pull-right<?php echo $order == 'newest' ? ' active' : ''; ?>"><a href="<?php echo $link.'newest'; ?>"><?php _e('Newest', 'ap'); ?></a></li>
-			<li class="pull-right<?php echo $order == 'oldest' ? ' active' : ''; ?>"><a href="<?php echo $link.'oldest'; ?>"><?php _e('Oldest', 'ap'); ?></a></li>
-			<li class="pull-right<?php echo $order == 'voted' ? ' active' : ''; ?>"><a href="<?php echo $link.'voted'; ?>"><?php _e('Voted', 'ap'); ?></a></li>
-		</ul>
+		<div class="ap-anstabhead clearfix">
+			<h2 class="ap-answer-count pull-left" data-view="ap-answer-count-label"><?php printf(_n('<span>1 Answer</span>', '<span>%d Answers</span>', $ans_count, 'ap'), $ans_count); ?></h2>
+			<ul class="ap-ans-tab ap-tabs clearfix" role="tablist">
+				<li class="<?php echo $order == 'newest' ? ' active' : ''; ?>"><a href="<?php echo $link.'newest'; ?>"><?php _e('Newest', 'ap'); ?></a></li>
+				<li class="<?php echo $order == 'oldest' ? ' active' : ''; ?>"><a href="<?php echo $link.'oldest'; ?>"><?php _e('Oldest', 'ap'); ?></a></li>
+				<li class="<?php echo $order == 'voted' ? ' active' : ''; ?>"><a href="<?php echo $link.'voted'; ?>"><?php _e('Voted', 'ap'); ?></a></li>
+			</ul>
+		</div>
 	<?php
 }
 

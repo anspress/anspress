@@ -396,7 +396,7 @@ body.anspress{
 	margin-right:10px;
 }
 .ap-container .question-title {
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 600;
     line-height: 30px;
     margin: 0 0 2px;
@@ -430,13 +430,9 @@ body.anspress{
     vertical-align: top;
 }
 .ap-question-right-inner{
-    border-left: 1px solid #eee;
-    box-shadow: 0 2px 0 rgba(255, 255, 255, 1) inset, 0 -2px 0 rgba(255, 255, 255, 1) inset, 2px 0 3px rgba(0, 0, 0, 0.02) inset;
     display: block;
-    padding-left: 15px;
-    padding-right: 10px;
-    padding-top: 10px;
-    width: 200px;
+    padding: 0;
+    width: 220px;
 }
 #ap-container .question-content, #ap-container .answer-content{
     color: #555555;
@@ -451,17 +447,25 @@ body.anspress{
     margin: 0;
 }
 .ap-container .ap-question-meta > li {
-    color: #444;
-    font-size: 12px;
+    border-bottom: 1px solid #eeeeee;
+    color: #444444;
     margin: 0;
-    padding: 2px 0;
+    padding: 10px 15px;
+}
+.anspress .ap-question-side ul {
+    margin-bottom: 10px;
+    padding: 0 15px;
+}
+.anspress .ap-question-side .ap-question-meta{
+	padding:0;
+	margin:0;
 }
 .ap-container .ap-question-meta > li span {
     display: inline-block;
     min-width: 60px;
 }
 .ap-container .ap-question-meta > li:last-child{
-    border-right: medium none;
+    border: medium none;
     margin-right: 0;
     padding-right: 0;
 }
@@ -537,9 +541,9 @@ body.anspress{
     font-weight: bold;
     margin-bottom: 5px;
 }
-.ap-ans-tab .ap-answer-count {
-    font-size: 15px;
-    line-height: 20px;
+.anspress .ap-answer-count {
+    font-size: 20px;
+    line-height: 28px;
     margin: 0;
     padding: 5px 0;
 }
@@ -1456,6 +1460,12 @@ ul.ap-pagination{
     margin: 0;
     padding: 0;
 }
+#answers-c .ap-ans-tab {
+    border: 1px solid #dddddd;
+    border-radius: 3px;
+    float: right;
+    overflow: hidden;
+}
 .ap-container .ap-tabs >li {
     float: left;
     list-style: none outside none;
@@ -1674,24 +1684,23 @@ ul.ap-pagination{
 }
 
 /* Question page side boxes */
+
 .ap-question-side {
-    border-bottom: 1px solid #eee;
-    color: #999;
-    font-size: 12px;
-    margin-bottom: 10px;
-    padding-bottom: 15px;
+    border: 1px solid #dddddd;
+    border-radius: 4px;
+    color: #666666;
+    margin-bottom: 15px;
+    padding: 0;
 }
-.ap-question-side:last-child{
-	border-bottom:none;
-}
+
 .ap-question-side .question-tags li {
     display: block;
     margin-bottom: 5px;
 }
 .ap-question-side .question-tags li a {
-    background: none repeat scroll 0 0 #5bc0de;
+    background: none repeat scroll 0 0 #333333;
     border-radius: 3px;
-    color: #fff;
+    color: #ffffff;
     display: inline-block;
     font-size: 12px;
     margin-right: 15px;
@@ -1701,8 +1710,8 @@ ul.ap-pagination{
 }
 
 .ap-question-side .question-tags li a:before {
-    background: none repeat scroll 0 0 #5bc0de;
-    border: 8px solid #5bc0de;
+    background: none repeat scroll 0 0 #333333;
+    border: 8px solid #333333;
     border-radius: 3px;
     content: "";
     position: absolute;
@@ -1712,11 +1721,12 @@ ul.ap-pagination{
     z-index: -1;
 }
 .ap-question-side .ap-question-side-title{
-    color: #777;
+    border-bottom: 1px solid #dddddd;
     font-size: 12px;
     line-height: 16px;
     margin-bottom: 10px;
     margin-top: 0;
+    padding: 10px;
 }
 .ap-question-side .question-label{
     display: block;
@@ -1743,12 +1753,8 @@ ul.ap-pagination{
 	list-style:none;
 }
 .ap-question-side .question-labels li {
-    border-color: #eee #eee #eee transparent;
-    border-image: none;
-    border-style: solid solid solid none;
-    border-width: 1px 1px 1px medium;
-    margin: 0 0 5px;
-    padding: 4px 0;
+    display: table;
+    margin: 0;
 }
 
 .ap-change-label-from .ap-dropdown-menu{
@@ -1758,14 +1764,18 @@ ul.ap-pagination{
     top: 20px;
 }
 .ap-question-side .question-label-color {
-    border-radius: 0;
+    border-radius: 2px;
     display: block;
-    height: 30px;
-    margin: -5px 10px 0 0;
-    width: 3px;
+    height: 15px;
+    margin: 4px 7px 0 0;
+    width: 15px;
 }
 .ap-question-side .question-labels li i{
 	font-style:normal;
+}
+.ap-participants-list li img {
+    border: 1px solid #aaaaaa;
+    box-shadow: none;
 }
 
 /* Profile styles */

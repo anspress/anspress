@@ -78,7 +78,7 @@ function ap_get_parti($post_id, $count = false){
 		5);
 }
 
-function ap_get_all_parti($avatar_size = 30, $post_id = false){
+function ap_get_all_parti($avatar_size = 40, $post_id = false){
 	if(!$post_id)
 		$post_id = get_the_ID();
 		
