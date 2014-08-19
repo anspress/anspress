@@ -528,7 +528,7 @@ function ap_get_conversation_users_name($ids){
 		$o .= implode(', ', $names);
 		
 		if(!empty($more))
-			$o .= ', <span class="ap-more tooltip" title="'.implode('<br /> ', $more).'">'.__('more', 'ap').'</span>';
+			$o .= ', <span class="ap-more ap-tip" title="'.implode('<br /> ', $more).'">'.__('more', 'ap').'</span>';
 	}else{
 		$o .= ap_user_display_name($ids);
 	}	

@@ -198,7 +198,7 @@ function ap_get_question_label($post_id = NULL, $bg = false){
 		$o = '<ul class="question-labels">';
 		foreach($taxo as $t){
 			$color = ap_get_label_color($t->term_id);
-			$o .= '<li title="'.$t->name. ($t->description ? ' - '.$t->description : '').'"'.($bg ?' style="background:'.$color.';"' : '').' class="ap-label-name tooltip">';
+			$o .= '<li title="'.$t->name. ($t->description ? ' - '.$t->description : '').'"'.($bg ?' style="background:'.$color.';"' : '').' class="ap-label-name ap-tip">';
 			if(!$bg)
 				$o .= '<span class="question-label-color '.$t->slug.'" style="background:'.$color.';"></span>';
 				

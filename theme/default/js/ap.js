@@ -98,7 +98,7 @@
 })(jQuery);
 
 jQuery(document).ready(function(){	
-	jQuery('.tooltip').tooltipster({contentAsHTML: true});
+	jQuery('.ap-tip').tooltipster({contentAsHTML: true});
 	jQuery('#ap-conversation-scroll').scrollTop(0);
 	jQuery('#ap-conversation-scroll').perfectScrollbar();
 	
