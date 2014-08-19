@@ -1,5 +1,8 @@
 AnsPress - A most advance community question and answer system for WordPress.
 =========
+
+![AnsPress Cover](http://plugins.svn.wordpress.org/anspress/assets/banner-1544x500.png "AnsPress cover image")
+
 Demo & support forum: http://open-wp.com/questions/
 
 AnsPress is a most complete question and answer system for WordPress. AnsPress is made with developers in mind, highly customizable. AnsPress provide an easy to use override system for theme. List of features:
@@ -16,7 +19,7 @@ AnsPress is a most complete question and answer system for WordPress. AnsPress i
   - Private messaging system
   - Point based permission (under development)
   - reCaptcha
-  - User level : Participent, Editor, Moderator (in future it can be customised and you can add your own levels)
+  - User level : Participants, Editor, Moderator (in future it can be customised and you can add your own levels)
   - Email notification
   - User can add questions to his favorite
   - User can edit profile
