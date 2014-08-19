@@ -24,12 +24,6 @@
  * Domain Path:       /languages
  */
  
- /* Add localization support */
-function ap_localization_setup() {
-    load_plugin_textdomain('ap', false, dirname(plugin_basename(__FILE__)) . '/languages/');
-}
-add_action('after_setup_theme', 'ap_localization_setup');
- 
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
 	die;
