@@ -306,9 +306,12 @@ select[multiple].input-lg {
 }
 
 /* end bootstrap styles */
-.anspress {
+body.anspress{
+	margin: 0;
+	font-family: 'helvetica neue',helvetica,arial,'lucida grande',sans-serif;
+	color:#4e5665;
 	line-height:1.6;
-} 
+}
 .anspress .site-content ul{
 	padding:0;
 	margin:0;
@@ -330,11 +333,7 @@ select[multiple].input-lg {
 .ap-container h2{
 	margin-top:0;
 }
-.anspress{
-	margin: 0;
-	font-family: 'helvetica neue',helvetica,arial,'lucida grande',sans-serif;
-	color:#4e5665;
-}
+
 .no-overflow{
 	overflow:hidden;
 }
@@ -400,7 +399,7 @@ select[multiple].input-lg {
     font-size: 16px;
     font-weight: 600;
     line-height: 30px;
-    margin: 0;
+    margin: 0 0 2px;
 }
 .ap-container h2.question-title {
     font-size: 25px;
@@ -893,24 +892,27 @@ body.modal-open {
 
 /* list  */
 .ap-lists-tab {
-    border-bottom: 1px solid #dddddd;
     margin-bottom: 15px;
 }
 #ap-lists .ap-tabs {
-    border-bottom: medium none;
+    border: 1px solid #dddddd;
+    border-radius: 3px;
     float: left;
+    overflow: hidden;
 }
 .summery.wrap-left {
     overflow: hidden;
 }
 .ap-container .question-list .question {
-    border-bottom: 1px solid #f8f8f8;
+    border-bottom: 1px solid #eeeeee;
     display: block;
-    margin: 8px 0;
-    padding: 0;
+    margin: 0;
+    padding: 10px 15px;
 }
 .anspress .question-list {
-    background: #fff;
+    background: none repeat scroll 0 0 #ffffff;
+    border: 1px solid #eeeeee;
+    margin-bottom: 20px;
 }
 .question-list .question:last-child {
     border-bottom: 0 none;
@@ -930,7 +932,7 @@ body.modal-open {
     display: block;
     float: right;
     text-align: center;
-    width: 110px;
+    width: 165px;
 }
 .question-list article:nth-child(2n) .ap-content-inner {
     background: #FFFFFF;
@@ -942,6 +944,9 @@ body.modal-open {
     padding: 10px;
     vertical-align: top;
     width: 35px;
+}
+.ap-list-inner .ap-avatar {
+    margin-top: 10px;
 }
 .question-list .ap-content-inner .ap-avatar img{
 	margin-top: 6px;
@@ -974,10 +979,12 @@ body.modal-open {
     border-radius: 2px;
     color: #666666;
     display: block;
-    float: left;
+    float: right;
     font-size: 10px;
     height: 50px;
-    margin: 6px 5px 6px 0;
+    margin-bottom: 0;
+    margin-left: 5px;
+    margin-top: 0;
     text-decoration: none;
     text-transform: uppercase;
     width: 50px;
@@ -986,7 +993,7 @@ body.modal-open {
     display: block;
     font-size: 15px;
     font-weight: bold;
-    line-height: 20px;
+    line-height: 22px;
     margin-top: 4px;
 }
 .question-list .ap-content-inner .ap-answer-count{
@@ -1027,6 +1034,10 @@ body.modal-open {
     display: inline;
     font-size: 12px;
     margin: 0 10px 0 0;
+}
+.question-list .list-taxo .ap-meta-icon{
+    color: #999999;
+    margin-right: 4px;
 }
 .question-list .list-taxo .in-cat{
 	display: inline;
@@ -1441,7 +1452,6 @@ ul.ap-pagination{
 
 /* anspress tabs */
 .ap-container .ap-tabs {
-    border-bottom: 1px solid #ddd;
     list-style: none outside none;
     margin: 0;
     padding: 0;
@@ -1452,22 +1462,18 @@ ul.ap-pagination{
     margin: 0;
 }
 .ap-container .ap-tabs> li >a{
-	text-decoration:none;
-}
-.ap-container .ap-tabs >li> a {
+    border-right: 1px solid #dddddd;
+    color: #656b7e;
     display: block;
     padding: 6px 15px;
     text-decoration: none;
-	border-radius: 3px 3px 0 0;
+}
+.ap-container .ap-tabs> li:last-child >a{
+	border-right: none;
 }
 .ap-container .ap-tabs >li.active >a {
-    background: none repeat scroll 0 0 #fff;
-    border-color: #ddd #ddd transparent;
-    border-image: none;
-    border-style: solid solid none;
-    border-width: 1px 1px medium;
-    color: inherit;
-    margin-bottom: -1px;
+    background: none repeat scroll 0 0 #ff8041;
+    color: #ffffff;
 }
 .ap-container .ap-tabs> li:hover >a{
 	background:#eee;
@@ -1557,7 +1563,18 @@ ul.ap-pagination{
     margin: 0 10px 0 0;
     padding: 0;
 }
-
+.question-list .list-taxo .ap-ansslable {
+    background: none repeat scroll 0 0 #81d742;
+    border-radius: 3px;
+    color: #ffffff;
+    font-size: 11px;
+    height: 17px;
+    line-height: 18px;
+    padding: 0 6px;
+}
+.question-list .list-taxo .ap-ansslable i:before{
+	color:#fff;
+}
 .ap-tax-description {
     border: 1px solid #ddd;
     border-radius: 5px;

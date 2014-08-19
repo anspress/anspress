@@ -56,6 +56,8 @@ class anspress_vote
 	function ap_append_vote_count($post){
 		if(!is_question() && ($post->post_type == 'question' || $post->post_type == 'answer')){
 			$post->net_vote = ap_net_vote_meta($post->ID);
+			$post->selected 	= get_post_meta($post->ID, ANSPRESS_SELECTED_META, true);
+			$post->closed 		= get_post_meta($post->ID, ANSPRESS_CLOSE_META, true);
 		}elseif($post->post_type == 'question' || $post->post_type == 'answer'){
 			
 			//voted up count
@@ -68,6 +70,7 @@ class anspress_vote
 				
 				//closed count
 				$post->closed 		= get_post_meta($post->ID, ANSPRESS_CLOSE_META, true);
+				$post->selected 	= get_post_meta($post->ID, ANSPRESS_SELECTED_META, true);
 				
 				//flagged count
 				$post->flag = get_post_meta($post->ID, ANSPRESS_FLAG_META, true);

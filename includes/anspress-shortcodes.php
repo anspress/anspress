@@ -219,7 +219,7 @@ class anspress_shortcodes {
 		if(!ap_opt('author_credits')){
 			?>
 				<div class="ap-footer">
-					<p class="ap-author-credit"><?php _e('Coded with &hearts; by', 'ap'); ?> <a href="https://rahularyan.com">Rahul Aryan</a> | AnsPress Version <?php echo AP_VERSION; ?></p>
+					<p class="ap-author-credit">AnsPress Version <?php echo AP_VERSION; ?></p>
 				</div>
 			<?php
 		}

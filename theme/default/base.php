@@ -7,6 +7,7 @@
 		
 		/* Start the Loop */
 		while ( $question->have_posts() ) : $question->the_post();
+			global $post;
 			include(ap_get_theme_location('content-list.php'));
 		endwhile;
 	?>

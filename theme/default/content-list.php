@@ -10,14 +10,18 @@
 			<?php _e( 'Featured post', 'ap' ); ?>
 		</div>
 		<?php endif; ?>
-			<div class="wrap-right">
-				<a class="ap-answer-count" href="<?php echo ap_answers_link(); ?>">
-					<span><?php echo ap_count_ans_meta(); ?></span>
-					<?php _e('Ans', 'ap');?>
-				</a>
+			<div class="wrap-right">				
 				<a class="ap-vote-count" href="#">
 					<span><?php echo ap_net_vote(); ?></span> 
 					<?php  _e('Votes', 'ap'); ?>
+				</a>
+				<a class="ap-vote-count" href="#">
+					<span><?php echo ap_get_qa_views(); ?></span> 
+					<?php  _e('Views', 'ap'); ?>
+				</a>
+				<a class="ap-answer-count" href="<?php echo ap_answers_link(); ?>">
+					<span><?php echo ap_count_ans_meta(); ?></span>
+					<?php _e('Ans', 'ap');?>
 				</a>
 			</div>
 			<div class="ap-list-inner">
@@ -32,8 +36,14 @@
 						<?php echo ap_get_question_label(null, true); ?>
 					</h3>					
 					<ul class="list-taxo ap-inline-list clearfix">
-						<li class="list-meta">	
-							
+						<?php if($post->selected): ?>
+							<li class="tooltip ap-ansslable" title="<?php _e('Answer is accepted', 'ap'); ?>">
+								<i class="ap-icon-answer ap-meta-icon"></i>
+								<?php _e('Selected', 'ap'); ?>
+							</li>
+						<?php endif; ?>
+						<li class="list-meta tooltip" title="<?php _e('Last activity', 'ap'); ?>">	
+							<i class="ap-icon-clock ap-meta-icon"></i>
 							<?php 							
 								printf(
 									'<span class="when">%s ago</span>',
@@ -42,9 +52,9 @@
 								ap_user_display_name();
 							?>
 						</li>
-						<li><?php  printf(__('%d Views', 'ap'), ap_get_qa_views()); ?></li>
-						<li><?php ap_question_categories_html(false, false); ?></li>
-						<li><?php ap_question_tags_html(false, false); ?></li>
+						<li class="tooltip" title="<?php _e('Question was viewed by', 'ap'); ?>"><i class="ap-icon-hit ap-meta-icon"></i><?php  printf(__('%d Views', 'ap'), ap_get_qa_views()); ?></li>
+						<li class="tooltip" title="<?php _e('Question category', 'ap'); ?>"><?php ap_question_categories_html(false, false); ?></li>
+						<li class="tooltip" title="<?php _e('Question tagged', 'ap'); ?>"><?php ap_question_tags_html(false, false); ?></li>
 					</ul>
 					
 				</div>				
