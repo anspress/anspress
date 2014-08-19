@@ -773,7 +773,7 @@ class anspress_form
 			<div class="form-group<?php echo isset($validate['post_title']) ? ' has-error' : ''; ?>">
 				<label for="post_title" class="ap-form-label"><?php _e('Title', 'ap') ?></label>
 				<div class="no-overflow">
-					<input type="text" name="post_title" id="post_title" value="<?php echo sanitize_text_field($_POST['title']); ?>" class="form-control" placeholder="<?php _e('Question in one sentence', 'ap'); ?>" />
+					<input type="text" name="post_title" id="post_title" value="<?php echo sanitize_text_field(@$_POST['title']); ?>" class="form-control" placeholder="<?php _e('Question in one sentence', 'ap'); ?>" />
 					<?php echo isset($validate['post_title']) ? '<span class="help-block">'. $validate['post_title'] .'</span>' : ''; ?>
 				</div>
 			</div>

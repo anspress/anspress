@@ -1,9 +1,9 @@
 <?php
-class AP_Search_Widget extends WP_Widget {
+class AP_QuickAsk_Widget extends WP_Widget {
 
-	function AP_Search_Widget() {
+	function AP_QuickAsk_Widget() {
 		// Instantiate the parent object
-		parent::__construct( false, 'AnsPress Search' );
+		parent::__construct( false, 'AnsPress Ask Form' );
 	}
 
 	public function widget( $args, $instance ) {
@@ -14,12 +14,7 @@ class AP_Search_Widget extends WP_Widget {
 			echo $args['before_title'] . $title . $args['after_title'];
 		}
 		?>
-			<form class="ap-quick-ask" action="<?php echo ap_get_link_to('ask'); ?>" method="POST">
-				<div class="ap-qaf-inner">
-					<input class="form-control" type="text" name="title" id="ap-quick-ask-input" placeholder="<?php _e('Search questions', 'ap'); ?>" autocomplete="off" />
-					<button type="submit ap-btn" ><?php _e('Search', 'ap'); ?></button>
-				</div>
-			</form>
+			<?php ap_ask_form(); ?>
 		<?php
 		echo $args['after_widget'];
 	}
@@ -29,7 +24,7 @@ class AP_Search_Widget extends WP_Widget {
 			$title = $instance[ 'title' ];
 		}
 		else {
-			$title = __( 'Search questions', 'ap' );
+			$title = __( 'Ask questions', 'ap' );
 		}
 		?>
 		<p>
@@ -57,8 +52,8 @@ class AP_Search_Widget extends WP_Widget {
 	}
 }
 
-function ap_search_register_widgets() {
-	register_widget( 'AP_Search_Widget' );
+function ap_quickask_register_widgets() {
+	register_widget( 'AP_QuickAsk_Widget' );
 }
 
-add_action( 'widgets_init', 'ap_search_register_widgets' );
+add_action( 'widgets_init', 'ap_quickask_register_widgets' );
