@@ -168,7 +168,7 @@ APjs.site.prototype = {
 	/* check for valid email */
 	checkEmail: function(field){
 		var self = this;
-		jQuery('.anspress').delegate('form #email', 'keyup', function(){
+		jQuery('.anspress').delegate('form #email', 'keyup blur', function(){
 			var field = jQuery(this);		
 			var parent = jQuery(field).closest('.form-group');
 
@@ -193,7 +193,7 @@ APjs.site.prototype = {
 	/* check length of username */
 	checkUsernameLength: function(){
 		var self = this;
-		jQuery('.anspress').delegate('.ap-signup-fields #username', 'keyup', function(){
+		jQuery('.anspress').delegate('.ap-signup-fields #username', 'keyup blur', function(){
 			var field = jQuery(this);		
 			var parent = field .closest('.form-group');
 			if (field.val().length <= 4){
