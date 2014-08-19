@@ -35,7 +35,7 @@ class AP_Widgets
      */
     public function __construct()
     {
-		require_once( ANSPRESS_WIDGET_DIR. 'quick-ask.php' );
+		require_once( ANSPRESS_WIDGET_DIR. 'search.php' );
 		
     }
 }

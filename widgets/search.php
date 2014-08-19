@@ -3,7 +3,7 @@ class AP_QuickAsk_Widget extends WP_Widget {
 
 	function AP_QuickAsk_Widget() {
 		// Instantiate the parent object
-		parent::__construct( false, 'AnsPress Quick Ask' );
+		parent::__construct( false, 'AnsPress Search' );
 	}
 
 	public function widget( $args, $instance ) {
@@ -16,8 +16,8 @@ class AP_QuickAsk_Widget extends WP_Widget {
 		?>
 			<form class="ap-quick-ask" action="<?php echo ap_get_link_to('ask'); ?>" method="POST">
 				<div class="ap-qaf-inner">
-					<input class="form-control" type="text" name="title" id="ap-quick-ask-input" placeholder="<?php _e('Ask a question', 'ap'); ?>" autocomplete="off" />
-					<button type="submit ap-btn" ><?php _e('Ask', 'ap'); ?></button>
+					<input class="form-control" type="text" name="title" id="ap-quick-ask-input" placeholder="<?php _e('Search questions', 'ap'); ?>" autocomplete="off" />
+					<button type="submit ap-btn" ><?php _e('Search', 'ap'); ?></button>
 				</div>
 			</form>
 		<?php
@@ -29,7 +29,7 @@ class AP_QuickAsk_Widget extends WP_Widget {
 			$title = $instance[ 'title' ];
 		}
 		else {
-			$title = __( 'Ask Question', 'text_domain' );
+			$title = __( 'Search questions', 'text_domain' );
 		}
 		?>
 		<p>

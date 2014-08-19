@@ -2613,8 +2613,7 @@ form .checkbox{
 }
 
 .ap-quick-ask {
-    background: none repeat scroll 0 0 #fcfcfc;
-    border: 1px solid #dddddd;
+    border: 1px solid #eee;
     border-radius: 5px;
     margin-bottom: 30px;
     padding: 20px;
