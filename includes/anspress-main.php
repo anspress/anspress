@@ -49,8 +49,6 @@ class anspress {
 		// Add specific CSS class by filter
 		add_filter('body_class', array($this, 'body_class'));
 		
-		
-		
 	}
 	
 
@@ -69,7 +67,7 @@ class anspress {
 
 		// Check the option we set on activation.
 		if (get_option('ap_flush')) {
-			flush_rewrite_rules( false );
+			flush_rewrite_rules( );
 			delete_option('ap_flush');
 		}
 	}

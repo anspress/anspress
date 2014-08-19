@@ -94,6 +94,8 @@ class anspress_admin {
 		add_action( 'wp_ajax_ap_install_data_table', array($this, 'ap_install_data_table') );
 		add_action( 'wp_ajax_ap_install_rewrite_rules', array($this, 'ap_install_rewrite_rules') );
 		add_action( 'wp_ajax_ap_install_finish', array($this, 'ap_install_finish') );
+		
+		add_action( 'save_post', array($this, 'update_rewrite') );
 	}
 
 	/**
@@ -296,7 +298,7 @@ class anspress_admin {
 			$page = get_page(ap_opt('base_page'));
 			$options['base_page_slug'] = $page->post_name;
 			update_option( 'anspress_opt', $options);
-			flush_rewrite_rules();
+			update_option('ap_flush', true);
 		}
 	}
 	
@@ -613,6 +615,14 @@ public function ap_menu_metaboxes(){
 			update_option('ap_installed', true);
 		}
 		die(admin_url('/admin.php?page=anspress_options'));
+	}
+	
+	public function update_rewrite($post_id){
+		if(ap_opt('base_page') == $post_id){
+			$post = get_post($post_id);
+			ap_opt('base_page_slug', $post->post_name);
+			update_option('ap_flush', true);
+		}
 	}
 
 }
