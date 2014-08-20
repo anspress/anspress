@@ -220,9 +220,11 @@ class anspress {
 		
 		$slug = ap_base_page_slug();
 		$new_rules = array(  
-			$slug. "question/([^/]+)/([^/]+)/page/?([0-9]{1,})/?$" => "index.php?page_id=".$base_page_id."&question=".$wp_rewrite->preg_index(1)."&paged=".$wp_rewrite->preg_index(2),
+			$slug. "question/([^/]+)/([^/]+)/page/?([0-9]{1,})/?$" => "index.php?page_id=".$base_page_id."&question_id=".$wp_rewrite->preg_index(1)."&question_name=".$wp_rewrite->preg_index(2)."&paged=".$wp_rewrite->preg_index(3),
 			
-			$slug. "question/([^/]+)/?" => "index.php?page_id=".$base_page_id."&question_name=".$wp_rewrite->preg_index(1),			
+			$slug. "question/([^/]+)/([^/]+)/?" => "index.php?page_id=".$base_page_id."&question_id=".$wp_rewrite->preg_index(1)."&question_name=".$wp_rewrite->preg_index(2),
+			
+			//$slug. "question/([^/]+)/?" => "index.php?page_id=".$base_page_id."&question_name=".$wp_rewrite->preg_index(1),			
 			
 			$slug. "category/([^/]+)/page/?([0-9]{1,})/?$" => "index.php?page_id=".$base_page_id."&question_category=".$wp_rewrite->preg_index(1)."&paged=".$wp_rewrite->preg_index(2),   
 			
