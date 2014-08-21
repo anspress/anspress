@@ -470,7 +470,7 @@ body.anspress{
     padding-right: 0;
 }
 .ap-question-meta .question-tags a{
-    background: none repeat scroll 0 0 #5db2f4;
+    background: #5db2f4;
     border-radius: 3px;
     color: #fff;
     padding: 3px 10px;
@@ -693,7 +693,7 @@ body.anspress{
 	margin-top:0;
 }
 .anspress .comment-form-c {
-    background: none repeat scroll 0 0 #fcfcfc;
+    background: #fcfcfc;
     border: 1px solid #ddd;
     border-radius: 3px;
     margin-top: 10px;
@@ -818,7 +818,7 @@ body.anspress{
 }
 
 .favorite-c .favorite-btn.added {
-    background: none repeat scroll 0 0 #e45840;
+    background: #e45840;
     border: 1px solid transparent;
     color: #fff;
 }
@@ -897,7 +897,6 @@ body.modal-open {
     border: 1px solid #dddddd;
     border-radius: 3px;
     float: left;
-    overflow: hidden;
 }
 .summery.wrap-left {
     overflow: hidden;
@@ -909,7 +908,7 @@ body.modal-open {
     padding: 10px 15px;
 }
 .anspress .question-list {
-    background: none repeat scroll 0 0 #ffffff;
+    background: #ffffff;
     border: 1px solid #eeeeee;
     margin-bottom: 20px;
 }
@@ -996,7 +995,7 @@ body.modal-open {
     margin-top: 4px;
 }
 .question-list .ap-content-inner .ap-answer-count{
-    background: none repeat scroll 0 0 #A5D887;
+    background: #A5D887;
     color: #FFFFFF;
     margin-right: 10px;
 }
@@ -1105,7 +1104,7 @@ body.modal-open {
     text-decoration: none;
 }
 .anspress #question {
-    background: none repeat scroll 0 0 #fff;
+    background: #fff;
     padding: 5px 0;
 }
 
@@ -1197,11 +1196,11 @@ body.modal-open {
     margin-right: 0;
 }
 .anspress .wp-editor-container, .anspress div.mce-panel {
-    background: none repeat scroll 0 0 transparent;
+    background: transparent;
 }
 
 .anspress div.mce-toolbar-grp {
-    background: none repeat scroll 0 0 transparent;
+    background: transparent;
     border-bottom: medium none;
     padding: 0;
 }
@@ -1242,7 +1241,7 @@ body.modal-open {
 
 /* pagination */
 ul.ap-pagination{
-    background: none repeat scroll 0 0 #fff;
+    background: #fff;
     border: 1px solid #dddddd;
     border-radius: 3px;
     display: table;
@@ -1281,7 +1280,7 @@ ul.ap-pagination{
 	float: right;
 }
 .ap-taxo-detail .ap-taxo-meta .count{
-    background: none repeat scroll 0 0 #8FC61B;
+    background: #8FC61B;
     border-radius: 2px;
     color: #FFFFFF;
     display: block;
@@ -1291,7 +1290,7 @@ ul.ap-pagination{
     padding: 1px 5px;
 }
 .ap-taxo-detail .ap-taxo-meta .feed-link{
-    background: none repeat scroll 0 0 #F1A34F;
+    background: #F1A34F;
     border-radius: 2px;
     color: #FFFFFF;
     display: block;
@@ -1315,7 +1314,7 @@ ul.ap-pagination{
     padding: 5px;
 }
 .ap-taxo-detail .ap-child-list li a span{
-    background: none repeat scroll 0 0 #EEEEEE;
+    background: #EEEEEE;
     border-radius: 2px;
     color: #777777;
     float: right;
@@ -1344,7 +1343,7 @@ ul.ap-pagination{
     padding: 10px;
 }
 .ap-container .ap-term-list li .ap-term-list-inner a.term-title{
-    background: none repeat scroll 0 0 #aaaaaa;
+    background: #aaaaaa;
     border-radius: 2px;
     color: #ffffff;
     display: inline-block;
@@ -1388,7 +1387,7 @@ ul.ap-pagination{
     padding: 5px 10px;
 }
 .ap-container .ap-term-list .ap-term-sub li a span {
-    background: none repeat scroll 0 0 #eeeeee;
+    background: #eeeeee;
     border-radius: 5px;
     color: #333333;
     display: block;
@@ -1413,7 +1412,7 @@ ul.ap-pagination{
     padding: 10px;
 }
 .ap-fom-group-label{
-    background: none repeat scroll 0 0 #fafafa;
+    background: #fafafa;
     border-bottom: 1px solid #ddd;
     border-radius: 5px 5px 0 0;
     display: block;
@@ -1459,7 +1458,6 @@ ul.ap-pagination{
     border: 1px solid #dddddd;
     border-radius: 3px;
     float: right;
-    overflow: hidden;
 }
 .ap-container .ap-tabs >li {
     float: left;
@@ -1477,11 +1475,23 @@ ul.ap-pagination{
 	border-right: none;
 }
 .ap-container .ap-tabs >li.active >a {
-    background: none repeat scroll 0 0 #ff8041;
+    background: #ff8041;
+    border-right: 0 none;
     color: #ffffff;
+    margin: -1px 0 -1px -1px;
+    padding: 7px 15px;
+}
+.ap-container .ap-tabs > li:first-child > a {
+    border-radius: 3px 0 0 3px;
+}
+.ap-container .ap-tabs > li:last-child > a {
+    border-radius: 0 3px 3px 0;
 }
 .ap-container .ap-tabs> li:hover >a{
 	background:#eee;
+}
+.ap-container .ap-tabs> li.active:hover >a{
+	background: #ff8041;
 }
 
 #ap-messagebox{
@@ -1498,7 +1508,7 @@ ul.ap-pagination{
 	width:280px;
 }
 .ap-message-item{
-    background: none repeat scroll 0 0 #fff;
+    background: #fff;
     border-radius: 2px;
     margin-top: 5px;
     padding: 15px; 
@@ -1569,7 +1579,7 @@ ul.ap-pagination{
     padding: 0;
 }
 .question-list .list-taxo .ap-ansslable {
-    background: none repeat scroll 0 0 #81d742;
+    background: #81d742;
     border-radius: 3px;
     color: #ffffff;
     font-size: 11px;
@@ -1594,7 +1604,7 @@ ul.ap-pagination{
 	margin:0;
 }
 .ap-tax-item-count{
-    background: none repeat scroll 0 0 #ddd;
+    background: #ddd;
     border-radius: 2px;
     display: block;
     float: right;
@@ -1606,7 +1616,7 @@ ul.ap-pagination{
     position: relative;
 }
 .ap-container .ap-dropdown-menu {
-    background: none repeat scroll 0 0 #fff;
+    background: #fff;
     border: 1px solid #ddd;
     border-radius: 5px;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
@@ -1658,7 +1668,7 @@ ul.ap-pagination{
 }
 
 .ap-btn {
-    background: none repeat scroll 0 0 #f7f7f7;
+    background: #f7f7f7;
     border: 1px solid #ddd;
     border-radius: 4px;
     display: block;
@@ -1693,7 +1703,7 @@ ul.ap-pagination{
     margin-bottom: 5px;
 }
 .ap-question-side .question-tags li a {
-    background: none repeat scroll 0 0 #333333;
+    background: #333333;
     border-radius: 3px;
     color: #ffffff;
     display: inline-block;
@@ -1705,7 +1715,7 @@ ul.ap-pagination{
 }
 
 .ap-question-side .question-tags li a:before {
-    background: none repeat scroll 0 0 #333333;
+    background: #333333;
     border: 8px solid #333333;
     border-radius: 3px;
     content: "";
@@ -1800,7 +1810,7 @@ ul.ap-pagination{
     position: absolute;
 }
 #ap-profile .ap-user-image img {
-    background: none repeat scroll 0 0 #ddd;
+    background: #ddd;
     border: 1px solid #aaa;
     box-shadow: none;
     display: block;
@@ -1841,7 +1851,7 @@ ul.ap-pagination{
 
 }
 .ap-cover-bottom {
-    background: none repeat scroll 0 0 #f9f9f9;
+    background: #f9f9f9;
     border-top: 1px solid #ddd;
 }
 .anspress .ap-container .ap-user-ffp {
@@ -1925,7 +1935,7 @@ ul.ap-pagination{
     margin: 0 0 8px;
 }
 .ap-user-answers-list li  .ap-mini-counts{
-    background: none repeat scroll 0 0 #eee;
+    background: #eee;
     display: block;
     float: left;
     height: 30px;
@@ -1991,7 +2001,7 @@ a.ap-btn.ap-success:visited{
 	margin-right:5px;
 }
 .ap-btn[disabled] {
-    background: none repeat scroll 0 0 #ccc !important;
+    background: #ccc !important;
     border-color: #aaa !important;
 }
 .ap-half-col{
@@ -2050,7 +2060,7 @@ a.ap-btn.ap-success:visited{
     border-radius: 5px;
 }
 .ap-users-lists .ap-user .ap-cover{
-    background: none repeat scroll 0 0 #fcfcfc;
+    background: #fcfcfc;
     border-radius: 5px 5px 0 0;
     display: block;
     height: 80px;	
@@ -2116,7 +2126,7 @@ form .checkbox{
 	margin:0;
 }
 .anspress .ap-question-extra-nav li.active a {
-    background: none repeat scroll 0 0 #fff;
+    background: #fff;
     margin-left: -1px;
 }
 
@@ -2156,13 +2166,13 @@ form .checkbox{
 }
 
 #ap-label-select li.ap-select-header {
-    background: none repeat scroll 0 0 #f6f6f6;
+    background: #f6f6f6;
     border-bottom: 1px solid #ddd;
     border-radius: 4px 4px 0 0;
     font-weight: bold;
 }
 .anspress #ap-label-select li.ap-select-footer {
-    background: none repeat scroll 0 0 #fbfbfb;
+    background: #fbfbfb;
     border-bottom: medium none;
     border-radius: 0 0 4px 4px;
 }
@@ -2209,7 +2219,7 @@ form .checkbox{
 
 /* Tags suggestion */
 .ap-suggestions {
-    background: none repeat scroll 0 0 #fff;
+    background: #fff;
     border: 1px solid #ddd;
     box-shadow: 0 0 5px #ddd;
     font-family: arial,helvetica,helvetica nue;
@@ -2223,7 +2233,7 @@ form .checkbox{
     width: 25%;
 }
 .ap-suggestions .ap-tag-item-inner {
-    background: none repeat scroll 0 0 #eee;
+    background: #eee;
     margin: 5px;
     padding: 5px;
 }
@@ -2234,7 +2244,7 @@ form .checkbox{
 	display: inline-block;
 }
 .ap-suggestions .tag-title span {
-    background: none repeat scroll 0 0 #aaa;
+    background: #aaa;
     color: #fff;
     font-size: 11px;
     padding: 1px 5px;
@@ -2319,7 +2329,7 @@ form .checkbox{
     overflow: hidden;
 }
 .ap-message-search {
-    background: none repeat scroll 0 0 #fdfdfd;
+    background: #fdfdfd;
     border-bottom: 1px solid #ddd;
     padding: 10px;
 }
@@ -2338,10 +2348,10 @@ form .checkbox{
     padding: 12px 5px;
 }
 .anspress .ap-conversations > li.active {
-    background: none repeat scroll 0 0 #f6f6f6;
+    background: #f6f6f6;
 }
 .anspress .ap-conversations > li:hover {
-    background: none repeat scroll 0 0 #fcfcfc;
+    background: #fcfcfc;
 }
 
 .ap-message-summery {
@@ -2377,7 +2387,7 @@ form .checkbox{
     font-size: 13px;
 }
 .ap-messages-right > form {
-    background: none repeat scroll 0 0 #f4f4f4;
+    background: #f4f4f4;
     border-top: 1px solid #ddd;
     display: block;
     padding: 10px;
@@ -2389,7 +2399,7 @@ form .checkbox{
 	margin-top: 4px;
 }
 .ap-group-icon {
-    background: none repeat scroll 0 0 #aaa;
+    background: #aaa;
     border-radius: 2px;
     color: #fff;
     display: block;
@@ -2403,7 +2413,7 @@ form .checkbox{
     font-size: 12px;
 }
 #ap-tip {
-    background: none repeat scroll 0 0 #111;
+    background: #111;
     border-radius: 3px;
     color: #fff;
     font-size: 12px;
@@ -2435,7 +2445,7 @@ form .checkbox{
     text-transform: uppercase;
 }
 .ap-conversation-users .ap-user {
-    background: none repeat scroll 0 0 #fff;
+    background: #fff;
     border: 1px solid #cccccc;
     border-radius: 4px;
     font-size: 12px;
@@ -2544,7 +2554,7 @@ form .checkbox{
     display: block;
 }
 .ap-cover-layer {
-    background: none repeat scroll 0 0 rgba(82, 172, 85, 0.7);
+    background: rgba(82, 172, 85, 0.7);
     display: block;
     height: 100%;
     left: 0;
@@ -2650,7 +2660,7 @@ form .checkbox{
     width: 450px;
 }
 .ap-qaf-inner > button{
-    background: none repeat scroll 0 0 #4db3f4;
+    background: #4db3f4;
     border-color: rgba(0, 0, 0, 0.1);
     color: #ffffff;
     font-size: 13px;
@@ -2658,7 +2668,7 @@ form .checkbox{
     padding: 10px 30px;
 }
 .ap-qsuggestions {
-    background: none repeat scroll 0 0 #ffffff;
+    background: #ffffff;
     border: 1px solid #dddddd;
     border-radius: 3px;
     box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);

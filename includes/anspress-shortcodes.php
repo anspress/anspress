@@ -35,7 +35,6 @@ class anspress_shortcodes {
 	}
 
 	public function ap_base_page_sc( $atts, $content="" ) {
-
 		if(!is_question()){
 			$order = get_query_var('sort');
 			$label = sanitize_text_field(get_query_var('label'));

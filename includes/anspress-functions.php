@@ -208,8 +208,14 @@ function ap_answers_link(){
 }
 
 function ap_get_link_to($page){
-	$relative = ltrim(str_replace(home_url(), '', get_permalink(ap_opt('base_page'))), '/'); 
-	return home_url(rtrim($relative, '/') .'/'.$page);
+	$home = wp_make_link_relative(home_url() );
+	$base = ltrim(wp_make_link_relative(get_permalink(ap_opt('base_page'))), '/');
+	
+	if (filter_var($home, FILTER_VALIDATE_URL) !==FALSE)
+		$home = '';
+	
+	$rel = str_replace($home, '', $base);
+	return home_url(rtrim($rel, '/') .'/'.$page);
 }
 
 function ap_comment_btn_html(){
