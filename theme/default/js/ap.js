@@ -105,6 +105,12 @@ jQuery(document).ready(function(){
 	jQuery('#ap-conversation-scroll').on('scroll', ap_chk_activity_scroll);
 	
 	jQuery('textarea.autogrow').autogrow({onInitialize: true});
+	
+	jQuery('.ap-categories-list li .ap-icon-arrow-down').click(function(e){
+		e.preventDefault();
+		jQuery(this).parent().next().slideToggle(200);
+	});	
+	
 });
 function ap_chk_activity_scroll(e){
 	if((jQuery('#ap-conversation-scroll .ap-no-more-message').length ==0)){

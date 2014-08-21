@@ -204,6 +204,8 @@ class anspress_shortcodes {
 		}
 
 		echo '<div class="ap-container">';
+		echo '<div class="ap-dtable">';
+		echo '<div class="ap-cl">';
 		include ap_get_theme_location(ap_get_current_page_template());
 		
 		if(is_ap_users()){
@@ -217,6 +219,15 @@ class anspress_shortcodes {
 		if(is_question_categories())
 			ap_pagi(ap_get_link_to('categories') . '/%_%', ceil( $total_terms / $per_page ), $paged);
 			
+		echo '</div>';
+		
+		if ( is_active_sidebar( 'ap-sidebar' ) ) {
+			echo '<div class="ap-sidebar">';
+				dynamic_sidebar( 'ap-sidebar' );
+			echo '</div>';
+		}
+		
+		echo '</div>';
 		
 		if(!ap_opt('author_credits')){
 			?>
@@ -225,10 +236,8 @@ class anspress_shortcodes {
 				</div>
 			<?php
 		}
-		echo '</div>';
-		
-		//if(is_question() || is_question_tag() || is_question_cat())
 		wp_reset_postdata();
+		echo '</div>';
 	}
 	
 }

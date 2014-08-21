@@ -317,6 +317,10 @@ body.anspress{
 	margin:0;
 	list-style:none;
 }
+.ap-container li{
+	padding:0;
+	margin:0;
+}
 .anspress pre {
     overflow-y:scroll;
 }
@@ -350,22 +354,8 @@ body.anspress{
 	display:table;
 	width:100%;
 }
-#ap-sidebar > #secondary {
-    margin-top: 0;
-    width: auto;
-}
-#ap-container {
-    line-height: 18px;
-	font-family: arial,helvetica,serif;
-}
-#ap-container .ap-content{
-    margin-bottom: 25px;
-    max-width: 685px;
-    position: relative;
-}
-#ap-container .user-header{
-	margin-bottom: 15px;
-}
+
+
 .ap-user-meta {
     color: #959bae;
     margin-bottom: 10px;
@@ -374,26 +364,19 @@ body.anspress{
     display: block;
     font-weight: bold;
 }
-
-#ap-container .user-header .user-meta > *{
-	display:block;
+.ap-container .ap-dtable{
+	display:table;
+	width:100%;
 }
-#ap-container .user-header .who{
-    font-size: 12px;
-    font-weight: bold;
-    margin-bottom: 5px;
-    margin-top: 2px;
+.ap-cl {
+    display: table-cell;
+	vertical-align: top;
+    width: 100%;
 }
-#ap-container .user-header .when{
-    color: #777777;
-    font-size: 12px;
-}
-#ap-container .user-header .question-taxo > *{
-	float: left;
-    margin: 0;
-}
-#ap-container .user-header .question-taxo .question-cats{
-	margin-right:10px;
+.ap-sidebar {
+    padding-left: 20px;
+    vertical-align: top;
+    width: 250px;
 }
 .ap-container .question-title {
     font-size: 15px;
@@ -2643,6 +2626,11 @@ form .checkbox{
 .ap-widget-pos{
 	margin-bottom:20px;
 }
+.anspress .ap-widget-title {
+    border-bottom: 1px solid #dddddd;
+    margin: 0;
+    padding: 5px;
+}
 
 .ap-quick-ask {
     border: 1px solid #eeeeee;
@@ -2695,4 +2683,49 @@ form .checkbox{
 .ap-sqitem .avatar {
     float: left;
     margin-right: 15px;
+}
+
+.widget_ap_categories_widget {
+    border: 1px solid #dddddd;
+    border-radius: 4px;
+}
+.ap-categories-list > li {
+    border-bottom: 1px solid #eeeeee;
+}
+.ap-categories-list li > a {
+    display: block;
+    font-size: 13px;
+    padding: 7px 10px;
+}
+.ap-categories-list li > a:before{
+	margin-right:10px;
+}
+.ap-categories-list li > a > span{
+    background: none repeat scroll 0 0 #eeeeee;
+    border-radius: 3px;
+    color: #333333;
+    float: right;
+    font-size: 12px;
+    padding: 0 6px;
+}
+.ap-categories-list li > a > i {
+    background: none repeat scroll 0 0 #ff8041;
+    border-radius: 50%;
+    color: #ffffff;
+    float: right;
+    height: 18px;
+    margin-right: 10px;
+    text-align: center;
+    width: 18px;
+	display:none;
+}
+.ap-categories-list li:hover > a > i {
+	display:block;
+}
+.ap-categories-list > li > .ap-term-sub{
+	display:none;
+}
+.ap-categories-list > li .ap-term-sub{
+    background: none repeat scroll 0 0 #fbfbfb;
+    border-top: 1px solid #eeeeee;
 }

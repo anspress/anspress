@@ -37,6 +37,7 @@ class AP_Widgets
     {
 		require_once( ANSPRESS_WIDGET_DIR. 'search.php' );
 		require_once( ANSPRESS_WIDGET_DIR. 'quick-ask.php' );
+		require_once( ANSPRESS_WIDGET_DIR. 'categories.php' );
 		
     }
 }

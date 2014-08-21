@@ -1,7 +1,6 @@
 <?php
-
- $clearfix_class = array('question-summary clearfix');
-
+global $post;
+$clearfix_class = array('question-summary clearfix');
 ?>
 
 	<article id="question-<?php the_ID(); ?>" <?php post_class($clearfix_class); ?>>
