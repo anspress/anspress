@@ -2024,13 +2024,11 @@ a.ap-btn.ap-success:visited{
 }
 
 .ap-btn.ap-unfollow, .ap-btn.ap-success, .ap-btn.selected {
-    background-color: #6aac1c;
-    background-image: -moz-linear-gradient(center top , #7db721, #4e9c15);
-    background-repeat: repeat-x;
-    border: 1px solid #386d0f;
-    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.05), 0 1px 1px 0 rgba(255, 255, 255, 0.2) inset;
-    color: #fff;
-	text-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
+    background: none repeat scroll 0 0 #31aa39;
+    border: medium none;
+    box-shadow: none;
+    color: #ffffff;
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
 }
 .ap-btn.ap-unfollow:visited, .ap-btn.selected:visited {
 	color:#fff;
@@ -2735,7 +2733,7 @@ form .checkbox{
     border-bottom: 1px solid #eeeeee;
     padding: 7px 10px;
 }
-.widget_ap_questions_widget {
+.widget_ap_questions_widget, .widget_ap_users_widget {
     border: 1px solid #dddddd;
     border-radius: 5px;
 }
@@ -2751,4 +2749,31 @@ form .checkbox{
     color: #aaaaaa;
     font-size: 11px;
     margin-top: 5px;
+}
+.apw-user-summary .ap-user-avatar {
+    float: left;
+    margin-right: 10px;
+}
+.apw-user-summary .ap-user-avatar img{
+	box-shadow:none;
+}
+.apw-user-summary .ap-follow-btn{
+    float: right;
+    font-size: 11px;
+    height: 22px;
+    line-height: 20px;
+    padding: 0 6px;
+}
+.apw-user-summary .ap-follow-btn:before {
+    line-height: 20px;
+    margin-right: 0;
+}
+.ap-uw .ap-user-rank {
+    color: #aaaaaa;
+    display: block;
+    font-size: 11px;
+}
+.ap-uw .apw-user-summary {
+    border-bottom: 1px solid #eeeeee;
+    padding: 8px;
 }

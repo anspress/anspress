@@ -179,12 +179,18 @@ class AP_Ranks
 }
 
 function ap_get_ranks($userid){
-	return wp_get_object_terms( $userid, 'rank');
+	$ranks = wp_get_object_terms( $userid, 'rank');
+	if(empty($ranks))
+		$ranks = array(get_term_by( 'slug', ap_opt('default_rank'), 'rank'));
+	
+	return $ranks;
 }
 
 function ap_get_rank_title($userid){
 	$ranks = ap_get_ranks($userid);
+	
 	$o = '';
+	if($ranks)
 	foreach ($ranks as $rank){
 		$o .= '<span class="ap-user-rank rank-'.$rank->slug.'">'. $rank->name .'</span>';
 	}

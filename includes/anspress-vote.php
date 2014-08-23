@@ -601,11 +601,11 @@ function ap_flag_note_modal(){
 	die();
 }
 
-function ap_follow_btn_html($userid){
+function ap_follow_btn_html($userid, $small = false){
 	if(get_current_user_id() == $userid)
 		return;
 		
 	$followed = ap_is_user_voted($userid, 'follow', get_current_user_id());
 	$text = $followed ? __('Unfollow', 'ap') : __('Follow', 'ap');
-	echo '<a class="btn ap-btn ap-follow-btn '.($followed ? 'ap-unfollow ap-icon-minus' : 'ap-icon-plus').'" href="#" data-action="ap-follow" data-args=\''.json_encode(array('user' => $userid, 'nonce' => wp_create_nonce( 'follow_'.$userid))).'\'>'.$text.'</a>';
+	echo '<a class="btn ap-btn ap-follow-btn '.($followed ? 'ap-unfollow ap-icon-minus' : 'ap-icon-plus').($small ? ' ap-tip' : '').'" href="#" data-action="ap-follow" data-args=\''.json_encode(array('user' => $userid, 'nonce' => wp_create_nonce( 'follow_'.$userid))).'\' title="'.$text.'">'.($small ? '' : $text).'</a>';
 }
