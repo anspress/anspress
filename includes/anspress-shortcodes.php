@@ -221,7 +221,7 @@ class anspress_shortcodes {
 			
 		echo '</div>';
 		
-		if ( is_active_sidebar( 'ap-sidebar' ) ) {
+		if ( !is_question() && is_active_sidebar( 'ap-sidebar' ) ) {
 			echo '<div class="ap-sidebar">';
 				dynamic_sidebar( 'ap-sidebar' );
 			echo '</div>';

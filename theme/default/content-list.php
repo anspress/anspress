@@ -37,8 +37,7 @@ $clearfix_class = array('question-summary clearfix');
 					<ul class="list-taxo ap-inline-list clearfix">
 						<?php if($post->selected): ?>
 							<li class="ap-tip ap-ansslable" title="<?php _e('Answer is accepted', 'ap'); ?>">
-								<i class="ap-icon-answer ap-meta-icon"></i>
-								<?php _e('Selected', 'ap'); ?>
+								<i class="ap-icon-answer"></i>
 							</li>
 						<?php endif; ?>
 						<li class="list-meta ap-tip" title="<?php _e('Last activity', 'ap'); ?>">	
@@ -51,7 +50,6 @@ $clearfix_class = array('question-summary clearfix');
 								ap_user_display_name();
 							?>
 						</li>
-						<li class="ap-tip" title="<?php _e('Question was viewed by', 'ap'); ?>"><i class="ap-icon-hit ap-meta-icon"></i><?php  printf(__('%d Views', 'ap'), ap_get_qa_views()); ?></li>
 						<li class="ap-tip" title="<?php _e('Question category', 'ap'); ?>"><?php ap_question_categories_html(false, false); ?></li>
 						<li class="ap-tip" title="<?php _e('Question tagged', 'ap'); ?>"><?php ap_question_tags_html(false, false); ?></li>
 					</ul>

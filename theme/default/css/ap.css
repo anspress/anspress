@@ -1562,13 +1562,15 @@ ul.ap-pagination{
     padding: 0;
 }
 .question-list .list-taxo .ap-ansslable {
-    background: #81d742;
+    background: none repeat scroll 0 0 #81d742;
     border-radius: 3px;
     color: #ffffff;
+    display: block;
     font-size: 11px;
     height: 17px;
-    line-height: 18px;
-    padding: 0 6px;
+    line-height: 20px;
+    padding: 0 4px;
+    text-align: center;
 }
 .question-list .list-taxo .ap-ansslable i:before{
 	color:#fff;
@@ -2728,4 +2730,25 @@ form .checkbox{
 .ap-categories-list > li .ap-term-sub{
     background: none repeat scroll 0 0 #fbfbfb;
     border-top: 1px solid #eeeeee;
+}
+.anspress .ap-qw > article {
+    border-bottom: 1px solid #eeeeee;
+    padding: 7px 10px;
+}
+.widget_ap_questions_widget {
+    border: 1px solid #dddddd;
+    border-radius: 5px;
+}
+.ap-qw .summery {
+    font-size: 13px;
+    line-height: 16px;
+}
+.ap-qw .ap-avatar {
+    margin-right: 10px;
+    margin-top: 3px;
+}
+.anspress .ap-qw .list-taxo {
+    color: #aaaaaa;
+    font-size: 11px;
+    margin-top: 5px;
 }
