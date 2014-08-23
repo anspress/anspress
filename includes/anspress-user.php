@@ -42,6 +42,7 @@ class AP_User {
 		add_action( 'after_setup_theme', array($this, 'cover_size') );
 		add_action( 'ap_edit_profile_fields', array($this, 'user_fields'), 10, 2 );
 		add_action( 'wp_ajax_ap_save_profile', array($this, 'ap_save_profile'));
+		add_action( 'pre_user_query', array($this, 'sort_pre_user_query') );
 	}
 	
 	/* For modifying WP_User_Query, if passed with a var is_followers */
@@ -267,6 +268,13 @@ class AP_User {
 			);
 		}
 		die(json_encode($result));
+	}
+	
+	public function sort_pre_user_query($query){
+		if(isset($query->query_vars['ap_query']) && $query->query_vars['ap_query'] == 'sort_points'){
+			global $wpdb;
+			$query->query_orderby = 'ORDER BY CAST('.$wpdb->usermeta.'.meta_value as DECIMAL) DESC';
+		}
 	}
 }
 

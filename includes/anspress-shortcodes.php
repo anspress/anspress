@@ -176,10 +176,26 @@ class anspress_shortcodes {
 			$offset = $per_page * ($paged - 1);
 			$total_pages = ceil($total_users / $per_page);
 			
-			$args = array(
+			$order = get_query_var('sort');
+			
+			if(empty($order ))
+				$order = 'points';
+				
+			$args = array(				
 				'number'    => $per_page,
 				'offset'    => $offset
 			);
+			
+			if($order == 'points'){
+				$args['ap_query']  	= 'sort_points';
+				$args['meta_key'] 	= 'ap_points';
+				$args['orderby'] 	= 'meta_value';
+				$args['order'] 		= 'DESC';
+			}elseif($order == 'newest'){
+				$args['orderby'] 	= 'date';
+				$args['order'] 		= 'DESC';
+			}
+			
 			// The Query
 			$users = new WP_User_Query( $args );
 		}elseif(is_ap_user()){

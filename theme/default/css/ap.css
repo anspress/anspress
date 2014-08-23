@@ -876,7 +876,7 @@ body.modal-open {
 .ap-lists-tab {
     margin-bottom: 15px;
 }
-#ap-lists .ap-tabs {
+.anspress .ap-tabs {
     border: 1px solid #dddddd;
     border-radius: 3px;
     float: left;
@@ -2503,6 +2503,7 @@ form .checkbox{
 .ap-user-card {
     display: block;
     float: left;
+    margin-bottom: 15px;
     padding: 8px;
     width: 293px;
 }
@@ -2537,7 +2538,6 @@ form .checkbox{
     display: block;
 }
 .ap-cover-layer {
-    background: rgba(82, 172, 85, 0.7);
     display: block;
     height: 100%;
     left: 0;

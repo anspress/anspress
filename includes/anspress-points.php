@@ -269,12 +269,12 @@ function ap_point_option_delete($id){
 }
 
 // get user points
-function ap_get_points($uid, $do_not_short = false) {
+function ap_get_points($uid, $short = false) {
 	$points = get_user_meta($uid, 'ap_points', true);
 	if ($points == '') {
 		return 0;
 	} else {
-		if($do_not_short)
+		if($short)
 			return ap_short_num( $points );
 		
 		return $points;

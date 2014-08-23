@@ -1,7 +1,7 @@
 <div id="ap-users" class="clearfix">
 	<?php
-
-
+	ap_users_tab();
+	
 	if ( ! empty( $users->results ) ) {
 		foreach ( $users->results as $f ) {
 			$data = $f->data;
