@@ -1,4 +1,13 @@
 <?php
+/**
+ * This file is responsible for displaying question page
+ * This file can be overridden by creating a anspress directory in active theme folder.
+ *
+ * @package    AnsPress
+ * @license    http://opensource.org/licenses/gpl-license.php  GNU Public License
+ * @author    Rahul Aryan <rah12@live.com>
+ */
+
 while ( $question->have_posts() ) : $question->the_post();
 if($question->post->post_status == 'publish'){
 ?>
@@ -123,6 +132,7 @@ if($question->post->post_status == 'publish'){
 				</div>
 				<!-- End participants -->
 			</div>
+			<?php dynamic_sidebar( 'ap-qsidebar' ); ?>
 		</div>
 	</div>
 </div>

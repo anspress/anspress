@@ -16,7 +16,10 @@ class AP_Users_Widget extends WP_Widget {
 		}
 		
 		$user_a = array(
-			'number'    => $number,
+			'number'    	=> $number,
+			'ap_query'  	=> 'sort_points',
+			'meta_key'		=> 'ap_points',
+			'orderby' 		=> 'meta_value'
 		);
 		// The Query
 		$users = new WP_User_Query( $user_a );

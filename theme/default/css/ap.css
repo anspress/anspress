@@ -322,7 +322,7 @@ body.anspress{
 	margin:0;
 }
 .anspress pre {
-    overflow-y:scroll;
+    white-space: pre-wrap;
 }
 .anspress .site-content{
 	margin-top:0;

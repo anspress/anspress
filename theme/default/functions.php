@@ -1,4 +1,15 @@
 <?php
+
+/**
+ * This file contains theme script, styles and other theme related functions.
+ *
+ * This file can be overridden by creating a anspress directory in active theme folder.
+ *
+ * @package    AnsPress
+ * @license    http://opensource.org/licenses/gpl-license.php  GNU Public License
+ * @author    Rahul Aryan <rah12@live.com>
+ */
+ 
 //include pagination function
 require_once( ap_get_theme_location('pagination.php') );
 
@@ -122,6 +133,16 @@ function ap_widgets_positions(){
 		'before_widget' => '<div id="%1$s" class="ap-widget-pos %2$s">',
 		'after_widget' 	=> '</div>',
 		'description'  	=> __( 'Widgets in this area will be shown in AnsPress sidebar.', 'ap' ),
+		'before_title' 	=> '<h3 class="ap-widget-title">',
+		'after_title'  	=> '</h3>',
+	) );
+	
+	register_sidebar( array(
+		'name'         	=> __( 'AP Question Sidebar', 'ap' ),
+		'id'           	=> 'ap-qsidebar',
+		'before_widget' => '<div id="%1$s" class="ap-widget-pos %2$s">',
+		'after_widget' 	=> '</div>',
+		'description'  	=> __( 'Widgets in this area will be shown in question page sidebar.', 'ap' ),
 		'before_title' 	=> '<h3 class="ap-widget-title">',
 		'after_title'  	=> '</h3>',
 	) );

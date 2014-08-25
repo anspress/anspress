@@ -719,6 +719,23 @@ class anspress_posts
 		if(isset($query->query['ap_query']) && $query->query['ap_query'] == 'main_questions_active'){
 			$sql['orderby'] = 'case when mt1.post_id IS NULL then '.$wpdb->posts.'.post_date else '.$wpdb->postmeta.'.meta_value end DESC';
 			//var_dump($sql);
+		}elseif(isset($query->query['ap_query']) && $query->query['ap_query'] == 'related'){
+			$keywords = explode(' ', $query->query['ap_title']);
+
+			$where = "AND (";
+			$i =1;
+			foreach ($keywords as $key){
+				if(strlen($key) > 1){
+					if($i != 1)
+					$where .= "OR ";
+					$where .= "(($wpdb->posts.post_title LIKE '%$key%') AND ($wpdb->posts.post_content LIKE '%$key%')) ";
+					$i++;
+				}
+			}
+			$where .= ")";
+			
+			$sql['where'] = $sql['where'].' '.$where;
+
 		}
 		return $sql;
 	}

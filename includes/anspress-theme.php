@@ -38,6 +38,7 @@ class anspress_theme {
 
 		add_filter('wp_title', array($this, 'ap_title'), 100, 2);
 		add_filter( 'the_title', array($this, 'the_title'), 100, 2 );
+		//add_filter( 'nav_menu_link_attributes', array($this, 'menu'), 10, 3 );
 	}
 	
 	// include required theme files
@@ -117,6 +118,11 @@ class anspress_theme {
 			return ap_page_title();
 		}
 		return $title;
+	}
+	
+	public function menu( $atts, $item, $args ) {
+		var_dump($atts);
+		return $atts;
 	}
 	
 
@@ -215,7 +221,7 @@ function is_anspress(){
 }
 
 function is_question(){
-	if(is_anspress() && get_query_var('question_id') || get_query_var('question') || get_query_var('question_name'))
+	if(is_anspress() && (get_query_var('question_id') || get_query_var('question') || get_query_var('question_name')))
 		return true;
 		
 	return false;

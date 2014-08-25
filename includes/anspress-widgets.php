@@ -40,6 +40,7 @@ class AP_Widgets
 		require_once( ANSPRESS_WIDGET_DIR. 'categories.php' );
 		require_once( ANSPRESS_WIDGET_DIR. 'questions.php' );
 		require_once( ANSPRESS_WIDGET_DIR. 'users.php' );
+		require_once( ANSPRESS_WIDGET_DIR. 'related_questions.php' );
 		
     }
 }
