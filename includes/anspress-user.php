@@ -39,10 +39,13 @@ class AP_User {
 		add_filter( 'pre_user_query', array($this, 'follower_query') );
 		add_filter( 'pre_user_query', array($this, 'following_query') );
 		add_action('wp_ajax_ap_cover_upload', array($this, 'cover_upload'));
+		add_action('wp_ajax_ap_avatar_upload', array($this, 'avatar_upload'));
 		add_action( 'after_setup_theme', array($this, 'cover_size') );
 		add_action( 'ap_edit_profile_fields', array($this, 'user_fields'), 10, 2 );
 		add_action( 'wp_ajax_ap_save_profile', array($this, 'ap_save_profile'));
 		add_action( 'pre_user_query', array($this, 'sort_pre_user_query') );
+		add_filter('default_avatar_select', array($this, 'default_avatar'), 10);
+		add_filter( 'get_avatar', array($this, 'get_avatar'), 10, 5);
 	}
 	
 	/* For modifying WP_User_Query, if passed with a var is_followers */
@@ -68,36 +71,55 @@ class AP_User {
 		return $query;
 	}
 	
+	public function upload_file(){
+		require_once(ABSPATH . "wp-admin" . '/includes/image.php');
+		require_once(ABSPATH . "wp-admin" . '/includes/file.php');
+		require_once(ABSPATH . "wp-admin" . '/includes/media.php');
+		if ($_FILES) {
+			foreach ($_FILES as $file => $array) {
+				if ($_FILES[$file]['error'] !== UPLOAD_ERR_OK) {
+					echo "upload error : " . $_FILES[$file]['error'];
+					die();
+				}
+				return  media_handle_upload( $file, 0 );
+			}   
+		}
+	}
+	
 	public function cover_upload(){
-		if(ap_user_can_upload_cover() && wp_verify_nonce( $_POST['nonce'], 'upload_cover' )){
-			require_once(ABSPATH . "wp-admin" . '/includes/image.php');
-			require_once(ABSPATH . "wp-admin" . '/includes/file.php');
-			require_once(ABSPATH . "wp-admin" . '/includes/media.php');
-			if ($_FILES) {
-				foreach ($_FILES as $file => $array) {
-					if ($_FILES[$file]['error'] !== UPLOAD_ERR_OK) {
-						echo "upload error : " . $_FILES[$file]['error'];
-						die();
-					}
-					$attach_id = media_handle_upload( $file, 0 );
-				}   
-			}
+		if(ap_user_can_upload_cover() && wp_verify_nonce( $_POST['nonce'], 'upload' )){
+			$attach_id = $this->upload_file();
 			$userid = get_current_user_id();	
 			$previous_cover = get_user_meta($userid, '_ap_cover', true);
 			wp_delete_attachment( $previous_cover, true );
 			update_user_meta($userid, '_ap_cover', $attach_id);
 
-			$result = array('status' => true, 'message' => __('Cover uploaded successfully.', 'ap'), 'background-image' => 'background-image:url('.ap_get_user_cover($userid).')');
+			$result = array('status' => true, 'message' => __('Cover uploaded successfully.', 'ap'), 'view' => '[data-view="cover"]', 'background-image' => 'background-image:url('.ap_get_user_cover($userid).')');
+	  }else{
+			$result = array('status' => false, 'message' => __('Unable to upload cover.', 'ap'));
+	  }
+	  
+	  die(json_encode($result));
+	}
+	
+	public function avatar_upload(){
+		if(ap_user_can_upload_cover() && wp_verify_nonce( $_POST['nonce'], 'upload' )){
+			$attach_id = $this->upload_file();
+			$userid = get_current_user_id();	
+			$previous_avatar = get_user_meta($userid, '_ap_avatar', true);
+			wp_delete_attachment( $previous_avatar, true );
+			update_user_meta($userid, '_ap_avatar', $attach_id);
+
+			$result = array('status' => true, 'message' => __('Avatar uploaded successfully.', 'ap'), 'view' => '[data-view="avatar-main"]', 'image' => get_avatar( $userid, 105 ));
 	  }else{
 		$result = array('status' => false, 'message' => __('Unable to upload cover.', 'ap'));
 	  }
-	  echo json_encode($result);
 	  
-	  die();
+	  die(json_encode($result));
 	}
 	
 	public function cover_size(){
-		add_image_size( 'ap_cover', ap_opt('cover_width'), ap_opt('cover_height'), array( 'top', 'center' ) );
+		add_image_size( 'ap_cover', ap_opt('cover_width'), ap_opt('cover_height'), array( 'top', 'center' ), true );
 		add_image_size( 'ap_cover_small', ap_opt('cover_width_small'), ap_opt('cover_height'), array( 'top', 'center' ), true );
 	}
 	
@@ -274,6 +296,21 @@ class AP_User {
 		if(isset($query->query_vars['ap_query']) && $query->query_vars['ap_query'] == 'sort_points'){
 			global $wpdb;
 			$query->query_orderby = 'ORDER BY CAST('.$wpdb->usermeta.'.meta_value as DECIMAL) DESC';
+		}
+	}
+	
+	public function get_avatar($avatar, $id_or_email, $size, $default, $alt){
+		if ( !empty($id_or_email) ) {
+			
+			if(is_email($id_or_email)){
+				$u = get_user_by('email', $id_or_email);
+				$id_or_email = $u->ID;
+			}			
+			
+			$image_a =  wp_get_attachment_image_src( get_user_meta($id_or_email, '_ap_avatar', true), 'thumbnail');
+			
+
+			return "<img alt='{$alt}' src='{$image_a[0]}' class='avatar avatar-{$size} photo' height='{$size}' width='{$size}' />";
 		}
 	}
 }
@@ -674,12 +711,12 @@ function ap_get_current_user_meta($meta){
 function ap_cover_upload_form(){
 	if(ap_user_can_upload_cover() && ap_get_user_page_user() == get_current_user_id()){
 		?>
-		<form id="ap-cover-upload-form" method="post" action="#" enctype="multipart/form-data" >
-			<div class="ap-btn cover-upload-o">
+		<form method="post" action="#" enctype="multipart/form-data" data-action="ap-upload-form" class="">
+			<div class="ap-btn ap-upload-o">
 				<span><?php _e('Upload cover', 'ap'); ?></span>
-				<input type="file" name="thumbnail" id="cover-upload-input">
+				<input type="file" name="thumbnail" class="ap-upload-input" data-action="ap-upload-field">
 			</div>
-			<input type='hidden' value='<?php echo wp_create_nonce( 'upload_cover' ); ?>' name='nonce' />
+			<input type='hidden' value='<?php echo wp_create_nonce( 'upload' ); ?>' name='nonce' />
 			<input type="hidden" name="action" id="action" value="ap_cover_upload">
 		</form>
 		<?php
@@ -708,6 +745,21 @@ function ap_user_cover_style($userid, $small = false){
 			echo 'style="background-image:url('.ap_get_user_cover($userid).')"';
 		else
 			echo 'style="background-image:url('.ap_get_theme_url('images/default_cover.jpg').')"';
+	}
+}
+
+function ap_avatar_upload_form(){
+	if(ap_get_user_page_user() == get_current_user_id()){
+		?>
+		<form method="post" action="#" enctype="multipart/form-data" data-action="ap-upload-form" class="">
+			<div class="ap-btn ap-upload-o">
+				<span><?php _e('Upload cover', 'ap'); ?></span>
+				<input type="file" name="thumbnail" class="ap-upload-input" data-action="ap-upload-field">
+			</div>
+			<input type='hidden' value='<?php echo wp_create_nonce( 'upload' ); ?>' name='nonce' />
+			<input type="hidden" name="action" id="action" value="ap_avatar_upload">
+		</form>
+		<?php
 	}
 }
 
@@ -788,15 +840,3 @@ function ap_profile_fields_validation(){
 	return $error;
 }
 
-function ap_user_avatar($userid = false, $return = false){
-	if(!$userid)
-		$userid = get_the_author_meta( 'ID' );
-	
-	$o = '<a href="'.ap_user_link($userid).'" class="ap-avatar-link">'.get_avatar( $userid, 35 ).'</a>';
-	
-	if($return)
-		return $o;
-	
-	echo $o;
-
-}

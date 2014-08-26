@@ -364,6 +364,7 @@ function is_ap_search(){
 	return false;
 }
 
+
 function is_ap_followers(){
 	if(is_ap_user() && get_query_var('user_page') == 'followers')
 		return true;
@@ -397,8 +398,10 @@ function ap_current_page_is(){
 			$template = 'user';
 		elseif(is_ap_search())
 			$template = 'search';
-		else
+		elseif(get_query_var('ap_page') == '')
 			$template = 'base';
+		else
+			$template = 'not-found';
 		
 		return apply_filters('ap_current_page_is', $template);
 	}

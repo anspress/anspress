@@ -71,6 +71,7 @@ function init_scripts_front(){
 			'loading_message_edit_form' 	=> __( 'Loading message form', 'ap' ),
 			'updating_message' 				=> __( 'Updating message', 'ap' ),
 			'deleting_message' 				=> __( 'Deleting message', 'ap' ),
+			'uploading' 					=> __( 'Uploading', 'ap' ),
 		) );
 	}
 }

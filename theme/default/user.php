@@ -3,7 +3,10 @@
 		<div data-view="cover" class="ap-cover-bg" <?php ap_user_cover_style($userid); ?>><?php ap_cover_upload_form(); ?></div>
 		<div class="ap-profile-head clearfix">
 			<div class="ap-user-image">
-				<?php echo get_avatar( $user->user_email, 105 ); ?>
+				<?php ap_avatar_upload_form(); ?>
+				<div class="ap-useravin" data-view="avatar-main">					
+					<?php echo get_avatar( $user->user_email, 105 ); ?>
+				</div>
 			</div>
 			<div class="ap-user-summery">
 				<?php ap_follow_btn_html($userid); ?>

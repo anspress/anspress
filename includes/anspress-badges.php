@@ -109,6 +109,8 @@ class AP_Badges
 
 		unset( $columns['posts'] );
 		$columns['type'] = __('Type', 'ap');
+		$columns['points'] = __('Min. Points', 'ap');
+		$columns['action'] = __('Action', 'ap');
 		$columns['users'] = __( 'Users', 'ap' );
 		
 		return $columns;
@@ -122,6 +124,14 @@ class AP_Badges
 		}
 		if ( 'type' === $column ) {
 			echo ap_get_badge_type($term_id);
+		}
+		
+		if ( 'action' === $column ) {
+			echo ap_get_badge_action($term_id);
+		}
+		
+		if ( 'points' === $column ) {
+			echo ap_get_badge_points($term_id);
 		}
 	}
 		
@@ -146,6 +156,24 @@ class AP_Badges
 				<br />
 			</td>
 		</tr>
+		<tr class="form-field ap-badge-action-field">
+			<th>
+				<label for="badge_action_field"><?php _e('Action', 'ap'); ?></label>
+			</th>
+			<td>
+				<input type="text" class="widefat" name="badge[action]" id="badge_action_field" value="<?php echo $tax_meta['action'] ? $tax_meta['action'] : ''; ?>" />
+				<br />
+			</td>
+		</tr>
+		<tr class="form-field ap-badge-points-field">
+			<th>
+				<label for="badge_points_field"><?php _e('Minimum points', 'ap'); ?></label>
+			</th>
+			<td>
+				<input type="text" class="widefat" name="badge[points]" id="badge_points_field" value="<?php echo $tax_meta['points'] ? $tax_meta['points'] : ''; ?>" />
+				<br />
+			</td>
+		</tr>
 			
 		
 	<?php
@@ -159,7 +187,7 @@ class AP_Badges
 			$tax_keys = array_keys($_POST['badge']);
 				foreach ($tax_keys as $key){
 				if (isset($_POST['badge'][$key])){
-					$tax_meta[$key] = $_POST['badge'][$key];
+					$tax_meta[$key] = sanitize_text_field($_POST['badge'][$key]);
 				}
 			}
 			//save the option array
@@ -183,4 +211,14 @@ function ap_badge_types(){
 function ap_get_badge_type($badge_id){
 	$tax_meta = get_option( "badge_$badge_id");
 	return $tax_meta['type'];
+}
+
+function ap_get_badge_action($badge_id){
+	$tax_meta = get_option( "badge_$badge_id");
+	return $tax_meta['action'];
+}
+
+function ap_get_badge_points($badge_id){
+	$tax_meta = get_option( "badge_$badge_id");
+	return $tax_meta['points'];
 }

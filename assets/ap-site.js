@@ -55,7 +55,7 @@ APjs.site.prototype = {
 		this.tagsScript();
 		this.tagsSuggestion();
 		this.addTag();
-		this.uploadCover();
+		this.uploadForm();
 		this.saveProfile();
 		this.sendMessage();
 		this.showConversation();
@@ -1080,22 +1080,22 @@ APjs.site.prototype = {
 			jQuery('#ap-suggestions').hide();
 		});
 	},
-	uploadCover: function(){
+	uploadForm:function(){
 		var self = this;
-		jQuery('#cover-upload-input').change(function(){
-			jQuery('#ap-cover-upload-form').submit();
+		jQuery('[data-action="ap-upload-field"]').change(function(){
+			jQuery(this).closest('form').submit();
 		});
 		
-		jQuery('#ap-cover-upload-form').submit(function(){
+		jQuery('[data-action="ap-upload-form"]').submit(function(){
 			jQuery(this).ajaxSubmit({
 				beforeSubmit:  function(){
-					self.showLoading(aplang.uploading_cover);
+					self.showLoading(aplang.uploading);
 				},
 				success: function(data){
 					self.hideLoading();
+					jQuery('body').trigger('uploadForm', data);
 					if(data['status']){
-						self.addMessage(data['message'], 'success');
-						jQuery('[data-view="cover"]').attr('style', data['background-image']);
+						self.addMessage(data['message'], 'success');					
 					}else{
 						self.addMessage(data['message'], 'error');
 					}
@@ -1106,7 +1106,16 @@ APjs.site.prototype = {
 			
 			return false
 		});
+		
+		jQuery('body').on('uploadForm', function(e, data){
+			if(data['view'] == '[data-view="cover"]')
+				jQuery(data['view']).attr('style', data['background-image']);
+			else if(data['view'] == '[data-view="avatar-main"]')
+				jQuery(data['view']).html(data['image']);
+			
+		});
 	},
+	
 	saveProfile: function(){
 		var self = this;
 		jQuery('[data-action="ap-edit-profile"]').submit(function(){
@@ -1494,7 +1503,7 @@ jQuery(document).ready(function (){
 	jQuery(document).mouseup(function (e)
 	{
 		var container = jQuery('#ap-qsuggestions');
-console.log(e.target);
+
 		if (!container.is(e.target) // if the target of the click isn't the container...
 			&& container.has(e.target).length === 0) // ... nor a descendant of the container
 		{
