@@ -88,6 +88,11 @@ class anspress_admin {
 		add_action( 'wp_ajax_ap_new_point_form', array($this, 'ap_new_point_form') );
 		add_action( 'wp_ajax_ap_delete_point', array($this, 'ap_delete_point') );
 		add_action( 'admin_menu', array($this, 'change_post_menu_label') );
+		
+		add_action( 'wp_ajax_ap_edit_badges', array($this, 'ap_edit_badges') );
+		add_action( 'wp_ajax_ap_save_badges', array($this, 'ap_save_badges') );
+		add_action( 'wp_ajax_ap_new_badge_form', array($this, 'ap_new_badge_form') );
+		add_action( 'wp_ajax_ap_delete_badge', array($this, 'ap_delete_badge') );
 
 		add_action( 'wp_ajax_ap_toggle_addon', array($this, 'ap_toggle_addon') );
 		add_action( 'wp_ajax_ap_install_base_page', array($this, 'ap_install_base_page') );
@@ -179,6 +184,8 @@ class anspress_admin {
 		
 		add_submenu_page('anspress', __( 'Points', 'ap' ), __( 'User Points', 'ap' ),	'manage_options', 'ap_points', array( $this, 'display_points_page' ));
 		
+		add_submenu_page('anspress', __( 'Badges', 'ap' ), __( 'User Badges', 'ap' ),	'manage_options', 'ap_badges', array( $this, 'display_badges_page' ));
+		
 		add_submenu_page('anspress', __( 'AnsPress Options', 'ap' ), __( 'Options', 'ap' ),	'manage_options', 'anspress_options', array( $this, 'display_plugin_admin_page' ));
 		
 		add_submenu_page('anspress', __( 'Addons', 'ap' ), __( 'Addons', 'ap' ),	'manage_options', 'anspress_addons', array( $this, 'display_plugin_addons_page' ));
@@ -223,6 +230,25 @@ class anspress_admin {
 				<a class="add-new-h2" href="#" data-button="ap-new-point"><?php _e('New point', 'ap'); ?></a>
 			</h2>
 			<form id="anspress-points-table" method="get">
+				<input type="hidden" name="page" value="<?php echo $_REQUEST['page'] ?>" />
+				<?php $points_table->display() ?>
+			</form>
+		</div>
+		<?php
+	}
+	
+	public function display_badges_page() {
+		include_once('badges.php');
+		$points_table = new AP_Badges_Table();
+		$points_table->prepare_items();
+		?>
+		<div class="wrap">        
+			<div id="icon-users" class="icon32"><br/></div>
+			<h2>
+				<?php _e('AnsPress Badges', 'ap'); ?>
+				<a class="add-new-h2" href="#" data-button="ap-new-badge"><?php _e('New badge', 'ap'); ?></a>
+			</h2>
+			<form id="anspress-badge-table" method="get">
 				<input type="hidden" name="page" value="<?php echo $_REQUEST['page'] ?>" />
 				<?php $points_table->display() ?>
 			</form>
@@ -535,6 +561,179 @@ public function ap_menu_metaboxes(){
 				ap_point_option_delete($args[0]);
 				$result = array('status' => true);
 				$result = apply_filters('ap_delete_point_form_result', $result);
+				echo json_encode( $result );
+			}
+		}
+		
+		die();
+	}
+	
+	public function ap_edit_badges(){
+		if(current_user_can('manage_options')){
+			$id = sanitize_text_field($_POST['id']);
+			$badge = ap_badge_by_id($id);
+			
+			$badges_opt = '';
+			foreach(ap_badge_types() as $k => $b){
+				$badges_opt .= "<option value='{$k}' ".selected($k, $badge['type'], false).">{$b}</option>";
+			}
+			
+			$html = '
+				<div id="ap-badge-edit">
+					<form method="POST" data-action="ap-save-badge">
+						<table class="form-table">
+							<tr valign="top">
+								<th scope="row"><label for="title">'. __('Title', 'ap').'</label></th>
+								<td>
+									<input id="title" type="text" name="title" value="'.$badge['title'].'" />
+								</td>
+							</tr>
+							<tr valign="top">
+								<th scope="row"><label for="description">'. __('Description', 'ap').'</label></th>
+								<td>
+									<textarea cols="50" id="description" name="description">'.$badge['description'].'</textarea>
+								</td>
+							</tr>
+							<tr valign="top">
+								<th scope="row"><label for="type">'. __('Type', 'ap').'</label></th>
+								<td>
+									<select id="type" name="type">'.$badges_opt.'</select>
+								</td>
+							</tr>
+							<tr valign="top">
+								<th scope="row"><label for="min_points">'. __('Min. Points', 'ap').'</label></th>
+								<td>
+									<input id="min_points" type="text" name="min_points" value="'.$badge['min_points'].'" />
+								</td>
+							</tr>
+							<tr valign="top">
+								<th scope="row"><label for="event">'. __('Event', 'ap').'</label></th>
+								<td>
+									<input type="text" name="event" value="'.$badge['event'].'" />
+								</td>
+							</tr>
+							<tr valign="top">
+								<th scope="row"><label for="multiple">'. __('Multiple', 'ap').'</label></th>
+								<td>
+									<input type="checkbox" name="multiple" '.checked($badge['multiple'], 1, false).'value="1" />
+								</td>
+							</tr>
+						</table>
+						<input class="button-primary" type="submit" value="'.__('Save badge', 'ap').'">
+						<input type="hidden" name="id" value="'.$badge['id'].'">
+						<input type="hidden" name="action" value="ap_save_badges">
+						<input type="hidden" name="nonce" value="'.wp_create_nonce('ap_save_badge').'">
+					</form>
+				</div>
+			';
+			
+			$result = array('status' => true, 'html' => $html);
+			$result = apply_filters('ap_edit_badge_result', $result);
+			echo json_encode( $result );
+		}
+		die();
+	}
+	public function ap_save_badges(){
+		if(current_user_can('manage_options')){
+			$nonce 		= sanitize_text_field($_POST['nonce']);
+			$title 		= sanitize_text_field($_POST['title']);
+			$desc 		= sanitize_text_field($_POST['description']);
+			$type 		= sanitize_text_field($_POST['type']);
+			$min_points = sanitize_text_field($_POST['min_points']);
+			$event 		= sanitize_text_field($_POST['event']);
+			$multiple 	= (int)$_POST['multiple'];
+			if(wp_verify_nonce($nonce, 'ap_save_badge')){
+				if(isset($_POST['id'])){
+					$id 	= sanitize_text_field($_POST['id']);				
+					ap_badge_option_update($id, $title, $desc, $type, $min_points, $event, $multiple);
+				}else{
+					ap_badge_option_new($id, $title, $desc, $type, $min_points, $event, $multiple);
+				}
+				
+				ob_start();
+				$this->display_badges_page();
+				$html = ob_get_clean();
+				
+				$result =  array(
+					'status' => true, 'html' => $html
+				);
+				
+				echo json_encode( $result );
+			}
+		}
+		die();
+	}
+	
+	public function ap_new_badge_form(){
+		if(current_user_can('manage_options')){
+			
+			$badges_opt = '';
+			foreach(ap_badge_types() as $k => $b){
+				$badges_opt .= "<option value='{$k}'>{$b}</option>";
+			}
+			
+			$html = '
+				<div id="ap-badge-edit">
+					<form method="POST" data-action="ap-save-badge">
+						<table class="form-table">
+							<tr valign="top">
+								<th scope="row"><label for="title">'. __('Title', 'ap').'</label></th>
+								<td>
+									<input id="title" type="text" name="title" value="" />
+								</td>
+							</tr>
+							<tr valign="top">
+								<th scope="row"><label for="description">'. __('Description', 'ap').'</label></th>
+								<td>
+									<textarea cols="50" id="description" name="description"></textarea>
+								</td>
+							</tr>
+							<tr valign="top">
+								<th scope="row"><label for="type">'. __('Type', 'ap').'</label></th>
+								<td>
+									<select id="type" name="type">'.$badges_opt.'</select>
+								</td>
+							</tr>
+							<tr valign="top">
+								<th scope="row"><label for="min_points">'. __('Min. Points', 'ap').'</label></th>
+								<td>
+									<input id="min_points" type="text" name="min_points" value="" />
+								</td>
+							</tr>
+							<tr valign="top">
+								<th scope="row"><label for="event">'. __('Event', 'ap').'</label></th>
+								<td>
+									<input type="text" name="event" value="" />
+								</td>
+							</tr>
+							<tr valign="top">
+								<th scope="row"><label for="multiple">'. __('Multiple', 'ap').'</label></th>
+								<td>
+									<input type="checkbox" name="multiple" value="1" />
+								</td>
+							</tr>
+						</table>
+						<input class="button-primary" type="submit" value="'.__('Save badge', 'ap').'">
+						<input type="hidden" name="action" value="ap_save_badges">
+						<input type="hidden" name="nonce" value="'.wp_create_nonce('ap_save_badge').'">
+					</form>
+				</div>
+			';
+			
+			$result = array('status' => true, 'html' => $html);
+			$result = apply_filters('ap_new_badge_result', $result);
+			echo json_encode( $result );
+		}
+		die();
+	}
+		
+	public function ap_delete_badge(){
+		if(current_user_can('manage_options')){
+			$args = explode('-', sanitize_text_field($_POST['args']));
+			if(wp_verify_nonce($args[1], 'delete_badge')){
+				ap_badge_option_delete($args[0]);
+				$result = array('status' => true);
+				$result = apply_filters('ap_delete_badge_form_result', $result);
 				echo json_encode( $result );
 			}
 		}

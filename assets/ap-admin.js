@@ -75,6 +75,7 @@ APjs.admin.prototype = {
 		this.deletePoint();
 		this.toggleAddons();
 		this.install();
+		this.badges();
 	},
 	
 	recountVotes:function(){
@@ -248,6 +249,88 @@ APjs.admin.prototype = {
 				url: ajaxurl,  
 				data:  {
 					action: 'ap_delete_point',
+					args: args
+				},
+				context:this,
+				dataType:'json',
+				success: function(data){
+					jQuery(this).closest('tr').slideUp(200);
+				}
+			});
+			
+			return false;
+		});
+	},
+	badges:function(){
+		jQuery('.wp-admin').delegate('[data-action="ap-edit-badge"]', 'click', function(e){
+			e.preventDefault();
+			var id = jQuery(this).attr('href');
+			jQuery.ajax({
+				type: 'POST',  
+				url: ajaxurl,  
+				data: {
+					action: 'ap_edit_badges',
+					id: id
+				},  
+				context:this,
+				dataType:'json',
+				success: function(data){
+					if(data['status']){
+						jQuery('#ap-badge-edit').remove();
+						jQuery('#anspress-badge-table').hide();
+						jQuery('#anspress-badge-table').after(data['html']);
+					}
+				}
+			});
+		});
+		
+		jQuery('.wp-admin').delegate('[data-action="ap-save-badge"]', 'submit', function(e){
+			e.preventDefault();
+			jQuery('.button-primary', this).attr('disabled', 'disabled');
+			var id = jQuery(this).attr('href');
+			jQuery.ajax({
+				type: 'POST',  
+				url: ajaxurl,  
+				data:  jQuery(this).serialize({ checkboxesAsBools: true }),
+				context:this,
+				dataType:'json',
+				success: function(data){
+					if(data['status']){
+						jQuery('.wrap').empty().html(data['html']);
+					}
+				}
+			});
+			
+			return false;
+		});
+		jQuery('.wp-admin').delegate('[data-button="ap-new-badge"]', 'click', function(e){
+			e.preventDefault();
+			jQuery.ajax({
+				type: 'POST',  
+				url: ajaxurl,  
+				data:  {
+					action: 'ap_new_badge_form'
+				},
+				context:this,
+				dataType:'json',
+				success: function(data){
+					jQuery('#ap-badge-edit').remove();
+					jQuery('#anspress-badge-table').hide();
+					jQuery('#anspress-badge-table').after(data['html']);
+				}
+			});
+			
+			return false;
+		});
+		jQuery('.wp-admin').delegate('[data-button="ap-delete-badge"]', 'click', function(e){
+			e.preventDefault();
+			var id = jQuery(this).attr('href');
+			var args = jQuery(this).data('args');
+			jQuery.ajax({
+				type: 'POST',  
+				url: ajaxurl,  
+				data:  {
+					action: 'ap_delete_badge',
 					args: args
 				},
 				context:this,

@@ -1,3 +1,4 @@
+<?php ap_check_user_profile_complete($userid); ?>
 <div id="ap-profile" class="clearfix" data-id="<?php echo $userid; ?>">
 	<div class="ap-profile-cover clearfix">
 		<div data-view="cover" class="ap-cover-bg" <?php ap_user_cover_style($userid); ?>><?php ap_cover_upload_form(); ?></div>

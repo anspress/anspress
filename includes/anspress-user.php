@@ -45,7 +45,7 @@ class AP_User {
 		add_action( 'wp_ajax_ap_save_profile', array($this, 'ap_save_profile'));
 		add_action( 'pre_user_query', array($this, 'sort_pre_user_query') );
 		add_filter('default_avatar_select', array($this, 'default_avatar'), 10);
-		add_filter( 'get_avatar', array($this, 'get_avatar'), 10, 5);
+		add_filter( 'get_avatar', array($this, 'get_avatar'), 10, 5);		
 	}
 	
 	/* For modifying WP_User_Query, if passed with a var is_followers */
@@ -181,6 +181,14 @@ class AP_User {
 			</div>
 		</div>
 		<div class="form-groups">
+			<div class="form-group">
+				<label for="description" class="ap-form-label"><?php _e('About', 'ap') ?></label>
+				<div class="no-overflow">
+					<textarea type="text" name="description" id="description" class="form-control" placeholder="<?php _e('About you', 'ap'); ?>"><?php echo esc_textarea(@$meta['description']); ?></textarea>
+				</div>
+			</div>
+		</div>
+		<div class="form-groups">
 			<div class="ap-fom-group-label"><?php _e('Contact Information', 'ap'); ?></div>
 			<div class="form-group">
 				<label for="url" class="ap-form-label"><?php _e('Website', 'ap') ?></label>
@@ -274,10 +282,13 @@ class AP_User {
 			if(isset($fields['twitter']))
 				update_user_meta( $current_user->ID, 'twitter', $fields['twitter'] );
 			
+			if(isset($fields['description']))
+				update_user_meta( $current_user->ID, 'description', $fields['description'] );
+			
 			if(isset($fields['google']))
 				update_user_meta( $current_user->ID, 'google', $fields['google'] );
 			
-			do_action('ap_save_profile', $fields);
+			do_action('ap_save_profile', $current_user, $fields);
 			
 			$result =  array(
 				'status' => true,
@@ -309,8 +320,12 @@ class AP_User {
 			
 			$image_a =  wp_get_attachment_image_src( get_user_meta($id_or_email, '_ap_avatar', true), 'thumbnail');
 			
+			if($image_a[0]){
 
-			return "<img alt='{$alt}' src='{$image_a[0]}' class='avatar avatar-{$size} photo' height='{$size}' width='{$size}' />";
+				return "<img alt='{$alt}' src='{$image_a[0]}' class='avatar avatar-{$size} photo' height='{$size}' width='{$size}' />";
+			}
+			
+			return $avatar;
 		}
 	}
 }
@@ -824,6 +839,9 @@ function ap_profile_fields_to_process(){
 	if ( !empty($_POST['password'] ))
 		$fields['password'] = sanitize_text_field($_POST['password']);
 	
+	if ( !empty($_POST['description'] ))
+		$fields['description'] = sanitize_text_field($_POST['description']);
+	
 	return $fields;
 }
 
@@ -838,5 +856,16 @@ function ap_profile_fields_validation(){
 	
 	$error = apply_filters('ap_profile_fields_validation', $error);
 	return $error;
+}
+
+function ap_check_user_profile_complete($user_id){
+	$user_meta = array_map( 'ap_meta_array_map', get_user_meta($user_id));
+	
+	$required = apply_filters('ap_required_user_fields', array('first_name', 'last_name', '_ap_avatar', '_ap_cover', 'description'));
+
+	if(count(array_diff(array_values($required), array_keys($user_meta))) == 0)
+		return true;
+	
+	return false;
 }
 
