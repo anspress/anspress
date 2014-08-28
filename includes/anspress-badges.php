@@ -83,8 +83,27 @@ function ap_set_badge($user_id, $badge_id, $badge_type){
 	return ap_add_meta($user_id, 'badge', $badge_id, $badge_type);
 }
 
-function ap_get_badges($user_id, $badge_type = false){
-	return ap_get_meta(array('apmeta_type' => 'badge', 'apmeta_userid' => $user_id, 'apmeta_value' => $badge_type));
+function ap_get_users_all_badges($user_id){
+	global $wpdb;
+		
+	return $wpdb->get_results( $wpdb->prepare('SELECT m1.apmeta_id as meta_id, m1.apmeta_userid as userid, m1.apmeta_actionid as badge_id, m1.apmeta_value as type, m1.apmeta_param as param, m1.apmeta_date as date FROM '.$wpdb->prefix.'ap_meta m1 JOIN (SELECT MAX(apmeta_id) as apmeta_id FROM '.$wpdb->prefix . 'ap_meta WHERE apmeta_userid = %d AND apmeta_type = "badge" GROUP BY apmeta_value) m2 WHERE m1.apmeta_id = m2.apmeta_id', $user_id));
+
+}
+
+function ap_user_badge_count_by_badge($user_id){
+	global $wpdb;
+		
+	$results = $wpdb->get_results( $wpdb->prepare('SELECT count(*) as count, apmeta_actionid as badge_id FROM '.$wpdb->prefix.'ap_meta WHERE apmeta_userid = %d AND apmeta_type = "badge" GROUP BY apmeta_actionid', $user_id));
+	
+	if($results){
+		$counts = array();
+		foreach($results as $r)
+			$counts[$r->badge_id] = $r->count;
+		
+		return $counts;
+	}
+	
+	return false;
 }
 
 function ap_get_user_badge($user_id, $badge_id){
@@ -92,7 +111,7 @@ function ap_get_user_badge($user_id, $badge_id){
 }
 
 function ap_user_have_badge_type($user_id, $type){
-	$badges = ap_get_badges($user_id, $type);	
+	$badges = ap_get_users_all_badges($user_id, $type);	
 }
 
 function ap_badges_option(){

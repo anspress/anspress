@@ -316,7 +316,19 @@ class AP_User {
 			if(is_email($id_or_email)){
 				$u = get_user_by('email', $id_or_email);
 				$id_or_email = $u->ID;
-			}			
+			}elseif(is_object($id_or_email)){
+                $allowed_comment_types = apply_filters( 'get_avatar_comment_types', array( 'comment' ) );
+	                if ( ! empty( $id_or_email->comment_type ) && ! in_array( $id_or_email->comment_type, (array) $allowed_comment_types ) )
+	                        return false;
+	
+	                if ( ! empty( $id_or_email->user_id ) ) {
+	                        $id = (int) $id_or_email->user_id;
+	                        $user = get_userdata($id);
+	                        if ( $user )
+	                                $id_or_email = $user->user_id;
+	                }
+
+			}
 			
 			$image_a =  wp_get_attachment_image_src( get_user_meta($id_or_email, '_ap_avatar', true), 'thumbnail');
 			
@@ -438,10 +450,11 @@ function ap_user_menu(){
 		'messages' => array( 'name' => __('Messages', 'ap'), 'link' => ap_user_link($userid, 'messages'), 'icon' => 'ap-icon-mail', 'own' => true),
 		'questions' => array( 'name' => __('Questions', 'ap'), 'link' => ap_user_link($userid, 'questions'), 'icon' => 'ap-icon-question'),
 		'answers' => array( 'name' => __('Answers', 'ap'), 'link' => ap_user_link($userid, 'answers'), 'icon' => 'ap-icon-answer'),		
+		'badges' => array( 'name' => __('Badges', 'ap'), 'link' => ap_user_link($userid, 'badges'), 'icon' => 'ap-icon-badge'),		
 		'favorites' => array( 'name' => __('Favorites', 'ap'), 'link' => ap_user_link($userid, 'favorites'), 'icon' => 'ap-icon-star'),
 		'followers' => array( 'name' => __('Followers', 'ap'), 'link' => ap_user_link($userid, 'followers'), 'icon' => 'ap-icon-users'),
 		'following' => array( 'name' => __('Following', 'ap'), 'link' => ap_user_link($userid, 'following'), 'icon' => 'ap-icon-users'),
-		'edit_profile' => array( 'name' => __('Edit Profile', 'ap'), 'link' => ap_user_link($userid, 'edit_profile'), 'icon' => 'ap-icon-pencil'),
+		'edit_profile' => array( 'name' => __('Edit Profile', 'ap'), 'link' => ap_user_link($userid, 'edit_profile'), 'icon' => 'ap-icon-pencil', 'own' => true),
 		//'settings' => array( 'name' => __('Settings', 'ap'), 'link' => ap_user_link($userid, 'settings'), 'icon' => 'ap-icon-cog'),		
 	);
 	
@@ -694,6 +707,9 @@ function ap_user_template(){
 			_e('You do not have access here', 'ap');
 			return;
 		}
+	}elseif(ap_current_user_page_is('badges')){
+		$user_badges = ap_get_users_all_badges(ap_get_user_page_user());
+		$count_badges = ap_user_badge_count_by_badge(ap_get_user_page_user());
 	}
 	
 	global $user;

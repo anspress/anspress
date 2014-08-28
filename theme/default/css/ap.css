@@ -2785,3 +2785,66 @@ form .checkbox{
     border-bottom: 1px solid #eeeeee;
     padding: 8px;
 }
+
+.anspress .ap-list-badges {
+    border: 1px solid #eee;
+    border-radius: 5px;
+    list-style: none outside none;
+    margin: 0;
+    padding: 0;
+}
+.anspress ul.ap-badge-item {
+    border-bottom: 1px solid #eee;
+    display: table;
+    width: 100%;
+}
+.anspress li:last-child .ap-badge-item{
+	border-bottom: none;
+}
+ul.ap-badge-item > li {
+    border-right: 1px solid #f8f8f8;
+    display: table-cell;
+    padding: 10px;
+    vertical-align: top;
+}
+
+
+ul.ap-badge-item > li.ap-badge-type i:before {
+    display: block;
+    font-size: 22px;
+}
+
+ul.ap-badge-item > li.ap-badge-type {
+    text-align: center;
+    width: 80px;
+}
+ul.ap-badge-item > li.ap-badge-type span {
+    color: #aaa;
+    font-size: 11px;
+}
+.ap-icon-badge.badge-gold {
+    color: #ffc250;
+}
+.ap-icon-badge.badge-silver {
+    color: #d6d6da;
+}
+.ap-icon-badge.badge-bronze {
+    color: #c26f27;
+}
+ul.ap-badge-item > li.ap-badge-info span {
+    display: block;
+    font-size: 11px;
+}
+.ap-total-badge > span {
+    background: none repeat scroll 0 0 #eee;
+    border-radius: 4px;
+    margin-right: 2px;
+    padding: 2px 7px;
+    text-align: center;
+}
+.ap-badge-date:before{
+	margin-right:5px;
+}
+.anspress .ap-nobadges {
+    padding: 10px;
+}

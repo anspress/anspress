@@ -184,7 +184,7 @@ function ap_user_page_title(){
 			$title = sprintf(__('Answers posted by %s', 'ap'), $name);
 		}elseif( 'activity' == $user_page ){
 			if(get_current_user_id() == $userid)
-				$title = __('Yours activity', 'ap');
+				$title = __('Your activity', 'ap');
 			else
 				$title = sprintf(__('%s\'s activity', 'ap'), $name);
 		}elseif( 'favorites' == $user_page ){
@@ -199,6 +199,11 @@ function ap_user_page_title(){
 			$title = __('Your settings', 'ap');
 		}elseif( 'messages' == $user_page ){
 			$title = __('Your messages', 'ap');
+		}elseif( 'badges' == $user_page ){
+			if(get_current_user_id() == $userid)
+				$title = __('Your badges', 'ap');
+			else
+				$title = sprintf(__('%s\'s activity', 'ap'), $name);
 		}
 		$title = apply_filters('ap_user_page_title', $title);
 		
