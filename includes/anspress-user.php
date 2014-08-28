@@ -877,7 +877,18 @@ function ap_profile_fields_validation(){
 function ap_check_user_profile_complete($user_id){
 	$user_meta = array_map( 'ap_meta_array_map', get_user_meta($user_id));
 	
-	$required = apply_filters('ap_required_user_fields', array('first_name', 'last_name', '_ap_avatar', '_ap_cover', 'description'));
+	$required = apply_filters('ap_required_user_fields', array('first_name', 'last_name', 'description'));
+
+	if(count(array_diff(array_values($required), array_keys($user_meta))) == 0)
+		return true;
+	
+	return false;
+}
+
+function ap_check_if_photogenic($user_id){
+	$user_meta = array_map( 'ap_meta_array_map', get_user_meta($user_id));
+	
+	$required = apply_filters('ap_check_if_photogenic', array('_ap_cover', '_ap_avatar'));
 
 	if(count(array_diff(array_values($required), array_keys($user_meta))) == 0)
 		return true;

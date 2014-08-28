@@ -48,10 +48,11 @@ class Ap_Badges_Table extends WP_List_Table
     public function get_columns()
     {
         $columns = array(
-            'title'       	=> 'Title',
-            'min_points'    => 'Points',
+            'title'       	=> 'Title',            
             'type'    		=> 'Type',
             'event'    		=> 'Event',
+            'value'    		=> 'Value',
+			'min_points'    => 'Min. Points',
             'multiple'    	=> 'Multiple',
         );
  
@@ -106,6 +107,7 @@ class Ap_Badges_Table extends WP_List_Table
             case 'title':
             case 'event':
             case 'min_points':
+            case 'value':
             case 'type':
             case 'multiple':
                 return $item[ $column_name ];
@@ -151,11 +153,15 @@ class Ap_Badges_Table extends WP_List_Table
 	
 	public function column_title($badge){
 		$nonce = wp_create_nonce( 'delete_badge' );
-		return '<a class="row-title" href="#">'.$badge['title'].'</a><div>'.$badge['description'].'<div>
+		return '<a class="row-title" href="#">'.$badge['title'].'</a><div>'.sprintf($badge['description'], $badge['value']).'<div>
 		<div class="row-actions">
 			<span class="edit"><a title="'.__('Delete this badge', 'ap').'" href="'.$badge['id'].'" data-action="ap-edit-badge">'.__('Edit', 'ap').'</a> | </span>
 			<span class="edit"><a title="'.__('Delete this badge', 'ap').'" href="'.$badge['id'].'" data-button="ap-delete-badge" data-args="'.$badge['id'].'-'.$nonce.'">'.__('Delete', 'ap').'</a></span>
 		</div>';
+	}
+	
+	public function column_type($badge){
+		return '<span class="badge-type badge-'.$badge['type'].'">'.$badge['type'].'</span>';
 	}
 	
 	public function column_badges($badge){
@@ -163,10 +169,18 @@ class Ap_Badges_Table extends WP_List_Table
 			return '<span class="badge negative">'.$badge['badges'].'</span>';
 		return '<span class="badge">'.$badge['badges'].'</span>';
 	}
+	
 	public function column_multiple($badge){
 		if($badge['multiple'])
 			return __('Yes', 'ap');
 		return __('No', 'ap');
+	}
+	
+	public function column_value($badge){
+		if($badge['value'] === FALSE)
+			return __('N/A', 'ap');
+			
+		return $badge['value'];
 	}
 }
 ?>

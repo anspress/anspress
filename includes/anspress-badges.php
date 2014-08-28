@@ -35,19 +35,21 @@ class AP_Badges
      */
     public function __construct()
     {
-		add_action( 'ap_save_profile', array($this, 'completed_profile'), 10, 2);
+		add_action( 'ap_save_profile', array($this, 'save_profile'), 10, 2);
 		
 
 
     }
 	
-	public function completed_profile($user, $fields){
+	public function save_profile($user, $fields){
 		
 		//check if user completed all required fields
-		if(ap_check_user_profile_complete($user->ID)){
-			
-			ap_award_badges($user->ID, 'completed_profile');			
-		}
+		if(ap_check_user_profile_complete($user->ID))			
+			ap_award_badges($user->ID, 'save_profile');			
+
+		if(ap_check_if_photogenic($user->ID))
+			ap_award_badges($user->ID, 'upload_avatar_cover');
+		
 
 	}
 
@@ -86,7 +88,7 @@ function ap_set_badge($user_id, $badge_id, $badge_type){
 function ap_get_users_all_badges($user_id){
 	global $wpdb;
 		
-	return $wpdb->get_results( $wpdb->prepare('SELECT m1.apmeta_id as meta_id, m1.apmeta_userid as userid, m1.apmeta_actionid as badge_id, m1.apmeta_value as type, m1.apmeta_param as param, m1.apmeta_date as date FROM '.$wpdb->prefix.'ap_meta m1 JOIN (SELECT MAX(apmeta_id) as apmeta_id FROM '.$wpdb->prefix . 'ap_meta WHERE apmeta_userid = %d AND apmeta_type = "badge" GROUP BY apmeta_value) m2 WHERE m1.apmeta_id = m2.apmeta_id', $user_id));
+	return $wpdb->get_results( $wpdb->prepare('SELECT apmeta_id as meta_id, apmeta_userid as userid, apmeta_actionid as badge_id, apmeta_value as type, apmeta_param as param, apmeta_date as date FROM '.$wpdb->prefix.'ap_meta WHERE apmeta_userid = %d AND apmeta_type = "badge" GROUP BY apmeta_actionid', $user_id));
 
 }
 
@@ -132,8 +134,129 @@ function ap_default_badges(){
 			'title'       	=> __('Autobiographer', 'ap'),
 			'description' 	=> __('Completed all user profile fields', 'ap'),
 			'min_points'    => 0,
+			'value'    		=> false,
 			'type'    		=> 'bronze',
-			'event'    		=> 'completed_profile',
+			'event'    		=> 'save_profile',
+			'multiple'    	=> false
+		),
+		array(
+			'id'       		=> 2,
+			'title'       	=> __('Photogenic', 'ap'),
+			'description' 	=> __('Uploaded an avatar and cover image', 'ap'),
+			'min_points'    => 0,
+			'value'    		=> false,
+			'type'    		=> 'bronze',
+			'event'    		=> 'upload_avatar_cover',
+			'multiple'    	=> false
+		),
+		array(
+			'id'       		=> 3,
+			'title'       	=> __('Nice Question', 'ap'),
+			'description' 	=> __('Question score of %d or more', 'ap'),
+			'min_points'    => 0,
+			'value'    		=> 20,
+			'type'    		=> 'bronze',
+			'event'    		=> 'question_vote',
+			'multiple'    	=> true
+		),
+		array(
+			'id'       		=> 4,
+			'title'       	=> __('Good Question', 'ap'),
+			'description' 	=> __('Question score of %d or more', 'ap'),
+			'min_points'    => 0,
+			'value'    		=> 50,
+			'type'    		=> 'silver',
+			'event'    		=> 'question_vote',
+			'multiple'    	=> true
+		),
+		array(
+			'id'       		=> 5,
+			'title'       	=> __('Great Question', 'ap'),
+			'description' 	=> __('Question score of %d or more', 'ap'),
+			'min_points'    => 0,
+			'value'    		=> 100,
+			'type'    		=> 'gold',
+			'event'    		=> 'question_vote',
+			'multiple'    	=> true
+		),
+		array(
+			'id'       		=> 6,
+			'title'       	=> __('Popular Question', 'ap'),
+			'description' 	=> __('Asked a question with %d views ', 'ap'),
+			'min_points'    => 0,
+			'value'    		=> 1000,
+			'type'    		=> 'bronze',
+			'event'    		=> 'question_view',
+			'multiple'    	=> true
+		),
+		array(
+			'id'       		=> 7,
+			'title'       	=> __('Notable Question', 'ap'),
+			'description' 	=> __('Asked a question with %d views ', 'ap'),
+			'min_points'    => 0,
+			'value'    		=> 2500,
+			'type'    		=> 'silver',
+			'event'    		=> 'question_view',
+			'multiple'    	=> true
+		),
+		array(
+			'id'       		=> 8,
+			'title'       	=> __('Famous Question', 'ap'),
+			'description' 	=> __('Asked a question with %d views', 'ap'),
+			'min_points'    => 0,
+			'value'    		=> 10000,
+			'type'    		=> 'gold',
+			'event'    		=> 'question_view',
+			'multiple'    	=> true
+		),
+		array(
+			'id'       		=> 9,
+			'title'       	=> __('Favorite Question', 'ap'),
+			'description' 	=> __('Question favorited by %d users', 'ap'),
+			'min_points'    => 0,
+			'value'    		=> 5,
+			'type'    		=> 'silver',
+			'event'    		=> 'question_favorite',
+			'multiple'    	=> true
+		),
+		array(
+			'id'       		=> 10,
+			'title'       	=> __('Stellar Question', 'ap'),
+			'description' 	=> __('Question favorited by %d users', 'ap'),
+			'min_points'    => 0,
+			'value'    		=> 20,
+			'type'    		=> 'gold',
+			'event'    		=> 'question_favorite',
+			'multiple'    	=> true
+		),
+		array(
+			'id'       		=> 11,
+			'title'       	=> __('Scholar', 'ap'),
+			'description' 	=> __('Asked a question and accepted an answer', 'ap'),
+			'min_points'    => 0,
+			'value'    		=> false,
+			'type'    		=> 'bronze',
+			'event'    		=> 'select_answer',
+			'multiple'    	=> false
+		),
+		array(
+			'id'       		=> 12,
+			'title'       	=> __('Student', 'ap'),
+			'description' 	=> __('Asked first question with score of %d or more', 'ap'),
+			'min_points'    => 0,
+			'value'    		=> 1,
+			'type'    		=> 'bronze',
+			'event'    		=> 'question_vote',
+			'multiple'    	=> false
+		),
+		array(
+			'id'       		=> 13,
+			'title'       	=> __('Tumbleweed', 'ap'),
+			'description' 	=> __('Asked a question with no votes, no answers, no comments, and low views for a week', 'ap'),
+			'min_points'    => 0,
+			'value'    		=> false,
+			'type'    		=> 'bronze',
+			'event'    		=> 'question_view',
 			'multiple'    	=> false
 		),
 	);
@@ -200,13 +323,13 @@ function ap_badges_by_event($event){
 }
 
 function ap_award_badges($user_id, $event){
-	$badges = ap_badges_by_event('completed_profile');
-	
+	$badges = ap_badges_by_event($event);
+
 	if(!empty($badges))
 		foreach($badges as $b){
 			if(!$b['multiple']){
 				$received = ap_get_user_badge($user_id, $b['id']);
-				if(!$received)
+				if(!is_array($received))
 					ap_set_badge($user_id, $b['id'], $b['type']);
 			}else{
 				ap_set_badge($user_id, $b['id'], $b['type']);

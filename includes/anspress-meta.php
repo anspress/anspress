@@ -140,14 +140,16 @@ function ap_get_meta($where){
 		$i++;
 	}
 	
-	$meta_key = ap_meta_key($where);
+	$query = 'SELECT * FROM '.$wpdb->prefix.'ap_meta WHERE ' .$where_string;
+	
+	$meta_key = md5($query);
 	
 	$cache = wp_cache_get($meta_key, 'ap_meta');
 
 	if($cache !== FALSE)
 		return $cache;	
 	
-	$row = $wpdb->get_row('SELECT * FROM '.$wpdb->prefix.'ap_meta WHERE ' .$where_string, ARRAY_A);	
+	$row = $wpdb->get_row($query, ARRAY_A);	
 	wp_cache_set( $meta_key, $row, 'ap_meta');
 	
 	return $row;

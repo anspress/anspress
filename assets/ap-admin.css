@@ -327,3 +327,22 @@ th.column-category {
     display: block;
     text-align: center;
 }
+
+.badge-type {
+    background: none repeat scroll 0 0 #ddd;
+    border-radius: 2px;
+    display: block;
+    padding: 1px 6px;
+    text-align: center;
+    width: 50px;
+	color:#fff;
+}
+.badge-type.badge-gold {
+    background: #ffc250;
+}
+.badge-type.badge-silver {
+    background: #d6d6da;
+}
+.badge-type.badge-bronze {
+    background: #c26f27;
+}
