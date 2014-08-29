@@ -1003,8 +1003,8 @@ APjs.site.prototype = {
 		
 		if(jQuery('[data-role="ap-tagsinput"]').length > 0){
 			jQuery('[data-role="ap-tagsinput"]').tagsinput({
-				freeInput: true,
-				maxTags: ap_max_tags
+				freeInput: false,
+				maxTags: ap_max_tags,
 			});
 			jQuery('[data-role="ap-tagsinput"]').tagsinput('input').blur(function(e){
 				jQuery(document).mouseup(function (e){
@@ -1015,6 +1015,7 @@ APjs.site.prototype = {
 					}
 				});
 			});
+
 		}
 	},
 	tagsSuggestion: function(){

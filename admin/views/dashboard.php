@@ -1,6 +1,9 @@
 <div id="ap-admin-dashboard" class="wrap">
 	<h2>AnsPress Dashboard</h2>
-	
+	<div class="doante-to-anspress">
+		<h3>Help us keep AnsPress open source, free and full functional without any limitations</h3>
+		<a href="https://www.paypal.com/cgi-bin/webscr?business=rah12@live.com&cmd=_xclick&item_name=Donation%20to%20AnsPress%20development" target="_blank"><img src="https://www.paypal.com/en_US/i/btn/btn_donateCC_LG.gif" alt="" /></a>
+	</div>
 	<div id="welcome-panel" class="welcome-panel">		
 		<div class="welcome-panel-content">
 			<h3>Welcome to AnsPress!</h3>

@@ -45,7 +45,7 @@ $clearfix_class = array('question-summary clearfix');
 							<?php 							
 								printf(
 									'<span class="when">%s ago</span>',
-									ap_human_time(get_the_time('U'))
+									ap_human_time( mysql2date('U', ap_last_active(get_question_id())))
 								); 
 								ap_user_display_name();
 							?>

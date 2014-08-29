@@ -346,3 +346,12 @@ th.column-category {
 .badge-type.badge-bronze {
     background: #c26f27;
 }
+
+.doante-to-anspress {
+    background: none repeat scroll 0 0 #fff;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    padding: 10px;
+    text-align: center;
+}

@@ -17,6 +17,10 @@ if ( ! isset( $_REQUEST['settings-updated'] ) )
 		<strong>Need more help ? feel free to ask for support. </strong>
 		<a href="http://open-wp.com">Support Forum</a>
 	</div>
+	<div class="doante-to-anspress">
+		<h3>Help us keep AnsPress open source, free and full functional without any limitations</h3>
+		<a href="https://www.paypal.com/cgi-bin/webscr?business=rah12@live.com&cmd=_xclick&item_name=Donation%20to%20AnsPress%20development" target="_blank"><img src="https://www.paypal.com/en_US/i/btn/btn_donateCC_LG.gif" alt="" /></a>
+	</div>
 	
 	<form method="post" action="" id="ap-options">
 		<ul id="ap_opt_nav" class="nav nav-tabs">

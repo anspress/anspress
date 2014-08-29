@@ -229,6 +229,10 @@ class anspress_admin {
 				<?php _e('AnsPress Points', 'ap'); ?>
 				<a class="add-new-h2" href="#" data-button="ap-new-point"><?php _e('New point', 'ap'); ?></a>
 			</h2>
+			<div class="doante-to-anspress">
+				<h3>Help us keep AnsPress open source, free and full functional without any limitations</h3>
+				<a href="https://www.paypal.com/cgi-bin/webscr?business=rah12@live.com&cmd=_xclick&item_name=Donation%20to%20AnsPress%20development" target="_blank"><img src="https://www.paypal.com/en_US/i/btn/btn_donateCC_LG.gif" alt="" /></a>
+			</div>
 			<form id="anspress-points-table" method="get">
 				<input type="hidden" name="page" value="<?php echo $_REQUEST['page'] ?>" />
 				<?php $points_table->display() ?>
@@ -248,6 +252,10 @@ class anspress_admin {
 				<?php _e('AnsPress Badges', 'ap'); ?>
 				<a class="add-new-h2" href="#" data-button="ap-new-badge"><?php _e('New badge', 'ap'); ?></a>
 			</h2>
+			<div class="doante-to-anspress">
+				<h3>Help us keep AnsPress open source, free and full functional without any limitations</h3>
+				<a href="https://www.paypal.com/cgi-bin/webscr?business=rah12@live.com&cmd=_xclick&item_name=Donation%20to%20AnsPress%20development" target="_blank"><img src="https://www.paypal.com/en_US/i/btn/btn_donateCC_LG.gif" alt="" /></a>
+			</div>
 			<form id="anspress-badge-table" method="get">
 				<input type="hidden" name="page" value="<?php echo $_REQUEST['page'] ?>" />
 				<?php $points_table->display() ?>
@@ -268,6 +276,10 @@ class anspress_admin {
 		<div class="wrap">        
 			<div id="icon-users" class="icon32"><br/></div>
 			<h2><?php _e('Posts waiting moderation', 'ap'); ?></h2>
+			<div class="doante-to-anspress">
+				<h3>Help us keep AnsPress open source, free and full functional without any limitations</h3>
+				<a href="https://www.paypal.com/cgi-bin/webscr?business=rah12@live.com&cmd=_xclick&item_name=Donation%20to%20AnsPress%20development" target="_blank"><img src="https://www.paypal.com/en_US/i/btn/btn_donateCC_LG.gif" alt="" /></a>
+			</div>
 			<form id="moderate-filter" method="get">
 				<input type="hidden" name="page" value="<?php echo $_REQUEST['page'] ?>" />
 				<?php $moderate_table->views() ?>
@@ -286,6 +298,10 @@ class anspress_admin {
 		<div class="wrap">        
 			<div id="icon-users" class="icon32"><br/></div>
 			<h2><?php _e('Flagged question & answer', 'ap'); ?></h2>
+			<div class="doante-to-anspress">
+				<h3>Help us keep AnsPress open source, free and full functional without any limitations</h3>
+				<a href="https://www.paypal.com/cgi-bin/webscr?business=rah12@live.com&cmd=_xclick&item_name=Donation%20to%20AnsPress%20development" target="_blank"><img src="https://www.paypal.com/en_US/i/btn/btn_donateCC_LG.gif" alt="" /></a>
+			</div>
 			<form id="moderate-filter" method="get">
 				<input type="hidden" name="page" value="<?php echo $_REQUEST['page'] ?>" />
 				<?php $moderate_table->views() ?>
