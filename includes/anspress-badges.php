@@ -43,6 +43,8 @@ class AP_Badges
 		add_action('ap_added_favorite', array($this, 'favorite_question'), 10, 2);
 		
 		add_action('ap_insert_views', array($this, 'question_view'), 10, 2);
+		
+		add_action('ap_event_select_answer', array($this, 'select_answer'), 10, 3);
 
     }
 	
@@ -149,6 +151,15 @@ class AP_Badges
 			ap_award_badge($post->post_author, 'famous_question', $post_id);
 			
 		}
+	}
+	
+	public function select_answer($userid, $question_id, $answer_id){
+		$question = get_post($question_id);
+		$scholar = ap_badge_by_id('scholar');
+		
+		if($question->post_author == $userid && !ap_received_badge_on_post('scholar', $question_id))
+			ap_award_badge($question->post_author, 'scholar', $question_id);
+
 	}
 
 }
