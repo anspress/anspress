@@ -95,6 +95,9 @@ class AP_User {
 			update_user_meta($userid, '_ap_cover', $attach_id);
 
 			$result = array('status' => true, 'message' => __('Cover uploaded successfully.', 'ap'), 'view' => '[data-view="cover"]', 'background-image' => 'background-image:url('.ap_get_user_cover($userid).')');
+			
+			do_action('ap_after_cover_upload', $userid, $attach_id);
+			
 	  }else{
 			$result = array('status' => false, 'message' => __('Unable to upload cover.', 'ap'));
 	  }
@@ -111,6 +114,8 @@ class AP_User {
 			update_user_meta($userid, '_ap_avatar', $attach_id);
 
 			$result = array('status' => true, 'message' => __('Avatar uploaded successfully.', 'ap'), 'view' => '[data-view="avatar-main"]', 'image' => get_avatar( $userid, 105 ));
+			
+			do_action('ap_after_avatar_upload', $userid, $attach_id);
 	  }else{
 		$result = array('status' => false, 'message' => __('Unable to upload cover.', 'ap'));
 	  }

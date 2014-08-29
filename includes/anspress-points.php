@@ -447,3 +447,9 @@ function ap_default_points(){
 	
 	return $points;
 }
+
+function ap_received_point_post($post_id){
+	$point 		= ap_point_by_event('question_upvote', true);
+	$vote_count = ap_meta_total_count('vote_up', $post_id);
+	return $vote_count*$point;
+}

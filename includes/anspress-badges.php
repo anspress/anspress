@@ -36,8 +36,11 @@ class AP_Badges
     public function __construct()
     {
 		add_action( 'ap_save_profile', array($this, 'save_profile'), 10, 2);
+		add_action('ap_after_avatar_upload', array($this, 'after_upload'));
 		
-
+		add_action('ap_event_vote_up', array($this, 'question_vote'), 10, 2);
+		
+		add_action('ap_added_favorite', array($this, 'favorite_question'), 10, 2);
 
     }
 	
@@ -45,12 +48,76 @@ class AP_Badges
 		
 		//check if user completed all required fields
 		if(ap_check_user_profile_complete($user->ID))			
-			ap_award_badges($user->ID, 'save_profile');			
+			ap_award_badge($user->ID, 'autobiographer');			
 
 		if(ap_check_if_photogenic($user->ID))
-			ap_award_badges($user->ID, 'upload_avatar_cover');
+			ap_award_badge($user->ID, 'photogenic');
 		
 
+	}
+	
+	public function after_upload($user_id){
+		if(ap_check_if_photogenic($user_id))
+			ap_award_badge($user_id, 'photogenic');
+	}
+	
+	public function question_vote($post_id, $counts) {
+		$post = get_post($post_id);
+		
+		// return if not question
+		if($post->post_type != 'question')
+			return;
+		
+		$great_question = ap_badge_by_id('great_question');
+		$great_question = $great_question['value'];
+		
+		$good_question = ap_badge_by_id('good_question');
+		$good_question = $good_question['value'];
+		
+		$nice_question = ap_badge_by_id('nice_question');
+		$nice_question = $nice_question['value'];
+
+
+		if(ap_received_point_post($post_id) > $great_question && !ap_received_badge_on_post('great_question', $post_id)){
+		
+			ap_award_badge($post->post_author, 'great_question', $post_id);
+			
+		}elseif(ap_received_point_post($post_id) > $good_question && !ap_received_badge_on_post('good_question', $post_id)){
+		
+			ap_award_badge($post->post_author, 'good_question', $post_id);
+			
+		}elseif(ap_received_point_post($post_id) > $nice_question && !ap_received_badge_on_post('nice_question', $post_id) ){
+		
+			ap_award_badge($post->post_author, 'nice_question', $post_id);
+			
+		}
+
+	}
+	
+	public function favorite_question($post_id, $count){
+		$post = get_post($post_id);
+		
+		// return if not question
+		if($post->post_type != 'question')
+			return;
+			
+		$favorite_question = ap_badge_by_id('favorite_question');
+		$favorite_question = $favorite_question['value'];
+		
+		$stellar_question = ap_badge_by_id('stellar_question');
+		$stellar_question = $stellar_question['value'];
+		
+		var_dump($count);
+		
+		/* if(ap_received_point_post($post_id) > $favorite_question && !ap_received_badge_on_post('favorite_question', $post_id)){
+		
+			ap_award_badge($post->post_author, 'favorite_question', $post_id);
+			
+		}elseif(ap_received_point_post($post_id) > $stellar_question && !ap_received_badge_on_post('stellar_question', $post_id)){
+		
+			ap_award_badge($post->post_author, 'stellar_question', $post_id);
+			
+		} */
 	}
 
 }
@@ -81,21 +148,21 @@ function ap_get_badge_points($badge_id){
 	return $tax_meta['points'];
 }
 
-function ap_set_badge($user_id, $badge_id, $badge_type){
-	return ap_add_meta($user_id, 'badge', $badge_id, $badge_type);
+function ap_set_badge($user_id, $badge_id, $badge_type, $action_id = 0){
+	return ap_add_meta($user_id, 'badge', $action_id, $badge_id, $badge_type);
 }
 
 function ap_get_users_all_badges($user_id){
 	global $wpdb;
 		
-	return $wpdb->get_results( $wpdb->prepare('SELECT apmeta_id as meta_id, apmeta_userid as userid, apmeta_actionid as badge_id, apmeta_value as type, apmeta_param as param, apmeta_date as date FROM '.$wpdb->prefix.'ap_meta WHERE apmeta_userid = %d AND apmeta_type = "badge" GROUP BY apmeta_actionid', $user_id));
+	return $wpdb->get_results( $wpdb->prepare('SELECT apmeta_id as meta_id, apmeta_userid as userid, apmeta_value as badge_id, apmeta_param as type, apmeta_date as date FROM '.$wpdb->prefix.'ap_meta WHERE apmeta_userid = %d AND apmeta_type = "badge" GROUP BY apmeta_value', $user_id));
 
 }
 
 function ap_user_badge_count_by_badge($user_id){
 	global $wpdb;
 		
-	$results = $wpdb->get_results( $wpdb->prepare('SELECT count(*) as count, apmeta_actionid as badge_id FROM '.$wpdb->prefix.'ap_meta WHERE apmeta_userid = %d AND apmeta_type = "badge" GROUP BY apmeta_actionid', $user_id));
+	$results = $wpdb->get_results( $wpdb->prepare('SELECT count(*) as count, apmeta_value as badge_id FROM '.$wpdb->prefix.'ap_meta WHERE apmeta_userid = %d AND apmeta_type = "badge" GROUP BY apmeta_value', $user_id));
 	
 	if($results){
 		$counts = array();
@@ -109,7 +176,7 @@ function ap_user_badge_count_by_badge($user_id){
 }
 
 function ap_get_user_badge($user_id, $badge_id){
-	return ap_get_meta(array('apmeta_type' => 'badge', 'apmeta_userid' => $user_id, 'apmeta_actionid' => $badge_id));
+	return ap_get_meta(array('apmeta_type' => 'badge', 'apmeta_userid' => $user_id, 'apmeta_value' => $badge_id));
 }
 
 function ap_user_have_badge_type($user_id, $type){
@@ -130,133 +197,120 @@ function ap_badges_option(){
 function ap_default_badges(){
 	$points = array(
 		array(
-			'id'       		=> 1,
+			'id'       		=> 'autobiographer',
 			'title'       	=> __('Autobiographer', 'ap'),
 			'description' 	=> __('Completed all user profile fields', 'ap'),
 			'min_points'    => 0,
 			'value'    		=> false,
 			'type'    		=> 'bronze',
-			'event'    		=> 'save_profile',
 			'multiple'    	=> false
 		),
 		array(
-			'id'       		=> 2,
+			'id'       		=> 'photogenic',
 			'title'       	=> __('Photogenic', 'ap'),
 			'description' 	=> __('Uploaded an avatar and cover image', 'ap'),
 			'min_points'    => 0,
 			'value'    		=> false,
 			'type'    		=> 'bronze',
-			'event'    		=> 'upload_avatar_cover',
 			'multiple'    	=> false
 		),
 		array(
-			'id'       		=> 3,
+			'id'       		=> 'nice_question',
 			'title'       	=> __('Nice Question', 'ap'),
 			'description' 	=> __('Question score of %d or more', 'ap'),
 			'min_points'    => 0,
-			'value'    		=> 20,
+			'value'    		=> 10,
 			'type'    		=> 'bronze',
-			'event'    		=> 'question_vote',
 			'multiple'    	=> true
 		),
 		array(
-			'id'       		=> 4,
+			'id'       		=> 'good_question',
 			'title'       	=> __('Good Question', 'ap'),
 			'description' 	=> __('Question score of %d or more', 'ap'),
 			'min_points'    => 0,
 			'value'    		=> 50,
 			'type'    		=> 'silver',
-			'event'    		=> 'question_vote',
 			'multiple'    	=> true
 		),
 		array(
-			'id'       		=> 5,
+			'id'       		=> 'great_question',
 			'title'       	=> __('Great Question', 'ap'),
 			'description' 	=> __('Question score of %d or more', 'ap'),
 			'min_points'    => 0,
 			'value'    		=> 100,
 			'type'    		=> 'gold',
-			'event'    		=> 'question_vote',
 			'multiple'    	=> true
 		),
 		array(
-			'id'       		=> 6,
+			'id'       		=> 'popular_question',
 			'title'       	=> __('Popular Question', 'ap'),
 			'description' 	=> __('Asked a question with %d views ', 'ap'),
 			'min_points'    => 0,
-			'value'    		=> 1000,
+			'value'    		=> 100,
 			'type'    		=> 'bronze',
-			'event'    		=> 'question_view',
 			'multiple'    	=> true
 		),
 		array(
-			'id'       		=> 7,
+			'id'       		=> 'notable_question',
 			'title'       	=> __('Notable Question', 'ap'),
 			'description' 	=> __('Asked a question with %d views ', 'ap'),
 			'min_points'    => 0,
-			'value'    		=> 2500,
+			'value'    		=> 500,
 			'type'    		=> 'silver',
-			'event'    		=> 'question_view',
 			'multiple'    	=> true
 		),
 		array(
-			'id'       		=> 8,
+			'id'       		=> 'famous_question',
 			'title'       	=> __('Famous Question', 'ap'),
 			'description' 	=> __('Asked a question with %d views', 'ap'),
 			'min_points'    => 0,
-			'value'    		=> 10000,
+			'value'    		=> 1500,
 			'type'    		=> 'gold',
-			'event'    		=> 'question_view',
 			'multiple'    	=> true
 		),
 		array(
-			'id'       		=> 9,
+			'id'       		=> 'favorite_question',
 			'title'       	=> __('Favorite Question', 'ap'),
 			'description' 	=> __('Question favorited by %d users', 'ap'),
 			'min_points'    => 0,
 			'value'    		=> 5,
 			'type'    		=> 'silver',
-			'event'    		=> 'question_favorite',
 			'multiple'    	=> true
 		),
 		array(
-			'id'       		=> 10,
+			'id'       		=> 'stellar_question',
 			'title'       	=> __('Stellar Question', 'ap'),
 			'description' 	=> __('Question favorited by %d users', 'ap'),
 			'min_points'    => 0,
 			'value'    		=> 20,
 			'type'    		=> 'gold',
-			'event'    		=> 'question_favorite',
 			'multiple'    	=> true
 		),
 		array(
-			'id'       		=> 11,
+			'id'       		=> 'scholar',
 			'title'       	=> __('Scholar', 'ap'),
 			'description' 	=> __('Asked a question and accepted an answer', 'ap'),
 			'min_points'    => 0,
 			'value'    		=> false,
 			'type'    		=> 'bronze',
-			'event'    		=> 'select_answer',
 			'multiple'    	=> false
 		),
 		array(
-			'id'       		=> 12,
+			'id'       		=> 'student',
 			'title'       	=> __('Student', 'ap'),
 			'description' 	=> __('Asked first question with score of %d or more', 'ap'),
 			'min_points'    => 0,
 			'value'    		=> 1,
 			'type'    		=> 'bronze',
-			'event'    		=> 'question_vote',
 			'multiple'    	=> false
 		),
 		array(
-			'id'       		=> 13,
+			'id'       		=> 'tumbleweed',
 			'title'       	=> __('Tumbleweed', 'ap'),
 			'description' 	=> __('Asked a question with no votes, no answers, no comments, and low views for a week', 'ap'),
 			'min_points'    => 0,
 			'value'    		=> false,
 			'type'    		=> 'bronze',
-			'event'    		=> 'question_view',
 			'multiple'    	=> false
 		),
 	);
@@ -271,7 +325,7 @@ function ap_badge_by_id($id){
 	
 	return false;
 }
-function ap_badge_option_update($id, $title, $desc, $type, $min_points, $event, $multiple = false){
+function ap_badge_option_update($id, $title, $desc, $type, $min_points, $multiple = false){
 	$opt 	= ap_badges_option();
 	foreach($opt as $k => $p){
 		if($p['id'] == $id){
@@ -279,7 +333,6 @@ function ap_badge_option_update($id, $title, $desc, $type, $min_points, $event, 
 			$opt[$k]['description'] = $desc;
 			$opt[$k]['type'] 		= $type;
 			$opt[$k]['min_points'] 	= $min_points;
-			$opt[$k]['event'] 		= $event;
 			$opt[$k]['multiple'] 	= $multiple;
 		}
 	}
@@ -287,15 +340,14 @@ function ap_badge_option_update($id, $title, $desc, $type, $min_points, $event, 
 	wp_cache_delete('ap_badges', 'ap');
 	return $update;
 }
-function ap_badge_option_new($id, $title, $desc, $type, $min_points, $event, $multiple = false){
+function ap_badge_option_new($id, $title, $desc, $type, $min_points, $multiple = false){
 	$opt 	= ap_badges_option();
 	$opt[] = array(
-		'id' 			=> count($opt),
+		'id' 			=> strtolower(str_replace(' ', '_', $title)),
 		'title' 		=> $title,
 		'description' 	=> $desc,
 		'type' 			=> $type,
 		'min_points' 	=> $min_points,
-		'event' 		=> $event,
 		'multiple' 		=> $multiple,
 	);
 	$new = update_option('ap_badges', $opt);
@@ -312,29 +364,21 @@ function ap_badge_option_delete($id){
 	return update_option('ap_badges', $opt);
 }
 
-function ap_badges_by_event($event){
-	$opt = ap_badges_option();
-	$badges = array();
-	foreach( $opt as $badge)
-		if($badge['event'] == $event){
-			$badges[] = $badge;
+function ap_award_badge($user_id, $id, $action_id = 0){
+	$badge = ap_badge_by_id($id);
+
+	if(!empty($badge)){
+		if(!$badge['multiple']){
+			$received = ap_get_user_badge($user_id, $badge['id']);
+			if(!is_array($received))
+				ap_set_badge($user_id, $badge['id'], $badge['type'], $action_id);
+		}else{
+			ap_set_badge($user_id, $badge['id'], $badge['type'], $action_id);
 		}
-	return $badges;
+	}
+
 }
 
-function ap_award_badges($user_id, $event){
-	$badges = ap_badges_by_event($event);
-
-	if(!empty($badges))
-		foreach($badges as $b){
-			if(!$b['multiple']){
-				$received = ap_get_user_badge($user_id, $b['id']);
-				if(!is_array($received))
-					ap_set_badge($user_id, $b['id'], $b['type']);
-			}else{
-				ap_set_badge($user_id, $b['id'], $b['type']);
-			}
-		}
-		
-		
+function ap_received_badge_on_post($badge_id, $post_id){
+	return ap_get_meta(array('apmeta_type' => 'badge', 'apmeta_actionid' => $post_id, 'apmeta_value' => $badge_id));
 }

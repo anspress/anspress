@@ -161,11 +161,6 @@ function ap_meta_total_count($type, $actionid=false, $userid = false, $group = f
 	$where_query = '';
 	$group_query = '';
 	
-	$key = 'apmeta_'.$type.'_'.$actionid;
-	$cache = wp_cache_get($key, 'count');
-	if($cache !== FALSE)
-		return $cache;
-	
 	if($actionid)
 		$where_query .= "apmeta_actionid = $actionid";
 	
@@ -176,8 +171,16 @@ function ap_meta_total_count($type, $actionid=false, $userid = false, $group = f
 		$group_query .= 'GROUP BY '.$group;
 	}
 		
-	$count = $wpdb->get_var( "SELECT IFNULL(count(*), 0) FROM " .$wpdb->prefix ."ap_meta where apmeta_type = '$type' and $where_query $group_query");
+	$query = "SELECT IFNULL(count(*), 0) FROM " .$wpdb->prefix ."ap_meta where apmeta_type = '$type' and $where_query $group_query";
 	
+	$key = md5($query);
+	
+	$cache = wp_cache_get($key, 'count');
+	if($cache !== FALSE)
+		return $cache;
+	
+
+	$count = $wpdb->get_var($query);
 	wp_cache_set( $key, $count, 'count');	
 	return $count;	
 }

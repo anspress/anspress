@@ -50,7 +50,6 @@ class Ap_Badges_Table extends WP_List_Table
         $columns = array(
             'title'       	=> 'Title',            
             'type'    		=> 'Type',
-            'event'    		=> 'Event',
             'value'    		=> 'Value',
 			'min_points'    => 'Min. Points',
             'multiple'    	=> 'Multiple',
@@ -105,7 +104,6 @@ class Ap_Badges_Table extends WP_List_Table
     {
         switch( $column_name ) {
             case 'title':
-            case 'event':
             case 'min_points':
             case 'value':
             case 'type':
@@ -125,7 +123,7 @@ class Ap_Badges_Table extends WP_List_Table
     private function sort_data( $a, $b )
     {
         // Set defaults
-        $orderby = 'id';
+        $orderby = 'type';
         $order = 'asc';
  
         // If orderby is set, use this as the sort column
