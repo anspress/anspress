@@ -41,6 +41,8 @@ class AP_Badges
 		add_action('ap_event_vote_up', array($this, 'question_vote'), 10, 2);
 		
 		add_action('ap_added_favorite', array($this, 'favorite_question'), 10, 2);
+		
+		add_action('ap_insert_views', array($this, 'question_view'), 10, 2);
 
     }
 	
@@ -114,6 +116,37 @@ class AP_Badges
 		}elseif($count > $stellar_question && !ap_received_badge_on_post('stellar_question', $post_id)){
 		
 			ap_award_badge($post->post_author, 'stellar_question', $post_id);
+			
+		}
+	}
+	
+	public function question_view($post_id, $count){
+		$post = get_post($post_id);
+		
+		// return if not question
+		if($post->post_type != 'question')
+			return;
+			
+		$popular_question = ap_badge_by_id('popular_question');
+		$popular_question = $popular_question['value'];
+		
+		$notable_question = ap_badge_by_id('notable_question');
+		$notable_question = $notable_question['value'];
+		
+		$famous_question = ap_badge_by_id('famous_question');
+		$famous_question = $famous_question['value'];
+		
+		if($count > $popular_question && !ap_received_badge_on_post('popular_question', $post_id)){
+		
+			ap_award_badge($post->post_author, 'popular_question', $post_id);
+			
+		}elseif($count > $notable_question && !ap_received_badge_on_post('notable_question', $post_id)){
+		
+			ap_award_badge($post->post_author, 'notable_question', $post_id);
+			
+		}elseif($count > $famous_question && !ap_received_badge_on_post('famous_question', $post_id)){
+		
+			ap_award_badge($post->post_author, 'famous_question', $post_id);
 			
 		}
 	}
@@ -271,7 +304,7 @@ function ap_default_badges(){
 			'title'       	=> __('Favorite Question', 'ap'),
 			'description' 	=> __('Question favorited by %d users', 'ap'),
 			'min_points'    => 0,
-			'value'    		=> 1,
+			'value'    		=> 5,
 			'type'    		=> 'silver',
 			'multiple'    	=> true
 		),
