@@ -56,7 +56,7 @@ function ap_insert_views($data_id, $type){
 		$view = ap_get_views_db($data_id);
 		$view = $view+1;
 		update_post_meta( $data_id, ANSPRESS_VIEW_META, apply_filters('ap_insert_views', $view ));
-		do_action('ap_insert_views', $data_id, $view);
+		do_action('after_insert_views', $data_id, $view);
 	}
 }
 

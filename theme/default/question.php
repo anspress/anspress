@@ -10,6 +10,8 @@
 
 while ( $question->have_posts() ) : $question->the_post();
 if($question->post->post_status == 'publish'){
+
+
 ?>
 <div id="ap-single" class="clearfix">
 	<?php ap_favorite_html(); ?>

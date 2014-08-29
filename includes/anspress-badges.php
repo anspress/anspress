@@ -42,7 +42,7 @@ class AP_Badges
 		
 		add_action('ap_added_favorite', array($this, 'favorite_question'), 10, 2);
 		
-		add_action('ap_insert_views', array($this, 'question_view'), 10, 2);
+		add_action('after_insert_views', array($this, 'question_view'), 10, 2);
 		
 		add_action('ap_event_select_answer', array($this, 'select_answer'), 10, 3);
 
@@ -157,6 +157,14 @@ class AP_Badges
 		
 			ap_award_badge($post->post_author, 'famous_question', $post_id);
 			
+		}
+		
+		$limit = 7 * 86400; //days * seconds per day
+		$post_age = current_time('timestamp') - mysql2date('U', $post->post_date_gmt);
+		
+		if($post_age > $limit){
+			if($count < 10 && ap_count_ans_meta($post_id) == 0) 
+				ap_award_badge($post->post_author, 'tumbleweed', $post_id);
 		}
 	}
 	
