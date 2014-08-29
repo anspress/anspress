@@ -75,11 +75,14 @@ class AP_Badges
 		$great_question = ap_badge_by_id('great_question');
 		$great_question = $great_question['value'];
 		
-		$good_question = ap_badge_by_id('good_question');
-		$good_question = $good_question['value'];
+		$good_question 	= ap_badge_by_id('good_question');
+		$good_question 	= $good_question['value'];
 		
-		$nice_question = ap_badge_by_id('nice_question');
-		$nice_question = $nice_question['value'];
+		$nice_question 	= ap_badge_by_id('nice_question');
+		$nice_question 	= $nice_question['value'];
+		
+		$student 		= ap_badge_by_id('student');
+		$student 		= $student['value'];
 
 
 		if(ap_received_point_post($post_id) > $great_question && !ap_received_badge_on_post('great_question', $post_id)){
@@ -94,6 +97,10 @@ class AP_Badges
 		
 			ap_award_badge($post->post_author, 'nice_question', $post_id);
 			
+		}
+		
+		if(ap_received_point_post($post_id) > $student && !ap_received_badge_on_post('student', $post_id) ){		
+			ap_award_badge( $post->post_author, 'student', $post_id );			
 		}
 
 	}
