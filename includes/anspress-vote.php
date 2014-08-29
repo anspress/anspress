@@ -76,7 +76,8 @@ class anspress_vote
 				$post->flag = get_post_meta($post->ID, ANSPRESS_FLAG_META, true);
 				
 				//favorite count
-				$post->favorite = get_post_meta($post->ID, ANSPRESS_FAV_META, true);
+				$post->favorite 	= get_post_meta($post->ID, ANSPRESS_FAV_META, true);
+				$post->favorited 	= ap_is_user_favorite($post->ID);
 				
 				$post->voted_closed = ap_is_user_voted_closed();
 					
@@ -190,7 +191,7 @@ class anspress_vote
 				update_post_meta($args[0], ANSPRESS_FAV_META, $counts);
 				
 				//register an action
-				do_action('ap_added_favorite', $args[1], $counts);
+				do_action('ap_added_favorite', $args[0], $counts);
 				
 				$title = __('Remove from favorite list', 'ap');
 				$message = __('Added question to your favorite list', 'ap');
@@ -462,7 +463,7 @@ function ap_favorite_html($post = false){
 	$title = (!$post->favorite) ? (__('Add to favorite list', 'ap')) : (__('Remove from favorite list', 'ap'));
 	?>
 		<div class="favorite-c">
-			<a id="<?php echo 'favorite_'.$post->ID; ?>" class="favorite-btn <?php echo ($post->favorite) ? ' added' :''; ?>" data-action="ap-favorite" data-args="<?php echo $post->ID.'-'.$nonce; ?>" href="#"title="<?php echo $title; ?>">&#9733; <?php echo $post->favorite; ?></a>
+			<a id="<?php echo 'favorite_'.$post->ID; ?>" class="favorite-btn <?php echo ($post->favorited) ? ' added' :''; ?>" data-action="ap-favorite" data-args="<?php echo $post->ID.'-'.$nonce; ?>" href="#"title="<?php echo $title; ?>">&#9733; <?php echo $post->favorite; ?></a>
 			<span> 
 				<?php  
 					if( $post->favorite =='1' && $post->favorite)
