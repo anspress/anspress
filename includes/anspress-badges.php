@@ -107,17 +107,15 @@ class AP_Badges
 		$stellar_question = ap_badge_by_id('stellar_question');
 		$stellar_question = $stellar_question['value'];
 		
-		var_dump($count);
-		
-		/* if(ap_received_point_post($post_id) > $favorite_question && !ap_received_badge_on_post('favorite_question', $post_id)){
+		if($count > $favorite_question && !ap_received_badge_on_post('favorite_question', $post_id)){
 		
 			ap_award_badge($post->post_author, 'favorite_question', $post_id);
 			
-		}elseif(ap_received_point_post($post_id) > $stellar_question && !ap_received_badge_on_post('stellar_question', $post_id)){
+		}elseif($count > $stellar_question && !ap_received_badge_on_post('stellar_question', $post_id)){
 		
 			ap_award_badge($post->post_author, 'stellar_question', $post_id);
 			
-		} */
+		}
 	}
 
 }
@@ -273,7 +271,7 @@ function ap_default_badges(){
 			'title'       	=> __('Favorite Question', 'ap'),
 			'description' 	=> __('Question favorited by %d users', 'ap'),
 			'min_points'    => 0,
-			'value'    		=> 5,
+			'value'    		=> 1,
 			'type'    		=> 'silver',
 			'multiple'    	=> true
 		),
