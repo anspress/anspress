@@ -37,7 +37,8 @@ class AP_History
     {
 		add_action('ap_event_new_answer', array($this, 'new_answer'), 10, 3);
 		add_action('ap_event_new_comment', array($this, 'new_comment'), 10, 3);
-		add_action('ap_event_edit_question', array($this, 'edit_question'), 10, 3);
+		add_action('ap_event_edit_question', array($this, 'edit_question'), 10, 2);
+		add_action('ap_event_edit_answer', array($this, 'edit_answer'), 10, 3);
 	}
 	public function new_answer($postid, $userid, $question_id) {
 		ap_add_history($userid, $postid, $question_id, 'new_answer');
@@ -49,31 +50,34 @@ class AP_History
 			ap_add_history($comment->user_id, $comment->comment_ID, $question_id, 'new_comment_answer');
 	}
 	public function edit_question($post_id, $user_id) {
-		ap_add_history($user_id, $post_id, NULL, 'edit_question');
+		ap_add_history($user_id, $post_id, $post_id, 'edit_question');
+	}
+	public function edit_answer($postid, $userid, $question_id) {
+		ap_add_history($userid, $postid, $question_id, 'edit_answer');
 	}
 }
 
-function ap_add_history($userid = false, $actionid, $value, $param=NULL){
+function ap_add_history($userid = false, $actionid, $parent_id, $param=NULL){
 	if(!$userid)
 		$userid = get_current_user_id();
 	
-	$opts = array('userid' => $userid, 'actionid' => $actionid, 'value' => $value, 'param' =>$param);
+	$opts = array('userid' => $userid, 'actionid' => $actionid, 'parent_id' => $parent_id, 'param' =>$param);
 	$opts = apply_filters('ap_add_history_parms', $opts );
 	
 	extract($opts);
 	
-	$last_history = ap_get_latest_history($actionid);
+	$last_history = ap_get_latest_history($parent_id);
 
-	if($last_history && $last_history['user_id'] == $userid && $last_history['action_id'] == $actionid && $last_history['question_id'] == $value)
+	if($last_history && $last_history['user_id'] == $userid && $last_history['type'] == $param && $last_history['parent_id'] == $parent_id && $last_history['action_id'] == $actionid){
 		$row = ap_update_meta(
-			array('apmeta_userid' => $userid, 'apmeta_actionid' => $actionid, 'apmeta_value' => $value, 'apmeta_param' =>$param),
-			array('apmeta_userid' => $last_history['apmeta_userid'], 'apmeta_actionid' => $last_history['apmeta_actionid'], 'apmeta_value' => $last_history['apmeta_value']));
-	else
-		$row = ap_add_meta($userid, 'history', $actionid, $value, $param );
+			array('apmeta_userid' => $userid, 'apmeta_actionid' => $actionid, 'apmeta_value' => $parent_id, 'apmeta_param' =>$param),
+			array('apmeta_userid' => $last_history['user_id'], 'apmeta_actionid' => $last_history['action_id'], 'apmeta_value' => $last_history['parent_id'], 'apmeta_param' => $last_history['type']));
+	}else{
+		$row = ap_add_meta($userid, 'history', $actionid, $parent_id, $param );
+	}
 	
-	
-	do_action('ap_after_history_'.$value, $userid, $actionid, $param);
-	do_action('ap_after_inserting_history', $userid, $actionid, $value, $param);
+	do_action('ap_after_history_'.$parent_id, $userid, $actionid, $param);
+	do_action('ap_after_inserting_history', $userid, $actionid, $parent_id, $param);
 	return $row;
 }
 
@@ -102,9 +106,9 @@ function ap_history_name($slug, $parm = ''){
 		'new_answer' 		=> __('Answer', 'ap'),
 		'new_comment' 		=> __('Comment', 'ap'),
 		'new_comment_answer'=> __('Comment on answer', 'ap'),
-		'edit_question' 	=> __('Edited question', 'ap'),
-		'edit_answer' 		=> __('Edited answer', 'ap'),
-		'edit_comment' 		=> __('Edited comment', 'ap'),
+		'edit_question' 	=> __('Question edited', 'ap'),
+		'edit_answer' 		=> __('Answer edited', 'ap'),
+		'edit_comment' 		=> __('Comment edited', 'ap'),
 	);
 	$names = apply_filters('ap_history_name', $names);
 	
@@ -117,7 +121,7 @@ function ap_history_name($slug, $parm = ''){
 
 function ap_get_latest_history($post_id){
 	global $wpdb;
-	$query = $wpdb->prepare('SELECT apmeta_id as meta_id, apmeta_userid as user_id, apmeta_actionid as action_id, apmeta_value as question_id, apmeta_param as type FROM '. $wpdb->prefix .'ap_meta WHERE apmeta_type="history" AND apmeta_value=%d ORDER BY apmeta_date DESC', $post_id);
+	$query = $wpdb->prepare('SELECT apmeta_id as meta_id, apmeta_userid as user_id, apmeta_actionid as action_id, apmeta_value as parent_id, apmeta_param as type FROM '. $wpdb->prefix .'ap_meta WHERE apmeta_type="history" AND apmeta_value=%d ORDER BY apmeta_date DESC', $post_id);
 	return $wpdb->get_row($query, ARRAY_A);
 }
 

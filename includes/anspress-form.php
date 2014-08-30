@@ -561,13 +561,12 @@ class anspress_form
 
 			$post_id = wp_update_post($answer_array);
 			
-			if($post_id){
-				do_action('ap_after_editing_answer', $post_id);
-				ap_do_event('edit_answer', $post_id, $user_id, $post->ID);	
+			if($post_id){					
 				// set updated meta for sorting purpose
 				update_post_meta($post->post_parent, ANSPRESS_UPDATED_META, current_time( 'mysql' ));
-				ap_add_history($user_id, $post->ID, 'edited_answer');
-				
+
+				do_action('ap_after_editing_answer', $post_id);
+				ap_do_event('edit_answer', $post_id, $user_id, $post->post_parent);
 				if($_POST['action'] == 'ap_submit_answer'){
 					$result = apply_filters('ap_ajax_answer_edit_result', 
 						array(
