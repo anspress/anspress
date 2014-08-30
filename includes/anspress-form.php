@@ -485,15 +485,16 @@ class anspress_form
 
 			$post_id = wp_update_post($question_array);
 			
-			if($post_id){
-				do_action('ap_after_editing_question', $post_id);
-				ap_do_event('edit_question', $post_id, $user_id);
+			if($post_id){				
 				// Update Custom Meta
 				wp_set_post_terms( $post_id, sanitize_text_field($_POST['category']), 'question_category' );
 				wp_set_post_terms( $post_id, sanitize_text_field($_POST['tags']), 'question_tags' );
 				
 				// set updated meta for sorting purpose
 				update_post_meta($post_id, ANSPRESS_UPDATED_META, current_time( 'mysql' ));
+				
+				do_action('ap_after_editing_question', $post_id);
+				ap_do_event('edit_question', $post_id, $user_id);
 				
 				if($_POST['action'] == 'ap_submit_question'){
 					$result = apply_filters('ap_ajax_edit_question_submit_result', 
@@ -726,17 +727,17 @@ class anspress_form
 	
 	public function comment_inserted($comment_id, $comment_object) {
 		if($comment_object->comment_approved =='1' ){
-			$post_type = get_post_type( $comment_object->comment_post_ID );			
+			$post = get_post( $comment_object->comment_post_ID );			
 			
-			if ($post_type == 'question') {
-				ap_do_event('new_comment', $comment_object, 'question');
+			if ($post->post_type == 'question') {
+				ap_do_event('new_comment', $comment_object, 'question', '');
 				// set updated meta for sorting purpose
 				update_post_meta($comment_object->comment_post_ID, ANSPRESS_UPDATED_META, current_time( 'mysql' ));
 				
 				// add participant	
 				ap_add_parti($comment_object->comment_post_ID, $comment_object->user_id, 'comment', $comment_id);
-			}elseif($post_type == 'answer'){
-				ap_do_event('new_comment', $comment_object, 'answer');
+			}elseif($post->post_type == 'answer'){
+				ap_do_event('new_comment', $comment_object, 'answer', $post->post_parent);
 				$post_id = wp_get_post_parent_id($comment_object->comment_post_ID);
 				// set updated meta for sorting purpose
 				update_post_meta($post_id, ANSPRESS_UPDATED_META, current_time( 'mysql' ));

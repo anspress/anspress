@@ -35,25 +35,22 @@ class AP_History
      */
     public function __construct()
     {
-	
+		add_action('ap_event_new_answer', array($this, 'new_answer'), 10, 3);
+		add_action('ap_event_new_comment', array($this, 'new_comment'), 10, 3);
+		add_action('ap_event_edit_question', array($this, 'edit_question'), 10, 3);
 	}
-}
-
-function ap_get_last_history($actionid){
-	$last = ap_get_all_meta(array(
-		'where' 	=> array(
-			'apmeta_type' => array('value' => 'history'),
-			'apmeta_actionid' => array('value' => $actionid)
-		),
-		'orderby' 	=> array(
-			'apmeta_date' => array('order' => 'DESC')
-		)
-	), 1);
-	
-	if(isset($last[0]))
-		return (array)$last[0];
-	
-	return false;
+	public function new_answer($postid, $userid, $question_id) {
+		ap_add_history($userid, $postid, $question_id, 'new_answer');
+	}
+	public function new_comment($comment, $post_type, $question_id){
+		if($post_type == 'question')
+			ap_add_history($comment->user_id, $comment->comment_ID, $comment->comment_post_ID, 'new_comment');
+		else
+			ap_add_history($comment->user_id, $comment->comment_ID, $question_id, 'new_comment_answer');
+	}
+	public function edit_question($post_id, $user_id) {
+		ap_add_history($user_id, $post_id, NULL, 'edit_question');
+	}
 }
 
 function ap_add_history($userid = false, $actionid, $value, $param=NULL){
@@ -65,9 +62,9 @@ function ap_add_history($userid = false, $actionid, $value, $param=NULL){
 	
 	extract($opts);
 	
-	$last_history = ap_get_last_history($actionid);
+	$last_history = ap_get_latest_history($actionid);
 
-	if($last_history && $last_history['apmeta_userid'] == $userid && $last_history['apmeta_actionid'] == $actionid && $last_history['apmeta_value'] == $value)
+	if($last_history && $last_history['user_id'] == $userid && $last_history['action_id'] == $actionid && $last_history['question_id'] == $value)
 		$row = ap_update_meta(
 			array('apmeta_userid' => $userid, 'apmeta_actionid' => $actionid, 'apmeta_value' => $value, 'apmeta_param' =>$param),
 			array('apmeta_userid' => $last_history['apmeta_userid'], 'apmeta_actionid' => $last_history['apmeta_actionid'], 'apmeta_value' => $last_history['apmeta_value']));
@@ -101,12 +98,13 @@ function ap_get_post_history($post_id){
 
 function ap_history_name($slug, $parm = ''){
 	$names = array(
-		'asked' 			=> __('Asked', 'ap'),
-		'answered' 			=> __('Answered', 'ap'),
-		'commented' 		=> sprintf(__('Commented on %s', 'ap'), $parm) ,
-		'edited_question' 	=> __('Edited question', 'ap'),
-		'edited_answer' 	=> __('Edited answer', 'ap'),
-		'edited_comment' 	=> __('Edited comment', 'ap'),
+		'new_question' 		=> __('Asked', 'ap'),
+		'new_answer' 		=> __('Answer', 'ap'),
+		'new_comment' 		=> __('Comment', 'ap'),
+		'new_comment_answer'=> __('Comment on answer', 'ap'),
+		'edit_question' 	=> __('Edited question', 'ap'),
+		'edit_answer' 		=> __('Edited answer', 'ap'),
+		'edit_comment' 		=> __('Edited comment', 'ap'),
 	);
 	$names = apply_filters('ap_history_name', $names);
 	
@@ -116,11 +114,20 @@ function ap_history_name($slug, $parm = ''){
 	return $slug;	
 }
 
-function ap_get_post_history_list($post_id){
-	$history = ap_get_post_history($post_id);	
-	echo '<ul class="ap-history-list">';
-	foreach($history as $h){
-		echo '<li>'.ap_history_name($h->apmeta_value, $h->apmeta_param).'</li>';
-	}
-	echo '</ul>';
+
+function ap_get_latest_history($post_id){
+	global $wpdb;
+	$query = $wpdb->prepare('SELECT apmeta_id as meta_id, apmeta_userid as user_id, apmeta_actionid as action_id, apmeta_value as question_id, apmeta_param as type FROM '. $wpdb->prefix .'ap_meta WHERE apmeta_type="history" AND apmeta_value=%d ORDER BY apmeta_date DESC', $post_id);
+	return $wpdb->get_row($query, ARRAY_A);
+}
+
+function ap_get_latest_history_html($post_id){
+	$history = ap_get_latest_history($post_id);
+
+	if($history)
+		$html = '<span class="ap-post-history">'.sprintf( __('%s by %s', 'ap'), ap_history_name($history['type']), ap_user_display_name($history['user_id']) ).'</span>';
+	else
+		$html = '<span class="ap-post-history">'.sprintf( __('Asked by %s', 'ap'), ap_user_display_name() ).'</span>';
+		
+	return apply_filters('ap_latest_history_html', $html);
 }

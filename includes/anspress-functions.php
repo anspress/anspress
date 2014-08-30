@@ -214,7 +214,10 @@ function ap_get_link_to($page){
 	if (filter_var($home, FILTER_VALIDATE_URL) !==FALSE)
 		$home = '';
 	
-	$rel = str_replace($home, '', $base);
+	$home = ltrim($home,'/');
+	$base = ltrim($base,'/');
+	$rel = ltrim($base, $home);
+
 	return home_url(rtrim($rel, '/') .'/'.$page);
 }
 

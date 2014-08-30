@@ -26,7 +26,7 @@ $clearfix_class = array('question-summary clearfix');
 			<div class="ap-list-inner">
 				<div class="ap-avatar">
 					<a href="<?php echo ap_user_link(); ?>">
-						<?php echo get_avatar( get_the_author_meta( 'user_email' ), 35 ); ?>
+						<?php echo get_avatar( get_the_author_meta( 'ID' ), 35 ); ?>
 					</a>
 				</div>								
 				<div class="summery wrap-left">
@@ -44,7 +44,8 @@ $clearfix_class = array('question-summary clearfix');
 							<i class="ap-icon-clock ap-meta-icon"></i>
 							<?php 							
 								printf(
-									'<span class="when">%s ago</span>',
+									'<span class="when">%s %s ago</span>',
+									ap_get_latest_history_html(get_the_ID()),
 									ap_human_time( mysql2date('U', ap_last_active(get_question_id())))
 								); 
 								ap_user_display_name();

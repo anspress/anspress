@@ -318,10 +318,7 @@ class AP_User {
 	public function get_avatar($avatar, $id_or_email, $size, $default, $alt){
 		if ( !empty($id_or_email) ) {
 			
-			if(is_email($id_or_email)){
-				$u = get_user_by('email', $id_or_email);
-				$id_or_email = $u->ID;
-			}elseif(is_object($id_or_email)){
+			if(is_object($id_or_email)){
                 $allowed_comment_types = apply_filters( 'get_avatar_comment_types', array( 'comment' ) );
 	                if ( ! empty( $id_or_email->comment_type ) && ! in_array( $id_or_email->comment_type, (array) $allowed_comment_types ) )
 	                        return false;
@@ -333,6 +330,9 @@ class AP_User {
 	                                $id_or_email = $user->user_id;
 	                }
 
+			}elseif(is_email($id_or_email)){
+				$u = get_user_by('email', $id_or_email);
+				$id_or_email = $u->ID;
 			}
 			
 			$image_a =  wp_get_attachment_image_src( get_user_meta($id_or_email, '_ap_avatar', true), 'thumbnail');

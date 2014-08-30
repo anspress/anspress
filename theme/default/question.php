@@ -11,7 +11,6 @@
 while ( $question->have_posts() ) : $question->the_post();
 if($question->post->post_status == 'publish'){
 
-
 ?>
 <div id="ap-single" class="clearfix">
 	<?php ap_favorite_html(); ?>
@@ -60,10 +59,8 @@ if($question->post->post_status == 'publish'){
 					if(ap_user_can_answer(get_question_id()))
 						include(ap_get_theme_location('answer-form.php')); 
 				?>
-			</div>
-			<div id="timeline">
-				<?php ap_get_post_history_list(get_question_id()); ?>
-			</div>
+
+		</div>
 		</div>
 		<div class="ap-question-right">
 			<div class="ap-question-right-inner">
