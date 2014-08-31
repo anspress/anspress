@@ -44,7 +44,7 @@ class anspress {
 		add_filter('query_vars', array($this, 'query_var'));
 		
 		add_action('post_type_link', array( $this, 'answer_link'),10,2);
-		add_action('generate_rewrite_rules', array( $this, 'rewrites'));
+		add_action('generate_rewrite_rules', array( $this, 'rewrites'), 1);
 		
 		// Add specific CSS class by filter
 		add_filter('body_class', array($this, 'body_class'));
@@ -277,6 +277,9 @@ class anspress {
 		
 		if ( !$rewrite_rules )
 			$rewrite_rules = array();
+		
+		if ( !$ap_rules )
+			$ap_rules = array();
 
 		$wp_rewrite->rewrite_rules();
 
