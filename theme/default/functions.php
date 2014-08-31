@@ -49,6 +49,7 @@ function init_scripts_front(){
 			'username_not_avilable' 		=> __( 'Username not available', 'ap' ),
 			'email_already_in_use' 			=> __( 'Email already in use', 'ap' ),
 			'loading' 						=> __( 'Loading', 'ap' ),
+			'sending' 						=> __( 'Sending request', 'ap' ),
 			'adding_to_fav' 				=> __( 'Adding question to your favorites', 'ap' ),
 			'voting_on_post' 				=> __( 'Sending your vote', 'ap' ),
 			'requesting_for_closing' 		=> __( 'Requesting for closing this question', 'ap' ),

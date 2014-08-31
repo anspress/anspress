@@ -65,6 +65,7 @@ APjs.site.prototype = {
 		this.editMessage();
 		this.deleteMessage();
 		this.questionSuggestion();
+		this.flushRules();
 		
 		
 		jQuery('body').delegate('.ap-modal-bg, .ap-modal-close', 'click', function () {
@@ -1489,6 +1490,22 @@ APjs.site.prototype = {
 			self.qsitems += this.html;
 		});
 	},
+	flushRules:function(){
+		var self = this;
+		
+		jQuery('.ap-missing-rules > a').click(function(e){
+			e.preventDefault();
+			self.showLoading(aplang.sending);
+			self.doAjaxForm(
+				{action: 'ap_install_rewrite_rules', args: jQuery(this).data('args')},
+				function(){
+					self.hideLoading();
+					jQuery('.ap-missing-rules').hide();
+				}
+			);
+		});
+
+	}
 	
 };
 

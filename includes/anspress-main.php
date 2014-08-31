@@ -49,6 +49,8 @@ class anspress {
 		// Add specific CSS class by filter
 		add_filter('body_class', array($this, 'body_class'));
 		
+		add_action('ap_page_top', array($this, 'check_rewrite_rules'));
+		
 	}
 	
 
@@ -210,6 +212,7 @@ class anspress {
 	 
 	public function rewrites() {  
 		global $wp_rewrite;  
+		global $ap_rules;
 		
 		unset($wp_rewrite->extra_permastructs['question']); 
         unset($wp_rewrite->extra_permastructs['answer']); 
@@ -249,6 +252,7 @@ class anspress {
 			$slug. "([^/]+)/?" => "index.php?page_id=".$base_page_id."&ap_page=".$wp_rewrite->preg_index(1),			
 
 		);  
+		$ap_rules = $new_rules;
 		return $wp_rewrite->rules = $new_rules + $wp_rewrite->rules;  
 	}  
 	
@@ -257,6 +261,40 @@ class anspress {
 		$classes[] = 'anspress';
 		// return the $classes array
 		return $classes;
+	}
+	
+	public function check_rewrite_rules(){
+		if(!is_super_admin())
+			return;
+			
+		global $wp_rewrite;
+		global $ap_rules;
+		
+		$show = false;
+		
+		$rewrite_rules_array = array();
+		$rewrite_rules = get_option( 'rewrite_rules' );
+		
+		if ( !$rewrite_rules )
+			$rewrite_rules = array();
+
+		$wp_rewrite->rewrite_rules();
+
+		$site_rules 	= array_keys($rewrite_rules);
+		$maybe_missing 	= array_keys($ap_rules);
+		
+		foreach( $maybe_missing as $rule ) {
+			if ( !in_array( $rule, $site_rules ) ) {
+				$rewrite_rules_array[$rule] = array('source' => 'missing');
+			}
+		}
+
+		if(count($rewrite_rules_array)> 0)
+			$show = true;
+			
+		if($show)
+			echo '<div class="ap-missing-rules">'.__('Rewrite rules are missing', 'ap').'<a href="#" data-args="'.wp_create_nonce('anspress_install').'">'.__('Click here to fix', 'ap').'</a></div>';
+
 	}
 
 }

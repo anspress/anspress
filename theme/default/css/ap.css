@@ -337,25 +337,25 @@ textarea.input-lg, select[multiple].input-lg {
 }
 
 /* end bootstrap styles */
-body.anspress {
+body.anspress .ap-container {
     margin: 0;
     font-family: "helvetica neue", helvetica, arial, "lucida grande", sans-serif;
     color: #4e5665;
     line-height: 1.6;
 }
 
-.anspress .site-content ul {
+.anspress .ap-container .site-content ul {
     padding: 0;
     margin: 0;
     list-style: none;
 }
 
-.ap-container li {
+.ap-container .ap-container li {
     padding: 0;
     margin: 0;
 }
 
-.anspress pre {
+.anspress .ap-container pre {
     white-space: pre-wrap;
 }
 
@@ -363,7 +363,7 @@ body.anspress {
     margin-top: 0;
 }
 
-.anspress a {
+.anspress .ap-container a {
     text-decoration: none;
 }
 
@@ -3465,4 +3465,23 @@ ul.ap-badge-item > li.ap-badge-info span {
 
 ul.ap-badge-item > li.ap-badge-info {
     width: 330px;
+}
+
+.ap-missing-rules {
+    border: 2px solid #dd433b;
+    border-radius: 5px;
+    color: #dd433b;
+    display: block;
+    font-size: 20px;
+    margin-bottom: 20px;
+    padding: 9px;
+    text-align: center;
+}
+.ap-missing-rules > a {
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    display: table;
+    font-size: 12px;
+    margin: 5px auto 0;
+    padding: 5px 10px;
 }

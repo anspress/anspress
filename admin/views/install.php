@@ -6,7 +6,7 @@
 	</h2>
 	<div class="ap-install-box">
 		<div class="ap-install-indi"><span></span></div>
-		<button id="start-install" data-args="<?php echo wp_create_nonce('anspress_install'); ?>"class="ap-start-installation"><?php _e('Start installation', 'ap'); ?></button>
+		<button id="start-install" data-args="<?php echo wp_create_nonce('anspress_install'); ?>" class="ap-start-installation"><?php _e('Start installation', 'ap'); ?></button>
 		<ul class="ap-install-steps">
 			<li>				
 				<div class="install-popup select-base-page" style="display:none">
