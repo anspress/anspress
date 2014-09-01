@@ -150,7 +150,7 @@ class anspress_activate {
 			$post['post_content'] = '[anspress]';
 			$post['post_author']  = null;
 			$post['post_status']  = 'publish';
-			$post['post_title']   = 'AnsPress';
+			$post['post_title']   = '[anspress]';
 			$postid = wp_insert_post ($post);
 			
 			if($postid){
@@ -163,6 +163,10 @@ class anspress_activate {
 			
 		}
 		
+		if( get_option ('ap_version') != AP_VERSION ) {
+			update_option('ap_installed', false);
+			update_option('ap_version', AP_VERSION);
+		}
 		
 		// create table
 		if( get_option ('ap_db_version') != AP_DB_VERSION ) {	

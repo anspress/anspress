@@ -32,6 +32,7 @@ if ( ! isset( $_REQUEST['settings-updated'] ) )
 		  <li><a href="#ap-tags" data-toggle="tab"><?php _e('Tags', 'ap'); ?></a></li>
 		  <li><a href="#ap-user" data-toggle="tab"><?php _e('User', 'ap'); ?></a></li>
 		  <li><a href="#ap-pages" data-toggle="tab"><?php _e('Pages', 'ap'); ?></a></li>
+		  <li><a href="#ap-labels" data-toggle="tab"><?php _e('Labels', 'ap'); ?></a></li>
 		  <li><a href="#ap-misc" data-toggle="tab"><?php _e('Spam', 'ap'); ?></a></li>
 		  <li><a href="#ap-maintenance" data-toggle="tab"><?php _e('Maintenance', 'ap'); ?></a></li>
 		</ul>
@@ -223,7 +224,7 @@ if ( ! isset( $_REQUEST['settings-updated'] ) )
 								if ( !empty( $terms ) ) {
 									echo '<select name="anspress_opt[default_rank]">';
 									foreach ( $terms as $term ) { ?>
-										<option value="<?php echo esc_attr( $term->slug ); ?>" <?php selected( true, $settings['default_rank'] ); ?>><?php echo esc_attr( $term->name ); ?></option>
+										<option value="<?php echo esc_attr( $term->term_id ); ?>" <?php selected(  $settings['default_rank'], $term->term_id ); ?>><?php echo esc_attr( $term->name ); ?></option>
 									<?php }
 									echo '</select>';
 								}
@@ -325,7 +326,32 @@ if ( ! isset( $_REQUEST['settings-updated'] ) )
 					</tr>
 				</table>
 			</div>				
-						
+			<div class="tab-pane" id="ap-labels">
+				<table class="form-table">					
+					<tr valign="top">
+						<th scope="row"><label for="default_label"><?php _e('Default label', 'ap'); ?></label></th>
+						<td>
+							<?php
+
+								$terms = get_terms( 'question_label', array( 'hide_empty' => false, 'orderby' => 'id' ) );
+								if ( !empty( $terms ) ) {
+									echo '<select name="anspress_opt[default_label]">';
+									foreach ( $terms as $term ) { ?>
+										<option value="<?php echo esc_attr( $term->term_id ); ?>" <?php selected(  $settings['default_label'], $term->term_id ); ?>><?php echo esc_attr( $term->name ); ?></option>
+									<?php }
+									echo '</select>';
+								}
+
+								/* If there are no rank terms, display a message. */
+								else {
+									_e( 'There are no labels available.', 'ap' );
+								}
+							?>
+							<p class="description"><?php _e('Assign a default label for new questions', 'ap'); ?></p>
+						</td>
+					</tr>
+				</table>
+			</div>			
 			<div class="tab-pane" id="ap-misc">	
 				<h3 class="title"><?php _e('Spam', 'ap'); ?></h3>
 				<p class="description"><?php _e('Default notes when flagging the posts', 'ap'); ?></p>

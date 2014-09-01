@@ -96,6 +96,7 @@ class anspress_admin {
 
 		add_action( 'wp_ajax_ap_toggle_addon', array($this, 'ap_toggle_addon') );
 		add_action( 'wp_ajax_ap_install_base_page', array($this, 'ap_install_base_page') );
+		add_action( 'wp_ajax_ap_install_default_opt', array($this, 'ap_install_default_opt') );
 		add_action( 'wp_ajax_ap_install_data_table', array($this, 'ap_install_data_table') );
 		add_action( 'wp_ajax_ap_install_rewrite_rules', array($this, 'ap_install_rewrite_rules') );
 		add_action( 'wp_ajax_ap_install_finish', array($this, 'ap_install_finish') );
@@ -810,12 +811,21 @@ public function ap_menu_metaboxes(){
 			// Update the post into the database
 			  wp_update_post( $basepage );
 			  flush_rewrite_rules();
+			  
+			  
 		}
 		die(true);
 	}
 	public function ap_install_data_table(){
 		if(wp_verify_nonce($_POST['args'], 'anspress_install') && current_user_can('manage_options')){
 			
+		}
+		die(true);
+	}
+	public function ap_install_default_opt(){
+		if(wp_verify_nonce($_POST['args'], 'anspress_install') && current_user_can('manage_options')){
+			ap_opt('default_rank', (int)$_POST['rank']);
+			ap_opt('default_label', (int)$_POST['label']);
 		}
 		die(true);
 	}

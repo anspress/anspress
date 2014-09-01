@@ -230,6 +230,8 @@ th.column-category {
     z-index: 9;
 }
 .ap-install > h2 {
+    margin-bottom: 20px;
+    padding: 0;
     text-align: center;
 }
 .ap-install > h2 > *{
@@ -258,37 +260,51 @@ th.column-category {
     width: 10px;
 }
 .ap-install-box {
-    display: table;
+    background: none repeat scroll 0 0 #fbfbfb;
+    border: 1px solid #eee;
+    border-radius: 4px;
+    display: block;
+    height: 300px;
     margin: 0 auto;
+    overflow: hidden;
     position: relative;
 }
 .ap-start-installation {
-    background: none repeat scroll 0 0 #39b2ff;
-    border: 4px solid #ffffff;
+    background: none repeat scroll 0 0 #ff8041;
+    border: medium none;
     border-radius: 3px;
     color: #ffffff;
     cursor: pointer;
     display: table;
     margin: 0 auto 30px;
-    padding: 5px 10px;
+    padding: 12px 30px;
     position: relative;
 }
+
 .ap-install-steps {
-    display: table;
-    margin: 0 auto;
-    position: relative;
+    margin: 0;
+    position: absolute;
+    transition: all 1s ease 0s;
+    width: 3010px;
 }
-.ap-install-steps li a, .ap-install-steps .twitter-button{
-    background: none repeat scroll 0 0 #ffffff;
-    border-radius: 30px;
-    color: #aaaaaa;
+.ap-install-steps > li {
+    display: block;
+    float: left;
+    height: 300px;
+    margin-bottom: 0;
+    margin-left: 0;
+    margin-top: 0;
+    padding: 10px;
+    width: 480px;
+	text-align:center;
+}
+.ap-install-steps li a, .ap-install-steps .twitter-button {
     display: block;
     font-size: 17px;
     margin-bottom: 15px;
     padding: 15px;
     text-align: center;
     text-decoration: none;
-    width: 300px;
 }
 .ap-install-steps li:last-child a {
     margin: 0;
@@ -302,7 +318,6 @@ th.column-category {
     background: none repeat scroll 0 0 #ffffff;
     border-radius: 8px;
     padding: 10px;
-    position: absolute;
 }
 .install-popup select {
     display: table;
@@ -353,5 +368,17 @@ th.column-category {
     border-radius: 5px;
     margin-bottom: 20px;
     padding: 10px;
+    text-align: center;
+}
+.ap-install {
+    background: none repeat scroll 0 0 #fff;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    margin: 0 auto;
+    max-width: 500px;
+    padding: 20px;
+}
+.ap-install-steps .start-install {
+    padding-top: 80px;
     text-align: center;
 }

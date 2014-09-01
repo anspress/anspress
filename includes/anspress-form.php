@@ -240,9 +240,7 @@ class anspress_form
 				
 				//update answer count
 				update_post_meta($post_id, ANSPRESS_ANS_META, '0');
-				
-				///ap_set_question_status($post_id);
-				
+
 				do_action('ap_after_inserting_question', $post_id);
 				ap_do_event('new_question', $post_id, $user_id);
 				

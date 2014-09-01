@@ -379,15 +379,12 @@ APjs.admin.prototype = {
 		var idni = jQuery('.ap-install-indi > span');
 		jQuery('#start-install').click(function(e){
 			e.preventDefault();
-
-			jQuery(this).css({'background':'#fff', 'border-color': '#49c742', 'color':'#333'});
-			idni.height(33);
-			jQuery('.ap-install-steps .select-base-page').delay(300).show();
+			jQuery('.ap-install-steps').animate({'left': '-500px'}, 300);
 		});
 		
 		jQuery('#continue-base-install').click(function(e){	
 			e.preventDefault();
-			jQuery('.ap-install-steps .select-base-page').hide();
+			jQuery('.ap-install-steps #continue-base-install').text('Wait...');
 			jQuery.ajax({
 				type: 'POST',  
 				url: ajaxurl,  
@@ -399,53 +396,65 @@ APjs.admin.prototype = {
 				context:this,
 				dataType:'json',
 				success: function(data){					
-					jQuery('.ap-install-steps .base-page').addClass('done');
-					idni.height(142);
-					self.checkDataTables();
+					jQuery('.ap-install-steps').animate({'left': '-1000px'}, 300);
 				}
 			});
 		
 		});
-	},
-	checkDataTables: function(){
-		var self = this;
-		var idni = jQuery('.ap-install-indi > span');
-		jQuery.ajax({
-			type: 'POST',  
-			url: ajaxurl,  
-			data:  {
-				action: 'ap_install_data_table',
-				args: jQuery('#start-install').data('args')
-			},
-			context:this,
-			dataType:'json',
-			success: function(data){					
-				jQuery('.ap-install-steps .data-table').addClass('done');
-				idni.height(162);
-				self.checkRewriteRules();
-			}
+		jQuery('#continue-dbcheck-install').click(function(e){	
+			e.preventDefault();
+			jQuery(this).text('Wait...');
+			jQuery.ajax({
+				type: 'POST',  
+				url: ajaxurl,  
+				data:  {
+					action: 'ap_install_data_table',
+					args: jQuery('#start-install').data('args')
+				},
+				context:this,
+				dataType:'json',
+				success: function(data){					
+					jQuery('.ap-install-steps').animate({'left': '-2000px'}, 300);
+				}
+			});
 		});
-	},
-	checkRewriteRules: function(){
-		var self = this;
-		var idni = jQuery('.ap-install-indi > span');
-		jQuery.ajax({
-			type: 'POST',  
-			url: ajaxurl,  
-			data:  {
-				action: 'ap_install_rewrite_rules',
-				args: jQuery('#start-install').data('args')
-			},
-			context:this,
-			dataType:'json',
-			success: function(data){					
-				jQuery('.ap-install-steps .rewrite-rules').addClass('done');
-				jQuery('.ap-install-steps .twitter-button').show();
-				idni.height(162);
-			}
+		jQuery('#continue-dopt-install').click(function(e){	
+			e.preventDefault();
+			jQuery(this).text('Wait...');
+			jQuery.ajax({
+				type: 'POST',  
+				url: ajaxurl,  
+				data:  {
+					action: 'ap_install_default_opt',
+					args: jQuery('#start-install').data('args'),
+					label: jQuery('#default-label').val(),
+					rank: jQuery('#default-rank').val(),
+				},
+				context:this,
+				dataType:'json',
+				success: function(data){					
+					jQuery('.ap-install-steps').animate({'left': '-1500px'}, 300);
+				}
+			});
 		});
-		
-		jQuery('.twitter-button').click(function(){
+		jQuery('#continue-rewrite-install').click(function(e){	
+			e.preventDefault();
+			jQuery(this).text('Wait...');
+			jQuery.ajax({
+				type: 'POST',  
+				url: ajaxurl,  
+				data:  {
+					action: 'ap_install_rewrite_rules',
+					args: jQuery('#start-install').data('args')
+				},
+				context:this,
+				dataType:'json',
+				success: function(data){					
+					jQuery('.ap-install-steps').animate({'left': '-2500px'}, 300);
+				}
+			});
+		});
+		jQuery('#ap-finish-installation').click(function(){
 			jQuery.ajax({
 				type: 'POST',  
 				url: ajaxurl,  
@@ -459,7 +468,8 @@ APjs.admin.prototype = {
 				}
 			});
 		});
-	}
+	},
+
 }
 
 function ap_option_flag_note(){

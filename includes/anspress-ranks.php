@@ -181,7 +181,7 @@ class AP_Ranks
 function ap_get_ranks($userid){
 	$ranks = wp_get_object_terms( $userid, 'rank');
 	if(empty($ranks))
-		$ranks = array(get_term_by( 'slug', ap_opt('default_rank'), 'rank'));
+		$ranks = array(get_term_by( 'id', ap_opt('default_rank'), 'rank'));
 	
 	return $ranks;
 }
