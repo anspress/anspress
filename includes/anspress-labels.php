@@ -54,6 +54,8 @@ class AP_labels
 		
 		add_filter('wp_ajax_ap_save_labels', array($this, 'ap_save_labels'));
 		
+		add_filter('ap_after_inserting_question', array($this, 'default_label'));
+		
     }
 
 	
@@ -179,6 +181,11 @@ class AP_labels
 			$result = array('status' => false, 'message' => __('Unable to set labels, please try again', 'ap'));
 		}
 		die(json_encode($result));
+	}
+	
+	public function default_label($post_id){
+		if(ap_opt('default_label'))
+			wp_set_post_terms($post_id, ap_opt('default_label'), 'question_label' );
 	}
 	
 
