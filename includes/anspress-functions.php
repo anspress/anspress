@@ -211,17 +211,17 @@ function ap_answers_link(){
 }
 
 function ap_get_link_to($page){
-	$home = wp_make_link_relative(home_url() );
-	$base = ltrim(wp_make_link_relative(get_permalink(ap_opt('base_page'))), '/');
-	
-	if (filter_var($home, FILTER_VALIDATE_URL) !==FALSE)
+	//$home = wp_make_link_relative(home_url() );
+	$base = rtrim(get_permalink(ap_opt('base_page')), '/');
+
+	/* if (filter_var($home, FILTER_VALIDATE_URL) !==FALSE)
 		$home = '';
 	
 	$home = ltrim($home,'/');
 	$base = ltrim($base,'/');
-	$rel = ltrim($base, $home);
+	$rel = ltrim($base, $home); */
 
-	return home_url(rtrim($rel, '/') .'/'.$page);
+	return $base.'/'.$page;
 }
 
 function ap_comment_btn_html(){
@@ -310,6 +310,13 @@ function ap_base_page_slug(){
 	
 	// get the base slug, if base page was set to home page then dont use any slug
 	$slug = ((ap_opt('base_page') !== get_option('page_on_front')) ? $base_page_slug.'/' : '');
+	
+	$base_page = get_post(ap_opt('base_page'));
+	
+	if( $base_page->post_parent != 0 ){
+		$parent_page = get_post($base_page->post_parent);
+		$slug = $parent_page->post_name . '/'.$slug;
+	}
 	
 	return apply_filters('ap_base_page_slug', $slug) ;
 }

@@ -222,6 +222,7 @@ class anspress {
 		$q_prefix 			= strlen(ap_opt('question_prefix')) > 0 ? ap_opt('question_prefix').'/' : '';
 		
 		$slug = ap_base_page_slug();
+		
 		$new_rules = array(  
 			$slug. "question/([^/]+)/([^/]+)/page/?([0-9]{1,})/?$" => "index.php?page_id=".$base_page_id."&question_id=".$wp_rewrite->preg_index(1)."&question_name=".$wp_rewrite->preg_index(2)."&paged=".$wp_rewrite->preg_index(3),
 			
