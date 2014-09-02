@@ -77,14 +77,13 @@ class anspress_vote
 				
 				//favorite count
 				$post->favorite 	= get_post_meta($post->ID, ANSPRESS_FAV_META, true);
-				$post->favorited 	= ap_is_user_favorite($post->ID);
 				
-				$post->voted_closed = ap_is_user_voted_closed();
-					
+				$post->voted_closed = ap_is_user_voted_closed();					
 				$post->flagged = ap_is_user_flagged();
 
 				//if current logged in user voted
 				if(is_user_logged_in()){
+					$post->favorited 	= ap_is_user_favorite($post->ID);
 					$userid = get_current_user_id();
 					$post->user_voted_up = ap_is_user_voted($post->ID, 'vote_up', $userid);	
 					$post->user_voted_down = ap_is_user_voted($post->ID, 'vote_down', $userid);	
@@ -466,9 +465,9 @@ function ap_favorite_html($post = false){
 			<a id="<?php echo 'favorite_'.$post->ID; ?>" class="favorite-btn <?php echo ($post->favorited) ? ' added' :''; ?>" data-action="ap-favorite" data-args="<?php echo $post->ID.'-'.$nonce; ?>" href="#"title="<?php echo $title; ?>">&#9733; <?php echo $post->favorite; ?></a>
 			<span> 
 				<?php  
-					if( $post->favorite =='1' && $post->favorite)
+					if( $post->favorite =='1' && $post->favorited)
 						_e('You favorited this question', 'ap'); 
-					elseif($post->favorite)
+					elseif($post->favorited)
 						printf( __( 'You and %s others favorited this question', 'ap' ), ($post->favorite -1));
 					else
 						printf( __( '%s people favorited this question', 'ap' ), $post->favorite); 
