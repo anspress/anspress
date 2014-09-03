@@ -301,8 +301,7 @@ function ap_get_all_users(){
 
 
 function ap_editor_content($content){
-	wp_editor( apply_filters('the_content', $content), 'post_content', array('media_buttons' => false, 'quicktags' => false, 'textarea_rows' => 6, 'teeny' => true, 'statusbar' => false)); 
-	remove_filter('the_content', $content);
+	wp_editor( esc_textarea($content), 'post_content', array('tinymce' => false, 'textarea_rows' => 7, 'media_buttons' => false, 'quicktags'=> array('buttons'=>'strong,em,link,blockquote,del,ul,li,ol,img,close'))); 
 }
 
 function ap_base_page_slug(){

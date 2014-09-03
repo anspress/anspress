@@ -134,7 +134,9 @@ input[type="date"] {
 .form-group {
     margin-bottom: 15px;
 }
-
+.form-group:last-child {
+    margin: 0;
+}
 .radio, .checkbox {
     display: block;
     min-height: 20px;
@@ -1481,16 +1483,23 @@ body.modal-open {
     margin-top: 7px;
 }
 
-#answer_form .form-groups {
+#answer_form .form-groups, #ask_question_form .wp-editor-wrap {
+    background: none repeat scroll 0 0 #fff;
     border: 1px solid #ddd;
-    -moz-border-radius: 3px;
-    -webkit-border-radius: 3px;
     border-radius: 3px;
     padding: 10px;
 }
-
-.anspress #answer_form div.mce-toolbar-grp {
-    border: medium none;
+.anspress .quicktags-toolbar {
+    margin: -10px -10px 12px;
+}
+textarea#post_content {
+    border: 1px solid #ddd;
+    box-shadow: 0 0 4px #dcdcdc inset;
+	background-color:#fafafa;
+}
+textarea#post_content:focus{
+	border-color:#51a7e8;
+	background-color:#fff;
 }
 
 .anspress .btn-submit-ans {
@@ -1498,23 +1507,6 @@ body.modal-open {
     margin-right: 0;
 }
 
-.anspress .wp-editor-container, .anspress div.mce-panel {
-    background: transparent;
-}
-
-.anspress div.mce-toolbar-grp {
-    background: transparent;
-    border-bottom: medium none;
-    padding: 0;
-}
-
-.anspress .mce-statusbar {
-    display: none;
-}
-
-#answer_form div.mce-statusbar .mce-path {
-    display: none;
-}
 
 #answer-form-c .author-avatar {
     margin-right: 12px;

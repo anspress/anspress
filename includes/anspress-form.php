@@ -111,6 +111,11 @@ class anspress_form
 			'post_content' 	=> preg_replace('/[ \t]+/', ' ', preg_replace("/[\r\n]+/", "\n", $_POST['post_content'])),
 		);
 		
+		//remove <!--more-->
+		
+		$fields['post_content'] = str_replace('<!--more-->', '', $fields['post_content']);
+		$fields['post_content'] = str_replace('<!-- more -->', '', $fields['post_content']);
+		
 		if(isset($_POST['category']))
 			$fields['category']	= sanitize_text_field($_POST['category']);
 		
@@ -268,8 +273,10 @@ class anspress_form
 			'is_answer' 	=> sanitize_text_field($_POST['is_answer']),
 			'submitted' 	=> sanitize_text_field($_POST['submitted']),
 			'nonce' 		=> $_POST['nonce'],
-			'content' 		=> preg_replace('/[ \t]+/', ' ',  preg_replace("/[\r\n]+/", "\n", $_POST['post_content']))
+			'post_content' 		=> preg_replace('/[ \t]+/', ' ',  preg_replace("/[\r\n]+/", "\n", $_POST['post_content']))
 		);
+		$fields['post_content'] = str_replace('<!--more-->', '', $fields['post_content']);
+		$fields['post_content'] = str_replace('<!-- more -->', '', $fields['post_content']);
 		
 		if(isset($_POST['form_question_id']))
 			$fields['question_id'] 	= sanitize_text_field($_POST['form_question_id']);
@@ -360,7 +367,7 @@ class anspress_form
 			
 			$ans_array = array(
 				'post_author'	=> $user_id,
-				'post_content' 	=> wp_kses($fields['content'], ap_form_allowed_tags()),
+				'post_content' 	=> wp_kses($fields['post_content'], ap_form_allowed_tags()),
 				'post_type' 	=> 'answer',
 				'post_status' 	=> 'publish',
 				'post_parent' 	=> $question->ID
@@ -553,7 +560,7 @@ class anspress_form
 			$answer_array = array(
 				'ID'			=> $post_id,
 				//'post_author'	=> $user_id,
-				'post_content' 	=>  wp_kses($fields['content'], ap_form_allowed_tags()),
+				'post_content' 	=>  wp_kses($fields['post_content'], ap_form_allowed_tags()),
 				'post_status' 	=> 'publish'
 			);
 
@@ -782,7 +789,7 @@ class anspress_form
 		?>
 			<div class="form-group<?php echo isset($validate['post_content']) ? ' has-error' : ''; ?>">
 				<?php 
-					wp_editor( '', 'post_content', array('media_buttons' => false, 'quicktags' => false, 'textarea_rows' => 7, 'teeny' => true, 'statusbar' => false)); 
+					wp_editor( '', 'post_content', array('tinymce' => false, 'textarea_rows' => 7, 'media_buttons' => false, 'quicktags'=> array('buttons'=>'strong,em,link,blockquote,del,ul,li,ol,img,close'))); 
 				?>
 				<?php echo isset($validate['post_content']) ? '<span class="help-block">'. $validate['post_content'] .'</span>' : ''; ?>
 			</div>
@@ -1028,11 +1035,11 @@ function ap_form_allowed_tags(){
 			'href' => array(),
 			'title' => array()
 		),
-		'p' => array(),
 		'br' => array(),
 		'em' => array(),
 		'strong' => array(),
 		'pre' => array(),
+		'code' => array(),
 	);
 	
 	return apply_filters( 'ap_allowed_tags', $allowed_tags);
@@ -1049,11 +1056,7 @@ function ap_ask_form(){
 	if( ap_user_can_ask()){
 		?>
 		<form action="" id="ask_question_form" method="POST" data-action="ap-submit-question">			
-			<div class="form-groups">
-				<div class="ap-fom-group-label"><?php _e('Ask question', 'ap'); ?></div>
-				<?php do_action('ap_ask_form_fields', $validate); ?>
-			</div>
-			
+			<?php do_action('ap_ask_form_fields', $validate); ?>			
 			<?php 
 				if(ap_opt('show_signup')){
 					echo '<div id="ap-login-signup">';
@@ -1078,10 +1081,10 @@ function ap_answer_form($question_id){
 	}
 	
 	if(ap_user_can_answer($question_id) ){
-		echo '<form action="" id="answer_form" class="ap-content-inner" method="POST" data-action="ap-submit-answer">';
+		echo '<form action="" id="answer_form" class="ap-content-inner no-overflow" method="POST" data-action="ap-submit-answer">';
 		
 		echo '<div class="form-groups">';
-		echo '<div class="ap-fom-group-label">'.__('Your answer', 'ap').'</div>';
+		//echo '<div class="ap-fom-group-label">'.__('Your answer', 'ap').'</div>';
 		do_action('ap_answer_fields', $question_id, $validate);
 		echo '</div>';
 		

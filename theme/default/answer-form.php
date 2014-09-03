@@ -9,9 +9,9 @@
 ?>
 
 <div id="answer-form-c">	
-	<div class="ap-user">
+	<div class="ap-avatar">
 		<?php 
-			echo get_avatar( $current_user->user_email, ap_opt('avatar_size_question') ); 
+			echo get_avatar( $current_user->user_email, ap_opt('avatar_size_qanswer') ); 
 		?>
 	</div>
 	<?php ap_answer_form($question_id); ?>
