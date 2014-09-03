@@ -607,7 +607,7 @@ class anspress_form
 			$comment_args = array(
 				'title_reply' => '',
 				'logged_in_as' => '',
-				'comment_field' => '<div class="ap-comment-ta"><textarea name="comment" rows="1" aria-required="true" class="form-control"></textarea></div>',
+				'comment_field' => '<div class="ap-comment-ta"><textarea name="comment" rows="1" aria-required="true" class="form-control"></textarea></div><input type="hidden" name="ap_comment_form" value="true"/>',
 				'comment_notes_after' => ''
 			);
 			$current_user = get_userdata( get_current_user_id() );
@@ -623,7 +623,7 @@ class anspress_form
 	
 	public function save_comment($comment_ID, $comment_status){
 		// If it's an AJAX-submitted comment
-		if(isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest'){
+		if(isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest' && $_REQUEST['ap_comment_form']){
 			// Get the comment data
 			$comment = get_comment($comment_ID);
 			// Allow the email to the author to be sent
@@ -656,6 +656,7 @@ class anspress_form
 			echo '<textarea class="form-control" name="content">'.$comment->comment_content.'</textarea>';
 			echo '<button class="btn btn-default" data-action="save-inline-comment" data-elem="#edit-comment-'. $args[0].'">'.__('Save', 'ap').'</button>';
 			echo '<input type="hidden" name="comment_id" value="'.$args[0].'"/>';
+			echo '<input type="hidden" name="ap_comment_form" value="true"/>';
 			wp_nonce_field('save-comment-'.$args[0], 'nonce');
 			echo '</form>';
 		}
@@ -789,7 +790,7 @@ class anspress_form
 		?>
 			<div class="form-group<?php echo isset($validate['post_content']) ? ' has-error' : ''; ?>">
 				<?php 
-					wp_editor( '', 'post_content', array('tinymce' => false, 'textarea_rows' => 7, 'media_buttons' => false, 'quicktags'=> array('buttons'=>'strong,em,link,blockquote,del,ul,li,ol,img,close'))); 
+					wp_editor( '', 'post_content', array('tinymce' => false, 'textarea_rows' => 7, 'media_buttons' => false, 'quicktags'=> array('buttons'=>'strong,em,link,blockquote,del,ul,li,ol,img,code,close'))); 
 				?>
 				<?php echo isset($validate['post_content']) ? '<span class="help-block">'. $validate['post_content'] .'</span>' : ''; ?>
 			</div>
