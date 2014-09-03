@@ -16,96 +16,96 @@ class anspress_activate {
 		// moderator and admin role
 		
 		$parti_cap = array(
-			'read_question'         => true,
-			'read_answer'			=> true,
+			'ap_read_question'         	=> true,
+			'ap_read_answer'			=> true,
 			
-			'new_question'			=> true,
-			'new_answer'			=> true,
-			'new_comment'			=> true,
+			'ap_new_question'			=> true,
+			'ap_new_answer'				=> true,
+			'ap_new_comment'			=> true,
 			
-			'edit_question'			=> true,
-			'edit_answer'			=> true,
-			'edit_comment'			=> true,
+			'ap_edit_question'			=> true,
+			'ap_edit_answer'			=> true,
+			'ap_edit_comment'			=> true,
 			
-			'hide_question'			=> true,
-			'hide_answer'			=> true,
-			'delete_comment'		=> true,
+			'ap_hide_question'			=> true,
+			'ap_hide_answer'			=> true,
+			'ap_delete_comment'			=> true,
 			
-			'vote_up'				=> true,
-			'vote_down'				=> true,
-			'vote_flag'				=> true,
-			'vote_close'			=> true,
+			'ap_vote_up'				=> true,
+			'ap_vote_down'				=> true,
+			'ap_vote_flag'				=> true,
+			'ap_vote_close'				=> true,
 			
-			'upload_cover'			=> true,
-			'message'				=> true,
+			'ap_upload_cover'			=> true,
+			'ap_message'				=> true,
 		);
 		
 		$editor_cap = array(
-			'read_question'         => true,
-			'read_answer'			=> true,
+			'ap_read_question'         	=> true,
+			'ap_read_answer'			=> true,
 			
-			'new_question'			=> true,
-			'new_answer'			=> true,
-			'new_comment'			=> true,
+			'ap_new_question'			=> true,
+			'ap_new_answer'				=> true,
+			'ap_new_comment'			=> true,
 			
-			'edit_question'			=> true,
-			'edit_answer'			=> true,
-			'edit_comment'			=> true,
+			'ap_edit_question'			=> true,
+			'ap_edit_answer'			=> true,
+			'ap_edit_comment'			=> true,
 			
-			'delete_question'		=> true,
-			'delete_answer'			=> true,
-			'delete_comment'		=> true,
+			'ap_delete_question'		=> true,
+			'ap_delete_answer'			=> true,
+			'ap_delete_comment'			=> true,
 			
-			'vote_up'				=> true,
-			'vote_down'				=> true,
-			'vote_flag'				=> true,
-			'vote_close'			=> true,
+			'ap_vote_up'				=> true,
+			'ap_vote_down'				=> true,
+			'ap_vote_flag'				=> true,
+			'ap_vote_close'				=> true,
 			
-			'edit_others_question'	=> true,
-			'edit_others_answer'	=> true,
-			'edit_others_comment'	=> true,
+			'ap_edit_others_question'	=> true,
+			'ap_edit_others_answer'		=> true,
+			'ap_edit_others_comment'	=> true,
 			
-			'upload_cover'			=> true,
-			'message'				=> true,
+			'ap_upload_cover'			=> true,
+			'ap_message'				=> true,
 		);
 		
 		$mod_cap = array(
-			'read_question'         => true,
-			'read_answer'			=> true,
+			'ap_read_question'         	=> true,
+			'ap_read_answer'			=> true,
 			
-			'new_question'			=> true,
-			'new_answer'			=> true,
-			'new_comment'			=> true,
+			'ap_new_question'			=> true,
+			'ap_new_answer'				=> true,
+			'ap_new_comment'			=> true,
 			
-			'edit_question'			=> true,
-			'edit_answer'			=> true,
-			'edit_comment'			=> true,
+			'ap_edit_question'			=> true,
+			'ap_edit_answer'			=> true,
+			'ap_edit_comment'			=> true,
 			
-			'delete_question'		=> true,
-			'delete_answer'			=> true,
-			'delete_comment'		=> true,
+			'ap_delete_question'		=> true,
+			'ap_delete_answer'			=> true,
+			'ap_delete_comment'			=> true,
 			
-			'vote_up'				=> true,
-			'vote_down'				=> true,
-			'vote_flag'				=> true,
-			'vote_close'			=> true,
+			'ap_vote_up'				=> true,
+			'ap_vote_down'				=> true,
+			'ap_vote_flag'				=> true,
+			'ap_vote_close'				=> true,
 			
-			'edit_others_question'	=> true,
-			'edit_others_answer'	=> true,
-			'edit_others_comment'	=> true,
+			'ap_edit_others_question'	=> true,
+			'ap_edit_others_answer'		=> true,
+			'ap_edit_others_comment'	=> true,
 			
-			'hide_others_question'	=> true,
-			'hide_others_answer'	=> true,
-			'hide_others_comment'	=> true,
+			'ap_hide_others_question'	=> true,
+			'ap_hide_others_answer'		=> true,
+			'ap_hide_others_comment'	=> true,
 			
-			'delete_others_question'	=> true,
-			'delete_others_answer'		=> true,
-			'delete_others_comment'		=> true,
+			'ap_delete_others_question'	=> true,
+			'ap_delete_others_answer'	=> true,
+			'ap_delete_others_comment'	=> true,
 			
-			'change_label'			=> true,
+			'ap_change_label'			=> true,
 			
-			'upload_cover'			=> true,
-			'message'				=> true,
+			'ap_upload_cover'			=> true,
+			'ap_message'				=> true,
 		);
 		
 		add_role('ap_participant',	__( 'Participant', 'ap' ), $parti_cap);
