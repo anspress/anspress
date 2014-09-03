@@ -157,7 +157,7 @@ function ap_user_can_change_label(){
 }
 
 function ap_user_can_comment(){
-	if(is_super_admin() || current_user_can('add_comment') || ap_opt('anonymous_comment'))
+	if(is_super_admin() || current_user_can('new_comment') || ap_opt('anonymous_comment'))
 		return true;
 
 	return false;

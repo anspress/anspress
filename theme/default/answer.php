@@ -2,11 +2,11 @@
 	<div class="ap-content clearfix">		
 		<div class="ap-avatar">
 			<?php echo get_avatar( get_the_author_meta( 'user_email' ), ap_opt('avatar_size_qanswer') ); ?>
+			<?php echo ap_select_answer_btn_html(get_the_ID()); ?>
 		</div>
 		<div class="ap-content-inner no-overflow">
 			<div class="ap-amainc">
-				<div class="ap-user-meta">
-					<?php echo ap_select_answer_btn_html(get_the_ID()); ?>				
+				<div class="ap-user-meta">									
 					<div class="ap-meta">
 						<?php 
 							printf( __( '%s <span class="when">answered about %s ago</span>', 'ap' ), ap_user_display_name() , ap_human_time( get_the_time('U')));
