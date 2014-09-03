@@ -173,7 +173,7 @@ class AP_labels
 				
 				$taxo = get_the_terms( $post_id, 'question_label' );
 				
-				$result = array('status' => true, 'message' => __('Question label updated.', 'ap'), 'html' => ap_get_question_label($post_id));
+				$result = array('status' => true, 'message' => __('Question label updated.', 'ap'), 'html' => ap_get_question_label($post_id, true));
 			}else{
 				$result = array('status' => false, 'message' => __('No label selected', 'ap'));
 			}

@@ -118,20 +118,63 @@ function ap_history_name($slug, $parm = ''){
 	return $slug;	
 }
 
+function ap_history_icon($history){
+	$icons = array(
+		'new_question' 		=> 'ap-icon-question',
+		'new_answer' 		=> 'ap-icon-answer',
+		'new_comment' 		=> 'ap-icon-comment',
+		'new_comment_answer'=> 'ap-icon-comment',
+		'edit_question' 	=> 'ap-icon-pencil',
+		'edit_answer' 		=> 'ap-icon-pencil',
+		'edit_comment' 		=> 'ap-icon-pencil',
+	);
+	
+	$icons = apply_filters('ap_history_icon', $icons);
+	
+	if(isset($icons[$history]))
+		return $icons[$history];
+	
+	return false;
+}
+
 
 function ap_get_latest_history($post_id){
 	global $wpdb;
+	
 	$query = $wpdb->prepare('SELECT apmeta_id as meta_id, apmeta_userid as user_id, apmeta_actionid as action_id, apmeta_value as parent_id, apmeta_param as type FROM '. $wpdb->prefix .'ap_meta WHERE apmeta_type="history" AND apmeta_value=%d ORDER BY apmeta_date DESC', $post_id);
-	return $wpdb->get_row($query, ARRAY_A);
+	
+	$key = md5($query);
+	$cache = wp_cache_get($key, 'ap_meta');
+	
+	if($cache !== false)
+		return $cache;
+	
+	$result = $wpdb->get_row($query, ARRAY_A);
+	wp_cache_set($key, $result, 'ap_meta');
+	
+	return $result;
 }
 
-function ap_get_latest_history_html($post_id){
+function ap_get_latest_history_html($post_id, $avatar = false, $icon = false){
 	$history = ap_get_latest_history($post_id);
-
-	if($history)
-		$html = '<span class="ap-post-history">'.sprintf( __('%s by %s', 'ap'), ap_history_name($history['type']), ap_user_display_name($history['user_id']) ).'</span>';
-	else
-		$html = '<span class="ap-post-history">'.sprintf( __('Asked by %s', 'ap'), ap_user_display_name() ).'</span>';
+	
+	$html = '';
+	if($history){
 		
-	return apply_filters('ap_latest_history_html', $html);
+		if($avatar)
+			$html .= '<a class="ap-savatar" href="'.ap_user_link($history['user_id']).'">'.get_avatar($history['user_id'], 20).'</a>';
+		
+		if($icon)
+			$html .= '<span class="'.ap_history_icon($history['type']).' ap-tlicon"></span>';
+			
+		$html .= '<span class="ap-post-history">'.sprintf( __('%s by %s', 'ap'), ap_history_name($history['type']), ap_user_display_name($history['user_id']) ).'</span>';
+		
+	}elseif(!$icon){
+		$html = '<span class="ap-post-history">'.sprintf( __('Asked by %s', 'ap'), ap_user_display_name() ).'</span>';
+	}
+	
+	if($html)	
+		return apply_filters('ap_latest_history_html', $html);
+	
+	return false;
 }

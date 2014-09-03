@@ -138,17 +138,17 @@ if ( ! isset( $_REQUEST['settings-updated'] ) )
 						</td>
 					</tr>
 					<tr valign="top">
-						<th scope="row"><label for="theme"><?php _e('Avatar size in question page', 'ap'); ?></label></th>
+						<th scope="row"><label for="avatar_size_qquestion"><?php _e('Avatar size in question page', 'ap'); ?></label></th>
 						<td>
-							<input type="text" name="anspress_opt[avatar_size_question]" id="avatar_size_question" value="<?php echo $settings['avatar_size_question'] ; ?>" />
-							<p class="description"><?php _e('User avatar size for question and answer.', 'ap'); ?></p>
+							<input type="text" name="anspress_opt[avatar_size_qquestion]" id="avatar_size_qquestion" value="<?php echo $settings['avatar_size_qquestion'] ; ?>" />
+							<p class="description"><?php _e('User avatar size for question.', 'ap'); ?></p>
 						</td>
 					</tr>
 					<tr valign="top">
-						<th scope="row"><label for="comment_avatar_size"><?php _e('Avatar size in question page', 'ap'); ?></label></th>
+						<th scope="row"><label for="avatar_size_qanswer"><?php _e('Avatar size in answer', 'ap'); ?></label></th>
 						<td>
-							<input type="text" name="anspress_opt[comment_avatar_size]" id="comment_avatar_size" value="<?php echo $settings['comment_avatar_size'] ; ?>" />
-							<p class="description"><?php _e('User avatar size for comments.', 'ap'); ?></p>
+							<input type="text" name="anspress_opt[avatar_size_qanswer]" id="avatar_size_qanswer" value="<?php echo $settings['avatar_size_qanswer'] ; ?>" />
+							<p class="description"><?php _e('User avatar in question page answers.', 'ap'); ?></p>
 						</td>
 					</tr>
 				</table>

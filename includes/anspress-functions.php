@@ -55,8 +55,8 @@ function ap_default_options(){
 		'minimum_question_length'=> 5,
 		'multiple_answers' 		=> false,
 		'minimum_ans_length' 	=> 5,
-		'avatar_size_question' 	=> '40',
-		'comment_avatar_size' 	=> '30',
+		'avatar_size_qquestion' => 55,
+		'avatar_size_qanswer' 	=> 30,
 		'down_vote_points' 		=> -1,
 		'flag_note' 			=> array(0 => array('title' => 'it is spam', 'description' => 'This question is effectively an advertisement with no disclosure. It is not useful or relevant, but promotional.')),			
 		'bootstrap' 			=> true,
@@ -402,6 +402,7 @@ function ap_answers_list($question_id, $order = 'voted'){
 	echo '<div id="answers-c">';
 	ap_ans_tab(); 	
 	echo '<div id="answers">';
+		echo '<span class="ap-tline"></span>';
 		while ( $ans->have_posts() ) : $ans->the_post(); 
 			include(ap_get_theme_location('answer.php'));
 		endwhile ;

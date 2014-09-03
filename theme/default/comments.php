@@ -5,7 +5,8 @@ if ( post_password_required() )
 ?>
 <div id="ap-comment-area-<?php echo get_the_ID(); ?>">
 	<?php if ( have_comments() ) : ?>
-	<div id="comments-<?php echo get_the_ID(); ?>" class="ap-comments comment-container">		
+	<div id="comments-<?php echo get_the_ID(); ?>" class="ap-comments comment-container have-comments">
+		<span class="ap-tldot"></span>
 		<ul class="commentlist">
 			<?php wp_list_comments( array( 'max_depth' => 0, 'callback' => 'ap_comment', 'style' => 'ul' ) ); ?>
 		</ul><!-- .commentlist -->
@@ -20,7 +21,7 @@ if ( post_password_required() )
 	</div>
 	<?php else: ?>
 		<!-- do not remove this, its needed for ajax submission -->
-		<div id="comments-<?php echo get_the_ID(); ?>" class="ap-comments comment-container">		
+		<div id="comments-<?php echo get_the_ID(); ?>" class="ap-comments comment-container no-comments">		
 			<ul class="commentlist">
 			</ul>
 		</div>

@@ -13,19 +13,38 @@ if($question->post->post_status == 'publish'){
 
 ?>
 <div id="ap-single" class="clearfix">
-	<?php ap_favorite_html(); ?>
+	<header class="ap-qhead clearfix">
+		<div class="ap-avatar">
+			<?php echo get_avatar( get_the_author_meta( 'user_email' ), ap_opt('avatar_size_qquestion') ); ?>
+		</div>
+		<div class="ap-qtitle-meta">
+			<h1 class="ap-q-title">
+				<?php the_title(); ?>
+			</h1>
+			<div class="ap-qtopmeta">
+				<div class="ap-last-activity">
+					<i class="ap-icon-clock ap-meta-icon"></i>
+					<?php 							
+						printf(
+							'<span class="when">%s %s ago</span>',
+							ap_get_latest_history_html(get_the_ID()),
+							ap_human_time( mysql2date('U', ap_last_active(get_question_id())))
+						); 
+						ap_user_display_name();
+					?>
+				</div>
+				<?php ap_favorite_html(); ?>		
+			</div>
+		</div>
+	</header>
 	<div class="ap-question-lr">		
 		<div class="ap-question-left ap-tab-content">
-			<div id="discussion" class="active">
-				<div id="question" role="main" class="ap-content question" data-id="<?php echo get_the_ID(); ?>">
-					<div class="ap-question-cells clearfix">
-						<div class="ap-single-vote"><?php ap_vote_html(); ?></div>
-									
+			<div id="discussion" class="active">				
+				<div id="question" role="main" class="ap-content question" data-id="<?php echo get_the_ID(); ?>">					
+					<div class="ap-question-cells clearfix">											
 						<div class="ap-content-inner">				
-							<div class="ap-user-meta">
-								<div class="ap-avatar">
-									<?php echo get_avatar( get_the_author_meta( 'user_email' ), ap_opt('avatar_size_question') ); ?>
-								</div>
+							<div class="ap-qmainc">
+							<div class="ap-user-meta">								
 								<div class="ap-meta">
 									<?php 
 										printf( __( '%s <span class="when">asked about %s ago</span>', 'ap' ), ap_user_display_name() , ap_human_time( get_the_time('U')));
@@ -36,16 +55,23 @@ if($question->post->post_status == 'publish'){
 								<?php the_content(); ?>									
 							</div>
 							
-							<ul class="ap-user-actions clearfix">			
+							<ul class="ap-user-actions clearfix">
+								<li><div class="ap-single-vote"><?php ap_vote_html(); ?></div></li>
 								<li><?php ap_edit_q_btn_html(); ?></li>					
 								<li><?php ap_comment_btn_html(); ?></li>					
 								<li><?php ap_close_vote_html(); ?></li>	
 								<li><?php ap_flag_btn_html(); ?></li>
 								<li><?php ap_post_delete_btn_html(); ?></li>
 							</ul>
-							<?php comments_template(); ?>	
-						</div>	
-						
+							</div>
+							<div class="ap-qfooter">
+								<span class="ap-qtline"></span>
+								<div class="ap-tlitem">
+									<?php echo ap_get_latest_history_html(get_the_ID(), true, true); ?>
+								</div>																
+							</div>
+							<?php comments_template(); ?>
+						</div>						
 					</div>		
 				</div>
 				
@@ -94,6 +120,18 @@ if($question->post->post_status == 'publish'){
 				</div>
 				<!-- End Views and Answers -->
 				
+				<!-- Start labels -->
+				<div class="ap-question-side">
+					<h3 class="ap-question-side-title">
+						<?php _e('Labels', 'ap'); ?>					
+						<?php ap_change_label_html(get_question_id()); ?>
+					</h3>
+					<div data-view="ap-labels-list">
+						<?php echo ap_get_question_label(get_question_id(), true); ?>
+					</div>
+				</div>
+				<!-- End labels -->
+				
 				<!-- Start Category -->
 				<?php if(ap_opt('enable_categories')): ?>
 				<div class="ap-question-side">
@@ -112,18 +150,6 @@ if($question->post->post_status == 'publish'){
 				</div>
 				<?php endif; ?>
 				<!-- End Tags -->
-				
-				<!-- Start labels -->
-				<div class="ap-question-side">
-					<h3 class="ap-question-side-title">
-						<?php _e('Labels', 'ap'); ?>					
-						<?php ap_change_label_html(get_question_id()); ?>
-					</h3>
-					<div data-view="ap-labels-list">
-						<?php echo ap_get_question_label(get_question_id()); ?>
-					</div>
-				</div>
-				<!-- End labels -->
 				
 				<!-- Start participants -->
 				<div class="ap-question-side">			
