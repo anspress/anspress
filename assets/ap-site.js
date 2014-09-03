@@ -588,6 +588,10 @@ APjs.site.prototype = {
 					context:this,
 					success: function(data){
 						self.hideLoading();
+						
+						if(jQuery('.comment-form-c').length > 0)
+							jQuery('.comment-form-c').remove();
+						
 						jQuery(elem).append(data);
 						jQuery(this).addClass('ajax-done');
 						jQuery('html, body').animate({

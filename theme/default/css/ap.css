@@ -216,6 +216,10 @@ textarea.input-lg, select[multiple].input-lg {
     height: auto;
 }
 
+.form-control.autogrow {
+    overflow: hidden;
+}
+
 .has-feedback {
     position: relative;
 }
@@ -850,31 +854,20 @@ body.anspress .ap-container {
 }
 
 #commentform .form-submit > input {
-    display: none;
+    box-shadow: none;
+    font-size: 13px;
+    padding: 4px 8px;
 }
 
 .anspress #commentform {
-    display: table;
-    width: 100%;
-}
 
-.anspress .ap-comment-ta, .anspress .ap-comment-sc {
-    display: table-cell;
-    vertical-align: top;
 }
-
-.anspress .ap-comment-sc {
-    width: 85px;
-}
-
 .anspress .ap-btn.ap-btn-comment {
-    margin-left: 10px;
+
 }
 
 .ap-comments .commentlist .comment-content textarea {
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-    width: 500px;
+
 }
 
 .ap-comments .commentlist .comment-content.comment > p {
@@ -894,11 +887,10 @@ body.anspress .ap-container {
 }
 
 .anspress .comment-form-c {
-    background: #fcfcfc;
+    background: none repeat scroll 0 0 #fcfcfc;
     border: 1px solid #ddd;
-    -moz-border-radius: 3px;
-    -webkit-border-radius: 3px;
-    border-radius: 3px;
+    border-radius: 4px;
+    margin-left: 44px;
     margin-top: 10px;
     padding: 10px;
 }
@@ -920,12 +912,9 @@ body.anspress .ap-container {
     vertical-align: top;
 }
 
-.single-question #commentform .form-submit {
-    display: table-cell;
-    max-width: 85px;
-    padding: 10px;
-    text-align: right;
-    vertical-align: top;
+#respond form .form-submit {
+    float: right;
+    margin: 0;
 }
 
 .question-content, .answer-content {

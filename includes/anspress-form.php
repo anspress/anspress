@@ -36,7 +36,7 @@ class anspress_form
     public function __construct()
     {
 		add_action( 'init', array($this, 'process_forms') );
-		add_action('comment_form', array($this, 'comment_button') );
+		//add_action('comment_form', array($this, 'comment_button') );
 		add_action( 'wp_ajax_ap_load_comment_form', array($this, 'load_ajax_commentform') ); 
 		add_action( 'wp_ajax_nopriv_ap_load_comment_form', array($this, 'load_ajax_commentform') );
 		
@@ -607,11 +607,11 @@ class anspress_form
 			$comment_args = array(
 				'title_reply' => '',
 				'logged_in_as' => '',
-				'comment_field' => '<div class="ap-comment-ta"><textarea name="comment" rows="1" aria-required="true" class="form-control"></textarea></div><input type="hidden" name="ap_comment_form" value="true"/>',
+				'comment_field' => '<div class="ap-comment-ta"><textarea name="comment" rows="3" aria-required="true" class="form-control autogrow" placeholder="'.__('Respond to the post.', 'ap').'"></textarea></div><input type="hidden" name="ap_comment_form" value="true"/>',
 				'comment_notes_after' => ''
 			);
 			$current_user = get_userdata( get_current_user_id() );
-			echo '<div class="comment-form-c">';
+			echo '<div class="comment-form-c clearfix">';
 				echo '<div class="ap-content-inner">';
 					comment_form($comment_args, $args[0] );
 				echo '</div>';
