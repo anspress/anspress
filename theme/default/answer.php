@@ -14,7 +14,7 @@
 					</div>			
 				</div>
 				<div class="answer-content">
-					<?php the_content(); ?>
+					<?php echo apply_filters('the_content', get_the_content()); ?>
 				</div>			
 				<ul class="ap-user-actions clearfix ">
 					<li>

@@ -85,7 +85,8 @@ class anspress_form
 		
 		add_action( 'wp_ajax_ap_delete_post', array($this, 'ap_delete_post') ); 
 		
-		add_action( 'wp_ajax_ap_load_edit_form', array($this, 'ap_load_edit_form') ); 
+		add_action( 'wp_ajax_ap_load_edit_form', array($this, 'ap_load_edit_form') );
+		add_action('print_footer_scripts', array($this, 'pre_button'));
     }
 	
 	public function process_forms(){
@@ -108,7 +109,7 @@ class anspress_form
 	public function get_question_fields_to_process(){
 		$fields = array(
 			'post_title' 	=> sanitize_text_field($_POST['post_title']),
-			'post_content' 	=> preg_replace('/[ \t]+/', ' ', preg_replace("/[\r\n]+/", "\n", $_POST['post_content'])),
+			'post_content' 	=>  $_POST['post_content'],
 		);
 		
 		//remove <!--more-->
@@ -273,7 +274,7 @@ class anspress_form
 			'is_answer' 	=> sanitize_text_field($_POST['is_answer']),
 			'submitted' 	=> sanitize_text_field($_POST['submitted']),
 			'nonce' 		=> $_POST['nonce'],
-			'post_content' 		=> preg_replace('/[ \t]+/', ' ',  preg_replace("/[\r\n]+/", "\n", $_POST['post_content']))
+			'post_content' 		=> $_POST['post_content']
 		);
 		$fields['post_content'] = str_replace('<!--more-->', '', $fields['post_content']);
 		$fields['post_content'] = str_replace('<!-- more -->', '', $fields['post_content']);
@@ -1027,6 +1028,14 @@ class anspress_form
 		}
 		
 		die(json_encode($result));
+	}
+	
+	public function pre_button() {
+		?>
+		<script type="text/javascript" charset="utf-8">
+			QTags.addButton( 'ap_code', 'code block','<pre>', '</pre>', 'q' );
+		</script>
+		<?php
 	}
 }
 

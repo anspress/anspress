@@ -950,7 +950,11 @@ body.anspress .ap-container {
     overflow: hidden;
 }
 .anspress .ap-q-title {
+    font-size: 20px;
     margin: 0;
+}
+.anspress .ap-main-title{
+	font-size: 20px;
 }
 .ap-qtopmeta {
 
@@ -1369,11 +1373,10 @@ body.modal-open {
 }
 
 .question-list .question-labels li.ap-label-name {
-    -moz-border-radius: 3px;
-    -webkit-border-radius: 3px;
     border-radius: 3px;
     color: #fff;
     font-size: 11px;
+    line-height: 20px;
     margin-right: 5px;
     padding: 0 10px;
 }
