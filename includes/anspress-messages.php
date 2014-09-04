@@ -495,7 +495,7 @@ function ap_search_conversations($user, $search, $limit = 10){
 
 	global $wpdb;
 	
-	$query = $wpdb->prepare('SELECT *, (SELECT GROUP_CONCAT(apmeta_userid) FROM '.$wpdb->prefix . 'ap_meta WHERE  apmeta_actionid = m.message_conversation AND apmeta_type = "recipient") as users FROM '.$wpdb->prefix . 'ap_messages m JOIN  '.$wpdb->prefix . 'ap_meta meta ON meta.apmeta_userid = %d AND meta.apmeta_actionid = m.message_conversation AND meta.apmeta_type= "recipient" JOIN (SELECT MAX(message_id) as message_id FROM '.$wpdb->prefix . 'ap_messages GROUP BY message_conversation) m2 WHERE m2.message_id = m.message_id AND m.message_content LIKE "%%%s%%" GROUP BY m.message_conversation ORDER BY m.message_date DESC LIMIT %d', $user, like_escape($search), $limit);
+	$query = $wpdb->prepare('SELECT *, (SELECT GROUP_CONCAT(apmeta_userid) FROM '.$wpdb->prefix . 'ap_meta WHERE  apmeta_actionid = m.message_conversation AND apmeta_type = "recipient") as users FROM '.$wpdb->prefix . 'ap_messages m JOIN  '.$wpdb->prefix . 'ap_meta meta ON meta.apmeta_userid = %d AND meta.apmeta_actionid = m.message_conversation AND meta.apmeta_type= "recipient" JOIN (SELECT MAX(message_id) as message_id FROM '.$wpdb->prefix . 'ap_messages GROUP BY message_conversation) m2 WHERE m2.message_id = m.message_id AND m.message_content LIKE "%%%s%%" GROUP BY m.message_conversation ORDER BY m.message_date DESC LIMIT %d', $user, $wpdb->esc_like($search), $limit);
 		
 	return $wpdb->get_results($query);
 }
