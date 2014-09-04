@@ -23,7 +23,7 @@
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Domain Path:       /languages
  */
- 
+
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
 	die;
@@ -59,6 +59,11 @@ define('ANSPRESS_PARTI_META', '_ap_participants');
 define('AP_FOLLOWERS_META', '_ap_followers'); 
 define('AP_FOLLOWING_META', '_ap_following'); 
 
+/* Load localization */
+function ap_localization_setup() {
+ load_plugin_textdomain('ap', false, dirname(plugin_basename(__FILE__)) . '/languages/');
+}
+add_action('after_setup_theme', 'ap_localization_setup'); 
 
 
 /*----------------------------------------------------------------------------*

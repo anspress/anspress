@@ -34,7 +34,6 @@ class anspress {
 
 		// Load plugin text domain
 		add_action( 'wp_loaded', array( $this, 'flush_rules' ) );
-		add_action( 'after_setup_theme', array( $this, 'load_plugin_textdomain' ) );
 		
 		add_action( 'wp', array( $this, 'remove_head_items' ) );
 
@@ -166,14 +165,6 @@ class anspress {
 		// @TODO: Define deactivation functionality here
 	}
 
-	/**
-	 * Load the plugin text domain for translation.
-	 *
-	 * @since    1.0.0
-	 */
-	public function load_plugin_textdomain() {
-		load_plugin_textdomain('ap', false, dirname(plugin_basename(__FILE__)) . '/languages/');
-	}
 	
 	//add author_more to query vars
 	public function query_var( $query_vars) {
