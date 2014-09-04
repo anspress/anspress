@@ -1,3 +1,6 @@
+<h1 class="ap-q-title">
+	<?php the_title(); ?>
+</h1>
 <?php dynamic_sidebar( 'ap-top' ); ?>
 <div id="ap-lists" class="clearfix">
 	<?php ap_questions_tab(); ?>
