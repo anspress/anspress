@@ -1545,8 +1545,7 @@ APjs.site.prototype = {
 				if(data['status']){
 					self.addMessage(data['message'], 'success');
 					jQuery('.ap-account-button').remove();
-					jQuery('#ap_login_modal').toggleClass('active');
-					jQuery('.ap-nli-backdrop').remove();
+					location.reload();
 				}else{
 					self.addMessage(data['message'], 'error');
 				}

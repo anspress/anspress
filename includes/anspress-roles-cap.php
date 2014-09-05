@@ -76,7 +76,7 @@ function ap_show_form_to_guest(){
 
 /* Check if a user can ask a question */
 function ap_user_can_ask(){
-	if(current_user_can('new_question') || is_super_admin() || ap_show_form_to_guest())
+	if(current_user_can('ap_new_question') || is_super_admin() || ap_show_form_to_guest())
 		return true;
 	
 	return false;
@@ -90,7 +90,7 @@ function ap_user_can_answer($question_id){
 	if(ap_opt('close_after_selecting') && ap_is_answer_selected($question_id) )
 		return false;
 		
-	if((current_user_can('new_answer') || ap_show_form_to_guest())){
+	if((current_user_can('ap_new_answer') || ap_show_form_to_guest())){
 		if(!ap_opt('multiple_answers') && ap_is_user_answered($question_id, get_current_user_id()) && get_current_user_id() != '0')
 			return false;
 		else
@@ -120,11 +120,11 @@ function ap_user_can_select_answer($post_id){
 
 /* Check if a user can edit answer on a question */
 function ap_user_can_edit_ans($post_id){
-	if(current_user_can('edit_answer') || current_user_can('edit_others_answer') || is_super_admin()){
+	if(current_user_can('ap_edit_answer') || current_user_can('ap_edit_others_answer') || is_super_admin()){
 		$post = get_post($post_id);
 		global $current_user;
 		$user_id		= $current_user->ID;
-		if(($post->post_author ==  $user_id) || current_user_can('edit_others_answer') || is_super_admin())
+		if(($post->post_author ==  $user_id) || current_user_can('ap_edit_others_answer') || is_super_admin())
 			return true;
 		else
 			return false;
@@ -133,52 +133,52 @@ function ap_user_can_edit_ans($post_id){
 }
 
 function ap_user_can_edit_question($post_id = false){
-	if(is_super_admin() || current_user_can('edit_others_question') )
+	if(is_super_admin() || current_user_can('ap_edit_others_question') )
 		return true;
 		
-	if(current_user_can('edit_question') || current_user_can('edit_others_question') || is_super_admin()){
+	if(current_user_can('ap_edit_question') || current_user_can('ap_edit_others_question') || is_super_admin()){
 		global $current_user;
 		if($post_id )
 			$post = get_post($post_id);
 		else
 			global $post;
 			
-		if(($current_user->ID == $post->post_author) && current_user_can('edit_question'))
+		if(($current_user->ID == $post->post_author) && current_user_can('ap_edit_question'))
 			return true;
 	}
 	return false;
 }
 
 function ap_user_can_change_label(){
-	if(is_super_admin() || current_user_can('change_label'))
+	if(is_super_admin() || current_user_can('ap_change_label'))
 		return true;
 
 	return false;
 }
 
 function ap_user_can_comment(){
-	if(is_super_admin() || current_user_can('new_comment') || ap_opt('anonymous_comment'))
+	if(is_super_admin() || current_user_can('ap_new_comment') || ap_opt('anonymous_comment'))
 		return true;
 
 	return false;
 }
 function ap_user_can_edit_comment($comment_id){
-	if(is_super_admin() || current_user_can('mod_comment'))
+	if(is_super_admin() || current_user_can('ap_mod_comment'))
 		return true;
 	
 	global $current_user;	
-	if( current_user_can('edit_comment') && ($current_user->ID == $comment_id))
+	if( current_user_can('ap_edit_comment') && ($current_user->ID == $comment_id))
 		return true;
 
 	return false;
 }
 
 function ap_user_can_delete_comment($comment_id){
-	if(is_super_admin() || current_user_can('mod_comment'))
+	if(is_super_admin() || current_user_can('ap_mod_comment'))
 		return true;
 	
 	global $current_user;	
-	if( current_user_can('delete_comment') && ($current_user->ID == $comment_id))
+	if( current_user_can('ap_delete_comment') && ($current_user->ID == $comment_id))
 		return true;
 
 	return false;
@@ -192,14 +192,14 @@ function ap_user_can_delete($postid){
 	global $current_user;
 	
 	if($current_user->ID == $post->post_author){
-		if( $post->post_type == 'question' && current_user_can('delete_question'))
+		if( $post->post_type == 'question' && current_user_can('ap_delete_question'))
 			return true;
-		elseif( $post->post_type == 'answer' && current_user_can('delete_answer'))
+		elseif( $post->post_type == 'answer' && current_user_can('ap_delete_answer'))
 			return true;
 	}else{
-		if( $post->post_type == 'question' && current_user_can('delete_others_question'))
+		if( $post->post_type == 'question' && current_user_can('ap_delete_others_question'))
 			return true;
-		elseif( $post->post_type == 'answer' && current_user_can('delete_others_answer'))
+		elseif( $post->post_type == 'answer' && current_user_can('ap_delete_others_answer'))
 			return true;	
 	}
 
@@ -207,14 +207,14 @@ function ap_user_can_delete($postid){
 }
 
 function ap_user_can_upload_cover(){
-	if(is_super_admin() || current_user_can('upload_cover'))
+	if(is_super_admin() || current_user_can('ap_upload_cover'))
 		return true;
 	
 	return false;
 }
 
 function ap_user_can_message(){
-	if(is_super_admin() || current_user_can('message'))
+	if(is_super_admin() || current_user_can('ap_message'))
 		return true;
 	
 	return false;

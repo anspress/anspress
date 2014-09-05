@@ -138,12 +138,12 @@ class anspress_form
 		$error = array();
 		$error['has_error'] 	= false;
 
-		if(str_word_count($_POST['post_title']) < ap_opt('minimum_qtitle_length')){
-			$error['post_title'] 	= sprintf(__('Question title must have %d words or more.', 'ap'), ap_opt('minimum_qtitle_length'));
+		if(strlen(utf8_decode($_POST['post_title'])) < ap_opt('minimum_qtitle_length')){
+			$error['post_title'] 	= sprintf(__('Question title must have %d letters or more.', 'ap'), ap_opt('minimum_qtitle_length'));
 			$error['has_error'] 	= true;
 		}
-		if(str_word_count($_POST['post_content']) < ap_opt('minimum_question_length')){
-			$error['post_content'] 	= sprintf(__('Question content must have %d words or more.', 'ap'), ap_opt('minimum_question_length'));
+		if(strlen(utf8_decode($_POST['post_content'])) < ap_opt('minimum_question_length')){
+			$error['post_content'] 	= sprintf(__('Question content must have %d letters or more.', 'ap'), ap_opt('minimum_question_length'));
 			$error['has_error'] 	= true;
 		}
 		
@@ -279,8 +279,8 @@ class anspress_form
 		$error = array();
 		$error['has_error'] 	= false;
 
-		if(str_word_count($_POST['post_content']) < ap_opt('minimum_ans_length')){
-			$error['post_content'] 	= sprintf(__('Your answer must have %d words or more.', 'ap'), ap_opt('minimum_ans_length'));
+		if(strlen(utf8_decode($_POST['post_content'])) < ap_opt('minimum_ans_length')){
+			$error['post_content'] 	= sprintf(__('Your answer must have %d letters or more.', 'ap'), ap_opt('minimum_ans_length'));
 			$error['has_error'] 	= true;
 		}
 		$ap_answer_form_validation = $error;
