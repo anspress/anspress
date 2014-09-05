@@ -403,7 +403,7 @@ body.anspress .ap-container {
 }
 
 .ap-qmainc .ap-user-meta {
-    background: none repeat scroll 0 0 #d0e8fc;
+    background: #d0e8fc;
     border-bottom: 1px solid #afcce5;
     border-radius: 3px 3px 0 0;
     font-size: 12px;
@@ -589,7 +589,7 @@ body.anspress .ap-container {
     text-decoration: none;
 }
 .ap-qmainc {
-    background: none repeat scroll 0 0 #fff;
+    background: #fff;
     border: 1px solid #afcce5;
     border-radius: 3px;
     padding: 10px;
@@ -612,13 +612,13 @@ body.anspress .ap-container {
     top: -27px;
 }
 .ap-amainc {
-    background: none repeat scroll 0 0 #fff;
+    background: #fff;
     border: 1px solid #b5d5b0;
     border-radius: 3px;
     padding: 10px;
 }
 .ap-amainc .ap-user-meta{
-    background: none repeat scroll 0 0 #dae9d8;
+    background: #dae9d8;
     border-bottom: 1px solid #b5d5b0;
     border-radius: 3px 3px 0 0;
     font-size: 12px;
@@ -657,7 +657,7 @@ body.anspress .ap-container {
 }
 
 #answers .answer.selected .ap-user-meta{
-    background: none repeat scroll 0 0 #6ab755;
+    background: #6ab755;
     border-color: #5b984a;
     color: #fff;
 }
@@ -667,7 +667,7 @@ body.anspress .ap-container {
 }
 
 .anspress .ap-sicon {
-    background: none repeat scroll 0 0 #aaa;
+    background: #aaa;
     border-radius: 50%;
     color: #fff;
     display: block;
@@ -680,7 +680,7 @@ body.anspress .ap-container {
     width: 22px;
 }
 .anspress .ap-sicon:hover, .anspress .ap-sicon.selected{
-	background: none repeat scroll 0 0 #6ab755;
+	background: #6ab755;
 }
 
 #answers .answer-header {
@@ -708,7 +708,7 @@ body.anspress .ap-container {
 }
 
 #question .ap-comments.have-comments:before {
-    background: none repeat scroll 0 0 #eee;
+    background: #eee;
     content: "";
     display: block;
     height: 35px;
@@ -887,7 +887,7 @@ body.anspress .ap-container {
 }
 
 .anspress .comment-form-c {
-    background: none repeat scroll 0 0 #fcfcfc;
+    background: #fcfcfc;
     border: 1px solid #ddd;
     border-radius: 4px;
     margin-left: 44px;
@@ -963,7 +963,7 @@ body.anspress .ap-container {
 /* ---------------votings-----------------------
 ---------------------------------------------- */
 .anspress .ap-voting a.vote-up, .anspress .ap-voting a.vote-down {
-    background: none repeat scroll 0 0 #ff8041;
+    background: #ff8041;
     border-radius: 2px;
     color: #fff;
     font-size: 15px;
@@ -1002,7 +1002,7 @@ body.anspress .ap-container {
 }
 
 .anspress .ap-single-vote a.disable {
-    background: none repeat scroll 0 0 #aaa;
+    background: #aaa;
 }
 
 .ap-single-vote:hover .disable {
@@ -1258,7 +1258,7 @@ body.modal-open {
 }
 
 #answers-c .ap-answer-count {
-    background: none repeat scroll 0 0 #58ae44;
+    background: #58ae44;
     border-radius: 2px;
     color: #fff;
     font-size: 14px;
@@ -1410,6 +1410,9 @@ body.modal-open {
 }
 
 /* Question form */
+#ask_question_form{
+	position:relative;
+}
 #ask_question_form label {
     display: block;
     margin-bottom: 5px;
@@ -1497,9 +1500,11 @@ body.modal-open {
     display: block;
     margin-top: 7px;
 }
-
+#answer_form {
+    position: relative;
+}
 #answer_form .form-groups, #ask_question_form .wp-editor-wrap {
-    background: none repeat scroll 0 0 #fff;
+    background: #fff;
     border: 1px solid #ddd;
     border-radius: 3px;
     padding: 10px;
@@ -1916,6 +1921,9 @@ ul.ap-pagination {
 }
 
 /* Modal */
+.ap-modal {
+    display: none;
+}
 .ap-modal-bg {
     display: none;
     position: fixed;
@@ -1923,7 +1931,7 @@ ul.ap-pagination {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: white;
+    background-color: black;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
     filter: alpha(opacity=50);
     opacity: 0.5;
@@ -1948,15 +1956,28 @@ ul.ap-pagination {
     width: 500px;
     z-index: 1000;
 }
-
+.ap-modal.active{
+	display:block;
+}
 .active .ap-modal-bg, .active .ap-modal-content {
     display: block;
 }
 
-.ap-modal-title {
+.anspress .ap-modal-title {
+    background: #f2f2f2;
     border-bottom: 1px solid #ddd;
-    margin: 0 -10px 10px;
-    padding: 10px 15px 15px;
+    border-radius: 3px 3px 0 0;
+    margin: -10px -10px 10px;
+    padding: 5px 15px;
+}
+
+.anspress .ap-modal-title span {
+    color: #888;
+    cursor: default;
+    display: block;
+    float: right;
+    font-size: 20px;
+    line-height: 140%;
 }
 
 .ap-container .ap-inline-list {
@@ -3628,7 +3649,7 @@ ul.ap-badge-item > li.ap-badge-info {
 }
 
 .ap-tline, .ap-qtline {
-    background: none repeat scroll 0 0 #eee;
+    background: #eee;
     content: "";
     display: block;
     height: 100%;
@@ -3648,7 +3669,7 @@ ul.ap-badge-item > li.ap-badge-info {
     top: 0;
 }
 .ap-tlicon {
-    background: none repeat scroll 0 0 #eee;
+    background: #eee;
     border-radius: 50%;
     color: #333;
     display: block;
@@ -3683,7 +3704,7 @@ ul.ap-badge-item > li.ap-badge-info {
     top: 0;
 }
 .ap-tldot {
-    background: none repeat scroll 0 0 #ddd;
+    background: #ddd;
     border: 2px solid #fff;
     border-radius: 50%;
     display: block;
@@ -3705,4 +3726,55 @@ ul.ap-badge-item > li.ap-badge-info {
 .ap-tlitem .ap-savatar {
     float: left;
     margin-right: 10px;
+}
+.ap-account-button > h3 {
+    margin: 0;
+    padding: 13px;
+    text-align: center;
+}
+.ap-account-button {
+    background: none repeat scroll 0 0 #fff;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+    left: 50%;
+    margin-bottom: 10px;
+    margin-left: -200px;
+    min-width: 400px;
+    position: absolute;
+    top: 39px;
+}
+.ap-site-ac, .ap-social-ac {
+    border-radius: 4px;
+    float: left;
+    padding: 10px;
+    width: 50%;
+}
+.ap-site-ac > h3, .ap-social-ac > h3 {
+    font-size: 13px;
+    margin: 0 0 10px;
+    text-align: center;
+}
+#wp-social-login-connect-with {
+    font-size: 13px;
+    font-weight: bold;
+    text-align: center;
+}
+.ap-social-ac {
+	background:none;
+	border:none;
+}
+.anspress .ap-container .ap-site-ac a {
+    display: table;
+    margin: 0 auto 10px;
+    text-decoration: none;
+	width:150px;
+	font-weight:bold;
+}
+.ap-nli-backdrop {
+    background: rgba(255, 255, 255, 0.7);
+    height: 100%;
+    position: absolute;
+    top: 0;
+    width: 100%;
 }

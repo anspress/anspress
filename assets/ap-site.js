@@ -66,11 +66,20 @@ APjs.site.prototype = {
 		this.deleteMessage();
 		this.questionSuggestion();
 		this.flushRules();
+		this.ajaxLoginForm();
 		
 		
 		jQuery('body').delegate('.ap-modal-bg, .ap-modal-close', 'click', function () {
-			jQuery('.ap-modal').toggleClass('active');
+			jQuery('.ap-modal.active').toggleClass('active');
 		});
+		
+		jQuery('.ap-open-modal').click(function(e){
+			e.preventDefault();
+			var id = jQuery(this).attr('href');
+			jQuery(id).addClass('active');
+		});
+		
+		
 	},
 	
 	appendMessageBox: function(){
@@ -194,7 +203,7 @@ APjs.site.prototype = {
 	/* check length of username */
 	checkUsernameLength: function(){
 		var self = this;
-		jQuery('.anspress').delegate('.ap-signup-fields #username', 'keyup blur', function(){
+		jQuery('.anspress').delegate('#ap_signup_modal #username', 'keyup blur', function(){
 			var field = jQuery(this);		
 			var parent = field .closest('.form-group');
 			if (field.val().length <= 4){
@@ -218,7 +227,7 @@ APjs.site.prototype = {
 	/* check if username is available */
 	checkUsernameAvilable: function(){
 		var self = this;
-		jQuery('.anspress').delegate('.ap-signup-fields #username', 'blur', function(){
+		jQuery('.anspress').delegate('#ap_signup_modal #username', 'blur', function(){
 			var field = jQuery(this);		
 			var parent = field .closest('.form-group');
 			
@@ -420,7 +429,7 @@ APjs.site.prototype = {
 	},
 	
 	modalShow:function(id){
-		jQuery('.ap-modal').addClass('active');		
+		jQuery('.ap-modal').addClass('active');			
 	},
 	
 	loadFlagModal:function (){
@@ -1509,6 +1518,58 @@ APjs.site.prototype = {
 			);
 		});
 
+	},
+	submitAjaxForm: function(form, before, after){
+		jQuery(form).submit(function(){
+			jQuery(this).ajaxSubmit({
+				beforeSubmit:  before,
+				success: after,
+				url:ajaxurl,
+				dataType:'json'
+			});
+			
+			return false;
+		});
+	},
+	
+	ajaxLoginForm:function(){
+		var self = this;
+		
+		self.submitAjaxForm(
+			'#ap-login-form',
+			function(){
+				self.showLoading(aplang.sending);
+			},
+			function(data){
+				self.hideLoading();
+				if(data['status']){
+					self.addMessage(data['message'], 'success');
+					jQuery('.ap-account-button').remove();
+					jQuery('#ap_login_modal').toggleClass('active');
+					jQuery('.ap-nli-backdrop').remove();
+				}else{
+					self.addMessage(data['message'], 'error');
+				}
+			}
+		);
+		
+		self.submitAjaxForm(
+			'#ap-signup-form',
+			function(){
+				self.showLoading(aplang.sending);
+			},
+			function(data){
+				self.hideLoading();
+				if(data['status']){
+					self.addMessage(data['message'], 'success');
+					jQuery('#ap_signup_modal').toggleClass('active');
+					jQuery('#ap_login_modal').toggleClass('active');
+					jQuery('#ap-login-form').prepend('<strong>'+data['message']+'</strong>');
+				}else{
+					self.addMessage(data['message'], 'error');
+				}
+			}
+		);
 	}
 	
 };
@@ -1532,6 +1593,9 @@ jQuery(document).ready(function (){
 			container.hide();
 		}
 	});
+	
+	if(typeof QTags !== 'undefined')
+		QTags.addButton( 'ap_code', 'code block','<pre>', '</pre>', 'q' );
 	
 }); 
 function ap_url_string_value(name) {

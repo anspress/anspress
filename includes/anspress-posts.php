@@ -726,6 +726,7 @@ class anspress_posts
 			$i =1;
 			foreach ($keywords as $key){
 				if(strlen($key) > 1){
+					$key = $wpdb->esc_like( $key );
 					if($i != 1)
 					$where .= "OR ";
 					$where .= "(($wpdb->posts.post_title LIKE '%$key%') AND ($wpdb->posts.post_content LIKE '%$key%')) ";

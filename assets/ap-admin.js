@@ -566,7 +566,7 @@ function ap_add_item_to_menu(menuItem, callback) {
 }
 jQuery(document).ready(function (jQuery){  
 
-	jQuery( "#ap_q_search" ).autocomplete({
+	/* jQuery( "#ap_q_search" ).autocomplete({
 		source: function( request, response ) {  
 			jQuery.getJSON( ajaxurl + "?callback=?&action=search_questions", request, function( data ) {  
 				response( jQuery.map( data, function( item ) {
@@ -581,7 +581,7 @@ jQuery(document).ready(function (jQuery){
 		select: function( event, ui ) {
 			jQuery('#ap_q').val(ui.item.id);
 		},
-	});
+	}); */
 	
 	ap_option_flag_note();
 	ap_tab();

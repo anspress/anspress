@@ -76,17 +76,23 @@ class anspress_form
 		add_filter('ap_save_question_filds', array($this, 'signup_fields'));
 		add_filter('ap_save_answer_filds', array($this, 'signup_fields'));		
 		
-		add_action( 'wp_ajax_ap_toggle_login_signup', array($this, 'ap_toggle_login_signup') ); 
+		//add_action( 'wp_ajax_ap_toggle_login_signup', array($this, 'ap_toggle_login_signup') ); 
 		add_action( 'wp_ajax_nopriv_ap_toggle_login_signup', array($this, 'ap_toggle_login_signup') ); 
 		
-		add_filter( 'ap_question_form_validation', array($this, 'ap_signup_login_validation') ); 
+		//add_filter( 'ap_question_form_validation', array($this, 'ap_signup_login_validation') ); 
 		 
-		add_filter( 'ap_answer_form_validation', array($this, 'ap_signup_login_validation') );
+		//add_filter( 'ap_answer_form_validation', array($this, 'ap_signup_login_validation') );
 		
 		add_action( 'wp_ajax_ap_delete_post', array($this, 'ap_delete_post') ); 
 		
 		add_action( 'wp_ajax_ap_load_edit_form', array($this, 'ap_load_edit_form') );
-		add_action('print_footer_scripts', array($this, 'pre_button'));
+		add_action('ap_after_ask_form', array($this, 'login_signup_modal'));
+		add_action('ap_after_answer_form', array($this, 'login_signup_modal'));
+		add_action('ap_ask_form_bottom', array($this, 'login_bottom'));
+		add_action('ap_answer_form_bottom', array($this, 'login_bottom'));
+		
+		add_action( 'wp_ajax_nopriv_ap_ajax_login', array($this, 'ap_ajax_login') );
+		add_action( 'wp_ajax_nopriv_ap_ajax_signup', array($this, 'ap_ajax_signup') );
     }
 	
 	public function process_forms(){
@@ -165,7 +171,10 @@ class anspress_form
 		return $ap_question_form_validation;
 	}
 	
-	public function process_ask_form(){	
+	public function process_ask_form(){
+		if(!is_user_logged_in())
+			return false;
+		
 		if(isset($_POST['is_question']) && isset($_POST['submitted']) && isset($_POST['ask_form']) && wp_verify_nonce($_POST['ask_form'], 'post_nonce')) {
 		
 			$fields = $this->get_question_fields_to_process();
@@ -187,29 +196,8 @@ class anspress_form
 				return;
 			}
 
-			do_action('process_ask_form');
-			
-			$user_id = get_current_user_id();
-			if(!is_user_logged_in()){
-				// create user
-				$user_id = wp_create_user( $fields['username'], $fields['password'], $fields['email'] );
-				
-				// return if there is any error
-				if(is_object($user_id))
-					return;
-				
-				// auto login user if enabled			
-				if(ap_opt('login_after_signup')){
-					$creds = array();
-					$creds['user_login'] = sanitize_user($fields['username']);
-					$creds['user_password'] = $fields['password'];
-					$creds['remember'] = true;
-					$user = wp_signon( $creds, false );
-					if ( is_wp_error($user) )
-					   return $user->get_error_message();
-				}
-			}
-			
+			do_action('process_ask_form');			
+			$user_id = get_current_user_id();			
 			$status = 'publish';
 			
 			if(ap_opt('moderate_new_question') == 'pending' || (ap_opt('moderate_new_question') == 'point' && ap_get_points($user_id) < ap_opt('mod_question_point')))
@@ -302,7 +290,10 @@ class anspress_form
 		return $ap_answer_form_validation;
 	}
 	
-	public function process_answer_form( ){		
+	public function process_answer_form( ){	
+		if(!is_user_logged_in())
+			return false;
+			
 		if(isset($_POST['is_answer']) && isset($_POST['submitted']) && isset($_POST['nonce']) && wp_verify_nonce($_POST['nonce'], 'post_nonce_'.$_POST['form_question_id'])) {
 			$fields = $this->get_answer_fields_to_process();	
 			
@@ -333,39 +324,7 @@ class anspress_form
 			
 			$logged_in = false;
 			
-			$user_id = get_current_user_id();
-			if(!is_user_logged_in() && $_POST['user-form'] == 'signup'){
-				// create user
-				$user_id = wp_create_user( $fields['username'], $fields['password'], $fields['email'] );
-				
-				// return if there is any error
-				if(is_object($user_id))
-					return;
-				
-				// auto login user if enabled			
-				if(ap_opt('login_after_signup')){
-					$creds = array();
-					$creds['user_login'] 	= sanitize_user($fields['username']);
-					$creds['user_password'] = $fields['password'];
-					$creds['remember'] 		= true;
-					$user 					= wp_signon( $creds, false );
-					
-					$logged_in 				= true;
-					
-					if ( is_wp_error($user) )
-					   return $user->get_error_message();
-				}
-			}
-			if(!is_user_logged_in() && $_POST['user-form'] == 'login'){
-				$creds = array();
-				$creds['user_login'] 	= sanitize_user($fields['username']);
-				$creds['user_password'] = $fields['password'];
-				$creds['remember'] 		= true;
-				$user 					= wp_signon( $creds, false );
-				$user_id 				= $user->ID;
-				$logged_in 				= true;
-			}
-			
+			$user_id = get_current_user_id();			
 			$ans_array = array(
 				'post_author'	=> $user_id,
 				'post_content' 	=> wp_kses($fields['post_content'], ap_form_allowed_tags()),
@@ -919,12 +878,6 @@ class anspress_form
 		if(isset($_POST['username']))
 			$fields['username'] = sanitize_user($_POST['username']);
 		
-		if(isset($_POST['password']))
-			$fields['password'] = esc_sql($_POST['password']);
-		
-		if(isset($_POST['password1']))
-			$fields['password1'] = esc_sql($_POST['password1']);
-		
 		if(isset($_POST['email']))
 			$fields['email'] =  sanitize_email($_POST['email']);
 		
@@ -934,43 +887,11 @@ class anspress_form
 	public function ap_toggle_login_signup(){
 
 		if($_POST['args'] == 'signup')
-			ap_login_fields();
+			ap_login_form();
 		else
-			ap_signup_fields();
+			ap_signup_form();
 			
 		die();
-	}
-	
-	public function ap_signup_login_validation($error){
-		if(isset($_POST['user-form']) && $_POST['user-form'] == 'signup' && ap_opt('show_signup') && !is_user_logged_in()){
-			if($_POST['username'] === ''){
-				$error['username'] 	= __('Username field cannot be left blank.', 'ap');
-				$error['has_error'] 	= true;
-			}
-			if($_POST['password'] === ''){
-				$error['password'] 	= __('Password field cannot be left blank.', 'ap');
-				$error['has_error'] 	= true;
-			}
-			if($_POST['password1'] != $_POST['password']){
-				$error['password1'] 	= __('Password not matching.', 'ap');
-				$error['has_error'] 	= true;
-			}
-			if($_POST['email'] === ''){
-				$error['email'] 		= __('Email field cannot be left blank.', 'ap');
-				$error['has_error'] 	= true;
-			}
-		}elseif(isset($_POST['user-form']) && $_POST['user-form'] == 'login' && ap_opt('show_login') && !is_user_logged_in()){
-			if($_POST['username'] === ''){
-				$error['username'] 	= __('Username field cannot be left blank.', 'ap');
-				$error['has_error'] 	= true;
-			}
-			if($_POST['password'] === ''){
-				$error['password'] 	= __('Password field cannot be left blank.', 'ap');
-				$error['has_error'] 	= true;
-			}
-		}
-		
-		return $error;
 	}
 	
 	public function ap_delete_post(){
@@ -1030,12 +951,89 @@ class anspress_form
 		die(json_encode($result));
 	}
 	
-	public function pre_button() {
+	public function login_signup_modal(){
+		if(!is_user_logged_in()){
 		?>
-		<script type="text/javascript" charset="utf-8">
-			QTags.addButton( 'ap_code', 'code block','<pre>', '</pre>', 'q' );
-		</script>
+		<div class="ap-modal flag-note" id="ap_login_modal" tabindex="-1" role="dialog">
+			<div class="ap-modal-bg"></div>
+			<div class="ap-modal-content">
+				<div class="ap-modal-header">					
+					<h4 class="ap-modal-title"><?php _e('Login', 'ap'); ?><span class="ap-modal-close">&times;</span></h4>					
+				</div>
+				<div class="ap-modal-body">				
+					<?php ap_login_form(); ?>
+				</div>
+			</div>		  
+		</div>
+		<div class="ap-modal flag-note" id="ap_signup_modal" tabindex="-1" role="dialog">
+			<div class="ap-modal-bg"></div>
+			<div class="ap-modal-content">
+				<div class="ap-modal-header">					
+					<h4 class="ap-modal-title"><?php _e('Sign up', 'ap'); ?><span class="ap-modal-close">&times;</span></h4>
+				</div>
+				<div class="ap-modal-body">				
+					<?php ap_signup_form(); ?>
+				</div>
+			</div>		  
+		</div>
 		<?php
+		}
+	}
+	
+	public function login_bottom(){
+		if(!is_user_logged_in()){
+		?>
+			<div class="ap-nli-backdrop"></div>
+			<div class="ap-account-button clearfix">
+				<h3><?php _e('Quickly login or sign up to continue', 'ap'); ?></h3>
+				<div class="ap-site-ac">
+					<h3><?php _e('Sign up or login', 'ap'); ?></h3>
+					<a href="#ap_login_modal" class="ap-open-modal ap-btn" title="<?php _e('Click here to login if you already have an account on this site.', 'ap'); ?>"><?php _e('Login', 'ap'); ?></a>
+					<a href="#ap_signup_modal" class="ap-open-modal ap-btn" title="<?php _e('Click here to signup if you do not have an account on this site.', 'ap'); ?>"><?php _e('Sign Up', 'ap'); ?></a>
+				</div>
+				<div class="ap-social-ac">
+					<?php do_action( 'wordpress_social_login' ); ?>
+				</div>
+			</div>		
+		<?php
+		}
+	}
+	
+	public function ap_ajax_login(){
+		$creds 					= array();
+		$creds['user_login'] 	= $_POST['username'];
+		$creds['user_password'] = $_POST['password'];
+		$creds['remember'] 		= true;
+		$user = wp_signon( $creds, false );
+		
+		if ( is_wp_error($user) )
+			$result = array('status' => false, 'message' => __('Unable to login, please try again.', 'ap'));
+		
+		else
+			$result = array('status' => true, 'message' => __('Successfully logged in.', 'ap'));
+			
+		die(json_encode($result));
+	}
+	
+	public function ap_ajax_signup(){
+		if(is_user_logged_in())
+			return;
+		
+		// create user
+		$user_id = register_new_user($_POST['username'], $_POST['email']);
+
+		// return if there is any error
+		if(is_wp_error($user_id))
+			return;		
+			
+		if ( is_wp_error($user_id) ){
+			$result = array('status' => false, 'message' => __('Unable to create account, please try again.', 'ap'));
+		
+		}else{
+			$result = array('status' => true, 'message' => __('Successfully created your account, please check your email for password.', 'ap'));
+		}
+		
+		die(json_encode($result));
 	}
 }
 
@@ -1068,9 +1066,9 @@ function ap_ask_form(){
 		<form action="" id="ask_question_form" method="POST" data-action="ap-submit-question">			
 			<?php do_action('ap_ask_form_fields', $validate); ?>			
 			<?php 
-				if(ap_opt('show_signup')){
+				if(!is_user_logged_in()){
 					echo '<div id="ap-login-signup">';
-					ap_login_fields();
+					echo do_action('ap_form_login');
 					echo '</div>';
 				}
 			?>
@@ -1080,6 +1078,7 @@ function ap_ask_form(){
 			
 		</form>
 		<?php
+		do_action('ap_after_ask_form');
 	}
 }
 function ap_answer_form($question_id){
@@ -1094,18 +1093,14 @@ function ap_answer_form($question_id){
 		echo '<form action="" id="answer_form" class="ap-content-inner no-overflow" method="POST" data-action="ap-submit-answer">';
 		
 		echo '<div class="form-groups">';
-		//echo '<div class="ap-fom-group-label">'.__('Your answer', 'ap').'</div>';
 		do_action('ap_answer_fields', $question_id, $validate);
-		echo '</div>';
-		
-		if(ap_opt('show_signup')){
-			echo '<div id="ap-login-signup">';
-			ap_login_fields();
-			echo '</div>';
-		}
+		echo '</div>';		
 		do_action('ap_answer_form_bottom');	
 		ap_answer_form_hidden_input($question_id);
 		echo '</form>';
+
+		echo do_action('ap_after_answer_form');
+
 	}
 }
 
@@ -1205,14 +1200,10 @@ function ap_edit_answer_form_hidden_input($post_id){
 	echo '<button type="submit" class="btn btn-primary">'. __('Update Answer', 'ap'). '</button>';
 }
 
-function ap_signup_fields(){
+function ap_signup_form(){
 	if(!is_user_logged_in()):
 	?>
-
-		<div class="for-non-logged-in ap-signup-fields">
-			<div class="ap-fom-group-label"><?php _e('Quick signup form', 'ap') ;?>
-				<span><?php _e('I already have an account.', 'ap') ;?><a href="#" data-toggle="ap-signup-form" class="ap-btn ap-btn-small" data-args="signup"><?php _e('Login', 'ap') ;?></a></span>
-			</div>
+		<form method="POST" id="ap-signup-form">
 			<div class="form-group">
 				<label for="username" class="ap-form-label"><?php _e('Username', 'ap') ?></label>
 				<div class="no-overflow">
@@ -1224,48 +1215,36 @@ function ap_signup_fields(){
 				<div class="no-overflow">
 					<input type="text" value="" tabindex="5" name="email" id="email" class="form-control" placeholder="<?php _e('name@domain.com', 'ap') ?>" />
 				</div>
-			</div>				
-			<div class="form-group">
-				<label for="password" class="ap-form-label"><?php _e('Password', 'ap') ?></label>
-				<div class="no-overflow">
-					<input type="password" value="" tabindex="5" name="password" id="password" class="form-control" placeholder="<?php _e('Password', 'ap') ?>" />
-				</div>
 			</div>
-			<div class="form-group">
-				<label for="password1" class="ap-form-label"><?php _e('Password', 'ap') ?></label>
-				<div class="no-overflow">
-					<input type="password" value="" tabindex="5" name="password1" id="password1" class="form-control" placeholder="<?php _e('Repeat password', 'ap') ?>" />
-				</div>
-			</div>
-		</div>
-		<input type="hidden" name="user-form" value="signup" />
+
+			<button type="submit" class="ap-btn" ><?php _e('Login', 'ap') ?></button>
+			<input type="hidden" name="action" value="ap_ajax_signup" />
+		</form>
 	<?php
 	endif;
 }
 
-function ap_login_fields(){
-
+function ap_login_form(){
 	if(!is_user_logged_in()){
 	?>
-		<div class="for-non-logged-in ap-login-fields">
-			<div class="ap-fom-group-label">
-				<?php _e('Quick login form', 'ap') ;?>
-				<span><?php _e('I do not have account yet', 'ap') ;?><a href="#" data-toggle="ap-signup-form" class="ap-btn ap-btn-small" data-args="login"><?php _e('Sign Up', 'ap') ;?></a></span>
-			</div>
-			<div class="form-group">
-				<label for="username" class="ap-form-label"><?php _e('Username', 'ap') ?></label>
-				<div class="no-overflow">
-					<input type="text" value="" tabindex="5" name="username" id="username" class="form-control" placeholder="<?php _e('Enter your username', 'ap') ?>" />
-				</div>
-			</div>	
-			<div class="form-group">
-				<label for="password" class="ap-form-label"><?php _e('Password', 'ap') ?></label>
-				<div class="no-overflow">
-					<input type="password" value="" tabindex="5" name="password" id="password" class="form-control" placeholder="<?php _e('Enter your password', 'ap') ?>" />
+		<form method="POST" id="ap-login-form">
+			<div class="for-non-logged-in ap-login-fields">
+				<div class="form-group">
+					<label for="username" class="ap-form-label"><?php _e('Username', 'ap') ?></label>
+					<div class="no-overflow">
+						<input type="text" value="" tabindex="5" name="username" id="username" class="form-control" placeholder="<?php _e('Enter your username', 'ap') ?>" />
+					</div>
+				</div>	
+				<div class="form-group">
+					<label for="password" class="ap-form-label"><?php _e('Password', 'ap') ?></label>
+					<div class="no-overflow">
+						<input type="password" value="" tabindex="5" name="password" id="password" class="form-control" placeholder="<?php _e('Enter your password', 'ap') ?>" />
+					</div>
 				</div>
 			</div>
-		</div>
-		<input type="hidden" name="user-form" value="login" />
+			<button type="submit" class="ap-btn" ><?php _e('Login', 'ap') ?></button>
+			<input type="hidden" name="action" value="ap_ajax_login" />
+		</form>
 	<?php
 	}
 }
@@ -1299,14 +1278,6 @@ function ap_edit_question_form($question_id = false){
 			<div class="ap-fom-group-label"><?php _e('Edit question', 'ap'); ?></div>
 			<?php do_action('ap_edit_question_form_fields', $question, $validate); ?>
 		</div>
-		
-		<?php 
-			if(ap_opt('show_signup')){
-				echo '<div id="ap-login-signup">';
-				ap_login_fields();
-				echo '</div>';
-			}
-		?>
 		
 		<?php do_action('ap_ask_form_bottom'); ?>
 		<?php ap_edit_question_form_hidden_input($question->ID); ?>
