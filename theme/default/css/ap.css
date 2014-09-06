@@ -411,12 +411,11 @@ body.anspress .ap-container {
     padding: 10px;
 }
 
-.ap-user-meta .who {
+.ap-user-meta .author {
     font-weight: bold;
-}
-.ap-user-meta .who a{
 	color:#333;
 }
+
 
 .ap-container .ap-dtable {
     display: table;

@@ -1,4 +1,4 @@
-<div id="answer_<?php echo get_the_ID(); ?>" class="answer<?php echo ap_is_best_answer(get_the_ID()) ? ' selected' : ''; ?>" data-id="<?php echo get_the_ID(); ?>">
+<div id="answer_<?php echo get_the_ID(); ?>" class="answer<?php echo ap_is_best_answer(get_the_ID()) ? ' selected' : ''; ?>" data-id="<?php echo get_the_ID(); ?>" itemprop="acceptedAnswer" itemtype="http://schema.org/Answer" itemscope="">
 	<div class="ap-content clearfix">		
 		<div class="ap-avatar">
 			<?php echo get_avatar( get_the_author_meta( 'user_email' ), ap_opt('avatar_size_qanswer') ); ?>
@@ -13,7 +13,7 @@
 						?>							
 					</div>			
 				</div>
-				<div class="answer-content">
+				<div class="answer-content" itemprop="text">
 					<?php echo apply_filters('the_content', get_the_content()); ?>
 				</div>			
 				<ul class="ap-user-actions clearfix ">

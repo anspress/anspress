@@ -420,7 +420,7 @@ function ap_ans_tab(){
 		$ans_count = ap_count_ans(get_the_ID());
 	?>
 		<div class="ap-anstabhead clearfix">
-			<h2 class="ap-answer-count pull-left" data-view="ap-answer-count-label"><?php printf(_n('<span>1 Answer</span>', '<span>%d Answers</span>', $ans_count, 'ap'), $ans_count); ?></h2>
+			<h2 class="ap-answer-count pull-left" data-view="ap-answer-count-label"><?php printf(_n('<span>1 Answer</span>', '<span>%d Answers</span>', $ans_count, 'ap'), $ans_count); ?><span itemprop="answerCount" style="display:none;"><?php echo $ans_count; ?></span></h2>
 			<ul class="ap-ans-tab ap-tabs clearfix" role="tablist">
 				<li class="<?php echo $order == 'newest' ? ' active' : ''; ?>"><a href="<?php echo $link.'newest'; ?>"><?php _e('Newest', 'ap'); ?></a></li>
 				<li class="<?php echo $order == 'oldest' ? ' active' : ''; ?>"><a href="<?php echo $link.'oldest'; ?>"><?php _e('Oldest', 'ap'); ?></a></li>

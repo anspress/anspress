@@ -12,13 +12,13 @@ while ( $question->have_posts() ) : $question->the_post();
 if($question->post->post_status == 'publish'){
 
 ?>
-<div id="ap-single" class="clearfix">
+<div id="ap-single" class="clearfix" itemtype="http://schema.org/Question" itemscope="">
 	<header class="ap-qhead clearfix">
 		<div class="ap-avatar">
 			<?php echo get_avatar( get_the_author_meta( 'user_email' ), ap_opt('avatar_size_qquestion') ); ?>
 		</div>
 		<div class="ap-qtitle-meta">
-			<h1 class="entry-title">
+			<h1 class="entry-title" itemprop="name">
 				<?php the_title(); ?>
 			</h1>
 			<div class="ap-qtopmeta">
@@ -29,8 +29,7 @@ if($question->post->post_status == 'publish'){
 							'<span class="when">%s %s ago</span>',
 							ap_get_latest_history_html(get_the_ID()),
 							ap_human_time( mysql2date('U', ap_last_active(get_question_id())))
-						); 
-						ap_user_display_name();
+						);
 					?>
 				</div>
 				<?php ap_favorite_html(); ?>		
@@ -47,11 +46,11 @@ if($question->post->post_status == 'publish'){
 							<div class="ap-user-meta">								
 								<div class="ap-meta">
 									<?php 
-										printf( __( '%s <span class="when">asked about %s ago</span>', 'ap' ), ap_user_display_name() , ap_human_time( get_the_time('U')));
+										printf( __( '<a href="'.ap_user_link(get_the_author_meta('ID')).'?rel=author" class="author"><span itemprop="author">%s</span></a> <span class="when">asked about %s ago</span>', 'ap' ), ap_user_display_name(false, true) , ap_human_time( get_the_time('U')));
 									?>							
 								</div>			
 							</div>			
-							<div class="question-content">
+							<div class="question-content" itemprop="text">
 								<?php the_content(); ?>									
 							</div>
 							
@@ -96,7 +95,7 @@ if($question->post->post_status == 'publish'){
 					<ul class="ap-question-meta">
 						<li>
 							<?php 
-								printf( __( '<span>Asked</span><strong>%s Ago</strong>', 'ap' ), ap_human_time( get_the_time('U', get_question_id())));
+								printf( __( '<span>Asked</span><strong><time itemprop="datePublished" datetime="%s">%s Ago</time></strong>', 'ap' ), get_the_time('c', get_question_id()), ap_human_time( get_the_time('U', get_question_id())));
 							?>
 						</li>
 						<li>
@@ -113,7 +112,7 @@ if($question->post->post_status == 'publish'){
 						</li>
 						<li>
 							<?php 
-								printf( __( '<span>Active</span><strong>%s Ago</strong>', 'ap' ), ap_human_time( mysql2date('U', ap_last_active(get_question_id()))));
+								printf( __( '<span>Active</span><strong><time class="updated" itemprop="dateUpdated" datetime="%s">%s Ago</time></strong>', 'ap' ), mysql2date('c', ap_last_active(get_question_id())),  ap_human_time( mysql2date('U', ap_last_active(get_question_id()))));
 							?>
 						</li>
 					</ul>
