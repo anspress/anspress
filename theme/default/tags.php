@@ -1,5 +1,5 @@
 <?php if(ap_opt('enable_tags')) : ?>
-<h1 class="ap-q-title">
+<h1 class="entry-title">
 	<?php the_title(); ?>
 </h1>
 	<div id="ap-tags" class="clearfix">

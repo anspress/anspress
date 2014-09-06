@@ -949,12 +949,13 @@ body.anspress .ap-container {
 .ap-qtitle-meta {
     overflow: hidden;
 }
-.anspress .ap-q-title {
+.anspress .entry-title {
     font-size: 20px;
-    margin: 0;
+    margin-bottom: 20px;
+	margin-top:0;
 }
-.anspress .ap-main-title{
-	font-size: 20px;
+.anspress .ap-qtitle-meta .entry-title{
+	margin-bottom: 0;
 }
 .ap-qtopmeta {
 

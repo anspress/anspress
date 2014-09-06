@@ -29,7 +29,7 @@
 		</div>
 		<div class="ap-profile-right clearfix">
 			<div class="ap-user-tm clearfix">
-				<h2 class="ap-page-title"><?php echo ap_page_title(); ?></h2>
+				<h2 class="entry-title"><?php echo ap_page_title(); ?></h2>
 				<?php ap_user_page_menu(); ?>
 			</div>
 			<?php 

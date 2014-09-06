@@ -18,7 +18,7 @@ if($question->post->post_status == 'publish'){
 			<?php echo get_avatar( get_the_author_meta( 'user_email' ), ap_opt('avatar_size_qquestion') ); ?>
 		</div>
 		<div class="ap-qtitle-meta">
-			<h1 class="ap-q-title">
+			<h1 class="entry-title">
 				<?php the_title(); ?>
 			</h1>
 			<div class="ap-qtopmeta">

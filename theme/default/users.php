@@ -1,3 +1,6 @@
+<h1 class="entry-title">
+	<?php the_title(); ?>
+</h1>
 <div id="ap-users" class="clearfix">
 	<?php
 	ap_users_tab();

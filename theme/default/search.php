@@ -1,4 +1,4 @@
-<h1 class="ap-q-title">
+<h1 class="entry-title">
 	<?php the_title(); ?>
 </h1>
 <?php dynamic_sidebar( 'ap-top' ); ?>

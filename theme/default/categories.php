@@ -1,5 +1,5 @@
 <?php if(ap_opt('enable_categories')): ?>
-<h1 class="ap-q-title">
+<h1 class="entry-title">
 	<?php the_title(); ?>
 </h1>
 <div id="ap-categories" class="clearfix">
