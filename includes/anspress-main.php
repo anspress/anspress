@@ -49,6 +49,7 @@ class anspress {
 		add_filter('body_class', array($this, 'body_class'));
 		
 		add_action('ap_page_top', array($this, 'check_rewrite_rules'));
+		add_action('wp_head', array($this, 'wp_head'));
 		
 	}
 	
@@ -82,6 +83,13 @@ class anspress {
 			remove_action( 'wp_head', 'wp_shortlink_wp_head', 10, 0 );
 			remove_action( 'wp_head', 'feed_links_extra', 3 );
 			remove_action( 'wp_head', 'feed_links', 2 );
+		}
+	}
+	
+	public function wp_head(){
+		if(is_question()){
+			global $wp;
+			echo '<link href="'.home_url(add_query_arg(array(),$wp->request)).'" title="'.wp_title( '|', false, 'right' ).'" type="application/rss+xml" rel="alternate">';
 		}
 	}
 
