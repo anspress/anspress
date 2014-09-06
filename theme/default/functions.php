@@ -79,7 +79,7 @@ function init_scripts_front(){
 
 
 if ( ! function_exists( 'ap_comment' ) ) :
-	function ap_comment( $comment, $args, $depth ) {
+	function ap_comment( $comment ) {
 		$GLOBALS['comment'] = $comment;
 		?>
 		<li <?php comment_class(); ?> id="li-comment-<?php comment_ID(); ?>">

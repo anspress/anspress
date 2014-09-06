@@ -3778,3 +3778,40 @@ ul.ap-badge-item > li.ap-badge-info {
     top: 0;
     width: 100%;
 }
+
+/* error, success, warning label */
+.ap-esw {
+    background: none repeat scroll 0 0 #eee;
+    border-radius: 3px;
+    display: block;
+    margin-bottom: 10px;
+    padding: 14px;
+	color:#fff;
+}
+.ap-esw.error{
+	background:#F44444;
+}
+.ap-esw.warning{
+	background:#ffb541;
+}
+.ap-esw.success{
+	background:#75da7f;	
+}
+.ap-cntlabel {
+    background: none repeat scroll 0 0 #eee;
+    border-top: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+#ap_new_tag_form {
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    padding: 10px;
+}
+#ap_new_tag_form > strong {
+    display: block;
+    margin-bottom: 10px;
+}
+#ap_new_tag_form .form-control {
+    margin-bottom: 10px;
+}

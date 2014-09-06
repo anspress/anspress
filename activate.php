@@ -38,6 +38,8 @@ class anspress_activate {
 			
 			'ap_upload_cover'			=> true,
 			'ap_message'				=> true,
+			
+			'ap_new_tag'				=> true,
 		);
 		
 		$editor_cap = array(
@@ -67,6 +69,8 @@ class anspress_activate {
 			
 			'ap_upload_cover'			=> true,
 			'ap_message'				=> true,
+			
+			'ap_new_tag'				=> true,
 		);
 		
 		$mod_cap = array(
@@ -106,6 +110,8 @@ class anspress_activate {
 			
 			'ap_upload_cover'			=> true,
 			'ap_message'				=> true,
+			
+			'ap_new_tag'				=> true,
 		);
 		
 		add_role('ap_participant',	__( 'Participant', 'ap' ), $parti_cap);

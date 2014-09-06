@@ -258,9 +258,13 @@ class anspress_ajax
 				$items[$k]['count'] 	= $t->count;
 				$items[$k]['description'] = ap_truncate_chars($t->description, 80);
 			}
-			$result = array('status' => true, 'items' => $items);
+			$result = array('status' => true, 'items' => $items, 'form' => '<div class="clearfix"></div><div class="ap-cntlabel"><a href="#" id="ap-load-new-tag-form" data-args="'.wp_create_nonce('new_tag_form').'">'.__('Create new tag', 'ap').'</a></div>');
 		}else{
-			$result = array('status' => false, 'message' => __('No related tags found', 'ap'));
+			$form = '';
+			if(ap_user_can_create_tag())
+				$form = '<div class="ap-esw warning">'.__('No tags found', 'ap').'</div>'.ap_tag_form();
+				
+			$result = array('status' => false, 'message' => __('No related tags found', 'ap'), 'form' => $form);
 		}
 		
 		die(json_encode($result));

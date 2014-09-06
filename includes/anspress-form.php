@@ -93,6 +93,8 @@ class anspress_form
 		
 		add_action( 'wp_ajax_nopriv_ap_ajax_login', array($this, 'ap_ajax_login') );
 		add_action( 'wp_ajax_nopriv_ap_ajax_signup', array($this, 'ap_ajax_signup') );
+		add_action( 'wp_ajax_ap_new_tag', array($this, 'ap_new_tag') );
+		add_action( 'wp_ajax_ap_load_new_tag_form', array($this, 'ap_load_new_tag_form') );
     }
 	
 	public function process_forms(){
@@ -115,7 +117,7 @@ class anspress_form
 	public function get_question_fields_to_process(){
 		$fields = array(
 			'post_title' 	=> sanitize_text_field($_POST['post_title']),
-			'post_content' 	=>  $_POST['post_content'],
+			'post_content' 	=>  strip_shortcodes($_POST['post_content']),
 		);
 		
 		//remove <!--more-->
@@ -262,7 +264,7 @@ class anspress_form
 			'is_answer' 	=> sanitize_text_field($_POST['is_answer']),
 			'submitted' 	=> sanitize_text_field($_POST['submitted']),
 			'nonce' 		=> $_POST['nonce'],
-			'post_content' 		=> $_POST['post_content']
+			'post_content' 		=> strip_shortcodes($_POST['post_content'])
 		);
 		$fields['post_content'] = str_replace('<!--more-->', '', $fields['post_content']);
 		$fields['post_content'] = str_replace('<!-- more -->', '', $fields['post_content']);
@@ -1035,6 +1037,35 @@ class anspress_form
 		
 		die(json_encode($result));
 	}
+	
+	public function ap_new_tag(){
+		if(!wp_verify_nonce( $_POST['_nonce'], 'new_tag' ) && ap_user_can_create_tag())
+			die();
+			
+		$term = wp_insert_term(
+		  $_POST['tag_name'],
+		  'question_tags', // the taxonomy
+		  array(
+			'description'=> $_POST['tag_desc']
+		  )
+		);
+		if ( is_wp_error($term) ){
+			$result = array('status' => false, 'message' => __('Unable to create tag, please try again.', 'ap'));
+		
+		}else{
+			$result = array('status' => true, 'message' => __('Successfully created a tag.', 'ap'), 'tag' => get_term_by( 'id', $term['term_id'], 'question_tags') );
+		}
+		die(json_encode($result));
+	}
+	
+	public function ap_load_new_tag_form(){
+		if(!wp_verify_nonce( $_REQUEST['args'], 'new_tag_form' ) && ap_user_can_create_tag()){
+			$result = array('status' => false, 'message' => __('Unable to load form, please try again.', 'ap'));
+		}else{			
+			$result = array('status' => true, 'message' => __('Successfully loaded form.', 'ap'), 'html' => ap_tag_form() );
+		}
+		die(json_encode($result));
+	}
 }
 
 function ap_form_allowed_tags(){
@@ -1285,4 +1316,19 @@ function ap_edit_question_form($question_id = false){
 	</form>
 	<?php
 
+}
+
+function ap_tag_form(){
+	$output = '';	
+	$output .= '<form method="POST" id="ap_new_tag_form">';
+	$output .= '<strong>'.__('Create new tag', 'ap').'</strong>';
+	$output .= '<input type="text" name="tag_name" class="form-control" value="" placeholder="'.__('Enter tag', 'ap').'" />';
+	$output .= '<textarea type="text" name="tag_desc" class="form-control" value="" placeholder="'.__('Description of tag.', 'ap').'"></textarea>';
+	$output .= '<button type="submit" class="ap-btn">'.__('Create tag', 'ap').'</button>';
+	$output .= '<input type="hidden" name="action" value="ap_new_tag" />';
+	$output .= '<input type="hidden" name="_nonce" value="'.wp_create_nonce('new_tag').'" />';
+	$output .= '</form>';
+	
+	return $output;
+	
 }

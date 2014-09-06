@@ -67,6 +67,8 @@ APjs.site.prototype = {
 		this.questionSuggestion();
 		this.flushRules();
 		this.ajaxLoginForm();
+		this.loadNewTagForm();
+		this.newTag();
 		
 		
 		jQuery('body').delegate('.ap-modal-bg, .ap-modal-close', 'click', function () {
@@ -1068,7 +1070,9 @@ APjs.site.prototype = {
 					if(data['items']){
 						self.tagItems(data['items']);
 						
-						jQuery('#ap-suggestions').html(self.tagsitems).css({'top': (position.top + container.height() + 20), 'left': position.left, 'width': container.width()}).show();
+						jQuery('#ap-suggestions').html(self.tagsitems+data['form']).css({'top': (position.top + container.height() + 20), 'left': position.left, 'width': container.width()}).show();
+					}else if(data['form']){
+						jQuery('#ap-suggestions').html(data['form']).css({'top': (position.top + container.height() + 20), 'left': position.left, 'width': container.width()}).show();
 					}
 					
 				}
@@ -1520,12 +1524,12 @@ APjs.site.prototype = {
 
 	},
 	submitAjaxForm: function(form, before, after){
-		jQuery(form).submit(function(){
+		jQuery('.anspress').delegate(form, 'submit', function(){
 			jQuery(this).ajaxSubmit({
-				beforeSubmit:  before,
-				success: after,
-				url:ajaxurl,
-				dataType:'json'
+				beforeSubmit:  	before,
+				success: 		after,
+				url:			ajaxurl,
+				dataType:		'json'
 			});
 			
 			return false;
@@ -1564,6 +1568,45 @@ APjs.site.prototype = {
 					jQuery('#ap_signup_modal').toggleClass('active');
 					jQuery('#ap_login_modal').toggleClass('active');
 					jQuery('#ap-login-form').prepend('<strong>'+data['message']+'</strong>');
+				}else{
+					self.addMessage(data['message'], 'error');
+				}
+			}
+		);
+	},
+	loadNewTagForm:function(){
+		var self = this;
+		jQuery('.anspress').delegate('#ap-load-new-tag-form', 'click', function(e){
+			e.preventDefault();
+			self.showLoading(aplang.loading);
+			self.doAjaxForm(
+				{action: 'ap_load_new_tag_form', args: jQuery(this).data('args')},
+				function(data){
+					self.hideLoading();
+					if(data['status']){
+						jQuery(this).closest('.ap-suggestions').html(data['html']);
+					}else{
+						self.addMessage(data['message'], 'error');
+					}
+				}, 
+				this
+			);
+		});
+	},
+	newTag:function(){
+		var self = this;
+		self.submitAjaxForm(
+			'#ap_new_tag_form',
+			function(){
+				self.showLoading(aplang.sending);
+			},
+			function(data){
+				self.hideLoading();
+				if(data['status']){
+					self.addMessage(data['message'], 'success');
+					jQuery('[data-role="ap-tagsinput"]').tagsinput('add', data['tag']['slug']);
+					jQuery('[data-role="ap-tagsinput"]').tagsinput('input').val('');
+					jQuery('#ap-suggestions').hide();
 				}else{
 					self.addMessage(data['message'], 'error');
 				}
