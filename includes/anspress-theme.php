@@ -356,7 +356,7 @@ function ap_get_user_page_user(){
 }
 
 function is_ap_profile(){
-	if(is_anspress() && get_query_var('ap_page') == 'profile')
+	if(is_anspress() && get_query_var('user_page') == '')
 		return true;
 		
 	return false;

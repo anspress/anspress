@@ -1,4 +1,5 @@
 <div id="ap-profile" class="clearfix" data-id="<?php echo $userid; ?>">
+	<?php if(is_ap_profile()): ?>
 	<div class="ap-profile-cover clearfix">
 		<div data-view="cover" class="ap-cover-bg" <?php ap_user_cover_style($userid); ?>><?php ap_cover_upload_form(); ?></div>
 		<div class="ap-profile-head clearfix">
@@ -23,6 +24,7 @@
 			</div>
 		</div>		
 	</div>
+	<?php endif; ?>
 	<div class="ap-profile-lr">
 		<div class="ap-profile-nav">
 			<?php ap_user_menu(); ?>
