@@ -123,7 +123,8 @@ class anspress_form
 		//remove <!--more-->
 		
 		$fields['post_content'] = str_replace('<!--more-->', '', $fields['post_content']);
-		$fields['post_content'] = str_replace('<!-- more -->', '', $fields['post_content']);
+		//convert to entity
+		$fields['post_content'] = preg_replace_callback('/<pre.*?>(.*?)<\/pre>/imsu', 'ap_convert_pre_char', $fields['post_content']);
 		
 		if(isset($_POST['category']))
 			$fields['category']	= sanitize_text_field($_POST['category']);
@@ -267,7 +268,9 @@ class anspress_form
 			'post_content' 		=> strip_shortcodes($_POST['post_content'])
 		);
 		$fields['post_content'] = str_replace('<!--more-->', '', $fields['post_content']);
-		$fields['post_content'] = str_replace('<!-- more -->', '', $fields['post_content']);
+		
+		//convert to entity
+		$fields['post_content'] = preg_replace_callback('/<pre.*?>(.*?)<\/pre>/imsu', 'ap_convert_pre_char', $fields['post_content']);
 		
 		if(isset($_POST['form_question_id']))
 			$fields['question_id'] 	= sanitize_text_field($_POST['form_question_id']);
@@ -1331,4 +1334,8 @@ function ap_tag_form(){
 	
 	return $output;
 	
+}
+
+function ap_convert_pre_char($matches){
+	return '<pre>'.esc_html($matches[1]).'</pre>';
 }
