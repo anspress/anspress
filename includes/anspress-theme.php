@@ -340,7 +340,7 @@ function is_ap_user(){
 
 function ap_get_user_page_user(){
 	if(is_ap_user()){
-		$user = get_query_var('user');
+		$user = sanitize_text_field(str_replace('%20', ' ', get_query_var('user')));
 		if($user){
 			if(!is_int($user)){
 				$user = get_user_by('login', $user);
