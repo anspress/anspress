@@ -10,15 +10,15 @@ $clearfix_class = array('question-summary clearfix');
 		</div>
 		<?php endif; ?>
 			<div class="wrap-right">				
-				<a class="ap-vote-count" href="#">
+				<a class="ap-vote-count ap-tip" href="#" title="<?php _e('Total votes', 'ap'); ?>">
 					<span><?php echo ap_net_vote(); ?></span> 
 					<?php  _e('Votes', 'ap'); ?>
 				</a>
-				<a class="ap-vote-count" href="#">
+				<a class="ap-vote-count ap-tip" href="#" title="<?php _e('Total views', 'ap'); ?>">
 					<span><?php echo ap_get_qa_views(); ?></span> 
 					<?php  _e('Views', 'ap'); ?>
 				</a>
-				<a class="ap-answer-count" href="<?php echo ap_answers_link(); ?>">
+				<a class="ap-answer-count ap-tip" href="<?php echo ap_answers_link(); ?>" title="<?php _e('Total answers', 'ap'); ?>">
 					<span><?php echo ap_count_ans_meta(); ?></span>
 					<?php _e('Ans', 'ap');?>
 				</a>
