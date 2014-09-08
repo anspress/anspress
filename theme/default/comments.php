@@ -5,8 +5,8 @@ if ( post_password_required() )
 ?>
 <div id="ap-comment-area-<?php echo get_the_ID(); ?>">
 	<?php if ( have_comments() ) : ?>
-	<div id="comments-<?php echo get_the_ID(); ?>" class="ap-comments comment-container have-comments">
-		<span class="ap-tldot"></span>
+	<div id="comments-<?php echo get_the_ID(); ?>" class="ap-comments comment-container have-comments ap-tlitem">
+		<span class="ap-icon-status ap-tlicon"></span>
 		<ul class="commentlist">
 			<?php wp_list_comments( array( 'max_depth' => 0, 'callback' => 'ap_comment', 'style' => 'ul' ) ); ?>
 		</ul><!-- .commentlist -->

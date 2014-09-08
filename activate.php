@@ -119,11 +119,23 @@ class anspress_activate {
 		add_role('ap_moderator', __( 'Moderator', 'ap' ), $mod_cap);
 		
 		// add capability to existing roles
-		$roles = array('administrator', 'subscriber');
+		$roles = array('administrator', 'subscriber', 'ap_participant', 'ap_editor', 'ap_moderator');
 		$roles_obj = new WP_Roles();
 		
 		foreach ($roles as $role_name) {
 			if($role_name == 'administrator')
+				foreach ($mod_cap as $k => $grant){
+					$roles_obj->add_cap($role_name, $k ); 				
+				}
+			elseif($role_name == 'ap_participant')
+				foreach ($parti_cap as $k => $grant){
+					$roles_obj->add_cap($role_name, $k ); 				
+				}
+			elseif($role_name == 'ap_editor')
+				foreach ($editor_cap as $k => $grant){
+					$roles_obj->add_cap($role_name, $k ); 				
+				}
+			elseif($role_name == 'ap_moderator')
 				foreach ($mod_cap as $k => $grant){
 					$roles_obj->add_cap($role_name, $k ); 				
 				}

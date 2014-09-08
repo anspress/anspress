@@ -35,25 +35,26 @@ class AP_History
      */
     public function __construct()
     {
-		add_action('ap_event_new_answer', array($this, 'new_answer'), 10, 3);
-		add_action('ap_event_new_comment', array($this, 'new_comment'), 10, 3);
+		add_action('ap_event_new_answer', array($this, 'new_answer'), 10, 3);		
 		add_action('ap_event_edit_question', array($this, 'edit_question'), 10, 2);
 		add_action('ap_event_edit_answer', array($this, 'edit_answer'), 10, 3);
 	}
 	public function new_answer($postid, $userid, $question_id) {
 		ap_add_history($userid, $postid, $question_id, 'new_answer');
 	}
-	public function new_comment($comment, $post_type, $question_id){
+	
+	/* public function new_comment($comment, $post_type, $question_id){
 		if($post_type == 'question')
 			ap_add_history($comment->user_id, $comment->comment_ID, $comment->comment_post_ID, 'new_comment');
 		else
 			ap_add_history($comment->user_id, $comment->comment_ID, $question_id, 'new_comment_answer');
-	}
+	} */
+	
 	public function edit_question($post_id, $user_id) {
 		ap_add_history($user_id, $post_id, $post_id, 'edit_question');
 	}
 	public function edit_answer($postid, $userid, $question_id) {
-		ap_add_history($userid, $postid, $question_id, 'edit_answer');
+		ap_add_history($userid, $postid, $postid, 'edit_answer');
 	}
 }
 
@@ -102,13 +103,13 @@ function ap_get_post_history($post_id){
 
 function ap_history_name($slug, $parm = ''){
 	$names = array(
-		'new_question' 		=> __('Asked', 'ap'),
-		'new_answer' 		=> __('Answer', 'ap'),
-		'new_comment' 		=> __('Comment', 'ap'),
-		'new_comment_answer'=> __('Comment on answer', 'ap'),
-		'edit_question' 	=> __('Question edited', 'ap'),
-		'edit_answer' 		=> __('Answer edited', 'ap'),
-		'edit_comment' 		=> __('Comment edited', 'ap'),
+		'new_question' 		=> __('asked', 'ap'),
+		'new_answer' 		=> __('answered', 'ap'),
+		'new_comment' 		=> __('commented', 'ap'),
+		'new_comment_answer'=> __('comment on answer', 'ap'),
+		'edit_question' 	=> __('edited question', 'ap'),
+		'edit_answer' 		=> __('edited answer', 'ap'),
+		'edit_comment' 		=> __('edited comment', 'ap'),
 	);
 	$names = apply_filters('ap_history_name', $names);
 	
@@ -141,7 +142,7 @@ function ap_history_icon($history){
 function ap_get_latest_history($post_id){
 	global $wpdb;
 	
-	$query = $wpdb->prepare('SELECT apmeta_id as meta_id, apmeta_userid as user_id, apmeta_actionid as action_id, apmeta_value as parent_id, apmeta_param as type FROM '. $wpdb->prefix .'ap_meta WHERE apmeta_type="history" AND apmeta_value=%d ORDER BY apmeta_date DESC', $post_id);
+	$query = $wpdb->prepare('SELECT apmeta_id as meta_id, apmeta_userid as user_id, apmeta_actionid as action_id, apmeta_value as parent_id, apmeta_param as type, apmeta_date as date FROM '. $wpdb->prefix .'ap_meta WHERE apmeta_type="history" AND apmeta_value=%d ORDER BY apmeta_date DESC', $post_id);
 	
 	$key = md5($query);
 	$cache = wp_cache_get($key, 'ap_meta');
@@ -167,7 +168,7 @@ function ap_get_latest_history_html($post_id, $avatar = false, $icon = false){
 		if($icon)
 			$html .= '<span class="'.ap_history_icon($history['type']).' ap-tlicon"></span>';
 			
-		$html .= '<span class="ap-post-history">'.sprintf( __('%s by %s', 'ap'), ap_history_name($history['type']), ap_user_display_name($history['user_id']) ).'</span>';
+		$html .= '<span class="ap-post-history">'.sprintf( __('%s %s about %s ago', 'ap'), ap_user_display_name($history['user_id']), ap_history_name($history['type']), ap_human_time( mysql2date('U', $history['date'])) ).'</span>';
 		
 	}elseif(!$icon){
 		$html = '<span class="ap-post-history">'.sprintf( __('Asked by %s', 'ap'), ap_user_display_name() ).'</span>';

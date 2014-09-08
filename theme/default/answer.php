@@ -11,8 +11,8 @@
 							<?php ap_vote_html(); ?>
 					</div>
 					<div class="ap-meta">
-						<?php 
-							printf( __( '%s <span class="when">answered about %s ago</span>', 'ap' ), ap_user_display_name() , ap_human_time( get_the_time('U')));
+						<?php
+							printf( __( '<a href="'.ap_user_link(get_the_author_meta('ID')).'" class="author"><span>%s</span></a> <span class="when">answered about %s ago</span>', 'ap' ), ap_user_display_name(false, true) , ap_human_time( get_the_time('U')));
 						?>							
 					</div>			
 				</div>
@@ -27,6 +27,16 @@
 					<li><?php ap_flag_btn_html(); ?></li>
 					<li><?php ap_post_delete_btn_html(); ?></li>
 				</ul>
+			</div>
+			<div class="ap-qfooter">
+				<?php
+					$history = ap_get_latest_history_html(get_the_ID(), true, true);
+					if($history):
+				?>				
+					<div class="ap-tlitem">
+						<?php echo ap_get_latest_history_html(get_the_ID(), true, true); ?>
+					</div>
+				<?php endif; ?>
 			</div>
 			<?php comments_template(); ?>
 		</div>			
