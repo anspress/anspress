@@ -403,12 +403,15 @@ body.anspress .ap-container {
 }
 
 .ap-qmainc .ap-user-meta {
-    background: #d0e8fc;
+    background: none repeat scroll 0 0 #d0e8fc;
     border-bottom: 1px solid #afcce5;
     border-radius: 3px 3px 0 0;
     font-size: 12px;
     margin: -10px -10px 10px;
-    padding: 10px;
+    padding: 4px;
+}
+.ap-meta {
+    padding: 7px;
 }
 
 .ap-user-meta .author {
@@ -455,7 +458,7 @@ body.anspress .ap-container {
 }
 
 .ap-question-cells {
-    margin-bottom: 30px;
+
 }
 
 #ap-single .ap-question-lr {
@@ -466,12 +469,12 @@ body.anspress .ap-container {
     display: block;
     float: left;
     padding-right: 20px;
-    width: 80%;
+    width: 85%;
 }
 
 #ap-single .ap-question-right {
     float: left;
-    width: 20%;
+    width: 15%;
 }
 
 #ap-container .question-content, #ap-container .answer-content {
@@ -485,11 +488,14 @@ body.anspress .ap-container {
 .ap-container .ap-question-meta {
     list-style: none outside none;
     margin: 0;
+    padding: 0;
 }
-
+.ap-container .ap-question-meta > li:first-child {
+    padding-left: 0;
+}
 .ap-container .ap-question-meta > li {
-    border-bottom: 1px solid #eee;
-    color: #444;
+    border-right: 1px solid #ddd;
+    display: inline;
     font-size: 12px;
     margin: 0;
     padding: 4px 10px;
@@ -508,7 +514,7 @@ body.anspress .ap-container {
 
 .ap-container .ap-question-meta > li span {
     display: inline-block;
-    min-width: 60px;
+    margin-right: 5px;
 }
 
 .ap-container .ap-question-meta > li:last-child {
@@ -556,8 +562,7 @@ body.anspress .ap-container {
 }
 
 #answers {
-    margin-bottom: 20px;
-    margin-top: 15px;
+
 }
 
 .author-avatar img {
@@ -594,22 +599,6 @@ body.anspress .ap-container {
     padding: 10px;
     position: relative;
 }
-.ap-qmainc:before {
-    border-color: transparent transparent #afcce5;
-    border-style: solid;
-    border-width: 14px;
-    content: "";
-    position: absolute;
-    top: -28px;
-}
-.ap-qmainc .ap-user-meta:before{
-    border-color: transparent transparent #d0e8fc;
-    border-style: solid;
-    border-width: 14px;
-    content: "";
-    position: absolute;
-    top: -27px;
-}
 .ap-amainc {
     background: #fff;
     border: 1px solid #ddd;
@@ -622,7 +611,7 @@ body.anspress .ap-container {
     border-radius: 3px 3px 0 0;
     font-size: 12px;
     margin: -10px -10px 10px;
-    padding: 10px;
+    padding: 4px;
 }
 .ap-user {
     display: inline;
@@ -945,18 +934,19 @@ body.anspress .ap-container {
     margin-right: 15px;
 }
 .ap-qtitle-meta {
-    overflow: hidden;
+    border-bottom: 1px solid #eee;
+    margin-bottom: 20px;
 }
 .anspress .entry-title {
     font-size: 20px;
     margin-bottom: 20px;
 	margin-top:0;
 }
-.anspress .ap-qtitle-meta .entry-title{
-	margin-bottom: 0;
+.anspress .ap-qtitle-meta .entry-title {
+    margin-bottom: 5px;
 }
 .ap-qtopmeta {
-
+    padding-bottom: 10px;
 }
 
 /* ---------------votings-----------------------
@@ -981,6 +971,7 @@ body.anspress .ap-container {
 }
 
 .ap-voting .net-vote-count {
+    color: #333;
     font-size: 13px;
     font-weight: bold;
     line-height: 16px;
@@ -994,7 +985,12 @@ body.anspress .ap-container {
 .ap-voting a.disable {
     color: #ddd;
 }
-
+.ap-single-vote {
+    background: none repeat scroll 0 0 #fff;
+    border-radius: 3px;
+    float: right;
+    padding: 5px;
+}
 .ap-single-vote .ap-voting > * {
     display: block;
     float: left;
@@ -1035,9 +1031,6 @@ body.anspress .ap-container {
 
 /*----------------- favorite ------------------
 --------------------------------------------- */
-.favorite-c {
-    margin-bottom: 15px;
-}
 
 .favorite-c span {
     color: #777;
@@ -1253,7 +1246,8 @@ body.modal-open {
     width: 50px;
 }
 .ap-anstabhead {
-    position: relative;
+    border-bottom: medium none !important;
+    margin-left: 70px;
 }
 
 #answers-c .ap-answer-count {
@@ -1266,10 +1260,10 @@ body.modal-open {
     position: relative;
 }
 .anspress .ap-container .ap-ans-tab li > a {
-    padding: 1px 7px;
+    padding: 1px 15px;
 }
 .anspress .ap-container .ap-ans-tab li.active > a {
-    padding: 2px 7px;
+    padding: 2px 15px;
 }
 .question-list .ap-answer-count > span, .question-list .ap-vote-count > span {
     display: block;
@@ -2134,7 +2128,6 @@ ul.ap-pagination {
 
 /* Question page side boxes */
 .ap-question-side {
-    margin-bottom: 25px;
     padding: 0;
 }
 
@@ -3647,14 +3640,14 @@ ul.ap-badge-item > li.ap-badge-info {
     padding: 5px 10px;
 }
 
-.ap-tline, .ap-qtline {
-    background: #eee;
+.ap-qtline {
+    background: none repeat scroll 0 0 #eee;
     content: "";
     display: block;
     height: 100%;
-    left: 65px;
+    left: 67px;
     position: absolute;
-    top: 44px;
+    top: 4px;
     width: 3px;
     z-index: 0;
 }
@@ -3668,26 +3661,27 @@ ul.ap-badge-item > li.ap-badge-info {
     top: 0;
 }
 .ap-tlicon {
-    background: #eee;
+    background: none repeat scroll 0 0 #eee;
+    border: 3px solid #fff;
     border-radius: 50%;
-    color: #333;
+    color: #777;
     display: block;
     height: 25px;
     left: -13px;
-    line-height: 27px;
+    line-height: 21px;
     position: absolute;
     text-align: center;
     width: 25px;
 }
 .ap-tlitem {
     border-bottom: 1px solid #eee;
-    color: #777;
+    color: #888;
     font-size: 13px;
     margin-top: 0;
-    padding: 10px 10px 10px 25px;
+    padding: 12px 0 12px 25px;
     position: relative;
 }
-.ap-tlitem:last-child{
+.ap-amainc .ap-tlitem:last-child{
 	border-bottom:none;
 }
 .ap-tlitem .ap-tlicon {

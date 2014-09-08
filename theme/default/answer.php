@@ -6,7 +6,10 @@
 		</div>
 		<div class="ap-content-inner no-overflow">
 			<div class="ap-amainc">
-				<div class="ap-user-meta">									
+				<div class="ap-user-meta">
+					<div class="ap-single-vote">
+							<?php ap_vote_html(); ?>
+					</div>
 					<div class="ap-meta">
 						<?php 
 							printf( __( '%s <span class="when">answered about %s ago</span>', 'ap' ), ap_user_display_name() , ap_human_time( get_the_time('U')));
@@ -16,12 +19,7 @@
 				<div class="answer-content" itemprop="text">
 					<?php the_content(); ?>
 				</div>			
-				<ul class="ap-user-actions clearfix ">
-					<li>
-						<div class="ap-single-vote">
-							<?php ap_vote_html(); ?>
-						</div>
-					</li>
+				<ul class="ap-user-actions clearfix">
 					<li>
 						<a href="<?php echo ap_answer_edit_link(); ?>" class="edit-btn" title="<?php _e('Edit this question', 'ap'); ?>"><?php _e('Edit', 'ap') ; ?></a>
 					</li>				

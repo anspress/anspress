@@ -13,10 +13,7 @@ if($question->post->post_status == 'publish'){
 
 ?>
 <div id="ap-single" class="clearfix" itemtype="http://schema.org/Question" itemscope="">
-	<header class="ap-qhead clearfix">
-		<div class="ap-avatar">
-			<?php echo get_avatar( get_the_author_meta( 'user_email' ), ap_opt('avatar_size_qquestion') ); ?>
-		</div>
+	<header class="ap-qhead clearfix">		
 		<div class="ap-qtitle-meta">
 			<h1 class="entry-title" itemprop="name">
 				<?php the_title(); ?>
@@ -38,35 +35,67 @@ if($question->post->post_status == 'publish'){
 	</header>
 	<div class="ap-question-lr">		
 		<div class="ap-question-left ap-tab-content">
-			<div id="discussion" class="active">				
+			<div id="discussion" class="active">
+				<span class="ap-qtline"></span>
 				<div id="question" role="main" class="ap-content question" data-id="<?php echo get_the_ID(); ?>">					
-					<div class="ap-question-cells clearfix">											
-						<div class="ap-content-inner">				
+					<div class="ap-question-cells clearfix">
+						<div class="ap-avatar">
+							<a href="<?php echo ap_user_link(get_the_author_meta('ID'))?>">
+								<?php echo get_avatar( get_the_author_meta( 'user_email' ), ap_opt('avatar_size_qquestion') ); ?>
+							</a>
+						</div>
+						<div class="ap-content-inner no-overflow">				
 							<div class="ap-qmainc">
-							<div class="ap-user-meta">								
-								<div class="ap-meta">
-									<?php 
-										printf( __( '<a href="'.ap_user_link(get_the_author_meta('ID')).'?rel=author" class="author"><span itemprop="author">%s</span></a> <span class="when">asked about %s ago</span>', 'ap' ), ap_user_display_name(false, true) , ap_human_time( get_the_time('U')));
-									?>							
+								<div class="ap-user-meta">
+									<div class="ap-single-vote"><?php ap_vote_html(); ?></div>
+									<div class="ap-meta">
+										<?php 
+											printf( __( '<a href="'.ap_user_link(get_the_author_meta('ID')).'?rel=author" class="author"><span itemprop="author">%s</span></a> <span class="when">asked about %s ago</span>', 'ap' ), ap_user_display_name(false, true) , ap_human_time( get_the_time('U')));
+										?>
+									</div>									
 								</div>			
-							</div>			
-							<div class="question-content" itemprop="text">
-								<?php the_content(); ?>									
+								<div class="question-content" itemprop="text">
+									<?php the_content(); ?>									
+								</div>
+								
+								<ul class="ap-user-actions clearfix">
+									<li><?php ap_edit_q_btn_html(); ?></li>					
+									<li><?php ap_comment_btn_html(); ?></li>					
+									<li><?php ap_close_vote_html(); ?></li>	
+									<li><?php ap_flag_btn_html(); ?></li>
+									<li><?php ap_post_delete_btn_html(); ?></li>
+								</ul>
 							</div>
-							
-							<ul class="ap-user-actions clearfix">
-								<li><div class="ap-single-vote"><?php ap_vote_html(); ?></div></li>
-								<li><?php ap_edit_q_btn_html(); ?></li>					
-								<li><?php ap_comment_btn_html(); ?></li>					
-								<li><?php ap_close_vote_html(); ?></li>	
-								<li><?php ap_flag_btn_html(); ?></li>
-								<li><?php ap_post_delete_btn_html(); ?></li>
-							</ul>
-							</div>
-							<div class="ap-qfooter">
-								<span class="ap-qtline"></span>
+							<div class="ap-qfooter">								
 								<div class="ap-tlitem">
 									<?php echo ap_get_latest_history_html(get_the_ID(), true, true); ?>
+								</div>
+								<div class="ap-tlitem">
+									<span class="ap-icon-answer ap-tlicon"></span>
+									<ul class="ap-question-meta">
+										<li>
+											<?php 
+												printf( __( '<span>Asked</span><strong><time itemprop="datePublished" datetime="%s">%s Ago</time></strong>', 'ap' ), get_the_time('c', get_question_id()), ap_human_time( get_the_time('U')));
+											?>
+										</li>
+										<li>
+											<?php 
+												$count = ap_count_ans(get_the_ID());
+												printf( _n('<span>Answer</span><strong data-view="ap-answer-count-label">1 Answer</strong>', '<span>Answers</span><strong data-view="ap-answer-count-label">%d Answers</strong>', $count, 'ap'), $count) ; 
+											?>
+										</li>
+										<li>
+											<?php 
+												$view_count = ap_get_qa_views();
+												printf( _n('<span>Viewed</span><strong>1 Times</strong>', '<span>Viewed</span><strong>%d Times</strong>', $view_count, 'ap'), $view_count) ;
+											?>
+										</li>
+										<li>
+											<?php 
+												printf( __( '<span>Active</span><strong><time class="updated" itemprop="dateUpdated" datetime="%s">%s Ago</time></strong>', 'ap' ), mysql2date('c', ap_last_active(get_question_id())),  ap_human_time( mysql2date('U', ap_last_active(get_question_id()))));
+											?>
+										</li>
+									</ul>
 								</div>																
 							</div>
 							<?php comments_template(); ?>
@@ -92,30 +121,7 @@ if($question->post->post_status == 'publish'){
 				<?php ap_question_side_tab(get_question_id()); ?>
 				<!-- Start Views and Answers -->
 				<div class="ap-question-side">			
-					<ul class="ap-question-meta">
-						<li>
-							<?php 
-								printf( __( '<span>Asked</span><strong><time itemprop="datePublished" datetime="%s">%s Ago</time></strong>', 'ap' ), get_the_time('c', get_question_id()), ap_human_time( get_the_time('U', get_question_id())));
-							?>
-						</li>
-						<li>
-							<?php 
-								$count = ap_count_ans(get_question_id());
-								printf( _n('<span>Answer</span><strong data-view="ap-answer-count-label">1 Answer</strong>', '<span>Answers</span><strong data-view="ap-answer-count-label">%d Answers</strong>', $count, 'ap'), $count) ; 
-							?>
-						</li>
-						<li>
-							<?php 
-								$view_count = ap_get_qa_views(get_question_id());
-								printf( _n('<span>Viewed</span><strong>1 Times</strong>', '<span>Viewed</span><strong>%d Times</strong>', $view_count, 'ap'), $view_count) ;
-							?>
-						</li>
-						<li>
-							<?php 
-								printf( __( '<span>Active</span><strong><time class="updated" itemprop="dateUpdated" datetime="%s">%s Ago</time></strong>', 'ap' ), mysql2date('c', ap_last_active(get_question_id())),  ap_human_time( mysql2date('U', ap_last_active(get_question_id()))));
-							?>
-						</li>
-					</ul>
+					
 				</div>
 				<!-- End Views and Answers -->
 				

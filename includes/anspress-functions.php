@@ -55,7 +55,7 @@ function ap_default_options(){
 		'minimum_question_length'=> 5,
 		'multiple_answers' 		=> false,
 		'minimum_ans_length' 	=> 5,
-		'avatar_size_qquestion' => 55,
+		'avatar_size_qquestion' => 30,
 		'avatar_size_qanswer' 	=> 30,
 		'down_vote_points' 		=> -1,
 		'flag_note' 			=> array(0 => array('title' => 'it is spam', 'description' => 'This question is effectively an advertisement with no disclosure. It is not useful or relevant, but promotional.')),			
@@ -396,7 +396,6 @@ function ap_answers_list($question_id, $order = 'voted'){
 	echo '<div id="answers-c">';
 	ap_ans_tab(); 	
 	echo '<div id="answers">';
-		echo '<span class="ap-tline"></span>';
 		while ( $ans->have_posts() ) : $ans->the_post(); 
 			include(ap_get_theme_location('answer.php'));
 		endwhile ;
@@ -414,7 +413,8 @@ function ap_ans_tab(){
 		$link = '?sort=';
 		$ans_count = ap_count_ans(get_the_ID());
 	?>
-		<div class="ap-anstabhead clearfix">
+		<div class="ap-anstabhead ap-tlitem clearfix">
+			<span class="ap-icon-answer ap-tlicon"></span>
 			<h2 class="ap-answer-count pull-left" data-view="ap-answer-count-label"><?php printf(_n('<span>1 Answer</span>', '<span>%d Answers</span>', $ans_count, 'ap'), $ans_count); ?><span itemprop="answerCount" style="display:none;"><?php echo $ans_count; ?></span></h2>
 			<ul class="ap-ans-tab ap-tabs clearfix" role="tablist">
 				<li class="<?php echo $order == 'newest' ? ' active' : ''; ?>"><a href="<?php echo $link.'newest'; ?>"><?php _e('Newest', 'ap'); ?></a></li>
