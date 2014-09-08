@@ -229,13 +229,12 @@ class anspress {
 			
 			$slug. "question/([^/]+)/([^/]+)/?" => "index.php?page_id=".$base_page_id."&question_id=".$wp_rewrite->preg_index(1)."&question_name=".$wp_rewrite->preg_index(2),
 			
-			//$slug. "question/([^/]+)/?" => "index.php?page_id=".$base_page_id."&question_name=".$wp_rewrite->preg_index(1),			
-			
 			$slug. "category/([^/]+)/page/?([0-9]{1,})/?$" => "index.php?page_id=".$base_page_id."&question_category=".$wp_rewrite->preg_index(1)."&paged=".$wp_rewrite->preg_index(2),   
 			
 			$slug. "tag/([^/]+)/page/?([0-9]{1,})/?$" => "index.php?page_id=".$base_page_id."&question_tags=".$wp_rewrite->preg_index(1)."&paged=".$wp_rewrite->preg_index(2), 
 			
 			$slug. "category/([^/]+)/?" => "index.php?page_id=".$base_page_id."&question_category=".$wp_rewrite->preg_index(1),
+			
 			$slug. "tag/([^/]+)/?" => "index.php?page_id=".$base_page_id."&question_tags=".$wp_rewrite->preg_index(1),
 			
 			$slug. "page/?([0-9]{1,})/?$" => "index.php?page_id=".$base_page_id."&paged=".$wp_rewrite->preg_index(1),  

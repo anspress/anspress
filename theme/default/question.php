@@ -71,7 +71,7 @@ if($question->post->post_status == 'publish'){
 									<?php echo ap_get_latest_history_html(get_the_ID(), true, true); ?>
 								</div>
 								<div class="ap-tlitem">
-									<span class="ap-icon-answer ap-tlicon"></span>
+									<span class="ap-icon-hit ap-tlicon"></span>
 									<ul class="ap-question-meta">
 										<li>
 											<?php 
@@ -166,7 +166,9 @@ if($question->post->post_status == 'publish'){
 		</div>
 	</div>
 </div>
+
 <?php 
+
 }else{
 	echo '<div class="ap-pending-notice ap-icon-clock">'.__('This question is being reviewed by moderator, will be published after review.').'</div>';
 }

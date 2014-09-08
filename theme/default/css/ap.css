@@ -666,6 +666,9 @@ body.anspress .ap-container {
     text-align: center;
     width: 22px;
 }
+.anspress .ap-sicon:visited{
+	color:#fff;
+}
 .anspress .ap-sicon:hover, .anspress .ap-sicon.selected{
 	background: #6ab755;
 }
@@ -1251,12 +1254,12 @@ body.modal-open {
 }
 
 #answers-c .ap-answer-count {
-    background: #58ae44;
+    background: none repeat scroll 0 0 #58ae44;
     border-radius: 2px;
     color: #fff;
-    font-size: 14px;
+    font-size: 13px;
     margin-bottom: 0;
-    padding: 3px 10px;
+    padding: 2px 10px;
     position: relative;
 }
 .anspress .ap-container .ap-ans-tab li > a {
@@ -3666,6 +3669,7 @@ ul.ap-badge-item > li.ap-badge-info {
     border-radius: 50%;
     color: #777;
     display: block;
+    font-size: 11px;
     height: 25px;
     left: -13px;
     line-height: 21px;
@@ -3686,7 +3690,7 @@ ul.ap-badge-item > li.ap-badge-info {
 }
 .ap-tlitem .ap-tlicon {
     left: -14px;
-    top: 8px;
+    top: 10px;
 }
 .ap-tlitem .who a{
 	font-weight:bold;

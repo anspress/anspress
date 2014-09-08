@@ -4,6 +4,33 @@
 		{
 			"icon": {
 				"paths": [
+					"M348.564 402.033c-166.967 376.307-203.287 453.486-228.508 488.796-18.16 25.222-44.39 43.886-73.647 52.966-17.151 5.044-21.186 8.575-21.186 18.16v11.602h302.66v-11.602c0-10.593-3.531-12.106-40.859-17.655-88.78-12.611-99.373-49.434-49.434-166.463l26.231-61.541h320.315l33.797 79.196c18.664 43.381 35.31 87.771 36.824 98.365 4.54 36.824-20.682 54.479-78.187 54.479-25.222 0-26.735 1.009-26.735 12.611v12.611h438.857v-12.106c0-10.089-3.531-12.611-18.664-15.637-41.364-7.567-61.541-27.744-96.347-95.842-9.584-19.673-93.32-207.827-185.632-418.68s-171.003-383.874-174.534-384.883c-4.035-0.504-61.036 122.073-164.95 355.626zM496.363 514.018c35.31 81.214 63.054 148.808 62.045 149.817-1.009 1.513-62.55 1.513-136.197 1.009l-134.179-1.513 68.603-155.366c42.372-95.338 70.116-152.843 72.638-148.808 2.018 3.531 32.284 73.143 67.090 154.861z"
+				],
+				"attrs": [
+					{}
+				],
+				"grid": 0,
+				"tags": [
+					"answer"
+				]
+			},
+			"attrs": [
+				{}
+			],
+			"properties": {
+				"order": 77,
+				"id": 0,
+				"prevSize": 32,
+				"code": 58950,
+				"name": "answer",
+				"ligatures": ""
+			},
+			"setIdx": 0,
+			"iconIdx": 0
+		},
+		{
+			"icon": {
+				"paths": [
 					"M437.248 8.533c-258.048 39.253-444.416 264.875-432.811 523.947 9.557 210.603 146.432 391.509 347.136 458.752 55.296 18.432 91.819 23.893 158.72 23.893s103.424-5.461 158.72-23.893c173.397-58.027 299.349-200.021 338.603-381.269 10.923-50.176 10.923-149.163 0-199.339-28.331-131.755-103.765-244.736-213.333-319.829-52.224-36.181-128.341-67.584-191.829-79.189-42.325-7.509-124.928-9.216-165.205-3.072zM558.421 268.629l45.056 132.437 271.019 3.413-8.192 7.168c-4.437 3.755-54.272 43.008-111.275 86.699s-102.741 81.237-102.059 83.285c7.851 20.48 84.309 269.653 83.627 272.043-0.683 1.365-50.859-35.499-111.616-82.261-61.099-47.104-111.616-85.333-112.64-85.333-1.365 0-51.883 38.571-112.981 85.333s-111.275 83.968-111.957 82.603c-0.341-1.707 18.432-64.171 41.643-138.923 23.552-74.752 41.984-137.216 41.301-138.581-1.024-1.024-34.133-27.307-74.069-58.027s-89.429-68.949-110.251-84.992l-37.547-29.013 273.067-3.413 44.373-132.437c24.235-72.704 45.056-132.096 46.080-132.096s21.845 59.392 46.421 132.096z"
 				],
 				"attrs": [
@@ -25,7 +52,7 @@
 				"name": "badge",
 				"ligatures": ""
 			},
-			"setIdx": 0,
+			"setIdx": 3,
 			"iconIdx": 0
 		},
 		{
@@ -44,10 +71,10 @@
 				"id": 1,
 				"prevSize": 32,
 				"code": 58937,
-				"name": "answer",
+				"name": "answer2",
 				"ligatures": ""
 			},
-			"setIdx": 1,
+			"setIdx": 4,
 			"iconIdx": 67
 		},
 		{
@@ -70,8 +97,36 @@
 				"name": "question",
 				"ligatures": ""
 			},
-			"setIdx": 1,
+			"setIdx": 4,
 			"iconIdx": 68
+		},
+		{
+			"icon": {
+				"paths": [
+					"M804.224 421.28c0-165.28-180.064-299.264-402.112-299.264-222.080 0-402.112 133.984-402.112 299.264 0 99.328 65.024 187.328 165.12 241.76-0.288 0.864-79.744 145.44-79.744 145.44s242.624-92.544 243.296-92.928c23.808 3.296 48.352 4.96 73.44 4.96 222.048 0 402.112-133.984 402.112-299.232zM1100.32 514.784c0-165.248-169.504-298.048-352.992-299.232 263.040 262.016-46.752 541.184-299.232 541.184 0 0 28.064 57.28 250.112 57.28 25.056 0 49.632-1.728 73.44-4.992 0.672 0.448 243.328 92.928 243.328 92.928s-79.488-144.544-79.744-145.408c100.064-54.432 165.088-142.464 165.088-241.76z"
+				],
+				"attrs": [
+					{}
+				],
+				"width": 1100,
+				"grid": 32,
+				"tags": [
+					"status"
+				]
+			},
+			"attrs": [
+				{}
+			],
+			"properties": {
+				"order": 76,
+				"id": 0,
+				"prevSize": 32,
+				"code": 58951,
+				"name": "status",
+				"ligatures": ""
+			},
+			"setIdx": 1,
+			"iconIdx": 0
 		},
 		{
 			"icon": {
@@ -94,7 +149,7 @@
 				"name": "hit",
 				"ligatures": ""
 			},
-			"setIdx": 1,
+			"setIdx": 4,
 			"iconIdx": 0
 		},
 		{
@@ -120,7 +175,7 @@
 				"name": "mail",
 				"ligatures": ""
 			},
-			"setIdx": 1,
+			"setIdx": 4,
 			"iconIdx": 1
 		},
 		{
@@ -144,7 +199,7 @@
 				"name": "paperplane",
 				"ligatures": ""
 			},
-			"setIdx": 1,
+			"setIdx": 4,
 			"iconIdx": 2
 		},
 		{
@@ -169,7 +224,7 @@
 				"name": "pencil",
 				"ligatures": ""
 			},
-			"setIdx": 1,
+			"setIdx": 4,
 			"iconIdx": 3
 		},
 		{
@@ -191,7 +246,7 @@
 				"name": "paperclip",
 				"ligatures": ""
 			},
-			"setIdx": 1,
+			"setIdx": 4,
 			"iconIdx": 4
 		},
 		{
@@ -217,7 +272,7 @@
 				"name": "reply",
 				"ligatures": ""
 			},
-			"setIdx": 1,
+			"setIdx": 4,
 			"iconIdx": 5
 		},
 		{
@@ -240,7 +295,7 @@
 				"name": "forward",
 				"ligatures": ""
 			},
-			"setIdx": 1,
+			"setIdx": 4,
 			"iconIdx": 6
 		},
 		{
@@ -265,7 +320,7 @@
 				"name": "user",
 				"ligatures": ""
 			},
-			"setIdx": 1,
+			"setIdx": 4,
 			"iconIdx": 7
 		},
 		{
@@ -289,7 +344,7 @@
 				"name": "users",
 				"ligatures": ""
 			},
-			"setIdx": 1,
+			"setIdx": 4,
 			"iconIdx": 8
 		},
 		{
@@ -310,7 +365,7 @@
 				"name": "user-add",
 				"ligatures": ""
 			},
-			"setIdx": 1,
+			"setIdx": 4,
 			"iconIdx": 9
 		},
 		{
@@ -332,7 +387,7 @@
 				"name": "vcard",
 				"ligatures": ""
 			},
-			"setIdx": 1,
+			"setIdx": 4,
 			"iconIdx": 10
 		},
 		{
@@ -356,7 +411,7 @@
 				"name": "heart",
 				"ligatures": ""
 			},
-			"setIdx": 1,
+			"setIdx": 4,
 			"iconIdx": 11
 		},
 		{
@@ -380,7 +435,7 @@
 				"name": "star",
 				"ligatures": ""
 			},
-			"setIdx": 1,
+			"setIdx": 4,
 			"iconIdx": 12
 		},
 		{
@@ -405,7 +460,7 @@
 				"name": "thumbsup",
 				"ligatures": ""
 			},
-			"setIdx": 1,
+			"setIdx": 4,
 			"iconIdx": 13
 		},
 		{
@@ -429,7 +484,7 @@
 				"name": "thumbsdown",
 				"ligatures": ""
 			},
-			"setIdx": 1,
+			"setIdx": 4,
 			"iconIdx": 14
 		},
 		{
@@ -455,7 +510,7 @@
 				"name": "chat",
 				"ligatures": ""
 			},
-			"setIdx": 1,
+			"setIdx": 4,
 			"iconIdx": 15
 		},
 		{
@@ -481,7 +536,7 @@
 				"name": "comment",
 				"ligatures": ""
 			},
-			"setIdx": 1,
+			"setIdx": 4,
 			"iconIdx": 16
 		},
 		{
@@ -504,7 +559,7 @@
 				"name": "house",
 				"ligatures": ""
 			},
-			"setIdx": 1,
+			"setIdx": 4,
 			"iconIdx": 17
 		},
 		{
@@ -528,7 +583,7 @@
 				"name": "bell",
 				"ligatures": ""
 			},
-			"setIdx": 1,
+			"setIdx": 4,
 			"iconIdx": 18
 		},
 		{
@@ -551,7 +606,7 @@
 				"name": "link",
 				"ligatures": ""
 			},
-			"setIdx": 1,
+			"setIdx": 4,
 			"iconIdx": 19
 		},
 		{
@@ -573,7 +628,7 @@
 				"name": "flag",
 				"ligatures": ""
 			},
-			"setIdx": 1,
+			"setIdx": 4,
 			"iconIdx": 20
 		},
 		{
@@ -597,7 +652,7 @@
 				"name": "cog",
 				"ligatures": ""
 			},
-			"setIdx": 1,
+			"setIdx": 4,
 			"iconIdx": 21
 		},
 		{
@@ -620,7 +675,7 @@
 				"name": "clock",
 				"ligatures": ""
 			},
-			"setIdx": 1,
+			"setIdx": 4,
 			"iconIdx": 22
 		},
 		{
@@ -644,7 +699,7 @@
 				"name": "calendar",
 				"ligatures": ""
 			},
-			"setIdx": 1,
+			"setIdx": 4,
 			"iconIdx": 23
 		},
 		{
@@ -667,7 +722,7 @@
 				"name": "earth",
 				"ligatures": ""
 			},
-			"setIdx": 1,
+			"setIdx": 4,
 			"iconIdx": 24
 		},
 		{
@@ -689,7 +744,7 @@
 				"name": "code",
 				"ligatures": ""
 			},
-			"setIdx": 1,
+			"setIdx": 4,
 			"iconIdx": 25
 		},
 		{
@@ -713,7 +768,7 @@
 				"name": "lock",
 				"ligatures": ""
 			},
-			"setIdx": 1,
+			"setIdx": 4,
 			"iconIdx": 26
 		},
 		{
@@ -735,7 +790,7 @@
 				"name": "lock-open",
 				"ligatures": ""
 			},
-			"setIdx": 1,
+			"setIdx": 4,
 			"iconIdx": 27
 		},
 		{
@@ -758,7 +813,7 @@
 				"name": "checkmark",
 				"ligatures": ""
 			},
-			"setIdx": 1,
+			"setIdx": 4,
 			"iconIdx": 28
 		},
 		{
@@ -783,7 +838,7 @@
 				"name": "cross",
 				"ligatures": ""
 			},
-			"setIdx": 1,
+			"setIdx": 4,
 			"iconIdx": 29
 		},
 		{
@@ -807,7 +862,7 @@
 				"name": "minus",
 				"ligatures": ""
 			},
-			"setIdx": 1,
+			"setIdx": 4,
 			"iconIdx": 30
 		},
 		{
@@ -830,7 +885,7 @@
 				"name": "plus",
 				"ligatures": ""
 			},
-			"setIdx": 1,
+			"setIdx": 4,
 			"iconIdx": 31
 		},
 		{
@@ -854,7 +909,7 @@
 				"name": "erase",
 				"ligatures": ""
 			},
-			"setIdx": 1,
+			"setIdx": 4,
 			"iconIdx": 32
 		},
 		{
@@ -876,7 +931,7 @@
 				"name": "question2",
 				"ligatures": ""
 			},
-			"setIdx": 1,
+			"setIdx": 4,
 			"iconIdx": 33
 		},
 		{
@@ -900,7 +955,7 @@
 				"name": "cycle",
 				"ligatures": ""
 			},
-			"setIdx": 1,
+			"setIdx": 4,
 			"iconIdx": 34
 		},
 		{
@@ -922,7 +977,7 @@
 				"name": "shuffle",
 				"ligatures": ""
 			},
-			"setIdx": 1,
+			"setIdx": 4,
 			"iconIdx": 35
 		},
 		{
@@ -944,7 +999,7 @@
 				"name": "arrow",
 				"ligatures": ""
 			},
-			"setIdx": 1,
+			"setIdx": 4,
 			"iconIdx": 36
 		},
 		{
@@ -966,7 +1021,7 @@
 				"name": "history",
 				"ligatures": ""
 			},
-			"setIdx": 1,
+			"setIdx": 4,
 			"iconIdx": 37
 		},
 		{
@@ -989,7 +1044,7 @@
 				"name": "add-to-list",
 				"ligatures": ""
 			},
-			"setIdx": 1,
+			"setIdx": 4,
 			"iconIdx": 38
 		},
 		{
@@ -1012,7 +1067,7 @@
 				"name": "text",
 				"ligatures": ""
 			},
-			"setIdx": 1,
+			"setIdx": 4,
 			"iconIdx": 39
 		},
 		{
@@ -1034,7 +1089,7 @@
 				"name": "flow-cascade",
 				"ligatures": ""
 			},
-			"setIdx": 1,
+			"setIdx": 4,
 			"iconIdx": 40
 		},
 		{
@@ -1056,7 +1111,7 @@
 				"name": "flow-branch",
 				"ligatures": ""
 			},
-			"setIdx": 1,
+			"setIdx": 4,
 			"iconIdx": 41
 		},
 		{
@@ -1078,7 +1133,7 @@
 				"name": "flow-tree",
 				"ligatures": ""
 			},
-			"setIdx": 1,
+			"setIdx": 4,
 			"iconIdx": 42
 		},
 		{
@@ -1100,7 +1155,7 @@
 				"name": "flow-line",
 				"ligatures": ""
 			},
-			"setIdx": 1,
+			"setIdx": 4,
 			"iconIdx": 43
 		},
 		{
@@ -1122,7 +1177,7 @@
 				"name": "flow-parallel",
 				"ligatures": ""
 			},
-			"setIdx": 1,
+			"setIdx": 4,
 			"iconIdx": 44
 		},
 		{
@@ -1145,7 +1200,7 @@
 				"name": "arrow-left",
 				"ligatures": ""
 			},
-			"setIdx": 1,
+			"setIdx": 4,
 			"iconIdx": 45
 		},
 		{
@@ -1168,7 +1223,7 @@
 				"name": "arrow-down",
 				"ligatures": ""
 			},
-			"setIdx": 1,
+			"setIdx": 4,
 			"iconIdx": 46
 		},
 		{
@@ -1191,7 +1246,7 @@
 				"name": "arrow-up",
 				"ligatures": ""
 			},
-			"setIdx": 1,
+			"setIdx": 4,
 			"iconIdx": 47
 		},
 		{
@@ -1214,7 +1269,7 @@
 				"name": "arrow-right",
 				"ligatures": ""
 			},
-			"setIdx": 1,
+			"setIdx": 4,
 			"iconIdx": 48
 		},
 		{
@@ -1236,7 +1291,7 @@
 				"name": "twitter",
 				"ligatures": ""
 			},
-			"setIdx": 1,
+			"setIdx": 4,
 			"iconIdx": 49
 		},
 		{
@@ -1258,7 +1313,7 @@
 				"name": "facebook",
 				"ligatures": ""
 			},
-			"setIdx": 1,
+			"setIdx": 4,
 			"iconIdx": 50
 		},
 		{
@@ -1280,7 +1335,7 @@
 				"name": "googleplus",
 				"ligatures": ""
 			},
-			"setIdx": 1,
+			"setIdx": 4,
 			"iconIdx": 51
 		},
 		{
@@ -1302,7 +1357,7 @@
 				"name": "pinterest",
 				"ligatures": ""
 			},
-			"setIdx": 1,
+			"setIdx": 4,
 			"iconIdx": 52
 		},
 		{
@@ -1324,7 +1379,7 @@
 				"name": "tumblr",
 				"ligatures": ""
 			},
-			"setIdx": 1,
+			"setIdx": 4,
 			"iconIdx": 53
 		},
 		{
@@ -1346,7 +1401,7 @@
 				"name": "linkedin",
 				"ligatures": ""
 			},
-			"setIdx": 1,
+			"setIdx": 4,
 			"iconIdx": 54
 		},
 		{
@@ -1368,7 +1423,7 @@
 				"name": "dribbble",
 				"ligatures": ""
 			},
-			"setIdx": 1,
+			"setIdx": 4,
 			"iconIdx": 55
 		},
 		{
@@ -1389,7 +1444,7 @@
 				"name": "paypal",
 				"ligatures": ""
 			},
-			"setIdx": 1,
+			"setIdx": 4,
 			"iconIdx": 56
 		},
 		{
@@ -1411,7 +1466,7 @@
 				"name": "behance",
 				"ligatures": ""
 			},
-			"setIdx": 1,
+			"setIdx": 4,
 			"iconIdx": 57
 		},
 		{
@@ -1439,7 +1494,7 @@
 				"name": "category",
 				"ligatures": ""
 			},
-			"setIdx": 1,
+			"setIdx": 4,
 			"iconIdx": 58
 		},
 		{
@@ -1467,7 +1522,7 @@
 				"name": "tag",
 				"ligatures": ""
 			},
-			"setIdx": 1,
+			"setIdx": 4,
 			"iconIdx": 59
 		},
 		{
@@ -1494,7 +1549,7 @@
 				"name": "tag2",
 				"ligatures": ""
 			},
-			"setIdx": 1,
+			"setIdx": 4,
 			"iconIdx": 60
 		},
 		{
@@ -1518,7 +1573,7 @@
 				"name": "feed",
 				"ligatures": ""
 			},
-			"setIdx": 1,
+			"setIdx": 4,
 			"iconIdx": 61
 		},
 		{
@@ -1542,7 +1597,7 @@
 				"name": "checkbox-checked",
 				"ligatures": ""
 			},
-			"setIdx": 1,
+			"setIdx": 4,
 			"iconIdx": 62
 		},
 		{
@@ -1565,7 +1620,7 @@
 				"name": "checkbox-unchecked",
 				"ligatures": ""
 			},
-			"setIdx": 1,
+			"setIdx": 4,
 			"iconIdx": 63
 		},
 		{
@@ -1587,7 +1642,7 @@
 				"name": "checkbox-partial",
 				"ligatures": ""
 			},
-			"setIdx": 1,
+			"setIdx": 4,
 			"iconIdx": 64
 		},
 		{
@@ -1608,7 +1663,7 @@
 				"name": "radio-checked",
 				"ligatures": ""
 			},
-			"setIdx": 1,
+			"setIdx": 4,
 			"iconIdx": 65
 		},
 		{
@@ -1630,7 +1685,7 @@
 				"name": "radio-unchecked",
 				"ligatures": ""
 			},
-			"setIdx": 1,
+			"setIdx": 4,
 			"iconIdx": 66
 		}
 	],

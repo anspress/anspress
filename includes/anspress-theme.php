@@ -362,6 +362,13 @@ function is_ap_profile(){
 	return false;
 }
 
+function is_ap_revision(){
+	if(is_anspress() && get_query_var('ap_page') == 'revision')
+		return true;
+		
+	return false;
+}
+
 function is_ap_search(){
 	if(is_anspress() && get_query_var('ap_page') == 'search')
 		return true;
@@ -403,6 +410,8 @@ function ap_current_page_is(){
 			$template = 'user';
 		elseif(is_ap_search())
 			$template = 'search';
+		elseif(is_ap_revision())
+			$template = 'revision';
 		elseif(get_query_var('ap_page') == '')
 			$template = 'base';
 		else

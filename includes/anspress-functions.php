@@ -57,6 +57,7 @@ function ap_default_options(){
 		'minimum_ans_length' 	=> 5,
 		'avatar_size_qquestion' => 30,
 		'avatar_size_qanswer' 	=> 30,
+		'avatar_size_qcomment' 	=> 25,
 		'down_vote_points' 		=> -1,
 		'flag_note' 			=> array(0 => array('title' => 'it is spam', 'description' => 'This question is effectively an advertisement with no disclosure. It is not useful or relevant, but promotional.')),			
 		'bootstrap' 			=> true,
@@ -549,10 +550,10 @@ function ap_select_answer_btn_html($post_id){
 	$nonce = wp_create_nonce( $action );	
 	
 	if(!ap_is_answer_selected($ans->post_parent)){		
-		return '<a href="#" class="ap-sicon ap-icon-answer ap-tip" data-button="ap-select-answer" data-args="'. $post_id.'-'. $nonce .'" title="'.__('Select this answer as best', 'ap').'"></a>';
+		return '<a href="#" class="ap-sicon ap-icon-checkmark ap-tip" data-button="ap-select-answer" data-args="'. $post_id.'-'. $nonce .'" title="'.__('Select this answer as best', 'ap').'"></a>';
 		
 	}elseif(ap_is_answer_selected($ans->post_parent) && ap_is_best_answer($ans->ID)){
-		return '<a href="#" class="ap-sicon ap-icon-answer selected ap-tip" data-button="ap-select-answer" data-args="'. $post_id.'-'. $nonce .'" title="'.__('Unselect this answer', 'ap').'"></a>';
+		return '<a href="#" class="ap-sicon ap-icon-checkmark selected ap-tip" data-button="ap-select-answer" data-args="'. $post_id.'-'. $nonce .'" title="'.__('Unselect this answer', 'ap').'"></a>';
 		
 	}
 }
