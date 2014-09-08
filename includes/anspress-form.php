@@ -1082,6 +1082,7 @@ function ap_form_allowed_tags(){
 		'strong' => array(),
 		'pre' => array(),
 		'code' => array(),
+		'blockquote' => array(),
 	);
 	
 	return apply_filters( 'ap_allowed_tags', $allowed_tags);
@@ -1338,4 +1339,8 @@ function ap_tag_form(){
 
 function ap_convert_pre_char($matches){
 	return '<pre>'.esc_html($matches[1]).'</pre>';
+}
+
+function ap_editor_content($content){
+	wp_editor( esc_textarea(html_entity_decode($content)), 'post_content', array('tinymce' => false, 'textarea_rows' => 7, 'media_buttons' => false, 'quicktags'=> array('buttons'=>'strong,em,link,block,del,ul,li,ol,img,code,close,fullscreen '))); 
 }

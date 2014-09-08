@@ -299,11 +299,6 @@ function ap_get_all_users(){
 	ap_pagination(ceil( $total_terms / $per_page ), $range = 1, $paged);
 }
 
-
-function ap_editor_content($content){
-	wp_editor( esc_textarea($content), 'post_content', array('tinymce' => false, 'textarea_rows' => 7, 'media_buttons' => false, 'quicktags'=> array('buttons'=>'strong,em,link,blockquote,del,ul,li,ol,img,code,close'))); 
-}
-
 function ap_base_page_slug(){
 	$base_page_slug = ap_opt('base_page_slug');
 	

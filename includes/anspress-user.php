@@ -789,7 +789,7 @@ function ap_avatar_upload_form(){
 		?>
 		<form method="post" action="#" enctype="multipart/form-data" data-action="ap-upload-form" class="">
 			<div class="ap-btn ap-upload-o">
-				<span><?php _e('Upload cover', 'ap'); ?></span>
+				<span><?php _e('Upload avatar', 'ap'); ?></span>
 				<input type="file" name="thumbnail" class="ap-upload-input" data-action="ap-upload-field">
 			</div>
 			<input type='hidden' value='<?php echo wp_create_nonce( 'upload' ); ?>' name='nonce' />
