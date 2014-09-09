@@ -49,7 +49,7 @@ class AP_Basic_Email_Addon
 			$message = sprintf(__('Hello! Admin, <br /><br /> A new question is posted by %s <br />', 'ap'), ap_user_display_name($post->post_author, true));
 			$message .= ap_truncate_chars($post->post_content, 100);
 			$message .= "<br /><br /><a href='". $post_url. "'>".__('View question', 'ap')."</a><br />";
-			$message .= '<p style="color:#777; font-size:11px">'.__('Powered by', 'ap').'<a href="http://open-wp.com">AnsPress</a></p>';
+			$message .= '<p style="color:#777; font-size:11px">'.__('Powered by', 'ap').' <a href="http://open-wp.com">AnsPress</a></p>';
 			
 			//sends email
 			wp_mail(get_option( 'admin_email' ), $subject, $message );
@@ -59,11 +59,22 @@ class AP_Basic_Email_Addon
 	public function new_answer_email( $post_id ) {
 		// lets check if post is not revision
 		if ( !wp_is_post_revision( $post_id ) ) {
-
-			$post = get_post($post_id); 
+			$post = get_post($post_id);
+			$parti_emails = ap_get_parti_emails($post->post_parent);
+			
+			if(isset($parti_emails[$post->post_author]))
+				unset($parti_emails[$post->post_author]);
+			
+			// return if no email found
+			if(empty($parti_emails))
+				return;			
+			
 			$parent = get_post($post->post_parent);
-			$subject = __('New Answer: ', 'ap'). $parent->post_title;
-			$message = sprintf(__('Hello!,<br /><br /> A new answer is posted by %s <br />', 'ap'), ap_user_display_name($post->post_author, true));			
+			
+			$subject = __('New Answer on: ', 'ap'). $parent->post_title;
+			
+			$message = sprintf(__('Hello!,<br /><br /> A new answer is posted by %s <br />', 'ap'), ap_user_display_name($post->post_author, true));
+			
 			$message .= ap_truncate_chars($post->post_content, 100);
 			$message .= "<br /><br /><a href='". get_permalink($parent->ID)."#".$post->ID. "'>".__('View Answer', 'ap')."</a><br />";
 			
@@ -71,13 +82,22 @@ class AP_Basic_Email_Addon
 			
 			//sends email
 			
-			if($post->post_author != $parent->post_author){
-				$email = get_the_author_meta( 'user_email', $parent->post_author);
+			foreach($parti_emails as $email){
 				wp_mail($email, $subject, $message );
 			}
 			
-			if(!in_array($post->post_author, get_super_admins()))
-				wp_mail(get_option( 'admin_email' ), $subject, $message );
+			$admins = get_option( 'admin_email' );
+			
+			$current_user_email = get_the_author_meta( 'user_email', $post->post_author);
+			
+			foreach($admins as $k => $admin_email){
+				if($admin_email == $current_user_email)
+					unset($admins[$k]);
+			}
+			
+			if(!empty($admins))
+				foreach($admins as $email)
+					wp_mail($email, $subject, $message );
 		}
 	}
 

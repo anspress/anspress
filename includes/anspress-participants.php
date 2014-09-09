@@ -95,3 +95,16 @@ function ap_get_all_parti($avatar_size = 40, $post_id = false){
 	echo '</ul>';
 	
 }
+
+function ap_get_parti_emails($post_id){
+	$parti = ap_get_parti($post_id);
+	
+	if(!$parti)
+		return false;
+	
+	$emails = array();
+	foreach ($parti as $p)
+		$emails[$p->apmeta_userid] = get_the_author_meta( 'user_email', $p->apmeta_userid);
+	
+	return $emails;
+}

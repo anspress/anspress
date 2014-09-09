@@ -1465,7 +1465,7 @@ body.modal-open {
 
 /* forms */
 #answer-form-c {
-
+    margin-top: 20px;
 }
 
 #answer-form-c .user-meta {
