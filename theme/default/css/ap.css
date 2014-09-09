@@ -688,8 +688,8 @@ body.anspress .ap-container {
 }
 
 .ap-comments.have-comments {
-    margin-left: 24px;
-    margin-top: 15px;
+    margin-left: 0;
+    padding-left: 48px;
 }
 
 #question .ap-comments {
@@ -721,8 +721,7 @@ body.anspress .ap-container {
 }
 
 .have-comments .commentlist {
-    border: 1px solid #eee;
-    border-radius: 3px;
+
 }
 
 .ap-comments .commentlist li {
@@ -3678,29 +3677,16 @@ ul.ap-badge-item > li.ap-badge-info {
 	color:#333;
 }
 .ap-comments .ap-tlicon {
-    left: -13px;
-    top: 0;
+    left: 10px;
+    top: -2px;
 }
-.ap-tldot {
-    background: #ddd;
-    border: 2px solid #fff;
-    border-radius: 50%;
+.ap-coomentcount {
+    color: #333;
     display: block;
-    height: 11px;
-    left: 19px;
-    position: absolute;
-    top: 13px;
-    width: 11px;
+    font-size: 13px;
+    margin-top: 10px;
 }
-#answers .ap-tldot {
-    left: -29px;
-}
-#answers .commentlist:before{
-    left: -20px;
-}
-#answers .commentlist:after {
-	left: -19px;
-}
+
 .ap-tlitem .ap-savatar {
     float: left;
     margin-right: 10px;
