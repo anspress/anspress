@@ -83,8 +83,6 @@ class anspress_posts
 		add_action('untrash_post', array($this, 'untrash_ans_on_question_untrash'));
 		//add_action('delete_post', array($this, 'delete_action'));		
 		add_action('after_delete_post', array($this, 'post_delete_action'));		
-		add_action('delete_comment', array($this, 'comment_delete_action'));		
-
 	}
     // Register Custom Post Type    
     public function create_cpt_tax()
@@ -603,21 +601,6 @@ class anspress_posts
 		add_action('after_delete_post', array($this, 'post_delete_action'));
 	}
 	
-	/* actions to run after deleting a comment */
-	public function comment_delete_action($comment_id){
-		$comment = get_comment($comment_id);
-		
-		$post_type = get_post_type( $comment->comment_post_ID );
-		if ($post_type == 'question') {
-			ap_do_event('delete_comment', $comment, 'question');
-			//remove participant
-			ap_remove_parti($comment->comment_post_ID, $comment->user_id, 'comment');
-		}elseif($post_type == 'answer'){
-			ap_do_event('delete_comment', $comment, 'answer');
-			$post_id = wp_get_post_parent_id($comment->comment_post_ID);
-			ap_remove_parti($post_id, $comment->user_id, 'comment');
-		}
-	}
 	
 	public function ans_post_type_link($link, $post) {
 	  $post_type = 'answer';

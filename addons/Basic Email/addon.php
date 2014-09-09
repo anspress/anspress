@@ -37,6 +37,7 @@ class AP_Basic_Email_Addon
     {
 		add_action( 'ap_after_inserting_question', array($this, 'new_question_email') );
 		add_action( 'ap_after_inserting_answer', array($this, 'new_answer_email') );
+		add_action( 'ap_event_new_comment', array($this, 'new_comment'), 10, 3);
     }
 	
 	/* Notify admin about new questions */
@@ -60,14 +61,8 @@ class AP_Basic_Email_Addon
 		// lets check if post is not revision
 		if ( !wp_is_post_revision( $post_id ) ) {
 			$post = get_post($post_id);
-			$parti_emails = ap_get_parti_emails($post->post_parent);
 			
-			if(isset($parti_emails[$post->post_author]))
-				unset($parti_emails[$post->post_author]);
-			
-			// return if no email found
-			if(empty($parti_emails))
-				return;			
+			$emails = ap_get_email_to_notify($post->post_parent, $post->post_author);
 			
 			$parent = get_post($post->post_parent);
 			
@@ -81,10 +76,10 @@ class AP_Basic_Email_Addon
 			$message .= '<p style="color:#777; font-size:11px">'.__('Powered by', 'ap').'<a href="http://open-wp.com">AnsPress</a></p>';
 			
 			//sends email
-			
-			foreach($parti_emails as $email){
-				wp_mail($email, $subject, $message );
-			}
+			if(empty($emails))
+				foreach($emails as $email){
+					wp_mail($email, $subject, $message );
+				}
 			
 			$admins = get_option( 'admin_email' );
 			
@@ -100,7 +95,55 @@ class AP_Basic_Email_Addon
 					wp_mail($email, $subject, $message );
 		}
 	}
+	
+	public function new_comment($comment, $post_type, $question_id){
+		$emails = ap_get_email_to_notify($comment->comment_post_ID, $comment->user_id);
 
+		$post = get_post($question_id);
+		if($post_type == 'question'){
+			$subject = __('New comment on: ', 'ap'). $post->post_title;
+			
+			$message = sprintf(__('Hello!,<br /><br /> A new comment is posted by %s <br />', 'ap'), ap_user_display_name($comment->user_id, true));
+			
+			$message .= ap_truncate_chars($comment->comment_content , 100);
+			$message .= "<br /><br /><a href='". get_comments_link($parent->ID). "'>".__('View comment', 'ap')."</a><br />";
+			
+			$message .= '<p style="color:#777; font-size:11px">'.__('Powered by', 'ap').'<a href="http://open-wp.com">AnsPress</a></p>';
+			
+			if(empty($emails))
+				foreach($emails as $email){
+					wp_mail($email, $subject, $message );
+				}
+		}else{
+			$subject = __('New comment on answer of: ', 'ap'). $post->post_title;
+			
+			$message = sprintf(__('Hello!,<br /><br /> A new comment is posted by %s <br />', 'ap'), ap_user_display_name($comment->user_id, true));
+			
+			$message .= ap_truncate_chars($comment->comment_content , 100);
+			$message .= "<br /><br /><a href='". get_comments_link($parent->ID). "'>".__('View comment', 'ap')."</a><br />";
+			
+			$message .= '<p style="color:#777; font-size:11px">'.__('Powered by', 'ap').'<a href="http://open-wp.com">AnsPress</a></p>';
+			
+			if(empty($emails))
+				foreach($emails as $email){
+					wp_mail($email, $subject, $message );
+				}
+		}
+	}
+
+}
+
+function ap_get_email_to_notify($post_id, $current_user){
+	$parti_emails = ap_get_parti_emails($post_id);
+			
+	if(isset($parti_emails[$current_user]))
+		unset($parti_emails[$current_user]);
+	
+	// return if no email found
+	if(empty($parti_emails))
+		return false;	
+	
+	return $parti_emails;
 }
 
 

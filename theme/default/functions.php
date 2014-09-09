@@ -85,7 +85,9 @@ if ( ! function_exists( 'ap_comment' ) ) :
 		<li <?php comment_class(); ?> id="li-comment-<?php comment_ID(); ?>">
 			<article id="comment-<?php comment_ID(); ?>" class="comment">
 				<div class="ap-avatar">
+					<a href="<?php echo ap_user_link($comment->user_id); ?>">
 					<?php echo get_avatar( $comment, ap_opt('avatar_size_qcomment') ); ?>
+					</a>
 				</div>
 				<div class="comment-content">
 					<?php if ( '0' == $comment->comment_approved ) : ?>

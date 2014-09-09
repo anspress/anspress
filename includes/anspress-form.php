@@ -45,6 +45,7 @@ class anspress_form
 	
 		add_action( 'wp_ajax_ap_update_comment', array($this, 'update_comment_form') ); 
 		add_action( 'wp_ajax_ap_delete_comment', array($this, 'delete_comment') ); 
+		add_action( 'ap_after_delete_comment', array($this, 'after_deleting_comment'), 10, 2 ); 
 		
 		add_action( 'wp_ajax_nopriv_ap_not_logged_in_messgae', array($this, 'ap_not_logged_in_messgae') ); 
 		add_action( 'wp_ajax_ap_edit_comment_form', array($this, 'edit_comment_form') ); 
@@ -668,10 +669,29 @@ class anspress_form
 		}		
 		$action = 'delete-comment-'.$args[0];		
 		if(wp_verify_nonce( $args[1], $action )){
-			wp_delete_comment( $args[0], true );
+			$comment = get_comment($args[0]);
+			$delete = wp_delete_comment( $args[0], true );
+			if($delete){						
+				$post_type = get_post_type( $comment->comment_post_ID );
+				do_action('ap_after_delete_comment', $comment, $post_type);
+				
+				if ($post_type == 'question') 
+					ap_do_event('delete_comment', $comment, 'question');
+				elseif($post_type == 'answer')
+					ap_do_event('delete_comment', $comment, 'answer');
+			}
 			$result = array('status' => true, 'message' => __('Comment deleted successfully', 'ap'));
 		}
 		die(json_encode($result));
+	}
+	
+	public function after_deleting_comment($comment, $post_type){
+		if ($post_type == 'question') {
+			ap_remove_parti($comment->comment_post_ID, $comment->user_id, 'comment', $comment->comment_ID);
+		}elseif($post_type == 'answer'){
+			$post_id = wp_get_post_parent_id($comment->comment_post_ID);
+			ap_remove_parti($post_id, $comment->user_id, 'comment', $comment->comment_ID);
+		}
 	}
 	
 	public function ap_not_logged_in_messgae(){

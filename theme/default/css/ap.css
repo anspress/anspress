@@ -2219,9 +2219,9 @@ ul.ap-pagination {
 }
 
 .ap-participants-list li img {
-    -moz-box-shadow: none;
-    -webkit-box-shadow: none;
+    background: none repeat scroll 0 0 #eee;
     box-shadow: none;
+    display: block;
 }
 
 /* Profile styles */
