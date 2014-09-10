@@ -81,18 +81,13 @@ class AP_Basic_Email_Addon
 					wp_mail($email, $subject, $message );
 				}
 			
-			$admins = get_option( 'admin_email' );
+			$admin_email = get_option( 'admin_email' );
 			
 			$current_user_email = get_the_author_meta( 'user_email', $post->post_author);
-			
-			foreach($admins as $k => $admin_email){
-				if($admin_email == $current_user_email)
-					unset($admins[$k]);
-			}
-			
-			if(!empty($admins))
-				foreach($admins as $email)
-					wp_mail($email, $subject, $message );
+
+
+			if($admin_email != $current_user_email)				
+				wp_mail($admin_email, $subject, $message );
 		}
 	}
 	
@@ -110,7 +105,7 @@ class AP_Basic_Email_Addon
 			
 			$message .= '<p style="color:#777; font-size:11px">'.__('Powered by', 'ap').'<a href="http://open-wp.com">AnsPress</a></p>';
 			
-			if(empty($emails))
+			if(!empty($emails))
 				foreach($emails as $email){
 					wp_mail($email, $subject, $message );
 				}
@@ -124,7 +119,7 @@ class AP_Basic_Email_Addon
 			
 			$message .= '<p style="color:#777; font-size:11px">'.__('Powered by', 'ap').'<a href="http://open-wp.com">AnsPress</a></p>';
 			
-			if(empty($emails))
+			if(!empty($emails))
 				foreach($emails as $email){
 					wp_mail($email, $subject, $message );
 				}
