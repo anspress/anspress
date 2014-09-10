@@ -1,0 +1,2975 @@
+# Copyright (C) 2014 AnsPress
+# This file is distributed under the same license as the AnsPress package.
+msgid ""
+msgstr ""
+"Project-Id-Version: AnsPress 1.0 PR\n"
+"Report-Msgid-Bugs-To: http://wordpress.org/tag/anspress\n"
+"POT-Creation-Date: 2014-09-07 19:09-0400\n"
+"PO-Revision-Date: 2014-09-07 19:15-0400\n"
+"Last-Translator: MasterBip <contacto@masterbip.cl>\n"
+"Language-Team: Masterbip <contacto@masterbip.cl>\n"
+"Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.6.9\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-KeywordsList: __;_e;_n;_x\n"
+"X-Poedit-SearchPath-0: ..\n"
+
+#: ../activate.php:117
+msgid "Participant"
+msgstr ""
+
+#: ../activate.php:118
+msgid "Editor"
+msgstr ""
+
+#: ../activate.php:119
+msgid "Moderator"
+msgstr ""
+
+#: ../addons/Basic Email/addon.php:48
+msgid "New Question: "
+msgstr ""
+
+#: ../addons/Basic Email/addon.php:49
+#, php-format
+msgid "Hello! Admin, <br /><br /> A new question is posted by %s <br />"
+msgstr ""
+
+#: ../addons/Basic Email/addon.php:51
+msgid "View question"
+msgstr ""
+
+#: ../addons/Basic Email/addon.php:63
+msgid "New Answer: "
+msgstr ""
+
+#: ../addons/Basic Email/addon.php:64
+#, php-format
+msgid "Hello!,<br /><br /> A new answer is posted by %s <br />"
+msgstr ""
+
+#: ../addons/Basic Email/addon.php:66 ../includes/anspress-posts.php:155
+msgid "View Answer"
+msgstr ""
+
+#: ../addons/reCaptcha/addon.php:64
+msgid "reCAPTCHA is not valid, please try again."
+msgstr ""
+
+#: ../admin/anspress-admin.php:168 ../includes/anspress-posts.php:104
+msgid "All Questions"
+msgstr ""
+
+#: ../admin/anspress-admin.php:170 ../includes/anspress-posts.php:107
+msgid "New Question"
+msgstr ""
+
+#: ../admin/anspress-admin.php:172 ../includes/anspress-posts.php:154
+msgid "All Answers"
+msgstr ""
+
+#: ../admin/anspress-admin.php:174
+msgid "Moderate question & answer"
+msgstr ""
+
+#: ../admin/anspress-admin.php:174 ../admin/flagged.php:94
+#: ../admin/moderate.php:76 ../includes/anspress-posts.php:196
+#: ../includes/anspress-posts.php:703 ../includes/anspress-posts.php:710
+msgid "Moderate"
+msgstr ""
+
+#: ../admin/anspress-admin.php:176 ../admin/anspress-admin.php:301
+msgid "Flagged question & answer"
+msgstr ""
+
+#: ../admin/anspress-admin.php:176
+msgid "Flagged"
+msgstr ""
+
+#: ../admin/anspress-admin.php:186 ../admin/anspress-admin.php:473
+#: ../admin/anspress-admin.php:548 ../includes/anspress-functions.php:742
+#: ../theme/default/content-user.php:17 ../theme/default/user.php:21
+msgid "Points"
+msgstr ""
+
+#: ../admin/anspress-admin.php:186
+msgid "User Points"
+msgstr ""
+
+#: ../admin/anspress-admin.php:188 ../includes/anspress-user.php:458
+msgid "Badges"
+msgstr ""
+
+#: ../admin/anspress-admin.php:188
+msgid "User Badges"
+msgstr ""
+
+#: ../admin/anspress-admin.php:190 ../admin/anspress-admin.php:418
+#: ../admin/views/admin.php:9
+msgid "AnsPress Options"
+msgstr ""
+
+#: ../admin/anspress-admin.php:190
+msgid "Options"
+msgstr ""
+
+#: ../admin/anspress-admin.php:192
+msgid "Addons"
+msgstr ""
+
+#: ../admin/anspress-admin.php:194
+msgid "Install"
+msgstr ""
+
+#: ../admin/anspress-admin.php:230
+msgid "AnsPress Points"
+msgstr ""
+
+#: ../admin/anspress-admin.php:231
+msgid "New point"
+msgstr ""
+
+#: ../admin/anspress-admin.php:253
+msgid "AnsPress Badges"
+msgstr ""
+
+#: ../admin/anspress-admin.php:254
+msgid "New badge"
+msgstr ""
+
+#: ../admin/anspress-admin.php:279
+msgid "Posts waiting moderation"
+msgstr ""
+
+#: ../admin/anspress-admin.php:323
+msgid "Settings"
+msgstr ""
+
+#: ../admin/anspress-admin.php:362 ../admin/anspress-admin.php:378
+msgid "AnsPress"
+msgstr ""
+
+#: ../admin/anspress-admin.php:383
+msgid "Ask"
+msgstr ""
+
+#: ../admin/anspress-admin.php:388 ../admin/views/admin.php:31
+#: ../theme/default/question.php:137 ../widgets/categories.php:58
+msgid "Categories"
+msgstr ""
+
+#: ../admin/anspress-admin.php:393 ../admin/views/admin.php:32
+#: ../includes/anspress-form.php:785 ../includes/anspress-form.php:871
+#: ../includes/anspress-posts.php:214 ../theme/default/question.php:147
+msgid "Tags"
+msgstr ""
+
+#: ../admin/anspress-admin.php:398 ../includes/anspress-ranks.php:108
+#: ../widgets/users.php:37
+msgid "Users"
+msgstr ""
+
+#: ../admin/anspress-admin.php:422
+msgid "AnsPress Role"
+msgstr ""
+
+#: ../admin/anspress-admin.php:431
+msgid "Role and permission for AnsPress"
+msgstr ""
+
+#: ../admin/anspress-admin.php:446
+msgid "AnsPress options updated successfully"
+msgstr ""
+
+#: ../admin/anspress-admin.php:461 ../admin/anspress-admin.php:536
+#: ../admin/anspress-admin.php:603 ../admin/anspress-admin.php:697
+#: ../admin/flagged.php:109 ../admin/moderate.php:89
+#: ../admin/views/admin.php:366 ../admin/views/admin.php:387
+#: ../includes/anspress-form.php:742 ../includes/anspress-form.php:812
+#: ../includes/anspress-posts.php:212
+msgid "Title"
+msgstr ""
+
+#: ../admin/anspress-admin.php:467 ../admin/anspress-admin.php:542
+#: ../admin/anspress-admin.php:609 ../admin/anspress-admin.php:703
+#: ../admin/views/admin.php:372 ../admin/views/admin.php:393
+msgid "Description"
+msgstr ""
+
+#: ../admin/anspress-admin.php:479 ../admin/anspress-admin.php:554
+#: ../admin/anspress-admin.php:627 ../admin/anspress-admin.php:721
+msgid "Event"
+msgstr ""
+
+#: ../admin/anspress-admin.php:485 ../admin/anspress-admin.php:560
+msgid "Save Point"
+msgstr ""
+
+#: ../admin/anspress-admin.php:615 ../admin/anspress-admin.php:709
+#: ../admin/flagged.php:108
+msgid "Type"
+msgstr ""
+
+#: ../admin/anspress-admin.php:621 ../admin/anspress-admin.php:715
+msgid "Min. Points"
+msgstr ""
+
+#: ../admin/anspress-admin.php:633 ../admin/anspress-admin.php:727
+msgid "Multiple"
+msgstr ""
+
+#: ../admin/anspress-admin.php:639 ../admin/anspress-admin.php:733
+msgid "Save badge"
+msgstr ""
+
+#: ../admin/anspress-admin.php:778 ../admin/views/addons.php:31
+msgid "Activate"
+msgstr ""
+
+#: ../admin/anspress-admin.php:778
+#, php-format
+msgid "%s disabled successfully."
+msgstr ""
+
+#: ../admin/anspress-admin.php:781 ../admin/views/addons.php:29
+msgid "Deactivate"
+msgstr ""
+
+#: ../admin/anspress-admin.php:781
+#, php-format
+msgid "%s activated successfully."
+msgstr ""
+
+#: ../admin/badges.php:156 ../admin/badges.php:157
+msgid "Delete this badge"
+msgstr ""
+
+#: ../admin/badges.php:156 ../admin/flagged.php:174 ../admin/meta_box.php:64
+#: ../admin/moderate.php:152 ../admin/points.php:152
+#: ../includes/anspress-functions.php:239
+#: ../includes/anspress-functions.php:251 ../includes/anspress-posts.php:381
+#: ../theme/default/answer-list.php:18 ../theme/default/answer.php:26
+#: ../theme/default/functions.php:108 ../theme/default/part/question.php:46
+msgid "Edit"
+msgstr ""
+
+#: ../admin/badges.php:157 ../admin/points.php:153
+#: ../includes/anspress-functions.php:573 ../theme/default/functions.php:111
+msgid "Delete"
+msgstr ""
+
+#: ../admin/badges.php:173
+msgid "Yes"
+msgstr ""
+
+#: ../admin/badges.php:174
+msgid "No"
+msgstr ""
+
+#: ../admin/badges.php:179
+msgid "N/A"
+msgstr ""
+
+#: ../admin/flagged.php:66 ../admin/moderate.php:57 ../widgets/search.php:20
+msgid "Search"
+msgstr ""
+
+#: ../admin/flagged.php:92
+msgid "Publish"
+msgstr ""
+
+#: ../admin/flagged.php:93 ../admin/flagged.php:227 ../admin/moderate.php:205
+msgid "Pending"
+msgstr ""
+
+#: ../admin/flagged.php:95
+msgid "Draft"
+msgstr ""
+
+#: ../admin/flagged.php:96 ../admin/flagged.php:175 ../admin/meta_box.php:66
+#: ../admin/moderate.php:153 ../includes/anspress-posts.php:375
+msgid "Trash"
+msgstr ""
+
+#: ../admin/flagged.php:110 ../admin/moderate.php:90
+#: ../includes/anspress-posts.php:218 ../includes/anspress-posts.php:234
+#: ../includes/anspress-vote.php:332
+msgid "Flag"
+msgstr ""
+
+#: ../admin/flagged.php:111 ../admin/moderate.php:91
+#: ../includes/anspress-categories.php:47 ../includes/anspress-form.php:766
+#: ../includes/anspress-form.php:843 ../includes/anspress-posts.php:213
+msgid "Category"
+msgstr ""
+
+#: ../admin/flagged.php:155 ../admin/meta_box.php:23
+#: ../admin/views/admin.php:28 ../includes/anspress-points.php:356
+#: ../includes/anspress-posts.php:101 ../includes/anspress-posts.php:118
+#: ../includes/anspress-posts.php:230
+msgid "Question"
+msgstr ""
+
+#: ../admin/flagged.php:157 ../includes/anspress-history.php:106
+#: ../includes/anspress-points.php:363 ../includes/anspress-posts.php:151
+#: ../includes/anspress-posts.php:168
+msgid "Answer"
+msgstr ""
+
+#: ../admin/flagged.php:169 ../admin/flagged.php:221 ../admin/moderate.php:147
+#: ../admin/moderate.php:199 ../includes/anspress-posts.php:372
+msgid "Restore"
+msgstr ""
+
+#: ../admin/flagged.php:170 ../admin/flagged.php:222 ../admin/moderate.php:148
+#: ../admin/moderate.php:200
+msgid "Delete permanently"
+msgstr ""
+
+#: ../admin/flagged.php:176 ../admin/moderate.php:154
+#: ../includes/anspress-posts.php:393
+msgid "View"
+msgstr ""
+
+#: ../admin/flagged.php:208 ../admin/moderate.php:186
+#: ../includes/anspress-posts.php:263
+msgid "--"
+msgstr ""
+
+#: ../admin/flagged.php:226 ../admin/moderate.php:204
+msgid "Published"
+msgstr ""
+
+#: ../admin/flagged.php:228 ../admin/moderate.php:206
+msgid "Move to trash"
+msgstr ""
+
+#: ../admin/meta_box.php:19 ../admin/views/admin.php:29
+#: ../includes/anspress-posts.php:150 ../includes/anspress-posts.php:152
+#: ../includes/anspress-user.php:457 ../theme/default/user-profile.php:14
+#: ../widgets/questions.php:140
+msgid "Answers"
+msgstr ""
+
+#: ../admin/meta_box.php:21
+msgid "Flag & report"
+msgstr ""
+
+#: ../admin/meta_box.php:59
+#, php-format
+msgid "<span class=\"when\">Answered about %s ago</span>"
+msgstr ""
+
+#: ../admin/meta_box.php:65
+msgid "Hide"
+msgstr ""
+
+#: ../admin/meta_box.php:73
+msgid "No answers yet"
+msgstr ""
+
+#: ../admin/meta_box.php:97
+#, php-format
+msgid "<span class=\"when\">Flagged about %s ago</span>"
+msgstr ""
+
+#: ../admin/meta_box.php:100
+msgid "Flagged with custom message"
+msgstr ""
+
+#: ../admin/meta_box.php:107
+msgid "No flag yet"
+msgstr ""
+
+#: ../admin/meta_box.php:116
+msgid "<strong>1</strong> Answer"
+msgstr ""
+
+#: ../admin/meta_box.php:117
+msgid "<strong>1</strong> Vote"
+msgstr ""
+
+#: ../admin/moderate.php:88 ../includes/anspress-posts.php:211
+msgid "Status"
+msgstr ""
+
+#: ../admin/points.php:152 ../admin/points.php:153
+msgid "Delete this point"
+msgstr ""
+
+#: ../admin/views/addons.php:7
+msgid "AnsPress Addons"
+msgstr ""
+
+#: ../admin/views/addons.php:17 ../includes/anspress-functions.php:469
+#: ../widgets/questions.php:137
+msgid "Active"
+msgstr ""
+
+#: ../admin/views/addons.php:22
+msgid "Addon Details"
+msgstr ""
+
+#: ../admin/views/admin.php:13
+msgid "Options saved"
+msgstr ""
+
+#: ../admin/views/admin.php:27
+msgid "General"
+msgstr ""
+
+#: ../admin/views/admin.php:30 ../admin/views/admin.php:129
+msgid "Theme"
+msgstr ""
+
+#: ../admin/views/admin.php:33
+msgid "User"
+msgstr ""
+
+#: ../admin/views/admin.php:34
+msgid "Pages"
+msgstr ""
+
+#: ../admin/views/admin.php:35 ../theme/default/question.php:125
+msgid "Labels"
+msgstr ""
+
+#: ../admin/views/admin.php:36 ../admin/views/admin.php:356
+msgid "Spam"
+msgstr ""
+
+#: ../admin/views/admin.php:37
+msgid "Maintenance"
+msgstr ""
+
+#: ../admin/views/admin.php:46
+msgid "Base Page"
+msgstr ""
+
+#: ../admin/views/admin.php:49 ../admin/views/install.php:70
+msgid ""
+"This page slug is use as base slug, if this page was selected for home page "
+"then no base slug will be added"
+msgstr ""
+
+#: ../admin/views/admin.php:84
+msgid "Minimum words in title"
+msgstr ""
+
+#: ../admin/views/admin.php:87
+msgid "Minimum words for question title."
+msgstr ""
+
+#: ../admin/views/admin.php:91
+msgid "Minimum words in question"
+msgstr ""
+
+#: ../admin/views/admin.php:94
+msgid "Set minimum question word limit."
+msgstr ""
+
+#: ../admin/views/admin.php:103
+msgid "Multiple Answers"
+msgstr ""
+
+#: ../admin/views/admin.php:106
+msgid "Allow an user to submit multiple answers on a single question"
+msgstr ""
+
+#: ../admin/views/admin.php:110
+msgid "Minimum words in answer"
+msgstr ""
+
+#: ../admin/views/admin.php:113
+msgid "Set minimum answer word limit."
+msgstr ""
+
+#: ../admin/views/admin.php:117
+msgid "Close after selecting answer"
+msgstr ""
+
+#: ../admin/views/admin.php:120
+msgid "Do not allow new answer after selecting answer."
+msgstr ""
+
+#: ../admin/views/admin.php:137
+msgid "Set the theme you want to use"
+msgstr ""
+
+#: ../admin/views/admin.php:141
+msgid "Avatar size in question page"
+msgstr ""
+
+#: ../admin/views/admin.php:144
+msgid "User avatar size for question."
+msgstr ""
+
+#: ../admin/views/admin.php:148
+msgid "Avatar size in answer"
+msgstr ""
+
+#: ../admin/views/admin.php:151
+msgid "User avatar in question page answers."
+msgstr ""
+
+#: ../admin/views/admin.php:160
+msgid "Enable tags"
+msgstr ""
+
+#: ../admin/views/admin.php:163
+msgid "Enable or disable tags system"
+msgstr ""
+
+#: ../admin/views/admin.php:167
+msgid "Maximum tags"
+msgstr ""
+
+#: ../admin/views/admin.php:170
+msgid "Maximum numbers of user can add when asking."
+msgstr ""
+
+#: ../admin/views/admin.php:179
+msgid "Enable categories"
+msgstr ""
+
+#: ../admin/views/admin.php:182
+msgid "Enable or disable categories system"
+msgstr ""
+
+#: ../admin/views/admin.php:192
+msgid "Cover width"
+msgstr ""
+
+#: ../admin/views/admin.php:195
+msgid "Width of of the cover image."
+msgstr ""
+
+#: ../admin/views/admin.php:199
+msgid "Cover height"
+msgstr ""
+
+#: ../admin/views/admin.php:202
+msgid "Height of the cover image."
+msgstr ""
+
+#: ../admin/views/admin.php:206
+msgid "Small cover width"
+msgstr ""
+
+#: ../admin/views/admin.php:209
+msgid "Width of of the small cover image."
+msgstr ""
+
+#: ../admin/views/admin.php:213
+msgid "Small cover height"
+msgstr ""
+
+#: ../admin/views/admin.php:216
+msgid "Height of the small cover image."
+msgstr ""
+
+#: ../admin/views/admin.php:220
+msgid "Default rank"
+msgstr ""
+
+#: ../admin/views/admin.php:234 ../includes/anspress-ranks.php:151
+msgid "There are no ranks available."
+msgstr ""
+
+#: ../admin/views/admin.php:237
+msgid "Assign a default rank for newly registered user"
+msgstr ""
+
+#: ../admin/views/admin.php:244
+msgid "Item per page"
+msgstr ""
+
+#: ../admin/views/admin.php:247
+msgid "Question per page"
+msgstr ""
+
+#: ../admin/views/admin.php:250
+msgid "Question to show per page"
+msgstr ""
+
+#: ../admin/views/admin.php:254
+msgid "Answers per page"
+msgstr ""
+
+#: ../admin/views/admin.php:257
+msgid "Answers to show per page in question page"
+msgstr ""
+
+#: ../admin/views/admin.php:261
+msgid "Tags per page"
+msgstr ""
+
+#: ../admin/views/admin.php:264
+msgid "Tags to show per page"
+msgstr ""
+
+#: ../admin/views/admin.php:268
+msgid "Users per page"
+msgstr ""
+
+#: ../admin/views/admin.php:271
+msgid "Users to show per page on users page"
+msgstr ""
+
+#: ../admin/views/admin.php:275
+msgid "Sorting & Ordering"
+msgstr ""
+
+#: ../admin/views/admin.php:278
+msgid "Default sorting of answers"
+msgstr ""
+
+#: ../admin/views/admin.php:285
+msgid "Default active tab for answers list"
+msgstr ""
+
+#: ../admin/views/admin.php:289
+msgid "Page titles"
+msgstr ""
+
+#: ../admin/views/admin.php:292
+msgid "Base page title"
+msgstr ""
+
+#: ../admin/views/admin.php:298
+msgid "Ask page title"
+msgstr ""
+
+#: ../admin/views/admin.php:304
+msgid "Categories page title"
+msgstr ""
+
+#: ../admin/views/admin.php:310
+msgid "Tags page title"
+msgstr ""
+
+#: ../admin/views/admin.php:316
+msgid "Users page title"
+msgstr ""
+
+#: ../admin/views/admin.php:322
+msgid "Search page title"
+msgstr ""
+
+#: ../admin/views/admin.php:332 ../admin/views/install.php:79
+msgid "Default label"
+msgstr ""
+
+#: ../admin/views/admin.php:347
+msgid "There are no labels available."
+msgstr ""
+
+#: ../admin/views/admin.php:350
+msgid "Assign a default label for new questions"
+msgstr ""
+
+#: ../admin/views/admin.php:357
+msgid "Default notes when flagging the posts"
+msgstr ""
+
+#: ../admin/views/admin.php:403
+msgid "Moderation"
+msgstr ""
+
+#: ../admin/views/admin.php:406
+msgid "New question"
+msgstr ""
+
+#: ../admin/views/admin.php:409
+msgid "No moderation"
+msgstr ""
+
+#: ../admin/views/admin.php:410
+msgid "Hold for review"
+msgstr ""
+
+#: ../admin/views/admin.php:411
+msgid "Point required"
+msgstr ""
+
+#: ../admin/views/admin.php:413
+msgid ""
+"Hold new question for moderation. If you select \"Point required\" then you "
+"can must enter point below."
+msgstr ""
+
+#: ../admin/views/admin.php:417
+msgid "Point required for question"
+msgstr ""
+
+#: ../admin/views/admin.php:420
+msgid "Point required for directly publish new question."
+msgstr ""
+
+#: ../admin/views/admin.php:424
+msgid "reCaptcha"
+msgstr ""
+
+#: ../admin/views/admin.php:427
+msgid "Public Key"
+msgstr ""
+
+#: ../admin/views/admin.php:433
+msgid "Private Key"
+msgstr ""
+
+#: ../admin/views/admin.php:439
+msgid "Enable in ask form"
+msgstr ""
+
+#: ../admin/views/admin.php:445
+msgid "Enable in answer form"
+msgstr ""
+
+#: ../admin/views/admin.php:453
+msgid "Recount Views"
+msgstr ""
+
+#: ../admin/views/admin.php:456
+msgid "Recount metas"
+msgstr ""
+
+#: ../admin/views/admin.php:459
+msgid "Recount views"
+msgstr ""
+
+#: ../admin/views/admin.php:460
+msgid "This will recheck views count"
+msgstr ""
+
+#: ../admin/views/admin.php:463
+msgid "Recount votes"
+msgstr ""
+
+#: ../admin/views/admin.php:464
+msgid "This will recheck vote count"
+msgstr ""
+
+#: ../admin/views/admin.php:467
+msgid "Recount favorites"
+msgstr ""
+
+#: ../admin/views/admin.php:468
+msgid "This will recheck favorite count"
+msgstr ""
+
+#: ../admin/views/admin.php:471
+msgid "Recount flag"
+msgstr ""
+
+#: ../admin/views/admin.php:472
+msgid "This will recheck flag count"
+msgstr ""
+
+#: ../admin/views/admin.php:475
+msgid "Recount close"
+msgstr ""
+
+#: ../admin/views/admin.php:476
+msgid "This will recheck close count"
+msgstr ""
+
+#: ../admin/views/install.php:5
+msgid "Question marked as open for discussion"
+msgstr ""
+
+#: ../admin/views/install.php:6
+msgid "Question marked as closed"
+msgstr ""
+
+#: ../admin/views/install.php:7
+msgid "Question marked as solved"
+msgstr ""
+
+#: ../admin/views/install.php:8
+msgid "Question marked as duplicate"
+msgstr ""
+
+#: ../admin/views/install.php:58
+msgid "AnsPress Installation"
+msgstr ""
+
+#: ../admin/views/install.php:63
+msgid "Start installation"
+msgstr ""
+
+#: ../admin/views/install.php:64
+msgid ""
+"For your convenience, we have created this auto installer. You must complete "
+"this step for proper working of anspress."
+msgstr ""
+
+#: ../admin/views/install.php:67
+msgid "Check base page"
+msgstr ""
+
+#: ../admin/views/install.php:71
+msgid ""
+"WARNING: All content of selected page will be removed and replaced with "
+"[anspress] shortcode."
+msgstr ""
+
+#: ../admin/views/install.php:72 ../admin/views/install.php:96
+#: ../admin/views/install.php:103 ../admin/views/install.php:110
+msgid "OK! Continue"
+msgstr ""
+
+#: ../admin/views/install.php:76
+msgid "Default Values"
+msgstr ""
+
+#: ../admin/views/install.php:78
+msgid "Assign default values."
+msgstr ""
+
+#: ../admin/views/install.php:87
+msgid "Default Rank"
+msgstr ""
+
+#: ../admin/views/install.php:95
+msgid "You can later edit and customize this default options"
+msgstr ""
+
+#: ../admin/views/install.php:100
+msgid "Check data tables"
+msgstr ""
+
+#: ../admin/views/install.php:102
+msgid "This step will check all data tables of AnsPress."
+msgstr ""
+
+#: ../admin/views/install.php:107
+msgid "Check rewrite rules"
+msgstr ""
+
+#: ../admin/views/install.php:109
+msgid "This step will check rewrite rules of AnsPress."
+msgstr ""
+
+#: ../admin/views/install.php:122
+msgid "Click here finish installation."
+msgstr ""
+
+#: ../admin/views/install.php:123
+msgid "Finish"
+msgstr ""
+
+#: ../admin/views/install.php:127
+msgid "Escape installation"
+msgstr ""
+
+#: ../includes/anspress-ajax.php:97 ../includes/anspress-ajax.php:150
+#: ../includes/anspress-ajax.php:178 ../includes/anspress-ajax.php:206
+#: ../includes/anspress-ajax.php:234
+#, php-format
+msgid "Checked %s questions."
+msgstr ""
+
+#: ../includes/anspress-ajax.php:99 ../includes/anspress-ajax.php:152
+#: ../includes/anspress-ajax.php:180 ../includes/anspress-ajax.php:208
+#: ../includes/anspress-ajax.php:236
+msgid "All questions looks fine."
+msgstr ""
+
+#: ../includes/anspress-ajax.php:122
+#, php-format
+msgid "Checked %s answers."
+msgstr ""
+
+#: ../includes/anspress-ajax.php:124
+msgid "All answers looks fine."
+msgstr ""
+
+#: ../includes/anspress-ajax.php:261 ../includes/anspress-form.php:1324
+msgid "Create new tag"
+msgstr ""
+
+#: ../includes/anspress-ajax.php:265
+msgid "No tags found"
+msgstr ""
+
+#: ../includes/anspress-ajax.php:267
+msgid "No related tags found"
+msgstr ""
+
+#: ../includes/anspress-ajax.php:284
+msgid "Uselected the answer"
+msgstr ""
+
+#: ../includes/anspress-ajax.php:290
+msgid "Thank you for awarding best answer"
+msgstr ""
+
+#: ../includes/anspress-ajax.php:294 ../includes/anspress-vote.php:336
+#: ../includes/anspress-vote.php:598
+msgid "Please try again"
+msgstr ""
+
+#: ../includes/anspress-ajax.php:311 ../includes/anspress-form.php:385
+#: ../includes/anspress-form.php:912
+msgid "1 Answer"
+msgstr ""
+
+#: ../includes/anspress-ajax.php:315
+msgid "No related questions found"
+msgstr ""
+
+#: ../includes/anspress-badges.php:185
+msgid "Gold"
+msgstr ""
+
+#: ../includes/anspress-badges.php:186
+msgid "Silver"
+msgstr ""
+
+#: ../includes/anspress-badges.php:187
+msgid "Bronze"
+msgstr ""
+
+#: ../includes/anspress-badges.php:258
+msgid "Autobiographer"
+msgstr ""
+
+#: ../includes/anspress-badges.php:259
+msgid "Completed all user profile fields"
+msgstr ""
+
+#: ../includes/anspress-badges.php:267
+msgid "Photogenic"
+msgstr ""
+
+#: ../includes/anspress-badges.php:268
+msgid "Uploaded an avatar and cover image"
+msgstr ""
+
+#: ../includes/anspress-badges.php:276
+msgid "Nice Question"
+msgstr ""
+
+#: ../includes/anspress-badges.php:277 ../includes/anspress-badges.php:286
+#: ../includes/anspress-badges.php:295
+#, php-format
+msgid "Question score of %d or more"
+msgstr ""
+
+#: ../includes/anspress-badges.php:285
+msgid "Good Question"
+msgstr ""
+
+#: ../includes/anspress-badges.php:294
+msgid "Great Question"
+msgstr ""
+
+#: ../includes/anspress-badges.php:303
+msgid "Popular Question"
+msgstr ""
+
+#: ../includes/anspress-badges.php:304 ../includes/anspress-badges.php:313
+#, php-format
+msgid "Asked a question with %d views "
+msgstr ""
+
+#: ../includes/anspress-badges.php:312
+msgid "Notable Question"
+msgstr ""
+
+#: ../includes/anspress-badges.php:321
+msgid "Famous Question"
+msgstr ""
+
+#: ../includes/anspress-badges.php:322
+#, php-format
+msgid "Asked a question with %d views"
+msgstr ""
+
+#: ../includes/anspress-badges.php:330
+msgid "Favorite Question"
+msgstr ""
+
+#: ../includes/anspress-badges.php:331 ../includes/anspress-badges.php:340
+#, php-format
+msgid "Question favorited by %d users"
+msgstr ""
+
+#: ../includes/anspress-badges.php:339
+msgid "Stellar Question"
+msgstr ""
+
+#: ../includes/anspress-badges.php:348
+msgid "Scholar"
+msgstr ""
+
+#: ../includes/anspress-badges.php:349
+msgid "Asked a question and accepted an answer"
+msgstr ""
+
+#: ../includes/anspress-badges.php:357
+msgid "Student"
+msgstr ""
+
+#: ../includes/anspress-badges.php:358
+#, php-format
+msgid "Asked first question with score of %d or more"
+msgstr ""
+
+#: ../includes/anspress-badges.php:366
+msgid "Tumbleweed"
+msgstr ""
+
+#: ../includes/anspress-badges.php:367
+msgid ""
+"Asked a question with no votes, no answers, no comments, and low views for a "
+"week"
+msgstr ""
+
+#: ../includes/anspress-categories.php:46
+msgid "Question Categories"
+msgstr ""
+
+#: ../includes/anspress-categories.php:48
+msgid "All Categories"
+msgstr ""
+
+#: ../includes/anspress-categories.php:49
+msgid "Add New Category"
+msgstr ""
+
+#: ../includes/anspress-categories.php:50
+msgid "Edit Category"
+msgstr ""
+
+#: ../includes/anspress-categories.php:51
+msgid "New Category"
+msgstr ""
+
+#: ../includes/anspress-categories.php:52
+msgid "View Category"
+msgstr ""
+
+#: ../includes/anspress-categories.php:53
+msgid "Search Category"
+msgstr ""
+
+#: ../includes/anspress-categories.php:54 ../includes/anspress-labels.php:83
+#: ../includes/anspress-tags.php:54
+msgid "Nothing Found"
+msgstr ""
+
+#: ../includes/anspress-categories.php:55 ../includes/anspress-labels.php:84
+#: ../includes/anspress-tags.php:55
+msgid "Nothing found in Trash"
+msgstr ""
+
+#: ../includes/anspress-categories.php:123 ../includes/anspress-posts.php:100
+#: ../includes/anspress-posts.php:102 ../includes/anspress-tags.php:123
+#: ../includes/anspress-user.php:456 ../theme/default/user-profile.php:23
+#: ../widgets/questions.php:83
+msgid "Questions"
+msgstr ""
+
+#: ../includes/anspress-form.php:144
+#, php-format
+msgid "Question title must have %d letters or more."
+msgstr ""
+
+#: ../includes/anspress-form.php:148
+#, php-format
+msgid "Question content must have %d letters or more."
+msgstr ""
+
+#: ../includes/anspress-form.php:153
+msgid "You must select a category."
+msgstr ""
+
+#: ../includes/anspress-form.php:157
+msgid "You must add at least one tag."
+msgstr ""
+
+#: ../includes/anspress-form.php:164
+#, php-format
+msgid "Maximum tags limit for a question is %d"
+msgstr ""
+
+#: ../includes/anspress-form.php:192
+msgid "Question not submitted, please check the form fields."
+msgstr ""
+
+#: ../includes/anspress-form.php:247
+msgid "Question submitted successfully"
+msgstr ""
+
+#: ../includes/anspress-form.php:285
+#, php-format
+msgid "Your answer must have %d letters or more."
+msgstr ""
+
+#: ../includes/anspress-form.php:308
+msgid "Answer not submitted, please check the form fields."
+msgstr ""
+
+#: ../includes/anspress-form.php:396
+msgid "Answer submitted successfully!"
+msgstr ""
+
+#: ../includes/anspress-form.php:410
+msgid "Please try again, answer submission failed!"
+msgstr ""
+
+#: ../includes/anspress-form.php:433
+msgid "Question not updated, please check the form fields."
+msgstr ""
+
+#: ../includes/anspress-form.php:470
+msgid "Question updated successfully"
+msgstr ""
+
+#: ../includes/anspress-form.php:495
+msgid "Answer not updated, please check the form fields."
+msgstr ""
+
+#: ../includes/anspress-form.php:512
+msgid "You do not have permission to edit this answer."
+msgstr ""
+
+#: ../includes/anspress-form.php:541
+msgid "Answer updated successfully"
+msgstr ""
+
+#: ../includes/anspress-form.php:558
+msgid "Submit"
+msgstr ""
+
+#: ../includes/anspress-form.php:562 ../includes/anspress-form.php:610
+#: ../includes/anspress-form.php:904
+msgid "No Permission"
+msgstr ""
+
+#: ../includes/anspress-form.php:572
+msgid "Respond to the post."
+msgstr ""
+
+#: ../includes/anspress-form.php:599
+msgid "Comment submitted successfully"
+msgstr ""
+
+#: ../includes/anspress-form.php:619
+msgid "Save"
+msgstr ""
+
+#: ../includes/anspress-form.php:632
+msgid "You do not ahve permission to edit this comment."
+msgstr ""
+
+#: ../includes/anspress-form.php:649
+msgid "Comment updated successfully"
+msgstr ""
+
+#: ../includes/anspress-form.php:651 ../includes/anspress-form.php:654
+msgid "Comment not updated, please retry"
+msgstr ""
+
+#: ../includes/anspress-form.php:662
+msgid "You do not have permission to delete this comment"
+msgstr ""
+
+#: ../includes/anspress-form.php:669
+msgid "Comment deleted successfully"
+msgstr ""
+
+#: ../includes/anspress-form.php:744 ../includes/anspress-form.php:814
+msgid "Question in one sentence"
+msgstr ""
+
+#: ../includes/anspress-form.php:909
+msgid "Question deleted successfully."
+msgstr ""
+
+#: ../includes/anspress-form.php:920
+msgid "Answer deleted successfully."
+msgstr ""
+
+#: ../includes/anspress-form.php:939 ../includes/anspress-form.php:945
+msgid "Form loaded."
+msgstr ""
+
+#: ../includes/anspress-form.php:947
+msgid "You do not have permission to edit this question."
+msgstr ""
+
+#: ../includes/anspress-form.php:950
+msgid "Something went wrong, please try again."
+msgstr ""
+
+#: ../includes/anspress-form.php:963 ../includes/anspress-form.php:993
+#: ../includes/anspress-form.php:1251 ../includes/anspress-form.php:1276
+#: ../theme/default/login.php:3 ../theme/default/login.php:32
+msgid "Login"
+msgstr ""
+
+#: ../includes/anspress-form.php:974
+msgid "Sign up"
+msgstr ""
+
+#: ../includes/anspress-form.php:990
+msgid "Quickly login or sign up to continue"
+msgstr ""
+
+#: ../includes/anspress-form.php:992
+msgid "Sign up or login"
+msgstr ""
+
+#: ../includes/anspress-form.php:993
+msgid "Click here to login if you already have an account on this site."
+msgstr ""
+
+#: ../includes/anspress-form.php:994
+msgid "Click here to signup if you do not have an account on this site."
+msgstr ""
+
+#: ../includes/anspress-form.php:994
+msgid "Sign Up"
+msgstr ""
+
+#: ../includes/anspress-form.php:1012
+msgid "Unable to login, please try again."
+msgstr ""
+
+#: ../includes/anspress-form.php:1015
+msgid "Successfully logged in."
+msgstr ""
+
+#: ../includes/anspress-form.php:1032
+msgid "Unable to create account, please try again."
+msgstr ""
+
+#: ../includes/anspress-form.php:1035
+msgid ""
+"Successfully created your account, please check your email for password."
+msgstr ""
+
+#: ../includes/anspress-form.php:1053
+msgid "Unable to create tag, please try again."
+msgstr ""
+
+#: ../includes/anspress-form.php:1056
+msgid "Successfully created a tag."
+msgstr ""
+
+#: ../includes/anspress-form.php:1063
+msgid "Unable to load form, please try again."
+msgstr ""
+
+#: ../includes/anspress-form.php:1065
+msgid "Successfully loaded form."
+msgstr ""
+
+#: ../includes/anspress-form.php:1092 ../includes/anspress-form.php:1120
+#: ../includes/anspress-form.php:1210 ../theme/default/answer-form.php:7
+msgid "Problem submitting form, please recheck form"
+msgstr ""
+
+#: ../includes/anspress-form.php:1143
+msgid "Please enter a title"
+msgstr ""
+
+#: ../includes/anspress-form.php:1148
+msgid "Please enter content of question"
+msgstr ""
+
+#: ../includes/anspress-form.php:1159
+msgid "Please enter some content"
+msgstr ""
+
+#: ../includes/anspress-form.php:1175
+msgid "Ask Question"
+msgstr ""
+
+#: ../includes/anspress-form.php:1183
+msgid "Submit Answer"
+msgstr ""
+
+#: ../includes/anspress-form.php:1193
+msgid "Update question"
+msgstr ""
+
+#: ../includes/anspress-form.php:1205
+msgid "You don't have permission to edit this answer."
+msgstr ""
+
+#: ../includes/anspress-form.php:1217 ../includes/anspress-posts.php:158
+#: ../includes/anspress-theme.php:149
+msgid "Edit answer"
+msgstr ""
+
+#: ../includes/anspress-form.php:1231
+msgid "Update Answer"
+msgstr ""
+
+#: ../includes/anspress-form.php:1239 ../includes/anspress-form.php:1241
+#: ../includes/anspress-form.php:1264 ../includes/anspress-user.php:138
+#: ../theme/default/login.php:7 ../theme/default/login.php:9
+#: ../theme/default/login.php:48 ../theme/default/login.php:50
+msgid "Username"
+msgstr ""
+
+#: ../includes/anspress-form.php:1245 ../includes/anspress-user.php:226
+msgid "Email"
+msgstr ""
+
+#: ../includes/anspress-form.php:1247
+msgid "name@domain.com"
+msgstr ""
+
+#: ../includes/anspress-form.php:1266
+msgid "Enter your username"
+msgstr ""
+
+#: ../includes/anspress-form.php:1270 ../includes/anspress-user.php:232
+#: ../theme/default/login.php:13 ../theme/default/login.php:15
+msgid "Password"
+msgstr ""
+
+#: ../includes/anspress-form.php:1272
+msgid "Enter your password"
+msgstr ""
+
+#: ../includes/anspress-form.php:1288
+msgid "You don't have permission to access this page."
+msgstr ""
+
+#: ../includes/anspress-form.php:1301
+msgid "Trying to cheat? huh!."
+msgstr ""
+
+#: ../includes/anspress-form.php:1309
+msgid "Edit question"
+msgstr ""
+
+#: ../includes/anspress-form.php:1325
+msgid "Enter tag"
+msgstr ""
+
+#: ../includes/anspress-form.php:1326
+msgid "Description of tag."
+msgstr ""
+
+#: ../includes/anspress-form.php:1327
+msgid "Create tag"
+msgstr ""
+
+#: ../includes/anspress-functions.php:162
+msgid "Please login or register to continue this action."
+msgstr ""
+
+#: ../includes/anspress-functions.php:230
+msgid "Add comment"
+msgstr ""
+
+#: ../includes/anspress-functions.php:230 ../includes/anspress-history.php:107
+#: ../includes/anspress-points.php:370
+msgid "Comment"
+msgstr ""
+
+#: ../includes/anspress-functions.php:239 ../theme/default/answer-list.php:18
+#: ../theme/default/answer.php:26
+msgid "Edit this question"
+msgstr ""
+
+#: ../includes/anspress-functions.php:251
+msgid "Edit Answer"
+msgstr ""
+
+#: ../includes/anspress-functions.php:423
+msgid "<span>1 Answer</span>"
+msgstr ""
+
+#: ../includes/anspress-functions.php:425
+#: ../includes/anspress-functions.php:442
+#: ../includes/anspress-functions.php:470
+#: ../includes/anspress-functions.php:743 ../widgets/questions.php:138
+msgid "Newest"
+msgstr ""
+
+#: ../includes/anspress-functions.php:426
+#: ../includes/anspress-functions.php:443
+#: ../includes/anspress-functions.php:474 ../widgets/questions.php:142
+msgid "Oldest"
+msgstr ""
+
+#: ../includes/anspress-functions.php:427
+#: ../includes/anspress-functions.php:444
+#: ../includes/anspress-functions.php:471 ../widgets/questions.php:139
+msgid "Voted"
+msgstr ""
+
+#: ../includes/anspress-functions.php:472
+msgid "Most answers"
+msgstr ""
+
+#: ../includes/anspress-functions.php:473 ../widgets/questions.php:141
+msgid "Unanswered"
+msgstr ""
+
+#: ../includes/anspress-functions.php:478 ../includes/anspress-labels.php:76
+#: ../includes/anspress-labels.php:238
+msgid "Label"
+msgstr ""
+
+#: ../includes/anspress-functions.php:511
+#: ../includes/anspress-functions.php:655
+msgid "Discussion"
+msgstr ""
+
+#: ../includes/anspress-functions.php:512
+msgid "History"
+msgstr ""
+
+#: ../includes/anspress-functions.php:513
+msgid "Related"
+msgstr ""
+
+#: ../includes/anspress-functions.php:557
+msgid "Select this answer as best"
+msgstr ""
+
+#: ../includes/anspress-functions.php:560
+msgid "Unselect this answer"
+msgstr ""
+
+#: ../includes/anspress-functions.php:635
+msgid "&laquo; Previous"
+msgstr ""
+
+#: ../includes/anspress-functions.php:636
+msgid "Next &raquo;"
+msgstr ""
+
+#: ../includes/anspress-functions.php:645
+#, php-format
+msgid "Page %d of %d"
+msgstr ""
+
+#: ../includes/anspress-history.php:105
+msgid "Asked"
+msgstr ""
+
+#: ../includes/anspress-history.php:108
+msgid "Comment on answer"
+msgstr ""
+
+#: ../includes/anspress-history.php:109
+msgid "Question edited"
+msgstr ""
+
+#: ../includes/anspress-history.php:110
+msgid "Answer edited"
+msgstr ""
+
+#: ../includes/anspress-history.php:111
+msgid "Comment edited"
+msgstr ""
+
+#: ../includes/anspress-history.php:170
+#, php-format
+msgid "%s by %s"
+msgstr ""
+
+#: ../includes/anspress-history.php:173
+#, php-format
+msgid "Asked by %s"
+msgstr ""
+
+#: ../includes/anspress-labels.php:75
+msgid "Question Label"
+msgstr ""
+
+#: ../includes/anspress-labels.php:77
+msgid "All Label"
+msgstr ""
+
+#: ../includes/anspress-labels.php:78
+msgid "Add New Label"
+msgstr ""
+
+#: ../includes/anspress-labels.php:79
+msgid "Edit Label"
+msgstr ""
+
+#: ../includes/anspress-labels.php:80
+msgid "New Label"
+msgstr ""
+
+#: ../includes/anspress-labels.php:81
+msgid "View Label"
+msgstr ""
+
+#: ../includes/anspress-labels.php:82
+msgid "Search Label"
+msgstr ""
+
+#: ../includes/anspress-labels.php:104 ../includes/anspress-labels.php:124
+msgid "Label color"
+msgstr ""
+
+#: ../includes/anspress-labels.php:152
+msgid "Color"
+msgstr ""
+
+#: ../includes/anspress-labels.php:176
+msgid "Question label updated."
+msgstr ""
+
+#: ../includes/anspress-labels.php:178
+msgid "No label selected"
+msgstr ""
+
+#: ../includes/anspress-labels.php:181
+msgid "Unable to set labels, please try again"
+msgstr ""
+
+#: ../includes/anspress-labels.php:244
+msgid "Done"
+msgstr ""
+
+#: ../includes/anspress-labels.php:245 ../includes/anspress-vote.php:238
+#: ../includes/anspress-vote.php:247
+msgid "Close"
+msgstr ""
+
+#: ../includes/anspress-main.php:293
+msgid "Rewrite rules are missing"
+msgstr ""
+
+#: ../includes/anspress-main.php:293
+msgid "Click here to fix"
+msgstr ""
+
+#: ../includes/anspress-messages.php:53
+msgid "New message"
+msgstr ""
+
+#: ../includes/anspress-messages.php:63 ../includes/anspress-messages.php:74
+#: ../includes/anspress-messages.php:106 ../includes/anspress-messages.php:125
+#: ../includes/anspress-messages.php:163
+msgid "Something went wrong, message not sent."
+msgstr ""
+
+#: ../includes/anspress-messages.php:68 ../includes/anspress-messages.php:117
+msgid "Message sent successfully."
+msgstr ""
+
+#: ../includes/anspress-messages.php:85
+msgid "You must add at least once recipient"
+msgstr ""
+
+#: ../includes/anspress-messages.php:90
+msgid "Message cannot be left blank."
+msgstr ""
+
+#: ../includes/anspress-messages.php:97
+msgid "Some fields empty, please check message form."
+msgstr ""
+
+#: ../includes/anspress-messages.php:142
+msgid "Conversation loaded"
+msgstr ""
+
+#: ../includes/anspress-messages.php:148
+msgid "Failed to load conversation"
+msgstr ""
+
+#: ../includes/anspress-messages.php:201
+msgid "More conversations loaded"
+msgstr ""
+
+#: ../includes/anspress-messages.php:207
+msgid "Failed to load conversations."
+msgstr ""
+
+#: ../includes/anspress-messages.php:224
+msgid "Something went wrong! cannot search for conversations."
+msgstr ""
+
+#: ../includes/anspress-messages.php:238
+msgid "Message edit form loaded."
+msgstr ""
+
+#: ../includes/anspress-messages.php:241 ../includes/anspress-messages.php:376
+#: ../includes/anspress-messages.php:675
+msgid "Type your message"
+msgstr ""
+
+#: ../includes/anspress-messages.php:243 ../includes/anspress-messages.php:378
+#: ../includes/anspress-messages.php:676
+msgid "Send"
+msgstr ""
+
+#: ../includes/anspress-messages.php:252 ../includes/anspress-messages.php:295
+msgid "You do not have permission to edit."
+msgstr ""
+
+#: ../includes/anspress-messages.php:258 ../includes/anspress-messages.php:301
+msgid "Something went wrong! load form."
+msgstr ""
+
+#: ../includes/anspress-messages.php:284
+msgid "Message updated successfully."
+msgstr ""
+
+#: ../includes/anspress-messages.php:290
+msgid "Message not updated"
+msgstr ""
+
+#: ../includes/anspress-messages.php:316
+msgid "Message delete successfully."
+msgstr ""
+
+#: ../includes/anspress-messages.php:321
+msgid "You do not have permission to delete."
+msgstr ""
+
+#: ../includes/anspress-messages.php:327
+msgid "Something went wrong! cannot delete message."
+msgstr ""
+
+#: ../includes/anspress-messages.php:373
+msgid "Type the name of user"
+msgstr ""
+
+#: ../includes/anspress-messages.php:531
+msgid "more"
+msgstr ""
+
+#: ../includes/anspress-messages.php:575 ../includes/anspress-messages.php:628
+#, php-format
+msgid "%s ago"
+msgstr ""
+
+#: ../includes/anspress-messages.php:588
+msgid "There is no more messages to load"
+msgstr ""
+
+#: ../includes/anspress-messages.php:598
+msgid "Edit message"
+msgstr ""
+
+#: ../includes/anspress-messages.php:599
+msgid "Delete message"
+msgstr ""
+
+#: ../includes/anspress-messages.php:654
+msgid "Participants"
+msgstr ""
+
+#: ../includes/anspress-messages.php:660 ../includes/anspress-theme.php:174
+msgid "You"
+msgstr ""
+
+#: ../includes/anspress-messages.php:686
+msgid "Message"
+msgstr ""
+
+#: ../includes/anspress-participants.php:87
+msgid "<span>1</span> Participant"
+msgstr ""
+
+#: ../includes/anspress-points.php:335
+msgid "New Registration"
+msgstr ""
+
+#: ../includes/anspress-points.php:336
+msgid "Points given to newly registered user."
+msgstr ""
+
+#: ../includes/anspress-points.php:342
+msgid "Uploading avatar"
+msgstr ""
+
+#: ../includes/anspress-points.php:343
+msgid "Awarded for uploading an profile picture."
+msgstr ""
+
+#: ../includes/anspress-points.php:349
+msgid "Completing profile"
+msgstr ""
+
+#: ../includes/anspress-points.php:350
+msgid "Awarded for completing profile fields."
+msgstr ""
+
+#: ../includes/anspress-points.php:357
+msgid "For asking a question."
+msgstr ""
+
+#: ../includes/anspress-points.php:364
+msgid "For answering a question."
+msgstr ""
+
+#: ../includes/anspress-points.php:371
+msgid "For new comment."
+msgstr ""
+
+#: ../includes/anspress-points.php:377
+msgid "Receive upvote on question"
+msgstr ""
+
+#: ../includes/anspress-points.php:378
+msgid "When user receive an upvote on question"
+msgstr ""
+
+#: ../includes/anspress-points.php:384
+msgid "Receive upvote on answer"
+msgstr ""
+
+#: ../includes/anspress-points.php:385
+msgid "When user receive an upvote on answer"
+msgstr ""
+
+#: ../includes/anspress-points.php:391
+msgid "Receive down vote on question"
+msgstr ""
+
+#: ../includes/anspress-points.php:392
+msgid "When user receive an down vote on question"
+msgstr ""
+
+#: ../includes/anspress-points.php:398
+msgid "Receive down vote on answer"
+msgstr ""
+
+#: ../includes/anspress-points.php:399
+msgid "When user receive an down vote on answer"
+msgstr ""
+
+#: ../includes/anspress-points.php:405
+msgid "Up voted questions"
+msgstr ""
+
+#: ../includes/anspress-points.php:406
+msgid "When user upvote others question"
+msgstr ""
+
+#: ../includes/anspress-points.php:412
+msgid "Up voted answers"
+msgstr ""
+
+#: ../includes/anspress-points.php:413
+msgid "When user upvote others answer"
+msgstr ""
+
+#: ../includes/anspress-points.php:419
+msgid "Down voted questions"
+msgstr ""
+
+#: ../includes/anspress-points.php:420
+msgid "When user down vote others question"
+msgstr ""
+
+#: ../includes/anspress-points.php:426
+msgid "Down voted answers"
+msgstr ""
+
+#: ../includes/anspress-points.php:427
+msgid "When user down vote others answers"
+msgstr ""
+
+#: ../includes/anspress-points.php:434
+msgid "Best answer"
+msgstr ""
+
+#: ../includes/anspress-points.php:435
+msgid "When user's answer get selected as best"
+msgstr ""
+
+#: ../includes/anspress-points.php:441
+msgid "Selecting answer"
+msgstr ""
+
+#: ../includes/anspress-points.php:442
+msgid "When user user select an answer."
+msgstr ""
+
+#: ../includes/anspress-posts.php:103
+msgid "Parent Question:"
+msgstr ""
+
+#: ../includes/anspress-posts.php:105
+msgid "View Question"
+msgstr ""
+
+#: ../includes/anspress-posts.php:106
+msgid "Add New Question"
+msgstr ""
+
+#: ../includes/anspress-posts.php:108
+msgid "Edit Question"
+msgstr ""
+
+#: ../includes/anspress-posts.php:109
+msgid "Update Question"
+msgstr ""
+
+#: ../includes/anspress-posts.php:110
+msgid "Search question"
+msgstr ""
+
+#: ../includes/anspress-posts.php:111
+msgid "No question found"
+msgstr ""
+
+#: ../includes/anspress-posts.php:112
+msgid "No questions found in Trash"
+msgstr ""
+
+#: ../includes/anspress-posts.php:117
+msgid "question"
+msgstr ""
+
+#: ../includes/anspress-posts.php:153
+msgid "Parent Answer:"
+msgstr ""
+
+#: ../includes/anspress-posts.php:156
+msgid "Add New Answer"
+msgstr ""
+
+#: ../includes/anspress-posts.php:157
+msgid "New answer"
+msgstr ""
+
+#: ../includes/anspress-posts.php:159
+msgid "Update answer"
+msgstr ""
+
+#: ../includes/anspress-posts.php:160
+msgid "Search answer"
+msgstr ""
+
+#: ../includes/anspress-posts.php:161
+msgid "No answer found"
+msgstr ""
+
+#: ../includes/anspress-posts.php:162
+msgid "No answer found in Trash"
+msgstr ""
+
+#: ../includes/anspress-posts.php:167
+msgid "answer"
+msgstr ""
+
+#: ../includes/anspress-posts.php:210
+msgid "Asker"
+msgstr ""
+
+#: ../includes/anspress-posts.php:215 ../theme/default/content-list.php:23
+#: ../theme/default/questions-widget.php:51
+msgid "Ans"
+msgstr ""
+
+#: ../includes/anspress-posts.php:216 ../includes/anspress-posts.php:232
+msgid "Comments"
+msgstr ""
+
+#: ../includes/anspress-posts.php:217 ../includes/anspress-posts.php:233
+msgid "Vote"
+msgstr ""
+
+#: ../includes/anspress-posts.php:219 ../includes/anspress-posts.php:235
+msgid "Date"
+msgstr ""
+
+#: ../includes/anspress-posts.php:229
+msgid "Answerer"
+msgstr ""
+
+#: ../includes/anspress-posts.php:231
+msgid "Content"
+msgstr ""
+
+#: ../includes/anspress-posts.php:286
+msgid "No Tags"
+msgstr ""
+
+#: ../includes/anspress-posts.php:302 ../includes/anspress-posts.php:310
+msgid "answers"
+msgstr ""
+
+#: ../includes/anspress-posts.php:372
+msgid "Restore this item from the Trash"
+msgstr ""
+
+#: ../includes/anspress-posts.php:375
+msgid "Move this item to the Trash"
+msgstr ""
+
+#: ../includes/anspress-posts.php:378
+msgid "Delete this item permanently"
+msgstr ""
+
+#: ../includes/anspress-posts.php:378
+msgid "Delete Permanently"
+msgstr ""
+
+#: ../includes/anspress-posts.php:381 ../includes/anspress-posts.php:390
+#, php-format
+msgid "Preview &#8220;%s&#8221;"
+msgstr ""
+
+#: ../includes/anspress-posts.php:390
+msgid "Preview"
+msgstr ""
+
+#: ../includes/anspress-posts.php:393
+#, php-format
+msgid "View &#8220;%s&#8221; question"
+msgstr ""
+
+#: ../includes/anspress-posts.php:443
+msgid "Please fill parent question field, Answer was not saved!"
+msgstr ""
+
+#: ../includes/anspress-ranks.php:65 ../includes/anspress-ranks.php:67
+msgid "Ranks"
+msgstr ""
+
+#: ../includes/anspress-ranks.php:66 ../includes/anspress-ranks.php:132
+msgid "Rank"
+msgstr ""
+
+#: ../includes/anspress-ranks.php:68
+msgid "Search ranks"
+msgstr ""
+
+#: ../includes/anspress-ranks.php:69
+msgid "Popular ranks"
+msgstr ""
+
+#: ../includes/anspress-ranks.php:70
+msgid "All ranks"
+msgstr ""
+
+#: ../includes/anspress-ranks.php:71
+msgid "Edit rank"
+msgstr ""
+
+#: ../includes/anspress-ranks.php:72
+msgid "Update rank"
+msgstr ""
+
+#: ../includes/anspress-ranks.php:73
+msgid "Add new rank"
+msgstr ""
+
+#: ../includes/anspress-ranks.php:74
+msgid "New rank name"
+msgstr ""
+
+#: ../includes/anspress-ranks.php:75
+msgid "Separate rank with commas"
+msgstr ""
+
+#: ../includes/anspress-ranks.php:76
+msgid "Add or remove ranks"
+msgstr ""
+
+#: ../includes/anspress-ranks.php:77
+msgid "Choose from the most popular ranks"
+msgstr ""
+
+#: ../includes/anspress-ranks.php:137
+msgid "Select rank"
+msgstr ""
+
+#: ../includes/anspress-shortcodes.php:207
+msgid "User not found"
+msgstr ""
+
+#: ../includes/anspress-tags.php:46
+msgid "Question Tags"
+msgstr ""
+
+#: ../includes/anspress-tags.php:47
+msgid "Tag"
+msgstr ""
+
+#: ../includes/anspress-tags.php:48
+msgid "All Tags"
+msgstr ""
+
+#: ../includes/anspress-tags.php:49
+msgid "Add New Tag"
+msgstr ""
+
+#: ../includes/anspress-tags.php:50
+msgid "Edit Tag"
+msgstr ""
+
+#: ../includes/anspress-tags.php:51
+msgid "New Tag"
+msgstr ""
+
+#: ../includes/anspress-tags.php:52
+msgid "View Tag"
+msgstr ""
+
+#: ../includes/anspress-tags.php:53
+msgid "Search Tag"
+msgstr ""
+
+#: ../includes/anspress-theme.php:142
+#, php-format
+msgid "Question tag: %s"
+msgstr ""
+
+#: ../includes/anspress-theme.php:145
+#, php-format
+msgid "Question category: %s"
+msgstr ""
+
+#: ../includes/anspress-theme.php:147
+msgid "Edit question "
+msgstr ""
+
+#: ../includes/anspress-theme.php:178
+msgid "Your profile"
+msgstr ""
+
+#: ../includes/anspress-theme.php:180
+#, php-format
+msgid "%s's profile"
+msgstr ""
+
+#: ../includes/anspress-theme.php:182
+#, php-format
+msgid "Questions asked by %s"
+msgstr ""
+
+#: ../includes/anspress-theme.php:184
+#, php-format
+msgid "Answers posted by %s"
+msgstr ""
+
+#: ../includes/anspress-theme.php:187
+msgid "Your activity"
+msgstr ""
+
+#: ../includes/anspress-theme.php:189 ../includes/anspress-theme.php:206
+#, php-format
+msgid "%s's activity"
+msgstr ""
+
+#: ../includes/anspress-theme.php:191
+#, php-format
+msgid "Favorites questions of %s"
+msgstr ""
+
+#: ../includes/anspress-theme.php:193
+#, php-format
+msgid "Users following %s"
+msgstr ""
+
+#: ../includes/anspress-theme.php:195
+#, php-format
+msgid "Users being followed by %s"
+msgstr ""
+
+#: ../includes/anspress-theme.php:197
+msgid "Edit your profile"
+msgstr ""
+
+#: ../includes/anspress-theme.php:199
+msgid "Your settings"
+msgstr ""
+
+#: ../includes/anspress-theme.php:201
+msgid "Your messages"
+msgstr ""
+
+#: ../includes/anspress-theme.php:204
+msgid "Your badges"
+msgstr ""
+
+#: ../includes/anspress-theme.php:213
+msgid "Page not found"
+msgstr ""
+
+#: ../includes/anspress-user.php:97
+msgid "Cover uploaded successfully."
+msgstr ""
+
+#: ../includes/anspress-user.php:102 ../includes/anspress-user.php:120
+msgid "Unable to upload cover."
+msgstr ""
+
+#: ../includes/anspress-user.php:116
+msgid "Avatar uploaded successfully."
+msgstr ""
+
+#: ../includes/anspress-user.php:134 ../widgets/categories.php:114
+msgid "Name"
+msgstr ""
+
+#: ../includes/anspress-user.php:136
+msgid "User name"
+msgstr ""
+
+#: ../includes/anspress-user.php:142
+msgid "First name"
+msgstr ""
+
+#: ../includes/anspress-user.php:144
+msgid "Your first name, i.e. Rahul"
+msgstr ""
+
+#: ../includes/anspress-user.php:148
+msgid "Last name"
+msgstr ""
+
+#: ../includes/anspress-user.php:150
+msgid "Your last name, i.e. Aryan"
+msgstr ""
+
+#: ../includes/anspress-user.php:154
+msgid "Nickname"
+msgstr ""
+
+#: ../includes/anspress-user.php:156
+msgid "Your nick name, i.e. nerdaryan"
+msgstr ""
+
+#: ../includes/anspress-user.php:160
+msgid "Display Name"
+msgstr ""
+
+#: ../includes/anspress-user.php:190
+msgid "About"
+msgstr ""
+
+#: ../includes/anspress-user.php:192
+msgid "About you"
+msgstr ""
+
+#: ../includes/anspress-user.php:197
+msgid "Contact Information"
+msgstr ""
+
+#: ../includes/anspress-user.php:199
+msgid "Website"
+msgstr ""
+
+#: ../includes/anspress-user.php:201
+msgid "http://open-wp.com"
+msgstr ""
+
+#: ../includes/anspress-user.php:205
+msgid "Facebook"
+msgstr ""
+
+#: ../includes/anspress-user.php:207
+msgid "i.e. http://facebook.com/openwp"
+msgstr ""
+
+#: ../includes/anspress-user.php:211
+msgid "Twitter"
+msgstr ""
+
+#: ../includes/anspress-user.php:213
+msgid "i.e. https://twitter.com/openwp"
+msgstr ""
+
+#: ../includes/anspress-user.php:217
+msgid "Google+"
+msgstr ""
+
+#: ../includes/anspress-user.php:219
+msgid "i.e. https://plus.google.com/+OpenwpCom"
+msgstr ""
+
+#: ../includes/anspress-user.php:224 ../includes/anspress-user.php:805
+msgid "Account"
+msgstr ""
+
+#: ../includes/anspress-user.php:228
+msgid "myemail@mydoamin.com"
+msgstr ""
+
+#: ../includes/anspress-user.php:234
+msgid "Your password"
+msgstr ""
+
+#: ../includes/anspress-user.php:238
+msgid "Repeat password"
+msgstr ""
+
+#: ../includes/anspress-user.php:240
+msgid "Repeat your password."
+msgstr ""
+
+#: ../includes/anspress-user.php:258
+msgid "Failed to update, please check form."
+msgstr ""
+
+#: ../includes/anspress-user.php:300
+msgid "Successfully updated your profile."
+msgstr ""
+
+#: ../includes/anspress-user.php:305
+msgid "Failed to save profile."
+msgstr ""
+
+#: ../includes/anspress-user.php:432 ../includes/anspress-user.php:433
+msgid "Anonymous"
+msgstr ""
+
+#: ../includes/anspress-user.php:454
+msgid "Profile"
+msgstr ""
+
+#: ../includes/anspress-user.php:455
+msgid "Messages"
+msgstr ""
+
+#: ../includes/anspress-user.php:459
+msgid "Favorites"
+msgstr ""
+
+#: ../includes/anspress-user.php:460 ../theme/default/content-user.php:15
+#: ../theme/default/user.php:19
+msgid "Followers"
+msgstr ""
+
+#: ../includes/anspress-user.php:461 ../theme/default/content-user.php:16
+#: ../theme/default/user.php:20
+msgid "Following"
+msgstr ""
+
+#: ../includes/anspress-user.php:462
+msgid "Edit Profile"
+msgstr ""
+
+#: ../includes/anspress-user.php:712
+msgid "You do not have access here"
+msgstr ""
+
+#: ../includes/anspress-user.php:752 ../includes/anspress-user.php:792
+msgid "Upload cover"
+msgstr ""
+
+#: ../includes/anspress-user.php:804
+msgid "About me"
+msgstr ""
+
+#: ../includes/anspress-user.php:804
+msgid "Edit your \"about me\" section"
+msgstr ""
+
+#: ../includes/anspress-user.php:805
+msgid "Edit your account information"
+msgstr ""
+
+#: ../includes/anspress-user.php:826
+msgid "Save profile"
+msgstr ""
+
+#: ../includes/anspress-user.php:874
+msgid "The passwords you entered do not match.  Your password was not updated."
+msgstr ""
+
+#: ../includes/anspress-vote.php:120
+msgid "Your vote has been removed"
+msgstr ""
+
+#: ../includes/anspress-vote.php:127
+msgid "Undo your vote first"
+msgstr ""
+
+#: ../includes/anspress-vote.php:142
+msgid "Thank you for voting"
+msgstr ""
+
+#: ../includes/anspress-vote.php:149
+msgid "Unable to process your vote, try again"
+msgstr ""
+
+#: ../includes/anspress-vote.php:156
+msgid "Please login for voting on question & answer"
+msgstr ""
+
+#: ../includes/anspress-vote.php:182 ../includes/anspress-vote.php:462
+msgid "Add to favorite list"
+msgstr ""
+
+#: ../includes/anspress-vote.php:184
+msgid "Removed question from your favorite list"
+msgstr ""
+
+#: ../includes/anspress-vote.php:195 ../includes/anspress-vote.php:462
+msgid "Remove from favorite list"
+msgstr ""
+
+#: ../includes/anspress-vote.php:196
+msgid "Added question to your favorite list"
+msgstr ""
+
+#: ../includes/anspress-vote.php:200 ../includes/anspress-vote.php:469
+msgid "You favorited this question"
+msgstr ""
+
+#: ../includes/anspress-vote.php:202 ../includes/anspress-vote.php:471
+#, php-format
+msgid "You and %s others favorited this question"
+msgstr ""
+
+#: ../includes/anspress-vote.php:204 ../includes/anspress-vote.php:473
+#, php-format
+msgid "%s people favorited this question"
+msgstr ""
+
+#: ../includes/anspress-vote.php:210
+msgid "Failed to process this action"
+msgstr ""
+
+#: ../includes/anspress-vote.php:218
+msgid "Please login for adding question to your favorite"
+msgstr ""
+
+#: ../includes/anspress-vote.php:238 ../includes/anspress-vote.php:508
+msgid "Vote for closing"
+msgstr ""
+
+#: ../includes/anspress-vote.php:238
+msgid "Your close request has been removed"
+msgstr ""
+
+#: ../includes/anspress-vote.php:247 ../includes/anspress-vote.php:508
+msgid "Undo your vote"
+msgstr ""
+
+#: ../includes/anspress-vote.php:247
+msgid "Your close request has been sent"
+msgstr ""
+
+#: ../includes/anspress-vote.php:252 ../includes/anspress-vote.php:303
+msgid "Something went wrong"
+msgstr ""
+
+#: ../includes/anspress-vote.php:259
+msgid "Please login for requesting closing this question."
+msgstr ""
+
+#: ../includes/anspress-vote.php:276 ../includes/anspress-vote.php:609
+msgid "Unfollow"
+msgstr ""
+
+#: ../includes/anspress-vote.php:277
+#, php-format
+msgid "Unfollow %s"
+msgstr ""
+
+#: ../includes/anspress-vote.php:278
+#, php-format
+msgid "You are now following %s"
+msgstr ""
+
+#: ../includes/anspress-vote.php:282 ../includes/anspress-vote.php:609
+msgid "Follow"
+msgstr ""
+
+#: ../includes/anspress-vote.php:283
+#, php-format
+msgid "Follow %s"
+msgstr ""
+
+#: ../includes/anspress-vote.php:284
+#, php-format
+msgid "You unfollowed %s"
+msgstr ""
+
+#: ../includes/anspress-vote.php:299
+msgid "Unable to process your request, please try again."
+msgstr ""
+
+#: ../includes/anspress-vote.php:321
+msgid "You already flagged this post"
+msgstr ""
+
+#: ../includes/anspress-vote.php:332 ../includes/anspress-vote.php:547
+msgid "You have flagged this post"
+msgstr ""
+
+#: ../includes/anspress-vote.php:332
+msgid "This post is notified to moderator. Thank you for helping us"
+msgstr ""
+
+#: ../includes/anspress-vote.php:443
+msgid "Up vote this post"
+msgstr ""
+
+#: ../includes/anspress-vote.php:447
+msgid "Down vote this post"
+msgstr ""
+
+#: ../includes/anspress-vote.php:511
+msgid "Close "
+msgstr ""
+
+#: ../includes/anspress-vote.php:547
+msgid "Flag this post"
+msgstr ""
+
+#: ../includes/anspress-vote.php:549
+msgid "Flag "
+msgstr ""
+
+#: ../includes/anspress-vote.php:564
+msgid "I am flagging this post because"
+msgstr ""
+
+#: ../includes/anspress-vote.php:582
+msgid "Other (needs moderator attention)"
+msgstr ""
+
+#: ../includes/anspress-vote.php:583
+msgid ""
+"This post needs a moderator's attention. Please describe exactly what's "
+"wrong. "
+msgstr ""
+
+#: ../includes/anspress-vote.php:589
+msgid "Flag post"
+msgstr ""
+
+#: ../theme/default/answer-list.php:10
+#, php-format
+msgid "<span class=\"when\">answered about %s ago</span>"
+msgstr ""
+
+#: ../theme/default/answer.php:12
+#, php-format
+msgid "%s <span class=\"when\">answered about %s ago</span>"
+msgstr ""
+
+#: ../theme/default/categories.php:21 ../widgets/categories.php:41
+msgid "Sub Categories"
+msgstr ""
+
+#: ../theme/default/categories.php:34
+msgid "Categories are disabled"
+msgstr ""
+
+#: ../theme/default/category.php:3
+#, php-format
+msgid "Category: %s"
+msgstr ""
+
+#: ../theme/default/category.php:3 ../theme/default/tag.php:3
+msgid "1 Question"
+msgstr ""
+
+#: ../theme/default/category.php:8 ../theme/default/tag.php:7
+msgid "-- No description --"
+msgstr ""
+
+#: ../theme/default/comments.php:16
+msgid "Comment navigation"
+msgstr ""
+
+#: ../theme/default/comments.php:17
+msgid "&larr; Older Comments"
+msgstr ""
+
+#: ../theme/default/comments.php:18
+msgid "Newer Comments &rarr;"
+msgstr ""
+
+#: ../theme/default/content-list.php:9 ../theme/default/part/question.php:14
+msgid "Featured post"
+msgstr ""
+
+#: ../theme/default/content-list.php:15
+#: ../theme/default/questions-widget.php:43
+msgid "Votes"
+msgstr ""
+
+#: ../theme/default/content-list.php:19
+msgid "Views"
+msgstr ""
+
+#: ../theme/default/content-list.php:39
+#: ../theme/default/questions-widget.php:21
+msgid "Answer is accepted"
+msgstr ""
+
+#: ../theme/default/content-list.php:43
+#: ../theme/default/questions-widget.php:27
+msgid "Last activity"
+msgstr ""
+
+#: ../theme/default/content-list.php:54
+#: ../theme/default/questions-widget.php:60
+msgid "Question category"
+msgstr ""
+
+#: ../theme/default/content-list.php:55
+#: ../theme/default/questions-widget.php:64
+msgid "Question tagged"
+msgstr ""
+
+#: ../theme/default/content-none.php:9
+msgid "No question asked yet!, be the first to ask a question."
+msgstr ""
+
+#: ../theme/default/content-none.php:11
+msgid "Ask question"
+msgstr ""
+
+#: ../theme/default/functions.php:45
+msgid "Password not matching"
+msgstr ""
+
+#: ../theme/default/functions.php:46
+msgid "Password length must be 6 or higher"
+msgstr ""
+
+#: ../theme/default/functions.php:47
+msgid "Not a valid email"
+msgstr ""
+
+#: ../theme/default/functions.php:48
+msgid "Username length must be 4 or higher"
+msgstr ""
+
+#: ../theme/default/functions.php:49
+msgid "Username not available"
+msgstr ""
+
+#: ../theme/default/functions.php:50
+msgid "Email already in use"
+msgstr ""
+
+#: ../theme/default/functions.php:51
+msgid "Loading"
+msgstr ""
+
+#: ../theme/default/functions.php:52
+msgid "Sending request"
+msgstr ""
+
+#: ../theme/default/functions.php:53
+msgid "Adding question to your favorites"
+msgstr ""
+
+#: ../theme/default/functions.php:54
+msgid "Sending your vote"
+msgstr ""
+
+#: ../theme/default/functions.php:55
+msgid "Requesting for closing this question"
+msgstr ""
+
+#: ../theme/default/functions.php:56
+msgid "Submitting request"
+msgstr ""
+
+#: ../theme/default/functions.php:57
+msgid "Loading comment form"
+msgstr ""
+
+#: ../theme/default/functions.php:58
+msgid "Sending your answer"
+msgstr ""
+
+#: ../theme/default/functions.php:59
+msgid "Sending your comment"
+msgstr ""
+
+#: ../theme/default/functions.php:60
+msgid "Deleting comment"
+msgstr ""
+
+#: ../theme/default/functions.php:61
+msgid "Updating comment"
+msgstr ""
+
+#: ../theme/default/functions.php:62
+msgid "Loading form"
+msgstr ""
+
+#: ../theme/default/functions.php:63
+msgid "Saving labels"
+msgstr ""
+
+#: ../theme/default/functions.php:64
+msgid "Loading suggestions"
+msgstr ""
+
+#: ../theme/default/functions.php:65
+msgid "Uploading cover"
+msgstr ""
+
+#: ../theme/default/functions.php:66
+msgid "Saving profile"
+msgstr ""
+
+#: ../theme/default/functions.php:67
+msgid "Sending message"
+msgstr ""
+
+#: ../theme/default/functions.php:68
+msgid "Loading conversation"
+msgstr ""
+
+#: ../theme/default/functions.php:69
+msgid "Loading new message form"
+msgstr ""
+
+#: ../theme/default/functions.php:70
+msgid "Loading more conversations"
+msgstr ""
+
+#: ../theme/default/functions.php:71
+msgid "Searching conversations"
+msgstr ""
+
+#: ../theme/default/functions.php:72
+msgid "Loading message form"
+msgstr ""
+
+#: ../theme/default/functions.php:73
+msgid "Updating message"
+msgstr ""
+
+#: ../theme/default/functions.php:74
+msgid "Deleting message"
+msgstr ""
+
+#: ../theme/default/functions.php:75
+msgid "Uploading"
+msgstr ""
+
+#: ../theme/default/functions.php:92
+msgid "Your comment is awaiting moderation."
+msgstr ""
+
+#: ../theme/default/functions.php:100
+msgid "ago"
+msgstr ""
+
+#: ../theme/default/functions.php:111
+msgid "Are you sure? It cannot be undone!"
+msgstr ""
+
+#: ../theme/default/functions.php:123
+msgid "AP Lists Top"
+msgstr ""
+
+#: ../theme/default/functions.php:127
+msgid "Widgets in this area will be shown before questions list."
+msgstr ""
+
+#: ../theme/default/functions.php:133
+msgid "AP Sidebar"
+msgstr ""
+
+#: ../theme/default/functions.php:137
+msgid "Widgets in this area will be shown in AnsPress sidebar."
+msgstr ""
+
+#: ../theme/default/functions.php:143
+msgid "AP Question Sidebar"
+msgstr ""
+
+#: ../theme/default/functions.php:147
+msgid "Widgets in this area will be shown in question page sidebar."
+msgstr ""
+
+#: ../theme/default/login.php:22
+msgid "Remember me"
+msgstr ""
+
+#: ../theme/default/login.php:41
+msgid "Or"
+msgstr ""
+
+#: ../theme/default/login.php:44
+msgid "Register"
+msgstr ""
+
+#: ../theme/default/login.php:54
+msgid "email"
+msgstr ""
+
+#: ../theme/default/login.php:56
+msgid "Your Email"
+msgstr ""
+
+#: ../theme/default/login.php:62
+msgid "Sign up!"
+msgstr ""
+
+#: ../theme/default/login.php:63
+msgid "Check your email for the password!"
+msgstr ""
+
+#: ../theme/default/not-found.php:1
+msgid "Error 404"
+msgstr ""
+
+#: ../theme/default/pagination.php:26
+msgid "First"
+msgstr ""
+
+#: ../theme/default/pagination.php:27
+msgid "Previous"
+msgstr ""
+
+#: ../theme/default/pagination.php:33
+msgid "Go to page "
+msgstr ""
+
+#: ../theme/default/part/question.php:28
+msgid "Leave a reply"
+msgstr ""
+
+#: ../theme/default/part/question.php:28
+msgid "1 Reply"
+msgstr ""
+
+#: ../theme/default/part/question.php:28
+msgid "% Replies"
+msgstr ""
+
+#: ../theme/default/part/question.php:39
+msgid "Continue reading <span class=\"meta-nav\">&rarr;</span>"
+msgstr ""
+
+#: ../theme/default/part/question.php:40
+msgid "Pages:"
+msgstr ""
+
+#: ../theme/default/part/question.php:53
+#, php-format
+msgid "About %s"
+msgstr ""
+
+#: ../theme/default/part/question.php:57
+#, php-format
+msgid "View all posts by %s <span class=\"meta-nav\">&rarr;</span>"
+msgstr ""
+
+#: ../theme/default/question.php:49
+msgid "<a href=\""
+msgstr ""
+
+#: ../theme/default/question.php:98
+#, php-format
+msgid ""
+"<span>Asked</span><strong><time itemprop=\"datePublished\" datetime=\"%s\">"
+"%s Ago</time></strong>"
+msgstr ""
+
+#: ../theme/default/question.php:104
+msgid ""
+"<span>Answer</span><strong data-view=\"ap-answer-count-label\">1 Answer</"
+"strong>"
+msgstr ""
+
+#: ../theme/default/question.php:110
+msgid "<span>Viewed</span><strong>1 Times</strong>"
+msgstr ""
+
+#: ../theme/default/question.php:115
+#, php-format
+msgid ""
+"<span>Active</span><strong><time class=\"updated\" itemprop=\"dateUpdated\" "
+"datetime=\"%s\">%s Ago</time></strong>"
+msgstr ""
+
+#: ../theme/default/question.php:165
+msgid ""
+"This question is being reviewed by moderator, will be published after review."
+msgstr ""
+
+#: ../theme/default/questions-widget.php:56
+msgid "Question was viewed by"
+msgstr ""
+
+#: ../theme/default/questions-widget.php:56
+#, php-format
+msgid "%d Views"
+msgstr ""
+
+#: ../theme/default/tag.php:3
+#, php-format
+msgid "Tag: %s"
+msgstr ""
+
+#: ../theme/default/tags.php:23
+msgid "Tags are disabled"
+msgstr ""
+
+#: ../theme/default/user-answers.php:15
+msgid "No answers posted yet."
+msgstr ""
+
+#: ../theme/default/user-badges.php:10
+msgid "<span>1</span> Badge"
+msgstr ""
+
+#: ../theme/default/user-badges.php:15
+msgid "No badges earned yet!"
+msgstr ""
+
+#: ../theme/default/user-favorites.php:15
+msgid "No favourite questions"
+msgstr ""
+
+#: ../theme/default/user-followers.php:12
+#: ../theme/default/user-following.php:12 ../theme/default/users-widget.php:21
+#: ../theme/default/users.php:17
+msgid "No users found."
+msgstr ""
+
+#: ../theme/default/user-messages.php:6
+msgid "Search messages"
+msgstr ""
+
+#: ../theme/default/user-profile.php:3
+msgid "About Me"
+msgstr ""
+
+#: ../theme/default/user-profile.php:9
+msgid "User did not written \"About Me\""
+msgstr ""
+
+#: ../theme/default/user-profile.php:18
+msgid "No answers posted by the user."
+msgstr ""
+
+#: ../theme/default/user-profile.php:27
+msgid "No question posted by the user."
+msgstr ""
+
+#: ../theme/default/user-questions.php:15
+msgid "No questions asked yet."
+msgstr ""
+
+#: ../widgets/categories.php:89 ../widgets/questions.php:127
+#: ../widgets/quick-ask.php:31 ../widgets/related_questions.php:88
+#: ../widgets/search.php:36 ../widgets/users.php:50
+msgid "Title:"
+msgstr ""
+
+#: ../widgets/categories.php:93
+msgid "Parent:"
+msgstr ""
+
+#: ../widgets/categories.php:95
+msgid "Top level"
+msgstr ""
+
+#: ../widgets/categories.php:105
+msgid "Number:"
+msgstr ""
+
+#: ../widgets/categories.php:109
+msgid "Order By:"
+msgstr ""
+
+#: ../widgets/categories.php:111
+msgid "None"
+msgstr ""
+
+#: ../widgets/categories.php:112
+msgid "Count"
+msgstr ""
+
+#: ../widgets/categories.php:113
+msgid "ID"
+msgstr ""
+
+#: ../widgets/categories.php:115
+msgid "Slug"
+msgstr ""
+
+#: ../widgets/categories.php:116
+msgid "Term group"
+msgstr ""
+
+#: ../widgets/categories.php:120
+msgid "Order:"
+msgstr ""
+
+#: ../widgets/categories.php:122
+msgid "DESC"
+msgstr ""
+
+#: ../widgets/categories.php:123
+msgid "ASC"
+msgstr ""
+
+#: ../widgets/questions.php:131 ../widgets/related_questions.php:92
+#: ../widgets/users.php:54
+msgid "Avatar:"
+msgstr ""
+
+#: ../widgets/questions.php:135
+msgid "Order by:"
+msgstr ""
+
+#: ../widgets/questions.php:146
+msgid "Label:"
+msgstr ""
+
+#: ../widgets/questions.php:162 ../widgets/related_questions.php:97
+msgid "Show selected:"
+msgstr ""
+
+#: ../widgets/questions.php:166 ../widgets/related_questions.php:101
+msgid "Show activity:"
+msgstr ""
+
+#: ../widgets/questions.php:170 ../widgets/related_questions.php:105
+msgid "Show vote:"
+msgstr ""
+
+#: ../widgets/questions.php:174 ../widgets/related_questions.php:109
+msgid "Show view:"
+msgstr ""
+
+#: ../widgets/questions.php:178 ../widgets/related_questions.php:113
+msgid "Show answers:"
+msgstr ""
+
+#: ../widgets/questions.php:182 ../widgets/related_questions.php:117
+msgid "Show category:"
+msgstr ""
+
+#: ../widgets/questions.php:186 ../widgets/related_questions.php:121
+msgid "Show tags:"
+msgstr ""
+
+#: ../widgets/quick-ask.php:27
+msgid "Ask questions"
+msgstr ""
+
+#: ../widgets/related_questions.php:41
+msgid "Related Questions"
+msgstr ""
+
+#: ../widgets/search.php:19 ../widgets/search.php:32
+msgid "Search questions"
+msgstr ""
+
+#: ../widgets/users.php:58
+msgid "Show"
+msgstr ""
