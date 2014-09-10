@@ -640,9 +640,11 @@ class anspress_posts
 
 	public function custom_question_link( $url, $post ) {
 		if ( 'question' == get_post_type( $post ) ) {
-			if(get_option('permalink_structure'))
-				return  ap_get_link_to('question/'.$post->ID.'/'.$post->post_name); 
-			else
+			if(get_option('permalink_structure')){
+				$question_slug = ap_opt('question_prefix');
+				$question_slug = strlen($question_slug) > 0 ? $question_slug.'/' : '';
+				return  ap_get_link_to($question_slug.$post->ID.'/'.$post->post_name); 
+			}else
 				return add_query_arg( array('apq' => false, 'page_id' => ap_opt('base_page'), 'question_id' =>$post->ID), $url );
 		}
 		return $url;

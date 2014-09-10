@@ -90,6 +90,7 @@ function ap_default_options(){
 		'moderate_new_question'	=> 'no_mod',
 		'mod_question_point'	=> 10,
 		'categories_per_page'	=> 20,
+		'question_prefix'		=> 'question',
 	);
 }
 

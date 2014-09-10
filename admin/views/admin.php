@@ -32,6 +32,7 @@ if ( ! isset( $_REQUEST['settings-updated'] ) )
 		  <li><a href="#ap-tags" data-toggle="tab"><?php _e('Tags', 'ap'); ?></a></li>
 		  <li><a href="#ap-user" data-toggle="tab"><?php _e('User', 'ap'); ?></a></li>
 		  <li><a href="#ap-pages" data-toggle="tab"><?php _e('Pages', 'ap'); ?></a></li>
+		  <li><a href="#ap-permalink" data-toggle="tab"><?php _e('Permalink', 'ap'); ?></a></li>
 		  <li><a href="#ap-labels" data-toggle="tab"><?php _e('Labels', 'ap'); ?></a></li>
 		  <li><a href="#ap-misc" data-toggle="tab"><?php _e('Spam', 'ap'); ?></a></li>
 		  <li><a href="#ap-maintenance" data-toggle="tab"><?php _e('Maintenance', 'ap'); ?></a></li>
@@ -325,7 +326,20 @@ if ( ! isset( $_REQUEST['settings-updated'] ) )
 						</td>
 					</tr>
 				</table>
-			</div>				
+			</div>
+			
+			<div class="tab-pane" id="ap-permalink">		
+				<table class="form-table">
+					<tr valign="top">
+						<th scope="row"><label for="question_prefix"><?php _e('Question prefix', 'ap'); ?></label></th>
+						<td>
+							<input type="text" id="question_prefix" name="anspress_opt[question_prefix]" value="<?php echo $settings['question_prefix'] ; ?>" <?php checked( true, $settings['question_prefix'] ); ?> />
+							<p class="description"><?php _e('Question prefix', 'ap'); ?></p>
+						</td>
+					</tr>					
+				</table>
+			</div>
+			
 			<div class="tab-pane" id="ap-labels">
 				<table class="form-table">					
 					<tr valign="top">
