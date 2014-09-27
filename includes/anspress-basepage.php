@@ -9,7 +9,7 @@
  * @copyright 2014 Rahul Aryan
  */
 
-class anspress_shortcodes {
+class AP_BasePage {
 
 	/**
 	 * Instance of this class.
