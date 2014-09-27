@@ -149,3 +149,17 @@ function ap_child_cat_list($parent){
 		echo '</ul>';
 	}
 }
+
+function ap_question_have_category($post_id = false){
+	if(!$post_id)
+		$post_id = get_the_ID();
+		
+	if(!ap_opt('enable_categories'))
+		return false;
+	
+	$categories = wp_get_post_terms( $post_id, 'question_category');
+	if(!empty($categories))
+		return true;
+	
+	return false;
+}

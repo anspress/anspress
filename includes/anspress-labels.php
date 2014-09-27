@@ -250,3 +250,17 @@ function ap_change_label_html($post_id){
 	</div>
 	<?php
 }
+
+function ap_question_have_labels($post_id = false){
+	if(!$post_id)
+		$post_id = get_the_ID();
+		
+	/* if(!ap_opt('enable_categories'))
+		return false; */
+	
+	$labels = wp_get_post_terms( $post_id, 'question_label');
+	if(!empty($labels))
+		return true;
+	
+	return false;
+}

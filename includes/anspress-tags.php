@@ -97,7 +97,7 @@ function ap_question_tags_html($post_id = false, $list = true){
 			$o .= '</ul>';
 			echo $o;
 		}else{
-			$o = '<i class="ap-icon-tag ap-meta-icon"></i>';
+			$o = '';
 			$o .= ' <span class="question-tags-list">';
 			foreach($tags as $t){
 				$o .= '<a href="'.esc_url( get_term_link($t)).'" title="'.$t->description.'">'. $t->name .'</a> ';
@@ -126,4 +126,19 @@ function ap_tag_details(){
 	echo '</div>';
 	
 	echo '<p class="desc clearfix">'. $tag->description .'</p>';
+}
+
+function ap_question_have_tags($post_id = false){
+	if(!$post_id)
+		$post_id = get_the_ID();
+		
+	if(!ap_opt('enable_tags'))
+		return false;
+	
+	$tags = wp_get_post_terms( $post_id, 'question_tags');
+	
+	if(!empty($tags))
+		return true;
+	
+	return false;
 }

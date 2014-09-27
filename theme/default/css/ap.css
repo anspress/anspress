@@ -345,7 +345,7 @@ textarea.input-lg, select[multiple].input-lg {
 /* end bootstrap styles */
 body.anspress .ap-container {
     margin: 0;
-    font-family: "helvetica neue", helvetica, arial, "lucida grande", sans-serif;
+    font-family: arial, "helvetica neue", helvetica, "lucida grande", sans-serif;
     color: #4e5665;
     line-height: 1.6;
 }
@@ -355,6 +355,10 @@ body.anspress .ap-container {
     margin: 0;
     list-style: none;
 }
+.ap-container a,.ap-container a:visited{
+	color:#3e90cc
+}
+
 
 .ap-container .ap-container li {
     padding: 0;
@@ -396,6 +400,10 @@ body.anspress .ap-container {
     border-radius: 2px;
     box-shadow: none;
     display: block;
+}
+
+.ap-list-inner .avatar {
+    border-radius: 50%;
 }
 
 .single-question #main, .tax-question_category #main {
@@ -441,7 +449,7 @@ body.anspress .ap-container {
 .ap-container .question-title {
     font-size: 15px;
     font-weight: 600;
-    line-height: 30px;
+    line-height: 22px;
     margin: 0 0 2px;
 }
 
@@ -453,7 +461,7 @@ body.anspress .ap-container {
 }
 
 .ap-container .question-title a {
-    color: #656b7e;
+    color: #4e5c65;
     display: inline-block;
     text-decoration: none;
 }
@@ -1122,6 +1130,28 @@ body.modal-open {
     overflow: hidden;
 }
 
+.question-tags-list > a {
+    border: 1px solid #ededed;
+    border-radius: 3px;
+    color: #888;
+    font-size: 12px;
+    padding: 1px 5px;
+}
+
+.question-tags-list > a:visited{
+    color: #888;
+}
+
+.ap-container .ap-other-meta.ap-inline-list {
+    margin-top: 5px;
+}
+
+.ap-meta-icon {
+    color: #999;
+    font-size: 11px;
+    margin-right: 4px;
+}
+
 #discussion {
     position: relative;
 }
@@ -1179,7 +1209,7 @@ body.modal-open {
 }
 
 .ap-list-inner .ap-avatar {
-    margin-top: 10px;
+    margin-top: 6px;
 }
 
 .question-list .ap-content-inner .ap-avatar img {
@@ -1279,8 +1309,6 @@ body.modal-open {
 
 .question-list .list-meta {
     color: #777;
-    font-family: Helvetica, Arial, sans-serif;
-    font-size: 11px;
 }
 
 .question-list .list-meta .question-status {
@@ -1297,7 +1325,6 @@ body.modal-open {
 
 .question-list .list-taxo > * {
     display: inline;
-    font-size: 12px;
     margin: 0 10px 0 0;
 }
 
@@ -1333,7 +1360,8 @@ body.modal-open {
 .question-list .question-labels {
     display: inline-block;
     list-style: none outside none;
-    margin: 0;
+    margin: 4px 0 0;
+    opacity: 0.7;
     padding: 0;
     vertical-align: text-bottom;
 }
@@ -1349,12 +1377,13 @@ body.modal-open {
 }
 
 .question-list .question-labels li.ap-label-name {
-    border-radius: 3px;
+    border-radius: 2px;
     color: #fff;
     font-size: 11px;
-    line-height: 20px;
+    font-weight: bold;
+    line-height: 16px;
     margin-right: 5px;
-    padding: 0 10px;
+    padding: 0 4px;
 }
 
 /* tags list */
@@ -1963,28 +1992,11 @@ ul.ap-pagination {
 }
 
 .ap-container .ap-inline-list > li {
+    color: #70818b;
     float: left;
     list-style: none outside none;
     margin: 0 10px 0 0;
     padding: 0;
-}
-
-.question-list .list-taxo .ap-ansslable {
-    background: #81d742;
-    -moz-border-radius: 3px;
-    -webkit-border-radius: 3px;
-    border-radius: 3px;
-    color: #fff;
-    display: block;
-    font-size: 11px;
-    height: 17px;
-    line-height: 20px;
-    padding: 0 4px;
-    text-align: center;
-}
-
-.question-list .list-taxo .ap-ansslable i:before {
-    color: #fff;
 }
 
 .ap-tax-description {
@@ -3766,4 +3778,17 @@ ul.ap-badge-item > li.ap-badge-info {
 }
 #ap_new_tag_form .form-control {
     margin-bottom: 10px;
+}
+
+.bullet-point {
+    color: #aaa;
+    display: inline-block;
+    font-size: 16px;
+    line-height: 10px;
+    margin-right: 1px;
+    vertical-align: middle;
+}
+
+li:first-child .bullet-point {
+    display: none;
 }

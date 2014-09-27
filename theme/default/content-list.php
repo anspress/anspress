@@ -31,23 +31,39 @@ $clearfix_class = array('question-summary clearfix');
 				</div>								
 				<div class="summery wrap-left">
 					<h3 class="question-title" itemprop="title">
-						<a class="question-hyperlink" itemprop="url" href="<?php the_permalink(); ?>" rel="bookmark" title="<?php the_title(); ?>"><?php the_title(); ?></a>
-						<?php echo ap_get_question_label(null, true); ?>
+						<a class="question-hyperlink" itemprop="url" href="<?php the_permalink(); ?>" rel="bookmark" title="<?php the_title(); ?>"><?php the_title(); ?></a>				
 					</h3>					
 					<ul class="list-taxo ap-inline-list clearfix">
-						<?php if($post->selected): ?>
-							<li class="ap-tip ap-ansslable" title="<?php _e('Answer is accepted', 'ap'); ?>">
-								<i class="ap-icon-answer"></i>
+						<?php if($post->selected): ?>							
+							<li class="ap-ansslable"><span class="bullet-point">&bull;</span><?php _e('answer accepted', 'ap'); ?></li>
+						<?php endif; ?>
+						<li class="list-meta">
+							<span class="bullet-point">&bull;</span>
+							<?php echo ap_get_latest_history_html(get_the_ID())	?>
+						</li>						
+					</ul>
+					<?php if(ap_question_have_labels() || ap_question_have_category() || ap_question_have_tags()): ?>
+					<ul class="ap-other-meta ap-inline-list clearfix">
+						<?php if(ap_question_have_labels()): ?>
+						<li>
+							<span class="bullet-point">&bull;</span>
+							<?php echo ap_get_question_label(null, true); ?>
+						</li>
+						<?php endif; ?>
+						<?php if(ap_question_have_category()): ?>
+							<li class="es-list-cat">
+								<span class="bullet-point">&bull;</span>
+								<?php ap_question_categories_html(false, false); ?>
 							</li>
 						<?php endif; ?>
-						<li class="list-meta ap-tip" title="<?php _e('Last activity', 'ap'); ?>">	
-							<i class="ap-icon-clock ap-meta-icon"></i>
-							<?php echo ap_get_latest_history_html(get_the_ID())	?>
+						<?php if(ap_question_have_tags()): ?>
+						<li class="es-list-tag">
+							<span class="bullet-point">&bull;</span>
+							<?php ap_question_tags_html(false, false); ?>
 						</li>
-						<li class="ap-tip" title="<?php _e('Question category', 'ap'); ?>"><?php ap_question_categories_html(false, false); ?></li>
-						<li class="ap-tip" title="<?php _e('Question tagged', 'ap'); ?>"><?php ap_question_tags_html(false, false); ?></li>
+						<?php endif; ?>
 					</ul>
-					
+					<?php endif; ?>
 				</div>				
 			</div>	
 
