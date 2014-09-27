@@ -3,7 +3,7 @@ global $post;
 $clearfix_class = array('question-summary clearfix');
 ?>
 
-	<article id="question-<?php the_ID(); ?>" <?php post_class($clearfix_class); ?>>
+	<article id="question-<?php the_ID(); ?>" <?php post_class($clearfix_class); ?> itemtype="http://schema.org" itemscope="">
 		<?php if ( is_sticky() && is_home() && ! is_paged() ) : ?>
 		<div class="featured-post">
 			<?php _e( 'Featured post', 'ap' ); ?>
@@ -26,12 +26,12 @@ $clearfix_class = array('question-summary clearfix');
 			<div class="ap-list-inner">
 				<div class="ap-avatar">
 					<a href="<?php echo ap_user_link(); ?>">
-						<?php echo get_avatar( get_the_author_meta( 'ID' ), 35 ); ?>
+						<?php echo get_avatar( get_the_author_meta( 'ID' ), 45 ); ?>
 					</a>
 				</div>								
 				<div class="summery wrap-left">
-					<h3 class="question-title">
-						<a class="question-hyperlink" href="<?php the_permalink(); ?>" rel="bookmark"><?php the_title(); ?></a>
+					<h3 class="question-title" itemprop="title">
+						<a class="question-hyperlink" itemprop="url" href="<?php the_permalink(); ?>" rel="bookmark" title="<?php the_title(); ?>"><?php the_title(); ?></a>
 						<?php echo ap_get_question_label(null, true); ?>
 					</h3>					
 					<ul class="list-taxo ap-inline-list clearfix">
