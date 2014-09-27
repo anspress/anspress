@@ -468,6 +468,7 @@ function ap_questions_tab(){
 			<li class="<?php echo $order == 'voted' ? ' active' : ''; ?>"><a href="<?php echo $link.'voted'; ?>"><?php _e('Voted', 'ap'); ?></a></li>
 			<li class="<?php echo $order == 'answers' ? ' active' : ''; ?>"><a href="<?php echo $link.'answers'; ?>"><?php _e('Most answers', 'ap'); ?></a></li>
 			<li class="<?php echo $order == 'unanswered' ? ' active' : ''; ?>"><a href="<?php echo $link.'unanswered'; ?>"><?php _e('Unanswered', 'ap'); ?></a></li>
+			<li class="<?php echo $order == 'unsolved' ? ' active' : ''; ?>"><a href="<?php echo $link.'unsolved'; ?>"><?php _e('Unsolved', 'ap'); ?></a></li>
 			<li class="<?php echo $order == 'oldest' ? ' active' : ''; ?>"><a href="<?php echo $link.'oldest'; ?>"><?php _e('Oldest', 'ap'); ?></a></li>			
 		</ul>
 		<div class="pull-right">

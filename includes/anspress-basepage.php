@@ -51,7 +51,7 @@ class AP_BasePage {
 				'post_type' 	=> 'question',
 				'post_status' 	=> 'publish',
 				'showposts' 	=> ap_opt('question_per_page'),
-				'paged' 		=> $paged
+				'paged' 		=> $paged,
 			);
 			
 			if($order == 'active'){				
@@ -77,6 +77,10 @@ class AP_BasePage {
 				$question_args['meta_key'] = ANSPRESS_ANS_META;
 				$question_args['meta_value'] = '0';
 
+			}elseif($order == 'unsolved'){
+				$question_args['orderby'] = 'meta_value';
+				$question_args['meta_key'] = ANSPRESS_SELECTED_META;
+				$question_args['meta_compare'] = 'NOT EXISTS';
 			}elseif($order == 'oldest'){
 				$question_args['orderby'] = 'date';
 				$question_args['order'] = 'ASC';
