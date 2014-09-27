@@ -204,6 +204,8 @@ function ap_user_page_title(){
 				$title = __('Your badges', 'ap');
 			else
 				$title = sprintf(__('%s\'s activity', 'ap'), $name);
+		}elseif( 'message' == $user_page ){
+			$title = sprintf(__('Message', 'ap'), $name);
 		}
 		$title = apply_filters('ap_user_page_title', $title);
 		
@@ -267,6 +269,13 @@ function is_question_cat(){
 	if(is_anspress() && (get_query_var('qcat_id') || get_query_var('question_category')))
 		return true;
 		
+	return false;
+}
+
+function is_my_profile(){
+	if(ap_get_user_page_user() == get_current_user_id())
+		return true;
+	
 	return false;
 }
 
@@ -430,13 +439,6 @@ function ap_get_current_page_template(){
 		return apply_filters('ap_current_page_template', $template.'.php');
 	}
 	return 'content-none.php';
-}
-
-function is_my_profile(){
-	if(ap_get_user_page_user() == get_current_user_id())
-		return true;
-	
-	return false;
 }
 
 function ap_current_user_page_is($page){

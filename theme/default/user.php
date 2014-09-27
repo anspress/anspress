@@ -26,7 +26,7 @@
 	</div>
 	<?php endif; ?>
 	<div class="ap-profile-lr">
-		<div class="ap-profile-nav">
+		<div class="ap-profile-nav clearfix">
 			<?php ap_user_menu(); ?>
 		</div>
 		<div class="ap-profile-right clearfix">

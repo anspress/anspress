@@ -521,7 +521,7 @@ function ap_get_conversation_users_name($ids){
 		$more = array();
 		foreach($ids as $k => $id){
 			if ($k < 3)
-				$names[] = ap_user_display_name($id);
+				$names[] = ap_user_display_name($id, true);
 			else
 				$more[] = ap_user_display_name($id, true);
 		}
@@ -571,15 +571,17 @@ function ap_conversations_list($recipient_id = false, $offset= 0, $limit = 10, $
 		foreach($conversation as $message) :
 
 		?>	
-			<li class="<?php echo $i == 1 ? 'active ' : ''; ?>clearfix" data-action="ap-show-conversation" data-args="<?php echo wp_create_nonce('show-conversation').'-'. $message->message_conversation; ?>">
-				<time><?php printf( __( '%s ago', 'ap' ), ap_human_time( $message->message_date, false)); ?></time>				
-				<div class="ap-avatar"><?php echo ap_get_conversation_users_avatar($message->users) ?></div>
-				<div class="ap-message-summery">
-					<strong><?php echo ap_get_conversation_users_name($message->users); ?></strong>
-					<span>
-						<span class="ap-last-action <?php echo $message->message_sender == get_current_user_id() ?'ap-icon-reply' : 'ap-icon-forward'; ?>"></span>
-						<?php echo ap_truncate_chars(strip_tags(stripcslashes($message->message_content)), 40); ?></span>
-				</div>
+			<li class="<?php echo $i == 1 ? 'active ' : ''; ?>clearfix">
+				<a href="<?php echo ap_user_link(get_current_user_id(), 'message/'.$message->message_conversation); ?>">
+					<time><?php printf( __( '%s ago', 'ap' ), ap_human_time( $message->message_date, false)); ?></time>				
+					<div class="ap-avatar"><?php echo ap_get_conversation_users_avatar($message->users) ?></div>
+					<div class="ap-message-summery">
+						<strong><?php echo ap_get_conversation_users_name($message->users); ?></strong>
+						<span>
+							<span class="ap-last-action <?php echo $message->message_sender == get_current_user_id() ?'ap-icon-reply' : 'ap-icon-forward'; ?>"></span>
+							<?php echo ap_truncate_chars(strip_tags(stripcslashes($message->message_content)), 40); ?></span>
+					</div>
+				</a>
 			</li>			
 		<?php
 		$i++;
@@ -612,7 +614,7 @@ function ap_message_actions_buttons($message){
 function ap_get_message_html($message, $return = true){
 	$link = ap_user_link($message->message_sender);
 	$o = '<li class="ap-message clearfix">
-			<div class="ap-avatar">'.ap_user_avatar($message->message_sender, true).'</div>
+			<div class="ap-avatar">'.get_avatar($message->message_sender, 30).'</div>
 			<div class="no-overflow">
 			<div class="ap-message-head clearfix">
 				<strong><a href="'.$link.'">'.ap_user_display_name($message->message_sender, true).'</a></strong>

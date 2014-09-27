@@ -489,13 +489,15 @@ function ap_user_page_menu(){
 	/* filter for overriding menu */
 	$menus = apply_filters('ap_user_page_menu', $menus, $userid);
 	
-	$o ='<ul class="ap-user-personal-menu ap-inline-list clearfix">';
-	foreach($menus as $k => $m){
-		$o .= '<li'.( $user_page == $k ? ' class="active"' : '' ).'><a href="'. $m['link'] .'" class="'.$m['icon'].' ap-user-menu-'.$k.'"'.(isset($m['attributes']) ? ' '.$m['attributes'] : '' ).'>'.$m['name'].'</a></li>';
-	}
-	$o .= '</ul>';
+	if(!empty($menus)){
+		$o ='<ul class="ap-user-personal-menu ap-inline-list clearfix">';
+		foreach($menus as $k => $m){
+			$o .= '<li'.( $user_page == $k ? ' class="active"' : '' ).'><a href="'. $m['link'] .'" class="'.$m['icon'].' ap-user-menu-'.$k.'"'.(isset($m['attributes']) ? ' '.$m['attributes'] : '' ).'>'.$m['name'].'</a></li>';
+		}
+		$o .= '</ul>';	
 	
-	echo $o;
+		echo $o;
+	}
 }
 
 function ap_get_current_user_page_template(){
@@ -712,6 +714,12 @@ function ap_user_template(){
 			_e('You do not have access here', 'ap');
 			return;
 		}
+	}elseif(ap_current_user_page_is('message')){
+		if(ap_get_user_page_user() != get_current_user_id()){
+			_e('You do not have access here', 'ap');
+			return;
+		}
+		$message_id = get_query_var('message_id');
 	}elseif(ap_current_user_page_is('badges')){
 		$user_badges = ap_get_users_all_badges(ap_get_user_page_user());
 		$count_badges = ap_user_badge_count_by_badge(ap_get_user_page_user());

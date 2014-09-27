@@ -198,6 +198,7 @@ class anspress {
 		$query_vars[] = 'user';
 		$query_vars[] = 'user_page';
 		$query_vars[] = 'ap_s';
+		$query_vars[] = 'message_id';
 		
 		return $query_vars;
 	}
@@ -228,6 +229,8 @@ class anspress {
 		$question_slug = strlen($question_slug) > 0 ? $question_slug.'/' : '';
 		
 		$new_rules = array(  
+			
+			/* question */
 			$slug. $question_slug . "([^/]+)/([^/]+)/page/?([0-9]{1,})/?$" => "index.php?page_id=".$base_page_id."&question_id=".$wp_rewrite->preg_index(1)."&question_name=".$wp_rewrite->preg_index(2)."&paged=".$wp_rewrite->preg_index(3),
 			
 			$slug. $question_slug ."([^/]+)/([^/]+)/?" => "index.php?page_id=".$base_page_id."&question_id=".$wp_rewrite->preg_index(1)."&question_name=".$wp_rewrite->preg_index(2),
@@ -246,6 +249,8 @@ class anspress {
 			$slug. "([^/]+)/page/?([0-9]{1,})/?$" => "index.php?page_id=".$base_page_id."&ap_page=".$wp_rewrite->preg_index(1)."&paged=".$wp_rewrite->preg_index(2),
 			
 			$slug. "user/([^/]+)/([^/]+)/page/?([0-9]{1,})/?$" => "index.php?page_id=".$base_page_id."&ap_page=user&user=". $wp_rewrite->preg_index(1)."&user_page=". $wp_rewrite->preg_index(2)."&paged=".$wp_rewrite->preg_index(3),
+			
+			$slug. "user/([^/]+)/([^/]+)/([^/]+)/?" => "index.php?page_id=".$base_page_id."&ap_page=user&user=". $wp_rewrite->preg_index(1)."&user_page=". $wp_rewrite->preg_index(2)."&message_id=". $wp_rewrite->preg_index(3),
 			
 			$slug. "user/([^/]+)/([^/]+)/?" => "index.php?page_id=".$base_page_id."&ap_page=user&user=". $wp_rewrite->preg_index(1)."&user_page=". $wp_rewrite->preg_index(2),
 			

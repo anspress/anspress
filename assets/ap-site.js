@@ -1254,8 +1254,8 @@ APjs.site.prototype = {
 							itemValue: 'value',
 							itemText: 'text',
 						});
-						if(window.location.search.match("to?=").length > 0)
-							jQuery('[data-action="ap-suggest-user"]').tagsinput('add', { "value": ap_url_string_value('to'), "text": ap_url_string_value('dname')});
+						//if(window.location.search.match("to?=").length > 0)
+							//jQuery('[data-action="ap-suggest-user"]').tagsinput('add', { "value": ap_url_string_value('to'), "text": ap_url_string_value('dname')});
 							
 						jQuery('[data-action="ap-suggest-user"]').tagsinput('input').blur(function(e){
 							jQuery(document).mouseup(function (e){

@@ -13,6 +13,6 @@
 			</div>
 		</div>
 	</div>
-	<div class="ap-messages-right" data-view="conversation">
-	</div>
+	<!--<div class="ap-messages-right" data-view="conversation">
+	</div>-->
 </div>

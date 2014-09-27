@@ -58,6 +58,8 @@ class AP_Basic_Email_Addon
 	}
 	
 	public function new_answer_email( $post_id ) {
+		var_dump('diw');
+		exit;
 		// lets check if post is not revision
 		if ( !wp_is_post_revision( $post_id ) ) {
 			$post = get_post($post_id);
@@ -76,7 +78,7 @@ class AP_Basic_Email_Addon
 			$message .= '<p style="color:#777; font-size:11px">'.__('Powered by', 'ap').'<a href="http://open-wp.com">AnsPress</a></p>';
 			
 			//sends email
-			if(empty($emails))
+			if(!empty($emails))
 				foreach($emails as $email){
 					wp_mail($email, $subject, $message );
 				}

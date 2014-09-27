@@ -2346,41 +2346,41 @@ ul.ap-pagination {
 }
 
 .ap-profile-nav {
-    float: left;
-    margin-right: 20px;
-    width: 100px;
+    margin-bottom: 20px;
 }
 
 .ap-profile-nav > ul {
     border: 1px solid #ddd;
-    -moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
-    border-radius: 5px;
     list-style: none outside none;
     margin: 0;
 }
 
 .ap-profile-nav > ul > li {
+    border-right: 1px solid #eee;
+    float: left;
     margin: 0;
 }
 
+.ap-profile-nav > ul > li:last-child{
+	border-right:none;
+}
+
 .ap-profile-nav > ul > li > a:before {
-    display: block;
-    font-size: 30px;
+    font-size: 12px;
+    margin-right: 10px;
 }
 
 .ap-profile-nav > ul > li > a {
-    border-bottom: 1px solid #eee;
-    color: #999;
+    color: #555;
     display: block;
     font-size: 13px;
-    padding: 7px 15px;
-    text-decoration: none;
+    padding: 5px 10px;
     text-align: center;
+    text-decoration: none;
 }
 
 .ap-profile-nav > ul > li > a:visited {
-    color: #999;
+    color: #555;
 }
 
 .ap-profile-nav > ul > li.active > a {
@@ -2501,10 +2501,6 @@ a.ap-btn.ap-success:visited {
 .ap-half-col {
     width: 50%;
     float: left;
-}
-
-.ap-user-tm {
-    margin-bottom: 20px;
 }
 
 .ap-user-tm .ap-page-title {
@@ -2905,40 +2901,35 @@ form .checkbox {
 }
 
 .ap-messages-left {
-    display: table-cell;
-    vertical-align: top;
-    width: 325px;
+
 }
 
 .ap-messages-left-c {
     border: 1px solid #ddd;
-    -moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
     border-radius: 5px;
-    overflow: hidden;
+    margin-bottom: 20px;
 }
 
 .ap-message-search {
-    background: #fdfdfd;
+    background: none repeat scroll 0 0 #fdfdfd;
     border-bottom: 1px solid #ddd;
+    border-radius: 4px 4px 0 0;
     padding: 10px;
 }
 
 .ap-messages-right {
-    display: table-cell;
-    padding-left: 20px;
-    vertical-align: top;
+
 }
 
 .ap-conversations {
-    width: 325px;
+
 }
 
 .anspress .ap-conversations > li {
     border-bottom: 1px solid #eee;
     cursor: pointer;
-    margin: 0 10px;
-    padding: 12px 5px;
+    margin: 0;
+    padding: 8px 10px;
 }
 
 .anspress .ap-conversations > li.active {
@@ -3033,10 +3024,7 @@ form .checkbox {
 }
 
 #ap-conversation-scroll {
-    -moz-box-shadow: 0 0 5px #ddd inset;
-    -webkit-box-shadow: 0 0 5px #ddd inset;
-    box-shadow: 0 0 5px #ddd inset;
-    max-height: 600px;
+    max-height: 800px;
     overflow: hidden;
     position: relative;
 }
