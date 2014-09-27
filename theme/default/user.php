@@ -11,7 +11,7 @@
 			</div>
 			<div class="ap-user-summery">
 				<?php ap_follow_btn_html($userid); ?>
-				<?php ap_message_btn_html($userid, $display_name); ?>				
+				<?php //ap_message_btn_html($userid, $display_name); ?>				
 				<h1 class="ap-user-name"><?php echo $display_name; ?></h1>
 				<span class="ap-user-rank"><?php echo ap_get_rank_title($userid); ?></span>			
 			</div>
