@@ -42,14 +42,7 @@ $clearfix_class = array('question-summary clearfix');
 						<?php endif; ?>
 						<li class="list-meta ap-tip" title="<?php _e('Last activity', 'ap'); ?>">	
 							<i class="ap-icon-clock ap-meta-icon"></i>
-							<?php 							
-								printf(
-									'<span class="when">%s %s ago</span>',
-									ap_get_latest_history_html(get_the_ID()),
-									ap_human_time( mysql2date('U', ap_last_active(get_question_id())))
-								); 
-								ap_user_display_name();
-							?>
+							<?php echo ap_get_latest_history_html(get_the_ID())	?>
 						</li>
 						<li class="ap-tip" title="<?php _e('Question category', 'ap'); ?>"><?php ap_question_categories_html(false, false); ?></li>
 						<li class="ap-tip" title="<?php _e('Question tagged', 'ap'); ?>"><?php ap_question_tags_html(false, false); ?></li>
