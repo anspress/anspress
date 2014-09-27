@@ -97,7 +97,7 @@ function ap_question_tags_html($post_id = false, $list = true){
 			$o .= '</ul>';
 			echo $o;
 		}else{
-			$o = '';
+			$o = 'Tags:';
 			$o .= ' <span class="question-tags-list">';
 			foreach($tags as $t){
 				$o .= '<a href="'.esc_url( get_term_link($t)).'" title="'.$t->description.'">'. $t->name .'</a> ';

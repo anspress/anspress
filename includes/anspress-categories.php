@@ -96,7 +96,7 @@ function ap_question_categories_html($post_id = false, $list = true){
 			$o .= '</ul>';
 			echo $o;
 		}else{
-			$o = '<i class="ap-icon-category ap-meta-icon"></i>';
+			$o = 'Categories:';
 			$o .= ' <span class="question-categories-list">';
 			foreach($cats as $c){
 				$o .= '<a href="'.esc_url( get_term_link($c)).'" title="'.$c->description.'">'. $c->name .'</a>';

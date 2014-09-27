@@ -58,8 +58,7 @@ class AP_Basic_Email_Addon
 	}
 	
 	public function new_answer_email( $post_id ) {
-		var_dump('diw');
-		exit;
+
 		// lets check if post is not revision
 		if ( !wp_is_post_revision( $post_id ) ) {
 			$post = get_post($post_id);
@@ -86,7 +85,6 @@ class AP_Basic_Email_Addon
 			$admin_email = get_option( 'admin_email' );
 			
 			$current_user_email = get_the_author_meta( 'user_email', $post->post_author);
-
 
 			if($admin_email != $current_user_email)				
 				wp_mail($admin_email, $subject, $message );

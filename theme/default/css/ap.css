@@ -1131,11 +1131,7 @@ body.modal-open {
 }
 
 .question-tags-list > a {
-    border: 1px solid #ededed;
-    border-radius: 3px;
-    color: #888;
-    font-size: 12px;
-    padding: 1px 5px;
+	padding: 0 3px;
 }
 
 .question-tags-list > a:visited{
@@ -1143,6 +1139,7 @@ body.modal-open {
 }
 
 .ap-container .ap-other-meta.ap-inline-list {
+    font-size: 13px;
     margin-top: 5px;
 }
 
