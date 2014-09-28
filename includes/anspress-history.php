@@ -38,23 +38,36 @@ class AP_History
 		add_action('ap_event_new_answer', array($this, 'new_answer'), 10, 3);		
 		add_action('ap_event_edit_question', array($this, 'edit_question'), 10, 2);
 		add_action('ap_event_edit_answer', array($this, 'edit_answer'), 10, 3);
+		add_action('ap_event_new_comment', array($this, 'new_comment'), 10, 3);
+		add_action('ap_event_select_answer', array($this, 'select_answer'), 10, 3);
+		add_action('ap_event_unselect_answer', array($this, 'unselect_answer'), 10, 3);
+		
 	}
 	public function new_answer($postid, $userid, $question_id) {
 		ap_add_history($userid, $postid, $question_id, 'new_answer');
 	}
 	
-	/* public function new_comment($comment, $post_type, $question_id){
+	public function edit_question($post_id, $user_id) {
+		ap_add_history($user_id, $post_id, $post_id, 'edit_question');
+	}
+	
+	public function edit_answer($postid, $userid, $question_id) {
+		ap_add_history($userid, $postid, $postid, 'edit_answer');
+	}
+	
+	public function new_comment($comment, $post_type, $question_id){
 		if($post_type == 'question')
 			ap_add_history($comment->user_id, $comment->comment_ID, $comment->comment_post_ID, 'new_comment');
 		else
 			ap_add_history($comment->user_id, $comment->comment_ID, $question_id, 'new_comment_answer');
-	} */
-	
-	public function edit_question($post_id, $user_id) {
-		ap_add_history($user_id, $post_id, $post_id, 'edit_question');
 	}
-	public function edit_answer($postid, $userid, $question_id) {
-		ap_add_history($userid, $postid, $postid, 'edit_answer');
+	
+	public function select_answer($user_id, $question_id, $answer_id){
+		ap_add_history($user_id, $answer_id, $question_id, 'answer_selected');
+	}
+	
+	public function unselect_answer($user_id, $question_id, $answer_id){
+		ap_add_history($user_id, $answer_id, $question_id, 'answer_unselected');
 	}
 }
 
@@ -80,6 +93,10 @@ function ap_add_history($userid = false, $actionid, $parent_id, $param=NULL){
 	do_action('ap_after_history_'.$parent_id, $userid, $actionid, $param);
 	do_action('ap_after_inserting_history', $userid, $actionid, $parent_id, $param);
 	return $row;
+}
+
+function es_delete_history($user_id, $action_id, $value, $param = null){
+	return ap_delete_meta(array('apmeta_userid' => $user_id, 'apmeta_type' => 'history', 'apmeta_actionid' => $action_id, 'apmeta_value' => $value, 'apmeta_param' => $param));
 }
 
 function ap_get_post_history($post_id){
@@ -110,6 +127,8 @@ function ap_history_name($slug, $parm = ''){
 		'edit_question' 	=> __('edited question', 'ap'),
 		'edit_answer' 		=> __('edited answer', 'ap'),
 		'edit_comment' 		=> __('edited comment', 'ap'),
+		'answer_selected' 	=> __('selected answer', 'ap'),
+		'answer_unselected' => __('unselected answer', 'ap'),
 	);
 	$names = apply_filters('ap_history_name', $names);
 	

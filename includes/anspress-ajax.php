@@ -280,12 +280,14 @@ class anspress_ajax
 				ap_do_event('unselect_answer', $user_id, $post->post_parent, $post->ID);
 				update_post_meta($post->ID, ANSPRESS_BEST_META, 0);
 				update_post_meta($post->post_parent, ANSPRESS_SELECTED_META, false);
+				update_post_meta($post->post_parent, ANSPRESS_UPDATED_META, current_time( 'mysql' ));
 				$html = ap_select_answer_btn_html($args[0]);
 				$result	= array('action' => 'unselected', 'message' => __('Uselected the answer', 'ap'), 'html' => $html);
 			}else{
 				ap_do_event('select_answer', $user_id, $post->post_parent, $post->ID);
 				update_post_meta($post->ID, ANSPRESS_BEST_META, 1);
 				update_post_meta($post->post_parent, ANSPRESS_SELECTED_META, $post->ID);
+				update_post_meta($post->post_parent, ANSPRESS_UPDATED_META, current_time( 'mysql' ));
 				$html = ap_select_answer_btn_html($args[0]);
 				$result	= array('action' => 'selected', 'message' => __('Thank you for awarding best answer', 'ap'), 'html' => $html);
 			}
