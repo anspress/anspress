@@ -38,6 +38,7 @@ class AP_Basic_Email_Addon
 		add_action( 'ap_after_inserting_question', array($this, 'new_question_email') );
 		add_action( 'ap_after_inserting_answer', array($this, 'new_answer_email') );
 		add_action( 'ap_event_new_comment', array($this, 'new_comment'), 10, 3);
+		add_action('ap_event_select_answer', array($this, 'select_answer'), 10, 3);
     }
 	
 	/* Notify admin about new questions */
@@ -124,6 +125,27 @@ class AP_Basic_Email_Addon
 					wp_mail($email, $subject, $message );
 				}
 		}
+	}
+	
+	public function select_answer($user_id, $question_id, $answer_id){
+		$post_url = get_permalink( $question_id );
+		$post = get_post($post_id); 
+		$subject = __('Your answer is selected as a best', 'ap');		
+		$message = sprintf(__('Hello!, <br /><br /> You answer on %s is selected as best by %s <br />', 'ap'), $pos->post_title, ap_user_display_name($user_id, true));
+
+		$message .= "<br /><br /><a href='". $post_url. "'>".__('View question', 'ap')."</a><br />";
+		$message .= '<p style="color:#777; font-size:11px">'.__('Powered by', 'ap').' <a href="http://open-wp.com">AnsPress</a></p>';
+
+		$emails = ap_get_email_to_notify($post->post_parent, $user_id);
+		
+		if(!empty($emails))
+			foreach($emails as $email){
+				wp_mail($email, $subject, $message );
+			}
+		
+		//sends email
+		wp_mail(get_option( 'admin_email' ), $subject, $message );
+
 	}
 
 }
