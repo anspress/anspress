@@ -197,6 +197,14 @@ class anspress_posts
 			  'show_in_admin_status_list' => true,
 			  'label_count'               => _n_noop( 'Moderate <span class="count">(%s)</span>', 'Moderate <span class="count">(%s)</span>' )
 		 ) );
+		 
+		 register_post_status( 'private_question', array(
+			  'label'                     => __( 'Private Question', 'ap' ),
+			  'public'                    => true,
+			  'show_in_admin_all_list'    => false,
+			  'show_in_admin_status_list' => true,
+			  'label_count'               => _n_noop( 'Private Question <span class="count">(%s)</span>', 'Private Question <span class="count">(%s)</span>' )
+		 ) );
         
     }
     
@@ -682,10 +690,12 @@ class anspress_posts
 		 $label = '';
 		
 		 if($post->post_type == 'question'){
-			var_dump($post->post_status);
 			  if($post->post_status == 'moderate'){
 				   $complete = ' selected=\'selected\'';
 				   $label = '<span id=\'post-status-display\'>'.__('Moderate', 'ap').'</span>';
+			  }elseif($post->post_status == 'private_question'){
+				   $complete = ' selected=\'selected\'';
+				   $label = '<span id=\'post-status-display\'>'.__('Private Question', 'ap').'</span>';
 			  }
 			  ?>
 			  
@@ -693,6 +703,7 @@ class anspress_posts
 			  echo '<script>
 					  jQuery(document).ready(function(){
 						   jQuery("select#post_status").append("<option value=\'moderate\' '.$complete.'>'.__('Moderate', 'ap').'</option>");
+						   jQuery("select#post_status").append("<option value=\'private_question\' '.$complete.'>'.__('Private Question', 'ap').'</option>");
 						   jQuery(".misc-pub-section label").append("'.$label.'");
 					  });
 			  </script>';

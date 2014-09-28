@@ -49,7 +49,7 @@ class AP_BasePage {
 			$question_args=array(
 				'ap_query' 		=> 'main_questions',
 				'post_type' 	=> 'question',
-				'post_status' 	=> 'publish',
+				'post_status' 	=> array('publish', 'moderate', 'private_question'),
 				'showposts' 	=> ap_opt('question_per_page'),
 				'paged' 		=> $paged,
 			);
@@ -102,8 +102,7 @@ class AP_BasePage {
 		if(is_question()){
 			$args = array(
 					'p'=> get_question_id(), 
-					'post_type'=>'question',			
-					'post_status'=> array('moderate', 'publish'),
+					'post_type'=>'question',
 				);
 			$question = new WP_Query( $args );
 		}elseif(is_question_tag()){

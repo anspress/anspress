@@ -226,3 +226,26 @@ function ap_user_can_create_tag(){
 	
 	return false;
 }
+
+function ap_user_can_view_private_question(){
+	if(is_super_admin() || current_user_can('ap_view_private'))
+		return true;
+	
+	return false;
+}
+
+function ap_user_can_view_question($question_id = false){
+	if(is_super_admin())
+		return true;
+		
+	if(!$question_id)
+		$question_id = get_the_ID();
+	
+	$post_status = get_post_status( $question_id );
+	
+	if( $post_status == 'publish' || ($post_status == 'private_question' && ap_user_can_view_private_question()))
+		return true;
+	
+	return false;
+	
+}

@@ -112,6 +112,8 @@ class anspress_activate {
 			'ap_message'				=> true,
 			
 			'ap_new_tag'				=> true,
+			
+			'ap_view_private'			=> true,
 		);
 		
 		add_role('ap_participant',	__( 'Participant', 'ap' ), $parti_cap);

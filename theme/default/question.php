@@ -9,7 +9,7 @@
  */
 
 while ( $question->have_posts() ) : $question->the_post();
-if($question->post->post_status == 'publish'){
+if(ap_user_can_view_question()){
 
 ?>
 <div id="ap-single" class="clearfix" itemtype="http://schema.org/Question" itemscope="">
@@ -170,7 +170,7 @@ if($question->post->post_status == 'publish'){
 <?php 
 
 }else{
-	echo '<div class="ap-pending-notice ap-icon-clock">'.__('This question is being reviewed by moderator, will be published after review.').'</div>';
+	echo '<div class="ap-pending-notice ap-icon-clock">'.__('You do not ahve permission to view this question.').'</div>';
 }
 endwhile ;
 

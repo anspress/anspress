@@ -446,3 +446,13 @@ function ap_current_user_page_is($page){
 		return true;
 	return false;
 }
+
+function is_private_question($question_id = false){
+	if(!$question_id)
+		$question_id = get_the_ID();
+	
+	if(get_post_status( $question_id ) == 'private_question')
+		return true;
+	
+	return false;
+}

@@ -1160,7 +1160,13 @@ body.modal-open {
     border-bottom: 1px solid #eee;
     display: block;
     margin: 0;
-    padding: 10px 15px;
+    overflow: visible;
+    padding: 15px;
+    position: relative;
+}
+
+.ap-container .question-list .question.status-private_question {
+    background: none repeat scroll 0 0 #f7f7f7;
 }
 
 .anspress .question-list {
@@ -3788,4 +3794,17 @@ ul.ap-badge-item > li.ap-badge-info {
 
 li:first-child .bullet-point {
     display: none;
+}
+.private-question-label {
+    display: block;
+    margin-bottom: 6px;
+}
+.private-question-label span {
+    background: none repeat scroll 0 0 #676363;
+    border-radius: 2px;
+    color: #fff;
+    display: inline-block;
+    font-size: 12px;
+    line-height: 14px;
+    padding: 3px 10px;
 }
