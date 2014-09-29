@@ -20,12 +20,7 @@ if(ap_user_can_view_question()){
 			<div class="ap-qtopmeta">
 				<div class="ap-last-activity">
 					<i class="ap-icon-clock ap-meta-icon"></i>
-					<?php 							
-						printf(
-							'<span class="when">%s %s ago</span>',
-							ap_get_latest_history_html(get_the_ID()),
-							ap_human_time( mysql2date('U', ap_last_active(get_question_id())))
-						);
+					<?php echo ap_get_latest_history_html(get_the_ID());
 					?>
 				</div>
 				<?php ap_favorite_html(); ?>		
