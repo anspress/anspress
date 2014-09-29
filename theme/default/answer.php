@@ -22,9 +22,7 @@
 					<?php the_content(); ?>
 				</div>			
 				<ul class="ap-user-actions clearfix">
-					<li>
-						<a href="<?php echo ap_answer_edit_link(); ?>" class="edit-btn" title="<?php _e('Edit this question', 'ap'); ?>"><?php _e('Edit', 'ap') ; ?></a>
-					</li>				
+					<li><?php ap_edit_a_btn_html() ; ?></li>					
 					<li><?php ap_comment_btn_html(); ?></li>
 					<li><?php ap_flag_btn_html(); ?></li>
 					<li><?php ap_post_delete_btn_html(); ?></li>

@@ -244,11 +244,12 @@ function ap_edit_q_btn_html(){
 }
 
 function ap_edit_a_btn_html(){
+	if(!is_user_logged_in())
+		return;
+		
 	$post_id = get_edit_answer_id();
 	if(ap_user_can_edit_ans($post_id)){		
-		$action = 'answer-'.$post_id;
-		$nonce = wp_create_nonce( $action );
-		$edit_link = add_query_arg( array('edit_a' => $post_id, 'ap_nonce' => $nonce), get_permalink( ap_opt('a_edit_page')) );
+		$edit_link = ap_answer_edit_link();
 		$args = json_encode(array('action' => 'ap_load_edit_form', 'id'=> $post_id, 'nonce' => $nonce, 'type' => 'answer'));
 		echo "<a href='$edit_link.' class='btn btn-xs edit-btn aicon-edit' data-button='ap-edit-post' data-args='$args' title='".__('Edit Answer', 'ap')."'>".__('Edit', 'ap')."</a>";
 	}

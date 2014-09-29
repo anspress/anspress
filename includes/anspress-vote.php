@@ -503,6 +503,9 @@ function ap_is_user_voted_closed($postid = false){
 
 // closing vote html
 function ap_close_vote_html(){
+	if(!is_user_logged_in())
+		return;
+		
 	global $post;
 	$nonce = wp_create_nonce( 'close_'.$post->ID );
 	$title = (!$post->voted_closed) ? (__('Vote for closing', 'ap')) : (__('Undo your vote', 'ap'));
@@ -542,6 +545,9 @@ function ap_is_user_flagged($postid = false){
 
 // flag button html
 function ap_flag_btn_html(){
+	if(!is_user_logged_in())
+		return;
+		
 	global $post;
 	$nonce = wp_create_nonce( 'flag_'.$post->ID );
 	$title = (!$post->flagged) ? (__('Flag this post', 'ap')) : (__('You have flagged this post', 'ap'));
