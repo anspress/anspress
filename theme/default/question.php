@@ -10,7 +10,6 @@
 
 while ( $question->have_posts() ) : $question->the_post();
 if(ap_user_can_view_question()){
-
 ?>
 <div id="ap-single" class="clearfix" itemtype="http://schema.org/Question" itemscope="">
 	<header class="ap-qhead clearfix">		

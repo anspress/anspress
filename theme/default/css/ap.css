@@ -1388,7 +1388,14 @@ body.modal-open {
     margin-right: 5px;
     padding: 0 4px;
 }
-
+.ap-post-history .ap-label-name {
+    border-radius: 2px;
+    color: #fff;
+    font-size: 11px;
+    line-height: 100%;
+    margin-right: 4px;
+    padding: 2px 4px;
+}
 /* tags list */
 .question-tags:before, .question-cats:before {
     color: #AAA;

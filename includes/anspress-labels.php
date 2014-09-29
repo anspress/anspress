@@ -168,9 +168,12 @@ class AP_labels
 					$ids[] = (int)$id;					
 				}
 
-				$post_id = sanitize_text_field( $_POST['id']);
-				wp_set_post_terms($post_id, $ids, 'question_label' );
+				$post_id = (int)sanitize_text_field( $_POST['id']);
+				$existing = get_the_terms( $post_id, 'question_label' );
 				
+				wp_set_post_terms($post_id, $ids, 'question_label' );
+				update_post_meta($post_id, ANSPRESS_UPDATED_META, current_time( 'mysql' ));
+
 				$taxo = get_the_terms( $post_id, 'question_label' );
 				
 				$result = array('status' => true, 'message' => __('Question label updated.', 'ap'), 'html' => ap_get_question_label($post_id, true));
@@ -187,7 +190,6 @@ class AP_labels
 		if(ap_opt('default_label'))
 			wp_set_post_terms($post_id, ap_opt('default_label'), 'question_label' );
 	}
-	
 
 }
 
@@ -199,11 +201,11 @@ function ap_get_label_color($label_id){
 
 function ap_get_question_label($post_id = NULL, $bg = false){	
 	if(!$post_id) $post_id = get_the_ID();
-	$taxo = get_the_terms( $post_id, 'question_label' );
+	$terms = get_the_terms( $post_id, 'question_label' );
 
-	if($taxo){
+	if($terms){
 		$o = '<ul class="question-labels">';
-		foreach($taxo as $t){
+		foreach($terms as $t){
 			$color = ap_get_label_color($t->term_id);
 			$o .= '<li title="'.$t->name. ($t->description ? ' - '.$t->description : '').'"'.($bg ?' style="background:'.$color.';"' : '').' class="ap-label-name ap-tip">';
 			if(!$bg)
@@ -216,6 +218,14 @@ function ap_get_question_label($post_id = NULL, $bg = false){
 		return $o;
 	}
 
+}
+
+function ap_label_html($term){
+	if(!$term)
+		return;
+		
+	$color = ap_get_label_color($term->term_id);
+	return '<span class="ap-label-name '.$term->slug.'" style="background:'.$color.';">'.$term->name.'</span>';
 }
 
 function ap_change_label_html($post_id){
