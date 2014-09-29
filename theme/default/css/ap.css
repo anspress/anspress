@@ -925,9 +925,13 @@ body.anspress .ap-container {
     margin-right: 15px;
 }
 .ap-qtitle-meta {
-    border-bottom: 1px solid #eee;
-    margin-bottom: 20px;
+
 }
+
+.ap-qtitle-meta >h1{
+	clear:none;
+}
+
 .anspress .entry-title {
     font-size: 20px;
     margin-bottom: 20px;
@@ -938,6 +942,14 @@ body.anspress .ap-container {
 }
 .ap-qtopmeta {
     padding-bottom: 10px;
+}
+
+.anspress .ap-btn.ap-ask-btn-head {
+    background: none repeat scroll 0 0 #58ae44;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0.3) inset;
+    color: #fff;
+    text-shadow: 1px 0 0 rgba(0, 0, 0, 0.1);
 }
 
 /* ---------------votings-----------------------
@@ -1162,7 +1174,6 @@ body.modal-open {
     margin: 0;
     overflow: visible;
     padding: 15px;
-    position: relative;
 }
 
 .ap-container .question-list .question.status-private_question {
@@ -1492,14 +1503,12 @@ body.modal-open {
 }
 
 .question-label-color {
-    -moz-border-radius: 50%;
-    -webkit-border-radius: 50%;
-    border-radius: 50%;
+    border-radius: 2px;
     display: block;
     float: left;
-    height: 10px;
-    margin: 6px 5px 7px 0;
-    width: 10px;
+    height: 12px;
+    margin: 5px 10px 0 0;
+    width: 12px;
 }
 
 /* forms */
@@ -2085,6 +2094,12 @@ ul.ap-pagination {
     right: 0;
 }
 
+.ap_status .ap-dropdown-toggle {
+    font-size: 14px;
+    height: 38px;
+    padding: 3px 10px;
+}
+
 .ap-container .ap_status ul li {
     display: block;
     margin: 0;
@@ -2096,7 +2111,6 @@ ul.ap-pagination {
 }
 
 .ap-container .ap_status ul li a {
-    border-bottom: 1px solid #ddd;
     display: block;
     padding: 5px 10px;
     text-decoration: none;

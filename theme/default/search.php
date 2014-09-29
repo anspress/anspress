@@ -1,5 +1,6 @@
 <h1 class="entry-title">
 	<?php the_title(); ?>
+	<a class="ap-btn ap-ask-btn-head pull-right" href="<?php echo ap_get_link_to('ask') ?>"><?php _e('Ask Question'); ?></a>
 </h1>
 <?php dynamic_sidebar( 'ap-top' ); ?>
 <div id="ap-lists" class="clearfix">
