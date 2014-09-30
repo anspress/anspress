@@ -1375,7 +1375,6 @@ body.modal-open {
     display: inline-block;
     list-style: none outside none;
     margin: 4px 0 0;
-    opacity: 0.7;
     padding: 0;
     vertical-align: text-bottom;
 }

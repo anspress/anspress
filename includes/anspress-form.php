@@ -64,6 +64,7 @@ class anspress_form
 		add_action('ap_ask_form_fields', array($this, 'ask_from_content_field'));
 		add_action('ap_ask_form_fields', array($this, 'ask_from_category_field'));
 		add_action('ap_ask_form_fields', array($this, 'ask_from_tags_field'));
+		add_action('ap_ask_form_fields', array($this, 'ask_from_private_field'));
 		
 		// edit question form fields
 		add_action('ap_edit_question_form_fields', array($this, 'edit_question_from_title_field'), 10, 2);
@@ -132,6 +133,9 @@ class anspress_form
 		
 		if(isset($_POST['tags']))
 			$fields['tags']	= sanitize_text_field($_POST['tags']);
+		
+		if(isset($_POST['private_question']))
+			$fields['private_question']	= sanitize_text_field($_POST['private_question']);
 		
 		return apply_filters('ap_save_question_filds', $fields);
 		
@@ -206,6 +210,9 @@ class anspress_form
 			
 			if(ap_opt('moderate_new_question') == 'pending' || (ap_opt('moderate_new_question') == 'point' && ap_get_points($user_id) < ap_opt('mod_question_point')))
 				$status = 'moderate';
+			
+			if(isset($fields['private_question']) && $fields['private_question'])
+				$status = 'private_question';
 				
 			$question_array = array(
 				'post_title'	=> $fields['post_title'],
@@ -811,6 +818,18 @@ class anspress_form
 			</div>
 		<?php
 		endif;
+	}
+	
+	public function ask_from_private_field($validate){
+		?>
+			<div class="form-group<?php echo isset($validate['private_question']) ? ' has-error' : ''; ?>">
+				<label for="private_question" class="ap-form-label"><?php _e('Is private', 'ap') ?></label>
+				<div class="no-overflow">
+					<input type="checkbox" value="1" name="private_question" id="private_question" class="checkbox" />
+					<?php echo isset($validate['private_question']) ? '<span class="help-block">'. $validate['private_question'] .'</span>' : ''; ?>
+				</div>
+			</div>
+		<?php
 	}	
 	
 	public function answer_from_content_field($question_id, $validate){
