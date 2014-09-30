@@ -452,7 +452,6 @@ function ap_user_menu(){
 	
 	$menus = array(
 		'profile' => array( 'name' => __('Profile', 'ap'), 'link' => ap_user_link($userid), 'icon' => 'ap-icon-user'),
-		'messages' => array( 'name' => __('Messages', 'ap'), 'link' => ap_user_link($userid, 'messages'), 'icon' => 'ap-icon-mail', 'own' => true),
 		'questions' => array( 'name' => __('Questions', 'ap'), 'link' => ap_user_link($userid, 'questions'), 'icon' => 'ap-icon-question'),
 		'answers' => array( 'name' => __('Answers', 'ap'), 'link' => ap_user_link($userid, 'answers'), 'icon' => 'ap-icon-answer'),		
 		'badges' => array( 'name' => __('Badges', 'ap'), 'link' => ap_user_link($userid, 'badges'), 'icon' => 'ap-icon-badge'),		
