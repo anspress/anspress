@@ -3836,3 +3836,13 @@ li:first-child .bullet-point {
     line-height: 14px;
     padding: 3px 10px;
 }
+
+.ap-view-all {
+    background: none repeat scroll 0 0 #fcfcfc;
+    border: 1px solid #ddd;
+    border-radius: 2px;
+    display: block;
+    margin-bottom: 10px;
+    padding: 5px;
+    text-align: center;
+}

@@ -1,10 +1,9 @@
 <h1 class="entry-title">
-	<?php the_title(); ?>
-	<?php ap_ask_btn(); ?>
+	<?php printf(__('Discussion on "%s"', 'ap'), get_the_title()); ?>
+	<?php ap_ask_btn(get_the_ID()); ?>
 </h1>
-<?php dynamic_sidebar( 'ap-top' ); ?>
-<div id="ap-lists" class="clearfix">
-	<?php ap_questions_tab(); ?>
+<div id="ap-on-post" class="clearfix">
+	<?php ///ap_questions_tab(); ?>
 	<?php if ( $question->have_posts() ) : ?>
 		<div class="question-list">
 	<?php
@@ -15,13 +14,10 @@
 			include(ap_get_theme_location('content-list.php'));
 		endwhile;
 	?>
-		</div>
-	<?php ap_pagination('', 2, $paged, $question); ?>
+		</div>	
 	<?php
 		else : 
 			include(ap_get_theme_location('content-none.php'));
 		endif; 
 	?>	
 </div>
-
-

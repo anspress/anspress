@@ -35,69 +35,11 @@ class AP_BasePage {
 	}
 
 	public function ap_base_page_sc( $atts, $content="" ) {
-		if(!is_question()){
-			$order = get_query_var('sort');
-			$label = sanitize_text_field(get_query_var('label'));
-			if(empty($order ))
-				$order = 'active';//ap_opt('answers_sort');
-				
-			if(empty($label ))
-				$label = '';
-				
-			$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
-			
-			$question_args=array(
-				'ap_query' 		=> 'main_questions',
-				'post_type' 	=> 'question',
-				'post_status' 	=> array('publish', 'moderate', 'private_question'),
-				'showposts' 	=> ap_opt('question_per_page'),
-				'paged' 		=> $paged,
-			);
-			
-			if($order == 'active'){				
-				$question_args['ap_query'] = 'main_questions_active';
-				$question_args['orderby'] = 'meta_value';
-				$question_args['meta_key'] = ANSPRESS_UPDATED_META;
-				$question_args['meta_query'] = array(
-					'relation' => 'OR',
-					array(
-						'key' => ANSPRESS_UPDATED_META,
-						'compare' => 'NOT EXISTS',
-					),
-				);	
-				
-			}elseif($order == 'voted'){
-				$question_args['orderby'] = 'meta_value_num';
-				$question_args['meta_key'] = ANSPRESS_VOTE_META;
-			}elseif($order == 'answers'){
-				$question_args['orderby'] = 'meta_value_num';
-				$question_args['meta_key'] = ANSPRESS_ANS_META;
-			}elseif($order == 'unanswered'){
-				$question_args['orderby'] = 'meta_value';
-				$question_args['meta_key'] = ANSPRESS_ANS_META;
-				$question_args['meta_value'] = '0';
-
-			}elseif($order == 'unsolved'){
-				$question_args['orderby'] = 'meta_value';
-				$question_args['meta_key'] = ANSPRESS_SELECTED_META;
-				$question_args['meta_compare'] = 'NOT EXISTS';
-			}elseif($order == 'oldest'){
-				$question_args['orderby'] = 'date';
-				$question_args['order'] = 'ASC';
-			}
-			
-			if ($label != ''){
-				$question_args['tax_query'] = array(
-					array(
-						'taxonomy' => 'question_label',
-						'field' => 'slug',
-						'terms' => $label
-					)
-				);				
-			}
-			
-			$question_args = apply_filters('ap_main_query_args', $question_args);
+		if(!is_question()){			
+			$question_args = ap_base_page_main_query();
 		}
+		
+		$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
 		
 		if(is_question()){
 			$args = array(

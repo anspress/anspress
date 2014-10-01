@@ -137,6 +137,9 @@ class anspress_form
 		if(isset($_POST['private_question']))
 			$fields['private_question']	= sanitize_text_field($_POST['private_question']);
 		
+		if(isset($_POST['parent_id']))
+			$fields['parent_id']	= sanitize_text_field($_POST['parent_id']);
+		
 		return apply_filters('ap_save_question_filds', $fields);
 		
 	}
@@ -221,6 +224,9 @@ class anspress_form
 				'post_type' 	=> 'question',
 				'post_status' 	=> $status
 			);
+			
+			if(isset($fields['parent_id']))
+				$question_array['post_parent'] = (int)$fields['parent_id'];
 
 			$post_id = wp_insert_post($question_array);
 			
@@ -1145,10 +1151,12 @@ function ap_ask_form(){
 					echo do_action('ap_form_login');
 					echo '</div>';
 				}
+				do_action('ap_ask_form_bottom'); 
+				ap_ask_form_hidden_input();
+				
+				if(get_query_var('parent'))
+					echo '<input type="hidden" name="parent_id" value="'.get_query_var('parent').'" />';
 			?>
-			
-			<?php do_action('ap_ask_form_bottom'); ?>
-			<?php ap_ask_form_hidden_input(); ?>
 			
 		</form>
 		<?php

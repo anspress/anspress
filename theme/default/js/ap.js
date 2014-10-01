@@ -101,9 +101,9 @@ jQuery(document).ready(function(){
 
 	jQuery('.ap-tip').tooltipster({contentAsHTML: true});
 	jQuery('#ap-conversation-scroll').scrollTop(0);
-	jQuery('#ap-conversation-scroll').perfectScrollbar();
+	//jQuery('#ap-conversation-scroll').perfectScrollbar();
 	
-	jQuery('#ap-conversation-scroll').on('scroll', ap_chk_activity_scroll);
+	//jQuery('#ap-conversation-scroll').on('scroll', ap_chk_activity_scroll);
 	
 	jQuery('textarea.autogrow, textarea#post_content').autogrow({onInitialize: true});
 	

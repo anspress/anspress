@@ -131,9 +131,12 @@ class anspress_theme {
 function ap_page_title() {
 	if(is_question())
 		$new_title = get_the_title(get_question_id());
-	elseif(is_ask())
-		$new_title = ap_opt('ask_page_title');
-	elseif(is_question_categories())
+	elseif(is_ask()){
+		if(get_query_var('parent') != '')
+			$new_title = sprintf('%s about "%s"', ap_opt('ask_page_title'), get_the_title(get_query_var('parent')));
+		else
+			$new_title = ap_opt('ask_page_title');
+	}elseif(is_question_categories())
 		$new_title = ap_opt('categories_page_title');
 	elseif(is_question_tags())
 		$new_title = ap_opt('tags_page_title');
@@ -153,9 +156,13 @@ function ap_page_title() {
 		$new_title = ap_user_page_title();
 	elseif(is_ap_search())
 		$new_title = sprintf(ap_opt('search_page_title'), get_query_var('ap_s'));
-	else
-		$new_title = ap_opt('base_page_title');
-
+	else{
+		if(get_query_var('parent') != '')
+			$new_title = sprintf( __( 'Discussion on "%s"', 'ap'), get_the_title(get_query_var('parent') ));
+		else
+			$new_title = ap_opt('base_page_title');
+			
+	}
 	$new_title = apply_filters('ap_page_title', $new_title);
 	
 	return $new_title;

@@ -93,7 +93,7 @@ require_once( plugin_dir_path( __FILE__ ) . 'includes/anspress-badges.php' );
 require_once( plugin_dir_path( __FILE__ ) . 'activate.php' );
 require_once( plugin_dir_path( __FILE__ ) . 'includes/anspress-points.php' );
 require_once( plugin_dir_path( __FILE__ ) . 'includes/anspress-history.php' );
-//require_once( plugin_dir_path( __FILE__ ) . 'includes/anspress-messages.php' );
+require_once( plugin_dir_path( __FILE__ ) . 'includes/anspress-shortcodes.php' );
 require_once( plugin_dir_path( __FILE__ ) . 'includes/anspress-widgets.php' );
 
 
@@ -125,7 +125,7 @@ add_action( 'plugins_loaded', array( 'AP_Ranks', 'get_instance' ) );
 add_action( 'plugins_loaded', array( 'AP_Badges', 'get_instance' ) );
 add_action( 'plugins_loaded', array( 'AP_Points', 'get_instance' ) );
 add_action( 'plugins_loaded', array( 'AP_History', 'get_instance' ) );
-//add_action( 'plugins_loaded', array( 'AP_Messages', 'get_instance' ) );
+add_action( 'plugins_loaded', array( 'AP_ShortCodes', 'get_instance' ) );
 add_action( 'plugins_loaded', array( 'AP_Widgets', 'get_instance' ) );
 
 

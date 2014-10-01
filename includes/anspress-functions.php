@@ -212,18 +212,35 @@ function ap_answers_link(){
 	return get_permalink().'#answers';
 }
 
-function ap_get_link_to($page){
-	//$home = wp_make_link_relative(home_url() );
+function ap_get_link_to($sub){
+	
 	$base = rtrim(get_permalink(ap_opt('base_page')), '/');
 
-	/* if (filter_var($home, FILTER_VALIDATE_URL) !==FALSE)
-		$home = '';
 	
-	$home = ltrim($home,'/');
-	$base = ltrim($base,'/');
-	$rel = ltrim($base, $home); */
+	if(get_option('permalink_structure') != ''){
+		
+		if(!is_array($sub))
+			$args = $sub ? '/'.$sub : '';
+		elseif(is_array($sub)){
+			$args = '/';
+			if(!empty($sub))
+				foreach($sub as $s)
+					$args .= $s.'/';
+		}
 
-	return $base.'/'.$page;
+		$link = $base;		
+	}else{
+		if(!is_array($sub))
+			$args = $sub ? '&es_page='.$sub : '';
+		elseif(is_array($sub)){
+			$args = '';
+			if(!empty($sub))
+				foreach($sub as $k => $s)
+					$args .= '&'.$k .'='.$s;
+		}
+		$link = $base;
+	}
+	return $link. $args ;
 }
 
 function ap_comment_btn_html(){
@@ -742,4 +759,107 @@ function ap_users_tab(){
 		</ul>
 	</div>
 	<?php
+}
+
+function ap_base_page_main_query($parent_id = false){
+	$order = get_query_var('sort');
+	$label = sanitize_text_field(get_query_var('label'));
+	if(empty($order ))
+		$order = 'active';//ap_opt('answers_sort');
+		
+	if(empty($label ))
+		$label = '';
+		
+	$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
+	
+	$question_args=array(
+		'ap_query' 		=> 'main_questions',
+		'post_type' 	=> 'question',
+		'post_status' 	=> array('publish', 'moderate', 'private_question'),
+		'showposts' 	=> ap_opt('question_per_page'),
+		'paged' 		=> $paged,
+	);
+	
+	if($parent_id !== false)
+		$question_args['post_parent'] 	= $parent_id;
+	
+	if(get_query_var('parent'))
+		$question_args['post_parent'] 	= get_query_var('parent');
+	
+	if($order == 'active'){				
+		$question_args['ap_query'] 		= 'main_questions_active';
+		$question_args['orderby'] 		= 'meta_value';
+		$question_args['meta_key'] 		= ANSPRESS_UPDATED_META;
+		$question_args['meta_query'] 	= array(
+			'relation' => 'OR',
+			array(
+				'key' => ANSPRESS_UPDATED_META,
+				'compare' => 'NOT EXISTS',
+			),
+		);	
+		
+	}elseif($order == 'voted'){
+		$question_args['orderby'] 		= 'meta_value_num';
+		$question_args['meta_key'] 		= ANSPRESS_VOTE_META;
+	}elseif($order == 'answers'){
+		$question_args['orderby'] 		= 'meta_value_num';
+		$question_args['meta_key'] 		= ANSPRESS_ANS_META;
+	}elseif($order == 'unanswered'){
+		$question_args['orderby'] 		= 'meta_value';
+		$question_args['meta_key'] 		= ANSPRESS_ANS_META;
+		$question_args['meta_value'] 	= '0';
+
+	}elseif($order == 'unsolved'){
+		$question_args['orderby'] 		= 'meta_value';
+		$question_args['meta_key'] 		= ANSPRESS_SELECTED_META;
+		$question_args['meta_compare'] 	= 'NOT EXISTS';
+	}elseif($order == 'oldest'){
+		$question_args['orderby'] 		= 'date';
+		$question_args['order'] 		= 'ASC';
+	}
+	
+	if ($label != ''){
+		$question_args['tax_query'] = array(
+			array(
+				'taxonomy' => 'question_label',
+				'field' => 'slug',
+				'terms' => $label
+			)
+		);				
+	}
+	
+	return apply_filters('ap_main_query_args', $question_args);
+			
+}
+
+function ap_qa_on_post($post_id = false){
+	if(is_anspress())
+		return false;
+		
+	if(!$post_id)
+		$post_id = get_the_ID();
+	
+	$question_args = ap_base_page_main_query($post_id);
+	$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
+	
+	$question = new WP_Query( $question_args );
+	echo '<div class="anspress">';
+	echo '<div class="ap-container">';
+	include ap_get_theme_location('on-post.php');
+	wp_reset_postdata();
+	echo '<a href="'.ap_get_link_to('parent/'.get_the_ID()).'" class="ap-view-all">'.__( 'View All', 'ap' ).'</a>';
+	echo '</div>';
+	echo '</div>';	
+}
+
+function ap_ask_btn($parent_id = false){
+	$args = array('ap_page' => 'ask');
+	
+	if($parent_id !== false)
+		$args['parent'] = $parent_id;
+	
+	if(get_query_var('parent') != '')
+		$args['parent'] = get_query_var('parent');
+	
+	echo '<a class="ap-btn ap-ask-btn-head pull-right" href="'.ap_get_link_to($args).'">'.__('Ask Question').'</a>';
 }
