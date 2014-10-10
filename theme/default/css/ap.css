@@ -641,7 +641,6 @@ body.anspress .ap-container {
 
 #answers .answer {
     margin-bottom: 30px;
-    position: relative;
 }
 
 #answers .answer:last-child {
