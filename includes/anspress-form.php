@@ -1128,6 +1128,9 @@ function ap_form_allowed_tags(){
 		'pre' => array(),
 		'code' => array(),
 		'blockquote' => array(),
+		'img' => array(
+			'src' => array(),
+		),
 	);
 	
 	return apply_filters( 'ap_allowed_tags', $allowed_tags);
