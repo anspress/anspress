@@ -269,8 +269,11 @@ class anspress_vote
 			
 			$user 			= get_userdata( $userid );
 			$user_name 		= $user->data->display_name;
-				
-			if(!$user_following){
+			if (!is_user_logged_in()){
+				$action = 'pleazelogin';
+				$message = sprintf(__('Register or log in to follow %s', 'ap'), $user_name);
+			}	
+			elseif(!$user_following){
 				$row 	= ap_add_vote(get_current_user_id(), 'follow', $userid);
 				$action = 'follow';
 				$text 	= __('Unfollow','ap');

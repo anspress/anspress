@@ -2,7 +2,7 @@
 /**
  * The WordPress Question and Answer Plugin.
  *
- * A most advance community question and answer system for WordPress
+ * The most advance community question and answer system for WordPress
  *
  * @package   AnsPress
  * @author    Rahul Aryan <support@rahularyan.com>
@@ -13,7 +13,7 @@
  * @wordpress-plugin
  * Plugin Name:       AnsPress
  * Plugin URI:        http://open-wp.com
- * Description:       A most advance community question and answer system for WordPress
+ * Description:       The most advance community question and answer system for WordPress
  * Donate link: https://www.paypal.com/cgi-bin/webscr?business=rah12@live.com&cmd=_xclick&item_name=Donation%20to%20AnsPress%20development
  * Version:           1.0 PR9
  * Author:            Rahul Aryan
