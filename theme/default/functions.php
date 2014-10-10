@@ -55,6 +55,7 @@ function init_scripts_front(){
 			'requesting_for_closing' 		=> __( 'Requesting for closing this question', 'ap' ),
 			'sending_request' 				=> __( 'Submitting request', 'ap' ),
 			'loading_comment_form' 			=> __( 'Loading comment form', 'ap' ),
+			'submitting_your_question' 		=> __( 'Sending your question', 'ap' ),
 			'submitting_your_answer' 		=> __( 'Sending your answer', 'ap' ),
 			'submitting_your_comment' 		=> __( 'Sending your comment', 'ap' ),
 			'deleting_comment' 				=> __( 'Deleting comment', 'ap' ),
