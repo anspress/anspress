@@ -3846,3 +3846,11 @@ li:first-child .bullet-point {
     padding: 5px;
     text-align: center;
 }
+
+.comma-left {
+	margin-left:-1.5px;
+}
+
+.question-tags-list > span:last-child{
+	display:none;
+}
