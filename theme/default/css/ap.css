@@ -3846,10 +3846,6 @@ li:first-child .bullet-point {
     text-align: center;
 }
 
-.comma-left {
-	margin-left:-1.5px;
-}
-
-.question-tags-list > span:last-child{
+.question-tags-list span:last-child{
 	display:none;
 }
