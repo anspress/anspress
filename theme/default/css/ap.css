@@ -3836,3 +3836,7 @@ li:first-child .bullet-point {
 input#private_question {
 	float:none;
 }
+
+a.disable:hover {
+	cursor:not-allowed;
+}
