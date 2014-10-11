@@ -1000,7 +1000,10 @@ body.anspress .ap-container {
 
 .anspress .ap-single-vote a.disable {
     background: #aaa;
-	pointer-events:none;
+}
+
+.ap-single-vote:hover .disable {
+
 }
 
 /* user actions buttons */
@@ -1577,13 +1580,12 @@ textarea#post_content:focus{
 
 /* pagination */
 ul.ap-pagination {
-    background: #fff;
+    background: none repeat scroll 0 0 #fff;
     border: 1px solid #ddd;
-    -moz-border-radius: 3px;
-    -webkit-border-radius: 3px;
     border-radius: 3px;
     display: table;
     margin: 10px 0 0;
+    padding: 0;
 }
 #answers-c ul.ap-pagination{
 	margin: 10px 0 25px 80px;

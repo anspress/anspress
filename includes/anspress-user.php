@@ -48,7 +48,7 @@ class AP_User {
 		add_filter( 'get_avatar', array($this, 'get_avatar'), 10, 5);		
 	}
 	
-	/* For modifying WP_User_Query, if passed with a var is_followers */
+	/* For modifying WP_User_Query, if passed with a var ap_followers_query */
 	public function follower_query ($query) {
 		if(isset($query->query_vars['ap_followers_query'])){
 			global $wpdb;
@@ -520,7 +520,7 @@ function ap_user_template(){
 		$total_followers = ap_get_current_user_meta('followers');
 
 		// how many users to show per page
-		$users_per_page = 1;
+		$users_per_page = 10;
 		
 		// grab the current page number and set to 1 if no page number is set
 		$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
@@ -532,13 +532,14 @@ function ap_user_template(){
 		
 		$args = array(
 			'ap_followers_query' => true,
-			'number' => 10,
-			'userid' => ap_get_user_page_user()
+			'number' => $users_per_page,
+			'userid' => ap_get_user_page_user(),
+			'offset' => $offset
 		);
-
+		
 		// The Query
 		$followers_query = new WP_User_Query( $args );
-		
+
 		$followers = $followers_query->results;
 		$base = ap_user_link(ap_get_user_page_user(), 'followers') . '/%_%';
 	}elseif(ap_current_user_page_is('following')){
@@ -546,7 +547,7 @@ function ap_user_template(){
 		$total_following = ap_get_current_user_meta('following');
 
 		// how many users to show per page
-		$users_per_page = 4;
+		$users_per_page = 10;
 		
 		// grab the current page number and set to 1 if no page number is set
 		$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
@@ -555,7 +556,7 @@ function ap_user_template(){
 		$total_pages = 1;
 		$offset = $users_per_page * ($paged - 1);
 		$total_pages = ceil($total_following / $users_per_page);
-		
+
 		$args = array(
 			'ap_following_query' => true,
 			'number' => $users_per_page,
@@ -727,9 +728,6 @@ function ap_user_template(){
 	global $user;
 	global $current_user_meta;
 	include ap_get_theme_location(ap_get_current_user_page_template());
-	
-	if(ap_current_user_page_is('following') || ap_current_user_page_is('followers'))
-		ap_pagi($base, $total_pages, $paged);
 	
 	// Restore original Post Data	
 	if(ap_current_user_page_is('questions') || ap_current_user_page_is('answers') || ap_current_user_page_is('favorites'))

@@ -73,6 +73,10 @@ function ap_get_views_db($id){
 }
 
 function ap_is_already_viewed($user_id, $data_id, $type ='question'){
-	$done = ap_meta_user_done('post_view', $user_id, $data_id);
+	
+	$ip = sanitize_text_field($_SERVER['REMOTE_ADDR']);
+	
+	$done = ap_meta_user_done('post_view', $user_id, $data_id, $ip);
+	
 	return $done > 0 ? true : false;
 }
