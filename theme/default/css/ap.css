@@ -1000,10 +1000,7 @@ body.anspress .ap-container {
 
 .anspress .ap-single-vote a.disable {
     background: #aaa;
-}
-
-.ap-single-vote:hover .disable {
-
+	pointer-events:none;
 }
 
 /* user actions buttons */
