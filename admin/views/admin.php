@@ -84,14 +84,14 @@ if ( ! isset( $_REQUEST['settings-updated'] ) )
 					<tr valign="top">
 						<th scope="row"><label for="minimum_qtitle_length"><?php _e('Minimum words in title', 'ap'); ?></label></th>
 						<td>
-							<input type="text" name="anspress_opt[minimum_qtitle_length]" id="minimum_qtitle_length" value="<?php echo $settings['minimum_qtitle_length'] ; ?>" />
+							<input type="number" min="1" name="anspress_opt[minimum_qtitle_length]" id="minimum_qtitle_length" value="<?php echo $settings['minimum_qtitle_length'] ; ?>" />
 							<p class="description"><?php _e('Minimum words for question title.', 'ap'); ?></p>
 						</td>
 					</tr>
 					<tr valign="top">
 						<th scope="row"><label for="minimum_question_length"><?php _e('Minimum words in question', 'ap'); ?></label></th>
 						<td>
-							<input type="text" name="anspress_opt[minimum_question_length]" id="minimum_question_length" value="<?php echo $settings['minimum_question_length'] ; ?>" />
+							<input type="number" min="1" name="anspress_opt[minimum_question_length]" id="minimum_question_length" value="<?php echo $settings['minimum_question_length'] ; ?>" />
 							<p class="description"><?php _e('Set minimum question word limit.', 'ap'); ?></p>
 						</td>
 					</tr>
@@ -110,7 +110,7 @@ if ( ! isset( $_REQUEST['settings-updated'] ) )
 					<tr valign="top">
 						<th scope="row"><label for="minimum_ans_length"><?php _e('Minimum words in answer', 'ap'); ?></label></th>
 						<td>
-							<input type="text" name="anspress_opt[minimum_ans_length]" id="minimum_ans_length" value="<?php echo $settings['minimum_ans_length'] ; ?>" />
+							<input type="number" min="1" name="anspress_opt[minimum_ans_length]" id="minimum_ans_length" value="<?php echo $settings['minimum_ans_length'] ; ?>" />
 							<p class="description"><?php _e('Set minimum answer word limit.', 'ap'); ?></p>
 						</td>
 					</tr>
@@ -141,14 +141,14 @@ if ( ! isset( $_REQUEST['settings-updated'] ) )
 					<tr valign="top">
 						<th scope="row"><label for="avatar_size_qquestion"><?php _e('Avatar size in question page', 'ap'); ?></label></th>
 						<td>
-							<input type="text" name="anspress_opt[avatar_size_qquestion]" id="avatar_size_qquestion" value="<?php echo $settings['avatar_size_qquestion'] ; ?>" />
+							<input type="number" min="1" name="anspress_opt[avatar_size_qquestion]" id="avatar_size_qquestion" value="<?php echo $settings['avatar_size_qquestion'] ; ?>" />
 							<p class="description"><?php _e('User avatar size for question.', 'ap'); ?></p>
 						</td>
 					</tr>
 					<tr valign="top">
 						<th scope="row"><label for="avatar_size_qanswer"><?php _e('Avatar size in answer', 'ap'); ?></label></th>
 						<td>
-							<input type="text" name="anspress_opt[avatar_size_qanswer]" id="avatar_size_qanswer" value="<?php echo $settings['avatar_size_qanswer'] ; ?>" />
+							<input type="number" min="1" name="anspress_opt[avatar_size_qanswer]" id="avatar_size_qanswer" value="<?php echo $settings['avatar_size_qanswer'] ; ?>" />
 							<p class="description"><?php _e('User avatar in question page answers.', 'ap'); ?></p>
 						</td>
 					</tr>
@@ -167,7 +167,7 @@ if ( ! isset( $_REQUEST['settings-updated'] ) )
 					<tr valign="top">
 						<th scope="row"><label for="max_tags"><?php _e('Maximum tags', 'ap'); ?></label></th>
 						<td>
-							<input type="text" id="max_tags" name="anspress_opt[max_tags]" value="<?php echo $settings['max_tags']; ?>" />
+							<input type="number" min="1" id="max_tags" name="anspress_opt[max_tags]" value="<?php echo $settings['max_tags']; ?>" />
 							<p class="description"><?php _e('Maximum numbers of user can add when asking.', 'ap'); ?></p>
 						</td>
 					</tr>
@@ -192,28 +192,28 @@ if ( ! isset( $_REQUEST['settings-updated'] ) )
 					<tr valign="top">
 						<th scope="row"><label for="cover_width"><?php _e('Cover width', 'ap'); ?></label></th>
 						<td>
-							<input type="text" name="anspress_opt[cover_width]" id="cover_width" value="<?php echo $settings['cover_width'] ; ?>" placeholder="800" />								
+							<input type="number" min="1" name="anspress_opt[cover_width]" id="cover_width" value="<?php echo $settings['cover_width'] ; ?>" placeholder="800" />								
 							<p class="description"><?php _e('Width of of the cover image.', 'ap'); ?></p>
 						</td>
 					</tr>
 					<tr valign="top">
 						<th scope="row"><label for="cover_height"><?php _e('Cover height', 'ap'); ?></label></th>
 						<td>
-							<input type="text" name="anspress_opt[cover_height]" id="cover_height" value="<?php echo $settings['cover_height'] ; ?>" placeholder="200" />								
+							<input type="number" min="1" name="anspress_opt[cover_height]" id="cover_height" value="<?php echo $settings['cover_height'] ; ?>" placeholder="200" />								
 							<p class="description"><?php _e('Height of the cover image.', 'ap'); ?></p>
 						</td>
 					</tr>
 					<tr valign="top">
 						<th scope="row"><label for="cover_width_small"><?php _e('Small cover width', 'ap'); ?></label></th>
 						<td>
-							<input type="text" name="anspress_opt[cover_width_small]" id="cover_width_small" value="<?php echo $settings['cover_width_small'] ; ?>" placeholder="800" />								
+							<input type="number" min="1" name="anspress_opt[cover_width_small]" id="cover_width_small" value="<?php echo $settings['cover_width_small'] ; ?>" placeholder="800" />								
 							<p class="description"><?php _e('Width of of the small cover image.', 'ap'); ?></p>
 						</td>
 					</tr>
 					<tr valign="top">
 						<th scope="row"><label for="cover_height_small"><?php _e('Small cover height', 'ap'); ?></label></th>
 						<td>
-							<input type="text" name="anspress_opt[cover_height_small]" id="cover_height_small" value="<?php echo $settings['cover_height_small'] ; ?>" placeholder="200" />								
+							<input type="number" min="1" name="anspress_opt[cover_height_small]" id="cover_height_small" value="<?php echo $settings['cover_height_small'] ; ?>" placeholder="200" />								
 							<p class="description"><?php _e('Height of the small cover image.', 'ap'); ?></p>
 						</td>
 					</tr>
@@ -247,28 +247,28 @@ if ( ! isset( $_REQUEST['settings-updated'] ) )
 					<tr valign="top">
 						<th scope="row"><label for="question_per_page"><?php _e('Question per page', 'ap'); ?></label></th>
 						<td>
-							<input type="text" name="anspress_opt[question_per_page]" id="question_per_page" value="<?php echo $settings['question_per_page'] ; ?>" />								
+							<input type="number" min="1" name="anspress_opt[question_per_page]" id="question_per_page" value="<?php echo $settings['question_per_page'] ; ?>" />								
 							<p class="description"><?php _e('Question to show per page', 'ap'); ?></p>
 						</td>
 					</tr>
 					<tr valign="top">
 						<th scope="row"><label for="answers_per_page"><?php _e('Answers per page', 'ap'); ?></label></th>
 						<td>
-							<input type="text" name="anspress_opt[answers_per_page]" id="answers_per_page" value="<?php echo $settings['answers_per_page'] ; ?>" />								
+							<input type="number" min="1" name="anspress_opt[answers_per_page]" id="answers_per_page" value="<?php echo $settings['answers_per_page'] ; ?>" />								
 							<p class="description"><?php _e('Answers to show per page in question page', 'ap'); ?></p>
 						</td>
 					</tr>					
 					<tr valign="top">
 						<th scope="row"><label for="tags_per_page"><?php _e('Tags per page', 'ap'); ?></label></th>
 						<td>
-							<input type="text" name="anspress_opt[tags_per_page]" id="tags_per_page" value="<?php echo $settings['tags_per_page'] ; ?>" />								
+							<input type="number" min="1" name="anspress_opt[tags_per_page]" id="tags_per_page" value="<?php echo $settings['tags_per_page'] ; ?>" />								
 							<p class="description"><?php _e('Tags to show per page', 'ap'); ?></p>
 						</td>
 					</tr>
 					<tr valign="top">
 						<th scope="row"><label for="users_per_page"><?php _e('Users per page', 'ap'); ?></label></th>
 						<td>
-							<input type="text" name="anspress_opt[users_per_page]" id="users_per_page" value="<?php echo $settings['users_per_page'] ; ?>" />								
+							<input type="number" min="1" name="anspress_opt[users_per_page]" id="users_per_page" value="<?php echo $settings['users_per_page'] ; ?>" />								
 							<p class="description"><?php _e('Users to show per page on users page', 'ap'); ?></p>
 						</td>
 					</tr>
@@ -430,7 +430,7 @@ if ( ! isset( $_REQUEST['settings-updated'] ) )
 					<tr valign="top">
 						<th scope="row"><label for="mod_question_point"><?php _e('Point required for question', 'ap'); ?></label></th>
 						<td>
-							<input type="text" class="regular-text" name="anspress_opt[mod_question_point]" value="<?php echo $settings['mod_question_point']; ?>" />
+							<input type="number" min="1" class="regular-text" name="anspress_opt[mod_question_point]" value="<?php echo $settings['mod_question_point']; ?>" />
 							<p class="description"><?php _e('Point required for directly publish new question.', 'ap'); ?></p>
 						</td>
 					</tr>
