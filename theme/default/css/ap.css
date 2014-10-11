@@ -2647,10 +2647,6 @@ a.ap-btn.ap-success:visited {
     margin-bottom: 20px;
 }
 
-.no-overflow {
-    overflow: hidden;
-}
-
 .ap-form-label {
     min-width: 125px;
     padding: 7px 0;
