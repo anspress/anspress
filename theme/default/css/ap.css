@@ -3848,3 +3848,7 @@ li:first-child .bullet-point {
 .question-tags-list span:last-child{
 	display:none;
 }
+
+input#private_question {
+	float:none;
+}

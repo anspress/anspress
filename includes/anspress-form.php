@@ -828,12 +828,12 @@ class anspress_form
 	
 	public function ask_from_private_field($validate){
 		?>
-			<div class="form-group<?php echo isset($validate['private_question']) ? ' has-error' : ''; ?>">
-				<label for="private_question" class="ap-form-label"><?php _e('Is private', 'ap') ?></label>
-				<div class="no-overflow">
-					<input type="checkbox" value="1" name="private_question" id="private_question" class="checkbox" />
+			<div class="checkbox<?php echo isset($validate['private_question']) ? ' has-error' : ''; ?>">
+				<label>
+					<input type="checkbox" value="1" name="private_question" id="private_question"/>
+					<?php _e('This question is ment to be private', 'ap') ?>
+				</label>
 					<?php echo isset($validate['private_question']) ? '<span class="help-block">'. $validate['private_question'] .'</span>' : ''; ?>
-				</div>
 			</div>
 		<?php
 	}	
