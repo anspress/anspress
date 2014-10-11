@@ -466,14 +466,6 @@ body.anspress .ap-container {
     text-decoration: none;
 }
 
-.ap-question-cells {
-
-}
-
-#ap-single .ap-question-lr {
-
-}
-
 #ap-single .ap-question-left {
     display: block;
     float: left;
@@ -568,10 +560,6 @@ body.anspress .ap-container {
 
 #ap-container .question-meta ul, #ap-container .question-meta li {
     display: inline;
-}
-
-#answers {
-
 }
 
 .author-avatar img {
