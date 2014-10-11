@@ -646,7 +646,7 @@ class anspress_form
 		$args = wp_parse_args($_REQUEST['args']);
 		$comment_id = sanitize_text_field($args['comment_id']);
 		if(!ap_user_can_edit_comment($comment_id)){
-			$result = json_encode(array('status' => false, 'message' => __('You do not ahve permission to edit this comment.', 'ap')));
+			$result = json_encode(array('status' => false, 'message' => __('You do not have permission to edit this comment.', 'ap')));
 			die($result);
 		}		
 		$action = 'save-comment-'.$comment_id;	

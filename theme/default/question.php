@@ -160,7 +160,7 @@ if(ap_user_can_view_question()){
 <?php 
 
 }else{
-	echo '<div class="ap-pending-notice ap-icon-clock">'.__('You do not ahve permission to view this question.').'</div>';
+	echo '<div class="ap-pending-notice ap-icon-clock">'.__('You do not have permission to view this question.').'</div>';
 }
 endwhile ;
 
