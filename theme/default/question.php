@@ -160,7 +160,7 @@ if(ap_user_can_view_question()){
 <?php 
 
 }else{
-	echo '<div class="ap-pending-notice ap-icon-clock">'.__('This question must be reviewed by a moderator before being published.').'</div>';
+	echo '<div class="ap-pending-notice ap-icon-clock">'.__('This question must be reviewed by a moderator before being posted.').'</div>';
 }
 endwhile ;
 
