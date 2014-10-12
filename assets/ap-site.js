@@ -717,7 +717,7 @@ APjs.site.prototype = {
 			btn.attr('disabled', 'disabled').addClass('disabled');
 			
 			var fields = jQuery(this).serialize();
-			self.showLoading(aplang.submitting_your_answer);
+			self.showLoading(aplang.submitting_your_question);
 			
 			jQuery.post(ajaxurl, fields+'&action=ap_submit_question', function(responce){
 				btn.removeAttr('disabled').removeClass('disabled');				
