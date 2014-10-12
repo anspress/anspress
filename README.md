@@ -1,4 +1,4 @@
-AnsPress - A most advance community question and answer system for WordPress.
+AnsPress - The most advance community question and answer system for WordPress.
 =========
 
 ![AnsPress Cover](https://raw.githubusercontent.com/open-wp/anspress/master/banner-1544x500.png "AnsPress cover image")

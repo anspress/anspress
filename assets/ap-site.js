@@ -533,7 +533,9 @@ APjs.site.prototype = {
 				success: function(data){
 					self.hideLoading();
 				
-					if(data['action'] == 'follow'){
+					if(data['action'] == 'pleazelogin'){
+						self.addMessage(data['message'], 'error');
+					}else if(data['action'] == 'follow'){
 						jQuery(this).text(data['text']);
 						jQuery(this).attr('title', data['title']);
 						jQuery(this).removeClass('ap-icon-plus');
