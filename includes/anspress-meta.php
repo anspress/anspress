@@ -185,9 +185,8 @@ function ap_meta_total_count($type, $actionid=false, $userid = false, $group = f
 	return $count;	
 }
 
-function ap_meta_user_done($type, $userid, $actionid){	
+function ap_meta_user_done($type, $userid, $actionid, $value = false){	
 	global $wpdb;
-	$key = 'apmeta_user_done_'.$type.'_'.$userid.'_'.$actionid;
 	
 	$where = "";
 	
@@ -206,17 +205,22 @@ function ap_meta_user_done($type, $userid, $actionid){
 		$where .= "apmeta_type = '$type'";
 	}
 	
-	$query = "SELECT IFNULL(count(*), 0) FROM " .$wpdb->prefix ."ap_meta where $where and apmeta_userid = $userid and apmeta_actionid = $actionid";
-
-	$user_voted = wp_cache_get($key, 'counts');
+	$query = $wpdb->prepare('SELECT IFNULL(count(*), 0) FROM ' .$wpdb->prefix .'ap_meta where '.$where.' and apmeta_userid = %d and apmeta_actionid = %d ', $userid, $actionid);
 	
-	if($user_voted !== false)
-		return $user_voted;
-		
-	$user_voted = $wpdb->get_var($query);	
-	wp_cache_set($key, $user_voted, 'counts');
+	if($value)
+		$query = $query. $wpdb->prepare('and apmeta_value = "%s"', $value);
+	
+	$key = md5($query);
 
-	return $user_voted;	
+	$user_done = wp_cache_get($key, 'counts');
+
+	if($user_done !== false)
+		return $user_done;
+		
+	$user_done = $wpdb->get_var($query);	
+	wp_cache_set($key, $user_done, 'counts');
+
+	return $user_done;	
 }
 
 function ap_get_all_meta($args =false, $limit=10, $query = false){
