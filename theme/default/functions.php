@@ -16,7 +16,7 @@ require_once( ap_get_theme_location('pagination.php') );
 
 add_action('wp_enqueue_scripts', 'init_scripts_front');
 function init_scripts_front(){
-	//if(is_anspress()){
+	if(is_anspress()){
 		wp_enqueue_script( 'jquery');				
 		wp_enqueue_script( 'tagsinput', ap_get_theme_url('js/bootstrap-tagsinput.min.js'), 'jquery', AP_VERSION);
 		wp_enqueue_script( 'jquery-form', array('jquery'), false, true );
@@ -75,7 +75,7 @@ function init_scripts_front(){
 			'deleting_message' 				=> __( 'Deleting message', 'ap' ),
 			'uploading' 					=> __( 'Uploading', 'ap' ),
 		) );
-	//}
+	}
 }
 
 
