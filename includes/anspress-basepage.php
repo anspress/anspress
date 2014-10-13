@@ -166,6 +166,7 @@ class AP_BasePage {
 
 		echo '<div class="ap-container">';
 		do_action('ap_page_top');
+		dynamic_sidebar( 'ap-before' );
 		echo '<div class="ap-dtable">';
 		echo '<div class="ap-cl">';
 		include ap_get_theme_location(ap_get_current_page_template());

@@ -123,6 +123,16 @@ endif;
 add_action( 'widgets_init', 'ap_widgets_positions' );
 function ap_widgets_positions(){
 	register_sidebar( array(
+		'name'         	=> __( 'AP Before', 'ap' ),
+		'id'           	=> 'ap-before',
+		'before_widget' => '<div id="%1$s" class="ap-widget-pos %2$s">',
+		'after_widget' 	=> '</div>',
+		'description'  	=> __( 'Widgets in this area will be shown before anspress body.', 'ap' ),
+		'before_title' 	=> '<h3 class="ap-widget-title">',
+		'after_title'  	=> '</h3>',
+	) );
+	
+	register_sidebar( array(
 		'name'         	=> __( 'AP Lists Top', 'ap' ),
 		'id'           	=> 'ap-top',
 		'before_widget' => '<div id="%1$s" class="ap-widget-pos %2$s">',
