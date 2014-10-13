@@ -267,7 +267,7 @@ function ap_edit_a_btn_html(){
 	$post_id = get_edit_answer_id();
 	if(ap_user_can_edit_ans($post_id)){		
 		$edit_link = ap_answer_edit_link();
-		echo "<a href='$edit_link.' class='btn btn-xs edit-btn aicon-edit' data-button='ap-edit-post' title='".__('Edit Answer', 'ap')."'>".__('Edit', 'ap')."</a>";
+		echo "<a href='$edit_link.' class='edit-btn aicon-edit' data-button='ap-edit-post' title='".__('Edit Answer', 'ap')."'>".__('Edit', 'ap')."</a>";
 	}
 	return;
 }
@@ -569,10 +569,10 @@ function ap_select_answer_btn_html($post_id){
 	$nonce = wp_create_nonce( $action );	
 	
 	if(!ap_is_answer_selected($ans->post_parent)){		
-		return '<a href="#" class="ap-sicon ap-icon-checkmark ap-tip" data-button="ap-select-answer" data-args="'. $post_id.'-'. $nonce .'" title="'.__('Select this answer as best', 'ap').'"></a>';
+		return '<a href="#" class="ap-btn-select ap-sicon ap-icon-checkmark ap-tip" data-button="ap-select-answer" data-args="'. $post_id.'-'. $nonce .'" title="'.__('Select this answer as best', 'ap').'"></a>';
 		
 	}elseif(ap_is_answer_selected($ans->post_parent) && ap_is_best_answer($ans->ID)){
-		return '<a href="#" class="ap-sicon ap-icon-checkmark selected ap-tip" data-button="ap-select-answer" data-args="'. $post_id.'-'. $nonce .'" title="'.__('Unselect this answer', 'ap').'"></a>';
+		return '<a href="#" class="ap-btn-select ap-sicon ap-icon-checkmark selected ap-tip" data-button="ap-select-answer" data-args="'. $post_id.'-'. $nonce .'" title="'.__('Unselect this answer', 'ap').'"></a>';
 		
 	}
 }
