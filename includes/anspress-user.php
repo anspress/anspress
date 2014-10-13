@@ -729,9 +729,6 @@ function ap_user_template(){
 	global $current_user_meta;
 	include ap_get_theme_location(ap_get_current_user_page_template());
 	
-	if(ap_current_user_page_is('following') || ap_current_user_page_is('followers'))
-		ap_pagi($base, $total_pages, $paged);
-	
 	// Restore original Post Data	
 	if(ap_current_user_page_is('questions') || ap_current_user_page_is('answers') || ap_current_user_page_is('favorites'))
 	wp_reset_postdata();
