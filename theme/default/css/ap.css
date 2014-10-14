@@ -466,14 +466,6 @@ body.anspress .ap-container {
     text-decoration: none;
 }
 
-.ap-question-cells {
-
-}
-
-#ap-single .ap-question-lr {
-
-}
-
 #ap-single .ap-question-left {
     display: block;
     float: left;
@@ -568,10 +560,6 @@ body.anspress .ap-container {
 
 #ap-container .question-meta ul, #ap-container .question-meta li {
     display: inline;
-}
-
-#answers {
-
 }
 
 .author-avatar img {
@@ -2647,10 +2635,6 @@ a.ap-btn.ap-success:visited {
     margin-bottom: 20px;
 }
 
-.no-overflow {
-    overflow: hidden;
-}
-
 .ap-form-label {
     min-width: 125px;
     padding: 7px 0;
@@ -3847,4 +3831,12 @@ li:first-child .bullet-point {
 
 .question-tags-list span:last-child{
 	display:none;
+}
+
+input#private_question {
+	float:none;
+}
+
+a.disable:hover {
+	cursor:not-allowed;
 }
