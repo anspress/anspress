@@ -102,11 +102,11 @@ class anspress_vote
 			$type 	= $args[0] == 'up' ? 'vote_up' : 'vote_down' ;
 			$userid = get_current_user_id();
 			
-			$is_voted = ap_is_user_voted($args[1], $type, $userid) ;
-			
-			if($is_voted){
+			$is_voted = ap_is_user_voted($args[1], 'vote', $userid) ;
+
+			if(is_object($is_voted) && $is_voted->count > 0){
 				// if user already voted and click that again then reverse
-				if($is_voted == $value){
+				if($is_voted->type == $type){
 					$row = ap_remove_vote($type, $userid, $args[1]);
 					$counts = ap_post_votes($args[1]);
 					
@@ -407,7 +407,23 @@ function ap_post_votes($postid){
 
 //check if user voted on the post
 function ap_is_user_voted($actionid, $type, $userid){
-	if(is_user_logged_in()){
+	if($type == 'vote' && is_user_logged_in()){
+		global $wpdb;
+		
+		$query = $wpdb->prepare('SELECT apmeta_type as type, IFNULL(count(*), 0) as count FROM ' .$wpdb->prefix .'ap_meta where (apmeta_type = "vote_up" OR apmeta_type = "vote_down") and apmeta_userid = %d and apmeta_actionid = %d GROUP BY apmeta_type', $userid, $actionid);
+		
+		$key = md5($query);
+
+		$user_done = wp_cache_get($key, 'counts');
+
+		if($user_done === false){
+			$user_done = $wpdb->get_row($query);	
+			wp_cache_set($key, $user_done, 'counts');
+		}
+			
+		return $user_done;
+		
+	}elseif(is_user_logged_in()){
 		$done = ap_meta_user_done($type, $userid, $actionid);
 		return $done > 0 ? true : false;
 	}
