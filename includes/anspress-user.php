@@ -433,16 +433,34 @@ function ap_user_display_name($id = false, $no_html = false){
 	return '<span class="who">'.__('Anonymous', 'ap').'</span>';
 }
 
-function ap_user_link($userid=false, $sub = false){
-	if(!$userid)
-		$userid = get_the_author_meta('ID');
-		
-	$user = get_userdata($userid);
-	$user_link = rtrim(ap_get_link_to('user/'.$user->user_login), '/');
-	if($user)
-		return $user_link. ($sub ? '/'.$sub : '');
+function ap_user_link($user_id = false, $sub = false){
+	if(!$user_id)
+		$user_id = get_the_author_meta('ID');
 	
-	return false;
+	$user = get_userdata($user_id);
+	$base = rtrim(ap_get_link_to(array('ap_page' => 'user', 'user' => $user->user_login)), '/');
+	$args = '';
+	
+	if(get_option('permalink_structure') != ''){
+		
+		if(!is_array($sub))
+			$args = $sub ? '/'. $sub : '';
+		elseif(is_array($sub)){
+			if(!empty($sub))
+				foreach($sub as $s)
+					$args .= $s.'/';
+		}
+	
+	}else{
+		if(!is_array($sub))
+			$args = $sub ? '&user_page='.$sub : '';
+		elseif(is_array($sub)){
+			if(!empty($sub))
+				foreach($sub as $k => $s)
+					$args .= '&'.$k .'='.$s;
+		}
+	}
+	return $base. $args ;
 }
 
 function ap_user_menu(){

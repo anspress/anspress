@@ -572,7 +572,7 @@ function ap_conversations_list($recipient_id = false, $offset= 0, $limit = 10, $
 
 		?>	
 			<li class="<?php echo $i == 1 ? 'active ' : ''; ?>clearfix">
-				<a href="<?php echo ap_user_link(get_current_user_id(), 'message/'.$message->message_conversation); ?>">
+				<a href="<?php echo ap_user_link(get_current_user_id(), array('user_page' => 'message', 'message_id' => $message->message_conversation)); ?>">
 					<time><?php printf( __( '%s ago', 'ap' ), ap_human_time( $message->message_date, false)); ?></time>				
 					<div class="ap-avatar"><?php echo ap_get_conversation_users_avatar($message->users) ?></div>
 					<div class="ap-message-summery">
@@ -685,5 +685,5 @@ function ap_get_conversation_list($id){
 }
 
 function ap_message_btn_html($userid, $display_name){
-	echo '<a class="btn ap-btn ap-follow-btn ap-icon-paperplane" href="'.ap_user_link(get_current_user_id(), 'messages/?to='.$userid.'&dname='.$display_name).'">'.__('Message', 'ap').'</a>';
+	echo '<a class="btn ap-btn ap-follow-btn ap-icon-paperplane" href="'.ap_user_link(get_current_user_id(), array('user_page' => 'messages')).'/?to='.$userid.'&dname='.$display_name.'">'.__('Message', 'ap').'</a>';
 }
