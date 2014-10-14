@@ -231,7 +231,7 @@ function ap_get_link_to($sub){
 		$link = $base;		
 	}else{
 		if(!is_array($sub))
-			$args = $sub ? '&es_page='.$sub : '';
+			$args = $sub ? '&ap_page='.$sub : '';
 		elseif(is_array($sub)){
 			$args = '';
 			if(!empty($sub))
