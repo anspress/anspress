@@ -163,11 +163,13 @@ APjs.admin.prototype = {
 				dataType:'json',
 				success: function(data){
 					if(data['status']){
-						jQuery('.wrap').prepend(data['html']);
+						var html = jQuery(data['html']);
+						jQuery('.wrap').prepend(html);
 						jQuery('html, body').animate({
 							scrollTop: 0
 						}, 300);
 						jQuery('.wrap .updated').delay(500).slideDown(300);
+						html.delay(5000).slideUp(300);
 					}
 				} 
 			});
