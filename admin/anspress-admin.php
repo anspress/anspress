@@ -131,6 +131,7 @@ class anspress_admin {
 	 */
 	public function enqueue_admin_scripts() {
 		wp_enqueue_script( 'jquery-ui-autocomplete' );
+		wp_enqueue_script( 'jquery-form', array('jquery'), false, true );
 		wp_enqueue_script( 'ap-admin-js', ANSPRESS_URL.'assets/ap-admin.js');
 	}
 

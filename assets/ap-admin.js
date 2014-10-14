@@ -158,7 +158,7 @@ APjs.admin.prototype = {
 			jQuery.ajax({  
 				type: 'POST',  
 				url: ajaxurl,  
-				data: jQuery(this).serialize({ checkboxesAsBools: true }),  
+				data: jQuery(this).formSerialize({ checkboxesAsBools: true }),  
 				context:this,
 				dataType:'json',
 				success: function(data){
