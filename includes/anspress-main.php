@@ -51,6 +51,9 @@ class anspress {
 		add_action('ap_page_top', array($this, 'check_rewrite_rules'));
 		add_action('wp_head', array($this, 'wp_head'));
 		
+		//update menu url
+		add_filter( 'wp_get_nav_menu_items', array($this, 'update_menu_url'));
+		
 	}
 	
 
@@ -311,6 +314,29 @@ class anspress {
 		if($show)
 			echo '<div class="ap-missing-rules">'.__('Rewrite rules are missing', 'ap').'<a href="#" data-args="'.wp_create_nonce('anspress_install').'">'.__('Click here to fix', 'ap').'</a></div>';
 
+	}
+	
+	function update_menu_url( $items ) {		
+		// Iterate over the items
+		foreach ( $items as $key => $item ) {
+			
+			if('http://ANSPRESS_BASE_PAGE_URL' == $item->url)
+				$item->url = get_permalink(ap_opt('base_page'));
+			
+			if('http://ANSPRESS_ASK_PAGE_URL' == $item->url)
+				$item->url = ap_get_link_to('ask');
+			
+			if('http://ANSPRESS_CATEGORIES_PAGE_URL' == $item->url)
+				$item->url = ap_get_link_to('categories');
+			
+			if('http://ANSPRESS_TAGS_PAGE_URL' == $item->url)
+				$item->url = ap_get_link_to('tags');
+			
+			if('http://ANSPRESS_USERS_PAGE_URL' == $item->url)
+				$item->url = ap_get_link_to('users');
+		}
+
+		return $items;
 	}
 
 }

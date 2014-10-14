@@ -376,27 +376,27 @@ public function ap_menu_metaboxes(){
 			<ul>
 				<li>
 					<label class="menu-item-title">
-						<input type="radio" value="" name="menu-item[<?php echo $_nav_menu_placeholder; ?>][menu-item-url]" class="menu-item-checkbox" data-url="<?php echo get_permalink( $base_page ); ?>" data-title="<?php _e('AnsPress', 'ap'); ?>"> <?php _e('AnsPress', 'ap'); ?>
+						<input type="radio" value="" name="menu-item[<?php echo $_nav_menu_placeholder; ?>][menu-item-url]" class="menu-item-checkbox" data-url="ANSPRESS_BASE_PAGE_URL" data-title="<?php _e('AnsPress', 'ap'); ?>"> <?php _e('AnsPress', 'ap'); ?>
 					</label>
 				</li>
 				<li>
 					<label class="menu-item-title">
-						<input type="radio" value="" name="menu-item[<?php echo $_nav_menu_placeholder; ?>][menu-item-url]" class="menu-item-checkbox" data-url="<?php echo get_permalink( $base_page ); ?>ask" data-title="<?php _e('Ask', 'ap'); ?>"> <?php _e('Ask', 'ap'); ?>
+						<input type="radio" value="" name="menu-item[<?php echo $_nav_menu_placeholder; ?>][menu-item-url]" class="menu-item-checkbox" data-url="ANSPRESS_ASK_PAGE_URL" data-title="<?php _e('Ask', 'ap'); ?>"> <?php _e('Ask', 'ap'); ?>
 					</label>
 				</li>				
 				<li>
 					<label class="menu-item-title">
-						<input type="radio" value="" name="menu-item[<?php echo $_nav_menu_placeholder; ?>][menu-item-url]" class="menu-item-checkbox" data-url="<?php echo get_permalink( $base_page ); ?>categories" data-title="<?php _e('Categories', 'ap'); ?>"> <?php _e('Categories', 'ap'); ?>
+						<input type="radio" value="" name="menu-item[<?php echo $_nav_menu_placeholder; ?>][menu-item-url]" class="menu-item-checkbox" data-url="ANSPRESS_CATEGORIES_PAGE_URL" data-title="<?php _e('Categories', 'ap'); ?>"> <?php _e('Categories', 'ap'); ?>
 					</label>
 				</li>
 				<li>
 					<label class="menu-item-title">
-						<input type="radio" value="" name="menu-item[<?php echo $_nav_menu_placeholder; ?>][menu-item-url]" class="menu-item-checkbox" data-url="<?php echo get_permalink( $base_page ); ?>tags" data-title="<?php _e('Tags', 'ap'); ?>"> <?php _e('Tags', 'ap'); ?>						
+						<input type="radio" value="" name="menu-item[<?php echo $_nav_menu_placeholder; ?>][menu-item-url]" class="menu-item-checkbox" data-url="ANSPRESS_TAGS_PAGE_URL" data-title="<?php _e('Tags', 'ap'); ?>"> <?php _e('Tags', 'ap'); ?>						
 					</label>
 				</li>
 				<li>
 					<label class="menu-item-title">
-						<input type="radio" value="" name="menu-item[<?php echo $_nav_menu_placeholder ; ?>][menu-item-url]" class="menu-item-checkbox" data-url="<?php echo get_permalink( $base_page ); ?>users" data-title="<?php _e('Users', 'ap'); ?>"> <?php _e('Users', 'ap'); ?>
+						<input type="radio" value="" name="menu-item[<?php echo $_nav_menu_placeholder ; ?>][menu-item-url]" class="menu-item-checkbox" data-url="ANSPRESS_USERS_PAGE_URL" data-title="<?php _e('Users', 'ap'); ?>"> <?php _e('Users', 'ap'); ?>
 					</label>
 				</li>
 			</ul>
