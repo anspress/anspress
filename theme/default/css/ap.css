@@ -3841,3 +3841,7 @@ input#private_question {
 a.disable:hover {
 	cursor:not-allowed;
 }
+
+.question-content img {
+	max-width:100%;
+}
