@@ -1,7 +1,7 @@
 AnsPress - The most advance community question and answer system for WordPress.
 =========
 
-![AnsPress Cover](https://raw.githubusercontent.com/open-wp/anspress/master/banner-1544x500.png "AnsPress cover image")
+![AnsPress Cover](https://raw.githubusercontent.com/open-wp/anspress/master/theme/default/images/default_cover.jpg "AnsPress cover image")
 
 Demo & support forum: http://open-wp.com/questions/
 
@@ -42,4 +42,3 @@ AnsPress is an open source project by [Open-WP]. And it is under active developm
 [Rahul Aryan]:http://rahularyan.com/
 [Support forum]:http://rahularyan.com/support
 [@openwp]:http://twitter.com/openwp
-
