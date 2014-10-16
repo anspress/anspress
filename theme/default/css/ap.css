@@ -3641,7 +3641,7 @@ ul.ap-badge-item > li.ap-badge-info {
     background: none repeat scroll 0 0 #eee;
     content: "";
     display: block;
-    height: 81%;
+    height: 100%;
     left: 67px;
     position: absolute;
     top: 4px;
@@ -3844,8 +3844,4 @@ a.disable:hover {
 
 .question-content img {
 	max-width:100%;
-}
-
-#recaptcha {
-	background-color:#fff;
 }
