@@ -1500,6 +1500,7 @@ body.modal-open {
 /* forms */
 #answer-form-c {
     margin-top: 20px;
+	background-color:#fff;
 }
 
 #answer-form-c .user-meta {
