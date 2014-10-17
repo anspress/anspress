@@ -76,7 +76,7 @@ function ap_show_form_to_guest(){
 
 /* Check if a user can ask a question */
 function ap_user_can_ask(){
-	if(current_user_can('ap_new_question') || is_super_admin() || is_user_logged_in() || ap_show_form_to_guest())
+	if(current_user_can('ap_new_question') || is_super_admin() || ap_show_form_to_guest())
 		return true;
 	
 	return false;
