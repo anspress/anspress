@@ -192,9 +192,7 @@ function ap_user_can_delete($postid){
 	global $current_user;
 	
 	if($current_user->ID == $post->post_author){
-		if( $post->post_type == 'question' && current_user_can('ap_delete_question'))
-			return true;
-		elseif( $post->post_type == 'answer' && current_user_can('ap_delete_answer'))
+		if( ($post->post_type == 'question' || $post->post_type == 'answer') && current_user_can('ap_delete_question'))
 			return true;
 	}else{
 		if( $post->post_type == 'question' && current_user_can('ap_delete_others_question'))

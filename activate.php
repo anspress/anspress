@@ -29,6 +29,9 @@ class anspress_activate {
 			
 			'ap_hide_question'			=> true,
 			'ap_hide_answer'			=> true,
+			
+			'ap_delete_question'		=> true,
+			'ap_delete_answer'			=> true,
 			'ap_delete_comment'			=> true,
 			
 			'ap_vote_up'				=> true,
