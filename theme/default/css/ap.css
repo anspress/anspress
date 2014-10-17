@@ -428,18 +428,6 @@ body.anspress .ap-container {
 	color:#333;
 }
 
-
-.ap-container .ap-dtable {
-    display: table;
-    width: 100%;
-}
-
-.ap-cl {
-    display: table-cell;
-    vertical-align: top;
-    width: 100%;
-}
-
 .ap-sidebar {
     padding-left: 20px;
     vertical-align: top;

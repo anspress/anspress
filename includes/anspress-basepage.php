@@ -122,7 +122,7 @@ class AP_BasePage {
 			$total_pages = ceil($total_users / $per_page);
 			
 			$order = get_query_var('sort');
-			
+			$base = ap_get_link_to('users') . '/%_%';
 			if(empty($order ))
 				$order = 'points';
 				
@@ -170,11 +170,6 @@ class AP_BasePage {
 		echo '<div class="ap-dtable">';
 		echo '<div class="ap-cl">';
 		include ap_get_theme_location(ap_get_current_page_template());
-		
-		if(is_ap_users()){
-			$base = ap_get_link_to('users') . '/%_%';
-			ap_pagi($base, ceil( $total_users / $per_page ), $paged);			
-		}
 		
 		if(is_question_tags())
 			ap_pagi(ap_get_link_to('tags') . '/%_%', ceil( $total_terms / $per_page ), $paged);
