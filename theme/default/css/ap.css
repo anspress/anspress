@@ -2869,6 +2869,12 @@ form .checkbox {
     display: block;
 }
 
+.ap-user-image > form {
+    left: 11px;
+    position: absolute;
+    top: 10px;
+}
+
 .ap-upload-input {
     cursor: inherit;
     display: block;
