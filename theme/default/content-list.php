@@ -2,7 +2,7 @@
 global $post;
 $clearfix_class = array('question-summary clearfix');
 
-if(!is_private_question() || (is_private_question() && ap_user_can_view_private_question())):
+if(!is_private_question() || (is_private_question() && ap_user_can_view_private_question(get_the_ID()))):
 ?>
 <article id="question-<?php the_ID(); ?>" <?php post_class($clearfix_class); ?> itemscope itemtype="http://schema.org/Question">
 	<?php if ( is_private_question()) : ?>

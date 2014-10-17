@@ -225,8 +225,13 @@ function ap_user_can_create_tag(){
 	return false;
 }
 
-function ap_user_can_view_private_question(){
+function ap_user_can_view_private_question($question_id){
 	if(is_super_admin() || current_user_can('ap_view_private'))
+		return true;
+	
+	$post = get_post( $question_id );
+	
+	if($post->post_author == get_current_user_id())
 		return true;
 	
 	return false;
@@ -239,9 +244,9 @@ function ap_user_can_view_question($question_id = false){
 	if(!$question_id)
 		$question_id = get_the_ID();
 	
-	$post_status = get_post_status( $question_id );
+	$post = get_post( $question_id );
 	
-	if( $post_status == 'publish' || ($post_status == 'private_question' && ap_user_can_view_private_question()))
+	if( $post->post_status == 'publish' || ($post->post_status == 'private_question' && ap_user_can_view_private_question($question_id)))
 		return true;
 	
 	return false;
