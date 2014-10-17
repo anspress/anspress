@@ -488,8 +488,10 @@ function ap_favorite_html($post = false){
 						_e('You favorited this question', 'ap'); 
 					elseif($post->favorited)
 						printf( __( 'You and %s others favorited this question', 'ap' ), ($post->favorite -1));
+					elseif($post->favorited == 0)
+						 _e( 'Be the first to add this question to favorite', 'ap' );
 					else
-						printf( __( '%s people favorited this question', 'ap' ), $post->favorite); 
+						printf( _n( '%s person favorited this question', '%s persons favorited this question', $post->favorite, 'ap' ), $post->favorite); 
 				?>
 			</span>
 		</div>
