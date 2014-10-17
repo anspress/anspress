@@ -3782,11 +3782,7 @@ ul.ap-badge-item > li.ap-badge-info {
     padding: 10px;
     text-align: center;
 }
-#ap_new_tag_form {
-    border: 1px solid #ddd;
-    border-radius: 3px;
-    padding: 10px;
-}
+
 #ap_new_tag_form > strong {
     display: block;
     margin-bottom: 10px;
