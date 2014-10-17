@@ -6,7 +6,7 @@
 		</p>
 	</div>
 <?php else: ?>
-	<div class="ap-bo-about-me ap-icon-user ap-soft-warning"><?php _e('User did not written "About Me"'); ?></div>
+	<div class="ap-bo-about-me ap-icon-user ap-soft-warning"><?php _e('User has not written an "About Me" statement.'); ?></div>
 <?php endif; ?>
 
 <?php if(ap_user_answer_count($userid) > 0) : ?>
