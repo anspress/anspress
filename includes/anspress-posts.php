@@ -82,7 +82,10 @@ class anspress_posts
 		add_action('wp_trash_post', array($this, 'trash_post_action'));
 		add_action('untrash_post', array($this, 'untrash_ans_on_question_untrash'));
 		//add_action('delete_post', array($this, 'delete_action'));		
-		add_action('after_delete_post', array($this, 'post_delete_action'));		
+		add_action('after_delete_post', array($this, 'post_delete_action'));
+		
+		// add custom post feed
+		add_feed('questions', 'question_feed');
 	}
     // Register Custom Post Type    
     public function create_cpt_tax()
@@ -738,5 +741,10 @@ class anspress_posts
 		}
 		return $sql;
 	}
+	
+	function question_feed(){
+		get_template_part('feed', 'questions');
+	}
+
 
 }
