@@ -249,6 +249,9 @@ class anspress_ajax
 			'number' 		=> 8
 		));
 		
+		$new_tag_html = '';
+		if(ap_user_can_create_tag())
+			$new_tag_html = '<div class="ap-cntlabel"><a href="#" id="ap-load-new-tag-form" data-args="'.wp_create_nonce('new_tag_form').'">'.__('Create new tag', 'ap').'</a></div>';
 		
 		if($tags){
 			$items = array();
@@ -258,7 +261,7 @@ class anspress_ajax
 				$items[$k]['count'] 	= $t->count;
 				$items[$k]['description'] = ap_truncate_chars($t->description, 80);
 			}
-			$result = array('status' => true, 'items' => $items, 'form' => '<div class="clearfix"></div><div class="ap-cntlabel"><a href="#" id="ap-load-new-tag-form" data-args="'.wp_create_nonce('new_tag_form').'">'.__('Create new tag', 'ap').'</a></div>');
+			$result = array('status' => true, 'items' => $items, 'form' => '<div class="clearfix"></div>'.$new_tag_html);
 		}else{
 			$form = '';
 			if(ap_user_can_create_tag())

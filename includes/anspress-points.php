@@ -269,8 +269,12 @@ function ap_point_option_delete($id){
 }
 
 // get user points
-function ap_get_points($uid, $short = false) {
+function ap_get_points($uid = false, $short = false) {
+	if(!$uid)
+		$uid = get_current_user_id();
+		
 	$points = get_user_meta($uid, 'ap_points', true);
+	
 	if ($points == '') {
 		return 0;
 	} else {

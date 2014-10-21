@@ -219,7 +219,7 @@ function ap_user_can_message(){
 }
 
 function ap_user_can_create_tag(){
-	if(is_super_admin() || current_user_can('ap_new_tag'))
+	if(is_super_admin() || (current_user_can('ap_new_tag') && ap_get_points() > ap_opt('min_point_new_tag') ))
 		return true;
 	
 	return false;

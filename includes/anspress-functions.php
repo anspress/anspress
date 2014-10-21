@@ -91,6 +91,8 @@ function ap_default_options(){
 		'mod_question_point'	=> 10,
 		'categories_per_page'	=> 20,
 		'question_prefix'		=> 'question',
+		'min_point_new_tag'		=> 100,
+		'min_tags'				=> 2,
 	);
 }
 

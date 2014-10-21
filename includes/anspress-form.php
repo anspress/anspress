@@ -175,6 +175,14 @@ class anspress_form
 			}
 		}
 		
+		if(ap_opt('enable_tags') && $_POST['tags'] !=='' ){
+			$tags = explode(',', $_POST['tags']);
+			if(ap_opt('min_tags') > count($tags)){
+				$error['tags'] 	= sprintf(__('You must add at least %d', 'ap'), ap_opt('min_tags'));
+				$error['has_error'] 	= true;
+			}
+		}
+		
 		$ap_question_form_validation = $error;
 		
 		$ap_question_form_validation = apply_filters('ap_question_form_validation', $ap_question_form_validation);

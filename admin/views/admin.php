@@ -171,6 +171,20 @@ if ( ! isset( $_REQUEST['settings-updated'] ) )
 							<p class="description"><?php _e('Maximum numbers of user can add when asking.', 'ap'); ?></p>
 						</td>
 					</tr>
+					<tr valign="top">
+						<th scope="row"><label for="min_tags"><?php _e('Minimum tags', 'ap'); ?></label></th>
+						<td>
+							<input type="number" min="1" id="min_tags" name="anspress_opt[min_tags]" value="<?php echo $settings['min_tags']; ?>" />
+							<p class="description"><?php _e('Minimum numbers of tags user need to add when asking.', 'ap'); ?></p>
+						</td>
+					</tr>
+					<tr valign="top">
+						<th scope="row"><label for="min_point_new_tag"><?php _e('Minimum points to create new tag', 'ap'); ?></label></th>
+						<td>
+							<input type="number" min="1" id="min_point_new_tag" name="anspress_opt[min_point_new_tag]" value="<?php echo $settings['min_point_new_tag']; ?>" />
+							<p class="description"><?php _e('User must have more then this point for creating new tag', 'ap'); ?></p>
+						</td>
+					</tr>
 				</table>
 			</div>
 			
