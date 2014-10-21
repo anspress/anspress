@@ -1880,6 +1880,7 @@ ul.ap-pagination {
     position: fixed;
     right: 4px;
     top: 35px;
+    width: 280px;
     z-index: 9999;
 }
 
@@ -1890,22 +1891,20 @@ ul.ap-pagination {
     border-radius: 2px;
     color: #fff;
     padding: 15px 15px 15px 40px;
-    width: 280px;
 }
 
 .ap-message-item {
-    background: #fff;
-    -moz-border-radius: 2px;
-    -webkit-border-radius: 2px;
+    background: none repeat scroll 0 0 #fff;
     border-radius: 2px;
+    line-height: 22px;
     margin-top: 5px;
-    padding: 15px;
-    width: 280px;
+    padding: 10px;
 }
 
 .ap-message-item.success {
-    background: #79c180;
-    color: #fff;
+    background: none repeat scroll 0 0 #dae8d8;
+    border: 1px solid #92d385;
+    color: #716767;
 }
 
 .ap-message-item.warning {
