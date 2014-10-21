@@ -156,7 +156,7 @@ APjs.admin.prototype = {
 	saveOptions: function(){
 		jQuery('#ap-options').submit(function(){
 			 var checkboxes = jQuery.param( jQuery(this).find('input:checkbox:not(:checked)').map(function() {
-			   return { name: this.name, value: this.checked ? this.value : "false" };
+			   return { name: this.name, value: this.checked ? this.value : '0' };
 			 }));
 			 console.log(checkboxes);
 			jQuery.ajax({  
