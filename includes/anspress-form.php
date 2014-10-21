@@ -1166,7 +1166,7 @@ function ap_ask_form(){
 				ap_ask_form_hidden_input();
 				
 				if(get_query_var('parent'))
-					echo '<input type="hidden" name="parent_id" value="'.get_query_var('parent').'" />';
+					echo '<input type="hidden" name="parent_id" value="'.sanitize_text_field( get_query_var('parent')).'" />';
 			?>
 			
 		</form>

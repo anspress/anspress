@@ -155,7 +155,7 @@ function ap_page_title() {
 	elseif(is_ap_user())
 		$new_title = ap_user_page_title();
 	elseif(is_ap_search())
-		$new_title = sprintf(ap_opt('search_page_title'), get_query_var('ap_s'));
+		$new_title = sprintf(ap_opt('search_page_title'), sanitize_text_field(get_query_var('ap_s')));
 	else{
 		if(get_query_var('parent') != '')
 			$new_title = sprintf( __( 'Discussion on "%s"', 'ap'), get_the_title(get_query_var('parent') ));
