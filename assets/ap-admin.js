@@ -155,10 +155,14 @@ APjs.admin.prototype = {
 	},
 	saveOptions: function(){
 		jQuery('#ap-options').submit(function(){
+			 var checkboxes = jQuery.param( jQuery(this).find('input:checkbox:not(:checked)').map(function() {
+			   return { name: this.name, value: this.checked ? this.value : "false" };
+			 }));
+			 console.log(checkboxes);
 			jQuery.ajax({  
 				type: 'POST',  
 				url: ajaxurl,  
-				data: jQuery(this).formSerialize({ checkboxesAsBools: true }),  
+				data: jQuery(this).formSerialize() + '&' +checkboxes,  
 				context:this,
 				dataType:'json',
 				success: function(data){
