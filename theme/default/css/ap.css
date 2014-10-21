@@ -3388,7 +3388,8 @@ form .checkbox {
     border-bottom: 1px solid #efefef;
     display: block;
     font-size: 13px;
-    padding: 6px 10px;
+    padding: 10px;
+    text-decoration: none;
 }
 
 .ap-sqitem :last-child {
@@ -3396,9 +3397,9 @@ form .checkbox {
 }
 
 .apqstitle {
-    color: #52586b;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 600;
+    margin-bottom: 4px;
 }
 
 .apsqcount {
@@ -3406,6 +3407,7 @@ form .checkbox {
 }
 
 .ap-sqitem .avatar {
+    border-radius: 2px;
     float: left;
     margin-right: 15px;
 }
