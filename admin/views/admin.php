@@ -70,10 +70,10 @@ if ( ! isset( $_REQUEST['settings-updated'] ) )
 					</td>
 				</tr>
 				<tr valign="top">
-					<th scope="row">Author Credits</th>
+					<th scope="row"><?php _e('Author Credits','ap') ?></th>
 					<td>
 						<input type="checkbox" id="author_credits" name="anspress_opt[author_credits]" value="1" <?php checked( true, $settings['author_credits'] ); ?> />
-						<label for="author_credits">Hide Author Credits</label>
+						<label for="author_credits"><?php _e('Hide Author Credits','ap') ?></label>
 					</td>
 				</tr>
 
