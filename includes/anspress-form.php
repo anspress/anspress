@@ -839,7 +839,7 @@ class anspress_form
 			<div class="checkbox<?php echo isset($validate['private_question']) ? ' has-error' : ''; ?>">
 				<label>
 					<input type="checkbox" value="1" name="private_question" id="private_question"/>
-					<?php _e('This question is ment to be private', 'ap') ?>
+					<?php _e('This question is meant to be private', 'ap') ?>
 				</label>
 					<?php echo isset($validate['private_question']) ? '<span class="help-block">'. $validate['private_question'] .'</span>' : ''; ?>
 			</div>
