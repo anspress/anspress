@@ -428,10 +428,15 @@ body.anspress .ap-container {
 	color:#333;
 }
 
+.ap-cl {
+    float: left;
+    width: 70%;
+}
+
 .ap-sidebar {
-    padding-left: 20px;
-    vertical-align: top;
-    width: 250px;
+    float: left;
+    padding-left: 25px;
+    width: 30%;
 }
 
 .ap-container .question-title {
@@ -3718,12 +3723,7 @@ ul.ap-badge-item > li.ap-badge-info {
     position: absolute;
     top: 39px;
 }
-.ap-site-ac, .ap-social-ac {
-    border-radius: 4px;
-    float: left;
-    padding: 10px;
-    width: 50%;
-}
+
 .ap-site-ac > h3, .ap-social-ac > h3 {
     font-size: 13px;
     margin: 0 0 10px;
@@ -3735,8 +3735,8 @@ ul.ap-badge-item > li.ap-badge-info {
     text-align: center;
 }
 .ap-social-ac {
-	background:none;
-	border:none;
+    border: medium none;
+    text-align: center;
 }
 .anspress .ap-container .ap-site-ac a {
     display: table;
