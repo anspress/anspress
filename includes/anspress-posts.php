@@ -85,7 +85,7 @@ class anspress_posts
 		add_action('after_delete_post', array($this, 'post_delete_action'));
 		
 		// add custom post feed
-		//add_feed('questions', 'question_feed');
+		add_feed('anspress-feed', 'question_feed');
 	}
     // Register Custom Post Type    
     public function create_cpt_tax()
