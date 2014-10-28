@@ -18,6 +18,7 @@ class AP_Questions_Widget extends WP_Widget {
 		$show_category	= $instance[ 'show_category' ];
 		$show_tags		= $instance[ 'show_tags' ];
 		$label			= $instance[ 'label' ];
+		$limit			= $instance[ 'limit' ];
 
 		echo $args['before_widget'];
 		if ( ! empty( $title ) ) 
@@ -33,7 +34,7 @@ class AP_Questions_Widget extends WP_Widget {
 			'ap_query' 		=> 'main_questions',
 			'post_type' 	=> 'question',
 			'post_status' 	=> 'publish',
-			'showposts' 	=> ap_opt('question_per_page'),
+			'showposts' 	=> $limit,
 		);
 		
 		if($order == 'active'){				
@@ -91,6 +92,7 @@ class AP_Questions_Widget extends WP_Widget {
 		$show_tags		= false;
 		$order			= 'active';
 		$label			= '';
+		$limit			= 5;
 		
 		if ( isset( $instance[ 'title' ] ) )
 			$title = $instance[ 'title' ];
@@ -121,6 +123,9 @@ class AP_Questions_Widget extends WP_Widget {
 		
 		if ( isset( $instance[ 'label' ] ) )
 			$label = $instance[ 'label' ];
+			
+		if ( isset( $instance[ 'limit' ] ) )
+			$limit = $instance[ 'limit' ];
 		
 		?>
 		<p>
@@ -186,6 +191,11 @@ class AP_Questions_Widget extends WP_Widget {
 			<label for="<?php echo $this->get_field_id( 'show_tags' ); ?>"><?php _e( 'Show tags:', 'ap' ); ?></label> 
 			<input id="<?php echo $this->get_field_id( 'show_tags' ); ?>" name="<?php echo $this->get_field_name( 'show_tags' ); ?>" type="checkbox" value="<?php echo esc_attr( $show_tags ); ?>" <?php checked( $show_tags, 1 ); ?>>
 		</p>
+		
+		<p>
+			<label for="<?php echo $this->get_field_id( 'limit' ); ?>"><?php _e( 'Limit:' ); ?></label> 
+			<input class="widefat" id="<?php echo $this->get_field_id( 'limit' ); ?>" name="<?php echo $this->get_field_name( 'limit' ); ?>" type="text" value="<?php echo esc_attr( $limit ); ?>">
+		</p>
 
 		<?php 
 	}
@@ -203,6 +213,7 @@ class AP_Questions_Widget extends WP_Widget {
 		$instance['show_category'] = ( ! empty( $new_instance['show_category'] ) ) ? strip_tags( $new_instance['show_category'] ) : 0;
 		$instance['show_tags'] = ( ! empty( $new_instance['show_tags'] ) ) ? strip_tags( $new_instance['show_tags'] ) : 0;
 		$instance['label'] = ( ! empty( $new_instance['label'] ) ) ? strip_tags( $new_instance['label'] ) : '';
+		$instance['limit'] = ( ! empty( $new_instance['limit'] ) ) ? strip_tags( $new_instance['limit'] ) : 5;
 
 		return $instance;
 	}
