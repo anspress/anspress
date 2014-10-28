@@ -44,7 +44,7 @@ function ap_default_options(){
 	return array(
 		'base_page' 			=> get_option('ap_base_page_created'),
 		'base_page_slug' 		=> $page->post_name,
-		'allow_non_loggedin' 	=> true,
+		'show_login_signup' 	=> true,
 		'show_login' 			=> true,
 		'show_signup' 			=> true,
 		'login_after_signup' 	=> true,
@@ -93,6 +93,7 @@ function ap_default_options(){
 		'question_prefix'		=> 'question',
 		'min_point_new_tag'		=> 100,
 		'min_tags'				=> 2,
+		'allow_anonymous'		=> false,
 	);
 }
 
@@ -864,4 +865,18 @@ function ap_ask_btn($parent_id = false){
 		$args['parent'] = get_query_var('parent');
 	
 	echo '<a class="ap-btn ap-ask-btn-head pull-right" href="'.ap_get_link_to($args).'">'.__('Ask Question').'</a>';
+}
+
+function ap_icon($name){
+	$icons = array(
+		'follow' 		=> 'ap-icon-plus',
+		'unfollow' 		=> 'ap-icon-minus',
+	);
+	
+	$icons = apply_filters('ap_icon', $icons);
+	
+	if(isset($icons[$name]))
+		return $icons[$name];
+		
+	return '';
 }
