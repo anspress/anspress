@@ -1952,7 +1952,6 @@ ul.ap-pagination {
     display: none;
     left: 50%;
     margin: -120px 0 0 -160px;
-    padding: 10px;
     position: fixed;
     top: 50%;
     width: 500px;
@@ -1969,17 +1968,23 @@ ul.ap-pagination {
     background: #f2f2f2;
     border-bottom: 1px solid #ddd;
     border-radius: 3px 3px 0 0;
-    margin: -10px -10px 10px;
-    padding: 5px 15px;
+    padding: 13px;
 }
 
-.anspress .ap-modal-title span {
+.ap-modal-close {
     color: #888;
-    cursor: default;
+    cursor: pointer;
     display: block;
     float: right;
     font-size: 20px;
-    line-height: 140%;
+}
+
+.ap-modal-close:hover {
+	color:#000;
+}
+
+.ap-modal-body {
+	padding:10px;
 }
 
 .ap-container .ap-inline-list {
