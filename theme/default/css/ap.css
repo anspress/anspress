@@ -1970,16 +1970,15 @@ ul.ap-pagination {
     border-bottom: 1px solid #ddd;
     border-radius: 3px 3px 0 0;
     margin: -10px -10px 10px;
-    padding: 5px 15px;
+    padding: 13px;
 }
 
 .anspress .ap-modal-title span {
     color: #888;
-    cursor: default;
+    cursor: pointer;
     display: block;
     float: right;
     font-size: 20px;
-    line-height: 140%;
 }
 
 .ap-container .ap-inline-list {
