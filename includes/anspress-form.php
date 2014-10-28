@@ -1310,7 +1310,7 @@ function ap_signup_form(){
 				</div>
 			</div>
 
-			<button type="submit" class="ap-btn" ><?php _e('Login', 'ap') ?></button>
+			<button type="submit" class="ap-btn" ><?php _e('Sign Up', 'ap') ?></button>
 			<input type="hidden" name="action" value="ap_ajax_signup" />
 		</form>
 	<?php
