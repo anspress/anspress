@@ -3880,5 +3880,7 @@ a.disable:hover {
 	.ap-qaf-inner button {
 		display:inline-block;
 		margin-top:10px;
+		padding-left:3px;
+		padding-right:3px;
 	}
 }
