@@ -3344,8 +3344,6 @@ form .checkbox {
 
 .ap-widget-pos {
     margin-bottom: 20px;
-	float:left;
-	width:30%;
 }
 
 .anspress .ap-widget-title {
@@ -3890,4 +3888,9 @@ a.disable:hover {
 
 .ap-icon.ap-icon-cog:hover {
 	cursor:pointer;
+}
+
+.widget-question-position {
+	float:left;
+	width:30%;
 }

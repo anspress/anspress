@@ -155,8 +155,8 @@ function ap_widgets_positions(){
 	register_sidebar( array(
 		'name'         	=> __( 'AP Question Sidebar', 'ap' ),
 		'id'           	=> 'ap-qsidebar',
-		'before_widget' => '<div id="%1$s" class="ap-widget-pos %2$s">',
-		'after_widget' 	=> '</div>',
+		'before_widget' => '<div class="widget-question-position"><div id="%1$s" class="ap-widget-pos %2$s">',
+		'after_widget' 	=> '</div></div>',
 		'description'  	=> __( 'Widgets in this area will be shown in question page sidebar.', 'ap' ),
 		'before_title' 	=> '<h3 class="ap-widget-title">',
 		'after_title'  	=> '</h3>',
