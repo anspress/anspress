@@ -1969,6 +1969,7 @@ ul.ap-pagination {
     border-bottom: 1px solid #ddd;
     border-radius: 3px 3px 0 0;
     padding: 13px;
+	margin:0;
 }
 
 .ap-modal-close {
