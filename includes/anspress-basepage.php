@@ -168,7 +168,13 @@ class AP_BasePage {
 		do_action('ap_page_top');
 		dynamic_sidebar( 'ap-before' );
 		echo '<div class="ap-dtable">';
+		if((ap_current_page_is() == 'base') and (is_active_sidebar('ap-sidebar' ))){
 		echo '<div class="ap-cl">';
+		}elseif (ap_current_page_is() == 'base') {
+		echo '<div class="ap-cl" style="float:none;width:100%;">'; }
+		else {
+		echo '<div class="ap-cl">';
+		}
 		include ap_get_theme_location(ap_get_current_page_template());
 		
 		if(is_question_tags())
