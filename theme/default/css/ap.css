@@ -3892,5 +3892,6 @@ a.disable:hover {
 
 .widget-question-position {
 	float:left;
-	width:30%;
+	margin-left:1%;
+	width:29%;
 }
