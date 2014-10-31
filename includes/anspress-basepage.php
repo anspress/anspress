@@ -171,7 +171,7 @@ class AP_BasePage {
 		if((ap_current_page_is() == 'base') and (is_active_sidebar('ap-sidebar' ))){
 		echo '<div class="ap-cl">';
 		}elseif (ap_current_page_is() == 'base') {
-		echo '<div class="ap-cl" style="float:none;width:100%;">'; }
+		echo '<div>'; }
 		else {
 		echo '<div class="ap-cl">';
 		}
