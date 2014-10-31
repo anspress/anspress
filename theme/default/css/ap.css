@@ -3344,6 +3344,8 @@ form .checkbox {
 
 .ap-widget-pos {
     margin-bottom: 20px;
+	float:left;
+	width:30%;
 }
 
 .anspress .ap-widget-title {

@@ -188,7 +188,8 @@ class AP_BasePage {
 			ap_pagi(ap_get_link_to('categories') . '/%_%', ceil( $total_terms / $per_page ), $paged);
 			
 		echo '</div>';
-		
+		if ((ap_current_page_is() == 'question') and (is_active_sidebar('ap-qsidebar' ))) {
+		dynamic_sidebar( 'ap-qsidebar' );}
 		if ( !is_question() && is_active_sidebar( 'ap-sidebar' ) ) {
 			echo '<div class="ap-sidebar">';
 				dynamic_sidebar( 'ap-sidebar' );
