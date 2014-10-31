@@ -1978,6 +1978,7 @@ ul.ap-pagination {
     display: block;
     float: right;
     font-size: 20px;
+	line-height:1;
 }
 
 .ap-modal-close:hover {
@@ -3888,4 +3889,10 @@ a.disable:hover {
 
 .ap-icon.ap-icon-cog:hover {
 	cursor:pointer;
+}
+
+.widget-question-position {
+	float:left;
+	margin-left:1%;
+	width:29%;
 }
