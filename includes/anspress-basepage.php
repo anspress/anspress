@@ -167,13 +167,17 @@ class AP_BasePage {
 		echo '<div class="ap-container">';
 		do_action('ap_page_top');
 		dynamic_sidebar( 'ap-before' );
-		echo '<div class="ap-dtable">';
+		echo '<div class="ap-dtable clearfix">';
 		if((ap_current_page_is() == 'base') and (is_active_sidebar('ap-sidebar' ))){
 		echo '<div class="ap-cl">';
 		}elseif (ap_current_page_is() == 'base') {
 		echo '<div>'; }
-		else {
+		elseif ((ap_current_page_is() == 'question') and (is_active_sidebar('ap-qsidebar' ))) {
 		echo '<div class="ap-cl">';
+		}elseif (ap_current_page_is() == 'question') {
+		echo '<div>'; }
+		else {
+		echo '<div>';
 		}
 		include ap_get_theme_location(ap_get_current_page_template());
 		

@@ -3885,3 +3885,7 @@ a.disable:hover {
 		padding-right:3px;
 	}
 }
+
+.ap-icon.ap-icon-cog:hover {
+	cursor:pointer;
+}
