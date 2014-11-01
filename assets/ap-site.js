@@ -332,11 +332,14 @@ APjs.site.prototype = {
 							jQuery(this).addClass('voted');
 							if(result['type'] == 'up') jQuery(this).parent().find('.vote-down').addClass('disable');
 							if(result['type'] == 'down') jQuery(this).parent().find('.vote-up').addClass('disable');
+							
+							jQuery(this).trigger('voted', result);
 						}
 						else if(result['action'] == 'undo'){
 							jQuery(this).removeClass('voted');
 							if(result['type'] == 'up') jQuery(this).parent().find('.vote-down').removeClass('disable');
 							if(result['type'] == 'down') jQuery(this).parent().find('.vote-up').removeClass('disable');
+							jQuery(this).trigger('undo_vote', result);
 						}
 						jQuery(this).parent().find('.net-vote-count').text(result['count']);
 						self.addMessage(result['message'], 'success');
@@ -517,7 +520,7 @@ APjs.site.prototype = {
 	
 	followUser: function(){
 		var self = this;
-		jQuery('.ap-container').delegate('[data-action="ap-follow"]', 'click', function(e){
+		jQuery('body').delegate('[data-action="ap-follow"]', 'click', function(e){
 			e.preventDefault();		
 			var args = jQuery(this).data('args');			
 			self.showLoading(aplang.sending_request);
