@@ -1024,6 +1024,7 @@ class anspress_form
 				</div>
 			</div>		  
 		</div>
+		<?php if (ap_opt('show_signup')): ?>
 		<div class="ap-modal flag-note" id="ap_signup_modal" tabindex="-1" role="dialog">
 			<div class="ap-modal-bg"></div>
 			<div class="ap-modal-content">
@@ -1035,6 +1036,7 @@ class anspress_form
 				</div>
 			</div>		  
 		</div>
+		<?php endif;?>
 		<?php
 		}
 	}
@@ -1051,11 +1053,16 @@ class anspress_form
 						<input type="text" name="name" placeholder="<?php _e('Your name or leave it blank', 'ap') ?>" />
 					</div>
 				</div>
+				<?php if (ap_opt('show_signup')): ?>
 				<h3><?php _e('Quickly login or sign up', 'ap'); ?></h3>
+				<?php else: ?>
+				<h3><?php _e('Login', 'ap'); ?></h3>
+				<?php endif; ?>
 				<div class="ap-site-ac">
-					<h3><?php _e('Sign up or login', 'ap'); ?></h3>
 					<a href="#ap_login_modal" class="ap-open-modal ap-btn" title="<?php _e('Click here to login if you already have an account on this site.', 'ap'); ?>"><?php _e('Login', 'ap'); ?></a>
+					<?php if (ap_opt('show_signup')): ?>
 					<a href="#ap_signup_modal" class="ap-open-modal ap-btn" title="<?php _e('Click here to signup if you do not have an account on this site.', 'ap'); ?>"><?php _e('Sign Up', 'ap'); ?></a>
+					<?php endif; ?>
 				</div>
 				<div class="ap-social-ac">
 					<?php do_action( 'wordpress_social_login' ); ?>
