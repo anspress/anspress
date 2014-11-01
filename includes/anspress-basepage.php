@@ -190,6 +190,9 @@ class AP_BasePage {
 		
 		echo '</div>';
 		
+		if ((ap_current_page_is() == 'question') and (is_active_sidebar('ap-qsidebar' ))) {
+		dynamic_sidebar( 'ap-qsidebar' );}
+
 		if(!ap_opt('author_credits')){
 			?>
 				<div class="ap-footer">

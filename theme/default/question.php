@@ -152,7 +152,6 @@ if(ap_user_can_view_question()){
 				</div>
 				<!-- End participants -->
 			</div>
-			<?php dynamic_sidebar( 'ap-qsidebar' ); ?>
 		</div>
 	</div>
 </div>
