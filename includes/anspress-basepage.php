@@ -168,7 +168,7 @@ class AP_BasePage {
 		do_action('ap_page_top');
 		dynamic_sidebar( 'ap-before' );
 		echo '<div class="ap-dtable clearfix">';
-		if ( !is_question())
+		if ( !is_question() && is_active_sidebar( 'ap-sidebar' ))
 			echo '<div class="ap-cl">';
 		
 		include ap_get_theme_location(ap_get_current_page_template());
