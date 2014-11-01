@@ -3731,6 +3731,7 @@ ul.ap-badge-item > li.ap-badge-info {
     margin-left: -200px;
     min-width: 400px;
     position: absolute;
+	text-align:center;
     top: 39px;
 }
 
@@ -3900,4 +3901,8 @@ a.disable:hover {
 	float:left;
 	margin-left:1%;
 	width:29%;
+}
+
+.anonymous-info {
+	display:inline-block;
 }
