@@ -191,7 +191,10 @@ class AP_BasePage {
 		echo '</div>';
 		
 		if ((ap_current_page_is() == 'question') and (is_active_sidebar('ap-qsidebar' ))) {
-		dynamic_sidebar( 'ap-qsidebar' );}
+		echo'<div class="question-sidebar">';
+		dynamic_sidebar( 'ap-qsidebar' );
+		echo'</div>';
+		}
 
 		if(!ap_opt('author_credits')){
 			?>

@@ -3891,7 +3891,12 @@ a.disable:hover {
 	cursor:pointer;
 }
 
-.widget-question-position {
+.ap-dtable {
+	float:left;
+	width:70%;
+}
+
+.question-sidebar {
 	float:left;
 	margin-left:1%;
 	width:29%;
