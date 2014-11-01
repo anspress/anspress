@@ -56,17 +56,17 @@ if ( ! isset( $_REQUEST['settings-updated'] ) )
 					<th scope="row">Allow non loggedin to see question & answer form</th>
 					<td>
 						<fieldset>
-							<input type="checkbox" id="allow_non_loggedin" name="anspress_opt[allow_non_loggedin]" value="1" <?php checked( true, $settings['allow_non_loggedin'] ); ?> />
-							<label for="allow_non_loggedin">Allow non logged in (but still they need to signup or login)</label>
+							<input type="checkbox" id="allow_anonymous" name="anspress_opt[allow_anonymous]" value="1" <?php checked( true, $settings['allow_anonymous'] ); ?> />
+							<label for="allow_anonymous"><?php _e('Allow anonymous', 'ap') ?></label>
+						</fieldset>
+						<fieldset>
+							<input type="checkbox" id="show_login_signup" name="anspress_opt[show_login_signup]" value="1" <?php checked( true, $settings['show_login_signup'] ); ?> />
+							<label for="show_login_signup">Show login and signup</label>
 						</fieldset>
 						<fieldset>
 							<input type="checkbox" id="show_signup" name="anspress_opt[show_signup]" value="1" <?php checked( true, $settings['show_signup'] ); ?> />
 							<label for="show_signup">Show signup form</label>
-						</fieldset>
-						<fieldset>
-							<input type="checkbox" id="login_after_signup" name="anspress_opt[login_after_signup]" value="1" <?php checked( true, $settings['login_after_signup'] ); ?> />
-							<label for="login_after_signup">Automatically login after signup</label>
-						</fieldset>						
+						</fieldset>					
 					</td>
 				</tr>
 				<tr valign="top">
