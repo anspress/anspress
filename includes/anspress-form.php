@@ -1046,6 +1046,7 @@ class anspress_form
 		?>
 			<div class="ap-nli-backdrop"></div>
 			<div class="ap-account-button clearfix">
+			<?php if (ap_opt('allow_anonymous')): ?>
 				<div class="anonymous-info">
 					<h3><?php _e('Continue as anonymous', 'ap'); ?></h3>
 					<div class="form-group">
@@ -1053,6 +1054,7 @@ class anspress_form
 						<input type="text" name="name" placeholder="<?php _e('Your name or leave it blank', 'ap') ?>" />
 					</div>
 				</div>
+				<?php endif; ?>
 				<?php if (ap_opt('show_signup')): ?>
 				<h3><?php _e('Quickly login or sign up', 'ap'); ?></h3>
 				<?php else: ?>
