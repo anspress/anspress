@@ -198,7 +198,7 @@ class AP_BasePage {
 
 		if(!ap_opt('author_credits')){
 			?>
-				<div class="ap-footer">
+				<div class="ap-footer clearfix">
 					<p class="ap-author-credit">AnsPress Version <?php echo AP_VERSION; ?></p>
 				</div>
 			<?php
