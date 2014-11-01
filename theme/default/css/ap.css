@@ -1952,7 +1952,6 @@ ul.ap-pagination {
     display: none;
     left: 50%;
     margin: -120px 0 0 -160px;
-    padding: 10px;
     position: fixed;
     top: 50%;
     width: 500px;
@@ -1969,17 +1968,24 @@ ul.ap-pagination {
     background: #f2f2f2;
     border-bottom: 1px solid #ddd;
     border-radius: 3px 3px 0 0;
-    margin: -10px -10px 10px;
-    padding: 5px 15px;
+    padding: 13px;
+	margin:0;
 }
 
-.anspress .ap-modal-title span {
+.ap-modal-close {
     color: #888;
-    cursor: default;
+    cursor: pointer;
     display: block;
     float: right;
     font-size: 20px;
-    line-height: 140%;
+}
+
+.ap-modal-close:hover {
+	color:#000;
+}
+
+.ap-modal-body {
+	padding:10px;
 }
 
 .ap-container .ap-inline-list {
@@ -3358,12 +3364,13 @@ form .checkbox {
 .ap-qaf-inner {
     display: table;
     margin: 0 auto;
+	width:100%;
 }
 
 .ap-qaf-inner > .form-control {
     float: left;
     margin-right: 10px;
-    width: 450px;
+    width: 70%;
 }
 
 .ap-qaf-inner > button {
@@ -3373,6 +3380,8 @@ form .checkbox {
     font-size: 13px;
     font-weight: bold;
     padding: 10px 30px;
+	margin-left:1%;
+	width:27%;
 }
 
 .ap-qsuggestions {
@@ -3836,4 +3845,47 @@ a.disable:hover {
 
 .question-content img {
 	max-width:100%;
+}
+
+
+@media (max-width: 480px) {
+	.ap-qaf-inner .form-control {
+		width:100%;
+	}
+}
+
+@media (max-width: 806px) {
+	.ap-qaf-inner button {
+		width:26%;
+		padding-left:21px;
+		padding-right:21px;
+	}
+}
+
+@media (max-width: 584px) {
+	.ap-qaf-inner button {
+		padding-left:19px;
+		padding-right:19px;
+	}
+}
+
+@media (max-width: 570px) {
+	.ap-qaf-inner .form-control {
+		width:100%;
+		display:block;
+	}
+	
+	.ap-qaf-inner {
+		text-align:center;
+	}
+	.ap-qaf-inner button {
+		display:inline-block;
+		margin-top:10px;
+		padding-left:3px;
+		padding-right:3px;
+	}
+}
+
+.ap-icon.ap-icon-cog:hover {
+	cursor:pointer;
 }
