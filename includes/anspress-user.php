@@ -335,11 +335,12 @@ class AP_User {
 				$id_or_email = $u->ID;
 			}
 			
-			$image_a =  wp_get_attachment_image_src( get_user_meta($id_or_email, '_ap_avatar', true), 'thumbnail');
 			
-			if($image_a[0]){
+			$resized = ap_get_resized_avatar($id_or_email, $size);
+			
+			if($resized){
 
-				return "<img alt='{$alt}' src='{$image_a[0]}' class='avatar avatar-{$size} photo' height='{$size}' width='{$size}' />";
+				return "<img alt='{$alt}' src='{$resized}' class='avatar avatar-{$size} photo' height='{$size}' width='{$size}' />";
 			}
 			
 			return $avatar;
@@ -922,5 +923,36 @@ function ap_check_if_photogenic($user_id){
 		return true;
 	
 	return false;
+}
+
+function ap_get_resized_avatar($id_or_email, $size = 32){
+	$upload_dir = wp_upload_dir();
+	$file_url = $upload_dir['baseurl'].'/avatar/'.$size;
+	
+	$image_meta =  wp_get_attachment_metadata( get_user_meta($id_or_email, '_ap_avatar', true), 'thumbnail');
+	
+	$orig_file_name = str_replace('-'.$image_meta['sizes']['thumbnail']['width'].'x'.$image_meta['sizes']['thumbnail']['height'], '', $image_meta['sizes']['thumbnail']['file']);
+	
+	$orig_dir = str_replace('/'.$orig_file_name, '', $image_meta['file']);
+	
+	$file = $upload_dir['basedir'].'/'.$orig_dir.'/'.$image_meta['sizes']['thumbnail']['file'];
+	$file = str_replace(array('/', '\\'), DIRECTORY_SEPARATOR, $file);
+	
+	$avatar_dir = $upload_dir['basedir'].'/avatar/'.$size;
+	$avatar_dir = str_replace(array('/', '\\'), DIRECTORY_SEPARATOR, $avatar_dir);
+	
+	if(!file_exists($upload_dir['basedir'].'/avatar'))
+		mkdir($upload_dir['basedir'].'/avatar', 0777);
+		
+	if(!file_exists($avatar_dir))
+		mkdir($avatar_dir, 0777);
+
+	if(!file_exists($avatar_dir.'/'.$orig_file_name)){
+		$image = new ApImageResize( $file );
+		$image->resize($size, $size);
+		$image->save($avatar_dir.'/'. $orig_file_name);
+	}
+	
+	return $file_url.'/'.$orig_file_name;
 }
 

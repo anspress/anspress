@@ -95,6 +95,7 @@ require_once( plugin_dir_path( __FILE__ ) . 'includes/anspress-points.php' );
 require_once( plugin_dir_path( __FILE__ ) . 'includes/anspress-history.php' );
 require_once( plugin_dir_path( __FILE__ ) . 'includes/anspress-shortcodes.php' );
 require_once( plugin_dir_path( __FILE__ ) . 'includes/anspress-widgets.php' );
+require_once( plugin_dir_path( __FILE__ ) . 'includes/image_resize.php' );
 
 
 /*
