@@ -930,7 +930,10 @@ function ap_get_resized_avatar($id_or_email, $size = 32){
 	$file_url = $upload_dir['baseurl'].'/avatar/'.$size;
 	
 	$image_meta =  wp_get_attachment_metadata( get_user_meta($id_or_email, '_ap_avatar', true), 'thumbnail');
-	
+
+	if($image_meta === false || empty($image_meta))
+		return false;
+		
 	$orig_file_name = str_replace('-'.$image_meta['sizes']['thumbnail']['width'].'x'.$image_meta['sizes']['thumbnail']['height'], '', $image_meta['sizes']['thumbnail']['file']);
 	
 	$orig_dir = str_replace('/'.$orig_file_name, '', $image_meta['file']);
@@ -950,7 +953,7 @@ function ap_get_resized_avatar($id_or_email, $size = 32){
 	if(!file_exists($avatar_dir.'/'.$orig_file_name)){
 		$image = new ApImageResize( $file );
 		$image->resize($size, $size);
-		$image->save($avatar_dir.'/'. $orig_file_name);
+		$image->save($avatar_dir.'/'. $orig_file_name, null, 100);
 	}
 	
 	return $file_url.'/'.$orig_file_name;

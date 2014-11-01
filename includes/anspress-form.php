@@ -191,7 +191,7 @@ class anspress_form
 	}
 	
 	public function process_ask_form(){
-		if(!is_user_logged_in())
+		if(!is_user_logged_in() && !ap_allow_anonymous())
 			return false;
 		
 		if(isset($_POST['is_question']) && isset($_POST['submitted']) && isset($_POST['ask_form']) && wp_verify_nonce($_POST['ask_form'], 'post_nonce')) {
@@ -215,7 +215,8 @@ class anspress_form
 				return;
 			}
 
-			do_action('process_ask_form');			
+			do_action('process_ask_form');
+			
 			$user_id = get_current_user_id();			
 			$status = 'publish';
 			
@@ -1043,7 +1044,14 @@ class anspress_form
 		?>
 			<div class="ap-nli-backdrop"></div>
 			<div class="ap-account-button clearfix">
-				<h3><?php _e('Quickly login or sign up to continue', 'ap'); ?></h3>
+				<div class="anonymous-info">
+					<h3><?php _e('Continue as anonymous', 'ap'); ?></h3>
+					<div class="form-group">
+						<label><?php _e('Your name', 'ap') ?></label>
+						<input type="text" name="name" placeholder="<?php _e('Your name or leave it blank', 'ap') ?>" />
+					</div>
+				</div>
+				<h3><?php _e('Quickly login or sign up', 'ap'); ?></h3>
 				<div class="ap-site-ac">
 					<h3><?php _e('Sign up or login', 'ap'); ?></h3>
 					<a href="#ap_login_modal" class="ap-open-modal ap-btn" title="<?php _e('Click here to login if you already have an account on this site.', 'ap'); ?>"><?php _e('Login', 'ap'); ?></a>

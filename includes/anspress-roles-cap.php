@@ -71,12 +71,12 @@ class AP_Roles_Permission
 }
 
 function ap_show_form_to_guest(){
-	return ap_opt('allow_non_loggedin');
+	return ap_opt('show_login_signup');
 }
 
 /* Check if a user can ask a question */
 function ap_user_can_ask(){
-	if(current_user_can('ap_new_question') || is_super_admin() || ap_show_form_to_guest())
+	if(current_user_can('ap_new_question') || is_super_admin() || ap_show_form_to_guest() || ap_allow_anonymous())
 		return true;
 	
 	return false;
@@ -251,4 +251,8 @@ function ap_user_can_view_question($question_id = false){
 	
 	return false;
 	
+}
+
+function ap_allow_anonymous(){
+	return ap_opt('allow_anonymous');
 }
