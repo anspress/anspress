@@ -539,7 +539,7 @@ function ap_user_template(){
 		$total_followers = ap_get_current_user_meta('followers');
 
 		// how many users to show per page
-		$users_per_page = 10;
+		$users_per_page = ap_opt('followers_limit');
 		
 		// grab the current page number and set to 1 if no page number is set
 		$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
@@ -566,7 +566,7 @@ function ap_user_template(){
 		$total_following = ap_get_current_user_meta('following');
 
 		// how many users to show per page
-		$users_per_page = 10;
+		$users_per_page = ap_opt('following_limit');
 		
 		// grab the current page number and set to 1 if no page number is set
 		$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
