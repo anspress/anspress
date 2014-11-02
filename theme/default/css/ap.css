@@ -1978,6 +1978,7 @@ ul.ap-pagination {
     display: block;
     float: right;
     font-size: 20px;
+	line-height:1;
 }
 
 .ap-modal-close:hover {
@@ -3730,6 +3731,7 @@ ul.ap-badge-item > li.ap-badge-info {
     margin-left: -200px;
     min-width: 400px;
     position: absolute;
+	text-align:center;
     top: 39px;
 }
 
@@ -3888,4 +3890,19 @@ a.disable:hover {
 
 .ap-icon.ap-icon-cog:hover {
 	cursor:pointer;
+}
+
+.ap-dtable {
+	float:left;
+	width:70%;
+}
+
+.question-sidebar {
+	float:left;
+	margin-left:1%;
+	width:29%;
+}
+
+.anonymous-info {
+	display:inline-block;
 }
