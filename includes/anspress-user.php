@@ -135,7 +135,7 @@ class AP_User {
 			<div class="form-group">
 				<label for="username" class="ap-form-label"><?php _e('User name', 'ap') ?></label>
 				<div class="no-overflow">
-					<input type="text" name="username" id="username" value="" class="form-control" placeholder="<?php _e('Username', 'ap'); ?>" disabled />
+				<?php $current_user = wp_get_current_user(); echo'<input type="text" name="'.$current_user->user_login.'" id="'.$current_user->user_login.'" class="form-control" placeholder="'.$current_user->user_login.'" disabled /> '?>
 				</div>
 			</div>
 			<div class="form-group">
