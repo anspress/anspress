@@ -812,7 +812,7 @@ function ap_avatar_upload_form(){
 	if(ap_get_user_page_user() == get_current_user_id()){
 		?>
 		<form method="post" action="#" enctype="multipart/form-data" data-action="ap-upload-form" class="">
-			<div class="ap-btn ap-upload-o">
+			<div class="ap-btn ap-upload-o <?php echo ap_icon('upload'); ?>">
 				<span><?php _e('Upload avatar', 'ap'); ?></span>
 				<input type="file" name="thumbnail" class="ap-upload-input" data-action="ap-upload-field">
 			</div>
@@ -951,9 +951,8 @@ function ap_get_resized_avatar($id_or_email, $size = 32){
 		mkdir($avatar_dir, 0777);
 
 	if(!file_exists($avatar_dir.'/'.$orig_file_name)){
-		$image = new ApImageResize( $file );
-		$image->resize($size, $size);
-		$image->save($avatar_dir.'/'. $orig_file_name, null, 100);
+		$image_new = $avatar_dir.'/'. $orig_file_name;
+		ap_smart_resize_image($file , null, $size , $size , false , $image_new , false , false ,100 );
 	}
 	
 	return $file_url.'/'.$orig_file_name;
