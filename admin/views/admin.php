@@ -182,7 +182,7 @@ if ( ! isset( $_REQUEST['settings-updated'] ) )
 						<th scope="row"><label for="min_point_new_tag"><?php _e('Minimum points to create new tag', 'ap'); ?></label></th>
 						<td>
 							<input type="number" min="1" id="min_point_new_tag" name="anspress_opt[min_point_new_tag]" value="<?php echo $settings['min_point_new_tag']; ?>" />
-							<p class="description"><?php _e('User must have more then this point for creating new tag', 'ap'); ?></p>
+							<p class="description"><?php _e('User must have more or equal to those points to create a new tag.', 'ap'); ?></p>
 						</td>
 					</tr>
 				</table>
