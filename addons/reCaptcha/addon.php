@@ -69,7 +69,11 @@ class AP_ReCaptcha_Addon
 		return $error;
 	}
 	public function ap_ask_form_bottom(){
-		if(!is_super_admin() && (ap_opt('captcha_ask') || ap_opt('captcha_answer'))): ?>
+		if(!is_super_admin() && ap_opt('captcha_answer') && (ap_current_page_is() == 'question')): ?>
+			<div class="form-group">
+				<div id="recaptcha"><?php ap_recaptch_html(); ?></div>
+			</div>
+		<?php elseif(!is_super_admin() && ap_opt('captcha_ask') && (ap_current_page_is() == 'ask')): ?>
 			<div class="form-group">
 				<div id="recaptcha"><?php ap_recaptch_html(); ?></div>
 			</div>

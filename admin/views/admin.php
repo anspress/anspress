@@ -480,13 +480,13 @@ if ( ! isset( $_REQUEST['settings-updated'] ) )
 					<tr valign="top">
 						<th scope="row"><label for="captcha_ask"><?php _e('Enable in ask form', 'ap'); ?></label></th>
 						<td>
-							<input type="checkbox" name="anspress_opt[captcha_ask]" id="captcha_ask" value="<?php echo $settings['captcha_ask'] ; ?>" <?php checked(true, $settings['captcha_ask']); ?> />
+							<input type="checkbox" name="anspress_opt[captcha_ask]" id="captcha_ask" value="1" <?php checked(true, $settings['captcha_ask']); ?> />
 						</td>
 					</tr>
 					<tr valign="top">
 						<th scope="row"><label for="captcha_answer"><?php _e('Enable in answer form', 'ap'); ?></label></th>
 						<td>
-							<input type="checkbox" name="anspress_opt[captcha_answer]" id="captcha_answer" value="<?php echo $settings['captcha_answer'] ; ?>" <?php checked(true, $settings['captcha_answer']); ?> />
+							<input type="checkbox" name="anspress_opt[captcha_answer]" id="captcha_answer" value="1" <?php checked(true, $settings['captcha_answer']); ?> />
 						</td>
 					</tr>
 				</table>
