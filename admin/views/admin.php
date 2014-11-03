@@ -182,7 +182,7 @@ if ( ! isset( $_REQUEST['settings-updated'] ) )
 						<th scope="row"><label for="min_point_new_tag"><?php _e('Minimum points to create new tag', 'ap'); ?></label></th>
 						<td>
 							<input type="number" min="1" id="min_point_new_tag" name="anspress_opt[min_point_new_tag]" value="<?php echo $settings['min_point_new_tag']; ?>" />
-							<p class="description"><?php _e('User must have more or equal to those points to create a new tag.', 'ap'); ?></p>
+							<p class="description"><?php _e('User must have more then this point for creating new tag', 'ap'); ?></p>
 						</td>
 					</tr>
 				</table>
@@ -487,6 +487,18 @@ if ( ! isset( $_REQUEST['settings-updated'] ) )
 						<th scope="row"><label for="captcha_answer"><?php _e('Enable in answer form', 'ap'); ?></label></th>
 						<td>
 							<input type="checkbox" name="anspress_opt[captcha_answer]" id="captcha_answer" value="1" <?php checked(true, $settings['captcha_answer']); ?> />
+						</td>
+					</tr>
+					<tr valign="top">
+						<th scope="row"><label for="enable_captcha_skip"><?php _e('Enable reCaptcha skip based on user points', 'ap'); ?></label></th>
+						<td>
+							<input type="checkbox" name="anspress_opt[enable_captcha_skip]" id="enable_captcha_skip" value="1" <?php checked(true, $settings['enable_captcha_skip']); ?> />
+						</td>
+					</tr>
+					<tr valign="top">
+						<th scope="row"><label for="captcha_skip_rpoints"><?php _e('Minimum points to skip reCaptcha', 'ap'); ?></label></th>
+						<td>
+							<input type="number" min="1" name="anspress_opt[captcha_skip_rpoints]" id="captcha_skip_rpoints" value="<?php echo $settings['captcha_skip_rpoints'] ; ?>" />
 						</td>
 					</tr>
 				</table>
