@@ -871,6 +871,7 @@ function ap_icon($name){
 	$icons = array(
 		'follow' 		=> 'ap-icon-plus',
 		'unfollow' 		=> 'ap-icon-minus',
+		'upload' 		=> 'ap-icon-upload',
 	);
 	
 	$icons = apply_filters('ap_icon', $icons);

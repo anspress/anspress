@@ -3723,14 +3723,6 @@ ul.ap-badge-item > li.ap-badge-info {
 .ap-account-button {
     background: none repeat scroll 0 0 #fff;
     border: 1px solid #ddd;
-    border-radius: 3px;
-    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
-    left: 50%;
-    margin-bottom: 10px;
-    margin-left: -200px;
-    min-width: 400px;
-    position: absolute;
-    top: 39px;
 }
 
 .ap-site-ac > h3, .ap-social-ac > h3 {

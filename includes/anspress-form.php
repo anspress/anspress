@@ -1042,7 +1042,6 @@ class anspress_form
 	public function login_bottom(){
 		if(!is_user_logged_in()){
 		?>
-			<div class="ap-nli-backdrop"></div>
 			<div class="ap-account-button clearfix">
 				<div class="anonymous-info">
 					<h3><?php _e('Continue as anonymous', 'ap'); ?></h3>
@@ -1191,7 +1190,7 @@ function ap_answer_form($question_id){
 	}
 	
 	if(ap_user_can_answer($question_id) ){
-		echo '<form action="" id="answer_form" class="ap-content-inner no-overflow" method="POST" data-action="ap-submit-answer">';
+		echo '<form action="" id="answer_form" class="ap-content-inner" method="POST" data-action="ap-submit-answer">';
 		
 		echo '<div class="form-groups">';
 		do_action('ap_answer_fields', $question_id, $validate);
