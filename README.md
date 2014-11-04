@@ -33,13 +33,12 @@ AnsPress is the most complete question and answer system for WordPress. AnsPress
 
 AnsPress is an open source project by [Open-WP]. And it is under active development of [Rahul Aryan] the developer.
 
-> Currently [Open-WP] website is under development, and it will be online whithin this month.
 > If you need any assistance then feel free to post it on Developers [Support forum] or you can contact us via twitter [@openwp]
 
 
 
 [Open-WP]:http://open-wp.com/
-[Rahul Aryan]:http://rahularyan.com/
-[Support forum]:http://rahularyan.com/support
+[Rahul Aryan]:http://open-wp.com/
+[Support forum]:http://open-wp.com/questions
 [@openwp]:http://twitter.com/openwp
 
