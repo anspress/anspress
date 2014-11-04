@@ -1534,8 +1534,8 @@ ul.ap-pagination {
     margin: 10px 0 0;
     padding: 0;
 }
-#answers-c ul.ap-pagination{
-	margin: 10px 0 25px 80px;
+#answers-c ul.ap-pagination {
+    margin: 0;
 }
 
 .ap-pagination li {

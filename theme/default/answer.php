@@ -28,16 +28,16 @@
 					<li><?php ap_post_delete_btn_html(); ?></li>
 				</ul>
 			</div>
-			<div class="ap-qfooter">
-				<?php
-					$history = ap_get_latest_history_html(get_the_ID(), true, true);
-					if($history):
-				?>				
-					<div class="ap-tlitem">
-						<?php echo ap_get_latest_history_html(get_the_ID(), true, true); ?>
-					</div>
-				<?php endif; ?>
+			<?php
+				$history = ap_get_latest_history_html(get_the_ID(), true, true);
+				if($history):
+			?>	
+			<div class="ap-qfooter">							
+				<div class="ap-tlitem">
+					<?php echo ap_get_latest_history_html(get_the_ID(), true, true); ?>
+				</div>				
 			</div>
+			<?php endif; ?>
 			<?php comments_template(); ?>
 		</div>			
 	</div>	

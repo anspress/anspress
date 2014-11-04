@@ -1020,7 +1020,7 @@ class anspress_form
 					<h4 class="ap-modal-title"><?php _e('Login', 'ap'); ?><span class="ap-modal-close">&times;</span></h4>					
 				</div>
 				<div class="ap-modal-body">				
-					<?php ap_login_form(); ?>
+					<?php wp_login_form(); ?>
 				</div>
 			</div>		  
 		</div>
