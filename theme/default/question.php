@@ -24,9 +24,8 @@ if(ap_user_can_view_question()){
 		</div>
 	</header>
 	<div class="ap-question-lr">		
-		<div class="ap-question-left ap-tab-content">
-			<div id="discussion" class="active">
-				<span class="ap-qtline"></span>
+		<div class="ap-question-left">
+			<div id="discussion">
 				<div id="question" role="main" class="ap-content question" data-id="<?php echo get_the_ID(); ?>">					
 					<div class="ap-question-cells clearfix">
 						<div class="ap-avatar">
@@ -109,11 +108,6 @@ if(ap_user_can_view_question()){
 		<div class="ap-question-right">
 			<div class="ap-question-right-inner">
 				<?php ap_question_side_tab(get_question_id()); ?>
-				<!-- Start Views and Answers -->
-				<div class="ap-question-side">			
-					
-				</div>
-				<!-- End Views and Answers -->
 				
 				<!-- Start labels -->
 				<div class="ap-question-side">

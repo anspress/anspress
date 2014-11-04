@@ -355,10 +355,6 @@ body.anspress .ap-container {
     margin: 0;
     list-style: none;
 }
-.ap-container a,.ap-container a:visited{
-	color:#3e90cc
-}
-
 
 .ap-container .ap-container li {
     padding: 0;
@@ -415,7 +411,6 @@ body.anspress .ap-container {
     background: none repeat scroll 0 0 #d0e8fc;
     border-bottom: 1px solid #afcce5;
     border-radius: 3px 3px 0 0;
-    font-size: 12px;
     margin: -10px -10px 10px;
     padding: 4px;
 }
@@ -655,9 +650,7 @@ body.anspress .ap-container {
     text-align: center;
     width: 22px;
 }
-.anspress .ap-sicon:visited{
-	color:#fff;
-}
+
 .anspress .ap-sicon:hover, .anspress .ap-sicon.selected{
 	background: #6ab755;
 }
@@ -676,26 +669,16 @@ body.anspress .ap-container {
 }
 
 .ap-comments.have-comments {
+    border: 1px solid #eee;
+    border-radius: 3px;
     margin-left: 0;
-    padding-left: 48px;
+    margin-top: 15px;
 }
 
 #question .ap-comments {
     margin-left: 0;
-    padding-left: 50px;
-    position: relative;
 }
 
-#question .ap-comments.have-comments:before {
-    background: #eee;
-    content: "";
-    display: block;
-    height: 35px;
-    left: 23px;
-    position: absolute;
-    top: -16px;
-    width: 3px;
-}
 .ap-comments.comments-area {
     list-style: none outside none;
     margin: 0;
@@ -1126,10 +1109,6 @@ body.modal-open {
 	padding: 0 3px;
 }
 
-.question-tags-list > a:visited{
-    color: #888;
-}
-
 .ap-container .ap-other-meta.ap-inline-list {
     font-size: 13px;
     margin-top: 5px;
@@ -1252,20 +1231,11 @@ body.modal-open {
     text-transform: uppercase;
     width: 50px;
 }
-.ap-anstabhead {
-    border-bottom: medium none !important;
-    margin-left: 70px;
-}
 
 #answers-c .ap-answer-count {
-    background: none repeat scroll 0 0 #58ae44;
-    border-radius: 2px;
-    color: #fff;
-    font-size: 13px;
-    margin-bottom: 0;
-    padding: 2px 10px;
-    position: relative;
+    margin: 0;
 }
+
 .anspress .ap-container .ap-ans-tab li > a {
     padding: 1px 15px;
 }
@@ -1387,11 +1357,6 @@ body.modal-open {
     padding: 2px 4px;
 }
 /* tags list */
-.question-tags:before, .question-cats:before {
-    color: #AAA;
-    font-size: 10px;
-    margin-right: 5px;
-}
 
 .question-tags, .question-cats {
     display: block;
@@ -2115,22 +2080,11 @@ ul.ap-pagination {
     text-decoration: none;
 }
 
-.ap-icon.ap-icon-parti {
-    background: url(../images/participants.png) no-repeat scroll center center #eee;
-    border: 1px solid #ddd;
-    -moz-border-radius: 2px;
-    -webkit-border-radius: 2px;
-    border-radius: 2px;
-    margin-right: 20px;
-    padding: 15px;
-}
-
-.ap-icon.ap-icon-cog {
-    background: url(../images/cog.png) no-repeat scroll center center #eee;
-}
 
 /* Question page side boxes */
 .ap-question-side {
+    border-bottom: 1px solid #eee;
+    margin-bottom: 15px;
     padding: 0;
 }
 
@@ -2140,41 +2094,15 @@ ul.ap-pagination {
 }
 
 .ap-question-side .question-tags li a {
-    background: #333;
-    -moz-border-radius: 3px;
-    -webkit-border-radius: 3px;
-    border-radius: 3px;
-    color: #fff;
     display: inline-block;
-    font-size: 12px;
-    margin-right: 15px;
-    padding: 0 10px;
+    margin-right: 5px;
     position: relative;
     z-index: 1;
 }
 
-.ap-question-side .question-tags li a:before {
-    background: #333;
-    border: 7px solid #333;
-    -moz-border-radius: 3px;
-    -webkit-border-radius: 3px;
-    border-radius: 3px;
-    content: "";
-    position: absolute;
-    right: -6px;
-    top: 2px;
-    -moz-transform: rotate(45deg);
-    -ms-transform: rotate(45deg);
-    -o-transform: rotate(45deg);
-    -webkit-transform: rotate(45deg);
-    transform: rotate(45deg);
-    z-index: -1;
-}
-
 .ap-question-side .ap-question-side-title {
-    font-size: 12px;
-    line-height: 16px;
-    margin-bottom: 10px;
+    font-size: 13px;
+    margin-bottom: 6px;
     margin-top: 0;
 }
 
@@ -2333,7 +2261,7 @@ ul.ap-pagination {
     margin-right: 20px;
 }
 
-.ap-user-ffp li a, .ap-user-ffp li a:visited {
+.ap-user-ffp li a {
     border-right: 1px solid #ddd;
     display: block;
     font-size: 16px;
@@ -2403,10 +2331,6 @@ ul.ap-pagination {
     padding: 5px 10px;
     text-align: center;
     text-decoration: none;
-}
-
-.ap-profile-nav > ul > li > a:visited {
-    color: #999;
 }
 
 .ap-profile-nav > ul > li.active > a {
@@ -2513,10 +2437,6 @@ ul.ap-pagination {
     padding: 0 7px;
 }
 
-a.ap-btn.ap-success:visited {
-    color: #fff;
-}
-
 .ap-btn:before {
     margin-right: 5px;
 }
@@ -2573,10 +2493,6 @@ a.ap-btn.ap-success:visited {
     box-shadow: none;
     color: #fff;
     text-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
-}
-
-.ap-btn.ap-unfollow:visited, .ap-btn.selected:visited {
-    color: #fff;
 }
 
 .ap-users-lists .ap-user {
@@ -3248,10 +3164,6 @@ form .checkbox {
     font-weight: bold;
 }
 
-.ap-user-card .user-name:visited {
-    color: #333;
-}
-
 .ap-user-card .ap-user-rank {
     color: #777;
     display: block;
@@ -3647,50 +3559,29 @@ ul.ap-badge-item > li.ap-badge-info {
     padding: 5px 10px;
 }
 
-.ap-qtline {
-    background: none repeat scroll 0 0 #eee;
-    content: "";
-    display: block;
-    height: 100%;
-    left: 67px;
-    position: absolute;
-    top: 4px;
-    width: 3px;
-    z-index: 0;
-}
-.ap-qfooter {
-    padding-left: 25px;
-    padding-top: 1px;
-    position: relative;
-}
 .ap-qfooter .ap-qtline {
     left: 23px;
     top: 0;
 }
 .ap-tlicon {
     background: none repeat scroll 0 0 #eee;
-    border: 3px solid #fff;
     border-radius: 50%;
-    color: #777;
+    color: #b5b3b3;
     display: block;
+    float: left;
     font-size: 11px;
-    height: 25px;
-    left: -13px;
-    line-height: 21px;
-    position: absolute;
+    height: 22px;
+    line-height: 23px;
+    margin-right: 12px;
     text-align: center;
-    width: 25px;
+    width: 22px;
 }
 .ap-tlitem {
     border-bottom: 1px solid #eee;
-    color: #888;
-    font-size: 13px;
-    margin-top: 0;
-    padding: 12px 0 12px 25px;
-    position: relative;
+    padding: 12px 0;
 }
-.ap-amainc .ap-tlitem:last-child{
-	border-bottom:none;
+.ap-tlitem:last-child {
+    border: medium none;
 }
 .ap-tlitem .ap-tlicon {
     left: -14px;
@@ -3700,15 +3591,9 @@ ul.ap-badge-item > li.ap-badge-info {
 	font-weight:bold;
 	color:#333;
 }
-.ap-comments .ap-tlicon {
-    left: 10px;
-    top: -2px;
-}
+
 .ap-coomentcount {
-    color: #333;
     display: block;
-    font-size: 13px;
-    margin-top: 10px;
 }
 
 .ap-tlitem .ap-savatar {
@@ -3880,4 +3765,25 @@ a.disable:hover {
 
 .ap-icon.ap-icon-cog:hover {
 	cursor:pointer;
+}
+
+body .avatar {
+    box-shadow: none;
+    display: block;
+}
+.ap_commnt_title {
+    border-bottom: 1px solid #f5f5f5;
+    margin-bottom: 5px;
+    padding: 6px;
+}
+
+.ap-anstabhead {
+    margin-bottom: 20px;
+    margin-top: 30px;
+}
+.ap-qfooter {
+    border: 1px solid #eee;
+    border-radius: 2px;
+    margin-top: 15px;
+    padding: 5px;
 }
