@@ -229,6 +229,7 @@ function ap_label_html($term){
 }
 
 function ap_change_label_html($post_id){
+	if(ap_user_can_change_label()):
 	?>
 	<div class="ap-change-label-from ap-dropdown pull-right">
 		<a class="ap-icon ap-icon-cog ap-dropdown-toggle" data-action="ap-change-status"></a>
@@ -259,6 +260,7 @@ function ap_change_label_html($post_id){
 		</div>
 	</div>
 	<?php
+	endif;
 }
 
 function ap_question_have_labels($post_id = false){
