@@ -95,6 +95,8 @@ function ap_default_options(){
 		'min_point_new_tag'		=> 100,
 		'min_tags'				=> 2,
 		'allow_anonymous'		=> false,
+		'enable_captcha_skip'	=> false,
+		'captcha_skip_rpoints'	=> 40
 	);
 }
 
