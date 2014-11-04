@@ -46,7 +46,8 @@ class AP_History
 		
 	}
 	public function new_answer($answer_id, $userid, $question_id) {
-		ap_add_history($userid, $question_id, $answer_id, 'new_answer');
+		//ap_add_history($userid, $question_id, $answer_id, 'new_answer');
+		ap_add_history($userid, $question_id, '', 'new_answer');
 	}
 	
 	public function edit_question($post_id, $user_id) {
@@ -185,12 +186,11 @@ function ap_get_latest_history_html($post_id, $avatar = false, $icon = false){
 
 	$html = '';
 	if($history){
-		
-		if($avatar)
-			$html .= '<a class="ap-savatar" href="'.ap_user_link($history['user_id']).'">'.get_avatar($history['user_id'], 20).'</a>';
-		
 		if($icon)
 			$html .= '<span class="'.ap_history_icon($history['type']).' ap-tlicon"></span>';
+			
+		if($avatar)
+			$html .= '<a class="ap-savatar" href="'.ap_user_link($history['user_id']).'">'.get_avatar($history['user_id'], 22).'</a>';		
 		
 		if($history['type'] == 'added_label' || $history['type'] == 'removed_label'){
 			$label = '';
