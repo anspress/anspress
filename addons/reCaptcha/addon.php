@@ -69,10 +69,26 @@ class AP_ReCaptcha_Addon
 		return $error;
 	}
 	public function ap_ask_form_bottom(){
-		if(!is_super_admin() && (ap_opt('captcha_ask') || ap_opt('captcha_answer'))): ?>
+		if(!is_super_admin() && ap_opt('captcha_answer') && (ap_current_page_is() == 'question')): ?>
+		<?php if (ap_opt('enable_captcha_skip') &&  (ap_get_points() < ap_opt('captcha_skip_rpoints')) ): ?>
 			<div class="form-group">
 				<div id="recaptcha"><?php ap_recaptch_html(); ?></div>
 			</div>
+		<?php elseif (!ap_opt('enable_captcha_skip')):?>
+			<div class="form-group">
+				<div id="recaptcha"><?php ap_recaptch_html(); ?></div>
+			</div>
+		<?php endif;?>
+		<?php elseif(!is_super_admin() && ap_opt('captcha_ask') && (ap_current_page_is() == 'ask')): ?>
+		<?php if (ap_opt('enable_captcha_skip') &&  (ap_get_points() < ap_opt('captcha_skip_rpoints')) ): ?>
+			<div class="form-group">
+				<div id="recaptcha"><?php ap_recaptch_html(); ?></div>
+			</div>
+		<?php elseif (!ap_opt('enable_captcha_skip')):?>
+			<div class="form-group">
+				<div id="recaptcha"><?php ap_recaptch_html(); ?></div>
+			</div>
+		<?php endif;?>
 		<?php endif; 
 	}
 }
