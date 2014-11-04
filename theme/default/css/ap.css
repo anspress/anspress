@@ -1978,6 +1978,7 @@ ul.ap-pagination {
     display: block;
     float: right;
     font-size: 20px;
+	line-height:1;
 }
 
 .ap-modal-close:hover {
@@ -1998,7 +1999,7 @@ ul.ap-pagination {
     color: #70818b;
     float: left;
     list-style: none outside none;
-    margin: 0 10px 0 0;
+    margin: 0 10px 10px 0;
     padding: 0;
 }
 
