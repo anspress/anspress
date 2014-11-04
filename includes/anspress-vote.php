@@ -588,7 +588,7 @@ function ap_flag_note_modal(){
 			<div class="ap-modal-bg"></div>
 			<div class="ap-modal-content">
 				<div class="ap-modal-header">					
-					<h4 class="ap-modal-title"><?php _e('I am flagging this post because', 'ap'); ?></h4>
+					<h4 class="ap-modal-title"><?php _e('I am flagging this post because', 'ap'); ?><span class="ap-modal-close">&times;</span></h4>
 				</div>
 				<div class="ap-modal-body">
 				<?php 

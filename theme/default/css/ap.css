@@ -3886,3 +3886,8 @@ a.disable:hover {
 .ap-icon.ap-icon-cog:hover {
 	cursor:pointer;
 }
+
+#submit-flag-question {
+	float:right;
+	margin:0 10px 10px 0;
+}
