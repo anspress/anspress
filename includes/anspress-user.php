@@ -135,7 +135,7 @@ class AP_User {
 			<div class="form-group">
 				<label for="username" class="ap-form-label"><?php _e('User name', 'ap') ?></label>
 				<div class="no-overflow">
-					<input type="text" name="username" id="username" value="" class="form-control" placeholder="<?php _e('Username', 'ap'); ?>" disabled />
+				<?php $current_user = wp_get_current_user(); echo'<input type="text" name="'.$current_user->user_login.'" id="'.$current_user->user_login.'" class="form-control" placeholder="'.$current_user->user_login.'" disabled /> '?>
 				</div>
 			</div>
 			<div class="form-group">
@@ -539,7 +539,7 @@ function ap_user_template(){
 		$total_followers = ap_get_current_user_meta('followers');
 
 		// how many users to show per page
-		$users_per_page = 10;
+		$users_per_page = ap_opt('followers_limit');
 		
 		// grab the current page number and set to 1 if no page number is set
 		$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
@@ -566,7 +566,7 @@ function ap_user_template(){
 		$total_following = ap_get_current_user_meta('following');
 
 		// how many users to show per page
-		$users_per_page = 10;
+		$users_per_page = ap_opt('following_limit');
 		
 		// grab the current page number and set to 1 if no page number is set
 		$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;

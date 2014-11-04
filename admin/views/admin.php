@@ -232,6 +232,20 @@ if ( ! isset( $_REQUEST['settings-updated'] ) )
 						</td>
 					</tr>
 					<tr valign="top">
+						<th scope="row"><label for="followers_limit"><?php _e('Limit followers', 'ap'); ?></label></th>
+						<td>
+							<input type="number" min="1" name="anspress_opt[followers_limit]" id="followers_limit" value="<?php echo $settings['followers_limit'] ; ?>" placeholder="10" />								
+							<p class="description"><?php _e('How many followers to display on user profile?', 'ap'); ?></p>
+						</td>
+					</tr>
+					<tr valign="top">
+						<th scope="row"><label for="following_limit"><?php _e('Limit following users', 'ap'); ?></label></th>
+						<td>
+							<input type="number" min="1" name="anspress_opt[following_limit]" id="following_limit" value="<?php echo $settings['following_limit'] ; ?>" placeholder="10" />								
+							<p class="description"><?php _e('How many following users to display on user profile?', 'ap'); ?></p>
+						</td>
+					</tr>
+					<tr valign="top">
 						<th scope="row"><label for="default_rank"><?php _e('Default rank', 'ap'); ?></label></th>
 						<td>
 							<?php

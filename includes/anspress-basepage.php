@@ -167,7 +167,11 @@ class AP_BasePage {
 		echo '<div class="ap-container">';
 		do_action('ap_page_top');
 		dynamic_sidebar( 'ap-before' );
-		echo '<div class="ap-dtable clearfix">';
+		if ((ap_current_page_is() == 'question') and (is_active_sidebar('ap-qsidebar' ))){
+		echo '<div class="ap-dtable">';}
+		else {
+		echo '<div>';
+		}
 		if ( !is_question() && is_active_sidebar( 'ap-sidebar' ))
 			echo '<div class="ap-cl">';
 		
@@ -190,9 +194,15 @@ class AP_BasePage {
 		
 		echo '</div>';
 		
+		if ((ap_current_page_is() == 'question') and (is_active_sidebar('ap-qsidebar' ))) {
+		echo'<div class="question-sidebar">';
+		dynamic_sidebar( 'ap-qsidebar' );
+		echo'</div>';
+		}
+
 		if(!ap_opt('author_credits')){
 			?>
-				<div class="ap-footer">
+				<div class="ap-footer clearfix">
 					<p class="ap-author-credit">AnsPress Version <?php echo AP_VERSION; ?></p>
 				</div>
 			<?php
