@@ -2003,7 +2003,7 @@ ul.ap-pagination {
     padding: 0;
 }
 
-.ap-container .ap-inline-list > li:nth-child(n+4){
+.ap-container .ap-participants-list li:nth-child(n+4){
 	margin-top:10px;
 }
 
