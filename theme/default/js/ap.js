@@ -110,7 +110,46 @@ jQuery(document).ready(function(){
 	jQuery('.ap-categories-list li .ap-icon-arrow-down').click(function(e){
 		e.preventDefault();
 		jQuery(this).parent().next().slideToggle(200);
-	});	
+	});
+	
+	if((jQuery('#post_content').length > 0) && typeof jQuery.jStorage !== 'undefined' ){
+		jQuery('#post_content').on('blur', function(){
+			jQuery.jStorage.set('post_content', jQuery(this).val());			
+		});
+		
+		jQuery('#post_title').on('blur', function(){
+			jQuery.jStorage.set('post_title', jQuery(this).val());			
+		});
+		
+		jQuery('select#category').on('blur', function(){
+			jQuery.jStorage.set('category', jQuery(this).val());			
+		});
+		
+		jQuery('.anspress').delegate('[data-action="ap-add-tag"]', 'click touchstart', function(){
+			jQuery.jStorage.set('tags', jQuery('[data-role="ap-tagsinput"]').tagsinput('items'));			
+		});
+		
+		if( typeof jQuery.jStorage.get('post_content') !== 'undefined' )
+			jQuery('#post_content').val(jQuery.jStorage.get('post_content'));
+		
+		if( typeof jQuery.jStorage.get('post_title') !== 'undefined' )
+			jQuery('#post_title').val(jQuery.jStorage.get('post_title'));
+		
+		if( typeof jQuery.jStorage.get('category') !== 'undefined' )
+			jQuery('select#category option[value="' + jQuery.jStorage.get('category') + '"]').prop('selected', true);
+
+		if( typeof jQuery.jStorage.get('tags') !== 'undefined'  && jQuery.jStorage.get('tags')){
+			jQuery.each(jQuery.jStorage.get('tags'), function(k, v){
+				jQuery('[data-role="ap-tagsinput"]').tagsinput('add', v);
+			});
+		}
+
+	}
+	
+	jQuery('#answer_form, #ask_question_form').submit(function(){
+		jQuery.jStorage.flush();
+	});
+	
 	
 });
 function ap_chk_activity_scroll(e){

@@ -23,6 +23,7 @@ function init_scripts_front(){
 			
 		wp_enqueue_script( 'ap-site-js', ANSPRESS_URL.'assets/ap-site.js', 'jquery', AP_VERSION);		
 		wp_enqueue_script( 'tooltipster', ap_get_theme_url('js/jquery.tooltipster.min.js'), 'jquery', AP_VERSION);
+		wp_enqueue_script( 'jstorage', ap_get_theme_url('js/jstorage.js'), 'jquery', AP_VERSION);
 		//wp_enqueue_script( 'perfect-scrollbar', ap_get_theme_url('js/perfect-scrollbar.min.js'), 'jquery', AP_VERSION);
 		wp_enqueue_script( 'ap-js', ap_get_theme_url('js/ap.js'), 'jquery', AP_VERSION);
 		wp_enqueue_style( 'tagsinput', ap_get_theme_url('css/bootstrap-tagsinput.css'), array(), AP_VERSION);
