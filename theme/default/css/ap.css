@@ -1999,8 +1999,12 @@ ul.ap-pagination {
     color: #70818b;
     float: left;
     list-style: none outside none;
-    margin: 0 10px 10px 0;
+    margin: 0 10px 0 0;
     padding: 0;
+}
+
+.ap-container .ap-inline-list > li:nth-child(n+4){
+	margin-top:10px;
 }
 
 .ap-tax-description {
