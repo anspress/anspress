@@ -417,6 +417,7 @@ function ap_get_user_question_list($user_id, $limit = 5, $title_limit = 50){
 }
 
 function ap_user_display_name($id = false, $no_html = false){
+	
 	if(!$id)
 		$id = get_the_author_meta('ID');
 	
@@ -429,8 +430,24 @@ function ap_user_display_name($id = false, $no_html = false){
 		return '<span class="who"><a href="'.ap_user_link($id).'">'.$user->display_name.'</a></span>';
 	}
 	
-	if($no_html)
-			return __('Anonymous', 'ap');		
+	global $post;
+	
+	if($post->post_type =='question' || $post->post_type =='answer' ){
+		$name = get_post_meta($post->ID, 'anonymous_name', true);
+		
+		if($no_html){
+			if($name != '')
+				return $name;
+			else
+				return __('Anonymous', 'ap');
+		}else{
+			if($name != '')
+				return '<span class="who">'.$name.'</span>';
+			else
+				return '<span class="who">'.__('Anonymous', 'ap').'</span>';
+		}
+	}
+	
 	return '<span class="who">'.__('Anonymous', 'ap').'</span>';
 }
 
