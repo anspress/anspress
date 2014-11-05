@@ -3761,7 +3761,7 @@ a.disable:hover {
 	cursor:pointer;
 }
 
-body .avatar {
+.ap-container .avatar {
     box-shadow: none;
     display: block;
 }
