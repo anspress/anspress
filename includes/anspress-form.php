@@ -1038,7 +1038,6 @@ class anspress_form
 	public function login_signup_modal(){
 		if(!is_user_logged_in()){
 		?>
-		<?php if (ap_opt('custom_login_url') == ''): ?>
 		<div class="ap-modal flag-note" id="ap_login_modal" tabindex="-1" role="dialog">
 			<div class="ap-modal-bg"></div>
 			<div class="ap-modal-content">
@@ -1050,9 +1049,7 @@ class anspress_form
 				</div>
 			</div>		  
 		</div>
-		<?php endif;?>
 		<?php if (ap_opt('show_signup')): ?>
-		<?php if (ap_opt('custom_signup_url') == ''): ?>
 		<div class="ap-modal flag-note" id="ap_signup_modal" tabindex="-1" role="dialog">
 			<div class="ap-modal-bg"></div>
 			<div class="ap-modal-content">
@@ -1064,7 +1061,6 @@ class anspress_form
 				</div>
 			</div>		  
 		</div>
-		<?php endif;?>
 		<?php endif;?>
 		<?php
 		}
@@ -1089,44 +1085,22 @@ class anspress_form
 					</div>
 				</div>
 				<?php endif; ?>
-				<?php if(ap_opt('show_signup') || ap_opt('show_login')):?>
 				<div class="ap-ac-accordion">
 					<strong>
 						<i class="<?php echo ap_icon('unchecked') ?>"></i>
 						<i class="<?php echo ap_icon('checked') ?>"></i>
-						<?php if(ap_opt('show_signup') && ap_opt('show_login')):?>
-						<?php _e('Login or Sign Up', 'ap'); ?>
-						<?php elseif (ap_opt('show_signup')): ?>
-						<?php _e('Sign up', 'ap'); ?>
-						<?php elseif(ap_opt('show_login')): ?>
-						<?php _e('Login', 'ap'); ?>
-						<?php endif; ?>
+						<?php _e('Login or sign up', 'ap'); ?>
 					</strong>
 					<div class="ap-site-ac accordion-content">
-						<?php if (ap_opt('show_login')): ?>
-						<?php if (ap_opt('custom_login_url') != ''): ?>
-						<?php $customloginurl=ap_opt('custom_login_url');?>
-						<a href="<?php echo $customloginurl?>" class="ap-btn" title="<?php _e('Click here to login if you already have an account on this site.', 'ap'); ?>"><?php _e('Login', 'ap'); ?></a>
-						<?php else: ?>
 						<a href="#ap_login_modal" class="ap-open-modal ap-btn" title="<?php _e('Click here to login if you already have an account on this site.', 'ap'); ?>"><?php _e('Login', 'ap'); ?></a>
-						<?php endif; ?>
-						<?php endif;?>
 						<?php if (ap_opt('show_signup')): ?>
-						<?php if (ap_opt('custom_signup_url') != ''): ?>
-						<?php $customsignupurl=ap_opt('custom_signup_url');?>
-						<a href="<?php echo $customsignupurl?>" class="ap-btn" title="<?php _e('Click here to signup if you do not have an account on this site.', 'ap'); ?>"><?php _e('Sign Up', 'ap'); ?></a>
-						<?php else: ?>
 						<a href="#ap_signup_modal" class="ap-open-modal ap-btn" title="<?php _e('Click here to signup if you do not have an account on this site.', 'ap'); ?>"><?php _e('Sign Up', 'ap'); ?></a>
-						<?php endif;?>
 						<?php endif; ?>
 					</div>
 				</div>
-				<?php endif;?>
-				<?php if (ap_opt('show_social_login')): ?>
 				<div class="ap-social-ac">
 					<?php do_action( 'wordpress_social_login' ); ?>
 				</div>
-				<?php endif;?>
 			</div>		
 		<?php
 		}
