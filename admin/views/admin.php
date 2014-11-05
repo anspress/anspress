@@ -77,11 +77,11 @@ if ( ! isset( $_REQUEST['settings-updated'] ) )
 						</fieldset>
 						<fieldset>
 							<p>Type down your own custom signup url or leave it blank for the default AnsPress modal signup</p>
-							<input type="url" name="anspress_opt[custom_signup_url]" placeholder="http://yorsite.com/customsignup" id="custom_signup_url" value="<?php echo $settings['custom_signup_url'] ; ?>" />
+							<input type="url" name="anspress_opt[custom_signup_url]" placeholder="http://yorsite.com/signup" id="custom_signup_url" value="<?php echo $settings['custom_signup_url'] ; ?>" />
 						</fieldset>
 						<fieldset>
 							<p>Type down your own custom login url or leave it blank for the default AnsPress modal login</p>
-							<input type="url" name="anspress_opt[custom_login_url]" placeholder="http://yorsite.com/customlogin" id="custom_login_url" value="<?php echo $settings['custom_login_url'] ; ?>" />
+							<input type="url" name="anspress_opt[custom_login_url]" placeholder="http://yorsite.com/login" id="custom_login_url" value="<?php echo $settings['custom_login_url'] ; ?>" />
 						</fieldset>
 					</td>
 				</tr>
