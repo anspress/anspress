@@ -358,7 +358,7 @@ class anspress_form
 	}
 	
 	public function process_answer_form( ){	
-		if(!is_user_logged_in())
+		if(!is_user_logged_in() && !ap_opt('allow_anonymous'))
 			return false;
 			
 		if(isset($_POST['is_answer']) && isset($_POST['submitted']) && isset($_POST['nonce']) && wp_verify_nonce($_POST['nonce'], 'post_nonce_'.$_POST['form_question_id'])) {
@@ -384,7 +384,7 @@ class anspress_form
 			
 			$question = get_post( $fields['question_id'] );
 			
-			if(!ap_user_can_answer($question->ID) )
+			if(!ap_user_can_answer($question->ID) && !ap_opt('allow_anonymous'))
 				return;
 			
 			do_action('process_answer_form');
@@ -410,7 +410,9 @@ class anspress_form
 				if($logged_in && $_POST['action'] != 'ap_submit_answer'){
 					wp_redirect( get_permalink($question->ID) ); exit;
 				}
-				
+				if (ap_opt('allow_anonymous') && isset($fields['name']))
+					update_post_meta($post_id, 'anonymous_name', $fields['name']);
+					
 				$result = array();
 				
 				if($_POST['action'] == 'ap_submit_answer'){
