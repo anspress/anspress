@@ -1943,6 +1943,7 @@ ul.ap-pagination {
     display: block;
     float: right;
     font-size: 20px;
+	line-height:1;
 }
 
 .ap-modal-close:hover {
@@ -1965,6 +1966,10 @@ ul.ap-pagination {
     list-style: none outside none;
     margin: 0 10px 0 0;
     padding: 0;
+}
+
+.ap-container .ap-participants-list li:nth-child(n+4){
+	margin-top:10px;
 }
 
 .ap-tax-description {
