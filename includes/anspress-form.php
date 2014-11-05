@@ -36,6 +36,8 @@ class anspress_form
     public function __construct()
     {
 		add_action( 'init', array($this, 'process_forms') );
+		add_action( 'ap_new_question', array($this, 'on_new_question'), 10, 2 );
+		add_action( 'ap_new_answer', array($this, 'on_new_answer'), 10, 2 );
 		//add_action('comment_form', array($this, 'comment_button') );
 		add_action( 'wp_ajax_ap_load_comment_form', array($this, 'load_ajax_commentform') ); 
 		add_action( 'wp_ajax_nopriv_ap_load_comment_form', array($this, 'load_ajax_commentform') );
@@ -114,6 +116,51 @@ class anspress_form
 			$this->process_edit_answer_form();
 		}	
 
+	}
+	
+	public function on_new_question($post_id, $post){
+		if($post_id){
+			$user_id = get_current_user_id();
+			update_post_meta($post_id, ANSPRESS_VOTE_META, '0');
+			update_post_meta($post_id, ANSPRESS_FAV_META, '0');
+			update_post_meta($post_id, ANSPRESS_CLOSE_META, '0');
+			update_post_meta($post_id, ANSPRESS_FLAG_META, '0');
+			update_post_meta($post_id, ANSPRESS_VIEW_META, '0');
+			update_post_meta($post_id, ANSPRESS_UPDATED_META, current_time( 'mysql' ));
+			update_post_meta($post_id, ANSPRESS_SELECTED_META, false);
+			
+			//ap_add_history($user_id, $post_id, 'asked');
+			ap_add_parti($post_id, $user_id, 'question');
+			
+			//update answer count
+			update_post_meta($post_id, ANSPRESS_ANS_META, '0');
+
+			do_action('ap_after_inserting_question', $post_id);
+			ap_do_event('new_question', $post_id, $user_id);
+		}
+	}	
+	
+	public function on_new_answer($post_id, $post){
+		if($post_id){
+			$user_id = get_current_user_id();	
+			$question = get_post($post->post_parent);
+			// set default value for meta
+			update_post_meta($post_id, ANSPRESS_VOTE_META, '0');
+			
+			// set updated meta for sorting purpose
+			update_post_meta($question->ID, ANSPRESS_UPDATED_META, current_time( 'mysql' ));
+			update_post_meta($post_id, ANSPRESS_UPDATED_META, current_time( 'mysql' ));
+			
+			ap_add_parti($question->ID, $user_id, 'answer');			
+			
+			// get existing answer count
+			$current_ans = ap_count_ans($question->ID);
+			
+			//update answer count
+			update_post_meta($question->ID, ANSPRESS_ANS_META, $current_ans);
+			
+			update_post_meta($post_id, ANSPRESS_BEST_META, 0);
+		}
 	}
 	
 	public function get_question_fields_to_process(){
@@ -244,25 +291,9 @@ class anspress_form
 				// Update Custom Meta
 				if(isset($fields['category']))
 					wp_set_post_terms( $post_id, $fields['category'], 'question_category' );
+					
 				if(isset($fields['tags']))
 					wp_set_post_terms( $post_id, $fields['tags'], 'question_tags' );
-					
-				update_post_meta($post_id, ANSPRESS_VOTE_META, '0');
-				update_post_meta($post_id, ANSPRESS_FAV_META, '0');
-				update_post_meta($post_id, ANSPRESS_CLOSE_META, '0');
-				update_post_meta($post_id, ANSPRESS_FLAG_META, '0');
-				update_post_meta($post_id, ANSPRESS_VIEW_META, '0');
-				update_post_meta($post_id, ANSPRESS_UPDATED_META, current_time( 'mysql' ));
-				update_post_meta($post_id, ANSPRESS_SELECTED_META, false);
-				
-				//ap_add_history($user_id, $post_id, 'asked');
-				ap_add_parti($post_id, $user_id, 'question');
-				
-				//update answer count
-				update_post_meta($post_id, ANSPRESS_ANS_META, '0');
-
-				do_action('ap_after_inserting_question', $post_id);
-				ap_do_event('new_question', $post_id, $user_id);
 				
 				if($_POST['action'] == 'ap_submit_question'){
 					$result = apply_filters('ap_ajax_question_submit_result', 
@@ -272,7 +303,6 @@ class anspress_form
 							'redirect_to'	=> get_permalink($post_id)
 						)
 					);
-
 					
 					return json_encode($result) ;
 				}else{
@@ -364,22 +394,8 @@ class anspress_form
 			$post_id = wp_insert_post($ans_array);
 			
 			if($post_id){				
-				
-				// set default value for meta
-				update_post_meta($post_id, ANSPRESS_VOTE_META, '0');
-				
-				// set updated meta for sorting purpose
-				update_post_meta($question->ID, ANSPRESS_UPDATED_META, current_time( 'mysql' ));
-				
-				ap_add_parti($question->ID, $user_id, 'answer');			
-				
 				// get existing answer count
 				$current_ans = ap_count_ans($question->ID);
-				
-				//update answer count
-				update_post_meta($question->ID, ANSPRESS_ANS_META, $current_ans);
-				
-				update_post_meta($post_id, ANSPRESS_BEST_META, 0);
 				
 				// redirect if just logged in
 				if($logged_in && $_POST['action'] != 'ap_submit_answer'){
