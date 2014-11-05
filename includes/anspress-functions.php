@@ -44,9 +44,12 @@ function ap_default_options(){
 	return array(
 		'base_page' 			=> get_option('ap_base_page_created'),
 		'base_page_slug' 		=> $page->post_name,
+		'custom_signup_url'		=> '',
+		'custom_login_url'		=> '',
 		'show_login_signup' 	=> true,
 		'show_login' 			=> true,
 		'show_signup' 			=> true,
+		'show_social_login'		=> false,
 		'theme' 				=> 'default',
 		'author_credits' 		=> false,
 		'clear_database' 		=> false,
