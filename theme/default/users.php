@@ -1,5 +1,7 @@
 <h1 class="entry-title">
-	<?php the_title(); ?>
+		<?php if (!ap_opt('double_titles'))
+		the_title(); 
+		?>
 	<a class="ap-btn ap-ask-btn-head pull-right" href="<?php echo ap_get_link_to('ask') ?>"><?php _e('Ask Question'); ?></a>
 </h1>
 <div id="ap-users" class="clearfix">

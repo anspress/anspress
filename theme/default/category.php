@@ -1,13 +1,14 @@
 <div id="ap-lists" class="clearfix">
-	<div class="ap-tax-description">		
+<?php if (!ap_opt('double_titles')):?>
+	<div class="ap-tax-description">
 		<h2 class="entry-title"><?php printf(__('Category: %s', 'ap'), $category->name); ?> <span class="ap-tax-item-count"><?php printf( _n('1 Question', '%s Questions', $category->count, 'ap'),  $category->count); ?></span></h2>
-		
 		<?php if($category->description !=''): ?>
 			<p class="ap-category-description"><?php echo $category->description; ?></p>
 		<?php else: ?>
 			<p class="ap-category-description"><?php _e('-- No description --', 'ap'); ?></p>
 		<?php endif; ?>
 	</div>
+	<?php endif;?>
 	<?php if ( $question->have_posts() ) : ?>
 		<?php ap_questions_tab(); ?>
 		<div class="question-list">

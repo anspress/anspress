@@ -92,6 +92,13 @@ if ( ! isset( $_REQUEST['settings-updated'] ) )
 						<label for="author_credits">Hide Author Credits</label>
 					</td>
 				</tr>
+				<tr valign="top">
+					<th scope="row">Double titles</th>
+					<td>
+						<input type="checkbox" id="double_titles" name="anspress_opt[double_titles]" value="1" <?php checked( true, $settings['double_titles'] ); ?> />
+						<label for="double_titles">If you see double titles on your pages enable this checkbox </label>
+					</td>
+				</tr>
 
 			</table>
 			</div>
