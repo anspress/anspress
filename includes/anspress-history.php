@@ -213,7 +213,7 @@ function ap_get_latest_history_html($post_id, $avatar = false, $icon = false){
 			$title = ap_history_name($history['type']);
 		}
 		
-		$html .= '<span class="ap-post-history">'.sprintf( __('%s %s about %s ago', 'ap'), ap_user_display_name($history['user_id']), $title, ap_human_time( mysql2date('U', $history['date'])) ).'</span>';
+		$html .= '<span class="ap-post-history">'.sprintf( __('%s %s about <time class="updated" datetime="'. mysql2date('c', $history['date']) .'">%s</time> ago', 'ap'), ap_user_display_name($history['user_id']), $title, ap_human_time( mysql2date('U', $history['date'])) ).'</span>';
 
 		
 	}elseif(!$icon){

@@ -4,7 +4,7 @@ $clearfix_class = array('question-summary clearfix');
 
 if(!is_private_question() || (is_private_question() && ap_user_can_view_private_question(get_the_ID()))):
 ?>
-<article id="question-<?php the_ID(); ?>" <?php post_class($clearfix_class); ?> itemscope itemtype="http://schema.org/Question">
+<article id="question-<?php the_ID(); ?>" <?php post_class($clearfix_class); ?>>
 	<?php if ( is_private_question()) : ?>
 		<div class="private-question-label">
 			<span><?php _e( 'Private Question', 'ap' ); ?></span>
@@ -31,7 +31,7 @@ if(!is_private_question() || (is_private_question() && ap_user_can_view_private_
 			</a>
 		</div>								
 		<div class="summery wrap-left">
-			<h3 class="question-title" itemprop="title">			
+			<h3 class="question-title entry-title" itemprop="title">			
 				<a class="question-hyperlink" itemprop="url" href="<?php the_permalink(); ?>" rel="bookmark" title="<?php the_title(); ?>"><?php the_title(); ?></a>				
 			</h3>					
 			<ul class="list-taxo ap-inline-list clearfix">

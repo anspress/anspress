@@ -18,6 +18,7 @@
 	?>
 </div>
 
-<?php if ( ! ( $users->results ) )  {
-+	ap_pagi($base, $total_pages, $paged);}
-+?
+<?php 
+if ( ! ( $users->results ) )  {
+	ap_pagi($base, $total_pages, $paged);
+}
