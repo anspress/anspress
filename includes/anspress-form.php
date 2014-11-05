@@ -562,7 +562,7 @@ class anspress_form
 				if($_POST['action'] == 'ap_submit_answer'){
 					$result = array(
 								'action' 		=> 'false',								
-								'message' 		=> __('You do not have permission to edit this answer.','ap')
+								'message' 		=> __('You don\'t have permission to edit this answer.','ap')
 							);
 					return json_encode($result) ;
 				}
