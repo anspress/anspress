@@ -488,8 +488,8 @@ class anspress_posts
 		if ( wp_is_post_revision( $post_id ) )
 			return;
 		
-		if ( !current_user_can( 'edit_post', $post->ID ))
-			return $post->ID;
+		/* if ( !current_user_can( 'edit_post', $post->ID ))
+			return $post->ID; */
 		
 		if ( $post->post_type == 'question' ) {
 			//check if post have updated meta, if not this is a new post :D

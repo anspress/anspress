@@ -160,6 +160,9 @@ class anspress_form
 			update_post_meta($question->ID, ANSPRESS_ANS_META, $current_ans);
 			
 			update_post_meta($post_id, ANSPRESS_BEST_META, 0);
+			
+			do_action('ap_after_inserting_answer', $post_id);
+			ap_do_event('new_answer', $post_id, $user_id, $question->ID, $result);
 		}
 	}
 	
@@ -186,6 +189,9 @@ class anspress_form
 		
 		if(isset($_POST['parent_id']))
 			$fields['parent_id']	= sanitize_text_field($_POST['parent_id']);
+		
+		if(isset($_POST['name']))
+			$fields['name']	= sanitize_text_field($_POST['name']);
 		
 		return apply_filters('ap_save_question_filds', $fields);
 		
@@ -245,7 +251,7 @@ class anspress_form
 		
 			$fields = $this->get_question_fields_to_process();
 			
-			if(!ap_user_can_ask())
+			if(!ap_user_can_ask() && ap_opt('allow_anonymous'))
 				return;
 			
 			$validate = $this->validate_question_form();
@@ -294,6 +300,9 @@ class anspress_form
 					
 				if(isset($fields['tags']))
 					wp_set_post_terms( $post_id, $fields['tags'], 'question_tags' );
+					
+				if (ap_opt('allow_anonymous') && isset($fields['name']))
+					update_post_meta($post_id, 'anonymous_name', $fields['name']);
 				
 				if($_POST['action'] == 'ap_submit_question'){
 					$result = apply_filters('ap_ajax_question_submit_result', 
@@ -441,9 +450,7 @@ class anspress_form
 					
 					if($logged_in)
 						$result['redirect_to'] = get_permalink($post->ID);
-				}
-				do_action('ap_after_inserting_answer', $post_id);
-				ap_do_event('new_answer', $post_id, $user_id, $question->ID, $result);
+				}				
 				
 				if($_POST['action'] == 'ap_submit_answer')
 					return json_encode($result) ;

@@ -75,15 +75,22 @@ class AP_History
 		ap_add_history($user_id, $question_id, $answer_id, 'answer_unselected');
 	}
 	public function after_label_added($object_id, $terms){
+		if(!is_user_logged_in())
+			return false;
+			
 		ap_add_history(get_current_user_id(), $object_id, implode(',', $terms), 'added_label');
 	}
 	
 	public function after_label_removed($object_id, $tt_ids){
+		if(!is_user_logged_in())
+			return false;
+			
 		ap_add_history(get_current_user_id(), $object_id, implode(',', $tt_ids), 'removed_label');
 	}
 }
 
 function ap_add_history($userid = false, $post_id, $value, $param=NULL){
+
 	if(!$userid)
 		$userid = get_current_user_id();
 	
