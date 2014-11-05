@@ -455,6 +455,9 @@ function ap_user_link($user_id = false, $sub = false){
 	if(!$user_id)
 		$user_id = get_the_author_meta('ID');
 	
+	if($user_id == 0)
+		return false;
+		
 	$user = get_userdata($user_id);
 	$base = rtrim(ap_get_link_to(array('ap_page' => 'user', 'user' => $user->user_login)), '/');
 	$args = '';
