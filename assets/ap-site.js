@@ -1566,6 +1566,7 @@ APjs.site.prototype = {
 			'#ap-signup-form',
 			function(){
 				self.showLoading(aplang.sending);
+				
 			},
 			function(data){
 				self.hideLoading();
