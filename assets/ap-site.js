@@ -69,6 +69,7 @@ APjs.site.prototype = {
 		this.ajaxLoginForm();
 		this.loadNewTagForm();
 		this.newTag();
+		this.loginAccor();
 		
 		
 		jQuery('body').delegate('.ap-modal-bg, .ap-modal-close', 'click', function () {
@@ -1617,6 +1618,15 @@ APjs.site.prototype = {
 				}
 			}
 		);
+	},
+	loginAccor:function(){
+		var self = this;
+		jQuery('.ap-ac-accordion > strong').click(function(){
+			jQuery('.ap-ac-accordion').removeClass('active');
+			jQuery('.ap-ac-accordion .accordion-content').hide();
+			jQuery(this).parent().addClass('active');
+			jQuery(this).next().slideToggle();
+		});
 	}
 	
 };

@@ -88,12 +88,11 @@ class anspress_form
 		add_action( 'wp_ajax_ap_delete_post', array($this, 'ap_delete_post') ); 
 		
 		add_action( 'wp_ajax_ap_load_edit_form', array($this, 'ap_load_edit_form') );
-		add_action('ap_after_ask_form', array($this, 'login_signup_modal'));
-		add_action('ap_after_answer_form', array($this, 'login_signup_modal'));
+
 		add_action('ap_ask_form_bottom', array($this, 'login_bottom'));
 		add_action('ap_answer_form_bottom', array($this, 'login_bottom'));
 		
-		add_action( 'wp_ajax_nopriv_ap_ajax_login', array($this, 'ap_ajax_login') );
+		//add_action( 'wp_ajax_nopriv_ap_ajax_login', array($this, 'ap_ajax_login') );
 		add_action( 'wp_ajax_nopriv_ap_ajax_signup', array($this, 'ap_ajax_signup') );
 		add_action( 'wp_ajax_ap_new_tag', array($this, 'ap_new_tag') );
 		add_action( 'wp_ajax_ap_load_new_tag_form', array($this, 'ap_load_new_tag_form') );
@@ -1032,7 +1031,7 @@ class anspress_form
 					<h4 class="ap-modal-title"><?php _e('Sign up', 'ap'); ?><span class="ap-modal-close">&times;</span></h4>
 				</div>
 				<div class="ap-modal-body">				
-					<?php ap_signup_form(); ?>
+					
 				</div>
 			</div>		  
 		</div>
@@ -1046,24 +1045,34 @@ class anspress_form
 		?>
 			<div class="ap-account-button clearfix">
 			<?php if (ap_opt('allow_anonymous')): ?>
-				<div class="anonymous-info">
-					<h3><?php _e('Continue as anonymous', 'ap'); ?></h3>
-					<div class="form-group">
-						<label><?php _e('Your name', 'ap') ?></label>
-						<input type="text" name="name" placeholder="<?php _e('Your name or leave it blank', 'ap') ?>" />
+				<div class="ap-ac-accordion">
+					<strong>
+						<i class="<?php echo ap_icon('unchecked') ?>"></i>
+						<i class="<?php echo ap_icon('checked') ?>"></i>
+						<?php _e('Continue as anonymous', 'ap'); ?>
+					</strong>
+					<div class="anonymous-info accordion-content">					
+						<div class="form-group">
+							<label for="name"><?php _e('Your name', 'ap') ?></label>
+							<input id="name" type="text" class="form-control" name="name" placeholder="<?php _e('Your name or leave it blank', 'ap') ?>" />
+						</div>
 					</div>
 				</div>
 				<?php endif; ?>
-				<?php if (ap_opt('show_signup')): ?>
-				<h3><?php _e('Quickly login or sign up', 'ap'); ?></h3>
-				<?php else: ?>
-				<h3><?php _e('Login', 'ap'); ?></h3>
-				<?php endif; ?>
-				<div class="ap-site-ac">
-					<a href="#ap_login_modal" class="ap-open-modal ap-btn" title="<?php _e('Click here to login if you already have an account on this site.', 'ap'); ?>"><?php _e('Login', 'ap'); ?></a>
-					<?php if (ap_opt('show_signup')): ?>
-					<a href="#ap_signup_modal" class="ap-open-modal ap-btn" title="<?php _e('Click here to signup if you do not have an account on this site.', 'ap'); ?>"><?php _e('Sign Up', 'ap'); ?></a>
-					<?php endif; ?>
+				<div class="ap-ac-accordion">
+					<strong>
+						<i class="<?php echo ap_icon('unchecked') ?>"></i>
+						<i class="<?php echo ap_icon('checked') ?>"></i>
+						<?php _e('Login or sign up', 'ap'); ?>
+					</strong>
+					<div class="ap-site-ac accordion-content">
+						<div class="ap-login-form">
+							<?php wp_login_form() ?>
+						</div>
+						<div class="ap-signup-form">
+							<?php ap_signup_form(); ?>
+						</div>
+					</div>
 				</div>
 				<div class="ap-social-ac">
 					<?php do_action( 'wordpress_social_login' ); ?>

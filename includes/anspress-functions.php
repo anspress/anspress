@@ -874,6 +874,8 @@ function ap_icon($name){
 		'follow' 		=> 'ap-icon-plus',
 		'unfollow' 		=> 'ap-icon-minus',
 		'upload' 		=> 'ap-icon-upload',
+		'unchecked' 	=> 'ap-icon-checkbox-unchecked',
+		'checked' 		=> 'ap-icon-checkbox-checked',
 	);
 	
 	$icons = apply_filters('ap_icon', $icons);

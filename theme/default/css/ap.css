@@ -392,7 +392,7 @@ body.anspress .ap-container {
 }
 
 .ap-avatar img {
-    background: none repeat scroll 0 0 #ddd;
+    background: #ddd;
     border-radius: 2px;
     box-shadow: none;
     display: block;
@@ -408,7 +408,7 @@ body.anspress .ap-container {
 }
 
 .ap-qmainc .ap-user-meta {
-    background: none repeat scroll 0 0 #d0e8fc;
+    background: #d0e8fc;
     border-bottom: 1px solid #afcce5;
     border-radius: 3px 3px 0 0;
     margin: -10px -10px 10px;
@@ -591,7 +591,7 @@ body.anspress .ap-container {
     padding: 10px;
 }
 .ap-amainc .ap-user-meta {
-    background: none repeat scroll 0 0 #f7f7f7;
+    background: #f7f7f7;
     border-bottom: 1px solid #ddd;
     border-radius: 3px 3px 0 0;
     font-size: 12px;
@@ -908,7 +908,7 @@ body.anspress .ap-container {
 }
 
 .anspress .ap-btn.ap-ask-btn-head {
-    background: none repeat scroll 0 0 #58ae44;
+    background: #58ae44;
     border: 1px solid rgba(0, 0, 0, 0.1);
     box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0.3) inset;
     color: #fff;
@@ -952,7 +952,7 @@ body.anspress .ap-container {
     color: #ddd;
 }
 .ap-single-vote {
-    background: none repeat scroll 0 0 #fff;
+    background: #fff;
     border-radius: 3px;
     float: right;
     padding: 5px;
@@ -1136,7 +1136,7 @@ body.modal-open {
 }
 
 .ap-container .question-list .question.status-private_question {
-    background: none repeat scroll 0 0 #f7f7f7;
+    background: #f7f7f7;
 }
 
 .anspress .question-list {
@@ -1527,7 +1527,7 @@ textarea#post_content:focus{
 
 /* pagination */
 ul.ap-pagination {
-    background: none repeat scroll 0 0 #fff;
+    background: #fff;
     border: 1px solid #ddd;
     border-radius: 3px;
     display: table;
@@ -1864,7 +1864,7 @@ ul.ap-pagination {
 }
 
 .ap-message-item {
-    background: none repeat scroll 0 0 #fff;
+    background: #fff;
     border-radius: 2px;
     line-height: 22px;
     margin-top: 5px;
@@ -1872,7 +1872,7 @@ ul.ap-pagination {
 }
 
 .ap-message-item.success {
-    background: none repeat scroll 0 0 #dae8d8;
+    background: #dae8d8;
     border: 1px solid #92d385;
     color: #716767;
 }
@@ -2167,7 +2167,7 @@ ul.ap-pagination {
 }
 
 .ap-participants-list li img {
-    background: none repeat scroll 0 0 #eee;
+    background: #eee;
     box-shadow: none;
     display: block;
 }
@@ -2858,7 +2858,7 @@ form .checkbox {
 }
 
 .ap-message-search {
-    background: none repeat scroll 0 0 #fdfdfd;
+    background: #fdfdfd;
     border-bottom: 1px solid #ddd;
     border-radius: 4px 4px 0 0;
     padding: 10px;
@@ -3564,7 +3564,7 @@ ul.ap-badge-item > li.ap-badge-info {
     top: 0;
 }
 .ap-tlicon {
-    background: none repeat scroll 0 0 #eee;
+    background: #eee;
     border-radius: 50%;
     color: #b5b3b3;
     display: block;
@@ -3606,10 +3606,12 @@ ul.ap-badge-item > li.ap-badge-info {
     text-align: center;
 }
 .ap-account-button {
-    background: none repeat scroll 0 0 #fff;
-    border: 1px solid #ddd;
+    border: 1px solid #eee;
 }
 
+.ap-account-button h3{
+	margin:0;
+}
 .ap-site-ac > h3, .ap-social-ac > h3 {
     font-size: 13px;
     margin: 0 0 10px;
@@ -3621,27 +3623,19 @@ ul.ap-badge-item > li.ap-badge-info {
     text-align: center;
 }
 .ap-social-ac {
-    border: medium none;
+    padding: 10px;
     text-align: center;
 }
 .anspress .ap-container .ap-site-ac a {
-    display: table;
-    margin: 0 auto 10px;
+    font-weight: bold;
     text-decoration: none;
-	width:150px;
-	font-weight:bold;
+    width: 150px;
 }
-.ap-nli-backdrop {
-    background: rgba(255, 255, 255, 0.7);
-    height: 100%;
-    position: absolute;
-    top: 0;
-    width: 100%;
-}
+
 
 /* error, success, warning label */
 .ap-esw {
-    background: none repeat scroll 0 0 #eee;
+    background: #eee;
     border-radius: 3px;
     display: block;
     margin-bottom: 10px;
@@ -3658,7 +3652,7 @@ ul.ap-badge-item > li.ap-badge-info {
 	background:#75da7f;	
 }
 .ap-cntlabel {
-    background: none repeat scroll 0 0 #eee;
+    background: #eee;
     border-top: 1px solid #ddd;
     padding: 10px;
     text-align: center;
@@ -3689,7 +3683,7 @@ li:first-child .bullet-point {
     margin-bottom: 6px;
 }
 .private-question-label span {
-    background: none repeat scroll 0 0 #676363;
+    background: #676363;
     border-radius: 2px;
     color: #fff;
     display: inline-block;
@@ -3699,7 +3693,7 @@ li:first-child .bullet-point {
 }
 
 .ap-view-all {
-    background: none repeat scroll 0 0 #fcfcfc;
+    background: #fcfcfc;
     border: 1px solid #ddd;
     border-radius: 2px;
     display: block;
@@ -3786,4 +3780,59 @@ body .avatar {
     border-radius: 2px;
     margin-top: 15px;
     padding: 5px;
+}
+.accordion-content {
+    border-top: 1px solid #f5f5f5;
+    display: none;
+    padding: 20px;
+}
+
+.ap-ac-accordion {    
+    border-bottom: 1px solid #eee;
+}
+.ap-ac-accordion > strong {
+    background: #fcfcfc;
+    display: block;
+    padding: 10px 15px;
+}
+
+.ap-ac-accordion > strong > i {
+    background: #fff;
+    cursor: pointer;
+    font-size: 15px;
+    margin-right: 5px;
+    vertical-align: middle;
+}
+.ap-ac-accordion .ap-icon-checkbox-checked, .ap-ac-accordion.active .ap-icon-checkbox-unchecked{
+	display:none;
+}
+.ap-ac-accordion.active .ap-icon-checkbox-checked{
+	display:inline;
+}
+.anspress #wp-social-login-connect-options a {
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 2px;
+    display: block;
+    float: left;
+    line-height: 20px;
+    margin-right: 5px;
+    padding: 5px 15px;
+	color: #fff;
+}
+.anspress #wp-social-login-connect-options {
+    display: table;
+    margin: 0 auto;
+    padding: 10px;
+}
+#wp-social-login-connect-options a.btn-facebook {
+    background: #3b5998;    
+}
+#wp-social-login-connect-options a.btn-twitter {
+    background: #55acee;
+}
+#wp-social-login-connect-options a.btn-google {
+    background: #f96161;
+}
+#wp-social-login-connect-options a.btn-linkedin {
+    background: #007bb6;
 }
