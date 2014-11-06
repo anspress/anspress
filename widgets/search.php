@@ -17,7 +17,7 @@ class AP_Search_Widget extends WP_Widget {
 			<form class="ap-quick-ask" action="<?php echo ap_get_link_to('search'); ?>" method="GET">
 				<div class="ap-qaf-inner">
 					<input class="form-control" type="text" name="ap_s" id="ap-quick-ask-input" placeholder="<?php _e('Search questions', 'ap'); ?>" value="<?php echo sanitize_text_field(get_query_var('ap_s')); ?>" autocomplete="off" />
-					<button type="submit ap-btn" ><?php _e('Search', 'ap'); ?></button>
+					<button type="submit" ><?php _e('Search', 'ap'); ?></button>
 				</div>
 			</form>
 		<?php
