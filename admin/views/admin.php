@@ -66,7 +66,23 @@ if ( ! isset( $_REQUEST['settings-updated'] ) )
 						<fieldset>
 							<input type="checkbox" id="show_signup" name="anspress_opt[show_signup]" value="1" <?php checked( true, $settings['show_signup'] ); ?> />
 							<label for="show_signup">Show signup form</label>
-						</fieldset>					
+						</fieldset>
+						<fieldset>
+							<input type="checkbox" id="show_login" name="anspress_opt[show_login]" value="1" <?php checked( true, $settings['show_login'] ); ?> />
+							<label for="show_login">Show login form</label>
+						</fieldset>
+						<fieldset>
+							<input type="checkbox" id="show_social_login" name="anspress_opt[show_social_login]" value="1" <?php checked( true, $settings['show_social_login'] ); ?> />
+							<label for="show_social_login">Show social login form</label>
+						</fieldset>
+						<fieldset>
+							<p>Type down your own custom signup url or leave it blank for the default AnsPress modal signup</p>
+							<input type="url" name="anspress_opt[custom_signup_url]" placeholder="http://yorsite.com/customsignup" id="custom_signup_url" value="<?php echo $settings['custom_signup_url'] ; ?>" />
+						</fieldset>
+						<fieldset>
+							<p>Type down your own custom login url or leave it blank for the default AnsPress modal login</p>
+							<input type="url" name="anspress_opt[custom_login_url]" placeholder="http://yorsite.com/customlogin" id="custom_login_url" value="<?php echo $settings['custom_login_url'] ; ?>" />
+						</fieldset>
 					</td>
 				</tr>
 				<tr valign="top">

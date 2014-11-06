@@ -3842,3 +3842,8 @@ a.disable:hover {
 #wp-social-login-connect-options a.btn-linkedin {
     background: #007bb6;
 }
+
+#submit-flag-question {
+	float:right;
+	margin:0 10px 10px 0;
+}
