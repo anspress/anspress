@@ -142,6 +142,7 @@ class anspress_form
 	
 	public function on_new_answer($post_id, $post){
 		if($post_id){
+
 			$user_id = get_current_user_id();	
 			$question = get_post($post->post_parent);
 			// set default value for meta
@@ -161,8 +162,7 @@ class anspress_form
 			
 			update_post_meta($post_id, ANSPRESS_BEST_META, 0);
 			
-			do_action('ap_after_inserting_answer', $post_id);
-			ap_do_event('new_answer', $post_id, $user_id, $question->ID, $result);
+			do_action('ap_after_inserting_answer', $post_id);			
 		}
 	}
 	
@@ -452,6 +452,8 @@ class anspress_form
 					
 					if($logged_in)
 						$result['redirect_to'] = get_permalink($post->ID);
+					
+					ap_do_event('new_answer', $post_id, $user_id, $question->ID, $result);
 				}				
 				
 				if($_POST['action'] == 'ap_submit_answer')
