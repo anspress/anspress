@@ -184,7 +184,7 @@ if ( ! isset( $_REQUEST['settings-updated'] ) )
 						<th scope="row"><label for="max_tags"><?php _e('Maximum tags', 'ap'); ?></label></th>
 						<td>
 							<input type="number" min="1" id="max_tags" name="anspress_opt[max_tags]" value="<?php echo $settings['max_tags']; ?>" />
-							<p class="description"><?php _e('Maximum numbers of user can add when asking.', 'ap'); ?></p>
+							<p class="description"><?php _e('Maximum numbers of tags that user can add when asking.', 'ap'); ?></p>
 						</td>
 					</tr>
 					<tr valign="top">
