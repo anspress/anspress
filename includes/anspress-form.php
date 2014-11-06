@@ -1441,7 +1441,7 @@ function ap_edit_question_form($question_id = false){
 	
 
 	?>
-	<form action="" id="ask_question_form" method="POST" data-action="ap-submit-question">			
+	<form action="" id="edit_question_form" method="POST" data-action="ap-submit-question">			
 		<div class="form-groups">
 			<div class="ap-fom-group-label"><?php _e('Edit question', 'ap'); ?></div>
 			<?php do_action('ap_edit_question_form_fields', $question, $validate); ?>

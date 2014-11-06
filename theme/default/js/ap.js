@@ -112,7 +112,7 @@ jQuery(document).ready(function(){
 		jQuery(this).parent().next().slideToggle(200);
 	});
 	
-	if((jQuery('#post_content').length > 0) && typeof jQuery.jStorage !== 'undefined' ){
+	if((jQuery('#ask_question_form #post_content, #answer_form #post_content').length > 0) && typeof jQuery.jStorage !== 'undefined' ){
 		jQuery('#post_content').on('blur', function(){
 			jQuery.jStorage.set('post_content', jQuery(this).val());			
 		});
