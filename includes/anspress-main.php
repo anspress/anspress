@@ -267,6 +267,8 @@ class anspress {
 			$slug. "ask/([^/]+)/?" => "index.php?page_id=".$base_page_id."&ap_page=ask&parent=".$wp_rewrite->preg_index(1),
 			
 			$slug. "([^/]+)/?" => "index.php?page_id=".$base_page_id."&ap_page=".$wp_rewrite->preg_index(1),
+			
+			//"feed/([^/]+)/?" => "index.php?feed=feed&parent=".$wp_rewrite->preg_index(1),
 		);  
 		$ap_rules = $new_rules;
 		return $wp_rewrite->rules = $new_rules + $wp_rewrite->rules;  

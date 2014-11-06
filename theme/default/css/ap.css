@@ -434,7 +434,7 @@ body.anspress .ap-container {
     width: 30%;
 }
 
-.ap-container .question-title {
+.ap-container .question-title.entry-title {
     font-size: 15px;
     font-weight: 600;
     line-height: 22px;

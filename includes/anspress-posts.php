@@ -83,8 +83,8 @@ class anspress_posts
 		add_action('wp_trash_post', array($this, 'trash_post_action'));
 		add_action('untrash_post', array($this, 'untrash_ans_on_question_untrash'));
 		//add_action('delete_post', array($this, 'delete_action'));		
-
-}
+	}
+	
     // Register Custom Post Type    
     public function create_cpt_tax()
     {
@@ -206,6 +206,9 @@ class anspress_posts
 			  'show_in_admin_status_list' => true,
 			  'label_count'               => _n_noop( 'Private Question <span class="count">(%s)</span>', 'Private Question <span class="count">(%s)</span>' )
 		 ) );
+		 
+		 add_feed('question-feed', array($this, 'question_feed'));
+		// add_feed('answer-feed', array($this, 'answer_feed'));
         
     }
     
@@ -760,6 +763,10 @@ class anspress_posts
 
 		}
 		return $sql;
+	}
+	
+	public function question_feed(){
+		include ap_get_theme_location('feed-question.php');
 	}
 
 }

@@ -167,11 +167,13 @@ class AP_BasePage {
 		echo '<div class="ap-container">';
 		do_action('ap_page_top');
 		dynamic_sidebar( 'ap-before' );
-		if ((ap_current_page_is() == 'question') and (is_active_sidebar('ap-qsidebar' ))){
-		echo '<div class="ap-dtable">';}
-		else {
-		echo '<div>';
-		}
+		
+		if ((ap_current_page_is() == 'question') and (is_active_sidebar('ap-qsidebar' )))
+			echo '<div class="ap-dtable">';
+		else
+			echo '<div>';
+		
+		
 		if ( !is_question() && is_active_sidebar( 'ap-sidebar' ))
 			echo '<div class="ap-cl">';
 		
