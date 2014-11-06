@@ -85,6 +85,7 @@ if ( ! function_exists( 'ap_comment' ) ) :
 		$GLOBALS['comment'] = $comment;
 		?>
 		<li <?php comment_class(); ?> id="li-comment-<?php comment_ID(); ?>">
+			<!-- comment #<?php comment_ID(); ?> -->
 			<article id="comment-<?php comment_ID(); ?>" class="comment">
 				<div class="ap-avatar">
 					<a href="<?php echo ap_user_link($comment->user_id); ?>">
