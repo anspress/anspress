@@ -430,8 +430,8 @@ body.anspress .ap-container {
 
 .ap-sidebar {
     float: left;
-    padding-left: 25px;
-    width: 30%;
+    margin-left:1%;
+    width: 29%;
 }
 
 .ap-container .question-title.entry-title {
