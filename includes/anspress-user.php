@@ -44,8 +44,9 @@ class AP_User {
 		add_action( 'ap_edit_profile_fields', array($this, 'user_fields'), 10, 2 );
 		add_action( 'wp_ajax_ap_save_profile', array($this, 'ap_save_profile'));
 		add_action( 'pre_user_query', array($this, 'sort_pre_user_query') );
-		add_filter('default_avatar_select', array($this, 'default_avatar'), 10);
+		//add_filter('avatar_defaults', array($this, 'default_avatar'), 10);
 		add_filter( 'get_avatar', array($this, 'get_avatar'), 10, 5);		
+		//add_filter( 'default_avatar_select', array($this, 'default_avatar_select'));		
 	}
 	
 	/* For modifying WP_User_Query, if passed with a var ap_followers_query */
@@ -316,6 +317,7 @@ class AP_User {
 	}
 	
 	public function get_avatar($avatar, $id_or_email, $size, $default, $alt){
+
 		if ( !empty($id_or_email) ) {
 			
 			if(is_object($id_or_email)){
@@ -327,25 +329,24 @@ class AP_User {
 	                        $id = (int) $id_or_email->user_id;
 	                        $user = get_userdata($id);
 	                        if ( $user )
-	                                $id_or_email = $user->user_id;
+	                           $id_or_email = $user->ID;
 	                }
 
 			}elseif(is_email($id_or_email)){
 				$u = get_user_by('email', $id_or_email);
 				$id_or_email = $u->ID;
 			}
-			
-			
-			$resized = ap_get_resized_avatar($id_or_email, $size);
-			
-			if($resized){
 
+			$resized = ap_get_resized_avatar($id_or_email, $size);
+
+			if($resized)
 				return "<img alt='{$alt}' src='{$resized}' class='avatar avatar-{$size} photo' height='{$size}' width='{$size}' />";
-			}
 			
 			return $avatar;
+			
 		}
 	}
+
 }
 
 function ap_count_user_posts_by_type( $userid, $post_type = 'question' ) {
@@ -945,12 +946,15 @@ function ap_check_if_photogenic($user_id){
 	return false;
 }
 
-function ap_get_resized_avatar($id_or_email, $size = 32){
+function ap_get_resized_avatar($id_or_email, $size = 32, $default = false){
 	$upload_dir = wp_upload_dir();
 	$file_url = $upload_dir['baseurl'].'/avatar/'.$size;
 	
-	$image_meta =  wp_get_attachment_metadata( get_user_meta($id_or_email, '_ap_avatar', true), 'thumbnail');
-
+	if($default)		
+		$image_meta =  wp_get_attachment_metadata( ap_opt('default_avatar'), 'thumbnail');
+	else
+		$image_meta =  wp_get_attachment_metadata( get_user_meta($id_or_email, '_ap_avatar', true), 'thumbnail');
+		
 	if($image_meta === false || empty($image_meta))
 		return false;
 		

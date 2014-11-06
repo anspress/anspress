@@ -444,6 +444,7 @@ public function ap_menu_metaboxes(){
 			flush_rewrite_rules();
 			$options = $_POST['anspress_opt'];
 			update_option('anspress_opt', $options);
+				
 			$result = array('status' => true, 'html' => '<div class="updated fade" style="display:none"><p><strong>'.__( 'AnsPress options updated successfully', 'ap' ).'</strong></p></div>');
 		}
 		die(json_encode( $result ));

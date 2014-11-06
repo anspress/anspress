@@ -219,6 +219,16 @@ if ( ! isset( $_REQUEST['settings-updated'] ) )
 			
 			<div class="tab-pane" id="ap-user">
 				<table class="form-table">
+					<!--<tr valign="top">
+						<th scope="row"><label for="default_avatar"><?php _e('Default avatar', 'ap'); ?></label></th>
+						<td>
+							<div class="uploader">
+								<input id="default_avatar" name="anspress_opt[default_avatar]" type="text" value="<?php echo $settings['default_avatar'] ; ?>" />
+								<button id="default_avatar_upload" class="button" name="default_avatar_upload">Upload</button>
+							</div>					
+							<p class="description"><?php _e('Default avatar.', 'ap'); ?></p>
+						</td>
+					</tr>-->
 					<tr valign="top">
 						<th scope="row"><label for="cover_width"><?php _e('Cover width', 'ap'); ?></label></th>
 						<td>

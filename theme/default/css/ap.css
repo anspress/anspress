@@ -1470,7 +1470,7 @@ body.modal-open {
     margin-top: 7px;
 }
 #answer_form {
-    position: relative;
+    overflow: hidden;
 }
 #answer_form .form-groups, #ask_question_form .wp-editor-wrap {
     background: #fff;
