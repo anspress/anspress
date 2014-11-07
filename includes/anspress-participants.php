@@ -108,8 +108,10 @@ function ap_get_parti_emails($post_id){
 		return false;
 	
 	$emails = array();
-	foreach ($parti as $p)
-		$emails[$p->apmeta_userid] = get_the_author_meta( 'user_email', $p->apmeta_userid);
-	
+	foreach ($parti as $p){
+		$email = get_the_author_meta( 'user_email', $p->apmeta_userid);
+		if($email)
+			$emails[$p->apmeta_userid] = get_the_author_meta( 'user_email', $p->apmeta_userid);
+	}
 	return $emails;
 }

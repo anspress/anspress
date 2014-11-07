@@ -276,7 +276,9 @@ class anspress {
 	
 	public function body_class($classes){
 		// add anspress class to body
-		$classes[] = 'anspress';
+		if(is_anspress())
+			$classes[] = 'anspress';
+			
 		// return the $classes array
 		return $classes;
 	}
