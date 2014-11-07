@@ -1,5 +1,7 @@
 <h1 class="entry-title">
-	<?php the_title(); ?>
+	<?php if (!ap_opt('double_titles'))
+	the_title(); 
+	?>
 	<?php ap_ask_btn(); ?>
 </h1>
 <?php dynamic_sidebar( 'ap-top' ); ?>

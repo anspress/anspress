@@ -49,6 +49,7 @@ function ap_default_options(){
 		'show_login_signup' 	=> true,
 		'show_login' 			=> true,
 		'show_signup' 			=> true,
+		'double_titles'			=> false,
 		'show_social_login'		=> false,
 		'theme' 				=> 'default',
 		'author_credits' 		=> false,
