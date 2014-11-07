@@ -92,6 +92,9 @@ class anspress_theme {
 		 if($post->post_type == 'question' || $post->post_type == 'answer' ){ 
 			return ap_get_theme_location('comments.php');
 		 }
+		 else {
+			return $comment_template;
+		 }
 	}
 	
 	public function disable_comment_form( $open, $post_id ) {
