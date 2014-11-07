@@ -31,7 +31,8 @@ class anspress {
 	 * and styles.
 	 */
 	private function __construct() {
-
+	
+		remove_action('pre_comment_on_post', 'dsq_pre_comment_on_post');
 		// Load plugin text domain
 		add_action( 'wp_loaded', array( $this, 'flush_rules' ) );
 		
