@@ -226,7 +226,7 @@ class AP_User {
 			<div class="form-group">
 				<label for="email" class="ap-form-label"><?php _e('Email', 'ap') ?></label>
 				<div class="no-overflow">
-					<input type="text" name="email" id="email" value="<?php echo $user->data->user_email; ?>" class="form-control" placeholder="<?php _e('myemail@mydoamin.com', 'ap'); ?>" disabled />
+					<input type="text" name="email" id="email" value="<?php echo $user->data->user_email; ?>" class="form-control" placeholder="<?php _e('myemail@mydomain.com', 'ap'); ?>" disabled />
 				</div>
 			</div>
 			<div class="form-group">

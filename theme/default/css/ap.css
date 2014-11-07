@@ -430,8 +430,8 @@ body.anspress .ap-container {
 
 .ap-sidebar {
     float: left;
-    padding-left: 25px;
-    width: 30%;
+    margin-left:1%;
+    width: 29%;
 }
 
 .ap-container .question-title.entry-title {
@@ -3286,7 +3286,7 @@ form .checkbox {
 
 .ap-qaf-inner > .form-control {
     float: left;
-    margin-right: 10px;
+    margin-right: 1%;
     width: 70%;
 }
 
@@ -3296,7 +3296,7 @@ form .checkbox {
     color: #fff;
     font-size: 13px;
     font-weight: bold;
-    padding: 10px 30px;
+    height:38px;
 	margin-left:1%;
 	width:27%;
 }
@@ -3846,4 +3846,16 @@ a.disable:hover {
 #submit-flag-question {
 	float:right;
 	margin:0 10px 10px 0;
+}
+
+.ap-dtable {
+	float:left;
+	width:70%;
+	margin-top:10px;
+}
+
+.question-sidebar {
+ 	float:left;
+ 	margin-left:1%;
+ 	width:29%;
 }

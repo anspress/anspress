@@ -77,11 +77,11 @@ if ( ! isset( $_REQUEST['settings-updated'] ) )
 						</fieldset>
 						<fieldset>
 							<p>Type down your own custom signup url or leave it blank for the default AnsPress modal signup</p>
-							<input type="url" name="anspress_opt[custom_signup_url]" placeholder="http://yorsite.com/customsignup" id="custom_signup_url" value="<?php echo $settings['custom_signup_url'] ; ?>" />
+							<input type="url" name="anspress_opt[custom_signup_url]" placeholder="http://yorsite.com/signup" id="custom_signup_url" value="<?php echo $settings['custom_signup_url'] ; ?>" />
 						</fieldset>
 						<fieldset>
 							<p>Type down your own custom login url or leave it blank for the default AnsPress modal login</p>
-							<input type="url" name="anspress_opt[custom_login_url]" placeholder="http://yorsite.com/customlogin" id="custom_login_url" value="<?php echo $settings['custom_login_url'] ; ?>" />
+							<input type="url" name="anspress_opt[custom_login_url]" placeholder="http://yorsite.com/login" id="custom_login_url" value="<?php echo $settings['custom_login_url'] ; ?>" />
 						</fieldset>
 					</td>
 				</tr>
@@ -90,6 +90,13 @@ if ( ! isset( $_REQUEST['settings-updated'] ) )
 					<td>
 						<input type="checkbox" id="author_credits" name="anspress_opt[author_credits]" value="1" <?php checked( true, $settings['author_credits'] ); ?> />
 						<label for="author_credits">Hide Author Credits</label>
+					</td>
+				</tr>
+				<tr valign="top">
+					<th scope="row">Double titles</th>
+					<td>
+						<input type="checkbox" id="double_titles" name="anspress_opt[double_titles]" value="1" <?php checked( true, $settings['double_titles'] ); ?> />
+						<label for="double_titles">If you see double titles on your pages enable this checkbox </label>
 					</td>
 				</tr>
 
@@ -184,7 +191,7 @@ if ( ! isset( $_REQUEST['settings-updated'] ) )
 						<th scope="row"><label for="max_tags"><?php _e('Maximum tags', 'ap'); ?></label></th>
 						<td>
 							<input type="number" min="1" id="max_tags" name="anspress_opt[max_tags]" value="<?php echo $settings['max_tags']; ?>" />
-							<p class="description"><?php _e('Maximum numbers of user can add when asking.', 'ap'); ?></p>
+							<p class="description"><?php _e('Maximum numbers of tags that user can add when asking.', 'ap'); ?></p>
 						</td>
 					</tr>
 					<tr valign="top">
@@ -258,20 +265,6 @@ if ( ! isset( $_REQUEST['settings-updated'] ) )
 						</td>
 					</tr>
 					<tr valign="top">
-						<th scope="row"><label for="followers_limit"><?php _e('Limit followers', 'ap'); ?></label></th>
-						<td>
-							<input type="number" min="1" name="anspress_opt[followers_limit]" id="followers_limit" value="<?php echo $settings['followers_limit'] ; ?>" placeholder="10" />								
-							<p class="description"><?php _e('How many followers to display on user profile?', 'ap'); ?></p>
-						</td>
-					</tr>
-					<tr valign="top">
-						<th scope="row"><label for="following_limit"><?php _e('Limit following users', 'ap'); ?></label></th>
-						<td>
-							<input type="number" min="1" name="anspress_opt[following_limit]" id="following_limit" value="<?php echo $settings['following_limit'] ; ?>" placeholder="10" />								
-							<p class="description"><?php _e('How many following users to display on user profile?', 'ap'); ?></p>
-						</td>
-					</tr>
-					<tr valign="top">
 						<th scope="row"><label for="default_rank"><?php _e('Default rank', 'ap'); ?></label></th>
 						<td>
 							<?php
@@ -324,6 +317,20 @@ if ( ! isset( $_REQUEST['settings-updated'] ) )
 						<td>
 							<input type="number" min="1" name="anspress_opt[users_per_page]" id="users_per_page" value="<?php echo $settings['users_per_page'] ; ?>" />								
 							<p class="description"><?php _e('Users to show per page on users page', 'ap'); ?></p>
+						</td>
+					</tr>
+					<tr valign="top">
+						<th scope="row"><label for="followers_limit"><?php _e('Followers per page', 'ap'); ?></label></th>
+						<td>
+							<input type="number" min="1" name="anspress_opt[followers_limit]" id="followers_limit" value="<?php echo $settings['followers_limit'] ; ?>" placeholder="10" />								
+							<p class="description"><?php _e('How many followers to display on user profile?', 'ap'); ?></p>
+						</td>
+					</tr>
+					<tr valign="top">
+						<th scope="row"><label for="following_limit"><?php _e('Following users per page', 'ap'); ?></label></th>
+						<td>
+							<input type="number" min="1" name="anspress_opt[following_limit]" id="following_limit" value="<?php echo $settings['following_limit'] ; ?>" placeholder="10" />								
+							<p class="description"><?php _e('How many following users to display on user profile?', 'ap'); ?></p>
 						</td>
 					</tr>
 				</table>

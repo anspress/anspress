@@ -31,8 +31,8 @@ if(!is_private_question() || (is_private_question() && ap_user_can_view_private_
 			</a>
 		</div>								
 		<div class="summery wrap-left">
-			<h3 class="question-title entry-title" itemprop="title">			
-				<a class="question-hyperlink" itemprop="url" href="<?php the_permalink(); ?>" rel="bookmark" title="<?php the_title(); ?>"><?php the_title(); ?></a>				
+			<h3 class="question-title entry-title" itemprop="title">
+				<a class="question-hyperlink" itemprop="url" href="<?php the_permalink(); ?>" rel="bookmark" title="<?php the_title(); ?>"><?php the_title(); ?></a>
 			</h3>					
 			<ul class="list-taxo ap-inline-list clearfix">
 				<?php if($post->selected): ?>							

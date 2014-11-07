@@ -119,7 +119,7 @@ foreach($ranks as $k => $rank){
 					<a href="https://www.paypal.com/cgi-bin/webscr?business=rah12@live.com&cmd=_xclick&item_name=Donation%20to%20AnsPress%20development" target="_blank"><img src="https://www.paypal.com/en_US/i/btn/btn_donateCC_LG.gif" alt="" /></a>
 				</div>				
 				
-				<small><?php _e('Click here finish installation.', 'ap'); ?></small>
+				<small><?php _e('Click here to finish installation.', 'ap'); ?></small>
 				<button class="ap-continue" id="ap-finish-installation"><?php _e('Finish', 'ap'); ?></button>
 			</li>
 		</ul>		

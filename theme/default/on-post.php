@@ -1,5 +1,7 @@
 <h1 class="entry-title">
+	<?php if (!ap_opt('double_titles')):?>
 	<?php printf(__('Discussion on "%s"', 'ap'), get_the_title()); ?>
+	<?php endif;?>
 	<?php ap_ask_btn(get_the_ID()); ?>
 </h1>
 <div id="ap-on-post" class="clearfix">
