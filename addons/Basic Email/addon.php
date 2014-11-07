@@ -75,7 +75,7 @@ class AP_Basic_Email_Addon
 				return false;
 				
 			$emails = array_unique ($emails);
-				
+	
 			$parent = get_post($post->post_parent);
 			
 			$subject = __('New Answer on: ', 'ap'). $parent->post_title;
@@ -86,6 +86,12 @@ class AP_Basic_Email_Addon
 			$message .= "<br /><br /><a href='". get_permalink($parent->ID)."#".$post->ID. "'>".__('View Answer', 'ap')."</a><br />";
 			
 			$message .= '<p style="color:#777; font-size:11px">'.__('Powered by', 'ap').'<a href="http://open-wp.com">AnsPress</a></p>';
+			
+			if(!empty($emails))
+				foreach($emails as $email){
+					if(is_email($email))
+						wp_mail($email, $subject, $message );
+				}
 
 		}
 	}
