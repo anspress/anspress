@@ -498,10 +498,8 @@ function ap_questions_tab(){
 			<li class="<?php echo $order == 'oldest' ? ' active' : ''; ?>"><a href="<?php echo $link.'oldest'; ?>"><?php _e('Oldest', 'ap'); ?></a></li>			
 		</ul>
 		<div class="pull-right">
-			<div class="ap_status ap-dropdown">
-				<button type="button" class="btn ap-btn ap-dropdown-toggle" data-toggle="ap-dropdown">
-					<?php _e('Label', 'ap'); ?> &#9662;
-				</button>
+			<ul class="ap_status ap-dropdown">
+				<a href="#" class="btn ap-btn ap-dropdown-toggle"><?php _e('Label', 'ap'); ?> &#9662;</a>
 				<ul class="ap-dropdown-menu">
 					<?php
 						$labels = get_terms('question_label', array('orderby'=> 'name','hide_empty'=> true));
@@ -511,7 +509,7 @@ function ap_questions_tab(){
 						}
 					?>
 				</ul>
-			</div>
+			</ul>
 		</div>
 	</div>
 	<?php
