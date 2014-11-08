@@ -99,7 +99,7 @@
 
 jQuery(document).ready(function(){
 
-	jQuery('.ap-tip').tooltipster({contentAsHTML: true});
+	jQuery('.ap-tip').tooltipster({offsetX:15 , contentAsHTML: true});
 	jQuery('#ap-conversation-scroll').scrollTop(0);
 	//jQuery('#ap-conversation-scroll').perfectScrollbar();
 	
