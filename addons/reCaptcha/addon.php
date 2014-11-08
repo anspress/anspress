@@ -36,8 +36,12 @@ class AP_ReCaptcha_Addon
     public function __construct()
     {
 		add_action('ap_enqueue', array($this, 'addon_style_script'));
-		add_filter( 'ap_question_form_validation', array($this, 'ap_recaptcha_validation') );
-		add_filter( 'ap_answer_form_validation', array($this, 'ap_recaptcha_validation') );
+		if(ap_opt('captcha_ask')){
+			add_filter( 'ap_question_form_validation', array($this, 'ap_recaptcha_validation') );	
+		}
+		if(ap_opt('captcha_answer')){
+			add_filter( 'ap_answer_form_validation', array($this, 'ap_recaptcha_validation') );
+		}
 		add_filter( 'ap_ask_form_bottom', array($this, 'ap_ask_form_bottom') );
 		add_filter( 'ap_answer_form_bottom', array($this, 'ap_ask_form_bottom') );
     }
