@@ -249,7 +249,7 @@ function ap_change_label_html($post_id){
 					echo '<li class="ap-select-header">'.__('Label', 'ap').'</li>';
 					foreach($labels as $l){
 						$color = ap_get_label_color($l->term_id);
-						echo '<li data-args="'.$l->term_id.'" class="ap-select-item ap-icon-checkmark'.(in_array($l->slug, $taxo_array) ? ' selected': '').'" data-color="'.$color.'"><span class="question-label-color" style="background:'.$color.';"></span>'.$l->name.'<span class="unselect ap-icon-cross"></span></li>';
+						echo '<li data-args="'.$l->term_id.'" class="ap-select-item '.ap_icon('checked').' '.(in_array($l->slug, $taxo_array) ? ' selected': '').'" data-color="'.$color.'"><span class="question-label-color" style="background:'.$color.';"></span>'.$l->name.'<span class="unselect ap-icon-cross"></span></li>';
 					}
 					$nonce = wp_create_nonce( 'label-'.get_question_id() );
 					echo '<li class="ap-select-footer"><a href="#" data-button="ap-save-label" data-id="'.get_question_id().'" data-nonce="'.$nonce.'" class="ap-btn ap-small">'.__('Done', 'ap').'</a>';
