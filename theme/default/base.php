@@ -1,6 +1,8 @@
 <h1 class="entry-title">
-	<?php if (!ap_opt('double_titles'))
-	the_title(); 
+	<?php if (!ap_opt('double_titles')){
+	the_title();}
+	else {
+	echo '<span style="visibility:hidden">'.get_the_title().'</span>';}
 	?>
 	<?php ap_ask_btn(); ?>
 </h1>
