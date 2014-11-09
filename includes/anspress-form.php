@@ -864,6 +864,7 @@ class anspress_form
 	
 	public function ask_from_private_field($validate){
 		?>
+			<?php if (!ap_opt('can_private_question')): ?>
 			<div class="checkbox<?php echo isset($validate['private_question']) ? ' has-error' : ''; ?>">
 				<label>
 					<input type="checkbox" value="1" name="private_question" id="private_question"/>
@@ -871,6 +872,7 @@ class anspress_form
 				</label>
 					<?php echo isset($validate['private_question']) ? '<span class="help-block">'. $validate['private_question'] .'</span>' : ''; ?>
 			</div>
+			<?php endif;?>
 		<?php
 	}	
 	
