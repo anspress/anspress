@@ -3859,3 +3859,7 @@ a.disable:hover {
  	margin-left:1%;
  	width:29%;
 }
+
+#private_question:hover {
+	cursor:pointer;
+}
