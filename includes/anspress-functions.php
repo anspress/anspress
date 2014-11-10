@@ -51,6 +51,7 @@ function ap_default_options(){
 		'show_signup' 			=> true,
 		'double_titles'			=> false,
 		'show_social_login'		=> false,
+		'can_private_question'	=> false,
 		'theme' 				=> 'default',
 		'author_credits' 		=> false,
 		'clear_database' 		=> false,
