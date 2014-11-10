@@ -95,10 +95,10 @@ function ap_get_all_parti($avatar_size = 40, $post_id = false){
 	foreach($parti as $p){
 		?>
 			<li>
-			<?php echo'<a title="'.ap_user_display_name(false, true).'" href="'.ap_user_link(get_the_author_meta('ID')).'">'	?>
- 			<?php echo get_avatar($p->apmeta_userid, $avatar_size); ?>
- 			<?php echo'</a>' ?>
- 			</li>
+			<?php echo'<a title="'.ap_user_display_name($p->apmeta_userid, true).'" href="'.ap_user_link($p->apmeta_userid).'">'	?>
+			<?php echo get_avatar($p->apmeta_userid, $avatar_size); ?>
+			<?php echo'</a>' ?>
+			</li>
 		<?php
 	}	
 	echo '</ul>';
