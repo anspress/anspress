@@ -337,6 +337,9 @@ class anspress_form
 		if(isset($_POST['form_question_id']))
 			$fields['question_id'] 	= sanitize_text_field($_POST['form_question_id']);
 		
+		if(isset($_POST['name']))
+			$fields['name'] 	= sanitize_text_field($_POST['name']);
+		
 		return apply_filters('ap_save_answer_filds', $fields);
 		
 	}
