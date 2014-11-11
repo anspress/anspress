@@ -94,7 +94,11 @@ function ap_get_all_parti($avatar_size = 40, $post_id = false){
 	echo '<ul class="ap-participants-list ap-inline-list clearfix">';	
 	foreach($parti as $p){
 		?>
-			<li><?php echo get_avatar($p->apmeta_userid, $avatar_size); ?></li>
+			<li>
+			<?php echo'<a title="'.ap_user_display_name(false, true).'" href="'.ap_user_link(get_the_author_meta('ID')).'">'	?>
+ 			<?php echo get_avatar($p->apmeta_userid, $avatar_size); ?>
+ 			<?php echo'</a>' ?>
+ 			</li>
 		<?php
 	}	
 	echo '</ul>';
