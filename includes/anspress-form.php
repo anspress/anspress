@@ -1355,7 +1355,7 @@ function ap_edit_answer_form($post_id){
 	}
 	
 	if(ap_user_can_edit_ans($post->ID) ){
-		echo '<form action="" id="answer_form" class="ap-content-inner" method="POST" data-action="ap-submit-answer">';
+		echo '<form action="" id="edit_form" class="ap-content-inner" method="POST" data-action="ap-submit-answer">';
 		
 		echo '<div class="form-groups">';
 		echo '<div class="ap-fom-group-label">'.__('Edit answer', 'ap').'</div>';
