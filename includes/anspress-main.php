@@ -94,6 +94,7 @@ class anspress {
 		if(is_question()){
 			global $wp;
 			echo '<link href="'.home_url(add_query_arg(array(),$wp->request)).'" title="'.wp_title( '|', false, 'right' ).'" type="application/rss+xml" rel="alternate">';
+			echo '<link rel="canonical" href="'.get_permalink(get_question_id()).'"> ';
 		}
 	}
 
