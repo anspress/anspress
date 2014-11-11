@@ -114,6 +114,9 @@ function ap_theme_list(){
 	return $themes;
 }
 
+function anstext(){return __('answered about','ap');}
+function asktext(){return __('asked about','ap');}
+
 function ap_get_theme(){	
 	$option = ap_opt('theme');
 	if(!$option)
@@ -500,7 +503,8 @@ function ap_questions_tab(){
 			<li class="<?php echo $order == 'oldest' ? ' active' : ''; ?>"><a href="<?php echo $link.'oldest'; ?>"><?php _e('Oldest', 'ap'); ?></a></li>			
 		</ul>
 		<?php if(!ap_opt('labels_system')):?>
-		<div class="pull-right"><!---- start labels sort------>
+		<!---- start labels sort------>
+		<div class="pull-right">
 			<div class="ap_status ap-dropdown">
 				<a href="#" class="btn ap-btn ap-dropdown-toggle"><?php _e('Label', 'ap'); ?> &#9662;</a>
 				<ul class="ap-dropdown-menu">

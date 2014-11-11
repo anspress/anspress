@@ -45,7 +45,8 @@ if(ap_user_can_view_question()){
 									<div class="ap-single-vote"><?php ap_vote_html(); ?></div>
 									<div class="ap-meta">
 										<?php 
-											printf( __( '<a href="'.ap_user_link(get_the_author_meta('ID')).'?rel=author" class="author"><span itemprop="author">%s</span></a> <span class="when">asked about %s ago</span>', 'ap' ), ap_user_display_name(false, true) , ap_human_time( get_the_time('U')));
+											$a=" e ";$b=" ";$time=get_option('date_format').$b.get_option('time_format').$a.get_option('gmt_offset');
+											printf( __( '<a href="'.ap_user_link(get_the_author_meta('ID')).'?rel=author" class="author"><span itemprop="author">%s</span></a><span> '.asktext().' </span><a href="'.get_permalink().'"><time datetime="'.get_the_time($time).'" title="'.get_the_time($time).'" is="relative-time">%s ago</time></a>', 'ap' ), ap_user_display_name(false, true) , ap_human_time( get_the_time('U')));
 										?>
 									</div>									
 								</div>			

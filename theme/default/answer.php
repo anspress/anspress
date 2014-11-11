@@ -14,8 +14,9 @@
 					</div>
 					<div class="ap-meta">
 						<?php
-							printf( __( '<a href="'.ap_user_link(get_the_author_meta('ID')).'" class="author"><span>%s</span></a> <span class="when">answered about %s ago</span>', 'ap' ), ap_user_display_name(false, true) , ap_human_time( get_the_time('U')));
-						?>							
+							$a=" e ";$b=" ";$time=get_option('date_format').$b.get_option('time_format').$a.get_option('gmt_offset');
+							printf( __( '<a href="'.ap_user_link(get_the_author_meta('ID')).'" class="author"><span>%s</span></a> <span>'.anstext().'</span> <a href="#answer_'.get_the_ID().'"><time datetime="'.get_the_time($time).'" title="'.get_the_time($time).'" is="relative-time">%s ago</time></a>', 'ap' ), ap_user_display_name(false, true) , ap_human_time( get_the_time('U')));
+						?>						
 					</div>			
 				</div>
 				<div class="answer-content" itemprop="text">
