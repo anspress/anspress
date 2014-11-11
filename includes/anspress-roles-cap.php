@@ -167,9 +167,9 @@ function ap_user_can_edit_comment($comment_id){
 		return true;
 	
 	global $current_user;	
-	if( current_user_can('ap_edit_comment') && ($current_user->ID == $comment_id))
+	if( current_user_can('ap_edit_comment') && ($current_user->ID == get_comment($comment_id)->user_id))
 		return true;
-
+	
 	return false;
 }
 
@@ -178,7 +178,7 @@ function ap_user_can_delete_comment($comment_id){
 		return true;
 	
 	global $current_user;	
-	if( current_user_can('ap_delete_comment') && ($current_user->ID == $comment_id))
+	if( current_user_can('ap_delete_comment') && ($current_user->ID == get_comment($comment_id)->user_id))
 		return true;
 
 	return false;
