@@ -58,6 +58,7 @@ function ap_default_options(){
 		'minimum_question_length'=> 5,
 		'multiple_answers' 		=> false,
 		'minimum_ans_length' 	=> 5,
+		'labels_system'			=> false,
 		'avatar_size_qquestion' => 30,
 		'can_private_question'	=> false,
 		'avatar_size_qanswer' 	=> 30,
@@ -498,7 +499,8 @@ function ap_questions_tab(){
 			<li class="<?php echo $order == 'unsolved' ? ' active' : ''; ?>"><a href="<?php echo $link.'unsolved'; ?>"><?php _e('Unsolved', 'ap'); ?></a></li>
 			<li class="<?php echo $order == 'oldest' ? ' active' : ''; ?>"><a href="<?php echo $link.'oldest'; ?>"><?php _e('Oldest', 'ap'); ?></a></li>			
 		</ul>
-		<div class="pull-right">
+		<?php if(!ap_opt('labels_system')):?>
+		<div class="pull-right"><!---- start labels sort------>
 			<div class="ap_status ap-dropdown">
 				<a href="#" class="btn ap-btn ap-dropdown-toggle"><?php _e('Label', 'ap'); ?> &#9662;</a>
 				<ul class="ap-dropdown-menu">
@@ -510,8 +512,9 @@ function ap_questions_tab(){
 						}
 					?>
 				</ul>
-			</div>
+			</div><!---- end labels sort ----->
 		</div>
+		<?php endif;?>
 	</div>
 	<?php
 }

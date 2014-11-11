@@ -199,25 +199,27 @@ function ap_get_label_color($label_id){
 	return $tax_meta['color'];
 }
 
-function ap_get_question_label($post_id = NULL, $bg = false){	
-	if(!$post_id) $post_id = get_the_ID();
-	$terms = get_the_terms( $post_id, 'question_label' );
+function ap_get_question_label($post_id = NULL, $bg = false){
+	if(!ap_opt('labels_system')){	
+			if(!$post_id) $post_id = get_the_ID();
+			$terms = get_the_terms( $post_id, 'question_label' );
 
-	if($terms){
-		$o = '<ul class="question-labels">';
-		foreach($terms as $t){
-			$color = ap_get_label_color($t->term_id);
-			$o .= '<li title="'.$t->name. ($t->description ? ' - '.$t->description : '').'"'.($bg ?' style="background:'.$color.';"' : '').' class="ap-label-name ap-tip">';
-			if(!$bg)
-				$o .= '<span class="question-label-color '.$t->slug.'" style="background:'.$color.';"></span>';
-				
-			$o .= '<i>'.$t->name.'</i>
-				</li>';
+			if($terms){
+				$o = '<ul class="question-labels">';
+				foreach($terms as $t){
+					$color = ap_get_label_color($t->term_id);
+					$o .= '<li title="'.$t->name. ($t->description ? ' - '.$t->description : '').'"'.($bg ?' style="background:'.$color.';"' : '').' class="ap-label-name ap-tip">';
+					if(!$bg)
+						$o .= '<span class="question-label-color '.$t->slug.'" style="background:'.$color.';"></span>';
+						
+					$o .= '<i>'.$t->name.'</i>
+						</li>';
+				}
+				$o .= '</ul>';
+				return $o;
+			}
+
 		}
-		$o .= '</ul>';
-		return $o;
-	}
-
 }
 
 function ap_label_html($term){
