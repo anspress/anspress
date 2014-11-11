@@ -187,8 +187,7 @@ class AP_BasePage {
 		if(is_question_categories())
 			ap_pagi(ap_get_link_to('categories') . '/%_%', ceil( $total_terms / $per_page ), $paged);
 		
-		if ( !is_question())	
-			echo '</div>';
+		echo '</div>';
 		
 		if ( !is_question() && is_active_sidebar( 'ap-sidebar' ) ) {
 			echo '<div class="ap-sidebar">';
@@ -199,9 +198,9 @@ class AP_BasePage {
 		echo '</div>';
 		
 		if ((ap_current_page_is() == 'question') and (is_active_sidebar('ap-qsidebar' ))) {
-		echo'<div class="question-sidebar">';
-		dynamic_sidebar( 'ap-qsidebar' );
-		echo'</div>';
+			echo'<div class="question-sidebar">';
+			dynamic_sidebar( 'ap-qsidebar' );
+			echo'</div>';
 		}
 
 		if(!ap_opt('author_credits')){
