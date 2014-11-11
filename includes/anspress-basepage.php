@@ -187,8 +187,8 @@ class AP_BasePage {
 		if(is_question_categories())
 			ap_pagi(ap_get_link_to('categories') . '/%_%', ceil( $total_terms / $per_page ), $paged);
 		
-		if ( !is_question())	
-			echo '</div>';
+		
+		echo '</div>';
 		
 		if ( !is_question() && is_active_sidebar( 'ap-sidebar' ) ) {
 			echo '<div class="ap-sidebar">';
