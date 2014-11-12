@@ -408,13 +408,7 @@ if ( ! isset( $_REQUEST['settings-updated'] ) )
 			</div>
 			
 			<div class="tab-pane" id="ap-labels">
-				<table class="form-table">
-					<tr valign="top">
-						<th scope="row"><label for="labels_system"><?php _e('Disable labels system', 'ap'); ?></label></th>
-						<td>
-							<input type="checkbox" id="labels_system" name="anspress_opt[labels_system]" value="1" <?php checked( true, $settings['labels_system'] ); ?> />
-						</td>
-					</tr>				
+				<table class="form-table">					
 					<tr valign="top">
 						<th scope="row"><label for="default_label"><?php _e('Default label', 'ap'); ?></label></th>
 						<td>
