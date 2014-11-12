@@ -108,7 +108,7 @@ if ( ! function_exists( 'ap_comment' ) ) :
 								__('ago', 'ap'),
 								$author = get_comment_author( $comment),
 								__('by','ap'),
-								get_the_time($time),
+								get_comment_time($time),
 								$comment_id = get_comment_ID()
 							);
 						?>
