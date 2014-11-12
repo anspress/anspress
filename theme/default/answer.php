@@ -36,6 +36,7 @@
 					<li><?php ap_flag_btn_html(); ?></li>
 					<li><?php ap_post_delete_btn_html(); ?></li>
 				</ul>
+				<?php ap_post_edited_time();?>
 			</div>
 			<?php
 				$history = ap_get_latest_history_html(get_the_ID(), true, true);
