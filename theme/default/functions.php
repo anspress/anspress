@@ -101,10 +101,15 @@ if ( ! function_exists( 'ap_comment' ) ) :
 										
 					<p class="ap-comment-texts">
 						<?php echo get_comment_text(); ?>
-						<?php printf( ' - <time datetime="%1$s">%2$s %3$s</time>',
+						<?php $a=" e ";$b=" ";$time=get_option('date_format').$b.get_option('time_format').$a.get_option('gmt_offset');
+								printf( ' - <a title="%6$s" href="#li-comment-%7$s"><time datetime="%1$s">%2$s %3$s %5$s %4$s</time></a>',
 								get_comment_time( 'c' ),
 								ap_human_time(get_comment_time('U')),
-								__('ago', 'ap')
+								__('ago', 'ap'),
+								$author = get_comment_author( $comment),
+								__('by','ap'),
+								get_the_time($time),
+								$comment_id = get_comment_ID()
 							);
 						?>
 					</p>
