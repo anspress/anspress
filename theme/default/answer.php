@@ -15,7 +15,15 @@
 					<div class="ap-meta">
 						<?php
 							$a=" e ";$b=" ";$time=get_option('date_format').$b.get_option('time_format').$a.get_option('gmt_offset');
-							printf( __( '<a href="'.ap_user_link(get_the_author_meta('ID')).'" class="author"><span>%s</span></a> <span>'.anstext().'</span> <a href="#answer_'.get_the_ID().'"><time datetime="'.get_the_time($time).'" title="'.get_the_time($time).'" is="relative-time">%s ago</time></a>', 'ap' ), ap_user_display_name(false, true) , ap_human_time( get_the_time('U')));
+							printf( '<a href="%6$s" class="author"><span>%s</span></a> <span>%5$s</span> <a href="#answer_%7$s"><time datetime="%3$s" title="%3$s" is="relative-time">%s %4$s</time></a>',
+							ap_user_display_name(false, true) ,
+							ap_human_time( get_the_time('U')),
+							get_the_time($time),
+							__('ago','ap'),
+							__('answered about','ap'),
+							ap_user_link(get_the_author_meta('ID')),
+							get_the_ID()
+							);
 						?>						
 					</div>			
 				</div>

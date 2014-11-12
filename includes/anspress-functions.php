@@ -114,9 +114,6 @@ function ap_theme_list(){
 	return $themes;
 }
 
-function anstext(){return __('answered about','ap');}
-function asktext(){return __('asked about','ap');}
-
 function ap_get_theme(){	
 	$option = ap_opt('theme');
 	if(!$option)

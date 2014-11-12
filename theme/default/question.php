@@ -46,7 +46,15 @@ if(ap_user_can_view_question()){
 									<div class="ap-meta">
 										<?php 
 											$a=" e ";$b=" ";$time=get_option('date_format').$b.get_option('time_format').$a.get_option('gmt_offset');
-											printf( __( '<a href="'.ap_user_link(get_the_author_meta('ID')).'?rel=author" class="author"><span itemprop="author">%s</span></a><span> '.asktext().' </span><a href="'.get_permalink().'"><time datetime="'.get_the_time($time).'" title="'.get_the_time($time).'" is="relative-time">%s ago</time></a>', 'ap' ), ap_user_display_name(false, true) , ap_human_time( get_the_time('U')));
+											printf('<a href="%3$s?rel=author" class="author"><span itemprop="author">%s</span></a><span> %4$s </span><a href="%5$s"><time datetime="%6$s" title="%6$s" is="relative-time">%s %7$s</time></a>', 
+											ap_user_display_name(false, true), 
+											ap_human_time( get_the_time('U')),
+											ap_user_link(get_the_author_meta('ID')),
+											__('askted about','ap'),
+											get_permalink(),
+											get_the_time($time),
+											__('ago','ap')
+											);
 										?>
 									</div>									
 								</div>			
