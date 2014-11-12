@@ -106,6 +106,13 @@ if ( ! isset( $_REQUEST['settings-updated'] ) )
 						<label for="can_private_question">Disable the ability to ask a question as private</label>
 					</td>
 				</tr>
+				<tr valign="top">
+					<th scope="row">Weird emails</th>
+					<td>
+						<input type="checkbox" id="setemail_html" name="anspress_opt[setemail_html]" value="1" <?php checked( true, $settings['setemail_html'] ); ?> />
+						<label for="setemail_html">If you see in your emails<input type="text" readonly placeholder="</a><br /><p style=" /> enable this checkbox</label>
+					</td>
+				</tr>
 			</table>
 			</div>
 			<div class="tab-pane" id="ap-question">		

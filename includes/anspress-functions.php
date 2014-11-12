@@ -49,6 +49,7 @@ function ap_default_options(){
 		'show_login_signup' 	=> true,
 		'show_login' 			=> true,
 		'show_signup' 			=> true,
+		'setemail_html'			=> false,
 		'double_titles'			=> false,
 		'show_social_login'		=> false,
 		'theme' 				=> 'default',
@@ -902,3 +903,11 @@ function ap_icon($name){
 		
 	return '';
 }
+
+function wps_set_content_type(){
+	if(ap_opt('setemail_html')){
+    return "text/html";
+	}
+}
+if(ap_opt('setemail_html')){
+add_filter( 'wp_mail_content_type','wps_set_content_type' );}
