@@ -91,7 +91,7 @@ function ap_get_all_parti($avatar_size = 40, $post_id = false){
 		
 	$parti = ap_get_parti($post_id);
 	
-	echo '<h3 class="ap-question-side-title">'. sprintf( _n('<span>1</span> Participant', '<span>%d</span> Participants', 'ap'), count($parti)) .'</h3>';
+	echo '<h3 class="ap-question-side-title">'. sprintf( _n('<span>1</span> Participant', '<span>%d</span> Participants', count($parti), 'ap'), count($parti)) .'</h3>';
 	
 	echo '<ul class="ap-participants-list ap-inline-list clearfix">';	
 	foreach($parti as $p){
