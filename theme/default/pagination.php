@@ -23,7 +23,7 @@ function ap_pagination($pages = '', $range = 1, $paged = false, $wp_query = fals
          echo '<ul class="ap-pagination clearfix">';
 		 
 		 echo '<li><span class="page-count">Page '.$paged.' of '.$pages.'</span></li>';
-         if($paged > 2 && $paged > $range+1 && $showitems < $pages) echo '<li><a href="'.get_pagenum_link(1).' title="'.__('First', 'ap').'" >&laquo;</a></li>';
+         if($paged > 2 && $paged > $range+1 && $showitems < $pages) echo '<li><a href="'.get_pagenum_link(1).'" title="'.__('First', 'ap').'" >&laquo;</a></li>';
          if($paged > 1 && $showitems < $pages) echo '<li><a href="'.get_pagenum_link($paged - 1).'" title="'.__('Previous', 'ap').'">&lsaquo; </a></li>';
  
          for ($i=1; $i <= $pages; $i++)

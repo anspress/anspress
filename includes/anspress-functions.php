@@ -282,6 +282,18 @@ function ap_edit_a_btn_html(){
 	}
 	return;
 }
+
+function ap_post_edited_time() {
+	if (get_the_time('s') != get_the_modified_time('s')){
+		printf('<span class="edited-text">%1$s</span> <span class="edited-time">%2$s</span>',
+		__('Edited on','ap'),
+		get_the_modified_time()
+		);
+	
+	}
+	return;
+}
+
 function ap_answer_edit_link(){
 	$post_id = get_the_ID();
 	if(ap_user_can_edit_ans($post_id)){		
