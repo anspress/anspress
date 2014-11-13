@@ -51,6 +51,8 @@ function ap_default_options(){
 		'show_signup' 			=> true,
 		'setemail_html'			=> false,
 		'double_titles'			=> false,
+		'show_answer_edited_time' => false,
+		'show_question_edited_time' => false,
 		'show_social_login'		=> false,
 		'theme' 				=> 'default',
 		'author_credits' 		=> false,

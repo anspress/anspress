@@ -131,6 +131,13 @@ if ( ! isset( $_REQUEST['settings-updated'] ) )
 							<p class="description"><?php _e('Set minimum question word limit.', 'ap'); ?></p>
 						</td>
 					</tr>
+					<tr valign="top">
+						<th scope="row"><label for="show_question_edited_time"><?php _e('Question edited', 'ap'); ?></label></th>
+						<td>
+							<input type="checkbox" id="show_question_edited_time" name="anspress_opt[show_question_edited_time]" value="1" <?php checked( true, $settings['show_question_edited_time'] ); ?> />
+							<label><?php _e('Show the date and the time when the question was edited', 'ap'); ?></label>
+						</td>
+					</tr>
 				</table>
 			</div>
 			<div class="tab-pane" id="ap-answers">		
@@ -155,6 +162,13 @@ if ( ! isset( $_REQUEST['settings-updated'] ) )
 						<td>
 							<input type="checkbox" id="close_selected" name="anspress_opt[close_selected]" value="1" <?php checked( true, $settings['close_selected'] ); ?> />
 							<p class="description"><?php _e('Do not allow new answer after selecting answer.', 'ap'); ?></p>
+						</td>
+					</tr>
+					<tr valign="top">
+						<th scope="row"><label for="show_answer_edited_time"><?php _e('Answer edited', 'ap'); ?></label></th>
+						<td>
+							<input type="checkbox" id="show_answer_edited_time" name="anspress_opt[show_answer_edited_time]" value="1" <?php checked( true, $settings['show_answer_edited_time'] ); ?> />
+							<label><?php _e('Show the date and the time when the answer was edited', 'ap'); ?></label>
 						</td>
 					</tr>
 				</table>
