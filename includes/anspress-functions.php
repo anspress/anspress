@@ -905,9 +905,8 @@ function ap_icon($name){
 }
 
 function wps_set_content_type(){
-	if(ap_opt('setemail_html')){
     return "text/html";
-	}
 }
 if(ap_opt('setemail_html')){
 add_filter( 'wp_mail_content_type','wps_set_content_type' );}
+
