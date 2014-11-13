@@ -297,7 +297,7 @@ function edited_time_date(){
 
 function ap_post_edited_time() {
 	if (get_the_time('s') != get_the_modified_time('s')){
-		printf('<span class="edited-text">%1$s</span> <span class="edited-time">%2$s</span>',
+		printf('<span class="edited-text">%1$s</span> <span class="edited-time-date">%2$s</span>',
 		__('Edited on','ap'),
 		edited_time_date()
 		);
