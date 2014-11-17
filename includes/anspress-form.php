@@ -284,7 +284,8 @@ class anspress_form
 				'post_author'	=> $user_id,
 				'post_content' 	=>  wp_kses($fields['post_content'], ap_form_allowed_tags()),
 				'post_type' 	=> 'question',
-				'post_status' 	=> $status
+				'post_status' 	=> $status,
+				'comment_status' => 'open',
 			);
 			
 			if(isset($fields['parent_id']))
