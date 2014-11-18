@@ -100,6 +100,8 @@ class anspress_form
 		add_action( 'wp_ajax_ap_new_tag', array($this, 'ap_new_tag') );
 		add_action( 'wp_ajax_ap_load_new_tag_form', array($this, 'ap_load_new_tag_form') );
     }
+
+
 	
 	public function process_forms(){
 		/* 
@@ -981,7 +983,7 @@ class anspress_form
 	public function ap_toggle_login_signup(){
 
 		if($_POST['args'] == 'signup')
-			ap_login_form();
+			wp_login_form();
 		else
 			ap_signup_form();
 			
@@ -1044,8 +1046,51 @@ class anspress_form
 		
 		die(json_encode($result));
 	}
+
+	/**
+	 * Run on login_form_defaults filter so we can reset a few of the default values
+	 * @param  Array $args The login default filter passed in from the wp_login_form() function
+	 * @return Array       The modified arguments array
+	 */
+	public function login_form_defaults($args) {
+		$args['label_username'] = 'Username / Email';
+		$args['value_remember'] = true;
+		return $args;
+	}
+
+	/**
+	 * Add additional fields to bottom of the login form
+	 * @param  String $content The existing content 
+	 * @return String
+	 */
+	public function login_form_bottom_html($content)
+	{
+		/*
+		 * Only add these AJAX login fields if the user wants 
+		 * to use an AJAX login form
+		 */
+		if (ap_opt('ajax_login')) {
+			$content .= '<input type="hidden" name="action" value="ap_ajax_login" />';
+			$content .= wp_nonce_field( 'ap_login_nonce', '_wpnonce', true, false ); 
+		}
+		$content .= '<p>' . sprintf(__("Don't have a user account? %sRegister now%s.", 'ap'), '<a class="ap-open-modal" href="#ap_signup_modal">', '</a>') . '</p>';
+
+		return $content;
+	}	
 	
-	public function login_signup_modal(){
+	public function login_signup_modal() {
+
+		/*
+		 * Add appropriate action filters for the login box   
+		 */
+		add_filter('login_form_defaults', array($this, 'login_form_defaults'));
+
+		/*
+		 * Add Content to the bottom of the form 
+		 */
+		add_filter('login_form_bottom', array($this, 'login_form_bottom_html'));
+
+
 		if(!is_user_logged_in()){
 		?>
 		<?php if (ap_opt('custom_login_url') == ''): ?>
@@ -1056,7 +1101,7 @@ class anspress_form
 					<h4 class="ap-modal-title"><?php _e('Login', 'ap'); ?><span class="ap-modal-close">&times;</span></h4>					
 				</div>
 				<div class="ap-modal-body">				
-					<?php ap_login_form(); ?>
+					<?php wp_login_form(); ?>
 				</div>
 			</div>		  
 		</div>
@@ -1077,6 +1122,12 @@ class anspress_form
 		<?php endif;?>
 		<?php endif;?>
 		<?php
+
+		/*
+		 * Clean up our filters 
+		 */
+		remove_filter('login_form_defaults', array($this, 'login_form_defaults'));
+		remove_filter('login_form_bottom', array($this, 'login_form_bottom_html'));
 		}
 	}
 	
@@ -1144,14 +1195,23 @@ class anspress_form
 	
 	public function ap_ajax_login() {
 		$creds 					= array();
-		$creds['user_login'] 	= $_POST['username'];
-		$creds['user_password'] = $_POST['password'];
-		$creds['remember'] 		= true;
+		$creds['user_login'] 	= $_POST['log'];
+		$creds['user_password'] = $_POST['pwd'];
+		$creds['remember'] 		= ($_POST['rememberme'] == 'forever') ? true : false;
 
 		if(!wp_verify_nonce( $_REQUEST['_wpnonce'], 'ap_login_nonce' ))
 		{
 			$results = array('status' => false, 'message' => __('Access Denied', 'ap'));
 		}
+
+		/*
+		 * As we allow users to enter their email address this is a lookup 
+		 * to get the real username 
+		 */
+	    if ( is_email( $creds['user_login'] ) ) {
+	        $user_lookup = get_user_by_email( $creds['user_login'] );
+	        if ( $user_lookup ) $creds['user_login'] = $user_lookup->user_login;
+	    }		
 
 		$user = wp_signon( $creds );
 
@@ -1434,43 +1494,19 @@ function ap_signup_form(){
 				<div class="no-overflow">
 					<input type="password" value="" tabindex="5" name="password" id="password" class="form-control" placeholder="<?php _e('Password', 'ap') ?>" />
 				</div>
-			</div>				
+			</div>					
 
 			<input type="text" name="honeypot" value="" placeholder="<?php _e('Leave this blank. This is a honeypot for spammers', 'ap'); ?>" style="display: none;" />
 
-			<button type="submit" class="ap-btn" ><?php _e('Sign Up', 'ap') ?></button>
+			<p><input type="submit" class="button-primary" value="<?php _e('Sign Up', 'ap'); ?>" /></p>
+			<p><?php printf(__("Already have an account? %sLogin now%s.", 'ap'), '<a class="ap-open-modal" href="#ap_login_modal">', '</a>'); ?></p>
+
 			<input type="hidden" name="action" value="ap_ajax_signup" />
 			<?php wp_nonce_field( 'ap_signup_nonce' ); ?>
+			
 		</form>
 	<?php
 	endif;
-}
-
-function ap_login_form(){
-	if(!is_user_logged_in()){
-	?>
-		<form method="POST" id="ap-login-form">
-			<div class="for-non-logged-in ap-login-fields">
-				<div class="form-group">
-					<label for="username" class="ap-form-label"><?php _e('Email', 'ap') ?></label>
-					<div class="no-overflow">
-						<input type="text" value="" tabindex="5" name="username" id="username" class="form-control" placeholder="<?php _e('Enter your email', 'ap') ?>" />
-					</div>
-				</div>	
-				<div class="form-group">
-					<label for="password" class="ap-form-label"><?php _e('Password', 'ap') ?></label>
-					<div class="no-overflow">
-						<input type="password" value="" tabindex="5" name="password" id="password" class="form-control" placeholder="<?php _e('Enter your password', 'ap') ?>" />
-					</div>
-				</div>
-			</div>
-			<p><?php printf(__("Don't have a user account? %sRegister now%s.", 'ap'), '<a class="ap-open-modal" href="#ap_signup_modal">', '</a>'); ?></p>
-			<button type="submit" class="ap-btn" ><?php _e('Login', 'ap') ?></button>
-			<input type="hidden" name="action" value="ap_ajax_login" />
-			<?php wp_nonce_field( 'ap_login_nonce' ); ?>			
-		</form>
-	<?php
-	}
 }
 
 function ap_edit_question_form($question_id = false){
@@ -1532,4 +1568,50 @@ function ap_convert_pre_char($matches){
 
 function ap_editor_content($content){
 	wp_editor( esc_textarea(html_entity_decode($content, ENT_QUOTES)), 'post_content', array('tinymce' => false, 'textarea_rows' => 7, 'media_buttons' => false, 'quicktags'=> array('buttons'=>'strong,em,link,block,del,ul,li,ol,img,code,close,fullscreen '))); 
+}
+
+
+if(!function_exists('ap_add_email_login'))
+{
+	/*
+	 * ap_add_email_to_login modifies the login 'Username' label to also include Email
+	 * @param  String $translated_text The translated text
+	 * @param  String $text            The default text
+	 * @param  String $domain          The translation domain
+	 * @return String                  The modified text
+	 */
+	function ap_add_email_to_login( $translated_text, $text, $domain ) {  
+	   
+	        if ( 'wp-login.php' != basename( $_SERVER['SCRIPT_NAME'] ) ) {  
+	            return $translated_text;  
+	        }  
+	   
+	        if ( "Username" == $text ) {  
+	            $translated_text .= ' / ';  
+	            $translated_text .= ' '.__( 'Email', $domain);  
+	        }  
+	        return $translated_text;  
+	}
+	add_filter( 'gettext', 'ap_add_email_to_login', 20, 3 );	
+}
+
+
+if(!function_exists('ap_allow_email_login'))	
+{
+	/**
+	 * ap_allow_email_login filter to the authenticate filter hook, to fetch a username based on entered email
+	 * @param  obj $user
+	 * @param  string $username 
+	 * @param  string $password 
+	 * @return boolean
+	 */
+	function ap_allow_email_login( $user, $username, $password ) {
+		
+	    if ( is_email( $username ) ) {
+	        $user = get_user_by_email( $username );
+	        if ( $user ) $username = $user->user_login;
+	    }	   
+	    return wp_authenticate_username_password(null, $username, $password );
+	}	
+	add_filter( 'authenticate','ap_allow_email_login', 20, 3);
 }

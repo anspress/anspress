@@ -78,6 +78,10 @@ function init_scripts_front(){
 			'deleting_message' 				=> __( 'Deleting message', 'ap' ),
 			'uploading' 					=> __( 'Uploading', 'ap' ),
 		) );
+
+		wp_localize_script( 'ap-site-js', 'apoptions', array(
+			'ajaxlogin' => ap_opt('ajax_login'),
+		));
 	}
 }
 

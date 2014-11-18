@@ -101,7 +101,7 @@ function ap_recaptch_html(){
 	$error = null;
 
 	if(!is_super_admin() && (ap_opt('captcha_ask') || ap_opt('captcha_answer')))
-		echo recaptcha_get_html(ap_opt('recaptcha_public_key'), $error);
+		echo recaptcha_get_html(ap_opt('recaptcha_public_key'), $error, is_ssl());
 }
 
 AP_ReCaptcha_Addon::get_instance();

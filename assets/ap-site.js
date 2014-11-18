@@ -1493,22 +1493,26 @@ APjs.site.prototype = {
 	ajaxLoginForm:function(){
 		var self = this;
 		
-		self.submitAjaxForm(
-			'#ap-login-form',
-			function(){
-				self.showLoading(aplang.sending);
-			},
-			function(data){
-				self.hideLoading();
-				if(data['status']){
-					self.addMessage(data['message'], 'success');
-					jQuery('.ap-account-button').remove();
-					location.reload();
-				}else{
-					self.addMessage(data['message'], 'error');
+		/* only run the AJAX login form is the user requests it */
+		if(apoptions.ajaxlogin != false)
+		{
+			self.submitAjaxForm(
+				'#loginform',
+				function(){
+					self.showLoading(aplang.sending);
+				},
+				function(data){
+					self.hideLoading();
+					if(data['status']){
+						self.addMessage(data['message'], 'success');
+						jQuery('.ap-account-button').remove();
+						location.reload();
+					}else{
+						self.addMessage(data['message'], 'error');
+					}
 				}
-			}
-		);
+			);
+		}
 		
 		self.submitAjaxForm(
 			'#ap-signup-form',
