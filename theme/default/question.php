@@ -17,7 +17,7 @@ if(ap_user_can_view_question()){
 			<a class="ap-btn ap-ask-btn-head pull-right" href="<?php echo ap_get_link_to('ask') ?>"><?php _e('Ask Question'); ?></a>
 			<?php if (!ap_opt("double_titles")):?>
 				<h1 class="entry-title" itemprop="name">
-					<?php the_title(); ?>
+					<a href="<?php the_permalink() ?>" itemprop="url"><?php the_title(); ?></a>
 				</h1>
 			<?php else:?>
 				<h1 style="display:none" class="entry-title" itemprop="name">

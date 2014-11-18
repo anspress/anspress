@@ -91,11 +91,16 @@ class anspress {
 	}
 	
 	public function wp_head(){
-		if(is_question()){
-			global $wp;
-			echo '<link href="'.home_url(add_query_arg(array(),$wp->request)).'" title="'.wp_title( '|', false, 'right' ).'" type="application/rss+xml" rel="alternate">';
+		if(is_anspress()){
+			$q_feed = get_post_type_archive_feed_link( 'question' );
+			$a_feed = get_post_type_archive_feed_link( 'answer' );
+			echo '<link rel="alternate" type="application/rss+xml" title="'.__('Question feed', 'ap').'" href="'.$q_feed.'" />';
+			echo '<link rel="alternate" type="application/rss+xml" title="'.__('Answers feed', 'ap').'" href="'.$a_feed.'" />';
+		}	
+		
+		if(is_question())	
 			echo '<link rel="canonical" href="'.get_permalink(get_question_id()).'"> ';
-		}
+		
 	}
 
 	/**

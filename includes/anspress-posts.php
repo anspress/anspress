@@ -136,7 +136,7 @@ class anspress_posts
             'can_export' => true,
             'has_archive' => true,
             'exclude_from_search' => false,
-            'publicly_queryable' => false,
+            'publicly_queryable' => true,
             'query_var' => 'apq',
             'capability_type' => 'post',
             'rewrite' => false
@@ -207,7 +207,7 @@ class anspress_posts
 			  'label_count'               => _n_noop( 'Private Question <span class="count">(%s)</span>', 'Private Question <span class="count">(%s)</span>' )
 		 ) );
 		 
-		 add_feed('question-feed', array($this, 'question_feed'));
+		 //add_feed('question-feed', array($this, 'question_feed'));
 		// add_feed('answer-feed', array($this, 'answer_feed'));
         
     }
