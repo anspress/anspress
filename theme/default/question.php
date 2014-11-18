@@ -45,7 +45,16 @@ if(ap_user_can_view_question()){
 									<div class="ap-single-vote"><?php ap_vote_html(); ?></div>
 									<div class="ap-meta">
 										<?php 
-											printf( __( '<a href="'.ap_user_link(get_the_author_meta('ID')).'?rel=author" class="author"><span itemprop="author">%s</span></a> <span class="when">asked about %s ago</span>', 'ap' ), ap_user_display_name(false, true) , ap_human_time( get_the_time('U')));
+											$a=" e ";$b=" ";$time=get_option('date_format').$b.get_option('time_format').$a.get_option('gmt_offset');
+											printf('<a href="%3$s?rel=author" class="author"><span itemprop="author">%s</span></a><span> %4$s </span><a href="%5$s"><time datetime="%6$s" title="%6$s" is="relative-time">%s %7$s</time></a>', 
+											ap_user_display_name(false, true), 
+											ap_human_time( get_the_time('U')),
+											ap_user_link(get_the_author_meta('ID')),
+											__('askted about','ap'),
+											get_permalink(),
+											get_the_time($time),
+											__('ago','ap')
+											);
 										?>
 									</div>									
 								</div>			
@@ -60,6 +69,7 @@ if(ap_user_can_view_question()){
 									<li><?php ap_flag_btn_html(); ?></li>
 									<li><?php ap_post_delete_btn_html(); ?></li>
 								</ul>
+								<?php ap_post_edited_time();?>
 							</div>
 							<div class="ap-qfooter">								
 								<div class="ap-tlitem">

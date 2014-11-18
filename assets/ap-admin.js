@@ -490,7 +490,7 @@ function ap_option_flag_note(){
 		jQuery(clone).insertBefore(this);
 	});
 	jQuery('body').delegate('.delete-flag-note', 'click', function(){
-		jQuery(this).parent().remove();
+		jQuery(this).parent().parent().parent().remove();
 	});
 }
 
