@@ -50,7 +50,7 @@ function init_scripts_front(){
 			'not_valid_email' 				=> __( 'Not a valid email', 'ap' ),
 			'username_less' 				=> __( 'Username length must be 4 or higher', 'ap' ),
 			'username_not_avilable' 		=> __( 'Username not available', 'ap' ),
-			'email_already_in_use' 			=> __( 'Email already in use', 'ap' ),
+			'email_already_in_use' 			=> sprintf(__( 'Email already in use. %sHave you previously registered an account?%s', 'ap' ), '<a class="ap-open-modal" href="#ap_login_modal">', '</a>'),
 			'loading' 						=> __( 'Loading', 'ap' ),
 			'sending' 						=> __( 'Sending request', 'ap' ),
 			'adding_to_fav' 				=> __( 'Adding question to your favorites', 'ap' ),

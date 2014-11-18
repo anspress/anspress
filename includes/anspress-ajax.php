@@ -35,7 +35,6 @@ class anspress_ajax
      */
     public function __construct()
     {
-		add_action('wp_ajax_nopriv_ap_check_username', array($this, 'check_username'));
 		add_action('wp_ajax_nopriv_ap_check_email', array($this, 'check_email'));
 		add_action('wp_ajax_recount_votes', array($this, 'recount_votes'));
 		add_action('wp_ajax_recount_views', array($this, 'recount_views'));
@@ -53,19 +52,11 @@ class anspress_ajax
     }
 
 	
-	public function check_username(){
-	   $username = sanitize_text_field($_POST['username']);
-       if ( username_exists( $username ) )
-           echo 'false' ;
-		else
-			echo 'true';
-		
-		die();
-	}
 	public function check_email(){
 	   $email = sanitize_text_field($_POST['email']);
 
-       if ( email_exists( $email ) )
+	   /* use the email as the username */
+       if ( email_exists( $email ) || username_exists($email) )
            echo 'false' ;
 		else
 			echo 'true';

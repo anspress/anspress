@@ -1056,7 +1056,7 @@ class anspress_form
 					<h4 class="ap-modal-title"><?php _e('Login', 'ap'); ?><span class="ap-modal-close">&times;</span></h4>					
 				</div>
 				<div class="ap-modal-body">				
-					<?php wp_login_form(); ?>
+					<?php ap_login_form(); ?>
 				</div>
 			</div>		  
 		</div>
@@ -1142,41 +1142,81 @@ class anspress_form
 		}
 	}
 	
-	public function ap_ajax_login(){
+	public function ap_ajax_login() {
 		$creds 					= array();
 		$creds['user_login'] 	= $_POST['username'];
 		$creds['user_password'] = $_POST['password'];
 		$creds['remember'] 		= true;
-		$user = wp_signon( $creds, false );
-		
+
+		if(!wp_verify_nonce( $_REQUEST['_wpnonce'], 'ap_login_nonce' ))
+		{
+			$results = array('status' => false, 'message' => __('Access Denied', 'ap'));
+		}
+
+		$user = wp_signon( $creds );
+
 		if ( is_wp_error($user) )
-			$result = array('status' => false, 'message' => __('Unable to login, please try again.', 'ap'));
-		
+		{
+			$error = (strlen($user->get_error_message()) > 0) ? $user->get_error_message() : __('Please enter your username and password to login', 'ap');
+			$result = array('status' => false, 'message' => $error);
+		}		
 		else
+		{
 			$result = array('status' => true, 'message' => __('Successfully logged in.', 'ap'));
+		}
 			
 		die(json_encode($result));
 	}
 	
-	public function ap_ajax_signup(){
+	public function ap_ajax_signup() {
+
 		if(is_user_logged_in())
 			return;
-		
-		// create user
-		$user_id = register_new_user($_POST['username'], $_POST['email']);
 
-		// return if there is any error
-		if(is_wp_error($user_id))
-			return;		
-			
-		if ( is_wp_error($user_id) ){
-			$result = array('status' => false, 'message' => __('Unable to create account, please try again.', 'ap'));
-		
-		}else{
-			$result = array('status' => true, 'message' => __('Successfully created your account, please check your email for password.', 'ap'));
+		if(!wp_verify_nonce( $_REQUEST['_wpnonce'], 'ap_signup_nonce' ))
+		{
+			die(json_encode(array('status' => false, 'message' => __('Access Denied', 'ap'))));			
+		}		
+
+		if(strlen($_POST['honeypot']) > 0)
+		{
+			exit;
+		}
+
+		$email = sanitize_email($_POST['email']);
+		$username = $email;
+		$password = $_POST['password'];
+
+		/*
+		 * Ensure the email is valid 
+		 */
+		if(!is_email($email))
+		{
+			die(json_encode(array('status' => false, 'message' => __('Please enter a valid email address.', 'ap'))));
+		}
+
+		/*
+		 * Ensure our username and email don't exist before creating it
+		 */
+		$existing_user = username_exists( $username );
+
+		if ( !$existing_user && email_exists($email) == false )		
+		{
+			$user_id = wp_create_user($username, $password, $email);
+
+			if ( is_wp_error($user_id) )
+			{
+				die(json_encode(array('status' => false, 'message' => $user_id->get_error_message())));
+			}		
+		}
+		else
+		{
+			/* email / username already in user */
+			die(json_encode(array('status' => false, 'message' => sprintf(__( 'Email already in use. %sHave you previously registered an account?%s', 'ap' ), '<a class="ap-open-modal" href="#ap_login_modal">', '</a>'))));
 		}
 		
-		die(json_encode($result));
+		/* successful */
+		die(json_encode(array('status' => true, 'message' => __('Successfully created your account. Use the form below to login.', 'ap'))));
 	}
 	
 	public function ap_new_tag(){
@@ -1383,20 +1423,24 @@ function ap_signup_form(){
 	?>
 		<form method="POST" id="ap-signup-form">
 			<div class="form-group">
-				<label for="username" class="ap-form-label"><?php _e('Username', 'ap') ?></label>
-				<div class="no-overflow">
-					<input type="text" value="" tabindex="5" name="username" id="username" class="form-control" placeholder="<?php _e('Username', 'ap') ?>" />
-				</div>
-			</div>	
-			<div class="form-group">
 				<label for="email" class="ap-form-label"><?php _e('Email', 'ap') ?></label>
 				<div class="no-overflow">
 					<input type="text" value="" tabindex="5" name="email" id="email" class="form-control" placeholder="<?php _e('name@domain.com', 'ap') ?>" />
 				</div>
 			</div>
 
+			<div class="form-group">
+				<label for="password" class="ap-form-label"><?php _e('Password', 'ap') ?></label>
+				<div class="no-overflow">
+					<input type="password" value="" tabindex="5" name="password" id="password" class="form-control" placeholder="<?php _e('Password', 'ap') ?>" />
+				</div>
+			</div>				
+
+			<input type="text" name="honeypot" value="" placeholder="<?php _e('Leave this blank. This is a honeypot for spammers', 'ap'); ?>" style="display: none;" />
+
 			<button type="submit" class="ap-btn" ><?php _e('Sign Up', 'ap') ?></button>
 			<input type="hidden" name="action" value="ap_ajax_signup" />
+			<?php wp_nonce_field( 'ap_signup_nonce' ); ?>
 		</form>
 	<?php
 	endif;
@@ -1408,9 +1452,9 @@ function ap_login_form(){
 		<form method="POST" id="ap-login-form">
 			<div class="for-non-logged-in ap-login-fields">
 				<div class="form-group">
-					<label for="username" class="ap-form-label"><?php _e('Username', 'ap') ?></label>
+					<label for="username" class="ap-form-label"><?php _e('Email', 'ap') ?></label>
 					<div class="no-overflow">
-						<input type="text" value="" tabindex="5" name="username" id="username" class="form-control" placeholder="<?php _e('Enter your username', 'ap') ?>" />
+						<input type="text" value="" tabindex="5" name="username" id="username" class="form-control" placeholder="<?php _e('Enter your email', 'ap') ?>" />
 					</div>
 				</div>	
 				<div class="form-group">
@@ -1420,8 +1464,10 @@ function ap_login_form(){
 					</div>
 				</div>
 			</div>
+			<p><?php printf(__("Don't have a user account? %sRegister now%s.", 'ap'), '<a class="ap-open-modal" href="#ap_signup_modal">', '</a>'); ?></p>
 			<button type="submit" class="ap-btn" ><?php _e('Login', 'ap') ?></button>
 			<input type="hidden" name="action" value="ap_ajax_login" />
+			<?php wp_nonce_field( 'ap_login_nonce' ); ?>			
 		</form>
 	<?php
 	}
