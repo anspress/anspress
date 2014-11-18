@@ -69,7 +69,7 @@ if(ap_user_can_view_question()){
 									<li><?php ap_flag_btn_html(); ?></li>
 									<li><?php ap_post_delete_btn_html(); ?></li>
 								</ul>
-								<?php ap_post_edited_time();?>
+								<?php if(ap_opt('show_question_edited_time')){ ap_post_edited_time();}?>
 							</div>
 							<div class="ap-qfooter">								
 								<div class="ap-tlitem">

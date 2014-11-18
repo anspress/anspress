@@ -106,6 +106,13 @@ if ( ! isset( $_REQUEST['settings-updated'] ) )
 						<label for="can_private_question">Disable the ability to ask a question as private</label>
 					</td>
 				</tr>
+				<tr valign="top">
+					<th scope="row">Weird emails</th>
+					<td>
+						<input type="checkbox" id="setemail_html" name="anspress_opt[setemail_html]" value="1" <?php checked( true, $settings['setemail_html'] ); ?> />
+						<label for="setemail_html">If you see in your emails<input type="text" readonly placeholder="</a><br /><p style=" /> enable this checkbox</label>
+					</td>
+				</tr>
 			</table>
 			</div>
 			<div class="tab-pane" id="ap-question">		
@@ -122,6 +129,13 @@ if ( ! isset( $_REQUEST['settings-updated'] ) )
 						<td>
 							<input type="number" min="1" name="anspress_opt[minimum_question_length]" id="minimum_question_length" value="<?php echo $settings['minimum_question_length'] ; ?>" />
 							<p class="description"><?php _e('Set minimum question word limit.', 'ap'); ?></p>
+						</td>
+					</tr>
+					<tr valign="top">
+						<th scope="row"><label for="show_question_edited_time"><?php _e('Question edited', 'ap'); ?></label></th>
+						<td>
+							<input type="checkbox" id="show_question_edited_time" name="anspress_opt[show_question_edited_time]" value="1" <?php checked( true, $settings['show_question_edited_time'] ); ?> />
+							<label><?php _e('Show the date and the time when the question was edited', 'ap'); ?></label>
 						</td>
 					</tr>
 				</table>
@@ -148,6 +162,13 @@ if ( ! isset( $_REQUEST['settings-updated'] ) )
 						<td>
 							<input type="checkbox" id="close_selected" name="anspress_opt[close_selected]" value="1" <?php checked( true, $settings['close_selected'] ); ?> />
 							<p class="description"><?php _e('Do not allow new answer after selecting answer.', 'ap'); ?></p>
+						</td>
+					</tr>
+					<tr valign="top">
+						<th scope="row"><label for="show_answer_edited_time"><?php _e('Answer edited', 'ap'); ?></label></th>
+						<td>
+							<input type="checkbox" id="show_answer_edited_time" name="anspress_opt[show_answer_edited_time]" value="1" <?php checked( true, $settings['show_answer_edited_time'] ); ?> />
+							<label><?php _e('Show the date and the time when the answer was edited', 'ap'); ?></label>
 						</td>
 					</tr>
 				</table>

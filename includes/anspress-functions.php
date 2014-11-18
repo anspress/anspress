@@ -49,7 +49,10 @@ function ap_default_options(){
 		'show_login_signup' 	=> true,
 		'show_login' 			=> true,
 		'show_signup' 			=> true,
+		'setemail_html'			=> false,
 		'double_titles'			=> false,
+		'show_answer_edited_time' => false,
+		'show_question_edited_time' => false,
 		'show_social_login'		=> false,
 		'theme' 				=> 'default',
 		'author_credits' 		=> false,
@@ -283,11 +286,22 @@ function ap_edit_a_btn_html(){
 	return;
 }
 
+function edited_time_date(){
+		if (current_time('Y-m-d') != get_the_modified_time('Y-m-d')) {
+		$b=" ";$time=get_option('date_format').$b.get_option('time_format');
+		return get_the_modified_time($time);
+		}
+		else{
+		return get_the_modified_time();
+		}
+	return;
+}
+
 function ap_post_edited_time() {
 	if (get_the_time('s') != get_the_modified_time('s')){
-		printf('<span class="edited-text">%1$s</span> <span class="edited-time">%2$s</span>',
+		printf('<span class="edited-text">%1$s</span> <span class="edited-time-date">%2$s</span>',
 		__('Edited on','ap'),
-		get_the_modified_time()
+		edited_time_date()
 		);
 	
 	}
@@ -902,3 +916,10 @@ function ap_icon($name){
 		
 	return '';
 }
+
+function wps_set_content_type(){
+    return "text/html";
+}
+if(ap_opt('setemail_html')){
+add_filter( 'wp_mail_content_type','wps_set_content_type' );}
+
