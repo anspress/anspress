@@ -50,7 +50,7 @@ if(ap_user_can_view_question()){
 											ap_user_display_name(false, true), 
 											ap_human_time( get_the_time('U')),
 											ap_user_link(get_the_author_meta('ID')),
-											__('askted about','ap'),
+											__('asked about','ap'),
 											get_permalink(),
 											get_the_time($time),
 											__('ago','ap')
