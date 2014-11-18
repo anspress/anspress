@@ -1485,5 +1485,5 @@ function ap_convert_pre_char($matches){
 }
 
 function ap_editor_content($content){
-	wp_editor( esc_textarea(html_entity_decode($content)), 'post_content', array('tinymce' => false, 'textarea_rows' => 7, 'media_buttons' => false, 'quicktags'=> array('buttons'=>'strong,em,link,block,del,ul,li,ol,img,code,close,fullscreen '))); 
+	wp_editor( esc_textarea(html_entity_decode($content, ENT_QUOTES)), 'post_content', array('tinymce' => false, 'textarea_rows' => 7, 'media_buttons' => false, 'quicktags'=> array('buttons'=>'strong,em,link,block,del,ul,li,ol,img,code,close,fullscreen '))); 
 }
