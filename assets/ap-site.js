@@ -736,11 +736,8 @@ APjs.site.prototype = {
 					self.clearError('#ask_question_form');
 					self.addMessage(responce['message'], 'error');
 					self.appendFormError('#ask_question_form', responce['error']);
-					if(typeof responce['error']['recaptcha_response_field'] !== 'undefined'){
-						var errorString = "&error=" + encodeURIComponent(responce['error']['recaptcha_response_field']);
-						Recaptcha.create(recaptch_public+errorString, "recaptcha", { theme: "clean",callback: Recaptcha.focus_response_field});
-						console.log(errorString);
-					}
+					/* if there is an error we reload the captcha regardless, as it won't be valid a second time */
+					Recaptcha.reload();
 				}else{
 					self.addMessage(responce['message'], 'error');
 				}

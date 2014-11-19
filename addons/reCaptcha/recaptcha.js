@@ -5,7 +5,7 @@ jQuery('body').on('submitQuestion', function(e, responce){
 		self.appendFormError('#ask_question_form', responce['error']);
 		if(typeof responce['error']['recaptcha_response_field'] !== 'undefined'){
 			var errorString = "&error=" + encodeURIComponent(responce['error']['recaptcha_response_field']);
-			Recaptcha.create(recaptch_public+errorString, "recaptcha", { theme: "white"});
+			Recaptcha.reload();
 			console.log(errorString);
 		}
 	}

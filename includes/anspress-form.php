@@ -1375,7 +1375,7 @@ function ap_edit_answer_form_hidden_input($post_id){
 	echo '<input type="hidden" name="answer_id" value="'.$post_id.'" />';
 	echo '<input type="hidden" name="edited" value="true" />';
 	echo '<input type="hidden" name="submitted" value="true" />';
-	echo '<button type="submit" class="btn btn-primary">'. __('Update Answer', 'ap'). '</button>';
+	echo '<input type="submit" class="btn btn-primary" value="'. __('Update Answer', 'ap'). '" />';
 }
 
 function ap_signup_form(){

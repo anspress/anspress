@@ -115,13 +115,14 @@ function recaptcha_get_html ($pubkey, $error = null, $use_ssl = false)
                 $server = RECAPTCHA_API_SERVER;
         }
 
-        return '<script type="text/javascript" src="http://www.google.com/recaptcha/api/js/recaptcha_ajax.js"></script><script>  Recaptcha.create(recaptch_public,
-    "recaptcha",
-    {
-      theme: "clean",
-      callback: Recaptcha.focus_response_field
-    }
-  );</script>';
+        /*
+         * Load a custom captcha theme 
+         * responsive reCAPTCHA by jaicab - https://github.com/jaicab/responsive-reCAPTCHA 
+         * Licence: Creative Commons Attribution 3.0 (http://creativecommons.org/licenses/by/3.0/)         
+         */
+        ob_start();
+        include dirname(__FILE__) . '/responsive_recaptcha.html';
+        return ob_get_clean();
 }
 
 

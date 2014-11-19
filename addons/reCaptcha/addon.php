@@ -50,6 +50,7 @@ class AP_ReCaptcha_Addon
 			</script>
 		<?php
 		wp_enqueue_script( 'ap-recaptcha', ANSPRESS_ADDON_URL. 'reCaptcha/recaptcha.js', 'jquery', AP_VERSION);
+		wp_enqueue_style( 'ap-recaptcha-css', ANSPRESS_ADDON_URL. 'reCaptcha/responsive_recaptcha.css', array(), AP_VERSION);
 	}
 	public function ap_recaptcha_validation($error){
 		require_once('recaptchalib.php');
