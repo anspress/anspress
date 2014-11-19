@@ -72,6 +72,10 @@ if ( ! isset( $_REQUEST['settings-updated'] ) )
 							<label for="show_login">Show login form</label>
 						</fieldset>
 						<fieldset>
+							<input type="checkbox" id="ajax_login" name="anspress_opt[ajax_login]" value="1" <?php checked( true, $settings['ajax_login'] ); ?> />
+							<label for="ajax_login"><?php _e('Enable AJAX Login?', 'ap'); ?></label>
+						</fieldset>					
+						<fieldset>
 							<input type="checkbox" id="show_social_login" name="anspress_opt[show_social_login]" value="1" <?php checked( true, $settings['show_social_login'] ); ?> />
 							<label for="show_social_login">Show social login form</label>
 						</fieldset>

@@ -1887,6 +1887,14 @@ ul.ap-pagination {
     color: #fff;
 }
 
+.ap-message-item.error a, .ap-message-item.warning a {
+    color: #FFF;
+}
+
+.ap-message-item.success a {
+     color: #716767;
+}
+
 /* Modal */
 .ap-modal {
     display: none;
@@ -1951,7 +1959,7 @@ ul.ap-pagination {
 }
 
 .ap-modal-body {
-	padding:10px;
+	padding:15px;
 }
 
 .ap-container .ap-inline-list {
@@ -3800,6 +3808,10 @@ a.disable:hover {
     background: #fcfcfc;
     display: block;
     padding: 10px 15px;
+}
+
+.ap-ac-accordion > strong:hover {
+    cursor: pointer;
 }
 
 .ap-ac-accordion > strong > i {

@@ -50,7 +50,7 @@ function init_scripts_front(){
 			'not_valid_email' 				=> __( 'Not a valid email', 'ap' ),
 			'username_less' 				=> __( 'Username length must be 4 or higher', 'ap' ),
 			'username_not_avilable' 		=> __( 'Username not available', 'ap' ),
-			'email_already_in_use' 			=> __( 'Email already in use', 'ap' ),
+			'email_already_in_use' 			=> sprintf(__( 'Email already in use. %sDo you want to reset your password?%s', 'ap' ), '<a href="'. wp_lostpassword_url() .'">', '</a>'),
 			'loading' 						=> __( 'Loading', 'ap' ),
 			'sending' 						=> __( 'Sending request', 'ap' ),
 			'adding_to_fav' 				=> __( 'Adding question to your favorites', 'ap' ),
@@ -78,6 +78,10 @@ function init_scripts_front(){
 			'deleting_message' 				=> __( 'Deleting message', 'ap' ),
 			'uploading' 					=> __( 'Uploading', 'ap' ),
 		) );
+
+		wp_localize_script( 'ap-site-js', 'apoptions', array(
+			'ajaxlogin' => ap_opt('ajax_login'),
+		));
 	}
 }
 
