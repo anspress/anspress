@@ -1272,7 +1272,7 @@ class anspress_form
 		else
 		{
 			/* email / username already in user */
-			die(json_encode(array('status' => false, 'message' => sprintf(__( 'Email already in use. %sHave you previously registered an account?%s', 'ap' ), '<a class="ap-open-modal" href="#ap_login_modal">', '</a>'))));
+			die(json_encode(array('status' => false, 'message' => sprintf(__( 'Email already in use. %sDo you want to reset your password?%s', 'ap' ), '<a href="'. wp_lostpassword_url() .'">', '</a>'))));
 		}
 		
 		/* successful */
