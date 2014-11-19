@@ -10,20 +10,6 @@ if(!is_private_question() || (is_private_question() && ap_user_can_view_private_
 			<span><?php _e( 'Private Question', 'ap' ); ?></span>
 		</div>
 	<?php endif; ?>
-	<div class="wrap-right">				
-		<a class="ap-vote-count ap-tip" href="#" title="<?php _e('Total votes', 'ap'); ?>">
-			<span><?php echo ap_net_vote(); ?></span> 
-			<?php  _e('Votes', 'ap'); ?>
-		</a>
-		<a class="ap-vote-count ap-tip" href="#" title="<?php _e('Total views', 'ap'); ?>">
-			<span><?php echo ap_get_qa_views(); ?></span> 
-			<?php  _e('Views', 'ap'); ?>
-		</a>
-		<a class="ap-answer-count ap-tip" href="<?php echo ap_answers_link(); ?>" title="<?php _e('Total answers', 'ap'); ?>">
-			<span><?php echo ap_count_ans_meta(); ?></span>
-			<?php _e('Ans', 'ap');?>
-		</a>
-	</div>
 	<div class="ap-list-inner">
 		<div class="ap-avatar">
 			<a href="<?php echo ap_user_link(); ?>">
@@ -67,5 +53,20 @@ if(!is_private_question() || (is_private_question() && ap_user_can_view_private_
 			<?php endif; ?>
 		</div>				
 	</div>
+
+	<div class="wrap-right">	
+		<a class="ap-answer-count ap-tip" href="<?php echo ap_answers_link(); ?>" title="<?php _e('Total answers', 'ap'); ?>">
+			<span><?php echo ap_count_ans_meta(); ?></span>
+			<?php _e('Ans', 'ap');?>
+		</a>						
+		<a class="ap-vote-count ap-tip" href="#" title="<?php _e('Total views', 'ap'); ?>">
+			<span><?php echo ap_get_qa_views(); ?></span> 
+			<?php  _e('Views', 'ap'); ?>
+		</a>
+		<a class="ap-vote-count ap-tip" href="#" title="<?php _e('Total votes', 'ap'); ?>">
+			<span><?php echo ap_net_vote(); ?></span> 
+			<?php  _e('Votes', 'ap'); ?>
+		</a>		
+	</div>	
 </article><!-- list item -->
 <?php endif; ?>

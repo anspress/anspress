@@ -382,6 +382,7 @@ body.anspress .ap-container {
 }
 
 .ap-avatar {
+    display: none;
     float: left;
     margin-right: 15px;
 }
@@ -454,16 +455,17 @@ body.anspress .ap-container {
     text-decoration: none;
 }
 
-#ap-single .ap-question-left {
-    display: block;
-    float: left;
-    padding-right: 20px;
-    width: 85%;
+/* fix any theme issues that may force a float 'clearing' */
+#ap-single .ap-question-right * {
+    clear: none;
 }
 
 #ap-single .ap-question-right {
-    float: left;
-    width: 15%;
+    margin-top: 10px;
+}
+
+.anspress .ap-question-right .ap-icon-cog {
+    font-size: 18px;
 }
 
 #ap-container .question-content, #ap-container .answer-content {
@@ -675,6 +677,11 @@ body.anspress .ap-container {
     margin-top: 15px;
 }
 
+/* fix theme irregularities */
+.ap-comments.no-comments {
+    background: none;
+}
+
 #question .ap-comments {
     margin-left: 0;
 }
@@ -787,6 +794,7 @@ body.anspress .ap-container {
     font-size: 12px;
     line-height: 18px;
     margin: 0 0 5px;
+    text-align: left;
 }
 
 .ap-comment-texts time {
@@ -831,7 +839,6 @@ body.anspress .ap-container {
     background: #fcfcfc;
     border: 1px solid #ddd;
     border-radius: 4px;
-    margin-left: 44px;
     margin-top: 10px;
     padding: 10px;
 }
@@ -900,10 +907,20 @@ body.anspress .ap-container {
     margin-bottom: 20px;
 	margin-top:0;
 }
+
+.anspress .entry-title:after,
+.ap-comments .commentlist li article:after {
+    content: '';
+    clear: both;
+    display: table;
+}
+
 .anspress .ap-qtitle-meta .entry-title {
     margin-bottom: 5px;
 }
 .ap-qtopmeta {
+    clear: both;
+    margin-top: 10px;
     padding-bottom: 10px;
 }
 
@@ -1145,6 +1162,8 @@ body.modal-open {
     margin-bottom: 20px;
 }
 
+
+
 .question-list .question:last-child {
     border-bottom: 0 none;
     margin-bottom: 0;
@@ -1163,9 +1182,9 @@ body.modal-open {
 
 .question-list .wrap-right {
     display: block;
-    float: right;
-    text-align: center;
-    width: 165px;
+    text-align: left;
+    text-align: left;
+    margin-top: 10px;
 }
 
 .question-list article:nth-child(2n) .ap-content-inner {
@@ -1182,7 +1201,12 @@ body.modal-open {
 }
 
 .ap-list-inner .ap-avatar {
+    display: none; /* make some room for mobiles */
     margin-top: 6px;
+}
+
+.anspress .ap-avatar img {
+    margin: 0 !important; /* ensure no themes are putting margins on the avatar images */
 }
 
 .question-list .ap-content-inner .ap-avatar img {
@@ -1220,16 +1244,16 @@ body.modal-open {
     -webkit-border-radius: 2px;
     border-radius: 2px;
     color: #666;
-    display: block;
-    float: right;
+    display: inline-block;
     font-size: 10px;
     height: 50px;
-    margin-bottom: 0;
+    margin-bottom: 2px;
     margin-left: 5px;
     margin-top: 0;
     text-decoration: none;
     text-transform: uppercase;
-    width: 50px;
+    width: 50px;    
+    text-align: center;
 }
 
 #answers-c .ap-answer-count {
@@ -1788,7 +1812,7 @@ ul.ap-pagination {
 /* anspress tabs */
 .ap-container .ap-tabs {
     list-style: none outside none;
-    margin: 0;
+    margin: 0 0 5px 0;
     padding: 0;
 }
 
@@ -1924,10 +1948,16 @@ ul.ap-pagination {
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.4);
     display: none;
     left: 50%;
-    margin: -120px 0 0 -160px;
+
+    -moz-transform: translateX(-50%) translateY(-50%);
+    -webkit-transform: translateX(-50%) translateY(-50%);
+    -o-transform: translateX(-50%) translateY(-50%);
+    -ms-transform: translateX(-50%) translateY(-50%);
+    transform: translateX(-50%) translateY(-50%);
     position: fixed;
     top: 50%;
-    width: 500px;
+    width: 90%;
+    max-width: 500px;
     z-index: 1000;
 }
 .ap-modal.active{
@@ -2114,7 +2144,7 @@ ul.ap-pagination {
 }
 
 .ap-question-side .ap-question-side-title {
-    font-size: 13px;
+    font-size: 15px;
     margin-bottom: 6px;
     margin-top: 0;
 }
@@ -2150,10 +2180,10 @@ ul.ap-pagination {
     border-radius: 2px;
     color: #fff;
     display: block;
-    font-size: 12px;
+    font-size: 14px;
     font-weight: bold;
     margin: 0 0 7px;
-    padding: 4px 8px;
+    padding: 6px 8px;
 }
 
 .ap-change-label-from .ap-dropdown-menu {
@@ -2564,9 +2594,7 @@ ul.ap-pagination {
 }
 
 .ap-form-label {
-    min-width: 125px;
-    padding: 7px 0;
-    float: left;
+    display: block;
 }
 
 form .checkbox {
@@ -2737,8 +2765,7 @@ form .checkbox {
 .ap-suggestions .ap-tag-item {
     cursor: pointer;
     display: block;
-    float: left;
-    width: 25%;
+    margin-bottom: 5px;
 }
 
 .ap-suggestions .ap-tag-item-inner {
@@ -3732,6 +3759,119 @@ a.disable:hover {
 	max-width:100%;
 }
 
+.ap-icon.ap-icon-cog:hover {
+    cursor:pointer;
+}
+
+.ap-container .avatar {
+    box-shadow: none;
+    display: block;
+}
+.ap_commnt_title {
+    border-bottom: 1px solid #f5f5f5;
+    margin-bottom: 5px;
+    padding: 6px;
+}
+
+.ap-anstabhead {
+    margin-bottom: 20px;
+    margin-top: 30px;
+}
+.ap-qfooter {
+    border: 1px solid #eee;
+    border-radius: 2px;
+    margin-top: 15px;
+    padding: 5px;
+}
+.accordion-content {
+    border-top: 1px solid #f5f5f5;
+    display: none;
+    padding: 20px;
+    text-align: center;
+}
+
+.accordion-content > a {
+    margin: 5px 0;
+    font-size: 15px;    
+}
+
+
+.ap-ac-accordion {    
+    border-bottom: 1px solid #eee;
+}
+.ap-ac-accordion > strong {
+    background: #fcfcfc;
+    display: block;
+    padding: 10px 15px;
+}
+
+.ap-ac-accordion > strong:hover {
+    cursor: pointer;
+}
+
+.ap-ac-accordion > strong > i {
+    background: #fff;
+    cursor: pointer;
+    font-size: 15px;
+    margin-right: 5px;
+    vertical-align: middle;
+}
+.ap-ac-accordion .ap-icon-checkbox-checked, .ap-ac-accordion.active .ap-icon-checkbox-unchecked{
+    display:none;
+}
+.ap-ac-accordion.active .ap-icon-checkbox-checked{
+    display:inline;
+}
+.anspress #wp-social-login-connect-options a {
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 2px;
+    display: block;
+    float: left;
+    line-height: 20px;
+    margin-right: 5px;
+    padding: 5px 15px;
+    color: #fff;
+}
+.anspress #wp-social-login-connect-options {
+    display: table;
+    margin: 0 auto;
+    padding: 10px;
+}
+#wp-social-login-connect-options a.btn-facebook {
+    background: #3b5998;    
+}
+#wp-social-login-connect-options a.btn-twitter {
+    background: #55acee;
+}
+#wp-social-login-connect-options a.btn-google {
+    background: #f96161;
+}
+#wp-social-login-connect-options a.btn-linkedin {
+    background: #007bb6;
+}
+
+#submit-flag-question {
+    float:right;
+    margin:0 10px 10px 0;
+}
+
+.ap-dtable {
+    float:left;
+    width:70%;
+    margin-top:10px;
+}
+
+.question-sidebar {
+    float:left;
+    margin-left:1%;
+    width:29%;
+}
+
+#private_question:hover {
+    cursor:pointer;
+}
+
+
 
 @media (max-width: 480px) {
 	.ap-qaf-inner .form-control {
@@ -3771,107 +3911,77 @@ a.disable:hover {
 	}
 }
 
-.ap-icon.ap-icon-cog:hover {
-	cursor:pointer;
+/*
+ * Add Responsive Media Queries 
+ * Design for mobile first, so we will only use the min-width @media option 
+ * as mobile support for @media is patchy. This will ensure the best compatibility 
+ * across a range of devices 
+ */
+
+@media all and (min-width: 500px) {
+    .question-list .ap-list-inner {
+        float: left;
+        width: 75%;
+    }
+
+    .question-list .wrap-right {
+        margin-left: 75%;
+        width: 25%;
+        text-align: right;
+    }   
+
+    .ap-container .ap-tabs {
+        margin-bottom: 0;
+    }
+
+    .ap-qtopmeta {
+        clear: none;
+        margin-top: 0;
+    }
+
+    #ap-single .ap-question-left {
+        float: left;
+        width: 83%;
+    }
+
+    #ap-single .ap-question-right {
+        margin-top: 0;
+        margin-left: 85%;
+        width: 15%;
+    } 
+
+    .ap-question-side .question-labels li {       
+        font-size: 12px;
+        padding: 4px 8px;
+    }  
+
+    .ap-suggestions .ap-tag-item {
+        float: left;
+        width: 25%;
+    }          
+
+ 
 }
 
-.ap-container .avatar {
-    box-shadow: none;
-    display: block;
-}
-.ap_commnt_title {
-    border-bottom: 1px solid #f5f5f5;
-    margin-bottom: 5px;
-    padding: 6px;
+@media all and (min-width: 740px) {
+    .ap-avatar { 
+        display: block;
+    }  
+
+    .anspress .comment-form-c {
+        margin-left: 44px;
+    }      
+
+    .ap-form-label {
+        display: inline;
+        min-width: 125px;
+        padding: 7px 0;
+        float: left;
+    } 
 }
 
-.ap-anstabhead {
-    margin-bottom: 20px;
-    margin-top: 30px;
-}
-.ap-qfooter {
-    border: 1px solid #eee;
-    border-radius: 2px;
-    margin-top: 15px;
-    padding: 5px;
-}
-.accordion-content {
-    border-top: 1px solid #f5f5f5;
-    display: none;
-    padding: 20px;
+@media all and (min-width: 1150px) {
+
 }
 
-.ap-ac-accordion {    
-    border-bottom: 1px solid #eee;
-}
-.ap-ac-accordion > strong {
-    background: #fcfcfc;
-    display: block;
-    padding: 10px 15px;
-}
 
-.ap-ac-accordion > strong:hover {
-    cursor: pointer;
-}
-
-.ap-ac-accordion > strong > i {
-    background: #fff;
-    cursor: pointer;
-    font-size: 15px;
-    margin-right: 5px;
-    vertical-align: middle;
-}
-.ap-ac-accordion .ap-icon-checkbox-checked, .ap-ac-accordion.active .ap-icon-checkbox-unchecked{
-	display:none;
-}
-.ap-ac-accordion.active .ap-icon-checkbox-checked{
-	display:inline;
-}
-.anspress #wp-social-login-connect-options a {
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    border-radius: 2px;
-    display: block;
-    float: left;
-    line-height: 20px;
-    margin-right: 5px;
-    padding: 5px 15px;
-	color: #fff;
-}
-.anspress #wp-social-login-connect-options {
-    display: table;
-    margin: 0 auto;
-    padding: 10px;
-}
-#wp-social-login-connect-options a.btn-facebook {
-    background: #3b5998;    
-}
-#wp-social-login-connect-options a.btn-twitter {
-    background: #55acee;
-}
-#wp-social-login-connect-options a.btn-google {
-    background: #f96161;
-}
-#wp-social-login-connect-options a.btn-linkedin {
-    background: #007bb6;
-}
-
-#submit-flag-question {
-	float:right;
-	margin:0 10px 10px 0;
-}
-
-.ap-dtable {
-	float:left;
-	width:70%;
-	margin-top:10px;
-}
-
-.question-sidebar {
- 	float:left;
- 	margin-left:1%;
- 	width:29%;
-}
-
-#private_question:hover {
-	cursor:pointer;
-}

@@ -613,7 +613,7 @@ function ap_flag_note_modal(){
 				</div>
 				</div>
 				<div class="ap-modal-footer">
-					<button id="submit-flag-question" type="button" data-update="<?php echo $args[0]; ?>" data-args="<?php echo $args[0].'-'.$nonce; ?>" class="btn btn-primary btn-sm"><?php _e('Flag post', 'ap'); ?></button>
+					<input id="submit-flag-question" type="submit" data-update="<?php echo $args[0]; ?>" data-args="<?php echo $args[0].'-'.$nonce; ?>" class="btn btn-primary btn-sm" value="<?php _e('Flag post', 'ap'); ?>" />
 				</div>
 			</div>
 		  
