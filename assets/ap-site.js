@@ -65,7 +65,6 @@ APjs.site.prototype = {
 		this.deleteMessage();
 		this.questionSuggestion();
 		this.flushRules();
-		this.ajaxLoginForm();
 		this.loadNewTagForm();
 		this.newTag();
 		this.loginAccor();
@@ -1487,49 +1486,7 @@ APjs.site.prototype = {
 		});
 	},
 	
-	ajaxLoginForm:function(){
-		var self = this;
-		
-		/* only run the AJAX login form is the user requests it */
-		if(apoptions.ajaxlogin != false)
-		{
-			self.submitAjaxForm(
-				'#loginform',
-				function(){
-					self.showLoading(aplang.sending);
-				},
-				function(data){
-					self.hideLoading();
-					if(data['status']){
-						self.addMessage(data['message'], 'success');
-						jQuery('.ap-account-button').remove();
-						location.reload();
-					}else{
-						self.addMessage(data['message'], 'error');
-					}
-				}
-			);
-		}
-		
-		self.submitAjaxForm(
-			'#ap-signup-form',
-			function(){
-				self.showLoading(aplang.sending);
-				
-			},
-			function(data){
-				self.hideLoading();
-				if(data['status']){
-					self.addMessage(data['message'], 'success');
-					jQuery('#ap_signup_modal').toggleClass('active');
-					jQuery('#ap_login_modal').toggleClass('active');
-					jQuery('#ap-login-form').prepend('<strong>'+data['message']+'</strong>');
-				}else{
-					self.addMessage(data['message'], 'error');
-				}
-			}
-		);
-	},
+	
 	loadNewTagForm:function(){
 		var self = this;
 		jQuery('.anspress').delegate('#ap-load-new-tag-form', 'click', function(e){

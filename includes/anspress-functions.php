@@ -591,10 +591,10 @@ function ap_select_answer_btn_html($post_id){
 	$nonce = wp_create_nonce( $action );	
 	
 	if(!ap_is_answer_selected($ans->post_parent)){		
-		return '<a href="#" class="ap-btn-select ap-sicon ap-icon-checkmark ap-tip" data-button="ap-select-answer" data-args="'. $post_id.'-'. $nonce .'" title="'.__('Select this answer as best', 'ap').'"></a>';
+		return '<a href="#" class="ap-btn-select ap-sicon '.ap_icon('tick').' ap-tip" data-button="ap-select-answer" data-args="'. $post_id.'-'. $nonce .'" title="'.__('Select this answer as best', 'ap').'"></a>';
 		
 	}elseif(ap_is_answer_selected($ans->post_parent) && ap_is_best_answer($ans->ID)){
-		return '<a href="#" class="ap-btn-select ap-sicon ap-icon-checkmark selected ap-tip" data-button="ap-select-answer" data-args="'. $post_id.'-'. $nonce .'" title="'.__('Unselect this answer', 'ap').'"></a>';
+		return '<a href="#" class="ap-btn-select ap-sicon '.ap_icon('tick').' selected ap-tip" data-button="ap-select-answer" data-args="'. $post_id.'-'. $nonce .'" title="'.__('Unselect this answer', 'ap').'"></a>';
 		
 	}
 }
@@ -893,6 +893,7 @@ function ap_icon($name){
 		'upload' 		=> 'ap-icon-upload',
 		'unchecked' 	=> 'ap-icon-checkbox-unchecked',
 		'checked' 		=> 'ap-icon-checkbox-checked',
+		'tick' 			=> 'ap-icon-tick',
 	);
 	
 	$icons = apply_filters('ap_icon', $icons);
