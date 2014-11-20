@@ -797,7 +797,7 @@ function ap_base_page_main_query($parent_id = false){
 	$question_args=array(
 		'ap_query' 		=> 'main_questions',
 		'post_type' 	=> 'question',
-		'post_status' 	=> array('publish', 'moderate', 'private_question'),
+		'post_status' 	=> array('publish', 'moderate', 'private_question', 'closed'),
 		'showposts' 	=> ap_opt('question_per_page'),
 		'paged' 		=> $paged,
 	);
