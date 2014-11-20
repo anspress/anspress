@@ -16,11 +16,12 @@ class AP_Question_Meta_Box {
 	public function add_meta_box( $post_type ) {
         $post_types = array('question');     //limit meta box to certain post types
         if ( in_array( $post_type, $post_types )) {
-			add_meta_box('ap_answers_meta_box' ,__( 'Answers', 'ap' ), array( $this,'answers_meta_box_content' ), $post_type, 'normal', 'high' );
-			
-			add_meta_box('ap_flag_meta_box' ,__( 'Flag & report', 'ap' ), array( $this,'flag_meta_box_content' ), $post_type, 'normal', 'high' );
-			
+			add_meta_box('ap_answers_meta_box' ,__( 'Answers', 'ap' ), array( $this,'answers_meta_box_content' ), $post_type, 'normal', 'high' );			
 			add_meta_box('ap_question_meta_box' ,__( 'Question', 'ap' ), array( $this,'question_meta_box_content' ), $post_type, 'side', 'high' );			
+        }
+		
+		if ( in_array( $post_type, array('question', 'answer') )) {
+			add_meta_box('ap_flag_meta_box' ,__( 'Flag & report', 'ap' ), array( $this,'flag_meta_box_content' ), $post_type, 'normal', 'high' );		
         }
 	}
 
@@ -105,6 +106,9 @@ class AP_Question_Meta_Box {
 					</div>
 					<strong><?php echo $r->apmeta_value !== NULL ? $flag_note[$r->apmeta_value]['title'] : __('Flagged with custom message', 'ap'); ?></strong>
 					<span><?php echo $r->apmeta_value !== NULL ? $flag_note[$r->apmeta_value]['description'] : $r->apmeta_param; ?></span>
+					<div class="row-actions">
+						<span class="delete vim-d vim-destructive"><a id="ap-delete-flag" data-id="<?php echo $r->apmeta_id; ?>" data-nonce="<?php echo wp_create_nonce('flag_delete'.$r->apmeta_id) ?>" href="#"><?php _e('Delete', 'ap') ?></a></span>
+					</div>
 				</div>
 			</div>
 		<?php

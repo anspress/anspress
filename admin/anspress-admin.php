@@ -101,6 +101,8 @@ class anspress_admin {
 		add_action( 'wp_ajax_ap_install_rewrite_rules', array($this, 'ap_install_rewrite_rules') );
 		add_action( 'wp_ajax_ap_install_finish', array($this, 'ap_install_finish') );
 		
+		add_action( 'wp_ajax_ap_delete_flag', array($this, 'ap_delete_flag') );
+		
 		add_action( 'save_post', array($this, 'update_rewrite') );
 	}
 
@@ -842,6 +844,14 @@ public function ap_menu_metaboxes(){
 			update_option('ap_installed', true);
 		}
 		die(admin_url('/admin.php?page=anspress_options'));
+	}
+	
+	public function ap_delete_flag(){
+		$id = (int)sanitize_text_field($_POST['flag_id']);
+		if(wp_verify_nonce($_POST['nonce'], 'flag_delete'.$id) && current_user_can('manage_options')){
+			return ap_delete_meta(false, $id);
+		}
+		die();
 	}
 	
 	public function update_rewrite($post_id){

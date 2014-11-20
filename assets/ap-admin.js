@@ -76,6 +76,7 @@ APjs.admin.prototype = {
 		this.toggleAddons();
 		this.install();
 		this.badges();
+		this.deleteFlag();
 	},
 	
 	recountVotes:function(){
@@ -475,7 +476,24 @@ APjs.admin.prototype = {
 			});
 		});
 	},
-
+	deleteFlag : function(){
+		jQuery('#ap-delete-flag').click(function(e){
+			e.preventDefault();
+			jQuery.ajax({
+				type: 'POST',  
+				url: ajaxurl,  
+				data:  {
+					action	: 'ap_delete_flag',
+					flag_id : jQuery(this).data('id'),
+					nonce 	: jQuery(this).data('nonce')
+				},
+				context:this,
+				success: function(data){					
+					jQuery(this).closest('.flag-item').remove();
+				}
+			});
+		});
+	}
 }
 
 function ap_option_flag_note(){
