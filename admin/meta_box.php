@@ -81,10 +81,16 @@ class AP_Question_Meta_Box {
 		// get all flag message
 		$flag_note = ap_opt('flag_note');
 		
-		$results = ap_get_all_meta(array('apmeta_type' => 'flag', 'apmeta_actionid' => $post->ID), 10);
+		$flags = ap_get_all_meta(
+			array(
+			'where' => array(
+				'apmeta_type' => array('value' => 'flag', 'compare' => '=', 'relation' => 'AND'), 
+				'apmeta_actionid' => array('value' => $post->ID, 'compare' => '=', 'relation' => 'AND'), 
+				)
+			), 10);
 
-		if(!empty($results)){
-		foreach ($results as $r){
+		if(!empty($flags)){
+		foreach ($flags as $r){
 		?>
 			<div class="flag-item clearfix">
 				<div class="flagger">
