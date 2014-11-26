@@ -346,6 +346,9 @@ class anspress {
 			
 			if('http://ANSPRESS_USERS_PAGE_URL' == $item->url)
 				$item->url = ap_get_link_to('users');
+			
+			if('http://ANSPRESS_USER_PROFILE_URL' == $item->url)
+				$item->url = ap_user_link(get_current_user_id());
 		}
 
 		return $items;

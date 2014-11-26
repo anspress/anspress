@@ -401,6 +401,11 @@ public function ap_menu_metaboxes(){
 						<input type="radio" value="" name="menu-item[<?php echo $_nav_menu_placeholder ; ?>][menu-item-url]" class="menu-item-checkbox" data-url="ANSPRESS_USERS_PAGE_URL" data-title="<?php _e('Users', 'ap'); ?>"> <?php _e('Users', 'ap'); ?>
 					</label>
 				</li>
+				<li>
+					<label class="menu-item-title">
+						<input type="radio" value="" name="menu-item[<?php echo $_nav_menu_placeholder ; ?>][menu-item-url]" class="menu-item-checkbox" data-url="ANSPRESS_USER_PROFILE_URL" data-title="<?php _e('My profile', 'ap'); ?>"> <?php _e('My profile', 'ap'); ?>
+					</label>
+				</li>
 			</ul>
 
 			<p class="button-controls">
