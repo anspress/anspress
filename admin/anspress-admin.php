@@ -166,7 +166,7 @@ class anspress_admin {
 		if($mod_count > 0)
 			$Modcount = ' <span class="update-plugins count"><span class="plugin-count">'.number_format_i18n($mod_count).'</span></span>';
 			
-		add_menu_page( 'AnsPress', 'AnsPress'.$Totalcount, 'manage_options', 'anspress', array($this, 'dashboard_page'), ANSPRESS_URL . '/assets/answer.png', 6 );
+		add_menu_page( 'AnsPress', 'AnsPress'.$Totalcount, 'manage_options', 'anspress', array($this, 'dashboard_page'), ANSPRESS_URL . '/assets/answer.png', 6.1 );
 		
 		add_submenu_page('anspress', __( 'All Questions', 'ap' ), __( 'All Questions', 'ap' ),	'manage_options', 'edit.php?post_type=question', '');
 		
