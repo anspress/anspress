@@ -101,7 +101,9 @@ function ap_default_options(){
 		'min_tags'				=> 2,
 		'allow_anonymous'		=> false,
 		'enable_captcha_skip'	=> false,
-		'captcha_skip_rpoints'	=> 40
+		'captcha_skip_rpoints'	=> 40,
+		'only_admin_can_answer'	=> false,
+		'logged_in_can_see_ans'	=> false
 	);
 }
 

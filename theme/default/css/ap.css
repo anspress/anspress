@@ -3987,6 +3987,14 @@ a.disable:hover {
     cursor: pointer;
 }
 
+.ap-login-to-see-ans {
+    background: url("../images/answer_fade.jpg") repeat-y scroll center top rgba(0, 0, 0, 0);
+    font-weight: bold;
+    height: 85px;
+    padding-top: 30px;
+    text-align: center;
+}
+
 /*
  * Add Responsive Media Queries 
  * Design for mobile first, so we will only use the min-width @media option 

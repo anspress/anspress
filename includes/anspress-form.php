@@ -1367,7 +1367,7 @@ function ap_answer_form($question_id){
 		echo '<div class="alert alert-danger" data-dismiss="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>'. __('Problem submitting form, please recheck form', 'ap') .'</div>';
 	}
 	
-	if(ap_user_can_answer($question_id) ){
+	if((!ap_opt('only_admin_can_answer') && ap_user_can_answer($question_id)) || is_super_admin()){
 		echo '<form action="" id="answer_form" class="ap-content-inner" method="POST" data-action="ap-submit-answer">';
 		
 		echo '<div class="form-groups">';

@@ -28,7 +28,13 @@
 					</div>			
 				</div>
 				<div class="answer-content" itemprop="text">
-					<?php the_content(); ?>
+					<?php 
+						if(((ap_opt('logged_in_can_see_ans') && is_user_logged_in()) || !ap_opt('logged_in_can_see_ans') ) || is_super_admin())
+							the_content();
+						else
+							echo '<div class="ap-login-to-see-ans">'.sprintf(__('Please %s or %s to view answers', 'ap'), '<a class="ap-open-modal ap-btn" title="Click here to login if you already have an account on this site." href="#ap_login_modal">Login</a>', '<a class="ap-open-modal ap-btn" title="Click here to signup if you do not have an account on this site." href="#ap_signup_modal">Sign Up</a>').'</div>';
+							
+					?>
 				</div>			
 				<ul class="ap-user-actions clearfix">
 					<li><?php ap_edit_a_btn_html() ; ?></li>					
