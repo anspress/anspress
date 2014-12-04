@@ -1,5 +1,5 @@
 <?php
-if ( post_password_required() )
+if ( post_password_required() || (ap_opt('logged_in_can_see_comment') && !is_user_logged_in()))
 	return;
 	
 ?>

@@ -165,8 +165,10 @@ class anspress_admin {
 		$Modcount =	'';	
 		if($mod_count > 0)
 			$Modcount = ' <span class="update-plugins count"><span class="plugin-count">'.number_format_i18n($mod_count).'</span></span>';
-			
-		add_menu_page( 'AnsPress', 'AnsPress'.$Totalcount, 'manage_options', 'anspress', array($this, 'dashboard_page'), ANSPRESS_URL . '/assets/answer.png', 6.1 );
+		
+		$pos = $this->get_free_menu_position(50, 0.3);
+		
+		add_menu_page( 'AnsPress', 'AnsPress'.$Totalcount, 'manage_options', 'anspress', array($this, 'dashboard_page'), ANSPRESS_URL . '/assets/answer.png', $pos );
 		
 		add_submenu_page('anspress', __( 'All Questions', 'ap' ), __( 'All Questions', 'ap' ),	'manage_options', 'edit.php?post_type=question', '');
 		
@@ -197,6 +199,20 @@ class anspress_admin {
 		add_submenu_page('ap_install', __( 'Install', 'ap' ), __( 'Install', 'ap' ),	'manage_options', 'anspress_install', array( $this, 'display_install_page' ));
 		
 	}
+	
+	public function get_free_menu_position($start, $increment = 0.3){
+        foreach ($GLOBALS['menu'] as $key => $menu) {
+            $menus_positions[] = $key;
+        }
+ 
+        if (!in_array($start, $menus_positions)) return $start;
+ 
+        /* the position is already reserved find the closet one */
+        while (in_array($start, $menus_positions)) {
+            $start += $increment;
+        }
+        return $start;
+    }
 	
 	// highlight the proper top level menu
 	public function tax_menu_correction($parent_file) {

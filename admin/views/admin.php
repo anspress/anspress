@@ -321,6 +321,15 @@ if ( ! isset( $_REQUEST['settings-updated'] ) )
 							</fieldset>
 						</td>
 					</tr>
+					<tr valign="top">
+						<th scope="row"><?php _e('Show comments', 'ap') ?></th>
+						<td>
+							<fieldset>
+								<input type="checkbox" id="logged_in_can_see_comment" name="anspress_opt[logged_in_can_see_comment]" value="1" <?php checked( true, $settings['logged_in_can_see_comment'] ); ?> />
+								<label for="logged_in_can_see_comment"><?php _e('Only logged in can see comment', 'ap') ?></label>
+							</fieldset>
+						</td>
+					</tr>
 				</table>
 			</div>
 				

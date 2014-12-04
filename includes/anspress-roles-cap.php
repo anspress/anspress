@@ -99,6 +99,17 @@ function ap_user_can_answer($question_id){
 	return false;
 }
 
+/* Check if a user can answer on a question */
+function ap_user_can_see_answers(){
+	if(is_super_admin())
+		return true;
+	
+	if(ap_opt('logged_in_can_see_ans') && !is_user_logged_in() )
+		return false;
+
+	return true;
+}
+
 function ap_user_can_select_answer($post_id){
 	if(is_super_admin())
 		return true;

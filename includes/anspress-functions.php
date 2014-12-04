@@ -103,7 +103,8 @@ function ap_default_options(){
 		'enable_captcha_skip'	=> false,
 		'captcha_skip_rpoints'	=> 40,
 		'only_admin_can_answer'	=> false,
-		'logged_in_can_see_ans'	=> false
+		'logged_in_can_see_ans'	=> false,
+		'logged_in_can_see_comment'	=> false
 	);
 }
 
@@ -257,9 +258,11 @@ function ap_get_link_to($sub){
 }
 
 function ap_comment_btn_html(){
-	$action = get_post_type(get_the_ID()).'-'.get_the_ID();
-	$nonce = wp_create_nonce( $action );
-	echo '<a href="#ap-comment-area-'.get_the_ID().'" class="comment-btn" data-action="ap-load-comment" data-args="'. get_the_ID().'-'. $nonce .'" title="'.__('Add comment', 'ap').'">'.__('Comment', 'ap').'</a>';
+	if(ap_user_can_comment()){
+		$action = get_post_type(get_the_ID()).'-'.get_the_ID();
+		$nonce = wp_create_nonce( $action );
+		echo '<a href="#ap-comment-area-'.get_the_ID().'" class="comment-btn" data-action="ap-load-comment" data-args="'. get_the_ID().'-'. $nonce .'" title="'.__('Add comment', 'ap').'">'.__('Comment', 'ap').'</a>';
+	}
 }
 function ap_edit_q_btn_html(){
 	$post_id = get_the_ID();
@@ -438,13 +441,17 @@ function ap_answers_list($question_id, $order = 'voted'){
 	
 	// get answer sorting tab
 	echo '<div id="answers-c">';
-	ap_ans_tab(); 	
-	echo '<div id="answers">';
-		while ( $ans->have_posts() ) : $ans->the_post(); 
-			include(ap_get_theme_location('answer.php'));
-		endwhile ;
-	echo '</div>';	
-	ap_pagination('', 2, $paged, $ans);
+		if(ap_user_can_see_answers()){
+			ap_ans_tab(); 	
+			echo '<div id="answers">';
+				while ( $ans->have_posts() ) : $ans->the_post(); 
+					include(ap_get_theme_location('answer.php'));
+				endwhile ;
+			echo '</div>';	
+			ap_pagination('', 2, $paged, $ans);
+		}else{
+			echo '<div class="ap-login-to-see-ans">'.sprintf(__('Please %s or %s to view answers and comments', 'ap'), '<a class="ap-open-modal ap-btn" title="Click here to login if you already have an account on this site." href="#ap_login_modal">Login</a>', '<a class="ap-open-modal ap-btn" title="Click here to signup if you do not have an account on this site." href="#ap_signup_modal">Sign Up</a>').'</div>';
+		}
 	echo '</div>';
 	wp_reset_query();
 }

@@ -1028,10 +1028,12 @@ body.anspress .ap-container {
     list-style: none outside none;
     margin: 10px 0 0;
     padding: 0;
+	 list-style: none outside none;
 }
 
 .ap-container .ap-user-actions > li {
     float: left;
+    list-style: none outside none;
     margin: 0 10px 0 0;
 }
 
@@ -1234,8 +1236,6 @@ body.modal-open {
 }
 
 .ap-list-inner .ap-avatar {
-    display: none;
-    /* make some room for mobiles */
     margin-top: 6px;
 }
 
@@ -3988,9 +3988,11 @@ a.disable:hover {
 }
 
 .ap-login-to-see-ans {
-    background: url("../images/answer_fade.jpg") repeat-y scroll center top rgba(0, 0, 0, 0);
+    background: url("../images/answer_fade.jpg") repeat-y scroll center top / cover rgba(0, 0, 0, 0);
+    border: 1px solid #ddd;
     font-weight: bold;
     height: 85px;
+    margin-top: 20px;
     padding-top: 30px;
     text-align: center;
 }
