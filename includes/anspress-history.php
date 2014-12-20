@@ -151,25 +151,6 @@ function ap_history_name($slug, $parm = ''){
 	return $slug;	
 }
 
-function ap_history_icon($history){
-	$icons = array(
-		'new_question' 		=> 'ap-icon-question',
-		'new_answer' 		=> 'ap-icon-answer',
-		'new_comment' 		=> 'ap-icon-comment',
-		'new_comment_answer'=> 'ap-icon-comment',
-		'edit_question' 	=> 'ap-icon-pencil',
-		'edit_answer' 		=> 'ap-icon-pencil',
-		'edit_comment' 		=> 'ap-icon-pencil',
-	);
-	
-	$icons = apply_filters('ap_history_icon', $icons);
-	
-	if(isset($icons[$history]))
-		return $icons[$history];
-	
-	return false;
-}
-
 
 function ap_get_latest_history($post_id){
 	global $wpdb;
@@ -194,7 +175,7 @@ function ap_get_latest_history_html($post_id, $avatar = false, $icon = false){
 	$html = '';
 	if($history){
 		if($icon)
-			$html .= '<span class="'.ap_history_icon($history['type']).' ap-tlicon"></span>';
+			$html .= '<span class="'.ap_icon($history['type']).' ap-tlicon"></span>';
 			
 		if($avatar)
 			$html .= '<a class="ap-savatar" href="'.ap_user_link($history['user_id']).'">'.get_avatar($history['user_id'], 22).'</a>';		

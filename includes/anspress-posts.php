@@ -702,8 +702,8 @@ class anspress_posts
 		global $wpdb;
 		if(isset($query->query['ap_query']) && $query->query['ap_query'] == 'answer_sort_newest'){		
 			$sql['orderby'] = 'IF('.$wpdb->prefix.'postmeta.meta_key = "'.ANSPRESS_BEST_META.'" AND '.$wpdb->prefix.'postmeta.meta_value = 1, 0, 1), '.$sql['orderby'];
-		}elseif(isset($query->query['ap_query']) && $query->query['ap_query'] == 'answer_sort_voted'){	
-			$sql['orderby'] = 'IF(mt2.meta_value = 1, 0, 1), '.$sql['orderby'];
+		}elseif(isset($query->query['ap_query']) && $query->query['ap_query'] == 'answer_sort_voted'){
+			$sql['orderby'] = 'IF(mt1.meta_value = 1, 0, 1), '.$sql['orderby'];
 		}
 		return $sql;
 	}

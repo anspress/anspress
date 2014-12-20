@@ -271,7 +271,7 @@ function ap_edit_q_btn_html(){
 		$nonce = wp_create_nonce( $action );
 		$edit_link = add_query_arg( array('edit_q' => $post_id, 'nonce' => $nonce), get_permalink( ap_opt('base_page')) );
 		//$args = json_encode(array('action' => 'ap_load_edit_form', 'id'=> $post_id, 'nonce' => $nonce, 'type' => 'question'));
-		echo "<a href='$edit_link' data-button='ap-edit-post' title='".__('Edit this question', 'ap')."'>".__('Edit', 'ap')."</a>";
+		echo "<a href='$edit_link' data-button='ap-edit-post' title='".__('Edit this question', 'ap')."' class='apEditBtn ".ap_icon('edit')."'><span>".__('Edit', 'ap')."</span></a>";
 	}
 	return;
 }
@@ -391,7 +391,7 @@ function ap_answers_list($question_id, $order = 'voted'){
 				),
 				array(
 					'key' => ANSPRESS_BEST_META,
-					'compare' => 'NOT EXISTS'
+					//'compare' => 'NOT EXISTS'
 				)
 			)
 		);
@@ -410,7 +410,7 @@ function ap_answers_list($question_id, $order = 'voted'){
 				'relation' => 'OR',
 				array(
 					'key' => ANSPRESS_BEST_META,
-					'compare' => 'NOT EXISTS'
+					//'compare' => 'NOT EXISTS'
 				)
 			)
 		);
@@ -429,7 +429,7 @@ function ap_answers_list($question_id, $order = 'voted'){
 				'relation' => 'OR',
 				array(
 					'key' => ANSPRESS_BEST_META,
-					'compare' => 'NOT EXISTS'
+					//'compare' => 'NOT EXISTS'
 				)
 			)
 		);
@@ -451,6 +451,7 @@ function ap_answers_list($question_id, $order = 'voted'){
 			ap_pagination('', 2, $paged, $ans);
 		}else{
 			echo '<div class="ap-login-to-see-ans">'.sprintf(__('Please %s or %s to view answers and comments', 'ap'), '<a class="ap-open-modal ap-btn" title="Click here to login if you already have an account on this site." href="#ap_login_modal">Login</a>', '<a class="ap-open-modal ap-btn" title="Click here to signup if you do not have an account on this site." href="#ap_signup_modal">Sign Up</a>').'</div>';
+			echo do_action('ap_after_answer_form');
 		}
 	echo '</div>';
 	wp_reset_query();
@@ -825,7 +826,7 @@ function ap_base_page_main_query($parent_id = false){
 			'relation' => 'OR',
 			array(
 				'key' => ANSPRESS_UPDATED_META,
-				'compare' => 'NOT EXISTS',
+				//'compare' => 'NOT EXISTS',
 			),
 		);	
 		
@@ -866,7 +867,9 @@ function ap_base_page_main_query($parent_id = false){
 function ap_qa_on_post($post_id = false){
 	if(is_anspress())
 		return false;
-		
+	
+	wp_enqueue_style( 'ap-style', ap_get_theme_url('css/ap.css'), array(), AP_VERSION);
+	
 	if(!$post_id)
 		$post_id = get_the_ID();
 	
@@ -897,12 +900,19 @@ function ap_ask_btn($parent_id = false){
 
 function ap_icon($name){
 	$icons = array(
-		'follow' 		=> 'ap-icon-plus',
-		'unfollow' 		=> 'ap-icon-minus',
-		'upload' 		=> 'ap-icon-upload',
-		'unchecked' 	=> 'ap-icon-checkbox-unchecked',
-		'checked' 		=> 'ap-icon-checkbox-checked',
-		'tick' 			=> 'ap-icon-tick',
+		'follow' 			=> 'ap-icon-plus',
+		'unfollow' 			=> 'ap-icon-minus',
+		'upload' 			=> 'ap-icon-upload',
+		'unchecked' 		=> 'ap-icon-checkbox-unchecked',
+		'checked' 			=> 'ap-icon-checkbox-checked',
+		'tick' 				=> 'ap-icon-tick',
+		'new_question' 		=> 'ap-icon-question',
+		'new_answer' 		=> 'ap-icon-answer',
+		'new_comment' 		=> 'ap-icon-comment',
+		'new_comment_answer'=> 'ap-icon-comment',
+		'edit_question' 	=> 'ap-icon-pencil',
+		'edit_answer' 		=> 'ap-icon-pencil',
+		'edit_comment' 		=> 'ap-icon-pencil',
 	);
 	
 	$icons = apply_filters('ap_icon', $icons);

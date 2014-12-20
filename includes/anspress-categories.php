@@ -78,7 +78,7 @@ class AP_Categories
 
 }
 
-function ap_question_categories_html($post_id = false, $list = true){
+function ap_question_categories_html($post_id = false, $list = true, $label = false){
 	if(!ap_opt('enable_categories'))
 		return;
 	
@@ -97,6 +97,9 @@ function ap_question_categories_html($post_id = false, $list = true){
 			echo $o;
 		}else{
 			$o = 'Categories:';
+			if($label)
+				$o = $label;
+				
 			$o .= ' <span class="question-categories-list">';
 			foreach($cats as $c){
 				$o .= '<a href="'.esc_url( get_term_link($c)).'" title="'.$c->description.'">'. $c->name .'</a>';
