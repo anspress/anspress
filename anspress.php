@@ -7,17 +7,17 @@
  * @package   AnsPress
  * @author    Rahul Aryan <support@rahularyan.com>
  * @license   GPL-2.0+
- * @link      http://open-wp.com
+ * @link      http://wp3.in
  * @copyright 2014 Open-WP & Rahul Aryan
  *
  * @wordpress-plugin
  * Plugin Name:       AnsPress
- * Plugin URI:        http://open-wp.com
+ * Plugin URI:        http://wp3.in
  * Description:       The most advance community question and answer system for WordPress
  * Donate link: https://www.paypal.com/cgi-bin/webscr?business=rah12@live.com&cmd=_xclick&item_name=Donation%20to%20AnsPress%20development
- * Version:           1.4.2
+ * Version:           1.4.3
  * Author:            Rahul Aryan
- * Author URI:        http://open-wp.com
+ * Author URI:        http://wp3.in
  * Text Domain:       ap
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
@@ -30,7 +30,7 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 // define	
-define('AP_VERSION', '1.4.2');
+define('AP_VERSION', '1.4.3');
 define('AP_DB_VERSION', '10');
 if (!defined('DS'))
 	define('DS', DIRECTORY_SEPARATOR);
