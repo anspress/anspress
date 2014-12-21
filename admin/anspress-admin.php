@@ -49,7 +49,7 @@ class anspress_admin {
 		 * Call $plugin_slug from public plugin class.
 		 *
 		 */
-		$plugin = anspress::get_instance();
+		$plugin = anspress_main::get_instance();
 		$this->plugin_slug = $plugin->get_plugin_slug();
 		
 		add_action('current_screen', array($this, 'redirect_to_install_page'));

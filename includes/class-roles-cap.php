@@ -1,71 +1,157 @@
 <?php
 /**
- * AnsPress.
+ * Roles and Capabilities
  *
- * @package   AnsPress
- * @author    Rahul Aryan <admin@rahularyan.com>
- * @license   GPL-2.0+
- * @link      http://rahularyan.com
- * @copyright 2014 Rahul Aryan
- */
-class AP_Roles_Permission
-{
-    /**
-     * Instance of this class.
-     */
-    protected static $instance = null;
+ * @package     AnsPress
+ * @subpackage  Classes/Roles
+ * @copyright   Copyright (c) 2013, Rahul Aryan
+ * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @since       0.8
+*/
+class AP_Roles{
 
-    public static function get_instance()
-    {
-        
-        // If the single instance hasn't been set, set it now.
-        if (null == self::$instance) {
-            self::$instance = new self;
-        }
-        
-        return self::$instance;
-    }
-
+	public $roles_obj;
+	/**
+	 * init class
+	 *
+	 * @since 2.0
+	 */
     public function __construct()
     {
-		//add_filter( 'user_has_cap', array($this, 'author_cap_filter'), 10, 3 );
+		global $wp_roles;
+		$this->roles_obj = $wp_roles;
+		
+		if ( class_exists('WP_Roles') ) {
+			if ( ! isset( $wp_roles ) ) {
+				$this->roles_obj = new WP_Roles();
+			}
+		}
 	}
 	
-	function author_cap_filter( $allcaps, $cap, $args ) {
+	
+	
+	/**
+	 * Add roles and cap, called on plugin activation
+	 *
+	 * @since 2.0
+	 */
+	public function add_roles(){		
+	
+		add_role( 'ap_moderator', __( 'AnsPress Moderator', 'ap' ), array(
+			'read'                   => true,
+			'edit_posts'             => true,
+			'delete_posts'           => true,
+			'upload_files'           => true,
+			'delete_others_pages'    => true,
+			'delete_others_posts'    => true,
+			'delete_private_pages'   => true,
+			'delete_private_posts'   => true,
+			'delete_published_pages' => true,
+			'delete_published_posts' => true,
+			'edit_others_posts'      => true,
+			'edit_private_pages'     => true,
+			'edit_private_posts'     => true,
+			'edit_published_pages'   => true,
+			'edit_published_posts'   => true,
+			'manage_categories'      => true,
+			'manage_links'           => true,
+			'moderate_comments'      => true,
+			'publish_pages'          => true,
+			'publish_posts'          => true,
+			'read_private_pages'     => true,
+			'read_private_posts'     => true
+		) );
 
-		// Bail out if we're not asking about a post:
-		if ( 'edit_post' != $args[0] )
-			return $allcaps;
+		add_role( 'ap_participant', __( 'AnsPress Participants', 'ap' ), array() );		
+	}
+	
+	/**
+	 * Add new capabilities
+	 *
+	 * @access public
+	 * @since  2.0
+	 * @global WP_Roles $wp_roles
+	 * @return void
+	 */
+	public function add_caps() {
+		global $wp_roles;
+		
+		if ( class_exists('WP_Roles') ) {
+			if ( ! isset( $wp_roles ) ) {
+				$wp_roles = new WP_Roles();
+			}
+		}
 
-		// Bail out for users who can already edit others posts:
-		if ( $allcaps['edit_others_posts'] )
-			return $allcaps;
+		if ( is_object( $wp_roles ) ) {
+			$base_caps = array(
+				'ap_read_question'         	=> true,
+				'ap_read_answer'			=> true,
+				
+				'ap_new_question'			=> true,
+				'ap_new_answer'				=> true,
+				'ap_new_comment'			=> true,
+				
+				'ap_edit_question'			=> true,
+				'ap_edit_answer'			=> true,
+				'ap_edit_comment'			=> true,
+				
+				'ap_hide_question'			=> true,
+				'ap_hide_answer'			=> true,
+				
+				'ap_delete_question'		=> true,
+				'ap_delete_answer'			=> true,
+				'ap_delete_comment'			=> true,
+				
+				'ap_vote_up'				=> true,
+				'ap_vote_down'				=> true,
+				'ap_vote_flag'				=> true,
+				'ap_vote_close'				=> true,
+				
+				'ap_upload_cover'			=> true,
+				'ap_message'				=> true,
+				
+				'ap_new_tag'				=> true,
+			);
+			
+			$mod_caps = array(				
+				'ap_edit_others_question'	=> true,
+				'ap_edit_others_answer'		=> true,
+				'ap_edit_others_comment'	=> true,				
+				'ap_hide_others_question'	=> true,
+				'ap_hide_others_answer'		=> true,
+				'ap_hide_others_comment'	=> true,				
+				'ap_delete_others_question'	=> true,
+				'ap_delete_others_answer'	=> true,
+				'ap_delete_others_comment'	=> true,				
+				'ap_change_label'			=> true,
+				'ap_view_private'			=> true,
+			);
+			
+			$roles = array('editor', 'contributor', 'author', 'ap_participant', 'ap_moderator', 'subscriber');
+			
+			foreach ($roles as $role_name) {
+				
+				// add base cpas to all roles
+				foreach ($base_caps as $k => $grant){
+					$roles_obj->add_cap($role_name, $k ); 				
+				}
+				
+				if($role_name == 'editor' || $role_name == 'ap_moderator'){
+					foreach ($mod_caps as $k => $grant){
+						$roles_obj->add_caps($role_name, $k ); 				
+					}
+				}
+			}
+		
+		}
 
-		// Bail out for users who can't publish posts:
-		if ( !isset( $allcaps['publish_posts'] ) or !$allcaps['publish_posts'] )
-			return $allcaps;
-
-		// Load the post data:
-		$post = get_post( $args[2] );
-
-		// Bail out if the user is the post author:
-		if ( $args[1] == $post->post_author )
-			return $allcaps;
-
-		// Bail out if the post isn't pending or published:
-		if ( ( 'pending' != $post->post_status ) and ( 'publish' != $post->post_status ) )
-			return $allcaps;
-
-		// Load the author data:
-		$author = new WP_User( $post->post_author );
-
-		// Bail out if post author can edit others posts:
-		if ( $author->has_cap( 'edit_others_posts' ) )
-			return $allcaps;
-
-		$allcaps[$cap[0]] = true;
-
-		return $allcaps;
+	}
+	
+	
+	public function remove_roles(){
+		$this->roles_obj->remove_role( 'ap_participant' );
+		$this->roles_obj->remove_role( 'ap_editor' );
+		$this->roles_obj->remove_role( 'ap_moderator' );
 
 	}
 }

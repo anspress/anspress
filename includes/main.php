@@ -10,7 +10,7 @@
  */
 
 
-class anspress {
+class anspress_main {
 
 	/**
 	 * Unique identifier
