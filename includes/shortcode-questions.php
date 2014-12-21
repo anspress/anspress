@@ -9,6 +9,11 @@
  * @copyright 2014 Rahul Aryan
  */
 
+// If this file is called directly, abort.
+if ( ! defined( 'WPINC' ) ) {
+	die;
+}
+
 class AnsPress_Questions_Shortcode {
 
 	/**
@@ -16,20 +21,16 @@ class AnsPress_Questions_Shortcode {
 	 * @param  $atts
 	 * @param  string $content
 	 */
-	public function anspress_questions($atts, $content = ''){
-
-		$question_args = ap_base_page_main_query();
-		$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
-
-		$question = new WP_Query( $question_args );
-
-		echo '<div class="ap-container">';
+	public static function anspress_questions($atts, $content = ''){
+		$questions = new Question_Query( array('orderby' => 'voted') );
+		echo '<div class="anspress-container">';
 			
 			/**
-			 * Action is firered before loading AnsPress body.
+			 * Action is fired before loading AnsPress body.
 			 */
 			do_action('ap_before');
 			
+			// include theme file
 			include ap_get_theme_location('base.php');
 
 		echo '</div>';

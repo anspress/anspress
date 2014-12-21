@@ -9,6 +9,11 @@
  * @copyright 2014 Rahul Aryan
  */
 
+// If this file is called directly, abort.
+if ( ! defined( 'WPINC' ) ) {
+	die;
+}
+
 class AnsPress_Theme {
 	/**
 	 * Initial call
@@ -24,7 +29,7 @@ class AnsPress_Theme {
 
 		add_shortcode( 'anspress_questions', array( 'AnsPress_Questions_Shortcode', 'anspress_questions' ) );
 
-		add_action('ap_before', array($this, 'ap_before_html_body'))
+		add_action('ap_before', array($this, 'ap_before_html_body'));
 
 	}
 

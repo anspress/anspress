@@ -9,12 +9,12 @@
 <?php dynamic_sidebar( 'ap-top' ); ?>
 <div id="ap-lists" class="clearfix">
 	<?php ap_questions_tab(); ?>
-	<?php if ( $question->have_posts() ) : ?>
+	<?php if ( $questions->have_posts() ) : ?>
 		<div class="question-list">
 	<?php
 		
 		/* Start the Loop */
-		while ( $question->have_posts() ) : $question->the_post();
+		while ( $questions->have_posts() ) : $questions->the_post();
 			global $post;
 			include(ap_get_theme_location('content-list.php'));
 		endwhile;
