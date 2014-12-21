@@ -31,7 +31,7 @@ class AP_BasePage {
 	}
 	
 	public function __construct(){
-		add_shortcode( 'anspress', array( $this, 'ap_base_page_sc' ) );
+		//add_shortcode( 'anspress', array( $this, 'ap_base_page_sc' ) );
 	}
 
 	public function ap_base_page_sc( $atts, $content="" ) {
@@ -160,8 +160,6 @@ class AP_BasePage {
 		}elseif(is_ap_search()){
 			$question_args['s'] = sanitize_text_field(get_query_var('ap_s'));
 			$question = new WP_Query( $question_args );
-		}else{			
-			$question = new WP_Query( $question_args );		
 		}
 
 		echo '<div class="ap-container">';

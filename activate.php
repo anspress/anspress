@@ -62,20 +62,21 @@ function anspress_activate( $network_wide ) {
 				$page = get_post($new_page_id);
 				ap_opt("{$k}_page_slug", $page->post_name);
 				ap_opt("{$k}_page_id", $new_page_id);
-				trigger_error("{$k}_page_id", E_USER_ERORR);
 			}
 		}
 	}
 	
 	
 	
-	if( get_option ('ap_version') != AP_VERSION ) {
-		update_option('ap_installed', false);
-		update_option('ap_version', AP_VERSION);
+	if( ap_opt ('ap_version') != AP_VERSION ) {
+		ap_opt('ap_installed', false);
+		ap_opt('ap_version', AP_VERSION);
 	}
 	
-	// create table
-	if( get_option ('ap_db_version') != AP_DB_VERSION ) {	
+	/**
+	 * Run DB quries only if AP_DB_VERSION does not match
+	 */
+	if( ap_opt ('ap_db_version') != AP_DB_VERSION ) {	
 	
 		if ( !empty($wpdb->charset) )
 			$charset_collate = "DEFAULT CHARACTER SET ".$wpdb->charset;
@@ -105,7 +106,7 @@ function anspress_activate( $network_wide ) {
 		dbDelta ($meta_table);
 		dbDelta ($message_table);
 		
-		update_option ('ap_db_version', AP_DB_VERSION);
+		ap_opt ('ap_db_version', AP_DB_VERSION);
 	}
 
 	
@@ -115,6 +116,6 @@ function anspress_activate( $network_wide ) {
 		update_option('anspress_opt', get_option('anspress_opt') + ap_default_options());
 		
 	
-	add_option('ap_flush', true); 
+	ap_opt('ap_flush', true); 
 	flush_rewrite_rules( false );
 }

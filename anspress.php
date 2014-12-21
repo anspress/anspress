@@ -33,7 +33,7 @@ if(!class_exists('AnsPress')):
 	
 	class AnsPress{
 		
-		private $plugin_version = '1.4.3';
+		private $plugin_version = '2.0';
 		
 		private static $instance = null;
 		
@@ -42,6 +42,12 @@ if(!class_exists('AnsPress')):
 		private $plugin_url;
 		
 		private $text_domain = 'ap';
+
+		/**
+		 * Theme object
+		 * @var object
+		 */
+		public $anspress_theme;
 
 
 		/**
@@ -55,14 +61,8 @@ if(!class_exists('AnsPress')):
 				add_action( 'plugins_loaded', array( self::$instance, 'load_textdomain' ) );
 
 				self::$instance->includes();
-				/* self::$instance->roles      = new EDD_Roles();
-				self::$instance->fees       = new EDD_Fees();
-				self::$instance->api        = new EDD_API();
-				self::$instance->session    = new EDD_Session();
-				self::$instance->html       = new EDD_HTML_Elements();
-				self::$instance->emails     = new EDD_Emails();
-				self::$instance->email_tags = new EDD_Email_Template_Tags();
-				self::$instance->customers  = new EDD_DB_Customers(); */
+				self::$instance->anspress_theme      = new AnsPress_Theme();
+
 			}
 			return self::$instance;
 		}
@@ -183,7 +183,7 @@ if(!class_exists('AnsPress')):
 			
 			require_once( ANSPRESS_DIR . 'includes/points.php' );
 			require_once( ANSPRESS_DIR . 'includes/history.php' );
-			require_once( ANSPRESS_DIR . 'includes/shortcodes.php' );
+			require_once( ANSPRESS_DIR . 'includes/shortcode-questions.php' );
 			require_once( ANSPRESS_DIR . 'includes/widgets.php' );
 			require_once( ANSPRESS_DIR . 'includes/image_resize.php' );
 		}
@@ -228,9 +228,9 @@ add_action( 'plugins_loaded', array( 'Ap_Meta', 'get_instance' ) );
 add_action( 'plugins_loaded', array( 'anspress_vote', 'get_instance' ) );
 add_action( 'plugins_loaded', array( 'anspress_view', 'get_instance' ) );
 add_action( 'plugins_loaded', array( 'anspress_form', 'get_instance' ) );
-add_action( 'plugins_loaded', array( 'anspress_theme', 'get_instance' ) );
+
 add_action( 'plugins_loaded', array( 'anspress_ajax', 'get_instance' ) );
-add_action( 'plugins_loaded', array( 'AP_BasePage', 'get_instance' ) );
+
 add_action( 'plugins_loaded', array( 'AP_Participents', 'get_instance' ) );
 add_action( 'plugins_loaded', array( 'AP_labels', 'get_instance' ) );
 add_action( 'plugins_loaded', array( 'AP_User', 'get_instance' ) );
@@ -238,7 +238,7 @@ add_action( 'plugins_loaded', array( 'AP_Ranks', 'get_instance' ) );
 add_action( 'plugins_loaded', array( 'AP_Badges', 'get_instance' ) );
 add_action( 'plugins_loaded', array( 'AP_Points', 'get_instance' ) );
 add_action( 'plugins_loaded', array( 'AP_History', 'get_instance' ) );
-add_action( 'plugins_loaded', array( 'AP_ShortCodes', 'get_instance' ) );
+
 add_action( 'plugins_loaded', array( 'AP_Widgets', 'get_instance' ) );
 
 /*----------------------------------------------------------------------------*

@@ -68,7 +68,8 @@ class anspress_posts
 		add_action( 'save_post', array($this, 'ans_parent_post'), 0, 2 );	
 		add_action( 'save_post', array($this, 'action_on_new_post'), 0, 2 );	
 		add_action('wp_ajax_search_questions', array($this, 'suggest_questions'));
-		add_filter( 'post_type_link', array($this, 'custom_question_link'), 10, 2 );		
+
+		//add_filter( 'post_type_link', array($this, 'custom_question_link'), 10, 2 );		
 		add_filter('get_pagenum_link', array($this, 'custom_page_link'));
 		
 		add_action( 'posts_clauses', array($this, 'answer_sort_newest'), 10, 2 );
@@ -680,6 +681,9 @@ class anspress_posts
 	}
 
 	public function custom_question_link( $url, $post ) {
+        /**
+         * TODO: Remove this filter if not needed anymore
+         */
 		if ( 'question' == get_post_type( $post ) ) {
 			if(get_option('permalink_structure')){
 				$question_slug = ap_opt('question_prefix');

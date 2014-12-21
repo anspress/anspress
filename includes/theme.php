@@ -1,6 +1,6 @@
 <?php
 /**
- * AnsPress.
+ * AnsPress theme and template handling.
  *
  * @package   AnsPress
  * @author    Rahul Aryan <admin@rahularyan.com>
@@ -9,50 +9,42 @@
  * @copyright 2014 Rahul Aryan
  */
 
-class anspress_theme {
-
+class AnsPress_Theme {
 	/**
-	 * Instance of this class.
+	 * Initial call
 	 */
-	protected static $instance = null;
-	/**
-	 * Return an instance of this class.
-	 *
-	 * @return    object    A single instance of this class.
-	 */
-	public static function get_instance() {
-
-		// If the single instance hasn't been set, set it now.
-		if ( null == self::$instance ) {
-			self::$instance = new self;
-		}
-
-		return self::$instance;
-	}
-	
 	public function __construct(){
-		//add_filter( 'template_include', array($this, 'template_files'), 1 );	
+
+		//add_filter( 'template_include', array($this, 'template_files'), 1 );
 		add_filter( 'comments_template', array($this, 'comment_template') );
 		add_action( 'after_setup_theme', array($this, 'includes') );
-		//add_filter( 'comments_open', array($this, 'disable_comment_form'), 10 , 2 );
-
 		add_filter('wp_title', array($this, 'ap_title'), 100, 2);
 		add_filter( 'the_title', array($this, 'the_title'), 100, 2 );
-		//add_filter( 'nav_menu_link_attributes', array($this, 'menu'), 10, 3 );
 		add_filter( 'wp_head', array($this, 'feed_link'), 9);
 
+		add_shortcode( 'anspress_questions', array( 'AnsPress_Questions_Shortcode', 'anspress_questions' ) );
+
+		add_action('ap_before', array($this, 'ap_before_html_body'))
+
 	}
-	
-	// include required theme files
+
+	/**
+	 * AnsPress theme function as like WordPress theme function
+	 * @return void
+	 */
 	public function includes(){
 		require_once ap_get_theme_location('functions.php');	
 	}
 	
-	/* Template for single question */		
+	/**
+	 * Handle all template redirect
+	 * @param  string
+	 * @return string
+	 */
 	public function template_files( $template_path ) {
 		global $post;
-		
-		if($post){
+
+		/*if($post){
 			if ( 
 			'question' == get_post_type() 			|| 
 			is_tax( 'question_category' ) 			|| 
@@ -79,7 +71,7 @@ class anspress_theme {
 
 		if( $post && ap_opt('ask_page') == $post->ID ){
 			if(!is_user_logged_in()) auth_redirect();
-		}
+		}*/
 
 
 		return $template_path;
@@ -138,6 +130,10 @@ class anspress_theme {
 		if(is_anspress()){
 			echo '<link href="'. esc_url( home_url( '/feed/question-feed' ) ) .'" title="'.__('Question >> Feed', 'ap').'" type="application/rss+xml" rel="alternate">';
 		}
+	}
+
+	public function ap_before_html_body(){
+		dynamic_sidebar( 'ap-before' );
 	}
 	
 

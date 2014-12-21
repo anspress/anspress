@@ -72,9 +72,9 @@ class anspress_main {
 	public function flush_rules(){
 
 		// Check the option we set on activation.
-		if (get_option('ap_flush')) {
+		if (ap_opt('ap_flush')) {
 			flush_rewrite_rules( );
-			delete_option('ap_flush');
+			ap_opt('ap_flush', 'false');
 		}
 	}
 	
@@ -155,7 +155,7 @@ class anspress_main {
 		} else {
 			self::single_deactivate();
 		}
-		delete_option('ap_flush'); 
+		ap_opt('ap_flush', 'false'); 
 		flush_rewrite_rules();
 	}
 

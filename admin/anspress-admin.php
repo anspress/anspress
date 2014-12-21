@@ -360,7 +360,7 @@ class anspress_admin {
 			$page = get_page(ap_opt('base_page'));
 			$options['base_page_slug'] = $page->post_name;
 			update_option( 'anspress_opt', $options);
-			update_option('ap_flush', true);
+			ap_opt('ap_flush', true);
 		}
 	}
 	
@@ -817,7 +817,7 @@ public function ap_menu_metaboxes(){
 
 		/* Check current admin page. */
 		if(isset($_GET['escape_install']) && wp_verify_nonce($_GET['nonce'], 'anspress_install')){
-			update_option('ap_installed', true);
+			ap_opt('ap_installed', true);
 		}elseif($screen->id != 'admin_page_anspress_install' && !get_option('ap_installed')){
 			wp_redirect(admin_url('/admin.php?page=anspress_install'));
 			exit;
@@ -862,7 +862,7 @@ public function ap_menu_metaboxes(){
 	}
 	public function ap_install_finish(){
 		if(wp_verify_nonce($_POST['args'], 'anspress_install') && current_user_can('manage_options')){
-			update_option('ap_installed', true);
+			ap_opt('ap_installed', true);
 		}
 		die(admin_url('/admin.php?page=anspress_options'));
 	}
@@ -879,7 +879,7 @@ public function ap_menu_metaboxes(){
 		if(ap_opt('base_page') == $post_id){
 			$post = get_post($post_id);
 			ap_opt('base_page_slug', $post->post_name);
-			update_option('ap_flush', true);
+			ap_opt('ap_flush', true);
 		}
 	}
 
