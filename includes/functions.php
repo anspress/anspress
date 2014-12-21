@@ -23,10 +23,16 @@ function ap_opt($key = false, $value = false){
 		wp_cache_set('ap_opt', $settings, 'options');
 	}	
 	if($value){
-		$settings[$key] = $value;
+
+		$settings[$key] = $value;		
 		update_option( 'anspress_opt', $settings);
+
+		// clear cache if option updated
+		wp_cache_delete( 'ap_opt', 'options' );
+
 		return;
-	}	
+	}
+
 	if(!$key)
 		return $settings;
 		
@@ -38,12 +44,9 @@ function ap_opt($key = false, $value = false){
 	return false;
 }
 
+
 function ap_default_options(){
-	$ap_options = get_option( 'anspress_opt');
-	$page = get_page($ap_options['base_page']);
 	return array(
-		'base_page' 			=> get_option('ap_base_page_created'),
-		'base_page_slug' 		=> $page->post_name,
 		'custom_signup_url'		=> '',
 		'custom_login_url'		=> '',
 		'show_login_signup' 	=> true,

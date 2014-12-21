@@ -5,7 +5,7 @@
  * @package     AnsPress
  * @copyright   Copyright (c) 2013, Rahul Aryan
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
- * @since       2.0
+ * @since       0.1
 */
 
 // Exit if accessed directly
@@ -15,10 +15,10 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  * Register hooks that are fired when the plugin is activated.
  */
 		
+
 /**
  * Create base pages, add roles, add caps and create tables
- *
- * @since 2.0
+ * @param $network_wide
  */
 function anspress_activate( $network_wide ) {
 
@@ -28,27 +28,46 @@ function anspress_activate( $network_wide ) {
 	
 	
 	global $wpdb;
-
-	// create base page
-	if(!get_option('ap_base_page_created') || !get_post(get_option('ap_base_page_created'))){
-		global $user_ID;
-		$post = array();
-		$post['post_type']    = 'page';
-		$post['post_content'] = '[anspress]';
-		$post['post_author']  = null;
-		$post['post_status']  = 'publish';
-		$post['post_title']   = '[anspress]';
-		$postid = wp_insert_post ($post);
+	
+	$page_to_create = array(
+		'questions' 			=> __('Questions', 'ap'), 
+		'question' 				=> __('Question', 'ap'),			
+		'question_categories' 	=> __('Categories', 'ap'),			
+		'question_tags' 		=> __('Tags', 'ap'),			
+		'user' 					=> __('User', 'ap'),			
+	);
+	
+	foreach($page_to_create as $k => $page_title){
+		// create page
 		
-		if($postid){
-			update_option('ap_base_page_created', $postid);	
-			$post = get_post($postid);
-			ap_opt('base_page_slug', $post->post_name);
-			ap_opt('base_page', $postid);
+		// check if page already exists
+		$page_id = ap_opt("{$k}_page_id");
+		
+		$post = get_post($page_id);
+		
+		if(!$post){
+			
+			$args['post_type']    = "page";
+			$args['post_content'] = "[anspress_{$k}]";
+			$args['post_status']  = "publish";
+			$args['post_title']   = $page_title;
+			
+			if($k != 'questions')
+				$args['post_parent']   = ap_opt('questions_page_id');
+			
+			// now create post
+			$new_page_id = wp_insert_post ($args);
+		
+			if($new_page_id){
+				$page = get_post($new_page_id);
+				ap_opt("{$k}_page_slug", $page->post_name);
+				ap_opt("{$k}_page_id", $new_page_id);
+				trigger_error("{$k}_page_id", E_USER_ERORR);
+			}
 		}
-		
-		
 	}
+	
+	
 	
 	if( get_option ('ap_version') != AP_VERSION ) {
 		update_option('ap_installed', false);

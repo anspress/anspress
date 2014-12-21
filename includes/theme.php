@@ -104,6 +104,11 @@ class anspress_theme {
 		return $open;
 	}
 	
+	/**
+	 * TODO: remove this as we are using specefic pages 
+	 * @param unknown $title
+	 * @return void
+	 */
 	public function ap_title( $title) {
 		if(is_anspress()){
 			$new_title = ap_page_title();

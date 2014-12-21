@@ -8,6 +8,8 @@
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       0.8
 */
+
+
 class AP_Roles{
 
 	public $roles_obj;

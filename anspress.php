@@ -241,8 +241,6 @@ add_action( 'plugins_loaded', array( 'AP_History', 'get_instance' ) );
 add_action( 'plugins_loaded', array( 'AP_ShortCodes', 'get_instance' ) );
 add_action( 'plugins_loaded', array( 'AP_Widgets', 'get_instance' ) );
 
-$roless = new AP_Roles;
-$roless->remove_roles();
 /*----------------------------------------------------------------------------*
  * Dashboard and Administrative Functionality
  *----------------------------------------------------------------------------*/
@@ -257,5 +255,3 @@ if ( is_admin() ) {
 	add_action( 'plugins_loaded', array( 'anspress_admin', 'get_instance' ) );
 
 }
-
-
