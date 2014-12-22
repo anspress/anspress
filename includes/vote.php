@@ -35,7 +35,7 @@ class anspress_vote
      */
     public function __construct()
     {
-		add_action( 'the_post', array($this, 'ap_append_vote_count') );
+		//add_action( 'the_post', array($this, 'ap_append_vote_count') );
 		add_action( 'wp_ajax_ap_vote_on_post', array($this, 'ap_vote_on_post') ); 
 		add_action( 'wp_ajax_nopriv_ap_vote_on_post', array($this, 'ap_vote_nopriv') ); 
 		add_action( 'wp_ajax_ap_add_to_favorite', array($this, 'ap_add_to_favorite') ); 

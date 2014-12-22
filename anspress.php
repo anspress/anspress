@@ -8,7 +8,7 @@
  * @author    Rahul Aryan <support@rahularyan.com>
  * @license   GPL-2.0+
  * @link      http://wp3.in
- * @copyright 2014 Open-WP & Rahul Aryan
+ * @copyright 2014 WP3.in & Rahul Aryan
  *
  * @wordpress-plugin
  * Plugin Name:       AnsPress
@@ -180,8 +180,7 @@ if(!class_exists('AnsPress')):
 			require_once( ANSPRESS_DIR . 'includes/labels.php' );
 			require_once( ANSPRESS_DIR . 'includes/user.php' );
 			require_once( ANSPRESS_DIR . 'includes/ranks.php' );
-			require_once( ANSPRESS_DIR . 'includes/badges.php' );
-			
+			require_once( ANSPRESS_DIR . 'includes/badges.php' );			
 			require_once( ANSPRESS_DIR . 'includes/points.php' );
 			require_once( ANSPRESS_DIR . 'includes/history.php' );
 			require_once( ANSPRESS_DIR . 'includes/shortcode-questions.php' );

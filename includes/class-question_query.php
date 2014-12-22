@@ -68,12 +68,14 @@ class Question_Query extends WP_Query {
 
         $args = $this->args;
 
+        add_action( 'the_post', array($this, 'append_post_var') );
         /**
          * Initialize parent class
          */
         parent::__construct( $args );
 
         remove_action('ap_pre_get_questions', $this);
+        remove_action('the_post', $this);
 
     }
 
@@ -124,6 +126,48 @@ class Question_Query extends WP_Query {
             //TOOD: Add more orderby like most viewed, and user order like 'answered by user_id', 'asked_by_user_id'
         }
          
+    }
+
+    /**
+     * Append meta as a post variable.
+     * @param  object $post Wordpress post object
+     * @return void
+     */
+    public function append_post_var( $post ){
+        if(is_object($post) && ($post->post_type == 'question' || $post->post_type == 'answer')) {
+
+            $post->net_vote     = ap_net_vote_meta($post->ID);
+            $post->selected     = get_post_meta($post->ID, ANSPRESS_SELECTED_META, true);
+            $post->closed       = get_post_meta($post->ID, ANSPRESS_CLOSE_META, true);
+            
+
+            $votes = ap_post_votes($post->ID);              
+            // net vote
+            $post->voted_up     = $votes['voted_up'];
+            $post->voted_down   = $votes['voted_down'];
+            $post->net_vote     = $votes['voted_up'] - $votes['voted_down'];
+            
+            //closed count
+            $post->closed       = get_post_meta($post->ID, ANSPRESS_CLOSE_META, true);
+            $post->selected     = get_post_meta($post->ID, ANSPRESS_SELECTED_META, true);
+            
+            //flagged count
+            $post->flag = get_post_meta($post->ID, ANSPRESS_FLAG_META, true);
+            
+            //favorite count
+            $post->favorite     = get_post_meta($post->ID, ANSPRESS_FAV_META, true);
+            
+            $post->voted_closed = ap_is_user_voted_closed();                    
+            $post->flagged = ap_is_user_flagged();
+
+            //if current logged in user voted
+            if(is_user_logged_in()){
+                $post->favorited    = ap_is_user_favorite($post->ID);
+                $userid = get_current_user_id();
+                $post->user_voted_up = ap_is_user_voted($post->ID, 'vote_up', $userid); 
+                $post->user_voted_down = ap_is_user_voted($post->ID, 'vote_down', $userid); 
+            }
+        }
     }
 
 }
