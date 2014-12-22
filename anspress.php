@@ -58,14 +58,6 @@ if(!class_exists('AnsPress')):
 		public $anspress_cpt;
 		
 		/**
-		 * Taxonomy object
-		 * @var object
-		 * @since 2.0
-		 */
-		public $anspress_category;
-
-
-		/**
 		 * Initializes the plugin by setting localization, hooks, filters, and administrative functions.
 		 */
 		public static function instance() {
@@ -78,7 +70,6 @@ if(!class_exists('AnsPress')):
 				self::$instance->includes();
 				self::$instance->anspress_theme      		= new AnsPress_Theme();
 				self::$instance->anspress_cpt      			= new AnsPress_PostTypes();
-				self::$instance->anspress_category      	= new AnsPress_Category();
 
 			}
 			return self::$instance;
@@ -182,9 +173,6 @@ if(!class_exists('AnsPress')):
 			require_once( ANSPRESS_DIR . 'includes/class-question_query.php' );
 			require_once( ANSPRESS_DIR . 'includes/post_types.php' );
 
-			//TODO: move category as an extension
-			require_once( ANSPRESS_DIR . 'includes/category.php' );
-
 			require_once( ANSPRESS_DIR . 'includes/events.php' );
 			require_once( ANSPRESS_DIR . 'includes/posts.php' );
 			
@@ -239,7 +227,7 @@ anspress();
 register_activation_hook( __FILE__, 'anspress_activate'  );
 
 register_deactivation_hook( __FILE__, array( 'anspress', 'deactivate' ) );
-add_action( 'plugins_loaded', array( 'AP_Addons', 'get_instance' ) );
+
 add_action( 'plugins_loaded', array( 'anspress_main', 'get_instance' ) );
 
 add_action( 'plugins_loaded', array( 'anspress_posts', 'get_instance' ) );
