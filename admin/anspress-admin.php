@@ -22,15 +22,13 @@ require_once('functions.php');
 class anspress_admin {
 
 	/**
-	 * Instance of this class.
-	 
+	 * Instance of this class.	 
 	 * @var      object
 	 */
 	protected static $instance = null;
 
 	/**
-	 * Slug of the plugin screen.
-	 
+	 * Slug of the plugin screen.	 
 	 * @var      string
 	 */
 	protected $plugin_screen_hook_suffix = null;
@@ -180,12 +178,16 @@ class anspress_admin {
 		
 		add_submenu_page('anspress', __( 'Flagged question & answer', 'ap' ), __( 'Flagged', 'ap' ).$Flagcount,	'manage_options', 'anspress_flagged', array( $this, 'display_flagged_page' ));
 		
-		add_submenu_page('anspress', 'Questions Category', 'Category', 'manage_options', 'edit-tags.php?taxonomy=question_category');
+		
 		
 		add_submenu_page('anspress', 'Questions Tags', 'Tags', 'manage_options', 'edit-tags.php?taxonomy=question_tags');
 		
 		add_submenu_page('anspress', 'Questions Label', 'Label', 'manage_options', 'edit-tags.php?taxonomy=question_label');
-		
+
+		/**
+		 * ACTION: ap_admin_menu
+		 * @since unknown
+		 */
 		do_action('ap_admin_menu');
 		
 		add_submenu_page('anspress', __( 'Points', 'ap' ), __( 'User Points', 'ap' ),	'manage_options', 'ap_points', array( $this, 'display_points_page' ));

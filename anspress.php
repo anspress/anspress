@@ -46,8 +46,23 @@ if(!class_exists('AnsPress')):
 		/**
 		 * Theme object
 		 * @var object
+		 * @since 2.0
 		 */
 		public $anspress_theme;
+
+		/**
+		 * Post type object
+		 * @var object
+		 * @since 2.0
+		 */
+		public $anspress_cpt;
+		
+		/**
+		 * Taxonomy object
+		 * @var object
+		 * @since 2.0
+		 */
+		public $anspress_category;
 
 
 		/**
@@ -61,7 +76,9 @@ if(!class_exists('AnsPress')):
 				add_action( 'plugins_loaded', array( self::$instance, 'load_textdomain' ) );
 
 				self::$instance->includes();
-				self::$instance->anspress_theme      = new AnsPress_Theme();
+				self::$instance->anspress_theme      		= new AnsPress_Theme();
+				self::$instance->anspress_cpt      			= new AnsPress_PostTypes();
+				self::$instance->anspress_category      	= new AnsPress_Category();
 
 			}
 			return self::$instance;
@@ -163,10 +180,13 @@ if(!class_exists('AnsPress')):
 			require_once( ANSPRESS_DIR . 'includes/functions.php' );
 			require_once( ANSPRESS_DIR . 'includes/class-roles-cap.php' );
 			require_once( ANSPRESS_DIR . 'includes/class-question_query.php' );
+			require_once( ANSPRESS_DIR . 'includes/post_types.php' );
+			require_once( ANSPRESS_DIR . 'includes/category.php' );
+
 			require_once( ANSPRESS_DIR . 'includes/events.php' );
 			require_once( ANSPRESS_DIR . 'includes/addons.php' );
 			require_once( ANSPRESS_DIR . 'includes/posts.php' );
-			require_once( ANSPRESS_DIR . 'includes/categories.php' );
+			
 			require_once( ANSPRESS_DIR . 'includes/tags.php' );
 			require_once( ANSPRESS_DIR . 'includes/meta.php' );
 			require_once( ANSPRESS_DIR . 'includes/vote.php' );
@@ -222,7 +242,7 @@ add_action( 'plugins_loaded', array( 'AP_Addons', 'get_instance' ) );
 add_action( 'plugins_loaded', array( 'anspress_main', 'get_instance' ) );
 
 add_action( 'plugins_loaded', array( 'anspress_posts', 'get_instance' ) );
-add_action( 'plugins_loaded', array( 'AP_Categories', 'get_instance' ) );
+
 add_action( 'plugins_loaded', array( 'AP_Tags', 'get_instance' ) );
 add_action( 'plugins_loaded', array( 'Ap_Meta', 'get_instance' ) );
 add_action( 'plugins_loaded', array( 'anspress_vote', 'get_instance' ) );

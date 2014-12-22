@@ -51,6 +51,7 @@ function anspress_activate( $network_wide ) {
 			$args['post_content'] = "[anspress_{$k}]";
 			$args['post_status']  = "publish";
 			$args['post_title']   = $page_title;
+			$args['comment_status']   = 'closed';
 			
 			if($k != 'questions')
 				$args['post_parent']   = ap_opt('questions_page_id');

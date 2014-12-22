@@ -28,6 +28,7 @@ if ( ! isset( $_REQUEST['settings-updated'] ) )
 		  <li><a href="#ap-question" data-toggle="tab"><?php _e('Question', 'ap'); ?></a></li>
 		  <li><a href="#ap-answers" data-toggle="tab"><?php _e('Answers', 'ap'); ?></a></li>
 		  <li><a href="#ap-theme" data-toggle="tab"><?php _e('Theme', 'ap'); ?></a></li>
+		  <!-- TODO: Move category setting to category.php -->
 		  <li><a href="#ap-categories" data-toggle="tab"><?php _e('Categories', 'ap'); ?></a></li>
 		  <li><a href="#ap-tags" data-toggle="tab"><?php _e('Tags', 'ap'); ?></a></li>
 		  <li><a href="#ap-user" data-toggle="tab"><?php _e('User', 'ap'); ?></a></li>

@@ -35,34 +35,41 @@ class anspress_posts
      */
     public function __construct()
     {
-		//Register Custom Post types and taxonomy
-        add_action('init', array($this, 'create_cpt_tax'), 0);
 		
-		// custom columns in CPT question
+		// TODO: move to admin
+        // custom columns in CPT question
         add_filter('manage_edit-question_columns', array( $this, 'cpt_question_columns'));
 		
+        // TODO: move to admin
 		// custom columns in CPT answer
         add_filter('manage_edit-answer_columns', array($this,'cpt_answer_columns'));
 		
+        // TODO: move to admin
 		// custom columns data
         add_action('manage_posts_custom_column', array($this, 'custom_columns_value'));
 		
+        // TODO: move to admin
 		// Sortable question CPT columns
         add_filter('manage_edit-question_sortable_columns', array($this, 'admin_column_sort_flag'));
 		
+        // TODO: move to admin
 		// Sortable answer CPT columns
         add_filter('manage_edit-answer_sortable_columns', array($this, 'admin_column_sort_flag'));
 		
+        // TODO: move to admin
 		// Sortable flag columns
         add_action('pre_get_posts', array( $this, 'admin_column_sort_flag_by'));
 		
+        // TODO: move to admin
         add_action('manage_answer_posts_custom_column', array($this, 'answer_row_actions'), 10, 2);
 		
+        // TODO: move to admin
         add_filter('wp_insert_post_data', array($this, 'post_data_check'), 99);
+        // TODO: move to admin
         add_filter('post_updated_messages', array($this,'post_custom_message'));
 		
 		//add_action('post_type_link',array($this, 'ans_post_type_link'),10,2);
-		
+		// TODO: move to admin
 		add_action( 'admin_init', array( $this, 'init_actions' ) ); 
 		add_action( 'init', array($this, 'ap_make_post_parent_public') );
 		add_action( 'save_post', array($this, 'ans_parent_post'), 0, 2 );	
@@ -74,6 +81,7 @@ class anspress_posts
 		
 		add_action( 'posts_clauses', array($this, 'answer_sort_newest'), 10, 2 );
 		add_action( 'posts_clauses', array($this, 'user_favorites'), 10, 2 );
+        // TODO: move to admin
 		add_action('admin_footer-post.php', array($this, 'append_post_status_list'));
 		
 		add_action( 'posts_clauses', array($this, 'main_question_query'), 10, 2 );
@@ -89,108 +97,9 @@ class anspress_posts
     // Register Custom Post Type    
     public function create_cpt_tax()
     {
-		// get the base page object
-        $base_page_slug = ap_opt('base_page_slug');
 		
-		// get the base slug, if base page was set to home page then dont use any slug
-        $slug = (ap_opt('base_page') !== get_option('page_on_front')) ? $base_page_slug.'/' : '';
         
-		// question CPT labels
-        $labels = array(
-            'name' 				=> _x('Questions', 'Post Type General Name', 'ap'),
-            'singular_name' 	=> _x('Question', 'Post Type Singular Name', 'ap'),
-            'menu_name' 		=> __('Questions', 'ap'),
-            'parent_item_colon' => __('Parent Question:', 'ap'),
-            'all_items' 		=> __('All Questions', 'ap'),
-            'view_item' 		=> __('View Question', 'ap'),
-            'add_new_item' 		=> __('Add New Question', 'ap'),
-            'add_new' 			=> __('New Question', 'ap'),
-            'edit_item' 		=> __('Edit Question', 'ap'),
-            'update_item' 		=> __('Update Question', 'ap'),
-            'search_items' 		=> __('Search question', 'ap'),
-            'not_found' 		=> __('No question found', 'ap'),
-            'not_found_in_trash' => __('No questions found in Trash', 'ap')
-        );
 		
-		// question CPT arguments
-        $args   = array(
-            'label' => __('question', 'ap'),
-            'description' => __('Question', 'ap'),
-            'labels' => $labels,
-            'supports' => array(
-                'title',
-                'editor',
-                'author',
-                'comments',
-                'trackbacks',
-                'revisions',
-                'custom-fields'
-            ),
-            'hierarchical' => false,
-            'public' => true,
-            'show_ui' => true,
-            'show_in_menu' => false,
-            'show_in_nav_menus' => false,
-            'show_in_admin_bar' => true,
-            'menu_icon' => ANSPRESS_URL . '/assets/question.png',
-			//'show_in_menu' => 'anspress',
-            'can_export' => true,
-            'has_archive' => true,
-            'exclude_from_search' => false,
-            'publicly_queryable' => true,
-            'query_var' => 'apq',
-            'capability_type' => 'post',
-            'rewrite' => false
-        );
-		// register CPT question
-        register_post_type('question', $args);
-        
-		// Answer CPT labels
-        $ans_labels = array(
-            'name' 			=> _x('Answers', 'Post Type General Name', 'ap'),
-            'singular_name' => _x('Answer', 'Post Type Singular Name', 'ap'),
-            'menu_name' => __('Answers', 'ap'),
-            'parent_item_colon' => __('Parent Answer:', 'ap'),
-            'all_items' => __('All Answers', 'ap'),
-            'view_item' => __('View Answer', 'ap'),
-            'add_new_item' => __('Add New Answer', 'ap'),
-            'add_new' => __('New answer', 'ap'),
-            'edit_item' => __('Edit answer', 'ap'),
-            'update_item' => __('Update answer', 'ap'),
-            'search_items' => __('Search answer', 'ap'),
-            'not_found' => __('No answer found', 'ap'),
-            'not_found_in_trash' => __('No answer found in Trash', 'ap')
-        );
-		
-		// Answers CPT arguments
-        $ans_args   = array(
-            'label' => __('answer', 'ap'),
-            'description' => __('Answer', 'ap'),
-            'labels' => $ans_labels,
-            'supports' => array(
-                'editor',
-                'author',
-                'comments',
-                'revisions',
-                'custom-fields'
-            ),
-            'hierarchical' => false,
-            'public' => true,
-            'show_ui' => true,
-            'show_in_menu' => false,
-            'show_in_nav_menus' => false,
-            'show_in_admin_bar' => false,
-            'menu_icon' => ANSPRESS_URL . '/assets/answer.png',
-			//'show_in_menu' => 'anspress',
-            'can_export' => true,
-            'has_archive' => true,
-            'exclude_from_search' => false,
-            'publicly_queryable' => true,
-            'capability_type' => 'post',
-			'rewrite' => false
-        );
-		// register CPT answer
-        register_post_type('answer', $ans_args);
 		
 		register_post_status( 'closed', array(
 			  'label'                     => __( 'Closed', 'ap' ),
