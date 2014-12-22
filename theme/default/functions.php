@@ -10,10 +10,6 @@
  * @author    Rahul Aryan <rah12@live.com>
  */
  
-//include pagination function
-require_once( ap_get_theme_location('pagination.php') );
-
-
 add_action('wp_enqueue_scripts', 'init_scripts_front');
 function init_scripts_front(){
 	if(is_anspress()){

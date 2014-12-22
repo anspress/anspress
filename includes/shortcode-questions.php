@@ -22,7 +22,9 @@ class AnsPress_Questions_Shortcode {
 	 * @param  string $content
 	 */
 	public static function anspress_questions($atts, $content = ''){
-		$questions = new Question_Query( array('orderby' => 'voted') );
+		global $questions;
+		
+		$questions = new Question_Query();
 		echo '<div class="anspress-container">';
 			
 			/**

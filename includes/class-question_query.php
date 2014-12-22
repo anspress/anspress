@@ -33,15 +33,30 @@ class Question_Query extends WP_Query {
      */
     public function __construct( $args = array() ) {
 
+        global $questions;
+
         $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
+
+        if(isset($args['post_parent']))
+            $post_parent = $args['post_parent'];
+        else
+            $post_parent = (get_query_var('parent')) ? get_query_var('parent') : false;
+
+        if(isset($args['orderby']))
+            $orderby = $args['orderby'];
+        else
+            $orderby = (get_query_var('orderby')) ? get_query_var('orderby') : 'active';
 
         $defaults = array(
            // 'ap_query'      => 'main_questions',
             'post_status'   => array('publish', 'moderate', 'private_question', 'closed'),
             'showposts'     => 20,
-            'orderby'       => 'active',
+            'orderby'       => $orderby,
             'paged'         => $paged,
         );
+
+        if($post_parent)
+            $this->args['post_parent'] = $post_parent;
 
         $this->args = wp_parse_args( $args, $defaults );        
 
@@ -49,7 +64,7 @@ class Question_Query extends WP_Query {
 
         do_action('ap_pre_get_questions', $this);
 
-        $this->args['post_type'] = 'question';
+        $this->args['post_type'] = 'question';        
 
         $args = $this->args;
 
@@ -105,6 +120,8 @@ class Question_Query extends WP_Query {
                     ),
                 );
             break;
+
+            //TOOD: Add more orderby like most viewed, and user order like 'answered by user_id', 'asked_by_user_id'
         }
          
     }

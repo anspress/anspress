@@ -479,3 +479,31 @@ function is_private_question($question_id = false){
 	
 	return false;
 }
+
+/**
+ * Anspress pagination
+ * Uses paginate_links
+ * @param  mixed $current Current paged, if not set then get_query_var('paged') is used
+ * @param  mixed $total   Total number of pages, if not set then global $questions is used
+ * @param  string  $format 
+ * @return string
+ */
+function ap_pagination( $current = false, $total = false, $format = '?paged=%#%'){
+
+	$big = 999999999; // need an unlikely integer
+
+	if(!$current)
+		$current = max( 1, get_query_var('paged') );
+
+	if(!$total){
+		global $questions;
+		$total = $questions->max_num_pages;
+	}
+
+	echo paginate_links( array(
+		'base' 		=> str_replace( $big, '%#%', esc_url( get_pagenum_link( $big ) ) ),
+		'format' 	=> $format,
+		'current' 	=> $current,
+		'total' 	=> $total
+	) );
+}
