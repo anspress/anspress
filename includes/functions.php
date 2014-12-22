@@ -572,12 +572,16 @@ function ap_selected_answer($post_id = false){
 	return get_post_meta($post_id, ANSPRESS_SELECTED_META, true);
 }
 
-
-function ap_is_answer_selected($post_id = false){
-	if(!$post_id)
-		$post_id = get_the_ID();
+/**
+ * Check if answer is selected for given question
+ * @param  int $question_id
+ * @return boolean
+ */
+function ap_is_answer_selected($question_id = false){
+	if(!$question_id)
+		$question_id = get_the_ID();
 		
-	$meta = get_post_meta($post_id, ANSPRESS_SELECTED_META, true);
+	$meta = get_post_meta($question_id, ANSPRESS_SELECTED_META, true);
 
 	if(!$meta)
 		return false;

@@ -35,6 +35,7 @@ class AnsPress_Questions_Shortcode {
 			// include theme file
 			include ap_get_theme_location('base.php');
 
+			wp_reset_postdata();
 		echo '</div>';
 
 	}

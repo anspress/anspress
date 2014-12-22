@@ -1,41 +1,24 @@
 <?php
 /**
- * AnsPress.
+ * Filter for post query
  *
  * @package   AnsPress
  * @author    Rahul Aryan <admin@rahularyan.com>
  * @license   GPL-2.0+
  * @link      http://rahularyan.com
  * @copyright 2014 Rahul Aryan
+ * @since 2.0
  */
 
-class anspress_posts
+class AnsPress_Query_Filter
 {
+
     /**
-     * Instance of this class.
-     */
-    protected static $instance = null;
-    /**
-     * Return an instance of this class.
-     * @return    object    A single instance of this class.
-     */
-    public static function get_instance()
-    {
-        
-        // If the single instance hasn't been set, set it now.
-        if (null == self::$instance) {
-            self::$instance = new self;
-        }
-        
-        return self::$instance;
-    }
-    /**
-     * Initialize the plugin by setting localization and loading public scripts
-     * and styles.
+     * Initialize the class
      */
     public function __construct()
     {
-		
+
 		// TODO: move to admin
         // custom columns in CPT question
         add_filter('manage_edit-question_columns', array( $this, 'cpt_question_columns'));
@@ -87,6 +70,8 @@ class anspress_posts
 		add_action( 'posts_clauses', array($this, 'main_question_query'), 10, 2 );
 
     }
+
+
 	public function init_actions(){
 		add_meta_box( 'ap_ans_parent_q','Parent Question', array($this, 'ans_parent_q_metabox'),'answer','side', 'high' );
 		add_action('wp_trash_post', array($this, 'trash_post_action'));
@@ -99,7 +84,7 @@ class anspress_posts
     {
 		
         
-		
+		//TODO: Move this to a new file
 		
 		register_post_status( 'closed', array(
 			  'label'                     => __( 'Closed', 'ap' ),

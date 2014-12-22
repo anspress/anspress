@@ -1,0 +1,42 @@
+//
+// Question lists style
+// --------------------------------------------------
+
+.list-question{
+	padding: 0;
+	margin: 0 0 20px;
+
+	.ap-count > a{
+		border: 1px solid #eee;
+		display: block;
+		float: left;	    
+		height: 65px;
+		margin-right: 10px;
+		text-align: center;
+		width: 65px;
+		text-decoration: none;
+		.border-radius(2px);
+
+		span{
+			font-size: @count-font-size;
+			font-weight: 600;
+			display: block;
+			margin-top: 6px;
+		}
+	}
+
+	.ap-count > a:last-child{
+		margin-right: 0;
+	}
+
+	.ap-list-inner{
+		.ap-avatar{
+			margin-right:15px;
+		}
+
+		.question-title{
+			margin-top: 0;
+		}
+	}
+}
+

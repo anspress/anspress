@@ -35,13 +35,20 @@ if(!class_exists('AnsPress')):
 		
 		private $plugin_version = '2.0';
 		
-		private static $instance = null;
-		
 		private $plugin_path;
 		
 		private $plugin_url;
 		
 		private $text_domain = 'ap';
+
+		static $instance = null;
+
+
+		/**
+		 * Filter object
+		 * @var object
+		 */
+		public $anspress_query_filter;
 
 		/**
 		 * Theme object
@@ -56,6 +63,7 @@ if(!class_exists('AnsPress')):
 		 * @since 2.0
 		 */
 		public $anspress_cpt;
+
 		
 		/**
 		 * Initializes the plugin by setting localization, hooks, filters, and administrative functions.
@@ -68,6 +76,7 @@ if(!class_exists('AnsPress')):
 				add_action( 'plugins_loaded', array( self::$instance, 'load_textdomain' ) );
 
 				self::$instance->includes();
+				self::$instance->anspress_query_filter      = new AnsPress_Query_Filter();
 				self::$instance->anspress_theme      		= new AnsPress_Theme();
 				self::$instance->anspress_cpt      			= new AnsPress_PostTypes();
 
@@ -174,7 +183,7 @@ if(!class_exists('AnsPress')):
 			require_once( ANSPRESS_DIR . 'includes/post_types.php' );
 
 			require_once( ANSPRESS_DIR . 'includes/events.php' );
-			require_once( ANSPRESS_DIR . 'includes/posts.php' );
+			require_once( ANSPRESS_DIR . 'includes/query_filter.php' );
 			
 			require_once( ANSPRESS_DIR . 'includes/tags.php' );
 			require_once( ANSPRESS_DIR . 'includes/meta.php' );
@@ -229,8 +238,6 @@ register_activation_hook( __FILE__, 'anspress_activate'  );
 register_deactivation_hook( __FILE__, array( 'anspress', 'deactivate' ) );
 
 add_action( 'plugins_loaded', array( 'anspress_main', 'get_instance' ) );
-
-add_action( 'plugins_loaded', array( 'anspress_posts', 'get_instance' ) );
 
 add_action( 'plugins_loaded', array( 'AP_Tags', 'get_instance' ) );
 add_action( 'plugins_loaded', array( 'Ap_Meta', 'get_instance' ) );

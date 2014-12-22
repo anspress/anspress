@@ -35,7 +35,7 @@ class anspress_vote
      */
     public function __construct()
     {
-		//add_action( 'the_post', array($this, 'ap_append_vote_count') );
+		add_action( 'the_post', array($this, 'ap_append_vote_count') );
 		add_action( 'wp_ajax_ap_vote_on_post', array($this, 'ap_vote_on_post') ); 
 		add_action( 'wp_ajax_nopriv_ap_vote_on_post', array($this, 'ap_vote_nopriv') ); 
 		add_action( 'wp_ajax_ap_add_to_favorite', array($this, 'ap_add_to_favorite') ); 
@@ -52,44 +52,23 @@ class anspress_vote
 		add_action( 'wp_ajax_ap_submit_flag_note', array($this, 'ap_submit_flag_note') ); 
     }
 
-		
+	/**
+	 * Append variable to post Object
+	 * @param  Object $post
+	 * @return object
+	 * @since unknown
+	 */
 	function ap_append_vote_count($post){
-		if(!is_question() && ($post->post_type == 'question' || $post->post_type == 'answer')){
-			$post->net_vote = ap_net_vote_meta($post->ID);
-			$post->selected 	= get_post_meta($post->ID, ANSPRESS_SELECTED_META, true);
-			$post->closed 		= get_post_meta($post->ID, ANSPRESS_CLOSE_META, true);
-		}elseif($post->post_type == 'question' || $post->post_type == 'answer'){
-			
-			//voted up count
-			if(is_object($post)){
-				$votes = ap_post_votes($post->ID);				
-				// net vote
-				$post->voted_up 	= $votes['voted_up'];
-				$post->voted_down 	= $votes['voted_down'];
-				$post->net_vote 	= $votes['voted_up'] - $votes['voted_down'];
-				
-				//closed count
-				$post->closed 		= get_post_meta($post->ID, ANSPRESS_CLOSE_META, true);
-				$post->selected 	= get_post_meta($post->ID, ANSPRESS_SELECTED_META, true);
-				
-				//flagged count
-				$post->flag = get_post_meta($post->ID, ANSPRESS_FLAG_META, true);
-				
-				//favorite count
-				$post->favorite 	= get_post_meta($post->ID, ANSPRESS_FAV_META, true);
-				
-				$post->voted_closed = ap_is_user_voted_closed();					
-				$post->flagged = ap_is_user_flagged();
+		if($post->post_type == 'question' || $post->post_type == 'answer'){
+             if(is_object($post)){
 
-				//if current logged in user voted
-				if(is_user_logged_in()){
-					$post->favorited 	= ap_is_user_favorite($post->ID);
-					$userid = get_current_user_id();
-					$post->user_voted_up = ap_is_user_voted($post->ID, 'vote_up', $userid);	
-					$post->user_voted_down = ap_is_user_voted($post->ID, 'vote_down', $userid);	
-				}
-			}
-		}
+                $votes = ap_post_votes($post->ID);              
+                // net vote
+                $post->voted_up     = $votes['voted_up'];
+                $post->voted_down   = $votes['voted_down'];
+                $post->net_vote     = $votes['voted_up'] - $votes['voted_down'];
+            }
+        }
 	}
 
 	

@@ -9,10 +9,15 @@
  * @license    http://opensource.org/licenses/gpl-license.php  GNU Public License
  * @author    Rahul Aryan <rah12@live.com>
  */
- 
+
+
+/**
+ * Enqueue scripts
+ *
+ */
 add_action('wp_enqueue_scripts', 'init_scripts_front');
 function init_scripts_front(){
-	if(is_anspress()){
+	//if(is_anspress()){
 		wp_enqueue_script( 'jquery');				
 		wp_enqueue_script( 'tagsinput', ap_get_theme_url('js/bootstrap-tagsinput.min.js'), 'jquery', AP_VERSION);
 		wp_enqueue_script( 'jquery-form', array('jquery'), false, true );
@@ -25,7 +30,7 @@ function init_scripts_front(){
 		wp_enqueue_style( 'tagsinput', ap_get_theme_url('css/bootstrap-tagsinput.css'), array(), AP_VERSION);
 		wp_enqueue_style( 'tooltipster', ap_get_theme_url('css/tooltipster.css'), array(), AP_VERSION);
 		//wp_enqueue_style( 'perfect-scrollbar', ap_get_theme_url('css/perfect-scrollbar.min.css'), array(), AP_VERSION);
-		wp_enqueue_style( 'ap-style', ap_get_theme_url('css/ap.css'), array(), AP_VERSION);		
+		wp_enqueue_style( 'ap-style', ap_get_theme_url('css/main.min.css'), array(), AP_VERSION);	
 		
 		wp_enqueue_style( 'ap-fonts', ap_get_theme_url('fonts/style.css'), array(), AP_VERSION);
 		
@@ -78,7 +83,7 @@ function init_scripts_front(){
 		wp_localize_script( 'ap-site-js', 'apoptions', array(
 			'ajaxlogin' => ap_opt('ajax_login'),
 		));
-	}
+	//}
 }
 
 

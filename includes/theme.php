@@ -20,7 +20,7 @@ class AnsPress_Theme {
 	 */
 	public function __construct(){
 
-		//add_filter( 'template_include', array($this, 'template_files'), 1 );
+		add_filter( 'the_content', array($this, 'question_single_the_content') );
 		add_filter( 'comments_template', array($this, 'comment_template') );
 		add_action( 'after_setup_theme', array($this, 'includes') );
 		add_filter('wp_title', array($this, 'ap_title'), 100, 2);
@@ -30,6 +30,7 @@ class AnsPress_Theme {
 		add_shortcode( 'anspress_questions', array( 'AnsPress_Questions_Shortcode', 'anspress_questions' ) );
 
 		add_action('ap_before', array($this, 'ap_before_html_body'));
+
 
 	}
 
@@ -42,44 +43,28 @@ class AnsPress_Theme {
 	}
 	
 	/**
-	 * Handle all template redirect
-	 * @param  string
+	 * Append single question page content to the_content() for compatibility purpose.
+	 * @param  string $content
 	 * @return string
+	 * @since 2.0
 	 */
-	public function template_files( $template_path ) {
-		global $post;
+	public function question_single_the_content( $content ) {
+		// check if is question
+		If(is_singular('question')){
+			/**
+			 * This will prevent infinite loop
+			 */
+			remove_filter( current_filter(), array($this, 'question_single_the_content') );
 
-		/*if($post){
-			if ( 
-			'question' == get_post_type() 			|| 
-			is_tax( 'question_category' ) 			|| 
-			ap_opt('base_page') == $post->ID 		|| 
-			ap_opt('ask_page') == $post->ID 		|| 
-			ap_opt('edit_page') == $post->ID 		|| 
-			ap_opt('a_edit_page') == $post->ID 		|| 
-			ap_opt('categories_page') == $post->ID 	|| 
-			ap_opt('tags_page') == $post->ID 		|| 
-			ap_opt('users_page') == $post->ID) {
-				$template_path = ap_get_theme_location('index.php');				
-			}
-		}
+			//check if user have permission to see the question
+			if(ap_user_can_view_question())
+				include ap_get_theme_location('question.php');
+			else
+				echo '<div class="ap-pending-notice ap-icon-clock">'.__('You do not have permission to view this question.', 'ap').'</div>';
+		}else{
+			return $content;
+		}	
 		
-		if ( is_tax( 'question_category' ) || is_tax( 'question_tags' ))
-			$template_path = ap_get_theme_location('index.php');
-		
-		if ( 'answer' == get_post_type() ) {
-			if ( is_single() ) {
-				global $post; 				
-				wp_redirect( get_permalink($post->post_parent) ); exit;							
-			}
-		}		
-
-		if( $post && ap_opt('ask_page') == $post->ID ){
-			if(!is_user_logged_in()) auth_redirect();
-		}*/
-
-
-		return $template_path;
 	}
 	
 
@@ -506,4 +491,39 @@ function ap_pagination( $current = false, $total = false, $format = '?paged=%#%'
 		'current' 	=> $current,
 		'total' 	=> $total
 	) );
+}
+
+/**
+ * Question meta to display 
+ * @param  int $question_id
+ * @return string
+ * @since 2.0
+ */
+function ap_display_question_metas($question_id =  false){
+	if (!$question_id) {
+		$question_id = get_the_ID();
+	}
+
+	$metas = array();
+
+	if(ap_is_answer_selected($question_id))
+		$metas['selected'] = __('answer accepted', 'ap');
+	
+	$metas['history'] = ap_get_latest_history_html($question_id);
+
+
+	/**
+	 * FILTER: ap_display_question_meta
+	 * Used to filter question display meta
+	 */
+	$metas = apply_filters('ap_display_question_metas', $metas, $question_id );
+
+	$output = '';
+	if (!empty($metas) && is_array($metas)) {
+		foreach ($metas as $meta => $display) {
+			$output .= "<li class='ap-display-meta-item {$meta}'>{$display}</li>";
+		}
+	}
+
+	return $output;
 }

@@ -8,26 +8,10 @@
  * @author    Rahul Aryan <rah12@live.com>
  */
 
-while ( $question->have_posts() ) : $question->the_post();
-if(ap_user_can_view_question()){
 ?>
 <div id="ap-single" class="clearfix" itemtype="http://schema.org/Question" itemscope="">
-	<header class="ap-qhead clearfix">		
-		<div class="ap-qtitle-meta">
-			<a class="ap-btn ap-ask-btn-head pull-right" href="<?php echo ap_get_link_to('ask') ?>"><?php _e('Ask Question'); ?></a>
-			<?php if (!ap_opt("double_titles")):?>
-				<h1 class="entry-title" itemprop="name">
-					<a href="<?php the_permalink() ?>" itemprop="url"><?php the_title(); ?></a>
-				</h1>
-			<?php else:?>
-				<h1 style="display:none" class="entry-title" itemprop="name">
-					<?php the_title(); ?>
-				</h1>
-			<?php endif;?>
-			<div class="ap-qtopmeta">
-				<?php ap_favorite_html(); ?>		
-			</div>
-		</div>
+	<header class="ap-qhead clearfix">
+		<?php ap_favorite_html(); ?>
 	</header>
 	<div class="ap-question-lr">		
 		<div class="ap-question-left">
@@ -110,7 +94,7 @@ if(ap_user_can_view_question()){
 				
 				<?php 
 					if(ap_have_ans(get_the_ID())){ 
-						ap_answers_list(get_the_ID(), 'voted');
+						//ap_answers_list(get_the_ID(), 'voted');
 					} 
 				?>
 					
@@ -165,12 +149,3 @@ if(ap_user_can_view_question()){
 		</div>
 	</div>
 </div>
-
-<?php 
-
-}else{
-	echo '<div class="ap-pending-notice ap-icon-clock">'.__('You do not have permission to view this question.').'</div>';
-}
-endwhile ;
-
-?>
