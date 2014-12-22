@@ -138,9 +138,6 @@ td.column-vote_note strong, td.column-post_title > a {
     overflow: hidden;
     padding: 5px 15px;
 }
-.tab-content .tab-pane{
-	display:none;
-}
 
 .tab-content .tab-pane.active{
 	display:block;
