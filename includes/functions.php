@@ -835,27 +835,3 @@ function ap_ask_btn($parent_id = false){
 	echo '<a class="ap-btn ap-ask-btn-head pull-right" href="'.ap_get_link_to($args).'">'.__('Ask Question').'</a>';
 }
 
-function ap_icon($name){
-	$icons = array(
-		'follow' 			=> 'ap-icon-plus',
-		'unfollow' 			=> 'ap-icon-minus',
-		'upload' 			=> 'ap-icon-upload',
-		'unchecked' 		=> 'ap-icon-checkbox-unchecked',
-		'checked' 			=> 'ap-icon-checkbox-checked',
-		'tick' 				=> 'ap-icon-tick',
-		'new_question' 		=> 'ap-icon-question',
-		'new_answer' 		=> 'ap-icon-answer',
-		'new_comment' 		=> 'ap-icon-comment',
-		'new_comment_answer'=> 'ap-icon-comment',
-		'edit_question' 	=> 'ap-icon-pencil',
-		'edit_answer' 		=> 'ap-icon-pencil',
-		'edit_comment' 		=> 'ap-icon-pencil',
-	);
-	
-	$icons = apply_filters('ap_icon', $icons);
-	
-	if(isset($icons[$name]))
-		return $icons[$name];
-		
-	return '';
-}

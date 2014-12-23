@@ -122,13 +122,7 @@ if(!class_exists('AnsPress')):
 			if (!defined('ANSPRESS_THEME_URL'))	
 				define('ANSPRESS_THEME_URL', plugin_dir_url( __FILE__ ).'theme');
 			
-			if (!defined('ANSPRESS_CAT_TAX'))		
-				define('ANSPRESS_CAT_TAX', 'question_category');
-			
-			if (!defined('ANSPRESS_TAG_TAX'))	
-				define('ANSPRESS_TAG_TAX', 'question_tags');
-
-			if (!defined('ANSPRESS_VOTE_META'))
+				if (!defined('ANSPRESS_VOTE_META'))
 				define('ANSPRESS_VOTE_META', '_ap_vote');
 			
 			if (!defined('ANSPRESS_FAV_META'))	
@@ -185,7 +179,6 @@ if(!class_exists('AnsPress')):
 			require_once( ANSPRESS_DIR . 'includes/events.php' );
 			require_once( ANSPRESS_DIR . 'includes/query_filter.php' );
 			
-			require_once( ANSPRESS_DIR . 'includes/tags.php' );
 			require_once( ANSPRESS_DIR . 'includes/meta.php' );
 			require_once( ANSPRESS_DIR . 'includes/vote.php' );
 			require_once( ANSPRESS_DIR . 'includes/view.php' );
@@ -239,7 +232,6 @@ register_deactivation_hook( __FILE__, array( 'anspress', 'deactivate' ) );
 
 add_action( 'plugins_loaded', array( 'anspress_main', 'get_instance' ) );
 
-add_action( 'plugins_loaded', array( 'AP_Tags', 'get_instance' ) );
 add_action( 'plugins_loaded', array( 'Ap_Meta', 'get_instance' ) );
 add_action( 'plugins_loaded', array( 'anspress_vote', 'get_instance' ) );
 add_action( 'plugins_loaded', array( 'anspress_view', 'get_instance' ) );

@@ -129,8 +129,8 @@ function ap_get_post_history($post_id){
 	return ap_get_all_meta(false, 20, $query);
 }
 
-function ap_history_name($slug, $parm = ''){
-	$names = array(
+function ap_history_title($slug, $parm = ''){
+	$title = array(
 		'new_question' 		=> __('asked', 'ap'),
 		'new_answer' 		=> __('answered', 'ap'),
 		'new_comment' 		=> __('commented', 'ap'),
@@ -143,10 +143,10 @@ function ap_history_name($slug, $parm = ''){
 		'added_label' 		=> sprintf(__('added the %s', 'ap'), $parm),
 		'removed_label' 	=> sprintf(__('removed %s', 'ap'), $parm),
 	);
-	$names = apply_filters('ap_history_name', $names);
+	$title = apply_filters('ap_history_name', $title);
 	
-	if(isset($names[$slug]))
-		return $names[$slug];
+	if(isset($title[$slug]))
+		return $title[$slug];
 	
 	return $slug;	
 }
@@ -169,6 +169,26 @@ function ap_get_latest_history($post_id){
 	return $result;
 }
 
+/**
+ * Get last active time
+ * @param  init $post_id
+ * @return string
+ * @since 2.0
+ */
+function ap_last_active_time($post_id = false, $html = true){
+	$history = ap_get_latest_history($post_id);
+
+	$o = '';
+	
+	if(!$html)
+		return $history['date'];
+
+	$title = ap_history_title($history['type']);
+	$title = esc_html('<span class="ap-post-history">'.sprintf( __('%s %s about <time class="updated" datetime="'. mysql2date('c', $history['date']) .'">%s</time> ago', 'ap'), ap_user_display_name($history['user_id']), $title, ap_human_time( mysql2date('U', $history['date'])) ).'</span>');
+
+	return sprintf( __('Active %s ago', 'ap'), '<a class="ap-tip" href="#" title="'. $title .'"><time class="updated" datetime="'. mysql2date('c', $history['date']) .'">'.ap_human_time( mysql2date('U', $history['date'])) ).'</time></a>';
+}
+
 function ap_get_latest_history_html($post_id, $avatar = false, $icon = false){
 	$history = ap_get_latest_history($post_id);
 
@@ -180,7 +200,8 @@ function ap_get_latest_history_html($post_id, $avatar = false, $icon = false){
 		if($avatar)
 			$html .= '<a class="ap-savatar" href="'.ap_user_link($history['user_id']).'">'.get_avatar($history['user_id'], 22).'</a>';		
 		
-		if($history['type'] == 'added_label' || $history['type'] == 'removed_label'){
+		/*TODOD: LABEL EXTENSION - Move this to labels addon*/
+		/*if($history['type'] == 'added_label' || $history['type'] == 'removed_label'){
 			$label = '';
 			$terms = get_terms( 'question_label', array( 'include' => explode(',', $history['value'])) );
 			
@@ -190,9 +211,9 @@ function ap_get_latest_history_html($post_id, $avatar = false, $icon = false){
 				}
 			$label .= ' '._n('label', 'labels', count($terms), 'ap');
 			$title = ap_history_name($history['type'], $label); 
-		}else{
-			$title = ap_history_name($history['type']);
-		}
+		}*/
+			$title = ap_history_title($history['type']);
+		
 		
 		$html .= '<span class="ap-post-history">'.sprintf( __('%s %s about <time class="updated" datetime="'. mysql2date('c', $history['date']) .'">%s</time> ago', 'ap'), ap_user_display_name($history['user_id']), $title, ap_human_time( mysql2date('U', $history['date'])) ).'</span>';
 

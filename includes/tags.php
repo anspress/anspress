@@ -35,32 +35,11 @@ class AP_Tags
      */
     public function __construct()
     {
-		//Register question tags
-        add_action('init', array($this, 'register_question_tags'), 1);
-		add_filter('term_link', array($this, 'custom_tags_link'), 10, 3);
+		
     }
 	
 	public function register_question_tags(){
-		if(ap_opt('enable_tags')){
-			$tags_labels       = array(
-				'name' => __('Question Tags', 'ap'),
-				'singular_name' => _x('Tag', 'ap'),
-				'all_items' => __('All Tags', 'ap'),
-				'add_new_item' => _x('Add New Tag', 'ap'),
-				'edit_item' => __('Edit Tag', 'ap'),
-				'new_item' => __('New Tag', 'ap'),
-				'view_item' => __('View Tag', 'ap'),
-				'search_items' => __('Search Tag', 'ap'),
-				'not_found' => __('Nothing Found', 'ap'),
-				'not_found_in_trash' => __('Nothing found in Trash', 'ap'),
-				'parent_item_colon' => ''
-			);
-			register_taxonomy('question_tags', array('question'), array(
-				'hierarchical' => false,
-				'labels' => $tags_labels,
-				'rewrite' => false
-			));
-		}
+		
 	}
 	
 	public function custom_tags_link($url, $term, $taxonomy){

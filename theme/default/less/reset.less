@@ -20,14 +20,32 @@
 	margin: 0;
 
 	li{
-		list-style: none;
-		padding: 0;
-		margin: 0;
+		float: left;
+	    list-style: none outside none;
+	    margin: 0 15px 0 0;
+	    padding: 0;
 
+	    &:last-child{
+	    	margin-right:0;
+	    }
 		ul{
 			list-style: none;
 			padding: 0;
 			margin: 0;
 		}
 	}
+}
+
+.anspress-container{
+	font-family: @font-family;
+}
+
+.ap-avatar{
+	img{
+		.border-radius(@avatar-border-radius);
+	}
+}
+
+.ap-initially-hidden{
+	display: none;
 }

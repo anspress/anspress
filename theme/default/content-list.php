@@ -10,6 +10,7 @@ if(!is_private_question() || (is_private_question() && ap_user_can_view_private_
 			<span><?php _e( 'Private Question', 'ap' ); ?></span>
 		</div>
 	<?php endif; ?>
+	<!-- TODO: ADD OPTION - add option to toggle each count -->
 	<div class="ap-count ap-pull-right">	
 		<a class="ap-answer-count ap-tip" href="<?php echo ap_answers_link(); ?>" title="<?php _e('Total answers', 'ap'); ?>">
 			<span><?php echo ap_count_ans_meta(); ?></span>
@@ -27,6 +28,7 @@ if(!is_private_question() || (is_private_question() && ap_user_can_view_private_
 	<div class="ap-list-inner">
 		<div class="ap-avatar ap-pull-left">
 			<a href="<?php echo ap_user_link(); ?>">
+				<!-- TODO: OPTION - avatar size in question list -->
 				<?php echo get_avatar( get_the_author_meta( 'ID' ), 45 ); ?>
 			</a>
 		</div>								

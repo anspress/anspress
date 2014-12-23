@@ -99,7 +99,7 @@
 
 jQuery(document).ready(function(){
 
-	jQuery('.ap-tip').tooltipster({contentAsHTML: true});
+	jQuery('.ap-tip').tooltipster({contentAsHTML: true, animation: 'fade', theme: 'tooltipster-default ap-tip-style', interactive: true});
 	jQuery('#ap-conversation-scroll').scrollTop(0);
 	//jQuery('#ap-conversation-scroll').perfectScrollbar();
 	

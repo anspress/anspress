@@ -21,6 +21,8 @@ class AnsPress_Theme {
 	public function __construct(){
 
 		add_filter( 'the_content', array($this, 'question_single_the_content') );
+		add_filter( 'post_class', array($this, 'question_post_class') );
+
 		add_filter( 'comments_template', array($this, 'comment_template') );
 		add_action( 'after_setup_theme', array($this, 'includes') );
 		add_filter('wp_title', array($this, 'ap_title'), 100, 2);
@@ -65,6 +67,25 @@ class AnsPress_Theme {
 			return $content;
 		}	
 		
+	}
+
+	/**
+	 * Add answer-seleted class in post_class
+	 * @param  array $classes
+	 * @return array
+	 * @since 2.0
+	 **/
+	public function question_post_class($classes)
+	{
+		global $post;
+		if($post->post_type == 'question'){
+			if(ap_is_answer_selected($post->post_id))
+				$classes[] = 'answer-selected';
+			
+			$classes[] = 'answer-count-'.ap_count_ans_meta();
+		}
+		
+		return $classes;
 	}
 	
 
@@ -507,9 +528,9 @@ function ap_display_question_metas($question_id =  false){
 	$metas = array();
 
 	if(ap_is_answer_selected($question_id))
-		$metas['selected'] = __('answer accepted', 'ap');
+		$metas['selected'] = '<span class="ap-tip" title="'.__('answer accepted', 'ap').'">'.ap_icon('tick', true).'</span>';
 	
-	$metas['history'] = ap_get_latest_history_html($question_id);
+	$metas['history'] = ap_last_active_time($question_id);
 
 
 	/**
@@ -526,4 +547,42 @@ function ap_display_question_metas($question_id =  false){
 	}
 
 	return $output;
+}
+
+/**
+ * Icons for anspress
+ * @param  string $name
+ * @param  boolean $html
+ * @return string
+ * @since 2.0
+ */
+function ap_icon($name, $html = false){
+	$icons = array(
+		'follow' 			=> 'icon-plus',
+		'unfollow' 			=> 'icon-minus',
+		'upload' 			=> 'icon-upload',
+		'unchecked' 		=> 'icon-checkbox-unchecked',
+		'checked' 			=> 'icon-checkbox-checked',
+		'tick' 				=> 'icon-tick',
+		'new_question' 		=> 'icon-question',
+		'new_answer' 		=> 'icon-answer',
+		'new_comment' 		=> 'icon-comment',
+		'new_comment_answer'=> 'icon-comment',
+		'edit_question' 	=> 'icon-pencil',
+		'edit_answer' 		=> 'icon-pencil',
+		'edit_comment' 		=> 'icon-pencil',
+	);
+	
+	$icons = apply_filters('ap_icon', $icons);
+	$icon = '';
+
+	if(isset($icons[$name]))
+		$icon = $icons[$name];
+
+	if($html)
+		return '<i class="'.$icon.'"></i> ';
+
+	return $icon;
+		
+	return '';
 }
