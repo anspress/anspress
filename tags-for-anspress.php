@@ -213,7 +213,7 @@ class Tags_For_AnsPress
      */
     public function ap_display_question_metas($metas, $question_id)
     {   
-        if(ap_opt('enable_tags') &&  ap_question_have_tag($question_id))
+        if(ap_opt('enable_tags') &&  ap_question_have_tags($question_id))
             $metas['tags'] = ap_question_tags_html(array('label' => __('Tagged ', 'tags_for_anspress')));
 
         return $metas;
@@ -257,13 +257,10 @@ function ap_question_tags_html($args = array()){
     );
 
     $args = wp_parse_args( $args, $defaults );
-
-    if(!$question_id)
-        $question_id = get_the_ID();
         
-    $tags = get_the_terms( $question_id, 'question_tags' );
+    $tags = get_the_terms($args['question_id'], 'question_tag' );
     
-    if($tags){
+    if($tags && count($tags) >0){
         $o = '';
         if($args['list']){
             $o = '<ul class="'.$args['class'].'">';
@@ -276,7 +273,7 @@ function ap_question_tags_html($args = array()){
             $o = $args['label'];
             $o .= '<'.$args['tag'].' class="'.$args['class'].'">';
             foreach($tags as $t){
-                $o .= '<a href="'.esc_url( get_term_link($t)).'" title="'.$t->description.'">'. $t->name .'</a><span>,</span>';
+                $o .= '<a href="'.esc_url( get_term_link($t)).'" title="'.$t->description.'">'. $t->name .'</a> ';
             }
             $o .= '</'.$args['tag'].'>';
         }
@@ -294,14 +291,14 @@ function ap_tag_details(){
     if(!ap_opt('enable_tags'))
         return;
         
-    $var = get_query_var('question_tags');
+    $var = get_query_var('question_tag');
 
-    $tag = get_term_by('slug', $var, 'question_tags');
+    $tag = get_term_by('slug', $var, 'question_tag');
     echo '<div class="clearfix">';
     echo '<h3><a href="'.get_category_link( $tag ).'">'. $tag->name .'</a></h3>';
     echo '<div class="ap-taxo-meta">';
     echo '<span class="count">'. $tag->count .' '.__('Questions', 'ap').'</span>';  
-    echo '<a class="aicon-rss feed-link" href="' . get_term_feed_link($tag->term_id, 'question_category') . '" title="Subscribe to '. $tag->name .'" rel="nofollow"></a>';
+    echo '<a class="aicon-rss feed-link" href="' . get_term_feed_link($tag->term_id, 'question_tag') . '" title="Subscribe to '. $tag->name .'" rel="nofollow"></a>';
     echo '</div>';
     echo '</div>';
     
@@ -309,13 +306,13 @@ function ap_tag_details(){
 }
 
 function ap_question_have_tags($question_id = false){
-    if(!$post_id)
-        $post_id = get_the_ID();
+    if(!$question_id)
+        $question_id = get_the_ID();
         
     if(!ap_opt('enable_tags'))
         return false;
     
-    $tags = wp_get_post_terms( $post_id, 'question_tags');
+    $tags = wp_get_post_terms( $question_id, 'question_tag');
     
     if(!empty($tags))
         return true;
