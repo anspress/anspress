@@ -77,6 +77,7 @@ class Tags_For_AnsPress
         add_action('ap_option_navigation', array($this, 'option_navigation' ));
         add_action('ap_option_fields', array($this, 'option_fields' ));
         add_action('ap_display_question_metas', array($this, 'ap_display_question_metas' ), 10, 2);
+        add_action('ap_after_post_content', array($this, 'ap_after_post_content' ));
 
     }
 
@@ -240,6 +241,18 @@ class Tags_For_AnsPress
         return $metas;
     }
 
+    /**
+     * Hook tags after post
+     * @param   object $post 
+     * @return  string    
+     * @since   1.0   
+     */
+    public function ap_after_post_content($post)
+    {
+        if(ap_question_have_tags())
+            echo '<div class="ap-post-tags">'. ap_question_tags_html(array('label' => '' )) .'</div>';
+    }
+
 }
 
 /**
@@ -277,7 +290,12 @@ function ap_question_tags_html($args = array()){
         'echo'          => false
     );
 
-    $args = wp_parse_args( $args, $defaults );
+    if(!is_array($args)){
+        $defaults['question_id '] = $args;
+        $args = $defaults;
+    }else{
+        $args = wp_parse_args( $args, $defaults );
+    }
         
     $tags = get_the_terms($args['question_id'], 'question_tag' );
     
