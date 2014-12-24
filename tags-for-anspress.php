@@ -71,7 +71,7 @@ class Tags_For_AnsPress
 
         //Register question tag
         add_action('init', array($this, 'register_question_tag'), 1);
-
+        add_filter('ap_default_options', array($this, 'ap_default_options') );
         add_action('ap_admin_menu', array($this, 'admin_tags_menu'));
 
         add_action('ap_option_navigation', array($this, 'option_navigation' ));
@@ -157,6 +157,21 @@ class Tags_For_AnsPress
     }
 
     /**
+     * Apppend default options
+     * @param   array $defaults
+     * @return  array           
+     * @since   1.0
+     */             
+    public function ap_default_options($defaults)
+    {
+        $defaults['enable_tags']    = true;
+        $defaults['max_tags']       = 5;
+        $defaults['min_tags']       = 1;
+
+        return $defaults;
+    }
+
+    /**
      * Add tags menu in wp-admin
      * @return void
      * @since 2.0
@@ -196,7 +211,13 @@ class Tags_For_AnsPress
                                 <p class="description"><?php _e('Enable or disable tags system', 'tags_for_anspress'); ?></p>
                             </td>
                         </tr>
-                        
+                        <tr valign="top">
+                            <th scope="row"><label for="tags_per_page"><?php _e('Tags per page', 'tags_for_anspress'); ?></label></th>
+                            <td>
+                                <input type="number" min="1" name="anspress_opt[tags_per_page]" id="tags_per_page" value="<?php echo $settings['tags_per_page'] ; ?>" />                                
+                                <p class="description"><?php _e('Tags to show per page', 'tags_for_anspress'); ?></p>
+                            </td>
+                        </tr>
                     </table>
                 </div>
             <?php
