@@ -28,6 +28,7 @@ class AnsPress_Questions_Shortcode {
 		echo '<div class="anspress-container">';
 			
 			/**
+			 * ACTION: ap_before
 			 * Action is fired before loading AnsPress body.
 			 */
 			do_action('ap_before');

@@ -109,7 +109,6 @@ class anspress_admin {
 
 		add_action('ap_option_fields', array($this, 'option_fields' ));
 
-
 	}
 
 	/**
@@ -186,9 +185,6 @@ class anspress_admin {
 		
 		add_submenu_page('anspress', __( 'Flagged question & answer', 'ap' ), __( 'Flagged', 'ap' ).$Flagcount,	'manage_options', 'anspress_flagged', array( $this, 'display_flagged_page' ));
 		
-		
-		
-		add_submenu_page('anspress', 'Questions Tags', 'Tags', 'manage_options', 'edit-tags.php?taxonomy=question_tags');
 		
 		add_submenu_page('anspress', 'Questions Label', 'Label', 'manage_options', 'edit-tags.php?taxonomy=question_label');
 

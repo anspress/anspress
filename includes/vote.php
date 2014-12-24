@@ -438,11 +438,11 @@ function ap_vote_html($post = false){
 
 	?>
 		<div data-action="vote" data-id="<?php echo $post->ID; ?>" class="ap-voting net-vote">
-			<a class="ap-icon-thumbsup vote-up<?php echo ($post->user_voted_up) ? ' voted' :''; echo $post->user_voted_down ? ' disable' :''; ?>" data-args="up-<?php echo $post->ID.'-'.$nonce; ?>" href="#" title="<?php _e('Up vote this post', 'ap'); ?>"></a>
+			<a class="<?php echo ap_icon('vote_up') ?> vote-up<?php echo ($post->user_voted_up) ? ' voted' :''; echo $post->user_voted_down ? ' disable' :''; ?>" data-args="up-<?php echo $post->ID.'-'.$nonce; ?>" href="#" title="<?php _e('Up vote this post', 'ap'); ?>"></a>
 			
 			<span class="net-vote-count" data-view="ap-net-vote" itemprop="upvoteCount"><?php echo ap_net_vote(); ?></span>
 			
-			<a class="ap-icon-thumbsdown vote-down<?php echo ($post->user_voted_down) ? ' voted' :''; echo ($post->user_voted_up) ? ' disable' :''; ?>" data-args="down-<?php echo $post->ID.'-'.$nonce; ?>" href="#" title="<?php _e('Down vote this post', 'ap'); ?>"></a>
+			<a class="<?php echo ap_icon('vote_down') ?> vote-down<?php echo ($post->user_voted_down) ? ' voted' :''; echo ($post->user_voted_up) ? ' disable' :''; ?>" data-args="down-<?php echo $post->ID.'-'.$nonce; ?>" href="#" title="<?php _e('Down vote this post', 'ap'); ?>"></a>
 		</div>
 	<?php
 }

@@ -59,8 +59,17 @@ class AnsPress_Theme {
 			remove_filter( current_filter(), array($this, 'question_single_the_content') );
 
 			//check if user have permission to see the question
-			if(ap_user_can_view_question())
+			if(ap_user_can_view_question()){
+				echo '<div class="anspress-container">';
+				/**
+				 * ACTION: ap_before
+				 * Action is fired before loading AnsPress body.
+				 */
+				do_action('ap_before');
+
 				include ap_get_theme_location('question.php');
+				echo '</div>';
+			}
 			else
 				echo '<div class="ap-pending-notice ap-icon-clock">'.__('You do not have permission to view this question.', 'ap').'</div>';
 		}else{
@@ -571,6 +580,8 @@ function ap_icon($name, $html = false){
 		'edit_question' 	=> 'icon-pencil',
 		'edit_answer' 		=> 'icon-pencil',
 		'edit_comment' 		=> 'icon-pencil',
+		'vote_up'			=> 'icon-thumbsup',
+		'vote_down'			=> 'icon-thumbsdown',
 	);
 	
 	$icons = apply_filters('ap_icon', $icons);
