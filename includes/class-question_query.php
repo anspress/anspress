@@ -45,7 +45,7 @@ class Question_Query extends WP_Query {
         if(isset($args['orderby']))
             $orderby = $args['orderby'];
         else
-            $orderby = (get_query_var('orderby')) ? get_query_var('orderby') : 'active';
+            $orderby = (get_query_var('sort')) ? get_query_var('sort') : 'active';
 
         $defaults = array(
            // 'ap_query'      => 'main_questions',

@@ -604,8 +604,8 @@ function ap_icon($name, $html = false){
 		'delete'			=> 'icon-trashcan',
 		'flag'				=> 'icon-flag',
 		'edit'				=> 'icon-pencil',
-		'comment'			=> 'icon-talk-chat',
-		'answer'			=> 'icon-mail-reply',
+		'comment'			=> 'icon-mail-reply',
+		'answer'			=> 'icon-comment',
 		'view'				=> 'icon-eye',
 		'vote'				=> 'icon-triangle-up',
 	);

@@ -11,23 +11,24 @@
 	    margin-left: 15px;
 	}
 	.ap-count > a{
-		background: @default-bg;
-		color:#777;
-		display: block;
-		float: left;
-		font-size: 12px;
-		height: 50px;
-		margin-right: 10px;
-		text-align: center;
-		width: 50px;
-		text-decoration: none;
+		border: 1px solid #d1e8f1;
+	    color: @light-color;
+	    display: block;
+	    float: left;
+	    font-size: 12px;
+	    height: 55px;
+	    margin-right: 10px;
+	    text-align: center;
+	    text-decoration: none;
+	    text-transform: lowercase;
+	    width: 60px;
 		.border-radius(@default-border-radius);
 
 		span{
 			font-size: @count-font-size;
 			font-weight: 600;
 			display: block;
-			margin-top: 6px;
+			margin-top: 8px;
 		}
 	}
 
@@ -44,7 +45,7 @@
 		    display: block;		    
 		    font-size: @list-font-size;
 		    font-weight: @bold;
-		    margin-bottom: 4px;
+		    margin-bottom: 5px;
 		    margin-top: 0;
 
 		    a{
@@ -74,15 +75,13 @@
 				display:none;
 			}
 			&.selected {
-			    background: @main-color;
+			    color: @main-color;
 			    .border-radius(50%);
-			    color: #fff;
 			    height: 15px;
 			    line-height: 15px;
 			    margin-top: 2px;
 			    text-align: center;
 			    width: 16px;
-			    .opacity(0.8);
 			}
 		}
 	}
