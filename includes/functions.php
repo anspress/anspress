@@ -285,119 +285,9 @@ function ap_base_page_slug(){
 	return apply_filters('ap_base_page_slug', $slug) ;
 }
 
-function ap_answers_list($question_id, $order = 'voted'){
 
-	$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
 
-	if(is_question()){
-		$order = get_query_var('sort');
-		if(empty($order ))
-			$order = ap_opt('answers_sort');
-	}
-	
-	if($order == 'voted'){
-		$ans_args=array(
-			'ap_query' => 'answer_sort_voted',
-			'post_type' => 'answer',
-			'post_status' => 'publish',
-			'post_parent' => get_the_ID(),
-			'showposts' => ap_opt('answers_per_page'),
-			'paged' => $paged,
-			'orderby' => 'meta_value_num',
-			'meta_key' => ANSPRESS_VOTE_META,
-			'meta_query'=>array(
-				'relation' => 'OR',
-				array(
-					'key' => ANSPRESS_BEST_META,
-					'compare' => '=',
-					'value' => '1'
-				),
-				array(
-					'key' => ANSPRESS_BEST_META,
-					//'compare' => 'NOT EXISTS'
-				)
-			)
-		);
-	}elseif($order == 'oldest'){
-		$ans_args=array(
-			'ap_query' => 'answer_sort_newest',
-			'post_type' => 'answer',
-			'post_status' => 'publish',
-			'post_parent' => get_the_ID(),
-			'showposts' => ap_opt('answers_per_page'),
-			'paged' => $paged,
-			'orderby' => 'meta_value date',
-			'meta_key' => ANSPRESS_BEST_META,
-			'order' => 'ASC',
-			'meta_query'=>array(
-				'relation' => 'OR',
-				array(
-					'key' => ANSPRESS_BEST_META,
-					//'compare' => 'NOT EXISTS'
-				)
-			)
-		);
-	}else{
-		$ans_args=array(
-			'ap_query' => 'answer_sort_newest',
-			'post_type' => 'answer',
-			'post_status' => 'publish',
-			'post_parent' => get_the_ID(),
-			'showposts' => ap_opt('answers_per_page'),
-			'paged' 	=> $paged,			
-			'orderby' 	=> 'meta_value date',
-			'meta_key' => ANSPRESS_BEST_META,
-			'order' 	=> 'DESC',
-			'meta_query'=>array(
-				'relation' => 'OR',
-				array(
-					'key' => ANSPRESS_BEST_META,
-					//'compare' => 'NOT EXISTS'
-				)
-			)
-		);
-	}
-	
-	$ans_args = apply_filters('ap_answers_query_args', $ans_args);
-	
-	$ans = new WP_Query($ans_args);	
-	
-	// get answer sorting tab
-	echo '<div id="answers-c">';
-		if(ap_user_can_see_answers()){
-			ap_ans_tab(); 	
-			echo '<div id="answers">';
-				while ( $ans->have_posts() ) : $ans->the_post(); 
-					include(ap_get_theme_location('answer.php'));
-				endwhile ;
-			echo '</div>';	
-			ap_pagination('', 2, $paged, $ans);
-		}else{
-			echo '<div class="ap-login-to-see-ans">'.sprintf(__('Please %s or %s to view answers and comments', 'ap'), '<a class="ap-open-modal ap-btn" title="Click here to login if you already have an account on this site." href="#ap_login_modal">Login</a>', '<a class="ap-open-modal ap-btn" title="Click here to signup if you do not have an account on this site." href="#ap_signup_modal">Sign Up</a>').'</div>';
-			echo do_action('ap_after_answer_form');
-		}
-	echo '</div>';
-	wp_reset_query();
-}
 
-function ap_ans_tab(){
-	$order = get_query_var('sort');
-	if(empty($order ))
-		$order = ap_opt('answers_sort');
-		
-		$link = '?sort=';
-		$ans_count = ap_count_ans(get_the_ID());
-	?>
-		<div class="ap-anstabhead clearfix">
-			<h2 class="ap-answer-count pull-left" data-view="ap-answer-count-label"><?php printf(_n('<span>1 Answer</span>', '<span>%d Answers</span>', $ans_count, 'ap'), $ans_count); ?><span itemprop="answerCount" style="display:none;"><?php echo $ans_count; ?></span></h2>
-			<ul class="ap-ans-tab ap-tabs clearfix" role="tablist">
-				<li class="<?php echo $order == 'newest' ? ' active' : ''; ?>"><a href="<?php echo $link.'newest'; ?>"><?php _e('Newest', 'ap'); ?></a></li>
-				<li class="<?php echo $order == 'oldest' ? ' active' : ''; ?>"><a href="<?php echo $link.'oldest'; ?>"><?php _e('Oldest', 'ap'); ?></a></li>
-				<li class="<?php echo $order == 'voted' ? ' active' : ''; ?>"><a href="<?php echo $link.'voted'; ?>"><?php _e('Voted', 'ap'); ?></a></li>
-			</ul>
-		</div>
-	<?php
-}
 
 function ap_ans_list_tab(){
 	$order = get_query_var('sort');
@@ -415,74 +305,7 @@ function ap_ans_list_tab(){
 	<?php
 }
 
-/**
- * Output questions list tab
- * @return string
- */
-function ap_questions_tab(){
-	$sort = get_query_var('sort');
-	$label = sanitize_text_field(get_query_var('label'));
-	$search_q = sanitize_text_field(get_query_var('ap_s'));
-	if(empty($sort ))
-		$sort = 'active';//ap_opt('answers_sort');
-	
-	if(empty($status ))
-		$status = '';
-	
-	$search = '';
-	if(empty($status ))
-		$search = 'ap_s='.$search_q.'&';
-		
-	$link = '?'.$search.'sort=';
-	//TODO: hook this from labels extension
-	//$label_link = '?'.$search.'sort='.$order.'&label=';
-	
-	$navs = array(
-		'active' => array('link' => $link.'active', 'title' => __('Active', 'ap')), 
-		'newest' => array('link' => $link.'newest', 'title' => __('Newest', 'ap')), 
-		'voted' => array('link' => $link.'voted', 'title' => __('Voted', 'ap')), 
-		'answers' => array('link' => $link.'answers', 'title' => __('Answers', 'ap')), 
-		'unanswered' => array('link' => $link.'unanswered', 'title' => __('Unanswered', 'ap')), 
-		'unsolved' => array('link' => $link.'unsolved', 'title' => __('Unsolved', 'ap')), 
-		//'oldest' => array('link' => $link.'oldest', 'title' => __('Oldest', 'ap')), 
-		);
-	
-	/**
-	 * FILTER: ap_questions_tab
-	 * Before prepering questions list tab.
-	 * @var array
-	 * @since 2.0
-	 */
-	$navs = apply_filters('ap_questions_tab', $navs );
 
-	echo '<ul class="ap-questions-tab ap-tab ap-ul-inline clearfix">';
-	foreach ($navs as $k => $nav) {
-		echo '<li'.( $sort == $k ? ' class="active"' : '') .'><a href="'. $nav['link'] .'">'. $nav['title'] .'</a></li>';
-	}
-	echo '</ul>';
-
-	?>
-	
-	
-
-		<!-- TODO - LABEL Extension -->
-		<!-- <div class="pull-right">
-			<div class="ap_status ap-dropdown">
-				<a href="#" class="btn ap-btn ap-dropdown-toggle"><?php _e('Label', 'ap'); ?> &#9662;</a>
-				<ul class="ap-dropdown-menu">
-					<?php
-						/*$labels = get_terms('question_label', array('orderby'=> 'name','hide_empty'=> true));
-						foreach($labels as $l){
-							$color = ap_get_label_color($l->term_id);
-							echo '<li'. ($label == $l->slug ? ' class="active" ' : '') .'><a href="'.$label_link.$l->slug.'" title="'.$l->description.'"><span class="question-label-color" style="background:'.$color.'"> </span>'.$l->name.'</a></li>';
-						}*/
-					?>
-				</ul>
-			</div>
-		</div> -->
-
-	<?php
-}
 
 function ap_untrash_post( $post_id ) {
     // no post?
@@ -498,15 +321,6 @@ function ap_user_can($id){
 	get_user_meta( $id, 'ap_role', true );
 }
 
-function ap_question_tab(){
-	?>
-		<ul class="ap-tabs ap-question-tab clearfix" data-action="ap-tabs" role="tablist">
-			<li class="active"><a href="#discussion"><?php _e('Discussion', 'ap'); ?></a></li>
-			<li><a href="#history"><?php _e('History', 'ap'); ?></a></li>
-			<li><a href="#related"><?php _e('Related', 'ap'); ?></a></li>
-		</ul>
-	<?php
-}
 
 function ap_selected_answer($post_id = false){
 	if(!$post_id)

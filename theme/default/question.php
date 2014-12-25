@@ -97,8 +97,9 @@ global $post;
 			
 			<?php
 
-				if(ap_have_ans(get_the_ID())){ 
-					ap_answers_list(get_the_ID(), 'voted');
+				if(ap_have_ans(get_the_ID())){
+					ap_get_best_answer();
+					ap_get_answers();
 				} 
 			?>
 				

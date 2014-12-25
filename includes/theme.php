@@ -670,3 +670,99 @@ function ap_post_actions_buttons()
 		}
 	}
 }
+
+/**
+ * Output questions list tab
+ * @return string
+ */
+function ap_questions_tab(){
+	$sort = get_query_var('sort');
+	$label = sanitize_text_field(get_query_var('label'));
+	$search_q = sanitize_text_field(get_query_var('ap_s'));
+	if(empty($sort ))
+		$sort = 'active';//ap_opt('answers_sort');
+	
+	if(empty($status ))
+		$status = '';
+	
+	$search = '';
+	if(empty($status ))
+		$search = 'ap_s='.$search_q.'&';
+		
+	$link = '?'.$search.'sort=';
+	//TODO: hook this from labels extension
+	//$label_link = '?'.$search.'sort='.$order.'&label=';
+	
+	$navs = array(
+		'active' => array('link' => $link.'active', 'title' => __('Active', 'ap')), 
+		'newest' => array('link' => $link.'newest', 'title' => __('Newest', 'ap')), 
+		'voted' => array('link' => $link.'voted', 'title' => __('Voted', 'ap')), 
+		'answers' => array('link' => $link.'answers', 'title' => __('Answers', 'ap')), 
+		'unanswered' => array('link' => $link.'unanswered', 'title' => __('Unanswered', 'ap')), 
+		'unsolved' => array('link' => $link.'unsolved', 'title' => __('Unsolved', 'ap')), 
+		//'oldest' => array('link' => $link.'oldest', 'title' => __('Oldest', 'ap')), 
+		);
+	
+	/**
+	 * FILTER: ap_questions_tab
+	 * Before prepering questions list tab.
+	 * @var array
+	 * @since 2.0
+	 */
+	$navs = apply_filters('ap_questions_tab', $navs );
+
+	echo '<ul class="ap-questions-tab ap-tab ap-ul-inline clearfix">';
+	foreach ($navs as $k => $nav) {
+		echo '<li'.( $sort == $k ? ' class="active"' : '') .'><a href="'. $nav['link'] .'">'. $nav['title'] .'</a></li>';
+	}
+	echo '</ul>';
+
+	?>
+	
+	
+
+		<!-- TODO - LABEL Extension -->
+		<!-- <div class="pull-right">
+			<div class="ap_status ap-dropdown">
+				<a href="#" class="btn ap-btn ap-dropdown-toggle"><?php _e('Label', 'ap'); ?> &#9662;</a>
+				<ul class="ap-dropdown-menu">
+					<?php
+						/*$labels = get_terms('question_label', array('orderby'=> 'name','hide_empty'=> true));
+						foreach($labels as $l){
+							$color = ap_get_label_color($l->term_id);
+							echo '<li'. ($label == $l->slug ? ' class="active" ' : '') .'><a href="'.$label_link.$l->slug.'" title="'.$l->description.'"><span class="question-label-color" style="background:'.$color.'"> </span>'.$l->name.'</a></li>';
+						}*/
+					?>
+				</ul>
+			</div>
+		</div> -->
+
+	<?php
+}
+
+/**
+ * Output answers tab
+ * @return void
+ * @since 2.0
+ */
+function ap_answers_tab(){
+	$sort = get_query_var('sort');
+	if(empty($sort ))
+		$sort = ap_opt('answers_sort');
+		
+		$link = '?sort=';
+		
+		$navs = array(
+			'active' => array('link' => $link.'active', 'title' => __('Active', 'ap')), 
+			'newest' => array('link' => $link.'newest', 'title' => __('Newest', 'ap')), 
+			'oldest' => array('link' => $link.'oldest', 'title' => __('Oldest', 'ap')), 
+			'voted' => array('link' => $link.'voted', 'title' => __('Voted', 'ap')), 
+			);
+
+		echo '<ul class="ap-answers-tab ap-tab ap-ul-inline clearfix">';
+		foreach ($navs as $k => $nav) {
+			echo '<li'.( $sort == $k ? ' class="active"' : '') .'><a href="'. $nav['link'] .'">'. $nav['title'] .'</a></li>';
+		}
+		echo '</ul>';
+}
+

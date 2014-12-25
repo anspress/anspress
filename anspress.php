@@ -175,6 +175,7 @@ if(!class_exists('AnsPress')):
 			require_once( ANSPRESS_DIR . 'includes/functions.php' );
 			require_once( ANSPRESS_DIR . 'includes/class-roles-cap.php' );
 			require_once( ANSPRESS_DIR . 'includes/class-question_query.php' );
+			require_once( ANSPRESS_DIR . 'includes/class-answer_query.php' );
 			require_once( ANSPRESS_DIR . 'includes/post_types.php' );
 
 			require_once( ANSPRESS_DIR . 'includes/events.php' );

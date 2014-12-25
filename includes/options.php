@@ -85,7 +85,7 @@ function ap_default_options(){
 		'flag_note' 			=> array(0 => array('title' => 'it is spam', 'description' => 'This question is effectively an advertisement with no disclosure. It is not useful or relevant, but promotional.')),			
 		'question_per_page' 	=> '20',
 		'answers_per_page' 		=> '5',
-		'answers_sort' 			=> 'voted',
+		'answers_sort' 			=> 'active',
 		'close_selected' 		=> true,
 		'cover_width'			=> '878',
 		'cover_height'			=> '200',

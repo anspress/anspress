@@ -425,7 +425,7 @@ function ap_get_user_question_list($user_id, $limit = 5, $title_limit = 50){
  * @since 0.1
  */
 function ap_user_display_name($args = array()){
-
+	global $post;
 	$defaults = array(
 			'user_id' 			=> get_the_author_meta('ID'),
 			'html' 				=> false,
@@ -453,7 +453,7 @@ function ap_user_display_name($args = array()){
 			$return = '<span class="who"><a href="'.ap_user_link($user_id).'">'.$user->display_name.'</a></span>';
 
 	}elseif($post->post_type =='question' || $post->post_type =='answer' ){
-		global $post;
+		
 		$name = get_post_meta($post->ID, 'anonymous_name', true);
 		
 		if(!$html){
