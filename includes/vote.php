@@ -182,7 +182,7 @@ class anspress_vote
 			else
 				$text =  sprintf( __( '%s people favorited this question', 'ap' ), $counts);
 			
-			$result = apply_filters('ap_favorite_result', array('row' => $row, 'action' => $action, 'count' => '&#9733; '.$counts, 'title' => $title, 'text' => $text, 'message' => $message));
+			$result = apply_filters('ap_favorite_result', array('row' => $row, 'action' => $action, 'count' => '<i class="'.ap_icon('favorite').'"></i> '.$counts, 'title' => $title, 'text' => $text, 'message' => $message));
 			echo json_encode($result);
 			
 		}else{
@@ -293,7 +293,7 @@ class anspress_vote
 		$note_id = sanitize_text_field($_POST['note_id']);
 		$other_note = sanitize_text_field($_POST['other_note']);
 		
-		if(wp_verify_nonce( $args[1], 'flag_submit_'.$args[0] )){
+		if(wp_verify_nonce( $args[1], 'flag_submit_'.$args[0] ) && is_user_logged_in()){
 			global $wpdb;
 			$userid = get_current_user_id();
 			$is_flagged = ap_is_user_flagged($args[0]);
@@ -384,8 +384,18 @@ function ap_post_votes($postid){
 	return $vote;
 }
 
-//check if user voted on the post
-function ap_is_user_voted($actionid, $type, $userid){
+/**
+ * Check if user voted on given post.
+ * @param  	int $actionid
+ * @param  	string $type     
+ * @param  	int $userid   
+ * @return 	boolean           
+ * @since 	2.0
+ */
+function ap_is_user_voted($actionid, $type, $userid = false){
+	if(!$userid)
+		$userid = get_current_user_id();
+
 	if($type == 'vote' && is_user_logged_in()){
 		global $wpdb;
 		
@@ -434,43 +444,50 @@ function ap_vote_html($post = false){
 	if(!$post)
 		global $post;
 		
-	$nonce = wp_create_nonce( 'vote_'.$post->ID );
+	$nonce 	= wp_create_nonce( 'vote_'.$post->ID );
+	$vote 	= ap_is_user_voted( $post->ID , 'vote');
 
+	$voted 	= isset($vote) ? true : false;
+	$type 	= isset($vote) ? $vote->type : '';
 	?>
-		<div data-action="vote" data-id="<?php echo $post->ID; ?>" class="ap-voting net-vote">
-			<a class="<?php echo ap_icon('vote_up') ?> vote-up<?php echo ($post->user_voted_up) ? ' voted' :''; echo $post->user_voted_down ? ' disable' :''; ?>" data-args="up-<?php echo $post->ID.'-'.$nonce; ?>" href="#" title="<?php _e('Up vote this post', 'ap'); ?>"></a>
+		<div data-action="vote" data-id="<?php echo $post->ID; ?>" class="ap-vote net-vote">
+			<a class="<?php echo ap_icon('vote_up') ?> ap-tip vote-up<?php echo $voted ? ' voted' :''; echo ($type == 'vote_down') ? ' disable' :''; ?>" data-args="up-<?php echo $post->ID.'-'.$nonce; ?>" href="#" title="<?php _e('Up vote this post', 'ap'); ?>"></a>
 			
 			<span class="net-vote-count" data-view="ap-net-vote" itemprop="upvoteCount"><?php echo ap_net_vote(); ?></span>
 			
-			<a class="<?php echo ap_icon('vote_down') ?> vote-down<?php echo ($post->user_voted_down) ? ' voted' :''; echo ($post->user_voted_up) ? ' disable' :''; ?>" data-args="down-<?php echo $post->ID.'-'.$nonce; ?>" href="#" title="<?php _e('Down vote this post', 'ap'); ?>"></a>
+			<a data-tipposition="bottom" class="<?php echo ap_icon('vote_down') ?> ap-tip vote-down<?php echo $voted ? ' voted' :''; echo ($type == 'vote_up') ? ' disable' :''; ?>" data-args="down-<?php echo $post->ID.'-'.$nonce; ?>" href="#" title="<?php _e('Down vote this post', 'ap'); ?>"></a>
 		</div>
 	<?php
 }
 
-
-/* -----------------------------------------------------
----------- favorite button---------------------------- */
-
-// favorite button
+/**
+ * Output favourite btn HTML
+ * @param  object $question  post Object
+ * @return string
+ * @since 2.0
+ */
 function ap_favorite_html($post = false){
 	if(!$post)
 		global $post;
 	
+	$total_favs = ap_post_favorite($post->ID);
+	$favorited = ap_is_user_favorite($post->ID);
+
 	$nonce = wp_create_nonce( 'favorite_'.$post->ID );
-	$title = (!$post->favorite) ? (__('Add to favorite list', 'ap')) : (__('Remove from favorite list', 'ap'));
+	$title = (!$total_favs) ? (__('Add to favorite list', 'ap')) : (__('Remove from favorite list', 'ap'));
 	?>
-		<div class="favorite-c">
-			<a id="<?php echo 'favorite_'.$post->ID; ?>" class="favorite-btn <?php echo ($post->favorited) ? ' added' :''; ?>" data-action="ap-favorite" data-args="<?php echo $post->ID.'-'.$nonce; ?>" href="#"title="<?php echo $title; ?>">&#9733; <?php echo $post->favorite; ?></a>
+		<div class="ap-favorite">
+			<a id="<?php echo 'favorite_'.$post->ID; ?>" class="ap-tip favorite-btn <?php echo ($favorited) ? ' added' :''; ?>" data-action="ap-favorite" data-args="<?php echo $post->ID.'-'.$nonce; ?>" href="#"title="<?php echo $title; ?>"> <?php echo ap_icon('favorite', true).' '. $total_favs; ?></a>
 			<span> 
 				<?php  
-					if( $post->favorite =='1' && $post->favorited)
+					if( $total_favs =='1' && $favorited)
 						_e('You favorited this question', 'ap'); 
-					elseif($post->favorited)
-						printf( __( 'You and %s others favorited this question', 'ap' ), ($post->favorite -1));
-					elseif($post->favorite == 0)
-						 _e( 'Be the first to add this question to favorite', 'ap' );
+					elseif($favorited)
+						printf( __( 'You and %s others favorited this question', 'ap' ), ($total_favs -1));
+					elseif($total_favs == 0)
+						 _e( 'Favorite this question and get updateds', 'ap' );
 					else
-						printf( _n( '%s person favorited this question', '%s persons favorited this question', $post->favorite, 'ap' ), $post->favorite); 
+						printf( _n( '%s person favorited this question', '%s persons favorited this question', $total_favs, 'ap' ), $total_favs); 
 				?>
 			</span>
 		</div>
@@ -501,7 +518,7 @@ function ap_is_user_voted_closed($postid = false){
 	return false;
 }
 
-// closing vote html
+//TODO: re-add closing system as an extension
 function ap_close_vote_html(){
 	if(!is_user_logged_in())
 		return;
@@ -543,17 +560,27 @@ function ap_is_user_flagged($postid = false){
 	return false;
 }
 
-// flag button html
-function ap_flag_btn_html(){
+/**
+ * Flag button html
+ * @return string 
+ * @since 0.9
+ */
+function ap_flag_btn_html($echo = false){
 	if(!is_user_logged_in())
 		return;
 		
 	global $post;
-	$nonce = wp_create_nonce( 'flag_'.$post->ID );
-	$title = (!$post->flagged) ? (__('Flag this post', 'ap')) : (__('You have flagged this post', 'ap'));
-	?>
-		<a id="<?php echo 'flag_'.$post->ID; ?>" data-action="flag-modal" class="flag-btn<?php echo (!$post->flagged) ? ' can-flagged' :''; ?>" data-args="<?php echo $post->ID.'-'.$nonce; ?>" href="#<?php echo 'flag_modal_'.$post->ID; ?>" title="<?php echo $title; ?>"><?php _e('Flag ', 'ap'); echo ($post->flag > 0 ? '<span>('.$post->flag.')</span>':''); ?></a>
-	<?php
+	$flagged 	= ap_is_user_flagged();
+	$total_flag = ap_post_flag_count();
+	$nonce 		= wp_create_nonce( 'flag_'.$post->ID );
+	$title 		= (!$flagged) ? (__('Flag this post', 'ap')) : (__('You have flagged this post', 'ap'));
+	
+	$output ='<a id="flag_'.$post->ID.'" data-action="flag-modal" class="flag-btn'. (!$flagged ? ' can-flagged' :'') .'" data-args="'.$post->ID.'-'.$nonce.'" href="#flag_modal_'.$post->ID.'" title="'.$title.'">'.ap_icon('flag', true). __('Flag ', 'ap') . ($total_flag > 0 ? ' <span>('.$total_flag.')</span>':'').'</a>';
+
+	if($echo)
+		echo $output;
+	else
+		return $output;
 }
 
 // vote for closing, ajax request

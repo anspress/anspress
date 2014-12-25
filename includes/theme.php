@@ -22,12 +22,14 @@ class AnsPress_Theme {
 
 		add_filter( 'the_content', array($this, 'question_single_the_content') );
 		add_filter( 'post_class', array($this, 'question_post_class') );
+		// Add specific CSS class by filter
+		add_filter('body_class', array($this, 'body_class'));
 
 		add_filter( 'comments_template', array($this, 'comment_template') );
 		add_action( 'after_setup_theme', array($this, 'includes') );
-		add_filter('wp_title', array($this, 'ap_title'), 100, 2);
+		//add_filter('wp_title', array($this, 'ap_title'), 100, 2);
 		add_filter( 'the_title', array($this, 'the_title'), 100, 2 );
-		add_filter( 'wp_head', array($this, 'feed_link'), 9);
+		//add_filter( 'wp_head', array($this, 'feed_link'), 9);
 
 		add_shortcode( 'anspress_questions', array( 'AnsPress_Questions_Shortcode', 'anspress_questions' ) );
 
@@ -56,6 +58,7 @@ class AnsPress_Theme {
 			/**
 			 * This will prevent infinite loop
 			 */
+
 			remove_filter( current_filter(), array($this, 'question_single_the_content') );
 
 			//check if user have permission to see the question
@@ -97,6 +100,20 @@ class AnsPress_Theme {
 		return $classes;
 	}
 	
+	/**
+	 * Add anspress classess to body
+	 * @param  array $classes
+	 * @return array
+	 * @since 2.0
+	 */
+	public function body_class($classes){
+		// add anspress class to body
+		if( get_the_ID() ==  ap_opt('questions_page_id') || get_the_ID() ==  ap_opt('question_page_id') || is_singular('question'))
+			$classes[] = 'anspress';
+			
+		// return the $classes array
+		return $classes;
+	}
 
 	// register comment template	
 	public function comment_template( $comment_template ) {
@@ -253,23 +270,11 @@ function ap_user_page_title(){
 	return __('Page not found', 'ap');
 }
 
-function is_anspress(){
-	$queried_object = get_queried_object();
-	
-	if(!isset($queried_object->ID)) 
-		return false;
-
-	if( $queried_object->ID ==  ap_opt('base_page'))
-		return true;
-		
-	return false;
-}
-
 function is_question(){
-	if(is_anspress() && (get_query_var('question_id') || get_query_var('question') || get_query_var('question_name')))
-		return true;
-		
-	return false;
+	$return = false;
+	if(is_singular('question'))
+		$return = true;
+	return $return;
 }
 
 function is_ask(){
@@ -354,25 +359,25 @@ function get_question_cat_id(){
 }
 
 function get_edit_question_id(){
-	if(is_anspress() && get_query_var('edit_q'))
+	if(get_query_var('edit_q'))
 		return get_query_var('edit_q');
 		
 	return false;
 }
 function is_answer_edit(){
-	if(is_anspress() && get_query_var('edit_a'))
+	if(get_query_var('edit_a'))
 		return true;
 		
 	return false;
 }
 function is_question_edit(){
-	if(is_anspress() && get_query_var('edit_q'))
+	if(get_query_var('edit_q'))
 		return true;
 		
 	return false;
 }
 function get_edit_answer_id(){
-	if(is_anspress() && get_query_var('edit_a'))
+	if(get_query_var('edit_a'))
 		return get_query_var('edit_a');
 		
 	return false;
@@ -536,10 +541,23 @@ function ap_display_question_metas($question_id =  false){
 
 	$metas = array();
 
-	if(ap_is_answer_selected($question_id))
-		$metas['selected'] = '<span class="ap-tip" title="'.__('answer accepted', 'ap').'">'.ap_icon('tick', true).'</span>';
+	if(ap_is_answer_selected($question_id) && !is_singular('question')){
+		$metas['selected'] = '<span class="ap-tip" title="'.__('answer accepted', 'ap').'">'.ap_icon('select', true).'</span>';
+
+		$metas['history'] = ap_last_active_time($question_id);
+	}
+
+	if(is_singular('question')){
+		$last_active = ap_last_active($question_id);
+		$metas['active'] = sprintf( __( '<span>Active</span> <a class="ap-tip" title="Show all histories of this question" href="#ap-question-preview" data-action="ap-toggle-history"><time class="updated" itemprop="dateUpdated" datetime="%s">%s Ago</time></a>', 'ap' ), mysql2date('c', $last_active),  ap_human_time( mysql2date('U', $last_active)));
+
+		$metas['created'] = sprintf( __( '<span>Created</span> <i><time itemprop="datePublished" datetime="%s">%s Ago</time></i>', 'ap' ), get_the_time('c', $question_id), ap_human_time( get_the_time('U')));
+
+		$view_count = ap_get_qa_views();
+		$metas['views'] = sprintf( __('<span>Viewed</span> <i>%d Times</i>', 'ap'), $view_count) ;
+	}
 	
-	$metas['history'] = ap_last_active_time($question_id);
+	
 
 
 	/**
@@ -572,16 +590,24 @@ function ap_icon($name, $html = false){
 		'upload' 			=> 'icon-upload',
 		'unchecked' 		=> 'icon-checkbox-unchecked',
 		'checked' 			=> 'icon-checkbox-checked',
-		'tick' 				=> 'icon-tick',
+		'select' 				=> 'icon-check',
 		'new_question' 		=> 'icon-question',
 		'new_answer' 		=> 'icon-answer',
-		'new_comment' 		=> 'icon-comment',
-		'new_comment_answer'=> 'icon-comment',
+		'new_comment' 		=> 'icon-talk-chat',
+		'new_comment_answer'=> 'icon-mail-reply',
 		'edit_question' 	=> 'icon-pencil',
 		'edit_answer' 		=> 'icon-pencil',
 		'edit_comment' 		=> 'icon-pencil',
-		'vote_up'			=> 'icon-thumbsup',
-		'vote_down'			=> 'icon-thumbsdown',
+		'vote_up'			=> 'icon-triangle-up',
+		'vote_down'			=> 'icon-triangle-down',
+		'favorite'			=> 'icon-heart',
+		'delete'			=> 'icon-trashcan',
+		'flag'				=> 'icon-flag',
+		'edit'				=> 'icon-pencil',
+		'comment'			=> 'icon-talk-chat',
+		'answer'			=> 'icon-mail-reply',
+		'view'				=> 'icon-eye',
+		'vote'				=> 'icon-triangle-up',
 	);
 	
 	$icons = apply_filters('ap_icon', $icons);
@@ -596,4 +622,51 @@ function ap_icon($name, $html = false){
 	return $icon;
 		
 	return '';
+}
+
+/**
+ * Post actions buttoons
+ * @return 	string
+ * @since 	2.0
+ */
+function ap_post_actions_buttons()
+{
+	global $post;
+
+	if(!$post->post_type == 'question' || !$post->post_type == 'answer')
+		return;
+
+	$actions = array();
+
+	/**
+	 * Comment button
+	 */
+	if(ap_user_can_comment())
+		$actions['comment'] = ap_comment_btn_html();
+
+	/**
+	 * edit question link
+	 */
+	if(ap_user_can_edit_question($post->ID))
+		$actions['edit_question'] = ap_edit_q_btn_html();
+	
+	if(is_user_logged_in())
+		$actions['flag'] = ap_flag_btn_html();
+
+	if(ap_user_can_delete($post->ID))
+		$actions['delete'] = ap_post_delete_btn_html();
+
+	/**
+	 * FILTER: ap_post_actions_buttons
+	 * For filtering post actions buttons
+	 * @var 	string
+	 * @since 	2.0
+	 */
+	$actions = apply_filters('ap_post_actions_buttons', $actions );
+
+	if (!empty($actions) && count($actions) > 0) {
+		foreach($actions as $k => $action){
+			echo '<li class="ap-post-action ap-action-'.$k.'">'.$action.'</li>';
+		}
+	}
 }

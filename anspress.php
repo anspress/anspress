@@ -169,6 +169,7 @@ if(!class_exists('AnsPress')):
 		private function includes() {
 			global $ap_options;
 			
+			require_once( ANSPRESS_DIR . 'includes/options.php' );
 			require_once( ANSPRESS_DIR . 'activate.php' );
 			
 			require_once( ANSPRESS_DIR . 'includes/functions.php' );

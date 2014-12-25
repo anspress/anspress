@@ -186,7 +186,7 @@ APjs.site.prototype = {
 	/* check for valid email */
 	checkEmail: function(field){
 		var self = this;
-		jQuery('.anspress').delegate('form #email', 'keyup blur', function(){
+		jQuery('body').delegate('form #email', 'keyup blur', function(){
 			var field = jQuery(this);		
 			var parent = jQuery(field).closest('.form-group');
 
@@ -212,7 +212,7 @@ APjs.site.prototype = {
 	/* check if email is available */
 	checkEmailAvailable: function(){
 		var self = this;
-		jQuery('.anspress').delegate('form #email', 'blur', function(){
+		jQuery('body').delegate('form #email', 'blur', function(){
 			var field = jQuery(this);		
 			var parent = field .closest('.form-group');
 			
@@ -260,7 +260,7 @@ APjs.site.prototype = {
 	},
 	castVote:function() {
 		var self = this;
-		jQuery('.anspress').delegate('[data-action="vote"] a', 'click', function(e){
+		jQuery('body').delegate('[data-action="vote"] a', 'click', function(e){
 			e.preventDefault();
 			var args = jQuery(this).data('args');
 			self.showLoading(aplang.voting_on_post);
@@ -301,7 +301,7 @@ APjs.site.prototype = {
 	},
 	favorite:function (){
 		var self = this;
-		jQuery('.anspress').delegate('[data-action="ap-favorite"]', 'click', function(e){
+		jQuery('body').delegate('[data-action="ap-favorite"]', 'click', function(e){
 			e.preventDefault();
 
 			/* show loading message */
@@ -341,7 +341,7 @@ APjs.site.prototype = {
 	
 	close:function(){
 		var self = this;
-		jQuery('.anspress').delegate('[data-action="close-question"]', 'click', function(e){
+		jQuery('body').delegate('[data-action="close-question"]', 'click', function(e){
 			e.preventDefault();
 			var args = jQuery(this).data('args');
 			
@@ -387,7 +387,7 @@ APjs.site.prototype = {
 	
 	loadFlagModal:function (){
 		var self = this;
-		jQuery('.anspress').delegate('[data-action="flag-modal"]', 'click', function(e){
+		jQuery('body').delegate('[data-action="flag-modal"]', 'click', function(e){
 			e.preventDefault();
 			if(!jQuery(this).is('.loaded')){
 				var args = jQuery(this).data('args');
@@ -512,12 +512,12 @@ APjs.site.prototype = {
 	},
 	
 	dropdown:function(){
-		jQuery('.anspress').delegate('.ap-dropdown-toggle', 'click', function(e){
+		jQuery('body').delegate('.ap-dropdown-toggle', 'click', function(e){
 			e.preventDefault();
 			jQuery(this).closest('.ap-dropdown').toggleClass('open');
 		});
 		
-		jQuery('.anspress').delegate('.ap-dropdown-menu a', 'click', function(e){
+		jQuery('body').delegate('.ap-dropdown-menu a', 'click', function(e){
 			jQuery(this).closest('.ap-dropdown').removeClass('open');
 		});
 	},
@@ -530,7 +530,7 @@ APjs.site.prototype = {
 	
 	load_comment_form: function(){
 		var self = this;
-		jQuery('.anspress').delegate('[data-action="ap-load-comment"]', 'click', function(e){
+		jQuery('body').delegate('[data-action="ap-load-comment"]', 'click', function(e){
 			e.preventDefault();
 			var args 	= jQuery(this).data('args'),
 				elem	= jQuery(this).attr('href');
@@ -602,7 +602,7 @@ APjs.site.prototype = {
 	
 	submitAnswer: function(){
 		var self = this;
-		jQuery('.anspress').delegate('[data-action="ap-submit-answer"]', 'submit', function(e){
+		jQuery('body').delegate('[data-action="ap-submit-answer"]', 'submit', function(e){
 			var form = jQuery(this);
 			var btn = jQuery(this).find('.btn-submit-ans');
 			/* Disable the button while submitting */
@@ -661,7 +661,7 @@ APjs.site.prototype = {
 	
 	submitQuestion: function(){
 		var self = this;
-		jQuery('.anspress').delegate('[data-action="ap-submit-question"]', 'submit', function(e){
+		jQuery('body').delegate('[data-action="ap-submit-question"]', 'submit', function(e){
 			var form = jQuery(this);
 			var btn = jQuery(this).find('.btn-submit-ask');
 			/* Disable the button while submitting */
@@ -713,7 +713,7 @@ APjs.site.prototype = {
 	},
 	
 	toggleLoginSignup: function(){
-		jQuery('.anspress').delegate('[data-toggle="ap-signup-form"]', 'click', function(e){
+		jQuery('body').delegate('[data-toggle="ap-signup-form"]', 'click', function(e){
 			e.preventDefault();
 			
 			jQuery.ajax({
@@ -733,7 +733,7 @@ APjs.site.prototype = {
 	},
 	saveComment: function(){
 		var self = this;
-		jQuery('.anspress').delegate('#commentform', 'submit', function(){
+		jQuery('body').delegate('#commentform', 'submit', function(){
 			var form = jQuery(this);
 			var fields = jQuery(this).serialize();
 			self.showLoading(aplang.submitting_your_comment);
@@ -754,7 +754,7 @@ APjs.site.prototype = {
 	},
 	deleteComment: function (){
 		var self = this;
-		jQuery('.anspress').delegate('[data-button="ap-delete-comment"]', 'click', function(e){
+		jQuery('body').delegate('[data-button="ap-delete-comment"]', 'click', function(e){
 			e.preventDefault();
 			if(confirm(jQuery(this).data('confirm'))){
 				var args 	= jQuery(this).data('args');
@@ -783,7 +783,7 @@ APjs.site.prototype = {
 	},
 	updateComment: function(){
 		var self = this;
-		jQuery('.anspress').delegate('[data-action="ap-edit-comment"]', 'submit', function(e) {
+		jQuery('body').delegate('[data-action="ap-edit-comment"]', 'submit', function(e) {
 			e.preventDefault();
 			self.showLoading(aplang.updating_comment);
 			jQuery.ajax({
@@ -812,7 +812,7 @@ APjs.site.prototype = {
 	},
 	selectBestAnswer: function(){
 		var self = this;
-		jQuery('.anspress').delegate('[data-button="ap-select-answer"]', 'click', function(e) {
+		jQuery('body').delegate('[data-button="ap-select-answer"]', 'click', function(e) {
 			e.preventDefault();
 			self.showLoading();
 			jQuery.ajax({
@@ -848,7 +848,7 @@ APjs.site.prototype = {
 	
 	deletePost: function(){
 		var self = this;
-		jQuery('.anspress').delegate('[data-button="ap-delete-post"]', 'click', function(e){
+		jQuery('body').delegate('[data-button="ap-delete-post"]', 'click', function(e){
 			e.preventDefault();
 			self.showLoading(aplang.deleting_post);
 			jQuery.ajax({
@@ -884,7 +884,7 @@ APjs.site.prototype = {
 	},
 	loadEditForm:function(){
 		var self = this;
-		jQuery('.anspress').delegate('[data-button="ap-edit-post"]', 'click', function(e){
+		jQuery('body').delegate('[data-button="ap-edit-post"]', 'click', function(e){
 			e.preventDefault();
 			self.showLoading(aplang.loading_form);
 			
@@ -921,14 +921,14 @@ APjs.site.prototype = {
 		});
 	},
 	labelSelect:function(){
-		jQuery('.anspress').delegate('[data-action="ap-label-select"] li:not(.ap-select-footer)', 'click', function(e){
+		jQuery('body').delegate('[data-action="ap-label-select"] li:not(.ap-select-footer)', 'click', function(e){
 			e.preventDefault();
 			jQuery(this).toggleClass('selected');
 		});
 	},
 	saveLabel:function(){
 		var self = this;
-		jQuery('.anspress').delegate('[data-button="ap-save-label"]', 'click', function(e){
+		jQuery('body').delegate('[data-button="ap-save-label"]', 'click', function(e){
 			e.preventDefault();
 			self.showLoading(aplang.saving_labels);	
 			var args = [];
@@ -988,7 +988,7 @@ APjs.site.prototype = {
 		this.tagsquery;
 		var self = this;
 		
-		jQuery('.anspress').delegate('#ask_question_form .bootstrap-tagsinput input', 'keyup', function(){
+		jQuery('body').delegate('#ask_question_form .bootstrap-tagsinput input', 'keyup', function(){
 			var value = jQuery(this).val();
 			
 			if(value.length == 0)
@@ -1015,7 +1015,7 @@ APjs.site.prototype = {
 						position = container.offset();
 					
 					if(jQuery('#ap-suggestions').length ==0)
-						jQuery('.anspress').append('<div id="ap-suggestions" class="ap-suggestions" style="display:none"></div>');
+						jQuery('body').append('<div id="ap-suggestions" class="ap-suggestions" style="display:none"></div>');
 					
 					if(data['items']){
 						self.tagItems(data['items']);
@@ -1043,7 +1043,7 @@ APjs.site.prototype = {
 	addTag: function(){
 		var self = this;
 		
-		jQuery('.anspress').delegate('[data-action="ap-add-tag"]', 'click touchstart', function(){
+		jQuery('body').delegate('[data-action="ap-add-tag"]', 'click touchstart', function(){
 			jQuery('[data-role="ap-tagsinput"]').tagsinput('add', jQuery(this).data('name'));
 			jQuery('[data-role="ap-tagsinput"]').tagsinput('input').val('');
 			jQuery('#ap-suggestions').hide();
@@ -1112,7 +1112,7 @@ APjs.site.prototype = {
 	},
 	sendMessage:function(){
 		var self = this;
-		jQuery('.anspress').delegate('[data-action="ap-send-message"]', 'submit', function(){
+		jQuery('body').delegate('[data-action="ap-send-message"]', 'submit', function(){
 			jQuery(this).ajaxSubmit({
 				beforeSubmit:  function(){
 					self.showLoading(aplang.sending_message);
@@ -1151,7 +1151,7 @@ APjs.site.prototype = {
 	showConversation:function(){
 		var self = this;
 		
-		jQuery('.anspress').delegate('[data-action="ap-show-conversation"]', 'click', function(e){
+		jQuery('body').delegate('[data-action="ap-show-conversation"]', 'click', function(e){
 			e.preventDefault();
 			self.showLoading(aplang.loading_conversation);
 			jQuery(this).parent().find('li.active').removeClass('active');
@@ -1183,7 +1183,7 @@ APjs.site.prototype = {
 	},
 	newMessageButton: function(){
 		var self = this;
-		jQuery('.anspress').delegate('[data-button="ap-new-message"]', 'click', function(e){
+		jQuery('body').delegate('[data-button="ap-new-message"]', 'click', function(e){
 			e.preventDefault();
 			self.showLoading(aplang.loading_new_message_form);
 			jQuery.ajax({
@@ -1229,13 +1229,13 @@ APjs.site.prototype = {
 		this.usersquery;
 		var self = this;
 		
-		jQuery('.anspress').delegate('[data-action="ap-add-user"]', 'click', function(){
+		jQuery('body').delegate('[data-action="ap-add-user"]', 'click', function(){
 			jQuery('[data-action="ap-suggest-user"]').tagsinput('add', { "value": jQuery(this).data('id'), "text": jQuery(this).data('name')});
 			jQuery('[data-action="ap-suggest-user"]').tagsinput('input').val('');
 			jQuery('#ap-suggestions').hide();
 		});
 		
-		jQuery('.anspress').delegate('#ap-new-message .bootstrap-tagsinput input', 'keyup', function(){
+		jQuery('body').delegate('#ap-new-message .bootstrap-tagsinput input', 'keyup', function(){
 			var value = jQuery(this).val();
 			
 			if(value.length == 0)
@@ -1256,7 +1256,7 @@ APjs.site.prototype = {
 						position = container.offset();
 					
 					if(jQuery('#ap-suggestions').length ==0)
-						jQuery('.anspress').append('<div id="ap-suggestions" class="ap-suggestions user-suggestions" style="display:none"></div>');
+						jQuery('body').append('<div id="ap-suggestions" class="ap-suggestions user-suggestions" style="display:none"></div>');
 					
 					if(data['items']){
 						self.userItems(data['items']);
@@ -1303,7 +1303,7 @@ APjs.site.prototype = {
 	searchMessage: function(){
 		var self = this;
 		
-		jQuery('.anspress').delegate('[data-action="ap-search-conversations"]', 'keyup', function(){
+		jQuery('body').delegate('[data-action="ap-search-conversations"]', 'keyup', function(){
 			var value = jQuery(this).val();
 			
 			if(value.length == 0)
@@ -1342,7 +1342,7 @@ APjs.site.prototype = {
 	},
 	editMessage: function(){
 		var self = this;
-		jQuery('.anspress').delegate('[data-button="ap-edit-message"]', 'click', function(e){
+		jQuery('body').delegate('[data-button="ap-edit-message"]', 'click', function(e){
 			e.preventDefault();
 			self.showLoading(aplang.loading_message_edit_form);
 			self.doAjaxForm(
@@ -1361,7 +1361,7 @@ APjs.site.prototype = {
 			);
 		});
 		
-		jQuery('.anspress').delegate('[data-action="ap-edit-message"]', 'submit', function(){
+		jQuery('body').delegate('[data-action="ap-edit-message"]', 'submit', function(){
 			jQuery(this).ajaxSubmit({
 				beforeSubmit:  function(){
 					self.showLoading(aplang.updating_message);
@@ -1387,7 +1387,7 @@ APjs.site.prototype = {
 	},
 	deleteMessage:function(){
 		var self = this;
-		jQuery('.anspress').delegate('[data-button="ap-delete-message"]', 'click', function(e){
+		jQuery('body').delegate('[data-button="ap-delete-message"]', 'click', function(e){
 			e.preventDefault();
 			self.showLoading(aplang.deleting_message);
 			self.doAjaxForm(
@@ -1409,7 +1409,7 @@ APjs.site.prototype = {
 		this.qquery;
 		var self = this;
 		
-		jQuery('.anspress').delegate('#ap-quick-ask-input', 'keyup', function(){
+		jQuery('body').delegate('#ap-quick-ask-input', 'keyup', function(){
 			var value = jQuery(this).val();
 			
 			if(value.length == 0)
@@ -1432,7 +1432,7 @@ APjs.site.prototype = {
 						position = container.offset();
 					
 					if(jQuery('#ap-qsuggestions').length ==0)
-						jQuery('.anspress').append('<div id="ap-qsuggestions" class="ap-qsuggestions" style="display:none"></div>');
+						jQuery('body').append('<div id="ap-qsuggestions" class="ap-qsuggestions" style="display:none"></div>');
 					
 					if(data['items']){
 						self.qsItems(data['items']);
@@ -1445,7 +1445,7 @@ APjs.site.prototype = {
 			);
 		});
 		
-		jQuery('.anspress').delegate('#ap-qsuggestions', 'click', function(e){
+		jQuery('body').delegate('#ap-qsuggestions', 'click', function(e){
 			jQuery('#ap-qsuggestions').toggle();
 		});
 
@@ -1474,7 +1474,7 @@ APjs.site.prototype = {
 
 	},
 	submitAjaxForm: function(form, before, after){
-		jQuery('.anspress').delegate(form, 'submit', function(){
+		jQuery('body').delegate(form, 'submit', function(){
 			jQuery(this).ajaxSubmit({
 				beforeSubmit:  	before,
 				success: 		after,
@@ -1489,7 +1489,7 @@ APjs.site.prototype = {
 	
 	loadNewTagForm:function(){
 		var self = this;
-		jQuery('.anspress').delegate('#ap-load-new-tag-form', 'click', function(e){
+		jQuery('body').delegate('#ap-load-new-tag-form', 'click', function(e){
 			e.preventDefault();
 			self.showLoading(aplang.loading);
 			self.doAjaxForm(

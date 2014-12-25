@@ -36,21 +36,18 @@ class anspress_main {
 		// Load plugin text domain
 		add_action( 'wp_loaded', array( $this, 'flush_rules' ) );
 		
-		add_action( 'wp', array( $this, 'remove_head_items' ) );
+		//add_action( 'wp', array( $this, 'remove_head_items' ) );
 
 		// Activate plugin when new blog is added
-		add_action( 'wpmu_new_blog', array( $this, 'activate_new_site' ) );
+		//add_action( 'wpmu_new_blog', array( $this, 'activate_new_site' ) );
 
 		add_filter('query_vars', array($this, 'query_var'));
 		
-		add_action('post_type_link', array( $this, 'answer_link'),10,2);
-		add_action('generate_rewrite_rules', array( $this, 'rewrites'), 1);
-		
-		// Add specific CSS class by filter
-		add_filter('body_class', array($this, 'body_class'));
+		//add_action('post_type_link', array( $this, 'answer_link'),10,2);
+		add_action('generate_rewrite_rules', array( $this, 'rewrites'), 1);		
 		
 		add_action('ap_page_top', array($this, 'check_rewrite_rules'));
-		add_action('wp_head', array($this, 'wp_head'));
+		//add_action('wp_head', array($this, 'wp_head'));
 		
 		//update menu url
 		add_filter( 'wp_get_nav_menu_items', array($this, 'update_menu_url'));
@@ -77,32 +74,8 @@ class anspress_main {
 			ap_opt('ap_flush', 'false');
 		}
 	}
-	
-	public function remove_head_items(){
-		if(is_page(ap_opt('base_page'))){
-			remove_action('wp_head', 'rsd_link');
-			remove_action('wp_head', 'wlwmanifest_link');
-			remove_action('wp_head', 'adjacent_posts_rel_link_wp_head', 10, 0 );
-			remove_action('wp_head', 'rel_canonical');
-			remove_action( 'wp_head', 'wp_shortlink_wp_head', 10, 0 );
-			remove_action( 'wp_head', 'feed_links_extra', 3 );
-			remove_action( 'wp_head', 'feed_links', 2 );
-		}
-	}
-	
-	public function wp_head(){
-		if(is_anspress()){
-			$q_feed = get_post_type_archive_feed_link( 'question' );
-			$a_feed = get_post_type_archive_feed_link( 'answer' );
-			echo '<link rel="alternate" type="application/rss+xml" title="'.__('Question feed', 'ap').'" href="'.$q_feed.'" />';
-			echo '<link rel="alternate" type="application/rss+xml" title="'.__('Answers feed', 'ap').'" href="'.$a_feed.'" />';
-		}	
-		
-		if(is_question()){	
-			echo '<link rel="canonical" href="'.get_permalink(get_question_id()).'">';
-			echo '<link rel="shortlink" href="'.wp_get_shortlink(get_question_id()).'" />';
-		}
-	}
+
+
 
 	/**
 	 * Return an instance of this class.
@@ -282,14 +255,7 @@ class anspress_main {
 		return $wp_rewrite->rules = $new_rules + $wp_rewrite->rules;  
 	}  
 	
-	public function body_class($classes){
-		// add anspress class to body
-		if(is_anspress())
-			$classes[] = 'anspress';
-			
-		// return the $classes array
-		return $classes;
-	}
+
 	
 	public function check_rewrite_rules(){
 		if(!is_super_admin())

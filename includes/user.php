@@ -417,39 +417,73 @@ function ap_get_user_question_list($user_id, $limit = 5, $title_limit = 50){
 	return $o;
 }
 
-function ap_user_display_name($id = false, $no_html = false){
-	
-	if(!$id)
-		$id = get_the_author_meta('ID');
-	
-	if ($id > 0){
-		$user = get_userdata($id);
-		
-		if($no_html)
-			return $user->display_name;
-			
-		return '<span class="who"><a href="'.ap_user_link($id).'">'.$user->display_name.'</a></span>';
+/**
+ * For user display name
+ * It can be filtered for adding cutom HTML
+ * @param  mixed $args
+ * @return string
+ * @since 0.1
+ */
+function ap_user_display_name($args = array()){
+
+	$defaults = array(
+			'user_id' 			=> get_the_author_meta('ID'),
+			'html' 				=> false,
+			'echo' 				=> false,
+			'anonymous_label'	=> __('Anonymous', 'ap')
+		);
+
+	if(!is_array($args)){
+		$defaults['user_id'] = $args;
+		$args = $defaults;
+	}else{
+		$args = wp_parse_args( $args, $defaults );		
 	}
+
+	extract($args);
+
+	$return = '';
 	
-	global $post;
-	
-	if($post->post_type =='question' || $post->post_type =='answer' ){
+	if ($user_id > 0){
+		$user = get_userdata($user_id);
+		
+		if(!$html)
+			$return = $user->display_name;
+		else	
+			$return = '<span class="who"><a href="'.ap_user_link($user_id).'">'.$user->display_name.'</a></span>';
+
+	}elseif($post->post_type =='question' || $post->post_type =='answer' ){
+		global $post;
 		$name = get_post_meta($post->ID, 'anonymous_name', true);
 		
-		if($no_html){
+		if(!$html){
 			if($name != '')
-				return $name;
+				$return = $name;
 			else
-				return __('Anonymous', 'ap');
+				$return = $anonymous_label;
 		}else{
 			if($name != '')
-				return '<span class="who">'.$name.'</span>';
+				$return = '<span class="who">'.$name.'</span>';
 			else
-				return '<span class="who">'.__('Anonymous', 'ap').'</span>';
+				$return = '<span class="who">'.$anonymous_label.'</span>';
 		}
+	}else{	
+		$return = '<span class="who">'.$anonymous_label.'</span>';
 	}
+
+	/**
+	 * FILTER: ap_user_display_name
+	 * Filter can be used to alter display name
+	 * @var string
+	 * @since 2.0
+	 */
 	
-	return '<span class="who">'.__('Anonymous', 'ap').'</span>';
+	$return = apply_filters('ap_user_display_name', $return );
+
+	if($echo)
+		echo $return;
+	else
+		return $return;
 }
 
 function ap_user_link($user_id = false, $sub = false){
@@ -980,5 +1014,46 @@ function ap_get_resized_avatar($id_or_email, $size = 32, $default = false){
 	}
 	
 	return $file_url.'/'.$orig_file_name;
+}
+
+/**
+ * Display user meta
+ * @param  	boolean 	$html    	for html output
+ * @param  	int 		$user_id 	User id, if empty then post author witll be user
+ * @param 	boolen 		$echo 
+ * @return 	string
+ */
+function ap_user_display_meta($html = false, $user_id = false, $echo = false){
+
+	if(!$user_id)
+		$id = get_the_author_meta('ID');
+
+	$metas = array();
+
+	$metas['display_name'] = '<span class="ap-user-meta ap-user-meta-display_name">'. ap_user_display_name(array('html' => true)) .'</span>';
+
+	/**
+	 * FILTER: ap_user_display_meta_array
+	 * Can be used to alter user display meta
+	 * @var string
+	 */
+	$metas = apply_filters('ap_user_display_meta_array', $metas );
+
+
+
+	$output = '';
+	
+	if(!empty($metas) && is_array($metas) && count($metas) > 0){
+		$output .= '<div class="ap-user-meta">';
+		foreach($metas as $meta){
+			$output .= $meta. ' ';
+		}
+		$output .= '</div>';
+	}
+
+	if($echo)
+		echo $output;
+	else
+		return $output;
 }
 

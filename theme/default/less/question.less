@@ -1,3 +1,138 @@
 //
 // Question page style
 // --------------------------------------------------
+
+.ap-content{
+	&.question{
+		.ap-single-vote{
+			margin-top: 28px;
+		}
+		.ap-question-cells {
+		    margin-top: 30px;
+		}
+		.ap-question-view-count{
+
+		}
+	}
+	.ap-favorite{
+		float: right;
+		a{
+		    border-radius: 50%;
+		    display: block;
+		    font-size: 20px;
+		    height: 50px;
+		    line-height: 45px;
+		    text-align: center;
+		    width: 50px;
+		    
+		    i{
+			    font-size: 15px;
+    			margin-right: -5px;
+			}
+		}
+		span{
+			display: none;
+		}
+
+	}
+	
+	.ap-user-meta{
+		color: @light-color;
+		margin-bottom: 8px;
+
+	    .ap-user-meta-display_name{
+		    font-size: 16px;
+		    font-weight: @bold;
+		    margin-bottom: 5px;
+		}
+	}
+	.ap-question-metas{
+		li{
+			color:@light-color;
+			i{
+				font-style: normal;
+			}
+
+			&:before {
+			    background: #dadada;
+			    .border-radius(@default-border-radius);
+			    content: "";
+			    display: block;
+			    float: left;
+			    height: 5px;
+			    margin-right: 6px;
+			    margin-top: 7px;
+			    padding: 0;
+			    width: 5px;
+			}
+			&:first-child:before{
+				display: none;
+			}
+		}
+	}
+	.entry-title{
+	    font-size: 32px;
+	    line-height: 42px;
+	}
+	.ap-post-content{
+	    font-size: @font-size-post-content;
+	    line-height: @line-height-post-content;
+
+	    p{
+	    	margin-bottom:20px;
+
+	    	&:last-child{
+	    		margin-bottom: 0;
+	    	}
+	    }
+	}
+	.ap-question-actions-history{
+		margin-bottom:20px;
+	}
+	.ap-user-actions {
+	    margin-top: 25px;
+
+	    a{
+		    color: @light-color;
+		    font-size: 15px;
+		    font-weight: 300;
+		    text-decoration: none;
+
+		    &:hover{
+		    	color: @default-color;
+		    }
+
+	    	i{
+	    		margin-right: 2px;
+	    		font-size: 14px;
+	    	}
+	    }
+	}
+	.ap-posted-in {
+	    color: @light-color;
+	    font-size: 16px;
+	    margin-bottom: -15px;
+	    text-transform: uppercase;
+	}
+
+	.ap-post-tags {
+		margin-top:20px;
+		li a{
+		    border: 2px solid #eee;
+		    .border-radius(16px);
+		    color:@meta-color;
+		    display: block;
+		    padding: 3px 13px;
+		    text-decoration: none;
+
+		    .tax-count{
+		    	font-style: normal;		    	
+		    }
+
+		    &:hover{
+		    	border-color: @main-color;
+		    	color: @default-color;
+		    }
+		}
+	}
+}

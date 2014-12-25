@@ -1,0 +1,72 @@
+//
+// Buttons style
+// --------------------------------------------------
+
+
+// voting button
+.ap-vote{
+    border: 1px solid #d1e8f1;
+    border-radius: 2px;
+    color: #428bca;
+    font-size: 18px;
+    font-weight: 600;
+    margin: 10px auto 0;
+    text-align: center;
+    width: 35px;
+    a{
+    	text-decoration: none;
+    	color: @link-color;
+    	display:block;
+
+    	&.disable{
+			display: none;
+		}
+    }
+    .vote-up{
+    	margin-bottom: -12px;
+        margin-top: 5px;
+	}
+	.vote-down{
+        margin-top: -6px;
+        margin-bottom: 2px;
+	}	
+    .net-vote-count{    	
+	    display: block;
+	    font-size: 16px;
+	    padding: 2px;
+    }
+}
+
+// Favourite button
+.ap-favorite {
+    margin-bottom: 20px;
+    color: @meta-color;
+
+    .favorite-btn{
+        border: 1px solid lighten(@favorite-color, 30%);
+        border-radius: 2px;
+        color: @favorite-color;
+        margin-right: 8px;
+        padding: 0 6px;
+        text-decoration: none;
+
+        &:hover{
+            border-color: @favorite-color;
+        }
+
+        &.added{
+            background: @favorite-color;
+            color: @white;
+            border-color: darken(@favorite-color, 10%)
+        }
+
+        i{
+            display: inline-block;
+            font-size: 12px;
+        }
+    }
+
+    span{
+        font-weight: 300;
+    }
+}

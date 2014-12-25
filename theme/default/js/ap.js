@@ -98,8 +98,18 @@
 })(jQuery);
 
 jQuery(document).ready(function(){
+    jQuery('.ap-tip').tooltipster({
+        contentAsHTML: true, 
+        animation: 'fade', 
+        theme: 'tooltipster-default ap-tip-style', 
+        interactive: true,
+        functionBefore: function(origin, continueTooltip) {
+            var pos = ap_default(origin.data('tipposition'), 'top');
+            jQuery(this).tooltipster('option', 'position', pos);
+            continueTooltip();
+        }
+    });
 
-	jQuery('.ap-tip').tooltipster({contentAsHTML: true, animation: 'fade', theme: 'tooltipster-default ap-tip-style', interactive: true});
 	jQuery('#ap-conversation-scroll').scrollTop(0);
 	//jQuery('#ap-conversation-scroll').perfectScrollbar();
 	

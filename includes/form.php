@@ -1359,7 +1359,10 @@ function ap_ask_form(){
 		do_action('ap_after_ask_form');
 	}
 }
-function ap_answer_form($question_id){
+function ap_answer_form($question_id = false){
+	if(!$question_id){
+		$question_id = get_the_ID();
+	}
 	global $ap_answer_form_validation;
 	$validate = $ap_answer_form_validation;
 	

@@ -1,5 +1,5 @@
 <?php
-	$question_id =get_question_id() ;
+	$question_id =get_query_var('question_id') ;
 	$current_user = get_userdata( get_current_user_id() );
 	$validate = ap_validate_form();
 	

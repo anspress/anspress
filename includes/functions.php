@@ -10,106 +10,7 @@
  */
 
 
-// AnsPress options
-function ap_opt($key = false, $value = false){
-	$settings = wp_cache_get('ap_opt', 'options');
-	
-	if($settings === false){
-		$settings = get_option( 'anspress_opt');
-		if(!$settings)
-			$settings = array();
-		$settings = $settings + ap_default_options();
-		
-		wp_cache_set('ap_opt', $settings, 'options');
-	}	
-	if($value){
 
-		$settings[$key] = $value;		
-		update_option( 'anspress_opt', $settings);
-
-		// clear cache if option updated
-		wp_cache_delete( 'ap_opt', 'options' );
-
-		return;
-	}
-
-	if(!$key)
-		return $settings;
-		
-	if(isset($settings[$key]))
-		return $settings[$key];
-	else
-		return NULL;
-	
-	return false;
-}
-
-
-function ap_default_options(){
-	return array(
-		'custom_signup_url'		=> '',
-		'custom_login_url'		=> '',
-		'show_login_signup' 	=> true,
-		'show_login' 			=> true,
-		'show_signup' 			=> true,
-		'double_titles'			=> false,
-		'show_social_login'		=> false,
-		'theme' 				=> 'default',
-		'author_credits' 		=> false,
-		'clear_database' 		=> false,
-		'minimum_qtitle_length'	=> 3,
-		'minimum_question_length'=> 5,
-		'multiple_answers' 		=> false,
-		'minimum_ans_length' 	=> 5,
-		'avatar_size_qquestion' => 30,
-		'can_private_question'	=> false,
-		'avatar_size_qanswer' 	=> 30,
-		'avatar_size_qcomment' 	=> 25,
-		'down_vote_points' 		=> -1,
-		'flag_note' 			=> array(0 => array('title' => 'it is spam', 'description' => 'This question is effectively an advertisement with no disclosure. It is not useful or relevant, but promotional.')),			
-		'bootstrap' 			=> true,
-		'question_per_page' 	=> '20',
-		'answers_per_page' 		=> '5',
-		'tags_per_page' 		=> '20',
-		
-		'answers_sort' 			=> 'voted',
-		
-		'base_page_title' 		=> 'AnsPress - Question and answer plugin',
-		'ask_page_title' 		=> 'Ask a question',
-		'categories_page_title' => 'AnsPress Categories',
-		'tags_page_title' 		=> 'AnsPress Tags',
-		'users_page_title' 		=> 'AnsPress users',
-		'search_page_title' 	=> 'Search result for %s',
-		
-		'close_selected' 		=> true,
-		'enable_tags' 			=> true,
-		'max_tags'				=> 5,
-		
-		'enable_categories'		=> true,
-		'cover_width'			=> '878',
-		'cover_height'			=> '200',
-		'default_rank'			=> '0',
-		'users_per_page'		=> 15,
-		'cover_width_small'		=> 275,
-		'cover_height_small'	=> 80,
-		'followers_limit'		=> 10,
-		'following_limit'		=> 10,
-		'captcha_ask'			=> true,
-		'captcha_answer'		=> true,
-		'moderate_new_question'	=> 'no_mod',
-		'mod_question_point'	=> 10,
-		'categories_per_page'	=> 20,
-		'question_prefix'		=> 'question',
-		'min_point_new_tag'		=> 100,
-		'min_tags'				=> 2,
-		'allow_anonymous'		=> false,
-		'enable_captcha_skip'	=> false,
-		'captcha_skip_rpoints'	=> 40,
-		'only_admin_can_answer'	=> false,
-		'logged_in_can_see_ans'	=> false,
-		'logged_in_can_see_comment'	=> false
-	);
-}
 
 function ap_theme_list(){
 	$themes = array();
@@ -260,21 +161,40 @@ function ap_get_link_to($sub){
 	return $link. $args ;
 }
 
-function ap_comment_btn_html(){
+/**
+ * Load comment form button
+ * @param  boolean $echo
+ * @return string        
+ * @since 0.1
+ */
+function ap_comment_btn_html($echo = false){
 	if(ap_user_can_comment()){
 		$action = get_post_type(get_the_ID()).'-'.get_the_ID();
 		$nonce = wp_create_nonce( $action );
-		echo '<a href="#ap-comment-area-'.get_the_ID().'" class="comment-btn" data-action="ap-load-comment" data-args="'. get_the_ID().'-'. $nonce .'" title="'.__('Add comment', 'ap').'">'.__('Comment', 'ap').'</a>';
+		$output = '<a href="#ap-comment-area-'.get_the_ID().'" class="comment-btn" data-action="ap-load-comment" data-args="'. get_the_ID().'-'. $nonce .'" title="'.__('Add comment', 'ap').'">'.ap_icon('comment', true).__('Comment', 'ap').'</a>';
+
+		if($echo)
+			echo $output;
+		else
+			return $output;
 	}
 }
-function ap_edit_q_btn_html(){
+
+//TODO: fix edit link, do edit on same page
+//
+function ap_edit_q_btn_html($echo = false){
 	$post_id = get_the_ID();
 	if(ap_user_can_edit_question($post_id)){		
 		$action = 'question-'.$post_id;
 		$nonce = wp_create_nonce( $action );
 		$edit_link = add_query_arg( array('edit_q' => $post_id, 'nonce' => $nonce), get_permalink( ap_opt('base_page')) );
 		//$args = json_encode(array('action' => 'ap_load_edit_form', 'id'=> $post_id, 'nonce' => $nonce, 'type' => 'question'));
-		echo "<a href='$edit_link' data-button='ap-edit-post' title='".__('Edit this question', 'ap')."' class='apEditBtn ".ap_icon('edit')."'><span>".__('Edit', 'ap')."</span></a>";
+		$output = "<a href='$edit_link' data-button='ap-edit-post' title='".__('Edit this question', 'ap')."' class='apEditBtn'>".ap_icon('edit', true)."<span>".__('Edit', 'ap')."</span></a>";
+
+		if($echo)
+			echo $output;
+		else
+			return $output;
 	}
 	return;
 }
@@ -616,7 +536,7 @@ function ap_select_answer_btn_html($post_id){
 	}
 }
 
-function ap_post_delete_btn_html($post_id = false){
+function ap_post_delete_btn_html($post_id = false, $echo = false){
 	if(!$post_id){
 		$post_id = get_the_ID();
 	}
@@ -624,7 +544,12 @@ function ap_post_delete_btn_html($post_id = false){
 		$action = 'delete_post_'.$post_id;
 		$nonce = wp_create_nonce( $action );
 		
-		echo '<a href="#" class="delete-btn" data-button="ap-delete-post" data-args="'. $post_id.'-'. $nonce .'" title="'.__('Delete', 'ap').'">'.__('Delete', 'ap').'</a>';
+		$output = '<a href="#" class="delete-btn" data-button="ap-delete-post ap-tip" data-args="'. $post_id.'-'. $nonce .'" title="'.__('Delete', 'ap').'">'.ap_icon('delete', true).__('Delete', 'ap').'</a>';
+
+		if($echo)
+			echo $output;
+		else
+			return $output;
 	}
 }
 

@@ -947,13 +947,7 @@ public function ap_menu_metaboxes(){
 							<label for="author_credits">Hide Author Credits</label>
 						</td>
 					</tr>
-					<tr valign="top">
-						<th scope="row">Double titles</th>
-						<td>
-							<input type="checkbox" id="double_titles" name="anspress_opt[double_titles]" value="1" <?php checked( true, $settings['double_titles'] ); ?> />
-							<label for="double_titles">If you see double titles on your pages enable this checkbox </label>
-						</td>
-					</tr>
+					
 					<tr valign="top">
 						<th scope="row">Disable private question</th>
 						<td>
@@ -1043,6 +1037,13 @@ public function ap_menu_metaboxes(){
 						<td>
 							<input type="number" min="1" name="anspress_opt[avatar_size_qanswer]" id="avatar_size_qanswer" value="<?php echo $settings['avatar_size_qanswer'] ; ?>" />
 							<p class="description"><?php _e('User avatar in question page answers.', 'ap'); ?></p>
+						</td>
+					</tr>
+					<tr valign="top">
+						<th scope="row"><?php _e('Show title inside question', 'ap') ?></th>
+						<td>
+							<input type="checkbox" id="show_title_in_question" name="anspress_opt[show_title_in_question]" value="1" <?php checked( true, $settings['show_title_in_question'] ); ?> />
+							<label for="show_title_in_question"><?php _e('Show title inside question, for theme layout', 'ap') ?></label>
 						</td>
 					</tr>
 				</table>
@@ -1167,13 +1168,7 @@ public function ap_menu_metaboxes(){
 							<p class="description"><?php _e('Answers to show per page in question page', 'ap'); ?></p>
 						</td>
 					</tr>					
-					<tr valign="top">
-						<th scope="row"><label for="tags_per_page"><?php _e('Tags per page', 'ap'); ?></label></th>
-						<td>
-							<input type="number" min="1" name="anspress_opt[tags_per_page]" id="tags_per_page" value="<?php echo $settings['tags_per_page'] ; ?>" />								
-							<p class="description"><?php _e('Tags to show per page', 'ap'); ?></p>
-						</td>
-					</tr>
+					
 					<tr valign="top">
 						<th scope="row"><label for="users_per_page"><?php _e('Users per page', 'ap'); ?></label></th>
 						<td>
@@ -1209,46 +1204,7 @@ public function ap_menu_metaboxes(){
 							<p class="description"><?php _e('Default active tab for answers list', 'ap'); ?></p>
 						</td>
 					</tr>
-				</table>
-				<h3 class="ap-option-section"><?php _e('Page titles', 'ap'); ?></h3>
-				<table class="form-table">
-					<tr valign="top">
-						<th scope="row"><label for="base_page_title"><?php _e('Base page title', 'ap'); ?></label></th>
-						<td>
-							<input type="text" name="anspress_opt[base_page_title]" id="base_page_title" value="<?php echo $settings['base_page_title'] ; ?>" />
-						</td>
-					</tr>
-					<tr valign="top">
-						<th scope="row"><label for="ask_page_title"><?php _e('Ask page title', 'ap'); ?></label></th>
-						<td>
-							<input type="text" name="anspress_opt[ask_page_title]" id="ask_page_title" value="<?php echo $settings['ask_page_title'] ; ?>" />
-						</td>
-					</tr>
-					<tr valign="top">
-						<th scope="row"><label for="categories_page_title"><?php _e('Categories page title', 'ap'); ?></label></th>
-						<td>
-							<input type="text" name="anspress_opt[categories_page_title]" id="categories_page_title" value="<?php echo $settings['categories_page_title'] ; ?>" />
-						</td>
-					</tr>
-					<tr valign="top">
-						<th scope="row"><label for="tags_page_title"><?php _e('Tags page title', 'ap'); ?></label></th>
-						<td>
-							<input type="text" name="anspress_opt[tags_page_title]" id="tags_page_title" value="<?php echo $settings['tags_page_title'] ; ?>" />
-						</td>
-					</tr>
-					<tr valign="top">
-						<th scope="row"><label for="users_page_title"><?php _e('Users page title', 'ap'); ?></label></th>
-						<td>
-							<input type="text" name="anspress_opt[users_page_title]" id="users_page_title" value="<?php echo $settings['users_page_title'] ; ?>" />
-						</td>
-					</tr>
-					<tr valign="top">
-						<th scope="row"><label for="search_page_title"><?php _e('Search page title', 'ap'); ?></label></th>
-						<td>
-							<input type="text" name="anspress_opt[search_page_title]" id="search_page_title" value="<?php echo $settings['search_page_title'] ; ?>" />
-						</td>
-					</tr>
-				</table>
+				</table>				
 			</div>
 			<?php
         }elseif ($active == 'spam') {
