@@ -14,12 +14,6 @@ global $post;
 	<div class="ap-question-lr">		
 		<div class="ap-question-left">
 			<div id="question" role="main" class="ap-content question" data-id="<?php echo get_the_ID(); ?>">
-				<!-- <div class="ap-question-view-count">
-					<?php 
-						$view_count = ap_get_qa_views();
-						printf( _n('<b>%d</b>View', '<b>%d</b><span>Views</span>', $view_count, 'ap'), $view_count) ;
-					?>
-				</div> -->
 				<?php 
 					/**
 					 * ACTION: ap_before_question_title
@@ -98,7 +92,7 @@ global $post;
 			<?php
 
 				if(ap_have_ans(get_the_ID())){
-					ap_get_best_answer();
+					include(ap_get_theme_location('best_answer.php'));
 					ap_get_answers();
 				} 
 			?>

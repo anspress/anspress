@@ -590,7 +590,8 @@ function ap_icon($name, $html = false){
 		'upload' 			=> 'icon-upload',
 		'unchecked' 		=> 'icon-checkbox-unchecked',
 		'checked' 			=> 'icon-checkbox-checked',
-		'select' 				=> 'icon-check',
+		'check' 			=> 'icon-check',
+		'select' 			=> 'icon-check',
 		'new_question' 		=> 'icon-question',
 		'new_answer' 		=> 'icon-answer',
 		'new_comment' 		=> 'icon-talk-chat',
@@ -608,6 +609,7 @@ function ap_icon($name, $html = false){
 		'answer'			=> 'icon-comment',
 		'view'				=> 'icon-eye',
 		'vote'				=> 'icon-triangle-up',
+		'cross'				=> 'icon-x',
 	);
 	
 	$icons = apply_filters('ap_icon', $icons);
@@ -647,8 +649,11 @@ function ap_post_actions_buttons()
 	/**
 	 * edit question link
 	 */
-	if(ap_user_can_edit_question($post->ID))
+	if(ap_user_can_edit_question($post->ID) && $post->post_type == 'question')
 		$actions['edit_question'] = ap_edit_q_btn_html();
+
+	if(ap_user_can_edit_ans($post->ID) && $post->post_type == 'answer')
+		$actions['edit_answer'] = ap_edit_a_btn_html();
 	
 	if(is_user_logged_in())
 		$actions['flag'] = ap_flag_btn_html();
@@ -750,13 +755,13 @@ function ap_answers_tab(){
 	if(empty($sort ))
 		$sort = ap_opt('answers_sort');
 		
-		$link = '?sort=';
+		$perma = get_permalink();
 		
 		$navs = array(
-			'active' => array('link' => $link.'active', 'title' => __('Active', 'ap')), 
-			'newest' => array('link' => $link.'newest', 'title' => __('Newest', 'ap')), 
-			'oldest' => array('link' => $link.'oldest', 'title' => __('Oldest', 'ap')), 
-			'voted' => array('link' => $link.'voted', 'title' => __('Voted', 'ap')), 
+			'active' => array('link' => add_query_arg(  array('sort' => 'active'), $perma), 'title' => __('Active', 'ap')),
+			'voted' => array('link' => add_query_arg(  array('sort' => 'voted'), $perma), 'title' => __('Voted', 'ap')), 
+			'newest' => array('link' =>add_query_arg(  array('sort' => 'newest'), $perma), 'title' => __('Newest', 'ap')), 
+			'oldest' => array('link' => add_query_arg(  array('sort' => 'oldest'), $perma), 'title' => __('Oldest', 'ap')),			
 			);
 
 		echo '<ul class="ap-answers-tab ap-tab ap-ul-inline clearfix">';
@@ -766,3 +771,37 @@ function ap_answers_tab(){
 		echo '</ul>';
 }
 
+/**
+ * Answer meta to display 
+ * @param  int $answer_id
+ * @return string
+ * @since 2.0
+ */
+function ap_display_answer_metas($answer_id =  false){
+	if (!$answer_id) {
+		$answer_id = get_the_ID();
+	}
+
+	$metas = array();
+
+	$metas['history'] = ap_last_active_time($answer_id);
+	$metas['created'] = sprintf( __( '<span>Created</span> <i><time itemprop="datePublished" datetime="%s">%s Ago</time></i>', 'ap' ), get_the_time('c', $answer_id), ap_human_time( get_the_time('U')));
+
+	
+	
+	/**
+	 * FILTER: ap_display_answer_meta
+	 * Used to filter answer display meta
+	 * @since 2.0
+	 */
+	$metas = apply_filters('ap_display_answer_metas', $metas, $answer_id );
+
+	$output = '';
+	if (!empty($metas) && is_array($metas)) {
+		foreach ($metas as $meta => $display) {
+			$output .= "<li class='ap-display-meta-item {$meta}'>{$display}</li>";
+		}
+	}
+
+	return $output;
+}

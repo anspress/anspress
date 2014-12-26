@@ -86,31 +86,50 @@ class Answers_Query extends WP_Query {
         if($this->args['only_best_answer']){
             $this->args[ 'orderby'] = 'meta_value' ;
             $this->args[ 'meta_key'] = ANSPRESS_BEST_META;
-            $this->args[ 'meta_compare'] = 'EXISTS';
-            $this->args[ 'showposts'] = 1;
+            $this->args[ 'meta_compare'] = '=';
+            $this->args[ 'meta_value'] = '1';
+            //$this->args[ 'showposts'] = 1;
         }else{
             switch ( $this->args[ 'orderby' ] ) {
                 case 'voted' :
                     $this->args[ 'orderby'] = 'meta_value_num' ;
-                    $this->args[ 'meta_key'] = ANSPRESS_VOTE_META;
+                    $this->args['meta_query']  = array(
+                        'relation' => 'AND',
+                        array(
+                            'key'       => ANSPRESS_VOTE_META,
+                        ),
+                        array(
+                            'key'           => ANSPRESS_BEST_META,
+                            'type'          => 'BOOLEAN',
+                            'compare'       => '!=',
+                            'value'         => '1'
+                        )
+                    );
                 break;
                 case 'oldest' :
                     $this->args['orderby'] = 'date';
                     $this->args['order'] = 'ASC';
                 break;
-                case 'active' :
+                case 'newest' :
+                    $this->args['orderby'] = 'date';
+                    $this->args['order'] = 'DESC';
+                break;
+                default :
                     $this->args['orderby'] = 'meta_value';
                     $this->args['meta_key'] = ANSPRESS_UPDATED_META;
                     $this->args['meta_query']  = array(
-                        'relation' => 'OR',
+                        'relation' => 'AND',
                         array(
-                            'key' => ANSPRESS_UPDATED_META
-                        ),
+                            'key'           => ANSPRESS_BEST_META,
+                            'type'          => 'BOOLEAN',
+                            'compare'       => '!=',
+                            'value'         => '1'
+                        )
                     );
                 break;
-
                 //TOOD: Add more orderby like most viewed, and user order like 'answered by user_id', 'asked_by_user_id'
             }
+
         }
          
     }
@@ -128,15 +147,15 @@ endif;
 function ap_get_answers($args = array()){
     global $answers;
 
-    if(is_question()){
-        $order = get_query_var('sort');
-        if(empty($order ))
-            $order = ap_opt('answers_sort');
-    }
+    $sort = get_query_var('sort');
+    if(empty($sort ))
+        $sort = ap_opt('answers_sort');
+
+    $args['orderby'] = $sort;
     
     
     $answers = new Answers_Query($args);    
-    
+
     // get answer sorting tab
     echo '<div id="ap-answers-c">';             
             include(ap_get_theme_location('answers.php'));      
@@ -144,17 +163,18 @@ function ap_get_answers($args = array()){
     wp_reset_postdata();
 }
 
+/** 
+ * Get select answer object
+ * @since   2.0
+ */
 function ap_get_best_answer($question_id = false){
     global $answers;
     if(!$question_id) 
         $question_id = get_the_ID();
 
     $answers = new Answers_Query(array('only_best_answer' => true, 'question_id' => $question_id));    
-
-    echo '<div id="ap-best-answer">';
         while ( $answers->have_posts() ) : $answers->the_post(); 
             include(ap_get_theme_location('answer.php'));
         endwhile;
-    echo '</div>';
     wp_reset_postdata();
 }

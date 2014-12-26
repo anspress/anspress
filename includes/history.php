@@ -176,7 +176,16 @@ function ap_get_latest_history($post_id){
  * @since 2.0
  */
 function ap_last_active_time($post_id = false, $html = true){
+	$post = get_post($post_id);
+	$post_id = !$post_id ? get_the_ID() : $post_id;
+
 	$history = ap_get_latest_history($post_id);
+
+	if(!$history){
+		$history['date'] = get_the_time('c', $post_id);
+		$history['user_id'] = $post->post_author;
+		$history['type'] 	= 'new_'.$post->post_type;
+	}
 
 	$o = '';
 	
@@ -190,7 +199,14 @@ function ap_last_active_time($post_id = false, $html = true){
 }
 
 function ap_get_latest_history_html($post_id, $avatar = false, $icon = false){
+	$post = get_post($post_id);
 	$history = ap_get_latest_history($post_id);
+	
+	if(!$history){
+		$history['date'] 	= get_the_time('c', $post_id);
+		$history['user_id'] = $post->post_author;
+		$history['type'] 	= 'new_'.$post->post_type;
+	}
 
 	$html = '';
 	if($history){
@@ -218,7 +234,7 @@ function ap_get_latest_history_html($post_id, $avatar = false, $icon = false){
 		$html .= '<span class="ap-post-history">'.sprintf( __('%s %s about <time class="updated" datetime="'. mysql2date('c', $history['date']) .'">%s</time> ago', 'ap'), ap_user_display_name($history['user_id']), $title, ap_human_time( mysql2date('U', $history['date'])) ).'</span>';
 
 		
-	}elseif(!$icon){
+	}elseif(!$icon && $post->post_type = 'question'){
 		$html = '<span class="ap-post-history">'.sprintf( __('Asked by %s', 'ap'), ap_user_display_name() ).'</span>';
 	}
 	

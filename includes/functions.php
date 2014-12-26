@@ -111,6 +111,22 @@ function ap_count_ans_meta($post_id =false){
 	 return $count ? $count : 0;
 }
 
+/**
+ * Count all answers excluding best answer
+ * @return int
+ */
+function ap_count_other_answer($question_id =false){
+	if(!$question_id) $question_id = get_the_ID();
+
+	$count = ap_count_ans_meta($question_id);
+	
+	if(ap_is_answer_selected($question_id))
+		return ($count - 1);
+
+	return $count;
+	
+}
+
 function ap_last_active($post_id =false){
 	if(!$post_id) $post_id = get_the_ID();
 	return get_post_meta($post_id, ANSPRESS_UPDATED_META, true);
@@ -199,16 +215,19 @@ function ap_edit_q_btn_html($echo = false){
 	return;
 }
 
-function ap_edit_a_btn_html(){
+function ap_edit_a_btn_html( $echo = false ){
 	if(!is_user_logged_in())
 		return;
 		
 	$post_id = get_edit_answer_id();
 	if(ap_user_can_edit_ans($post_id)){		
 		$edit_link = ap_answer_edit_link();
-		echo "<a href='$edit_link.' class='edit-btn aicon-edit' data-button='ap-edit-post' title='".__('Edit Answer', 'ap')."'>".__('Edit', 'ap')."</a>";
+		$output = "<a href='$edit_link.' class='edit-btn aicon-edit' data-button='ap-edit-post' title='".__('Edit Answer', 'ap')."'>".ap_icon('edit', true).__('Edit', 'ap')."</a>";
 	}
-	return;
+	if($echo)
+			echo $output;
+	else
+		return $output;
 }
 
 function ap_post_edited_time() {
@@ -365,10 +384,10 @@ function ap_select_answer_btn_html($post_id){
 	$nonce = wp_create_nonce( $action );	
 	
 	if(!ap_is_answer_selected($ans->post_parent)){		
-		return '<a href="#" class="ap-btn-select ap-sicon '.ap_icon('tick').' ap-tip" data-button="ap-select-answer" data-args="'. $post_id.'-'. $nonce .'" title="'.__('Select this answer as best', 'ap').'"></a>';
+		return '<a href="#" class="ap-btn-select ap-sicon '.ap_icon('check').' ap-tip" data-button="ap-select-answer" data-args="'. $post_id.'-'. $nonce .'" title="'.__('Select this answer as best', 'ap').'">'.__('Select answer', 'ap').'</a>';
 		
 	}elseif(ap_is_answer_selected($ans->post_parent) && ap_is_best_answer($ans->ID)){
-		return '<a href="#" class="ap-btn-select ap-sicon '.ap_icon('tick').' selected ap-tip" data-button="ap-select-answer" data-args="'. $post_id.'-'. $nonce .'" title="'.__('Unselect this answer', 'ap').'"></a>';
+		return '<a href="#" class="ap-btn-select ap-sicon '.ap_icon('cross').' selected ap-tip" data-button="ap-select-answer" data-args="'. $post_id.'-'. $nonce .'" title="'.__('Unselect this answer', 'ap').'">'.__('Unselect answer', 'ap').'</a>';
 		
 	}
 }
