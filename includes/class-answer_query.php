@@ -119,12 +119,20 @@ class Answers_Query extends WP_Query {
                     $this->args['meta_key'] = ANSPRESS_UPDATED_META;
                     $this->args['meta_query']  = array(
                         'relation' => 'AND',
+
+                        array(
+                            'key'           => ANSPRESS_UPDATED_META,
+                            //'type'          => 'BOOLEAN',
+                            'compare'       => '>',
+                            //'value'         => '1'
+                        ),
                         array(
                             'key'           => ANSPRESS_BEST_META,
                             'type'          => 'BOOLEAN',
                             'compare'       => '!=',
                             'value'         => '1'
                         )
+                        
                     );
                 break;
                 //TOOD: Add more orderby like most viewed, and user order like 'answered by user_id', 'asked_by_user_id'
