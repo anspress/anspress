@@ -616,6 +616,12 @@ class anspress_form
 		if($post_type == 'question' || $post_type =='answer')
 			echo '<div class="ap-comment-sc"><button class="ap-btn-comment ap-btn ap-btn-small" type="submit">' . __( 'Submit' ) . '</button></div>';
     }
+
+    /**
+     * Load comment form
+     * @return string
+     * @since unknown
+     */
 	public function load_ajax_commentform(){
 		if(!ap_user_can_comment()){
 			_e('No Permission', 'ap');
@@ -628,11 +634,11 @@ class anspress_form
 			$comment_args = array(
 				'title_reply' => '',
 				'logged_in_as' => '',
-				'comment_field' => '<div class="ap-comment-ta"><textarea name="comment" rows="3" aria-required="true" class="form-control autogrow" placeholder="'.__('Respond to the post.', 'ap').'"></textarea></div><input type="hidden" name="ap_comment_form" value="true"/>',
+				'comment_field' => '<textarea name="comment" rows="3" aria-required="true" id="ap-comment-textarea" class="form-control autogrow" placeholder="'.__('Respond to the post.', 'ap').'"></textarea><input type="hidden" name="ap_comment_form" value="true"/>',
 				'comment_notes_after' => ''
 			);
 			$current_user = get_userdata( get_current_user_id() );
-			echo '<div class="comment-form-c clearfix">';
+			echo '<div class="ap-comment-form clearfix">';
 				echo '<div class="ap-content-inner">';
 					comment_form($comment_args, $args[0] );
 				echo '</div>';

@@ -805,3 +805,35 @@ function ap_display_answer_metas($answer_id =  false){
 
 	return $output;
 }
+
+
+function ap_comment_actions_buttons()
+{
+	global $comment;
+	$post = get_post($comment->comment_post_ID);
+
+	if(!$post->post_type == 'question' || !$post->post_type == 'answer')
+		return;
+
+	$actions = array();
+
+	if(ap_user_can_edit_comment(get_comment_ID()))
+		$actions['edit'] = '<a class="comment-edit-btn" href="#" data-button="ap-edit-comment" data-args="'.get_comment_ID().'-'.wp_create_nonce( 'comment-'.get_comment_ID() ).'">'.ap_icon('edit', true).__('Edit', 'ap').'</a>';
+
+	if(ap_user_can_delete_comment(get_comment_ID()))
+		$actions['delete'] = '<a class="comment-delete-btn" href="#" data-button="ap-delete-comment" data-confirm="'.__('Are you sure? It cannot be undone!', 'ap').'" data-args="'.get_comment_ID().'-'.wp_create_nonce( 'delete-comment-'.get_comment_ID() ).'">'.ap_icon('delete', true).__('Delete', 'ap').'</a>';
+
+	/**
+	 * FILTER: ap_comment_actions_buttons
+	 * For filtering post actions buttons
+	 * @var 	string
+	 * @since 	2.0
+	 */
+	$actions = apply_filters('ap_comment_actions_buttons', $actions );
+
+	if (!empty($actions) && count($actions) > 0) {
+		foreach($actions as $k => $action){
+			echo '<span class="ap-comment-action ap-action-'.$k.'">'.$action.'</span>';
+		}
+	}
+}

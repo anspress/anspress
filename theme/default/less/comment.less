@@ -1,0 +1,53 @@
+//
+// Comments
+// --------------------------------------------------
+
+.ap-comments{
+	&.have-comments{
+		margin-top: 30px;
+	}
+	.ap-commentlist {
+	    list-style: none outside none;
+	    margin: 0;
+	    padding: 0;
+
+	    .comment{
+	    	border-top: solid 1px @default-border-color;
+		    color: #777777;
+		    font-size: 13px;
+		    line-height: 22px;
+		    margin-bottom: 20px;
+		    padding-top: 20px;
+
+		    &:last-child{
+		    	margin-bottom:0;
+		    }
+		    .ap-comment-time{
+		    	margin-right: 10px;
+		    }
+		    .ap-comment-action{
+		    	margin-right:5px;
+		    	white-space: nowrap;
+		    	a{
+		    		text-decoration: none;
+		    	}
+		    	i{
+		    		font-size: 10px;
+		    	}
+		    }
+	    }
+	}
+}
+
+.ap-comment-form{
+	#ap-comment-textarea{
+	    background: #f2f2f2;
+	    border: medium none;
+	    .box-shadow(none);
+	    margin-bottom: 15px;
+	    padding: 15px;
+	}
+	#submit{
+		.ap-btn;
+	}
+}

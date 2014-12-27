@@ -94,41 +94,41 @@ if ( ! function_exists( 'ap_comment' ) ) :
 		?>
 		<li <?php comment_class(); ?> id="li-comment-<?php comment_ID(); ?>">
 			<!-- comment #<?php comment_ID(); ?> -->
-			<article id="comment-<?php comment_ID(); ?>" class="comment">
-				<div class="ap-avatar">
+			<article id="comment-<?php comment_ID(); ?>">
+				<div class="ap-avatar ap-pull-left">
 					<a href="<?php echo ap_user_link($comment->user_id); ?>">
-					<?php echo get_avatar( $comment, ap_opt('avatar_size_qcomment') ); ?>
+					<!-- TODO: OPTION - Avatar size -->
+					<?php echo get_avatar( $comment, 30 ); ?>
 					</a>
 				</div>
-				<div class="comment-content">
+				<div class="ap-comment-content no-overflow">
 					<?php if ( '0' == $comment->comment_approved ) : ?>
 						<p class="comment-awaiting-moderation"><?php _e( 'Your comment is awaiting moderation.', 'ap' ); ?></p>
 					<?php endif; ?>
 										
-					<p class="ap-comment-texts">
+					<div class="ap-comment-texts">
 						<?php echo get_comment_text(); ?>
 						<?php $a=" e ";$b=" ";$time=get_option('date_format').$b.get_option('time_format').$a.get_option('gmt_offset');
-								printf( ' - <a title="%6$s" href="#li-comment-%7$s"><time datetime="%1$s">%2$s %3$s %5$s %4$s</time></a>',
+								printf( ' - <a title="%4$s" href="#li-comment-%5$s" class="ap-comment-time"><time datetime="%1$s">%2$s %3$s</time></a>',
 								get_comment_time( 'c' ),
 								ap_human_time(get_comment_time('U')),
 								__('ago', 'ap'),
-								$author = get_comment_author( $comment),
-								__('by','ap'),
 								get_comment_time($time),
 								$comment_id = get_comment_ID()
 							);
+
+							// Comment actions
+							ap_comment_actions_buttons();
 						?>
-					</p>
-					<div class="comment-meta">
-						<?php
-							
-							if(ap_user_can_edit_comment(get_comment_ID()))
-								echo '<a class="comment-edit-btn" href="#" data-button="ap-edit-comment" data-args="'.get_comment_ID().'-'.wp_create_nonce( 'comment-'.get_comment_ID() ).'"><i class="aicon-pencil"></i> '.__('Edit', 'ap').'</a>';
-							
-							if(ap_user_can_delete_comment(get_comment_ID()))
-								echo '<a class="comment-delete-btn" href="#" data-button="ap-delete-comment" data-confirm="'.__('Are you sure? It cannot be undone!', 'ap').'" data-args="'.get_comment_ID().'-'.wp_create_nonce( 'delete-comment-'.get_comment_ID() ).'"><i class="aicon-close"></i> '.__('Delete', 'ap').'</a>';
-						?>
-					</div>					
+					</div>
+					<?php
+						/**
+						 * ACTION: ap_after_comment_content
+						 * Action called after comment content
+						 * @since 2.0
+						 */
+						do_action('ap_after_comment_content', $comment );
+					?>
 				</div>
 			</article>
 		<?php
