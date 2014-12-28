@@ -63,7 +63,7 @@ function anspress_activate( $network_wide ) {
 			if($new_page_id){
 				$page = get_post($new_page_id);
 				ap_opt("{$k}_page_slug", $page->post_name);
-				ap_opt("{$k}_page_id", $new_page_id);
+				ap_opt("{$k}_page_id", $page->ID);
 			}
 		}
 	}

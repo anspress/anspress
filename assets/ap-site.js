@@ -17,12 +17,14 @@ APjs.site = function() {};
 APjs.site.prototype = {
 	
 	/* automatically called */
-	initialize: function() {		
+	initialize: function() {
+
 		if(jQuery('.ap-signup-fields #password').length > 0){		
 			jQuery('.ap-signup-fields #password1').on('keyup', jQuery.proxy(this.checkPasswordMatch, this, '.ap-signup-fields #password', '.ap-signup-fields #password1'));
 			jQuery('.ap-signup-fields #password').on('keyup', jQuery.proxy(this.checkPasswordLength, this, '#password'));
 		}
 		
+		this.onWidnowReady();
 		this.checkEmail();
 		this.checkEmailAvailable();
 		
@@ -69,7 +71,10 @@ APjs.site.prototype = {
 		this.newTag();
 		this.loginAccor();
 		
+		this.expandToggle();
 		
+		
+
 		jQuery('body').delegate('.ap-modal-bg, .ap-modal-close', 'click', function () {
 			jQuery('.ap-modal.active').toggleClass('active');
 		});
@@ -87,6 +92,14 @@ APjs.site.prototype = {
 			jQuery(id).addClass('active');
 		});
 		
+		
+	},
+
+	onWidnowReady:function(){
+		var self = this;
+		jQuery(window).ready(function(){
+			self.foldContent();
+		})
 		
 	},
 	
@@ -1542,6 +1555,23 @@ APjs.site.prototype = {
 				$elm.removeClass('active');
 				$elm.find('.accordion-content').hide();
 			}
+		});
+	},
+	foldContent: function(){
+		jQuery('[data-action="ap_fold_content"]').each(function(e){
+			if(jQuery('.ap-fold-inner', this).height() > 80)
+				jQuery(this).next().show();
+		});
+	},
+
+	expandToggle: function(){
+		var self = this;
+		jQuery('[data-button="ap_expand_toggle"]').click(function(e){
+			e.preventDefault();
+
+			jQuery(this).prev().animate({'height': jQuery(this).prev().find('> *').height() }, 200);
+			jQuery(this).hide();
+
 		});
 	}
 	

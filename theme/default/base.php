@@ -13,7 +13,7 @@
 	?>
 		</div>
 	<?php 
-
+		ap_pagination();
 	?>
 	<?php
 		else : 

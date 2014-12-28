@@ -242,7 +242,7 @@ add_action( 'plugins_loaded', array( 'anspress_form', 'get_instance' ) );
 add_action( 'plugins_loaded', array( 'anspress_ajax', 'get_instance' ) );
 
 add_action( 'plugins_loaded', array( 'AP_Participents', 'get_instance' ) );
-add_action( 'plugins_loaded', array( 'AP_labels', 'get_instance' ) );
+//add_action( 'plugins_loaded', array( 'AP_labels', 'get_instance' ) );
 add_action( 'plugins_loaded', array( 'AP_User', 'get_instance' ) );
 add_action( 'plugins_loaded', array( 'AP_Ranks', 'get_instance' ) );
 add_action( 'plugins_loaded', array( 'AP_Badges', 'get_instance' ) );

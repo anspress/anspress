@@ -28,25 +28,43 @@ function ap_get_theme(){
 	return ap_opt('theme');
 }
 
-// get the location of the theme
-function ap_get_theme_location($file){
+/**
+ * Get location to a file
+ * First file is looked inside active WordPress theme directory /anspress.
+ * @param  	string  	$file   	file name
+ * @param  	mixed 		$plugin   	Plugin path
+ * @return 	string 
+ * @since 	0.1         
+ */
+function ap_get_theme_location($file, $plugin = false){
 	// checks if the file exists in the theme first,
 	// otherwise serve the file from the plugin
 	if ( $theme_file = locate_template( array( 'anspress/'.$file ) ) ) {
 		$template_path = $theme_file;
-	} else {
+	} elseif($plugin !== false) {
+		$template_path = $plugin .'/theme/'.$file;
+	}else {
 		$template_path = ANSPRESS_THEME_DIR .'/'.ap_get_theme().'/'.$file;
 	}
 	return $template_path;
 }
 
-// get the url theme
-function ap_get_theme_url($file){
+/**
+ * Get url to a file
+ * Used for enqueue CSS or JS
+ * @param  		string  $file   
+ * @param  		mixed $plugin 
+ * @return 		string          
+ * @since  		2.0
+ */
+function ap_get_theme_url($file, $plugin = false){
 	// checks if the file exists in the theme first,
 	// otherwise serve the file from the plugin
 	if ( $theme_file = locate_template( array( 'anspress/'.$file ) ) ) {
 		$template_url = get_template_directory_uri().'/anspress/'.$file;
-	} else {
+	} elseif($plugin !== false) {
+		$template_url = $plugin .'theme/'.$file;
+	}else {
 		$template_url = ANSPRESS_THEME_URL .'/'.ap_get_theme().'/'.$file;
 	}
 	return $template_url;
@@ -218,11 +236,11 @@ function ap_edit_q_btn_html($echo = false){
 function ap_edit_a_btn_html( $echo = false ){
 	if(!is_user_logged_in())
 		return;
-		
+	$output = '';	
 	$post_id = get_edit_answer_id();
 	if(ap_user_can_edit_ans($post_id)){		
 		$edit_link = ap_answer_edit_link();
-		$output = "<a href='$edit_link.' class='edit-btn aicon-edit' data-button='ap-edit-post' title='".__('Edit Answer', 'ap')."'>".ap_icon('edit', true).__('Edit', 'ap')."</a>";
+		$output .= "<a href='$edit_link.' class='edit-btn aicon-edit' data-button='ap-edit-post' title='".__('Edit Answer', 'ap')."'>".ap_icon('edit', true).__('Edit', 'ap')."</a>";
 	}
 	if($echo)
 			echo $output;
@@ -288,6 +306,7 @@ function ap_get_all_users(){
 	ap_pagination(ceil( $total_terms / $per_page ), $range = 1, $paged);
 }
 
+/* TODO: REMOVE - base page slug*/
 function ap_base_page_slug(){
 	$base_page_slug = ap_opt('base_page_slug');
 	

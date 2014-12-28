@@ -8,6 +8,19 @@
     .border-radius(@default-border-radius);
     border:none;
     padding: 10px 20px;
+    text-decoration: none;
+
+    &.ap-btn-transparent{
+        background: none;
+        border: solid 1px #eee;
+        color: @light-color;
+        &:hover{
+            border-color: @blue-color;
+        }
+    }
+    &:hover{
+        text-decoration: none;
+    }
 }
 
 // voting button

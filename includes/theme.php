@@ -31,7 +31,9 @@ class AnsPress_Theme {
 		add_filter( 'the_title', array($this, 'the_title'), 100, 2 );
 		//add_filter( 'wp_head', array($this, 'feed_link'), 9);
 
+		/*TODO: MOVE to another file*/
 		add_shortcode( 'anspress_questions', array( 'AnsPress_Questions_Shortcode', 'anspress_questions' ) );
+		add_shortcode( 'anspress_question_categories', array( 'AnsPress_Categories_Shortcode', 'anspress_categories' ) );
 
 		add_action('ap_before', array($this, 'ap_before_html_body'));
 
@@ -509,13 +511,22 @@ function is_private_question($question_id = false){
  * @return string
  */
 function ap_pagination( $current = false, $total = false, $format = '?paged=%#%'){
+	global $ap_max_num_pages, $ap_current;
 
 	$big = 999999999; // need an unlikely integer
 
-	if(!$current)
+	if($current === false)
 		$current = max( 1, get_query_var('paged') );
+	elseif(!empty($ap_current))
+		$current = $ap_current;
 
-	if(!$total){
+
+	if(!empty($ap_max_num_pages))
+	{
+		$total = $ap_max_num_pages;
+
+	}elseif($total === false)
+	{
 		global $questions;
 		$total = $questions->max_num_pages;
 	}
@@ -610,6 +621,7 @@ function ap_icon($name, $html = false){
 		'view'				=> 'icon-eye',
 		'vote'				=> 'icon-triangle-up',
 		'cross'				=> 'icon-x',
+		'more'				=> 'icon-ellipsis',
 	);
 	
 	$icons = apply_filters('ap_icon', $icons);
