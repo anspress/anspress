@@ -307,7 +307,7 @@ function ap_get_all_users(){
 }
 
 /* TODO: REMOVE - base page slug*/
-function ap_base_page_slug(){
+/*function ap_base_page_slug(){
 	$base_page_slug = ap_opt('base_page_slug');
 	
 	// get the base slug, if base page was set to home page then dont use any slug
@@ -321,7 +321,7 @@ function ap_base_page_slug(){
 	}
 	
 	return apply_filters('ap_base_page_slug', $slug) ;
-}
+}*/
 
 
 

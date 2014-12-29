@@ -71,7 +71,7 @@ class anspress_admin {
 		
 		// flush rewrite rule if option updated
 		add_action('admin_init', array($this, 'init_actions'));
-		add_action( 'admin_head-nav-menus.php', array($this, 'ap_menu_metaboxes') );
+		//add_action( 'admin_head-nav-menus.php', array($this, 'ap_menu_metaboxes') );
 		
 		add_action('parent_file', array($this, 'tax_menu_correction'));
 		

@@ -29,13 +29,11 @@ function anspress_activate( $network_wide ) {
 	
 	global $wpdb;
 	
-	//TODO: FOR EXTENSION - move category and tags page to extension
+	//TODO: EXTENSION - move category and tags page to extension
 	$page_to_create = array(
 		'questions' 			=> __('Questions', 'ap'), 
-		'question' 				=> __('Question', 'ap'),			
-		'question_categories' 	=> __('Categories', 'ap'),			
-		'question_tags' 		=> __('Tags', 'ap'),			
 		'user' 					=> __('User', 'ap'),			
+		'ask' 					=> __('Ask', 'ap'),			
 	);
 	
 	foreach($page_to_create as $k => $page_title){
@@ -48,11 +46,11 @@ function anspress_activate( $network_wide ) {
 		
 		if(!$post){
 			
-			$args['post_type']    = "page";
-			$args['post_content'] = "[anspress_{$k}]";
-			$args['post_status']  = "publish";
-			$args['post_title']   = $page_title;
-			$args['comment_status']   = 'closed';
+			$args['post_type']    		= "page";
+			$args['post_content'] 		= "[anspress_{$k}]";
+			$args['post_status']  		= "publish";
+			$args['post_title']   		= $page_title;
+			$args['comment_status']   	= 'closed';
 			
 			if($k != 'questions')
 				$args['post_parent']   = ap_opt('questions_page_id');

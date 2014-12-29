@@ -44,7 +44,7 @@ class anspress_main {
 		add_filter('query_vars', array($this, 'query_var'));
 		
 		//add_action('post_type_link', array( $this, 'answer_link'),10,2);
-		add_action('generate_rewrite_rules', array( $this, 'rewrites'), 1);		
+		//add_action('generate_rewrite_rules', array( $this, 'rewrites'), 1);		
 		
 		add_action('ap_page_top', array($this, 'check_rewrite_rules'));
 		//add_action('wp_head', array($this, 'wp_head'));
@@ -198,7 +198,7 @@ class anspress_main {
 
 	 
 	public function rewrites() {  
-		global $wp_rewrite;  
+		/*global $wp_rewrite;  
 		global $ap_rules;
 		
 		unset($wp_rewrite->extra_permastructs['question']); 
@@ -217,7 +217,6 @@ class anspress_main {
 			
 			$slug. "parent/([^/]+)/?" => "index.php?page_id=".$base_page_id."&parent=".$wp_rewrite->preg_index(1),
 			
-			/* question */
 			$slug. $question_slug . "([^/]+)/([^/]+)/page/?([0-9]{1,})/?$" => "index.php?page_id=".$base_page_id."&question_id=".$wp_rewrite->preg_index(1)."&question_name=".$wp_rewrite->preg_index(2)."&paged=".$wp_rewrite->preg_index(3),
 			
 			$slug. $question_slug ."([^/]+)/([^/]+)/?" => "index.php?page_id=".$base_page_id."&question_id=".$wp_rewrite->preg_index(1)."&question_name=".$wp_rewrite->preg_index(2),
@@ -252,7 +251,8 @@ class anspress_main {
 			//"feed/([^/]+)/?" => "index.php?feed=feed&parent=".$wp_rewrite->preg_index(1),
 		);  
 		$ap_rules = $new_rules;
-		return $wp_rewrite->rules = $new_rules + $wp_rewrite->rules;  
+		return $wp_rewrite->rules = $new_rules + $wp_rewrite->rules;  */
+		return $wp_rewrite->rules;
 	}  
 	
 

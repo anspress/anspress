@@ -28,7 +28,7 @@ class AnsPress_Theme {
 		add_filter( 'comments_template', array($this, 'comment_template') );
 		add_action( 'after_setup_theme', array($this, 'includes') );
 		//add_filter('wp_title', array($this, 'ap_title'), 100, 2);
-		add_filter( 'the_title', array($this, 'the_title'), 100, 2 );
+		//add_filter( 'the_title', array($this, 'the_title'), 100, 2 );
 		//add_filter( 'wp_head', array($this, 'feed_link'), 9);
 
 		/*TODO: MOVE to another file*/
@@ -178,45 +178,6 @@ class AnsPress_Theme {
 
 }
 
-function ap_page_title() {
-	if(is_question())
-		$new_title = get_the_title(get_question_id());
-	elseif(is_ask()){
-		if(get_query_var('parent') != '')
-			$new_title = sprintf('%s about "%s"', ap_opt('ask_page_title'), get_the_title(get_query_var('parent')));
-		else
-			$new_title = ap_opt('ask_page_title');
-	}elseif(is_question_categories())
-		$new_title = ap_opt('categories_page_title');
-	elseif(is_question_tags())
-		$new_title = ap_opt('tags_page_title');
-	elseif(is_question_tag()){
-		$tag = get_term_by('slug', get_query_var('question_tags'), 'question_tags');
-		$new_title = sprintf(__('Question tag: %s', 'ap'), $tag->name);
-	}elseif(is_question_cat()){
-		$category = get_term_by('slug', get_query_var('question_category'), 'question_category');
-		$new_title = sprintf(__('Question category: %s', 'ap'), $category->name);
-	}elseif(is_question_edit())
-		$new_title = __('Edit question ', 'ap'). get_the_title(get_question_id());
-	elseif(is_answer_edit())
-		$new_title = __('Edit answer', 'ap');
-	elseif(is_ap_users())
-		$new_title = ap_opt('users_page_title');
-	elseif(is_ap_user())
-		$new_title = ap_user_page_title();
-	elseif(is_ap_search())
-		$new_title = sprintf(ap_opt('search_page_title'), sanitize_text_field(get_query_var('ap_s')));
-	else{
-		if(get_query_var('parent') != '')
-			$new_title = sprintf( __( 'Discussion on "%s"', 'ap'), get_the_title(get_query_var('parent') ));
-		else
-			$new_title = ap_opt('base_page_title');
-			
-	}
-	$new_title = apply_filters('ap_page_title', $new_title);
-	
-	return $new_title;
-}
 
 function ap_user_page_title(){
 	if(is_ap_user()){
@@ -272,6 +233,11 @@ function ap_user_page_title(){
 	return __('Page not found', 'ap');
 }
 
+/**
+ * Check if single question page.
+ * @return boolean
+ * @since unknown
+ */
 function is_question(){
 	$return = false;
 	if(is_singular('question'))
@@ -279,20 +245,24 @@ function is_question(){
 	return $return;
 }
 
+/** 
+ * Check if current page is ask page.
+ * @return boolean
+ * @since unlnown
+ */
 function is_ask(){
-	if(is_anspress() && get_query_var('ap_page')=='ask')
+	if(get_the_ID() == ap_opt('ask_page_id'))
 		return true;
 		
 	return false;
 }
-function is_question_categories(){
-	if(is_anspress() && get_query_var('ap_page')=='categories')
-		return true;
-		
-	return false;
-}
+
+
+/**
+ * TODO: Extension - move to tags
+ */
 function is_question_tags(){
-	if(is_anspress() && get_query_var('ap_page')=='tags')
+	if(get_the_ID() == ap_opt('question_categories_page_id'))
 		return true;
 		
 	return false;
@@ -303,19 +273,8 @@ function is_ap_users(){
 		
 	return false;
 }
-function is_question_tag(){
-	if(is_anspress() && (get_query_var('qtag_id') || get_query_var('question_tags')))
-		return true;
-		
-	return false;
-}
 
-function is_question_cat(){
-	if(is_anspress() && (get_query_var('qcat_id') || get_query_var('question_category')))
-		return true;
-		
-	return false;
-}
+
 
 function is_my_profile(){
 	if(ap_get_user_page_user() == get_current_user_id())
@@ -530,13 +489,14 @@ function ap_pagination( $current = false, $total = false, $format = '?paged=%#%'
 		global $questions;
 		$total = $questions->max_num_pages;
 	}
-
+	echo '<div class="ap-pagination clearfix">';
 	echo paginate_links( array(
 		'base' 		=> str_replace( $big, '%#%', esc_url( get_pagenum_link( $big ) ) ),
 		'format' 	=> $format,
 		'current' 	=> $current,
 		'total' 	=> $total
 	) );
+	echo '</div>';
 }
 
 /**
@@ -622,6 +582,7 @@ function ap_icon($name, $html = false){
 		'vote'				=> 'icon-triangle-up',
 		'cross'				=> 'icon-x',
 		'more'				=> 'icon-ellipsis',
+		'category'			=> 'icon-file-directory',
 	);
 	
 	$icons = apply_filters('ap_icon', $icons);
