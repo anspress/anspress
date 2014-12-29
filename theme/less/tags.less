@@ -1,0 +1,102 @@
+@import "../../../anspress-question-answer/theme/default/less/variables.less";
+@import "../../../anspress-question-answer/theme/default/less/lesshat.less";
+//--------------------------
+// Categories styles
+//-------------------------
+
+.ap-term-tag-box{
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	>li{
+	    border-bottom: 1px dashed @default-border-color;
+	    float: left;
+	    margin-bottom: 30px;
+	    padding: 0 15px 20px;
+	    width: 25%;
+	    .ap-term-title{
+	    	background: @blue-color;
+	    }
+	    .ap-term-count{
+		    color: @light-color;
+		    font-style: italic;
+		    line-height: 28px;
+		    text-align: right;
+		    width: 140px;
+	    }
+
+		.term-title{
+		    background: @blue-color;
+		    .border-radius(2px);
+		    color: @white;
+		    margin-right: 10px;
+		    padding: 3px 10px;
+		    text-decoration: none;
+		    text-transform: lowercase;
+		}
+		.ap-taxo-description {
+		    color: @light-color;
+		    font-size: 12px;
+		    height: 65px;
+		    line-height: 20px;		    
+		    margin-top: 15px;
+		    overflow: hidden;
+		}
+	}
+	
+}
+
+.sub-taxo-label{
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    margin-top: 10px;
+}
+.ap-sub-taxo{
+    margin-bottom: 30px;
+	li{
+	    margin: 0 10px 15px 0;
+	    min-width: 145px;
+	    a{
+		    background: @white;
+		    border: 1px solid @default-border-color;
+		    .border-radius(2px);
+		    color: @light-color;
+		    display: block;
+		    font-size: 15px;
+		    padding: 7px 12px;
+		    text-decoration: none;
+
+		    span{
+		    	float: right;
+		    }
+
+		    &:hover{
+		    	border-color: @blue-color;
+		    }
+	    }
+	}
+}
+.ap-taxo-detail {
+    background: none repeat scroll 0 0 #f8f8f8;
+    .border-radius(5px);
+    margin-bottom: 25px;
+    padding: 15px 20px;
+    .ap-tax-item-count {
+	    background: @blue-color;
+	    color: @white;
+	    float: right;
+	    font-size: 17px;
+	    padding: 5px 10px;
+	    .border-radius(2px);
+	}
+	.ap-taxo-description {
+	    line-height: 28px;
+	}
+	.ap-term-sub {
+	    margin-top: 20px;
+	}
+	.ap-sub-taxo{
+		margin:0;
+	}
+}
