@@ -105,7 +105,9 @@ jQuery(document).ready(function(){
         interactive: true,
         functionBefore: function(origin, continueTooltip) {
             var pos = ap_default(origin.data('tipposition'), 'top');
+            var theme = ap_default(origin.data('tipclass'), 'top');
             jQuery(this).tooltipster('option', 'position', pos);
+            jQuery(this).tooltipster('option', 'theme', 'tooltipster-default ap-tip-style '+ theme);
             continueTooltip();
         }
     });

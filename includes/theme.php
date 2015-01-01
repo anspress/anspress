@@ -31,9 +31,9 @@ class AnsPress_Theme {
 		//add_filter( 'the_title', array($this, 'the_title'), 100, 2 );
 		//add_filter( 'wp_head', array($this, 'feed_link'), 9);
 
-		/*TODO: MOVE to another file*/
 		add_shortcode( 'anspress_questions', array( 'AnsPress_Questions_Shortcode', 'anspress_questions' ) );
 		add_shortcode( 'anspress_question_categories', array( 'AnsPress_Categories_Shortcode', 'anspress_categories' ) );
+		add_shortcode( 'anspress_user', array( 'AnsPress_User_Shortcode', 'anspress_user' ) );
 
 		add_action('ap_before', array($this, 'ap_before_html_body'));
 
@@ -257,18 +257,9 @@ function is_ask(){
 	return false;
 }
 
-
-/**
- * TODO: Extension - move to tags
- */
-function is_question_tags(){
-	if(get_the_ID() == ap_opt('question_categories_page_id'))
-		return true;
-		
-	return false;
-}
 function is_ap_users(){
-	if(is_anspress() && get_query_var('ap_page')=='users')
+	$queried_object = get_queried_object();
+	if(isset($queried_object->ID) && $queried_object->ID == ap_opt('users_page_id'))
 		return true;
 		
 	return false;
@@ -344,14 +335,20 @@ function get_edit_answer_id(){
 	return false;
 }
 
+/**
+ * Check if current page is user page
+ * @return boolean
+ * @since unknown
+ */
 function is_ap_user(){
-	if(is_anspress() && get_query_var('ap_page') == 'user')
+	$queried_object = get_queried_object();
+	if(isset($queried_object->ID) && $queried_object->ID == ap_opt('user_page_id'))
 		return true;
 		
 	return false;
 }
 
-function ap_get_user_page_user(){
+function ap_user_page_user_id(){
 	if(is_ap_user()){
 		$user = sanitize_text_field(str_replace('%20', ' ', get_query_var('user')));
 		if($user){
@@ -513,7 +510,7 @@ function ap_display_question_metas($question_id =  false){
 	$metas = array();
 
 	if(ap_is_answer_selected($question_id) && !is_singular('question')){
-		$metas['selected'] = '<span class="ap-tip" title="'.__('answer accepted', 'ap').'">'.ap_icon('select', true).'</span>';
+		$metas['selected'] = '<span class="ap-tip" title="'.__('answer accepted', 'ap').'">'.ap_icon('select', true).__('Selected', 'ap').'</span>';
 
 		$metas['history'] = ap_last_active_time($question_id);
 	}
@@ -583,6 +580,10 @@ function ap_icon($name, $html = false){
 		'cross'				=> 'icon-x',
 		'more'				=> 'icon-ellipsis',
 		'category'			=> 'icon-file-directory',
+		'home'				=> 'icon-home',
+		'question'			=> 'icon-comment-discussion',
+		'upload'			=> 'icon-cloud-upload',
+		'link'				=> 'icon-link',
 	);
 	
 	$icons = apply_filters('ap_icon', $icons);
@@ -756,6 +757,8 @@ function ap_display_answer_metas($answer_id =  false){
 	}
 
 	$metas = array();
+	if(is_ap_user() && ap_is_best_answer($answer_id))
+		$metas['best_answer'] = '<span class="ap-best-answer-label">'.__('Best answer', 'ap').'</span>';
 
 	$metas['history'] = ap_last_active_time($answer_id);
 	$metas['created'] = sprintf( __( '<span>Created</span> <i><time itemprop="datePublished" datetime="%s">%s Ago</time></i>', 'ap' ), get_the_time('c', $answer_id), ap_human_time( get_the_time('U')));

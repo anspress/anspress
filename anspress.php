@@ -196,9 +196,18 @@ if(!class_exists('AnsPress')):
 			require_once( ANSPRESS_DIR . 'includes/badges.php' );			
 			require_once( ANSPRESS_DIR . 'includes/points.php' );
 			require_once( ANSPRESS_DIR . 'includes/history.php' );
-			require_once( ANSPRESS_DIR . 'includes/shortcode-questions.php' );
+			
 			require_once( ANSPRESS_DIR . 'includes/widgets.php' );
 			require_once( ANSPRESS_DIR . 'includes/image_resize.php' );
+
+			require_once( ANSPRESS_DIR . 'includes/shortcode-questions.php' );
+			require_once( ANSPRESS_DIR . 'includes/shortcode-user.php' );
+
+			require_once( ANSPRESS_DIR . 'includes/user-page-profile.php' );
+			require_once( ANSPRESS_DIR . 'includes/user-page-questions.php' );
+			require_once( ANSPRESS_DIR . 'includes/user-page-answers.php' );
+			require_once( ANSPRESS_DIR . 'includes/user-profile-blocks.php' );
+			require_once( ANSPRESS_DIR . 'includes/user-page-favorites.php' );
 		}
 		
 		/**
@@ -243,7 +252,7 @@ add_action( 'plugins_loaded', array( 'anspress_ajax', 'get_instance' ) );
 
 add_action( 'plugins_loaded', array( 'AP_Participents', 'get_instance' ) );
 //add_action( 'plugins_loaded', array( 'AP_labels', 'get_instance' ) );
-add_action( 'plugins_loaded', array( 'AP_User', 'get_instance' ) );
+add_action( 'plugins_loaded', array( 'AnsPress_User', 'get_instance' ) );
 add_action( 'plugins_loaded', array( 'AP_Ranks', 'get_instance' ) );
 add_action( 'plugins_loaded', array( 'AP_Badges', 'get_instance' ) );
 add_action( 'plugins_loaded', array( 'AP_Points', 'get_instance' ) );

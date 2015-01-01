@@ -54,7 +54,10 @@
 		    }
 		}
 	}
-	.ap-display-question-meta{
+	
+}
+
+.ap-display-question-meta{
 		color: @meta-color;
 		font-size: @meta-font-size;
 
@@ -74,15 +77,20 @@
 			&:first-child:before{
 				display:none;
 			}
-			&.selected {
-			    color: @main-color;
-			    .border-radius(50%);
-			    height: 15px;
+			&.selected, .ap-best-answer-label {
+			    background: lighten(@main-color, 10%);
+			    .border-radius(@default-border-radius);
+			    color: @white;
+			    font-size: 11px;
 			    line-height: 15px;
 			    margin-top: 2px;
+			    padding: 1px 4px;
 			    text-align: center;
-			    width: 16px;
+			    text-transform: uppercase;
+			}
+			
+			i{
+				font-style: normal;
 			}
 		}
 	}
-}

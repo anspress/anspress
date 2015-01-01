@@ -39,8 +39,6 @@ class Answers_Query extends WP_Query {
 
         if(isset($args['question_id']))
             $question_id = $args['question_id'];
-        else
-            $question_id = get_the_ID();
 
         if(isset($args['orderby']))
             $orderby = $args['orderby'];
@@ -53,10 +51,13 @@ class Answers_Query extends WP_Query {
             'orderby'           => $orderby,
             'paged'             => $paged,
             'only_best_answer'  => false,
+            'include_best_answer'  => false,
         );
 
         $this->args = wp_parse_args( $args, $defaults );
-        $this->args['post_parent'] = $question_id;
+        
+        if(!empty($question_id))
+            $this->args['post_parent'] = $question_id;
 
         $this->pre_answers();
 
@@ -97,14 +98,15 @@ class Answers_Query extends WP_Query {
                         'relation' => 'AND',
                         array(
                             'key'       => ANSPRESS_VOTE_META,
-                        ),
-                        array(
+                        )
+                    );
+                    if(!$this->args['include_best_answer'])
+                        $this->args['meta_query'][] = array(
                             'key'           => ANSPRESS_BEST_META,
                             'type'          => 'BOOLEAN',
                             'compare'       => '!=',
                             'value'         => '1'
-                        )
-                    );
+                        );
                 break;
                 case 'oldest' :
                     $this->args['orderby'] = 'date';
@@ -125,19 +127,22 @@ class Answers_Query extends WP_Query {
                             //'type'          => 'BOOLEAN',
                             'compare'       => '>',
                             //'value'         => '1'
-                        ),
-                        array(
-                            'key'           => ANSPRESS_BEST_META,
-                            'type'          => 'BOOLEAN',
-                            'compare'       => '!=',
-                            'value'         => '1'
-                        )
-                        
-                    );
+                        )                        
+                    );                    
                 break;
                 //TOOD: Add more orderby like most viewed, and user order like 'answered by user_id', 'asked_by_user_id'
             }
-
+            if(!$this->args['include_best_answer']){
+                if(!isset($this->args['meta_query']))
+                    $this->args['meta_query']  = array('relation' => 'AND');
+                
+                $this->args['meta_query'][] = array(
+                    'key'           => ANSPRESS_BEST_META,
+                    'type'          => 'BOOLEAN',
+                    'compare'       => '!=',
+                    'value'         => '1'
+                );
+            }
         }
          
     }
@@ -154,6 +159,9 @@ endif;
  */
 function ap_get_answers($args = array()){
     global $answers;
+
+    if(empty($args['question_id']))
+        $args['question_id'] = get_the_ID();
 
     $sort = get_query_var('sort');
     if(empty($sort ))

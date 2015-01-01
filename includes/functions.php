@@ -384,6 +384,12 @@ function ap_is_answer_selected($question_id = false){
 	return true;
 }
 
+/**
+ * Check if given post is selected answer
+ * @param  int $post_id 
+ * @return boolean
+ * @since unknown
+ */
 function ap_is_best_answer($post_id = false){
 	if(!$post_id){
 		$post_id = get_the_ID();

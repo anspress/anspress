@@ -21,6 +21,7 @@
 	list-style: none;
 	padding: 0;
 	margin: 0;
+	display: block;
 
 	li{
 		float: left;
@@ -67,6 +68,7 @@
 		    padding-bottom: 12px;
 		    padding-top: 8px;
 		    .border-radius(3px 3px 0 0);
+		    color: @default-color;
     	}
 
     	&:first-child{
@@ -115,4 +117,11 @@
 
 .ap-notice{
 	display: block;
+}
+
+.border-top{
+	border-top: solid 1px @default-border-color;
+}
+.margin-top-20{
+	margin-top: 20px;
 }
