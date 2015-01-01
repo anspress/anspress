@@ -207,7 +207,7 @@ class AnsPress_User {
 			<div class="form-group">
 				<label for="url" class="ap-form-label"><?php _e('Website', 'ap') ?></label>
 				<div class="no-overflow">
-					<input type="text" name="url" id="url" value="<?php echo $user->data->user_url; ?>" class="form-control" placeholder="<?php _e('http://open-wp.com', 'ap'); ?>" />
+					<input type="text" name="url" id="url" value="<?php echo $user->data->user_url; ?>" class="form-control" placeholder="<?php _e('http://wp3.in', 'ap'); ?>" />
 				</div>
 			</div>
 			<div class="form-group">

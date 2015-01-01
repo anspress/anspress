@@ -4,8 +4,8 @@
 	Description: Basic email notification
 	Version:1.0
 	Author: Rahul Aryan
-	Author URI: http://open-wp.com
-	Addon URI: http://open-wp.com/anspress
+	Author URI: http://wp3.in
+	Addon URI: http://wp3.in/anspress
 */
 
 
@@ -51,7 +51,7 @@ class AP_Basic_Email_Addon
 			$message = sprintf(__('Hello! Admin, <br /><br /> A new question is posted by %s <br />', 'ap'), ap_user_display_name($post->post_author, true));
 			$message .= ap_truncate_chars(strip_tags($post->post_content), 100);
 			$message .= "<br /><br /><a href='". $post_url. "'>".__('View question', 'ap')."</a><br />";
-			$message .= '<p style="color:#777; font-size:11px">'.__('Powered by', 'ap').' <a href="http://open-wp.com">AnsPress</a></p>';
+			$message .= '<p style="color:#777; font-size:11px">'.__('Powered by', 'ap').' <a href="http://wp3.in">AnsPress</a></p>';
 			
 			//sends email
 			wp_mail(get_option( 'admin_email' ), $subject, $message );
@@ -85,7 +85,7 @@ class AP_Basic_Email_Addon
 			$message .= ap_truncate_chars(strip_tags($post->post_content), 100);
 			$message .= "<br /><br /><a href='". get_permalink($parent->ID)."#".$post->ID. "'>".__('View Answer', 'ap')."</a><br />";
 			
-			$message .= '<p style="color:#777; font-size:11px">'.__('Powered by', 'ap').'<a href="http://open-wp.com">AnsPress</a></p>';
+			$message .= '<p style="color:#777; font-size:11px">'.__('Powered by', 'ap').'<a href="http://wp3.in">AnsPress</a></p>';
 			
 			if(!empty($emails))
 				foreach($emails as $email){
@@ -108,7 +108,7 @@ class AP_Basic_Email_Addon
 			$message .= ap_truncate_chars($comment->comment_content , 100);
 			$message .= "<br /><br /><a href='". get_comments_link($parent->ID). "'>".__('View comment', 'ap')."</a><br />";
 			
-			$message .= '<p style="color:#777; font-size:11px">'.__('Powered by', 'ap').'<a href="http://open-wp.com">AnsPress</a></p>';
+			$message .= '<p style="color:#777; font-size:11px">'.__('Powered by', 'ap').'<a href="http://wp3.in">AnsPress</a></p>';
 			
 			if(!empty($emails))
 				foreach($emails as $email){
@@ -122,7 +122,7 @@ class AP_Basic_Email_Addon
 			$message .= ap_truncate_chars($comment->comment_content , 100);
 			$message .= "<br /><br /><a href='". get_comments_link($parent->ID). "'>".__('View comment', 'ap')."</a><br />";
 			
-			$message .= '<p style="color:#777; font-size:11px">'.__('Powered by', 'ap').'<a href="http://open-wp.com">AnsPress</a></p>';
+			$message .= '<p style="color:#777; font-size:11px">'.__('Powered by', 'ap').'<a href="http://wp3.in">AnsPress</a></p>';
 			
 			if(!empty($emails))
 				foreach($emails as $email){
@@ -138,7 +138,7 @@ class AP_Basic_Email_Addon
 		$message = sprintf(__('Hello!, <br /><br /> You answer on %s is selected as best by %s <br />', 'ap'), $pos->post_title, ap_user_display_name($user_id, true));
 
 		$message .= "<br /><br /><a href='". $post_url. "'>".__('View question', 'ap')."</a><br />";
-		$message .= '<p style="color:#777; font-size:11px">'.__('Powered by', 'ap').' <a href="http://open-wp.com">AnsPress</a></p>';
+		$message .= '<p style="color:#777; font-size:11px">'.__('Powered by', 'ap').' <a href="http://wp3.in">AnsPress</a></p>';
 
 		$emails = ap_get_email_to_notify($post->post_parent, $user_id);
 		

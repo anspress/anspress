@@ -54,7 +54,7 @@ foreach($ranks as $k => $rank){
 <div class="wrap">
 	<div class="ap-install">
 	<h2>
-		<a href="http://open-wp.com"><img src="<?php echo ANSPRESS_URL.'assets/open-wp-logo.png'; ?>" /></a>
+		<a href="http://wp3.in"><img src="<?php echo ANSPRESS_URL.'assets/open-wp-logo.png'; ?>" /></a>
 		<span><?php _e('AnsPress Installation', 'ap'); ?></span>		
 	</h2>
 	<div class="ap-install-box">

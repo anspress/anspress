@@ -54,7 +54,7 @@ if ( ! isset( $_REQUEST['settings-updated'] ) )
 	<!-- TODO: Remove this donation section if not needed -->
 	<div class="get-support">
 		<strong>Need more help ? feel free to ask for support. </strong>
-		<a href="http://open-wp.com">Support Forum</a>
+		<a href="http://wp3.in">Support Forum</a>
 	</div>
 	<div class="doante-to-anspress">
 		<h3>Help us keep AnsPress open source, free and full functional without any limitations</h3>

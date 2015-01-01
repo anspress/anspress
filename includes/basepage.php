@@ -204,7 +204,7 @@ class AP_BasePage {
 		if(!ap_opt('author_credits')){
 			?>
 				<div class="ap-footer clearfix">
-					<p class="ap-author-credit"><a href="http://open-wp.com">AnsPress</a> Version <?php echo AP_VERSION; ?></p>
+					<p class="ap-author-credit"><a href="http://wp3.in">AnsPress</a> Version <?php echo AP_VERSION; ?></p>
 				</div>
 			<?php
 		}

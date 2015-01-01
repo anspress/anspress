@@ -4,8 +4,8 @@
 	Description: Add reCAPTCHA in form for preventing spam
 	Version:1.0
 	Author: Rahul Aryan
-	Author URI: http://open-wp.com
-	Addon URI: http://open-wp.com/anspress
+	Author URI: http://wp3.in
+	Addon URI: http://wp3.in/anspress
 */
 
 
