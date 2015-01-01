@@ -42,11 +42,6 @@ $ap_user_data 	= ap_user_data();
 				<?php ap_user_menu(); ?>
 			</div>
 			<div class="ap-profile-right clearfix">
-				<div data-view="cover" class="ap-cover-bg" <?php ap_user_cover_style($user_id); ?>>
-					<?php ap_cover_upload_form(); ?>
-				</div>
-
-				
 
 				<?php 
 					/* include proper user template */

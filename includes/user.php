@@ -52,7 +52,7 @@ class AnsPress_User {
 		ap_register_user_page('profile', __('Profile', 'ap'), array('AnsPress_User_Page_Profile', 'output'));
 		ap_register_user_page('questions', __('Questions', 'ap'), array('AnsPress_User_Page_Questions', 'output'));
 		ap_register_user_page('answers', __('Answers', 'ap'), array('AnsPress_User_Page_Answers', 'output'));
-		ap_register_user_page('favorites', __('Favorites', 'ap'), array('AnsPress_User_Page_Favorites', 'output'));
+		//ap_register_user_page('favorites', __('Favorites', 'ap'), array('AnsPress_User_Page_Favorites', 'output'));
 
 		add_filter('ap_user_menu', array($this, 'ap_user_menu_icons') );
 	}
@@ -363,17 +363,14 @@ class AnsPress_User {
 	 */
 	public function ap_user_menu_icons($menus)
 	{
-		if ($menus['profile'])
+		if (isset($menus['profile']))
 			$menus['profile']['class'] = ap_icon('home');
 
-		if ($menus['questions'])
+		if (isset($menus['questions']))
 			$menus['questions']['class'] = ap_icon('question');
 
-		if ($menus['answers'])
+		if (isset($menus['answers']))
 			$menus['answers']['class'] = ap_icon('answer'); 
-
-		if ($menus['favorites'])
-			$menus['favorites']['class'] = ap_icon('favorite'); 
 
 		return $menus;
 	}
@@ -546,8 +543,8 @@ function ap_user_link($user_id = false, $sub = false){
 		
 	$user = get_userdata($user_id);
 	$base = add_query_arg(array('user' => $user->user_login), get_permalink(ap_opt('user_page_id') ));
-	$args = '';
-	
+	$args = $base;
+
 	/* TODO: REWRITE - fix when rewrite is active */
 	if(get_option('permalink_structure') != ''){		
 		if($sub !== false)
@@ -1137,7 +1134,7 @@ function ap_get_resized_avatar($id_or_email, $size = 32, $default = false){
 function ap_user_display_meta($html = false, $user_id = false, $echo = false){
 
 	if(!$user_id)
-		$id = get_the_author_meta('ID');
+		$user_id = get_the_author_meta('ID');
 
 	$metas = array();
 
@@ -1146,7 +1143,7 @@ function ap_user_display_meta($html = false, $user_id = false, $echo = false){
 	/**
 	 * FILTER: ap_user_display_meta_array
 	 * Can be used to alter user display meta
-	 * @var string
+	 * @var array
 	 */
 	$metas = apply_filters('ap_user_display_meta_array', $metas );
 

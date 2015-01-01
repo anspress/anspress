@@ -21,11 +21,11 @@ class AnsPress_User_Page_Answers {
 	 * @since 2.0
 	 */
 	public static function output(){
-		global $questions;
+		global $answers;
 		
 		$current_user = get_query_var('user');
 
-		$questions = new Question_Query();
+		$answers = new Answers_Query();
 		echo '<div class="anspress-container">';
 			
 			/**
@@ -35,9 +35,9 @@ class AnsPress_User_Page_Answers {
 			do_action('ap_before');
 			
 			if(!empty($current_user))
-				include ap_get_theme_location('user-profile.php');
+				include ap_get_theme_location('user-answers.php');
 			else
-				include ap_get_theme_location('no-user-found.php');
+				include ap_get_theme_location('not-found.php');
 
 			wp_reset_postdata();
 		echo '</div>';

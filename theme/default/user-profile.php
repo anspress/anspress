@@ -14,6 +14,10 @@ $ap_user_data 	= ap_user_data();
 $description 	= ap_get_current_user_meta('description');
 ?>
 
+<div data-view="cover" class="ap-cover-bg" <?php ap_user_cover_style($user_id); ?>>
+	<?php ap_cover_upload_form(); ?>
+</div>
+
 <?php ap_profile_user_stats_counts() ?>
 
 
@@ -38,16 +42,7 @@ $description 	= ap_get_current_user_meta('description');
 					$answers = new Answers_Query(array('author' => $user_id, 'include_best_answer' => true, 'showposts' => 5));
 					
 					while ( $answers->have_posts() ) : $answers->the_post();
-						global $post;				
-						echo '<div class="ap-answer-post clearfix">';
-						echo '<a class="ap-vote-count ap-tip" href="#" title="'.__('Total votes', 'ap').'"><span>'.ap_net_vote().'</span>'.__('Votes', 'ap').'</a>';		
-						echo '<div class="ap-ans-content no-overflow">';
-						//echo '<a class="ap-title" href="'.get_permalink($post->post_parent).'">'.get_the_title($post->post_parent).'</a>';
-						echo '<a class="ap-answer-link" href="'.get_permalink().'">'. ap_truncate_chars(strip_tags(get_the_content()), 150) .'</a>';
-						echo '<ul class="ap-display-question-meta ap-ul-inline">';
-						echo ap_display_answer_metas();
-						echo '</ul>';
-						echo '</div></div>';
+						include ap_get_theme_location('content-answer.php');
 					endwhile;
 					
 					wp_reset_postdata(); 

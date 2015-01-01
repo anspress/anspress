@@ -28,7 +28,6 @@ class AnsPress_User_Page_Questions {
 
 		$questions = new Question_Query();
 		echo '<div class="anspress-container">';
-			echo 'adadad';
 			/**
 			 * ACTION: ap_before
 			 * Action is fired before loading AnsPress body.

@@ -96,8 +96,8 @@ class Question_Query extends WP_Query {
                 $this->args[ 'meta_value' ] = 0 ;
             break;
             case 'voted' :
-                $this->args[ 'orderby'] = 'meta_value_num' ;
-                $this->args[ 'meta_key'] = ANSPRESS_VOTE_META;
+                $this->args['orderby'] = 'meta_value_num';
+                $this->args['meta_key'] = ANSPRESS_VOTE_META;
             break;
             case 'unsolved' :
                 $this->args['orderby'] = 'meta_value';

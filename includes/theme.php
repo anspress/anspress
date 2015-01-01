@@ -654,31 +654,32 @@ function ap_post_actions_buttons()
  * Output questions list tab
  * @return string
  */
-function ap_questions_tab(){
+function ap_questions_tab($current_url){
+	$param = array();
+
 	$sort = get_query_var('sort');
 	$label = sanitize_text_field(get_query_var('label'));
 	$search_q = sanitize_text_field(get_query_var('ap_s'));
+	
 	if(empty($sort ))
 		$sort = 'active';//ap_opt('answers_sort');
 	
-	if(empty($status ))
-		$status = '';
-	
-	$search = '';
-	if(empty($status ))
-		$search = 'ap_s='.$search_q.'&';
-		
-	$link = '?'.$search.'sort=';
+	//$param['sort'] = $sort;
+
+	if(!empty( $search ))
+		$param['ap_s'] =  $search;
+
+	$link = add_query_arg($param, $current_url);
 	//TODO: hook this from labels extension
 	//$label_link = '?'.$search.'sort='.$order.'&label=';
 	
 	$navs = array(
-		'active' => array('link' => $link.'active', 'title' => __('Active', 'ap')), 
-		'newest' => array('link' => $link.'newest', 'title' => __('Newest', 'ap')), 
-		'voted' => array('link' => $link.'voted', 'title' => __('Voted', 'ap')), 
-		'answers' => array('link' => $link.'answers', 'title' => __('Answers', 'ap')), 
-		'unanswered' => array('link' => $link.'unanswered', 'title' => __('Unanswered', 'ap')), 
-		'unsolved' => array('link' => $link.'unsolved', 'title' => __('Unsolved', 'ap')), 
+		'active' => array('link' => add_query_arg(array('sort' => 'active'), $link), 'title' => __('Active', 'ap')), 
+		'newest' => array('link' => add_query_arg(array('sort' => 'newest'), $link), 'title' => __('Newest', 'ap')), 
+		'voted' => array('link' => add_query_arg(array('sort' => 'voted'), $link), 'title' => __('Voted', 'ap')), 
+		'answers' => array('link' => add_query_arg(array('sort' => 'answers'), $link), 'title' => __('Answers', 'ap')), 
+		'unanswered' => array('link' => add_query_arg(array('sort' => 'unanswered'), $link), 'title' => __('Unanswered', 'ap')), 
+		'unsolved' => array('link' => add_query_arg(array('sort' => 'unsolved'), $link), 'title' => __('Unsolved', 'ap')), 
 		//'oldest' => array('link' => $link.'oldest', 'title' => __('Oldest', 'ap')), 
 		);
 	
@@ -724,18 +725,19 @@ function ap_questions_tab(){
  * @return void
  * @since 2.0
  */
-function ap_answers_tab(){
+function ap_answers_tab($base = false){
 	$sort = get_query_var('sort');
 	if(empty($sort ))
 		$sort = ap_opt('answers_sort');
 		
-		$perma = get_permalink();
+		if(!$base)
+			$base = get_permalink();
 		
 		$navs = array(
-			'active' => array('link' => add_query_arg(  array('sort' => 'active'), $perma), 'title' => __('Active', 'ap')),
-			'voted' => array('link' => add_query_arg(  array('sort' => 'voted'), $perma), 'title' => __('Voted', 'ap')), 
-			'newest' => array('link' =>add_query_arg(  array('sort' => 'newest'), $perma), 'title' => __('Newest', 'ap')), 
-			'oldest' => array('link' => add_query_arg(  array('sort' => 'oldest'), $perma), 'title' => __('Oldest', 'ap')),			
+			'active' => array('link' => add_query_arg(  array('sort' => 'active'), $base), 'title' => __('Active', 'ap')),
+			'voted' => array('link' => add_query_arg(  array('sort' => 'voted'), $base), 'title' => __('Voted', 'ap')), 
+			'newest' => array('link' =>add_query_arg(  array('sort' => 'newest'), $base), 'title' => __('Newest', 'ap')), 
+			'oldest' => array('link' => add_query_arg(  array('sort' => 'oldest'), $base), 'title' => __('Oldest', 'ap')),			
 			);
 
 		echo '<ul class="ap-answers-tab ap-tab ap-ul-inline clearfix">';

@@ -206,7 +206,6 @@ if(!class_exists('AnsPress')):
 			require_once( ANSPRESS_DIR . 'includes/user-page-profile.php' );
 			require_once( ANSPRESS_DIR . 'includes/user-page-questions.php' );
 			require_once( ANSPRESS_DIR . 'includes/user-page-answers.php' );
-			require_once( ANSPRESS_DIR . 'includes/user-profile-blocks.php' );
 			require_once( ANSPRESS_DIR . 'includes/user-page-favorites.php' );
 		}
 		

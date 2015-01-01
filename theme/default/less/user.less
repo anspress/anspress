@@ -110,52 +110,53 @@
 		line-height: 28px;
 	}
 
-	.ap-answer-post{
-	    border-bottom: 1px solid @default-border-color;
-	    padding: 15px 0;
-	    &:last-child{
-	    	border-bottom: none;
-	    }
-		.ap-title{
+
+}
+.ap-answer-post{
+    border-bottom: 1px solid @default-border-color;
+    padding: 15px 0;
+    &:last-child{
+    	border-bottom: none;
+    }
+	.ap-title{
+	    color: @default-color;
+	    display: block;
+	    font-size: 15px;
+	    font-weight: @bold;
+	    margin-bottom: 10px;
+	    overflow: hidden;
+	    white-space: nowrap;
+	}
+	.ap-vote-count, .ap-answer-count{
+	    border: 2px solid lighten(@main-color, 20%);
+	    border-radius: 50%;
+	    color: @light-color;
+	    display: block;
+	    float: left;
+	    font-size: 11px;
+	    height: 59px;
+	    line-height: 22px;
+	    margin-right: 20px;
+	    padding: 4px;
+	    text-align: center;
+	    text-transform: uppercase;
+	    width: 59px;
+	    text-decoration: none;
+	    span{
 		    color: @default-color;
 		    display: block;
 		    font-size: 15px;
-		    font-weight: @bold;
-		    margin-bottom: 10px;
-		    overflow: hidden;
-		    white-space: nowrap;
-		}
-		.ap-vote-count, .ap-answer-count{
-		    border: 2px solid lighten(@main-color, 20%);
-		    border-radius: 50%;
-		    color: @light-color;
-		    display: block;
-		    float: left;
-		    font-size: 11px;
-		    height: 59px;
-		    line-height: 22px;
-		    margin-right: 20px;
-		    padding: 4px;
-		    text-align: center;
-		    text-transform: uppercase;
-		    width: 59px;
-		    text-decoration: none;
-		    span{
-			    color: @default-color;
-			    display: block;
-			    font-size: 15px;
-		    }
-		}
-		.ap-vote-count{
-			border: 2px solid lighten(@blue-color, 20%);
-		}
-		.ap-answer-link{
-			color: #777;
-			line-height: 28px;
-			&:hover{
-				text-decoration: none;
-				color:@default-color;
-			}
+	    }
+	}
+	.ap-vote-count{
+		border: 2px solid lighten(@blue-color, 20%);
+	}
+	.ap-answer-link{
+		color: #777;
+		line-height: 28px;
+		&:hover{
+			text-decoration: none;
+			color:@default-color;
 		}
 	}
 }
