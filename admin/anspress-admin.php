@@ -472,9 +472,19 @@ public function ap_menu_metaboxes(){
 		if(current_user_can('manage_options')){
 			flush_rewrite_rules();
 			$options = $_POST['anspress_opt'];
-			update_option('anspress_opt', $options);
+
+			if(!empty($options) && is_array($options)){
+				$old_options = get_option('anspress_opt');
 				
-			$result = array('status' => true, 'html' => '<div class="updated fade" style="display:none"><p><strong>'.__( 'AnsPress options updated successfully', 'ap' ).'</strong></p></div>');
+				foreach($options as $k => $opt){
+					$old_options[$k] = $opt;
+				}
+
+				update_option('anspress_opt', $old_options);
+				$result = array('status' => true, 'html' => '<div class="updated fade" style="display:none"><p><strong>'.__( 'AnsPress options updated successfully', 'ap' ).'</strong></p></div>');
+			}
+				
+			
 		}
 		die(json_encode( $result ));
 	}
@@ -903,43 +913,27 @@ public function ap_menu_metaboxes(){
 				<table class="form-table">
 
 					<tr valign="top">
-						<th scope="row"><label for="base_page"><?php _e('Base Page', 'ap'); ?></label></th>
+						<th scope="row"><label for="questions_page"><?php _e('Questions Page', 'ap'); ?></label></th>
 						<td>
-							<?php wp_dropdown_pages( array('selected'=> $settings['base_page'],'name'=> 'anspress_opt[base_page]','post_type'=> 'page') ); ?>
-							<p class="description"><?php _e('This page slug is use as base slug, if this page was selected for home page then no base slug will be added', 'ap'); ?></p>
-						</td>
-					</tr>			
-					
-
-					<tr valign="top">
-						<th scope="row">Allow non loggedin to see question & answer form</th>
-						<td>
-							<fieldset>
-								<input type="checkbox" id="show_login_signup" name="anspress_opt[show_login_signup]" value="1" <?php checked( true, $settings['show_login_signup'] ); ?> />
-								<label for="show_login_signup">Show login and signup</label>
-							</fieldset>
-							<fieldset>
-								<input type="checkbox" id="show_signup" name="anspress_opt[show_signup]" value="1" <?php checked( true, $settings['show_signup'] ); ?> />
-								<label for="show_signup">Show signup form</label>
-							</fieldset>
-							<fieldset>
-								<input type="checkbox" id="show_login" name="anspress_opt[show_login]" value="1" <?php checked( true, $settings['show_login'] ); ?> />
-								<label for="show_login">Show login form</label>
-							</fieldset>
-							<fieldset>
-								<input type="checkbox" id="show_social_login" name="anspress_opt[show_social_login]" value="1" <?php checked( true, $settings['show_social_login'] ); ?> />
-								<label for="show_social_login">Show social login form</label>
-							</fieldset>
-							<fieldset>
-								<p>Type down your own custom signup url or leave it blank for the default AnsPress modal signup</p>
-								<input type="url" name="anspress_opt[custom_signup_url]" placeholder="http://yorsite.com/signup" id="custom_signup_url" value="<?php echo $settings['custom_signup_url'] ; ?>" />
-							</fieldset>
-							<fieldset>
-								<p>Type down your own custom login url or leave it blank for the default AnsPress modal login</p>
-								<input type="url" name="anspress_opt[custom_login_url]" placeholder="http://yorsite.com/login" id="custom_login_url" value="<?php echo $settings['custom_login_url'] ; ?>" />
-							</fieldset>
+							<?php wp_dropdown_pages( array('selected'=> $settings['questions_page_id'],'name'=> 'anspress_opt[questions_page_id]','post_type'=> 'page') ); ?>
+							<p class="description"><?php _e('Questions page', 'ap'); ?></p>
 						</td>
 					</tr>
+					<tr valign="top">
+						<th scope="row"><label for="ask_page"><?php _e('Ask Page', 'ap'); ?></label></th>
+						<td>
+							<?php wp_dropdown_pages( array('selected'=> $settings['ask_page_id'],'name'=> 'anspress_opt[ask_page_id]','post_type'=> 'page') ); ?>
+							<p class="description"><?php _e('Ask page', 'ap'); ?></p>
+						</td>
+					</tr>
+					<tr valign="top">
+						<th scope="row"><label for="user_page"><?php _e('User Page', 'ap'); ?></label></th>
+						<td>
+							<?php wp_dropdown_pages( array('selected'=> $settings['user_page_id'],'name'=> 'anspress_opt[user_page_id]','post_type'=> 'page') ); ?>
+							<p class="description"><?php _e('Used to show user profil.', 'ap'); ?></p>
+						</td>
+					</tr>	
+
 					<tr valign="top">
 						<th scope="row">Author Credits</th>
 						<td>
