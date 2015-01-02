@@ -137,6 +137,7 @@ td.column-vote_note strong, td.column-post_title > a {
     border-radius: 2px;
     margin-top: -2px;
     max-width: 700px;
+    min-height: 429px;
     overflow: hidden;
     padding: 5px 15px;
 }

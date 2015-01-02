@@ -34,6 +34,7 @@ class AnsPress_Theme {
 		add_shortcode( 'anspress_questions', array( 'AnsPress_Questions_Shortcode', 'anspress_questions' ) );
 		add_shortcode( 'anspress_question_categories', array( 'AnsPress_Categories_Shortcode', 'anspress_categories' ) );
 		add_shortcode( 'anspress_user', array( 'AnsPress_User_Shortcode', 'anspress_user' ) );
+		add_shortcode( 'anspress_ask', array( 'AnsPress_Ask_Shortcode', 'anspress_ask' ) );
 
 		add_action('ap_before', array($this, 'ap_before_html_body'));
 

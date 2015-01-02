@@ -29,7 +29,6 @@ $navigation = array(
 	'user'			=> __('User', 'ap'),
 	'permission'	=> __('Permission', 'ap'),
 	'pages'			=> __('Pages', 'ap'),
-	'permalink'		=> __('Permalink', 'ap'),
 	'spam'			=> __('Spam and Moderate', 'ap'),
 );
 

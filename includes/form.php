@@ -9,7 +9,7 @@
  * @copyright 2014 Rahul Aryan
  */
 
-class anspress_form
+class AnsPress_Form_Helper
 {
     /**
      * Instance of this class.
@@ -42,7 +42,7 @@ class anspress_form
 		add_action( 'wp_ajax_ap_load_comment_form', array($this, 'load_ajax_commentform') ); 
 		add_action( 'wp_ajax_nopriv_ap_load_comment_form', array($this, 'load_ajax_commentform') );
 		
-		// Send all comment submissions through my "ajaxComment" method
+		/*TODO: remove this, only anspress comment from ajax*/
 		add_action('comment_post', array($this, 'save_comment'), 20, 2);
 	
 		add_action( 'wp_ajax_ap_update_comment', array($this, 'update_comment_form') ); 
@@ -63,8 +63,7 @@ class anspress_form
 		
 		// add ask form fields
 		add_action('ap_ask_form_fields', array($this, 'ask_from_title_field'));
-		add_action('ap_ask_form_fields', array($this, 'ask_from_content_field'));
-		add_action('ap_ask_form_fields', array($this, 'ask_from_category_field'));
+		add_action('ap_ask_form_fields', array($this, 'ask_from_content_field'));		
 		add_action('ap_ask_form_fields', array($this, 'ask_from_tags_field'));
 		add_action('ap_ask_form_fields', array($this, 'ask_from_private_field'));
 		
@@ -180,9 +179,6 @@ class anspress_form
 		//convert to entity
 		$fields['post_content'] = preg_replace_callback('/<pre.*?>(.*?)<\/pre>/imsu', 'ap_convert_pre_char', $fields['post_content']);
 		
-		if(isset($_POST['category']))
-			$fields['category']	= sanitize_text_field($_POST['category']);
-		
 		if(isset($_POST['tags']))
 			$fields['tags']	= sanitize_text_field($_POST['tags']);
 		
@@ -195,7 +191,7 @@ class anspress_form
 		if(isset($_POST['name']))
 			$fields['name']	= sanitize_text_field($_POST['name']);
 		
-		return apply_filters('ap_save_question_filds', $fields);
+		return apply_filters('ap_question_fields_to_process', $fields);
 		
 	}
 	
@@ -245,6 +241,12 @@ class anspress_form
 		return $ap_question_form_validation;
 	}
 	
+
+	/**
+	 * Process ask question form
+	 * @return void
+	 * @since 2.0
+	 */
 	public function process_ask_form(){
 		if(!is_user_logged_in() && !ap_allow_anonymous())
 			return false;
@@ -257,6 +259,7 @@ class anspress_form
 				return;
 			
 			$validate = $this->validate_question_form();
+
 			if($validate['has_error']){
 				if($_POST['action'] == 'ap_submit_question'){
 					$result = array(
@@ -268,9 +271,7 @@ class anspress_form
 				}
 				
 				return;
-			}
-
-			do_action('process_ask_form');
+			}			
 			
 			$user_id = get_current_user_id();			
 			$status = 'publish';
@@ -472,6 +473,10 @@ class anspress_form
 		
 	}
 	
+	/**
+	 * Process frontend edit question form
+	 * @return void
+	 */
 	public function process_edit_question_form(){
 		
 		if(isset($_POST['is_question']) && isset($_POST['submitted']) && isset($_POST['edited']) && wp_verify_nonce($_POST['edit_question'], 'post_nonce-'.$_POST['question_id'])) {
@@ -836,7 +841,7 @@ class anspress_form
 	
 	public function ask_from_content_field($validate){
 		?>
-			<div class="form-group<?php echo isset($validate['post_content']) ? ' has-error' : ''; ?>">
+			<div class="ap-editor form-group<?php echo isset($validate['post_content']) ? ' has-error' : ''; ?>">
 				<?php 
 					wp_editor( '', 'post_content', array('tinymce' => false, 'textarea_rows' => 7, 'media_buttons' => false, 'quicktags'=> array('buttons'=>'strong,em,link,blockquote,del,ul,li,ol,img,code,close'))); 
 				?>
@@ -845,24 +850,7 @@ class anspress_form
 		<?php
 	}	
 	
-	public function ask_from_category_field($validate){
-		if(ap_opt('enable_categories')):
-			?>
-				<div class="form-group<?php echo isset($validate['category']) ? ' has-error' : ''; ?>">
-					<label for="category"><?php _e('Category', 'ap') ?></label>
-					<select class="form-control" name="category" id="category">
-						<option value=""></option>
-						<?php 
-						$taxonomies = get_terms( 'question_category', 'orderby=count&hide_empty=0' );
-						foreach($taxonomies as $cat)
-								echo '<option value="'.$cat->term_id.'">'.$cat->name.'</option>';
-						?>
-					</select>
-					<?php echo isset($validate['category']) ? '<span class="help-block">'. $validate['category'] .'</span>' : ''; ?>
-				</div>
-			<?php
-		endif;
-	}	
+		
 	
 	public function ask_from_tags_field($validate){
 		if(ap_opt('enable_tags')):
@@ -1334,7 +1322,7 @@ function ap_form_allowed_tags(){
 	
 	return apply_filters( 'ap_allowed_tags', $allowed_tags);
 }
-
+/*
 function ap_ask_form(){
 
 	$validate = ap_validate_form();
@@ -1364,7 +1352,7 @@ function ap_ask_form(){
 		<?php
 		do_action('ap_after_ask_form');
 	}
-}
+}*/
 function ap_answer_form($question_id = false){
 	if(!$question_id){
 		$question_id = get_the_ID();

@@ -202,11 +202,13 @@ if(!class_exists('AnsPress')):
 
 			require_once( ANSPRESS_DIR . 'includes/shortcode-questions.php' );
 			require_once( ANSPRESS_DIR . 'includes/shortcode-user.php' );
+			require_once( ANSPRESS_DIR . 'includes/shortcode-ask.php' );
 
 			require_once( ANSPRESS_DIR . 'includes/user-page-profile.php' );
 			require_once( ANSPRESS_DIR . 'includes/user-page-questions.php' );
 			require_once( ANSPRESS_DIR . 'includes/user-page-answers.php' );
 			require_once( ANSPRESS_DIR . 'includes/user-page-favorites.php' );
+			require_once( ANSPRESS_DIR . 'includes/class-form.php' );
 		}
 		
 		/**
@@ -245,7 +247,7 @@ add_action( 'plugins_loaded', array( 'anspress_main', 'get_instance' ) );
 add_action( 'plugins_loaded', array( 'Ap_Meta', 'get_instance' ) );
 add_action( 'plugins_loaded', array( 'anspress_vote', 'get_instance' ) );
 add_action( 'plugins_loaded', array( 'anspress_view', 'get_instance' ) );
-add_action( 'plugins_loaded', array( 'anspress_form', 'get_instance' ) );
+//add_action( 'plugins_loaded', array( 'anspress_form', 'get_instance' ) );
 
 add_action( 'plugins_loaded', array( 'anspress_ajax', 'get_instance' ) );
 

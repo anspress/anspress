@@ -34,7 +34,7 @@ class anspress_main {
 	
 		remove_action('pre_comment_on_post', 'dsq_pre_comment_on_post');
 		// Load plugin text domain
-		add_action( 'wp_loaded', array( $this, 'flush_rules' ) );
+		//add_action( 'wp_loaded', array( $this, 'flush_rules' ) );
 		
 		//add_action( 'wp', array( $this, 'remove_head_items' ) );
 
@@ -46,7 +46,7 @@ class anspress_main {
 		//add_action('post_type_link', array( $this, 'answer_link'),10,2);
 		//add_action('generate_rewrite_rules', array( $this, 'rewrites'), 1);		
 		
-		add_action('ap_page_top', array($this, 'check_rewrite_rules'));
+		//add_action('ap_page_top', array($this, 'check_rewrite_rules'));
 		//add_action('wp_head', array($this, 'wp_head'));
 		
 		//update menu url

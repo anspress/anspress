@@ -1,9 +1,14 @@
-<!-- #primary BEGIN -->
-<h1 class="ap-main-title">
-	<?php if (!ap_opt('double_titles'))
-	the_title(); 
-	?>
-</h1>
+<?php
+/**
+ * Ask question page
+ *
+ * @link http://wp3.in
+ * @since 0.1
+ *
+ * @package AnsPress
+ */
+
+?>
 <div id="ap-ask-page" class="clearfix">	
 	<?php if (ap_user_can_ask()): ?>
 		<?php ap_ask_form(); ?>
