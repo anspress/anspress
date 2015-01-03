@@ -2,7 +2,72 @@
 // Form and editor styles
 // --------------------------------------------------
 
+.ap-form-control {
+    border: 2px solid #e4e4e4;
+    border-radius: 2px;
+    box-shadow: 0 0 2px #eee inset;
+    display: block;
+    height: 50px;
+    margin-bottom: 15px;
+    padding: 10px;
+    width: 100%;
+
+    &[type="checkbox"]{
+	    display: inline;
+	    margin: 0;
+	    padding: 0;
+	    width: auto;
+    }
+}
+.ap-checkbox-withdesc{
+	margin-bottom: 15px;
+	[type="checkbox"]{
+	    float: left;
+	    height: 20px;
+	    line-height: 100%;
+	    margin-right: 10px;
+	}
+	p{
+	    color: @light-color;
+	    font-size: 13px;
+	    margin-bottom: 0;
+	}
+}
+.ap-form-fields{
+	position: relative;
+	&.ap-have-error{
+		.ap-form-control, .ap-editor{
+			border: solid 2px @error-color;
+			background: lighten(@error-color, 40%);
+		}
+		.ap-editor{
+			padding: 10px;
+		}
+		&.being-edited{
+			.ap-form-control, .ap-editor{
+				border-color: @yellow-color;
+				background: @white;
+			}
+			.ap-form-error-message{
+				background: @yellow-color;
+			}
+		}
+	}
+
+	.ap-form-error-message{
+	    background: @error-color;
+	    .border-radius(2px 2px 0 0);
+	    color: @white;
+	    margin: 0;
+	    padding: 3px 10px;
+	    position: absolute;
+	    right: 0;
+	    top: 0;
+	}
+
+}
 .ap-editor{
+	margin-bottom: 15px;
 	.wp-editor-container{
 		background: #f2f2f2;
 		.border-radius(4px);
@@ -12,15 +77,22 @@
 		background: none;
 		border:none;
 	}
-	textarea.wp-editor-area{
+	textarea.wp-editor-area, .mce-panel{
 		background: none;
 	}
-	.quicktags-toolbar input.button{
+	.quicktags-toolbar input.button, .mce-btn button{
 	    background: none repeat scroll 0 0 #fff;
 	    border: medium none;
 	    .border-radius(2px);
 	    .box-shadow(none);
 	    color: #aaa;
+
+	    i{
+	    	padding: 4px;
+	    }
+	}
+	.mce-toolbar-grp{
+		border-bottom: none;
 	}
 }
 #answer-form-c {

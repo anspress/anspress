@@ -18,6 +18,8 @@ class AnsPress_Form {
     
     private $field;
 
+    private $errors;
+
     /**
      * Initiate the class
      * @param array $args
@@ -39,6 +41,9 @@ class AnsPress_Form {
 
         // set the name of the form
         $this->name = $this->args['name'];
+
+        global $ap_errors;
+        $this->errors = $ap_errors;
 
     }
 
@@ -98,6 +103,8 @@ class AnsPress_Form {
     {
         if($this->args['is_ajaxified'])
             $this->output .= '<input type="hidden" name="action" value="ap_submit_form">';
+        
+        $this->output .= '<input type="hidden" name="ap_form_action" value="'.$this->name.'">';
 
         $this->nonce();
     }
@@ -144,7 +151,7 @@ class AnsPress_Form {
 
         $placeholder = $this->placeholder();
         $this->output .= '<input type="text" class="ap-form-control" value="'. @$field['value'] .'" name="'. @$field['name'] .'"'.$placeholder.' />';
-
+        $this->error_messages();
         $this->desc();
     }
 
@@ -160,9 +167,10 @@ class AnsPress_Form {
             $this->label();
         
         if(!empty($field['desc']))
-            $this->output .= '<div class="ap-checkbox-withdesc">';
+            $this->output .= '<div class="ap-checkbox-withdesc clearfix">';
 
-        $this->output .= '<input type="checkbox" class="ap-form-control" value="'. @$field['value'] .'" name="'. @$field['name'] .'" '.checked( $field['value'], 1, false ).' />';
+        $this->output .= '<input type="checkbox" class="ap-form-control" value="1" name="'. @$field['name'] .'" '.checked( $field['value'], 1, false ).' />';
+        $this->error_messages();
         $this->desc();
 
         if(!empty($field['desc']))
@@ -195,6 +203,7 @@ class AnsPress_Form {
         $this->output .= '<select class="ap-form-control" value="'. @$field['value'] .'" name="'. @$field['name'] .'" >';
         $this->select_options($field);
         $this->output .= '</select>';
+        $this->error_messages();
         $this->desc();
     }
 
@@ -228,6 +237,7 @@ class AnsPress_Form {
         $this->output .= '<select class="ap-form-control" value="'. @$field['value'] .'" name="'. @$field['name'] .'" >';
         $this->taxonomy_select_options($field);
         $this->output .= '</select>';
+        $this->error_messages();
         $this->desc();
     }
 
@@ -244,7 +254,7 @@ class AnsPress_Form {
 
         $placeholder = $this->placeholder();
         $this->output .= '<textarea rows="'. @$field['rows'] .'" class="ap-form-control" name="'. @$field['name'] .'"'.$placeholder.'>'. @$field['value'] .'</textarea>';
-
+        $this->error_messages();
         $this->desc();
     }
 
@@ -265,14 +275,50 @@ class AnsPress_Form {
          * @var array
          * @since 2.0
          */
+        $field['settings']['tinymce'] = array( 
+            'content_css' => ap_get_theme_url('css/editor.css') 
+       );
         $settings = apply_filters('ap_pre_editor_settings', $field['settings'] );
 
         // Turn on the output buffer
         ob_start();
+        echo '<div class="ap-editor">';
         wp_editor( $field['value'], $field['name'], $field['settings'] );
+        echo '</div>';
         $this->output .= ob_get_clean();
-
+        $this->error_messages();
         $this->desc();
+    }
+    /**
+     * For creating hidden input fields
+     * @param  array  $field
+     * @return void
+     * @since 2.0
+     */
+    private function hidden_field($field = array()){
+        $this->output .= '<input type="hidden" value="'. @$field['value'] .'" name="'. @$field['name'] .'" />';
+    }
+
+    /**
+     * Check if current field have any error
+     * @return boolean
+     * @since 2.0
+     */
+    private function have_error(){
+        if(isset($this->errors[$this->field['name']]))
+            return true;
+
+        return false;
+    }
+    private function error_messages(){
+        if(isset($this->errors[$this->field['name']])){
+            $this->output .= '<div class="ap-form-error-messages">';
+            
+            foreach($this->errors[$this->field['name']] as $error)
+                $this->output .= '<p class="ap-form-error-message">'. $error .'</p>';
+
+            $this->output .= '</div>';
+        }
     }
 
     /**
@@ -294,32 +340,48 @@ class AnsPress_Form {
 
             $this->field = $field;
 
-            $this->output .= '<div class="ap-form-fields">';
+            $error_class = $this->have_error() ? ' ap-have-error' : '';
            
             switch ($field['type']) {
 
                 case 'text':
+                    $this->output .= '<div class="ap-form-fields'.$error_class.'">';
                     $this->text_field($field);
+                    $this->output .= '</div>';
                     break;
 
                 case 'checkbox':
+                    $this->output .= '<div class="ap-form-fields'.$error_class.'">';
                     $this->checkbox_field($field);
+                    $this->output .= '</div>';
                     break;
 
                 case 'select':
+                    $this->output .= '<div class="ap-form-fields'.$error_class.'">';
                     $this->select_field($field);
+                    $this->output .= '</div>';
                     break;
 
                 case 'taxonomy_select':
+                    $this->output .= '<div class="ap-form-fields'.$error_class.'">';
                     $this->taxonomy_select_field($field);
+                    $this->output .= '</div>';
                     break;
 
                 case 'textarea':
+                    $this->output .= '<div class="ap-form-fields'.$error_class.'">';
                     $this->textarea_field($field);
+                    $this->output .= '</div>';
                     break;
 
                 case 'editor':
+                    $this->output .= '<div class="ap-form-fields'.$error_class.'">';
                     $this->editor_field($field);
+                    $this->output .= '</div>';
+                    break;
+
+                case 'hidden':
+                    $this->hidden_field($field);
                     break;
                 
                 default:
@@ -329,9 +391,7 @@ class AnsPress_Form {
                      */
                     $this->output .= apply_filters( 'ap_form_fields_'.$field['type'],  $field);
                     break;
-            }
-
-            $this->output .= '</div>';
+            }            
         }
     }
 
@@ -388,8 +448,13 @@ function ap_ask_form(){
                 'rows'  => 5,
                 'value' => @$_POST['description'],
                 'settings' => array(
-                    'editor_class' => 'ap-editor',
+                    'textarea_rows' => 8,
                 ),
+            ),
+            array(
+                'name' => 'parent_id',
+                'type'  => 'hidden',
+                'value' => get_query_var('parent')
             ),
         ),
     );

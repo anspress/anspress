@@ -641,3 +641,14 @@ function ap_ask_btn($parent_id = false){
 	echo '<a class="ap-btn ap-ask-btn-head pull-right" href="'.ap_get_link_to($args).'">'.__('Ask Question').'</a>';
 }
 
+/**
+ * Check if doing ajax request
+ * @return boolean
+ * @since 2.0
+ */
+function ap_is_ajax(){
+	if (defined('DOING_AJAX') && DOING_AJAX)
+		return true;
+
+	return false;
+}

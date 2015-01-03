@@ -63,6 +63,9 @@ if(!class_exists('AnsPress')):
 		 * @since 2.0
 		 */
 		public $anspress_cpt;
+		
+
+		public $anspress_forms;
 
 		
 		/**
@@ -79,6 +82,7 @@ if(!class_exists('AnsPress')):
 				self::$instance->anspress_query_filter      = new AnsPress_Query_Filter();
 				self::$instance->anspress_theme      		= new AnsPress_Theme();
 				self::$instance->anspress_cpt      			= new AnsPress_PostTypes();
+				self::$instance->anspress_forms      		= new AnsPress_Process_Form();
 
 			}
 			return self::$instance;
@@ -209,6 +213,8 @@ if(!class_exists('AnsPress')):
 			require_once( ANSPRESS_DIR . 'includes/user-page-answers.php' );
 			require_once( ANSPRESS_DIR . 'includes/user-page-favorites.php' );
 			require_once( ANSPRESS_DIR . 'includes/class-form.php' );
+			require_once( ANSPRESS_DIR . 'includes/class-validation.php' );
+			require_once( ANSPRESS_DIR . 'includes/process-form.php' );
 		}
 		
 		/**

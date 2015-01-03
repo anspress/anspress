@@ -35,6 +35,7 @@ function init_scripts_front(){
 		
 		wp_enqueue_style( 'ap-fonts', ap_get_theme_url('fonts/styles.css'), array(), AP_VERSION);
 		
+		
 		do_action('ap_enqueue');
 		
 		wp_enqueue_style( 'ap-overrides', ap_get_theme_url('css/overrides.css'), array(), AP_VERSION);

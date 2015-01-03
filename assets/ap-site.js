@@ -72,6 +72,8 @@ APjs.site.prototype = {
 		this.loginAccor();
 		
 		this.expandToggle();
+
+		this.removeHasError();
 		
 		
 
@@ -1573,7 +1575,15 @@ APjs.site.prototype = {
 			jQuery(this).hide();
 
 		});
+	},
+
+	removeHasError: function(){
+		jQuery('.ap-have-error input, .ap-have-error textarea, .ap-have-error select').click(function(){
+			jQuery(this).closest('.ap-have-error').addClass('being-edited');
+		});
 	}
+
+
 	
 };
 
