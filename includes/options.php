@@ -78,7 +78,7 @@ function ap_default_options(){
 		'multiple_answers' 		=> false,
 		'minimum_ans_length' 	=> 5,
 		'avatar_size_qquestion' => 50,
-		'can_private_question'	=> false,
+		'allow_private_post'	=> true,
 		'avatar_size_qanswer' 	=> 30,
 		'avatar_size_qcomment' 	=> 25,
 		'down_vote_points' 		=> -1,

@@ -2,7 +2,7 @@
 global $post;
 $clearfix_class = array('list-question clearfix');
 
-if(!is_private_question() || (is_private_question() && ap_user_can_view_private_question(get_the_ID()))):
+if(!is_private_post() || (is_private_post() && ap_user_can_view_private_post(get_the_ID()))):
 ?>
 <article id="question-<?php the_ID(); ?>" <?php post_class($clearfix_class); ?>>
 	<?php if ( is_private_question()) : ?>

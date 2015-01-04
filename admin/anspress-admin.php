@@ -952,8 +952,8 @@ public function ap_menu_metaboxes(){
 					<tr valign="top">
 						<th scope="row">Disable private question</th>
 						<td>
-							<input type="checkbox" id="can_private_question" name="anspress_opt[can_private_question]" value="1" <?php checked( true, $settings['can_private_question'] ); ?> />
-							<label for="can_private_question">Disable the ability to ask a question as private</label>
+							<input type="checkbox" id="allow_private_posts" name="anspress_opt[allow_private_posts]" value="1" <?php checked( true, $settings['allow_private_posts'] ); ?> />
+							<label for="allow_private_posts"><?php _e('Toggle creating private question and answer', 'ap') ?></label>
 						</td>
 					</tr>
 				</table>

@@ -63,6 +63,10 @@ class AnsPress_Process_Form
 			case 'ask_form':
 				$this->process_ask_form();
 				break;
+
+			case 'answer_form':
+				$this->process_answer_form();
+				break;
 			
 			default:
 				/**
@@ -149,7 +153,7 @@ class AnsPress_Process_Form
 			$status = 'moderate';
 		
 		if(isset($fields['is_private']) && $fields['is_private'])
-			$status = 'private_question';
+			$status = 'private_post';
 			
 		$question_array = array(
 			'post_title'	=> $fields['title'],
@@ -201,6 +205,11 @@ class AnsPress_Process_Form
 
 	}
 
+	/**
+	 * Process edit question form
+	 * @return void
+	 * @since 2.0
+	 */
 	public function edit_question()
 	{
 		global $ap_errors, $validate;
@@ -218,7 +227,7 @@ class AnsPress_Process_Form
 			$status = 'moderate';
 		
 		if(isset($this->fields['is_private']) && $this->fields['is_private'])
-			$status = 'private_question';
+			$status = 'private_post';
 
 		$question_array = array(
 			'ID'			=> $post->ID,
@@ -309,6 +318,116 @@ class AnsPress_Process_Form
 				 */
 				do_action('ap_after_update_answer', $post_id, $post);
 			}
+		}
+	}
+
+	public function process_answer_form()
+	{
+		global $ap_errors, $validate;
+
+		$question = get_post((int)$_POST['question_id']);
+		// Do security check, if fails then return
+		if(!ap_user_can_answer($question->ID) || !isset($_POST['__nonce']) || !wp_verify_nonce($_POST['__nonce'], 'nonce_answer_'.$question->ID))
+			return;
+
+		$args = array(
+			'description' => array(
+				'sanitize' => array('remove_more', 'strip_shortcodes', 'encode_pre_code', 'wp_kses'),
+				'validate' => array('required' => true, 'length_check' => ap_opt('minimum_question_length'))
+			),
+			'is_private' => array(
+				'sanitize' => array('only_boolean')
+			),
+			'name' => array(
+				'sanitize' => array('strip_tags', 'sanitize_text_field')
+			),
+			'question_id' => array(
+				'sanitize' => array('only_int')
+			),
+			'edit_post_id' => array(
+				'sanitize' => array('only_int')
+			),
+		);
+
+		/**
+		 * FILTER: ap_answer_fields_validation
+		 * Filter can be used to modify answer form fields.
+		 * @var void
+		 * @since 2.0
+		 */
+		$args = apply_filters( 'ap_answer_fields_validation', $args );
+
+		$validate = new AnsPress_Validation($args);
+
+		$ap_errors = $validate->get_errors();
+		
+		// if error in form then return
+		if($validate->have_error()){
+			$this->result = $ap_errors;
+			return;
+		}
+
+		$fields = $validate->get_sanitized_fields();
+		$this->fields = $fields;
+
+		if(!empty($fields['edit_post_id'])){
+			//$this->edit_question();
+			return;
+		}
+
+
+		$user_id = get_current_user_id();
+
+		$status = 'publish';
+		
+		if(isset($fields['is_private']) && $fields['is_private'])
+			$status = 'private_answer';
+			
+		$question_array = array(
+			'post_title'	=> $fields['title'],
+			'post_author'	=> $user_id,
+			'post_content' 	=>  wp_kses($fields['description'], ap_form_allowed_tags()),
+			'post_type' 	=> 'question',
+			'post_status' 	=> $status,
+			'comment_status' => 'open',
+		);
+		
+		if(isset($fields['parent_id']))
+			$question_array['post_parent'] = (int)$fields['parent_id'];
+
+		/**
+		 * FILTER: ap_pre_insert_question
+		 * Can be used to modify args before inserting question
+		 * @var array
+		 * @since 2.0
+		 */
+		$question_array = apply_filters('ap_pre_insert_question', $question_array );
+
+		$post_id = wp_insert_post($question_array);
+
+		if($post_id){
+			
+			// Update Custom Meta
+			
+			/**
+			 * TODO: EXTENSTION - move to tags extension
+			 */
+			if(isset($fields['tags']))
+				wp_set_post_terms( $post_id, $fields['tags'], 'question_tags' );
+				
+			if (!is_user_logged_in() && ap_opt('allow_anonymous') && !empty($fields['name']))
+				update_post_meta($post_id, 'anonymous_name', $fields['name']);
+			
+			
+			$this->redirect =  get_permalink($post_id);
+
+			$this->result = apply_filters('ap_ajax_question_submit_result', 
+				array(
+					'action' 		=> 'new_question',
+					'message'		=> __('Question submitted successfully', 'ap'),
+					'redirect_to'	=> get_permalink($post_id)
+				)
+			);
 		}
 	}
 }

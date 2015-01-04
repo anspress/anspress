@@ -222,6 +222,7 @@ if(!class_exists('AnsPress')):
 			require_once( ANSPRESS_DIR . 'includes/class-validation.php' );
 			require_once( ANSPRESS_DIR . 'includes/process-form.php' );
 			require_once( ANSPRESS_DIR . 'includes/ask-form.php' );
+			require_once( ANSPRESS_DIR . 'includes/answer-form.php' );
 		}
 		
 		/**

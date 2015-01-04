@@ -568,13 +568,13 @@ class AnsPress_Query_Filter
 		 $complete = '';
 		 $label = '';
 		
-		 if($post->post_type == 'question'){
+		 if($post->post_type == 'question' || $post->post_type == 'answer'){
 			  if($post->post_status == 'moderate'){
 				   $complete = ' selected=\'selected\'';
 				   $label = '<span id=\'post-status-display\'>'.__('Moderate', 'ap').'</span>';
-			  }elseif($post->post_status == 'private_question'){
+			  }elseif($post->post_status == 'private_post'){
 				   $complete = ' selected=\'selected\'';
-				   $label = '<span id=\'post-status-display\'>'.__('Private Question', 'ap').'</span>';
+				   $label = '<span id=\'post-status-display\'>'.__('Private Post', 'ap').'</span>';
 			  }elseif($post->post_status == 'closed'){
 				   $complete = ' selected=\'selected\'';
 				   $label = '<span id=\'post-status-display\'>'.__('Closed', 'ap').'</span>';
@@ -585,7 +585,7 @@ class AnsPress_Query_Filter
 			  echo '<script>
 					  jQuery(document).ready(function(){
 						   jQuery("select#post_status").append("<option value=\'moderate\' '.$complete.'>'.__('Moderate', 'ap').'</option>");
-						   jQuery("select#post_status").append("<option value=\'private_question\' '.$complete.'>'.__('Private Question', 'ap').'</option>");
+						   jQuery("select#post_status").append("<option value=\'private_post\' '.$complete.'>'.__('Private Post', 'ap').'</option>");
 						   jQuery("select#post_status").append("<option value=\'closed\' '.$complete.'>'.__('Closed', 'ap').'</option>");
 						   jQuery(".misc-pub-section label").append("'.$label.'");
 					  });

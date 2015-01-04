@@ -8,11 +8,11 @@
  * @package AnsPress
  */
 
-class AnsPress_Ask_Form
+class AnsPress_Answer_Form
 {
     public function __construct()
     {
-        add_filter('ap_ask_form_fields', array($this, 'ask_form_name_field'));
+       // add_filter('ap_ask_form_fields', array($this, 'ask_form_name_field'));
     }
 
     public function ask_form_name_field($args){
@@ -30,14 +30,14 @@ class AnsPress_Ask_Form
     }
 }
 
-new AnsPress_Ask_Form;
+new AnsPress_Answer_Form;
 
 /**
- * Generate ask form
+ * Generate answer form
  * @param  boolean $editing
  * @return void
  */
-function ap_ask_form($editing = false){
+function ap_answer_form($question_id, $editing = false){
     global $editing_post;
 
     if($editing){
@@ -45,23 +45,14 @@ function ap_ask_form($editing = false){
     }
 
     $args = array(
-        'name'              => 'ask_form',
+        'name'              => 'answer_form',
         'is_ajaxified'      => true,
-        'submit_button'     => __('Post question', 'ap'),
+        'submit_button'     => __('Post answer', 'ap'),
+        'nonce_name'        => 'nonce_answer_'.$question_id,
         'fields'            => array(
             array(
-                'name' => 'title',
-                'label' => __('Title', 'ap'),
-                'type'  => 'text',
-                'placeholder'  => __('Question in once sentence', 'ap'),
-                'value' => ( $editing ? $editing_post->post_title : sanitize_text_field( @$_POST['title'] ) ),
-                'order' => 5
-            ),            
-            array(
                 'name' => 'description',
-                'label' => __('Description', 'ap'),
                 'type'  => 'editor',
-                'rows'  => 5,
                 'value' => ( $editing ? $editing_post->post_content : @$_POST['description']  ),
                 'settings' => array(
                     'textarea_rows' => 8,
@@ -71,14 +62,14 @@ function ap_ask_form($editing = false){
                 'name' => 'is_private',
                 'label' => __('Private', 'ap'),
                 'type'  => 'checkbox',
-                'desc'  => __('This question ment to be private, only visible to admin and moderator.', 'ap'),
+                'desc'  => __('This answer ment to be private, only visible to admin and moderator.', 'ap'),
                 'value' => ( $editing ? $is_private : sanitize_text_field( @$_POST['is_private'] ) ),
                 'order' => 12
             ),            
             array(
-                'name' => 'parent_id',
+                'name' => 'question_id',
                 'type'  => 'hidden',
-                'value' => ( $editing ? $editing_post->post_parent : get_query_var('parent')  ),
+                'value' => ( $editing ? $editing_post->post_parent : $question_id  ),
                 'order' => 20
             ),
         ),
@@ -90,7 +81,7 @@ function ap_ask_form($editing = false){
      * @var array
      * @since  2.0
      */
-    $args = apply_filters( 'ap_ask_form_fields', $args, $editing );
+    $args = apply_filters( 'ap_answer_form_fields', $args, $editing );
 
     if($editing){
         $args['fields'][] = array(
@@ -111,7 +102,7 @@ function ap_ask_form($editing = false){
  * @return void
  * @since 2.0
  */
-function ap_edit_question()
+function ap_edit_answer_form($question_id)
 {
-    ap_ask_form(true);
+    ap_answer_form($question_id, true);
 }

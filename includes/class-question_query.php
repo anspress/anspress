@@ -49,7 +49,7 @@ class Question_Query extends WP_Query {
 
         $defaults = array(
            // 'ap_query'      => 'main_questions',
-            'post_status'   => array('publish', 'moderate', 'private_question', 'closed'),
+            'post_status'   => array('publish', 'moderate', 'private_post', 'closed'),
             'showposts'     => 20,
             'orderby'       => $orderby,
             'paged'         => $paged,

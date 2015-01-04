@@ -46,7 +46,7 @@ class Answers_Query extends WP_Query {
             $orderby = (get_query_var('sort')) ? get_query_var('sort') : 'active';
 
         $defaults = array(
-            'post_status'       => array('publish', 'moderate', 'private_question'),
+            'post_status'       => array('publish', 'moderate', 'private_post'),
             'showposts'         => ap_opt('answers_per_page'),
             'orderby'           => $orderby,
             'paged'             => $paged,

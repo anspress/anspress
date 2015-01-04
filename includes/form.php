@@ -59,9 +59,7 @@ class AnsPress_Form_Helper
 				
 		add_action('wp_insert_comment', array($this, 'comment_inserted'), 99, 2);
 		add_action('pre_comment_approved', array($this, 'pre_comment_approved'), 99, 2);
-		
-		add_action('ap_answer_fields', array($this, 'answer_from_content_field'), 10, 2);
-		add_action('ap_edit_answer_fields', array($this, 'edit_answer_from_content_field'), 10, 2);
+
 
 		//add_action( 'wp_ajax_ap_toggle_login_signup', array($this, 'ap_toggle_login_signup') ); 
 		add_action( 'wp_ajax_nopriv_ap_toggle_login_signup', array($this, 'ap_toggle_login_signup') ); 
@@ -765,45 +763,8 @@ class AnsPress_Form_Helper
 
 
 
-function ap_answer_form($question_id = false){
-	if(!$question_id){
-		$question_id = get_the_ID();
-	}
-	global $ap_answer_form_validation;
-	$validate = $ap_answer_form_validation;
-	
-	if(!empty($validate['has_error'])){
-		echo '<div class="alert alert-danger" data-dismiss="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>'. __('Problem submitting form, please recheck form', 'ap') .'</div>';
-	}
-	
-	if((!ap_opt('only_admin_can_answer') && ap_user_can_answer($question_id)) || is_super_admin()){
-		echo '<form action="" id="answer_form" class="ap-content-inner" method="POST" data-action="ap-submit-answer">';
-		
-		echo '<div class="form-groups">';
-		do_action('ap_answer_fields', $question_id, $validate);
-		echo '</div>';		
-		do_action('ap_answer_form_bottom');	
-		ap_answer_form_hidden_input($question_id);
-		echo '</form>';
 
-		echo do_action('ap_after_answer_form');
-
-	}
-}
-
-
-
-function ap_answer_form_hidden_input($question_id){	
-	wp_nonce_field('post_nonce_'.$question_id, 'nonce');
-	echo '<input type="hidden" name="is_answer" value="true" />';
-	echo '<input type="hidden" name="submitted" value="true" />';
-	echo '<input type="hidden" name="form_question_id" value="'.$question_id.'" />';
-	echo '<button type="submit" class="btn-submit-ans btn ap-btn ap-success">'. __('Submit Answer', 'ap'). '</button>';
-}
-
-
-
-function ap_edit_answer_form($post_id){
+/*function ap_edit_answer_form($post_id){
 	global $ap_answer_form_validation;
 	$validate = $ap_answer_form_validation;
 	
@@ -829,7 +790,7 @@ function ap_edit_answer_form($post_id){
 		ap_edit_answer_form_hidden_input($post->ID);
 		echo '</form>';
 	}
-}
+}*/
 function ap_edit_answer_form_hidden_input($post_id){
 	wp_nonce_field('post_nonce-'.$post_id, 'nonce');
 	echo '<input type="hidden" name="is_answer" value="true" />';

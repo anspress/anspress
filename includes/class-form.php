@@ -138,7 +138,8 @@ class AnsPress_Form {
 
     private function nonce()
     {
-        $this->output .=  wp_nonce_field( $this->name, '__nonce', true, false) ;
+        $nonce_name = isset($this->args['nonce_name']) ? $this->args['nonce_name'] : $this->name;
+        $this->output .=  wp_nonce_field( $nonce_name, '__nonce', true, false) ;
     }
 
     /**

@@ -324,7 +324,7 @@ function ap_user_can_create_tag(){
 	return false;
 }
 
-function ap_user_can_view_private_question($question_id){
+function ap_user_can_view_private_post($question_id){
 	if(is_super_admin() || current_user_can('ap_view_private'))
 		return true;
 	
@@ -345,7 +345,7 @@ function ap_user_can_view_question($question_id = false){
 	
 	$post = get_post( $question_id );
 	
-	if( $post->post_status == 'publish' || ($post->post_status == 'private_question' && ap_user_can_view_private_question($question_id)))
+	if( $post->post_status == 'publish' || ($post->post_status == 'private_post' && ap_user_can_view_private_post($question_id)))
 		return true;
 	
 	return false;

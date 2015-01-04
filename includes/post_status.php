@@ -34,12 +34,12 @@ class AnsPress_Post_Status
 			  'label_count'               => _n_noop( 'Moderate <span class="count">(%s)</span>', 'Moderate <span class="count">(%s)</span>' )
 		 ) );
 		 
-		 register_post_status( 'private_question', array(
-			  'label'                     => __( 'Private Question', 'ap' ),
+		 register_post_status( 'private_post', array(
+			  'label'                     => __( 'Private Post', 'ap' ),
 			  'public'                    => true,
 			  'show_in_admin_all_list'    => false,
 			  'show_in_admin_status_list' => true,
-			  'label_count'               => _n_noop( 'Private Question <span class="count">(%s)</span>', 'Private Question <span class="count">(%s)</span>' )
+			  'label_count'               => _n_noop( 'Private Post <span class="count">(%s)</span>', 'Private Post <span class="count">(%s)</span>' )
 		 ) );
 	}
 }
