@@ -450,7 +450,7 @@ function ap_current_user_page_is($page){
 	return false;
 }
 
-function is_private_question($post_id = false){
+function is_private_post($post_id = false){
 	if(!$post_id)
 		$post_id = get_the_ID();
 	

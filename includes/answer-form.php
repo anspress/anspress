@@ -67,7 +67,7 @@ function ap_answer_form($question_id, $editing = false){
                 'order' => 12
             ),            
             array(
-                'name' => 'question_id',
+                'name' => 'form_question_id',
                 'type'  => 'hidden',
                 'value' => ( $editing ? $editing_post->post_parent : $question_id  ),
                 'order' => 20

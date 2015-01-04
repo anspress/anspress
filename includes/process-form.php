@@ -14,6 +14,8 @@ class AnsPress_Process_Form
 	private $result;
 
 	private $redirect ;
+
+	private $is_ajax = false;
 	/**
 	 * Initialize the class
 	 */
@@ -47,6 +49,7 @@ class AnsPress_Process_Form
 	 */
 	public function ajax_form()
 	{
+		$this->is_ajax = true;
 		$this->process_form();
 		wp_send_json( $this->result );
 	}
@@ -59,6 +62,7 @@ class AnsPress_Process_Form
 	public function process_form()
 	{
 		$action = sanitize_text_field($_POST['ap_form_action']);
+
 		switch ($action) {
 			case 'ask_form':
 				$this->process_ask_form();
@@ -325,7 +329,8 @@ class AnsPress_Process_Form
 	{
 		global $ap_errors, $validate;
 
-		$question = get_post((int)$_POST['question_id']);
+		$question = get_post((int)$_POST['form_question_id']);
+
 		// Do security check, if fails then return
 		if(!ap_user_can_answer($question->ID) || !isset($_POST['__nonce']) || !wp_verify_nonce($_POST['__nonce'], 'nonce_answer_'.$question->ID))
 			return;
@@ -341,7 +346,7 @@ class AnsPress_Process_Form
 			'name' => array(
 				'sanitize' => array('strip_tags', 'sanitize_text_field')
 			),
-			'question_id' => array(
+			'form_question_id' => array(
 				'sanitize' => array('only_int')
 			),
 			'edit_post_id' => array(
@@ -371,63 +376,144 @@ class AnsPress_Process_Form
 		$this->fields = $fields;
 
 		if(!empty($fields['edit_post_id'])){
-			//$this->edit_question();
+			$this->edit_answer($question);
 			return;
 		}
 
 
 		$user_id = get_current_user_id();
 
+		/**
+		 * TODO: ADD - moderate for answers too
+		 */
 		$status = 'publish';
 		
-		if(isset($fields['is_private']) && $fields['is_private'])
-			$status = 'private_answer';
+		if(isset($fields['is_private']))
+			$status = 'private_post';
 			
-		$question_array = array(
-			'post_title'	=> $fields['title'],
+		$answer_array = array(
 			'post_author'	=> $user_id,
-			'post_content' 	=>  wp_kses($fields['description'], ap_form_allowed_tags()),
-			'post_type' 	=> 'question',
+			'post_content' 	=>  $fields['description'],
+			'post_parent' 	=>  $question->ID,
+			'post_type' 	=> 'answer',
 			'post_status' 	=> $status,
 			'comment_status' => 'open',
 		);
-		
-		if(isset($fields['parent_id']))
-			$question_array['post_parent'] = (int)$fields['parent_id'];
 
 		/**
-		 * FILTER: ap_pre_insert_question
-		 * Can be used to modify args before inserting question
+		 * FILTER: ap_pre_insert_answer
+		 * Can be used to modify args before inserting answer
 		 * @var array
 		 * @since 2.0
 		 */
-		$question_array = apply_filters('ap_pre_insert_question', $question_array );
+		$answer_array = apply_filters('ap_pre_insert_answer', $answer_array );
 
-		$post_id = wp_insert_post($question_array);
+		$post_id = wp_insert_post($answer_array);
 
-		if($post_id){
-			
-			// Update Custom Meta
-			
-			/**
-			 * TODO: EXTENSTION - move to tags extension
-			 */
-			if(isset($fields['tags']))
-				wp_set_post_terms( $post_id, $fields['tags'], 'question_tags' );
-				
-			if (!is_user_logged_in() && ap_opt('allow_anonymous') && !empty($fields['name']))
+		if($post_id){				
+			// get existing answer count
+			$current_ans = ap_count_ans($question->ID);
+
+			if (!is_user_logged_in() && ap_opt('allow_anonymous') && isset($fields['name']))
 				update_post_meta($post_id, 'anonymous_name', $fields['name']);
 			
-			
-			$this->redirect =  get_permalink($post_id);
 
-			$this->result = apply_filters('ap_ajax_question_submit_result', 
-				array(
-					'action' 		=> 'new_question',
-					'message'		=> __('Question submitted successfully', 'ap'),
-					'redirect_to'	=> get_permalink($post_id)
-				)
-			);
+			if($this->is_ajax){
+				
+
+				if($current_ans == 1){
+					global $post;
+					$post = $question;
+					setup_postdata($post);
+				}else{
+					global $post;
+					$post = get_post($post_id);
+					setup_postdata($post);
+				}
+				
+				ob_start();
+				if($current_ans == 1)								
+					ap_answers_list($post->ID, 'voted');
+				else
+					include(ap_get_theme_location('answer.php'));
+				
+				$html = ob_get_clean();
+				
+				$count_label = sprintf( _n('1 Answer', '%d Answers', $current_ans, 'ap'), $current_ans);
+				
+				$result = apply_filters('ap_ajax_answer_submit_result', 
+					array(
+						'postid' 		=> $post_id, 
+						'action' 		=> 'new_answer',
+						'div_id' 		=> '#answer_'.get_the_ID(),
+						'count' 		=> $current_ans,
+						'count_label' 	=> $count_label,
+						'can_answer' 	=> ap_user_can_answer($post->ID),
+						'html' 			=> $html,
+						'message' 		=> __('Answer submitted successfully!','ap')
+					)
+				);
+				
+				$this->result = $result;
+
+				unset($_POST);
+				
+			}
+		}
+	}
+
+	public function edit_answer($question)
+	{
+		global $ap_errors, $validate;
+		
+		// return if user do not have permission to edit this answer
+		if( !ap_user_can_edit_ans($this->fields['edit_post_id']))
+			return;
+
+		/*if( !ap_user_can_edit_ans($this->fields['edit_post_id'])){
+			if($_POST['action'] == 'ap_submit_answer'){
+				$result = array(
+							'action' 		=> 'false',								
+							'message' 		=> __('You don\'t have permission to edit this answer.','ap')
+						);
+				return json_encode($result) ;
+			}
+			return;
+		}*/
+		
+		$answer = get_post($this->fields['edit_post_id']);
+
+		global $current_user;
+
+		$user_id		= $current_user->ID;
+		
+		$status = 'publish';
+
+		if(isset($this->fields['is_private']))
+			$status = 'private_post';
+
+		$answer_array = array(
+			'ID'			=> $this->fields['edit_post_id'],
+			'post_content' 	=> $this->fields['description'],
+			'post_status' 	=> $status
+		);
+
+		$answer_array = apply_filters( 'ap_pre_update_answer', $answer_array );
+		
+		$post_id = wp_update_post($answer_array);
+		
+		if($post_id){					
+			if($this->is_ajax){
+				$this->result = apply_filters('ap_ajax_answer_edit_result', 
+					array(
+						'action' 		=> 'answer_edited',
+						'message'		=> __('Answer updated successfully', 'ap'),
+						'redirect_to'	=> get_permalink($answer->post_parent)
+					)
+				);
+			}
+
+			//$this->redirect = get_permalink($post_id);
 		}
 	}
 }

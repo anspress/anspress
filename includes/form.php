@@ -241,12 +241,8 @@ class AnsPress_Form_Helper
 			if($post_id){				
 				// get existing answer count
 				$current_ans = ap_count_ans($question->ID);
-				
-				// redirect if just logged in
-				if($logged_in && $_POST['action'] != 'ap_submit_answer'){
-					wp_redirect( get_permalink($question->ID) ); exit;
-				}
-				if (ap_opt('allow_anonymous') && isset($fields['name']))
+
+				if (!is_user_logged_in() && ap_opt('allow_anonymous') && isset($fields['name']))
 					update_post_meta($post_id, 'anonymous_name', $fields['name']);
 					
 				$result = array();

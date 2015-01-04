@@ -5,7 +5,7 @@ $clearfix_class = array('list-question clearfix');
 if(!is_private_post() || (is_private_post() && ap_user_can_view_private_post(get_the_ID()))):
 ?>
 <article id="question-<?php the_ID(); ?>" <?php post_class($clearfix_class); ?>>
-	<?php if ( is_private_question()) : ?>
+	<?php if ( is_private_post()) : ?>
 		<div class="private-question-label">
 			<span><?php _e( 'Private Question', 'ap' ); ?></span>
 		</div>

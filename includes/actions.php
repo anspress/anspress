@@ -24,6 +24,7 @@ class AnsPress_Actions
 		add_action( 'ap_after_new_answer', array($this, 'after_new_answer'), 10, 2 );
 
 		add_action( 'ap_after_update_question', array($this, 'ap_after_update_question'), 10, 2 );
+		add_action( 'ap_after_update_answer', array($this, 'ap_after_update_answer'), 10, 2 );
 	}
 
 	/**
@@ -85,7 +86,8 @@ class AnsPress_Actions
 		
 		update_post_meta($post_id, ANSPRESS_BEST_META, 0);
 		
-		do_action('ap_after_inserting_answer', $post_id);			
+		do_action('ap_after_inserting_answer', $post_id);
+		ap_do_event('new_answer', $post_id, $user_id, $question->ID);
 	}
 
 	public function ap_after_update_question($post_id, $post){
@@ -93,6 +95,12 @@ class AnsPress_Actions
 		update_post_meta($post_id, ANSPRESS_UPDATED_META, current_time( 'mysql' ));
 
 		ap_do_event('edit_question', $post_id, get_current_user_id());
+	}
+
+	public function ap_after_update_answer($post_id, $post)
+	{
+		update_post_meta($post_id, ANSPRESS_UPDATED_META, current_time( 'mysql' ));
+		ap_do_event('edit_answer', $post_id, get_current_user_id(), $post->post_parent);
 	}
 
 }
