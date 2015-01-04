@@ -56,7 +56,7 @@ class AnsPress_Query_Filter
 		add_action( 'admin_init', array( $this, 'init_actions' ) ); 
 		add_action( 'init', array($this, 'ap_make_post_parent_public') );
 		add_action( 'save_post', array($this, 'ans_parent_post'), 0, 2 );	
-		add_action( 'save_post', array($this, 'action_on_new_post'), 0, 2 );	
+	
 		add_action('wp_ajax_search_questions', array($this, 'suggest_questions'));
 
 		//add_filter( 'post_type_link', array($this, 'custom_question_link'), 10, 2 );		
@@ -79,38 +79,6 @@ class AnsPress_Query_Filter
 		//add_action('delete_post', array($this, 'delete_action'));		
 	}
 	
-    // Register Custom Post Type    
-    public function create_cpt_tax()
-    {
-		
-        
-		//TODO: Move this to a new file
-		
-		register_post_status( 'closed', array(
-			  'label'                     => __( 'Closed', 'ap' ),
-			  'public'                    => true,
-			  'show_in_admin_all_list'    => false,
-			  'show_in_admin_status_list' => true,
-			  'label_count'               => _n_noop( 'Closed <span class="count">(%s)</span>', 'Moderate <span class="count">(%s)</span>' )
-		 ) );
-		 
-		 register_post_status( 'moderate', array(
-			  'label'                     => __( 'Moderate', 'ap' ),
-			  'public'                    => true,
-			  'show_in_admin_all_list'    => false,
-			  'show_in_admin_status_list' => true,
-			  'label_count'               => _n_noop( 'Moderate <span class="count">(%s)</span>', 'Moderate <span class="count">(%s)</span>' )
-		 ) );
-		 
-		 register_post_status( 'private_question', array(
-			  'label'                     => __( 'Private Question', 'ap' ),
-			  'public'                    => true,
-			  'show_in_admin_all_list'    => false,
-			  'show_in_admin_status_list' => true,
-			  'label_count'               => _n_noop( 'Private Question <span class="count">(%s)</span>', 'Private Question <span class="count">(%s)</span>' )
-		 ) );
-        
-    }
     
     // custom columns in CPT question
     public function cpt_question_columns($columns)
@@ -384,27 +352,7 @@ class AnsPress_Query_Filter
 		}
 	}
 	
-	public function action_on_new_post( $post_id, $post ) {
-		// return on autosave
-		if(defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) { return; }
-		
-		if ( wp_is_post_revision( $post_id ) )
-			return;
-		
-		/* if ( !current_user_can( 'edit_post', $post->ID ))
-			return $post->ID; */
-		
-		if ( $post->post_type == 'question' ) {
-			//check if post have updated meta, if not this is a new post :D
-			$updated = get_post_meta($post_id, ANSPRESS_UPDATED_META, true);
-			if($updated == '')
-				do_action('ap_new_question', $post_id, $post);
-		}elseif ( $post->post_type == 'answer' ) {
-			$updated = get_post_meta($post_id, ANSPRESS_UPDATED_META, true);
-			if($updated == '')
-				do_action('ap_new_answer', $post_id, $post);
-		}
-	}
+	
 	// make post_parent public for admin_init
 	public function ap_make_post_parent_public() {
 		if ( is_admin() )

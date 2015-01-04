@@ -35,6 +35,7 @@ class AnsPress_Theme {
 		add_shortcode( 'anspress_question_categories', array( 'AnsPress_Categories_Shortcode', 'anspress_categories' ) );
 		add_shortcode( 'anspress_user', array( 'AnsPress_User_Shortcode', 'anspress_user' ) );
 		add_shortcode( 'anspress_ask', array( 'AnsPress_Ask_Shortcode', 'anspress_ask' ) );
+		add_shortcode( 'anspress_edit_page', array( 'AnsPress_Edit_Shortcode', 'anspress_edit' ) );
 
 		add_action('ap_before', array($this, 'ap_before_html_body'));
 
@@ -625,10 +626,10 @@ function ap_post_actions_buttons()
 	 * edit question link
 	 */
 	if(ap_user_can_edit_question($post->ID) && $post->post_type == 'question')
-		$actions['edit_question'] = ap_edit_q_btn_html();
+		$actions['edit_question'] = ap_edit_post_link_html();
 
 	if(ap_user_can_edit_ans($post->ID) && $post->post_type == 'answer')
-		$actions['edit_answer'] = ap_edit_a_btn_html();
+		$actions['edit_answer'] = ap_edit_post_link_html();
 	
 	if(is_user_logged_in())
 		$actions['flag'] = ap_flag_btn_html();

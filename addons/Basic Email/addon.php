@@ -35,8 +35,8 @@ class AP_Basic_Email_Addon
      */
     public function __construct()
     {
-		add_action( 'ap_after_inserting_question', array($this, 'new_question_email') );
-		add_action( 'ap_after_inserting_answer', array($this, 'new_answer_email') );
+		add_action( 'ap_after_new_question', array($this, 'new_question_email') );
+		add_action( 'ap_after_new_answer', array($this, 'new_answer_email') );
 		add_action( 'ap_event_new_comment', array($this, 'new_comment'), 10, 3);
 		add_action('ap_event_select_answer', array($this, 'select_answer'), 10, 3);
     }

@@ -214,23 +214,52 @@ function ap_comment_btn_html($echo = false){
 	}
 }
 
-//TODO: fix edit link, do edit on same page
-//
-function ap_edit_q_btn_html($echo = false){
-	$post_id = get_the_ID();
-	if(ap_user_can_edit_question($post_id)){		
-		$action = 'question-'.$post_id;
-		$nonce = wp_create_nonce( $action );
-		$edit_link = add_query_arg( array('edit_q' => $post_id, 'nonce' => $nonce), get_permalink( ap_opt('base_page')) );
-		//$args = json_encode(array('action' => 'ap_load_edit_form', 'id'=> $post_id, 'nonce' => $nonce, 'type' => 'question'));
-		$output = "<a href='$edit_link' data-button='ap-edit-post' title='".__('Edit this question', 'ap')."' class='apEditBtn'>".ap_icon('edit', true)."<span>".__('Edit', 'ap')."</span></a>";
+/**
+ * Return edit link for question and answer
+ * @param  int| object $post_id_or_object
+ * @return string                 
+ * @since 2.0
+ */
+function ap_post_edit_link($post_id_or_object){
+	if(!is_object($post_id_or_object))
+		$post_id_or_object = get_post($post_id_or_object);
 
-		if($echo)
+	$post = $post_id_or_object;
+
+	$nonce = wp_create_nonce( 'nonce_edit_post_'.$post->ID );
+
+	$edit_link = add_query_arg( array('edit_post_id' => $post->ID,  '__nonce' => $nonce), get_permalink( ap_opt('edit_page')) );
+
+	return apply_filters( 'ap_post_edit_link', $edit_link );
+}
+
+/**
+ * Returns edit post button html
+ * @param  boolean $echo
+ * @param  int | object $post_id_or_object
+ * @return void
+ * @since 2.0
+ */
+function ap_edit_post_link_html($echo = false, $post_id_or_object = false){
+	if(!is_object($post_id_or_object))
+		$post_id_or_object = get_post($post_id_or_object);
+
+	$post = $post_id_or_object;
+	
+	$edit_link = ap_post_edit_link($post);
+
+	$output = '';
+
+	if($post->post_type == 'question' && ap_user_can_edit_question($post->ID)){		
+		$output = "<a href='$edit_link' data-button='ap-edit-post' title='".__('Edit this question', 'ap')."' class='apEditBtn'>".ap_icon('edit', true)."<span>".__('Edit', 'ap')."</span></a>";	
+	}elseif($post->post_type == 'answer' && ap_user_can_edit_ans($post->ID)){
+		$output = "<a href='$edit_link' data-button='ap-edit-post' title='".__('Edit this answer', 'ap')."' class='apEditBtn'>".ap_icon('edit', true)."<span>".__('Edit', 'ap')."</span></a>";
+	}
+
+	if($echo)
 			echo $output;
 		else
 			return $output;
-	}
-	return;
 }
 
 function ap_edit_a_btn_html( $echo = false ){
@@ -651,4 +680,33 @@ function ap_is_ajax(){
 		return true;
 
 	return false;
+}
+
+/**
+ * Allow HTML tags
+ * @return array
+ * @since 0.9
+ */
+function ap_form_allowed_tags(){
+	$allowed_tags = array(
+		'a' => array(
+			'href' => array(),
+			'title' => array()
+		),
+		'br' => array(),
+		'em' => array(),
+		'strong' => array(),
+		'pre' => array(),
+		'code' => array(),
+		'blockquote' => array(),
+		'img' => array(
+			'src' => array(),
+		),
+	);
+	
+	/**
+	 * FILTER: ap_allowed_tags
+	 * Before passing allowed tags
+	 */
+	return apply_filters( 'ap_allowed_tags', $allowed_tags);
 }

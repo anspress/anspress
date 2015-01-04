@@ -52,7 +52,7 @@ class AnsPress_Validation
      */
     public function required($field)
     {
-        if(!isset($this->fields[$field]) || mb_strlen($this->fields[$field]) == 0 )
+        if(!isset($this->fields[$field]) || mb_strlen($this->fields[$field]) == 0 || $this->fields[$field] =='' )
             $this->errors[$field][] = __('This field is required', 'ap');
     }
 
@@ -96,7 +96,7 @@ class AnsPress_Validation
 
     /**
      * Sanitize as a integer value
-     * @param  array $field
+     * @param  string $field
      * @return void
      * @since 2.0
      */
@@ -105,6 +105,72 @@ class AnsPress_Validation
 
         $this->fields[$field] = (int) $this->fields[$field];
 
+    }
+
+    /**
+     * Sanitize field using wp_kses
+     * @param  string $field
+     * @return void
+     * @since 2.0
+     */
+    private function wp_kses($field)
+    {
+        $this->fields[$field] = wp_kses($this->fields[$field], ap_form_allowed_tags());
+    }
+
+    /**
+     * Remove wordpress read more tag
+     * @param  string $field
+     * @return void
+     * @since 2.0
+     */
+    private function remove_more($field)
+    {
+        $this->fields[$field] = str_replace('<!--more-->', '', $this->fields[$field]);
+    }
+
+    /**
+     * Stripe shortcode tags
+     * @param  string $field
+     * @return void
+     * @since 2.0
+     */
+    private function strip_shortcodes($field)
+    {
+        $this->fields[$field] = strip_shortcodes($this->fields[$field]);
+    }
+
+    /**
+     * Encode contents inside pre and code tag
+     * @param  string $field
+     * @return void
+     * @since 2.0
+     */
+    private function encode_pre_code($field)
+    {
+        $this->fields[$field] = preg_replace_callback('/<pre.*?>(.*?)<\/pre>/imsu', array($this, 'pre_content'), $this->fields[$field]);
+        $this->fields[$field] = preg_replace_callback('/<code.*?>(.*?)<\/code>/imsu', array($this, 'code_content'), $this->fields[$field]);
+    }
+
+    private function pre_content($matches)
+    {
+        return '<pre>'.esc_html($matches[1]).'</pre>';
+    }
+
+    private function code_content($matches)
+    {
+        return '<code>'.esc_html($matches[1]).'</code>';
+    }
+
+    /**
+     * Strip all tags
+     * @param  array $field
+     * @return void       
+     * @since  2.0
+     */
+    private function strip_tags($field)
+    {
+       $this->fields[$field] = strip_tags($this->fields[$field]); 
     }
 
     /**
@@ -125,6 +191,31 @@ class AnsPress_Validation
                 case 'only_boolean':                    
                     $this->only_boolean($field);
                     break;
+
+                case 'only_int':                    
+                    $this->only_int($field);
+                    break;
+
+                case 'wp_kses':                    
+                    $this->wp_kses($field);
+                    break;
+
+                case 'remove_more':                    
+                    $this->remove_more($field);
+                    break;
+
+                case 'strip_shortcodes':                    
+                    $this->strip_shortcodes($field);
+                    break;
+
+                case 'encode_pre_code':                    
+                    $this->encode_pre_code($field);
+                    break;
+
+                case 'strip_tags':                    
+                    $this->strip_tags($field);
+                    break;
+
                 
                 default:
                     $this->fields[$field] = apply_filters('ap_validation_sanitize_field', $field, $actions );
@@ -146,7 +237,7 @@ class AnsPress_Validation
         foreach($actions as $type => $param){
             if(isset($this->errors[$field]))
                 return;
-            
+
             switch ($type) {
                 case 'required':
                     $this->required($field);

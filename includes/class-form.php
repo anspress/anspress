@@ -45,6 +45,35 @@ class AnsPress_Form {
         global $ap_errors;
         $this->errors = $ap_errors;
 
+        $this->add_default_in_field();
+
+        $this->order_fields();
+    }
+
+    private function add_default_in_field()
+    {
+        if(!isset($this->args['fields']))
+            return;
+        
+        foreach($this->args['fields'] as $k => $field){
+            if(!isset($field['order']))
+                $this->args['fields'][$k]['order'] = 10;
+        }
+    }
+
+    /**
+     * Order fields
+     * @return void
+     * @since 2.0
+     */
+    private function order_fields()
+    {
+        if(!isset($this->args['fields']))
+            return;
+
+        usort($this->args['fields'], function($a, $b) {
+            return $a['order'] - $b['order'];
+        });
     }
 
     /**
@@ -75,6 +104,15 @@ class AnsPress_Form {
         if(!empty($this->args['class']))
             $attr .= ' class="'.$this->args['class'].'"';
 
+        ob_start();
+        /**
+         * ACTION: ap_form_before_[form_name]
+         * action for hooking before form
+         * @since 2.0
+         */
+        do_action('ap_form_before_'. $this->name);
+        $this->output .= ob_get_clean();
+
         $this->output .= '<form name="'.$this->args['name'].'" method="'.$this->args['method'].'" action="'.$this->args['action'].'"'.$attr.'>';
     }
 
@@ -84,7 +122,16 @@ class AnsPress_Form {
      * @since 2.0
      */
     private function form_footer()
-    {        
+    { 
+        ob_start();
+        /**
+         * ACTION: ap_form_bottom_[form_name]
+         * action for hooking captcha and extar fields
+         * @since 2.0
+         */
+        do_action('ap_form_bottom_'. $this->name);
+        $this->output .= ob_get_clean();
+
         $this->output .= '<button type="submit" class="ap-btn ap-submit-btn">'.$this->args['submit_button'].'</button>';
         $this->output .= '</form>';
     }
@@ -169,7 +216,7 @@ class AnsPress_Form {
         if(!empty($field['desc']))
             $this->output .= '<div class="ap-checkbox-withdesc clearfix">';
 
-        $this->output .= '<input type="checkbox" class="ap-form-control" value="1" name="'. @$field['name'] .'" '.checked( $field['value'], 1, false ).' />';
+        $this->output .= '<input type="checkbox" class="ap-form-control" value="1" name="'. @$field['name'] .'" '.checked( (bool)$field['value'], true, false ).' />';
         $this->error_messages();
         $this->desc();
 
@@ -201,6 +248,7 @@ class AnsPress_Form {
             $this->label();
         
         $this->output .= '<select class="ap-form-control" value="'. @$field['value'] .'" name="'. @$field['name'] .'" >';
+        $this->output .= '<option value=""></option>';
         $this->select_options($field);
         $this->output .= '</select>';
         $this->error_messages();
@@ -235,6 +283,7 @@ class AnsPress_Form {
             $this->label();
         
         $this->output .= '<select class="ap-form-control" value="'. @$field['value'] .'" name="'. @$field['name'] .'" >';
+        $this->output .= '<option value=""></option>';
         $this->taxonomy_select_options($field);
         $this->output .= '</select>';
         $this->error_messages();
@@ -413,53 +462,3 @@ class AnsPress_Form {
 }
 
 
-function ap_ask_form(){
-    $args = array(
-        'name'              => 'ask_form',
-        'is_ajaxified'      => true,
-        'submit_button'     => __('Post question', 'ap'),
-        'fields'            => array(
-            array(
-                'name' => 'title',
-                'label' => __('Title', 'ap'),
-                'type'  => 'text',
-                'placeholder'  => __('Question in once sentence', 'ap'),
-                'value' => sanitize_text_field(@$_POST['title'] )
-            ),
-            array(
-                'name' => 'category',
-                'label' => __('Category', 'ap'),
-                'type'  => 'taxonomy_select',
-                'value' => sanitize_text_field(@$_POST['category'] ),
-                'taxonomy' => 'question_category'
-            ),
-            array(
-                'name' => 'is_private',
-                'label' => __('Private', 'ap'),
-                'type'  => 'checkbox',
-                'desc'  => __('This question ment to be private, only visible to admin and moderator.', 'ap'),
-                'value' => sanitize_text_field(@$_POST['is_private'] )
-            ),
-            array(
-                'name' => 'description',
-                'label' => __('Description', 'ap'),
-                'type'  => 'editor',
-                'desc'  => __('Write question in detail', 'ap'),
-                'rows'  => 5,
-                'value' => @$_POST['description'],
-                'settings' => array(
-                    'textarea_rows' => 8,
-                ),
-            ),
-            array(
-                'name' => 'parent_id',
-                'type'  => 'hidden',
-                'value' => get_query_var('parent')
-            ),
-        ),
-    );
-
-    $form = new AnsPress_Form($args);
-
-    echo $form->get_form();
-}

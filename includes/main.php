@@ -163,9 +163,8 @@ class anspress_main {
 	//add author_more to query vars
 	public function query_var( $query_vars) {
 
-		$query_vars[] = 'edit_q';
+		$query_vars[] = 'edit_post_id';
 		$query_vars[] = 'ap_nonce';
-		$query_vars[] = 'edit_a';
 		$query_vars[] = 'question_id';
 		$query_vars[] = 'question';
 		$query_vars[] = 'question_name';

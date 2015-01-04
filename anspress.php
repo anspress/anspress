@@ -43,6 +43,7 @@ if(!class_exists('AnsPress')):
 
 		static $instance = null;
 
+		public $anspress_actions;
 
 		/**
 		 * Filter object
@@ -79,10 +80,12 @@ if(!class_exists('AnsPress')):
 				add_action( 'plugins_loaded', array( self::$instance, 'load_textdomain' ) );
 
 				self::$instance->includes();
+
+				self::$instance->anspress_forms      		= new AnsPress_Process_Form();
+				self::$instance->anspress_actions      		= new AnsPress_Actions();
 				self::$instance->anspress_query_filter      = new AnsPress_Query_Filter();
 				self::$instance->anspress_theme      		= new AnsPress_Theme();
-				self::$instance->anspress_cpt      			= new AnsPress_PostTypes();
-				self::$instance->anspress_forms      		= new AnsPress_Process_Form();
+				self::$instance->anspress_cpt      			= new AnsPress_PostTypes();				
 
 			}
 			return self::$instance;
@@ -177,6 +180,7 @@ if(!class_exists('AnsPress')):
 			require_once( ANSPRESS_DIR . 'activate.php' );
 			
 			require_once( ANSPRESS_DIR . 'includes/functions.php' );
+			require_once( ANSPRESS_DIR . 'includes/actions.php' );
 			require_once( ANSPRESS_DIR . 'includes/class-roles-cap.php' );
 			require_once( ANSPRESS_DIR . 'includes/class-question_query.php' );
 			require_once( ANSPRESS_DIR . 'includes/class-answer_query.php' );
@@ -184,6 +188,7 @@ if(!class_exists('AnsPress')):
 
 			require_once( ANSPRESS_DIR . 'includes/events.php' );
 			require_once( ANSPRESS_DIR . 'includes/query_filter.php' );
+			require_once( ANSPRESS_DIR . 'includes/post_status.php' );
 			
 			require_once( ANSPRESS_DIR . 'includes/meta.php' );
 			require_once( ANSPRESS_DIR . 'includes/vote.php' );
@@ -207,6 +212,7 @@ if(!class_exists('AnsPress')):
 			require_once( ANSPRESS_DIR . 'includes/shortcode-questions.php' );
 			require_once( ANSPRESS_DIR . 'includes/shortcode-user.php' );
 			require_once( ANSPRESS_DIR . 'includes/shortcode-ask.php' );
+			require_once( ANSPRESS_DIR . 'includes/shortcode-edit.php' );
 
 			require_once( ANSPRESS_DIR . 'includes/user-page-profile.php' );
 			require_once( ANSPRESS_DIR . 'includes/user-page-questions.php' );
@@ -215,6 +221,7 @@ if(!class_exists('AnsPress')):
 			require_once( ANSPRESS_DIR . 'includes/class-form.php' );
 			require_once( ANSPRESS_DIR . 'includes/class-validation.php' );
 			require_once( ANSPRESS_DIR . 'includes/process-form.php' );
+			require_once( ANSPRESS_DIR . 'includes/ask-form.php' );
 		}
 		
 		/**

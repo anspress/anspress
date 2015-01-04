@@ -34,6 +34,7 @@ function anspress_activate( $network_wide ) {
 		'questions' 			=> __('Questions', 'ap'), 
 		'user' 					=> __('User', 'ap'),			
 		'ask' 					=> __('Ask', 'ap'),			
+		'edit_page' 			=> __('Edit', 'ap'),			
 	);
 	
 	foreach($page_to_create as $k => $page_title){

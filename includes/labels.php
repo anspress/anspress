@@ -54,7 +54,7 @@ class AP_labels
 		
 		add_filter('wp_ajax_ap_save_labels', array($this, 'ap_save_labels'));
 		
-		add_filter('ap_after_inserting_question', array($this, 'default_label'));
+		add_filter('ap_after_new_question', array($this, 'default_label'));
 		
     }
 

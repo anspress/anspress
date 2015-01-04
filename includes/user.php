@@ -504,7 +504,7 @@ function ap_user_display_name($args = array()){
 				$return = $anonymous_label;
 		}else{
 			if($name != '')
-				$return = '<span class="who">'.$name.'</span>';
+				$return = '<span class="who">'.$name.__(' (anonymous)', 'ap').'</span>';
 			else
 				$return = '<span class="who">'.$anonymous_label.'</span>';
 		}

@@ -933,6 +933,13 @@ public function ap_menu_metaboxes(){
 							<p class="description"><?php _e('Used to show user profil.', 'ap'); ?></p>
 						</td>
 					</tr>	
+					<tr valign="top">
+						<th scope="row"><label for="edit_page"><?php _e('Edit Page', 'ap'); ?></label></th>
+						<td>
+							<?php wp_dropdown_pages( array('selected'=> $settings['edit_page'],'name'=> 'anspress_opt[edit_page]','post_type'=> 'page') ); ?>
+							<p class="description"><?php _e('Used to edit question and answer.', 'ap'); ?></p>
+						</td>
+					</tr>	
 
 					<tr valign="top">
 						<th scope="row">Author Credits</th>
