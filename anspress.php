@@ -44,6 +44,7 @@ if(!class_exists('AnsPress')):
 		static $instance = null;
 
 		public $anspress_actions;
+		public $anspress_ajax;
 
 		/**
 		 * Filter object
@@ -83,6 +84,7 @@ if(!class_exists('AnsPress')):
 
 				self::$instance->anspress_forms      		= new AnsPress_Process_Form();
 				self::$instance->anspress_actions      		= new AnsPress_Actions();
+				self::$instance->anspress_ajax      		= new AnsPress_Ajax();
 				self::$instance->anspress_query_filter      = new AnsPress_Query_Filter();
 				self::$instance->anspress_theme      		= new AnsPress_Theme();
 				self::$instance->anspress_cpt      			= new AnsPress_PostTypes();				
@@ -262,8 +264,6 @@ add_action( 'plugins_loaded', array( 'Ap_Meta', 'get_instance' ) );
 add_action( 'plugins_loaded', array( 'anspress_vote', 'get_instance' ) );
 add_action( 'plugins_loaded', array( 'anspress_view', 'get_instance' ) );
 //add_action( 'plugins_loaded', array( 'anspress_form', 'get_instance' ) );
-
-add_action( 'plugins_loaded', array( 'anspress_ajax', 'get_instance' ) );
 
 add_action( 'plugins_loaded', array( 'AP_Participents', 'get_instance' ) );
 //add_action( 'plugins_loaded', array( 'AP_labels', 'get_instance' ) );

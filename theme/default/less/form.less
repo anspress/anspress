@@ -18,6 +18,10 @@
 	    padding: 0;
 	    width: auto;
     }
+    &#title {
+	    font-size: 18px;
+	    font-weight: @bold;
+	}
 }
 .ap-checkbox-withdesc{
 	margin-bottom: 15px;
@@ -102,4 +106,61 @@
 }
 .btn-submit-ans{
 	padding: 10px 20px;
+}
+.ap-form-label{
+	display: block;
+	margin-bottom: 10px;
+	.ap-field-desc {
+	    background: none repeat scroll 0 0 #bbb;
+	    .border-radius(50%);
+	    color: @white;
+	    display: inline-block;
+	    font-size: 12px;
+	    height: 16px;
+	    line-height: 18px;
+	    margin-left: 7px;
+	    text-align: center;
+	    width: 16px;
+	    &:hover{
+	    	background: @blue-color;
+	    }
+	}
+}
+.ap-similar-questions-head{
+	h3{
+		color: @main-color;
+		font-size: 16px;
+    	font-weight: @bold;
+	}
+}
+.ap-similar-questions{
+	border: solid 2px #eee;
+	.border-radius(@default-border-radius);
+	margin-bottom: 15px;
+	max-height: 210px;
+    overflow-x: auto;
+    .box-shadow(0 0 4px rgba(0, 0, 0, 0.04) inset);
+    padding: 15px;
+
+	a{
+		color: @default-color;
+		display: block;
+		padding: 8px;
+		text-decoration: none;
+
+		.acount{
+		    color: @light-color;
+		    float: right;
+		    font-size: 13px;
+		    font-style: italic;
+		}
+
+		&:hover{
+			background: #fcfcfc;
+		}
+		.highlight_word{
+			font-weight: @bold;
+			text-decoration: underline;
+		}
+	}
 }

@@ -54,14 +54,22 @@ function ap_ask_form($editing = false){
                 'label' => __('Title', 'ap'),
                 'type'  => 'text',
                 'placeholder'  => __('Question in once sentence', 'ap'),
+                'desc'  => __('Write a meaningful title for the question.', 'ap'),
                 'value' => ( $editing ? $editing_post->post_title : sanitize_text_field( @$_POST['title'] ) ),
-                'order' => 5
+                'order' => 5,
+                'attar' => 'data-bind="keyup" data-query="ap_ajax_action=suggest_similar_questions&value=__INPUT_VAL__" data-success="html_content=similar_suggestions"'
+            ),
+            array(
+                'name' => 'title',
+                'type'  => 'custom',
+                'order' => 5,
+                'html' => '<div id="similar_suggestions"></div>'
             ),            
             array(
                 'name' => 'description',
                 'label' => __('Description', 'ap'),
                 'type'  => 'editor',
-                'rows'  => 5,
+                'desc'  => __('Write description for the question.', 'ap'),
                 'value' => ( $editing ? $editing_post->post_content : @$_POST['description']  ),
                 'settings' => array(
                     'textarea_rows' => 8,
@@ -73,7 +81,8 @@ function ap_ask_form($editing = false){
                 'type'  => 'checkbox',
                 'desc'  => __('This question ment to be private, only visible to admin and moderator.', 'ap'),
                 'value' => ( $editing ? $is_private : sanitize_text_field( @$_POST['is_private'] ) ),
-                'order' => 12
+                'order' => 12,
+                'show_desc_tip' => false
             ),            
             array(
                 'name' => 'parent_id',

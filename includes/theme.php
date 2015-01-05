@@ -586,6 +586,7 @@ function ap_icon($name, $html = false){
 		'question'			=> 'icon-comment-discussion',
 		'upload'			=> 'icon-cloud-upload',
 		'link'				=> 'icon-link',
+		'help'				=> 'icon-question',
 	);
 	
 	$icons = apply_filters('ap_icon', $icons);

@@ -58,6 +58,9 @@ class AnsPress_Form {
         foreach($this->args['fields'] as $k => $field){
             if(!isset($field['order']))
                 $this->args['fields'][$k]['order'] = 10;
+
+            if(!isset($field['show_desc_tip']))
+                $this->args['fields'][$k]['show_desc_tip'] = true;
         }
     }
 
@@ -164,8 +167,13 @@ class AnsPress_Form {
      */
     private function label()
     {
-        if($this->field['label'])
-            $this->output .= '<label class="ap-form-label" for="'. @$this->field['name'] .'">'. @$this->field['label'] .'</label>';
+        if($this->field['label'] && !$this->field['show_desc_tip']){
+            $this->output .= '<label class="ap-form-label" for="'. @$this->field['name'] .'">'. @$this->field['label'].'</label>';
+        }elseif($this->field['label']){
+            $this->output .= '<label class="ap-form-label" for="'. @$this->field['name'] .'">'. @$this->field['label'];
+            $this->desc();
+            $this->output .= '</label>';
+        }
     }
 
     /**
@@ -183,7 +191,11 @@ class AnsPress_Form {
      * @since 2.0
      */
     private function desc(){
-        $this->output .= (!empty($this->field['desc']) ? '<p class="ap-field-desc">'.$this->field['desc'].'</p>' : '');
+
+        if(!$this->field['show_desc_tip'])
+            $this->output .= (!empty($this->field['desc']) ? '<p class="ap-field-desc">'.$this->field['desc'].'</p>' : '');
+        else
+            $this->output .= (!empty($this->field['desc']) ? '<span class="ap-tip ap-field-desc" data-tipposition="right" title="'.esc_html($this->field['desc']).'">?</span>' : '');
     }
 
     /**
@@ -198,9 +210,8 @@ class AnsPress_Form {
             $this->label();
 
         $placeholder = $this->placeholder();
-        $this->output .= '<input type="text" class="ap-form-control" value="'. @$field['value'] .'" name="'. @$field['name'] .'"'.$placeholder.' />';
+        $this->output .= '<input id="'. @$field['name'] .'" type="text" class="ap-form-control" value="'. @$field['value'] .'" name="'. @$field['name'] .'"'.$placeholder.' '. @$field['attar'] .' />';
         $this->error_messages();
-        $this->desc();
     }
 
     /**
@@ -217,9 +228,9 @@ class AnsPress_Form {
         if(!empty($field['desc']))
             $this->output .= '<div class="ap-checkbox-withdesc clearfix">';
 
-        $this->output .= '<input type="checkbox" class="ap-form-control" value="1" name="'. @$field['name'] .'" '.checked( (bool)$field['value'], true, false ).' />';
-        $this->error_messages();
+        $this->output .= '<input id="'. @$field['name'] .'" type="checkbox" class="ap-form-control" value="1" name="'. @$field['name'] .'" '.checked( (bool)$field['value'], true, false ).' '. @$field['attar'] .' />';
         $this->desc();
+        $this->error_messages();
 
         if(!empty($field['desc']))
             $this->output .= '</div>';
@@ -248,12 +259,11 @@ class AnsPress_Form {
         if(isset($field['label']))
             $this->label();
         
-        $this->output .= '<select class="ap-form-control" value="'. @$field['value'] .'" name="'. @$field['name'] .'" >';
+        $this->output .= '<select id="'. @$field['name'] .'" class="ap-form-control" value="'. @$field['value'] .'" name="'. @$field['name'] .'" '. @$field['attar'] .'>';
         $this->output .= '<option value=""></option>';
         $this->select_options($field);
         $this->output .= '</select>';
         $this->error_messages();
-        $this->desc();
     }
 
     /**
@@ -283,12 +293,11 @@ class AnsPress_Form {
         if(isset($field['label']))
             $this->label();
         
-        $this->output .= '<select class="ap-form-control" value="'. @$field['value'] .'" name="'. @$field['name'] .'" >';
+        $this->output .= '<select id="'. @$field['name'] .'" class="ap-form-control" value="'. @$field['value'] .'" name="'. @$field['name'] .'" '. @$field['attar'] .'>';
         $this->output .= '<option value=""></option>';
         $this->taxonomy_select_options($field);
         $this->output .= '</select>';
         $this->error_messages();
-        $this->desc();
     }
 
     /**
@@ -303,9 +312,8 @@ class AnsPress_Form {
             $this->label();
 
         $placeholder = $this->placeholder();
-        $this->output .= '<textarea rows="'. @$field['rows'] .'" class="ap-form-control" name="'. @$field['name'] .'"'.$placeholder.'>'. @$field['value'] .'</textarea>';
+        $this->output .= '<textarea id="'. @$field['name'] .'" rows="'. @$field['rows'] .'" class="ap-form-control" name="'. @$field['name'] .'"'.$placeholder.' '. @$field['attar'] .'>'. @$field['value'] .'</textarea>';
         $this->error_messages();
-        $this->desc();
     }
 
     /**
@@ -337,7 +345,6 @@ class AnsPress_Form {
         echo '</div>';
         $this->output .= ob_get_clean();
         $this->error_messages();
-        $this->desc();
     }
     /**
      * For creating hidden input fields
@@ -346,7 +353,11 @@ class AnsPress_Form {
      * @since 2.0
      */
     private function hidden_field($field = array()){
-        $this->output .= '<input type="hidden" value="'. @$field['value'] .'" name="'. @$field['name'] .'" />';
+        $this->output .= '<input type="hidden" value="'. @$field['value'] .'" name="'. @$field['name'] .'" '. @$field['attar'] .' />';
+    }
+
+    private function custom_field($field = array()){
+        $this->output .= $field['html'];
     }
 
     /**
@@ -432,6 +443,10 @@ class AnsPress_Form {
 
                 case 'hidden':
                     $this->hidden_field($field);
+                    break;
+
+                case 'custom':
+                    $this->custom_field($field);
                     break;
                 
                 default:

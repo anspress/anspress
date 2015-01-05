@@ -1,6 +1,6 @@
 <?php
 /**
- * AnsPress.
+ * AnsPress ajax requests
  *
  * @package   AnsPress
  * @author    Rahul Aryan <admin@rahularyan.com>
@@ -9,32 +9,20 @@
  * @copyright 2014 Rahul Aryan
  */
 
-class anspress_ajax
+class AnsPress_Ajax
 {
-    /**
-     * Instance of this class.
-     */
-    protected static $instance = null;
-    /**
-     * Return an instance of this class.
-     * @return    object    A single instance of this class.
-     */
-    public static function get_instance()
-    {
-        
-        // If the single instance hasn't been set, set it now.
-        if (null == self::$instance) {
-            self::$instance = new self;
-        }
-        
-        return self::$instance;
-    }
+
+	private $request;
+
     /**
      * Initialize the plugin by setting localization and loading public scripts
      * and styles.
      */
     public function __construct()
     {
+		add_action('wp_ajax_ap_ajax', array($this, 'ap_ajax'));
+		add_action('wp_ajax_nopriv_ap_ajax', array($this, 'ap_ajax'));
+		
 		add_action('wp_ajax_nopriv_ap_check_email', array($this, 'check_email'));
 		add_action('wp_ajax_recount_votes', array($this, 'recount_votes'));
 		add_action('wp_ajax_recount_views', array($this, 'recount_views'));
@@ -49,6 +37,62 @@ class anspress_ajax
 		
 		add_action('wp_ajax_ap_suggest_questions', array($this, 'ap_suggest_questions'));
 		add_action('wp_ajax_nopriv_ap_suggest_questions', array($this, 'ap_suggest_questions'));
+    }
+
+    /**
+     * Handle all anspress ajax requests 
+     * @return void
+     * @since 2.0
+     */
+    public function ap_ajax()
+    {
+    	$this->request = $_REQUEST;
+
+    	$action = sanitize_text_field($_POST['ap_ajax_action']);
+
+    	switch ($action) {
+    		case 'suggest_similar_questions':
+    			$this->suggest_similar_questions();
+    			break;
+    		
+    		default:
+    			# code...
+    			break;
+    	}
+    }
+
+    /**
+     * Show similar questions when asking a question
+     * @return void
+     * @since 2.0
+     */
+    public function suggest_similar_questions(){
+    	$keyword = sanitize_text_field($_POST['value']);
+		$questions = get_posts(array(
+			'post_type'   	=> 'question',
+			'showposts'   	=> 10,
+			's' 			=> $keyword,
+		));
+		
+		
+		if($questions){
+			$items = '<div class="ap-similar-questions-head">';
+			$items .= '<h3>'.ap_icon('check', true). sprintf(__('%d similar questions found', 'ap'), count($questions)) .'</h3>';
+			$items .= '<p>'.__('We found similar questions that have already been asked, click to read them. Avoid creating duplicate questions, it will be deleted.').'</p>';
+			$items .= '</div>';
+			$items .= '<div class="ap-similar-questions">';
+			foreach ($questions as $k => $p){
+				$count = ap_count_ans_meta($p->ID);
+				$p->post_title = ap_highlight_words($p->post_title, $keyword);
+				$items .= '<a class="ap-sqitem" href="'.get_permalink($p->ID).'">'.$p->post_title.'<span class="acount">'. sprintf(_n('1 Answer', '%d Answers', $count, 'ap' ), $count) .'</span></a>';
+			}
+			$items .= '</div>';
+			$result = array('status' => true, 'html' => $items);
+		}else{
+			$result = array('status' => false, 'message' => __('No related questions found', 'ap'));
+		}
+		
+		ap_send_json($result);
     }
 
 	

@@ -710,3 +710,30 @@ function ap_form_allowed_tags(){
 	 */
 	return apply_filters( 'ap_allowed_tags', $allowed_tags);
 }
+
+function ap_send_json($result = array()){
+	$result['is_ap_ajax'] = true;
+
+	wp_send_json( $result );
+}
+
+/**
+ * Highlight matching words
+ * @param  	string $text 
+ * @param  	string $words
+ * @return 	string 
+ * @since 	2.0
+ */
+function ap_highlight_words($text, $words) {
+	$words = explode(' ', $words);
+	foreach ($words as $word)
+    {
+        //quote the text for regex
+        $word = preg_quote($word);
+        
+        //highlight the words
+        $text = preg_replace("/\b($word)\b/i", '<span class="highlight_word">\1</span>', $text);
+    }
+
+    return $text;
+}
