@@ -23,10 +23,10 @@ class AnsPress_User_Page_Profile {
 	public static function output(){
 		global $questions;
 		
-		$current_user = get_query_var('user');
+		$user_id = ap_user_page_user_id();
 
 
-		echo '<div class="anspress-container">';
+		echo '<div class="anspress-user-container">';
 			
 			/**
 			 * ACTION: ap_before
@@ -34,7 +34,7 @@ class AnsPress_User_Page_Profile {
 			 */
 			do_action('ap_before');
 			
-			if(!empty($current_user))
+			if(!empty($user_id))
 				include ap_get_theme_location('user-profile.php');
 			else
 				include ap_get_theme_location('not-found.php');

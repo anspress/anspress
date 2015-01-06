@@ -48,7 +48,7 @@ class AnsPress_Ajax
     {
     	$this->request = $_REQUEST;
 
-    	$action = sanitize_text_field($_POST['ap_ajax_action']);
+    	$action = sanitize_text_field($this->request['ap_ajax_action']);
 
     	switch ($action) {
     		case 'suggest_similar_questions':

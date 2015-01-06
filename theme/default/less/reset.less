@@ -125,3 +125,21 @@
 .margin-top-20{
 	margin-top: 20px;
 }
+
+.ap-loading-icon {
+    font-size: 20px;
+    height: 20px;
+    left: 50%;
+    line-height: 20px;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    top: 50%;
+    width: 20px;
+    .animation(spin 1s linear infinite);
+}
+
+
+@-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
+@-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
+@keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }

@@ -64,7 +64,8 @@ function ap_answer_form($question_id, $editing = false){
                 'type'  => 'checkbox',
                 'desc'  => __('This answer ment to be private, only visible to admin and moderator.', 'ap'),
                 'value' => ( $editing ? $is_private : sanitize_text_field( @$_POST['is_private'] ) ),
-                'order' => 12
+                'order' => 12,
+                'show_desc_tip' => false
             ),            
             array(
                 'name' => 'form_question_id',

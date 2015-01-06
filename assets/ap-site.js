@@ -24,11 +24,11 @@ APjs.site.prototype = {
 			$('.ap-signup-fields #password').on('keyup', $.proxy(this.checkPasswordLength, this, '#password'));
 		}
 		
-		this.onWidnowReady();
+		/*this.onWidnowReady();
 		this.afterAjaxComplete();
 		this.checkEmail();
 		this.checkEmailAvailable();
-		this.bind();
+		//this.bind();
 		
 		this.castVote();
 		this.favorite();
@@ -43,8 +43,6 @@ APjs.site.prototype = {
 		this.load_edit_comment_form();
 		this.submitAnswer();
 		this.submitQuestion();
-		
-		this.toggleLoginSignup();
 		
 		this.saveComment();
 		this.updateComment();
@@ -75,7 +73,7 @@ APjs.site.prototype = {
 		
 		this.expandToggle();
 
-		this.removeHasError();
+		this.removeHasError();*/
 		
 		
 
@@ -169,47 +167,38 @@ APjs.site.prototype = {
 	},
 
 	/**
-	 * Bind all element which have data-bind
+	 * do actions as defined in data-action
 	 * @return {void}
 	 * @since  2.0
 	 */
-	bind: function(){
+	doAction: function(){
 		var self = this;
 		var ajax_q = new Object();
-		$('[data-bind]').each(function(i){
-			var e = $(this).data('bind');
+
+		$('[data-action]').each(function(i){
+			var action = $(this).data('action');
+			//self.[action]();
+			/*var e = $(this).data('bind');
 			
-			if(typeof e === 'undefined')
+			var q = $(this).data('query');
+
+			if(typeof q === 'undefined')
 				return;
 
 			$(this).on(e, function(){
+				self.loading = self.showLoading(this);
 				var data = self.parseAjaxData($(this).data('query'), this);
 				
-				/* abort previous ajax request */
 				if(typeof ajax_q[i] !== 'undefined'){
 					ajax_q[i].abort();
 				}
 
 				 ajax_q[i] = self.doAjax(data, self.parseAjaxSuccess, this);
-			});
+			});*/
 		});
 	},
 
-	doAjax: function(query, success, context, before){
-		context 	= typeof context !== 'undefined' ? context : false;
-		success 	= typeof success !== 'undefined' ? success : false;
-		before 		= typeof before !== 'undefined' ? before : false;
-		
-		return $.ajax({
-					type: 'POST',
-					url: ajaxurl, 
-					data: query, 
-					beforeSend: before, 
-					success: success, 
-					dataType: 'json',
-					context:context,
-				});
-	},
+	
 	
 	appendMessageBox: function(){
 		if($('#ap-messagebox').length == '0')
@@ -833,25 +822,6 @@ APjs.site.prototype = {
 		$(form).find('.help-block').remove();
 	},
 	
-	toggleLoginSignup: function(){
-		$('body').delegate('[data-toggle="ap-signup-form"]', 'click', function(e){
-			e.preventDefault();
-			
-			$.ajax({
-				type: 'POST',
-				url: ajaxurl,  
-				data: {  
-					action: 'ap_toggle_login_signup',  
-					args: $(this).data('args'),
-				},  
-				context:this,
-				success: function(data){ 
-					$('#ap-login-signup').empty().append(data);
-				}
-			}); 
-			
-		});
-	},
 	saveComment: function(){
 		var self = this;
 		$('body').delegate('#commentform', 'submit', function(){
@@ -1726,15 +1696,3 @@ function ap_url_string_value(name) {
     return results == null ? false : decodeURIComponent(results[1].replace(/\+/g, " "));
 }
 
-function apQueryStringToJSON(string) {
-
-    var pairs = string.split('&');
-    
-    var result = {};
-    pairs.forEach(function(pair) {
-        pair = pair.split('=');
-        result[pair[0]] = decodeURIComponent(pair[1] || '');
-    });
-
-    return JSON.parse(JSON.stringify(result));
-}

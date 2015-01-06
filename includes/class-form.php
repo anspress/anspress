@@ -210,7 +210,8 @@ class AnsPress_Form {
             $this->label();
 
         $placeholder = $this->placeholder();
-        $this->output .= '<input id="'. @$field['name'] .'" type="text" class="ap-form-control" value="'. @$field['value'] .'" name="'. @$field['name'] .'"'.$placeholder.' '. @$field['attar'] .' />';
+        $autocomplete = isset($field['autocomplete'])  ? ' autocomplete="off"' : '';
+        $this->output .= '<input id="'. @$field['name'] .'" type="text" class="ap-form-control" value="'. @$field['value'] .'" name="'. @$field['name'] .'"'.$placeholder.' '. @$field['attar'] .$autocomplete.' />';
         $this->error_messages();
     }
 
