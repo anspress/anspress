@@ -20,8 +20,7 @@ class AnsPress_Ajax
      */
     public function __construct()
     {
-		add_action('wp_ajax_ap_ajax', array($this, 'ap_ajax'));
-		add_action('wp_ajax_nopriv_ap_ajax', array($this, 'ap_ajax'));
+		add_action('ap_ajax_suggest_similar_questions', array($this, 'suggest_similar_questions'));
 		
 		add_action('wp_ajax_nopriv_ap_check_email', array($this, 'check_email'));
 		add_action('wp_ajax_recount_votes', array($this, 'recount_votes'));
@@ -39,27 +38,7 @@ class AnsPress_Ajax
 		add_action('wp_ajax_nopriv_ap_suggest_questions', array($this, 'ap_suggest_questions'));
     }
 
-    /**
-     * Handle all anspress ajax requests 
-     * @return void
-     * @since 2.0
-     */
-    public function ap_ajax()
-    {
-    	$this->request = $_REQUEST;
-
-    	$action = sanitize_text_field($this->request['ap_ajax_action']);
-
-    	switch ($action) {
-    		case 'suggest_similar_questions':
-    			$this->suggest_similar_questions();
-    			break;
-    		
-    		default:
-    			# code...
-    			break;
-    	}
-    }
+    
 
     /**
      * Show similar questions when asking a question

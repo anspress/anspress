@@ -232,13 +232,7 @@ APjs.site.prototype = {
 	},
 	
 	/* add help block below field */
-	helpBlock:function(elm, message){
-		/* remove existing help block */
-		if($(elm).find('.help-block').length > 0)
-			$(elm).find('.help-block').remove();
-			
-		$(elm).append('<span class="help-block">'+message+'</span>');
-	},
+	
 	
 	toggleFormSubmission:function(form, toggle){
 		//$(form).submit(toggle);		
@@ -806,16 +800,7 @@ APjs.site.prototype = {
 		});
 	},
 	
-	appendFormError: function(form, error){	
-		var self = this;
-		if(typeof error !== 'undefined'){
-			$.each(error, function(i, message) {
-				var parent = $(form).find('#'+i).closest('.form-group');
-				parent.addClass('has-error');
-				self.helpBlock(parent, message);
-			});
-		}
-	},
+	
 	
 	clearError: function(form){
 		$(form).find('.has-error').removeClass('has-error');

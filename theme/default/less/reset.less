@@ -126,12 +126,20 @@
 	margin-top: 20px;
 }
 
-.ap-loading-icon {
+.ap-loading-icon{
+	position: absolute;
+
+	&.fade-bg{
+		background: rgba(255, 255, 255, 0.8)
+	}
+}
+.ap-loading-icon>i {
     font-size: 20px;
     height: 20px;
     left: 50%;
     line-height: 20px;
-    margin: 0;
+    margin-left: -10px;
+    margin-top: -10px;
     padding: 0;
     position: absolute;
     top: 50%;

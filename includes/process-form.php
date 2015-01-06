@@ -21,8 +21,11 @@ class AnsPress_Process_Form
 	 */
 	public function __construct()
 	{
+
 		add_action('init', array($this, 'non_ajax_form'));
 		add_action( 'save_post', array($this, 'action_on_new_post'), 0, 2 );
+		add_action('wp_ajax_ap_ajax', array($this, 'ap_ajax'));
+		add_action('wp_ajax_nopriv_ap_ajax', array($this, 'ap_ajax'));
 	}
 
 	/**
@@ -32,9 +35,10 @@ class AnsPress_Process_Form
 	public function non_ajax_form()
 	{
 		//return if ap_form_action is not set, probably its not our form
-		if(!isset($_POST['ap_form_action']))
+		if(!isset($_REQUEST['ap_form_action']) || isset($_REQUEST['ap_ajax_action']))
 			return;
 
+		$this->request = $_REQUEST;
 		$this->process_form();
 
 		if(!empty($this->redirect)){
@@ -44,15 +48,34 @@ class AnsPress_Process_Form
 	}
 
 	/**
-	 * for ajax form
-	 * @return string
-	 */
-	public function ajax_form()
-	{
-		$this->is_ajax = true;
-		$this->process_form();
-		wp_send_json( $this->result );
-	}
+     * Handle all anspress ajax requests 
+     * @return void
+     * @since 2.0
+     */
+    public function ap_ajax()
+    {
+
+    	if(!isset($_REQUEST['ap_ajax_action']))
+    		return;
+    	
+    	$this->request = $_REQUEST;
+
+    	if(isset($_POST['ap_form_action'])){
+	    	$this->is_ajax = true;
+	    	$this->process_form();
+			wp_send_json( $this->result );
+		}else{
+			$action = sanitize_text_field($this->request['ap_ajax_action']);
+
+	    	/**
+	    	 * ACTION: ap_ajax_[$action]
+	    	 * Action for processing Ajax requests
+	    	 * @since 2.0
+	    	 */
+	    	do_action('ap_ajax_'.$action);
+		}
+    }
+
 
 	/**
 	 * Process form based on action value
@@ -136,7 +159,15 @@ class AnsPress_Process_Form
 		
 		// if error in form then return
 		if($validate->have_error()){
-			$this->result = $ap_errors;
+			$this->result = apply_filters('ap_ajax_question_error_result', 
+				array(
+					'ap_responce' 	=> true,
+					'form' 			=> $_POST['ap_form_action'],
+					'message_type' 	=> 'error',
+					'message'		=> __('Check missing fields and then re-submit.', 'ap'),
+					'errors'		=> $ap_errors
+				)
+			);
 			return;
 		}
 
@@ -199,9 +230,11 @@ class AnsPress_Process_Form
 
 			$this->result = apply_filters('ap_ajax_question_submit_result', 
 				array(
+					'ap_responce' 	=> true,
 					'action' 		=> 'new_question',
 					'message'		=> __('Question submitted successfully', 'ap'),
-					'redirect_to'	=> get_permalink($post_id)
+					'redirect_to'	=> get_permalink($post_id),
+					'do'			=> 'redirect'
 				)
 			);
 		}
@@ -284,7 +317,7 @@ class AnsPress_Process_Form
 		// return on autosave
 		if(defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) { return; }
 		
-		if ( wp_is_post_revision( $post_id ) )
+		if ( wp_is_post_revision( $post_id ) || $post->post_status == 'trash')
 			return;
 		
 		if ( $post->post_type == 'question' ) {

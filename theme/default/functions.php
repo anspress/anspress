@@ -81,6 +81,9 @@ function init_scripts_front(){
 			'updating_message' 				=> __( 'Updating message', 'ap' ),
 			'deleting_message' 				=> __( 'Deleting message', 'ap' ),
 			'uploading' 					=> __( 'Uploading', 'ap' ),
+			'error' 						=> ap_icon('error'),
+			'warning' 						=> ap_icon('warning'),
+			'success' 						=> ap_icon('success'),
 		) );
 
 		wp_localize_script( 'ap-site-js', 'apoptions', array(

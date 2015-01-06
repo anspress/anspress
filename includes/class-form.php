@@ -102,7 +102,7 @@ class AnsPress_Form {
         $attr = '';
 
         if($this->args['is_ajaxified'])
-            $attr .= ' data-type="ap_ajax_form"';
+            $attr .= ' data-action="ap_ajax_form"';
 
         if(!empty($this->args['class']))
             $attr .= ' class="'.$this->args['class'].'"';
@@ -116,7 +116,7 @@ class AnsPress_Form {
         do_action('ap_form_before_'. $this->name);
         $this->output .= ob_get_clean();
 
-        $this->output .= '<form name="'.$this->args['name'].'" method="'.$this->args['method'].'" action="'.$this->args['action'].'"'.$attr.'>';
+        $this->output .= '<form id="'.$this->args['name'].'" method="'.$this->args['method'].'" action="'.$this->args['action'].'"'.$attr.'>';
     }
 
     /**
@@ -153,9 +153,9 @@ class AnsPress_Form {
     private function hidden_fields()
     {
         if($this->args['is_ajaxified'])
-            $this->output .= '<input type="hidden" name="action" value="ap_submit_form">';
-        
-        $this->output .= '<input type="hidden" name="ap_form_action" value="'.$this->name.'">';
+            $this->output .= '<input type="hidden" name="ap_ajax_action" value="'.$this->name.'">';
+           
+            $this->output .= '<input type="hidden" name="ap_form_action" value="'.$this->name.'">';
 
         $this->nonce();
     }

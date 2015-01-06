@@ -53,7 +53,7 @@ class AnsPress_Validation
     public function required($field)
     {
         if(!isset($this->fields[$field]) || mb_strlen($this->fields[$field]) == 0 || $this->fields[$field] =='' )
-            $this->errors[$field][] = __('This field is required', 'ap');
+            $this->errors[$field] = __('This field is required', 'ap');
     }
 
     /**
@@ -78,7 +78,7 @@ class AnsPress_Validation
     private function length_check($field, $param)
     {
         if(!isset($this->fields[$field]) || mb_strlen($this->fields[$field]) < $param )
-            $this->errors[$field][] = sprintf(__('Its too short, it must be minimum %d characters', 'ap'), $param);
+            $this->errors[$field] = sprintf(__('Its too short, it must be minimum %d characters', 'ap'), $param);
     }
 
     /**
