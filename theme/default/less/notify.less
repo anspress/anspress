@@ -1,21 +1,26 @@
 // Style for notify bubble
 
 #ap-notify{
+    left: 10px;
+    overflow: hidden;
+    padding: 10px;
     position: fixed;
-    right: 20px;
-    top: 60px;
+    top: 125px;
+    width: 320px;
     z-index: 9999;
 
     .ap-notify-item {
+    	background: @white;
 	    border: 2px solid #ddd;
 	    .border-radius(3px);
 	    display: block;
 	    font-size: 15px;
 	    padding: 10px 15px;
-	    text-align: center;
 	    width: 300px;
 	    .box-shadow(0 0 5px rgba(0, 0, 0, 0.1));
-	    margin-bottom: 10px;
+	    margin-bottom: 20px;
+	    margin-left: -300px;
+	    position: relative;
 
 	    &.error{
 	    	border-color: @error-color;
@@ -39,13 +44,13 @@
 	    	background: @error-color;
 		    .border-radius(50%);
 		    color: #fff;
-		    font-size: 25px;
+		    display: block;
+		    float: left;
+		    font-size: 15px;
 		    height: 30px;
-		    left: -12px;
 		    line-height: 36px;
-		    position: absolute;
+		    margin-right: 10px;
 		    text-align: center;
-		    top: -12px;
 		    width: 30px;
 	    }
 	}

@@ -36,10 +36,7 @@ class AnsPress_Form_Helper
     public function __construct()
     {
 
-		
-		//add_action('comment_form', array($this, 'comment_button') );
-		add_action( 'wp_ajax_ap_load_comment_form', array($this, 'load_ajax_commentform') ); 
-		add_action( 'wp_ajax_nopriv_ap_load_comment_form', array($this, 'load_ajax_commentform') );
+
 		
 		/*TODO: remove this, only anspress comment from ajax*/
 		add_action('comment_post', array($this, 'save_comment'), 20, 2);
@@ -375,36 +372,7 @@ class AnsPress_Form_Helper
 			echo '<div class="ap-comment-sc"><button class="ap-btn-comment ap-btn ap-btn-small" type="submit">' . __( 'Submit' ) . '</button></div>';
     }
 
-    /**
-     * Load comment form
-     * @return string
-     * @since unknown
-     */
-	public function load_ajax_commentform(){
-		if(!ap_user_can_comment()){
-			_e('No Permission', 'ap');
-			die();
-		}
-		
-		$args = explode('-', sanitize_text_field($_REQUEST['args']));
-		$action = get_post_type($args[0]).'-'.$args[0];	
-		if(wp_verify_nonce( $args[1], $action )){						
-			$comment_args = array(
-				'title_reply' => '',
-				'logged_in_as' => '',
-				'comment_field' => '<textarea name="comment" rows="3" aria-required="true" id="ap-comment-textarea" class="form-control autogrow" placeholder="'.__('Respond to the post.', 'ap').'"></textarea><input type="hidden" name="ap_comment_form" value="true"/>',
-				'comment_notes_after' => ''
-			);
-			$current_user = get_userdata( get_current_user_id() );
-			echo '<div class="ap-comment-form clearfix">';
-				echo '<div class="ap-content-inner">';
-					comment_form($comment_args, $args[0] );
-				echo '</div>';
-			echo '</div>';
 
-		}
-		die();
-	}
 	
 	public function save_comment($comment_ID, $comment_status){
 		// If it's an AJAX-submitted comment

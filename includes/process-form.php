@@ -94,6 +94,10 @@ class AnsPress_Process_Form
 			case 'answer_form':
 				$this->process_answer_form();
 				break;
+
+			case 'comment_form':
+				$this->comment_form();
+				break;
 			
 			default:
 				/**
@@ -297,6 +301,7 @@ class AnsPress_Process_Form
 
 			$this->result = apply_filters('ap_ajax_edit_question_submit_result', 
 				array(
+					'ap_responce' 	=> true,
 					'action' 		=> 'edited_question',
 					'message'		=> __('Question updated successfully', 'ap'),
 					'redirect_to'	=> $this->redirect
@@ -476,6 +481,7 @@ class AnsPress_Process_Form
 				
 				$result = apply_filters('ap_ajax_answer_submit_result', 
 					array(
+						'ap_responce' 	=> true,
 						'postid' 		=> $post_id, 
 						'action' 		=> 'new_answer',
 						'div_id' 		=> '#answer_'.get_the_ID(),
@@ -502,17 +508,6 @@ class AnsPress_Process_Form
 		// return if user do not have permission to edit this answer
 		if( !ap_user_can_edit_ans($this->fields['edit_post_id']))
 			return;
-
-		/*if( !ap_user_can_edit_ans($this->fields['edit_post_id'])){
-			if($_POST['action'] == 'ap_submit_answer'){
-				$result = array(
-							'action' 		=> 'false',								
-							'message' 		=> __('You don\'t have permission to edit this answer.','ap')
-						);
-				return json_encode($result) ;
-			}
-			return;
-		}*/
 		
 		$answer = get_post($this->fields['edit_post_id']);
 
@@ -539,6 +534,7 @@ class AnsPress_Process_Form
 			if($this->is_ajax){
 				$this->result = apply_filters('ap_ajax_answer_edit_result', 
 					array(
+						'ap_responce' 	=> true,
 						'action' 		=> 'answer_edited',
 						'message'		=> __('Answer updated successfully', 'ap'),
 						'redirect_to'	=> get_permalink($answer->post_parent)
@@ -546,8 +542,80 @@ class AnsPress_Process_Form
 				);
 			}
 
-			//$this->redirect = get_permalink($post_id);
+			$this->redirect = get_permalink($post_id);
 		}
+	}
+
+	public function comment_form()
+	{		
+
+		// Do security check
+		if(!ap_user_can_comment() || !isset($_POST['__nonce']) || !wp_verify_nonce($_POST['__nonce'], 'comment_' . (int)$_POST['comment_post_ID'])){
+			$this->result = ap_ajax_responce( 'no_permission');
+			return;
+		}
+
+		$comment_post_ID = (int) $_POST['comment_post_ID'];
+		$post = get_post( $comment_post_ID );
+
+		if(!$post || empty( $post->post_status ))
+			return;
+
+		if ( in_array($post->post_status, array('draft', 'pending', 'trash') ) ){
+			$this->result = ap_ajax_responce('draft_comment_not_allowed');
+
+			return;
+		}
+
+		$user = wp_get_current_user();
+		if ( $user->exists() ) {
+			$user_ID = $user->ID;
+			$comment_author = wp_slash( $user->display_name );
+			$comment_author_email = wp_slash( $user->user_email );
+			$comment_author_url = wp_slash( $user->user_url );
+			$comment_content = trim( $_POST['comment'] );
+			$comment_type = isset( $_POST['comment_type'] ) ? trim( $_POST['comment_type'] ) : '';
+
+		} else {
+			$this->result = ap_ajax_responce('no_permission');
+			return;
+		}
+
+
+
+		$comment_parent = 0;
+
+		if ( isset( $_POST['comment_ID'] ) )
+			$comment_parent = absint( $_POST['comment_ID'] );
+		
+		$comment_auto_approved = false;
+
+		$commentdata = compact('comment_post_ID', 'comment_author', 'comment_author_email', 'comment_author_url', 'comment_content', 'comment_type', 'comment_parent', 'user_ID');
+
+		// Automatically approve parent comment.
+		if ( !empty($_POST['approve_parent']) ) {
+			$parent = get_comment( $comment_parent );
+			if ( $parent && $parent->comment_approved === '0' && $parent->comment_post_ID == $comment_post_ID ) {
+				if ( wp_set_comment_status( $parent->comment_ID, 'approve' ) )
+					$comment_auto_approved = true;
+			}
+		}
+		
+		$comment_id = wp_new_comment( $commentdata );		
+		
+		if($this->is_ajax){
+			if($comment_id > 0){
+				$comment = get_comment($comment_id);
+				ob_start();
+				ap_comment($comment);		
+				$html = ob_get_clean();
+				$this->result = ap_ajax_responce(  array( 'action' => 'new_comment', 'status' => true, 'comment_ID' => $comment->comment_ID, 'comment_post_ID' => $comment->comment_post_ID, 'comment_content' => $comment->comment_content, 'html' => $html, 'message' => 'comment_success'));
+			}else{
+				$this->result = ap_ajax_responce('something_wrong');
+			}
+		}
+
+		
 	}
 }
     

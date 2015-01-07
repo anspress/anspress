@@ -5,7 +5,7 @@ $(function() {
     /* create document */
     APjs.site = new APjs.site();
     /* need to call init manually with $ */
-    APjs.site.initialize();
+    //APjs.site.initialize();
  
 });
  

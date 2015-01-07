@@ -587,7 +587,7 @@ function ap_icon($name, $html = false){
 		'upload'			=> 'icon-cloud-upload',
 		'link'				=> 'icon-link',
 		'help'				=> 'icon-question',
-		'error'				=> 'icon-circle-slash',
+		'error'				=> 'icon-x',
 		'warning'			=> 'icon-alert',
 		'success'			=> 'icon-check',
 	);

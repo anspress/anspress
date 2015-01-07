@@ -203,9 +203,8 @@ function ap_get_link_to($sub){
  */
 function ap_comment_btn_html($echo = false){
 	if(ap_user_can_comment()){
-		$action = get_post_type(get_the_ID()).'-'.get_the_ID();
-		$nonce = wp_create_nonce( $action );
-		$output = '<a href="#ap-comment-area-'.get_the_ID().'" class="comment-btn" data-action="ap-load-comment" data-args="'. get_the_ID().'-'. $nonce .'" title="'.__('Add comment', 'ap').'">'.ap_icon('comment', true).__('Comment', 'ap').'</a>';
+		$nonce = wp_create_nonce( 'comment_form_nonce' );
+		$output = '<a href="#ap-comment-area-'.get_the_ID().'" class="comment-btn" data-action="load_comment_form" data-query="ap_ajax_action=load_comment_form&post='.get_the_ID().'&__nonce='.$nonce.'" title="'.__('Add comment', 'ap').'">'.ap_icon('comment', true).__('Comment', 'ap').'</a>';
 
 		if($echo)
 			echo $output;
@@ -736,4 +735,64 @@ function ap_highlight_words($text, $words) {
     }
 
     return $text;
+}
+
+/**
+ * Return response with type and message
+ * @param  string $id error id
+ * @return string
+ * @since 2.0
+ */
+function ap_responce_message($id)
+{
+	$msg =array(
+		'something_wrong' => array('type' => 'error', 'message' => __('Something went wrong, last action failed.', 'ap')),
+		'no_permission' => array('type' => 'warning', 'message' => __('You do not have permission to do this action.', 'ap')),
+		'draft_comment_not_allowed' => array('type' => 'warning', 'message' => __('You are commenting on a draft post.', 'ap')),
+		'comment_success' => array('type' => 'success', 'message' => __('Comment successfully posted.', 'ap')),
+	);
+
+	/**
+	 * FILTER: ap_responce_message
+	 * Can be used to alter response messages
+	 * @var array
+	 * @since 2.0 
+	 */
+	$msg = apply_filters( 'ap_responce_message', $msg );
+
+	if(isset($msg[$id]))
+		return $msg[$id];
+
+	return false;
+}
+
+function ap_ajax_responce($results)
+{
+
+	if(!is_array($results)){
+		$message_id = $results;
+		$results = array();
+		$results['message'] = $message_id;
+	}
+
+	$results['ap_responce'] = true;
+
+	if( isset($results['message']) ){
+		$error_message = ap_responce_message($results['message']);
+
+		if($error_message !== false){
+			$results['message'] = $error_message['message'];
+			$results['message_type'] = $error_message['type'];
+		}
+	}
+
+	/**
+	 * FILTER: ap_ajax_responce
+	 * Can be used to alter ap_ajax_responce
+	 * @var array
+	 * @since 2.0
+	 */
+	$results = apply_filters( 'ap_ajax_responce', $results );
+
+	return $results;
 }
