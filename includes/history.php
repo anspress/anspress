@@ -214,7 +214,7 @@ function ap_get_latest_history_html($post_id, $avatar = false, $icon = false){
 			$html .= '<span class="'.ap_icon($history['type']).' ap-tlicon"></span>';
 			
 		if($avatar)
-			$html .= '<a class="ap-savatar" href="'.ap_user_link($history['user_id']).'">'.get_avatar($history['user_id'], 22).'</a>';		
+			$html .= '<a class="ap-avatar" href="'.ap_user_link($history['user_id']).'">'.get_avatar($history['user_id'], 22).'</a>';		
 		
 		/*TODOD: LABEL EXTENSION - Move this to labels addon*/
 		/*if($history['type'] == 'added_label' || $history['type'] == 'removed_label'){

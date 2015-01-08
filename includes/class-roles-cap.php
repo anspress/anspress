@@ -127,6 +127,7 @@ class AP_Roles{
 				'ap_delete_others_comment'	=> true,				
 				'ap_change_label'			=> true,
 				'ap_view_private'			=> true,
+				'ap_view_moderate'			=> true,
 			);
 			
 			$roles = array('editor', 'contributor', 'author', 'ap_participant', 'ap_moderator', 'subscriber');
@@ -336,16 +337,34 @@ function ap_user_can_view_private_post($question_id){
 	return false;
 }
 
-function ap_user_can_view_question($question_id = false){
-	if(is_super_admin())
+function ap_user_can_view_moderate_post($question_id){
+	if(is_super_admin() || current_user_can('ap_view_moderate'))
 		return true;
-		
-	if(!$question_id)
-		$question_id = get_the_ID();
 	
 	$post = get_post( $question_id );
 	
-	if( $post->post_status == 'publish' || ($post->post_status == 'private_post' && ap_user_can_view_private_post($question_id)))
+	if($post->post_author == get_current_user_id())
+		return true;
+	
+	return false;
+}
+
+function ap_user_can_view_post($post_id = false){
+	if(is_super_admin())
+		return true;
+		
+	if(!$post_id)
+		$post_id = get_the_ID();
+	
+	$post = get_post( $post_id );
+	
+	if( $post->post_status == 'private_post' && ap_user_can_view_private_post($post_id))
+		return true;
+
+	if( $post->post_status == 'moderate' && ap_user_can_view_moderate_post($post_id))
+		return true;
+	
+	if( $post->post_status == 'publish')
 		return true;
 	
 	return false;

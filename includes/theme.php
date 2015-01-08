@@ -514,7 +514,7 @@ function ap_display_question_metas($question_id =  false){
 	if(ap_is_answer_selected($question_id) && !is_singular('question')){
 		$metas['selected'] = '<span class="ap-tip" title="'.__('answer accepted', 'ap').'">'.ap_icon('select', true).__('Selected', 'ap').'</span>';
 
-		$metas['history'] = ap_last_active_time($question_id);
+		//$metas['history'] = ap_last_active_time($question_id);
 	}
 
 	if(is_singular('question')){

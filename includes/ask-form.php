@@ -121,7 +121,7 @@ function ap_ask_form($editing = false){
  * @return void
  * @since 2.0
  */
-function ap_edit_question()
+function ap_edit_question_form()
 {
     ap_ask_form(true);
 }

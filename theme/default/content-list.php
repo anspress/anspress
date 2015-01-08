@@ -1,8 +1,19 @@
 <?php
+/**
+ * Question list item template
+ *
+ * @link http://wp3.in
+ * @since 0.1
+ * @license GPL 2+ 
+ * @package AnsPress
+ */
+
+if(!ap_user_can_view_post(get_the_ID()))
+	return;
+
 global $post;
 $clearfix_class = array('list-question clearfix');
 
-if(!is_private_post() || (is_private_post() && ap_user_can_view_private_post(get_the_ID()))):
 ?>
 <article id="question-<?php the_ID(); ?>" <?php post_class($clearfix_class); ?>>
 	<?php if ( is_private_post()) : ?>
@@ -10,20 +21,22 @@ if(!is_private_post() || (is_private_post() && ap_user_can_view_private_post(get
 			<span><?php _e( 'Private Question', 'ap' ); ?></span>
 		</div>
 	<?php endif; ?>
-	<!-- TODO: ADD OPTION - add option to toggle each count -->
+	<div class="ap-list-history ap-pull-right">
+		<?php echo ap_get_latest_history_html(get_the_ID(), true) ?>
+	</div>
 	<div class="ap-count ap-pull-right">	
 		<a class="ap-answer-count ap-tip" href="<?php echo ap_answers_link(); ?>" title="<?php _e('Total answers', 'ap'); ?>">
 			<span><?php echo ap_count_ans_meta(); ?></span>
-			<?php _e('Ans', 'ap');?>
+			<?php _e('Answer', 'ap');?>
 		</a>						
-		<a class="ap-vote-count ap-tip" href="#" title="<?php _e('Total views', 'ap'); ?>">
-			<span><?php echo ap_get_qa_views(); ?></span> 
-			<?php  _e('Views', 'ap'); ?>
+		<!-- <a class="ap-vote-count ap-tip" href="#" title="<?php _e('Total views', 'ap'); ?>">
+			<span><?php //echo ap_get_qa_views(); ?></span> 
+			<?php  //_e('Views', 'ap'); ?>
 		</a>
-		<a class="ap-vote-count ap-tip" href="#" title="<?php _e('Total votes', 'ap'); ?>">
-			<span><?php echo ap_net_vote(); ?></span> 
+		<a class="ap-vote-count ap-tip" href="#" title="<?php //_e('Total votes', 'ap'); ?>">
+			<span><?php //echo ap_net_vote(); ?></span> 
 			<?php  _e('Votes', 'ap'); ?>
-		</a>		
+		</a> -->		
 	</div>	
 	<div class="ap-list-inner">
 		<div class="ap-avatar ap-pull-left">
@@ -39,10 +52,7 @@ if(!is_private_post() || (is_private_post() && ap_user_can_view_private_post(get
 			<ul class="ap-display-question-meta ap-ul-inline">
 				<?php echo ap_display_question_metas() ?>
 				<!-- TODOD: hook question labels ap_get_question_label(null, true);  -->
-				<!-- TODO: hook tags ap_question_tags_html(false, false) -->
 			</ul>
 		</div>				
 	</div>
 </article><!-- list item -->
-
-<?php endif; ?>

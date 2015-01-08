@@ -5,30 +5,26 @@
 .list-question{
     border-bottom: 1px solid @default-border-color;
     margin: 0;
-    padding: 15px 0;
+    padding: 20px 15px;
+
+    &:nth-child(2n) {
+	    background: #fdfdfd;
+	}
 
     .ap-count {
 	    margin-left: 15px;
 	}
 	.ap-count > a{
-		border: 1px solid @default-border-color;
-	    color: @light-color;
+	    color: #888;
 	    display: block;
-	    float: left;
-	    font-size: 12px;
-	    height: 55px;
-	    margin-right: 10px;
 	    text-align: center;
 	    text-decoration: none;
-	    text-transform: lowercase;
-	    width: 60px;
-		.border-radius(@default-border-radius);
 
 		span{
 			font-size: @count-font-size;
 			font-weight: 600;
 			display: block;
-			margin-top: 8px;
+			color: @default-color;
 		}
 	}
 
@@ -52,6 +48,21 @@
 		    	color:@default-color;
 		    	text-decoration: none;
 		    }
+		}
+	}
+	.ap-list-history {
+	    margin-left: 30px;
+	    max-width: 220px;
+	    .ap-avatar{
+		    float: left;
+		    margin-top: 4px;
+	    }
+	    .ap-post-history {
+		    color: #888;
+		    display: block;
+		    font-size: 13px;
+		    line-height: 22px;
+		    overflow: hidden;
 		}
 	}
 	
@@ -81,7 +92,7 @@
 			    background: lighten(@main-color, 10%);
 			    .border-radius(@default-border-radius);
 			    color: @white;
-			    font-size: 11px;
+			    font-size: 10px;
 			    line-height: 15px;
 			    margin-top: 2px;
 			    padding: 1px 4px;
