@@ -22,6 +22,7 @@ class AnsPress_Ajax
     {
 		add_action('ap_ajax_suggest_similar_questions', array($this, 'suggest_similar_questions'));
 		add_action('ap_ajax_load_comment_form', array($this, 'load_comment_form'));
+		add_action('ap_ajax_delete_comment', array($this, 'delete_comment'));
 		
 		add_action('wp_ajax_nopriv_ap_check_email', array($this, 'check_email'));
 		add_action('wp_ajax_recount_votes', array($this, 'recount_votes'));
@@ -87,24 +88,44 @@ class AnsPress_Ajax
     		'do' 			=> 'append'
     	);
 
-		if(wp_verify_nonce( $_REQUEST['__nonce'], 'comment_form_nonce' ) && ap_user_can_comment()){						
+		if((wp_verify_nonce( $_REQUEST['__nonce'], 'comment_form_nonce' ) && ap_user_can_comment()) || (isset($_REQUEST['comment_ID']) && ap_user_can_edit_comment((int)$_REQUEST['comment_ID'] ) && wp_verify_nonce( $_REQUEST['__nonce'], 'edit_comment_'.(int)$_REQUEST['comment_ID'] ))){
+
+			
+
+			if(isset($_REQUEST['comment_ID'])){
+				$comment = get_comment($_REQUEST['comment_ID']);
+				$comment_post_ID = $comment->comment_post_ID;
+				$nonce = wp_create_nonce( 'comment_'.$comment->comment_ID );
+				$comment_args['label_submit'] = __('Update comment', 'ap');
+
+				$content = $comment->comment_content;
+				$commentid = '<input type="hidden" name="comment_ID" value="'.$comment->comment_ID.'"/>';
+			}else{
+				$comment_post_ID = (int)$_REQUEST['post'];
+				$nonce = wp_create_nonce( 'comment_'.(int)$_REQUEST['post'] );
+			}
+
 			$comment_args = array(
 				'id_form' => 'ap-commentform',
 				'title_reply' => '',
 				'logged_in_as' => '',
-				'comment_field' => '<textarea name="comment" rows="3" aria-required="true" id="ap-comment-textarea" class="form-control autogrow" placeholder="'.__('Respond to the post.', 'ap').'"></textarea><input type="hidden" name="ap_form_action" value="comment_form"/><input type="hidden" name="ap_ajax_action" value="comment_form"/><input type="hidden" name="__nonce" value="'.wp_create_nonce( 'comment_'.(int)$_REQUEST['post'] ).'"/>',
+				'comment_field' => '<textarea name="comment" rows="3" aria-required="true" id="ap-comment-textarea" class="form-control autogrow" placeholder="'.__('Respond to the post.', 'ap').'">'.@$content.'</textarea><input type="hidden" name="ap_form_action" value="comment_form"/><input type="hidden" name="ap_ajax_action" value="comment_form"/><input type="hidden" name="__nonce" value="'.$nonce.'"/>'.@$commentid,
 				'comment_notes_after' => ''
 			);
+			
+			if(isset($_REQUEST['comment_ID']))
+				$comment_args['label_submit'] = __('Update comment', 'ap');
+
 			$current_user = get_userdata( get_current_user_id() );
 
 			ob_start();
 				echo '<div class="ap-comment-form clearfix">';
 					echo '<div class="ap-content-inner">';
-						comment_form($comment_args, (int)$_REQUEST['post'] );
+						comment_form($comment_args, $comment_post_ID );
 					echo '</div>';
 				echo '</div>';
 			$result['html'] = ob_get_clean();
-			$result['container'] = '#comments-'.(int)$_REQUEST['post'];
+			$result['container'] = '#comments-'.$comment_post_ID;
 
 		}else{
 			$result['message'] = __('You do not have permission to comment', 'ap');
@@ -112,6 +133,20 @@ class AnsPress_Ajax
 		}
 
 		ap_send_json($result);
+    }
+
+    public function delete_comment(){
+    	if(isset($_POST['comment_ID']) && ap_user_can_delete_comment((int)$_POST['comment_ID'] ) && wp_verify_nonce( $_POST['__nonce'], 'delete_comment' )){
+    		$delete = wp_delete_comment( (int)$_POST['comment_ID'], true );
+    		
+    		if($delete){
+    			ap_send_json(ap_ajax_responce(  array( 'action' => 'delete_comment', 'comment_ID' => (int)$_POST['comment_ID'], 'message' => 'comment_delete_success')));
+    		}else{
+    			ap_send_json( ap_ajax_responce('something_wrong'));
+    		}
+    		return;
+    	}
+    	ap_send_json( ap_ajax_responce('no_permission'));
     }
 
 	

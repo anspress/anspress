@@ -801,11 +801,15 @@ function ap_comment_actions_buttons()
 
 	$actions = array();
 
-	if(ap_user_can_edit_comment(get_comment_ID()))
-		$actions['edit'] = '<a class="comment-edit-btn" href="#" data-button="ap-edit-comment" data-args="'.get_comment_ID().'-'.wp_create_nonce( 'comment-'.get_comment_ID() ).'">'.ap_icon('edit', true).__('Edit', 'ap').'</a>';
+	if(ap_user_can_edit_comment(get_comment_ID())){
+		$nonce = wp_create_nonce( 'edit_comment_'. get_comment_ID() );
+		$actions['edit'] = '<a class="comment-edit-btn" href="#" data-toggle="#li-comment-'.get_comment_ID().'" data-action="load_comment_form" data-query="ap_ajax_action=load_comment_form&comment_ID='.get_comment_ID().'&__nonce='.$nonce.'">'.ap_icon('edit', true).__('Edit', 'ap').'</a>';
+	}
 
-	if(ap_user_can_delete_comment(get_comment_ID()))
-		$actions['delete'] = '<a class="comment-delete-btn" href="#" data-button="ap-delete-comment" data-confirm="'.__('Are you sure? It cannot be undone!', 'ap').'" data-args="'.get_comment_ID().'-'.wp_create_nonce( 'delete-comment-'.get_comment_ID() ).'">'.ap_icon('delete', true).__('Delete', 'ap').'</a>';
+	if(ap_user_can_delete_comment(get_comment_ID())){
+		$nonce = wp_create_nonce( 'delete_comment' );
+		$actions['delete'] = '<a class="comment-delete-btn" href="#" data-toggle="#li-comment-'.get_comment_ID().'" data-action="delete_comment" data-query="ap_ajax_action=delete_comment&comment_ID='.get_comment_ID().'&__nonce='.$nonce.'">'.ap_icon('delete', true).__('Delete', 'ap').'</a>';
+	}
 
 	/**
 	 * FILTER: ap_comment_actions_buttons

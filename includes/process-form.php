@@ -549,11 +549,17 @@ class AnsPress_Process_Form
 	public function comment_form()
 	{		
 
-		// Do security check
-		if(!ap_user_can_comment() || !isset($_POST['__nonce']) || !wp_verify_nonce($_POST['__nonce'], 'comment_' . (int)$_POST['comment_post_ID'])){
-			$this->result = ap_ajax_responce( 'no_permission');
-			return;
-		}
+		if(!isset($_REQUEST['comment_ID']) )
+			// Do security check
+			if(!ap_user_can_comment() || !isset($_POST['__nonce']) || !wp_verify_nonce($_POST['__nonce'], 'comment_' . (int)$_POST['comment_post_ID'])){
+				$this->result = ap_ajax_responce( 'no_permission');
+				return;
+			}
+		else
+			if(!isset($_REQUEST['comment_ID']) && !ap_user_can_edit_comment((int)$_REQUEST['comment_ID'] ) && !wp_verify_nonce( $_REQUEST['__nonce'], 'comment_'.(int)$_REQUEST['comment_ID'] )){
+				$this->result = ap_ajax_responce( 'no_permission');
+				return;
+			}
 
 		$comment_post_ID = (int) $_POST['comment_post_ID'];
 		$post = get_post( $comment_post_ID );
@@ -567,43 +573,52 @@ class AnsPress_Process_Form
 			return;
 		}
 
-		$user = wp_get_current_user();
-		if ( $user->exists() ) {
-			$user_ID = $user->ID;
-			$comment_author = wp_slash( $user->display_name );
-			$comment_author_email = wp_slash( $user->user_email );
-			$comment_author_url = wp_slash( $user->user_url );
-			$comment_content = trim( $_POST['comment'] );
-			$comment_type = isset( $_POST['comment_type'] ) ? trim( $_POST['comment_type'] ) : '';
+		if ( isset( $_POST['comment_ID'] ) ){
+			$comment_id = wp_update_comment( array('comment_ID' => (int)$_POST['comment_ID'], 'comment_content' => trim( $_POST['comment'] )) );
+			$comment = get_comment($_POST['comment_ID']);
+			ob_start();
+			ap_comment($comment);		
+			$html = ob_get_clean();
+			$this->result = ap_ajax_responce(  array( 'action' => 'edit_comment', 'comment_ID' => $comment->comment_ID, 'comment_post_ID' => $comment->comment_post_ID, 'comment_content' => $comment->comment_content, 'html' => $html, 'message' => 'comment_edit_success'));
 
-		} else {
-			$this->result = ap_ajax_responce('no_permission');
 			return;
-		}
+		}else{
+			$user = wp_get_current_user();
+			if ( $user->exists() ) {
+				$user_ID = $user->ID;
+				$comment_author = wp_slash( $user->display_name );
+				$comment_author_email = wp_slash( $user->user_email );
+				$comment_author_url = wp_slash( $user->user_url );
+				$comment_content = trim( $_POST['comment'] );
+				$comment_type = isset( $_POST['comment_type'] ) ? trim( $_POST['comment_type'] ) : '';
 
-
-
-		$comment_parent = 0;
-
-		if ( isset( $_POST['comment_ID'] ) )
-			$comment_parent = absint( $_POST['comment_ID'] );
-		
-		$comment_auto_approved = false;
-
-		$commentdata = compact('comment_post_ID', 'comment_author', 'comment_author_email', 'comment_author_url', 'comment_content', 'comment_type', 'comment_parent', 'user_ID');
-
-		// Automatically approve parent comment.
-		if ( !empty($_POST['approve_parent']) ) {
-			$parent = get_comment( $comment_parent );
-			if ( $parent && $parent->comment_approved === '0' && $parent->comment_post_ID == $comment_post_ID ) {
-				if ( wp_set_comment_status( $parent->comment_ID, 'approve' ) )
-					$comment_auto_approved = true;
+			} else {
+				$this->result = ap_ajax_responce('no_permission');
+				return;
 			}
-		}
-		
-		$comment_id = wp_new_comment( $commentdata );		
-		
-		if($this->is_ajax){
+
+
+
+			$comment_parent = 0;
+
+			if ( isset( $_POST['comment_ID'] ) )
+				$comment_parent = absint( $_POST['comment_ID'] );
+			
+			$comment_auto_approved = false;
+
+			$commentdata = compact('comment_post_ID', 'comment_author', 'comment_author_email', 'comment_author_url', 'comment_content', 'comment_type', 'comment_parent', 'user_ID');
+
+			// Automatically approve parent comment.
+			if ( !empty($_POST['approve_parent']) ) {
+				$parent = get_comment( $comment_parent );
+				if ( $parent && $parent->comment_approved === '0' && $parent->comment_post_ID == $comment_post_ID ) {
+					if ( wp_set_comment_status( $parent->comment_ID, 'approve' ) )
+						$comment_auto_approved = true;
+				}
+			}
+
+			$comment_id = wp_new_comment( $commentdata );
+
 			if($comment_id > 0){
 				$comment = get_comment($comment_id);
 				ob_start();
@@ -613,7 +628,12 @@ class AnsPress_Process_Form
 			}else{
 				$this->result = ap_ajax_responce('something_wrong');
 			}
+
 		}
+
+				
+		
+		
 
 		
 	}

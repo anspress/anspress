@@ -750,6 +750,8 @@ function ap_responce_message($id)
 		'no_permission' => array('type' => 'warning', 'message' => __('You do not have permission to do this action.', 'ap')),
 		'draft_comment_not_allowed' => array('type' => 'warning', 'message' => __('You are commenting on a draft post.', 'ap')),
 		'comment_success' => array('type' => 'success', 'message' => __('Comment successfully posted.', 'ap')),
+		'comment_edit_success' => array('type' => 'success', 'message' => __('Comment updated successfully.', 'ap')),
+		'comment_delete_success' => array('type' => 'success', 'message' => __('Comment deleted successfully.', 'ap')),
 	);
 
 	/**

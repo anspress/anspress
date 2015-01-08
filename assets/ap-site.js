@@ -807,27 +807,7 @@ APjs.site.prototype = {
 		$(form).find('.help-block').remove();
 	},
 	
-	saveComment: function(){
-		var self = this;
-		$('body').delegate('#commentform', 'submit', function(){
-			var form = $(this);
-			var fields = $(this).serialize();
-			self.showLoading(aplang.submitting_your_comment);
-			
-			$.post($(this).attr('action'), fields, function(responce){
-				self.hideLoading();
-				form[0].reset();
-				if(responce['status'] && $('#li-comment-'+responce['comment_ID']).length ==0){
-					$('#comments-'+responce['comment_post_ID']+' ul.commentlist').append($(responce['html']).hide().slideDown(300));
-					
-					self.addMessage(responce['message'], 'success');
-				}
-				
-			}, 'json'); 
-			
-			return false
-		});
-	},
+
 	deleteComment: function (){
 		var self = this;
 		$('body').delegate('[data-button="ap-delete-comment"]', 'click', function(e){
@@ -857,35 +837,7 @@ APjs.site.prototype = {
 			}		
 		});
 	},
-	updateComment: function(){
-		var self = this;
-		$('body').delegate('[data-action="ap-edit-comment"]', 'submit', function(e) {
-			e.preventDefault();
-			self.showLoading(aplang.updating_comment);
-			$.ajax({
-				type: 'POST',			
-				url: ajaxurl,
-				data: {  
-					action: 'ap_update_comment',  
-					args: $(this).serialize(),
-				},
-				context:this,
-				dataType:'json',				
-				success: function(data){
-					self.hideLoading();
-					if(data['status']){
-						var item = $(this).closest('li');
-						$(item).after(data['html']);
-						item.remove();
-						self.addMessage(data['message'], 'success');
-					}else{
-						self.addMessage(data['message'], 'error');
-					}
-				}
-			});
-			return false;
-		});
-	},
+
 	selectBestAnswer: function(){
 		var self = this;
 		$('body').delegate('[data-button="ap-select-answer"]', 'click', function(e) {

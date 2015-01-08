@@ -472,6 +472,7 @@ class AnsPress_Form_Helper
 		die(json_encode($result));
 	}
 	
+	/** TODO: Add this again */
 	public function after_deleting_comment($comment, $post_type){
 		if ($post_type == 'question') {
 			ap_remove_parti($comment->comment_post_ID, $comment->user_id, 'comment', $comment->comment_ID);

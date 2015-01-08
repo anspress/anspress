@@ -226,11 +226,15 @@ AnsPress.site.prototype = {
 			ApSite.doAjax( 
 				apAjaxData(q), 
 				function(data){
-					$('#respond').remove();
-					
+					$('.ap-comment-form').remove();					
+
 					$('html, body').animate({
 						scrollTop: ($(data.container).offset().top) - 50
 					}, 500);
+
+					if(typeof $(elm).attr('data-toggle') !== 'undefined')
+						$($(elm).attr('data-toggle')).hide();
+
 					$('#ap-comment-textarea').focus();
 					ApSite.doAction('ap_ajax_form');
 				}, 
@@ -251,9 +255,11 @@ AnsPress.site.prototype = {
 			ApSite.doAjax( 
 				apAjaxData($(this).formSerialize()), 
 				function(data){
-					if(data['message_type'] == 'success'){
+					if(data['action'] == 'new_comment' && data['message_type'] == 'success'){
 						$('#comments-'+data['comment_post_ID']+' ul.ap-commentlist').append($(data['html']).hide().slideDown(100));
-
+					}else if(data['action'] == 'edit_comment' && data['message_type'] == 'success'){
+						$('#li-comment-'+data.comment_ID).replaceWith($(data['html']).hide().slideDown(100));
+						$('.ap-comment-form').remove();
 					}
 				}, 
 				this
@@ -261,6 +267,25 @@ AnsPress.site.prototype = {
 			return false;
 		})
 	},
+	delete_comment: function(elm){
+		var q = $(elm).data('query');
+
+		$(elm).click( function(e){
+			e.preventDefault();
+			
+			ApSite.doAjax( 
+				apAjaxData(q), 
+				function(data){
+					if(typeof $(elm).attr('data-toggle') !== 'undefined')
+						$($(elm).attr('data-toggle')).hide();
+				}, 
+				elm,
+				false,
+				true
+			);
+		});
+	}
+
 
 
 }
