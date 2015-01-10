@@ -81,8 +81,7 @@ function ap_get_parti($post_id, $count = false){
 			),
 			'group' => array(
 				'apmeta_userid' => array('relation' => 'AND'),
-			)),
-		5);
+			)));
 }
 
 function ap_get_all_parti($avatar_size = 40, $post_id = false){
@@ -91,19 +90,15 @@ function ap_get_all_parti($avatar_size = 40, $post_id = false){
 		
 	$parti = ap_get_parti($post_id);
 	
-	echo '<h3 class="ap-question-side-title">'. sprintf( _n('<span>1</span> Participant', '<span>%d</span> Participants', count($parti), 'ap'), count($parti)) .'</h3>';
+	echo '<span class="ap-side-sec-label">'. sprintf( _n('<span>1</span> Participant', '<span>%d</span> Participants', count($parti), 'ap'), count($parti)) .'</h3>';
 	
-	echo '<ul class="ap-participants-list ap-inline-list clearfix">';	
+	echo '<div class="ap-participants-list clearfix">';	
 	foreach($parti as $p){
-		?>
-			<li>
-			<?php echo'<a title="'.ap_user_display_name($p->apmeta_userid, true).'" href="'.ap_user_link($p->apmeta_userid).'">'	?>
-			<?php echo get_avatar($p->apmeta_userid, $avatar_size); ?>
-			<?php echo'</a>' ?>
-			</li>
-		<?php
+		echo'<a title="'.ap_user_display_name($p->apmeta_userid, true).'" href="'.ap_user_link($p->apmeta_userid).'" class="ap-avatar">';
+		echo get_avatar($p->apmeta_userid, $avatar_size);
+		echo'</a>';
 	}	
-	echo '</ul>';
+	echo '</div>';
 	
 }
 

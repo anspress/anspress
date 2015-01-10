@@ -4,7 +4,9 @@
 
 .ap-comments{
 	&.have-comments{
-		margin-top: 30px;
+	    border: 1px solid #f8f8f8;
+	    border-radius: 4px;
+	    margin-top: 30px;
 	}
 	.ap-commentlist {
 	    list-style: none outside none;
@@ -12,15 +14,21 @@
 	    padding: 0;
 
 	    .comment{
-	    	border-top: solid 1px @default-border-color;
-		    color: #777777;
+		    border-bottom: 1px solid #f8f8f8;
+		    color: #777;
 		    font-size: 13px;
 		    line-height: 22px;
-		    margin-bottom: 20px;
-		    padding-top: 20px;
+		    margin-bottom: 0;
+		    padding: 12px;
+
 
 		    &:last-child{
 		    	margin-bottom:0;
+		    	border-bottom: none;
+		    }
+
+		    .ap-avatar{
+		    	margin-top: 3px;
 		    }
 		    .ap-comment-time{
 		    	margin-right: 10px;
@@ -30,6 +38,7 @@
 		    	white-space: nowrap;
 		    	a{
 		    		text-decoration: none;
+		    		color: @link-color;
 		    	}
 		    	i{
 		    		font-size: 10px;

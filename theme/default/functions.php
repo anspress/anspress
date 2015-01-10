@@ -97,7 +97,7 @@ if ( ! function_exists( 'ap_comment' ) ) :
 	function ap_comment( $comment ) {
 		$GLOBALS['comment'] = $comment;
 		?>
-		<li <?php comment_class(); ?> id="li-comment-<?php comment_ID(); ?>">
+		<li <?php comment_class('clearfix'); ?> id="li-comment-<?php comment_ID(); ?>">
 			<!-- comment #<?php comment_ID(); ?> -->
 			<article id="comment-<?php comment_ID(); ?>">
 				<div class="ap-avatar ap-pull-left">

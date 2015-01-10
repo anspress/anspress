@@ -107,7 +107,7 @@ global $post;
 					<?php ap_subscribe_btn_html(); ?>
 				</div>
 
-				<div class="ap-question-side">			
+				<div class="ap-q-side-sec">			
 					<?php ap_get_all_parti(30, get_question_id()); ?>
 				</div>
 

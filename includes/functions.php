@@ -746,7 +746,7 @@ function ap_highlight_words($text, $words) {
 function ap_responce_message($id)
 {
 	$msg =array(
-		'please_login' => array('type' => 'warning', 'message' => __('You need to login doing this action.', 'ap')),
+		'please_login' => array('type' => 'warning', 'message' => __('You need to login before doing this action.', 'ap')),
 		'something_wrong' => array('type' => 'error', 'message' => __('Something went wrong, last action failed.', 'ap')),
 		'no_permission' => array('type' => 'warning', 'message' => __('You do not have permission to do this action.', 'ap')),
 		'draft_comment_not_allowed' => array('type' => 'warning', 'message' => __('You are commenting on a draft post.', 'ap')),

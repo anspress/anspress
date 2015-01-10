@@ -330,6 +330,13 @@ function ap_user_can_view_private_post($question_id){
 		return true;
 	
 	$post = get_post( $question_id );
+
+	if($post->post_type == 'answer'){
+		$question = get_post($post->post_parent);
+		
+		if($question->post_author == get_current_user_id())
+			return true;
+	}
 	
 	if($post->post_author == get_current_user_id())
 		return true;
