@@ -173,7 +173,7 @@ function ap_get_latest_history($post_id){
  * Get last active time
  * @param  init $post_id
  * @return string
- * @since 2.0
+ * @since 2.0.1
  */
 function ap_last_active_time($post_id = false, $html = true){
 	$post = get_post($post_id);

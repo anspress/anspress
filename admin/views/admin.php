@@ -5,7 +5,7 @@
  *
  * 
  * @link http://wp3.in/anspress
- * @since 2.0
+ * @since 2.0.1
  * @package AnsPress
  */
 // If this file is called directly, abort.

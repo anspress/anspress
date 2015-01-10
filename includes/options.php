@@ -7,7 +7,7 @@
  * @license   GPL-2.0+
  * @link      http://rahularyan.com
  * @copyright 2014 Rahul Aryan
- * @since 2.0
+ * @since 2.0.1
  */
 
 // If this file is called directly, abort.
@@ -59,7 +59,7 @@ function ap_opt($key = false, $value = false){
 /**
  * Default options for AnsPress
  * @return array
- * @since 2.0
+ * @since 2.0.1
  */
 function ap_default_options(){
 	$defaults =  array(

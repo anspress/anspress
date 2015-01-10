@@ -359,7 +359,7 @@ class AnsPress_User {
 	 * Set icon class for user menus
 	 * @param  arrat $menus
 	 * @return array
-	 * @since 2.0
+	 * @since 2.0.1
 	 */
 	public function ap_user_menu_icons($menus)
 	{
@@ -383,7 +383,7 @@ class AnsPress_User {
  * @param  string $page_title Page title
  * @param  callable $func Hook to run when shortcode is found.    
  * @return void
- * @since 2.0
+ * @since 2.0.1
  */
 function ap_register_user_page($page_slug, $page_title, $func){
 	global $user_pages;
@@ -516,7 +516,7 @@ function ap_user_display_name($args = array()){
 	 * FILTER: ap_user_display_name
 	 * Filter can be used to alter display name
 	 * @var string
-	 * @since 2.0
+	 * @since 2.0.1
 	 */
 	
 	$return = apply_filters('ap_user_display_name', $return );
@@ -561,7 +561,7 @@ function ap_user_link($user_id = false, $sub = false){
  * Output user menu
  * Extract menu from registered user pages
  * @return void
- * @since 2.0
+ * @since 2.0.1
  */
 function ap_user_menu(){
 	global $user_pages;
@@ -659,7 +659,7 @@ function ap_user_page(){
 /**
  * Get active user page
  * @return string
- * @since 2.0
+ * @since 2.0.1
  */
 function ap_active_user_page(){
 	$user_page 		= sanitize_text_field(get_query_var('user_page'));

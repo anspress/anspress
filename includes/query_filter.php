@@ -7,7 +7,7 @@
  * @license   GPL-2.0+
  * @link      http://rahularyan.com
  * @copyright 2014 Rahul Aryan
- * @since 2.0
+ * @since 2.0.1
  */
 
 class AnsPress_Query_Filter

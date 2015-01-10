@@ -3,7 +3,7 @@
  * Error messages
  *
  * @link http://wp3.in
- * @since 2.0
+ * @since 2.0.1
  * @license GPL 2+
  * @package AnsPress
  */
@@ -12,7 +12,7 @@
  * Return response with type and message
  * @param  string $id error id
  * @return string
- * @since 2.0
+ * @since 2.0.1
  */
 function ap_responce_message($id)
 {
@@ -26,7 +26,7 @@ function ap_responce_message($id)
 	 * FILTER: ap_responce_message
 	 * Can be used to alter response messages
 	 * @var array
-	 * @since 2.0 
+	 * @since 2.0.1 
 	 */
 	$msg = apply_filters( 'ap_responce_message', $msg );
 
@@ -56,7 +56,7 @@ function ap_ajax_responce($results)
 	 * FILTER: ap_ajax_responce
 	 * Can be used to alter ap_ajax_responce
 	 * @var array
-	 * @since 2.0
+	 * @since 2.0.1
 	 */
 	$results = apply_filters( 'ap_ajax_responce', $results );
 

@@ -54,7 +54,7 @@ class AnsPress_Theme {
 	 * Append single question page content to the_content() for compatibility purpose.
 	 * @param  string $content
 	 * @return string
-	 * @since 2.0
+	 * @since 2.0.1
 	 */
 	public function question_single_the_content( $content ) {
 		// check if is question
@@ -89,7 +89,7 @@ class AnsPress_Theme {
 	 * Add answer-seleted class in post_class
 	 * @param  array $classes
 	 * @return array
-	 * @since 2.0
+	 * @since 2.0.1
 	 **/
 	public function question_post_class($classes)
 	{
@@ -108,7 +108,7 @@ class AnsPress_Theme {
 	 * Add anspress classess to body
 	 * @param  array $classes
 	 * @return array
-	 * @since 2.0
+	 * @since 2.0.1
 	 */
 	public function body_class($classes){
 		// add anspress class to body
@@ -502,7 +502,7 @@ function ap_pagination( $current = false, $total = false, $format = '?paged=%#%'
  * Question meta to display 
  * @param  int $question_id
  * @return string
- * @since 2.0
+ * @since 2.0.1
  */
 function ap_display_question_metas($question_id =  false){
 	if (!$question_id) {
@@ -551,7 +551,7 @@ function ap_display_question_metas($question_id =  false){
  * @param  string $name
  * @param  boolean $html
  * @return string
- * @since 2.0
+ * @since 2.0.1
  */
 function ap_icon($name, $html = false){
 	$icons = array(
@@ -695,7 +695,7 @@ function ap_questions_tab($current_url){
 	 * FILTER: ap_questions_tab
 	 * Before prepering questions list tab.
 	 * @var array
-	 * @since 2.0
+	 * @since 2.0.1
 	 */
 	$navs = apply_filters('ap_questions_tab', $navs );
 
@@ -731,7 +731,7 @@ function ap_questions_tab($current_url){
 /**
  * Output answers tab
  * @return void
- * @since 2.0
+ * @since 2.0.1
  */
 function ap_answers_tab($base = false){
 	$sort = get_query_var('sort');
@@ -759,7 +759,7 @@ function ap_answers_tab($base = false){
  * Answer meta to display 
  * @param  int $answer_id
  * @return string
- * @since 2.0
+ * @since 2.0.1
  */
 function ap_display_answer_metas($answer_id =  false){
 	if (!$answer_id) {
@@ -778,7 +778,7 @@ function ap_display_answer_metas($answer_id =  false){
 	/**
 	 * FILTER: ap_display_answer_meta
 	 * Used to filter answer display meta
-	 * @since 2.0
+	 * @since 2.0.1
 	 */
 	$metas = apply_filters('ap_display_answer_metas', $metas, $answer_id );
 

@@ -2,7 +2,7 @@
 /**
  * AnsPress process form
  * @link http://wp3.in
- * @since 2.0
+ * @since 2.0.1
  * @license GPL 2+
  * @package AnsPress
  */
@@ -50,7 +50,7 @@ class AnsPress_Process_Form
 	/**
      * Handle all anspress ajax requests 
      * @return void
-     * @since 2.0
+     * @since 2.0.1
      */
     public function ap_ajax()
     {
@@ -70,7 +70,7 @@ class AnsPress_Process_Form
 	    	/**
 	    	 * ACTION: ap_ajax_[$action]
 	    	 * Action for processing Ajax requests
-	    	 * @since 2.0
+	    	 * @since 2.0.1
 	    	 */
 	    	do_action('ap_ajax_'.$action);
 		}
@@ -80,7 +80,7 @@ class AnsPress_Process_Form
 	/**
 	 * Process form based on action value
 	 * @return void
-	 * @since 2.0
+	 * @since 2.0.1
 	 */
 	public function process_form()
 	{
@@ -103,7 +103,7 @@ class AnsPress_Process_Form
 				/**
 				 * ACTION: ap_process_form_[action]
 				 * process form
-				 * @since 2.0
+				 * @since 2.0.1
 				 */
 				do_action('ap_process_form_'.$action);
 				break;
@@ -116,7 +116,7 @@ class AnsPress_Process_Form
 	/**
 	 * Process ask form
 	 * @return void
-	 * @since 2.0
+	 * @since 2.0.1
 	 */
 	public function process_ask_form()
 	{
@@ -153,7 +153,7 @@ class AnsPress_Process_Form
 		 * FILTER: ap_ask_fields_validation
 		 * Filter can be used to modify ask question fields.
 		 * @var void
-		 * @since 2.0
+		 * @since 2.0.1
 		 */
 		$args = apply_filters( 'ap_ask_fields_validation', $args );
 
@@ -207,7 +207,7 @@ class AnsPress_Process_Form
 		 * FILTER: ap_pre_insert_question
 		 * Can be used to modify args before inserting question
 		 * @var array
-		 * @since 2.0
+		 * @since 2.0.1
 		 */
 		$question_array = apply_filters('ap_pre_insert_question', $question_array );
 
@@ -243,7 +243,7 @@ class AnsPress_Process_Form
 	/**
 	 * Process edit question form
 	 * @return void
-	 * @since 2.0
+	 * @since 2.0.1
 	 */
 	public function edit_question()
 	{
@@ -276,7 +276,7 @@ class AnsPress_Process_Form
 		 * FILTER: ap_pre_update_question
 		 * Can be used to modify $args before updating question
 		 * @var array
-		 * @since 2.0
+		 * @since 2.0.1
 		 */
 		$question_array = apply_filters('ap_pre_update_question', $question_array );
 
@@ -389,7 +389,7 @@ class AnsPress_Process_Form
 		 * FILTER: ap_answer_fields_validation
 		 * Filter can be used to modify answer form fields.
 		 * @var void
-		 * @since 2.0
+		 * @since 2.0.1
 		 */
 		$args = apply_filters( 'ap_answer_fields_validation', $args );
 
@@ -435,7 +435,7 @@ class AnsPress_Process_Form
 		 * FILTER: ap_pre_insert_answer
 		 * Can be used to modify args before inserting answer
 		 * @var array
-		 * @since 2.0
+		 * @since 2.0.1
 		 */
 		$answer_array = apply_filters('ap_pre_insert_answer', $answer_array );
 

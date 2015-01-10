@@ -16,7 +16,7 @@ class AP_Roles{
 	/**
 	 * init class
 	 *
-	 * @since 2.0
+	 * @since 2.0.1
 	 */
     public function __construct()
     {
@@ -35,7 +35,7 @@ class AP_Roles{
 	/**
 	 * Add roles and cap, called on plugin activation
 	 *
-	 * @since 2.0
+	 * @since 2.0.1
 	 */
 	public function add_roles(){		
 	
@@ -329,7 +329,7 @@ function ap_user_can_create_tag(){
  * Check if user gave permission to view post
  * @param  int $post_id post ID
  * @return boolean
- * @since 2.0
+ * @since 2.0.1
  */
 function ap_user_can_view_private_post($post_id){
 	$post = get_post( $post_id );

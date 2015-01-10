@@ -333,29 +333,7 @@ AnsPress.site.prototype = {
 					}
 				}, 
 				this,
-				function(){
-					var vote_c = $(this).parent();
-					var cur_count = vote_c.find('.net-vote-count');
-
-					vote_c.append('<div class="ap-vote-fade"></div>');
-
-					if($(this).is('.voted')){
-						vote_c.find('.vote-down').removeClass('disable');
-						vote_c.find('.vote-up').removeClass('disable');
-						
-						if($(this).is('.vote-down'))
-							cur_count.text(parseInt(cur_count.text()) + 1);
-						else if($(this).is('.vote-up'))
-							cur_count.text(parseInt(cur_count.text()) - 1);
-
-					}else if($(this).is('.vote-down')){
-						vote_c.find('.vote-up').addClass('disable');
-						cur_count.text(parseInt(cur_count.text()) - 1);
-					}else if($(this).is('.vote-up')){
-						vote_c.find('.vote-down').addClass('disable');
-						cur_count.text(parseInt(cur_count.text()) + 1);
-					}
-				}
+				false
 			);
 		});
 	}

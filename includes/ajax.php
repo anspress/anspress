@@ -47,7 +47,7 @@ class AnsPress_Ajax
     /**
      * Show similar questions when asking a question
      * @return void
-     * @since 2.0
+     * @since 2.0.1
      */
     public function suggest_similar_questions(){
     	$keyword = sanitize_text_field($_POST['value']);
@@ -81,7 +81,7 @@ class AnsPress_Ajax
     /**
      * Return comment form
      * @return void
-     * @since 2.0
+     * @since 2.0.1
      */
     public function load_comment_form(){
     	$result = array(

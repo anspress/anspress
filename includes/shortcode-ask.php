@@ -20,7 +20,7 @@ class AnsPress_Ask_Shortcode {
 	 * Output for anspress_ask shortcode
 	 * @param  $atts
 	 * @param  string $content
-	 * @since 2.0
+	 * @since 2.0.1
 	 */
 	public static function anspress_ask($atts, $content = ''){
 		echo '<div class="anspress-container">';

@@ -3,7 +3,7 @@
  * Form and controls of ask form
  *
  * @link http://wp3.in
- * @since 2.0
+ * @since 2.0.1
  * @license GPL2+
  * @package AnsPress
  */
@@ -119,7 +119,7 @@ function ap_ask_form($editing = false){
 /**
  * Generate edit question form, this is a wrapper of ap_ask_form()
  * @return void
- * @since 2.0
+ * @since 2.0.1
  */
 function ap_edit_question_form()
 {

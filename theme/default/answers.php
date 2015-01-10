@@ -6,7 +6,7 @@
  * Control the output of answers
  *
  * @link http://wp3.in/anspress
- * @since 2.0
+ * @since 2.0.1
  *
  * @package AnsPress
  */

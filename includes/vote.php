@@ -74,7 +74,7 @@ class AnsPress_Vote_Ajax extends AnsPress_Ajax
 	/**
 	 * Process voting button
 	 * @return void
-	 * @since 2.0.1
+	 * @since 2.0.1.1
 	 */
 	public function vote()
 	{
@@ -488,7 +488,7 @@ function ap_vote_btn($post = false){
  * Output subscribe btn HTML
  * @param  object $question  post Object
  * @return string
- * @since 2.0
+ * @since 2.0.1
  */
 function ap_subscribe_btn_html($post = false){
 	if(!$post)

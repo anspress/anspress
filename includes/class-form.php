@@ -67,7 +67,7 @@ class AnsPress_Form {
     /**
      * Order fields
      * @return void
-     * @since 2.0
+     * @since 2.0.1
      */
     private function order_fields()
     {
@@ -82,7 +82,7 @@ class AnsPress_Form {
     /**
      * Build the form 
      * @return void
-     * @since 2.0
+     * @since 2.0.1
      */
     public function build()
     {
@@ -95,7 +95,7 @@ class AnsPress_Form {
     /**
      * FORM element
      * @return void
-     * @since 2.0
+     * @since 2.0.1
      */
     private function form_head()
     {
@@ -111,7 +111,7 @@ class AnsPress_Form {
         /**
          * ACTION: ap_form_before_[form_name]
          * action for hooking before form
-         * @since 2.0
+         * @since 2.0.1
          */
         do_action('ap_form_before_'. $this->name);
         $this->output .= ob_get_clean();
@@ -122,7 +122,7 @@ class AnsPress_Form {
     /**
      * FORM footer
      * @return void
-     * @since 2.0
+     * @since 2.0.1
      */
     private function form_footer()
     { 
@@ -130,7 +130,7 @@ class AnsPress_Form {
         /**
          * ACTION: ap_form_bottom_[form_name]
          * action for hooking captcha and extar fields
-         * @since 2.0
+         * @since 2.0.1
          */
         do_action('ap_form_bottom_'. $this->name);
         $this->output .= ob_get_clean();
@@ -148,7 +148,7 @@ class AnsPress_Form {
     /**
      * Form hidden fields
      * @return void
-     * @since 2.0
+     * @since 2.0.1
      */
     private function hidden_fields()
     {
@@ -163,7 +163,7 @@ class AnsPress_Form {
     /**
      * form field label
      * @return void
-     * @since 2.0
+     * @since 2.0.1
      */
     private function label()
     {
@@ -179,7 +179,7 @@ class AnsPress_Form {
     /**
      * Output placeholder attribute of current field
      * @return string
-     * @since 2.0
+     * @since 2.0.1
      */
     private function placeholder(){        
         return !empty($this->field['placeholder']) ? ' placeholder="'.$this->field['placeholder'].'"' : '';
@@ -188,7 +188,7 @@ class AnsPress_Form {
     /**
      * Output description of a form fields
      * @return void
-     * @since 2.0
+     * @since 2.0.1
      */
     private function desc(){
 
@@ -219,7 +219,7 @@ class AnsPress_Form {
      * Checkbox field
      * @param  array  $field
      * @return void
-     * @since 2.0
+     * @since 2.0.1
      */
     private function checkbox_field($field = array())
     {
@@ -241,7 +241,7 @@ class AnsPress_Form {
      * output select field options
      * @param  array  $field
      * @return void
-     * @since 2.0
+     * @since 2.0.1
      */
     private function select_options($field = array())
     {
@@ -253,7 +253,7 @@ class AnsPress_Form {
      * Select fields
      * @param  array  $field
      * @return void
-     * @since 2.0
+     * @since 2.0.1
      */
     private function select_field($field = array())
     {
@@ -271,7 +271,7 @@ class AnsPress_Form {
      * output select field options
      * @param  array  $field
      * @return void
-     * @since 2.0
+     * @since 2.0.1
      */
     private function taxonomy_select_options($field = array())
     {
@@ -287,7 +287,7 @@ class AnsPress_Form {
      * Taxonomy select field
      * @param  array  $field
      * @return void
-     * @since 2.0
+     * @since 2.0.1
      */
     private function taxonomy_select_field($field = array())
     {
@@ -321,7 +321,7 @@ class AnsPress_Form {
      * Create wp_editor field
      * @param  array  $field
      * @return void      
-     * @since 2.0
+     * @since 2.0.1
      */
     private function editor_field($field = array())
     {
@@ -332,7 +332,7 @@ class AnsPress_Form {
          * FILTER: ap_pre_editor_settings
          * Can be used to mody wp_editor settings
          * @var array
-         * @since 2.0
+         * @since 2.0.1
          */
         $field['settings']['tinymce'] = array( 
             'content_css' => ap_get_theme_url('css/editor.css') 
@@ -351,7 +351,7 @@ class AnsPress_Form {
      * For creating hidden input fields
      * @param  array  $field
      * @return void
-     * @since 2.0
+     * @since 2.0.1
      */
     private function hidden_field($field = array()){
         $this->output .= '<input type="hidden" value="'. @$field['value'] .'" name="'. @$field['name'] .'" '. @$field['attar'] .' />';
@@ -364,7 +364,7 @@ class AnsPress_Form {
     /**
      * Check if current field have any error
      * @return boolean
-     * @since 2.0
+     * @since 2.0.1
      */
     private function have_error(){
         if(isset($this->errors[$this->field['name']]))
@@ -394,7 +394,7 @@ class AnsPress_Form {
          * FILTER: ap_pre_form_fields
          * Provide filter to add or override form fields before output.
          * @var array
-         * @since 2.0
+         * @since 2.0.1
          */
         $this->args['fields'] =  apply_filters('ap_pre_form_fields', $this->args['fields'] );
         
@@ -464,7 +464,7 @@ class AnsPress_Form {
     /**
      * Output form
      * @return string
-     * @since 2.0
+     * @since 2.0.1
      */
     public function get_form()
     {

@@ -2,7 +2,7 @@
 /**
  * AnsPress form validation class
  * @link http://wp3.in
- * @since 2.0
+ * @since 2.0.1
  * @license GPL 2+
  * @package AnsPress
  */
@@ -34,7 +34,7 @@ class AnsPress_Validation
     /**
      * Check fields to process
      * @return void
-     * @since 2.0
+     * @since 2.0.1
      */
     private function fields_to_include()
     {
@@ -48,7 +48,7 @@ class AnsPress_Validation
      * Check if field is empty or not set
      * @param  string $field
      * @return void
-     * @since 2.0
+     * @since 2.0.1
      */
     public function required($field)
     {
@@ -60,7 +60,7 @@ class AnsPress_Validation
      * Sanitize text fields
      * @param  string $field
      * @return void
-     * @since 2.0
+     * @since 2.0.1
      */
     private function sanitize_text_field($field)
     {
@@ -85,7 +85,7 @@ class AnsPress_Validation
      * Sanitize as a boolean value
      * @param  array $field
      * @return void
-     * @since 2.0
+     * @since 2.0.1
      */
     private function only_boolean($field)
     {
@@ -98,7 +98,7 @@ class AnsPress_Validation
      * Sanitize as a integer value
      * @param  string $field
      * @return void
-     * @since 2.0
+     * @since 2.0.1
      */
     private function only_int($field)
     {
@@ -111,7 +111,7 @@ class AnsPress_Validation
      * Sanitize field using wp_kses
      * @param  string $field
      * @return void
-     * @since 2.0
+     * @since 2.0.1
      */
     private function wp_kses($field)
     {
@@ -122,7 +122,7 @@ class AnsPress_Validation
      * Remove wordpress read more tag
      * @param  string $field
      * @return void
-     * @since 2.0
+     * @since 2.0.1
      */
     private function remove_more($field)
     {
@@ -133,7 +133,7 @@ class AnsPress_Validation
      * Stripe shortcode tags
      * @param  string $field
      * @return void
-     * @since 2.0
+     * @since 2.0.1
      */
     private function strip_shortcodes($field)
     {
@@ -144,7 +144,7 @@ class AnsPress_Validation
      * Encode contents inside pre and code tag
      * @param  string $field
      * @return void
-     * @since 2.0
+     * @since 2.0.1
      */
     private function encode_pre_code($field)
     {
@@ -178,7 +178,7 @@ class AnsPress_Validation
      * @param  string $field
      * @param  array $actions
      * @return void
-     * @since 2.0
+     * @since 2.0.1
      */
     private function sanitize($field, $actions)
     {
@@ -229,7 +229,7 @@ class AnsPress_Validation
      * @param  string $field   
      * @param  array $actions
      * @return void          
-     * @since 2.0
+     * @since 2.0.1
      */
     private function validate($field, $actions)
     {
@@ -257,7 +257,7 @@ class AnsPress_Validation
     /**
      * Field is being checked and sanitized
      * @return void
-     * @since 2.0
+     * @since 2.0.1
      */
     private function actions()
     {
@@ -274,7 +274,7 @@ class AnsPress_Validation
     /**
      * Check if fields have any error
      * @return boolean
-     * @since 2.0
+     * @since 2.0.1
      */
     public function have_error(){
         if(count($this->errors) > 0)
@@ -297,7 +297,7 @@ class AnsPress_Validation
     /**
      * Return all sanitized fields
      * @return array
-     * @since 2.0
+     * @since 2.0.1
      */
     public function get_sanitized_fields()
     {

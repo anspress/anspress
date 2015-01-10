@@ -130,7 +130,7 @@ if ( ! function_exists( 'ap_comment' ) ) :
 						/**
 						 * ACTION: ap_after_comment_content
 						 * Action called after comment content
-						 * @since 2.0
+						 * @since 2.0.1
 						 */
 						do_action('ap_after_comment_content', $comment );
 					?>

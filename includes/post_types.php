@@ -31,7 +31,7 @@ class AnsPress_PostTypes
     /**
      * Register question CPT
      * @return void
-     * @since 2.0
+     * @since 2.0.1
      */
     public function register_question_cpt(){
         

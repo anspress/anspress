@@ -117,7 +117,7 @@ function ap_is_user_answered($question_id, $user_id){
  * Count all answers of a question includes all post status
  * @param  int $id question id
  * @return int
- * @since 2.0.1
+ * @since 2.0.1.1
  */
 function ap_count_all_answers($id){
 		
@@ -229,7 +229,7 @@ function ap_comment_btn_html($echo = false){
  * Return edit link for question and answer
  * @param  int| object $post_id_or_object
  * @return string                 
- * @since 2.0
+ * @since 2.0.1
  */
 function ap_post_edit_link($post_id_or_object){
 	if(!is_object($post_id_or_object))
@@ -249,7 +249,7 @@ function ap_post_edit_link($post_id_or_object){
  * @param  boolean $echo
  * @param  int | object $post_id_or_object
  * @return void
- * @since 2.0
+ * @since 2.0.1
  */
 function ap_edit_post_link_html($echo = false, $post_id_or_object = false){
 	if(!is_object($post_id_or_object))
@@ -684,7 +684,7 @@ function ap_ask_btn($parent_id = false){
 /**
  * Check if doing ajax request
  * @return boolean
- * @since 2.0
+ * @since 2.0.1
  */
 function ap_is_ajax(){
 	if (defined('DOING_AJAX') && DOING_AJAX)
@@ -753,7 +753,7 @@ function ap_highlight_words($text, $words) {
  * Return response with type and message
  * @param  string $id error id
  * @return string
- * @since 2.0
+ * @since 2.0.1
  */
 function ap_responce_message($id)
 {
@@ -781,7 +781,7 @@ function ap_responce_message($id)
 	 * FILTER: ap_responce_message
 	 * Can be used to alter response messages
 	 * @var array
-	 * @since 2.0 
+	 * @since 2.0.1 
 	 */
 	$msg = apply_filters( 'ap_responce_message', $msg );
 
@@ -815,7 +815,7 @@ function ap_ajax_responce($results)
 	 * FILTER: ap_ajax_responce
 	 * Can be used to alter ap_ajax_responce
 	 * @var array
-	 * @since 2.0
+	 * @since 2.0.1
 	 */
 	$results = apply_filters( 'ap_ajax_responce', $results );
 

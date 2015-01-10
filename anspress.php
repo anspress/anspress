@@ -15,7 +15,7 @@
  * Plugin URI:        http://wp3.in
  * Description:       The most advance community question and answer system for WordPress
  * Donate link: https://www.paypal.com/cgi-bin/webscr?business=rah12@live.com&cmd=_xclick&item_name=Donation%20to%20AnsPress%20development
- * Version:           1.4.3
+ * Version:           2.0.1
  * Author:            Rahul Aryan
  * Author URI:        http://wp3.in
  * Text Domain:       ap
@@ -33,7 +33,7 @@ if(!class_exists('AnsPress')):
 	
 	class AnsPress{
 		
-		private $plugin_version = '2.0';
+		private $plugin_version = '2.0.1';
 		
 		private $plugin_path;
 		
@@ -55,14 +55,14 @@ if(!class_exists('AnsPress')):
 		/**
 		 * Theme object
 		 * @var object
-		 * @since 2.0
+		 * @since 2.0.1
 		 */
 		public $anspress_theme;
 
 		/**
 		 * Post type object
 		 * @var object
-		 * @since 2.0
+		 * @since 2.0.1
 		 */
 		public $anspress_cpt;
 		
@@ -102,7 +102,7 @@ if(!class_exists('AnsPress')):
 		 * Setup plugin constants
 		 *
 		 * @access private
-		 * @since 2.0
+		 * @since 2.0.1
 		 * @return void
 		 */		 
 		 private function setup_constants(){
@@ -177,7 +177,7 @@ if(!class_exists('AnsPress')):
 		 * Include required files
 		 *
 		 * @access private
-		 * @since 2.0
+		 * @since 2.0.1
 		 * @return void
 		 */
 		private function includes() {
@@ -238,7 +238,7 @@ if(!class_exists('AnsPress')):
 		 * Load translations
 		 *
 		 * @access private
-		 * @since 2.0
+		 * @since 2.0.1
 		 * @return void
 		 */
 		public function load_textdomain(){

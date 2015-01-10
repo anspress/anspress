@@ -19,7 +19,7 @@ class AnsPress_User_Page_Questions {
 
 	/**
 	 * Output for profile page
-	 * @since 2.0
+	 * @since 2.0.1
 	 */
 	public static function output(){
 		global $questions;

@@ -20,7 +20,7 @@ class AnsPress_Edit_Shortcode {
 	 * Output for anspress_edit shortcode
 	 * @param  $atts
 	 * @param  string $content
-	 * @since 2.0
+	 * @since 2.0.1
 	 */
 	public static function anspress_edit($atts, $content = ''){
 		$post_id = (int) sanitize_text_field( get_query_var( 'edit_post_id' ));

@@ -14,7 +14,7 @@ class AnsPress_Actions
 	/**
 	 * Initialize the class
 	 * @return void
-	 * @since 2.0
+	 * @since 2.0.1
 	 */
 	public function __construct()
 	{
@@ -62,7 +62,7 @@ class AnsPress_Actions
 	 * @param  int $post_id
 	 * @param  object $post
 	 * @return void
-	 * @since 2.0
+	 * @since 2.0.1
 	 */
 	public function after_new_answer($post_id, $post)
 	{
