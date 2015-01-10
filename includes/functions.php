@@ -774,6 +774,7 @@ function ap_responce_message($id)
 		'voted' => array('type' => 'success', 'message' => __('Thank you for voting.', 'ap')),
 		'undo_vote' => array('type' => 'success', 'message' => __('Your vote has been removed.', 'ap')),
 		'undo_vote_your_vote' => array('type' => 'warning', 'message' => __('Undo your vote first.', 'ap')),
+		'cannot_vote_own_post' => array('type' => 'warning', 'message' => __('You cannot vote on your own question or answer.', 'ap')),
 	);
 
 	/**

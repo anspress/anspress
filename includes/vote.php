@@ -90,6 +90,12 @@ class AnsPress_Vote_Ajax extends AnsPress_Ajax
 			return;
 		}
 
+		$post = get_post($post_id);
+		if($post->post_author == get_current_user_id()){
+			ap_send_json(ap_ajax_responce('cannot_vote_own_post'));
+			return;
+		}
+
 		$type = sanitize_text_field( $_POST['type'] );
 
 		$type 	= $type == 'up' ? 'vote_up' : 'vote_down' ;
