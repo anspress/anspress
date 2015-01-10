@@ -171,7 +171,6 @@ function ap_get_answers($args = array()){
     
     
     $answers = new Answers_Query($args);    
-
     // get answer sorting tab
     echo '<div id="ap-answers-c">';             
             include(ap_get_theme_location('answers.php'));      

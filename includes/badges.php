@@ -163,7 +163,7 @@ class AP_Badges
 		$post_age = current_time('timestamp') - mysql2date('U', $post->post_date_gmt);
 		
 		if($post_age > $limit){
-			if($count < 10 && ap_count_ans_meta($post_id) == 0) 
+			if($count < 10 && ap_count_answer_meta($post_id) == 0) 
 				ap_award_badge($post->post_author, 'tumbleweed', $post_id);
 		}
 	}

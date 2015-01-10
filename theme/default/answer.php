@@ -8,6 +8,7 @@
  *
  * @package AnsPress
  */
+
 if(!ap_user_can_view_post(get_the_ID())){
 	include ap_get_theme_location('no-permission-post.php');
 	return;

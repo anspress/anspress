@@ -98,7 +98,7 @@ class AnsPress_Theme {
 			if(ap_is_answer_selected($post->post_id))
 				$classes[] = 'answer-selected';
 			
-			$classes[] = 'answer-count-'.ap_count_ans_meta();
+			$classes[] = 'answer-count-'.ap_count_answer_meta();
 		}
 		
 		return $classes;

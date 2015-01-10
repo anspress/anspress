@@ -209,7 +209,7 @@ class AnsPress_Form_Helper
 			if($post->post_type == 'question'){
 				$result = array('action' => 'question', 'redirect_to' => get_permalink(ap_opt('base_page')), 'message' => __('Question deleted successfully.', 'ap'));
 			}else{
-				$current_ans = ap_count_ans($post->post_parent);
+				$current_ans = ap_count_all_answers($post->post_parent);
 				$count_label = sprintf( _n('1 Answer', '%d Answers', $current_ans, 'ap'), $current_ans);
 				$remove = (!$current_ans ? true : false);
 				$result = array(

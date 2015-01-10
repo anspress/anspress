@@ -119,7 +119,7 @@ class AP_Question_Meta_Box {
 	}
 	
 	function question_meta_box_content($post){
-		$ans_count = ap_count_ans_meta($post->ID);
+		$ans_count = ap_count_answer_meta($post->ID);
 		$vote_count = get_post_meta($post->ID, ANSPRESS_VOTE_META, true);
 		?>
 			<ul>

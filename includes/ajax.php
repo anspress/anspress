@@ -65,7 +65,7 @@ class AnsPress_Ajax
 			$items .= '</div>';
 			$items .= '<div class="ap-similar-questions">';
 			foreach ($questions as $k => $p){
-				$count = ap_count_ans_meta($p->ID);
+				$count = ap_count_answer_meta($p->ID);
 				$p->post_title = ap_highlight_words($p->post_title, $keyword);
 				$items .= '<a class="ap-sqitem" href="'.get_permalink($p->ID).'">'.$p->post_title.'<span class="acount">'. sprintf(_n('1 Answer', '%d Answers', $count, 'ap' ), $count) .'</span></a>';
 			}
@@ -403,7 +403,7 @@ class AnsPress_Ajax
 		if($questions){
 			$items = array();
 			foreach ($questions as $k => $p){
-				$count = ap_count_ans_meta($p->ID);
+				$count = ap_count_answer_meta($p->ID);
 				$items[$k]['html'] 			= '<a class="ap-sqitem" href="'.get_permalink($p->ID).'">'.get_avatar($p->post_author, 30).'<div class="apqstitle">'.$p->post_title.'</div><span class="apsqcount">'. sprintf(_n('1 Answer', '%d Answers', $count, 'ap' ), $count) .'</span></a>';
 			}
 			$result = array('status' => true, 'items' => $items);

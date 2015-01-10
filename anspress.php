@@ -250,13 +250,12 @@ if(!class_exists('AnsPress')):
 endif;
 
 function anspress(){
-	AnsPress::instance();
-
 	/**
 	 * ACTION: anspress_loaded
 	 * Hooks for extension to load their codes after AnsPress is leaded
 	 */
 	do_action( 'anspress_loaded');
+	AnsPress::instance();	
 }
 
 anspress();

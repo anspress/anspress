@@ -384,7 +384,7 @@ class AnsPress_Query_Filter
 		}
 
 		if( $post->post_type == 'answer') {
-			$ans = ap_count_ans($post->post_parent);
+			$ans = ap_count_all_answers($post->post_parent);
 			ap_do_event('delete_answer', $post->ID, $post->post_author);
 			ap_remove_parti($post->post_parent, $post->post_author, 'answer');
 			
@@ -419,7 +419,7 @@ class AnsPress_Query_Filter
 		}
 		
 		if( $post->post_type == 'answer') {
-			$ans = ap_count_ans( $post->post_parent );
+			$ans = ap_count_all_answers( $post->post_parent );
 			ap_do_event('untrash_answer', $post->ID, $post->post_author);
 			ap_add_parti($post->post_parent, $post->post_author, 'answer');
 			

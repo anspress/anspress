@@ -113,17 +113,29 @@ function ap_is_user_answered($question_id, $user_id){
 	return false;
 }
 
-
-// count numbers of answers
-function ap_count_ans($id){
+/**
+ * Count all answers of a question includes all post status
+ * @param  int $id question id
+ * @return int
+ * @since 2.0.1
+ */
+function ap_count_all_answers($id){
 		
 	global $wpdb;
-	$count = $wpdb->get_var( "SELECT COUNT(*) FROM $wpdb->posts where post_parent = $id AND post_status = 'publish' AND post_type = 'answer'");
+	$count = $wpdb->get_var( $wpdb->prepare("SELECT COUNT(*) FROM $wpdb->posts where post_parent = %d AND post_type = %s", $id, 'answer'));
 
 	return $count;
 }
 
-function ap_count_ans_meta($post_id =false){
+function ap_count_published_answers($id){
+		
+	global $wpdb;
+	$count = $wpdb->get_var( $wpdb->prepare("SELECT COUNT(*) FROM $wpdb->posts where post_parent = %d AND post_status = %s AND post_type = %s", $id, 'publish', 'answer'));
+
+	return $count;
+}
+
+function ap_count_answer_meta($post_id =false){
 	if(!$post_id) $post_id = get_the_ID();
 	$count = get_post_meta($post_id, ANSPRESS_ANS_META, true);
 	 return $count ? $count : 0;
@@ -136,7 +148,7 @@ function ap_count_ans_meta($post_id =false){
 function ap_count_other_answer($question_id =false){
 	if(!$question_id) $question_id = get_the_ID();
 
-	$count = ap_count_ans_meta($question_id);
+	$count = ap_count_answer_meta($question_id);
 	
 	if(ap_is_answer_selected($question_id))
 		return ($count - 1);
@@ -153,7 +165,7 @@ function ap_last_active($post_id =false){
 //check if current questions have answers
 function ap_have_ans($id){
 	
-	if(ap_count_ans($id) > 0)
+	if(ap_count_all_answers($id) > 0)
 		return true;	
 	
 	return false;
@@ -361,7 +373,7 @@ function ap_ans_list_tab(){
 		$order = ap_opt('answers_sort');
 		
 		$link = '?sort=';
-		$ans_count = ap_count_ans(get_the_ID());
+		$ans_count = ap_count_all_answers(get_the_ID());
 	?>
 		<ul class="ap-ans-tab ap-tabs clearfix" role="tablist">
 			<li class="<?php echo $order == 'newest' ? ' active' : ''; ?>"><a href="<?php echo $link.'newest'; ?>"><?php _e('Newest', 'ap'); ?></a></li>
@@ -755,6 +767,10 @@ function ap_responce_message($id)
 		'comment_delete_success' => array('type' => 'success', 'message' => __('Comment deleted successfully.', 'ap')),
 		'subscribed' => array('type' => 'success', 'message' => __('You are subscribed to this question.', 'ap')),
 		'unsubscribed' => array('type' => 'success', 'message' => __('Successfully unsubscribed.', 'ap')),
+		'question_submitted' => array('type' => 'success', 'message' => __('Question submitted successfully', 'ap')),
+		'question_updated' => array('type' => 'success', 'message' => __('Question updated successfully', 'ap')),
+		'answer_submitted' => array('type' => 'success', 'message' => __('Answer submitted successfully', 'ap')),
+		'answer_updated' => array('type' => 'success', 'message' => __('Answer updated successfully', 'ap')),
 	);
 
 	/**

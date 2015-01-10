@@ -23,7 +23,7 @@ class AnsPress_Process_Form
 	{
 
 		add_action('init', array($this, 'non_ajax_form'));
-		add_action( 'save_post', array($this, 'action_on_new_post'), 0, 2 );
+		add_action( 'save_post', array($this, 'action_on_new_post'), 10, 2 );
 		add_action('wp_ajax_ap_ajax', array($this, 'ap_ajax'));
 		add_action('wp_ajax_nopriv_ap_ajax', array($this, 'ap_ajax'));
 	}
@@ -63,7 +63,7 @@ class AnsPress_Process_Form
     	if(isset($_POST['ap_form_action'])){
 	    	$this->is_ajax = true;
 	    	$this->process_form();
-			wp_send_json( $this->result );
+			ap_send_json( ap_ajax_responce( $this->result ) );
 		}else{
 			$action = sanitize_text_field($this->request['ap_ajax_action']);
 
@@ -163,14 +163,11 @@ class AnsPress_Process_Form
 		
 		// if error in form then return
 		if($validate->have_error()){
-			$this->result = apply_filters('ap_ajax_question_error_result', 
-				array(
-					'ap_responce' 	=> true,
-					'form' 			=> $_POST['ap_form_action'],
-					'message_type' 	=> 'error',
-					'message'		=> __('Check missing fields and then re-submit.', 'ap'),
-					'errors'		=> $ap_errors
-				)
+			$this->result = array(
+				'form' 			=> $_POST['ap_form_action'],
+				'message_type' 	=> 'error',
+				'message'		=> __('Check missing fields and then re-submit.', 'ap'),
+				'errors'		=> $ap_errors
 			);
 			return;
 		}
@@ -232,14 +229,11 @@ class AnsPress_Process_Form
 			
 			$this->redirect =  get_permalink($post_id);
 
-			$this->result = apply_filters('ap_ajax_question_submit_result', 
-				array(
-					'ap_responce' 	=> true,
+			$this->result = array(
 					'action' 		=> 'new_question',
-					'message'		=> __('Question submitted successfully', 'ap'),
+					'message'		=> 'question_submitted',
 					'redirect_to'	=> get_permalink($post_id),
 					'do'			=> 'redirect'
-				)
 			);
 		}
 
@@ -299,13 +293,11 @@ class AnsPress_Process_Form
 			
 			$this->redirect = get_permalink($post_id);
 
-			$this->result = apply_filters('ap_ajax_edit_question_submit_result', 
-				array(
-					'ap_responce' 	=> true,
-					'action' 		=> 'edited_question',
-					'message'		=> __('Question updated successfully', 'ap'),
-					'redirect_to'	=> $this->redirect
-				)
+			$this->result = array(
+				'action' 		=> 'edited_question',
+				'message'		=> 'question_updated',
+				'do'			=> 'redirect',
+				'redirect_to'	=> $this->redirect
 			);
 		}
 	}
@@ -318,7 +310,7 @@ class AnsPress_Process_Form
 	 * @since  2.0
 	 */
 	public function action_on_new_post( $post_id, $post ) {
-
+		
 		// return on autosave
 		if(defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) { return; }
 		
@@ -345,6 +337,7 @@ class AnsPress_Process_Form
 			}
 		}elseif ( $post->post_type == 'answer' ) {
 			$updated = get_post_meta($post_id, ANSPRESS_UPDATED_META, true);
+			
 			if($updated == ''){
 				/**
 				 * ACTION: ap_after_new_answer
@@ -426,7 +419,7 @@ class AnsPress_Process_Form
 		 */
 		$status = 'publish';
 		
-		if(isset($fields['is_private']))
+		if($fields['is_private'])
 			$status = 'private_post';
 			
 		$answer_array = array(
@@ -450,7 +443,7 @@ class AnsPress_Process_Form
 
 		if($post_id){				
 			// get existing answer count
-			$current_ans = ap_count_ans($question->ID);
+			$current_ans = ap_count_all_answers($question->ID);
 
 			if (!is_user_logged_in() && ap_opt('allow_anonymous') && isset($fields['name']))
 				update_post_meta($post_id, 'anonymous_name', $fields['name']);
@@ -471,7 +464,7 @@ class AnsPress_Process_Form
 				
 				ob_start();
 				if($current_ans == 1)								
-					ap_answers_list($post->ID, 'voted');
+					ap_get_answers();
 				else
 					include(ap_get_theme_location('answer.php'));
 				
@@ -479,23 +472,20 @@ class AnsPress_Process_Form
 				
 				$count_label = sprintf( _n('1 Answer', '%d Answers', $current_ans, 'ap'), $current_ans);
 				
-				$result = apply_filters('ap_ajax_answer_submit_result', 
-					array(
-						'ap_responce' 	=> true,
-						'postid' 		=> $post_id, 
-						'action' 		=> 'new_answer',
-						'div_id' 		=> '#answer_'.get_the_ID(),
-						'count' 		=> $current_ans,
-						'count_label' 	=> $count_label,
-						'can_answer' 	=> ap_user_can_answer($post->ID),
-						'html' 			=> $html,
-						'message' 		=> __('Answer submitted successfully!','ap')
-					)
+				$result = array(
+					'postid' 		=> $post_id, 
+					'action' 		=> 'new_answer',
+					'div_id' 		=> '#answer_'.get_the_ID(),
+					'count' 		=> $current_ans,
+					'count_label' 	=> $count_label,
+					'can_answer' 	=> ap_user_can_answer($post->ID),
+					'html' 			=> $html,
+					'message' 		=> 'answer_submitted',
 				);
 				
 				$this->result = $result;
 
-				unset($_POST);
+				//unset($_POST);
 				
 			}
 		}
@@ -517,7 +507,7 @@ class AnsPress_Process_Form
 		
 		$status = 'publish';
 
-		if(isset($this->fields['is_private']))
+		if($this->fields['is_private'])
 			$status = 'private_post';
 
 		$answer_array = array(
@@ -532,13 +522,11 @@ class AnsPress_Process_Form
 		
 		if($post_id){					
 			if($this->is_ajax){
-				$this->result = apply_filters('ap_ajax_answer_edit_result', 
-					array(
-						'ap_responce' 	=> true,
-						'action' 		=> 'answer_edited',
-						'message'		=> __('Answer updated successfully', 'ap'),
-						'redirect_to'	=> get_permalink($answer->post_parent)
-					)
+				$this->result = array(
+					'action' 		=> 'answer_edited',
+					'message'		=> 'answer_updated',
+					'redirect_to'	=> get_permalink($answer->post_parent),
+					'do'			=> 'redirect'
 				);
 			}
 

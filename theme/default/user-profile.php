@@ -70,7 +70,7 @@ $description 	= ap_get_current_user_meta('description');
 					while ( $answers->have_posts() ) : $answers->the_post();
 						global $post;				
 						echo '<div class="ap-answer-post clearfix">';
-						echo '<a class="ap-answer-count ap-tip" href="'.ap_answers_link().'" title="'.__('Total answers', 'ap').'"><span>'. ap_count_ans_meta().'</span>'.__('Ans', 'ap').'</a>';		
+						echo '<a class="ap-answer-count ap-tip" href="'.ap_answers_link().'" title="'.__('Total answers', 'ap').'"><span>'. ap_count_answer_meta().'</span>'.__('Ans', 'ap').'</a>';		
 						echo '<div class="ap-ans-content no-overflow">';
 						echo '<a class="ap-title" href="'.get_permalink().'">'.get_the_title().'</a>';
 						echo '<ul class="ap-display-question-meta ap-ul-inline">';

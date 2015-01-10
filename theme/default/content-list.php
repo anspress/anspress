@@ -26,7 +26,7 @@ $clearfix_class = array('list-question clearfix');
 	</div>
 	<div class="ap-count ap-pull-right">	
 		<a class="ap-answer-count ap-tip" href="<?php echo ap_answers_link(); ?>" title="<?php _e('Total answers', 'ap'); ?>">
-			<span><?php echo ap_count_ans_meta(); ?></span>
+			<span><?php echo ap_count_answer_meta(); ?></span>
 			<?php _e('Answer', 'ap');?>
 		</a>						
 		<!-- <a class="ap-vote-count ap-tip" href="#" title="<?php _e('Total views', 'ap'); ?>">

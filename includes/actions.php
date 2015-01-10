@@ -39,7 +39,7 @@ class AnsPress_Actions
 
 		$user_id = get_current_user_id();
 		update_post_meta($post_id, ANSPRESS_VOTE_META, '0');
-		update_post_meta($post_id, ANSPRESS_FAV_META, '0');
+		update_post_meta($post_id, ANSPRESS_SUBSCRIBER_META, '0');
 		update_post_meta($post_id, ANSPRESS_CLOSE_META, '0');
 		update_post_meta($post_id, ANSPRESS_FLAG_META, '0');
 		update_post_meta($post_id, ANSPRESS_VIEW_META, '0');
@@ -79,7 +79,7 @@ class AnsPress_Actions
 		ap_add_parti($question->ID, $user_id, 'answer');			
 		
 		// get existing answer count
-		$current_ans = ap_count_ans($question->ID);
+		$current_ans = ap_count_published_answers($question->ID);
 		
 		//update answer count
 		update_post_meta($question->ID, ANSPRESS_ANS_META, $current_ans);
@@ -100,6 +100,11 @@ class AnsPress_Actions
 	public function ap_after_update_answer($post_id, $post)
 	{
 		update_post_meta($post_id, ANSPRESS_UPDATED_META, current_time( 'mysql' ));
+		update_post_meta($post->post_parent, ANSPRESS_UPDATED_META, current_time( 'mysql' ));
+		
+		//update answer count
+		$current_ans = ap_count_published_answers($post->post_parent);
+		update_post_meta($post->post_parent, ANSPRESS_ANS_META, $current_ans);
 		ap_do_event('edit_answer', $post_id, get_current_user_id(), $post->post_parent);
 	}
 
