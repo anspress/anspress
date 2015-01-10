@@ -66,7 +66,7 @@ class AnsPress_Theme {
 			remove_filter( current_filter(), array($this, 'question_single_the_content') );
 
 			//check if user have permission to see the question
-			if(ap_user_can_view_question()){
+			if(ap_user_can_view_post()){
 				echo '<div class="anspress-container">';
 				/**
 				 * ACTION: ap_before
@@ -78,7 +78,7 @@ class AnsPress_Theme {
 				echo '</div>';
 			}
 			else
-				echo '<div class="ap-pending-notice ap-icon-clock">'.__('You do not have permission to view this question.', 'ap').'</div>';
+				echo '<div class="ap-pending-notice ap-icon-clock">'.ap_responce_message('no_permission').'</div>';
 		}else{
 			return $content;
 		}	
@@ -650,9 +650,11 @@ function ap_post_actions_buttons()
 	$actions = apply_filters('ap_post_actions_buttons', $actions );
 
 	if (!empty($actions) && count($actions) > 0) {
+		echo '<ul class="ap-user-actions ap-ul-inline clearfix">';
 		foreach($actions as $k => $action){
 			echo '<li class="ap-post-action ap-action-'.$k.'">'.$action.'</li>';
 		}
+		echo '</ul>';
 	}
 }
 

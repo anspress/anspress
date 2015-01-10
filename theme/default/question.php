@@ -11,8 +11,8 @@
 global $post;
 ?>
 <div id="ap-single" class="clearfix" itemtype="http://schema.org/Question" itemscope="">	
-	<div class="ap-question-lr">		
-		<div class="ap-question-left">
+	<div class="ap-question-lr row">		
+		<div class="ap-question-left col-md-10">
 			<div id="question" role="main" class="ap-content question" data-id="<?php echo get_the_ID(); ?>">
 				<?php 
 					/**
@@ -47,8 +47,7 @@ global $post;
 					<!-- Start ap-content-inner -->
 					<div class="ap-content-inner no-overflow">
 	
-						<div class="ap-question-metas clearfix">
-							<?php ap_favorite_html(); ?>
+						<div class="ap-question-metas clearfix">							
 							<?php ap_user_display_meta(true, false, true); ?>
 
 							<!-- TODO: Show all questions history on toggle -->
@@ -69,9 +68,8 @@ global $post;
 							do_action('ap_after_question_content', $post);
 						?>
 
-						<ul class="ap-user-actions ap-ul-inline clearfix">
-							<?php ap_post_actions_buttons() ?>
-						</ul>
+						
+						<?php ap_post_actions_buttons() ?>
 
 						<?php 
 							/**
@@ -102,41 +100,18 @@ global $post;
 					include(ap_get_theme_location('answer-form.php')); 
 			?>
 		</div>
-		<!--
-		<div class="ap-question-right">
+
+		<div class="ap-question-right col-md-2">
 			<div class="ap-question-right-inner">
-				<?php ap_question_side_tab(get_question_id()); ?>
-
-				<div class="ap-question-side">
-					<h3 class="ap-question-side-title">
-						<?php _e('Labels', 'ap'); ?>					
-						<?php ap_change_label_html(get_question_id()); ?>
-					</h3>
-					<div data-view="ap-labels-list">
-						<?php echo ap_get_question_label(get_question_id(), true); ?>
-					</div>
+				<div class="ap-q-side-sec">
+					<?php ap_subscribe_btn_html(); ?>
 				</div>
-
-				<?php if(ap_opt('enable_categories')): ?>
-				<div class="ap-question-side">
-					<h3 class="ap-question-side-title"><?php _e('Categories', 'ap'); ?></h3>
-					<?php ap_question_categories_html(get_question_id()); ?>
-				</div>
-				<?php endif; ?>
-
-
-				<?php if(ap_opt('enable_tags')): ?>
-				<div class="ap-question-side">
-					<h3 class="ap-question-side-title"><?php _e('Tags', 'ap'); ?></h3>
-					<?php ap_question_tags_html(get_question_id()); ?>
-				</div>
-				<?php endif; ?>
 
 				<div class="ap-question-side">			
 					<?php ap_get_all_parti(30, get_question_id()); ?>
 				</div>
 
 			</div>
-		</div>-->
+		</div>
 	</div>
 </div>

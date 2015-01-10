@@ -284,13 +284,40 @@ AnsPress.site.prototype = {
 				true
 			);
 		});
+	},
+
+	ap_subscribe: function(elm){
+		var q = $(elm).data('query');
+
+		$(elm).click( function(e){
+			e.preventDefault();
+			
+			ApSite.doAjax( 
+				apAjaxData(q), 
+				function(data){
+					if(data.message_type == 'success'){
+						$(elm).addClass('active');
+						$(elm).closest('.ap-subscribe').addClass('active');
+					}else{
+						$(elm).removeClass('active');
+						$(elm).closest('.ap-subscribe').removeClass('active');
+					}
+				}, 
+				elm,
+				function(){
+					$(elm).closest('.ap-subscribe').toggleClass('active');
+				}
+			);
+		});
 	}
 
 
 
 }
 
-})(jQuery)
+})(jQuery);
+
+
 
 function apAjaxData(param){
 	param = param + '&action=ap_ajax';

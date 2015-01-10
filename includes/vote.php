@@ -9,6 +9,70 @@
  * @copyright 2014 Rahul Aryan
  */
 
+
+class AnsPress_Vote_Ajax extends AnsPress_Ajax
+{
+	public function __construct()
+	{
+		add_action( 'ap_ajax_subscribe_question', array($this, 'subscribe_question') ); 
+	}
+
+	public function subscribe_question()
+	{
+		if(!wp_verify_nonce( $_POST['__nonce'], 'subscribe_'. (int)$_POST['question_id'] ) ){
+			ap_send_json(ap_ajax_responce('something_wrong'));
+			return;
+		}
+
+		if(!is_user_logged_in()){
+			ap_send_json(ap_ajax_responce('please_login'));
+			return;
+		}
+
+		if(wp_verify_nonce( $_POST['__nonce'], 'subscribe_'. (int)$_POST['question_id'] )){
+
+			$question_id = (int)$_POST['question_id'];
+
+			$is_subscribed = ap_is_user_subscribed( $question_id );	
+			$userid		 = get_current_user_id();	
+
+			if($is_subscribed){
+				// if already subscribed then remove	
+				$row = ap_remove_vote('subscriber', $userid, $question_id);
+				
+				$counts = ap_post_subscribers_count($question_id);
+				
+				//update post meta
+				update_post_meta($question_id, ANSPRESS_SUBSCRIBER_META, $counts);
+				
+				//register an action
+				do_action('ap_removed_subscribe', $question_id, $counts);
+
+				ap_send_json(ap_ajax_responce('unsubscribed'));
+				return;
+				
+				$title = __('Add to subscribe list', 'ap');
+				$action = 'removed';
+				$message = __('Removed question from your subscribe list', 'ap');
+			}else{
+				$row = ap_add_vote($userid, 'subscriber', $question_id);
+				$counts = ap_post_subscribers_count($question_id);
+				
+				//update post meta
+				update_post_meta($question_id, ANSPRESS_SUBSCRIBER_META, $counts);
+				
+				//register an action
+				do_action('ap_added_subscribe', $question_id, $counts);
+				
+				ap_send_json(ap_ajax_responce('subscribed'));
+			}
+			
+		}
+	}
+
+}
+new AnsPress_Vote_Ajax();
+
 class anspress_vote
 {
     /**
@@ -38,8 +102,7 @@ class anspress_vote
 		add_action( 'the_post', array($this, 'ap_append_vote_count') );
 		add_action( 'wp_ajax_ap_vote_on_post', array($this, 'ap_vote_on_post') ); 
 		add_action( 'wp_ajax_nopriv_ap_vote_on_post', array($this, 'ap_vote_nopriv') ); 
-		add_action( 'wp_ajax_ap_add_to_favorite', array($this, 'ap_add_to_favorite') ); 
-		add_action( 'wp_ajax_nopriv_ap_add_to_favorite', array($this, 'ap_add_to_favorite_nopriv') ); 
+
 		
 		// vote for closing, ajax request
 		add_action( 'wp_ajax_ap_vote_for_close', array($this, 'ap_vote_for_close') ); 
@@ -137,64 +200,12 @@ class anspress_vote
 	}
 
 		
-	// add to favorite ajax action	 
-	function ap_add_to_favorite(){
-		$args = explode('-', sanitize_text_field($_POST['args']));
-		
-		if(wp_verify_nonce( $args[1], 'favorite_'.$args[0] )){
-
-			$is_favorite = ap_is_user_favorite($args[0]);	
-			$userid		 = get_current_user_id();	
-			
-			if($is_favorite){
-				// if already in favorite list then remove	
-				$row = ap_remove_vote('favorite', $userid, $args[0]);
-				
-				$counts = ap_post_favorite($args[0]);
-				
-				//update post meta
-				update_post_meta($args[0], ANSPRESS_FAV_META, $counts);
-				
-				//register an action
-				do_action('ap_removed_favorite', $args[1], $counts);
-				
-				$title = __('Add to favorite list', 'ap');
-				$action = 'removed';
-				$message = __('Removed question from your favorite list', 'ap');
-			}else{
-				$row = ap_add_vote($userid, 'favorite', $args[0]);
-				$counts = ap_post_favorite($args[0]);
-				
-				//update post meta
-				update_post_meta($args[0], ANSPRESS_FAV_META, $counts);
-				
-				//register an action
-				do_action('ap_added_favorite', $args[0], $counts);
-				
-				$title = __('Remove from favorite list', 'ap');
-				$message = __('Added question to your favorite list', 'ap');
-				$action = 'added';
-			}
-			if( $counts =='1' && $action == 'added')
-				$text = __('You favorited this question', 'ap'); 
-			elseif($action == 'added')
-				$text = sprintf( __( 'You and %s others favorited this question', 'ap' ), ($counts -1));
-			else
-				$text =  sprintf( __( '%s people favorited this question', 'ap' ), $counts);
-			
-			$result = apply_filters('ap_favorite_result', array('row' => $row, 'action' => $action, 'count' => '<i class="'.ap_icon('favorite').'"></i> '.$counts, 'title' => $title, 'text' => $text, 'message' => $message));
-			echo json_encode($result);
-			
-		}else{
-			echo json_encode(array('action'=> false, 'message' =>__('Failed to process this action', 'ap')));	
-		}
-		
-		die();
-	}
+	// add to subscribe ajax action	 
+	
 
 	
-	function ap_add_to_favorite_nopriv(){
-		echo json_encode(array('action'=> false, 'message' =>__('Please login for adding question to your favorite', 'ap')));
+	function ap_add_to_subscribe_nopriv(){
+		echo json_encode(array('action'=> false, 'message' =>__('Please login for adding question to your subscribe', 'ap')));
 		die();
 	}
 	
@@ -419,22 +430,22 @@ function ap_is_user_voted($actionid, $type, $userid = false){
 	return false;
 }
 
-//check if user added post to favorite
-function ap_is_user_favorite($postid){
+//check if user added post to subscribe
+function ap_is_user_subscribed($postid){
 	if(is_user_logged_in()){
 		$userid = get_current_user_id();
-		$done = ap_meta_user_done('favorite', $userid, $postid);
+		$done = ap_meta_user_done('subscriber', $userid, $postid);
 		return $done > 0 ? true : false;
 	}
 	return false;
 }
 
-function ap_post_favorite($postid = false){
-	//favorite count
+function ap_post_subscribers_count($postid = false){
+	//subscribe count
 	global $post;
 
 	$postid = $postid ? $postid : $post->ID;
-	return ap_meta_total_count('favorite', $postid);
+	return ap_meta_total_count('subscriber', $postid);
 }
 
 
@@ -461,35 +472,37 @@ function ap_vote_html($post = false){
 }
 
 /**
- * Output favourite btn HTML
+ * Output subscribe btn HTML
  * @param  object $question  post Object
  * @return string
  * @since 2.0
  */
-function ap_favorite_html($post = false){
+function ap_subscribe_btn_html($post = false){
 	if(!$post)
 		global $post;
 	
-	$total_favs = ap_post_favorite($post->ID);
-	$favorited = ap_is_user_favorite($post->ID);
+	$total_favs = ap_post_subscribers_count($post->ID);
+	$subscribed = ap_is_user_subscribed($post->ID);
 
-	$nonce = wp_create_nonce( 'favorite_'.$post->ID );
-	$title = (!$total_favs) ? (__('Add to favorite list', 'ap')) : (__('Remove from favorite list', 'ap'));
+	$nonce = wp_create_nonce( 'subscribe_'.$post->ID );
+	$title = (!$total_favs) ? (__('Subscribe', 'ap')) : (__('Subscribed', 'ap'));
+
 	?>
-		<div class="ap-favorite">
-			<a id="<?php echo 'favorite_'.$post->ID; ?>" class="ap-tip favorite-btn <?php echo ($favorited) ? ' added' :''; ?>" data-action="ap-favorite" data-args="<?php echo $post->ID.'-'.$nonce; ?>" href="#"title="<?php echo $title; ?>"> <?php echo ap_icon('favorite', true).' '. $total_favs; ?></a>
-			<span> 
+		<div class="ap-subscribe<?php echo ($subscribed) ? ' active' :''; ?>">
+			<span class="ap-subscribe-label"><?php echo $title ?></span>
+			<span id="<?php echo 'subscribe_'.$post->ID; ?>" class="ap-radio-btn subscribe-btn <?php echo ($subscribed) ? ' active' :''; ?>" data-query="ap_ajax_action=subscribe_question&question_id=<?php echo $post->ID ?>&__nonce=<?php echo $nonce ?>" data-action="ap_subscribe" data-args="<?php echo $post->ID.'-'.$nonce; ?>"></span>
+			<!-- <span class="ap-subscribers-count"> 
 				<?php  
-					if( $total_favs =='1' && $favorited)
-						_e('You favorited this question', 'ap'); 
-					elseif($favorited)
-						printf( __( 'You and %s others favorited this question', 'ap' ), ($total_favs -1));
+					/*if( $total_favs =='1' && $subscribed)
+						_e('You are subscribed', 'ap'); 
+					elseif($subscribed)
+						printf( __( 'You and %s people subscribed this question', 'ap' ), ($total_favs -1));
 					elseif($total_favs == 0)
-						 _e( 'Favorite this question and get updateds', 'ap' );
+						 _e( 'Subscribe this question', 'ap' );
 					else
-						printf( _n( '%s person favorited this question', '%s persons favorited this question', $total_favs, 'ap' ), $total_favs); 
+						printf( _n( '%d people subscribed this question', '%d peoples subscribed this question', $total_favs, 'ap' ), $total_favs); */
 				?>
-			</span>
+			</span> -->
 		</div>
 	<?php
 }

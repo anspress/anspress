@@ -80,6 +80,9 @@ if(!class_exists('AnsPress')):
 
 				add_action( 'plugins_loaded', array( self::$instance, 'load_textdomain' ) );
 
+				global $ap_classes;
+				$ap_classes = array();
+
 				self::$instance->includes();
 
 				self::$instance->anspress_forms      		= new AnsPress_Process_Form();
@@ -87,7 +90,9 @@ if(!class_exists('AnsPress')):
 				self::$instance->anspress_ajax      		= new AnsPress_Ajax();
 				self::$instance->anspress_query_filter      = new AnsPress_Query_Filter();
 				self::$instance->anspress_theme      		= new AnsPress_Theme();
-				self::$instance->anspress_cpt      			= new AnsPress_PostTypes();				
+				self::$instance->anspress_cpt      			= new AnsPress_PostTypes();
+
+				
 
 			}
 			return self::$instance;
@@ -134,8 +139,8 @@ if(!class_exists('AnsPress')):
 				if (!defined('ANSPRESS_VOTE_META'))
 				define('ANSPRESS_VOTE_META', '_ap_vote');
 			
-			if (!defined('ANSPRESS_FAV_META'))	
-				define('ANSPRESS_FAV_META', '_ap_favorite');
+			if (!defined('ANSPRESS_SUBSCRIBER_META'))	
+				define('ANSPRESS_SUBSCRIBER_META', '_ap_subscriber');
 			
 			if (!defined('ANSPRESS_CLOSE_META'))	
 				define('ANSPRESS_CLOSE_META', '_ap_close');
@@ -183,6 +188,8 @@ if(!class_exists('AnsPress')):
 			
 			require_once( ANSPRESS_DIR . 'includes/functions.php' );
 			require_once( ANSPRESS_DIR . 'includes/actions.php' );
+			require_once( ANSPRESS_DIR . 'includes/ajax.php' );
+
 			require_once( ANSPRESS_DIR . 'includes/class-roles-cap.php' );
 			require_once( ANSPRESS_DIR . 'includes/class-question_query.php' );
 			require_once( ANSPRESS_DIR . 'includes/class-answer_query.php' );
@@ -198,7 +205,7 @@ if(!class_exists('AnsPress')):
 			require_once( ANSPRESS_DIR . 'includes/theme.php' );
 			require_once( ANSPRESS_DIR . 'includes/main.php' );
 			require_once( ANSPRESS_DIR . 'includes/form.php' );
-			require_once( ANSPRESS_DIR . 'includes/ajax.php' );
+			
 			require_once( ANSPRESS_DIR . 'includes/basepage.php' );
 			require_once( ANSPRESS_DIR . 'includes/participants.php' );
 			require_once( ANSPRESS_DIR . 'includes/labels.php' );
@@ -244,6 +251,12 @@ endif;
 
 function anspress(){
 	AnsPress::instance();
+
+	/**
+	 * ACTION: anspress_loaded
+	 * Hooks for extension to load their codes after AnsPress is leaded
+	 */
+	do_action( 'anspress_loaded');
 }
 
 anspress();

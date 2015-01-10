@@ -20,6 +20,7 @@ class AnsPress_Ajax
      */
     public function __construct()
     {
+
 		add_action('ap_ajax_suggest_similar_questions', array($this, 'suggest_similar_questions'));
 		add_action('ap_ajax_load_comment_form', array($this, 'load_comment_form'));
 		add_action('ap_ajax_delete_comment', array($this, 'delete_comment'));
@@ -38,6 +39,7 @@ class AnsPress_Ajax
 		
 		add_action('wp_ajax_ap_suggest_questions', array($this, 'ap_suggest_questions'));
 		add_action('wp_ajax_nopriv_ap_suggest_questions', array($this, 'ap_suggest_questions'));
+
     }
 
     

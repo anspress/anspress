@@ -157,11 +157,8 @@ jQuery(document).ready(function(){
 		}
 
 	}
-	
-	jQuery('#answer_form, #ask_question_form').submit(function(){
-		jQuery.jStorage.flush();
-	});
-	
+
+    jQuery('.ap-radio-btn').click(function(){ jQuery(this).toggleClass('active'); });
 	
 });
 function ap_chk_activity_scroll(e){
