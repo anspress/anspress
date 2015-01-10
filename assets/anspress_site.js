@@ -31,11 +31,11 @@ AnsPress.site.prototype = {
 		this.errors;
 		this.ajaxData;
 
-		this.doAction();
 		this.afterAjaxComplete();
 		this.appendFormError();
 		this.appendMessageBox();
 		this.ap_comment_form();
+
 	},
 
 	doAjax: function(query, success, context, before, abort){
@@ -51,28 +51,14 @@ AnsPress.site.prototype = {
 			ApSite.ajax_id[action].abort();
 		}
 
-		//if(typeof ApSite.loading[action] !== 'undefined')
-			ApSite.hideLoading();
-
-		var new_success = function new_success(data){
-			ApSite.hideLoading();
-			if(success !== false)
-				success(data);
-		};
-
-		var new_before = function new_before(){
-			ApSite.showLoading();			
-
-			if(before !== false)
-				before();
-		};
+		ApSite.showLoading();
 
 		var req = $.ajax({
 					type: 'POST',
 					url: ajaxurl, 
 					data: query, 
-					beforeSend: new_before, 
-					success: new_success, 
+					beforeSend: before, 
+					success: success, 
 					dataType: 'json',
 					context:context,
 				});
@@ -82,14 +68,19 @@ AnsPress.site.prototype = {
 	},
 
 	doAction: function(action){
+		var self = this;
 		var action = typeof action !== 'undefined' ? '[data-action="'+action+'"]' : '[data-action]';
-
+		var actions = new Object();
 		$(action).each(function(i){
 
 			var action = $(this).attr('data-action');
+			if(typeof actions[action] !== 'undefined')
+				return;
 
-			if (typeof ApSite[action] === 'function')
-				ApSite[action](this);
+			actions[action] = '1';
+
+			if (typeof self[action] === 'function')
+				self[action]('[data-action="'+action+'"]');
 			/*else
 				console.log('No "'+action+'" method found in AnsPress.site{}');*/
 
@@ -103,7 +94,7 @@ AnsPress.site.prototype = {
 	 */
 	afterAjaxComplete:function(){
 		$( document ).ajaxComplete(function( event, data, settings ) {
-
+			ApSite.hideLoading();
 			if(typeof data !== 'undefined' && typeof data.responseJSON !== 'undefined' && typeof data.responseJSON.ap_responce !== 'undefined'){
 
 				if(typeof data.responseJSON.message !== 'undefined'){
@@ -112,9 +103,10 @@ AnsPress.site.prototype = {
 				}
 
 				$(document).trigger('ap_after_ajax', data.responseJSON);
-				console.log(data.responseJSON.do !== 'undefined' && typeof ApSite[data.responseJSON.do] === 'function');
+				
 				if (data.responseJSON.do !== 'undefined' && typeof ApSite[data.responseJSON.do] === 'function')
 					ApSite[data.responseJSON.do](data.responseJSON);
+
 			}
 		});
 	},
@@ -270,7 +262,7 @@ AnsPress.site.prototype = {
 	delete_comment: function(elm){
 		var q = $(elm).data('query');
 
-		$(elm).click( function(e){
+		$('body').delegate(elm, 'click', function(e){
 			e.preventDefault();
 			
 			ApSite.doAjax( 
@@ -309,6 +301,63 @@ AnsPress.site.prototype = {
 				}
 			);
 		});
+	},
+
+	vote:function(action ){
+
+		$('body').delegate(action +' a', 'click', function(e){
+			e.preventDefault();
+			var q = $(this).attr('data-query');
+
+			ApSite.doAjax( 
+				apAjaxData(q), 
+				function(data){
+					var vote_c = $(this).parent();
+					vote_c.find('.ap-vote-fade').remove();
+					if(data['action'] == 'voted' || data['action'] == 'undo'){
+						if(data['action'] == 'voted'){
+							
+							$(this).addClass('voted');
+							if(data['type'] == 'vote_up') vote_c.find('.vote-down').addClass('disable');
+							if(data['type'] == 'vote_down') vote_c.find('.vote-up').addClass('disable');
+							
+							$(this).trigger('voted', data);
+						}
+						else if(data['action'] == 'undo'){
+							$(this).removeClass('voted');
+							if(data['type'] == 'vote_up') vote_c.find('.vote-down').removeClass('disable');
+							if(data['type'] == 'vote_down') vote_c.find('.vote-up').removeClass('disable');
+							$(this).trigger('undo_vote', data);
+						}
+						vote_c.find('.net-vote-count').text(data['count']);
+					}
+				}, 
+				this,
+				function(){
+					var vote_c = $(this).parent();
+					var cur_count = vote_c.find('.net-vote-count');
+
+					vote_c.append('<div class="ap-vote-fade"></div>');
+
+					if($(this).is('.voted')){
+						vote_c.find('.vote-down').removeClass('disable');
+						vote_c.find('.vote-up').removeClass('disable');
+						
+						if($(this).is('.vote-down'))
+							cur_count.text(parseInt(cur_count.text()) + 1);
+						else if($(this).is('.vote-up'))
+							cur_count.text(parseInt(cur_count.text()) - 1);
+
+					}else if($(this).is('.vote-down')){
+						vote_c.find('.vote-up').addClass('disable');
+						cur_count.text(parseInt(cur_count.text()) - 1);
+					}else if($(this).is('.vote-up')){
+						vote_c.find('.vote-down').addClass('disable');
+						cur_count.text(parseInt(cur_count.text()) + 1);
+					}
+				}
+			);
+		});
 	}
 
 
@@ -316,6 +365,10 @@ AnsPress.site.prototype = {
 }
 
 })(jQuery);
+
+jQuery(document).ready(function(){
+	ApSite.doAction();
+})
 
 
 

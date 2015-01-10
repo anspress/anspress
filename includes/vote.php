@@ -15,6 +15,7 @@ class AnsPress_Vote_Ajax extends AnsPress_Ajax
 	public function __construct()
 	{
 		add_action( 'ap_ajax_subscribe_question', array($this, 'subscribe_question') ); 
+		add_action( 'ap_ajax_vote', array($this, 'vote') ); 
 	}
 
 	public function subscribe_question()
@@ -70,6 +71,74 @@ class AnsPress_Vote_Ajax extends AnsPress_Ajax
 		}
 	}
 
+	/**
+	 * Process voting button
+	 * @return void
+	 * @since 2.0.1
+	 */
+	public function vote()
+	{
+		$post_id = (int)$_POST['post_id'];
+
+		if(!wp_verify_nonce( $_POST['__nonce'], 'vote_'. $post_id ) ){
+			ap_send_json(ap_ajax_responce('something_wrong'));
+			return;
+		}
+
+		if(!is_user_logged_in()){
+			ap_send_json(ap_ajax_responce('please_login'));
+			return;
+		}
+
+		$type = sanitize_text_field( $_POST['type'] );
+
+		$type 	= $type == 'up' ? 'vote_up' : 'vote_down' ;
+		$userid = get_current_user_id();
+		
+		$is_voted = ap_is_user_voted($post_id, 'vote', $userid) ;
+
+		if(is_object($is_voted) && $is_voted->count > 0){
+			// if user already voted and click that again then reverse
+			if($is_voted->type == $type){
+				$row = ap_remove_vote($type, $userid, $post_id);
+				$counts = ap_post_votes($post_id);
+				
+				//update post meta
+				update_post_meta($post_id, ANSPRESS_VOTE_META, $counts['net_vote']);
+				
+				do_action('ap_undo_vote', $post_id, $counts);
+				
+				$action = 'undo';
+				$count = $counts['net_vote'] ;
+				$message = __('Your vote has been removed', 'ap');
+				
+				ap_do_event('undo_'.$type, $post_id, $counts);
+
+				ap_send_json(ap_ajax_responce(array('action' => $action, 'type' => $type, 'count' => $count, 'message' => 'undo_vote')));
+			}else{
+				$result = ap_send_json(ap_ajax_responce('undo_vote_your_vote'));
+			}				
+				
+		}else{
+			
+			$row = ap_add_vote($userid, $type, $post_id);				
+			$counts = ap_post_votes($post_id);
+			
+			//update post meta
+			update_post_meta($post_id, ANSPRESS_VOTE_META, $counts['net_vote']);				
+			do_action('ap_voted_'.$type, $post_id, $counts);
+			
+				
+			$action = 'voted';
+			$count = $counts['net_vote'] ;
+
+			ap_do_event($type, $post_id, $counts);
+
+			ap_send_json(ap_ajax_responce(array('action' => $action, 'type' => $type, 'count' => $count, 'message' => 'voted')));
+		}			
+
+	}
+
 }
 new AnsPress_Vote_Ajax();
 
@@ -100,8 +169,7 @@ class anspress_vote
     public function __construct()
     {
 		add_action( 'the_post', array($this, 'ap_append_vote_count') );
-		add_action( 'wp_ajax_ap_vote_on_post', array($this, 'ap_vote_on_post') ); 
-		add_action( 'wp_ajax_nopriv_ap_vote_on_post', array($this, 'ap_vote_nopriv') ); 
+
 
 		
 		// vote for closing, ajax request
@@ -134,70 +202,6 @@ class anspress_vote
         }
 	}
 
-	
-	// process ajax voting request 	 
-	function ap_vote_on_post(){
-		$args = explode('-', sanitize_text_field($_POST['args']));
-		if(wp_verify_nonce( $args[2], 'vote_'.$args[1] )){
-
-			$value 	= $args[0] == 'up' ? 1 : -1;
-			$type 	= $args[0] == 'up' ? 'vote_up' : 'vote_down' ;
-			$userid = get_current_user_id();
-			
-			$is_voted = ap_is_user_voted($args[1], 'vote', $userid) ;
-
-			if(is_object($is_voted) && $is_voted->count > 0){
-				// if user already voted and click that again then reverse
-				if($is_voted->type == $type){
-					$row = ap_remove_vote($type, $userid, $args[1]);
-					$counts = ap_post_votes($args[1]);
-					
-					//update post meta
-					update_post_meta($args[1], ANSPRESS_VOTE_META, $counts['net_vote']);
-					
-					do_action('ap_undo_vote', $args[1], $counts, $value);
-					
-					$action = 'undo';
-					$count = $counts['net_vote'] ;
-					$message = __('Your vote has been removed', 'ap');
-					
-					$result = apply_filters('ap_undo_vote_result', array('row' => $row, 'action' => $action, 'type' => $args[0], 'count' => $count, 'message' => $message));
-					
-					ap_do_event('undo_'.$type, $args[1], $counts);
-
-				}else{
-					$result = array('action' => false, 'message' => __('Undo your vote first', 'ap'));
-				}				
-					
-			}else{
-				
-				$row = ap_add_vote($userid, $type, $args[1]);				
-				$counts = ap_post_votes($args[1]);
-				
-				//update post meta
-				update_post_meta($args[1], ANSPRESS_VOTE_META, $counts['net_vote']);				
-				do_action('ap_voted_'.$type, $args[1], $counts);
-				
-					
-				$action = 'voted';
-				$count = $counts['net_vote'] ;
-				$message = __('Thank you for voting', 'ap');
-				
-				$result = apply_filters('ap_cast_vote_result', array('row' => $row, 'action' => $action, 'type' => $args[0], 'count' => $count, 'message' => $message));
-				ap_do_event($type, $args[1], $counts);
-			}			
-			
-		}else{
-			$result = array('action' => false, 'message' => __('Unable to process your vote, try again', 'ap'));
-		}
-		
-		die(json_encode($result));
-	}
-	
-	function ap_vote_nopriv(){
-		echo json_encode(array('action'=> false, 'message' =>__('Please login for voting on question & answer', 'ap')));
-		die();
-	}
 
 		
 	// add to subscribe ajax action	 
@@ -448,10 +452,13 @@ function ap_post_subscribers_count($postid = false){
 	return ap_meta_total_count('subscriber', $postid);
 }
 
-
-
-// voting html
-function ap_vote_html($post = false){
+/**
+ * Output voting button
+ * @param  int $post 
+ * @return void
+ * @since 0.1
+ */
+function ap_vote_btn($post = false){
 	if(!$post)
 		global $post;
 		
@@ -461,12 +468,12 @@ function ap_vote_html($post = false){
 	$voted 	= isset($vote) ? true : false;
 	$type 	= isset($vote) ? $vote->type : '';
 	?>
-		<div data-action="vote" data-id="<?php echo $post->ID; ?>" class="ap-vote net-vote">
-			<a class="<?php echo ap_icon('vote_up') ?> ap-tip vote-up<?php echo $voted ? ' voted' :''; echo ($type == 'vote_down') ? ' disable' :''; ?>" data-args="up-<?php echo $post->ID.'-'.$nonce; ?>" href="#" title="<?php _e('Up vote this post', 'ap'); ?>"></a>
+		<div data-id="<?php echo $post->ID; ?>" class="ap-vote net-vote" data-action="vote">
+			<a class="<?php echo ap_icon('vote_up') ?> ap-tip vote-up<?php echo $voted ? ' voted' :''; echo ($type == 'vote_down') ? ' disable' :''; ?>" data-query="ap_ajax_action=vote&type=up&post_id=<?php echo $post->ID; ?>&__nonce=<?php echo $nonce ?>" href="#" title="<?php _e('Up vote this post', 'ap'); ?>"></a>
 			
 			<span class="net-vote-count" data-view="ap-net-vote" itemprop="upvoteCount"><?php echo ap_net_vote(); ?></span>
 			
-			<a data-tipposition="bottom" class="<?php echo ap_icon('vote_down') ?> ap-tip vote-down<?php echo $voted ? ' voted' :''; echo ($type == 'vote_up') ? ' disable' :''; ?>" data-args="down-<?php echo $post->ID.'-'.$nonce; ?>" href="#" title="<?php _e('Down vote this post', 'ap'); ?>"></a>
+			<a data-tipposition="bottom" class="<?php echo ap_icon('vote_down') ?> ap-tip vote-down<?php echo $voted ? ' voted' :''; echo ($type == 'vote_up') ? ' disable' :''; ?>" data-query="ap_ajax_action=vote&type=down&post_id=<?php echo $post->ID; ?>&__nonce=<?php echo $nonce ?>" href="#" title="<?php _e('Down vote this post', 'ap'); ?>"></a>
 		</div>
 	<?php
 }

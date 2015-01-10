@@ -771,6 +771,9 @@ function ap_responce_message($id)
 		'question_updated' => array('type' => 'success', 'message' => __('Question updated successfully', 'ap')),
 		'answer_submitted' => array('type' => 'success', 'message' => __('Answer submitted successfully', 'ap')),
 		'answer_updated' => array('type' => 'success', 'message' => __('Answer updated successfully', 'ap')),
+		'voted' => array('type' => 'success', 'message' => __('Thank you for voting.', 'ap')),
+		'undo_vote' => array('type' => 'success', 'message' => __('Your vote has been removed.', 'ap')),
+		'undo_vote_your_vote' => array('type' => 'warning', 'message' => __('Undo your vote first.', 'ap')),
 	);
 
 	/**

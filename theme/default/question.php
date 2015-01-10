@@ -42,7 +42,7 @@ global $post;
 						<a href="<?php echo ap_user_link(get_the_author_meta('ID'))?>">
 							<?php echo get_avatar( get_the_author_meta( 'user_email' ), ap_opt('avatar_size_qquestion') ); ?>
 						</a>
-						<div class="ap-single-vote"><?php ap_vote_html(); ?></div>
+						<div class="ap-single-vote"><?php ap_vote_btn(); ?></div>
 					</div>
 					<!-- Start ap-content-inner -->
 					<div class="ap-content-inner no-overflow">

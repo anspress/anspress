@@ -40,11 +40,14 @@
     margin: 10px auto 0;
     text-align: center;
     width: 35px;
+    position: relative;
     a{
     	text-decoration: none;
     	color: @link-color;
     	display:block;
-
+        &:focus{
+            outline: none;
+        }
     	&.disable{
 			display: none;
 		}
@@ -61,6 +64,12 @@
 	    display: block;
 	    font-size: 16px;
 	    padding: 2px;
+    }
+    .ap-vote-fade {
+        bottom: 0;
+        position: absolute;
+        top: 0;
+        width: 100%;
     }
 }
 
