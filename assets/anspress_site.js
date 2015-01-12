@@ -128,16 +128,15 @@ AnsPress.site.prototype = {
 		$('.ap-loading-icon').hide();
 	},
 
-	suggest_similar_questions: function(elm){
-		var uid = this.uniqueId();
-		$(elm).on('keyup', function(){
+	suggest_similar_questions: function(action){
+		$(action).on('keyup', function(){
 			ApSite.doAjax( 
-				apAjaxData('ap_ajax_action=suggest_similar_questions&value=' + $(elm).val()), 
+				apAjaxData('ap_ajax_action=suggest_similar_questions&value=' + $(this).val()), 
 				function(data){
 					if(typeof data['html'] !== 'undefined')
 						$('#similar_suggestions').html(data['html']);
 				}, 
-				elm,
+				this,
 				false,
 				true
 			);
@@ -145,18 +144,18 @@ AnsPress.site.prototype = {
 
 	},
 
-	ap_ajax_form:function(form){		
-		$('body').delegate(form,'submit', function(){
+	ap_ajax_form:function(action){		
+		$('body').delegate(action,'submit', function(){
 			
 			if(typeof tinyMCE !== 'undefined')
 				tinyMCE.triggerSave();
 
 			ApSite.doAjax( 
-				apAjaxData($(form).formSerialize()), 
+				apAjaxData($(this).formSerialize()), 
 				function(data){
 					console.log(data);
 				}, 
-				form
+				this
 			);
 			return false;
 		})
@@ -210,12 +209,11 @@ AnsPress.site.prototype = {
 			$(data.container).append(data.html);
 	},
 
-	load_comment_form: function(elm){
-		var q = $(elm).data('query');
+	load_comment_form: function(action){
 
-		$(elm).click( function(e){
+		$(action).click( function(e){
 			e.preventDefault();
-			
+			var q = $(this).attr('data-query');
 			ApSite.doAjax( 
 				apAjaxData(q), 
 				function(data){
@@ -225,13 +223,13 @@ AnsPress.site.prototype = {
 						scrollTop: ($(data.container).offset().top) - 50
 					}, 500);
 
-					if(typeof $(elm).attr('data-toggle') !== 'undefined')
-						$($(elm).attr('data-toggle')).hide();
+					if(typeof $(this).attr('data-toggle') !== 'undefined')
+						$($(this).attr('data-toggle')).hide();
 
 					$('#ap-comment-textarea').focus();
 					ApSite.doAction('ap_ajax_form');
 				}, 
-				elm,
+				this,
 				false,
 				true
 			);
@@ -260,45 +258,41 @@ AnsPress.site.prototype = {
 			return false;
 		})
 	},
-	delete_comment: function(elm){
-		var q = $(elm).data('query');
-
-		$('body').delegate(elm, 'click', function(e){
+	delete_comment: function(action){
+		$('body').delegate(action, 'click', function(e){
 			e.preventDefault();
-			
+			var q = $(this).attr('query');
 			ApSite.doAjax( 
 				apAjaxData(q), 
 				function(data){
-					if(typeof $(elm).attr('data-toggle') !== 'undefined')
-						$($(elm).attr('data-toggle')).hide();
+					if(typeof $(this).attr('data-toggle') !== 'undefined')
+						$($(this).attr('data-toggle')).hide();
 				}, 
-				elm,
+				this,
 				false,
 				true
 			);
 		});
 	},
 
-	ap_subscribe: function(elm){
-		var q = $(elm).data('query');
-
-		$(elm).click( function(e){
+	ap_subscribe: function(action){
+		$(action).click( function(e){
 			e.preventDefault();
-			
+			var q = $(this).attr('query');
 			ApSite.doAjax( 
 				apAjaxData(q), 
 				function(data){
-					if(data.message_type == 'success'){
-						$(elm).addClass('active');
-						$(elm).closest('.ap-subscribe').addClass('active');
+					if(data.action == 'subscribed'){
+						$(this).addClass('active');
+						$(this).closest('.ap-subscribe').addClass('active');
 					}else{
-						$(elm).removeClass('active');
-						$(elm).closest('.ap-subscribe').removeClass('active');
+						$(this).removeClass('active');
+						$(this).closest('.ap-subscribe').removeClass('active');
 					}
 				}, 
-				elm,
+				this,
 				function(){
-					$(elm).closest('.ap-subscribe').toggleClass('active');
+					$(this).closest('.ap-subscribe').toggleClass('active');
 				}
 			);
 		});
@@ -352,6 +346,10 @@ AnsPress.site.prototype = {
 			}
 		});
 	},
+
+	select_answer: function(){
+
+	}
 	
 
 

@@ -49,12 +49,9 @@ class AnsPress_Vote_Ajax extends AnsPress_Ajax
 				//register an action
 				do_action('ap_removed_subscribe', $question_id, $counts);
 
-				ap_send_json(ap_ajax_responce('unsubscribed'));
+				ap_send_json(ap_ajax_responce(array('message' => 'unsubscribed', 'action' => 'unsubscribed')));
 				return;
-				
-				$title = __('Add to subscribe list', 'ap');
-				$action = 'removed';
-				$message = __('Removed question from your subscribe list', 'ap');
+
 			}else{
 				$row = ap_add_vote($userid, 'subscriber', $question_id);
 				$counts = ap_post_subscribers_count($question_id);
@@ -65,7 +62,7 @@ class AnsPress_Vote_Ajax extends AnsPress_Ajax
 				//register an action
 				do_action('ap_added_subscribe', $question_id, $counts);
 				
-				ap_send_json(ap_ajax_responce('subscribed'));
+				ap_send_json(ap_ajax_responce(array('message' => 'subscribed', 'action' => 'subscribed')));
 			}
 			
 		}

@@ -449,10 +449,10 @@ function ap_select_answer_btn_html($post_id){
 	$nonce = wp_create_nonce( $action );	
 	
 	if(!ap_is_answer_selected($ans->post_parent)){		
-		return '<a href="#" class="ap-btn-select ap-sicon '.ap_icon('check').' ap-tip" data-button="ap-select-answer" data-args="'. $post_id.'-'. $nonce .'" title="'.__('Select this answer as best', 'ap').'">'.__('Select answer', 'ap').'</a>';
+		return '<a href="#" class="ap-btn-select ap-sicon '.ap_icon('check').' ap-tip" data-action="select_answer" data-query="answer_id='. $post_id.'&__nonce='. $nonce .'&ap_ajax_action=select_best_answer" title="'.__('Select this answer as best', 'ap').'">'.__('Select answer', 'ap').'</a>';
 		
 	}elseif(ap_is_answer_selected($ans->post_parent) && ap_is_best_answer($ans->ID)){
-		return '<a href="#" class="ap-btn-select ap-sicon '.ap_icon('cross').' selected ap-tip" data-button="ap-select-answer" data-args="'. $post_id.'-'. $nonce .'" title="'.__('Unselect this answer', 'ap').'">'.__('Unselect answer', 'ap').'</a>';
+		return '<a href="#" class="ap-btn-select ap-sicon '.ap_icon('cross').' selected ap-tip" data-action="select_answer" data-query="answer_id='. $post_id.'&__nonce='. $nonce .'&ap_ajax_action=select_best_answer" title="'.__('Unselect this answer', 'ap').'">'.__('Unselect answer', 'ap').'</a>';
 		
 	}
 }
