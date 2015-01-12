@@ -102,7 +102,9 @@ class Question_Query extends WP_Query {
             case 'unsolved' :
                 $this->args['orderby'] = 'meta_value';
                 $this->args['meta_key'] = ANSPRESS_SELECTED_META;
-                $this->args['meta_compare'] = 'NOT EXISTS';
+                $this->args['meta_compare'] = '!=';
+                $this->args['meta_value'] = '1';
+
  
             break;
             case 'oldest' :
