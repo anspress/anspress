@@ -399,7 +399,12 @@ class AnsPress_Process_Form
 		
 		// if error in form then return
 		if($validate->have_error()){
-			$this->result = $ap_errors;
+			$this->result = array(
+				'form' 			=> $_POST['ap_form_action'],
+				'message_type' 	=> 'error',
+				'message'		=> __('Check missing fields and then re-submit.', 'ap'),
+				'errors'		=> $ap_errors
+			);
 			return;
 		}
 
