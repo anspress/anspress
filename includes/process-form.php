@@ -481,11 +481,10 @@ class AnsPress_Process_Form
 					'postid' 		=> $post_id, 
 					'action' 		=> 'new_answer',
 					'div_id' 		=> '#answer_'.get_the_ID(),
-					'count' 		=> $current_ans,
-					'count_label' 	=> $count_label,
 					'can_answer' 	=> ap_user_can_answer($post->ID),
 					'html' 			=> $html,
 					'message' 		=> 'answer_submitted',
+					'view'			=> array('answer_count' => $current_ans, 'answer_count_label' => $count_label)
 				);
 				
 				$this->result = $result;

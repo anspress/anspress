@@ -97,16 +97,23 @@ AnsPress.site.prototype = {
 		$( document ).ajaxComplete(function( event, data, settings ) {
 			ApSite.hideLoading();
 			if(typeof data !== 'undefined' && typeof data.responseJSON !== 'undefined' && typeof data.responseJSON.ap_responce !== 'undefined'){
-
-				if(typeof data.responseJSON.message !== 'undefined'){
-					var type = typeof data.responseJSON.message_type === 'undefined' ? 'success' : data.responseJSON.message_type;				
-					ApSite.addMessage(data.responseJSON.message, type);
+				var data = data.responseJSON;
+				if(typeof data.message !== 'undefined'){
+					var type = typeof data.message_type === 'undefined' ? 'success' : data.message_type;				
+					ApSite.addMessage(data.message, type);
 				}
 
-				$(document).trigger('ap_after_ajax', data.responseJSON);
+				$(document).trigger('ap_after_ajax', data);
 				
-				if (data.responseJSON.do !== 'undefined' && typeof ApSite[data.responseJSON.do] === 'function')
-					ApSite[data.responseJSON.do](data.responseJSON);
+				if (data.do !== 'undefined' && typeof ApSite[data.do] === 'function')
+					ApSite[data.do](data);
+
+				if (data.view !== 'undefined'){
+					$.each(data.view, function(i, view){
+						$('[data-view="'+ i +'"]').text(view);				
+						$('[data-view="'+ i +'"]').text(view);
+					});
+				}
 
 			}
 		});

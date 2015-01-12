@@ -13,7 +13,7 @@
 
 if(count($answers) > 0){
 	echo '<div class="ap-other-answers-tab clearfix">';
-		echo '<h3 class="ap-widget-title ap-pull-left">'. sprintf(__('Other answers (%d)', 'ap'), ap_count_other_answer()) .'</h3>';
+		echo '<h3 class="ap-widget-title ap-pull-left">'. sprintf(__('Other answers (%s)', 'ap'), '<span data-view="answer_count">'.ap_count_other_answer().'</span>') .'</h3>';
 		ap_answers_tab();
 	echo '</div>';
 

@@ -214,7 +214,8 @@ class AnsPress_Ajax
 				'div_id' 			=> '#answer_'.$post_id,
 				'count' 		=> $current_ans,
 				'count_label' 	=> $count_label,
-				'message' 		=> 'answer_moved_to_trash')));
+				'message' 		=> 'answer_moved_to_trash',
+				'view'			=> array('answer_count' => $current_ans, 'answer_count_label' => $count_label))));
 		}
 		
 	}
