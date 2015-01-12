@@ -261,7 +261,7 @@ AnsPress.site.prototype = {
 	delete_comment: function(action){
 		$('body').delegate(action, 'click', function(e){
 			e.preventDefault();
-			var q = $(this).attr('query');
+			var q = $(this).attr('data-query');
 			ApSite.doAjax( 
 				apAjaxData(q), 
 				function(data){
@@ -278,7 +278,7 @@ AnsPress.site.prototype = {
 	ap_subscribe: function(action){
 		$(action).click( function(e){
 			e.preventDefault();
-			var q = $(this).attr('query');
+			var q = $(this).attr('data-query');
 			ApSite.doAjax( 
 				apAjaxData(q), 
 				function(data){

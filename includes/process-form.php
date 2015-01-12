@@ -448,7 +448,7 @@ class AnsPress_Process_Form
 
 		if($post_id){				
 			// get existing answer count
-			$current_ans = ap_count_all_answers($question->ID);
+			$current_ans = ap_count_published_answers($question->ID);
 
 			if (!is_user_logged_in() && ap_opt('allow_anonymous') && isset($fields['name']))
 				update_post_meta($post_id, 'anonymous_name', $fields['name']);

@@ -74,8 +74,7 @@ class AnsPress_Query_Filter
 
 	public function init_actions(){
 		add_meta_box( 'ap_ans_parent_q','Parent Question', array($this, 'ans_parent_q_metabox'),'answer','side', 'high' );
-		add_action('wp_trash_post', array($this, 'trash_post_action'));
-		add_action('untrash_post', array($this, 'untrash_ans_on_question_untrash'));
+		
 		//add_action('delete_post', array($this, 'delete_action'));		
 	}
 	
@@ -360,72 +359,7 @@ class AnsPress_Query_Filter
 	}
 	
 	 
-	//if a question is sent to trash, send all ans as well
-	public function trash_post_action ($post_id) {
-		$post = get_post( $post_id );
-		if( $post->post_type == 'question') {
-			ap_do_event('delete_question', $post->ID, $post->post_author);
-			ap_remove_parti($post->ID, $post->post_author, 'question');
-			$arg = array(
-			  'post_type' => 'answer',
-			  'post_status' => 'publish',
-			  'post_parent' => $post_id,
-			  'showposts' => -1,
-			);
-			$ans = get_posts($arg);
-			if($ans>0){
-				foreach( $ans as $p){
-					ap_do_event('delete_answer', $p->ID, $p->post_author);
-					ap_remove_parti($p->post_parent, $p->post_author, 'answer');
-					wp_trash_post($p->ID);
-				}
-			}
-		}
-
-		if( $post->post_type == 'answer') {
-			$ans = ap_count_all_answers($post->post_parent);
-			ap_do_event('delete_answer', $post->ID, $post->post_author);
-			ap_remove_parti($post->post_parent, $post->post_author, 'answer');
-			
-			//update answer count
-			update_post_meta($post->post_parent, ANSPRESS_ANS_META, $ans-1);
-		}
-	}
-
-	//if questions was restored then restore its answers as well	
-	public function untrash_ans_on_question_untrash ($post_id) {
-		$post = get_post( $post_id );
-		
-		if( $post->post_type == 'question') {
-			ap_do_event('untrash_question', $post->ID, $post->post_author);
-			ap_add_parti($post->ID, $post->post_author, 'question');
-			
-			$arg = array(
-			  'post_type' => 'answer',
-			  'post_status' => 'trash',
-			  'post_parent' => $post_id,
-			  'showposts' => -1,
-			  'caller_get_posts'=> 1
-			);
-			$ans = get_posts($arg);
-			if($ans>0){
-				foreach( $ans as $p){
-					ap_do_event('untrash_answer', $p->ID, $p->post_author);
-					ap_add_parti($p->ID, $p->post_author, 'answer');
-					wp_untrash_post($p->ID);
-				}
-			}
-		}
-		
-		if( $post->post_type == 'answer') {
-			$ans = ap_count_all_answers( $post->post_parent );
-			ap_do_event('untrash_answer', $post->ID, $post->post_author);
-			ap_add_parti($post->post_parent, $post->post_author, 'answer');
-			
-			//update answer count
-			update_post_meta($post->post_parent, ANSPRESS_ANS_META, $ans+1);
-		}
-	}
+	
 	
 	public function delete_action($post_id){
 		$post = get_post($post_id);
@@ -437,52 +371,7 @@ class AnsPress_Query_Filter
 			ap_do_event('delete_answer', $post->ID, $post->post_author);
 	}
 	
-	/* Action to do right after deleting a post */
-	public function post_delete_action ($post_id) {
-		 
-		remove_action('after_delete_post', array($this, 'post_delete_action'));
-		 
-		/* trashed item post type is revison so we have to get its post parent */
-		$post = get_post($post_id );
-		
-		if($post){
-			/* if questions was deleted then delete its answers as well */
-			$post_type = get_post_type( $post->post_parent );
-			if( $post_type == 'question') {
-				ap_do_event('delete_question', $post->post_parent, $post->post_author);			
-				// remove question participant
-				ap_remove_parti($post->post_parent);
-				
-				$arg = array(
-				  'post_type' => 'answer',
-				  'post_status' => 'trash',
-				  'post_parent' => $post->post_parent,
-				  'showposts' => -1,
-				  'caller_get_posts'=> 1,
-				  'post__not_in' => '',
-				);
-				$ans = get_posts($arg);
-				
-				if(count($ans)>0){
-					
-					foreach( $ans as $p){					
-						ap_remove_parti($p->post_parent, $p->post_author, 'answer');
-						ap_do_event('delete_answer', $ans->ID, $ans->post_author);
-						wp_delete_post($p->ID, true);					
-					}
-					
-				}
-			}
-			
-			/* remove participant answer */
-			if( $post_type == 'answer') {
-				$ans = get_post($post->post_parent );
-				ap_remove_parti($ans->post_parent, $ans->post_author, 'answer');
-				ap_do_event('delete_answer', $ans->ID, $ans->post_author);
-			}
-		}
-		add_action('after_delete_post', array($this, 'post_delete_action'));
-	}
+	
 	
 	
 	public function ans_post_type_link($link, $post) {

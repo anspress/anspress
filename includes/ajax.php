@@ -206,7 +206,7 @@ class AnsPress_Ajax
 		if($post->post_type == 'question'){
 			ap_send_json( ap_ajax_responce( array('action' => 'delete_question', 'do' => 'redirect', 'redirect_to' => get_permalink(ap_opt('anspress_questions')), 'message' => 'question_moved_to_trash')));
 		}else{
-			$current_ans = ap_count_all_answers($post->post_parent);
+			$current_ans = ap_count_published_answers($post->post_parent);
 			$count_label = sprintf( _n('1 Answer', '%d Answers', $current_ans, 'ap'), $current_ans);
 			$remove = (!$current_ans ? true : false);
 			ap_send_json( ap_ajax_responce(array(

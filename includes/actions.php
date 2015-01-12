@@ -25,6 +25,9 @@ class AnsPress_Actions
 
 		add_action( 'ap_after_update_question', array($this, 'ap_after_update_question'), 10, 2 );
 		add_action( 'ap_after_update_answer', array($this, 'ap_after_update_answer'), 10, 2 );
+
+		add_action('wp_trash_post', array($this, 'trash_post_action'));
+		add_action('untrash_post', array($this, 'untrash_ans_on_question_untrash'));
 	}
 
 	/**
@@ -106,6 +109,82 @@ class AnsPress_Actions
 		$current_ans = ap_count_published_answers($post->post_parent);
 		update_post_meta($post->post_parent, ANSPRESS_ANS_META, $current_ans);
 		ap_do_event('edit_answer', $post_id, get_current_user_id(), $post->post_parent);
+	}
+
+	/**
+	 * if a question is sent to trash, then move its answers to trash as well
+	 * @param  int
+	 * @return void
+	 * @since 2.0.0
+	 */
+	public function trash_post_action ($post_id) {
+		$post = get_post( $post_id );
+		if( $post->post_type == 'question') {
+			ap_do_event('delete_question', $post->ID, $post->post_author);
+			ap_remove_parti($post->ID, $post->post_author, 'question');
+			$arg = array(
+			  'post_type' => 'answer',
+			  'post_status' => 'publish',
+			  'post_parent' => $post_id,
+			  'showposts' => -1,
+			);
+			$ans = get_posts($arg);
+			if($ans>0){
+				foreach( $ans as $p){
+					ap_do_event('delete_answer', $p->ID, $p->post_author);
+					ap_remove_parti($p->post_parent, $p->post_author, 'answer');
+					wp_trash_post($p->ID);
+				}
+			}
+		}
+
+		if( $post->post_type == 'answer') {
+			$ans = ap_count_published_answers($post->post_parent);
+			ap_do_event('delete_answer', $post->ID, $post->post_author);
+			ap_remove_parti($post->post_parent, $post->post_author, 'answer');
+			
+			//update answer count
+			update_post_meta($post->post_parent, ANSPRESS_ANS_META, $ans-1);
+		}
+	}
+
+	/**
+	 * if questions is restored then restore its answers too.
+	 * @param  int
+	 * @return void
+	 * @since 2.0.0
+	 */
+	public function untrash_ans_on_question_untrash ($post_id) {
+		$post = get_post( $post_id );
+		
+		if( $post->post_type == 'question') {
+			ap_do_event('untrash_question', $post->ID, $post->post_author);
+			ap_add_parti($post->ID, $post->post_author, 'question');
+			
+			$arg = array(
+			  'post_type' => 'answer',
+			  'post_status' => 'trash',
+			  'post_parent' => $post_id,
+			  'showposts' => -1
+			);
+			$ans = get_posts($arg);
+			if($ans>0){
+				foreach( $ans as $p){
+					ap_do_event('untrash_answer', $p->ID, $p->post_author);
+					ap_add_parti($p->ID, $p->post_author, 'answer');
+					wp_untrash_post($p->ID);
+				}
+			}
+		}
+		
+		if( $post->post_type == 'answer') {
+			$ans = ap_count_published_answers( $post->post_parent );
+			ap_do_event('untrash_answer', $post->ID, $post->post_author);
+			ap_add_parti($post->post_parent, $post->post_author, 'answer');
+			
+			//update answer count
+			update_post_meta($post->post_parent, ANSPRESS_ANS_META, $ans+1);
+		}
 	}
 
 }
