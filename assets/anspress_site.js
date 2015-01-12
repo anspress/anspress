@@ -347,8 +347,18 @@ AnsPress.site.prototype = {
 		});
 	},
 
-	select_answer: function(){
+	select_answer: function(action){
+		$('body').delegate(action, 'click', function(e){
+			e.preventDefault();
+			var q = $(this).attr('data-query');
 
+			ApSite.doAjax( 
+				apAjaxData(q), 
+				false, 
+				this,
+				false
+			);
+		});
 	}
 	
 
