@@ -465,7 +465,7 @@ function ap_post_delete_btn_html($post_id = false, $echo = false){
 		$action = 'delete_post_'.$post_id;
 		$nonce = wp_create_nonce( $action );
 		
-		$output = '<a href="#" class="delete-btn" data-button="ap-delete-post ap-tip" data-args="'. $post_id.'-'. $nonce .'" title="'.__('Delete', 'ap').'">'.ap_icon('delete', true).__('Delete', 'ap').'</a>';
+		$output = '<a href="#" class="delete-btn ap-tip" data-action="ap_delete_post" data-query="post_id='. $post_id.'&__nonce='. $nonce .'&ap_ajax_action=delete_post" title="'.__('Delete', 'ap').'">'.ap_icon('delete', true).__('Delete', 'ap').'</a>';
 
 		if($echo)
 			echo $output;
@@ -777,6 +777,8 @@ function ap_responce_message($id)
 		'cannot_vote_own_post' => array('type' => 'warning', 'message' => __('You cannot vote on your own question or answer.', 'ap')),
 		'unselected_the_answer' => array('type' => 'success', 'message' => __('Best answer is unselected for your question.', 'ap')),
 		'selected_the_answer' => array('type' => 'success', 'message' => __('Best answer is selected for your question.', 'ap')),
+		'question_moved_to_trash' => array('type' => 'success', 'message' => __('Question moved to trash.', 'ap')),
+		'answer_moved_to_trash' => array('type' => 'success', 'message' => __('Answer moved to trash.', 'ap')),
 	);
 
 	/**

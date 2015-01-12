@@ -25,21 +25,11 @@ class AnsPress_Ajax
 		add_action('ap_ajax_load_comment_form', array($this, 'load_comment_form'));
 		add_action('ap_ajax_delete_comment', array($this, 'delete_comment'));
 		add_action('ap_ajax_select_best_answer', array($this, 'select_best_answer'));
-		
-		add_action('wp_ajax_nopriv_ap_check_email', array($this, 'check_email'));
-		add_action('wp_ajax_recount_votes', array($this, 'recount_votes'));
-		add_action('wp_ajax_recount_views', array($this, 'recount_views'));
-		add_action('wp_ajax_recount_fav', array($this, 'recount_fav'));
-		add_action('wp_ajax_recount_flag', array($this, 'recount_flag'));
-		add_action('wp_ajax_recount_close', array($this, 'recount_close'));
+		add_action('ap_ajax_delete_post', array($this, 'delete_post'));
 		
 		add_action('wp_ajax_ap_suggest_tags', array($this, 'ap_suggest_tags'));
 		add_action('wp_ajax_nopriv_ap_suggest_tags', array($this, 'ap_suggest_tags'));
-		
-		
-		
-		add_action('wp_ajax_ap_suggest_questions', array($this, 'ap_suggest_questions'));
-		add_action('wp_ajax_nopriv_ap_suggest_questions', array($this, 'ap_suggest_questions'));
+
 
     }
 
@@ -195,6 +185,40 @@ class AnsPress_Ajax
 		}
 	}
 
+	public function delete_post()
+	{
+		$post_id = (int) $_POST['post_id'];
+
+		$action = 'delete_post_'.$post_id;	
+		
+		if(!wp_verify_nonce( $_POST['__nonce'], $action )){
+			ap_send_json( ap_ajax_responce('something_wrong'));
+			return;
+		}
+
+		if(!ap_user_can_delete($post_id)){
+			ap_send_json( ap_ajax_responce('no_permission'));
+			return;
+		}
+		
+		$post = get_post( $post_id );
+		wp_trash_post($post_id);
+		if($post->post_type == 'question'){
+			ap_send_json( ap_ajax_responce( array('action' => 'delete_question', 'do' => 'redirect', 'redirect_to' => get_permalink(ap_opt('anspress_questions')), 'message' => 'question_moved_to_trash')));
+		}else{
+			$current_ans = ap_count_all_answers($post->post_parent);
+			$count_label = sprintf( _n('1 Answer', '%d Answers', $current_ans, 'ap'), $current_ans);
+			$remove = (!$current_ans ? true : false);
+			ap_send_json( ap_ajax_responce(array(
+				'action' 		=> 'delete_answer', 
+				'div_id' 			=> '#answer_'.$post_id,
+				'count' 		=> $current_ans,
+				'count_label' 	=> $count_label,
+				'message' 		=> 'answer_moved_to_trash')));
+		}
+		
+	}
+
 	
 	public function check_email(){
 	   $email = sanitize_text_field($_POST['email']);
@@ -241,28 +265,5 @@ class AnsPress_Ajax
 		
 		die(json_encode($result));
 	}
-	
-	
-	public function ap_suggest_questions(){
-		$keyword = sanitize_text_field($_POST['q']);
-		$questions = get_posts(array(
-			'post_type'   	=> 'question',
-			'showposts'   	=> 10,
-			's' 			=> $keyword,
-		));
-		
-		
-		if($questions){
-			$items = array();
-			foreach ($questions as $k => $p){
-				$count = ap_count_answer_meta($p->ID);
-				$items[$k]['html'] 			= '<a class="ap-sqitem" href="'.get_permalink($p->ID).'">'.get_avatar($p->post_author, 30).'<div class="apqstitle">'.$p->post_title.'</div><span class="apsqcount">'. sprintf(_n('1 Answer', '%d Answers', $count, 'ap' ), $count) .'</span></a>';
-			}
-			$result = array('status' => true, 'items' => $items);
-		}else{
-			$result = array('status' => false, 'message' => __('No related questions found', 'ap'));
-		}
-		
-		die(json_encode($result));
-	}
+
 }

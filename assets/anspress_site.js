@@ -353,8 +353,22 @@ AnsPress.site.prototype = {
 			var q = $(this).attr('data-query');
 
 			ApSite.doAjax( 
+				apAjaxData(q)
+			);
+		});
+	},
+
+	ap_delete_post: function(action){
+		$('body').delegate(action, 'click', function(e){
+			e.preventDefault();
+			var q = $(this).attr('data-query');
+
+			ApSite.doAjax( 
 				apAjaxData(q), 
-				false, 
+				function(data){
+					if(typeof data.action !== 'undefined' && data.action == 'delete_answer')
+						$(data.div_id).slideUp(500).fadeOut(300, function(){ $(this).remove(); })
+				}, 
 				this,
 				false
 			);

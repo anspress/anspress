@@ -371,7 +371,6 @@ class AnsPress_Query_Filter
 			  'post_status' => 'publish',
 			  'post_parent' => $post_id,
 			  'showposts' => -1,
-			  'caller_get_posts'=> 1
 			);
 			$ans = get_posts($arg);
 			if($ans>0){

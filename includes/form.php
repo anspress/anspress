@@ -54,16 +54,7 @@ class AnsPress_Form_Helper
 		add_action('pre_comment_approved', array($this, 'pre_comment_approved'), 99, 2);
 
 
-		//add_action( 'wp_ajax_ap_toggle_login_signup', array($this, 'ap_toggle_login_signup') ); 
-		add_action( 'wp_ajax_nopriv_ap_toggle_login_signup', array($this, 'ap_toggle_login_signup') ); 
-		
-		//add_filter( 'ap_question_form_validation', array($this, 'ap_signup_login_validation') ); 
-		 
-		//add_filter( 'ap_answer_form_validation', array($this, 'ap_signup_login_validation') );
-		
-		add_action( 'wp_ajax_ap_delete_post', array($this, 'ap_delete_post') ); 
-		
-		add_action( 'wp_ajax_ap_load_edit_form', array($this, 'ap_load_edit_form') );
+
 
 		add_action( 'wp_ajax_ap_new_tag', array($this, 'ap_new_tag') );
 		add_action( 'wp_ajax_ap_load_new_tag_form', array($this, 'ap_load_new_tag_form') );
@@ -195,35 +186,6 @@ class AnsPress_Form_Helper
 		endif;
 	}
 
-
-	
-	public function ap_delete_post(){
-		$args = explode('-', sanitize_text_field($_REQUEST['args']));
-		$action = 'delete_post_'.$args[0];	
-		
-		if(!ap_user_can_delete($args[0])){
-			$result = array('action' => false, 'message' => __('No Permission', 'ap'));			
-		}elseif(wp_verify_nonce( $args[1], $action )){
-			$post = get_post( $args[0] );
-			wp_trash_post($args[0]);
-			if($post->post_type == 'question'){
-				$result = array('action' => 'question', 'redirect_to' => get_permalink(ap_opt('base_page')), 'message' => __('Question deleted successfully.', 'ap'));
-			}else{
-				$current_ans = ap_count_all_answers($post->post_parent);
-				$count_label = sprintf( _n('1 Answer', '%d Answers', $current_ans, 'ap'), $current_ans);
-				$remove = (!$current_ans ? true : false);
-				$result = array(
-					'action' 		=> 'answer', 
-					'div' 			=> '#answer_'.$args[0],
-					'count' 		=> $current_ans,
-					'count_label' 	=> $count_label,
-					'remove' 		=> $remove, 
-					'message' 		=> __('Answer deleted successfully.', 'ap'));
-			}
-		}
-		die(json_encode($result));
-	}
-	
 	public function ap_load_edit_form(){
 		$nonce 			= sanitize_text_field($_POST['nonce']);
 		$post_id 	= sanitize_text_field($_POST['id']);
