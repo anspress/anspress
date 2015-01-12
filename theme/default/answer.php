@@ -14,7 +14,7 @@ if(!ap_user_can_view_post(get_the_ID())){
 	return;
 }
 
-$class = ap_is_best_answer(get_the_ID()) ? ' selected' : '';
+$class = ap_is_best_answer(get_the_ID()) ? ' selected answer' : 'answer';
 ?>
 
 <!-- TODO: add post_class() -->

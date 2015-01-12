@@ -484,8 +484,6 @@ class AnsPress_Process_Form
 				);
 				
 				$this->result = $result;
-
-				//unset($_POST);
 				
 			}
 		}

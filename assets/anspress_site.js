@@ -35,6 +35,7 @@ AnsPress.site.prototype = {
 		this.appendFormError();
 		this.appendMessageBox();
 		this.ap_comment_form();
+		this.afterPostingAnswer();
 
 	},
 
@@ -336,7 +337,22 @@ AnsPress.site.prototype = {
 				false
 			);
 		});
-	}
+	},
+
+	afterPostingAnswer: function(){
+		$(document).on('ap_after_ajax', function(e, data){
+			if(typeof data.action !== 'undefined' && data.action == 'new_answer'){
+				if($('#answers').length === 0){
+					$('#question').after($(data['html']));
+					$(data['div_id']).hide();
+				}else
+					$('#answers').append($(data['html']).hide());				
+				
+				$(data.div_id).slideDown(500);
+			}
+		});
+	},
+	
 
 
 
