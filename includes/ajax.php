@@ -113,7 +113,7 @@ class AnsPress_Ajax
 
 			ob_start();
 				echo '<div class="ap-comment-form clearfix">';
-					echo '<div class="ap-content-inner">';
+					echo '<div class="ap-comment-inner">';
 						comment_form($comment_args, $comment_post_ID );
 					echo '</div>';
 				echo '</div>';

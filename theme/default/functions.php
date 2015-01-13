@@ -99,7 +99,7 @@ if ( ! function_exists( 'ap_comment' ) ) :
 		?>
 		<li <?php comment_class('clearfix'); ?> id="li-comment-<?php comment_ID(); ?>">
 			<!-- comment #<?php comment_ID(); ?> -->
-			<article id="comment-<?php comment_ID(); ?>">
+			<article id="comment-<?php comment_ID(); ?>" class="clearfix">
 				<div class="ap-avatar ap-pull-left">
 					<a href="<?php echo ap_user_link($comment->user_id); ?>">
 					<!-- TODO: OPTION - Avatar size -->
@@ -184,7 +184,7 @@ function ap_widgets_positions(){
 }
 
 /* for overriding icon in social login plugin */
-function ap_social_login_icons( $provider_id, $provider_name, $authenticate_url )
+/*function ap_social_login_icons( $provider_id, $provider_name, $authenticate_url )
 {
 	?>
 	<a rel = "nofollow" href = "<?php echo $authenticate_url; ?>" data-provider = "<?php echo  $provider_id ?>" class = "wp-social-login-provider wp-social-login-provider-<?php echo strtolower( $provider_id ); ?> btn btn-<?php echo strtolower( $provider_id ); ?>">
@@ -192,4 +192,4 @@ function ap_social_login_icons( $provider_id, $provider_name, $authenticate_url 
 	</a>
 	<?php
 }
-add_filter( 'wsl_render_login_form_alter_provider_icon_markup', 'ap_social_login_icons', 10, 3 );
+add_filter( 'wsl_render_login_form_alter_provider_icon_markup', 'ap_social_login_icons', 10, 3 );*/

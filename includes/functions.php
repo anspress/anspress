@@ -216,7 +216,7 @@ function ap_get_link_to($sub){
 function ap_comment_btn_html($echo = false){
 	if(ap_user_can_comment()){
 		$nonce = wp_create_nonce( 'comment_form_nonce' );
-		$output = '<a href="#ap-comment-area-'.get_the_ID().'" class="comment-btn" data-action="load_comment_form" data-query="ap_ajax_action=load_comment_form&post='.get_the_ID().'&__nonce='.$nonce.'" title="'.__('Add comment', 'ap').'">'.ap_icon('comment', true).__('Comment', 'ap').'</a>';
+		$output = '<a href="#comments-'.get_the_ID().'" class="comment-btn" data-action="load_comment_form" data-query="ap_ajax_action=load_comment_form&post='.get_the_ID().'&__nonce='.$nonce.'" title="'.__('Add comment', 'ap').'">'.ap_icon('comment', true).__('Comment', 'ap').'</a>';
 
 		if($echo)
 			echo $output;

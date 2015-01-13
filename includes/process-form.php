@@ -539,17 +539,18 @@ class AnsPress_Process_Form
 	public function comment_form()
 	{		
 
-		if(!isset($_REQUEST['comment_ID']) )
+		if(!isset($_REQUEST['comment_ID']) ){
 			// Do security check
 			if(!ap_user_can_comment() || !isset($_POST['__nonce']) || !wp_verify_nonce($_POST['__nonce'], 'comment_' . (int)$_POST['comment_post_ID'])){
 				$this->result = ap_ajax_responce( 'no_permission');
 				return;
 			}
-		else
-			if(!isset($_REQUEST['comment_ID']) && !ap_user_can_edit_comment((int)$_REQUEST['comment_ID'] ) && !wp_verify_nonce( $_REQUEST['__nonce'], 'comment_'.(int)$_REQUEST['comment_ID'] )){
+		}else{
+			if(!ap_user_can_edit_comment((int)$_REQUEST['comment_ID'] ) || !wp_verify_nonce( $_REQUEST['__nonce'], 'comment_'.(int)$_REQUEST['comment_ID'] )){
 				$this->result = ap_ajax_responce( 'no_permission');
 				return;
 			}
+		}
 
 		$comment_post_ID = (int) $_POST['comment_post_ID'];
 		$post = get_post( $comment_post_ID );

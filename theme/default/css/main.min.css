@@ -1276,7 +1276,7 @@
 }
 .ap-content .ap-user-meta {
   color: #888888;
-  margin-bottom: 0;
+  margin-bottom: 5px;
 }
 .ap-content .ap-user-meta .ap-user-meta-display_name {
   font-size: 14px;
@@ -1292,6 +1292,7 @@
 .ap-content .ap-question-metas li,
 .ap-content .ap-answer-metas li {
   color: #888888;
+  margin: 0 10px 0 0;
 }
 .ap-content .ap-question-metas li i,
 .ap-content .ap-answer-metas li i {
@@ -1379,6 +1380,7 @@
   font-weight: 600;
   padding: 5px 10px;
   text-decoration: none;
+  display: block;
 }
 .ap-content .ap-user-actions a:hover {
   color: #555555;
@@ -1797,9 +1799,9 @@
   text-decoration: underline;
 }
 .ap-comments.have-comments {
-  border: 1px solid #f8f8f8;
+  background: none repeat scroll 0 0 #fcfcfc;
   border-radius: 4px;
-  margin-top: 30px;
+  margin: 20px -16px -16px;
 }
 .ap-comments .ap-commentlist {
   list-style: none outside none;
@@ -1807,15 +1809,14 @@
   padding: 0;
 }
 .ap-comments .ap-commentlist .comment {
-  border-bottom: 1px solid #f8f8f8;
+  border-top: 1px solid #eee;
   color: #777;
   font-size: 13px;
   line-height: 22px;
   margin-bottom: 0;
-  padding: 12px;
+  padding: 15px;
 }
 .ap-comments .ap-commentlist .comment:last-child {
-  margin-bottom: 0;
   border-bottom: none;
 }
 .ap-comments .ap-commentlist .comment .ap-avatar {
@@ -1834,6 +1835,11 @@
 }
 .ap-comments .ap-commentlist .comment .ap-comment-action i {
   font-size: 10px;
+}
+.ap-comment-form {
+  background: none repeat scroll 0 0 #fff;
+  border-top: 1px solid #eee;
+  padding: 15px;
 }
 .ap-comment-form #ap-comment-textarea {
   background: #f2f2f2;

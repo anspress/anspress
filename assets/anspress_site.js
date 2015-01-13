@@ -234,6 +234,8 @@ AnsPress.site.prototype = {
 						$($(this).attr('data-toggle')).hide();
 
 					$('#ap-comment-textarea').focus();
+
+					$($(this).attr('href')).addClass('have-comments').removeClass('no-comment');
 					ApSite.doAction('ap_ajax_form');
 				}, 
 				this,
@@ -259,6 +261,8 @@ AnsPress.site.prototype = {
 						$('#li-comment-'+data.comment_ID).replaceWith($(data['html']).hide().slideDown(100));
 						$('.ap-comment-form').remove();
 					}
+					$(this)[0].reset();
+					$('.ap-comment-form').fadeOut(200, function(){$(this).remove()});
 				}, 
 				this
 			);
