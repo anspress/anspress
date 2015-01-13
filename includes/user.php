@@ -934,10 +934,10 @@ function ap_user_template(){
 function ap_cover_upload_form(){
 	if(ap_user_can_upload_cover() && ap_user_page_user_id() == get_current_user_id()){
 		?>
-		<form method="post" action="#" enctype="multipart/form-data" data-action="ap-upload-form" class="">
+		<form method="post" action="#" enctype="multipart/form-data" data-action="ap_upload_form" class="">
 			<div class="ap-upload-o">
 				<span class="ap-tip <?php echo ap_icon('upload') ?>" title="<?php _e('Upload cover', 'ap'); ?>"></span>
-				<input type="file" name="thumbnail" class="ap-upload-input" data-action="ap-upload-field">
+				<input type="file" name="thumbnail" class="ap-upload-input" data-action="ap_upload_field">
 			</div>
 			<input type='hidden' value='<?php echo wp_create_nonce( 'upload' ); ?>' name='nonce' />
 			<input type="hidden" name="action" id="action" value="ap_cover_upload">
@@ -974,10 +974,10 @@ function ap_user_cover_style($userid, $small = false){
 function ap_avatar_upload_form(){
 	if(ap_user_page_user_id() == get_current_user_id()){
 		?>
-		<form method="post" action="#" enctype="multipart/form-data" data-action="ap-upload-form" class="">
+		<form method="post" action="#" enctype="multipart/form-data" data-action="ap_upload_form" class="">
 			<div class="ap-btn ap-upload-o">
 				<span class="<?php echo ap_icon('upload'); ?>"></span>
-				<input type="file" name="thumbnail" class="ap-upload-input" data-action="ap-upload-field">
+				<input type="file" name="thumbnail" class="ap-upload-input" data-action="ap_upload_field">
 			</div>
 			<input type='hidden' value='<?php echo wp_create_nonce( 'upload' ); ?>' name='nonce' />
 			<input type="hidden" name="action" id="action" value="ap_avatar_upload">

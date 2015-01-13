@@ -20,24 +20,7 @@ $clearfix_class = array('list-question clearfix');
 		<div class="private-question-label">
 			<span><?php _e( 'Private Question', 'ap' ); ?></span>
 		</div>
-	<?php endif; ?>
-	<div class="ap-list-history ap-pull-right">
-		<?php echo ap_get_latest_history_html(get_the_ID(), true) ?>
-	</div>
-	<div class="ap-count ap-pull-right">	
-		<a class="ap-answer-count ap-tip" href="<?php echo ap_answers_link(); ?>" title="<?php _e('Total answers', 'ap'); ?>">
-			<span><?php echo ap_count_answer_meta(); ?></span>
-			<?php _e('Answer', 'ap');?>
-		</a>						
-		<!-- <a class="ap-vote-count ap-tip" href="#" title="<?php _e('Total views', 'ap'); ?>">
-			<span><?php //echo ap_get_qa_views(); ?></span> 
-			<?php  //_e('Views', 'ap'); ?>
-		</a>
-		<a class="ap-vote-count ap-tip" href="#" title="<?php //_e('Total votes', 'ap'); ?>">
-			<span><?php //echo ap_net_vote(); ?></span> 
-			<?php  _e('Votes', 'ap'); ?>
-		</a> -->		
-	</div>	
+	<?php endif; ?>		
 	<div class="ap-list-inner">
 		<div class="ap-avatar ap-pull-left">
 			<a href="<?php echo ap_user_link(); ?>">
@@ -54,5 +37,22 @@ $clearfix_class = array('list-question clearfix');
 				<!-- TODOD: hook question labels ap_get_question_label(null, true);  -->
 			</ul>
 		</div>				
+	</div>	
+	<div class="ap-count">	
+		<a class="ap-answer-count ap-tip" href="<?php echo ap_answers_link(); ?>" title="<?php _e('Total answers', 'ap'); ?>">
+			<span><?php echo ap_count_answer_meta(); ?></span>
+			<?php _e('Answer', 'ap');?>
+		</a>						
+		<!-- <a class="ap-vote-count ap-tip" href="#" title="<?php _e('Total views', 'ap'); ?>">
+			<span><?php //echo ap_get_qa_views(); ?></span> 
+			<?php  //_e('Views', 'ap'); ?>
+		</a>
+		<a class="ap-vote-count ap-tip" href="#" title="<?php //_e('Total votes', 'ap'); ?>">
+			<span><?php //echo ap_net_vote(); ?></span> 
+			<?php  _e('Votes', 'ap'); ?>
+		</a> -->		
+	</div>
+	<div class="ap-list-history">
+		<?php echo ap_get_latest_history_html(get_the_ID(), true) ?>
 	</div>
 </article><!-- list item -->

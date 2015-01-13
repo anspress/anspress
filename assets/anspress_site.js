@@ -105,10 +105,10 @@ AnsPress.site.prototype = {
 
 				$(document).trigger('ap_after_ajax', data);
 				
-				if (data.do !== 'undefined' && typeof ApSite[data.do] === 'function')
+				if (typeof data.do !== 'undefined' && typeof ApSite[data.do] === 'function')
 					ApSite[data.do](data);
 
-				if (data.view !== 'undefined'){
+				if (typeof data.view !== 'undefined'){
 					$.each(data.view, function(i, view){
 						$('[data-view="'+ i +'"]').text(view);				
 						$('[data-view="'+ i +'"]').text(view);
@@ -316,7 +316,7 @@ AnsPress.site.prototype = {
 				function(data){
 					var vote_c = $(this).parent();
 					vote_c.find('.ap-vote-fade').remove();
-					if(data['action'] == 'voted' || data['action'] == 'undo'){
+					if(typeof data['action'] !== 'undefined' && data['action'] == 'voted' || data['action'] == 'undo'){
 						if(data['action'] == 'voted'){
 							
 							$(this).addClass('voted');
@@ -380,10 +380,27 @@ AnsPress.site.prototype = {
 				false
 			);
 		});
+	},
+
+	ap_upload_field:function(action){
+		var self = this;
+		var form 
+		$(action).change(function(){
+			$(this).closest('form').submit();
+		});
+		
+		$('[data-action="ap_upload_form"]').submit(function(){
+			$(this).ajaxSubmit({
+				success: function(data){
+					$('body').trigger('uploadForm', data);
+				},
+				url:ajaxurl,
+				dataType:'json'
+			});
+			
+			return false
+		});
 	}
-	
-
-
 
 }
 
