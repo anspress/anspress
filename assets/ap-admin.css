@@ -104,10 +104,9 @@ td.column-vote_note strong, td.column-post_title > a {
 /* Option Tabs */
 
 #ap_opt_nav {
-    border: 1px solid rgba(0, 0, 0, 0.1);
     float: left;
     margin-bottom: 0;
-    margin-right: 15px;
+    margin-right: -1px;
     margin-top: 0;
     width: 200px;
 }
@@ -116,30 +115,41 @@ td.column-vote_note strong, td.column-post_title > a {
     margin-bottom: 0;
 }
 #ap_opt_nav li.active a{
-    background: #FFFFFF;
+    background: none repeat scroll 0 0 #ffffff;
+    border-left: 3px solid #43bdff;
     color: #666666;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
 }
 
 #ap_opt_nav li a{
-    background: #eeeeee;
-    border-bottom: 1px solid #dddddd;
     color: #666;
     display: block;
     font-size: 13px;
-    font-weight: bold;
+    font-weight: normal;
     padding: 10px 15px;
     text-decoration: none;
 }
 
 .tab-content {
-    background: #ffffff;
-    border: 1px solid rgba(0, 0, 0, 0.1);
+    background: none repeat scroll 0 0 #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 2px;
     margin-top: -2px;
+    max-width: 700px;
+    min-height: 429px;
     overflow: hidden;
     padding: 5px 15px;
 }
-.tab-content .tab-pane{
-	display:none;
+.tab-content input[type="text"], .tab-content input[type="number"], .tab-content select, .tab-content textarea{
+    border: 1px solid #e7e7e7;
+    border-radius: 2px;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.02) inset;
+    height: 36px;
+    padding: 2px 6px;
+}
+.tab-content textarea{
+    height: auto;
 }
 
 .tab-content .tab-pane.active{

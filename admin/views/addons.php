@@ -1,5 +1,5 @@
 <?php 
-$addons = ap_read_addons();
+$addons = array();
 ?>
 <?php add_thickbox(); ?>
 <div class="wrap">

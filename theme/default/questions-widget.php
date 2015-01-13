@@ -47,7 +47,7 @@
 						<?php if($show_answers) : ?>
 						<li class="ap-tip">
 							<i class="ap-icon-comment ap-meta-icon"></i>
-							<?php echo ap_count_ans_meta(); ?>
+							<?php echo ap_count_answer_meta(); ?>
 							<?php _e('Ans', 'ap');?>
 						</li>
 						<?php endif; ?>

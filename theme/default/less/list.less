@@ -1,0 +1,115 @@
+//
+// Question lists style
+// --------------------------------------------------
+
+.list-question{
+    border-bottom: 1px solid #eeeeee;
+    display: table;
+    margin: 0;
+    padding: 20px 0;
+    width: 100%;
+
+    .ap-list-inner, .ap-count, .ap-list-history{
+    	display: table-cell;
+    	vertical-align: top;
+    }
+
+    &:nth-child(2n) {
+	    background: #fdfdfd;
+	}
+
+    .ap-count {
+	    padding-left: 15px;
+	    width: 75px;
+	}
+	.ap-count > a{
+	    color: #888;
+	    display: block;
+	    text-align: center;
+	    text-decoration: none;
+
+		span{
+			font-size: @count-font-size;
+			font-weight: 600;
+			display: block;
+			color: @default-color;
+		}
+	}
+
+	.ap-count > a:last-child{
+		margin-right: 0;
+	}
+
+	.ap-list-inner{
+		.ap-avatar{
+			margin-right:15px;
+		}
+
+		.question-title{
+		    display: block;		    
+		    font-size: @list-font-size;
+		    font-weight: @bold;
+		    margin-bottom: 6px;
+		    margin-top: 0;
+
+		    a{
+		    	color:@default-color;
+		    	text-decoration: none;
+		    }
+		}
+	}
+	.ap-list-history {
+	    padding-left: 15px;
+	    width: 235px;
+	    .ap-avatar{
+		    float: left;
+		    margin-top: 4px;
+	    }
+	    .ap-post-history {
+		    color: #888;
+		    display: block;
+		    font-size: 13px;
+		    line-height: 22px;
+		    overflow: hidden;
+		}
+	}
+	
+}
+
+.ap-display-question-meta{
+		color: @meta-color;
+		font-size: @meta-font-size;
+
+		li{
+			&:before {
+			    background: none repeat scroll 0 0 #dadada;
+			    .border-radius(2px);
+			    content: "";
+			    display: block;
+			    float: left;
+			    height: 5px;
+			    margin-right: 6px;
+			    margin-top: 8px;
+			    padding: 0;
+			    width: 5px;
+			}
+			&:first-child:before{
+				display:none;
+			}
+			&.selected, .ap-best-answer-label {
+			    background: lighten(@main-color, 10%);
+			    .border-radius(@default-border-radius);
+			    color: @white;
+			    font-size: 10px;
+			    line-height: 15px;
+			    margin-top: 2px;
+			    padding: 1px 4px;
+			    text-align: center;
+			    text-transform: uppercase;
+			}
+			
+			i{
+				font-style: normal;
+			}
+		}
+	}

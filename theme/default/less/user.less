@@ -1,0 +1,271 @@
+//
+// User styles
+// --------------------------------------------------
+
+.ap-profile-lr{
+
+	.ap-profile-nav, .ap-profile-right{
+		float: left;		
+	}
+	.ap-profile-nav{
+	    position: relative;
+	    width: @user-nav-width;
+
+    	.ap-avatar-meta-c{
+		    margin: 0;
+		    padding: 0 0 20px;
+    	}
+		.ap-big-avatar{
+		    display: table;
+		    margin: 0 auto 10px;
+		    position: relative;
+
+			form{
+			    position: absolute;
+			    right: 3px;
+			    top: 3px;
+			    z-index: 99;
+			    
+			    .ap-upload-o{
+				    border-radius: 50%;
+				    color: #555;
+				    height: 35px;
+				    line-height: 40px;
+				    margin: 0;
+				    padding: 0;
+				    width: 35px;
+			    }
+			}
+			img{
+				border-radius: 2px;
+			}
+		}
+    	.ap-user-name {
+    		color: @default-color;
+		    display: block;
+		    font-size: 22px;
+		    font-weight: 600;
+		    margin-bottom: 5px;
+		}
+
+		.ap-user-profile-meta{
+			color: @light-color;
+
+			:before{
+				margin-right: 10px;
+			}
+		}
+	}
+	.ap-profile-right{
+	    margin-left: -@user-nav-width;
+	    padding-left: @user-nav-width + 30px;
+	    width: 100%;
+	}
+	.ap-user-menu{
+	    border: 1px solid #eee;
+	    border-radius: 3px;
+	    list-style: none outside none;
+	    margin: 0;
+	    padding: 0;
+
+		li{
+			a{			    
+			    border-bottom: 1px solid #f9f9f9;
+			    color: @light-color;
+			    display: block;
+			    font-size: 14px;
+			    padding: 14px 15px;
+			    text-decoration: none;
+
+			    &:before{
+				    display: inline-block;
+				    margin-right: 15px;
+				    width: 16px;
+			    }
+			}
+			&.active > a{
+				color: @default-color;
+				font-weight: @bold;
+			}
+			&:last-child a{
+				border-bottom: none;
+			}
+		}
+	}
+}
+.ap-profile-box{
+	&.ap-about-me {
+	    background: none repeat scroll 0 0 #f8f8f8;
+	    .border-radius(5px);
+	    margin-top: 20px;
+	    padding: 15px;
+	    h3{
+	    	margin-top: 0;
+	    }
+	    p:last-child{
+	    	margin-bottom: 0;
+	    }
+	}
+	.about-me{
+		line-height: 28px;
+	}
+
+
+}
+.ap-answer-post{
+    border-bottom: 1px solid @default-border-color;
+    padding: 15px 0;
+    &:last-child{
+    	border-bottom: none;
+    }
+	.ap-title{
+	    color: @default-color;
+	    display: block;
+	    font-size: 15px;
+	    font-weight: @bold;
+	    margin-bottom: 10px;
+	    overflow: hidden;
+	    white-space: nowrap;
+	}
+	.ap-vote-count, .ap-answer-count{
+	    border: 2px solid lighten(@main-color, 20%);
+	    border-radius: 50%;
+	    color: @light-color;
+	    display: block;
+	    float: left;
+	    font-size: 11px;
+	    height: 59px;
+	    line-height: 22px;
+	    margin-right: 20px;
+	    padding: 4px;
+	    text-align: center;
+	    text-transform: uppercase;
+	    width: 59px;
+	    text-decoration: none;
+	    span{
+		    color: @default-color;
+		    display: block;
+		    font-size: 15px;
+	    }
+	}
+	.ap-vote-count{
+		border: 2px solid lighten(@blue-color, 20%);
+	}
+	.ap-answer-link{
+		color: #777;
+		line-height: 28px;
+		&:hover{
+			text-decoration: none;
+			color:@default-color;
+		}
+	}
+}
+.ap-profile-box-group{
+	> .ap-profile-box{
+		float: left;
+		width: 50%;
+	}
+}
+
+.ap-cover-bg {
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: block;
+    height: 250px;
+    .border-radius(2px);
+
+    &:hover .ap-upload-o{
+	    font-size: 40px;
+	    height: 45px;
+	    line-height: 54px;
+	    width: 55px;
+    }
+}
+
+.ap-upload-o {
+    background: none repeat scroll 0 0 #fff;
+    border-radius: 4px;
+    display: block;
+    float: right;
+    font-size: 25px;
+    height: 32px;
+    line-height: 38px;
+    margin: 10px;
+    overflow: hidden;
+    position: relative;
+    text-align: center;
+    width: 40px;
+    .transition(all 0.2s ease 0s);
+
+    .ap-upload-input{
+	    cursor: pointer;
+	    font-size: 20px;
+	    height: 100%;
+	    margin: 0;
+	    .opacity(0);
+	    padding: 0;
+	    position: absolute;
+	    right: 0;
+	    top: 0;
+	    width: 100%;
+    }
+    span{
+	    
+    }
+}
+
+.ap-profile-right{	
+	.ap-user-meta{
+		.ap-user-name{
+		    display: block;
+		    font-size: 40px;
+		    text-align: center;
+		}
+	}
+}
+.ap-user-counts{
+    border-bottom: 1px solid #eee;
+    border-top: 1px solid #eee;
+    padding: 15px 0;
+    li{
+    	border-right: 1px solid #eee;
+    	padding: 0 15px 0 0;
+    	&:last-child{
+    		border-right: none;
+    	}
+    }
+	a{
+		color:@default-color;
+	    display: block;
+	    font-size: 22px;
+	    min-width: 120px;
+	    padding: 10px;
+	    text-decoration: none;
+
+		b{
+			color:@blue-color;
+		    font-weight: @bold;
+		    margin-right: 10px;
+		}
+		span{
+		    text-transform: uppercase;
+		    font-weight: 300;
+		}
+	}
+}
+
+.ap-cpt-statics{
+    border-left: 2px solid @blue-color;
+    list-style: none outside none;
+    margin: 0;
+    padding: 0 0 0 20px;
+	li{
+	    color: #aaa;
+	    font-size: 18px;
+	    font-weight: 300;
+	    margin-bottom: 15px;
+		span{
+			float: right;
+		}
+	}
+}

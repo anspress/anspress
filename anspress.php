@@ -7,17 +7,17 @@
  * @package   AnsPress
  * @author    Rahul Aryan <support@rahularyan.com>
  * @license   GPL-2.0+
- * @link      http://open-wp.com
- * @copyright 2014 Open-WP & Rahul Aryan
+ * @link      http://wp3.in
+ * @copyright 2014 WP3.in & Rahul Aryan
  *
  * @wordpress-plugin
  * Plugin Name:       AnsPress
- * Plugin URI:        http://open-wp.com
+ * Plugin URI:        http://wp3.in
  * Description:       The most advance community question and answer system for WordPress
  * Donate link: https://www.paypal.com/cgi-bin/webscr?business=rah12@live.com&cmd=_xclick&item_name=Donation%20to%20AnsPress%20development
- * Version:           1.4.2
+ * Version:           2.0.0-alpha
  * Author:            Rahul Aryan
- * Author URI:        http://open-wp.com
+ * Author URI:        http://wp3.in
  * Text Domain:       ap
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
@@ -29,73 +29,236 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-// define	
-define('AP_VERSION', '1.4.2');
-define('AP_DB_VERSION', '10');
-if (!defined('DS'))
-	define('DS', DIRECTORY_SEPARATOR);
-define('ANSPRESS_DIR', plugin_dir_path( __FILE__ ));
-define('ANSPRESS_URL', plugin_dir_url( __FILE__ ));
-define('ANSPRESS_WIDGET_DIR', ANSPRESS_DIR.'widgets'.DS);
-define('ANSPRESS_ADDON_DIR', ANSPRESS_DIR.'addons'.DS);
-define('ANSPRESS_ADDON_URL', ANSPRESS_URL.'addons/');
-define('ANSPRESS_THEME_DIR', plugin_dir_path( __FILE__ ).'theme');
-define('ANSPRESS_THEME_URL', plugin_dir_url( __FILE__ ).'theme');
-define('ANSPRESS_CAT_TAX', 'question_category');
-define('ANSPRESS_TAG_TAX', 'question_tags');
+if(!class_exists('AnsPress')):
+	
+	class AnsPress{
+		
+		private $plugin_version = '2.0.0-alpha';
+		
+		private $plugin_path;
+		
+		private $plugin_url;
+		
+		private $text_domain = 'ap';
 
+		static $instance = null;
 
-define('ANSPRESS_VOTE_META', '_ap_vote');
-define('ANSPRESS_FAV_META', '_ap_favorite');
-define('ANSPRESS_CLOSE_META', '_ap_close');
-define('ANSPRESS_FLAG_META', '_ap_flag');
-define('ANSPRESS_VIEW_META', '_views');
-define('ANSPRESS_UPDATED_META', '_ap_updated');
-define('ANSPRESS_ANS_META', '_ap_answers');
-define('ANSPRESS_SELECTED_META', '_ap_selected');
-define('ANSPRESS_BEST_META', '_ap_best_answer');
-define('ANSPRESS_PARTI_META', '_ap_participants'); 
+		public $anspress_actions;
+		public $anspress_ajax;
 
-define('AP_FOLLOWERS_META', '_ap_followers'); 
-define('AP_FOLLOWING_META', '_ap_following'); 
+		/**
+		 * Filter object
+		 * @var object
+		 */
+		public $anspress_query_filter;
 
-/* Load localization */
-function ap_localization_setup() {
- load_plugin_textdomain('ap', false, dirname(plugin_basename(__FILE__)) . '/languages/');
+		/**
+		 * Theme object
+		 * @var object
+		 * @since 2.0.1
+		 */
+		public $anspress_theme;
+
+		/**
+		 * Post type object
+		 * @var object
+		 * @since 2.0.1
+		 */
+		public $anspress_cpt;
+		
+
+		public $anspress_forms;
+
+		
+		/**
+		 * Initializes the plugin by setting localization, hooks, filters, and administrative functions.
+		 */
+		public static function instance() {
+			if ( ! isset( self::$instance ) && ! ( self::$instance instanceof AnsPress ) ) {
+				self::$instance = new AnsPress;
+				self::$instance->setup_constants();
+
+				add_action( 'plugins_loaded', array( self::$instance, 'load_textdomain' ) );
+
+				global $ap_classes;
+				$ap_classes = array();
+
+				self::$instance->includes();
+
+				self::$instance->anspress_forms      		= new AnsPress_Process_Form();
+				self::$instance->anspress_actions      		= new AnsPress_Actions();
+				self::$instance->anspress_ajax      		= new AnsPress_Ajax();
+				self::$instance->anspress_query_filter      = new AnsPress_Query_Filter();
+				self::$instance->anspress_theme      		= new AnsPress_Theme();
+				self::$instance->anspress_cpt      			= new AnsPress_PostTypes();
+
+				
+
+			}
+			return self::$instance;
+		}
+		
+		/**
+		 * Setup plugin constants
+		 *
+		 * @access private
+		 * @since 2.0.1
+		 * @return void
+		 */		 
+		 private function setup_constants(){
+			if (!defined('AP_VERSION'))
+				define('AP_VERSION', '1.4.3');
+			
+			if (!defined('AP_DB_VERSION'))
+				define('AP_DB_VERSION', '10');
+			
+			if (!defined('DS'))
+				define('DS', DIRECTORY_SEPARATOR);
+			
+			if (!defined('ANSPRESS_DIR'))	
+				define('ANSPRESS_DIR', plugin_dir_path( __FILE__ ));
+			
+			if (!defined('ANSPRESS_URL'))	
+				define('ANSPRESS_URL', plugin_dir_url( __FILE__ ));
+			
+			if (!defined('ANSPRESS_WIDGET_DIR'))	
+				define('ANSPRESS_WIDGET_DIR', ANSPRESS_DIR.'widgets'.DS);
+			
+			if (!defined('ANSPRESS_ADDON_DIR'))	
+				define('ANSPRESS_ADDON_DIR', ANSPRESS_DIR.'addons'.DS);
+			
+			if (!defined('ANSPRESS_ADDON_URL'))	
+				define('ANSPRESS_ADDON_URL', ANSPRESS_URL.'addons/');
+			
+			if (!defined('ANSPRESS_THEME_DIR'))
+				define('ANSPRESS_THEME_DIR', plugin_dir_path( __FILE__ ).'theme');
+			
+			if (!defined('ANSPRESS_THEME_URL'))	
+				define('ANSPRESS_THEME_URL', plugin_dir_url( __FILE__ ).'theme');
+			
+				if (!defined('ANSPRESS_VOTE_META'))
+				define('ANSPRESS_VOTE_META', '_ap_vote');
+			
+			if (!defined('ANSPRESS_SUBSCRIBER_META'))	
+				define('ANSPRESS_SUBSCRIBER_META', '_ap_subscriber');
+			
+			if (!defined('ANSPRESS_CLOSE_META'))	
+				define('ANSPRESS_CLOSE_META', '_ap_close');
+			
+			if (!defined('ANSPRESS_FLAG_META'))	
+				define('ANSPRESS_FLAG_META', '_ap_flag');
+			
+			if (!defined('ANSPRESS_VIEW_META'))		
+				define('ANSPRESS_VIEW_META', '_views');
+			
+			if (!defined('ANSPRESS_UPDATED_META'))	
+				define('ANSPRESS_UPDATED_META', '_ap_updated');
+			
+			if (!defined('ANSPRESS_ANS_META'))	
+				define('ANSPRESS_ANS_META', '_ap_answers');
+			
+			if (!defined('ANSPRESS_SELECTED_META'))			
+				define('ANSPRESS_SELECTED_META', '_ap_selected');
+			
+			if (!defined('ANSPRESS_BEST_META'))		
+				define('ANSPRESS_BEST_META', '_ap_best_answer');
+			
+			if (!defined('ANSPRESS_PARTI_META'))		
+				define('ANSPRESS_PARTI_META', '_ap_participants'); 
+			
+			if (!defined('AP_FOLLOWERS_META'))
+				define('AP_FOLLOWERS_META', '_ap_followers');
+			
+			if (!defined('AP_FOLLOWING_META'))	
+				define('AP_FOLLOWING_META', '_ap_following'); 
+		 }
+		 
+		 /**
+		 * Include required files
+		 *
+		 * @access private
+		 * @since 2.0.1
+		 * @return void
+		 */
+		private function includes() {
+			global $ap_options;
+			
+			require_once( ANSPRESS_DIR . 'includes/options.php' );
+			require_once( ANSPRESS_DIR . 'activate.php' );
+			
+			require_once( ANSPRESS_DIR . 'includes/functions.php' );
+			require_once( ANSPRESS_DIR . 'includes/actions.php' );
+			require_once( ANSPRESS_DIR . 'includes/ajax.php' );
+
+			require_once( ANSPRESS_DIR . 'includes/class-roles-cap.php' );
+			require_once( ANSPRESS_DIR . 'includes/class-question_query.php' );
+			require_once( ANSPRESS_DIR . 'includes/class-answer_query.php' );
+			require_once( ANSPRESS_DIR . 'includes/post_types.php' );
+
+			require_once( ANSPRESS_DIR . 'includes/events.php' );
+			require_once( ANSPRESS_DIR . 'includes/query_filter.php' );
+			require_once( ANSPRESS_DIR . 'includes/post_status.php' );
+			
+			require_once( ANSPRESS_DIR . 'includes/meta.php' );
+			require_once( ANSPRESS_DIR . 'includes/vote.php' );
+			require_once( ANSPRESS_DIR . 'includes/view.php' );
+			require_once( ANSPRESS_DIR . 'includes/theme.php' );
+			require_once( ANSPRESS_DIR . 'includes/main.php' );
+			require_once( ANSPRESS_DIR . 'includes/form.php' );
+			
+			require_once( ANSPRESS_DIR . 'includes/basepage.php' );
+			require_once( ANSPRESS_DIR . 'includes/participants.php' );
+			require_once( ANSPRESS_DIR . 'includes/labels.php' );
+			require_once( ANSPRESS_DIR . 'includes/user.php' );
+			require_once( ANSPRESS_DIR . 'includes/ranks.php' );
+			require_once( ANSPRESS_DIR . 'includes/badges.php' );			
+			require_once( ANSPRESS_DIR . 'includes/points.php' );
+			require_once( ANSPRESS_DIR . 'includes/history.php' );
+			
+			require_once( ANSPRESS_DIR . 'includes/widgets.php' );
+			require_once( ANSPRESS_DIR . 'includes/image_resize.php' );
+
+			require_once( ANSPRESS_DIR . 'includes/shortcode-questions.php' );
+			require_once( ANSPRESS_DIR . 'includes/shortcode-user.php' );
+			require_once( ANSPRESS_DIR . 'includes/shortcode-ask.php' );
+			require_once( ANSPRESS_DIR . 'includes/shortcode-edit.php' );
+
+			require_once( ANSPRESS_DIR . 'includes/user-page-profile.php' );
+			require_once( ANSPRESS_DIR . 'includes/user-page-questions.php' );
+			require_once( ANSPRESS_DIR . 'includes/user-page-answers.php' );
+			require_once( ANSPRESS_DIR . 'includes/user-page-favorites.php' );
+			require_once( ANSPRESS_DIR . 'includes/class-form.php' );
+			require_once( ANSPRESS_DIR . 'includes/class-validation.php' );
+			require_once( ANSPRESS_DIR . 'includes/process-form.php' );
+			require_once( ANSPRESS_DIR . 'includes/ask-form.php' );
+			require_once( ANSPRESS_DIR . 'includes/answer-form.php' );
+		}
+		
+		/**
+		 * Load translations
+		 *
+		 * @access private
+		 * @since 2.0.1
+		 * @return void
+		 */
+		public function load_textdomain(){
+			load_plugin_textdomain( $this->text_domain, false, 'languages' );
+		}
+	
+	}
+	
+endif;
+
+function anspress(){
+	/**
+	 * ACTION: anspress_loaded
+	 * Hooks for extension to load their codes after AnsPress is leaded
+	 */
+	do_action( 'anspress_loaded');
+	AnsPress::instance();	
 }
-add_action('after_setup_theme', 'ap_localization_setup'); 
 
-
-/*----------------------------------------------------------------------------*
- * Public-Facing Functionality
- *----------------------------------------------------------------------------*/
-
-require_once( plugin_dir_path( __FILE__ ) . 'includes/anspress-functions.php' );
-require_once( plugin_dir_path( __FILE__ ) . 'includes/anspress-roles-cap.php' );
-require_once( plugin_dir_path( __FILE__ ) . 'includes/anspress-events.php' );
-require_once( plugin_dir_path( __FILE__ ) . 'includes/anspress-addons.php' );
-require_once( plugin_dir_path( __FILE__ ) . 'includes/anspress-posts.php' );
-require_once( plugin_dir_path( __FILE__ ) . 'includes/anspress-categories.php' );
-require_once( plugin_dir_path( __FILE__ ) . 'includes/anspress-tags.php' );
-require_once( plugin_dir_path( __FILE__ ) . 'includes/anspress-meta.php' );
-require_once( plugin_dir_path( __FILE__ ) . 'includes/anspress-vote.php' );
-require_once( plugin_dir_path( __FILE__ ) . 'includes/anspress-view.php' );
-require_once( plugin_dir_path( __FILE__ ) . 'includes/anspress-theme.php' );
-require_once( plugin_dir_path( __FILE__ ) . 'includes/anspress-main.php' );
-require_once( plugin_dir_path( __FILE__ ) . 'includes/anspress-form.php' );
-require_once( plugin_dir_path( __FILE__ ) . 'includes/anspress-ajax.php' );
-require_once( plugin_dir_path( __FILE__ ) . 'includes/anspress-basepage.php' );
-require_once( plugin_dir_path( __FILE__ ) . 'includes/anspress-participants.php' );
-require_once( plugin_dir_path( __FILE__ ) . 'includes/anspress-labels.php' );
-require_once( plugin_dir_path( __FILE__ ) . 'includes/anspress-user.php' );
-require_once( plugin_dir_path( __FILE__ ) . 'includes/anspress-ranks.php' );
-require_once( plugin_dir_path( __FILE__ ) . 'includes/anspress-badges.php' );
-require_once( plugin_dir_path( __FILE__ ) . 'activate.php' );
-require_once( plugin_dir_path( __FILE__ ) . 'includes/anspress-points.php' );
-require_once( plugin_dir_path( __FILE__ ) . 'includes/anspress-history.php' );
-require_once( plugin_dir_path( __FILE__ ) . 'includes/anspress-shortcodes.php' );
-require_once( plugin_dir_path( __FILE__ ) . 'includes/anspress-widgets.php' );
-require_once( plugin_dir_path( __FILE__ ) . 'includes/image_resize.php' );
+anspress();
 
 
 /*
@@ -103,47 +266,35 @@ require_once( plugin_dir_path( __FILE__ ) . 'includes/image_resize.php' );
  * When the plugin is deleted, the uninstall.php file is loaded.
  */
 
-register_activation_hook( __FILE__, array( 'anspress_activate', 'activate' ) );
+register_activation_hook( __FILE__, 'anspress_activate'  );
 
 register_deactivation_hook( __FILE__, array( 'anspress', 'deactivate' ) );
-add_action( 'plugins_loaded', array( 'AP_Addons', 'get_instance' ) );
-add_action( 'plugins_loaded', array( 'anspress', 'get_instance' ) );
-add_action( 'plugins_loaded', array( 'AP_Roles_Permission', 'get_instance' ) );
-add_action( 'plugins_loaded', array( 'anspress_posts', 'get_instance' ) );
-add_action( 'plugins_loaded', array( 'AP_Categories', 'get_instance' ) );
-add_action( 'plugins_loaded', array( 'AP_Tags', 'get_instance' ) );
+
+add_action( 'plugins_loaded', array( 'anspress_main', 'get_instance' ) );
+
 add_action( 'plugins_loaded', array( 'Ap_Meta', 'get_instance' ) );
 add_action( 'plugins_loaded', array( 'anspress_vote', 'get_instance' ) );
 add_action( 'plugins_loaded', array( 'anspress_view', 'get_instance' ) );
-add_action( 'plugins_loaded', array( 'anspress_form', 'get_instance' ) );
-add_action( 'plugins_loaded', array( 'anspress_theme', 'get_instance' ) );
-add_action( 'plugins_loaded', array( 'anspress_ajax', 'get_instance' ) );
-add_action( 'plugins_loaded', array( 'AP_BasePage', 'get_instance' ) );
+//add_action( 'plugins_loaded', array( 'anspress_form', 'get_instance' ) );
+
 add_action( 'plugins_loaded', array( 'AP_Participents', 'get_instance' ) );
-add_action( 'plugins_loaded', array( 'AP_labels', 'get_instance' ) );
-add_action( 'plugins_loaded', array( 'AP_User', 'get_instance' ) );
+//add_action( 'plugins_loaded', array( 'AP_labels', 'get_instance' ) );
+add_action( 'plugins_loaded', array( 'AnsPress_User', 'get_instance' ) );
 add_action( 'plugins_loaded', array( 'AP_Ranks', 'get_instance' ) );
 add_action( 'plugins_loaded', array( 'AP_Badges', 'get_instance' ) );
 add_action( 'plugins_loaded', array( 'AP_Points', 'get_instance' ) );
 add_action( 'plugins_loaded', array( 'AP_History', 'get_instance' ) );
-add_action( 'plugins_loaded', array( 'AP_ShortCodes', 'get_instance' ) );
-add_action( 'plugins_loaded', array( 'AP_Widgets', 'get_instance' ) );
 
+add_action( 'plugins_loaded', array( 'AP_Widgets', 'get_instance' ) );
 
 /*----------------------------------------------------------------------------*
  * Dashboard and Administrative Functionality
  *----------------------------------------------------------------------------*/
 
 /*
- * If you want to include Ajax within the dashboard, change the following
- * conditional to:
- *
- * if ( is_admin() ) {
- *   ...
- * }
- *
  * The code below is intended to to give the lightest footprint possible.
  */
+
 if ( is_admin() ) {
 
 	require_once( plugin_dir_path( __FILE__ ) . 'admin/anspress-admin.php' );

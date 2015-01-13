@@ -1,0 +1,129 @@
+//
+// Buttons style
+// --------------------------------------------------
+
+.ap-btn{
+    background: @blue-color;
+    color: @white;
+    .border-radius(@default-border-radius);
+    border:none;
+    padding: 10px 20px;
+    text-decoration: none;
+
+    &.ap-btn-blue{
+        background: @blue-color;
+        color: @white;
+        &:hover{
+            border-color: @blue-color;
+        }
+    }
+    &.ap-btn-view-all {
+        display: block;
+        margin-top: 30px;
+        text-align: center;
+        text-transform: uppercase;
+    }
+    &:hover{
+        text-decoration: none;
+        background: darken(@blue-color, 10%);
+        color: @white;
+    }
+}
+
+// voting button
+.ap-vote{
+    border: 1px solid #d1e8f1;
+    border-radius: 2px;
+    color: #428bca;
+    font-size: 18px;
+    font-weight: 600;
+    margin: 10px auto 0;
+    text-align: center;
+    width: 35px;
+    position: relative;
+    a{
+    	text-decoration: none;
+    	color: @link-color;
+    	display:block;
+        &:focus{
+            outline: none;
+        }
+    	&.disable{
+			display: none;
+		}
+    }
+    .vote-up{
+    	margin-bottom: -12px;
+        margin-top: 5px;
+	}
+	.vote-down{
+        margin-top: -6px;
+        margin-bottom: 2px;
+	}	
+    .net-vote-count{    	
+	    display: block;
+	    font-size: 16px;
+	    padding: 2px;
+    }
+    .ap-vote-fade {
+        bottom: 0;
+        position: absolute;
+        top: 0;
+        width: 100%;
+    }
+}
+
+.ap-radio-btn{
+    background: none repeat scroll 0 0 #ddd;
+    border: 2px solid #ddd;
+    .border-radius(8px);
+    display: block;
+    width: 30px;
+    height: 16px;
+    position: relative;
+    cursor: pointer;
+   
+    
+    &:before{
+        background: none repeat scroll 0 0 #fff;
+        .border-radius(50%);
+        content: "";
+        display: block;
+        height: 12px;
+        width: 12px;
+        position: absolute;
+        left: 0;
+    }
+    &:focus{
+        outline: none;
+    }
+    &.active{
+        background: @main-color;
+        border-color: @main-color;
+        &:before{
+            right: 0;
+            left: auto;
+        }
+    }
+        
+}
+.ap-subscribe{
+    text-align:center;
+    &.active{
+        color: @main-color;
+    }
+    .ap-subscribe-label{
+        display: block;
+        font-weight: bold;
+        margin-bottom: 10px;
+        text-transform: uppercase;
+        font-size: 12px;
+    }
+    .ap-radio-btn{
+        margin: 0 auto;
+    }
+    .ap-subscribers-count{
+        font-size: 16px;
+        line-height: 100%;
+    }
+}

@@ -1,0 +1,166 @@
+//
+// Form and editor styles
+// --------------------------------------------------
+
+.ap-form-control {
+    border: 2px solid #e4e4e4;
+    border-radius: 2px;
+    box-shadow: 0 0 2px #eee inset;
+    display: block;
+    height: 50px;
+    margin-bottom: 15px;
+    padding: 10px;
+    width: 100%;
+
+    &[type="checkbox"]{
+	    display: inline;
+	    margin: 0;
+	    padding: 0;
+	    width: auto;
+    }
+    &#title {
+	    font-size: 18px;
+	    font-weight: @bold;
+	}
+}
+.ap-checkbox-withdesc{
+	margin-bottom: 15px;
+	[type="checkbox"]{
+	    float: left;
+	    height: 20px;
+	    line-height: 100%;
+	    margin-right: 10px;
+	}
+	p{
+	    color: @light-color;
+	    font-size: 13px;
+	    margin-bottom: 0;
+	}
+}
+.ap-form-fields{
+	position: relative;
+	&.ap-have-error{
+		.ap-form-control, .ap-editor{
+			border: solid 2px @error-color;
+			background: lighten(@error-color, 40%);
+		}
+		.ap-editor{
+			padding: 10px;
+		}
+		&.being-edited{
+			.ap-form-control, .ap-editor{
+				border-color: @yellow-color;
+				background: @white;
+			}
+			.ap-form-error-message{
+				background: @yellow-color;
+			}
+		}
+	}
+
+	.ap-form-error-message{
+	    background: @error-color;
+	    .border-radius(2px 2px 0 0);
+	    color: @white;
+	    margin: 0;
+	    padding: 3px 10px;
+	    position: absolute;
+	    right: 0;
+	    top: 5px;
+	}
+
+}
+.ap-editor{
+	margin-bottom: 15px;
+	.wp-editor-container{
+		background: #f2f2f2;
+		.border-radius(4px);
+		padding: 5px;
+	}
+	.quicktags-toolbar{
+		background: none;
+		border:none;
+	}
+	textarea.wp-editor-area, .mce-panel{
+		background: none;
+	}
+	.quicktags-toolbar input.button, .mce-btn button{
+	    background: none repeat scroll 0 0 #fff;
+	    border: medium none;
+	    .border-radius(2px);
+	    .box-shadow(none);
+	    color: #aaa;
+
+	    i{
+	    	padding: 4px;
+	    }
+	}
+	.mce-toolbar-grp{
+		border-bottom: none;
+	}
+}
+#answer-form-c {
+    border-top: 1px solid @default-border-color;
+    margin-top: 30px;
+    padding-top: 10px;
+}
+.btn-submit-ans{
+	padding: 10px 20px;
+}
+.ap-form-label{
+	display: block;
+	margin-bottom: 10px;
+	.ap-field-desc {
+	    background: none repeat scroll 0 0 #bbb;
+	    .border-radius(50%);
+	    color: @white;
+	    display: inline-block;
+	    font-size: 12px;
+	    height: 16px;
+	    line-height: 18px;
+	    margin-left: 7px;
+	    text-align: center;
+	    width: 16px;
+	    &:hover{
+	    	background: @blue-color;
+	    }
+	}
+}
+.ap-similar-questions-head{
+	h3{
+		color: @main-color;
+		font-size: 16px;
+    	font-weight: @bold;
+	}
+}
+.ap-similar-questions{
+	border: solid 2px #eee;
+	.border-radius(@default-border-radius);
+	margin-bottom: 15px;
+	max-height: 210px;
+    overflow-x: auto;
+    .box-shadow(0 0 4px rgba(0, 0, 0, 0.04) inset);
+    padding: 15px;
+
+	a{
+		color: @default-color;
+		display: block;
+		padding: 8px;
+		text-decoration: none;
+
+		.acount{
+		    color: @light-color;
+		    float: right;
+		    font-size: 13px;
+		    font-style: italic;
+		}
+
+		&:hover{
+			background: #fcfcfc;
+		}
+		.highlight_word{
+			font-weight: @bold;
+			text-decoration: underline;
+		}
+	}
+}

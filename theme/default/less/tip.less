@@ -1,0 +1,38 @@
+//
+// Tooltip styles
+// --------------------------------------------------
+
+.tooltipster-default.ap-tip-style{
+	background: @tooltip-bg;
+	font-size: 11px;
+	font-family: arial, helvetica, sans-serif;
+	.tooltipster-content{
+		font-size: 13px;
+		a{
+			font-weight: @bold;
+			text-decoration: none;
+			color: @white;
+		}
+	}
+	&.tags-list{
+		background: @white;
+		width: 150px;
+		border:solid 2px #ddd;
+		.border-radius(3px);
+		.box-shadow(0 0 5px rgba(0, 0, 0, 0.1));
+		a{
+			color: @default-color;
+		    display: block;
+		    font-weight: normal;
+		    padding: 8px 5px;
+		    border-bottom: solid 1px #f8f8f8;
+
+		    &:hover{
+		    	background: #f8f8f8;
+		    }
+		    &:last-child{
+		    	border-bottom: none;
+		    }
+		}
+	}	
+}

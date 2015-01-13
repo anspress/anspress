@@ -3,7 +3,7 @@ AnsPress - The most advance community question and answer system for WordPress.
 
 ![AnsPress Cover](https://raw.githubusercontent.com/open-wp/anspress/master/banner-1544x500.png "AnsPress cover image")
 
-Demo & support forum: http://open-wp.com/questions/
+Demo & support forum: http://wp3.in/questions/
 
 AnsPress is the most complete question and answer system for WordPress. AnsPress is made with developers in mind, highly customizable. AnsPress provide an easy to use override system for theme. List of features:
 
@@ -31,14 +31,14 @@ AnsPress is the most complete question and answer system for WordPress. AnsPress
   - User profile
   - Pages : Tags, categories, users etc.
 
-AnsPress is an open source project by [Open-WP]. And it is under active development of [Rahul Aryan] the developer.
+AnsPress is an open source project by [WP3.in]. And it is under active development of [Rahul Aryan] the developer.
 
-> If you need any assistance then feel free to post it on Developers [Support forum] or you can contact us via twitter [@openwp]
+> If you need any assistance then feel free to post it on Developers [Support forum] or you can contact us via twitter [@wp3in]
 
 
 
-[Open-WP]:http://open-wp.com/
-[Rahul Aryan]:http://open-wp.com/
-[Support forum]:http://open-wp.com/questions
-[@openwp]:http://twitter.com/openwp
+[Open-WP]:http://wp3.in/
+[Rahul Aryan]:http://wp3.in/
+[Support forum]:http://wp3.in/questions
+[@openwp]:http://twitter.com/wp3in
 

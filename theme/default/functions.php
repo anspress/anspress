@@ -9,19 +9,22 @@
  * @license    http://opensource.org/licenses/gpl-license.php  GNU Public License
  * @author    Rahul Aryan <rah12@live.com>
  */
- 
-//include pagination function
-require_once( ap_get_theme_location('pagination.php') );
 
 
-add_action('wp_enqueue_scripts', 'init_scripts_front');
+/**
+ * Enqueue scripts
+ *
+ */
+add_action('wp_enqueue_scripts', 'init_scripts_front', 11);
 function init_scripts_front(){
-	if(is_anspress()){
+	//if(is_anspress()){
 		wp_enqueue_script( 'jquery');				
 		wp_enqueue_script( 'tagsinput', ap_get_theme_url('js/bootstrap-tagsinput.min.js'), 'jquery', AP_VERSION);
 		wp_enqueue_script( 'jquery-form', array('jquery'), false, true );
 			
+		wp_enqueue_script( 'ap-functions-js', ANSPRESS_URL.'assets/ap-functions.js', 'jquery');		
 		wp_enqueue_script( 'ap-site-js', ANSPRESS_URL.'assets/ap-site.js', 'jquery', AP_VERSION);		
+		wp_enqueue_script( 'anspress_acript', ANSPRESS_URL.'assets/anspress_site.js', 'jquery', AP_VERSION);		
 		wp_enqueue_script( 'tooltipster', ap_get_theme_url('js/jquery.tooltipster.min.js'), 'jquery', AP_VERSION);
 		wp_enqueue_script( 'jstorage', ap_get_theme_url('js/jstorage.js'), 'jquery', AP_VERSION);
 		//wp_enqueue_script( 'perfect-scrollbar', ap_get_theme_url('js/perfect-scrollbar.min.js'), 'jquery', AP_VERSION);
@@ -29,9 +32,10 @@ function init_scripts_front(){
 		wp_enqueue_style( 'tagsinput', ap_get_theme_url('css/bootstrap-tagsinput.css'), array(), AP_VERSION);
 		wp_enqueue_style( 'tooltipster', ap_get_theme_url('css/tooltipster.css'), array(), AP_VERSION);
 		//wp_enqueue_style( 'perfect-scrollbar', ap_get_theme_url('css/perfect-scrollbar.min.css'), array(), AP_VERSION);
-		wp_enqueue_style( 'ap-style', ap_get_theme_url('css/ap.css'), array(), AP_VERSION);		
+		wp_enqueue_style( 'ap-style', ap_get_theme_url('css/main.min.css'), array(), AP_VERSION);	
 		
-		wp_enqueue_style( 'ap-fonts', ap_get_theme_url('fonts/style.css'), array(), AP_VERSION);
+		wp_enqueue_style( 'ap-fonts', ap_get_theme_url('fonts/styles.css'), array(), AP_VERSION);
+		
 		
 		do_action('ap_enqueue');
 		
@@ -77,12 +81,15 @@ function init_scripts_front(){
 			'updating_message' 				=> __( 'Updating message', 'ap' ),
 			'deleting_message' 				=> __( 'Deleting message', 'ap' ),
 			'uploading' 					=> __( 'Uploading', 'ap' ),
+			'error' 						=> ap_icon('error'),
+			'warning' 						=> ap_icon('warning'),
+			'success' 						=> ap_icon('success'),
 		) );
 
 		wp_localize_script( 'ap-site-js', 'apoptions', array(
 			'ajaxlogin' => ap_opt('ajax_login'),
 		));
-	}
+	//}
 }
 
 
@@ -90,43 +97,43 @@ if ( ! function_exists( 'ap_comment' ) ) :
 	function ap_comment( $comment ) {
 		$GLOBALS['comment'] = $comment;
 		?>
-		<li <?php comment_class(); ?> id="li-comment-<?php comment_ID(); ?>">
+		<li <?php comment_class('clearfix'); ?> id="li-comment-<?php comment_ID(); ?>">
 			<!-- comment #<?php comment_ID(); ?> -->
-			<article id="comment-<?php comment_ID(); ?>" class="comment">
-				<div class="ap-avatar">
+			<article id="comment-<?php comment_ID(); ?>">
+				<div class="ap-avatar ap-pull-left">
 					<a href="<?php echo ap_user_link($comment->user_id); ?>">
-					<?php echo get_avatar( $comment, ap_opt('avatar_size_qcomment') ); ?>
+					<!-- TODO: OPTION - Avatar size -->
+					<?php echo get_avatar( $comment, 30 ); ?>
 					</a>
 				</div>
-				<div class="comment-content">
+				<div class="ap-comment-content no-overflow">
 					<?php if ( '0' == $comment->comment_approved ) : ?>
 						<p class="comment-awaiting-moderation"><?php _e( 'Your comment is awaiting moderation.', 'ap' ); ?></p>
 					<?php endif; ?>
 										
-					<p class="ap-comment-texts">
+					<div class="ap-comment-texts">
 						<?php echo get_comment_text(); ?>
 						<?php $a=" e ";$b=" ";$time=get_option('date_format').$b.get_option('time_format').$a.get_option('gmt_offset');
-								printf( ' - <a title="%6$s" href="#li-comment-%7$s"><time datetime="%1$s">%2$s %3$s %5$s %4$s</time></a>',
+								printf( ' - <a title="%4$s" href="#li-comment-%5$s" class="ap-comment-time"><time datetime="%1$s">%2$s %3$s</time></a>',
 								get_comment_time( 'c' ),
 								ap_human_time(get_comment_time('U')),
 								__('ago', 'ap'),
-								$author = get_comment_author( $comment),
-								__('by','ap'),
 								get_comment_time($time),
 								$comment_id = get_comment_ID()
 							);
+
+							// Comment actions
+							ap_comment_actions_buttons();
 						?>
-					</p>
-					<div class="comment-meta">
-						<?php
-							
-							if(ap_user_can_edit_comment(get_comment_ID()))
-								echo '<a class="comment-edit-btn" href="#" data-button="ap-edit-comment" data-args="'.get_comment_ID().'-'.wp_create_nonce( 'comment-'.get_comment_ID() ).'"><i class="aicon-pencil"></i> '.__('Edit', 'ap').'</a>';
-							
-							if(ap_user_can_delete_comment(get_comment_ID()))
-								echo '<a class="comment-delete-btn" href="#" data-button="ap-delete-comment" data-confirm="'.__('Are you sure? It cannot be undone!', 'ap').'" data-args="'.get_comment_ID().'-'.wp_create_nonce( 'delete-comment-'.get_comment_ID() ).'"><i class="aicon-close"></i> '.__('Delete', 'ap').'</a>';
-						?>
-					</div>					
+					</div>
+					<?php
+						/**
+						 * ACTION: ap_after_comment_content
+						 * Action called after comment content
+						 * @since 2.0.1
+						 */
+						do_action('ap_after_comment_content', $comment );
+					?>
 				</div>
 			</article>
 		<?php

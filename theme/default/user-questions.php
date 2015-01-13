@@ -1,18 +1,23 @@
-<div id="ap-user-questions">
-	<?php if ( $question->have_posts() ) : ?>
-	<?php ap_questions_tab();?>
+<?php dynamic_sidebar( 'ap-top' ); ?>
+<div id="ap-lists" class="clearfix">
+	<?php ap_questions_tab(ap_user_link('questions')); ?>
+	<?php if ( $questions->have_posts() ) : ?>
 		<div class="question-list">
 	<?php
+		
 		/* Start the Loop */
-		while ( $question->have_posts() ) : $question->the_post();
+		while ( $questions->have_posts() ) : $questions->the_post();
+			global $post;
 			include(ap_get_theme_location('content-list.php'));
 		endwhile;
 	?>
 		</div>
-	<?php ap_pagination('', 2, $paged, $question); ?>
+	<?php 
+		ap_pagination();
+	?>
 	<?php
 		else : 
-			_e('No questions asked yet.', 'ap');
+			include(ap_get_theme_location('content-none.php'));
 		endif; 
 	?>	
 </div>

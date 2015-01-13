@@ -1,0 +1,233 @@
+//
+// Question page style
+// --------------------------------------------------
+
+.ap-content{
+	&.question{		
+		.ap-question-cells {
+		    margin-top: 30px;
+		}
+	}
+
+	.ap-favorite{
+		float: right;
+		a{
+		    border-radius: 50%;
+		    display: block;
+		    font-size: 20px;
+		    height: 50px;
+		    line-height: 45px;
+		    text-align: center;
+		    width: 50px;
+		    
+		    i{
+			    font-size: 15px;
+    			margin-right: -5px;
+			}
+		}
+		span{
+			display: none;
+		}
+
+	}
+	
+	.ap-user-meta{
+		color: @light-color;
+		margin-bottom: 0;
+
+	    .ap-user-meta-display_name{
+		    font-size: 14px;
+		    font-weight: @bold;
+		    margin-bottom: 5px;
+		}
+	}
+	.ap-question-metas, .ap-answer-metas{
+	    border-bottom: 1px solid #eee;
+	    margin: -15px -15px 15px;
+	    padding: 10px;
+		li{
+			color:@light-color;
+			i{
+				font-style: normal;
+			}
+
+			&:before {
+			    background: #dadada;
+			    .border-radius(@default-border-radius);
+			    content: "";
+			    display: block;
+			    float: left;
+			    height: 5px;
+			    margin-right: 6px;
+			    margin-top: 7px;
+			    padding: 0;
+			    width: 5px;
+			}
+			&:first-child:before{
+				display: none;
+			}
+		}
+	}
+	.entry-title{
+	    font-size: 32px;
+	    line-height: 42px;
+	}
+	.ap-post-content{
+	    font-size: @font-size-post-content;
+	    line-height: @line-height-post-content;
+
+	    p{
+	    	margin-bottom:15px;
+
+	    	&:last-child{
+	    		margin-bottom: 0;
+	    	}
+	    }
+	}
+	.ap-question-actions-history{
+		margin-bottom:20px;
+	}
+	
+	.ap-posted-in {
+	    color: @light-color;
+	    font-size: 16px;
+	    margin-bottom: -15px;
+	    text-transform: uppercase;
+	}
+
+	.ap-post-tags {
+		margin-top:20px;
+		li a{
+		    border: 2px solid #eee;
+		    .border-radius(16px);
+		    color:@meta-color;
+		    display: block;
+		    padding: 3px 13px;
+		    text-decoration: none;
+
+		    .tax-count{
+		    	font-style: normal;		    	
+		    }
+
+		    &:hover{
+		    	border-color: @main-color;
+		    	color: @default-color;
+		    }
+		}
+	}
+	.ap-user-actions {
+	    margin-top: 25px;
+	    li{
+	    	margin-right: 10px;
+	    }
+	    a{
+		    border: 1px solid #ddd;
+		    border-radius: 2px;
+		    color: @light-color;
+		    font-size: 12px;
+		    font-weight: 600;
+		    padding: 5px 10px;
+		    text-decoration: none;
+
+		    &:hover{
+		    	color: @default-color;
+		    }
+
+	    	i{
+			    display: inline-block;
+			    font-size: 11px;
+			    margin-left: -4px;
+			    margin-right: 3px;
+			    margin-top: 0;
+	    	}
+	    }
+	}
+}
+
+#ap-best-answer {
+    margin-bottom: 30px;
+    margin-top: 30px;
+}
+
+.ap-other-answers-tab {
+	border-bottom: 2px solid @default-border-color;
+	.ap-widget-title{
+    	margin: 7px 30px 7px 0;
+    	font-size: 18px;
+	}
+	.ap-answers-tab {
+	    float: right;
+	    margin: 0;
+	    border-bottom:none;
+		li{
+			float: right;
+		}
+	}
+}
+#ap-answers-c{
+	padding-top: 25px;
+}
+#answers{
+	.answer{
+	    border-top: 1px solid @default-border-color;
+	    margin-top: 30px;
+	    padding-top: 25px;
+
+	    &:first-child{
+	    	padding-top: 0;
+	    	border-top: none;
+	    }
+	}
+}
+
+.ap-btn-select {
+    border: 1px solid lighten(@main-color, 30%);
+    .border-radius(@default-border-radius);
+    color:@main-color;
+    display: block;
+    float: right;
+    padding: 8px;
+    text-decoration: none;
+    &:hover{
+    	border-color: @main-color;
+    	text-decoration: none;
+    	color:@main-color;
+    }
+    &.selected{
+    	background: @main-color;
+    	color:@white;
+    	border-color: transparent;
+    }
+    &:before{
+	    display: block;
+	    float: left;
+	    font-size: 18px;
+	    margin-right: 6px;
+    }
+}
+.ap-question-right-inner {
+    border-left: 1px solid #eee;
+}
+.ap-q-side-sec{
+	margin-bottom: 15px;
+	text-align: center;
+	.ap-side-sec-label{
+		display: block;
+	    font-weight: bold;
+	    margin-bottom: 10px;
+	    text-transform: uppercase;
+	    font-size: 12px;
+	}
+	.ap-participants-list{
+		.ap-avatar{
+			margin-right: 0;
+			padding: 5px;
+			margin-top: 10px;
+		}
+	}
+}
+.ap-content-inner {
+    border: 1px solid #ddd;
+    .border-radius(3px);
+    padding: 15px;
+}

@@ -512,19 +512,6 @@ function ap_option_flag_note(){
 	});
 }
 
-// Tab for option page
-function ap_tab(){
-	
-	jQuery('#ap_opt_nav li a').click(function(e){
-		e.preventDefault();
-		jQuery('#ap_opt_nav li').removeClass('active');
-		jQuery(this).parent().addClass('active');
-		var t = jQuery(this).attr('href');
-		jQuery('.tab-content .tab-pane').removeClass('active');
-		jQuery(t).addClass('active');
-		
-	});
-}
 if(typeof wpNavMenu != 'undefined'){
 	wpNavMenu.addApLink = function( processMethod ) {
 		var $checked = jQuery('.aplinks ul .menu-item-title input[type="radio"]:checked');
@@ -608,7 +595,6 @@ jQuery(document).ready(function (jQuery){
 	}); */
 	
 	ap_option_flag_note();
-	ap_tab();
 	ap_submit_menu();
 	//wpNavMenu.init();
 

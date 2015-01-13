@@ -1,0 +1,62 @@
+//
+// Comments
+// --------------------------------------------------
+
+.ap-comments{
+	&.have-comments{
+	    border: 1px solid #f8f8f8;
+	    border-radius: 4px;
+	    margin-top: 30px;
+	}
+	.ap-commentlist {
+	    list-style: none outside none;
+	    margin: 0;
+	    padding: 0;
+
+	    .comment{
+		    border-bottom: 1px solid #f8f8f8;
+		    color: #777;
+		    font-size: 13px;
+		    line-height: 22px;
+		    margin-bottom: 0;
+		    padding: 12px;
+
+
+		    &:last-child{
+		    	margin-bottom:0;
+		    	border-bottom: none;
+		    }
+
+		    .ap-avatar{
+		    	margin-top: 3px;
+		    }
+		    .ap-comment-time{
+		    	margin-right: 10px;
+		    }
+		    .ap-comment-action{
+		    	margin-right:5px;
+		    	white-space: nowrap;
+		    	a{
+		    		text-decoration: none;
+		    		color: @link-color;
+		    	}
+		    	i{
+		    		font-size: 10px;
+		    	}
+		    }
+	    }
+	}
+}
+
+.ap-comment-form{
+	#ap-comment-textarea{
+	    background: #f2f2f2;
+	    border: medium none;
+	    .box-shadow(none);
+	    margin-bottom: 15px;
+	    padding: 15px;
+	}
+	#submit{
+		.ap-btn;
+	}
+}

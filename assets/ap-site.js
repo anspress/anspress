@@ -1,11 +1,11 @@
-
+(function($){
 /* on start */
-jQuery(function() {
+$(function() {
      
     /* create document */
     APjs.site = new APjs.site();
-    /* need to call init manually with jQuery */
-    APjs.site.initialize();
+    /* need to call init manually with $ */
+    //APjs.site.initialize();
  
 });
  
@@ -17,14 +17,18 @@ APjs.site = function() {};
 APjs.site.prototype = {
 	
 	/* automatically called */
-	initialize: function() {		
-		if(jQuery('.ap-signup-fields #password').length > 0){		
-			jQuery('.ap-signup-fields #password1').on('keyup', jQuery.proxy(this.checkPasswordMatch, this, '.ap-signup-fields #password', '.ap-signup-fields #password1'));
-			jQuery('.ap-signup-fields #password').on('keyup', jQuery.proxy(this.checkPasswordLength, this, '#password'));
+	initialize: function() {
+
+		if($('.ap-signup-fields #password').length > 0){		
+			$('.ap-signup-fields #password1').on('keyup', $.proxy(this.checkPasswordMatch, this, '.ap-signup-fields #password', '.ap-signup-fields #password1'));
+			$('.ap-signup-fields #password').on('keyup', $.proxy(this.checkPasswordLength, this, '#password'));
 		}
 		
+		/*this.onWidnowReady();
+		this.afterAjaxComplete();
 		this.checkEmail();
 		this.checkEmailAvailable();
+		//this.bind();
 		
 		this.castVote();
 		this.favorite();
@@ -39,8 +43,6 @@ APjs.site.prototype = {
 		this.load_edit_comment_form();
 		this.submitAnswer();
 		this.submitQuestion();
-		
-		this.toggleLoginSignup();
 		
 		this.saveComment();
 		this.updateComment();
@@ -69,73 +71,175 @@ APjs.site.prototype = {
 		this.newTag();
 		this.loginAccor();
 		
+		this.expandToggle();
+
+		this.removeHasError();*/
 		
-		jQuery('body').delegate('.ap-modal-bg, .ap-modal-close', 'click', function () {
-			jQuery('.ap-modal.active').toggleClass('active');
+		
+
+		$('body').delegate('.ap-modal-bg, .ap-modal-close', 'click', function () {
+			$('.ap-modal.active').toggleClass('active');
 		});
 		
-		jQuery('body').delegate('.ap-open-modal', 'click', function(e){
+		$('body').delegate('.ap-open-modal', 'click', function(e){
 			e.preventDefault();
-			var id = jQuery(this).attr('href');
+			var id = $(this).attr('href');
 			/* ensure all other models are closed */
-			jQuery('.ap-open-modal').each(function() {
-				var model_id = jQuery(this).attr('href')
-				jQuery(model_id).removeClass('active');
+			$('.ap-open-modal').each(function() {
+				var model_id = $(this).attr('href')
+				$(model_id).removeClass('active');
 			});
 
 			/* activate our model */
-			jQuery(id).addClass('active');
+			$(id).addClass('active');
 		});
 		
 		
 	},
+
+	onWidnowReady:function(){
+		var self = this;
+		$(window).ready(function(){
+			self.foldContent();
+		})
+		
+	},
+
+	/**
+	 * Process to run after completing an ajax request
+	 * @return {void}
+	 * @since 2.0
+	 */
+	afterAjaxComplete:function(){
+		var self = this;
+		$( document ).ajaxComplete(function( event, data, settings ) {
+			console.log(data);
+			if(typeof data !== 'undefined' && typeof data.responseJSON !== 'undefined' && typeof data.responseJSON.message !== 'undefined'){
+				var type = typeof data.responseJSON.message_type === 'undefined' ? 'success' : data.responseJSON.message_type;
+				self.addMessage(data.responseJSON.message, type);
+				$('document').trigger('ap_after_ajax', data);
+			}
+		});
+	},
+
+	inputVal:function(elm){
+		return $(elm).val();
+	},
+
+	parseAjaxData: function(string, elm){
+		var self = this;
+		var data = apQueryStringToJSON(string);
+		
+		$.each(data, function(k, v){
+			var new_v = '';
+
+			switch(v) {
+			    case '__INPUT_VAL__':
+			        new_v = self.inputVal(elm);
+			        break;
+			}
+
+			if(new_v !== '')
+				data[k] = new_v;
+		});
+
+		data['action'] = 'ap_ajax';
+
+		return data;	
+	},
+
+	html_content: function(id, html, elm){
+		$('#'+id).html(html);
+	},
+
+	parseAjaxSuccess: function(data){
+		var self = APjs.site;
+		var success = apQueryStringToJSON($(this).data('success'));
+
+		$.each(success, function(k, v){			
+			switch(k) {
+			    case 'html_content':
+			        self.html_content(v, data['html'], this);
+			        break;
+			}
+
+		});
+	},
+
+	/**
+	 * do actions as defined in data-action
+	 * @return {void}
+	 * @since  2.0
+	 */
+	doAction: function(){
+		var self = this;
+		var ajax_q = new Object();
+
+		$('[data-action]').each(function(i){
+			var action = $(this).data('action');
+			//self.[action]();
+			/*var e = $(this).data('bind');
+			
+			var q = $(this).data('query');
+
+			if(typeof q === 'undefined')
+				return;
+
+			$(this).on(e, function(){
+				self.loading = self.showLoading(this);
+				var data = self.parseAjaxData($(this).data('query'), this);
+				
+				if(typeof ajax_q[i] !== 'undefined'){
+					ajax_q[i].abort();
+				}
+
+				 ajax_q[i] = self.doAjax(data, self.parseAjaxSuccess, this);
+			});*/
+		});
+	},
+
+	
 	
 	appendMessageBox: function(){
-		if(jQuery('#ap-messagebox').length == '0')
-			jQuery('body').append('<div id="ap-messagebox"></div>');
+		if($('#ap-messagebox').length == '0')
+			$('body').append('<div id="ap-messagebox"></div>');
 	},
 	
 	showLoading: function(message){
 		/* set the default message if no message passed */
 		if(typeof message == 'undefined')message = aplang.loading;
 
-		if(jQuery('#ap-ajax-loading').length > 0)
-			jQuery('#ap-ajax-loading').text(message);
+		if($('#ap-ajax-loading').length > 0)
+			$('#ap-ajax-loading').text(message);
 		else
-			jQuery('#ap-messagebox').append('<div style="display:none" id="ap-ajax-loading">'+message+'</div>');
+			$('#ap-messagebox').append('<div style="display:none" id="ap-ajax-loading">'+message+'</div>');
 		
-		jQuery('#ap-ajax-loading').slideDown(200);
+		$('#ap-ajax-loading').slideDown(200);
 	},
 	
 	/* change the message of loading */
 	addMessage: function(message, type){
-		jQuery('<div class="ap-message-item '+type+'">'+message+'</div>').appendTo('#ap-messagebox').delay(5000).slideUp(200);
+		$('<div class="ap-message-item '+type+'">'+message+'</div>').appendTo('#ap-messagebox').delay(5000).slideUp(200);
 	},
 	
 	hideLoading:function(){
-		jQuery('#ap-ajax-loading').delay(500).slideUp(200);
+		$('#ap-ajax-loading').delay(500).slideUp(200);
 	},
 	
 	/* add bootstrap validation class */
 	fieldValidationClass: function(field, vclass){
-		jQuery(field).addClass(vclass);
+		$(field).addClass(vclass);
 	},
 	
 	/* add help block below field */
-	helpBlock:function(elm, message){
-		/* remove existing help block */
-		if(jQuery(elm).find('.help-block').length > 0)
-			jQuery(elm).find('.help-block').remove();
-			
-		jQuery(elm).append('<span class="help-block">'+message+'</span>');
-	},
+	
 	
 	toggleFormSubmission:function(form, toggle){
-		//jQuery(form).submit(toggle);		
-		if(toggle && jQuery(form).find('.has-error').length == 0)
-			jQuery(form).find('button[type="submit"]').removeAttr('disabled');
+		//$(form).submit(toggle);		
+		if(toggle && $(form).find('.has-error').length == 0)
+			$(form).find('button[type="submit"]').removeAttr('disabled');
 		else
-			jQuery(form).find('button[type="submit"]').attr('disabled', 'disabled');
+			$(form).find('button[type="submit"]').attr('disabled', 'disabled');
 	},
 	
 	isEmail : function (email) {
@@ -145,16 +249,16 @@ APjs.site.prototype = {
 	
  	/* check for matching password between to fields  */
 	checkPasswordMatch : function (field1, field2) {
-		var password = jQuery(field1).val();
-		var confirmPassword = jQuery(field2).val();
+		var password = $(field1).val();
+		var confirmPassword = $(field2).val();
 		
-		var parent = jQuery(field2).closest('.form-group');
+		var parent = $(field2).closest('.form-group');
 		if (password != confirmPassword){
 			this.fieldValidationClass(parent, 'has-error');
 			if(parent.find('.help-block').length == 0)
 				this.helpBlock(parent, aplang.password_field_not_macthing);
 			
-			this.toggleFormSubmission(jQuery(field2).closest('form'), false);
+			this.toggleFormSubmission($(field2).closest('form'), false);
 		}
 		else{
 			parent.removeClass('has-error');
@@ -162,40 +266,40 @@ APjs.site.prototype = {
 			if(parent.find('.help-block').length >0)
 				parent.find('.help-block').remove();
 			
-			this.toggleFormSubmission(jQuery(field2).closest('form'), true);
+			this.toggleFormSubmission($(field2).closest('form'), true);
 		}
 	},
 	
 	/* check for password length */
 	checkPasswordLength:function(field){
-		var password = jQuery(field).val(),
-			parent = jQuery(field).closest('.form-group');
+		var password = $(field).val(),
+			parent = $(field).closest('.form-group');
 		
 		if(password.length < 6){
 			this.fieldValidationClass(parent, 'has-error');
 			this.helpBlock(parent, aplang.password_length_less);
-			this.toggleFormSubmission(jQuery(field).closest('form'), false);
+			this.toggleFormSubmission($(field).closest('form'), false);
 		}else{
 			parent.removeClass('has-error');
 			this.fieldValidationClass(parent, 'has-feedback');
 			parent.find('.help-block').remove();
-			this.toggleFormSubmission(jQuery(field).closest('form'), true);
+			this.toggleFormSubmission($(field).closest('form'), true);
 		}
 	},
 	
 	/* check for valid email */
 	checkEmail: function(field){
 		var self = this;
-		jQuery('.anspress').delegate('form #email', 'keyup blur', function(){
-			var field = jQuery(this);		
-			var parent = jQuery(field).closest('.form-group');
+		$('body').delegate('form #email', 'keyup blur', function(){
+			var field = $(this);		
+			var parent = $(field).closest('.form-group');
 
 			if (!self.isEmail(field.val())){
 				self.fieldValidationClass(parent, 'has-error');
 				if(parent.find('.help-block').length == 0)
 					self.helpBlock(parent, aplang.not_valid_email);
 				
-				self.toggleFormSubmission(jQuery(field).closest('form'), false);
+				self.toggleFormSubmission($(field).closest('form'), false);
 			}
 			else{
 				parent.removeClass('has-error');
@@ -203,7 +307,7 @@ APjs.site.prototype = {
 				if(parent.find('.help-block').length >0)
 					parent.find('.help-block').remove();
 				
-				self.toggleFormSubmission(jQuery(field).closest('form'), true);
+				self.toggleFormSubmission($(field).closest('form'), true);
 			}
 		});
 	},
@@ -212,17 +316,17 @@ APjs.site.prototype = {
 	/* check if email is available */
 	checkEmailAvailable: function(){
 		var self = this;
-		jQuery('.anspress').delegate('form #email', 'blur', function(){
-			var field = jQuery(this);		
+		$('body').delegate('form #email', 'blur', function(){
+			var field = $(this);		
 			var parent = field .closest('.form-group');
 			
-			if(!jQuery(parent).is('.has-error'))
-			jQuery.ajax({  
+			if(!$(parent).is('.has-error'))
+			$.ajax({  
 				type: 'POST',  
 				url: ajaxurl,  
 				data: {  
 					action: 'ap_check_email',  
-					email: jQuery(field).val(),  
+					email: $(field).val(),  
 				},  
 				context:this,
 				success: function(data){ 
@@ -249,7 +353,7 @@ APjs.site.prototype = {
 		context 	= typeof context !== 'undefined' ? context : false;
 		callback 	= typeof callback !== 'undefined' ? callback : false;
 		
-		return jQuery.ajax({  
+		return $.ajax({  
 			type: 		'POST',  
 			url: 		ajaxurl,  
 			data: 		data,
@@ -260,11 +364,11 @@ APjs.site.prototype = {
 	},
 	castVote:function() {
 		var self = this;
-		jQuery('.anspress').delegate('[data-action="vote"] a', 'click', function(e){
+		$('body').delegate('[data-action="vote"] a', 'click', function(e){
 			e.preventDefault();
-			var args = jQuery(this).data('args');
+			var args = $(this).data('args');
 			self.showLoading(aplang.voting_on_post);
-			jQuery.ajax({  
+			$.ajax({  
 				type: 'POST',  
 				url: ajaxurl,  
 				data: {  
@@ -277,19 +381,19 @@ APjs.site.prototype = {
 					self.hideLoading();
 					if(result['action'] == 'voted' || result['action'] == 'undo'){
 						if(result['action'] == 'voted'){
-							jQuery(this).addClass('voted');
-							if(result['type'] == 'up') jQuery(this).parent().find('.vote-down').addClass('disable');
-							if(result['type'] == 'down') jQuery(this).parent().find('.vote-up').addClass('disable');
+							$(this).addClass('voted');
+							if(result['type'] == 'up') $(this).parent().find('.vote-down').addClass('disable');
+							if(result['type'] == 'down') $(this).parent().find('.vote-up').addClass('disable');
 							
-							jQuery(this).trigger('voted', result);
+							$(this).trigger('voted', result);
 						}
 						else if(result['action'] == 'undo'){
-							jQuery(this).removeClass('voted');
-							if(result['type'] == 'up') jQuery(this).parent().find('.vote-down').removeClass('disable');
-							if(result['type'] == 'down') jQuery(this).parent().find('.vote-up').removeClass('disable');
-							jQuery(this).trigger('undo_vote', result);
+							$(this).removeClass('voted');
+							if(result['type'] == 'up') $(this).parent().find('.vote-down').removeClass('disable');
+							if(result['type'] == 'down') $(this).parent().find('.vote-up').removeClass('disable');
+							$(this).trigger('undo_vote', result);
 						}
-						jQuery(this).parent().find('.net-vote-count').text(result['count']);
+						$(this).parent().find('.net-vote-count').text(result['count']);
 						self.addMessage(result['message'], 'success');
 					}else{
 						self.addMessage(result['message'], 'error');
@@ -301,14 +405,14 @@ APjs.site.prototype = {
 	},
 	favorite:function (){
 		var self = this;
-		jQuery('.anspress').delegate('[data-action="ap-favorite"]', 'click', function(e){
+		$('body').delegate('[data-action="ap-favorite"]', 'click', function(e){
 			e.preventDefault();
 
 			/* show loading message */
 			self.showLoading(aplang.adding_to_fav);
 			
-			var args = jQuery(this).data('args');
-			jQuery.ajax({  
+			var args = $(this).data('args');
+			$.ajax({  
 				type: 'POST',  
 				url: ajaxurl,  
 				data: {  
@@ -321,11 +425,11 @@ APjs.site.prototype = {
 					/* hide loading message */
 					self.hideLoading();
 					if(data['action'] == 'added' || data['action'] == 'removed'){
-						if(data['action'] == 'added') jQuery(this).addClass('added');
-						else if(data['action'] == 'removed') jQuery(this).removeClass('added');
-						jQuery(this).html(data['count']);
-						jQuery(this).attr('title',data['title']);
-						jQuery(this).parent().find('span').html(data['text']);
+						if(data['action'] == 'added') $(this).addClass('added');
+						else if(data['action'] == 'removed') $(this).removeClass('added');
+						$(this).html(data['count']);
+						$(this).attr('title',data['title']);
+						$(this).parent().find('span').html(data['text']);
 						self.addMessage(data['message'], 'success');
 					}else{
 						self.addMessage(data['message'], 'error');
@@ -341,13 +445,13 @@ APjs.site.prototype = {
 	
 	close:function(){
 		var self = this;
-		jQuery('.anspress').delegate('[data-action="close-question"]', 'click', function(e){
+		$('body').delegate('[data-action="close-question"]', 'click', function(e){
 			e.preventDefault();
-			var args = jQuery(this).data('args');
+			var args = $(this).data('args');
 			
 			self.showLoading(aplang.requesting_for_closing);
 			
-			jQuery.ajax({  
+			$.ajax({  
 				type: 'POST',  
 				url: ajaxurl,  
 				data: {  
@@ -361,12 +465,12 @@ APjs.site.prototype = {
 					self.hideLoading();
 					if(result['row']){
 						if(result['action'] == 'added') 
-							jQuery(this).addClass('closed');
+							$(this).addClass('closed');
 						else if(result['action'] == 'removed') 
-							jQuery(this).removeClass('closed');
+							$(this).removeClass('closed');
 						
-						jQuery(this).text(result['text']);
-						jQuery(this).attr('title', result['title']);
+						$(this).text(result['text']);
+						$(this).attr('title', result['title']);
 						self.addMessage(result['message'], 'success');
 						
 					}else{
@@ -382,17 +486,17 @@ APjs.site.prototype = {
 	},
 	
 	modalShow:function(id){
-		jQuery('.ap-modal').addClass('active');			
+		$('.ap-modal').addClass('active');			
 	},
 	
 	loadFlagModal:function (){
 		var self = this;
-		jQuery('.anspress').delegate('[data-action="flag-modal"]', 'click', function(e){
+		$('body').delegate('[data-action="flag-modal"]', 'click', function(e){
 			e.preventDefault();
-			if(!jQuery(this).is('.loaded')){
-				var args = jQuery(this).data('args');
+			if(!$(this).is('.loaded')){
+				var args = $(this).data('args');
 				self.showLoading();
-				jQuery.ajax({  
+				$.ajax({  
 					type: 'POST',  
 					url: ajaxurl,  
 					data: {  
@@ -402,36 +506,36 @@ APjs.site.prototype = {
 					context:this,
 					success: function(data){ 
 						self.hideLoading();
-						jQuery(data).appendTo('body');
-						self.modalShow(jQuery(this).attr('href'));
-						jQuery(this).addClass('loaded');
+						$(data).appendTo('body');
+						self.modalShow($(this).attr('href'));
+						$(this).addClass('loaded');
 					},  
 					error: function(MLHttpRequest, textStatus, errorThrown){  
 						alert(errorThrown);  
 					}  
 				});
 			}else{
-				self.modalShow(jQuery(this).attr('href'));
+				self.modalShow($(this).attr('href'));
 			}
 
 		});
 		
-		jQuery('body').delegate(':radio[name="note_id"]', 'click', function () {
-			jQuery(':radio[name="note_id"]').closest('.note').removeClass('active');
-			jQuery(this).closest('.note').addClass('active');
+		$('body').delegate(':radio[name="note_id"]', 'click', function () {
+			$(':radio[name="note_id"]').closest('.note').removeClass('active');
+			$(this).closest('.note').addClass('active');
 		});		
 		
 	},
 	
 	flagModalSubmit: function(){
 		var self = this;
-		jQuery('body').delegate('#submit-flag-question', 'click', function(e){
+		$('body').delegate('#submit-flag-question', 'click', function(e){
 			e.preventDefault();		
-			var args = jQuery(this).data('args');
-			var note_id = jQuery(this).closest('.flag-note').find(':radio[name="note_id"]:checked').val();
-			var other_note = jQuery(this).closest('.flag-note').find('#other-note').val();
+			var args = $(this).data('args');
+			var note_id = $(this).closest('.flag-note').find(':radio[name="note_id"]:checked').val();
+			var other_note = $(this).closest('.flag-note').find('#other-note').val();
 			self.showLoading(aplang.sending_request);
-			jQuery.ajax({  
+			$.ajax({  
 				type: 'POST',  
 				url: ajaxurl,  
 				data: {  
@@ -444,11 +548,11 @@ APjs.site.prototype = {
 				context:this,
 				success: function(result){ 
 					self.hideLoading();
-					var id = jQuery(this).closest('.flag-note').attr('id');
-					var to_update = jQuery('#flag_' + jQuery(this).data('update'));
+					var id = $(this).closest('.flag-note').attr('id');
+					var to_update = $('#flag_' + $(this).data('update'));
 					
-					jQuery('#'+id).removeClass('active');
-					//jQuery('#'+id).remove();
+					$('#'+id).removeClass('active');
+					//$('#'+id).remove();
 					
 					if(result['row'] == '1'){
 						if(result['action'] == 'flagged') to_update.addClass('flagged');
@@ -468,11 +572,11 @@ APjs.site.prototype = {
 	
 	followUser: function(){
 		var self = this;
-		jQuery('body').delegate('[data-action="ap-follow"]', 'click', function(e){
+		$('body').delegate('[data-action="ap-follow"]', 'click', function(e){
 			e.preventDefault();		
-			var args = jQuery(this).data('args');			
+			var args = $(this).data('args');			
 			self.showLoading(aplang.sending_request);
-			jQuery.ajax({  
+			$.ajax({  
 				type: 'POST',  
 				url: ajaxurl,  
 				data: {  
@@ -487,18 +591,18 @@ APjs.site.prototype = {
 					if(data['action'] == 'pleazelogin'){
 						self.addMessage(data['message'], 'error');
 					}else if(data['action'] == 'follow'){
-						jQuery(this).text(data['text']);
-						jQuery(this).attr('title', data['title']);
-						jQuery(this).removeClass('ap-icon-plus');
-						jQuery(this).addClass('ap-unfollow ap-icon-minus');
-						jQuery('[data-id="'+data['id']+'"] [data-view="ap-followers"]').text(data['followers_count']);
+						$(this).text(data['text']);
+						$(this).attr('title', data['title']);
+						$(this).removeClass('ap-icon-plus');
+						$(this).addClass('ap-unfollow ap-icon-minus');
+						$('[data-id="'+data['id']+'"] [data-view="ap-followers"]').text(data['followers_count']);
 						self.addMessage(data['message'], 'success');
 					}else if(data['action'] == 'unfollow'){
-						jQuery(this).text(data['text']);
-						jQuery(this).attr('title', data['title']);
-						jQuery(this).removeClass('ap-unfollow ap-icon-minus');
-						jQuery(this).addClass('ap-icon-plus');
-						jQuery('[data-id="'+data['id']+'"] [data-view="ap-followers"]').text(data['followers_count']);
+						$(this).text(data['text']);
+						$(this).attr('title', data['title']);
+						$(this).removeClass('ap-unfollow ap-icon-minus');
+						$(this).addClass('ap-icon-plus');
+						$('[data-id="'+data['id']+'"] [data-view="ap-followers"]').text(data['followers_count']);
 						self.addMessage(data['message'], 'success');
 					}else{
 						self.addMessage(data['message'], 'error');
@@ -512,37 +616,37 @@ APjs.site.prototype = {
 	},
 	
 	dropdown:function(){
-		jQuery('.anspress').delegate('.ap-dropdown-toggle', 'click', function(e){
+		$('body').delegate('.ap-dropdown-toggle', 'click', function(e){
 			e.preventDefault();
-			jQuery(this).closest('.ap-dropdown').toggleClass('open');
+			$(this).closest('.ap-dropdown').toggleClass('open');
 		});
 		
-		jQuery('.anspress').delegate('.ap-dropdown-menu a', 'click', function(e){
-			jQuery(this).closest('.ap-dropdown').removeClass('open');
+		$('body').delegate('.ap-dropdown-menu a', 'click', function(e){
+			$(this).closest('.ap-dropdown').removeClass('open');
 		});
 	},
 	dropdownClose:function(){
-		jQuery('[data-toggle="ap-dropdown"]').click(function(e){
+		$('[data-toggle="ap-dropdown"]').click(function(e){
 			e.preventDefault();
-			jQuery(this).closest('.ap-dropdown').removeClass('open');
+			$(this).closest('.ap-dropdown').removeClass('open');
 		});
 	},
 	
 	load_comment_form: function(){
 		var self = this;
-		jQuery('.anspress').delegate('[data-action="ap-load-comment"]', 'click', function(e){
+		$('body').delegate('[data-action="ap-load-comment"]', 'click', function(e){
 			e.preventDefault();
-			var args 	= jQuery(this).data('args'),
-				elem	= jQuery(this).attr('href');
+			var args 	= $(this).data('args'),
+				elem	= $(this).attr('href');
 			
-			if(jQuery(elem).length === 0)
-				jQuery(this).closest('ul').after('<div id="'+elem.replace('#', '')+'"></div>');
+			if($(elem).length === 0)
+				$(this).closest('ul').after('<div id="'+elem.replace('#', '')+'"></div>');
 				
-			if(jQuery(this).is('.ajax-done')){
-				jQuery(elem+' #respond').slideToggle();
+			if($(this).is('.ajax-done')){
+				$(elem+' #respond').slideToggle();
 			}else{
 				self.showLoading(aplang.loading_comment_form);
-				jQuery.ajax({  
+				$.ajax({  
 					type: 'POST',  
 					url: ajaxurl,  
 					data: {  
@@ -553,13 +657,13 @@ APjs.site.prototype = {
 					success: function(data){
 						self.hideLoading();
 						
-						if(jQuery('.comment-form-c').length > 0)
-							jQuery('.comment-form-c').remove();
+						if($('.comment-form-c').length > 0)
+							$('.comment-form-c').remove();
 						
-						jQuery(elem).append(data);
-						jQuery(this).addClass('ajax-done');
-						jQuery('html, body').animate({
-							scrollTop: (jQuery('#respond').offset().top) - 50
+						$(elem).append(data);
+						$(this).addClass('ajax-done');
+						$('html, body').animate({
+							scrollTop: ($('#respond').offset().top) - 50
 						}, 500);
 
 					},  
@@ -573,11 +677,11 @@ APjs.site.prototype = {
 	
 	load_edit_comment_form: function(){
 		var self = this;
-		jQuery('body').delegate('[data-button="ap-edit-comment"]', 'click', function(e){
+		$('body').delegate('[data-button="ap-edit-comment"]', 'click', function(e){
 			e.preventDefault();
-			var args 	= jQuery(this).data('args');
+			var args 	= $(this).data('args');
 			self.showLoading(aplang.loading_comment_form);
-			jQuery.ajax({  
+			$.ajax({  
 				url: ajaxurl,  
 				data: {  
 					action: 'ap_edit_comment_form',  
@@ -586,10 +690,10 @@ APjs.site.prototype = {
 				context:this,
 				success: function(data, textStatus, XMLHttpRequest){
 					self.hideLoading();
-					if(jQuery(data).selector == 'not_logged_in'){
+					if($(data).selector == 'not_logged_in'){
 						ap_not_logged_in();
 					}else{
-						jQuery(this).closest('.comment-content').html(data);
+						$(this).closest('.comment-content').html(data);
 					}
 				}
 			});  			
@@ -597,21 +701,21 @@ APjs.site.prototype = {
 		});
 	},
 	updateView: function(data, text){
-		jQuery('[data-view="'+data+'"]').text(text);
+		$('[data-view="'+data+'"]').text(text);
 	},
 	
 	submitAnswer: function(){
 		var self = this;
-		jQuery('.anspress').delegate('[data-action="ap-submit-answer"]', 'submit', function(e){
-			var form = jQuery(this);
-			var btn = jQuery(this).find('.btn-submit-ans');
+		$('body').delegate('[data-action="ap-submit-answer"]', 'submit', function(e){
+			var form = $(this);
+			var btn = $(this).find('.btn-submit-ans');
 			/* Disable the button while submitting */
 			btn.attr('disabled', 'disabled').addClass('disabled');
 			
-			var fields = jQuery(this).serialize();
+			var fields = $(this).serialize();
 			self.showLoading(aplang.submitting_your_answer);
 			
-			jQuery.post(ajaxurl, fields+'&action=ap_submit_answer', function(responce){
+			$.post(ajaxurl, fields+'&action=ap_submit_answer', function(responce){
 				btn.removeAttr('disabled').removeClass('disabled');				
 				self.hideLoading();
 				
@@ -619,22 +723,22 @@ APjs.site.prototype = {
 					//rest the from
 					form[0].reset();
 					if(!responce['can_answer'])
-						jQuery('#answer-form-c').hide();
+						$('#answer-form-c').hide();
 						
 					/* Update answer count */
 					
-					jQuery('[data-view="ap-answer-count"]').text(responce['count']);
-					jQuery('[data-view="ap-answer-count-label"]').text(responce['count_label']);
+					$('[data-view="ap-answer-count"]').text(responce['count']);
+					$('[data-view="ap-answer-count-label"]').text(responce['count_label']);
 					
 					self.addMessage(responce['message'], 'success');
 					
-					if(jQuery('#answers').length === 0){
-						jQuery('#question').after(jQuery(responce['html']));
-						jQuery(responce['div_id']).hide();
+					if($('#answers').length === 0){
+						$('#question').after($(responce['html']));
+						$(responce['div_id']).hide();
 					}else
-						jQuery('#answers').append(jQuery(responce['html']).hide());				
+						$('#answers').append($(responce['html']).hide());				
 					
-					jQuery(responce['div_id']).slideDown(500);
+					$(responce['div_id']).slideDown(500);
 					
 					if(typeof responce['redirect_to'] !== 'undefined')
 						window.location.replace(responce['redirect_to']);
@@ -661,16 +765,16 @@ APjs.site.prototype = {
 	
 	submitQuestion: function(){
 		var self = this;
-		jQuery('.anspress').delegate('[data-action="ap-submit-question"]', 'submit', function(e){
-			var form = jQuery(this);
-			var btn = jQuery(this).find('.btn-submit-ask');
+		$('body').delegate('[data-action="ap-submit-question"]', 'submit', function(e){
+			var form = $(this);
+			var btn = $(this).find('.btn-submit-ask');
 			/* Disable the button while submitting */
 			btn.attr('disabled', 'disabled').addClass('disabled');
 			
-			var fields = jQuery(this).serialize();
+			var fields = $(this).serialize();
 			self.showLoading(aplang.submitting_your_question);
 			
-			jQuery.post(ajaxurl, fields+'&action=ap_submit_question', function(responce){
+			$.post(ajaxurl, fields+'&action=ap_submit_question', function(responce){
 				btn.removeAttr('disabled').removeClass('disabled');				
 				self.hideLoading();
 					
@@ -688,7 +792,7 @@ APjs.site.prototype = {
 				}else{
 					self.addMessage(responce['message'], 'error');
 				}
-				jQuery(this).trigger('submitQuestion', responce);
+				$(this).trigger('submitQuestion', responce);
 			}, 'json');			
 			
 			
@@ -696,70 +800,22 @@ APjs.site.prototype = {
 		});
 	},
 	
-	appendFormError: function(form, error){	
-		var self = this;
-		if(typeof error !== 'undefined'){
-			jQuery.each(error, function(i, message) {
-				var parent = jQuery(form).find('#'+i).closest('.form-group');
-				parent.addClass('has-error');
-				self.helpBlock(parent, message);
-			});
-		}
-	},
+	
 	
 	clearError: function(form){
-		jQuery(form).find('.has-error').removeClass('has-error');
-		jQuery(form).find('.help-block').remove();
+		$(form).find('.has-error').removeClass('has-error');
+		$(form).find('.help-block').remove();
 	},
 	
-	toggleLoginSignup: function(){
-		jQuery('.anspress').delegate('[data-toggle="ap-signup-form"]', 'click', function(e){
-			e.preventDefault();
-			
-			jQuery.ajax({
-				type: 'POST',
-				url: ajaxurl,  
-				data: {  
-					action: 'ap_toggle_login_signup',  
-					args: jQuery(this).data('args'),
-				},  
-				context:this,
-				success: function(data){ 
-					jQuery('#ap-login-signup').empty().append(data);
-				}
-			}); 
-			
-		});
-	},
-	saveComment: function(){
-		var self = this;
-		jQuery('.anspress').delegate('#commentform', 'submit', function(){
-			var form = jQuery(this);
-			var fields = jQuery(this).serialize();
-			self.showLoading(aplang.submitting_your_comment);
-			
-			jQuery.post(jQuery(this).attr('action'), fields, function(responce){
-				self.hideLoading();
-				form[0].reset();
-				if(responce['status'] && jQuery('#li-comment-'+responce['comment_ID']).length ==0){
-					jQuery('#comments-'+responce['comment_post_ID']+' ul.commentlist').append(jQuery(responce['html']).hide().slideDown(300));
-					
-					self.addMessage(responce['message'], 'success');
-				}
-				
-			}, 'json'); 
-			
-			return false
-		});
-	},
+
 	deleteComment: function (){
 		var self = this;
-		jQuery('.anspress').delegate('[data-button="ap-delete-comment"]', 'click', function(e){
+		$('body').delegate('[data-button="ap-delete-comment"]', 'click', function(e){
 			e.preventDefault();
-			if(confirm(jQuery(this).data('confirm'))){
-				var args 	= jQuery(this).data('args');
+			if(confirm($(this).data('confirm'))){
+				var args 	= $(this).data('args');
 				self.showLoading(aplang.deleting_comment);
-				jQuery.ajax({  
+				$.ajax({  
 					url: ajaxurl,  
 					data: {  
 						action: 'ap_delete_comment',  
@@ -771,7 +827,7 @@ APjs.site.prototype = {
 						self.hideLoading();
 						
 						if(data['status']){
-							jQuery(this).closest('li.comment').remove();
+							$(this).closest('li.comment').remove();
 							self.addMessage(data['message'], 'success');
 						}else{
 							self.addMessage(data['message'], 'error');
@@ -781,62 +837,34 @@ APjs.site.prototype = {
 			}		
 		});
 	},
-	updateComment: function(){
-		var self = this;
-		jQuery('.anspress').delegate('[data-action="ap-edit-comment"]', 'submit', function(e) {
-			e.preventDefault();
-			self.showLoading(aplang.updating_comment);
-			jQuery.ajax({
-				type: 'POST',			
-				url: ajaxurl,
-				data: {  
-					action: 'ap_update_comment',  
-					args: jQuery(this).serialize(),
-				},
-				context:this,
-				dataType:'json',				
-				success: function(data){
-					self.hideLoading();
-					if(data['status']){
-						var item = jQuery(this).closest('li');
-						jQuery(item).after(data['html']);
-						item.remove();
-						self.addMessage(data['message'], 'success');
-					}else{
-						self.addMessage(data['message'], 'error');
-					}
-				}
-			});
-			return false;
-		});
-	},
+
 	selectBestAnswer: function(){
 		var self = this;
-		jQuery('.anspress').delegate('[data-button="ap-select-answer"]', 'click', function(e) {
+		$('body').delegate('[data-button="ap-select-answer"]', 'click', function(e) {
 			e.preventDefault();
 			self.showLoading();
-			jQuery.ajax({
+			$.ajax({
 				type: 'POST',			
 				url: ajaxurl,
 				data: {  
 					action: 'ap_set_best_answer',  
-					args: jQuery(this).data('args'),
+					args: $(this).data('args'),
 				},
 				context:this,
 				dataType:'json',				
 				success: function(data){
 					self.hideLoading();
 					if(data['action'] == 'selected'){
-						jQuery('[data-button="ap-select-answer"]').not(this).hide();
-						jQuery(this).after(data['html']);
-						jQuery(this).closest('.answer').addClass('selected');						
-						jQuery(this).remove();
+						$('[data-button="ap-select-answer"]').not(this).hide();
+						$(this).after(data['html']);
+						$(this).closest('.answer').addClass('selected');						
+						$(this).remove();
 						
 						self.addMessage(data['message'], 'success');
 					}else if(data['action'] == 'unselected'){
-						jQuery(this).after(data['html']);
-						jQuery(this).closest('.answer').removeClass('selected');
-						jQuery(this).remove();
+						$(this).after(data['html']);
+						$(this).closest('.answer').removeClass('selected');
+						$(this).remove();
 						self.addMessage(data['message'], 'success');
 					}else{
 						self.addMessage(data['message'], 'error');
@@ -848,15 +876,15 @@ APjs.site.prototype = {
 	
 	deletePost: function(){
 		var self = this;
-		jQuery('.anspress').delegate('[data-button="ap-delete-post"]', 'click', function(e){
+		$('body').delegate('[data-button="ap-delete-post"]', 'click', function(e){
 			e.preventDefault();
 			self.showLoading(aplang.deleting_post);
-			jQuery.ajax({
+			$.ajax({
 				type: 'POST',			
 				url: ajaxurl,
 				data: {  
 					action: 'ap_delete_post',  
-					args: jQuery(this).data('args'),
+					args: $(this).data('args'),
 				},
 				context:this,
 				dataType:'json',				
@@ -871,9 +899,9 @@ APjs.site.prototype = {
 						self.updateView('ap-answer-count', data['count']);
 						
 						if(!data['remove'])
-							jQuery(data['div']).slideUp(200);
+							$(data['div']).slideUp(200);
 						else
-							jQuery('#answers-c').remove();
+							$('#answers-c').remove();
 							
 					}else{
 						self.addMessage(data['message'], 'error');
@@ -884,21 +912,21 @@ APjs.site.prototype = {
 	},
 	loadEditForm:function(){
 		var self = this;
-		jQuery('.anspress').delegate('[data-button="ap-edit-post"]', 'click', function(e){
+		$('body').delegate('[data-button="ap-edit-post"]', 'click', function(e){
 			e.preventDefault();
 			self.showLoading(aplang.loading_form);
 			
-			jQuery.ajax({
+			$.ajax({
 				type: 'POST',			
 				url: ajaxurl,
-				data: jQuery(this).data('args'),
+				data: $(this).data('args'),
 				context:this,
 				dataType:'json',				
 				success: function(data){
 					self.hideLoading();
 					if(data['action']){
 						self.addMessage(data['message'], 'success');
-						jQuery('#ap-single').html(data['html']);										
+						$('#ap-single').html(data['html']);										
 					}else{
 						self.addMessage(data['message'], 'error');
 					}
@@ -907,42 +935,42 @@ APjs.site.prototype = {
 		});
 	},
 	tab:function(){
-		jQuery('[data-action="ap-tab"] a').click(function(e){
+		$('[data-action="ap-tab"] a').click(function(e){
 			e.preventDefault();
-			var current = jQuery(this).closest('ul').find('.active a').attr('href');
-			var div = jQuery(this).attr('href');
+			var current = $(this).closest('ul').find('.active a').attr('href');
+			var div = $(this).attr('href');
 
-			jQuery(current).removeClass('active');
+			$(current).removeClass('active');
 			
-			jQuery(this).closest('ul').find('li').removeClass('active');
-			jQuery(this).parent().addClass('active');			
+			$(this).closest('ul').find('li').removeClass('active');
+			$(this).parent().addClass('active');			
 			
-			jQuery(div).addClass('active');
+			$(div).addClass('active');
 		});
 	},
 	labelSelect:function(){
-		jQuery('.anspress').delegate('[data-action="ap-label-select"] li:not(.ap-select-footer)', 'click', function(e){
+		$('body').delegate('[data-action="ap-label-select"] li:not(.ap-select-footer)', 'click', function(e){
 			e.preventDefault();
-			jQuery(this).toggleClass('selected');
+			$(this).toggleClass('selected');
 		});
 	},
 	saveLabel:function(){
 		var self = this;
-		jQuery('.anspress').delegate('[data-button="ap-save-label"]', 'click', function(e){
+		$('body').delegate('[data-button="ap-save-label"]', 'click', function(e){
 			e.preventDefault();
 			self.showLoading(aplang.saving_labels);	
 			var args = [];
-			jQuery(this).closest('ul').find('li.selected').each(function(i){
-				args[i] = jQuery(this).data('args');
+			$(this).closest('ul').find('li.selected').each(function(i){
+				args[i] = $(this).data('args');
 			});
-			jQuery.ajax({
+			$.ajax({
 				type: 'POST',			
 				url: ajaxurl,
 				data: {
 					action:'ap_save_labels',
 					args:args,
-					id:jQuery(this).data('id'),
-					nonce:jQuery(this).data('nonce')
+					id:$(this).data('id'),
+					nonce:$(this).data('nonce')
 				},
 				context:this,
 				dataType:'json',				
@@ -950,12 +978,12 @@ APjs.site.prototype = {
 					self.hideLoading();
 					if(data['status']){
 						self.addMessage(data['message'], 'success');
-						jQuery(this).closest('.ap-dropdown').removeClass('open');
-						jQuery('[data-view="ap-labels-list"]').html(jQuery(data['html']));
-						jQuery('[data-view="ap-labels-list"]').find('li').hide()
+						$(this).closest('.ap-dropdown').removeClass('open');
+						$('[data-view="ap-labels-list"]').html($(data['html']));
+						$('[data-view="ap-labels-list"]').find('li').hide()
 						var i = 1;
-						jQuery('[data-view="ap-labels-list"]').find('li').each(function(){
-							jQuery(this).delay(i*100).slideDown(300);
+						$('[data-view="ap-labels-list"]').find('li').each(function(){
+							$(this).delay(i*100).slideDown(300);
 							i++;
 						});
 					}else{
@@ -967,14 +995,14 @@ APjs.site.prototype = {
 	},
 	tagsScript:function(){
 		
-		if(jQuery('[data-role="ap-tagsinput"]').length > 0){
-			jQuery('[data-role="ap-tagsinput"]').tagsinput({
+		if($('[data-role="ap-tagsinput"]').length > 0){
+			$('[data-role="ap-tagsinput"]').tagsinput({
 				freeInput: false,
 				maxTags: ap_max_tags,
 			});
-			jQuery('[data-role="ap-tagsinput"]').tagsinput('input').blur(function(e){
-				jQuery(document).mouseup(function (e){
-					var container = jQuery('#ap-suggestions');
+			$('[data-role="ap-tagsinput"]').tagsinput('input').blur(function(e){
+				$(document).mouseup(function (e){
+					var container = $('#ap-suggestions');
 
 					if (!container.is(e.target)	&& container.has(e.target).length === 0){
 						container.hide();
@@ -988,8 +1016,8 @@ APjs.site.prototype = {
 		this.tagsquery;
 		var self = this;
 		
-		jQuery('.anspress').delegate('#ask_question_form .bootstrap-tagsinput input', 'keyup', function(){
-			var value = jQuery(this).val();
+		$('body').delegate('#ask_question_form .bootstrap-tagsinput input', 'keyup', function(){
+			var value = $(this).val();
 			
 			if(value.length == 0)
 				return;
@@ -1000,7 +1028,7 @@ APjs.site.prototype = {
 			}
 			
 			self.showLoading(aplang.loading_suggestions);	
-			self.tagsquery = jQuery.ajax({
+			self.tagsquery = $.ajax({
 				type: 'POST',			
 				url: ajaxurl,
 				data: {
@@ -1011,18 +1039,18 @@ APjs.site.prototype = {
 				dataType:'json',				
 				success: function(data){
 					self.hideLoading();
-					var container = jQuery(this).closest('.bootstrap-tagsinput'),
+					var container = $(this).closest('.bootstrap-tagsinput'),
 						position = container.offset();
 					
-					if(jQuery('#ap-suggestions').length ==0)
-						jQuery('.anspress').append('<div id="ap-suggestions" class="ap-suggestions" style="display:none"></div>');
+					if($('#ap-suggestions').length ==0)
+						$('body').append('<div id="ap-suggestions" class="ap-suggestions" style="display:none"></div>');
 					
 					if(data['items']){
 						self.tagItems(data['items']);
 						
-						jQuery('#ap-suggestions').html(self.tagsitems+data['form']).css({'top': (position.top + container.height() + 20), 'left': position.left, 'width': container.width()}).show();
+						$('#ap-suggestions').html(self.tagsitems+data['form']).css({'top': (position.top + container.height() + 20), 'left': position.left, 'width': container.width()}).show();
 					}else if(data['form']){
-						jQuery('#ap-suggestions').html(data['form']).css({'top': (position.top + container.height() + 20), 'left': position.left, 'width': container.width()}).show();
+						$('#ap-suggestions').html(data['form']).css({'top': (position.top + container.height() + 20), 'left': position.left, 'width': container.width()}).show();
 					}
 					
 				}
@@ -1032,7 +1060,7 @@ APjs.site.prototype = {
 	tagItems: function(items){
 		this.tagsitems = '';
 		var self = this;
-		jQuery.each(items, function(i){
+		$.each(items, function(i){
 			self.tagsitems += '<div class="ap-tag-item" data-action="ap-add-tag" data-name="'+ this.name +'"><div class="ap-tag-item-inner">';
 			self.tagsitems += '<div class="tag-title"><strong>'+ this.name +'</strong> &times; <span>'+this.count+'</span></div>';			
 			self.tagsitems += '<span class="tag-description">'+ this.description +'</strong>';			
@@ -1043,26 +1071,26 @@ APjs.site.prototype = {
 	addTag: function(){
 		var self = this;
 		
-		jQuery('.anspress').delegate('[data-action="ap-add-tag"]', 'click touchstart', function(){
-			jQuery('[data-role="ap-tagsinput"]').tagsinput('add', jQuery(this).data('name'));
-			jQuery('[data-role="ap-tagsinput"]').tagsinput('input').val('');
-			jQuery('#ap-suggestions').hide();
+		$('body').delegate('[data-action="ap-add-tag"]', 'click touchstart', function(){
+			$('[data-role="ap-tagsinput"]').tagsinput('add', $(this).data('name'));
+			$('[data-role="ap-tagsinput"]').tagsinput('input').val('');
+			$('#ap-suggestions').hide();
 		});
 	},
 	uploadForm:function(){
 		var self = this;
-		jQuery('[data-action="ap-upload-field"]').change(function(){
-			jQuery(this).closest('form').submit();
+		$('[data-action="ap-upload-field"]').change(function(){
+			$(this).closest('form').submit();
 		});
 		
-		jQuery('[data-action="ap-upload-form"]').submit(function(){
-			jQuery(this).ajaxSubmit({
+		$('[data-action="ap-upload-form"]').submit(function(){
+			$(this).ajaxSubmit({
 				beforeSubmit:  function(){
 					self.showLoading(aplang.uploading);
 				},
 				success: function(data){
 					self.hideLoading();
-					jQuery('body').trigger('uploadForm', data);
+					$('body').trigger('uploadForm', data);
 					if(data['status']){
 						self.addMessage(data['message'], 'success');					
 					}else{
@@ -1076,19 +1104,19 @@ APjs.site.prototype = {
 			return false
 		});
 		
-		jQuery('body').on('uploadForm', function(e, data){
+		$('body').on('uploadForm', function(e, data){
 			if(data['view'] == '[data-view="cover"]')
-				jQuery(data['view']).attr('style', data['background-image']);
+				$(data['view']).attr('style', data['background-image']);
 			else if(data['view'] == '[data-view="avatar-main"]')
-				jQuery(data['view']).html(data['image']);
+				$(data['view']).html(data['image']);
 			
 		});
 	},
 	
 	saveProfile: function(){
 		var self = this;
-		jQuery('[data-action="ap-edit-profile"]').submit(function(){
-			jQuery(this).ajaxSubmit({
+		$('[data-action="ap-edit-profile"]').submit(function(){
+			$(this).ajaxSubmit({
 				beforeSubmit:  function(){
 					self.showLoading(aplang.saving_profile);
 				},
@@ -1112,8 +1140,8 @@ APjs.site.prototype = {
 	},
 	sendMessage:function(){
 		var self = this;
-		jQuery('.anspress').delegate('[data-action="ap-send-message"]', 'submit', function(){
-			jQuery(this).ajaxSubmit({
+		$('body').delegate('[data-action="ap-send-message"]', 'submit', function(){
+			$(this).ajaxSubmit({
 				beforeSubmit:  function(){
 					self.showLoading(aplang.sending_message);
 				},
@@ -1121,17 +1149,17 @@ APjs.site.prototype = {
 					self.hideLoading();
 					if(data['status'] == true){
 						self.addMessage(data['message'], 'success');
-						var container = jQuery('[data-view="conversation"] > ul');
+						var container = $('[data-view="conversation"] > ul');
 						
 						if(container.length == 0){
-							jQuery('[data-view="conversation"]').html(jQuery(data['html']).hide());
-							jQuery('[data-view="conversation"] > ul').slideDown(200);
-							jQuery('[data-view="conversation"] > form').slideDown(200);
+							$('[data-view="conversation"]').html($(data['html']).hide());
+							$('[data-view="conversation"] > ul').slideDown(200);
+							$('[data-view="conversation"] > form').slideDown(200);
 						}else{	
-							container.append(jQuery(data['html']).hide());
+							container.append($(data['html']).hide());
 							container.find('li:last-child').slideDown(200);
 						}
-						jQuery('textarea.autogrow').autogrow({onInitialize: true});						
+						$('textarea.autogrow').autogrow({onInitialize: true});						
 					}else if(data['status'] == 'validation_falied'){
 						self.clearError(this);
 						self.addMessage(data['message'], 'error');
@@ -1151,24 +1179,24 @@ APjs.site.prototype = {
 	showConversation:function(){
 		var self = this;
 		
-		jQuery('.anspress').delegate('[data-action="ap-show-conversation"]', 'click', function(e){
+		$('body').delegate('[data-action="ap-show-conversation"]', 'click', function(e){
 			e.preventDefault();
 			self.showLoading(aplang.loading_conversation);
-			jQuery(this).parent().find('li.active').removeClass('active');
-			jQuery(this).addClass('active');
-			jQuery.ajax({
+			$(this).parent().find('li.active').removeClass('active');
+			$(this).addClass('active');
+			$.ajax({
 				type: 'POST',			
 				url: ajaxurl,
 				data: {
 					action:'ap_show_conversation',
-					args: jQuery(this).data('args')
+					args: $(this).data('args')
 				},
 				context:this,
 				dataType:'json',				
 				success: function(data){
 					self.hideLoading();
 					if(data['status']){
-						jQuery('[data-view="conversation"]').html(data['html']);
+						$('[data-view="conversation"]').html(data['html']);
 						self.addMessage(data['message'], 'success');
 					}
 					else{
@@ -1179,14 +1207,14 @@ APjs.site.prototype = {
 			});
 		});
 		if(!ap_url_string_value('to'))
-			jQuery('[data-action="ap-show-conversation"].active').click();
+			$('[data-action="ap-show-conversation"].active').click();
 	},
 	newMessageButton: function(){
 		var self = this;
-		jQuery('.anspress').delegate('[data-button="ap-new-message"]', 'click', function(e){
+		$('body').delegate('[data-button="ap-new-message"]', 'click', function(e){
 			e.preventDefault();
 			self.showLoading(aplang.loading_new_message_form);
-			jQuery.ajax({
+			$.ajax({
 				type: 'POST',			
 				url: ajaxurl,
 				data: {
@@ -1197,19 +1225,19 @@ APjs.site.prototype = {
 				success: function(data){
 					self.hideLoading();
 					if(data['status']){
-						jQuery('[data-view="conversation"]').html(data['html']);
-						jQuery('textarea.autogrow').autogrow({onInitialize: true});
-						jQuery('[data-action="ap-suggest-user"]').tagsinput({
+						$('[data-view="conversation"]').html(data['html']);
+						$('textarea.autogrow').autogrow({onInitialize: true});
+						$('[data-action="ap-suggest-user"]').tagsinput({
 							freeInput: false,
 							itemValue: 'value',
 							itemText: 'text',
 						});
 						//if(window.location.search.match("to?=").length > 0)
-							//jQuery('[data-action="ap-suggest-user"]').tagsinput('add', { "value": ap_url_string_value('to'), "text": ap_url_string_value('dname')});
+							//$('[data-action="ap-suggest-user"]').tagsinput('add', { "value": ap_url_string_value('to'), "text": ap_url_string_value('dname')});
 							
-						jQuery('[data-action="ap-suggest-user"]').tagsinput('input').blur(function(e){
-							jQuery(document).mouseup(function (e){
-								var container = jQuery('#ap-suggestions');
+						$('[data-action="ap-suggest-user"]').tagsinput('input').blur(function(e){
+							$(document).mouseup(function (e){
+								var container = $('#ap-suggestions');
 
 								if (!container.is(e.target)	&& container.has(e.target).length === 0){
 									container.hide();
@@ -1223,20 +1251,20 @@ APjs.site.prototype = {
 		});
 	
 		if(ap_url_string_value('to'))
-			jQuery('[data-button="ap-new-message"]').click();
+			$('[data-button="ap-new-message"]').click();
 	},
 	userSuggestion: function(){
 		this.usersquery;
 		var self = this;
 		
-		jQuery('.anspress').delegate('[data-action="ap-add-user"]', 'click', function(){
-			jQuery('[data-action="ap-suggest-user"]').tagsinput('add', { "value": jQuery(this).data('id'), "text": jQuery(this).data('name')});
-			jQuery('[data-action="ap-suggest-user"]').tagsinput('input').val('');
-			jQuery('#ap-suggestions').hide();
+		$('body').delegate('[data-action="ap-add-user"]', 'click', function(){
+			$('[data-action="ap-suggest-user"]').tagsinput('add', { "value": $(this).data('id'), "text": $(this).data('name')});
+			$('[data-action="ap-suggest-user"]').tagsinput('input').val('');
+			$('#ap-suggestions').hide();
 		});
 		
-		jQuery('.anspress').delegate('#ap-new-message .bootstrap-tagsinput input', 'keyup', function(){
-			var value = jQuery(this).val();
+		$('body').delegate('#ap-new-message .bootstrap-tagsinput input', 'keyup', function(){
+			var value = $(this).val();
 			
 			if(value.length == 0)
 				return;
@@ -1252,16 +1280,16 @@ APjs.site.prototype = {
 				{action:'ap_search_users', q: value},
 				function(data){
 					self.hideLoading();
-					var container = jQuery(this).closest('.bootstrap-tagsinput'),
+					var container = $(this).closest('.bootstrap-tagsinput'),
 						position = container.offset();
 					
-					if(jQuery('#ap-suggestions').length ==0)
-						jQuery('.anspress').append('<div id="ap-suggestions" class="ap-suggestions user-suggestions" style="display:none"></div>');
+					if($('#ap-suggestions').length ==0)
+						$('body').append('<div id="ap-suggestions" class="ap-suggestions user-suggestions" style="display:none"></div>');
 					
 					if(data['items']){
 						self.userItems(data['items']);
 						
-						jQuery('#ap-suggestions').html(self.useritems).css({'top': (position.top + container.height() + 20), 'left': position.left}).show();
+						$('#ap-suggestions').html(self.useritems).css({'top': (position.top + container.height() + 20), 'left': position.left}).show();
 					}					
 				},
 				this
@@ -1272,7 +1300,7 @@ APjs.site.prototype = {
 	userItems: function(items){
 		this.useritems = '';
 		var self = this;
-		jQuery.each(items, function(i){
+		$.each(items, function(i){
 			self.useritems += '<div class="ap-suggestion-user" data-action="ap-add-user" data-name="'+ this.name +'" data-id="'+ this.id +'"><div class="ap-user-item-inner clearfix">';
 			self.useritems += '<div class="suggestion-avatar">'+ this.avatar +'</div>';			
 			self.useritems += '<span class="name">'+ this.name +'</strong>';			
@@ -1282,18 +1310,18 @@ APjs.site.prototype = {
 	loadMoreConversations:function(elem){
 		var self = this;
 		self.showLoading(aplang.loading_more_conversations);
-		var offset = jQuery(elem).attr('data-offset');
+		var offset = $(elem).attr('data-offset');
 		
 		if(typeof offset !== 'undefined')
 		self.doAjaxForm(
-			{action:'ap_load_conversations', offset: offset, args: jQuery(elem).attr('data-args')}, 
+			{action:'ap_load_conversations', offset: offset, args: $(elem).attr('data-args')}, 
 			function(data){
 				self.hideLoading();				
 				if(data['status']){
 					self.addMessage(data['message'], 'success');
-					jQuery(elem).attr('data-offset', parseInt(offset)+1);
-					jQuery('#ap-conversation-scroll ul').append(jQuery(data['html']).html());
-					jQuery('#ap-conversation-scroll').perfectScrollbar('update');
+					$(elem).attr('data-offset', parseInt(offset)+1);
+					$('#ap-conversation-scroll ul').append($(data['html']).html());
+					$('#ap-conversation-scroll').perfectScrollbar('update');
 				}else{
 					self.addMessage(data['message'], 'error');
 				}
@@ -1303,8 +1331,8 @@ APjs.site.prototype = {
 	searchMessage: function(){
 		var self = this;
 		
-		jQuery('.anspress').delegate('[data-action="ap-search-conversations"]', 'keyup', function(){
-			var value = jQuery(this).val();
+		$('body').delegate('[data-action="ap-search-conversations"]', 'keyup', function(){
+			var value = $(this).val();
 			
 			if(value.length == 0)
 				return;
@@ -1314,20 +1342,20 @@ APjs.site.prototype = {
 				self.messageSearchXhr.abort();
 			}
 			
-			jQuery(this).closest('form').submit();
+			$(this).closest('form').submit();
 		});
 		
-		jQuery('[data-role="ap-search-conversations"]').submit(function(){
-			self.messageSearch = jQuery(this).ajaxSubmit({
+		$('[data-role="ap-search-conversations"]').submit(function(){
+			self.messageSearch = $(this).ajaxSubmit({
 				beforeSubmit:  function(){
 					self.showLoading(aplang.searching_conversations);
 				},
 				success: function(data){
 					self.hideLoading();
 					if(data['status']){
-						jQuery(this).removeAttr('data-offset');
-						jQuery('#ap-conversation-scroll ul').html(jQuery(data['html']).html());
-						jQuery('#ap-conversation-scroll').perfectScrollbar('update');
+						$(this).removeAttr('data-offset');
+						$('#ap-conversation-scroll ul').html($(data['html']).html());
+						$('#ap-conversation-scroll').perfectScrollbar('update');
 					}else{
 						self.addMessage(data['message'], 'error');
 					}
@@ -1342,17 +1370,17 @@ APjs.site.prototype = {
 	},
 	editMessage: function(){
 		var self = this;
-		jQuery('.anspress').delegate('[data-button="ap-edit-message"]', 'click', function(e){
+		$('body').delegate('[data-button="ap-edit-message"]', 'click', function(e){
 			e.preventDefault();
 			self.showLoading(aplang.loading_message_edit_form);
 			self.doAjaxForm(
-				{action:'ap_message_edit_form', args: jQuery(this).data('args')}, 
+				{action:'ap_message_edit_form', args: $(this).data('args')}, 
 				function(data){
 					self.hideLoading();				
 					if(data['status']){
 						self.addMessage(data['message'], 'success');
-						jQuery(this).closest('.ap-message').find('[data-view="ap-message-content"]').html(data['html']);
-						jQuery('textarea.autogrow').autogrow({onInitialize: true});
+						$(this).closest('.ap-message').find('[data-view="ap-message-content"]').html(data['html']);
+						$('textarea.autogrow').autogrow({onInitialize: true});
 					}else{
 						self.addMessage(data['message'], 'error');
 					}
@@ -1361,8 +1389,8 @@ APjs.site.prototype = {
 			);
 		});
 		
-		jQuery('.anspress').delegate('[data-action="ap-edit-message"]', 'submit', function(){
-			jQuery(this).ajaxSubmit({
+		$('body').delegate('[data-action="ap-edit-message"]', 'submit', function(){
+			$(this).ajaxSubmit({
 				beforeSubmit:  function(){
 					self.showLoading(aplang.updating_message);
 				},
@@ -1370,8 +1398,8 @@ APjs.site.prototype = {
 					self.hideLoading();
 					if(data['status']){
 						self.addMessage(data['message'], 'success');
-						jQuery(this).after(data['html']);
-						jQuery(this).remove();
+						$(this).after(data['html']);
+						$(this).remove();
 					}else{
 						self.addMessage(data['message'], 'error');
 					}
@@ -1387,16 +1415,16 @@ APjs.site.prototype = {
 	},
 	deleteMessage:function(){
 		var self = this;
-		jQuery('.anspress').delegate('[data-button="ap-delete-message"]', 'click', function(e){
+		$('body').delegate('[data-button="ap-delete-message"]', 'click', function(e){
 			e.preventDefault();
 			self.showLoading(aplang.deleting_message);
 			self.doAjaxForm(
-				{action:'ap_delete_message', args: jQuery(this).data('args')}, 
+				{action:'ap_delete_message', args: $(this).data('args')}, 
 				function(data){
 					self.hideLoading();				
 					if(data['status']){
 						self.addMessage(data['message'], 'success');
-						jQuery(this).closest('.ap-message').remove();
+						$(this).closest('.ap-message').remove();
 					}else{
 						self.addMessage(data['message'], 'error');
 					}
@@ -1409,8 +1437,8 @@ APjs.site.prototype = {
 		this.qquery;
 		var self = this;
 		
-		jQuery('.anspress').delegate('#ap-quick-ask-input', 'keyup', function(){
-			var value = jQuery(this).val();
+		$('body').delegate('#ap-quick-ask-input', 'keyup', function(){
+			var value = $(this).val();
 			
 			if(value.length == 0)
 				return;
@@ -1428,16 +1456,16 @@ APjs.site.prototype = {
 				},
 				function(data){
 					self.hideLoading();
-					var container = jQuery(this).closest('.ap-qaf-inner'),
+					var container = $(this).closest('.ap-qaf-inner'),
 						position = container.offset();
 					
-					if(jQuery('#ap-qsuggestions').length ==0)
-						jQuery('.anspress').append('<div id="ap-qsuggestions" class="ap-qsuggestions" style="display:none"></div>');
+					if($('#ap-qsuggestions').length ==0)
+						$('body').append('<div id="ap-qsuggestions" class="ap-qsuggestions" style="display:none"></div>');
 					
 					if(data['items']){
 						self.qsItems(data['items']);
 						
-						jQuery('#ap-qsuggestions').html(self.qsitems).css({'top': (position.top + container.height() + 10), 'left': position.left, 'width': container.width()}).show();
+						$('#ap-qsuggestions').html(self.qsitems).css({'top': (position.top + container.height() + 10), 'left': position.left, 'width': container.width()}).show();
 					}
 					
 				},
@@ -1445,37 +1473,37 @@ APjs.site.prototype = {
 			);
 		});
 		
-		jQuery('.anspress').delegate('#ap-qsuggestions', 'click', function(e){
-			jQuery('#ap-qsuggestions').toggle();
+		$('body').delegate('#ap-qsuggestions', 'click', function(e){
+			$('#ap-qsuggestions').toggle();
 		});
 
 	},
 	qsItems: function(items){
 		this.qsitems = '';
 		var self = this;
-		jQuery.each(items, function(i){
+		$.each(items, function(i){
 			self.qsitems += this.html;
 		});
 	},
 	flushRules:function(){
 		var self = this;
 		
-		jQuery('.ap-missing-rules > a').click(function(e){
+		$('.ap-missing-rules > a').click(function(e){
 			e.preventDefault();
 			self.showLoading(aplang.sending);
 			self.doAjaxForm(
-				{action: 'ap_install_rewrite_rules', args: jQuery(this).data('args')},
+				{action: 'ap_install_rewrite_rules', args: $(this).data('args')},
 				function(){
 					self.hideLoading();
-					jQuery('.ap-missing-rules').hide();
+					$('.ap-missing-rules').hide();
 				}
 			);
 		});
 
 	},
 	submitAjaxForm: function(form, before, after){
-		jQuery('.anspress').delegate(form, 'submit', function(){
-			jQuery(this).ajaxSubmit({
+		$('body').delegate(form, 'submit', function(){
+			$(this).ajaxSubmit({
 				beforeSubmit:  	before,
 				success: 		after,
 				url:			ajaxurl,
@@ -1489,15 +1517,15 @@ APjs.site.prototype = {
 	
 	loadNewTagForm:function(){
 		var self = this;
-		jQuery('.anspress').delegate('#ap-load-new-tag-form', 'click', function(e){
+		$('body').delegate('#ap-load-new-tag-form', 'click', function(e){
 			e.preventDefault();
 			self.showLoading(aplang.loading);
 			self.doAjaxForm(
-				{action: 'ap_load_new_tag_form', args: jQuery(this).data('args')},
+				{action: 'ap_load_new_tag_form', args: $(this).data('args')},
 				function(data){
 					self.hideLoading();
 					if(data['status']){
-						jQuery(this).closest('.ap-suggestions').html(data['html']);
+						$(this).closest('.ap-suggestions').html(data['html']);
 					}else{
 						self.addMessage(data['message'], 'error');
 					}
@@ -1517,9 +1545,9 @@ APjs.site.prototype = {
 				self.hideLoading();
 				if(data['status']){
 					self.addMessage(data['message'], 'success');
-					jQuery('[data-role="ap-tagsinput"]').tagsinput('add', data['tag']['slug']);
-					jQuery('[data-role="ap-tagsinput"]').tagsinput('input').val('');
-					jQuery('#ap-suggestions').hide();
+					$('[data-role="ap-tagsinput"]').tagsinput('add', data['tag']['slug']);
+					$('[data-role="ap-tagsinput"]').tagsinput('input').val('');
+					$('#ap-suggestions').hide();
 				}else{
 					self.addMessage(data['message'], 'error');
 				}
@@ -1528,14 +1556,14 @@ APjs.site.prototype = {
 	},
 	loginAccor:function(){
 		var self = this;
-		jQuery('.ap-ac-accordion > strong').click(function(){
-			var $elm = jQuery(this).parent();
+		$('.ap-ac-accordion > strong').click(function(){
+			var $elm = $(this).parent();
 			if(!$elm.hasClass('active'))
 			{
-				jQuery('.ap-ac-accordion').removeClass('active');
-				jQuery('.ap-ac-accordion .accordion-content').hide();
-				jQuery(this).parent().addClass('active');
-				jQuery(this).next().slideToggle();
+				$('.ap-ac-accordion').removeClass('active');
+				$('.ap-ac-accordion .accordion-content').hide();
+				$(this).parent().addClass('active');
+				$(this).next().slideToggle();
 			}
 			else
 			{
@@ -1543,9 +1571,36 @@ APjs.site.prototype = {
 				$elm.find('.accordion-content').hide();
 			}
 		});
+	},
+	foldContent: function(){
+		$('[data-action="ap_fold_content"]').each(function(e){
+			if($('.ap-fold-inner', this).height() > 80)
+				$(this).next().show();
+		});
+	},
+
+	expandToggle: function(){
+		var self = this;
+		$('[data-button="ap_expand_toggle"]').click(function(e){
+			e.preventDefault();
+
+			$(this).prev().animate({'height': $(this).prev().find('> *').height() }, 200);
+			$(this).hide();
+
+		});
+	},
+
+	removeHasError: function(){
+		$('.ap-have-error input, .ap-have-error textarea, .ap-have-error select').click(function(){
+			$(this).closest('.ap-have-error').addClass('being-edited');
+		});
 	}
+
+
 	
 };
+
+})(jQuery);
 
 
 function ap_label_select_template(state) {
@@ -1577,3 +1632,4 @@ function ap_url_string_value(name) {
         results = regex.exec(location.search);
     return results == null ? false : decodeURIComponent(results[1].replace(/\+/g, " "));
 }
+
