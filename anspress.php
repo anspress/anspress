@@ -205,8 +205,7 @@ if(!class_exists('AnsPress')):
 			require_once( ANSPRESS_DIR . 'includes/theme.php' );
 			require_once( ANSPRESS_DIR . 'includes/main.php' );
 			require_once( ANSPRESS_DIR . 'includes/form.php' );
-			
-			require_once( ANSPRESS_DIR . 'includes/basepage.php' );
+
 			require_once( ANSPRESS_DIR . 'includes/participants.php' );
 			require_once( ANSPRESS_DIR . 'includes/labels.php' );
 			require_once( ANSPRESS_DIR . 'includes/user.php' );

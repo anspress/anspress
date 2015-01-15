@@ -368,11 +368,11 @@ function ap_get_all_users(){
 
 
 function ap_ans_list_tab(){
-	$order = get_query_var('sort');
+	$order = get_query_var('ap_sort');
 	if(empty($order ))
 		$order = ap_opt('answers_sort');
 		
-		$link = '?sort=';
+		$link = '?ap_sort=';
 		$ans_count = ap_count_all_answers(get_the_ID());
 	?>
 		<ul class="ap-ans-tab ap-tabs clearfix" role="tablist">
@@ -628,12 +628,12 @@ function ap_features_metadata($contents, $fields){
 }
 
 function ap_users_tab(){
-	$order = get_query_var('sort');
+	$order = get_query_var('ap_sort');
 	
 	if(empty($order ))
 		$order = 'points';//ap_opt('answers_sort');
 	
-	$link = '?sort=';
+	$link = '?ap_sort=';
 
 	
 	?>
