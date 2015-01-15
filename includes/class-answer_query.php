@@ -43,7 +43,7 @@ class Answers_Query extends WP_Query {
         if(isset($args['orderby']))
             $orderby = $args['orderby'];
         else
-            $orderby = (get_query_var('ap_sort')) ? get_query_var('ap_sort') : 'active';
+            $orderby = (isset($_GET['ap_sort'])) ? $_GET['ap_sort'] : 'active';
 
         $defaults = array(
             'post_status'       => array('publish', 'moderate', 'private_post'),

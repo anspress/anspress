@@ -665,14 +665,11 @@ function ap_post_actions_buttons()
 function ap_questions_tab($current_url){
 	$param = array();
 
-	$sort = get_query_var('ap_sort');
-	
+	$sort = isset($_GET['ap_sort']) ? $_GET['ap_sort'] : 'active';
+
 	$label = sanitize_text_field(get_query_var('label'));
 	$search_q = sanitize_text_field(get_query_var('ap_s'));
-	
-	if(empty($sort ))
-		$sort = 'active';//ap_opt('answers_sort');
-	
+
 	//$param['sort'] = $sort;
 
 	if(!empty( $search ))
@@ -735,25 +732,23 @@ function ap_questions_tab($current_url){
  * @since 2.0.1
  */
 function ap_answers_tab($base = false){
-	$sort = get_query_var('ap_sort');
-	if(empty($sort ))
-		$sort = ap_opt('answers_sort');
+	$sort = isset($_GET['ap_sort']) ? $_GET['ap_sort'] : ap_opt('answers_sort');
 		
-		if(!$base)
-			$base = get_permalink();
-		
-		$navs = array(
-			'active' => array('link' => add_query_arg(  array('ap_sort' => 'active'), $base), 'title' => __('Active', 'ap')),
-			'voted' => array('link' => add_query_arg(  array('ap_sort' => 'voted'), $base), 'title' => __('Voted', 'ap')), 
-			'newest' => array('link' =>add_query_arg(  array('ap_sort' => 'newest'), $base), 'title' => __('Newest', 'ap')), 
-			'oldest' => array('link' => add_query_arg(  array('ap_sort' => 'oldest'), $base), 'title' => __('Oldest', 'ap')),			
-			);
+	if(!$base)
+		$base = get_permalink();
+	
+	$navs = array(
+		'active' => array('link' => add_query_arg(  array('ap_sort' => 'active'), $base), 'title' => __('Active', 'ap')),
+		'voted' => array('link' => add_query_arg(  array('ap_sort' => 'voted'), $base), 'title' => __('Voted', 'ap')), 
+		'newest' => array('link' =>add_query_arg(  array('ap_sort' => 'newest'), $base), 'title' => __('Newest', 'ap')), 
+		'oldest' => array('link' => add_query_arg(  array('ap_sort' => 'oldest'), $base), 'title' => __('Oldest', 'ap')),			
+		);
 
-		echo '<ul class="ap-answers-tab ap-tab ap-ul-inline clearfix">';
-		foreach ($navs as $k => $nav) {
-			echo '<li'.( $sort == $k ? ' class="active"' : '') .'><a href="'. $nav['link'] .'">'. $nav['title'] .'</a></li>';
-		}
-		echo '</ul>';
+	echo '<ul class="ap-answers-tab ap-tab ap-ul-inline clearfix">';
+	foreach ($navs as $k => $nav) {
+		echo '<li'.( $sort == $k ? ' class="active"' : '') .'><a href="'. $nav['link'] .'">'. $nav['title'] .'</a></li>';
+	}
+	echo '</ul>';
 }
 
 /**

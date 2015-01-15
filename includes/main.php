@@ -176,7 +176,7 @@ class anspress_main {
 		$query_vars[] = 'qcat';
 		$query_vars[] = 'qtag_id';
 		$query_vars[] = 'qtag';
-		$query_vars[] = 'ap_sort';
+//		$query_vars[] = 'ap_sort';
 		$query_vars[] = 'label';
 		$query_vars[] = 'user';
 		$query_vars[] = 'user_page';
