@@ -25,6 +25,7 @@ class AnsPress_PostTypes
 		//Register Custom Post types and taxonomy
         add_action('init', array($this, 'register_question_cpt'), 0);
         add_action('init', array($this, 'register_answer_cpt'), 0);
+        add_action('post_type_link',array($this, 'ans_post_type_link'),10,2);
 
     }
 
@@ -85,7 +86,7 @@ class AnsPress_PostTypes
             'publicly_queryable' => true,
             'query_var' => 'question',
             'capability_type' => 'post',
-            'rewrite' => false
+            'rewrite' => true
         );
 
         /**
@@ -163,6 +164,22 @@ class AnsPress_PostTypes
 
         // register CPT answer
         register_post_type('answer', $args);
+    }
+
+    /**
+     * Alter answer CPT permalink
+     * @param  string $link
+     * @param  object $post 
+     * @return string
+     * @since 2.0.0-alpha2
+     */
+    public function ans_post_type_link($link, $post) {
+        $post_type = 'answer';
+       
+        if ($post->post_type==$post_type) {
+            $link = get_permalink($post->post_parent) ."#answer_{$post->ID}";
+        }
+        return $link;
     }
 
 }

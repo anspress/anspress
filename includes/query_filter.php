@@ -51,7 +51,7 @@ class AnsPress_Query_Filter
         // TODO: move to admin
         add_filter('post_updated_messages', array($this,'post_custom_message'));
 		
-		//add_action('post_type_link',array($this, 'ans_post_type_link'),10,2);
+		//
 		// TODO: move to admin
 		add_action( 'admin_init', array( $this, 'init_actions' ) ); 
 		add_action( 'init', array($this, 'ap_make_post_parent_public') );
@@ -374,13 +374,7 @@ class AnsPress_Query_Filter
 	
 	
 	
-	public function ans_post_type_link($link, $post) {
-	  $post_type = 'answer';
-	  if ($post->post_type==$post_type) {
-		$link = get_permalink($post->post_parent) ."#answer_{$post->ID}";
-	  }
-	  return $link;
-	}
+	
 	
 	function suggest_questions() {
 		// Query for suggestions  

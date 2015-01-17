@@ -139,7 +139,7 @@ AnsPress.site.prototype = {
 		$(action).on('keyup', function(){
 			if($.trim($(this).val()) == '')
 				return;
-			
+
 			ApSite.doAjax( 
 				apAjaxData('ap_ajax_action=suggest_similar_questions&value=' + $(this).val()), 
 				function(data){
@@ -210,8 +210,11 @@ AnsPress.site.prototype = {
 	},
 
 	redirect:function(data){
-		if(typeof data.redirect_to !== 'undefined')
-			window.location.replace(data.redirect_to);
+		console.log(typeof data.redirect_to !== 'undefined');
+		if(typeof data.redirect_to !== 'undefined'){
+			window.location = data.redirect_to;
+			window.location.reload(true);
+		}
 	},
 
 	append:function(data){
