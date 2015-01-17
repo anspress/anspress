@@ -820,3 +820,7 @@ function ap_ajax_responce($results)
 
 	return $results;
 }
+
+function ap_meta_array_map( $a ) {
+	return $a[0];
+}
