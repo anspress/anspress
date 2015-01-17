@@ -41,6 +41,10 @@ class AnsPress_Ajax
      * @since 2.0.1
      */
     public function suggest_similar_questions(){
+
+    	if(empty($_POST['value'] ))
+    		return;
+
     	$keyword = sanitize_text_field($_POST['value']);
 		$questions = get_posts(array(
 			'post_type'   	=> 'question',

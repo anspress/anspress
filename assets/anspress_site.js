@@ -137,6 +137,9 @@ AnsPress.site.prototype = {
 
 	suggest_similar_questions: function(action){
 		$(action).on('keyup', function(){
+			if($.trim($(this).val()) == '')
+				return;
+			
 			ApSite.doAjax( 
 				apAjaxData('ap_ajax_action=suggest_similar_questions&value=' + $(this).val()), 
 				function(data){
