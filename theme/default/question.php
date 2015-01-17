@@ -95,9 +95,8 @@ global $post;
 				} 
 			?>
 				
-			<?php 
-				if(ap_user_can_answer(get_question_id()))
-					include(ap_get_theme_location('answer-form.php')); 
+			<?php 				
+				include(ap_get_theme_location('answer-form.php')); 
 			?>
 		</div>
 

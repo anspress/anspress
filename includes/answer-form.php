@@ -38,6 +38,10 @@ new AnsPress_Answer_Form;
  * @return void
  */
 function ap_answer_form($question_id, $editing = false){
+    
+    if(!ap_user_can_answer($question_id))
+        return;
+
     global $editing_post;
 
     if($editing){
