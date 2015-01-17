@@ -51,7 +51,7 @@ class AnsPress_Form_Helper
 		add_action( 'wp_ajax_nopriv_ap_submit_answer', array($this, 'ajax_answer_submit') ); 
 				
 		add_action('wp_insert_comment', array($this, 'comment_inserted'), 99, 2);
-		add_action('pre_comment_approved', array($this, 'pre_comment_approved'), 99, 2);
+		
 
 
 
@@ -122,31 +122,6 @@ class AnsPress_Form_Helper
 			}
 		}
 	}
-	
-	public function pre_comment_approved($approved , $commentdata){
-		if($approved =='1' ){
-			$post_type = get_post_type( $commentdata->comment_post_ID );
-
-			if ($post_type == 'question') {
-				// set updated meta for sorting purpose
-				update_post_meta($commentdata->comment_post_ID, ANSPRESS_UPDATED_META, current_time( 'mysql' ));
-
-				// add participant
-				//ap_add_parti($commentdata->comment_post_ID, $commentdata->user_ID, 'comment');
-
-			}elseif($post_type == 'answer'){
-				$post_id = wp_get_post_parent_id($commentdata->comment_post_ID);
-				// set updated meta for sorting purpose
-				update_post_meta($post_id, ANSPRESS_UPDATED_META, current_time( 'mysql' ));
-				// add participant only
-				//ap_add_parti($post_id, $commentdata->user_ID, 'comment');
-			}
-		}else{
-			return $approved;
-		}
-	}
-
-	
 		
 	/**
 	 * TODO: EXTENSION - move to tags
