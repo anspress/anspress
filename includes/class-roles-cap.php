@@ -159,13 +159,10 @@ class AP_Roles{
 	}
 }
 
-function ap_show_form_to_guest(){
-	return ap_opt('show_login_signup');
-}
 
 /* Check if a user can ask a question */
 function ap_user_can_ask(){
-	if(current_user_can('ap_new_question') || is_super_admin() || ap_show_form_to_guest() || ap_allow_anonymous())
+	if(current_user_can('ap_new_question') || is_super_admin() || ap_allow_anonymous())
 		return true;
 	
 	return false;
@@ -179,7 +176,7 @@ function ap_user_can_answer($question_id){
 	if(ap_opt('close_after_selecting') && ap_is_answer_selected($question_id) )
 		return false;
 		
-	if((current_user_can('ap_new_answer') || ap_show_form_to_guest())){
+	if((current_user_can('ap_new_answer'))){
 		if(!ap_opt('multiple_answers') && ap_is_user_answered($question_id, get_current_user_id()) && get_current_user_id() != '0')
 			return false;
 		else
