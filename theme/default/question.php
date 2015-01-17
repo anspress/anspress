@@ -108,7 +108,7 @@ global $post;
 				</div>
 
 				<div class="ap-q-side-sec">			
-					<?php ap_get_all_parti(30, get_question_id()); ?>
+					<?php ap_get_all_parti(30); ?>
 				</div>
 
 			</div>

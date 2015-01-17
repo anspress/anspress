@@ -274,10 +274,7 @@ add_action( 'plugins_loaded', array( 'anspress_main', 'get_instance' ) );
 add_action( 'plugins_loaded', array( 'Ap_Meta', 'get_instance' ) );
 add_action( 'plugins_loaded', array( 'anspress_vote', 'get_instance' ) );
 add_action( 'plugins_loaded', array( 'anspress_view', 'get_instance' ) );
-//add_action( 'plugins_loaded', array( 'anspress_form', 'get_instance' ) );
 
-add_action( 'plugins_loaded', array( 'AP_Participents', 'get_instance' ) );
-//add_action( 'plugins_loaded', array( 'AP_labels', 'get_instance' ) );
 add_action( 'plugins_loaded', array( 'AnsPress_User', 'get_instance' ) );
 add_action( 'plugins_loaded', array( 'AP_Ranks', 'get_instance' ) );
 add_action( 'plugins_loaded', array( 'AP_Badges', 'get_instance' ) );

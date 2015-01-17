@@ -1,44 +1,14 @@
 <?php
 /**
- * AnsPress.
+ * AnsPress participants functions.
  *
  * @package   AnsPress
  * @author    Rahul Aryan <admin@rahularyan.com>
  * @license   GPL-2.0+
- * @link      http://rahularyan.com
+ * @link      http://wp3.in
  * @copyright 2014 Rahul Aryan
  */
 
-class AP_Participents
-{
-    /**
-     * Instance of this class.
-     */
-    protected static $instance = null;
-    /**
-     * Return an instance of this class.
-     * @return    object    A single instance of this class.
-     */
-    public static function get_instance()
-    {
-        
-        // If the single instance hasn't been set, set it now.
-        if (null == self::$instance) {
-            self::$instance = new self;
-        }
-        
-        return self::$instance;
-    }
-    /**
-     * Initialize the plugin by setting localization and loading public scripts
-     * and styles.
-     */
-    public function __construct()
-    {
-
-    }
-		
-}
 
 /* Insert participant  */
 function ap_add_parti($post_id, $user_id, $action, $param = false){
@@ -89,7 +59,7 @@ function ap_get_all_parti($avatar_size = 40, $post_id = false){
 		$post_id = get_the_ID();
 		
 	$parti = ap_get_parti($post_id);
-	
+
 	echo '<span class="ap-side-sec-label">'. sprintf( _n('<span>1</span> Participant', '<span>%d</span> Participants', count($parti), 'ap'), count($parti)) .'</h3>';
 	
 	echo '<div class="ap-participants-list clearfix">';	
