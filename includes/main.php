@@ -41,7 +41,7 @@ class anspress_main {
 		// Activate plugin when new blog is added
 		//add_action( 'wpmu_new_blog', array( $this, 'activate_new_site' ) );
 
-		add_filter('query_vars', array($this, 'query_var'));
+		
 		
 		//add_action('post_type_link', array( $this, 'answer_link'),10,2);
 		//add_action('generate_rewrite_rules', array( $this, 'rewrites'), 1);		
@@ -161,31 +161,7 @@ class anspress_main {
 
 	
 	//add author_more to query vars
-	public function query_var( $query_vars) {
-
-		$query_vars[] = 'edit_post_id';
-		$query_vars[] = 'ap_nonce';
-		$query_vars[] = 'question_id';
-		$query_vars[] = 'question';
-		$query_vars[] = 'question_name';
-		$query_vars[] = 'answer_id';
-		$query_vars[] = 'answer';
-		$query_vars[] = 'ask';
-		$query_vars[] = 'ap_page';
-		$query_vars[] = 'qcat_id';
-		$query_vars[] = 'qcat';
-		$query_vars[] = 'qtag_id';
-		$query_vars[] = 'qtag';
-//		$query_vars[] = 'ap_sort';
-		$query_vars[] = 'label';
-		$query_vars[] = 'user';
-		$query_vars[] = 'user_page';
-		$query_vars[] = 'ap_s';
-		$query_vars[] = 'message_id';
-		$query_vars[] = 'parent';
-		
-		return $query_vars;
-	}
+	
 	
 	/* Answer link */	
 	public function answer_link($link, $post) {

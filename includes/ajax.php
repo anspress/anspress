@@ -239,7 +239,7 @@ class AnsPress_Ajax
 	
 	public function ap_suggest_tags(){
 		$keyword = sanitize_text_field($_POST['q']);
-		$tags = get_terms( 'question_tags', array(
+		$tags = get_terms( 'question_tag', array(
 			'orderby'   	=> 'count',
 			'order' 		=> 'DESC',
 			'hide_empty' 	=> false,
@@ -247,28 +247,21 @@ class AnsPress_Ajax
 			'number' 		=> 8
 		));
 		
-		$new_tag_html = '';
-		if(ap_user_can_create_tag())
-			$new_tag_html = '<div class="ap-cntlabel"><a href="#" id="ap-load-new-tag-form" data-args="'.wp_create_nonce('new_tag_form').'">'.__('Create new tag', 'ap').'</a></div>';
-		
+		//$new_tag_html = '';
+		//if(ap_user_can_create_tag())
+			//$new_tag_html = '<div class="ap-cntlabel"><a href="#" id="ap-load-new-tag-form" data-args="'.wp_create_nonce('new_tag_form').'">'.__('Create new tag', 'ap').'</a></div>';
+
 		if($tags){
 			$items = array();
 			foreach ($tags as $k => $t){
-				$items[$k]['id'] 		= $t->slug;
-				$items[$k]['name'] 		= $t->name;
-				$items[$k]['count'] 	= $t->count;
-				$items[$k]['description'] = ap_truncate_chars($t->description, 80);
+				$items[$k]		= $t->name;
 			}
-			$result = array('status' => true, 'items' => $items, 'form' => '<div class="clearfix"></div>'.$new_tag_html);
-		}else{
-			$form = '';
-			if(ap_user_can_create_tag())
-				$form = '<div class="ap-esw warning">'.__('No tags found', 'ap').'</div>'.ap_tag_form();
-				
-			$result = array('status' => false, 'message' => __('No related tags found', 'ap'), 'form' => $form);
+
+			$result = array('status' => true, 'items' => $items);
+			die(json_encode($result));
 		}
 		
-		die(json_encode($result));
+		die(json_encode(array('status' => false)));
 	}
 
 }

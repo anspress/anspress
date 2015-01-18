@@ -176,36 +176,6 @@ function ap_answers_link(){
 	return get_permalink().'#answers';
 }
 
-function ap_get_link_to($sub){
-	
-	$base = rtrim(get_permalink(ap_opt('base_page')), '/');
-
-	
-	if(get_option('permalink_structure') != ''){
-		
-		if(!is_array($sub))
-			$args = $sub ? '/'.$sub : '';
-		elseif(is_array($sub)){
-			$args = '/';
-			if(!empty($sub))
-				foreach($sub as $s)
-					$args .= $s.'/';
-		}
-
-		$link = $base;		
-	}else{
-		if(!is_array($sub))
-			$args = $sub ? '&ap_page='.$sub : '';
-		elseif(is_array($sub)){
-			$args = '';
-			if(!empty($sub))
-				foreach($sub as $k => $s)
-					$args .= '&'.$k .'='.$s;
-		}
-		$link = $base;
-	}
-	return $link. $args ;
-}
 
 /**
  * Load comment form button
@@ -823,4 +793,28 @@ function ap_ajax_responce($results)
 
 function ap_meta_array_map( $a ) {
 	return $a[0];
+}
+
+/**
+ * Return the current page url
+ * @param  array $args
+ * @return string
+ * @since 2.0.0-alpha2
+ */
+function ap_current_page_url($args){
+	$base = rtrim(get_permalink(), '/');
+
+	
+	if(get_option('permalink_structure') != ''){
+
+		$link = $base.'/';
+		if(!empty($args))
+			foreach($args as $k => $s)
+				$link .= $s.'/';
+	
+	}else{
+		
+		$link = add_query_arg($args, $base);
+	}
+	return $link ;
 }

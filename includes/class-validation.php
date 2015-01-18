@@ -52,7 +52,7 @@ class AnsPress_Validation
      */
     public function required($field)
     {
-        if(!isset($this->fields[$field]) || mb_strlen($this->fields[$field]) == 0 || $this->fields[$field] =='' )
+        if(!isset($this->fields[$field]) ||  $this->fields[$field] =='' )
             $this->errors[$field] = __('This field is required', 'ap');
     }
 
@@ -79,6 +79,19 @@ class AnsPress_Validation
     {
         if(!isset($this->fields[$field]) || mb_strlen($this->fields[$field]) < $param )
             $this->errors[$field] = sprintf(__('Its too short, it must be minimum %d characters', 'ap'), $param);
+    }
+
+    /**
+     * Count comma separated strings
+     * @param  string $field
+     * @param  string $param
+     * @return void
+     * @since  2.0
+     */
+    private function comma_separted_count($field, $param)
+    {
+        if(!isset($this->fields[$field]) || count(explode(',', $this->fields[$field])) < $param )
+            $this->errors[$field] = sprintf(__('It must be minimum %d characters', 'ap'), $param);
     }
 
     /**
@@ -174,6 +187,29 @@ class AnsPress_Validation
     }
 
     /**
+     * Santitize tags field
+     * @param  array $field
+     * @return void       
+     * @since  2.0
+     */
+    private function sanitize_tags($field)
+    {
+       $this->fields[$field] = $this->fields[$field];
+
+       $tags = explode(',', $this->fields[$field]);
+
+       $sanitized_tags = '';
+
+       if(is_array($tags)){
+            foreach ($tags  as $tag) {
+                $sanitized_tags .= sanitize_text_field( $tag ) .',';
+            }
+       }
+
+       $this->fields[$field] = $sanitized_tags;
+    }
+
+    /**
      * Sanitize field based on actions passed
      * @param  string $field
      * @param  array $actions
@@ -216,6 +252,10 @@ class AnsPress_Validation
                     $this->strip_tags($field);
                     break;
 
+                case 'sanitize_tags':                    
+                    $this->sanitize_tags($field);
+                    break;
+
                 
                 default:
                     $this->fields[$field] = apply_filters('ap_validation_sanitize_field', $field, $actions );
@@ -245,6 +285,10 @@ class AnsPress_Validation
 
                 case 'length_check':
                     $this->length_check($field, $param);
+                    break;
+
+                case 'comma_separted_count':
+                    $this->comma_separted_count($field, $param);
                     break;
                 
                 default:

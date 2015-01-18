@@ -30,6 +30,8 @@ class AnsPress_Actions
 		add_action('untrash_post', array($this, 'untrash_ans_on_question_untrash'));
 
 		add_action('pre_comment_approved', array($this, 'pre_comment_approved'), 99, 2);
+
+		add_filter('query_vars', array($this, 'query_var'));
 	}
 
 	/**
@@ -216,6 +218,37 @@ class AnsPress_Actions
 		}else{
 			return $approved;
 		}
+	}
+
+	/**
+	 * Register query vars
+	 * @param  array $query_vars 
+	 * @return array             
+	 */
+	public function query_var( $query_vars) {
+
+		$query_vars[] = 'edit_post_id';
+		$query_vars[] = 'ap_nonce';
+		$query_vars[] = 'question_id';
+		$query_vars[] = 'question';
+		$query_vars[] = 'question_name';
+		$query_vars[] = 'answer_id';
+		$query_vars[] = 'answer';
+		$query_vars[] = 'ask';
+		$query_vars[] = 'ap_page';
+		$query_vars[] = 'qcat_id';
+		$query_vars[] = 'qcat';
+		$query_vars[] = 'qtag_id';
+		$query_vars[] = 'q_tag';
+
+		$query_vars[] = 'label';
+		$query_vars[] = 'user';
+		$query_vars[] = 'user_page';
+		$query_vars[] = 'ap_s';
+		$query_vars[] = 'message_id';
+		$query_vars[] = 'parent';
+		
+		return $query_vars;
 	}
 
 }

@@ -28,8 +28,7 @@ function anspress_activate( $network_wide ) {
 	
 	
 	global $wpdb;
-	
-	//TODO: EXTENSION - move category and tags page to extension
+
 	$page_to_create = array(
 		'questions' 			=> __('Questions', 'ap'), 
 		'user' 					=> __('User', 'ap'),			

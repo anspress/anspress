@@ -29,10 +29,7 @@ APjs.site.prototype = {
 		this.checkEmail();
 		this.checkEmailAvailable();
 		//this.bind();
-		
-		this.castVote();
-		this.favorite();
-		this.appendMessageBox();
+
 		this.close();
 		this.loadFlagModal();
 		this.flagModalSubmit();
@@ -41,15 +38,7 @@ APjs.site.prototype = {
 		this.dropdownClose();
 		this.load_comment_form();
 		this.load_edit_comment_form();
-		this.submitAnswer();
-		this.submitQuestion();
-		
-		this.saveComment();
-		this.updateComment();
-		this.deleteComment();
-		
-		this.selectBestAnswer();
-		this.deletePost();
+
 		this.tab();
 		this.labelSelect();
 		this.saveLabel();
@@ -993,90 +982,8 @@ APjs.site.prototype = {
 			});
 		});
 	},
-	tagsScript:function(){
-		
-		if($('[data-role="ap-tagsinput"]').length > 0){
-			$('[data-role="ap-tagsinput"]').tagsinput({
-				freeInput: false,
-				maxTags: ap_max_tags,
-			});
-			$('[data-role="ap-tagsinput"]').tagsinput('input').blur(function(e){
-				$(document).mouseup(function (e){
-					var container = $('#ap-suggestions');
 
-					if (!container.is(e.target)	&& container.has(e.target).length === 0){
-						container.hide();
-					}
-				});
-			});
-
-		}
-	},
-	tagsSuggestion: function(){
-		this.tagsquery;
-		var self = this;
-		
-		$('body').delegate('#ask_question_form .bootstrap-tagsinput input', 'keyup', function(){
-			var value = $(this).val();
-			
-			if(value.length == 0)
-				return;
-				
-			/* abort previous ajax request */
-			if(typeof self.tagsquery !== 'undefined'){
-				self.tagsquery.abort();
-			}
-			
-			self.showLoading(aplang.loading_suggestions);	
-			self.tagsquery = $.ajax({
-				type: 'POST',			
-				url: ajaxurl,
-				data: {
-					action:'ap_suggest_tags',
-					q: value
-				},
-				context:this,
-				dataType:'json',				
-				success: function(data){
-					self.hideLoading();
-					var container = $(this).closest('.bootstrap-tagsinput'),
-						position = container.offset();
-					
-					if($('#ap-suggestions').length ==0)
-						$('body').append('<div id="ap-suggestions" class="ap-suggestions" style="display:none"></div>');
-					
-					if(data['items']){
-						self.tagItems(data['items']);
-						
-						$('#ap-suggestions').html(self.tagsitems+data['form']).css({'top': (position.top + container.height() + 20), 'left': position.left, 'width': container.width()}).show();
-					}else if(data['form']){
-						$('#ap-suggestions').html(data['form']).css({'top': (position.top + container.height() + 20), 'left': position.left, 'width': container.width()}).show();
-					}
-					
-				}
-			});
-		});
-	},
-	tagItems: function(items){
-		this.tagsitems = '';
-		var self = this;
-		$.each(items, function(i){
-			self.tagsitems += '<div class="ap-tag-item" data-action="ap-add-tag" data-name="'+ this.name +'"><div class="ap-tag-item-inner">';
-			self.tagsitems += '<div class="tag-title"><strong>'+ this.name +'</strong> &times; <span>'+this.count+'</span></div>';			
-			self.tagsitems += '<span class="tag-description">'+ this.description +'</strong>';			
-			self.tagsitems += '</div></div>';
-		});
-	},
 	
-	addTag: function(){
-		var self = this;
-		
-		$('body').delegate('[data-action="ap-add-tag"]', 'click touchstart', function(){
-			$('[data-role="ap-tagsinput"]').tagsinput('add', $(this).data('name'));
-			$('[data-role="ap-tagsinput"]').tagsinput('input').val('');
-			$('#ap-suggestions').hide();
-		});
-	},
 	uploadForm:function(){
 		var self = this;
 		$('[data-action="ap-upload-field"]').change(function(){

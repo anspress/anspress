@@ -211,7 +211,7 @@ class AnsPress_Form {
 
         $placeholder = $this->placeholder();
         $autocomplete = isset($field['autocomplete'])  ? ' autocomplete="off"' : '';
-        $this->output .= '<input id="'. @$field['name'] .'" type="text" class="ap-form-control" value="'. @$field['value'] .'" name="'. @$field['name'] .'"'.$placeholder.' '. @$field['attar'] .$autocomplete.' />';
+        $this->output .= '<input id="'. @$field['name'] .'" type="text" class="ap-form-control" value="'. @$field['value'] .'" name="'. @$field['name'] .'"'.$placeholder.' '. @$field['attr'] .$autocomplete.' />';
         $this->error_messages();
     }
 
@@ -229,7 +229,7 @@ class AnsPress_Form {
         if(!empty($field['desc']))
             $this->output .= '<div class="ap-checkbox-withdesc clearfix">';
 
-        $this->output .= '<input id="'. @$field['name'] .'" type="checkbox" class="ap-form-control" value="1" name="'. @$field['name'] .'" '.checked( (bool)$field['value'], true, false ).' '. @$field['attar'] .' />';
+        $this->output .= '<input id="'. @$field['name'] .'" type="checkbox" class="ap-form-control" value="1" name="'. @$field['name'] .'" '.checked( (bool)$field['value'], true, false ).' '. @$field['attr'] .' />';
         $this->desc();
         $this->error_messages();
 
@@ -260,7 +260,7 @@ class AnsPress_Form {
         if(isset($field['label']))
             $this->label();
         
-        $this->output .= '<select id="'. @$field['name'] .'" class="ap-form-control" value="'. @$field['value'] .'" name="'. @$field['name'] .'" '. @$field['attar'] .'>';
+        $this->output .= '<select id="'. @$field['name'] .'" class="ap-form-control" value="'. @$field['value'] .'" name="'. @$field['name'] .'" '. @$field['attr'] .'>';
         $this->output .= '<option value=""></option>';
         $this->select_options($field);
         $this->output .= '</select>';
@@ -294,7 +294,7 @@ class AnsPress_Form {
         if(isset($field['label']))
             $this->label();
         
-        $this->output .= '<select id="'. @$field['name'] .'" class="ap-form-control" value="'. @$field['value'] .'" name="'. @$field['name'] .'" '. @$field['attar'] .'>';
+        $this->output .= '<select id="'. @$field['name'] .'" class="ap-form-control" value="'. @$field['value'] .'" name="'. @$field['name'] .'" '. @$field['attr'] .'>';
         $this->output .= '<option value=""></option>';
         $this->taxonomy_select_options($field);
         $this->output .= '</select>';
@@ -313,7 +313,7 @@ class AnsPress_Form {
             $this->label();
 
         $placeholder = $this->placeholder();
-        $this->output .= '<textarea id="'. @$field['name'] .'" rows="'. @$field['rows'] .'" class="ap-form-control" name="'. @$field['name'] .'"'.$placeholder.' '. @$field['attar'] .'>'. @$field['value'] .'</textarea>';
+        $this->output .= '<textarea id="'. @$field['name'] .'" rows="'. @$field['rows'] .'" class="ap-form-control" name="'. @$field['name'] .'"'.$placeholder.' '. @$field['attr'] .'>'. @$field['value'] .'</textarea>';
         $this->error_messages();
     }
 
@@ -354,7 +354,7 @@ class AnsPress_Form {
      * @since 2.0.1
      */
     private function hidden_field($field = array()){
-        $this->output .= '<input type="hidden" value="'. @$field['value'] .'" name="'. @$field['name'] .'" '. @$field['attar'] .' />';
+        $this->output .= '<input type="hidden" value="'. @$field['value'] .'" name="'. @$field['name'] .'" '. @$field['attr'] .' />';
     }
 
     private function custom_field($field = array()){

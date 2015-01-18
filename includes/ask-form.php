@@ -57,7 +57,7 @@ function ap_ask_form($editing = false){
                 'desc'  => __('Write a meaningful title for the question.', 'ap'),
                 'value' => ( $editing ? $editing_post->post_title : sanitize_text_field( @$_POST['title'] ) ),
                 'order' => 5,
-                'attar' => 'data-action="suggest_similar_questions"',
+                'attr' => 'data-action="suggest_similar_questions"',
                 'autocomplete' => false,
             ),
             array(

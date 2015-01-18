@@ -13,9 +13,8 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
+$settings = ap_opt();
 
-$options = get_option('anspress_opt');
-$settings = $options  + ap_default_options();
 
 /**
  * Anspress option navigation
@@ -47,7 +46,7 @@ if ( ! isset( $_REQUEST['settings-updated'] ) )
 	// This shows the page's name and an icon if one has been provided ?>
 			
 	<?php if ( false !== $_REQUEST['settings-updated'] ) : ?>
-	<div class="updated fade"><p><strong><?php _e( 'Options saved' ); ?></strong></p></div>
+	<div class="updated fade"><p><strong><?php _e( 'Options saved', 'ap' ); ?></strong></p></div>
 	<?php endif; // If the form has just been submitted, this shows the notification ?>
 	
 	<!-- TODO: Remove this donation section if not needed -->
@@ -81,62 +80,8 @@ if ( ! isset( $_REQUEST['settings-updated'] ) )
 				 * action used to show option fields
 				 */
 				do_action('ap_option_fields', $settings);
-			 ?>		  
-			
-						
-					
-			<!-- TODO: move tags options to extensions -->
-			<!-- <div class="tab-pane" id="ap-tags">		
-				<table class="form-table">
-					<tr valign="top">
-						<th scope="row"><label for="enable_tags"><?php _e('Enable tags', 'ap'); ?></label></th>
-						<td>
-							<input type="checkbox" id="enable_tags" name="anspress_opt[enable_tags]" value="1" <?php checked( true, $settings['enable_tags'] ); ?> />
-							<p class="description"><?php _e('Enable or disable tags system', 'ap'); ?></p>
-						</td>
-					</tr>
-					<tr valign="top">
-						<th scope="row"><label for="max_tags"><?php _e('Maximum tags', 'ap'); ?></label></th>
-						<td>
-							<input type="number" min="1" id="max_tags" name="anspress_opt[max_tags]" value="<?php echo $settings['max_tags']; ?>" />
-							<p class="description"><?php _e('Maximum numbers of tags that user can add when asking.', 'ap'); ?></p>
-						</td>
-					</tr>
-					<tr valign="top">
-						<th scope="row"><label for="min_tags"><?php _e('Minimum tags', 'ap'); ?></label></th>
-						<td>
-							<input type="number" min="1" id="min_tags" name="anspress_opt[min_tags]" value="<?php echo $settings['min_tags']; ?>" />
-							<p class="description"><?php _e('Minimum numbers of tags user need to add when asking.', 'ap'); ?></p>
-						</td>
-					</tr>
-					<tr valign="top">
-						<th scope="row"><label for="min_point_new_tag"><?php _e('Minimum points to create new tag', 'ap'); ?></label></th>
-						<td>
-							<input type="number" min="1" id="min_point_new_tag" name="anspress_opt[min_point_new_tag]" value="<?php echo $settings['min_point_new_tag']; ?>" />
-							<p class="description"><?php _e('User must have more or equal to those points to create a new tag.', 'ap'); ?></p>
-						</td>
-					</tr>
-				</table>
-			</div> -->
-			
-			
-			
-				
-			<!-- TODO: remove this option if not needed -->
-			
-			<!-- <div class="tab-pane" id="ap-permalink">		
-				<table class="form-table">
-					<tr valign="top">
-						<th scope="row"><label for="question_prefix"><?php _e('Question prefix', 'ap'); ?></label></th>
-						<td>
-							<input type="text" id="question_prefix" name="anspress_opt[question_prefix]" value="<?php echo $settings['question_prefix'] ; ?>" <?php checked( true, $settings['question_prefix'] ); ?> />
-							<p class="description"><?php _e('Question prefix', 'ap'); ?></p>
-						</td>
-					</tr>					
-				</table>
-			</div> -->
-			
-			<!-- TODO: move this to extension -->
+			 ?>			
+			<!-- TODO: move this to LABEL extension -->
 			<!-- <div class="tab-pane" id="ap-labels">
 				<table class="form-table">					
 					<tr valign="top">

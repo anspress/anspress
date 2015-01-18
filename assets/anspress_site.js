@@ -211,10 +211,8 @@ AnsPress.site.prototype = {
 
 	redirect:function(data){
 		console.log(typeof data.redirect_to !== 'undefined');
-		if(typeof data.redirect_to !== 'undefined'){
-			window.location = data.redirect_to;
-			window.location.reload(true);
-		}
+		if(typeof data.redirect_to !== 'undefined')
+			window.location.replace(data.redirect_to);
 	},
 
 	append:function(data){
