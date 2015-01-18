@@ -295,7 +295,10 @@ class Tags_For_AnsPress
      */
     public function ap_enqueue()
     {
-        wp_enqueue_style( 'tags_for_anspress_css', ap_get_theme_url('css/tags.css', TAGS_FOR_ANSPRESS_URL));
+        wp_enqueue_script( 'tagsinput', ap_get_theme_url('js/bootstrap-tagsinput.min.js', TAGS_FOR_ANSPRESS_URL));
+        wp_enqueue_script( 'tags_js', ap_get_theme_url('js/tags_js.js', TAGS_FOR_ANSPRESS_URL));
+        wp_enqueue_style( 'tagsinput_css', ap_get_theme_url('css/bootstrap-tagsinput.css', TAGS_FOR_ANSPRESS_URL));
+        wp_enqueue_style( 'tags_css', ap_get_theme_url('css/tags.css', TAGS_FOR_ANSPRESS_URL));
         
     }
 
@@ -332,7 +335,8 @@ class Tags_For_AnsPress
             'value' => ( $editing ? $tags_string :  sanitize_text_field(@$_POST['tag'] ))  ,
             'taxonomy' => 'question_tag',
             'desc' => __('Slowly type for suggestions', 'ap'),
-            'order' => 11
+            'order' => 11,
+            'attr' => 'data-role="ap-tagsinput"'
         );
 
         return $args;
