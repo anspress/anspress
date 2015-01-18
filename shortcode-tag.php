@@ -23,9 +23,9 @@ class AnsPress_Tag_Shortcode {
 	 * @param  string $content
 	 */
 	public static function anspress_tag($atts, $content = ''){
-		$category_id = get_query_var( 'question_tag');
-		
-		if(empty( $category_id )){
+		$tag_id = sanitize_text_field(get_query_var( 'q_tag'));
+
+		if(empty( $tag_id )){
 			echo '<div class="anspress-container">';
 				/**
 				 * ACTION: ap_before
@@ -34,7 +34,7 @@ class AnsPress_Tag_Shortcode {
 				do_action('ap_before');
 				
 				// include theme file
-				include ap_get_theme_location('no-tags-found.php', CATEGORIES_FOR_ANSPRESS_DIR);
+				include ap_get_theme_location('no-tags-found.php', TAGS_FOR_ANSPRESS_DIR);
 			echo '</div>';
 			return;
 		}
@@ -44,8 +44,8 @@ class AnsPress_Tag_Shortcode {
 		$question_args['tax_query'] = array(		
 			array(
 				'taxonomy' => 'question_tag',
-				'field' => 'id',
-				'terms' => array( get_query_var( 'question_tag') )
+				'field' => is_integer($tag_id) ? 'id' : 'slug',
+				'terms' => array( $tag_id )
 			)
 		);
 
@@ -58,7 +58,8 @@ class AnsPress_Tag_Shortcode {
 		$question_args = apply_filters('ap_tag_shortcode_args', $question_args );
 
 		$questions = new Question_Query( $question_args );
-		$question_tag = $questions->get_queried_object();
+		$question_tag = get_term_by( is_integer($tag_id) ? 'id' : 'slug', $tag_id, 'question_tag');
+
 		echo '<div class="anspress-container">';
 			/**
 			 * ACTION: ap_before

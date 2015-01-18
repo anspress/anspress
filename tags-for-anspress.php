@@ -89,7 +89,6 @@ class Tags_For_AnsPress
         add_action( 'ap_enqueue', array( $this, 'ap_enqueue' ) );
         add_filter('term_link', array($this, 'term_link_filter'), 10, 3);
 
-        add_shortcode( 'anspress_question_tags', array( 'AnsPress_Tags_Shortcode', 'anspress_tags' ) );
         add_shortcode( 'anspress_question_tag', array( 'AnsPress_Tag_Shortcode', 'anspress_tag' ) );
 
         add_action('ap_ask_form_fields', array($this, 'ask_from_tag_field'), 10, 2);
@@ -97,10 +96,11 @@ class Tags_For_AnsPress
         add_action( 'ap_after_new_question', array($this, 'after_new_question'), 10, 2 );
         add_action( 'ap_after_update_question', array($this, 'after_new_question'), 10, 2 );
 
+        add_action('generate_rewrite_rules', array( $this, 'rewrites'), 1); 
+
     }
 
     public function includes(){
-        require_once( TAGS_FOR_ANSPRESS_DIR . 'shortcode-tags.php' );
         require_once( TAGS_FOR_ANSPRESS_DIR . 'shortcode-tag.php' );
     }
 
@@ -228,6 +228,13 @@ class Tags_For_AnsPress
                 <div class="tab-pane" id="ap-tags">       
                     <table class="form-table">
                         <tr valign="top">
+                            <th scope="row"><label for="question_tag_page_id"><?php _e('Tag Page', 'ap'); ?></label></th>
+                            <td>
+                                <?php wp_dropdown_pages( array('selected'=> $settings['question_tag_page_id'],'name'=> 'anspress_opt[question_tag_page_id]','post_type'=> 'page') ); ?>
+                                <p class="description"><?php _e('Used to show user profil.', 'ap'); ?></p>
+                            </td>
+                        </tr>
+                        <tr valign="top">
                             <th scope="row"><label for="tags_per_page"><?php _e('Tags per page', 'tags_for_anspress'); ?></label></th>
                             <td>
                                 <input type="number" min="1" name="anspress_opt[tags_per_page]" id="tags_per_page" value="<?php echo $settings['tags_per_page'] ; ?>" />                                
@@ -303,8 +310,12 @@ class Tags_For_AnsPress
     }
 
     public function term_link_filter( $url, $term, $taxonomy ) {
+
         if($taxonomy == 'question_tag'){
-            $url = add_query_arg(array('question_tag' => $term->term_id), get_permalink(ap_opt('question_tag_page_id')));
+            if(get_option('permalink_structure') != '')
+                $url = get_permalink(ap_opt('question_tag_page_id')).$term->slug;                
+            else
+                $url = add_query_arg(array('q_tag' => $term->term_id), get_permalink(ap_opt('question_tag_page_id')));
         }
         return $url;
        
@@ -374,6 +385,18 @@ class Tags_For_AnsPress
         }
     }
 
+    public function rewrites() {  
+        global $wp_rewrite;  
+        
+        $new_rules = array(  
+            
+            "([^/]+)/([^/]+)/?" => "index.php?page_id=".ap_opt('question_tag_page_id')."&q_tag=".$wp_rewrite->preg_index(2),
+        );
+
+        return $wp_rewrite->rules = $new_rules + $wp_rewrite->rules;
+        return $wp_rewrite->rules;
+    }
+
 }
 
 /**
@@ -398,7 +421,7 @@ add_action( 'plugins_loaded', 'tags_for_anspress' );
 function activate_tags_for_anspress(){
     // create and check for tags base page
     
-    $page_to_create = array('question_tags' => __('Tags', 'tags_for_anspress'), 'question_tag' => __('Tag', 'tags_for_anspress'));
+    $page_to_create = array( 'question_tag' => __('Tag', 'tags_for_anspress'));
 
     foreach($page_to_create as $k => $page_title){
         // create page
@@ -414,6 +437,7 @@ function activate_tags_for_anspress(){
             $args['post_content']       = "[anspress_{$k}]";
             $args['post_status']        = "publish";
             $args['post_title']         = $page_title;
+            $args['post_name']          = $k;
             $args['comment_status']     = 'closed';
             $args['post_parent']        = ap_opt('questions_page_id');
             
