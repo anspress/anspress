@@ -1,3 +1,4 @@
+
 <div id="ap-lists" class="clearfix">
 	<div class="ap-taxo-detail">
 		<h2 class="entry-title"><?php echo $question_tag->name; ?> <span class="ap-tax-item-count"><?php printf( _n('1 Question', '%s Questions', $question_tag->count, 'ap'),  $question_tag->count); ?></span></h2>
@@ -8,7 +9,7 @@
 	</div>
 
 	<?php if ( $questions->have_posts() ) : ?>
-		<?php ap_questions_tab(ap_current_page_url(array('q_tag' => $question_tag->slug))); ?>
+		<?php ap_questions_tab(get_term_link( $question_tag, 'question_tag' )); ?>
 		<div class="questions-list">
 			<?php				
 				/* Start the Loop */
