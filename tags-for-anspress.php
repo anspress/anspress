@@ -15,7 +15,7 @@
  * Plugin URI:        http://wp3.in/categories-for-anspress
  * Description:       Extension for AnsPress. Add tags in AnsPress.
  * Donate link: https://www.paypal.com/cgi-bin/webscr?business=rah12@live.com&cmd=_xclick&item_name=Donation%20to%20AnsPress%20development
- * Version:           1.0
+ * Version:           1.2
  * Author:            Rahul Aryan
  * Author URI:        http://wp3.in
  * Text Domain:       ap
@@ -390,7 +390,7 @@ class Tags_For_AnsPress
         
         $new_rules = array(  
             
-            "([^/]+)/([^/]+)/?" => "index.php?page_id=".ap_opt('question_tag_page_id')."&q_tag=".$wp_rewrite->preg_index(2),
+            "tags/([^/]+)/?" => "index.php?page_id=".ap_opt('question_tag_page_id')."&q_tag=".$wp_rewrite->preg_index(1),
         );
 
         return $wp_rewrite->rules = $new_rules + $wp_rewrite->rules;
