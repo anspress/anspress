@@ -240,6 +240,7 @@ class AnsPress_Actions
 		$query_vars[] = 'qcat';
 		$query_vars[] = 'qtag_id';
 		$query_vars[] = 'q_tag';
+		$query_vars[] = 'q_cat';
 
 		$query_vars[] = 'label';
 		$query_vars[] = 'user';
