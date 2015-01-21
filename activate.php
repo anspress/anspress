@@ -52,9 +52,6 @@ function anspress_activate( $network_wide ) {
 			$args['post_title']   		= $page_title;
 			$args['comment_status']   	= 'closed';
 			
-			if($k != 'questions')
-				$args['post_parent']   = ap_opt('questions_page_id');
-			
 			// now create post
 			$new_page_id = wp_insert_post ($args);
 		
