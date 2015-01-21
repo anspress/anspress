@@ -208,7 +208,7 @@ class AnsPress_Ajax
 		$post = get_post( $post_id );
 		wp_trash_post($post_id);
 		if($post->post_type == 'question'){
-			ap_send_json( ap_ajax_responce( array('action' => 'delete_question', 'do' => 'redirect', 'redirect_to' => get_permalink(ap_opt('anspress_questions')), 'message' => 'question_moved_to_trash')));
+			ap_send_json( ap_ajax_responce( array('action' => 'delete_question', 'do' => 'redirect', 'redirect_to' => get_permalink(ap_opt('questions_page_id')), 'message' => 'question_moved_to_trash')));
 		}else{
 			$current_ans = ap_count_published_answers($post->post_parent);
 			$count_label = sprintf( _n('1 Answer', '%d Answers', $current_ans, 'ap'), $current_ans);
