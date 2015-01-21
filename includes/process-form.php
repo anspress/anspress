@@ -175,6 +175,8 @@ class AnsPress_Process_Form
 		$fields = $validate->get_sanitized_fields();
 		$this->fields = $fields;
 
+		print_r($fields);
+
 		if(!empty($fields['edit_post_id'])){
 			$this->edit_question();
 			return;
@@ -283,13 +285,6 @@ class AnsPress_Process_Form
 		$post_id = wp_update_post($question_array);
 
 		if($post_id){				
-
-			/**
-			 * TODO: EXTENSION - move this to tags
-			 */
-			wp_set_post_terms( $post_id, $this->fields['tags'], 'question_tags' );
-
-			
 			
 			$this->redirect = get_permalink($post_id);
 

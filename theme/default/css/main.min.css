@@ -931,7 +931,7 @@
 .ap-ul-inline li {
   float: left;
   list-style: none outside none;
-  margin: 0 15px 0 0;
+  margin: 0 5px 0 0;
   padding: 0;
 }
 .ap-ul-inline li:last-child {
@@ -1171,12 +1171,10 @@
 .list-question .ap-list-history .ap-post-history {
   color: #888;
   display: block;
-  font-size: 13px;
-  line-height: 22px;
   overflow: hidden;
 }
 .ap-display-question-meta {
-  color: #999999;
+  color: #888888;
   font-size: 13px;
 }
 .ap-display-question-meta li:before {
@@ -1361,7 +1359,7 @@
   -moz-background-clip: padding;
   border-radius: 16px;
   background-clip: padding-box;
-  color: #999999;
+  color: #888888;
   display: block;
   padding: 3px 13px;
   text-decoration: none;

@@ -40,8 +40,9 @@ $clearfix_class = array('list-question clearfix');
 	</div>	
 	<div class="ap-count">	
 		<a class="ap-answer-count ap-tip" href="<?php echo ap_answers_link(); ?>" title="<?php _e('Total answers', 'ap'); ?>">
-			<span><?php echo ap_count_answer_meta(); ?></span>
-			<?php _e('Answer', 'ap');?>
+			<?php
+				$ans_count = ap_count_answer_meta();
+				printf(_n('%s %d %s answer', '%s %d %s answers', $ans_count, 'ap'), '<span>', $ans_count, '</span>') ?>
 		</a>						
 	</div>
 	<div class="ap-list-history">

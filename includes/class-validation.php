@@ -201,8 +201,15 @@ class AnsPress_Validation
        $sanitized_tags = '';
 
        if(is_array($tags)){
+            $count = count($tags);
+            $i = 1;
             foreach ($tags  as $tag) {
-                $sanitized_tags .= sanitize_text_field( $tag ) .',';
+                $sanitized_tags .= sanitize_text_field( $tag ) ;
+                
+                if($count != $i)
+                    $sanitized_tags .= ',';
+                
+                $i++;
             }
        }
 
