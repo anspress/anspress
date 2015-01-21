@@ -32,7 +32,7 @@ class anspress_main {
 	 */
 	private function __construct() {
 	
-		remove_action('pre_comment_on_post', 'dsq_pre_comment_on_post');
+		
 		// Load plugin text domain
 		//add_action( 'wp_loaded', array( $this, 'flush_rules' ) );
 		
@@ -269,30 +269,6 @@ class anspress_main {
 
 	}
 	
-	function update_menu_url( $items ) {		
-		// Iterate over the items
-		foreach ( $items as $key => $item ) {
-			
-			if('http://ANSPRESS_BASE_PAGE_URL' == $item->url)
-				$item->url = get_permalink(ap_opt('base_page'));
-			
-			if('http://ANSPRESS_ASK_PAGE_URL' == $item->url)
-				$item->url = ap_get_link_to('ask');
-			
-			if('http://ANSPRESS_CATEGORIES_PAGE_URL' == $item->url)
-				$item->url = ap_get_link_to('categories');
-			
-			if('http://ANSPRESS_TAGS_PAGE_URL' == $item->url)
-				$item->url = ap_get_link_to('tags');
-			
-			if('http://ANSPRESS_USERS_PAGE_URL' == $item->url)
-				$item->url = ap_get_link_to('users');
-			
-			if('http://ANSPRESS_USER_PROFILE_URL' == $item->url)
-				$item->url = ap_user_link(get_current_user_id());
-		}
-
-		return $items;
-	}
+	
 
 }

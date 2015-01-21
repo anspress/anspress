@@ -92,6 +92,12 @@ if(!class_exists('AnsPress')):
 				self::$instance->anspress_theme      		= new AnsPress_Theme();
 				self::$instance->anspress_cpt      			= new AnsPress_PostTypes();
 
+				/**
+				 * ACTION: anspress_loaded
+				 * Hooks for extension to load their codes after AnsPress is leaded
+				 */
+				do_action( 'anspress_loaded');
+
 				
 
 			}
@@ -203,7 +209,7 @@ if(!class_exists('AnsPress')):
 			require_once( ANSPRESS_DIR . 'includes/vote.php' );
 			require_once( ANSPRESS_DIR . 'includes/view.php' );
 			require_once( ANSPRESS_DIR . 'includes/theme.php' );
-			require_once( ANSPRESS_DIR . 'includes/main.php' );
+
 			require_once( ANSPRESS_DIR . 'includes/form.php' );
 
 			require_once( ANSPRESS_DIR . 'includes/participants.php' );
@@ -248,12 +254,7 @@ if(!class_exists('AnsPress')):
 	
 endif;
 
-function anspress(){
-	/**
-	 * ACTION: anspress_loaded
-	 * Hooks for extension to load their codes after AnsPress is leaded
-	 */
-	do_action( 'anspress_loaded');
+function anspress(){	
 	AnsPress::instance();	
 }
 
@@ -269,9 +270,6 @@ register_activation_hook( __FILE__, 'anspress_activate'  );
 
 register_deactivation_hook( __FILE__, array( 'anspress', 'deactivate' ) );
 
-add_action( 'plugins_loaded', array( 'anspress_main', 'get_instance' ) );
-
-add_action( 'plugins_loaded', array( 'Ap_Meta', 'get_instance' ) );
 add_action( 'plugins_loaded', array( 'anspress_vote', 'get_instance' ) );
 add_action( 'plugins_loaded', array( 'anspress_view', 'get_instance' ) );
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * AnsPress.
+ * All function related to AnsPress meta
  *
  * @package   AnsPress
  * @author    Rahul Aryan <admin@rahularyan.com>
@@ -9,36 +9,7 @@
  * @copyright 2014 Rahul Aryan
  */
 
-class AP_Meta
-{
-    /**
-     * Instance of this class.
-     */
-    protected static $instance = null;
-    /**
-     * Return an instance of this class.
-     * @return    object    A single instance of this class.
-     */
-    public static function get_instance()
-    {
-        
-        // If the single instance hasn't been set, set it now.
-        if (null == self::$instance) {
-            self::$instance = new self;
-        }
-        
-        return self::$instance;
-    }
-    /**
-     * Initialize the plugin by setting localization and loading public scripts
-     * and styles.
-     */
-    public function __construct()
-    {
 
-    }
-
-}
 
 /* Add meta */
 function ap_add_meta($userid=false, $type=NULL, $actionid =NULL, $value=NULL, $param = NULL, $date = false){
