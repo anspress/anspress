@@ -43,14 +43,6 @@ $clearfix_class = array('list-question clearfix');
 			<span><?php echo ap_count_answer_meta(); ?></span>
 			<?php _e('Answer', 'ap');?>
 		</a>						
-		<!-- <a class="ap-vote-count ap-tip" href="#" title="<?php _e('Total views', 'ap'); ?>">
-			<span><?php //echo ap_get_qa_views(); ?></span> 
-			<?php  //_e('Views', 'ap'); ?>
-		</a>
-		<a class="ap-vote-count ap-tip" href="#" title="<?php //_e('Total votes', 'ap'); ?>">
-			<span><?php //echo ap_net_vote(); ?></span> 
-			<?php  _e('Votes', 'ap'); ?>
-		</a> -->		
 	</div>
 	<div class="ap-list-history">
 		<?php echo ap_get_latest_history_html(get_the_ID(), true) ?>

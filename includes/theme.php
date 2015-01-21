@@ -514,7 +514,6 @@ function ap_display_question_metas($question_id =  false){
 	if(ap_is_answer_selected($question_id) && !is_singular('question')){
 		$metas['selected'] = '<span class="ap-tip" title="'.__('answer accepted', 'ap').'">'.ap_icon('select', true).__('Selected', 'ap').'</span>';
 
-		//$metas['history'] = ap_last_active_time($question_id);
 	}
 
 	if(is_singular('question')){
@@ -523,10 +522,14 @@ function ap_display_question_metas($question_id =  false){
 
 		$metas['created'] = sprintf( __( '<span>Created</span> <i><time itemprop="datePublished" datetime="%s">%s Ago</time></i>', 'ap' ), get_the_time('c', $question_id), ap_human_time( get_the_time('U')));
 
-		$view_count = ap_get_qa_views();
-		$metas['views'] = sprintf( __('<span>Viewed</span> <i>%d Times</i>', 'ap'), $view_count) ;
-	}
-	
+		
+	}else{
+		$net_vote = ap_net_vote();
+		$metas['vote'] = sprintf( _n('<span>1 vote</span>', '<span>%d votes</span>', $net_vote, 'ap'), $net_vote) ;
+	}	
+
+	$view_count = ap_get_qa_views();
+	$metas['views'] = sprintf( __('<span>Viewed</span> <i>%d Times</i>', 'ap'), $view_count) ;
 	
 
 
