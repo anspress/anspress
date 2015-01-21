@@ -810,7 +810,7 @@ function ap_current_page_url($args){
 		$link = $base.'/';
 		if(!empty($args))
 			foreach($args as $k => $s)
-				$link .= $s.'/';
+				$link .= $k.'/'.$s.'/';
 	
 	}else{
 		

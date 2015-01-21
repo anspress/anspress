@@ -1100,12 +1100,14 @@ function ap_get_resized_avatar($id_or_email, $size = 32, $default = false){
 	if($image_meta === false || empty($image_meta))
 		return false;
 		
-	$orig_file_name = str_replace('-'.$image_meta['sizes']['thumbnail']['width'].'x'.$image_meta['sizes']['thumbnail']['height'], '', $image_meta['sizes']['thumbnail']['file']);
+	$path =  get_attached_file(get_user_meta($id_or_email, '_ap_avatar', true));
+
+	$orig_file_name = basename($path);
 	
-	$orig_dir = str_replace('/'.$orig_file_name, '', $image_meta['file']);
+	$orig_dir = str_replace('/'.$orig_file_name, '', $orig_file_name);
 	
-	$file = $upload_dir['basedir'].'/'.$orig_dir.'/'.$image_meta['sizes']['thumbnail']['file'];
-	$file = str_replace(array('/', '\\'), DIRECTORY_SEPARATOR, $file);
+	//$file = $upload_dir['basedir'].'/'.$orig_dir.'/'.$image_meta['sizes']['thumbnail']['file'];
+	//$file = str_replace(array('/', '\\'), DIRECTORY_SEPARATOR, $file);
 	
 	$avatar_dir = $upload_dir['basedir'].'/avatar/'.$size;
 	$avatar_dir = str_replace(array('/', '\\'), DIRECTORY_SEPARATOR, $avatar_dir);
@@ -1118,7 +1120,7 @@ function ap_get_resized_avatar($id_or_email, $size = 32, $default = false){
 
 	if(!file_exists($avatar_dir.'/'.$orig_file_name)){
 		$image_new = $avatar_dir.'/'. $orig_file_name;
-		ap_smart_resize_image($file , null, $size , $size , false , $image_new , false , false ,100 );
+		ap_smart_resize_image($path , null, $size , $size , false , $image_new , false , false ,100 );
 	}
 	
 	return $file_url.'/'.$orig_file_name;
