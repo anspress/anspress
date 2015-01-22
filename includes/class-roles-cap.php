@@ -131,9 +131,16 @@ class AP_Roles{
 	
 	
 	public function remove_roles(){
-		$this->roles_obj->remove_role( 'ap_participant' );
-		$this->roles_obj->remove_role( 'ap_editor' );
-		$this->roles_obj->remove_role( 'ap_moderator' );
+		global $wp_roles;
+
+		if ( class_exists('WP_Roles') ) {
+			if ( ! isset( $wp_roles ) ) {
+				$wp_roles = new WP_Roles();
+			}
+		}
+		$wp_roles->remove_role( 'ap_participant' );
+		$wp_roles->remove_role( 'ap_editor' );
+		$wp_roles->remove_role( 'ap_moderator' );
 
 	}
 }
