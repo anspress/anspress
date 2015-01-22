@@ -455,6 +455,7 @@ public function ap_menu_metaboxes(){
 	}
 	
 	public function ap_save_options(){
+		$result = array();
 		if(current_user_can('manage_options')){
 			flush_rewrite_rules();
 			$options = $_POST['anspress_opt'];
@@ -792,6 +793,7 @@ public function ap_menu_metaboxes(){
 	}
 	
 	public function ap_toggle_addon(){
+		$result = '';
 		if(current_user_can('manage_options')){
 			$args = explode('-', sanitize_text_field($_POST['args']));
 			if(wp_verify_nonce($args[1], 'toggle_addon')){
