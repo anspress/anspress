@@ -43,13 +43,6 @@ function ap_answer_form($question_id, $editing = false){
     $is_private = sanitize_text_field( @$_POST['is_private'] );
     if($editing){
         $is_private = $editing_post->post_status == 'private_post' ? true : false;
-
-        $args['fields'][] = array(
-            'name'  => 'edit_post_id',
-            'type'  => 'hidden',
-            'value' => $editing_post->ID,
-            'order' => 20
-        );
     }
 
     $args = array(
@@ -91,6 +84,15 @@ function ap_answer_form($question_id, $editing = false){
      * @since  2.0
      */
     $args = apply_filters( 'ap_answer_form_fields', $args, $editing );
+
+    if($editing){
+        $args['fields'][] = array(
+            'name'  => 'edit_post_id',
+            'type'  => 'hidden',
+            'value' => $editing_post->ID,
+            'order' => 20
+        );
+    }
 
     $form = new AnsPress_Form($args);
 
