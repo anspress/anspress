@@ -196,6 +196,7 @@ class anspress_admin {
 	}
 	
 	public function get_free_menu_position($start, $increment = 0.3){
+		$menus_positions = array();
         foreach ($GLOBALS['menu'] as $key => $menu) {
             $menus_positions[] = $key;
         }
