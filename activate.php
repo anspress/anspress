@@ -113,6 +113,6 @@ function anspress_activate( $network_wide ) {
 		update_option('anspress_opt', get_option('anspress_opt') + ap_default_options());
 		
 	
-	ap_opt('ap_flush', true); 
+	ap_opt('ap_flush', 'true'); 
 	flush_rewrite_rules( false );
 }
