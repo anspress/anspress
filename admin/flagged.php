@@ -332,6 +332,7 @@ class AP_Flagged_Table extends WP_List_Table {
 
 		$this->_column_headers = array( $columns, $hidden, $sortable );
 
+		$total_items = 0;
 		switch ( $status ) {
 			case 'publish':
 				$total_items = $this->published_count;
