@@ -10,10 +10,6 @@
 
 class AnsPress_Answer_Form
 {
-    public function __construct()
-    {
-       // add_filter('ap_ask_form_fields', array($this, 'ask_form_name_field'));
-    }
 
     public function ask_form_name_field($args){
         if(!is_user_logged_in() && ap_opt('allow_anonymous'))
