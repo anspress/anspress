@@ -47,12 +47,8 @@ class anspress_admin {
 	 *
 	 */
 	private function __construct() {
-		/*
-		 * Call $plugin_slug from public plugin class.
-		 *
-		 */
-		$plugin = anspress_main::get_instance();
-		$this->plugin_slug = $plugin->get_plugin_slug();
+
+		$this->plugin_slug = 'anspress';
 		
 		
 		// Load admin style sheet and JavaScript.

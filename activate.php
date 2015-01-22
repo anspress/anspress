@@ -115,5 +115,5 @@ function anspress_activate( $network_wide ) {
 		
 	
 	ap_opt('ap_flush', true); 
-	flush_rewrite_rules( false );
+	flush_rewrite_rules( );
 }

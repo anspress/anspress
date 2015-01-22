@@ -818,3 +818,21 @@ function ap_current_page_url($args){
 	}
 	return $link ;
 }
+
+/**
+ * Register option tabs
+ * @param  string $page_slug  slug for links
+ * @param  string $page_title Page title
+ * @param  callable $func Hook to run when shortcode is found.    
+ * @return void
+ * @since 2.0.0-alpha2
+ */
+function ap_register_option_tab($group_slug, $group_title, $func){
+	global $ap_option_tabs;
+
+	if(empty($ap_option_tabs) || !is_array($ap_option_tabs))
+		$ap_option_tabs = array();
+
+	$ap_option_tabs[$page_slug] = array('title' => $page_title, 'func' =>  $func);
+
+}
