@@ -829,7 +829,7 @@ public function ap_menu_metaboxes(){
 		if(ap_opt('base_page') == $post_id){
 			$post = get_post($post_id);
 			ap_opt('base_page_slug', $post->post_name);
-			ap_opt('ap_flush', true);
+			ap_opt('ap_flush', 'true');
 		}
 	}
 
