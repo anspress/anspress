@@ -76,8 +76,7 @@ function anspress_activate( $network_wide ) {
 	 */
 	if( ap_opt ('ap_db_version') != AP_DB_VERSION ) {	
 	
-		if ( !empty($wpdb->charset) )
-			$charset_collate = "DEFAULT CHARACTER SET ".$wpdb->charset;
+		$charset_collate = !empty($wpdb->charset) ? "DEFAULT CHARACTER SET ".$wpdb->charset : '';
 
 		$meta_table = "CREATE TABLE IF NOT EXISTS `".$wpdb->base_prefix."ap_meta` (
 				  `apmeta_id` bigint(20) NOT NULL AUTO_INCREMENT,
