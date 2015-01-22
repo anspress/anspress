@@ -73,7 +73,7 @@ class AP_Moderate_Table extends WP_List_Table {
 		
 
 		$views = array(
-			'moderate'	=> sprintf( '<a href="%s"%s>%s</a>', add_query_arg( array( 'status' => 'moderate', 'paged' => FALSE ) ), $current === 'moderate' ? ' class="current"' : '', __('Moderate', 'ap') . $moderate_count )
+			'moderate'	=> sprintf( '<a href="%s"%s>%s</a>', add_query_arg( array( 'status' => 'moderate', 'paged' => FALSE ) ), $this->current_status === 'moderate' ? ' class="current"' : '', __('Moderate', 'ap') . $moderate_count )
 		);
 
 		return apply_filters( 'ap_moderate_table_views', $views );
