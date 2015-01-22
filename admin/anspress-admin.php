@@ -679,6 +679,7 @@ public function ap_menu_metaboxes(){
 	public function ap_save_badges(){
 		if(current_user_can('manage_options')){
 			$nonce 		= sanitize_text_field($_POST['nonce']);
+			$id 		= (int)sanitize_text_field($_POST['id']);
 			$title 		= sanitize_text_field($_POST['title']);
 			$desc 		= sanitize_text_field($_POST['description']);
 			$type 		= sanitize_text_field($_POST['type']);
