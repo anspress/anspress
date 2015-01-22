@@ -377,7 +377,6 @@ public function ap_menu_metaboxes(){
 		global $_nav_menu_placeholder, $nav_menu_selected_id;
 
 		$_nav_menu_placeholder = 0 > $_nav_menu_placeholder ? $_nav_menu_placeholder - 1 : -1;
-		$base_page = ap_opt('base_page');
 		
 		?>
 		<div class="aplinks" id="aplinks">
