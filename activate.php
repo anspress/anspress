@@ -25,6 +25,7 @@ function anspress_activate( $network_wide ) {
 	// add roles
 	$ap_roles = new AP_Roles;
 	$ap_roles->add_roles();
+	$ap_roles->add_capabilities();
 	
 	
 	global $wpdb;
