@@ -34,6 +34,8 @@ class AnsPress_Actions
 		add_filter('query_vars', array($this, 'query_var'));
 		add_filter( 'wp_get_nav_menu_items', array($this, 'update_menu_url'));
 
+		add_action( 'wp_loaded', array( $this, 'flush_rules' ) );
+
 	}
 
 	/**
@@ -278,6 +280,14 @@ class AnsPress_Actions
 		}
 
 		return $items;
+	}
+
+	public function flush_rules(){
+		// Check the option we set on activation.
+		if (ap_opt('ap_flush')) {
+			flush_rewrite_rules( );
+			ap_opt('ap_flush', 'false');
+		}
 	}
 
 }
