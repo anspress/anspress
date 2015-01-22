@@ -46,7 +46,7 @@ function anspress_activate( $network_wide ) {
 		$post = get_post($page_id);
 		
 		if(!$post){
-			
+			$args = array();
 			$args['post_type']    		= "page";
 			$args['post_content'] 		= "[anspress_{$k}]";
 			$args['post_status']  		= "publish";
