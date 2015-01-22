@@ -40,6 +40,7 @@ function ap_answer_form($question_id, $editing = false){
 
     global $editing_post;
 
+    $is_private = sanitize_text_field( @$_POST['is_private'] );
     if($editing){
         $is_private = $editing_post->post_status == 'private_post' ? true : false;
     }
@@ -63,7 +64,7 @@ function ap_answer_form($question_id, $editing = false){
                 'label' => __('Private', 'ap'),
                 'type'  => 'checkbox',
                 'desc'  => __('This answer ment to be private, only visible to admin and moderator.', 'ap'),
-                'value' => ( $editing ? $is_private : sanitize_text_field( @$_POST['is_private'] ) ),
+                'value' => $is_private,
                 'order' => 12,
                 'show_desc_tip' => false
             ),            
