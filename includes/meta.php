@@ -67,7 +67,7 @@ function ap_update_meta($data, $where){
  * Delete ap_meta row
  * @param  false|array 	$where wp_db where clause
  * @param  false|int 	$id    if meta id is known then it can be passed
- * @return void         
+ * @return boolean         
  */
 function ap_delete_meta($where=false, $id=false){		
 	global $wpdb;
