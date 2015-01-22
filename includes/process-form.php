@@ -175,8 +175,6 @@ class AnsPress_Process_Form
 		$fields = $validate->get_sanitized_fields();
 		$this->fields = $fields;
 
-		print_r($fields);
-
 		if(!empty($fields['edit_post_id'])){
 			$this->edit_question();
 			return;
