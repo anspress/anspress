@@ -293,8 +293,8 @@ function ap_truncate_chars($text, $limit, $ellipsis = '...') {
 function ap_get_all_users(){
 	$paged 			= (get_query_var('paged')) ? get_query_var('paged') : 1;
 	$per_page    	= ap_opt('tags_per_page');
-	$total_terms 	= wp_count_terms('question_tags'); 	
-	$offset      	= $per_page * ( $paged - 1) ;
+	$total_terms 	= wp_count_terms('question_tags');
+	$offset      	= $per_page * ( $paged - 1);
 	
 	$args = array(
 		'number'		=> $per_page,
@@ -315,27 +315,6 @@ function ap_get_all_users(){
 	
 	ap_pagination(ceil( $total_terms / $per_page ), $range = 1, $paged);
 }
-
-/* TODO: REMOVE - base page slug*/
-/*function ap_base_page_slug(){
-	$base_page_slug = ap_opt('base_page_slug');
-	
-	// get the base slug, if base page was set to home page then dont use any slug
-	$slug = ((ap_opt('base_page') !== get_option('page_on_front')) ? $base_page_slug.'/' : '');
-	
-	$base_page = get_post(ap_opt('base_page'));
-	
-	if( $base_page->post_parent != 0 ){
-		$parent_page = get_post($base_page->post_parent);
-		$slug = $parent_page->post_name . '/'.$slug;
-	}
-	
-	return apply_filters('ap_base_page_slug', $slug) ;
-}*/
-
-
-
-
 
 function ap_ans_list_tab(){
 	$order = isset($_GET['ap_sort']) ? $_GET['ap_sort'] : ap_opt('answers_sort');
@@ -835,4 +814,40 @@ function ap_register_option_tab($group_slug, $group_title, $func){
 
 	$ap_option_tabs[$page_slug] = array('title' => $page_title, 'func' =>  $func);
 
+}
+
+/**
+ * Output option tab nav
+ * @return void
+ * @since 2.0.0-alpha2
+ */
+function ap_options_nav(){
+	global $ap_option_tabs;
+
+	$userid = ap_user_page_user_id();
+	$active = (isset($_REQUEST['option_page'])) ? $_REQUEST['option_page'] : 'general' ;
+
+	$menus = array();
+
+	foreach($ap_option_tabs as $k => $args){
+		$link 		= ap_user_link($userid, $k);
+		$menus[$k] 	= array( 'title' => $args['title'], 'link' => $link);
+	}
+
+	/**
+	 * FILTER: ap_option_tab_nav
+	 * filter is applied before showing option tab navigation
+	 * @var array
+	 * @since  2.0.0-alpha2
+	 */
+	$menus = apply_filters('ap_option_tab_nav', $menus);
+	
+	$o ='<ul id="ap_opt_nav" class="nav nav-tabs">';
+	foreach($menus as $k => $m){
+		$class = !empty($m['class']) ? ' '. $m['class'] : '';
+			$o .= '<li'.( $active == $k ? ' class="active"' : '' ).'><a href="'. $m['link'] .'" class="ap-user-menu-'.$k.$class.'">'.$m['title'].'</a></li>';
+	}
+	$o .= '</ul>';
+	
+	echo $o;
 }
