@@ -31,6 +31,8 @@ class anspress_admin {
 	 */
 	protected static $instance = null;
 
+	protected $this->plugin_slug = 'anspress';
+
 	/**
 	 * Slug of the plugin screen.	 
 	 * @var      string
@@ -47,9 +49,6 @@ class anspress_admin {
 	 *
 	 */
 	private function __construct() {
-
-		$this->plugin_slug = 'anspress';
-		
 		
 		// Load admin style sheet and JavaScript.
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_styles' ) );
