@@ -31,7 +31,7 @@ class anspress_admin {
 	 */
 	protected static $instance = null;
 
-	protected $this->plugin_slug = 'anspress';
+	protected $plugin_slug = 'anspress';
 
 	/**
 	 * Slug of the plugin screen.	 
