@@ -114,7 +114,7 @@ class AnsPress_Ajax
 			if(isset($_REQUEST['comment_ID']))
 				$comment_args['label_submit'] = __('Update comment', 'ap');
 
-			$current_user = get_userdata( get_current_user_id() );
+			//$current_user = get_userdata( get_current_user_id() );
 
 			ob_start();
 				echo '<div class="ap-comment-form clearfix">';
@@ -186,7 +186,7 @@ class AnsPress_Ajax
 			update_post_meta($post->post_parent, ANSPRESS_SELECTED_META, $post->ID);
 			update_post_meta($post->post_parent, ANSPRESS_UPDATED_META, current_time( 'mysql' ));
 			$html = ap_select_answer_btn_html($answer_id);
-			ap_send_json( ap_ajax_responce(array('message' => 'selected_the_answer', 'action' => 'selected_answer', 'do' => 'redirect', 'redirect_to' => get_permalink($post->ID))));
+			ap_send_json( ap_ajax_responce(array('message' => 'selected_the_answer', 'action' => 'selected_answer', 'do' => 'redirect', 'html' => $html, 'redirect_to' => get_permalink($post->ID))));
 		}
 	}
 
@@ -219,6 +219,7 @@ class AnsPress_Ajax
 				'div_id' 			=> '#answer_'.$post_id,
 				'count' 		=> $current_ans,
 				'count_label' 	=> $count_label,
+				'remove' 		=> $remove,
 				'message' 		=> 'answer_moved_to_trash',
 				'view'			=> array('answer_count' => $current_ans, 'answer_count_label' => $count_label))));
 		}

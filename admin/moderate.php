@@ -268,7 +268,6 @@ class AP_Moderate_Table extends WP_List_Table {
 		$num_posts = wp_count_posts( 'question', 'readable' );
 		$status = "moderate";
 		$mod_count = 0;
-		$count = '';
 		
 		if ( !empty($num_posts->$status) )
 			$mod_count = $num_posts->$status;

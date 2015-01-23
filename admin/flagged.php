@@ -84,7 +84,7 @@ class AP_Flagged_Table extends WP_List_Table {
 	public function get_views() {
 
 		$current        = isset( $_GET['status'] ) ? $_GET['status'] : 'publish';
-		$total_count    = '&nbsp;<span class="count">(' . $this->total_count    . ')</span>';
+		//$total_count    = '&nbsp;<span class="count">(' . $this->total_count    . ')</span>';
 		$published_count = '&nbsp;<span class="count">(' . $this->published_count . ')</span>';
 		$pending_count  = '&nbsp;<span class="count">(' . $this->pending_count  . ')</span>';
 		$draft_count = '&nbsp;<span class="count">(' . $this->draft_count . ')</span>';

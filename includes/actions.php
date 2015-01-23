@@ -45,7 +45,7 @@ class AnsPress_Actions
 	 * @return void
 	 * @since 1.0
 	 */
-	public function after_new_question($post_id, $post)
+	public function after_new_question($post_id)
 	{
 
 		$user_id = get_current_user_id();
@@ -101,7 +101,7 @@ class AnsPress_Actions
 		ap_do_event('new_answer', $post_id, $user_id, $question->ID);
 	}
 
-	public function ap_after_update_question($post_id, $post){
+	public function ap_after_update_question($post_id){
 		// set updated meta for sorting purpose
 		update_post_meta($post_id, ANSPRESS_UPDATED_META, current_time( 'mysql' ));
 
