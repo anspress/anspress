@@ -96,7 +96,7 @@ class AnsPress_Validation
 
     /**
      * Sanitize as a boolean value
-     * @param  array $field
+     * @param  string $field
      * @return void
      * @since 2.0.1
      */
@@ -177,7 +177,7 @@ class AnsPress_Validation
 
     /**
      * Strip all tags
-     * @param  array $field
+     * @param  string $field
      * @return void       
      * @since  2.0
      */
@@ -188,7 +188,7 @@ class AnsPress_Validation
 
     /**
      * Santitize tags field
-     * @param  array $field
+     * @param  string $field
      * @return void       
      * @since  2.0
      */

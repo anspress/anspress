@@ -199,6 +199,9 @@ function ap_get_label_color($label_id){
 	return $tax_meta['color'];
 }
 
+/**
+ * @param integer $post_id
+ */
 function ap_get_question_label($post_id = NULL, $bg = false){	
 	if(!$post_id) $post_id = get_the_ID();
 	$terms = get_the_terms( $post_id, 'question_label' );

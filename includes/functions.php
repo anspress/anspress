@@ -218,7 +218,7 @@ function ap_post_edit_link($post_id_or_object){
  * Returns edit post button html
  * @param  boolean $echo
  * @param  int | object $post_id_or_object
- * @return void
+ * @return null|string
  * @since 2.0.1
  */
 function ap_edit_post_link_html($echo = false, $post_id_or_object = false){
@@ -280,6 +280,10 @@ function ap_answer_edit_link(){
 	return;
 }
 
+/**
+ * @param string $text
+ * @param integer $limit
+ */
 function ap_truncate_chars($text, $limit, $ellipsis = '...') {
     if( strlen($text) > $limit ) {
         $endpos = strpos(str_replace(array("\r\n", "\r", "\n", "\t"), ' ', $text), ' ', $limit);
@@ -387,6 +391,9 @@ function ap_is_best_answer($post_id = false){
 	return false;
 }
 
+/**
+ * @param integer $post_id
+ */
 function ap_select_answer_btn_html($post_id){
 	if(!ap_user_can_select_answer($post_id))
 		return;
@@ -564,6 +571,9 @@ function ap_get_file_data( $file) {
 	return $metadata;
 }
 
+/**
+ * @param string $contents
+ */
 function ap_features_metadata($contents, $fields){
 	$metadata=array();
 
