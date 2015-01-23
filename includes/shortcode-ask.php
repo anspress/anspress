@@ -23,6 +23,7 @@ class AnsPress_Ask_Shortcode {
 	 * @since 2.0.1
 	 */
 	public static function anspress_ask($atts, $content = ''){
+		ob_start();
 		echo '<div class="anspress-container">';
 			
 			/**
@@ -35,6 +36,7 @@ class AnsPress_Ask_Shortcode {
 			include ap_get_theme_location('ask.php');
 
 		echo '</div>';
+		return ob_get_clean();
 
 	}
 

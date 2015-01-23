@@ -25,6 +25,7 @@ class AnsPress_Questions_Shortcode {
 		global $questions;
 		
 		$questions = new Question_Query();
+		ob_start();
 		echo '<div class="anspress-container">';
 			
 			/**
@@ -38,7 +39,7 @@ class AnsPress_Questions_Shortcode {
 
 			wp_reset_postdata();
 		echo '</div>';
-
+		return ob_get_clean();
 	}
 
 	

@@ -24,7 +24,7 @@ class AnsPress_Edit_Shortcode {
 	 */
 	public static function anspress_edit($atts, $content = ''){
 		$post_id = (int) sanitize_text_field( get_query_var( 'edit_post_id' ));
-		
+		ob_start();
 		echo '<div class="anspress-container">';
 			
 			/**
@@ -45,6 +45,7 @@ class AnsPress_Edit_Shortcode {
 			}			
 
 		echo '</div>';
+		return ob_get_clean();
 
 	}
 

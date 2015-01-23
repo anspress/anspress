@@ -32,6 +32,7 @@ class AnsPress_User_Shortcode {
 		$ap_user_data 	= $ap_user->data;
 		$ap_current_user_meta = array_map(	'ap_meta_array_map', get_user_meta($user_id));
 		
+		ob_start();
 		echo '<div class="anspress-container">';
 			
 			/**
@@ -46,6 +47,7 @@ class AnsPress_User_Shortcode {
 				include ap_get_theme_location('no-user-found.php');
 
 		echo '</div>';
+		return ob_get_clean();
 
 	}
 
