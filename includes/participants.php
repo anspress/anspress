@@ -11,6 +11,9 @@
 
 
 /* Insert participant  */
+/**
+ * @param string $action
+ */
 function ap_add_parti($post_id, $user_id, $action, $param = false){
 	if(is_user_logged_in()){
 		$rows = ap_add_meta($user_id, 'parti', $post_id, $action, $param);

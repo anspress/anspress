@@ -615,6 +615,9 @@ function ap_user_page_menu(){
 	}
 }
 
+/**
+ * @return string
+ */
 function ap_get_current_user_page_template(){
 	$user_page = get_query_var('user_page');
 	$user_page = $user_page ? $user_page : 'profile';
