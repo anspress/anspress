@@ -40,6 +40,10 @@ class AP_Flagged_Table extends WP_List_Table {
 		$this->get_posts_counts();		
 		$this->current_status =  isset($_GET['status']) ? sanitize_text_field($_GET['status']) : 'publish' ;
 	}
+
+	/**
+	 * @param string $input_id
+	 */
 	public function search_box( $text, $input_id ) {
 		if ( empty( $_REQUEST['s'] ) && !$this->has_items() )
 			return;

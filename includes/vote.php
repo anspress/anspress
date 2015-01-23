@@ -340,14 +340,23 @@ class anspress_vote
 	}
 }
 
+/**
+ * @param string $type
+ */
 function ap_add_vote($userid, $type, $actionid){	
 	return ap_add_meta($userid, $type, $actionid );
 }
 
+/**
+ * @param string $type
+ */
 function ap_remove_vote($type, $userid, $actionid){
 	return ap_delete_meta(array('apmeta_type' => $type, 'apmeta_userid' => $userid, 'apmeta_actionid' => $actionid));
 }
 
+/**
+ * @param string $type
+ */
 function ap_count_vote($userid = false, $type, $actionid =false, $value = 1){
 	global $wpdb;
 	if(!$userid){
@@ -483,7 +492,6 @@ function ap_vote_btn($post = false){
 
 /**
  * Output subscribe btn HTML
- * @param  object $question  post Object
  * @return string
  * @since 2.0.1
  */

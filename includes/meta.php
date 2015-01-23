@@ -12,6 +12,9 @@
 
 
 /* Add meta */
+/**
+ * @param string $type
+ */
 function ap_add_meta($userid=false, $type=NULL, $actionid =NULL, $value=NULL, $param = NULL, $date = false){
 	/* get current user id if not set */
 	if(!$userid)
@@ -66,7 +69,7 @@ function ap_update_meta($data, $where){
 /**
  * Delete ap_meta row
  * @param  false|array 	$where wp_db where clause
- * @param  false|int 	$id    if meta id is known then it can be passed
+ * @param  integer 	$id    if meta id is known then it can be passed
  * @return boolean         
  */
 function ap_delete_meta($where=false, $id=false){		
@@ -133,6 +136,9 @@ function ap_get_meta($where){
 }
 
 /* get the total count by type and actionid */
+/**
+ * @param string $type
+ */
 function ap_meta_total_count($type, $actionid=false, $userid = false, $group = false){
 	global $wpdb;
 	$where_query = '';
@@ -162,6 +168,9 @@ function ap_meta_total_count($type, $actionid=false, $userid = false, $group = f
 	return $count;	
 }
 
+/**
+ * @param string $type
+ */
 function ap_meta_user_done($type, $userid, $actionid, $value = false){	
 	global $wpdb;
 	

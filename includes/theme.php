@@ -446,6 +446,9 @@ function ap_get_current_page_template(){
 	return 'content-none.php';
 }
 
+/**
+ * @param string $page
+ */
 function ap_current_user_page_is($page){
 	if (get_query_var('user_page') == $page)
 		return true;
@@ -465,8 +468,8 @@ function is_private_post($post_id = false){
 /**
  * Anspress pagination
  * Uses paginate_links
- * @param  mixed $current Current paged, if not set then get_query_var('paged') is used
- * @param  mixed $total   Total number of pages, if not set then global $questions is used
+ * @param  double $current Current paged, if not set then get_query_var('paged') is used
+ * @param  integer $total   Total number of pages, if not set then global $questions is used
  * @param  string  $format 
  * @return string
  */
