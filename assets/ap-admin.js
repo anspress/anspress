@@ -73,8 +73,6 @@ APjs.admin.prototype = {
 		this.savePoints();
 		this.newPointForm();
 		this.deletePoint();
-		this.toggleAddons();
-		this.install();
 		this.badges();
 		this.deleteFlag();
 	},
@@ -155,11 +153,10 @@ APjs.admin.prototype = {
 		});
 	},
 	saveOptions: function(){
-		jQuery('#ap-options').submit(function(){
+		jQuery('#options_form').submit(function(){
 			 var checkboxes = jQuery.param( jQuery(this).find('input:checkbox:not(:checked)').map(function() {
 			   return { name: this.name, value: this.checked ? this.value : '0' };
 			 }));
-			 console.log(checkboxes);
 			jQuery.ajax({  
 				type: 'POST',  
 				url: ajaxurl,  
@@ -350,132 +347,8 @@ APjs.admin.prototype = {
 			return false;
 		});
 	},
-	toggleAddons:function(){
-		jQuery('.wp-admin').delegate('[data-action="ap-toggle-addon"]', 'click', function(e){
-			e.preventDefault();
-			var args = jQuery(this).data('args');
-			jQuery.ajax({
-				type: 'POST',  
-				url: ajaxurl,  
-				data:  {
-					action: 'ap_toggle_addon',
-					args: args
-				},
-				context:this,
-				dataType:'json',
-				success: function(data){
-					if(jQuery('#ap-message').length > 0)
-						jQuery('#ap-message').remove();
-						
-					if(data['status'] == 'activate'){
-						jQuery(this).closest('.theme').find('.ap-addon-status').show();
-					}else if(data['status'] == 'deactivate'){
-						jQuery(this).closest('.theme').find('.ap-addon-status').hide();
-					}
-					jQuery(this).parent().html(data['html']);
-					jQuery('#wpbody .wrap').prepend(data['message']);
-					jQuery('#ap-message').slideDown().delay(5000).queue(function(next) {jQuery(this).remove(); next(); });
-				}
-			});
-			
-			return false;
-		});
-	},
-	install: function(){
-		var self = this;
-		var idni = jQuery('.ap-install-indi > span');
-		jQuery('#start-install').click(function(e){
-			e.preventDefault();
-			jQuery('.ap-install-steps').animate({'left': '-500px'}, 300);
-		});
-		
-		jQuery('#continue-base-install').click(function(e){	
-			e.preventDefault();
-			jQuery('.ap-install-steps #continue-base-install').text('Wait...');
-			jQuery.ajax({
-				type: 'POST',  
-				url: ajaxurl,  
-				data:  {
-					action: 'ap_install_base_page',
-					base_page: jQuery('select[name="base_page"]').val(),
-					args: jQuery('#start-install').data('args')
-				},
-				context:this,
-				dataType:'json',
-				success: function(data){					
-					jQuery('.ap-install-steps').animate({'left': '-1000px'}, 300);
-				}
-			});
-		
-		});
-		jQuery('#continue-dbcheck-install').click(function(e){	
-			e.preventDefault();
-			jQuery(this).text('Wait...');
-			jQuery.ajax({
-				type: 'POST',  
-				url: ajaxurl,  
-				data:  {
-					action: 'ap_install_data_table',
-					args: jQuery('#start-install').data('args')
-				},
-				context:this,
-				dataType:'json',
-				success: function(data){					
-					jQuery('.ap-install-steps').animate({'left': '-2000px'}, 300);
-				}
-			});
-		});
-		jQuery('#continue-dopt-install').click(function(e){	
-			e.preventDefault();
-			jQuery(this).text('Wait...');
-			jQuery.ajax({
-				type: 'POST',  
-				url: ajaxurl,  
-				data:  {
-					action: 'ap_install_default_opt',
-					args: jQuery('#start-install').data('args'),
-					label: jQuery('#default-label').val(),
-					rank: jQuery('#default-rank').val(),
-				},
-				context:this,
-				dataType:'json',
-				success: function(data){					
-					jQuery('.ap-install-steps').animate({'left': '-1500px'}, 300);
-				}
-			});
-		});
-		jQuery('#continue-rewrite-install').click(function(e){	
-			e.preventDefault();
-			jQuery(this).text('Wait...');
-			jQuery.ajax({
-				type: 'POST',  
-				url: ajaxurl,  
-				data:  {
-					action: 'ap_install_rewrite_rules',
-					args: jQuery('#start-install').data('args')
-				},
-				context:this,
-				dataType:'json',
-				success: function(data){					
-					jQuery('.ap-install-steps').animate({'left': '-2500px'}, 300);
-				}
-			});
-		});
-		jQuery('#ap-finish-installation').click(function(){
-			jQuery.ajax({
-				type: 'POST',  
-				url: ajaxurl,  
-				data:  {
-					action: 'ap_install_finish',
-					args: jQuery('#start-install').data('args')
-				},
-				context:this,
-				success: function(data){					
-					window.location.replace(data);
-				}
-			});
-		});
-	},
+	
+	
 	deleteFlag : function(){
 		jQuery('#ap-delete-flag').click(function(e){
 			e.preventDefault();
@@ -497,20 +370,6 @@ APjs.admin.prototype = {
 }
 
 function ap_option_flag_note(){
-/*	jQuery('#add-flag-note').click(function(e){
-		e.preventDefault();
-		var count = (jQuery('.flag-note-ite').length)+1;
-		var clone = jQuery('#first-note').clone().removeAttr('id');
-		clone.find('input').attr('value', '');
-		clone.find('input').attr('name', 'anspress_opt[flag_note]['+count+'][title]');
-		clone.find('textarea').attr('name', 'anspress_opt[flag_note]['+count+'][description]');
-		clone.find('textarea').text('');
-		jQuery(clone).insertBefore(this);
-	});
-	jQuery('body').delegate('.delete-flag-note', 'click', function(){
-		jQuery(this).parent().parent().parent().remove();
-	});*/
-	
 	jQuery('body').delegate('[data-action="ap_add_field"]', 'click', function(){
 		var copy 	= jQuery(this).data('copy');
 		var field_c = jQuery(this).data('field');

@@ -911,7 +911,7 @@
   box-sizing: border-box;
 }
 .anspress-container {
-  color: #555555;
+  color: #303030;
 }
 .ap-pull-right {
   float: right !important;
@@ -974,7 +974,7 @@
   -moz-background-clip: padding;
   border-radius: 3px 3px 0 0;
   background-clip: padding-box;
-  color: #555555;
+  color: #303030;
 }
 .ap-tab li:first-child {
   margin-left: 5px;
@@ -1124,9 +1124,6 @@
   display: table-cell;
   vertical-align: top;
 }
-.list-question:nth-child(2n) {
-  background: #fdfdfd;
-}
 .list-question .ap-count {
   padding-left: 15px;
   width: 75px;
@@ -1141,7 +1138,7 @@
   font-size: 19px;
   font-weight: 600;
   display: block;
-  color: #555555;
+  color: #303030;
 }
 .list-question .ap-count > a:last-child {
   margin-right: 0;
@@ -1157,7 +1154,7 @@
   margin-top: 0;
 }
 .list-question .ap-list-inner .question-title a {
-  color: #555555;
+  color: #303030;
   text-decoration: none;
 }
 .list-question .ap-list-history {
@@ -1245,7 +1242,7 @@
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 }
 .tooltipster-default.ap-tip-style.tags-list a {
-  color: #555555;
+  color: #303030;
   display: block;
   font-weight: normal;
   padding: 8px 5px;
@@ -1369,7 +1366,7 @@
 }
 .ap-content .ap-post-tags li a:hover {
   border-color: #40a656;
-  color: #555555;
+  color: #303030;
 }
 .ap-content .ap-user-actions {
   margin-top: 25px;
@@ -1388,7 +1385,7 @@
   display: block;
 }
 .ap-content .ap-user-actions a:hover {
-  color: #555555;
+  color: #303030;
 }
 .ap-content .ap-user-actions a i {
   display: inline-block;
@@ -1785,7 +1782,7 @@
   padding: 15px;
 }
 .ap-similar-questions a {
-  color: #555555;
+  color: #303030;
   display: block;
   padding: 8px;
   text-decoration: none;
@@ -1922,7 +1919,7 @@
   border-radius: 2px;
 }
 .ap-profile-lr .ap-profile-nav .ap-user-name {
-  color: #555555;
+  color: #303030;
   display: block;
   font-size: 22px;
   font-weight: 600;
@@ -1960,7 +1957,7 @@
   width: 16px;
 }
 .ap-profile-lr .ap-user-menu li.active > a {
-  color: #555555;
+  color: #303030;
   font-weight: 600;
 }
 .ap-profile-lr .ap-user-menu li:last-child a {
@@ -1994,7 +1991,7 @@
   border-bottom: none;
 }
 .ap-answer-post .ap-title {
-  color: #555555;
+  color: #303030;
   display: block;
   font-size: 15px;
   font-weight: 600;
@@ -2021,7 +2018,7 @@
 }
 .ap-answer-post .ap-vote-count span,
 .ap-answer-post .ap-answer-count span {
-  color: #555555;
+  color: #303030;
   display: block;
   font-size: 15px;
 }
@@ -2034,7 +2031,7 @@
 }
 .ap-answer-post .ap-answer-link:hover {
   text-decoration: none;
-  color: #555555;
+  color: #303030;
 }
 .ap-profile-box-group > .ap-profile-box {
   float: left;
@@ -2110,7 +2107,7 @@
   border-right: none;
 }
 .ap-user-counts a {
-  color: #555555;
+  color: #303030;
   display: block;
   font-size: 22px;
   min-width: 120px;

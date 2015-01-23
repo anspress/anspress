@@ -72,12 +72,7 @@ class anspress_admin {
 		
 		add_action( 'load-post.php', array($this, 'question_meta_box_class') );
 		add_action( 'load-post-new.php', array($this, 'question_meta_box_class') );
-		
-		//add_action( 'show_user_profile', array($this, 'user_roles_fields') );
-		//add_action( 'edit_user_profile', array($this, 'user_roles_fields') );
-		
-		//add_action( 'personal_options_update', array($this, 'save_user_roles_fields') );
-		//add_action( 'edit_user_profile_update', array($this, 'save_user_roles_fields') );
+
 		
 		add_action( 'wp_ajax_ap_save_options', array($this, 'ap_save_options') );
 		add_action( 'wp_ajax_ap_edit_points', array($this, 'ap_edit_points') );
@@ -90,14 +85,7 @@ class anspress_admin {
 		add_action( 'wp_ajax_ap_save_badges', array($this, 'ap_save_badges') );
 		add_action( 'wp_ajax_ap_new_badge_form', array($this, 'ap_new_badge_form') );
 		add_action( 'wp_ajax_ap_delete_badge', array($this, 'ap_delete_badge') );
-
-		add_action( 'wp_ajax_ap_toggle_addon', array($this, 'ap_toggle_addon') );
-
-		
-		add_action( 'wp_ajax_ap_delete_flag', array($this, 'ap_delete_flag') );
-		
-		add_action( 'save_post', array($this, 'update_rewrite') );
-
+		add_action( 'wp_ajax_ap_delete_flag', array($this, 'ap_delete_flag') );		
 		add_action('ap_option_fields', array($this, 'option_fields' ));
 
 
@@ -800,30 +788,6 @@ public function ap_menu_metaboxes(){
 		$submenu['anspress'][0][0] = 'AnsPress';
 	}
 	
-	public function ap_toggle_addon(){
-		$result = '';
-		if(current_user_can('manage_options')){
-			$args = explode('-', sanitize_text_field($_POST['args']));
-			if(wp_verify_nonce($args[1], 'toggle_addon')){
-				$option = get_option('ap_addons');
-
-				if(isset($option[$args[0]]) && $option[$args[0]]){
-					$active = $option[$args[0]];
-					if($active)
-						$option[$args[0]] = false;
-					
-					$result = array('status' => 'deactivate', 'html' => '<a data-action="ap-toggle-addon" data-args="'.$args[0].'-'.wp_create_nonce('toggle_addon').'-activate'.'" href="#" class="button button-primary activate">'.__('Activate', 'ap').'</a>', 'message' => '<div id="ap-message" class="updated fade"><p><strong>'.sprintf(__( '%s disabled successfully.', 'ap' ), $args[0]).'</strong></p></div>');
-				}else{
-					$option[$args[0]] = true;
-					$result = array('status' => 'activate', 'html' => '<a data-action="ap-toggle-addon" data-args="'.$args[0].'-'.wp_create_nonce('toggle_addon').'-deactivate'.'" href="#" class="button button-primary activate">'.__('Deactivate', 'ap').'</a>', 'message' => '<div id="ap-message" class="updated fade"><p><strong>'.sprintf(__( '%s activated successfully.', 'ap' ), $args[0]).'</strong></p></div>');
-				}
-				
-				update_option('ap_addons', $option);
-			}
-		}
-		die(json_encode($result));
-	}
-	
 	
 	
 	public function ap_delete_flag(){
@@ -833,14 +797,7 @@ public function ap_menu_metaboxes(){
 		}
 		die();
 	}
-	
-	public function update_rewrite($post_id){
-		if(ap_opt('base_page') == $post_id){
-			$post = get_post($post_id);
-			ap_opt('base_page_slug', $post->post_name);
-			ap_opt('ap_flush', 'true');
-		}
-	}
+
 
 	/**
      * Option fields
