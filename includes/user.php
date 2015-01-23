@@ -49,14 +49,16 @@ class AnsPress_User {
 		add_filter( 'get_avatar', array($this, 'get_avatar'), 10, 5);		
 		//add_filter( 'default_avatar_select', array($this, 'default_avatar_select'));
 		
-		ap_register_user_page('profile', __('Profile', 'ap'), array('AnsPress_User_Page_Profile', 'output'));
-		ap_register_user_page('questions', __('Questions', 'ap'), array('AnsPress_User_Page_Questions', 'output'));
-		ap_register_user_page('answers', __('Answers', 'ap'), array('AnsPress_User_Page_Answers', 'output'));
-		//ap_register_user_page('favorites', __('Favorites', 'ap'), array('AnsPress_User_Page_Favorites', 'output'));
+		ap_register_user_page('profile', __('Profile', 'ap'), 10, array('AnsPress_User_Page_Profile', 'output'));
+		ap_register_user_page('questions', __('Questions', 'ap'), 20, array('AnsPress_User_Page_Questions', 'output'));
+		ap_register_user_page('answers', __('Answers', 'ap'), 30, array('AnsPress_User_Page_Answers', 'output'));
+		//ap_register_user_page('favorites', __('Favorites', 'ap'), 40, array('AnsPress_User_Page_Favorites', 'output'));
 
 		add_filter('ap_user_menu', array($this, 'ap_user_menu_icons') );
+		add_filter('ap_user_menu', array($this, 'ap_user_menu_sort'));
+
 	}
-	
+		
 	/* For modifying WP_User_Query, if passed with a var ap_followers_query */
 	public function follower_query ($query) {
 		if(isset($query->query_vars['ap_followers_query'])){
@@ -374,8 +376,23 @@ class AnsPress_User {
 
 		return $menus;
 	}
+	
+	/**
+	 * Sort the entries in the menu depending on the specified order
+	 * @param  arrat $menus
+	 * @return array
+	 * @since 2.0.1
+	 */
+	public function ap_user_menu_sort($menus)
+	{
+		uasort($menus, function ($menuA, $menuB)	{
+			return strcmp($menuA["order"], $menuB["order"]);
+		});
+		return $menus;
+	}
 
 }
+
 
 /**
  * Register user page 
@@ -385,13 +402,12 @@ class AnsPress_User {
  * @return void
  * @since 2.0.1
  */
-function ap_register_user_page($page_slug, $page_title, $func){
+function ap_register_user_page($page_slug, $page_title, $order, $func){
 	global $user_pages;
 
 	if(empty($user_pages) || !is_array($user_pages))
 		$user_pages = array();
-
-	$user_pages[$page_slug] = array('title' => $page_title, 'func' =>  $func);
+	$user_pages[$page_slug] = array('title' => $page_title, 'func' =>  $func, 'order' => $order);
 
 }
 
@@ -571,10 +587,9 @@ function ap_user_menu(){
 	$user_page = $user_page ? $user_page : 'profile';
 
 	$menus = array();
-
 	foreach($user_pages as $k => $args){
 		$link 		= ap_user_link($userid, $k);
-		$menus[$k] 	= array( 'title' => $args['title'], 'link' => $link);
+		$menus[$k] 	= array( 'title' => $args['title'], 'link' => $link, 'order' => $args['order']);
 	}
 	
 	/*$menus = array(
@@ -601,7 +616,8 @@ function ap_user_menu(){
 	foreach($menus as $k => $m){
 		//if(!((isset($m['own']) && $m['own']) && $userid != get_current_user_id()))
 		$class = !empty($m['class']) ? ' '. $m['class'] : '';
-			$o .= '<li'.( $user_page == $k ? ' class="active"' : '' ).'><a href="'. $m['link'] .'" class="ap-user-menu-'.$k.$class.'">'.$m['title'].'</a></li>';
+		//$o .= '<li'.( $user_page == $k ? ' class="active"' : '' ).'><a href="'. $m['link'] .'" class="ap-user-menu-'.$k.$class.'">'.$m['title'].'</a></li>';
+		$o .= '<li'.( $user_page == $k ? ' class="active"' : '' ).'><a href="'. $m['link'] .'" class="ap-user-menu-'.$k.'"><i class="'.$class.'">&nbsp;&nbsp;</i>'.$m['title'].'</a></li>';
 	}
 	$o .= '</ul>';
 	
@@ -609,6 +625,7 @@ function ap_user_menu(){
 }
 
 function ap_user_page_menu(){
+
 	if(!is_my_profile())
 		return;
 		
@@ -627,8 +644,8 @@ function ap_user_page_menu(){
 			$o .= '<li'.( $user_page == $k ? ' class="active"' : '' ).'><a href="'. $m['link'] .'" class="'.$m['icon'].' ap-user-menu-'.$k.'"'.(isset($m['attributes']) ? ' '.$m['attributes'] : '' ).'>'.$m['name'].'</a></li>';
 		}
 		$o .= '</ul>';	
-	
 		echo $o;
+		
 	}
 }
 
