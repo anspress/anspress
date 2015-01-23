@@ -88,7 +88,8 @@ class AnsPress_Ajax
 		if((wp_verify_nonce( $_REQUEST['__nonce'], 'comment_form_nonce' ) && ap_user_can_comment()) || (isset($_REQUEST['comment_ID']) && ap_user_can_edit_comment((int)$_REQUEST['comment_ID'] ) && wp_verify_nonce( $_REQUEST['__nonce'], 'edit_comment_'.(int)$_REQUEST['comment_ID'] ))){
 			
 			$comment_args  = array();
-
+			$content = '';
+			$commentid = '';
 			if(isset($_REQUEST['comment_ID'])){
 				$comment = get_comment($_REQUEST['comment_ID']);
 				$comment_post_ID = $comment->comment_post_ID;
@@ -106,7 +107,7 @@ class AnsPress_Ajax
 				'id_form' => 'ap-commentform',
 				'title_reply' => '',
 				'logged_in_as' => '',
-				'comment_field' => '<textarea name="comment" rows="3" aria-required="true" id="ap-comment-textarea" class="form-control autogrow" placeholder="'.__('Respond to the post.', 'ap').'">'.@$content.'</textarea><input type="hidden" name="ap_form_action" value="comment_form"/><input type="hidden" name="ap_ajax_action" value="comment_form"/><input type="hidden" name="__nonce" value="'.$nonce.'"/>'.@$commentid,
+				'comment_field' => '<textarea name="comment" rows="3" aria-required="true" id="ap-comment-textarea" class="form-control autogrow" placeholder="'.__('Respond to the post.', 'ap').'">'.$content.'</textarea><input type="hidden" name="ap_form_action" value="comment_form"/><input type="hidden" name="ap_ajax_action" value="comment_form"/><input type="hidden" name="__nonce" value="'.$nonce.'"/>'.$commentid,
 				'comment_notes_after' => ''
 			);
 			

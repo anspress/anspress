@@ -40,6 +40,7 @@ new AnsPress_Ask_Form;
 function ap_ask_form($editing = false){
     global $editing_post;
 
+    $is_private = false;
     if($editing){
         $is_private = $editing_post->post_status == 'private_post' ? true : false;
     }

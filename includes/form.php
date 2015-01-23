@@ -85,8 +85,9 @@ class AnsPress_Form_Helper
 					ap_do_event('delete_comment', $comment, 'answer');
 			}
 			$result = array('status' => true, 'message' => __('Comment deleted successfully', 'ap'));
+			die(json_encode($result));
 		}
-		die(json_encode($result));
+		die();
 	}
 	
 	/** TODO: Add this again */

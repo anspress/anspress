@@ -585,7 +585,7 @@ function ap_features_metadata($contents, $fields){
 }
 
 function ap_users_tab(){
-	isset($_GET['ap_sort']) ? $_GET['ap_sort'] : 'points';
+	$order = isset($_GET['ap_sort']) ? $_GET['ap_sort'] : 'points';
 	
 	$link = '?ap_sort=';
 
