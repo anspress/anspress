@@ -838,8 +838,9 @@ function ap_sort_array_by_order($array){
 
 /**
  * Append array to global var
- * @param  string|integer 	$key
+ * @param  string 	$key
  * @param  array 			$args
+ * @param string $var
  * @return void
  * @since 2.0.0-alpha2
  */

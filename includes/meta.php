@@ -12,6 +12,9 @@
 
 
 /* Add meta */
+/**
+ * @param string $type
+ */
 function ap_add_meta($userid=false, $type=NULL, $actionid =NULL, $value=NULL, $param = NULL, $date = false){
 	/* get current user id if not set */
 	if(!$userid)
@@ -133,6 +136,9 @@ function ap_get_meta($where){
 }
 
 /* get the total count by type and actionid */
+/**
+ * @param string $type
+ */
 function ap_meta_total_count($type, $actionid=false, $userid = false, $group = false){
 	global $wpdb;
 	$where_query = '';
