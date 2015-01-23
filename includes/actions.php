@@ -199,7 +199,7 @@ class AnsPress_Actions
 	 * Actions to run after posting a comment
 	 * @param  int $approved
 	 * @param  object $commentdata
-	 * @return void   
+	 * @return null|integer   
 	 */
 	public function pre_comment_approved($approved , $commentdata){
 		if($approved =='1' ){
@@ -227,7 +227,7 @@ class AnsPress_Actions
 	/**
 	 * Register query vars
 	 * @param  array $query_vars 
-	 * @return array             
+	 * @return string[]             
 	 */
 	public function query_var( $query_vars) {
 

@@ -89,6 +89,9 @@ class AP_History
 	}
 }
 
+/**
+ * @param string $param
+ */
 function ap_add_history($userid = false, $post_id, $value, $param=NULL){
 
 	if(!$userid)

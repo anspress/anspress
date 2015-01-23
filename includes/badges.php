@@ -397,6 +397,9 @@ function ap_badge_option_update($id, $title, $desc, $type, $min_points, $multipl
 	wp_cache_delete('ap_badges', 'ap');
 	return $update;
 }
+/**
+ * @param integer $id
+ */
 function ap_badge_option_new($id, $title, $desc, $type, $min_points, $multiple = false){
 	$opt 	= ap_badges_option();
 	$opt[] = array(
@@ -421,6 +424,9 @@ function ap_badge_option_delete($id){
 	return update_option('ap_badges', $opt);
 }
 
+/**
+ * @param string $id
+ */
 function ap_award_badge($user_id, $id, $action_id = 0){
 	$badge = ap_badge_by_id($id);
 
@@ -436,6 +442,9 @@ function ap_award_badge($user_id, $id, $action_id = 0){
 
 }
 
+/**
+ * @param string $badge_id
+ */
 function ap_received_badge_on_post($badge_id, $post_id){
 	return ap_get_meta(array('apmeta_type' => 'badge', 'apmeta_actionid' => $post_id, 'apmeta_value' => $badge_id));
 }
