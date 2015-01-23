@@ -220,6 +220,9 @@ function ap_point_by_id($id){
 	return false;
 }
 
+/**
+ * @param string $event
+ */
 function ap_point_by_event($event, $only_point = false){
 	$opt = ap_point_option();
 	foreach( $opt as $point)
@@ -285,6 +288,9 @@ function ap_get_points($uid = false, $short = false) {
 	}
 }
 
+/**
+ * @param string $type
+ */
 function ap_points($type, $uid, $points, $data){
 	$points = apply_filters('ap_points',$points, $type, $uid, $data);
 	ap_alter_points($uid, $points);
@@ -317,6 +323,9 @@ function ap_point_log($type, $uid, $points, $data){
 	return ap_add_meta($uid, 'point', $data, $points, $type);
 }
 
+/**
+ * @param string $type
+ */
 function ap_point_log_delete($type, $uid, $points =NULL, $data =NULL){
 	$new_point = ap_get_points($uid) - $points;
 	
