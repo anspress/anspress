@@ -799,55 +799,29 @@ function ap_current_page_url($args){
 }
 
 /**
- * Register option tabs
- * @param  string $page_slug  slug for links
- * @param  string $page_title Page title
- * @param  callable $func Hook to run when shortcode is found.    
- * @return void
+ * Sort array by order value. Group array which have same order number and then sort them.
+ * @param  array $array
+ * @return array
  * @since 2.0.0-alpha2
  */
-function ap_register_option_tab($group_slug, $group_title, $func){
-	global $ap_option_tabs;
+function ap_sort_array_by_order($array){
+	$new_array = array();
+	if(!empty($array) && is_array($array) ){
+		$group = array();
+		foreach($array as $k => $a){
+			$order = $a['order'];
+			$group[$order][] = $a;
+		}
+		
+		usort($group, function($a, $b) {
+            return key($a) - key($b);
+        });
 
-	if(empty($ap_option_tabs) || !is_array($ap_option_tabs))
-		$ap_option_tabs = array();
+        foreach($group as $a){
+        	foreach($a as $newa)
+				$new_array[] = $newa;
+		}
 
-	$ap_option_tabs[$page_slug] = array('title' => $page_title, 'func' =>  $func);
-
-}
-
-/**
- * Output option tab nav
- * @return void
- * @since 2.0.0-alpha2
- */
-function ap_options_nav(){
-	global $ap_option_tabs;
-
-	$userid = ap_user_page_user_id();
-	$active = (isset($_REQUEST['option_page'])) ? $_REQUEST['option_page'] : 'general' ;
-
-	$menus = array();
-
-	foreach($ap_option_tabs as $k => $args){
-		$link 		= ap_user_link($userid, $k);
-		$menus[$k] 	= array( 'title' => $args['title'], 'link' => $link);
+		return $new_array;
 	}
-
-	/**
-	 * FILTER: ap_option_tab_nav
-	 * filter is applied before showing option tab navigation
-	 * @var array
-	 * @since  2.0.0-alpha2
-	 */
-	$menus = apply_filters('ap_option_tab_nav', $menus);
-	
-	$o ='<ul id="ap_opt_nav" class="nav nav-tabs">';
-	foreach($menus as $k => $m){
-		$class = !empty($m['class']) ? ' '. $m['class'] : '';
-			$o .= '<li'.( $active == $k ? ' class="active"' : '' ).'><a href="'. $m['link'] .'" class="ap-user-menu-'.$k.$class.'">'.$m['title'].'</a></li>';
-	}
-	$o .= '</ul>';
-	
-	echo $o;
 }

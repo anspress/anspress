@@ -497,7 +497,7 @@ APjs.admin.prototype = {
 }
 
 function ap_option_flag_note(){
-	jQuery('#add-flag-note').click(function(e){
+/*	jQuery('#add-flag-note').click(function(e){
 		e.preventDefault();
 		var count = (jQuery('.flag-note-ite').length)+1;
 		var clone = jQuery('#first-note').clone().removeAttr('id');
@@ -509,6 +509,21 @@ function ap_option_flag_note(){
 	});
 	jQuery('body').delegate('.delete-flag-note', 'click', function(){
 		jQuery(this).parent().parent().parent().remove();
+	});*/
+	
+	jQuery('body').delegate('[data-action="ap_add_field"]', 'click', function(){
+		var copy 	= jQuery(this).data('copy');
+		var field_c = jQuery(this).data('field');
+		var count = (jQuery(field_c+' > div').length)+1;
+		var html = jQuery('#'+copy+' .ap-repeatbable-field').html();
+		html = html.replace('#', count).replace('#', count).replace('#', count);
+		jQuery(html).appendTo('#'+field_c);
+
+	});
+	jQuery('body').delegate('[data-action="ap_delete_field"]', 'click', function(){
+		var toggle = jQuery(this).data('toggle');
+
+		jQuery('#'+toggle).remove();
 	});
 }
 

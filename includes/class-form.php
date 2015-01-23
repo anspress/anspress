@@ -74,9 +74,7 @@ class AnsPress_Form {
         if(!isset($this->args['fields']))
             return;
 
-        usort($this->args['fields'], function($a, $b) {
-            return $a['order'] - $b['order'];
-        });
+        $this->args['fields'] = ap_sort_array_by_order($this->args['fields']);
     }
 
     /**
@@ -211,7 +209,44 @@ class AnsPress_Form {
 
         $placeholder = $this->placeholder();
         $autocomplete = isset($field['autocomplete'])  ? ' autocomplete="off"' : '';
-        $this->output .= '<input id="'. @$field['name'] .'" type="text" class="ap-form-control" value="'. @$field['value'] .'" name="'. @$field['name'] .'"'.$placeholder.' '. @$field['attr'] .$autocomplete.' />';
+        if(!isset($field['repeatable']) || !$field['repeatable'] ){
+            
+            $this->output .= '<input id="'. @$field['name'] .'" type="text" class="ap-form-control" value="'. @$field['value'] .'" name="'. @$field['name'] .'"'.$placeholder.' '. @$field['attr'] .$autocomplete.' />';
+        }else{
+            if(!empty($field['value']) && is_array($field['value'])){
+                $this->output .= '<div id="ap-repeat-c-'. @$field['name'] .'" class="ap-repeatbable-field">';
+                foreach($field['value'] as $k => $rep_f){                    
+                    $this->output .= '<div id="ap_text_rep_'. @$field['name'] .'_'.$k.'" class="ap-repeatbable-field"><input id="'. @$field['name'] .'_'.$k.'" type="text" class="ap-form-control ap-repeatable-text" value="'. @$rep_f .'" name="'. @$field['name'] .'['.$k.']"'.$placeholder.' '. @$field['attr'] .$autocomplete.' />';
+                    $this->output .= '<button data-action="ap_delete_field" type="button" data-toggle="'. @$field['name'] .'_'.$k.'">'.__('Delete').'</button>';
+                    $this->output .= '</div>';
+                }
+                $this->output .= '</div>';
+
+                $this->output .= '<div id="ap-repeatbable-field-'. @$field['name'] .'" class="ap-reapt-field-copy">';
+                $this->output .= '<div id="ap_text_rep_'. @$field['name'] .'_#" class="ap-repeatbable-field"><input id="'. @$field['name'] .'_#" type="text" class="ap-form-control ap-repeatable-text" value="" name="'. @$field['name'] .'[#]"'.$placeholder.' '. @$field['attr'] .$autocomplete.' />';
+                $this->output .= '<button data-action="ap_delete_field" type="button" data-toggle="'. @$field['name'] .'_#">'.__('Delete').'</button>';
+                $this->output .= '</div></div>';
+                $this->output .= '<button data-action="ap_add_field" type="button" data-field="ap-repeat-c-'. @$field['name'] .'" data-copy="ap-repeatbable-field-'. @$field['name'] .'">'.__('Add more').'</button>';
+            }
+        }
+
+        $this->error_messages();
+    }
+
+    /**
+     * Output text type="number"
+     * @param       array  $field
+     * @return      void
+     * @since       2.0.0-alpha2
+     */
+    private function number_field($field = array())
+    {
+        if(isset($field['label']))
+            $this->label();
+
+        $placeholder = $this->placeholder();
+        $autocomplete = isset($field['autocomplete'])  ? ' autocomplete="off"' : '';
+        $this->output .= '<input id="'. @$field['name'] .'" type="number" class="ap-form-control" value="'. @$field['value'] .'" name="'. @$field['name'] .'"'.$placeholder.' '. @$field['attr'] .$autocomplete.' />';
         $this->error_messages();
     }
 
@@ -298,6 +333,21 @@ class AnsPress_Form {
         $this->output .= '<option value=""></option>';
         $this->taxonomy_select_options($field);
         $this->output .= '</select>';
+        $this->error_messages();
+    }
+
+    /**
+     * Page select field
+     * @param  array  $field
+     * @return void
+     * @since 2.0.0-alpha2
+     */
+    private function page_select_field($field = array())
+    {
+        if(isset($field['label']))
+            $this->label();
+
+        $this->output .= wp_dropdown_pages( array('selected'=> @$field['value'],'name'=> @$field['name'],'post_type'=> 'page', 'echo' => false) );
         $this->error_messages();
     }
 
@@ -412,6 +462,12 @@ class AnsPress_Form {
                     $this->output .= '</div>';
                     break;
 
+                case 'number':
+                    $this->output .= '<div class="ap-form-fields'.$error_class.'">';
+                    $this->number_field($field);
+                    $this->output .= '</div>';
+                    break;
+
                 case 'checkbox':
                     $this->output .= '<div class="ap-form-fields'.$error_class.'">';
                     $this->checkbox_field($field);
@@ -427,6 +483,12 @@ class AnsPress_Form {
                 case 'taxonomy_select':
                     $this->output .= '<div class="ap-form-fields'.$error_class.'">';
                     $this->taxonomy_select_field($field);
+                    $this->output .= '</div>';
+                    break;
+
+                case 'page_select':
+                    $this->output .= '<div class="ap-form-fields'.$error_class.'">';
+                    $this->page_select_field($field);
                     $this->output .= '</div>';
                     break;
 

@@ -21,8 +21,6 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
  
-require_once('functions.php'); 
-
 class anspress_admin {
 
 	/**
@@ -50,6 +48,9 @@ class anspress_admin {
 	 */
 	private function __construct() {
 		
+		$this->includes();
+		AnsPress_Options_Page::add_option_groups();
+
 		// Load admin style sheet and JavaScript.
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_styles' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_scripts' ) );
@@ -99,6 +100,8 @@ class anspress_admin {
 
 		add_action('ap_option_fields', array($this, 'option_fields' ));
 
+
+
 	}
 
 	/**
@@ -112,6 +115,12 @@ class anspress_admin {
 		}
 
 		return self::$instance;
+	}
+
+	public function includes()
+	{
+		require_once('functions.php'); 
+		require_once('options-page.php'); 
 	}
 
 	/**
@@ -841,308 +850,7 @@ public function ap_menu_metaboxes(){
      */
     public function option_fields($settings){
         $active = (isset($_REQUEST['option_page'])) ? $_REQUEST['option_page'] : 'general' ;
-        if ($active == 'general') {
-            ?>
-			<div class="tab-pane" id="ap-general">		
-				<table class="form-table">
-
-					<tr valign="top">
-						<th scope="row"><label for="questions_page"><?php _e('Questions Page', 'ap'); ?></label></th>
-						<td>
-							<?php wp_dropdown_pages( array('selected'=> $settings['questions_page_id'],'name'=> 'anspress_opt[questions_page_id]','post_type'=> 'page') ); ?>
-							<p class="description"><?php _e('Questions page', 'ap'); ?></p>
-						</td>
-					</tr>
-					<tr valign="top">
-						<th scope="row"><label for="ask_page"><?php _e('Ask Page', 'ap'); ?></label></th>
-						<td>
-							<?php wp_dropdown_pages( array('selected'=> $settings['ask_page_id'],'name'=> 'anspress_opt[ask_page_id]','post_type'=> 'page') ); ?>
-							<p class="description"><?php _e('Ask page', 'ap'); ?></p>
-						</td>
-					</tr>
-					<tr valign="top">
-						<th scope="row"><label for="user_page"><?php _e('User Page', 'ap'); ?></label></th>
-						<td>
-							<?php wp_dropdown_pages( array('selected'=> $settings['user_page_id'],'name'=> 'anspress_opt[user_page_id]','post_type'=> 'page') ); ?>
-							<p class="description"><?php _e('Used to show user profil.', 'ap'); ?></p>
-						</td>
-					</tr>	
-					<tr valign="top">
-						<th scope="row"><label for="edit_page"><?php _e('Edit Page', 'ap'); ?></label></th>
-						<td>
-							<?php wp_dropdown_pages( array('selected'=> $settings['edit_page'],'name'=> 'anspress_opt[edit_page]','post_type'=> 'page') ); ?>
-							<p class="description"><?php _e('Used to edit question and answer.', 'ap'); ?></p>
-						</td>
-					</tr>	
-
-					<tr valign="top">
-						<th scope="row">Author Credits</th>
-						<td>
-							<input type="checkbox" id="author_credits" name="anspress_opt[author_credits]" value="1" <?php checked( true, $settings['author_credits'] ); ?> />
-							<label for="author_credits">Hide Author Credits</label>
-						</td>
-					</tr>
-					
-					<tr valign="top">
-						<th scope="row">Disable private question</th>
-						<td>
-							<input type="checkbox" id="allow_private_posts" name="anspress_opt[allow_private_posts]" value="1" <?php checked( true, $settings['allow_private_posts'] ); ?> />
-							<label for="allow_private_posts"><?php _e('Toggle creating private question and answer', 'ap') ?></label>
-						</td>
-					</tr>
-				</table>
-			</div>
-            <?php
-        }elseif ($active == 'questions') {
-        	?>
-        	<div class="tab-pane" id="ap-question">		
-				<table class="form-table">
-					<tr valign="top">
-						<th scope="row"><label for="minimum_qtitle_length"><?php _e('Minimum words in title', 'ap'); ?></label></th>
-						<td>
-							<input type="number" min="1" name="anspress_opt[minimum_qtitle_length]" id="minimum_qtitle_length" value="<?php echo $settings['minimum_qtitle_length'] ; ?>" />
-							<p class="description"><?php _e('Minimum words for question title.', 'ap'); ?></p>
-						</td>
-					</tr>
-					<tr valign="top">
-						<th scope="row"><label for="minimum_question_length"><?php _e('Minimum words in question', 'ap'); ?></label></th>
-						<td>
-							<input type="number" min="1" name="anspress_opt[minimum_question_length]" id="minimum_question_length" value="<?php echo $settings['minimum_question_length'] ; ?>" />
-							<p class="description"><?php _e('Set minimum question word limit.', 'ap'); ?></p>
-						</td>
-					</tr>
-				</table>
-			</div>
-			<?php
-        }elseif ($active == 'answers') {
-        	?>
-        	<div class="tab-pane" id="ap-answers">		
-				<table class="form-table">
-
-					<tr valign="top">
-						<th scope="row"><label for="multiple_answers"><?php _e('Multiple Answers', 'ap'); ?></label></th>
-						<td>
-							<input type="checkbox" id="multiple_answers" name="anspress_opt[multiple_answers]" value="1" <?php checked( true, $settings['multiple_answers'] ); ?> />
-							<label><?php _e('Allow an user to submit multiple answers on a single question', 'ap'); ?></label>
-						</td>
-					</tr>
-					<tr valign="top">
-						<th scope="row"><label for="minimum_ans_length"><?php _e('Minimum words in answer', 'ap'); ?></label></th>
-						<td>
-							<input type="number" min="1" name="anspress_opt[minimum_ans_length]" id="minimum_ans_length" value="<?php echo $settings['minimum_ans_length'] ; ?>" />
-							<p class="description"><?php _e('Set minimum answer word limit.', 'ap'); ?></p>
-						</td>
-					</tr>
-					<tr valign="top">
-						<th scope="row"><label for="close_selected"><?php _e('Close after selecting answer', 'ap'); ?></label></th>
-						<td>
-							<input type="checkbox" id="close_selected" name="anspress_opt[close_selected]" value="1" <?php checked( true, $settings['close_selected'] ); ?> />
-							<p class="description"><?php _e('Do not allow new answer after selecting answer.', 'ap'); ?></p>
-						</td>
-					</tr>
-				</table>
-			</div>
-			<?php
-        }elseif ($active == 'layout') {
-        	?>
-        	<div class="tab-pane" id="ap-theme">		
-				<table class="form-table">
-
-					<tr valign="top">
-						<th scope="row"><label for="theme"><?php _e('Theme', 'ap'); ?></label></th>
-						<td>
-							<select name="anspress_opt[theme]" id="theme">
-								<?php 
-									foreach (ap_theme_list() as $theme)
-										echo '<option value="'.$theme.'">'.$theme.'</option>';
-								?>									
-							</select>
-							<p class="description"><?php _e('Set the theme you want to use', 'ap'); ?></p>
-						</td>
-					</tr>
-					<tr valign="top">
-						<th scope="row"><label for="avatar_size_qquestion"><?php _e('Avatar size in question page', 'ap'); ?></label></th>
-						<td>
-							<input type="number" min="1" name="anspress_opt[avatar_size_qquestion]" id="avatar_size_qquestion" value="<?php echo $settings['avatar_size_qquestion'] ; ?>" />
-							<p class="description"><?php _e('User avatar size for question.', 'ap'); ?></p>
-						</td>
-					</tr>
-					<tr valign="top">
-						<th scope="row"><label for="avatar_size_qanswer"><?php _e('Avatar size in answer', 'ap'); ?></label></th>
-						<td>
-							<input type="number" min="1" name="anspress_opt[avatar_size_qanswer]" id="avatar_size_qanswer" value="<?php echo $settings['avatar_size_qanswer'] ; ?>" />
-							<p class="description"><?php _e('User avatar in question page answers.', 'ap'); ?></p>
-						</td>
-					</tr>
-					<tr valign="top">
-						<th scope="row"><?php _e('Show title inside question', 'ap') ?></th>
-						<td>
-							<input type="checkbox" id="show_title_in_question" name="anspress_opt[show_title_in_question]" value="1" <?php checked( true, $settings['show_title_in_question'] ); ?> />
-							<label for="show_title_in_question"><?php _e('Show title inside question, for theme layout', 'ap') ?></label>
-						</td>
-					</tr>
-				</table>
-			</div>	
-			<?php
-        }elseif ($active == 'user') {
-        	?>
-        	<div class="tab-pane" id="ap-user">
-				<table class="form-table">
-					<tr valign="top">
-						<th scope="row"><label for="cover_width"><?php _e('Cover width', 'ap'); ?></label></th>
-						<td>
-							<input type="number" min="1" name="anspress_opt[cover_width]" id="cover_width" value="<?php echo $settings['cover_width'] ; ?>" placeholder="800" />								
-							<p class="description"><?php _e('Width of of the cover image.', 'ap'); ?></p>
-						</td>
-					</tr>
-					<tr valign="top">
-						<th scope="row"><label for="cover_height"><?php _e('Cover height', 'ap'); ?></label></th>
-						<td>
-							<input type="number" min="1" name="anspress_opt[cover_height]" id="cover_height" value="<?php echo $settings['cover_height'] ; ?>" placeholder="200" />								
-							<p class="description"><?php _e('Height of the cover image.', 'ap'); ?></p>
-						</td>
-					</tr>
-					<tr valign="top">
-						<th scope="row"><label for="cover_width_small"><?php _e('Small cover width', 'ap'); ?></label></th>
-						<td>
-							<input type="number" min="1" name="anspress_opt[cover_width_small]" id="cover_width_small" value="<?php echo $settings['cover_width_small'] ; ?>" placeholder="800" />								
-							<p class="description"><?php _e('Width of of the small cover image.', 'ap'); ?></p>
-						</td>
-					</tr>
-					<tr valign="top">
-						<th scope="row"><label for="cover_height_small"><?php _e('Small cover height', 'ap'); ?></label></th>
-						<td>
-							<input type="number" min="1" name="anspress_opt[cover_height_small]" id="cover_height_small" value="<?php echo $settings['cover_height_small'] ; ?>" placeholder="200" />								
-							<p class="description"><?php _e('Height of the small cover image.', 'ap'); ?></p>
-						</td>
-					</tr>
-					<tr valign="top">
-						<th scope="row"><label for="default_rank"><?php _e('Default rank', 'ap'); ?></label></th>
-						<td>
-							<?php
-								$terms = get_terms( 'rank', array( 'hide_empty' => false, 'orderby' => 'id' ) );
-								if ( !empty( $terms ) ) {
-									echo '<select name="anspress_opt[default_rank]">';
-									foreach ( $terms as $term ) { ?>
-										<option value="<?php echo esc_attr( $term->term_id ); ?>" <?php selected(  $settings['default_rank'], $term->term_id ); ?>><?php echo esc_attr( $term->name ); ?></option>
-									<?php }
-									echo '</select>';
-								}
-
-								/* If there are no rank terms, display a message. */
-								else {
-									_e( 'There are no ranks available.', 'ap' );
-								}
-							?>
-							<p class="description"><?php _e('Assign a default rank for newly registered user', 'ap'); ?></p>
-						</td>
-					</tr>
-				</table>
-			</div>
-			<?php
-        }elseif ($active == 'permission') {
-        	?>
-        	<div class="tab-pane" id="ap-permission">
-				<h3 class="ap-option-section"><?php _e('Permission', 'ap'); ?></h3>
-				<table class="form-table">
-					<tr valign="top">
-						<th scope="row"><?php _e('Post questions', 'ap') ?></th>
-						<td>
-							<fieldset>
-								<input type="checkbox" id="allow_anonymous" name="anspress_opt[allow_anonymous]" value="1" <?php checked( true, $settings['allow_anonymous'] ); ?> />
-								<label for="allow_anonymous"><?php _e('Allow anonymous', 'ap') ?></label>
-							</fieldset>
-						</td>
-					</tr>
-					<tr valign="top">
-						<th scope="row"><?php _e('Post answers', 'ap') ?></th>
-						<td>
-							<fieldset>
-								<input type="checkbox" id="only_admin_can_answer" name="anspress_opt[only_admin_can_answer]" value="1" <?php checked( true, $settings['only_admin_can_answer'] ); ?> />
-								<label for="only_admin_can_answer"><?php _e('Only admin can answer', 'ap') ?></label>
-							</fieldset>
-						</td>
-					</tr>
-					<tr valign="top">
-						<th scope="row"><?php _e('Show answers', 'ap') ?></th>
-						<td>
-							<fieldset>
-								<input type="checkbox" id="logged_in_can_see_ans" name="anspress_opt[logged_in_can_see_ans]" value="1" <?php checked( true, $settings['logged_in_can_see_ans'] ); ?> />
-								<label for="logged_in_can_see_ans"><?php _e('Only logged in can see answers', 'ap') ?></label>
-							</fieldset>
-						</td>
-					</tr>
-					<tr valign="top">
-						<th scope="row"><?php _e('Show comments', 'ap') ?></th>
-						<td>
-							<fieldset>
-								<input type="checkbox" id="logged_in_can_see_comment" name="anspress_opt[logged_in_can_see_comment]" value="1" <?php checked( true, $settings['logged_in_can_see_comment'] ); ?> />
-								<label for="logged_in_can_see_comment"><?php _e('Only logged in can see comment', 'ap') ?></label>
-							</fieldset>
-						</td>
-					</tr>
-				</table>
-			</div>
-			<?php
-        }elseif ($active == 'pages') {
-        	?>
-        	<div class="tab-pane" id="ap-pages">
-				<h3 class="ap-option-section"><?php _e('Item per page', 'ap'); ?></h3>
-				<table class="form-table">
-					<tr valign="top">
-						<th scope="row"><label for="question_per_page"><?php _e('Question per page', 'ap'); ?></label></th>
-						<td>
-							<input type="number" min="1" name="anspress_opt[question_per_page]" id="question_per_page" value="<?php echo $settings['question_per_page'] ; ?>" />								
-							<p class="description"><?php _e('Question to show per page', 'ap'); ?></p>
-						</td>
-					</tr>
-					<tr valign="top">
-						<th scope="row"><label for="answers_per_page"><?php _e('Answers per page', 'ap'); ?></label></th>
-						<td>
-							<input type="number" min="1" name="anspress_opt[answers_per_page]" id="answers_per_page" value="<?php echo $settings['answers_per_page'] ; ?>" />								
-							<p class="description"><?php _e('Answers to show per page in question page', 'ap'); ?></p>
-						</td>
-					</tr>					
-					
-					<tr valign="top">
-						<th scope="row"><label for="users_per_page"><?php _e('Users per page', 'ap'); ?></label></th>
-						<td>
-							<input type="number" min="1" name="anspress_opt[users_per_page]" id="users_per_page" value="<?php echo $settings['users_per_page'] ; ?>" />								
-							<p class="description"><?php _e('Users to show per page on users page', 'ap'); ?></p>
-						</td>
-					</tr>
-					<tr valign="top">
-						<th scope="row"><label for="followers_limit"><?php _e('Followers per page', 'ap'); ?></label></th>
-						<td>
-							<input type="number" min="1" name="anspress_opt[followers_limit]" id="followers_limit" value="<?php echo $settings['followers_limit'] ; ?>" placeholder="10" />								
-							<p class="description"><?php _e('How many followers to display on user profile?', 'ap'); ?></p>
-						</td>
-					</tr>
-					<tr valign="top">
-						<th scope="row"><label for="following_limit"><?php _e('Following users per page', 'ap'); ?></label></th>
-						<td>
-							<input type="number" min="1" name="anspress_opt[following_limit]" id="following_limit" value="<?php echo $settings['following_limit'] ; ?>" placeholder="10" />								
-							<p class="description"><?php _e('How many following users to display on user profile?', 'ap'); ?></p>
-						</td>
-					</tr>
-				</table>
-				<h3 class="ap-option-section"><?php _e('Sorting & Ordering', 'ap'); ?></h3>
-				<table class="form-table">
-					<tr valign="top">
-						<th scope="row"><label for="answers_sort"><?php _e('Default sorting of answers', 'ap'); ?></label></th>
-						<td>
-							<select name="anspress_opt[answers_sort]" id="answers_sort">
-								<option value="voted"<?php echo $settings['answers_sort']=='voted' ? ' selected="selected"' : '' ?>>Voted</option>
-								<option value="oldest"<?php echo $settings['answers_sort']=='oldest' ? ' selected="selected"' : '' ?>>Oldest</option>
-								<option value="newest"<?php echo $settings['answers_sort']=='newest' ? ' selected="selected"' : '' ?>>Newest</option>
-							</select>
-							<p class="description"><?php _e('Default active tab for answers list', 'ap'); ?></p>
-						</td>
-					</tr>
-				</table>				
-			</div>
-			<?php
-        }elseif ($active == 'spam') {
+       if ($active == 'spam') {
         	?>
         	<div class="tab-pane" id="ap-misc">	
 				<h3 class="title"><?php _e('Spam', 'ap'); ?></h3>
