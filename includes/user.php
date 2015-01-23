@@ -616,8 +616,7 @@ function ap_user_menu(){
 	foreach($menus as $k => $m){
 		//if(!((isset($m['own']) && $m['own']) && $userid != get_current_user_id()))
 		$class = !empty($m['class']) ? ' '. $m['class'] : '';
-		//$o .= '<li'.( $user_page == $k ? ' class="active"' : '' ).'><a href="'. $m['link'] .'" class="ap-user-menu-'.$k.$class.'">'.$m['title'].'</a></li>';
-		$o .= '<li'.( $user_page == $k ? ' class="active"' : '' ).'><a href="'. $m['link'] .'" class="ap-user-menu-'.$k.'"><i class="'.$class.'">&nbsp;&nbsp;</i>'.$m['title'].'</a></li>';
+		$o .= '<li'.( $user_page == $k ? ' class="active"' : '' ).'><a href="'. $m['link'] .'" class="ap-user-menu-'.$k.$class.'">'.$m['title'].'</a></li>';
 	}
 	$o .= '</ul>';
 	
