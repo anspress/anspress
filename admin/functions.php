@@ -39,8 +39,8 @@ function ap_flagged_posts_count(){
 
 /**
  * Register anspress option tab and fields
- * @param  string 	$page_slug  	slug for links
- * @param  string 	$page_title 	Page title
+ * @param  string 	$group_slug  	slug for links
+ * @param  string 	$group_title 	Page title
  * @param  array 	$fields 		fields array.    
  * @return void
  * @since 2.0.0-alpha2
