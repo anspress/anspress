@@ -825,3 +825,17 @@ function ap_sort_array_by_order($array){
 		return $new_array;
 	}
 }
+
+/**
+ * Append array to global var
+ * @param  string|integer 	$key
+ * @param  array 			$args
+ * @return void
+ * @since 2.0.0-alpha2
+ */
+function ap_append_to_global_var($var, $key, $args){
+	if(!isset($GLOBALS[$var]))
+		$GLOBALS[$var] = array();
+	
+	$GLOBALS[$var][$key] = $args;
+}

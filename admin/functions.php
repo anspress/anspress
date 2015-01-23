@@ -46,13 +46,7 @@ function ap_flagged_posts_count(){
  * @since 2.0.0-alpha2
  */
 function ap_register_option_group($group_slug, $group_title, $fields){
-	global $ap_option_tabs;
-
-	if(empty($ap_option_tabs) || !is_array($ap_option_tabs))
-		$ap_option_tabs = array();
-
-	$ap_option_tabs[$group_slug] = array('title' => $group_title, 'fields' =>  $fields);
-
+	ap_append_to_global_var('ap_option_tabs', $group_slug , array('title' => $group_title, 'fields' =>  $fields));
 }
 
 /**

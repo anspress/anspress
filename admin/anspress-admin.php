@@ -71,9 +71,7 @@ class anspress_admin {
 		add_action('parent_file', array($this, 'tax_menu_correction'));
 		
 		add_action( 'load-post.php', array($this, 'question_meta_box_class') );
-		add_action( 'load-post-new.php', array($this, 'question_meta_box_class') );
-
-		
+		add_action( 'load-post-new.php', array($this, 'question_meta_box_class') );		
 		add_action( 'wp_ajax_ap_save_options', array($this, 'ap_save_options') );
 		add_action( 'wp_ajax_ap_edit_points', array($this, 'ap_edit_points') );
 		add_action( 'wp_ajax_ap_save_points', array($this, 'ap_save_points') );
@@ -86,10 +84,6 @@ class anspress_admin {
 		add_action( 'wp_ajax_ap_new_badge_form', array($this, 'ap_new_badge_form') );
 		add_action( 'wp_ajax_ap_delete_badge', array($this, 'ap_delete_badge') );
 		add_action( 'wp_ajax_ap_delete_flag', array($this, 'ap_delete_flag') );		
-		add_action('ap_option_fields', array($this, 'option_fields' ));
-
-
-
 	}
 
 	/**
@@ -449,9 +443,9 @@ public function ap_menu_metaboxes(){
 		update_usermeta( $user_id, 'ap_role', sanitize_text_field($_POST['ap_role']) );
 	}
 	
-	public function ap_save_options(){
-		$result = array();
+	public function ap_save_options(){		
 		if(current_user_can('manage_options')){
+			$result = array();
 			flush_rewrite_rules();
 			$options = $_POST['anspress_opt'];
 
@@ -466,9 +460,9 @@ public function ap_menu_metaboxes(){
 				$result = array('status' => true, 'html' => '<div class="updated fade" style="display:none"><p><strong>'.__( 'AnsPress options updated successfully', 'ap' ).'</strong></p></div>');
 			}
 				
-			
+			die(json_encode( $result ));
 		}
-		die(json_encode( $result ));
+		
 	}
 	
 	public function ap_edit_points(){
@@ -798,129 +792,5 @@ public function ap_menu_metaboxes(){
 		die();
 	}
 
-
-	/**
-     * Option fields
-     * @param  array  $settings
-     * @return string
-     * @since 1.0
-     */
-    public function option_fields($settings){
-        $active = (isset($_REQUEST['option_page'])) ? $_REQUEST['option_page'] : 'general' ;
-       if ($active == 'spam') {
-        	?>
-        	<div class="tab-pane" id="ap-misc">	
-				<h3 class="title"><?php _e('Spam', 'ap'); ?></h3>
-				<p class="description"><?php _e('Default notes when flagging the posts', 'ap'); ?></p>
-				<?php if(isset($settings['flag_note']) && is_array($settings['flag_note'])) : ?>
-				
-				<?php 
-					$i = 0;
-					foreach($settings['flag_note'] as $k => $flag) : 
-				?>	
-					<table<?php echo $i == 0 ? ' id="first-note"' : ''; ?> class="form-table flag-note-item">
-						<tr valign="top">
-							<th scope="row"><label><?php _e('Title', 'ap'); ?></label></th>
-							<td>							
-								<input type="text" class="regular-text" name="anspress_opt[flag_note][<?php echo $k;?>][title]" value="<?php echo $flag['title'];?>" placeholder="Title of the note" />
-							</td>
-						</tr>
-						<tr valign="top">
-							<th scope="row"><label><?php _e('Description', 'ap'); ?></label></th>
-							<td>							
-								<textarea style="width: 500px;" name="anspress_opt[flag_note][<?php echo $k;?>][description]"><?php echo $flag['description'];?></textarea>
-								
-								<a class="delete-flag-note" href="#">Delete</a>
-							</td>
-						</tr>
-					</table>
-				<?php 
-					$i++;
-					endforeach; 
-					else:
-				?>				
-				<table id="first-note" class="form-table flag-note-item">
-					<tr valign="top">
-						<th scope="row"><label><?php _e('Title', 'ap'); ?></label></th>
-						<td>							
-							<input type="text" class="regular-text" name="anspress_opt[flag_note][0][title]" value="" placeholder="Title of the note" />
-						</td>
-					</tr>
-					<tr valign="top">
-						<th scope="row"><label><?php _e('Description', 'ap'); ?></label></th>
-						<td>							
-							<textarea style="width: 500px;" name="anspress_opt[flag_note][0][description]"></textarea>
-							
-							<a class="delete-flag-note" href="#">Delete</a>
-						</td>
-					</tr>
-				</table>
-				<?php endif; ?>
-				<a id="add-flag-note" href="#">Add more notes</a>
-				<h3 class="ap-option-section"><?php _e('Moderation', 'ap'); ?></h3>
-				<table class="form-table">
-					<tr valign="top">
-						<th scope="row"><label for="moderate_new_question"><?php _e('New question', 'ap'); ?></label></th>
-						<td>
-							<select name="anspress_opt[moderate_new_question]" id="moderate_new_question">
-								<option value="no_mod" <?php selected($settings['moderate_new_question'], 'no_mod') ; ?>><?php _e('No moderation', 'ap'); ?></option>
-								<option value="pending" <?php selected($settings['moderate_new_question'], 'pending') ; ?>><?php _e('Hold for review', 'ap'); ?></option>
-								<option value="point" <?php selected($settings['moderate_new_question'], 'point') ; ?>><?php _e('Point required', 'ap'); ?></option>
-							</select>
-							<p class="description"><?php _e('Hold new question for moderation. If you select "Point required" then you can must enter point below.', 'ap'); ?></p>
-						</td>
-					</tr>
-					<tr valign="top">
-						<th scope="row"><label for="mod_question_point"><?php _e('Point required for question', 'ap'); ?></label></th>
-						<td>
-							<input type="number" min="1" class="regular-text" name="anspress_opt[mod_question_point]" value="<?php echo $settings['mod_question_point']; ?>" />
-							<p class="description"><?php _e('Point required for directly publish new question.', 'ap'); ?></p>
-						</td>
-					</tr>
-				</table>
-				<h3 class="ap-option-section"><?php _e('reCaptcha', 'ap'); ?></h3>
-				<table class="form-table">
-					<tr valign="top">
-						<th scope="row"><label for="recaptcha_public_key"><?php _e('Public Key', 'ap'); ?></label></th>
-						<td>
-							<input type="text" name="anspress_opt[recaptcha_public_key]" id="recaptcha_public_key" value="<?php echo $settings['recaptcha_public_key'] ; ?>" />
-						</td>
-					</tr>
-					<tr valign="top">
-						<th scope="row"><label for="recaptcha_private_key"><?php _e('Private Key', 'ap'); ?></label></th>
-						<td>
-							<input type="text" name="anspress_opt[recaptcha_private_key]" id="recaptcha_private_key" value="<?php echo $settings['recaptcha_private_key'] ; ?>" />
-						</td>
-					</tr>
-					<tr valign="top">
-						<th scope="row"><label for="captcha_ask"><?php _e('Enable in ask form', 'ap'); ?></label></th>
-						<td>
-							<input type="checkbox" name="anspress_opt[captcha_ask]" id="captcha_ask" value="1" <?php checked(true, $settings['captcha_ask']); ?> />
-						</td>
-					</tr>
-					<tr valign="top">
-						<th scope="row"><label for="captcha_answer"><?php _e('Enable in answer form', 'ap'); ?></label></th>
-						<td>
-							<input type="checkbox" name="anspress_opt[captcha_answer]" id="captcha_answer" value="1" <?php checked(true, $settings['captcha_answer']); ?> />
-						</td>
-					</tr>
-					<tr valign="top">
-						<th scope="row"><label for="enable_captcha_skip"><?php _e('Enable reCaptcha skip based on user points', 'ap'); ?></label></th>
-						<td>
-							<input type="checkbox" name="anspress_opt[enable_captcha_skip]" id="enable_captcha_skip" value="1" <?php checked(true, $settings['enable_captcha_skip']); ?> />
-						</td>
-					</tr>
-					<tr valign="top">
-						<th scope="row"><label for="captcha_skip_rpoints"><?php _e('Minimum points to skip reCaptcha', 'ap'); ?></label></th>
-						<td>
-							<input type="number" min="1" name="anspress_opt[captcha_skip_rpoints]" id="captcha_skip_rpoints" value="<?php echo $settings['captcha_skip_rpoints'] ; ?>" />
-						</td>
-					</tr>
-				</table>
-			</div>
-			<?php
-        }
-        
-    }
 
 }

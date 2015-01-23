@@ -386,13 +386,7 @@ class AnsPress_User {
  * @since 2.0.1
  */
 function ap_register_user_page($page_slug, $page_title, $func){
-	global $user_pages;
-
-	if(empty($user_pages) || !is_array($user_pages))
-		$user_pages = array();
-
-	$user_pages[$page_slug] = array('title' => $page_title, 'func' =>  $func);
-
+	ap_append_to_global_var('user_pages', $page_slug , array('title' => $page_title, 'func' =>  $func));
 }
 
 /**
@@ -576,18 +570,7 @@ function ap_user_menu(){
 		$link 		= ap_user_link($userid, $k);
 		$menus[$k] 	= array( 'title' => $args['title'], 'link' => $link);
 	}
-	
-	/*$menus = array(
-		'profile' => array( 'name' => __('Profile', 'ap'), 'link' => ap_user_link($userid), 'icon' => 'ap-icon-user'),
-		'questions' => array( 'name' => __('Questions', 'ap'), 'link' => ap_user_link($userid, 'questions'), 'icon' => 'ap-icon-question'),
-		'answers' => array( 'name' => __('Answers', 'ap'), 'link' => ap_user_link($userid, 'answers'), 'icon' => 'ap-icon-answer'),		
-		'badges' => array( 'name' => __('Badges', 'ap'), 'link' => ap_user_link($userid, 'badges'), 'icon' => 'ap-icon-badge'),		
-		'favorites' => array( 'name' => __('Favorites', 'ap'), 'link' => ap_user_link($userid, 'favorites'), 'icon' => 'ap-icon-star'),
-		'followers' => array( 'name' => __('Followers', 'ap'), 'link' => ap_user_link($userid, 'followers'), 'icon' => 'ap-icon-users'),
-		'following' => array( 'name' => __('Following', 'ap'), 'link' => ap_user_link($userid, 'following'), 'icon' => 'ap-icon-users'),
-		'edit_profile' => array( 'name' => __('Edit Profile', 'ap'), 'link' => ap_user_link($userid, 'edit_profile'), 'icon' => 'ap-icon-pencil', 'own' => true),
-		//'settings' => array( 'name' => __('Settings', 'ap'), 'link' => ap_user_link($userid, 'settings'), 'icon' => 'ap-icon-cog'),		
-	);*/
+
 	
 	/**
 	 * FILTER: ap_user_menu
