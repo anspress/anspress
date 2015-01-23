@@ -65,9 +65,10 @@ class AnsPress_Theme {
 
 			remove_filter( current_filter(), array($this, 'question_single_the_content') );
 
-			ob_start();
+			
 			//check if user have permission to see the question
 			if(ap_user_can_view_post()){
+				ob_start();
 				echo '<div class="anspress-container">';
 				/**
 				 * ACTION: ap_before
@@ -77,10 +78,11 @@ class AnsPress_Theme {
 
 				include ap_get_theme_location('question.php');
 				echo '</div>';
+				return ob_get_clean();
 			}
 			else
-				echo '<div class="ap-pending-notice ap-icon-clock">'.ap_responce_message('no_permission').'</div>';
-			return ob_get_clean();
+				return '<div class="ap-pending-notice ap-icon-clock">'.ap_responce_message('no_permission').'</div>';
+			
 		}else{
 			return $content;
 		}	
