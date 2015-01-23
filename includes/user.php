@@ -56,9 +56,8 @@ class AnsPress_User {
 
 		add_filter('ap_user_menu', array($this, 'ap_user_menu_icons') );
 		add_filter('ap_user_menu', array($this, 'ap_user_menu_sort'));
-
 	}
-		
+	
 	/* For modifying WP_User_Query, if passed with a var ap_followers_query */
 	public function follower_query ($query) {
 		if(isset($query->query_vars['ap_followers_query'])){
@@ -393,7 +392,6 @@ class AnsPress_User {
 
 }
 
-
 /**
  * Register user page 
  * @param  string $page_slug  slug for links
@@ -407,6 +405,7 @@ function ap_register_user_page($page_slug, $page_title, $order, $func){
 
 	if(empty($user_pages) || !is_array($user_pages))
 		$user_pages = array();
+
 	$user_pages[$page_slug] = array('title' => $page_title, 'func' =>  $func, 'order' => $order);
 
 }
@@ -587,6 +586,7 @@ function ap_user_menu(){
 	$user_page = $user_page ? $user_page : 'profile';
 
 	$menus = array();
+
 	foreach($user_pages as $k => $args){
 		$link 		= ap_user_link($userid, $k);
 		$menus[$k] 	= array( 'title' => $args['title'], 'link' => $link, 'order' => $args['order']);
@@ -616,7 +616,7 @@ function ap_user_menu(){
 	foreach($menus as $k => $m){
 		//if(!((isset($m['own']) && $m['own']) && $userid != get_current_user_id()))
 		$class = !empty($m['class']) ? ' '. $m['class'] : '';
-		$o .= '<li'.( $user_page == $k ? ' class="active"' : '' ).'><a href="'. $m['link'] .'" class="ap-user-menu-'.$k.$class.'">'.$m['title'].'</a></li>';
+			$o .= '<li'.( $user_page == $k ? ' class="active"' : '' ).'><a href="'. $m['link'] .'" class="ap-user-menu-'.$k.$class.'">'.$m['title'].'</a></li>';
 	}
 	$o .= '</ul>';
 	
@@ -624,7 +624,6 @@ function ap_user_menu(){
 }
 
 function ap_user_page_menu(){
-
 	if(!is_my_profile())
 		return;
 		
@@ -643,8 +642,8 @@ function ap_user_page_menu(){
 			$o .= '<li'.( $user_page == $k ? ' class="active"' : '' ).'><a href="'. $m['link'] .'" class="'.$m['icon'].' ap-user-menu-'.$k.'"'.(isset($m['attributes']) ? ' '.$m['attributes'] : '' ).'>'.$m['name'].'</a></li>';
 		}
 		$o .= '</ul>';	
+	
 		echo $o;
-		
 	}
 }
 
