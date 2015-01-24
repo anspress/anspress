@@ -10,8 +10,8 @@
  *
  * @package AnsPress
  */
-
-if(count($answers) > 0){
+$other_answer_count = ap_count_other_answer(get_the_ID());
+if($other_answer_count > 0){
 	$label = ap_is_answer_selected(get_the_ID()) ? 'Other ' : '';
 	echo '<div class="ap-other-answers-tab clearfix">';
 		echo '<h3 class="ap-widget-title ap-pull-left">'. sprintf(__('%sanswers (%s)', 'ap'), $label, '<span data-view="answer_count">'.ap_count_other_answer().'</span>') .'</h3>';

@@ -74,7 +74,7 @@ class AnsPress_Form {
         if(!isset($this->args['fields']))
             return;
 
-        $this->args['fields'] = ap_sort_array_by_order($this->args['fields']);
+        $this->args['fields'] = ap_sort_array_by_order($this->args['fields']);        
     }
 
     /**

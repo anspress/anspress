@@ -41,7 +41,6 @@ class AnsPress_Actions
 	/**
 	 * Things to do after creating a question
 	 * @param  int $post_id
-	 * @param  object $post
 	 * @return void
 	 * @since 1.0
 	 */

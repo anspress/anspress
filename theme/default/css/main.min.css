@@ -1173,6 +1173,7 @@
 .ap-display-question-meta {
   color: #888888;
   font-size: 13px;
+  margin-top: 2px;
 }
 .ap-display-question-meta li:before {
   background: none repeat scroll 0 0 #dadada;
@@ -1278,7 +1279,8 @@
 }
 .ap-content .ap-user-meta {
   color: #888888;
-  margin-bottom: 5px;
+  margin-right: 5px;
+  float: left;
 }
 .ap-content .ap-user-meta .ap-user-meta-display_name {
   font-size: 14px;
@@ -1287,9 +1289,7 @@
 }
 .ap-content .ap-question-metas,
 .ap-content .ap-answer-metas {
-  border-bottom: 1px solid #eee;
-  margin: -15px -15px 15px;
-  padding: 10px;
+  margin-bottom: 8px;
 }
 .ap-content .ap-question-metas li,
 .ap-content .ap-answer-metas li {
@@ -1328,7 +1328,7 @@
 }
 .ap-content .ap-post-content {
   font-size: 14px;
-  line-height: 1.6;
+  line-height: 1.9;
 }
 .ap-content .ap-post-content p {
   margin-bottom: 15px;

@@ -821,15 +821,18 @@ function ap_sort_array_by_order($array){
 		foreach($array as $k => $a){
 			$order = $a['order'];
 			$group[$order][] = $a;
+			$group[$order]['order'] = $order;
 		}
 		
 		usort($group, function($a, $b) {
-            return key($a) - key($b);
+            return $a['order'] - $b['order'];
         });
 
         foreach($group as $a){
-        	foreach($a as $newa)
-				$new_array[] = $newa;
+        	foreach($a as $k => $newa){
+        		if($k !== 'order')
+					$new_array[] = $newa;
+        	}
 		}
 
 		return $new_array;

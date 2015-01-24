@@ -28,8 +28,6 @@ class AP_Question_Meta_Box {
 
 	/**
 	 * Render Meta Box content.
-	 *
-	 * @param WP_Post $post The post object.
 	 */
 	public function answers_meta_box_content( ) {
 		$ans_args=array(
