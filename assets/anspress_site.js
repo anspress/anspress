@@ -222,7 +222,7 @@ AnsPress.site.prototype = {
 
 	load_comment_form: function(action){
 
-		$(action).click( function(e){
+		$('body').delegate(action, 'click', function(e){
 			e.preventDefault();
 			var q = $(this).attr('data-query');
 			ApSite.doAjax( 
