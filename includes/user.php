@@ -568,7 +568,7 @@ function ap_user_menu(){
 
 	foreach($user_pages as $k => $args){
 		$link 		= ap_user_link($userid, $k);
-		$menus[$k] 	= array( 'title' => $args['title'], 'link' => $link);
+		$menus[$k] 	= array( 'title' => $args['title'], 'link' => $link, 'order' => 10);
 	}
 
 	
@@ -579,6 +579,8 @@ function ap_user_menu(){
 	 * @since  unknown
 	 */
 	$menus = apply_filters('ap_user_menu', $menus);
+	
+	$menus = ap_sort_array_by_order($menus);
 	
 	$o ='<ul class="ap-user-menu clearfix">';
 	foreach($menus as $k => $m){
