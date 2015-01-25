@@ -42,7 +42,7 @@ function init_scripts_front(){
 			</script>
 		<?php
 
-		wp_localize_script( 'ap-site-js', 'aplang', array(
+		wp_localize_script( 'anspress_acript', 'aplang', array(
 			'password_field_not_macthing' 	=> __( 'Password not matching', 'ap' ),
 			'password_length_less' 			=> __( 'Password length must be 6 or higher', 'ap' ),
 			'not_valid_email' 				=> __( 'Not a valid email', 'ap' ),
