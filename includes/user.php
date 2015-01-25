@@ -581,16 +581,19 @@ function ap_user_menu(){
 	$menus = apply_filters('ap_user_menu', $menus);
 	
 	$menus = ap_sort_array_by_order($menus);
-	
-	$o ='<ul class="ap-user-menu clearfix">';
-	foreach($menus as $k => $m){
-		//if(!((isset($m['own']) && $m['own']) && $userid != get_current_user_id()))
-		$class = !empty($m['class']) ? ' '. $m['class'] : '';
-			$o .= '<li'.( $user_page == $k ? ' class="active"' : '' ).'><a href="'. $m['link'] .'" class="ap-user-menu-'.$k.$class.'">'.$m['title'].'</a></li>';
+
+	if(!empty($menus) && is_array($menus)){
+		$o ='<ul class="ap-user-menu clearfix">';
+		foreach($menus as $k => $m){
+			//if(!((isset($m['own']) && $m['own']) && $userid != get_current_user_id()))
+			$class = !empty($m['class']) ? ' '. $m['class'] : '';
+				$o .= '<li'.( $user_page == $k ? ' class="active"' : '' ).'><a href="'. $m['link'] .'" class="ap-user-menu-'.$k.$class.'">'.$m['title'].'</a></li>';
+		}
+		$o .= '</ul>';
+		echo $o;
 	}
-	$o .= '</ul>';
 	
-	echo $o;
+	
 }
 
 function ap_user_page_menu(){
