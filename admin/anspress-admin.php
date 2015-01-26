@@ -102,6 +102,7 @@ class anspress_admin {
 	{
 		require_once('functions.php'); 
 		require_once('options-page.php'); 
+		require_once('extensions.php'); 
 	}
 
 	/**

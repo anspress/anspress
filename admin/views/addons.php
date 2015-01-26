@@ -1,65 +1,28 @@
-<?php 
-$addons = array();
+<?php
+	/**
+	 * Show lists of available extensions from AnsPress server
+	 * @package AnsPress
+	 * @since 2.0.0-alpha2
+	 * @license GPL 2+
+	 * @author Rahul Aryan <rh12@live.com>
+	 */
+	
+	// If this file is called directly, abort.
+	if ( ! defined( 'WPINC' ) ) {
+		die;
+	}
+	$extensions = new AnsPress_Extensions;
 ?>
-
 <div class="wrap">
 	<h2>
 		<?php _e('AnsPress Extensions'); ?></span>
 	</h2>
-	<div class="wp-filter">
-		<ul class="filter-links">
-			<li class="plugin-install-featured"><a class=" current" href="http://localhost/anspress/wp-admin/plugin-install.php?tab=featured">Featured</a> </li>
-			<li class="plugin-install-popular"><a class="" href="http://localhost/anspress/wp-admin/plugin-install.php?tab=popular">Popular</a> </li>
-			<li class="plugin-install-recommended"><a class="" href="http://localhost/anspress/wp-admin/plugin-install.php?tab=recommended">Recommended</a> </li>
-			<li class="plugin-install-favorites"><a class="" href="http://localhost/anspress/wp-admin/plugin-install.php?tab=favorites">Favorites</a></li>
-		</ul>
-
-		<form action="" method="get" class="search-form search-plugins">
-			<input type="hidden" value="search" name="tab">
-			<label><span class="screen-reader-text">Search Plugins</span>
-				<input type="search" placeholder="Search Plugins" class="wp-filter-search" value="" name="s">
-			</label>
-			<input type="submit" value="Search Plugins" class="button screen-reader-text" id="search-submit" name="">
-		</form>
-	</div>
-
-<div class="ap_extensions-browser rendered">
-	<div class="themes">
-
-		<?php foreach($addons as $k => $addon): ?>
-			
-			<div class="theme" tabindex="0">
-				<div class="theme-screenshot">
-					<div class="ap-addon-status"<?php echo !$addon['active'] ? ' style="display:none"' : ''; ?>><?php _e('Active', 'ap'); ?></div>
-					
-					<img alt="" src="<?php echo ANSPRESS_ADDON_URL.$addon['folder'].'/screenshot.png'; ?>">
-				</div>
-
-				<a class="more-details thickbox" href="#TB_inline?width=600&height=550&inlineId=<?php echo str_replace(' ', '_', $k); ?>"><?php _e('Addon Details'); ?></a>
-				<div class="theme-author"><?php echo $addon['author']; ?></div>
-
-
-				<h3 class="theme-name"><?php echo $addon['name']; ?></h3>
-				<div class="theme-actions">
-					<?php if($addon['active']): ?>
-						<a data-action="ap-toggle-addon" data-args="<?php echo $k.'-'.wp_create_nonce('toggle_addon').'-deactivate'; ?>" href="#" class="button button-primary activate"><?php _e('Deactivate', 'ap'); ?></a>
-					<?php else: ?>
-						<a data-action="ap-toggle-addon" data-args="<?php echo $k.'-'.wp_create_nonce('toggle_addon').'-activate'; ?>" href="#" class="button button-primary activate"><?php _e('Activate', 'ap'); ?></a>
-					<?php endif; ?>
+	<form method="post" action="" id="plugin-filter">
+		<input type="hidden" value="/anspress/wp-admin/plugin-install.php?tab=search&amp;s=search" name="_wp_http_referer">
+			<div class="wp-list-table widefat plugin-install">
+				<div id="the-list">
+					<?php $extensions->extensions_lists() ?>
 				</div>
 			</div>
-			<div id="<?php echo str_replace(' ', '_', $k); ?>" style="display:none;" class="addon-modal">
-				<div class="addon-screenshot">
-					<img alt="" src="<?php echo ANSPRESS_ADDON_URL.$addon['folder'].'/screenshot.png'; ?>">
-				</div>
-				 <p class="addon-description">
-					  <?php echo $addon['description']; ?>
-				 </p>
-			</div>
-		<?php endforeach; ?>
-	</div>
-
-<br class="clear"></div>
-
-
+	</form>
 </div>
