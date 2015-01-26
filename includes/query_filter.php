@@ -18,19 +18,12 @@ class AnsPress_Query_Filter
      */
     public function __construct()
     {
-
-		// TODO: move to admin
-        // custom columns in CPT question
-        add_filter('manage_edit-question_columns', array( $this, 'cpt_question_columns'));
+        
 		
         // TODO: move to admin
 		// custom columns in CPT answer
         add_filter('manage_edit-answer_columns', array($this,'cpt_answer_columns'));
-		
-        // TODO: move to admin
-		// custom columns data
-        add_action('manage_posts_custom_column', array($this, 'custom_columns_value'));
-		
+
         // TODO: move to admin
 		// Sortable question CPT columns
         add_filter('manage_edit-question_sortable_columns', array($this, 'admin_column_sort_flag'));
@@ -77,26 +70,7 @@ class AnsPress_Query_Filter
 		
 		//add_action('delete_post', array($this, 'delete_action'));		
 	}
-	
     
-    // custom columns in CPT question
-    public function cpt_question_columns($columns)
-    {
-        $columns = array(
-            "cb" => "<input type=\"checkbox\" />",
-            "asker" => __('Asker', 'ap'),
-            "status" => __('Status', 'ap'),
-            "title" => __('Title', 'ap'),
-            "question_category" => __('Category', 'ap'),
-            "question_tags" => __('Tags', 'ap'),
-            "answers" => __('Ans', 'ap'),
-            "comments" => __('Comments', 'ap'),
-            "vote" => __('Vote', 'ap'),
-            "flag" => __('Flag', 'ap'),
-            "date" => __('Date', 'ap')
-        );
-        return $columns;
-    }
     
     // custom columns in CPT answer
     public function cpt_answer_columns($columns)
@@ -104,100 +78,14 @@ class AnsPress_Query_Filter
         $columns = array(
             "cb" => "<input type=\"checkbox\" />",
             "answerer" => __('Answerer', 'ap'),
-            "parent_question" => __('Question', 'ap'),
-            "answer_content" => __('Content', 'ap'),
+            //"parent_question" => __('Question', 'ap'),
+            //"answer_content" => __('Content', 'ap'),
             "comments" => __('Comments', 'ap'),
-            "vote" => __('Vote', 'ap'),
+            //"vote" => __('Vote', 'ap'),
             "flag" => __('Flag', 'ap'),
             "date" => __('Date', 'ap')
         );
         return $columns;
-    }
-    
-    public function custom_columns_value($column)
-    {
-        global $post;
-        if ('asker' == $column || 'answerer' == $column) {
-            echo get_avatar(get_the_author_meta('user_email'), 40);
-        } elseif (ANSPRESS_CAT_TAX == $column) {
-            /* Get the genres for the post. */
-            $category = get_the_terms($post->ID, ANSPRESS_CAT_TAX);
-            
-            /* If terms were found. */
-            if (!empty($category)) {
-                $out = array();
-                
-                /* Loop through each term, linking to the 'edit posts' page for the specific term. */
-                foreach ($category as $cat) {
-                    $out[] = edit_term_link($cat->name, '', '', $cat, false);
-                }
-                /* Join the terms, separating them with a comma. */
-                echo join(', ', $out);
-            }
-            
-            /* If no terms were found, output a default message. */
-            else {
-                _e('--');
-            }
-        } elseif (ANSPRESS_TAG_TAX == $column) {
-            /* Get the genres for the post. */
-            $terms = get_the_terms($post->ID, ANSPRESS_TAG_TAX);
-            
-            /* If terms were found. */
-            if (!empty($terms)) {
-                $out = array();
-                
-                /* Loop through each term, linking to the 'edit posts' page for the specific term. */
-                foreach ($terms as $term) {
-                    $out[] = sprintf('<a href="%s">%s</a>', esc_url(add_query_arg(array(
-                        'post_type' => $post->post_type,
-                        ANSPRESS_TAG_TAX => $term->slug
-                    ), 'edit.php')), esc_html(sanitize_term_field('name', $term->name, $term->term_id, ANSPRESS_TAG_TAX, 'display')));
-                }
-                /* Join the terms, separating them with a comma. */
-                echo join(', ', $out);
-            }
-            
-            /* If no terms were found, output a default message. */
-            else {
-                _e('No Tags');
-            }
-        } elseif ('answers' == $column) {
-            /* Get the genres for the post. */
-            $an_count_args = array(
-                'post_type' => 'answer',
-                'post_status' => 'publish',
-                'post_parent' => $post->ID,
-                'showposts' => -1,
-            );
-            
-            $a_count = count(get_posts($an_count_args));
-            
-            /* If terms were found. */
-            if (!empty($a_count)) {
-                
-                echo '<a class="ans-count" title="' . $a_count . __('answers', 'ap') . '" href="' . esc_url(add_query_arg(array(
-                    'post_type' => 'answer',
-                    'post_parent' => $post->ID
-                ), 'edit.php')) . '">' . $a_count . '</a>';
-            }
-            
-            /* If no terms were found, output a default message. */
-            else {
-                echo '<a class="ans-count" title="0' . __('answers', 'ap') . '">0</a>';
-            }
-        } elseif ('parent_question' == $column) {
-            echo '<a class="parent_question" href="' . esc_url(add_query_arg(array(
-                'post' => $post->post_parent,
-                'action' => 'edit'
-            ), 'post.php')) . '"><strong>' . get_the_title($post->post_parent) . '</strong></a>';
-        } elseif ('status' == $column) {
-            echo '<span class="question-status">' . ap_get_question_label() . '</span>';
-        } elseif ('vote' == $column) {
-            echo '<span class="vote-count' . ($post->flag ? ' zero' : '') . '">' . $post->net_vote . '</span>';
-        } elseif ('flag' == $column) {
-            echo '<span class="flag-count' . ($post->flag ? ' flagged' : '') . '">' . $post->flag . '</span>';
-        }
     }
     
     //make flag sortable

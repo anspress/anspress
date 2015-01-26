@@ -250,7 +250,7 @@ function ap_edit_a_btn_html( $echo = false ){
 	$post_id = get_edit_answer_id();
 	if(ap_user_can_edit_ans($post_id)){		
 		$edit_link = ap_answer_edit_link();
-		$output .= "<a href='$edit_link.' class='edit-btn aicon-edit' data-button='ap-edit-post' title='".__('Edit Answer', 'ap')."'>".ap_icon('edit', true).__('Edit', 'ap')."</a>";
+		$output .= "<a href='$edit_link.' class='edit-btn aapicon-edit' data-button='ap-edit-post' title='".__('Edit Answer', 'ap')."'>".ap_icon('edit', true).__('Edit', 'ap')."</a>";
 	}
 	if($echo)
 			echo $output;
@@ -506,7 +506,7 @@ function ap_pagi($base, $total_pages, $paged, $end_size = 1, $mid_size = 5){
 
 function ap_question_side_tab(){
 	$links = array (
-		'discussion' => array('icon' => 'ap-icon-flow-tree', 'title' => __('Discussion', 'ap'), 'url' => '#discussion')
+		'discussion' => array('icon' => 'ap-apicon-flow-tree', 'title' => __('Discussion', 'ap'), 'url' => '#discussion')
 	);
 	$links = apply_filters('ap_question_tab', $links);
 	$i = 1;
@@ -852,4 +852,18 @@ function ap_append_to_global_var($var, $key, $args){
 		$GLOBALS[$var] = array();
 	
 	$GLOBALS[$var][$key] = $args;
+}
+
+/**
+ * Register an event
+ * @return void
+ * @since 0.1
+ */
+function ap_do_event(){
+	$args = func_get_args ();
+	do_action('ap_event', $args);
+	//do_action('ap_event_'.$args[0], $args);
+	$action = 'ap_event_'.$args[0];
+	$args[0] = $action;
+	call_user_func_array('do_action', $args);
 }

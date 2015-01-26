@@ -32,20 +32,11 @@ $clearfix_class = array('list-question clearfix');
 			<span class="question-title entry-title" itemprop="title">
 				<a class="question-hyperlink" itemprop="url" href="<?php the_permalink(); ?>" rel="bookmark" title="<?php the_title(); ?>"><?php the_title(); ?></a>
 			</span>
-			<ul class="ap-display-question-meta ap-ul-inline">
+			<?php echo ap_get_latest_history_html(get_the_ID()) ?>
+			<ul class="ap-display-question-meta ap-ul-inline clearfix">
 				<?php echo ap_display_question_metas() ?>
-				<!-- TODOD: hook question labels ap_get_question_label(null, true);  -->
-			</ul>
+			</ul>			
 		</div>				
 	</div>	
 	<div class="ap-count">	
-		<a class="ap-answer-count ap-tip" href="<?php echo ap_answers_link(); ?>" title="<?php _e('Total answers', 'ap'); ?>">
-			<?php
-				$ans_count = ap_count_answer_meta();
-				printf(_n('%s %d %s answer', '%s %d %s answers', $ans_count, 'ap'), '<span>', $ans_count, '</span>') ?>
-		</a>						
-	</div>
-	<div class="ap-list-history">
-		<?php echo ap_get_latest_history_html(get_the_ID(), true) ?>
-	</div>
 </article><!-- list item -->

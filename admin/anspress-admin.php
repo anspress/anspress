@@ -66,7 +66,6 @@ class anspress_admin {
 		
 		// flush rewrite rule if option updated
 		add_action('admin_init', array($this, 'init_actions'));
-		//add_action( 'admin_head-nav-menus.php', array($this, 'ap_menu_metaboxes') );
 		
 		add_action('parent_file', array($this, 'tax_menu_correction'));
 		
@@ -163,25 +162,21 @@ class anspress_admin {
 		
 		add_submenu_page('anspress', __( 'Moderate question & answer', 'ap' ), __( 'Moderate', 'ap' ).$Modcount,	'manage_options', 'anspress_moderate', array( $this, 'display_moderate_page' ));
 		
-		add_submenu_page('anspress', __( 'Flagged question & answer', 'ap' ), __( 'Flagged', 'ap' ).$Flagcount,	'manage_options', 'anspress_flagged', array( $this, 'display_flagged_page' ));
+		add_submenu_page('anspress', __( 'Flagged question & answer', 'ap' ), __( 'Flagged', 'ap' ).$Flagcount,	'manage_options', 'anspress_flagged', array( $this, 'display_flagged_page' ));		
 		
+		//add_submenu_page('anspress', 'Questions Label', 'Label', 'manage_options', 'edit-tags.php?taxonomy=question_label');
+		//add_submenu_page('anspress', __( 'Points', 'ap' ), __( 'User Points', 'ap' ),	'manage_options', 'ap_points', array( $this, 'display_points_page' ));		
+		//add_submenu_page('anspress', __( 'Badges', 'ap' ), __( 'User Badges', 'ap' ),	'manage_options', 'ap_badges', array( $this, 'display_badges_page' ));
 		
-		add_submenu_page('anspress', 'Questions Label', 'Label', 'manage_options', 'edit-tags.php?taxonomy=question_label');
+		add_submenu_page('anspress', __( 'AnsPress Options', 'ap' ), __( 'Options', 'ap' ),	'manage_options', 'anspress_options', array( $this, 'display_plugin_admin_page' ));
+		
+		add_submenu_page('anspress', __( 'Addons', 'ap' ), __( 'Addons', 'ap' ),	'manage_options', 'anspress_addons', array( $this, 'display_plugin_addons_page' ));
 
 		/**
 		 * ACTION: ap_admin_menu
 		 * @since unknown
 		 */
-		do_action('ap_admin_menu');
-		
-		add_submenu_page('anspress', __( 'Points', 'ap' ), __( 'User Points', 'ap' ),	'manage_options', 'ap_points', array( $this, 'display_points_page' ));
-		
-		add_submenu_page('anspress', __( 'Badges', 'ap' ), __( 'User Badges', 'ap' ),	'manage_options', 'ap_badges', array( $this, 'display_badges_page' ));
-		
-		add_submenu_page('anspress', __( 'AnsPress Options', 'ap' ), __( 'Options', 'ap' ),	'manage_options', 'anspress_options', array( $this, 'display_plugin_admin_page' ));
-		
-		add_submenu_page('anspress', __( 'Addons', 'ap' ), __( 'Addons', 'ap' ),	'manage_options', 'anspress_addons', array( $this, 'display_plugin_addons_page' ));
-		
+		do_action('ap_admin_menu');		
 		
 	}
 	
@@ -229,15 +224,11 @@ class anspress_admin {
 		$points_table->prepare_items();
 		?>
 		<div class="wrap">        
-			<div id="icon-users" class="icon32"><br/></div>
+			<div id="apicon-users" class="icon32"><br/></div>
 			<h2>
 				<?php _e('AnsPress Points', 'ap'); ?>
 				<a class="add-new-h2" href="#" data-button="ap-new-point"><?php _e('New point', 'ap'); ?></a>
 			</h2>
-			<div class="doante-to-anspress">
-				<h3>Help us keep AnsPress open source, free and full functional without any limitations</h3>
-				<a href="https://www.paypal.com/cgi-bin/webscr?business=rah12@live.com&cmd=_xclick&item_name=Donation%20to%20AnsPress%20development" target="_blank"><img src="https://www.paypal.com/en_US/i/btn/btn_donateCC_LG.gif" alt="" /></a>
-			</div>
 			<form id="anspress-points-table" method="get">
 				<input type="hidden" name="page" value="<?php echo $_REQUEST['page'] ?>" />
 				<?php $points_table->display() ?>
@@ -248,22 +239,18 @@ class anspress_admin {
 	
 	public function display_badges_page() {
 		include_once('badges.php');
-		$points_table = new AP_Badges_Table();
-		$points_table->prepare_items();
+		$badge_table = new AP_Badges_Table();
+		$badge_table->prepare_items();
 		?>
 		<div class="wrap">        
-			<div id="icon-users" class="icon32"><br/></div>
+			<div id="apicon-users" class="icon32"><br/></div>
 			<h2>
 				<?php _e('AnsPress Badges', 'ap'); ?>
 				<a class="add-new-h2" href="#" data-button="ap-new-badge"><?php _e('New badge', 'ap'); ?></a>
 			</h2>
-			<div class="doante-to-anspress">
-				<h3>Help us keep AnsPress open source, free and full functional without any limitations</h3>
-				<a href="https://www.paypal.com/cgi-bin/webscr?business=rah12@live.com&cmd=_xclick&item_name=Donation%20to%20AnsPress%20development" target="_blank"><img src="https://www.paypal.com/en_US/i/btn/btn_donateCC_LG.gif" alt="" /></a>
-			</div>
 			<form id="anspress-badge-table" method="get">
 				<input type="hidden" name="page" value="<?php echo $_REQUEST['page'] ?>" />
-				<?php $points_table->display() ?>
+				<?php $badge_table->display() ?>
 			</form>
 		</div>
 		<?php
@@ -279,7 +266,7 @@ class anspress_admin {
 		$moderate_table->prepare_items();
 		?>
 		<div class="wrap">        
-			<div id="icon-users" class="icon32"><br/></div>
+			<div id="apicon-users" class="icon32"><br/></div>
 			<h2><?php _e('Posts waiting moderation', 'ap'); ?></h2>
 			<div class="doante-to-anspress">
 				<h3>Help us keep AnsPress open source, free and full functional without any limitations</h3>
@@ -301,7 +288,7 @@ class anspress_admin {
 		$moderate_table->prepare_items();
 		?>
 		<div class="wrap">        
-			<div id="icon-users" class="icon32"><br/></div>
+			<div id="apicon-users" class="icon32"><br/></div>
 			<h2><?php _e('Flagged question & answer', 'ap'); ?></h2>
 			<div class="doante-to-anspress">
 				<h3>Help us keep AnsPress open source, free and full functional without any limitations</h3>
@@ -353,72 +340,6 @@ class anspress_admin {
 		require_once('meta_box.php'); 
 		new AP_Question_Meta_Box();
 	}
-	
-public function ap_menu_metaboxes(){
-		/* $anspress_menu = array(
-			'id' => 'add-anspress',
-			'title' => 'AnsPress',
-			'callback' => 'wp_nav_menu_item_link_meta_box',
-			'args' => null		
-		);
-		$GLOBALS['wp_meta_boxes']['nav-menus']['side']['default']['add-anspress'] = $anspress_menu;
-		var_dump ( $GLOBALS['wp_meta_boxes']['nav-menus']['side']['default']['add-custom-links']); */
-		add_meta_box( 'add-anspress', __( 'AnsPress' ), array($this, 'wp_nav_menu_item_anspress_meta_box'), 'nav-menus', 'side', 'default' );
-			//and $GLOBALS['wp_meta_boxes']['nav-menus'] = array ();
-	}
-	
-	public function wp_nav_menu_item_anspress_meta_box(){
-		global $_nav_menu_placeholder, $nav_menu_selected_id;
-
-		$_nav_menu_placeholder = 0 > $_nav_menu_placeholder ? $_nav_menu_placeholder - 1 : -1;
-		
-		?>
-		<div class="aplinks" id="aplinks">
-			<input type="hidden" value="custom" name="menu-item[<?php echo $_nav_menu_placeholder; ?>][menu-item-type]" />
-			<ul>
-				<li>
-					<label class="menu-item-title">
-						<input type="radio" value="" name="menu-item[<?php echo $_nav_menu_placeholder; ?>][menu-item-url]" class="menu-item-checkbox" data-url="ANSPRESS_BASE_PAGE_URL" data-title="<?php _e('AnsPress', 'ap'); ?>"> <?php _e('AnsPress', 'ap'); ?>
-					</label>
-				</li>
-				<li>
-					<label class="menu-item-title">
-						<input type="radio" value="" name="menu-item[<?php echo $_nav_menu_placeholder; ?>][menu-item-url]" class="menu-item-checkbox" data-url="ANSPRESS_ASK_PAGE_URL" data-title="<?php _e('Ask', 'ap'); ?>"> <?php _e('Ask', 'ap'); ?>
-					</label>
-				</li>				
-				<li>
-					<label class="menu-item-title">
-						<input type="radio" value="" name="menu-item[<?php echo $_nav_menu_placeholder; ?>][menu-item-url]" class="menu-item-checkbox" data-url="ANSPRESS_CATEGORIES_PAGE_URL" data-title="<?php _e('Categories', 'ap'); ?>"> <?php _e('Categories', 'ap'); ?>
-					</label>
-				</li>
-				<li>
-					<label class="menu-item-title">
-						<input type="radio" value="" name="menu-item[<?php echo $_nav_menu_placeholder; ?>][menu-item-url]" class="menu-item-checkbox" data-url="ANSPRESS_TAGS_PAGE_URL" data-title="<?php _e('Tags', 'ap'); ?>"> <?php _e('Tags', 'ap'); ?>						
-					</label>
-				</li>
-				<li>
-					<label class="menu-item-title">
-						<input type="radio" value="" name="menu-item[<?php echo $_nav_menu_placeholder ; ?>][menu-item-url]" class="menu-item-checkbox" data-url="ANSPRESS_USERS_PAGE_URL" data-title="<?php _e('Users', 'ap'); ?>"> <?php _e('Users', 'ap'); ?>
-					</label>
-				</li>
-				<li>
-					<label class="menu-item-title">
-						<input type="radio" value="" name="menu-item[<?php echo $_nav_menu_placeholder ; ?>][menu-item-url]" class="menu-item-checkbox" data-url="ANSPRESS_USER_PROFILE_URL" data-title="<?php _e('My profile', 'ap'); ?>"> <?php _e('My profile', 'ap'); ?>
-					</label>
-				</li>
-			</ul>
-
-			<p class="button-controls">
-				<span class="add-to-menu">
-					<input type="submit"<?php wp_nav_menu_disabled_check( $nav_menu_selected_id ); ?> class="button-secondary submit-add-to-menu right" value="<?php esc_attr_e('Add to Menu'); ?>" name="add-custom-menu-item" id="submit-aplinks" />
-					<span class="spinner"></span>
-				</span>
-			</p>
-
-		</div><!-- /.customlinkdiv -->
-		<?php
-	}
-	
 
 	public function user_roles_fields( $user ) { 
 	?>

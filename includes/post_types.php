@@ -26,6 +26,8 @@ class AnsPress_PostTypes
         add_action('init', array($this, 'register_question_cpt'), 0);
         add_action('init', array($this, 'register_answer_cpt'), 0);
         add_action('post_type_link',array($this, 'ans_post_type_link'),10,2);
+        add_filter('manage_edit-question_columns', array( $this, 'cpt_question_columns'));
+        add_action('manage_posts_custom_column', array($this, 'custom_columns_value'));
 
     }
 
@@ -180,6 +182,118 @@ class AnsPress_PostTypes
             $link = get_permalink($post->post_parent) ."#answer_{$post->ID}";
         }
         return $link;
+    }
+
+    /**
+     * Alter columns in question cpt
+     * @param  array $columns
+     * @return array
+     * @since  2.0.0-alpha
+     */
+    public function cpt_question_columns($columns)
+    {
+        $columns = array(
+            "cb" => "<input type=\"checkbox\" />",
+            "asker" => __('Asker', 'ap'),
+            //"status" => __('Status', 'ap'),
+            "title" => __('Title', 'ap'),
+            //"question_category" => __('Category', 'ap'),
+            //"question_tags" => __('Tags', 'ap'),
+            "answers" => __('Ans', 'ap'),
+            "comments" => __('Comments', 'ap'),
+            //"vote" => __('Vote', 'ap'),
+            "status" => __('Status', 'ap'),
+            "date" => __('Date', 'ap')
+        );
+        return $columns;
+    }
+
+    public function custom_columns_value($column)
+    {
+        global $post;
+
+        if($post->post_type != 'question')
+            return $column;
+
+        if ('asker' == $column || 'answerer' == $column) {
+            echo get_avatar(get_the_author_meta('user_email'), 40);
+        }elseif ('status' == $column) {
+            $total_flag = ap_post_flag_count();
+            echo '<span class="post-status">' . $post->post_status .'</span>';
+            echo '<span class="flag-count' . ($total_flag ? ' flagged' : '') . '">' .__('Flag : ').'<i>'. $total_flag . '</i></span>';
+        } /*elseif (ANSPRESS_CAT_TAX == $column) {
+
+            $category = get_the_terms($post->ID, ANSPRESS_CAT_TAX);            
+
+            if (!empty($category)) {
+                $out = array();
+
+                foreach ($category as $cat) {
+                    $out[] = edit_term_link($cat->name, '', '', $cat, false);
+                }
+                echo join(', ', $out);
+            }
+            
+            else {
+                _e('--');
+            }
+        } elseif (ANSPRESS_TAG_TAX == $column) {
+            
+            $terms = get_the_terms($post->ID, ANSPRESS_TAG_TAX);
+            
+            
+            if (!empty($terms)) {
+                $out = array();
+                
+                
+                foreach ($terms as $term) {
+                    $out[] = sprintf('<a href="%s">%s</a>', esc_url(add_query_arg(array(
+                        'post_type' => $post->post_type,
+                        ANSPRESS_TAG_TAX => $term->slug
+                    ), 'edit.php')), esc_html(sanitize_term_field('name', $term->name, $term->term_id, ANSPRESS_TAG_TAX, 'display')));
+                }
+                
+                echo join(', ', $out);
+            }
+            
+            
+            else {
+                _e('No Tags');
+            }
+        }*/ elseif ('answers' == $column) {
+            /* Get the genres for the post. */
+            $an_count_args = array(
+                'post_type' => 'answer',
+                'post_status' => 'publish',
+                'post_parent' => $post->ID,
+                'showposts' => -1,
+            );
+            
+            $a_count = count(get_posts($an_count_args));
+            
+            /* If terms were found. */
+            if (!empty($a_count)) {
+                
+                echo '<a class="ans-count" title="' . $a_count . __('answers', 'ap') . '" href="' . esc_url(add_query_arg(array(
+                    'post_type' => 'answer',
+                    'post_parent' => $post->ID
+                ), 'edit.php')) . '">' . $a_count . '</a>';
+            }
+            
+            /* If no terms were found, output a default message. */
+            else {
+                echo '<a class="ans-count" title="0' . __('answers', 'ap') . '">0</a>';
+            }
+        } elseif ('parent_question' == $column) {
+            echo '<a class="parent_question" href="' . esc_url(add_query_arg(array(
+                'post' => $post->post_parent,
+                'action' => 'edit'
+            ), 'post.php')) . '"><strong>' . get_the_title($post->post_parent) . '</strong></a>';
+        }  /*elseif ('status' == $column) {
+            echo '<span class="question-status">' . ap_get_question_label() . '</span>';
+        } elseif ('vote' == $column) {
+            echo '<span class="vote-count' . ($post->flag ? ' zero' : '') . '">' . $post->net_vote . '</span>';
+        }*/
     }
 
 }

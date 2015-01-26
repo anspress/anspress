@@ -190,44 +190,29 @@ if(!class_exists('AnsPress')):
 			global $ap_options;
 			
 			require_once( ANSPRESS_DIR . 'includes/options.php' );
-			require_once( ANSPRESS_DIR . 'activate.php' );
-			
+			require_once( ANSPRESS_DIR . 'activate.php' );			
 			require_once( ANSPRESS_DIR . 'includes/functions.php' );
 			require_once( ANSPRESS_DIR . 'includes/actions.php' );
 			require_once( ANSPRESS_DIR . 'includes/ajax.php' );
-
 			require_once( ANSPRESS_DIR . 'includes/class-roles-cap.php' );
 			require_once( ANSPRESS_DIR . 'includes/class-question_query.php' );
 			require_once( ANSPRESS_DIR . 'includes/class-answer_query.php' );
 			require_once( ANSPRESS_DIR . 'includes/post_types.php' );
-
-			require_once( ANSPRESS_DIR . 'includes/events.php' );
 			require_once( ANSPRESS_DIR . 'includes/query_filter.php' );
-			require_once( ANSPRESS_DIR . 'includes/post_status.php' );
-			
+			require_once( ANSPRESS_DIR . 'includes/post_status.php' );			
 			require_once( ANSPRESS_DIR . 'includes/meta.php' );
 			require_once( ANSPRESS_DIR . 'includes/vote.php' );
 			require_once( ANSPRESS_DIR . 'includes/view.php' );
 			require_once( ANSPRESS_DIR . 'includes/theme.php' );
-
 			require_once( ANSPRESS_DIR . 'includes/form.php' );
-
-			require_once( ANSPRESS_DIR . 'includes/participants.php' );
-			require_once( ANSPRESS_DIR . 'includes/labels.php' );
-			require_once( ANSPRESS_DIR . 'includes/user.php' );
-			require_once( ANSPRESS_DIR . 'includes/ranks.php' );
-			require_once( ANSPRESS_DIR . 'includes/badges.php' );			
-			require_once( ANSPRESS_DIR . 'includes/points.php' );
-			require_once( ANSPRESS_DIR . 'includes/history.php' );
-			
-			require_once( ANSPRESS_DIR . 'includes/widgets.php' );
+			require_once( ANSPRESS_DIR . 'includes/participants.php' );			
+			require_once( ANSPRESS_DIR . 'includes/user.php' );			
+			require_once( ANSPRESS_DIR . 'includes/history.php' );			
 			require_once( ANSPRESS_DIR . 'includes/image_resize.php' );
-
 			require_once( ANSPRESS_DIR . 'includes/shortcode-questions.php' );
 			require_once( ANSPRESS_DIR . 'includes/shortcode-user.php' );
 			require_once( ANSPRESS_DIR . 'includes/shortcode-ask.php' );
 			require_once( ANSPRESS_DIR . 'includes/shortcode-edit.php' );
-
 			require_once( ANSPRESS_DIR . 'includes/user-page-profile.php' );
 			require_once( ANSPRESS_DIR . 'includes/user-page-questions.php' );
 			require_once( ANSPRESS_DIR . 'includes/user-page-answers.php' );
@@ -237,6 +222,7 @@ if(!class_exists('AnsPress')):
 			require_once( ANSPRESS_DIR . 'includes/process-form.php' );
 			require_once( ANSPRESS_DIR . 'includes/ask-form.php' );
 			require_once( ANSPRESS_DIR . 'includes/answer-form.php' );
+			require_once( ANSPRESS_DIR . 'widgets/search.php' );
 		}
 		
 		/**
@@ -274,12 +260,8 @@ add_action( 'plugins_loaded', array( 'anspress_vote', 'get_instance' ) );
 add_action( 'plugins_loaded', array( 'anspress_view', 'get_instance' ) );
 
 add_action( 'plugins_loaded', array( 'AnsPress_User', 'get_instance' ) );
-add_action( 'plugins_loaded', array( 'AP_Ranks', 'get_instance' ) );
-add_action( 'plugins_loaded', array( 'AP_Badges', 'get_instance' ) );
-add_action( 'plugins_loaded', array( 'AP_Points', 'get_instance' ) );
 add_action( 'plugins_loaded', array( 'AP_History', 'get_instance' ) );
 
-add_action( 'plugins_loaded', array( 'AP_Widgets', 'get_instance' ) );
 
 /*----------------------------------------------------------------------------*
  * Dashboard and Administrative Functionality

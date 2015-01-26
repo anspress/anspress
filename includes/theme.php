@@ -81,7 +81,7 @@ class AnsPress_Theme {
 				return ob_get_clean();
 			}
 			else
-				return '<div class="ap-pending-notice ap-icon-clock">'.ap_responce_message('no_permission').'</div>';
+				return '<div class="ap-pending-notice ap-apicon-clock">'.ap_responce_message('no_permission').'</div>';
 			
 		}else{
 			return $content;
@@ -531,12 +531,15 @@ function ap_display_question_metas($question_id =  false){
 
 		
 	}else{
+		$ans_count = ap_count_answer_meta();
 		$net_vote = ap_net_vote();
+
+		$metas['answers'] = sprintf( _n('<span>1 answer</span>', '<span>%d answers</span>', $ans_count, 'ap'), $ans_count) ;
 		$metas['vote'] = sprintf( _n('<span>1 vote</span>', '<span>%d votes</span>', $net_vote, 'ap'), $net_vote) ;
 	}	
 
 	$view_count = ap_get_qa_views();
-	$metas['views'] = sprintf( __('<span>Viewed</span> <i>%d Times</i>', 'ap'), $view_count) ;
+	$metas['views'] = sprintf( __('<i>%d views</i>', 'ap'), $view_count) ;
 	
 
 
@@ -565,41 +568,41 @@ function ap_display_question_metas($question_id =  false){
  */
 function ap_icon($name, $html = false){
 	$icons = array(
-		'follow' 			=> 'icon-plus',
-		'unfollow' 			=> 'icon-minus',
-		'upload' 			=> 'icon-upload',
-		'unchecked' 		=> 'icon-checkbox-unchecked',
-		'checked' 			=> 'icon-checkbox-checked',
-		'check' 			=> 'icon-check',
-		'select' 			=> 'icon-check',
-		'new_question' 		=> 'icon-question',
-		'new_answer' 		=> 'icon-answer',
-		'new_comment' 		=> 'icon-talk-chat',
-		'new_comment_answer'=> 'icon-mail-reply',
-		'edit_question' 	=> 'icon-pencil',
-		'edit_answer' 		=> 'icon-pencil',
-		'edit_comment' 		=> 'icon-pencil',
-		'vote_up'			=> 'icon-triangle-up',
-		'vote_down'			=> 'icon-triangle-down',
-		'favorite'			=> 'icon-heart',
-		'delete'			=> 'icon-trashcan',
-		'flag'				=> 'icon-flag',
-		'edit'				=> 'icon-pencil',
-		'comment'			=> 'icon-mail-reply',
-		'answer'			=> 'icon-comment',
-		'view'				=> 'icon-eye',
-		'vote'				=> 'icon-triangle-up',
-		'cross'				=> 'icon-x',
-		'more'				=> 'icon-ellipsis',
-		'category'			=> 'icon-file-directory',
-		'home'				=> 'icon-home',
-		'question'			=> 'icon-comment-discussion',
-		'upload'			=> 'icon-cloud-upload',
-		'link'				=> 'icon-link',
-		'help'				=> 'icon-question',
-		'error'				=> 'icon-x',
-		'warning'			=> 'icon-alert',
-		'success'			=> 'icon-check',
+		'follow' 			=> 'apicon-plus',
+		'unfollow' 			=> 'apicon-minus',
+		'upload' 			=> 'apicon-upload',
+		'unchecked' 		=> 'apicon-checkbox-unchecked',
+		'checked' 			=> 'apicon-checkbox-checked',
+		'check' 			=> 'apicon-check',
+		'select' 			=> 'apicon-check',
+		'new_question' 		=> 'apicon-question',
+		'new_answer' 		=> 'apicon-answer',
+		'new_comment' 		=> 'apicon-talk-chat',
+		'new_comment_answer'=> 'apicon-mail-reply',
+		'edit_question' 	=> 'apicon-pencil',
+		'edit_answer' 		=> 'apicon-pencil',
+		'edit_comment' 		=> 'apicon-pencil',
+		'vote_up'			=> 'apicon-triangle-up',
+		'vote_down'			=> 'apicon-triangle-down',
+		'favorite'			=> 'apicon-heart',
+		'delete'			=> 'apicon-trashcan',
+		'flag'				=> 'apicon-flag',
+		'edit'				=> 'apicon-pencil',
+		'comment'			=> 'apicon-mail-reply',
+		'answer'			=> 'apicon-comment',
+		'view'				=> 'apicon-eye',
+		'vote'				=> 'apicon-triangle-up',
+		'cross'				=> 'apicon-x',
+		'more'				=> 'apicon-ellipsis',
+		'category'			=> 'apicon-file-directory',
+		'home'				=> 'apicon-home',
+		'question'			=> 'apicon-comment-discussion',
+		'upload'			=> 'apicon-cloud-upload',
+		'link'				=> 'apicon-link',
+		'help'				=> 'apicon-question',
+		'error'				=> 'apicon-x',
+		'warning'			=> 'apicon-alert',
+		'success'			=> 'apicon-check',
 	);
 	
 	$icons = apply_filters('ap_icon', $icons);
@@ -707,7 +710,7 @@ function ap_questions_tab($current_url){
 	 */
 	$navs = apply_filters('ap_questions_tab', $navs );
 
-	echo '<ul class="ap-questions-tab ap-tab ap-ul-inline clearfix">';
+	echo '<ul class="ap-questions-tab ap-ul-inline clearfix">';
 	foreach ($navs as $k => $nav) {
 		echo '<li'.( $sort == $k ? ' class="active"' : '') .'><a href="'. $nav['link'] .'">'. $nav['title'] .'</a></li>';
 	}

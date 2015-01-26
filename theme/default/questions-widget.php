@@ -19,13 +19,13 @@
 						
 						<?php if($post->selected): ?>
 							<li class="ap-tip ap-ansslable" title="<?php _e('Answer is accepted', 'ap'); ?>">
-								<i class="ap-icon-answer"></i>
+								<i class="ap-apicon-answer"></i>
 							</li>
 						<?php endif; ?>
 						
 						<?php if($show_activity) : ?>
 						<li class="list-meta ap-tip" title="<?php _e('Last activity', 'ap'); ?>">	
-							<i class="ap-icon-clock ap-meta-icon"></i>
+							<i class="ap-apicon-clock ap-meta-icon"></i>
 							<?php 							
 								printf(
 									'<span class="when">%s ago</span>',
@@ -38,7 +38,7 @@
 						
 						<?php if($show_vote) : ?>
 						<li class="ap-tip">
-							<i class="ap-icon-thumbsup ap-meta-icon"></i>
+							<i class="ap-apicon-thumbsup ap-meta-icon"></i>
 							<?php echo ap_net_vote(); ?>
 							<?php  _e('Votes', 'ap'); ?>
 						</li>
@@ -46,14 +46,14 @@
 						
 						<?php if($show_answers) : ?>
 						<li class="ap-tip">
-							<i class="ap-icon-comment ap-meta-icon"></i>
+							<i class="ap-apicon-comment ap-meta-icon"></i>
 							<?php echo ap_count_answer_meta(); ?>
 							<?php _e('Ans', 'ap');?>
 						</li>
 						<?php endif; ?>
 						
 						<?php if($show_views) : ?>						
-							<li class="ap-tip" title="<?php _e('Question was viewed by', 'ap'); ?>"><i class="ap-icon-hit ap-meta-icon"></i><?php  printf(__('%d Views', 'ap'), ap_get_qa_views()); ?></li>
+							<li class="ap-tip" title="<?php _e('Question was viewed by', 'ap'); ?>"><i class="ap-apicon-hit ap-meta-icon"></i><?php  printf(__('%d Views', 'ap'), ap_get_qa_views()); ?></li>
 						<?php endif; ?>
 						
 						<?php if($show_category) : ?>

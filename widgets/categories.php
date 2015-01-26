@@ -29,10 +29,10 @@ class AP_Categories_Widget extends WP_Widget {
 					$sub_cat_count = count(get_term_children( $category->term_id, 'question_category' ));
 				?>
 					<li>
-						<a class="term-title ap-icon-category" href="<?php echo get_category_link( $category );?>"><?php echo $category->name; ?>							
+						<a class="term-title ap-apicon-category" href="<?php echo get_category_link( $category );?>"><?php echo $category->name; ?>							
 							<span><?php echo $category->count; ?></span>
 							<?php if($sub_cat_count >0): ?>
-								<i class="ap-icon-arrow-down"></i>
+								<i class="ap-apicon-arrow-down"></i>
 							<?php endif; ?>
 						</a>						
 						<?php							
