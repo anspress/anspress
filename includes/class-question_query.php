@@ -58,7 +58,10 @@ class Question_Query extends WP_Query {
         if($post_parent)
             $this->args['post_parent'] = $post_parent;
 
-        $this->args = wp_parse_args( $args, $defaults );        
+        $this->args = wp_parse_args( $args, $defaults );
+
+        if(get_query_var('ap_s') != '')
+            $this->args['s'] = sanitize_text_field(get_query_var('ap_s'));
 
         $this->pre_questions();
 

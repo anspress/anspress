@@ -36,6 +36,7 @@ class AnsPress_Theme {
 		add_shortcode( 'anspress_user', array( 'AnsPress_User_Shortcode', 'anspress_user' ) );
 		add_shortcode( 'anspress_ask', array( 'AnsPress_Ask_Shortcode', 'anspress_ask' ) );
 		add_shortcode( 'anspress_edit_page', array( 'AnsPress_Edit_Shortcode', 'anspress_edit' ) );
+		add_shortcode( 'anspress_q_search', array( 'AnsPress_Search_Shortcode', 'anspress_search' ) );
 
 		add_action('ap_before', array($this, 'ap_before_html_body'));
 
@@ -685,12 +686,10 @@ function ap_questions_tab($current_url){
 
 	//$param['sort'] = $sort;
 
-	if(!empty( $search ))
-		$param['ap_s'] =  $search;
+	if(!empty( $search_q ))
+		$param['ap_s'] =  $search_q;
 
 	$link = add_query_arg($param, $current_url);
-	//TODO: hook this from labels extension
-	//$label_link = '?'.$search.'sort='.$order.'&label=';
 	
 	$navs = array(
 		'active' => array('link' => add_query_arg(array('ap_sort' => 'active'), $link), 'title' => __('Active', 'ap')), 

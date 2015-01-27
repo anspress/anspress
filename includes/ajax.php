@@ -59,7 +59,7 @@ class AnsPress_Ajax
 			$items .= '<p>'.__('We found similar questions that have already been asked, click to read them. Avoid creating duplicate questions, it will be deleted.').'</p>';
 			$items .= '</div>';
 			$items .= '<div class="ap-similar-questions">';
-			foreach ($questions as $k => $p){
+			foreach ($questions as $p){
 				$count = ap_count_answer_meta($p->ID);
 				$p->post_title = ap_highlight_words($p->post_title, $keyword);
 				$items .= '<a class="ap-sqitem" href="'.get_permalink($p->ID).'">'.$p->post_title.'<span class="acount">'. sprintf(_n('1 Answer', '%d Answers', $count, 'ap' ), $count) .'</span></a>';
