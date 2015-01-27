@@ -31,11 +31,11 @@ $clearfix_class = array('list-question clearfix');
 		<div class="summery no-overflow">
 			<span class="question-title entry-title" itemprop="title">
 				<a class="question-hyperlink" itemprop="url" href="<?php the_permalink(); ?>" rel="bookmark" title="<?php the_title(); ?>"><?php the_title(); ?></a>
-			</span>
-			<?php echo ap_get_latest_history_html(get_the_ID()) ?>
+			</span>			
 			<ul class="ap-display-question-meta ap-ul-inline clearfix">
 				<?php echo ap_display_question_metas() ?>
-			</ul>			
+			</ul>
+			<?php echo ap_get_latest_history_html(get_the_ID()) ?>
 		</div>				
 	</div>	
 	<div class="ap-count">	

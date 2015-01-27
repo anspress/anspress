@@ -867,3 +867,204 @@ function ap_do_event(){
 	$args[0] = $action;
 	call_user_func_array('do_action', $args);
 }
+
+/**
+ * For user display name
+ * It can be filtered for adding cutom HTML
+ * @param  mixed $args
+ * @return string
+ * @since 0.1
+ */
+function ap_user_display_name($args = array())
+{
+    global $post;
+    $defaults = array(
+            'user_id'            => get_the_author_meta('ID'),
+            'html'                => false,
+            'echo'                => false,
+            'anonymous_label'    => __('Anonymous', 'ap'),
+        );
+
+    if (!is_array($args)) {
+        $defaults['user_id'] = $args;
+        $args = $defaults;
+    } else {
+        $args = wp_parse_args($args, $defaults);
+    }
+
+    extract($args);
+
+    $return = '';
+
+    if ($user_id > 0) {
+        $user = get_userdata($user_id);
+
+        if (!$html) {
+            $return = $user->display_name;
+        } else {
+            $return = '<span class="who"><a href="'.ap_user_link($user_id).'">'.$user->display_name.'</a></span>';
+        }
+    } elseif ($post->post_type == 'question' || $post->post_type == 'answer') {
+        $name = get_post_meta($post->ID, 'anonymous_name', true);
+
+        if (!$html) {
+            if ($name != '') {
+                $return = $name;
+            } else {
+                $return = $anonymous_label;
+            }
+        } else {
+            if ($name != '') {
+                $return = '<span class="who">'.$name.__(' (anonymous)', 'ap').'</span>';
+            } else {
+                $return = '<span class="who">'.$anonymous_label.'</span>';
+            }
+        }
+    } else {
+        $return = '<span class="who">'.$anonymous_label.'</span>';
+    }
+
+    /**
+     * FILTER: ap_user_display_name
+     * Filter can be used to alter display name
+     * @var string
+     * @since 2.0.1
+     */
+    $return = apply_filters('ap_user_display_name', $return);
+
+    if ($echo) {
+        echo $return;
+    } else {
+        return $return;
+    }
+}
+
+/**
+ * Link to user user pages
+ * @param  integer $user_id 	user id
+ * @param  string $sub 		page slug
+ * @return string
+ * @since  unknown
+ */
+function ap_user_link($user_id = false, $sub = false)
+{
+    if (!$user_id) {
+        $user_id = get_the_author_meta('ID');
+    }
+
+    $is_enabled = apply_filters('ap_user_profile_active', false);
+
+    if (!$is_enabled) {
+        return get_author_posts_url($user_id);
+    }
+
+    if ($user_id == 0) {
+        return false;
+    }
+
+    $user = get_userdata($user_id);
+    $base = add_query_arg(array('user' => $user->user_login), get_permalink(ap_opt('user_page_id')));
+    $args = $base;
+
+    /* TODO: REWRITE - fix when rewrite is active */
+    if (get_option('permalink_structure') != '') {
+        if ($sub !== false) {
+            $args = add_query_arg(array('user_page' => $sub), $base);
+        }
+    } else {
+        if ($sub !== false) {
+            $args = add_query_arg(array('user_page' => $sub), $base);
+        }
+    }
+
+    return $args;
+}
+
+/**
+ * Resize image and save it in upload dir
+ * @param  integer|string  $id_or_email 
+ * @param  integer $size
+ * @param  boolean $default
+ * @return string
+ * @since  0.9
+ */
+function ap_get_resized_avatar($id_or_email, $size = 32, $default = false)
+{
+    $upload_dir = wp_upload_dir();
+    $file_url = $upload_dir['baseurl'].'/avatar/'.$size;
+
+    if ($default) {
+        $image_meta =  wp_get_attachment_metadata(ap_opt('default_avatar'), 'thumbnail');
+    } else {
+        $image_meta =  wp_get_attachment_metadata(get_user_meta($id_or_email, '_ap_avatar', true), 'thumbnail');
+    }
+
+    if ($image_meta === false || empty($image_meta)) {
+        return false;
+    }
+
+    $path =  get_attached_file(get_user_meta($id_or_email, '_ap_avatar', true));
+
+    $orig_file_name = basename($path);
+
+    $orig_dir = str_replace('/'.$orig_file_name, '', $orig_file_name);
+
+    $avatar_dir = $upload_dir['basedir'].'/avatar/'.$size;
+    $avatar_dir = str_replace(array('/', '\\'), DIRECTORY_SEPARATOR, $avatar_dir);
+
+    if (!file_exists($upload_dir['basedir'].'/avatar')) {
+        mkdir($upload_dir['basedir'].'/avatar', 0777);
+    }
+
+    if (!file_exists($avatar_dir)) {
+        mkdir($avatar_dir, 0777);
+    }
+
+    if (!file_exists($avatar_dir.'/'.$orig_file_name)) {
+        $image_new = $avatar_dir.'/'.$orig_file_name;
+        ap_smart_resize_image($path, null, $size, $size, false, $image_new, false, false, 100);
+    }
+
+    return $file_url.'/'.$orig_file_name;
+}
+
+/**
+ * Display user meta
+ * @param  	boolean 	$html    	for html output
+ * @param  	int 		$user_id 	User id, if empty then post author witll be user
+ * @param 	boolen 		$echo
+ * @return 	string
+ */
+function ap_user_display_meta($html = false, $user_id = false, $echo = false)
+{
+    if (!$user_id) {
+        $user_id = get_the_author_meta('ID');
+    }
+
+    $metas = array();
+
+    $metas['display_name'] = '<span class="ap-user-meta ap-user-meta-display_name">'.ap_user_display_name(array('html' => true)).'</span>';
+
+    /**
+     * FILTER: ap_user_display_meta_array
+     * Can be used to alter user display meta
+     * @var array
+     */
+    $metas = apply_filters('ap_user_display_meta_array', $metas);
+
+    $output = '';
+
+    if (!empty($metas) && is_array($metas) && count($metas) > 0) {
+        $output .= '<div class="ap-user-meta">';
+        foreach ($metas as $meta) {
+            $output .= $meta.' ';
+        }
+        $output .= '</div>';
+    }
+
+    if ($echo) {
+        echo $output;
+    } else {
+        return $output;
+    }
+}

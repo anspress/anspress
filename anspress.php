@@ -6,9 +6,9 @@
  *
  * @package   AnsPress
  * @author    Rahul Aryan <support@rahularyan.com>
- * @license   GPL-2.0+
- * @link      http://wp3.in
  * @copyright 2014 WP3.in & Rahul Aryan
+ * @license   GPL-2.0+ http://www.gnu.org/licenses/gpl-2.0.txt
+ * @link      http://wp3.in
  *
  * @wordpress-plugin
  * Plugin Name:       AnsPress
@@ -29,17 +29,22 @@ if (! defined('WPINC')) {
     die;
 }
 
-if (!class_exists('AnsPress')):
-    class anspress
+if (!class_exists('AnsPress')) {
+
+    /**
+     * Main AnsPress class
+     * @package AnsPress
+     */
+    class AnsPress
     {
 
-        private $plugin_version = '2.0.0-alpha';
+        private $_plugin_version = '2.0.0-alpha';
 
-        private $plugin_path;
+        private $_plugin_path;
 
-        private $plugin_url;
+        private $_plugin_url;
 
-        private $text_domain = 'ap';
+        private $_text_domain = 'ap';
 
         public static $instance = null;
 
@@ -70,12 +75,13 @@ if (!class_exists('AnsPress')):
 
         /**
          * Initializes the plugin by setting localization, hooks, filters, and administrative functions.
+         * @return instance
          */
         public static function instance()
         {
             if (! isset(self::$instance) && ! (self::$instance instanceof AnsPress)) {
                 self::$instance = new AnsPress();
-                self::$instance->setup_constants();
+                self::$instance->_setup_constants();
 
                 add_action('plugins_loaded', array( self::$instance, 'load_textdomain' ));
 
@@ -85,11 +91,11 @@ if (!class_exists('AnsPress')):
                 self::$instance->includes();
 
                 self::$instance->anspress_forms              = new AnsPress_Process_Form();
-                self::$instance->anspress_actions              = new AnsPress_Actions();
-                self::$instance->anspress_ajax              = new AnsPress_Ajax();
-                self::$instance->anspress_query_filter      = new AnsPress_Query_Filter();
+                self::$instance->anspress_actions            = new AnsPress_Actions();
+                self::$instance->anspress_ajax               = new AnsPress_Ajax();
+                self::$instance->anspress_query_filter       = new AnsPress_Query_Filter();
                 self::$instance->anspress_theme              = new AnsPress_Theme();
-                self::$instance->anspress_cpt                  = new AnsPress_PostTypes();
+                self::$instance->anspress_cpt                = new AnsPress_PostTypes();
 
                 /**
                  * ACTION: anspress_loaded
@@ -105,10 +111,10 @@ if (!class_exists('AnsPress')):
           * Setup plugin constants
           *
           * @access private
-          * @since 2.0.1
+          * @since  2.0.1
           * @return void
           */
-         private function setup_constants()
+         private function _setup_constants()
          {
              if (!defined('AP_VERSION')) {
                  define('AP_VERSION', '1.4.3');
@@ -227,7 +233,6 @@ if (!class_exists('AnsPress')):
             require_once ANSPRESS_DIR.'includes/theme.php';
             require_once ANSPRESS_DIR.'includes/form.php';
             require_once ANSPRESS_DIR.'includes/participants.php';
-            require_once ANSPRESS_DIR.'includes/user.php';
             require_once ANSPRESS_DIR.'includes/history.php';
             require_once ANSPRESS_DIR.'includes/image_resize.php';
             require_once ANSPRESS_DIR.'includes/shortcode-questions.php';
@@ -255,11 +260,10 @@ if (!class_exists('AnsPress')):
          */
         public function load_textdomain()
         {
-            load_plugin_textdomain($this->text_domain, false, 'languages');
+            load_plugin_textdomain($this->_text_domain, false, '/languages');
         }
     }
-
-endif;
+}
 
 function anspress()
 {
@@ -280,7 +284,6 @@ register_deactivation_hook(__FILE__, array( 'anspress', 'deactivate' ));
 add_action('plugins_loaded', array( 'anspress_vote', 'get_instance' ));
 add_action('plugins_loaded', array( 'anspress_view', 'get_instance' ));
 
-add_action('plugins_loaded', array( 'AnsPress_User', 'get_instance' ));
 add_action('plugins_loaded', array( 'AP_History', 'get_instance' ));
 
 /*----------------------------------------------------------------------------*
