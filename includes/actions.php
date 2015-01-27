@@ -37,6 +37,9 @@ class AnsPress_Actions
 		add_action( 'wp_loaded', array( $this, 'flush_rules' ) );
 		add_filter('get_avatar', array($this, 'get_avatar'), 10, 5);
 
+		add_filter( 'the_title', array($this,'the_title'), 100, 2 );
+		add_filter( 'wp_title', array($this,'wp_title'), 100, 2 );
+
 	}
 
 	/**
@@ -328,6 +331,33 @@ class AnsPress_Actions
 
             return $avatar;
         }
+    }
+
+    /**
+     * Override the title 
+     * @param  string $title 
+     * @param  integer $id
+     * @return string
+     */
+    public function the_title($title, $id)
+    {
+    	if($id == ap_opt('q_search_page_id'))
+    		return sprintf(__('Search "%s"', 'ap'), sanitize_text_field( get_query_var('ap_s') ));
+
+    	return $title;
+    }
+
+    /**
+     * Override wp_title
+     * @param  string $title
+     * @return string
+     */
+    public function wp_title($title)
+    {
+    	if(get_the_ID() == ap_opt('q_search_page_id'))
+    		return sprintf(__('Search "%s"', 'ap'), sanitize_text_field( get_query_var('ap_s') ));
+
+    	return $title;
     }
 
 }
