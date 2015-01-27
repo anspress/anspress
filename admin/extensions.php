@@ -69,13 +69,13 @@ class AnsPress_Extensions
                             </li>
                      </div>
                     <div class="desc column-description">
-                        <p><?php echo $ext->description ?></p>
+                        <p><?php echo substr(strip_tags($ext->description), 0, 100) ?></p>
                         <p class="authors"> <cite><?php printf(__('By %s', 'ap'), '<a href="'.$ext->author_link.'">'. $ext->author.'</a>') ?></cite></p>
                     </div>
                 </div>
                 <div class="plugin-card-bottom">
                     <div class="column-updated">
-                        <strong><?php _e('Last Updated:', 'ap') ?></strong><span title="2009-08-25 5:21am GMT"><?php echo human_time_diff( $ext->last_updated, current_time('timestamp') ) . ' ago'; ?></span>
+                        <strong><?php _e('Last Updated:', 'ap') ?></strong><span><?php echo human_time_diff( $ext->last_updated, current_time('timestamp') ) . ' ago'; ?></span>
                     </div>
                     <div class="column-compatibility">
                         <?php if($wp_version > $ext->tested_upto): ?>
