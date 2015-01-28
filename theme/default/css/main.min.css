@@ -1289,7 +1289,6 @@
   margin-bottom: 20px;
 }
 .ap-content.question .ap-question-cells {
-  border-bottom: 1px solid #eee;
   margin-top: 10px;
   padding-bottom: 15px;
 }
@@ -1407,7 +1406,7 @@
   color: #303030;
 }
 .ap-content .ap-user-actions {
-  margin-top: 5px;
+  margin-top: 10px;
 }
 .ap-content .ap-user-actions li {
   margin-right: 15px;
@@ -1426,6 +1425,7 @@
   margin-top: 0;
 }
 #ap-best-answer {
+  border-top: 1px solid #eee;
   margin-bottom: 30px;
   margin-top: 30px;
 }
@@ -1456,40 +1456,48 @@
   border-top: none;
 }
 .ap-btn-select {
-  border: 1px solid #bde1b5;
+  background: #5db34a;
   -webkit-border-radius: 2px;
   -webkit-background-clip: padding-box;
   -moz-border-radius: 2px;
   -moz-background-clip: padding;
   border-radius: 2px;
   background-clip: padding-box;
-  color: #5db34a;
+  color: #ffffff;
   display: block;
-  float: right;
-  padding: 8px;
+  font-size: 11px;
+  padding: 1px 4px;
   text-decoration: none;
 }
 .ap-btn-select:hover {
   border-color: #5db34a;
   text-decoration: none;
-  color: #5db34a;
+  color: #ffffff !important;
 }
 .ap-btn-select.selected {
-  background: #5db34a;
+  background: #f4ac20;
   color: #ffffff;
   border-color: transparent;
 }
 .ap-btn-select:before {
   display: block;
   float: left;
-  font-size: 18px;
-  margin-right: 6px;
+  font-size: 11px;
+  margin-right: 3px;
+  margin-top: 1px;
 }
 .ap-question-right {
   padding-left: 30px;
 }
 .ap-question-right > div {
   margin-bottom: 20px;
+}
+.ap-question-right .ap-widget-title {
+  color: #303030;
+  display: block;
+  font-size: 16px;
+  line-height: 1.8;
+  margin-bottom: 5px;
 }
 .ap-participants-list {
   display: block;
@@ -1504,6 +1512,19 @@
 }
 .ap-single-vote {
   position: relative;
+}
+.comment-awaiting-moderation {
+  background: #f4ac20;
+  -webkit-border-radius: 2px;
+  -webkit-background-clip: padding-box;
+  -moz-border-radius: 2px;
+  -moz-background-clip: padding;
+  border-radius: 2px;
+  background-clip: padding-box;
+  color: #fff;
+  display: table;
+  font-size: 11px;
+  padding: 1px 4px;
 }
 .ap-btn {
   background: #11a7db;
@@ -1709,12 +1730,12 @@
   margin-bottom: 15px;
 }
 .ap-editor .wp-editor-container {
-  background: #f2f2f2;
-  -webkit-border-radius: 4px;
+  border: 1px solid #ddd;
+  -webkit-border-radius: 2px;
   -webkit-background-clip: padding-box;
-  -moz-border-radius: 4px;
+  -moz-border-radius: 2px;
   -moz-background-clip: padding;
-  border-radius: 4px;
+  border-radius: 2px;
   background-clip: padding-box;
   padding: 5px;
 }
@@ -1728,7 +1749,7 @@
 }
 .ap-editor .quicktags-toolbar input.button,
 .ap-editor .mce-btn button {
-  background: none repeat scroll 0 0 #fff;
+  background: #f8f8f8;
   border: medium none;
   -webkit-border-radius: 2px;
   -webkit-background-clip: padding-box;
@@ -1743,10 +1764,15 @@
 }
 .ap-editor .quicktags-toolbar input.button i,
 .ap-editor .mce-btn button i {
-  padding: 4px;
+  padding: 0;
 }
 .ap-editor .mce-toolbar-grp {
   border-bottom: none;
+}
+.ap-editor .html-active .switch-html,
+.ap-editor .tmce-active .switch-tmce {
+  background: none repeat scroll 0 0 #fff;
+  border-bottom-color: #fff;
 }
 #answer-form-c {
   border-top: 1px solid #eeeeee;
@@ -1819,6 +1845,24 @@
 .ap-similar-questions a .highlight_word {
   font-weight: 600;
   text-decoration: underline;
+}
+#answer_form {
+  position: relative;
+}
+#answer_form.ap-form-mini > * {
+  display: none;
+}
+#answer_form .ap-editor-answer-label {
+  color: #888;
+  display: block !important;
+  padding: 5px 10px;
+}
+.ap-form-mini {
+  border: 1px solid #ddd;
+  border-radius: 2px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.05) inset;
+  display: block;
+  height: 60px;
 }
 .ap-comments.have-comments {
   margin: 20px -10px -10px;
@@ -2221,5 +2265,20 @@
   margin-right: 10px;
   text-align: center;
   width: 30px;
+}
+.ap-stats-widget {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+.ap-stats-widget li {
+  color: #888;
+  padding: 5px 0;
+}
+.ap-stats-widget li i {
+  margin-right: 10px;
+}
+.ap-stats-widget li time {
+  font-weight: bold;
 }
 /*# sourceMappingURL=main.min.css.map */

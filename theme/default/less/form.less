@@ -73,8 +73,8 @@
 .ap-editor{
 	margin-bottom: 15px;
 	.wp-editor-container{
-		background: #f2f2f2;
-		.border-radius(4px);
+		border: 1px solid #ddd;
+		.border-radius(2px);
 		padding: 5px;
 	}
 	.quicktags-toolbar{
@@ -85,20 +85,25 @@
 		background: none;
 	}
 	.quicktags-toolbar input.button, .mce-btn button{
-	    background: none repeat scroll 0 0 #fff;
+	    background: #f8f8f8;
 	    border: medium none;
 	    .border-radius(2px);
 	    .box-shadow(none);
 	    color: #aaa;
 
 	    i{
-	    	padding: 4px;
+	    	padding: 0;
 	    }
 	}
 	.mce-toolbar-grp{
 		border-bottom: none;
 	}
+	.html-active .switch-html, .tmce-active .switch-tmce {
+	    background: none repeat scroll 0 0 #fff;
+	    border-bottom-color: #fff;
+	}
 }
+
 #answer-form-c {
     border-top: 1px solid @default-border-color;
     margin-top: 30px;
@@ -163,4 +168,24 @@
 			text-decoration: underline;
 		}
 	}
+}
+
+#answer_form{
+	position: relative;
+
+	&.ap-form-mini > *{
+		display: none;
+	}
+	.ap-editor-answer-label{
+	    color: #888;
+	    display: block !important;
+	    padding: 5px 10px;
+	}
+}
+.ap-form-mini {
+    border: 1px solid #ddd;
+    border-radius: 2px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.05) inset;
+    display: block;
+    height: 60px;
 }

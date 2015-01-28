@@ -23,7 +23,6 @@ $class = ap_is_best_answer(get_the_ID()) ? ' selected answer' : 'answer';
 		<div class="ap-single-vote ap-pull-left"><?php ap_vote_btn(); ?></div>
 		
 		<div class="ap-content-inner no-overflow">
-			<?php echo ap_select_answer_btn_html(get_the_ID()); ?>
 			<div class="ap-answer-metas clearfix">
 				<div class="ap-avatar ap-pull-right">
 					<a href="<?php echo ap_user_link(get_the_author_meta('ID')); ?>">

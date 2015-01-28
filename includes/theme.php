@@ -524,12 +524,8 @@ function ap_display_question_metas($question_id =  false){
 
 	}
 
-	if(is_singular('question')){
-		$last_active = ap_last_active($question_id);
-		$metas['active'] = sprintf( __( '<span>Active</span> <a class="ap-tip" title="Show all histories of this question" href="#ap-question-preview" data-action="ap-toggle-history"><time class="updated" itemprop="dateUpdated" datetime="%s">%s Ago</time></a>', 'ap' ), mysql2date('c', $last_active),  ap_human_time( mysql2date('U', $last_active)));
-
+	if(is_singular('question')){		
 		$metas['created'] = sprintf( __( '<span>Created</span> <i><time itemprop="datePublished" datetime="%s">%s Ago</time></i>', 'ap' ), get_the_time('c', $question_id), ap_human_time( get_the_time('U')));
-
 		
 	}else{
 		$ans_count = ap_count_answer_meta();
@@ -537,12 +533,10 @@ function ap_display_question_metas($question_id =  false){
 
 		$metas['answers'] = sprintf( _n('<span>1 answer</span>', '<span>%d answers</span>', $ans_count, 'ap'), $ans_count) ;
 		$metas['vote'] = sprintf( _n('<span>1 vote</span>', '<span>%d votes</span>', $net_vote, 'ap'), $net_vote) ;
+		
+		$view_count = ap_get_qa_views();
+		$metas['views'] = sprintf( __('<i>%d views</i>', 'ap'), $view_count) ;
 	}	
-
-	$view_count = ap_get_qa_views();
-	$metas['views'] = sprintf( __('<i>%d views</i>', 'ap'), $view_count) ;
-	
-
 
 	/**
 	 * FILTER: ap_display_question_meta
@@ -604,6 +598,8 @@ function ap_icon($name, $html = false){
 		'error'				=> 'apicon-x',
 		'warning'			=> 'apicon-alert',
 		'success'			=> 'apicon-check',
+		'history'			=> 'apicon-history',
+		'mail'				=> 'apicon-mail',
 	);
 	
 	$icons = apply_filters('ap_icon', $icons);
@@ -633,6 +629,13 @@ function ap_post_actions_buttons()
 		return;
 
 	$actions = array();
+
+	/**
+	 * Select answer button
+	 * @var string
+	 */
+	if($post->post_type == 'answer')
+		$actions['select_answer'] = ap_select_answer_btn_html(get_the_ID());
 
 	/**
 	 * Comment button
@@ -666,7 +669,8 @@ function ap_post_actions_buttons()
 	if (!empty($actions) && count($actions) > 0) {
 		echo '<ul class="ap-user-actions ap-ul-inline clearfix">';
 		foreach($actions as $k => $action){
-			echo '<li class="ap-post-action ap-action-'.$k.'">'.$action.'</li>';
+			if(!empty($action))
+				echo '<li class="ap-post-action ap-action-'.$k.'">'.$action.'</li>';
 		}
 		echo '</ul>';
 	}

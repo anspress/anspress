@@ -50,7 +50,13 @@ function ap_answer_form($question_id, $editing = false){
         'is_ajaxified'      => true,
         'submit_button'     => __('Post answer', 'ap'),
         'nonce_name'        => 'nonce_answer_'.$question_id,
+        'class'             => 'ap-form-mini',
         'fields'            => array(
+            array(
+                'name' => 'description',
+                'type'  => 'custom',
+                'html' => '<span class="ap-editor-answer-label">'.__('Answer this question now..', 'ap').'</span>',
+            ),
             array(
                 'name' => 'description',
                 'type'  => 'editor',

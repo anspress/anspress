@@ -513,7 +513,6 @@ function ap_subscribe_btn_html($post = false){
 }
 
 
-
 /* ------------close button----------------- */
 
 // post close vote count
@@ -659,4 +658,27 @@ function ap_follow_btn_html($userid, $small = false){
 	$followed = ap_is_user_voted($userid, 'follow', get_current_user_id());
 	$text = $followed ? __('Unfollow', 'ap') : __('Follow', 'ap');
 	echo '<a class="btn ap-btn ap-follow-btn '.($followed ? 'ap-unfollow '.ap_icon('unfollow') : ap_icon('follow')).($small ? ' ap-tip' : '').'" href="#" data-action="ap-follow" data-args=\''.json_encode(array('user' => $userid, 'nonce' => wp_create_nonce( 'follow_'.$userid))).'\' title="'.$text.'">'.($small ? '' : $text).'</a>';
+}
+
+/**
+ * Return subscriber count in human readable format
+ * @return string
+ * @since 2.0.0-alpha2
+ */
+function ap_subscriber_count_html($post = false)
+{
+	if(!$post)
+		global $post;
+	
+	$subscribed = ap_is_user_subscribed($post->ID);
+	$total_subscribers = ap_post_subscribers_count($post->ID);
+
+	if( $total_subscribers =='1' && $subscribed)
+		return __('Only you are subscribed to this question.', 'ap'); 
+	elseif($subscribed)
+		return sprintf( __( 'You and <strong>%s people</strong> subscribed to this question.', 'ap' ), ($total_subscribers -1));
+	elseif($total_subscribers == 0)
+		return __( 'No one is subscribed to this question.', 'ap' );
+	else
+		return sprintf( __( '<strong>%d people</strong> subscribed to this question.', 'ap' ), $total_subscribers);	
 }
