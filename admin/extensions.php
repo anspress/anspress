@@ -10,7 +10,7 @@ class AnsPress_Extensions
      * Hold the result fetched from AnsPress project site
      * @var array
      */
-    private $result = array();
+    private $result ;
 
     private $API_url = 'http://wp3.in/json_view';
 

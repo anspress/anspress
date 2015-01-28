@@ -308,7 +308,7 @@ class AnsPress_Actions
             if (is_object($id_or_email)) {
                 $allowed_comment_types = apply_filters('get_avatar_comment_types', array( 'comment' ));
                 if (! empty($id_or_email->comment_type) && ! in_array($id_or_email->comment_type, (array) $allowed_comment_types)) {
-                    return false;
+                    return $avatar;
                 }
 
                 if (! empty($id_or_email->user_id)) {

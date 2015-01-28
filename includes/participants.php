@@ -57,13 +57,20 @@ function ap_get_parti($post_id, $count = false){
 			)));
 }
 
+/**
+ * Print all particpants of a question
+ * @param  integer $avatar_size
+ * @param  boolean $post_id
+ * @return void
+ * @since  0.4
+ */
 function ap_get_all_parti($avatar_size = 40, $post_id = false){
 	if(!$post_id)
 		$post_id = get_the_ID();
 		
 	$parti = ap_get_parti($post_id);
 
-	echo '<span class="ap-side-sec-label">'. sprintf( _n('<span>1</span> Participant', '<span>%d</span> Participants', count($parti), 'ap'), count($parti)) .'</h3>';
+	echo '<span class="ap-text-label">'. sprintf( _n('<span>1</span> Participant', '<span>%d</span> Participants', count($parti), 'ap'), count($parti)) .'</span>';
 	
 	echo '<div class="ap-participants-list clearfix">';	
 	foreach($parti as $p){

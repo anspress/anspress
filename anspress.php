@@ -250,6 +250,8 @@ if (!class_exists('AnsPress')) {
             require_once ANSPRESS_DIR.'includes/ask-form.php';
             require_once ANSPRESS_DIR.'includes/answer-form.php';
             require_once ANSPRESS_DIR.'widgets/search.php';
+            require_once ANSPRESS_DIR.'widgets/subscribe.php';
+            require_once ANSPRESS_DIR.'widgets/participants.php';
         }
 
         /**

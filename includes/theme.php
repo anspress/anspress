@@ -82,7 +82,7 @@ class AnsPress_Theme {
 				return ob_get_clean();
 			}
 			else
-				return '<div class="ap-pending-notice ap-apicon-clock">'.ap_responce_message('no_permission').'</div>';
+				return '<div class="ap-pending-notice ap-apicon-clock">'.ap_responce_message('no_permission_to_view_private', true).'</div>';
 			
 		}else{
 			return $content;
@@ -813,12 +813,12 @@ function ap_comment_actions_buttons()
 
 	if(ap_user_can_edit_comment(get_comment_ID())){
 		$nonce = wp_create_nonce( 'edit_comment_'. get_comment_ID() );
-		$actions['edit'] = '<a class="comment-edit-btn" href="#" data-toggle="#li-comment-'.get_comment_ID().'" data-action="load_comment_form" data-query="ap_ajax_action=load_comment_form&comment_ID='.get_comment_ID().'&__nonce='.$nonce.'">'.ap_icon('edit', true).__('Edit', 'ap').'</a>';
+		$actions['edit'] = '<a class="comment-edit-btn" href="#" data-toggle="#li-comment-'.get_comment_ID().'" data-action="load_comment_form" data-query="ap_ajax_action=load_comment_form&comment_ID='.get_comment_ID().'&__nonce='.$nonce.'">'.__('Edit', 'ap').'</a>';
 	}
 
 	if(ap_user_can_delete_comment(get_comment_ID())){
 		$nonce = wp_create_nonce( 'delete_comment' );
-		$actions['delete'] = '<a class="comment-delete-btn" href="#" data-toggle="#li-comment-'.get_comment_ID().'" data-action="delete_comment" data-query="ap_ajax_action=delete_comment&comment_ID='.get_comment_ID().'&__nonce='.$nonce.'">'.ap_icon('delete', true).__('Delete', 'ap').'</a>';
+		$actions['delete'] = '<a class="comment-delete-btn" href="#" data-toggle="#li-comment-'.get_comment_ID().'" data-action="delete_comment" data-query="ap_ajax_action=delete_comment&comment_ID='.get_comment_ID().'&__nonce='.$nonce.'">'.__('Delete', 'ap').'</a>';
 	}
 
 	/**

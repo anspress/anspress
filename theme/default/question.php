@@ -11,43 +11,46 @@
 global $post;
 ?>
 <div id="ap-single" class="clearfix" itemtype="http://schema.org/Question" itemscope="">	
-	<div class="ap-question-lr row">		
-		<div class="ap-question-left col-md-10">
+	<div class="ap-question-lr">		
+		<div class="ap-question-left col-md-8">
 			<div id="question" role="main" class="ap-content question" data-id="<?php echo get_the_ID(); ?>">
-				<?php 
-					/**
-					 * ACTION: ap_before_question_title
-					 * @since 	2.0
-					 */
-					do_action('ap_before_question_title', $post);
-				?>
-				<?php 
-					/**
-					 * By default this title is hidden
-					 */
-					if(ap_opt('show_title_in_question')) : 
-				?>
-					<h1 class="entry-title"><?php the_title(); ?></h1>
-				<?php endif; ?>
+				<header class="ap-q-head">
+					<?php 
+						/**
+						 * ACTION: ap_before_question_title
+						 * @since 	2.0
+						 */
+						do_action('ap_before_question_title', $post);
+					?>
+					<?php 
+						/**
+						 * By default this title is hidden
+						 */
+						if(ap_opt('show_title_in_question')) : 
+					?>
+						<h1 class="entry-title"><a href="<?php get_permalink() ?>"><?php the_title(); ?></a></h1>
+					<?php endif; ?>
 
-				<?php 
-					/**
-					 * ACTION: ap_after_question_title
-					 * @since 	2.0
-					 */
-					do_action('ap_after_question_title', $post);
-				?>
+					<?php 
+						/**
+						 * ACTION: ap_after_question_title
+						 * @since 	2.0
+						 */
+						do_action('ap_after_question_title', $post);
+					?>
+				</header>
+				<h3 class="ap-widget-title"><?php _e('Question', 'ap') ?></h3>
 				<div class="ap-question-cells clearfix">
-					<div class="ap-avatar ap-pull-left">
-						<a href="<?php echo ap_user_link(get_the_author_meta('ID'))?>">
-							<?php echo get_avatar( get_the_author_meta( 'user_email' ), ap_opt('avatar_size_qquestion') ); ?>
-						</a>
-						<div class="ap-single-vote"><?php ap_vote_btn(); ?></div>
-					</div>
+					<div class="ap-single-vote ap-pull-left"><?php ap_vote_btn(); ?></div>
 					<!-- Start ap-content-inner -->
 					<div class="ap-content-inner no-overflow">
-	
-						<div class="ap-question-metas clearfix">							
+				
+						<div class="ap-question-metas clearfix">
+							<div class="ap-avatar ap-pull-right">
+								<a href="<?php echo ap_user_link(get_the_author_meta('ID'))?>">
+									<?php echo get_avatar( get_the_author_meta( 'user_email' ), ap_opt('avatar_size_qquestion') ); ?>
+								</a>						
+							</div>							
 							<?php ap_user_display_meta(true, false, true); ?>
 
 							<!-- TODO: Show all questions history on toggle -->
@@ -100,17 +103,8 @@ global $post;
 			?>
 		</div>
 
-		<div class="ap-question-right col-md-2">
-			<div class="ap-question-right-inner">
-				<div class="ap-q-side-sec">
-					<?php ap_subscribe_btn_html(); ?>
-				</div>
-
-				<div class="ap-q-side-sec">			
-					<?php ap_get_all_parti(30); ?>
-				</div>
-
-			</div>
+		<div class="ap-question-right col-md-4">
+			<?php dynamic_sidebar( 'ap-question-sidebar' ); ?>
 		</div>
 	</div>
 </div>

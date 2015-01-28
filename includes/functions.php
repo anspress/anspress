@@ -186,7 +186,7 @@ function ap_answers_link(){
 function ap_comment_btn_html($echo = false){
 	if(ap_user_can_comment()){
 		$nonce = wp_create_nonce( 'comment_form_nonce' );
-		$output = '<a href="#comments-'.get_the_ID().'" class="comment-btn" data-action="load_comment_form" data-query="ap_ajax_action=load_comment_form&post='.get_the_ID().'&__nonce='.$nonce.'" title="'.__('Add comment', 'ap').'">'.ap_icon('comment', true).__('Comment', 'ap').'</a>';
+		$output = '<a href="#comments-'.get_the_ID().'" class="comment-btn ap-tip" data-action="load_comment_form" data-query="ap_ajax_action=load_comment_form&post='.get_the_ID().'&__nonce='.$nonce.'" title="'.__('Add comment', 'ap').'">'.__('Comment', 'ap').'</a>';
 
 		if($echo)
 			echo $output;
@@ -232,9 +232,9 @@ function ap_edit_post_link_html($echo = false, $post_id_or_object = false){
 	$output = '';
 
 	if($post->post_type == 'question' && ap_user_can_edit_question($post->ID)){		
-		$output = "<a href='$edit_link' data-button='ap-edit-post' title='".__('Edit this question', 'ap')."' class='apEditBtn'>".ap_icon('edit', true)."<span>".__('Edit', 'ap')."</span></a>";	
+		$output = "<a href='$edit_link' data-button='ap-edit-post' title='".__('Edit this question', 'ap')."' class='apEditBtn ap-tip'>"."<span>".__('Edit', 'ap')."</span></a>";	
 	}elseif($post->post_type == 'answer' && ap_user_can_edit_ans($post->ID)){
-		$output = "<a href='$edit_link' data-button='ap-edit-post' title='".__('Edit this answer', 'ap')."' class='apEditBtn'>".ap_icon('edit', true)."<span>".__('Edit', 'ap')."</span></a>";
+		$output = "<a href='$edit_link' data-button='ap-edit-post' title='".__('Edit this answer', 'ap')."' class='apEditBtn ap-tip'>"."<span>".__('Edit', 'ap')."</span></a>";
 	}
 
 	if($echo)
@@ -250,7 +250,7 @@ function ap_edit_a_btn_html( $echo = false ){
 	$post_id = get_edit_answer_id();
 	if(ap_user_can_edit_ans($post_id)){		
 		$edit_link = ap_answer_edit_link();
-		$output .= "<a href='$edit_link.' class='edit-btn aapicon-edit' data-button='ap-edit-post' title='".__('Edit Answer', 'ap')."'>".ap_icon('edit', true).__('Edit', 'ap')."</a>";
+		$output .= "<a href='$edit_link.' class='edit-btn ap-tip' data-button='ap-edit-post' title='".__('Edit Answer', 'ap')."'>".__('Edit', 'ap')."</a>";
 	}
 	if($echo)
 			echo $output;
@@ -419,7 +419,7 @@ function ap_post_delete_btn_html($post_id = false, $echo = false){
 		$action = 'delete_post_'.$post_id;
 		$nonce = wp_create_nonce( $action );
 		
-		$output = '<a href="#" class="delete-btn ap-tip" data-action="ap_delete_post" data-query="post_id='. $post_id.'&__nonce='. $nonce .'&ap_ajax_action=delete_post" title="'.__('Delete', 'ap').'">'.ap_icon('delete', true).__('Delete', 'ap').'</a>';
+		$output = '<a href="#" class="delete-btn ap-tip" data-action="ap_delete_post" data-query="post_id='. $post_id.'&__nonce='. $nonce .'&ap_ajax_action=delete_post" title="'.__('Delete', 'ap').'">'.__('Delete', 'ap').'</a>';
 
 		if($echo)
 			echo $output;
@@ -705,11 +705,12 @@ function ap_highlight_words($text, $words) {
 
 /**
  * Return response with type and message
- * @param  string $id error id
+ * @param  string $id messge id
+ * @param  boolean $only_message return message string instead of array
  * @return string
- * @since 2.0.1
+ * @since 2.0.0-alpha2
  */
-function ap_responce_message($id)
+function ap_responce_message($id, $only_message = false)
 {
 	$msg =array(
 		'please_login' => array('type' => 'warning', 'message' => __('You need to login before doing this action.', 'ap')),
@@ -733,6 +734,7 @@ function ap_responce_message($id)
 		'selected_the_answer' => array('type' => 'success', 'message' => __('Best answer is selected for your question.', 'ap')),
 		'question_moved_to_trash' => array('type' => 'success', 'message' => __('Question moved to trash.', 'ap')),
 		'answer_moved_to_trash' => array('type' => 'success', 'message' => __('Answer moved to trash.', 'ap')),
+		'no_permission_to_view_private' => array('type' => 'warning', 'message' => __('You dont have permission to view private posts.', 'ap')),
 	);
 
 	/**
@@ -742,6 +744,9 @@ function ap_responce_message($id)
 	 * @since 2.0.1 
 	 */
 	$msg = apply_filters( 'ap_responce_message', $msg );
+
+	if(isset($msg[$id]) && $only_message)
+		return $msg[$id]['message'];
 
 	if(isset($msg[$id]))
 		return $msg[$id];

@@ -964,7 +964,7 @@
   background: #ffffff;
   border-color: #eeeeee #eeeeee transparent;
   border-style: solid solid none;
-  border-width: 2px 2px medium;
+  border-width: 1px 1px medium;
   margin-bottom: -2px;
   padding-bottom: 12px;
   padding-top: 8px;
@@ -990,9 +990,10 @@
   background: #eeeeee;
 }
 .ap-widget-title {
-  font-size: 18px;
+  color: #888888;
+  font-size: 15px;
   font-weight: 600;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 }
 .block {
   display: block;
@@ -1126,11 +1127,25 @@
   font-weight: 600;
   padding: 10px 0;
 }
+.ap-pending-notice {
+  background: #f4ac20;
+  border-radius: 2px;
+  margin: 0 15px 10px;
+  padding: 20px;
+  text-align: center;
+}
+.ap-text-label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  font-size: 12px;
+}
 .list-question {
   border-bottom: 1px solid #F8F8F8;
   display: table;
   margin: 0;
-  padding: 20px 0;
+  padding: 15px 0;
   width: 100%;
 }
 .list-question .ap-list-inner,
@@ -1163,13 +1178,9 @@
 }
 .list-question .ap-list-inner .question-title {
   display: block;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
   margin-top: 0;
-}
-.list-question .ap-list-inner .question-title a {
-  color: #303030;
-  text-decoration: none;
 }
 .list-question .ap-list-inner .ap-post-history {
   color: #888;
@@ -1191,7 +1202,7 @@
 }
 .ap-display-question-meta {
   color: #777777;
-  margin-top: 2px;
+  margin-top: 5px;
 }
 .ap-display-question-meta li:before {
   background: none repeat scroll 0 0 #dadada;
@@ -1273,8 +1284,17 @@
 .tooltipster-default.ap-tip-style.tags-list a:last-child {
   border-bottom: none;
 }
+.ap-content.question .ap-q-head {
+  border-bottom: 1px solid #eee;
+  margin-bottom: 20px;
+}
 .ap-content.question .ap-question-cells {
-  margin-top: 30px;
+  border-bottom: 1px solid #eee;
+  margin-top: 10px;
+  padding-bottom: 15px;
+}
+.ap-content.question .ap-question-cells .ap-question-metas > .ap-avatar {
+  margin: 0;
 }
 .ap-content .ap-favorite {
   float: right;
@@ -1297,22 +1317,23 @@
 }
 .ap-content .ap-user-meta {
   color: #888888;
-  margin-right: 5px;
-  float: left;
 }
 .ap-content .ap-user-meta .ap-user-meta-display_name {
   font-size: 14px;
   font-weight: 600;
   margin-bottom: 5px;
 }
+.ap-content .ap-user-meta a {
+  color: #303030;
+}
 .ap-content .ap-question-metas,
 .ap-content .ap-answer-metas {
-  margin-bottom: 8px;
+  margin-bottom: 15px;
 }
 .ap-content .ap-question-metas li,
 .ap-content .ap-answer-metas li {
   color: #888888;
-  margin: 0 10px 0 0;
+  margin: 0 5px 0 0;
 }
 .ap-content .ap-question-metas li i,
 .ap-content .ap-answer-metas li i {
@@ -1330,26 +1351,26 @@
   content: "";
   display: block;
   float: left;
-  height: 5px;
+  height: 3px;
   margin-right: 6px;
   margin-top: 7px;
   padding: 0;
-  width: 5px;
+  width: 3px;
 }
 .ap-content .ap-question-metas li:first-child:before,
 .ap-content .ap-answer-metas li:first-child:before {
   display: none;
 }
 .ap-content .entry-title {
-  font-size: 32px;
-  line-height: 42px;
+  font-size: 26px;
+  line-height: 1.6;
+  margin-bottom: 5px;
 }
 .ap-content .ap-post-content {
-  font-size: 14px;
-  line-height: 1.9;
+  line-height: 1.6;
 }
 .ap-content .ap-post-content p {
-  margin-bottom: 15px;
+  margin-bottom: 10px;
 }
 .ap-content .ap-post-content p:last-child {
   margin-bottom: 0;
@@ -1358,25 +1379,24 @@
   margin-bottom: 20px;
 }
 .ap-content .ap-posted-in {
-  color: #888888;
-  font-size: 16px;
-  margin-bottom: -15px;
+  margin-bottom: -20px;
   text-transform: uppercase;
 }
 .ap-content .ap-post-tags {
-  margin-top: 20px;
+  margin-bottom: 10px;
 }
 .ap-content .ap-post-tags li a {
   border: 2px solid #eee;
-  -webkit-border-radius: 16px;
+  -webkit-border-radius: 14px;
   -webkit-background-clip: padding-box;
-  -moz-border-radius: 16px;
+  -moz-border-radius: 14px;
   -moz-background-clip: padding;
-  border-radius: 16px;
+  border-radius: 14px;
   background-clip: padding-box;
-  color: #777777;
+  color: #888;
   display: block;
-  padding: 3px 13px;
+  font-size: 11px;
+  padding: 1px 8px;
   text-decoration: none;
 }
 .ap-content .ap-post-tags li a .tax-count {
@@ -1387,20 +1407,14 @@
   color: #303030;
 }
 .ap-content .ap-user-actions {
-  margin-top: 25px;
+  margin-top: 5px;
 }
 .ap-content .ap-user-actions li {
-  margin-right: 10px;
+  margin-right: 15px;
 }
 .ap-content .ap-user-actions a {
-  border: 1px solid #ddd;
-  border-radius: 2px;
-  color: #888888;
-  font-size: 12px;
-  font-weight: 600;
-  padding: 5px 10px;
-  text-decoration: none;
   display: block;
+  text-decoration: none;
 }
 .ap-content .ap-user-actions a:hover {
   color: #303030;
@@ -1408,8 +1422,7 @@
 .ap-content .ap-user-actions a i {
   display: inline-block;
   font-size: 11px;
-  margin-left: -4px;
-  margin-right: 3px;
+  margin-right: 1px;
   margin-top: 0;
 }
 #ap-best-answer {
@@ -1417,11 +1430,10 @@
   margin-top: 30px;
 }
 .ap-other-answers-tab {
-  border-bottom: 2px solid #eeeeee;
+  border-bottom: 1px solid #eeeeee;
 }
 .ap-other-answers-tab .ap-widget-title {
-  margin: 7px 30px 7px 0;
-  font-size: 18px;
+  margin: 14px 30px 1px 0;
 }
 .ap-other-answers-tab .ap-answers-tab {
   float: right;
@@ -1473,34 +1485,25 @@
   font-size: 18px;
   margin-right: 6px;
 }
-.ap-question-right-inner {
-  border-left: 1px solid #eee;
+.ap-question-right {
+  padding-left: 30px;
 }
-.ap-q-side-sec {
-  margin-bottom: 15px;
-  text-align: center;
+.ap-question-right > div {
+  margin-bottom: 20px;
 }
-.ap-q-side-sec .ap-side-sec-label {
+.ap-participants-list {
   display: block;
-  font-weight: bold;
-  margin-bottom: 10px;
-  text-transform: uppercase;
-  font-size: 12px;
+  margin: -5px;
 }
-.ap-q-side-sec .ap-participants-list .ap-avatar {
+.ap-participants-list .ap-avatar {
+  display: block;
+  float: left;
   margin-right: 0;
+  margin-bottom: 10px;
   padding: 5px;
-  margin-top: 10px;
 }
-.ap-content-inner {
-  border: 1px solid #ddd;
-  -webkit-border-radius: 3px;
-  -webkit-background-clip: padding-box;
-  -moz-border-radius: 3px;
-  -moz-background-clip: padding;
-  border-radius: 3px;
-  background-clip: padding-box;
-  padding: 15px;
+.ap-single-vote {
+  position: relative;
 }
 .ap-btn {
   background: #11a7db;
@@ -1535,14 +1538,19 @@
 }
 .ap-vote {
   border: 1px solid #d1e8f1;
+  -webkit-border-radius: 2px;
+  -webkit-background-clip: padding-box;
+  -moz-border-radius: 2px;
+  -moz-background-clip: padding;
   border-radius: 2px;
+  background-clip: padding-box;
   color: #428bca;
-  font-size: 18px;
+  font-size: 14px;
   font-weight: 600;
-  margin: 10px auto 0;
-  text-align: center;
-  width: 35px;
+  margin-right: 15px;
   position: relative;
+  text-align: center;
+  width: 30px;
 }
 .ap-vote a {
   text-decoration: none;
@@ -1556,7 +1564,7 @@
   display: none;
 }
 .ap-vote .vote-up {
-  margin-bottom: -12px;
+  margin-bottom: -9px;
   margin-top: 5px;
 }
 .ap-vote .vote-down {
@@ -1618,9 +1626,6 @@
 .ap-subscribe {
   text-align: center;
 }
-.ap-subscribe.active {
-  color: #5db34a;
-}
 .ap-subscribe .ap-subscribe-label {
   display: block;
   font-weight: bold;
@@ -1628,12 +1633,9 @@
   text-transform: uppercase;
   font-size: 12px;
 }
-.ap-subscribe .ap-radio-btn {
+.ap-subscribe .ap-btn {
   margin: 0 auto;
-}
-.ap-subscribe .ap-subscribers-count {
-  font-size: 16px;
-  line-height: 100%;
+  display: block;
 }
 .ap-form-control {
   border: 2px solid #e4e4e4;
@@ -1819,9 +1821,7 @@
   text-decoration: underline;
 }
 .ap-comments.have-comments {
-  background: none repeat scroll 0 0 #fcfcfc;
-  border-radius: 4px;
-  margin: 20px -16px -16px;
+  margin: 20px -10px -10px;
 }
 .ap-comments .ap-commentlist {
   list-style: none outside none;
@@ -1831,10 +1831,8 @@
 .ap-comments .ap-commentlist .comment {
   border-top: 1px solid #eee;
   color: #777;
-  font-size: 13px;
-  line-height: 22px;
   margin-bottom: 0;
-  padding: 15px;
+  padding: 10px;
 }
 .ap-comments .ap-commentlist .comment:last-child {
   border-bottom: none;
@@ -1855,6 +1853,9 @@
 }
 .ap-comments .ap-commentlist .comment .ap-comment-action i {
   font-size: 10px;
+}
+.ap-comments .ap-commentlist .comment .ap-comment-time {
+  color: #777;
 }
 .ap-comment-form {
   background: none repeat scroll 0 0 #fff;
