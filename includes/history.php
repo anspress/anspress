@@ -30,7 +30,7 @@ class AP_History
         return self::$instance;
     }
     /**
-     * Initialize the plugin by setting localization and loading public scripts
+     * Initialize the class
      * and styles.
      */
     public function __construct()
@@ -41,8 +41,8 @@ class AP_History
 		add_action('ap_event_new_comment', array($this, 'new_comment'), 10, 3);
 		add_action('ap_event_select_answer', array($this, 'select_answer'), 10, 3);
 		add_action('ap_event_unselect_answer', array($this, 'unselect_answer'), 10, 3);
-		add_action( 'set_object_terms', array($this, 'after_label_added'), 10, 2 );
-		add_action( 'deleted_term_relationships', array($this, 'after_label_removed'), 10, 2 );
+		//add_action( 'set_object_terms', array($this, 'after_label_added'), 10, 2 );
+		//add_action( 'deleted_term_relationships', array($this, 'after_label_removed'), 10, 2 );
 		
 	}
 	public function new_answer($answer_id, $userid, $question_id) {
@@ -74,19 +74,7 @@ class AP_History
 	public function unselect_answer($user_id, $question_id, $answer_id){
 		ap_add_history($user_id, $question_id, $answer_id, 'answer_unselected');
 	}
-	public function after_label_added($object_id, $terms){
-		if(!is_user_logged_in())
-			return false;
-			
-		ap_add_history(get_current_user_id(), $object_id, implode(',', $terms), 'added_label');
-	}
-	
-	public function after_label_removed($object_id, $tt_ids){
-		if(!is_user_logged_in())
-			return false;
-			
-		ap_add_history(get_current_user_id(), $object_id, implode(',', $tt_ids), 'removed_label');
-	}
+
 }
 
 /**
@@ -143,8 +131,8 @@ function ap_history_title($slug, $parm = ''){
 		'edit_comment' 		=> __('edited comment', 'ap'),
 		'answer_selected' 	=> __('selected answer', 'ap'),
 		'answer_unselected' => __('unselected answer', 'ap'),
-		'added_label' 		=> sprintf(__('added the %s', 'ap'), $parm),
-		'removed_label' 	=> sprintf(__('removed %s', 'ap'), $parm),
+		//'added_label' 		=> sprintf(__('added the %s', 'ap'), $parm),
+		//'removed_label' 	=> sprintf(__('removed %s', 'ap'), $parm),
 	);
 	$title = apply_filters('ap_history_name', $title);
 	

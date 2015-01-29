@@ -1528,14 +1528,12 @@
 }
 .ap-btn {
   background: #11a7db;
-  color: #ffffff;
-  -webkit-border-radius: 2px;
-  -webkit-background-clip: padding-box;
-  -moz-border-radius: 2px;
-  -moz-background-clip: padding;
+  border-color: transparent transparent rgba(0, 0, 0, 0.1);
+  border-image: none;
   border-radius: 2px;
-  background-clip: padding-box;
-  border: none;
+  border-style: none none solid;
+  border-width: medium medium 2px;
+  color: #ffffff;
   padding: 10px 20px;
   text-decoration: none;
 }
@@ -1554,7 +1552,7 @@
 }
 .ap-btn:hover {
   text-decoration: none;
-  background: #0d83ac;
+  border-color: transparent transparent #11a7db;
   color: #ffffff;
 }
 .ap-vote {
@@ -1657,6 +1655,9 @@
 .ap-subscribe .ap-btn {
   margin: 0 auto;
   display: block;
+}
+.ap-subscribe .ap-btn.active {
+  background: #ddd;
 }
 .ap-form-control {
   border: 2px solid #e4e4e4;
@@ -1917,14 +1918,12 @@
 }
 .ap-comment-form #submit {
   background: #11a7db;
-  color: #ffffff;
-  -webkit-border-radius: 2px;
-  -webkit-background-clip: padding-box;
-  -moz-border-radius: 2px;
-  -moz-background-clip: padding;
+  border-color: transparent transparent rgba(0, 0, 0, 0.1);
+  border-image: none;
   border-radius: 2px;
-  background-clip: padding-box;
-  border: none;
+  border-style: none none solid;
+  border-width: medium medium 2px;
+  color: #ffffff;
   padding: 10px 20px;
   text-decoration: none;
 }
@@ -1943,7 +1942,7 @@
 }
 .ap-comment-form #submit:hover {
   text-decoration: none;
-  background: #0d83ac;
+  border-color: transparent transparent #11a7db;
   color: #ffffff;
 }
 .ap-profile-lr .ap-profile-nav,
@@ -2280,5 +2279,16 @@
 }
 .ap-stats-widget li time {
   font-weight: bold;
+}
+.ap-rq-widget .ap-rq-post {
+  border-bottom: 1px solid #f7f7f7;
+  color: #888;
+  display: block;
+  margin-bottom: 0;
+  padding: 10px 0;
+}
+.ap-rq-widget .ap-rq-post a {
+  margin-bottom: 5px;
+  display: block;
 }
 /*# sourceMappingURL=main.min.css.map */

@@ -253,6 +253,7 @@ if (!class_exists('AnsPress')) {
             require_once ANSPRESS_DIR.'widgets/subscribe.php';
             require_once ANSPRESS_DIR.'widgets/participants.php';
             require_once ANSPRESS_DIR.'widgets/question_stats.php';
+            require_once ANSPRESS_DIR.'widgets/related_questions.php';
         }
 
         /**

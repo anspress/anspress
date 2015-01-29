@@ -4,9 +4,12 @@
 
 .ap-btn{
     background: @blue-color;
+    border-color: transparent transparent rgba(0,0,0,0.1);
+    border-image: none;
+    border-radius: 2px;
+    border-style: none none solid;
+    border-width: medium medium 2px;
     color: @white;
-    .border-radius(@default-border-radius);
-    border:none;
     padding: 10px 20px;
     text-decoration: none;
 
@@ -25,7 +28,7 @@
     }
     &:hover{
         text-decoration: none;
-        background: darken(@blue-color, 10%);
+        border-color: transparent transparent @blue-color;
         color: @white;
     }
 }
@@ -119,6 +122,9 @@
     .ap-btn{
         margin: 0 auto;
         display: block;
+    }
+    .ap-btn.active{
+        background: #ddd;
     }
 
 }

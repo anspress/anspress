@@ -503,11 +503,11 @@ function ap_subscribe_btn_html($post = false){
 	$subscribed = ap_is_user_subscribed($post->ID);
 
 	$nonce = wp_create_nonce( 'subscribe_'.$post->ID );
-	$title = (!$total_favs) ? (__('Subscribe', 'ap')) : (__('Subscribed', 'ap'));
+	$title = (!$subscribed) ? (__('Subscribe', 'ap')) : (__('Subscribed', 'ap'));
 
 	?>
 		<div class="ap-subscribe<?php echo ($subscribed) ? ' active' :''; ?> clearfix">
-			<a id="<?php echo 'subscribe_'.$post->ID; ?>" class="ap-btn subscribe-btn <?php echo ($subscribed) ? ' active' :''; ?>" data-query="ap_ajax_action=subscribe_question&question_id=<?php echo $post->ID ?>&__nonce=<?php echo $nonce ?>" data-action="ap_subscribe" data-args="<?php echo $post->ID.'-'.$nonce; ?>"><?php echo $title ?></a>
+			<a id="<?php echo 'subscribe_'.$post->ID; ?>" href="#" class="ap-btn subscribe-btn <?php echo ($subscribed) ? ' active' :''; ?>" data-query="ap_ajax_action=subscribe_question&question_id=<?php echo $post->ID ?>&__nonce=<?php echo $nonce ?>" data-action="ap_subscribe" data-args="<?php echo $post->ID.'-'.$nonce; ?>"><?php echo $title ?></a>
 		</div>
 	<?php
 }
