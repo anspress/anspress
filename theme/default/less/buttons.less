@@ -35,38 +35,42 @@
 
 // voting button
 .ap-vote{
-    border: 1px solid #d1e8f1;
-    .border-radius(2px);
+    background-clip: padding-box;
     color: #428bca;
     font-size: 14px;
     font-weight: 600;
     margin-right: 15px;
     position: relative;
-    text-align: center;
-    width: 30px;
+
+    > *{
+        float: left;
+    }
     a{
-    	text-decoration: none;
-    	color: @link-color;
-    	display:block;
+    	border: 1px solid #d2e3f2;
+        border-radius: 3px;
+        color: #6198cb;
+        display: block;
+        padding: 2px 7px;
+        text-decoration: none;
         &:focus{
             outline: none;
         }
     	&.disable{
-			display: none;
+			cursor: default;
+            opacity: 0.3;
 		}
     }
     .vote-up{
-    	margin-bottom: -9px;
-        margin-top: 5px;
+
 	}
 	.vote-down{
-        margin-top: -6px;
-        margin-bottom: 2px;
+
 	}	
     .net-vote-count{    	
-	    display: block;
-	    font-size: 16px;
-	    padding: 2px;
+        color: @light-color;
+        display: block;
+        font-size: 15px;
+        padding: 4px 10px;
     }
     .ap-vote-fade {
         bottom: 0;

@@ -470,7 +470,7 @@ function ap_post_subscribers_count($postid = false){
  * @return void
  * @since 0.1
  */
-function ap_vote_btn($post = false){
+function ap_vote_btn($post = false, $echo = true){
 	if(!$post)
 		global $post;
 		
@@ -479,6 +479,8 @@ function ap_vote_btn($post = false){
 
 	$voted 	= $vote ? true : false;
 	$type 	= $vote ? $vote->type : '';
+
+	ob_start();
 	?>
 		<div data-id="<?php echo $post->ID; ?>" class="ap-vote net-vote" data-action="vote">
 			<a class="<?php echo ap_icon('vote_up') ?> ap-tip vote-up<?php echo $voted ? ' voted' :''; echo ($type == 'vote_down') ? ' disable' :''; ?>" data-query="ap_ajax_action=vote&type=up&post_id=<?php echo $post->ID; ?>&__nonce=<?php echo $nonce ?>" href="#" title="<?php _e('Up vote this post', 'ap'); ?>"></a>
@@ -488,6 +490,13 @@ function ap_vote_btn($post = false){
 			<a data-tipposition="bottom" class="<?php echo ap_icon('vote_down') ?> ap-tip vote-down<?php echo $voted ? ' voted' :''; echo ($type == 'vote_up') ? ' disable' :''; ?>" data-query="ap_ajax_action=vote&type=down&post_id=<?php echo $post->ID; ?>&__nonce=<?php echo $nonce ?>" href="#" title="<?php _e('Down vote this post', 'ap'); ?>"></a>
 		</div>
 	<?php
+	$html = ob_get_clean();
+
+	if($echo){
+		echo $html;
+	}else{
+		return $html;
+	}
 }
 
 /**

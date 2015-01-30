@@ -32,15 +32,15 @@ class AnsPress_Stats_Widget extends WP_Widget {
 
 		$ans_count 		= ap_count_answer_meta();
 		$last_active 	= ap_last_active(get_the_ID());
-		$total_favs 	= ap_post_subscribers_count(get_the_ID());
+		$total_subs 	= ap_post_subscribers_count(get_the_ID());
 		$view_count 	= ap_get_qa_views();
 
 
 		echo '<ul class="ap-stats-widget">';
-		echo '<li>'.ap_icon('history', true). sprintf( __( 'Last activity <time class="updated" itemprop="dateUpdated" datetime="%s">%s</time> Ago.', 'ap' ), mysql2date('c', $last_active),  ap_human_time( mysql2date('U', $last_active))).'</li>';
-		echo '<li>'.ap_icon('view', true). sprintf( __('<strong>%d views</strong> on this question.', 'ap'), $view_count).'</li>' ;		
-		echo '<li>'.ap_icon('answer', true). sprintf( _n('<a href="#answers">1 Answer</a> on this question.', '<a href="#answers">%d Answer</a> on this question.', $ans_count, 'ap'), $ans_count).'</li>' ;		
-		echo '<li>'.ap_icon('mail', true). ap_subscriber_count_html() .'</li>';
+		echo '<li>'.__('Active', 'ap'). '<span><time class="updated" itemprop="dateUpdated" datetime="'.mysql2date('c', $last_active).'">'.ap_human_time( mysql2date('U', $last_active)).'</time> '.__('Ago', 'ap').'</span></li>' ;
+		echo '<li>'.__('Views', 'ap'). '<span>'.$view_count.'</span></li>' ;		
+		echo '<li>'.__('Answers', 'ap'). '<span>'.$ans_count.'</span></li>' ;		
+		echo '<li>'.__('Subscribers', 'ap'). '<span>'.$total_subs.'</span></li>' ;		
 		echo '</ul>';
 
 		echo $args['after_widget'];

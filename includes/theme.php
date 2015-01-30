@@ -518,12 +518,6 @@ function ap_display_question_metas($question_id =  false){
 	}
 
 	$metas = array();
-
-	if(ap_is_answer_selected($question_id) && !is_singular('question')){
-		$metas['selected'] = '<span class="ap-tip" title="'.__('answer accepted', 'ap').'">'.ap_icon('select', true).__('Selected', 'ap').'</span>';
-
-	}
-
 	if(is_singular('question')){		
 		$metas['created'] = sprintf( __( '<span>Created</span> <i><time itemprop="datePublished" datetime="%s">%s Ago</time></i>', 'ap' ), get_the_time('c', $question_id), ap_human_time( get_the_time('U')));
 		
@@ -577,8 +571,8 @@ function ap_icon($name, $html = false){
 		'edit_question' 	=> 'apicon-pencil',
 		'edit_answer' 		=> 'apicon-pencil',
 		'edit_comment' 		=> 'apicon-pencil',
-		'vote_up'			=> 'apicon-triangle-up',
-		'vote_down'			=> 'apicon-triangle-down',
+		'vote_up'			=> 'apicon-thumb-up',
+		'vote_down'			=> 'apicon-thumb-down',
 		'favorite'			=> 'apicon-heart',
 		'delete'			=> 'apicon-trashcan',
 		'flag'				=> 'apicon-flag',
@@ -629,6 +623,8 @@ function ap_post_actions_buttons()
 		return;
 
 	$actions = array();
+
+	$actions['vote'] = '<div class="ap-single-vote ap-pull-left">'.ap_vote_btn($post, false).'</div>';
 
 	/**
 	 * Select answer button
@@ -760,7 +756,7 @@ function ap_answers_tab($base = false){
 		'oldest' => array('link' => add_query_arg(  array('ap_sort' => 'oldest'), $base), 'title' => __('Oldest', 'ap')),			
 		);
 
-	echo '<ul class="ap-answers-tab ap-tab ap-ul-inline clearfix">';
+	echo '<ul class="ap-answers-tab ap-ul-inline ap-pull-right clearfix">';
 	foreach ($navs as $k => $nav) {
 		echo '<li'.( $sort == $k ? ' class="active"' : '') .'><a href="'. $nav['link'] .'">'. $nav['title'] .'</a></li>';
 	}

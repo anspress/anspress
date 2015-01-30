@@ -5,41 +5,14 @@
 .ap-content{
 	&.question{
 		.ap-q-head{
-		    border-bottom: 1px solid #eee;
 		    margin-bottom: 20px;
 		}
 		.ap-question-cells {
+		    border-bottom: 1px solid #eee;
 		    margin-top: 10px;
-		    padding-bottom: 15px;
-
-		    .ap-question-metas > .ap-avatar{
-		    	margin: 0;
-		    }
+		    padding-bottom: 25px;
 		}
 	}
-
-	.ap-favorite{
-		float: right;
-		a{
-		    border-radius: 50%;
-		    display: block;
-		    font-size: 20px;
-		    height: 50px;
-		    line-height: 45px;
-		    text-align: center;
-		    width: 50px;
-		    
-		    i{
-			    font-size: 15px;
-    			margin-right: -5px;
-			}
-		}
-		span{
-			display: none;
-		}
-
-	}
-	
 	.ap-user-meta{
 		color: @light-color;
 
@@ -54,10 +27,11 @@
 		}
 	}
 	.ap-question-metas, .ap-answer-metas{
-		margin-bottom: 15px;
+		margin-bottom: 10px;
 		li{
 			color:@light-color;
-			margin: 0 5px 0 0;
+		    font-size: 12px;
+		    margin: 0 5px 0 0;
 			i{
 				font-style: normal;
 			}
@@ -78,14 +52,22 @@
 				display: none;
 			}
 		}
+		.ap-avatar{
+			margin-right: 10px;
+			margin-top: 4px;
+		}
 	}
 	.entry-title{
-	    font-size: 26px;
-	    line-height: 1.6;
+	    font-size: 22px;
+	    font-weight: bold;
 	    margin-bottom: 5px;
+	    a{
+	    	color: @default-color;
+	    }
 	}
 	.ap-post-content{
-	    line-height: @line-height-post-content;
+	    font-size: 14px;
+	    line-height: 1.8;
 
 	    p{
 	    	margin-bottom:10px;
@@ -102,37 +84,23 @@
 	.ap-posted-in {
 	    margin-bottom: -20px;
 	    text-transform: uppercase;
-	}
-
-	.ap-post-tags {
-		margin-bottom:10px;
-		li a{
-		    border: 2px solid #eee;
-		    .border-radius(14px);
-		    color: #888;
-		    display: block;
-		    font-size: 11px;
-		    padding: 1px 8px;
-		    text-decoration: none;
-
-		    .tax-count{
-		    	font-style: normal;		    	
-		    }
-
-		    &:hover{
-		    	border-color: @main-color;
-		    	color: @default-color;
-		    }
-		}
-	}
+	}	
 	.ap-user-actions {
 	    margin-top: 10px;
 	    li{
-	    	margin-right: 15px;
+	    	float: right;
+    		margin-left: 15px;
+    		margin-top: 5px;
+	    }
+	    .ap-action-vote{
+		    float: left;
+		    margin-left: 0;
+		    margin-top: 0;
 	    }
 	    a{
+		    color: @light-color;
 		    display: block;
-    		text-decoration: none;
+		    text-decoration: none;
 
 		    &:hover{
 		    	color: @default-color;
@@ -147,35 +115,72 @@
 	    }
 	}
 }
+.ap-post-tags {	
+	li a{
+	    background: @blue-color;
+	    border-radius: 10px;
+	    color: #fff;
+	    display: table;
+	    font-size: 12px;
+	    font-weight: bold;
+	    margin-bottom: 10px;
+	    padding: 2px 10px;
+	    text-decoration: none;
 
-#ap-best-answer {
-    border-top: 1px solid #eee;
-    margin-bottom: 30px;
-    margin-top: 30px;
+	    .tax-count{
+	    	font-style: normal;		    	
+	    }
+
+	    &:hover{
+	    	border-color: @main-color;
+	    	color: @default-color;
+	    }
+	}
+	li:last-child a{
+    	margin-bottom: 0;
+    }
 }
 
-.ap-other-answers-tab {
-	border-bottom: 1px solid @default-border-color;
+.ap-sorting-tab {
+    border-bottom: 1px solid @default-border-color;
+    padding: 20px 0;
 	.ap-widget-title{
-    	margin: 14px 30px 1px 0;
+    	display: block;
+	    font-size: 12px;
+	    margin: 0;
+	    padding: 3px 0;
+	    text-transform: uppercase;
+    	color: @default-color;
 	}
 	.ap-answers-tab {
 	    float: right;
 	    margin: 0;
 	    border-bottom:none;
+	    padding: 0;
+	    list-style: none;
 		li{
-			float: right;
+		    margin-left: 10px;
+		    margin-right: 0;
+		    > a{
+			    font-size: 12px;
+			    font-weight: 600;
+			    padding: 5px;
+		    }
+
+		    &.active a{
+		    	color: @default-color;
+		    }
 		}
 	}
 }
 #ap-answers-c{
-	padding-top: 25px;
+	padding-top: 15px;
 }
 #answers{
 	.answer{
-	    border-top: 1px solid @default-border-color;
-	    margin-top: 30px;
-	    padding-top: 25px;
+	    border-top: 1px solid #eeeeee;
+    	margin: 0;
+    	padding: 15px 0;
 
 	    &:first-child{
 	    	padding-top: 0;
@@ -183,7 +188,11 @@
 	    }
 	}
 }
-
+#ap-best-answer > .answer {
+    border-bottom: 1px solid #eee;
+    margin: 0;
+    padding: 15px 0;
+}
 .ap-btn-select {
 	background: @main-color;
     .border-radius(@default-border-radius);
@@ -226,7 +235,7 @@
 }
 .ap-participants-list{
 	display: block;
-	margin: -5px;
+	margin: 0 -5px -5px;
 	.ap-avatar{
 	    display: block;
 	    float: left;
@@ -245,4 +254,20 @@
     display: table;
     font-size: 11px;
     padding: 1px 4px;
+}
+.ap-question-info{
+	.ap-widget-title{
+	    border-bottom: 1px solid #f8f8f8;
+	    color: #333;
+	    display: block;
+	    font-size: 11px;
+	    margin: 0 0 5px;
+	    padding: 0 0 8px;
+	    text-transform: uppercase;
+	}
+	.question-tags{
+		margin:0;
+		list-style: none;
+		padding: 0;
+	}
 }

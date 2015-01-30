@@ -35,7 +35,14 @@ $clearfix_class = array('list-question clearfix');
 			<ul class="ap-display-question-meta ap-ul-inline clearfix">
 				<?php echo ap_display_question_metas() ?>
 			</ul>
-			<?php echo ap_get_latest_history_html(get_the_ID()) ?>
+			<div class="ap-history">
+				<?php 
+					if(ap_is_answer_selected()){
+						echo '<span class="ap-best-answer-label ap-tip" title="'.__('answer accepted', 'ap').'">'.__('Selected', 'ap').'</span>';
+					}
+					echo ap_get_latest_history_html(get_the_ID());					
+				?>
+			</div>
 		</div>				
 	</div>	
 	<div class="ap-count">	

@@ -28,7 +28,7 @@ function init_scripts_front(){
 		//wp_enqueue_style( 'perfect-scrollbar', ap_get_theme_url('css/perfect-scrollbar.min.css'), array(), AP_VERSION);
 		wp_enqueue_style( 'ap-style', ap_get_theme_url('css/main.min.css'), array(), AP_VERSION);	
 		
-		wp_enqueue_style( 'ap-fonts', ap_get_theme_url('fonts/styles.css'), array(), AP_VERSION);
+		wp_enqueue_style( 'ap-fonts', ap_get_theme_url('fonts/style.css'), array(), AP_VERSION);
 		
 		
 		do_action('ap_enqueue');
