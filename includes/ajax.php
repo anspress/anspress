@@ -82,10 +82,9 @@ class AnsPress_Ajax
     	$result = array(
     		'ap_responce' 	=> true,
     		'action' 		=> 'load_comment_form',
-    		'do' 			=> 'append'
     	);
 
-		if((wp_verify_nonce( $_REQUEST['__nonce'], 'comment_form_nonce' ) && ap_user_can_comment()) || (isset($_REQUEST['comment_ID']) && ap_user_can_edit_comment((int)$_REQUEST['comment_ID'] ) && wp_verify_nonce( $_REQUEST['__nonce'], 'edit_comment_'.(int)$_REQUEST['comment_ID'] ))){
+		if((wp_verify_nonce( $_REQUEST['__nonce'], 'comment_form_nonce' )) || (wp_verify_nonce( $_REQUEST['__nonce'], 'edit_comment_'.(int)$_REQUEST['comment_ID'] ))){
 			
 			$comment_args  = array();
 			$content = '';
@@ -107,7 +106,7 @@ class AnsPress_Ajax
 				'id_form' => 'ap-commentform',
 				'title_reply' => '',
 				'logged_in_as' => '',
-				'comment_field' => '<textarea name="comment" rows="3" aria-required="true" id="ap-comment-textarea" class="form-control autogrow" placeholder="'.__('Respond to the post.', 'ap').'">'.$content.'</textarea><input type="hidden" name="ap_form_action" value="comment_form"/><input type="hidden" name="ap_ajax_action" value="comment_form"/><input type="hidden" name="__nonce" value="'.$nonce.'"/>'.$commentid,
+				'comment_field' => '<div class="ap-comment-submit"><input type="submit" value="'.__('Post Comment', 'ap').'" name="submit"></div><div class="ap-comment-textarea"><textarea name="comment" rows="3" aria-required="true" id="ap-comment-textarea" class="ap-form-control autogrow" placeholder="'.__('Respond to the post.', 'ap').'">'.$content.'</textarea></div><input type="hidden" name="ap_form_action" value="comment_form"/><input type="hidden" name="ap_ajax_action" value="comment_form"/><input type="hidden" name="__nonce" value="'.$nonce.'"/>'.$commentid,
 				'comment_notes_after' => ''
 			);
 			
@@ -115,12 +114,23 @@ class AnsPress_Ajax
 				$comment_args['label_submit'] = __('Update comment', 'ap');
 
 			//$current_user = get_userdata( get_current_user_id() );
+			global $withcomments;
+			$withcomments = true;
 
+			$question = new Question_Query('p='.$comment_post_ID);
 			ob_start();
-				echo '<div class="ap-comment-form clearfix">';
-					echo '<div class="ap-comment-inner">';
-						comment_form($comment_args, $comment_post_ID );
-					echo '</div>';
+				echo '<div class="ap-comment-block clearfix">';
+					//if(ap_user_can_comment() || (isset($_REQUEST['comment_ID']) && ap_user_can_edit_comment((int)$_REQUEST['comment_ID'] ))){
+						echo '<div class="ap-comment-form clearfix">';
+							echo '<div class="ap-comment-inner">';
+								comment_form($comment_args, $comment_post_ID );
+							echo '</div>';
+						echo '</div>';
+					//}
+					while( $question->have_posts() ) : $question->the_post();
+					comments_template();
+					endwhile;
+					wp_reset_postdata();
 				echo '</div>';
 			$result['html'] = ob_get_clean();
 			$result['container'] = '#comments-'.$comment_post_ID;

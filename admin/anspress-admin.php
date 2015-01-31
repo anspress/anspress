@@ -333,7 +333,7 @@ class anspress_admin {
 			$page = get_page(ap_opt('base_page'));
 			$options['base_page_slug'] = $page->post_name;
 			update_option( 'anspress_opt', $options);
-			ap_opt('ap_flush', true);
+			ap_opt('ap_flush', 'true');
 		}
 	}
 	

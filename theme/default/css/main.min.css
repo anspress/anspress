@@ -1284,6 +1284,7 @@
 }
 .ap-content .ap-user-meta {
   color: #888888;
+  margin-bottom: 3px;
 }
 .ap-content .ap-user-meta .ap-user-meta-display_name {
   font-size: 14px;
@@ -1372,19 +1373,31 @@
   margin-left: 0;
   margin-top: 0;
 }
-.ap-content .ap-user-actions a {
+.ap-content .ap-user-actions li > a {
   color: #888888;
   display: block;
+  font-size: 12px;
   text-decoration: none;
 }
-.ap-content .ap-user-actions a:hover {
+.ap-content .ap-user-actions li > a:hover {
   color: #595959;
 }
-.ap-content .ap-user-actions a i {
+.ap-content .ap-user-actions li > a i {
   display: inline-block;
   font-size: 11px;
   margin-right: 1px;
   margin-top: 0;
+}
+.ap-content .ap-user-actions li > a span {
+  background: none repeat scroll 0 0 #eee;
+  border-radius: 2px;
+  font-size: 11px;
+  font-weight: bold;
+  margin-left: 5px;
+  padding: 2px 5px;
+}
+.ap-content .ap-user-actions .ap-action-select_answer a {
+  color: #fff;
 }
 .ap-post-tags li a {
   background: #11a7db;
@@ -1444,16 +1457,41 @@
 #answers .answer {
   border-top: 1px solid #eeeeee;
   margin: 0;
-  padding: 15px 0;
+  padding: 25px 0;
 }
 #answers .answer:first-child {
   padding-top: 0;
   border-top: none;
 }
+#ap-best-answer {
+  position: relative;
+}
 #ap-best-answer > .answer {
-  border-bottom: 1px solid #eee;
-  margin: 0;
-  padding: 15px 0;
+  background: none repeat scroll 0 0 #f7fef9;
+  border: 1px solid #cbdaca;
+  border-radius: 3px;
+  margin: 15px 0;
+  padding: 15px;
+}
+#ap-best-answer .ap-widget-title {
+  background: none repeat scroll 0 0 #5db859;
+  color: #fff;
+  font-size: 13px;
+  font-weight: normal;
+  padding: 5px 10px;
+  position: absolute;
+  right: 0;
+}
+#ap-best-answer .ap-widget-title:before {
+  border-color: transparent #5db859 transparent transparent;
+  border-image: none;
+  border-style: solid;
+  border-width: 12px 10px 12px 12px;
+  content: "";
+  display: block;
+  left: -22px;
+  position: absolute;
+  top: 0;
 }
 .ap-btn-select {
   background: #5db34a;
@@ -1666,14 +1704,17 @@
   background: #ddd;
 }
 .ap-form-control {
-  border: 2px solid #e4e4e4;
+  border: 1px solid #e4e4e4;
   border-radius: 2px;
   box-shadow: 0 0 2px #eee inset;
   display: block;
   height: 50px;
   margin-bottom: 15px;
-  padding: 10px;
+  padding: 8px 10px;
   width: 100%;
+}
+.ap-form-control.autogrow {
+  overflow: hidden;
 }
 .ap-form-control[type="checkbox"] {
   display: inline;
@@ -1872,8 +1913,10 @@
   display: block !important;
   padding: 5px 10px;
 }
-.ap-comments.have-comments {
-  margin: 20px -10px -10px;
+.ap-comment-block {
+  background: none repeat scroll 0 0 #fcfcfc;
+  border: 1px solid #eee;
+  margin-top: 25px;
 }
 .ap-comments .ap-commentlist {
   list-style: none outside none;
@@ -1886,7 +1929,7 @@
   margin-bottom: 0;
   padding: 10px;
 }
-.ap-comments .ap-commentlist .comment:last-child {
+.ap-comments .ap-commentlist .comment:first-child {
   border-bottom: none;
 }
 .ap-comments .ap-commentlist .comment .ap-avatar {
@@ -1910,18 +1953,14 @@
   color: #777;
 }
 .ap-comment-form {
-  background: none repeat scroll 0 0 #fff;
-  border-top: 1px solid #eee;
-  padding: 15px;
+  padding: 10px;
 }
 .ap-comment-form #ap-comment-textarea {
-  background: #f2f2f2;
-  border: medium none;
-  -webkit-box-shadow: none;
-  -moz-box-shadow: none;
-  box-shadow: none;
-  margin-bottom: 15px;
-  padding: 15px;
+  height: 35px;
+  margin: 0;
+}
+.ap-comment-form .form-submit {
+  display: none;
 }
 .ap-comment-form #submit {
   background: #11a7db;
@@ -1951,6 +1990,45 @@
   text-decoration: none;
   border-color: transparent transparent #11a7db;
   color: #ffffff;
+}
+.ap-comment-form .ap-comment-submit {
+  float: right;
+  margin-left: 10px;
+}
+.ap-comment-form input[type="submit"] {
+  background: #11a7db;
+  border-color: transparent transparent rgba(0, 0, 0, 0.1);
+  border-image: none;
+  border-radius: 2px;
+  border-style: none none solid;
+  border-width: medium medium 2px;
+  color: #ffffff;
+  padding: 10px 20px;
+  text-decoration: none;
+}
+.ap-comment-form input[type="submit"].ap-btn-blue {
+  background: #11a7db;
+  color: #ffffff;
+}
+.ap-comment-form input[type="submit"].ap-btn-blue:hover {
+  border-color: #11a7db;
+}
+.ap-comment-form input[type="submit"].ap-btn-view-all {
+  display: block;
+  margin-top: 30px;
+  text-align: center;
+  text-transform: uppercase;
+}
+.ap-comment-form input[type="submit"]:hover {
+  text-decoration: none;
+  border-color: transparent transparent #11a7db;
+  color: #ffffff;
+}
+.ap-comment-form .ap-comment-textarea {
+  overflow: hidden;
+}
+.ap-comment-form .comment-reply-title {
+  display: none;
 }
 .ap-profile-lr .ap-profile-nav,
 .ap-profile-lr .ap-profile-right {

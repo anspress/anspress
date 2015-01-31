@@ -186,7 +186,8 @@ function ap_answers_link(){
 function ap_comment_btn_html($echo = false){
 	if(ap_user_can_comment()){
 		$nonce = wp_create_nonce( 'comment_form_nonce' );
-		$output = '<a href="#comments-'.get_the_ID().'" class="comment-btn ap-tip" data-action="load_comment_form" data-query="ap_ajax_action=load_comment_form&post='.get_the_ID().'&__nonce='.$nonce.'" title="'.__('Add comment', 'ap').'">'.__('Comment', 'ap').'</a>';
+		$comment_count = get_comments_number( get_the_ID() );
+		$output = '<a href="#comments-'.get_the_ID().'" class="comment-btn ap-tip" data-action="load_comment_form" data-query="ap_ajax_action=load_comment_form&post='.get_the_ID().'&__nonce='.$nonce.'" title="'.__('Comments', 'ap').'">'.__('Comment', 'ap').'<span>'.$comment_count.'</span></a>';
 
 		if($echo)
 			echo $output;
@@ -232,9 +233,9 @@ function ap_edit_post_link_html($echo = false, $post_id_or_object = false){
 	$output = '';
 
 	if($post->post_type == 'question' && ap_user_can_edit_question($post->ID)){		
-		$output = "<a href='$edit_link' data-button='ap-edit-post' title='".__('Edit this question', 'ap')."' class='apEditBtn ap-tip'>"."<span>".__('Edit', 'ap')."</span></a>";	
+		$output = "<a href='$edit_link' data-button='ap-edit-post' title='".__('Edit this question', 'ap')."' class='apEditBtn ap-tip'>".__('Edit', 'ap')."</a>";	
 	}elseif($post->post_type == 'answer' && ap_user_can_edit_ans($post->ID)){
-		$output = "<a href='$edit_link' data-button='ap-edit-post' title='".__('Edit this answer', 'ap')."' class='apEditBtn ap-tip'>"."<span>".__('Edit', 'ap')."</span></a>";
+		$output = "<a href='$edit_link' data-button='ap-edit-post' title='".__('Edit this answer', 'ap')."' class='apEditBtn ap-tip'>".__('Edit', 'ap')."</a>";
 	}
 
 	if($echo)

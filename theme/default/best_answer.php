@@ -14,7 +14,7 @@
  */
 if(ap_is_answer_selected(get_the_ID())){
 	echo '<div id="ap-best-answer">';
-		//echo '<h3 class="ap-widget-title">' . __('Best answer', 'ap') .'</h3>';
+		echo '<h3 class="ap-widget-title">' . __('Best answer', 'ap') .'</h3>';
 		ap_get_best_answer();
 	echo '</div>';
 }

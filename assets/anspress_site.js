@@ -125,7 +125,7 @@ AnsPress.site.prototype = {
 
 	showLoading: function(){
 		var uid = this.uniqueId();
-		var el = $('<div class="ap-loading-icon ap-uid" id="apuid-'+ uid +'"><i class="icon-sync"><i></div>');
+		var el = $('<div class="ap-loading-icon ap-uid" id="apuid-'+ uid +'"><i class="apicon-sync"><i></div>');
 		$('body').append(el);
 		
 		return '#apuid-'+ uid;
@@ -229,6 +229,7 @@ AnsPress.site.prototype = {
 				apAjaxData(q), 
 				function(data){
 					$('.ap-comment-form').remove();					
+					$(this).closest('.ap-content-inner').append(data.html);
 
 					$('html, body').animate({
 						scrollTop: ($(data.container).offset().top) - 50
@@ -240,7 +241,6 @@ AnsPress.site.prototype = {
 					$('#ap-comment-textarea').focus();
 
 					$($(this).attr('href')).addClass('have-comments').removeClass('no-comment');
-					ApSite.doAction('ap_ajax_form');
 				}, 
 				this,
 				false,

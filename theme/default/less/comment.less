@@ -1,10 +1,14 @@
 //
 // Comments
 // --------------------------------------------------
-
+.ap-comment-block {
+    background: none repeat scroll 0 0 #fcfcfc;
+    border: 1px solid #eee;
+    margin-top: 25px;
+}
 .ap-comments{
 	&.have-comments{
-	    margin: 20px -10px -10px;
+
 	}
 	.ap-commentlist {
 	    list-style: none outside none;
@@ -18,7 +22,7 @@
 		    padding: 10px;
 
 
-		    &:last-child{
+		    &:first-child{
 		    	border-bottom: none;
 		    }
 
@@ -47,18 +51,28 @@
 }
 
 .ap-comment-form{
-    background: none repeat scroll 0 0 #fff;
-    border-top: 1px solid #eee;
-    padding: 15px;
-
-	#ap-comment-textarea{
-	    background: #f2f2f2;
-	    border: medium none;
-	    .box-shadow(none);
-	    margin-bottom: 15px;
-	    padding: 15px;
+    padding: 10px;
+    #ap-comment-textarea{
+    	height: 35px;
+    	margin: 0;
+    }
+	.form-submit{
+		display: none;
 	}
 	#submit{
 		.ap-btn;
+	}
+	.ap-comment-submit {
+	    float: right;
+	    margin-left: 10px;
+	}
+	input[type="submit"]{
+		.ap-btn;
+	}
+	.ap-comment-textarea {
+	    overflow: hidden;
+	}
+	.comment-reply-title {
+	    display: none;
 	}
 }

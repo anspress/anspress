@@ -150,6 +150,18 @@ class AnsPress_Options_Page
 					),
 				'value' 			=> $settings['answers_sort'],
 			),
+			array(
+				'name' 				=> '__sep',
+				'type' 				=> 'custom',
+				'html' 				=> '<span class="ap-form-separator">'.__('Toggle').'</span>',
+			),
+			array(
+				'name' 				=> 'anspress_opt[show_comments_by_default]',
+				'label' 			=> __('Show comments', 'ap'),
+				'description' 		=> __('Show comments by default.', 'ap'),
+				'type' 				=> 'checkbox',
+				'value' 			=> $settings['show_comments_by_default'],
+			),
 
 			/* TODO: Add question sorting*/
 

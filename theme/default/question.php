@@ -98,7 +98,7 @@ global $post;
 							do_action('ap_after_question_actions', $post);
 						?>
 
-						<?php comments_template(); ?>
+						<?php if(ap_opt('show_comments_by_default')) comments_template(); ?>
 
 					</div>
 					<!-- End ap-content-inner -->					

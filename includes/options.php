@@ -108,7 +108,8 @@ function ap_default_options(){
 		'captcha_skip_rpoints'	=> 40,
 		'only_admin_can_answer'	=> false,
 		'logged_in_can_see_ans'	=> false,
-		'logged_in_can_see_comment'	=> false
+		'logged_in_can_see_comment'	=> false,
+		'show_comments_by_default'	=> false,
 	);
 	
 	/**

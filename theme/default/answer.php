@@ -41,7 +41,7 @@ $class = ap_is_best_answer(get_the_ID()) ? ' selected answer' : 'answer';
 				?>
 			</div>
 			<?php ap_post_actions_buttons() ?>
-			<?php comments_template(); ?>
+			<?php if(ap_opt('show_comments_by_default')) comments_template(); ?>
 		</div>			
 	</div>	
 </div>
