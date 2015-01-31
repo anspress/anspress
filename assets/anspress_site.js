@@ -110,8 +110,10 @@ AnsPress.site.prototype = {
 
 				if (typeof data.view !== 'undefined'){
 					$.each(data.view, function(i, view){
-						$('[data-view="'+ i +'"]').text(view);				
 						$('[data-view="'+ i +'"]').text(view);
+						
+						if(view !== 0)
+							$('[data-view="'+ i +'"]').removeClass('ap-view-count-0');
 					});
 				}
 

@@ -187,7 +187,7 @@ function ap_comment_btn_html($echo = false){
 	if(ap_user_can_comment()){
 		$nonce = wp_create_nonce( 'comment_form_nonce' );
 		$comment_count = get_comments_number( get_the_ID() );
-		$output = '<a href="#comments-'.get_the_ID().'" class="comment-btn ap-tip" data-action="load_comment_form" data-query="ap_ajax_action=load_comment_form&post='.get_the_ID().'&__nonce='.$nonce.'" title="'.__('Comments', 'ap').'">'.__('Comment', 'ap').'<span>'.$comment_count.'</span></a>';
+		$output = '<a href="#comments-'.get_the_ID().'" class="comment-btn ap-tip" data-action="load_comment_form" data-query="ap_ajax_action=load_comment_form&post='.get_the_ID().'&__nonce='.$nonce.'" title="'.__('Comments', 'ap').'">'.__('Comment', 'ap').'<span class="ap-data-view ap-view-count-'.$comment_count.'">'.$comment_count.'</span></a>';
 
 		if($echo)
 			echo $output;
@@ -736,6 +736,8 @@ function ap_responce_message($id, $only_message = false)
 		'question_moved_to_trash' => array('type' => 'success', 'message' => __('Question moved to trash.', 'ap')),
 		'answer_moved_to_trash' => array('type' => 'success', 'message' => __('Answer moved to trash.', 'ap')),
 		'no_permission_to_view_private' => array('type' => 'warning', 'message' => __('You dont have permission to view private posts.', 'ap')),
+		'flagged' => array('type' => 'success', 'message' => __('Thank you for reporting this post.', 'ap')),
+		'already_flagged' => array('type' => 'warning', 'message' => __('You have already reported this post.', 'ap')),
 	);
 
 	/**

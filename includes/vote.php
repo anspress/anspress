@@ -16,6 +16,7 @@ class AnsPress_Vote_Ajax extends AnsPress_Ajax
 	{
 		add_action( 'ap_ajax_subscribe_question', array($this, 'subscribe_question') ); 
 		add_action( 'ap_ajax_vote', array($this, 'vote') ); 
+		add_action( 'ap_ajax_flag_post', array($this, 'flag_post') ); 
 	}
 
 	public function subscribe_question()
@@ -142,6 +143,39 @@ class AnsPress_Vote_Ajax extends AnsPress_Ajax
 
 	}
 
+	/**
+	 * Flag a post as inappropriate
+	 * @return void
+	 * @since 2.0.0-alpha2
+	 */
+	public function flag_post()
+	{
+		$post_id = (int)$_POST['post_id'];
+		if(!wp_verify_nonce( $_POST['__nonce'], 'flag_'. $post_id  ) && is_user_logged_in()){
+			ap_send_json(ap_ajax_responce('something_wrong'));
+			return;
+		}
+
+		$userid = get_current_user_id();
+		$is_flagged = ap_is_user_flagged( $post_id );
+		
+		if($is_flagged){
+			ap_send_json(ap_ajax_responce(array('message' => 'already_flagged')));
+			echo json_encode(array('action' => false, 'message' => __('You already flagged this post', 'ap')));			
+		}else{
+
+			$row = ap_add_flag($userid, $post_id);
+				
+			$count = ap_post_flag_count( $post_id );
+			
+			//update post meta
+			update_post_meta($post_id, ANSPRESS_FLAG_META, $count);
+			ap_send_json(ap_ajax_responce(array('message' => 'flagged', 'action' => 'flagged', 'view' => array($post_id.'_flag_count' => $count),  'count' => $count)));
+		}			
+		
+		die();
+	}
+
 }
 new AnsPress_Vote_Ajax();
 
@@ -183,7 +217,7 @@ class anspress_vote
 		add_action( 'wp_ajax_ap_follow', array($this, 'ap_follow') ); 
 		add_action( 'wp_ajax_nopriv_ap_follow', array($this, 'ap_follow') ); 
 		
-		add_action( 'wp_ajax_ap_submit_flag_note', array($this, 'ap_submit_flag_note') ); 
+		
     }
 
 	/**
@@ -304,40 +338,7 @@ class anspress_vote
 		}
 		die();
 	}
-	
-	// vote for closing, ajax request 
-	public function ap_submit_flag_note(){
-		$args = explode('-', sanitize_text_field($_POST['args']));
-		$note_id = sanitize_text_field($_POST['note_id']);
-		$other_note = sanitize_text_field($_POST['other_note']);
-		
-		if(wp_verify_nonce( $args[1], 'flag_submit_'.$args[0] ) && is_user_logged_in()){
-			global $wpdb;
-			$userid = get_current_user_id();
-			$is_flagged = ap_is_user_flagged($args[0]);
-			
-			if($is_flagged){
-				// if already then return
-				echo json_encode(array('action' => false, 'message' => __('You already flagged this post', 'ap')));			
-			}else{
-				if($note_id != 'other')
-					$row = ap_add_flag($userid, $args[0], $note_id);
-				else
-					$row = ap_add_flag($userid, $args[0], NULL, $other_note);
-					
-				$counts = ap_post_flag_count($args[0]);
-				//update post meta
-				update_post_meta($args[0], ANSPRESS_FLAG_META, $counts);
-				
-				echo json_encode(array('row' => $row, 'action' => 'flagged', 'text' => __('Flag','ap').' ('.$counts.')','title' =>  __('You have flagged this post', 'ap'), 'message' => __('This post is notified to moderator. Thank you for helping us', 'ap')));
-			}
-			
-		}else{
-			echo '0'.__('Please try again', 'ap');	
-		}
-		
-		die();
-	}
+
 }
 
 /**
@@ -601,7 +602,7 @@ function ap_flag_btn_html($echo = false){
 	$nonce 		= wp_create_nonce( 'flag_'.$post->ID );
 	$title 		= (!$flagged) ? (__('Flag this post', 'ap')) : (__('You have flagged this post', 'ap'));
 	
-	$output ='<a id="flag_'.$post->ID.'" data-query="ap_ajax_action=subscribe_question&question_id=<?php echo $post->ID ?>&__nonce=<?php echo $nonce ?>" data-action="ap_subscribe" class="ap-tip flag-btn'. (!$flagged ? ' can-flagged' :'') .'" href="#" title="'.$title.'">'. __('Flag ', 'ap') . ($total_flag > 0 ? ' <span>('.$total_flag.')</span>':'').'</a>';
+	$output ='<a id="flag_'.$post->ID.'" data-query="ap_ajax_action=flag_post&post_id='.$post->ID .'&__nonce='.$nonce.'" data-action="ap_subscribe" class="ap-tip flag-btn'. (!$flagged ? ' can-flagged' :'') .'" href="#" title="'.$title.'">'. __('Flag ', 'ap') . '<span class="ap-data-view ap-view-count-'.$total_flag.'" data-view="'.$post->ID .'_flag_count">'.$total_flag.'</span></a>';
 
 	if($echo)
 		echo $output;
@@ -609,56 +610,6 @@ function ap_flag_btn_html($echo = false){
 		return $output;
 }
 
-// vote for closing, ajax request
-add_action( 'wp_ajax_ap_flag_note_modal', 'ap_flag_note_modal' );  
-function ap_flag_note_modal(){
-	$args = explode('-', sanitize_text_field($_POST['args']));
-	if(wp_verify_nonce( $args[1], 'flag_'.$args[0] )){
-		$nonce = wp_create_nonce( 'flag_submit_'.$args[0] );
-		?>
-		<div class="ap-modal flag-note" id="<?php echo 'flag_modal_'.$args[0]; ?>" tabindex="-1" role="dialog">
-			<div class="ap-modal-bg"></div>
-			<div class="ap-modal-content">
-				<div class="ap-modal-header">					
-					<h4 class="ap-modal-title"><?php _e('I am flagging this post because', 'ap'); ?><span class="ap-modal-close">&times;</span></h4>
-				</div>
-				<div class="ap-modal-body">
-				<?php 
-					if(ap_opt('flag_note'))
-					foreach( ap_opt('flag_note') as $k => $note){
-						echo '<div class="note clearfix">';
-						echo '<div class="note-radio pull-left"><input type="radio" name="note_id" value="'.$k.'" /></div>';
-						echo '<div class="note-desc">';
-						echo '<h4>'.$note['title'].'</h4>';
-						echo '<p>'.$note['description'].'</p>';
-						echo '</div>';
-						echo '</div>';
-					}
-				?>
-				<div class="note clearfix">
-					<div class="note-radio pull-left"><input type="radio" name="note_id" value="other" /></div>
-					<div class="note-desc">
-						<h4><?php _e('Other (needs moderator attention)', 'ap'); ?></h4>
-						<p><?php _e('This post needs a moderator\'s attention. Please describe exactly what\'s wrong. ', 'ap'); ?></p>
-						<textarea id="other-note" class="other-note" name="other_note"></textarea>
-					</div>
-				</div>
-				</div>
-				<div class="ap-modal-footer">
-					<input id="submit-flag-question" type="submit" data-update="<?php echo $args[0]; ?>" data-args="<?php echo $args[0].'-'.$nonce; ?>" class="btn btn-primary btn-sm" value="<?php _e('Flag post', 'ap'); ?>" />
-				</div>
-			</div>
-		  
-		  
-		</div>
-		<?php
-		
-	}else{
-		echo '0_'.__('Please try again', 'ap');	
-	}
-	
-	die();
-}
 
 function ap_follow_btn_html($userid, $small = false){
 	if(get_current_user_id() == $userid)
