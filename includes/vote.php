@@ -563,6 +563,9 @@ function ap_close_vote_html(){
 
 /* ---------------Flag btn-------------------
 ------------------------------------------- */
+/**
+ * @param integer $actionid
+ */
 function ap_add_flag($userid, $actionid, $value =NULL, $param =NULL){	
 	return ap_add_meta($userid, 'flag', $actionid, $value, $param );
 }
