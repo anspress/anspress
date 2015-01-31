@@ -282,14 +282,14 @@ class AnsPress_Options_Page
 				'type' 				=> 'custom',
 				'html' 				=> '<span class="ap-form-separator">'.__('Flag').'</span>',
 			),
-			array(
+			/*array(
 				'name' 				=> 'anspress_opt[flag_note]',
 				'label' 			=> __('Flag notes', 'ap'),
 				'description' 		=> __('Default notes when flagging a post', 'ap'),
 				'type' 				=> 'text',
 				'value' 			=> $settings['flag_note'],
 				'repeatable' 		=> true,
-			),
+			),*/
 			
 		));
 	}

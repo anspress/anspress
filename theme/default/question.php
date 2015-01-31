@@ -26,7 +26,7 @@ global $post;
 				?>
 			</div>
 		</div>
-		<div class="ap-question-left col-md-7">
+		<div class="ap-question-left <?php echo is_active_sidebar( 'ap-qsidebar' ) ? 'col-md-7' : 'col-md-10' ?>">
 			<div id="question" role="main" class="ap-content question" data-id="<?php echo get_the_ID(); ?>">
 				<header class="ap-q-head">
 					<?php 
@@ -122,9 +122,10 @@ global $post;
 				include(ap_get_theme_location('answer-form.php')); 
 			?>
 		</div>
-
-		<div class="ap-question-right col-md-3">
-			<?php dynamic_sidebar( 'ap-question-sidebar' ); ?>
-		</div>
+		<?php if ( is_active_sidebar( 'ap-qsidebar' ) ){ ?>
+			<div class="ap-question-right col-md-3">
+				<?php dynamic_sidebar( 'ap-qsidebar' ); ?>
+			</div>
+		<?php } ?>
 	</div>
 </div>
