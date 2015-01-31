@@ -467,7 +467,7 @@ function ap_post_subscribers_count($postid = false){
 /**
  * Output voting button
  * @param  int $post 
- * @return void
+ * @return null|string
  * @since 0.1
  */
 function ap_vote_btn($post = false, $echo = true){
