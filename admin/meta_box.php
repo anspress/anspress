@@ -20,9 +20,9 @@ class AP_Question_Meta_Box {
 			add_meta_box('ap_question_meta_box' ,__( 'Question', 'ap' ), array( $this,'question_meta_box_content' ), $post_type, 'side', 'high' );			
         }
 		
-		if ( in_array( $post_type, array('question', 'answer') )) {
+		/*if ( in_array( $post_type, array('question', 'answer') )) {
 			add_meta_box('ap_flag_meta_box' ,__( 'Flag & report', 'ap' ), array( $this,'flag_meta_box_content' ), $post_type, 'normal', 'high' );		
-        }
+        }*/
 	}
 
 
@@ -74,7 +74,7 @@ class AP_Question_Meta_Box {
 		wp_reset_postdata();
 	}
 	
-	public function flag_meta_box_content( $post ) {
+	/*public function flag_meta_box_content( $post ) {
 
 		
 		// get all flag message
@@ -114,7 +114,7 @@ class AP_Question_Meta_Box {
 		}else{
 			 _e('No flag yet', 'ap');
 		}
-	}
+	}*/
 	
 	function question_meta_box_content($post){
 		$ans_count = ap_count_answer_meta($post->ID);

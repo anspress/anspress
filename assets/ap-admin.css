@@ -6,7 +6,9 @@
 
     content: ' ';
 }
-
+.ap-admin-container {    
+    max-width: 800px;
+}
 .wp-list-table th#asker,
 .wp-list-table th#answerer
 {
@@ -52,6 +54,9 @@ td.column-post_title > a
     display: block;
 
     margin-bottom: .2em;
+}
+.post_type.column-post_type, .manage-column.column-post_type {
+    width: 70px;
 }
 
 .question-status
@@ -566,4 +571,36 @@ button.ap-submit-btn {
 }
 .ap-repeatbable-field .ap-form-control {
     width: 100%;
+}
+.ap-flagger-table{
+    width: 100%;
+}
+.ap-flagger-table td{
+    padding: 5px 10px;
+    border-bottom: solid 1px #eee;
+}
+.ap-flagger-table tr:last-child td{
+    border-bottom: none;
+}
+.ap-flagger-table .ap-user-avatar{
+    width: 30px;
+}
+.ap-flag-count {
+    display: block;
+    font-size: 18px;
+    font-weight: bold;
+    margin: 10px 0;
+}
+.ap-remove-flag {
+    text-align: right;
+}
+.ap-admin-sub {
+    font-size: 16px;
+    margin: 20px 0;
+}
+.ap-flag-post-content, .ap-flagger-table {
+    background: none repeat scroll 0 0 #fff;
+    border: 1px solid #e7e7e7;
+    margin-bottom: 20px;
+    padding: 10px 20px;
 }

@@ -173,6 +173,8 @@ class anspress_admin {
 		
 		add_submenu_page('anspress', __( 'Addons', 'ap' ), __( 'Addons', 'ap' ),	'manage_options', 'anspress_addons', array( $this, 'display_plugin_addons_page' ));
 
+		 add_submenu_page('ap_post_flag', __( 'Post flag', 'ap' ), __( 'Post flag', 'ap' ), 'manage_options', 'ap_post_flag', array( $this, 'display_post_flag' ));
+
 		/**
 		 * ACTION: ap_admin_menu
 		 * @since unknown
@@ -249,6 +251,7 @@ class anspress_admin {
 				<?php _e('AnsPress Badges', 'ap'); ?>
 				<a class="add-new-h2" href="#" data-button="ap-new-badge"><?php _e('New badge', 'ap'); ?></a>
 			</h2>
+			<?php do_action('ap_after_admin_page_title') ?>
 			<form id="anspress-badge-table" method="get">
 				<input type="hidden" name="page" value="<?php echo $_REQUEST['page'] ?>" />
 				<?php $badge_table->display() ?>
@@ -269,10 +272,7 @@ class anspress_admin {
 		<div class="wrap">        
 			<div id="apicon-users" class="icon32"><br/></div>
 			<h2><?php _e('Posts waiting moderation', 'ap'); ?></h2>
-			<div class="doante-to-anspress">
-				<h3>Help us keep AnsPress open source, free and full functional without any limitations</h3>
-				<a href="https://www.paypal.com/cgi-bin/webscr?business=rah12@live.com&cmd=_xclick&item_name=Donation%20to%20AnsPress%20development" target="_blank"><img src="https://www.paypal.com/en_US/i/btn/btn_donateCC_LG.gif" alt="" /></a>
-			</div>
+			<?php do_action('ap_after_admin_page_title') ?>
 			<form id="moderate-filter" method="get">
 				<input type="hidden" name="page" value="<?php echo $_REQUEST['page'] ?>" />
 				<?php $moderate_table->views() ?>
@@ -285,24 +285,30 @@ class anspress_admin {
 	
 	public function display_flagged_page() {
 		include_once('flagged.php');
-		$moderate_table = new AP_Flagged_Table();
-		$moderate_table->prepare_items();
+		$flagged_table = new AP_Flagged_Table();
+		$flagged_table->prepare_items();
 		?>
 		<div class="wrap">        
 			<div id="apicon-users" class="icon32"><br/></div>
 			<h2><?php _e('Flagged question & answer', 'ap'); ?></h2>
-			<div class="doante-to-anspress">
-				<h3>Help us keep AnsPress open source, free and full functional without any limitations</h3>
-				<a href="https://www.paypal.com/cgi-bin/webscr?business=rah12@live.com&cmd=_xclick&item_name=Donation%20to%20AnsPress%20development" target="_blank"><img src="https://www.paypal.com/en_US/i/btn/btn_donateCC_LG.gif" alt="" /></a>
-			</div>
-			<form id="moderate-filter" method="get">
+			<?php do_action('ap_after_admin_page_title') ?>
+			<form id="flagged-filter" method="get">
 				<input type="hidden" name="page" value="<?php echo $_REQUEST['page'] ?>" />
-				<?php $moderate_table->views() ?>
-				<?php $moderate_table->advanced_filters(); ?>
-				<?php $moderate_table->display() ?>
+				<?php $flagged_table->views() ?>
+				<?php $flagged_table->advanced_filters(); ?>
+				<?php $flagged_table->display() ?>
 			</form>
 		</div>
 		<?php
+	}
+
+	/**
+	 * Control the output of post flag page
+	 * @return void
+	 * @since 2.0.0-alpha2
+	 */
+	public function display_post_flag() {
+		include_once('views/post_flag.php');
 	}
 
 	/**
@@ -710,8 +716,8 @@ class anspress_admin {
 	
 	
 	public function ap_delete_flag(){
-		$id = (int)sanitize_text_field($_POST['flag_id']);
-		if(wp_verify_nonce($_POST['nonce'], 'flag_delete'.$id) && current_user_can('manage_options')){
+		$id = (int)sanitize_text_field($_POST['id']);
+		if(wp_verify_nonce($_POST['__nonce'], 'flag_delete'.$id) && current_user_can('manage_options')){
 			return ap_delete_meta(false, $id);
 		}
 		die();

@@ -350,16 +350,12 @@ APjs.admin.prototype = {
 	
 	
 	deleteFlag : function(){
-		jQuery('#ap-delete-flag').click(function(e){
+		jQuery('[data-action="ap-delete-flag"]').click(function(e){
 			e.preventDefault();
 			jQuery.ajax({
 				type: 'POST',  
 				url: ajaxurl,  
-				data:  {
-					action	: 'ap_delete_flag',
-					flag_id : jQuery(this).data('id'),
-					nonce 	: jQuery(this).data('nonce')
-				},
+				data:  jQuery(this).attr('href'),
 				context:this,
 				success: function(data){					
 					jQuery(this).closest('.flag-item').remove();
