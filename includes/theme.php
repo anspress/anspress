@@ -459,15 +459,25 @@ function ap_current_user_page_is($page){
 }
 
 /**
- * Check if current post is private
- * @param  integer $post_id 
- * @return boolean
+ * Get post status
+ * @param  integer $post_id
+ * @return string
+ * @since 2.0.0-alpha2
  */
-function is_private_post($post_id = false){
+function ap_post_status($post_id){
 	if(!$post_id)
 		$post_id = get_the_ID();
 	
-	if(get_post_status( $post_id ) == 'private_post')
+	return get_post_status( $post_id );
+}
+
+/**
+ * Check if current post is private
+ * @return boolean
+ */
+function is_private_post(){
+	
+	if(ap_post_status( ) == 'private_post')
 		return true;
 	
 	return false;
@@ -475,12 +485,9 @@ function is_private_post($post_id = false){
 
 /**
  * Check if post is waiting moderation
- * @param  integer $post_id
  * @return boolean
  */
-function is_post_waiting_moderation($post_id = false){
-	if(!$post_id)
-		$post_id = get_the_ID();
+function is_post_waiting_moderation(){
 	
 	if(get_post_status( $post_id ) == 'moderate')
 		return true;
@@ -490,14 +497,10 @@ function is_post_waiting_moderation($post_id = false){
 
 /**
  * Check if question is closed
- * @param  integer $post_id
  * @return boolean
  * @since 2.0.0-alpha2
  */
 function is_post_closed($post_id = false){
-	if(!$post_id)
-		$post_id = get_the_ID();
-	
 	if(get_post_status( $post_id ) == 'closed')
 		return true;
 	
