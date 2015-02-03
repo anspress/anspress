@@ -40,8 +40,18 @@ $class = ap_is_best_answer(get_the_ID()) ? ' selected answer' : 'answer';
 					the_content();
 				?>
 			</div>
-			<?php ap_post_actions_buttons() ?>
-			<?php if(ap_opt('show_comments_by_default')) comments_template(); ?>
-		</div>			
+			<?php ap_post_actions_buttons() ?>			
+		</div>
+		<?php if ( is_private_post()) : ?>
+			<div class="ap-notice black clearfix">
+				<i class="apicon-lock"></i><span><?php _e( 'Answer is marked as a private, only admin and post author can see.', 'ap' ); ?></span>
+			</div>
+		<?php endif; ?>
+		<?php if ( is_post_waiting_moderation()) : ?>
+			<div class="ap-notice yellow clearfix">
+				<i class="apicon-info"></i><span><?php _e( 'Answer is waiting for approval by moderator.', 'ap' ); ?></span>
+			</div>
+		<?php endif; ?>
+		<?php if(ap_opt('show_comments_by_default')) comments_template(); ?>
 	</div>	
 </div>

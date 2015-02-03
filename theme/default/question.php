@@ -12,21 +12,7 @@ global $post;
 ?>
 <div id="ap-single" class="clearfix" itemtype="http://schema.org/Question" itemscope="">	
 	<div class="ap-question-lr">		
-		<div class="col-md-2">
-			<div class="ap-question-info">
-				<?php
-					the_widget( 'AnsPress_Subscribe_Widget', 'title=');
-					the_widget( 'AnsPress_Participants_Widget', 'title=&avatar_size=25');
-					/**
-					 * ACTION: ap_question_info
-					 * @since 	2.0.0-alpha2
-					 */
-					do_action('ap_question_info');
-					the_widget( 'AnsPress_Stats_Widget', 'title='.__('Stats', 'ap'), 'before_title=<h3 class="ap-widget-title">&after_title=</h3>');
-				?>
-			</div>
-		</div>
-		<div class="ap-question-left <?php echo is_active_sidebar( 'ap-qsidebar' ) ? 'col-md-7' : 'col-md-10' ?>">
+		<div class="ap-question-left <?php echo is_active_sidebar( 'ap-qsidebar' ) ? 'col-md-9' : 'col-md-12' ?>">
 			<div id="question" role="main" class="ap-content question" data-id="<?php echo get_the_ID(); ?>">
 				<header class="ap-q-head">
 					<?php 
@@ -72,9 +58,6 @@ global $post;
 					
 					<!-- Start ap-content-inner -->
 					<div class="ap-content-inner">
-				
-						
-
 						<div class="question-content ap-post-content" itemprop="text">
 							<?php the_content(); ?>									
 						</div>
@@ -84,6 +67,14 @@ global $post;
 							 * @since 	2.0
 							 */
 							do_action('ap_after_question_content', $post);
+						?>
+
+						<?php 
+							/**
+							 * ACTION: ap_after_question_content
+							 * @since 	2.0.0-alpha2
+							 */
+							do_action('ap_after_question_content');
 						?>
 
 						
@@ -97,11 +88,25 @@ global $post;
 							global $post;
 							do_action('ap_after_question_actions', $post);
 						?>
-
-						<?php if(ap_opt('show_comments_by_default')) comments_template(); ?>
-
 					</div>
-					<!-- End ap-content-inner -->					
+					<!-- End ap-content-inner -->
+
+					<?php if ( is_private_post()) : ?>
+						<div class="ap-notice black clearfix">
+							<i class="apicon-lock"></i><span><?php _e( 'Question is marked as a private, only admin and post author can see.', 'ap' ); ?></span>
+						</div>
+					<?php endif; ?>
+					<?php if ( is_post_waiting_moderation()) : ?>
+						<div class="ap-notice yellow clearfix">
+							<i class="apicon-info"></i><span><?php _e( 'Question is waiting for approval by moderator.', 'ap' ); ?></span>
+						</div>
+					<?php endif; ?>
+					<?php if ( is_post_closed()) : ?>
+						<div class="ap-notice red clearfix">
+							<?php echo ap_icon('cross', true) ?><span><?php _e( 'Question is closed, new answer are not accepted.', 'ap' ); ?></span>
+						</div>
+					<?php endif; ?>
+					<?php if(ap_opt('show_comments_by_default')) comments_template(); ?>
 				</div>		
 			</div>
 			
@@ -124,7 +129,9 @@ global $post;
 		</div>
 		<?php if ( is_active_sidebar( 'ap-qsidebar' ) ){ ?>
 			<div class="ap-question-right col-md-3">
-				<?php dynamic_sidebar( 'ap-qsidebar' ); ?>
+				<div class="ap-question-info">
+					<?php dynamic_sidebar( 'ap-qsidebar' ); ?>
+				</div>
 			</div>
 		<?php } ?>
 	</div>

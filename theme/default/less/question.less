@@ -13,6 +13,11 @@
 		    padding-bottom: 25px;
 		}
 	}
+	.ap-content-inner {
+	    border: 1px solid #eee;
+	    border-radius: 4px;
+	    padding: 15px;
+	}
 	.ap-user-meta{
 		color: @light-color;
     	margin-bottom: 3px;
@@ -30,8 +35,8 @@
 	.ap-question-metas, .ap-answer-metas{
 		margin-bottom: 10px;
 		li{
-			color:@light-color;
-		    font-size: 12px;
+		    color: #888888;
+		    font-size: 14px;
 		    margin: 0 5px 0 0;
 			i{
 				font-style: normal;
@@ -67,7 +72,6 @@
 	    }
 	}
 	.ap-post-content{
-	    font-size: 13px;
 	    line-height: 1.8;
 
 	    p{
@@ -155,8 +159,10 @@
 }
 
 .ap-sorting-tab {
-    border-bottom: 1px solid @default-border-color;
-    padding: 20px 0;
+    border-bottom: 1px solid #eeeeee;
+    margin-bottom: 25px;
+    padding: 10px 0;
+
 	.ap-widget-title{
     	display: block;
 	    font-size: 12px;
@@ -191,7 +197,6 @@
 }
 #answers{
 	.answer{
-	    border-top: 1px solid #eeeeee;
     	margin: 0;
     	padding: 25px 0;
 
@@ -203,12 +208,9 @@
 }
 #ap-best-answer {
 	position: relative;
-	> .answer {
-	    background: none repeat scroll 0 0 #f7fef9;
-	    border: 1px solid #cbdaca;
-	    border-radius: 3px;
-	    margin: 15px 0;
-	    padding: 15px;
+	.ap-content-inner {
+	    background: none repeat scroll 0 0 rgba(247, 254, 249, 0.33);
+	    border: 1px solid rgba(204, 218, 202, 0.22);
 	}
 	.ap-widget-title {
 	    background: none repeat scroll 0 0 #5db859;

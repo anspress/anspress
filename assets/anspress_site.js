@@ -165,7 +165,8 @@ AnsPress.site.prototype = {
 			ApSite.doAjax( 
 				apAjaxData($(this).formSerialize()), 
 				function(data){
-					console.log(data);
+					if(typeof tinyMCE !== 'undefined')
+						tinyMCE.activeEditor.setContent('');
 				}, 
 				this
 			);

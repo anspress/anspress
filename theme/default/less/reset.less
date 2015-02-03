@@ -163,7 +163,7 @@
 @keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
 
 .private-question-label{
-    background: none repeat scroll 0 0 #333;
+    background: none repeat scroll 0 0 #8F8F8F;
     .border-radius(2px);
     color: @white;
     display: table;
@@ -204,6 +204,29 @@
 	}
 }
 
+.ap-notice {
+    background: none repeat scroll 0 0 #eee;
+    border-radius: 2px;
+    display: block;
+    margin-top: 10px;
+    padding: 12px;
+
+    &.black{
+    	background: #777;
+    	color: #fff;
+    }
+    &.yellow{
+    	background: @yellow-color;
+    	color: #fff;
+    }
+    &.red{
+    	background: @error-color;
+    	color: #fff;
+    }
+    i{
+    	margin-right: 15px;
+    }
+}
 .ap-pending-notice {
     background: @yellow-color;
     border-radius: 2px;

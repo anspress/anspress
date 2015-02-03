@@ -1085,7 +1085,7 @@
   }
 }
 .private-question-label {
-  background: none repeat scroll 0 0 #333;
+  background: none repeat scroll 0 0 #8F8F8F;
   -webkit-border-radius: 2px;
   -webkit-background-clip: padding-box;
   -moz-border-radius: 2px;
@@ -1127,6 +1127,28 @@
   font-weight: 600;
   padding: 10px 0;
 }
+.ap-notice {
+  background: none repeat scroll 0 0 #eee;
+  border-radius: 2px;
+  display: block;
+  margin-top: 10px;
+  padding: 12px;
+}
+.ap-notice.black {
+  background: #777;
+  color: #fff;
+}
+.ap-notice.yellow {
+  background: #f4ac20;
+  color: #fff;
+}
+.ap-notice.red {
+  background: #eb5837;
+  color: #fff;
+}
+.ap-notice i {
+  margin-right: 15px;
+}
 .ap-pending-notice {
   background: #f4ac20;
   border-radius: 2px;
@@ -1150,12 +1172,6 @@
   margin: 0;
   padding: 15px 0;
   width: 100%;
-}
-.list-question .ap-list-inner,
-.list-question .ap-count,
-.list-question .ap-list-history {
-  display: table-cell;
-  vertical-align: top;
 }
 .list-question .ap-count {
   padding-left: 15px;
@@ -1181,8 +1197,9 @@
 }
 .list-question .ap-list-inner .question-title {
   display: block;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 600;
+  margin-bottom: 5px;
   margin-top: 0;
 }
 .list-question .ap-list-inner .ap-post-history {
@@ -1285,6 +1302,11 @@
   margin-top: 10px;
   padding-bottom: 25px;
 }
+.ap-content .ap-content-inner {
+  border: 1px solid #eee;
+  border-radius: 4px;
+  padding: 15px;
+}
 .ap-content .ap-user-meta {
   color: #888888;
   margin-bottom: 3px;
@@ -1304,7 +1326,7 @@
 .ap-content .ap-question-metas li,
 .ap-content .ap-answer-metas li {
   color: #888888;
-  font-size: 12px;
+  font-size: 14px;
   margin: 0 5px 0 0;
 }
 .ap-content .ap-question-metas li i,
@@ -1347,7 +1369,6 @@
   color: #595959;
 }
 .ap-content .ap-post-content {
-  font-size: 13px;
   line-height: 1.8;
 }
 .ap-content .ap-post-content p {
@@ -1425,7 +1446,8 @@
 }
 .ap-sorting-tab {
   border-bottom: 1px solid #eeeeee;
-  padding: 20px 0;
+  margin-bottom: 25px;
+  padding: 10px 0;
 }
 .ap-sorting-tab .ap-widget-title {
   display: block;
@@ -1458,7 +1480,6 @@
   padding-top: 15px;
 }
 #answers .answer {
-  border-top: 1px solid #eeeeee;
   margin: 0;
   padding: 25px 0;
 }
@@ -1469,12 +1490,9 @@
 #ap-best-answer {
   position: relative;
 }
-#ap-best-answer > .answer {
-  background: none repeat scroll 0 0 #f7fef9;
-  border: 1px solid #cbdaca;
-  border-radius: 3px;
-  margin: 15px 0;
-  padding: 15px;
+#ap-best-answer .ap-content-inner {
+  background: none repeat scroll 0 0 rgba(247, 254, 249, 0.33);
+  border: 1px solid rgba(204, 218, 202, 0.22);
 }
 #ap-best-answer .ap-widget-title {
   background: none repeat scroll 0 0 #5db859;
@@ -2352,6 +2370,9 @@
   margin-right: 10px;
   text-align: center;
   width: 30px;
+}
+.ap-widget-pos {
+  margin-bottom: 25px;
 }
 .ap-stats-widget {
   padding: 0;

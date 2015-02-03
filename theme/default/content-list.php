@@ -17,7 +17,7 @@ $clearfix_class = array('list-question clearfix');
 ?>
 <article id="question-<?php the_ID(); ?>" <?php post_class($clearfix_class); ?>>
 	<?php if ( is_private_post()) : ?>
-		<div class="private-question-label">
+		<div class="private-question-label clearfix">
 			<span><?php _e( 'Private Question', 'ap' ); ?></span>
 		</div>
 	<?php endif; ?>		
@@ -45,5 +45,4 @@ $clearfix_class = array('list-question clearfix');
 			</div>
 		</div>				
 	</div>	
-	<div class="ap-count">	
 </article><!-- list item -->

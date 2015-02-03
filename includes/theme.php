@@ -458,11 +458,47 @@ function ap_current_user_page_is($page){
 	return false;
 }
 
+/**
+ * Check if current post is private
+ * @param  integer $post_id 
+ * @return boolean
+ */
 function is_private_post($post_id = false){
 	if(!$post_id)
 		$post_id = get_the_ID();
 	
 	if(get_post_status( $post_id ) == 'private_post')
+		return true;
+	
+	return false;
+}
+
+/**
+ * Check if post is waiting moderation
+ * @param  integer $post_id
+ * @return boolean
+ */
+function is_post_waiting_moderation($post_id = false){
+	if(!$post_id)
+		$post_id = get_the_ID();
+	
+	if(get_post_status( $post_id ) == 'moderate')
+		return true;
+	
+	return false;
+}
+
+/**
+ * Check if question is closed
+ * @param  integer $post_id
+ * @return boolean
+ * @since 2.0.0-alpha2
+ */
+function is_post_closed($post_id = false){
+	if(!$post_id)
+		$post_id = get_the_ID();
+	
+	if(get_post_status( $post_id ) == 'closed')
 		return true;
 	
 	return false;
