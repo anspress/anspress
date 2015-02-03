@@ -464,7 +464,7 @@ function ap_current_user_page_is($page){
  * @return string
  * @since 2.0.0-alpha2
  */
-function ap_post_status($post_id){
+function ap_post_status($post_id = false){
 	if(!$post_id)
 		$post_id = get_the_ID();
 	
@@ -475,9 +475,9 @@ function ap_post_status($post_id){
  * Check if current post is private
  * @return boolean
  */
-function is_private_post(){
+function is_private_post($post_id = false){
 	
-	if(ap_post_status( ) == 'private_post')
+	if(ap_post_status( $post_id ) == 'private_post')
 		return true;
 	
 	return false;
@@ -487,7 +487,7 @@ function is_private_post(){
  * Check if post is waiting moderation
  * @return boolean
  */
-function is_post_waiting_moderation(){
+function is_post_waiting_moderation($post_id = false){
 	
 	if(get_post_status( $post_id ) == 'moderate')
 		return true;

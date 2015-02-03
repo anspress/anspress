@@ -34,7 +34,14 @@ new AnsPress_Answer_Form;
  * @return void
  */
 function ap_answer_form($question_id, $editing = false){
-    
+
+    if(is_post_closed($question_id)){
+        echo '<div class="ap-notice yellow clearfix">
+                '.ap_icon('cross', true).'<span>'.__( 'Question is closed, new answer cannot be submitted.', 'ap' ).'</span>
+            </div>';
+        return;
+    }
+
     if(!ap_user_can_answer($question_id))
         return;
 
