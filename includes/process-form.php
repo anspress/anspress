@@ -573,7 +573,7 @@ class AnsPress_Process_Form
 				$comment_author_email = wp_slash( $user->user_email );
 				$comment_author_url = wp_slash( $user->user_url );
 				$comment_content = trim( $_POST['comment'] );
-				$comment_type = isset( $_POST['comment_type'] ) ? trim( $_POST['comment_type'] ) : '';
+				$comment_type = 'anspress';
 
 			} else {
 				$this->result = ap_ajax_responce('no_permission');

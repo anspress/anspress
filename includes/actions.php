@@ -13,7 +13,6 @@ class AnsPress_Actions
 {
 	/**
 	 * Initialize the class
-	 * @return void
 	 * @since 2.0.1
 	 */
 	public function __construct()
