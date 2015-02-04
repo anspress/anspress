@@ -183,6 +183,13 @@ class AnsPress_Options_Page
 				'type' 				=> 'number',
 				'value' 			=> $settings['minimum_question_length'],
 			),
+			array(
+				'name' 				=> 'anspress_opt[question_text_editor]',
+				'label' 			=> __('Use text editor ?', 'ap'),
+				'description' 		=> __('Text editor as default.', 'ap'),
+				'type' 				=> 'checkbox',
+				'value' 			=> $settings['question_text_editor'],
+			),
 		));
 
 		// Register answer settings
@@ -200,6 +207,13 @@ class AnsPress_Options_Page
 				'description' 		=> __('Set minimum letters for a answer contents.', 'ap'),
 				'type' 				=> 'number',
 				'value' 			=> $settings['minimum_ans_length'],
+			),
+			array(
+				'name' 				=> 'anspress_opt[answer_text_editor]',
+				'label' 			=> __('Use text editor ?', 'ap'),
+				'description' 		=> __('Text editor as default.', 'ap'),
+				'type' 				=> 'checkbox',
+				'value' 			=> $settings['answer_text_editor'],
 			),
 		));
 

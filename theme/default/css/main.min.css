@@ -2337,10 +2337,10 @@
   padding: 10px;
   position: fixed;
   top: 125px;
-  width: 320px;
   z-index: 9999;
 }
 #ap-notify .ap-notify-item {
+  width: 320px;
   background: #ffffff;
   border: 2px solid #ddd;
   -webkit-border-radius: 3px;

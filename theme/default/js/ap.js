@@ -160,7 +160,7 @@ jQuery(document).ready(function(){
 
     jQuery('.ap-radio-btn').click(function(){ jQuery(this).toggleClass('active'); });
 
-    jQuery('#answer_form').click(function(){
+    /*jQuery('#answer_form').click(function(){
         var form = this;
         jQuery(this).find('.ap-editor-answer-label').remove();
         jQuery(this).animate({
@@ -168,7 +168,7 @@ jQuery(document).ready(function(){
         }, 500).find('>*').delay(500).fadeIn(200, function(){
             jQuery(form).removeClass('ap-form-mini').css('height', '');
         });
-    })
+    })*/
 	
 });
 function ap_chk_activity_scroll(e){

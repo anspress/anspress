@@ -75,6 +75,7 @@ function ap_ask_form($editing = false){
                 'value' => ( $editing ? $editing_post->post_content : @$_POST['description']  ),
                 'settings' => array(
                     'textarea_rows' => 8,
+                    'tinymce' => ap_opt('question_text_editor') ? false : true,
                 ),
             ),
             array(

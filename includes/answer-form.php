@@ -64,6 +64,7 @@ function ap_answer_form($question_id, $editing = false){
                 'value' => ( $editing ? $editing_post->post_content : @$_POST['description']  ),
                 'settings' => array(
                     'textarea_rows' => 8,
+                    'tinymce' => ap_opt('answer_text_editor') ? false : true,
                 ),
                 'placeholder'  => __('Your answer..'),
             ),
