@@ -173,13 +173,9 @@ class anspress_admin {
 		
 		add_submenu_page('anspress', __( 'Flagged question & answer', 'ap' ), __( 'Flagged', 'ap' ).$Flagcount,	'manage_options', 'anspress_flagged', array( $this, 'display_flagged_page' ));		
 		
-		//add_submenu_page('anspress', 'Questions Label', 'Label', 'manage_options', 'edit-tags.php?taxonomy=question_label');
-		//add_submenu_page('anspress', __( 'Points', 'ap' ), __( 'User Points', 'ap' ),	'manage_options', 'ap_points', array( $this, 'display_points_page' ));		
-		//add_submenu_page('anspress', __( 'Badges', 'ap' ), __( 'User Badges', 'ap' ),	'manage_options', 'ap_badges', array( $this, 'display_badges_page' ));
-		
 		add_submenu_page('anspress', __( 'AnsPress Options', 'ap' ), __( 'Options', 'ap' ),	'manage_options', 'anspress_options', array( $this, 'display_plugin_admin_page' ));
 		
-		add_submenu_page('anspress', __( 'Addons', 'ap' ), __( 'Addons', 'ap' ),	'manage_options', 'anspress_addons', array( $this, 'display_plugin_addons_page' ));
+		add_submenu_page('anspress', __( 'Extensions', 'ap' ), __( 'Extensions', 'ap' ),	'manage_options', 'anspress_ext', array( $this, 'display_plugin_addons_page' ));
 
 		 add_submenu_page('ap_post_flag', __( 'Post flag', 'ap' ), __( 'Post flag', 'ap' ), 'manage_options', 'ap_post_flag', array( $this, 'display_post_flag' ));
 		 add_submenu_page('ap_select_question', __( 'Select question', 'ap' ), __( 'Select question', 'ap' ), 'manage_options', 'ap_select_question', array( $this, 'display_select_question' ));

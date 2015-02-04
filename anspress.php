@@ -82,8 +82,8 @@ if (!class_exists('AnsPress')) {
             if (! isset(self::$instance) && ! (self::$instance instanceof AnsPress)) {
                 self::$instance = new AnsPress();
                 self::$instance->_setup_constants();
-
-                add_action('plugins_loaded', array( self::$instance, 'load_textdomain' ));
+                
+                add_action('init', array( self::$instance, 'load_textdomain' ));
 
                 global $ap_classes;
                 $ap_classes = array();
@@ -265,7 +265,7 @@ if (!class_exists('AnsPress')) {
          */
         public function load_textdomain()
         {
-            load_plugin_textdomain($this->_text_domain, false, '/languages');
+            load_plugin_textdomain($this->_text_domain, false, dirname(plugin_basename(__FILE__)).'/languages/');
         }
     }
 }
