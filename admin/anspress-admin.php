@@ -127,7 +127,11 @@ class anspress_admin {
 	 * @return    null    Return early if no settings page is registered.
 	 */
 	public function enqueue_admin_scripts() {
-		wp_enqueue_script( 'jquery-ui-autocomplete' );
+		global $typenow, $pagenow;
+
+		if (in_array( $pagenow, array( 'admin.php' ) ) &&  (isset($_GET['page']) && $_GET['page'] == 'anspress') )
+			wp_enqueue_script('masonry');
+		
 		wp_enqueue_script( 'jquery-form', array('jquery'), false, true );
 		wp_enqueue_script( 'ap-admin-js', ANSPRESS_URL.'assets/ap-admin.js');
 	}
@@ -763,7 +767,7 @@ class anspress_admin {
 	{
 		global $typenow, $pagenow, $post;
 
-		if (in_array( $pagenow, array( 'post-new.php', 'post.php' ) ) && ($typenow == 'answer'|| $_GET['action'] == 'edit') ){
+		if (in_array( $pagenow, array( 'post-new.php', 'post.php' ) ) && ($typenow == 'answer'|| (isset($_GET['action']) && $_GET['action'] == 'edit') )){
 			
 			$post_parent = isset($_GET['action']) ? $post->post_parent : (int)$_GET['post_parent'];
 			

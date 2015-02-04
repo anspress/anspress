@@ -31,7 +31,7 @@ $flags = ap_get_all_meta(
 
 ?>
 <div id="ap-admin-dashboard" class="wrap">
-	<?php do_action('ap_after_admin_page_title') ?>
+	<?php do_action('ap_before_admin_page_title') ?>
 	<h2><?php _e('Post flag', 'ap') ?></h2>
 
 	<div class="ap-admin-container">

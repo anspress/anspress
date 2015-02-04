@@ -367,6 +367,12 @@ function ap_add_item_to_menu(menuItem, callback) {
 }
 jQuery(document).ready(function (jQuery){  
 
+	var container = document.querySelector('#ap-dash-tiles');
+	var msnry = new Masonry( container, {
+	  // options
+	  columnWidth: '.grid-sizer',
+	  itemSelector: '.ap-dash-tile'
+	});
 	
 	jQuery('#select-question-for-answer').on('keyup', function(){
 		if(jQuery.trim(jQuery(this).val()) == '')
