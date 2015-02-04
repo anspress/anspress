@@ -35,7 +35,10 @@ class AnsPress_Search_Shortcode {
 			do_action('ap_before');
 			
 			// include theme file
-			include ap_get_theme_location('base.php');
+			if($questions->have_posts())
+				include ap_get_theme_location('base.php');
+			else
+				_e('No questions match your search criteria', 'ap');
 
 			wp_reset_postdata();
 		echo '</div>';
