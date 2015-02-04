@@ -11,7 +11,7 @@
 global $post;
 ?>
 <div id="ap-single" class="clearfix" itemtype="http://schema.org/Question" itemscope="">	
-	<div class="ap-question-lr">		
+	<div class="ap-question-lr row">		
 		<div class="ap-question-left <?php echo is_active_sidebar( 'ap-qsidebar' ) ? 'col-md-9' : 'col-md-12' ?>">
 			<div id="question" role="main" class="ap-content question" data-id="<?php echo get_the_ID(); ?>">
 				<header class="ap-q-head">

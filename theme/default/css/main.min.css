@@ -913,6 +913,14 @@
 .anspress-container {
   color: #595959;
 }
+.anspress-container .hentry {
+  padding-top: 0;
+  margin: 0;
+  border: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+}
 .ap-pull-right {
   float: right !important;
 }
@@ -1168,10 +1176,17 @@
 }
 .list-question {
   border-bottom: 1px solid #F8F8F8;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
   display: table;
   margin: 0;
   padding: 15px 0;
   width: 100%;
+}
+.list-question.hentry {
+  margin: 0;
+  border-top: none;
 }
 .list-question .ap-count {
   padding-left: 15px;
@@ -1201,6 +1216,9 @@
   font-weight: 600;
   margin-bottom: 5px;
   margin-top: 0;
+}
+.list-question .ap-list-inner .question-title a {
+  text-decoration: none;
 }
 .list-question .ap-list-inner .ap-post-history {
   color: #888;

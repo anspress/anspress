@@ -4,10 +4,16 @@
 
 .list-question{
     border-bottom: 1px solid #F8F8F8;
+    .box-shadow(none);
     display: table;
     margin: 0;
     padding: 15px 0;
     width: 100%;
+
+    &.hentry{
+    	margin: 0;
+    	border-top:none;
+    }
 
     .ap-count {
 	    padding-left: 15px;
@@ -42,6 +48,9 @@
 		    font-weight: 600;
 		    margin-bottom: 5px;
 		    margin-top: 0;
+		    a{
+		    	text-decoration: none;
+		    }
 		}
 		.ap-post-history {
 		    color: #888;
