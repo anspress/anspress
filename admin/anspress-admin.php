@@ -83,6 +83,15 @@ class anspress_admin {
 		add_action( 'wp_ajax_ap_new_badge_form', array($this, 'ap_new_badge_form') );
 		add_action( 'wp_ajax_ap_delete_badge', array($this, 'ap_delete_badge') );
 		add_action( 'wp_ajax_ap_delete_flag', array($this, 'ap_delete_flag') );		
+		add_action( 'edit_form_after_title', array($this, 'edit_form_after_title') );
+		add_action( 'save_post', array($this, 'ans_parent_post'), 0, 2 );
+		add_filter('manage_edit-answer_columns', array($this,'cpt_answer_columns'));
+		add_action('manage_answer_posts_custom_column', array($this, 'answer_row_actions'), 10, 2);
+		add_filter('manage_edit-question_sortable_columns', array($this, 'admin_column_sort_flag'));
+        add_filter('manage_edit-answer_sortable_columns', array($this, 'admin_column_sort_flag'));
+        add_action('pre_get_posts', array( $this, 'admin_column_sort_flag_by'));
+        add_filter('wp_insert_post_data', array($this, 'post_data_check'), 99);
+        add_filter('post_updated_messages', array($this,'post_custom_message'));
 	}
 
 	/**
@@ -174,6 +183,7 @@ class anspress_admin {
 		add_submenu_page('anspress', __( 'Addons', 'ap' ), __( 'Addons', 'ap' ),	'manage_options', 'anspress_addons', array( $this, 'display_plugin_addons_page' ));
 
 		 add_submenu_page('ap_post_flag', __( 'Post flag', 'ap' ), __( 'Post flag', 'ap' ), 'manage_options', 'ap_post_flag', array( $this, 'display_post_flag' ));
+		 add_submenu_page('ap_select_question', __( 'Select question', 'ap' ), __( 'Select question', 'ap' ), 'manage_options', 'ap_select_question', array( $this, 'display_select_question' ));
 
 		/**
 		 * ACTION: ap_admin_menu
@@ -312,6 +322,15 @@ class anspress_admin {
 	}
 
 	/**
+	 * Control the ouput of question selection
+	 * @return void
+	 * @since 2.0.0-alpha2
+	 */
+	public function display_select_question() {
+		include_once('views/select_question.php');
+	}
+
+	/**
 	 * Add settings action link to the plugins page.
 	 */
 	public function add_action_links( $links ) {
@@ -332,6 +351,8 @@ class anspress_admin {
 		return $input;
 	}
 	public function init_actions(){
+
+		$GLOBALS['wp']->add_query_var( 'post_parent' );
 		
 		// flush_rules if option updated	
 		if(isset($_GET['page']) && ('anspress_options' == $_GET['page']) && isset($_GET['settings-updated']) && $_GET['settings-updated']){
@@ -340,6 +361,16 @@ class anspress_admin {
 			$options['base_page_slug'] = $page->post_name;
 			update_option( 'anspress_opt', $options);
 			ap_opt('ap_flush', 'true');
+		}
+
+		// If creating a new question then first set a question ID
+
+		global $typenow;
+
+		global $pagenow;
+
+		if (in_array( $pagenow, array( 'post-new.php' ) ) && $typenow == 'answer' && !isset($_GET['post_parent'])){
+		   wp_redirect( admin_url( 'admin.php?page=ap_select_question' ) );
 		}
 	}
 	
@@ -723,5 +754,180 @@ class anspress_admin {
 		die();
 	}
 
+	/**
+	 * Show question detail above new answer
+	 * @return void
+	 * @since 2.0
+	 */
+	public function edit_form_after_title()
+	{
+		global $typenow, $pagenow, $post;
 
+		if (in_array( $pagenow, array( 'post-new.php', 'post.php' ) ) && ($typenow == 'answer'|| $_GET['action'] == 'edit') ){
+			
+			$post_parent = isset($_GET['action']) ? $post->post_parent : (int)$_GET['post_parent'];
+			
+			echo '<div class="ap-selected-question">';
+				if(!isset($post_parent)){
+					echo '<p class="no-q-selected">'.__('This question is orphan, no question is selected for this answer').'</p>';
+				}else{
+					$q = get_post($post_parent);
+					$answer = get_post_meta( $q->ID, ANSPRESS_ANS_META, true );
+					echo '<a class="ap-q-title" href="'. get_permalink($q->post_id) .'">'. $q->post_title .'</a>';
+					echo '<div class="ap-q-meta"><span class="ap-a-count">'.sprintf(_n('1 Answer', '%d Answer', $answer, 'ap'), $answer).'</span><span class="ap-edit-link">| <a href="'.get_edit_post_link($q->ID).'">'. __('Edit question', 'ap').'</a></span></div>';
+					echo '<div class="ap-q-content">'. $q->post_content .'</div>';
+				}
+			echo '</div>';
+		}
+	}
+
+	/**
+	 * Set answer CPT post parent when saving
+	 * @param  integer $post_id
+	 * @param  object $post 
+	 * @return void
+	 * @since 2.0.0-alpha2
+	 */
+	public function ans_parent_post( $post_id, $post ) {
+
+		if ( !current_user_can( 'edit_post', $post->ID ))
+			return $post->ID;
+		
+		if ( $post->post_type == 'answer' ) {
+			$parent_q = (int) $_GET['post_parent'];
+			if( !isset( $parent_q ) || $parent_q == '0' || $parent_q =='' ){
+				return $post->ID;
+			}else{
+				global $wpdb;
+				$wpdb->update( $wpdb->posts, array( 'post_parent' => $parent_q ), array( 'ID' => $post->ID ) );
+			}
+			
+		}
+	}
+
+	/**
+	 * Answer CPT columns
+	 * @param  array $columns
+	 * @return array
+	 * @since 2.0.0-alpha2
+	 */
+	public function cpt_answer_columns($columns)
+    {
+        $columns = array(
+            "cb" => "<input type=\"checkbox\" />",
+            "author" => __('Author', 'ap'),
+            "answer_content" => __('Content', 'ap'),
+            "comments" => __('Comments', 'ap'),
+            "vote" => __('Vote', 'ap'),
+            "flag" => __('Flag', 'ap'),
+            "date" => __('Date', 'ap')
+        );
+        return $columns;
+    }
+
+    public function answer_row_actions($column, $post_id)
+    {
+        global $post, $mode;
+        
+        if ('answer_content' != $column)
+            return;
+
+        $question = get_post($post->post_parent);
+        echo '<a href="'.get_permalink( $post->post_parent ).'" class="row-title">'.$question->post_title.'</a>';
+
+        $content = get_the_excerpt();
+        // get the first 80 words from the content and added to the $abstract variable
+        preg_match('/^([^.!?\s]*[\.!?\s]+){0,40}/', strip_tags($content), $abstract);
+        // pregmatch will return an array and the first 80 chars will be in the first element 
+        echo $abstract[0] . '...';
+        
+        //First set up some variables
+        $actions          = array();
+        $post_type_object = get_post_type_object($post->post_type);
+        $can_edit_post    = current_user_can($post_type_object->cap->edit_post, $post->ID);
+        
+        //Actions to delete/trash
+        if (current_user_can($post_type_object->cap->delete_post, $post->ID)) {
+            if ('trash' == $post->post_status) {
+                $_wpnonce           = wp_create_nonce('untrash-post_' . $post_id);
+                $url                = admin_url('post.php?post=' . $post_id . '&action=untrash&_wpnonce=' . $_wpnonce);
+                $actions['untrash'] = "<a title='" . esc_attr(__('Restore this item from the Trash')) . "' href='" . $url . "'>" . __('Restore') . "</a>";
+                
+            } elseif (EMPTY_TRASH_DAYS) {
+                $actions['trash'] = "<a class='submitdelete' title='" . esc_attr(__('Move this item to the Trash')) . "' href='" . get_delete_post_link($post->ID) . "'>" . __('Trash') . "</a>";
+            }
+            if ('trash' == $post->post_status || !EMPTY_TRASH_DAYS)
+                $actions['delete'] = "<a class='submitdelete' title='" . esc_attr(__('Delete this item permanently')) . "' href='" . get_delete_post_link($post->ID, '', true) . "'>" . __('Delete Permanently') . "</a>";
+        }
+        if ($can_edit_post)
+			$actions['edit'] = '<a href="' . get_edit_post_link($post->ID, '', true) . '" title="' . esc_attr(sprintf(__('Preview &#8220;%s&#8221;'),$post->title)) . '" rel="permalink">' . __('Edit') . '</a>';
+			
+        //Actions to view/preview
+        if (in_array($post->post_status, array(
+            'pending',
+            'draft',
+            'future'
+        ))) {
+            if ($can_edit_post)
+                $actions['view'] = '<a href="' . esc_url(add_query_arg('preview', 'true', get_permalink($post->ID))) . '" title="' . esc_attr(sprintf(__('Preview &#8220;%s&#8221;'),$post->title)) . '" rel="permalink">' . __('Preview') . '</a>';
+            
+        } elseif ('trash' != $post->post_status) {
+            $actions['view'] = '<a href="' . get_permalink($post->ID) . '" title="' . esc_attr(__('View &#8220;%s&#8221; question')) . '" rel="permalink">' . __('View') . '</a>';
+        }
+        
+        //***** END  -- Our actions  *******//
+        
+        //Echo the 'actions' HTML, let WP_List_Table do the hard work
+		$WP_List_Table = new WP_List_Table();
+        echo $WP_List_Table->row_actions($actions);
+    }
+
+    public function admin_column_sort_flag($columns)
+    {
+        $columns['flag'] = 'flag';
+        return $columns;
+    }
+    
+    public function admin_column_sort_flag_by($query)
+    {
+        if (!is_admin())
+            return;
+        
+        $orderby = $query->get('orderby');
+        
+        if ('flag' == $orderby) {
+            $query->set('meta_key', ANSPRESS_FLAG_META);
+            $query->set('orderby', 'meta_value_num');
+        }
+    }
+
+    public function post_data_check($data)
+    {
+        global $pagenow;
+        if ($pagenow == 'post.php' && $data['post_type'] == 'answer') {
+            $parent_q = isset($_REQUEST['ap_q']) ? $_REQUEST['ap_q'] : $data['post_parent'];
+            if (!isset($parent_q) || $parent_q == '0' || $parent_q == '') {
+                add_filter('redirect_post_location', array(
+                    $this,
+                    'custom_post_location'
+                ), 99);
+                return;
+            }
+        }
+        
+        return $data;
+    }
+
+    public function post_custom_message($messages)
+    {
+        global $post;
+        
+        if ($post->post_type == 'answer' && isset($_REQUEST['message']) && $_REQUEST['message'] == 99)
+            add_action('admin_notices', array(
+                $this,
+                'ans_notice'
+            ));
+        
+        return $messages;
+    }
 }

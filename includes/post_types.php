@@ -176,9 +176,7 @@ class AnsPress_PostTypes
      * @since 2.0.0-alpha2
      */
     public function ans_post_type_link($link, $post) {
-        $post_type = 'answer';
-       
-        if ($post->post_type==$post_type) {
+        if ($post->post_type == 'answer' && $post->post_parent != 0) {
             $link = get_permalink($post->post_parent) ."#answer_{$post->ID}";
         }
         return $link;

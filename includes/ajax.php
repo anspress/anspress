@@ -62,7 +62,12 @@ class AnsPress_Ajax
 			foreach ($questions as $p){
 				$count = ap_count_answer_meta($p->ID);
 				$p->post_title = ap_highlight_words($p->post_title, $keyword);
-				$items .= '<a class="ap-sqitem" href="'.get_permalink($p->ID).'">'.$p->post_title.'<span class="acount">'. sprintf(_n('1 Answer', '%d Answers', $count, 'ap' ), $count) .'</span></a>';
+				
+				if(!isset($_POST['is_admin']))
+					$items .= '<a class="ap-sqitem" href="'.get_permalink($p->ID).'">'.$p->post_title.'<span class="acount">'. sprintf(_n('1 Answer', '%d Answers', $count, 'ap' ), $count) .'</span></a>';
+
+				else
+					$items .= '<div class="ap-q-suggestion-item"><a class="select-question-button button button-primary button-small" href="'.add_query_arg(array('post_type' => 'answer', 'post_parent' => $p->ID), admin_url( 'post-new.php' )).'">'.__('Select', 'ap').'</a><span class="question-title">'.$p->post_title.'</span><span class="acount">'. sprintf(_n('1 Answer', '%d Answers', $count, 'ap' ), $count) .'</span></div>';
 			}
 			$items .= '</div>';
 			$result = array('status' => true, 'html' => $items);

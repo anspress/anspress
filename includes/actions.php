@@ -19,7 +19,7 @@ class AnsPress_Actions
 	public function __construct()
 	{
 		new AnsPress_Post_Status;
-
+		add_action( 'after_setup_theme', array($this, 'after_setup_theme') );
 		add_action( 'ap_after_new_question', array($this, 'after_new_question'), 10, 2 );
 		add_action( 'ap_after_new_answer', array($this, 'after_new_answer'), 10, 2 );
 
@@ -36,11 +36,19 @@ class AnsPress_Actions
 
 		add_action( 'wp_loaded', array( $this, 'flush_rules' ) );
 		add_filter('get_avatar', array($this, 'get_avatar'), 10, 5);
-
-		add_filter( 'the_title', array($this,'the_title'), 100, 2 );
-		add_filter( 'wp_title', array($this,'wp_title'), 100, 2 );
-
+		
 	}
+
+	/**
+     * Actions to do after after theme setup
+     * @return void
+     * @since 2.0.0-alpha2
+     */
+    public function after_setup_theme()
+    {
+    	add_filter( 'the_title', array($this,'the_title'), 100, 2 );
+		add_filter( 'wp_title', array($this,'wp_title'), 100, 2 );
+    }
 
 	/**
 	 * Things to do after creating a question
@@ -69,7 +77,7 @@ class AnsPress_Actions
 		do_action('ap_after_inserting_question', $post_id);
 		ap_do_event('new_question', $post_id, $user_id);
 
-	}	
+	}
 	
 	/**
 	 * Things to do after creating an answer
@@ -359,5 +367,7 @@ class AnsPress_Actions
 
     	return $title;
     }
+
+
 
 }

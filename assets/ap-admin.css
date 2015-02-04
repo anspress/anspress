@@ -598,9 +598,59 @@ button.ap-submit-btn {
     font-size: 16px;
     margin: 20px 0;
 }
-.ap-flag-post-content, .ap-flagger-table {
+.ap-flag-post-content, .ap-flagger-table, .question-selection, .ap-similar-questions {
     background: none repeat scroll 0 0 #fff;
     border: 1px solid #e7e7e7;
     margin-bottom: 20px;
     padding: 10px 20px;
+}
+.question-selection input{
+    border-radius: 2px;
+    display: block;
+    margin-bottom: 10px;
+    padding: 10px;
+    width: 100%;
+}
+
+.ap-similar-questions > .ap-q-suggestion-item {
+    border-bottom: 1px solid #eee;
+    display: block;
+    padding: 12px 0;
+}
+.ap-similar-questions > .ap-q-suggestion-item:last-child{
+    border-bottom: none;
+}
+.ap-similar-questions .select-question-button{
+    float: right;
+    margin-top: -3px;
+}
+.ap-similar-questions .question-title{
+    font-weight: bold;
+}
+.ap-q-suggestion-item .acount {
+    color: #aaa;
+    margin-left: 15px;
+}
+.ap-selected-question {
+    background: none repeat scroll 0 0 #fff;
+    border: 1px solid #a5c5d9;
+    padding: 10px;
+}
+.ap-selected-question .ap-q-title {
+    display: block;
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    text-decoration: none;
+}
+.ap-q-meta {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+.ap-q-meta a {
+    text-decoration: none;
+}
+.answer_content > .row-title{
+    display: block;
+    font-weight: bold;
 }

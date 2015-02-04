@@ -63,11 +63,6 @@ APjs.admin.prototype = {
 	
 	/* automatically called */
 	initialize: function() {
-		this.recountVotes();
-		this.recountViews();
-		this.recountFav();
-		this.recountFlag();
-		this.recountClose();
 		this.saveOptions();
 		this.editPoints();
 		this.savePoints();
@@ -77,81 +72,6 @@ APjs.admin.prototype = {
 		this.deleteFlag();
 	},
 	
-	recountVotes:function(){
-		jQuery('[data-action="recount-votes"]').click(function(e){
-			jQuery.ajax({  
-				type: 'POST',  
-				url: ajaxurl,  
-				data: {  
-					action: 'recount_votes' 
-				},  
-				context:this,
-				success: function(data){ 
-					jQuery(this).after('<p>'+data+'</p>')
-				} 
-			});
-		});
-	},
-	recountViews:function(){
-		jQuery('[data-action="recount-views"]').click(function(e){
-			jQuery.ajax({  
-				type: 'POST',  
-				url: ajaxurl,  
-				data: {  
-					action: 'recount_views' 
-				},  
-				context:this,
-				success: function(data){ 
-					jQuery(this).after('<p>'+data+'</p>')
-				} 
-			});
-		});
-	},
-	recountFav:function(){
-		jQuery('[data-action="recount-fav"]').click(function(e){
-			jQuery.ajax({  
-				type: 'POST',  
-				url: ajaxurl,  
-				data: {  
-					action: 'recount_fav' 
-				},  
-				context:this,
-				success: function(data){ 
-					jQuery(this).after('<p>'+data+'</p>')
-				} 
-			});
-		});
-	},
-	recountFlag:function(){
-		jQuery('[data-action="recount-flag"]').click(function(e){
-			jQuery.ajax({  
-				type: 'POST',  
-				url: ajaxurl,  
-				data: {  
-					action: 'recount_flag' 
-				},  
-				context:this,
-				success: function(data){ 
-					jQuery(this).after('<p>'+data+'</p>')
-				} 
-			});
-		});
-	},
-	recountClose:function(){
-		jQuery('[data-action="recount-close"]').click(function(e){
-			jQuery.ajax({  
-				type: 'POST',  
-				url: ajaxurl,  
-				data: {  
-					action: 'recount_close' 
-				},  
-				context:this,
-				success: function(data){ 
-					jQuery(this).after('<p>'+data+'</p>')
-				} 
-			});
-		});
-	},
 	saveOptions: function(){
 		jQuery('#options_form').submit(function(){
 			 var checkboxes = jQuery.param( jQuery(this).find('input:checkbox:not(:checked)').map(function() {
@@ -447,22 +367,27 @@ function ap_add_item_to_menu(menuItem, callback) {
 }
 jQuery(document).ready(function (jQuery){  
 
-	/* jQuery( "#ap_q_search" ).autocomplete({
-		source: function( request, response ) {  
-			jQuery.getJSON( ajaxurl + "?callback=?&action=search_questions", request, function( data ) {  
-				response( jQuery.map( data, function( item ) {
-					jQuery.each( item, function( i, val ) {
-						val.label = val.url; // build result for autocomplete from suggestion array data
-					} );
-					return item;
-				} ) );
-		  } );  
-		},
-		minLength: 2,
-		select: function( event, ui ) {
-			jQuery('#ap_q').val(ui.item.id);
-		},
-	}); */
+	
+	jQuery('#select-question-for-answer').on('keyup', function(){
+		if(jQuery.trim(jQuery(this).val()) == '')
+			return;
+		jQuery.ajax({
+			type: 'POST',
+			url: ajaxurl, 
+			data: {
+				action: 'ap_ajax',
+				ap_ajax_action: 'suggest_similar_questions',
+				value: jQuery(this).val(),
+				is_admin: true
+			}, 
+			success: function(data){
+				if(typeof data['html'] !== 'undefined')
+					jQuery('#similar_suggestions').html(data['html']);
+			}, 
+			dataType: 'json',
+			context: this,
+		});
+	});
 	
 	ap_option_flag_note();
 	ap_submit_menu();
