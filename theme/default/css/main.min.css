@@ -921,39 +921,39 @@
   -moz-box-shadow: none;
   box-shadow: none;
 }
-.ap-pull-right {
+.anspress-container .ap-pull-right {
   float: right !important;
 }
-.ap-pull-left {
+.anspress-container .ap-pull-left {
   float: left !important;
 }
-.no-overflow {
+.anspress-container .no-overflow {
   overflow: hidden;
 }
-.ap-ul-inline {
+.anspress-container .ap-ul-inline {
   list-style: none;
   padding: 0;
   margin: 0;
   display: block;
 }
-.ap-ul-inline li {
+.anspress-container .ap-ul-inline li {
   float: left;
   list-style: none outside none;
   margin: 0 5px 0 0;
   padding: 0;
 }
-.ap-ul-inline li:last-child {
+.anspress-container .ap-ul-inline li:last-child {
   margin-right: 0;
 }
-.ap-ul-inline li ul {
+.anspress-container .ap-ul-inline li ul {
   list-style: none;
   padding: 0;
   margin: 0;
 }
-.ap-avatar {
+.anspress-container .ap-avatar {
   margin-right: 15px;
 }
-.ap-avatar img {
+.anspress-container .ap-avatar img {
   -webkit-border-radius: 2px;
   -webkit-background-clip: padding-box;
   -moz-border-radius: 2px;
@@ -961,14 +961,14 @@
   border-radius: 2px;
   background-clip: padding-box;
 }
-.ap-initially-hidden {
+.anspress-container .ap-initially-hidden {
   display: none;
 }
-.ap-tab {
+.anspress-container .ap-tab {
   border-bottom: solid 2px #eeeeee;
   margin-bottom: 10px;
 }
-.ap-tab li.active a {
+.anspress-container .ap-tab li.active a {
   background: #ffffff;
   border-color: #eeeeee #eeeeee transparent;
   border-style: solid solid none;
@@ -984,34 +984,34 @@
   background-clip: padding-box;
   color: #595959;
 }
-.ap-tab li:first-child {
+.anspress-container .ap-tab li:first-child {
   margin-left: 5px;
 }
-.ap-tab li a {
+.anspress-container .ap-tab li a {
   display: block;
   padding: 10px 15px;
   text-decoration: none;
   color: #888888;
   font-weight: 600;
 }
-.ap-tab li a:hover {
+.anspress-container .ap-tab li a:hover {
   background: #eeeeee;
 }
-.ap-widget-title {
+.anspress-container .ap-widget-title {
   color: #888888;
   font-size: 15px;
   font-weight: 600;
   margin-bottom: 15px;
 }
-.block {
+.anspress-container .block {
   display: block;
 }
-.ap-pagination {
+.anspress-container .ap-pagination {
   display: block;
   margin: 20px 0;
 }
-.ap-pagination span,
-.ap-pagination a {
+.anspress-container .ap-pagination span,
+.anspress-container .ap-pagination a {
   border: 1px solid #eeeeee;
   display: block;
   float: left;
@@ -1025,19 +1025,19 @@
   border-radius: 2px;
   background-clip: padding-box;
 }
-.ap-pagination span {
+.anspress-container .ap-pagination span {
   background: #eeeeee;
 }
-.ap-notice {
+.anspress-container .ap-notice {
   display: block;
 }
-.border-top {
+.anspress-container .border-top {
   border-top: solid 1px #eeeeee;
 }
-.margin-top-20 {
+.anspress-container .margin-top-20 {
   margin-top: 20px;
 }
-.ap-loading-icon {
+.anspress-container .ap-loading-icon {
   background: #11a7db;
   -webkit-border-radius: 2px;
   -webkit-background-clip: padding-box;
@@ -1057,10 +1057,10 @@
   width: 40px;
   z-index: 9999;
 }
-.ap-loading-icon.fade-bg {
+.anspress-container .ap-loading-icon.fade-bg {
   background: rgba(255, 255, 255, 0.8);
 }
-.ap-loading-icon > i {
+.anspress-container .ap-loading-icon > i {
   font-size: 20px;
   height: 20px;
   left: 50%;
@@ -1092,7 +1092,7 @@
     transform: rotate(360deg);
   }
 }
-.private-question-label {
+.anspress-container .private-question-label {
   background: none repeat scroll 0 0 #8F8F8F;
   -webkit-border-radius: 2px;
   -webkit-background-clip: padding-box;
@@ -1106,75 +1106,82 @@
   margin-bottom: 10px;
   padding: 2px 6px;
 }
-.ap-no-permission-to-view {
+.anspress-container .ap-no-permission-to-view {
   background: #f7fcfe;
   display: block;
   margin-top: 20px;
   padding: 15px;
   text-align: center;
 }
-.ap-please-login {
+.anspress-container .ap-please-login {
   background: none repeat scroll 0 0 #e0fbff;
   border-radius: 3px;
   margin-bottom: 20px;
   padding: 15px;
   text-align: center;
 }
-.ap-questions-tab {
+.anspress-container .ap-questions-tab {
   border-bottom: solid 1px #ddd;
 }
-.ap-questions-tab > li {
+.anspress-container .ap-questions-tab > li {
   margin-right: 20px;
 }
-.ap-questions-tab > li.active a {
+.anspress-container .ap-questions-tab > li.active a {
   color: #595959;
 }
-.ap-questions-tab > li a {
+.anspress-container .ap-questions-tab > li a {
   color: #428bca;
   display: block;
   font-weight: 600;
   padding: 10px 0;
 }
-.ap-notice {
+.anspress-container .ap-notice {
   background: none repeat scroll 0 0 #eee;
   border-radius: 2px;
   display: block;
   margin-top: 10px;
   padding: 12px;
 }
-.ap-notice.black {
+.anspress-container .ap-notice.black {
   background: #777;
   color: #fff;
 }
-.ap-notice.yellow {
+.anspress-container .ap-notice.yellow {
   background: #f4ac20;
   color: #fff;
 }
-.ap-notice.red {
+.anspress-container .ap-notice.red {
   background: #eb5837;
   color: #fff;
 }
-.ap-notice i {
+.anspress-container .ap-notice.blue {
+  background: #11a7db;
+  color: #fff;
+}
+.anspress-container .ap-notice.blue a {
+  color: #fff;
+}
+.anspress-container .ap-notice i {
   margin-right: 15px;
 }
-.ap-pending-notice {
+.anspress-container .ap-pending-notice {
   background: #f4ac20;
   border-radius: 2px;
   margin: 0 15px 10px;
   padding: 20px;
   text-align: center;
 }
-.ap-text-label {
+.anspress-container .ap-text-label {
   display: block;
   font-weight: bold;
   margin-bottom: 10px;
   text-transform: uppercase;
   font-size: 12px;
 }
-.ap-view-count-0 {
+.anspress-container .ap-view-count-0 {
   display: none;
 }
-.list-question {
+.anspress-container .list-question {
   border-bottom: 1px solid #F8F8F8;
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
@@ -1184,47 +1191,47 @@
   padding: 15px 0;
   width: 100%;
 }
-.list-question.hentry {
+.anspress-container .list-question.hentry {
   margin: 0;
   border-top: none;
 }
-.list-question .ap-count {
+.anspress-container .list-question .ap-count {
   padding-left: 15px;
   width: 75px;
 }
-.list-question .ap-count > a {
+.anspress-container .list-question .ap-count > a {
   color: #888;
   display: block;
   text-align: center;
   text-decoration: none;
 }
-.list-question .ap-count > a span {
+.anspress-container .list-question .ap-count > a span {
   font-size: 19px;
   font-weight: 600;
   display: block;
   color: #595959;
 }
-.list-question .ap-count > a:last-child {
+.anspress-container .list-question .ap-count > a:last-child {
   margin-right: 0;
 }
-.list-question .ap-list-inner .ap-avatar {
+.anspress-container .list-question .ap-list-inner .ap-avatar {
   margin-right: 15px;
 }
-.list-question .ap-list-inner .question-title {
+.anspress-container .list-question .ap-list-inner .question-title {
   display: block;
   font-size: 16px;
   font-weight: 600;
   margin-bottom: 5px;
   margin-top: 0;
 }
-.list-question .ap-list-inner .question-title a {
+.anspress-container .list-question .ap-list-inner .question-title a {
   text-decoration: none;
 }
-.list-question .ap-list-inner .ap-post-history {
+.anspress-container .list-question .ap-list-inner .ap-post-history {
   color: #888;
 }
-.list-question .selected,
-.list-question .ap-best-answer-label {
+.anspress-container .list-question .selected,
+.anspress-container .list-question .ap-best-answer-label {
   background: #7dc36d;
   -webkit-border-radius: 2px;
   -webkit-background-clip: padding-box;
@@ -1239,17 +1246,17 @@
   text-align: center;
   text-transform: uppercase;
 }
-.list-question .ap-history {
+.anspress-container .list-question .ap-history {
   margin-top: 5px;
 }
-.list-question .ap-history > span {
+.anspress-container .list-question .ap-history > span {
   display: inline;
   margin-right: 10px;
 }
-.ap-display-question-meta {
+.anspress-container .ap-display-question-meta {
   color: #777777;
 }
-.ap-display-question-meta li:before {
+.anspress-container .ap-display-question-meta li:before {
   background: none repeat scroll 0 0 #dadada;
   -webkit-border-radius: 2px;
   -webkit-background-clip: padding-box;
@@ -1266,10 +1273,10 @@
   padding: 0;
   width: 5px;
 }
-.ap-display-question-meta li:first-child:before {
+.anspress-container .ap-display-question-meta li:first-child:before {
   display: none;
 }
-.ap-display-question-meta li i {
+.anspress-container .ap-display-question-meta li i {
   font-style: normal;
 }
 .tooltipster-default.ap-tip-style {
@@ -1952,56 +1959,56 @@
   display: block !important;
   padding: 5px 10px;
 }
-.ap-comment-block {
+.anspress-container .ap-comment-block {
   background: none repeat scroll 0 0 #fcfcfc;
   border: 1px solid #eee;
   margin-top: 25px;
 }
-.ap-comments .ap-commentlist {
+.anspress-container .ap-comments .ap-commentlist {
   list-style: none outside none;
   margin: 0;
   padding: 0;
 }
-.ap-comments .ap-commentlist .comment {
+.anspress-container .ap-comments .ap-commentlist .comment {
   border-top: 1px solid #eee;
   color: #777;
   margin-bottom: 0;
   padding: 10px;
 }
-.ap-comments .ap-commentlist .comment:first-child {
+.anspress-container .ap-comments .ap-commentlist .comment:first-child {
   border-bottom: none;
 }
-.ap-comments .ap-commentlist .comment .ap-avatar {
+.anspress-container .ap-comments .ap-commentlist .comment .ap-avatar {
   margin-top: 3px;
 }
-.ap-comments .ap-commentlist .comment .ap-comment-time {
+.anspress-container .ap-comments .ap-commentlist .comment .ap-comment-time {
   margin-right: 10px;
 }
-.ap-comments .ap-commentlist .comment .ap-comment-action {
+.anspress-container .ap-comments .ap-commentlist .comment .ap-comment-action {
   margin-right: 5px;
   white-space: nowrap;
 }
-.ap-comments .ap-commentlist .comment .ap-comment-action a {
+.anspress-container .ap-comments .ap-commentlist .comment .ap-comment-action a {
   text-decoration: none;
   color: #428bca;
 }
-.ap-comments .ap-commentlist .comment .ap-comment-action i {
+.anspress-container .ap-comments .ap-commentlist .comment .ap-comment-action i {
   font-size: 10px;
 }
-.ap-comments .ap-commentlist .comment .ap-comment-time {
+.anspress-container .ap-comments .ap-commentlist .comment .ap-comment-time {
   color: #777;
 }
-.ap-comment-form {
+.anspress-container .ap-comment-form {
   padding: 10px;
 }
-.ap-comment-form #ap-comment-textarea {
+.anspress-container .ap-comment-form #ap-comment-textarea {
   height: 35px;
   margin: 0;
 }
-.ap-comment-form .form-submit {
+.anspress-container .ap-comment-form .form-submit {
   display: none;
 }
-.ap-comment-form #submit {
+.anspress-container .ap-comment-form #submit {
   background: #11a7db;
   border-color: transparent transparent rgba(0, 0, 0, 0.1);
   border-image: none;
@@ -2012,29 +2019,29 @@
   padding: 10px 20px;
   text-decoration: none;
 }
-.ap-comment-form #submit.ap-btn-blue {
+.anspress-container .ap-comment-form #submit.ap-btn-blue {
   background: #11a7db;
   color: #ffffff;
 }
-.ap-comment-form #submit.ap-btn-blue:hover {
+.anspress-container .ap-comment-form #submit.ap-btn-blue:hover {
   border-color: #11a7db;
 }
-.ap-comment-form #submit.ap-btn-view-all {
+.anspress-container .ap-comment-form #submit.ap-btn-view-all {
   display: block;
   margin-top: 30px;
   text-align: center;
   text-transform: uppercase;
 }
-.ap-comment-form #submit:hover {
+.anspress-container .ap-comment-form #submit:hover {
   text-decoration: none;
   border-color: transparent transparent #11a7db;
   color: #ffffff;
 }
-.ap-comment-form .ap-comment-submit {
+.anspress-container .ap-comment-form .ap-comment-submit {
   float: right;
   margin-left: 10px;
 }
-.ap-comment-form input[type="submit"] {
+.anspress-container .ap-comment-form input[type="submit"] {
   background: #11a7db;
   border-color: transparent transparent rgba(0, 0, 0, 0.1);
   border-image: none;
@@ -2045,28 +2052,28 @@
   padding: 10px 20px;
   text-decoration: none;
 }
-.ap-comment-form input[type="submit"].ap-btn-blue {
+.anspress-container .ap-comment-form input[type="submit"].ap-btn-blue {
   background: #11a7db;
   color: #ffffff;
 }
-.ap-comment-form input[type="submit"].ap-btn-blue:hover {
+.anspress-container .ap-comment-form input[type="submit"].ap-btn-blue:hover {
   border-color: #11a7db;
 }
-.ap-comment-form input[type="submit"].ap-btn-view-all {
+.anspress-container .ap-comment-form input[type="submit"].ap-btn-view-all {
   display: block;
   margin-top: 30px;
   text-align: center;
   text-transform: uppercase;
 }
-.ap-comment-form input[type="submit"]:hover {
+.anspress-container .ap-comment-form input[type="submit"]:hover {
   text-decoration: none;
   border-color: transparent transparent #11a7db;
   color: #ffffff;
 }
-.ap-comment-form .ap-comment-textarea {
+.anspress-container .ap-comment-form .ap-comment-textarea {
   overflow: hidden;
 }
-.ap-comment-form .comment-reply-title {
+.anspress-container .ap-comment-form .comment-reply-title {
   display: none;
 }
 .ap-profile-lr .ap-profile-nav,
@@ -2389,30 +2396,30 @@
   text-align: center;
   width: 30px;
 }
-.ap-widget-pos {
+.anspress-container .ap-widget-pos {
   margin-bottom: 25px;
 }
-.ap-stats-widget {
+.anspress-container .ap-stats-widget {
   padding: 0;
   margin: 0;
   list-style: none;
 }
-.ap-stats-widget li {
+.anspress-container .ap-stats-widget li {
   color: #888;
   padding: 5px 0;
 }
-.ap-stats-widget li span {
+.anspress-container .ap-stats-widget li span {
   float: right;
   font-weight: bold;
 }
-.ap-rq-widget .ap-rq-post {
+.anspress-container .ap-rq-widget .ap-rq-post {
   border-bottom: 1px solid #f7f7f7;
   color: #888;
   display: block;
   margin-bottom: 0;
   padding: 10px 0;
 }
-.ap-rq-widget .ap-rq-post a {
+.anspress-container .ap-rq-widget .ap-rq-post a {
   margin-bottom: 5px;
   display: block;
 }

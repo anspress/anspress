@@ -1,78 +1,80 @@
 //
 // Comments
 // --------------------------------------------------
-.ap-comment-block {
-    background: none repeat scroll 0 0 #fcfcfc;
-    border: 1px solid #eee;
-    margin-top: 25px;
-}
-.ap-comments{
-	&.have-comments{
-
+.anspress-container{
+	.ap-comment-block {
+	    background: none repeat scroll 0 0 #fcfcfc;
+	    border: 1px solid #eee;
+	    margin-top: 25px;
 	}
-	.ap-commentlist {
-	    list-style: none outside none;
-	    margin: 0;
-	    padding: 0;
+	.ap-comments{
+		&.have-comments{
 
-	    .comment{
-		    border-top: 1px solid #eee;
-		    color: #777;
-		    margin-bottom: 0;
-		    padding: 10px;
+		}
+		.ap-commentlist {
+		    list-style: none outside none;
+		    margin: 0;
+		    padding: 0;
 
-
-		    &:first-child{
-		    	border-bottom: none;
-		    }
-
-		    .ap-avatar{
-		    	margin-top: 3px;
-		    }
-		    .ap-comment-time{
-		    	margin-right: 10px;
-		    }
-		    .ap-comment-action{
-		    	margin-right:5px;
-		    	white-space: nowrap;
-		    	a{
-		    		text-decoration: none;
-		    		color: @link-color;
-		    	}
-		    	i{
-		    		font-size: 10px;
-		    	}
-		    }
-		    .ap-comment-time {
+		    .comment{
+			    border-top: 1px solid #eee;
 			    color: #777;
-			}
-	    }
-	}
-}
+			    margin-bottom: 0;
+			    padding: 10px;
 
-.ap-comment-form{
-    padding: 10px;
-    #ap-comment-textarea{
-    	height: 35px;
-    	margin: 0;
-    }
-	.form-submit{
-		display: none;
+
+			    &:first-child{
+			    	border-bottom: none;
+			    }
+
+			    .ap-avatar{
+			    	margin-top: 3px;
+			    }
+			    .ap-comment-time{
+			    	margin-right: 10px;
+			    }
+			    .ap-comment-action{
+			    	margin-right:5px;
+			    	white-space: nowrap;
+			    	a{
+			    		text-decoration: none;
+			    		color: @link-color;
+			    	}
+			    	i{
+			    		font-size: 10px;
+			    	}
+			    }
+			    .ap-comment-time {
+				    color: #777;
+				}
+		    }
+		}
 	}
-	#submit{
-		.ap-btn;
-	}
-	.ap-comment-submit {
-	    float: right;
-	    margin-left: 10px;
-	}
-	input[type="submit"]{
-		.ap-btn;
-	}
-	.ap-comment-textarea {
-	    overflow: hidden;
-	}
-	.comment-reply-title {
-	    display: none;
+
+	.ap-comment-form{
+	    padding: 10px;
+	    #ap-comment-textarea{
+	    	height: 35px;
+	    	margin: 0;
+	    }
+		.form-submit{
+			display: none;
+		}
+		#submit{
+			.ap-btn;
+		}
+		.ap-comment-submit {
+		    float: right;
+		    margin-left: 10px;
+		}
+		input[type="submit"]{
+			.ap-btn;
+		}
+		.ap-comment-textarea {
+		    overflow: hidden;
+		}
+		.comment-reply-title {
+		    display: none;
+		}
 	}
 }

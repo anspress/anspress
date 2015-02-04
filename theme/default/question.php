@@ -91,6 +91,12 @@ global $post;
 					</div>
 					<!-- End ap-content-inner -->
 
+					<?php if ( ap_have_parent_post()) : ?>
+						<div class="ap-notice blue clearfix">
+							<?php echo ap_icon('link', true) ?>
+							<span><?php printf(__( 'Question is asked for %s.', 'ap' ), '<a href="'. get_permalink($post->post_parent) .'">'.get_the_title( $post->post_parent ).'</a>'); ?></span>
+						</div>
+					<?php endif; ?>
 					<?php if ( is_private_post()) : ?>
 						<div class="ap-notice black clearfix">
 							<i class="apicon-lock"></i><span><?php _e( 'Question is marked as a private, only admin and post author can see.', 'ap' ); ?></span>

@@ -508,6 +508,24 @@ function is_post_closed($post_id = false){
 }
 
 /**
+ * Check if question have a parent post
+ * @param  boolean|integer $post_id
+ * @return boolean
+ * @since   2.0.0-alpha2
+ */
+function ap_have_parent_post($post_id = false){
+	if(!$post_id)
+		$post_id = get_the_ID();
+	
+	$post = get_post($post_id);
+	
+	if($post->post_parent > 0 && 'question' == $post->post_type)
+		return true;
+	
+	return false;
+}
+
+/**
  * Anspress pagination
  * Uses paginate_links
  * @param  double $current Current paged, if not set then get_query_var('paged') is used
@@ -633,6 +651,7 @@ function ap_icon($name, $html = false){
 		'success'			=> 'apicon-check',
 		'history'			=> 'apicon-history',
 		'mail'				=> 'apicon-mail',
+		'link'				=> 'apicon-link',
 	);
 	
 	$icons = apply_filters('ap_icon', $icons);

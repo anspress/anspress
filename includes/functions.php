@@ -603,29 +603,29 @@ function ap_users_tab(){
 
 
 function ap_qa_on_post($post_id = false){
-	if(is_anspress())
-		return false;
-	
-	wp_enqueue_style( 'ap-style', ap_get_theme_url('css/ap.css'), array(), AP_VERSION);
 	
 	if(!$post_id)
 		$post_id = get_the_ID();
+
+	$post = get_post($post_id);
+
+	if('question' == $post->post_type || 'answer' == $post->post_type)
+		return;
+
+	wp_enqueue_style( 'ap-style', ap_get_theme_url('css/ap.css'), array(), AP_VERSION);
 	
-	$question_args = ap_base_page_main_query($post_id);
-	$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
-	
-	$question = new WP_Query( $question_args );
-	echo '<div class="anspress">';
-	echo '<div class="ap-container">';
+	$questions = new Question_Query( array('post_parent' => $post_id) );
+
+	echo '<div class="anspress-container">';
 	include ap_get_theme_location('on-post.php');
 	wp_reset_postdata();
-	echo '<a href="'.ap_get_link_to('parent/'.get_the_ID()).'" class="ap-view-all">'.__( 'View All', 'ap' ).'</a>';
+	echo '<a href="'. add_query_arg(array('parent' => get_the_ID()), get_permalink(ap_opt('questions_page_id'))) .'" class="ap-view-all">'.__( 'View All', 'ap' ).'</a>';
 	echo '</div>';
-	echo '</div>';	
+
 }
 
 function ap_ask_btn($parent_id = false){
-	$args = array('ap_page' => 'ask');
+	$args = array();
 	
 	if($parent_id !== false)
 		$args['parent'] = $parent_id;
@@ -633,7 +633,7 @@ function ap_ask_btn($parent_id = false){
 	if(get_query_var('parent') != '')
 		$args['parent'] = get_query_var('parent');
 	
-	echo '<a class="ap-btn ap-ask-btn-head pull-right" href="'.ap_get_link_to($args).'">'.__('Ask Question').'</a>';
+	echo '<a class="ap-ask-btn" href="'.add_query_arg(array($args), get_permalink(ap_opt('ask_page_id'))).'">'.__('Ask Question', 'ap').'</a>';
 }
 
 /**
