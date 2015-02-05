@@ -15,7 +15,7 @@
  * Plugin URI:        http://wp3.in/categories-for-anspress
  * Description:       Extension for AnsPress. Add tags in AnsPress.
  * Donate link: https://www.paypal.com/cgi-bin/webscr?business=rah12@live.com&cmd=_xclick&item_name=Donation%20to%20AnsPress%20development
- * Version:           1.2
+ * Version:           1.2.1
  * Author:            Rahul Aryan
  * Author URI:        http://wp3.in
  * Text Domain:       ap
@@ -73,6 +73,7 @@ class Tags_For_AnsPress
                 define('TAGS_FOR_ANSPRESS_URL', plugin_dir_url( __FILE__ ));
 
         $this->includes();
+        $this->option_fields();
 
         // internationalization
         add_action( 'init', array( $this, 'textdomain' ) );
@@ -83,9 +84,9 @@ class Tags_For_AnsPress
         add_action('ap_admin_menu', array($this, 'admin_tags_menu'));
 
         add_action('ap_option_navigation', array($this, 'option_navigation' ));
-        add_action('ap_option_fields', array($this, 'option_fields' ));
+
         add_action('ap_display_question_metas', array($this, 'ap_display_question_metas' ), 10, 2);
-        add_action('ap_after_question_title', array($this, 'ap_after_question_title' ));
+        add_action('ap_question_info', array($this, 'ap_question_info' ));
         add_action( 'ap_enqueue', array( $this, 'ap_enqueue' ) );
         add_filter('term_link', array($this, 'term_link_filter'), 10, 3);
 
@@ -216,58 +217,45 @@ class Tags_For_AnsPress
     }
 
     /**
-     * Option fields
-     * @param  array  $settings
-     * @return string
-     * @since 1.0
+     * Register option fields
+     * @return void
+     * @since 1.2.1
      */
-    public function option_fields($settings){
-        $active = (isset($_REQUEST['option_page'])) ? $_REQUEST['option_page'] : 'general' ;
-        if ($active == 'tags') {
-            ?>
-                <div class="tab-pane" id="ap-tags">       
-                    <table class="form-table">
-                        <tr valign="top">
-                            <th scope="row"><label for="question_tag_page_id"><?php _e('Tag Page', 'ap'); ?></label></th>
-                            <td>
-                                <?php wp_dropdown_pages( array('selected'=> $settings['question_tag_page_id'],'name'=> 'anspress_opt[question_tag_page_id]','post_type'=> 'page') ); ?>
-                                <p class="description"><?php _e('Used to show user profil.', 'ap'); ?></p>
-                            </td>
-                        </tr>
-                        <tr valign="top">
-                            <th scope="row"><label for="tags_per_page"><?php _e('Tags per page', 'tags_for_anspress'); ?></label></th>
-                            <td>
-                                <input type="number" min="1" name="anspress_opt[tags_per_page]" id="tags_per_page" value="<?php echo $settings['tags_per_page'] ; ?>" />                                
-                                <p class="description"><?php _e('Tags to show per page', 'tags_for_anspress'); ?></p>
-                            </td>
-                        </tr>
-                        <tr valign="top">
-                            <th scope="row"><label for="max_tags"><?php _e('Maximum tags', 'ap'); ?></label></th>
-                            <td>
-                                <input type="number" min="1" id="max_tags" name="anspress_opt[max_tags]" value="<?php echo $settings['max_tags']; ?>" />
-                                <p class="description"><?php _e('Maximum numbers of tags that user can add when asking.', 'ap'); ?></p>
-                            </td>
-                        </tr>
-                        <tr valign="top">
-                            <th scope="row"><label for="min_tags"><?php _e('Minimum tags', 'ap'); ?></label></th>
-                            <td>
-                                <input type="number" min="1" id="min_tags" name="anspress_opt[min_tags]" value="<?php echo $settings['min_tags']; ?>" />
-                                <p class="description"><?php _e('Minimum numbers of tags user need to add when asking.', 'ap'); ?></p>
-                            </td>
-                        </tr>
-                        <tr valign="top">
-                            <th scope="row"><label for="min_point_new_tag"><?php _e('Minimum points to create new tag', 'ap'); ?></label></th>
-                            <td>
-                                <input type="number" min="1" id="min_point_new_tag" name="anspress_opt[min_point_new_tag]" value="<?php echo $settings['min_point_new_tag']; ?>" />
-                                <p class="description"><?php _e('User must have more or equal to those points to create a new tag.', 'ap'); ?></p>
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-            <?php
-        }
-        
+    public function option_fields()
+    {
+        $settings = ap_opt();
+        ap_register_option_group( 'tags', __('Tags', 'ap'), array(
+            array(
+                'name'              => 'anspress_opt[question_tag_page_id]',
+                'label'             => __('Tag Page', 'ap'),
+                'description'       => __('Page used for showing question tag.', 'ap'),
+                'type'              => 'select_page',
+                'value'             => $settings['question_tag_page_id'],
+            ),
+            array(
+                'name'              => 'anspress_opt[tags_per_page]',
+                'label'             => __('Tags per page', 'ap'),
+                'description'       => __('Tags to show per page.', 'ap'),
+                'type'              => 'number',
+                'value'             => $settings['tags_per_page'],
+            ),
+            array(
+                'name'              => 'anspress_opt[max_tags]',
+                'label'             => __('Maximum tags', 'ap'),
+                'description'       => __('Maximum numbers of tags that user can add when asking.', 'ap'),
+                'type'              => 'number',
+                'value'             => $settings['max_tags'],
+            ),
+            array(
+                'name'              => 'anspress_opt[min_tags]',
+                'label'             => __('Minimum tags', 'ap'),
+                'description'       => __('minimum numbers of tags that user must add when asking.', 'ap'),
+                'type'              => 'number',
+                'value'             => $settings['min_tags'],
+            ),
+        ));
     }
+
 
     /**
      * Append meta display
@@ -290,10 +278,12 @@ class Tags_For_AnsPress
      * @return  string    
      * @since   1.0   
      */
-    public function ap_after_question_title($post)
+    public function ap_question_info($post)
     {
-        if(ap_question_have_tags())
-            echo '<div class="ap-post-tags clearfix">'. ap_question_tags_html(array('list' => true, 'label' => '', 'class' => 'ap-ul-inline' )) .'</div>';
+        if(ap_question_have_tags()){
+            echo '<div class="widget"><span class="ap-widget-title">'.__('Tags').'</span>';
+            echo '<div class="ap-post-tags clearfix">'. ap_question_tags_html(array('list' => true, 'label' => '')) .'</div></div>';
+        }
     }
 
     /**
@@ -378,6 +368,10 @@ class Tags_For_AnsPress
     public function after_new_question($post_id, $post)
     {
         global $validate;
+        
+        if(empty($validate))
+            return;
+
         $fields = $validate->get_sanitized_fields();
         if(isset($fields['tag'])){
             $tags = explode(',', $fields['tag']);
@@ -495,14 +489,14 @@ function ap_question_tags_html($args = array()){
             $i = 1;
             foreach($tags as $t){
                 $o .= '<a href="'.esc_url( get_term_link($t)).'" title="'.$t->description.'">'. $t->name .'</a> ';
-                if($args['show'] > 0 && $i == $args['show']){
+                /*if($args['show'] > 0 && $i == $args['show']){
                     $o_n = '';
                     foreach($tags as $tag_n)
                         $o_n .= '<a href="'.esc_url( get_term_link($tag_n)).'" title="'.$tag_n->description.'">'. $tag_n->name .'</a> ';
 
                     $o .= '<a class="ap-tip" data-tipclass="tags-list" title="'.esc_html($o_n).'" href="#">'. sprintf(__('%d More', 'ap'), count($tags)) .'</a>';
                     break;
-                }
+                }*/
                 $i++;
             }
             $o .= '</'.$args['tag'].'>';

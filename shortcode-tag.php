@@ -26,6 +26,7 @@ class AnsPress_Tag_Shortcode {
 		$tag_id = sanitize_text_field(get_query_var( 'q_tag'));
 
 		if(empty( $tag_id )){
+			ob_start();
 			echo '<div class="anspress-container">';
 				/**
 				 * ACTION: ap_before
@@ -36,6 +37,7 @@ class AnsPress_Tag_Shortcode {
 				// include theme file
 				include ap_get_theme_location('no-tags-found.php', TAGS_FOR_ANSPRESS_DIR);
 			echo '</div>';
+			return ob_get_clean();
 			return;
 		}
 
@@ -60,6 +62,7 @@ class AnsPress_Tag_Shortcode {
 		$questions = new Question_Query( $question_args );
 		$question_tag = get_term_by( is_integer($tag_id) ? 'id' : 'slug', $tag_id, 'question_tag');
 
+		ob_start();
 		echo '<div class="anspress-container">';
 			/**
 			 * ACTION: ap_before
@@ -70,7 +73,9 @@ class AnsPress_Tag_Shortcode {
 			// include theme file
 			include ap_get_theme_location('tag.php', TAGS_FOR_ANSPRESS_DIR);
 		echo '</div>';
+		return ob_get_clean();
 		wp_reset_postdata();
+
 	}
 
 	
