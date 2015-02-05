@@ -223,6 +223,9 @@ class Tags_For_AnsPress
      */
     public function option_fields()
     {
+        if(!is_admin())
+            return;
+        
         $settings = ap_opt();
         ap_register_option_group( 'tags', __('Tags', 'ap'), array(
             array(
