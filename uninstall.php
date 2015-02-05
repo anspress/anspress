@@ -15,4 +15,4 @@ if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 }
 
 // remove voting database
-register_uninstall_hook(__FILE__, array('anspress_vote', 'uninstall'));
+//register_uninstall_hook(__FILE__, array('anspress_vote', 'uninstall'));
