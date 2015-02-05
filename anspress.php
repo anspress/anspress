@@ -117,7 +117,7 @@ if (!class_exists('AnsPress')) {
          private function _setup_constants()
          {
              if (!defined('AP_VERSION')) {
-                 define('AP_VERSION', '1.4.3');
+                 define('AP_VERSION', '2.0.0-alpha2');
              }
 
              if (!defined('AP_DB_VERSION')) {
