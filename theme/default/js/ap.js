@@ -169,6 +169,10 @@ jQuery(document).ready(function(){
             jQuery(form).removeClass('ap-form-mini').css('height', '');
         });
     })*/
+    
+    jQuery('.bootstrap-tagsinput > input').keyup(function(event) {
+        jQuery(this).css(width, 'auto');
+    });
 	
 });
 function ap_chk_activity_scroll(e){

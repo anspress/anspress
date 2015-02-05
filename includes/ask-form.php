@@ -79,15 +79,6 @@ function ap_ask_form($editing = false){
                 ),
             ),
             array(
-                'name' => 'is_private',
-                'label' => __('Private', 'ap'),
-                'type'  => 'checkbox',
-                'desc'  => __('This question ment to be private, only visible to admin and moderator.', 'ap'),
-                'value' => ( $editing ? $is_private : sanitize_text_field( @$_POST['is_private'] ) ),
-                'order' => 12,
-                'show_desc_tip' => false
-            ),            
-            array(
                 'name' => 'parent_id',
                 'type'  => 'hidden',
                 'value' => ( $editing ? $editing_post->post_parent : get_query_var('parent')  ),
@@ -95,6 +86,16 @@ function ap_ask_form($editing = false){
             ),
         ),
     );
+
+    if(ap_opt('allow_private_posts'))
+        $args['fields'][] = array(
+            'name' => 'is_private',
+            'type'  => 'checkbox',
+            'desc'  => __('Only visible to admin and moderator.', 'ap'),
+            'value' => $is_private,
+            'order' => 12,
+            'show_desc_tip' => false
+        );
     
     /**
      * FILTER: ap_ask_form_fields

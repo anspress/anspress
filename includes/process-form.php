@@ -303,7 +303,7 @@ class AnsPress_Process_Form
 	 * @since  2.0
 	 */
 	public function action_on_new_post( $post_id, $post, $update ) {
-		
+
 		// return on autosave
 		if(defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) { return; }
 		
@@ -313,7 +313,7 @@ class AnsPress_Process_Form
 		if ( $post->post_type == 'question' ) {
 			//check if post have updated meta, if not this is a new post :D
 			$updated = get_post_meta($post_id, ANSPRESS_UPDATED_META, true);
-			if(! $update ){
+			if($updated == '' ){
 				/**
 				 * ACTION: ap_after_new_question
 				 * action triggered after inserting a question
@@ -330,7 +330,7 @@ class AnsPress_Process_Form
 			}
 		}elseif ( $post->post_type == 'answer' ) {
 			
-			if( !$update ){
+			if( $updated == ''){
 				/**
 				 * ACTION: ap_after_new_answer
 				 * action triggered after inserting an answer
@@ -344,6 +344,7 @@ class AnsPress_Process_Form
 				 * @since 0.9
 				 */
 				do_action('ap_after_update_answer', $post_id, $post);
+
 			}
 		}
 	}

@@ -87,7 +87,7 @@ class AnsPress_Actions
 	 */
 	public function after_new_answer($post_id, $post)
 	{
-
+		
 		$user_id = get_current_user_id();	
 		$question = get_post($post->post_parent);
 		// set default value for meta
@@ -120,6 +120,7 @@ class AnsPress_Actions
 
 	public function ap_after_update_answer($post_id, $post)
 	{
+		
 		update_post_meta($post_id, ANSPRESS_UPDATED_META, current_time( 'mysql' ));
 		update_post_meta($post->post_parent, ANSPRESS_UPDATED_META, current_time( 'mysql' ));
 		
