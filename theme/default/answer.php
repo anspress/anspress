@@ -9,12 +9,12 @@
  * @package AnsPress
  */
 
-if(!ap_user_can_view_post(get_the_ID())){
+if(!ap_user_can_view_post(get_question_id())){
 	include ap_get_theme_location('no-permission-post.php');
 	return;
 }
 
-$class = ap_is_best_answer(get_the_ID()) ? ' selected answer' : 'answer';
+$class = ap_is_best_answer(get_question_id()) ? ' selected answer' : 'answer';
 ?>
 
 <!-- TODO: add post_class() -->

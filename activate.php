@@ -30,40 +30,30 @@ function anspress_activate( $network_wide ) {
 	
 	global $wpdb;
 
-	$page_to_create = array(
-		'questions' 			=> __('Questions', 'ap'), 
-		'user' 					=> __('User', 'ap'),			
-		'ask' 					=> __('Ask', 'ap'),			
-		'edit_page' 			=> __('Edit', 'ap'),			
-		'q_search' 				=> __('Search', 'ap'),			
-	);
+		
+	// check if page already exists
+	$page_id = ap_opt("base_page");
 	
-	foreach($page_to_create as $k => $page_title){
-		// create page
+	$post = get_post($page_id);
+	
+	if(!$post){
+		$args = array();
+		$args['post_type']    		= "page";
+		$args['post_content'] 		= "[anspress]";
+		$args['post_status']  		= "publish";
+		$args['post_title']   		= "ANSPRESS_TITLE";
+		$args['comment_status']   	= 'closed';
 		
-		// check if page already exists
-		$page_id = ap_opt("{$k}_page_id");
-		
-		$post = get_post($page_id);
-		
-		if(!$post){
-			$args = array();
-			$args['post_type']    		= "page";
-			$args['post_content'] 		= "[anspress_{$k}]";
-			$args['post_status']  		= "publish";
-			$args['post_title']   		= $page_title;
-			$args['comment_status']   	= 'closed';
-			
-			// now create post
-			$new_page_id = wp_insert_post ($args);
-		
-			if($new_page_id){
-				$page = get_post($new_page_id);
-				ap_opt("{$k}_page_slug", $page->post_name);
-				ap_opt("{$k}_page_id", $page->ID);
-			}
+		// now create post
+		$new_page_id = wp_insert_post ($args);
+	
+		if($new_page_id){
+			$page = get_post($new_page_id);
+			ap_opt("base_page", $page->ID);
+			ap_opt("base_page_id", $page->post_name);
 		}
 	}
+
 	
 	
 	

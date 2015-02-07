@@ -25,7 +25,7 @@ class AnsPress_PostTypes
 		//Register Custom Post types and taxonomy
         add_action('init', array($this, 'register_question_cpt'), 0);
         add_action('init', array($this, 'register_answer_cpt'), 0);
-        add_action('post_type_link',array($this, 'ans_post_type_link'),10,2);
+        add_action('post_type_link',array($this, 'post_type_link'),10,2);
         add_filter('manage_edit-question_columns', array( $this, 'cpt_question_columns'));
         add_action('manage_posts_custom_column', array($this, 'custom_columns_value'));
         add_filter('manage_edit-answer_columns', array($this,'cpt_answer_columns'));
@@ -90,9 +90,9 @@ class AnsPress_PostTypes
             'has_archive' => true,
             'exclude_from_search' => false,
             'publicly_queryable' => true,
-            'query_var' => 'question',
             'capability_type' => 'post',
-            'rewrite' => true
+            'rewrite' => false,
+            'query_var' => 'apq',
         );
 
         /**
@@ -159,7 +159,7 @@ class AnsPress_PostTypes
             'exclude_from_search' => false,
             'publicly_queryable' => true,
             'capability_type' => 'post',
-            'rewrite' => false
+            'rewrite' => false,
         );
         
         /**
@@ -173,15 +173,21 @@ class AnsPress_PostTypes
     }
 
     /**
-     * Alter answer CPT permalink
+     * Alter question and answer CPT permalink
      * @param  string $link
      * @param  object $post 
      * @return string
      * @since 2.0.0-alpha2
      */
-    public function ans_post_type_link($link, $post) {
-        if ($post->post_type == 'answer' && $post->post_parent != 0) {
-            $link = get_permalink($post->post_parent) ."#answer_{$post->ID}";
+    public function post_type_link($link, $post) {
+        if ($post->post_type == 'question') {
+            if(get_option('permalink_structure')){
+                return ap_get_link_to($question_slug.$post->ID.'/'.$post->post_name);
+            }else{
+                return add_query_arg( array('apq' => false, 'question_id' =>$post->ID), ap_base_page_link());
+            }
+        }elseif ($post->post_type == 'answer' && $post->post_parent != 0) {
+           return get_permalink($post->post_parent) ."#answer_{$post->ID}";
         }
         return $link;
     }

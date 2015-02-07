@@ -18,9 +18,6 @@ class AnsPress_Query_Filter
      */
     public function __construct()
     {
-
-		//add_filter( 'post_type_link', array($this, 'custom_question_link'), 10, 2 );		
-		//add_filter('get_pagenum_link', array($this, 'custom_page_link'));
 		
 		add_action( 'posts_clauses', array($this, 'answer_sort_newest'), 10, 2 );
 		add_action( 'posts_clauses', array($this, 'user_favorites'), 10, 2 );
@@ -68,29 +65,6 @@ class AnsPress_Query_Filter
 		
 		elseif($post->post_type == 'answer')
 			ap_do_event('delete_answer', $post->ID, $post->post_author);
-	}
-
-
-	public function custom_question_link( $url, $post ) {
-        /**
-         * TODO: Remove this filter if not needed anymore
-         */
-		if ( 'question' == get_post_type( $post ) ) {
-			if(get_option('permalink_structure')){
-				$question_slug = ap_opt('question_prefix');
-				$question_slug = strlen($question_slug) > 0 ? $question_slug.'/' : '';
-				return  ap_get_link_to($question_slug.$post->ID.'/'.$post->post_name); 
-			}else
-				return add_query_arg( array('apq' => false, 'page_id' => ap_opt('base_page'), 'question_id' =>$post->ID), $url );
-		}
-		return $url;
-	}
-	
-	public function custom_page_link( $result ){
-		//print_r($result);
-		if(ap_opt('base_page') == get_option('page_on_front'))
-			$result = str_replace('?paged', '?page_id='.ap_opt('base_page').'&paged', $result);
-		return $result ;
 	}
 	
 	public function answer_sort_newest($sql, $query){

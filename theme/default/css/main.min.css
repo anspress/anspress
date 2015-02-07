@@ -911,7 +911,9 @@
   box-sizing: border-box;
 }
 .anspress-container {
+  font-size: 13px;
   color: #595959;
+  line-height: 1.2;
 }
 .anspress-container .hentry {
   padding-top: 0;
@@ -920,6 +922,9 @@
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
   box-shadow: none;
+}
+.anspress-container a {
+  text-decoration: none;
 }
 .anspress-container .ap-pull-right {
   float: right !important;
@@ -1002,6 +1007,7 @@
   font-size: 15px;
   font-weight: 600;
   margin-bottom: 15px;
+  line-height: 1.2;
 }
 .anspress-container .block {
   display: block;
@@ -1421,12 +1427,14 @@
   float: left;
   margin-left: 0;
   margin-top: 0;
+  line-height: 1.2;
 }
 .ap-content .ap-user-actions li > a {
   color: #888888;
   display: block;
   font-size: 12px;
   text-decoration: none;
+  line-height: 1.2;
 }
 .ap-content .ap-user-actions li > a:hover {
   color: #595959;

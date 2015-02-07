@@ -224,6 +224,7 @@ if (!class_exists('AnsPress')) {
             require_once ANSPRESS_DIR.'includes/class-roles-cap.php';
             require_once ANSPRESS_DIR.'includes/class-question_query.php';
             require_once ANSPRESS_DIR.'includes/class-answer_query.php';
+            require_once ANSPRESS_DIR.'includes/class-theme.php';
             require_once ANSPRESS_DIR.'includes/post_types.php';
             require_once ANSPRESS_DIR.'includes/query_filter.php';
             require_once ANSPRESS_DIR.'includes/post_status.php';
@@ -235,15 +236,17 @@ if (!class_exists('AnsPress')) {
             require_once ANSPRESS_DIR.'includes/participants.php';
             require_once ANSPRESS_DIR.'includes/history.php';
             require_once ANSPRESS_DIR.'includes/image_resize.php';
-            require_once ANSPRESS_DIR.'includes/shortcode-questions.php';
-            require_once ANSPRESS_DIR.'includes/shortcode-user.php';
+
+            require_once ANSPRESS_DIR.'includes/shortcode-basepage.php';
+            /*require_once ANSPRESS_DIR.'includes/shortcode-user.php';
             require_once ANSPRESS_DIR.'includes/shortcode-ask.php';
             require_once ANSPRESS_DIR.'includes/shortcode-edit.php';
-            require_once ANSPRESS_DIR.'includes/shortcode-search.php';
-            require_once ANSPRESS_DIR.'includes/user-page-profile.php';
-            require_once ANSPRESS_DIR.'includes/user-page-questions.php';
-            require_once ANSPRESS_DIR.'includes/user-page-answers.php';
-            require_once ANSPRESS_DIR.'includes/user-page-favorites.php';
+            require_once ANSPRESS_DIR.'includes/shortcode-search.php';*/
+
+            require_once ANSPRESS_DIR.'includes/common-pages.php';
+            //require_once ANSPRESS_DIR.'includes/user-page-questions.php';
+            //require_once ANSPRESS_DIR.'includes/user-page-answers.php';
+            //require_once ANSPRESS_DIR.'includes/user-page-favorites.php';
             require_once ANSPRESS_DIR.'includes/class-form.php';
             require_once ANSPRESS_DIR.'includes/class-validation.php';
             require_once ANSPRESS_DIR.'includes/process-form.php';

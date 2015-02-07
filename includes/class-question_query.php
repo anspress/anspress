@@ -50,7 +50,7 @@ class Question_Query extends WP_Query {
         $defaults = array(
            // 'ap_query'      => 'main_questions',
             'post_status'   => array('publish', 'moderate', 'private_post', 'closed'),
-            'showposts'     => 20,
+            'showposts'     => ap_opt('question_per_page'),
             'orderby'       => $orderby,
             'paged'         => $paged,
         );

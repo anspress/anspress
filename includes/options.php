@@ -112,6 +112,8 @@ function ap_default_options(){
 		'show_comments_by_default'	=> false,
 		'question_text_editor'	=> false,
 		'answer_text_editor'	=> false,
+		'base_page_title'		=> 'Questions',
+		'ask_page_title'		=> 'Ask question',
 	);
 	
 	/**

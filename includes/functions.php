@@ -9,7 +9,33 @@
  * @copyright 2014 Rahul Aryan
  */
 
+/**
+ * Get slug of base page
+ * @return string
+ * @since 2.0.0-beta
+ */
+function ap_base_page_slug(){
+	$base_page_slug = ap_opt('base_page_slug');
+	// get the base slug, if base page was set to home page then dont use any slug
+	$slug = ((ap_opt('base_page') !== get_option('page_on_front')) ? $base_page_slug.'/' : '');
+	$base_page = get_post(ap_opt('base_page'));
+	
+	if( $base_page->post_parent != 0 ){
+		$parent_page = get_post($base_page->post_parent);
+		$slug = $parent_page->post_name . '/'.$slug;
+	}
 
+	return apply_filters('ap_base_page_slug', $slug) ;
+}
+
+/**
+ * Retrive permalink to base page
+ * @return string URL to AnsPress base page
+ * @since 2.0.0-beta
+ */
+function ap_base_page_link(){
+	return get_permalink(ap_opt('base_page'));
+}
 
 
 function ap_theme_list(){
@@ -210,7 +236,7 @@ function ap_post_edit_link($post_id_or_object){
 
 	$nonce = wp_create_nonce( 'nonce_edit_post_'.$post->ID );
 
-	$edit_link = add_query_arg( array('edit_post_id' => $post->ID,  '__nonce' => $nonce), get_permalink( ap_opt('edit_page')) );
+	$edit_link = add_query_arg( array('ap_page' => 'edit', 'edit_post_id' => $post->ID,  '__nonce' => $nonce), ap_base_page_link() );
 
 	return apply_filters( 'ap_post_edit_link', $edit_link );
 }
@@ -619,21 +645,21 @@ function ap_qa_on_post($post_id = false){
 	echo '<div class="anspress-container">';
 	include ap_get_theme_location('on-post.php');
 	wp_reset_postdata();
-	echo '<a href="'. add_query_arg(array('parent' => get_the_ID()), get_permalink(ap_opt('questions_page_id'))) .'" class="ap-view-all">'.__( 'View All', 'ap' ).'</a>';
+	echo '<a href="'. add_query_arg(array('parent' => get_the_ID()), ap_base_page_link()) .'" class="ap-view-all">'.__( 'View All', 'ap' ).'</a>';
 	echo '</div>';
 
 }
 
 function ap_ask_btn($parent_id = false){
-	$args = array();
+	$args = array('ap_page' => 'ask');
 	
 	if($parent_id !== false)
 		$args['parent'] = $parent_id;
 	
 	if(get_query_var('parent') != '')
 		$args['parent'] = get_query_var('parent');
-	
-	echo '<a class="ap-ask-btn" href="'.add_query_arg(array($args), get_permalink(ap_opt('ask_page_id'))).'">'.__('Ask Question', 'ap').'</a>';
+
+	echo '<a class="ap-ask-btn" href="'.add_query_arg(array($args), ap_base_page_link()).'">'.__('Ask Question', 'ap').'</a>';
 }
 
 /**
@@ -850,8 +876,8 @@ function ap_sort_array_by_order($array){
 /**
  * Append array to global var
  * @param  string 	$key
- * @param  array 			$args
- * @param string $var
+ * @param  array 	$args
+ * @param string 	$var
  * @return void
  * @since 2.0.0-alpha2
  */
@@ -1075,4 +1101,40 @@ function ap_user_display_meta($html = false, $user_id = false, $echo = false)
     } else {
         return $output;
     }
+}
+
+function ap_get_link_to($sub){
+	$base = rtrim(get_permalink(ap_opt('base_page')), '/');
+	
+	if(get_option('permalink_structure') != ''){
+
+		if(!is_array($sub))
+			$args = $sub ? '/'.$sub : '';
+
+		elseif(is_array($sub)){
+			$args = '/';
+
+			if(!empty($sub))
+				foreach($sub as $s)
+					$args .= $s.'/';
+		}
+		$link = $base;
+
+	}else{
+
+		if(!is_array($sub))
+			$args = $sub ? '&ap_page='.$sub : '';
+		elseif(is_array($sub)){
+			$args = '';
+		
+		if(!empty($sub))
+			foreach($sub as $k => $s)
+				$args .= '&'.$k .'='.$s;
+			}
+
+		$link = $base;
+
+	}
+
+	return $link. $args ;
 }

@@ -12,7 +12,7 @@
 /**
  * Show best answer
  */
-if(ap_is_answer_selected(get_the_ID())){
+if(ap_is_answer_selected(get_question_id())){
 	echo '<div id="ap-best-answer">';
 		echo '<h3 class="ap-widget-title">' . __('Best answer', 'ap') .'</h3>';
 		ap_get_best_answer();

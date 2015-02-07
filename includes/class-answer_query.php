@@ -161,7 +161,7 @@ function ap_get_answers($args = array()){
     global $answers;
 
     if(empty($args['question_id']))
-        $args['question_id'] = get_the_ID();
+        $args['question_id'] = get_question_id();
 
     $sort = get_query_var('ap_sort');
     if(empty($sort ))
@@ -171,12 +171,11 @@ function ap_get_answers($args = array()){
     
     
     $answers = new Answers_Query($args);
-
+    
     // get answer sorting tab
     echo '<div id="ap-answers-c">';             
-            include(ap_get_theme_location('answers.php'));      
+        include(ap_get_theme_location('answers.php'));      
     echo '</div>';
-    wp_reset_postdata();
 }
 
 /** 
@@ -186,11 +185,11 @@ function ap_get_answers($args = array()){
 function ap_get_best_answer($question_id = false){
     global $answers;
     if(!$question_id) 
-        $question_id = get_the_ID();
+        $question_id = get_question_id();
 
     $answers = new Answers_Query(array('only_best_answer' => true, 'question_id' => $question_id));    
-        while ( $answers->have_posts() ) : $answers->the_post(); 
-            include(ap_get_theme_location('answer.php'));
-        endwhile;
-    wp_reset_postdata();
+    
+    while ( $answers->have_posts() ) : $answers->the_post(); 
+        include(ap_get_theme_location('answer.php'));
+    endwhile;
 }

@@ -9,33 +9,11 @@ class AnsPress_Options_Page
 		// Register general settings
 		ap_register_option_group( 'general', __('General', 'ap'), array(
 			array(
-				'name' 				=> 'anspress_opt[questions_page]',
-				'label' 			=> __('Questions page', 'ap'),
-				'description' 		=> __('Select page for displaying questions list.', 'ap'),
+				'name' 				=> 'anspress_opt[base_page]',
+				'label' 			=> __('Base page', 'ap'),
+				'description' 		=> __('Select page for displaying anspress.', 'ap'),
 				'type' 				=> 'page_select',
-				'value' 			=> @$settings['questions_page_id'],
-				
-			),
-			array(
-				'name' 				=> 'anspress_opt[ask_page]',
-				'label' 			=> __('Ask page', 'ap'),
-				'description' 		=> __('Select page for displaying ask form.', 'ap'),
-				'type' 				=> 'page_select',
-				'value' 			=> @$settings['ask_page_id'],
-			),
-			array(
-				'name' 				=> 'anspress_opt[user_page]',
-				'label' 			=> __('User page', 'ap'),
-				'description' 		=> __('Select page for displaying user profile.', 'ap'),
-				'type' 				=> 'page_select',
-				'value' 			=> @$settings['user_page_id'],
-			),
-			array(
-				'name' 				=> 'anspress_opt[edit_page]',
-				'label' 			=> __('Edit page', 'ap'),
-				'description' 		=> __('Select page for displaying edit form.', 'ap'),
-				'type' 				=> 'page_select',
-				'value' 			=> @$settings['edit_page_id'],
+				'value' 			=> @$settings['base_page'],				
 			),
 			array(
 				'name' 				=> 'anspress_opt[author_credits]',
@@ -161,6 +139,26 @@ class AnsPress_Options_Page
 				'description' 		=> __('Show comments by default.', 'ap'),
 				'type' 				=> 'checkbox',
 				'value' 			=> $settings['show_comments_by_default'],
+			),
+
+			array(
+				'name' 				=> '__sep',
+				'type' 				=> 'custom',
+				'html' 				=> '<span class="ap-form-separator">'.__('Page titles').'</span>',
+			),
+			array(
+				'name' 				=> 'anspress_opt[base_page_title]',
+				'label' 			=> __('Base page title', 'ap'),
+				'description' 		=> __('Main questions list page title', 'ap'),
+				'type' 				=> 'text',
+				'value' 			=> $settings['base_page_title'],
+			),
+			array(
+				'name' 				=> 'anspress_opt[ask_page_title]',
+				'label' 			=> __('Ask page title', 'ap'),
+				'description' 		=> __('Title of the ask page', 'ap'),
+				'type' 				=> 'text',
+				'value' 			=> $settings['ask_page_title'],
 			),
 
 			/* TODO: Add question sorting*/

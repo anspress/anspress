@@ -10,10 +10,9 @@
  *
  * @package AnsPress
  */
-$other_answer_count = ap_count_other_answer(get_the_ID());
+$other_answer_count = ap_count_other_answer(get_question_id());
 if($other_answer_count > 0){
-	$label = ap_is_answer_selected(get_the_ID()) ? 'Other ' : '';
-	
+	$label = ap_is_answer_selected(get_question_id()) ? 'Other ' : '';
 
 	if(ap_user_can_see_answers()){
 
