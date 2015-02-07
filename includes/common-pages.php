@@ -31,6 +31,7 @@ class AnsPress_Common_Pages
         ap_register_page('question', __('Question', 'ap'), array($this, 'question_page'));
         ap_register_page('ask', __('Ask', 'ap'), array($this, 'ask_page'));
         ap_register_page('edit', __('Edit', 'ap'), array($this, 'edit_page'));
+        ap_register_page('search', __('Search', 'ap'), array($this, 'search_page'));
     }
 
 
@@ -45,6 +46,7 @@ class AnsPress_Common_Pages
 
     public function question_page()
     {
+        remove_filter( 'the_content', array($this, 'question_page') );
         global $questions;
 
         $questions          = new WP_Query(array('p' => get_question_id(), 'post_type' => 'question'));
@@ -76,6 +78,18 @@ class AnsPress_Common_Pages
             // include theme file
             include ap_get_theme_location('edit.php');
         }
+    }
+
+    public function search_page()
+    {
+        global $questions;
+        $keywords   = sanitize_text_field( get_query_var( 'ap_s' ));
+        $questions  = new Question_Query(array('s' => $keywords));
+
+        if($questions->have_posts())
+            include(ap_get_theme_location('base.php'));
+        else
+            _e('No posts found based on your criteria.', 'ap');
     }
 
 }

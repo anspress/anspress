@@ -114,6 +114,7 @@ function ap_default_options(){
 		'answer_text_editor'	=> false,
 		'base_page_title'		=> 'Questions',
 		'ask_page_title'		=> 'Ask question',
+		'search_page_title'		=> 'Search "%s"',
 	);
 	
 	/**
