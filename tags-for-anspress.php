@@ -7,15 +7,15 @@
  * @package   Tags for AnsPress
  * @author    Rahul Aryan <wp3@rahularyan.com>
  * @license   GPL-2.0+
- * @link      http://wp3.in/categories-for-anspress
+ * @link      http://wp3.in/tags-for-anspress
  * @copyright 2014 WP3.in & Rahul Aryan
  *
  * @wordpress-plugin
  * Plugin Name:       Tags for AnsPress
- * Plugin URI:        http://wp3.in/categories-for-anspress
+ * Plugin URI:        http://wp3.in/tags-for-anspress
  * Description:       Extension for AnsPress. Add tags in AnsPress.
  * Donate link: https://www.paypal.com/cgi-bin/webscr?business=rah12@live.com&cmd=_xclick&item_name=Donation%20to%20AnsPress%20development
- * Version:           1.2.1
+ * Version:           1.2.2
  * Author:            Rahul Aryan
  * Author URI:        http://wp3.in
  * Text Domain:       ap
@@ -72,8 +72,9 @@ class Tags_For_AnsPress
         if (!defined('TAGS_FOR_ANSPRESS_URL'))   
                 define('TAGS_FOR_ANSPRESS_URL', plugin_dir_url( __FILE__ ));
 
-        $this->includes();
         $this->option_fields();
+
+        ap_register_page('tag', __('Tag', 'ap'), array($this, 'tag_page'));
 
         // internationalization
         add_action( 'init', array( $this, 'textdomain' ) );
@@ -89,9 +90,6 @@ class Tags_For_AnsPress
         add_action('ap_question_info', array($this, 'ap_question_info' ));
         add_action( 'ap_enqueue', array( $this, 'ap_enqueue' ) );
         add_filter('term_link', array($this, 'term_link_filter'), 10, 3);
-
-        add_shortcode( 'anspress_question_tag', array( 'AnsPress_Tag_Shortcode', 'anspress_tag' ) );
-
         add_action('ap_ask_form_fields', array($this, 'ask_from_tag_field'), 10, 2);
         add_action('ap_ask_fields_validation', array($this, 'ap_ask_fields_validation'));
         add_action( 'ap_after_new_question', array($this, 'after_new_question'), 10, 2 );
@@ -101,8 +99,24 @@ class Tags_For_AnsPress
 
     }
 
-    public function includes(){
-        require_once( TAGS_FOR_ANSPRESS_DIR . 'shortcode-tag.php' );
+    public function tag_page()
+    {
+        global $questions, $question_tag;
+
+        $tag_id = sanitize_text_field(get_query_var( 'q_tag'));
+
+        $question_args= array('tax_query' => array(        
+            array(
+                'taxonomy' => 'question_tag',
+                'field' => is_numeric($tag_id) ? 'id' : 'slug',
+                'terms' => array( $tag_id )
+            )
+        ));
+
+        $questions          = new Question_Query($question_args);
+        $question_tag       = get_term_by( is_numeric($tag_id) ? 'id' : 'slug', $tag_id, 'question_tag');
+        
+        include ap_get_theme_location('tag.php', TAGS_FOR_ANSPRESS_DIR);
     }
 
     /**
@@ -232,7 +246,7 @@ class Tags_For_AnsPress
                 'name'              => 'anspress_opt[question_tag_page_id]',
                 'label'             => __('Tag Page', 'ap'),
                 'description'       => __('Page used for showing question tag.', 'ap'),
-                'type'              => 'select_page',
+                'type'              => 'page_select',
                 'value'             => $settings['question_tag_page_id'],
             ),
             array(
@@ -303,12 +317,11 @@ class Tags_For_AnsPress
     }
 
     public function term_link_filter( $url, $term, $taxonomy ) {
-
-        if($taxonomy == 'question_tag'){
+        if($taxonomy == 'question_tag'){           
             if(get_option('permalink_structure') != '')
-                $url = get_permalink(ap_opt('question_tag_page_id')).$term->slug;                
+                 return ap_get_link_to(array('ap_page' => 'tag', 'q_tag' => $term->slug));               
             else
-                $url = add_query_arg(array('q_tag' => $term->term_id), get_permalink(ap_opt('question_tag_page_id')));
+                return ap_get_link_to(array('ap_page' => 'tag', 'q_tag' => $term->term_id));
         }
         return $url;
        
