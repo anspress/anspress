@@ -1103,6 +1103,9 @@ function ap_user_display_meta($html = false, $user_id = false, $echo = false)
     }
 }
 
+/**
+ * @param string $sub
+ */
 function ap_get_link_to($sub){
 	$base = rtrim(get_permalink(ap_opt('base_page')), '/');
 	
