@@ -234,9 +234,10 @@ AnsPress.site.prototype = {
 					$('.ap-comment-form').remove();					
 					$(this).closest('.ap-content-inner').append(data.html);
 
-					$('html, body').animate({
-						scrollTop: ($(data.container).offset().top) - 50
-					}, 500);
+					if($(data.container).length > 0)
+						$('html, body').animate({
+							scrollTop: ($(data.container).offset().top) - 50
+						}, 500);
 
 					if(typeof $(this).attr('data-toggle') !== 'undefined')
 						$($(this).attr('data-toggle')).hide();

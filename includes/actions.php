@@ -18,7 +18,7 @@ class AnsPress_Actions
 	public function __construct()
 	{
 		new AnsPress_Post_Status;
-		//add_action( 'after_setup_theme', array($this, 'after_setup_theme') );
+		add_action( 'init', array($this, 'init') );
 		add_action( 'ap_after_new_question', array($this, 'after_new_question'), 10, 2 );
 		add_action( 'ap_after_new_answer', array($this, 'after_new_answer'), 10, 2 );
 
@@ -45,9 +45,10 @@ class AnsPress_Actions
      * @return void
      * @since 2.0.0-alpha2
      */
-    public function after_setup_theme()
+    public function init()
     {
-
+    	ap_register_menu('ANSPRESS_BASE_PAGE_URL', __('Questions', 'ap'), ap_base_page_link());
+    	ap_register_menu('ANSPRESS_ASK_PAGE_URL', __('Ask', 'ap'), ap_get_link_to('ask'));
     }
 
 	/**
@@ -269,27 +270,17 @@ class AnsPress_Actions
 	}
 
 	public function update_menu_url( $items ) {		
-		// Iterate over the items
-		foreach ( $items as $key => $item ) {
-			
-			if('http://ANSPRESS_BASE_PAGE_URL' == $item->url)
-				$item->url = get_permalink(ap_opt('base_page'));
-			
-			if('http://ANSPRESS_ASK_PAGE_URL' == $item->url)
-				$item->url = ap_get_link_to('ask');
-			
-			if('http://ANSPRESS_CATEGORIES_PAGE_URL' == $item->url)
-				$item->url = ap_get_link_to('categories');
-			
-			if('http://ANSPRESS_TAGS_PAGE_URL' == $item->url)
-				$item->url = ap_get_link_to('tags');
-			
-			if('http://ANSPRESS_USERS_PAGE_URL' == $item->url)
-				$item->url = ap_get_link_to('users');
-			
-			if('http://ANSPRESS_USER_PROFILE_URL' == $item->url)
-				$item->url = ap_user_link(get_current_user_id());
-		}
+		global $ap_menu;
+
+		if(!empty($items) && is_array($items))
+			foreach ( $items as $key => $item ) {
+				foreach($ap_menu as $slug => $args){
+					
+					if(strpos($item->url, $slug) !== FALSE)
+						$item->url = $args['link'];
+				}
+
+			}
 
 		return $items;
 	}

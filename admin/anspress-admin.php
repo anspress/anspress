@@ -87,6 +87,7 @@ class anspress_admin {
 		add_action( 'save_post', array($this, 'ans_parent_post'), 0, 2 );        
         add_filter('wp_insert_post_data', array($this, 'post_data_check'), 99);
         add_filter('post_updated_messages', array($this,'post_custom_message'));
+        add_action( 'admin_head-nav-menus.php', array($this, 'ap_menu_metaboxes') );
 	}
 
 	/**
@@ -106,7 +107,7 @@ class anspress_admin {
 	{
 		require_once('functions.php'); 
 		require_once('options-page.php'); 
-		require_once('extensions.php'); 
+		require_once('extensions.php');
 	}
 
 	/**
@@ -829,4 +830,45 @@ class anspress_admin {
         
         return $messages;
     }
+
+    public function ap_menu_metaboxes(){
+		/* $anspress_menu = array(
+			'id' => 'add-anspress',
+			'title' => 'AnsPress',
+			'callback' => 'wp_nav_menu_item_link_meta_box',
+			'args' => null		
+		);
+		$GLOBALS['wp_meta_boxes']['nav-menus']['side']['default']['add-anspress'] = $anspress_menu;
+		var_dump ( $GLOBALS['wp_meta_boxes']['nav-menus']['side']['default']['add-custom-links']); */
+		add_meta_box( 'add-anspress', __( 'AnsPress' ), array($this, 'wp_nav_menu_item_anspress_meta_box'), 'nav-menus', 'side', 'default' );
+			//and $GLOBALS['wp_meta_boxes']['nav-menus'] = array ();
+	}
+
+    public function wp_nav_menu_item_anspress_meta_box(){
+		global $ap_menu, $_nav_menu_placeholder, $nav_menu_selected_id;
+
+		$_nav_menu_placeholder = 0 > $_nav_menu_placeholder ? $_nav_menu_placeholder - 1 : -1;
+		$base_page = ap_opt('base_page');
+
+		//$ap_menu = apply_filters( 'ap_admin_nav_menus', $ap_menu );
+
+		echo '<div class="aplinks" id="aplinks">';
+		echo '<input type="hidden" value="custom" name="menu-item['.$_nav_menu_placeholder.'][menu-item-type]" />';
+		echo '<ul>';
+		foreach($ap_menu as $k => $args){
+			echo '<li>';
+				echo '<label class="menu-item-title">';
+					echo '<input type="radio" value="" name="menu-item['.$_nav_menu_placeholder.'][menu-item-url]" class="menu-item-checkbox" data-url="'. $k .'" data-title="'.$args['title'].'"> '.$args['title'].'
+				</label>';
+			echo '</li>';
+		}
+		echo '</ul><p class="button-controls">
+<span class="add-to-menu">
+<input type="submit"'.wp_nav_menu_disabled_check( $nav_menu_selected_id ).' class="button-secondary submit-add-to-menu right" value="'.__('Add to Menu', 'ap').'" name="add-custom-menu-item" id="submit-aplinks" />
+<span class="spinner"></span>
+</span>
+</p>';
+		echo '</div>';
+
+	}
 }

@@ -1757,63 +1757,67 @@
 .ap-subscribe .ap-btn.active {
   background: #ddd;
 }
-.ap-form-control {
+.anspress-container .ap-form-control {
   border: 1px solid #e4e4e4;
+  -webkit-border-radius: 2px;
+  -webkit-background-clip: padding-box;
+  -moz-border-radius: 2px;
+  -moz-background-clip: padding;
   border-radius: 2px;
-  box-shadow: 0 0 2px #eee inset;
+  background-clip: padding-box;
+  -webkit-box-shadow: 0 0 2px #fbfbfb inset;
+  -moz-box-shadow: 0 0 2px #fbfbfb inset;
+  box-shadow: 0 0 2px #fbfbfb inset;
   display: block;
-  height: 50px;
+  height: 40px;
   margin-bottom: 15px;
-  padding: 8px 10px;
+  padding: 5px 10px;
   width: 100%;
+  line-height: 1.2;
 }
-.ap-form-control.autogrow {
+.anspress-container .ap-form-control.autogrow {
   overflow: hidden;
 }
-.ap-form-control[type="checkbox"] {
+.anspress-container .ap-form-control[type="checkbox"] {
   display: inline;
   margin: 0;
   padding: 0;
   width: auto;
 }
-.ap-form-control#title {
-  font-size: 18px;
-  font-weight: 600;
-}
-.ap-checkbox-withdesc {
+.anspress-container .ap-checkbox-withdesc {
   margin-bottom: 15px;
 }
-.ap-checkbox-withdesc [type="checkbox"] {
+.anspress-container .ap-checkbox-withdesc [type="checkbox"] {
   float: left;
   height: 20px;
   line-height: 100%;
   margin-right: 10px;
 }
-.ap-checkbox-withdesc p {
+.anspress-container .ap-checkbox-withdesc p {
   color: #888888;
   font-size: 13px;
   margin-bottom: 0;
 }
-.ap-form-fields {
+.anspress-container .ap-form-fields {
   position: relative;
 }
-.ap-form-fields.ap-have-error .ap-form-control,
-.ap-form-fields.ap-have-error .ap-editor {
+.anspress-container .ap-form-fields.ap-have-error .ap-form-control,
+.anspress-container .ap-form-fields.ap-have-error .ap-editor {
   border: solid 2px #eb5837;
   background: #fef3f0;
 }
-.ap-form-fields.ap-have-error .ap-editor {
+.anspress-container .ap-form-fields.ap-have-error .ap-editor {
   padding: 10px;
 }
-.ap-form-fields.ap-have-error.being-edited .ap-form-control,
-.ap-form-fields.ap-have-error.being-edited .ap-editor {
+.anspress-container .ap-form-fields.ap-have-error.being-edited .ap-form-control,
+.anspress-container .ap-form-fields.ap-have-error.being-edited .ap-editor {
   border-color: #f4ac20;
   background: #ffffff;
 }
-.ap-form-fields.ap-have-error.being-edited .ap-form-error-message {
+.anspress-container .ap-form-fields.ap-have-error.being-edited .ap-form-error-message {
   background: #f4ac20;
 }
-.ap-form-fields .ap-form-error-message {
+.anspress-container .ap-form-fields .ap-form-error-message {
   background: #eb5837;
   -webkit-border-radius: 2px 2px 0 0;
   -webkit-background-clip: padding-box;
@@ -1828,19 +1832,26 @@
   right: 0;
   top: 5px;
 }
-.ap-editor {
+.anspress-container .ap-editor {
+  border: 1px solid #e4e4e4;
+  -webkit-border-radius: 3px;
+  -webkit-background-clip: padding-box;
+  -moz-border-radius: 3px;
+  -moz-background-clip: padding;
+  border-radius: 3px;
+  background-clip: padding-box;
   margin-bottom: 10px;
 }
-.ap-editor .quicktags-toolbar {
+.anspress-container .ap-editor .quicktags-toolbar {
   background: none;
   border: none;
 }
-.ap-editor textarea.wp-editor-area,
-.ap-editor .mce-panel {
+.anspress-container .ap-editor textarea.wp-editor-area,
+.anspress-container .ap-editor .mce-panel {
   background: none;
 }
-.ap-editor .quicktags-toolbar input.button,
-.ap-editor .mce-btn button {
+.anspress-container .ap-editor .quicktags-toolbar input.button,
+.anspress-container .ap-editor .mce-btn button {
   background: #fff;
   border: medium none;
   -webkit-border-radius: 2px;
@@ -1854,22 +1865,22 @@
   box-shadow: none;
   color: #aaa;
 }
-.ap-editor .quicktags-toolbar input.button i,
-.ap-editor .mce-btn button i {
+.anspress-container .ap-editor .quicktags-toolbar input.button i,
+.anspress-container .ap-editor .mce-btn button i {
   padding: 0;
 }
-.ap-editor .mce-toolbar-grp {
+.anspress-container .ap-editor .mce-toolbar-grp {
   border-bottom: 1px solid #eee;
 }
-.ap-editor .html-active .switch-html,
-.ap-editor .tmce-active .switch-tmce {
-  background: none repeat scroll 0 0 #fff;
+.anspress-container .ap-editor .html-active .switch-html,
+.anspress-container .ap-editor .tmce-active .switch-tmce {
+  background: #fff;
   border-bottom-color: #fff;
 }
-.ap-editor div.mce-toolbar-grp > div {
+.anspress-container .ap-editor div.mce-toolbar-grp > div {
   padding: 0;
 }
-.ap-editor .mce-toolbar .mce-btn-group .mce-btn {
+.anspress-container .ap-editor .mce-toolbar .mce-btn-group .mce-btn {
   border-color: transparent #eee transparent transparent;
   border-image: none;
   border-style: none solid none none;
@@ -1877,29 +1888,31 @@
   margin: 0;
   padding: 5px;
 }
-.ap-editor .mce-toolbar .mce-btn-group .mce-btn:hover {
+.anspress-container .ap-editor .mce-toolbar .mce-btn-group .mce-btn:hover {
   background: transparent;
+  border-color: #ddd;
 }
-.ap-editor .wp-editor-tools {
-  background: none repeat scroll 0 0 #f8f8f8;
+.anspress-container .ap-editor .wp-editor-tools {
+  background: #f8f8f8;
   padding: 5px;
 }
-.ap-editor .mce-statusbar {
+.anspress-container .ap-editor .mce-statusbar {
   display: none;
 }
-#answer-form-c {
+.anspress-container #answer-form-c {
   border-top: 1px solid #eeeeee;
   margin-top: 20px;
 }
-.btn-submit-ans {
+.anspress-container .btn-submit-ans {
   padding: 10px 20px;
 }
-.ap-form-label {
+.anspress-container .ap-form-label {
   display: block;
+  font-weight: bold;
   margin-bottom: 10px;
 }
-.ap-form-label .ap-field-desc {
-  background: none repeat scroll 0 0 #bbb;
+.anspress-container .ap-form-label .ap-field-desc {
+  background: #bbb;
   -webkit-border-radius: 50%;
   -webkit-background-clip: padding-box;
   -moz-border-radius: 50%;
@@ -1908,22 +1921,23 @@
   background-clip: padding-box;
   color: #ffffff;
   display: inline-block;
-  font-size: 12px;
-  height: 16px;
-  line-height: 18px;
+  font-size: 11px;
+  height: 15px;
+  line-height: 16px;
   margin-left: 7px;
   text-align: center;
-  width: 16px;
+  width: 15px;
 }
-.ap-form-label .ap-field-desc:hover {
+.anspress-container .ap-form-label .ap-field-desc:hover {
   background: #11a7db;
+  cursor: pointer;
 }
-.ap-similar-questions-head h3 {
+.anspress-container .ap-similar-questions-head h3 {
   color: #5db34a;
   font-size: 16px;
   font-weight: 600;
 }
-.ap-similar-questions {
+.anspress-container .ap-similar-questions {
   border: solid 2px #eee;
   -webkit-border-radius: 2px;
   -webkit-background-clip: padding-box;
@@ -1939,33 +1953,64 @@
   box-shadow: 0 0 4px rgba(0, 0, 0, 0.04) inset;
   padding: 15px;
 }
-.ap-similar-questions a {
+.anspress-container .ap-similar-questions a {
   color: #595959;
   display: block;
   padding: 8px;
   text-decoration: none;
 }
-.ap-similar-questions a .acount {
+.anspress-container .ap-similar-questions a .acount {
   color: #888888;
   float: right;
   font-size: 13px;
   font-style: italic;
 }
-.ap-similar-questions a:hover {
+.anspress-container .ap-similar-questions a:hover {
   background: #fcfcfc;
 }
-.ap-similar-questions a .highlight_word {
+.anspress-container .ap-similar-questions a .highlight_word {
   font-weight: 600;
   text-decoration: underline;
 }
-#answer_form .ap-editor {
+.anspress-container #answer_form .ap-editor {
   border: 1px solid #ddd;
   border-radius: 3px;
 }
-#answer_form .ap-editor-answer-label {
+.anspress-container #answer_form .ap-editor-answer-label {
   color: #888;
   display: block !important;
   padding: 5px 10px;
+}
+.anspress-container .bootstrap-tagsinput {
+  border: 1px solid #e4e4e4;
+  -webkit-border-radius: 2px;
+  -webkit-background-clip: padding-box;
+  -moz-border-radius: 2px;
+  -moz-background-clip: padding;
+  border-radius: 2px;
+  background-clip: padding-box;
+  -webkit-box-shadow: 0 0 2px #fbfbfb inset;
+  -moz-box-shadow: 0 0 2px #fbfbfb inset;
+  box-shadow: 0 0 2px #fbfbfb inset;
+  display: block;
+  height: 40px;
+  margin-bottom: 15px;
+  padding: 5px 10px;
+  width: 100%;
+  line-height: 1.2;
+}
+.anspress-container .bootstrap-tagsinput.autogrow {
+  overflow: hidden;
+}
+.anspress-container .bootstrap-tagsinput[type="checkbox"] {
+  display: inline;
+  margin: 0;
+  padding: 0;
+  width: auto;
+}
+.anspress-container .bootstrap-tagsinput input {
+  line-height: 20px;
+  margin-top: 5px;
 }
 .anspress-container .ap-comment-block {
   background: none repeat scroll 0 0 #fcfcfc;
