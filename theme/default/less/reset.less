@@ -136,43 +136,7 @@
 		margin-top: 20px;
 	}
 
-	.ap-loading-icon{
-	    background: @blue-color;
-	    .border-radius(2px);
-	    color: #fff;
-	    display: block;
-	    font-size: 25px;
-	    height: 40px;
-	    left: 20px;
-	    line-height: 44px;
-	    position: fixed;
-	    text-align: center;
-	    top: 82px;
-	    width: 40px;
-	    z-index: 9999;
-
-		&.fade-bg{
-			background: rgba(255, 255, 255, 0.8)
-		}
-	}
-	.ap-loading-icon>i {
-	    font-size: 20px;
-	    height: 20px;
-	    left: 50%;
-	    line-height: 20px;
-	    margin-left: -10px;
-	    margin-top: -10px;
-	    padding: 0;
-	    position: absolute;
-	    top: 50%;
-	    width: 20px;
-	    .animation(spin 1s linear infinite);
-	}
-
-
-	@-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
-	@-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
-	@keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
+	
 
 	.private-question-label{
 	    background: none repeat scroll 0 0 #8F8F8F;
@@ -264,3 +228,40 @@
 		display: none;
 	}
 }
+.ap-loading-icon{
+    background: @blue-color;
+    .border-radius(2px);
+    color: #fff;
+    display: block;
+    font-size: 25px;
+    height: 40px;
+    left: 20px;
+    line-height: 44px;
+    position: fixed;
+    text-align: center;
+    top: 82px;
+    width: 40px;
+    z-index: 9999;
+
+	&.fade-bg{
+		background: rgba(255, 255, 255, 0.8)
+	}
+}
+.ap-loading-icon>i {
+    font-size: 20px;
+    height: 20px;
+    left: 50%;
+    line-height: 20px;
+    margin-left: -10px;
+    margin-top: -10px;
+    padding: 0;
+    position: absolute;
+    top: 50%;
+    width: 20px;
+    .animation(spin 1s linear infinite);
+}
+
+
+@-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
+@-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
+@keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }

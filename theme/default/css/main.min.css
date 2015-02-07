@@ -1043,61 +1043,6 @@
 .anspress-container .margin-top-20 {
   margin-top: 20px;
 }
-.anspress-container .ap-loading-icon {
-  background: #11a7db;
-  -webkit-border-radius: 2px;
-  -webkit-background-clip: padding-box;
-  -moz-border-radius: 2px;
-  -moz-background-clip: padding;
-  border-radius: 2px;
-  background-clip: padding-box;
-  color: #fff;
-  display: block;
-  font-size: 25px;
-  height: 40px;
-  left: 20px;
-  line-height: 44px;
-  position: fixed;
-  text-align: center;
-  top: 82px;
-  width: 40px;
-  z-index: 9999;
-}
-.anspress-container .ap-loading-icon.fade-bg {
-  background: rgba(255, 255, 255, 0.8);
-}
-.anspress-container .ap-loading-icon > i {
-  font-size: 20px;
-  height: 20px;
-  left: 50%;
-  line-height: 20px;
-  margin-left: -10px;
-  margin-top: -10px;
-  padding: 0;
-  position: absolute;
-  top: 50%;
-  width: 20px;
-  -webkit-animation: spin 1s linear infinite;
-  -moz-animation: spin 1s linear infinite;
-  -o-animation: spin 1s linear infinite;
-  animation: spin 1s linear infinite;
-}
-@-moz-keyframes spin {
-  100% {
-    -moz-transform: rotate(360deg);
-  }
-}
-@-webkit-keyframes spin {
-  100% {
-    -webkit-transform: rotate(360deg);
-  }
-}
-@keyframes spin {
-  100% {
-    -webkit-transform: rotate(360deg);
-    transform: rotate(360deg);
-  }
-}
 .anspress-container .private-question-label {
   background: none repeat scroll 0 0 #8F8F8F;
   -webkit-border-radius: 2px;
@@ -1186,6 +1131,61 @@
 }
 .anspress-container .ap-view-count-0 {
   display: none;
+}
+.ap-loading-icon {
+  background: #11a7db;
+  -webkit-border-radius: 2px;
+  -webkit-background-clip: padding-box;
+  -moz-border-radius: 2px;
+  -moz-background-clip: padding;
+  border-radius: 2px;
+  background-clip: padding-box;
+  color: #fff;
+  display: block;
+  font-size: 25px;
+  height: 40px;
+  left: 20px;
+  line-height: 44px;
+  position: fixed;
+  text-align: center;
+  top: 82px;
+  width: 40px;
+  z-index: 9999;
+}
+.ap-loading-icon.fade-bg {
+  background: rgba(255, 255, 255, 0.8);
+}
+.ap-loading-icon > i {
+  font-size: 20px;
+  height: 20px;
+  left: 50%;
+  line-height: 20px;
+  margin-left: -10px;
+  margin-top: -10px;
+  padding: 0;
+  position: absolute;
+  top: 50%;
+  width: 20px;
+  -webkit-animation: spin 1s linear infinite;
+  -moz-animation: spin 1s linear infinite;
+  -o-animation: spin 1s linear infinite;
+  animation: spin 1s linear infinite;
+}
+@-moz-keyframes spin {
+  100% {
+    -moz-transform: rotate(360deg);
+  }
+}
+@-webkit-keyframes spin {
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+@keyframes spin {
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
 }
 .anspress-container .list-question {
   border-bottom: 1px solid #F8F8F8;
@@ -1971,6 +1971,9 @@
   background: none repeat scroll 0 0 #fcfcfc;
   border: 1px solid #eee;
   margin-top: 25px;
+}
+.anspress-container #respond {
+  margin: 0;
 }
 .anspress-container .ap-comments .ap-commentlist {
   list-style: none outside none;

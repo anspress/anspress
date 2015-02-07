@@ -15,15 +15,9 @@
  * @since 2.0.0-beta
  */
 function ap_base_page_slug(){
-	$base_page_slug = ap_opt('base_page_slug');
-	// get the base slug, if base page was set to home page then dont use any slug
-	$slug = ((ap_opt('base_page') !== get_option('page_on_front')) ? $base_page_slug.'/' : '');
 	$base_page = get_post(ap_opt('base_page'));
-	
-	if( $base_page->post_parent != 0 ){
-		$parent_page = get_post($base_page->post_parent);
-		$slug = $parent_page->post_name . '/'.$slug;
-	}
+
+	$slug = $base_page->post_name;
 
 	return apply_filters('ap_base_page_slug', $slug) ;
 }

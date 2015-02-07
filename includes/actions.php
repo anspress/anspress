@@ -18,7 +18,7 @@ class AnsPress_Actions
 	public function __construct()
 	{
 		new AnsPress_Post_Status;
-		add_action( 'after_setup_theme', array($this, 'after_setup_theme') );
+		//add_action( 'after_setup_theme', array($this, 'after_setup_theme') );
 		add_action( 'ap_after_new_question', array($this, 'after_new_question'), 10, 2 );
 		add_action( 'ap_after_new_answer', array($this, 'after_new_answer'), 10, 2 );
 
@@ -35,6 +35,8 @@ class AnsPress_Actions
 
 		add_action( 'wp_loaded', array( $this, 'flush_rules' ) );
 		add_filter('get_avatar', array($this, 'get_avatar'), 10, 5);
+
+		add_action('generate_rewrite_rules', array( $this, 'rewrites'), 1);
 		
 	}
 
@@ -45,8 +47,7 @@ class AnsPress_Actions
      */
     public function after_setup_theme()
     {
-    	add_filter( 'the_title', array($this,'the_title'), 100, 2 );
-		add_filter( 'wp_title', array($this,'wp_title'), 100, 2 );
+
     }
 
 	/**
@@ -341,32 +342,59 @@ class AnsPress_Actions
         }
     }
 
-    /**
-     * Override the title 
-     * @param  string $title 
-     * @param  integer $id
-     * @return string
-     */
-    public function the_title($title, $id)
-    {
-    	if($id == ap_opt('q_search_page_id'))
-    		return sprintf(__('Search "%s"', 'ap'), sanitize_text_field( get_query_var('ap_s') ));
+    public function rewrites() {  
+		global $wp_rewrite;  
+		global $ap_rules;
+		
+		unset($wp_rewrite->extra_permastructs['question']); 
+        unset($wp_rewrite->extra_permastructs['answer']); 
+		
+		$base_page_id 		= ap_opt('base_page');
+		
+		$slug = ap_base_page_slug().'/';
 
-    	return $title;
-    }
+		$new_rules = array(  
+			
+			$slug. "parent/([^/]+)/?" => "index.php?page_id=".$base_page_id."&parent=".$wp_rewrite->preg_index(1),		
+			
+			$slug. "category/([^/]+)/page/?([0-9]{1,})/?$" => "index.php?page_id=".$base_page_id."&ap_page=category&q_cat=".$wp_rewrite->preg_index(1)."&paged=".$wp_rewrite->preg_index(2),   
+			
+			$slug. "tag/([^/]+)/page/?([0-9]{1,})/?$" => "index.php?page_id=".$base_page_id."&ap_page=tag&q_tag=".$wp_rewrite->preg_index(1)."&paged=".$wp_rewrite->preg_index(2), 
+			
+			$slug. "category/([^/]+)/?" => "index.php?page_id=".$base_page_id."&ap_page=category&q_cat=".$wp_rewrite->preg_index(1),
+			
+			$slug. "tag/([^/]+)/?" => "index.php?page_id=".$base_page_id."&ap_page=tag&q_tag=".$wp_rewrite->preg_index(1),
 
-    /**
-     * Override wp_title
-     * @param  string $title
-     * @return string
-     */
-    public function wp_title($title)
-    {
-    	if(get_the_ID() == ap_opt('q_search_page_id'))
-    		return sprintf(__('Search "%s"', 'ap'), sanitize_text_field( get_query_var('ap_s') ));
+			/* question */
+			$slug . "([^/]+)/([^/]+)/page/?([0-9]{1,})/?$" => "index.php?page_id=".$base_page_id."&question_name=".$wp_rewrite->preg_index(1)."&question_id=".$wp_rewrite->preg_index(2)."&paged=".$wp_rewrite->preg_index(3),
+			
+			$slug."([^/]+)/([^/]+)/?" => "index.php?page_id=".$base_page_id."&question_name=".$wp_rewrite->preg_index(1)."&question_id=".$wp_rewrite->preg_index(2),
+			
+			$slug. "page/?([0-9]{1,})/?$" => "index.php?page_id=".$base_page_id."&paged=".$wp_rewrite->preg_index(1),  
+			
+			
+			$slug. "([^/]+)/page/?([0-9]{1,})/?$" => "index.php?page_id=".$base_page_id."&ap_page=".$wp_rewrite->preg_index(1)."&paged=".$wp_rewrite->preg_index(2),
+			
+			$slug. "user/([^/]+)/([^/]+)/page/?([0-9]{1,})/?$" => "index.php?page_id=".$base_page_id."&ap_page=user&user=". $wp_rewrite->preg_index(1)."&user_page=". $wp_rewrite->preg_index(2)."&paged=".$wp_rewrite->preg_index(3),
+			
+			$slug. "user/([^/]+)/([^/]+)/([^/]+)/?" => "index.php?page_id=".$base_page_id."&ap_page=user&user=". $wp_rewrite->preg_index(1)."&user_page=". $wp_rewrite->preg_index(2)."&message_id=". $wp_rewrite->preg_index(3),
+			
+			$slug. "user/([^/]+)/([^/]+)/?" => "index.php?page_id=".$base_page_id."&ap_page=user&user=". $wp_rewrite->preg_index(1)."&user_page=". $wp_rewrite->preg_index(2),
+			
+			$slug. "user/([^/]+)/?" => "index.php?page_id=".$base_page_id."&ap_page=user&user=".$wp_rewrite->preg_index(1),
+			
+			$slug. "search/([^/]+)/?" => "index.php?page_id=".$base_page_id."&ap_page=search&ap_s=". $wp_rewrite->preg_index(1),			
+			
+			$slug. "ask/([^/]+)/?" => "index.php?page_id=".$base_page_id."&ap_page=ask&parent=".$wp_rewrite->preg_index(1),
+			
+			$slug. "([^/]+)/?" => "index.php?page_id=".$base_page_id."&ap_page=".$wp_rewrite->preg_index(1),
+			
+			//"feed/([^/]+)/?" => "index.php?feed=feed&parent=".$wp_rewrite->preg_index(1),
+		);  
+		$ap_rules = $new_rules;
 
-    	return $title;
-    }
+		return $wp_rewrite->rules = $new_rules + $wp_rewrite->rules;  
+	}  
 
 
 
