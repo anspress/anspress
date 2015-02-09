@@ -759,7 +759,7 @@ class anspress_admin {
 	{
 		global $typenow, $pagenow, $post;
 
-		if (in_array( $pagenow, array( 'post-new.php', 'post.php' ) ) && ($typenow == 'answer'|| (isset($_GET['action']) && $_GET['action'] == 'edit') )){
+		if (in_array( $pagenow, array( 'post-new.php', 'post.php' ) ) && $post->post_type == 'answer' && ( (isset($_GET['action']) && $_GET['action'] == 'edit') )){
 			
 			$post_parent = isset($_GET['action']) ? $post->post_parent : (int)$_GET['post_parent'];
 			
