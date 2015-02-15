@@ -341,6 +341,8 @@ class AnsPress_Actions
         unset($wp_rewrite->extra_permastructs['answer']); 
 		
 		$base_page_id 		= ap_opt('base_page');
+
+		$base_page = get_post($base_page_id);
 		
 		$slug = ap_base_page_slug().'/';
 

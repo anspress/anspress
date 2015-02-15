@@ -19,6 +19,11 @@ function ap_base_page_slug(){
 
 	$slug = $base_page->post_name;
 
+	if( $base_page->post_parent > 0 ){
+		$parent_page = get_post($base_page->post_parent);
+		$slug = $parent_page->post_name . '/'.$slug;
+	}
+
 	return apply_filters('ap_base_page_slug', $slug) ;
 }
 
