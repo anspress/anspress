@@ -52,6 +52,6 @@ $class = ap_is_best_answer(get_question_id()) ? ' selected answer' : 'answer';
 				<i class="apicon-info"></i><span><?php _e( 'Answer is waiting for approval by moderator.', 'ap' ); ?></span>
 			</div>
 		<?php endif; ?>
-		<?php if(ap_opt('show_comments_by_default')) comments_template(); ?>
+		<?php if(ap_opt('show_comments_by_default') && !ap_opt('disable_comments_on_answer')) comments_template(); ?>
 	</div>	
 </div>

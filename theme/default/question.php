@@ -112,7 +112,7 @@ global $post;
 							<?php echo ap_icon('cross', true) ?><span><?php _e( 'Question is closed, new answer are not accepted.', 'ap' ); ?></span>
 						</div>
 					<?php endif; ?>
-					<?php if(ap_opt('show_comments_by_default')) comments_template(); ?>
+					<?php if(ap_opt('show_comments_by_default') && !ap_opt('disable_comments_on_question')) comments_template(); ?>
 				</div>		
 			</div>
 			

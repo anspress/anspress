@@ -160,7 +160,6 @@ class AnsPress_Options_Page
 				'type' 				=> 'text',
 				'value' 			=> $settings['ask_page_title'],
 			),
-
 			/* TODO: Add question sorting*/
 
 		));
@@ -188,6 +187,13 @@ class AnsPress_Options_Page
 				'type' 				=> 'checkbox',
 				'value' 			=> $settings['question_text_editor'],
 			),
+			array(
+				'name' 				=> 'anspress_opt[disable_comments_on_question]',
+				'label' 			=> __('Disable comments', 'ap'),
+				'description' 		=> __('Disable comments on questions.', 'ap'),
+				'type' 				=> 'checkbox',
+				'value' 			=> $settings['disable_comments_on_question'],
+			),
 		));
 
 		// Register answer settings
@@ -212,6 +218,13 @@ class AnsPress_Options_Page
 				'description' 		=> __('Text editor as default.', 'ap'),
 				'type' 				=> 'checkbox',
 				'value' 			=> $settings['answer_text_editor'],
+			),
+			array(
+				'name' 				=> 'anspress_opt[disable_comments_on_answer]',
+				'label' 			=> __('Disable comments', 'ap'),
+				'description' 		=> __('Disable comments on answer.', 'ap'),
+				'type' 				=> 'checkbox',
+				'value' 			=> $settings['disable_comments_on_answer'],
 			),
 		));
 

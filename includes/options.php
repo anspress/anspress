@@ -115,6 +115,8 @@ function ap_default_options(){
 		'base_page_title'		=> 'Questions',
 		'ask_page_title'		=> 'Ask question',
 		'search_page_title'		=> 'Search "%s"',
+		'disable_comments_on_question'=> false,
+		'disable_comments_on_answer'=> false,
 	);
 	
 	/**

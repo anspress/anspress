@@ -205,6 +205,14 @@ function ap_answers_link(){
  */
 function ap_comment_btn_html($echo = false){
 	if(ap_user_can_comment()){
+		global $post;
+		
+		if($post->post_type == 'question' && ap_opt('disable_comments_on_question'))
+			return;
+
+		if($post->post_type == 'answer' && ap_opt('disable_comments_on_answer'))
+			return;
+
 		$nonce = wp_create_nonce( 'comment_form_nonce' );
 		$comment_count = get_comments_number( get_the_ID() );
 		$output = '<a href="#comments-'.get_the_ID().'" class="comment-btn ap-tip" data-action="load_comment_form" data-query="ap_ajax_action=load_comment_form&post='.get_the_ID().'&__nonce='.$nonce.'" title="'.__('Comments', 'ap').'">'.__('Comment', 'ap').'<span class="ap-data-view ap-view-count-'.$comment_count.'">'.$comment_count.'</span></a>';
@@ -1134,4 +1142,16 @@ function ap_get_link_to($sub){
 	}
 
 	return $link. $args ;
+}
+
+/**
+ * Register profile option tab and fields
+ * @param  string 	$group_slug  	slug for links
+ * @param  string 	$group_title 	Page title
+ * @param  array 	$fields 		fields array.    
+ * @return void
+ * @since 2.0.0-alpha2
+ */
+function profile_register_option_group($group_slug, $group_title, $fields){
+	ap_append_to_global_var('ap_option_tabs', $group_slug , array('title' => $group_title, 'fields' =>  $fields));
 }
