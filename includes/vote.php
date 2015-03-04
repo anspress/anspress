@@ -48,7 +48,7 @@ class AnsPress_Vote_Ajax extends AnsPress_Ajax
 				update_post_meta($question_id, ANSPRESS_SUBSCRIBER_META, $counts);
 				
 				//register an action
-				do_action('ap_removed_subscribe', $question_id, $counts);
+				do_action('ap_removed_subscriber', $question_id, $counts);
 
 				ap_send_json(ap_ajax_responce(array('message' => 'unsubscribed', 'action' => 'unsubscribed')));
 				return;
@@ -61,7 +61,7 @@ class AnsPress_Vote_Ajax extends AnsPress_Ajax
 				update_post_meta($question_id, ANSPRESS_SUBSCRIBER_META, $counts);
 				
 				//register an action
-				do_action('ap_added_subscribe', $question_id, $counts);
+				do_action('ap_added_subscriber', $question_id, $counts);
 				
 				ap_send_json(ap_ajax_responce(array('message' => 'subscribed', 'action' => 'subscribed')));
 			}
@@ -458,10 +458,7 @@ function ap_is_user_subscribed($postid){
 }
 
 function ap_post_subscribers_count($postid = false){
-	//subscribe count
-	global $post;
-
-	$postid = $postid ? $postid : $post->ID;
+	$postid = $postid ? $postid : get_question_id();
 	return ap_meta_total_count('subscriber', $postid);
 }
 
@@ -505,19 +502,19 @@ function ap_vote_btn($post = false, $echo = true){
  * @return string
  * @since 2.0.1
  */
-function ap_subscribe_btn_html($post = false){
-	if(!$post)
-		global $post;
+function ap_subscribe_btn_html($question_id = false){
+	if(!$question_id)
+		$question_id = get_question_id();
 	
-	$total_favs = ap_post_subscribers_count($post->ID);
-	$subscribed = ap_is_user_subscribed($post->ID);
+	$total_favs = ap_post_subscribers_count($question_id);
+	$subscribed = ap_is_user_subscribed($question_id);
 
-	$nonce = wp_create_nonce( 'subscribe_'.$post->ID );
+	$nonce = wp_create_nonce( 'subscribe_'.$question_id );
 	$title = (!$subscribed) ? (__('Subscribe', 'ap')) : (__('Subscribed', 'ap'));
 
 	?>
 		<div class="ap-subscribe<?php echo ($subscribed) ? ' active' :''; ?> clearfix">
-			<a id="<?php echo 'subscribe_'.$post->ID; ?>" href="#" class="ap-btn subscribe-btn <?php echo ($subscribed) ? ' active' :''; ?>" data-query="ap_ajax_action=subscribe_question&question_id=<?php echo $post->ID ?>&__nonce=<?php echo $nonce ?>" data-action="ap_subscribe" data-args="<?php echo $post->ID.'-'.$nonce; ?>"><?php echo $title ?></a>
+			<a id="<?php echo 'subscribe_'.$question_id; ?>" href="#" class="ap-btn subscribe-btn <?php echo ($subscribed) ? ' active' :''; ?>" data-query="ap_ajax_action=subscribe_question&question_id=<?php echo $question_id ?>&__nonce=<?php echo $nonce ?>" data-action="ap_subscribe" data-args="<?php echo $question_id.'-'.$nonce; ?>"><?php echo $title ?></a>
 		</div>
 	<?php
 }

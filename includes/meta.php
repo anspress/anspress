@@ -155,7 +155,7 @@ function ap_meta_total_count($type, $actionid=false, $userid = false, $group = f
 	}
 		
 	$query = "SELECT IFNULL(count(*), 0) FROM " .$wpdb->prefix ."ap_meta where apmeta_type = '$type' and $where_query $group_query";
-	
+
 	$key = md5($query);
 	
 	$cache = wp_cache_get($key, 'count');

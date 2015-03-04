@@ -1756,7 +1756,9 @@
   display: block;
 }
 .ap-subscribe .ap-btn.active {
-  background: #ddd;
+  -webkit-box-shadow: 0 0 1px rgba(0, 0, 0, 0.2) inset;
+  -moz-box-shadow: 0 0 1px rgba(0, 0, 0, 0.2) inset;
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0.2) inset;
 }
 .anspress-container .ap-form-control {
   border: 1px solid #e4e4e4;
