@@ -30,10 +30,10 @@ class AnsPress_Stats_Widget extends WP_Widget {
 			echo $args['before_title'] . $title . $args['after_title'];
 		}
 
-		$ans_count 		= ap_count_answer_meta();
-		$last_active 	= ap_last_active(get_the_ID());
-		$total_subs 	= ap_post_subscribers_count(get_the_ID());
-		$view_count 	= ap_get_qa_views();
+		$ans_count 		= ap_count_answer_meta(get_question_id());
+		$last_active 	= ap_last_active(get_question_id());
+		$total_subs 	= ap_post_subscribers_count(get_question_id());
+		$view_count 	= ap_get_qa_views(get_question_id());
 
 
 		echo '<ul class="ap-stats-widget">';

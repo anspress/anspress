@@ -60,7 +60,7 @@
 		}
 		.ap-avatar{
 			margin-right: 10px;
-			margin-top: 4px;
+			margin-top: 0px;
 		}
 	}
 	.entry-title{
@@ -215,25 +215,16 @@
 	    border: 1px solid rgba(204, 218, 202, 0.22);
 	}
 	.ap-widget-title {
-	    background: none repeat scroll 0 0 #5db859;
+	    background: @main-color;
+	    .border-radius(2px);
 	    color: #fff;
 	    font-size: 13px;
 	    font-weight: normal;
+	    margin: 6px 0 0;
+	    .opacity(0.6);
 	    padding: 5px 10px;
 	    position: absolute;
 	    right: 0;
-
-	    &:before{
-		    border-color: transparent #5db859 transparent transparent;
-		    border-image: none;
-		    border-style: solid;
-		    border-width: 12px 10px 12px 12px;
-		    content: "";
-		    display: block;
-		    left: -22px;
-		    position: absolute;
-		    top: 0;
-	    }
 	}
 }
 .ap-btn-select {

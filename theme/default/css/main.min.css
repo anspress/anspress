@@ -1389,7 +1389,7 @@
 .ap-content .ap-question-metas .ap-avatar,
 .ap-content .ap-answer-metas .ap-avatar {
   margin-right: 10px;
-  margin-top: 4px;
+  margin-top: 0px;
 }
 .ap-content .entry-title {
   font-size: 22px;
@@ -1528,24 +1528,25 @@
   border: 1px solid rgba(204, 218, 202, 0.22);
 }
 #ap-best-answer .ap-widget-title {
-  background: none repeat scroll 0 0 #5db859;
+  background: #5db34a;
+  -webkit-border-radius: 2px;
+  -webkit-background-clip: padding-box;
+  -moz-border-radius: 2px;
+  -moz-background-clip: padding;
+  border-radius: 2px;
+  background-clip: padding-box;
   color: #fff;
   font-size: 13px;
   font-weight: normal;
+  margin: 6px 0 0;
+  zoom: 1;
+  filter: alpha(opacity=60);
+  -webkit-opacity: 0.6;
+  -moz-opacity: 0.6;
+  opacity: 0.6;
   padding: 5px 10px;
   position: absolute;
   right: 0;
-}
-#ap-best-answer .ap-widget-title:before {
-  border-color: transparent #5db859 transparent transparent;
-  border-image: none;
-  border-style: solid;
-  border-width: 12px 10px 12px 12px;
-  content: "";
-  display: block;
-  left: -22px;
-  position: absolute;
-  top: 0;
 }
 .ap-btn-select {
   background: #5db34a;

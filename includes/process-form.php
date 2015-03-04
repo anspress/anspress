@@ -310,9 +310,11 @@ class AnsPress_Process_Form
 		if ( wp_is_post_revision( $post_id ) || $post->post_status == 'trash'|| $post->post_status == 'auto-draft')
 			return;
 		
+		$updated = get_post_meta($post_id, ANSPRESS_UPDATED_META, true);
+		
 		if ( $post->post_type == 'question' ) {
 			//check if post have updated meta, if not this is a new post :D
-			$updated = get_post_meta($post_id, ANSPRESS_UPDATED_META, true);
+			
 			if($updated == '' ){
 				/**
 				 * ACTION: ap_after_new_question

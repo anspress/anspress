@@ -110,6 +110,52 @@ function ap_question_content(){
 }
 
 
+function is_anspress(){
+	$queried_object = get_queried_object();
+	
+	if(!isset($queried_object->ID)) 
+		return false;
+
+	if( $queried_object->ID ==  ap_opt('base_page'))
+		return true;
+		
+	return false;
+}
+
+function is_question(){
+	if(is_anspress() && (get_query_var('question_id') || get_query_var('question') || get_query_var('question_name')))
+		return true;
+		
+	return false;
+}
+
+function is_ask(){
+	if(is_anspress() && get_query_var('ap_page')=='ask')
+		return true;
+		
+	return false;
+}
+function is_ap_users(){
+	if(is_anspress() && get_query_var('ap_page')=='users')
+		return true;
+		
+	return false;
+}
+
+function get_question_id(){
+	if(is_question() && get_query_var('question_id')){
+		return (int)get_query_var('question_id');
+	}elseif(is_question() && get_query_var('question')){
+		return get_query_var('question');
+	}elseif(is_question() && get_query_var('question_name')){
+		$post = get_page_by_path(get_query_var('question_name'), OBJECT, 'question');
+		return $post->ID;
+	}elseif(get_query_var('edit_q')){
+		return get_query_var('edit_q');
+	}
+	
+	return false;
+}
 
 function ap_human_time($time, $unix = true){
 	if(!$unix)

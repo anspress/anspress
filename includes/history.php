@@ -92,7 +92,7 @@ function ap_add_history($userid = false, $post_id, $value, $param=NULL){
 	
 	$last_history = ap_get_latest_history($value);
 
-	if($last_history && $last_history['user_id'] == $userid && $last_history['type'] == $param && $last_history['value'] == $value && $last_history['action_id'] == $post_id){
+	if($last_history && $last_history['user_id'] == $userid && $last_history['type'] == $param && $last_history['value'] == $value && @$last_history['action_id'] == $post_id){
 		$row = ap_update_meta(
 			array('apmeta_userid' => $userid, 'apmeta_actionid' => $post_id, 'apmeta_value' => $value, 'apmeta_param' =>$param),
 			array('apmeta_userid' => $last_history['user_id'], 'apmeta_actionid' => $last_history['action_id'], 'apmeta_value' => $last_history['value'], 'apmeta_param' => $last_history['type']));

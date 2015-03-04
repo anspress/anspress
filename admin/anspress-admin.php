@@ -51,6 +51,8 @@ class anspress_admin {
 		$this->includes();
 		AnsPress_Options_Page::add_option_groups();
 
+		add_action( 'save_post', array($this, 'ans_parent_post'), 10, 2 ); 
+
 		// Load admin style sheet and JavaScript.
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_styles' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_scripts' ) );
@@ -84,7 +86,7 @@ class anspress_admin {
 		add_action( 'wp_ajax_ap_delete_badge', array($this, 'ap_delete_badge') );
 		add_action( 'wp_ajax_ap_delete_flag', array($this, 'ap_delete_flag') );		
 		add_action( 'edit_form_after_title', array($this, 'edit_form_after_title') );
-		add_action( 'save_post', array($this, 'ans_parent_post'), 0, 2 );        
+		       
         add_filter('wp_insert_post_data', array($this, 'post_data_check'), 99);
         add_filter('post_updated_messages', array($this,'post_custom_message'));
         add_action( 'admin_head-nav-menus.php', array($this, 'ap_menu_metaboxes') );
@@ -160,8 +162,8 @@ class anspress_admin {
 		if($mod_count > 0)
 			$Modcount = ' <span class="update-plugins count"><span class="plugin-count">'.number_format_i18n($mod_count).'</span></span>';
 		
-		$pos = $this->get_free_menu_position(50, 0.3);
-		
+		$pos = $this->get_free_menu_position(10);
+
 		add_menu_page( 'AnsPress', 'AnsPress'.$Totalcount, 'manage_options', 'anspress', array($this, 'dashboard_page'), ANSPRESS_URL . '/assets/answer.png', $pos );
 		
 		add_submenu_page('anspress', __( 'All Questions', 'ap' ), __( 'All Questions', 'ap' ),	'manage_options', 'edit.php?post_type=question', '');
@@ -785,6 +787,11 @@ class anspress_admin {
 	 * @since 2.0.0-alpha2
 	 */
 	public function ans_parent_post( $post_id, $post ) {
+
+		global $pagenow;
+
+		if (!in_array( $pagenow, array( 'post.php', 'post-new.php' ) ) )
+		   return $post->ID;
 
 		if ( !current_user_can( 'edit_post', $post->ID ))
 			return $post->ID;
