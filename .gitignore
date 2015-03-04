@@ -4,3 +4,5 @@
 /.buildpath
 /.project
 /addons
+/node_modules
+/docs

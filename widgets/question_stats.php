@@ -42,7 +42,6 @@ class AnsPress_Stats_Widget extends WP_Widget {
 		echo '<li>'.__('Answers', 'ap'). '<span>'.$ans_count.'</span></li>' ;		
 		echo '<li>'.__('Subscribers', 'ap'). '<span>'.$total_subs.'</span></li>' ;		
 		echo '</ul>';
-
 		echo $args['after_widget'];
 	}
 

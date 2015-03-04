@@ -66,7 +66,7 @@ function ap_get_parti($post_id, $count = false){
  */
 function ap_get_all_parti($avatar_size = 40, $post_id = false){
 	if(!$post_id)
-		$post_id = get_the_ID();
+		$post_id = get_question_id();
 		
 	$parti = ap_get_parti($post_id);
 

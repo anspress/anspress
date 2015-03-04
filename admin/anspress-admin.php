@@ -1,6 +1,6 @@
 <?php
 /**
- * AnsPresss
+ * AnsPresss admin class
  *
  * @package   AnsPress
  * @author    Rahul Aryan <admin@rahularyan.com>
@@ -9,19 +9,19 @@
  * @copyright 2014 Rahul Aryan
  */
 
-/**
- * anspress_admin class. This class should ideally be used to work with the
- * administrative side of the WordPress site.
- *
- * @package AnsPress
- * @author  Rahul Aryan <admin@rahularyan.com>
- */
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
- 
-class anspress_admin {
+
+/**
+ * This class should ideally be used to work with the
+ * administrative side of the WordPress site.
+ *
+ * @package AnsPress
+ * @author  Rahul Aryan <rah12@live.com>
+ */
+class AnsPress_Admin {
 
 	/**
 	 * Instance of this class.	 
@@ -64,13 +64,10 @@ class anspress_admin {
 		$plugin_basename = plugin_basename( plugin_dir_path( __DIR__ ) . $this->plugin_slug . '.php' );
 		add_filter( 'plugin_action_links_' . $plugin_basename, array( $this, 'add_action_links' ) );
 		
-		add_action('admin_init', array($this, 'register_setting'));
-		
+		add_action('admin_init', array($this, 'register_setting'));		
 		// flush rewrite rule if option updated
-		add_action('admin_init', array($this, 'init_actions'));
-		
-		add_action('parent_file', array($this, 'tax_menu_correction'));
-		
+		add_action('admin_init', array($this, 'init_actions'));		
+		add_action('parent_file', array($this, 'tax_menu_correction'));		
 		add_action( 'load-post.php', array($this, 'question_meta_box_class') );
 		add_action( 'load-post-new.php', array($this, 'question_meta_box_class') );		
 		add_action( 'wp_ajax_ap_save_options', array($this, 'ap_save_options') );
@@ -78,15 +75,13 @@ class anspress_admin {
 		add_action( 'wp_ajax_ap_save_points', array($this, 'ap_save_points') );
 		add_action( 'wp_ajax_ap_new_point_form', array($this, 'ap_new_point_form') );
 		add_action( 'wp_ajax_ap_delete_point', array($this, 'ap_delete_point') );
-		add_action( 'admin_menu', array($this, 'change_post_menu_label') );
-		
+		add_action( 'admin_menu', array($this, 'change_post_menu_label') );		
 		add_action( 'wp_ajax_ap_edit_badges', array($this, 'ap_edit_badges') );
 		add_action( 'wp_ajax_ap_save_badges', array($this, 'ap_save_badges') );
 		add_action( 'wp_ajax_ap_new_badge_form', array($this, 'ap_new_badge_form') );
 		add_action( 'wp_ajax_ap_delete_badge', array($this, 'ap_delete_badge') );
 		add_action( 'wp_ajax_ap_delete_flag', array($this, 'ap_delete_flag') );		
-		add_action( 'edit_form_after_title', array($this, 'edit_form_after_title') );
-		       
+		add_action( 'edit_form_after_title', array($this, 'edit_form_after_title') );		       
         add_filter('wp_insert_post_data', array($this, 'post_data_check'), 99);
         add_filter('post_updated_messages', array($this,'post_custom_message'));
         add_action( 'admin_head-nav-menus.php', array($this, 'ap_menu_metaboxes') );

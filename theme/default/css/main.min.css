@@ -1429,6 +1429,10 @@
   margin-top: 0;
   line-height: 1.2;
 }
+.ap-content .ap-user-actions .ap-action-favorite .favorite-btn {
+  margin-top: -2px;
+  padding: 1px 5px;
+}
 .ap-content .ap-user-actions li > a {
   color: #888888;
   display: block;
