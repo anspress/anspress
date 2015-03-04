@@ -34,7 +34,7 @@ class AnsPress_Actions
 		add_filter( 'wp_get_nav_menu_items', array($this, 'update_menu_url'));
 
 		add_action( 'wp_loaded', array( $this, 'flush_rules' ) );
-		add_filter('get_avatar', array($this, 'get_avatar'), 10, 5);
+		//add_filter('get_avatar', array($this, 'get_avatar'), 10, 5);
 
 		add_action('generate_rewrite_rules', array( $this, 'rewrites'), 1);
 		

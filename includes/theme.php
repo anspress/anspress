@@ -51,60 +51,6 @@ function ap_page_title() {
 	return $new_title;
 }
 
-function ap_user_page_title(){
-	if(is_ap_user()){
-		$userid = ap_get_user_page_user();
-		$user = get_userdata($userid);
-		$user_page = get_query_var('user_page');
-		$user_page = $user_page ? $user_page : 'profile';
-		
-		$name = $user->data->display_name;
-		
-		if(get_current_user_id() == $userid)
-			$name = __('You', 'ap');
-		
-		if( 'profile' == $user_page){
-			if(get_current_user_id() == $userid)
-				$title = __('Your profile', 'ap');
-			else
-				$title = sprintf(__('%s\'s profile', 'ap'), $name);
-		}elseif( 'questions' == $user_page ){
-			$title = sprintf(__('Questions asked by %s', 'ap'), $name);
-		}elseif( 'answers' == $user_page ){
-			$title = sprintf(__('Answers posted by %s', 'ap'), $name);
-		}elseif( 'activity' == $user_page ){
-			if(get_current_user_id() == $userid)
-				$title = __('Your activity', 'ap');
-			else
-				$title = sprintf(__('%s\'s activity', 'ap'), $name);
-		}elseif( 'favorites' == $user_page ){
-			$title = sprintf(__('Favorites questions of %s', 'ap'), $name);
-		}elseif( 'followers' == $user_page ){
-			$title = sprintf(__('Users following %s', 'ap'), $name);
-		}elseif( 'following' == $user_page ){
-			$title = sprintf(__('Users being followed by %s', 'ap'), $name);
-		}elseif( 'edit_profile' == $user_page ){
-			$title = __('Edit your profile', 'ap');
-		}elseif( 'settings' == $user_page ){
-			$title = __('Your settings', 'ap');
-		}elseif( 'messages' == $user_page ){
-			$title = __('Your messages', 'ap');
-		}elseif( 'badges' == $user_page ){
-			if(get_current_user_id() == $userid)
-				$title = __('Your badges', 'ap');
-			else
-				$title = sprintf(__('%s\'s activity', 'ap'), $name);
-		}elseif( 'message' == $user_page ){
-			$title = sprintf(__('Message', 'ap'), $name);
-		}
-		$title = apply_filters('ap_user_page_title', $title);
-		
-		return $title;
-	}
-	
-	return __('Page not found', 'ap');
-}
-
 function is_anspress(){
 	$queried_object = get_queried_object();
 	
@@ -136,13 +82,6 @@ function is_ap_users(){
 		
 	return false;
 }
-function is_my_profile(){
-	if(ap_get_user_page_user() == get_current_user_id())
-		return true;
-	
-	return false;
-}
-
 
 function get_question_id(){
 	if(is_question() && get_query_var('question_id')){
@@ -188,37 +127,6 @@ function ap_edit_post_id(){
 
 function is_ap_edit(){
 	if(is_anspress() && get_query_var('edit_post_id'))
-		return true;
-		
-	return false;
-}
-
-function is_ap_user(){
-	if(is_anspress() && get_query_var('ap_page') == 'user')
-		return true;
-		
-	return false;
-}
-
-function ap_get_user_page_user(){
-	if(is_ap_user()){
-		$user = sanitize_text_field(str_replace('%20', ' ', get_query_var('user')));
-		if($user){
-			if(!is_int($user)){
-				$user = get_user_by('login', $user);
-				return $user->ID;
-			}
-			return $user;
-		}else{
-			return get_current_user_id();
-		}
-	}	
-		
-	return false;
-}
-
-function is_ap_profile(){
-	if(is_anspress() && get_query_var('user_page') == '')
 		return true;
 		
 	return false;
@@ -293,13 +201,6 @@ function ap_get_current_page_template(){
 	}
 	return 'content-none.php';
 }
-
-function ap_current_user_page_is($page){
-	if (get_query_var('user_page') == $page)
-		return true;
-	return false;
-}
-
 
 /**
  * Get post status
