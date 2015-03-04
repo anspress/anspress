@@ -329,6 +329,15 @@ class AnsPress_Options_Page
 				'value' => $settings['logged_in_can_see_comment'],
 				'show_desc_tip' => false,
 			) ,
+
+			array(
+				'name' => 'anspress_opt[disable_delete_after]',
+				'label' => __('Lock delete action', 'ap') ,
+				'desc' => __('Lock comment or post after a period so that user cannot delete it. Set the time in epoch i.e. 86400 = 1 day.', 'ap') ,
+				'type' => 'number',
+				'value' => $settings['disable_delete_after'],
+				'show_desc_tip' => false,
+			) ,
 		));
 		
 		// register moderate settings

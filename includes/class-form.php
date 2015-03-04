@@ -234,6 +234,10 @@ class AnsPress_Form {
         }
 
         $this->error_messages();
+
+        if(!$this->field['show_desc_tip'])
+            $this->desc();
+
         $this->output .= '</div>';
     }
 
@@ -253,6 +257,10 @@ class AnsPress_Form {
         $this->output .= '<div class="ap-form-fields-in">';
         $this->output .= '<input id="'. @$field['name'] .'" type="number" class="ap-form-control" value="'. @$field['value'] .'" name="'. @$field['name'] .'"'.$placeholder.' '. @$field['attr'] .$autocomplete.' />';
         $this->error_messages();
+
+        if(!$this->field['show_desc_tip'])
+            $this->desc();
+
         $this->output .= '</div>';
     }
 
@@ -273,11 +281,14 @@ class AnsPress_Form {
             $this->output .= '<div class="ap-checkbox-withdesc clearfix">';
 
         $this->output .= '<input id="'. @$field['name'] .'" type="checkbox" class="ap-form-control" value="1" name="'. @$field['name'] .'" '.checked( (bool)$field['value'], true, false ).' '. @$field['attr'] .' />';
-
+ 
         $this->error_messages();
 
         if(!empty($field['desc']))
             $this->output .= '</div>';
+
+        if(!$this->field['show_desc_tip'])
+            $this->desc();
 
         $this->output .= '</div>';
     }
@@ -310,6 +321,8 @@ class AnsPress_Form {
         $this->select_options($field);
         $this->output .= '</select>';
         $this->error_messages();
+        if(!$this->field['show_desc_tip'])
+            $this->desc();
         $this->output .= '</div>';
     }
 
@@ -345,6 +358,8 @@ class AnsPress_Form {
         $this->taxonomy_select_options($field);
         $this->output .= '</select>';
         $this->error_messages();
+        if(!$this->field['show_desc_tip'])
+            $this->desc();
         $this->output .= '</div>';
     }
 
@@ -360,8 +375,9 @@ class AnsPress_Form {
             $this->label();
         $this->output .= '<div class="ap-form-fields-in">';
         $this->output .= wp_dropdown_pages( array('selected'=> @$field['value'],'name'=> @$field['name'],'post_type'=> 'page', 'echo' => false) );
-        $this->desc();
         $this->error_messages();
+        if(!$this->field['show_desc_tip'])
+            $this->desc();
         $this->output .= '</div>';
     }
 
@@ -378,8 +394,9 @@ class AnsPress_Form {
         $this->output .= '<div class="ap-form-fields-in">';
         $placeholder = $this->placeholder();
         $this->output .= '<textarea id="'. @$field['name'] .'" rows="'. @$field['rows'] .'" class="ap-form-control" name="'. @$field['name'] .'"'.$placeholder.' '. @$field['attr'] .'>'. @$field['value'] .'</textarea>';
-        $this->desc();
         $this->error_messages();
+        if(!$this->field['show_desc_tip'])
+            $this->desc();
         $this->output .= '</div>';
     }
 
@@ -412,6 +429,8 @@ class AnsPress_Form {
         echo '</div>';
         $this->output .= ob_get_clean();
         $this->error_messages();
+        if(!$this->field['show_desc_tip'])
+            $this->desc();
         $this->output .= '</div>';
     }
     /**

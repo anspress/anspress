@@ -20,23 +20,7 @@ $settings = ap_opt();
  * Anspress option navigation
  * @var array
  */
-/*$navigation = array(
-	'general'		=> __('General', 'ap'),
-	'questions'		=> __('Questions', 'ap'),
-	'answers'		=> __('Answers', 'ap'),
 
-	'user'			=> __('User', 'ap'),
-	'permission'	=> __('Permission', 'ap'),
-	'pages'			=> __('Pages', 'ap'),
-	'spam'			=> __('Spam and Moderate', 'ap'),
-);*/
-
-
-/**
- * FILTER: ap_option_navigation
- * For filtering AnsPress option navigation
- */
-//$navigation = apply_filters('ap_option_navigation', $navigation );
 
 if ( ! isset( $_REQUEST['settings-updated'] ) )
 	$_REQUEST['settings-updated'] = false; // This checks whether the form has just been submitted. ?>
@@ -50,7 +34,7 @@ if ( ! isset( $_REQUEST['settings-updated'] ) )
 	<?php endif; // If the form has just been submitted, this shows the notification ?>
 	
 	<div class="anspress-options">
-		<div class="option-nav-tab">
+		<div class="option-nav-tab clearfix">
 			<?php ap_options_nav(); ?>
 		</div>
 		<div class="ap-group-options">

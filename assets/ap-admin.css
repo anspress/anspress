@@ -1,571 +1,379 @@
-.clearfix:before,
-.clearfix:after
-{
+.clearfix:before, .clearfix:after {
     display: table;
     clear: both;
-
     content: ' ';
 }
-.ap-admin-container
-{
+.ap-admin-container {
     max-width: 800px;
 }
-.wp-list-table th#asker,
-.wp-list-table th#answerer
-{
+.wp-list-table th#asker, .wp-list-table th#answerer {
     width: 60px;
 }
-
-.wp-list-table th#answers
-{
+.wp-list-table th#answers {
     width: 30px;
 }
-.wp-list-table th#question_category,
-.wp-list-table th#question_tags
-{
+.wp-list-table th#question_category, .wp-list-table th#question_tags {
     width: 100px;
 }
-.wp-list-table th#vote
-{
+.wp-list-table th#vote {
     width: 60px;
 }
-
-.wp-list-table th#status
-{
+.wp-list-table th#status {
     width: 60px;
 }
-
-.wp-list-table th#parent_question
-{
+.wp-list-table th#parent_question {
     width: 30%;
 }
-.wp-list-table th#flag
-{
+.wp-list-table th#flag {
     width: 40px;
 }
-th.column-question_status
-{
+th.column-question_status {
     width: 50px;
 }
-td.column-vote_note strong,
-td.column-post_title > a
-{
+td.column-vote_note strong, td.column-post_title > a {
     font-size: 14px;
-
     display: block;
-
     margin-bottom: .2em;
 }
-.post_type.column-post_type,
-.manage-column.column-post_type
-{
+.post_type.column-post_type, .manage-column.column-post_type {
     width: 70px;
 }
-
-.question-status
-{
+.question-status {
     font-size: 11px;
-
     display: block;
-
     padding: 1px 5px;
-
     text-align: center;
-
     color: #fff;
     border-radius: 3px;
     background: #ddd;
 }
-
-.question-status.open
-{
+.question-status.open {
     background: #8fc61b;
 }
-.question-status.duplicate
-{
+.question-status.duplicate {
     background: #f7ba36;
 }
-.question-status.publish
-{
+.question-status.publish {
     background: #00bfdd;
 }
-.question-status.solved
-{
+.question-status.solved {
     background: #4ac1ff;
 }
-.question-status.closed
-{
+.question-status.closed {
     background: #f64d55;
 }
-
-
-
-
-.wp-list-table .type-question .ans-count
-{
+.wp-list-table .type-question .ans-count {
     display: block;
-
     padding: 2px 0;
-
     text-align: center;
 }
-.wp-list-table .vote-count
-{
+.wp-list-table .vote-count {
     text-align: center;
 }
-
-
-.wp-list-table .type-answer .answerer
-{
+.wp-list-table .type-answer .answerer {
     width: 50px;
 }
-
-.form-table .flag-note
-{
+.form-table .flag-note {
     margin-bottom: 20px;
     padding-bottom: 20px;
 }
-
-.wp-list-table .flag-count,
-.wp-list-table .flag-count
-{
+.wp-list-table .flag-count, .wp-list-table .flag-count {
     display: block;
-
     width: 21px;
     margin-top: 6px;
     padding: 2px 0;
-
     text-align: center;
-
     color: #fff;
     border-radius: 3px;
     background: #ddd;
 }
-.wp-list-table .flag-count.flagged,
-.wp-list-table .flag-count.flagged
-{
+.wp-list-table .flag-count.flagged, .wp-list-table .flag-count.flagged {
     background: #ec5858;
 }
-
-
 /* Option Tabs */
-.anspress-options
-{
+
+.anspress-options {
     margin-top: 30px;
 }
-#ap_opt_nav
-{
+.option-nav-tab {
+    background: none repeat scroll 0 0 #F8F8F8;
+    border-color: #ddd #ddd transparent;
+    border-style: solid solid none;
+    border-width: 1px 1px medium;
+}
+#ap_opt_nav {
+    margin: 0;
+}
+#ap_opt_nav li {
     float: left;
-
-    width: 165px;
-    margin-top: 15px;
-    margin-right: -1px;
     margin-bottom: 0;
 }
-
-#ap_opt_nav li
-{
-    margin-bottom: 0;
-}
-#ap_opt_nav li.active a
-{
+#ap_opt_nav li.active a {
+    background: none repeat scroll 0 0 #fff;
+    border-top: 2px solid #40bcff;
     color: #666;
-    border-top: 1px solid #ddd;
-    border-bottom: 1px solid #ddd;
-    border-left: 3px solid #43bdff;
-    background: #fff;
+    margin-bottom: -1px;
 }
-
-#ap_opt_nav li a
-{
+#ap_opt_nav li a {
     font-size: 13px;
     font-weight: 600;
-
     display: block;
-
     padding: 12px 15px;
-
     text-decoration: none;
-
     color: #555;
 }
-
-.tab-content
-{
+.tab-content {
     overflow: hidden;
-
     max-width: 700px;
     min-height: 429px;
     margin-top: -2px;
     padding: 5px 15px;
-
     border: 1px solid #ddd;
     border-radius: 2px;
     background: #fff;
 }
-.tab-content input[type='text'],
-.tab-content input[type='number'],
-.tab-content select,
-.tab-content textarea
-{
+.tab-content input[type='text'], .tab-content input[type='number'], .tab-content select, .tab-content textarea {
     height: 36px;
     padding: 2px 6px;
-
     border: 1px solid #e7e7e7;
     border-radius: 2px;
     box-shadow: 0 0 2px rgba(0, 0, 0, .02) inset;
 }
-.tab-content textarea
-{
+.tab-content textarea {
     height: auto;
 }
-
-.tab-content .tab-pane.active
-{
+.tab-content .tab-pane.active {
     display: block;
 }
-
-
-.ap-option-section
-{
+.ap-option-section {
     margin: 5px 0 0;
     padding: 10px 0;
-
     border-bottom: 1px dotted #eee;
 }
-
-th.column-category
-{
+th.column-category {
     width: 100px;
 }
-
-#ap_flag_meta_box .flag-item,
-#ap_answers_meta_box .answer
-{
+#ap_flag_meta_box .flag-item, #ap_answers_meta_box .answer {
     margin-bottom: 5px;
     padding-bottom: 5px;
-
     border-bottom: 1px solid #eee;
 }
-#ap_flag_meta_box .flag-item:last-child,
-#ap_answers_meta_box .answer:last-child
-{
+#ap_flag_meta_box .flag-item: last-child, #ap_answers_meta_box .answer: last-child {
     border-bottom: none;
 }
-#ap_flag_meta_box .flagger,
-#ap_answers_meta_box .author
-{
+#ap_flag_meta_box .flagger, #ap_answers_meta_box .author {
     float: left;
-
     width: 200px;
     margin-top: 4px;
     margin-right: 5px;
 }
-#ap_flag_meta_box .flag-message strong
-{
+#ap_flag_meta_box .flag-message strong {
     display: block;
 }
-#ap_flag_meta_box .flag-item:hover .row-actions,
-#ap_answers_meta_box .answer:hover .row-actions
-{
+#ap_flag_meta_box .flag-item:hover .row-actions, #ap_answers_meta_box .answer:hover .row-actions {
     visibility: visible;
 }
-
-#ap_flag_meta_box .flag-item  .flag-message,
-#ap_answers_meta_box .answer .answer-content
-{
+#ap_flag_meta_box .flag-item .flag-message, #ap_answers_meta_box .answer .answer-content {
     overflow: hidden;
 }
-.ap-label-color-field .wp-picker-container
-{
+.ap-label-color-field .wp-picker-container {
     position: absolute;
 }
-.get-support
-{
+.get-support {
     margin-bottom: 20px;
 }
-
-#anspress-points-table .column-points .point
-{
+#anspress-points-table .column-points .point {
     font-weight: bold;
-
     display: table;
-
     padding: 0 5px;
-
     text-align: center;
-
     color: #fff;
     border-radius: 2px;
     background: #419efd;
 }
-#anspress-points-table .column-points .point.negative
-{
+#anspress-points-table .column-points .point.negative {
     background: #f45a5a;
 }
-#ap-point-edit
-{
+#ap-point-edit {
     padding: 0 15px;
-
     border: 1px solid #ddd;
     background: #fff;
 }
-#ap-point-edit .button-primary
-{
+#ap-point-edit .button-primary {
     margin-bottom: 10px;
 }
-.addon-count
-{
+.addon-count {
     font-size: 16px;
     line-height: 22px;
-
     display: inline-block;
-
     width: 25px;
     height: 25px;
-
     text-align: center;
-
     color: #fff;
     border-radius: 50%;
     background: #333;
 }
-.ap-addon-status
-{
+.ap-addon-status {
     position: absolute;
     z-index: 9;
     top: 5px;
-
     padding: 5px 14px 5px 10px;
-
     color: #fff;
     background: rgba(0, 0, 0, .7);
 }
-.ap-install > h2
-{
+.ap-install > h2 {
     margin-bottom: 20px;
     padding: 0;
-
     text-align: center;
 }
-.ap-install > h2 > *
-{
+.ap-install > h2 > * {
     display: block;
 }
-
-.ap-install-indi
-{
+.ap-install-indi {
     position: absolute;
     left: 50%;
-
     display: block;
-
     width: 10px;
     height: 170px;
     margin-top: 35px;
     margin-left: -5px;
-
     content: '';
     transition: all 1s ease 0s;
-
     border-radius: 10px;
     background: #fff;
 }
-
-.ap-install-indi > span
-{
+.ap-install-indi > span {
     display: block;
-
     width: 10px;
     height: 0;
-
     transition: all .5s ease 0s;
-
     background: #49c742;
 }
-.ap-install-box
-{
+.ap-install-box {
     position: relative;
-
     display: block;
     overflow: hidden;
-
     height: 300px;
     margin: 0 auto;
-
     border: 1px solid #eee;
     border-radius: 4px;
     background: #fbfbfb;
 }
-.ap-start-installation
-{
+.ap-start-installation {
     position: relative;
-
     display: table;
-
     margin: 0 auto 30px;
     padding: 12px 30px;
-
     cursor: pointer;
-
     color: #fff;
     border: medium none;
     border-radius: 3px;
     background: #ff8041;
 }
-
-.ap-install-steps
-{
+.ap-install-steps {
     position: absolute;
-
     width: 3010px;
     margin: 0;
-
     transition: all 1s ease 0s;
 }
-.ap-install-steps > li
-{
+.ap-install-steps > li {
     display: block;
     float: left;
-
     width: 480px;
     height: 300px;
     margin-top: 0;
     margin-bottom: 0;
     margin-left: 0;
     padding: 10px;
-
     text-align: center;
 }
-.ap-install-steps li a,
-.ap-install-steps .twitter-button
-{
+.ap-install-steps li a, .ap-install-steps .twitter-button {
     font-size: 17px;
-
     display: block;
-
     margin-bottom: 15px;
     padding: 15px;
-
     text-align: center;
     text-decoration: none;
 }
-.ap-install-steps li:last-child a
-{
+.ap-install-steps li: last-child a {
     margin: 0;
 }
-.ap-install-steps li .done
-{
+.ap-install-steps li .done {
     transition: all .5s ease 0s;
-
     color: #fff;
     background: #49c742;
 }
-.install-popup
-{
+.install-popup {
     padding: 10px;
-
     border-radius: 8px;
     background: #fff;
 }
-.install-popup select
-{
+.install-popup select {
     display: table;
-
     margin: 0 auto;
 }
-.ap-continue
-{
+.ap-continue {
     display: block;
-
     margin: 0 auto;
     padding: 1px 10px;
-
     color: #fff;
     border: medium none;
     border-radius: 2px;
     background: #49c742;
 }
-
-.twitter-button > small
-{
+.twitter-button > small {
     font-size: 12px;
-
     display: block;
-
     margin-top: 6px;
 }
-.escape_install
-{
+.escape_install {
     display: block;
-
     text-align: center;
 }
-
-.badge-type
-{
+.badge-type {
     display: block;
-
     width: 50px;
     padding: 1px 6px;
-
     text-align: center;
-
     color: #fff;
     border-radius: 2px;
     background: #ddd;
 }
-.badge-type.badge-gold
-{
+.badge-type.badge-gold {
     background: #ffc250;
 }
-.badge-type.badge-silver
-{
+.badge-type.badge-silver {
     background: #d6d6da;
 }
-.badge-type.badge-bronze
-{
+.badge-type.badge-bronze {
     background: #c26f27;
 }
-
-.ap-group-options
-{
-    display: block;
-    overflow: hidden;
-
-    max-width: 800px;
-    min-height: 300px;
+.ap-group-options {
     padding: 20px;
-
     border: 1px solid #ddd;
     border-radius: 2px;
     background: #fff;
 }
-.ap-form-label
-{
+.ap-form-label {
     font-size: 13px;
-
     display: block;
     float: left;
-
     width: 250px;
     font-size: 14px !important;
     font-weight: 600;
 }
-.ap-form-fields-in{
+.ap-form-fields-in {
     overflow: hidden;
 }
 .ap-form-fields {
     border-bottom: 1px solid #eee;
-    margin: 0 !important;
-    padding: 10px;
+    margin: 0;
+    padding: 20px 10px;
 }
 .ap-field-desc {
     margin-bottom: 0;
 }
-
-button.ap-submit-btn
-{
+button.ap-submit-btn {
     background: none repeat scroll 0 0 #43caff;
     border-color: transparent transparent rgba(0, 0, 0, 0.2);
     border-image: none;
@@ -578,8 +386,7 @@ button.ap-submit-btn
     margin-top: 20px;
     padding: 8px 20px;
 }
-.ap-form-separator
-{
+.ap-form-separator {
     border-bottom: 1px solid #eee;
     display: block;
     font-size: 20px;
@@ -587,316 +394,218 @@ button.ap-submit-btn
     margin-bottom: 10px;
     padding: 10px;
 }
-.ap-reapt-field-copy
-{
+.ap-reapt-field-copy {
     display: none;
 }
-
-.ap-repeatbable-field
-{
+.ap-repeatbable-field {
     overflow: hidden;
 }
-.ap-repeatbable-field > div
-{
+.ap-repeatbable-field > div {
     margin-bottom: 10px;
 }
-.ap-repeatbable-field .ap-form-control
-{
+.ap-repeatbable-field .ap-form-control {
     width: 100%;
 }
-.ap-flagger-table
-{
+.ap-flagger-table {
     width: 100%;
 }
-.ap-flagger-table td
-{
+.ap-flagger-table td {
     padding: 5px 10px;
-
     border-bottom: solid 1px #eee;
 }
-.ap-flagger-table tr:last-child td
-{
+.ap-flagger-table tr: last-child td {
     border-bottom: none;
 }
-.ap-flagger-table .ap-user-avatar
-{
+.ap-flagger-table .ap-user-avatar {
     width: 30px;
 }
-.ap-flag-count
-{
+.ap-flag-count {
     font-size: 18px;
     font-weight: bold;
-
     display: block;
-
     margin: 10px 0;
 }
-.ap-remove-flag
-{
+.ap-remove-flag {
     text-align: right;
 }
-.ap-admin-sub
-{
+.ap-admin-sub {
     font-size: 16px;
-
     margin: 20px 0;
 }
-.ap-flag-post-content,
-.ap-flagger-table,
-.question-selection,
-.ap-similar-questions
-{
+.ap-flag-post-content, .ap-flagger-table, .question-selection, .ap-similar-questions {
     margin-bottom: 20px;
     padding: 10px 20px;
-
     border: 1px solid #e7e7e7;
     background: #fff;
 }
-.question-selection input
-{
+.question-selection input {
     display: block;
-
     width: 100%;
     margin-bottom: 10px;
     padding: 10px;
-
     border-radius: 2px;
 }
-
-.ap-similar-questions > .ap-q-suggestion-item
-{
+.ap-similar-questions > .ap-q-suggestion-item {
     display: block;
-
     padding: 12px 0;
-
     border-bottom: 1px solid #eee;
 }
-.ap-similar-questions > .ap-q-suggestion-item:last-child
-{
+.ap-similar-questions > .ap-q-suggestion-item: last-child {
     border-bottom: none;
 }
-.ap-similar-questions .select-question-button
-{
+.ap-similar-questions .select-question-button {
     float: right;
-
     margin-top: -3px;
 }
-.ap-similar-questions .question-title
-{
+.ap-similar-questions .question-title {
     font-weight: bold;
 }
-.ap-q-suggestion-item .acount
-{
+.ap-q-suggestion-item .acount {
     margin-left: 15px;
-
     color: #aaa;
 }
-.ap-selected-question
-{
+.ap-selected-question {
     padding: 10px;
-
     border: 1px solid #a5c5d9;
     background: #fff;
 }
-.ap-selected-question .ap-q-title
-{
+.ap-selected-question .ap-q-title {
     font-size: 16px;
     font-weight: bold;
-
     display: block;
-
     margin-bottom: 10px;
-
     text-decoration: none;
 }
-.ap-q-meta
-{
+.ap-q-meta {
     font-weight: bold;
-
     margin-bottom: 10px;
 }
-.ap-q-meta a
-{
+.ap-q-meta a {
     text-decoration: none;
 }
-.answer_content > .row-title
-{
+.answer_content > .row-title {
     font-weight: bold;
-
     display: block;
 }
-#ap-admin-dashboard
-{
+#ap-admin-dashboard {
     max-width: 1100px;
 }
-#ap-dash-tiles .grid-sizer,
-#ap-dash-tiles .ap-dash-tile
-{
+#ap-dash-tiles .grid-sizer, #ap-dash-tiles .ap-dash-tile {
     width: 25%;
 }
-#ap-dash-tiles .ap-dash-tile.col-4
-{
+#ap-dash-tiles .ap-dash-tile.col-4 {
     width: 100%;
 }
-#ap-dash-tiles .ap-dash-tile.col-3
-{
+#ap-dash-tiles .ap-dash-tile.col-3 {
     width: 75%;
 }
-#ap-dash-tiles .ap-dash-tile.col-2
-{
+#ap-dash-tiles .ap-dash-tile.col-2 {
     width: 50%;
 }
-
-.ap-dash-tile-in
-{
+.ap-dash-tile-in {
     margin: 15px;
     padding: 10px;
-
-    border: 1px solid  rgba(0, 0, 0, .1);
+    border: 1px solid rgba(0, 0, 0, .1);
     background: #fff;
 }
-.anspress-stats-count ul
-{
+.anspress-stats-count ul {
     margin: 0;
     padding: 0;
-
     list-style: none;
 }
-.anspress-stats-count ul li
-{
+.anspress-stats-count ul li {
     float: left;
-
     width: 25%;
     margin-right: -1px;
-
     text-align: center;
-
     border-right: 1px solid #eee;
 }
-.anspress-stats-count ul li a
-{
+.anspress-stats-count ul li a {
     text-decoration: none;
 }
-.anspress-stats-count ul li:last-child
-{
+.anspress-stats-count ul li: last-child {
     border: none;
 }
-.anspress-stats-count ul li strong
-{
+.anspress-stats-count ul li strong {
     font-size: 35px;
     font-weight: 300;
     line-height: 60px;
-
     position: relative;
-
     display: table;
-
     margin: 0 auto;
 }
-.ap-need-att
-{
+.ap-need-att {
     font-size: 14px;
     font-style: normal;
     line-height: 19px;
-
     position: absolute;
     top: 10px;
     right: -20px;
-
     display: block;
-
     width: 20px;
     height: 20px;
-
     color: #fff;
     border-radius: 50%;
     background: #d54e21;
 }
-.ap-dash-questions li
-{
+.ap-dash-questions li {
     margin-bottom: 15px;
 }
-.ap-dash-questions li:last-child
-{
+.ap-dash-questions li: last-child {
     margin-bottom: 0;
 }
-.ap-dash-questions li .ap-avatar
-{
+.ap-dash-questions li .ap-avatar {
     float: left;
-
     margin-top: 4px;
     margin-right: 10px;
 }
-.ap-dash-questions .ap-q-meta
-{
+.ap-dash-questions .ap-q-meta {
     font-weight: normal;
-
     margin-bottom: 0;
 }
-.ap-dash-questions .ap-q-post
-{
+.ap-dash-questions .ap-q-post {
     overflow: hidden;
 }
-.ap-dash-questions .ap-q-title
-{
+.ap-dash-questions .ap-q-title {
     font-weight: bold;
-
     text-decoration: none;
 }
-
-h3.ap-dash-title
-{
+h3.ap-dash-title {
     font-size: 14px;
-
     margin: 0 0 10px;
     padding: 0 0 10px;
-
     text-transform: uppercase;
-
     border-bottom: 1px solid #eee;
 }
-.anspress-support-link
-{
+.anspress-support-link {
     background: #6ac137;
 }
-.ap-dash-tile-in.ap-tile-card
-{
+.ap-dash-tile-in.ap-tile-card {
     text-align: center;
-
     color: #fff;
 }
-.ap-tile-card p
-{
+.ap-tile-card p {
     font-size: 20px;
-
     margin: 0;
 }
-.ap-tile-card a
-{
+.ap-tile-card a {
     display: table;
-
     margin: 10px auto 0;
     padding: 5px 15px;
-
     text-decoration: none;
     text-transform: uppercase;
-
     border-radius: 2px;
     background: #fff;
 }
-#ap-dash-tiles
-{
+#ap-dash-tiles {
     margin: 0 -15px;
 }
-.ap-dash-questions .ap-q-meta > span
-{
+.ap-dash-questions .ap-q-meta > span {
     margin-right: 6px;
 }
-.anspress-moderation-count
-{
+.anspress-moderation-count {
     background: #d54e21;
 }
-.manage-column.column-author
-{
+.manage-column.column-author {
     width: 80px;
 }

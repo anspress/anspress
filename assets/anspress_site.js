@@ -36,6 +36,15 @@ AnsPress.site.prototype = {
 		this.appendMessageBox();
 		this.ap_comment_form();
 		this.afterPostingAnswer();
+		this.suggest_similar_questions();
+		this.ap_ajax_form();
+		this.load_comment_form();
+		this.delete_comment();
+		this.ap_subscribe();
+		this.vote();
+		this.select_answer();
+		this.ap_delete_post();
+		this.ap_upload_field();
 
 	},
 
@@ -80,7 +89,7 @@ AnsPress.site.prototype = {
 
 			actions[action] = '1';
 
-			if (typeof self[action] === 'function')
+			//if (typeof self[action] === 'function')
 				self[action]('[data-action="'+action+'"]');
 			/*else
 				console.log('No "'+action+'" method found in AnsPress.site{}');*/
@@ -137,8 +146,8 @@ AnsPress.site.prototype = {
 		$('.ap-loading-icon').hide();
 	},
 
-	suggest_similar_questions: function(action){
-		$(action).on('keyup', function(){
+	suggest_similar_questions: function(){
+		$('[data-action="suggest_similar_questions"]').on('keyup', function(){
 			if($.trim($(this).val()) == '')
 				return;
 
@@ -156,8 +165,8 @@ AnsPress.site.prototype = {
 
 	},
 
-	ap_ajax_form:function(action){		
-		$('body').delegate(action,'submit', function(){
+	ap_ajax_form:function(){		
+		$('body').delegate('[data-action="ap_ajax_form"]','submit', function(){
 			
 			if(typeof tinyMCE !== 'undefined')
 				tinyMCE.triggerSave();
@@ -223,9 +232,9 @@ AnsPress.site.prototype = {
 			$(data.container).append(data.html);
 	},
 
-	load_comment_form: function(action){
+	load_comment_form: function(){
 
-		$('body').delegate(action, 'click', function(e){
+		$('body').delegate('[data-action="load_comment_form"]', 'click', function(e){
 			e.preventDefault();
 			var q = $(this).attr('data-query');
 			ApSite.doAjax( 
@@ -277,14 +286,14 @@ AnsPress.site.prototype = {
 			return false;
 		})
 	},
-	delete_comment: function(action){
-		$('body').delegate(action, 'click', function(e){
+	delete_comment: function(){
+		$('body').delegate('[data-action="delete_comment"]', 'click', function(e){
 			e.preventDefault();
 			var q = $(this).attr('data-query');
 			ApSite.doAjax( 
 				apAjaxData(q), 
 				function(data){
-					if(typeof $(this).attr('data-toggle') !== 'undefined')
+					if(typeof $(this).attr('data-toggle') !== 'undefined' && data.message_type == 'success')
 						$($(this).attr('data-toggle')).hide();
 				}, 
 				this,
@@ -294,8 +303,8 @@ AnsPress.site.prototype = {
 		});
 	},
 
-	ap_subscribe: function(action){
-		$(action).click( function(e){
+	ap_subscribe: function(){
+		$('[data-action="ap_subscribe"]').click( function(e){
 			e.preventDefault();
 			var q = $(this).attr('data-query');
 			ApSite.doAjax( 
@@ -317,9 +326,9 @@ AnsPress.site.prototype = {
 		});
 	},
 
-	vote:function(action ){
+	vote:function( ){
 
-		$('body').delegate(action +' a', 'click', function(e){
+		$('body').delegate('[data-action="vote"] a', 'click', function(e){
 			e.preventDefault();
 			var q = $(this).attr('data-query');
 
@@ -366,8 +375,8 @@ AnsPress.site.prototype = {
 		});
 	},
 
-	select_answer: function(action){
-		$('body').delegate(action, 'click', function(e){
+	select_answer: function(){
+		$('body').delegate('[data-action="select_answer"]', 'click', function(e){
 			e.preventDefault();
 			var q = $(this).attr('data-query');
 
@@ -377,8 +386,8 @@ AnsPress.site.prototype = {
 		});
 	},
 
-	ap_delete_post: function(action){
-		$('body').delegate(action, 'click', function(e){
+	ap_delete_post: function(){
+		$('body').delegate('[data-action="ap_delete_post"]', 'click', function(e){
 			e.preventDefault();
 			var q = $(this).attr('data-query');
 
@@ -394,10 +403,10 @@ AnsPress.site.prototype = {
 		});
 	},
 
-	ap_upload_field:function(action){
+	ap_upload_field:function(){
 		var self = this;
 		var form 
-		$(action).change(function(){
+		$('[data-action="ap_upload_field"]').change(function(){
 			$(this).closest('form').submit();
 		});
 		
@@ -417,10 +426,6 @@ AnsPress.site.prototype = {
 }
 
 })(jQuery);
-
-jQuery(document).ready(function(){
-	ApSite.doAction();
-})
 
 
 

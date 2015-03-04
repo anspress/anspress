@@ -155,6 +155,12 @@ class AnsPress_Ajax
      */
     public function delete_comment(){
     	if(isset($_POST['comment_ID']) && ap_user_can_delete_comment((int)$_POST['comment_ID'] ) && wp_verify_nonce( $_POST['__nonce'], 'delete_comment' )){
+
+    		if (time() > (get_comment_date( 'U', (int)$_POST['comment_ID'] ) + (int)ap_opt('disable_delete_after')) && !is_super_admin()) {
+				ap_send_json( ap_ajax_responce(array('message_type' => 'warning', 'message' => sprintf(__('This post was created %s ago, its locked hence you cannot delete it.', 'ap'), ap_human_time( get_comment_date( 'U', (int)$_POST['comment_ID'] )) ))));
+				return;
+			}
+
     		$delete = wp_delete_comment( (int)$_POST['comment_ID'], true );
     		
     		if($delete){
@@ -211,17 +217,18 @@ class AnsPress_Ajax
 
 		$action = 'delete_post_'.$post_id;	
 		
-		if(!wp_verify_nonce( $_POST['__nonce'], $action )){
+		if(!wp_verify_nonce( $_POST['__nonce'], $action ) || !ap_user_can_delete($post_id)){
 			ap_send_json( ap_ajax_responce('something_wrong'));
-			return;
-		}
-
-		if(!ap_user_can_delete($post_id)){
-			ap_send_json( ap_ajax_responce('no_permission'));
 			return;
 		}
 		
 		$post = get_post( $post_id );
+
+		if( (time() > (get_the_time('U', $post->ID) + (int)ap_opt('disable_delete_after'))) && !is_super_admin( ) ){
+			ap_send_json( ap_ajax_responce(array('message_type' => 'warning', 'message' => sprintf(__('This post was created %s ago, its locked hence you cannot delete it.', 'ap'), ap_human_time( get_the_time('U', $post->ID)) ))));
+			return;
+		}
+
 		wp_trash_post($post_id);
 		if($post->post_type == 'question'){
 			ap_send_json( ap_ajax_responce( array('action' => 'delete_question', 'do' => 'redirect', 'redirect_to' => get_permalink(ap_opt('questions_page_id')), 'message' => 'question_moved_to_trash')));
