@@ -131,6 +131,10 @@ class AnsPress_Admin {
 	 * Register the administration menu for this plugin into the WordPress Dashboard menu.
 	 */
 	public function add_plugin_admin_menu() {
+
+		if(!current_user_can('manage_options'))
+			return;
+		
 		$flagged_count = ap_flagged_posts_count();
 		$flagged_count = $flagged_count->total > 0 ? $flagged_count->total : 0;
 		
