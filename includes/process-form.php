@@ -421,6 +421,7 @@ class AnsPress_Process_Form
 			$status = 'private_post';
 			
 		$answer_array = array(
+			'post_title'	=> $question->post_title,
 			'post_author'	=> $user_id,
 			'post_content' 	=>  $fields['description'],
 			'post_parent' 	=>  $question->ID,

@@ -993,32 +993,13 @@ function ap_user_link($user_id = false, $sub = false)
 		$user_id = get_the_author_meta('ID');
 	}
 
-	$is_enabled = apply_filters('ap_user_profile_active', false);
-
-	if (!$is_enabled) {
+	if(!function_exists('profile_get_link_to')) {
 		return get_author_posts_url($user_id);
 	}
 
-	if ($user_id == 0) {
-		return false;
-	}
+	
 
-	$user = get_userdata($user_id);
-	$base = add_query_arg(array('user' => $user->user_login), get_permalink(ap_opt('user_page_id')));
-	$args = $base;
-
-	/* TODO: REWRITE - fix when rewrite is active */
-	if (get_option('permalink_structure') != '') {
-		if ($sub !== false) {
-			$args = add_query_arg(array('user_page' => $sub), $base);
-		}
-	} else {
-		if ($sub !== false) {
-			$args = add_query_arg(array('user_page' => $sub), $base);
-		}
-	}
-
-	return $args;
+	return profile_get_link_to($sub, $user_id);
 }
 
 /**

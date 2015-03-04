@@ -612,7 +612,7 @@ function ap_display_answer_metas($answer_id =  false){
 	}
 
 	$metas = array();
-	if(is_ap_user() && ap_is_best_answer($answer_id))
+	if(ap_is_best_answer($answer_id))
 		$metas['best_answer'] = '<span class="ap-best-answer-label">'.__('Best answer', 'ap').'</span>';
 
 	$metas['history'] = ap_last_active_time($answer_id);
