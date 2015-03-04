@@ -273,7 +273,7 @@ class AnsPress_Form {
             $this->output .= '<div class="ap-checkbox-withdesc clearfix">';
 
         $this->output .= '<input id="'. @$field['name'] .'" type="checkbox" class="ap-form-control" value="1" name="'. @$field['name'] .'" '.checked( (bool)$field['value'], true, false ).' '. @$field['attr'] .' />';
-        $this->desc();
+
         $this->error_messages();
 
         if(!empty($field['desc']))
@@ -309,7 +309,6 @@ class AnsPress_Form {
         $this->output .= '<option value=""></option>';
         $this->select_options($field);
         $this->output .= '</select>';
-        $this->desc();
         $this->error_messages();
         $this->output .= '</div>';
     }
@@ -345,7 +344,6 @@ class AnsPress_Form {
         $this->output .= '<option value=""></option>';
         $this->taxonomy_select_options($field);
         $this->output .= '</select>';
-        $this->desc();
         $this->error_messages();
         $this->output .= '</div>';
     }
@@ -413,7 +411,6 @@ class AnsPress_Form {
         wp_editor( $field['value'], $field['name'], $field['settings'] );
         echo '</div>';
         $this->output .= ob_get_clean();
-        $this->desc();
         $this->error_messages();
         $this->output .= '</div>';
     }

@@ -1486,15 +1486,14 @@
 }
 .ap-sorting-tab {
   border-bottom: 1px solid #eeeeee;
-  margin-bottom: 25px;
+  margin-bottom: 10px;
   padding: 10px 0;
 }
 .ap-sorting-tab .ap-widget-title {
   display: block;
-  font-size: 12px;
+  font-size: 16px;
   margin: 0;
   padding: 3px 0;
-  text-transform: uppercase;
   color: #595959;
 }
 .ap-sorting-tab .ap-answers-tab {
@@ -1512,6 +1511,7 @@
   font-size: 12px;
   font-weight: 600;
   padding: 5px;
+  display: block;
 }
 .ap-sorting-tab .ap-answers-tab li.active a {
   color: #595959;
@@ -1920,6 +1920,7 @@
   display: block;
   font-weight: bold;
   margin-bottom: 10px;
+  font-size: 14px;
 }
 .anspress-container .ap-form-label .ap-field-desc {
   background: #bbb;

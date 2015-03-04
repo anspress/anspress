@@ -6,3 +6,5 @@
 /addons
 /node_modules
 /docs
+/tests
+/bin

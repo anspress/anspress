@@ -255,7 +255,7 @@ function ap_display_question_metas($question_id =  false){
 	}
 
 	$metas = array();
-	if(is_singular('question')){		
+	if(is_question()){		
 		$metas['created'] = sprintf( __( '<span>Created</span> <i><time itemprop="datePublished" datetime="%s">%s Ago</time></i>', 'ap' ), get_the_time('c', $question_id), ap_human_time( get_the_time('U')));
 		
 	}else{
