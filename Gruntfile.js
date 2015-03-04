@@ -2,6 +2,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks( 'grunt-wp-i18n' );
 	grunt.loadNpmTasks('grunt-phpdocumentor');
+	grunt.loadNpmTasks('grunt-csscomb');
 
 	grunt.initConfig({
 	    makepot: {
@@ -32,6 +33,10 @@ module.exports = function(grunt) {
 	                ignore: 'node_modules'
 	            }
 	        }
+	    },
+	    csscomb: {
+	        files: ['**/*.css'],
+			tasks: ['csscomb'],
 	    },
 		watch: {
 			makepot: {

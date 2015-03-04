@@ -9,12 +9,14 @@
     "grunt-contrib-jshint": "",
     "grunt-contrib-uglify": "",
     "grunt-contrib-watch": "^0.6.1",
+    "grunt-csscomb": "^3.0.0",
     "grunt-phpdocumentor": "^0.4.1",
     "grunt-phplint": "",
     "grunt-pot": "^0.2.1",
     "grunt-wp-i18n": "",
     "load-grunt-tasks": "",
-    "time-grunt": ""
+    "time-grunt": "",
+    "grunt-csscomb": ""
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

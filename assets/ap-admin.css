@@ -549,38 +549,43 @@ th.column-category
     float: left;
 
     width: 250px;
+    font-size: 14px !important;
+    font-weight: 600;
 }
-.ap-form-fields
-{
-    margin-bottom: 15px;
+.ap-form-fields-in{
+    overflow: hidden;
+}
+.ap-form-fields {
+    border-bottom: 1px solid #eee;
+    margin: 0 !important;
     padding: 10px;
+}
+.ap-field-desc {
+    margin-bottom: 0;
 }
 
 button.ap-submit-btn
 {
-    font-size: 15px;
-
-    display: block;
-
-    padding: 8px 20px;
-
-    color: #fff;
-    border: medium none;
+    background: none repeat scroll 0 0 #43caff;
+    border-color: transparent transparent rgba(0, 0, 0, 0.2);
+    border-image: none;
     border-radius: 2px;
-    background: #43caff;
+    border-style: none none solid;
+    border-width: medium medium 2px;
+    color: #fff;
+    display: block;
+    font-size: 15px;
+    margin-top: 20px;
+    padding: 8px 20px;
 }
 .ap-form-separator
 {
-    font-weight: 600;
-
+    border-bottom: 1px solid #eee;
     display: block;
-
+    font-size: 20px;
+    font-weight: 600;
     margin-bottom: 10px;
     padding: 10px;
-
-    text-transform: uppercase;
-
-    border-bottom: 1px solid #eee;
 }
 .ap-reapt-field-copy
 {

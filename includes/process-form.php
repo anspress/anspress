@@ -185,7 +185,7 @@ class AnsPress_Process_Form
 
 		$status = 'publish';
 		
-		if(ap_opt('moderate_new_question') == 'pending' || (ap_opt('moderate_new_question') == 'point' && ap_get_points($user_id) < ap_opt('mod_question_point')))
+		if(ap_opt('moderate_new_question') == 'pending' || (ap_opt('moderate_new_question') == 'reputation' && ap_get_points($user_id) < ap_opt('mod_question_point')))
 			$status = 'moderate';
 		
 		if(isset($fields['is_private']) && $fields['is_private'])

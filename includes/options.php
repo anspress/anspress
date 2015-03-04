@@ -117,6 +117,8 @@ function ap_default_options(){
 		'search_page_title'		=> 'Search "%s"',
 		'disable_comments_on_question'=> false,
 		'disable_comments_on_answer'=> false,
+		'new_question_status'	=> 'publish',
+		'new_answer_status'	=> 'publish',
 	);
 	
 	/**

@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: AnsPress 2.0.0-alpha2\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/anspress\n"
-"POT-Creation-Date: 2015-03-04 08:52:05+00:00\n"
+"POT-Creation-Date: 2015-03-04 11:07:56+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -24,150 +24,151 @@ msgstr ""
 "X-Poedit-Bookmarks: \n"
 "X-Textdomain-Support: yes\n"
 
-#: admin/anspress-admin.php:164 includes/post_types.php:51
+#: admin/anspress-admin.php:162 includes/post_types.php:51
 msgid "All Questions"
 msgstr ""
 
-#: admin/anspress-admin.php:166 includes/post_types.php:54
+#: admin/anspress-admin.php:164 includes/post_types.php:54
 msgid "New Question"
 msgstr ""
 
-#: admin/anspress-admin.php:168 includes/post_types.php:120
+#: admin/anspress-admin.php:166 includes/post_types.php:120
 msgid "All Answers"
 msgstr ""
 
-#: admin/anspress-admin.php:170
+#: admin/anspress-admin.php:168
 msgid "Moderate question & answer"
 msgstr ""
 
-#: admin/anspress-admin.php:170 admin/flagged.php:100 admin/moderate.php:80
-#: admin/options-page.php:304 admin/views/dashboard.php:45
+#: admin/anspress-admin.php:168 admin/flagged.php:100 admin/moderate.php:80
+#: admin/options-page.php:335 admin/options-page.php:349
+#: admin/options-page.php:361 admin/views/dashboard.php:45
 #: includes/post_status.php:30 includes/query_filter.php:97
 #: includes/query_filter.php:110
 msgid "Moderate"
 msgstr ""
 
-#: admin/anspress-admin.php:172 admin/anspress-admin.php:296
+#: admin/anspress-admin.php:170 admin/anspress-admin.php:294
 msgid "Flagged question & answer"
 msgstr ""
 
-#: admin/anspress-admin.php:172 admin/views/dashboard.php:51
+#: admin/anspress-admin.php:170 admin/views/dashboard.php:51
 msgid "Flagged"
 msgstr ""
 
-#: admin/anspress-admin.php:174 admin/anspress-admin.php:378
+#: admin/anspress-admin.php:172 admin/anspress-admin.php:376
 #: admin/views/admin.php:45
 msgid "AnsPress Options"
 msgstr ""
 
-#: admin/anspress-admin.php:174
+#: admin/anspress-admin.php:172
 msgid "Options"
 msgstr ""
 
-#: admin/anspress-admin.php:176
+#: admin/anspress-admin.php:174
 msgid "Extensions"
 msgstr ""
 
-#: admin/anspress-admin.php:178 admin/views/post_flag.php:35
+#: admin/anspress-admin.php:176 admin/views/post_flag.php:35
 msgid "Post flag"
 msgstr ""
 
-#: admin/anspress-admin.php:179
+#: admin/anspress-admin.php:177
 msgid "Select question"
 msgstr ""
 
-#: admin/anspress-admin.php:235
+#: admin/anspress-admin.php:233
 msgid "AnsPress Points"
 msgstr ""
 
-#: admin/anspress-admin.php:236
+#: admin/anspress-admin.php:234
 msgid "New point"
 msgstr ""
 
-#: admin/anspress-admin.php:254
+#: admin/anspress-admin.php:252
 msgid "AnsPress Badges"
 msgstr ""
 
-#: admin/anspress-admin.php:255
+#: admin/anspress-admin.php:253
 msgid "New badge"
 msgstr ""
 
-#: admin/anspress-admin.php:277
+#: admin/anspress-admin.php:275
 msgid "Posts waiting moderation"
 msgstr ""
 
-#: admin/anspress-admin.php:333
+#: admin/anspress-admin.php:331
 msgid "Settings"
 msgstr ""
 
-#: admin/anspress-admin.php:382
+#: admin/anspress-admin.php:380
 msgid "AnsPress Role"
 msgstr ""
 
-#: admin/anspress-admin.php:391
+#: admin/anspress-admin.php:389
 msgid "Role and permission for AnsPress"
 msgstr ""
 
-#: admin/anspress-admin.php:415
+#: admin/anspress-admin.php:413
 msgid "AnsPress options updated successfully"
 msgstr ""
 
-#: admin/anspress-admin.php:433 admin/anspress-admin.php:508
-#: admin/anspress-admin.php:575 admin/anspress-admin.php:670
+#: admin/anspress-admin.php:431 admin/anspress-admin.php:506
+#: admin/anspress-admin.php:573 admin/anspress-admin.php:668
 #: admin/flagged.php:116 admin/moderate.php:93 includes/ask-form.php:55
 #: includes/post_types.php:206
 msgid "Title"
 msgstr ""
 
-#: admin/anspress-admin.php:439 admin/anspress-admin.php:514
-#: admin/anspress-admin.php:581 admin/anspress-admin.php:676
+#: admin/anspress-admin.php:437 admin/anspress-admin.php:512
+#: admin/anspress-admin.php:579 admin/anspress-admin.php:674
 #: includes/ask-form.php:72
 msgid "Description"
 msgstr ""
 
-#: admin/anspress-admin.php:445 admin/anspress-admin.php:520
+#: admin/anspress-admin.php:443 admin/anspress-admin.php:518
 #: includes/functions.php:676 theme/default/content-user.php:17
 msgid "Points"
 msgstr ""
 
-#: admin/anspress-admin.php:451 admin/anspress-admin.php:526
-#: admin/anspress-admin.php:599 admin/anspress-admin.php:694
+#: admin/anspress-admin.php:449 admin/anspress-admin.php:524
+#: admin/anspress-admin.php:597 admin/anspress-admin.php:692
 msgid "Event"
 msgstr ""
 
-#: admin/anspress-admin.php:457 admin/anspress-admin.php:532
+#: admin/anspress-admin.php:455 admin/anspress-admin.php:530
 msgid "Save Point"
 msgstr ""
 
-#: admin/anspress-admin.php:587 admin/anspress-admin.php:682
+#: admin/anspress-admin.php:585 admin/anspress-admin.php:680
 #: admin/flagged.php:115
 msgid "Type"
 msgstr ""
 
-#: admin/anspress-admin.php:593 admin/anspress-admin.php:688
+#: admin/anspress-admin.php:591 admin/anspress-admin.php:686
 msgid "Min. Points"
 msgstr ""
 
-#: admin/anspress-admin.php:605 admin/anspress-admin.php:700
+#: admin/anspress-admin.php:603 admin/anspress-admin.php:698
 msgid "Multiple"
 msgstr ""
 
-#: admin/anspress-admin.php:611 admin/anspress-admin.php:706
+#: admin/anspress-admin.php:609 admin/anspress-admin.php:704
 msgid "Save badge"
 msgstr ""
 
-#: admin/anspress-admin.php:765
+#: admin/anspress-admin.php:763
 msgid "This question is orphan, no question is selected for this answer"
 msgstr ""
 
-#: admin/anspress-admin.php:770 includes/ajax.php:67 includes/ajax.php:70
+#: admin/anspress-admin.php:768 includes/ajax.php:67 includes/ajax.php:70
 #: includes/ajax.php:230 includes/process-form.php:474
 msgid "1 Answer"
 msgid_plural "%d Answer"
 msgstr[0] ""
 msgstr[1] ""
 
-#: admin/anspress-admin.php:770
+#: admin/anspress-admin.php:768
 msgid "Edit question"
 msgstr ""
 
@@ -175,7 +176,7 @@ msgstr ""
 msgid "AnsPress"
 msgstr ""
 
-#: admin/anspress-admin.php:869
+#: admin/anspress-admin.php:867
 msgid "Add to Menu"
 msgstr ""
 
@@ -192,8 +193,8 @@ msgstr ""
 msgid "Edit"
 msgstr ""
 
-#: admin/badges.php:157 admin/points.php:153 includes/class-form.php:220
-#: includes/class-form.php:227 includes/functions.php:502
+#: admin/badges.php:157 admin/points.php:153 includes/class-form.php:223
+#: includes/class-form.php:230 includes/functions.php:502
 #: includes/theme.php:592
 msgid "Delete"
 msgstr ""
@@ -239,7 +240,7 @@ msgstr ""
 msgid "All"
 msgstr ""
 
-#: admin/flagged.php:98
+#: admin/flagged.php:98 admin/options-page.php:348 admin/options-page.php:360
 msgid "Publish"
 msgstr ""
 
@@ -261,17 +262,17 @@ msgstr ""
 msgid "Trash"
 msgstr ""
 
-#: admin/flagged.php:117 admin/moderate.php:94 admin/options-page.php:308
+#: admin/flagged.php:117 admin/moderate.php:94 admin/options-page.php:339
 #: includes/post_types.php:211 includes/post_types.php:309
 msgid "Flag"
 msgstr ""
 
-#: admin/flagged.php:162 admin/meta_box.php:20 admin/options-page.php:168
+#: admin/flagged.php:162 admin/meta_box.php:20 admin/options-page.php:179
 #: includes/common-pages.php:31 includes/post_types.php:71
 msgid "Question"
 msgstr ""
 
-#: admin/flagged.php:164 admin/options-page.php:200 includes/post_types.php:140
+#: admin/flagged.php:164 admin/options-page.php:215 includes/post_types.php:140
 msgid "Answer"
 msgstr ""
 
@@ -348,15 +349,15 @@ msgstr ""
 msgid "--"
 msgstr ""
 
-#: admin/options-page.php:10
+#: admin/options-page.php:9
 msgid "General"
 msgstr ""
 
-#: admin/options-page.php:13
+#: admin/options-page.php:12
 msgid "Base page"
 msgstr ""
 
-#: admin/options-page.php:14
+#: admin/options-page.php:13
 msgid "Select page for displaying anspress."
 msgstr ""
 
@@ -376,265 +377,281 @@ msgstr ""
 msgid "Allow users to create private question and answer."
 msgstr ""
 
-#: admin/options-page.php:37
+#: admin/options-page.php:38
 msgid "Layout"
 msgstr ""
 
-#: admin/options-page.php:41
+#: admin/options-page.php:42
 msgid "Avatar"
 msgstr ""
 
-#: admin/options-page.php:45
+#: admin/options-page.php:46
 msgid "Theme"
 msgstr ""
 
-#: admin/options-page.php:46
+#: admin/options-page.php:47
 msgid "Select theme for AnsPress."
 msgstr ""
 
-#: admin/options-page.php:53
+#: admin/options-page.php:55
 msgid "List avatar size"
 msgstr ""
 
-#: admin/options-page.php:54
+#: admin/options-page.php:56
 msgid "User avatar size for questions list."
 msgstr ""
 
-#: admin/options-page.php:60
+#: admin/options-page.php:63
 msgid "Question avatar size"
 msgstr ""
 
-#: admin/options-page.php:61
+#: admin/options-page.php:64
 msgid "User avatar size for question."
 msgstr ""
 
-#: admin/options-page.php:67 admin/options-page.php:74
+#: admin/options-page.php:71 admin/options-page.php:79
 msgid "Answer avatar size"
 msgstr ""
 
-#: admin/options-page.php:68 admin/options-page.php:75
+#: admin/options-page.php:72 admin/options-page.php:80
 msgid "User avatar size for answer."
 msgstr ""
 
-#: admin/options-page.php:81
+#: admin/options-page.php:87
 msgid "Comment avatar size"
 msgstr ""
 
-#: admin/options-page.php:82
+#: admin/options-page.php:88
 msgid "User avatar size for comments."
 msgstr ""
 
-#: admin/options-page.php:89
+#: admin/options-page.php:96
 msgid "Items to show per page"
 msgstr ""
 
-#: admin/options-page.php:93
+#: admin/options-page.php:100
 msgid "Questions per page"
 msgstr ""
 
-#: admin/options-page.php:94
+#: admin/options-page.php:101
 msgid "Questions to show per page."
 msgstr ""
 
-#: admin/options-page.php:100 admin/options-page.php:107
+#: admin/options-page.php:108 admin/options-page.php:116
 msgid "Answers per page"
 msgstr ""
 
-#: admin/options-page.php:101 admin/options-page.php:108
+#: admin/options-page.php:109 admin/options-page.php:117
 msgid "Answers to show per page."
 msgstr ""
 
-#: admin/options-page.php:115
+#: admin/options-page.php:124
 msgid "Sorting"
 msgstr ""
 
-#: admin/options-page.php:120
+#: admin/options-page.php:128
 msgid "Default answer sort"
 msgstr ""
 
-#: admin/options-page.php:121
+#: admin/options-page.php:129
 msgid "Sort answers by default."
 msgstr ""
 
-#: admin/options-page.php:124 includes/functions.php:412 includes/theme.php:468
+#: admin/options-page.php:132 includes/functions.php:412 includes/theme.php:468
 #: includes/theme.php:525 widgets/questions.php:144
 msgid "Voted"
 msgstr ""
 
-#: admin/options-page.php:125 includes/theme.php:466 includes/theme.php:524
+#: admin/options-page.php:133 includes/theme.php:466 includes/theme.php:524
 #: widgets/question_stats.php:40 widgets/questions.php:142
 msgid "Active"
 msgstr ""
 
-#: admin/options-page.php:126 includes/functions.php:410
+#: admin/options-page.php:134 includes/functions.php:410
 #: includes/functions.php:677 includes/theme.php:467 includes/theme.php:526
 #: widgets/questions.php:143
 msgid "Newest"
 msgstr ""
 
-#: admin/options-page.php:127 includes/functions.php:411 includes/theme.php:527
+#: admin/options-page.php:135 includes/functions.php:411 includes/theme.php:527
 #: widgets/questions.php:147
 msgid "Oldest"
 msgstr ""
 
-#: admin/options-page.php:134
+#: admin/options-page.php:143
 msgid "Toggle"
 msgstr ""
 
-#: admin/options-page.php:138
+#: admin/options-page.php:147
 msgid "Show comments"
 msgstr ""
 
-#: admin/options-page.php:139
+#: admin/options-page.php:148
 msgid "Show comments by default."
 msgstr ""
 
-#: admin/options-page.php:147
+#: admin/options-page.php:156
 msgid "Page titles"
 msgstr ""
 
-#: admin/options-page.php:151
+#: admin/options-page.php:160
 msgid "Base page title"
 msgstr ""
 
-#: admin/options-page.php:152
+#: admin/options-page.php:161
 msgid "Main questions list page title"
 msgstr ""
 
-#: admin/options-page.php:158
+#: admin/options-page.php:168
 msgid "Ask page title"
 msgstr ""
 
-#: admin/options-page.php:159
+#: admin/options-page.php:169
 msgid "Title of the ask page"
 msgstr ""
 
-#: admin/options-page.php:171
+#: admin/options-page.php:182
 msgid "Minimum title length"
 msgstr ""
 
-#: admin/options-page.php:172
+#: admin/options-page.php:183
 msgid "Set minimum letters for a question title."
 msgstr ""
 
-#: admin/options-page.php:178 admin/options-page.php:210
+#: admin/options-page.php:190 admin/options-page.php:226
 msgid "Minimum question content"
 msgstr ""
 
-#: admin/options-page.php:179
+#: admin/options-page.php:191
 msgid "Set minimum letters for a question contents."
 msgstr ""
 
-#: admin/options-page.php:185 admin/options-page.php:217
+#: admin/options-page.php:198 admin/options-page.php:234
 msgid "Use text editor ?"
 msgstr ""
 
-#: admin/options-page.php:186 admin/options-page.php:218
+#: admin/options-page.php:199 admin/options-page.php:235
 msgid "Text editor as default."
 msgstr ""
 
-#: admin/options-page.php:192 admin/options-page.php:224
+#: admin/options-page.php:206 admin/options-page.php:242
 msgid "Disable comments"
 msgstr ""
 
-#: admin/options-page.php:193
+#: admin/options-page.php:207
 msgid "Disable comments on questions."
 msgstr ""
 
-#: admin/options-page.php:203
+#: admin/options-page.php:218
 msgid "Multiple Answers"
 msgstr ""
 
-#: admin/options-page.php:204
+#: admin/options-page.php:219
 msgid "Allow an user to submit multiple answers on a single question."
 msgstr ""
 
-#: admin/options-page.php:211
+#: admin/options-page.php:227
 msgid "Set minimum letters for a answer contents."
 msgstr ""
 
-#: admin/options-page.php:225
+#: admin/options-page.php:243
 msgid "Disable comments on answer."
 msgstr ""
 
-#: admin/options-page.php:232
+#: admin/options-page.php:251
 msgid "User"
 msgstr ""
 
-#: admin/options-page.php:235
+#: admin/options-page.php:254
 msgid "Cover width"
 msgstr ""
 
-#: admin/options-page.php:236
+#: admin/options-page.php:255
 msgid "Set width of user cover photo."
 msgstr ""
 
-#: admin/options-page.php:242
+#: admin/options-page.php:262
 msgid "Cover height"
 msgstr ""
 
-#: admin/options-page.php:243
+#: admin/options-page.php:263
 msgid "Set height of user cover photo."
 msgstr ""
 
-#: admin/options-page.php:249
+#: admin/options-page.php:270
 msgid "Cover thumb width"
 msgstr ""
 
-#: admin/options-page.php:250
+#: admin/options-page.php:271
 msgid "Set width of user cover photo thumbnail."
 msgstr ""
 
-#: admin/options-page.php:256
+#: admin/options-page.php:278
 msgid "Small cover height"
 msgstr ""
 
-#: admin/options-page.php:257
+#: admin/options-page.php:279
 msgid "Set height of user cover photo thumbnail."
 msgstr ""
 
-#: admin/options-page.php:263
+#: admin/options-page.php:286
 msgid "Default rank"
 msgstr ""
 
-#: admin/options-page.php:264
+#: admin/options-page.php:287
 msgid "Assign a default rank for newly registered user."
 msgstr ""
 
-#: admin/options-page.php:272
+#: admin/options-page.php:299
 msgid "Permission"
 msgstr ""
 
-#: admin/options-page.php:275
+#: admin/options-page.php:302
 msgid "Allow anonymous"
 msgstr ""
 
-#: admin/options-page.php:276
+#: admin/options-page.php:303
 msgid "Non-loggedin user can post questions and answers."
 msgstr ""
 
-#: admin/options-page.php:282
+#: admin/options-page.php:310
 msgid "Only admin can answer"
 msgstr ""
 
-#: admin/options-page.php:283
+#: admin/options-page.php:311
 msgid "Only allow admin to answer question."
 msgstr ""
 
-#: admin/options-page.php:289
+#: admin/options-page.php:318
 msgid "Only logged in can see answers"
 msgstr ""
 
-#: admin/options-page.php:290
+#: admin/options-page.php:319
 msgid "non-loggedin user cannot see answers."
 msgstr ""
 
-#: admin/options-page.php:296
+#: admin/options-page.php:326
 msgid "Only logged in can see comment"
 msgstr ""
 
-#: admin/options-page.php:297
+#: admin/options-page.php:327
 msgid "non-loggedin user cannot see comments."
+msgstr ""
+
+#: admin/options-page.php:343
+msgid "Status of new question"
+msgstr ""
+
+#: admin/options-page.php:344
+msgid "Set post status of new question."
+msgstr ""
+
+#: admin/options-page.php:355
+msgid "Status of new answer"
+msgstr ""
+
+#: admin/options-page.php:356
+msgid "Set post status of new answer."
 msgstr ""
 
 #: admin/points.php:152 admin/points.php:153
@@ -807,11 +824,11 @@ msgstr ""
 msgid "Submit"
 msgstr ""
 
-#: includes/class-form.php:229
+#: includes/class-form.php:232
 msgid "Add more"
 msgstr ""
 
-#: includes/class-form.php:534
+#: includes/class-form.php:554
 msgid "No fields found"
 msgstr ""
 
