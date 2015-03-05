@@ -180,7 +180,7 @@ class AnsPress_Theme
         return $title;
     }
     
-    public function the_title($title, $id) 
+    public function the_title($title, $id = null) 
     {
         
         if ($id == ap_opt('base_page')) 
