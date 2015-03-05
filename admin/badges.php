@@ -118,7 +118,7 @@ class Ap_Badges_Table extends WP_List_Table
     /**
      * Allows you to sort the data by the variables set in the $_GET
      *
-     * @return Mixed
+     * @return integer
      */
     private function sort_data( $a, $b )
     {
