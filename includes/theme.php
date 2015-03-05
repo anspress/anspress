@@ -607,6 +607,10 @@ function ap_comment_actions_buttons()
 	}
 }
 
+/**
+ * @param string $slug
+ * @param string $link
+ */
 function ap_register_menu($slug, $title, $link){
 	ap_append_to_global_var('ap_menu', $slug, array('title' => $title, 'link' => $link));
 }
