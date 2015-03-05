@@ -235,7 +235,6 @@ if (!class_exists('AnsPress')) {
             require_once ANSPRESS_DIR.'includes/form.php';
             require_once ANSPRESS_DIR.'includes/participants.php';
             require_once ANSPRESS_DIR.'includes/history.php';
-            require_once ANSPRESS_DIR.'includes/image_resize.php';
             require_once ANSPRESS_DIR.'includes/shortcode-basepage.php';
             require_once ANSPRESS_DIR.'includes/common-pages.php';
             require_once ANSPRESS_DIR.'includes/class-form.php';
