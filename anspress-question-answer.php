@@ -278,7 +278,35 @@ anspress();
 
 register_activation_hook(__FILE__, 'anspress_activate');
 
-register_deactivation_hook(__FILE__, array( 'anspress', 'deactivate' ));
+register_uninstall_hook(__FILE__, 'anspress_uninstall');
+function anspress_uninstall()
+{
+
+    if ( ! current_user_can( 'activate_plugins' ) )
+        return;
+
+    check_admin_referer( 'bulk-plugins' );
+    
+
+    if(!ap_opt('db_cleanup'))
+        return;
+
+    global $wpdb;
+
+    // remove question and answer cpt
+    $wpdb->query("DELETE FROM $wpdb->posts WHERE post_type = 'question'");
+    $wpdb->query("DELETE FROM $wpdb->posts WHERE post_type = 'answer'");
+
+    // remove meta table
+    $meta_table = $wpdb->prefix."ap_meta";
+    $wpdb->query("DROP TABLE IF EXISTS $meta_table");
+
+    //remove option
+    delete_option( 'anspress_opt' );
+
+    //Remove user roles
+    AP_Roles::remove_roles();
+}
 
 add_action('plugins_loaded', array( 'anspress_vote', 'get_instance' ));
 add_action('plugins_loaded', array( 'anspress_view', 'get_instance' ));

@@ -120,6 +120,7 @@ function ap_default_options(){
 		'new_question_status'	=> 'publish',
 		'new_answer_status'		=> 'publish',
 		'disable_delete_after'	=> 86400,
+		'db_cleanup'			=> false,
 	);
 	
 	/**

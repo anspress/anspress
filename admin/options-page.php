@@ -32,6 +32,15 @@ class AnsPress_Options_Page
 				'value' => @$settings['allow_private_posts'],
 				'show_desc_tip' => false,
 			) ,
+
+			array(
+				'name' => 'anspress_opt[db_cleanup]',
+				'label' => __('Clean DB', 'ap') ,
+				'desc' => __('check this to remove all anspress data including posts on deactivating plugin.', 'ap') ,
+				'type' => 'checkbox',
+				'value' => @$settings['db_cleanup'],
+				'show_desc_tip' => false,
+			) ,
 		));
 		
 		//Register layout settings

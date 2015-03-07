@@ -3,6 +3,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks( 'grunt-wp-i18n' );
 	grunt.loadNpmTasks('grunt-phpdocumentor');
 	grunt.loadNpmTasks('grunt-csscomb');
+	grunt.loadNpmTasks('grunt-contrib-copy');
 
 	grunt.initConfig({
 	    makepot: {
@@ -38,6 +39,14 @@ module.exports = function(grunt) {
 	        files: ['**/*.css'],
 			tasks: ['csscomb'],
 	    },
+
+		copy: {
+		    main: {
+		        files: [
+		            {nonull:true, expand: true, cwd: 'E:\\\wamp\\\www\\\anspress\\\wp-content\\\plugins\\\anspress-question-answer', src: ['**/*', '!**/.git/**', '!**/.svn/**', '!**/node_modules/**', '!**/bin/**', '!**/docs/**', '!**/tests/**'], dest: 'E:\\\wamp\\\www\\\answerbox\\\wp-content\\\plugins\\\anspress-question-answer'}
+		        ]
+		    }
+		},
 		watch: {
 			makepot: {
 				files: ['**/*.php'],
