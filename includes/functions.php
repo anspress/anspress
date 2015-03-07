@@ -440,7 +440,7 @@ function ap_selected_answer($post_id = false){
 
 /**
  * Check if answer is selected for given question
- * @param  int $question_id
+ * @param  false|integer $question_id
  * @return boolean
  */
 function ap_is_answer_selected($question_id = false){
@@ -456,8 +456,8 @@ function ap_is_answer_selected($question_id = false){
 }
 
 /**
- * Check if given post is selected answer
- * @param  int $post_id 
+ * Check if given anser/post is selected as a best answer
+ * @param  false|integer $post_id 
  * @return boolean
  * @since unknown
  */
@@ -472,7 +472,9 @@ function ap_is_best_answer($post_id = false){
 }
 
 /**
+ * Print select anser HTML button
  * @param integer $post_id
+ * @return  void
  */
 function ap_select_answer_btn_html($post_id){
 	if(!ap_user_can_select_answer($post_id))
@@ -1027,8 +1029,8 @@ function ap_user_display_name($args = array())
 }
 
 /**
- * Link to user user pages
- * @param  integer $user_id 	user id
+ * Return Link to user profile pages if profile plugin is installed else return user posts link
+ * @param  false|integer $user_id 	user id
  * @param  string $sub 		page slug
  * @return string
  * @since  unknown
@@ -1041,65 +1043,16 @@ function ap_user_link($user_id = false, $sub = false)
 
 	if(!function_exists('profile_get_link_to')) {
 		return get_author_posts_url($user_id);
-	}
-
-	
+	}	
 
 	return profile_get_link_to($sub, $user_id);
 }
 
-/**
- * Resize image and save it in upload dir
- * @param  integer|string  $id_or_email 
- * @param  integer $size
- * @param  boolean $default
- * @return string
- * @since  0.9
- */
-function ap_get_resized_avatar($id_or_email, $size = 32, $default = false)
-{
-	$upload_dir = wp_upload_dir();
-	$file_url = $upload_dir['baseurl'].'/avatar/'.$size;
-
-	if ($default) {
-		$image_meta =  wp_get_attachment_metadata(ap_opt('default_avatar'), 'thumbnail');
-	} else {
-		$image_meta =  wp_get_attachment_metadata(get_user_meta($id_or_email, '_ap_avatar', true), 'thumbnail');
-	}
-
-	if ($image_meta === false || empty($image_meta)) {
-		return false;
-	}
-
-	$path =  get_attached_file(get_user_meta($id_or_email, '_ap_avatar', true));
-
-	$orig_file_name = basename($path);
-
-	$orig_dir = str_replace('/'.$orig_file_name, '', $orig_file_name);
-
-	$avatar_dir = $upload_dir['basedir'].'/avatar/'.$size;
-	$avatar_dir = str_replace(array('/', '\\'), DIRECTORY_SEPARATOR, $avatar_dir);
-
-	if (!file_exists($upload_dir['basedir'].'/avatar')) {
-		mkdir($upload_dir['basedir'].'/avatar', 0777);
-	}
-
-	if (!file_exists($avatar_dir)) {
-		mkdir($avatar_dir, 0777);
-	}
-
-	if (!file_exists($avatar_dir.'/'.$orig_file_name)) {
-		$image_new = $avatar_dir.'/'.$orig_file_name;
-		ap_smart_resize_image($path, null, $size, $size, false, $image_new, false, false, 100);
-	}
-
-	return $file_url.'/'.$orig_file_name;
-}
 
 /**
  * Display user meta
  * @param  	boolean 	$html    	for html output
- * @param  	int 		$user_id 	User id, if empty then post author witll be user
+ * @param  	false|integer 		$user_id 	User id, if empty then post author witll be user
  * @param 	boolen 		$echo
  * @return 	string
  */
@@ -1138,41 +1091,42 @@ function ap_user_display_meta($html = false, $user_id = false, $echo = false)
 }
 
 /**
+ * Return link to AnsPress pages
  * @param string $sub
  */
 function ap_get_link_to($sub){
 	$base = rtrim(get_permalink(ap_opt('base_page')), '/');
 	
-	if(get_option('permalink_structure') != ''){
+if(get_option('permalink_structure') != ''){
+	$args = '';
+	if(!is_array($sub))
+		$args = $sub ? '/'.$sub : '';
+
+	elseif(is_array($sub)){
+		$args = '/';
+
+		if(!empty($sub))
+			foreach($sub as $s)
+				$args .= $s.'/';
+		}
+		$link = $base;
+
+	}else{
 
 		if(!is_array($sub))
-			$args = $sub ? '/'.$sub : '';
-
+			$args = $sub ? '&ap_page='.$sub : '';
 		elseif(is_array($sub)){
-			$args = '/';
-
+			$args = '';
+			
 			if(!empty($sub))
-				foreach($sub as $s)
-					$args .= $s.'/';
+				foreach($sub as $k => $s)
+					$args .= '&'.$k .'='.$s;
 			}
+
 			$link = $base;
 
-		}else{
-
-			if(!is_array($sub))
-				$args = $sub ? '&ap_page='.$sub : '';
-			elseif(is_array($sub)){
-				$args = '';
-				
-				if(!empty($sub))
-					foreach($sub as $k => $s)
-						$args .= '&'.$k .'='.$s;
-				}
-
-				$link = $base;
-
-			}
-
-			return $link. $args ;
 		}
+
+		return $link. $args ;
+	}
 

@@ -257,44 +257,4 @@ class AnsPress_Actions
 			ap_opt('ap_flush', 'false');
 		}
 	}
-
-	/**
-	 * Override get_avatar
-	 * @param  string $avatar      
-	 * @param  integar|string $id_or_email
-	 * @param  string $size        
-	 * @param  string $default     
-	 * @param  string $alt         
-	 * @return string              
-	 */
-	public function get_avatar($avatar, $id_or_email, $size, $default, $alt)
-    {
-        if (!empty($id_or_email)) {
-            if (is_object($id_or_email)) {
-                $allowed_comment_types = apply_filters('get_avatar_comment_types', array( 'comment' ));
-                if (! empty($id_or_email->comment_type) && ! in_array($id_or_email->comment_type, (array) $allowed_comment_types)) {
-                    return $avatar;
-                }
-
-                if (! empty($id_or_email->user_id)) {
-                    $id = (int) $id_or_email->user_id;
-                    $user = get_userdata($id);
-                    if ($user) {
-                        $id_or_email = $user->ID;
-                    }
-                }
-            } elseif (is_email($id_or_email)) {
-                $u = get_user_by('email', $id_or_email);
-                $id_or_email = $u->ID;
-            }
-
-            $resized = ap_get_resized_avatar($id_or_email, $size);
-
-            if ($resized) {
-                return "<img alt='{$alt}' src='{$resized}' class='avatar avatar-{$size} photo' height='{$size}' width='{$size}' />";
-            }
-
-            return $avatar;
-        }
-    }
 }
