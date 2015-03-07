@@ -17,18 +17,11 @@ global $post;
 				<header class="ap-q-head">
 					<?php 
 						/**
-						 * ACTION: ap_before_question_title
-						 * @since 	2.0
-						 */
-						do_action('ap_before_question_title', $post);
-					?>
-					<?php 
-						/**
 						 * By default this title is hidden
 						 */
 						if(ap_opt('show_title_in_question')) : 
 					?>
-						<h1 class="entry-title"><a href="<?php get_permalink() ?>"><?php the_title(); ?></a></h1>
+						<h1 class="entry-title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h1>
 					<?php endif; ?>
 
 					<?php 
