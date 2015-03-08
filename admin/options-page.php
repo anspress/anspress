@@ -218,6 +218,14 @@ class AnsPress_Options_Page
 				'value' => $settings['disable_comments_on_question'],
 				'show_desc_tip' => false,
 			) ,
+			array(
+				'name' => 'anspress_opt[show_title_in_question]',
+				'label' => __('Show title in question', 'ap') ,
+				'desc' => __('Show title of the question in question page.', 'ap') ,
+				'type' => 'checkbox',
+				'value' => $settings['show_title_in_question'],
+				'show_desc_tip' => false,
+			) ,
 		));
 		
 		// Register answer settings

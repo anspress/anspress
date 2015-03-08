@@ -72,7 +72,6 @@ function ap_default_options(){
 		'show_social_login'		=> false,
 		'theme' 				=> 'default',
 		'author_credits' 		=> false,
-		'clear_database' 		=> false,
 		'minimum_qtitle_length'	=> 10,
 		'minimum_question_length'=> 10,
 		'multiple_answers' 		=> false,
