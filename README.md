@@ -1,9 +1,7 @@
 AnsPress - The most advance community question and answer system for WordPress.
 =========
 
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/wp3/anspress/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/wp3/anspress/?branch=master)
-
-[![Build Status](https://scrutinizer-ci.com/g/wp3/anspress/badges/build.png?b=master)](https://scrutinizer-ci.com/g/wp3/anspress/build-status/master)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/wp3/anspress/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/wp3/anspress/?branch=master) [![Build Status](https://travis-ci.org/wp3/anspress.svg?branch=master)](https://travis-ci.org/wp3/anspress)
 
 ![AnsPress Cover](https://raw.githubusercontent.com/open-wp/anspress/master/banner-1544x500.png "AnsPress cover image")
 
