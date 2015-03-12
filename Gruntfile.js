@@ -1,5 +1,6 @@
 module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-watch');
+	grunt.loadNpmTasks('grunt-contrib-less');
 	grunt.loadNpmTasks( 'grunt-wp-i18n' );
 	grunt.loadNpmTasks('grunt-phpdocumentor');
 	grunt.loadNpmTasks('grunt-csscomb');
@@ -47,10 +48,26 @@ module.exports = function(grunt) {
 		        ]
 		    }
 		},
+		less: {
+		  development: {
+		    options: {
+		      paths: ["less"]
+		    },
+		    files: {
+		      "theme/default/css/main.css": "theme/default/less/main.less",
+		    }
+		  },
+		  production: {
+		    files: {
+		      "theme/default/css/main.css": "theme/default/less/main.less",
+
+		    }
+		  }
+		},
 		watch: {
-			makepot: {
-				files: ['**/*.php'],
-				tasks: ['makepot'],
+			less: {
+				files: ['**/*.less'],
+				tasks: ['less'],
 			}
 		},
 	});

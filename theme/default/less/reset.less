@@ -7,10 +7,10 @@
 	color: @default-color;
 	line-height: 1.2;
 	.hentry {
-	    padding-top: 0;
-	    margin: 0;
-	    border: none;
-	    .box-shadow(none);
+		padding-top: 0;
+		margin: 0;
+		border: none;
+		.box-shadow(none);
 	}
 	a{
 		text-decoration: none;
@@ -37,12 +37,12 @@
 
 		li{
 			float: left;
-		    list-style: none outside none;
-		    margin: 0 5px 0 0;
-		    padding: 0;	    
-		    &:last-child{
-		    	margin-right:0;
-		    }
+			list-style: none outside none;
+			margin: 0 5px 0 0;
+			padding: 0;	    
+			&:last-child{
+				margin-right:0;
+			}
 			ul{
 				list-style: none;
 				padding: 0;
@@ -68,40 +68,40 @@
 		li{
 			&.active a{
 				background: @white;
-			    border-color: @default-border-color @default-border-color transparent;
-			    border-style: solid solid none;
-			    border-width: 1px 1px medium;
-			    margin-bottom: -2px;
-			    padding-bottom: 12px;
-			    padding-top: 8px;
-			    .border-radius(3px 3px 0 0);
-			    color: @default-color;
-	    	}
+				border-color: @default-border-color @default-border-color transparent;
+				border-style: solid solid none;
+				border-width: 1px 1px medium;
+				margin-bottom: -2px;
+				padding-bottom: 12px;
+				padding-top: 8px;
+				.border-radius(3px 3px 0 0);
+				color: @default-color;
+			}
 
-	    	&:first-child{
-	    		margin-left:5px;
-	    	}
+			&:first-child{
+				margin-left:5px;
+			}
 
 			a{
-			    display: block;
-			    padding: 10px 15px;
-			    text-decoration: none;
-			    color:@light-color;
-			    font-weight: @bold;
+				display: block;
+				padding: 10px 15px;
+				text-decoration: none;
+				color:@light-color;
+				font-weight: @bold;
 
-			    &:hover{
-			    	background: @default-border-color;
-			    }
+				&:hover{
+					background: @default-border-color;
+				}
 			}
 		}
 	}
 
 	.ap-widget-title {
-	    color: @light-color;
-	    font-size: 15px;
-	    font-weight: 600;
-	    margin-bottom: 15px;
-	    line-height: 1.2;
+		color: @light-color;
+		font-size: 15px;
+		font-weight: 600;
+		margin-bottom: 15px;
+		line-height: 1.2;
 	}
 
 	.block{
@@ -112,13 +112,13 @@
 		display: block;
 		margin: 20px 0;
 		span, a{
-		    border: 1px solid @default-border-color;
-		    display: block;
-		    float: left;
-		    margin-right: 5px;
-		    padding: 5px 14px;
-		    text-decoration: none;
-		    .border-radius(@default-border-radius);
+			border: 1px solid @default-border-color;
+			display: block;
+			float: left;
+			margin-right: 5px;
+			padding: 5px 14px;
+			text-decoration: none;
+			.border-radius(@default-border-radius);
 		}
 		span{
 			background: @default-border-color;
@@ -139,83 +139,90 @@
 	
 
 	.private-question-label{
-	    background: none repeat scroll 0 0 #8F8F8F;
-	    .border-radius(2px);
-	    color: @white;
-	    display: table;
-	    font-size: 12px;
-	    margin-bottom: 10px;
-	    padding: 2px 6px;
+		background: none repeat scroll 0 0 #8F8F8F;
+		.border-radius(2px);
+		color: @white;
+		display: table;
+		font-size: 12px;
+		margin-bottom: 10px;
+		padding: 2px 6px;
 	}
 
 	.ap-no-permission-to-view {
-	    background: lighten(@blue-color, 52%);
-	    display: block;
-	    margin-top: 20px;
-	    padding: 15px;
-	    text-align: center;
+		background: lighten(@blue-color, 52%);
+		display: block;
+		margin-top: 20px;
+		padding: 15px;
+		text-align: center;
 	}
 	.ap-please-login {
-	    background: none repeat scroll 0 0 #e0fbff;
-	    border-radius: 3px;
-	    margin-bottom: 20px;
-	    padding: 15px;
-	    text-align: center;
+		background: none repeat scroll 0 0 #e0fbff;
+		border-radius: 3px;
+		margin-bottom: 20px;
+		padding: 15px;
+		text-align: center;
 	}
 	.ap-questions-tab{
 		border-bottom: solid 1px #ddd;
 		> li {
-		    margin-right: 20px;
+			margin-right: 10px;
 
-		    &.active a{
-		    	color: @default-color;
-		    }
+			&.active a{
+				color: @default-color;
+				border-color: #ddd #ddd #fff;
+				border-image: none;
+				border-style: solid;
+				border-width: 1px;
+				color: #595959;
+				margin-bottom: -1px;
+			}
 
-		    a{
-			    color: @link-color;
-			    display: block;
-			    font-weight: 600;
-			    padding: 10px 0;
-		    }
+			a{
+				color: @link-color;
+				display: block;
+				font-weight: 600;
+				padding: 5px 15px;
+				border-radius: 3px 3px 0 0;
+			}
 		}
 	}
 
 	.ap-notice {
-	    background: none repeat scroll 0 0 #eee;
-	    border-radius: 2px;
-	    display: block;
-	    margin-top: 10px;
-	    padding: 12px;
+		background: none repeat scroll 0 0 #eee;
+		border-radius: 2px;
+		display: block;
+		margin-top: 10px;
+		padding: 12px;
 
-	    &.black{
-	    	background: #777;
-	    	color: #fff;
-	    }
-	    &.yellow{
-	    	background: @yellow-color;
-	    	color: #fff;
-	    }
-	    &.red{
-	    	background: @error-color;
-	    	color: #fff;
-	    }
-	    &.blue{
-	    	background: @blue-color;
-	    	color: #fff;
-	    	a{
-	    		color: #fff;
-	    	}
-	    }
-	    i{
-	    	margin-right: 15px;
-	    }
+		&.black{
+			background: #777;
+			color: #fff;
+		}
+		&.yellow{
+			background: @yellow-color;
+			color: #fff;
+		}
+		&.red{
+			background: @error-color;
+			color: #fff;
+		}
+		&.blue{
+			background: @blue-color;
+			color: #fff;
+			a{
+				color: #fff;
+			}
+		}
+		i{
+			margin-right: 15px;
+		}
 	}
 	.ap-pending-notice {
-	    background: @yellow-color;
-	    border-radius: 2px;
-	    margin: 0 15px 10px;
-	    padding: 20px;
-	    text-align: center;
+		background: @yellow-color;
+		border-radius: 2px;
+		margin: 0 15px 10px;
+		padding: 20px;
+		text-align: center;
 	}
 	.ap-text-label{
 		display: block;
@@ -229,36 +236,36 @@
 	}
 }
 .ap-loading-icon{
-    background: @blue-color;
-    .border-radius(2px);
-    color: #fff;
-    display: block;
-    font-size: 25px;
-    height: 40px;
-    left: 20px;
-    line-height: 44px;
-    position: fixed;
-    text-align: center;
-    top: 82px;
-    width: 40px;
-    z-index: 9999;
+	background: @blue-color;
+	.border-radius(2px);
+	color: #fff;
+	display: block;
+	font-size: 25px;
+	height: 40px;
+	left: 20px;
+	line-height: 44px;
+	position: fixed;
+	text-align: center;
+	top: 82px;
+	width: 40px;
+	z-index: 9999;
 
 	&.fade-bg{
 		background: rgba(255, 255, 255, 0.8)
 	}
 }
 .ap-loading-icon>i {
-    font-size: 20px;
-    height: 20px;
-    left: 50%;
-    line-height: 20px;
-    margin-left: -10px;
-    margin-top: -10px;
-    padding: 0;
-    position: absolute;
-    top: 50%;
-    width: 20px;
-    .animation(spin 1s linear infinite);
+	font-size: 20px;
+	height: 20px;
+	left: 50%;
+	line-height: 20px;
+	margin-left: -10px;
+	margin-top: -10px;
+	padding: 0;
+	position: absolute;
+	top: 50%;
+	width: 20px;
+	.animation(spin 1s linear infinite);
 }
 
 

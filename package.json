@@ -9,6 +9,7 @@
     "grunt-contrib-copy": "^0.8.0",
     "grunt-contrib-jshint": "",
     "grunt-contrib-uglify": "",
+    "grunt-contrib-less": "",
     "grunt-contrib-watch": "^0.6.1",
     "grunt-csscomb": "",
     "grunt-phpdocumentor": "^0.4.1",
