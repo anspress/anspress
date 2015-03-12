@@ -1492,7 +1492,7 @@
 .ap-sorting-tab {
   border-bottom: 1px solid #eeeeee;
   border-top: 1px solid #eeeeee;
-  margin-bottom: 25px;
+  margin-bottom: 0;
   margin-top: 20px;
   padding: 5px 0;
 }
@@ -1522,9 +1522,6 @@
 }
 .ap-sorting-tab .ap-answers-tab li.active a {
   color: #595959;
-}
-#ap-answers-c {
-  padding-top: 15px;
 }
 #answers .answer {
   margin: 30px 0 0;

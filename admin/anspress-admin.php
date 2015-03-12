@@ -159,7 +159,7 @@ class AnsPress_Admin {
 		if($mod_count > 0)
 			$Modcount = ' <span class="update-plugins count"><span class="plugin-count">'.number_format_i18n($mod_count).'</span></span>';
 		
-		$pos = $this->get_free_menu_position(10);
+		$pos = $this->get_free_menu_position();
 
 		add_menu_page( 'AnsPress', 'AnsPress'.$Totalcount, 'delete_pages', 'anspress', array($this, 'dashboard_page'), ANSPRESS_URL . '/assets/answer.png', $pos );
 		
@@ -191,7 +191,7 @@ class AnsPress_Admin {
 	/**
 	 * @param integer $start
 	 */
-	public function get_free_menu_position($start, $increment = 0.3){
+	public function get_free_menu_position($start, $increment = 0.99){
 		$menus_positions = array();
         foreach ($GLOBALS['menu'] as $key => $menu) {
             $menus_positions[] = $key;
