@@ -1041,11 +1041,11 @@ function ap_user_link($user_id = false, $sub = false)
 		$user_id = get_the_author_meta('ID');
 	}
 
-	if(!function_exists('profile_get_link_to')) {
+	if(!function_exists('pp_get_link_to')) {
 		return get_author_posts_url($user_id);
 	}	
 
-	return profile_get_link_to($sub, $user_id);
+	return pp_get_link_to($sub, $user_id);
 }
 
 
