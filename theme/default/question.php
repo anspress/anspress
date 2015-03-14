@@ -50,7 +50,7 @@ global $post;
 							<?php ap_user_display_meta(true, false, true); ?>
 
 							<!-- TODO: Show all questions history on toggle -->
-							<ul class="ap-display-question-meta ap-ul-inline">
+							<ul class="ap-display-question-meta ap-ul-inline clearfix">
 								<?php echo ap_display_question_metas() ?>
 							</ul>
 						</div>

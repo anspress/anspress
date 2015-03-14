@@ -61,6 +61,7 @@ function ap_answer_form($question_id, $editing = false){
                 'settings' => array(
                     'textarea_rows' => 8,
                     'tinymce' => ap_opt('answer_text_editor') ? false : true,
+                    'quicktags' => false,
                 ),
                 'placeholder'  => __('Your answer..'),
             ),

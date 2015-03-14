@@ -1533,31 +1533,11 @@
 }
 #ap-best-answer {
   position: relative;
+  margin-top: 25px;
 }
 #ap-best-answer .ap-content-inner {
   background: none repeat scroll 0 0 rgba(247, 254, 249, 0.33);
   border: 1px solid rgba(204, 218, 202, 0.22);
-}
-#ap-best-answer .ap-widget-title {
-  background: #5db34a;
-  -webkit-border-radius: 2px;
-  -webkit-background-clip: padding-box;
-  -moz-border-radius: 2px;
-  -moz-background-clip: padding;
-  border-radius: 2px;
-  background-clip: padding-box;
-  color: #fff;
-  font-size: 13px;
-  font-weight: normal;
-  margin: 6px 0 0;
-  zoom: 1;
-  filter: alpha(opacity=60);
-  -webkit-opacity: 0.6;
-  -moz-opacity: 0.6;
-  opacity: 0.6;
-  padding: 5px 10px;
-  position: absolute;
-  right: 0;
 }
 .ap-btn-select {
   background: #5db34a;
@@ -1912,6 +1892,14 @@
 }
 .anspress-container .ap-editor .mce-statusbar {
   display: none;
+}
+.anspress-container .ap-editor .wp-media-buttons {
+  position: absolute;
+  right: 3px;
+  top: 3px;
+}
+.anspress-container .ap-editor #wp-description-editor-tools {
+  padding: 0;
 }
 .anspress-container #answer-form-c {
   border-top: 1px solid #eeeeee;
