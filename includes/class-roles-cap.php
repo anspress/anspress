@@ -160,7 +160,7 @@ function ap_user_can_ask(){
 
 /* Check if a user can answer on a question */
 function ap_user_can_answer($question_id){
-	if(is_super_admin())
+	if(is_super_admin() || ap_allow_anonymous())
 		return true;
 	
 	if(ap_opt('close_after_selecting') && ap_is_answer_selected($question_id) )
