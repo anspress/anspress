@@ -414,16 +414,16 @@ function ap_post_actions_buttons()
 	 * edit question link
 	 */
 	if(ap_user_can_edit_question($post->ID) && $post->post_type == 'question')
-		$actions['edit_question'] = ap_edit_post_link_html();
+		$actions['dropdown']['edit_question'] = ap_edit_post_link_html();
 
 	if(ap_user_can_edit_ans($post->ID) && $post->post_type == 'answer')
-		$actions['edit_answer'] = ap_edit_post_link_html();
+		$actions['dropdown']['edit_answer'] = ap_edit_post_link_html();
 	
 	if(is_user_logged_in())
-		$actions['flag'] = ap_flag_btn_html();
+		$actions['dropdown']['flag'] = ap_flag_btn_html();
 
 	if(ap_user_can_delete($post->ID))
-		$actions['delete'] = ap_post_delete_btn_html();
+		$actions['dropdown']['delete'] = ap_post_delete_btn_html();
 
 	/**
 	 * FILTER: ap_post_actions_buttons
@@ -436,9 +436,18 @@ function ap_post_actions_buttons()
 	if (!empty($actions) && count($actions) > 0) {
 		echo '<ul class="ap-user-actions ap-ul-inline clearfix">';
 		foreach($actions as $k => $action){
-			if(!empty($action))
+			if(!empty($action) && $k != 'dropdown')
 				echo '<li class="ap-post-action ap-action-'.$k.'">'.$action.'</li>';
 		}
+			echo '<li class="ap-post-action ap-action-dropdown">';
+				echo '<div class="ap-dropdown">';
+				echo '<a class="ap-dropdown-toggle apicon-gear" href="#"></a>';
+				echo '<ul class="ap-dropdown-menu">';
+					foreach($actions['dropdown'] as $sk=>$sub)
+						echo '<li class="ap-post-action ap-action-'.$sk.'">'.$sub.'</li>';
+				echo '</ul>';
+				echo '</div>';
+			echo '</li>';
 		echo '</ul>';
 	}
 }

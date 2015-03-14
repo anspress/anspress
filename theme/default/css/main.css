@@ -1468,6 +1468,12 @@
 .ap-content .ap-user-actions .ap-action-select_answer a {
   color: #fff;
 }
+.ap-content .ap-user-actions .ap-dropdown-toggle {
+  color: #aaa;
+  display: block;
+  margin-top: -3px;
+  padding: 0;
+}
 .ap-post-tags li a {
   background: #11a7db;
   border-radius: 10px;
@@ -1751,6 +1757,34 @@
   -moz-box-shadow: 0 0 1px rgba(0, 0, 0, 0.2) inset;
   box-shadow: 0 0 1px rgba(0, 0, 0, 0.2) inset;
 }
+.ap-dropdown {
+  position: relative;
+}
+.ap-dropdown .ap-dropdown-menu {
+  background: none repeat scroll 0 0 #fff;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  display: none;
+  position: absolute;
+  right: 0;
+  width: 160px;
+}
+.ap-dropdown .ap-dropdown-menu > li {
+  margin: 0;
+  float: none;
+}
+.ap-dropdown .ap-dropdown-menu > li > a {
+  border-bottom: 1px solid #f9f9f9;
+  font-size: 13px;
+  padding: 10px 15px;
+}
+.ap-dropdown .ap-dropdown-menu > li > a:hover {
+  background: #fcfcfc;
+}
+.ap-dropdown.open .ap-dropdown-menu {
+  display: block;
+}
 .anspress-container .ap-form-control {
   border: 1px solid #e4e4e4;
   -webkit-border-radius: 2px;
@@ -1835,13 +1869,6 @@
   top: 5px;
 }
 .anspress-container .ap-editor {
-  border: 1px solid #e4e4e4;
-  -webkit-border-radius: 3px;
-  -webkit-background-clip: padding-box;
-  -moz-border-radius: 3px;
-  -moz-background-clip: padding;
-  border-radius: 3px;
-  background-clip: padding-box;
   margin-bottom: 10px;
 }
 .anspress-container .ap-editor .quicktags-toolbar {
@@ -1888,7 +1915,7 @@
   border-style: none solid none none;
   border-width: medium 1px medium medium;
   margin: 0;
-  padding: 5px;
+  padding: 3px;
 }
 .anspress-container .ap-editor .mce-toolbar .mce-btn-group .mce-btn:hover {
   background: transparent;
@@ -1904,10 +1931,27 @@
 .anspress-container .ap-editor .wp-media-buttons {
   position: absolute;
   right: 3px;
-  top: 3px;
+  top: 1px;
+}
+.anspress-container .ap-editor .wp-media-buttons #insert-media-button {
+  background: none repeat scroll 0 0 #fff;
+  border-color: #eee;
+  border-image: none;
+  border-radius: 0;
+  border-style: none none none solid;
+  border-width: 1px;
+  box-shadow: none;
+  height: 30px;
+  margin-bottom: -3px;
+  margin-right: -2px;
+  margin-top: -1px;
+  padding: 2px 10px;
 }
 .anspress-container .ap-editor #wp-description-editor-tools {
   padding: 0;
+}
+.anspress-container .ap-editor .mce-toolbar.mce-first.mce-stack-layout-item {
+  margin-right: 120px;
 }
 .anspress-container #answer-form-c {
   border-top: 1px solid #eeeeee;

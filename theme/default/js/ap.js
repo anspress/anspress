@@ -173,6 +173,22 @@ jQuery(document).ready(function(){
     jQuery('.bootstrap-tagsinput > input').keyup(function(event) {
         jQuery(this).css(width, 'auto');
     });
+
+    jQuery('.ap-dropdown').click(function(event) {
+        event.preventDefault();
+        jQuery(this).toggleClass('open');
+    });
+
+    jQuery(document).mouseup(function (e)
+    {
+        var container = jQuery(".ap-dropdown");
+
+        if (!container.is(e.target) // if the target of the click isn't the container...
+            && container.has(e.target).length === 0) // ... nor a descendant of the container
+        {
+            container.removeClass('open');
+        }
+    });
 	
 });
 function ap_chk_activity_scroll(e){

@@ -602,7 +602,7 @@ function ap_flag_btn_html($echo = false){
 	$nonce 		= wp_create_nonce( 'flag_'.$post->ID );
 	$title 		= (!$flagged) ? (__('Flag this post', 'ap')) : (__('You have flagged this post', 'ap'));
 	
-	$output ='<a id="flag_'.$post->ID.'" data-query="ap_ajax_action=flag_post&post_id='.$post->ID .'&__nonce='.$nonce.'" data-action="ap_subscribe" class="ap-tip flag-btn'. (!$flagged ? ' can-flagged' :'') .'" href="#" title="'.$title.'">'. __('Flag ', 'ap') . '<span class="ap-data-view ap-view-count-'.$total_flag.'" data-view="'.$post->ID .'_flag_count">'.$total_flag.'</span></a>';
+	$output ='<a id="flag_'.$post->ID.'" data-query="ap_ajax_action=flag_post&post_id='.$post->ID .'&__nonce='.$nonce.'" data-action="ap_subscribe" class="flag-btn'. (!$flagged ? ' can-flagged' :'') .'" href="#" title="'.$title.'">'. __('Flag ', 'ap') . '<span class="ap-data-view ap-view-count-'.$total_flag.'" data-view="'.$post->ID .'_flag_count">'.$total_flag.'</span></a>';
 
 	if($echo)
 		echo $output;

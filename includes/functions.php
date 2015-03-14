@@ -312,9 +312,9 @@ function ap_edit_post_link_html($echo = false, $post_id_or_object = false){
 	$output = '';
 
 	if($post->post_type == 'question' && ap_user_can_edit_question($post->ID)){		
-		$output = "<a href='$edit_link' data-button='ap-edit-post' title='".__('Edit this question', 'ap')."' class='apEditBtn ap-tip'>".__('Edit', 'ap')."</a>";	
+		$output = "<a href='$edit_link' data-button='ap-edit-post' title='".__('Edit this question', 'ap')."' class='apEditBtn'>".__('Edit', 'ap')."</a>";	
 	}elseif($post->post_type == 'answer' && ap_user_can_edit_ans($post->ID)){
-		$output = "<a href='$edit_link' data-button='ap-edit-post' title='".__('Edit this answer', 'ap')."' class='apEditBtn ap-tip'>".__('Edit', 'ap')."</a>";
+		$output = "<a href='$edit_link' data-button='ap-edit-post' title='".__('Edit this answer', 'ap')."' class='apEditBtn'>".__('Edit', 'ap')."</a>";
 	}
 
 	if($echo)
@@ -330,7 +330,7 @@ function ap_edit_a_btn_html( $echo = false ){
 	$post_id = get_edit_answer_id();
 	if(ap_user_can_edit_ans($post_id)){		
 		$edit_link = ap_answer_edit_link();
-		$output .= "<a href='$edit_link.' class='edit-btn ap-tip' data-button='ap-edit-post' title='".__('Edit Answer', 'ap')."'>".__('Edit', 'ap')."</a>";
+		$output .= "<a href='$edit_link.' class='edit-btn ' data-button='ap-edit-post' title='".__('Edit Answer', 'ap')."'>".__('Edit', 'ap')."</a>";
 	}
 	if($echo)
 		echo $output;
@@ -501,7 +501,7 @@ function ap_post_delete_btn_html($post_id = false, $echo = false){
 		$action = 'delete_post_'.$post_id;
 		$nonce = wp_create_nonce( $action );
 		
-		$output = '<a href="#" class="delete-btn ap-tip" data-action="ap_delete_post" data-query="post_id='. $post_id.'&__nonce='. $nonce .'&ap_ajax_action=delete_post" title="'.__('Delete', 'ap').'">'.__('Delete', 'ap').'</a>';
+		$output = '<a href="#" class="delete-btn" data-action="ap_delete_post" data-query="post_id='. $post_id.'&__nonce='. $nonce .'&ap_ajax_action=delete_post" title="'.__('Delete', 'ap').'">'.__('Delete', 'ap').'</a>';
 
 		if($echo)
 			echo $output;
