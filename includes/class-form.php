@@ -278,17 +278,17 @@ class AnsPress_Form {
         $this->output .= '<div class="ap-form-fields-in">';
 
         if(!empty($field['desc']))
-            $this->output .= '<div class="ap-checkbox-withdesc clearfix">';
+            $this->output .= '<label for="'. @$field['name'] .'">';
 
         $this->output .= '<input id="'. @$field['name'] .'" type="checkbox" class="ap-form-control" value="1" name="'. @$field['name'] .'" '.checked( (bool)$field['value'], true, false ).' '. @$field['attr'] .' />';
- 
-        $this->error_messages();
 
         if(!empty($field['desc']))
-            $this->output .= '</div>';
+            $this->output .= @$field['desc'].'</label>';
 
-        if(!$this->field['show_desc_tip'])
-            $this->desc();
+        $this->error_messages();
+
+        //if(!$this->field['show_desc_tip'])
+            //$this->desc();
 
         $this->output .= '</div>';
     }

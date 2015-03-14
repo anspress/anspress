@@ -1777,6 +1777,14 @@
   margin: 0;
   padding: 0;
   width: auto;
+  height: auto;
+}
+.anspress-container label > input[type="checkbox"] {
+  float: left;
+  margin-right: 15px !important;
+}
+.anspress-container label.inline-cb {
+  margin-bottom: 15px;
 }
 .anspress-container .ap-checkbox-withdesc {
   margin-bottom: 15px;
@@ -2010,6 +2018,7 @@
   margin: 0;
   padding: 0;
   width: auto;
+  height: auto;
 }
 .anspress-container .bootstrap-tagsinput input {
   line-height: 20px;
