@@ -165,6 +165,14 @@ class AnsPress_Options_Page
 				'html' => '<span class="ap-form-separator">' . __('Page titles') . '</span>',
 			) ,
 			array(
+				'name' => 'anspress_opt[show_title_in_question]',
+				'label' => __('Show question title', 'ap') ,
+				'desc' => __('Show question title in single question page.', 'ap') ,
+				'type' => 'checkbox',
+				'value' => $settings['show_title_in_question'],
+				'show_desc_tip' => false,
+			) ,
+			array(
 				'name' => 'anspress_opt[base_page_title]',
 				'label' => __('Base page title', 'ap') ,
 				'desc' => __('Main questions list page title', 'ap') ,
