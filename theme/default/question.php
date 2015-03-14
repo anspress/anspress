@@ -118,12 +118,7 @@ global $post;
 			
 			<?php
 
-				if(ap_have_ans(get_question_id())){
-					$ans_count = ap_count_answer_meta();
-					echo '<div class="ap-sorting-tab clearfix">';
-						echo '<h3 class="ap-widget-title ap-pull-left">'. sprintf(__('%s answers', 'ap'), '<span data-view="answer_count">'.$ans_count.'</span>') .'</h3>';
-						ap_answers_tab();
-					echo '</div>';
+				if(ap_have_ans(get_question_id())){					
 					include(ap_get_theme_location('best_answer.php'));
 					ap_get_answers();
 				} 

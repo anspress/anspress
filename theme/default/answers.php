@@ -12,6 +12,10 @@
  */
 $other_answer_count = ap_count_other_answer(get_question_id());
 if($other_answer_count > 0){
+	echo '<div class="ap-sorting-tab clearfix">';
+		echo '<h3 class="ap-widget-title ap-pull-left">'. sprintf(__('%s answers', 'ap'), '<span data-view="answer_count">'.$other_answer_count.'</span>') .'</h3>';
+		ap_answers_tab();
+	echo '</div>';
 	$label = ap_is_answer_selected(get_question_id()) ? 'Other ' : '';
 
 	if(ap_user_can_see_answers()){
