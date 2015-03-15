@@ -37,7 +37,7 @@ class AnsPress_Stats_Widget extends WP_Widget {
 
 
 		echo '<ul class="ap-stats-widget">';
-		echo '<li>'.__('Active', 'ap'). '<span><time class="updated" itemprop="dateUpdated" datetime="'.mysql2date('c', $last_active).'">'.ap_human_time( mysql2date('U', $last_active)).'</time> '.__('Ago', 'ap').'</span></li>' ;
+		echo '<li>'.__('Active', 'ap'). '<span><time class="publish updated" itemprop="dateUpdated" datetime="'.mysql2date('c', $last_active).'">'.ap_human_time( mysql2date('U', $last_active)).'</time> '.__('Ago', 'ap').'</span></li>' ;
 		echo '<li>'.__('Views', 'ap'). '<span>'.$view_count.'</span></li>' ;		
 		echo '<li>'.__('Answers', 'ap'). '<span>'.$ans_count.'</span></li>' ;		
 		echo '<li>'.__('Subscribers', 'ap'). '<span>'.$total_subs.'</span></li>' ;		
