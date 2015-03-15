@@ -444,7 +444,7 @@ function ap_selected_answer($post_id = false){
  * @return boolean
  */
 function ap_is_answer_selected($question_id = false){
-	if(!$question_id)
+	if($question_id === false)
 		$question_id = get_the_ID();
 	
 	$meta = get_post_meta($question_id, ANSPRESS_SELECTED_META, true);
@@ -462,9 +462,9 @@ function ap_is_answer_selected($question_id = false){
  * @since unknown
  */
 function ap_is_best_answer($post_id = false){
-	if(!$post_id){
+	if($post_id === false)
 		$post_id = get_the_ID();
-	}
+	
 	$meta = get_post_meta($post_id, ANSPRESS_BEST_META, true);
 	if($meta) return true;
 	
@@ -1037,7 +1037,7 @@ function ap_user_display_name($args = array())
  */
 function ap_user_link($user_id = false, $sub = false)
 {
-	if (!$user_id) {
+	if ($user_id === false) {
 		$user_id = get_the_author_meta('ID');
 	}
 
@@ -1058,9 +1058,9 @@ function ap_user_link($user_id = false, $sub = false)
  */
 function ap_user_display_meta($html = false, $user_id = false, $echo = false)
 {
-	if (!$user_id) {
+	if (false === $user_id) 
 		$user_id = get_the_author_meta('ID');
-	}
+	
 
 	$metas = array();
 
