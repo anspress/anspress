@@ -19,7 +19,19 @@
 		    list-style: none outside none;
 		    margin: 0;
 		    padding: 0;
-
+		    >li{
+		    	padding: 0;
+		    	margin:0;
+		    }
+		    article{
+			    border-color: #eee transparent transparent;
+			    border-image: none;
+			    border-right: medium none transparent;
+			    border-style: solid none none;
+			    border-width: 1px medium medium;
+			    margin: 0;
+			    padding: 10px;
+		    }
 		    .comment{
 			    border-top: 1px solid #eee;
 			    color: #777;
@@ -47,11 +59,15 @@
 			    	i{
 			    		font-size: 10px;
 			    	}
-			    }
-			    .ap-comment-time {
-				    color: #777;
-				}
+			    }			    
 		    }
+		    .ap-comment-time {
+			    color: #777;
+			    margin-right: 10px;
+			}
+			.ap-comment-action{
+				margin-left:10px;
+			}
 		}
 	}
 

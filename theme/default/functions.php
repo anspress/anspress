@@ -97,7 +97,7 @@ if ( ! function_exists( 'ap_comment' ) ) :
 				<div class="ap-avatar ap-pull-left">
 					<a href="<?php echo ap_user_link($comment->user_id); ?>">
 					<!-- TODO: OPTION - Avatar size -->
-					<?php echo get_avatar( $comment, 30 ); ?>
+					<?php echo get_avatar( $comment->user_id, 30 ); ?>
 					</a>
 				</div>
 				<div class="ap-comment-content no-overflow">

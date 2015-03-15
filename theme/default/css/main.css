@@ -2081,6 +2081,19 @@
   margin: 0;
   padding: 0;
 }
+.anspress-container .ap-comments .ap-commentlist > li {
+  padding: 0;
+  margin: 0;
+}
+.anspress-container .ap-comments .ap-commentlist article {
+  border-color: #eee transparent transparent;
+  border-image: none;
+  border-right: medium none transparent;
+  border-style: solid none none;
+  border-width: 1px medium medium;
+  margin: 0;
+  padding: 10px;
+}
 .anspress-container .ap-comments .ap-commentlist .comment {
   border-top: 1px solid #eee;
   color: #777;
@@ -2107,8 +2120,12 @@
 .anspress-container .ap-comments .ap-commentlist .comment .ap-comment-action i {
   font-size: 10px;
 }
-.anspress-container .ap-comments .ap-commentlist .comment .ap-comment-time {
+.anspress-container .ap-comments .ap-commentlist .ap-comment-time {
   color: #777;
+  margin-right: 10px;
+}
+.anspress-container .ap-comments .ap-commentlist .ap-comment-action {
+  margin-left: 10px;
 }
 .anspress-container .ap-comment-form {
   padding: 10px;

@@ -439,6 +439,7 @@ function ap_post_actions_buttons()
 			if(!empty($action) && $k != 'dropdown')
 				echo '<li class="ap-post-action ap-action-'.$k.'">'.$action.'</li>';
 		}
+		if(!empty($actions['dropdown'])){
 			echo '<li class="ap-post-action ap-action-dropdown">';
 				echo '<div class="ap-dropdown">';
 				echo '<a class="ap-dropdown-toggle apicon-gear" href="#"></a>';
@@ -448,6 +449,7 @@ function ap_post_actions_buttons()
 				echo '</ul>';
 				echo '</div>';
 			echo '</li>';
+		}
 		echo '</ul>';
 	}
 }

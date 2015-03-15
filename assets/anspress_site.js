@@ -240,8 +240,13 @@ AnsPress.site.prototype = {
 			ApSite.doAjax( 
 				apAjaxData(q), 
 				function(data){
-					$('.ap-comment-form').remove();					
-					$(this).closest('.ap-content-inner').append(data.html);
+					if(!$(data.html).is('.ap-comment-block')){
+						$('.ap-comment-form').remove();					
+						$(this).closest('.ap-content-inner').append(data.html);
+					}else{
+						$(this).closest('.ap-content-inner').find('.ap-comment-block').remove().append(data.html);
+						$(this).closest('.ap-content-inner').append(data.html);
+					}
 
 					if($(data.container).length > 0)
 						$('html, body').animate({
