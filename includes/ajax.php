@@ -123,7 +123,7 @@ class AnsPress_Ajax
 			$withcomments = true;
 
 			$post = new WP_Query(array('p' => $comment_post_ID, 'post_type' => array('question', 'answer')));
-
+			$count = get_comment_count( $comment_post_ID );
 			ob_start();
 				echo '<div class="ap-comment-block clearfix">';
 					//if(ap_user_can_comment() || (isset($_REQUEST['comment_ID']) && ap_user_can_edit_comment((int)$_REQUEST['comment_ID'] ))){
@@ -141,6 +141,7 @@ class AnsPress_Ajax
 			$result['html'] = ob_get_clean();
 			$result['container'] = '#comments-'.$comment_post_ID;
 			$result['message'] = 'success';
+			$result['view'] = array('comments_count_'.$comment_post_ID => $count['approved'], 'comment_count_label_'.$comment_post_ID => sprintf(_n('One comment', '%d comments', $count['approved'], 'ap'), $count['approved']) );
 
 		}else{
 			$result['message'] = 'no_permission';
@@ -157,6 +158,7 @@ class AnsPress_Ajax
     public function delete_comment(){
     	if(isset($_POST['comment_ID']) && ap_user_can_delete_comment((int)$_POST['comment_ID'] ) && wp_verify_nonce( $_POST['__nonce'], 'delete_comment' )){
 
+    		$comment = get_comment( $_POST['comment_ID'] );
     		if (time() > (get_comment_date( 'U', (int)$_POST['comment_ID'] ) + (int)ap_opt('disable_delete_after')) && !is_super_admin()) {
 				ap_send_json( ap_ajax_responce(array('message_type' => 'warning', 'message' => sprintf(__('This post was created %s ago, its locked hence you cannot delete it.', 'ap'), ap_human_time( get_comment_date( 'U', (int)$_POST['comment_ID'] )) ))));
 				return;
@@ -165,7 +167,8 @@ class AnsPress_Ajax
     		$delete = wp_delete_comment( (int)$_POST['comment_ID'], true );
     		
     		if($delete){
-    			ap_send_json(ap_ajax_responce(  array( 'action' => 'delete_comment', 'comment_ID' => (int)$_POST['comment_ID'], 'message' => 'comment_delete_success')));
+    			$count = get_comment_count( $comment->comment_post_ID );
+    			ap_send_json(ap_ajax_responce(  array( 'action' => 'delete_comment', 'comment_ID' => (int)$_POST['comment_ID'], 'message' => 'comment_delete_success', 'view' => array('comments_count_'.$comment->comment_post_ID => $count['approved'], 'comment_count_label_'.$comment->comment_post_ID => sprintf(_n('One comment', '%d comments', $count['approved'], 'ap'), $count['approved']) ))));
     		}else{
     			ap_send_json( ap_ajax_responce('something_wrong'));
     		}

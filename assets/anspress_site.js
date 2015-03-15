@@ -108,8 +108,8 @@
             var el = $('<div class="ap-loading-icon ap-uid" id="apuid-' + uid + '"><i class="apicon-sync"><i></div>');
             $('body').append(el);
             var offset = $(elm).offset();
-            var height = $(elm).height();
-            var width = $(elm).width();
+            var height = $(elm).outerHeight();
+            var width = $(elm).outerWidth();
             el.css({
                 top: offset.top,
                 left: offset.left,

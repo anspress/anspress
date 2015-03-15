@@ -266,7 +266,7 @@ function ap_comment_btn_html($echo = false){
 
 		$nonce = wp_create_nonce( 'comment_form_nonce' );
 		$comment_count = get_comments_number( get_the_ID() );
-		$output = '<a href="#comments-'.get_the_ID().'" class="comment-btn ap-tip" data-action="load_comment_form" data-query="ap_ajax_action=load_comment_form&post='.get_the_ID().'&__nonce='.$nonce.'" title="'.__('Comments', 'ap').'">'.__('Comment', 'ap').'<span class="ap-data-view ap-view-count-'.$comment_count.'">'.$comment_count.'</span></a>';
+		$output = '<a href="#comments-'.get_the_ID().'" class="comment-btn ap-tip" data-action="load_comment_form" data-query="ap_ajax_action=load_comment_form&post='.get_the_ID().'&__nonce='.$nonce.'" title="'.__('Comments', 'ap').'">'.__('Comment', 'ap').'<span class="ap-data-view ap-view-count-'.$comment_count.'"><b data-view="comments_count_'.get_the_ID().'">'.$comment_count.'</b></span></a>';
 
 		if($echo)
 			echo $output;

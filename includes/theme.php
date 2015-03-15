@@ -384,9 +384,11 @@ function ap_page(){
 /**
  * Post actions buttoons
  * @return 	string
+ * @param  array $disable
+ * @return void
  * @since 	2.0
  */
-function ap_post_actions_buttons()
+function ap_post_actions_buttons($disable = array())
 {
 	global $post;
 
@@ -436,7 +438,7 @@ function ap_post_actions_buttons()
 	if (!empty($actions) && count($actions) > 0) {
 		echo '<ul class="ap-user-actions ap-ul-inline clearfix">';
 		foreach($actions as $k => $action){
-			if(!empty($action) && $k != 'dropdown')
+			if(!empty($action) && $k != 'dropdown' && !in_array($k, $disable))
 				echo '<li class="ap-post-action ap-action-'.$k.'">'.$action.'</li>';
 		}
 		if(!empty($actions['dropdown'])){

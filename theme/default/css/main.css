@@ -1553,7 +1553,7 @@
 .ap-btn-select:hover {
   border-color: #5db34a;
   text-decoration: none;
-  color: #ffffff !important;
+  color: #ffffff;
 }
 .ap-btn-select.selected {
   background: #f4ac20;
@@ -1760,6 +1760,7 @@
   position: absolute;
   right: 0;
   width: 160px;
+  z-index: 99;
 }
 .ap-dropdown .ap-dropdown-menu > li {
   margin: 0;
@@ -2531,7 +2532,7 @@
   color: #888;
   padding: 5px 0;
 }
-.anspress-container .ap-stats-widget li span {
+.anspress-container .ap-stats-widget li .stat-value {
   float: right;
   font-weight: bold;
 }
