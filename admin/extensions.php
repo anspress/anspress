@@ -31,11 +31,12 @@ class AnsPress_Extensions
 
         if($fetch === false){
             $fetch = wp_remote_get( $this->API_url);
+            $json = $fetch['body'];
             set_transient('anspress_extensions_fetch', $fetch, 60 * 5);
         }
 
-        if(! is_wp_error($fetch)){
-            $this->result = json_decode($fetch['body']);
+        if(! is_wp_error($fetch) && !empty($json)){
+            $this->result = json_decode($json);
         }
         
     }
