@@ -1,6 +1,6 @@
 {
     "name": "anspress/anspress",
-    "description": "Question adn answer plugin for WordPress",
+    "description": "Question and answer plugin for WordPress",
     "license": "GPL-3.0+",
     "require": {
         "php": ">=5.3.0"
