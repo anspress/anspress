@@ -222,9 +222,9 @@ function ap_count_other_answer($question_id =false){
 	$count = ap_count_answer_meta($question_id);
 	
 	if(ap_is_answer_selected($question_id))
-		return ($count - 1);
+		return (int)($count - 1);
 
-	return $count;
+	return (int)$count;
 	
 }
 
