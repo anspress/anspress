@@ -122,7 +122,8 @@ class AnsPress_Ajax
 			global $withcomments;
 			$withcomments = true;
 
-			$question = new Question_Query('p='.$comment_post_ID);
+			$post = new WP_Query(array('p' => $comment_post_ID, 'post_type' => array('question', 'answer')));
+
 			ob_start();
 				echo '<div class="ap-comment-block clearfix">';
 					//if(ap_user_can_comment() || (isset($_REQUEST['comment_ID']) && ap_user_can_edit_comment((int)$_REQUEST['comment_ID'] ))){
@@ -132,7 +133,7 @@ class AnsPress_Ajax
 							echo '</div>';
 						echo '</div>';
 					//}
-					while( $question->have_posts() ) : $question->the_post();
+					while( $post->have_posts() ) : $post->the_post();					
 					comments_template();
 					endwhile;
 					wp_reset_postdata();
