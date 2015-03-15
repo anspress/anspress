@@ -236,35 +236,31 @@
 	}
 }
 .ap-loading-icon{
-	background: @blue-color;
-	.border-radius(2px);
-	color: #fff;
-	display: block;
-	font-size: 25px;
-	height: 40px;
-	left: 20px;
-	line-height: 44px;
-	position: fixed;
-	text-align: center;
-	top: 82px;
-	width: 40px;
-	z-index: 9999;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 2px;
+    color: rgba(0, 0, 0, 0.4);
+    display: block;
+    height: 16px;
+    position: absolute;
+    text-align: center;
+    width: 16px;
+    z-index: 99;
 
 	&.fade-bg{
 		background: rgba(255, 255, 255, 0.8)
 	}
 }
 .ap-loading-icon>i {
-	font-size: 20px;
-	height: 20px;
-	left: 50%;
-	line-height: 20px;
-	margin-left: -10px;
-	margin-top: -10px;
-	padding: 0;
-	position: absolute;
-	top: 50%;
-	width: 20px;
+    font-size: 16px;
+    height: 16px;
+    left: 50%;
+    line-height: 16px;
+    margin-left: -10px;
+    margin-top: -10px;
+    padding: 0;
+    position: absolute;
+    top: 50%;
+    width: 16px;
 	.animation(spin 1s linear infinite);
 }
 

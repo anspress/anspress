@@ -1,0 +1,5 @@
+# .scrutinizer.yml
+checks:
+    php:
+        code_rating: true
+        duplication: false
