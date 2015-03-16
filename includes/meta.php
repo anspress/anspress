@@ -85,7 +85,7 @@ function ap_update_meta($data, $where){
 function ap_delete_meta($where=false, $id=false){		
 	global $wpdb;
 	
-	if($id)
+	if(false === $id)
 		$where = array('apmeta_id' => $id);
 	
 	$meta_key = ap_meta_key($where);

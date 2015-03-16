@@ -207,7 +207,7 @@
                     }
                     
                     if ($(data.container).length > 0) $('html, body').animate({
-                        scrollTop: ($(data.container).offset().top) - 50
+                        scrollTop: ($(data.container).offset().top) - 150
                     }, 500);
 
                     jQuery('textarea.autogrow, textarea#post_content').keyup();

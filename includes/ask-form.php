@@ -76,6 +76,7 @@ function ap_ask_form($editing = false){
                 'settings' => array(
                     'textarea_rows' => 8,
                     'tinymce' => ap_opt('question_text_editor') ? false : true,
+                    'quicktags' => false,
                 ),
             ),
             array(
