@@ -121,6 +121,8 @@ function ap_default_options(){
 		'new_answer_status'		=> 'publish',
 		'disable_delete_after'	=> 86400,
 		'db_cleanup'			=> false,
+		'disable_voting_on_question' => false,
+		'disable_voting_on_answer' => false,
 	);
 	
 	/**

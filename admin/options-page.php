@@ -226,6 +226,14 @@ class AnsPress_Options_Page
 				'value' => $settings['disable_comments_on_question'],
 				'show_desc_tip' => false,
 			) ,
+			array(
+				'name' => 'anspress_opt[disable_voting_on_question]',
+				'label' => __('Disable voting', 'ap') ,
+				'desc' => __('Disable voting on questions.', 'ap') ,
+				'type' => 'checkbox',
+				'value' => $settings['disable_voting_on_question'],
+				'show_desc_tip' => false,
+			) ,
 		));
 		
 		// Register answer settings
@@ -260,6 +268,14 @@ class AnsPress_Options_Page
 				'desc' => __('Disable comments on answer.', 'ap') ,
 				'type' => 'checkbox',
 				'value' => $settings['disable_comments_on_answer'],
+				'show_desc_tip' => false,
+			) ,
+			array(
+				'name' => 'anspress_opt[disable_voting_on_answer]',
+				'label' => __('Disable voting', 'ap') ,
+				'desc' => __('Disable voting on answers.', 'ap') ,
+				'type' => 'checkbox',
+				'value' => $settings['disable_voting_on_answer'],
 				'show_desc_tip' => false,
 			) ,
 		));

@@ -471,6 +471,12 @@ function ap_post_subscribers_count($postid = false){
 function ap_vote_btn($post = false, $echo = true){
 	if(!$post)
 		global $post;
+
+	if('answer' == $post->post_type && ap_opt('disable_voting_on_answer'))
+		return;
+
+	if('question' == $post->post_type && ap_opt('disable_voting_on_question'))
+		return;
 		
 	$nonce 	= wp_create_nonce( 'vote_'.$post->ID );
 	$vote 	= ap_is_user_voted( $post->ID , 'vote');
