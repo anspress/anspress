@@ -474,7 +474,7 @@ function ap_is_best_answer($post_id = false){
 /**
  * Print select anser HTML button
  * @param integer $post_id
- * @return  void
+ * @return  null|string
  */
 function ap_select_answer_btn_html($post_id){
 	if(!ap_user_can_select_answer($post_id))
