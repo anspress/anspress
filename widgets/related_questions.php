@@ -13,14 +13,30 @@ class AP_Related_questions extends WP_Widget {
 		if ( ! empty( $title ) ) 
 			echo $args['before_title'] . $title . $args['after_title'];
 
-	
+		if(!class_exists('Tags_For_AnsPress')){
+			echo 'Tags plugin must be installed for related question. Get <a href="https://wordpress.org/plugins/tags-for-anspress">Tags for AnsPress</a>';
+			return;
+		}
+		$tags = get_the_terms(get_question_id(), 'question_tag' );
+
+		$tags_in = array();
+
+		if($tags)
+			foreach($tags as $t)
+				$tags_in[] = $t->term_id;
+
 		$question_args=array(
-			's' 			=> get_the_title(get_the_ID()),
+			'tax_query' 	=> array(
+				'taxonomy' => 'question_tag',
+				'field'    => 'id',
+				'terms'    => $tags_in,
+			),
 			'showposts' 	=> 10,
-			'post__not_in' 	=> array(get_the_ID()),
+			'post__not_in' 	=> array(get_question_id()),
 		);
-	
+			
 		$questions = new Question_Query( $question_args );
+
 		include ap_get_theme_location('widget-related_questions.php');
 		echo $args['after_widget'];
 		wp_reset_postdata();
