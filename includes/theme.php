@@ -481,13 +481,16 @@ function ap_questions_tab($current_url){
 	
 	$navs = array(
 		'active' => array('link' => add_query_arg(array('ap_sort' => 'active'), $link), 'title' => __('Active', 'ap')), 
-		'newest' => array('link' => add_query_arg(array('ap_sort' => 'newest'), $link), 'title' => __('Newest', 'ap')), 
-		'voted' => array('link' => add_query_arg(array('ap_sort' => 'voted'), $link), 'title' => __('Voted', 'ap')), 
-		'answers' => array('link' => add_query_arg(array('ap_sort' => 'answers'), $link), 'title' => __('Answers', 'ap')), 
-		'unanswered' => array('link' => add_query_arg(array('ap_sort' => 'unanswered'), $link), 'title' => __('Unanswered', 'ap')), 
-		'unsolved' => array('link' => add_query_arg(array('ap_sort' => 'unsolved'), $link), 'title' => __('Unsolved', 'ap')), 
-		//'oldest' => array('link' => $link.'oldest', 'title' => __('Oldest', 'ap')), 
-		);
+		'newest' => array('link' => add_query_arg(array('ap_sort' => 'newest'), $link), 'title' => __('Newest', 'ap'))
+	);
+
+	if(!ap_opt('disable_voting_on_question'))
+		$navs['voted'] =  array('link' => add_query_arg(array('ap_sort' => 'voted'), $link), 'title' => __('Voted', 'ap'));
+
+	$navs['answers'] = array('link' => add_query_arg(array('ap_sort' => 'answers'), $link), 'title' => __('Answers', 'ap'));
+	$navs['unanswered'] = array('link' => add_query_arg(array('ap_sort' => 'unanswered'), $link), 'title' => __('Unanswered', 'ap'));
+	$navs['unsolved'] = array('link' => add_query_arg(array('ap_sort' => 'unsolved'), $link), 'title' => __('Unsolved', 'ap')); 
+
 	
 	/**
 	 * FILTER: ap_questions_tab
@@ -504,25 +507,6 @@ function ap_questions_tab($current_url){
 	echo '</ul>';
 
 	?>
-	
-	
-
-		<!-- TODO - LABEL Extension -->
-		<!-- <div class="pull-right">
-			<div class="ap_status ap-dropdown">
-				<a href="#" class="btn ap-btn ap-dropdown-toggle"><?php _e('Label', 'ap'); ?> &#9662;</a>
-				<ul class="ap-dropdown-menu">
-					<?php
-						/*$labels = get_terms('question_label', array('orderby'=> 'name','hide_empty'=> true));
-						foreach($labels as $l){
-							$color = ap_get_label_color($l->term_id);
-							echo '<li'. ($label == $l->slug ? ' class="active" ' : '') .'><a href="'.$label_link.$l->slug.'" title="'.$l->description.'"><span class="question-label-color" style="background:'.$color.'"> </span>'.$l->name.'</a></li>';
-						}*/
-					?>
-				</ul>
-			</div>
-		</div> -->
-
 	<?php
 }
 
@@ -538,11 +522,15 @@ function ap_answers_tab($base = false){
 		$base = get_permalink();
 	
 	$navs = array(
-		'active' => array('link' => add_query_arg(  array('ap_sort' => 'active'), $base), 'title' => __('Active', 'ap')),
-		'voted' => array('link' => add_query_arg(  array('ap_sort' => 'voted'), $base), 'title' => __('Voted', 'ap')), 
-		'newest' => array('link' =>add_query_arg(  array('ap_sort' => 'newest'), $base), 'title' => __('Newest', 'ap')), 
-		'oldest' => array('link' => add_query_arg(  array('ap_sort' => 'oldest'), $base), 'title' => __('Oldest', 'ap')),			
-		);
+		'active' => array('link' => add_query_arg(  array('ap_sort' => 'active'), $base), 'title' => __('Active', 'ap'))
+	);
+	
+	if(!ap_opt('disable_voting_on_answer'))
+		$navs['voted'] = array('link' => add_query_arg(  array('ap_sort' => 'voted'), $base), 'title' => __('Voted', 'ap'));
+
+	$navs['newest'] = array('link' =>add_query_arg(  array('ap_sort' => 'newest'), $base), 'title' => __('Newest', 'ap'));
+	$navs['oldest'] = array('link' => add_query_arg(  array('ap_sort' => 'oldest'), $base), 'title' => __('Oldest', 'ap'));
+
 
 	echo '<ul class="ap-answers-tab ap-ul-inline ap-pull-right clearfix">';
 	foreach ($navs as $k => $nav) {

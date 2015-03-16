@@ -52,6 +52,7 @@ class AnsPress_Rewrite
 		$query_vars[] = 'ap_s';
 		$query_vars[] = 'message_id';
 		$query_vars[] = 'parent';
+		$query_vars[] = 'ap_sort';
 		
 		return $query_vars;
 	}

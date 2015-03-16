@@ -43,7 +43,7 @@ class Answers_Query extends WP_Query {
         if(isset($args['orderby']))
             $orderby = $args['orderby'];
         else
-            $orderby = (isset($_GET['ap_sort'])) ? $_GET['ap_sort'] : 'active';
+            $orderby = (get_query_var('ap_sort')) ? get_query_var('ap_sort') : 'active';
 
         $defaults = array(
             'post_status'       => array('publish', 'moderate', 'private_post'),
@@ -120,15 +120,11 @@ class Answers_Query extends WP_Query {
                     $this->args['orderby'] = 'meta_value';
                     $this->args['meta_key'] = ANSPRESS_UPDATED_META;
                     $this->args['meta_query']  = array(
-                        'relation' => 'AND',
-
+                        'relation' => 'OR',
                         array(
-                            'key'           => ANSPRESS_UPDATED_META,
-                            //'type'          => 'BOOLEAN',
-                            'compare'       => '>',
-                            //'value'         => '1'
-                        )                        
-                    );                    
+                            'key' => ANSPRESS_UPDATED_META
+                        ),
+                    );
                 break;
                 //TOOD: Add more orderby like most viewed, and user order like 'answered by user_id', 'asked_by_user_id'
             }
@@ -164,6 +160,7 @@ function ap_get_answers($args = array()){
         $args['question_id'] = get_question_id();
 
     $sort = get_query_var('ap_sort');
+
     if(empty($sort ))
         $sort = ap_opt('answers_sort');
 
