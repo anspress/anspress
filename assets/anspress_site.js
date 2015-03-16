@@ -181,6 +181,9 @@
         append: function(data) {
             if (typeof data.container !== 'undefined') $(data.container).append(data.html);
         },
+        updateHtml: function(data) {
+            if (typeof data.container !== 'undefined') $(data.container).html(data.html);
+        },
         clearForm: function(data) {
             if (typeof tinyMCE !== 'undefined') 
                 tinyMCE.activeEditor.setContent('');

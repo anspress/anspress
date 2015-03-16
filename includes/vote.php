@@ -50,9 +50,8 @@ class AnsPress_Vote_Ajax extends AnsPress_Ajax
 				//register an action
 				do_action('ap_removed_subscriber', $question_id, $counts);
 
-				ap_send_json(ap_ajax_responce(array('message' => 'unsubscribed', 'action' => 'unsubscribed')));
+				ap_send_json(ap_ajax_responce(array('message' => 'unsubscribed', 'action' => 'unsubscribed', 'container' => '#subscribe_'.$question_id, 'do' => 'updateHtml', 'html' => ap_icon('unmute', true).__('subscribe', 'ap'))));
 				return;
-
 			}else{
 				$row = ap_add_vote($userid, 'subscriber', $question_id);
 				$counts = ap_post_subscribers_count($question_id);
@@ -63,7 +62,7 @@ class AnsPress_Vote_Ajax extends AnsPress_Ajax
 				//register an action
 				do_action('ap_added_subscriber', $question_id, $counts);
 				
-				ap_send_json(ap_ajax_responce(array('message' => 'subscribed', 'action' => 'subscribed')));
+				ap_send_json(ap_ajax_responce(array('message' => 'subscribed', 'action' => 'subscribed', 'container' => '#subscribe_'.$question_id, 'do' => 'updateHtml', 'html' => ap_icon('mute', true).__('unsubscribe', 'ap'))));
 			}
 			
 		}
@@ -516,7 +515,7 @@ function ap_subscribe_btn_html($question_id = false){
 	$subscribed = ap_is_user_subscribed($question_id);
 
 	$nonce = wp_create_nonce( 'subscribe_'.$question_id );
-	$title = (!$subscribed) ? (__('Subscribe', 'ap')) : (__('Subscribed', 'ap'));
+	$title = (!$subscribed) ? ap_icon('unmute', true).(__('subscribe', 'ap')) : ap_icon('mute', true).(__('unsubscribe', 'ap'));
 
 	?>
 		<div class="ap-subscribe<?php echo ($subscribed) ? ' active' :''; ?> clearfix">

@@ -38,7 +38,7 @@ class AnsPress_Subscribe_Widget extends WP_Widget {
 			$title = $instance[ 'title' ];
 		}
 		else {
-			$title = __( 'Search questions', 'ap' );
+			$title = __( 'Subscribe questions', 'ap' );
 		}
 		?>
 		<p>

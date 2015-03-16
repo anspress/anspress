@@ -336,6 +336,8 @@ function ap_icon($name, $html = false){
 		'history'			=> 'apicon-history',
 		'mail'				=> 'apicon-mail',
 		'link'				=> 'apicon-link',
+		'mute'				=> 'apicon-mute',
+		'unmute'			=> 'apicon-unmute',
 	);
 	
 	$icons = apply_filters('ap_icon', $icons);

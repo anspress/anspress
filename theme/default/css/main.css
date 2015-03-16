@@ -1748,6 +1748,11 @@
   margin: 0 auto;
   display: block;
 }
+.ap-subscribe .ap-btn i {
+  font-size: 16px;
+  margin-right: 10px;
+  vertical-align: middle;
+}
 .ap-subscribe .ap-btn.active {
   -webkit-box-shadow: 0 0 1px rgba(0, 0, 0, 0.2) inset;
   -moz-box-shadow: 0 0 1px rgba(0, 0, 0, 0.2) inset;
