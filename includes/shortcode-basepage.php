@@ -46,6 +46,8 @@ class AnsPress_BasePage_Shortcode {
 			// include theme file
 			ap_page();
 
+			if(!ap_opt('author_credits'))
+				echo '<div class="ap-cradit">Question and answer is powered by <a href="http://wp3.in" traget="_blank">AnsPress</a></div>';
 			
 		echo '</div>';
 		return ob_get_clean();

@@ -1138,6 +1138,11 @@
 .anspress-container .ap-view-count-0 {
   display: none;
 }
+.anspress-container .ap-cradit {
+  color: #aaa;
+  font-size: 12px;
+  margin-top: 20px;
+}
 .ap-loading-icon {
   background: rgba(255, 255, 255, 0.8);
   border-radius: 2px;
