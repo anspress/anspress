@@ -203,7 +203,7 @@ class AnsPress_Ajax
 			update_post_meta($post->ID, ANSPRESS_BEST_META, 0);
 			update_post_meta($post->post_parent, ANSPRESS_SELECTED_META, false);
 			update_post_meta($post->post_parent, ANSPRESS_UPDATED_META, current_time( 'mysql' ));
-			ap_send_json( ap_ajax_responce(array('message' => 'unselected_the_answer', 'action' => 'unselected_answer', 'do' => 'redirect', 'redirect_to' => get_permalink($post->ID))));
+			ap_send_json( ap_ajax_responce(array('message' => 'unselected_the_answer', 'action' => 'unselected_answer', 'do' => 'reload')));
 
 		}else{
 			ap_do_event('select_answer', $user_id, $post->post_parent, $post->ID);
@@ -211,7 +211,7 @@ class AnsPress_Ajax
 			update_post_meta($post->post_parent, ANSPRESS_SELECTED_META, $post->ID);
 			update_post_meta($post->post_parent, ANSPRESS_UPDATED_META, current_time( 'mysql' ));
 			$html = ap_select_answer_btn_html($answer_id);
-			ap_send_json( ap_ajax_responce(array('message' => 'selected_the_answer', 'action' => 'selected_answer', 'do' => 'redirect', 'html' => $html, 'redirect_to' => get_permalink($post->ID))));
+			ap_send_json( ap_ajax_responce(array('message' => 'selected_the_answer', 'action' => 'selected_answer', 'do' => 'reload', 'html' => $html)));
 		}
 	}
 

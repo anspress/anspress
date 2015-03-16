@@ -430,7 +430,11 @@ function ap_user_can($id){
 	get_user_meta( $id, 'ap_role', true );
 }
 
-
+/**
+ * Return the ID of selected answer of a question
+ * @param  false|integer $post_id
+ * @return integer
+ */
 function ap_selected_answer($post_id = false){
 	if(!$post_id)
 		$post_id = get_the_ID();

@@ -19,7 +19,6 @@ if($other_answer_count > 0){
 	$label = ap_is_answer_selected(get_question_id()) ? 'Other ' : '';
 
 	if(ap_user_can_see_answers()){
-
 		echo '<div id="answers">';
 			while ( $answers->have_posts() ) : $answers->the_post(); 
 				include(ap_get_theme_location('answer.php'));

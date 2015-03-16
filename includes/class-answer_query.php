@@ -84,62 +84,44 @@ class Answers_Query extends WP_Query {
      * @return void
      */
     public function orderby_answers(){
-        if($this->args['only_best_answer']){
-            $this->args[ 'orderby'] = 'meta_value' ;
-            $this->args[ 'meta_key'] = ANSPRESS_BEST_META;
-            $this->args[ 'meta_compare'] = '=';
-            $this->args[ 'meta_value'] = '1';
-            //$this->args[ 'showposts'] = 1;
-        }else{
-            switch ( $this->args[ 'orderby' ] ) {
-                case 'voted' :
-                    $this->args[ 'orderby'] = 'meta_value_num' ;
-                    $this->args['meta_query']  = array(
-                        'relation' => 'AND',
-                        array(
-                            'key'       => ANSPRESS_VOTE_META,
-                        )
-                    );
-                    if(!$this->args['include_best_answer'])
-                        $this->args['meta_query'][] = array(
-                            'key'           => ANSPRESS_BEST_META,
-                            'type'          => 'BOOLEAN',
-                            'compare'       => '!=',
-                            'value'         => '1'
-                        );
-                break;
-                case 'oldest' :
-                    $this->args['orderby'] = 'date';
-                    $this->args['order'] = 'ASC';
-                break;
-                case 'newest' :
-                    $this->args['orderby'] = 'date';
-                    $this->args['order'] = 'DESC';
-                break;
-                default :
-                    $this->args['orderby'] = 'meta_value';
-                    $this->args['meta_key'] = ANSPRESS_UPDATED_META;
-                    $this->args['meta_query']  = array(
-                        'relation' => 'OR',
-                        array(
-                            'key' => ANSPRESS_UPDATED_META
-                        ),
-                    );
-                break;
-                //TOOD: Add more orderby like most viewed, and user order like 'answered by user_id', 'asked_by_user_id'
-            }
-            if(!$this->args['include_best_answer']){
-                if(!isset($this->args['meta_query']))
-                    $this->args['meta_query']  = array('relation' => 'AND');
-                
-                $this->args['meta_query'][] = array(
-                    'key'           => ANSPRESS_BEST_META,
-                    'type'          => 'BOOLEAN',
-                    'compare'       => '!=',
-                    'value'         => '1'
+        $this->args['meta_query'] = array();
+        switch ( $this->args[ 'orderby' ] ) {
+            case 'voted' :
+                $this->args[ 'orderby'] = 'meta_value_num' ;
+                $this->args['meta_query']  = array(
+                    'relation' => 'AND',
+                    array(
+                        'key'       => ANSPRESS_VOTE_META,
+                    )
                 );
-            }
+            break;
+            case 'oldest' :
+                $this->args['orderby'] = 'meta_value date';
+                $this->args['order'] = 'ASC';
+            break;
+            case 'newest' :
+                $this->args['orderby'] = 'meta_value date';
+                $this->args['order'] = 'DESC';
+            break;
+            default :
+                $this->args['orderby'] = 'meta_value';
+                $this->args['meta_key'] = ANSPRESS_UPDATED_META;
+                $this->args['meta_query']  = array(
+                    'relation' => 'AND',
+                    array(
+                        'key' => ANSPRESS_UPDATED_META
+                    )
+                );
+            break;
         }
+
+        if(!$this->args['include_best_answer'])
+            $this->args['meta_query'][] = array(
+                'key'           => ANSPRESS_BEST_META,
+                'type'          => 'BOOLEAN',
+                'compare'       => '!=',
+                'value'         => '1'
+            );
          
     }
 
@@ -181,10 +163,13 @@ function ap_get_answers($args = array()){
  */
 function ap_get_best_answer($question_id = false){
     global $answers;
+    
     if(!$question_id) 
         $question_id = get_question_id();
 
-    $answers = new Answers_Query(array('only_best_answer' => true, 'question_id' => $question_id));    
+    $answer_id = ap_selected_answer($question_id);
+
+    $answers = new WP_Query(array('p' => $answer_id, 'post_type' => 'answer'));    
     
     while ( $answers->have_posts() ) : $answers->the_post(); 
         include(ap_get_theme_location('answer.php'));

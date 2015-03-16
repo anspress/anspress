@@ -175,6 +175,9 @@
             console.log(typeof data.redirect_to !== 'undefined');
             if (typeof data.redirect_to !== 'undefined') window.location.replace(data.redirect_to);
         },
+        reload: function(data) {
+            location.reload();
+        },
         append: function(data) {
             if (typeof data.container !== 'undefined') $(data.container).append(data.html);
         },
