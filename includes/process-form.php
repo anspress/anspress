@@ -480,6 +480,7 @@ class AnsPress_Process_Form
 					'can_answer' 	=> ap_user_can_answer($post->ID),
 					'html' 			=> $html,
 					'message' 		=> 'answer_submitted',
+					'do' 			=> 'clearForm',
 					'view'			=> array('answer_count' => $current_ans, 'answer_count_label' => $count_label)
 				);
 				

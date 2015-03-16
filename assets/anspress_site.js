@@ -178,6 +178,10 @@
         append: function(data) {
             if (typeof data.container !== 'undefined') $(data.container).append(data.html);
         },
+        clearForm: function(data) {
+            if (typeof tinyMCE !== 'undefined') 
+                tinyMCE.activeEditor.setContent('');
+        },
         load_comment_form: function() {
             $('body').delegate('[data-action="load_comment_form"]', 'click', function(e) {
                 e.preventDefault();
