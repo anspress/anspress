@@ -28,9 +28,6 @@ function ap_page_title() {
 	elseif(is_question_tag()){
 		$tag = get_term_by('slug', get_query_var('question_tags'), 'question_tags');
 		$new_title = sprintf(__('Question tag: %s', 'ap'), $tag->name);
-	}elseif(is_question_cat()){
-		$category = get_term_by('slug', get_query_var('question_category'), 'question_category');
-		$new_title = sprintf(__('Question category: %s', 'ap'), $category->name);
 	}*/
 	elseif(is_ap_edit())
 		$new_title = __('Edit post', 'ap');

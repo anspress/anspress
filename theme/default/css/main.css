@@ -2557,3 +2557,12 @@
   margin-bottom: 5px;
   display: block;
 }
+.anspress-container .ap-questions-widget .ap-question-item {
+  border-bottom: 1px solid #f8f8f8;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+}
+.anspress-container .ap-questions-widget .ap-question-title {
+  display: block;
+  margin-bottom: 5px;
+}
