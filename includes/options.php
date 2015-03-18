@@ -123,6 +123,9 @@ function ap_default_options(){
 		'db_cleanup'			=> false,
 		'disable_voting_on_question' => false,
 		'disable_voting_on_answer' => false,
+		'enable_recaptcha' 		=> false,
+		'recaptcha_site_key' 	=> '',
+		'recaptcha_secret_key' 	=> '',
 	);
 	
 	/**

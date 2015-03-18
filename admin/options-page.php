@@ -409,6 +409,35 @@ class AnsPress_Options_Page
 				) ,
 				'show_desc_tip' => false,
 			) ,
+			array(
+				'name' => '__sep',
+				'type' => 'custom',
+				'html' => '<span class="ap-form-separator">' . __('reCaptacha') . '</span>',
+			) ,
+			array(
+				'name' => 'anspress_opt[enable_recaptcha]',
+				'label' => __('Enable reCaptcha', 'ap') ,
+				'desc' => __('Use this for preventing spam posts.', 'ap') ,
+				'type' => 'checkbox',
+				'value' => $settings['enable_recaptcha'],
+				'show_desc_tip' => false,
+			) ,
+			array(
+				'name' => 'anspress_opt[recaptcha_site_key]',
+				'label' => __('Recaptcha site key', 'ap') ,
+				'desc' => __('Enter your site key, if you dont have it get it from here https://www.google.com/recaptcha/admin', 'ap') ,
+				'type' => 'text',
+				'value' => $settings['recaptcha_site_key'],
+				'show_desc_tip' => false,
+			) ,
+			array(
+				'name' => 'anspress_opt[recaptcha_secret_key]',
+				'label' => __('Recaptcha secret key', 'ap') ,
+				'desc' => __('Enter your secret key', 'ap') ,
+				'type' => 'text',
+				'value' => $settings['recaptcha_secret_key'],
+				'show_desc_tip' => false,
+			) ,
 		));
 	}
 }

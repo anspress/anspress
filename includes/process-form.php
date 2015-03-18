@@ -111,7 +111,16 @@ class AnsPress_Process_Form
 
 	}
 
-	
+	public function check_recaptcha()
+	{
+		$recaptcha = new \ReCaptcha\ReCaptcha(ap_opt('recaptcha_secret_key'));
+		$resp = $recaptcha->verify($_POST['g-recaptcha-response'], $_SERVER['REMOTE_ADDR']);
+		
+		if ($resp->isSuccess())
+			return true;
+
+		return false;
+	}
 
 	/**
 	 * Process ask form
@@ -121,6 +130,15 @@ class AnsPress_Process_Form
 	public function process_ask_form()
 	{
 		global $ap_errors, $validate;
+
+		if(ap_opt('enable_recaptcha') && !$this->check_recaptcha()){
+			$this->result = array(
+				'form' 			=> $_POST['ap_form_action'],
+				'message'		=> 'captcha_error',
+				'errors'		=> array('captcha' => __('Bot verification failed.', 'ap'))
+			);
+			return;
+		}
 
 		// Do security check, if fails then return
 		if(!ap_user_can_ask() || !isset($_POST['__nonce']) || !wp_verify_nonce($_POST['__nonce'], 'ask_form'))
@@ -220,8 +238,8 @@ class AnsPress_Process_Form
 			/**
 			 * TODO: EXTENSTION - move to tags extension
 			 */
-			if(isset($fields['tags']))
-				wp_set_post_terms( $post_id, $fields['tags'], 'question_tags' );
+			//if(isset($fields['tags']))
+				//wp_set_post_terms( $post_id, $fields['tags'], 'question_tags' );
 				
 			if (!is_user_logged_in() && ap_opt('allow_anonymous') && !empty($fields['name']))
 				update_post_meta($post_id, 'anonymous_name', $fields['name']);
@@ -230,10 +248,10 @@ class AnsPress_Process_Form
 			$this->redirect =  get_permalink($post_id);
 
 			$this->result = array(
-					'action' 		=> 'new_question',
-					'message'		=> 'question_submitted',
-					'redirect_to'	=> get_permalink($post_id),
-					'do'			=> 'redirect'
+				'action' 		=> 'new_question',
+				'message'		=> 'question_submitted',
+				'redirect_to'	=> get_permalink($post_id),
+				'do'			=> 'redirect'
 			);
 		}
 

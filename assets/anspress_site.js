@@ -87,6 +87,9 @@
                     if (typeof data.message !== 'undefined') {
                         var type = typeof data.message_type === 'undefined' ? 'success' : data.message_type;
                         ApSite.addMessage(data.message, type);
+                        
+                        if(typeof grecaptcha !== 'undefined' && data.message_type !== 'success')
+                            grecaptcha.reset(widgetId1);
                     }
                     $(document).trigger('ap_after_ajax', data);
                     if (typeof data.do !=='undefined' &&
@@ -98,8 +101,10 @@
                         });
                     }
                 }
+                
             });
         },
+
         uniqueId: function() {
             return $('.ap-uid').length;
         },

@@ -1189,6 +1189,9 @@
     transform: rotate(360deg);
   }
 }
+.g-recaptcha {
+  margin-bottom: 15px;
+}
 .anspress-container .list-question {
   border-bottom: 1px solid #F8F8F8;
   -webkit-box-shadow: none;

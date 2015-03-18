@@ -824,6 +824,7 @@ function ap_responce_message($id, $only_message = false)
 		'no_permission_to_view_private' => array('type' => 'warning', 'message' => __('You dont have permission to view private posts.', 'ap')),
 		'flagged' => array('type' => 'success', 'message' => __('Thank you for reporting this post.', 'ap')),
 		'already_flagged' => array('type' => 'warning', 'message' => __('You have already reported this post.', 'ap')),
+		'captcha_error' => array('type' => 'error', 'message' => __('Please check captcha field and resubmit it again.', 'ap')),
 		);
 
 	/**
