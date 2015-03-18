@@ -22,8 +22,7 @@ function ap_page_title() {
 			$new_title = sprintf('%s about "%s"', ap_opt('ask_page_title'), get_the_title(get_query_var('parent')));
 		else
 			$new_title = ap_opt('ask_page_title');
-	}/*elseif(is_question_categories())
-		$new_title = ap_opt('categories_page_title');
+	}/*
 	elseif(is_question_tags())
 		$new_title = ap_opt('tags_page_title');
 	elseif(is_question_tag()){

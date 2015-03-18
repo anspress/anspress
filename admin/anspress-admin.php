@@ -49,7 +49,7 @@ class AnsPress_Admin {
 	private function __construct() {
 		
 		$this->includes();
-		AnsPress_Options_Page::add_option_groups();
+		new AnsPress_Options_Page;
 
 		add_action( 'save_post', array($this, 'ans_parent_post'), 10, 2 ); 
 

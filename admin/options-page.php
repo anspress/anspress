@@ -1,7 +1,12 @@
 <?php
 class AnsPress_Options_Page
 {
-	static public function add_option_groups() 
+	public function __construct()
+	{
+		add_action('admin_init', array($this, 'add_option_groups') );
+	}
+	
+	public function add_option_groups() 
 	{
 		$settings = ap_opt();
 		
