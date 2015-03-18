@@ -72,11 +72,12 @@ class Tags_For_AnsPress
         if (!defined('TAGS_FOR_ANSPRESS_URL'))   
                 define('TAGS_FOR_ANSPRESS_URL', plugin_dir_url( __FILE__ ));
 
-        $this->option_fields();
+        
 
         ap_register_page('tag', __('Tag', 'ap'), array($this, 'tag_page'));
 
         // internationalization
+        add_action( 'admin_init', array( $this, 'load_options' ) );
         add_action( 'init', array( $this, 'textdomain' ) );
 
         //Register question tag
@@ -116,6 +117,11 @@ class Tags_For_AnsPress
         $question_tag       = get_term_by( is_numeric($tag_id) ? 'id' : 'slug', $tag_id, 'question_tag');
         
         include ap_get_theme_location('tag.php', TAGS_FOR_ANSPRESS_DIR);
+    }
+
+    public function load_options()
+    {
+        $this->option_fields();
     }
 
     /**
@@ -241,13 +247,6 @@ class Tags_For_AnsPress
         
         $settings = ap_opt();
         ap_register_option_group( 'tags', __('Tags', 'ap'), array(
-            array(
-                'name'              => 'anspress_opt[question_tag_page_id]',
-                'label'             => __('Tag Page', 'ap'),
-                'description'       => __('Page used for showing question tag.', 'ap'),
-                'type'              => 'page_select',
-                'value'             => $settings['question_tag_page_id'],
-            ),
             array(
                 'name'              => 'anspress_opt[tags_per_page]',
                 'label'             => __('Tags per page', 'ap'),
