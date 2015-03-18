@@ -94,8 +94,7 @@ class Tags_For_AnsPress
         add_action('ap_ask_fields_validation', array($this, 'ap_ask_fields_validation'));
         add_action( 'ap_after_new_question', array($this, 'after_new_question'), 10, 2 );
         add_action( 'ap_after_update_question', array($this, 'after_new_question'), 10, 2 );
-
-        add_action('generate_rewrite_rules', array( $this, 'rewrites'), 1); 
+        add_filter('ap_page_title', array($this, 'page_title'));        
 
     }
 
@@ -395,16 +394,14 @@ class Tags_For_AnsPress
         }
     }
 
-    public function rewrites() {  
-        global $wp_rewrite;  
-        
-        $new_rules = array(  
-            
-            "tags/([^/]+)/?" => "index.php?page_id=".ap_opt('question_tag_page_id')."&q_tag=".$wp_rewrite->preg_index(1),
-        );
+    public function page_title($title){
+        if(is_question_tag()){
+            $tag_id = sanitize_text_field( get_query_var( 'q_tag'));
+            $category = get_term_by(is_numeric($tag_id) ? 'id' : 'slug', $tag_id, 'question_tag');
+            $title = sprintf(__('Question tag: %s', 'ap'), $category->name);
+        }
 
-        return $wp_rewrite->rules = $new_rules + $wp_rewrite->rules;
-        return $wp_rewrite->rules;
+        return $title;
     }
 
 }
@@ -423,46 +420,6 @@ function tags_for_anspress() {
 }
 add_action( 'plugins_loaded', 'tags_for_anspress' );
 
-/**
- * Register activatin hook
- * @return void
- * @since  1.0
- */
-function activate_tags_for_anspress(){
-    // create and check for tags base page
-    
-    $page_to_create = array( 'question_tag' => __('Tag', 'tags_for_anspress'));
-
-    foreach($page_to_create as $k => $page_title){
-        // create page
-        
-        // check if page already exists
-        $page_id = ap_opt("{$k}_page_id");
-        
-        $post = get_post($page_id);
-
-        if(!$post){
-            
-            $args['post_type']          = "page";
-            $args['post_content']       = "[anspress_{$k}]";
-            $args['post_status']        = "publish";
-            $args['post_title']         = $page_title;
-            $args['post_name']          = $k;
-            $args['comment_status']     = 'closed';
-            $args['post_parent']        = ap_opt('questions_page_id');
-            
-            // now create post
-            $new_page_id = wp_insert_post ($args);
-        
-            if($new_page_id){
-                $page = get_post($new_page_id);
-                ap_opt("{$k}_page_slug", $page->post_name);
-                ap_opt("{$k}_page_id", $page->ID);
-            }
-        }
-    }
-}
-register_activation_hook( __FILE__, 'activate_tags_for_anspress'  );
 
 /**
  * Output tags html
@@ -557,20 +514,7 @@ function ap_question_have_tags($question_id = false){
 }
 
 function is_question_tag(){
-    if(get_the_ID() == ap_opt('question_tag_page_id'))
-        return true;
-        
-    return false;
-}
-
-/**
- * Check if current page is tags page
- * @return boolean
- * @since 1.0
- */
-function is_question_tags(){
-    $queried_object = get_queried_object();
-    if(isset($queried_object->ID) && $queried_object->ID == ap_opt('question_tags_page_id'))
+    if('tag' == get_query_var( 'ap_page' ))
         return true;
         
     return false;
