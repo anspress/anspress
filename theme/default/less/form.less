@@ -80,14 +80,23 @@
 
 	}
 	.ap-editor{
-	    margin-bottom: 10px;
+	    border: 1px solid #ddd;
+	    border-radius: 3px;
+	    margin-bottom: 20px;
+	    iframe{
+	    	margin: 0;
+	    }
 		.quicktags-toolbar{
 			background: none;
 			border:none;
 		}
-		textarea.wp-editor-area, .mce-panel{
-			background: none;
+		.mce-edit-area {
+		    background: none repeat scroll 0 0 #fcfcfc;
+		    border-top: 1px solid #ddd;
+		    box-shadow: 0 0 2px rgba(0, 0, 0, 0.05) inset;
+		    padding: 7px;
 		}
+
 		.quicktags-toolbar input.button, .mce-btn button{
 		    background: #fff;
 		    border: medium none;
@@ -100,7 +109,8 @@
 		    }
 		}
 		.mce-toolbar-grp{
-			border-bottom: 1px solid #eee;
+		    background: none repeat scroll 0 0 #fff;
+		    border-bottom: medium none;
 		}
 		.html-active .switch-html, .tmce-active .switch-tmce {
 		    background: #fff;
@@ -155,10 +165,6 @@
 		}
 	}
 
-	#answer-form-c {
-	    border-top: 1px solid @default-border-color;
-	    margin-top: 20px;
-	}
 	.btn-submit-ans{
 		padding: 10px 20px;
 	}
@@ -225,10 +231,6 @@
 	}
 
 	#answer_form{
-		.ap-editor{
-	    	border: 1px solid #ddd;
-	    	border-radius: 3px;
-		}
 		.ap-editor-answer-label{
 		    color: #888;
 		    display: block !important;

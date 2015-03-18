@@ -1871,15 +1871,22 @@
   top: 5px;
 }
 .anspress-container .ap-editor {
-  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  margin-bottom: 20px;
+}
+.anspress-container .ap-editor iframe {
+  margin: 0;
 }
 .anspress-container .ap-editor .quicktags-toolbar {
   background: none;
   border: none;
 }
-.anspress-container .ap-editor textarea.wp-editor-area,
-.anspress-container .ap-editor .mce-panel {
-  background: none;
+.anspress-container .ap-editor .mce-edit-area {
+  background: none repeat scroll 0 0 #fcfcfc;
+  border-top: 1px solid #ddd;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.05) inset;
+  padding: 7px;
 }
 .anspress-container .ap-editor .quicktags-toolbar input.button,
 .anspress-container .ap-editor .mce-btn button {
@@ -1901,7 +1908,8 @@
   padding: 0;
 }
 .anspress-container .ap-editor .mce-toolbar-grp {
-  border-bottom: 1px solid #eee;
+  background: none repeat scroll 0 0 #fff;
+  border-bottom: medium none;
 }
 .anspress-container .ap-editor .html-active .switch-html,
 .anspress-container .ap-editor .tmce-active .switch-tmce {
@@ -1954,10 +1962,6 @@
 }
 .anspress-container .ap-editor .mce-toolbar.mce-first.mce-stack-layout-item {
   margin-right: 120px;
-}
-.anspress-container #answer-form-c {
-  border-top: 1px solid #eeeeee;
-  margin-top: 20px;
 }
 .anspress-container .btn-submit-ans {
   padding: 10px 20px;
@@ -2028,10 +2032,6 @@
 .anspress-container .ap-similar-questions a .highlight_word {
   font-weight: 600;
   text-decoration: underline;
-}
-.anspress-container #answer_form .ap-editor {
-  border: 1px solid #ddd;
-  border-radius: 3px;
 }
 .anspress-container #answer_form .ap-editor-answer-label {
   color: #888;

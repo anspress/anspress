@@ -1,9 +1,7 @@
 <?php if(ap_user_can_answer(get_question_id())) : ?>
 	<div id="answer-form-c">
-		<h3 class="ap-widget-title"><?php _e('Your answer', 'ap') ?></h3>	
-		<div class="ap-editor">
-			<?php ap_answer_form(get_question_id()); ?>
-		</div>
+		<h3 class="ap-widget-title"><?php _e('Your answer', 'ap') ?></h3>
+		<?php ap_answer_form(get_question_id()); ?>
 	</div>
 <?php else: ?>
 	<div class="ap-please-login">
