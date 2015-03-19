@@ -83,6 +83,19 @@ function ap_answer_form($question_id, $editing = false){
             'order' => 12,
             'show_desc_tip' => false
         );
+
+    if(ap_opt('enable_recaptcha'))
+        $args['fields'][] = array(
+            'name' => 'captcha',
+            'type'  => 'custom',
+            'order' => 100,
+            'html' => '<div class="g-recaptcha" id="recaptcha" data-sitekey="'.ap_opt('recaptcha_site_key').'"></div><script type="text/javascript"
+src="https://www.google.com/recaptcha/api.js?hl='.get_locale().'&onload=onloadCallback&render=explicit"  async defer></script><script type="text/javascript">var onloadCallback = function() {
+        widgetId1 = grecaptcha.render("recaptcha", {
+          "sitekey" : "'.ap_opt('recaptcha_site_key').'"
+        });
+      };</script>'
+        );
     
     /**
      * FILTER: ap_ask_form_fields

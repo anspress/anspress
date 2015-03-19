@@ -373,6 +373,15 @@ class AnsPress_Process_Form
 	{
 		global $ap_errors, $validate;
 
+		if(ap_opt('enable_recaptcha') && !$this->check_recaptcha()){
+			$this->result = array(
+				'form' 			=> $_POST['ap_form_action'],
+				'message'		=> 'captcha_error',
+				'errors'		=> array('captcha' => __('Bot verification failed.', 'ap'))
+			);
+			return;
+		}
+
 		$question = get_post((int)$_POST['form_question_id']);
 
 		// Do security check, if fails then return
