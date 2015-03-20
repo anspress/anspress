@@ -1047,11 +1047,13 @@ function ap_user_link($user_id = false, $sub = false)
 		$user_id = get_the_author_meta('ID');
 	}
 
-	if(!function_exists('pp_get_link_to')) {
-		return get_author_posts_url($user_id);
-	}	
+	if(function_exists('pp_get_link_to')) {
+		return pp_get_link_to($sub, $user_id);
+	}elseif(function_exists('bp_core_get_userlink')){
+		return bp_core_get_userlink($user_id, false, true);
+	}
 
-	return pp_get_link_to($sub, $user_id);
+	return get_author_posts_url($user_id);	
 }
 
 
