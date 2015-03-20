@@ -16,7 +16,6 @@ if($other_answer_count > 0){
 		echo '<h3 class="ap-widget-title ap-pull-left">'. sprintf(_n('%1$s answer', '%2$s Answers', $other_answer_count, 'ap'), '<span data-view="answer_count">'.__('One', 'ap').'</span>', '<span data-view="answer_count">'.$other_answer_count.'</span>') .'</h3>';
 		ap_answers_tab();
 	echo '</div>';
-	$label = ap_is_answer_selected(get_question_id()) ? 'Other ' : '';
 
 	if(ap_user_can_see_answers()){
 		echo '<div id="answers">';

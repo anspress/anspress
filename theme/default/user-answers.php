@@ -1,8 +1,21 @@
-<div id="ap-user-answers">
-	<?php
-		ap_answers_tab(ap_user_link(ap_user_page_user_id(), 'answers'));
-		while ( $answers->have_posts() ) : $answers->the_post();
-			include ap_get_theme_location('content-answer.php');
-		endwhile;
+<div id="ap-lists" class="clearfix">
+	<?php if ( $answers->have_posts() ) : ?>
+		<div class="question-list">
+			<?php
+				
+				/* Start the Loop */
+				while ( $answers->have_posts() ) : $answers->the_post();
+					global $post;
+					include(ap_get_theme_location('answer-list.php'));
+				endwhile;
+			?>
+		</div>
+	<?php 
+		ap_pagination(false, $answers->max_num_pages);
 	?>
+	<?php
+		else : 
+			include(ap_get_theme_location('content-none.php'));
+		endif; 
+	?>	
 </div>

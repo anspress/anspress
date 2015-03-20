@@ -32,6 +32,13 @@ class AnsPress_BP
 		    'position'              => 40,//weight on menu, change it to whatever you want
 		    'default_subnav_slug'   => 'my-posts-subnav'
 		) );
+		bp_core_new_nav_item( array(
+		    'name'                  => __('Answers', 'ap'),
+		    'slug'                  => 'answers',
+		    'screen_function'       => array($this, 'answers_screen_link'),
+		    'position'              => 40,//weight on menu, change it to whatever you want
+		    'default_subnav_slug'   => 'my-posts-subnav'
+		) );
 	}
 
 	public function questions_screen_link() {
@@ -50,6 +57,26 @@ class AnsPress_BP
     	$questions 		 = new Question_Query(array('author' => bp_displayed_user_id()));
     	echo '<div class="anspress-container">';
 	    include ap_get_theme_location('user-questions.php');
+	    echo '</div>';
+	    wp_reset_postdata();
+	}
+
+	public function answers_screen_link() {
+	    add_action( 'bp_template_title', array($this, 'answers_screen_title') );
+	    add_action( 'bp_template_content', array($this, 'answers_screen_content') );
+	    bp_core_load_template( apply_filters( 'bp_core_template_plugin', 'members/single/plugins' ) );
+	}
+
+	public function answers_screen_title() {
+	    _e('Answers', 'ap');
+	}
+
+	public function answers_screen_content() {
+		global $answers;
+
+    	$answers 		 = new Answers_Query(array('author' => bp_displayed_user_id()));
+    	echo '<div class="anspress-container">';
+	    include ap_get_theme_location('user-answers.php');
 	    echo '</div>';
 	    wp_reset_postdata();
 	}
