@@ -112,6 +112,13 @@ function ap_question_content(){
 
 function is_anspress(){
 	$queried_object = get_queried_object();
+
+	// if buddypress installed
+	if(function_exists('bp_current_component')){
+		$bp_com = bp_current_component();
+		if('questions' == $bp_com || 'answers' == $bp_com)
+			return true;
+	}
 	
 	if(!isset($queried_object->ID)) 
 		return false;

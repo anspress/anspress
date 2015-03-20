@@ -34,6 +34,8 @@ class AnsPress_Actions
 		add_filter( 'wp_get_nav_menu_items', array($this, 'update_menu_url'));
 
 		add_action( 'wp_loaded', array( $this, 'flush_rules' ) );
+
+		new AnsPress_BP;
 		
 	}
 
