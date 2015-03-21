@@ -77,7 +77,8 @@ class AnsPress_PostTypes
                 'comments',
                 'trackbacks',
                 'revisions',
-                'custom-fields'
+                'custom-fields',
+                'buddypress-activity'
             ),
             'hierarchical' => false,
             'public' => true,
@@ -92,8 +93,9 @@ class AnsPress_PostTypes
             'publicly_queryable' => true,
             'capability_type' => 'post',
             'rewrite' => false,
-            'query_var' => 'apq',
+            'query_var' => 'apq'
         );
+
 
         /**
          * FILTER: ap_question_cpt_args 
