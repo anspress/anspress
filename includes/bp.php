@@ -26,14 +26,14 @@ class AnsPress_BP
 		global $bp;
 
 		bp_core_new_nav_item( array(
-		    'name'                  => __('Questions', 'ap'),
+		    'name'                  => sprintf(__('Questions %s', 'ap'), '<span class="count">'.count_user_posts( bp_displayed_user_id() , 'question' ).'</span>'),
 		    'slug'                  => 'questions',
 		    'screen_function'       => array($this, 'questions_screen_link'),
 		    'position'              => 40,//weight on menu, change it to whatever you want
 		    'default_subnav_slug'   => 'my-posts-subnav'
 		) );
 		bp_core_new_nav_item( array(
-		    'name'                  => __('Answers', 'ap'),
+		    'name'                  => sprintf(__('Answers %s', 'ap'), '<span class="count">'.count_user_posts( bp_displayed_user_id() , 'answer' ).'</span>'),
 		    'slug'                  => 'answers',
 		    'screen_function'       => array($this, 'answers_screen_link'),
 		    'position'              => 40,//weight on menu, change it to whatever you want

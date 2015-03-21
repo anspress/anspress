@@ -22,6 +22,7 @@ class AnsPress_Rewrite
 	{
 		add_filter('query_vars', array($this, 'query_var'));
 		add_action('generate_rewrite_rules', array( $this, 'rewrites'), 1);
+		add_filter( 'paginate_links', array($this, 'bp_com_paged') );
 	}
 
 	/**
@@ -78,7 +79,7 @@ class AnsPress_Rewrite
 		$new_rules = array(  
 			
 			//$slug. "parent/([^/]+)/?" => "index.php?page_id=".$base_page_id."&parent=".$wp_rewrite->preg_index(1),		
-			
+ 
 			$slug. "category/([^/]+)/page/?([0-9]{1,})/?$" => "index.php?page_id=".$base_page_id."&ap_page=category&q_cat=".$wp_rewrite->preg_index(1)."&paged=".$wp_rewrite->preg_index(2),   
 			
 			$slug. "tag/([^/]+)/page/?([0-9]{1,})/?$" => "index.php?page_id=".$base_page_id."&ap_page=tag&q_tag=".$wp_rewrite->preg_index(1)."&paged=".$wp_rewrite->preg_index(2), 
@@ -107,9 +108,22 @@ class AnsPress_Rewrite
 			$slug. "([^/]+)/?" => "index.php?page_id=".$base_page_id."&ap_page=".$wp_rewrite->preg_index(1),
 			
 			//"feed/([^/]+)/?" => "index.php?feed=feed&parent=".$wp_rewrite->preg_index(1),
-		);  
+		);
+
 		$ap_rules = $new_rules;
 
 		return $wp_rewrite->rules = $new_rules + $wp_rewrite->rules;  
-	} 
+	}
+
+	public function bp_com_paged($args)
+	{
+		if(function_exists('bp_current_component')){
+			$bp_com = bp_current_component();
+			
+			if('questions' == $bp_com || 'answers' == $bp_com)
+				return preg_replace('/page.([0-9]+)./', '?paged=$1', $args);
+		}
+
+		return $args;
+	}
 }
