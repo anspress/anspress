@@ -250,8 +250,11 @@ function ap_have_ans($id){
 }
 
 // link to asnwers
-function ap_answers_link(){
-	return get_permalink().'#answers';
+function ap_answers_link($question_id = false){
+	if(!$question_id)
+		return get_permalink().'#answers';
+	
+	return get_permalink($question_id).'#answers';
 }
 
 
