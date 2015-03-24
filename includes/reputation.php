@@ -114,7 +114,7 @@ class AnsPress_Reputation {
 	 * Update reputation of post author when received an up vote
 	 * @param  integer $postid
 	 * @param  array $counts
-	 * @return void
+	 * @return boolean
 	 */
 	public function vote_up($postid, $counts) {
 		$post = get_post($postid);
@@ -136,14 +136,17 @@ class AnsPress_Reputation {
 		
 		$userid = get_current_user_id();
 		
-		ap_reputation('vote_up', $userid, $reputation, $postid);
+		if(!empty($reputation))
+			return ap_reputation('vote_up', $userid, $reputation, $postid);
+
+		return false;
 	}
 	
 	/**
 	 * Update reputation of post author when received a down vote
 	 * @param  integer $postid
 	 * @param  array $counts
-	 * @return void
+	 * @return boolean
 	 */
 	public function vote_down($postid, $counts) {	
 		$post = get_post($postid);
@@ -154,7 +157,11 @@ class AnsPress_Reputation {
 		elseif($post->post_type == 'answer')
 			$reputation = ap_reputation_by_event('answer_downvote', true);
 		
-		$uid = $post->post_author;		
+		$uid = $post->post_author;
+
+		if(empty($reputation))
+			return false;
+
 		ap_reputation('down_vote', $uid, $reputation, $postid);
 		
 		// give reputation to user casting vote
@@ -166,13 +173,15 @@ class AnsPress_Reputation {
 		
 		$uid = $post->post_author;		
 		ap_reputation('down_voted', $userid, $reputation, $postid);
+
+		return true;
 	}
 	
 	/**
 	 * Reverse reputation of post author when up vote is undone
 	 * @param  integer $postid
 	 * @param  array $counts
-	 * @return void
+	 * @return boolean
 	 */
 	public function undo_vote_up($postid, $counts) {	
 		$post = get_post($postid);
@@ -185,6 +194,9 @@ class AnsPress_Reputation {
 		
 		$uid = $post->post_author;
 		
+		if(empty($reputation))
+			return false;
+
 		ap_reputation_log_delete('vote_up', $uid, $reputation, $postid);
 		
 		if($post->post_type == 'question')
@@ -195,6 +207,8 @@ class AnsPress_Reputation {
 		$userid = get_current_user_id();
 		
 		ap_reputation_log_delete('vote_up', $userid, $reputation, $postid);
+
+		return true;
 	}
 	
 	/**
@@ -212,7 +226,11 @@ class AnsPress_Reputation {
 		elseif($post->post_type == 'answer')
 			$reputation = ap_reputation_by_event('answer_downvote', true);
 		
-		$uid = $post->post_author;		
+		$uid = $post->post_author;
+
+		if(empty($reputation))
+			return false;	
+
 		ap_reputation_log_delete('down_vote', $uid, $reputation, $postid);
 		
 		// give reputation to user casting vote
@@ -332,7 +350,7 @@ function ap_get_reputation($uid = false, $short = false) {
 	if ($reputation == '') {
 		return 0;
 	} else {
-		if($short)
+		if(false !== $short)
 			return ap_short_num( $reputation );
 		
 		return $reputation;

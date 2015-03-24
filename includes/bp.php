@@ -23,7 +23,7 @@ class AnsPress_BP
 		add_action( 'init', array($this, 'question_answer_tracking') );
 		add_action( 'bp_activity_entry_meta', array($this, 'activity_buttons') );
 		add_filter( 'bp_activity_custom_post_type_post_action', array($this, 'activity_action'), 10, 2 );
-		add_filter( 'bp_profile_header_meta', array($this, 'bp_profile_header_meta'));
+		add_filter( 'bp_before_member_header_meta', array($this, 'bp_profile_header_meta'));
 		
 	}
 
@@ -129,6 +129,6 @@ class AnsPress_BP
 	}
 
 	public function bp_profile_header_meta(){
-		echo '<span class="ap-user-meta ap-user-meta-reputation">'. sprintf(__('%d Reputation', 'ap'), ap_get_reputation($user_id, true)) .'</span>';
+		echo '<span class="ap-user-meta ap-user-meta-reputation">'. sprintf(__('%d Reputation', 'ap'), ap_get_reputation( bp_displayed_user_id(), true)) .'</span>';
 	}
 }

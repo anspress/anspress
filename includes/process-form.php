@@ -12,6 +12,8 @@ class AnsPress_Process_Form
 	private $fields;
 
 	private $result;
+	
+	private $request;
 
 	private $redirect ;
 

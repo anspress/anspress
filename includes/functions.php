@@ -446,7 +446,7 @@ function ap_user_can($id){
  * @return integer
  */
 function ap_selected_answer($post_id = false){
-	if(!$post_id)
+	if(false === $post_id)
 		$post_id = get_the_ID();
 	
 	return get_post_meta($post_id, ANSPRESS_SELECTED_META, true);

@@ -79,20 +79,23 @@ function ap_update_meta($data, $where){
 /**
  * Delete ap_meta row
  * @param  false|array 	$where wp_db where clause
- * @param  integer 	$id    if meta id is known then it can be passed
+ * @param  false|integer 	$id    if meta id is known then it can be passed
  * @return boolean         
  */
 function ap_delete_meta($where=false, $id=false){		
 	global $wpdb;
-	
+
 	if(false !== $id)
 		$where = array('apmeta_id' => $id);
 	
 	$meta_key = ap_meta_key($where);
 	
-	$delete = $wpdb->delete( 
-		$wpdb->prefix . 'ap_meta', $where		
-	);
+	if(is_array($where))
+		$delete = $wpdb->delete( 
+			$wpdb->prefix . 'ap_meta', $where		
+		);
+	else
+		return false;
 	
 	if($delete)
 		wp_cache_delete($meta_key, 'ap_meta');

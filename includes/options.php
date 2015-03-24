@@ -23,7 +23,7 @@ if ( ! defined( 'WPINC' ) ) {
  * @return string         
  * @since 0.1
  */
-function ap_opt($key = false, $value = false){
+function ap_opt($key = false, $value = null){
 	$settings = wp_cache_get('ap_opt', 'options');
 	
 	if($settings === false){
@@ -34,7 +34,7 @@ function ap_opt($key = false, $value = false){
 		
 		wp_cache_set('ap_opt', $settings, 'options');
 	}	
-	if($value){
+	if(!is_null($value)){
 
 		$settings[$key] = $value;		
 		update_option( 'anspress_opt', $settings);
@@ -45,7 +45,7 @@ function ap_opt($key = false, $value = false){
 		return;
 	}
 
-	if(!$key)
+	if(false === $key)
 		return $settings;
 		
 	if(isset($settings[$key]))

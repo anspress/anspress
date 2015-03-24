@@ -119,7 +119,7 @@ class AnsPress_Vote_Ajax extends AnsPress_Ajax
 
 				ap_send_json(ap_ajax_responce(array('action' => $action, 'type' => $type, 'count' => $count, 'message' => 'undo_vote')));
 			}else{
-				$result = ap_send_json(ap_ajax_responce('undo_vote_your_vote'));
+				ap_send_json(ap_ajax_responce('undo_vote_your_vote'));
 			}				
 				
 		}else{
@@ -201,17 +201,9 @@ class anspress_vote
     public function __construct()
     {
 		add_action( 'the_post', array($this, 'ap_append_vote_count') );
-
-
-		
 		// vote for closing, ajax request
 		add_action( 'wp_ajax_ap_vote_for_close', array($this, 'ap_vote_for_close') ); 
 		add_action( 'wp_ajax_nopriv_ap_vote_for_close', array($this, 'ap_nopriv_vote_for_close') ); 
-		
-		// Follow user
-		add_action( 'wp_ajax_ap_follow', array($this, 'ap_follow') ); 
-		add_action( 'wp_ajax_nopriv_ap_follow', array($this, 'ap_follow') ); 
-		
 		
     }
 
@@ -284,55 +276,7 @@ class anspress_vote
 	function ap_nopriv_vote_for_close(){
 		echo json_encode(array('action'=> false, 'message' =>__('Please login for requesting closing this question.', 'ap')));
 		die();
-	}
-	
-	public function ap_follow(){
-		$args = $_POST['args'];
-		if(wp_verify_nonce( $args['nonce'], 'follow_'.$args['user'] )){
-			$userid = (int)sanitize_text_field($args['user']);
-			
-			$user_following = ap_is_user_voted($userid, 'follow', get_current_user_id());
-			
-			$user 			= get_userdata( $userid );
-			$user_name 		= $user->data->display_name;
-			if (!is_user_logged_in()){
-				$action = 'pleazelogin';
-				$message = sprintf(__('Register or log in to follow %s', 'ap'), $user_name);
-			}	
-			elseif(!$user_following){
-				$row 	= ap_add_vote(get_current_user_id(), 'follow', $userid);
-				$action = 'follow';
-				$text 	= __('Unfollow','ap');
-				$title 	= sprintf(__('Unfollow %s', 'ap'), $user_name);
-				$message = sprintf(__('You are now following %s', 'ap'), $user_name);
-			}else{
-				$row = ap_remove_vote('follow', get_current_user_id(), $userid);
-				$action = 'unfollow';
-				$text 	= __('Follow','ap');
-				$title 	= sprintf(__('Follow %s', 'ap'), $user_name);
-				$message = sprintf(__('You unfollowed %s', 'ap'), $user_name);
-			}
-				
-			if($row !== FALSE){
-				$followers = ap_count_vote(false, 'follow', $userid);
-				$following = ap_count_vote(get_current_user_id(), 'follow');
-				update_user_meta( $userid, AP_FOLLOWERS_META, $followers);
-				update_user_meta( get_current_user_id(), AP_FOLLOWING_META, $following);
-				
-				
-				
-				$result = apply_filters('ap_follow_result', array('row' => $row, 'action' => $action, 'text' => $text, 'id' => $userid, 'title' => $title, 'message' => $message, 'following_count' => $following, 'followers_count' => $followers ));
-				
-				echo json_encode($result);
-			}else{
-				echo json_encode(array('action' => false, 'message' => _('Unable to process your request, please try again.', 'ap')));
-			}
-
-		}else{
-			echo json_encode(array('action' => false, 'message' => _('Something went wrong', 'ap')));
-		}
-		die();
-	}
+	}	
 
 }
 
@@ -409,14 +353,14 @@ function ap_post_votes($postid){
 
 /**
  * Check if user voted on given post.
- * @param  	int $actionid
+ * @param  	integer $actionid
  * @param  	string $type     
  * @param  	int $userid   
  * @return 	boolean           
  * @since 	2.0
  */
 function ap_is_user_voted($actionid, $type, $userid = false){
-	if(!$userid)
+	if(false === $userid)
 		$userid = get_current_user_id();
 
 	if($type == 'vote' && is_user_logged_in()){
@@ -464,7 +408,7 @@ function ap_post_subscribers_count($postid = false){
  * @since 0.1
  */
 function ap_vote_btn($post = false, $echo = true){
-	if(!$post)
+	if(false === $post)
 		global $post;
 
 	if('answer' == $post->post_type && ap_opt('disable_voting_on_answer'))
@@ -611,15 +555,6 @@ function ap_flag_btn_html($echo = false){
 		return $output;
 }
 
-
-function ap_follow_btn_html($userid, $small = false){
-	if(get_current_user_id() == $userid)
-		return;
-		
-	$followed = ap_is_user_voted($userid, 'follow', get_current_user_id());
-	$text = $followed ? __('Unfollow', 'ap') : __('Follow', 'ap');
-	echo '<a class="btn ap-btn ap-follow-btn '.($followed ? 'ap-unfollow '.ap_icon('unfollow') : ap_icon('follow')).($small ? ' ap-tip' : '').'" href="#" data-action="ap-follow" data-args=\''.json_encode(array('user' => $userid, 'nonce' => wp_create_nonce( 'follow_'.$userid))).'\' title="'.$text.'">'.($small ? '' : $text).'</a>';
-}
 
 /**
  * Return subscriber count in human readable format

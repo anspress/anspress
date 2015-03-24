@@ -134,12 +134,12 @@ function ap_get_current_page_template(){
 
 /**
  * Get post status
- * @param  integer $post_id
+ * @param  false|integer $post_id
  * @return string
  * @since 2.0.0-alpha2
  */
 function ap_post_status($post_id = false){
-	if(!$post_id)
+	if(false === $post_id)
 		$post_id = get_the_ID();
 	
 	return get_post_status( $post_id );
@@ -241,12 +241,12 @@ function ap_pagination( $current = false, $total = false, $format = '?paged=%#%'
 
 /**
  * Question meta to display 
- * @param  int $question_id
+ * @param  false|integer $question_id
  * @return string
  * @since 2.0.1
  */
 function ap_display_question_metas($question_id =  false){
-	if (!$question_id) {
+	if (false === $question_id) {
 		$question_id = get_the_ID();
 	}
 
@@ -539,14 +539,13 @@ function ap_answers_tab($base = false){
 
 /**
  * Answer meta to display 
- * @param  int $answer_id
+ * @param  false|integer $answer_id
  * @return string
  * @since 2.0.1
  */
 function ap_display_answer_metas($answer_id =  false){
-	if (!$answer_id) {
+	if (false === $answer_id) 
 		$answer_id = get_the_ID();
-	}
 
 	$metas = array();
 	if(ap_is_best_answer($answer_id))
@@ -555,8 +554,6 @@ function ap_display_answer_metas($answer_id =  false){
 	$metas['history'] = ap_last_active_time($answer_id);
 	$metas['created'] = sprintf( __( '<span>Created</span> <i><time itemprop="datePublished" datetime="%s">%s Ago</time></i>', 'ap' ), get_the_time('c', $answer_id), ap_human_time( get_the_time('U')));
 
-	
-	
 	/**
 	 * FILTER: ap_display_answer_meta
 	 * Used to filter answer display meta
