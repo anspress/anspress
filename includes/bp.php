@@ -26,6 +26,7 @@ class AnsPress_BP
 		add_filter( 'bp_activity_custom_post_type_post_action', array($this, 'activity_action'), 10, 2 );
 		add_filter( 'bp_before_member_header_meta', array($this, 'bp_profile_header_meta'));
 		add_filter( 'ap_the_question_content', array($this, 'ap_the_question_content'));
+		add_filter( 'the_content', array($this, 'ap_the_answer_content'));
 		
 	}
 
@@ -140,5 +141,14 @@ class AnsPress_BP
 	 */
 	public function ap_the_question_content($content){
 		return bp_activity_at_name_filter($content);
+	}
+
+	public function ap_the_answer_content($content){
+		global $post;
+		
+		if($post->post_type == 'answer')
+			return bp_activity_at_name_filter($content);
+
+		return $content;
 	}
 }
