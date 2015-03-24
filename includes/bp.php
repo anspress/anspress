@@ -17,6 +17,7 @@ class AnsPress_BP
 	 */
 	public function __construct()
 	{
+		//add_action( 'ap_enqueue', 'bp_activity_mentions_script' );
 		add_action( 'bp_setup_nav',  array( $this, 'content_setup_nav') );
 		add_post_type_support( 'question', 'buddypress-activity' );
 		add_post_type_support( 'answer', 'buddypress-activity' );
@@ -24,6 +25,7 @@ class AnsPress_BP
 		add_action( 'bp_activity_entry_meta', array($this, 'activity_buttons') );
 		add_filter( 'bp_activity_custom_post_type_post_action', array($this, 'activity_action'), 10, 2 );
 		add_filter( 'bp_before_member_header_meta', array($this, 'bp_profile_header_meta'));
+		add_filter( 'ap_the_question_content', array($this, 'ap_the_question_content'));
 		
 	}
 
@@ -130,5 +132,13 @@ class AnsPress_BP
 
 	public function bp_profile_header_meta(){
 		echo '<span class="ap-user-meta ap-user-meta-reputation">'. sprintf(__('%d Reputation', 'ap'), ap_get_reputation( bp_displayed_user_id(), true)) .'</span>';
+	}
+
+	/**
+	 * Filter question content and link metions
+	 * @return string
+	 */
+	public function ap_the_question_content($content){
+		return bp_activity_at_name_filter($content);
 	}
 }
