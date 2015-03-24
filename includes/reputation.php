@@ -364,6 +364,9 @@ function ap_get_reputation($uid = false, $short = false) {
  * @param string $type
  */
 function ap_reputation($type, $uid, $reputation, $data){
+	if($uid == 0)
+		return;
+	
 	$reputation = apply_filters('ap_reputation',$reputation, $type, $uid, $data);
 	ap_alter_reputation($uid, $reputation);
 	ap_reputation_log($type, $uid, $reputation, $data);
@@ -537,4 +540,27 @@ function ap_received_reputation_post($post_id){
 	$reputation 		= ap_reputation_by_event('question_upvote', true);
 	$vote_count = ap_meta_total_count('vote_up', $post_id);
 	return $vote_count*$reputation;
+}
+
+/**
+ * Get total reputation of all users
+ * @return integer
+ */
+function ap_total_reputation(){
+	global $wpdb;
+
+	$count = wp_cache_get( 'site_total_reputation', 'ap' );
+
+	if(false === $count){
+		$count = $wpdb->get_var('SELECT sum(apmeta_value) FROM '.$wpdb->prefix.'ap_meta where apmeta_type = "reputation"');
+		wp_cache_add( 'site_total_reputation', $count, 'ap' );
+	}
+	
+	return (int)$count;
+}
+
+function ap_get_user_reputation_share($user_id){
+	$user_points = ap_get_reputation($user_id);
+
+	return ($user_points * ap_total_reputation()) / 100;
 }
