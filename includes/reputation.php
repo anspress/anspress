@@ -35,7 +35,7 @@ class AnsPress_Reputation {
 	/**
 	 * Update reputation of user created question 
 	 * @param  integer $postid
-	 * @return boolean
+	 * @return boolean|null
 	 */
 	public function new_question($postid) {
 		$reputation = ap_reputation_by_event('new_question', true);
@@ -45,7 +45,7 @@ class AnsPress_Reputation {
 	/**
 	 * Update point of trashing question
 	 * @param  integer $postid
-	 * @return boolean
+	 * @return boolean|null
 	 */
 	public function delete_question($postid) {
 		$reputation = ap_reputation_by_event('new_question', true);
@@ -55,7 +55,7 @@ class AnsPress_Reputation {
 	/**
 	 * Update reputation of user created an answer
 	 * @param  integer $postid
-	 * @return boolean
+	 * @return boolean|null
 	 */
 	public function new_answer($postid) {
 		$reputation = ap_reputation_by_event('new_answer', true);
@@ -65,7 +65,7 @@ class AnsPress_Reputation {
 	/**
 	 * Update reputation on trasing answer
 	 * @param  integer $postid
-	 * @return boolean
+	 * @return boolean|null
 	 */
 	public function delete_answer($postid) {
 		$reputation = ap_reputation_by_event('new_answer', true);
@@ -114,7 +114,7 @@ class AnsPress_Reputation {
 	 * Update reputation of post author when received an up vote
 	 * @param  integer $postid
 	 * @param  array $counts
-	 * @return boolean
+	 * @return null|false
 	 */
 	public function vote_up($postid, $counts) {
 		$post = get_post($postid);
@@ -215,7 +215,7 @@ class AnsPress_Reputation {
 	 * Reverse reputation of post author when down vote is undone
 	 * @param  integer $postid
 	 * @param  array $counts
-	 * @return void
+	 * @return false|null
 	 */
 	public function undo_vote_down($postid, $counts) {	
 		$post = get_post($postid);
@@ -286,6 +286,9 @@ function ap_reputation_by_id($id){
 	return false;
 }
 
+/**
+ * @param string $event
+ */
 function ap_reputation_by_event($event, $only_reputation = false){
 	$opt = ap_reputation_option();
 	foreach( $opt as $reputation)
@@ -338,7 +341,7 @@ function ap_reputation_option_delete($id){
 /**
  * Get the reputation of a user
  * @param  false|integere 	$uid    WordPress user id
- * @param  false|integer 	$short  set it to true for formatted output like 1.2K
+ * @param  boolean 	$short  set it to true for formatted output like 1.2K
  * @return string
  */
 function ap_get_reputation($uid = false, $short = false) {
@@ -357,6 +360,9 @@ function ap_get_reputation($uid = false, $short = false) {
 	}
 }
 
+/**
+ * @param string $type
+ */
 function ap_reputation($type, $uid, $reputation, $data){
 	$reputation = apply_filters('ap_reputation',$reputation, $type, $uid, $data);
 	ap_alter_reputation($uid, $reputation);
@@ -389,6 +395,9 @@ function ap_reputation_log($type, $uid, $reputation, $data){
 	return ap_add_meta($uid, 'reputation', $data, $reputation, $type);
 }
 
+/**
+ * @param string $type
+ */
 function ap_reputation_log_delete($type, $uid, $reputation =NULL, $data =NULL){
 	$new_reputation = ap_get_reputation($uid) - $reputation;
 	
