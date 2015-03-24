@@ -35,19 +35,58 @@ class AnsPress_BP
 		global $bp;
 
 		bp_core_new_nav_item( array(
+		    'name'                  => __('Reputation', 'ap'),
+		    'slug'                  => 'reputation',
+		    'screen_function'       => array($this, 'reputation_screen_link'),
+		    'position'              => 30,//weight on menu, change it to whatever you want
+		    'default_subnav_slug' => 'my-posts-subnav'
+
+		) );
+		bp_core_new_nav_item( array(
 		    'name'                  => sprintf(__('Questions %s', 'ap'), '<span class="count">'.count_user_posts( bp_displayed_user_id() , 'question' ).'</span>'),
 		    'slug'                  => 'questions',
 		    'screen_function'       => array($this, 'questions_screen_link'),
 		    'position'              => 40,//weight on menu, change it to whatever you want
-		    'default_subnav_slug'   => 'my-posts-subnav'
+		    'default_subnav_slug' => 'my-posts-subnav'
+
 		) );
 		bp_core_new_nav_item( array(
 		    'name'                  => sprintf(__('Answers %s', 'ap'), '<span class="count">'.count_user_posts( bp_displayed_user_id() , 'answer' ).'</span>'),
 		    'slug'                  => 'answers',
 		    'screen_function'       => array($this, 'answers_screen_link'),
 		    'position'              => 40,//weight on menu, change it to whatever you want
-		    'default_subnav_slug'   => 'my-posts-subnav'
+		    'default_subnav_slug' => 'my-posts-subnav'
+
 		) );
+	}
+
+	public function reputation_screen_link() {
+	    add_action( 'bp_template_title', array($this, 'reputation_screen_title') );
+	    add_action( 'bp_template_content', array($this, 'reputation_screen_content') );
+	    bp_core_load_template( apply_filters( 'bp_core_template_plugin', 'members/single/plugins' ) );
+	}
+
+	public function reputation_screen_title() {
+	    _e('Reputation', 'ap');
+	}
+
+	public function reputation_screen_content() {
+		global $wpdb;
+		$user_id = bp_displayed_user_id();
+		// Preparing your query
+      	$query = "SELECT v.* FROM ".$wpdb->prefix."ap_meta v WHERE v.apmeta_type='reputation' AND v.apmeta_userid = $user_id";
+        
+	
+		//adjust the query to take pagination
+		/*if(!empty($paged) && !empty($this->per_page)){
+			$offset=($paged-1)*$this->per_page;
+			$query.=' LIMIT '.(int)$offset.','.$this->per_page;
+		}		
+		*/
+		$reputation = $wpdb->get_results($query);
+    	echo '<div class="anspress-container">';
+	    include ap_get_theme_location('user-reputation.php');
+	    echo '</div>';
 	}
 
 	public function questions_screen_link() {
@@ -133,6 +172,8 @@ class AnsPress_BP
 
 	public function bp_profile_header_meta(){
 		echo '<span class="ap-user-meta ap-user-meta-reputation">'. sprintf(__('%d Reputation', 'ap'), ap_get_reputation( bp_displayed_user_id(), true)) .'</span>';
+
+		//echo '<span class="ap-user-meta ap-user-meta-share">'.sprintf(__('%d&percent; of reputation on this site', 'ap'), ap_get_user_reputation_share(bp_displayed_user_id())).'</span>';
 	}
 
 	/**

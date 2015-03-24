@@ -162,7 +162,7 @@ class AnsPress_Reputation {
 		if(empty($reputation))
 			return false;
 
-		ap_reputation('down_vote', $uid, $reputation, $postid);
+		ap_reputation('vote_down', $uid, $reputation, $postid);
 		
 		// give reputation to user casting vote
 		$userid = get_current_user_id();
@@ -172,7 +172,7 @@ class AnsPress_Reputation {
 			$reputation = ap_reputation_by_event('answer_downvoted', true);
 		
 		$uid = $post->post_author;		
-		ap_reputation('down_voted', $userid, $reputation, $postid);
+		ap_reputation('voted_down', $userid, $reputation, $postid);
 
 		return true;
 	}
@@ -231,7 +231,7 @@ class AnsPress_Reputation {
 		if(empty($reputation))
 			return false;	
 
-		ap_reputation_log_delete('down_vote', $uid, $reputation, $postid);
+		ap_reputation_log_delete('vote_up', $uid, $reputation, $postid);
 		
 		// give reputation to user casting vote
 		$userid = get_current_user_id();
@@ -241,7 +241,7 @@ class AnsPress_Reputation {
 			$reputation = ap_reputation_by_event('answer_downvoted', true);
 		
 		$uid = $post->post_author;		
-		ap_reputation_log_delete('down_voted', $userid, $reputation, $postid);
+		ap_reputation_log_delete('voted_down', $userid, $reputation, $postid);
 	}
 	
 	/**
@@ -366,7 +366,7 @@ function ap_get_reputation($uid = false, $short = false) {
 function ap_reputation($type, $uid, $reputation, $data){
 	if($uid == 0)
 		return;
-	
+
 	$reputation = apply_filters('ap_reputation',$reputation, $type, $uid, $data);
 	ap_alter_reputation($uid, $reputation);
 	ap_reputation_log($type, $uid, $reputation, $data);
@@ -563,4 +563,20 @@ function ap_get_user_reputation_share($user_id){
 	$user_points = ap_get_reputation($user_id);
 
 	return ($user_points * ap_total_reputation()) / 100;
+}
+
+function ap_get_reputation_info($meta){
+	$info = array(
+		'answer' 		=> sprintf(__('Answered a question %s'), '<a href="'.get_permalink($meta->apmeta_actionid).'">'. get_the_title($meta->apmeta_actionid)) .'</a>',
+		'question' 		=> sprintf(__('Asked %s'), '<a href="'.get_permalink($meta->apmeta_actionid).'">'.get_the_title($meta->apmeta_actionid)).'</a>',
+		'comment' 		=> sprintf(__('Commented %s'), '<a href="'.get_comment_link($meta->apmeta_actionid).'">'. get_comment_text($meta->apmeta_actionid)).'</a>',
+		'selecting_answer' => sprintf(__('Selected a best answer for %s'), '<a href="'.get_permalink($meta->apmeta_actionid).'">'. get_the_title($meta->apmeta_actionid)).'</a>',
+		'vote_up' 		=> sprintf(__('Received a down vote on %s %s'), get_post_type($meta->apmeta_actionid), '<a href="'.get_permalink($meta->apmeta_actionid).'">'.get_the_title($meta->apmeta_actionid) ).'</a>',
+		'vote_down' 	=> sprintf(__('Received a down vote on on %s %s'), get_post_type($meta->apmeta_actionid), '<a href="'.get_permalink($meta->apmeta_actionid).'">'.get_the_title($meta->apmeta_actionid).'</a>' ),
+		'voted_down' 	=> sprintf(__('Voted down on %s'), get_post_type($meta->apmeta_actionid) ),
+		'best_answer' 	=> sprintf(__('Answer on a question is selected as best, %s'), get_post_type($meta->apmeta_actionid) ),
+	);
+
+	if(isset($info[$meta->apmeta_param]))
+		return $info[$meta->apmeta_param];
 }

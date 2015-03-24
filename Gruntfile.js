@@ -31,7 +31,7 @@ module.exports = function(grunt) {
 	        dist: {
 	            options: {
 	                directory : './',
-	                target : 'docs',
+	                target : 'E:\\wamp\\www\\anspress-doc',
 	                ignore: 'node_modules'
 	            }
 	        }

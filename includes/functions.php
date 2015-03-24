@@ -1083,7 +1083,9 @@ function ap_user_display_meta($html = false, $user_id = false, $echo = false)
 	$metas = array();
 
 	$metas['display_name'] = '<span class="ap-user-meta ap-user-meta-display_name">'. ap_user_display_name(array('html' => true)) .'</span>';
-	$metas['reputation'] = '<span class="ap-user-meta ap-user-meta-reputation">'. sprintf(__('%d Reputation', 'ap'), ap_get_reputation($user_id, true)) .'</span>';
+	
+	if($user_id > 0)
+		$metas['reputation'] = '<span class="ap-user-meta ap-user-meta-reputation">'. sprintf(__('%d Reputation', 'ap'), ap_get_reputation($user_id, true)) .'</span>';
 
     /**
      * FILTER: ap_user_display_meta_array

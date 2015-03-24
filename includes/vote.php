@@ -95,7 +95,7 @@ class AnsPress_Vote_Ajax extends AnsPress_Ajax
 
 		$type = sanitize_text_field( $_POST['type'] );
 
-		$type 	= $type == 'up' ? 'vote_up' : 'vote_down' ;
+		$type 	= ($type == 'up' ? 'vote_up' : 'vote_down') ;
 		$userid = get_current_user_id();
 		
 		$is_voted = ap_is_user_voted($post_id, 'vote', $userid) ;
@@ -123,7 +123,7 @@ class AnsPress_Vote_Ajax extends AnsPress_Ajax
 			}				
 				
 		}else{
-			
+
 			$row = ap_add_vote($userid, $type, $post_id);				
 			$counts = ap_post_votes($post_id);
 			
