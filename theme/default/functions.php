@@ -17,7 +17,7 @@
  */
 add_action('wp_enqueue_scripts', 'init_scripts_front', 11);
 function init_scripts_front(){
-	if(is_anspress()){
+	//if(is_anspress()){
 		wp_enqueue_script( 'jquery');				
 		wp_enqueue_script( 'jquery-form', array('jquery'), false, true );			
 		wp_enqueue_script( 'ap-functions-js', ANSPRESS_URL.'assets/ap-functions.js', 'jquery');		
@@ -83,7 +83,7 @@ function init_scripts_front(){
 		wp_localize_script( 'ap-site-js', 'apoptions', array(
 			'ajaxlogin' => ap_opt('ajax_login'),
 		));
-	}
+	//}
 }
 
 

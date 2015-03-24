@@ -1069,9 +1069,9 @@ function ap_user_link($user_id = false, $sub = false)
 
 /**
  * Display user meta
- * @param  	boolean 	$html    	for html output
- * @param  	false|integer 		$user_id 	User id, if empty then post author witll be user
- * @param 	boolen 		$echo
+ * @param  	boolean 		$html  for html output
+ * @param  	false|integer 	$user_id  User id, if empty then post author witll be user
+ * @param 	boolen 			$echo
  * @return 	string
  */
 function ap_user_display_meta($html = false, $user_id = false, $echo = false)
@@ -1082,7 +1082,8 @@ function ap_user_display_meta($html = false, $user_id = false, $echo = false)
 
 	$metas = array();
 
-	$metas['display_name'] = '<span class="ap-user-meta ap-user-meta-display_name">'.ap_user_display_name(array('html' => true)).'</span>';
+	$metas['display_name'] = '<span class="ap-user-meta ap-user-meta-display_name">'. ap_user_display_name(array('html' => true)) .'</span>';
+	$metas['reputation'] = '<span class="ap-user-meta ap-user-meta-reputation">'. sprintf(__('%d Reputation', 'ap'), ap_get_reputation($user_id, true)) .'</span>';
 
     /**
      * FILTER: ap_user_display_meta_array

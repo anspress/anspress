@@ -167,6 +167,7 @@ class AnsPress_Ajax
     		$delete = wp_delete_comment( (int)$_POST['comment_ID'], true );
     		
     		if($delete){
+    			do_action( 'ap_after_deleting_comment', $comment );
     			$count = get_comment_count( $comment->comment_post_ID );
     			ap_send_json(ap_ajax_responce(  array( 'action' => 'delete_comment', 'comment_ID' => (int)$_POST['comment_ID'], 'message' => 'comment_delete_success', 'view' => array('comments_count_'.$comment->comment_post_ID => $count['approved'], 'comment_count_label_'.$comment->comment_post_ID => sprintf(_n('One comment', '%d comments', $count['approved'], 'ap'), $count['approved']) ))));
     		}else{
@@ -199,14 +200,14 @@ class AnsPress_Ajax
 		$user_id = get_current_user_id();
 		
 		if(ap_is_answer_selected($post->post_parent)){
-			ap_do_event('unselect_answer', $user_id, $post->post_parent, $post->ID);
+			do_action('ap_unselect_answer', $user_id, $post->post_parent, $post->ID);
 			update_post_meta($post->ID, ANSPRESS_BEST_META, 0);
 			update_post_meta($post->post_parent, ANSPRESS_SELECTED_META, false);
 			update_post_meta($post->post_parent, ANSPRESS_UPDATED_META, current_time( 'mysql' ));
 			ap_send_json( ap_ajax_responce(array('message' => 'unselected_the_answer', 'action' => 'unselected_answer', 'do' => 'reload')));
 
 		}else{
-			ap_do_event('select_answer', $user_id, $post->post_parent, $post->ID);
+			do_action('ap_select_answer', $user_id, $post->post_parent, $post->ID);
 			update_post_meta($post->ID, ANSPRESS_BEST_META, 1);
 			update_post_meta($post->post_parent, ANSPRESS_SELECTED_META, $post->ID);
 			update_post_meta($post->post_parent, ANSPRESS_UPDATED_META, current_time( 'mysql' ));
@@ -235,8 +236,10 @@ class AnsPress_Ajax
 
 		wp_trash_post($post_id);
 		if($post->post_type == 'question'){
+			do_action('ap_wp_trash_question', $post_id);
 			ap_send_json( ap_ajax_responce( array('action' => 'delete_question', 'do' => 'redirect', 'redirect_to' => get_permalink(ap_opt('questions_page_id')), 'message' => 'question_moved_to_trash')));
 		}else{
+			do_action('ap_wp_trash_answer', $post_id);
 			$current_ans = ap_count_published_answers($post->post_parent);
 			$count_label = sprintf( _n('1 Answer', '%d Answers', $current_ans, 'ap'), $current_ans);
 			$remove = (!$current_ans ? true : false);

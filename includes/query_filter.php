@@ -32,7 +32,7 @@ class AnsPress_Query_Filter
 	public function init_actions(){
 		//add_meta_box( 'ap_ans_parent_q','Parent Question', array($this, 'ans_parent_q_metabox'),'answer','side', 'high' );
 		
-		//add_action('delete_post', array($this, 'delete_action'));		
+		//	
 	}
 
     public function custom_post_location($location)
@@ -55,18 +55,6 @@ class AnsPress_Query_Filter
 		echo '<input type="text" name="ap_q_search" id="ap_q_search" value="'.get_the_title($answer->post_parent).'" />';
 	}
 	 
-	
-	
-	public function delete_action($post_id){
-		$post = get_post($post_id);
-		
-		if($post->post_type == 'question')
-			ap_do_event('delete_question', $post->ID, $post->post_author);
-		
-		elseif($post->post_type == 'answer')
-			ap_do_event('delete_answer', $post->ID, $post->post_author);
-	}
-	
 	public function answer_sort_newest($sql, $query){
 		global $wpdb;
 		if(isset($query->query['ap_query']) && $query->query['ap_query'] == 'answer_sort_newest'){		

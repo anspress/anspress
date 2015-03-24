@@ -2,6 +2,26 @@
 // Question page style
 // --------------------------------------------------
 
+.ap-user-meta{
+	color: @light-color;
+	margin-bottom: 3px;
+    
+	a{
+		color: @default-color;
+	}
+}
+.ap-user-meta-display_name{
+    font-size: 14px;
+    font-weight: @bold;
+    margin-bottom: 5px;
+}
+.ap-user-meta-reputation{
+    background: none repeat scroll 0 0 #ff8d37;
+    border-radius: 3px;
+    color: #fff;
+    font-size: 11px;
+    padding: 0 4px;
+}
 .ap-content{
 	&.question{
 		.ap-q-head{
@@ -17,20 +37,7 @@
 	    border-radius: 4px;
 	    padding: 15px;
 	}
-	.ap-user-meta{
-		color: @light-color;
-    	margin-bottom: 3px;
 
-	    .ap-user-meta-display_name{
-		    font-size: 14px;
-		    font-weight: @bold;
-		    margin-bottom: 5px;
-		}
-
-		a{
-			color: @default-color;
-		}
-	}
 	.ap-question-metas, .ap-answer-metas{
 		margin-bottom: 10px;
 		li{

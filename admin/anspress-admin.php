@@ -69,10 +69,10 @@ class AnsPress_Admin {
 		add_action( 'load-post.php', array($this, 'question_meta_box_class') );
 		add_action( 'load-post-new.php', array($this, 'question_meta_box_class') );		
 		add_action( 'wp_ajax_ap_save_options', array($this, 'ap_save_options') );
-		add_action( 'wp_ajax_ap_edit_points', array($this, 'ap_edit_points') );
-		add_action( 'wp_ajax_ap_save_points', array($this, 'ap_save_points') );
-		add_action( 'wp_ajax_ap_new_point_form', array($this, 'ap_new_point_form') );
-		add_action( 'wp_ajax_ap_delete_point', array($this, 'ap_delete_point') );
+		add_action( 'wp_ajax_ap_edit_reputation', array($this, 'ap_edit_reputation') );
+		add_action( 'wp_ajax_ap_save_reputation', array($this, 'ap_save_reputation') );
+		add_action( 'wp_ajax_ap_new_reputation_form', array($this, 'ap_new_reputation_form') );
+		add_action( 'wp_ajax_ap_delete_reputation', array($this, 'ap_delete_reputation') );
 		add_action( 'admin_menu', array($this, 'change_post_menu_label') );		
 		add_action( 'wp_ajax_ap_edit_badges', array($this, 'ap_edit_badges') );
 		add_action( 'wp_ajax_ap_save_badges', array($this, 'ap_save_badges') );
@@ -173,6 +173,8 @@ class AnsPress_Admin {
 		
 		add_submenu_page('anspress', __( 'Flagged question & answer', 'ap' ), __( 'Flagged', 'ap' ).$Flagcount,	'delete_pages', 'anspress_flagged', array( $this, 'display_flagged_page' ));		
 		
+		add_submenu_page('anspress', __( 'Reputation', 'ap' ), __( 'Reputation', 'ap' ),	'manage_options', 'anspress_reputation', array( $this, 'display_reputation_page' ));
+
 		add_submenu_page('anspress', __( 'AnsPress Options', 'ap' ), __( 'Options', 'ap' ),	'manage_options', 'anspress_options', array( $this, 'display_plugin_admin_page' ));
 		
 		add_submenu_page('anspress', __( 'Extensions', 'ap' ), __( 'Extensions', 'ap' ),	'manage_options', 'anspress_ext', array( $this, 'display_plugin_addons_page' ));
@@ -226,20 +228,20 @@ class AnsPress_Admin {
 		include_once( 'views/addons.php' );
 	}
 	
-	public function display_points_page() {
-		include_once('points.php');
-		$points_table = new AP_Points_Table();
-		$points_table->prepare_items();
+	public function display_reputation_page() {
+		include_once('reputation.php');
+		$reputation_table = new AnsPress_Reputation_Table();
+		$reputation_table->prepare_items();
 		?>
 		<div class="wrap">        
 			<div id="apicon-users" class="icon32"><br/></div>
 			<h2>
 				<?php _e('AnsPress Points', 'ap'); ?>
-				<a class="add-new-h2" href="#" data-button="ap-new-point"><?php _e('New point', 'ap'); ?></a>
+				<a class="add-new-h2" href="#" data-button="ap-new-reputation"><?php _e('New reputation', 'ap'); ?></a>
 			</h2>
-			<form id="anspress-points-table" method="get">
+			<form id="anspress-reputation-table" method="get">
 				<input type="hidden" name="page" value="<?php echo $_REQUEST['page'] ?>" />
-				<?php $points_table->display() ?>
+				<?php $reputation_table->display() ?>
 			</form>
 		</div>
 		<?php
@@ -340,7 +342,7 @@ class AnsPress_Admin {
 	}
 	//register settings
 	public function register_setting(){
-		register_setting( 'ap_points', 'ap_points', array($this, 'validate_options') );
+		register_setting( 'ap_reputation', 'ap_reputation', array($this, 'validate_options') );
 	}
 	public function validate_options( $input ) {
 		return $input;
@@ -422,72 +424,72 @@ class AnsPress_Admin {
 		
 	}
 	
-	public function ap_edit_points(){
+	public function ap_edit_reputation(){
 		if(current_user_can('manage_options')){
 			$id = sanitize_text_field($_POST['id']);
-			$point = ap_point_by_id($id);
+			$reputation = ap_reputation_by_id($id);
 			
 			$html = '
-				<div id="ap-point-edit">
-					<form method="POST" data-action="ap-save-point">
+				<div id="ap-reputation-edit">
+					<form method="POST" data-action="ap-save-reputation">
 						<table class="form-table">
 							<tr valign="top">
 								<th scope="row"><label for="title">'. __('Title', 'ap').'</label></th>
 								<td>
-									<input id="title" type="text" name="title" value="'.$point['title'].'" />
+									<input id="title" type="text" name="title" value="'.$reputation['title'].'" />
 								</td>
 							</tr>
 							<tr valign="top">
 								<th scope="row"><label for="description">'. __('Description', 'ap').'</label></th>
 								<td>
-									<textarea cols="50" id="description" name="description">'.$point['description'].'</textarea>
+									<textarea cols="50" id="description" name="description">'.$reputation['description'].'</textarea>
 								</td>
 							</tr>
 							<tr valign="top">
-								<th scope="row"><label for="points">'. __('Points', 'ap').'</label></th>
+								<th scope="row"><label for="reputation">'. __('Points', 'ap').'</label></th>
 								<td>
-									<input id="points" type="text" name="points" value="'.$point['points'].'" />
+									<input id="reputation" type="text" name="reputation" value="'.$reputation['reputation'].'" />
 								</td>
 							</tr>
 							<tr valign="top">
 								<th scope="row"><label for="event">'. __('Event', 'ap').'</label></th>
 								<td>
-									<input type="text" name="event" value="'.$point['event'].'" />
+									<input type="text" name="event" value="'.$reputation['event'].'" />
 								</td>
 							</tr>
 						</table>
 						<input class="button-primary" type="submit" value="'.__('Save Point', 'ap').'">
-						<input type="hidden" name="id" value="'.$point['id'].'">
-						<input type="hidden" name="action" value="ap_save_points">
-						<input type="hidden" name="nonce" value="'.wp_create_nonce('ap_save_point').'">
+						<input type="hidden" name="id" value="'.$reputation['id'].'">
+						<input type="hidden" name="action" value="ap_save_reputation">
+						<input type="hidden" name="nonce" value="'.wp_create_nonce('ap_save_reputation').'">
 					</form>
 				</div>
 			';
 			
 			$result = array('status' => true, 'html' => $html);
-			$result = apply_filters('ap_edit_points_result', $result);
+			$result = apply_filters('ap_edit_reputation_result', $result);
 			echo json_encode( $result );
 		}
 		die();
 	}
 	
-	public function ap_save_points(){
+	public function ap_save_reputation(){
 		if(current_user_can('manage_options')){
 			$nonce 	= sanitize_text_field($_POST['nonce']);
 			$title 	= sanitize_text_field($_POST['title']);
 			$desc 	= sanitize_text_field($_POST['description']);
-			$points = sanitize_text_field($_POST['points']);
+			$reputation = sanitize_text_field($_POST['reputation']);
 			$event 	= sanitize_text_field($_POST['event']);
-			if(wp_verify_nonce($nonce, 'ap_save_point')){
+			if(wp_verify_nonce($nonce, 'ap_save_reputation')){
 				if(isset($_POST['id'])){
 					$id 	= sanitize_text_field($_POST['id']);				
-					ap_point_option_update($id, $title, $desc, $points, $event);
+					ap_reputation_option_update($id, $title, $desc, $reputation, $event);
 				}else{
-					ap_point_option_new($title, $desc, $points, $event);
+					ap_reputation_option_new($title, $desc, $reputation, $event);
 				}
 				
 				ob_start();
-				$this->display_points_page();
+				$this->display_reputation_page();
 				$html = ob_get_clean();
 				
 				$result =  array(
@@ -500,11 +502,11 @@ class AnsPress_Admin {
 		
 		die();
 	}	
-	public function ap_new_point_form(){
+	public function ap_new_reputation_form(){
 		if(current_user_can('manage_options')){
 			$html = '
-				<div id="ap-point-edit">
-					<form method="POST" data-action="ap-save-point">
+				<div id="ap-reputation-edit">
+					<form method="POST" data-action="ap-save-reputation">
 						<table class="form-table">
 							<tr valign="top">
 								<th scope="row"><label for="title">'. __('Title', 'ap').'</label></th>
@@ -519,9 +521,9 @@ class AnsPress_Admin {
 								</td>
 							</tr>
 							<tr valign="top">
-								<th scope="row"><label for="points">'. __('Points', 'ap').'</label></th>
+								<th scope="row"><label for="reputation">'. __('Points', 'ap').'</label></th>
 								<td>
-									<input id="points" type="text" name="points" value="" />
+									<input id="reputation" type="text" name="reputation" value="" />
 								</td>
 							</tr>
 							<tr valign="top">
@@ -532,26 +534,26 @@ class AnsPress_Admin {
 							</tr>
 						</table>
 						<input class="button-primary" type="submit" value="'.__('Save Point', 'ap').'">
-						<input type="hidden" name="action" value="ap_save_points">
-						<input type="hidden" name="nonce" value="'.wp_create_nonce('ap_save_point').'">
+						<input type="hidden" name="action" value="ap_save_reputation">
+						<input type="hidden" name="nonce" value="'.wp_create_nonce('ap_save_reputation').'">
 					</form>
 				</div>
 			';
 			
 			$result = array('status' => true, 'html' => $html);
-			$result = apply_filters('ap_new_point_form_result', $result);
+			$result = apply_filters('ap_new_reputation_form_result', $result);
 			echo json_encode( $result );
 		}
 		die();
 	}
 	
-	public function ap_delete_point(){
+	public function ap_delete_reputation(){
 		if(current_user_can('manage_options')){
 			$args = explode('-', sanitize_text_field($_POST['args']));
-			if(wp_verify_nonce($args[1], 'delete_point')){
-				ap_point_option_delete($args[0]);
+			if(wp_verify_nonce($args[1], 'delete_reputation')){
+				ap_reputation_option_delete($args[0]);
 				$result = array('status' => true);
-				$result = apply_filters('ap_delete_point_form_result', $result);
+				$result = apply_filters('ap_delete_reputation_form_result', $result);
 				echo json_encode( $result );
 			}
 		}
@@ -592,9 +594,9 @@ class AnsPress_Admin {
 								</td>
 							</tr>
 							<tr valign="top">
-								<th scope="row"><label for="min_points">'. __('Min. Points', 'ap').'</label></th>
+								<th scope="row"><label for="min_reputation">'. __('Min. Points', 'ap').'</label></th>
 								<td>
-									<input id="min_points" type="text" name="min_points" value="'.$badge['min_points'].'" />
+									<input id="min_reputation" type="text" name="min_reputation" value="'.$badge['min_reputation'].'" />
 								</td>
 							</tr>
 							<tr valign="top">
@@ -631,15 +633,15 @@ class AnsPress_Admin {
 			$title 		= sanitize_text_field($_POST['title']);
 			$desc 		= sanitize_text_field($_POST['description']);
 			$type 		= sanitize_text_field($_POST['type']);
-			$min_points = sanitize_text_field($_POST['min_points']);
+			$min_reputation = sanitize_text_field($_POST['min_reputation']);
 			$event 		= sanitize_text_field($_POST['event']);
 			$multiple 	= (int)$_POST['multiple'];
 			if(wp_verify_nonce($nonce, 'ap_save_badge')){
 				if(isset($_POST['id'])){
 					$id 	= sanitize_text_field($_POST['id']);				
-					ap_badge_option_update($id, $title, $desc, $type, $min_points, $event, $multiple);
+					ap_badge_option_update($id, $title, $desc, $type, $min_reputation, $event, $multiple);
 				}else{
-					ap_badge_option_new($id, $title, $desc, $type, $min_points, $event, $multiple);
+					ap_badge_option_new($id, $title, $desc, $type, $min_reputation, $event, $multiple);
 				}
 				
 				ob_start();
@@ -687,9 +689,9 @@ class AnsPress_Admin {
 								</td>
 							</tr>
 							<tr valign="top">
-								<th scope="row"><label for="min_points">'. __('Min. Points', 'ap').'</label></th>
+								<th scope="row"><label for="min_reputation">'. __('Min. Points', 'ap').'</label></th>
 								<td>
-									<input id="min_points" type="text" name="min_points" value="" />
+									<input id="min_reputation" type="text" name="min_reputation" value="" />
 								</td>
 							</tr>
 							<tr valign="top">

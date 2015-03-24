@@ -72,6 +72,7 @@ if (!class_exists('AnsPress')) {
         public $anspress_cpt;
 
         public $anspress_forms;
+        public $anspress_reputation;
 
         /**
          * Initializes the plugin by setting localization, hooks, filters, and administrative functions.
@@ -96,6 +97,7 @@ if (!class_exists('AnsPress')) {
                 self::$instance->anspress_query_filter       = new AnsPress_Query_Filter();
                 self::$instance->anspress_theme              = new AnsPress_Theme();
                 self::$instance->anspress_cpt                = new AnsPress_PostTypes();
+                self::$instance->anspress_reputation                = new AnsPress_Reputation();
 
                 /**
                  * ACTION: anspress_loaded
@@ -195,14 +197,6 @@ if (!class_exists('AnsPress')) {
              if (!defined('ANSPRESS_PARTI_META')) {
                  define('ANSPRESS_PARTI_META', '_ap_participants');
              }
-
-             if (!defined('AP_FOLLOWERS_META')) {
-                 define('AP_FOLLOWERS_META', '_ap_followers');
-             }
-
-             if (!defined('AP_FOLLOWING_META')) {
-                 define('AP_FOLLOWING_META', '_ap_following');
-             }
          }
 
         /**
@@ -250,6 +244,7 @@ if (!class_exists('AnsPress')) {
             require_once ANSPRESS_DIR.'widgets/questions.php';
             require_once ANSPRESS_DIR.'includes/rewrite.php';
             require_once ANSPRESS_DIR.'includes/bp.php';
+            require_once ANSPRESS_DIR.'includes/reputation.php';
             
             require_once ANSPRESS_DIR.'vendor/autoload.php';
         }
@@ -307,6 +302,7 @@ function anspress_uninstall()
 
     //remove option
     delete_option( 'anspress_opt' );
+    delete_option( 'ap_reputation' );
 
     //Remove user roles
     AP_Roles::remove_roles();

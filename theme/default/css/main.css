@@ -1330,6 +1330,25 @@
 .tooltipster-default.ap-tip-style.tags-list a:last-child {
   border-bottom: none;
 }
+.ap-user-meta {
+  color: #888888;
+  margin-bottom: 3px;
+}
+.ap-user-meta a {
+  color: #595959;
+}
+.ap-user-meta-display_name {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+.ap-user-meta-reputation {
+  background: none repeat scroll 0 0 #ff8d37;
+  border-radius: 3px;
+  color: #fff;
+  font-size: 11px;
+  padding: 0 4px;
+}
 .ap-content.question .ap-q-head {
   margin-bottom: 20px;
 }
@@ -1341,18 +1360,6 @@
   border: 1px solid #eee;
   border-radius: 4px;
   padding: 15px;
-}
-.ap-content .ap-user-meta {
-  color: #888888;
-  margin-bottom: 3px;
-}
-.ap-content .ap-user-meta .ap-user-meta-display_name {
-  font-size: 14px;
-  font-weight: 600;
-  margin-bottom: 5px;
-}
-.ap-content .ap-user-meta a {
-  color: #595959;
 }
 .ap-content .ap-question-metas,
 .ap-content .ap-answer-metas {

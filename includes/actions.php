@@ -27,6 +27,8 @@ class AnsPress_Actions
 		add_action( 'ap_after_update_question', array($this, 'ap_after_update_question'), 10, 2 );
 		add_action( 'ap_after_update_answer', array($this, 'ap_after_update_answer'), 10, 2 );
 
+		add_action('before_delete_question', array($this, 'before_delete'));	
+
 		add_action('wp_trash_post', array($this, 'trash_post_action'));
 		add_action('untrash_post', array($this, 'untrash_ans_on_question_untrash'));
 
@@ -131,6 +133,15 @@ class AnsPress_Actions
 		ap_do_event('edit_answer', $post_id, get_current_user_id(), $post->post_parent);
 	}
 
+	public function before_delete($post_id){
+		$post = get_post($post_id);
+		
+		if($post->post_type == 'question')
+			do_action('ap_before_delete_question', $post->ID, $post->post_author);
+		
+		elseif($post->post_type == 'answer')
+			do_action('ap_before_delete_answer', $post->ID, $post->post_author);
+	}
 	/**
 	 * if a question is sent to trash, then move its answers to trash as well
 	 * @param  int
@@ -139,8 +150,9 @@ class AnsPress_Actions
 	 */
 	public function trash_post_action ($post_id) {
 		$post = get_post( $post_id );
+
 		if( $post->post_type == 'question') {
-			ap_do_event('delete_question', $post->ID, $post->post_author);
+			do_action('delete_question', $post->ID, $post->post_author);
 			ap_remove_parti($post->ID, $post->post_author, 'question');
 			$arg = array(
 			  'post_type' => 'answer',
@@ -151,7 +163,7 @@ class AnsPress_Actions
 			$ans = get_posts($arg);
 			if($ans>0){
 				foreach( $ans as $p){
-					ap_do_event('delete_answer', $p->ID, $p->post_author);
+					do_action('ap_trash_question', $p->ID);
 					ap_remove_parti($p->post_parent, $p->post_author, 'answer');
 					wp_trash_post($p->ID);
 				}
@@ -160,7 +172,7 @@ class AnsPress_Actions
 
 		if( $post->post_type == 'answer') {
 			$ans = ap_count_published_answers($post->post_parent);
-			ap_do_event('delete_answer', $post->ID, $post->post_author);
+			do_action('ap_trash_answer', $post->ID);
 			ap_remove_parti($post->post_parent, $post->post_author, 'answer');
 			
 			//update answer count
@@ -178,7 +190,7 @@ class AnsPress_Actions
 		$post = get_post( $post_id );
 		
 		if( $post->post_type == 'question') {
-			ap_do_event('untrash_question', $post->ID, $post->post_author);
+			do_action('ap_untrash_question', $post->ID);
 			ap_add_parti($post->ID, $post->post_author, 'question');
 			
 			$arg = array(
@@ -190,7 +202,7 @@ class AnsPress_Actions
 			$ans = get_posts($arg);
 			if($ans>0){
 				foreach( $ans as $p){
-					ap_do_event('untrash_answer', $p->ID, $p->post_author);
+					do_action('ap_untrash_answer', $p->ID);
 					ap_add_parti($p->ID, $p->post_author, 'answer');
 					wp_untrash_post($p->ID);
 				}
@@ -199,7 +211,7 @@ class AnsPress_Actions
 		
 		if( $post->post_type == 'answer') {
 			$ans = ap_count_published_answers( $post->post_parent );
-			ap_do_event('untrash_answer', $post->ID, $post->post_author);
+			do_action('untrash_answer', $post->ID, $post->post_author);
 			ap_add_parti($post->post_parent, $post->post_author, 'answer');
 			
 			//update answer count

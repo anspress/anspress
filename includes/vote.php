@@ -105,7 +105,7 @@ class AnsPress_Vote_Ajax extends AnsPress_Ajax
 			if($is_voted->type == $type){
 				$row = ap_remove_vote($type, $userid, $post_id);
 				$counts = ap_post_votes($post_id);
-				
+	
 				//update post meta
 				update_post_meta($post_id, ANSPRESS_VOTE_META, $counts['net_vote']);
 				
@@ -115,7 +115,7 @@ class AnsPress_Vote_Ajax extends AnsPress_Ajax
 				$count = $counts['net_vote'] ;
 				$message = __('Your vote has been removed', 'ap');
 				
-				ap_do_event('undo_'.$type, $post_id, $counts);
+				do_action('ap_undo_'.$type, $post_id, $counts);
 
 				ap_send_json(ap_ajax_responce(array('action' => $action, 'type' => $type, 'count' => $count, 'message' => 'undo_vote')));
 			}else{
@@ -129,14 +129,10 @@ class AnsPress_Vote_Ajax extends AnsPress_Ajax
 			
 			//update post meta
 			update_post_meta($post_id, ANSPRESS_VOTE_META, $counts['net_vote']);				
-			do_action('ap_voted_'.$type, $post_id, $counts);
-			
+			do_action('ap_'.$type, $post_id, $counts);			
 				
 			$action = 'voted';
 			$count = $counts['net_vote'] ;
-
-			ap_do_event($type, $post_id, $counts);
-
 			ap_send_json(ap_ajax_responce(array('action' => $action, 'type' => $type, 'count' => $count, 'message' => 'voted')));
 		}			
 

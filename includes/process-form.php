@@ -636,6 +636,7 @@ class AnsPress_Process_Form
 
 			if($comment_id > 0){
 				$comment = get_comment($comment_id);
+				do_action( 'ap_after_new_comment', $comment );
 				ob_start();
 				ap_comment($comment);		
 				$html = ob_get_clean();
