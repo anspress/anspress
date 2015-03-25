@@ -16,7 +16,7 @@ class AnsPress_BasePage_Shortcode {
     public static function get_instance()
     {
         // create an object
-        NULL === self::$instance and self::$instance = new self;
+        NULL === self::$instance && self::$instance = new self;
 
         return self::$instance; // return the object
     }

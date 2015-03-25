@@ -17,7 +17,7 @@ if ( ! defined( 'WPINC' ) ) {
 
 class AnsPress_Stats_Widget extends WP_Widget {
 
-	function AnsPress_Stats_Widget() {
+	public function AnsPress_Stats_Widget() {
 		// Instantiate the parent object
 		parent::__construct( false, __('AnsPress Stats', 'ap') );
 	}

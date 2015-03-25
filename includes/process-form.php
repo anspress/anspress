@@ -649,13 +649,5 @@ class AnsPress_Process_Form
 			}
 
 		}
-
-				
-		
-		
-
-		
 	}
 }
-    
-?>

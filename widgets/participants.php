@@ -17,7 +17,7 @@ if ( ! defined( 'WPINC' ) ) {
 
 class AnsPress_Participants_Widget extends WP_Widget {
 
-	function AnsPress_Participants_Widget() {
+	public function AnsPress_Participants_Widget() {
 		// Instantiate the parent object
 		parent::__construct( false, __('AnsPress Participants', 'ap') );
 	}

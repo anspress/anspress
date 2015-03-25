@@ -1,7 +1,7 @@
 <?php
 class AP_QuickAsk_Widget extends WP_Widget {
 
-	function AP_QuickAsk_Widget() {
+	public function AP_QuickAsk_Widget() {
 		// Instantiate the parent object
 		parent::__construct( false, 'AnsPress Ask Form' );
 	}

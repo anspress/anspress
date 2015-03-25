@@ -1,7 +1,7 @@
 <?php
 class AP_Users_Widget extends WP_Widget {
 
-	function AP_Users_Widget() {
+	public function AP_Users_Widget() {
 		// Instantiate the parent object
 		parent::__construct( false, 'AnsPress Users' );
 	}

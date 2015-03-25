@@ -213,7 +213,7 @@ class anspress_vote
 	 * @return object
 	 * @since unknown
 	 */
-	function ap_append_vote_count($post){
+	public function ap_append_vote_count($post){
 		if($post->post_type == 'question' || $post->post_type == 'answer'){
              if(is_object($post)){
 
@@ -226,18 +226,13 @@ class anspress_vote
         }
 	}
 
-
-		
-	// add to subscribe ajax action	 
 	
-
-	
-	function ap_add_to_subscribe_nopriv(){
+	public function ap_add_to_subscribe_nopriv(){
 		echo json_encode(array('action'=> false, 'message' =>__('Please login for adding question to your subscribe', 'ap')));
 		die();
 	}
 	
-	function ap_vote_for_close(){
+	public function ap_vote_for_close(){
 		$args = explode('-', sanitize_text_field($_POST['args']));
 		if(wp_verify_nonce( $args[1], 'close_'.$args[0] )){
 
@@ -273,7 +268,7 @@ class anspress_vote
 		die(json_encode($result));
 	}
 	
-	function ap_nopriv_vote_for_close(){
+	public function ap_nopriv_vote_for_close(){
 		echo json_encode(array('action'=> false, 'message' =>__('Please login for requesting closing this question.', 'ap')));
 		die();
 	}	

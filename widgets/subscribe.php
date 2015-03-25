@@ -17,7 +17,7 @@ if ( ! defined( 'WPINC' ) ) {
 
 class AnsPress_Subscribe_Widget extends WP_Widget {
 
-	function AnsPress_Subscribe_Widget() {
+	public function AnsPress_Subscribe_Widget() {
 		// Instantiate the parent object
 		parent::__construct( false, __('AnsPress Subscribe', 'ap') );
 	}

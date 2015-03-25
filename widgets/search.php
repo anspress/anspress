@@ -17,7 +17,7 @@ if ( ! defined( 'WPINC' ) ) {
 
 class AP_Search_Widget extends WP_Widget {
 
-	function AP_Search_Widget() {
+	public  function AP_Search_Widget() {
 		// Instantiate the parent object
 		parent::__construct( false, 'AnsPress Search' );
 	}

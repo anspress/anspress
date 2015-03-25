@@ -355,5 +355,3 @@ class AnsPress_Validation
         return $this->fields;
     }
 }
-    
-?>

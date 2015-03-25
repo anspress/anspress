@@ -1,7 +1,7 @@
 <?php
 class AP_Related_questions extends WP_Widget {
 
-	function AP_Related_questions() {
+	public function AP_Related_questions() {
 		// Instantiate the parent object
 		parent::__construct( false, 'AnsPress Related Questions' );
 	}

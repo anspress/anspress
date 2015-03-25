@@ -43,5 +43,3 @@ class AnsPress_Post_Status
 		 ) );
 	}
 }
-
-?>

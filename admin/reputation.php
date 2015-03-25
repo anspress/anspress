@@ -160,4 +160,3 @@ class AnsPress_Reputation_Table extends WP_List_Table
 		return '<span class="reputation">'.$reputation['reputation'].'</span>';
 	}
 }
-?>

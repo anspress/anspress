@@ -1,7 +1,7 @@
 <?php
 class AP_Questions_Widget extends WP_Widget {
 
-	function AP_Questions_Widget() {
+	public function AP_Questions_Widget() {
 		// Instantiate the parent object
 		parent::__construct( false, 'AnsPress Questions' );
 	}
