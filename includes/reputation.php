@@ -127,7 +127,8 @@ class AnsPress_Reputation {
 		
 		$uid = $post->post_author;
 		
-		ap_reputation('vote_up', $uid, $reputation, $postid);
+		if(!empty($reputation))
+			ap_reputation('vote_up', $uid, $reputation, $postid);
 		
 		if($post->post_type == 'question')
 			$reputation = ap_reputation_by_event('question_upvoted', true);
