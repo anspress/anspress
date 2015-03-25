@@ -389,8 +389,6 @@ function ap_post_actions_buttons($disable = array())
 
 	$actions = array();
 
-	$actions['vote'] = '<div class="ap-single-vote ap-pull-left">'.ap_vote_btn($post, false).'</div>';
-
 	/**
 	 * Select answer button
 	 * @var string
@@ -428,7 +426,7 @@ function ap_post_actions_buttons($disable = array())
 	$actions = apply_filters('ap_post_actions_buttons', $actions );
 
 	if (!empty($actions) && count($actions) > 0) {
-		echo '<ul class="ap-user-actions ap-ul-inline clearfix">';
+		echo '<ul class="ap-q-actions ap-ul-inline clearfix">';
 		foreach($actions as $k => $action){
 			if(!empty($action) && $k != 'dropdown' && !in_array($k, $disable))
 				echo '<li class="ap-post-action ap-action-'.$k.'">'.$action.'</li>';

@@ -10,9 +10,9 @@
 
 global $post;
 ?>
-<div id="ap-single" class="clearfix" itemtype="http://schema.org/Question" itemscope="">	
+<div id="ap-single" class="ap-q clearfix" itemtype="http://schema.org/Question" itemscope="">	
 	<div class="ap-question-lr row">		
-		<div class="ap-question-left <?php echo is_active_sidebar( 'ap-qsidebar' ) ? 'col-md-9' : 'col-md-12' ?>">
+		<div class="ap-q-left <?php echo is_active_sidebar( 'ap-qsidebar' ) ? 'col-md-9' : 'col-md-12' ?>">
 			<div id="question" role="main" class="ap-content question" data-id="<?php echo get_the_ID(); ?>">
 				<header class="ap-q-head">
 					<?php 
@@ -39,26 +39,25 @@ global $post;
 						do_action('ap_after_question_title', $post);
 					?>
 				</header>
-				<div class="ap-question-cells clearfix">
-					<div class="ap-question-metas clearfix">
-						<div class="ap-avatar ap-pull-left">
-							<a href="<?php echo ap_user_link(get_the_author_meta('ID'))?>">
-								<?php echo get_avatar( get_the_author_meta( 'user_email' ), ap_opt('avatar_size_qquestion') ); ?>
-							</a>						
-						</div>
-						<div class="no-overflow">
-							<?php ap_user_display_meta(true, false, true); ?>
+				<div class="ap-avatar ap-pull-left">
+					<a href="<?php echo ap_user_link(get_the_author_meta('ID'))?>">
+						<?php echo get_avatar( get_the_author_meta( 'user_email' ), ap_opt('avatar_size_qquestion') ); ?>
+					</a>						
+				</div>
+				<div class="ap-q-cells clearfix">
+					<div class="ap-q-metas clearfix">
+						<div class="ap-single-vote ap-pull-right"><?php ap_vote_btn($post) ?></div>
+						<?php ap_user_display_meta(true, false, true); ?>
 
-							<!-- TODO: Show all questions history on toggle -->
-							<ul class="ap-display-question-meta ap-ul-inline clearfix">
-								<?php echo ap_display_question_metas() ?>
-							</ul>
-						</div>
+						<!-- TODO: Show all questions history on toggle -->
+						<ul class="ap-display-question-meta ap-ul-inline clearfix">
+							<?php echo ap_display_question_metas() ?>
+						</ul>
 					</div>
 					
 					<!-- Start ap-content-inner -->
-					<div class="ap-content-inner">
-						<div class="question-content ap-post-content" itemprop="text">
+					<div class="ap-q-inner">
+						<div class="question-content ap-q-content" itemprop="text">
 							<?php the_content(); ?>									
 						</div>
 						<?php 

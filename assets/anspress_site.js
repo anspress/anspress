@@ -203,12 +203,12 @@
                     var button = $(this);
 
                     if ($(data.html).is('.ap-comment-block')) {
-                    	var c = button.closest('.ap-content-inner');
+                    	var c = button.closest('.ap-q-inner');
                     	c.find('.ap-comment-block').remove();
                         c.append(data.html);
                      } else {
                         $('.ap-comment-form').remove();
-                        $(this).closest('.ap-content-inner').append(data.html);
+                        $(this).closest('.ap-q-inner').append(data.html);
                     }
                     
                     if ($(data.container).length > 0) $('html, body').animate({
