@@ -27,7 +27,7 @@ class AnsPress_Actions
 		add_action( 'ap_after_update_question', array($this, 'ap_after_update_question'), 10, 2 );
 		add_action( 'ap_after_update_answer', array($this, 'ap_after_update_answer'), 10, 2 );
 
-		add_action('before_delete_question', array($this, 'before_delete'));	
+		add_action('before_delete_post', array($this, 'before_delete'));	
 
 		add_action('wp_trash_post', array($this, 'trash_post_action'));
 		add_action('untrash_post', array($this, 'untrash_ans_on_question_untrash'));
@@ -135,12 +135,10 @@ class AnsPress_Actions
 
 	public function before_delete($post_id){
 		$post = get_post($post_id);
-		
-		if($post->post_type == 'question')
-			do_action('ap_before_delete_question', $post->ID, $post->post_author);
-		
-		elseif($post->post_type == 'answer')
-			do_action('ap_before_delete_answer', $post->ID, $post->post_author);
+		if($post->post_type == 'question' || $post->post_type == 'answer' ){
+			do_action('ap_before_delete_'.$post->post_type, $post->ID, $post->post_author);
+			ap_delete_meta(array('apmeta_actionid' => $post->ID));
+		}
 	}
 	/**
 	 * if a question is sent to trash, then move its answers to trash as well
@@ -166,6 +164,7 @@ class AnsPress_Actions
 				foreach( $ans as $p){
 					do_action('ap_trash_question', $p->ID);
 					ap_remove_parti($p->post_parent, $p->post_author, 'answer');
+					ap_delete_meta(array('apmeta_type' => 'flag', 'apmeta_actionid' => $post->ID));
 					wp_trash_post($p->ID);
 				}
 			}
@@ -175,6 +174,7 @@ class AnsPress_Actions
 			$ans = ap_count_published_answers($post->post_parent);
 			do_action('ap_trash_answer', $post->ID);
 			ap_remove_parti($post->post_parent, $post->post_author, 'answer');
+			ap_delete_meta(array('apmeta_type' => 'flag', 'apmeta_actionid' => $post->ID));
 			
 			//update answer count
 			update_post_meta($post->post_parent, ANSPRESS_ANS_META, $ans-1);
