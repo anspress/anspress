@@ -376,9 +376,10 @@ function ap_reputation($type, $uid, $reputation, $data){
 //update reputation
 function ap_update_reputation($uid, $reputation) {
 	// no negative reputation 
-	if ($reputation < 0) {
+	if ($reputation < 1) {
 	  $reputation = 0;
 	}
+
 	update_user_meta($uid, 'ap_reputation', $reputation);
 }
 
