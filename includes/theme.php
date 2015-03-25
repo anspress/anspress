@@ -255,16 +255,6 @@ function ap_display_question_metas($question_id =  false){
 		$metas['created'] = sprintf( __( '<span>Created</span> <i><time itemprop="datePublished" datetime="%s">%s Ago</time></i>', 'ap' ), get_the_time('c', $question_id), ap_human_time( get_the_time('U')));
 		
 	}else{
-		$ans_count = ap_count_answer_meta();		
-
-		$metas['answers'] = sprintf( _n('<span>1 answer</span>', '<span>%d answers</span>', $ans_count, 'ap'), $ans_count) ;
-
-		// do not output voting button if disabled
-		if(!ap_opt('disable_voting_on_question')){
-			$net_vote = ap_net_vote();		
-			$metas['vote'] = sprintf( _n('<span>1 vote</span>', '<span>%d votes</span>', $net_vote, 'ap'), $net_vote) ;
-		}
-		
 		$view_count = ap_get_qa_views();
 		$metas['views'] = sprintf( __('<i>%d views</i>', 'ap'), $view_count) ;
 	}	

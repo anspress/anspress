@@ -2,7 +2,7 @@
 <div id="ap-lists" class="clearfix">
 	<?php ap_questions_tab(get_permalink()); ?>
 	<?php if ( $questions->have_posts() ) : ?>
-		<div class="question-list">
+		<div class="ap-questions">
 			<?php
 				
 				/* Start the Loop */
