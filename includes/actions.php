@@ -154,6 +154,7 @@ class AnsPress_Actions
 		if( $post->post_type == 'question') {
 			do_action('delete_question', $post->ID, $post->post_author);
 			ap_remove_parti($post->ID, $post->post_author, 'question');
+			ap_delete_meta(array('apmeta_type' => 'flag', 'apmeta_actionid' => $post->ID));
 			$arg = array(
 			  'post_type' => 'answer',
 			  'post_status' => 'publish',
