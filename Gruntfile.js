@@ -11,10 +11,10 @@ module.exports = function(grunt) {
 	        target: {
 	            options: {
 	                //cwd: '',                          // Directory of files to internationalize.
-	                //domainPath: '',                   // Where to save the POT file.
-	                //exclude: [],                      // List of files or directories to ignore.
+	                domainPath: '/languages',                   // Where to save the POT file.
+	                exclude: ['.git/.*', '.svn/.*', '.node_modules/.*', '.vendor/.*'],
 	                //include: [],                      // List of files or directories to include.
-	                mainFile: 'anspress.php',                     // Main project file.
+	                mainFile: 'anspress-question-answer.php',                     // Main project file.
 	                //potComments: '',                  // The copyright at the beginning of the POT file.
 	                //potFilename: '',                  // Name of the POT file.
 	                potHeaders: {
