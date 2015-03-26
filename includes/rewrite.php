@@ -21,6 +21,7 @@ class AnsPress_Rewrite
 	public function __construct()
 	{
 		add_filter('query_vars', array($this, 'query_var'));
+		add_filter( 'query_vars', array($this, 'home_query_var'), 9999 );
 		add_action('generate_rewrite_rules', array( $this, 'rewrites'), 1);
 		add_filter( 'paginate_links', array($this, 'bp_com_paged') );
 	}
@@ -46,16 +47,27 @@ class AnsPress_Rewrite
 		$query_vars[] = 'qtag_id';
 		$query_vars[] = 'q_tag';
 		$query_vars[] = 'q_cat';
-
-		$query_vars[] = 'label';
-		$query_vars[] = 'user';
-		$query_vars[] = 'user_page';
 		$query_vars[] = 'ap_s';
 		$query_vars[] = 'message_id';
 		$query_vars[] = 'parent';
-		$query_vars[] = 'ap_sort';
+
+		if(!is_home())
+			$query_vars[] = 'ap_sort';
 		
 		return $query_vars;
+	}
+
+	function home_query_var( $query_vars )
+	{
+		$key = array_search( 'ap_sort', $query_vars );
+
+	    if( false !== $key ) {
+
+	        unset( $query_vars[ $key ] );
+
+	    }
+
+	    return $query_vars;
 	}
 
 	/**
