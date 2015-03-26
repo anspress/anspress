@@ -40,7 +40,7 @@ class AnsPress_Vote_Ajax extends AnsPress_Ajax
 
 			if($is_subscribed){
 				// if already subscribed then remove	
-				$row = ap_remove_vote('subscriber', $userid, $question_id);
+				ap_remove_vote('subscriber', $userid, $question_id);
 				
 				$counts = ap_post_subscribers_count($question_id);
 				
@@ -53,7 +53,7 @@ class AnsPress_Vote_Ajax extends AnsPress_Ajax
 				ap_send_json(ap_ajax_responce(array('message' => 'unsubscribed', 'action' => 'unsubscribed', 'container' => '#subscribe_'.$question_id, 'do' => 'updateHtml', 'html' => ap_icon('unmute', true).__('subscribe', 'ap'))));
 				return;
 			}else{
-				$row = ap_add_vote($userid, 'subscriber', $question_id);
+				ap_add_vote($userid, 'subscriber', $question_id);
 				$counts = ap_post_subscribers_count($question_id);
 				
 				//update post meta
@@ -103,7 +103,7 @@ class AnsPress_Vote_Ajax extends AnsPress_Ajax
 		if(is_object($is_voted) && $is_voted->count > 0){
 			// if user already voted and click that again then reverse
 			if($is_voted->type == $type){
-				$row = ap_remove_vote($type, $userid, $post_id);
+				ap_remove_vote($type, $userid, $post_id);
 				$counts = ap_post_votes($post_id);
 	
 				//update post meta
@@ -113,8 +113,6 @@ class AnsPress_Vote_Ajax extends AnsPress_Ajax
 				
 				$action = 'undo';
 				$count = $counts['net_vote'] ;
-				$message = __('Your vote has been removed', 'ap');
-				
 				do_action('ap_undo_'.$type, $post_id, $counts);
 
 				ap_send_json(ap_ajax_responce(array('action' => $action, 'type' => $type, 'count' => $count, 'message' => 'undo_vote')));
@@ -124,7 +122,7 @@ class AnsPress_Vote_Ajax extends AnsPress_Ajax
 				
 		}else{
 
-			$row = ap_add_vote($userid, $type, $post_id);				
+			ap_add_vote($userid, $type, $post_id);				
 			$counts = ap_post_votes($post_id);
 			
 			//update post meta
@@ -159,7 +157,7 @@ class AnsPress_Vote_Ajax extends AnsPress_Ajax
 			echo json_encode(array('action' => false, 'message' => __('You already flagged this post', 'ap')));			
 		}else{
 
-			$row = ap_add_flag($userid, $post_id);
+			ap_add_flag($userid, $post_id);
 				
 			$count = ap_post_flag_count( $post_id );
 			
@@ -446,7 +444,7 @@ function ap_subscribe_btn_html($question_id = false){
 	if(!$question_id)
 		$question_id = get_question_id();
 	
-	$total_favs = ap_post_subscribers_count($question_id);
+	//$total_favs = ap_post_subscribers_count($question_id);
 	$subscribed = ap_is_user_subscribed($question_id);
 
 	$nonce = wp_create_nonce( 'subscribe_'.$question_id );

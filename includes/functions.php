@@ -85,7 +85,7 @@ function ap_get_theme_location($file, $plugin = false){
 function ap_get_theme_url($file, $plugin = false){
 	// checks if the file exists in the theme first,
 	// otherwise serve the file from the plugin
-	if ( $theme_file = locate_template( array( 'anspress/'.$file ) ) ) {
+	if ( locate_template( array( 'anspress/'.$file ) ) ) {
 		$template_url = get_template_directory_uri().'/anspress/'.$file;
 	} elseif($plugin !== false) {
 		$template_url = $plugin .'theme/'.$file;
@@ -414,7 +414,6 @@ function ap_ans_list_tab(){
 	$order = isset($_GET['ap_sort']) ? $_GET['ap_sort'] : ap_opt('answers_sort');
 	
 	$link = '?ap_sort=';
-	$ans_count = ap_count_all_answers(get_the_ID());
 	?>
 	<ul class="ap-ans-tab ap-tabs clearfix" role="tablist">
 		<li class="<?php echo $order == 'newest' ? ' active' : ''; ?>"><a href="<?php echo $link.'newest'; ?>"><?php _e('Newest', 'ap'); ?></a></li>
@@ -998,8 +997,6 @@ function ap_user_display_name($args = array())
 	}
 
 	extract($args);
-
-	$return = '';
 
 	if ($user_id > 0) {
 		$user = get_userdata($user_id);

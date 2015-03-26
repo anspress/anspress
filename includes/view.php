@@ -48,6 +48,12 @@ class anspress_view {
 	}
 }
 
+/**
+ * Insert view data in ap_meta table and update post meta ANSPRESS_VIEW_META
+ * @param  integer $data_id
+ * @param  string $type	
+ * @return boolean|integer
+ */
 function ap_insert_views($data_id, $type){
 	if($type == 'question'){
 		$userid = get_current_user_id();
@@ -57,7 +63,10 @@ function ap_insert_views($data_id, $type){
 		$view = $view+1;
 		update_post_meta( $data_id, ANSPRESS_VIEW_META, apply_filters('ap_insert_views', $view ));
 		do_action('after_insert_views', $data_id, $view);
+
+		return $row;
 	}
+	return false;
 }
 
 function ap_get_qa_views($id = false){	

@@ -1,6 +1,6 @@
 <?php
 /**
- * Installation and activation of anspress
+ * Installation and activation of anspress, register hooks that are fired when the plugin is activated.
  *
  * @package     AnsPress
  * @copyright   Copyright (c) 2013, Rahul Aryan
@@ -11,10 +11,6 @@
 // Exit if accessed directly
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-/*
- * Register hooks that are fired when the plugin is activated.
- */
-		
 
 /**
  * Create base pages, add roles, add caps and create tables
@@ -58,7 +54,7 @@ function anspress_activate( $network_wide ) {
 	
 	
 	if( ap_opt ('ap_version') != AP_VERSION ) {
-		ap_opt('ap_installed', false);
+		ap_opt('ap_installed', 'false');
 		ap_opt('ap_version', AP_VERSION);
 	}
 	

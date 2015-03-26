@@ -455,7 +455,6 @@ function ap_questions_tab($current_url){
 
 	$sort = isset($_GET['ap_sort']) ? $_GET['ap_sort'] : 'active';
 
-	$label = sanitize_text_field(get_query_var('label'));
 	$search_q = sanitize_text_field(get_query_var('ap_s'));
 
 	//$param['sort'] = $sort;

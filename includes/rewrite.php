@@ -57,7 +57,7 @@ class AnsPress_Rewrite
 		return $query_vars;
 	}
 
-	function home_query_var( $query_vars )
+	public function home_query_var( $query_vars )
 	{
 		$key = array_search( 'ap_sort', $query_vars );
 

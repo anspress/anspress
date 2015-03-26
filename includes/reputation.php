@@ -172,7 +172,6 @@ class AnsPress_Reputation {
 		elseif($post->post_type == 'answer')
 			$reputation = ap_reputation_by_event('answer_downvoted', true);
 		
-		$uid = $post->post_author;		
 		ap_reputation('voted_down', $userid, $reputation, $postid);
 
 		return true;
@@ -240,8 +239,7 @@ class AnsPress_Reputation {
 			$reputation = ap_reputation_by_event('question_downvoted', true);
 		elseif($post->post_type == 'answer')
 			$reputation = ap_reputation_by_event('answer_downvoted', true);
-		
-		$uid = $post->post_author;		
+
 		ap_reputation_log_delete('voted_down', $userid, $reputation, $postid);
 	}
 	
@@ -408,6 +406,8 @@ function ap_reputation_log_delete($type, $uid, $reputation =NULL, $data =NULL){
 	
 	$row = ap_delete_meta(array('apmeta_type' => 'reputation', 'apmeta_userid' => $uid, 'apmeta_actionid' => $data, 'apmeta_value' => $reputation, 'apmeta_param' => $type ));
 	update_user_meta($uid, 'ap_reputation', $new_reputation);
+
+	return $row;
 }
 
 

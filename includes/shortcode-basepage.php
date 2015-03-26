@@ -24,7 +24,7 @@ class AnsPress_BasePage_Shortcode {
 	/**
 	 * Control the output of [anspress] shortcode
 	 * @param  array $atts  {
-	 *    Attributes of the caption shortcode.
+	 *    Attributes of the shortcode.
 	 *    
 	 * 	  $categories slug of question_category
 	 * 	  $tags slug of question_tag

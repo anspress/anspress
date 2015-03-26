@@ -178,8 +178,6 @@ function ap_last_active_time($post_id = false, $html = true){
 		$history['type'] 	= 'new_'.$post->post_type;
 	}
 
-	$o = '';
-	
 	if(!$html)
 		return $history['date'];
 

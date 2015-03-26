@@ -282,7 +282,7 @@ class AP_Moderate_Table extends WP_List_Table {
 	public function posts_data() {
 		global $wpdb;
 
-		$status =  isset($_GET['status']) ? sanitize_text_field($_GET['status']) : 'publish' ;
+		//$status =  isset($_GET['status']) ? sanitize_text_field($_GET['status']) : 'publish' ;
 		$paged = isset( $_GET['paged'] ) ? sanitize_text_field($_GET['paged']) : 1;
 		
 		// Preparing your query

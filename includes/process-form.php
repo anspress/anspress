@@ -528,10 +528,6 @@ class AnsPress_Process_Form
 			return;
 		
 		$answer = get_post($this->fields['edit_post_id']);
-
-		global $current_user;
-
-		$user_id		= $current_user->ID;
 		
 		$status = 'publish';
 
@@ -592,7 +588,7 @@ class AnsPress_Process_Form
 
 		if ( isset( $_POST['comment_ID'] ) ){
 			$comment_id = wp_update_comment( array('comment_ID' => (int)$_POST['comment_ID'], 'comment_content' => trim( $_POST['comment'] )) );
-			$comment = get_comment($_POST['comment_ID']);
+			$comment = get_comment($comment_id);
 			ob_start();
 			ap_comment($comment);		
 			$html = ob_get_clean();
@@ -614,14 +610,10 @@ class AnsPress_Process_Form
 				return;
 			}
 
-
-
 			$comment_parent = 0;
 
 			if ( isset( $_POST['comment_ID'] ) )
 				$comment_parent = absint( $_POST['comment_ID'] );
-			
-			$comment_auto_approved = false;
 
 			$commentdata = compact('comment_post_ID', 'comment_author', 'comment_author_email', 'comment_author_url', 'comment_content', 'comment_type', 'comment_parent', 'user_ID');
 

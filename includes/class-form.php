@@ -425,7 +425,7 @@ class AnsPress_Form {
         // Turn on the output buffer
         ob_start();
         echo '<div class="ap-editor">';
-        wp_editor( $field['value'], $field['name'], $field['settings'] );
+        wp_editor( $field['value'], $field['name'], $settings );
         echo '</div>';
         $this->output .= ob_get_clean();
         $this->error_messages();
