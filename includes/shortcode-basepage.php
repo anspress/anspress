@@ -32,6 +32,32 @@ class AnsPress_BasePage_Shortcode {
 		
 		global $questions, $wp;
 
+		if(isset($atts['categories'])){
+			$categories = explode (',', str_replace(', ', ',', $atts['categories']));
+			// append $atts in global $wp so that we can use it later
+			$wp->set_query_var('ap_sc_atts_categories', $categories);
+		}
+		
+		if(isset($atts['tags'])){
+			$tags = explode (',', str_replace(', ', ',', $atts['tags']));
+			$wp->set_query_var('ap_sc_atts_tags', $tags);
+		}
+
+		if(isset($atts['tax_relation'])){
+			$tax_relation = $atts['tax_relation'];
+			$wp->set_query_var('ap_sc_atts_tax_relation', $tax_relation);
+		}
+
+		if(isset($atts['tags_operator'])){
+			$tags_operator = $atts['tags_operator'];
+			$wp->set_query_var('ap_sc_atts_tags_operator', $tags_operator);
+		}
+
+		if(isset($atts['categories_operator'])){
+			$categories_operator = $atts['categories_operator'];
+			$wp->set_query_var('ap_sc_atts_categories_operator', $categories_operator);
+		}
+
 		ob_start();
 		echo '<div class="anspress-container">';
 			

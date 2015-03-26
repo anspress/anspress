@@ -37,9 +37,41 @@ class AnsPress_Common_Pages
 
     public function base_page()
     {
-    	global $questions;
+    	global $questions, $wp;
 
-    	$questions 		 = new Question_Query();
+        $tags = $wp->query_vars['ap_sc_atts_tags'];
+        $categories = $wp->query_vars['ap_sc_atts_categories'];
+        $tax_relation = $wp->query_vars['ap_sc_atts_tax_relation'];
+        $tax_relation = !empty($tax_relation) ? $tax_relation : 'OR';
+
+        $tags_operator = $wp->query_vars['ap_sc_atts_tags_operator'];
+        $tags_operator = !empty($tags_operator) ? $tags_operator : 'IN';
+
+        $categories_operator = $wp->query_vars['ap_sc_atts_categories_operator'];
+        $categories_operator = !empty($categories_operator) ? $categories_operator : 'IN';
+
+        $args = array();
+        $args['tax_query'] = array('relation' => $tax_relation);
+
+        if(!empty($tags) && is_array($tags)){
+            $args['tax_query'][] = array(
+                'taxonomy' => 'question_tag',
+                'field'    => 'slug',
+                'terms'    => $tags,
+                'operator' => $tags_operator,
+            );
+        }
+
+        if(!empty($categories) && is_array($categories)){
+            $args['tax_query'][] = array(
+                'taxonomy' => 'question_category',
+                'field'    => 'slug',
+                'terms'    => $categories,
+                'operator' => $categories_operator,
+            );
+        }
+
+    	$questions 		 = new Question_Query($args);
 
 		include(ap_get_theme_location('base.php'));
     }

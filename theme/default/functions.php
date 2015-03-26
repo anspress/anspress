@@ -93,7 +93,7 @@ if ( ! function_exists( 'ap_comment' ) ) :
 		?>
 		<li <?php comment_class('clearfix'); ?> id="li-comment-<?php comment_ID(); ?>">
 			<!-- comment #<?php comment_ID(); ?> -->
-			<article id="comment-<?php comment_ID(); ?>" class="clearfix">
+			<div id="comment-<?php comment_ID(); ?>" class="clearfix">
 				<div class="ap-avatar ap-pull-left">
 					<a href="<?php echo ap_user_link($comment->user_id); ?>">
 					<!-- TODO: OPTION - Avatar size -->
@@ -129,7 +129,7 @@ if ( ! function_exists( 'ap_comment' ) ) :
 						do_action('ap_after_comment_content', $comment );
 					?>
 				</div>
-			</article>
+			</div>
 		<?php
 	}
 endif;

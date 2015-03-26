@@ -79,20 +79,9 @@ function anspress_activate( $network_wide ) {
 				  `apmeta_date` timestamp NULL DEFAULT NULL,
 				  PRIMARY KEY (`apmeta_id`)
 				)".$charset_collate.";";
-
-		$message_table = "CREATE TABLE IF NOT EXISTS " . $wpdb->prefix ."ap_messages (
-				`message_id` bigint(20) NOT NULL auto_increment,
-				`message_content` text NOT NULL,
-				`message_sender` bigint(20) NOT NULL,
-				`message_conversation` bigint(20) NOT NULL,
-				`message_date` datetime NOT NULL,
-				`message_read` tinyint(1) NOT NULL,
-				PRIMARY KEY (`message_id`)
-			  )".$charset_collate.";";
 		
 		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 		dbDelta ($meta_table);
-		dbDelta ($message_table);
 		
 		ap_opt ('ap_db_version', AP_DB_VERSION);
 	}
