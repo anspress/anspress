@@ -23,7 +23,15 @@ class AnsPress_BasePage_Shortcode {
 
 	/**
 	 * Control the output of [anspress] shortcode
-	 * @param  array $atts
+	 * @param  array $atts  {
+	 *    Attributes of the caption shortcode.
+	 *    
+	 * 	  $categories slug of question_category
+	 * 	  $tags slug of question_tag
+	 * 	  $tax_relation taxonomy relation, see here http://codex.wordpress.org/Taxonomies
+	 * 	  $tags_operator operator for question_tag taxnomomy
+	 * 	  $categories_operator operator for question_category taxnomomy
+	 * }
 	 * @param  string $content
 	 * @return string
 	 * @since 2.0.0-beta
