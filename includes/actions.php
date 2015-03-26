@@ -265,9 +265,12 @@ class AnsPress_Actions
 		return $items;
 	}
 
+	/**
+	 * Check if flushing rewrite rule is needed
+	 * @return void
+	 */
 	public function flush_rules(){
-		// Check the option we set on activation.
-		if (ap_opt('ap_flush')) {
+		if (ap_opt('ap_flush') != 'false') {
 			flush_rewrite_rules( );
 			ap_opt('ap_flush', 'false');
 		}
