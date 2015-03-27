@@ -73,6 +73,8 @@ if (!class_exists('AnsPress')) {
 
         public $anspress_forms;
         public $anspress_reputation;
+        public $anspress_bp;
+
 
         /**
          * Initializes the plugin by setting localization, hooks, filters, and administrative functions.
@@ -85,6 +87,7 @@ if (!class_exists('AnsPress')) {
                 self::$instance->_setup_constants();
                 
                 add_action('init', array( self::$instance, 'load_textdomain' ));
+                add_action('bp_loaded', array( self::$instance, 'bp_include' ));
 
                 global $ap_classes;
                 $ap_classes = array();
@@ -97,7 +100,7 @@ if (!class_exists('AnsPress')) {
                 self::$instance->anspress_query_filter       = new AnsPress_Query_Filter();
                 self::$instance->anspress_theme              = new AnsPress_Theme();
                 self::$instance->anspress_cpt                = new AnsPress_PostTypes();
-                self::$instance->anspress_reputation                = new AnsPress_Reputation();
+                self::$instance->anspress_reputation         = new AnsPress_Reputation();
 
                 /**
                  * ACTION: anspress_loaded
@@ -242,11 +245,10 @@ if (!class_exists('AnsPress')) {
             require_once ANSPRESS_DIR.'widgets/question_stats.php';
             require_once ANSPRESS_DIR.'widgets/question_stats.php';
             require_once ANSPRESS_DIR.'widgets/questions.php';
-            require_once ANSPRESS_DIR.'includes/rewrite.php';
-            require_once ANSPRESS_DIR.'includes/bp.php';
-            require_once ANSPRESS_DIR.'includes/reputation.php';
-            
+            require_once ANSPRESS_DIR.'includes/rewrite.php';            
+            require_once ANSPRESS_DIR.'includes/reputation.php';            
             require_once ANSPRESS_DIR.'vendor/autoload.php';
+             
         }
 
         /**
@@ -260,6 +262,13 @@ if (!class_exists('AnsPress')) {
         {
             load_plugin_textdomain($this->_text_domain, false, dirname(plugin_basename(__FILE__)).'/languages/');
         }
+
+        public function bp_include()
+        {
+            require_once ANSPRESS_DIR.'includes/bp.php';
+            self::$instance->anspress_bp = new AnsPress_BP;
+        }
+
     }
 }
 
