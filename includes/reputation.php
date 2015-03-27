@@ -45,7 +45,7 @@ class AnsPress_Reputation {
 	/**
 	 * Update point of trashing question
 	 * @param  integer $postid
-	 * @return boolean|null
+	 * @return boolean
 	 */
 	public function delete_question($postid) {
 		$reputation = ap_reputation_by_event('new_question', true);
@@ -65,7 +65,7 @@ class AnsPress_Reputation {
 	/**
 	 * Update reputation on trasing answer
 	 * @param  integer $postid
-	 * @return boolean|null
+	 * @return boolean
 	 */
 	public function delete_answer($postid) {
 		$reputation = ap_reputation_by_event('new_answer', true);

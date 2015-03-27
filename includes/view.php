@@ -77,6 +77,9 @@ function ap_get_qa_views($id = false){
 	return apply_filters('ap_get_views', $views);
 }
 
+/**
+ * @param integer $id
+ */
 function ap_get_views_db($id){
 	return ap_meta_total_count('post_view', $id);
 }
