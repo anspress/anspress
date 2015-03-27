@@ -28,8 +28,8 @@ class AnsPress_Reputation {
 		add_action('ap_undo_vote_up', array($this, 'undo_vote_up'), 10, 2);
 		add_action('ap_undo_vote_down', array($this, 'undo_vote_down'), 10, 2);
 		
-		add_action('ap_after_new_comment', array($this, 'new_comment'));
-		add_action('ap_after_deleting_comment', array($this, 'delete_comment'));
+		add_action('ap_publish_comment', array($this, 'new_comment'));
+		add_action('ap_unpublish_comment', array($this, 'delete_comment'));
 	}
 	
 	/**

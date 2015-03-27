@@ -27,11 +27,11 @@ function ap_add_parti($post_id, $user_id, $action, $param = false){
 }
 
 /* Remove particpants from db when user delete its post or comment */
-function ap_remove_parti($post_id, $user_id = false, $action = false, $param = false){
+function ap_remove_parti($post_id, $user_id = false, $value = false){
 	$where = array('apmeta_type' => 'parti', 'apmeta_actionid' => $post_id, 'apmeta_userid' => $user_id);
 	
-	if($param)
-		$where['apmeta_param'] = $param;
+	if($value !== false)
+		$where['apmeta_value'] = $value;
 	
 	$rows = ap_delete_meta($where);
 	
@@ -42,19 +42,28 @@ function ap_remove_parti($post_id, $user_id = false, $action = false, $param = f
 	}
 }
 
-function ap_get_parti($post_id, $count = false){
+function ap_get_parti($post_id = false, $count = false, $param = false){
 	global $wpdb;
-	if($count)		
+	if($count){		
 		return ap_meta_total_count('parti', $post_id, false, 'apmeta_userid');
-	else	
+	}else{
+
+		$where = array(
+			'apmeta_type' => array('value' => 'parti', 'compare' => '=', 'relation' => 'AND'), 
+		);
+
+		if($post_id !== false)
+			$where['apmeta_actionid'] = array('value' => $post_id, 'compare' => '=', 'relation' => 'AND');
+
+		if($param !== false)
+			$where['apmeta_param'] = array('value' => $param, 'compare' => '=', 'relation' => 'AND');
+
 		return ap_get_all_meta(array(
-			'where' => array(
-				'apmeta_type' => array('value' => 'parti', 'compare' => '=', 'relation' => 'AND'), 
-				'apmeta_actionid' => array('value' => $post_id, 'compare' => '=', 'relation' => 'AND'), 
-			),
+			'where' => $where,
 			'group' => array(
 				'apmeta_userid' => array('relation' => 'AND'),
 			)));
+	}
 }
 
 /**

@@ -8,7 +8,7 @@
  * @link      http://wp3.in
  * @copyright 2014 Rahul Aryan
  */
-
+define( 'BP_AP_NOTIFIER_SLUG', 'ap_notification' );
 class AnsPress_BP
 {
 	/**
@@ -16,7 +16,7 @@ class AnsPress_BP
 	 * @since 2.0.1
 	 */
 	public function __construct()
-	{
+	{		
 		//add_action( 'ap_enqueue', 'bp_activity_mentions_script' );
 		add_action( 'bp_setup_nav',  array( $this, 'content_setup_nav') );
 		add_post_type_support( 'question', 'buddypress-activity' );
@@ -27,7 +27,12 @@ class AnsPress_BP
 		add_filter( 'bp_before_member_header_meta', array($this, 'bp_profile_header_meta'));
 		add_filter( 'ap_the_question_content', array($this, 'ap_the_question_content'));
 		add_filter( 'the_content', array($this, 'ap_the_answer_content'));
-		
+		add_action( 'bp_setup_globals', array($this, 'notifier_setup_globals') );
+
+		add_action( 'ap_after_new_answer', array($this, 'add_new_answer_notification'));
+		add_action( 'ap_publish_comment', array($this, 'add_new_comment_notification'));		
+		add_action( 'ap_trash_answer', array($this, 'remove_answer_notify') );
+		add_action( 'ap_unpublish_comment', array($this, 'remove_comment_notify') );
 	}
 
 	public function content_setup_nav()
@@ -192,4 +197,196 @@ class AnsPress_BP
 
 		return $content;
 	}
+	public function notifier_setup_globals() {
+	    global $bp;
+	    $bp->ap_notifier = new stdClass();
+	    $bp->ap_notifier->id = 'ap_notifier';//I asume others are not going to use this is
+	    $bp->ap_notifier->slug = BP_AP_NOTIFIER_SLUG;
+	    $bp->ap_notifier->notification_callback = array($this, 'ap_notifier_format_notifications');//show the notification
+	    /* Register this in the active components array */
+	    $bp->active_components[$bp->ap_notifier->id] = $bp->ap_notifier->id;
+
+	    do_action( 'ap_notifier_setup_globals' );
+	}
+
+	public function ap_notifier_format_notifications( $action, $activity_id, $secondary_item_id, $total_items, $format = 'string' ) {		
+	   	
+	   	if(strrpos($action, 'new_answer') !== false){
+	   		$answer = get_post($activity_id);
+			$at_mention_link  = get_permalink($answer->ID);
+
+			$amount = 'single';
+
+			$title = substr(strip_tags($answer->post_title), 0, 35). (strlen($answer->post_title)> 35 ? '...' : '') ;
+
+			if ( (int) $total_items > 1 ) {
+				$text = sprintf( __( '%1$d answers on - %2$s', 'ap' ), (int) $total_items, $title );
+				$amount = 'multiple';
+			} else {
+				$user_fullname = bp_core_get_user_displayname( $secondary_item_id );
+				$text =  sprintf( __( '%1$s answered on - %2$s', 'ap' ), $user_fullname, $title );
+			}
+		}elseif(strrpos($action, 'new_comment') !== false ){
+			$comment = get_comment($activity_id);			
+			$post  = get_post($comment->comment_post_ID);
+			$at_mention_link  = get_permalink($comment->comment_post_ID);
+
+			$type = $post->post_type == 'question' ? __('question', 'ap') : __('answer', 'ap');
+			$amount = 'single';
+
+			$title = substr(strip_tags($post->post_title), 0, 35). (strlen($post->post_title)> 35 ? '...' : '') ;
+
+			if ( (int) $total_items > 1 ) {
+				$text = sprintf( __( '%1$d comments on your %3$s - %2$s', 'ap' ), (int) $total_items, $title, $type );
+				$amount = 'multiple';
+			} else {
+				$user_fullname = bp_core_get_user_displayname( $secondary_item_id );
+				$text =  sprintf( __( '%1$s commented on your %3$s - %2$s', 'ap' ), $user_fullname, $title, $type );
+			}
+		}
+
+		if ( 'string' == $format ) {
+
+			$return = apply_filters( 'ap_notifier_' . $amount . '_at_mentions_notification', '<a href="' . esc_url( $at_mention_link ) . '">' . esc_html( $text ) . '</a>', $at_mention_link, (int) $total_items, $activity_id, $secondary_item_id );
+		} else {
+
+			$return = apply_filters( 'ap_notifier_' . $amount . '_at_mentions_notification', array(
+				'text' => $text,
+				'link' => $at_mention_link
+			), $at_mention_link, (int) $total_items, $activity_id, $secondary_item_id );
+		}
+
+		do_action( 'ap_notifier_format_notifications', $action, $activity_id, $secondary_item_id, $total_items );
+
+		return $return;
+	}
+
+	public function add_new_answer_notification( $post_id ) {		
+	    if ( bp_is_active( 'notifications' ) ) {
+	    	global $bp;
+	    	$answer = get_post($post_id);
+
+	    	$participants = ap_get_parti($answer->post_parent);
+
+	    	$notification_args = array(
+	            'item_id'           => $answer->ID,
+	            'secondary_item_id' => $answer->post_author,
+	            'component_name'    => $bp->ap_notifier->id,
+	            'component_action'  => 'new_answer_'.$answer->post_parent,
+	            'date_notified'     => bp_core_current_time(),
+	            'is_new'            => 1,
+	    	);
+
+	    	if(!empty($participants) && is_array($participants))
+		    	foreach($participants as $p){
+		    		if($p->apmeta_userid != $answer->post_author){		    		
+		    			$notification_args['user_id'] = $p->apmeta_userid;
+		        		bp_notifications_add_notification( $notification_args );
+		        	}
+		        }
+	    }
+	}
+
+	public function add_new_comment_notification( $comment ) {
+		$comment = (object) $comment;
+	    if ( bp_is_active( 'notifications' ) ) {
+	    	global $bp;
+	    	$post = get_post($comment->comment_post_ID);
+
+	    	if($post->post_type == 'answer')
+	    		$participants = ap_get_parti(false, false, $comment->comment_post_ID);
+
+	    	if($post->post_type == 'question')
+	    		$participants = ap_get_parti($comment->comment_post_ID);
+
+	    	$notification_args = array(
+	            'item_id'           => $comment->comment_ID, 
+	            'secondary_item_id' => $comment->user_id,
+	            'component_name'    => $bp->ap_notifier->id,
+	            'component_action'  => 'new_comment_'.$post->ID,
+	            'date_notified'     => bp_core_current_time(),
+	            'is_new'            => 1,
+	    	);
+
+	    	if(!empty($participants) && is_array($participants))
+		    	foreach($participants as $p){
+		    		if($p->apmeta_userid != $comment->user_id){		    		
+		    			$notification_args['user_id'] = $p->apmeta_userid;
+		        		bp_notifications_add_notification( $notification_args );
+		        	}
+		        }
+	    }
+	}
+	
+	/**
+	 * Remove question notification when corresponding question get deleted
+	 * @param  integer $post_id
+	 * @return void
+	 */
+	public function remove_question_notify($post_id)
+	{
+		if ( bp_is_active( 'notifications' ) )
+			bp_notifications_delete_all_notifications_by_type( $post_id, buddypress()->ap_notifier->id, 'new_answer_'.$post_id );
+		
+	}
+
+	/**
+	 * Remove answer notification when corresponding answer get deleted
+	 * @param  integer $post_id
+	 * @return void
+	 */
+	public function remove_comment_notify($comment)
+	{
+		if ( bp_is_active( 'notifications' ) )
+			bp_notifications_delete_all_notifications_by_type( $comment->comment_post_ID, buddypress()->ap_notifier->id, 'new_comment_'.$comment->comment_post_ID );
+		
+	}
+
+}
+function ap_notifier_get_activity_ids($params){
+    global $bp, $wpdb;
+    extract( $params );
+    $list = '(' . join( ',', $secondary_ids ) . ')';//create a set to use in the query;
+
+    return $wpdb->get_col( $wpdb->prepare( "SELECT id from {$bp->activity->table_name} where type=%s and component=%s and item_id=%d and secondary_item_id in {$list}",$type,$component,$item_id));
+   
+}
+
+
+function bp_ac_clear_notification_on_activity_delete($ac_ids){
+    global $bp;
+
+    //bp_core_delete_notifications_by_item_id(  $bp->loggedin_user->id, $activity->id, $bp->activity->id,  'new_activity_comment_'.$activity->id);
+    foreach((array)$ac_ids as $activity_id)
+        bp_notifications_delete_all_notifications_by_type( $activity_id, $bp->ap_notifier->id, 'new_activity_comment_'.$activity_id, $secondary_item_id = false );
+}
+add_action( 'bp_activity_deleted_activities', 'bp_ac_clear_notification_on_activity_delete' );
+
+/************************************ HELPER FUNCTIONS ********************************************************/
+/**
+  * @desc: find all the unique user_ids who have commented on this activity
+ */
+
+function ap_notifier_find_involved_persons($activity_id){
+   
+    global $bp, $wpdb;
+   
+    return $wpdb->get_col( $wpdb->prepare( "SELECT DISTINCT(user_id) FROM {$bp->activity->table_name} WHERE item_id = %d and user_id != %d ", $activity_id, get_current_user_id() ) );//it finds all uses who commted on the activity
+ }
+
+/**
+ * @desc : return an arry of comment ids for the post
+ */
+function ap_notifier_get_all_blog_post_comment_ids( $post_id ) {
+    global $wpdb;
+    return $wpdb->get_col( $wpdb->prepare( "SELECT comment_ID as id FROM $wpdb->comments WHERE comment_post_ID = %d AND comment_approved = '1' ORDER BY comment_date", $post_id ) );
+}
+
+/*
+ * @desc find all the posts ids in the current topic
+ * returns array of ids
+ */
+function ap_notifier_get_forum_post_ids( $topic_id ) {
+    global $wpdb,$bbdb;
+    return $wpdb->get_col( $wpdb->prepare( "SELECT post_id FROM {$bbdb->posts} WHERE topic_id=%d",$topic_id));
 }

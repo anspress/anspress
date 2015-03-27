@@ -38,7 +38,7 @@ class AnsPress_Common_Pages
     public function base_page()
     {
     	global $questions, $wp;
-
+        
         $tags = $wp->query_vars['ap_sc_atts_tags'];
         $categories = $wp->query_vars['ap_sc_atts_categories'];
         $tax_relation = $wp->query_vars['ap_sc_atts_tax_relation'];

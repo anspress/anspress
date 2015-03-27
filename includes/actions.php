@@ -32,13 +32,16 @@ class AnsPress_Actions
 		add_action('wp_trash_post', array($this, 'trash_post_action'));
 		add_action('untrash_post', array($this, 'untrash_ans_on_question_untrash'));
 
-		add_action('pre_comment_approved', array($this, 'pre_comment_approved'), 99, 2);
-		add_filter( 'wp_get_nav_menu_items', array($this, 'update_menu_url'));
+		add_action('comment_post', array($this, 'new_comment_approve'), 10, 2);
+		add_action('comment_unapproved_to_approved', array($this, 'comment_approve'));
+		add_action('comment_approved_to_unapproved', array($this, 'comment_unapproved'));
+		add_action('trashed_comment', array($this, 'comment_trash'));
+		add_action('delete_comment ', array($this, 'comment_trash'));
+		add_action('publish_comment', array($this, 'publish_comment'));
+		add_action('unpublish_comment', array($this, 'unpublish_comment'));
+		add_filter('wp_get_nav_menu_items', array($this, 'update_menu_url'));
 
 		add_action( 'wp_loaded', array( $this, 'flush_rules' ) );
-		
-		new AnsPress_BP;
-		
 	}
 
 	/**
@@ -100,7 +103,7 @@ class AnsPress_Actions
 		update_post_meta($question->ID, ANSPRESS_UPDATED_META, current_time( 'mysql' ));
 		update_post_meta($post_id, ANSPRESS_UPDATED_META, current_time( 'mysql' ));
 		
-		ap_add_parti($question->ID, $user_id, 'answer');			
+		ap_add_parti($question->ID, $user_id, 'answer', $post_id);			
 		
 		// get existing answer count
 		$current_ans = ap_count_published_answers($question->ID);
@@ -111,7 +114,6 @@ class AnsPress_Actions
 		update_post_meta($post_id, ANSPRESS_BEST_META, 0);
 		
 		do_action('ap_after_inserting_answer', $post_id);
-		ap_do_event('new_answer', $post_id, $user_id, $question->ID);
 	}
 
 	public function ap_after_update_question($post_id){
@@ -220,33 +222,66 @@ class AnsPress_Actions
 		}
 	}
 
+	public function new_comment_approve($comment_id, $approved)
+	{
+		if($approved === 1){
+			$comment = get_comment($comment_id);
+			do_action('ap_publish_comment', $comment);
+		}
+	}
+
+	public function comment_approve($comment)
+	{
+		do_action('ap_publish_comment', $comment);
+	}
+
+	public function comment_unapprove($comment)
+	{
+		do_action('ap_unpublish_comment', $comment);
+	}
+	public function comment_trash($comment_id)
+	{
+		$comment = get_comment($comment_id);
+		do_action('ap_unpublish_comment', $comment);
+	}
+
 	/**
 	 * Actions to run after posting a comment
 	 * @param  int $approved
-	 * @param  object $commentdata
 	 * @return null|integer   
 	 */
-	public function pre_comment_approved($approved , $commentdata){
-		if($approved =='1' ){
-			$post_type = get_post_type( $commentdata['comment_post_ID'] );
+	public function publish_comment($comment){
 
-			if ($post_type == 'question') {
-				// set updated meta for sorting purpose
-				update_post_meta($commentdata['comment_post_ID'], ANSPRESS_UPDATED_META, current_time( 'mysql' ));
+		$post_type = get_post_type( $comment['comment_post_ID'] );
 
-				// add participant
-				ap_add_parti($commentdata['comment_post_ID'], $commentdata['user_ID'], 'comment');
+		if ($post_type == 'question') {
+			// set updated meta for sorting purpose
+			update_post_meta($comment['comment_post_ID'], ANSPRESS_UPDATED_META, current_time( 'mysql' ));
 
-			}elseif($post_type == 'answer'){
-				$post_id = wp_get_post_parent_id($commentdata['comment_post_ID']);
-				// set updated meta for sorting purpose
-				update_post_meta($post_id, ANSPRESS_UPDATED_META, current_time( 'mysql' ));
-				// add participant only
-				ap_add_parti($post_id, $commentdata['user_ID'], 'comment');
-			}
-		}else{
-			return $approved;
+			// add participant
+			ap_add_parti($comment['comment_post_ID'], $comment['user_ID'], 'comment');
+
+		}elseif($post_type == 'answer'){
+			$post_id = wp_get_post_parent_id($comment['comment_post_ID']);
+			// set updated meta for sorting purpose
+			update_post_meta($post_id, ANSPRESS_UPDATED_META, current_time( 'mysql' ));
+			// add participant only
+			ap_add_parti($post_id, $comment['user_ID'], 'comment');
 		}
+
+	}
+
+	public function unpublish_comment($comment){
+		$post_type = get_post_type( $comment['comment_post_ID'] );
+
+		if ($post_type == 'question') {
+			ap_remove_parti($comment['comment_post_ID'], $comment['user_ID'], 'comment');
+
+		}elseif($post_type == 'answer'){
+			$post_id = wp_get_post_parent_id($comment['comment_post_ID']);
+			ap_remove_parti($post_id, $comment['user_ID'], 'comment');
+		}
+
 	}
 
 	public function update_menu_url( $items ) {		
