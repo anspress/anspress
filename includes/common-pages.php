@@ -39,15 +39,15 @@ class AnsPress_Common_Pages
     {
     	global $questions, $wp;
         
-        $tags = $wp->query_vars['ap_sc_atts_tags'];
-        $categories = $wp->query_vars['ap_sc_atts_categories'];
-        $tax_relation = $wp->query_vars['ap_sc_atts_tax_relation'];
+        $tags = @$wp->query_vars['ap_sc_atts_tags'];
+        $categories = @$wp->query_vars['ap_sc_atts_categories'];
+        $tax_relation = @$wp->query_vars['ap_sc_atts_tax_relation'];
         $tax_relation = !empty($tax_relation) ? $tax_relation : 'OR';
 
-        $tags_operator = $wp->query_vars['ap_sc_atts_tags_operator'];
+        $tags_operator = @$wp->query_vars['ap_sc_atts_tags_operator'];
         $tags_operator = !empty($tags_operator) ? $tags_operator : 'IN';
 
-        $categories_operator = $wp->query_vars['ap_sc_atts_categories_operator'];
+        $categories_operator = @$wp->query_vars['ap_sc_atts_categories_operator'];
         $categories_operator = !empty($categories_operator) ? $categories_operator : 'IN';
 
         $args = array();
