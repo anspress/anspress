@@ -248,6 +248,7 @@ if (!class_exists('AnsPress')) {
             require_once ANSPRESS_DIR.'includes/rewrite.php';            
             require_once ANSPRESS_DIR.'includes/reputation.php';            
             require_once ANSPRESS_DIR.'vendor/autoload.php';
+            require_once ANSPRESS_DIR.'includes/requirements.php';
              
         }
 

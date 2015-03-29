@@ -2,10 +2,10 @@
 # This file is distributed under the GPL-2.0+.
 msgid ""
 msgstr ""
-"Project-Id-Version: AnsPress 2.0.0-alpha2\n"
+"Project-Id-Version: AnsPress 2.0.0\n"
 "Report-Msgid-Bugs-To: "
 "http://wordpress.org/support/plugin/anspress-question-answer\n"
-"POT-Creation-Date: 2015-03-25 16:35:25+00:00\n"
+"POT-Creation-Date: 2015-03-27 15:58:02+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -57,7 +57,7 @@ msgstr ""
 msgid "Flagged"
 msgstr ""
 
-#: admin/anspress-admin.php:176 includes/bp.php:38 includes/bp.php:70
+#: admin/anspress-admin.php:176 includes/bp.php:43 includes/bp.php:75
 msgid "Reputation"
 msgstr ""
 
@@ -132,7 +132,7 @@ msgid "Description"
 msgstr ""
 
 #: admin/anspress-admin.php:449 admin/anspress-admin.php:524
-#: includes/functions.php:692 theme/default/content-user.php:17
+#: includes/functions.php:691 theme/default/content-user.php:17
 msgid "Points"
 msgstr ""
 
@@ -146,7 +146,7 @@ msgid "Save Point"
 msgstr ""
 
 #: admin/anspress-admin.php:591 admin/anspress-admin.php:686
-#: admin/flagged.php:115
+#: admin/flagged.php:115 includes/plugin-activation.php:1376
 msgid "Type"
 msgstr ""
 
@@ -242,14 +242,14 @@ msgid "Flag"
 msgstr ""
 
 #: admin/flagged.php:162 admin/meta_box.php:20 admin/options-page.php:201
-#: includes/bp.php:142 includes/bp.php:143 includes/common-pages.php:31
-#: includes/post_types.php:71 includes/reputation.php:444
+#: includes/bp.php:147 includes/bp.php:148 includes/common-pages.php:31
+#: includes/post_types.php:71 includes/reputation.php:446
 msgid "Question"
 msgstr ""
 
-#: admin/flagged.php:164 admin/options-page.php:245 includes/bp.php:152
-#: includes/bp.php:153 includes/bp.php:162 includes/post_types.php:142
-#: includes/reputation.php:451
+#: admin/flagged.php:164 admin/options-page.php:245 includes/bp.php:157
+#: includes/bp.php:158 includes/bp.php:167 includes/post_types.php:142
+#: includes/reputation.php:453
 msgid "Answer"
 msgstr ""
 
@@ -271,7 +271,7 @@ msgstr ""
 #: admin/reputation.php:152 includes/common-pages.php:33
 #: includes/functions.php:325 includes/functions.php:327
 #: includes/functions.php:343 includes/post_types.php:352
-#: includes/theme.php:575 theme/default/part/question.php:46
+#: includes/theme.php:574 theme/default/part/question.php:46
 msgid "Edit"
 msgstr ""
 
@@ -292,8 +292,8 @@ msgid "Save options"
 msgstr ""
 
 #: admin/meta_box.php:19 admin/views/dashboard.php:39
-#: admin/views/dashboard.php:101 includes/bp.php:119
-#: includes/post_types.php:120 includes/theme.php:476
+#: admin/views/dashboard.php:101 includes/bp.php:124
+#: includes/post_types.php:120 includes/theme.php:475
 #: widgets/question_stats.php:42 widgets/questions.php:55
 msgid "Answers"
 msgstr ""
@@ -322,7 +322,8 @@ msgid_plural "<strong>%d</strong> Votes"
 msgstr[0] ""
 msgstr[1] ""
 
-#: admin/moderate.php:92 includes/post_types.php:209
+#: admin/moderate.php:92 includes/plugin-activation.php:1377
+#: includes/post_types.php:209
 msgid "Status"
 msgstr ""
 
@@ -452,23 +453,23 @@ msgstr ""
 msgid "Sort answers by default."
 msgstr ""
 
-#: admin/options-page.php:146 includes/functions.php:422 includes/theme.php:474
-#: includes/theme.php:515 widgets/questions.php:54
+#: admin/options-page.php:146 includes/functions.php:421 includes/theme.php:473
+#: includes/theme.php:514 widgets/questions.php:54
 msgid "Voted"
 msgstr ""
 
-#: admin/options-page.php:147 includes/theme.php:469 includes/theme.php:511
+#: admin/options-page.php:147 includes/theme.php:468 includes/theme.php:510
 #: widgets/question_stats.php:40 widgets/questions.php:52
 msgid "Active"
 msgstr ""
 
-#: admin/options-page.php:148 includes/functions.php:420
-#: includes/functions.php:693 includes/theme.php:470 includes/theme.php:517
+#: admin/options-page.php:148 includes/functions.php:419
+#: includes/functions.php:692 includes/theme.php:469 includes/theme.php:516
 #: widgets/questions.php:53
 msgid "Newest"
 msgstr ""
 
-#: admin/options-page.php:149 includes/functions.php:421 includes/theme.php:518
+#: admin/options-page.php:149 includes/functions.php:420 includes/theme.php:517
 msgid "Oldest"
 msgstr ""
 
@@ -713,8 +714,8 @@ msgid "Delete this reputation"
 msgstr ""
 
 #: admin/reputation.php:153 includes/class-form.php:223
-#: includes/class-form.php:230 includes/functions.php:518
-#: includes/theme.php:580
+#: includes/class-form.php:230 includes/functions.php:517
+#: includes/theme.php:579
 msgid "Delete"
 msgstr ""
 
@@ -731,7 +732,7 @@ msgid "AnsPress Dashboard"
 msgstr ""
 
 #: admin/views/dashboard.php:33 admin/views/dashboard.php:59
-#: includes/actions.php:51 includes/bp.php:99 includes/common-pages.php:30
+#: includes/actions.php:54 includes/bp.php:104 includes/common-pages.php:30
 #: includes/post_types.php:49 widgets/questions.php:31
 msgid "Questions"
 msgstr ""
@@ -807,7 +808,7 @@ msgid ""
 "question title."
 msgstr ""
 
-#: includes/actions.php:52 includes/common-pages.php:32
+#: includes/actions.php:55 includes/common-pages.php:32
 msgid "Ask"
 msgstr ""
 
@@ -821,7 +822,7 @@ msgid ""
 "them. Avoid creating duplicate questions, it will be deleted."
 msgstr ""
 
-#: includes/ajax.php:70 includes/functions.php:502
+#: includes/ajax.php:70 includes/functions.php:501
 msgid "Select"
 msgstr ""
 
@@ -833,7 +834,7 @@ msgstr ""
 msgid "Update comment"
 msgstr ""
 
-#: includes/ajax.php:114 includes/functions.php:279 includes/reputation.php:458
+#: includes/ajax.php:114 includes/functions.php:279 includes/reputation.php:460
 msgid "Comment"
 msgstr ""
 
@@ -841,7 +842,7 @@ msgstr ""
 msgid "Respond to the post."
 msgstr ""
 
-#: includes/ajax.php:144 includes/ajax.php:172 includes/process-form.php:646
+#: includes/ajax.php:144 includes/ajax.php:172 includes/process-form.php:638
 msgid "One comment"
 msgid_plural "%d comments"
 msgstr[0] ""
@@ -888,36 +889,60 @@ msgstr ""
 msgid "Write description for the question."
 msgstr ""
 
-#: includes/bp.php:46
+#: includes/bp.php:51
 msgid "Questions %s"
 msgstr ""
 
-#: includes/bp.php:54
+#: includes/bp.php:59
 msgid "Answers %s"
 msgstr ""
 
-#: includes/bp.php:144
+#: includes/bp.php:149
 msgid "%1$s asked a new <a href=\"AP_CPT_LINK\">question</a>"
 msgstr ""
 
-#: includes/bp.php:145
+#: includes/bp.php:150
 msgid "%1$s asked a new <a href=\"AP_CPT_LINK\">question</a>, on the site %3$s"
 msgstr ""
 
-#: includes/bp.php:154
+#: includes/bp.php:159
 msgid "%1$s <a href=\"AP_CPT_LINK\">answered</a> a question"
 msgstr ""
 
-#: includes/bp.php:155
+#: includes/bp.php:160
 msgid "%1$s <a href=\"AP_CPT_LINK\">answered</a> a question, on the site %3$s"
 msgstr ""
 
-#: includes/bp.php:162
+#: includes/bp.php:167
 msgid "Answer this question"
 msgstr ""
 
-#: includes/bp.php:174 includes/functions.php:1088
+#: includes/bp.php:179 includes/functions.php:1085
 msgid "%d Reputation"
+msgstr ""
+
+#: includes/bp.php:223
+msgid "%1$d answers on - %2$s"
+msgstr ""
+
+#: includes/bp.php:227
+msgid "%1$s answered on - %2$s"
+msgstr ""
+
+#: includes/bp.php:234 includes/post_types.php:70
+msgid "question"
+msgstr ""
+
+#: includes/bp.php:234 includes/post_types.php:141
+msgid "answer"
+msgstr ""
+
+#: includes/bp.php:240
+msgid "%1$d comments on your %3$s - %2$s"
+msgstr ""
+
+#: includes/bp.php:244
+msgid "%1$s commented on your %3$s - %2$s"
 msgstr ""
 
 #: includes/class-form.php:36
@@ -956,31 +981,12 @@ msgstr ""
 msgid "It must be minimum %d characters"
 msgstr ""
 
-#: includes/common-pages.php:72
+#: includes/common-pages.php:104
 msgid "You don't have permission to access this page."
 msgstr ""
 
-#: includes/common-pages.php:92
+#: includes/common-pages.php:124
 msgid "No posts found based on your criteria."
-msgstr ""
-
-#: includes/error_responce.php:20 includes/functions.php:814
-msgid "Something went wrong, last action failed."
-msgstr ""
-
-#: includes/error_responce.php:21 includes/functions.php:815
-#: includes/responce_message.php:20
-msgid "You do not have permission to do this action."
-msgstr ""
-
-#: includes/error_responce.php:22 includes/functions.php:816
-#: includes/responce_message.php:21
-msgid "You are commenting on a draft post."
-msgstr ""
-
-#: includes/error_responce.php:23 includes/functions.php:817
-#: includes/responce_message.php:22
-msgid "Comment successfully posted."
 msgstr ""
 
 #: includes/form.php:70
@@ -1072,135 +1078,151 @@ msgstr ""
 msgid "Edited on"
 msgstr ""
 
-#: includes/functions.php:502
+#: includes/functions.php:501
 msgid "Select this answer as best"
 msgstr ""
 
-#: includes/functions.php:505
+#: includes/functions.php:504
 msgid "Unselect this answer"
 msgstr ""
 
-#: includes/functions.php:505
+#: includes/functions.php:504
 msgid "Unselect"
 msgstr ""
 
-#: includes/functions.php:585
+#: includes/functions.php:584
 msgid "&laquo; Previous"
 msgstr ""
 
-#: includes/functions.php:586
+#: includes/functions.php:585
 msgid "Next &raquo;"
 msgstr ""
 
-#: includes/functions.php:595
+#: includes/functions.php:594
 msgid "Page %d of %d"
 msgstr ""
 
-#: includes/functions.php:605
+#: includes/functions.php:604
 msgid "Discussion"
 msgstr ""
 
-#: includes/functions.php:717
+#: includes/functions.php:716
 msgid "View All"
 msgstr ""
 
-#: includes/functions.php:731
+#: includes/functions.php:730
 msgid "Ask Question"
 msgstr ""
 
-#: includes/functions.php:812
+#: includes/functions.php:811
 msgid "Success"
 msgstr ""
 
-#: includes/functions.php:813
+#: includes/functions.php:812
 msgid "You need to login before doing this action."
 msgstr ""
 
-#: includes/functions.php:818
+#: includes/functions.php:813
+msgid "Something went wrong, last action failed."
+msgstr ""
+
+#: includes/functions.php:814 includes/responce_message.php:20
+msgid "You do not have permission to do this action."
+msgstr ""
+
+#: includes/functions.php:815 includes/responce_message.php:21
+msgid "You are commenting on a draft post."
+msgstr ""
+
+#: includes/functions.php:816 includes/responce_message.php:22
+msgid "Comment successfully posted."
+msgstr ""
+
+#: includes/functions.php:817
 msgid "Comment updated successfully."
 msgstr ""
 
-#: includes/functions.php:819
+#: includes/functions.php:818
 msgid "Comment deleted successfully."
 msgstr ""
 
-#: includes/functions.php:820
+#: includes/functions.php:819
 msgid "You are subscribed to this question."
 msgstr ""
 
-#: includes/functions.php:821
+#: includes/functions.php:820
 msgid "Successfully unsubscribed."
 msgstr ""
 
-#: includes/functions.php:822
+#: includes/functions.php:821
 msgid "Question submitted successfully"
 msgstr ""
 
-#: includes/functions.php:823
+#: includes/functions.php:822
 msgid "Question updated successfully"
 msgstr ""
 
-#: includes/functions.php:824
+#: includes/functions.php:823
 msgid "Answer submitted successfully"
 msgstr ""
 
-#: includes/functions.php:825
+#: includes/functions.php:824
 msgid "Answer updated successfully"
 msgstr ""
 
-#: includes/functions.php:826
+#: includes/functions.php:825
 msgid "Thank you for voting."
 msgstr ""
 
-#: includes/functions.php:827
+#: includes/functions.php:826
 msgid "Your vote has been removed."
 msgstr ""
 
-#: includes/functions.php:828
+#: includes/functions.php:827
 msgid "Undo your vote first."
 msgstr ""
 
-#: includes/functions.php:829
+#: includes/functions.php:828
 msgid "You cannot vote on your own question or answer."
 msgstr ""
 
-#: includes/functions.php:830
+#: includes/functions.php:829
 msgid "Best answer is unselected for your question."
 msgstr ""
 
-#: includes/functions.php:831
+#: includes/functions.php:830
 msgid "Best answer is selected for your question."
 msgstr ""
 
-#: includes/functions.php:832
+#: includes/functions.php:831
 msgid "Question moved to trash."
 msgstr ""
 
-#: includes/functions.php:833
+#: includes/functions.php:832
 msgid "Answer moved to trash."
 msgstr ""
 
-#: includes/functions.php:834
+#: includes/functions.php:833
 msgid "You dont have permission to view private posts."
 msgstr ""
 
-#: includes/functions.php:835
+#: includes/functions.php:834
 msgid "Thank you for reporting this post."
 msgstr ""
 
-#: includes/functions.php:836
+#: includes/functions.php:835
 msgid "You have already reported this post."
 msgstr ""
 
-#: includes/functions.php:837
+#: includes/functions.php:836
 msgid "Please check captcha field and resubmit it again."
 msgstr ""
 
-#: includes/functions.php:990
+#: includes/functions.php:989
 msgid "Anonymous"
 msgstr ""
 
-#: includes/functions.php:1023
+#: includes/functions.php:1020
 msgid " (anonymous)"
 msgstr ""
 
@@ -1240,19 +1262,276 @@ msgstr ""
 msgid "unselected answer"
 msgstr ""
 
-#: includes/history.php:189
+#: includes/history.php:187
 msgid "Active %s ago"
 msgstr ""
 
-#: includes/history.php:228
+#: includes/history.php:226
 msgid "Asked by %s"
 msgstr ""
 
-#: includes/participants.php:73
+#: includes/participants.php:82
 msgid "<span>1</span> Participant"
 msgid_plural "<span>%d</span> Participants"
 msgstr[0] ""
 msgstr[1] ""
+
+#: includes/plugin-activation.php:161 includes/requirements.php:75
+msgid "Install Required Plugins"
+msgstr ""
+
+#: includes/plugin-activation.php:162 includes/requirements.php:76
+msgid "Install Plugins"
+msgstr ""
+
+#: includes/plugin-activation.php:163 includes/requirements.php:77
+msgid "Installing Plugin: %s"
+msgstr ""
+
+#: includes/plugin-activation.php:164
+msgid "Something went wrong."
+msgstr ""
+
+#: includes/plugin-activation.php:165
+msgid "This theme requires the following plugin: %1$s."
+msgid_plural "This theme requires the following plugins: %1$s."
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/plugin-activation.php:166
+msgid "This theme recommends the following plugin: %1$s."
+msgid_plural "This theme recommends the following plugins: %1$s."
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/plugin-activation.php:167 includes/requirements.php:81
+msgid ""
+"Sorry, but you do not have the correct permissions to install the %s "
+"plugin. Contact the administrator of this site for help on getting the "
+"plugin installed."
+msgid_plural ""
+"Sorry, but you do not have the correct permissions to install the %s "
+"plugins. Contact the administrator of this site for help on getting the "
+"plugins installed."
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/plugin-activation.php:168 includes/requirements.php:82
+msgid "The following required plugin is currently inactive: %1$s."
+msgid_plural "The following required plugins are currently inactive: %1$s."
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/plugin-activation.php:169 includes/requirements.php:83
+msgid "The following recommended plugin is currently inactive: %1$s."
+msgid_plural "The following recommended plugins are currently inactive: %1$s."
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/plugin-activation.php:170 includes/requirements.php:84
+msgid ""
+"Sorry, but you do not have the correct permissions to activate the %s "
+"plugin. Contact the administrator of this site for help on getting the "
+"plugin activated."
+msgid_plural ""
+"Sorry, but you do not have the correct permissions to activate the %s "
+"plugins. Contact the administrator of this site for help on getting the "
+"plugins activated."
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/plugin-activation.php:171 includes/requirements.php:85
+msgid ""
+"The following plugin needs to be updated to its latest version to ensure "
+"maximum compatibility with this theme: %1$s."
+msgid_plural ""
+"The following plugins need to be updated to their latest version to ensure "
+"maximum compatibility with this theme: %1$s."
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/plugin-activation.php:172 includes/requirements.php:86
+msgid ""
+"Sorry, but you do not have the correct permissions to update the %s plugin. "
+"Contact the administrator of this site for help on getting the plugin "
+"updated."
+msgid_plural ""
+"Sorry, but you do not have the correct permissions to update the %s "
+"plugins. Contact the administrator of this site for help on getting the "
+"plugins updated."
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/plugin-activation.php:173 includes/requirements.php:87
+msgid "Begin installing plugin"
+msgid_plural "Begin installing plugins"
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/plugin-activation.php:174 includes/requirements.php:88
+msgid "Begin activating plugin"
+msgid_plural "Begin activating plugins"
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/plugin-activation.php:175 includes/requirements.php:89
+msgid "Return to Required Plugins Installer"
+msgstr ""
+
+#: includes/plugin-activation.php:176
+msgid "Return to the dashboard"
+msgstr ""
+
+#: includes/plugin-activation.php:177 includes/plugin-activation.php:1939
+#: includes/requirements.php:90
+msgid "Plugin activated successfully."
+msgstr ""
+
+#: includes/plugin-activation.php:178 includes/plugin-activation.php:1630
+msgid "The following plugin was activated successfully:"
+msgstr ""
+
+#: includes/plugin-activation.php:179
+msgid "All plugins installed and activated successfully. %1$s"
+msgstr ""
+
+#: includes/plugin-activation.php:180
+msgid "Dismiss this notice"
+msgstr ""
+
+#: includes/plugin-activation.php:531 includes/plugin-activation.php:2156
+msgid "Return to the Dashboard"
+msgstr ""
+
+#: includes/plugin-activation.php:1166
+msgid "Private Repository"
+msgstr ""
+
+#: includes/plugin-activation.php:1169
+msgid "Pre-Packaged"
+msgstr ""
+
+#: includes/plugin-activation.php:1174
+msgid "WordPress Repository"
+msgstr ""
+
+#: includes/plugin-activation.php:1177
+msgid "Required"
+msgstr ""
+
+#: includes/plugin-activation.php:1177
+msgid "Recommended"
+msgstr ""
+
+#: includes/plugin-activation.php:1180
+msgid "Not Installed"
+msgstr ""
+
+#: includes/plugin-activation.php:1182
+msgid "Installed But Not Activated"
+msgstr ""
+
+#: includes/plugin-activation.php:1287 includes/plugin-activation.php:1395
+msgid "Install"
+msgstr ""
+
+#: includes/plugin-activation.php:1309 includes/plugin-activation.php:1396
+msgid "Activate"
+msgstr ""
+
+#: includes/plugin-activation.php:1358
+msgid ""
+"No plugins to install or activate. <a href=\"%1$s\" title=\"Return to the "
+"Dashboard\">Return to the Dashboard</a>"
+msgstr ""
+
+#: includes/plugin-activation.php:1374
+msgid "Plugin"
+msgstr ""
+
+#: includes/plugin-activation.php:1375
+msgid "Source"
+msgstr ""
+
+#: includes/plugin-activation.php:1922
+msgid "Install package not available."
+msgstr ""
+
+#: includes/plugin-activation.php:1923
+msgid "Downloading install package from <span class=\"code\">%s</span>&#8230;"
+msgstr ""
+
+#: includes/plugin-activation.php:1924
+msgid "Unpacking the package&#8230;"
+msgstr ""
+
+#: includes/plugin-activation.php:1925
+msgid "Installing the plugin&#8230;"
+msgstr ""
+
+#: includes/plugin-activation.php:1926
+msgid "Plugin install failed."
+msgstr ""
+
+#: includes/plugin-activation.php:1927
+msgid "Plugin installed successfully."
+msgstr ""
+
+#: includes/plugin-activation.php:1938
+msgid "Plugin activation failed."
+msgstr ""
+
+#: includes/plugin-activation.php:2052
+msgid ""
+"The installation and activation process is starting. This process may take "
+"a while on some hosts, so please be patient."
+msgstr ""
+
+#: includes/plugin-activation.php:2053
+msgid "%1$s installed and activated successfully."
+msgstr ""
+
+#: includes/plugin-activation.php:2053 includes/plugin-activation.php:2062
+msgid "Show Details"
+msgstr ""
+
+#: includes/plugin-activation.php:2053 includes/plugin-activation.php:2062
+msgid "Hide Details"
+msgstr ""
+
+#: includes/plugin-activation.php:2054
+msgid "All installations and activations have been completed."
+msgstr ""
+
+#: includes/plugin-activation.php:2055
+msgid "Installing and Activating Plugin %1$s (%2$d/%3$d)"
+msgstr ""
+
+#: includes/plugin-activation.php:2059
+msgid ""
+"The installation process is starting. This process may take a while on some "
+"hosts, so please be patient."
+msgstr ""
+
+#: includes/plugin-activation.php:2060
+msgid "An error occurred while installing %1$s: <strong>%2$s</strong>."
+msgstr ""
+
+#: includes/plugin-activation.php:2061
+msgid "The installation of %1$s failed."
+msgstr ""
+
+#: includes/plugin-activation.php:2062
+msgid "%1$s installed successfully."
+msgstr ""
+
+#: includes/plugin-activation.php:2063
+msgid "All installations have been completed."
+msgstr ""
+
+#: includes/plugin-activation.php:2064
+msgid "Installing Plugin %1$s (%2$d/%3$d)"
+msgstr ""
 
 #: includes/post_status.php:26
 msgid "Closed <span class=\"count\">(%s)</span>"
@@ -1309,10 +1588,6 @@ msgstr ""
 msgid "No questions found in Trash"
 msgstr ""
 
-#: includes/post_types.php:70
-msgid "question"
-msgstr ""
-
 #: includes/post_types.php:121
 msgid "Parent Answer:"
 msgstr ""
@@ -1347,10 +1622,6 @@ msgstr ""
 
 #: includes/post_types.php:130
 msgid "No answer found in Trash"
-msgstr ""
-
-#: includes/post_types.php:141
-msgid "answer"
 msgstr ""
 
 #: includes/post_types.php:207 includes/post_types.php:307
@@ -1417,160 +1688,180 @@ msgstr ""
 msgid "Please fill parent question field, Answer was not saved!"
 msgstr ""
 
-#: includes/reputation.php:423
+#: includes/reputation.php:425
 msgid "New Registration"
 msgstr ""
 
-#: includes/reputation.php:424
+#: includes/reputation.php:426
 msgid "Points given to newly registered user."
 msgstr ""
 
-#: includes/reputation.php:430
+#: includes/reputation.php:432
 msgid "Uploading avatar"
 msgstr ""
 
-#: includes/reputation.php:431
+#: includes/reputation.php:433
 msgid "Awarded for uploading an profile picture."
 msgstr ""
 
-#: includes/reputation.php:437
+#: includes/reputation.php:439
 msgid "Completing profile"
 msgstr ""
 
-#: includes/reputation.php:438
+#: includes/reputation.php:440
 msgid "Awarded for completing profile fields."
 msgstr ""
 
-#: includes/reputation.php:445
+#: includes/reputation.php:447
 msgid "For asking a question."
 msgstr ""
 
-#: includes/reputation.php:452
+#: includes/reputation.php:454
 msgid "For answering a question."
 msgstr ""
 
-#: includes/reputation.php:459
+#: includes/reputation.php:461
 msgid "For new comment."
 msgstr ""
 
-#: includes/reputation.php:465
+#: includes/reputation.php:467
 msgid "Receive upvote on question"
 msgstr ""
 
-#: includes/reputation.php:466
+#: includes/reputation.php:468
 msgid "When user receive an upvote on question"
 msgstr ""
 
-#: includes/reputation.php:472
+#: includes/reputation.php:474
 msgid "Receive upvote on answer"
 msgstr ""
 
-#: includes/reputation.php:473
+#: includes/reputation.php:475
 msgid "When user receive an upvote on answer"
 msgstr ""
 
-#: includes/reputation.php:479
+#: includes/reputation.php:481
 msgid "Receive down vote on question"
 msgstr ""
 
-#: includes/reputation.php:480
+#: includes/reputation.php:482
 msgid "When user receive an down vote on question"
 msgstr ""
 
-#: includes/reputation.php:486
+#: includes/reputation.php:488
 msgid "Receive down vote on answer"
 msgstr ""
 
-#: includes/reputation.php:487
+#: includes/reputation.php:489
 msgid "When user receive an down vote on answer"
 msgstr ""
 
-#: includes/reputation.php:493
+#: includes/reputation.php:495
 msgid "Up voted questions"
 msgstr ""
 
-#: includes/reputation.php:494
+#: includes/reputation.php:496
 msgid "When user upvote others question"
 msgstr ""
 
-#: includes/reputation.php:500
+#: includes/reputation.php:502
 msgid "Up voted answers"
 msgstr ""
 
-#: includes/reputation.php:501
+#: includes/reputation.php:503
 msgid "When user upvote others answer"
 msgstr ""
 
-#: includes/reputation.php:507
+#: includes/reputation.php:509
 msgid "Down voted questions"
 msgstr ""
 
-#: includes/reputation.php:508
+#: includes/reputation.php:510
 msgid "When user down vote others question"
 msgstr ""
 
-#: includes/reputation.php:514
+#: includes/reputation.php:516
 msgid "Down voted answers"
 msgstr ""
 
-#: includes/reputation.php:515
+#: includes/reputation.php:517
 msgid "When user down vote others answers"
 msgstr ""
 
-#: includes/reputation.php:522 includes/theme.php:540
+#: includes/reputation.php:524 includes/theme.php:539
 #: theme/default/best_answer.php:17
 msgid "Best answer"
 msgstr ""
 
-#: includes/reputation.php:523
+#: includes/reputation.php:525
 msgid "When user's answer get selected as best"
 msgstr ""
 
-#: includes/reputation.php:529
+#: includes/reputation.php:531
 msgid "Selecting answer"
 msgstr ""
 
-#: includes/reputation.php:530
+#: includes/reputation.php:532
 msgid "When user user select an answer."
 msgstr ""
 
-#: includes/reputation.php:570
+#: includes/reputation.php:572
 msgid "Answered a question %s"
 msgstr ""
 
-#: includes/reputation.php:571
+#: includes/reputation.php:573
 msgid "Asked %s"
 msgstr ""
 
-#: includes/reputation.php:572
+#: includes/reputation.php:574
 msgid "Commented %s"
 msgstr ""
 
-#: includes/reputation.php:573
+#: includes/reputation.php:575
 msgid "Selected a best answer for %s"
 msgstr ""
 
-#: includes/reputation.php:574
+#: includes/reputation.php:576
 msgid "Received a down vote on %s %s"
 msgstr ""
 
-#: includes/reputation.php:575
+#: includes/reputation.php:577
 msgid "Received a down vote on on %s %s"
 msgstr ""
 
-#: includes/reputation.php:576
+#: includes/reputation.php:578
 msgid "Voted down on %s"
 msgstr ""
 
-#: includes/reputation.php:577
+#: includes/reputation.php:579
 msgid "Answer on a question is selected as best, %s"
+msgstr ""
+
+#: includes/requirements.php:78
+msgid "Something went wrong with the plugin API."
+msgstr ""
+
+#: includes/requirements.php:79
+msgid "AnsPress requires the following plugin: %1$s."
+msgid_plural "AnsPress requires the following plugins: %1$s."
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/requirements.php:80
+msgid "AnsPress recommends the following plugin: %1$s."
+msgid_plural "AnsPress recommends the following plugins: %1$s."
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/requirements.php:91
+msgid "All plugins installed and activated successfully. %s"
 msgstr ""
 
 #: includes/theme.php:40 theme/default/on-post.php:4
 msgid "Discussion on \"%s\""
 msgstr ""
 
-#: includes/theme.php:255 includes/theme.php:543
+#: includes/theme.php:255 includes/theme.php:542
 msgid ""
 "<span>Created</span> <i><time itemprop=\"datePublished\" datetime=\"%s\">%s "
 "Ago</time></i>"
@@ -1580,99 +1871,95 @@ msgstr ""
 msgid "<i>%d views</i>"
 msgstr ""
 
-#: includes/theme.php:477 widgets/questions.php:56
+#: includes/theme.php:476 widgets/questions.php:56
 msgid "Unanswered"
 msgstr ""
 
-#: includes/theme.php:478
+#: includes/theme.php:477
 msgid "Unsolved"
 msgstr ""
 
-#: includes/vote.php:53 includes/vote.php:458
+#: includes/vote.php:53 includes/vote.php:451
 msgid "subscribe"
 msgstr ""
 
-#: includes/vote.php:65 includes/vote.php:458
+#: includes/vote.php:65 includes/vote.php:451
 msgid "unsubscribe"
 msgstr ""
 
-#: includes/vote.php:116
-msgid "Your vote has been removed"
-msgstr ""
-
-#: includes/vote.php:159
+#: includes/vote.php:157
 msgid "You already flagged this post"
 msgstr ""
 
-#: includes/vote.php:236
+#: includes/vote.php:229
 msgid "Please login for adding question to your subscribe"
 msgstr ""
 
-#: includes/vote.php:256 includes/vote.php:265
+#: includes/vote.php:249 includes/vote.php:258
 msgid "Close"
 msgstr ""
 
-#: includes/vote.php:256 includes/vote.php:497
+#: includes/vote.php:249 includes/vote.php:490
 msgid "Vote for closing"
 msgstr ""
 
-#: includes/vote.php:256
+#: includes/vote.php:249
 msgid "Your close request has been removed"
 msgstr ""
 
-#: includes/vote.php:265 includes/vote.php:497
+#: includes/vote.php:258 includes/vote.php:490
 msgid "Undo your vote"
 msgstr ""
 
-#: includes/vote.php:265
+#: includes/vote.php:258
 msgid "Your close request has been sent"
 msgstr ""
 
-#: includes/vote.php:270
+#: includes/vote.php:263
 msgid "Something went wrong"
 msgstr ""
 
-#: includes/vote.php:277
+#: includes/vote.php:270
 msgid "Please login for requesting closing this question."
 msgstr ""
 
-#: includes/vote.php:429
+#: includes/vote.php:422
 msgid "Up vote this post"
 msgstr ""
 
-#: includes/vote.php:433
+#: includes/vote.php:426
 msgid "Down vote this post"
 msgstr ""
 
-#: includes/vote.php:500
+#: includes/vote.php:493
 msgid "Close "
 msgstr ""
 
-#: includes/vote.php:548
+#: includes/vote.php:541
 msgid "Flag this post"
 msgstr ""
 
-#: includes/vote.php:548
+#: includes/vote.php:541
 msgid "You have flagged this post"
 msgstr ""
 
-#: includes/vote.php:550
+#: includes/vote.php:543
 msgid "Flag "
 msgstr ""
 
-#: includes/vote.php:573
+#: includes/vote.php:566
 msgid "Only you are subscribed to this question."
 msgstr ""
 
-#: includes/vote.php:575
+#: includes/vote.php:568
 msgid "You and <strong>%s people</strong> subscribed to this question."
 msgstr ""
 
-#: includes/vote.php:577
+#: includes/vote.php:570
 msgid "No one is subscribed to this question."
 msgstr ""
 
-#: includes/vote.php:579
+#: includes/vote.php:572
 msgid "<strong>%d people</strong> subscribed to this question."
 msgstr ""
 

@@ -255,8 +255,12 @@ function ap_display_question_metas($question_id =  false){
 		$metas['created'] = sprintf( __( '<span>Created</span> <i><time itemprop="datePublished" datetime="%s">%s Ago</time></i>', 'ap' ), get_the_time('c', $question_id), ap_human_time( get_the_time('U')));
 		
 	}else{
+		if(ap_is_answer_selected())
+			$metas['solved'] = '<span class="ap-best-answer-label ap-tip" title="'.__('answer accepted', 'ap').'">'.__('Selected', 'ap').'</span>';
+
 		$view_count = ap_get_qa_views();
 		$metas['views'] = sprintf( __('<i>%d views</i>', 'ap'), $view_count) ;
+		$metas['history'] = ap_get_latest_history_html($question_id);
 	}	
 
 	/**
@@ -268,7 +272,7 @@ function ap_display_question_metas($question_id =  false){
 	$output = '';
 	if (!empty($metas) && is_array($metas)) {
 		foreach ($metas as $meta => $display) {
-			$output .= "<li class='ap-display-meta-item {$meta}'>{$display}</li>";
+			$output .= "<span class='ap-display-meta-item {$meta}'>{$display}</span>";
 		}
 	}
 
@@ -487,7 +491,7 @@ function ap_questions_tab($current_url){
 
 	echo '<ul class="ap-questions-tab ap-ul-inline clearfix">';
 	foreach ($navs as $k => $nav) {
-		echo '<li'.( $sort == $k ? ' class="active"' : '') .'><a href="'. $nav['link'] .'">'. $nav['title'] .'</a></li>';
+		echo '<li class="ap-questions-tab-'.esc_attr($k).( $sort == $k ? ' active' : '') .'"><a href="'. esc_url($nav['link']) .'">'. $nav['title'] .'</a></li>';
 	}
 	echo '</ul>';
 

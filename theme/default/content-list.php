@@ -29,12 +29,13 @@ $clearfix_class = array('ap-questions-item clearfix');
 			</a>
 		</div>
 		<div class="pull-right">
-			<a class="ap-questions-acount" href="<?php echo ap_answers_link() ?>">
+			<a class="ap-questions-count ap-questions-acount" href="<?php echo ap_answers_link() ?>">
 				<?php printf( __('%s ans', 'ap'), '<span>'.ap_count_answer_meta().'</span>'); ?>
 			</a>
 			<?php if(!ap_opt('disable_voting_on_question')){ ?>
-				<span class="ap-questions-vcount">
-					<?php printf( __('%s votes', 'ap'), ap_net_vote()); ?>
+				<span class="ap-questions-count ap-questions-vcount">
+					<span><?php echo ap_net_vote() ?></span>
+					<?php  _e('votes', 'ap'); ?>
 				</span>
 			<?php } ?>
 		</div>
@@ -42,16 +43,8 @@ $clearfix_class = array('ap-questions-item clearfix');
 			<span class="ap-questions-title entry-title" itemprop="title">
 				<a class="ap-questions-hyperlink" itemprop="url" href="<?php the_permalink(); ?>" rel="bookmark" title="<?php the_title(); ?>"><?php the_title(); ?></a>
 			</span>			
-			<ul class="ap-display-question-meta ap-ul-inline clearfix">
+			<div class="ap-display-question-meta">
 				<?php echo ap_display_question_metas() ?>
-			</ul>
-			<div class="ap-questions-history">
-				<?php 
-					if(ap_is_answer_selected()){
-						echo '<span class="ap-best-answer-label ap-tip" title="'.__('answer accepted', 'ap').'">'.__('Selected', 'ap').'</span>';
-					}
-					echo ap_get_latest_history_html(get_the_ID());					
-				?>
 			</div>
 		</div>				
 	</div>	

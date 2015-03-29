@@ -1218,31 +1218,34 @@
 .anspress-container .ap-questions-title a {
   text-decoration: none;
 }
-.anspress-container .ap-questions-acount {
-  background: none repeat scroll 0 0 #fcfcfc;
+.anspress-container .ap-questions-count {
   border: 1px solid #eee;
   border-radius: 2px;
+  color: #888;
   display: block;
-  height: 45px;
+  float: left;
+  font-size: 13px;
+  height: 50px;
   line-height: 18px;
+  margin-left: 12px;
   padding: 2px;
   text-align: center;
   width: 55px;
 }
-.anspress-container .ap-questions-acount span {
+.anspress-container .ap-questions-count span {
+  color: #777;
   display: block;
   font-size: 14px;
   font-weight: 600;
-  margin-top: 2px;
+  margin-top: 4px;
 }
-.anspress-container .ap-questions-vcount {
-  background: none repeat scroll 0 0 #18afff;
-  border-radius: 2px;
+.anspress-container .ap-questions-acount {
+  background: #5db34a;
+  border-color: rgba(0, 0, 0, 0.08);
   color: #fff;
-  display: block;
-  margin-top: 5px;
-  padding: 1px 4px;
-  text-align: center;
+}
+.anspress-container .ap-questions-acount span {
+  color: #fff;
 }
 .anspress-container .ap-questions-summery {
   padding-right: 10px;
@@ -1264,30 +1267,22 @@
   text-transform: uppercase;
   margin-right: 10px;
 }
-.anspress-container .ap-display-question-meta {
-  color: #777777;
-}
-.anspress-container .ap-display-question-meta li:before {
-  background: none repeat scroll 0 0 #dadada;
-  -webkit-border-radius: 2px;
-  -webkit-background-clip: padding-box;
-  -moz-border-radius: 2px;
-  -moz-background-clip: padding;
-  border-radius: 2px;
-  background-clip: padding-box;
+.anspress-container .ap-display-meta-item:before {
+  background: #dadada;
+  border-radius: 50%;
   content: "";
-  display: block;
-  float: left;
-  height: 5px;
+  display: inline-block;
+  height: 7px;
+  margin-left: 10px;
   margin-right: 6px;
-  margin-top: 11px;
   padding: 0;
-  width: 5px;
+  vertical-align: middle;
+  width: 7px;
 }
-.anspress-container .ap-display-question-meta li:first-child:before {
+.anspress-container .ap-display-meta-item:first-child:before {
   display: none;
 }
-.anspress-container .ap-display-question-meta li i {
+.anspress-container .ap-display-meta-item i {
   font-style: normal;
 }
 .tooltipster-default.ap-tip-style {
