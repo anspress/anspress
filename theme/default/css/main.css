@@ -2576,6 +2576,31 @@
   display: block;
   margin-bottom: 5px;
 }
+.anspress-container .ap-cat-wid {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.anspress-container .ap-cat-wid > li {
+  border-bottom: 1px solid #eee;
+  margin: 0;
+  padding: 0;
+}
+.anspress-container .ap-cat-wid > li:last-child {
+  border-bottom: none;
+}
+.anspress-container .ap-cat-wid > li > a {
+  display: block;
+  padding: 7px 2px;
+}
+.anspress-container .ap-cat-wid > li > a > span {
+  float: right;
+}
+.anspress-container .ap-cat-wid > li > a > i {
+  display: block;
+  font-size: 13px;
+  font-style: normal;
+}
 .ap-reputation-item {
   border-top: 1px solid #eee;
   padding: 12px 0;

@@ -23,27 +23,19 @@ class AP_Categories_Widget extends WP_Widget {
 		);
 		$categories = get_terms( 'question_category' , $cat_args);
 		?>
-			<ul class="ap-categories-list">
+			<ul class="ap-cat-wid">
 				<?php 
 				foreach($categories as $key => $category) : 
 					$sub_cat_count = count(get_term_children( $category->term_id, 'question_category' ));
 				?>
-					<li>
-						<a class="term-title ap-apicon-category" href="<?php echo get_category_link( $category );?>"><?php echo $category->name; ?>							
+					<li class="clearfix">
+						<a class="ap-cat-wid-title" href="<?php echo get_category_link( $category );?>">
 							<span><?php echo $category->count; ?></span>
-							<?php if($sub_cat_count >0): ?>
-								<i class="ap-apicon-arrow-down"></i>
-							<?php endif; ?>
-						</a>						
-						<?php							
-							if($sub_cat_count >0){
-								echo '<div class="ap-term-sub">';
-								echo '<div class="sub-cat-count">' .$sub_cat_count.' '.__('Sub Categories', 'ap') .'</div>';
-								
-								ap_child_cat_list($category->term_id);
-								echo '</div>';
-							}
-						?>			
+							<?php echo $category->name; ?>
+							<?php if($sub_cat_count > 0) : ?>
+								<i><?php printf(__('%d sub categories', 'ap'), $sub_cat_count); ?></i>
+							<?php endif; ?>					
+						</a>								
 					</li>
 				<?php endforeach; ?>
 			</ul>
