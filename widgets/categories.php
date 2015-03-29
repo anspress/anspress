@@ -3,7 +3,7 @@ class AP_Categories_Widget extends WP_Widget {
 
 	public function AP_Categories_Widget() {
 		// Instantiate the parent object
-		parent::__construct( false, 'AnsPress Categories' );
+		parent::__construct( false, '(AnsPress) Categories' );
 	}
 
 	public function widget( $args, $instance ) {

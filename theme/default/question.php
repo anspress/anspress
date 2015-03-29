@@ -12,7 +12,7 @@ global $post;
 ?>
 <div id="ap-single" class="ap-q clearfix" itemtype="http://schema.org/Question" itemscope="">	
 	<div class="ap-question-lr row">		
-		<div class="ap-q-left <?php echo is_active_sidebar( 'ap-qsidebar' ) ? 'col-md-9' : 'col-md-12' ?>">
+		<div class="ap-q-left <?php echo is_active_sidebar( 'ap-qsidebar' ) ? 'col-md-8' : 'col-md-12' ?>">
 			<div id="question" role="main" class="ap-content question" data-id="<?php echo get_the_ID(); ?>">
 				<header class="ap-q-head">
 					<?php 
@@ -128,7 +128,7 @@ global $post;
 			?>
 		</div>
 		<?php if ( is_active_sidebar( 'ap-qsidebar' ) ){ ?>
-			<div class="ap-question-right col-md-3">
+			<div class="ap-question-right col-md-4">
 				<div class="ap-question-info">
 					<?php dynamic_sidebar( 'ap-qsidebar' ); ?>
 				</div>
