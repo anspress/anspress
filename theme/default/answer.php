@@ -26,6 +26,7 @@ $class = ap_is_best_answer(get_question_id()) ? ' selected answer' : 'answer';
 	</div>
 	<div class="ap-q-cells ap-content clearfix">
 		<div class="ap-q-metas clearfix">
+			<div class="ap-single-vote ap-pull-right"><?php ap_vote_btn() ?></div>
 			<?php ap_user_display_meta(true, false, true); ?>
 
 			<ul class="ap-display-question-meta ap-ul-inline">
