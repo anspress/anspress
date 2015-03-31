@@ -2,10 +2,10 @@
 # This file is distributed under the GPL-2.0+.
 msgid ""
 msgstr ""
-"Project-Id-Version: AnsPress 2.0.1\n"
+"Project-Id-Version: AnsPress 2.0.2\n"
 "Report-Msgid-Bugs-To: "
 "http://wordpress.org/support/plugin/anspress-question-answer\n"
-"POT-Creation-Date: 2015-03-29 10:58:42+00:00\n"
+"POT-Creation-Date: 2015-03-31 17:49:13+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -25,23 +25,23 @@ msgstr ""
 "X-Poedit-Bookmarks: \n"
 "X-Textdomain-Support: yes\n"
 
-#: admin/anspress-admin.php:166 includes/post_types.php:51
+#: admin/anspress-admin.php:167 includes/post_types.php:51
 msgid "All Questions"
 msgstr ""
 
-#: admin/anspress-admin.php:168 includes/post_types.php:54
+#: admin/anspress-admin.php:169 includes/post_types.php:54
 msgid "New Question"
 msgstr ""
 
-#: admin/anspress-admin.php:170 includes/post_types.php:122
+#: admin/anspress-admin.php:171 includes/post_types.php:122
 msgid "All Answers"
 msgstr ""
 
-#: admin/anspress-admin.php:172
+#: admin/anspress-admin.php:173
 msgid "Moderate question & answer"
 msgstr ""
 
-#: admin/anspress-admin.php:172 admin/flagged.php:100 admin/moderate.php:80
+#: admin/anspress-admin.php:173 admin/flagged.php:100 admin/moderate.php:80
 #: admin/options-page.php:398 admin/options-page.php:412
 #: admin/options-page.php:424 admin/views/dashboard.php:45
 #: includes/post_status.php:30 includes/query_filter.php:85
@@ -49,116 +49,116 @@ msgstr ""
 msgid "Moderate"
 msgstr ""
 
-#: admin/anspress-admin.php:174 admin/anspress-admin.php:300
+#: admin/anspress-admin.php:175 admin/anspress-admin.php:301
 msgid "Flagged question & answer"
 msgstr ""
 
-#: admin/anspress-admin.php:174 admin/views/dashboard.php:51
+#: admin/anspress-admin.php:175 admin/views/dashboard.php:51
 msgid "Flagged"
 msgstr ""
 
-#: admin/anspress-admin.php:176 includes/bp.php:43 includes/bp.php:75
+#: admin/anspress-admin.php:177 includes/bp.php:43 includes/bp.php:75
 msgid "Reputation"
 msgstr ""
 
-#: admin/anspress-admin.php:178 admin/anspress-admin.php:382
+#: admin/anspress-admin.php:179 admin/anspress-admin.php:383
 #: admin/views/admin.php:29
 msgid "AnsPress Options"
 msgstr ""
 
-#: admin/anspress-admin.php:178
+#: admin/anspress-admin.php:179
 msgid "Options"
 msgstr ""
 
-#: admin/anspress-admin.php:180
+#: admin/anspress-admin.php:181
 msgid "Extensions"
 msgstr ""
 
-#: admin/anspress-admin.php:182 admin/views/post_flag.php:35
+#: admin/anspress-admin.php:183 admin/views/post_flag.php:35
 msgid "Post flag"
 msgstr ""
 
-#: admin/anspress-admin.php:183
+#: admin/anspress-admin.php:184
 msgid "Select question"
 msgstr ""
 
-#: admin/anspress-admin.php:239
+#: admin/anspress-admin.php:240
 msgid "AnsPress Points"
 msgstr ""
 
-#: admin/anspress-admin.php:240
+#: admin/anspress-admin.php:241
 msgid "New reputation"
 msgstr ""
 
-#: admin/anspress-admin.php:258
+#: admin/anspress-admin.php:259
 msgid "AnsPress Badges"
 msgstr ""
 
-#: admin/anspress-admin.php:259
+#: admin/anspress-admin.php:260
 msgid "New badge"
 msgstr ""
 
-#: admin/anspress-admin.php:281
+#: admin/anspress-admin.php:282
 msgid "Posts waiting moderation"
 msgstr ""
 
-#: admin/anspress-admin.php:337
+#: admin/anspress-admin.php:338
 msgid "Settings"
 msgstr ""
 
-#: admin/anspress-admin.php:386
+#: admin/anspress-admin.php:387
 msgid "AnsPress Role"
 msgstr ""
 
-#: admin/anspress-admin.php:395
+#: admin/anspress-admin.php:396
 msgid "Role and permission for AnsPress"
 msgstr ""
 
-#: admin/anspress-admin.php:419
+#: admin/anspress-admin.php:420
 msgid "AnsPress options updated successfully"
 msgstr ""
 
-#: admin/anspress-admin.php:437 admin/anspress-admin.php:512
-#: admin/anspress-admin.php:579 admin/anspress-admin.php:674
+#: admin/anspress-admin.php:438 admin/anspress-admin.php:513
+#: admin/anspress-admin.php:580 admin/anspress-admin.php:675
 #: admin/flagged.php:116 admin/moderate.php:93 includes/ask-form.php:55
 #: includes/post_types.php:208
 msgid "Title"
 msgstr ""
 
-#: admin/anspress-admin.php:443 admin/anspress-admin.php:518
-#: admin/anspress-admin.php:585 admin/anspress-admin.php:680
+#: admin/anspress-admin.php:444 admin/anspress-admin.php:519
+#: admin/anspress-admin.php:586 admin/anspress-admin.php:681
 #: includes/ask-form.php:72
 msgid "Description"
 msgstr ""
 
-#: admin/anspress-admin.php:449 admin/anspress-admin.php:524
+#: admin/anspress-admin.php:450 admin/anspress-admin.php:525
 #: includes/functions.php:691 theme/default/content-user.php:17
 msgid "Points"
 msgstr ""
 
-#: admin/anspress-admin.php:455 admin/anspress-admin.php:530
-#: admin/anspress-admin.php:603 admin/anspress-admin.php:698
+#: admin/anspress-admin.php:456 admin/anspress-admin.php:531
+#: admin/anspress-admin.php:604 admin/anspress-admin.php:699
 msgid "Event"
 msgstr ""
 
-#: admin/anspress-admin.php:461 admin/anspress-admin.php:536
+#: admin/anspress-admin.php:462 admin/anspress-admin.php:537
 msgid "Save Point"
 msgstr ""
 
-#: admin/anspress-admin.php:591 admin/anspress-admin.php:686
+#: admin/anspress-admin.php:592 admin/anspress-admin.php:687
 #: admin/flagged.php:115 includes/plugin-activation.php:1376
 msgid "Type"
 msgstr ""
 
-#: admin/anspress-admin.php:597 admin/anspress-admin.php:692
+#: admin/anspress-admin.php:598 admin/anspress-admin.php:693
 msgid "Min. Points"
 msgstr ""
 
-#: admin/anspress-admin.php:609 admin/anspress-admin.php:704
+#: admin/anspress-admin.php:610 admin/anspress-admin.php:705
 msgid "Multiple"
 msgstr ""
 
-#: admin/anspress-admin.php:615 admin/anspress-admin.php:710
+#: admin/anspress-admin.php:616 admin/anspress-admin.php:711
 msgid "Save badge"
 msgstr ""
 
@@ -183,6 +183,22 @@ msgstr ""
 
 #: admin/anspress-admin.php:873
 msgid "Add to Menu"
+msgstr ""
+
+#: admin/anspress-admin.php:893
+msgid "Is your existing question tags are not appearing ? click here to fix it %s"
+msgstr ""
+
+#: admin/anspress-admin.php:893
+msgid "Fix question tags"
+msgstr ""
+
+#: admin/anspress-admin.php:894
+msgid "Hide message %s"
+msgstr ""
+
+#: admin/anspress-admin.php:894
+msgid "dismiss"
 msgstr ""
 
 #: admin/extensions.php:69
