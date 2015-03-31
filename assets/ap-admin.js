@@ -64,6 +64,7 @@ APjs.admin.prototype = {
 	/* automatically called */
 	initialize: function() {
 		this.saveOptions();
+		this.renameTaxo();
 		this.editPoints();
 		this.savePoints();
 		this.newPointForm();
@@ -93,6 +94,22 @@ APjs.admin.prototype = {
 						jQuery('.wrap .updated').delay(500).slideDown(300);
 						html.delay(5000).slideUp(300);
 					}
+				} 
+			});
+			return false;
+		});
+	},
+	renameTaxo: function(){
+		jQuery('.ap-rename-taxo').click(function(e){
+			e.preventDefault();
+
+			jQuery.ajax({ 
+				url: ajaxurl,
+				data: {action: 'ap_taxo_rename'},
+				context:this,
+				success: function(data){
+					jQuery(this).closest('.error').remove();
+					location.reload(); 
 				} 
 			});
 			return false;

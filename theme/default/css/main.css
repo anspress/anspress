@@ -2539,64 +2539,64 @@
   text-align: center;
   width: 30px;
 }
-.anspress-container .ap-widget-pos {
+.ap-widget-pos {
   margin-bottom: 25px;
 }
-.anspress-container .ap-stats-widget {
+.ap-stats-widget {
   padding: 0;
   margin: 0;
   list-style: none;
 }
-.anspress-container .ap-stats-widget li {
+.ap-stats-widget li {
   color: #888;
   margin: 0;
   padding: 5px 0;
 }
-.anspress-container .ap-stats-widget li .stat-value {
+.ap-stats-widget li .stat-value {
   float: right;
   font-weight: bold;
 }
-.anspress-container .ap-rq-widget .ap-rq-post {
+.ap-rq-widget .ap-rq-post {
   border-bottom: 1px solid #f7f7f7;
   color: #888;
   display: block;
   margin-bottom: 0;
   padding: 10px 0;
 }
-.anspress-container .ap-rq-widget .ap-rq-post a {
+.ap-rq-widget .ap-rq-post a {
   margin-bottom: 5px;
   display: block;
 }
-.anspress-container .ap-questions-widget .ap-question-item {
+.ap-questions-widget .ap-question-item {
   border-bottom: 1px solid #f8f8f8;
   margin-bottom: 10px;
   padding-bottom: 10px;
 }
-.anspress-container .ap-questions-widget .ap-question-title {
+.ap-questions-widget .ap-question-title {
   display: block;
   margin-bottom: 5px;
 }
-.anspress-container .ap-cat-wid {
+.ap-cat-wid {
   list-style: none;
   padding: 0;
   margin: 0;
 }
-.anspress-container .ap-cat-wid > li {
+.ap-cat-wid > li {
   border-bottom: 1px solid #eee;
   margin: 0;
   padding: 0;
 }
-.anspress-container .ap-cat-wid > li:last-child {
+.ap-cat-wid > li:last-child {
   border-bottom: none;
 }
-.anspress-container .ap-cat-wid > li > a {
+.ap-cat-wid > li > a {
   display: block;
   padding: 7px 2px;
 }
-.anspress-container .ap-cat-wid > li > a > span {
+.ap-cat-wid > li > a > span {
   float: right;
 }
-.anspress-container .ap-cat-wid > li > a > i {
+.ap-cat-wid > li > a > i {
   display: block;
   font-size: 13px;
   font-style: normal;

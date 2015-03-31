@@ -77,12 +77,13 @@ class AnsPress_Admin {
 		add_action( 'wp_ajax_ap_edit_badges', array($this, 'ap_edit_badges') );
 		add_action( 'wp_ajax_ap_save_badges', array($this, 'ap_save_badges') );
 		add_action( 'wp_ajax_ap_new_badge_form', array($this, 'ap_new_badge_form') );
-		add_action( 'wp_ajax_ap_delete_badge', array($this, 'ap_delete_badge') );
+		add_action( 'wp_ajax_ap_taxo_rename', array($this, 'ap_taxo_rename') );
 		add_action( 'wp_ajax_ap_delete_flag', array($this, 'ap_delete_flag') );		
 		add_action( 'edit_form_after_title', array($this, 'edit_form_after_title') );		       
         add_filter('wp_insert_post_data', array($this, 'post_data_check'), 99);
         add_filter('post_updated_messages', array($this,'post_custom_message'));
         add_action( 'admin_head-nav-menus.php', array($this, 'ap_menu_metaboxes') );
+        add_action( 'admin_notices', array($this, 'taxonomy_rename') );
 	}
 
 	/**
@@ -721,15 +722,14 @@ class AnsPress_Admin {
 		die();
 	}
 		
-	public function ap_delete_badge(){
+	public function ap_taxo_rename(){
+
 		if(current_user_can('manage_options')){
-			$args = explode('-', sanitize_text_field($_POST['args']));
-			if(wp_verify_nonce($args[1], 'delete_badge')){
-				ap_badge_option_delete($args[0]);
-				$result = array('status' => true);
-				$result = apply_filters('ap_delete_badge_form_result', $result);
-				echo json_encode( $result );
-			}
+			global $wpdb;
+
+			$wpdb->query("UPDATE ".$wpdb->prefix."term_taxonomy SET taxonomy = 'question_tag' WHERE  taxonomy = 'question_tags'");
+
+			ap_opt('tags_taxo_renamed', 'true');
 		}
 		
 		die();
@@ -876,5 +876,23 @@ class AnsPress_Admin {
 </p>';
 		echo '</div>';
 
+	}
+
+	public function taxonomy_rename()
+	{
+
+		global $pagenow;
+
+		if(ap_opt('tags_taxo_renamed') == 'true' || !taxonomy_exists('question_tag'))
+			return;
+
+		if('edit-tags.php' != $pagenow)
+			return;
+		?>
+	    <div class="error">
+	        <p><strong><?php printf(__( 'Is your existing question tags are not appearing ? click here to fix it %s', 'ap' ), '<a class="ap-rename-taxo" href="#">'.__('Fix question tags', 'ap').'</a>'); ?></strong></p>
+	        <p><?php printf(__( 'Hide message %s', 'ap' ), '<a class="ap-rename-taxo" href="#">'.__('dismiss', 'ap').'</a>'); ?></p>
+	    </div>
+	    <?php
 	}
 }

@@ -2,10 +2,10 @@
 # This file is distributed under the GPL-2.0+.
 msgid ""
 msgstr ""
-"Project-Id-Version: AnsPress 2.0.0\n"
+"Project-Id-Version: AnsPress 2.0.1\n"
 "Report-Msgid-Bugs-To: "
 "http://wordpress.org/support/plugin/anspress-question-answer\n"
-"POT-Creation-Date: 2015-03-27 15:58:02+00:00\n"
+"POT-Creation-Date: 2015-03-29 10:58:42+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -42,8 +42,8 @@ msgid "Moderate question & answer"
 msgstr ""
 
 #: admin/anspress-admin.php:172 admin/flagged.php:100 admin/moderate.php:80
-#: admin/options-page.php:382 admin/options-page.php:396
-#: admin/options-page.php:408 admin/views/dashboard.php:45
+#: admin/options-page.php:398 admin/options-page.php:412
+#: admin/options-page.php:424 admin/views/dashboard.php:45
 #: includes/post_status.php:30 includes/query_filter.php:85
 #: includes/query_filter.php:98
 msgid "Moderate"
@@ -214,7 +214,7 @@ msgstr ""
 msgid "All"
 msgstr ""
 
-#: admin/flagged.php:98 admin/options-page.php:395 admin/options-page.php:407
+#: admin/flagged.php:98 admin/options-page.php:411 admin/options-page.php:423
 msgid "Publish"
 msgstr ""
 
@@ -236,7 +236,7 @@ msgstr ""
 msgid "Trash"
 msgstr ""
 
-#: admin/flagged.php:117 admin/moderate.php:94 admin/options-page.php:386
+#: admin/flagged.php:117 admin/moderate.php:94 admin/options-page.php:402
 #: includes/post_types.php:213 includes/post_types.php:311
 msgid "Flag"
 msgstr ""
@@ -271,7 +271,7 @@ msgstr ""
 #: admin/reputation.php:152 includes/common-pages.php:33
 #: includes/functions.php:325 includes/functions.php:327
 #: includes/functions.php:343 includes/post_types.php:352
-#: includes/theme.php:574 theme/default/part/question.php:46
+#: includes/theme.php:578 theme/default/part/question.php:46
 msgid "Edit"
 msgstr ""
 
@@ -293,7 +293,7 @@ msgstr ""
 
 #: admin/meta_box.php:19 admin/views/dashboard.php:39
 #: admin/views/dashboard.php:101 includes/bp.php:124
-#: includes/post_types.php:120 includes/theme.php:475
+#: includes/post_types.php:120 includes/theme.php:479
 #: widgets/question_stats.php:42 widgets/questions.php:55
 msgid "Answers"
 msgstr ""
@@ -453,23 +453,23 @@ msgstr ""
 msgid "Sort answers by default."
 msgstr ""
 
-#: admin/options-page.php:146 includes/functions.php:421 includes/theme.php:473
-#: includes/theme.php:514 widgets/questions.php:54
+#: admin/options-page.php:146 includes/functions.php:421 includes/theme.php:477
+#: includes/theme.php:518 widgets/questions.php:54
 msgid "Voted"
 msgstr ""
 
-#: admin/options-page.php:147 includes/theme.php:468 includes/theme.php:510
+#: admin/options-page.php:147 includes/theme.php:472 includes/theme.php:514
 #: widgets/question_stats.php:40 widgets/questions.php:52
 msgid "Active"
 msgstr ""
 
 #: admin/options-page.php:148 includes/functions.php:419
-#: includes/functions.php:692 includes/theme.php:469 includes/theme.php:516
+#: includes/functions.php:692 includes/theme.php:473 includes/theme.php:520
 #: widgets/questions.php:53
 msgid "Newest"
 msgstr ""
 
-#: admin/options-page.php:149 includes/functions.php:420 includes/theme.php:517
+#: admin/options-page.php:149 includes/functions.php:420 includes/theme.php:521
 msgid "Oldest"
 msgstr ""
 
@@ -622,90 +622,106 @@ msgid "Permission"
 msgstr ""
 
 #: admin/options-page.php:340
-msgid "Allow anonymous"
+msgid "Multiple answers"
 msgstr ""
 
 #: admin/options-page.php:341
-msgid "Non-loggedin user can post questions and answers."
+msgid "Allow user to submit multiple answer per question."
 msgstr ""
 
 #: admin/options-page.php:348
-msgid "Only admin can answer"
+msgid "Asker cant answer"
 msgstr ""
 
 #: admin/options-page.php:349
-msgid "Only allow admin to answer question."
+msgid "Disallow asker to answer his own question."
 msgstr ""
 
 #: admin/options-page.php:356
-msgid "Only logged in can see answers"
+msgid "Allow anonymous"
 msgstr ""
 
 #: admin/options-page.php:357
-msgid "non-loggedin user cannot see answers."
+msgid "Non-loggedin user can post questions and answers."
 msgstr ""
 
 #: admin/options-page.php:364
-msgid "Only logged in can see comment"
+msgid "Only admin can answer"
 msgstr ""
 
 #: admin/options-page.php:365
-msgid "non-loggedin user cannot see comments."
+msgid "Only allow admin to answer question."
+msgstr ""
+
+#: admin/options-page.php:372
+msgid "Only logged in can see answers"
 msgstr ""
 
 #: admin/options-page.php:373
+msgid "non-loggedin user cannot see answers."
+msgstr ""
+
+#: admin/options-page.php:380
+msgid "Only logged in can see comment"
+msgstr ""
+
+#: admin/options-page.php:381
+msgid "non-loggedin user cannot see comments."
+msgstr ""
+
+#: admin/options-page.php:389
 msgid "Lock delete action"
 msgstr ""
 
-#: admin/options-page.php:374
+#: admin/options-page.php:390
 msgid ""
 "Lock comment or post after a period so that user cannot delete it. Set the "
 "time in epoch i.e. 86400 = 1 day."
 msgstr ""
 
-#: admin/options-page.php:390
+#: admin/options-page.php:406
 msgid "Status of new question"
 msgstr ""
 
-#: admin/options-page.php:391
+#: admin/options-page.php:407
 msgid "Set post status of new question."
 msgstr ""
 
-#: admin/options-page.php:402
+#: admin/options-page.php:418
 msgid "Status of new answer"
 msgstr ""
 
-#: admin/options-page.php:403
+#: admin/options-page.php:419
 msgid "Set post status of new answer."
 msgstr ""
 
-#: admin/options-page.php:415
+#: admin/options-page.php:431
 msgid "reCaptacha"
 msgstr ""
 
-#: admin/options-page.php:419
+#: admin/options-page.php:435
 msgid "Enable reCaptcha"
 msgstr ""
 
-#: admin/options-page.php:420
+#: admin/options-page.php:436
 msgid "Use this for preventing spam posts."
 msgstr ""
 
-#: admin/options-page.php:427
+#: admin/options-page.php:443
 msgid "Recaptcha site key"
 msgstr ""
 
-#: admin/options-page.php:428
+#: admin/options-page.php:444
 msgid ""
 "Enter your site key, if you dont have it get it from here "
 "https://www.google.com/recaptcha/admin"
 msgstr ""
 
-#: admin/options-page.php:435
+#: admin/options-page.php:451
 msgid "Recaptcha secret key"
 msgstr ""
 
-#: admin/options-page.php:436
+#: admin/options-page.php:452
 msgid "Enter your secret key"
 msgstr ""
 
@@ -715,7 +731,7 @@ msgstr ""
 
 #: admin/reputation.php:153 includes/class-form.php:223
 #: includes/class-form.php:230 includes/functions.php:517
-#: includes/theme.php:579
+#: includes/theme.php:583
 msgid "Delete"
 msgstr ""
 
@@ -853,7 +869,7 @@ msgid "This post was created %s ago, its locked hence you cannot delete it."
 msgstr ""
 
 #: includes/answer-form.php:18 includes/ask-form.php:22
-#: widgets/categories.php:114
+#: widgets/categories.php:106
 msgid "Name"
 msgstr ""
 
@@ -1788,7 +1804,7 @@ msgstr ""
 msgid "When user down vote others answers"
 msgstr ""
 
-#: includes/reputation.php:524 includes/theme.php:539
+#: includes/reputation.php:524 includes/theme.php:543
 #: theme/default/best_answer.php:17
 msgid "Best answer"
 msgstr ""
@@ -1861,21 +1877,29 @@ msgstr ""
 msgid "Discussion on \"%s\""
 msgstr ""
 
-#: includes/theme.php:255 includes/theme.php:542
+#: includes/theme.php:255 includes/theme.php:546
 msgid ""
 "<span>Created</span> <i><time itemprop=\"datePublished\" datetime=\"%s\">%s "
 "Ago</time></i>"
 msgstr ""
 
 #: includes/theme.php:259
+msgid "answer accepted"
+msgstr ""
+
+#: includes/theme.php:259 theme/default/answer-list.php:40
+msgid "Selected"
+msgstr ""
+
+#: includes/theme.php:262
 msgid "<i>%d views</i>"
 msgstr ""
 
-#: includes/theme.php:476 widgets/questions.php:56
+#: includes/theme.php:480 widgets/questions.php:56
 msgid "Unanswered"
 msgstr ""
 
-#: includes/theme.php:477
+#: includes/theme.php:481
 msgid "Unsolved"
 msgstr ""
 
@@ -1989,15 +2013,11 @@ msgstr ""
 msgid "Selected as a best answer"
 msgstr ""
 
-#: theme/default/answer-list.php:40 theme/default/content-list.php:51
-msgid "Selected"
-msgstr ""
-
-#: theme/default/answer.php:45
+#: theme/default/answer.php:46
 msgid "Answer is marked as a private, only admin and post author can see."
 msgstr ""
 
-#: theme/default/answer.php:50
+#: theme/default/answer.php:51
 msgid "Answer is waiting for approval by moderator."
 msgstr ""
 
@@ -2043,12 +2063,8 @@ msgstr ""
 msgid "%s ans"
 msgstr ""
 
-#: theme/default/content-list.php:37
-msgid "%s votes"
-msgstr ""
-
-#: theme/default/content-list.php:51
-msgid "answer accepted"
+#: theme/default/content-list.php:38
+msgid "votes"
 msgstr ""
 
 #: theme/default/content-none.php:9
@@ -2341,66 +2357,66 @@ msgstr ""
 msgid "No related questions found."
 msgstr ""
 
-#: widgets/categories.php:41
-msgid "Sub Categories"
+#: widgets/categories.php:36
+msgid "%d sub categories"
 msgstr ""
 
-#: widgets/categories.php:58
+#: widgets/categories.php:50
 msgid "Categories"
 msgstr ""
 
-#: widgets/categories.php:89 widgets/participants.php:43
+#: widgets/categories.php:81 widgets/participants.php:43
 #: widgets/question_stats.php:57 widgets/questions.php:46
 #: widgets/quick-ask.php:31 widgets/related_questions.php:54
 #: widgets/search.php:52 widgets/subscribe.php:45 widgets/users.php:50
 msgid "Title:"
 msgstr ""
 
-#: widgets/categories.php:93
+#: widgets/categories.php:85
 msgid "Parent:"
 msgstr ""
 
-#: widgets/categories.php:95
+#: widgets/categories.php:87
 msgid "Top level"
 msgstr ""
 
-#: widgets/categories.php:105
+#: widgets/categories.php:97
 msgid "Number:"
 msgstr ""
 
-#: widgets/categories.php:109
+#: widgets/categories.php:101
 msgid "Order By:"
 msgstr ""
 
-#: widgets/categories.php:111
+#: widgets/categories.php:103
 msgid "None"
 msgstr ""
 
-#: widgets/categories.php:112
+#: widgets/categories.php:104
 msgid "Count"
 msgstr ""
 
-#: widgets/categories.php:113
+#: widgets/categories.php:105
 msgid "ID"
 msgstr ""
 
-#: widgets/categories.php:115
+#: widgets/categories.php:107
 msgid "Slug"
 msgstr ""
 
-#: widgets/categories.php:116
+#: widgets/categories.php:108
 msgid "Term group"
 msgstr ""
 
-#: widgets/categories.php:120
+#: widgets/categories.php:112
 msgid "Order:"
 msgstr ""
 
-#: widgets/categories.php:122
+#: widgets/categories.php:114
 msgid "DESC"
 msgstr ""
 
-#: widgets/categories.php:123
+#: widgets/categories.php:115
 msgid "ASC"
 msgstr ""
 
