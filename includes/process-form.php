@@ -559,7 +559,11 @@ class AnsPress_Process_Form
 	}
 
 	public function comment_form()
-	{		
+	{
+		if(empty($_POST['comment'])){
+			$this->result = ap_ajax_responce( 'comment_content_empty');
+			return;
+		}
 
 		if(!isset($_REQUEST['comment_ID']) ){
 			// Do security check
@@ -571,7 +575,7 @@ class AnsPress_Process_Form
 			if(!ap_user_can_edit_comment((int)$_REQUEST['comment_ID'] ) || !wp_verify_nonce( $_REQUEST['__nonce'], 'comment_'.(int)$_REQUEST['comment_ID'] )){
 				$this->result = ap_ajax_responce( 'no_permission');
 				return;
-			}
+			}			
 		}
 
 		$comment_post_ID = (int) $_POST['comment_post_ID'];
