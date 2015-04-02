@@ -325,8 +325,9 @@
         select_answer: function() {
             $('body').delegate('[data-action="select_answer"]', 'click', function(e) {
                 e.preventDefault();
+                AnsPress.site.showLoading(this);
                 var q = $(this).attr('data-query');
-                ApSite.doAjax(apAjaxData(q));
+                ApSite.doAjax(apAjaxData(q), function(data){AnsPress.site.hideLoading(this);});
             });
         },
         ap_delete_post: function() {
