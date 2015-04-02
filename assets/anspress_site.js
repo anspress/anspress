@@ -129,7 +129,7 @@
             $($(elm).data('loading')).hide();
         },
         suggest_similar_questions: function() {
-            $('[data-action="suggest_similar_questions"]').on('keyup', function() {
+            $('[data-action="suggest_similar_questions"]').on('keyup keydown', function() {
                 if ($.trim($(this).val()) == '') return;
                 ApSite.doAjax(apAjaxData('ap_ajax_action=suggest_similar_questions&value=' + $(this).val()), function(data) {
                     if (typeof data['html'] !== 'undefined') $('#similar_suggestions').html(data['html']);
