@@ -37,7 +37,7 @@ jQuery(document).ready(function(){
 			tagsquery.abort();
 		}
 
-		AnsPress.site.showLoading();
+		AnsPress.site.showLoading(this);
 
 		tagsquery = jQuery.ajax({
 			type: 'POST',			
@@ -49,7 +49,7 @@ jQuery(document).ready(function(){
 			context:this,
 			dataType:'json',				
 			success: function(data){
-				AnsPress.site.hideLoading();
+				AnsPress.site.hideLoading(this);
 
 				if(!data.status)
 					return;
