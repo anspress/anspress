@@ -286,7 +286,7 @@ class AnsPress_Options_Page
 		));
 		
 		// register user settings
-		ap_register_option_group('user', __('User', 'ap') , array(
+		/*ap_register_option_group('user', __('User', 'ap') , array(
 			array(
 				'name' => 'anspress_opt[cover_width]',
 				'label' => __('Cover width', 'ap') ,
@@ -331,7 +331,7 @@ class AnsPress_Options_Page
 				'value' => $settings['default_rank'],
 				'show_desc_tip' => false,
 			) ,
-		));
+		));*/
 		
 		// register permission settings
 		ap_register_option_group('permission', __('Permission', 'ap') , array(

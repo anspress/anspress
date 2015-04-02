@@ -145,7 +145,8 @@ APjs.admin.prototype = {
 			var id = jQuery(this).attr('href');
 			jQuery.ajax({
 				type: 'POST',  
-				url: ajaxurl,  
+				url: ajaxurl, 
+				cache: false,
 				data:  jQuery(this).serialize({ checkboxesAsBools: true }),
 				context:this,
 				dataType:'json',
