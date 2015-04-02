@@ -115,12 +115,26 @@
             var offset = $(elm).offset();
             var height = $(elm).outerHeight();
             var width = $(elm).outerWidth();
-            el.css({
-                top: offset.top,
-                left: offset.left,
-                height: height,
-                width: width
-            });
+
+            if($(elm).is('a, button, input[type="submit"], form')){
+                el.css({
+                    top: offset.top,
+                    left: offset.left,
+                    height: height,
+                    width: width
+                });
+            }else if($(elm).is('input[type="text"]')){
+                el.css({
+                    top: offset.top,
+                    left: offset.left + width
+                });
+            }else{
+                elm.css({
+                    top: offset.top,
+                    left: offset.left
+                });
+            }
+
             $(elm).data('loading', '#apuid-' + uid);
 
             return '#apuid-' + uid;
@@ -138,8 +152,10 @@
         },
         ap_ajax_form: function() {
             $('body').delegate('[data-action="ap_ajax_form"]', 'submit', function() {
+                AnsPress.site.showLoading(this);
                 if (typeof tinyMCE !== 'undefined') tinyMCE.triggerSave();
                 ApSite.doAjax(apAjaxData($(this).formSerialize()), function(data) {
+                    AnsPress.site.hideLoading(this);
                     if (typeof tinyMCE !== 'undefined' && typeof data.type !== 'undefined' && data.type == 'success') tinyMCE.activeEditor.setContent('');
                 }, this);
                 return false;
@@ -253,8 +269,10 @@
         ap_subscribe: function() {
             $('[data-action="ap_subscribe"]').click(function(e) {
                 e.preventDefault();
+                AnsPress.site.showLoading(this);
                 var q = $(this).attr('data-query');
                 ApSite.doAjax(apAjaxData(q), function(data) {
+                    AnsPress.site.hideLoading(this);
                     if (data.action == 'subscribed') {
                         $(this).addClass('active');
                         $(this).closest('.ap-subscribe').addClass('active');
@@ -270,8 +288,10 @@
         vote: function() {
             $('body').delegate('[data-action="vote"] a', 'click', function(e) {
                 e.preventDefault();
+                AnsPress.site.showLoading(this);
                 var q = $(this).attr('data-query');
                 ApSite.doAjax(apAjaxData(q), function(data) {
+                    AnsPress.site.hideLoading(this);
                     var vote_c = $(this).parent();
                     vote_c.find('.ap-vote-fade').remove();
                     if (typeof data['action'] !== 'undefined' && data['action'] == 'voted' || data['action'] == 'undo') {

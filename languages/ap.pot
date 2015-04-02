@@ -2,10 +2,10 @@
 # This file is distributed under the GPL-2.0+.
 msgid ""
 msgstr ""
-"Project-Id-Version: AnsPress 2.0.2\n"
+"Project-Id-Version: AnsPress 2.0.3\n"
 "Report-Msgid-Bugs-To: "
 "http://wordpress.org/support/plugin/anspress-question-answer\n"
-"POT-Creation-Date: 2015-03-31 17:49:13+00:00\n"
+"POT-Creation-Date: 2015-04-02 12:42:16+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -589,50 +589,6 @@ msgstr ""
 msgid "Disable voting on answers."
 msgstr ""
 
-#: admin/options-page.php:289
-msgid "User"
-msgstr ""
-
-#: admin/options-page.php:292
-msgid "Cover width"
-msgstr ""
-
-#: admin/options-page.php:293
-msgid "Set width of user cover photo."
-msgstr ""
-
-#: admin/options-page.php:300
-msgid "Cover height"
-msgstr ""
-
-#: admin/options-page.php:301
-msgid "Set height of user cover photo."
-msgstr ""
-
-#: admin/options-page.php:308
-msgid "Cover thumb width"
-msgstr ""
-
-#: admin/options-page.php:309
-msgid "Set width of user cover photo thumbnail."
-msgstr ""
-
-#: admin/options-page.php:316
-msgid "Small cover height"
-msgstr ""
-
-#: admin/options-page.php:317
-msgid "Set height of user cover photo thumbnail."
-msgstr ""
-
-#: admin/options-page.php:324
-msgid "Default rank"
-msgstr ""
-
-#: admin/options-page.php:325
-msgid "Assign a default rank for newly registered user."
-msgstr ""
-
 #: admin/options-page.php:337
 msgid "Permission"
 msgstr ""
@@ -874,7 +830,7 @@ msgstr ""
 msgid "Respond to the post."
 msgstr ""
 
-#: includes/ajax.php:144 includes/ajax.php:172 includes/process-form.php:638
+#: includes/ajax.php:144 includes/ajax.php:172 includes/process-form.php:642
 msgid "One comment"
 msgid_plural "%d comments"
 msgstr[0] ""
@@ -949,7 +905,7 @@ msgstr ""
 msgid "Answer this question"
 msgstr ""
 
-#: includes/bp.php:179 includes/functions.php:1085
+#: includes/bp.php:179 includes/functions.php:1086
 msgid "%d Reputation"
 msgstr ""
 
@@ -1250,11 +1206,15 @@ msgstr ""
 msgid "Please check captcha field and resubmit it again."
 msgstr ""
 
-#: includes/functions.php:989
+#: includes/functions.php:837
+msgid "Comment content is empty."
+msgstr ""
+
+#: includes/functions.php:990
 msgid "Anonymous"
 msgstr ""
 
-#: includes/functions.php:1020
+#: includes/functions.php:1021
 msgid " (anonymous)"
 msgstr ""
 
