@@ -160,7 +160,7 @@ class AnsPress_Admin {
 		if($mod_count > 0)
 			$Modcount = ' <span class="update-plugins count"><span class="plugin-count">'.number_format_i18n($mod_count).'</span></span>';
 		
-		$pos = $this->get_free_menu_position(15);
+		$pos = $this->get_free_menu_position(42.9);
 
 		add_menu_page( 'AnsPress', 'AnsPress'.$Totalcount, 'delete_pages', 'anspress', array($this, 'dashboard_page'), ANSPRESS_URL . '/assets/answer.png', $pos );
 		
