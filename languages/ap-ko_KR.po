@@ -1,0 +1,3885 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: AnsPress\n"
+"POT-Creation-Date: 2015-03-25 14:55+0900\n"
+"PO-Revision-Date: 2015-03-25 17:29+0900\n"
+"Last-Translator: Seongho Jang <spcblack@gmail.com>\n"
+"Language-Team: Wp3.in <rah12@live.com>\n"
+"Language: ko_KR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.7.5\n"
+"X-Poedit-Basepath: F:\\06.Wordpress\\language\\anspress-question-"
+"answer.1.4.3\\anspress-question-answer\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
+"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.js\n"
+
+#: activate.php:122
+msgid "Participant"
+msgstr "참가자"
+
+#: activate.php:123
+msgid "Editor"
+msgstr "편집자"
+
+#: activate.php:124
+msgid "Moderator"
+msgstr "승인자"
+
+#: addons/Basic Email/addon.php:50
+msgid "New Question: "
+msgstr "신규 질문:"
+
+#: addons/Basic Email/addon.php:51
+#, php-format
+msgid "Hello! Admin, <br /><br /> A new question is posted by %s <br />"
+msgstr "관리자님, <br /><br />  %s 님이 새로운 질문을 작성했습니다. <br />"
+
+#: addons/Basic Email/addon.php:53 Email/addon.php:140
+msgid "View question"
+msgstr "질문 열람"
+
+#: addons/Basic Email/addon.php:54 Email/addon.php:88 Email/addon.php:111
+#: Email/addon.php:125 Email/addon.php:141
+msgid "Powered by"
+msgstr "Powered by"
+
+#: addons/Basic Email/addon.php:81
+msgid "New Answer on: "
+msgstr "새로운 답변:"
+
+#: addons/Basic Email/addon.php:83
+#, php-format
+msgid "Hello!,<br /><br /> A new answer is posted by %s <br />"
+msgstr "안녕하세요.<br /><br />  %s 님이 새로운 답변을 작성했습니다. <br />"
+
+#: addons/Basic Email/addon.php:86 includes/anspress-posts.php:154
+msgid "View Answer"
+msgstr "답변 열람"
+
+#: addons/Basic Email/addon.php:104
+msgid "New comment on: "
+msgstr "신규 댓글:"
+
+#: addons/Basic Email/addon.php:106 Email/addon.php:120
+#, php-format
+msgid "Hello!,<br /><br /> A new comment is posted by %s <br />"
+msgstr "안녕하세요.<br /><br />  %s 님이 새 댓글을 다셨습니다. <br />"
+
+#: addons/Basic Email/addon.php:109 Email/addon.php:123
+msgid "View comment"
+msgstr "댓글 열람"
+
+#: addons/Basic Email/addon.php:118
+msgid "New comment on answer of: "
+msgstr "답변에 대한 신규 댓글:"
+
+#: addons/Basic Email/addon.php:137
+msgid "Your answer is selected as a best"
+msgstr "최고 답변에 뽑혔습니다."
+
+#: addons/Basic Email/addon.php:138
+#, php-format
+msgid "Hello!, <br /><br /> You answer on %s is selected as best by %s <br />"
+msgstr ""
+"안녕하세요. <br /><br /> %s 님이 %s에 대한 최고 답변으로 채택했습니다. <br />"
+
+#: addons/reCaptcha/addon.php:65
+msgid "reCAPTCHA is not valid, please try again."
+msgstr "reCAPTCHA 가 유효하지 않습니다. 다시 시도 해 주세요."
+
+#: admin/anspress-admin.php:173 includes/anspress-posts.php:103
+msgid "All Questions"
+msgstr "모든 질문"
+
+#: admin/anspress-admin.php:175 includes/anspress-posts.php:106
+msgid "New Question"
+msgstr "신규 질문"
+
+#: admin/anspress-admin.php:177 includes/anspress-posts.php:153
+msgid "All Answers"
+msgstr "모든 답변"
+
+#: admin/anspress-admin.php:179
+msgid "Moderate question & answer"
+msgstr "승인 대기 Q&A"
+
+#: admin/anspress-admin.php:179 admin/flagged.php:94 admin/moderate.php:76
+#: includes/anspress-posts.php:203 includes/anspress-posts.php:728
+#: includes/anspress-posts.php:741
+msgid "Moderate"
+msgstr "승인 대기"
+
+#: admin/anspress-admin.php:181 admin/anspress-admin.php:320
+msgid "Flagged question & answer"
+msgstr "신고 Q&A"
+
+#: admin/anspress-admin.php:181
+msgid "Flagged"
+msgstr "신고"
+
+#: admin/anspress-admin.php:191 admin/anspress-admin.php:498
+#: admin/anspress-admin.php:573 includes/anspress-functions.php:789
+#: theme/default/content-user.php:17 theme/default/user.php:22
+msgid "Points"
+msgstr "점수"
+
+#: admin/anspress-admin.php:191
+msgid "User Points"
+msgstr "사용자 점수"
+
+#: admin/anspress-admin.php:193 includes/anspress-user.php:497
+msgid "Badges"
+msgstr "뱃지"
+
+#: admin/anspress-admin.php:193
+msgid "User Badges"
+msgstr "사용자 뱃지"
+
+#: admin/anspress-admin.php:195 admin/anspress-admin.php:442
+#: admin/views/admin.php:9
+msgid "AnsPress Options"
+msgstr "AnsPress 옵션"
+
+#: admin/anspress-admin.php:195
+msgid "Options"
+msgstr "옵션"
+
+#: admin/anspress-admin.php:197
+msgid "Addons"
+msgstr "추가기능"
+
+#: admin/anspress-admin.php:199
+msgid "Install"
+msgstr "설치"
+
+#: admin/anspress-admin.php:249
+msgid "AnsPress Points"
+msgstr "AnsPress 점수"
+
+#: admin/anspress-admin.php:250
+msgid "New point"
+msgstr "신규 점수"
+
+#: admin/anspress-admin.php:272
+msgid "AnsPress Badges"
+msgstr "AnsPress 뱃지"
+
+#: admin/anspress-admin.php:273
+msgid "New badge"
+msgstr "신규 뱃지"
+
+#: admin/anspress-admin.php:298
+msgid "Posts waiting moderation"
+msgstr "승인 대기 중인 글"
+
+#: admin/anspress-admin.php:342
+msgid "Settings"
+msgstr "설정"
+
+#: admin/anspress-admin.php:381 admin/anspress-admin.php:397
+msgid "AnsPress"
+msgstr "AnsPress"
+
+#: admin/anspress-admin.php:402
+msgid "Ask"
+msgstr "문의하기"
+
+#: admin/anspress-admin.php:407 admin/views/admin.php:31
+#: theme/default/question.php:143 widgets/categories.php:58
+msgid "Categories"
+msgstr "분류"
+
+#: admin/anspress-admin.php:412 admin/views/admin.php:32
+#: includes/anspress-form.php:865 includes/anspress-form.php:965
+#: includes/anspress-posts.php:229 theme/default/question.php:153
+msgid "Tags"
+msgstr "태그"
+
+#: admin/anspress-admin.php:417 includes/anspress-ranks.php:108
+#: widgets/users.php:37
+msgid "Users"
+msgstr "사용자"
+
+#: admin/anspress-admin.php:422
+msgid "My profile"
+msgstr "프로필"
+
+#: admin/anspress-admin.php:429
+msgid "Add to Menu"
+msgstr "메뉴에 추가"
+
+#: admin/anspress-admin.php:446
+msgid "AnsPress Role"
+msgstr "AnsPress 역할"
+
+#: admin/anspress-admin.php:455
+msgid "Role and permission for AnsPress"
+msgstr "AnsPress 역할과 권한"
+
+#: admin/anspress-admin.php:471
+msgid "AnsPress options updated successfully"
+msgstr "AnsPress 옵션 변경 성공"
+
+#: admin/anspress-admin.php:486 admin/anspress-admin.php:561
+#: admin/anspress-admin.php:628 admin/anspress-admin.php:722
+#: admin/flagged.php:109 admin/moderate.php:89 admin/views/admin.php:486
+#: admin/views/admin.php:507 includes/anspress-form.php:822
+#: includes/anspress-form.php:906 includes/anspress-posts.php:227
+msgid "Title"
+msgstr "제목"
+
+#: admin/anspress-admin.php:492 admin/anspress-admin.php:567
+#: admin/anspress-admin.php:634 admin/anspress-admin.php:728
+#: admin/views/admin.php:492 admin/views/admin.php:513
+msgid "Description"
+msgstr "설명"
+
+#: admin/anspress-admin.php:504 admin/anspress-admin.php:579
+#: admin/anspress-admin.php:652 admin/anspress-admin.php:746
+msgid "Event"
+msgstr "이벤트"
+
+#: admin/anspress-admin.php:510 admin/anspress-admin.php:585
+msgid "Save Point"
+msgstr "점수 저장"
+
+#: admin/anspress-admin.php:640 admin/anspress-admin.php:734
+#: admin/flagged.php:108
+msgid "Type"
+msgstr "타입"
+
+#: admin/anspress-admin.php:646 admin/anspress-admin.php:740
+msgid "Min. Points"
+msgstr "최소 점수"
+
+#: admin/anspress-admin.php:658 admin/anspress-admin.php:752
+msgid "Multiple"
+msgstr "다수"
+
+#: admin/anspress-admin.php:664 admin/anspress-admin.php:758
+msgid "Save badge"
+msgstr "뱃지 저장"
+
+#: admin/anspress-admin.php:803 admin/views/addons.php:31
+msgid "Activate"
+msgstr "활성화"
+
+#: admin/anspress-admin.php:803
+#, php-format
+msgid "%s disabled successfully."
+msgstr "%s 비활성화 성공"
+
+#: admin/anspress-admin.php:806 admin/views/addons.php:29
+msgid "Deactivate"
+msgstr "비활성화"
+
+#: admin/anspress-admin.php:806
+#, php-format
+msgid "%s activated successfully."
+msgstr "%s 활성화 성공"
+
+#: admin/badges.php:156 admin/badges.php:157
+msgid "Delete this badge"
+msgstr "뱃지 삭제"
+
+#: admin/badges.php:156 admin/flagged.php:174 admin/meta_box.php:65
+#: admin/moderate.php:152 admin/points.php:152
+#: includes/anspress-functions.php:274 includes/anspress-functions.php:286
+#: includes/anspress-posts.php:396 theme/default/answer-list.php:18
+#: theme/default/functions.php:124 theme/default/part/question.php:46
+msgid "Edit"
+msgstr "수정"
+
+#: admin/badges.php:157 admin/meta_box.php:110 admin/points.php:153
+#: includes/anspress-functions.php:620 theme/default/functions.php:127
+msgid "Delete"
+msgstr "삭제"
+
+#: admin/badges.php:173
+msgid "Yes"
+msgstr "예"
+
+#: admin/badges.php:174
+msgid "No"
+msgstr "아니오"
+
+#: admin/badges.php:179
+msgid "N/A"
+msgstr "N/A"
+
+#: admin/flagged.php:66 admin/moderate.php:57 widgets/search.php:20
+msgid "Search"
+msgstr "검색"
+
+#: admin/flagged.php:92
+msgid "Publish"
+msgstr "발행"
+
+#: admin/flagged.php:93 admin/flagged.php:227 admin/moderate.php:205
+msgid "Pending"
+msgstr "보류"
+
+#: admin/flagged.php:95
+msgid "Draft"
+msgstr "임시"
+
+#: admin/flagged.php:96 admin/flagged.php:175 admin/meta_box.php:67
+#: admin/moderate.php:153 includes/anspress-posts.php:390
+msgid "Trash"
+msgstr "휴지통"
+
+#: admin/flagged.php:110 admin/moderate.php:90 includes/anspress-posts.php:233
+#: includes/anspress-posts.php:249 includes/anspress-vote.php:335
+msgid "Flag"
+msgstr "신고"
+
+#: admin/flagged.php:111 admin/moderate.php:91 includes/anspress-form.php:846
+#: includes/anspress-form.php:937 includes/anspress-posts.php:228
+msgid "Category"
+msgstr "분류"
+
+#: admin/flagged.php:155 admin/meta_box.php:20 admin/views/admin.php:28
+#: includes/anspress-points.php:360 includes/anspress-posts.php:117
+#: includes/anspress-posts.php:245
+msgid "Question"
+msgstr "질문"
+
+#: admin/flagged.php:157 includes/anspress-points.php:367
+#: includes/anspress-posts.php:167
+msgid "Answer"
+msgstr "답변"
+
+#: admin/flagged.php:169 admin/flagged.php:221 admin/moderate.php:147
+#: admin/moderate.php:199 includes/anspress-posts.php:387
+msgid "Restore"
+msgstr "복구"
+
+#: admin/flagged.php:170 admin/flagged.php:222 admin/moderate.php:148
+#: admin/moderate.php:200
+msgid "Delete permanently"
+msgstr "영구 삭제"
+
+#: admin/flagged.php:176 admin/moderate.php:154
+#: includes/anspress-posts.php:408
+msgid "View"
+msgstr "열람"
+
+#: admin/flagged.php:208 admin/moderate.php:186
+#: includes/anspress-posts.php:278
+msgid "--"
+msgstr "--"
+
+#: admin/flagged.php:226 admin/moderate.php:204
+msgid "Published"
+msgstr "발행함"
+
+#: admin/flagged.php:228 admin/moderate.php:206
+msgid "Move to trash"
+msgstr "휴지통으로 보냄"
+
+#: admin/meta_box.php:19 admin/views/admin.php:29
+#: includes/anspress-posts.php:151 includes/anspress-user.php:496
+#: theme/default/user-profile.php:14 widgets/questions.php:145
+msgid "Answers"
+msgstr "답변"
+
+#: admin/meta_box.php:24
+msgid "Flag & report"
+msgstr "신고"
+
+#: admin/meta_box.php:60
+#, php-format
+msgid "<span class=\"when\">Answered about %s ago</span>"
+msgstr "<span class=\"when\"> %s 전에 답변함</span>"
+
+#: admin/meta_box.php:66
+msgid "Hide"
+msgstr "숨김"
+
+#: admin/meta_box.php:74
+msgid "No answers yet"
+msgstr "미답변"
+
+#: admin/meta_box.php:104
+#, php-format
+msgid "<span class=\"when\">Flagged about %s ago</span>"
+msgstr "<span class=\"when\">%s 전에 신고됨</span>"
+
+#: admin/meta_box.php:107
+msgid "Flagged with custom message"
+msgstr "메시지와 함께 신고됨"
+
+#: admin/meta_box.php:117
+msgid "No flag yet"
+msgstr "신고 없음"
+
+#: admin/meta_box.php:126
+#, php-format
+msgid "<strong>1</strong> Answer"
+msgid_plural "<strong>%d</strong> Answers"
+msgstr[0] "<strong>1 개</strong> 답변"
+msgstr[1] "<strong>%d 개</strong> 답변"
+
+#: admin/meta_box.php:127
+#, php-format
+msgid "<strong>1</strong> Vote"
+msgid_plural "<strong>%d</strong> Votes"
+msgstr[0] "<strong>1 표 </strong> 득표"
+msgstr[1] "<strong>%d 표</strong> 득표"
+
+#: admin/moderate.php:88 includes/anspress-posts.php:226
+msgid "Status"
+msgstr "상태"
+
+#: admin/points.php:152 admin/points.php:153
+msgid "Delete this point"
+msgstr "점수 삭제"
+
+#: admin/views/addons.php:7
+msgid "AnsPress Addons"
+msgstr "AnsPress 추가 기능"
+
+#: admin/views/addons.php:17 includes/anspress-functions.php:515
+#: widgets/questions.php:142
+msgid "Active"
+msgstr "활성"
+
+#: admin/views/addons.php:22
+msgid "Addon Details"
+msgstr "추가기능 상세"
+
+#: admin/views/admin.php:13
+msgid "Options saved"
+msgstr "옵션 저장함 "
+
+#: admin/views/admin.php:27
+msgid "General"
+msgstr "일반사항"
+
+#: admin/views/admin.php:30 admin/views/admin.php:156
+msgid "Theme"
+msgstr "테마"
+
+#: admin/views/admin.php:33
+msgid "User"
+msgstr "사용자"
+
+#: admin/views/admin.php:34 admin/views/admin.php:295
+msgid "Permission"
+msgstr "허가권"
+
+#: admin/views/admin.php:35
+msgid "Pages"
+msgstr "페이지"
+
+#: admin/views/admin.php:36
+msgid "Permalink"
+msgstr "고유주소"
+
+#: admin/views/admin.php:37 theme/default/question.php:131
+msgid "Labels"
+msgstr "레이블"
+
+#: admin/views/admin.php:38 admin/views/admin.php:476
+msgid "Spam"
+msgstr "스팸"
+
+#: admin/views/admin.php:39
+msgid "Maintenance"
+msgstr "관리"
+
+#: admin/views/admin.php:48
+msgid "Base Page"
+msgstr "기준 페이지"
+
+#: admin/views/admin.php:51 admin/views/install.php:70
+msgid ""
+"This page slug is use as base slug, if this page was selected for home page "
+"then no base slug will be added"
+msgstr ""
+"이 페이지 슬러그를 기준 슬러그로 사용합니다. 이 페이지를 홈 페이지로 선택하"
+"면 기준 슬러그를 추가하지 않습니다."
+
+#: admin/views/admin.php:111
+msgid "Minimum words in title"
+msgstr "제목의 최소 단어 수"
+
+#: admin/views/admin.php:114
+msgid "Minimum words for question title."
+msgstr "질문 제목의 최소 단어 수"
+
+#: admin/views/admin.php:118
+msgid "Minimum words in question"
+msgstr "질문의 최소 단어 수"
+
+#: admin/views/admin.php:121
+msgid "Set minimum question word limit."
+msgstr "질문의 최소 단어 수 설정"
+
+#: admin/views/admin.php:130
+msgid "Multiple Answers"
+msgstr "복수 답변"
+
+#: admin/views/admin.php:133
+msgid "Allow an user to submit multiple answers on a single question"
+msgstr "한 질문에 복수의 답변을 작성하는 것을 허용"
+
+#: admin/views/admin.php:137
+msgid "Minimum words in answer"
+msgstr "답변의 최소 단어 수"
+
+#: admin/views/admin.php:140
+msgid "Set minimum answer word limit."
+msgstr "답변의 최소 단어 수 설정"
+
+#: admin/views/admin.php:144
+msgid "Close after selecting answer"
+msgstr "답변 채택 후 답변 완료로 처리"
+
+#: admin/views/admin.php:147
+msgid "Do not allow new answer after selecting answer."
+msgstr "답변 채택 후에는 새로은 답변을 허용 하지 않음"
+
+#: admin/views/admin.php:164
+msgid "Set the theme you want to use"
+msgstr "사용 테마 설정"
+
+#: admin/views/admin.php:168
+msgid "Avatar size in question page"
+msgstr "질문의 아바타 크기"
+
+#: admin/views/admin.php:171
+msgid "User avatar size for question."
+msgstr "질문에서의 사용자 아바타 크기"
+
+#: admin/views/admin.php:175
+msgid "Avatar size in answer"
+msgstr "답변의 아바타 크기"
+
+#: admin/views/admin.php:178
+msgid "User avatar in question page answers."
+msgstr "답변에서의 사용자 아바타 크기"
+
+#: admin/views/admin.php:187
+msgid "Enable tags"
+msgstr "태그 사용"
+
+#: admin/views/admin.php:190
+msgid "Enable or disable tags system"
+msgstr "태그를 사용/사용 안함"
+
+#: admin/views/admin.php:194
+msgid "Maximum tags"
+msgstr "최대 태그"
+
+#: admin/views/admin.php:197
+msgid "Maximum numbers of tags that user can add when asking."
+msgstr "질문 작성에 사용할 수 있는 최대 태그 수"
+
+#: admin/views/admin.php:201
+msgid "Minimum tags"
+msgstr "최소 태그"
+
+#: admin/views/admin.php:204
+msgid "Minimum numbers of tags user need to add when asking."
+msgstr "질문 작성에 사용할 수 있는 최소 태그 수"
+
+#: admin/views/admin.php:208
+msgid "Minimum points to create new tag"
+msgstr "신규 태그 생성에 필요한 최소 점수"
+
+#: admin/views/admin.php:211
+msgid "User must have more or equal to those points to create a new tag."
+msgstr "사용자는 신규 태그 생성에 필요한 점수 또는 그 이상을 보유해야 합니다."
+
+#: admin/views/admin.php:220
+msgid "Enable categories"
+msgstr "분류 사용"
+
+#: admin/views/admin.php:223
+msgid "Enable or disable categories system"
+msgstr "분류를 사용/사용 안함"
+
+#: admin/views/admin.php:233
+msgid "Default avatar"
+msgstr "기본 아바타"
+
+#: admin/views/admin.php:239
+msgid "Default avatar."
+msgstr "기본 아바타."
+
+#: admin/views/admin.php:243
+msgid "Cover width"
+msgstr "표지 폭"
+
+#: admin/views/admin.php:246
+msgid "Width of of the cover image."
+msgstr "표지의 폭"
+
+#: admin/views/admin.php:250
+msgid "Cover height"
+msgstr "표지 높이"
+
+#: admin/views/admin.php:253
+msgid "Height of the cover image."
+msgstr "표지의 높이"
+
+#: admin/views/admin.php:257
+msgid "Small cover width"
+msgstr "작은 표지 폭"
+
+#: admin/views/admin.php:260
+msgid "Width of of the small cover image."
+msgstr "작은 표지의 폭"
+
+#: admin/views/admin.php:264
+msgid "Small cover height"
+msgstr "작은 표지 높이"
+
+#: admin/views/admin.php:267
+msgid "Height of the small cover image."
+msgstr "작은 표지의 높이"
+
+#: admin/views/admin.php:271
+msgid "Default rank"
+msgstr "기본 랭크"
+
+#: admin/views/admin.php:285 includes/anspress-ranks.php:151
+msgid "There are no ranks available."
+msgstr "랭크 사용이 불가합니다."
+
+#: admin/views/admin.php:288
+msgid "Assign a default rank for newly registered user"
+msgstr "신규 가입자의 기본 랭크"
+
+#: admin/views/admin.php:298
+msgid "Post questions"
+msgstr "질문 작성"
+
+#: admin/views/admin.php:302
+msgid "Allow anonymous"
+msgstr "익명 사용자 허용"
+
+#: admin/views/admin.php:307
+msgid "Post answers"
+msgstr "답변 작성"
+
+#: admin/views/admin.php:311
+msgid "Only admin can answer"
+msgstr "관리자만 답변 가능"
+
+#: admin/views/admin.php:316
+msgid "Show answers"
+msgstr "답변 보기"
+
+#: admin/views/admin.php:320
+msgid "Only logged in can see answers"
+msgstr "로그인 후 답변 보기"
+
+#: admin/views/admin.php:325
+msgid "Show comments"
+msgstr "댓글 보여주기"
+
+#: admin/views/admin.php:329
+msgid "Only logged in can see comment"
+msgstr "로그인 후 댓글 보기"
+
+#: admin/views/admin.php:337
+msgid "Item per page"
+msgstr "페이지당 아이템 수"
+
+#: admin/views/admin.php:340
+msgid "Question per page"
+msgstr "페이지당 질문 수"
+
+#: admin/views/admin.php:343
+msgid "Question to show per page"
+msgstr "페이지당 보여줄 질문 수"
+
+#: admin/views/admin.php:347
+msgid "Answers per page"
+msgstr "페이지당 답변 수"
+
+#: admin/views/admin.php:350
+msgid "Answers to show per page in question page"
+msgstr "질문 목록의 페지이당 보여줄 답변 수"
+
+#: admin/views/admin.php:354
+msgid "Tags per page"
+msgstr "페이지당 태그 수"
+
+#: admin/views/admin.php:357
+msgid "Tags to show per page"
+msgstr "페이지당 보여줄 태그 수"
+
+#: admin/views/admin.php:361
+msgid "Users per page"
+msgstr "페이지당 사용자"
+
+#: admin/views/admin.php:364
+msgid "Users to show per page on users page"
+msgstr "사용자 페이지에서 한 페이지당 보여줄 사용자 수"
+
+#: admin/views/admin.php:368
+msgid "Followers per page"
+msgstr "페이지당 팔로우"
+
+#: admin/views/admin.php:371
+msgid "How many followers to display on user profile?"
+msgstr "사용자 프로필에서 보여줄 팔로우의 수?"
+
+#: admin/views/admin.php:375
+msgid "Following users per page"
+msgstr "페이지당 팔로잉 수"
+
+#: admin/views/admin.php:378
+msgid "How many following users to display on user profile?"
+msgstr "사용자 프로필에서 보여줄 팔로잉 수?"
+
+#: admin/views/admin.php:382
+msgid "Sorting & Ordering"
+msgstr "정렬"
+
+#: admin/views/admin.php:385
+msgid "Default sorting of answers"
+msgstr "답변의 기본 정렬"
+
+#: admin/views/admin.php:392
+msgid "Default active tab for answers list"
+msgstr "답변 목록의 기본 활성 탭"
+
+#: admin/views/admin.php:396
+msgid "Page titles"
+msgstr "페이지 제목"
+
+#: admin/views/admin.php:399
+msgid "Base page title"
+msgstr "기준 페이지 제목"
+
+#: admin/views/admin.php:405
+msgid "Ask page title"
+msgstr "질문 페이지 제목"
+
+#: admin/views/admin.php:411
+msgid "Categories page title"
+msgstr "분류 페이지 제목"
+
+#: admin/views/admin.php:417
+msgid "Tags page title"
+msgstr "태그 페이지 제목"
+
+#: admin/views/admin.php:423
+msgid "Users page title"
+msgstr "사용자 페이지 제목"
+
+#: admin/views/admin.php:429
+msgid "Search page title"
+msgstr "검색 페이지 제목"
+
+#: admin/views/admin.php:440 admin/views/admin.php:443
+msgid "Question prefix"
+msgstr "질문 머릿말"
+
+#: admin/views/admin.php:452 admin/views/install.php:79
+msgid "Default label"
+msgstr "기본 레이블"
+
+#: admin/views/admin.php:467
+msgid "There are no labels available."
+msgstr "사용 가능한 레이블이 없습니다."
+
+#: admin/views/admin.php:470
+msgid "Assign a default label for new questions"
+msgstr "신규 질문에 기본 레이블 할당"
+
+#: admin/views/admin.php:477
+msgid "Default notes when flagging the posts"
+msgstr "신고할 때의 기본 노트"
+
+#: admin/views/admin.php:523
+msgid "Moderation"
+msgstr "승인"
+
+#: admin/views/admin.php:526
+msgid "New question"
+msgstr "신규 질문"
+
+#: admin/views/admin.php:529
+msgid "No moderation"
+msgstr "승인 없음"
+
+#: admin/views/admin.php:530
+msgid "Hold for review"
+msgstr "검토 대기"
+
+#: admin/views/admin.php:531
+msgid "Point required"
+msgstr "필요 점수"
+
+#: admin/views/admin.php:533
+msgid ""
+"Hold new question for moderation. If you select \"Point required\" then you "
+"can must enter point below."
+msgstr ""
+"승인을 위해 신규 질문을 보류합니다. \"필요 점수\" 을 원하시면 아래에 점수를 "
+"입력하십시오."
+
+#: admin/views/admin.php:537
+msgid "Point required for question"
+msgstr "질문을 위한 필요 점수"
+
+#: admin/views/admin.php:540
+msgid "Point required for directly publish new question."
+msgstr "신규 질문 작성을 위해 필요한 점수"
+
+#: admin/views/admin.php:544
+msgid "reCaptcha"
+msgstr "reCaptcha"
+
+#: admin/views/admin.php:547
+msgid "Public Key"
+msgstr "공개키"
+
+#: admin/views/admin.php:553
+msgid "Private Key"
+msgstr "개인키"
+
+#: admin/views/admin.php:559
+msgid "Enable in ask form"
+msgstr "질문 양식에서 사용"
+
+#: admin/views/admin.php:565
+msgid "Enable in answer form"
+msgstr "답변 양식에서 사용"
+
+#: admin/views/admin.php:571
+msgid "Enable reCaptcha skip based on user points"
+msgstr "사용자 점수에 따라 reCaptcha 건너뛰기 사용"
+
+#: admin/views/admin.php:577
+msgid "Minimum points to skip reCaptcha"
+msgstr "reCaptcha를 건너뛰기 위한 최소 점수"
+
+#: admin/views/admin.php:585
+msgid "Recount Views"
+msgstr "열람 정보 재집계 "
+
+#: admin/views/admin.php:588
+msgid "Recount metas"
+msgstr "메타 재집계 "
+
+#: admin/views/admin.php:591
+msgid "Recount views"
+msgstr "열람 재집계 "
+
+#: admin/views/admin.php:592
+msgid "This will recheck views count"
+msgstr "열람 횟수를 재집계합니다."
+
+#: admin/views/admin.php:595
+msgid "Recount votes"
+msgstr "투표 재집계 "
+
+#: admin/views/admin.php:596
+msgid "This will recheck vote count"
+msgstr "득표를 재집계합니다."
+
+#: admin/views/admin.php:599
+msgid "Recount favorites"
+msgstr "즐겨찾기 재집계 "
+
+#: admin/views/admin.php:600
+msgid "This will recheck favorite count"
+msgstr "즐겨찾기 횟수를 재집계합니다."
+
+#: admin/views/admin.php:603
+msgid "Recount flag"
+msgstr "신고 재집계 "
+
+#: admin/views/admin.php:604
+msgid "This will recheck flag count"
+msgstr "신고 횟수를 재집계합니다."
+
+#: admin/views/admin.php:607
+msgid "Recount close"
+msgstr "답변 완료 재집계 "
+
+#: admin/views/admin.php:608
+msgid "This will recheck close count"
+msgstr "답변 완료를 재집계합니다."
+
+#: admin/views/install.php:5
+msgid "Question marked as open for discussion"
+msgstr "답변 가능으로 표시"
+
+#: admin/views/install.php:6
+msgid "Question marked as closed"
+msgstr "답변 완료로 표시"
+
+#: admin/views/install.php:7
+msgid "Question marked as solved"
+msgstr "해결로 표시"
+
+#: admin/views/install.php:8
+msgid "Question marked as duplicate"
+msgstr "중복으로 표시"
+
+#: admin/views/install.php:58
+msgid "AnsPress Installation"
+msgstr "AnsPress 설치"
+
+#: admin/views/install.php:63
+msgid "Start installation"
+msgstr "설치 시작"
+
+#: admin/views/install.php:64
+msgid ""
+"For your convenience, we have created this auto installer. You must complete "
+"this step for proper working of anspress."
+msgstr ""
+"편의를 위해 자동 설치를 만들었습니다. AnsPress 의 원활한 사용을 위해서는 이 "
+"단계를 완료해야만 합니다."
+
+#: admin/views/install.php:67
+msgid "Check base page"
+msgstr "기준 페이지 확인"
+
+#: admin/views/install.php:71
+msgid ""
+"WARNING: All content of selected page will be removed and replaced with "
+"[anspress] shortcode."
+msgstr ""
+"경고: 선택한 페이지의 모든 내용을 삭제하고 [anspress] 숏코드로 대체합니다."
+
+#: admin/views/install.php:72 admin/views/install.php:96
+#: admin/views/install.php:103 admin/views/install.php:110
+msgid "OK! Continue"
+msgstr "계속진행"
+
+#: admin/views/install.php:76
+msgid "Default Values"
+msgstr "기본값"
+
+#: admin/views/install.php:78
+msgid "Assign default values."
+msgstr "기본값 할당"
+
+#: admin/views/install.php:87
+msgid "Default Rank"
+msgstr "기본 랭크"
+
+#: admin/views/install.php:95
+msgid "You can later edit and customize this default options"
+msgstr "이 기본 옵션을 추후 수정 또는 사용자 정의할 수 있습니다."
+
+#: admin/views/install.php:100
+msgid "Check data tables"
+msgstr "데이타 테이블 확인"
+
+#: admin/views/install.php:102
+msgid "This step will check all data tables of AnsPress."
+msgstr "모든 AnsPress 데이타 테이블을 점검합니다."
+
+#: admin/views/install.php:107
+msgid "Check rewrite rules"
+msgstr "rewrite 규칙 확인"
+
+#: admin/views/install.php:109
+msgid "This step will check rewrite rules of AnsPress."
+msgstr "AnsPress 의 rewrite 규칙을 점검합니다."
+
+#: admin/views/install.php:122
+msgid "Click here to finish installation."
+msgstr "설치를 완료하시려면 여기를 클릭하세요."
+
+#: admin/views/install.php:123
+msgid "Finish"
+msgstr "종료"
+
+#: admin/views/install.php:127
+msgid "Escape installation"
+msgstr "설치에서 나가기"
+
+#: includes/anspress-ajax.php:88 includes/anspress-ajax.php:141
+#: includes/anspress-ajax.php:169 includes/anspress-ajax.php:197
+#: includes/anspress-ajax.php:225
+#, php-format
+msgid "Checked %s questions."
+msgstr "%s 개 질문 점검"
+
+#: includes/anspress-ajax.php:90 includes/anspress-ajax.php:143
+#: includes/anspress-ajax.php:171 includes/anspress-ajax.php:199
+#: includes/anspress-ajax.php:227
+msgid "All questions looks fine."
+msgstr "질문 이상 없음."
+
+#: includes/anspress-ajax.php:113
+#, php-format
+msgid "Checked %s answers."
+msgstr "%s 개 답변 점검"
+
+#: includes/anspress-ajax.php:115
+msgid "All answers looks fine."
+msgstr "답변 이상 없음."
+
+#: includes/anspress-ajax.php:245 includes/anspress-form.php:1553
+msgid "Create new tag"
+msgstr "신규 태그 생성"
+
+#: includes/anspress-ajax.php:259
+msgid "No tags found"
+msgstr "태그가 없습니다."
+
+#: includes/anspress-ajax.php:261
+msgid "No related tags found"
+msgstr "관련 태그가 없습니다."
+
+#: includes/anspress-ajax.php:279
+msgid "Unselected the answer"
+msgstr "답변 채택 취소"
+
+#: includes/anspress-ajax.php:286
+msgid "Thank you for awarding best answer"
+msgstr "최고 답변 선정에 감사 드립니다."
+
+#: includes/anspress-ajax.php:290 includes/anspress-vote.php:339
+#: includes/anspress-vote.php:625
+msgid "Please try again"
+msgstr "다시 해 보세요."
+
+#: includes/anspress-ajax.php:307 includes/anspress-form.php:444
+#: includes/anspress-form.php:1006
+#, php-format
+msgid "1 Answer"
+msgid_plural "%d Answers"
+msgstr[0] "1 개 답변 "
+msgstr[1] "%d 개 답변"
+
+#: includes/anspress-ajax.php:311
+msgid "No related questions found"
+msgstr "유사한 질문을 찾지 못했습니다."
+
+#: includes/anspress-badges.php:185
+msgid "Gold"
+msgstr "금 "
+
+#: includes/anspress-badges.php:186
+msgid "Silver"
+msgstr "은 "
+
+#: includes/anspress-badges.php:187
+msgid "Bronze"
+msgstr "동 "
+
+#: includes/anspress-badges.php:258
+msgid "Autobiographer"
+msgstr "저자 "
+
+#: includes/anspress-badges.php:259
+msgid "Completed all user profile fields"
+msgstr "사용자 프로필 작성 완료"
+
+#: includes/anspress-badges.php:267
+msgid "Photogenic"
+msgstr "포토제닉"
+
+#: includes/anspress-badges.php:268
+msgid "Uploaded an avatar and cover image"
+msgstr "아바타와 표지 업로드"
+
+#: includes/anspress-badges.php:276
+msgid "Nice Question"
+msgstr "좋은 질문"
+
+#: includes/anspress-badges.php:277 includes/anspress-badges.php:286
+#: includes/anspress-badges.php:295
+#, php-format
+msgid "Question score of %d or more"
+msgstr "%d 이상의 질문 점수"
+
+#: includes/anspress-badges.php:285
+msgid "Good Question"
+msgstr "더 좋은 질문"
+
+#: includes/anspress-badges.php:294
+msgid "Great Question"
+msgstr "아주 좋은 질문"
+
+#: includes/anspress-badges.php:303
+msgid "Popular Question"
+msgstr "인기 질문"
+
+#: includes/anspress-badges.php:304 includes/anspress-badges.php:313
+#, php-format
+msgid "Asked a question with %d views "
+msgstr "%d 회 열람한 질문"
+
+#: includes/anspress-badges.php:312
+msgid "Notable Question"
+msgstr "눈에 띄는 질문"
+
+#: includes/anspress-badges.php:321
+msgid "Famous Question"
+msgstr "유명 질문"
+
+#: includes/anspress-badges.php:322
+#, php-format
+msgid "Asked a question with %d views"
+msgstr "%d 회 열람한 질문"
+
+#: includes/anspress-badges.php:330
+msgid "Favorite Question"
+msgstr "즐겨찾기 질문"
+
+#: includes/anspress-badges.php:331 includes/anspress-badges.php:340
+#, php-format
+msgid "Question favorited by %d users"
+msgstr "%d 명이 즐겨찾기한 질문"
+
+#: includes/anspress-badges.php:339
+msgid "Stellar Question"
+msgstr "스텔라 질문"
+
+#: includes/anspress-badges.php:348
+msgid "Scholar"
+msgstr "학자"
+
+#: includes/anspress-badges.php:349
+msgid "Asked a question and accepted an answer"
+msgstr "질문하고 답변을 받은 경우"
+
+#: includes/anspress-badges.php:357
+msgid "Student"
+msgstr "학생"
+
+#: includes/anspress-badges.php:358
+#, php-format
+msgid "Asked first question with score of %d or more"
+msgstr "%d 이상 점수를 가지고 있는 첫번째 질문"
+
+#: includes/anspress-badges.php:366
+msgid "Tumbleweed"
+msgstr "텀블위드"
+
+#: includes/anspress-badges.php:367
+msgid ""
+"Asked a question with no votes, no answers, no comments, and low views for a "
+"week"
+msgstr "일주일간 투표, 답변,댓글,열람이 없는 질문"
+
+#: includes/anspress-basepage.php:152
+msgid "User not found"
+msgstr "사용자가 없습니다."
+
+#: includes/anspress-categories.php:46
+msgid "Question Categories"
+msgstr "질문 분류"
+
+#: includes/anspress-categories.php:47
+msgctxt "ap"
+msgid "Category"
+msgstr "분류"
+
+#: includes/anspress-categories.php:48
+msgid "All Categories"
+msgstr "모든 분류"
+
+#: includes/anspress-categories.php:49
+msgctxt "ap"
+msgid "Add New Category"
+msgstr "신규 분류 추가"
+
+#: includes/anspress-categories.php:50
+msgid "Edit Category"
+msgstr "분류 수정"
+
+#: includes/anspress-categories.php:51
+msgid "New Category"
+msgstr "신규 분류"
+
+#: includes/anspress-categories.php:52
+msgid "View Category"
+msgstr "분류 열람"
+
+#: includes/anspress-categories.php:53
+msgid "Search Category"
+msgstr "분류 검색"
+
+#: includes/anspress-categories.php:54 includes/anspress-labels.php:83
+#: includes/anspress-tags.php:54
+msgid "Nothing Found"
+msgstr "발견 못함"
+
+#: includes/anspress-categories.php:55 includes/anspress-labels.php:84
+#: includes/anspress-tags.php:55
+msgid "Nothing found in Trash"
+msgstr "휴지통에서 발견 못함"
+
+#: includes/anspress-categories.php:126 includes/anspress-posts.php:101
+#: includes/anspress-tags.php:123 includes/anspress-user.php:495
+#: theme/default/user-profile.php:23 widgets/questions.php:84
+msgid "Questions"
+msgstr "질문"
+
+#: includes/anspress-form.php:208
+#, php-format
+msgid "Question title must have %d letters or more."
+msgstr "질문 제목은 %d 글자 이상이어야 합니다."
+
+#: includes/anspress-form.php:212
+#, php-format
+msgid "Question content must have %d letters or more."
+msgstr "질문 내용은 %d 글자 이상이어야 합니다."
+
+#: includes/anspress-form.php:217
+msgid "You must select a category."
+msgstr "분류를 선택해야 합니다."
+
+#: includes/anspress-form.php:221
+msgid "You must add at least one tag."
+msgstr "최소 하나의 태그를 추가해야 합니다."
+
+#: includes/anspress-form.php:228
+#, php-format
+msgid "Maximum tags limit for a question is %d"
+msgstr "한 질문의 최대 태그 수는 %d 입니다."
+
+#: includes/anspress-form.php:236
+#, php-format
+msgid "You must add at least %d"
+msgstr "최소 %d 개 추가해야 합니다."
+
+#: includes/anspress-form.php:264
+msgid "Question not submitted, please check the form fields."
+msgstr "질문을 제출하지 않았습니다. 양식을 다시 확인하세요."
+
+#: includes/anspress-form.php:314
+msgid "Question submitted successfully"
+msgstr "질문 제출 성공"
+
+#: includes/anspress-form.php:356
+#, php-format
+msgid "Your answer must have %d letters or more."
+msgstr "답변은 %d 글자 이상이어야 합니다."
+
+#: includes/anspress-form.php:379
+msgid "Answer not submitted, please check the form fields."
+msgstr "답변 제출을 하지 않았습니다. 양식을 다시 확인하세요."
+
+#: includes/anspress-form.php:455
+msgid "Answer submitted successfully!"
+msgstr "답변 제출 성공!"
+
+#: includes/anspress-form.php:469
+msgid "Please try again, answer submission failed!"
+msgstr "답변 제출 실패. 다시 해 보세요."
+
+#: includes/anspress-form.php:492
+msgid "Question not updated, please check the form fields."
+msgstr "질문을 갱신하지 않았습니다. 양식을 다시 확인하세요."
+
+#: includes/anspress-form.php:529
+msgid "Question updated successfully"
+msgstr "질문 갱신 성공"
+
+#: includes/anspress-form.php:554
+msgid "Answer not updated, please check the form fields."
+msgstr "답변을 갱신하지 않았습니다. 양식을 다시 확인하세요."
+
+#: includes/anspress-form.php:571 includes/anspress-form.php:1452
+msgid "You don't have permission to edit this answer."
+msgstr "답변 수정 권한이 없습니다."
+
+#: includes/anspress-form.php:600
+msgid "Answer updated successfully"
+msgstr "답변 갱신 성공"
+
+#: includes/anspress-form.php:617
+msgid "Submit"
+msgstr "제출하기"
+
+#: includes/anspress-form.php:621 includes/anspress-form.php:669
+#: includes/anspress-form.php:998
+msgid "No Permission"
+msgstr "권한 없음"
+
+#: includes/anspress-form.php:631
+msgid "Respond to the post."
+msgstr "답글 달기"
+
+#: includes/anspress-form.php:658
+msgid "Comment submitted successfully"
+msgstr "댓글 제출 성공"
+
+#: includes/anspress-form.php:678
+msgid "Save"
+msgstr "저장"
+
+#: includes/anspress-form.php:691
+msgid "You do not have permission to edit this comment."
+msgstr "댓글 수정 권한 없음"
+
+#: includes/anspress-form.php:708
+msgid "Comment updated successfully"
+msgstr "댓글 갱신 성공"
+
+#: includes/anspress-form.php:710 includes/anspress-form.php:713
+msgid "Comment not updated, please retry"
+msgstr "댓글을 갱신하지 않았습니다. 다시 해 보세요."
+
+#: includes/anspress-form.php:721
+msgid "You do not have permission to delete this comment"
+msgstr "댓글 삭제 권한이 없습니다."
+
+#: includes/anspress-form.php:738
+msgid "Comment deleted successfully"
+msgstr "댓글 삭제 성공"
+
+#: includes/anspress-form.php:824 includes/anspress-form.php:908
+msgid "Question in one sentence"
+msgstr "간단한 한 문장으로 질문을 요약해 주세요."
+
+#: includes/anspress-form.php:879
+msgid "This question is meant to be private"
+msgstr "비공개 질문입니다."
+
+#: includes/anspress-form.php:1003
+msgid "Question deleted successfully."
+msgstr "질문 삭제 성공"
+
+#: includes/anspress-form.php:1014
+msgid "Answer deleted successfully."
+msgstr "답변 삭제 성공"
+
+#: includes/anspress-form.php:1033 includes/anspress-form.php:1039
+msgid "Form loaded."
+msgstr "양식 가져옴"
+
+#: includes/anspress-form.php:1041
+msgid "You do not have permission to edit this question."
+msgstr "질문을 수정할 권한이 없습니다."
+
+#: includes/anspress-form.php:1044
+msgid "Something went wrong, please try again."
+msgstr "뭔가 잘못되었습니다. 재시도해 주세요."
+
+#: includes/anspress-form.php:1076
+#, php-format
+msgid "Don't have a user account? %sRegister now%s."
+msgstr "아직 회원 가입을 하지 않으셨나요? %s지금 가입하세요%s."
+
+#: includes/anspress-form.php:1101 includes/anspress-form.php:1163
+#: includes/anspress-form.php:1170 includes/anspress-form.php:1172
+#: theme/default/login.php:3 theme/default/login.php:32
+msgid "Login"
+msgstr "로그인"
+
+#: includes/anspress-form.php:1115 includes/anspress-form.php:1161
+msgid "Sign up"
+msgstr "회원 가입"
+
+#: includes/anspress-form.php:1143
+msgid "Continue as anonymous"
+msgstr "로그인 없이 진행"
+
+#: includes/anspress-form.php:1147
+msgid "Your name"
+msgstr "이름"
+
+#: includes/anspress-form.php:1148
+msgid "Your name or leave it blank"
+msgstr "이름을 적거나 비워두세요."
+
+#: includes/anspress-form.php:1159
+msgid "Login or Sign Up"
+msgstr "로그인 또는 회원 가입"
+
+#: includes/anspress-form.php:1170 includes/anspress-form.php:1172
+msgid "Click here to login if you already have an account on this site."
+msgstr "회원이시라면 여기를 클릭해서 로그인하세요."
+
+#: includes/anspress-form.php:1178 includes/anspress-form.php:1180
+msgid "Click here to signup if you do not have an account on this site."
+msgstr "아직 회원이 아니시라면 여기를 클릭해서 회원 가입하세요."
+
+#: includes/anspress-form.php:1178 includes/anspress-form.php:1180
+#: includes/anspress-form.php:1501
+msgid "Sign Up"
+msgstr "회원 가입"
+
+#: includes/anspress-form.php:1204 includes/anspress-form.php:1238
+msgid "Access Denied"
+msgstr "접근 거부"
+
+#: includes/anspress-form.php:1220
+msgid "Please enter your username and password to login"
+msgstr "계정과 비밀번호를 입력하세요."
+
+#: includes/anspress-form.php:1225
+msgid "Successfully logged in."
+msgstr "로그인 성공"
+
+#: includes/anspress-form.php:1255
+msgid "Please enter a valid email address."
+msgstr "올바른 메일 주소를 입력하세요."
+
+#: includes/anspress-form.php:1275 theme/default/functions.php:53
+#, php-format
+msgid "Email already in use. %sDo you want to reset your password?%s"
+msgstr "이미 사용 중인 메일 주소입니다. %s비밀번호를 초기화하겠습니까?%s"
+
+#: includes/anspress-form.php:1279
+msgid "Successfully created your account. Use the form below to login."
+msgstr "계정 생성 성공. 아래 양식을 이용해 로그인 하세요."
+
+#: includes/anspress-form.php:1294
+msgid "Unable to create tag, please try again."
+msgstr "태그 생성이 불가합니다. 재시도 해 주세요."
+
+#: includes/anspress-form.php:1297
+msgid "Successfully created a tag."
+msgstr "태그 생성 성공"
+
+#: includes/anspress-form.php:1304
+msgid "Unable to load form, please try again."
+msgstr "양식 불러오기가 불가능합니다. 재시도 해 주세요."
+
+#: includes/anspress-form.php:1306
+msgid "Successfully loaded form."
+msgstr "양식 불러오기 성공"
+
+#: includes/anspress-form.php:1337 includes/anspress-form.php:1367
+#: includes/anspress-form.php:1457 theme/default/answer-form.php:7
+msgid "Problem submitting form, please recheck form"
+msgstr "양식 제출에 문제가 있습니다. 양식을 재 확인해 주세요."
+
+#: includes/anspress-form.php:1390
+msgid "Please enter a title"
+msgstr "제목을 입력해 주세요."
+
+#: includes/anspress-form.php:1395
+msgid "Please enter content of question"
+msgstr "질문 내용을 입력해 주세요."
+
+#: includes/anspress-form.php:1406
+msgid "Please enter some content"
+msgstr "내용을 입력해 주세요."
+
+#: includes/anspress-form.php:1422 includes/anspress-functions.php:898
+#: theme/default/categories.php:6 theme/default/question.php:17
+#: theme/default/search.php:5 theme/default/tags.php:6
+#: theme/default/users.php:5
+msgid "Ask Question"
+msgstr "질문하기"
+
+#: includes/anspress-form.php:1430
+msgid "Submit Answer"
+msgstr "답변 제출"
+
+#: includes/anspress-form.php:1440
+msgid "Update question"
+msgstr "질문 갱신"
+
+#: includes/anspress-form.php:1464 includes/anspress-posts.php:157
+#: includes/anspress-theme.php:162
+msgid "Edit answer"
+msgstr "답변 수정"
+
+#: includes/anspress-form.php:1478
+msgid "Update Answer"
+msgstr "답변 갱신"
+
+#: includes/anspress-form.php:1486 includes/anspress-form.php:1591
+#: includes/anspress-user.php:227
+msgid "Email"
+msgstr "메일"
+
+#: includes/anspress-form.php:1488
+msgid "name@domain.com"
+msgstr "name@domain.com"
+
+#: includes/anspress-form.php:1493 includes/anspress-form.php:1495
+#: includes/anspress-user.php:233 theme/default/login.php:13
+#: theme/default/login.php:15
+msgid "Password"
+msgstr "비밀번호"
+
+#: includes/anspress-form.php:1499
+msgid "Leave this blank. This is a honeypot for spammers"
+msgstr "여기는 비워두세요. 스패머를 위한 꿀단지입니다."
+
+#: includes/anspress-form.php:1502
+#, php-format
+msgid "Already have an account? %sLogin now%s."
+msgstr "회원이세요? %s로그인하세요.%s"
+
+#: includes/anspress-form.php:1517
+msgid "You don't have permission to access this page."
+msgstr "페이지를 볼 수 있는 권한이 없습니다."
+
+#: includes/anspress-form.php:1530
+msgid "Trying to cheat? huh!."
+msgstr "뭐라고요?"
+
+#: includes/anspress-form.php:1538
+msgid "Edit question"
+msgstr "질문 수정"
+
+#: includes/anspress-form.php:1554
+msgid "Enter tag"
+msgstr "태그 입력"
+
+#: includes/anspress-form.php:1555
+msgid "Description of tag."
+msgstr "태그 설명"
+
+#: includes/anspress-form.php:1556
+msgid "Create tag"
+msgstr "태그 생성"
+
+#: includes/anspress-functions.php:178
+msgid "Please login or register to continue this action."
+msgstr "작업 수행을 위해서 로그인 또는 회원 가입해 주세요."
+
+#: includes/anspress-functions.php:264
+msgid "Add comment"
+msgstr "댓글 추가"
+
+#: includes/anspress-functions.php:264 includes/anspress-points.php:374
+msgid "Comment"
+msgstr "댓글"
+
+#: includes/anspress-functions.php:274 theme/default/answer-list.php:18
+msgid "Edit this question"
+msgstr "질문 수정"
+
+#: includes/anspress-functions.php:286
+msgid "Edit Answer"
+msgstr "답변 수정"
+
+#: includes/anspress-functions.php:294
+msgid "Edited on"
+msgstr "수정하기"
+
+#: includes/anspress-functions.php:453
+#, php-format
+msgid "Please %s or %s to view answers and comments"
+msgstr "답변과 댓글을 열람하려면 %s 나 %s 해 주십시오."
+
+#: includes/anspress-functions.php:469
+#, php-format
+msgid "<span>1 Answer</span>"
+msgid_plural "<span>%d Answers</span>"
+msgstr[0] "<span>1 개 답변</span>"
+msgstr[1] "<span>%d 개 답변</span>"
+
+#: includes/anspress-functions.php:471 includes/anspress-functions.php:488
+#: includes/anspress-functions.php:516 includes/anspress-functions.php:790
+#: widgets/questions.php:143
+msgid "Newest"
+msgstr "최근 질문"
+
+#: includes/anspress-functions.php:472 includes/anspress-functions.php:489
+#: includes/anspress-functions.php:521 widgets/questions.php:147
+msgid "Oldest"
+msgstr "오래된 질문"
+
+#: includes/anspress-functions.php:473 includes/anspress-functions.php:490
+#: includes/anspress-functions.php:517 widgets/questions.php:144
+msgid "Voted"
+msgstr "득표수"
+
+#: includes/anspress-functions.php:518
+msgid "Most answered"
+msgstr "답변 많은 질문"
+
+#: includes/anspress-functions.php:519 widgets/questions.php:146
+msgid "Unanswered"
+msgstr "답변 없는 질문"
+
+#: includes/anspress-functions.php:520
+msgid "Unsolved"
+msgstr "미해결 질문"
+
+#: includes/anspress-functions.php:525 includes/anspress-labels.php:249
+msgid "Label"
+msgstr "레이블"
+
+#: includes/anspress-functions.php:558 includes/anspress-functions.php:702
+msgid "Discussion"
+msgstr "토의"
+
+#: includes/anspress-functions.php:559
+msgid "History"
+msgstr "기록"
+
+#: includes/anspress-functions.php:560
+msgid "Related"
+msgstr "연관성"
+
+#: includes/anspress-functions.php:604
+msgid "Select this answer as best"
+msgstr "최고 답변으로 채택하세요."
+
+#: includes/anspress-functions.php:607
+msgid "Unselect this answer"
+msgstr "답변 채택 취소"
+
+#: includes/anspress-functions.php:682
+msgid "&laquo; Previous"
+msgstr "&laquo; 이전"
+
+#: includes/anspress-functions.php:683
+msgid "Next &raquo;"
+msgstr "다음 &raquo;"
+
+#: includes/anspress-functions.php:692
+#, php-format
+msgid "Page %d of %d"
+msgstr "페이지 %d / %d"
+
+#: includes/anspress-functions.php:884
+msgid "View All"
+msgstr "모두 보기"
+
+#: includes/anspress-history.php:134
+msgid "asked"
+msgstr "질문 받음"
+
+#: includes/anspress-history.php:135
+msgid "answered"
+msgstr "답변 완료"
+
+#: includes/anspress-history.php:136
+msgid "commented"
+msgstr "댓글 달림"
+
+#: includes/anspress-history.php:137
+msgid "comment on answer"
+msgstr "답변의 댓글"
+
+#: includes/anspress-history.php:138
+msgid "edited question"
+msgstr "수정 질문"
+
+#: includes/anspress-history.php:139
+msgid "edited answer"
+msgstr "답변 수정"
+
+#: includes/anspress-history.php:140
+msgid "edited comment"
+msgstr "수정 댓글"
+
+#: includes/anspress-history.php:141
+msgid "selected answer"
+msgstr "채택 답변"
+
+#: includes/anspress-history.php:142
+msgid "unselected answer"
+msgstr "미채택 답변"
+
+#: includes/anspress-history.php:143
+#, php-format
+msgid "added the %s"
+msgstr "%s 추가"
+
+#: includes/anspress-history.php:144
+#, php-format
+msgid "removed %s"
+msgstr "%s 삭제"
+
+#: includes/anspress-history.php:191
+msgid "label"
+msgid_plural "labels"
+msgstr[0] "레이블"
+msgstr[1] "레이블"
+
+#: includes/anspress-history.php:197
+#, php-format
+msgid "%s %s about <time class=\"updated\" datetime=\""
+msgstr "%s %s 약 <time class=\"updated\" datetime=\""
+
+#: includes/anspress-history.php:201
+#, php-format
+msgid "Asked by %s"
+msgstr "%s 님 문의"
+
+#: includes/anspress-labels.php:75
+msgid "Question Label"
+msgstr "질문 레이블"
+
+#: includes/anspress-labels.php:76
+msgctxt "ap"
+msgid "Label"
+msgstr "레이블"
+
+#: includes/anspress-labels.php:77
+msgid "All Label"
+msgstr "모든 레이블"
+
+#: includes/anspress-labels.php:78
+msgctxt "ap"
+msgid "Add New Label"
+msgstr "신규 레이블 추가"
+
+#: includes/anspress-labels.php:79
+msgid "Edit Label"
+msgstr "레이블 수정"
+
+#: includes/anspress-labels.php:80
+msgid "New Label"
+msgstr "신규 레이블"
+
+#: includes/anspress-labels.php:81
+msgid "View Label"
+msgstr "레이블 열람"
+
+#: includes/anspress-labels.php:82
+msgid "Search Label"
+msgstr "레이블 검색"
+
+#: includes/anspress-labels.php:104 includes/anspress-labels.php:124
+msgid "Label color"
+msgstr "레이블 색상"
+
+#: includes/anspress-labels.php:152
+msgid "Color"
+msgstr "색상"
+
+#: includes/anspress-labels.php:179
+msgid "Question label updated."
+msgstr "질문 레이블 갱신"
+
+#: includes/anspress-labels.php:181
+msgid "No label selected"
+msgstr "선택한 레이블 없음"
+
+#: includes/anspress-labels.php:184
+msgid "Unable to set labels, please try again"
+msgstr "레이블 설정 불가. 다시 해 보세요."
+
+#: includes/anspress-labels.php:255
+msgid "Done"
+msgstr "완료"
+
+#: includes/anspress-labels.php:256 includes/anspress-vote.php:238
+#: includes/anspress-vote.php:247
+msgid "Close"
+msgstr "닫기"
+
+#: includes/anspress-main.php:97
+msgid "Question feed"
+msgstr "질문 피드"
+
+#: includes/anspress-main.php:98
+msgid "Answers feed"
+msgstr "답변 피드"
+
+#: includes/anspress-main.php:327
+msgid "Rewrite rules are missing"
+msgstr "rewrite 규칙 누락"
+
+#: includes/anspress-main.php:327
+msgid "Click here to fix"
+msgstr "수정하려면 여기를 클릭하세요."
+
+#: includes/anspress-messages.php:53
+msgid "New message"
+msgstr "신규 메시지"
+
+#: includes/anspress-messages.php:63 includes/anspress-messages.php:74
+#: includes/anspress-messages.php:106 includes/anspress-messages.php:125
+#: includes/anspress-messages.php:163
+msgid "Something went wrong, message not sent."
+msgstr "문제가 발생하여 메시지 발송을 못했습니다."
+
+#: includes/anspress-messages.php:68 includes/anspress-messages.php:117
+msgid "Message sent successfully."
+msgstr "메시지 발송 성공"
+
+#: includes/anspress-messages.php:85
+msgid "You must add at least once recipient"
+msgstr "최소 한 명의 수신자를 추가해야 합니다."
+
+#: includes/anspress-messages.php:90
+msgid "Message cannot be left blank."
+msgstr "메시지는 내용이 있어야 합니다."
+
+#: includes/anspress-messages.php:97
+msgid "Some fields empty, please check message form."
+msgstr "필드가 비어있습니다 메시지 양식을 다시 확인하세요."
+
+#: includes/anspress-messages.php:142
+msgid "Conversation loaded"
+msgstr "대화를 불러왔습니다."
+
+#: includes/anspress-messages.php:148
+msgid "Failed to load conversation"
+msgstr "대화 불러오기 실패 "
+
+#: includes/anspress-messages.php:201
+msgid "More conversations loaded"
+msgstr "더 많은 대화 불러오기"
+
+#: includes/anspress-messages.php:207
+msgid "Failed to load conversations."
+msgstr "대화 불러오기 실패"
+
+#: includes/anspress-messages.php:224
+msgid "Something went wrong! cannot search for conversations."
+msgstr "대화를 찾지 못했습니다."
+
+#: includes/anspress-messages.php:238
+msgid "Message edit form loaded."
+msgstr "불러온 내용에서 메시지 수정하기"
+
+#: includes/anspress-messages.php:241 includes/anspress-messages.php:376
+#: includes/anspress-messages.php:677
+msgid "Type your message"
+msgstr "메시지를 입력하세요."
+
+#: includes/anspress-messages.php:243 includes/anspress-messages.php:378
+#: includes/anspress-messages.php:678
+msgid "Send"
+msgstr "보내기"
+
+#: includes/anspress-messages.php:252 includes/anspress-messages.php:295
+msgid "You do not have permission to edit."
+msgstr "수정 권한 없음"
+
+#: includes/anspress-messages.php:258 includes/anspress-messages.php:301
+msgid "Something went wrong! load form."
+msgstr "양식 불러오기에서 문제 발생"
+
+#: includes/anspress-messages.php:284
+msgid "Message updated successfully."
+msgstr "메시지 갱신 성공"
+
+#: includes/anspress-messages.php:290
+msgid "Message not updated"
+msgstr "메시지를 갱신하지 않았습니다."
+
+#: includes/anspress-messages.php:316
+msgid "Message delete successfully."
+msgstr "메시지 삭제 성공"
+
+#: includes/anspress-messages.php:321
+msgid "You do not have permission to delete."
+msgstr "삭제 권한 없음"
+
+#: includes/anspress-messages.php:327
+msgid "Something went wrong! cannot delete message."
+msgstr "메시지를 삭제할 수 없습니다."
+
+#: includes/anspress-messages.php:373
+msgid "Type the name of user"
+msgstr "이름을 입력하세요."
+
+#: includes/anspress-messages.php:531
+msgid "more"
+msgstr "더 많은/이"
+
+#: includes/anspress-messages.php:576 includes/anspress-messages.php:630
+#, php-format
+msgid "%s ago"
+msgstr "%s 전"
+
+#: includes/anspress-messages.php:590
+msgid "There is no more messages to load"
+msgstr "더 불러올 메시지가 없습니다."
+
+#: includes/anspress-messages.php:600
+msgid "Edit message"
+msgstr "메시지 "
+
+#: includes/anspress-messages.php:601
+msgid "Delete message"
+msgstr "메시지 삭제"
+
+#: includes/anspress-messages.php:656
+msgid "Participants"
+msgstr "참가자"
+
+#: includes/anspress-messages.php:662 includes/anspress-theme.php:191
+msgid "You"
+msgstr "당신"
+
+#: includes/anspress-messages.php:688 includes/anspress-theme.php:225
+msgid "Message"
+msgstr "메시지"
+
+#: includes/anspress-participants.php:94
+#, php-format
+msgid "<span>1</span> Participant"
+msgid_plural "<span>%d</span> Participants"
+msgstr[0] "<span>1 명 </span> 참가"
+msgstr[1] "<span>%d 명</span> 참가"
+
+#: includes/anspress-points.php:339
+msgid "New Registration"
+msgstr "신규 등록"
+
+#: includes/anspress-points.php:340
+msgid "Points given to newly registered user."
+msgstr "신규 등록자 부여 점수"
+
+#: includes/anspress-points.php:346
+msgid "Uploading avatar"
+msgstr "아바타 업로드"
+
+#: includes/anspress-points.php:347
+msgid "Awarded for uploading an profile picture."
+msgstr "프로필 사진 업로드 보상"
+
+#: includes/anspress-points.php:353
+msgid "Completing profile"
+msgstr "프로필 "
+
+#: includes/anspress-points.php:354
+msgid "Awarded for completing profile fields."
+msgstr "프로필 완성 보상"
+
+#: includes/anspress-points.php:361
+msgid "For asking a question."
+msgstr "질문 작성 "
+
+#: includes/anspress-points.php:368
+msgid "For answering a question."
+msgstr "답변 작성 "
+
+#: includes/anspress-points.php:375
+msgid "For new comment."
+msgstr "댓글 작성"
+
+#: includes/anspress-points.php:381
+msgid "Receive upvote on question"
+msgstr "질문 올리기 획득"
+
+#: includes/anspress-points.php:382
+msgid "When user receive an upvote on question"
+msgstr "질문 올리기를 받은 경우 "
+
+#: includes/anspress-points.php:388
+msgid "Receive upvote on answer"
+msgstr "답변 올리기 획득"
+
+#: includes/anspress-points.php:389
+msgid "When user receive an upvote on answer"
+msgstr "답변 올리기를 받은 경우"
+
+#: includes/anspress-points.php:395
+msgid "Receive down vote on question"
+msgstr "질문 내리기 확득"
+
+#: includes/anspress-points.php:396
+msgid "When user receive an down vote on question"
+msgstr "질문 내리기를 받은 경우"
+
+#: includes/anspress-points.php:402
+msgid "Receive down vote on answer"
+msgstr "답변 내리기 획득"
+
+#: includes/anspress-points.php:403
+msgid "When user receive an down vote on answer"
+msgstr "답변 내리기를 받은 경우"
+
+#: includes/anspress-points.php:409
+msgid "Up voted questions"
+msgstr "올리기한 질문 "
+
+#: includes/anspress-points.php:410
+msgid "When user upvote others question"
+msgstr "다른 사람 질문을 올리기한 경우"
+
+#: includes/anspress-points.php:416
+msgid "Up voted answers"
+msgstr "올리기한 답변"
+
+#: includes/anspress-points.php:417
+msgid "When user upvote others answer"
+msgstr "다른 사람 답변을 올리기한 경우"
+
+#: includes/anspress-points.php:423
+msgid "Down voted questions"
+msgstr "내리기한 질문"
+
+#: includes/anspress-points.php:424
+msgid "When user down vote others question"
+msgstr "다른 사람 질문을 내리기한 경우"
+
+#: includes/anspress-points.php:430
+msgid "Down voted answers"
+msgstr "내리기한 답변"
+
+#: includes/anspress-points.php:431
+msgid "When user down vote others answers"
+msgstr "다른 사람 답변을 내리기한 경우 "
+
+#: includes/anspress-points.php:438
+msgid "Best answer"
+msgstr "최고 답변"
+
+#: includes/anspress-points.php:439
+msgid "When user's answer get selected as best"
+msgstr "최고 답변으로 채택된 경우"
+
+#: includes/anspress-points.php:445
+msgid "Selecting answer"
+msgstr "답변 채택"
+
+#: includes/anspress-points.php:446
+msgid "When user user select an answer."
+msgstr "답변을 채택한 경우"
+
+#: includes/anspress-posts.php:99
+msgctxt "Post Type General Name"
+msgid "Questions"
+msgstr "질문"
+
+#: includes/anspress-posts.php:100
+msgctxt "Post Type Singular Name"
+msgid "Question"
+msgstr "질문"
+
+#: includes/anspress-posts.php:102
+msgid "Parent Question:"
+msgstr "상위 질문:"
+
+#: includes/anspress-posts.php:104
+msgid "View Question"
+msgstr "질문 열람"
+
+#: includes/anspress-posts.php:105
+msgid "Add New Question"
+msgstr "신규 질문 추가"
+
+#: includes/anspress-posts.php:107
+msgid "Edit Question"
+msgstr "질문 수정"
+
+#: includes/anspress-posts.php:108
+msgid "Update Question"
+msgstr "질문 갱신"
+
+#: includes/anspress-posts.php:109
+msgid "Search question"
+msgstr "질문 검색"
+
+#: includes/anspress-posts.php:110
+msgid "No question found"
+msgstr "아무런 질문을 발견 못함"
+
+#: includes/anspress-posts.php:111
+msgid "No questions found in Trash"
+msgstr "휴지통에는 질문이 없습니다."
+
+#: includes/anspress-posts.php:116
+msgid "question"
+msgstr "질문 "
+
+#: includes/anspress-posts.php:149
+msgctxt "Post Type General Name"
+msgid "Answers"
+msgstr "답변"
+
+#: includes/anspress-posts.php:150
+msgctxt "Post Type Singular Name"
+msgid "Answer"
+msgstr "답변"
+
+#: includes/anspress-posts.php:152
+msgid "Parent Answer:"
+msgstr "상위 답변:"
+
+#: includes/anspress-posts.php:155
+msgid "Add New Answer"
+msgstr "신규 답변 추가"
+
+#: includes/anspress-posts.php:156
+msgid "New answer"
+msgstr "신규 답변"
+
+#: includes/anspress-posts.php:158
+msgid "Update answer"
+msgstr "답변 갱신"
+
+#: includes/anspress-posts.php:159
+msgid "Search answer"
+msgstr "답변 검색"
+
+#: includes/anspress-posts.php:160
+msgid "No answer found"
+msgstr "아무런 답변을 찾지 못함"
+
+#: includes/anspress-posts.php:161
+msgid "No answer found in Trash"
+msgstr "휴지통에는 답변이 없습니다."
+
+#: includes/anspress-posts.php:166
+msgid "answer"
+msgstr "답변"
+
+#: includes/anspress-posts.php:195 includes/anspress-posts.php:734
+#: includes/anspress-posts.php:743
+msgid "Closed"
+msgstr "완료"
+
+#: includes/anspress-posts.php:199
+#, php-format
+msgid "Closed <span class=\"count\">(%s)</span>"
+msgid_plural "Moderate <span class=\"count\">(%s)</span>"
+msgstr[0] "완료 <span class=\"count\">(%s)</span>"
+msgstr[1] "완료  <span class=\"count\">(%s)</span>"
+
+#: includes/anspress-posts.php:207
+#, php-format
+msgid "Moderate <span class=\"count\">(%s)</span>"
+msgid_plural "Moderate <span class=\"count\">(%s)</span>"
+msgstr[0] "승인  <span class=\"count\">(%s)</span>"
+msgstr[1] "승인  <span class=\"count\">(%s)</span>"
+
+#: includes/anspress-posts.php:211 includes/anspress-posts.php:731
+#: includes/anspress-posts.php:742 theme/default/content-list.php:10
+msgid "Private Question"
+msgstr "비공개 질문"
+
+#: includes/anspress-posts.php:215
+#, php-format
+msgid "Private Question <span class=\"count\">(%s)</span>"
+msgid_plural "Private Question <span class=\"count\">(%s)</span>"
+msgstr[0] "비공개 질문 <span class=\"count\">(%s)</span>"
+msgstr[1] "비공개 질문 <span class=\"count\">(%s)</span>"
+
+#: includes/anspress-posts.php:225
+msgid "Asker"
+msgstr "질문자"
+
+#: includes/anspress-posts.php:230 theme/default/content-list.php:16
+#: theme/default/questions-widget.php:51
+msgid "Ans"
+msgstr "답변"
+
+#: includes/anspress-posts.php:231 includes/anspress-posts.php:247
+msgid "Comments"
+msgstr "댓글"
+
+#: includes/anspress-posts.php:232 includes/anspress-posts.php:248
+msgid "Vote"
+msgstr "투표"
+
+#: includes/anspress-posts.php:234 includes/anspress-posts.php:250
+msgid "Date"
+msgstr "날짜"
+
+#: includes/anspress-posts.php:244
+msgid "Answerer"
+msgstr "답변자"
+
+#: includes/anspress-posts.php:246
+msgid "Content"
+msgstr "내용"
+
+#: includes/anspress-posts.php:301
+msgid "No Tags"
+msgstr "태그 없음"
+
+#: includes/anspress-posts.php:317 includes/anspress-posts.php:325
+msgid "answers"
+msgstr "답변"
+
+#: includes/anspress-posts.php:387
+msgid "Restore this item from the Trash"
+msgstr "휴지통에서 복구"
+
+#: includes/anspress-posts.php:390
+msgid "Move this item to the Trash"
+msgstr "휴지통으로 이동"
+
+#: includes/anspress-posts.php:393
+msgid "Delete this item permanently"
+msgstr "영구 삭제"
+
+#: includes/anspress-posts.php:393
+msgid "Delete Permanently"
+msgstr "영구 삭제"
+
+#: includes/anspress-posts.php:396 includes/anspress-posts.php:405
+#, php-format
+msgid "Preview &#8220;%s&#8221;"
+msgstr "미리보기 &#8220;%s&#8221;"
+
+#: includes/anspress-posts.php:405
+msgid "Preview"
+msgstr "미리보기"
+
+#: includes/anspress-posts.php:408
+#, php-format
+msgid "View &#8220;%s&#8221; question"
+msgstr "열람 &#8220;%s&#8221; 질문"
+
+#: includes/anspress-posts.php:458
+msgid "Please fill parent question field, Answer was not saved!"
+msgstr "답변을 저장하지 않았습니다. 상위 질문 필드를 입력해 주세요. "
+
+#: includes/anspress-ranks.php:65 includes/anspress-ranks.php:67
+msgid "Ranks"
+msgstr "랭크"
+
+#: includes/anspress-ranks.php:66 includes/anspress-ranks.php:132
+msgid "Rank"
+msgstr "랭크"
+
+#: includes/anspress-ranks.php:68
+msgid "Search ranks"
+msgstr "랭크 검색"
+
+#: includes/anspress-ranks.php:69
+msgid "Popular ranks"
+msgstr "인기 랭크"
+
+#: includes/anspress-ranks.php:70
+msgid "All ranks"
+msgstr "모든 랭크"
+
+#: includes/anspress-ranks.php:71
+msgid "Edit rank"
+msgstr "랭크 수정"
+
+#: includes/anspress-ranks.php:72
+msgid "Update rank"
+msgstr "랭크 갱신"
+
+#: includes/anspress-ranks.php:73
+msgid "Add new rank"
+msgstr "신규 랭크 추가"
+
+#: includes/anspress-ranks.php:74
+msgid "New rank name"
+msgstr "신규 랭크명"
+
+#: includes/anspress-ranks.php:75
+msgid "Separate rank with commas"
+msgstr "랭크는 쉼표(,)로 구분하세요."
+
+#: includes/anspress-ranks.php:76
+msgid "Add or remove ranks"
+msgstr "랭크 추가/삭제"
+
+#: includes/anspress-ranks.php:77
+msgid "Choose from the most popular ranks"
+msgstr "인기 랭크에서 선택하세요."
+
+#: includes/anspress-ranks.php:137
+msgid "Select rank"
+msgstr "랭크 선택"
+
+#: includes/anspress-tags.php:46
+msgid "Question Tags"
+msgstr "질문 태그"
+
+#: includes/anspress-tags.php:47
+msgctxt "ap"
+msgid "Tag"
+msgstr "태그"
+
+#: includes/anspress-tags.php:48
+msgid "All Tags"
+msgstr "모든 태그"
+
+#: includes/anspress-tags.php:49
+msgctxt "ap"
+msgid "Add New Tag"
+msgstr "신규 태그 추가"
+
+#: includes/anspress-tags.php:50
+msgid "Edit Tag"
+msgstr "태그 수정"
+
+#: includes/anspress-tags.php:51
+msgid "New Tag"
+msgstr "신규 태그"
+
+#: includes/anspress-tags.php:52
+msgid "View Tag"
+msgstr "태그 열람"
+
+#: includes/anspress-tags.php:53
+msgid "Search Tag"
+msgstr "태그 검색"
+
+#: includes/anspress-theme.php:134
+msgid "Question >> Feed"
+msgstr "질문 >> 피드"
+
+#: includes/anspress-theme.php:155
+#, php-format
+msgid "Question tag: %s"
+msgstr "질문 태그: %s"
+
+#: includes/anspress-theme.php:158
+#, php-format
+msgid "Question category: %s"
+msgstr "질문 분류: %s"
+
+#: includes/anspress-theme.php:160
+msgid "Edit question "
+msgstr "질문 수정"
+
+#: includes/anspress-theme.php:171 theme/default/on-post.php:3
+#, php-format
+msgid "Discussion on \"%s\""
+msgstr "\"%s\" 에 관한 토의"
+
+#: includes/anspress-theme.php:195
+msgid "Your profile"
+msgstr "프로필"
+
+#: includes/anspress-theme.php:197
+#, php-format
+msgid "%s's profile"
+msgstr "%s 프로필"
+
+#: includes/anspress-theme.php:199
+#, php-format
+msgid "Questions asked by %s"
+msgstr "%s의 질의"
+
+#: includes/anspress-theme.php:201
+#, php-format
+msgid "Answers posted by %s"
+msgstr "%s의 답변"
+
+#: includes/anspress-theme.php:204
+msgid "Your activity"
+msgstr "활동"
+
+#: includes/anspress-theme.php:206 includes/anspress-theme.php:223
+#, php-format
+msgid "%s's activity"
+msgstr "%s의 활동"
+
+#: includes/anspress-theme.php:208
+#, php-format
+msgid "Favorites questions of %s"
+msgstr "%s의 좋아하는 질문"
+
+#: includes/anspress-theme.php:210
+#, php-format
+msgid "Users following %s"
+msgstr "%s 팔로워"
+
+#: includes/anspress-theme.php:212
+#, php-format
+msgid "Users being followed by %s"
+msgstr "%s 팔로윙"
+
+#: includes/anspress-theme.php:214
+msgid "Edit your profile"
+msgstr "프로필 수정"
+
+#: includes/anspress-theme.php:216
+msgid "Your settings"
+msgstr "설정 "
+
+#: includes/anspress-theme.php:218
+msgid "Your messages"
+msgstr "메시지 "
+
+#: includes/anspress-theme.php:221
+msgid "Your badges"
+msgstr "뱃지"
+
+#: includes/anspress-theme.php:232
+msgid "Page not found"
+msgstr "페이지가 없습니다."
+
+#: includes/anspress-user.php:98
+msgid "Cover uploaded successfully."
+msgstr "표지 업로드 성공"
+
+#: includes/anspress-user.php:103 includes/anspress-user.php:121
+msgid "Unable to upload cover."
+msgstr "표지 업로드 불가"
+
+#: includes/anspress-user.php:117
+msgid "Avatar uploaded successfully."
+msgstr "아바타 업로드 성공"
+
+#: includes/anspress-user.php:135 widgets/categories.php:114
+msgid "Name"
+msgstr "이름"
+
+#: includes/anspress-user.php:137
+msgid "User name"
+msgstr "이름"
+
+#: includes/anspress-user.php:143
+msgid "First name"
+msgstr "이름"
+
+#: includes/anspress-user.php:145
+msgid "Your first name, i.e. Rahul"
+msgstr "Rahul 과 같은 당신의 이름"
+
+#: includes/anspress-user.php:149
+msgid "Last name"
+msgstr "성"
+
+#: includes/anspress-user.php:151
+msgid "Your last name, i.e. Aryan"
+msgstr "Aryan과 같은 당신의 성"
+
+#: includes/anspress-user.php:155
+msgid "Nickname"
+msgstr "별명"
+
+#: includes/anspress-user.php:157
+msgid "Your nick name, i.e. nerdaryan"
+msgstr "nerdaryan 과 같은 당신의 별명"
+
+#: includes/anspress-user.php:161
+msgid "Display Name"
+msgstr "표시 이름"
+
+#: includes/anspress-user.php:191
+msgid "About"
+msgstr "약 "
+
+#: includes/anspress-user.php:193
+msgid "About you"
+msgstr "당신의 정보"
+
+#: includes/anspress-user.php:198
+msgid "Contact Information"
+msgstr "연락처"
+
+#: includes/anspress-user.php:200
+msgid "Website"
+msgstr "웹주소"
+
+#: includes/anspress-user.php:202
+msgid "http://open-wp.com"
+msgstr "http://open-wp.com"
+
+#: includes/anspress-user.php:206
+msgid "Facebook"
+msgstr "페이스북"
+
+#: includes/anspress-user.php:208
+msgid "i.e. http://facebook.com/openwp"
+msgstr "i.e. http://facebook.com/openwp"
+
+#: includes/anspress-user.php:212
+msgid "Twitter"
+msgstr "트위터"
+
+#: includes/anspress-user.php:214
+msgid "i.e. https://twitter.com/openwp"
+msgstr "i.e. https://twitter.com/openwp"
+
+#: includes/anspress-user.php:218
+msgid "Google+"
+msgstr "구글+"
+
+#: includes/anspress-user.php:220
+msgid "i.e. https://plus.google.com/+OpenwpCom"
+msgstr "i.e. https://plus.google.com/+OpenwpCom"
+
+#: includes/anspress-user.php:225 includes/anspress-user.php:850
+msgid "Account"
+msgstr "계정"
+
+#: includes/anspress-user.php:229
+msgid "myemail@mydomain.com"
+msgstr "myemail@mydomain.com"
+
+#: includes/anspress-user.php:235
+msgid "Your password"
+msgstr "비밀번호"
+
+#: includes/anspress-user.php:239
+msgid "Repeat password"
+msgstr "비밀번호 재입력"
+
+#: includes/anspress-user.php:241
+msgid "Repeat your password."
+msgstr "비밀번호 재입력"
+
+#: includes/anspress-user.php:259
+msgid "Failed to update, please check form."
+msgstr "갱신 실패. 양식을 다시 확인하세요."
+
+#: includes/anspress-user.php:301
+msgid "Successfully updated your profile."
+msgstr "프로필 갱신 성공"
+
+#: includes/anspress-user.php:306
+msgid "Failed to save profile."
+msgstr "프로필 저장 실패"
+
+#: includes/anspress-user.php:443 includes/anspress-user.php:448
+#: includes/anspress-user.php:452
+msgid "Anonymous"
+msgstr "익명 사용자"
+
+#: includes/anspress-user.php:494
+msgid "Profile"
+msgstr "프로필"
+
+#: includes/anspress-user.php:498
+msgid "Favorites"
+msgstr "즐겨찾기"
+
+#: includes/anspress-user.php:499 theme/default/content-user.php:15
+#: theme/default/user.php:20
+msgid "Followers"
+msgstr "팔로워"
+
+#: includes/anspress-user.php:500 theme/default/content-user.php:16
+#: theme/default/user.php:21
+msgid "Following"
+msgstr "팔로잉"
+
+#: includes/anspress-user.php:501
+msgid "Edit Profile"
+msgstr "프로필 수정"
+
+#: includes/anspress-user.php:754 includes/anspress-user.php:759
+msgid "You do not have access here"
+msgstr "접근할 수 없습니다."
+
+#: includes/anspress-user.php:797
+msgid "Upload cover"
+msgstr "표지 업로드"
+
+#: includes/anspress-user.php:837
+msgid "Upload avatar"
+msgstr "아바타 업로드"
+
+#: includes/anspress-user.php:849
+msgid "About me"
+msgstr "내 정보"
+
+#: includes/anspress-user.php:849
+msgid "Edit your \"about me\" section"
+msgstr "\"내 정보\" 수정"
+
+#: includes/anspress-user.php:850
+msgid "Edit your account information"
+msgstr "계정 정보 수정"
+
+#: includes/anspress-user.php:871
+msgid "Save profile"
+msgstr "프로필 저장"
+
+#: includes/anspress-user.php:919
+msgid "The passwords you entered do not match.  Your password was not updated."
+msgstr "비밀번호가 일치하지 않아서 비밀번호를 갱신하지 않았습니다."
+
+#: includes/anspress-vote.php:120
+msgid "Your vote has been removed"
+msgstr "투표를 취소했습니다."
+
+#: includes/anspress-vote.php:127
+msgid "Undo your vote first"
+msgstr "먼저, 투표를 취소하세요."
+
+#: includes/anspress-vote.php:142
+msgid "Thank you for voting"
+msgstr "투표해 주셔서 고맙습니다."
+
+#: includes/anspress-vote.php:149
+msgid "Unable to process your vote, try again"
+msgstr "투표 진행 불가. 다시 해 보세요."
+
+#: includes/anspress-vote.php:156
+msgid "Please login for voting on question & answer"
+msgstr "질문과 답변에 투표 하시려면 로그인해 주세요."
+
+#: includes/anspress-vote.php:182 includes/anspress-vote.php:481
+msgid "Add to favorite list"
+msgstr "즐겨찾기 추가"
+
+#: includes/anspress-vote.php:184
+msgid "Removed question from your favorite list"
+msgstr "즐겨찾기 목록에서 제거한 질문"
+
+#: includes/anspress-vote.php:195 includes/anspress-vote.php:481
+msgid "Remove from favorite list"
+msgstr "즐겨찾기 목록에서 삭제"
+
+#: includes/anspress-vote.php:196
+msgid "Added question to your favorite list"
+msgstr "즐겨찾기에 추가한 질문"
+
+#: includes/anspress-vote.php:200 includes/anspress-vote.php:488
+msgid "You favorited this question"
+msgstr "즐겨찾기에 추가했습니다."
+
+#: includes/anspress-vote.php:202 includes/anspress-vote.php:490
+#, php-format
+msgid "You and %s others favorited this question"
+msgstr "당신과 %s 명이 즐겨찾기했습니다."
+
+#: includes/anspress-vote.php:204
+#, php-format
+msgid "%s people favorited this question"
+msgstr "%s 명이 즐겨찾기했습니다."
+
+#: includes/anspress-vote.php:210
+msgid "Failed to process this action"
+msgstr "작업 실패"
+
+#: includes/anspress-vote.php:218
+msgid "Please login for adding question to your favorite"
+msgstr "즐겨찾기 추가를 위해서 로그인하십시오"
+
+#: includes/anspress-vote.php:238 includes/anspress-vote.php:532
+msgid "Vote for closing"
+msgstr "답변 완료"
+
+#: includes/anspress-vote.php:238
+msgid "Your close request has been removed"
+msgstr "완료 요청을 취소했습니다."
+
+#: includes/anspress-vote.php:247 includes/anspress-vote.php:532
+msgid "Undo your vote"
+msgstr "투표를 취소하십시오."
+
+#: includes/anspress-vote.php:247
+msgid "Your close request has been sent"
+msgstr "완료 요청을 제출했습니다."
+
+#: includes/anspress-vote.php:252 includes/anspress-vote.php:306
+msgid "Something went wrong"
+msgstr "뭔가 잘못되었습니다."
+
+#: includes/anspress-vote.php:259
+msgid "Please login for requesting closing this question."
+msgstr "질문에 대한 답변 완료 요청을 하려면 로그인하십시오."
+
+#: includes/anspress-vote.php:274
+#, php-format
+msgid "Register or log in to follow %s"
+msgstr "%s 팔로우하려면 로그인하십시오."
+
+#: includes/anspress-vote.php:279 includes/anspress-vote.php:636
+msgid "Unfollow"
+msgstr "팔로잉 취소"
+
+#: includes/anspress-vote.php:280
+#, php-format
+msgid "Unfollow %s"
+msgstr "%s 팔로잉 취소"
+
+#: includes/anspress-vote.php:281
+#, php-format
+msgid "You are now following %s"
+msgstr "%s 를 팔로잉하고 있지 않습니다."
+
+#: includes/anspress-vote.php:285 includes/anspress-vote.php:636
+msgid "Follow"
+msgstr "팔로우"
+
+#: includes/anspress-vote.php:286
+#, php-format
+msgid "Follow %s"
+msgstr "%s를 팔로우"
+
+#: includes/anspress-vote.php:287
+#, php-format
+msgid "You unfollowed %s"
+msgstr "%s 팔로잉을 취소했습니다."
+
+#: includes/anspress-vote.php:302
+msgid "Unable to process your request, please try again."
+msgstr "요청을 수행하지 못했습니다. 재시도 해 주세요."
+
+#: includes/anspress-vote.php:324
+msgid "You already flagged this post"
+msgstr "이미 신고하셨습니다."
+
+#: includes/anspress-vote.php:335 includes/anspress-vote.php:574
+msgid "You have flagged this post"
+msgstr "신고했습니다."
+
+#: includes/anspress-vote.php:335
+msgid "This post is notified to moderator. Thank you for helping us"
+msgstr "이 글을 승인자에게 알렸습니다. 도와주셔서 고맙습니다."
+
+#: includes/anspress-vote.php:462
+msgid "Up vote this post"
+msgstr "글 올리기에 투표"
+
+#: includes/anspress-vote.php:466
+msgid "Down vote this post"
+msgstr "글 내리기에 "
+
+#: includes/anspress-vote.php:492
+msgid "Be the first to add this question to favorite"
+msgstr "첫 번째로 즐겨찾기하세요."
+
+#: includes/anspress-vote.php:494
+#, php-format
+msgid "%s person favorited this question"
+msgid_plural "%s persons favorited this question"
+msgstr[0] "%s 명이 즐겨찾기했습니다."
+msgstr[1] "%s 명이 즐겨찾기했습니다."
+
+#: includes/anspress-vote.php:535
+msgid "Close "
+msgstr "완료"
+
+#: includes/anspress-vote.php:574
+msgid "Flag this post"
+msgstr "신고하기"
+
+#: includes/anspress-vote.php:576
+msgid "Flag "
+msgstr "신고"
+
+#: includes/anspress-vote.php:591
+msgid "I am flagging this post because"
+msgstr "이 글을 신고했습니다. 이유는 "
+
+#: includes/anspress-vote.php:609
+msgid "Other (needs moderator attention)"
+msgstr "기타 ( 승인자 검토 필요 )"
+
+#: includes/anspress-vote.php:610
+msgid ""
+"This post needs a moderator's attention. Please describe exactly what's "
+"wrong. "
+msgstr "승인자 검토가 필요합니다. 상세한 이유를 적어주세요."
+
+#: includes/anspress-vote.php:616
+msgid "Flag post"
+msgstr "신고한 글"
+
+#: theme/default/answer-list.php:10
+#, php-format
+msgid "<span class=\"when\">answered about %s ago</span>"
+msgstr "<span class=\"when\">약 %s 전에 답변했습니다.</span>"
+
+#: theme/default/answer.php:22 theme/default/functions.php:112
+#: theme/default/question.php:56
+msgid "ago"
+msgstr "전 "
+
+#: theme/default/answer.php:23
+msgid "answered about"
+msgstr "답변함"
+
+#: theme/default/categories.php:24 widgets/categories.php:41
+msgid "Sub Categories"
+msgstr "하위 분류"
+
+#: theme/default/categories.php:37
+msgid "Categories are disabled"
+msgstr "분류 사용 불가"
+
+#: theme/default/category.php:4
+#, php-format
+msgid "Category: %s"
+msgstr "분류: %s"
+
+#: theme/default/category.php:4 theme/default/tag.php:4
+#, php-format
+msgid "1 Question"
+msgid_plural "%s Questions"
+msgstr[0] "1 개 질문"
+msgstr[1] "%s 개 질문"
+
+#: theme/default/category.php:8 theme/default/tag.php:8
+msgid "-- No description --"
+msgstr "-- 설명 없음 --"
+
+#: theme/default/comments.php:11
+#, php-format
+msgid "1 Comment"
+msgid_plural "%d Comments"
+msgstr[0] "1 개 댓글"
+msgstr[1] "%d 개 댓글"
+
+#: theme/default/comments.php:19
+msgid "Comment navigation"
+msgstr "댓글 보기"
+
+#: theme/default/comments.php:20
+msgid "&larr; Older Comments"
+msgstr "&larr; 이전 댓글"
+
+#: theme/default/comments.php:21
+msgid "Newer Comments &rarr;"
+msgstr "최신 댓글 &rarr;"
+
+#: theme/default/content-list.php:14
+msgid "Total answers"
+msgstr "전체 답변"
+
+#: theme/default/content-list.php:18
+msgid "Total views"
+msgstr "총 열람 횟수"
+
+#: theme/default/content-list.php:20
+msgid "Views"
+msgstr "열람"
+
+#: theme/default/content-list.php:22
+msgid "Total votes"
+msgstr "총 득표수"
+
+#: theme/default/content-list.php:24 theme/default/questions-widget.php:43
+msgid "Votes"
+msgstr "득표"
+
+#: theme/default/content-list.php:39
+msgid "answer accepted"
+msgstr "답변 채택됨"
+
+#: theme/default/content-none.php:9
+msgid "No question asked yet!, be the first to ask a question."
+msgstr "아직 질문이 없습니다. 첫번째 질문을 작성해 보세요."
+
+#: theme/default/content-none.php:11
+msgid "Ask question"
+msgstr "질문하기"
+
+#: theme/default/functions.php:48
+msgid "Password not matching"
+msgstr "비밀번호 불일치"
+
+#: theme/default/functions.php:49
+msgid "Password length must be 6 or higher"
+msgstr "비밀번호 길이는 최소 6자 이상임"
+
+#: theme/default/functions.php:50
+msgid "Not a valid email"
+msgstr "메일 주소 형식이 틀림"
+
+#: theme/default/functions.php:51
+msgid "Username length must be 4 or higher"
+msgstr "계정 길이는 최소 4글자임"
+
+#: theme/default/functions.php:52
+msgid "Username not available"
+msgstr "계정 형식이 틀렸음"
+
+#: theme/default/functions.php:54
+msgid "Loading"
+msgstr "불러오기"
+
+#: theme/default/functions.php:55
+msgid "Sending request"
+msgstr "요청 전송"
+
+#: theme/default/functions.php:56
+msgid "Adding question to your favorites"
+msgstr "좋아하는 질문으로 등록"
+
+#: theme/default/functions.php:57
+msgid "Sending your vote"
+msgstr "투표 보내기"
+
+#: theme/default/functions.php:58
+msgid "Requesting for closing this question"
+msgstr "답변 완료 요청 전송"
+
+#: theme/default/functions.php:59
+msgid "Submitting request"
+msgstr "요청 작성"
+
+#: theme/default/functions.php:60
+msgid "Loading comment form"
+msgstr "댓글 양식 불러오기"
+
+#: theme/default/functions.php:61
+msgid "Sending your question"
+msgstr "질문 보내기"
+
+#: theme/default/functions.php:62
+msgid "Sending your answer"
+msgstr "답변 보내기"
+
+#: theme/default/functions.php:63
+msgid "Sending your comment"
+msgstr "댓글 보내기"
+
+#: theme/default/functions.php:64
+msgid "Deleting comment"
+msgstr "댓글 삭제하기"
+
+#: theme/default/functions.php:65
+msgid "Updating comment"
+msgstr "댓글 갱신하기"
+
+#: theme/default/functions.php:66
+msgid "Loading form"
+msgstr "양식 불러오기"
+
+#: theme/default/functions.php:67
+msgid "Saving labels"
+msgstr "레이블 저장"
+
+#: theme/default/functions.php:68
+msgid "Loading suggestions"
+msgstr "추천 불러오기"
+
+#: theme/default/functions.php:69
+msgid "Uploading cover"
+msgstr "표지 "
+
+#: theme/default/functions.php:70
+msgid "Saving profile"
+msgstr "프로필 "
+
+#: theme/default/functions.php:71
+msgid "Sending message"
+msgstr "메시지 보내기 "
+
+#: theme/default/functions.php:72
+msgid "Loading conversation"
+msgstr "대화 불러오기"
+
+#: theme/default/functions.php:73
+msgid "Loading new message form"
+msgstr "신규 메시지 양식 불러오기"
+
+#: theme/default/functions.php:74
+msgid "Loading more conversations"
+msgstr "더 많은 대화 불러오기"
+
+#: theme/default/functions.php:75
+msgid "Searching conversations"
+msgstr "대화 검색"
+
+#: theme/default/functions.php:76
+msgid "Loading message form"
+msgstr "메시지 양식 불러오기"
+
+#: theme/default/functions.php:77
+msgid "Updating message"
+msgstr "메시지 갱신"
+
+#: theme/default/functions.php:78
+msgid "Deleting message"
+msgstr "메시지 삭제"
+
+#: theme/default/functions.php:79
+msgid "Uploading"
+msgstr "업로드"
+
+#: theme/default/functions.php:103
+msgid "Your comment is awaiting moderation."
+msgstr "댓글은 승인 대기 중입니다."
+
+#: theme/default/functions.php:114
+msgid "by"
+msgstr "by"
+
+#: theme/default/functions.php:127
+msgid "Are you sure? It cannot be undone!"
+msgstr "확실한가요? 취소할 수 없습니다."
+
+#: theme/default/functions.php:139
+msgid "AP Before"
+msgstr "AP 이전"
+
+#: theme/default/functions.php:143
+msgid "Widgets in this area will be shown before anspress body."
+msgstr "이 영역의 위젯은 AnsPress Body 이전에 보입니다."
+
+#: theme/default/functions.php:149
+msgid "AP Lists Top"
+msgstr "AP 목록 상단"
+
+#: theme/default/functions.php:153
+msgid "Widgets in this area will be shown before questions list."
+msgstr "이 영역의 위젯은 질문 목록 이전에 보입니다."
+
+#: theme/default/functions.php:159
+msgid "AP Sidebar"
+msgstr "AP 사이드바"
+
+#: theme/default/functions.php:163
+msgid "Widgets in this area will be shown in AnsPress sidebar."
+msgstr "이 영역 위젯은 AnsPress 사이드바에서 보입니다."
+
+#: theme/default/functions.php:169
+msgid "AP Question Sidebar"
+msgstr "AP 질문 사이드바"
+
+#: theme/default/functions.php:173
+msgid "Widgets in this area will be shown in question page sidebar."
+msgstr "이 영역의 위젯은 질문 페이지 사이드바에서 보입니다."
+
+#: theme/default/login.php:7 theme/default/login.php:9
+#: theme/default/login.php:48 theme/default/login.php:50
+msgid "Username"
+msgstr "계정"
+
+#: theme/default/login.php:22
+msgid "Remember me"
+msgstr "기억하기"
+
+#: theme/default/login.php:41
+msgid "Or"
+msgstr "또는"
+
+#: theme/default/login.php:44
+msgid "Register"
+msgstr "회원 가입"
+
+#: theme/default/login.php:54
+msgid "email"
+msgstr "메일"
+
+#: theme/default/login.php:56
+msgid "Your Email"
+msgstr "메일 "
+
+#: theme/default/login.php:62
+msgid "Sign up!"
+msgstr "가입하기!"
+
+#: theme/default/login.php:63
+msgid "Check your email for the password!"
+msgstr "메일 주소를 다시 한 번 확인하세요."
+
+#: theme/default/not-found.php:1
+msgid "Error 404"
+msgstr "오류 404"
+
+#: theme/default/pagination.php:26
+msgid "First"
+msgstr "첫번째"
+
+#: theme/default/pagination.php:27
+msgid "Previous"
+msgstr "이전"
+
+#: theme/default/pagination.php:33
+msgid "Go to page "
+msgstr "페이지 이동"
+
+#: theme/default/part/question.php:14
+msgid "Featured post"
+msgstr "눈에 띄는 글"
+
+#: theme/default/part/question.php:28
+msgid "Leave a reply"
+msgstr "회신 남기기"
+
+#: theme/default/part/question.php:28
+msgid "1 Reply"
+msgstr "1 개 회신"
+
+#: theme/default/part/question.php:28
+msgid "% Replies"
+msgstr "%s 개 회신"
+
+#: theme/default/part/question.php:39
+msgid "Continue reading <span class=\"meta-nav\">&rarr;</span>"
+msgstr "계속 읽기 <span class=\"meta-nav\">&rarr;</span>"
+
+#: theme/default/part/question.php:40
+msgid "Pages:"
+msgstr "페이지: "
+
+#: theme/default/part/question.php:53
+#, php-format
+msgid "About %s"
+msgstr "%s 에 관해"
+
+#: theme/default/part/question.php:57
+#, php-format
+msgid "View all posts by %s <span class=\"meta-nav\">&rarr;</span>"
+msgstr "%s 의 모든 작성 글 열람 <span class=\"meta-nav\">&rarr;</span>"
+
+#: theme/default/question.php:53
+msgid "asked about"
+msgstr "질문 주제"
+
+#: theme/default/question.php:83
+#, php-format
+msgid ""
+"<span>Asked</span><strong><time itemprop=\"datePublished\" datetime=\"%s\">"
+"%s Ago</time></strong>"
+msgstr ""
+"<span>질문</span><strong><time itemprop=\"datePublished\" datetime=\"%s\"> "
+"%s 전 </time></strong>"
+
+#: theme/default/question.php:89
+#, php-format
+msgid ""
+"<span>Answer</span><strong data-view=\"ap-answer-count-label\">1 Answer</"
+"strong>"
+msgid_plural ""
+"<span>Answers</span><strong data-view=\"ap-answer-count-label\">%d Answers</"
+"strong>"
+msgstr[0] ""
+"<span>답변</span><strong data-view=\"ap-answer-count-label\">1 개</strong>"
+msgstr[1] ""
+"<span>답변</span><strong data-view=\"ap-answer-count-label\">%d 개</strong>"
+
+#: theme/default/question.php:95
+#, php-format
+msgid "<span>Viewed</span><strong>1 Times</strong>"
+msgid_plural "<span>Viewed</span><strong>%d Times</strong>"
+msgstr[0] "<span>열람</span><strong> 1 회</strong>"
+msgstr[1] "<span>열람</span><strong> %d 회</strong>"
+
+#: theme/default/question.php:100
+#, php-format
+msgid ""
+"<span>Active</span><strong><time class=\"updated\" itemprop=\"dateUpdated\" "
+"datetime=\"%s\">%s Ago</time></strong>"
+msgstr ""
+"<span>활성 <span><strong><time class=\"updated\" itemprop=\"dateUpdated\" "
+"datetime=\"%s\">%s 전</time></strong>"
+
+#: theme/default/question.php:172
+msgid "You do not have permission to view this question."
+msgstr "질문 열람 권한이 없습니다."
+
+#: theme/default/questions-widget.php:21
+msgid "Answer is accepted"
+msgstr "답변을 채택했습니다."
+
+#: theme/default/questions-widget.php:27
+msgid "Last activity"
+msgstr "마지막 활동"
+
+#: theme/default/questions-widget.php:56
+msgid "Question was viewed by"
+msgstr "질문 열람자 "
+
+#: theme/default/questions-widget.php:56
+#, php-format
+msgid "%d Views"
+msgstr "%d 회 열람"
+
+#: theme/default/questions-widget.php:60
+msgid "Question category"
+msgstr "질문 분류"
+
+#: theme/default/questions-widget.php:64
+msgid "Question tagged"
+msgstr "질문 태그"
+
+#: theme/default/tag.php:4
+#, php-format
+msgid "Tag: %s"
+msgstr "태그: %s"
+
+#: theme/default/tags.php:26
+msgid "Tags are disabled"
+msgstr "태그 사용 불가"
+
+#: theme/default/user-answers.php:15
+msgid "No answers posted yet."
+msgstr "아직 답변이 없습니다."
+
+#: theme/default/user-badges.php:10
+#, php-format
+msgid "<span>1</span> Badge"
+msgid_plural "<span>%d</span> Badges"
+msgstr[0] "<span>1 개</span> 뱃지"
+msgstr[1] "<span>%d 개</span> 뱃지"
+
+#: theme/default/user-badges.php:15
+msgid "No badges earned yet!"
+msgstr "아직 뱃지가 없습니다."
+
+#: theme/default/user-favorites.php:15
+msgid "No favourite questions"
+msgstr "좋아하는 질문이 아직 없습니다."
+
+#: theme/default/user-followers.php:11 theme/default/user-following.php:11
+#: theme/default/users-widget.php:21 theme/default/users.php:18
+msgid "No users found."
+msgstr "사용자가 없습니다."
+
+#: theme/default/user-messages.php:6
+msgid "Search messages"
+msgstr "메시지 검색 "
+
+#: theme/default/user-profile.php:3
+msgid "About Me"
+msgstr "나에 관해"
+
+#: theme/default/user-profile.php:9
+msgid "User has not written an \"About Me\" statement."
+msgstr "아직까지 \"내 정보\" 를 작성하지 않았습니다."
+
+#: theme/default/user-profile.php:18
+msgid "No answers posted by the user."
+msgstr "작성한 답변이 없습니다."
+
+#: theme/default/user-profile.php:27
+msgid "No question posted by the user."
+msgstr "작성한 질문이 없습니다."
+
+#: theme/default/user-questions.php:15
+msgid "No questions asked yet."
+msgstr "아직까지 질문이 없습니다."
+
+#: widgets/categories.php:89 widgets/questions.php:132
+#: widgets/quick-ask.php:31 widgets/related_questions.php:88
+#: widgets/search.php:36 widgets/users.php:50
+msgid "Title:"
+msgstr "제목:"
+
+#: widgets/categories.php:93
+msgid "Parent:"
+msgstr "상위:"
+
+#: widgets/categories.php:95
+msgid "Top level"
+msgstr "최고 레벨"
+
+#: widgets/categories.php:105
+msgid "Number:"
+msgstr "수:"
+
+#: widgets/categories.php:109
+msgid "Order By:"
+msgstr "정렬순서:"
+
+#: widgets/categories.php:111
+msgid "None"
+msgstr "없음"
+
+#: widgets/categories.php:112
+msgid "Count"
+msgstr "회/개"
+
+#: widgets/categories.php:113
+msgid "ID"
+msgstr "아이디"
+
+#: widgets/categories.php:115
+msgid "Slug"
+msgstr "슬러그"
+
+#: widgets/categories.php:116
+msgid "Term group"
+msgstr "팀 그룹"
+
+#: widgets/categories.php:120
+msgid "Order:"
+msgstr "정렬:"
+
+#: widgets/categories.php:122
+msgid "DESC"
+msgstr "오름차순"
+
+#: widgets/categories.php:123
+msgid "ASC"
+msgstr "내림차순"
+
+#: widgets/post_discussion.php:19
+msgid "No options"
+msgstr "옵션 없음."
+
+#: widgets/questions.php:136 widgets/related_questions.php:92
+#: widgets/users.php:54
+msgid "Avatar:"
+msgstr "아바타:"
+
+#: widgets/questions.php:140
+msgid "Order by:"
+msgstr "정렬 순서:"
+
+#: widgets/questions.php:151
+msgid "Label:"
+msgstr "레이블"
+
+#: widgets/questions.php:167 widgets/related_questions.php:97
+msgid "Show selected:"
+msgstr "채택 현황:"
+
+#: widgets/questions.php:171 widgets/related_questions.php:101
+msgid "Show activity:"
+msgstr "활동 현황:"
+
+#: widgets/questions.php:175 widgets/related_questions.php:105
+msgid "Show vote:"
+msgstr "투표 현황:"
+
+#: widgets/questions.php:179 widgets/related_questions.php:109
+msgid "Show view:"
+msgstr "열람 현황:"
+
+#: widgets/questions.php:183 widgets/related_questions.php:113
+msgid "Show answers:"
+msgstr "답변 현황:"
+
+#: widgets/questions.php:187 widgets/related_questions.php:117
+msgid "Show category:"
+msgstr "분류 현황:"
+
+#: widgets/questions.php:191 widgets/related_questions.php:121
+msgid "Show tags:"
+msgstr "태그 현황:"
+
+#: widgets/questions.php:196
+msgid "Limit:"
+msgstr "제한:"
+
+#: widgets/quick-ask.php:27
+msgid "Ask questions"
+msgstr "질문하기"
+
+#: widgets/related_questions.php:41
+msgid "Related Questions"
+msgstr "관련 질문"
+
+#: widgets/search.php:19 widgets/search.php:32
+msgid "Search questions"
+msgstr "질문 검색"
+
+#: widgets/users.php:58
+msgid "Show"
+msgstr "현황 보기"
+
+#~ msgid "Extensions"
+#~ msgstr "확장"
+
+#~ msgid "Post flag"
+#~ msgstr "신고하기"
+
+#~ msgid "Select question"
+#~ msgstr "질문 선택"
+
+#~ msgid "This question is orphan, no question is selected for this answer"
+#~ msgstr "이 답변에 맞는 질문이 없습니다."
+
+#~ msgid "Download"
+#~ msgstr "다운로드"
+
+#~ msgid "By %s"
+#~ msgstr "%s"
+
+#~ msgid "Last Updated:"
+#~ msgstr "최근 갱신:"
+
+#~ msgid "Untested with your version of WordPress"
+#~ msgstr "이 워드프레스 버전에서 시험되지 않았음"
+
+#~ msgid "<strong>Compatible</strong> with your version of WordPress"
+#~ msgstr "현재 워드프레스 버전과 <strong>호환됨</strong>"
+
+#~ msgid "All"
+#~ msgstr "전체"
+
+#~ msgid "Edit flags"
+#~ msgstr "신고 수정"
+
+#~ msgid "Save options"
+#~ msgstr "옵션 저장"
+
+#~ msgid "Questions page"
+#~ msgstr "질문 페이지"
+
+#~ msgid "Select page for displaying questions list."
+#~ msgstr "질문 목록을 표시할 페이지를 선택하세요."
+
+#~ msgid "Ask page"
+#~ msgstr "질문 페이지"
+
+#~ msgid "Select page for displaying ask form."
+#~ msgstr "질문 작성 양식을 표시할 페이지를 선택하세요"
+
+#~ msgid "User page"
+#~ msgstr "사용자 페이지"
+
+#~ msgid "Select page for displaying user profile."
+#~ msgstr "사용자 정보를 표시할 페이지를 선택하세요."
+
+#~ msgid "Edit page"
+#~ msgstr "편집 페이지"
+
+#~ msgid "Select page for displaying edit form."
+#~ msgstr "편집 양식을 표시할 페이지를 선택하세요."
+
+#~ msgid "Hide author credits"
+#~ msgstr "작성자 정보 숨김"
+
+#~ msgid "Show your love by showing link to AnsPress project site."
+#~ msgstr ""
+#~ "AnsPress 프로젝트 사이트로의 링크를 보임으로써 여러분의 호의를 보여주세요."
+
+#~ msgid "Allow private posts"
+#~ msgstr "비공개 질문 허용"
+
+#~ msgid "Allow users to create private question and answer."
+#~ msgstr "비공개 질문과 답변 작성을 허용"
+
+#~ msgid "Layout"
+#~ msgstr "양식 정의"
+
+#~ msgid "Avatar"
+#~ msgstr "아바타"
+
+#~ msgid "Select theme for AnsPress."
+#~ msgstr "AnsPress 용 테마를 선택하세요"
+
+#~ msgid "List avatar size"
+#~ msgstr "아바타 크기 목록"
+
+#~ msgid "User avatar size for questions list."
+#~ msgstr "질문 목록용 사용자 아바타 크기 "
+
+#~ msgid "Question avatar size"
+#~ msgstr "질문 아바타 크기"
+
+#~ msgid "Answer avatar size"
+#~ msgstr "답변 아바타 크기"
+
+#~ msgid "User avatar size for answer."
+#~ msgstr "답변용 사용자 아바타 크기"
+
+#~ msgid "Comment avatar size"
+#~ msgstr "댓글 아바타 크기"
+
+#~ msgid "User avatar size for comments."
+#~ msgstr "댓글용 사용자 아바타 크기"
+
+#~ msgid "Items to show per page"
+#~ msgstr "페이지당 아이템 수"
+
+#~ msgid "Questions per page"
+#~ msgstr "페이지당 질문"
+
+#~ msgid "Questions to show per page."
+#~ msgstr "한 페지이에 보여줄 질문 수"
+
+#~ msgid "Answers to show per page."
+#~ msgstr "한 페이지에 보여줄 답변 수"
+
+#~ msgid "Sorting"
+#~ msgstr "정렬"
+
+#~ msgid "Default answer sort"
+#~ msgstr "기본 답변 정렬"
+
+#~ msgid "Sort answers by default."
+#~ msgstr "기본적인 답변의 정렬 순서"
+
+#~ msgid "Toggle"
+#~ msgstr "토글"
+
+#~ msgid "Show comments by default."
+#~ msgstr "기본적으로 댓글 보여주기"
+
+#~ msgid "Minimum title length"
+#~ msgstr "최소 제목 길이"
+
+#~ msgid "Set minimum letters for a question title."
+#~ msgstr "질문 제목의 최소 글자 수"
+
+#~ msgid "Minimum question content"
+#~ msgstr "최소 질문 내용"
+
+#~ msgid "Set minimum letters for a question contents."
+#~ msgstr "질문 내용 작성을 위한 최소 글자 수"
+
+#~ msgid "Use text editor ?"
+#~ msgstr "문서 편집기 사용 ?"
+
+#~ msgid "Text editor as default."
+#~ msgstr "기본적인 문서 편집기"
+
+#~ msgid "Allow an user to submit multiple answers on a single question."
+#~ msgstr "하나의 질문에 여러 답변을 제출 하는 사용자를 수 있습니다."
+
+#~ msgid "Set minimum letters for a answer contents."
+#~ msgstr "답변 내용의 최소 글자 수"
+
+#~ msgid "Set width of user cover photo."
+#~ msgstr "사용자 표지 사진의 폭 설정"
+
+#~ msgid "Set height of user cover photo."
+#~ msgstr "사용자 표지 사진의 높이 설정"
+
+#~ msgid "Cover thumb width"
+#~ msgstr "표지 썸네일의 폭"
+
+#~ msgid "Set width of user cover photo thumbnail."
+#~ msgstr "사용자 표지 썸네일의 폭 설정"
+
+#~ msgid "Set height of user cover photo thumbnail."
+#~ msgstr "사용자 표지 썽네일의 높이"
+
+#~ msgid "Assign a default rank for newly registered user."
+#~ msgstr "신규 등록 사용자에게 기본 랭크를 할당"
+
+#~ msgid "Non-loggedin user can post questions and answers."
+#~ msgstr "로그인 하지 않은 사용자도 질문과 답변 작성 가능"
+
+#~ msgid "Only allow admin to answer question."
+#~ msgstr "관리자만 질문에 답변을 달 수 있게 허용함"
+
+#~ msgid "non-loggedin user cannot see answers."
+#~ msgstr "로그인 하지 않은 사용자는 답변을 볼 수 없음"
+
+#~ msgid "non-loggedin user cannot see comments."
+#~ msgstr "로그인 하지 않은 사용자는 댓글을 볼 수 없음 "
+
+#~ msgid "AnsPress Extensions"
+#~ msgstr "AnsPress 기능 확장 "
+
+#~ msgid "AnsPress Dashboard"
+#~ msgstr "AnsPress 대시보드"
+
+#~ msgid "1 answer"
+#~ msgid_plural "%d answers"
+#~ msgstr[0] "1개 답변"
+#~ msgstr[1] "%d 개 답변 "
+
+#~ msgid "1 vote"
+#~ msgid_plural "%d votes"
+#~ msgstr[0] "1표 득표"
+#~ msgstr[1] "%d표 득표"
+
+#~ msgid "1 view"
+#~ msgid_plural "%d views"
+#~ msgstr[0] "1회 열람"
+#~ msgstr[1] "%d 열람"
+
+#~ msgid "There is no question yet."
+#~ msgstr "아직 질문이 없습니다."
+
+#~ msgid "Have any questions ?"
+#~ msgstr "궁금한 것이 있으신가요? "
+
+#~ msgid "Ask for support"
+#~ msgstr "문의해 주십시오."
+
+#~ msgid "Total <b>%d flag</b>"
+#~ msgstr "총 <b>%d 건 신고</b>"
+
+#~ msgid "Edit post"
+#~ msgstr "글 수정"
+
+#~ msgid "Trash post"
+#~ msgstr "글 버리기"
+
+#~ msgid "%s flagged this post %s ago"
+#~ msgstr "%s가 %s 전에 이 글을 신고했습니다."
+
+#~ msgid "Remove"
+#~ msgstr "삭제"
+
+#~ msgid "No one flagged this post yet"
+#~ msgstr "신고가 없습니다."
+
+#~ msgid "Select a question for new answer"
+#~ msgstr "답변을 작성할 질문을 선택하세요."
+
+#~ msgid ""
+#~ "Slowly type for question suggestion and then click select button right to "
+#~ "question title."
+#~ msgstr ""
+#~ "질문 추전을 위해 천천히 입력해 주시고 질문 제목의 오른쪽 단추를 누르십시"
+#~ "오."
+
+#~ msgid "Search \"%s\""
+#~ msgstr "\"%s\" 검색"
+
+#~ msgid "%d similar questions found"
+#~ msgstr "%d 개의 유사한 질문을 찾았습니다."
+
+#~ msgid ""
+#~ "We found similar questions that have already been asked, click to read "
+#~ "them. Avoid creating duplicate questions, it will be deleted."
+#~ msgstr "유사한 질문을 찾았습니다."
+
+#~ msgid "Select"
+#~ msgstr "선택"
+
+#~ msgid "Update comment"
+#~ msgstr "댓글 갱신"
+
+#~ msgid "Post Comment"
+#~ msgstr "댓글 작성"
+
+#~ msgid "You do not have permission to comment"
+#~ msgstr "댓글 작성 권한이 없습니다."
+
+#~ msgid "Enter your name to display"
+#~ msgstr "표시하실 이름을 입력하세요."
+
+#~ msgid "Question is closed, new answer cannot be submitted."
+#~ msgstr "질문을 마감하였기에 새로운 답변을 작성하실 수 없습니다."
+
+#~ msgid "Post answer"
+#~ msgstr "답변 작성"
+
+#~ msgid "Your answer.."
+#~ msgstr "답변을 작성해 주세요."
+
+#~ msgid "Only visible to admin and moderator."
+#~ msgstr "관리자와 승인자에게만 보임"
+
+#~ msgid "Post question"
+#~ msgstr "질문 작성"
+
+#~ msgid "Question in once sentence"
+#~ msgstr "한 문장 속 질문"
+
+#~ msgid "Write a meaningful title for the question."
+#~ msgstr "내용을 알기 쉽게 질문 제목을 정하세요."
+
+#~ msgid "Write description for the question."
+#~ msgstr "질문에 대한 설명을 작성하세요."
+
+#~ msgid "Private"
+#~ msgstr "비공개"
+
+#~ msgid ""
+#~ "This question ment to be private, only visible to admin and moderator."
+#~ msgstr "이 질문은 비공개라서 관리자와 승인자에게만 보입니다."
+
+#~ msgid "Add more"
+#~ msgstr "추가"
+
+#~ msgid "No fields found"
+#~ msgstr "필드를 발견 못함"
+
+#~ msgid "AnsPress Moderator"
+#~ msgstr "AnsPress 승인자"
+
+#~ msgid "AnsPress Participants"
+#~ msgstr "AnsPress 참여자"
+
+#~ msgid "This field is required"
+#~ msgstr "필수 필드입니다."
+
+#~ msgid "Its too short, it must be minimum %d characters"
+#~ msgstr "너무 짧습니다. 최소 %d 자 이상이 필요합니다."
+
+#~ msgid "It must be minimum %d characters"
+#~ msgstr "최소 %d 자 이상 필요합니다."
+
+#~ msgid "Something went wrong, last action failed."
+#~ msgstr "뭔가 잘못되었습니다. 마지막 작업을 실패했습니다."
+
+#~ msgid "You do not have permission to do this action."
+#~ msgstr "작업 실행 권한이 없습니다."
+
+#~ msgid "You are commenting on a draft post."
+#~ msgstr "임시 글에 댓글을 작성하고 계십니다."
+
+#~ msgid "Comment successfully posted."
+#~ msgstr "댓글 작성 성공"
+
+#~ msgid "Edit this answer"
+#~ msgstr "답변 수정"
+
+#~ msgid "Unselect"
+#~ msgstr "취소"
+
+#~ msgid "You need to login before doing this action."
+#~ msgstr "작업을 위해서 로그인하셔야 합니다."
+
+#~ msgid "Comment updated successfully."
+#~ msgstr "댓글 갱신 성공"
+
+#~ msgid "Comment deleted successfully."
+#~ msgstr "댓글 삭제 성공"
+
+#~ msgid "You are subscribed to this question."
+#~ msgstr "이 질문을 구독 신청했습니다."
+
+#~ msgid "Successfully unsubscribed."
+#~ msgstr "구독 취소 성공"
+
+#~ msgid "Answer submitted successfully"
+#~ msgstr "답변 제출 성공"
+
+#~ msgid "Thank you for voting."
+#~ msgstr "투표해 주셔서 고맙습니다."
+
+#~ msgid "Your vote has been removed."
+#~ msgstr "투표를 철회했습니다."
+
+#~ msgid "Undo your vote first."
+#~ msgstr "먼저, 투표를 취소하십시오."
+
+#~ msgid "You cannot vote on your own question or answer."
+#~ msgstr "자신이 작성한 질문이나 답변에는 투표할 수 없습니다."
+
+#~ msgid "Best answer is unselected for your question."
+#~ msgstr "질문에 대한 최고의 답변 채택이 취소되었습니다."
+
+#~ msgid "Best answer is selected for your question."
+#~ msgstr "질문에 대한 최고 답변으로 채택되었습니다."
+
+#~ msgid "Question moved to trash."
+#~ msgstr "질문을 휴지통으로 이동"
+
+#~ msgid "Answer moved to trash."
+#~ msgstr "답변을 휴지통으로 이동"
+
+#~ msgid "You dont have permission to view private posts."
+#~ msgstr "비공개 글을 볼 수 있는 권한이 없습니다."
+
+#~ msgid "Thank you for reporting this post."
+#~ msgstr "신고해 주셔서 고맙습니다."
+
+#~ msgid "You have already reported this post."
+#~ msgstr "이미 신고하셨습니다."
+
+#~ msgid " (anonymous)"
+#~ msgstr "(익명 사용자)"
+
+#~ msgid "Active %s ago"
+#~ msgstr "%s 전에 활성"
+
+#~ msgid "Private Post"
+#~ msgstr "비공개 글"
+
+#~ msgid "Private Post <span class=\"count\">(%s)</span>"
+#~ msgid_plural "Private Post <span class=\"count\">(%s)</span>"
+#~ msgstr[0] "비공개 글  <span class=\"count\">(%s)</span>"
+#~ msgstr[1] "비공개 글  <span class=\"count\">(%s)</span>"
+
+#~ msgid "Author"
+#~ msgstr "작성자"
+
+#~ msgid "Check missing fields and then re-submit."
+#~ msgstr "누락한 필드를 확인하고 다시 제출하세요."
+
+#~ msgid "No questions match your search criteria"
+#~ msgstr "검색 결과가 없습니다."
+
+#~ msgid ""
+#~ "<span>Created</span> <i><time itemprop=\"datePublished\" datetime=\"%s\">"
+#~ "%s Ago</time></i>"
+#~ msgstr ""
+#~ "<i><time itemprop=\"datePublished\" datetime=\"%s\">%s 전에</time></"
+#~ "i><span> 작성</span>"
+
+#~ msgid "<span>1 answer</span>"
+#~ msgid_plural "<span>%d answers</span>"
+#~ msgstr[0] "<span>1개 답변</span>"
+#~ msgstr[1] "<span>%d개 답변</span>"
+
+#~ msgid "<span>1 vote</span>"
+#~ msgid_plural "<span>%d votes</span>"
+#~ msgstr[0] "<span>1 표 득표</span>"
+#~ msgstr[1] "<span>%d 표 득표</span>"
+
+#~ msgid "<i>%d views</i>"
+#~ msgstr "<i>%d 회 열람</i>"
+
+#~ msgid "Please login for adding question to your subscribe"
+#~ msgstr "질문을 구독 목록에 추가하려면 로그인하십시오."
+
+#~ msgid "Subscribe"
+#~ msgstr "구독"
+
+#~ msgid "Subscribed"
+#~ msgstr "구독함"
+
+#~ msgid "Only you are subscribed to this question."
+#~ msgstr "이 질문만 구독했습니다."
+
+#~ msgid "You and <strong>%s people</strong> subscribed to this question."
+#~ msgstr "당신과 <strong>%s 명</strong>이 구독하고 있습니다."
+
+#~ msgid "No one is subscribed to this question."
+#~ msgstr "구독 중인 사람이 없습니다."
+
+#~ msgid "<strong>%d people</strong> subscribed to this question."
+#~ msgstr "<strong>%d 명</strong>이 구독 중입니다."
+
+#~ msgid "Your answer"
+#~ msgstr "답변"
+
+#~ msgid "Please %s or %s to ask a question."
+#~ msgstr "질문하려면 %s 나 %s 해 주세요."
+
+#~ msgid "Answer is marked as a private, only admin and post author can see."
+#~ msgstr "비공개 답변입니다. 관리자와 작성자만 볼 수 있습니다."
+
+#~ msgid "Answer is waiting for approval by moderator."
+#~ msgstr "답변은 승인 대기 중입니다."
+
+#~ msgid "Selected"
+#~ msgstr "채택"
+
+#~ msgid "This is a private %s."
+#~ msgstr "비공개 %s 입니다."
+
+#~ msgid "This %s waiting for moderation."
+#~ msgstr "%s 은/는 승인 대기 중입니다."
+
+#~ msgid "Question is asked for %s."
+#~ msgstr "%s 에 관한 질문"
+
+#~ msgid "Question is marked as a private, only admin and post author can see."
+#~ msgstr "비공개 질문입니다. 관리자와 작성자만 볼 수 있습니다."
+
+#~ msgid "Question is waiting for approval by moderator."
+#~ msgstr "질문은 승인 대기 중입니다."
+
+#~ msgid "Question is closed, new answer are not accepted."
+#~ msgstr "답변 완료 질문이기에 새로은 답변 작성이 불가능합니다."
+
+#~ msgid "%s answers"
+#~ msgstr "%s 개의 답변"
+
+#~ msgid "Answers (%d)"
+#~ msgstr "답변 (%d)"
+
+#~ msgid "Best answers"
+#~ msgstr "최고 답변"
+
+#~ msgid "View all answers"
+#~ msgstr "모든 답변 열람"
+
+#~ msgid "Questions (%d)"
+#~ msgstr "질문 (%d)"
+
+#~ msgid "Total questions"
+#~ msgstr "전체 질문"
+
+#~ msgid "Solved questions"
+#~ msgstr "해결한 질문"
+
+#~ msgid "View all questions"
+#~ msgstr "모든 질문 보기"
+
+#~ msgid "No related questions found."
+#~ msgstr "관련 질문을 찾지 못했습니다."
+
+#~ msgid "Avatar size:"
+#~ msgstr "아바타 크기:"
+
+#~ msgid "AnsPress Stats"
+#~ msgstr "AnsPress 현황"
+
+#~ msgid "Ago"
+#~ msgstr "전"
+
+#~ msgid "Subscribers"
+#~ msgstr "구독자"
+
+#~ msgid "Question stats"
+#~ msgstr "질문 현황"
+
+#~ msgid "Search questions & answers"
+#~ msgstr "질문과 답변 검색"
+
+#~ msgid "AnsPress Subscribe"
+#~ msgstr "AnsPress 구독"
