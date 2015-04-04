@@ -147,16 +147,10 @@ function ap_option_group_fields(){
 		return;
 
 	$fields =  $ap_option_tabs[$active]['fields'];
-	
-	$fields[] = array(
-		'name' 	=> 'action',
-		'type'	=> 'hidden',
-		'value'	=> 'ap_save_options',
-	);
 
 	$args = array(
         'name'              => 'options_form',
-        'is_ajaxified'      => true,
+        'is_ajaxified'      => false,
         'submit_button'     => __('Save options', 'ap'),
         'nonce_name'        => 'nonce_option_form',
         'fields'            => $fields,

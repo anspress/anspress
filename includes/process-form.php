@@ -99,6 +99,9 @@ class AnsPress_Process_Form
 
 			case 'comment_form':
 				$this->comment_form();
+
+			case 'options_form':
+				$this->options_form();
 				break;
 			
 			default:
@@ -645,5 +648,30 @@ class AnsPress_Process_Form
 			}
 
 		}
+	}
+
+	public function options_form()
+	{
+		if(!isset($_POST['__nonce']) || !wp_verify_nonce( $_POST['__nonce'], 'nonce_option_form' ) || !current_user_can('manage_options'))
+			return;
+
+		$result = array();
+		flush_rewrite_rules();
+		$options = $_POST['anspress_opt'];
+
+		if(!empty($options) && is_array($options)){
+			$old_options = get_option('anspress_opt');
+			
+			foreach($options as $k => $opt){
+				$old_options[$k] = $opt;
+			}
+
+			update_option('anspress_opt', $old_options);
+			wp_cache_delete( 'ap_opt', 'options' );
+
+			$_POST['anspress_opt_updated'] = true;
+			//$result = array('status' => true, 'html' => '<div class="updated fade" style="display:none"><p><strong>'.__( 'AnsPress options updated successfully', 'ap' ).'</strong></p></div>');
+		}
+		
 	}
 }

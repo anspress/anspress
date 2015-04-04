@@ -282,6 +282,9 @@ class AnsPress_Form {
 
         $this->output .= '<input id="'. @$field['name'] .'" type="checkbox" class="ap-form-control" value="1" name="'. @$field['name'] .'" '.checked( (bool)$field['value'], true, false ).' '. @$field['attr'] .' />';
 
+        // hack for getting value of unchecked checkbox
+        $this->output .= '<input type="hidden" value="0" name="_hidden_'. @$field['name'] .'" />';
+
         if(!empty($field['desc']))
             $this->output .= @$field['desc'].'</label>';
 

@@ -20,17 +20,14 @@ $settings = ap_opt();
  * Anspress option navigation
  * @var array
  */
-
-
-if ( ! isset( $_REQUEST['settings-updated'] ) )
-	$_REQUEST['settings-updated'] = false; // This checks whether the form has just been submitted. ?>
+?>
 
 <div class="wrap">
 	<?php screen_icon(); echo '<h2>' . __( 'AnsPress Options' ) . '</h2>';
 	// This shows the page's name and an icon if one has been provided ?>
 			
-	<?php if ( false !== $_REQUEST['settings-updated'] ) : ?>
-	<div class="updated fade"><p><strong><?php _e( 'Options saved', 'ap' ); ?></strong></p></div>
+	<?php if ( @$_POST['anspress_opt_updated'] === true ) : ?>
+		<div class="updated fade"><p><strong><?php _e( 'AnsPress options updated', 'ap' ); ?></strong></p></div>
 	<?php endif; // If the form has just been submitted, this shows the notification ?>
 	
 	<div class="anspress-options">

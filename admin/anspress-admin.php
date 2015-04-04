@@ -68,7 +68,6 @@ class AnsPress_Admin {
 		add_action('parent_file', array($this, 'tax_menu_correction'));		
 		add_action( 'load-post.php', array($this, 'question_meta_box_class') );
 		add_action( 'load-post-new.php', array($this, 'question_meta_box_class') );		
-		add_action( 'wp_ajax_ap_save_options', array($this, 'ap_save_options') );
 		add_action( 'wp_ajax_ap_edit_reputation', array($this, 'ap_edit_reputation') );
 		add_action( 'wp_ajax_ap_save_reputation', array($this, 'ap_save_reputation') );
 		add_action( 'wp_ajax_ap_new_reputation_form', array($this, 'ap_new_reputation_form') );
@@ -178,7 +177,7 @@ class AnsPress_Admin {
 
 		add_submenu_page('anspress', __( 'AnsPress Options', 'ap' ), __( 'Options', 'ap' ),	'manage_options', 'anspress_options', array( $this, 'display_plugin_admin_page' ));
 		
-		add_submenu_page('anspress', __( 'Extensions', 'ap' ), __( 'Extensions', 'ap' ),	'manage_options', 'anspress_ext', array( $this, 'display_plugin_addons_page' ));
+		//add_submenu_page('anspress', __( 'Extensions', 'ap' ), __( 'Extensions', 'ap' ),	'manage_options', 'anspress_ext', array( $this, 'display_plugin_addons_page' ));
 
 		 add_submenu_page('ap_post_flag', __( 'Post flag', 'ap' ), __( 'Post flag', 'ap' ), 'delete_pages', 'ap_post_flag', array( $this, 'display_post_flag' ));
 		 add_submenu_page('ap_select_question', __( 'Select question', 'ap' ), __( 'Select question', 'ap' ), 'delete_pages', 'ap_select_question', array( $this, 'display_select_question' ));
@@ -401,28 +400,6 @@ class AnsPress_Admin {
 	
 	public function save_user_roles_fields( $user_id ) {
 		update_usermeta( $user_id, 'ap_role', sanitize_text_field($_POST['ap_role']) );
-	}
-	
-	public function ap_save_options(){		
-		if(current_user_can('manage_options')){
-			$result = array();
-			flush_rewrite_rules();
-			$options = $_POST['anspress_opt'];
-
-			if(!empty($options) && is_array($options)){
-				$old_options = get_option('anspress_opt');
-				
-				foreach($options as $k => $opt){
-					$old_options[$k] = $opt;
-				}
-
-				update_option('anspress_opt', $old_options);
-				$result = array('status' => true, 'html' => '<div class="updated fade" style="display:none"><p><strong>'.__( 'AnsPress options updated successfully', 'ap' ).'</strong></p></div>');
-			}
-				
-			die(json_encode( $result ));
-		}
-		
 	}
 	
 	public function ap_edit_reputation(){

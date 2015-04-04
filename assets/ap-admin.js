@@ -75,28 +75,15 @@ APjs.admin.prototype = {
 	
 	saveOptions: function(){
 		jQuery('#options_form').submit(function(){
-			 var checkboxes = jQuery.param( jQuery(this).find('input:checkbox:not(:checked)').map(function() {
-			   return { name: this.name, value: this.checked ? this.value : '0' };
-			 }));
-			jQuery.ajax({  
-				type: 'POST',  
-				url: ajaxurl,  
-				data: jQuery(this).formSerialize() + '&' +checkboxes,  
-				context:this,
-				dataType:'json',
-				success: function(data){
-					if(data['status']){
-						var html = jQuery(data['html']);
-						jQuery('.wrap').prepend(html);
-						jQuery('html, body').animate({
-							scrollTop: 0
-						}, 300);
-						jQuery('.wrap .updated').delay(500).slideDown(300);
-						html.delay(5000).slideUp(300);
-					}
-				} 
+			jQuery.each(jQuery(this).find('input:checkbox:not(:checked)'), function(index, val) {
+				var name = jQuery(this).attr('name');
+				console.log(name);
+				var hidden = '_hidden_'+name;
+				jQuery(this).attr('name', '');
+				jQuery('input[name="'+ hidden + '"]').attr('name', name);
 			});
-			return false;
+
+			return true;
 		});
 	},
 	renameTaxo: function(){
