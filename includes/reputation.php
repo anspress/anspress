@@ -359,6 +359,22 @@ function ap_get_reputation($uid = false, $short = false) {
 	}
 }
 
+function ap_get_all_reputation($user_id){
+	global $wpdb;
+	$query = "SELECT v.* FROM ".$wpdb->prefix."ap_meta v WHERE v.apmeta_type='reputation' AND v.apmeta_userid = $user_id";
+
+	$key = md5($query);
+
+	$result = wp_cache_get( $key, 'ap');
+
+	if($result === false){
+		$result = $wpdb->get_results($query);
+		wp_cache_set( $key, $result, 'ap' );
+	}
+
+	return $result;
+}
+
 /**
  * @param string $type
  */

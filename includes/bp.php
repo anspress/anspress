@@ -78,17 +78,8 @@ class AnsPress_BP
 	public function reputation_screen_content() {
 		global $wpdb;
 		$user_id = bp_displayed_user_id();
-		// Preparing your query
-      	$query = "SELECT v.* FROM ".$wpdb->prefix."ap_meta v WHERE v.apmeta_type='reputation' AND v.apmeta_userid = $user_id";
-        
-	
-		//adjust the query to take pagination
-		/*if(!empty($paged) && !empty($this->per_page)){
-			$offset=($paged-1)*$this->per_page;
-			$query.=' LIMIT '.(int)$offset.','.$this->per_page;
-		}		
-		*/
-		$reputation = $wpdb->get_results($query);
+		
+		$reputation = ap_get_all_reputation($user_id);
     	echo '<div class="anspress-container">';
 	    include ap_get_theme_location('user-reputation.php');
 	    echo '</div>';
