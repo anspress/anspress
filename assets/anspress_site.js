@@ -109,6 +109,9 @@
             return $('.ap-uid').length;
         },
         showLoading: function(elm) {
+            /*hide any existing loading icon*/
+            AnsPress.site.hideLoading(elm);
+
             var uid = this.uniqueId();
             var el = $('<div class="ap-loading-icon ap-uid" id="apuid-' + uid + '"><i class="apicon-sync"><i></div>');
             $('body').append(el);
