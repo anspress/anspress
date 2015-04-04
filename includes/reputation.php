@@ -361,7 +361,7 @@ function ap_get_reputation($uid = false, $short = false) {
 
 function ap_get_all_reputation($user_id){
 	global $wpdb;
-	$query = "SELECT v.* FROM ".$wpdb->prefix."ap_meta v WHERE v.apmeta_type='reputation' AND v.apmeta_userid = $user_id";
+	$query = "SELECT v.* FROM ".$wpdb->prefix."ap_meta v WHERE v.apmeta_type='reputation' AND v.apmeta_userid = $user_id order by v.apmeta_date DESC";
 
 	$key = md5($query);
 
