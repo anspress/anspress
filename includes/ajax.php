@@ -237,7 +237,7 @@ class AnsPress_Ajax
 		wp_trash_post($post_id);
 		if($post->post_type == 'question'){
 			do_action('ap_wp_trash_question', $post_id);
-			ap_send_json( ap_ajax_responce( array('action' => 'delete_question', 'do' => 'redirect', 'redirect_to' => get_permalink(ap_opt('questions_page_id')), 'message' => 'question_moved_to_trash')));
+			ap_send_json( ap_ajax_responce( array('action' => 'delete_question', 'do' => 'redirect', 'redirect_to' => ap_base_page_link(), 'message' => 'question_moved_to_trash')));
 		}else{
 			do_action('ap_wp_trash_answer', $post_id);
 			$current_ans = ap_count_published_answers($post->post_parent);
@@ -245,7 +245,7 @@ class AnsPress_Ajax
 			$remove = (!$current_ans ? true : false);
 			ap_send_json( ap_ajax_responce(array(
 				'action' 		=> 'delete_answer', 
-				'div_id' 			=> '#answer_'.$post_id,
+				'div_id' 		=> '#answer_'.$post_id,
 				'count' 		=> $current_ans,
 				'count_label' 	=> $count_label,
 				'remove' 		=> $remove,
