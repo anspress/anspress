@@ -19,6 +19,8 @@ class AnsPress_Actions
 	{
 		new AnsPress_Post_Status;
 		new AnsPress_Rewrite;
+		
+		AP_History::get_instance();
 
 		add_action( 'init', array($this, 'init') );
 		add_action( 'ap_after_new_question', array($this, 'after_new_question'), 10, 2 );
