@@ -215,11 +215,11 @@ class anspress_vote
 		if($post->post_type == 'question' || $post->post_type == 'answer'){
              if(is_object($post)){
 
-                $votes = ap_post_votes($post->ID);              
+                //$votes = ap_post_votes($post->ID);              
                 // net vote
-                $post->voted_up     = $votes['voted_up'];
-                $post->voted_down   = $votes['voted_down'];
-                $post->net_vote     = $votes['voted_up'] - $votes['voted_down'];
+               // $post->voted_up     = $votes['voted_up'];
+               // $post->voted_down   = $votes['voted_down'];
+                $post->net_vote     = ap_net_vote_meta($post->ID);
             }
         }
 	}
