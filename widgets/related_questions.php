@@ -3,7 +3,7 @@ class AP_Related_questions extends WP_Widget {
 
 	public function AP_Related_questions() {
 		// Instantiate the parent object
-		parent::__construct( false, 'AnsPress Related Questions' );
+		parent::__construct( false, '(AnsPress) Related Questions', array('description' => 'For showing related question. This widget will only work in question page.') );
 	}
 
 	public function widget( $args, $instance ) {

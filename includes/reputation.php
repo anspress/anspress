@@ -359,9 +359,9 @@ function ap_get_reputation($uid = false, $short = false) {
 	}
 }
 
-function ap_get_all_reputation($user_id){
+function ap_get_all_reputation($user_id, $limit = 10){
 	global $wpdb;
-	$query = "SELECT v.* FROM ".$wpdb->prefix."ap_meta v WHERE v.apmeta_type='reputation' AND v.apmeta_userid = $user_id order by v.apmeta_date DESC";
+	$query = $wpdb->prepare("SELECT v.* FROM ".$wpdb->prefix."ap_meta v WHERE v.apmeta_type='reputation' AND v.apmeta_userid = %d order by v.apmeta_date DESC LIMIT %d", $user_id, $limit);
 
 	$key = md5($query);
 
