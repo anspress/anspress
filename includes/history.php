@@ -217,7 +217,7 @@ function ap_get_latest_history_html($post_id, $avatar = false, $icon = false){
 
 		$title = ap_history_title($history['type']);
 
-		$html .= '<span class="ap-post-history">'.sprintf( __('%s %s about <time datetime="'. mysql2date('c', $history['date']) .'">%s</time> ago', 'ap'), ap_user_display_name($history['user_id']), $title, ap_human_time( $history['date'], false)) .'</span>';
+		$html .= '<span class="ap-post-history">'.sprintf( __('%s %s <time datetime="'. mysql2date('c', $history['date']) .'">%s</time> ago', 'ap'), ap_user_display_name($history['user_id']), $title, ap_human_time( $history['date'], false)) .'</span>';
 
 		
 	}elseif(!$icon && $post->post_type = 'question'){

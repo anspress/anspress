@@ -543,7 +543,6 @@ function ap_display_answer_metas($answer_id =  false){
 		$metas['best_answer'] = '<span class="ap-best-answer-label">'.__('Best answer', 'ap').'</span>';
 
 	$metas['history'] = ap_last_active_time($answer_id);
-	$metas['created'] = sprintf( __( '<span>Created</span> <i><time itemprop="datePublished" datetime="%s">%s Ago</time></i>', 'ap' ), get_the_time('c', $answer_id), ap_human_time( get_the_time('U')));
 
 	/**
 	 * FILTER: ap_display_answer_meta
@@ -555,7 +554,7 @@ function ap_display_answer_metas($answer_id =  false){
 	$output = '';
 	if (!empty($metas) && is_array($metas)) {
 		foreach ($metas as $meta => $display) {
-			$output .= "<li class='ap-display-meta-item {$meta}'>{$display}</li>";
+			$output .= "<span class='ap-display-meta-item {$meta}'>{$display}</span>";
 		}
 	}
 

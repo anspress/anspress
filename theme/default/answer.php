@@ -16,8 +16,6 @@ if(!ap_user_can_view_post(get_question_id())){
 
 $class = ap_is_best_answer(get_question_id()) ? ' selected answer' : 'answer';
 ?>
-
-<!-- TODO: add post_class() -->
 <div id="answer_<?php echo get_the_ID(); ?>" <?php post_class($class) ?> data-id="<?php echo get_the_ID(); ?>" itemprop="suggestedAnswer<?php echo ap_is_best_answer(get_the_ID()) ? ' acceptedAnswer' : ''; ?>" itemtype="http://schema.org/Answer" itemscope="">
 	<div class="ap-avatar ap-pull-left">
 		<a href="<?php echo ap_user_link(get_the_author_meta('ID')); ?>">
