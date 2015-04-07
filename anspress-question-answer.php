@@ -322,7 +322,6 @@ function anspress_uninstall()
 add_action('plugins_loaded', array( 'anspress_vote', 'get_instance' ));
 add_action('plugins_loaded', array( 'anspress_view', 'get_instance' ));
 
-add_action('plugins_loaded', array( 'AP_History', 'get_instance' ));
 
 /*----------------------------------------------------------------------------*
  * Dashboard and Administrative Functionality
