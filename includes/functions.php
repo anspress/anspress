@@ -929,9 +929,7 @@ function ap_sort_array_by_order($array){
 			$group[$order]['order'] = $order;
 		}
 		
-		usort($group, function($a, $b) {
-			return $a['order'] - $b['order'];
-		});
+		usort($group, 'ap_sort_order_callback');
 
 		foreach($group as $a){
 			foreach($a as $k => $newa){
@@ -942,6 +940,10 @@ function ap_sort_array_by_order($array){
 
 		return $new_array;
 	}
+}
+
+function ap_sort_order_callback($a, $b) {
+	return $a['order'] - $b['order'];
 }
 
 /**
