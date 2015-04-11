@@ -1,6 +1,6 @@
 <?php dynamic_sidebar( 'ap-top' ); ?>
 <div class="row">
-	<div id="ap-lists" class="<?php echo is_active_sidebar( 'ap-sidebar' ) ? 'col-md-8' : 'col-md-12' ?>">
+	<div id="ap-lists" class="<?php echo is_active_sidebar( 'ap-sidebar' ) && is_anspress() ? 'col-md-8' : 'col-md-12' ?>">
 		<?php ap_questions_tab(get_permalink()); ?>
 		<?php if ( $questions->have_posts() ) : ?>
 			<div class="ap-questions">
@@ -22,8 +22,8 @@
 			endif; 
 		?>	
 	</div>
-	<?php if ( is_active_sidebar( 'ap-sidebar' ) ){ ?>
-		<div class="ap-question-right col-md-3">
+	<?php if ( is_active_sidebar( 'ap-sidebar' ) && is_anspress()){ ?>
+		<div class="ap-question-right col-md-4">
 			<div class="ap-question-info">
 				<?php dynamic_sidebar( 'ap-sidebar' ); ?>
 			</div>

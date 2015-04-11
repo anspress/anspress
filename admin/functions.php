@@ -7,73 +7,11 @@
  *
  * @package AnsPress
  */
-
-
-
 // If this file is called directly, abort.
 if (! defined('WPINC')) {
     die;
 }
 
-
-/**
- * Return the total numbers of post
- * @param  string         $post_type
- * @param  boolean|string $meta_type
- * @return array
- * @since  2.0.0-alpha2
- */
-function ap_total_posts_count($post_type = 'question', $meta_type =  false)
-{
-
-	global $wpdb;
-
-	$type = "";
-	
-	if('question' == $post_type)
-		$type = "p.post_type = 'question'";
-	elseif('answer' == $post_type)
-		$type = "p.post_type = 'answer'";
-	else
-		$type = "(p.post_type = 'question' OR p.post_type = 'answer')";
-
-	$meta = "";
-	$join = "";
-	
-	if($meta_type){
-		$meta = "AND m.apmeta_type='$meta_type'";
-		$join = "INNER JOIN ".$wpdb->prefix."ap_meta m ON p.ID = m.apmeta_actionid";
-	}
-
-	$where = "WHERE $type $meta";
-	
-	$where = apply_filters( 'ap_total_posts_count', $where );
-	
-	$query = "SELECT count(*) as count, p.post_status FROM $wpdb->posts p $join $where GROUP BY p.post_status";
-	
-	$cache_key = md5( $query );
-
-	$count = wp_cache_get( $cache_key, 'counts');
-	
-	if ( false !== $count )
-		return $count;
-		
-	$count = $wpdb->get_results( $query, ARRAY_A);
-	
-	$counts = array();
-	foreach ( get_post_stati() as $state )
-		$counts[$state] = 0;	
-
-	$counts['total'] = 0;
-
-	foreach ( (array) $count as $row ){
-		$counts[$row['post_status']] = $row['count'];
-		$counts['total'] += $row['count'];
-	}	
-	wp_cache_set( $cache_key, (object)$counts, 'counts' );
-
-	return (object)$counts;
-}
 
 /**
  * Return number of flagged posts
