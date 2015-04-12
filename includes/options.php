@@ -111,6 +111,7 @@ function ap_default_options(){
 		'enable_recaptcha' 		=> false,
 		'recaptcha_site_key' 	=> '',
 		'recaptcha_secret_key' 	=> '',
+		'disable_reputation' 	=> false,
 	);
 	
 	/**

@@ -12,6 +12,15 @@
 class AnsPress_Reputation {
 	
 	public function __construct(){
+		add_action('init', array($this, 'init'));
+	}
+
+	public function init(){
+
+		// return if reputation is disabled
+		if(ap_opt('disable_reputation'))
+			return;
+
 		add_action('ap_after_new_question', array($this, 'new_question'));
 		add_action('ap_untrash_question', array($this, 'new_question'));
 		add_action('ap_trash_question', array($this, 'delete_question'));
@@ -30,6 +39,8 @@ class AnsPress_Reputation {
 		
 		add_action('ap_publish_comment', array($this, 'new_comment'));
 		add_action('ap_unpublish_comment', array($this, 'delete_comment'));
+
+		add_filter('ap_user_display_meta_array', array($this, 'display_meta'), 10, 2);
 	}
 	
 	/**
@@ -263,6 +274,13 @@ class AnsPress_Reputation {
 		ap_reputation_log_delete('comment', $comment->user_id, $reputation, $comment->comment_ID);
 	}
 	
+
+	public function display_meta($metas, $user_id){
+		if($user_id > 0)
+			$metas['reputation'] = '<span class="ap-user-meta ap-user-meta-reputation">'. sprintf(__('%d Reputation', 'ap'), ap_get_reputation($user_id, true)) .'</span>';
+
+		return $metas;
+	}
 }
 
 function ap_reputation_option(){

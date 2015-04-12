@@ -287,7 +287,21 @@ class AnsPress_Options_Page
 		));
 		
 		// register user settings
-		/*ap_register_option_group('user', __('User', 'ap') , array(
+		ap_register_option_group('user', __('User', 'ap') , array(
+			array(
+				'name' => '__sep',
+				'type' => 'custom',
+				'html' => '<span class="ap-form-separator">' . __('Features', 'ap') . '</span>',
+			) ,
+			array(
+				'name' => 'anspress_opt[disable_reputation]',
+				'label' => __('Disable reputation', 'ap') ,
+				'desc' => __('Disable reputation for user', 'ap') ,
+				'type' => 'checkbox',
+				'value' => $settings['disable_reputation'],
+				'show_desc_tip' => false,
+			) ,
+			
 			array(
 				'name' => 'anspress_opt[cover_width]',
 				'label' => __('Cover width', 'ap') ,
@@ -332,7 +346,7 @@ class AnsPress_Options_Page
 				'value' => $settings['default_rank'],
 				'show_desc_tip' => false,
 			) ,
-		));*/
+		));
 		
 		// register permission settings
 		ap_register_option_group('permission', __('Permission', 'ap') , array(

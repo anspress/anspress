@@ -1078,22 +1078,18 @@ function ap_user_link($user_id = false, $sub = false)
 function ap_user_display_meta($html = false, $user_id = false, $echo = false)
 {
 	if (false === $user_id) 
-		$user_id = get_the_author_meta('ID');
-	
+		$user_id = get_the_author_meta('ID');	
 
 	$metas = array();
 
 	$metas['display_name'] = '<span class="ap-user-meta ap-user-meta-display_name">'. ap_user_display_name(array('html' => true)) .'</span>';
-	
-	if($user_id > 0)
-		$metas['reputation'] = '<span class="ap-user-meta ap-user-meta-reputation">'. sprintf(__('%d Reputation', 'ap'), ap_get_reputation($user_id, true)) .'</span>';
 
     /**
      * FILTER: ap_user_display_meta_array
      * Can be used to alter user display meta
      * @var array
      */
-    $metas = apply_filters('ap_user_display_meta_array', $metas);
+    $metas = apply_filters('ap_user_display_meta_array', $metas, $user_id);
 
     $output = '';
 

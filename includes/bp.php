@@ -39,14 +39,15 @@ class AnsPress_BP
 	{
 		global $bp;
 
-		bp_core_new_nav_item( array(
-		    'name'                  => __('Reputation', 'ap'),
-		    'slug'                  => 'reputation',
-		    'screen_function'       => array($this, 'reputation_screen_link'),
-		    'position'              => 30,//weight on menu, change it to whatever you want
-		    'default_subnav_slug' => 'my-posts-subnav'
+		if(!ap_opt('disable_reputation'))
+			bp_core_new_nav_item( array(
+			    'name'                  => __('Reputation', 'ap'),
+			    'slug'                  => 'reputation',
+			    'screen_function'       => array($this, 'reputation_screen_link'),
+			    'position'              => 30,//weight on menu, change it to whatever you want
+			    'default_subnav_slug' => 'my-posts-subnav'
 
-		) );
+			) );
 		bp_core_new_nav_item( array(
 		    'name'                  => sprintf(__('Questions %s', 'ap'), '<span class="count">'.count_user_posts( bp_displayed_user_id() , 'question' ).'</span>'),
 		    'slug'                  => 'questions',
@@ -167,9 +168,10 @@ class AnsPress_BP
 	}
 
 	public function bp_profile_header_meta(){
-		echo '<span class="ap-user-meta ap-user-meta-reputation">'. sprintf(__('%d Reputation', 'ap'), ap_get_reputation( bp_displayed_user_id(), true)) .'</span>';
+		if(ap_opt('disable_reputation'))
+			return;
 
-		//echo '<span class="ap-user-meta ap-user-meta-share">'.sprintf(__('%d&percent; of reputation on this site', 'ap'), ap_get_user_reputation_share(bp_displayed_user_id())).'</span>';
+		echo '<span class="ap-user-meta ap-user-meta-reputation">'. sprintf(__('%d Reputation', 'ap'), ap_get_reputation( bp_displayed_user_id(), true)) .'</span>';
 	}
 
 	/**
