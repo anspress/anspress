@@ -79,17 +79,22 @@ class AnsPress_Common_Pages
     public function question_page()
     {
         remove_filter( 'the_content', array($this, 'question_page') );
-        global $questions;
+        global $questions, $wp;
+
 
         $questions          = new WP_Query(array('p' => get_question_id(), 'post_type' => 'question'));
         
-        // Set current question as a global $post
-        while ( $questions->have_posts() ) : $questions->the_post();
-            global $post;
-            setup_postdata( $post ); 
-        endwhile;
+        if($questions->have_posts()){
+            // Set current question as a global $post
+            while ( $questions->have_posts() ) : $questions->the_post();
+                global $post;
+                setup_postdata( $post ); 
+            endwhile;
 
-        include(ap_get_theme_location('question.php'));
+            include(ap_get_theme_location('question.php'));
+        }else{
+            include(ap_get_theme_location('not-found.php'));
+        }
     }
 
     public function ask_page()

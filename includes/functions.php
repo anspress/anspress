@@ -130,7 +130,8 @@ function is_anspress(){
 }
 
 function is_question(){
-	if(is_anspress() && (get_query_var('question_id') || get_query_var('question') || get_query_var('question_name')))
+	$question_id = (int) get_query_var('question_id');
+	if(is_anspress() && $question_id > 0 )
 		return true;
 		
 	return false;
@@ -1131,6 +1132,8 @@ function ap_get_link_to($sub){
 				foreach($sub as $s)
 					$args .= $s.'/';
 			}
+
+			$args = rtrim($args, '/').'/';
 			$link = $base;
 
 	}else{

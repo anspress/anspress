@@ -162,7 +162,6 @@ class AnsPress_Theme
      */
     public function ap_title($title) 
     {
-        
         if (is_anspress()) 
         {
             remove_filter('wp_title', array(

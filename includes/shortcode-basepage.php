@@ -79,7 +79,7 @@ class AnsPress_BasePage_Shortcode {
 			ap_page();
 
 			if(!ap_opt('author_credits'))
-				echo '<div class="ap-cradit">Question and answer is powered by <a href="http://wp3.in" traget="_blank">AnsPress</a></div>';
+				echo '<div class="ap-cradit">Question and answer is powered by <a href="http://anspress.io" traget="_blank">AnsPress</a></div>';
 
 		echo '</div>';
 		wp_reset_postdata();

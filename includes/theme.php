@@ -14,6 +14,10 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
+/**
+ * Return current page title
+ * @return string current title
+ */
 function ap_page_title() {
 	if(is_question())
 		$new_title = get_the_title(get_question_id());
@@ -22,13 +26,7 @@ function ap_page_title() {
 			$new_title = sprintf('%s about "%s"', ap_opt('ask_page_title'), get_the_title(get_query_var('parent')));
 		else
 			$new_title = ap_opt('ask_page_title');
-	}/*
-	elseif(is_question_tags())
-		$new_title = ap_opt('tags_page_title');
-	elseif(is_question_tag()){
-		$tag = get_term_by('slug', get_query_var('question_tags'), 'question_tags');
-		$new_title = sprintf(__('Question tag: %s', 'ap'), $tag->name);
-	}*/
+	}
 	elseif(is_ap_edit())
 		$new_title = __('Edit post', 'ap');
 
@@ -368,7 +366,7 @@ function ap_page(){
 	if(is_question())
 		$current_page = 'question';
 	
-	elseif($current_page == '' && !is_question())
+	elseif($current_page == '' && !is_question() && get_query_var('question_name') == '')
 		$current_page = 'base';
 
 	if(isset($ap_pages[$current_page]['func']))
