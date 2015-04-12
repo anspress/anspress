@@ -1636,22 +1636,13 @@
   padding: 0;
 }
 .ap-btn {
-  background: #11a7db;
   border-color: transparent transparent rgba(0, 0, 0, 0.1);
   border-image: none;
   border-radius: 2px;
   border-style: none none solid;
   border-width: medium medium 2px;
-  color: #ffffff;
-  padding: 10px 20px;
+  padding: 5px 10px;
   text-decoration: none;
-}
-.ap-btn.ap-btn-blue {
-  background: #11a7db;
-  color: #ffffff;
-}
-.ap-btn.ap-btn-blue:hover {
-  border-color: #11a7db;
 }
 .ap-btn.ap-btn-view-all {
   display: block;
@@ -1660,9 +1651,8 @@
   text-transform: uppercase;
 }
 .ap-btn:hover {
-  text-decoration: none;
-  border-color: transparent transparent #11a7db;
-  color: #ffffff;
+  background: #ddd;
+  border-color: transparent transparent rgba(0, 0, 0, 0.1);
 }
 .ap-vote {
   background-clip: padding-box;
@@ -2152,22 +2142,13 @@
   display: none;
 }
 .anspress-container .ap-comment-form #submit {
-  background: #11a7db;
   border-color: transparent transparent rgba(0, 0, 0, 0.1);
   border-image: none;
   border-radius: 2px;
   border-style: none none solid;
   border-width: medium medium 2px;
-  color: #ffffff;
-  padding: 10px 20px;
+  padding: 5px 10px;
   text-decoration: none;
-}
-.anspress-container .ap-comment-form #submit.ap-btn-blue {
-  background: #11a7db;
-  color: #ffffff;
-}
-.anspress-container .ap-comment-form #submit.ap-btn-blue:hover {
-  border-color: #11a7db;
 }
 .anspress-container .ap-comment-form #submit.ap-btn-view-all {
   display: block;
@@ -2176,31 +2157,21 @@
   text-transform: uppercase;
 }
 .anspress-container .ap-comment-form #submit:hover {
-  text-decoration: none;
-  border-color: transparent transparent #11a7db;
-  color: #ffffff;
+  background: #ddd;
+  border-color: transparent transparent rgba(0, 0, 0, 0.1);
 }
 .anspress-container .ap-comment-form .ap-comment-submit {
   float: right;
   margin-left: 10px;
 }
 .anspress-container .ap-comment-form input[type="submit"] {
-  background: #11a7db;
   border-color: transparent transparent rgba(0, 0, 0, 0.1);
   border-image: none;
   border-radius: 2px;
   border-style: none none solid;
   border-width: medium medium 2px;
-  color: #ffffff;
-  padding: 10px 20px;
+  padding: 5px 10px;
   text-decoration: none;
-}
-.anspress-container .ap-comment-form input[type="submit"].ap-btn-blue {
-  background: #11a7db;
-  color: #ffffff;
-}
-.anspress-container .ap-comment-form input[type="submit"].ap-btn-blue:hover {
-  border-color: #11a7db;
 }
 .anspress-container .ap-comment-form input[type="submit"].ap-btn-view-all {
   display: block;
@@ -2209,9 +2180,8 @@
   text-transform: uppercase;
 }
 .anspress-container .ap-comment-form input[type="submit"]:hover {
-  text-decoration: none;
-  border-color: transparent transparent #11a7db;
-  color: #ffffff;
+  background: #ddd;
+  border-color: transparent transparent rgba(0, 0, 0, 0.1);
 }
 .anspress-container .ap-comment-form .ap-comment-textarea {
   overflow: hidden;

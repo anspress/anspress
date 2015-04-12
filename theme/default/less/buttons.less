@@ -3,23 +3,14 @@
 // --------------------------------------------------
 
 .ap-btn{
-    background: @blue-color;
-    border-color: transparent transparent rgba(0,0,0,0.1);
+    border-color: transparent transparent rgba(0, 0, 0, 0.1);
     border-image: none;
     border-radius: 2px;
     border-style: none none solid;
     border-width: medium medium 2px;
-    color: @white;
-    padding: 10px 20px;
+    padding: 5px 10px;
     text-decoration: none;
 
-    &.ap-btn-blue{
-        background: @blue-color;
-        color: @white;
-        &:hover{
-            border-color: @blue-color;
-        }
-    }
     &.ap-btn-view-all {
         display: block;
         margin-top: 30px;
@@ -27,9 +18,8 @@
         text-transform: uppercase;
     }
     &:hover{
-        text-decoration: none;
-        border-color: transparent transparent @blue-color;
-        color: @white;
+        background: #ddd;
+        border-color: transparent transparent rgba(0, 0, 0, 0.1);
     }
 }
 
