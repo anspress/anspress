@@ -1,7 +1,7 @@
 <?php
 /**
  * AnsPress form validation class
- * @link http://wp3.in
+ * @link http://anspress.io
  * @since 2.0.1
  * @license GPL 2+
  * @package AnsPress

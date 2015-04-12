@@ -3,9 +3,9 @@
  * Class for base page
  *
  * @package   AnsPress
- * @author    Rahul Aryan <rah12@live.com>
+ * @author    Rahul Aryan <support@anspress.io>
  * @license   GPL-3.0+
- * @link      http://wp3.in
+ * @link      http://anspress.io
  * @copyright 2014 Rahul Aryan
  */
 

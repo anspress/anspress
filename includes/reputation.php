@@ -3,7 +3,7 @@
  * AnsPress reputation controller class
  *
  * @package   AnsPress
- * @author    Rahul Aryan <rah12@live.com>
+ * @author    Rahul Aryan <support@anspress.io>
  * @license   GPL-3.0+
  * @link      http://wp3.com
  * @copyright 2014 Rahul Aryan

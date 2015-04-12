@@ -3,7 +3,7 @@
 /**
  * Post status related codes
  *
- * @link http://wp3.in
+ * @link http://anspress.io
  * @since 2.0.1
  * @license GPL2+
  * @package AnsPress
