@@ -679,24 +679,6 @@ function ap_features_metadata($contents, $fields){
 		
 		return $metadata;
 	}
-
-	function ap_users_tab(){
-		$order = isset($_GET['ap_sort']) ? $_GET['ap_sort'] : 'points';
-		
-		$link = '?ap_sort=';
-
-		
-		?>
-		<div class="ap-lists-tab clearfix">
-			<ul class="ap-tabs clearfix" role="tablist">			
-				<li class="<?php echo $order == 'points' ? ' active' : ''; ?>"><a href="<?php echo $link.'points'; ?>"><?php _e('Points', 'ap'); ?></a></li>
-				<li class="<?php echo $order == 'newest' ? ' active' : ''; ?>"><a href="<?php echo $link.'newest'; ?>"><?php _e('Newest', 'ap'); ?></a></li>			
-			</ul>
-		</div>
-		<?php
-	}
-
-
 	function ap_qa_on_post($post_id = false){
 		
 		if(!$post_id)

@@ -886,3 +886,31 @@ function ap_profile_user_stats_counts($echo = true)
         return $output;
     }
 }
+
+/**
+ * Display users page tab
+ * @return void
+ */
+function ap_users_tab(){
+    $active = isset($_GET['ap_sort']) ? $_GET['ap_sort'] : 'points';
+    
+    $link = '?ap_sort=';
+
+    
+    ?>
+    <ul class="ap-questions-tab ap-ul-inline clearfix" role="tablist">
+        <?php if(!ap_opt('disable_reputation')): ?>
+            <li class="<?php echo $active == 'points' ? ' active' : ''; ?>"><a href="<?php echo $link.'points'; ?>"><?php _e('Reputation', 'ap'); ?></a></li>
+        <?php endif; ?>
+        <li class="<?php echo $active == 'newest' ? ' active' : ''; ?>"><a href="<?php echo $link.'newest'; ?>"><?php _e('Newest', 'ap'); ?></a></li>
+        <?php 
+            /**
+             * ACTION: ap_users_tab
+             * Used to hook into users page tab
+             * @since 2.1.0
+             */
+            do_action('ap_users_tab', $active); 
+        ?>
+    </ul>
+    <?php
+}

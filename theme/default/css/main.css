@@ -2591,3 +2591,17 @@
   display: block;
   font-style: italic;
 }
+.ap-users-item {
+  float: left;
+  width: 25%;
+  padding: 10px;
+}
+.ap-users-inner {
+  text-align: center;
+}
+.ap-users-name {
+  font-weight: 600;
+}
+.ap-users-avatar img {
+  border-radius: 50%;
+}
