@@ -127,11 +127,11 @@ class AnsPress_Options_Page
 				'show_desc_tip' => false,
 			) ,
 			array(
-				'name' => 'anspress_opt[answers_per_page]',
-				'label' => __('Answers per page', 'ap') ,
-				'desc' => __('Answers to show per page.', 'ap') ,
+				'name' => 'anspress_opt[users_per_page]',
+				'label' => __('Users per page', 'ap') ,
+				'desc' => __('Users to show per page.', 'ap') ,
 				'type' => 'number',
-				'value' => $settings['answers_per_page'],
+				'value' => $settings['users_per_page'],
 			) ,
 			array(
 				'name' => '__sep',
@@ -287,7 +287,7 @@ class AnsPress_Options_Page
 		));
 		
 		// register user settings
-		ap_register_option_group('user', __('User', 'ap') , array(
+		ap_register_option_group('users', __('Users', 'ap') , array(
 			array(
 				'name' => '__sep',
 				'type' => 'custom',
@@ -302,6 +302,15 @@ class AnsPress_Options_Page
 				'show_desc_tip' => false,
 			) ,
 			
+			array(
+				'name' => 'anspress_opt[users_page_avatar_size]',
+				'label' => __('Users avatar size', 'ap') ,
+				'desc' => __('Set user avatar size for users page item.', 'ap') ,
+				'type' => 'number',
+				'value' => $settings['users_page_avatar_size'],
+				'show_desc_tip' => false,
+			) ,
+
 			array(
 				'name' => 'anspress_opt[cover_width]',
 				'label' => __('Cover width', 'ap') ,
