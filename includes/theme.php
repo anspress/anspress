@@ -19,29 +19,32 @@ if ( ! defined( 'WPINC' ) ) {
  * @return string current title
  */
 function ap_page_title() {
+	$pages = anspress()->pages;
+	$current_page  = get_query_var('ap_page');
+	
 	if(is_question())
 		$new_title = get_the_title(get_question_id());
-	
-	elseif(is_ask()){
-		if(get_query_var('parent') != '')
-			$new_title = sprintf('%s about "%s"', ap_opt('ask_page_title'), get_the_title(get_query_var('parent')));
-		else
-			$new_title = ap_opt('ask_page_title');
-	}
-	
+
 	elseif(is_ap_edit())
 		$new_title = __('Edit post', 'ap');
+	
+	elseif(isset($pages[$current_page]['title']))
+		$new_title = $pages[$current_page]['title'];
 
 	elseif(is_ap_search())
 		$new_title = sprintf(ap_opt('search_page_title'), sanitize_text_field(get_query_var('ap_s')));
-	
-	else{
-		if(get_query_var('parent') != '')
-			$new_title = sprintf( __( 'Discussion on "%s"', 'ap'), get_the_title(get_query_var('parent') ));
-		else
-			$new_title = ap_opt('base_page_title');
-			
-	}
+
+	elseif($pages[$current_page]['title'])
+		$new_title = ap_opt('base_page_title');
+
+	elseif($current_page == '' && !is_question() && get_query_var('question_name') == '')
+		$new_title = ap_opt('base_page_title');
+
+	elseif(get_query_var('parent') != '')
+		$new_title = sprintf( __( 'Discussion on "%s"', 'ap'), get_the_title(get_query_var('parent') ));
+
+	else
+		$new_title = __('Error 404', 'ap');
 	
 	$new_title = apply_filters('ap_page_title', $new_title);
 	

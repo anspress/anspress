@@ -168,6 +168,7 @@ class AnsPress_Theme
                 $this,
                 'ap_title'
             ));
+
             $new_title = ap_page_title();
             
             $new_title = str_replace('ANSPRESS_TITLE', $new_title, $title);
