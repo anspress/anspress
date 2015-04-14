@@ -12,7 +12,7 @@ class AnsPress_Extensions
      */
     private $result ;
 
-    private $API_url = 'http://wp3.in/json_view';
+    private $API_url = 'http://anspress.io/json_view';
 
     public function __construct()
     {

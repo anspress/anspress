@@ -27,13 +27,18 @@ class AnsPress_Common_Pages
     {
         global $questions;
 
+        add_action('init', array($this, 'register_common_pages'));
+        
+    }
+
+    public function register_common_pages()
+    {
         ap_register_page('base', __('Questions', 'ap'), array($this, 'base_page'));
         ap_register_page('question', __('Question', 'ap'), array($this, 'question_page'));
         ap_register_page('ask', __('Ask', 'ap'), array($this, 'ask_page'));
         ap_register_page('edit', __('Edit', 'ap'), array($this, 'edit_page'));
         ap_register_page('search', __('Search', 'ap'), array($this, 'search_page'));
     }
-
 
     public function base_page()
     {

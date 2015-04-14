@@ -21,12 +21,14 @@ if ( ! defined( 'WPINC' ) ) {
 function ap_page_title() {
 	if(is_question())
 		$new_title = get_the_title(get_question_id());
+	
 	elseif(is_ask()){
 		if(get_query_var('parent') != '')
 			$new_title = sprintf('%s about "%s"', ap_opt('ask_page_title'), get_the_title(get_query_var('parent')));
 		else
 			$new_title = ap_opt('ask_page_title');
 	}
+	
 	elseif(is_ap_edit())
 		$new_title = __('Edit post', 'ap');
 
@@ -40,6 +42,7 @@ function ap_page_title() {
 			$new_title = ap_opt('base_page_title');
 			
 	}
+	
 	$new_title = apply_filters('ap_page_title', $new_title);
 	
 	return $new_title;
@@ -351,7 +354,7 @@ function ap_icon($name, $html = false){
 * @since 2.0.1
 */
 function ap_register_page($page_slug, $page_title, $func){
-	ap_append_to_global_var('ap_pages', $page_slug , array('title' => $page_title, 'func' => $func));
+	anspress()->pages[$page_slug] = array('title' => $page_title, 'func' => $func);
 }
 
 /**
@@ -360,7 +363,7 @@ function ap_register_page($page_slug, $page_title, $func){
 * @since 2.0.0-beta
 */
 function ap_page(){
-	global $ap_pages;
+	$pages = anspress()->pages;
 	$current_page  = get_query_var('ap_page');
 
 	if(is_question())
@@ -369,8 +372,8 @@ function ap_page(){
 	elseif($current_page == '' && !is_question() && get_query_var('question_name') == '')
 		$current_page = 'base';
 
-	if(isset($ap_pages[$current_page]['func']))
-		call_user_func($ap_pages[$current_page]['func']);
+	if(isset($pages[$current_page]['func']))
+		call_user_func($pages[$current_page]['func']);
 	else
 		include(ap_get_theme_location('not-found.php'));
 }

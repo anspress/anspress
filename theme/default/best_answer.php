@@ -2,8 +2,8 @@
 /**
  * Best answer content
  * 	
- * @author Rahul Aryan <rah12@live.com>
- * @link http://wp3.in/anspress
+ * @author Rahul Aryan <support@anspress.io>
+ * @link http://anspress.io/anspress
  * @since 0.1
  *
  * @package AnsPress

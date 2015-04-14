@@ -7,7 +7,7 @@
  *
  * @package    AnsPress
  * @license    http://opensource.org/licenses/gpl-license.php  GNU Public License
- * @author    Rahul Aryan <rah12@live.com>
+ * @author    Rahul Aryan <support@anspress.io>
  */
 
 

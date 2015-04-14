@@ -578,7 +578,7 @@ function sanitize_comma_delimited($str){
 	return implode(",", array_map("intval", explode(",", $str)));
 }
 
-function ap_pagi($base, $total_pages, $paged, $end_size = 1, $mid_size = 5){
+/*function ap_pagi($base, $total_pages, $paged, $end_size = 1, $mid_size = 5){
 	$pagi_a = paginate_links( array(
 		'base' => $base, // the base URL, including query arg
 		'format' => 'page/%#%', // this defines the query parameter that will be used, in this case "p"
@@ -598,7 +598,7 @@ function ap_pagi($base, $total_pages, $paged, $end_size = 1, $mid_size = 5){
 		}
 		echo '</ul>';
 	}
-}
+}*/
 
 function ap_question_side_tab(){
 	$links = array (
@@ -974,97 +974,6 @@ function ap_do_event(){
 	$action = 'ap_event_'.$args[0];
 	$args[0] = $action;
 	call_user_func_array('do_action', $args);
-}
-
-/**
- * For user display name
- * It can be filtered for adding cutom HTML
- * @param  mixed $args
- * @return string
- * @since 0.1
- */
-function ap_user_display_name($args = array())
-{
-	global $post;
-	$defaults = array(
-		'user_id'            => get_the_author_meta('ID'),
-		'html'                => false,
-		'echo'                => false,
-		'anonymous_label'    => __('Anonymous', 'ap'),
-		);
-
-	if (!is_array($args)) {
-		$defaults['user_id'] = $args;
-		$args = $defaults;
-	} else {
-		$args = wp_parse_args($args, $defaults);
-	}
-
-	extract($args);
-
-	if ($user_id > 0) {
-		$user = get_userdata($user_id);
-
-		if (!$html) {
-			$return = $user->display_name;
-		} else {
-			$return = '<span class="who"><a href="'.ap_user_link($user_id).'">'.$user->display_name.'</a></span>';
-		}
-	} elseif ($post->post_type == 'question' || $post->post_type == 'answer') {
-		$name = get_post_meta($post->ID, 'anonymous_name', true);
-
-		if (!$html) {
-			if ($name != '') {
-				$return = $name;
-			} else {
-				$return = $anonymous_label;
-			}
-		} else {
-			if ($name != '') {
-				$return = '<span class="who">'.$name.__(' (anonymous)', 'ap').'</span>';
-			} else {
-				$return = '<span class="who">'.$anonymous_label.'</span>';
-			}
-		}
-	} else {
-		$return = '<span class="who">'.$anonymous_label.'</span>';
-	}
-
-    /**
-     * FILTER: ap_user_display_name
-     * Filter can be used to alter display name
-     * @var string
-     * @since 2.0.1
-     */
-    $return = apply_filters('ap_user_display_name', $return);
-
-    if ($echo) {
-    	echo $return;
-    } else {
-    	return $return;
-    }
-}
-
-/**
- * Return Link to user profile pages if profile plugin is installed else return user posts link
- * @param  false|integer $user_id 	user id
- * @param  string $sub 		page slug
- * @return string
- * @since  unknown
- */
-function ap_user_link($user_id = false, $sub = false)
-{
-	if ($user_id === false) {
-		$user_id = get_the_author_meta('ID');
-	}
-
-	if(function_exists('pp_get_link_to')) {
-		return pp_get_link_to($sub, $user_id);
-	}elseif(function_exists('bp_core_get_userlink')){
-		return bp_core_get_userlink($user_id, false, true);
-	}
-
-	return get_author_posts_url($user_id);	
 }
 
 

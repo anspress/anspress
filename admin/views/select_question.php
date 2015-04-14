@@ -2,9 +2,9 @@
 /**
  * Control the output of question select
  *
- * @link http://wp3.in
+ * @link http://anspress.io
  * @since 2.0.0-alpha2
- * @author Rahul Aryan <rah12@live.com>
+ * @author Rahul Aryan <support@anspress.io>
  * @package AnsPress
  */
 

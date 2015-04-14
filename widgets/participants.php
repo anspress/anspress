@@ -3,9 +3,9 @@
  * AnsPress participants question
  * Widget for showing participants button
  * @package AnsPress
- * @author Rahul Aryan <rah12@live.com>
+ * @author Rahul Aryan <support@anspress.io>
  * @license GPL 2+ GNU GPL licence above 2+
- * @link http://wp3.in
+ * @link http://anspress.io
  * @since 2.0.0-alpha2
  *  
  */

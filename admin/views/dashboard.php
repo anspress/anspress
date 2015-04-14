@@ -2,9 +2,9 @@
 /**
  * Control the output of AnsPress dashboard
  *
- * @link http://wp3.in
+ * @link http://anspress.io
  * @since 2.0.0-alpha2
- * @author Rahul Aryan <rah12@live.com>
+ * @author Rahul Aryan <support@anspress.io>
  * @package AnsPress
  */
 
@@ -92,7 +92,7 @@ $flagged_count = ap_total_posts_count('both', 'flag');
 		<div class="ap-dash-tile col-2">
 			<div class="ap-dash-tile-in ap-tile anspress-support-link ap-tile-card">
 				<p><?php _e('Have any questions ?', 'ap') ?></p>
-				<a href="http://wp3.in/questions/ask" target="_blank"><?php _e('Ask for support', 'ap') ?></a>
+				<a href="http://anspress.io/questions/ask" target="_blank"><?php _e('Ask for support', 'ap') ?></a>
 			</div>
 		</div>
 

@@ -2,7 +2,7 @@
 	/**
 	 * Display answer in user page
 	 *
-	 * @link http://wp3.in 	
+	 * @link http://anspress.io 	
 	 * @since 2.3
 	 *
 	 * @package AnsPress
