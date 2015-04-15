@@ -73,18 +73,8 @@ class AP_Users_Query
     var $offset;
 
 
-    function __construct($args = '')
+    public function __construct($args = '')
     {
-        $count_args = array(
-            'fields' => 'all_with_meta',
-            'number' => 999999
-        );
-
-        $user_count_query = new WP_User_Query($count_args);
-        $user_count = $user_count_query->get_results();
-        
-        // count the number of users found in the query
-        $this->total_user_count = $user_count ? count($user_count) : 1;
 
         $this->per_page = ap_opt('users_per_page');
 
@@ -93,31 +83,46 @@ class AP_Users_Query
         $this->paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
     
         $this->offset = $this->per_page * ($this->paged - 1);
-
-
-        $this->total_pages = ceil($this->total_user_count / $this->per_page);
+        
 
         $args =  wp_parse_args( $args, array(
             'number' => $this->per_page,
-            'offset' => $this->offset
+            'offset' => $this->offset,
+            'sortby' => 'reputtaion'
         ));
 
-        if(isset($args['sortby']) && $args['sortby'] == 'points')
-        {
-            $args['ap_query']   = 'sort_points';
-            $args['meta_key']   = 'ap_reputation';
-            $args['orderby']    = 'meta_value';
-            $args['order']      = 'DESC';
-        }
-        elseif(isset($args['sortby']) && $args['sortby'] == 'newest')
-        {
-            $args['orderby']    = 'date';
-            $args['order']      = 'DESC';
+        if(isset($args['sortby'])){
+
+            switch ($args['sortby']) {
+                case 'newest':
+                    $args['orderby']    = 'date';
+                    break;
+                
+                default:                   
+                    $args['ap_query']    = 'user_sort_by_reputation';
+                    $args['orderby']    = 'meta_value';
+                    $args['order']      = 'DESC';
+                    $args['meta_query'] = array(
+                        'relation' => 'OR',
+                        array(
+                            'key' => 'ap_reputation'                            
+                        ),
+                        array(
+                            'key' => 'ap_reputation',
+                            'compare' => 'NOT EXISTS'
+                        )
+                    );
+                    
+                    break;
+            }
         }
 
         $users_query = new WP_User_Query( $args );
+        $this->users = $users_query->results;        
 
-        $this->users = $users_query->results;
+        // count the number of users found in the query
+        $this->total_user_count = $users_query->get_total();
+        $this->total_pages = ceil($this->total_user_count / $this->per_page);
 
         $this->user_count = count($this->users);
     }
@@ -194,7 +199,10 @@ class AP_Users_Query
 
 function ap_has_users($args = ''){
     global $users_query;
-    $sort = get_query_var('ap_sort');
+    $sortby = get_query_var( 'ap_sort' ) != '' ? get_query_var( 'ap_sort' ) : 'reputation';
+
+    $args = wp_parse_args( $args, array( 'sortby' => $sortby ) );
+
     $users_query = new AP_Users_Query($args);
 
     return $users_query->has_users();
@@ -278,7 +286,7 @@ function ap_user_the_avatar($size = 40){
     function ap_user_get_the_avatar($size = 40){
         if(is_ap_users() && 40 == $size)
             $size = ap_opt('users_page_avatar_size');
-        
+
         return get_avatar( ap_user_get_the_ID(), $size );
     }
 

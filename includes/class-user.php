@@ -23,12 +23,13 @@ class AnsPress_User
 
         add_filter('pre_user_query', array($this, 'follower_query'));
         add_filter('pre_user_query', array($this, 'following_query'));
+        add_filter('pre_user_query', array($this, 'user_sort_by_reputation'));
         add_action('wp_ajax_ap_cover_upload', array($this, 'cover_upload'));
         add_action('wp_ajax_ap_avatar_upload', array($this, 'avatar_upload'));
         add_action('after_setup_theme', array($this, 'cover_size'));
         add_action('ap_edit_profile_fields', array($this, 'user_fields'), 10, 2);
         add_action('wp_ajax_ap_save_profile', array($this, 'ap_save_profile'));
-        add_action('pre_user_query', array($this, 'sort_pre_user_query'));
+
         //add_filter('avatar_defaults', array($this, 'default_avatar'), 10);
         //add_filter('get_avatar', array($this, 'get_avatar'), 10, 5);
         //add_filter( 'default_avatar_select', array($this, 'default_avatar_select'));
@@ -67,6 +68,16 @@ class AnsPress_User
             $query->query_from = $query->query_from." LEFT JOIN ".$wpdb->prefix."ap_meta M ON $wpdb->users.ID = M.apmeta_actionid";
             $userid = $query->query_vars['userid'];
             $query->query_where = $query->query_where." AND M.apmeta_type = 'follow' AND M.apmeta_userid = $userid";
+        }
+
+        return $query;
+    }
+
+    public function user_sort_by_reputation($query)
+    {
+        if (isset($query->query_vars['ap_query']) && $query->query_vars['ap_query'] == 'user_sort_by_reputation') {
+            global $wpdb;            
+            $query->query_orderby = 'ORDER BY cast(mt1.meta_value AS DECIMAL) DESC';
         }
 
         return $query;
@@ -350,13 +361,6 @@ class AnsPress_User
         die(json_encode($result));
     }
 
-    public function sort_pre_user_query($query)
-    {
-        if (isset($query->query_vars['ap_query']) && $query->query_vars['ap_query'] == 'sort_points') {
-            global $wpdb;
-            $query->query_orderby = 'ORDER BY CAST('.$wpdb->usermeta.'.meta_value as DECIMAL) DESC';
-        }
-    }
 
     public function get_avatar($avatar, $id_or_email, $size, $default, $alt)
     {
