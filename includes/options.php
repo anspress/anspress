@@ -114,6 +114,7 @@ function ap_default_options(){
 		'disable_reputation' 	=> false,
 		'users_page_avatar_size' 	=> 80,
 		'users_per_page' 	=> 20,		
+		'enable_users_directory' 	=> true,		
 	);
 	
 	/**

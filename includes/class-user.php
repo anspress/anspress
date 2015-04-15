@@ -42,8 +42,11 @@ class AnsPress_User
         add_filter('ap_user_menu', array($this, 'ap_user_menu_icons'));
     }
 
-    public function users_page(){        
-        include ap_get_theme_location('users/users.php');
+    public function users_page(){
+        if(ap_opt('enable_users_directory'))
+            include ap_get_theme_location('users/users.php');
+        else
+            _e('User directory is disabled.', 'ap');
     }
 
     /* For modifying WP_User_Query, if passed with a var ap_followers_query */

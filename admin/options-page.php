@@ -289,6 +289,14 @@ class AnsPress_Options_Page
 		// register user settings
 		ap_register_option_group('users', __('Users', 'ap') , array(
 			array(
+				'name' => 'anspress_opt[enable_users_directory]',
+				'label' => __('Show users directory', 'ap') ,
+				'desc' => __('When enabled public can see directory of users.', 'ap') ,
+				'type' => 'checkbox',
+				'value' => $settings['enable_users_directory'],
+				'show_desc_tip' => false,
+			) ,
+			array(
 				'name' => '__sep',
 				'type' => 'custom',
 				'html' => '<span class="ap-form-separator">' . __('Features', 'ap') . '</span>',
