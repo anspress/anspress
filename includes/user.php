@@ -184,21 +184,8 @@ function ap_user_link($user_id = false, $sub = false)
         return false;
 
     $user = get_userdata($user_id);
-    $base = add_query_arg(array('user' => $user->user_login), get_permalink(ap_opt('user_page_id')));
-    $args = $base;
 
-    /* TODO: REWRITE - fix when rewrite is active */
-    if (get_option('permalink_structure') != '') {
-        if ($sub !== false) {
-            $args = add_query_arg(array('user_page' => $sub), $base);
-        }
-    } else {
-        if ($sub !== false) {
-            $args = add_query_arg(array('user_page' => $sub), $base);
-        }
-    }
-
-    return $args;
+    return apply_filters('ap_user_link', ap_get_link_to(array('ap_page' => 'users', 'user' => $user->user_login)), $user_id);
 }
 
 /**
@@ -859,7 +846,7 @@ function ap_profile_user_stats_counts($echo = true)
     $ap_user_data    = ap_user_data();
 
     $metas = array();
-    $metas['points'] = '<a href="'.ap_user_link($user_id, 'points').'"><b data-view="ap-points">'.ap_get_points($user_id, true).'</b><span>'.__('Points', 'ap').'</span></a>';
+    $metas['reputation'] = '<a href="'.ap_user_link($user_id, 'reputation').'"><b data-view="ap-reputation">'.ap_get_reputation($user_id, true).'</b><span>'.__('Points', 'ap').'</span></a>';
     $metas['followers'] = '<a href="'.ap_user_link($user_id, 'followers').'"><b data-view="ap-followers">'.ap_get_current_user_meta('followers').'</b><span>'.__('Followers', 'ap').'</span></a>';
     $metas['following'] = '<a href="'.ap_user_link($user_id, 'following').'"><b data-view="ap-following">'.ap_get_current_user_meta('following').'</b><span>'.__('Following', 'ap').'</span></a>';
 
@@ -892,7 +879,7 @@ function ap_profile_user_stats_counts($echo = true)
  * @return void
  */
 function ap_users_tab(){
-    $active = isset($_GET['ap_sort']) ? $_GET['ap_sort'] : 'points';
+    $active = isset($_GET['ap_sort']) ? $_GET['ap_sort'] : 'reputation';
     
     $link = '?ap_sort=';
 
@@ -900,7 +887,7 @@ function ap_users_tab(){
     ?>
     <ul class="ap-questions-tab ap-ul-inline clearfix" role="tablist">
         <?php if(!ap_opt('disable_reputation')): ?>
-            <li class="<?php echo $active == 'points' ? ' active' : ''; ?>"><a href="<?php echo $link.'points'; ?>"><?php _e('Reputation', 'ap'); ?></a></li>
+            <li class="<?php echo $active == 'reputation' ? ' active' : ''; ?>"><a href="<?php echo $link.'reputation'; ?>"><?php _e('Reputation', 'ap'); ?></a></li>
         <?php endif; ?>
         <li class="<?php echo $active == 'newest' ? ' active' : ''; ?>"><a href="<?php echo $link.'newest'; ?>"><?php _e('Newest', 'ap'); ?></a></li>
         <?php 

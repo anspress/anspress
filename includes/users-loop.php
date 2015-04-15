@@ -95,7 +95,8 @@ class AP_Users_Query
 
             switch ($args['sortby']) {
                 case 'newest':
-                    $args['orderby']    = 'date';
+                    $args['orderby']    = 'registered';
+                    $args['order']      = 'DESC';
                     break;
                 
                 default:                   
@@ -199,7 +200,8 @@ class AP_Users_Query
 
 function ap_has_users($args = ''){
     global $users_query;
-    $sortby = get_query_var( 'ap_sort' ) != '' ? get_query_var( 'ap_sort' ) : 'reputation';
+
+    $sortby = ap_get_sort() != '' ? ap_get_sort() : 'reputation';
 
     $args = wp_parse_args( $args, array( 'sortby' => $sortby ) );
 

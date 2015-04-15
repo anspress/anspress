@@ -1001,7 +1001,7 @@ function ap_user_display_meta($html = false, $user_id = false, $echo = false)
 
 /**
  * Return link to AnsPress pages
- * @param string $sub
+ * @param string|array $sub
  */
 function ap_get_link_to($sub){
 	
@@ -1021,25 +1021,21 @@ function ap_get_link_to($sub){
 			}
 
 			$args = rtrim($args, '/').'/';
-			$link = $base;
-
 	}else{
 
 		if(!is_array($sub))
 			$args = $sub ? '&ap_page='.$sub : '';
+		
 		elseif(is_array($sub)){
 			$args = '';
 			
 			if(!empty($sub))
 				foreach($sub as $k => $s)
 					$args .= '&'.$k .'='.$s;
-			}
-
-			$link = $base;
-
+		}
 	}
 
-	return $link. $args ;
+	return $base. $args ;
 }
 
 
@@ -1139,4 +1135,10 @@ function ap_total_solved_questions($type = 'int'){
 		return $counts->publish + $counts->closed + $counts->private_post;
 
 	return $counts;
+}
+
+
+function ap_get_sort(){
+	if(isset($_GET['ap_sort']))
+		return sanitize_text_field( $_GET['ap_sort'] );
 }
