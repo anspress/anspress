@@ -321,3 +321,4 @@ function ap_users_the_pagination(){
 
     ap_pagination($users_query->paged, $users_query->total_pages, $base);
 }
+

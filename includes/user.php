@@ -17,11 +17,10 @@
  * @return void
  * @since 2.0.1
  */
-function ap_register_user_page($page_slug, $page_title, $func)
-{
-    ap_append_to_global_var('user_pages', $page_slug, array('title' => $page_title, 'func' =>  $func));
-}
 
+function ap_register_user_page($page_slug, $page_title, $func, $show_in_menu = true){
+    anspress()->user_pages[$page_slug] = array('title' => $page_title, 'func' => $func, 'show_in_menu' => $show_in_menu);
+}
 /**
  * Count user posts by post type
  * @param  int $userid
@@ -185,7 +184,7 @@ function ap_user_link($user_id = false, $sub = false)
 
     $user = get_userdata($user_id);
 
-    return apply_filters('ap_user_link', ap_get_link_to(array('ap_page' => 'users', 'user' => $user->user_login)), $user_id);
+    return apply_filters('ap_user_link', ap_get_link_to(array('ap_page' => 'user', 'user' => $user->user_login)), $user_id);
 }
 
 /**
@@ -196,11 +195,11 @@ function ap_user_link($user_id = false, $sub = false)
  */
 function ap_user_menu()
 {
-    global $user_pages;
+    $user_pages = anspress()->user_pages;
 
-    $userid = ap_user_page_user_id();
-    $user_page = get_query_var('user_page');
-    $user_page = $user_page ? $user_page : 'profile';
+    $userid             = ap_get_displayed_user_id();
+    $active_user_page   = get_query_var('user_page');
+    $active_user_page   = $active_user_page ? $active_user_page : 'profile';
 
     $menus = array();
 
@@ -224,7 +223,7 @@ function ap_user_menu()
         foreach ($menus as $k => $m) {
             //if(!((isset($m['own']) && $m['own']) && $userid != get_current_user_id()))
             $class = !empty($m['class']) ? ' '.$m['class'] : '';
-            $o .= '<li'.($user_page == $k ? ' class="active"' : '').'><a href="'.$m['link'].'" class="ap-user-menu-'.$k.$class.'">'.$m['title'].'</a></li>';
+            $o .= '<li'.($active_user_page == $k ? ' class="active"' : '').'><a href="'.$m['link'].'" class="ap-user-menu-'.$k.$class.'">'.$m['title'].'</a></li>';
         }
         $o .= '</ul>';
         echo $o;
@@ -237,7 +236,7 @@ function ap_user_page_menu()
         return;
     }
 
-    $userid = ap_user_page_user_id();
+    $userid = ap_get_displayed_user_id();
     $user_page = get_query_var('user_page');
     $user_page = $user_page ? $user_page : 'profile';
 
@@ -279,7 +278,7 @@ function ap_user_page()
 {
     global $user_pages;
 
-    $user_id        = ap_user_page_user_id();
+    $user_id        = ap_get_displayed_user_id();
     $user_page        = ap_active_user_page();
 
     call_user_func($user_pages[$user_page]['func']);
@@ -343,7 +342,7 @@ function ap_get_current_user_meta($meta)
 
 function ap_user_template()
 {
-    $userid = ap_user_page_user_id();
+    $userid = ap_get_displayed_user_id();
     $user_meta = (object) array_map('ap_meta_array_map', get_user_meta($userid));
 
     if (is_ap_followers()) {
@@ -363,7 +362,7 @@ function ap_user_template()
         $args = array(
             'ap_followers_query' => true,
             'number' => $users_per_page,
-            'userid' => ap_user_page_user_id(),
+            'userid' => ap_get_displayed_user_id(),
             'offset' => $offset,
         );
 
@@ -371,7 +370,7 @@ function ap_user_template()
         $followers_query = new WP_User_Query($args);
 
         $followers = $followers_query->results;
-        $base = ap_user_link(ap_user_page_user_id(), 'followers').'/%_%';
+        $base = ap_user_link(ap_get_displayed_user_id(), 'followers').'/%_%';
     } elseif (ap_current_user_page_is('following')) {
         $total_following = ap_get_current_user_meta('following');
 
@@ -389,14 +388,14 @@ function ap_user_template()
         $args = array(
             'ap_following_query' => true,
             'number' => $users_per_page,
-            'userid' => ap_user_page_user_id(),
+            'userid' => ap_get_displayed_user_id(),
             'offset' => $offset,
         );
 
         // The Query
         $following_query = new WP_User_Query($args);
         $following = $following_query->results;
-        $base = ap_user_link(ap_user_page_user_id(), 'following').'/%_%';
+        $base = ap_user_link(ap_get_displayed_user_id(), 'following').'/%_%';
     } elseif (ap_current_user_page_is('questions')) {
         $order = get_query_var('sort');
         $label = sanitize_text_field(get_query_var('label'));
@@ -411,7 +410,7 @@ function ap_user_template()
         $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
 
         $question_args = array(
-            'author' => ap_user_page_user_id(),
+            'author' => ap_get_displayed_user_id(),
             'post_type' => 'question',
             'post_status' => 'publish',
             'showposts' => ap_opt('question_per_page'),
@@ -458,7 +457,7 @@ function ap_user_template()
 
         if ($order == 'voted') {
             $ans_args = array(
-                'author' => ap_user_page_user_id(),
+                'author' => ap_get_displayed_user_id(),
                 'ap_query' => 'answer_sort_voted',
                 'post_type' => 'answer',
                 'post_status' => 'publish',
@@ -481,7 +480,7 @@ function ap_user_template()
             );
         } elseif ($order == 'oldest') {
             $ans_args = array(
-                'author' => ap_user_page_user_id(),
+                'author' => ap_get_displayed_user_id(),
                 'ap_query' => 'answer_sort_newest',
                 'post_type' => 'answer',
                 'post_status' => 'publish',
@@ -500,7 +499,7 @@ function ap_user_template()
             );
         } else {
             $ans_args = array(
-                'author' => ap_user_page_user_id(),
+                'author' => ap_get_displayed_user_id(),
                 'ap_query' => 'answer_sort_newest',
                 'post_type' => 'answer',
                 'post_status' => 'publish',
@@ -525,7 +524,7 @@ function ap_user_template()
     } elseif (ap_current_user_page_is('favorites')) {
         $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
         $args = array(
-                'author' => ap_user_page_user_id(),
+                'author' => ap_get_displayed_user_id(),
                 'ap_query' => 'user_favorites',
                 'post_type' => 'question',
                 'post_status' => 'publish',
@@ -538,21 +537,21 @@ function ap_user_template()
 
         $question = new WP_Query($args);
     } elseif (ap_current_user_page_is('messages')) {
-        if (ap_user_page_user_id() != get_current_user_id()) {
+        if (ap_get_displayed_user_id() != get_current_user_id()) {
             _e('You do not have access here', 'ap');
 
             return;
         }
     } elseif (ap_current_user_page_is('message')) {
-        if (ap_user_page_user_id() != get_current_user_id()) {
+        if (ap_get_displayed_user_id() != get_current_user_id()) {
             _e('You do not have access here', 'ap');
 
             return;
         }
         $message_id = get_query_var('message_id');
     } elseif (ap_current_user_page_is('badges')) {
-        $user_badges = ap_get_users_all_badges(ap_user_page_user_id());
-        $count_badges = ap_user_badge_count_by_badge(ap_user_page_user_id());
+        $user_badges = ap_get_users_all_badges(ap_get_displayed_user_id());
+        $count_badges = ap_user_badge_count_by_badge(ap_get_displayed_user_id());
     }
 
     global $user;
@@ -567,7 +566,7 @@ function ap_user_template()
 
 function ap_cover_upload_form()
 {
-    if (ap_user_can_upload_cover() && ap_user_page_user_id() == get_current_user_id()) {
+    if (ap_user_can_upload_cover() && ap_get_displayed_user_id() == get_current_user_id()) {
         ?>
 		<form method="post" action="#" enctype="multipart/form-data" data-action="ap_upload_form" class="">
 			<div class="ap-upload-o">
@@ -616,7 +615,7 @@ function ap_user_cover_style($userid, $small = false)
 
 function ap_avatar_upload_form()
 {
-    if (ap_user_page_user_id() == get_current_user_id()) {
+    if (ap_get_displayed_user_id() == get_current_user_id()) {
         ?>
 		<form method="post" action="#" enctype="multipart/form-data" data-action="ap_upload_form" class="">
 			<div class="ap-btn ap-upload-o">
@@ -806,7 +805,7 @@ function ap_get_resized_avatar($id_or_email, $size = 32, $default = false)
 
 function ap_user_profile_meta($echo = true)
 {
-    $user_id        = ap_user_page_user_id();
+    $user_id        = ap_get_displayed_user_id();
     $ap_user        = ap_user();
     $ap_user_data    = ap_user_data();
 
@@ -841,7 +840,7 @@ function ap_user_profile_meta($echo = true)
 
 function ap_profile_user_stats_counts($echo = true)
 {
-    $user_id        = ap_user_page_user_id();
+    $user_id        = ap_get_displayed_user_id();
     $ap_user        = ap_user();
     $ap_user_data    = ap_user_data();
 
@@ -900,4 +899,54 @@ function ap_users_tab(){
         ?>
     </ul>
     <?php
+}
+
+/**
+ * echo ID of currently displaying user
+ * @return integer WordPress user ID
+ * @since 2.1
+ */
+function ap_displayed_user_id(){
+    echo ap_get_displayed_user_id();
+}
+    /**
+     * Return ID of currently displaying user
+     * @return integer WordPress user ID
+     * @since 2.1
+     */
+    function ap_get_displayed_user_id(){
+        $user_id =  (int)get_query_var('ap_user_id');
+        
+        if($user_id > 0)
+            return $user_id;
+
+        return false;
+    }
+
+
+/**
+ * Retrive image url
+ * @param  integer $size
+ * @param  boolean $default
+ * @return string
+ * @since  0.0.1
+ */
+function ap_get_avatar_src($user_id, $size = 'thumbnail', $default = false) {
+    $upload_dir = wp_upload_dir();
+    
+    if ($default) {
+        $image      = wp_get_attachment_image_src(pp_opt('default_avatar') , 'thumbnail');
+    } 
+    else {
+        $image      = wp_get_attachment_image_src(get_user_meta($user_id, '__pp_avatar', true) , array(
+            $size,
+            $size
+            ));
+    }
+    
+    if ($image === false || !is_array($image) || empty($image[0])) {
+        return false;
+    }
+    
+    return $image[0];
 }

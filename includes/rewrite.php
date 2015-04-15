@@ -50,6 +50,7 @@ class AnsPress_Rewrite
 		$query_vars[] = 'ap_s';
 		$query_vars[] = 'message_id';
 		$query_vars[] = 'parent';
+		$query_vars[] = 'ap_user';
 		
 		return $query_vars;
 	}
@@ -93,9 +94,9 @@ class AnsPress_Rewrite
 			
 			$slug. "([^/]+)/page/?([0-9]{1,})/?$" => "index.php?page_id=".$base_page_id."&ap_page=".$wp_rewrite->preg_index(1)."&paged=".$wp_rewrite->preg_index(2),
 			
-			$slug. "user/([^/]+)/([^/]+)/?" => "index.php?page_id=".$base_page_id."&ap_page=user&user=". $wp_rewrite->preg_index(1)."&user_page=". $wp_rewrite->preg_index(2),
+			$slug. "user/([^/]+)/([^/]+)/?" => "index.php?page_id=".$base_page_id."&ap_page=user&ap_user=". $wp_rewrite->preg_index(1)."&user_page=". $wp_rewrite->preg_index(2),
 			
-			$slug. "user/([^/]+)/?" => "index.php?page_id=".$base_page_id."&ap_page=user&user=".$wp_rewrite->preg_index(1),
+			$slug. "user/([^/]+)/?" => "index.php?page_id=".$base_page_id."&ap_page=user&ap_user=".$wp_rewrite->preg_index(1),
 			
 			$slug. "search/([^/]+)/?" => "index.php?page_id=".$base_page_id."&ap_page=search&ap_s=". $wp_rewrite->preg_index(1),			
 			
@@ -124,12 +125,18 @@ class AnsPress_Rewrite
 	}
 
 	public function add_query_var($wp) {
-		
 	    if(!empty($wp->query_vars['question_name'])){
 	        $question =  get_page_by_path( sanitize_text_field( $wp->query_vars['question_name'] ), 'OBJECT', 'question' );
 
 	        if($question)
 	        	$wp->set_query_var('question_id', $question->ID);
+	    }
+
+	    if(!empty($wp->query_vars['ap_user'])){
+	       	$user = get_user_by( 'login', sanitize_text_field($wp->query_vars['ap_user']) );
+	       	
+	       	if($user)
+        		$wp->set_query_var('ap_user_id', $user->ID);
 	    }
 	}
 }

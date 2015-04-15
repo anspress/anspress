@@ -53,6 +53,7 @@ if (!class_exists('AnsPress')) {
         public $anspress_ajax;
 
         public $pages;
+        public $user_pages;
         public $users;
         public $menu;
 
