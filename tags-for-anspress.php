@@ -74,7 +74,7 @@ class Tags_For_AnsPress
 
         
 
-        ap_register_page('tag', __('Tag', 'ap'), array($this, 'tag_page'));
+        ap_register_page('tag', __('Tag', 'ap'), array($this, 'tag_page'), false);
 
         // internationalization
         add_action( 'admin_init', array( $this, 'load_options' ) );
