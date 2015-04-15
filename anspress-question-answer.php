@@ -54,6 +54,7 @@ if (!class_exists('AnsPress')) {
 
         public $pages;
         public $users;
+        public $menu;
 
         /**
          * Filter object

@@ -815,42 +815,34 @@ class AnsPress_Admin {
     }
 
     public function ap_menu_metaboxes(){
-		/* $anspress_menu = array(
-			'id' => 'add-anspress',
-			'title' => 'AnsPress',
-			'callback' => 'wp_nav_menu_item_link_meta_box',
-			'args' => null		
-		);
-		$GLOBALS['wp_meta_boxes']['nav-menus']['side']['default']['add-anspress'] = $anspress_menu;
-		var_dump ( $GLOBALS['wp_meta_boxes']['nav-menus']['side']['default']['add-custom-links']); */
-		add_meta_box( 'add-anspress', __( 'AnsPress' ), array($this, 'wp_nav_menu_item_anspress_meta_box'), 'nav-menus', 'side', 'default' );
-			//and $GLOBALS['wp_meta_boxes']['nav-menus'] = array ();
+		add_meta_box( 'add-anspress', __( 'AnsPress Pages' ), array($this, 'wp_nav_menu_item_anspress_meta_box'), 'nav-menus', 'side', 'high' );
 	}
 
-    public function wp_nav_menu_item_anspress_meta_box(){
-		global $ap_menu, $_nav_menu_placeholder, $nav_menu_selected_id;
+	public function wp_nav_menu_item_anspress_meta_box(){
+		global $_nav_menu_placeholder, $nav_menu_selected_id;
 
 		$_nav_menu_placeholder = 0 > $_nav_menu_placeholder ? $_nav_menu_placeholder - 1 : -1;
 		$base_page = ap_opt('base_page');
 
-		//$ap_menu = apply_filters( 'ap_admin_nav_menus', $ap_menu );
+		$pages = anspress()->pages;
 
 		echo '<div class="aplinks" id="aplinks">';
 		echo '<input type="hidden" value="custom" name="menu-item['.$_nav_menu_placeholder.'][menu-item-type]" />';
 		echo '<ul>';
-		foreach($ap_menu as $k => $args){
-			echo '<li>';
+		foreach($pages as $k => $args){
+			if($args['show_in_menu']){
+				echo '<li>';
 				echo '<label class="menu-item-title">';
-					echo '<input type="radio" value="" name="menu-item['.$_nav_menu_placeholder.'][menu-item-url]" class="menu-item-checkbox" data-url="'. $k .'" data-title="'.$args['title'].'"> '.$args['title'].'
-				</label>';
-			echo '</li>';
+				echo '<input type="radio" value="" name="menu-item['.$_nav_menu_placeholder.'][menu-item-url]" class="menu-item-checkbox" data-url="'. strtoupper ( 'ANSPRESS_PAGE_URL_'.$k) .'" data-title="'.$args['title'].'"> '.$args['title'].'</label>';
+				echo '</li>';
+			}
 		}
 		echo '</ul><p class="button-controls">
-<span class="add-to-menu">
-<input type="submit"'.wp_nav_menu_disabled_check( $nav_menu_selected_id ).' class="button-secondary submit-add-to-menu right" value="'.__('Add to Menu', 'ap').'" name="add-custom-menu-item" id="submit-aplinks" />
-<span class="spinner"></span>
-</span>
-</p>';
+					<span class="add-to-menu">
+						<input type="submit"'.wp_nav_menu_disabled_check( $nav_menu_selected_id ).' class="button-secondary submit-add-to-menu right" value="'.__('Add to Menu', 'ap').'" name="add-custom-menu-item" id="submit-aplinks" />
+						<span class="spinner"></span>
+					</span>
+				</p>';
 		echo '</div>';
 
 	}

@@ -42,6 +42,7 @@ class AnsPress_Actions
 		add_action('publish_comment', array($this, 'publish_comment'));
 		add_action('unpublish_comment', array($this, 'unpublish_comment'));
 		add_filter('wp_get_nav_menu_items', array($this, 'update_menu_url'));
+		add_filter('nav_menu_css_class', array($this, 'fix_nav_current_class'), 10, 2 );
 
 		add_action( 'wp_loaded', array( $this, 'flush_rules' ) );
 	}
@@ -53,8 +54,8 @@ class AnsPress_Actions
      */
     public function init()
     {
-    	ap_register_menu('ANSPRESS_BASE_PAGE_URL', __('Questions', 'ap'), ap_base_page_link());
-    	ap_register_menu('ANSPRESS_ASK_PAGE_URL', __('Ask', 'ap'), ap_get_link_to('ask'));
+    	/*ap_register_menu('ANSPRESS_BASE_PAGE_URL', __('Questions', 'ap'), ap_base_page_link());
+    	ap_register_menu('ANSPRESS_ASK_PAGE_URL', __('Ask', 'ap'), ap_get_link_to('ask'));*/
     }
 
 	/**
@@ -286,20 +287,53 @@ class AnsPress_Actions
 
 	}
 
+	/**
+	 * Update AnsPress pages URL dynimacally
+	 * @param  array $items
+	 * @return array
+	 */
 	public function update_menu_url( $items ) {		
-		global $ap_menu;
-
+		$pages = anspress()->pages;
 		if(!empty($items) && is_array($items))
 			foreach ( $items as $key => $item ) {
-				foreach($ap_menu as $slug => $args){
+				foreach($pages as $slug => $args){	
+
+					if(strpos($item->url, strtoupper('ANSPRESS_PAGE_URL_'.$slug)) !== FALSE ){
+						$item->url = ap_get_link_to($slug);
+						$item->classes[] = 'anspress-page-link';
+						$item->classes[] = 'anspress-page-'.$slug;
+						
+						if(get_query_var('ap_page') == $slug)
+							$item->classes[] = 'anspress-active-menu-link';
+					}
 					
-					if(strpos($item->url, $slug) !== FALSE)
-						$item->url = $args['link'];
 				}
 
 			}
 
 		return $items;
+	}
+
+	/**
+	 * add current-menu-item class in AnsPress pages
+	 * @param  array $class
+	 * @param  object $item
+	 * @return array
+	 * @since  2.1
+	 */
+	public function fix_nav_current_class( $class, $item ) {		
+		$pages = anspress()->pages;
+		if(!empty($item) && is_object($item)){
+			foreach($pages as $slug => $args){
+				if(in_array('anspress-page-link', $class)){
+					if(ap_get_link_to(get_query_var('ap_page')) != $item->url){
+						$pos = array_search('current-menu-item', $class);
+						unset($class[$pos]);
+					}
+				}
+			}
+		}
+		return $class;
 	}
 
 	/**

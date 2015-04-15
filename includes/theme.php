@@ -353,11 +353,12 @@ function ap_icon($name, $html = false){
 * @param string $page_slug slug for links
 * @param string $page_title Page title
 * @param callable $func Hook to run when shortcode is found.
+* @param boolean $show_in_menu User can add this pages to their WordPress menu from appearance->menu->AnsPress
 * @return void
 * @since 2.0.1
 */
-function ap_register_page($page_slug, $page_title, $func){
-	anspress()->pages[$page_slug] = array('title' => $page_title, 'func' => $func);
+function ap_register_page($page_slug, $page_title, $func, $show_in_menu = true){
+	anspress()->pages[$page_slug] = array('title' => $page_title, 'func' => $func, 'show_in_menu' => $show_in_menu);
 }
 
 /**
@@ -599,12 +600,4 @@ function ap_comment_actions_buttons()
 			echo '<span class="ap-comment-action ap-action-'.$k.'">'.$action.'</span>';
 		}
 	}
-}
-
-/**
- * @param string $slug
- * @param string $link
- */
-function ap_register_menu($slug, $title, $link){
-	ap_append_to_global_var('ap_menu', $slug, array('title' => $title, 'link' => $link));
 }

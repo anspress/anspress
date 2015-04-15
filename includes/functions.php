@@ -1103,6 +1103,11 @@ function ap_total_published_questions(){
 	return $posts->publish;
 }
 
+/**
+ * Get total numbers of solved question
+ * @param  string $type int|object
+ * @return integer|object
+ */
 function ap_total_solved_questions($type = 'int'){
 	global $wpdb;
 
@@ -1137,8 +1142,21 @@ function ap_total_solved_questions($type = 'int'){
 	return $counts;
 }
 
-
+/**
+ * Get current sorting type
+ * @return string
+ * @since 2.1
+ */
 function ap_get_sort(){
 	if(isset($_GET['ap_sort']))
 		return sanitize_text_field( $_GET['ap_sort'] );
+}
+
+/**
+ * Register AnsPress menu
+ * @param string $slug
+ * @param string $link
+ */
+function ap_register_menu($slug, $title, $link){
+	anspress()->menu[$slug] = array('title' => $title, 'link' => $link);
 }
