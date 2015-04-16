@@ -453,6 +453,10 @@ function ap_post_actions_buttons($disable = array())
  * @return string
  */
 function ap_questions_tab($current_url){
+	
+	if(is_home() || is_front_page())
+		$current_url = home_url('/');
+		
 	$param = array();
 
 	$sort = isset($_GET['ap_sort']) ? $_GET['ap_sort'] : 'active';
