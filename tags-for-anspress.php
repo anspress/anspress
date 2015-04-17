@@ -113,10 +113,14 @@ class Tags_For_AnsPress
             )
         ));
 
-        $questions          = new Question_Query($question_args);
         $question_tag       = get_term_by( is_numeric($tag_id) ? 'id' : 'slug', $tag_id, 'question_tag');
         
-        include ap_get_theme_location('tag.php', TAGS_FOR_ANSPRESS_DIR);
+        $questions = ap_get_questions($question_args);
+
+        if(ap_have_questions())
+            include(ap_get_theme_location('tag.php', TAGS_FOR_ANSPRESS_DIR));
+        else
+            include(ap_get_theme_location('not-found.php'));
     }
 
     public function load_options()
