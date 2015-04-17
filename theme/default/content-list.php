@@ -15,33 +15,25 @@ global $post;
 $clearfix_class = array('ap-questions-item clearfix');
 
 ?>
-<div id="question-<?php the_ID(); ?>" <?php post_class($clearfix_class); ?>>
-	<?php if ( is_private_post()) : ?>
+<div id="question-<?php ap_question_the_ID(); ?>" <?php post_class($clearfix_class); ?>>
+	<?php if ( ap_question_is_private()) : ?>
 		<div class="private-question-label clearfix">
 			<span><?php _e( 'Private Question', 'ap' ); ?></span>
 		</div>
 	<?php endif; ?>		
 	<div class="ap-questions-inner">
 		<div class="ap-avatar ap-pull-left">
-			<a href="<?php echo ap_user_link(); ?>">
-				<!-- TODO: OPTION - avatar size in question list -->
-				<?php echo get_avatar( get_the_author_meta( 'ID' ), 45 ); ?>
+			<a href="<?php ap_question_the_author_link() ; ?>">
+				<?php ap_question_the_author_avatar(); ?>
 			</a>
 		</div>
 		<div class="pull-right">
-			<a class="ap-questions-count ap-questions-acount" href="<?php echo ap_answers_link() ?>">
-				<?php printf( __('%s ans', 'ap'), '<span>'.ap_count_answer_meta().'</span>'); ?>
-			</a>
-			<?php if(!ap_opt('disable_voting_on_question')){ ?>
-				<span class="ap-questions-count ap-questions-vcount">
-					<span><?php echo ap_net_vote() ?></span>
-					<?php  _e('votes', 'ap'); ?>
-				</span>
-			<?php } ?>
+			<?php ap_question_the_answer_count(); ?>
+			<?php ap_question_the_vote_button(); ?>
 		</div>
 		<div class="ap-questions-summery no-overflow">
 			<span class="ap-questions-title entry-title" itemprop="title">
-				<a class="ap-questions-hyperlink" itemprop="url" href="<?php the_permalink(); ?>" rel="bookmark" title="<?php the_title(); ?>"><?php the_title(); ?></a>
+				<a class="ap-questions-hyperlink" itemprop="url" href="<?php ap_question_the_permalink(); ?>" rel="bookmark" title="<?php the_title(); ?>"><?php the_title(); ?></a>
 			</span>			
 			<div class="ap-display-question-meta">
 				<?php echo ap_display_question_metas() ?>

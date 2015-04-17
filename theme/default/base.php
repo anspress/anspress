@@ -2,19 +2,19 @@
 <div class="row">
 	<div id="ap-lists" class="<?php echo is_active_sidebar( 'ap-sidebar' ) && is_anspress() ? 'col-md-8' : 'col-md-12' ?>">
 		<?php ap_questions_tab(get_permalink()); ?>
-		<?php if ( $questions->have_posts() ) : ?>
+		<?php if ( ap_have_questions() ) : ?>
 			<div class="ap-questions">
 				<?php
 					
 					/* Start the Loop */
-					while ( $questions->have_posts() ) : $questions->the_post();
+					while ( ap_questions() ) : ap_the_question();
 						global $post;
 						include(ap_get_theme_location('content-list.php'));
 					endwhile;
 				?>
 			</div>
 		<?php 
-			ap_pagination();
+			ap_questions_the_pagination();
 		?>
 		<?php
 			else : 
