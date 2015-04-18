@@ -76,30 +76,26 @@ class AnsPress_Common_Pages
             );
         }
 
-    	$questions 		 = new Question_Query($args);
-
+        $questions = ap_get_questions($args);
 		include(ap_get_theme_location('base.php'));
     }
 
     public function question_page()
     {
-        remove_filter( 'the_content', array($this, 'question_page') );
-        global $questions, $wp;
+        global $questions;
 
-
-        $questions          = new WP_Query(array('p' => get_question_id(), 'post_type' => 'question'));
-        
-        if($questions->have_posts()){
-            // Set current question as a global $post
-            while ( $questions->have_posts() ) : $questions->the_post();
+        $questions = ap_get_questions(array('p' => get_question_id()));
+        if(ap_have_questions()){
+            while ( anspress()->questions->have_posts() ) : anspress()->questions->the_post();
                 global $post;
-                setup_postdata( $post ); 
+                setup_postdata( $post );                 
             endwhile;
-
             include(ap_get_theme_location('question.php'));
+            wp_reset_postdata();
         }else{
             include(ap_get_theme_location('not-found.php'));
         }
+        
     }
 
     public function ask_page()

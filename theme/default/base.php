@@ -4,8 +4,7 @@
 		<?php ap_questions_tab(get_permalink()); ?>
 		<?php if ( ap_have_questions() ) : ?>
 			<div class="ap-questions">
-				<?php
-					
+				<?php					
 					/* Start the Loop */
 					while ( ap_questions() ) : ap_the_question();
 						global $post;
@@ -13,9 +12,7 @@
 					endwhile;
 				?>
 			</div>
-		<?php 
-			ap_questions_the_pagination();
-		?>
+		<?php ap_questions_the_pagination(); ?>
 		<?php
 			else : 
 				include(ap_get_theme_location('content-none.php'));

@@ -578,140 +578,6 @@ function sanitize_comma_delimited($str){
 	return implode(",", array_map("intval", explode(",", $str)));
 }
 
-/*function ap_pagi($base, $total_pages, $paged, $end_size = 1, $mid_size = 5){
-	$pagi_a = paginate_links( array(
-		'base' => $base, // the base URL, including query arg
-		'format' => 'page/%#%', // this defines the query parameter that will be used, in this case "p"
-		'prev_text' => __('&laquo; Previous', 'ap'), // text for previous page
-		'next_text' => __('Next &raquo;', 'ap'), // text for next page
-		'total' => $total_pages, // the total number of pages we have
-		'current' => $paged, // the current page
-		'end_size' => 1,
-		'mid_size' => 5,
-		'type' => 'array'
-		));
-	if($pagi_a){
-		echo '<ul class="ap-pagination clearfix">';
-		echo '<li><span class="page-count">'. sprintf(__('Page %d of %d', 'ap'), $paged, $total_pages) .'</span></li>';
-		foreach($pagi_a as $pagi){
-			echo '<li>'. $pagi .'</li>';
-		}
-		echo '</ul>';
-	}
-}*/
-
-function ap_question_side_tab(){
-	$links = array (
-		'discussion' => array('icon' => 'ap-apicon-flow-tree', 'title' => __('Discussion', 'ap'), 'url' => '#discussion')
-		);
-	$links = apply_filters('ap_question_tab', $links);
-	$i = 1;
-	if(count($links) > 1){
-		echo '<ul class="ap-question-extra-nav" data-action="ap-tab">';
-		foreach($links as $link){
-			echo '<li'.($i == 1 ? ' class="active"' : '').'><a class="'.$link['icon'].'" href="'.$link['url'].'">'.$link['title'].'</a></li>';
-			$i++;
-		}
-		echo '</ul>';
-	}
-}
-
-function ap_read_features($type = 'addon'){
-	$option = get_option('ap_addons');
-	$cache = wp_cache_get('ap_'.$type.'s_list', 'array');
-	
-	if($cache !== FALSE)
-		return $cache;
-	
-	$features = array();
-	//load files from addons folder
-	$files=glob(ANSPRESS_DIR.'/'.$type.'s/*/'.$type.'.php');
-	//print_r($files);
-	foreach ($files as $file){
-		$data = ap_get_features_data($file);
-		$data['folder'] = basename(dirname($file));
-		$data['file'] = basename($file);
-		$data['active'] = (isset($option[$data['name']]) && $option[$data['name']]) ? true : false;
-		$features[$data['name']] = $data;
-	}
-	wp_cache_set( 'ap_'.$type.'s_list', $features, 'array');
-	return $features;
-}
-
-
-function ap_get_features_data( $plugin_file) {
-	$plugin_data = ap_get_file_data( $plugin_file);
-
-	return $plugin_data;
-}
-
-function ap_get_file_data( $file) {
-	// We don't need to write to the file, so just open for reading.
-	$fp = fopen( $file, 'r' );
-
-	// Pull only the first 8kiB of the file in.
-	$file_data = fread( $fp, 1000 );
-
-	// PHP will close file handle, but we are good citizens.
-	fclose( $fp );
-
-	$metadata=ap_features_metadata($file_data, array(
-		'name' 				=> 'Name',
-		'version' 			=> 'Version',
-		'description' 		=> 'Description',
-		'author' 			=> 'Author',
-		'author_uri' 		=> 'Author URI',
-		'addon_uri' 		=> 'Addon URI'
-		));
-
-	return $metadata;
-}
-
-/**
- * @param string $contents
- */
-function ap_features_metadata($contents, $fields){
-	$metadata=array();
-
-	foreach ($fields as $key => $field)
-		if (preg_match('/'.str_replace(' ', '[ \t]*', preg_quote($field, '/')).':[ \t]*([^\n\f]*)[\n\f]/i', $contents, $matches))
-			$metadata[$key]=trim($matches[1]);
-		
-		return $metadata;
-	}
-	function ap_qa_on_post($post_id = false){
-		
-		if(!$post_id)
-			$post_id = get_the_ID();
-
-		$post = get_post($post_id);
-
-		if('question' == $post->post_type || 'answer' == $post->post_type)
-			return;
-
-		wp_enqueue_style( 'ap-style', ap_get_theme_url('css/ap.css'), array(), AP_VERSION);
-		
-		$questions = new Question_Query( array('post_parent' => $post_id) );
-
-		echo '<div class="anspress-container">';
-		include ap_get_theme_location('on-post.php');
-		wp_reset_postdata();
-		echo '<a href="'. add_query_arg(array('parent' => get_the_ID()), ap_base_page_link()) .'" class="ap-view-all">'.__( 'View All', 'ap' ).'</a>';
-		echo '</div>';
-
-	}
-
-	function ap_ask_btn($parent_id = false){
-		$args = array('ap_page' => 'ask');
-		
-		if($parent_id !== false)
-			$args['parent'] = $parent_id;
-		
-		if(get_query_var('parent') != '')
-			$args['parent'] = get_query_var('parent');
-
-		echo '<a class="ap-ask-btn" href="'.add_query_arg(array($args), ap_base_page_link()).'">'.__('Ask Question', 'ap').'</a>';
-	}
 
 /**
  * Check if doing ajax request
@@ -1154,8 +1020,10 @@ function ap_get_sort(){
 
 /**
  * Register AnsPress menu
- * @param string $slug
- * @param string $link
+ * @param  page $slug  [description]
+ * @param  [type] $title [description]
+ * @param  [type] $link  [description]
+ * @return [type]        [description]
  */
 function ap_register_menu($slug, $title, $link){
 	anspress()->menu[$slug] = array('title' => $title, 'link' => $link);

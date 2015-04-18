@@ -25,11 +25,8 @@ class AnsPress_User
         add_filter('pre_user_query', array($this, 'user_sort_by_reputation'));
         add_action('wp_ajax_ap_cover_upload', array($this, 'cover_upload'));
         add_action('wp_ajax_ap_avatar_upload', array($this, 'avatar_upload'));
-
-        //add_filter('avatar_defaults', array($this, 'default_avatar'), 10);
         add_filter('get_avatar', array($this, 'get_avatar'), 10, 5);
-        //add_filter( 'default_avatar_select', array($this, 'default_avatar_select'));
-        add_filter('ap_user_menu', array($this, 'ap_user_menu_icons'));
+        //add_filter('ap_user_menu', array($this, 'ap_user_menu_icons'));
     }
 
     public function init_actions()
@@ -40,9 +37,8 @@ class AnsPress_User
 
         // Register user pages
         ap_register_user_page('profile', __('Profile', 'ap'), array($this, 'profile_page'));
-        //ap_register_user_page('questions', __('Questions', 'ap'), array('AnsPress_User_Page_Questions', 'output'));
-        //ap_register_user_page('answers', __('Answers', 'ap'), array('AnsPress_User_Page_Answers', 'output'));
-        //ap_register_user_page('favorites', __('Favorites', 'ap'), array('AnsPress_User_Page_Favorites', 'output'));
+        ap_register_user_page('questions', __('Questions', 'ap'), array($this, 'questions_page'));
+        ap_register_user_page('answers', __('Answers', 'ap'), array($this, 'answers_page'));
     }
 
     public function users_page(){
@@ -66,13 +62,26 @@ class AnsPress_User
 
     /**
      * Output for profile page
+     * @since 2.1
+     */
+    public function profile_page(){        
+        include ap_get_theme_location('user/profile.php');
+    }
+
+    /**
+     * Output for user questions page
+     * @since 2.1
+     */
+    /*public function questions_page(){
+        include ap_get_theme_location('user/user-questions.php');
+    }*/
+
+    /**
+     * Output for user answers page
      * @since 2.0.1
      */
-    public function profile_page(){     
-        if(!empty($user_id))
-            include ap_get_theme_location('user-profile.php');
-        else
-            include ap_get_theme_location('not-found.php');
+    public function answers_page(){     
+        include ap_get_theme_location('user/user-answers.php');
     }
 
     /* For modifying WP_User_Query, if passed with a var ap_followers_query */

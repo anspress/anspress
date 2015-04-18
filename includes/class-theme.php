@@ -34,7 +34,7 @@ class AnsPress_Theme
         add_filter('wp_title', array( $this, 'ap_title' ) , 100, 2);
         add_filter('the_title', array( $this, 'the_title' ) , 100, 2);
         add_filter('wp_head', array( $this, 'feed_link' ) , 9);
-        add_action('ap_before', array( $this, 'ap_before_html_body' ));
+        add_action('ap_before', array( $this, 'ap_before_html_body' ));        
     }
 
     public function init_actions()
@@ -50,53 +50,7 @@ class AnsPress_Theme
     {
         require_once ap_get_theme_location('functions.php');
     }
-    
-    /**
-     * Append single question page content to the_content() for compatibility purpose.
-     * @param  string $content
-     * @return string
-     * @since 2.0.1
-     */
-    public function question_single_the_content($content) 
-    {
         
-        // check if is question
-        if (is_singular('question')) 
-        {
-            
-            /**
-             * This will prevent infinite loop
-             */
-            
-            remove_filter(current_filter() , array(
-                $this,
-                'question_single_the_content'
-            ));
-            
-            //check if user have permission to see the question
-            if (ap_user_can_view_post()) 
-            {
-                ob_start();
-                echo '<div class="anspress-container">';
-                
-                /**
-                 * ACTION: ap_before
-                 * Action is fired before loading AnsPress body.
-                 */
-                do_action('ap_before');
-                
-                include ap_get_theme_location('question.php');
-                echo '</div>';
-                return ob_get_clean();
-            } 
-            else return '<div class="ap-pending-notice ap-apicon-clock">' . ap_responce_message('no_permission_to_view_private', true) . '</div>';
-        } 
-        else
-        {
-            return $content;
-        }
-    }
-    
     /**
      * Add answer-seleted class in post_class
      * @param  array $classes

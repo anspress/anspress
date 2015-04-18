@@ -1187,6 +1187,20 @@
 .g-recaptcha {
   margin-bottom: 15px;
 }
+#ap-user-posts-tab {
+  float: right;
+}
+#ap-user-posts-tab > li {
+  margin-left: 10px;
+}
+#ap-user-posts-tab > li > a {
+  font-size: 14px;
+  font-weight: normal;
+  color: #333;
+}
+#ap-user-posts-tab > li.active a {
+  font-weight: 600;
+}
 .anspress-container .ap-questions-item {
   border-bottom: 1px solid #F8F8F8;
   -webkit-box-shadow: none;
@@ -2189,260 +2203,27 @@
 .anspress-container .ap-comment-form .comment-reply-title {
   display: none;
 }
-.ap-profile-lr .ap-profile-nav,
-.ap-profile-lr .ap-profile-right {
-  float: left;
-}
-.ap-profile-lr .ap-profile-nav {
-  position: relative;
-  width: 200px;
-}
-.ap-profile-lr .ap-profile-nav .ap-avatar-meta-c {
-  margin: 0;
-  padding: 0 0 20px;
-}
-.ap-profile-lr .ap-profile-nav .ap-big-avatar {
-  display: table;
-  margin: 0 auto 10px;
-  position: relative;
-}
-.ap-profile-lr .ap-profile-nav .ap-big-avatar form {
-  position: absolute;
-  right: 3px;
-  top: 3px;
-  z-index: 99;
-}
-.ap-profile-lr .ap-profile-nav .ap-big-avatar form .ap-upload-o {
-  border-radius: 50%;
-  color: #555;
-  height: 35px;
-  line-height: 40px;
-  margin: 0;
-  padding: 0;
-  width: 35px;
-}
-.ap-profile-lr .ap-profile-nav .ap-big-avatar img {
-  border-radius: 2px;
-}
-.ap-profile-lr .ap-profile-nav .ap-user-name {
-  color: #595959;
-  display: block;
-  font-size: 22px;
-  font-weight: 600;
-  margin-bottom: 5px;
-}
-.ap-profile-lr .ap-profile-nav .ap-user-profile-meta {
-  color: #888888;
-}
-.ap-profile-lr .ap-profile-nav .ap-user-profile-meta :before {
+.ap-user-avatar {
   margin-right: 10px;
 }
-.ap-profile-lr .ap-profile-right {
-  margin-left: -200px;
-  padding-left: 230px;
-  width: 100%;
-}
-.ap-profile-lr .ap-user-menu {
-  border: 1px solid #eee;
-  border-radius: 3px;
-  list-style: none outside none;
-  margin: 0;
-  padding: 0;
-}
-.ap-profile-lr .ap-user-menu li a {
-  border-bottom: 1px solid #f9f9f9;
-  color: #888888;
-  display: block;
-  font-size: 14px;
-  padding: 14px 15px;
-  text-decoration: none;
-}
-.ap-profile-lr .ap-user-menu li a:before {
-  display: inline-block;
-  margin-right: 15px;
-  width: 16px;
-}
-.ap-profile-lr .ap-user-menu li.active > a {
-  color: #595959;
+.ap-user-name {
   font-weight: 600;
-}
-.ap-profile-lr .ap-user-menu li:last-child a {
-  border-bottom: none;
-}
-.ap-profile-box.ap-about-me {
-  background: none repeat scroll 0 0 #f8f8f8;
-  -webkit-border-radius: 5px;
-  -webkit-background-clip: padding-box;
-  -moz-border-radius: 5px;
-  -moz-background-clip: padding;
-  border-radius: 5px;
-  background-clip: padding-box;
-  margin-top: 20px;
-  padding: 15px;
-}
-.ap-profile-box.ap-about-me h3 {
-  margin-top: 0;
-}
-.ap-profile-box.ap-about-me p:last-child {
-  margin-bottom: 0;
-}
-.ap-profile-box .about-me {
-  line-height: 28px;
-}
-.ap-answer-post {
-  border-bottom: 1px solid #eeeeee;
-  padding: 15px 0;
-}
-.ap-answer-post:last-child {
-  border-bottom: none;
-}
-.ap-answer-post .ap-title {
-  color: #595959;
   display: block;
-  font-size: 15px;
-  font-weight: 600;
-  margin-bottom: 10px;
-  overflow: hidden;
-  white-space: nowrap;
 }
-.ap-answer-post .ap-vote-count,
-.ap-answer-post .ap-answer-count {
-  border: 2px solid #9dd291;
-  border-radius: 50%;
-  color: #888888;
-  display: block;
-  float: left;
-  font-size: 11px;
-  height: 59px;
-  line-height: 22px;
-  margin-right: 20px;
-  padding: 4px;
-  text-align: center;
-  text-transform: uppercase;
-  width: 59px;
-  text-decoration: none;
-}
-.ap-answer-post .ap-vote-count span,
-.ap-answer-post .ap-answer-count span {
-  color: #595959;
-  display: block;
-  font-size: 15px;
-}
-.ap-answer-post .ap-vote-count {
-  border: 2px solid #5fcdf3;
-}
-.ap-answer-post .ap-answer-link {
-  color: #777;
-  line-height: 28px;
-}
-.ap-answer-post .ap-answer-link:hover {
-  text-decoration: none;
-  color: #595959;
-}
-.ap-profile-box-group > .ap-profile-box {
-  float: left;
-  width: 50%;
-}
-.ap-cover-bg {
-  background-repeat: no-repeat;
-  background-size: cover;
-  display: block;
-  height: 250px;
-  -webkit-border-radius: 2px;
-  -webkit-background-clip: padding-box;
-  -moz-border-radius: 2px;
-  -moz-background-clip: padding;
-  border-radius: 2px;
-  background-clip: padding-box;
-}
-.ap-cover-bg:hover .ap-upload-o {
-  font-size: 40px;
-  height: 45px;
-  line-height: 54px;
-  width: 55px;
-}
-.ap-upload-o {
-  background: none repeat scroll 0 0 #fff;
-  border-radius: 4px;
-  display: block;
-  float: right;
-  font-size: 25px;
-  height: 32px;
-  line-height: 38px;
-  margin: 10px;
-  overflow: hidden;
-  position: relative;
-  text-align: center;
-  width: 40px;
-  -webkit-transition: all 0.2s ease 0s;
-  -moz-transition: all 0.2s ease 0s;
-  -o-transition: all 0.2s ease 0s;
-  transition: all 0.2s ease 0s;
-}
-.ap-upload-o .ap-upload-input {
-  cursor: pointer;
-  font-size: 20px;
-  height: 100%;
-  margin: 0;
-  zoom: 1;
-  filter: alpha(opacity=0);
-  -webkit-opacity: 0;
-  -moz-opacity: 0;
-  opacity: 0;
-  padding: 0;
-  position: absolute;
-  right: 0;
-  top: 0;
-  width: 100%;
-}
-.ap-profile-right .ap-user-meta .ap-user-name {
-  display: block;
-  font-size: 40px;
-  text-align: center;
-}
-.ap-user-counts {
-  border-bottom: 1px solid #eee;
+#ap-user-menu {
   border-top: 1px solid #eee;
-  padding: 15px 0;
+  list-style: outside none none;
+  margin: 5px 0 0;
+  padding: 0;
 }
-.ap-user-counts li {
-  border-right: 1px solid #eee;
-  padding: 0 15px 0 0;
-}
-.ap-user-counts li:last-child {
-  border-right: none;
-}
-.ap-user-counts a {
-  color: #595959;
-  display: block;
-  font-size: 22px;
-  min-width: 120px;
-  padding: 10px;
-  text-decoration: none;
-}
-.ap-user-counts a b {
-  color: #11a7db;
-  font-weight: 600;
-  margin-right: 10px;
-}
-.ap-user-counts a span {
-  text-transform: uppercase;
-  font-weight: 300;
-}
-.ap-cpt-statics {
-  border-left: 2px solid #11a7db;
-  list-style: none outside none;
+#ap-user-menu > li {
+  padding: 0;
   margin: 0;
-  padding: 0 0 0 20px;
 }
-.ap-cpt-statics li {
-  color: #aaa;
-  font-size: 18px;
-  font-weight: 300;
-  margin-bottom: 15px;
-}
-.ap-cpt-statics li span {
-  float: right;
+#ap-user-menu > li > a {
+  display: block;
+  font-weight: 600;
+  padding: 2px 0;
 }
 #ap-notify {
   left: 10px;

@@ -37,18 +37,26 @@
 			<!-- Start  ap-profile-lr -->
 			<div class="ap-user-lr row">
 				<div class="col-md-3 ap-user-left">
-					<div class="ap-user-info">
-						<div class="ap-user-avatar">
-							<?php ap_user_the_avatar(150); ?>						
+					<div class="ap-user-info clearfix">
+						<div class="ap-user-avatar ap-pull-left">
+							<?php ap_user_the_avatar(50); ?>						
 						</div>
-						<?php //ap_user_profile_meta(); ?>						
+						<div class="ap-user-data no-overflow">
+							<a class="ap-user-name" href="<?php ap_user_the_link(); ?>"><?php ap_user_the_display_name(); ?></a>
+							<?php
+								/**
+								 * ACTION: ap_user_left_after_name
+								 */
+								do_action('ap_user_left_after_name');
+							?>
+						</div>					
 					</div>
-				</div>
-				<div class="col-md-9 ap-user-right">
 					<?php ap_user_menu(); ?>
+				</div>
+				<div class="col-md-9 ap-user-right">					
 					<?php 
 						/* include proper user template */
-						//ap_user_page();
+						ap_user_page();
 					?>
 				</div>
 			</div>

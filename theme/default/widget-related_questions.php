@@ -1,10 +1,10 @@
 <div class="ap-rq-widget clearfix">
-	<?php 
-		if ( $questions->have_posts() ) {
+	<?php
+		if ( ap_have_questions() ) {
 			/* Start the Loop */
-			while ( $questions->have_posts() ) : $questions->the_post();
-				$ans_count = ap_count_answer_meta();
-				$net_vote = ap_net_vote();
+			while ( ap_questions() ) : ap_the_question();
+				$ans_count = ap_question_get_the_answer_count();
+				$net_vote = ap_question_get_the_net_vote();
 				?>
 				<div class="ap-rq-post">
 					<a href="<?php the_permalink() ?>"><?php the_title() ?></a>

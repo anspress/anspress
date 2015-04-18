@@ -27,19 +27,21 @@ class AP_Related_questions extends WP_Widget {
 
 		$question_args=array(
 			'tax_query' 	=> array(
-				'taxonomy' => 'question_tag',
-				'field'    => 'id',
-				'terms'    => $tags_in,
+				array(
+					'taxonomy' => 'question_tag',
+					'field'    => 'term_id',
+					'terms'    => $tags_in,
+				)
 			),
-			'showposts' 	=> 10,
+			'showposts' 	=> 5,
 			'post__not_in' 	=> array(get_question_id()),
 		);
-			
-		$questions = new Question_Query( $question_args );
 
+		ap_get_questions($question_args);
 		include ap_get_theme_location('widget-related_questions.php');
-		echo $args['after_widget'];
 		wp_reset_postdata();
+		echo $args['after_widget'];
+
 	}
 
 	public function form( $instance ) {

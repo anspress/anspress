@@ -21,11 +21,8 @@ if(!class_exists('Question_Query')):
  *
  * This class is for retriving questions based on $args
  */
-class Question_Query {
+class Question_Query extends WP_Query {
 
-    public $questions;
-    public $question;
-    public $max_num_pages;
     public $args = array();
 
     /**
@@ -36,8 +33,6 @@ class Question_Query {
      */
     public function __construct( $args = array() ) {
 
-        global $questions;
-
         $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
 
         if(isset($args['post_parent']))
@@ -45,15 +40,10 @@ class Question_Query {
         else
             $post_parent = (get_query_var('parent')) ? get_query_var('parent') : false;
 
-        if(isset($args['orderby']))
-            $orderby = $args['orderby'];
-        else
-            $orderby = (isset($_GET['ap_sort'])) ? $_GET['ap_sort'] : 'active';
-
         $defaults = array(
+           // 'ap_query'      => 'main_questions',
             'post_status'   => array('publish', 'moderate', 'private_post', 'closed'),
             'showposts'     => ap_opt('question_per_page'),
-            'orderby'       => $orderby,
             'paged'         => $paged,
         );
 
@@ -65,29 +55,25 @@ class Question_Query {
         if(get_query_var('ap_s') != '')
             $this->args['s'] = sanitize_text_field(get_query_var('ap_s'));
 
-        $this->sortby_questions();
-
-        do_action('ap_pre_get_questions', $this);
+        if(isset($this->args[ 'orderby' ]))
+            $this->orderby_questions();
 
         $this->args['post_type'] = 'question';        
 
-        $questions = new WP_Query($this->args);
+        $args = $this->args;
 
-        $this->questions    = $questions;
-        $this->question     = $questions->post;
-        $this->max_num_pages= $questions->max_num_pages;
-    }
-
-    public function get_questions(){
-        return $this->questions;
+        /**
+         * Initialize parent class
+         */
+        parent::__construct( $args );
     }
 
     /**
      * Modify orderby args
      * @return void
      */
-    public function sortby_questions(){
-        switch ( $this->args[ 'sortby' ] ) {
+    public function orderby_questions(){
+        switch ( $this->args[ 'orderby' ] ) {
             case 'answers' :
                 $this->args[ 'orderby' ] = 'meta_value_num';
                 $this->args[ 'meta_key' ] = ANSPRESS_ANS_META;
@@ -129,62 +115,45 @@ class Question_Query {
          
     }
 
-    public function have_posts(){
-        return $this->questions->have_posts();
-    }
-
-    public function the_question(){
-        return $this->questions->the_post();
-    }
-
 }
+
 
 endif;
 
 function ap_get_questions($args = ''){
-    global $questions;
     $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
+
     if(isset($args['post_parent']))
         $post_parent = $args['post_parent'];
     else
         $post_parent = (get_query_var('parent')) ? get_query_var('parent') : false;
 
-    if(isset($args['sortby']))
-        $sortby = $args['sortby'];
-    else
-        $sortby = (isset($_GET['ap_sort'])) ? $_GET['ap_sort'] : 'active';
+    if(!isset($args['sortby']))
+        $args['sortby'] = (isset($_GET['ap_sort'])) ? $_GET['ap_sort'] : 'active';
 
     $args = wp_parse_args( $args, array(
         'post_status'   => array('publish', 'moderate', 'private_post', 'closed'),
         'showposts'     => ap_opt('question_per_page'),
-        'sortby'        => $sortby,
-        'paged'         => $paged,
-        'post_parent'   => $post_parent
+        'paged'         => $paged
     ) );
 
-    $questions = new Question_Query($args);
-
-    return $questions;
+    anspress()->questions = new Question_Query($args);
 }
 
 function ap_have_questions(){
-    global $questions;
-    return $questions->have_posts();
+    return anspress()->questions->have_posts();
 }
 
-function ap_questions(){
-    global $questions;    
-    return $questions->have_posts();
+function ap_questions(){  
+   return anspress()->questions->have_posts();
 }
 
 function ap_the_question(){
-    global $questions;     
-    return $questions->the_question(); 
+    return anspress()->questions->the_post(); 
 }
 
 function ap_question_the_object(){
-    global $questions;
-    return $questions->question;
+    return anspress()->questions->post;
 }
 
 /**
@@ -204,6 +173,24 @@ function ap_question_the_ID(){
         $question = ap_question_the_object();
 
         return $question->ID;
+    }
+/**
+ * echo current question post_parent
+ * @since 2.1
+ */
+function ap_question_the_post_parent(){
+    echo ap_question_get_the_post_parent();
+}
+    
+    /**
+     * Returns the question post parent ID
+     * @return integer
+     * @since 2.1
+     */
+    function ap_question_get_the_post_parent(){
+        $question = ap_question_the_object();
+
+        return $question->post_parent;
     }
 
 function ap_question_get_author_id(){
@@ -233,7 +220,7 @@ function ap_question_the_author_link(){
      * @since 2.1
      */
     function ap_question_get_the_author_link(){
-        return ap_user_link();
+        return ap_user_link(ap_question_get_author_id());
     }
 
 function ap_question_the_author_avatar($size = 45){
@@ -262,20 +249,29 @@ function ap_question_the_answer_count(){
     }
 
 /**
- * Echo active question voting button
+ * Echo active question total vote
  * @return void
  * @since 2.1
  */
-function ap_question_the_vote_button(){
+function ap_question_the_net_vote(){
     if(!ap_opt('disable_voting_on_question')){
         ?>
             <span class="ap-questions-count ap-questions-vcount">
-                <span><?php echo ap_net_vote() ?></span>
+                <span><?php echo ap_question_get_the_net_vote(); ?></span>
                 <?php  _e('votes', 'ap'); ?>
             </span>
         <?php 
     }
 }
+
+    /**
+     * Return count of net vote of a question
+     * @return integer
+     * @since 2.1
+     */
+    function ap_question_get_the_net_vote(){
+        return ap_net_vote(ap_question_the_object());
+    }
 
 /**
  * Echo active question permalink
@@ -292,7 +288,7 @@ function ap_question_the_permalink(){
      * @since 2.1
      */
     function ap_question_get_the_permalink(){
-        return the_permalink(ap_question_get_the_ID());
+        return get_the_permalink(ap_question_get_the_ID());
     }
 
 /**
@@ -300,6 +296,123 @@ function ap_question_the_permalink(){
  * @return string pagination html tag
  */
 function ap_questions_the_pagination(){
-    global $questions;
+    $questions = anspress()->questions;
     ap_pagination(false, $questions->max_num_pages);
 }
+
+/**
+ * Output active question vote button
+ * @return 2.1
+ */
+function ap_question_the_vote_button(){
+    ap_vote_btn(ap_question_the_object());
+}
+
+function ap_question_the_status_description(){
+    if ( ap_have_parent_post()) : ?>
+        <div class="ap-notice blue clearfix">
+            <?php echo ap_icon('link', true) ?>
+            <span><?php printf(__( 'Question is asked for %s.', 'ap' ), '<a href="'. get_permalink(ap_question_get_the_post_parent()) .'">'.get_the_title( ap_question_get_the_post_parent() ).'</a>'); ?></span>
+        </div>
+    <?php endif;
+
+    if ( is_private_post()) : ?>
+        <div class="ap-notice black clearfix">
+            <i class="apicon-lock"></i><span><?php _e( 'Question is marked as a private, only admin and post author can see.', 'ap' ); ?></span>
+        </div>
+    <?php endif;
+
+    if ( is_post_waiting_moderation()) : ?>
+        <div class="ap-notice yellow clearfix">
+            <i class="apicon-info"></i><span><?php _e( 'Question is waiting for approval by moderator.', 'ap' ); ?></span>
+        </div>
+    <?php endif;
+
+    if ( is_post_closed()) : ?>
+        <div class="ap-notice red clearfix">
+            <?php echo ap_icon('cross', true) ?><span><?php _e( 'Question is closed, new answer are not accepted.', 'ap' ); ?></span>
+        </div>
+    <?php endif;
+}
+
+/**
+ * Output comment template if enabled.
+ * @return void
+ * @since 2.1
+ */
+function ap_question_the_comments(){
+    if(ap_opt('show_comments_by_default') && !ap_opt('disable_comments_on_question')) 
+        comments_template();
+}
+
+/**
+ * Output answer form
+ * @return void
+ * @since 2.1
+ */
+function ap_question_the_answer_form(){
+    include(ap_get_theme_location('answer-form.php'));
+}
+
+/**
+ * Output answer of active question.
+ * @return void
+ * @since 2.1
+ */
+function ap_question_the_answers(){
+    if(ap_have_ans( ap_question_get_the_ID() )){                 
+        include(ap_get_theme_location('best_answer.php'));
+        ap_get_answers();
+    } 
+}
+
+/**
+ * Echo time current question was active
+ * @return void
+ * @since 2.1
+ */
+function ap_question_the_active_ago(){
+    echo ap_question_get_the_active_ago();
+}
+    
+    /**
+     * Return the question active ago time
+     * @return string
+     * @since 2.1
+     */
+    function ap_question_get_the_active_ago(){
+        return ap_last_active(ap_question_get_the_ID());
+    }
+
+/**
+ * Echo view count for current question
+ * @since 2.1
+ */
+function ap_question_the_view_count(){
+    echo ap_question_get_the_view_count();
+}
+    
+    /**
+     * Return total view count
+     * @return integer
+     * @since 2.1
+     */
+    function ap_question_get_the_view_count(){
+        return ap_get_qa_views(ap_question_get_the_ID());
+    }
+
+/**
+ * Echo questions subscriber count
+ * @since 2.1
+ */
+function ap_question_the_subscriber_count(){
+    echo ap_question_get_the_subscriber_count();
+}
+    /**
+     * Return the subscriber count for active question
+     * @return integer
+     * @since 2.1
+     */
+    function ap_question_get_the_subscriber_count(){
+        return ap_post_subscribers_count(ap_question_get_the_ID());
+    }

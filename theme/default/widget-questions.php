@@ -1,15 +1,13 @@
 <div class="ap-questions-widget clearfix">
 	<?php 
-		if ( $questions->have_posts() ) {
+		if ( ap_have_questions() ) {
 			/* Start the Loop */
-			while ( $questions->have_posts() ) : $questions->the_post();
-				$ans_count = ap_count_answer_meta();
-				$net_vote = ap_net_vote();
+			while ( ap_questions() ) : ap_the_question();
 				?>
 				<div class="ap-question-item">
-					<a class="ap-question-title"href="<?php the_permalink() ?>"><?php the_title() ?></a>
-					<span class="ap-ans-count"><?php printf( _n('1 answer', '%d answers', $ans_count, 'ap'), $ans_count) ?></span>
-					<span class="ap-vote-count"> | <?php printf( _n('1 vote', '%d votes', $net_vote, 'ap'), $net_vote) ?></span>
+					<a class="ap-question-title"href="<?php ap_question_the_permalink() ?>"><?php the_title() ?></a>
+					<span class="ap-ans-count"><?php printf( _n('1 answer', '%d answers', ap_question_get_the_answer_count(), 'ap'), ap_question_get_the_answer_count()) ?></span>
+					<span class="ap-vote-count"> | <?php printf( _n('1 vote', '%d votes', ap_get_the_net_vote(), 'ap'), ap_get_the_net_vote()) ?></span>
 				</div>
 				<?php
 			endwhile;

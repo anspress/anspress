@@ -184,7 +184,18 @@ function ap_user_link($user_id = false, $sub = false)
 
     $user = get_userdata($user_id);
 
-    return apply_filters('ap_user_link', ap_get_link_to(array('ap_page' => 'user', 'user' => $user->user_login)), $user_id);
+    if($sub === false){
+        $sub = array('ap_page' => 'user', 'user' => $user->user_login);
+    }
+    elseif(is_array($sub)){
+       $sub['ap_page']  = 'user';
+       $sub['user']     = $user->user_login;
+    }
+    elseif(!is_array($sub)){
+        $sub = array('ap_page' => 'user', 'user' => $user->user_login, 'user_page' => $sub);
+    }
+
+    return apply_filters('ap_user_link', ap_get_link_to($sub), $user_id);
 }
 
 /**
@@ -219,7 +230,7 @@ function ap_user_menu()
     $menus = ap_sort_array_by_order($menus);
 
     if (!empty($menus) && is_array($menus)) {
-        $o = '<ul class="ap-user-menu clearfix">';
+        $o = '<ul id="ap-user-menu" class="ap-user-menu clearfix">';
         foreach ($menus as $k => $m) {
             //if(!((isset($m['own']) && $m['own']) && $userid != get_current_user_id()))
             $class = !empty($m['class']) ? ' '.$m['class'] : '';
@@ -276,12 +287,14 @@ function ap_get_current_user_page_template()
  */
 function ap_user_page()
 {
-    global $user_pages;
-
+    $user_pages     = anspress()->user_pages;
     $user_id        = ap_get_displayed_user_id();
-    $user_page        = ap_active_user_page();
+    $user_page      = ap_active_user_page();
 
-    call_user_func($user_pages[$user_page]['func']);
+    if($user_id > 0 && is_callable($user_pages[$user_page]['func']))
+        call_user_func($user_pages[$user_page]['func']);
+    else
+        echo '<div class="ap-page-template-404">'.__('Page not found or registered.', 'ap').'</div>';
 }
 
 /**
@@ -292,7 +305,6 @@ function ap_user_page()
 function ap_active_user_page()
 {
     $user_page        = sanitize_text_field(get_query_var('user_page'));
-
     return  $user_page ? $user_page : 'profile';
 }
 
@@ -564,74 +576,6 @@ function ap_user_template()
     }
 }
 
-function ap_cover_upload_form()
-{
-    if (ap_user_can_upload_cover() && ap_get_displayed_user_id() == get_current_user_id()) {
-        ?>
-		<form method="post" action="#" enctype="multipart/form-data" data-action="ap_upload_form" class="">
-			<div class="ap-upload-o">
-				<span class="ap-tip <?php echo ap_icon('upload') ?>" title="<?php _e('Upload cover', 'ap');
-        ?>"></span>
-				<input type="file" name="thumbnail" class="ap-upload-input" data-action="ap_upload_field">
-			</div>
-			<input type='hidden' value='<?php echo wp_create_nonce('upload');
-        ?>' name='nonce' />
-			<input type="hidden" name="action" id="action" value="ap_cover_upload">
-		</form>
-		<?php
-
-    }
-}
-
-function ap_get_user_cover($userid, $small = false)
-{
-    if (!$small) {
-        $image_a =  wp_get_attachment_image_src(get_user_meta($userid, '_ap_cover', true), 'ap_cover');
-    } else {
-        $image_a =  wp_get_attachment_image_src(get_user_meta($userid, '_ap_cover', true), 'ap_cover_small');
-    }
-
-    return $image_a[0];
-}
-
-function ap_user_cover_style($userid, $small = false)
-{
-    $image = ap_get_user_cover($userid);
-
-    if ($small) {
-        if ($image) {
-            echo 'style="background-image:url('.ap_get_user_cover($userid, true).')"';
-        } else {
-            echo 'style="background-image:url('.ap_get_theme_url('images/default_cover_s.jpg').')"';
-        }
-    } else {
-        if ($image) {
-            echo 'style="background-image:url('.ap_get_user_cover($userid).')"';
-        } else {
-            echo 'style="background-image:url('.ap_get_theme_url('images/default_cover.jpg').')"';
-        }
-    }
-}
-
-function ap_avatar_upload_form()
-{
-    if (ap_get_displayed_user_id() == get_current_user_id()) {
-        ?>
-		<form method="post" action="#" enctype="multipart/form-data" data-action="ap_upload_form" class="">
-			<div class="ap-btn ap-upload-o">
-				<span class="<?php echo ap_icon('upload');
-        ?>"></span>
-				<input type="file" name="thumbnail" class="ap-upload-input" data-action="ap_upload_field">
-			</div>
-			<input type='hidden' value='<?php echo wp_create_nonce('upload');
-        ?>' name='nonce' />
-			<input type="hidden" name="action" id="action" value="ap_avatar_upload">
-		</form>
-		<?php
-
-    }
-}
-
 function ap_edit_profile_nav()
 {
     $menu = array(
@@ -803,40 +747,6 @@ function ap_get_resized_avatar($id_or_email, $size = 32, $default = false)
     return $file_url.'/'.$orig_file_name;
 }
 
-function ap_user_profile_meta($echo = true)
-{
-    $user_id        = ap_get_displayed_user_id();
-    $ap_user        = ap_user();
-    $ap_user_data    = ap_user_data();
-
-    $metas = array();
-
-    $metas['display_name'] = '<span class="ap-user-name">'.$ap_user_data->display_name.'</span>';
-    $metas['url'] = '<span class="ap-user-url '.ap_icon('link').'">'.ap_get_current_user_meta('user_url').'</span>';
-
-    /**
-     * FILTER: ap_user_profile_meta
-     * Can be used to alter user profile meta
-     * @var string
-     */
-    $metas = apply_filters('ap_user_profile_meta', $metas);
-
-    $output = '';
-
-    if (!empty($metas) && is_array($metas) && count($metas) > 0) {
-        $output .= '<div class="ap-user-profile-meta">';
-        foreach ($metas as $meta) {
-            $output .= $meta.' ';
-        }
-        $output .= '</div>';
-    }
-
-    if ($echo) {
-        echo $output;
-    } else {
-        return $output;
-    }
-}
 
 function ap_profile_user_stats_counts($echo = true)
 {
@@ -920,7 +830,7 @@ function ap_displayed_user_id(){
         if($user_id > 0)
             return $user_id;
 
-        return false;
+        return 0;
     }
 
 
@@ -935,10 +845,10 @@ function ap_get_avatar_src($user_id, $size = 'thumbnail', $default = false) {
     $upload_dir = wp_upload_dir();
     
     if ($default) {
-        $image      = wp_get_attachment_image_src(pp_opt('default_avatar') , 'thumbnail');
+        $image      = wp_get_attachment_image_src(ap_opt('default_avatar') , 'thumbnail');
     } 
     else {
-        $image      = wp_get_attachment_image_src(get_user_meta($user_id, '__pp_avatar', true) , array(
+        $image      = wp_get_attachment_image_src(get_user_meta($user_id, '__ap_avatar', true) , array(
             $size,
             $size
             ));
@@ -949,4 +859,32 @@ function ap_get_avatar_src($user_id, $size = 'thumbnail', $default = false) {
     }
     
     return $image[0];
+}
+
+/**
+ * User's top posts tab
+ * @return void
+ * @since 2.1
+ */
+function ap_user_top_posts_tab(){
+    $active = isset($_GET['tab']) ? $_GET['tab'] : 'all';
+    
+    $link = '?tab=';
+
+    
+    ?>
+    <ul id="ap-user-posts-tab" class="ap-flat-tab ap-ul-inline clearfix" role="tablist">
+        <li class="<?php echo $active == 'all' ? ' active' : ''; ?>"><a href="<?php echo $link.'all'; ?>"><?php _e('All', 'ap'); ?></a></li>
+        <li class="<?php echo $active == 'questions' ? ' active' : ''; ?>"><a href="<?php echo $link.'question'; ?>"><?php _e('Questions', 'ap'); ?></a></li>
+        <li class="<?php echo $active == 'answers' ? ' active' : ''; ?>"><a href="<?php echo $link.'answer'; ?>"><?php _e('Answers', 'ap'); ?></a></li>
+        <?php 
+            /**
+             * ACTION: ap_users_tab
+             * Used to hook into users page tab
+             * @since 2.1.0
+             */
+            do_action('ap_users_tab', $active); 
+        ?>
+    </ul>
+    <?php
 }

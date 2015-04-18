@@ -41,6 +41,7 @@ class AnsPress_Reputation {
 		add_action('ap_unpublish_comment', array($this, 'delete_comment'));
 
 		add_filter('ap_user_display_meta_array', array($this, 'display_meta'), 10, 2);
+		add_action('ap_user_left_after_name', array( $this, 'ap_user_left_after_name' ));
 	}
 	
 	/**
@@ -280,6 +281,17 @@ class AnsPress_Reputation {
 			$metas['reputation'] = '<span class="ap-user-meta ap-user-meta-reputation">'. sprintf(__('%d Reputation', 'ap'), ap_get_reputation($user_id, true)) .'</span>';
 
 		return $metas;
+	}
+
+	/**
+	 * Display user reputation below user name in profile page
+	 * @return void
+	 * @since 2.1
+	 */
+	public function ap_user_left_after_name(){
+		echo '<span class="ap-user-reputation">';
+		printf(__('%s Rep.', 'ap'), ap_user_get_the_reputation());
+		echo '</span>';
 	}
 }
 

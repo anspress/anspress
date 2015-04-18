@@ -51,6 +51,7 @@ class AnsPress_Rewrite
 		$query_vars[] = 'message_id';
 		$query_vars[] = 'parent';
 		$query_vars[] = 'ap_user';
+		$query_vars[] = 'user_page';
 		
 		return $query_vars;
 	}

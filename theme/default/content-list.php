@@ -29,7 +29,7 @@ $clearfix_class = array('ap-questions-item clearfix');
 		</div>
 		<div class="pull-right">
 			<?php ap_question_the_answer_count(); ?>
-			<?php ap_question_the_vote_button(); ?>
+			<?php ap_question_the_net_vote(); ?>
 		</div>
 		<div class="ap-questions-summery no-overflow">
 			<span class="ap-questions-title entry-title" itemprop="title">

@@ -37,7 +37,6 @@ class AnsPress_BasePage_Shortcode {
 	 * @since 2.0.0-beta
 	 */
 	public function anspress_sc( $atts, $content="" ) {
-		
 		global $questions, $wp;
 
 		if(isset($atts['categories'])){

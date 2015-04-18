@@ -114,9 +114,9 @@ src="https://www.google.com/recaptcha/api.js?hl='.get_locale().'&onload=onloadCa
         );
     }
 
-    $form = new AnsPress_Form($args);
+    anspress()->form = new AnsPress_Form($args);
 
-    echo $form->get_form();
+    echo anspress()->form->get_form();
 }
 
 /**

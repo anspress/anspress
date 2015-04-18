@@ -7,20 +7,18 @@
  * @license    http://opensource.org/licenses/gpl-license.php  GNU Public License
  * @author    Rahul Aryan <support@anspress.io>
  */
-
-global $post;
 ?>
 <div id="ap-single" class="ap-q clearfix" itemtype="http://schema.org/Question" itemscope="">	
 	<div class="ap-question-lr row">		
 		<div class="ap-q-left <?php echo is_active_sidebar( 'ap-qsidebar' ) ? 'col-md-8' : 'col-md-12' ?>">
-			<div id="question" role="main" class="ap-content question" data-id="<?php echo get_the_ID(); ?>">
+			<div id="question" role="main" class="ap-content question" data-id="<?php ap_question_the_ID(); ?>">
 				<header class="ap-q-head">
 					<?php 
 						/**
 						 * ACTION: ap_before_question_title
 						 * @since 	2.0
 						 */
-						do_action('ap_before_question_title', $post);
+						do_action('ap_before_question_title');
 					?>
 					<?php 
 						/**
@@ -28,7 +26,7 @@ global $post;
 						 */
 						if(ap_opt('show_title_in_question')) : 
 					?>
-						<h1 class="entry-title"><a href="<?php get_permalink() ?>"><?php the_title(); ?></a></h1>
+						<h1 class="entry-title"><a href="<?php ap_question_the_permalink() ?>"><?php the_title(); ?></a></h1>
 					<?php endif; ?>
 
 					<?php 
@@ -36,20 +34,18 @@ global $post;
 						 * ACTION: ap_after_question_title
 						 * @since 	2.0
 						 */
-						do_action('ap_after_question_title', $post);
+						do_action('ap_after_question_title');
 					?>
 				</header>
 				<div class="ap-avatar ap-pull-left">
-					<a href="<?php echo ap_user_link(get_the_author_meta('ID'))?>">
-						<?php echo get_avatar( get_the_author_meta( 'user_email' ), ap_opt('avatar_size_qquestion') ); ?>
+					<a href="<?php ap_question_the_author_link(); ?>">
+						<?php ap_question_the_author_avatar(ap_opt('avatar_size_qquestion') ); ?>
 					</a>						
 				</div>
 				<div class="ap-q-cells clearfix">
 					<div class="ap-q-metas clearfix">
-						<div class="ap-single-vote ap-pull-right"><?php ap_vote_btn($post) ?></div>
+						<div class="ap-single-vote ap-pull-right"><?php ap_question_the_vote_button(); ?></div>
 						<?php ap_user_display_meta(true, false, true); ?>
-
-						<!-- TODO: Show all questions history on toggle -->
 						<ul class="ap-display-question-meta ap-ul-inline clearfix">
 							<?php echo ap_display_question_metas() ?>
 						</ul>
@@ -65,7 +61,7 @@ global $post;
 							 * ACTION: ap_after_question_content
 							 * @since 	2.0
 							 */
-							do_action('ap_after_question_content', $post);
+							do_action('ap_after_question_content');
 						?>
 
 						<?php 
@@ -84,48 +80,27 @@ global $post;
 							 * ACTION: ap_after_question_actions
 							 * @since 	2.0
 							 */
-							global $post;
-							do_action('ap_after_question_actions', $post);
+							do_action('ap_after_question_actions');
 						?>
 					</div>
 					<!-- End ap-content-inner -->
-
-					<?php if ( ap_have_parent_post()) : ?>
-						<div class="ap-notice blue clearfix">
-							<?php echo ap_icon('link', true) ?>
-							<span><?php printf(__( 'Question is asked for %s.', 'ap' ), '<a href="'. get_permalink($post->post_parent) .'">'.get_the_title( $post->post_parent ).'</a>'); ?></span>
-						</div>
-					<?php endif; ?>
-					<?php if ( is_private_post()) : ?>
-						<div class="ap-notice black clearfix">
-							<i class="apicon-lock"></i><span><?php _e( 'Question is marked as a private, only admin and post author can see.', 'ap' ); ?></span>
-						</div>
-					<?php endif; ?>
-					<?php if ( is_post_waiting_moderation()) : ?>
-						<div class="ap-notice yellow clearfix">
-							<i class="apicon-info"></i><span><?php _e( 'Question is waiting for approval by moderator.', 'ap' ); ?></span>
-						</div>
-					<?php endif; ?>
-					<?php if ( is_post_closed()) : ?>
-						<div class="ap-notice red clearfix">
-							<?php echo ap_icon('cross', true) ?><span><?php _e( 'Question is closed, new answer are not accepted.', 'ap' ); ?></span>
-						</div>
-					<?php endif; ?>
-					<?php if(ap_opt('show_comments_by_default') && !ap_opt('disable_comments_on_question')) comments_template(); ?>
+					<?php
+						/**
+						 * Show question status. i.e. private post, moderate etc
+						 */
+						ap_question_the_status_description();
+					?>
+					<?php ap_question_the_comments(); ?>
 				</div>		
 			</div>
 			
-			<?php
-
-				if(ap_have_ans(get_question_id())){					
-					include(ap_get_theme_location('best_answer.php'));
-					ap_get_answers();
-				} 
-			?>
-				
-			<?php 				
-				include(ap_get_theme_location('answer-form.php')); 
-			?>
+			<?php 
+				/**
+				 * Output list of answers
+				 */
+				ap_question_the_answers();
+			?>				
+			<?php ap_question_the_answer_form(); ?>
 		</div>
 		<?php if ( is_active_sidebar( 'ap-qsidebar' ) ){ ?>
 			<div class="ap-question-right col-md-4">

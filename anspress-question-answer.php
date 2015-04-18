@@ -56,6 +56,9 @@ if (!class_exists('AnsPress')) {
         public $user_pages;
         public $users;
         public $menu;
+        public $questions;
+        public $answers;
+        public $form;
 
         /**
          * Filter object
@@ -292,6 +295,20 @@ function anspress()
 
 anspress();
 
+/*----------------------------------------------------------------------------*
+ * Dashboard and Administrative Functionality
+ *----------------------------------------------------------------------------*/
+
+/*
+ * The code below is intended to to give the lightest footprint possible.
+ */
+
+if (is_admin()) {
+    require_once plugin_dir_path(__FILE__).'admin/anspress-admin.php';
+    add_action('plugins_loaded', array( 'AnsPress_Admin', 'get_instance' ));
+}
+
+
 /*
  * Register hooks that are fired when the plugin is activated or deactivated.
  * When the plugin is deleted, the uninstall.php file is loaded.
@@ -334,15 +351,3 @@ add_action('plugins_loaded', array( 'anspress_vote', 'get_instance' ));
 add_action('plugins_loaded', array( 'anspress_view', 'get_instance' ));
 
 
-/*----------------------------------------------------------------------------*
- * Dashboard and Administrative Functionality
- *----------------------------------------------------------------------------*/
-
-/*
- * The code below is intended to to give the lightest footprint possible.
- */
-
-if (is_admin()) {
-    require_once plugin_dir_path(__FILE__).'admin/anspress-admin.php';
-    add_action('plugins_loaded', array( 'AnsPress_Admin', 'get_instance' ));
-}
