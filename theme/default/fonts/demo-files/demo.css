@@ -146,8 +146,14 @@ p {
 	font-size: 16px;
 }
 .fs1 {
-	font-size: 24px;
+	font-size: 28px;
 }
 .fs2 {
+	font-size: 32px;
+}
+.fs3 {
+	font-size: 24px;
+}
+.fs4 {
 	font-size: 32px;
 }

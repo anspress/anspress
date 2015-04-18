@@ -59,9 +59,8 @@ class Answers_Query extends WP_Query {
         if(!empty($question_id))
             $this->args['post_parent'] = $question_id;
 
-        $this->pre_answers();
-
-        do_action('ap_pre_get_answers', $this);
+        if(isset($this->args[ 'sortby' ]))
+            $this->orderby_answers();
 
         $this->args['post_type'] = 'answer';        
 
@@ -71,12 +70,6 @@ class Answers_Query extends WP_Query {
          * Initialize parent class
          */
         parent::__construct( $args );
-
-        remove_action('ap_pre_get_answers', $this);
-    }
-
-    public function pre_answers(){
-        add_action('ap_pre_get_answers', array($this, 'orderby_answers'));
     }
 
     /**
@@ -85,7 +78,7 @@ class Answers_Query extends WP_Query {
      */
     public function orderby_answers(){
         $this->args['meta_query'] = array();
-        switch ( $this->args[ 'orderby' ] ) {
+        switch ( $this->args[ 'sortby' ] ) {
             case 'voted' :
                 $this->args[ 'orderby'] = 'meta_value_num' ;
                 $this->args['meta_query']  = array(
@@ -145,13 +138,10 @@ function ap_get_answers($args = array()){
     if(empty($sort ))
         $sort = ap_opt('answers_sort');
 
-    $args['orderby'] = $sort;
+    if(!isset($args['sortby']))
+        $args['sortby'] = (isset($_GET['ap_sort'])) ? $_GET['ap_sort'] : 'active';
 
-    anspress()->answers = new Answers_Query($args);   
-    
-    include(ap_get_theme_location('answers.php'));
-
-    wp_reset_postdata();
+    anspress()->answers = new Answers_Query($args); 
 }
 
 /** 
@@ -159,7 +149,6 @@ function ap_get_answers($args = array()){
  * @since   2.0
  */
 function ap_get_best_answer($question_id = false){
-    global $answers;
     
     if(!$question_id) 
         $question_id = get_question_id();
@@ -184,7 +173,7 @@ function ap_answers(){
    return anspress()->answers->have_posts();
 }
 
-function ap_the_answers(){
+function ap_the_answer(){
     return anspress()->answers->the_post(); 
 }
 
@@ -307,4 +296,82 @@ function ap_answer_the_vote_button(){
 function ap_answer_the_comments(){
     if(ap_opt('show_comments_by_default') && !ap_opt('disable_comments_on_answer')) 
         comments_template();
+}
+
+/**
+ * Echo time current answer was active
+ * @return void
+ * @since 2.1
+ */
+function ap_answer_the_active_ago(){
+    echo ap_human_time(ap_answer_get_the_active_ago(), false);
+}
+    
+    /**
+     * Return the answer active ago time
+     * @return string
+     * @since 2.1
+     */
+    function ap_answer_get_the_active_ago(){
+        return ap_last_active(ap_answer_get_the_answer_id());
+    }
+
+/**
+ * Echo active answer permalink
+ * @return void
+ * @since 2.1
+ */
+function ap_answer_the_permalink(){
+    echo ap_answer_get_the_permalink();
+}
+    
+    /**
+     * Return active question permalink
+     * @return string
+     * @since 2.1
+     */
+    function ap_answer_get_the_permalink(){
+        return get_the_permalink(ap_answer_get_the_answer_id());
+    }
+
+/**
+ * Echo active answer total vote
+ * @return void
+ * @since 2.1
+ */
+function ap_answer_the_net_vote(){
+    if(!ap_opt('disable_voting_on_answer')){
+        ?>
+            <span class="ap-questions-count ap-questions-vcount">
+                <span><?php echo ap_answer_get_the_net_vote(); ?></span>
+                <?php  _e('votes', 'ap'); ?>
+            </span>
+        <?php 
+    }
+}
+
+    /**
+     * Return count of net vote of a answer
+     * @return integer
+     * @since 2.1
+     */
+    function ap_answer_get_the_net_vote(){        
+        return ap_net_vote(ap_answer_the_object());
+    }
+
+function ap_answer_the_vote_class(){
+    echo ap_answer_get_the_vote_class();
+}
+
+/**
+ * Get vote class of active answer
+ * @return string
+ */
+function ap_answer_get_the_vote_class(){
+    $vote = ap_answer_get_the_net_vote();
+    
+    if($vote > 0)
+        return 'positive';
+    elseif($vote < 0)
+        return 'negative';
 }

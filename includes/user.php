@@ -867,16 +867,14 @@ function ap_get_avatar_src($user_id, $size = 'thumbnail', $default = false) {
  * @since 2.1
  */
 function ap_user_top_posts_tab(){
-    $active = isset($_GET['tab']) ? $_GET['tab'] : 'all';
+    $active = isset($_GET['tab']) ? $_GET['tab'] : 'answers';
     
     $link = '?tab=';
-
-    
     ?>
+    <?php printf(__('Top %s', 'ap'), $active); ?>
     <ul id="ap-user-posts-tab" class="ap-flat-tab ap-ul-inline clearfix" role="tablist">
-        <li class="<?php echo $active == 'all' ? ' active' : ''; ?>"><a href="<?php echo $link.'all'; ?>"><?php _e('All', 'ap'); ?></a></li>
-        <li class="<?php echo $active == 'questions' ? ' active' : ''; ?>"><a href="<?php echo $link.'question'; ?>"><?php _e('Questions', 'ap'); ?></a></li>
-        <li class="<?php echo $active == 'answers' ? ' active' : ''; ?>"><a href="<?php echo $link.'answer'; ?>"><?php _e('Answers', 'ap'); ?></a></li>
+        <li class="<?php echo $active == 'answers' ? ' active' : ''; ?>"><a href="<?php echo $link.'answers'; ?>"><?php _e('Answers', 'ap'); ?></a></li>
+        <li class="<?php echo $active == 'questions' ? ' active' : ''; ?>"><a href="<?php echo $link.'questions'; ?>"><?php _e('Questions', 'ap'); ?></a></li>
         <?php 
             /**
              * ACTION: ap_users_tab

@@ -363,6 +363,9 @@ function ap_question_the_answers(){
     if(ap_have_ans( ap_question_get_the_ID() )){                 
         include(ap_get_theme_location('best_answer.php'));
         ap_get_answers();
+        
+        include(ap_get_theme_location('answers.php'));
+        wp_reset_postdata();
     } 
 }
 
@@ -372,7 +375,7 @@ function ap_question_the_answers(){
  * @since 2.1
  */
 function ap_question_the_active_ago(){
-    echo ap_question_get_the_active_ago();
+    echo ap_human_time(ap_question_get_the_active_ago(), false);
 }
     
     /**
@@ -416,3 +419,19 @@ function ap_question_the_subscriber_count(){
     function ap_question_get_the_subscriber_count(){
         return ap_post_subscribers_count(ap_question_get_the_ID());
     }
+
+/**
+ * Check if answer is selected for given question
+ * @param  false|integer $question_id
+ * @return boolean
+ */
+function ap_question_best_answer_selected($question_id = false){
+    $question_id = ap_parameter_empty($question_id, ap_question_get_the_ID());
+    
+    $meta = get_post_meta($question_id, ANSPRESS_SELECTED_META, true);
+
+    if(!$meta)
+        return false;
+    
+    return true;
+}

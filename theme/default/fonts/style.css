@@ -1,15 +1,15 @@
 @font-face {
 	font-family: 'anspress';
-	src:url('fonts/anspress.eot?avhpie');
-	src:url('fonts/anspress.eot?#iefixavhpie') format('embedded-opentype'),
-		url('fonts/anspress.woff?avhpie') format('woff'),
-		url('fonts/anspress.ttf?avhpie') format('truetype'),
-		url('fonts/anspress.svg?avhpie#anspress') format('svg');
+	src:url('fonts/anspress.eot?jpk0z5');
+	src:url('fonts/anspress.eot?#iefixjpk0z5') format('embedded-opentype'),
+		url('fonts/anspress.woff?jpk0z5') format('woff'),
+		url('fonts/anspress.ttf?jpk0z5') format('truetype'),
+		url('fonts/anspress.svg?jpk0z5#anspress') format('svg');
 	font-weight: normal;
 	font-style: normal;
 }
 
-[class^="apicon-"]:before, [class*=" apicon-"]:before {
+[class^="apicon-"], [class*=" apicon-"] {
 	font-family: 'anspress';
 	speak: none;
 	font-style: normal;
@@ -21,6 +21,18 @@
 	/* Better Font Rendering =========== */
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
+}
+
+.apicon-comments:before {
+	content: "\e603";
+}
+
+.apicon-anspress:before {
+	content: "\e604";
+}
+
+.apicon-anspress-icon:before {
+	content: "\e605";
 }
 
 .apicon-thumbs-up-down:before {
@@ -39,6 +51,14 @@
 	content: "\f02d";
 }
 
+.apicon-bug:before {
+	content: "\f091";
+}
+
+.apicon-calendar:before {
+	content: "\f068";
+}
+
 .apicon-check:before {
 	content: "\f03a";
 }
@@ -55,7 +75,7 @@
 	content: "\f00c";
 }
 
-.apicon-comment:before {
+.apicon-answer:before {
 	content: "\f02b";
 }
 
@@ -65,6 +85,10 @@
 
 .apicon-dash:before {
 	content: "\f0ca";
+}
+
+.apicon-ellipsis:before {
+	content: "\f09a";
 }
 
 .apicon-eye:before {
@@ -77,10 +101,6 @@
 
 .apicon-file-directory:before {
 	content: "\f016";
-}
-
-.apicon-flame:before {
-	content: "\f0d2";
 }
 
 .apicon-fold:before {
@@ -109,14 +129,6 @@
 
 .apicon-history:before {
 	content: "\f07e";
-}
-
-.apicon-horizontal-rule:before {
-	content: "\f070";
-}
-
-.apicon-hourglass:before {
-	content: "\f09e";
 }
 
 .apicon-info:before {
@@ -155,6 +167,10 @@
 	content: "\f03c";
 }
 
+.apicon-mark-github:before {
+	content: "\f00a";
+}
+
 .apicon-mention:before {
 	content: "\f0be";
 }
@@ -165,10 +181,6 @@
 
 .apicon-mute:before {
 	content: "\f080";
-}
-
-.apicon-no-newline:before {
-	content: "\f09c";
 }
 
 .apicon-organization:before {
@@ -233,10 +245,6 @@
 
 .apicon-sync:before {
 	content: "\f087";
-}
-
-.apicon-terminal:before {
-	content: "\f0c8";
 }
 
 .apicon-three-bars:before {

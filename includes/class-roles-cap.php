@@ -168,7 +168,7 @@ function ap_user_can_answer($question_id){
 	if(!ap_opt('disallow_op_to_answer') && $question->post_author == get_current_user_id())
 		return false;
 
-	if(ap_opt('close_after_selecting') && ap_is_answer_selected($question_id) )
+	if(ap_opt('close_after_selecting') && ap_question_best_answer_selected($question_id) )
 		return false;
 
 	if((current_user_can('ap_new_answer'))){

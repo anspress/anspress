@@ -13,6 +13,7 @@ if ( !function_exists( '_deprecated_function' ) )
 	require_once ABSPATH . WPINC . '/functions.php';
 
 _deprecated_function('ap_is_best_answer', '2.1', 'ap_answer_is_best');
+_deprecated_function('ap_is_answer_selected', '2.1', 'ap_question_best_answer_selected');
 
 /**
  * Check if given anser/post is selected as a best answer
@@ -31,4 +32,21 @@ function ap_is_best_answer($post_id = false){
 	if($meta) return true;
 	
 	return false;
+}
+
+/**
+ * Check if answer is selected for given question
+ * @param  false|integer $question_id
+ * @return boolean
+ */
+function ap_is_answer_selected($question_id = false){
+	if($question_id === false)
+		$question_id = get_the_ID();
+	
+	$meta = get_post_meta($question_id, ANSPRESS_SELECTED_META, true);
+
+	if(!$meta)
+		return false;
+	
+	return true;
 }

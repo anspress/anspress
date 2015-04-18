@@ -199,7 +199,7 @@ class AnsPress_Ajax
 		$post = get_post($answer_id);
 		$user_id = get_current_user_id();
 		
-		if(ap_is_answer_selected($post->post_parent)){
+		if(ap_question_best_answer_selected($post->post_parent)){
 			do_action('ap_unselect_answer', $user_id, $post->post_parent, $post->ID);
 			update_post_meta($post->ID, ANSPRESS_BEST_META, 0);
 			update_post_meta($post->post_parent, ANSPRESS_SELECTED_META, false);

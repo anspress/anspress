@@ -229,7 +229,7 @@ function ap_count_other_answer($question_id =false){
 
 	$count = ap_count_answer_meta($question_id);
 	
-	if(ap_is_answer_selected($question_id))
+	if(ap_question_best_answer_selected($question_id))
 		return (int)($count - 1);
 
 	return (int)$count;
@@ -453,25 +453,6 @@ function ap_selected_answer($post_id = false){
 }
 
 /**
- * Check if answer is selected for given question
- * @param  false|integer $question_id
- * @return boolean
- */
-function ap_is_answer_selected($question_id = false){
-	if($question_id === false)
-		$question_id = get_the_ID();
-	
-	$meta = get_post_meta($question_id, ANSPRESS_SELECTED_META, true);
-
-	if(!$meta)
-		return false;
-	
-	return true;
-}
-
-
-
-/**
  * Print select anser HTML button
  * @param integer $post_id
  * @return  null|string
@@ -484,10 +465,10 @@ function ap_select_answer_btn_html($post_id){
 	$action = 'answer-'.$post_id;
 	$nonce = wp_create_nonce( $action );	
 	
-	if(!ap_is_answer_selected($ans->post_parent)){		
+	if(!ap_question_best_answer_selected($ans->post_parent)){		
 		return '<a href="#" class="ap-btn-select ap-sicon '.ap_icon('check').' ap-tip" data-action="select_answer" data-query="answer_id='. $post_id.'&__nonce='. $nonce .'&ap_ajax_action=select_best_answer" title="'.__('Select this answer as best', 'ap').'">'.__('Select', 'ap').'</a>';
 		
-	}elseif(ap_is_answer_selected($ans->post_parent) && ap_is_best_answer($ans->ID)){
+	}elseif(ap_question_best_answer_selected($ans->post_parent) && ap_answer_is_best($ans->ID)){
 		return '<a href="#" class="ap-btn-select ap-sicon '.ap_icon('cross').' selected ap-tip" data-action="select_answer" data-query="answer_id='. $post_id.'&__nonce='. $nonce .'&ap_ajax_action=select_best_answer" title="'.__('Unselect this answer', 'ap').'">'.__('Unselect', 'ap').'</a>';
 		
 	}

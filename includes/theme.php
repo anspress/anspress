@@ -257,7 +257,7 @@ function ap_display_question_metas($question_id =  false){
 		$metas['created'] = sprintf( __( '<span>Created</span> <i><time itemprop="datePublished" datetime="%s">%s Ago</time></i>', 'ap' ), get_the_time('c', $question_id), ap_human_time( get_the_time('U')));
 		
 	}else{
-		if(ap_is_answer_selected())
+		if(ap_question_best_answer_selected())
 			$metas['solved'] = '<span class="ap-best-answer-label ap-tip" title="'.__('answer accepted', 'ap').'">'.__('Selected', 'ap').'</span>';
 
 		$view_count = ap_get_qa_views();
@@ -310,8 +310,8 @@ function ap_icon($name, $html = false){
 		'delete'			=> 'apicon-trashcan',
 		'flag'				=> 'apicon-flag',
 		'edit'				=> 'apicon-pencil',
-		'comment'			=> 'apicon-mail-reply',
-		'answer'			=> 'apicon-comment',
+		'comment'			=> 'apicon-comments',
+		'answer'			=> 'apicon-answer',
 		'view'				=> 'apicon-eye',
 		'vote'				=> 'apicon-triangle-up',
 		'cross'				=> 'apicon-x',
@@ -543,7 +543,7 @@ function ap_display_answer_metas($answer_id =  false){
 		$answer_id = get_the_ID();
 
 	$metas = array();
-	if(ap_is_best_answer($answer_id))
+	if(ap_answer_is_best($answer_id))
 		$metas['best_answer'] = '<span class="ap-best-answer-label">'.__('Best answer', 'ap').'</span>';
 
 	$metas['history'] = ap_last_active_time($answer_id);

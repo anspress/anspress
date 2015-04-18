@@ -63,7 +63,7 @@ class AnsPress_Theme
         global $post;
         if ($post->post_type == 'question') 
         {
-            if (ap_is_answer_selected($post->post_id)) $classes[] = 'answer-selected';
+            if (ap_question_best_answer_selected($post->post_id)) $classes[] = 'answer-selected';
             
             $classes[] = 'answer-count-' . ap_count_answer_meta();
         }

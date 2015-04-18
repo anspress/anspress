@@ -240,7 +240,6 @@ function ap_user_the_ID(){
      */
     function ap_user_get_the_ID(){
         global $users_query; 
-        var_dump('dsfsdf');
         $user = $users_query->user;
 
         return $user->data->ID;

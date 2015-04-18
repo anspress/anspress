@@ -105,7 +105,7 @@ class AnsPress_Vote_Ajax extends AnsPress_Ajax
 			if($is_voted->type == $type){
 				ap_remove_vote($type, $userid, $post_id);
 				$counts = ap_post_votes($post_id);
-	
+
 				//update post meta
 				update_post_meta($post_id, ANSPRESS_VOTE_META, $counts['net_vote']);
 				
@@ -214,12 +214,7 @@ class anspress_vote
 	public function ap_append_vote_count($post){
 		if($post->post_type == 'question' || $post->post_type == 'answer'){
              if(is_object($post)){
-
-                //$votes = ap_post_votes($post->ID);              
-                // net vote
-               // $post->voted_up     = $votes['voted_up'];
-               // $post->voted_down   = $votes['voted_down'];
-                $post->net_vote     = ap_net_vote_meta($post->ID);
+               $post->net_vote     = ap_net_vote_meta($post->ID);
             }
         }
 	}
@@ -319,6 +314,7 @@ function ap_down_vote($echo = false){
 function ap_net_vote($post =false){
 	if(!$post)
 		global $post;
+
 	$net= $post->net_vote;
 	return $net ? $net : 0;
 }
