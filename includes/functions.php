@@ -225,7 +225,7 @@ function ap_count_answer_meta($post_id =false){
  * @return int
  */
 function ap_count_other_answer($question_id =false){
-	if(!$question_id) $question_id = get_the_ID();
+	if(!$question_id) $question_id = get_question_id();
 
 	$count = ap_count_answer_meta($question_id);
 	
@@ -469,21 +469,7 @@ function ap_is_answer_selected($question_id = false){
 	return true;
 }
 
-/**
- * Check if given anser/post is selected as a best answer
- * @param  false|integer $post_id 
- * @return boolean
- * @since unknown
- */
-function ap_is_best_answer($post_id = false){
-	if($post_id === false)
-		$post_id = get_the_ID();
-	
-	$meta = get_post_meta($post_id, ANSPRESS_BEST_META, true);
-	if($meta) return true;
-	
-	return false;
-}
+
 
 /**
  * Print select anser HTML button
@@ -1027,4 +1013,18 @@ function ap_get_sort(){
  */
 function ap_register_menu($slug, $title, $link){
 	anspress()->menu[$slug] = array('title' => $title, 'link' => $link);
+}
+
+/**
+ * Check if first parameter is false, if yes then return other parameter
+ * @param  mixed $param
+ * @param  mixed $return
+ * @return mixed
+ * @since 2.1
+ */
+function ap_parameter_empty($param = false, $return){
+	if($param === false || $param == '')
+		return $return;
+
+	return $param;
 }

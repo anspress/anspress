@@ -27,7 +27,7 @@ class AnsPress_Theme
         AnsPress_Common_Pages::get_instance();
         
         add_action('init', array($this, 'init_actions'));
-        add_filter('post_class', array( $this, 'question_post_class' ));
+        add_filter('post_class', array( $this, 'question_answer_post_class' ));
         add_filter('body_class', array( $this, 'body_class' ));        
         add_filter('comments_template', array( $this, 'comment_template' ));
         add_action('after_setup_theme', array( $this, 'includes' ));
@@ -58,7 +58,7 @@ class AnsPress_Theme
      * @since 2.0.1
      *
      */
-    public function question_post_class($classes) 
+    public function question_answer_post_class($classes) 
     {
         global $post;
         if ($post->post_type == 'question') 
@@ -66,6 +66,10 @@ class AnsPress_Theme
             if (ap_is_answer_selected($post->post_id)) $classes[] = 'answer-selected';
             
             $classes[] = 'answer-count-' . ap_count_answer_meta();
+        }
+        if ($post->post_type == 'answer') 
+        {
+            if (ap_answer_is_best($post->post_id)) $classes[] = 'best-answer';
         }
         
         return $classes;

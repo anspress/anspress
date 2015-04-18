@@ -178,7 +178,10 @@ jQuery(document).ready(function() {
         }
     });
 
-    jQuery('.ap-dynamic-avatar').initial({fontSize:15, fontWeight:600}); 
+    jQuery('.ap-dynamic-avatar').initial({fontSize:15, fontWeight:600});
+    jQuery( document ).ajaxComplete(function( event, data, settings ) {
+        jQuery('.ap-dynamic-avatar').initial({fontSize:15, fontWeight:600});
+    });
 });
 
 function ap_chk_activity_scroll(e) {

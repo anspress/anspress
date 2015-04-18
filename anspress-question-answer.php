@@ -231,7 +231,7 @@ if (!class_exists('AnsPress')) {
             require_once ANSPRESS_DIR.'includes/ajax.php';
             require_once ANSPRESS_DIR.'includes/class-roles-cap.php';
             require_once ANSPRESS_DIR.'includes/question-loop.php';
-            require_once ANSPRESS_DIR.'includes/class-answer_query.php';
+            require_once ANSPRESS_DIR.'includes/answer-loop.php';
             require_once ANSPRESS_DIR.'includes/class-theme.php';
             require_once ANSPRESS_DIR.'includes/post_types.php';
             require_once ANSPRESS_DIR.'includes/query_filter.php';
@@ -264,6 +264,7 @@ if (!class_exists('AnsPress')) {
             require_once ANSPRESS_DIR.'includes/class-user.php';
             require_once ANSPRESS_DIR.'includes/user.php';
             require_once ANSPRESS_DIR.'includes/users-loop.php';
+            require_once ANSPRESS_DIR.'includes/deprecated.php';
              
         }
 

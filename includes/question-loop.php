@@ -55,7 +55,7 @@ class Question_Query extends WP_Query {
         if(get_query_var('ap_s') != '')
             $this->args['s'] = sanitize_text_field(get_query_var('ap_s'));
 
-        if(isset($this->args[ 'orderby' ]))
+        if(isset($this->args[ 'sortby' ]))
             $this->orderby_questions();
 
         $this->args['post_type'] = 'question';        
@@ -73,7 +73,7 @@ class Question_Query extends WP_Query {
      * @return void
      */
     public function orderby_questions(){
-        switch ( $this->args[ 'orderby' ] ) {
+        switch ( $this->args[ 'sortby' ] ) {
             case 'answers' :
                 $this->args[ 'orderby' ] = 'meta_value_num';
                 $this->args[ 'meta_key' ] = ANSPRESS_ANS_META;
@@ -120,7 +120,7 @@ class Question_Query extends WP_Query {
 
 endif;
 
-function ap_get_questions($args = ''){
+function ap_get_questions($args = array()){
     $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
 
     if(isset($args['post_parent']))
@@ -135,7 +135,7 @@ function ap_get_questions($args = ''){
         'post_status'   => array('publish', 'moderate', 'private_post', 'closed'),
         'showposts'     => ap_opt('question_per_page'),
         'paged'         => $paged
-    ) );
+    ));
 
     anspress()->questions = new Question_Query($args);
 }
