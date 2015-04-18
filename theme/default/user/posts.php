@@ -18,7 +18,10 @@
 					<div class="no-overflow"><a href="<?php ap_answer_the_permalink(); ?>" class="ap-user-posts-title"><?php the_title(); ?></a></div>				
 				</div>
 			<?php endwhile; ?>
-
+			<div class="ap-user-posts-footer">
+				<?php printf(__('More answers by %s', 'ap'), ap_user_get_the_display_name()); ?>
+				<a href="<?php echo ap_user_link(ap_get_displayed_user_id(), 'answers'); ?>"><?php _e('view', 'ap'); ?>&rarr;</a>
+			</div>
 		<?php else: ?>
 
 			<?php _e('No answer posted yet!', 'ap'); ?>
@@ -41,7 +44,10 @@
 					<div class="no-overflow"><a href="<?php ap_question_the_permalink(); ?>" class="ap-user-posts-title"><?php the_title(); ?></a></div>				
 				</div>
 			<?php endwhile; ?>
-
+			<div class="ap-user-posts-footer">
+				<?php printf(__('More questions by %s', 'ap'), ap_user_get_the_display_name()); ?>
+				<a href="<?php echo ap_user_link(ap_get_displayed_user_id(), 'questions'); ?>"><?php _e('view', 'ap'); ?>&rarr;</a>
+			</div>
 		<?php else: ?>
 
 			<?php _e('No question asked yet!', 'ap'); ?>
