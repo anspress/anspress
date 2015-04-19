@@ -208,7 +208,7 @@ class AnsPress_Process_Form
 
 		$status = 'publish';
 		
-		if(ap_opt('moderate_new_question') == 'pending' || (ap_opt('moderate_new_question') == 'reputation' && ap_get_points($user_id) < ap_opt('mod_question_point')))
+		if(ap_opt('new_question_status') == 'moderate' || (ap_opt('new_question_status') == 'reputation' && ap_get_points($user_id) < ap_opt('mod_question_point')))
 			$status = 'moderate';
 		
 		if(isset($fields['is_private']) && $fields['is_private'])
@@ -281,7 +281,7 @@ class AnsPress_Process_Form
 
 		$status = 'publish';
 		
-		if(ap_opt('moderate_new_question') == 'pending' || (ap_opt('moderate_new_question') == 'point' && ap_get_points($user_id) < ap_opt('mod_question_point')))
+		if(ap_opt('edit_question_status') == 'moderate' || (ap_opt('edit_question_status') == 'point' && ap_get_points($user_id) < ap_opt('mod_answer_point')))
 			$status = 'moderate';
 		
 		if(isset($this->fields['is_private']) && $this->fields['is_private'])
@@ -446,12 +446,12 @@ class AnsPress_Process_Form
 
 		$user_id = get_current_user_id();
 
-		/**
-		 * TODO: ADD - moderate for answers too
-		 */
 		$status = 'publish';
 		
-		if($fields['is_private'])
+		if(ap_opt('new_answer_status') == 'moderate' || (ap_opt('new_answer_status') == 'point' && ap_get_points($user_id) < ap_opt('new_answer_status')))
+			$status = 'moderate';
+		
+		if(isset($this->fields['is_private']) && $this->fields['is_private'])
 			$status = 'private_post';
 			
 		$answer_array = array(
@@ -533,8 +533,11 @@ class AnsPress_Process_Form
 		$answer = get_post($this->fields['edit_post_id']);
 		
 		$status = 'publish';
-
-		if($this->fields['is_private'])
+		
+		if(ap_opt('edit_answer_status') == 'moderate' || (ap_opt('edit_answer_status') == 'point' && ap_get_points($user_id) < ap_opt('new_answer_status')))
+			$status = 'moderate';
+		
+		if(isset($this->fields['is_private']) && $this->fields['is_private'])
 			$status = 'private_post';
 
 		$answer_array = array(

@@ -5,11 +5,11 @@
 	</div>
 <?php elseif (is_user_logged_in()): ?>
 	<div class="ap-no-permission">
-		<?php _e('You dont have permission to ask question.', 'ap'); ?>
+		<?php _e('You dont have permission to answer this question.', 'ap'); ?>
 	</div>
 <?php else: ?>
 	<div class="ap-please-login">
-		<?php printf(__('Please %s or %s to ask a question.', 'ap'), '<a href="'.wp_login_url(get_permalink()).'">'.__('Login', 'ap').'</a>', '<a href="'.wp_registration_url().'">'.__('Register', 'ap').'</a>') ?>
+		<?php printf(__('Please %s or %s to answer this question.', 'ap'), '<a href="'.wp_login_url(get_permalink()).'">'.__('Login', 'ap').'</a>', '<a href="'.wp_registration_url().'">'.__('Register', 'ap').'</a>') ?>
 		<?php do_action( 'wordpress_social_login' ); ?>
 	</div>
 <?php endif; ?>

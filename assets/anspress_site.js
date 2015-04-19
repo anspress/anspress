@@ -29,7 +29,7 @@
             this.appendMessageBox();
             this.ap_comment_form();
             this.afterPostingAnswer();
-            this.suggest_similar_questions();
+            //this.suggest_similar_questions();
             this.ap_ajax_form();
             this.load_comment_form();
             this.delete_comment();

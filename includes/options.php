@@ -104,6 +104,8 @@ function ap_default_options(){
 		'disable_comments_on_answer'=> false,
 		'new_question_status'	=> 'publish',
 		'new_answer_status'		=> 'publish',
+		'edit_question_status'	=> 'publish',
+		'edit_answer_status'	=> 'publish',
 		'disable_delete_after'	=> 86400,
 		'db_cleanup'			=> false,
 		'disable_voting_on_question' => false,

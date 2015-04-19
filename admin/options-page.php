@@ -429,11 +429,6 @@ class AnsPress_Options_Page
 		// register moderate settings
 		ap_register_option_group('moderate', __('Moderate', 'ap') , array(
 			array(
-				'name' => '__sep',
-				'type' => 'custom',
-				'html' => '<span class="ap-form-separator">' . __('Flag') . '</span>',
-			) ,
-			array(
 				'name' => 'anspress_opt[new_question_status]',
 				'label' => __('Status of new question', 'ap') ,
 				'desc' => __('Set post status of new question.', 'ap') ,
@@ -446,11 +441,35 @@ class AnsPress_Options_Page
 				'show_desc_tip' => false,
 			) ,
 			array(
+				'name' => 'anspress_opt[edit_question_status]',
+				'label' => __('Status of edited question', 'ap') ,
+				'desc' => __('Set post status of edited question.', 'ap') ,
+				'type' => 'select',
+				'value' => $settings['edit_question_status'],
+				'options' => array(
+					'publish' => __('Publish') ,
+					'moderate' => __('Moderate', 'profile')
+				) ,
+				'show_desc_tip' => false,
+			) ,
+			array(
 				'name' => 'anspress_opt[new_answer_status]',
 				'label' => __('Status of new answer', 'ap') ,
 				'desc' => __('Set post status of new answer.', 'ap') ,
 				'type' => 'select',
 				'value' => $settings['new_answer_status'],
+				'options' => array(
+					'publish' => __('Publish') ,
+					'moderate' => __('Moderate', 'profile')
+				) ,
+				'show_desc_tip' => false,
+			) ,
+			array(
+				'name' => 'anspress_opt[edit_answer_status]',
+				'label' => __('Status of edited answer', 'ap') ,
+				'desc' => __('Set post status of edited answer.', 'ap') ,
+				'type' => 'select',
+				'value' => $settings['edit_answer_status'],
 				'options' => array(
 					'publish' => __('Publish') ,
 					'moderate' => __('Moderate', 'profile')
