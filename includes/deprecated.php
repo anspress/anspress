@@ -12,9 +12,6 @@
 if ( !function_exists( '_deprecated_function' ) )
 	require_once ABSPATH . WPINC . '/functions.php';
 
-_deprecated_function('ap_is_best_answer', '2.1', 'ap_answer_is_best');
-_deprecated_function('ap_is_answer_selected', '2.1', 'ap_question_best_answer_selected');
-
 /**
  * Check if given anser/post is selected as a best answer
  * You should use ap_answer_is_best instead
@@ -25,6 +22,7 @@ _deprecated_function('ap_is_answer_selected', '2.1', 'ap_question_best_answer_se
  * @deprecated 2.1
  */
 function ap_is_best_answer($post_id = false){
+	_deprecated_function('ap_is_best_answer', '2.1', 'ap_answer_is_best');
 	if($post_id === false)
 		$post_id = get_the_ID();
 	
@@ -40,6 +38,7 @@ function ap_is_best_answer($post_id = false){
  * @return boolean
  */
 function ap_is_answer_selected($question_id = false){
+	_deprecated_function('ap_is_answer_selected', '2.1', 'ap_question_best_answer_selected');
 	if($question_id === false)
 		$question_id = get_the_ID();
 	

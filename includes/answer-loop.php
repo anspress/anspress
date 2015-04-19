@@ -40,15 +40,15 @@ class Answers_Query extends WP_Query {
         if(isset($args['question_id']))
             $question_id = $args['question_id'];
 
-        if(isset($args['orderby']))
-            $orderby = $args['orderby'];
+        if(isset($args['sortby']))
+            $sortby = $args['sortby'];
         else
-            $orderby = (get_query_var('ap_sort')) ? get_query_var('ap_sort') : 'active';
+            $sortby = (get_query_var('ap_sort')) ? get_query_var('ap_sort') : 'active';
 
         $defaults = array(
             'post_status'       => array('publish', 'moderate', 'private_post'),
             'showposts'         => ap_opt('answers_per_page'),
-            'orderby'           => $orderby,
+            'sortby'            => $sortby,
             'paged'             => $paged,
             'only_best_answer'  => false,
             'include_best_answer'  => false,
@@ -374,4 +374,13 @@ function ap_answer_get_the_vote_class(){
         return 'positive';
     elseif($vote < 0)
         return 'negative';
+}
+
+/**
+ * output answers pagination
+ * @return string pagination html tag
+ */
+function ap_answers_the_pagination(){
+    $answers = anspress()->answers;
+    ap_pagination(false, $answers->max_num_pages);
 }

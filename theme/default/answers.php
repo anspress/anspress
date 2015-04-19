@@ -23,7 +23,7 @@
 		<?php if(ap_user_can_see_answers()): ?>
 			<div id="answers">
 				<?php
-					while ( anspress()->answers->have_posts() ) : anspress()->answers->the_post();
+					while ( ap_have_answers() ) : ap_the_answer();
 						include(ap_get_theme_location('answer.php'));
 					endwhile ;
 				?>

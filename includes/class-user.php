@@ -49,15 +49,11 @@ class AnsPress_User
     }
 
     public function user_page(){
-        //if(ap_opt('enable_user_profile'))
-        if(ap_has_users(array('include' => array(ap_get_displayed_user_id()) ) )){
+        if(ap_has_users(array('ID' => ap_get_displayed_user_id() ) )){
             include ap_get_theme_location('user/user.php');
         }else{
             _e('No user found', 'ap');
         }
-        
-        //else
-          //  _e('User profile is disabled.', 'ap');
     }
 
     /**
@@ -72,16 +68,20 @@ class AnsPress_User
      * Output for user questions page
      * @since 2.1
      */
-    /*public function questions_page(){
+    public function questions_page(){
+        ap_get_questions(array('author' => ap_get_displayed_user_id()));
         include ap_get_theme_location('user/user-questions.php');
-    }*/
+        wp_reset_postdata();
+    }
 
     /**
      * Output for user answers page
      * @since 2.0.1
      */
-    public function answers_page(){     
+    public function answers_page(){
+        ap_get_answers(array('author' => ap_get_displayed_user_id()));
         include ap_get_theme_location('user/user-answers.php');
+        wp_reset_postdata();
     }
 
     /* For modifying WP_User_Query, if passed with a var ap_followers_query */

@@ -76,6 +76,7 @@ class AP_Users_Query
     public function __construct($args = '')
     {
 
+
         $this->per_page = ap_opt('users_per_page');
 
        
@@ -91,41 +92,51 @@ class AP_Users_Query
             'sortby' => 'reputtaion'
         ));
 
-        if(isset($args['sortby'])){
+        if(isset($args['ID'])){
+            $this->users = array(get_user_by('id', $args['ID']));
+            $this->total_user_count = 1;
+            $this->total_pages = 1;
 
-            switch ($args['sortby']) {
-                case 'newest':
-                    $args['orderby']    = 'registered';
-                    $args['order']      = 'DESC';
-                    break;
-                
-                default:                   
-                    $args['ap_query']    = 'user_sort_by_reputation';
-                    $args['orderby']    = 'meta_value';
-                    $args['order']      = 'DESC';
-                    $args['meta_query'] = array(
-                        'relation' => 'OR',
-                        array(
-                            'key' => 'ap_reputation'                            
-                        ),
-                        array(
-                            'key' => 'ap_reputation',
-                            'compare' => 'NOT EXISTS'
-                        )
-                    );
-                    
-                    break;
-            }
+            $this->user_count = 1;
         }
+        else{
 
-        $users_query = new WP_User_Query( $args );
-        $this->users = $users_query->results;        
+            if(isset($args['sortby'])){
 
-        // count the number of users found in the query
-        $this->total_user_count = $users_query->get_total();
-        $this->total_pages = ceil($this->total_user_count / $this->per_page);
+                switch ($args['sortby']) {
+                    case 'newest':
+                        $args['orderby']    = 'registered';
+                        $args['order']      = 'DESC';
+                        break;
+                    
+                    default:                   
+                        $args['ap_query']    = 'user_sort_by_reputation';
+                        $args['orderby']    = 'meta_value';
+                        $args['order']      = 'DESC';
+                        $args['meta_query'] = array(
+                            'relation' => 'OR',
+                            array(
+                                'key' => 'ap_reputation'                            
+                            ),
+                            array(
+                                'key' => 'ap_reputation',
+                                'compare' => 'NOT EXISTS'
+                            )
+                        );
+                        
+                        break;
+                }
+            }
 
-        $this->user_count = count($this->users);
+            $users_query = new WP_User_Query( $args );
+            $this->users = $users_query->results;        
+
+            // count the number of users found in the query
+            $this->total_user_count = $users_query->get_total();
+            $this->total_pages = ceil($this->total_user_count / $this->per_page);
+
+            $this->user_count = count($this->users);
+        }
     }
 
     public function users()

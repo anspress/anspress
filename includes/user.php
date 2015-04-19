@@ -290,9 +290,10 @@ function ap_user_page()
     $user_pages     = anspress()->user_pages;
     $user_id        = ap_get_displayed_user_id();
     $user_page      = ap_active_user_page();
+    $callback       = $user_pages[$user_page]['func'];
 
-    if($user_id > 0 && is_callable($user_pages[$user_page]['func']))
-        call_user_func($user_pages[$user_page]['func']);
+    if($user_id > 0 && ((is_array($callback) && method_exists($callback[0], $callback[1])) || (!is_array($callback) && function_exists($callback)) ) )
+        call_user_func($callback);
     else
         echo '<div class="ap-page-template-404">'.__('Page not found or registered.', 'ap').'</div>';
 }
