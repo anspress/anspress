@@ -166,7 +166,6 @@ jQuery(document).ready(function() {
         jQuery(this).css(width, 'auto');
     });
     jQuery('.ap-dropdown').click(function(event) {
-        event.preventDefault();
         jQuery(this).toggleClass('open');
     });
     jQuery(document).mouseup(function(e) {
