@@ -814,15 +814,24 @@ class AnsPress_Admin {
         return $messages;
     }
 
+    /**
+     * Hook menu meta box
+     * @return void
+     * @since unknown
+     */
     public function ap_menu_metaboxes(){
 		add_meta_box( 'add-anspress', __( 'AnsPress Pages' ), array($this, 'wp_nav_menu_item_anspress_meta_box'), 'nav-menus', 'side', 'high' );
 	}
 
+	/**
+	 * Shows AnsPress menu meta box in WP menu editor
+	 * @return void
+	 * @since unknown
+	 */
 	public function wp_nav_menu_item_anspress_meta_box(){
 		global $_nav_menu_placeholder, $nav_menu_selected_id;
 
 		$_nav_menu_placeholder = 0 > $_nav_menu_placeholder ? $_nav_menu_placeholder - 1 : -1;
-		$base_page = ap_opt('base_page');
 
 		$pages = anspress()->pages;
 

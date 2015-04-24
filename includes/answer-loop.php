@@ -133,13 +133,8 @@ function ap_get_answers($args = array()){
     if(empty($args['question_id']))
         $args['question_id'] = get_question_id();
 
-    $sort = get_query_var('ap_sort');
-
-    if(empty($sort ))
-        $sort = ap_opt('answers_sort');
-
     if(!isset($args['sortby']))
-        $args['sortby'] = (isset($_GET['ap_sort'])) ? $_GET['ap_sort'] : 'active';
+        $args['sortby'] = (isset($_GET['ap_sort'])) ? $_GET['ap_sort'] : ap_opt('answers_sort');
 
     anspress()->answers = new Answers_Query($args); 
 }

@@ -881,10 +881,7 @@ function ap_get_link_to($sub){
  */
 function ap_total_posts_count($post_type = 'question', $ap_type =  false)
 {
-
 	global $wpdb;
-
-	$type = "";
 	
 	if('question' == $post_type)
 		$type = "p.post_type = 'question'";

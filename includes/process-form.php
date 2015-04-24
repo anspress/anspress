@@ -534,7 +534,7 @@ class AnsPress_Process_Form
 		
 		$status = 'publish';
 		
-		if(ap_opt('edit_answer_status') == 'moderate' || (ap_opt('edit_answer_status') == 'point' && ap_get_points($user_id) < ap_opt('new_answer_status')))
+		if(ap_opt('edit_answer_status') == 'moderate' || (ap_opt('edit_answer_status') == 'point' && ap_get_points(get_current_user_id()) < ap_opt('new_answer_status')))
 			$status = 'moderate';
 		
 		if(isset($this->fields['is_private']) && $this->fields['is_private'])
@@ -658,7 +658,7 @@ class AnsPress_Process_Form
 		if(!isset($_POST['__nonce']) || !wp_verify_nonce( $_POST['__nonce'], 'nonce_option_form' ) || !current_user_can('manage_options'))
 			return;
 
-		$result = array();
+		//$result = array();
 		flush_rewrite_rules();
 		$options = $_POST['anspress_opt'];
 

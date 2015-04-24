@@ -24,7 +24,7 @@ $clearfix_class = array('ap-questions-item clearfix');
 	<div class="ap-questions-inner">
 		<div class="ap-avatar ap-pull-left">
 			<a href="<?php ap_question_the_author_link() ; ?>">
-				<?php ap_question_the_author_avatar(); ?>
+				<?php ap_question_the_author_avatar(ap_opt('avatar_size_list')); ?>
 			</a>
 		</div>
 		<div class="pull-right">

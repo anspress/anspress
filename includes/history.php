@@ -65,7 +65,8 @@ class AP_History
 		if($post->post_type == 'question'){
 			ap_add_history($comment->user_id, $comment->comment_post_ID, $comment->comment_ID, 'new_comment');
 		}else{
-			ap_add_history($comment->user_id, $question_id, $comment->comment_ID, 'new_comment_answer');
+			$answer = get_post($comment->comment_post_ID);
+			ap_add_history($comment->user_id, $answer->post_parent, $comment->comment_ID, 'new_comment_answer');
 			ap_add_history($comment->user_id, $comment->comment_post_ID, $comment->comment_ID, 'new_comment_answer');
 		}
 	}
@@ -115,7 +116,7 @@ function ap_delete_history($user_id, $action_id, $value, $param = null){
 
 	if($row){
 		$last_activity = ap_get_latest_history($action_id);
-		update_post_meta( $post_id, '__ap_history', array('type' => $last_activity['type'], 'user_id' => $last_activity['user_id'], 'time' => $last_activity['date']) );
+		update_post_meta( $action_id, '__ap_history', array('type' => $last_activity['type'], 'user_id' => $last_activity['user_id'], 'time' => $last_activity['date']) );
 	}
 
 	return $row;
@@ -216,7 +217,6 @@ function ap_get_latest_history_html($post_id, $avatar = false, $icon = false){
 			$html .= '<a class="ap-avatar" href="'.ap_user_link($history['user_id']).'">'.get_avatar($history['user_id'], 22).'</a>';		
 
 		$title = ap_history_title($history['type']);
-
 		$html .= '<span class="ap-post-history">'.sprintf( __('%s %s <time datetime="'. mysql2date('c', $history['date']) .'">%s</time> ago', 'ap'), ap_user_display_name($history['user_id']), $title, ap_human_time( $history['date'], false)) .'</span>';
 
 		
