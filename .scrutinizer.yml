@@ -3,3 +3,8 @@ checks:
     php:
         code_rating: true
         duplication: false
+filter:
+    excluded_paths:
+        - tests/*
+        - vendor/*
+        - includes/plugin-activation
