@@ -18,23 +18,7 @@
 						 * ACTION: ap_before_question_title
 						 * @since 	2.0
 						 */
-						do_action('ap_before_question_title');
-					?>
-					<?php 
-						/**
-						 * By default this title is hidden
-						 */
-						if(ap_opt('show_title_in_question')) : 
-					?>
-						<h1 class="entry-title"><a href="<?php ap_question_the_permalink() ?>"><?php the_title(); ?></a></h1>
-					<?php endif; ?>
-
-					<?php 
-						/**
-						 * ACTION: ap_after_question_title
-						 * @since 	2.0
-						 */
-						do_action('ap_after_question_title');
+						do_action('ap_before_question_content');
 					?>
 				</header>
 				<div class="ap-avatar ap-pull-left">

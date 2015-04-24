@@ -10,6 +10,7 @@
  *
  * @package AnsPress
  */ 
+
 ?>
 <?php if(ap_count_other_answer(get_question_id())): ?>
 	<div id="ap-answers-c">

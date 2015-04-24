@@ -14,7 +14,7 @@ if(!ap_answer_user_can_view()){
 	return;
 }
 ?>
-<div id="answer_<?php echo get_the_ID(); ?>" <?php post_class() ?> data-id="<?php echo get_the_ID(); ?>" itemprop="suggestedAnswer<?php echo ap_answer_is_best() ? ' acceptedAnswer' : ''; ?>" itemtype="http://schema.org/Answer" itemscope="">
+<div id="answer_<?php the_ID(); ?>" <?php post_class() ?> data-id="<?php the_ID(); ?>" itemprop="suggestedAnswer<?php echo ap_answer_is_best() ? ' acceptedAnswer' : ''; ?>" itemtype="http://schema.org/Answer" itemscope="">
 	<div class="ap-avatar ap-pull-left">
 		<a href="<?php ap_answer_the_author_link(); ?>">
 			<?php ap_answer_the_author_avatar(); ?>
@@ -22,7 +22,7 @@ if(!ap_answer_user_can_view()){
 	</div>
 	<div class="ap-q-cells ap-content clearfix">
 		<div class="ap-q-metas clearfix">
-			<div class="ap-single-vote ap-pull-right"><?php ap_answer_the_vote_button(); ?></div>
+			<div class="ap-single-vote ap-pull-right"><?php //ap_answer_the_vote_button(); ?></div>
 			<?php ap_user_display_meta(true, false, true); ?>
 
 			<ul class="ap-display-question-meta ap-ul-inline">

@@ -496,10 +496,14 @@ class AnsPress_Process_Form
 				}
 				
 				ob_start();
-				if($current_ans == 1)								
+
+				if($current_ans == 1){								
 					ap_get_answers(array('question_id' => $question->ID));
-				else
-					include(ap_get_theme_location('answer.php'));
+					ap_get_template_part('answers');
+				}else{
+					ap_get_answer( $post_id );
+					ap_get_template_part('answer');
+				}
 				
 				$html = ob_get_clean();
 				

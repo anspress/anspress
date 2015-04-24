@@ -139,6 +139,16 @@ function ap_get_answers($args = array()){
     anspress()->answers = new Answers_Query($args); 
 }
 
+/**
+ * Get an answer by ID
+ * @param  integer $answer_id
+ * @return void
+ * @since 2.1
+ */
+function ap_get_answer($answer_id){
+    anspress()->answers = new Answers_Query(array('p' => $answer_id)); 
+}
+
 /** 
  * Get select answer object
  * @since   2.0
@@ -258,7 +268,7 @@ function ap_answer_the_author_link(){
      * @since 2.1
      */
     function ap_answer_get_the_author_link(){
-        return ap_user_link(ap_question_get_author_id());
+        return ap_user_link(ap_answer_get_author_id());
     }
 
 function ap_answer_the_author_avatar($size = false){
@@ -266,13 +276,13 @@ function ap_answer_the_author_avatar($size = false){
     echo ap_answer_get_the_author_avatar( $size );
 }
     /**
-     * Return question author avatar
+     * Return answer author avatar
      * @param  integer $size
      * @return string
      * @since 2.1
      */
     function ap_answer_get_the_author_avatar($size = 45){
-        return get_avatar( ap_question_get_author_id(), $size );
+        return get_avatar( ap_answer_get_author_id(), $size );
     }
 
 /**
@@ -321,7 +331,7 @@ function ap_answer_the_permalink(){
 }
     
     /**
-     * Return active question permalink
+     * Return active answer permalink
      * @return string
      * @since 2.1
      */

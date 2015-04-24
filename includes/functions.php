@@ -160,6 +160,8 @@ function get_question_id(){
 		return $post->ID;
 	}elseif(get_query_var('edit_q')){
 		return get_query_var('edit_q');
+	}elseif(ap_answer_the_object()){
+		return ap_answer_get_the_question_id();
 	}
 	
 	return false;
