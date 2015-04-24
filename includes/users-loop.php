@@ -68,7 +68,7 @@ class AP_Users_Query
      * @var int
      */
     var $per_page;
-    var $total_page = 1;
+    var $total_pages = 1;
     var $paged;
     var $offset;
 
@@ -328,8 +328,6 @@ function ap_users_the_pagination(){
     global $users_query;
 
     $base = ap_get_link_to('users') . '/%_%';
-    $user = $users_query->user;
-
     ap_pagination($users_query->paged, $users_query->total_pages, $base);
 }
 

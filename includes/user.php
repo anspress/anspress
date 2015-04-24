@@ -234,7 +234,7 @@ function ap_user_menu()
         foreach ($menus as $m) {            
             //if(!((isset($m['own']) && $m['own']) && $userid != get_current_user_id()))
             $class = !empty($m['class']) ? ' '.$m['class'] : '';
-            $o .= '<li'.($active_user_page == $m['slug'] ? ' class="active"' : '').'><a href="'.$m['link'].'" class="ap-user-menu-'.$k.$class.'">'.$m['title'].'</a></li>';
+            $o .= '<li'.($active_user_page == $m['slug'] ? ' class="active"' : '').'><a href="'.$m['link'].'" class="ap-user-menu-'.$m['slug'].$class.'">'.$m['title'].'</a></li>';
         }
         $o .= '</ul>';
         echo $o;
@@ -398,7 +398,7 @@ function ap_get_resized_avatar($id_or_email, $size = 32, $default = false)
 
     $orig_file_name = basename($path);
 
-    $orig_dir = str_replace('/'.$orig_file_name, '', $orig_file_name);
+    //$orig_dir = str_replace('/'.$orig_file_name, '', $orig_file_name);
 
     //$file = $upload_dir['basedir'].'/'.$orig_dir.'/'.$image_meta['sizes']['thumbnail']['file'];
     //$file = str_replace(array('/', '\\'), DIRECTORY_SEPARATOR, $file);
@@ -426,7 +426,7 @@ function ap_get_resized_avatar($id_or_email, $size = 32, $default = false)
 function ap_profile_user_stats_counts($echo = true)
 {
     $user_id        = ap_get_displayed_user_id();
-    $ap_user        = ap_user();
+   // $ap_user        = ap_user();
     $ap_user_data    = ap_user_data();
 
     $metas = array();
@@ -517,8 +517,6 @@ function ap_displayed_user_id(){
  * @since  0.0.1
  */
 function ap_get_avatar_src($user_id, $size = 'thumbnail', $default = false) {
-    $upload_dir = wp_upload_dir();
-    
     if ($default) {
         $image      = wp_get_attachment_image_src(ap_opt('default_avatar') , 'thumbnail');
     } 

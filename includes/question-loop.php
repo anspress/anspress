@@ -126,7 +126,7 @@ function ap_get_questions($args = array()){
     if(isset($args['post_parent']))
         $post_parent = $args['post_parent'];
     else
-        $post_parent = (get_query_var('parent')) ? get_query_var('parent') : false;
+        $args['post_parent'] = (get_query_var('parent')) ? get_query_var('parent') : false;
 
     if(!isset($args['sortby']))
         $args['sortby'] = (isset($_GET['ap_sort'])) ? $_GET['ap_sort'] : 'active';

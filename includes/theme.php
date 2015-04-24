@@ -600,3 +600,20 @@ function ap_comment_actions_buttons()
 		}
 	}
 }
+
+/**
+ * Echo ask button
+ * @return void
+ * @since 2.1
+ */
+function ap_ask_btn(){
+	echo ap_get_ask_btn();
+}
+	/**
+	 * Return the ask button
+	 * @return string Ask button HTML
+	 * @since 2.1
+	 */
+	function ap_get_ask_btn(){
+		return '<a href="'.ap_get_link_to('ask').'">'.__('Ask question', 'ap').'</a>';
+	}
