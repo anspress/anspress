@@ -461,7 +461,7 @@ if ( ! class_exists( 'ap_TGM_Plugin_Activation' ) ) {
                     $api = plugins_api( 'plugin_information', array( 'slug' => $plugin['slug'], 'fields' => array( 'sections' => false ) ) );
 
                     if ( is_wp_error( $api ) ) {
-                        wp_die( $this->strings['oops'] . var_dump( $api ) );
+                        wp_die( $this->strings['oops'] );
                     }
 
                     if ( isset( $api->download_link ) ) {
@@ -1557,7 +1557,7 @@ if ( ! class_exists( 'ap_TGMPA_List_Table' ) ) {
                 }
 
                 if ( is_wp_error( $api ) ) {
-                    wp_die( ap_TGM_Plugin_Activation::$instance->strings['oops'] . var_dump( $api ) );
+                    wp_die( ap_TGM_Plugin_Activation::$instance->strings['oops'] );
                 }
 
                 // Capture download links from $api or set install link to pre-packaged/private repo.
