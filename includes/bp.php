@@ -325,7 +325,7 @@ class AnsPress_BP
 
 	/**
 	 * Remove answer notification when corresponding answer get deleted
-	 * @param  integer $post_id
+	 * @param  object $comment
 	 * @return void
 	 */
 	public function remove_comment_notify($comment)

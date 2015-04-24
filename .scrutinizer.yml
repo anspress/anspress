@@ -7,4 +7,4 @@ filter:
     excluded_paths:
         - tests/*
         - vendor/*
-        - includes/plugin-activation
+        - includes/plugin-activation.php

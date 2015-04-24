@@ -250,7 +250,7 @@ class AnsPress_Actions
 
 	/**
 	 * Actions to run after posting a comment
-	 * @param  int $approved
+	 * @param  object $comment
 	 * @return null|integer   
 	 */
 	public function publish_comment($comment){

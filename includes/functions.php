@@ -875,7 +875,7 @@ function ap_get_link_to($sub){
 /**
  * Return the total numbers of post
  * @param  string         $post_type
- * @param  boolean|string $meta_type
+ * @param  boolean|string $ap_type
  * @return array
  * @since  2.0.0-alpha2
  */

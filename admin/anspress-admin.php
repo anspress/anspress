@@ -21,7 +21,8 @@ if ( ! defined( 'WPINC' ) ) {
  * @package AnsPress
  * @author  Rahul Aryan <support@anspress.io>
  */
-class AnsPress_Admin {
+class AnsPress_Admin
+{
 
 	/**
 	 * Instance of this class.	 
