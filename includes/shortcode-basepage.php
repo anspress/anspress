@@ -66,7 +66,7 @@ class AnsPress_BasePage_Shortcode {
 		}
 
 		ob_start();
-		echo '<div class="anspress-container">';
+		echo '<div id="anspress">';
 			
 			/**
 			 * ACTION: ap_before
