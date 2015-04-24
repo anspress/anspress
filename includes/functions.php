@@ -833,43 +833,52 @@ function ap_user_display_meta($html = false, $user_id = false, $echo = false)
 }
 
 /**
- * Return link to AnsPress pages
- * @param string|array $sub
+ * Echo anspress links
+ * @return void
+ * @since 2.1
  */
-function ap_get_link_to($sub){
-	
-	$base = rtrim(get_permalink(ap_opt('base_page')), '/');
-	$args = '';
-
-	if(get_option('permalink_structure') != ''){		
-		if(!is_array($sub))
-			$args = $sub ? '/'.$sub : '';
-
-		elseif(is_array($sub)){
-			$args = '/';
-
-			if(!empty($sub))
-				foreach($sub as $s)
-					$args .= $s.'/';
-			}
-
-			$args = rtrim($args, '/').'/';
-	}else{
-
-		if(!is_array($sub))
-			$args = $sub ? '&ap_page='.$sub : '';
-		
-		elseif(is_array($sub)){
-			$args = '';
-			
-			if(!empty($sub))
-				foreach($sub as $k => $s)
-					$args .= '&'.$k .'='.$s;
-		}
-	}
-
-	return $base. $args ;
+function ap_link_to($sub){
+	echo ap_get_link_to($sub);
 }
+
+	/**
+	 * Return link to AnsPress pages
+	 * @param string|array $sub
+	 */
+	function ap_get_link_to($sub){
+		
+		$base = rtrim(get_permalink(ap_opt('base_page')), '/');
+		$args = '';
+
+		if(get_option('permalink_structure') != ''){		
+			if(!is_array($sub))
+				$args = $sub ? '/'.$sub : '';
+
+			elseif(is_array($sub)){
+				$args = '/';
+
+				if(!empty($sub))
+					foreach($sub as $s)
+						$args .= $s.'/';
+				}
+
+				$args = rtrim($args, '/').'/';
+		}else{
+
+			if(!is_array($sub))
+				$args = $sub ? '&ap_page='.$sub : '';
+			
+			elseif(is_array($sub)){
+				$args = '';
+				
+				if(!empty($sub))
+					foreach($sub as $k => $s)
+						$args .= '&'.$k .'='.$s;
+			}
+		}
+
+		return $base. $args ;
+	}
 
 
 /**

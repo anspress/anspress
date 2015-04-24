@@ -219,15 +219,11 @@ class AnsPress_User
             if ($resized) {
                 return "<img data-cont='avatar_{$id_or_email}' alt='{$alt}' src='{$resized}' class='avatar avatar-{$size} photo' height='{$size}' width='{$size}' />";
             } 
-            else {
-                $display_name = ap_user_display_name(array(
-                    'html' => false,
-                    'user_id' => $id_or_email
-                    ));
-
-                return '<img data-cont="avatar_' . $id_or_email . '" alt="' . $alt . '" data-name="' . $display_name . '" data-height="' . $size . '" data-width="' . $size . '" data-char-count="1" class="ap-dynamic-avatar"/>';
-            }
         }
+
+        $display_name = ap_user_display_name(array('user_id' => $id_or_email));
+
+        return '<img data-cont="avatar_' . $id_or_email . '" alt="' . $alt . '" data-name="' . $display_name . '" data-height="' . $size . '" data-width="' . $size . '" data-char-count="1" class="ap-dynamic-avatar"/>';
     }
 
     /**

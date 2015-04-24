@@ -1055,7 +1055,6 @@
 #anspress .ap-no-permission-to-view {
   background: #f7fcfe;
   display: block;
-  margin-top: 20px;
   padding: 15px;
   text-align: center;
 }
@@ -1067,25 +1066,44 @@
   text-align: center;
 }
 #anspress .ap-questions-tab {
-  border-bottom: solid 1px #ddd;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 2px;
+  display: table;
+  float: right;
 }
 #anspress .ap-questions-tab > li {
-  margin-right: 10px;
+  border-right: 1px solid #e4e4e4;
+  margin: 0;
 }
 #anspress .ap-questions-tab > li.active a {
-  border-color: #ddd #ddd #fff;
-  border-image: none;
-  border-style: solid;
-  border-width: 1px;
-  color: #595959;
-  margin-bottom: -1px;
+  background: #61c17d;
+  color: #fff;
+  margin: -1px;
+  padding: 6px 10px;
+}
+#anspress .ap-questions-tab > li.active a:hover {
+  background: #86cf9b;
 }
 #anspress .ap-questions-tab > li a {
-  color: #428bca;
+  border-radius: 0;
+  color: #333;
   display: block;
+  font-size: 13px;
   font-weight: 600;
   padding: 5px 15px;
-  border-radius: 3px 3px 0 0;
+}
+#anspress .ap-questions-tab > li a:hover {
+  background: #f5f5f5;
+}
+#anspress .ap-questions-tab > li:first-child a {
+  border-radius: 2px 0 0 2px;
+}
+#anspress .ap-questions-tab > li:last-child {
+  border-right: none;
+}
+#anspress .ap-questions-tab > li:last-child a {
+  border-radius: 0 2px 2px 0;
 }
 #anspress .ap-notice {
   background: none repeat scroll 0 0 #eee;
@@ -1254,7 +1272,7 @@
   margin-top: 4px;
 }
 #anspress .ap-questions-acount {
-  background: #5db34a;
+  background: #61c17d;
   border-color: rgba(0, 0, 0, 0.08);
   color: #fff;
 }
@@ -1266,7 +1284,7 @@
 }
 #anspress .selected,
 #anspress .ap-best-answer-label {
-  background: #7dc36d;
+  background: #86cf9b;
   -webkit-border-radius: 2px;
   -webkit-background-clip: padding-box;
   -moz-border-radius: 2px;
@@ -1298,6 +1316,23 @@
 }
 #anspress .ap-display-meta-item i {
   font-style: normal;
+}
+.ap-list-head {
+  background: none repeat scroll 0 0 #f8f8f8;
+  border: 1px solid #eee;
+  border-radius: 3px;
+  padding: 14px;
+}
+.ap-list-head .ap-btn-ask {
+  float: right;
+  background: #f14f4f;
+  border-radius: 2px;
+  color: #fff;
+  margin-left: 15px;
+  padding: 5px 10px;
+}
+.ap-list-head .ap-btn-ask:visited {
+  color: #fff;
 }
 .tooltipster-default.ap-tip-style {
   background: #000000;
@@ -1393,11 +1428,6 @@
 #anspress .ap-q-metas .ap-avatar {
   margin-right: 10px;
   margin-top: 0px;
-}
-#anspress .ap-q-content {
-  font-family: georgia,times new roman,serif;
-  font-size: 16px;
-  line-height: 1.8;
 }
 #anspress .ap-q-content p {
   margin-bottom: 10px;
@@ -1508,7 +1538,7 @@
   font-style: normal;
 }
 .ap-post-tags li a:hover {
-  border-color: #5db34a;
+  border-color: #61c17d;
   color: #595959;
 }
 .ap-post-tags li:last-child a {
@@ -1565,7 +1595,7 @@
   border: 1px solid rgba(204, 218, 202, 0.22);
 }
 .ap-btn-select {
-  background: #5db34a;
+  background: #61c17d;
   -webkit-border-radius: 2px;
   -webkit-background-clip: padding-box;
   -moz-border-radius: 2px;
@@ -1579,7 +1609,7 @@
   text-decoration: none;
 }
 .ap-btn-select:hover {
-  border-color: #5db34a;
+  border-color: #61c17d;
   text-decoration: none;
   color: #ffffff;
 }
@@ -1744,8 +1774,8 @@
   outline: none;
 }
 .ap-radio-btn.active {
-  background: #5db34a;
-  border-color: #5db34a;
+  background: #61c17d;
+  border-color: #61c17d;
 }
 .ap-radio-btn.active:before {
   right: 0;
@@ -1805,22 +1835,22 @@
   display: block;
 }
 #anspress .ap-form-control {
-  border: 1px solid #e4e4e4;
   -webkit-border-radius: 2px;
   -webkit-background-clip: padding-box;
   -moz-border-radius: 2px;
   -moz-background-clip: padding;
-  border-radius: 2px;
-  background-clip: padding-box;
   -webkit-box-shadow: 0 0 2px #fbfbfb inset;
   -moz-box-shadow: 0 0 2px #fbfbfb inset;
+  background-clip: padding-box;
+  border: 1px solid #e4e4e4;
+  border-radius: 2px;
   box-shadow: 0 0 2px #fbfbfb inset;
   display: block;
-  height: 40px;
-  margin-bottom: 15px;
-  padding: 5px 10px;
-  width: 100%;
+  height: 32px;
   line-height: 1.2;
+  margin-bottom: 15px;
+  padding: 2px 10px;
+  width: 100%;
 }
 #anspress .ap-form-control.autogrow {
   overflow: hidden;
@@ -2011,7 +2041,7 @@
   cursor: pointer;
 }
 #anspress .ap-similar-questions-head h3 {
-  color: #5db34a;
+  color: #61c17d;
   font-size: 16px;
   font-weight: 600;
 }
@@ -2056,22 +2086,22 @@
   padding: 5px 10px;
 }
 #anspress .bootstrap-tagsinput {
-  border: 1px solid #e4e4e4;
   -webkit-border-radius: 2px;
   -webkit-background-clip: padding-box;
   -moz-border-radius: 2px;
   -moz-background-clip: padding;
-  border-radius: 2px;
-  background-clip: padding-box;
   -webkit-box-shadow: 0 0 2px #fbfbfb inset;
   -moz-box-shadow: 0 0 2px #fbfbfb inset;
+  background-clip: padding-box;
+  border: 1px solid #e4e4e4;
+  border-radius: 2px;
   box-shadow: 0 0 2px #fbfbfb inset;
   display: block;
-  height: 40px;
-  margin-bottom: 15px;
-  padding: 5px 10px;
-  width: 100%;
+  height: 32px;
   line-height: 1.2;
+  margin-bottom: 15px;
+  padding: 2px 10px;
+  width: 100%;
 }
 #anspress .bootstrap-tagsinput.autogrow {
   overflow: hidden;
@@ -2086,6 +2116,13 @@
 #anspress .bootstrap-tagsinput input {
   line-height: 20px;
   margin-top: 5px;
+}
+#ap-search-form {
+  margin-bottom: 0;
+}
+#ap-search-form .ap-form-control {
+  vertical-align: top;
+  margin: 0;
 }
 #anspress .ap-comment-block {
   background: none repeat scroll 0 0 #fcfcfc;
@@ -2251,10 +2288,10 @@
   background: #eb5837;
 }
 #ap-notify .ap-notify-item.success {
-  border-color: #5db34a;
+  border-color: #61c17d;
 }
 #ap-notify .ap-notify-item.success i {
-  background: #5db34a;
+  background: #61c17d;
 }
 #ap-notify .ap-notify-item.warning {
   border-color: #f4ac20;
@@ -2402,7 +2439,7 @@
 }
 .ap-user-posts-vcount.positive,
 .ap-user-posts-vcount.answer-selected {
-  background: #6dbb5b;
+  background: #73c88c;
   color: #fff;
 }
 .ap-user-posts-vcount.negative {

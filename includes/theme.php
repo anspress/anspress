@@ -615,5 +615,14 @@ function ap_ask_btn(){
 	 * @since 2.1
 	 */
 	function ap_get_ask_btn(){
-		return '<a href="'.ap_get_link_to('ask').'">'.__('Ask question', 'ap').'</a>';
+		return '<a class="ap-btn-ask" href="'.ap_get_link_to('ask').'">'.__('Ask question', 'ap').'</a>';
 	}
+
+/**
+ * Include template php files
+ * @param  string $file File name without extension
+ * @since 2.1
+ */
+function ap_get_template_part($file){
+	include(ap_get_theme_location($file.'.php'));
+}

@@ -34,7 +34,7 @@ class AnsPress_Theme
         add_filter('wp_title', array( $this, 'ap_title' ) , 100, 2);
         add_filter('the_title', array( $this, 'the_title' ) , 100, 2);
         add_filter('wp_head', array( $this, 'feed_link' ) , 9);
-        add_action('ap_before', array( $this, 'ap_before_html_body' ));        
+        add_action('ap_before', array( $this, 'ap_before_html_body' ));
     }
 
     public function init_actions()
@@ -169,4 +169,5 @@ class AnsPress_Theme
     {
         dynamic_sidebar('ap-before');
     }
+
 }

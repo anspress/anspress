@@ -133,9 +133,6 @@
 	.margin-top-20{
 		margin-top: 20px;
 	}
-
-	
-
 	.private-question-label{
 		background: none repeat scroll 0 0 #8F8F8F;
 		.border-radius(2px);
@@ -149,7 +146,6 @@
 	.ap-no-permission-to-view {
 		background: lighten(@blue-color, 52%);
 		display: block;
-		margin-top: 20px;
 		padding: 15px;
 		text-align: center;
 	}
@@ -161,26 +157,45 @@
 		text-align: center;
 	}
 	.ap-questions-tab{
-		border-bottom: solid 1px #ddd;
+		background: #fff;
+	    border: 1px solid #ddd;
+	    border-radius: 2px;
+	    display: table;
+	    float: right;
 		> li {
-			margin-right: 10px;
+		    border-right: 1px solid #e4e4e4;
+		    margin: 0;
 
 			&.active a{
-				color: @default-color;
-				border-color: #ddd #ddd #fff;
-				border-image: none;
-				border-style: solid;
-				border-width: 1px;
-				color: #595959;
-				margin-bottom: -1px;
+			    background: @main-color;
+			    color: #fff;
+			    margin: -1px;
+			    padding: 6px 10px;
+			    &:hover{
+			    	background: lighten(@main-color, 10%);
+			    }
 			}
 
 			a{
-				color: @link-color;
-				display: block;
-				font-weight: 600;
-				padding: 5px 15px;
-				border-radius: 3px 3px 0 0;
+			    border-radius: 0;
+			    color: #333;
+			    display: block;
+			    font-size: 13px;
+			    font-weight: 600;
+			    padding: 5px 15px;
+			    &:hover{
+			    	background: #f5f5f5;
+			    }
+			}
+			&:first-child a{
+				border-radius: 2px 0 0 2px;
+			}
+			&:last-child{
+				border-right: none;
+
+				a{
+					border-radius: 0 2px 2px 0;
+				}
 			}
 		}
 	}

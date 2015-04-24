@@ -104,7 +104,7 @@ function ap_user_display_name($args = array())
         'html'                => false,
         'echo'                => false,
         'anonymous_label'    => __('Anonymous', 'ap'),
-        );
+    );
 
     if (!is_array($args)) {
         $defaults['user_id'] = $args;
@@ -151,11 +151,12 @@ function ap_user_display_name($args = array())
      */
     $return = apply_filters('ap_user_display_name', $return);
 
-    if ($echo) {
+    if ($echo !== false) {
         echo $return;
-    } else {
-        return $return;
+        return;
     }
+
+    return $return;
 }
 
 /**

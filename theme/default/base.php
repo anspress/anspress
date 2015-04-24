@@ -1,21 +1,20 @@
 <?php dynamic_sidebar( 'ap-top' ); ?>
 <div class="row">
 	<div id="ap-lists" class="<?php echo is_active_sidebar( 'ap-sidebar' ) && is_anspress() ? 'col-md-8' : 'col-md-12' ?>">
-		<?php ap_questions_tab(get_permalink()); ?>
+		<?php ap_get_template_part('list-head'); ?>
 		<?php if ( ap_have_questions() ) : ?>
 			<div class="ap-questions">
 				<?php					
 					/* Start the Loop */
 					while ( ap_questions() ) : ap_the_question();
-						global $post;
-						include(ap_get_theme_location('content-list.php'));
+						ap_get_template_part('content-list');
 					endwhile;
 				?>
 			</div>
 		<?php ap_questions_the_pagination(); ?>
 		<?php
 			else : 
-				include(ap_get_theme_location('content-none.php'));
+				ap_get_template_part('content-none');
 			endif; 
 		?>	
 	</div>

@@ -184,12 +184,12 @@ class AnsPress_PostTypes
     public function post_type_link($link, $post) {
         if ($post->post_type == 'question') {
             if(get_option('permalink_structure')){
-                return ap_get_link_to('question/'.$post->post_name);
+                return home_url( '/question/'.$post->post_name.'/');
             }else{
                 return add_query_arg( array('apq' => false, 'question_id' =>$post->ID), ap_base_page_link());
             }
         }elseif ($post->post_type == 'answer' && $post->post_parent != 0) {
-           return get_permalink($post->post_parent) ."#answer_{$post->ID}";
+           return home_url( '/question/'.$post->post_name.'/') ."#answer_{$post->ID}";
         }
         return $link;
     }
