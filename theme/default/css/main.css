@@ -1066,6 +1066,9 @@
   padding: 15px;
   text-align: center;
 }
+#anspress .no-questions {
+  padding: 20px;
+}
 #anspress .ap-questions-tab {
   background: #fff;
   border: 1px solid #ddd;
