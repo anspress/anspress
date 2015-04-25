@@ -123,9 +123,7 @@ endif;
 function ap_get_questions($args = array()){
     $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
 
-    if(isset($args['post_parent']))
-        $post_parent = $args['post_parent'];
-    else
+    if(!isset($args['post_parent']))
         $args['post_parent'] = (get_query_var('parent')) ? get_query_var('parent') : false;
 
     if(!isset($args['sortby']))

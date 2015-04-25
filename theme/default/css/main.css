@@ -1292,6 +1292,16 @@
 #anspress .ap-questions-summery {
   padding-right: 10px;
 }
+#anspress .ap-questions .ap-display-meta-item {
+  color: #777777;
+}
+#anspress .ap-questions .ap-display-meta-item a {
+  color: #777777;
+}
+#anspress .ap-questions .ap-display-meta-item i:before {
+  color: #aaa;
+  font-size: 12px;
+}
 #anspress .selected,
 #anspress .ap-best-answer-label {
   background: #86cf9b;
@@ -1527,11 +1537,6 @@
   margin-left: 5px;
   padding: 0 6px;
 }
-#anspress .ap-post-history {
-  display: block;
-  font-size: 13px;
-  margin-top: 10px;
-}
 #anspress .ap-answers-label {
   display: block;
   font-size: 16px;
@@ -1550,6 +1555,11 @@
 .ap-content .ap-posted-in {
   margin-bottom: -20px;
   text-transform: uppercase;
+}
+.ap-content .ap-post-history {
+  display: block;
+  font-size: 13px;
+  margin-top: 10px;
 }
 .ap-post-tags li a {
   background: #11a7db;
