@@ -16,11 +16,6 @@ $clearfix_class = array('ap-questions-item clearfix');
 
 ?>
 <div id="question-<?php ap_question_the_ID(); ?>" <?php post_class($clearfix_class); ?>>
-	<?php if ( ap_question_is_private()) : ?>
-		<div class="private-question-label clearfix">
-			<span><?php _e( 'Private Question', 'ap' ); ?></span>
-		</div>
-	<?php endif; ?>		
 	<div class="ap-questions-inner">
 		<div class="ap-avatar ap-pull-left">
 			<a href="<?php ap_question_the_author_link() ; ?>">
@@ -33,6 +28,7 @@ $clearfix_class = array('ap-questions-item clearfix');
 		</div>
 		<div class="ap-questions-summery no-overflow">
 			<span class="ap-questions-title entry-title" itemprop="title">
+				<?php ap_question_the_status(); ?>
 				<a class="ap-questions-hyperlink" itemprop="url" href="<?php ap_question_the_permalink(); ?>" rel="bookmark" title="<?php the_title(); ?>"><?php the_title(); ?></a>
 			</span>			
 			<div class="ap-display-question-meta">

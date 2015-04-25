@@ -133,15 +133,6 @@
 	.margin-top-20{
 		margin-top: 20px;
 	}
-	.private-question-label{
-		background: none repeat scroll 0 0 #8F8F8F;
-		.border-radius(2px);
-		color: @white;
-		display: table;
-		font-size: 12px;
-		margin-bottom: 10px;
-		padding: 2px 6px;
-	}
 
 	.ap-no-permission-to-view {
 		background: lighten(@blue-color, 52%);
@@ -202,30 +193,24 @@
 	}
 
 	.ap-notice {
-		background: none repeat scroll 0 0 #eee;
-		border-radius: 2px;
-		display: block;
-		margin-top: 10px;
-		padding: 12px;
+	    background: none repeat scroll 0 0 #eee;
+	    border: 1px solid rgba(0, 0, 0, 0.1);
+	    border-radius: 2px;
+	    display: block;
+	    margin-top: 10px;
+	    padding: 4px 15px;
 
-		&.black{
-			background: #777;
-			color: #fff;
+		&.gray{
+			background: #F5F4F4;
 		}
 		&.yellow{
-			background: @yellow-color;
-			color: #fff;
+			background: #FFEAB1;
 		}
 		&.red{
-			background: @error-color;
-			color: #fff;
+			background: #FFB5B5;
 		}
 		&.blue{
-			background: @blue-color;
-			color: #fff;
-			a{
-				color: #fff;
-			}
+			background: #E1F8FF;
 		}
 		i{
 			margin-right: 15px;

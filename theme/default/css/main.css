@@ -1038,20 +1038,6 @@
 #anspress .margin-top-20 {
   margin-top: 20px;
 }
-#anspress .private-question-label {
-  background: none repeat scroll 0 0 #8F8F8F;
-  -webkit-border-radius: 2px;
-  -webkit-background-clip: padding-box;
-  -moz-border-radius: 2px;
-  -moz-background-clip: padding;
-  border-radius: 2px;
-  background-clip: padding-box;
-  color: #ffffff;
-  display: table;
-  font-size: 12px;
-  margin-bottom: 10px;
-  padding: 2px 6px;
-}
 #anspress .ap-no-permission-to-view {
   background: #f7fcfe;
   display: block;
@@ -1065,9 +1051,6 @@
   margin-bottom: 20px;
   padding: 15px;
   text-align: center;
-}
-#anspress .no-questions {
-  padding: 20px;
 }
 #anspress .ap-questions-tab {
   background: #fff;
@@ -1111,29 +1094,23 @@
 }
 #anspress .ap-notice {
   background: none repeat scroll 0 0 #eee;
+  border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: 2px;
   display: block;
   margin-top: 10px;
-  padding: 12px;
+  padding: 4px 15px;
 }
-#anspress .ap-notice.black {
-  background: #777;
-  color: #fff;
+#anspress .ap-notice.gray {
+  background: #F5F4F4;
 }
 #anspress .ap-notice.yellow {
-  background: #f4ac20;
-  color: #fff;
+  background: #FFEAB1;
 }
 #anspress .ap-notice.red {
-  background: #eb5837;
-  color: #fff;
+  background: #FFB5B5;
 }
 #anspress .ap-notice.blue {
-  background: #11a7db;
-  color: #fff;
-}
-#anspress .ap-notice.blue a {
-  color: #fff;
+  background: #E1F8FF;
 }
 #anspress .ap-notice i {
   margin-right: 15px;
@@ -1304,6 +1281,12 @@
 #anspress .ap-questions .ap-display-meta-item i:before {
   color: #aaa;
   font-size: 12px;
+}
+#anspress .ap-questions .ap-post-type {
+  display: inline;
+  font-size: 11px;
+  margin: 0;
+  padding: 0 6px;
 }
 #anspress .selected,
 #anspress .ap-best-answer-label {

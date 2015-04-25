@@ -311,6 +311,15 @@ function ap_question_the_vote_button(){
     ap_vote_btn(ap_question_the_object());
 }
 
+function ap_question_the_status(){
+    if(ap_question_the_object()->post_status == 'private_post')
+        echo '<span class="ap-post-type private ap-notice gray">'.__('Private', 'ap').'</span>';
+    elseif(ap_question_the_object()->post_status == 'moderate')
+        echo '<span class="ap-post-type moderate ap-notice yellow">'.__('Moderate', 'ap').'</span>';
+    elseif(ap_question_the_object()->post_status == 'closed')
+        echo '<span class="ap-post-type closed ap-notice red">'.__('Closed', 'ap').'</span>';
+}
+
 function ap_question_the_status_description(){
     if ( ap_have_parent_post()) : ?>
         <div class="ap-notice blue clearfix">
@@ -320,7 +329,7 @@ function ap_question_the_status_description(){
     <?php endif;
 
     if ( is_private_post()) : ?>
-        <div class="ap-notice black clearfix">
+        <div class="ap-notice gray clearfix">
             <i class="apicon-lock"></i><span><?php _e( 'Question is marked as a private, only admin and post author can see.', 'ap' ); ?></span>
         </div>
     <?php endif;

@@ -56,6 +56,12 @@
 						?>
 
 						<?php ap_question_the_active_time(); ?>
+						<?php
+							/**
+							 * Show question status. i.e. private post, moderate etc
+							 */
+							ap_question_the_status_description();
+						?>
 						<?php ap_post_actions_buttons() ?>
 
 						<?php 
@@ -66,13 +72,7 @@
 							do_action('ap_after_question_actions');
 						?>
 					</div>
-					<!-- End ap-content-inner -->
-					<?php
-						/**
-						 * Show question status. i.e. private post, moderate etc
-						 */
-						ap_question_the_status_description();
-					?>
+					<!-- End ap-content-inner -->					
 					<?php ap_question_the_comments(); ?>
 				</div>		
 			</div>
