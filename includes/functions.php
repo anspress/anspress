@@ -244,6 +244,9 @@ function ap_last_active($post_id =false){
 }
 
 //check if current questions have answers
+/**
+ * @param integer $id
+ */
 function ap_have_ans($id){
 	
 	if(ap_count_all_answers($id) > 0)
