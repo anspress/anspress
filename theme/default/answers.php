@@ -15,8 +15,8 @@
 <?php if(ap_count_other_answer(get_question_id())): ?>
 	<div id="ap-answers-c">
 		<div class="ap-sorting-tab clearfix">
-			<h3 class="ap-widget-title ap-pull-left">
-				<?php printf(_n('%1$s answer', '%2$s Answers', ap_count_other_answer(get_question_id()), 'ap'), '<span data-view="answer_count">'.__('One', 'ap').'</span>', '<span data-view="answer_count">'.ap_count_other_answer(get_question_id()).'</span>'); ?>
+			<h3 class="ap-answers-label ap-pull-left">
+				<?php printf(_n('%1$s answer', '%2$s Answers', ap_count_other_answer(get_question_id()), 'ap'), '<span data-view="answer_count">1</span>', '<span data-view="answer_count">'.ap_count_other_answer(get_question_id()).'</span>'); ?>
 			</h3>
 			<?php ap_answers_tab(); ?>
 		</div>

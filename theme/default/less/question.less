@@ -1,20 +1,17 @@
 //
 // Question page style
 // --------------------------------------------------
+.ap-content{
+    padding-right: 40px;
+    position: relative;
+}
 #anspress{
 	.ap-q{
 		.ap-avatar{
 			margin-right: 0x;
     		margin-top: 5px;
 		}
-		.entry-title{
-		    font-size: 22px;
-		    font-weight: bold;
-		    margin-bottom: 5px;
-		    a{
-		    	color: @default-color;
-		    }
-		}
+
 		&-head{
 		    margin-bottom: 20px;
 		}
@@ -47,7 +44,7 @@
 		}
 		&-actions {
 		    margin-top: 10px;
-		    li{
+		    >li{
 	    		margin-right: 15px;
 	    		margin-top: 5px;
 		    }
@@ -101,23 +98,23 @@
 		    .ap-action-select_answer a{
 		    	color: #fff;
 		    }
-	    	.ap-dropdown-toggle {
-			    border: 1px solid #eee;
-			    border-radius: 2px;
+	    	.dropdown-toggle{
 			    color: #aaa;
 			    display: block;
-			    padding: 2px 6px;
+			    font-size: 25px;
 			    height: 27px;
+			    line-height: 20px;
+			    padding: 0;
 			}
 		}
 	}
 	.ap-a-cells {
 	    margin-left: 70px;
-		margin-top: 10px;
 		padding-bottom: 25px;
 	}
 	.ap-question-meta {
-	    border-bottom: 1px solid #eee;
+        border-bottom: 1px solid #eee;
+	    font-weight: 600;
 	    margin-bottom: 15px;
 	    >.ap-display-meta-item{
 		    display: inline-block;
@@ -138,10 +135,13 @@
 	    	}
 	    }
 	    .question-tags a, .question-categories a{
-		    margin-left: 6px;
-		    color: @link-color;
+		    margin-right: 5px;
+		    color: @default-color;
 		    &:hover{
 		    	color: @default-color;
+		    }
+		    &:last-child{
+		    	margin-right: 0;
 		    }
 	    }
 	}
@@ -163,6 +163,13 @@
 	    display: block;
 	    font-size: 13px;
 	    margin-top: 10px;
+	}
+	.ap-answers-label{
+		display: block;
+	    font-size: 16px;
+	    margin: 0;
+	    padding: 0;
+    	color: @default-color;
 	}
 }
 
@@ -211,19 +218,9 @@
 }
 
 .ap-sorting-tab {
-    border-bottom: 1px solid #eeeeee;
-    border-top: 1px solid #eeeeee;
     margin-bottom: 0;
-    margin-top: 20px;
     padding: 5px 0;
 
-	.ap-widget-title{
-	    display: block;
-	    font-size: 16px;
-	    margin: 0;
-	    padding: 3px 0;
-    	color: @default-color;
-	}
 	.ap-answers-tab {
 	    float: right;
 	    margin: 0;
@@ -247,20 +244,17 @@
 	}
 }
 
-#answers{
-	.answer{
-    	margin: 30px 0 0;
-    	padding: 0;
-
-	    &:first-child{
-	    	padding-top: 0;
-	    	border-top: none;
-	    }
+#answers, #ap-best-answer{
+	.ap-content{
+	    border-top: 1px solid #eee;
+    	padding-top: 15px;
+	}
+	.ap-single-vote{
+		top: 20px;
 	}
 }
 #ap-best-answer {
 	position: relative;
-	margin-top: 25px;
 	.ap-content-inner {
 	    background: none repeat scroll 0 0 rgba(247, 254, 249, 0.33);
 	    border: 1px solid rgba(204, 218, 202, 0.22);
@@ -318,7 +312,9 @@
 	}
 }
 .ap-single-vote {
-    position: relative;
+   	right: 0;
+    position: absolute;
+    top: 5px;
 }
 .comment-awaiting-moderation {
     background: @yellow-color;

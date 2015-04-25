@@ -9,7 +9,7 @@
 	font-style: normal;
 }
 
-[class^="apicon-"], [class*=" apicon-"] {
+[class^="apicon-"]:before, [class*=" apicon-"]:before {
 	font-family: 'anspress';
 	speak: none;
 	font-style: normal;

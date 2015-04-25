@@ -2,164 +2,171 @@
 // Buttons style
 // --------------------------------------------------
 
-.ap-btn{
-    border-color: transparent transparent rgba(0, 0, 0, 0.1);
-    border-image: none;
-    border-radius: 2px;
-    border-style: none none solid;
-    border-width: medium medium 2px;
-    padding: 5px 10px;
-    text-decoration: none;
-
-    &.ap-btn-view-all {
-        display: block;
-        margin-top: 30px;
-        text-align: center;
-        text-transform: uppercase;
-    }
-    &:hover{
-        background: #ddd;
+#anspress{
+    .ap-btn{
         border-color: transparent transparent rgba(0, 0, 0, 0.1);
-    }
-}
-
-// voting button
-.ap-vote{
-    background-clip: padding-box;
-    color: #428bca;
-    font-size: 14px;
-    font-weight: 600;
-    margin-right: 15px;
-    position: relative;
-
-    > *{
-        float: left;
-    }
-    a{
-        border: 1px solid #d2e3f2;
-        border-radius: 3px;
-        color: #6198cb;
-        display: block;
-        height: 32px;
-        padding: 7px;
-        text-align: center;
+        border-image: none;
+        border-radius: 2px;
+        border-style: none none solid;
+        border-width: medium medium 2px;
+        padding: 5px 10px;
         text-decoration: none;
-        width: 32px;
+
+        &.ap-btn-view-all {
+            display: block;
+            margin-top: 30px;
+            text-align: center;
+            text-transform: uppercase;
+        }
+        &:hover{
+            background: #ddd;
+            border-color: transparent transparent rgba(0, 0, 0, 0.1);
+        }
+    }
+
+    // voting button
+    .ap-vote{
+        background-clip: padding-box;
+        color: #428bca;
+        font-size: 14px;
+        font-weight: 600;
+        position: relative;
+
+        > *{
+
+        }
+        a{
+            background-image: linear-gradient(#fff, #fcfcfc);
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            color: @default-color;
+            display: block;
+            font-size: 13px;
+            height: 25px;
+            line-height: 22px;
+            padding: 0;
+            text-align: center;
+            text-decoration: none;
+            width: 25px;
+            &:focus{
+                outline: none;
+            }
+        	&.disable{
+    			cursor: default;
+                opacity: 0.3;
+    		}
+        }
+        .vote-up{
+
+    	}
+    	.vote-down{
+
+    	}	
+        .net-vote-count{    	
+            color: @default-color;
+            display: block;
+            font-size: 13px;
+            font-weight: bold;
+            height: 25px;
+            line-height: 23px;
+            padding: 0 1px;
+            text-align: center;
+        }
+        .ap-vote-fade {
+            bottom: 0;
+            position: absolute;
+            top: 0;
+            width: 100%;
+        }
+    }
+
+    .ap-radio-btn{
+        background: none repeat scroll 0 0 #ddd;
+        border: 2px solid #ddd;
+        .border-radius(8px);
+        display: block;
+        width: 30px;
+        height: 16px;
+        position: relative;
+        cursor: pointer;
+       
+        
+        &:before{
+            background: none repeat scroll 0 0 #fff;
+            .border-radius(50%);
+            content: "";
+            display: block;
+            height: 12px;
+            width: 12px;
+            position: absolute;
+            left: 0;
+        }
         &:focus{
             outline: none;
         }
-    	&.disable{
-			cursor: default;
-            opacity: 0.3;
-		}
+        &.active{
+            background: @main-color;
+            border-color: @main-color;
+            &:before{
+                right: 0;
+                left: auto;
+            }
+        }
+            
     }
-    .vote-up{
+    .ap-subscribe{
+        text-align:center;
+        .ap-subscribe-label{
+            display: block;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            font-size: 12px;
+        }
+        .ap-btn{
+            margin: 0 auto;
+            display: block;
+            i{
+                font-size: 16px;
+                margin-right: 10px;
+                vertical-align: middle;
+            }
+        }
+        .ap-btn.active{
+            .box-shadow(0 0 1px rgba(0, 0, 0, 0.2) inset);
+        }
 
-	}
-	.vote-down{
+    }
+    .ap-dropdown{
+        position: relative;
 
-	}	
-    .net-vote-count{    	
-        color: @light-color;
-        display: block;
-        font-size: 15px;
-        height: 32px;
-        padding: 2px 10px;
-    }
-    .ap-vote-fade {
-        bottom: 0;
-        position: absolute;
-        top: 0;
-        width: 100%;
-    }
-}
-
-.ap-radio-btn{
-    background: none repeat scroll 0 0 #ddd;
-    border: 2px solid #ddd;
-    .border-radius(8px);
-    display: block;
-    width: 30px;
-    height: 16px;
-    position: relative;
-    cursor: pointer;
-   
-    
-    &:before{
-        background: none repeat scroll 0 0 #fff;
-        .border-radius(50%);
-        content: "";
-        display: block;
-        height: 12px;
-        width: 12px;
-        position: absolute;
-        left: 0;
-    }
-    &:focus{
-        outline: none;
-    }
-    &.active{
-        background: @main-color;
-        border-color: @main-color;
-        &:before{
+        .ap-dropdown-menu{
+            background: none repeat scroll 0 0 #fff;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            display: none;
+            position: absolute;
             right: 0;
-            left: auto;
-        }
-    }
-        
-}
-.ap-subscribe{
-    text-align:center;
-    .ap-subscribe-label{
-        display: block;
-        font-weight: bold;
-        margin-bottom: 10px;
-        text-transform: uppercase;
-        font-size: 12px;
-    }
-    .ap-btn{
-        margin: 0 auto;
-        display: block;
-        i{
-            font-size: 16px;
-            margin-right: 10px;
-            vertical-align: middle;
-        }
-    }
-    .ap-btn.active{
-        .box-shadow(0 0 1px rgba(0, 0, 0, 0.2) inset);
-    }
+            width: 160px;
+            z-index: 99;
 
-}
-.ap-dropdown{
-    position: relative;
+            > li{
+                margin: 0;
+                float: none;
 
-    .ap-dropdown-menu{
-        background: none repeat scroll 0 0 #fff;
-        border: 1px solid #ddd;
-        border-radius: 3px;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-        display: none;
-        position: absolute;
-        right: 0;
-        width: 160px;
-        z-index: 99;
-
-        > li{
-            margin: 0;
-            float: none;
-
-            > a{
-                border-bottom: 1px solid #f9f9f9;
-                display: block;
-                padding: 5px 15px;
-            }
-            > a:hover{
-                background: #fcfcfc;
+                > a{
+                    border-bottom: 1px solid #f9f9f9;
+                    display: block;
+                    padding: 5px 15px;
+                }
+                > a:hover{
+                    background: #fcfcfc;
+                }
             }
         }
-    }
-    &.open .ap-dropdown-menu{
-        display: block;
+        &.open .ap-dropdown-menu{
+            display: block;
+        }
     }
 }

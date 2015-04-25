@@ -47,17 +47,15 @@ class AP_History
 	}
 	public function new_answer($answer_id) {
 		$post = get_post($answer_id);
-		ap_add_history($post->post_author, $post->post_parent, '', 'new_answer');
+		ap_add_history(get_current_user_id(), $post->post_parent, '', 'new_answer');
 	}
 	
 	public function edit_question($post_id) {
-		$post = get_post($post_id);
-		ap_add_history(get_current_user_id(), $post->ID, '', 'edit_question');
+		ap_add_history(get_current_user_id(), $post_id, '', 'edit_question');
 	}
 	
-	public function edit_answer($postid, $userid, $question_id) {
-		$post = get_post($post_id);
-		ap_add_history(get_current_user_id(), $post->ID, '', 'edit_answer');
+	public function edit_answer($post_id) {
+		ap_add_history(get_current_user_id(), $post_id, '', 'edit_answer');
 	}
 	
 	public function new_comment($comment){

@@ -982,7 +982,7 @@
   -moz-background-clip: padding;
   border-radius: 3px 3px 0 0;
   background-clip: padding-box;
-  color: #595959;
+  color: #333333;
 }
 #anspress .ap-tab li:first-child {
   margin-left: 5px;
@@ -1055,6 +1055,7 @@
 #anspress .ap-no-permission-to-view {
   background: #f7fcfe;
   display: block;
+  margin-top: 20px;
   padding: 15px;
   text-align: center;
 }
@@ -1155,6 +1156,14 @@
   color: #aaa;
   font-size: 12px;
   margin-top: 20px;
+}
+#anspress .dropdown-menu {
+  border: 1px solid #eee;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+#anspress .dropdown-menu > li {
+  margin: 0;
+  padding: 0;
 }
 .ap-loading-icon {
   background: rgba(255, 255, 255, 0.8);
@@ -1363,7 +1372,7 @@
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 }
 .tooltipster-default.ap-tip-style.tags-list a {
-  color: #595959;
+  color: #333333;
   display: block;
   font-weight: normal;
   padding: 8px 5px;
@@ -1375,17 +1384,13 @@
 .tooltipster-default.ap-tip-style.tags-list a:last-child {
   border-bottom: none;
 }
+.ap-content {
+  padding-right: 40px;
+  position: relative;
+}
 #anspress .ap-q .ap-avatar {
   margin-right: 0x;
   margin-top: 5px;
-}
-#anspress .ap-q .entry-title {
-  font-size: 22px;
-  font-weight: bold;
-  margin-bottom: 5px;
-}
-#anspress .ap-q .entry-title a {
-  color: #595959;
 }
 #anspress .ap-q-head {
   margin-bottom: 20px;
@@ -1414,7 +1419,7 @@
 #anspress .ap-q-actions {
   margin-top: 10px;
 }
-#anspress .ap-q-actions li {
+#anspress .ap-q-actions > li {
   margin-right: 15px;
   margin-top: 5px;
 }
@@ -1443,7 +1448,7 @@
   text-decoration: none;
 }
 #anspress .ap-q-actions > li > a:hover {
-  color: #595959;
+  color: #333333;
 }
 #anspress .ap-q-actions > li > a i {
   display: inline-block;
@@ -1465,21 +1470,21 @@
 #anspress .ap-q-actions .ap-action-select_answer a {
   color: #fff;
 }
-#anspress .ap-q-actions .ap-dropdown-toggle {
-  border: 1px solid #eee;
-  border-radius: 2px;
+#anspress .ap-q-actions .dropdown-toggle {
   color: #aaa;
   display: block;
-  padding: 2px 6px;
+  font-size: 25px;
   height: 27px;
+  line-height: 20px;
+  padding: 0;
 }
 #anspress .ap-a-cells {
   margin-left: 70px;
-  margin-top: 10px;
   padding-bottom: 25px;
 }
 #anspress .ap-question-meta {
   border-bottom: 1px solid #eee;
+  font-weight: 600;
   margin-bottom: 15px;
 }
 #anspress .ap-question-meta > .ap-display-meta-item {
@@ -1500,12 +1505,16 @@
 }
 #anspress .ap-question-meta .question-tags a,
 #anspress .ap-question-meta .question-categories a {
-  margin-left: 6px;
-  color: #2488b7;
+  margin-right: 5px;
+  color: #333333;
 }
 #anspress .ap-question-meta .question-tags a:hover,
 #anspress .ap-question-meta .question-categories a:hover {
-  color: #595959;
+  color: #333333;
+}
+#anspress .ap-question-meta .question-tags a:last-child,
+#anspress .ap-question-meta .question-categories a:last-child {
+  margin-right: 0;
 }
 #anspress .ap-user-meta a {
   color: #2488b7;
@@ -1522,6 +1531,13 @@
   display: block;
   font-size: 13px;
   margin-top: 10px;
+}
+#anspress .ap-answers-label {
+  display: block;
+  font-size: 16px;
+  margin: 0;
+  padding: 0;
+  color: #333333;
 }
 .ap-user-meta-display_name {
   font-size: 14px;
@@ -1551,24 +1567,14 @@
 }
 .ap-post-tags li a:hover {
   border-color: #61c17d;
-  color: #595959;
+  color: #333333;
 }
 .ap-post-tags li:last-child a {
   margin-bottom: 0;
 }
 .ap-sorting-tab {
-  border-bottom: 1px solid #eeeeee;
-  border-top: 1px solid #eeeeee;
   margin-bottom: 0;
-  margin-top: 20px;
   padding: 5px 0;
-}
-.ap-sorting-tab .ap-widget-title {
-  display: block;
-  font-size: 16px;
-  margin: 0;
-  padding: 3px 0;
-  color: #595959;
 }
 .ap-sorting-tab .ap-answers-tab {
   float: right;
@@ -1588,19 +1594,19 @@
   display: block;
 }
 .ap-sorting-tab .ap-answers-tab li.active a {
-  color: #595959;
+  color: #333333;
 }
-#answers .answer {
-  margin: 30px 0 0;
-  padding: 0;
+#answers .ap-content,
+#ap-best-answer .ap-content {
+  border-top: 1px solid #eee;
+  padding-top: 15px;
 }
-#answers .answer:first-child {
-  padding-top: 0;
-  border-top: none;
+#answers .ap-single-vote,
+#ap-best-answer .ap-single-vote {
+  top: 20px;
 }
 #ap-best-answer {
   position: relative;
-  margin-top: 25px;
 }
 #ap-best-answer .ap-content-inner {
   background: none repeat scroll 0 0 rgba(247, 254, 249, 0.33);
@@ -1662,7 +1668,9 @@
   padding: 5px;
 }
 .ap-single-vote {
-  position: relative;
+  right: 0;
+  position: absolute;
+  top: 5px;
 }
 .comment-awaiting-moderation {
   background: #f4ac20;
@@ -1691,7 +1699,7 @@
   list-style: none;
   padding: 0;
 }
-.ap-btn {
+#anspress .ap-btn {
   border-color: transparent transparent rgba(0, 0, 0, 0.1);
   border-image: none;
   border-radius: 2px;
@@ -1700,59 +1708,61 @@
   padding: 5px 10px;
   text-decoration: none;
 }
-.ap-btn.ap-btn-view-all {
+#anspress .ap-btn.ap-btn-view-all {
   display: block;
   margin-top: 30px;
   text-align: center;
   text-transform: uppercase;
 }
-.ap-btn:hover {
+#anspress .ap-btn:hover {
   background: #ddd;
   border-color: transparent transparent rgba(0, 0, 0, 0.1);
 }
-.ap-vote {
+#anspress .ap-vote {
   background-clip: padding-box;
   color: #428bca;
   font-size: 14px;
   font-weight: 600;
-  margin-right: 15px;
   position: relative;
 }
-.ap-vote > * {
-  float: left;
-}
-.ap-vote a {
-  border: 1px solid #d2e3f2;
+#anspress .ap-vote a {
+  background-image: linear-gradient(#ffffff, #fcfcfc);
+  border: 1px solid #ddd;
   border-radius: 3px;
-  color: #6198cb;
+  color: #333333;
   display: block;
-  height: 32px;
-  padding: 7px;
+  font-size: 13px;
+  height: 25px;
+  line-height: 22px;
+  padding: 0;
   text-align: center;
   text-decoration: none;
-  width: 32px;
+  width: 25px;
 }
-.ap-vote a:focus {
+#anspress .ap-vote a:focus {
   outline: none;
 }
-.ap-vote a.disable {
+#anspress .ap-vote a.disable {
   cursor: default;
   opacity: 0.3;
 }
-.ap-vote .net-vote-count {
-  color: #888888;
+#anspress .ap-vote .net-vote-count {
+  color: #333333;
   display: block;
-  font-size: 15px;
-  height: 32px;
-  padding: 2px 10px;
+  font-size: 13px;
+  font-weight: bold;
+  height: 25px;
+  line-height: 23px;
+  padding: 0 1px;
+  text-align: center;
 }
-.ap-vote .ap-vote-fade {
+#anspress .ap-vote .ap-vote-fade {
   bottom: 0;
   position: absolute;
   top: 0;
   width: 100%;
 }
-.ap-radio-btn {
+#anspress .ap-radio-btn {
   background: none repeat scroll 0 0 #ddd;
   border: 2px solid #ddd;
   -webkit-border-radius: 8px;
@@ -1767,7 +1777,7 @@
   position: relative;
   cursor: pointer;
 }
-.ap-radio-btn:before {
+#anspress .ap-radio-btn:before {
   background: none repeat scroll 0 0 #fff;
   -webkit-border-radius: 50%;
   -webkit-background-clip: padding-box;
@@ -1782,45 +1792,45 @@
   position: absolute;
   left: 0;
 }
-.ap-radio-btn:focus {
+#anspress .ap-radio-btn:focus {
   outline: none;
 }
-.ap-radio-btn.active {
+#anspress .ap-radio-btn.active {
   background: #61c17d;
   border-color: #61c17d;
 }
-.ap-radio-btn.active:before {
+#anspress .ap-radio-btn.active:before {
   right: 0;
   left: auto;
 }
-.ap-subscribe {
+#anspress .ap-subscribe {
   text-align: center;
 }
-.ap-subscribe .ap-subscribe-label {
+#anspress .ap-subscribe .ap-subscribe-label {
   display: block;
   font-weight: bold;
   margin-bottom: 10px;
   text-transform: uppercase;
   font-size: 12px;
 }
-.ap-subscribe .ap-btn {
+#anspress .ap-subscribe .ap-btn {
   margin: 0 auto;
   display: block;
 }
-.ap-subscribe .ap-btn i {
+#anspress .ap-subscribe .ap-btn i {
   font-size: 16px;
   margin-right: 10px;
   vertical-align: middle;
 }
-.ap-subscribe .ap-btn.active {
+#anspress .ap-subscribe .ap-btn.active {
   -webkit-box-shadow: 0 0 1px rgba(0, 0, 0, 0.2) inset;
   -moz-box-shadow: 0 0 1px rgba(0, 0, 0, 0.2) inset;
   box-shadow: 0 0 1px rgba(0, 0, 0, 0.2) inset;
 }
-.ap-dropdown {
+#anspress .ap-dropdown {
   position: relative;
 }
-.ap-dropdown .ap-dropdown-menu {
+#anspress .ap-dropdown .ap-dropdown-menu {
   background: none repeat scroll 0 0 #fff;
   border: 1px solid #ddd;
   border-radius: 3px;
@@ -1831,19 +1841,19 @@
   width: 160px;
   z-index: 99;
 }
-.ap-dropdown .ap-dropdown-menu > li {
+#anspress .ap-dropdown .ap-dropdown-menu > li {
   margin: 0;
   float: none;
 }
-.ap-dropdown .ap-dropdown-menu > li > a {
+#anspress .ap-dropdown .ap-dropdown-menu > li > a {
   border-bottom: 1px solid #f9f9f9;
   display: block;
   padding: 5px 15px;
 }
-.ap-dropdown .ap-dropdown-menu > li > a:hover {
+#anspress .ap-dropdown .ap-dropdown-menu > li > a:hover {
   background: #fcfcfc;
 }
-.ap-dropdown.open .ap-dropdown-menu {
+#anspress .ap-dropdown.open .ap-dropdown-menu {
   display: block;
 }
 #anspress .ap-form-control {
@@ -2074,7 +2084,7 @@
   padding: 15px;
 }
 #anspress .ap-similar-questions a {
-  color: #595959;
+  color: #333333;
   display: block;
   padding: 8px;
   text-decoration: none;
@@ -2467,7 +2477,7 @@
   width: 70px;
 }
 .ap-user-posts-title {
-  color: #595959;
+  color: #333333;
   font-weight: 600;
 }
 .ap-user-posts-ccount {

@@ -11,17 +11,18 @@
 <div id="ap-single" class="ap-q clearfix" itemtype="http://schema.org/Question" itemscope="">	
 	<div class="ap-question-lr row">		
 		<div class="ap-q-left <?php echo is_active_sidebar( 'ap-qsidebar' ) ? 'col-md-8' : 'col-md-12' ?>">
-			<div id="question" role="main" class="ap-content question" data-id="<?php ap_question_the_ID(); ?>">			
+			<div class="ap-question-meta clearfix">					
+				<?php echo ap_display_question_metas() ?>
+			</div>
+			<div id="question" role="main" class="ap-content question" data-id="<?php ap_question_the_ID(); ?>">
+				<div class="ap-single-vote"><?php ap_question_the_vote_button(); ?></div>			
 				<?php 
 					/**
 					 * ACTION: ap_before_question_title
 					 * @since 	2.0
 					 */
 					do_action('ap_before_question_content');
-				?>
-				<div class="ap-question-meta clearfix">
-					<?php echo ap_display_question_metas() ?>
-				</div>
+				?>				
 				<div class="ap-avatar ap-pull-left">
 					<a href="<?php ap_question_the_author_link(); ?>">
 						<?php ap_question_the_author_avatar( ap_opt('avatar_size_qquestion') ); ?>
@@ -29,7 +30,6 @@
 				</div>
 				<div class="ap-q-cells clearfix">
 					<div class="ap-q-metas">
-						<!--<div class="ap-single-vote ap-pull-right"><?php //ap_question_the_vote_button(); ?></div>-->
 						<?php ap_user_display_meta(true, false, true); ?>
 						<span><?php ap_question_the_time(); ?></span>
 					</div>

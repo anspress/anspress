@@ -389,3 +389,22 @@ function ap_answers_the_pagination(){
     $answers = anspress()->answers;
     ap_pagination(false, $answers->max_num_pages);
 }
+
+function ap_answer_the_active_time($answer_id = false){
+    echo ap_answer_get_the_active_time();
+}
+
+function ap_answer_get_the_active_time($answer_id = false){
+    $answer_id = ap_parameter_empty($answer_id, @ap_answer_get_the_answer_id());
+    return ap_get_latest_history_html($answer_id);
+}
+
+function ap_answer_the_time($answer_id = false, $format = 'U'){
+    $answer_id = ap_parameter_empty($answer_id, @ap_answer_get_the_answer_id());
+    printf( __( '<time itemprop="datePublished" datetime="%s">%s Ago</time>', 'ap' ), ap_answer_get_the_time(false, 'c'), ap_human_time(ap_answer_get_the_time($answer_id, $format)));
+}
+
+function ap_answer_get_the_time($answer_id = false, $format = ''){
+    $answer_id = ap_parameter_empty($answer_id, @ap_answer_get_the_answer_id());
+    return get_the_time($format, $answer_id);
+}
