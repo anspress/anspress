@@ -46,7 +46,7 @@ class Answers_Query extends WP_Query {
             $sortby = (get_query_var('ap_sort')) ? get_query_var('ap_sort') : 'active';
 
         $defaults = array(
-            'post_status'       => array('publish', 'moderate', 'private_post'),
+            'post_status'       => array('publish'),
             'showposts'         => ap_opt('answers_per_page'),
             'sortby'            => $sortby,
             'paged'             => $paged,
@@ -61,6 +61,12 @@ class Answers_Query extends WP_Query {
 
         if(isset($this->args[ 'sortby' ]))
             $this->orderby_answers();
+
+        if(is_super_admin() || current_user_can('ap_view_private'))
+            $this->args['post_status'][] = 'private_post';
+
+        if(is_super_admin() || current_user_can('ap_view_moderate'))
+            $this->args['post_status'][] = 'moderate';
 
         $this->args['post_type'] = 'answer';        
 

@@ -42,7 +42,7 @@ class Question_Query extends WP_Query {
 
         $defaults = array(
            // 'ap_query'      => 'main_questions',
-            'post_status'   => array('publish', 'moderate', 'private_post', 'closed'),
+            'post_status'   => array('publish', 'closed'),
             'showposts'     => ap_opt('question_per_page'),
             'paged'         => $paged,
         );
@@ -57,6 +57,12 @@ class Question_Query extends WP_Query {
 
         if(isset($this->args[ 'sortby' ]))
             $this->orderby_questions();
+
+        if(is_super_admin() || current_user_can('ap_view_private'))
+            $this->args['post_status'][] = 'private_post';
+
+        if(is_super_admin() || current_user_can('ap_view_moderate'))
+            $this->args['post_status'][] = 'moderate';
 
         $this->args['post_type'] = 'question';        
 
@@ -130,7 +136,6 @@ function ap_get_questions($args = array()){
         $args['sortby'] = (isset($_GET['ap_sort'])) ? $_GET['ap_sort'] : 'active';
 
     $args = wp_parse_args( $args, array(
-        'post_status'   => array('publish', 'moderate', 'private_post', 'closed'),
         'showposts'     => ap_opt('question_per_page'),
         'paged'         => $paged
     ));
