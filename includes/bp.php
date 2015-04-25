@@ -81,7 +81,7 @@ class AnsPress_BP
 		$user_id = bp_displayed_user_id();
 		
 		$reputation = ap_get_all_reputation($user_id);
-    	echo '<div class="anspress">';
+    	echo '<div id="anspress">';
 	    include ap_get_theme_location('user-reputation.php');
 	    echo '</div>';
 	}
@@ -100,7 +100,7 @@ class AnsPress_BP
 		global $questions;
 
     	$questions 		 = new Question_Query(array('author' => bp_displayed_user_id()));
-    	echo '<div class="anspress">';
+    	echo '<div id="anspress">';
 	    include ap_get_theme_location('user-questions.php');
 	    echo '</div>';
 	    wp_reset_postdata();
@@ -120,7 +120,7 @@ class AnsPress_BP
 		global $answers;
 
     	$answers 		 = new Answers_Query(array('author' => bp_displayed_user_id()));
-    	echo '<div class="anspress">';
+    	echo '<div id="anspress">';
 	    include ap_get_theme_location('user-answers.php');
 	    echo '</div>';
 	    wp_reset_postdata();
