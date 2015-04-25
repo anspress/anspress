@@ -136,7 +136,7 @@ function ap_get_current_page_template(){
 
 /**
  * Get post status
- * @param  false|integer $post_id
+ * @param  boolean $post_id
  * @return string
  * @since 2.0.0-alpha2
  */

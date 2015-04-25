@@ -326,6 +326,9 @@ function ap_net_vote_meta($post_id =false){
 	return $net ? $net : 0;
 }
 
+/**
+ * @param integer $postid
+ */
 function ap_post_votes($postid){
 	$vote = array();
 	//voted up count

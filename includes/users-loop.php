@@ -264,7 +264,7 @@ function ap_user_the_display_name(){
 }
     /**
      * Return active user ID
-     * @return integer
+     * @return string
      */
     function ap_user_get_the_display_name(){
         return ap_user_display_name(array('user_id' => ap_user_get_the_ID()));
