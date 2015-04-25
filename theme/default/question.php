@@ -11,28 +11,27 @@
 <div id="ap-single" class="ap-q clearfix" itemtype="http://schema.org/Question" itemscope="">	
 	<div class="ap-question-lr row">		
 		<div class="ap-q-left <?php echo is_active_sidebar( 'ap-qsidebar' ) ? 'col-md-8' : 'col-md-12' ?>">
-			<div id="question" role="main" class="ap-content question" data-id="<?php ap_question_the_ID(); ?>">
-				<header class="ap-q-head">
-					<?php 
-						/**
-						 * ACTION: ap_before_question_title
-						 * @since 	2.0
-						 */
-						do_action('ap_before_question_content');
-					?>
-				</header>
+			<div id="question" role="main" class="ap-content question" data-id="<?php ap_question_the_ID(); ?>">			
+				<?php 
+					/**
+					 * ACTION: ap_before_question_title
+					 * @since 	2.0
+					 */
+					do_action('ap_before_question_content');
+				?>
+				<div class="ap-question-meta clearfix">
+					<?php echo ap_display_question_metas() ?>
+				</div>
 				<div class="ap-avatar ap-pull-left">
 					<a href="<?php ap_question_the_author_link(); ?>">
-						<?php ap_question_the_author_avatar(ap_opt('avatar_size_qquestion') ); ?>
+						<?php ap_question_the_author_avatar( ap_opt('avatar_size_qquestion') ); ?>
 					</a>						
 				</div>
 				<div class="ap-q-cells clearfix">
-					<div class="ap-q-metas clearfix">
-						<div class="ap-single-vote ap-pull-right"><?php ap_question_the_vote_button(); ?></div>
+					<div class="ap-q-metas">
+						<!--<div class="ap-single-vote ap-pull-right"><?php //ap_question_the_vote_button(); ?></div>-->
 						<?php ap_user_display_meta(true, false, true); ?>
-						<ul class="ap-display-question-meta ap-ul-inline clearfix">
-							<?php echo ap_display_question_metas() ?>
-						</ul>
+						<span><?php ap_question_the_time(); ?></span>
 					</div>
 					
 					<!-- Start ap-content-inner -->
@@ -56,7 +55,7 @@
 							do_action('ap_after_question_content');
 						?>
 
-						
+						<?php ap_question_the_active_time(); ?>
 						<?php ap_post_actions_buttons() ?>
 
 						<?php 

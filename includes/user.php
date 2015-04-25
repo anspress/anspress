@@ -560,3 +560,43 @@ function ap_user_top_posts_tab(){
     </ul>
     <?php
 }
+
+/**
+ * Display user meta
+ * @param   boolean         $html  for html output
+ * @param   false|integer   $user_id  User id, if empty then post author witll be user
+ * @param   boolen          $echo
+ * @return  string
+ */
+function ap_user_display_meta($html = false, $user_id = false, $echo = false)
+{
+    if (false === $user_id) 
+        $user_id = get_the_author_meta('ID');   
+
+    $metas = array();
+
+    $metas['display_name'] = '<span class="ap-user-meta ap-user-meta-display_name">'. ap_user_display_name(array('html' => true)) .'</span>';
+
+    /**
+     * FILTER: ap_user_display_meta_array
+     * Can be used to alter user display meta
+     * @var array
+     */
+    $metas = apply_filters('ap_user_display_meta_array', $metas, $user_id);
+
+    $output = '';
+
+    if (!empty($metas) && is_array($metas) && count($metas) > 0) {
+        $output .= '<span class="ap-user-meta">';
+        foreach ($metas as $meta) {
+            $output .= $meta.' ';
+        }
+        $output .= '</span>';
+    }
+
+    if ($echo) {
+        echo $output;
+    } else {
+        return $output;
+    }
+}

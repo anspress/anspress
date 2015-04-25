@@ -4,7 +4,7 @@
 #anspress{
 	.ap-q{
 		.ap-avatar{
-			margin-right: 15px;
+			margin-right: 0x;
     		margin-top: 5px;
 		}
 		.entry-title{
@@ -19,35 +19,14 @@
 		    margin-bottom: 20px;
 		}
 		&-cells {
-		    margin-left: 55px;
-		    margin-top: 10px;
-		    padding-bottom: 25px;
+		    margin-left: 70px;
+    		margin-top: 10px;
+    		padding-bottom: 25px;
 		}
 		&-metas{
 			margin-bottom: 10px;
-			li{
-			    color: #888888;
-			    font-size: 13px;
-			    margin: 0 5px 0 0;
-				i{
-					font-style: normal;
-				}
-
-				&:before {
-				    background: #dadada;
-				    .border-radius(@default-border-radius);
-				    content: "";
-				    display: block;
-				    float: left;
-				    height: 3px;
-				    margin-right: 6px;
-				    margin-top: 7px;
-				    padding: 0;
-				    width: 3px;
-				}
-				&:first-child:before{
-					display: none;
-				}
+			>span{
+				margin-right: 10px;
 			}
 			.ap-avatar{
 				margin-right: 10px;
@@ -132,27 +111,67 @@
 			}
 		}
 	}
-}
-.ap-user-meta{
-	color: @light-color;
-	margin-bottom: 3px;
-    
-	a{
-		color: @default-color;
+	.ap-a-cells {
+	    margin-left: 70px;
+		margin-top: 10px;
+		padding-bottom: 25px;
+	}
+	.ap-question-meta {
+	    border-bottom: 1px solid #eee;
+	    margin-bottom: 15px;
+	    >.ap-display-meta-item{
+		    display: inline-block;
+		    margin-right: 20px;
+		    padding: 5px 0;
+
+		    &:last-child{
+		    	margin-right:0;
+		    }
+
+	    	&:before{
+	    		display: none;
+	    	}
+	    	i{
+	    		vertical-align: middle;
+	    		margin-right: 4px;
+	    		color: @light-color;
+	    	}
+	    }
+	    .question-tags a, .question-categories a{
+		    margin-left: 6px;
+		    color: @link-color;
+		    &:hover{
+		    	color: @default-color;
+		    }
+	    }
+	}
+	.ap-user-meta{
+	    
+		a{
+			color: @link-color;
+		}
+		&-reputation{
+		    border: 1px solid #ddd;
+		    border-radius: 2px;
+		    font-size: 11px;
+		    font-weight: 600;
+		    margin-left: 5px;
+		    padding: 0 6px;
+		}
+	}
+	.ap-post-history {
+	    display: block;
+	    font-size: 13px;
+	    margin-top: 10px;
 	}
 }
+
 .ap-user-meta-display_name{
     font-size: 14px;
     font-weight: @bold;
     margin-bottom: 5px;
 }
-.ap-user-meta-reputation{
-    background: none repeat scroll 0 0 #ff8d37;
-    border-radius: 3px;
-    color: #fff;
-    font-size: 11px;
-    padding: 0 4px;
-}
+
 .ap-content{
 
 	.ap-question-actions-history{

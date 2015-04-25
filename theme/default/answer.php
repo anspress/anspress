@@ -20,7 +20,7 @@ if(!ap_answer_user_can_view()){
 			<?php ap_answer_the_author_avatar(); ?>
 		</a>		
 	</div>
-	<div class="ap-q-cells ap-content clearfix">
+	<div class="ap-a-cells ap-content clearfix">
 		<div class="ap-q-metas clearfix">
 			<div class="ap-single-vote ap-pull-right"><?php //ap_answer_the_vote_button(); ?></div>
 			<?php ap_user_display_meta(true, false, true); ?>

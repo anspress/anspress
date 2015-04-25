@@ -26,7 +26,16 @@ function init_scripts_front(){
 		wp_enqueue_script( 'initial-js', ap_get_theme_url('js/initial.min.js'), 'jquery', AP_VERSION);
 		wp_enqueue_script( 'ap-js', ap_get_theme_url('js/ap.js'), 'jquery', AP_VERSION);
 		wp_enqueue_style( 'tooltipster', ap_get_theme_url('css/tooltipster.css'), array(), AP_VERSION);
-		wp_enqueue_style( 'ap-style', ap_get_theme_url('css/main.css'), array(), AP_VERSION);	
+		wp_enqueue_style( 'ap-style', ap_get_theme_url('css/main.css'), array(), AP_VERSION);
+
+		$custom_css = "
+                #anspress .ap-q-cells{
+                        margin-left: ".(ap_opt('avatar_size_qquestion') + 20)."px;
+                }
+                #anspress .ap-a-cells{
+                        margin-left: ".(ap_opt('avatar_size_qanswer') + 20)."px;
+                }";
+        wp_add_inline_style( 'ap-style', $custom_css );
 		
 		wp_enqueue_style( 'ap-fonts', ap_get_theme_url('fonts/style.css'), array(), AP_VERSION);
 		

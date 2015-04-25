@@ -435,3 +435,31 @@ function ap_question_best_answer_selected($question_id = false){
     
     return true;
 }
+
+function ap_question_the_active_time($question_id = false){
+    echo ap_question_get_the_active_time();
+}
+
+function ap_question_get_the_active_time($question_id = false){
+    $question_id = ap_parameter_empty($question_id, @ap_question_get_the_ID());
+    return ap_get_latest_history_html($question_id);
+}
+
+function ap_question_the_time($question_id = false, $format = 'U'){
+    $question_id = ap_parameter_empty($question_id, @ap_question_get_the_ID());
+    printf( __( '<time itemprop="datePublished" datetime="%s">%s Ago</time>', 'ap' ), ap_question_get_the_time(false, 'c'), ap_human_time(ap_question_get_the_time($question_id, $format)));
+}
+
+function ap_question_get_the_time($question_id = false, $format = ''){
+    $question_id = ap_parameter_empty($question_id, @ap_question_get_the_ID());
+    return get_the_time($format, $question_id);
+}
+
+function ap_question_the_time_relative($question_id = false){
+    echo ap_question_get_the_time_relative($question_id);
+}
+
+function ap_question_get_the_time_relative($question_id = false){
+    $question_id = ap_parameter_empty($question_id, @ap_question_get_the_ID());
+    return ap_human_time(ap_question_get_the_time($question_id, 'U')) .__(' ago', 'ap');
+}

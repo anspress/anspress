@@ -253,16 +253,13 @@ function ap_display_question_metas($question_id =  false){
 	}
 
 	$metas = array();
-	if(is_question()){		
-		$metas['created'] = sprintf( __( '<span>Created</span> <i><time itemprop="datePublished" datetime="%s">%s Ago</time></i>', 'ap' ), get_the_time('c', $question_id), ap_human_time( get_the_time('U')));
-		
-	}else{
+	if(!is_question()){
 		if(ap_question_best_answer_selected())
 			$metas['solved'] = '<span class="ap-best-answer-label ap-tip" title="'.__('answer accepted', 'ap').'">'.__('Selected', 'ap').'</span>';
 
 		$view_count = ap_get_qa_views();
 		$metas['views'] = sprintf( __('<i>%d views</i>', 'ap'), $view_count) ;
-		$metas['history'] = ap_get_latest_history_html($question_id);
+		$metas['history'] = ap_get_latest_history_html($question_id, true);
 	}	
 
 	/**
@@ -316,7 +313,7 @@ function ap_icon($name, $html = false){
 		'vote'				=> 'apicon-triangle-up',
 		'cross'				=> 'apicon-x',
 		'more'				=> 'apicon-ellipsis',
-		'category'			=> 'apicon-file-directory',
+		'category'			=> 'apicon-category',
 		'home'				=> 'apicon-home',
 		'question'			=> 'apicon-comment-discussion',
 		'upload'			=> 'apicon-cloud-upload',
@@ -330,6 +327,8 @@ function ap_icon($name, $html = false){
 		'link'				=> 'apicon-link',
 		'mute'				=> 'apicon-mute',
 		'unmute'			=> 'apicon-unmute',
+		'tag'				=> 'apicon-tag',
+		'history'				=> 'apicon-history',
 	);
 	
 	$icons = apply_filters('ap_icon', $icons);
