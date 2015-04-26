@@ -211,7 +211,7 @@ function ap_count_all_answers($id){
 function ap_count_published_answers($id){
 	
 	global $wpdb;
-	$count = $wpdb->get_var( $wpdb->prepare("SELECT COUNT(*) FROM $wpdb->posts where post_parent = %d AND post_status = %s AND post_type = %s", $id, 'publish', 'answer'));
+	$count = $wpdb->get_var( $wpdb->prepare("SELECT COUNT(*) FROM $wpdb->posts where post_parent = %d AND post_status = %s AND post_status = %s AND post_type = %s", $id, 'publish', 'closed', 'answer'));
 
 	return $count;
 }
@@ -521,7 +521,7 @@ function ap_post_change_status_btn_html($post_id = false){
 				
 				$can = true;
 
-				if($k == 'closed' && !ap_user_can_change_status_to_closed() )
+				if($k == 'closed' && ( !ap_user_can_change_status_to_closed() || $post->post_type == 'answer'))
 					$can = false;
 
 				elseif($k == 'moderate' && !ap_user_can_change_status_to_moderate() )
@@ -1023,4 +1023,36 @@ function ap_parameter_empty($param = false, $return){
 		return $return;
 
 	return $param;
+}
+
+
+function ap_post_status_description($post_id = false){
+    $post_id = ap_parameter_empty($post_id, @ap_question_get_the_ID());
+    $post = get_post($post_id);
+    $post_type = $post->post_type == 'question' ? __('Question','ap') : __('Answer','ap');
+
+    if ( ap_have_parent_post($post_id) && $post->post_type != 'answer') : ?>
+        <div id="ap_post_status_desc_<?php echo $post_id; ?>" class="ap-notice blue clearfix">
+            <?php echo ap_icon('link', true) ?>
+            <span><?php printf(__( 'Question is asked for %s.', 'ap' ), '<a href="'. get_permalink(ap_question_get_the_post_parent()) .'">'.get_the_title( ap_question_get_the_post_parent() ).'</a>'); ?></span>
+        </div>
+    <?php endif;
+
+    if ( is_private_post($post_id)) : ?>
+        <div id="ap_post_status_desc_<?php echo $post_id; ?>" class="ap-notice gray clearfix">
+            <i class="apicon-lock"></i><span><?php printf(__( '%s is marked as a private, only admin and post author can see.', 'ap' ), $post_type); ?></span>
+        </div>
+    <?php endif;
+
+    if ( is_post_waiting_moderation($post_id)) : ?>
+        <div id="ap_post_status_desc_<?php echo $post_id; ?>" class="ap-notice yellow clearfix">
+            <i class="apicon-info"></i><span><?php printf(__( '%s is waiting for approval by moderator.', 'ap' ), $post_type); ?></span>
+        </div>
+    <?php endif;
+
+    if ( is_post_closed($post_id) && $post->post_type != 'answer') : ?>
+        <div id="ap_post_status_desc_<?php echo $post_id; ?>" class="ap-notice red clearfix">
+            <?php echo ap_icon('cross', true) ?><span><?php printf(__( '%s is closed, new answer are not accepted.', 'ap' ), $post_type); ?></span>
+        </div>
+    <?php endif;
 }

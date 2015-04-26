@@ -40,14 +40,8 @@ class Answers_Query extends WP_Query {
         if(isset($args['question_id']))
             $question_id = $args['question_id'];
 
-        if(isset($args['sortby']))
-            $sortby = $args['sortby'];
-        else
-            $sortby = (get_query_var('ap_sort')) ? get_query_var('ap_sort') : 'active';
-
         $defaults = array(
             'showposts'         => ap_opt('answers_per_page'),
-            'sortby'            => $sortby,
             'paged'             => $paged,
             'only_best_answer'  => false,
             'include_best_answer'  => false,
@@ -63,12 +57,6 @@ class Answers_Query extends WP_Query {
 
         if(isset($this->args[ 'sortby' ]))
             $this->orderby_answers();
-
-        if(is_super_admin() || current_user_can('ap_view_private'))
-            $this->args['post_status'][] = 'private_post';
-
-        if(is_super_admin() || current_user_can('ap_view_moderate'))
-            $this->args['post_status'][] = 'moderate';
 
         $this->args['post_type'] = 'answer';        
 
@@ -144,7 +132,13 @@ function ap_get_answers($args = array()){
     if(!isset($args['sortby']))
         $args['sortby'] = (isset($_GET['ap_sort'])) ? $_GET['ap_sort'] : ap_opt('answers_sort');
 
-    anspress()->answers = new Answers_Query($args); 
+    if(is_super_admin() || current_user_can('ap_view_private'))
+        $args['post_status'][] = 'private_post';
+
+    if(is_super_admin() || current_user_can('ap_view_moderate'))
+        $args['post_status'][] = 'moderate';
+
+    anspress()->answers = new Answers_Query($args);
 }
 
 /**
@@ -154,7 +148,7 @@ function ap_get_answers($args = array()){
  * @since 2.1
  */
 function ap_get_answer($answer_id){
-    anspress()->answers = new Answers_Query(array('p' => $answer_id)); 
+    anspress()->answers = new Answers_Query(array('p' => $answer_id));
 }
 
 /** 
@@ -162,19 +156,25 @@ function ap_get_answer($answer_id){
  * @since   2.0
  */
 function ap_get_best_answer($question_id = false){
-    
+
     if(!$question_id) 
         $question_id = get_question_id();
 
     $answer_id = ap_selected_answer($question_id);
-
-    anspress()->answers = new WP_Query(array('p' => $answer_id, 'post_type' => 'answer'));    
     
-    while ( anspress()->answers->have_posts() ) : anspress()->answers->the_post(); 
-        include(ap_get_theme_location('answer.php'));
-    endwhile;
+    $args = array('p' => $answer_id);
 
-    wp_reset_postdata();
+    if(ap_user_can_view_private_post($answer_id))
+      $args['post_status'][] = 'private_post';
+
+    if(ap_user_can_view_moderate_post($answer_id))
+       $args['post_status'][] = 'moderate';
+
+    anspress()->answers = new Answers_Query( $args ); 
+
+    while ( ap_have_answers() ) : ap_the_answer();
+        include(ap_get_theme_location('answer.php'));
+    endwhile ;
 }
 
 
@@ -416,3 +416,19 @@ function ap_answer_get_the_time($answer_id = false, $format = ''){
     $answer_id = ap_parameter_empty($answer_id, @ap_answer_get_the_answer_id());
     return get_the_time($format, $answer_id);
 }
+
+/**
+ * echo the count of total numbers of Answers
+ * @since 2.1
+ */
+function ap_answer_the_count(){
+    echo ap_answer_get_the_count();
+}
+    /**
+     * Return the count of total numbers of Answers
+     * @return integer
+     * @since 2.1
+     */
+    function ap_answer_get_the_count(){
+        return anspress()->answers->found_posts;
+    }

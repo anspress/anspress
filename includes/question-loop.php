@@ -131,10 +131,10 @@ function ap_get_questions($args = array()){
         $args['sortby'] = (isset($_GET['ap_sort'])) ? $_GET['ap_sort'] : 'active';
 
     if(is_super_admin() || current_user_can('ap_view_private'))
-            $this->args['post_status'][] = 'private_post';
+        $args['post_status'][] = 'private_post';
 
     if(is_super_admin() || current_user_can('ap_view_moderate'))
-        $this->args['post_status'][] = 'moderate';
+        $args['post_status'][] = 'moderate';
 
     $args = wp_parse_args( $args, array(
         'showposts'     => ap_opt('question_per_page'),
@@ -192,8 +192,7 @@ function ap_question_the_ID(){
      * @since 2.1
      */
     function ap_question_get_the_ID(){
-        if(ap_question_the_object())
-            return ap_question_the_object()->ID;
+        return ap_question_the_object()->ID;
 
         return false;
     }
@@ -345,34 +344,6 @@ function ap_question_the_status(){
         echo '<span class="ap-post-type closed ap-notice red">'.__('Closed', 'ap').'</span>';
 }
 
-function ap_question_the_status_description($question_id = false){
-    $question_id = ap_parameter_empty($question_id, @ap_question_get_the_ID());
-    if ( ap_have_parent_post($question_id)) : ?>
-        <div id="ap_post_status_desc_<?php echo $question_id; ?>" class="ap-notice blue clearfix">
-            <?php echo ap_icon('link', true) ?>
-            <span><?php printf(__( 'Question is asked for %s.', 'ap' ), '<a href="'. get_permalink(ap_question_get_the_post_parent()) .'">'.get_the_title( ap_question_get_the_post_parent() ).'</a>'); ?></span>
-        </div>
-    <?php endif;
-
-    if ( is_private_post($question_id)) : ?>
-        <div id="ap_post_status_desc_<?php echo $question_id; ?>" class="ap-notice gray clearfix">
-            <i class="apicon-lock"></i><span><?php _e( 'Question is marked as a private, only admin and post author can see.', 'ap' ); ?></span>
-        </div>
-    <?php endif;
-
-    if ( is_post_waiting_moderation($question_id)) : ?>
-        <div id="ap_post_status_desc_<?php echo $question_id; ?>" class="ap-notice yellow clearfix">
-            <i class="apicon-info"></i><span><?php _e( 'Question is waiting for approval by moderator.', 'ap' ); ?></span>
-        </div>
-    <?php endif;
-
-    if ( is_post_closed($question_id)) : ?>
-        <div id="ap_post_status_desc_<?php echo $question_id; ?>" class="ap-notice red clearfix">
-            <?php echo ap_icon('cross', true) ?><span><?php _e( 'Question is closed, new answer are not accepted.', 'ap' ); ?></span>
-        </div>
-    <?php endif;
-}
-
 /**
  * Output comment template if enabled.
  * @return void
@@ -401,7 +372,7 @@ function ap_question_the_answers(){
     if(ap_have_ans( ap_question_get_the_ID() )){                 
         include(ap_get_theme_location('best_answer.php'));
         ap_get_answers();
-        
+        wp_reset_postdata();
         include(ap_get_theme_location('answers.php'));
         wp_reset_postdata();
     } 

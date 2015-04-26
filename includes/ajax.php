@@ -271,23 +271,24 @@ class AnsPress_Ajax
 		}else{		
 			$post = get_post($post_id);
 			if(($post->post_type == 'question' || $post->post_type == 'answer') && $post->post_status != $status){
+				$update_data = array();
 				if($status == 'publish')
-					$post->post_status = 'publish';
+					$update_data['post_status'] = 'publish';
 
 				elseif($status == 'moderate')
-					$post->post_status = 'moderate';
+					$update_data['post_status'] = 'moderate';
 
 				elseif($status == 'private_post')
-					$post->post_status = 'private_post';
+					$update_data['post_status'] = 'private_post';
 
 				elseif($status == 'closed')
-					$post->post_status = 'closed';
+					$update_data['post_status'] = 'closed';
 
-				wp_update_post( $post );
+				$update_data['ID'] = $post->ID;
+				wp_update_post( $update_data );
 
 				ob_start();
-				if($post->post_type == 'question')
-					ap_question_the_status_description($post->ID);
+					ap_post_status_description($post->ID);
 				$html = ob_get_clean();
 
 				ap_send_json( ap_ajax_responce(array(

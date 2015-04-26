@@ -29,20 +29,20 @@ class AnsPress_Actions
 		add_action( 'ap_after_update_question', array($this, 'ap_after_update_question'), 10, 2 );
 		add_action( 'ap_after_update_answer', array($this, 'ap_after_update_answer'), 10, 2 );
 
-		add_action('before_delete_post', array($this, 'before_delete'));	
+		add_action( 'before_delete_post', array($this, 'before_delete'));	
 
-		add_action('wp_trash_post', array($this, 'trash_post_action'));
-		add_action('untrash_post', array($this, 'untrash_ans_on_question_untrash'));
+		add_action( 'wp_trash_post', array($this, 'trash_post_action'));
+		add_action( 'untrash_post', array($this, 'untrash_ans_on_question_untrash'));
 
-		add_action('comment_post', array($this, 'new_comment_approve'), 10, 2);
-		add_action('comment_unapproved_to_approved', array($this, 'comment_approve'));
-		add_action('comment_approved_to_unapproved', array($this, 'comment_unapproved'));
-		add_action('trashed_comment', array($this, 'comment_trash'));
-		add_action('delete_comment ', array($this, 'comment_trash'));
-		add_action('publish_comment', array($this, 'publish_comment'));
-		add_action('unpublish_comment', array($this, 'unpublish_comment'));
-		add_filter('wp_get_nav_menu_items', array($this, 'update_menu_url'));
-		add_filter('nav_menu_css_class', array($this, 'fix_nav_current_class'), 10, 2 );
+		add_action( 'comment_post', array($this, 'new_comment_approve'), 10, 2);
+		add_action( 'comment_unapproved_to_approved', array($this, 'comment_approve'));
+		add_action( 'comment_approved_to_unapproved', array($this, 'comment_unapproved'));
+		add_action( 'trashed_comment', array($this, 'comment_trash'));
+		add_action( 'delete_comment ', array($this, 'comment_trash'));
+		add_action( 'publish_comment', array($this, 'publish_comment'));
+		add_action( 'unpublish_comment', array($this, 'unpublish_comment'));
+		add_filter( 'wp_get_nav_menu_items', array($this, 'update_menu_url'));
+		add_filter( 'nav_menu_css_class', array($this, 'fix_nav_current_class'), 10, 2 );
 
 		add_action( 'wp_loaded', array( $this, 'flush_rules' ) );
 	}

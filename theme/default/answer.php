@@ -32,18 +32,9 @@ if(!ap_answer_user_can_view()){
 					<?php the_content(); ?>
 				</div>
 				<?php ap_answer_the_active_time(); ?>
+				<?php ap_post_status_description(ap_answer_get_the_answer_id()) ?>			
 				<?php ap_post_actions_buttons() ?>			
 			</div>
-			<?php if ( is_private_post()) : ?>
-				<div class="ap-notice black clearfix">
-					<i class="apicon-lock"></i><span><?php _e( 'Answer is marked as a private, only admin and post author can see.', 'ap' ); ?></span>
-				</div>
-			<?php endif; ?>
-			<?php if ( is_post_waiting_moderation()) : ?>
-				<div class="ap-notice yellow clearfix">
-					<i class="apicon-info"></i><span><?php _e( 'Answer is waiting for approval by moderator.', 'ap' ); ?></span>
-				</div>
-			<?php endif; ?>
 			<?php ap_answer_the_comments(); ?>
 		</div>
 	</div>

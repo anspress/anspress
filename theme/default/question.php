@@ -56,12 +56,7 @@
 						?>
 
 						<?php ap_question_the_active_time(); ?>
-						<?php
-							/**
-							 * Show question status. i.e. private post, moderate etc
-							 */
-							ap_question_the_status_description();
-						?>
+						<?php ap_post_status_description(ap_question_get_the_ID());	?>
 						<?php ap_post_actions_buttons() ?>
 
 						<?php 
