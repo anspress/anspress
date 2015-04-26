@@ -1,7 +1,7 @@
 AnsPress - The most advance community question and answer system for WordPress.
 =========
 
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/wp3/anspress/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/wp3/anspress/?branch=master) [![Build Status](https://travis-ci.org/wp3/anspress.svg?branch=master)](https://travis-ci.org/wp3/anspress) [![WordPress](https://img.shields.io/badge/download-21.9k-brightgreen.svg)](https://wordpress.org/plugins/anspress-question-answer)
+[![Code Quality](https://scrutinizer-ci.com/g/anspress/anspress/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/anspress/anspress/?branch=master) [![Build Status](https://travis-ci.org/anspress/anspress.svg?branch=master)](https://travis-ci.org/anspress/anspress) [![WordPress](https://img.shields.io/badge/download-25.6k-brightgreen.svg)](https://wordpress.org/plugins/anspress-question-answer)
 
 ![AnsPress Cover](https://raw.githubusercontent.com/open-wp/anspress/master/banner-1544x500.png "AnsPress cover image")
 
@@ -33,9 +33,6 @@ AnsPress is the most complete question and answer system for WordPress. AnsPress
   - User profile
   - Pages : Tags, categories, users etc.
 
-AnsPress is an open source project by [WP3.in]. And it is under active development of [Rahul Aryan] the developer.
-
-> If you need any assistance then feel free to post it on Developers [Support forum] or you can contact us via twitter [@wp3in]
 
 
 
