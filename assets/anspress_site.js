@@ -38,7 +38,7 @@
             this.select_answer();
             this.ap_delete_post();
             this.ap_upload_field();
-            this.chnage_status();
+            this.change_status();
         },
         doAjax: function(query, success, context, before, abort) {
             /** Shorthand method for calling ajax */
@@ -386,7 +386,7 @@
                 return false
             });
         },
-        chnage_status: function() {
+        change_status: function() {
             $('body').delegate('[data-action="ap_change_status"]', 'click', function(e) {
                 e.preventDefault();
                 var c = $(this).closest('ul').prev();
