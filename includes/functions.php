@@ -282,7 +282,7 @@ function ap_comment_btn_html($echo = false){
 
 		$nonce = wp_create_nonce( 'comment_form_nonce' );
 		$comment_count = get_comments_number( get_the_ID() );
-		$output = '<a href="#comments-'.get_the_ID().'" class="comment-btn ap-tip" data-action="load_comment_form" data-query="ap_ajax_action=load_comment_form&post='.get_the_ID().'&__nonce='.$nonce.'" title="'.__('Comments', 'ap').'">'.__('Comment', 'ap').'<span class="ap-data-view ap-view-count-'.$comment_count.'"><b data-view="comments_count_'.get_the_ID().'">'.$comment_count.'</b></span></a>';
+		$output = '<a href="#comments-'.get_the_ID().'" class="ap-btn comment-btn ap-tip" data-action="load_comment_form" data-query="ap_ajax_action=load_comment_form&post='.get_the_ID().'&__nonce='.$nonce.'" title="'.__('Comments', 'ap').'">'.__('Comment', 'ap').'<span class="ap-data-view ap-view-count-'.$comment_count.'"><b data-view="comments_count_'.get_the_ID().'">'.$comment_count.'</b></span></a>';
 
 		if($echo)
 			echo $output;
@@ -471,14 +471,20 @@ function ap_select_answer_btn_html($post_id){
 	$nonce = wp_create_nonce( $action );	
 	
 	if(!ap_question_best_answer_selected($ans->post_parent)){		
-		return '<a href="#" class="ap-btn-select ap-sicon '.ap_icon('check').' ap-tip" data-action="select_answer" data-query="answer_id='. $post_id.'&__nonce='. $nonce .'&ap_ajax_action=select_best_answer" title="'.__('Select this answer as best', 'ap').'">'.__('Select', 'ap').'</a>';
+		return '<a href="#" class="ap-btn ap-btn-select ap-sicon '.ap_icon('check').' ap-tip" data-action="select_answer" data-query="answer_id='. $post_id.'&__nonce='. $nonce .'&ap_ajax_action=select_best_answer" title="'.__('Select this answer as best', 'ap').'">'.__('Select', 'ap').'</a>';
 		
 	}elseif(ap_question_best_answer_selected($ans->post_parent) && ap_answer_is_best($ans->ID)){
-		return '<a href="#" class="ap-btn-select ap-sicon '.ap_icon('cross').' selected ap-tip" data-action="select_answer" data-query="answer_id='. $post_id.'&__nonce='. $nonce .'&ap_ajax_action=select_best_answer" title="'.__('Unselect this answer', 'ap').'">'.__('Unselect', 'ap').'</a>';
+		return '<a href="#" class="ap-btn ap-btn-select ap-sicon '.ap_icon('cross').' selected ap-tip" data-action="select_answer" data-query="answer_id='. $post_id.'&__nonce='. $nonce .'&ap_ajax_action=select_best_answer" title="'.__('Unselect this answer', 'ap').'">'.__('Unselect', 'ap').'</a>';
 		
 	}
 }
 
+/**
+ * Output frontend post delete button
+ * @param  integer $post_id
+ * @param  boolean $echo
+ * @return void|string
+ */
 function ap_post_delete_btn_html($post_id = false, $echo = false){
 	if(!$post_id){
 		$post_id = get_the_ID();
@@ -493,6 +499,44 @@ function ap_post_delete_btn_html($post_id = false, $echo = false){
 			echo $output;
 		else
 			return $output;
+	}
+}
+
+function ap_post_change_status_btn_html($post_id = false){
+	$post = get_post($post_id);
+
+	if(ap_user_can_change_status($post_id)){		
+		$action = 'change_post_status_'.$post_id;
+		$nonce = wp_create_nonce( $action );
+		
+		$status = apply_filters('ap_change_status_dropdown', array('closed' => __('Close', 'ap'), 'publish' => __('Open', 'ap'), 'moderate' => __('Moderate', 'ap'), 'private_post' => __('Private', 'ap') ));
+
+		$output = '<div class="btn-group">
+			<a class="ap-btn ap-tip" title="'.__('Change status of post', 'ap').'" href="#" data-toggle="dropdown" aria-expanded="false">
+				'.__('Status', 'ap').' <i class="caret"></i>
+			</a>
+			<ul class="dropdown-menu" role="menu">';
+
+			foreach($status as $k => $title){
+				
+				$can = true;
+
+				if($k == 'closed' && !ap_user_can_change_status_to_closed() )
+					$can = false;
+
+				elseif($k == 'moderate' && !ap_user_can_change_status_to_moderate() )
+					$can = false;
+
+				if($can){
+					$output .= '<li'.($k == $post->post_status ? ' class="active"' : '').'>
+						<a href="#" data-action="ap_change_status" data-query="post_id='.$post_id.'&__nonce='.$nonce.'&ap_ajax_action=change_post_status&status='.$k.'">'.$title.'</a>
+					</li>';
+				}
+			}	
+			$output .='</ul>
+		</div>';
+
+		return $output;
 	}
 }
 
@@ -656,6 +700,7 @@ function ap_responce_message($id, $only_message = false)
 		'already_flagged' => array('type' => 'warning', 'message' => __('You have already reported this post.', 'ap')),
 		'captcha_error' => array('type' => 'error', 'message' => __('Please check captcha field and resubmit it again.', 'ap')),
 		'comment_content_empty' => array('type' => 'error', 'message' => __('Comment content is empty.', 'ap')),
+		'status_updated' => array('type' => 'success', 'message' => __('Post status updated successfully', 'ap')),
 		);
 
 	/**

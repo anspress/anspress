@@ -400,13 +400,15 @@ function ap_post_actions_buttons($disable = array())
 	 * @var string
 	 */
 	if($post->post_type == 'answer')
-		$actions['select_answer'] = ap_select_answer_btn_html(get_the_ID());
+		$actions['select_answer'] = ap_select_answer_btn_html($post->ID);
 
 	/**
 	 * Comment button
 	 */
 	if(ap_user_can_comment())
 		$actions['comment'] = ap_comment_btn_html();
+	
+	$actions['status'] = ap_post_change_status_btn_html($post->ID);
 
 	/**
 	 * edit question link
@@ -440,7 +442,7 @@ function ap_post_actions_buttons($disable = array())
 		if(!empty($actions['dropdown'])){			
 			echo '<li class="ap-post-action dropdown">';				
 				echo '<div id="ap_post_action_'.$post->ID.'" class="dropdown">';
-				echo '<a class="apicon-ellipsis dropdown-toggle" href="#" data-toggle="dropdown" aria-expanded="false"></a>';
+				echo '<a class="apicon-ellipsis ap-btn more-actions" href="#" data-toggle="dropdown" aria-expanded="false"></a>';
 				echo '<ul class="dropdown-menu">';
 					foreach($actions['dropdown'] as $sk=>$sub)
 						echo '<li class="ap-post-action ap-action-'.$sk.'">'.$sub.'</li>';

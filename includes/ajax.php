@@ -26,6 +26,7 @@ class AnsPress_Ajax
 		add_action('ap_ajax_delete_comment', array($this, 'delete_comment'));
 		add_action('ap_ajax_select_best_answer', array($this, 'select_best_answer'));
 		add_action('ap_ajax_delete_post', array($this, 'delete_post'));
+		add_action('ap_ajax_change_post_status', array($this, 'change_post_status'));
 		
 		add_action('wp_ajax_ap_suggest_tags', array($this, 'ap_suggest_tags'));
 		add_action('wp_ajax_nopriv_ap_suggest_tags', array($this, 'ap_suggest_tags'));
@@ -253,6 +254,42 @@ class AnsPress_Ajax
 				'view'			=> array('answer_count' => $current_ans, 'answer_count_label' => $count_label))));
 		}
 		
+	}
+
+	/**
+	 * Handle change post status request
+	 * @return void
+	 * @since 2.1
+	 */
+	public function change_post_status(){
+		$post_id = (int) $_POST['post_id'];
+		$status = $_POST['status'];
+
+		if(!is_user_logged_in() || !wp_verify_nonce( $_POST['__nonce'], 'change_post_status_'.$post_id ) || !ap_user_can_change_status($post_id)){
+			ap_send_json( ap_ajax_responce('no_permission'));
+			die();
+		}else{		
+			$post = get_post($post_id);
+			if(($post->post_type == 'question' || $post->post_type == 'answer') && $post->post_status != $status){
+				if($status == 'publish')
+					$post->post_status = 'publish';
+
+				elseif($status == 'moderate')
+					$post->post_status = 'moderate';
+
+				elseif($status == 'private_post')
+					$post->post_status = 'private_post';
+
+				elseif($status == 'closed')
+					$post->post_status = 'closed';
+
+				wp_update_post( $post );
+				ap_send_json( ap_ajax_responce('status_updated'));
+				die();
+			}			
+		}
+		ap_send_json( ap_ajax_responce('something_wrong'));
+		die();
 	}
 
 	

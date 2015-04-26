@@ -1417,7 +1417,6 @@
 }
 #anspress .ap-q-actions > li {
   margin-right: 15px;
-  margin-top: 5px;
 }
 #anspress .ap-q-actions .ap-action-vote {
   float: left;
@@ -1432,47 +1431,53 @@
 #anspress .ap-q-actions .ap-action-favorite .favorite-btn.active {
   color: #fff;
 }
-#anspress .ap-q-actions > li > a {
-  border: 1px solid #eee;
-  border-radius: 2px;
+#anspress .ap-q-actions > li.ap-post-action a.ap-btn {
+  background: none;
+  border: medium none;
+  color: #2488b7;
   display: block;
   font-size: 12px;
   font-weight: 600;
-  height: 27px;
-  line-height: 1.2;
-  padding: 5px 10px;
+  height: 25px;
+  line-height: 25px;
+  padding: 0;
   text-decoration: none;
 }
-#anspress .ap-q-actions > li > a:hover {
+#anspress .ap-q-actions > li.ap-post-action a.ap-btn:hover {
   color: #333333;
+  background: none;
 }
-#anspress .ap-q-actions > li > a i {
+#anspress .ap-q-actions > li.ap-post-action a.ap-btn i {
   display: inline-block;
   font-size: 11px;
   margin-right: 1px;
   margin-top: 0;
 }
-#anspress .ap-q-actions > li > a span {
-  border-left: 1px solid #eee;
-  display: table;
-  float: right;
+#anspress .ap-q-actions > li.ap-post-action a.ap-btn span {
+  border: 1px solid #ddd;
+  border-radius: 2px;
+  display: inline-block;
   font-size: 11px;
   font-weight: bold;
-  margin-left: 5px;
-  margin-right: -10px;
-  margin-top: -5px;
-  padding: 6px 9px;
+  line-height: 12px;
+  margin: 0 0 0 5px;
+  padding: 1px 5px;
+}
+#anspress .ap-q-actions > li.ap-post-action a.ap-btn.more-actions {
+  font-size: 25px;
+}
+#anspress .ap-q-actions > li.ap-post-action a.ap-btn.ap-btn-select {
+  background: #D1EED2;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  line-height: 22px;
+  padding: 0 5px;
+  color: #333333;
+}
+#anspress .ap-q-actions > li.ap-post-action a.ap-btn.ap-btn-select:before {
+  margin-right: 4px;
 }
 #anspress .ap-q-actions .ap-action-select_answer a {
   color: #fff;
-}
-#anspress .ap-q-actions .dropdown-toggle {
-  color: #aaa;
-  display: block;
-  font-size: 25px;
-  height: 27px;
-  line-height: 20px;
-  padding: 0;
 }
 #anspress .ap-a-cells {
   margin-left: 70px;
@@ -1607,37 +1612,6 @@
 #ap-best-answer .ap-content-inner {
   background: none repeat scroll 0 0 rgba(247, 254, 249, 0.33);
   border: 1px solid rgba(204, 218, 202, 0.22);
-}
-.ap-btn-select {
-  background: #61c17d;
-  -webkit-border-radius: 2px;
-  -webkit-background-clip: padding-box;
-  -moz-border-radius: 2px;
-  -moz-background-clip: padding;
-  border-radius: 2px;
-  background-clip: padding-box;
-  color: #ffffff;
-  display: block;
-  font-size: 11px;
-  padding: 1px 4px;
-  text-decoration: none;
-}
-.ap-btn-select:hover {
-  border-color: #61c17d;
-  text-decoration: none;
-  color: #ffffff;
-}
-.ap-btn-select.selected {
-  background: #f4ac20;
-  color: #ffffff;
-  border-color: transparent;
-}
-.ap-btn-select:before {
-  display: block;
-  float: left;
-  font-size: 11px;
-  margin-right: 3px;
-  margin-top: 1px;
 }
 .ap-question-right {
   padding-left: 30px;

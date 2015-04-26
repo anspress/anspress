@@ -92,6 +92,7 @@ class AP_Roles{
 				'ap_message'				=> true,
 				
 				'ap_new_tag'				=> true,
+				'ap_change_status'			=> true,
 			);
 			
 			$mod_caps = array(				
@@ -107,6 +108,7 @@ class AP_Roles{
 				'ap_change_label'			=> true,
 				'ap_view_private'			=> true,
 				'ap_view_moderate'			=> true,
+				'ap_change_status_other'	=> true,
 			);
 			
 			$roles = array('editor', 'contributor', 'author', 'ap_participant', 'ap_moderator', 'subscriber');
@@ -382,4 +384,36 @@ function ap_user_can_view_post($post_id = false){
 
 function ap_allow_anonymous(){
 	return ap_opt('allow_anonymous');
+}
+
+/**
+ * Check if current user can change post status i.e. private_post, moderate, closed
+ * @param  integer $post_id Question id
+ * @return boolean
+ * @since 2.1
+ **/
+function ap_user_can_change_status($post_id){
+	if( current_user_can('ap_change_status_other') || is_super_admin())
+		return true;
+
+	$post = get_post( $post_id );
+
+	if(current_user_can('ap_change_status') && $post->post_author == get_current_user_id())
+		return true;
+
+	return false;
+}
+
+function ap_user_can_change_status_to_closed(){
+	if(is_super_admin() || current_user_can('ap_change_status_other'))
+		return true;
+	
+	return false;
+}
+
+function ap_user_can_change_status_to_moderate(){
+	if(is_super_admin() || current_user_can('ap_change_status_other'))
+		return true;
+	
+	return false;
 }

@@ -143,6 +143,16 @@ function ap_get_questions($args = array()){
     anspress()->questions = new Question_Query($args);
 }
 
+/**
+ * Get an question by ID
+ * @param  integer $question_id
+ * @return void
+ * @since 2.1
+ */
+function ap_get_answer($question_id){
+    anspress()->questions = new Answers_Query(array('p' => $question_id)); 
+}
+
 function ap_have_questions(){
     return anspress()->questions->have_posts();
 }

@@ -46,7 +46,6 @@
 		    margin-top: 10px;
 		    >li{
 	    		margin-right: 15px;
-	    		margin-top: 5px;
 		    }
 		    .ap-action-vote{
 			    float: left;
@@ -61,19 +60,21 @@
 					color: #fff;
 				}
 			}
-		    > li > a{
-			    border: 1px solid #eee;
-			    border-radius: 2px;
+		    > li.ap-post-action a.ap-btn{
+		    	background: none;
+			    border: medium none;
+			    color: @link-color;
 			    display: block;
 			    font-size: 12px;
 			    font-weight: 600;
-			    height: 27px;
-			    line-height: 1.2;
-			    padding: 5px 10px;
+			    height: 25px;
+			    line-height: 25px;
+			    padding: 0;
 			    text-decoration: none;
 
 			    &:hover{
 			    	color: @default-color;
+			    	background: none;
 			    }
 
 		    	i{
@@ -83,29 +84,34 @@
 				    margin-top: 0;
 		    	}
 		    	span {
-				    border-left: 1px solid #eee;
-				    display: table;
-				    float: right;
+				    border: 1px solid #ddd;
+				    border-radius: 2px;
+				    display: inline-block;
 				    font-size: 11px;
 				    font-weight: bold;
-				    margin-left: 5px;
-				    margin-right: -10px;
-				    margin-top: -5px;
-				    padding: 6px 9px;
+				    line-height: 12px;
+				    margin: 0 0 0 5px;
+				    padding: 1px 5px;
+				}
+				&.more-actions{
+				    font-size: 25px;
+				}
+				&.ap-btn-select{
+				    background: #D1EED2;
+				    border: 1px solid rgba(0, 0, 0, 0.1);
+				    line-height: 22px;
+				    padding: 0 5px;
+				    color: @default-color;
+					&:before{
+						margin-right: 4px;
+					}
 				}
 
 		    }
 		    .ap-action-select_answer a{
 		    	color: #fff;
 		    }
-	    	.dropdown-toggle{
-			    color: #aaa;
-			    display: block;
-			    font-size: 25px;
-			    height: 27px;
-			    line-height: 20px;
-			    padding: 0;
-			}
+	    	
 		}
 	}
 	.ap-a-cells {
@@ -261,33 +267,7 @@
 	    border: 1px solid rgba(204, 218, 202, 0.22);
 	}
 }
-.ap-btn-select {
-	background: @main-color;
-    .border-radius(@default-border-radius);
-    color: @white;
-    display: block;
-    font-size: 11px;
-    padding: 1px 4px;
-    text-decoration: none;
 
-    &:hover{
-    	border-color: @main-color;
-    	text-decoration: none;
-    	color:@white;
-    }
-    &.selected{
-    	background: @yellow-color;
-    	color:@white ;
-    	border-color: transparent;
-    }
-    &:before{
-	    display: block;
-	    float: left;
-	    font-size: 11px;
-	    margin-right: 3px;
-	    margin-top: 1px;
-    }
-}
 .ap-question-right {
 	padding-left: 30px;
     > div{

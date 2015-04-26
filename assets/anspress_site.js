@@ -38,6 +38,7 @@
             this.select_answer();
             this.ap_delete_post();
             this.ap_upload_field();
+            this.chnage_status();
         },
         doAjax: function(query, success, context, before, abort) {
             /** Shorthand method for calling ajax */
@@ -360,7 +361,16 @@
                 });
                 return false
             });
-        }
+        },
+        chnage_status: function() {
+            $('body').delegate('[data-action="ap_change_status"]', 'click', function(e) {
+                e.preventDefault();
+                var q = $(this).attr('data-query');
+                ApSite.doAjax(apAjaxData(q), function(data) {
+                    
+                }, this, false, true);
+            });
+        },
     }
 })(jQuery);
 
