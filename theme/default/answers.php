@@ -28,7 +28,7 @@
 				endwhile ;
 			?>
 		</div>
-		<?php //ap_pagination(false, $answers->max_num_pages); ?>
+		<?php ap_answers_the_pagination(); ?>
 	<?php else: ?>
 		<div class="ap-login-to-see-ans">
 			<?php 
