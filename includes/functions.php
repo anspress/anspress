@@ -474,7 +474,7 @@ function ap_select_answer_btn_html($post_id){
 		return '<a href="#" class="ap-btn ap-btn-select ap-sicon '.ap_icon('check').' ap-tip" data-action="select_answer" data-query="answer_id='. $post_id.'&__nonce='. $nonce .'&ap_ajax_action=select_best_answer" title="'.__('Select this answer as best', 'ap').'">'.__('Select', 'ap').'</a>';
 		
 	}elseif(ap_question_best_answer_selected($ans->post_parent) && ap_answer_is_best($ans->ID)){
-		return '<a href="#" class="ap-btn ap-btn-select ap-sicon '.ap_icon('cross').' selected ap-tip" data-action="select_answer" data-query="answer_id='. $post_id.'&__nonce='. $nonce .'&ap_ajax_action=select_best_answer" title="'.__('Unselect this answer', 'ap').'">'.__('Unselect', 'ap').'</a>';
+		return '<a href="#" class="ap-btn ap-btn-select ap-sicon '.ap_icon('cross').' active ap-tip" data-action="select_answer" data-query="answer_id='. $post_id.'&__nonce='. $nonce .'&ap_ajax_action=select_best_answer" title="'.__('Unselect this answer', 'ap').'">'.__('Unselect', 'ap').'</a>';
 		
 	}
 }

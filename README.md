@@ -3,7 +3,7 @@ AnsPress - The most advance community question and answer system for WordPress.
 
 [![Code Quality](https://scrutinizer-ci.com/g/anspress/anspress/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/anspress/anspress/?branch=master) [![Build Status](https://travis-ci.org/anspress/anspress.svg?branch=master)](https://travis-ci.org/anspress/anspress) [![WordPress](https://img.shields.io/badge/download-25.6k-brightgreen.svg)](https://wordpress.org/plugins/anspress-question-answer)
 
-![AnsPress Cover](https://raw.githubusercontent.com/open-wp/anspress/master/banner-1544x500.png "AnsPress cover image")
+![AnsPress Cover](https://raw.githubusercontent.com/open-wp/anspress/master/screenshot.png "AnsPress cover image")
 
 Demo & support forum: http://wp3.in/questions/
 

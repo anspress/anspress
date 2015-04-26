@@ -194,19 +194,17 @@ function ap_user_can_see_answers(){
 }
 
 function ap_user_can_select_answer($post_id){
+	if(!is_user_logged_in())
+		return false;
+
 	if(is_super_admin())
 		return true;
 	
 	$post 		= get_post($post_id);
 	$question 	= get_post($post->post_parent);
 	
-	global $current_user;
-	
-	$user_id		= $current_user->ID;
-	
-	if($post->post_type == 'answer' && $question->post_author ==  $user_id){
+	if($post->post_type == 'answer' && $question->post_author ==  get_current_user_id())
 		return true;
-	}
 	
 	return false;
 }
