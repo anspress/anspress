@@ -284,7 +284,22 @@ class AnsPress_Ajax
 					$post->post_status = 'closed';
 
 				wp_update_post( $post );
-				ap_send_json( ap_ajax_responce('status_updated'));
+
+				ob_start();
+				if($post->post_type == 'question')
+					ap_question_the_status_description($post->ID);
+				$html = ob_get_clean();
+
+				ap_send_json( ap_ajax_responce(array(
+					'action' 		=> 'status_updated',
+					'message' 		=> 'status_updated',
+					'do'			=> array('remove_if_exists', 'toggle_active_class', 'append_before'),
+					'append_before_container'		=> '#ap_post_actions_'.$post->ID,
+					'toggle_active_class_container'	=> '#ap_post_status_toggle_'.$post->ID,
+					'remove_if_exists_container'	=> '#ap_post_status_desc_'.$post->ID,
+					'active'		=> '.'.$status,
+					'html'			=> $html,
+				)));
 				die();
 			}			
 		}

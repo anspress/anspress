@@ -41,11 +41,12 @@ class Question_Query extends WP_Query {
             $post_parent = (get_query_var('parent')) ? get_query_var('parent') : false;
 
         $defaults = array(
-           // 'ap_query'      => 'main_questions',
-            'post_status'   => array('publish', 'closed'),
             'showposts'     => ap_opt('question_per_page'),
             'paged'         => $paged,
         );
+
+        $args['post_status'][] = 'publish'; 
+        $args['post_status'][] = 'closed'; 
 
         if($post_parent)
             $this->args['post_parent'] = $post_parent;
@@ -57,12 +58,6 @@ class Question_Query extends WP_Query {
 
         if(isset($this->args[ 'sortby' ]))
             $this->orderby_questions();
-
-        if(is_super_admin() || current_user_can('ap_view_private'))
-            $this->args['post_status'][] = 'private_post';
-
-        if(is_super_admin() || current_user_can('ap_view_moderate'))
-            $this->args['post_status'][] = 'moderate';
 
         $this->args['post_type'] = 'question';        
 
@@ -135,6 +130,12 @@ function ap_get_questions($args = array()){
     if(!isset($args['sortby']))
         $args['sortby'] = (isset($_GET['ap_sort'])) ? $_GET['ap_sort'] : 'active';
 
+    if(is_super_admin() || current_user_can('ap_view_private'))
+            $this->args['post_status'][] = 'private_post';
+
+    if(is_super_admin() || current_user_can('ap_view_moderate'))
+        $this->args['post_status'][] = 'moderate';
+
     $args = wp_parse_args( $args, array(
         'showposts'     => ap_opt('question_per_page'),
         'paged'         => $paged
@@ -149,8 +150,16 @@ function ap_get_questions($args = array()){
  * @return void
  * @since 2.1
  */
-function ap_get_answer($question_id){
-    anspress()->questions = new Answers_Query(array('p' => $question_id)); 
+function ap_get_question($question_id){
+    $args = array('p' => $question_id);
+
+    if(ap_user_can_view_private_post($question_id))
+      $args['post_status'][] = 'private_post';
+
+    if(ap_user_can_view_moderate_post($question_id))
+       $args['post_status'][] = 'moderate';
+
+    anspress()->questions = new Question_Query($args); 
 }
 
 function ap_have_questions(){
@@ -179,13 +188,14 @@ function ap_question_the_ID(){
 
     /**
      * Return question ID active in loop
-     * @return integer
+     * @return integer|false
      * @since 2.1
      */
     function ap_question_get_the_ID(){
-        $question = ap_question_the_object();
+        if(ap_question_the_object())
+            return ap_question_the_object()->ID;
 
-        return $question->ID;
+        return false;
     }
 /**
  * echo current question post_parent
@@ -321,6 +331,11 @@ function ap_question_the_vote_button(){
     ap_vote_btn(ap_question_the_object());
 }
 
+/**
+ * Get active question post status 
+ * @return void
+ * @since 2.1
+ */
 function ap_question_the_status(){
     if(ap_question_the_object()->post_status == 'private_post')
         echo '<span class="ap-post-type private ap-notice gray">'.__('Private', 'ap').'</span>';
@@ -330,28 +345,29 @@ function ap_question_the_status(){
         echo '<span class="ap-post-type closed ap-notice red">'.__('Closed', 'ap').'</span>';
 }
 
-function ap_question_the_status_description(){
-    if ( ap_have_parent_post()) : ?>
-        <div class="ap-notice blue clearfix">
+function ap_question_the_status_description($question_id = false){
+    $question_id = ap_parameter_empty($question_id, @ap_question_get_the_ID());
+    if ( ap_have_parent_post($question_id)) : ?>
+        <div id="ap_post_status_desc_<?php echo $question_id; ?>" class="ap-notice blue clearfix">
             <?php echo ap_icon('link', true) ?>
             <span><?php printf(__( 'Question is asked for %s.', 'ap' ), '<a href="'. get_permalink(ap_question_get_the_post_parent()) .'">'.get_the_title( ap_question_get_the_post_parent() ).'</a>'); ?></span>
         </div>
     <?php endif;
 
-    if ( is_private_post()) : ?>
-        <div class="ap-notice gray clearfix">
+    if ( is_private_post($question_id)) : ?>
+        <div id="ap_post_status_desc_<?php echo $question_id; ?>" class="ap-notice gray clearfix">
             <i class="apicon-lock"></i><span><?php _e( 'Question is marked as a private, only admin and post author can see.', 'ap' ); ?></span>
         </div>
     <?php endif;
 
-    if ( is_post_waiting_moderation()) : ?>
-        <div class="ap-notice yellow clearfix">
+    if ( is_post_waiting_moderation($question_id)) : ?>
+        <div id="ap_post_status_desc_<?php echo $question_id; ?>" class="ap-notice yellow clearfix">
             <i class="apicon-info"></i><span><?php _e( 'Question is waiting for approval by moderator.', 'ap' ); ?></span>
         </div>
     <?php endif;
 
-    if ( is_post_closed()) : ?>
-        <div class="ap-notice red clearfix">
+    if ( is_post_closed($question_id)) : ?>
+        <div id="ap_post_status_desc_<?php echo $question_id; ?>" class="ap-notice red clearfix">
             <?php echo ap_icon('cross', true) ?><span><?php _e( 'Question is closed, new answer are not accepted.', 'ap' ); ?></span>
         </div>
     <?php endif;

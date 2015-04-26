@@ -46,13 +46,15 @@ class Answers_Query extends WP_Query {
             $sortby = (get_query_var('ap_sort')) ? get_query_var('ap_sort') : 'active';
 
         $defaults = array(
-            'post_status'       => array('publish'),
             'showposts'         => ap_opt('answers_per_page'),
             'sortby'            => $sortby,
             'paged'             => $paged,
             'only_best_answer'  => false,
             'include_best_answer'  => false,
         );
+
+        $args['post_status'][] = 'publish'; 
+        $args['post_status'][] = 'closed';
 
         $this->args = wp_parse_args( $args, $defaults );
         

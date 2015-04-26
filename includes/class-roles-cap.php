@@ -328,8 +328,11 @@ function ap_user_can_create_tag(){
 function ap_user_can_view_private_post($post_id){
 	$post = get_post( $post_id );
 
-	if($post->post_type != 'private_post')
-		return;
+	if($post->post_status != 'private_post')
+		return true;
+
+	if($post->post_author == get_current_user_id())
+		return true;
 
 	if(is_super_admin() || current_user_can('ap_view_private'))
 		return true;
@@ -341,10 +344,7 @@ function ap_user_can_view_private_post($post_id){
 		if($question->post_author == get_current_user_id())
 			return true;
 	}
-	
-	if($post->post_author == get_current_user_id())
-		return true;
-	
+
 	return false;
 }
 

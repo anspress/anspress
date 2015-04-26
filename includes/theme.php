@@ -434,7 +434,7 @@ function ap_post_actions_buttons($disable = array())
 	$actions = apply_filters('ap_post_actions_buttons', $actions );
 
 	if (!empty($actions) && count($actions) > 0) {
-		echo '<ul class="ap-q-actions ap-ul-inline clearfix">';
+		echo '<ul id="ap_post_actions_'.$post->ID.'" class="ap-q-actions ap-ul-inline clearfix">';
 		foreach($actions as $k => $action){
 			if(!empty($action) && $k != 'dropdown' && !in_array($k, $disable))
 				echo '<li class="ap-post-action ap-action-'.$k.'">'.$action.'</li>';
@@ -442,7 +442,7 @@ function ap_post_actions_buttons($disable = array())
 		if(!empty($actions['dropdown'])){			
 			echo '<li class="ap-post-action dropdown">';				
 				echo '<div id="ap_post_action_'.$post->ID.'" class="dropdown">';
-				echo '<a class="apicon-ellipsis ap-btn more-actions" href="#" data-toggle="dropdown" aria-expanded="false"></a>';
+				echo '<a class="apicon-ellipsis ap-btn more-actions ap-tip" title="'.__('More action', 'ap').'" href="#" data-toggle="dropdown" aria-expanded="false"></a>';
 				echo '<ul class="dropdown-menu">';
 					foreach($actions['dropdown'] as $sk=>$sub)
 						echo '<li class="ap-post-action ap-action-'.$sk.'">'.$sub.'</li>';

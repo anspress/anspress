@@ -515,7 +515,7 @@ function ap_post_change_status_btn_html($post_id = false){
 			<a class="ap-btn ap-tip" title="'.__('Change status of post', 'ap').'" href="#" data-toggle="dropdown" aria-expanded="false">
 				'.__('Status', 'ap').' <i class="caret"></i>
 			</a>
-			<ul class="dropdown-menu" role="menu">';
+			<ul id="ap_post_status_toggle_'.$post_id.'" class="dropdown-menu" role="menu">';
 
 			foreach($status as $k => $title){
 				
@@ -528,7 +528,7 @@ function ap_post_change_status_btn_html($post_id = false){
 					$can = false;
 
 				if($can){
-					$output .= '<li'.($k == $post->post_status ? ' class="active"' : '').'>
+					$output .= '<li class="'.$k.($k == $post->post_status ? ' active' : '').'">
 						<a href="#" data-action="ap_change_status" data-query="post_id='.$post_id.'&__nonce='.$nonce.'&ap_ajax_action=change_post_status&status='.$k.'">'.$title.'</a>
 					</li>';
 				}

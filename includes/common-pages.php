@@ -88,7 +88,8 @@ class AnsPress_Common_Pages
     {
         global $questions;
 
-        ap_get_questions(array('p' => get_question_id()));
+        ap_get_question(get_question_id());
+        
         if(ap_have_questions()){
             while ( anspress()->questions->have_posts() ) : anspress()->questions->the_post();
                 global $post;
