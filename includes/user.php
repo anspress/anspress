@@ -140,7 +140,11 @@ function ap_user_display_name($args = array())
             }
         }
     } else {
-        $return = '<span class="who">'.$anonymous_label.'</span>';
+        if (!$html) {
+            $return = $anonymous_label;
+        } else {
+            $return = '<span class="who">'.$anonymous_label.'</span>';
+        }
     }
 
     /**

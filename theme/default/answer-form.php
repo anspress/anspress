@@ -1,7 +1,14 @@
 <?php if(ap_user_can_answer(get_question_id())) : ?>
+	<h3 class="ap-answers-label"><?php _e('Your answer', 'ap') ?></h3>
 	<div id="answer-form-c">
-		<h3 class="ap-widget-title"><?php _e('Your answer', 'ap') ?></h3>
-		<?php ap_answer_form(get_question_id()); ?>
+		<div class="ap-avatar ap-pull-left">
+			<a href="<?php echo ap_user_link(get_current_user_id()); ?>">
+				<?php echo get_avatar(get_current_user_id(), ap_opt('avatar_size_qquestion')); ?>
+			</a>		
+		</div>
+		<div class="ap-a-cells">
+			<?php ap_answer_form(get_question_id()); ?>
+		</div>
 	</div>
 <?php elseif (is_user_logged_in()): ?>
 	<div class="ap-no-permission">
