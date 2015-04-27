@@ -134,7 +134,7 @@ class AnsPress_Rewrite
 	    }
 
 	    if(!empty($wp->query_vars['ap_user'])){
-	       	$user = get_user_by( 'login', sanitize_text_field($wp->query_vars['ap_user']) );
+	       	$user = get_user_by( 'login', sanitize_text_field(urldecode ($wp->query_vars['ap_user']) ) );
 	       	
 	       	if($user)
         		$wp->set_query_var('ap_user_id', $user->ID);
