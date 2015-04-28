@@ -570,3 +570,24 @@ function ap_subscriber_count_html($post = false)
 	else
 		return sprintf( __( '<strong>%d people</strong> subscribed to this question.', 'ap' ), $total_subscribers);	
 }
+
+/**
+ * Return all subscribers of a question
+ * @param  integer $question_id
+ * @return array
+ * @since 2.1
+ */
+function ap_get_question_subscribers($question_id){
+	global $wpdb;
+
+	$where = array(
+		'apmeta_type' => array('value' => 'subscriber', 'compare' => '=', 'relation' => 'AND'), 
+	);
+	$where['apmeta_actionid'] = array('value' => $question_id, 'compare' => '=', 'relation' => 'AND');
+
+	return ap_get_all_meta(array(
+		'where' => $where,
+		'group' => array(
+			'apmeta_userid' => array('relation' => 'AND'),
+		)));
+}

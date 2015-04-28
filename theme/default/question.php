@@ -7,6 +7,7 @@
  * @license    http://opensource.org/licenses/gpl-license.php  GNU Public License
  * @author    Rahul Aryan <support@anspress.io>
  */
+var_dump(ap_get_question_subscribers_email(get_question_id()));
 ?>
 <div id="ap-single" class="ap-q clearfix" itemtype="http://schema.org/Question" itemscope="">	
 	<div class="ap-question-lr row">		
