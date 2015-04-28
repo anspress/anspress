@@ -911,7 +911,7 @@
   box-sizing: border-box;
 }
 #anspress {
-  line-height: 1.3;
+  line-height: 1.6;
   font-size: 14px;
 }
 #anspress .hentry {
@@ -2400,10 +2400,10 @@
   font-style: normal;
 }
 .ap-question-subscribers-inner {
-  margin: -10px;
+  margin: -5px;
 }
 .ap-question-subscribers a {
-  margin: 10px;
+  margin: 5px;
   display: inline-block;
 }
 .ap-question-subscribers a > img {
