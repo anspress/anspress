@@ -31,8 +31,8 @@ class AnsPress_Theme
         add_filter('body_class', array( $this, 'body_class' ));        
         add_filter('comments_template', array( $this, 'comment_template' ));
         add_action('after_setup_theme', array( $this, 'includes' ));
-        add_filter('wp_title', array( $this, 'ap_title' ) , 1000, 2);
-        add_filter('the_title', array( $this, 'the_title' ) , 1000, 2);
+        add_filter('wp_title', array( $this, 'ap_title' ) , 1, 2);
+        add_filter('the_title', array( $this, 'the_title' ) , 1, 2);
         add_filter('wp_head', array( $this, 'feed_link' ) , 9);
         add_action('ap_before', array( $this, 'ap_before_html_body' ));
     }

@@ -174,7 +174,7 @@ function ap_user_link($user_id = false, $sub = false)
 {
     if($user_id == 0)
         return '#';
-    
+
     if (!$user_id) {
         $user_id = get_the_author_meta('ID');
     }
@@ -547,7 +547,7 @@ function ap_get_avatar_src($user_id, $size = 'thumbnail', $default = false) {
  * @since 2.1
  */
 function ap_user_top_posts_tab(){
-    $active = isset($_GET['tab']) ? $_GET['tab'] : 'answers';
+    $active = isset($_GET['tab']) ? sanitize_text_field($_GET['tab']) : 'answers';
     
     $link = '?tab=';
     ?>

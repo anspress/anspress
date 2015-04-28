@@ -129,7 +129,7 @@ class AnsPress_User
         if ($_FILES) {
             foreach ($_FILES as $file => $array) {
                 if ($_FILES[$file]['error'] !== UPLOAD_ERR_OK) {
-                    echo "upload error : ".$_FILES[$file]['error'];
+                    echo "upload error : ".sanitize_text_field($_FILES[$file]['error']);
                     die();
                 }
 

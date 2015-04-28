@@ -227,7 +227,7 @@ class AnsPress_PostTypes
             echo get_avatar(get_the_author_meta('user_email'), 40);
         }elseif ('status' == $column) {            
             echo '<span class="post-status">' . $post->post_status .'</span>';
-        } /*elseif (ANSPRESS_CAT_TAX == $column) {
+        } elseif (ANSPRESS_CAT_TAX == $column) {
 
             $category = get_the_terms($post->ID, ANSPRESS_CAT_TAX);            
 
@@ -266,7 +266,7 @@ class AnsPress_PostTypes
             else {
                 _e('No Tags');
             }
-        }*/ elseif ('answers' == $column) {
+        } elseif ('answers' == $column) {
             $a_count = ap_count_answer_meta();
             
             /* If terms were found. */
