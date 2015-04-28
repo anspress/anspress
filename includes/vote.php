@@ -35,33 +35,14 @@ class AnsPress_Vote_Ajax extends AnsPress_Ajax
 
 			$question_id = (int)$_POST['question_id'];
 
-			$is_subscribed = ap_is_user_subscribed( $question_id );	
-			$userid		 = get_current_user_id();	
+			$is_subscribed = ap_is_user_subscribed( $question_id );
 
 			if($is_subscribed){
-				// if already subscribed then remove	
-				ap_remove_vote('subscriber', $userid, $question_id);
-				
-				$counts = ap_post_subscribers_count($question_id);
-				
-				//update post meta
-				update_post_meta($question_id, ANSPRESS_SUBSCRIBER_META, $counts);
-				
-				//register an action
-				do_action('ap_removed_subscriber', $question_id, $counts);
-
+				ap_add_question_subscriber($question_id);
 				ap_send_json(ap_ajax_responce(array('message' => 'unsubscribed', 'action' => 'unsubscribed', 'container' => '#subscribe_'.$question_id, 'do' => 'updateHtml', 'html' => ap_icon('unmute', true).__('subscribe', 'ap'))));
 				return;
 			}else{
-				ap_add_vote($userid, 'subscriber', $question_id);
-				$counts = ap_post_subscribers_count($question_id);
-				
-				//update post meta
-				update_post_meta($question_id, ANSPRESS_SUBSCRIBER_META, $counts);
-				
-				//register an action
-				do_action('ap_added_subscriber', $question_id, $counts);
-				
+				ap_remove_question_subscriber($question_id);
 				ap_send_json(ap_ajax_responce(array('message' => 'subscribed', 'action' => 'subscribed', 'container' => '#subscribe_'.$question_id, 'do' => 'updateHtml', 'html' => ap_icon('mute', true).__('unsubscribe', 'ap'))));
 			}
 			
@@ -590,4 +571,53 @@ function ap_get_question_subscribers($question_id){
 		'group' => array(
 			'apmeta_userid' => array('relation' => 'AND'),
 		)));
+}
+
+function ap_add_question_subscriber($question_id, $user_id = false){
+	$is_subscribed = ap_is_user_subscribed( $question_id );
+
+	if($user_id === false)
+		$user_id = get_current_user_id();	
+
+	if(!$is_subscribed){
+
+		ap_add_vote($user_id, 'subscriber', $question_id);
+		$counts = ap_post_subscribers_count($question_id);
+		
+		//update post meta
+		update_post_meta($question_id, ANSPRESS_SUBSCRIBER_META, $counts);
+		
+		//register an action
+		do_action('ap_added_subscriber', $question_id, $counts);
+
+		return array('count' => $counts, 'action' => 'subscribed');
+	}
+
+	return false;
+}
+
+function ap_remove_question_subscriber($question_id, $user_id = false){
+	$is_subscribed = ap_is_user_subscribed( $question_id );
+
+	if($user_id === false)
+		$user_id = get_current_user_id();	
+
+	if($is_subscribed){
+
+		// if already subscribed then remove	
+		ap_remove_vote('subscriber', $user_id, $question_id);
+		
+		$counts = ap_post_subscribers_count($question_id);
+		
+		//update post meta
+		update_post_meta($question_id, ANSPRESS_SUBSCRIBER_META, $counts);
+		
+		//register an action
+		do_action('ap_removed_subscriber', $question_id, $counts);
+
+		return array('count' => $counts, 'action' => 'unsubscribed');
+
+	}
+
+	return false;
 }

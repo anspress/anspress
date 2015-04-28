@@ -76,8 +76,10 @@ class AnsPress_Actions
 		update_post_meta($post_id, ANSPRESS_UPDATED_META, current_time( 'mysql' ));
 		update_post_meta($post_id, ANSPRESS_SELECTED_META, false);
 		
-		//ap_add_history($user_id, $post_id, 'asked');
 		ap_add_parti($post_id, $user_id, 'question');
+
+		// subscribe to current question
+		ap_add_question_subscriber($post_id);
 		
 		//update answer count
 		update_post_meta($post_id, ANSPRESS_ANS_META, '0');
@@ -106,7 +108,10 @@ class AnsPress_Actions
 		update_post_meta($question->ID, ANSPRESS_UPDATED_META, current_time( 'mysql' ));
 		update_post_meta($post_id, ANSPRESS_UPDATED_META, current_time( 'mysql' ));
 		
-		ap_add_parti($question->ID, $user_id, 'answer', $post_id);			
+		ap_add_parti($question->ID, $user_id, 'answer', $post_id);	
+
+		// subscribe to current question
+		ap_add_question_subscriber($question->ID);	
 		
 		// get existing answer count
 		$current_ans = ap_count_published_answers($question->ID);
@@ -169,6 +174,7 @@ class AnsPress_Actions
 				foreach( $ans as $p){
 					do_action('ap_trash_question', $p->ID);
 					ap_remove_parti($p->post_parent, $p->post_author, 'answer');
+
 					ap_delete_meta(array('apmeta_type' => 'flag', 'apmeta_actionid' => $post->ID));
 					wp_trash_post($p->ID);
 				}
@@ -180,9 +186,9 @@ class AnsPress_Actions
 			do_action('ap_trash_answer', $post->ID);
 			ap_remove_parti($post->post_parent, $post->post_author, 'answer');
 			ap_delete_meta(array('apmeta_type' => 'flag', 'apmeta_actionid' => $post->ID));
-			
+			ap_remove_question_subscriber($post->ID, $post->post_author);
 			//update answer count
-			update_post_meta($post->post_parent, ANSPRESS_ANS_META, $ans-1);
+			update_post_meta($post->post_parent, ANSPRESS_ANS_META, $ans);
 		}
 	}
 
