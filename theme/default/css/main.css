@@ -910,6 +910,10 @@
   -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
+#anspress {
+  line-height: 1.3;
+  font-size: 14px;
+}
 #anspress .hentry {
   padding-top: 0;
   margin: 0;

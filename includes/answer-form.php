@@ -35,10 +35,7 @@ new AnsPress_Answer_Form;
  */
 function ap_answer_form($question_id, $editing = false){
 
-    if(is_post_closed($question_id) && !$editing)
-        return;    
-
-    if(!ap_user_can_answer($question_id))
+    if(!ap_user_can_answer($question_id) && !$editing)
         return;
 
     global $editing_post;

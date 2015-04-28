@@ -170,7 +170,7 @@ function ap_user_can_answer($question_id){
 	if(!ap_opt('disallow_op_to_answer') && $question->post_author == get_current_user_id())
 		return false;
 
-	if(ap_opt('close_after_selecting') && ap_question_best_answer_selected($question_id) )
+	if($question->post_type == 'closed' )
 		return false;
 
 	if(ap_allow_anonymous() && !is_user_logged_in())

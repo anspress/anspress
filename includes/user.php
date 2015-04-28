@@ -172,12 +172,13 @@ function ap_user_display_name($args = array())
  */
 function ap_user_link($user_id = false, $sub = false)
 {
-    if($user_id == 0)
-        return '#';
 
     if (!$user_id) {
         $user_id = get_the_author_meta('ID');
     }
+
+    if($user_id <1)
+        return '#';
 
     $is_enabled = apply_filters('ap_user_profile_active', true);
 
