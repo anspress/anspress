@@ -11,7 +11,7 @@
 	list-style: none;
 
 	li{
-	    color: #888;
+	    list-style: outside none none;
 	    margin: 0;
 	    padding: 5px 0;
 	    .stat-value{
@@ -70,5 +70,18 @@
 			    font-style: normal;
 		    }
 	    }
+	}
+}
+.ap-question-subscribers{
+	&-inner{
+		margin: -10px;
+	}
+	a{
+		margin: 10px;
+		display: inline-block;
+		>img{
+			margin: 0;
+			display: block;
+		}
 	}
 }

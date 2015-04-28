@@ -552,6 +552,24 @@ function ap_subscriber_count_html($post = false)
 		return sprintf( __( '<strong>%d people</strong> subscribed to this question.', 'ap' ), $total_subscribers);	
 }
 
+function ap_question_subscribers($question_id = false, $avatar_size = 30){
+	if($question_id === false)
+		$question_id = get_question_id();
+
+	$subscribers = ap_get_question_subscribers($question_id);
+
+	if($subscribers){
+		echo '<div class="ap-question-subscribers clearfix">';
+			echo '<h3 class="ap-widget-title">'.__('Subscribers', 'ap').'</h3>';
+			echo '<div class="ap-question-subscribers-inner">';
+			foreach($subscribers as $subscriber){
+				echo '<a href="'.ap_user_link($subscriber->apmeta_userid).'">'.get_avatar($subscriber->apmeta_userid, $avatar_size).'</a>';
+			}
+			echo '</div>';
+		echo '</div>';
+	}
+}
+
 /**
  * Return all subscribers of a question
  * @param  integer $question_id

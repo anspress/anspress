@@ -998,11 +998,11 @@
   background: #eeeeee;
 }
 #anspress .ap-widget-title {
-  color: #888888;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 600;
-  margin-bottom: 15px;
   line-height: 1.2;
+  margin-bottom: 15px;
+  margin-top: 0;
 }
 #anspress .block {
   display: block;
@@ -2323,7 +2323,7 @@
   list-style: none;
 }
 .ap-stats-widget li {
-  color: #888;
+  list-style: outside none none;
   margin: 0;
   padding: 5px 0;
 }
@@ -2375,6 +2375,17 @@
   display: block;
   font-size: 13px;
   font-style: normal;
+}
+.ap-question-subscribers-inner {
+  margin: -10px;
+}
+.ap-question-subscribers a {
+  margin: 10px;
+  display: inline-block;
+}
+.ap-question-subscribers a > img {
+  margin: 0;
+  display: block;
 }
 .ap-reputation-item {
   border-top: 1px solid #eee;
@@ -2519,4 +2530,12 @@
   text-decoration: none;
   padding: .5em 1em;
   display: block;
+}
+#anspress .ap-dropdown-menu li.active a {
+  background: #61c17d;
+  color: #fff;
+}
+#anspress .ap-dropdown-menu li.active a:hover {
+  background: #61c17d;
+  color: #fff;
 }

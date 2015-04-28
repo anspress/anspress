@@ -40,7 +40,7 @@ class AnsPress_Stats_Widget extends WP_Widget {
 		echo '<li><span class="stat-label">'.__('Active', 'ap'). '</span><span class="stat-value"><time class="published updated" itemprop="dateUpdated" datetime="'.mysql2date('c', $last_active).'">'.ap_human_time( mysql2date('U', $last_active)).'</time> '.__('Ago', 'ap').'</span></li>' ;
 		echo '<li><span class="stat-label">'.__('Views', 'ap'). '</span><span class="stat-value">'.sprintf(_n('One time', '%d times', $view_count, 'ap'), $view_count).'</span></li>' ;		
 		echo '<li><span class="stat-label">'.__('Answers', 'ap'). '</span><span class="stat-value">'.sprintf(_n('%2$s1%3$s answer', '%2$s%1$d%3$s answers', $ans_count, 'ap'), $ans_count, '<span data-view="answer_count">', '</span>').'</span></li>' ;		
-		echo '<li><span class="stat-label">'.__('Subscribers', 'ap'). '</span><span class="stat-value">'.sprintf(_n('One follower', '%d followers', $total_subs, 'ap'), $total_subs).'</span></li>' ;		
+		echo '<li><span class="stat-label">'.__('Subscribers', 'ap'). '</span><span class="stat-value">'.sprintf(_n('1 Subscriber', '%d subscribers', $total_subs, 'ap'), $total_subs).'</span></li>' ;		
 		echo '</ul>';
 		echo $args['after_widget'];
 	}

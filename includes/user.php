@@ -172,7 +172,9 @@ function ap_user_display_name($args = array())
  */
 function ap_user_link($user_id = false, $sub = false)
 {
-
+    if($user_id == 0)
+        return '#';
+    
     if (!$user_id) {
         $user_id = get_the_author_meta('ID');
     }
