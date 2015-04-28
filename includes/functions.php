@@ -511,11 +511,11 @@ function ap_post_change_status_btn_html($post_id = false){
 		
 		$status = apply_filters('ap_change_status_dropdown', array('closed' => __('Close', 'ap'), 'publish' => __('Open', 'ap'), 'moderate' => __('Moderate', 'ap'), 'private_post' => __('Private', 'ap') ));
 
-		$output = '<div class="btn-group">
-			<a class="ap-btn ap-tip" title="'.__('Change status of post', 'ap').'" href="#" data-toggle="dropdown" aria-expanded="false">
+		$output = '<div class="ap-dropdown">
+			<a class="ap-btn ap-tip ap-dropdown-toggle" title="'.__('Change status of post', 'ap').'" href="#" >
 				'.__('Status', 'ap').' <i class="caret"></i>
 			</a>
-			<ul id="ap_post_status_toggle_'.$post_id.'" class="dropdown-menu" role="menu">';
+			<ul id="ap_post_status_toggle_'.$post_id.'" class="ap-dropdown-menu" role="menu">';
 
 			foreach($status as $k => $title){
 				

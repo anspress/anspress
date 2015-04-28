@@ -2494,3 +2494,29 @@
 #ap-user-menu > li.active > a {
   color: #2488b7;
 }
+#anspress .ap-dropdown {
+  position: relative;
+}
+#anspress .ap-dropdown-toggle {
+  padding: .5em 1em;
+  background: #777;
+  border-radius: .2em .2em 0 0;
+}
+#anspress .ap-dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  margin-top: .5em;
+  background: #777;
+  min-width: 12em;
+  padding: 0;
+  border-radius: 0 0 .2em .2em;
+}
+#anspress .ap-dropdown-menu li {
+  list-style-type: none;
+}
+#anspress .ap-dropdown-menu li a {
+  text-decoration: none;
+  padding: .5em 1em;
+  display: block;
+}

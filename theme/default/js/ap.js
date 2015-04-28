@@ -1,6 +1,7 @@
 /* https://github.com/ultimatedelman/autogrow */
 ;
 (function($) {
+
     //pass in just the context as a $(obj) or a settings JS object
     $.fn.autogrow = function(opts) {
         var that = $(this).css({
@@ -105,6 +106,20 @@
     }
 })(jQuery);
 jQuery(document).ready(function() {
+
+    // Dropdown toggle
+    jQuery('.ap-dropdown-toggle').click(function(e){
+        e.preventDefault();
+        jQuery(this).next('.ap-dropdown-menu').toggle();
+    });
+
+    jQuery(document).click(function(e) {
+        var target = e.target;
+        if (!jQuery(target).is('.ap-dropdown-toggle') && !jQuery(target).parents().is('.ap-dropdown-toggle')) {
+            jQuery('.ap-dropdown-menu').hide();
+        }
+    });
+
     jQuery('.ap-tip').tooltipster({
         contentAsHTML: true,
         animation: 'fade',
