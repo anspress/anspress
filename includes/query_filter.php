@@ -19,7 +19,7 @@ class AnsPress_Query_Filter
     public function __construct()
     {
 		
-		add_action( 'posts_clauses', array($this, 'answer_sort_newest'), 10, 2 );
+		add_action( 'posts_clauses', array($this, 'answer_sort'), 10, 2 );
 		add_action( 'posts_clauses', array($this, 'user_favorites'), 10, 2 );
         // TODO: move to admin
 		add_action('admin_footer-post.php', array($this, 'append_post_status_list'));
@@ -55,12 +55,14 @@ class AnsPress_Query_Filter
 		echo '<input type="text" name="ap_q_search" id="ap_q_search" value="'.get_the_title($answer->post_parent).'" />';
 	}
 	 
-	public function answer_sort_newest($sql, $query){
+	public function answer_sort($sql, $query){
 		global $wpdb;
 		if(isset($query->query['ap_query']) && $query->query['ap_query'] == 'answer_sort_newest'){		
 			$sql['orderby'] = 'IF('.$wpdb->prefix.'postmeta.meta_key = "'.ANSPRESS_BEST_META.'" AND '.$wpdb->prefix.'postmeta.meta_value = 1, 0, 1), '.$sql['orderby'];
 		}elseif(isset($query->query['ap_query']) && $query->query['ap_query'] == 'answer_sort_voted'){
 			$sql['orderby'] = 'IF(mt1.meta_value = 1, 0, 1), '.$sql['orderby'];
+		}elseif(isset($query->query['ap_query']) && $query->query['ap_query'] == 'order_answer_to_top'){			
+			$sql['orderby'] = $wpdb->prepare($wpdb->posts.'.ID=%d desc', $query->query['order_answer_id']).', '.$sql['orderby'];
 		}
 		return $sql;
 	}

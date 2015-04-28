@@ -49,3 +49,11 @@ function ap_is_answer_selected($question_id = false){
 	
 	return true;
 }
+
+function ap_have_ans($id){
+	_deprecated_function('ap_have_ans', '2.1', 'ap_have_answers');
+	if(ap_count_all_answers($id) > 0)
+		return true;	
+	
+	return false;
+}

@@ -38,11 +38,11 @@ class AnsPress_Vote_Ajax extends AnsPress_Ajax
 			$is_subscribed = ap_is_user_subscribed( $question_id );
 
 			if($is_subscribed){
-				ap_add_question_subscriber($question_id);
+				ap_remove_question_subscriber($question_id);
 				ap_send_json(ap_ajax_responce(array('message' => 'unsubscribed', 'action' => 'unsubscribed', 'container' => '#subscribe_'.$question_id, 'do' => 'updateHtml', 'html' => ap_icon('unmute', true).__('subscribe', 'ap'))));
 				return;
 			}else{
-				ap_remove_question_subscriber($question_id);
+				ap_add_question_subscriber($question_id);
 				ap_send_json(ap_ajax_responce(array('message' => 'subscribed', 'action' => 'subscribed', 'container' => '#subscribe_'.$question_id, 'do' => 'updateHtml', 'html' => ap_icon('mute', true).__('unsubscribe', 'ap'))));
 			}
 			

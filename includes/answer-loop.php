@@ -137,6 +137,11 @@ function ap_get_answers($args = array()){
 
     if(is_super_admin() || current_user_can('ap_view_moderate'))
         $args['post_status'][] = 'moderate';
+    
+    if(isset($_GET['show_answer'])){
+        $args['ap_query'] = 'order_answer_to_top';
+        $args['order_answer_id'] = (int)$_GET['show_answer'];
+    }
 
     anspress()->answers = new Answers_Query($args);
 }

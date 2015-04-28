@@ -4,13 +4,17 @@
 
 #anspress{
     .ap-btn{
+        background: @main-color;
         border-color: transparent transparent rgba(0, 0, 0, 0.1);
         border-image: none;
         border-radius: 2px;
         border-style: none none solid;
         border-width: medium medium 2px;
+        color: #fff;
+        line-height: 25px;
         padding: 5px 10px;
         text-decoration: none;
+        vertical-align: middle;
 
         &.ap-btn-view-all {
             display: block;
@@ -19,8 +23,12 @@
             text-transform: uppercase;
         }
         &:hover{
-            background: #ddd;
+            background: darken(@main-color, 10%);
             border-color: transparent transparent rgba(0, 0, 0, 0.1);
+        }
+        &.active{
+            background: lighten(@main-color, 10%);
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2) inset;
         }
     }
 
@@ -131,9 +139,6 @@
                 margin-right: 10px;
                 vertical-align: middle;
             }
-        }
-        .ap-btn.active{
-            .box-shadow(0 0 1px rgba(0, 0, 0, 0.2) inset);
         }
 
     }

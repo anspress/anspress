@@ -368,14 +368,12 @@ function ap_question_the_answer_form(){
  * @return void
  * @since 2.1
  */
-function ap_question_the_answers(){
-    if(ap_have_ans( ap_question_get_the_ID() )){                 
-        include(ap_get_theme_location('best_answer.php'));
-        ap_get_answers();
-        wp_reset_postdata();
-        include(ap_get_theme_location('answers.php'));
-        wp_reset_postdata();
-    } 
+function ap_question_the_answers(){              
+    include(ap_get_theme_location('best_answer.php'));
+    ap_get_answers();
+
+    include(ap_get_theme_location('answers.php'));
+    wp_reset_postdata();
 }
 
 /**

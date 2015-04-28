@@ -211,7 +211,7 @@ function ap_count_all_answers($id){
 function ap_count_published_answers($id){
 	
 	global $wpdb;
-	$count = $wpdb->get_var( $wpdb->prepare("SELECT COUNT(*) FROM $wpdb->posts where post_parent = %d AND post_status = %s AND post_status = %s AND post_type = %s", $id, 'publish', 'closed', 'answer'));
+	$count = $wpdb->get_var( $wpdb->prepare("SELECT COUNT(*) FROM $wpdb->posts where post_parent = %d AND (post_status = %s OR post_status = %s) AND post_type = %s", $id, 'publish', 'closed', 'answer'));
 
 	return $count;
 }
@@ -241,18 +241,6 @@ function ap_count_other_answer($question_id =false){
 function ap_last_active($post_id =false){
 	if(!$post_id) $post_id = get_the_ID();
 	return get_post_meta($post_id, ANSPRESS_UPDATED_META, true);
-}
-
-//check if current questions have answers
-/**
- * @param integer $id
- */
-function ap_have_ans($id){
-	
-	if(ap_count_all_answers($id) > 0)
-		return true;	
-	
-	return false;
 }
 
 // link to asnwers
