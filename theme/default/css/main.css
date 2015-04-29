@@ -1680,13 +1680,10 @@
   padding-top: 15px;
 }
 #anspress .ap-btn {
-  background: #61c17d;
-  border-color: transparent transparent rgba(0, 0, 0, 0.1);
-  border-image: none;
+  background-image: linear-gradient(#ffffff, #fcfcfc);
+  border: 1px solid #eee;
   border-radius: 2px;
-  border-style: none none solid;
-  border-width: medium medium 2px;
-  color: #fff;
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.02);
   line-height: 25px;
   padding: 5px 10px;
   text-decoration: none;
@@ -1699,11 +1696,11 @@
   text-transform: uppercase;
 }
 #anspress .ap-btn:hover {
-  background: #43ac62;
-  border-color: transparent transparent rgba(0, 0, 0, 0.1);
+  background: none repeat scroll 0 0 #f9f9f9;
+  border-color: #ddd;
 }
 #anspress .ap-btn.active {
-  background: #86cf9b;
+  background: #eee;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.2) inset;
 }
 #anspress .ap-vote {
@@ -2204,13 +2201,10 @@
   display: none;
 }
 #anspress .ap-comment-form #submit {
-  background: #61c17d;
-  border-color: transparent transparent rgba(0, 0, 0, 0.1);
-  border-image: none;
+  background-image: linear-gradient(#ffffff, #fcfcfc);
+  border: 1px solid #eee;
   border-radius: 2px;
-  border-style: none none solid;
-  border-width: medium medium 2px;
-  color: #fff;
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.02);
   line-height: 25px;
   padding: 5px 10px;
   text-decoration: none;
@@ -2223,11 +2217,11 @@
   text-transform: uppercase;
 }
 #anspress .ap-comment-form #submit:hover {
-  background: #43ac62;
-  border-color: transparent transparent rgba(0, 0, 0, 0.1);
+  background: none repeat scroll 0 0 #f9f9f9;
+  border-color: #ddd;
 }
 #anspress .ap-comment-form #submit.active {
-  background: #86cf9b;
+  background: #eee;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.2) inset;
 }
 #anspress .ap-comment-form .ap-comment-submit {
@@ -2235,13 +2229,10 @@
   margin-left: 10px;
 }
 #anspress .ap-comment-form input[type="submit"] {
-  background: #61c17d;
-  border-color: transparent transparent rgba(0, 0, 0, 0.1);
-  border-image: none;
+  background-image: linear-gradient(#ffffff, #fcfcfc);
+  border: 1px solid #eee;
   border-radius: 2px;
-  border-style: none none solid;
-  border-width: medium medium 2px;
-  color: #fff;
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.02);
   line-height: 25px;
   padding: 5px 10px;
   text-decoration: none;
@@ -2254,11 +2245,11 @@
   text-transform: uppercase;
 }
 #anspress .ap-comment-form input[type="submit"]:hover {
-  background: #43ac62;
-  border-color: transparent transparent rgba(0, 0, 0, 0.1);
+  background: none repeat scroll 0 0 #f9f9f9;
+  border-color: #ddd;
 }
 #anspress .ap-comment-form input[type="submit"].active {
-  background: #86cf9b;
+  background: #eee;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.2) inset;
 }
 #anspress .ap-comment-form .ap-comment-textarea {
