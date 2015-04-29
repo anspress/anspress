@@ -318,29 +318,6 @@ function ap_active_user_page()
 }
 
 /**
- * Return object of current user page
- * @since 	2.0
- */
-function ap_user()
-{
-    global $ap_user;
-
-    return $ap_user;
-}
-
-/**
- * return $User->data of active user in user page
- * @return 	object
- * @since 	2.0
- */
-function ap_user_data()
-{
-    global $ap_user_data;
-
-    return $ap_user_data;
-}
-
-/**
  * Return meta of active user in user page
  * @param  string $meta key of meta
  * @return string
@@ -385,85 +362,6 @@ function ap_check_if_photogenic($user_id)
     }
 
     return false;
-}
-
-function ap_get_resized_avatar($id_or_email, $size = 32, $default = false)
-{
-    $upload_dir = wp_upload_dir();
-    $file_url = $upload_dir['baseurl'].'/avatar/'.$size;
-
-    if ($default) {
-        $image_meta =  wp_get_attachment_metadata(ap_opt('default_avatar'), 'thumbnail');
-    } else {
-        $image_meta =  wp_get_attachment_metadata(get_user_meta($id_or_email, '_ap_avatar', true), 'thumbnail');
-    }
-
-    if ($image_meta === false || empty($image_meta)) {
-        return false;
-    }
-
-    $path =  get_attached_file(get_user_meta($id_or_email, '_ap_avatar', true));
-
-    $orig_file_name = basename($path);
-
-    //$orig_dir = str_replace('/'.$orig_file_name, '', $orig_file_name);
-
-    //$file = $upload_dir['basedir'].'/'.$orig_dir.'/'.$image_meta['sizes']['thumbnail']['file'];
-    //$file = str_replace(array('/', '\\'), DIRECTORY_SEPARATOR, $file);
-
-    $avatar_dir = $upload_dir['basedir'].'/avatar/'.$size;
-    $avatar_dir = str_replace(array('/', '\\'), DIRECTORY_SEPARATOR, $avatar_dir);
-
-    if (!file_exists($upload_dir['basedir'].'/avatar')) {
-        mkdir($upload_dir['basedir'].'/avatar', 0777);
-    }
-
-    if (!file_exists($avatar_dir)) {
-        mkdir($avatar_dir, 0777);
-    }
-
-    if (!file_exists($avatar_dir.'/'.$orig_file_name)) {
-        $image_new = $avatar_dir.'/'.$orig_file_name;
-        ap_smart_resize_image($path, null, $size, $size, false, $image_new, false, false, 100);
-    }
-
-    return $file_url.'/'.$orig_file_name;
-}
-
-
-function ap_profile_user_stats_counts($echo = true)
-{
-    $user_id        = ap_get_displayed_user_id();
-   // $ap_user        = ap_user();
-    $ap_user_data    = ap_user_data();
-
-    $metas = array();
-    $metas['reputation'] = '<a href="'.ap_user_link($user_id, 'reputation').'"><b data-view="ap-reputation">'.ap_get_reputation($user_id, true).'</b><span>'.__('Points', 'ap').'</span></a>';
-    $metas['followers'] = '<a href="'.ap_user_link($user_id, 'followers').'"><b data-view="ap-followers">'.ap_get_current_user_meta('followers').'</b><span>'.__('Followers', 'ap').'</span></a>';
-    $metas['following'] = '<a href="'.ap_user_link($user_id, 'following').'"><b data-view="ap-following">'.ap_get_current_user_meta('following').'</b><span>'.__('Following', 'ap').'</span></a>';
-
-    /**
-     * FILTER: ap_profile_user_stats_counts
-     * Can be used to alter user profile stats counts
-     * @var string
-     */
-    $metas = apply_filters('ap_profile_user_stats_counts', $metas);
-
-    $output = '';
-
-    if (!empty($metas) && is_array($metas) && count($metas) > 0) {
-        $output .= '<ul class="ap-user-counts ap-ul-inline clearfix">';
-        foreach ($metas as $meta) {
-            $output .= '<li>'.$meta.'</li>';
-        }
-        $output .= '</ul>';
-    }
-
-    if ($echo) {
-        echo $output;
-    } else {
-        return $output;
-    }
 }
 
 /**

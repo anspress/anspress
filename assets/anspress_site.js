@@ -39,6 +39,7 @@
             this.ap_delete_post();
             this.ap_upload_field();
             this.change_status();
+            this.load_profile_field();
         },
         doAjax: function(query, success, context, before, abort) {
             /** Shorthand method for calling ajax */
@@ -395,6 +396,16 @@
                 ApSite.doAjax(apAjaxData(q), function(data) {
                     AnsPress.site.hideLoading(c);
                 }, this, false, true);
+            });
+        },
+        load_profile_field: function() {
+            $('body').delegate('[data-action="ap_load_user_field_form"]', 'click', function(e) {
+                e.preventDefault();
+                AnsPress.site.showLoading(this);
+                var q = $(this).attr('data-query');
+                ApSite.doAjax(apAjaxData(q), function(data) {
+                    AnsPress.site.hideLoading(this);
+                }, this, false);
             });
         },
     }

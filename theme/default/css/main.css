@@ -1680,8 +1680,8 @@
   padding-top: 15px;
 }
 #anspress .ap-btn {
-  background-image: linear-gradient(#ffffff, #fcfcfc);
-  border: 1px solid #eee;
+  background: none repeat scroll 0 0 #f9f9f9;
+  border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: 2px;
   box-shadow: 0 0 3px rgba(0, 0, 0, 0.02);
   line-height: 25px;
@@ -1696,7 +1696,7 @@
   text-transform: uppercase;
 }
 #anspress .ap-btn:hover {
-  background: none repeat scroll 0 0 #f9f9f9;
+  background: none repeat scroll 0 0 #eee;
   border-color: #ddd;
 }
 #anspress .ap-btn.active {
@@ -1843,15 +1843,14 @@
   -moz-background-clip: padding;
   -webkit-box-shadow: 0 0 2px #fbfbfb inset;
   -moz-box-shadow: 0 0 2px #fbfbfb inset;
+  box-shadow: 0 0 2px #fbfbfb inset;
   background-clip: padding-box;
   border: 1px solid #e4e4e4;
   border-radius: 2px;
-  box-shadow: 0 0 2px #fbfbfb inset;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.05) inset;
   display: block;
-  height: 32px;
-  line-height: 1.2;
   margin-bottom: 15px;
-  padding: 2px 10px;
+  padding: 5px 10px;
   width: 100%;
 }
 #anspress .ap-form-control.autogrow {
@@ -1918,6 +1917,41 @@
   position: absolute;
   right: 0;
   top: 5px;
+}
+#anspress .ap-form-fields-wrap {
+  border-bottom: 1px solid #f7f7f7;
+  padding: 10px 0;
+}
+#anspress .ap-form-fields-wrap .ap-btn-submit,
+#anspress .ap-form-fields-wrap .ap-btn-cancel {
+  color: #777;
+  font-size: 12px;
+  line-height: 15px;
+  margin-right: 7px;
+  padding: 2px 5px;
+}
+#anspress .ap-form-fields-wrap .ap-btn-cancel {
+  background: none;
+  box-shadow: none;
+  border: none;
+}
+#anspress .ap-form-fields-wrap .ap-form-control {
+  margin-bottom: 5px;
+}
+#anspress .ap-form-fields-wrap-label {
+  float: left;
+  font-weight: 600;
+  width: 150px;
+}
+#anspress .ap-form-fields-wrap-inner {
+  overflow: hidden;
+}
+#anspress .ap-form-fields-wrap-inner > a {
+  float: right;
+  font-style: normal;
+}
+#anspress .ap-form-fields-edit {
+  float: right;
 }
 #anspress .ap-editor {
   border: 1px solid #ddd;
@@ -2096,15 +2130,14 @@
   -moz-background-clip: padding;
   -webkit-box-shadow: 0 0 2px #fbfbfb inset;
   -moz-box-shadow: 0 0 2px #fbfbfb inset;
+  box-shadow: 0 0 2px #fbfbfb inset;
   background-clip: padding-box;
   border: 1px solid #e4e4e4;
   border-radius: 2px;
-  box-shadow: 0 0 2px #fbfbfb inset;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.05) inset;
   display: block;
-  height: 32px;
-  line-height: 1.2;
   margin-bottom: 15px;
-  padding: 2px 10px;
+  padding: 5px 10px;
   width: 100%;
 }
 #anspress .bootstrap-tagsinput.autogrow {
@@ -2201,8 +2234,8 @@
   display: none;
 }
 #anspress .ap-comment-form #submit {
-  background-image: linear-gradient(#ffffff, #fcfcfc);
-  border: 1px solid #eee;
+  background: none repeat scroll 0 0 #f9f9f9;
+  border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: 2px;
   box-shadow: 0 0 3px rgba(0, 0, 0, 0.02);
   line-height: 25px;
@@ -2217,7 +2250,7 @@
   text-transform: uppercase;
 }
 #anspress .ap-comment-form #submit:hover {
-  background: none repeat scroll 0 0 #f9f9f9;
+  background: none repeat scroll 0 0 #eee;
   border-color: #ddd;
 }
 #anspress .ap-comment-form #submit.active {
@@ -2229,8 +2262,8 @@
   margin-left: 10px;
 }
 #anspress .ap-comment-form input[type="submit"] {
-  background-image: linear-gradient(#ffffff, #fcfcfc);
-  border: 1px solid #eee;
+  background: none repeat scroll 0 0 #f9f9f9;
+  border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: 2px;
   box-shadow: 0 0 3px rgba(0, 0, 0, 0.02);
   line-height: 25px;
@@ -2245,7 +2278,7 @@
   text-transform: uppercase;
 }
 #anspress .ap-comment-form input[type="submit"]:hover {
-  background: none repeat scroll 0 0 #f9f9f9;
+  background: none repeat scroll 0 0 #eee;
   border-color: #ddd;
 }
 #anspress .ap-comment-form input[type="submit"].active {

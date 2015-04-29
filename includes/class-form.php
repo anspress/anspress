@@ -86,8 +86,11 @@ class AnsPress_Form {
     {
         $this->form_head();
         $this->form_fields();
-        $this->hidden_fields();
-        $this->form_footer();
+
+        if(@$this->args['hide_footer'] === false){
+            $this->hidden_fields();
+            $this->form_footer();
+        }
     }
 
     /**
@@ -114,7 +117,8 @@ class AnsPress_Form {
         do_action('ap_form_before_'. $this->name);
         $this->output .= ob_get_clean();
 
-        $this->output .= '<form id="'.$this->args['name'].'" method="'.$this->args['method'].'" action="'.$this->args['action'].'"'.$attr.'>';
+        if(@$this->args['hide_footer'] === false)
+            $this->output .= '<form id="'.$this->args['name'].'" method="'.$this->args['method'].'" action="'.$this->args['action'].'"'.$attr.'>';
     }
 
     /**
@@ -133,7 +137,11 @@ class AnsPress_Form {
         do_action('ap_form_bottom_'. $this->name);
         $this->output .= ob_get_clean();
 
-        $this->output .= '<button type="submit" class="ap-btn ap-submit-btn">'.$this->args['submit_button'].'</button>';
+        $this->output .= '<button type="submit" class="ap-btn ap-btn-submit">'.$this->args['submit_button'].'</button>';
+        
+        if(@$this->args['show_cancel'] === true)
+            $this->output .= '<button type="button" class="ap-btn ap-btn-cancel">'.__('Cancel', 'ap').'</button>';
+
         $this->output .= '</form>';
     }
 
@@ -202,7 +210,7 @@ class AnsPress_Form {
      * @return      void
      * @since       2.0
      */
-    private function text_field($field = array())
+    private function text_field($field = array(), $type = 'text')
     {
         if(isset($field['label']))
             $this->label();
@@ -214,7 +222,11 @@ class AnsPress_Form {
 
         if(!isset($field['repeatable']) || !$field['repeatable'] ){
             
-            $this->output .= '<input id="'. @$field['name'] .'" type="text" class="ap-form-control" value="'. @$field['value'] .'" name="'. @$field['name'] .'"'.$placeholder.' '. @$field['attr'] .$autocomplete.' />';
+            $this->output .= '<input id="'. @$field['name'] .'" type="'.$type.'" class="ap-form-control" value="'. @$field['value'] .'" name="'. @$field['name'] .'"'.$placeholder.' '. @$field['attr'] .$autocomplete.' />';
+
+            if($type == 'password')
+                $this->output .= '<input id="'. @$field['name'] .'-1" type="'.$type.'" class="ap-form-control" value="'. @$field['value'] .'" name="'. @$field['name'] .'-1" placeholder="'.__('Repeat your password', 'ap').'" '. @$field['attr'] .$autocomplete.' />';
+
         }else{
             if(!empty($field['value']) && is_array($field['value'])){
                 $this->output .= '<div id="ap-repeat-c-'. @$field['name'] .'" class="ap-repeatbable-field">';
@@ -493,72 +505,92 @@ class AnsPress_Form {
 
             $error_class = $this->have_error() ? ' ap-have-error' : '';
            
-            switch ($field['type']) {
+            if(isset($this->args['field_hidden']) && $this->args['field_hidden']) {
+                if(isset($field['name']) && $field['type'] != 'hidden' && (@$field['visibility'] != 'me' || ( @$field['visibility'] == 'me' && $this->args['user_id'] == get_current_user_id())) ){
+                    $nonce = wp_create_nonce( 'user_field_form_'.$field['name'].'_'.$this->args['user_id'] );
 
-                case 'text':
-                    $this->output .= '<div class="ap-form-fields'.$error_class.'">';
-                    $this->text_field($field);
+                    $this->output .= '<div id="'.@$field['name'].'_field_wrap" class="clearfix ap-form-fields-wrap'.$error_class.'">';
+                        $this->output .= '<label class="ap-form-fields-wrap-label">'.@$field['label'].'</label>';
+                        if(@$field['edit_disabled'] !== true && $this->args['user_id'] == get_current_user_id())
+                            $this->output .= '<a class="ap-form-fields-edit" data-action="ap_load_user_field_form" data-query="ap_ajax_action=load_user_field_form&field='.$field['name'].'&__nonce='.$nonce.'" href="#">'.__('Edit', 'ap').'</a>';
+                        $this->output .= '<div id="user_field_form_'.$field['name'].'" class="ap-form-fields-wrap-inner"><span>'.@$field['value'].'</apn></div>';
                     $this->output .= '</div>';
-                    break;
+                }
+            }else{
+            
+                switch ($field['type']) {
 
-                case 'number':
-                    $this->output .= '<div class="ap-form-fields'.$error_class.'">';
-                    $this->number_field($field);
-                    $this->output .= '</div>';
-                    break;
+                    case 'text':
+                        $this->output .= '<div class="ap-form-fields'.$error_class.'">';
+                        $this->text_field($field, 'text');
+                        $this->output .= '</div>';
+                        break;
 
-                case 'checkbox':
-                    $this->output .= '<div class="ap-form-fields'.$error_class.'">';
-                    $this->checkbox_field($field);
-                    $this->output .= '</div>';
-                    break;
+                    case 'password':
+                        $this->output .= '<div class="ap-form-fields'.$error_class.'">';
+                        $this->text_field($field, 'password');
+                        $this->output .= '</div>';
+                        break;
 
-                case 'select':
-                    $this->output .= '<div class="ap-form-fields'.$error_class.'">';
-                    $this->select_field($field);
-                    $this->output .= '</div>';
-                    break;
+                    case 'number':
+                        $this->output .= '<div class="ap-form-fields'.$error_class.'">';
+                        $this->number_field($field);
+                        $this->output .= '</div>';
+                        break;
 
-                case 'taxonomy_select':
-                    $this->output .= '<div class="ap-form-fields'.$error_class.'">';
-                    $this->taxonomy_select_field($field);
-                    $this->output .= '</div>';
-                    break;
+                    case 'checkbox':
+                        $this->output .= '<div class="ap-form-fields'.$error_class.'">';
+                        $this->checkbox_field($field);
+                        $this->output .= '</div>';
+                        break;
 
-                case 'page_select':
-                    $this->output .= '<div class="ap-form-fields'.$error_class.'">';
-                    $this->page_select_field($field);
-                    $this->output .= '</div>';
-                    break;
+                    case 'select':
+                        $this->output .= '<div class="ap-form-fields'.$error_class.'">';
+                        $this->select_field($field);
+                        $this->output .= '</div>';
+                        break;
 
-                case 'textarea':
-                    $this->output .= '<div class="ap-form-fields'.$error_class.'">';
-                    $this->textarea_field($field);
-                    $this->output .= '</div>';
-                    break;
+                    case 'taxonomy_select':
+                        $this->output .= '<div class="ap-form-fields'.$error_class.'">';
+                        $this->taxonomy_select_field($field);
+                        $this->output .= '</div>';
+                        break;
 
-                case 'editor':
-                    $this->output .= '<div class="ap-form-fields'.$error_class.'">';
-                    $this->editor_field($field);
-                    $this->output .= '</div>';
-                    break;
+                    case 'page_select':
+                        $this->output .= '<div class="ap-form-fields'.$error_class.'">';
+                        $this->page_select_field($field);
+                        $this->output .= '</div>';
+                        break;
 
-                case 'hidden':
-                    $this->hidden_field($field);
-                    break;
+                    case 'textarea':
+                        $this->output .= '<div class="ap-form-fields'.$error_class.'">';
+                        $this->textarea_field($field);
+                        $this->output .= '</div>';
+                        break;
 
-                case 'custom':
-                    $this->custom_field($field);
-                    break;
-                
-                default:
-                    /**
-                     * FILTER: ap_form_fields_[type]
-                     * filter for custom form field type
-                     */
-                    $this->output .= apply_filters( 'ap_form_fields_'.$field['type'],  $field);
-                    break;
-            }            
+                    case 'editor':
+                        $this->output .= '<div class="ap-form-fields'.$error_class.'">';
+                        $this->editor_field($field);
+                        $this->output .= '</div>';
+                        break;
+
+                    case 'hidden':
+                        $this->hidden_field($field);
+                        break;
+
+                    case 'custom':
+                        $this->custom_field($field);
+                        break;
+                    
+                    default:
+                        /**
+                         * FILTER: ap_form_fields_[type]
+                         * filter for custom form field type
+                         */
+                        $this->output .= apply_filters( 'ap_form_fields_'.$field['type'],  $field);
+                        break;
+                }  
+            }         
         }
     }
 

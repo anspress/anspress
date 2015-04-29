@@ -103,6 +103,10 @@ class AnsPress_Process_Form
 			case 'options_form':
 				$this->options_form();
 				break;
+
+			case 'ap_user_profile_field':
+				$this->ap_user_profile_field();
+				break;
 			
 			default:
 				/**
@@ -680,5 +684,39 @@ class AnsPress_Process_Form
 			//$result = array('status' => true, 'html' => '<div class="updated fade" style="display:none"><p><strong>'.__( 'AnsPress options updated successfully', 'ap' ).'</strong></p></div>');
 		}
 		
+	}
+
+	public function ap_user_profile_field(){
+		$user_id = get_current_user_id();
+		
+		if(!is_user_logged_in()){
+			$this->result  = array('message' => 'no_permission');
+			return;
+		}
+
+		if(!isset($_POST['__nonce']) || !wp_verify_nonce( $_POST['__nonce'], 'nonce_user_profile_'.$user_id ) )
+			ap_send_json( ap_ajax_responce('something_wrong'));
+
+		if(ap_has_users(array('ID' => $user_id ) )){
+			while ( ap_users() ) : ap_the_user();
+				
+				$form = ap_user_get_fields(array('form' => array('field_hidden' => true, 'hide_footer' => true)));
+
+				$field = array_values(array_intersect($form->fields_name, array_keys($_POST)));
+				$field_name = $field[0];
+
+				if(!empty($_POST[$field_name]))
+					$form->update_field($field_name);
+
+				$form = ap_user_get_fields(array('show_only' => $field_name, 'form' => array('field_hidden' => true, 'hide_footer' => true)));
+
+				$this->result  = array(
+					'action' 		=> 'updated_user_field',
+					'do'			=> 'updateHtml',
+					'container'		=> '#user_field_form_'.$field_name,
+					'html'			=> $form->get_form()
+				);
+			endwhile;
+		}
 	}
 }

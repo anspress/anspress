@@ -94,6 +94,15 @@ class AnsPress_Validation
             $this->errors[$field] = sprintf(__('It must be minimum %d characters', 'ap'), $param);
     }
 
+    private function is_email($field, $param)
+    {
+        $email = is_email($this->fields[$field]);
+        if(!$email )
+            $this->errors[$field] = sprintf(__('Not a valid email address', 'ap'), $param);
+        else
+            $this->fields[$field] = $email;
+    }
+
     /**
      * Sanitize as a boolean value
      * @param  string $field
@@ -263,6 +272,10 @@ class AnsPress_Validation
                     $this->sanitize_tags($field);
                     break;
 
+                case 'is_email':                    
+                    $this->is_email($field);
+                    break;
+
                 
                 default:
                     $this->fields[$field] = apply_filters('ap_validation_sanitize_field', $field, $actions );
@@ -296,6 +309,10 @@ class AnsPress_Validation
 
                 case 'comma_separted_count':
                     $this->comma_separted_count($field, $param);
+                    break;
+
+                case 'is_email':
+                    $this->is_email($field);
                     break;
                 
                 default:

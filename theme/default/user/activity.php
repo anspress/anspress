@@ -23,7 +23,7 @@
 
 <div class="ap-profile-box clearfix">
 	<?php
-		ap_user_fields();
+		ap_get_template_part('user/posts');
 	?>
 </div>
 

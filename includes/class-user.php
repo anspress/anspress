@@ -36,6 +36,7 @@ class AnsPress_User
         ap_register_page('user', __('User', 'ap'), array($this, 'user_page'), false);
 
         // Register user pages
+        ap_register_user_page('activity', __('Activity', 'ap'), array($this, 'activity_page'));
         ap_register_user_page('profile', __('Profile', 'ap'), array($this, 'profile_page'));
         ap_register_user_page('questions', __('Questions', 'ap'), array($this, 'questions_page'));
         ap_register_user_page('answers', __('Answers', 'ap'), array($this, 'answers_page'));
@@ -54,6 +55,14 @@ class AnsPress_User
         }else{
             _e('No user found', 'ap');
         }
+    }
+
+    /**
+     * Output for activity page
+     * @since 2.1
+     */
+    public function activity_page(){        
+        include ap_get_theme_location('user/activity.php');
     }
 
     /**

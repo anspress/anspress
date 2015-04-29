@@ -27,6 +27,7 @@ class AnsPress_Ajax
 		add_action('ap_ajax_select_best_answer', array($this, 'select_best_answer'));
 		add_action('ap_ajax_delete_post', array($this, 'delete_post'));
 		add_action('ap_ajax_change_post_status', array($this, 'change_post_status'));
+		add_action('ap_ajax_load_user_field_form', array($this, 'load_user_field_form'));
 		
 		add_action('wp_ajax_ap_suggest_tags', array($this, 'ap_suggest_tags'));
 		add_action('wp_ajax_nopriv_ap_suggest_tags', array($this, 'ap_suggest_tags'));
@@ -313,6 +314,29 @@ class AnsPress_Ajax
 				)));
 				die();
 			}			
+		}
+		ap_send_json( ap_ajax_responce('something_wrong'));
+		die();
+	}
+
+	public function load_user_field_form(){
+		$user_id 		= get_current_user_id();
+		$field_name 	= sanitize_text_field($_POST['field']);
+
+		if(!is_user_logged_in() || !wp_verify_nonce( $_POST['__nonce'], 'user_field_form_'.$field_name.'_'.$user_id )){
+			ap_send_json( ap_ajax_responce('no_permission'));
+		}else{
+			if(ap_has_users(array('ID' => $user_id ) )){
+				while ( ap_users() ) : ap_the_user(); 
+					$form = ap_user_get_fields(array('show_only' => $field_name, 'form' => array('field_hidden' => false, 'hide_footer' => false, 'show_cancel' => true, 'is_ajaxified' => true, 'submit_button' => __('Update', 'ap'))));
+					ap_send_json( ap_ajax_responce(array(
+						'action' 		=> 'user_field_form_loaded',
+						'do'			=> 'updateHtml',
+						'container'		=> '#user_field_form_'.$field_name,
+						'html'			=> $form->get_form()
+					)));
+				endwhile;
+			}
 		}
 		ap_send_json( ap_ajax_responce('something_wrong'));
 		die();

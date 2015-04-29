@@ -233,9 +233,7 @@ function ap_the_user(){
 
 function ap_user_the_object(){
     global $users_query; 
-    $user = $users_query->user;
-
-    return $user;
+    return $users_query->user;
 }
 
 /**
@@ -250,9 +248,12 @@ function ap_user_the_ID(){
      * @return integer
      */
     function ap_user_get_the_ID(){
-        global $users_query; 
-        $user = $users_query->user;
+        global $users_query;
 
+        if(!isset($users_query))
+            return;
+
+        $user = $users_query->user;
         return $user->data->ID;
     }
 
@@ -331,3 +332,49 @@ function ap_users_the_pagination(){
     ap_pagination($users_query->paged, $users_query->total_pages, $base);
 }
 
+function ap_user_get_the_meta($key = false){
+    $meta = array_map('ap_meta_array_map', get_user_meta( ap_user_get_the_ID() )) ;
+    
+    $meta['user_login']         = ap_user_the_object()->user_login;
+    $meta['user_nicename']      = ap_user_the_object()->user_nicename;
+    $meta['user_email']         = ap_user_the_object()->user_email;
+    $meta['user_registered']    = ap_user_the_object()->user_registered;
+    $meta['display_name']       = ap_user_the_object()->display_name;
+
+    if($key !== false && !empty($meta[$key]))
+        return $meta[$key];
+    
+    return $meta;
+}
+
+/**
+ * Return array of user name, to be used in display name user field
+ * @param  integer $user_id
+ * @return array
+ * @since 2.1
+ */
+function ap_user_get_display_name_option($user_id = false){
+    $user_id = ap_parameter_empty(@$user_id, @ap_user_get_the_ID());
+    $user = ap_user_get_the_meta($user_id);
+
+    $public_display = array();
+
+    if( !empty($user['nickname']) )
+        $public_display[$user['nickname']] = $user['nickname'];
+
+    if( !empty($user['user_login']) )
+        $public_display[$user['user_login']] = $user['user_login'];
+
+    if ( !empty($user['first_name']) )
+        $public_display[$user['first_name']] = $user['first_name'];
+
+    if ( !empty($user['last_name']) )
+        $public_display[$user['last_name']] = $user['last_name'];
+
+    if ( !empty($user['first_name']) && !empty($user['last_name']) ) {
+        $public_display[$user['first_name'] . ' ' . $user['last_name']] = $user['first_name'] . ' ' . $user['last_name'];
+        $public_display[$user['last_name'] . ' ' . $user['first_name']] = $user['last_name'] . ' ' . $user['first_name'];
+    }
+
+    return $public_display;
+}
