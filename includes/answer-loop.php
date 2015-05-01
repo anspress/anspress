@@ -196,6 +196,9 @@ function ap_the_answer(){
 }
 
 function ap_answer_the_object(){
+    if(!@anspress()->answers)
+        return;
+
     return anspress()->answers->post;
 }
 
@@ -214,6 +217,9 @@ function ap_answer_the_answer_id(){
      * @since 2.1
      */
     function ap_answer_get_the_answer_id(){
+        if(!is_object(ap_answer_the_object()))
+            return false;
+
         return ap_answer_the_object()->ID;
     }
 
@@ -250,7 +256,7 @@ function ap_answer_user_can_view(){
  * @since 2.1
  */
 function ap_answer_is_best($answer_id = false){
-    $answer_id = ap_parameter_empty($answer_id, ap_answer_get_the_answer_id());
+    $answer_id = ap_parameter_empty($answer_id, @ap_answer_get_the_answer_id());
 
     $meta = get_post_meta($answer_id, ANSPRESS_BEST_META, true);
     

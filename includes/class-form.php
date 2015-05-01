@@ -87,7 +87,7 @@ class AnsPress_Form {
         $this->form_head();
         $this->form_fields();
 
-        if(@$this->args['hide_footer'] === false){
+        if(!isset($this->args['hide_footer']) || $this->args['hide_footer'] !== false){
             $this->hidden_fields();
             $this->form_footer();
         }
@@ -117,7 +117,7 @@ class AnsPress_Form {
         do_action('ap_form_before_'. $this->name);
         $this->output .= ob_get_clean();
 
-        if(@$this->args['hide_footer'] === false)
+        if(!isset($this->args['hide_footer']) || $this->args['hide_footer'] !== false)
             $this->output .= '<form id="'.$this->args['name'].'" method="'.$this->args['method'].'" action="'.$this->args['action'].'"'.$attr.'>';
     }
 

@@ -38,7 +38,7 @@ if (!class_exists('AnsPress')) {
     class AnsPress
     {
 
-        private $_plugin_version = '2.0.5';
+        private $_plugin_version = '2.1';
 
         private $_plugin_path;
 
