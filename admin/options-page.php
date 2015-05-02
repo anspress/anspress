@@ -20,7 +20,7 @@ class AnsPress_Options_Page
 				'type' => 'page_select',
 				'value' => @$settings['base_page'],
 				'show_desc_tip' => false,
-			) ,
+			),
 			array(
 				'name' => 'anspress_opt[author_credits]',
 				'label' => __('Hide author credits', 'ap') ,
@@ -29,7 +29,7 @@ class AnsPress_Options_Page
 				'value' => @$settings['author_credits'],
 				'order' => '1',
 				'show_desc_tip' => false,
-			) ,
+			),
 			array(
 				'name' => 'anspress_opt[allow_private_posts]',
 				'label' => __('Allow private posts', 'ap') ,
@@ -37,7 +37,7 @@ class AnsPress_Options_Page
 				'type' => 'checkbox',
 				'value' => @$settings['allow_private_posts'],
 				'show_desc_tip' => false,
-			) ,
+			),
 
 			array(
 				'name' => 'anspress_opt[db_cleanup]',
@@ -46,7 +46,15 @@ class AnsPress_Options_Page
 				'type' => 'checkbox',
 				'value' => @$settings['db_cleanup'],
 				'show_desc_tip' => false,
-			) ,
+			),
+			array(
+				'name' => 'anspress_opt[question_permalink_follow]',
+				'label' => __('Show question permalink under base page', 'ap') ,
+				'desc' => __('i.e. '.home_url('/BASE_PAGE/question/QUESTION_TITLE'), 'ap') ,
+				'type' => 'checkbox',
+				'value' => @$settings['question_permalink_follow'],
+				'show_desc_tip' => false,
+			),
 		));
 		
 		//Register layout settings

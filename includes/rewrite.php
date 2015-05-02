@@ -72,6 +72,8 @@ class AnsPress_Rewrite
 		
 		$slug = ap_base_page_slug().'/';
 
+
+
 		$new_rules = array(  
 			
 			//$slug. "parent/([^/]+)/?" => "index.php?page_id=".$base_page_id."&parent=".$wp_rewrite->preg_index(1),		
@@ -85,9 +87,6 @@ class AnsPress_Rewrite
 			$slug. "tag/([^/]+)/?" => "index.php?page_id=".$base_page_id."&ap_page=tag&q_tag=".$wp_rewrite->preg_index(1),
 
 			$slug. "page/?([0-9]{1,})/?$" => "index.php?page_id=".$base_page_id."&paged=".$wp_rewrite->preg_index(1), 
-
-			/* question */
-			"question/([^/]+)/page/?([0-9]{1,})/?$" => "index.php?page_id=".$base_page_id."&question_name=".$wp_rewrite->preg_index(1)."&paged=".$wp_rewrite->preg_index(2),
 			
 			"question/([^/]+)/?" => "index.php?page_id=".$base_page_id."&question_name=".$wp_rewrite->preg_index(1),
 			
@@ -104,9 +103,20 @@ class AnsPress_Rewrite
 			$slug. "ask/([^/]+)/?" => "index.php?page_id=".$base_page_id."&ap_page=ask&parent=".$wp_rewrite->preg_index(1),
 			
 			$slug. "([^/]+)/?" => "index.php?page_id=".$base_page_id."&ap_page=".$wp_rewrite->preg_index(1),
-			
-			//"feed/([^/]+)/?" => "index.php?feed=feed&parent=".$wp_rewrite->preg_index(1),
 		);
+
+		if(!ap_opt('question_permalink_follow')){
+			
+			$new_rules["question/([^/]+)/page/?([0-9]{1,})/?$"] =  "index.php?page_id=".$base_page_id."&question_name=".$wp_rewrite->preg_index(1)."&paged=".$wp_rewrite->preg_index(2);
+			
+			$new_rules["question/([^/]+)/page/?([0-9]{1,})/?$"]  = "index.php?page_id=".$base_page_id."&question_name=".$wp_rewrite->preg_index(1)."&paged=".$wp_rewrite->preg_index(2);
+
+		}else{
+
+			$new_rules[$slug."question/([^/]+)/page/?([0-9]{1,})/?$"] = "index.php?page_id=".$base_page_id."&question_name=".$wp_rewrite->preg_index(1)."&paged=".$wp_rewrite->preg_index(2);
+			
+			$new_rules[$slug."question/([^/]+)/page/?([0-9]{1,})/?$"] = "index.php?page_id=".$base_page_id."&question_name=".$wp_rewrite->preg_index(1)."&paged=".$wp_rewrite->preg_index(2);
+		}
 
 		$ap_rules = $new_rules;
 
