@@ -14,7 +14,7 @@
  */
 if(ap_question_best_answer_selected(get_question_id())){
 	echo '<div id="ap-best-answer">';
-		echo '<h3 class="ap-answers-label">' . __('Best answer', 'ap') .'</h3>';
+		echo '<h3 class="ap-answers-label"><span>' . __('Best answer', 'ap') .'</span></h3>';
 		ap_get_best_answer();
 	echo '</div>';
 }

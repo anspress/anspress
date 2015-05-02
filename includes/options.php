@@ -25,7 +25,7 @@ if ( ! defined( 'WPINC' ) ) {
  */
 function ap_opt($key = false, $value = null){
 	$settings = wp_cache_get('ap_opt', 'options');
-	
+
 	if($settings === false){
 		$settings = get_option( 'anspress_opt');
 		if(!$settings)

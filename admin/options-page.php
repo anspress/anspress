@@ -3,7 +3,7 @@ class AnsPress_Options_Page
 {
 	public function __construct()
 	{
-		add_action('init', array($this, 'add_option_groups'), 2 );
+		add_action('init', array($this, 'add_option_groups'), 11 );
 	}
 	
 	public function add_option_groups() 

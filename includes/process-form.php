@@ -662,7 +662,7 @@ class AnsPress_Process_Form
 	}
 
 	public function options_form()
-	{
+	{		
 		if(!isset($_POST['__nonce']) || !wp_verify_nonce( $_POST['__nonce'], 'nonce_option_form' ) || !current_user_can('manage_options'))
 			return;
 
@@ -679,7 +679,6 @@ class AnsPress_Process_Form
 
 			update_option('anspress_opt', $old_options);
 			wp_cache_delete( 'ap_opt', 'options' );
-
 			$_POST['anspress_opt_updated'] = true;
 			//$result = array('status' => true, 'html' => '<div class="updated fade" style="display:none"><p><strong>'.__( 'AnsPress options updated successfully', 'ap' ).'</strong></p></div>');
 		}
