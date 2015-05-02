@@ -72,11 +72,11 @@ class AnsPress_Rewrite
 		
 		$slug = ap_base_page_slug().'/';
 
-
+		
 
 		$new_rules = array(  
 			
-			//$slug. "parent/([^/]+)/?" => "index.php?page_id=".$base_page_id."&parent=".$wp_rewrite->preg_index(1),		
+			$slug. "parent/([^/]+)/?" => "index.php?page_id=".$base_page_id."&parent=".$wp_rewrite->preg_index(1),		
  
 			$slug. "category/([^/]+)/page/?([0-9]{1,})/?$" => "index.php?page_id=".$base_page_id."&ap_page=category&q_cat=".$wp_rewrite->preg_index(1)."&paged=".$wp_rewrite->preg_index(2),   
 			
@@ -88,35 +88,36 @@ class AnsPress_Rewrite
 
 			$slug. "page/?([0-9]{1,})/?$" => "index.php?page_id=".$base_page_id."&paged=".$wp_rewrite->preg_index(1), 
 			
-			"question/([^/]+)/?" => "index.php?page_id=".$base_page_id."&question_name=".$wp_rewrite->preg_index(1),
-			
 			$slug. "([^/]+)/page/?([0-9]{1,})/?$" => "index.php?page_id=".$base_page_id."&ap_page=".$wp_rewrite->preg_index(1)."&paged=".$wp_rewrite->preg_index(2),
-			
-			$slug. "user/([^/]+)/([^/]+)/page/?([0-9]{1,})/?$" => "index.php?page_id=".$base_page_id."&ap_page=user&ap_user=". $wp_rewrite->preg_index(1)."&user_page=". $wp_rewrite->preg_index(2)."&paged=".$wp_rewrite->preg_index(3),
 
-			$slug. "user/([^/]+)/([^/]+)/?" => "index.php?page_id=".$base_page_id."&ap_page=user&ap_user=". $wp_rewrite->preg_index(1)."&user_page=". $wp_rewrite->preg_index(2),
-			
-			$slug. "user/([^/]+)/?" => "index.php?page_id=".$base_page_id."&ap_page=user&ap_user=".$wp_rewrite->preg_index(1),
-			
-			$slug. "search/([^/]+)/?" => "index.php?page_id=".$base_page_id."&ap_page=search&ap_s=". $wp_rewrite->preg_index(1),			
-			
-			$slug. "ask/([^/]+)/?" => "index.php?page_id=".$base_page_id."&ap_page=ask&parent=".$wp_rewrite->preg_index(1),
-			
-			$slug. "([^/]+)/?" => "index.php?page_id=".$base_page_id."&ap_page=".$wp_rewrite->preg_index(1),
 		);
 
 		if(!ap_opt('question_permalink_follow')){
 			
 			$new_rules["question/([^/]+)/page/?([0-9]{1,})/?$"] =  "index.php?page_id=".$base_page_id."&question_name=".$wp_rewrite->preg_index(1)."&paged=".$wp_rewrite->preg_index(2);
 			
-			$new_rules["question/([^/]+)/page/?([0-9]{1,})/?$"]  = "index.php?page_id=".$base_page_id."&question_name=".$wp_rewrite->preg_index(1)."&paged=".$wp_rewrite->preg_index(2);
+			$new_rules["question/([^/]+)/?$"]  = "index.php?page_id=".$base_page_id."&question_name=".$wp_rewrite->preg_index(1);
 
 		}else{
 
 			$new_rules[$slug."question/([^/]+)/page/?([0-9]{1,})/?$"] = "index.php?page_id=".$base_page_id."&question_name=".$wp_rewrite->preg_index(1)."&paged=".$wp_rewrite->preg_index(2);
 			
-			$new_rules[$slug."question/([^/]+)/page/?([0-9]{1,})/?$"] = "index.php?page_id=".$base_page_id."&question_name=".$wp_rewrite->preg_index(1)."&paged=".$wp_rewrite->preg_index(2);
+			$new_rules[$slug."question/([^/]+)/?$"] = "index.php?page_id=".$base_page_id."&question_name=".$wp_rewrite->preg_index(1);
 		}
+
+		$new_rules[$slug. "user/([^/]+)/([^/]+)/page/?([0-9]{1,})/?$"] = "index.php?page_id=".$base_page_id."&ap_page=user&ap_user=". $wp_rewrite->preg_index(1)."&user_page=". $wp_rewrite->preg_index(2)."&paged=".$wp_rewrite->preg_index(3);
+
+		$new_rules[$slug. "user/([^/]+)/([^/]+)/?"] = "index.php?page_id=".$base_page_id."&ap_page=user&ap_user=". $wp_rewrite->preg_index(1)."&user_page=". $wp_rewrite->preg_index(2);
+
+		$new_rules[$slug. "user/([^/]+)/?"] = "index.php?page_id=".$base_page_id."&ap_page=user&ap_user=".$wp_rewrite->preg_index(1);
+
+		$new_rules[$slug. "search/([^/]+)/?"] = "index.php?page_id=".$base_page_id."&ap_page=search&ap_s=". $wp_rewrite->preg_index(1);
+
+		$new_rules[$slug. "ask/([^/]+)/?"] = "index.php?page_id=".$base_page_id."&ap_page=ask&parent=".$wp_rewrite->preg_index(1);
+
+		$new_rules[$slug. "([^/]+)/?"] = "index.php?page_id=".$base_page_id."&ap_page=".$wp_rewrite->preg_index(1);
+		
+		
 
 		$ap_rules = $new_rules;
 
