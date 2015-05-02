@@ -1539,6 +1539,7 @@
   margin: 0;
   padding: 5px 0;
   color: #333333;
+  white-space: nowrap;
 }
 .ap-user-meta-display_name {
   font-size: 14px;
