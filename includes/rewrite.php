@@ -138,7 +138,7 @@ class AnsPress_Rewrite
 
 	public function add_query_var($wp) {
 	    if(!empty($wp->query_vars['question_name'])){
-	        $question =  get_page_by_path( sanitize_text_field( $wp->query_vars['question_name'] ), 'OBJECT', 'question' );
+	        $question =  get_page_by_path( $wp->query_vars['question_name'], 'OBJECT', 'question' );
 
 	        if($question)
 	        	$wp->set_query_var('question_id', $question->ID);
