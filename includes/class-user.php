@@ -25,6 +25,7 @@ class AnsPress_User
         add_filter('pre_user_query', array($this, 'user_sort_by_reputation'));
         add_action('wp_ajax_ap_cover_upload', array($this, 'cover_upload'));
         add_action('wp_ajax_ap_avatar_upload', array($this, 'avatar_upload'));
+        add_filter( 'avatar_defaults' , array($this, 'default_avatar') );
         add_filter('get_avatar', array($this, 'get_avatar'), 10, 5);
         //add_filter('ap_user_menu', array($this, 'ap_user_menu_icons'));
     }
@@ -185,6 +186,13 @@ class AnsPress_User
         die(json_encode($result));
     }
 
+    public function default_avatar($avatar_defaults){
+        $new_avatar = 'ANSPRESS_AVATAR_SRC';
+        $avatar_defaults[$new_avatar] = 'AnsPress';
+
+        return $avatar_defaults;
+    }
+
     /**
      * Override get_avatar
      * @param  string $avatar
@@ -222,7 +230,6 @@ class AnsPress_User
                 $id_or_email = $u->ID;
             }
 
-            
             $resized     = ap_get_avatar_src($id_or_email, $size);
 
             if ($resized) {
@@ -230,9 +237,13 @@ class AnsPress_User
             } 
         }
 
-        $display_name = ap_user_display_name(array('user_id' => $id_or_email));
+        if(strpos($avatar, 'ANSPRESS_AVATAR_SRC') !== false){
+            $display_name = ap_user_display_name(array('user_id' => $id_or_email));
 
-        return '<img data-cont="avatar_' . $id_or_email . '" alt="' . $alt . '" data-name="' . $display_name . '" data-height="' . $size . '" data-width="' . $size . '" data-char-count="1" class="ap-dynamic-avatar"/>';
+            return '<img data-cont="avatar_' . $id_or_email . '" alt="' . $alt . '" data-name="' . $display_name . '" data-height="' . $size . '" data-width="' . $size . '" data-char-count="1" class="ap-dynamic-avatar"/>';
+        }
+
+        return $avatar;
     }
 
     /**

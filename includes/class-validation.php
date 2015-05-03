@@ -94,11 +94,11 @@ class AnsPress_Validation
             $this->errors[$field] = sprintf(__('It must be minimum %d characters', 'ap'), $param);
     }
 
-    private function is_email($field, $param)
+    private function is_email($field)
     {
         $email = is_email($this->fields[$field]);
         if(!$email )
-            $this->errors[$field] = sprintf(__('Not a valid email address', 'ap'), $param);
+            $this->errors[$field] = __('Not a valid email address', 'ap');
         else
             $this->fields[$field] = $email;
     }
