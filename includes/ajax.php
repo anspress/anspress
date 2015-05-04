@@ -295,8 +295,16 @@ class AnsPress_Ajax
 				elseif($status == 'closed')
 					$update_data['post_status'] = 'closed';
 
+				// unregister history action for edit
+				remove_action('ap_after_new_answer', array('AP_History', 'new_answer'));
+				remove_action('ap_after_new_question', array('AP_History', 'new_question'));
+
 				$update_data['ID'] = $post->ID;
 				wp_update_post( $update_data );
+				
+				ap_add_history(get_current_user_id(), $post_id, '', 'status_updated');
+
+				add_action('ap_post_status_updated', $post->ID);
 
 				ob_start();
 					ap_post_status_description($post->ID);

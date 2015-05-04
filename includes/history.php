@@ -142,6 +142,7 @@ function ap_history_title($slug, $parm = ''){
 		'edit_comment' 		=> __('edited comment', 'ap'),
 		'answer_selected' 	=> __('selected answer', 'ap'),
 		'answer_unselected' => __('unselected answer', 'ap'),
+		'status_updated' 	=> __('updated status', 'ap'),
 	);
 	$title = apply_filters('ap_history_name', $title);
 	
