@@ -114,7 +114,7 @@ jQuery(document).ready(function() {
     });
 
     // Dropdown toggle
-    jQuery('.ap-dropdown-toggle').click(function(e){
+    jQuery('body').delegate('.ap-dropdown-toggle', 'click', function(e){
         e.preventDefault();
         jQuery('.ap-dropdown').removeClass('open');
         jQuery(this).closest('.ap-dropdown').addClass('open');
