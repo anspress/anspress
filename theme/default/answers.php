@@ -17,7 +17,7 @@
 			<h3 class="ap-answers-label ap-pull-left">
 				<?php printf(_n('%1$s answer', '%2$s answers', ap_answer_get_the_count(), 'ap'), '<span data-view="answer_count">1</span>', '<span data-view="answer_count">'.ap_answer_get_the_count().'</span>'); ?>
 			</h3>
-			<?php ap_answers_tab(); ?>
+			<?php ap_answers_tab(ap_question_get_the_permalink()); ?>
 		</div>
 
 		<?php if(ap_user_can_see_answers()): ?>
