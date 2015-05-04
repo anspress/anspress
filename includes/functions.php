@@ -615,6 +615,9 @@ function ap_form_allowed_tags(){
 		'img' => array(
 			'src' => array(),
 			),
+		'ul' => array(),
+		'ol' => array(),
+		'li' => array(),
 		);
 	
 	/**
