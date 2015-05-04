@@ -55,11 +55,11 @@ function ap_answer_form($question_id, $editing = false){
                 'name' => 'description',
                 'type'  => 'editor',
                 'value' => ( $editing ? $editing_post->post_content : @$_POST['description']  ),
-                'settings' => array(
+                'settings' => apply_filters( 'ap_answer_form_editor_settings', array(
                     'textarea_rows' => 8,
                     'tinymce' => ap_opt('answer_text_editor') ? false : true,
                     'quicktags' => false,
-                ),
+                )),
                 'placeholder'  => __('Your answer..'),
             ),
             array(

@@ -73,11 +73,11 @@ function ap_ask_form($editing = false){
                 'type'  => 'editor',
                 'desc'  => __('Write description for the question.', 'ap'),
                 'value' => ( $editing ? $editing_post->post_content : @$_POST['description']  ),
-                'settings' => array(
+                'settings' => apply_filters( 'ap_ask_form_editor_settings', array(
                     'textarea_rows' => 8,
                     'tinymce' => ap_opt('question_text_editor') ? false : true,
                     'quicktags' => false,
-                ),
+                )),
             ),
             array(
                 'name' => 'parent_id',
