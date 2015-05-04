@@ -601,19 +601,32 @@ function ap_is_ajax(){
  * @since 0.9
  */
 function ap_form_allowed_tags(){
+	$allowed_style = array(
+		'align' => true
+	);
 	$allowed_tags = array(
+		'p' => array(
+			'style' => $allowed_style,
+			'title' => true
+			),
+		'span' => array(
+			'style' => $allowed_style,
+			),
 		'a' => array(
-			'href' => array(),
-			'title' => array()
+			'href' => true,
+			'title' => true
 			),
 		'br' => array(),
 		'em' => array(),
-		'strong' => array(),
+		'strong' => array(
+			'style' => $allowed_style,
+			),
 		'pre' => array(),
 		'code' => array(),
 		'blockquote' => array(),
 		'img' => array(
-			'src' => array(),
+			'src' => true,
+			'style' => $allowed_style,
 			),
 		'ul' => array(),
 		'ol' => array(),
