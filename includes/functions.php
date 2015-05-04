@@ -618,6 +618,7 @@ function ap_form_allowed_tags(){
 		'ul' => array(),
 		'ol' => array(),
 		'li' => array(),
+		'del' => array(),
 		);
 	
 	/**
