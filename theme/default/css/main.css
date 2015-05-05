@@ -2162,6 +2162,9 @@
   vertical-align: top;
   margin: 0;
 }
+.screen-reader-text {
+  display: none;
+}
 #anspress .ap-comment-block {
   background: none repeat scroll 0 0 #fcfcfc;
   border: 1px solid #eee;
