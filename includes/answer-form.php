@@ -48,7 +48,7 @@ function ap_answer_form($question_id, $editing = false){
     $args = array(
         'name'              => 'answer_form',
         'is_ajaxified'      => true,
-        'submit_button'     => __('Post answer', 'ap'),
+        'submit_button'     => ($editing ? __('Update answer', 'ap') : __('Post answer', 'ap')),
         'nonce_name'        => 'nonce_answer_'.$question_id,
         'fields'            => array(
             array(

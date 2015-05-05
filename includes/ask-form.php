@@ -48,7 +48,7 @@ function ap_ask_form($editing = false){
     $args = array(
         'name'              => 'ask_form',
         'is_ajaxified'      => true,
-        'submit_button'     => __('Post question', 'ap'),
+        'submit_button'     => ($editing ? __('Update question', 'ap') : __('Post question', 'ap')),
         'fields'            => array(
             array(
                 'name' => 'title',
