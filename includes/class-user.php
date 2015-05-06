@@ -16,7 +16,7 @@ class AnsPress_User
      * Store upload error
      * @var string
      */
-    var $upload_error;
+    private $upload_error;
 
     /**
      * Initialize the plugin by setting localization and loading public scripts
@@ -136,12 +136,26 @@ class AnsPress_User
         return $query;
     }
 
-    function unique_filename_callback( $dir, $user_id, $ext ) {
+    /**
+     * Create unique name for files
+     * @param  string $dir
+     * @param  integer $user_id
+     * @param  string $ext
+     * @return string
+     * @since 2.1.5
+     */
+    public function unique_filename_callback( $dir, $user_id, $ext ) {
         global $user_id;
         $md5 = md5($user_id.time());
         return $md5 . $ext;
     } 
 
+    /**
+     * Upload a photo to server. Before uploading it check for valid image type
+     * @uses wp_handle_upload
+     * @param  string $file_name Name of file input field
+     * @return array
+     */
     public function upload_photo($file_name)
     {
         require_once ABSPATH."wp-admin".'/includes/image.php';
@@ -152,9 +166,7 @@ class AnsPress_User
             $mimes = array (
                 'jpg|jpeg|jpe'=>'image/jpeg',
                 'gif'=>'image/gif',
-                'png'=>'image/png',
-                'bmp'=>'image/bmp',
-                'tif|tiff'=>'image/tiff'
+                'png'=>'image/png'
             );
 
             $photo = wp_handle_upload( $_FILES[ $file_name ], array ( 'mimes'=>$mimes, 'test_form'=>false, 'unique_filename_callback'=>array ( $this, 'unique_filename_callback' ) ) );

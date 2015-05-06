@@ -417,10 +417,10 @@ function ap_displayed_user_id(){
 
 /**
  * Retrive image url
- * @param  integer $size
- * @param  boolean $default
- * @return string
- * @since  0.0.1
+ * @param  integer $user_id WordPress user id
+ * @param  boolean $small Set as true if you want to get big avatar
+ * @return string|false Return url of avatar if file exisits else return false
+ * @since  2.1.5
  */
 function ap_get_avatar_src($user_id, $small = true) {
 
