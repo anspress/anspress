@@ -17,7 +17,8 @@
     "grunt-pot": "^0.2.1",
     "grunt-wp-i18n": "",
     "load-grunt-tasks": "",
-    "time-grunt": ""
+    "time-grunt": "",
+    "grunt-replace": ""
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

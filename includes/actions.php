@@ -160,7 +160,7 @@ class AnsPress_Actions
 		$post = get_post( $post_id );
 
 		if( $post->post_type == 'question') {
-			do_action('delete_question', $post->ID, $post->post_author);
+			do_action('ap_trash_question', $post);
 			ap_remove_parti($post->ID, $post->post_author, 'question');
 			ap_delete_meta(array('apmeta_type' => 'flag', 'apmeta_actionid' => $post->ID));
 			$arg = array(
@@ -171,11 +171,10 @@ class AnsPress_Actions
 			);
 			$ans = get_posts($arg);
 			if($ans>0){
-				foreach( $ans as $p){
-					do_action('ap_trash_question', $p->ID);
+				foreach( $ans as $p){					
 					ap_remove_parti($p->post_parent, $p->post_author, 'answer');
-
-					ap_delete_meta(array('apmeta_type' => 'flag', 'apmeta_actionid' => $post->ID));
+					do_action('ap_trash_multi_answer', $post);
+					ap_delete_meta(array('apmeta_type' => 'flag', 'apmeta_actionid' => $p->ID));
 					wp_trash_post($p->ID);
 				}
 			}
@@ -183,7 +182,7 @@ class AnsPress_Actions
 
 		if( $post->post_type == 'answer') {
 			$ans = ap_count_published_answers($post->post_parent);
-			do_action('ap_trash_answer', $post->ID);
+			do_action('ap_trash_answer', $post);
 			ap_remove_parti($post->post_parent, $post->post_author, 'answer');
 			ap_delete_meta(array('apmeta_type' => 'flag', 'apmeta_actionid' => $post->ID));
 			ap_remove_question_subscriber($post->ID, $post->post_author);

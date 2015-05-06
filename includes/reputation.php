@@ -27,7 +27,7 @@ class AnsPress_Reputation {
 		
 		add_action('ap_after_new_answer', array($this, 'new_answer'));
 		add_action('ap_untrash_answer', array($this, 'new_answer'));
-		add_action('ap_trash_answer', array($this, 'delete_answer'));
+		add_action('ap_trash_multi_answer', array($this, 'delete_answer'));
 		
 		add_action('ap_select_answer', array($this, 'select_answer'), 10, 3);
 		add_action('ap_unselect_answer', array($this, 'unselect_answer'), 10, 3);
@@ -59,9 +59,9 @@ class AnsPress_Reputation {
 	 * @param  integer $postid
 	 * @return boolean
 	 */
-	public function delete_question($postid) {
+	public function delete_question($post) {
 		$reputation = ap_reputation_by_event('new_question', true);
-		return ap_reputation_log_delete('question', get_current_user_id(), $reputation, $postid);
+		return ap_reputation_log_delete('question', get_current_user_id(), $reputation, $post->ID);
 	}
 	
 	/**
@@ -79,9 +79,9 @@ class AnsPress_Reputation {
 	 * @param  integer $postid
 	 * @return boolean
 	 */
-	public function delete_answer($postid) {
+	public function delete_answer($post) {
 		$reputation = ap_reputation_by_event('new_answer', true);
-		return ap_reputation_log_delete('answer', get_current_user_id(), $reputation, $postid);
+		return ap_reputation_log_delete('answer', get_current_user_id(), $reputation, $post->ID);
 	}
 	
 	/**
