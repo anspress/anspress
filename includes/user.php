@@ -426,7 +426,7 @@ function ap_get_avatar_src($user_id, $small = true) {
 
     $avatar = get_user_meta( $user_id, '_ap_avatar', true );
 
-    if($avatar){
+    if(is_array($avatar) && !empty($avatar)){
         if($small && file_exists($avatar['small_file']))
             return $avatar['small_url'];
 
