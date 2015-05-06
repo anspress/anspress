@@ -1,0 +1,52 @@
+{
+	"name": "AnsPress",
+	"version": "2.1.3",
+	"tested_up_to": "4.2",
+	"updated": "",
+	"licence": "GPL-3.0+",
+	"licence_link": "http://www.gnu.org/licenses/gpl.txt",
+	"text_domain": "ap",
+	"languages": ["fr_FR", "ru_RU"],
+	"download": {
+		"stable":{
+			"wp" : "https://downloads.wordpress.org/plugin/anspress-question-answer.2.0.4.zip",
+			"github" : "https://github.com/anspress/anspress/archive/2.0.5-4.zip"
+		},
+		"dev":{
+			"wp" : "https://downloads.wordpress.org/plugin/anspress-question-answer.zip",
+			"github" : "https://github.com/anspress/anspress/archive/master.zip"
+		}
+	},
+	"features":[
+		{
+			"title": "Voting up & down",
+			"icon": "icon-reputation",
+			"desc": "Registered user can vote up and down on both question and answers"
+		},
+		{
+			"title": "Flag and moderate",
+			"icon": "icon-flag",
+			"desc": "Hold new posts for moderation and allow community to flag posts"
+		},
+		{
+			"title": "Private question & answer",
+			"icon": "icon-gist-secret",
+			"desc": "User can ask private posts which are only visible to user level above moderator"
+		},
+		{
+			"title": "Best answer",
+			"icon": "icon-lock",
+			"desc": "Original poster or admin can select a best answer for a question."
+		},
+		{
+			"title": "Comments on question and answer",
+			"icon": "icon-comment-discussion",
+			"desc": "Registered user can comments on both question an answer"
+		},
+		{
+			"title": "User profile",
+			"icon": "icon-user",
+			"desc": "Frontend profile management and users activities, status and notifications"
+		}
+	]
+}
