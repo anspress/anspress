@@ -154,7 +154,7 @@ class AnsPress_User
      * Upload a photo to server. Before uploading it check for valid image type
      * @uses wp_handle_upload
      * @param  string $file_name Name of file input field
-     * @return array
+     * @return array|false
      */
     public function upload_photo($file_name)
     {
@@ -299,7 +299,7 @@ class AnsPress_User
 
             $ap_avatar     = ap_get_avatar_src($id_or_email, ($size > 50 ? false:  true) );
 
-            if ($ap_avatar) {
+            if ($ap_avatar !== false) {
                 return "<span data-view='user_avatar_{$id_or_email}'><img data-cont='avatar_{$id_or_email}' alt='{$alt}' src='{$ap_avatar}' class='avatar avatar-{$size} photo' height='{$size}' width='{$size}' /></span>";
             } 
         }

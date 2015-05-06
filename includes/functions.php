@@ -474,7 +474,7 @@ function ap_select_answer_btn_html($post_id){
  * @return void|string
  */
 function ap_post_delete_btn_html($post_id = false, $echo = false){
-	if(!$post_id){
+	if($post_id === false){
 		$post_id = get_the_ID();
 	}
 	if(ap_user_can_delete($post_id)){		
