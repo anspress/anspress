@@ -215,15 +215,17 @@ function ap_user_can_select_answer($post_id){
 
 /* Check if a user can edit answer on a question */
 function ap_user_can_edit_ans($post_id){
-	if(current_user_can('ap_edit_answer') || current_user_can('ap_edit_others_answer') || is_super_admin()){
-		$post = get_post($post_id);
-		global $current_user;
-		$user_id		= $current_user->ID;
-		if(($post->post_author ==  $user_id) || current_user_can('ap_edit_others_answer') || is_super_admin())
-			return true;
-		else
-			return false;
+	if(current_user_can('ap_edit_others_answer') || is_super_admin()){
+		return true;
 	}
+	
+	if(current_user_can('ap_edit_answer')){
+		$post = get_post($post_id);
+		
+		if($post->post_author ==  get_current_user_id())
+			return true;
+	}
+	
 	return false;
 }
 

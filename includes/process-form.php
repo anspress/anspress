@@ -391,11 +391,7 @@ class AnsPress_Process_Form
 			return;
 		}
 
-		$question = get_post((int)$_POST['form_question_id']);
-
-		// Do security check, if fails then return
-		if(!ap_user_can_answer($question->ID) || !isset($_POST['__nonce']) || !wp_verify_nonce($_POST['__nonce'], 'nonce_answer_'.$question->ID))
-			return;
+		$question = get_post((int)$_POST['form_question_id']);		
 
 		$args = array(
 			'description' => array(
@@ -447,6 +443,11 @@ class AnsPress_Process_Form
 			return;
 		}
 
+		// Do security check, if fails then return
+		if(!ap_user_can_answer($question->ID) || !isset($_POST['__nonce']) || !wp_verify_nonce($_POST['__nonce'], 'nonce_answer_'.$question->ID)){
+			$this->result = ap_ajax_responce( 'no_permission');
+			return;
+		}
 
 		$user_id = get_current_user_id();
 
@@ -533,10 +534,12 @@ class AnsPress_Process_Form
 	public function edit_answer($question)
 	{
 		global $ap_errors, $validate;
-		
+
 		// return if user do not have permission to edit this answer
-		if( !ap_user_can_edit_ans($this->fields['edit_post_id']))
+		if( !ap_user_can_edit_ans($this->fields['edit_post_id'])){
+			$this->result = ap_ajax_responce( 'no_permission');
 			return;
+		}
 		
 		$answer = get_post($this->fields['edit_post_id']);
 		
