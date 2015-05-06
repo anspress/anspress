@@ -192,7 +192,7 @@ function ap_last_active_time($post_id = false, $html = true){
 		return $history['date'];
 
 	$title = ap_history_title($history['type']);
-	$title = esc_html('<span class="ap-post-history">'.sprintf( __('%s %s about <time datetime="'. mysql2date('c', $history['date']) .'">%s</time> ago', 'ap'), ap_user_display_name($history['user_id']), $title, ap_human_time( mysql2date('U', $history['date'])) ).'</span>');
+	$title = esc_html('<span class="ap-post-history">'.sprintf( __('%s %s about %s ago', 'ap'), ap_user_display_name($history['user_id']), $title, '<time datetime="'. mysql2date('c', $history['date']) .'">'.ap_human_time( mysql2date('U', $history['date'])).'</time>' ).'</span>');
 
 	return sprintf( __('Active %s ago', 'ap'), '<a class="ap-tip" href="#" title="'. $title .'"><time datetime="'. mysql2date('c', $history['date']) .'">'.ap_human_time( mysql2date('U', $history['date'])) ).'</time></a>';
 }
