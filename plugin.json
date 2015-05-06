@@ -1,0 +1,22 @@
+{
+	"name": "Tags for AnsPress",
+	"description": "Add tag support in AnsPress",
+	"version": "1.2.5",
+	"tested_up_to": "4.2",
+	"updated": "",
+	"licence": "GPL-3.0+",
+	"licence_link": "http://www.gnu.org/licenses/gpl.txt",
+	"text_domain": "tags_for_anspress",
+	"languages": [],
+	"author": "AnsPress Team",
+	"download": {
+		"stable":{
+			"wp" : "https://downloads.wordpress.org/plugin/tags-for-anspress.zip",
+			"github" : "https://github.com/anspress/tags-for-anspress/archive/master.zip"
+		},
+		"dev":{
+			"wp" : "https://downloads.wordpress.org/plugin/tags-for-anspress.zip",
+			"github" : "https://github.com/anspress/tags-for-anspress/archive/master.zip"
+		}
+	}
+}

@@ -15,7 +15,7 @@
  * Plugin URI:        http://wp3.in/tags-for-anspress
  * Description:       Extension for AnsPress. Add tags in AnsPress.
  * Donate link: https://www.paypal.com/cgi-bin/webscr?business=rah12@live.com&cmd=_xclick&item_name=Donation%20to%20AnsPress%20development
- * Version:           1.2.4
+ * Version:           1.2.5
  * Author:            Rahul Aryan
  * Author URI:        http://wp3.in
  * Text Domain:       ap
@@ -279,7 +279,7 @@ class Tags_For_AnsPress
     public function ap_display_question_metas($metas, $question_id)
     {   
         if(ap_question_have_tags($question_id) && !is_singular('question'))
-            $metas['tags'] = ap_question_tags_html(array('label' => __('Tagged ', 'tags_for_anspress'), 'show' => 1));
+            $metas['tags'] = ap_question_tags_html(array('label' => ap_icon('tag', true), 'show' => 1));
 
         return $metas;
     }
