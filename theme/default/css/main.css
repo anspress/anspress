@@ -2155,6 +2155,30 @@
   line-height: 20px;
   margin-top: 5px;
 }
+#anspress .ap-avatar-upload-form .ap-upload-o {
+  font-size: 17px;
+  height: 30px;
+  line-height: 18px;
+  padding: 6px;
+  position: relative;
+  width: 30px;
+}
+#anspress .ap-avatar-upload-form .ap-upload-o > span {
+  display: none;
+}
+#anspress .ap-avatar-upload-form .ap-upload-input {
+  cursor: pointer;
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  zoom: 1;
+  filter: alpha(opacity=0);
+  -webkit-opacity: 0;
+  -moz-opacity: 0;
+  opacity: 0;
+}
 #ap-search-form {
   margin-bottom: 0;
 }
@@ -2297,6 +2321,24 @@
 }
 .ap-user-avatar {
   margin-right: 10px;
+  position: relative;
+}
+.ap-user-avatar .ap-avatar-upload-form {
+  left: 0;
+  position: absolute;
+  top: 0;
+  zoom: 1;
+  filter: alpha(opacity=50);
+  -webkit-opacity: 0.5;
+  -moz-opacity: 0.5;
+  opacity: 0.5;
+}
+.ap-user-avatar .ap-avatar-upload-form:hover {
+  zoom: 1;
+  filter: alpha(opacity=100);
+  -webkit-opacity: 1;
+  -moz-opacity: 1;
+  opacity: 1;
 }
 .ap-user-name {
   font-weight: 600;

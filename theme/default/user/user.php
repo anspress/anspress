@@ -8,9 +8,6 @@
  * @package AnsPress
  */
 
-///$ap_user 		= ap_user();
-//$ap_user_data 	= ap_user_data();
-
 ?>
 
 <?php while ( ap_users() ) : ap_the_user(); ?>
@@ -39,7 +36,8 @@
 				<div class="col-md-3 ap-user-left">
 					<div class="ap-user-info clearfix">
 						<div class="ap-user-avatar ap-pull-left">
-							<?php ap_user_the_avatar(50); ?>						
+							<?php ap_user_the_avatar(100); ?>
+							<?php ap_avatar_upload_form(); ?>
 						</div>
 						<div class="ap-user-data no-overflow">
 							<a class="ap-user-name" href="<?php ap_user_the_link(); ?>"><?php ap_user_the_display_name(); ?></a>

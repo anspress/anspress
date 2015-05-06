@@ -12,6 +12,11 @@ $user_pages = array();
 
 class AnsPress_User
 {
+    /**
+     * Store upload error
+     * @var string
+     */
+    var $upload_error;
 
     /**
      * Initialize the plugin by setting localization and loading public scripts
@@ -131,26 +136,41 @@ class AnsPress_User
         return $query;
     }
 
-    public function upload_file()
+    function unique_filename_callback( $dir, $user_id, $ext ) {
+        global $user_id;
+        $md5 = md5($user_id.time());
+        return $md5 . $ext;
+    } 
+
+    public function upload_photo($file_name)
     {
         require_once ABSPATH."wp-admin".'/includes/image.php';
         require_once ABSPATH."wp-admin".'/includes/file.php';
         require_once ABSPATH."wp-admin".'/includes/media.php';
-        if ($_FILES) {
-            foreach ($_FILES as $file => $array) {
-                if ($_FILES[$file]['error'] !== UPLOAD_ERR_OK) {
-                    echo "upload error : ".sanitize_text_field($_FILES[$file]['error']);
-                    die();
-                }
+        
+        if ( !empty( $_FILES[ $file_name ][ 'name' ] ) && is_uploaded_file( $_FILES[ $file_name ]['tmp_name'] )) {
+            $mimes = array (
+                'jpg|jpeg|jpe'=>'image/jpeg',
+                'gif'=>'image/gif',
+                'png'=>'image/png',
+                'bmp'=>'image/bmp',
+                'tif|tiff'=>'image/tiff'
+            );
 
-                return  media_handle_upload($file, 0);
+            $photo = wp_handle_upload( $_FILES[ $file_name ], array ( 'mimes'=>$mimes, 'test_form'=>false, 'unique_filename_callback'=>array ( $this, 'unique_filename_callback' ) ) );
+
+            if ( empty( $photo[ 'file' ] ) || isset( $photo['error'] ) ) { // handle failures
+                $this->upload_error = __('There was an error while uploading avatar, please check your image', 'ap');
+                return false;
             }
+
+            return $photo;
         }
     }
 
     public function cover_upload()
     {
-        if (ap_user_can_upload_cover() && wp_verify_nonce($_POST['nonce'], 'upload')) {
+        /*if (ap_user_can_upload_cover() && wp_verify_nonce($_POST['nonce'], 'upload')) {
             $attach_id = $this->upload_file();
             $userid = get_current_user_id();
             $previous_cover = get_user_meta($userid, '_ap_cover', true);
@@ -164,26 +184,61 @@ class AnsPress_User
             $result = array('status' => false, 'message' => __('Unable to upload cover.', 'ap'));
         }
 
-        die(json_encode($result));
+        die(json_encode($result));*/
     }
 
+    /**
+     * Process ajax user avatar upload request. Sanitize file and pass to upload_file(). Rename image to md5 and store file * name in user meta. Also remove existing avtar if exists
+     * @return void
+     */
     public function avatar_upload()
     {
-        if (ap_user_can_upload_cover() && wp_verify_nonce($_POST['nonce'], 'upload')) {
-            $attach_id = $this->upload_file();
+        if (wp_verify_nonce($_POST['__nonce'], 'upload_avatar_'.get_current_user_id())) {
+            
+            $photo = $this->upload_photo('thumbnail');
+            
+            $file = str_replace('\\', '\\\\', $photo['file']);
+            $photo['file'] = $file;
+
+            $photo['small_url'] = str_replace(basename($photo['url']), 'small_'.basename($photo['url']), $photo['url']);
+
+            $small_name = str_replace(basename($photo['file']), 'small_'.basename($photo['file']), $photo['file']);
+
+            $photo['small_file'] = $small_name;
+
+            if($photo === false)
+                ap_send_json( ap_ajax_responce(array('message' => $this->upload_error, 'type' => 'error')));
+
             $userid = get_current_user_id();
+            
+            // Remove previous image
             $previous_avatar = get_user_meta($userid, '_ap_avatar', true);
-            wp_delete_attachment($previous_avatar, true);
-            update_user_meta($userid, '_ap_avatar', $attach_id);
+            
+            if($previous_avatar['file'] && file_exists($previous_avatar['file']))
+                unlink( $previous_avatar['file'] );
 
-            $result = array('status' => true, 'message' => __('Avatar uploaded successfully.', 'ap'), 'view' => '[data-view="avatar-main"]', 'image' => get_avatar($userid, 105));
+            if($previous_avatar['small_file'] && file_exists($previous_avatar['small_file']))
+                unlink( $previous_avatar['small_file'] );
 
-            do_action('ap_after_avatar_upload', $userid, $attach_id);
-        } else {
-            $result = array('status' => false, 'message' => __('Unable to upload cover.', 'ap'));
+            // resize thumbnail
+            $image = wp_get_image_editor( $file );
+
+            if ( ! is_wp_error( $image ) ) {
+                $image->resize( 200, 200, true );
+                $image->save( $file );
+                $image->resize( 50, 50, true );
+                $image->save( $small_name );
+            }
+
+            update_user_meta($userid, '_ap_avatar', $photo);
+
+            do_action('ap_after_avatar_upload', $userid, $photo);
+
+            ap_send_json( ap_ajax_responce(array('status' => true, 'message' => __('Avatar uploaded successfully.', 'ap'), 'view' => array('user_avatar_'.$userid => get_avatar($userid, 105)))));            
         }
+        
+        ap_send_json( ap_ajax_responce(array('message' => __('There was an error while uploading avatar, please check your image', 'ap'), 'type' => 'error')));        
 
-        die(json_encode($result));
     }
 
     public function default_avatar($avatar_defaults){
@@ -230,17 +285,17 @@ class AnsPress_User
                 $id_or_email = $u->ID;
             }
 
-            $resized     = ap_get_avatar_src($id_or_email, $size);
+            $ap_avatar     = ap_get_avatar_src($id_or_email, ($size > 50 ? false:  true) );
 
-            if ($resized) {
-                return "<img data-cont='avatar_{$id_or_email}' alt='{$alt}' src='{$resized}' class='avatar avatar-{$size} photo' height='{$size}' width='{$size}' />";
+            if ($ap_avatar) {
+                return "<span data-view='user_avatar_{$id_or_email}'><img data-cont='avatar_{$id_or_email}' alt='{$alt}' src='{$ap_avatar}' class='avatar avatar-{$size} photo' height='{$size}' width='{$size}' /></span>";
             } 
         }
 
         if(strpos($avatar, 'ANSPRESS_AVATAR_SRC') !== false){
             $display_name = ap_user_display_name(array('user_id' => $id_or_email));
 
-            return '<img data-cont="avatar_' . $id_or_email . '" alt="' . $alt . '" data-name="' . $display_name . '" data-height="' . $size . '" data-width="' . $size . '" data-char-count="1" class="ap-dynamic-avatar"/>';
+            return '<span data-view="user_avatar_'.$id_or_email.'"><img data-cont="avatar_' . $id_or_email . '" alt="' . $alt . '" data-name="' . $display_name . '" data-height="' . $size . '" data-width="' . $size . '" data-char-count="1" class="ap-dynamic-avatar"/></span>';
         }
 
         return $avatar;

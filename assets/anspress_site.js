@@ -109,8 +109,13 @@
                    
                    if (typeof data.view !== 'undefined') {
                         $.each(data.view, function(i, view) {
-                            $('[data-view="' + i + '"]').text(view);
-                            if (view !== 0) $('[data-view="' + i + '"]').removeClass('ap-view-count-0');
+                            var html = $(view);
+                            console.log(html.is('[data-view="' + i + '"]'));
+                            if(html.is('[data-view="' + i + '"]'))
+                                html = html.children();
+
+                            $('[data-view="' + i + '"]').html(html);
+                            if (html !== 0) $('[data-view="' + i + '"]').removeClass('ap-view-count-0');
                         });
                     }
                 }

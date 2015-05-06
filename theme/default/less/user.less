@@ -5,6 +5,17 @@
 .ap-user{
 	&-avatar{
 		margin-right: 10px;
+		position: relative;
+		.ap-avatar-upload-form{
+		    left: 0;
+		    position: absolute;
+		    top: 0;
+		    .opacity(0.5);
+
+		    &:hover{
+		    	.opacity(1);
+		    }
+		}
 	}
 	&-name{
 		font-weight: 600;

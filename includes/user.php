@@ -422,22 +422,17 @@ function ap_displayed_user_id(){
  * @return string
  * @since  0.0.1
  */
-function ap_get_avatar_src($user_id, $size = 'thumbnail', $default = false) {
-    if ($default) {
-        $image      = wp_get_attachment_image_src(ap_opt('default_avatar') , 'thumbnail');
-    } 
-    else {
-        $image      = wp_get_attachment_image_src(get_user_meta($user_id, '__ap_avatar', true) , array(
-            $size,
-            $size
-            ));
-    }
-    
-    if ($image === false || !is_array($image) || empty($image[0])) {
-        return false;
-    }
-    
-    return $image[0];
+function ap_get_avatar_src($user_id, $small = true) {
+
+    $avatar = get_user_meta( $user_id, '_ap_avatar', true );
+
+    if($small && file_exists($avatar['small_file']))
+        return $avatar['small_url'];
+
+    if(file_exists($avatar['file']))
+        return $avatar['url'];
+
+    return false;
 }
 
 /**
@@ -503,5 +498,25 @@ function ap_user_display_meta($html = false, $user_id = false, $echo = false)
         echo $output;
     } else {
         return $output;
+    }
+}
+
+/**
+ * Output user profile photo upload form
+ * @return void
+ * @since 2.1.5
+ */
+function ap_avatar_upload_form(){
+    if(ap_get_displayed_user_id() == get_current_user_id()){
+        ?>
+        <form method="post" action="#" enctype="multipart/form-data" data-action="ap_upload_form" class="ap-avatar-upload-form">
+            <div class="ap-btn ap-tip ap-upload-o <?php echo ap_icon('upload'); ?>" title="<?php _e('Upload an avatar', 'ap'); ?>">
+                <span><?php _e('Upload avatar', 'ap'); ?></span>
+                <input type="file" name="thumbnail" class="ap-upload-input" data-action="ap_upload_field">
+            </div>
+            <input type='hidden' value='<?php echo wp_create_nonce( 'upload_avatar_'.get_current_user_id() ); ?>' name='__nonce' />
+            <input type="hidden" name="action" id="action" value="ap_avatar_upload">
+        </form>
+        <?php
     }
 }
