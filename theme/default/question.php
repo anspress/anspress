@@ -10,7 +10,7 @@
 ?>
 <div id="ap-single" class="ap-q clearfix" itemtype="http://schema.org/Question" itemscope="">	
 	<div class="ap-question-lr row">		
-		<div class="ap-q-left col-md-8">
+		<div class="ap-q-left <?php echo (is_active_sidebar( 'ap-qsidebar' ) || ap_opt('show_question_sidebar')) ? 'col-md-8' : 'col-md-12'; ?>">
 			<div class="ap-question-meta clearfix">					
 				<?php echo ap_display_question_metas() ?>
 			</div>
@@ -80,16 +80,18 @@
 			?>				
 			<?php ap_question_the_answer_form(); ?>
 		</div>
-		<?php //if ( is_active_sidebar( 'ap-qsidebar' ) ){ ?>
+		<?php if ( is_active_sidebar( 'ap-qsidebar' ) || ap_opt('show_question_sidebar')){ ?>
 			<div class="ap-question-right col-md-4">
-				<?php ap_subscribe_btn_html(); ?>
-				<?php ap_question_subscribers(); ?>
-				<h3 class="ap-widget-title"><?php _e('Question stats', 'ap'); ?></h3>
-				<?php the_widget('AnsPress_Stats_Widget'); ?>
+				<?php if(ap_opt('show_question_sidebar')): ?>
+					<?php ap_subscribe_btn_html(); ?>
+					<?php ap_question_subscribers(); ?>
+					<h3 class="ap-widget-title"><?php _e('Question stats', 'ap'); ?></h3>
+					<?php the_widget('AnsPress_Stats_Widget'); ?>
+				<?php endif; ?>
 				<div class="ap-question-info">
 					<?php dynamic_sidebar( 'ap-qsidebar' ); ?>
 				</div>
 			</div>
-		<?php //} ?>
+		<?php } ?>
 	</div>
 </div>

@@ -174,6 +174,14 @@ class AnsPress_Options_Page
 				'show_desc_tip' => false,
 			) ,
 			array(
+				'name' => 'anspress_opt[show_question_sidebar]',
+				'label' => __('Show question sidebar', 'ap') ,
+				'desc' => __('Subbscribe and and stats widget will shown in question page.', 'ap') ,
+				'type' => 'checkbox',
+				'value' => $settings['show_question_sidebar'],
+				'show_desc_tip' => false,
+			) ,
+			array(
 				'name' => '__sep',
 				'type' => 'custom',
 				'html' => '<span class="ap-form-separator">' . __('Page titles') . '</span>',
