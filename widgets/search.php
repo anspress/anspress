@@ -30,7 +30,7 @@ class AP_Search_Widget extends WP_Widget {
 			echo $args['before_title'] . $title . $args['after_title'];
 		}
 		?>
-			<form class="ap-quick-ask" action="<?php echo ap_get_link_to('search'); ?>" method="GET">
+			<form id="ap-search-form" class="ap-search-form" action="<?php echo ap_get_link_to('search'); ?>" method="GET">
 				<div class="ap-qaf-inner">
 					<input class="form-control" type="text" name="ap_s" id="ap-quick-ask-input" placeholder="<?php _e('Search questions & answers', 'ap'); ?>" value="<?php echo sanitize_text_field(get_query_var('ap_s')); ?>" autocomplete="off" />
 					<button type="submit" ><?php _e('Search', 'ap'); ?></button>

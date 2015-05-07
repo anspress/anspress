@@ -22,18 +22,18 @@ function ap_page_title() {
 	$pages = anspress()->pages;
 
 	$current_page  = get_query_var('ap_page');
-	
+
 	if(is_question())
 		$new_title = get_the_title(get_question_id());
 
 	elseif(is_ap_edit())
 		$new_title = __('Edit post', 'ap');
 	
-	elseif(isset($pages[$current_page]['title']))
-		$new_title = $pages[$current_page]['title'];
-
 	elseif(is_ap_search())
 		$new_title = sprintf(ap_opt('search_page_title'), sanitize_text_field(get_query_var('ap_s')));
+
+	elseif(isset($pages[$current_page]['title']))
+		$new_title = $pages[$current_page]['title'];
 
 	elseif($current_page == '' && !is_question() && get_query_var('question_name') == '')
 		$new_title = ap_opt('base_page_title');

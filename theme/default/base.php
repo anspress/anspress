@@ -1,6 +1,6 @@
 <?php dynamic_sidebar( 'ap-top' ); ?>
 <div class="row">
-	<div id="ap-lists" class="<?php echo is_active_sidebar( 'ap-sidebar' ) && is_anspress() ? 'col-md-8' : 'col-md-12' ?>">
+	<div id="ap-lists" class="<?php echo is_active_sidebar( 'ap-sidebar' ) && is_anspress() ? 'col-md-9' : 'col-md-12' ?>">
 		<?php ap_get_template_part('list-head'); ?>
 		<?php if ( ap_have_questions() ) : ?>
 			<div class="ap-questions">
@@ -19,10 +19,8 @@
 		?>	
 	</div>
 	<?php if ( is_active_sidebar( 'ap-sidebar' ) && is_anspress()){ ?>
-		<div class="ap-question-right col-md-4">
-			<div class="ap-question-info">
-				<?php dynamic_sidebar( 'ap-sidebar' ); ?>
-			</div>
+		<div class="ap-question-right col-md-3">
+			<?php dynamic_sidebar( 'ap-sidebar' ); ?>
 		</div>
 	<?php } ?>
 </div>

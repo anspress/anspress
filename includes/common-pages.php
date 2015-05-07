@@ -125,14 +125,9 @@ class AnsPress_Common_Pages
 
     public function search_page()
     {
-        global $questions;
         $keywords   = sanitize_text_field( get_query_var( 'ap_s' ));
-        $questions  = new Question_Query(array('s' => $keywords));
-
-        if($questions->have_posts())
-            include(ap_get_theme_location('base.php'));
-        else
-            _e('No posts found based on your criteria.', 'ap');
+        ap_get_questions(array('keywords' => $keywords));
+        include(ap_get_theme_location('base.php'));
     }
 
 }
