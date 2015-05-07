@@ -1,6 +1,6 @@
 {
 	"name": "AnsPress",
-	"version": "2.1.5",
+	"version": "2.1.6",
 	"tested_up_to": "4.2",
 	"updated": "",
 	"licence": "GPL-3.0+",
@@ -9,8 +9,8 @@
 	"languages": ["fr_FR", "ru_RU"],
 	"download": {
 		"stable":{
-			"wp" : "https://downloads.wordpress.org/plugin/anspress-question-answer.2.0.4.zip",
-			"github" : "https://github.com/anspress/anspress/archive/2.0.5-4.zip"
+			"wp" : "https://downloads.wordpress.org/plugin/anspress-question-answer.zip",
+			"github" : "https://github.com/anspress/anspress/archive/master.zip"
 		},
 		"dev":{
 			"wp" : "https://downloads.wordpress.org/plugin/anspress-question-answer.zip",
