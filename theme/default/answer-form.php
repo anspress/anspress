@@ -1,5 +1,4 @@
 <?php if(ap_user_can_answer(get_question_id())) : ?>
-	<h3 class="ap-answers-label"><?php _e('Your answer', 'ap') ?></h3>
 	<div id="answer-form-c">
 		<div class="ap-avatar ap-pull-left">
 			<a href="<?php echo ap_user_link(get_current_user_id()); ?>">

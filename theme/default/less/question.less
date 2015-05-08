@@ -231,13 +231,16 @@
 
 #answers, #ap-best-answer{
 	.ap-content{
-    	padding-top: 5px;
+    	padding-top: 0;
 	}
 	.ap-single-vote{
-		top: 20px;
+		top: 0;
 	}
 	.type-answer{
-		margin-top: 10px;
+		margin-top: 20px;
+		&:first-child{
+			margin-top:0;
+		}
 	}
 }
 #ap-best-answer {
@@ -285,7 +288,7 @@
 .ap-single-vote {
    	right: 0;
     position: absolute;
-    top: 5px;
+    top: 0;
 }
 .comment-awaiting-moderation {
     background: @yellow-color;
@@ -312,7 +315,7 @@
 	}
 }
 #answer-form-c {
-    border-top: 1px solid #eee;
-    margin-top: 5px;
-    padding-top: 15px;
+    margin-right: 40px;
+    margin-top: 20px;
+    padding-top: 0;
 }

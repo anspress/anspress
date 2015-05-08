@@ -1592,15 +1592,19 @@
 }
 #answers .ap-content,
 #ap-best-answer .ap-content {
-  padding-top: 5px;
+  padding-top: 0;
 }
 #answers .ap-single-vote,
 #ap-best-answer .ap-single-vote {
-  top: 20px;
+  top: 0;
 }
 #answers .type-answer,
 #ap-best-answer .type-answer {
-  margin-top: 10px;
+  margin-top: 20px;
+}
+#answers .type-answer:first-child,
+#ap-best-answer .type-answer:first-child {
+  margin-top: 0;
 }
 #ap-best-answer {
   margin-top: 20px;
@@ -1646,7 +1650,7 @@
 .ap-single-vote {
   right: 0;
   position: absolute;
-  top: 5px;
+  top: 0;
 }
 .comment-awaiting-moderation {
   background: #f4ac20;
@@ -1676,9 +1680,9 @@
   padding: 0;
 }
 #answer-form-c {
-  border-top: 1px solid #eee;
-  margin-top: 5px;
-  padding-top: 15px;
+  margin-right: 40px;
+  margin-top: 20px;
+  padding-top: 0;
 }
 #anspress .ap-btn {
   background: none repeat scroll 0 0 #f9f9f9;

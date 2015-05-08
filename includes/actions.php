@@ -46,6 +46,8 @@ class AnsPress_Actions
 
 		add_action( 'wp_loaded', array( $this, 'flush_rules' ) );
 
+		add_filter( 'teeny_mce_buttons', array($this, 'editor_buttons'), 10, 2 );
+
 	}
 
 	/**
@@ -354,4 +356,9 @@ class AnsPress_Actions
 		}
 	}
 
+	public function editor_buttons( $buttons, $editor_id )
+	{
+		if(is_anspress() && $editor_id == 'description')
+	    	return array( 'bold', 'italic', 'underline', 'strikethrough', 'bullist', 'numlist', 'link', 'unlink', 'blockquote' );
+	}
 }
