@@ -9,7 +9,6 @@
 	.ap-q{
 		.ap-avatar{
 			margin-right: 0x;
-    		margin-top: 5px;
     		position: absolute;
 		}
 
@@ -17,9 +16,10 @@
 		    margin-bottom: 20px;
 		}
 		&-cells {
+		    border: 1px solid #e7e7e7;
+		    border-radius: 3px;
 		    margin-left: 70px;
-    		margin-top: 10px;
-    		padding-bottom: 25px;    		
+		    padding: 15px;   		
 		}
 		&-metas{
 			margin-bottom: 10px;
@@ -116,8 +116,10 @@
 		}
 	}
 	.ap-a-cells {
+	    border: 1px solid #e7e7e7;
+	    border-radius: 3px;
 	    margin-left: 70px;
-		padding-bottom: 25px;
+	    padding: 15px;
 	}
 	.ap-question-meta {
         border-bottom: 1px solid #eee;
@@ -158,12 +160,8 @@
 			color: @link-color;
 		}
 		&-reputation{
-		    border: 1px solid #ddd;
-		    border-radius: 2px;
-		    font-size: 11px;
-		    font-weight: 600;
-		    margin-left: 5px;
-		    padding: 0 6px;
+		    font-size: 13px;
+    		font-weight: 600;
 		}
 	}
 	
@@ -229,45 +227,35 @@
 .ap-sorting-tab {
     margin-bottom: 0;
     padding: 5px 0;
-
-	.ap-answers-tab {
-	    float: right;
-	    margin: 0;
-	    border-bottom:none;
-	    padding: 0;
-	    list-style: none;
-		li{
-		    margin-left: 10px;
-		    margin-right: 0;
-		    > a{
-			    font-size: 12px;
-			    font-weight: 600;
-			    padding: 5px;
-			    display: block;
-		    }
-
-		    &.active a{
-		    	color: @default-color;
-		    }
-		}
-	}
 }
 
 #answers, #ap-best-answer{
 	.ap-content{
-	    border-top: 1px solid #eee;
-    	padding-top: 15px;
+    	padding-top: 5px;
 	}
 	.ap-single-vote{
 		top: 20px;
 	}
+	.type-answer{
+		margin-top: 10px;
+	}
 }
 #ap-best-answer {
-	position: relative;
+    margin-top: 20px;
+    position: relative;
 	.ap-content-inner {
 	    background: none repeat scroll 0 0 rgba(247, 254, 249, 0.33);
 	    border: 1px solid rgba(204, 218, 202, 0.22);
 	}
+}
+#ap-answers-c {
+    margin-top: 30px;
+    .ap-answers-tab > li a{
+    	padding: 3px 10px;
+    }
+    .ap-answers-tab > li.active a{
+    	padding: 4px 10px;
+    }
 }
 
 .ap-question-right {

@@ -137,7 +137,7 @@ if (!class_exists('AnsPress')) {
              }
 
              if (!defined('AP_DB_VERSION')) {
-                 define('AP_DB_VERSION', '15');
+                 define('AP_DB_VERSION', '12');
              }
 
              if (!defined('DS')) {
