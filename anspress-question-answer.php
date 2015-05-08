@@ -96,7 +96,7 @@ if (!class_exists('AnsPress')) {
                 self::$instance = new AnsPress();
                 self::$instance->_setup_constants();
                 
-                add_action('init', array( self::$instance, 'load_textdomain' ));
+                add_action('plugins_loaded', array( self::$instance, 'load_textdomain' ));
                 add_action('bp_include', array( self::$instance, 'bp_include' ));
 
                 global $ap_classes;
@@ -137,7 +137,7 @@ if (!class_exists('AnsPress')) {
              }
 
              if (!defined('AP_DB_VERSION')) {
-                 define('AP_DB_VERSION', '11');
+                 define('AP_DB_VERSION', '15');
              }
 
              if (!defined('DS')) {
@@ -260,7 +260,6 @@ if (!class_exists('AnsPress')) {
             require_once ANSPRESS_DIR.'includes/rewrite.php';            
             require_once ANSPRESS_DIR.'includes/reputation.php';            
             require_once ANSPRESS_DIR.'vendor/autoload.php';
-            require_once ANSPRESS_DIR.'includes/requirements.php';
             require_once ANSPRESS_DIR.'includes/class-user.php';
             require_once ANSPRESS_DIR.'includes/user.php';
             require_once ANSPRESS_DIR.'includes/users-loop.php';
@@ -278,7 +277,14 @@ if (!class_exists('AnsPress')) {
          */
         public function load_textdomain()
         {
-            load_plugin_textdomain($this->_text_domain, false, dirname(plugin_basename(__FILE__)).'/languages/');
+            $locale = apply_filters( 'plugin_locale', get_locale(), 'ap' );
+
+
+            if ( $loaded = load_textdomain( 'ap', trailingslashit( WP_LANG_DIR ) . 'ap' . '/' . 'ap' . '-' . $locale . '.mo' ) ) {
+                return $loaded;
+            } else {
+                load_plugin_textdomain( 'ap', FALSE, basename( dirname( __FILE__ ) ) . '/languages/' );
+            }
         }
 
         public function bp_include()

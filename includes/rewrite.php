@@ -105,6 +105,8 @@ class AnsPress_Rewrite
 			$new_rules[$slug."question/([^/]+)/?$"] = "index.php?page_id=".$base_page_id."&question_name=".$wp_rewrite->preg_index(1);
 		}
 
+		$new_rules["questions/question/([^/]+)/([^/]+)/?$"]  = "index.php?page_id=".$base_page_id."&question_id=".$wp_rewrite->preg_index(1)."&question_name=".$wp_rewrite->preg_index(2);
+
 		$new_rules[$slug. "user/([^/]+)/([^/]+)/page/?([0-9]{1,})/?$"] = "index.php?page_id=".$base_page_id."&ap_page=user&ap_user=". $wp_rewrite->preg_index(1)."&user_page=". $wp_rewrite->preg_index(2)."&paged=".$wp_rewrite->preg_index(3);
 
 		$new_rules[$slug. "user/([^/]+)/([^/]+)/?"] = "index.php?page_id=".$base_page_id."&ap_page=user&ap_user=". $wp_rewrite->preg_index(1)."&user_page=". $wp_rewrite->preg_index(2);

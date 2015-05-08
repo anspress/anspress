@@ -45,6 +45,7 @@ class AnsPress_Actions
 		add_filter( 'nav_menu_css_class', array($this, 'fix_nav_current_class'), 10, 2 );
 
 		add_action( 'wp_loaded', array( $this, 'flush_rules' ) );
+
 	}
 
 	/**
@@ -351,4 +352,5 @@ class AnsPress_Actions
 			ap_opt('ap_flush', 'false');
 		}
 	}
+
 }
