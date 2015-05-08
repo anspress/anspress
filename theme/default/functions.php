@@ -34,6 +34,8 @@ function init_scripts_front(){
                 }
                 #anspress .ap-a-cells{
                         margin-left: ".(ap_opt('avatar_size_qanswer') + 20)."px;
+                }#anspress .ap-comment-content{
+                        margin-left: ".(ap_opt('avatar_size_qcomment') + 20)."px;
                 }";
         wp_add_inline_style( 'ap-style', $custom_css );
 		

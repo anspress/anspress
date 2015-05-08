@@ -5,7 +5,7 @@
 	.ap-comment-block {
 	    background: none repeat scroll 0 0 #fcfcfc;
 	    border: 1px solid #eee;
-	    margin-top: 25px;
+	    margin: 10px -16px -16px;
 	}
 	#respond {
 	    margin: 0;
@@ -20,8 +20,15 @@
 		    margin: 0;
 		    padding: 0;
 		    >li{
-		    	padding: 0;
-		    	margin:0;
+			    border-top: 1px solid #eee;
+			    margin: 0;
+			    padding: 10px;
+			    .ap-avatar{
+			    	margin-top: 5px;
+			    }
+			    &:nth-child(2n+1) {
+				    background: #fff;
+				}
 		    }
 		    article{
 			    border-color: #eee transparent transparent;
