@@ -340,7 +340,7 @@ class AnsPress_Options_Page
 				'label' => __('Cover width', 'ap') ,
 				'desc' => __('Set width of user cover photo.', 'ap') ,
 				'type' => 'number',
-				'value' => $settings['cover_width'],
+				'value' => @$settings['cover_width'],
 				'show_desc_tip' => false,
 			) ,
 			array(
@@ -348,7 +348,7 @@ class AnsPress_Options_Page
 				'label' => __('Cover height', 'ap') ,
 				'desc' => __('Set height of user cover photo.', 'ap') ,
 				'type' => 'number',
-				'value' => $settings['cover_height'],
+				'value' => @$settings['cover_height'],
 				'show_desc_tip' => false,
 			) ,
 			array(
@@ -356,7 +356,7 @@ class AnsPress_Options_Page
 				'label' => __('Cover thumb width', 'ap') ,
 				'desc' => __('Set width of user cover photo thumbnail.', 'ap') ,
 				'type' => 'number',
-				'value' => $settings['cover_width_small'],
+				'value' => @$settings['cover_width_small'],
 				'show_desc_tip' => false,
 			) ,
 			array(
@@ -364,7 +364,7 @@ class AnsPress_Options_Page
 				'label' => __('Small cover height', 'ap') ,
 				'desc' => __('Set height of user cover photo thumbnail.', 'ap') ,
 				'type' => 'number',
-				'value' => $settings['cover_height_small'],
+				'value' => @$settings['cover_height_small'],
 				'show_desc_tip' => false,
 			) ,
 			array(
@@ -376,7 +376,7 @@ class AnsPress_Options_Page
 					'hide_empty' => false,
 					'orderby' => 'id'
 				)) ,
-				'value' => $settings['default_rank'],
+				'value' => @$settings['default_rank'],
 				'show_desc_tip' => false,
 			) ,
 		));
