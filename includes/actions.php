@@ -183,6 +183,7 @@ class AnsPress_Actions
 
 		if( $post->post_type == 'answer') {
 			$ans = ap_count_published_answers($post->post_parent);
+			$ans = $ans > 0 ? $ans - 1 : 0;
 			do_action('ap_trash_answer', $post);
 			ap_remove_parti($post->post_parent, $post->post_author, 'answer');
 			ap_delete_meta(array('apmeta_type' => 'flag', 'apmeta_actionid' => $post->ID));
