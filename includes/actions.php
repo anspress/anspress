@@ -360,5 +360,8 @@ class AnsPress_Actions
 	{
 		if(is_anspress() && $editor_id == 'description')
 	    	return array( 'bold', 'italic', 'underline', 'strikethrough', 'bullist', 'numlist', 'link', 'unlink', 'blockquote' );
+
+	   	return $buttons;
 	}
+
 }

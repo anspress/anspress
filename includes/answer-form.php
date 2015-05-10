@@ -104,6 +104,15 @@ src="https://www.google.com/recaptcha/api.js?hl='.get_locale().'&onload=onloadCa
      */
     $args = apply_filters( 'ap_answer_form_fields', $args, $editing );
 
+    
+    $args['fields'][] = array(
+        'name'  => 'ap_upload',
+        'type'  => 'custom',
+        'html' => ap_post_upload_form(),
+        'order' => 11
+    );
+    
+
     if($editing){
         $args['fields'][] = array(
             'name'  => 'edit_post_id',
@@ -116,10 +125,11 @@ src="https://www.google.com/recaptcha/api.js?hl='.get_locale().'&onload=onloadCa
     anspress()->form = new AnsPress_Form($args);
 
     echo anspress()->form->get_form();
+    echo ap_post_upload_hidden_form();
 }
 
 /**
- * Generate edit question form, this is a wrapper of ap_ask_form()
+ * Generate edit question form, this is a wrapper of ap_answer_form()
  * @return void
  * @since 2.0.1
  */

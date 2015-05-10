@@ -184,7 +184,6 @@ class AnsPress_PostTypes
     public function post_type_link($link, $post) {
         if ($post->post_type == 'question') {
             if(get_option('permalink_structure')){
-                var_dump(ap_opt('question_permalink_follow'));
                 if(ap_opt('question_permalink_follow'))
                     return ap_base_page_link() .'question/'.$post->post_name.'/';
                 else

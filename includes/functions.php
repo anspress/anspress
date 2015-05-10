@@ -707,6 +707,7 @@ function ap_responce_message($id, $only_message = false)
 		'captcha_error' => array('type' => 'error', 'message' => __('Please check captcha field and resubmit it again.', 'ap')),
 		'comment_content_empty' => array('type' => 'error', 'message' => __('Comment content is empty.', 'ap')),
 		'status_updated' => array('type' => 'success', 'message' => __('Post status updated successfully', 'ap')),
+		'post_image_uploaded' => array('type' => 'success', 'message' => __('Image uploaded successfully', 'ap')),
 		);
 
 	/**
@@ -1061,4 +1062,76 @@ function ap_post_status_description($post_id = false){
             <?php echo ap_icon('cross', true) ?><span><?php printf(__( '%s is closed, new answer are not accepted.', 'ap' ), $post_type); ?></span>
         </div>
     <?php endif;
+}
+
+function ap_post_upload_form($post_id = false){
+	$html = '
+    <div class="ap-post-upload-form">
+        <div class="ap-btn ap-upload-o '.ap_icon('image').'">
+        	<span>'.__('Add image to editor', 'ap').'</span>';
+        	if(ap_user_can_upload_image())
+	        	$html .= '	
+	            <span class="ap-upload-link">
+	            	'.__('upload', 'ap').'
+	            	<input type="file" name="post_upload_image" class="ap-upload-input" data-action="ap_post_upload_field">
+	            </span> '.__('or', 'ap');
+
+            $html .= '<span class="ap-upload-remote-link">
+            	'.__('add image from link', 'ap').'            	
+            </span>
+            <div class="ap-upload-link-rc">
+        		<input type="text" name="post_remote_image" class="ap-form-control" placeholder="'.__('Enter images link', 'ap').'" data-action="post_remote_image">        		
+        		<a data-action="post_image_ok" class="apicon-check ap-btn" href="#"></a>
+        		<a data-action="post_image_close" class="apicon-x ap-btn" href="#"></a>
+        	</div>
+        </div>';
+        
+        if(ap_user_can_upload_image())
+	        	$html .= '<script id="ap_post_upload_field" type="application/json">
+        	'.json_encode(array( '__nonce' => wp_create_nonce( 'upload_image_'.get_current_user_id().'_'.get_question_id() ), 'post_id' => $post_id, 'question_id' => get_question_id() )).'
+        	</script>';
+
+    $html .= '</div>';
+
+    return $html;
+
+}
+
+function ap_post_upload_hidden_form(){
+	if(ap_opt('allow_upload_image'))
+		return '<form id="hidden-post-upload" enctype="multipart/form-data" method="POST" style="display:none">
+			<input type="hidden" name="ap_ajax_action" value="upload_post_image" />
+			<input type="hidden" name="ap_form_action" value="upload_post_image" />
+			<input type="hidden" name="action" value="ap_ajax" />
+		</form>';
+}
+
+function ap_upload_user_file( $file = array(), $question_id ) {
+	require_once( ABSPATH . 'wp-admin/includes/admin.php' );
+	$file_return = wp_handle_upload( $file, array('test_form' => false, 'mimes' => array (
+                'jpg|jpeg'=>'image/jpeg',
+                'gif'=>'image/gif',
+                'png'=>'image/png'
+            ) ) );
+	if( isset( $file_return['error'] ) || isset( $file_return['upload_error_handler'] ) ) {
+		return false;
+	} else {
+		$filename = $file_return['file'];
+		$attachment = array(
+			'post_parent' => $question_id,
+			'post_mime_type' => $file_return['type'],
+			'post_title' => preg_replace( '/\.[^.]+$/', '', basename( $filename ) ),
+			'post_content' => '',
+			'post_status' => 'inherit',
+			'guid' => $file_return['url']
+			);
+		$attachment_id = wp_insert_attachment( $attachment, $file_return['url'] );
+		require_once(ABSPATH . 'wp-admin/includes/image.php');
+		$attachment_data = wp_generate_attachment_metadata( $attachment_id, $filename );
+		wp_update_attachment_metadata( $attachment_id, $attachment_data );
+		if( 0 < intval( $attachment_id ) ) {
+			return $attachment_id;
+		}
+	}
+	return false;
 }

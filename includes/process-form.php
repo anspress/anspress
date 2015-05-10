@@ -24,7 +24,7 @@ class AnsPress_Process_Form
 	public function __construct()
 	{
 
-		add_action('init', array($this, 'non_ajax_form'));
+		add_action('init', array($this, 'non_ajax_form'), 0);
 		add_action( 'save_post', array($this, 'action_on_new_post'), 10, 3 );
 		add_action('wp_ajax_ap_ajax', array($this, 'ap_ajax'));
 		add_action('wp_ajax_nopriv_ap_ajax', array($this, 'ap_ajax'));
@@ -56,7 +56,6 @@ class AnsPress_Process_Form
      */
     public function ap_ajax()
     {
-
     	if(!isset($_REQUEST['ap_ajax_action']))
     		return;
     	
@@ -106,6 +105,10 @@ class AnsPress_Process_Form
 
 			case 'ap_user_profile_field':
 				$this->ap_user_profile_field();
+				break;
+
+			case 'upload_post_image':
+				$this->upload_post_image();
 				break;
 			
 			default:
@@ -462,7 +465,7 @@ class AnsPress_Process_Form
 		$answer_array = array(
 			'post_title'	=> $question->post_title,
 			'post_author'	=> $user_id,
-			'post_content' 	=>  $fields['description'],
+			'post_content' 	=>  apply_filters('ap_form_contents_filter', $fields['description']),
 			'post_parent' 	=>  $question->ID,
 			'post_type' 	=> 'answer',
 			'post_status' 	=> $status,
@@ -720,5 +723,34 @@ class AnsPress_Process_Form
 				);
 			endwhile;
 		}
+	}
+
+	public function upload_post_image(){
+
+		if(!ap_user_can_upload_image())
+			return;
+
+		$user_id = get_current_user_id();
+		
+		$file = $_FILES['post_upload_image'];
+		$question_id = (int)$_POST['question_id'];
+
+		if(!is_user_logged_in()){
+			$this->result  = array('message' => 'no_permission');
+			return;
+		}
+
+		if(!isset($_POST['__nonce']) || !wp_verify_nonce( $_POST['__nonce'], 'upload_image_'.$user_id.'_'. $question_id ) )
+			ap_send_json( ap_ajax_responce('something_wrong'));
+
+		if( ! empty( $file ) && is_array( $file ) && $file['error'] === 0 ) {
+			
+			$attachment_id = ap_upload_user_file( $file, $question_id );
+			
+			if($attachment_id !== false)
+				ap_send_json( ap_ajax_responce( array('action' => 'upload_post_image', 'html' => wp_get_attachment_image($attachment_id, 'full'), 'message' => 'post_image_uploaded' ) ));
+		}
+
+		ap_send_json( ap_ajax_responce('something_wrong'));
 	}
 }

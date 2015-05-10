@@ -420,3 +420,10 @@ function ap_user_can_change_status_to_moderate(){
 	
 	return false;
 }
+
+function ap_user_can_upload_image(){
+	if(is_user_logged_in() && ap_opt('allow_upload_image'))
+		return true;
+
+	return false;
+}

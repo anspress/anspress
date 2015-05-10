@@ -911,8 +911,10 @@
   box-sizing: border-box;
 }
 #anspress {
+  font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, freesans, sans-serif;
+  font-size: 16px;
   line-height: 1.6;
-  font-size: 14px;
+  word-wrap: break-word;
 }
 #anspress .hentry {
   padding-top: 0;
@@ -1409,6 +1411,7 @@
   border-radius: 3px;
   margin-left: 70px;
   padding: 15px;
+  font-size: 14px;
 }
 #anspress .ap-q-metas {
   margin-bottom: 10px;
@@ -1419,6 +1422,10 @@
 #anspress .ap-q-metas .ap-avatar {
   margin-right: 10px;
   margin-top: 0px;
+}
+#anspress .ap-q-content img {
+  max-width: 100%;
+  height: auto;
 }
 #anspress .ap-q-content p {
   margin-bottom: 10px;
@@ -1498,6 +1505,7 @@
   border-radius: 3px;
   margin-left: 70px;
   padding: 15px;
+  font-size: 14px;
 }
 #anspress .ap-question-meta {
   border-bottom: 1px solid #eee;
@@ -1693,6 +1701,7 @@
   padding: 5px 10px;
   text-decoration: none;
   vertical-align: middle;
+  font-weight: 600;
 }
 #anspress .ap-btn.ap-btn-view-all {
   display: block;
@@ -1850,7 +1859,7 @@
   -moz-box-shadow: 0 0 2px #fbfbfb inset;
   box-shadow: 0 0 2px #fbfbfb inset;
   background-clip: padding-box;
-  border: 1px solid #e4e4e4;
+  border: 1px solid #ddd;
   border-radius: 2px;
   box-shadow: 0 0 2px rgba(0, 0, 0, 0.05) inset;
   display: block;
@@ -1871,6 +1880,7 @@
 #anspress label > input[type="checkbox"] {
   float: left;
   margin-right: 15px !important;
+  margin-top: 5px !important;
 }
 #anspress label.inline-cb {
   margin-bottom: 15px;
@@ -1998,6 +2008,7 @@
 #anspress .ap-editor .mce-toolbar-grp {
   background: none repeat scroll 0 0 #fff;
   border-bottom: medium none;
+  border-radius: 4px 4px 0 0;
 }
 #anspress .ap-editor .html-active .switch-html,
 #anspress .ap-editor .tmce-active .switch-tmce {
@@ -2013,7 +2024,7 @@
   border-style: none solid none none;
   border-width: medium 1px medium medium;
   margin: 0;
-  padding: 3px;
+  padding: 8px;
 }
 #anspress .ap-editor .mce-toolbar .mce-btn-group .mce-btn:hover {
   background: transparent;
@@ -2137,7 +2148,7 @@
   -moz-box-shadow: 0 0 2px #fbfbfb inset;
   box-shadow: 0 0 2px #fbfbfb inset;
   background-clip: padding-box;
-  border: 1px solid #e4e4e4;
+  border: 1px solid #ddd;
   border-radius: 2px;
   box-shadow: 0 0 2px rgba(0, 0, 0, 0.05) inset;
   display: block;
@@ -2183,6 +2194,71 @@
   -moz-opacity: 0;
   opacity: 0;
 }
+#anspress .ap-post-upload-form {
+  background: #fcfcfc;
+  border-color: #ddd;
+  border-image: none;
+  border-radius: 0 0 4px 4px;
+  border-right: 1px solid #ddd;
+  border-style: dashed solid solid;
+  border-width: 1px;
+  font-size: 13px;
+  margin-bottom: 15px;
+  margin-top: -22px;
+  padding: 0;
+  position: relative;
+}
+#anspress .ap-post-upload-form .ap-upload-o {
+  background: none;
+  border: medium none;
+  box-shadow: none;
+  color: #888;
+  font-weight: 400;
+}
+#anspress .ap-post-upload-form .ap-upload-link {
+  color: #2488b7;
+  position: relative;
+}
+#anspress .ap-post-upload-form .ap-upload-remote-link {
+  color: #2488b7;
+  cursor: pointer;
+}
+#anspress .ap-post-upload-form .ap-upload-input {
+  cursor: pointer;
+  height: 100%;
+  left: 0;
+  opacity: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 100%;
+}
+#anspress .ap-post-upload-form .ap-upload-link-rc {
+  background: none repeat scroll 0 0 #fcfcfc;
+  border-radius: 2px;
+  display: none;
+  left: 0;
+  padding: 3px;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 9;
+}
+#anspress .ap-post-upload-form .ap-upload-link-rc .ap-form-control {
+  margin: 0;
+  width: auto;
+}
+#anspress .ap-post-upload-form .ap-upload-link-rc > * {
+  display: inline-block;
+}
+#anspress .ap-post-upload-form .ap-upload-link-rc > a {
+  border-radius: 2px;
+  height: 28px;
+  padding: 2px;
+  text-align: center;
+  vertical-align: top;
+  width: 28px;
+}
 #ap-search-form {
   margin-bottom: 0;
 }
@@ -2192,6 +2268,10 @@
 }
 .screen-reader-text {
   display: none;
+}
+.ap-btn-submit {
+  float: right;
+  margin-top: 10px;
 }
 #anspress .ap-comment-block {
   background: none repeat scroll 0 0 #fcfcfc;
@@ -2281,6 +2361,7 @@
   padding: 5px 10px;
   text-decoration: none;
   vertical-align: middle;
+  font-weight: 600;
 }
 #anspress .ap-comment-form #submit.ap-btn-view-all {
   display: block;
@@ -2309,6 +2390,7 @@
   padding: 5px 10px;
   text-decoration: none;
   vertical-align: middle;
+  font-weight: 600;
 }
 #anspress .ap-comment-form input[type="submit"].ap-btn-view-all {
   display: block;

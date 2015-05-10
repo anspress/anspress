@@ -6,7 +6,7 @@
 	    .border-radius(2px);
 	    .box-shadow(0 0 2px #fbfbfb inset);
         background-clip: padding-box;
-	    border: 1px solid #e4e4e4;
+	    border: 1px solid #ddd;
 	    border-radius: 2px;
 	    box-shadow: 0 0 2px rgba(0,0,0,0.05) inset;
 	    display: block;
@@ -29,6 +29,7 @@
 	label > input[type="checkbox"] {
 	    float: left;
 	    margin-right: 15px !important;
+	    margin-top: 5px !important;
 	}
 	label.inline-cb{
 		margin-bottom: 15px;
@@ -146,6 +147,7 @@
 		.mce-toolbar-grp{
 		    background: none repeat scroll 0 0 #fff;
 		    border-bottom: medium none;
+		    border-radius: 4px 4px 0 0;
 		}
 		.html-active .switch-html, .tmce-active .switch-tmce {
 		    background: #fff;
@@ -160,7 +162,7 @@
 		    border-style: none solid none none;
 		    border-width: medium 1px medium medium;
 		    margin: 0;
-		    padding: 3px;
+		    padding: 8px;
 		}
 		.mce-toolbar .mce-btn-group .mce-btn:hover{
 		    background: transparent;
@@ -305,6 +307,74 @@
 			.opacity(0);
 		}
 	}
+	.ap-post-upload-form{
+	    background: #fcfcfc;
+	    border-color: #ddd;
+	    border-image: none;
+	    border-radius: 0 0 4px 4px;
+	    border-right: 1px solid #ddd;
+	    border-style: dashed solid solid;
+	    border-width: 1px;
+	    font-size: 13px;
+	    margin-bottom: 15px;
+	    margin-top: -22px;
+	    padding: 0;
+	    position: relative;
+	    .ap-upload-o{
+		   	background: none;
+		    border: medium none;
+		    box-shadow: none;
+		    color: #888;
+		    font-weight: 400;
+	    }
+	    .ap-upload-link{
+	    	color: @link-color;
+	    	position: relative;
+	    }
+	    .ap-upload-remote-link{
+	    	color: @link-color;
+	    	cursor: pointer;
+	    }
+	    .ap-upload-input{
+		    cursor: pointer;
+		    height: 100%;
+		    left: 0;
+		    opacity: 0;
+		    position: absolute;
+		    right: 0;
+		    top: 0;
+		    width: 100%;
+	    }
+	    .ap-upload-link-rc {
+		    background: none repeat scroll 0 0 #fcfcfc;
+		    border-radius: 2px;
+		    display: none;
+		    left: 0;
+		    padding: 3px;
+		    position: absolute;
+		    right: 0;
+		    top: 0;
+		    z-index: 9;
+		    
+		    .ap-form-control{
+		    	margin: 0;
+		    	width: auto;
+		    }
+
+		    > *{
+		    	display: inline-block;
+		    }
+
+		    > a{
+			    border-radius: 2px;
+			    height: 28px;
+			    padding: 2px;
+			    text-align: center;
+			    vertical-align: top;
+			    width: 28px;
+		    }
+		}
+	}
 }
 
 #ap-search-form {
@@ -316,4 +386,8 @@
 }
 .screen-reader-text{
 	display: none;
+}
+.ap-btn-submit {
+    float: right;
+    margin-top: 10px;
 }

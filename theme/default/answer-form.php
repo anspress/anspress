@@ -5,7 +5,7 @@
 				<?php echo get_avatar(get_current_user_id(), ap_opt('avatar_size_qquestion')); ?>
 			</a>		
 		</div>
-		<div class="ap-a-cells">
+		<div class="ap-a-cells clearfix">
 			<?php ap_answer_form(get_question_id()); ?>
 		</div>
 	</div>

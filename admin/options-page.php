@@ -390,7 +390,7 @@ class AnsPress_Options_Page
 				'type' => 'checkbox',
 				'value' => $settings['multiple_answers'],
 				'show_desc_tip' => false,
-			) ,
+			),
 			array(
 				'name' => 'anspress_opt[disallow_op_to_answer]',
 				'label' => __('Asker cant answer', 'ap') ,
@@ -398,7 +398,7 @@ class AnsPress_Options_Page
 				'type' => 'checkbox',
 				'value' => $settings['disallow_op_to_answer'],
 				'show_desc_tip' => false,
-			) ,
+			),
 			array(
 				'name' => 'anspress_opt[allow_anonymous]',
 				'label' => __('Allow anonymous', 'ap') ,
@@ -406,7 +406,7 @@ class AnsPress_Options_Page
 				'type' => 'checkbox',
 				'value' => $settings['allow_anonymous'],
 				'show_desc_tip' => false,
-			) ,
+			),
 			array(
 				'name' => 'anspress_opt[only_admin_can_answer]',
 				'label' => __('Only admin can answer', 'ap') ,
@@ -414,7 +414,7 @@ class AnsPress_Options_Page
 				'type' => 'checkbox',
 				'value' => $settings['only_admin_can_answer'],
 				'show_desc_tip' => false,
-			) ,
+			),
 			array(
 				'name' => 'anspress_opt[logged_in_can_see_ans]',
 				'label' => __('Only logged in can see answers', 'ap') ,
@@ -422,7 +422,7 @@ class AnsPress_Options_Page
 				'type' => 'checkbox',
 				'value' => $settings['logged_in_can_see_ans'],
 				'show_desc_tip' => false,
-			) ,
+			),
 			array(
 				'name' => 'anspress_opt[logged_in_can_see_comment]',
 				'label' => __('Only logged in can see comment', 'ap') ,
@@ -430,8 +430,7 @@ class AnsPress_Options_Page
 				'type' => 'checkbox',
 				'value' => $settings['logged_in_can_see_comment'],
 				'show_desc_tip' => false,
-			) ,
-
+			),
 			array(
 				'name' => 'anspress_opt[disable_delete_after]',
 				'label' => __('Lock delete action', 'ap') ,
@@ -439,7 +438,20 @@ class AnsPress_Options_Page
 				'type' => 'number',
 				'value' => $settings['disable_delete_after'],
 				'show_desc_tip' => false,
-			) ,
+			),
+			array(
+				'name' => '__sep',
+				'type' => 'custom',
+				'html' => '<span class="ap-form-separator">' . __('Upload', 'ap') . '</span>',
+			),
+			array(
+				'name' => 'anspress_opt[allow_upload_image]',
+				'label' => __('Allow image upload', 'ap') ,
+				'desc' => __('Allow logged-in users to upload image.', 'ap') ,
+				'type' => 'checkbox',
+				'value' => $settings['allow_upload_image'],
+				'show_desc_tip' => false,
+			),
 		));
 		
 		// register moderate settings

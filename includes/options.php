@@ -119,6 +119,7 @@ function ap_default_options(){
 		'enable_users_directory'=> true,		
 		'question_permalink_follow' 	=> false,		
 		'show_question_sidebar' => true,		
+		'allow_upload_image' 	=> true,		
 	);
 	
 	/**
