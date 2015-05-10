@@ -78,8 +78,14 @@ function ap_ask_form($editing = false){
                     'tinymce' => ap_opt('question_text_editor') ? false : true,
                     'quicktags' => false ,
                     'teeny'=>true,
-                    'media_buttons'=>false,
+                    'media_buttons'=>false,  
                 )),
+            ),
+            array(
+                'name'  => 'ap_upload',
+                'type'  => 'custom',
+                'html' => ap_post_upload_form(),
+                'order' => 10
             ),
             array(
                 'name' => 'parent_id',
@@ -133,6 +139,7 @@ src="https://www.google.com/recaptcha/api.js?hl='.get_locale().'&onload=onloadCa
     $form = new AnsPress_Form($args);
 
     echo $form->get_form();
+    echo ap_post_upload_hidden_form();
 }
 
 /**
