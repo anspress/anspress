@@ -184,6 +184,7 @@ class AnsPress_PostTypes
     public function post_type_link($link, $post) {
         if ($post->post_type == 'question') {
             if(get_option('permalink_structure')){
+                var_dump(ap_opt('question_permalink_follow'));
                 if(ap_opt('question_permalink_follow'))
                     return ap_base_page_link() .'question/'.$post->post_name.'/';
                 else
@@ -192,7 +193,7 @@ class AnsPress_PostTypes
                 return add_query_arg( array('apq' => false, 'question_id' =>$post->ID), ap_base_page_link());
             }
         }elseif ($post->post_type == 'answer' && $post->post_parent != 0) {
-           return home_url( '/question/'.$post->post_name.'/') ."?show_answer=$post->ID#answer_{$post->ID}";
+           return get_permalink( $post->post_parent ) ."?show_answer=$post->ID#answer_{$post->ID}";
         }
         return $link;
     }
