@@ -912,8 +912,8 @@
 }
 #anspress {
   font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, freesans, sans-serif;
-  font-size: 16px;
-  line-height: 1.6;
+  font-size: 14px;
+  line-height: 1.4;
   word-wrap: break-word;
 }
 #anspress .hentry {
@@ -957,7 +957,7 @@
   margin: 0;
 }
 #anspress .ap-avatar {
-  margin-right: 15px;
+  margin-right: 10px;
 }
 #anspress .ap-avatar img {
   -webkit-border-radius: 2px;
@@ -966,6 +966,7 @@
   -moz-background-clip: padding;
   border-radius: 2px;
   background-clip: padding-box;
+  box-shadow: none;
 }
 #anspress .ap-initially-hidden {
   display: none;
@@ -1241,8 +1242,8 @@
   margin-top: 5px;
 }
 #anspress .ap-questions .ap-avatar {
-  margin-right: 15px;
-  margin-top: 4px;
+  margin-right: 10px;
+  margin-top: 2px;
 }
 #anspress .ap-questions-title {
   display: block;
@@ -1555,11 +1556,6 @@
   padding: 5px 0;
   color: #333333;
   white-space: nowrap;
-}
-.ap-user-meta-display_name {
-  font-size: 14px;
-  font-weight: 600;
-  margin-bottom: 5px;
 }
 .ap-content .ap-question-actions-history {
   margin-bottom: 20px;

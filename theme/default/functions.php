@@ -30,12 +30,12 @@ function init_scripts_front(){
 
 		$custom_css = "
                 #anspress .ap-q-cells{
-                        margin-left: ".(ap_opt('avatar_size_qquestion') + 20)."px;
+                        margin-left: ".(ap_opt('avatar_size_qquestion') + 10)."px;
                 }
                 #anspress .ap-a-cells{
-                        margin-left: ".(ap_opt('avatar_size_qanswer') + 20)."px;
+                        margin-left: ".(ap_opt('avatar_size_qanswer') + 10)."px;
                 }#anspress .ap-comment-content{
-                        margin-left: ".(ap_opt('avatar_size_qcomment') + 20)."px;
+                        margin-left: ".(ap_opt('avatar_size_qcomment') + 10)."px;
                 }";
         wp_add_inline_style( 'ap-style', $custom_css );
 		

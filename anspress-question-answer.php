@@ -97,7 +97,9 @@ if (!class_exists('AnsPress')) {
                 self::$instance->_setup_constants();
                 
                 add_action('plugins_loaded', array( self::$instance, 'load_textdomain' ));
-                add_action('bp_include', array( self::$instance, 'bp_include' ));
+                
+                if ( class_exists( 'BuddyPress' ) )
+                    add_action('bp_include', array( self::$instance, 'bp_include' ));
 
                 global $ap_classes;
                 $ap_classes = array();
