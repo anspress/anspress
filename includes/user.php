@@ -447,7 +447,7 @@ function ap_user_top_posts_tab(){
     
     $link = '?tab=';
     ?>
-    <?php printf(__('Top %s', 'ap'), $active); ?>
+    <?php printf(__('Top %s', 'ap'), __(ucfirst($active), 'ap')); ?>
     <ul id="ap-user-posts-tab" class="ap-flat-tab ap-ul-inline clearfix" role="tablist">
         <li class="<?php echo $active == 'answers' ? ' active' : ''; ?>"><a href="<?php echo $link.'answers'; ?>"><?php _e('Answers', 'ap'); ?></a></li>
         <li class="<?php echo $active == 'questions' ? ' active' : ''; ?>"><a href="<?php echo $link.'questions'; ?>"><?php _e('Questions', 'ap'); ?></a></li>
