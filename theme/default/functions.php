@@ -35,7 +35,7 @@ function init_scripts_front(){
                 #anspress .ap-a-cells{
                         margin-left: ".(ap_opt('avatar_size_qanswer') + 10)."px;
                 }#anspress .ap-comment-content{
-                        margin-left: ".(ap_opt('avatar_size_qcomment') + 10)."px;
+                        margin-left: ".(ap_opt('avatar_size_qcomment') + 15)."px;
                 }";
         wp_add_inline_style( 'ap-style', $custom_css );
 		
@@ -115,9 +115,9 @@ if ( ! function_exists( 'ap_comment' ) ) :
 					<?php if ( '0' == $comment->comment_approved ) : ?>
 						<p class="comment-awaiting-moderation"><?php _e( 'Your comment is awaiting moderation.', 'ap' ); ?></p>
 					<?php endif; ?>
-										
-					<div class="ap-comment-texts">
-						<?php echo get_comment_text(); ?>
+					<div class="ap-comment-header">
+						<a href="<?php echo ap_user_link($comment->user_id); ?>" class="ap-comment-author"><?php echo ap_user_display_name($comment->user_id); ?></a>
+
 						<?php $a=" e ";$b=" ";$time=get_option('date_format').$b.get_option('time_format').$a.get_option('gmt_offset');
 								printf( ' - <a title="%4$s" href="#li-comment-%5$s" class="ap-comment-time"><time datetime="%1$s">%2$s %3$s</time></a>',
 								get_comment_time( 'c' ),
@@ -130,6 +130,9 @@ if ( ! function_exists( 'ap_comment' ) ) :
 							// Comment actions
 							ap_comment_actions_buttons();
 						?>
+					</div>
+					<div class="ap-comment-texts">
+						<?php echo get_comment_text(); ?>						
 					</div>
 					<?php
 						/**

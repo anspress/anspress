@@ -127,7 +127,7 @@ class AnsPress_Ajax
 			$post = new WP_Query(array('p' => $comment_post_ID, 'post_type' => array('question', 'answer')));
 			$count = get_comment_count( $comment_post_ID );
 			ob_start();
-				echo '<div class="ap-comment-block clearfix">';
+				if(!ap_opt('show_comments_by_default')) echo '<div class="ap-comment-block clearfix">';
 					//if(ap_user_can_comment() || (isset($_REQUEST['comment_ID']) && ap_user_can_edit_comment((int)$_REQUEST['comment_ID'] ))){
 						echo '<div class="ap-comment-form clearfix">';
 							echo '<div class="ap-comment-inner">';
@@ -135,15 +135,18 @@ class AnsPress_Ajax
 							echo '</div>';
 						echo '</div>';
 					//}
-					while( $post->have_posts() ) : $post->the_post();					
-					comments_template();
-					endwhile;
-					wp_reset_postdata();
-				echo '</div>';
+					if(!ap_opt('show_comments_by_default')){
+						while( $post->have_posts() ) : $post->the_post();					
+						comments_template();
+						endwhile;
+						wp_reset_postdata();
+					}
+				if(!ap_opt('show_comments_by_default')) echo '</div>';
 			$result['html'] = ob_get_clean();
 			$result['container'] = '#comments-'.$comment_post_ID;
 			$result['message'] = 'success';
-			$result['view'] = array('comments_count_'.$comment_post_ID => $count['approved'], 'comment_count_label_'.$comment_post_ID => sprintf(_n('One comment', '%d comments', $count['approved'], 'ap'), $count['approved']) );
+			$result['view_default'] = ap_opt('show_comments_by_default');
+			$result['view'] = array('comments_count_'.$comment_post_ID => '('.$count['approved'].')', 'comment_count_label_'.$comment_post_ID => sprintf(_n('One comment', '%d comments', $count['approved'], 'ap'), $count['approved']) );
 
 		}else{
 			$result['message'] = 'no_permission';
@@ -171,7 +174,7 @@ class AnsPress_Ajax
     		if($delete){
     			do_action( 'ap_after_deleting_comment', $comment );
     			$count = get_comment_count( $comment->comment_post_ID );
-    			ap_send_json(ap_ajax_responce(  array( 'action' => 'delete_comment', 'comment_ID' => (int)$_POST['comment_ID'], 'message' => 'comment_delete_success', 'view' => array('comments_count_'.$comment->comment_post_ID => $count['approved'], 'comment_count_label_'.$comment->comment_post_ID => sprintf(_n('One comment', '%d comments', $count['approved'], 'ap'), $count['approved']) ))));
+    			ap_send_json(ap_ajax_responce(  array( 'action' => 'delete_comment', 'comment_ID' => (int)$_POST['comment_ID'], 'message' => 'comment_delete_success', 'view' => array('comments_count_'.$comment->comment_post_ID => '('.$count['approved'].')', 'comment_count_label_'.$comment->comment_post_ID => sprintf(_n('One comment', '%d comments', $count['approved'], 'ap'), $count['approved']) ))));
     		}else{
     			ap_send_json( ap_ajax_responce('something_wrong'));
     		}

@@ -246,7 +246,7 @@ class AnsPress_User
 
             do_action('ap_after_avatar_upload', $userid, $photo);
 
-            ap_send_json( ap_ajax_responce(array('status' => true, 'message' => __('Avatar uploaded successfully.', 'ap'), 'view' => array('user_avatar_'.$userid => get_avatar($userid, 105)))));            
+            ap_send_json( ap_ajax_responce(array('status' => true, 'message' => __('Avatar uploaded successfully.', 'ap'), 'view' => array('user_avatar_'.$userid => get_avatar($userid, 105)), 'view_html' => true  )));            
         }
         
         ap_send_json( ap_ajax_responce(array('message' => __('There was an error while uploading avatar, please check your image', 'ap'), 'type' => 'error')));        

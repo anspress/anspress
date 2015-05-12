@@ -659,7 +659,7 @@ class AnsPress_Process_Form
 				ap_comment($comment);		
 				$html = ob_get_clean();
 				$count = get_comment_count( $comment->comment_post_ID );
-				$this->result = ap_ajax_responce(  array( 'action' => 'new_comment', 'status' => true, 'comment_ID' => $comment->comment_ID, 'comment_post_ID' => $comment->comment_post_ID, 'comment_content' => $comment->comment_content, 'html' => $html, 'message' => 'comment_success', 'view' => array('comments_count_'.$comment->comment_post_ID => $count['approved'], 'comment_count_label_'.$comment->comment_post_ID => sprintf(_n('One comment', '%d comments', $count['approved'], 'ap'), $count['approved']) )));
+				$this->result = ap_ajax_responce(  array( 'action' => 'new_comment', 'status' => true, 'comment_ID' => $comment->comment_ID, 'comment_post_ID' => $comment->comment_post_ID, 'comment_content' => $comment->comment_content, 'html' => $html, 'message' => 'comment_success', 'view' => array('comments_count_'.$comment->comment_post_ID => '('.$count['approved'].')', 'comment_count_label_'.$comment->comment_post_ID => sprintf(_n('One comment', '%d comments', $count['approved'], 'ap'), $count['approved']) )));
 			}else{
 				$this->result = ap_ajax_responce('something_wrong');
 			}

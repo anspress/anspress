@@ -110,13 +110,15 @@
                    
                    if (typeof data.view !== 'undefined') {
                         $.each(data.view, function(i, view) {
-                            var html = $(view);
-                            console.log(html.is('[data-view="' + i + '"]'));
-                            if(html.is('[data-view="' + i + '"]'))
+                            
+                            if(typeof data.view_html !== 'undefined' && html.is('[data-view="' + i + '"]')){
+                                var html = $(view);
                                 html = html.children();
-
-                            $('[data-view="' + i + '"]').html(html);
-                            if (html !== 0) $('[data-view="' + i + '"]').removeClass('ap-view-count-0');
+                                $('[data-view="' + i + '"]').html(html);
+                            }else{
+                                $('[data-view="' + i + '"]').text(view);
+                                $('[data-view="' + i + '"]').removeClass('ap-view-count-0');
+                            }
                         });
                     }
                 }
@@ -248,13 +250,17 @@
                     ApSite.hideLoading(this);
                     var button = $(this);
 
-                    if ($(data.html).is('.ap-comment-block')) {
-                    	var c = button.closest('.ap-q-inner');
-                    	c.find('.ap-comment-block').remove();
-                        c.append(data.html);
-                     } else {
-                        $('.ap-comment-form').remove();
-                        $(this).closest('.ap-q-inner').append(data.html);
+                    if(!data.view_default){
+                        if ($(data.html).is('.ap-comment-block')) {
+                        	var c = button.closest('.ap-q-inner');
+                        	c.find('.ap-comment-block').remove();
+                            c.append(data.html);
+                         } else {
+                            $('.ap-comment-form').remove();
+                            $(this).closest('.ap-q-inner').append(data.html);
+                        }
+                    }else{
+                        $(data.container).append(data.html);
                     }
                     
                     if ($(data.container).length > 0) $('html, body').animate({

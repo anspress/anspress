@@ -443,7 +443,7 @@ function ap_post_actions_buttons($disable = array())
 		if(!empty($actions['dropdown'])){			
 			echo '<li class="ap-post-action dropdown">';				
 				echo '<div id="ap_post_action_'.$post->ID.'" class="ap-dropdown">';
-				echo '<a class="apicon-ellipsis ap-btn more-actions ap-tip ap-dropdown-toggle" title="'.__('More action', 'ap').'" href="#"></a>';
+				echo '<a class="apicon-ellipsis more-actions ap-tip ap-dropdown-toggle" title="'.__('More action', 'ap').'" href="#"></a>';
 				echo '<ul class="ap-dropdown-menu">';
 					foreach($actions['dropdown'] as $sk=>$sub)
 						echo '<li class="ap-post-action ap-action-'.$sk.'">'.$sub.'</li>';

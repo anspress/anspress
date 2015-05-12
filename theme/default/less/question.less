@@ -19,11 +19,12 @@
 		    border: 1px solid #e7e7e7;
 		    border-radius: 3px;
 		    margin-left: 70px;
-		    padding: 15px;  
+		    padding: 10px;  
 		    font-size: 14px;
 		}
 		&-metas{
-			margin-bottom: 10px;
+			font-size: 12px;
+    		margin-bottom: 10px;
 			>span{
 				margin-right: 10px;
 			}
@@ -65,17 +66,19 @@
 					color: #fff;
 				}
 			}
-		    > li.ap-post-action a.ap-btn{
+		    > li.ap-post-action >a, .ap-dropdown-toggle{
 		    	background: none;
 			    border: medium none;
 			    color: @link-color;
 			    display: block;
 			    font-size: 12px;
-			    font-weight: 600;
-			    height: 25px;
 			    line-height: 25px;
 			    padding: 0;
 			    text-decoration: none;
+
+			    &:visited{
+			    	color: @link-color;
+			    }
 
 			    &:hover{
 			    	color: @default-color;
@@ -89,14 +92,7 @@
 				    margin-top: 0;
 		    	}
 		    	span {
-				    border: 1px solid #ddd;
-				    border-radius: 2px;
-				    display: inline-block;
-				    font-size: 11px;
-				    font-weight: bold;
-				    line-height: 12px;
-				    margin: 0 0 0 5px;
-				    padding: 1px 5px;
+				    margin-left: 3px;
 				}
 				&.more-actions{
 				    font-size: 25px;
@@ -119,11 +115,12 @@
 	    	
 		}
 	}
+
 	.ap-a-cells {
 	    border: 1px solid #e7e7e7;
 	    border-radius: 3px;
 	    margin-left: 70px;
-	    padding: 15px;
+	    padding: 10px;
 	    font-size: 14px;
 	}
 	.ap-question-meta {
@@ -165,8 +162,8 @@
 			color: @link-color;
 		}
 		&-reputation{
-		    font-size: 13px;
-    		font-weight: 600;
+		    color: #888;
+		    font-size: 12px;
 		}
 	}
 	
@@ -194,6 +191,10 @@
 	    display: block;
 	    font-size: 13px;
 	    margin-top: 10px;
+	}
+
+	:last-child{
+		margin-bottom: 0;
 	}
 
 }

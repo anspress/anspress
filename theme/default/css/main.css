@@ -1411,10 +1411,11 @@
   border: 1px solid #e7e7e7;
   border-radius: 3px;
   margin-left: 70px;
-  padding: 15px;
+  padding: 10px;
   font-size: 14px;
 }
 #anspress .ap-q-metas {
+  font-size: 12px;
   margin-bottom: 10px;
 }
 #anspress .ap-q-metas > span {
@@ -1453,49 +1454,51 @@
 #anspress .ap-q-actions .ap-action-favorite .favorite-btn.active {
   color: #fff;
 }
-#anspress .ap-q-actions > li.ap-post-action a.ap-btn {
+#anspress .ap-q-actions > li.ap-post-action > a,
+#anspress .ap-q-actions .ap-dropdown-toggle {
   background: none;
   border: medium none;
   color: #2488b7;
   display: block;
   font-size: 12px;
-  font-weight: 600;
-  height: 25px;
   line-height: 25px;
   padding: 0;
   text-decoration: none;
 }
-#anspress .ap-q-actions > li.ap-post-action a.ap-btn:hover {
+#anspress .ap-q-actions > li.ap-post-action > a:visited,
+#anspress .ap-q-actions .ap-dropdown-toggle:visited {
+  color: #2488b7;
+}
+#anspress .ap-q-actions > li.ap-post-action > a:hover,
+#anspress .ap-q-actions .ap-dropdown-toggle:hover {
   color: #333333;
   background: none;
 }
-#anspress .ap-q-actions > li.ap-post-action a.ap-btn i {
+#anspress .ap-q-actions > li.ap-post-action > a i,
+#anspress .ap-q-actions .ap-dropdown-toggle i {
   display: inline-block;
   font-size: 11px;
   margin-right: 1px;
   margin-top: 0;
 }
-#anspress .ap-q-actions > li.ap-post-action a.ap-btn span {
-  border: 1px solid #ddd;
-  border-radius: 2px;
-  display: inline-block;
-  font-size: 11px;
-  font-weight: bold;
-  line-height: 12px;
-  margin: 0 0 0 5px;
-  padding: 1px 5px;
+#anspress .ap-q-actions > li.ap-post-action > a span,
+#anspress .ap-q-actions .ap-dropdown-toggle span {
+  margin-left: 3px;
 }
-#anspress .ap-q-actions > li.ap-post-action a.ap-btn.more-actions {
+#anspress .ap-q-actions > li.ap-post-action > a.more-actions,
+#anspress .ap-q-actions .ap-dropdown-toggle.more-actions {
   font-size: 25px;
 }
-#anspress .ap-q-actions > li.ap-post-action a.ap-btn.ap-btn-select {
+#anspress .ap-q-actions > li.ap-post-action > a.ap-btn-select,
+#anspress .ap-q-actions .ap-dropdown-toggle.ap-btn-select {
   background: #D1EED2;
   border: 1px solid rgba(0, 0, 0, 0.1);
   line-height: 22px;
   padding: 0 5px;
   color: #333333;
 }
-#anspress .ap-q-actions > li.ap-post-action a.ap-btn.ap-btn-select:before {
+#anspress .ap-q-actions > li.ap-post-action > a.ap-btn-select:before,
+#anspress .ap-q-actions .ap-dropdown-toggle.ap-btn-select:before {
   margin-right: 4px;
 }
 #anspress .ap-q-actions .ap-action-select_answer a {
@@ -1505,7 +1508,7 @@
   border: 1px solid #e7e7e7;
   border-radius: 3px;
   margin-left: 70px;
-  padding: 15px;
+  padding: 10px;
   font-size: 14px;
 }
 #anspress .ap-question-meta {
@@ -1546,8 +1549,8 @@
   color: #2488b7;
 }
 #anspress .ap-user-meta-reputation {
-  font-size: 13px;
-  font-weight: 600;
+  color: #888;
+  font-size: 12px;
 }
 #anspress .ap-answers-label {
   display: block;
@@ -1568,6 +1571,9 @@
   display: block;
   font-size: 13px;
   margin-top: 10px;
+}
+.ap-content :last-child {
+  margin-bottom: 0;
 }
 .ap-post-tags li a {
   background: #11a7db;
@@ -2269,10 +2275,16 @@
   float: right;
   margin-top: 10px;
 }
-#anspress .ap-comment-block {
+#anspress .ap-comment-block,
+#anspress .have-comments {
   background: none repeat scroll 0 0 #fcfcfc;
-  border: 1px solid #eee;
-  margin: 10px -16px -16px;
+  border-color: transparent #eee #eee;
+  border-image: none;
+  border-right: 1px solid #eee;
+  border-style: none solid solid;
+  border-width: medium 1px 1px;
+  font-size: 13px;
+  margin: 11px -11px -11px;
 }
 #anspress #respond {
   margin: 0;
@@ -2407,6 +2419,9 @@
 }
 #anspress .ap-comment-form .comment-reply-title {
   display: none;
+}
+#anspress .ap-comment-header {
+  font-size: 12px;
 }
 .ap-user-avatar {
   margin-right: 10px;
@@ -2689,11 +2704,6 @@
 }
 #anspress .ap-dropdown {
   position: relative;
-}
-#anspress .ap-dropdown-toggle {
-  padding: .5em 1em;
-  background: #777;
-  border-radius: .2em .2em 0 0;
 }
 #anspress .ap-dropdown-menu {
   display: none;

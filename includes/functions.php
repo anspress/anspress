@@ -270,7 +270,7 @@ function ap_comment_btn_html($echo = false){
 
 		$nonce = wp_create_nonce( 'comment_form_nonce' );
 		$comment_count = get_comments_number( get_the_ID() );
-		$output = '<a href="#comments-'.get_the_ID().'" class="ap-btn comment-btn ap-tip" data-action="load_comment_form" data-query="ap_ajax_action=load_comment_form&post='.get_the_ID().'&__nonce='.$nonce.'" title="'.__('Comments', 'ap').'">'.__('Comment', 'ap').'<span class="ap-data-view ap-view-count-'.$comment_count.'"><b data-view="comments_count_'.get_the_ID().'">'.$comment_count.'</b></span></a>';
+		$output = '<a href="#comments-'.get_the_ID().'" class="comment-btn ap-tip" data-action="load_comment_form" data-query="ap_ajax_action=load_comment_form&post='.get_the_ID().'&__nonce='.$nonce.'" title="'.__('Comments', 'ap').'">'.__('Comment', 'ap').'<span class="ap-data-view ap-view-count-'.$comment_count.'" data-view="comments_count_'.get_the_ID().'">('.$comment_count.')</span></a>';
 
 		if($echo)
 			echo $output;
@@ -500,7 +500,7 @@ function ap_post_change_status_btn_html($post_id = false){
 		$status = apply_filters('ap_change_status_dropdown', array('closed' => __('Close', 'ap'), 'publish' => __('Open', 'ap'), 'moderate' => __('Moderate', 'ap'), 'private_post' => __('Private', 'ap') ));
 
 		$output = '<div class="ap-dropdown">
-			<a class="ap-btn ap-tip ap-dropdown-toggle" title="'.__('Change status of post', 'ap').'" href="#" >
+			<a class="ap-tip ap-dropdown-toggle" title="'.__('Change status of post', 'ap').'" href="#" >
 				'.__('Status', 'ap').' <i class="caret"></i>
 			</a>
 			<ul id="ap_post_status_toggle_'.$post_id.'" class="ap-dropdown-menu" role="menu">';
