@@ -167,7 +167,7 @@ function ap_user_can_answer($question_id){
 	
 	$question = get_post($question_id);
 
-	if(!ap_opt('disallow_op_to_answer') && $question->post_author == get_current_user_id())
+	if(!ap_opt('disallow_op_to_answer') && $question->post_author == get_current_user_id() && get_current_user_id() > 0)
 		return false;
 
 	if($question->post_type == 'closed' )
