@@ -2319,7 +2319,6 @@
 }
 #anspress .ap-commentlist .comment {
   border-top: 1px solid #eee;
-  color: #777;
   margin-bottom: 0;
   padding: 10px;
 }
@@ -2349,6 +2348,10 @@
 }
 #anspress .ap-commentlist .ap-comment-action {
   margin-left: 10px;
+}
+#anspress .ap-commentlist .children {
+  list-style: outside none none;
+  margin-top: 5px;
 }
 #anspress .ap-comment-form {
   padding: 10px;
