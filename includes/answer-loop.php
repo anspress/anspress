@@ -247,7 +247,7 @@ function ap_answer_the_question_id(){
  * @since 2.1
  */
 function ap_answer_user_can_view(){
-    return ap_user_can_view_post(ap_answer_get_the_question_id());
+    return ap_user_can_view_post(ap_answer_get_the_answer_id());
 }
 
 /**

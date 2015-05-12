@@ -378,7 +378,7 @@ function ap_user_can_view_post($post_id = false){
 	if( $post->post_status == 'moderate' && ap_user_can_view_moderate_post($post_id))
 		return true;
 	
-	if( $post->post_status == 'publish')
+	if( $post->post_status == 'publish' || $post->post_status == 'closed')
 		return true;
 	
 	return false;
