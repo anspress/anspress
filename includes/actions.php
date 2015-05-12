@@ -39,8 +39,8 @@ class AnsPress_Actions
 		add_action( 'comment_approved_to_unapproved', array($this, 'comment_unapproved'));
 		add_action( 'trashed_comment', array($this, 'comment_trash'));
 		add_action( 'delete_comment ', array($this, 'comment_trash'));
-		add_action( 'publish_comment', array($this, 'publish_comment'));
-		add_action( 'unpublish_comment', array($this, 'unpublish_comment'));
+		add_action( 'ap_publish_comment', array($this, 'publish_comment'));
+		add_action( 'ap_unpublish_comment', array($this, 'unpublish_comment'));
 		add_filter( 'wp_get_nav_menu_items', array($this, 'update_menu_url'));
 		add_filter( 'nav_menu_css_class', array($this, 'fix_nav_current_class'), 10, 2 );
 
@@ -263,37 +263,46 @@ class AnsPress_Actions
 	 * @return null|integer   
 	 */
 	public function publish_comment($comment){
+		$comment = (object) $comment;
 
-		$post_type = get_post_type( $comment['comment_post_ID'] );
+		$post_type = get_post_type( $comment->comment_post_ID );
 
 		if ($post_type == 'question') {
 			// set updated meta for sorting purpose
-			update_post_meta($comment['comment_post_ID'], ANSPRESS_UPDATED_META, current_time( 'mysql' ));
+			update_post_meta($comment->comment_post_ID, ANSPRESS_UPDATED_META, current_time( 'mysql' ));
 
 			// add participant
-			ap_add_parti($comment['comment_post_ID'], $comment['user_ID'], 'comment');
+			ap_add_parti($comment->comment_post_ID, $comment->user_id, 'comment');
+
+			// subscribe to current question
+			ap_add_question_subscriber($comment->comment_post_ID, $comment->user_id);
 
 		}elseif($post_type == 'answer'){
-			$post_id = wp_get_post_parent_id($comment['comment_post_ID']);
+
+			$post_id = wp_get_post_parent_id($comment->comment_post_ID);
 			// set updated meta for sorting purpose
 			update_post_meta($post_id, ANSPRESS_UPDATED_META, current_time( 'mysql' ));
 			// add participant only
-			ap_add_parti($post_id, $comment['user_ID'], 'comment');
+			ap_add_parti($post_id, $comment->user_id, 'comment');
+
+			ap_add_question_subscriber($post_id, $comment->user_id);
 		}
 
 	}
 
 	public function unpublish_comment($comment){
-		$post_type = get_post_type( $comment['comment_post_ID'] );
+		$comment = (object) $comment;
+		$post = get_post( $comment->comment_post_ID );
 
-		if ($post_type == 'question') {
-			ap_remove_parti($comment['comment_post_ID'], $comment['user_ID'], 'comment');
+		if ($post->post_type == 'question') {
+			ap_remove_parti($comment->comment_post_ID, $comment->user_id, 'comment');
+			ap_remove_question_subscriber($post->ID, $comment->user_id);
 
-		}elseif($post_type == 'answer'){
-			$post_id = wp_get_post_parent_id($comment['comment_post_ID']);
-			ap_remove_parti($post_id, $comment['user_ID'], 'comment');
+		}elseif($post->post_type == 'answer'){
+			$post_id = wp_get_post_parent_id($comment->comment_post_ID);
+			ap_remove_parti($post_id, $comment->user_id, 'comment');
+			ap_remove_question_subscriber($post_id, $comment->user_id);
 		}
-
 	}
 
 	/**
