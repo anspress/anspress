@@ -189,7 +189,7 @@ class AnsPress_Actions
 			do_action('ap_trash_answer', $post);
 			ap_remove_parti($post->post_parent, $post->post_author, 'answer');
 			ap_delete_meta(array('apmeta_type' => 'flag', 'apmeta_actionid' => $post->ID));
-			ap_remove_question_subscriber($post->ID, $post->post_author);
+			ap_remove_question_subscriber($post->post_parent, $post->post_author);
 			//update answer count
 			update_post_meta($post->post_parent, ANSPRESS_ANS_META, $ans);
 		}

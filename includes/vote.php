@@ -595,7 +595,10 @@ function ap_add_question_subscriber($question_id, $user_id = false){
 	$is_subscribed = ap_is_user_subscribed( $question_id );
 
 	if($user_id === false)
-		$user_id = get_current_user_id();	
+		$user_id = get_current_user_id();
+
+	if($user_id < 1)
+		return false;
 
 	if(!$is_subscribed){
 
