@@ -162,10 +162,6 @@ if (!class_exists('AnsPress')) {
                  define('ANSPRESS_ADDON_DIR', ANSPRESS_DIR.'addons'.DS);
              }
 
-             if (!defined('ANSPRESS_ADDON_URL')) {
-                 define('ANSPRESS_ADDON_URL', ANSPRESS_URL.'addons/');
-             }
-
              if (!defined('ANSPRESS_THEME_DIR')) {
                  define('ANSPRESS_THEME_DIR', plugin_dir_path(__FILE__).'theme');
              }

@@ -230,10 +230,10 @@ class AnsPress_PostTypes
     {
         global $post;
 
-        if($post->post_type != 'question')
+        if(!($post->post_type != 'question' || $post->post_type != 'answer'))
             return $column;
 
-        if ('asker' == $column) {
+        if ('asker' == $column || 'answerer' == $column) {
             
             echo get_avatar(get_the_author_meta('user_email'), 40);
         
@@ -328,7 +328,8 @@ class AnsPress_PostTypes
                 'action' => 'edit'
             ), 'post.php')) . '"><strong>' . get_the_title($post->post_parent) . '</strong></a>';
         } elseif ('vote' == $column) {
-            echo '<span class="vote-count' . ($post->flag ? ' zero' : '') . '">' . $post->net_vote . '</span>';
+            $vote = get_post_meta( $post->ID, ANSPRESS_VOTE_META, true );
+            echo '<span class="vote-count' . ($vote ? ' zero' : '') . '">' .$vote . '</span>';
         }elseif ('flag' == $column) {
             $total_flag = ap_post_flag_count();
             echo '<span class="flag-count' . ($total_flag ? ' flagged' : '') . '">'. $total_flag . '</span>';
@@ -344,8 +345,9 @@ class AnsPress_PostTypes
     {
         $columns = array(
             "cb" => "<input type=\"checkbox\" />",
-            "author" => __('Author', 'ap'),
+            "answerer" => __('Author', 'ap'),
             "answer_content" => __('Content', 'ap'),
+            "status" => __('Status', 'ap'),
             "comments" => __('Comments', 'ap'),
             "vote" => __('Vote', 'ap'),
             "flag" => __('Flag', 'ap'),
