@@ -1489,14 +1489,6 @@
 #anspress .ap-q-actions .ap-dropdown-toggle.more-actions {
   font-size: 25px;
 }
-#anspress .ap-q-actions > li.ap-post-action > a.ap-btn-select,
-#anspress .ap-q-actions .ap-dropdown-toggle.ap-btn-select {
-  background: #D1EED2;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  line-height: 22px;
-  padding: 0 5px;
-  color: #333333;
-}
 #anspress .ap-q-actions > li.ap-post-action > a.ap-btn-select:before,
 #anspress .ap-q-actions .ap-dropdown-toggle.ap-btn-select:before {
   margin-right: 4px;
@@ -1512,8 +1504,6 @@
   font-size: 14px;
 }
 #anspress .ap-question-meta {
-  border-bottom: 1px solid #eee;
-  font-weight: 600;
   margin-bottom: 15px;
 }
 #anspress .ap-question-meta > .ap-display-meta-item {
@@ -1534,8 +1524,12 @@
 }
 #anspress .ap-question-meta .question-tags a,
 #anspress .ap-question-meta .question-categories a {
-  margin-right: 5px;
   color: #333333;
+  border: 1px solid #e1e1e1;
+  border-radius: 3px;
+  font-size: 13px;
+  margin-right: 5px;
+  padding: 3px 11px;
 }
 #anspress .ap-question-meta .question-tags a:hover,
 #anspress .ap-question-meta .question-categories a:hover {
@@ -1568,9 +1562,13 @@
   text-transform: uppercase;
 }
 .ap-content .ap-post-history {
+  color: #888;
   display: block;
   font-size: 13px;
   margin-top: 10px;
+}
+.ap-content .ap-post-history > i {
+  font-size: 12px;
 }
 .ap-content :last-child {
   margin-bottom: 0;
@@ -1624,14 +1622,25 @@
   background: none repeat scroll 0 0 rgba(247, 254, 249, 0.33);
   border: 1px solid rgba(204, 218, 202, 0.22);
 }
+#ap-best-answer .type-answer {
+  margin-top: 0;
+}
+#ap-best-answer .ap-a-cells {
+  background: none repeat scroll 0 0 #f9fff8;
+  border-color: #cce4c8;
+}
 #ap-answers-c {
   margin-top: 30px;
 }
-#ap-answers-c .ap-answers-tab > li a {
-  padding: 3px 10px;
+#ap-answers-c .ap-answers-tab {
+  margin-top: 7px;
 }
-#ap-answers-c .ap-answers-tab > li.active a {
-  padding: 4px 10px;
+#ap-answers-c .ap-answers-tab > li a {
+  font-size: 12px;
+  padding: 1px 12px;
+}
+#ap-answers-c .ap-answers-tab li.active a {
+  padding: 2px 12px;
 }
 .ap-question-right {
   padding-left: 30px;
@@ -1730,15 +1739,15 @@
   background-image: linear-gradient(#ffffff, #fcfcfc);
   border: 1px solid #ddd;
   border-radius: 3px;
-  color: #333333;
+  color: #777;
   display: block;
-  font-size: 13px;
-  height: 25px;
-  line-height: 22px;
+  font-size: 15px;
+  height: 27px;
+  line-height: 26px;
   padding: 0;
   text-align: center;
   text-decoration: none;
-  width: 25px;
+  width: 27px;
 }
 #anspress .ap-vote a:focus {
   outline: none;
