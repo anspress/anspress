@@ -101,8 +101,9 @@ function init_scripts_front(){
 if ( ! function_exists( 'ap_comment' ) ) :
 	function ap_comment( $comment ) {
 		$GLOBALS['comment'] = $comment;
+		$class = '0' == $comment->comment_approved ? ' pending' : '';
 		?>
-		<li <?php comment_class('clearfix'); ?> id="li-comment-<?php comment_ID(); ?>">
+		<li <?php comment_class('clearfix'.$class); ?> id="li-comment-<?php comment_ID(); ?>">
 			<!-- comment #<?php comment_ID(); ?> -->
 			<div id="comment-<?php comment_ID(); ?>" class="clearfix">
 				<div class="ap-avatar ap-pull-left">
@@ -111,10 +112,7 @@ if ( ! function_exists( 'ap_comment' ) ) :
 					<?php echo get_avatar( $comment->user_id, 30 ); ?>
 					</a>
 				</div>
-				<div class="ap-comment-content no-overflow">
-					<?php if ( '0' == $comment->comment_approved ) : ?>
-						<p class="comment-awaiting-moderation"><?php _e( 'Your comment is awaiting moderation.', 'ap' ); ?></p>
-					<?php endif; ?>
+				<div class="ap-comment-content no-overflow">					
 					<div class="ap-comment-header">
 						<a href="<?php echo ap_user_link($comment->user_id); ?>" class="ap-comment-author"><?php echo ap_user_display_name($comment->user_id); ?></a>
 
@@ -142,6 +140,9 @@ if ( ! function_exists( 'ap_comment' ) ) :
 						 */
 						do_action('ap_after_comment_content', $comment );
 					?>
+					<?php if ( '0' == $comment->comment_approved ) : ?>
+						<p class="comment-awaiting-moderation"><?php _e( 'Your comment is awaiting moderation.', 'ap' ); ?></p>
+					<?php endif; ?>
 				</div>
 			</div>
 		<?php
