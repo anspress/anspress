@@ -278,7 +278,7 @@ class AnsPress_Reputation {
 
 	public function display_meta($metas, $user_id){
 		if($user_id > 0)
-			$metas['reputation'] = '<span class="ap-user-meta ap-user-meta-reputation" title="'.__('Reputation', 'ap').'">'. sprintf(__('%d Rep.', 'ap'), ap_get_reputation($user_id, true)) .'</span>';
+			$metas['reputation'] = '<span class="ap-user-meta ap-user-meta-reputation" title="'.__('Reputation', 'ap').'">'. sprintf(__('%s Rep.', 'ap'), ap_get_reputation($user_id, true)) .'</span>';
 
 		return $metas;
 	}
