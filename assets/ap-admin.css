@@ -609,3 +609,6 @@ h3.ap-dash-title {
 .manage-column.column-author {
     width: 80px;
 }
+.column-question_tag{
+    width: 100px;
+}

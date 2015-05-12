@@ -205,17 +205,24 @@ class AnsPress_PostTypes
      */
     public function cpt_question_columns($columns)
     {
-        $columns = array(
-            "cb" => "<input type=\"checkbox\" />",
-            "author" => __('Author', 'ap'),
-            "title" => __('Title', 'ap'),
-            "status" => __('Status', 'ap'),
-            "answers" => __('Ans', 'ap'),
-            "comments" => __('Comments', 'ap'),
-            "vote" => __('Vote', 'ap'),            
-            "flag" => __('Flag', 'ap'),            
-            "date" => __('Date', 'ap')
-        );
+        $columns = array();
+        $columns["cb"]          = "<input type=\"checkbox\" />";
+        $columns["asker"]      = __('Author', 'ap');
+        $columns["title"]       = __('Title', 'ap');
+
+        if(taxonomy_exists( 'question_category' ))
+            $columns["question_category"]       = __('Category', 'ap');
+
+        if(taxonomy_exists( 'question_tag' ))
+            $columns["question_tag"]       = __('Tag', 'ap');
+        
+        $columns["status"]      = __('Status', 'ap');
+        $columns["answers"]     = __('Ans', 'ap');
+        $columns["comments"]    = __('Comments', 'ap');
+        $columns["vote"]        = __('Vote', 'ap');           
+        $columns["flag"]        = __('Flag', 'ap');           
+        $columns["date"]        = __('Date', 'ap');
+
         return $columns;
     }
 
@@ -226,13 +233,43 @@ class AnsPress_PostTypes
         if($post->post_type != 'question')
             return $column;
 
-        if ('asker' == $column || 'answerer' == $column) {
+        if ('asker' == $column) {
+            
             echo get_avatar(get_the_author_meta('user_email'), 40);
+        
         }elseif ('status' == $column) {            
-            echo '<span class="post-status">' . $post->post_status .'</span>';
-        } /*elseif ('question_category' == $column && taxonomy_exists( 'question_category' )) {
+            
+            echo '<span class="post-status">';
+            
+                if('private_post' == $post->post_status)
+                    echo __('Private', 'ap');
 
-            $category = get_the_terms($post->ID, ANSPRESS_CAT_TAX);            
+                elseif('closed' == $post->post_status)
+                    echo __('Closed', 'ap');
+
+                elseif('moderate' == $post->post_status)
+                    echo __('Moderate', 'ap');
+
+                elseif('private' == $post->post_status)
+                    echo __('Private', 'ap');
+
+                elseif('darft' == $post->post_status)
+                    echo __('Draft', 'ap');
+
+                elseif('pending' == $post->post_status)
+                    echo __('Pending', 'ap');
+
+                elseif('trash' == $post->post_status)
+                    echo __('Trash', 'ap');
+
+                else
+                    echo __('Open', 'ap');
+
+            echo '</span>';
+        
+        } elseif ('question_category' == $column && taxonomy_exists( 'question_category' )) {
+
+            $category = get_the_terms($post->ID, 'question_category');            
 
             if (!empty($category)) {
                 $out = array();
@@ -246,9 +283,9 @@ class AnsPress_PostTypes
             else {
                 _e('--');
             }
-        } elseif (ANSPRESS_TAG_TAX == $column) {
+        } elseif ('question_tag' == $column && taxonomy_exists( 'question_tag' )) {
             
-            $terms = get_the_terms($post->ID, ANSPRESS_TAG_TAX);
+            $terms = get_the_terms($post->ID, 'question_tag');
             
             
             if (!empty($terms)) {
@@ -258,8 +295,8 @@ class AnsPress_PostTypes
                 foreach ($terms as $term) {
                     $out[] = sprintf('<a href="%s">%s</a>', esc_url(add_query_arg(array(
                         'post_type' => $post->post_type,
-                        ANSPRESS_TAG_TAX => $term->slug
-                    ), 'edit.php')), esc_html(sanitize_term_field('name', $term->name, $term->term_id, ANSPRESS_TAG_TAX, 'display')));
+                        'question_tag' => $term->slug
+                    ), 'edit.php')), esc_html(sanitize_term_field('name', $term->name, $term->term_id, 'question_tag', 'display')));
                 }
                 
                 echo join(', ', $out);
@@ -267,9 +304,9 @@ class AnsPress_PostTypes
             
             
             else {
-                _e('No Tags');
+                _e('--', 'ap');
             }
-        }*/ elseif ('answers' == $column) {
+        } elseif ('answers' == $column) {
             $a_count = ap_count_answer_meta();
             
             /* If terms were found. */
