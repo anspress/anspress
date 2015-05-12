@@ -41,6 +41,8 @@
             this.change_status();
             this.load_profile_field();
             this.ap_post_upload_field();
+            this.tinyMCEeditorToggle();
+            this.tab();
         },
         doAjax: function(query, success, context, before, abort) {
             /** Shorthand method for calling ajax */
@@ -476,6 +478,23 @@
 
                 reader.readAsDataURL(input.files[0]);
             }
+        },
+        tinyMCEeditorToggle: function(){            
+            $('body').delegate('[data-action="ap_fullscreen_toggle"]', 'click', function(e) {
+                e.preventDefault();
+                $(this).toggleClass('active');
+                tinyMCE.activeEditor.execCommand('mceFullscreen');                
+            });
+        },
+        tab: function(){
+            $('body').delegate('.ap-tab-nav a', 'click', function(e) {
+                e.preventDefault();
+                var container = $(this).attr('href');
+                $('.ap-tab-container > *').removeClass('active');
+                $('.ap-tab-nav >li').removeClass('active');
+                $(this).parent().addClass('active');
+                $(container).toggleClass('active');
+            });
         }
     }
 })(jQuery);

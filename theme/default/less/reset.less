@@ -251,6 +251,31 @@
 			padding: 0;
 		}
 	}
+	.ap-tab-nav{
+		li> a{
+		    background: none repeat scroll 0 0 #eee;
+		    border-color: #ddd #ddd transparent;
+		    border-image: none;
+		    border-radius: 2px 2px 0 0;
+		    border-style: solid solid none;
+		    border-width: 1px 1px medium;
+		    display: block;
+		    margin-bottom: -9px;
+		    padding: 3px 12px;
+		    &:focus{
+		    	outline: none;
+		    }
+	    }
+	    li.active > a{
+	    	background: none repeat scroll 0 0 #fff;
+	    }
+	}
+	.ap-tab-container > *{
+		display: none;
+		&.active{
+			display: block;
+		}
+	}
 }
 .ap-loading-icon{
     background: rgba(255, 255, 255, 0.8);

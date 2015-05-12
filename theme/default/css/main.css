@@ -1161,6 +1161,29 @@
   margin: 0;
   padding: 0;
 }
+#anspress .ap-tab-nav li > a {
+  background: none repeat scroll 0 0 #eee;
+  border-color: #ddd #ddd transparent;
+  border-image: none;
+  border-radius: 2px 2px 0 0;
+  border-style: solid solid none;
+  border-width: 1px 1px medium;
+  display: block;
+  margin-bottom: -9px;
+  padding: 3px 12px;
+}
+#anspress .ap-tab-nav li > a:focus {
+  outline: none;
+}
+#anspress .ap-tab-nav li.active > a {
+  background: none repeat scroll 0 0 #fff;
+}
+#anspress .ap-tab-container > * {
+  display: none;
+}
+#anspress .ap-tab-container > *.active {
+  display: block;
+}
 .ap-loading-icon {
   background: rgba(255, 255, 255, 0.8);
   border-radius: 2px;
@@ -1980,8 +2003,6 @@
   float: right;
 }
 #anspress .ap-editor {
-  border: 1px solid #ddd;
-  border-radius: 3px;
   margin-bottom: 20px;
 }
 #anspress .ap-editor iframe {
@@ -1993,7 +2014,8 @@
 }
 #anspress .ap-editor .mce-edit-area {
   background: none repeat scroll 0 0 #fcfcfc;
-  border-top: 1px solid #ddd;
+  border: 1px solid #ddd !important;
+  border-radius: 3px;
   box-shadow: 0 0 2px rgba(0, 0, 0, 0.05) inset;
   padding: 7px;
 }
@@ -2016,6 +2038,10 @@
 #anspress .ap-editor .mce-btn button i {
   padding: 0;
 }
+#anspress .ap-editor .quicktags-toolbar input.button:hover,
+#anspress .ap-editor .mce-btn button:hover {
+  background: #eee;
+}
 #anspress .ap-editor .mce-toolbar-grp {
   background: none repeat scroll 0 0 #fff;
   border-bottom: medium none;
@@ -2030,12 +2056,9 @@
   padding: 0;
 }
 #anspress .ap-editor .mce-toolbar .mce-btn-group .mce-btn {
-  border-color: transparent #eee transparent transparent;
-  border-image: none;
-  border-style: none solid none none;
-  border-width: medium 1px medium medium;
+  border: medium none;
   margin: 0;
-  padding: 8px;
+  padding: 3px;
 }
 #anspress .ap-editor .mce-toolbar .mce-btn-group .mce-btn:hover {
   background: transparent;
@@ -2269,6 +2292,30 @@
   text-align: center;
   vertical-align: top;
   width: 28px;
+}
+#anspress .ap-form-head {
+  background: #f8f8f8;
+  border-bottom: 1px solid #e7e7e7;
+  margin: -10px -10px 10px;
+  padding: 8px;
+}
+#anspress .ap-form-head .ap-btn-fullscreen {
+  font-size: 12px;
+  padding: 2px 0;
+}
+#anspress .ap-form-head .ap-btn-fullscreen:before {
+  margin-right: 5px;
+}
+#anspress .ap-form-head .ap-btn-fullscreen.active {
+  background: none repeat scroll 0 0 #ededed;
+  border: 1px solid #ddd;
+  line-height: 20px;
+  margin-top: 2px;
+  padding: 1px 9px;
+  position: fixed;
+  right: 5px;
+  top: 1px;
+  z-index: 999999;
 }
 #ap-search-form {
   margin-bottom: 0;

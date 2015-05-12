@@ -6,7 +6,21 @@
 			</a>		
 		</div>
 		<div class="ap-a-cells clearfix">
-			<?php ap_answer_form(get_question_id()); ?>
+			<div class="ap-form-head">
+				<a href="#" class="apicon-screen-full pull-right ap-btn-fullscreen" data-action="ap_fullscreen_toggle"><?php _e('Toggle fullscreen'); ?></a>
+				<ul class="ap-form-head-tab ap-ul-inline clearfix ap-tab-nav">
+					<li class="active"><a href="#ap-form-main"><?php _e('Write', 'ap'); ?></a></li>
+					<li><a href="#ap-form-help"><?php _e('How to write', 'ap'); ?></a></li>
+				</ul>				
+			</div>
+			<div class="ap-tab-container">
+				<div id="ap-form-main" class="active ap-tab-item">
+					<?php ap_answer_form(get_question_id()); ?>
+				</div>
+				<div id="ap-form-help" class="ap-tab-item">
+				Here goes the contests
+				</div>
+			</div>
 		</div>
 	</div>
 <?php elseif (is_user_logged_in()): ?>
