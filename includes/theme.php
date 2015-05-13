@@ -628,3 +628,49 @@ function ap_ask_btn(){
 function ap_get_template_part($file){
 	include(ap_get_theme_location($file.'.php'));
 }
+
+/**
+ * Output the contents of help page
+ * @since 2.2
+ */
+function ap_how_to_ask(){
+	$content = ap_get_how_to_ask();
+	
+	if($content !== false)
+		echo $content;
+}
+	/**
+	 * Get the contents of help page
+	 * @return string|false
+	 * @since 2.2
+	 */
+	function ap_get_how_to_ask(){
+		if(ap_opt('qustion_help_page') != ''){
+			$help = get_post((int)ap_opt('question_help_page'));
+			return $help->the_content();
+		}
+		return false;
+	}
+
+/**
+ * Output the contents of answer help page
+ * @since 2.2
+ */
+function ap_how_to_answer(){
+	$content = ap_get_how_to_answer();
+	
+	if($content !== false)
+		echo $content;
+}
+	/**
+	 * Get the contents of help page
+	 * @return string|false
+	 * @since 2.2
+	 */
+	function ap_get_how_to_answer(){
+		if(ap_opt('answer_help_page') != ''){
+			$help = get_post((int)ap_opt('answer_help_page'));
+			return $help->post_content;
+		}
+		return false;
+	}

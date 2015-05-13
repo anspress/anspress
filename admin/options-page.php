@@ -22,6 +22,22 @@ class AnsPress_Options_Page
 				'show_desc_tip' => false,
 			),
 			array(
+				'name' => 'anspress_opt[question_help_page]',
+				'label' => __('Question Help page', 'ap') ,
+				'desc' => __('Direction for asking a question.', 'ap') ,
+				'type' => 'page_select',
+				'value' => @$settings['question_help_page'],
+				'show_desc_tip' => false,
+			),
+			array(
+				'name' => 'anspress_opt[answer_help_page]',
+				'label' => __('Answer Help page', 'ap') ,
+				'desc' => __('Direction for answring a question.', 'ap') ,
+				'type' => 'page_select',
+				'value' => @$settings['answer_help_page'],
+				'show_desc_tip' => false,
+			),
+			array(
 				'name' => 'anspress_opt[author_credits]',
 				'label' => __('Hide author credits', 'ap') ,
 				'desc' => __('Show your love by showing link to AnsPress project site.', 'ap') ,

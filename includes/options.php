@@ -120,6 +120,8 @@ function ap_default_options(){
 		'question_permalink_follow' 	=> false,		
 		'show_question_sidebar' => true,		
 		'allow_upload_image' 	=> true,		
+		'question_help_page' 	=> '',		
+		'answer_help_page' 		=> '',		
 	);
 	
 	/**
