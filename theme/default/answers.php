@@ -28,6 +28,14 @@
 					endwhile ;
 				?>
 			</div>
+			<div class="ap-answers-nav fix">
+				<a href="#" title="<?php _e('Prev answer', 'ap'); ?>" class="ap-answerss-nav-prev apicon-chevron-up"></a>
+				<span class="ap-answers-nav-count">
+					<span class="ap-answers-nav-current">1</span>
+					<span class="ap-answers-nav-total">/ <?php ap_answer_the_count(); ?></span>
+				</span>
+				<a href="#" title="<?php _e('Prev answer', 'ap'); ?>" class="ap-answers-nav-next apicon-chevron-down"></a>
+			</div>
 			<?php ap_answers_the_pagination(); ?>
 		<?php else: ?>
 			<div class="ap-login-to-see-ans">

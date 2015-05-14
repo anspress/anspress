@@ -98,8 +98,8 @@ if (!class_exists('AnsPress')) {
                 
                 add_action('plugins_loaded', array( self::$instance, 'load_textdomain' ));
                 
-                if ( class_exists( 'BuddyPress' ) )
-                    add_action('bp_include', array( self::$instance, 'bp_include' ));
+                
+                add_action('bp_include', array( self::$instance, 'bp_include' ));
 
                 global $ap_classes;
                 $ap_classes = array();
@@ -287,6 +287,9 @@ if (!class_exists('AnsPress')) {
 
         public function bp_include()
         {
+            if ( !class_exists( 'BuddyPress' ) )
+                return;
+
             require_once ANSPRESS_DIR.'includes/bp.php';
             self::$instance->anspress_bp = new AnsPress_BP;
         }

@@ -144,7 +144,7 @@ class AnsPress_Ajax
 				if(!ap_opt('show_comments_by_default')) echo '</div>';
 			$result['html'] = ob_get_clean();
 			$result['container'] = '#comments-'.$comment_post_ID;
-			$result['message'] = 'success';
+			//$result['message'] = 'success';
 			$result['view_default'] = ap_opt('show_comments_by_default');
 			$result['view'] = array('comments_count_'.$comment_post_ID => '('.$count['approved'].')', 'comment_count_label_'.$comment_post_ID => sprintf(_n('One comment', '%d comments', $count['approved'], 'ap'), $count['approved']) );
 

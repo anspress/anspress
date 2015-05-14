@@ -916,6 +916,12 @@
   line-height: 1.4;
   word-wrap: break-word;
 }
+#anspress ul {
+  line-height: 1.4;
+}
+#anspress h3 {
+  line-height: 1.8;
+}
 #anspress .hentry {
   padding-top: 0;
   margin: 0;
@@ -1170,7 +1176,7 @@
   border-width: 1px 1px medium;
   display: block;
   margin-bottom: -9px;
-  padding: 3px 12px;
+  padding: 5px 12px;
 }
 #anspress .ap-tab-nav li > a:focus {
   outline: none;
@@ -1660,10 +1666,10 @@
 }
 #ap-answers-c .ap-answers-tab > li a {
   font-size: 12px;
-  padding: 1px 12px;
+  padding: 5px 12px;
 }
 #ap-answers-c .ap-answers-tab li.active a {
-  padding: 2px 12px;
+  padding: 6px 12px;
 }
 .ap-question-right {
   padding-left: 30px;
@@ -1727,15 +1733,14 @@
   padding-top: 0;
 }
 #anspress .ap-btn {
-  background: none repeat scroll 0 0 #f9f9f9;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  border-radius: 2px;
-  box-shadow: 0 0 3px rgba(0, 0, 0, 0.02);
-  line-height: 25px;
-  padding: 5px 10px;
+  background-image: linear-gradient(#ffffff, #fcfcfc);
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 3px;
+  font-weight: 600;
+  line-height: 1.6;
+  padding: 4px 10px;
   text-decoration: none;
   vertical-align: middle;
-  font-weight: 600;
 }
 #anspress .ap-btn.ap-btn-view-all {
   display: block;
@@ -1744,8 +1749,8 @@
   text-transform: uppercase;
 }
 #anspress .ap-btn:hover {
-  background: none repeat scroll 0 0 #eee;
-  border-color: #ddd;
+  background: none repeat scroll 0 0 #f5f5f5;
+  border-color: rgba(0, 0, 0, 0.2);
 }
 #anspress .ap-btn.active {
   background: #eee;
@@ -1913,8 +1918,8 @@
 }
 #anspress label > input[type="checkbox"] {
   float: left;
-  margin-right: 15px !important;
-  margin-top: 5px !important;
+  margin-right: 10px !important;
+  margin-top: 3px !important;
 }
 #anspress label.inline-cb {
   margin-bottom: 15px;
@@ -2328,7 +2333,6 @@
   display: none;
 }
 .ap-btn-submit {
-  float: right;
   margin-top: 10px;
 }
 #anspress .ap-comment-block,
@@ -2423,15 +2427,14 @@
   display: none;
 }
 #anspress .ap-comment-form #submit {
-  background: none repeat scroll 0 0 #f9f9f9;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  border-radius: 2px;
-  box-shadow: 0 0 3px rgba(0, 0, 0, 0.02);
-  line-height: 25px;
-  padding: 5px 10px;
+  background-image: linear-gradient(#ffffff, #fcfcfc);
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 3px;
+  font-weight: 600;
+  line-height: 1.6;
+  padding: 4px 10px;
   text-decoration: none;
   vertical-align: middle;
-  font-weight: 600;
 }
 #anspress .ap-comment-form #submit.ap-btn-view-all {
   display: block;
@@ -2440,8 +2443,8 @@
   text-transform: uppercase;
 }
 #anspress .ap-comment-form #submit:hover {
-  background: none repeat scroll 0 0 #eee;
-  border-color: #ddd;
+  background: none repeat scroll 0 0 #f5f5f5;
+  border-color: rgba(0, 0, 0, 0.2);
 }
 #anspress .ap-comment-form #submit.active {
   background: #eee;
@@ -2452,15 +2455,14 @@
   margin-left: 10px;
 }
 #anspress .ap-comment-form input[type="submit"] {
-  background: none repeat scroll 0 0 #f9f9f9;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  border-radius: 2px;
-  box-shadow: 0 0 3px rgba(0, 0, 0, 0.02);
-  line-height: 25px;
-  padding: 5px 10px;
+  background-image: linear-gradient(#ffffff, #fcfcfc);
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 3px;
+  font-weight: 600;
+  line-height: 1.6;
+  padding: 4px 10px;
   text-decoration: none;
   vertical-align: middle;
-  font-weight: 600;
 }
 #anspress .ap-comment-form input[type="submit"].ap-btn-view-all {
   display: block;
@@ -2469,8 +2471,8 @@
   text-transform: uppercase;
 }
 #anspress .ap-comment-form input[type="submit"]:hover {
-  background: none repeat scroll 0 0 #eee;
-  border-color: #ddd;
+  background: none repeat scroll 0 0 #f5f5f5;
+  border-color: rgba(0, 0, 0, 0.2);
 }
 #anspress .ap-comment-form input[type="submit"].active {
   background: #eee;
@@ -2792,4 +2794,34 @@
 #anspress .ap-dropdown-menu li.active a:hover {
   background: #61c17d;
   color: #fff;
+}
+.ap-answers-nav {
+  background: #61c17d;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+  color: #fff;
+  font-weight: 600;
+  text-align: center;
+}
+.ap-answers-nav.fix {
+  position: fixed;
+  bottom: 0;
+}
+.ap-answers-nav-count,
+.ap-answers-nav a {
+  color: #fff;
+  display: inline-block;
+  padding: 5px 10px;
+}
+.ap-answers-nav-count {
+  padding: 5px 14px;
+  font-weight: 700;
+}
+.ap-answers-nav > a {
+  background: rgba(0, 0, 0, 0.05);
+}
+.ap-answers-nav > a:visited {
+  color: #fff;
+}
+.ap-answers-nav > a:hover {
+  background: rgba(0, 0, 0, 0.1);
 }
