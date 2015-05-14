@@ -1643,6 +1643,10 @@
 #ap-best-answer .type-answer:first-child {
   margin-top: 0;
 }
+#answers .type-answer.active .ap-a-cells,
+#ap-best-answer .type-answer.active .ap-a-cells {
+  border-color: #6AB17F;
+}
 #ap-best-answer {
   margin-top: 20px;
   position: relative;
@@ -2338,13 +2342,10 @@
 #anspress .ap-comment-block,
 #anspress .have-comments {
   background: none repeat scroll 0 0 #fcfcfc;
-  border-color: transparent #eee #eee;
-  border-image: none;
-  border-right: 1px solid #eee;
-  border-style: none solid solid;
-  border-width: medium 1px 1px;
+  border: medium none;
+  border-radius: 0 0 3px 3px;
   font-size: 13px;
-  margin: 11px -11px -11px;
+  margin: 5px -10px -10px;
 }
 #anspress #respond {
   margin: 0;
@@ -2362,7 +2363,7 @@
 #anspress .ap-commentlist > li .ap-avatar {
   margin-top: 5px;
 }
-#anspress .ap-commentlist > li:nth-child(2n+1) {
+#anspress .ap-commentlist > li:nth-child(2n) {
   background: #fff;
 }
 #anspress .ap-commentlist > li.pending {

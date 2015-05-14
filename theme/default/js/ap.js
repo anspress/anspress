@@ -177,6 +177,43 @@ jQuery(document).ready(function() {
     jQuery( document ).ajaxComplete(function( event, data, settings ) {
         jQuery('.ap-dynamic-avatar').initial({fontSize:15, fontWeight:600});
     });
+
+
+
+    var waypoints = jQuery('#answers .answer').waypoint(function(direction) {
+        jQuery('#answers .answer').removeClass('active');
+        var total = parseInt(jQuery('[data-view="ap_answer_nav_total"]').text());
+        var index = parseInt(jQuery(this.element).data('index'));
+        var nav = jQuery('.ap-answers-nav');
+
+        if((index == 1 && direction == 'up') || (index == total && direction == 'down') )
+            nav.hide();
+        else
+            nav.show();
+
+        jQuery('[data-view="ap_answer_nav_cur"]').text(index);
+        jQuery(this.element).addClass('active');
+    }, {
+        offset: '100'
+    });
+
+    jQuery('[data-acton="ap_answer_prev"]').click(function(e) {
+        e.preventDefault();
+        var cur = parseInt(jQuery('[data-view="ap_answer_nav_cur"]').text()) - 1;
+        jQuery('html, body').animate({
+            scrollTop: (jQuery('#answers .answer:nth-child('+cur+')').offset().top) - 100
+        }, 500);
+    });
+
+    jQuery('[data-acton="ap_answer_next"]').click(function(e) {
+        e.preventDefault();
+        var cur = parseInt( jQuery('[data-view="ap_answer_nav_cur"]').text()) + 1;
+        jQuery('html, body').animate({
+            scrollTop: (jQuery('#answers .answer:nth-child('+cur+')').offset().top) - 99
+        }, 500);
+    });
+
+
 });
 
 function ap_chk_activity_scroll(e) {
