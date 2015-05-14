@@ -23,11 +23,11 @@ class AnsPress_Actions
 		AP_History::get_instance();
 
 		add_action( 'init', array($this, 'init') );
-		add_action( 'ap_after_new_question', array($this, 'after_new_question'), 1, 2 );
-		add_action( 'ap_after_new_answer', array($this, 'after_new_answer'), 1, 2 );
+		add_action( 'ap_after_new_question', array($this, 'after_new_question'), 0, 2 );
+		add_action( 'ap_after_new_answer', array($this, 'after_new_answer'), 0, 2 );
 
-		add_action( 'ap_after_update_question', array($this, 'ap_after_update_question'), 1, 2 );
-		add_action( 'ap_after_update_answer', array($this, 'ap_after_update_answer'), 1, 2 );
+		add_action( 'ap_after_update_question', array($this, 'ap_after_update_question'), 0, 2 );
+		add_action( 'ap_after_update_answer', array($this, 'ap_after_update_answer'), 0, 2 );
 
 		add_action( 'before_delete_post', array($this, 'before_delete'));	
 
