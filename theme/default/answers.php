@@ -30,13 +30,15 @@
 					endwhile ;
 				?>
 			</div>
-			<div class="ap-answers-nav fix">
-				<a href="#" title="<?php _e('Prev answer', 'ap'); ?>" data-acton="ap_answer_prev" class="ap-answerss-nav-prev apicon-chevron-up"></a>
-				<span class="ap-answers-nav-count">
-					<span class="ap-answers-nav-current" data-view="ap_answer_nav_cur">1</span> /
-					<span class="ap-answers-nav-total" data-view="ap_answer_nav_total"><?php ap_answer_the_count(); ?></span>
-				</span>
-				<a href="#" title="<?php _e('Prev answer', 'ap'); ?>" data-acton="ap_answer_next" class="ap-answers-nav-next apicon-chevron-down"></a>
+			<div id="ap-answers-nav-c">
+				<div class="ap-answers-nav fix">
+					<a href="#" title="<?php _e('Prev answer', 'ap'); ?>" data-acton="ap_answer_prev" class="ap-answerss-nav-prev apicon-chevron-up"></a>
+					<span class="ap-answers-nav-count">
+						<span class="ap-answers-nav-current" data-view="ap_answer_nav_cur">1</span> /
+						<span class="ap-answers-nav-total" data-view="ap_answer_nav_total"><?php ap_answer_the_count(); ?></span>
+					</span>
+					<a href="#" title="<?php _e('Prev answer', 'ap'); ?>" data-acton="ap_answer_next" class="ap-answers-nav-next apicon-chevron-down"></a>
+				</div>
 			</div>
 			<?php ap_answers_the_pagination(); ?>
 		<?php else: ?>

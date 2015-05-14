@@ -179,14 +179,13 @@ jQuery(document).ready(function() {
     });
 
 
-
-    var waypoints = jQuery('#answers .answer').waypoint(function(direction) {
+    jQuery('#answers .answer').waypoint(function(direction, pos) {
         jQuery('#answers .answer').removeClass('active');
         var total = parseInt(jQuery('[data-view="ap_answer_nav_total"]').text());
         var index = parseInt(jQuery(this.element).data('index'));
         var nav = jQuery('.ap-answers-nav');
 
-        if((index == 1 && direction == 'up') || (index == total && direction == 'down') )
+        if((index == 1 && direction == 'up') || (index == total) )
             nav.hide();
         else
             nav.show();

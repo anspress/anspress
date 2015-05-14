@@ -2804,8 +2804,9 @@
   text-align: center;
 }
 .ap-answers-nav.fix {
-  position: fixed;
   bottom: 0;
+  position: fixed;
+  z-index: 99;
 }
 .ap-answers-nav-count,
 .ap-answers-nav a {

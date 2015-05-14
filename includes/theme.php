@@ -32,14 +32,17 @@ function ap_page_title() {
 	elseif(is_ap_search())
 		$new_title = sprintf(ap_opt('search_page_title'), sanitize_text_field(get_query_var('ap_s')));
 
-	elseif(isset($pages[$current_page]['title']))
-		$new_title = $pages[$current_page]['title'];
+	elseif(is_ask())
+		$new_title = ap_opt('ask_page_title');
 
 	elseif($current_page == '' && !is_question() && get_query_var('question_name') == '')
 		$new_title = ap_opt('base_page_title');
 
 	elseif(get_query_var('parent') != '')
 		$new_title = sprintf( __( 'Discussion on "%s"', 'ap'), get_the_title(get_query_var('parent') ));
+
+	elseif(isset($pages[$current_page]['title']))
+		$new_title = $pages[$current_page]['title'];
 
 	else
 		$new_title = __('Error 404', 'ap');
