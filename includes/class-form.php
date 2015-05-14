@@ -342,22 +342,6 @@ class AnsPress_Form {
     }
 
     /**
-     * output select field options
-     * @param  array  $field
-     * @return void
-     * @since 2.0.1
-     */
-    private function taxonomy_select_options($field = array())
-    {
-        $taxonomies = get_terms( $field['taxonomy'], 'orderby=count&hide_empty=0&hierarchical=0' );
-        
-        if($taxonomies){
-            foreach($taxonomies as $tax )
-                $this->output .= '<option value="'.$tax->term_id.'" '.selected( $tax->term_id, $field['value'], false).'>'.$tax->name.'</option>';
-        }
-    }
-
-    /**
      * Taxonomy select field
      * @param  array  $field
      * @return void
@@ -368,10 +352,10 @@ class AnsPress_Form {
         if(isset($field['label']))
             $this->label();
         $this->output .= '<div class="ap-form-fields-in">';
-        $this->output .= '<select id="'. @$field['name'] .'" class="ap-form-control" value="'. @$field['value'] .'" name="'. @$field['name'] .'" '. @$field['attr'] .'>';
-        $this->output .= '<option value=""></option>';
-        $this->taxonomy_select_options($field);
-        $this->output .= '</select>';
+        
+        $taxonomies = wp_dropdown_categories( array('taxonomy' => $field['taxonomy'], 'orderby' => @$field['orderby'], 'hide_empty' => 0, 'hierarchical' => 1, 'selected' => @$field['value'], 'name' => @$field['name'], 'class' => 'ap-form-control', 'id' => @$field['name'], 'echo' => false) );
+        $this->output .= $taxonomies;
+
         $this->error_messages();
         if(!$this->field['show_desc_tip'])
             $this->desc();
