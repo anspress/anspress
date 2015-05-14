@@ -498,7 +498,7 @@ function ap_questions_tab($current_url){
 	 */
 	$navs = apply_filters('ap_questions_tab', $navs );
 
-	echo '<ul class="ap-questions-tab ap-ul-inline clearfix">';
+	echo '<ul id="ap-question-tab" class="ap-questions-tab ap-ul-inline clearfix">';
 	foreach ($navs as $k => $nav) {
 		echo '<li class="ap-questions-tab-'.esc_attr($k).( $sort == $k ? ' active' : '') .'"><a href="'. esc_url($nav['link']) .'">'. $nav['title'] .'</a></li>';
 	}

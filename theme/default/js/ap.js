@@ -212,6 +212,14 @@ jQuery(document).ready(function() {
         }, 500);
     });
 
+    jQuery('body').delegate('#ap-question-tab a', 'click', function(e) {
+        e.preventDefault();
+        var load = AnsPress.site.showLoading(this);
+        var link = jQuery(this).attr('href');
+        var anc = this;
+        jQuery('#anspress').load(link + ' #anspress', function(){jQuery(load).hide()});
+    });
+
 
 });
 
