@@ -79,7 +79,7 @@ class AnsPress_Actions
 		update_post_meta($post_id, ANSPRESS_UPDATED_META, current_time( 'mysql' ));
 		update_post_meta($post_id, ANSPRESS_SELECTED_META, false);
 		
-		ap_add_parti($post_id, $user_id, 'question');
+		//ap_add_parti($post_id, $user_id, 'question');
 
 		// subscribe to current question
 		ap_add_question_subscriber($post_id);
@@ -111,7 +111,7 @@ class AnsPress_Actions
 		update_post_meta($question->ID, ANSPRESS_UPDATED_META, current_time( 'mysql' ));
 		update_post_meta($post_id, ANSPRESS_UPDATED_META, current_time( 'mysql' ));
 		
-		ap_add_parti($question->ID, $user_id, 'answer', $post_id);	
+		//ap_add_parti($question->ID, $user_id, 'answer', $post_id);	
 
 		// subscribe to current question
 		ap_add_question_subscriber($question->ID);	
@@ -164,7 +164,7 @@ class AnsPress_Actions
 
 		if( $post->post_type == 'question') {
 			do_action('ap_trash_question', $post);
-			ap_remove_parti($post->ID, $post->post_author, 'question');
+			//ap_remove_parti($post->ID, $post->post_author, 'question');
 			ap_delete_meta(array('apmeta_type' => 'flag', 'apmeta_actionid' => $post->ID));
 			$arg = array(
 			  'post_type' => 'answer',
@@ -175,7 +175,7 @@ class AnsPress_Actions
 			$ans = get_posts($arg);
 			if($ans>0){
 				foreach( $ans as $p){					
-					ap_remove_parti($p->post_parent, $p->post_author, 'answer');
+					//ap_remove_parti($p->post_parent, $p->post_author, 'answer');
 					do_action('ap_trash_multi_answer', $post);
 					ap_delete_meta(array('apmeta_type' => 'flag', 'apmeta_actionid' => $p->ID));
 					wp_trash_post($p->ID);
@@ -187,7 +187,7 @@ class AnsPress_Actions
 			$ans = ap_count_published_answers($post->post_parent);
 			$ans = $ans > 0 ? $ans - 1 : 0;
 			do_action('ap_trash_answer', $post);
-			ap_remove_parti($post->post_parent, $post->post_author, 'answer');
+			//ap_remove_parti($post->post_parent, $post->post_author, 'answer');
 			ap_delete_meta(array('apmeta_type' => 'flag', 'apmeta_actionid' => $post->ID));
 			ap_remove_question_subscriber($post->post_parent, $post->post_author);
 			//update answer count
@@ -206,7 +206,7 @@ class AnsPress_Actions
 		
 		if( $post->post_type == 'question') {
 			do_action('ap_untrash_question', $post->ID);
-			ap_add_parti($post->ID, $post->post_author, 'question');
+			//ap_add_parti($post->ID, $post->post_author, 'question');
 			
 			$arg = array(
 			  'post_type' => 'answer',
@@ -218,7 +218,7 @@ class AnsPress_Actions
 			if($ans>0){
 				foreach( $ans as $p){
 					do_action('ap_untrash_answer', $p->ID);
-					ap_add_parti($p->ID, $p->post_author, 'answer');
+					//ap_add_parti($p->ID, $p->post_author, 'answer');
 					wp_untrash_post($p->ID);
 				}
 			}
@@ -227,7 +227,7 @@ class AnsPress_Actions
 		if( $post->post_type == 'answer') {
 			$ans = ap_count_published_answers( $post->post_parent );
 			do_action('untrash_answer', $post->ID, $post->post_author);
-			ap_add_parti($post->post_parent, $post->post_author, 'answer');
+			//ap_add_parti($post->post_parent, $post->post_author, 'answer');
 			
 			//update answer count
 			update_post_meta($post->post_parent, ANSPRESS_ANS_META, $ans+1);
@@ -272,7 +272,7 @@ class AnsPress_Actions
 			update_post_meta($comment->comment_post_ID, ANSPRESS_UPDATED_META, current_time( 'mysql' ));
 
 			// add participant
-			ap_add_parti($comment->comment_post_ID, $comment->user_id, 'comment');
+			//ap_add_parti($comment->comment_post_ID, $comment->user_id, 'comment');
 
 			// subscribe to current question
 			ap_add_question_subscriber($comment->comment_post_ID, $comment->user_id);
@@ -283,7 +283,7 @@ class AnsPress_Actions
 			// set updated meta for sorting purpose
 			update_post_meta($post_id, ANSPRESS_UPDATED_META, current_time( 'mysql' ));
 			// add participant only
-			ap_add_parti($post_id, $comment->user_id, 'comment');
+			//ap_add_parti($post_id, $comment->user_id, 'comment');
 
 			ap_add_question_subscriber($post_id, $comment->user_id);
 		}
@@ -295,12 +295,12 @@ class AnsPress_Actions
 		$post = get_post( $comment->comment_post_ID );
 
 		if ($post->post_type == 'question') {
-			ap_remove_parti($comment->comment_post_ID, $comment->user_id, 'comment');
+			//ap_remove_parti($comment->comment_post_ID, $comment->user_id, 'comment');
 			ap_remove_question_subscriber($post->ID, $comment->user_id);
 
 		}elseif($post->post_type == 'answer'){
 			$post_id = wp_get_post_parent_id($comment->comment_post_ID);
-			ap_remove_parti($post_id, $comment->user_id, 'comment');
+			//ap_remove_parti($post_id, $comment->user_id, 'comment');
 			ap_remove_question_subscriber($post_id, $comment->user_id);
 		}
 	}

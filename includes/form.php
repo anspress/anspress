@@ -41,7 +41,7 @@ class AnsPress_Form_Helper
 		/*TODO: remove this, only anspress comment from ajax*/
 		add_action('comment_post', array($this, 'save_comment'), 20, 2);
 	
-		add_action( 'ap_after_delete_comment', array($this, 'after_deleting_comment'), 10, 2 ); 
+		//add_action( 'ap_after_delete_comment', array($this, 'after_deleting_comment'), 10, 2 ); 
 		
 		
 		add_action( 'wp_ajax_ap_submit_question', array($this, 'ajax_question_submit') ); 
@@ -51,10 +51,6 @@ class AnsPress_Form_Helper
 		add_action( 'wp_ajax_nopriv_ap_submit_answer', array($this, 'ajax_answer_submit') ); 
 				
 		add_action('wp_insert_comment', array($this, 'comment_inserted'), 99, 2);
-		
-
-
-
 
 		add_action( 'wp_ajax_ap_new_tag', array($this, 'ap_new_tag') );
 		add_action( 'wp_ajax_ap_load_new_tag_form', array($this, 'ap_load_new_tag_form') );
@@ -93,10 +89,10 @@ class AnsPress_Form_Helper
 	/** TODO: Add this again */
 	public function after_deleting_comment($comment, $post_type){
 		if ($post_type == 'question') {
-			ap_remove_parti($comment->comment_post_ID, $comment->user_id, 'comment', $comment->comment_ID);
+			//ap_remove_parti($comment->comment_post_ID, $comment->user_id, 'comment', $comment->comment_ID);
 		}elseif($post_type == 'answer'){
 			$post_id = wp_get_post_parent_id($comment->comment_post_ID);
-			ap_remove_parti($post_id, $comment->user_id, 'comment', $comment->comment_ID);
+			//ap_remove_parti($post_id, $comment->user_id, 'comment', $comment->comment_ID);
 		}
 	}
 
@@ -111,7 +107,7 @@ class AnsPress_Form_Helper
 				update_post_meta($comment_object->comment_post_ID, ANSPRESS_UPDATED_META, current_time( 'mysql' ));
 				
 				// add participant	
-				ap_add_parti($comment_object->comment_post_ID, $comment_object->user_id, 'comment', $comment_id);
+				//ap_add_parti($comment_object->comment_post_ID, $comment_object->user_id, 'comment', $comment_id);
 			}elseif($post->post_type == 'answer'){
 				ap_do_event('new_comment', $comment_object, 'answer', $post->post_parent);
 				$post_id = wp_get_post_parent_id($comment_object->comment_post_ID);
@@ -119,7 +115,7 @@ class AnsPress_Form_Helper
 				update_post_meta($post_id, ANSPRESS_UPDATED_META, current_time( 'mysql' ));
 				
 				// add participant only			
-				ap_add_parti($post_id, $comment_object->user_id, 'comment', $comment_id);
+				//ap_add_parti($post_id, $comment_object->user_id, 'comment', $comment_id);
 			}
 		}
 	}

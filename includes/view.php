@@ -52,7 +52,7 @@ class anspress_view {
  * Insert view data in ap_meta table and update post meta ANSPRESS_VIEW_META
  * @param  integer $data_id
  * @param  string $type	
- * @return boolean|integer
+ * @return boolean
  */
 function ap_insert_views($data_id, $type){
 	if($type == 'question'){
@@ -65,7 +65,7 @@ function ap_insert_views($data_id, $type){
 		update_post_meta( $data_id, ANSPRESS_VIEW_META, apply_filters('ap_insert_views', $view ));
 		do_action('after_insert_views', $data_id, $view);
 
-		return $row;
+		return true;
 	}
 	return false;
 }
