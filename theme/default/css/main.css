@@ -2583,15 +2583,31 @@
   padding: 0;
   margin: 0;
   list-style: none;
+  border: solid 1px #ddd;
+  border-radius: 3px;
 }
 .ap-stats-widget li {
+  border-bottom: 1px solid #eee;
   list-style: outside none none;
   margin: 0;
-  padding: 5px 0;
+  padding: 10px;
+  font-size: 13px;
 }
 .ap-stats-widget li .stat-value {
+  color: #888;
   float: right;
-  font-weight: bold;
+}
+.ap-stats-widget li .stat-label {
+  font-size: 12px;
+  font-weight: 600;
+}
+.ap-stats-widget li .stat-label:before {
+  color: #888;
+  display: inline-block;
+  width: 25px;
+}
+.ap-stats-widget li:last-child {
+  border-bottom: none;
 }
 .ap-rq-widget .ap-rq-post {
   border-bottom: 1px solid #f7f7f7;

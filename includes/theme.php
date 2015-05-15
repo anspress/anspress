@@ -462,7 +462,7 @@ function ap_post_actions_buttons($disable = array())
  * Output questions list tab
  * @return string
  */
-function ap_questions_tab($current_url){
+function ap_questions_tab($current_url = ''){
 	if(is_home() || is_front_page())
 		$current_url = home_url('/');
 

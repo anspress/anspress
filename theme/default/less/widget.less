@@ -9,14 +9,30 @@
 	padding: 0;
 	margin:0;
 	list-style: none;
+	border: solid 1px #ddd;
+	border-radius: 3px;
 
 	li{
+	    border-bottom: 1px solid #eee;
 	    list-style: outside none none;
 	    margin: 0;
-	    padding: 5px 0;
+	    padding: 10px;
+	    font-size: 13px;
 	    .stat-value{
+		    color: #888;
 		    float: right;
-		    font-weight: bold;
+	    }
+	    .stat-label{
+		    font-size: 12px;
+		    font-weight: 600;
+	    }
+	    .stat-label:before{
+		    color: #888;
+		    display: inline-block;
+		    width: 25px;
+	    }
+	    &:last-child{
+	    	border-bottom: none;
 	    }
 	}
 
