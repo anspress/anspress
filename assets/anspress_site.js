@@ -279,8 +279,10 @@
         },
         ap_comment_form: function() {
             $('body').delegate('#ap-commentform', 'submit', function() {
+                ApSite.showLoading(this);
                 if (typeof tinyMCE !== 'undefined') tinyMCE.triggerSave();
                 ApSite.doAjax(apAjaxData($(this).formSerialize()), function(data) {
+                    ApSite.hideLoading(this);
                     if (data['action'] == 'new_comment' && data['message_type'] == 'success') {
                         $('#comments-' + data['comment_post_ID'] + ' ul.ap-commentlist').append($(data['html']).hide().slideDown(100));
                     } else if (data['action'] == 'edit_comment' && data['message_type'] == 'success') {
