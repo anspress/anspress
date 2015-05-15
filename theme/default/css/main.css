@@ -1436,7 +1436,7 @@
   margin-bottom: 20px;
 }
 #anspress .ap-q-cells {
-  border: 1px solid #e7e7e7;
+  border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: 3px;
   margin-left: 70px;
   padding: 10px;
@@ -1525,7 +1525,7 @@
   color: #fff;
 }
 #anspress .ap-a-cells {
-  border: 1px solid #e7e7e7;
+  border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: 3px;
   margin-left: 70px;
   padding: 10px;
@@ -1660,6 +1660,9 @@
 #ap-best-answer .ap-a-cells {
   background: none repeat scroll 0 0 #f9fff8;
   border-color: #cce4c8;
+}
+.status-trash .ap-a-cells {
+  background: none repeat scroll 0 0 #fff4f4;
 }
 #ap-answers-c {
   margin-top: 30px;

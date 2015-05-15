@@ -1062,6 +1062,12 @@ function ap_post_status_description($post_id = false){
             <?php echo ap_icon('cross', true) ?><span><?php printf(__( '%s is closed, new answer are not accepted.', 'ap' ), $post_type); ?></span>
         </div>
     <?php endif;
+
+    if ( $post->post_status=='trash') : ?>
+        <div id="ap_post_status_desc_<?php echo $post_id; ?>" class="ap-notice red clearfix">
+            <?php echo ap_icon('cross', true) ?><span><?php printf(__( '%s has been trashed, you can delete it permanently from wp-admin.', 'ap' ), $post_type); ?></span>
+        </div>
+    <?php endif;
 }
 
 function ap_post_upload_form($post_id = false){
