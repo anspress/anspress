@@ -426,7 +426,7 @@ function ap_post_actions_buttons($disable = array())
 	if(is_user_logged_in())
 		$actions['dropdown']['flag'] = ap_flag_btn_html();
 
-	if(ap_user_can_delete($post->ID))
+	if(ap_user_can_delete($post->ID) && $post->post_status != 'trash')
 		$actions['dropdown']['delete'] = ap_post_delete_btn_html();
 
 	if(ap_user_can_delete($post->ID))
