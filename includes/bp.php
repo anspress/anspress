@@ -185,6 +185,9 @@ class AnsPress_BP
 	public function ap_the_answer_content($content){
 		global $post;
 		
+		if ( !function_exists( 'bp_activity_at_name_filter' ) )
+			require_once '/bp-activity/bp-activity-filters.php';
+		
 		if($post->post_type == 'answer')
 			return bp_activity_at_name_filter($content);
 
