@@ -13,6 +13,7 @@
 		<?php endif; ?>
 
 	</div>
+	<?php ap_get_template_part('list-head'); ?>
 	<?php if ( ap_have_questions() ) : ?>
 		<div class="ap-questions">
 			<?php
