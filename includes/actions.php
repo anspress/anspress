@@ -47,6 +47,7 @@ class AnsPress_Actions
 		add_action( 'wp_loaded', array( $this, 'flush_rules' ) );
 
 		add_filter( 'teeny_mce_buttons', array($this, 'editor_buttons'), 10, 2 );
+		add_filter( 'wp_insert_post_data', array($this, 'wp_insert_post_data'), 10, 2 );
 
 	}
 
@@ -371,6 +372,24 @@ class AnsPress_Actions
 	    	return array( 'bold', 'italic', 'underline', 'strikethrough', 'bullist', 'numlist', 'link', 'unlink', 'blockquote' );
 
 	   	return $buttons;
+	}
+
+	/**
+	 * Filter post so that anonymous author should not be replaced
+	 * @param  array $data
+	 * @param  array $args
+	 * @return array
+	 * @since 2.2 
+	 */
+	public function wp_insert_post_data( $data, $args )
+	{
+
+		if($args['post_type'] == 'question' || $args['post_type'] == 'answer'){
+			if($args['post_author'] == '0')
+				$data['post_author'] = '0';
+		}
+
+		return $data;
 	}
 
 }

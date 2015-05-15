@@ -296,6 +296,7 @@ class AnsPress_Process_Form
 
 		$question_array = array(
 			'ID'			=> $post->ID,
+			'post_author'	=> $post->post_author,
 			'post_title'	=> $this->fields['title'],
 			'post_name'		=> sanitize_title($this->fields['title']),
 			'post_content' 	=> $this->fields['description'],
@@ -556,6 +557,7 @@ class AnsPress_Process_Form
 
 		$answer_array = array(
 			'ID'			=> $this->fields['edit_post_id'],
+			'post_author'	=> $answer->post_author,
 			'post_content' 	=> $this->fields['description'],
 			'post_status' 	=> $status
 		);
