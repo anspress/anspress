@@ -316,6 +316,14 @@ class AnsPress_Options_Page
 				'value' => $settings['disable_voting_on_answer'],
 				'show_desc_tip' => false,
 			) ,
+			array(
+				'name' => 'anspress_opt[disable_answer_nav]',
+				'label' => __('Disable navigation', 'ap') ,
+				'desc' => __('Disable answer navigation.', 'ap') ,
+				'type' => 'checkbox',
+				'value' => $settings['disable_answer_nav'],
+				'show_desc_tip' => false,
+			) ,
 		));
 		
 		// register user settings

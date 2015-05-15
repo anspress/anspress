@@ -122,6 +122,7 @@ function ap_default_options(){
 		'allow_upload_image' 	=> true,		
 		'question_help_page' 	=> '',		
 		'answer_help_page' 		=> '',		
+		'disable_answer_nav' 	=> false,		
 	);
 	
 	/**
