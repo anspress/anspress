@@ -83,8 +83,7 @@
 		<?php if ( is_active_sidebar( 'ap-qsidebar' ) || ap_opt('show_question_sidebar')){ ?>
 			<div class="ap-question-right col-md-4">
 				<?php if(ap_opt('show_question_sidebar')): ?>
-					<?php ap_subscribe_btn_html(); ?>
-					<?php ap_question_subscribers(); ?>
+					<?php the_widget( 'AnsPress_Subscribe_Widget' ); ?>
 					<h3 class="ap-widget-title"><?php _e('Question stats', 'ap'); ?></h3>
 					<?php the_widget('AnsPress_Stats_Widget'); ?>
 				<?php endif; ?>

@@ -1,10 +1,10 @@
 @font-face {
 	font-family: 'anspress';
-	src:url('fonts/anspress.eot?-66as2m');
-	src:url('fonts/anspress.eot?#iefix-66as2m') format('embedded-opentype'),
-		url('fonts/anspress.woff?-66as2m') format('woff'),
-		url('fonts/anspress.ttf?-66as2m') format('truetype'),
-		url('fonts/anspress.svg?-66as2m#anspress') format('svg');
+	src:url('fonts/anspress.eot?ydg628');
+	src:url('fonts/anspress.eot?#iefixydg628') format('embedded-opentype'),
+		url('fonts/anspress.woff?ydg628') format('woff'),
+		url('fonts/anspress.ttf?ydg628') format('truetype'),
+		url('fonts/anspress.svg?ydg628#anspress') format('svg');
 	font-weight: normal;
 	font-style: normal;
 }
@@ -21,6 +21,30 @@
 	/* Better Font Rendering =========== */
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
+}
+
+.apicon-toggle-on:before {
+	content: "\e60f";
+}
+
+.apicon-toggle-off:before {
+	content: "\e610";
+}
+
+.apicon-image:before {
+	content: "\e608";
+}
+
+.apicon-category:before {
+	content: "\e606";
+}
+
+.apicon-tag:before {
+	content: "\e607";
+}
+
+.apicon-comments:before {
+	content: "\e603";
 }
 
 .apicon-chevron-down:before {
@@ -257,22 +281,6 @@
 
 .apicon-x:before {
 	content: "\f081";
-}
-
-.apicon-image:before {
-	content: "\e608";
-}
-
-.apicon-category:before {
-	content: "\e606";
-}
-
-.apicon-tag:before {
-	content: "\e607";
-}
-
-.apicon-comments:before {
-	content: "\e603";
 }
 
 .apicon-anspress:before {

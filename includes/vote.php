@@ -39,11 +39,11 @@ class AnsPress_Vote_Ajax extends AnsPress_Ajax
 
 			if($is_subscribed){
 				ap_remove_question_subscriber($question_id);
-				ap_send_json(ap_ajax_responce(array('message' => 'unsubscribed', 'action' => 'unsubscribed', 'container' => '#subscribe_'.$question_id, 'do' => 'updateHtml', 'html' => ap_icon('unmute', true).__('subscribe', 'ap'))));
+				ap_send_json(ap_ajax_responce(array('message' => 'unsubscribed', 'action' => 'unsubscribed', 'container' => '#subscribe_'.$question_id.' b', 'do' => 'updateHtml', 'html' =>__('Subscribe', 'ap'))));
 				return;
 			}else{
 				ap_add_question_subscriber($question_id);
-				ap_send_json(ap_ajax_responce(array('message' => 'subscribed', 'action' => 'subscribed', 'container' => '#subscribe_'.$question_id, 'do' => 'updateHtml', 'html' => ap_icon('mute', true).__('unsubscribe', 'ap'))));
+				ap_send_json(ap_ajax_responce(array('message' => 'subscribed', 'action' => 'subscribed', 'container' => '#subscribe_'.$question_id.' b', 'do' => 'updateHtml', 'html' => __('Unsubscribe', 'ap'))));
 			}
 			
 		}
@@ -428,12 +428,17 @@ function ap_subscribe_btn_html($question_id = false){
 	$subscribed = ap_is_user_subscribed($question_id);
 
 	$nonce = wp_create_nonce( 'subscribe_'.$question_id );
-	$title = (!$subscribed) ? ap_icon('unmute', true).(__('subscribe', 'ap')) : ap_icon('mute', true).(__('unsubscribe', 'ap'));
+	$title = (!$subscribed) ? __('Subscribe', 'ap') : __('Unsubscribe', 'ap');
 
 	?>
-		<div class="ap-subscribe<?php echo ($subscribed) ? ' active' :''; ?> clearfix">
-			<a id="<?php echo 'subscribe_'.$question_id; ?>" href="#" class="ap-btn subscribe-btn <?php echo ($subscribed) ? ' active' :''; ?>" data-query="ap_ajax_action=subscribe_question&question_id=<?php echo $question_id ?>&__nonce=<?php echo $nonce ?>" data-action="ap_subscribe" data-args="<?php echo $question_id.'-'.$nonce; ?>"><?php echo $title ?></a>
-		</div>
+	<div class="ap-subscribe" id="<?php echo 'subscribe_'.$question_id; ?>">
+		<a href="#" class="ap-btn-toggle<?php echo ($subscribed) ? ' active' :''; ?>" data-query="ap_ajax_action=subscribe_question&question_id=<?php echo $question_id ?>&__nonce=<?php echo $nonce ?>" data-action="ap_subscribe" data-args="<?php echo $question_id.'-'.$nonce; ?>">
+			<span class="apicon-toggle-on"></span>
+			<span class="apicon-toggle-off"></span>
+		</a>
+		<b><?php echo $title ?></b>
+	</div>
+
 	<?php
 }
 
@@ -560,7 +565,6 @@ function ap_question_subscribers($question_id = false, $avatar_size = 30){
 
 	if($subscribers){
 		echo '<div class="ap-question-subscribers clearfix">';
-			echo '<h3 class="ap-widget-title">'.__('Subscribers', 'ap').'</h3>';
 			echo '<div class="ap-question-subscribers-inner">';
 			foreach($subscribers as $subscriber){
 				echo '<a href="'.ap_user_link($subscriber->apmeta_userid).'">'.get_avatar($subscriber->apmeta_userid, $avatar_size).'</a>';

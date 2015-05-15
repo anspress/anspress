@@ -119,26 +119,7 @@
         }
             
     }
-    .ap-subscribe{
-        text-align:center;
-        .ap-subscribe-label{
-            display: block;
-            font-weight: bold;
-            margin-bottom: 10px;
-            text-transform: uppercase;
-            font-size: 12px;
-        }
-        .ap-btn{
-            margin: 0 auto;
-            display: block;
-            i{
-                font-size: 16px;
-                margin-right: 10px;
-                vertical-align: middle;
-            }
-        }
 
-    }
     .ap-dropdown{
         position: relative;
 
@@ -169,6 +150,40 @@
         }
         &.open .ap-dropdown-menu{
             display: block;
+        }
+    }
+    .ap-btn-toggle{
+        display: inline-block;
+        span{
+            font-size: 25px;
+            color: #888;
+            line-height: 1.6;
+        }
+        .apicon-toggle-on{
+            display: none;
+        }
+        .apicon-toggle-off{
+            display: inline;
+        }
+        &.active{
+            .apicon-toggle-on{
+                display: inline;
+                color: @main-color;
+            }
+            .apicon-toggle-off{
+                display: none;
+            }
+        } 
+        &:focus{
+            outline: none;
+        }      
+    }
+    .ap-subscribe{
+        b{
+            display: inline-block;
+            font-weight: normal;
+            line-height: 30px;
+            vertical-align: super;
         }
     }
 }
