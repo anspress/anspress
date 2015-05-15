@@ -36,11 +36,10 @@ class Answers_Query extends WP_Query {
         global $answers;
 
         $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
-
-        if(isset($args['question_id']))
-            $question_id = $args['question_id'];
-
+        
         $defaults = array(
+            'question_id'  => get_question_id(),
+            'ap_answers_query'  => true,
             'showposts'         => ap_opt('answers_per_page'),
             'paged'             => $paged,
             'only_best_answer'  => false,
@@ -52,11 +51,24 @@ class Answers_Query extends WP_Query {
 
         $this->args = wp_parse_args( $args, $defaults );
         
+        if(isset($this->args['question_id']))
+            $question_id = $this->args['question_id'];
+
         if(!empty($question_id))
             $this->args['post_parent'] = $question_id;
 
         if(isset($this->args[ 'sortby' ]))
             $this->orderby_answers();
+
+        if(isset($this->args['only_best_answer']) && $this->args['only_best_answer'])
+            $this->args['meta_query'] = array(
+                array(
+                    'key'           => ANSPRESS_BEST_META,
+                    'type'          => 'BOOLEAN',
+                    'compare'       => '=',
+                    'value'         => '1'
+                )
+            );
 
         $this->args['post_type'] = 'answer';        
 
@@ -165,21 +177,16 @@ function ap_get_best_answer($question_id = false){
     if(!$question_id) 
         $question_id = get_question_id();
 
-    $answer_id = ap_selected_answer($question_id);
     
-    $args = array('p' => $answer_id);
+    $args = array('only_best_answer' => true);
 
-    if(ap_user_can_view_private_post($answer_id))
+    /*if(ap_user_can_view_private_post($answer_id))
       $args['post_status'][] = 'private_post';
 
     if(ap_user_can_view_moderate_post($answer_id))
-       $args['post_status'][] = 'moderate';
+       $args['post_status'][] = 'moderate';*/
 
-    anspress()->answers = new Answers_Query( $args ); 
-
-    while ( ap_have_answers() ) : ap_the_answer();
-        include(ap_get_theme_location('answer.php'));
-    endwhile ;
+    anspress()->answers = new Answers_Query( $args );
 }
 
 

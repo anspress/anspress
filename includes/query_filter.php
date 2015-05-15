@@ -25,6 +25,7 @@ class AnsPress_Query_Filter
 		add_action('admin_footer-post.php', array($this, 'append_post_status_list'));
 		
 		add_action( 'posts_clauses', array($this, 'main_question_query'), 10, 2 );
+		add_action( 'posts_clauses', array($this, 'ap_answers_query'), 10, 2 );
 
     }
 
@@ -131,6 +132,18 @@ class AnsPress_Query_Filter
 
 		}
 		return $sql;
+	}
+
+	public function ap_answers_query($sql, $query){		
+		
+		if( isset($query->query['ap_answers_query']) && @$query->args['only_best_answer'] !== true ){
+			global $wpdb;
+			
+			$sql['where'] = $sql['where'].$wpdb->prepare(" OR ( wp_posts.post_author = %d AND wp_posts.post_type ='answer' AND wp_posts.post_parent = %d AND ( mt1.meta_key = '_ap_best_answer' AND CAST(mt1.meta_value AS CHAR) != '1' )) ", get_current_user_id(), $query->args['question_id']);
+		}
+
+		return $sql;
+
 	}
 	
 	public function question_feed(){
