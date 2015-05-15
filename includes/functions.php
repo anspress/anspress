@@ -490,6 +490,23 @@ function ap_post_delete_btn_html($post_id = false, $echo = false){
 	}
 }
 
+function ap_post_permanent_delete_btn_html($post_id = false, $echo = false){
+	if($post_id === false){
+		$post_id = get_the_ID();
+	}
+	if(ap_user_can_permanent_delete()){		
+		$action = 'delete_post_'.$post_id;
+		$nonce = wp_create_nonce( $action );
+		
+		$output = '<a href="#" class="delete-btn" data-action="ap_delete_post" data-query="post_id='. $post_id.'&__nonce='. $nonce .'&ap_ajax_action=permanent_delete_post" title="'.__('Delete permanently', 'ap').'">'.__('Delete permanently', 'ap').'</a>';
+
+		if($echo)
+			echo $output;
+		else
+			return $output;
+	}
+}
+
 function ap_post_change_status_btn_html($post_id = false){
 	$post = get_post($post_id);
 
@@ -708,6 +725,8 @@ function ap_responce_message($id, $only_message = false)
 		'comment_content_empty' => array('type' => 'error', 'message' => __('Comment content is empty.', 'ap')),
 		'status_updated' => array('type' => 'success', 'message' => __('Post status updated successfully', 'ap')),
 		'post_image_uploaded' => array('type' => 'success', 'message' => __('Image uploaded successfully', 'ap')),
+		'question_deleted_permanently' => array('type' => 'success', 'message' => __('Question has been deleted permanently', 'ap')),
+		'answer_deleted_permanently' => array('type' => 'success', 'message' => __('Answer has been deleted permanently', 'ap')),
 		);
 
 	/**

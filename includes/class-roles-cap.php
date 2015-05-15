@@ -301,6 +301,13 @@ function ap_user_can_delete($postid){
 	return false;
 }
 
+function ap_user_can_permanent_delete(){
+	if(is_super_admin())
+		return true;
+
+	return false;
+}
+
 function ap_user_can_upload_cover(){
 	if(is_super_admin() || current_user_can('ap_upload_cover'))
 		return true;

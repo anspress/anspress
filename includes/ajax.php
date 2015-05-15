@@ -26,6 +26,7 @@ class AnsPress_Ajax
 		add_action('ap_ajax_delete_comment', array($this, 'delete_comment'));
 		add_action('ap_ajax_select_best_answer', array($this, 'select_best_answer'));
 		add_action('ap_ajax_delete_post', array($this, 'delete_post'));
+		add_action('ap_ajax_permanent_delete_post', array($this, 'permanent_delete_post'));
 		add_action('ap_ajax_change_post_status', array($this, 'change_post_status'));
 		add_action('ap_ajax_load_user_field_form', array($this, 'load_user_field_form'));
 		
@@ -265,6 +266,48 @@ class AnsPress_Ajax
 				'count_label' 	=> $count_label,
 				'remove' 		=> $remove,
 				'message' 		=> 'answer_moved_to_trash',
+				'view'			=> array('answer_count' => $current_ans, 'answer_count_label' => $count_label))));
+		}
+		
+	}
+
+	public function permanent_delete_post()
+	{
+		$post_id = (int) $_POST['post_id'];
+
+		$action = 'delete_post_'.$post_id;	
+		
+		if(!wp_verify_nonce( $_POST['__nonce'], $action ) || !ap_user_can_permanent_delete()){
+			ap_send_json( ap_ajax_responce('something_wrong'));
+			return;
+		}
+		
+		$post = get_post( $post_id );
+
+		wp_trash_post( $post_id );
+		
+		if($post->post_type == 'question'){
+			do_action('ap_wp_trash_question', $post_id);
+
+		}else{
+			do_action('ap_wp_trash_answer', $post_id);
+		}
+
+		wp_delete_post($post_id, true);
+
+		if($post->post_type == 'question'){
+			ap_send_json( ap_ajax_responce( array('action' => 'delete_question', 'do' => 'redirect', 'redirect_to' => ap_base_page_link(), 'message' => 'question_deleted_permanently')));
+		}else{
+			$current_ans = ap_count_published_answers($post->post_parent);
+			$count_label = sprintf( _n('1 Answer', '%d Answers', $current_ans, 'ap'), $current_ans);
+			$remove = (!$current_ans ? true : false);
+			ap_send_json( ap_ajax_responce(array(
+				'action' 		=> 'delete_answer', 
+				'div_id' 		=> '#answer_'.$post_id,
+				'count' 		=> $current_ans,
+				'count_label' 	=> $count_label,
+				'remove' 		=> $remove,
+				'message' 		=> 'answer_deleted_permanently',
 				'view'			=> array('answer_count' => $current_ans, 'answer_count_label' => $count_label))));
 		}
 		

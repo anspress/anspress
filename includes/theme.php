@@ -429,6 +429,9 @@ function ap_post_actions_buttons($disable = array())
 	if(ap_user_can_delete($post->ID))
 		$actions['dropdown']['delete'] = ap_post_delete_btn_html();
 
+	if(ap_user_can_delete($post->ID))
+		$actions['dropdown']['permanent_delete'] = ap_post_permanent_delete_btn_html();
+
 	/**
 	 * FILTER: ap_post_actions_buttons
 	 * For filtering post actions buttons
