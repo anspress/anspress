@@ -489,7 +489,7 @@ function ap_questions_tab($current_url = ''){
 		$navs['voted'] =  array('link' => add_query_arg(array('ap_sort' => 'voted'), $link), 'title' => __('Vote', 'ap'));
 
 	$navs['answers'] = array('link' => add_query_arg(array('ap_sort' => 'answers'), $link), 'title' => __('Answer', 'ap'));
-	$navs['unanswered'] = array('link' => add_query_arg(array('ap_sort' => 'unanswered'), $link), 'title' => __('Non answered', 'ap'));
+	$navs['unanswered'] = array('link' => add_query_arg(array('ap_sort' => 'unanswered'), $link), 'title' => __('Not answered', 'ap'));
 	$navs['unsolved'] = array('link' => add_query_arg(array('ap_sort' => 'unsolved'), $link), 'title' => __('Unsolved', 'ap')); 
 
 	
