@@ -171,7 +171,7 @@ class AnsPress_BP
 		if(ap_opt('disable_reputation'))
 			return;
 
-		echo '<span class="ap-user-meta ap-user-meta-reputation">'. sprintf(__('%d Reputation', 'ap'), ap_get_reputation( bp_displayed_user_id(), true)) .'</span>';
+		echo '<span class="ap-user-meta ap-user-meta-reputation">'. sprintf(__('%s Reputation', 'ap'), ap_get_reputation( bp_displayed_user_id(), true)) .'</span>';
 	}
 
 	/**
