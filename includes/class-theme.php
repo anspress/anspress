@@ -161,7 +161,7 @@ class AnsPress_Theme
     {
         if (is_anspress()) 
         {
-            echo '<link href="' . esc_url(home_url('/feed/question-feed')) . '" title="' . __('Question >> Feed', 'ap') . '" type="application/rss+xml" rel="alternate">';
+            echo '<link href="' . esc_url(home_url('/feed/question-feed')) . '" title="' . __('Question Feed', 'ap') . '" type="application/rss+xml" rel="alternate">';
         }
     }
     

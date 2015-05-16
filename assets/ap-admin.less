@@ -1,0 +1,737 @@
+@import "../theme/default/less/variables.less";
+@import "../theme/default/less/user-posts.less";
+@import "../theme/default/less/grid.less";
+.clearfix:before, .clearfix:after {
+    display: table;
+    clear: both;
+    content: ' ';
+}
+.ap-admin-container {
+    max-width: 800px;
+}
+.wp-list-table th#asker, .wp-list-table th#answerer {
+    width: 60px;
+}
+.wp-list-table {
+    th#answers {
+        width: 30px;
+    }
+    th#vote {
+        width: 60px;
+    }
+    th#status {
+        width: 60px;
+    }
+    th#parent_question {
+        width: 30%;
+    }
+    th#flag {
+        width: 40px;
+    }
+    .type-question {
+        .ans-count {
+            display: block;
+            padding: 2px 0;
+            text-align: center;
+        }
+    }
+    .vote-count {
+        text-align: center;
+    }
+    .type-answer {
+        .answerer {
+            width: 50px;
+        }
+    }
+}
+.wp-list-table th#question_category, .wp-list-table th#question_tags {
+    width: 100px;
+}
+th.column-question_status {
+    width: 50px;
+}
+td.column-vote_note strong, td.column-post_title &>a {
+    font-size: 14px;
+    display: block;
+    margin-bottom: .2em;
+}
+.post_type.column-post_type, .manage-column.column-post_type {
+    width: 70px;
+}
+.question-status {
+    font-size: 11px;
+    display: block;
+    padding: 1px 5px;
+    text-align: center;
+    color: #fff;
+    border-radius: 3px;
+    background: #ddd;
+}
+.question-status.open {
+    background: #8fc61b;
+}
+.question-status.duplicate {
+    background: #f7ba36;
+}
+.question-status.publish {
+    background: #00bfdd;
+}
+.question-status.solved {
+    background: #4ac1ff;
+}
+.question-status.closed {
+    background: #f64d55;
+}
+.form-table {
+    .flag-note {
+        margin-bottom: 20px;
+        padding-bottom: 20px;
+    }
+}
+.wp-list-table .flag-count, .wp-list-table .flag-count {
+    display: block;
+    width: 21px;
+    margin-top: 6px;
+    padding: 2px 0;
+    text-align: center;
+    color: #fff;
+    border-radius: 3px;
+    background: #ddd;
+}
+.wp-list-table .flag-count.flagged, .wp-list-table .flag-count.flagged {
+    background: #ec5858;
+}
+.anspress-options {
+    margin-top: 30px;
+}
+.option-nav-tab {
+    background: none repeat scroll 0 0 #F8F8F8;
+    border-color: #ddd #ddd transparent;
+    border-style: solid solid none;
+    border-width: 1px 1px medium;
+}
+#ap_opt_nav {
+    margin: 0;
+    li {
+        float: left;
+        margin-bottom: 0;
+        a {
+            font-size: 13px;
+            font-weight: 600;
+            display: block;
+            padding: 12px 15px;
+            text-decoration: none;
+            color: #555;
+        }
+    }
+    li.active {
+        a {
+            background: none repeat scroll 0 0 #fff;
+            border-top: 2px solid #40bcff;
+            color: #666;
+            margin-bottom: -1px;
+        }
+    }
+}
+.tab-content {
+    overflow: hidden;
+    max-width: 700px;
+    min-height: 429px;
+    margin-top: -2px;
+    padding: 5px 15px;
+    border: 1px solid #ddd;
+    border-radius: 2px;
+    background: #fff;
+    textarea {
+        height: auto;
+    }
+    .tab-pane.active {
+        display: block;
+    }
+}
+.tab-content input[type='text'], .tab-content input[type='number'], .tab-content select, .tab-content textarea {
+    height: 36px;
+    padding: 2px 6px;
+    border: 1px solid #e7e7e7;
+    border-radius: 2px;
+    box-shadow: 0 0 2px rgba(0, 0, 0, .02) inset;
+}
+.ap-option-section {
+    margin: 5px 0 0;
+    padding: 10px 0;
+    border-bottom: 1px dotted #eee;
+}
+th.column-category {
+    width: 100px;
+}
+#ap_flag_meta_box .flag-item, #ap_answers_meta_box .answer {
+    margin-bottom: 5px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #eee;
+}
+#ap_flag_meta_box .flag-item:last-child, #ap_answers_meta_box .answer:last-child {
+    border-bottom: none;
+}
+#ap_flag_meta_box .flagger, #ap_answers_meta_box .author {
+    float: left;
+    width: 200px;
+    margin-top: 4px;
+    margin-right: 5px;
+}
+#ap_flag_meta_box {
+    .flag-message {
+        strong {
+            display: block;
+        }
+    }
+}
+#ap_flag_meta_box .flag-item:hover .row-actions, #ap_answers_meta_box .answer:hover .row-actions {
+    visibility: visible;
+}
+#ap_flag_meta_box .flag-item .flag-message, #ap_answers_meta_box .answer .answer-content {
+    overflow: hidden;
+}
+.ap-label-color-field {
+    .wp-picker-container {
+        position: absolute;
+    }
+}
+.get-support {
+    margin-bottom: 20px;
+}
+#anspress-points-table {
+    .column-points {
+        .point {
+            font-weight: bold;
+            display: table;
+            padding: 0 5px;
+            text-align: center;
+            color: #fff;
+            border-radius: 2px;
+            background: #419efd;
+        }
+        .point.negative {
+            background: #f45a5a;
+        }
+    }
+}
+#ap-point-edit {
+    padding: 0 15px;
+    border: 1px solid #ddd;
+    background: #fff;
+    .button-primary {
+        margin-bottom: 10px;
+    }
+}
+.addon-count {
+    font-size: 16px;
+    line-height: 22px;
+    display: inline-block;
+    width: 25px;
+    height: 25px;
+    text-align: center;
+    color: #fff;
+    border-radius: 50%;
+    background: #333;
+}
+.ap-addon-status {
+    position: absolute;
+    z-index: 9;
+    top: 5px;
+    padding: 5px 14px 5px 10px;
+    color: #fff;
+    background: rgba(0, 0, 0, .7);
+}
+.ap-install {
+    & > h2 {
+        margin-bottom: 20px;
+        padding: 0;
+        text-align: center;
+        & > * {
+            display: block;
+        }
+    }
+}
+.ap-install-indi {
+    position: absolute;
+    left: 50%;
+    display: block;
+    width: 10px;
+    height: 170px;
+    margin-top: 35px;
+    margin-left: -5px;
+    content: '';
+    transition: all 1s ease 0s;
+    border-radius: 10px;
+    background: #fff;
+    & > span {
+        display: block;
+        width: 10px;
+        height: 0;
+        transition: all .5s ease 0s;
+        background: #49c742;
+    }
+}
+.ap-install-box {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    height: 300px;
+    margin: 0 auto;
+    border: 1px solid #eee;
+    border-radius: 4px;
+    background: #fbfbfb;
+}
+.ap-start-installation {
+    position: relative;
+    display: table;
+    margin: 0 auto 30px;
+    padding: 12px 30px;
+    cursor: pointer;
+    color: #fff;
+    border: medium none;
+    border-radius: 3px;
+    background: #ff8041;
+}
+.ap-install-steps {
+    position: absolute;
+    width: 3010px;
+    margin: 0;
+    transition: all 1s ease 0s;
+    & > li {
+        display: block;
+        float: left;
+        width: 480px;
+        height: 300px;
+        margin-top: 0;
+        margin-bottom: 0;
+        margin-left: 0;
+        padding: 10px;
+        text-align: center;
+    }
+
+    li {
+        .done {
+            transition: all .5s ease 0s;
+            color: #fff;
+            background: #49c742;
+        }
+        &:last-child a {
+            margin: 0;
+        }
+    }
+}
+.ap-install-steps li a, .ap-install-steps .twitter-button {
+    font-size: 17px;
+    display: block;
+    margin-bottom: 15px;
+    padding: 15px;
+    text-align: center;
+    text-decoration: none;
+}
+.install-popup {
+    padding: 10px;
+    border-radius: 8px;
+    background: #fff;
+    select {
+        display: table;
+        margin: 0 auto;
+    }
+}
+.ap-continue {
+    display: block;
+    margin: 0 auto;
+    padding: 1px 10px;
+    color: #fff;
+    border: medium none;
+    border-radius: 2px;
+    background: #49c742;
+}
+.twitter-button {
+    & > small {
+        font-size: 12px;
+        display: block;
+        margin-top: 6px;
+    }
+}
+.escape_install {
+    display: block;
+    text-align: center;
+}
+.badge-type {
+    display: block;
+    width: 50px;
+    padding: 1px 6px;
+    text-align: center;
+    color: #fff;
+    border-radius: 2px;
+    background: #ddd;
+}
+.badge-type.badge-gold {
+    background: #ffc250;
+}
+.badge-type.badge-silver {
+    background: #d6d6da;
+}
+.badge-type.badge-bronze {
+    background: #c26f27;
+}
+.ap-group-options {
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 2px;
+    background: #fff;
+}
+.ap-form-label {
+    font-size: 13px;
+    display: block;
+    float: left;
+    width: 250px;
+    font-size: 14px !important;
+    font-weight: 600;
+}
+.ap-form-fields-in {
+    overflow: hidden;
+}
+.ap-form-fields {
+    border-bottom: 1px solid #eee;
+    margin: 0;
+    padding: 20px 10px;
+}
+.ap-field-desc {
+    margin-bottom: 0;
+}
+button.ap-submit-btn {
+    background: none repeat scroll 0 0 #43caff;
+    border-color: transparent transparent rgba(0, 0, 0, 0.2);
+    border-image: none;
+    border-radius: 2px;
+    border-style: none none solid;
+    border-width: medium medium 2px;
+    color: #fff;
+    display: block;
+    font-size: 15px;
+    margin-top: 20px;
+    padding: 8px 20px;
+}
+.ap-form-separator {
+    border-bottom: 1px solid #eee;
+    display: block;
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    padding: 10px;
+}
+.ap-reapt-field-copy {
+    display: none;
+}
+.ap-repeatbable-field {
+    overflow: hidden;
+    & > div {
+        margin-bottom: 10px;
+    }
+    .ap-form-control {
+        width: 100%;
+    }
+}
+.ap-flagger-table {
+    width: 100%;
+    td {
+        padding: 5px 10px;
+        border-bottom: solid 1px #eee;
+    }
+    tr:last-child {
+        td {
+            border-bottom: none;
+        }
+    }
+    .ap-user-avatar {
+        width: 30px;
+    }
+}
+.ap-flag-count {
+    font-size: 18px;
+    font-weight: bold;
+    display: block;
+    margin: 10px 0;
+}
+.ap-remove-flag {
+    text-align: right;
+}
+.ap-admin-sub {
+    font-size: 16px;
+    margin: 20px 0;
+}
+.ap-flag-post-content, .ap-flagger-table, .question-selection, .ap-similar-questions {
+    margin-bottom: 20px;
+    padding: 10px 20px;
+    border: 1px solid #e7e7e7;
+    background: #fff;
+}
+.question-selection {
+    input {
+        display: block;
+        width: 100%;
+        margin-bottom: 10px;
+        padding: 10px;
+        border-radius: 2px;
+    }
+}
+.ap-similar-questions {
+    &.ap-q-suggestion-item {
+        display: block;
+        padding: 12px 0;
+        border-bottom: 1px solid #eee;
+    }
+    &.ap-q-suggestion-item:last-child {
+            border-bottom: none;
+    }
+    .select-question-button {
+        float: right;
+        margin-top: -3px;
+    }
+    .question-title {
+        font-weight: bold;
+    }
+}
+.ap-q-suggestion-item {
+    .acount {
+        margin-left: 15px;
+        color: #aaa;
+    }
+}
+.ap-selected-question {
+    padding: 10px;
+    border: 1px solid #a5c5d9;
+    background: #fff;
+    .ap-q-title {
+        font-size: 16px;
+        font-weight: bold;
+        display: block;
+        margin-bottom: 10px;
+        text-decoration: none;
+    }
+}
+.ap-q-meta {
+    font-weight: bold;
+    margin-bottom: 10px;
+    a {
+        text-decoration: none;
+    }
+}
+.answer_content {
+    &.row-title {
+        font-weight: bold;
+        display: block;
+    }
+}
+
+.ap-dash-tile-in {
+    background: none repeat scroll 0 0 #fff;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    margin: 0 0 15px;
+    padding: 10px;
+}
+.anspress-stats-count {
+    ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        li {
+            float: left;
+            width: 25%;
+            margin-right: -1px;
+            text-align: center;
+            border-right: 1px solid #eee;
+            a {
+                text-decoration: none;
+                color: #333;
+            }
+            strong {
+                font-size: 22px;
+                font-weight: 600;
+                line-height: 40px;
+                position: relative;
+                display: table;
+                margin: 0 auto;
+            }
+        }
+        li:last-child {
+            border: none;
+        }
+    }
+}
+.ap-need-att {
+    background: none repeat scroll 0 0 #f96574;
+    border-radius: 50%;
+    color: #fff;
+    display: inline-block;
+    font-size: 12px;
+    font-style: normal;
+    height: 15px;
+    line-height: 14px;
+    position: absolute;
+    width: 15px;
+}
+.ap-dash-questions {
+    li {
+        margin-bottom: 15px;
+        .ap-avatar {
+            float: left;
+            margin-top: 4px;
+            margin-right: 10px;
+        }
+    }
+    li:last-child {
+        margin-bottom: 0;
+    }
+    .ap-q-meta {
+        font-weight: normal;
+        margin-bottom: 0;
+        & > span {
+            margin-right: 6px;
+        }
+    }
+    .ap-q-post {
+        overflow: hidden;
+    }
+    .ap-q-title {
+        font-weight: bold;
+        text-decoration: none;
+    }
+}
+h3.ap-dash-title {
+    font-size: 14px;
+    margin: 0 0 10px;
+    padding: 0 0 10px;
+    text-transform: uppercase;
+    border-bottom: 1px solid #eee;
+}
+.anspress-support-link {
+    background: #6ac137;
+}
+.ap-dash-tile-in.ap-tile-card {
+    text-align: center;
+    color: #fff;
+}
+.ap-tile-card {
+    p {
+        font-size: 20px;
+        margin: 0;
+    }
+    a {
+        display: table;
+        margin: 10px auto 0;
+        padding: 5px 15px;
+        text-decoration: none;
+        text-transform: uppercase;
+        border-radius: 2px;
+        background: #fff;
+    }
+}
+.anspress-moderation-count {
+    background: #d54e21;
+}
+.manage-column.column-author {
+    width: 80px;
+}
+.column-question_tag {
+    width: 100px;
+}
+
+.ap-user-posts-item{
+    a{
+        text-decoration: none;
+    }
+    .ap-user-posts-vcount {
+        line-height: 24px;
+        padding: 0 2px;
+        width: 40px;
+    }
+}
+
+
+.ap-ext-notice{
+    background: none repeat scroll 0 0 #a0e1fb;
+    border: 2px solid #5ac6f1;
+    border-radius: 4px;
+    padding: 10px;
+    text-align: center;
+    
+    i{
+        background: none repeat scroll 0 0 #14ccff;
+        border-radius: 50%;
+        color: #fff;
+        display: block;
+        font-size: 35px;
+        height: 80px;
+        line-height: 80px;
+        margin: 0 auto;
+        width: 80px;
+        overflow: hidden;
+         text-shadow: 1px 1px rgb(16, 163, 204), 2px 2px rgb(16, 163, 204), 3px 3px rgb(16, 163, 204), 4px 4px rgb(16, 163, 204), 5px 5px rgb(16, 163, 204), 6px 6px rgb(16, 163, 204), 7px 7px rgb(16, 163, 204), 8px 8px rgb(16, 163, 204), 9px 9px rgb(16, 163, 204), 10px 10px rgb(16, 163, 204), 11px 11px rgb(16, 163, 204), 12px 12px rgb(16, 163, 204), 13px 13px rgb(16, 163, 204), 14px 14px rgb(16, 163, 204), 15px 15px rgb(16, 163, 204), 16px 16px rgb(16, 163, 204), 17px 17px rgb(16, 163, 204), 18px 18px rgb(16, 163, 204), 19px 19px rgb(16, 163, 204), 20px 20px rgb(16, 163, 204), 21px 21px rgb(16, 163, 204), 22px 22px rgb(16, 163, 204), 23px 23px rgb(16, 163, 204), 24px 24px rgb(16, 163, 204), 25px 25px rgb(16, 163, 204), 26px 26px rgb(16, 163, 204), 27px 27px rgb(16, 163, 204), 28px 28px rgb(16, 163, 204), 29px 29px rgb(16, 163, 204), 30px 30px rgb(16, 163, 204), 31px 31px rgb(16, 163, 204), 32px 32px rgb(16, 163, 204), 33px 33px rgb(16, 163, 204), 34px 34px rgb(16, 163, 204), 35px 35px rgb(16, 163, 204), 36px 36px rgb(16, 163, 204), 37px 37px rgb(16, 163, 204), 38px 38px rgb(16, 163, 204), 39px 39px rgb(16, 163, 204), 40px 40px rgb(16, 163, 204), 41px 41px rgb(16, 163, 204), 42px 42px rgb(16, 163, 204), 43px 43px rgb(16, 163, 204), 44px 44px rgb(16, 163, 204), 45px 45px rgb(16, 163, 204), 46px 46px rgb(16, 163, 204), 47px 47px rgb(16, 163, 204), 48px 48px rgb(16, 163, 204), 49px 49px rgb(16, 163, 204), 50px 50px rgb(16, 163, 204), 51px 51px rgb(16, 163, 204), 52px 52px rgb(16, 163, 204), 53px 53px rgb(16, 163, 204), 54px 54px rgb(16, 163, 204), 55px 55px rgb(16, 163, 204), 56px 56px rgb(16, 164, 205), 57px 57px rgb(16, 165, 207), 58px 58px rgb(16, 166, 208), 59px 59px rgb(16, 167, 210), 60px 60px rgb(16, 169, 211), 61px 61px rgb(16, 170, 213), 62px 62px rgb(16, 171, 214), 63px 63px rgb(16, 172, 216), 64px 64px rgb(17, 174, 217), 65px 65px rgb(17, 175, 219), 66px 66px rgb(17, 176, 221), 67px 67px rgb(17, 177, 222), 68px 68px rgb(17, 179, 224), 69px 69px rgb(17, 180, 225), 70px 70px rgb(17, 181, 227), 71px 71px rgb(17, 182, 228), 72px 72px rgb(18, 184, 230), 73px 73px rgb(18, 185, 231), 74px 74px rgb(18, 186, 233), 75px 75px rgb(18, 187, 234), 76px 76px rgb(18, 189, 236), 77px 77px rgb(18, 190, 238), 78px 78px rgb(18, 191, 239), 79px 79px rgb(18, 192, 241), 80px 80px rgb(19, 194, 242), 81px 81px rgb(19, 195, 244), 82px 82px rgb(19, 196, 245), 83px 83px rgb(19, 197, 247), 84px 84px rgb(19, 199, 248), 85px 85px rgb(19, 200, 250), 86px 86px rgb(19, 201, 251), 87px 87px rgb(19, 202, 253), 88px 88px rgb(20, 204, 255);
+    }
+    p{
+        font-size: 14px;
+    }
+    a{
+        background: none repeat scroll 0 0 #4a8a9f;
+        border-radius: 2px;
+        color: #fff;
+        display: block;
+        padding: 5px;
+        text-decoration: none;
+        &:hover{
+            background: darken(#4a8a9f, 10%);
+        }
+    }
+    img{
+        width: 100%;
+        height: auto;
+    }
+    &.red{
+        background: none repeat scroll 0 0 #ffe3dc;
+        border: 2px solid #fea893;
+        a{
+            background: none repeat scroll 0 0 #FE8163;
+        }
+    }
+}
+#anspress{
+    a{
+        text-decoration: none;
+    }
+    h2 {
+        font-size: 23px;
+        font-weight: 600;
+        line-height: 60px;
+        padding: 9px 15px 4px 3px;
+    }
+    .anspress-links{
+        background: none repeat scroll 0 0 #fff;
+        border: 2px solid #dce0dd;
+        border-radius: 4px;
+        display: block;
+        margin-bottom: 15px;
+        > a{
+            border-bottom: 1px solid #eaeaea;
+            color: #777;
+            display: block;
+            font-weight: 600;
+            padding: 15px;
+            &:last-child{
+                border-bottom: none;
+            }
+            &:hover{
+                background: #FBFBFB;
+            }
+            > i{
+                color: #aaa;
+                float: right;
+                font-size: 18px;
+                text-align: center;
+                width: 22px;
+            }
+        }
+    }
+} 

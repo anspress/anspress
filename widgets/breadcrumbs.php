@@ -19,7 +19,7 @@ class AnsPress_Breadcrumbs_Widget extends WP_Widget {
 
 	public function AnsPress_Breadcrumbs_Widget() {
 		// Instantiate the parent object
-		parent::__construct( false, __('AnsPress Breadcrumbs', 'ap') );
+		parent::__construct( false, __('(AnsPress) Breadcrumbs', 'ap') );
 	}
 
 	public function widget( $args, $instance ) {

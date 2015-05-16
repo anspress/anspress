@@ -105,6 +105,7 @@
         return that;
     }
 })(jQuery);
+
 jQuery(document).ready(function() {
     jQuery(document).click(function(e) {
         var target = e.target;

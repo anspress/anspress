@@ -20,12 +20,12 @@ function init_scripts_front(){
 	//if(is_anspress()){
 		wp_enqueue_script( 'jquery');				
 		wp_enqueue_script( 'jquery-form', array('jquery'), false, true );			
-		wp_enqueue_script( 'ap-functions-js', ANSPRESS_URL.'assets/ap-functions.js', 'jquery');		
+		//wp_enqueue_script( 'ap-functions-js', ANSPRESS_URL.'assets/ap-functions.js', 'jquery');		
 		wp_enqueue_script( 'waypoints', ap_get_theme_url('js/jquery.waypoints.min.js'), 'jquery', AP_VERSION);	
-		wp_enqueue_script( 'anspress_acript', ANSPRESS_URL.'assets/anspress_site.js', 'jquery', AP_VERSION);		
+		wp_enqueue_script( 'anspress_acript', ANSPRESS_URL.'assets/prod/anspress_site.min.js', 'jquery', AP_VERSION);		
 		wp_enqueue_script( 'tooltipster', ap_get_theme_url('js/jquery.tooltipster.min.js'), 'jquery', AP_VERSION);
 		wp_enqueue_script( 'initial-js', ap_get_theme_url('js/initial.min.js'), 'jquery', AP_VERSION);
-		wp_enqueue_script( 'ap-js', ap_get_theme_url('js/ap.js'), 'jquery', AP_VERSION);
+		wp_enqueue_script( 'ap-js', ap_get_theme_url('prod/ap.min.js'), 'jquery', AP_VERSION);
 		wp_enqueue_style( 'tooltipster', ap_get_theme_url('css/tooltipster.css'), array(), AP_VERSION);
 		wp_enqueue_style( 'ap-style', ap_get_theme_url('css/main.css'), array(), AP_VERSION);
 
