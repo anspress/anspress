@@ -136,10 +136,18 @@ class AnsPress_Query_Filter
 
 	public function ap_answers_query($sql, $query){		
 		
-		if( isset($query->query['ap_answers_query']) && @$query->args['only_best_answer'] !== true && is_user_logged_in()){
-			global $wpdb;
+		if( isset($query->query['ap_answers_query']) && @$query->args['only_best_answer'] !== true && is_user_logged_in() && isset($query->args['meta_query'])){
 			
-			$sql['where'] = $sql['where'].$wpdb->prepare(" OR ( wp_posts.post_author = %d AND wp_posts.post_type ='answer' AND wp_posts.post_parent = %d AND ( mt1.meta_key = '_ap_best_answer' AND CAST(mt1.meta_value AS CHAR) != '1' )) ", get_current_user_id(), $query->args['question_id']);
+			global $wpdb;
+
+			$meta = "";
+
+			if(count($query->args['meta_query']) == 1)
+				$meta = "AND ( ".$wpdb->postmeta.".meta_key = '_ap_best_answer' AND CAST(".$wpdb->postmeta.".meta_value AS CHAR) != '1' )";
+			else
+				$meta = "AND ( mt1.meta_key = '_ap_best_answer' AND CAST(mt1.meta_value AS CHAR) != '1' )";
+			
+			$sql['where'] = $sql['where'].$wpdb->prepare(" OR ( wp_posts.post_author = %d AND wp_posts.post_type ='answer' AND wp_posts.post_parent = %d $meta) ", get_current_user_id(), $query->args['question_id']);
 		}
 
 		return $sql;
