@@ -96,6 +96,7 @@ class Tags_For_AnsPress
         add_action( 'ap_after_new_question', array($this, 'after_new_question'), 10, 2 );
         add_action( 'ap_after_update_question', array($this, 'after_new_question'), 10, 2 );
         add_filter('ap_page_title', array($this, 'page_title'));        
+        add_filter('ap_breadcrumbs', array($this, 'ap_breadcrumbs'));        
 
     }
 
@@ -393,11 +394,25 @@ class Tags_For_AnsPress
     public function page_title($title){
         if(is_question_tag()){
             $tag_id = sanitize_text_field( get_query_var( 'q_tag'));
-            $category = get_term_by(is_numeric($tag_id) ? 'id' : 'slug', $tag_id, 'question_tag');
-            $title = sprintf(__('Question tag: %s', 'ap'), $category->name);
+            $tag = get_term_by(is_numeric($tag_id) ? 'id' : 'slug', $tag_id, 'question_tag');
+            $title = sprintf(__('Question tag: %s', 'ap'), $tag->name);
         }
 
         return $title;
+    }
+
+    public function ap_breadcrumbs($navs){
+        if( is_question_tag()){
+            $tag_id = sanitize_text_field( get_query_var( 'q_tag'));
+            $tag = get_term_by(is_numeric($tag_id) ? 'id' : 'slug', $tag_id, 'question_tag');
+            $navs['page'] = array( );
+            $navs['tag'] = array( 'title' => $tag->name, 'link' => get_term_link( $tag, 'question_tag' ), 'order' => 8 );
+        }elseif( is_question_categories()){
+            $navs['page'] = array( 'title' => __('Categories', 'ap'), 'link' => ap_get_link_to('categories'), 'order' => 8 );
+ 
+        }
+
+        return $navs;
     }
 
 }
