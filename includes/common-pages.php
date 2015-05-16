@@ -11,7 +11,6 @@
 
 class AnsPress_Common_Pages
 {
-    private $template;
 
     protected static $instance = NULL;
 

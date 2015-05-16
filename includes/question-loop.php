@@ -370,6 +370,7 @@ function ap_question_the_answer_form(){
  */
 function ap_question_the_answers(){              
     include(ap_get_theme_location('best_answer.php'));
+    
     ap_get_answers();
 
     include(ap_get_theme_location('answers.php'));

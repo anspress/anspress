@@ -208,10 +208,16 @@ class AP_User_Fields
     }
 }
 
+
 function ap_user_fields($args = ''){
     echo ap_user_get_fields($args)->get_form();
 }
-
+    
+    /**
+     * Return fields of users
+     * @param  string|array $args
+     * @return object
+     */
     function ap_user_get_fields($args = ''){
         global $ap_user_fields;
         $ap_user_fields = new AP_User_Fields($args);

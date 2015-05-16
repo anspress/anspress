@@ -208,7 +208,11 @@ class AP_Users_Query
     }
 }
 
-
+/**
+ * Setup users loop
+ * @param  string|array $args
+ * @return object
+ */
 function ap_has_users($args = ''){
     global $users_query;
 

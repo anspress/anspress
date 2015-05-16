@@ -229,6 +229,11 @@ function ap_user_can_edit_ans($post_id){
 	return false;
 }
 
+/**
+ * Check if user can edit a question
+ * @param  boolean|integer $post_id
+ * @return boolean
+ */
 function ap_user_can_edit_question($post_id = false){
 	if(is_super_admin() || current_user_can('ap_edit_others_question') )
 		return true;
@@ -370,6 +375,11 @@ function ap_user_can_view_moderate_post($question_id){
 	return false;
 }
 
+/**
+ * Check if user can view post
+ * @param  boolean|integer $post_id
+ * @return boolean
+ */
 function ap_user_can_view_post($post_id = false){
 	if(is_super_admin())
 		return true;

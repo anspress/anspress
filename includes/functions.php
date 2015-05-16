@@ -507,6 +507,11 @@ function ap_post_permanent_delete_btn_html($post_id = false, $echo = false){
 	}
 }
 
+/**
+ * Output chnage post status button
+ * @param  boolean|integer $post_id
+ * @return null|string
+ */
 function ap_post_change_status_btn_html($post_id = false){
 	$post = get_post($post_id);
 
@@ -1028,10 +1033,10 @@ function ap_get_sort(){
 
 /**
  * Register AnsPress menu
- * @param  page $slug  [description]
- * @param  [type] $title [description]
- * @param  [type] $link  [description]
- * @return [type]        [description]
+ * @param  string $slug 
+ * @param  string $title
+ * @param  string $link
+ * @return void
  */
 function ap_register_menu($slug, $title, $link){
 	anspress()->menu[$slug] = array('title' => $title, 'link' => $link);

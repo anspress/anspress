@@ -160,9 +160,12 @@ class AnsPress_Ajax
      * @since 2.0.0
      */
     public function delete_comment(){
-    	if(isset($_POST['comment_ID']) && ap_user_can_delete_comment((int)$_POST['comment_ID'] ) && wp_verify_nonce( $_POST['__nonce'], 'delete_comment' )){
+    	$comment_id = (int) $_POST['comment_ID'];
+    	
+    	if(isset($_POST['comment_ID']) && ap_user_can_delete_comment($comment_id ) && wp_verify_nonce( $_POST['__nonce'], 'delete_comment' )){
 
-    		$comment = get_comment( (int) $_POST['comment_ID'] );
+    		$comment = get_comment( $comment_id );
+    		
     		if (time() > (get_comment_date( 'U', (int)$_POST['comment_ID'] ) + (int)ap_opt('disable_delete_after')) && !is_super_admin()) {
 				ap_send_json( ap_ajax_responce(array('message_type' => 'warning', 'message' => sprintf(__('This post was created %s ago, its locked hence you cannot delete it.', 'ap'), ap_human_time( get_comment_date( 'U', (int)$_POST['comment_ID'] )) ))));
 				return;

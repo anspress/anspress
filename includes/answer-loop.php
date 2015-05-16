@@ -96,15 +96,15 @@ class Answers_Query extends WP_Query {
                     )
                 );
             break;
-            case 'oldest' :
+            case 'oldest':
                 $this->args['orderby'] = 'meta_value date';
                 $this->args['order'] = 'ASC';
             break;
-            case 'newest' :
+            case 'newest':
                 $this->args['orderby'] = 'meta_value date';
                 $this->args['order'] = 'DESC';
             break;
-            default :
+            default:
                 $this->args['orderby'] = 'meta_value';
                 $this->args['meta_key'] = ANSPRESS_UPDATED_META;
                 $this->args['meta_query']  = array(
@@ -283,7 +283,7 @@ function ap_answer_get_author_id(){
 
 /**
  * echo user profile link
- * @return 2.1
+ * @since 2.1
  */
 function ap_answer_the_author_link(){
     echo ap_answer_get_the_author_link();
@@ -298,7 +298,7 @@ function ap_answer_the_author_link(){
     }
 
 function ap_answer_the_author_avatar($size = false){
-    $size = ap_parameter_empty(ap_opt('avatar_size_qanswer'), 45);
+    $size = ap_parameter_empty(ap_opt('avatar_size_qanswer'), $size);
     echo ap_answer_get_the_author_avatar( $size );
 }
     /**
@@ -313,7 +313,7 @@ function ap_answer_the_author_avatar($size = false){
 
 /**
  * Output active answer vote button
- * @return 2.1
+ * @since 2.1
  */
 function ap_answer_the_vote_button(){
     ap_vote_btn(ap_answer_the_object());
@@ -417,13 +417,13 @@ function ap_answers_the_pagination(){
 }
 
 function ap_answer_the_active_time($answer_id = false){
-    echo ap_answer_get_the_active_time();
+    echo ap_answer_get_the_active_time($answer_id);
 }
 
-function ap_answer_get_the_active_time($answer_id = false){
-    $answer_id = ap_parameter_empty($answer_id, @ap_answer_get_the_answer_id());
-    return ap_get_latest_history_html($answer_id);
-}
+    function ap_answer_get_the_active_time($answer_id = false){
+        $answer_id = ap_parameter_empty($answer_id, @ap_answer_get_the_answer_id());
+        return ap_get_latest_history_html($answer_id);
+    }
 
 function ap_answer_the_time($answer_id = false, $format = 'U'){
     $answer_id = ap_parameter_empty($answer_id, @ap_answer_get_the_answer_id());
