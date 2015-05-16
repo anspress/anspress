@@ -112,6 +112,7 @@ class AnsPress_Admin
 	 */
 	public function enqueue_admin_styles() {
 		wp_enqueue_style( 'ap-admin-css', ANSPRESS_URL.'assets/ap-admin.css');
+		wp_enqueue_style( 'ap-fonts', ap_get_theme_url('fonts/style.css'), array(), AP_VERSION);
 	}
 
 	/**
