@@ -1,60 +1,66 @@
 // Style for notify bubble
 
 #ap-notify{
+    bottom: 20px;
+    font-family: "Helvetica",Arial,sans-serif;
+    font-size: 13px;
     left: 10px;
+    line-height: 1.6;
     overflow: hidden;
-    padding: 10px;
     position: fixed;
-    top: 125px;    
     z-index: 9999;
 
     .ap-notify-item {
     	width: 320px;
     	background: @white;
-	    border: 2px solid #ddd;
+	    border: 1px solid #ddd;
 	    .border-radius(3px);
 	    display: block;
-	    font-size: 15px;
-	    padding: 10px 15px;
-	    width: 300px;
+	    font-size: 13px;
+	    padding: 10px 15px 10px 40px;
+	    width: 250px;
 	    .box-shadow(0 0 5px rgba(0, 0, 0, 0.1));
 	    margin-bottom: 20px;
 	    margin-left: -300px;
 	    position: relative;
 	    min-height: 20px;
 
+	    &:last-child{
+	    	margin-bottom: 0;
+	    }
+
 	    &.error{
-	    	border-color: @error-color;
 	    	i{
 	    		background: @error-color;
 	    	}
 	    }
 	    &.success{
-	    	border-color: @main-color;
 	    	i{
 	    		background: @main-color;
 	    	}
 	    }
 	    &.warning{
-	    	border-color: @yellow-color;
 	    	i{
 	    		background: @yellow-color;
 	    	}
 	    }
 	    i{
 	    	background: @error-color;
-		    border-radius: 3px;
+		    border-radius: 2px;
 		    color: #fff;
 		    display: block;
 		    float: left;
-		    font-size: 14px;
-		    height: 15px;
+		    font-size: 12px;
+		    height: 13px;
+		    left: 15px;
 		    line-height: 15px;
 		    margin-left: -5px;
 		    margin-right: 10px;
 		    padding: 3px;
+		    position: absolute;
 		    text-align: center;
-		    width: 15px;
+		    top: 10px;
+		    width: 13px;
 	    }
 	}
 }

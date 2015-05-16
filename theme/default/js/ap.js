@@ -220,7 +220,10 @@ jQuery(document).ready(function() {
         jQuery('#anspress').load(link + ' #anspress', function(){jQuery(load).hide()});
     });
 
-
+    jQuery('body').delegate('.ap-notify-item', 'click', function(e) {
+        e.preventDefault();
+        jQuery(this).hide();
+    });
 });
 
 function ap_chk_activity_scroll(e) {

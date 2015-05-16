@@ -2527,17 +2527,19 @@
   display: block;
 }
 #ap-notify {
+  bottom: 20px;
+  font-family: "Helvetica", Arial, sans-serif;
+  font-size: 13px;
   left: 10px;
+  line-height: 1.6;
   overflow: hidden;
-  padding: 10px;
   position: fixed;
-  top: 125px;
   z-index: 9999;
 }
 #ap-notify .ap-notify-item {
   width: 320px;
   background: #ffffff;
-  border: 2px solid #ddd;
+  border: 1px solid #ddd;
   -webkit-border-radius: 3px;
   -webkit-background-clip: padding-box;
   -moz-border-radius: 3px;
@@ -2545,9 +2547,9 @@
   border-radius: 3px;
   background-clip: padding-box;
   display: block;
-  font-size: 15px;
-  padding: 10px 15px;
-  width: 300px;
+  font-size: 13px;
+  padding: 10px 15px 10px 40px;
+  width: 250px;
   -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
   -moz-box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
@@ -2556,38 +2558,35 @@
   position: relative;
   min-height: 20px;
 }
-#ap-notify .ap-notify-item.error {
-  border-color: #eb5837;
+#ap-notify .ap-notify-item:last-child {
+  margin-bottom: 0;
 }
 #ap-notify .ap-notify-item.error i {
   background: #eb5837;
 }
-#ap-notify .ap-notify-item.success {
-  border-color: #61c17d;
-}
 #ap-notify .ap-notify-item.success i {
   background: #61c17d;
-}
-#ap-notify .ap-notify-item.warning {
-  border-color: #f4ac20;
 }
 #ap-notify .ap-notify-item.warning i {
   background: #f4ac20;
 }
 #ap-notify .ap-notify-item i {
   background: #eb5837;
-  border-radius: 3px;
+  border-radius: 2px;
   color: #fff;
   display: block;
   float: left;
-  font-size: 14px;
-  height: 15px;
+  font-size: 12px;
+  height: 13px;
+  left: 15px;
   line-height: 15px;
   margin-left: -5px;
   margin-right: 10px;
   padding: 3px;
+  position: absolute;
   text-align: center;
-  width: 15px;
+  top: 10px;
+  width: 13px;
 }
 .ap-widget-pos {
   margin-bottom: 25px;
