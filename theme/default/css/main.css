@@ -1959,8 +1959,9 @@
   position: relative;
 }
 #anspress .ap-form-fields.ap-have-error .ap-form-control,
-#anspress .ap-form-fields.ap-have-error .ap-editor {
-  border: solid 2px #eb5837;
+#anspress .ap-form-fields.ap-have-error .ap-editor,
+#anspress .ap-form-fields.ap-have-error .bootstrap-tagsinput {
+  border: solid 1px #eb5837;
   background: #fef3f0;
 }
 #anspress .ap-form-fields.ap-have-error .ap-editor {
@@ -1975,19 +1976,13 @@
   background: #f4ac20;
 }
 #anspress .ap-form-fields .ap-form-error-message {
-  background: #eb5837;
-  -webkit-border-radius: 2px 2px 0 0;
-  -webkit-background-clip: padding-box;
-  -moz-border-radius: 2px 2px 0 0;
-  -moz-background-clip: padding;
-  border-radius: 2px 2px 0 0;
-  background-clip: padding-box;
-  color: #ffffff;
-  margin: 0;
-  padding: 3px 10px;
-  position: absolute;
-  right: 0;
-  top: 5px;
+  border-radius: 2px;
+  color: #eb5837;
+  display: table;
+  font-size: 13px;
+  font-weight: 600;
+  margin: -10px 0 10px;
+  padding: 0;
 }
 #anspress .ap-form-fields-wrap {
   border-bottom: 1px solid #f7f7f7;

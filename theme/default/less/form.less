@@ -51,8 +51,8 @@
 	.ap-form-fields{
 		position: relative;
 		&.ap-have-error{
-			.ap-form-control, .ap-editor{
-				border: solid 2px @error-color;
+			.ap-form-control, .ap-editor, .bootstrap-tagsinput{
+				border: solid 1px @error-color;
 				background: lighten(@error-color, 40%);
 			}
 			.ap-editor{
@@ -70,14 +70,13 @@
 		}
 
 		.ap-form-error-message{
-		    background: @error-color;
-		    .border-radius(2px 2px 0 0);
-		    color: @white;
-		    margin: 0;
-		    padding: 3px 10px;
-		    position: absolute;
-		    right: 0;
-		    top: 5px;
+		    border-radius: 2px;
+		    color: @error-color;
+		    display: table;
+		    font-size: 13px;
+		    font-weight: 600;
+		    margin: -10px 0 10px;
+		    padding: 0;
 		}
 		&-wrap{
 			border-bottom: 1px solid #f7f7f7;

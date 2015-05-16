@@ -482,14 +482,14 @@ function ap_questions_tab($current_url = ''){
 	
 	$navs = array(
 		'active' => array('link' => add_query_arg(array('ap_sort' => 'active'), $link), 'title' => __('Active', 'ap')), 
-		'newest' => array('link' => add_query_arg(array('ap_sort' => 'newest'), $link), 'title' => __('New', 'ap'))
+		'newest' => array('link' => add_query_arg(array('ap_sort' => 'newest'), $link), 'title' => __('Newest', 'ap'))
 	);
 
 	if(!ap_opt('disable_voting_on_question'))
-		$navs['voted'] =  array('link' => add_query_arg(array('ap_sort' => 'voted'), $link), 'title' => __('Vote', 'ap'));
+		$navs['voted'] =  array('link' => add_query_arg(array('ap_sort' => 'voted'), $link), 'title' => __('Voted', 'ap'));
 
-	$navs['answers'] = array('link' => add_query_arg(array('ap_sort' => 'answers'), $link), 'title' => __('Answer', 'ap'));
-	$navs['unanswered'] = array('link' => add_query_arg(array('ap_sort' => 'unanswered'), $link), 'title' => __('Non answered', 'ap'));
+	$navs['answers'] = array('link' => add_query_arg(array('ap_sort' => 'answers'), $link), 'title' => __('Answered', 'ap'));
+	$navs['unanswered'] = array('link' => add_query_arg(array('ap_sort' => 'unanswered'), $link), 'title' => __('Unanswered', 'ap'));
 	$navs['unsolved'] = array('link' => add_query_arg(array('ap_sort' => 'unsolved'), $link), 'title' => __('Unsolved', 'ap')); 
 
 	
