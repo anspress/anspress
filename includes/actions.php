@@ -22,7 +22,6 @@ class AnsPress_Actions
 		
 		AP_History::get_instance();
 
-		add_action( 'init', array($this, 'init') );
 		add_action( 'ap_after_new_question', array($this, 'after_new_question'), 0, 2 );
 		add_action( 'ap_after_new_answer', array($this, 'after_new_answer'), 0, 2 );
 
@@ -51,16 +50,6 @@ class AnsPress_Actions
 
 	}
 
-	/**
-     * Actions to do after after theme setup
-     * @return void
-     * @since 2.0.0-alpha2
-     */
-    public function init()
-    {
-    	/*ap_register_menu('ANSPRESS_BASE_PAGE_URL', __('Questions', 'ap'), ap_base_page_link());
-    	ap_register_menu('ANSPRESS_ASK_PAGE_URL', __('Ask', 'ap'), ap_get_link_to('ask'));*/
-    }
 
 	/**
 	 * Things to do after creating a question
@@ -103,7 +92,6 @@ class AnsPress_Actions
 	public function after_new_answer($post_id, $post)
 	{
 		
-		$user_id = get_current_user_id();	
 		$question = get_post($post->post_parent);
 		// set default value for meta
 		update_post_meta($post_id, ANSPRESS_VOTE_META, '0');
@@ -111,8 +99,6 @@ class AnsPress_Actions
 		// set updated meta for sorting purpose
 		update_post_meta($question->ID, ANSPRESS_UPDATED_META, current_time( 'mysql' ));
 		update_post_meta($post_id, ANSPRESS_UPDATED_META, current_time( 'mysql' ));
-		
-		//ap_add_parti($question->ID, $user_id, 'answer', $post_id);	
 
 		// subscribe to current question
 		ap_add_question_subscriber($question->ID);	

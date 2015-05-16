@@ -40,12 +40,6 @@ if (!class_exists('AnsPress')) {
 
         private $_plugin_version = '2.2-beta1';
 
-        private $_plugin_path;
-
-        private $_plugin_url;
-
-        private $_text_domain = 'ap';
-
         public static $instance = null;
 
         public $anspress_actions;
