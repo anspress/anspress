@@ -680,3 +680,53 @@ function ap_how_to_answer(){
 		}
 		return false;
 	}
+
+function ap_breadcrumbs(){
+	$navs = ap_get_breadcrumbs();
+
+	echo '<ul class="ap-breadcrumbs clearfix">';
+	echo '<li class="ap-breadcrumbs-home"><a href="'.home_url( '/' ).'" class="apicon-home"></a></li>';
+	echo '<li><i class="apicon-chevron-right"></i></li>';
+
+	$i = 1;
+	$total_nav = count($navs);
+	
+	foreach($navs as $k => $nav){
+		if(!empty($nav)){
+			echo '<li>';
+			echo '<a href="'.$nav['link'].'">'.$nav['title'].'</a>';
+			echo '</li>';
+			
+			if($total_nav != $i)
+				echo '<li><i class="apicon-chevron-right"></i></li>';
+		}
+		$i++;
+	}
+
+	echo '</ul>';
+}
+
+	function ap_get_breadcrumbs(){
+		$current_page  = get_query_var('ap_page');
+		$title = ap_page_title();
+		$a = array();
+		
+		$a['base'] = array( 'title' => ap_opt('base_page_title'), 'link' => ap_base_page_link(), 'order' => 0 );
+
+		
+
+		if( is_question_tag()){
+			$a['tag'] = array( 'title' => __('Tags', 'ap'), 'link' => '', 'order' => 10 );
+		}
+
+		elseif(is_question()){			
+			$a['page'] = array( 'title' => substr($title, 0, 30). (strlen($title)>30 ? __('..', 'ap') : ''), 'link' => get_permalink( get_question_id() ), 'order' => 10 );
+		}
+		else{
+			$a['page'] = array( 'title' => substr($title, 0, 30). (strlen($title)>30 ? __('..', 'ap') : ''), 'link' => ap_get_link_to($current_page), 'order' => 10 );
+		}
+
+		$a = apply_filters('ap_breadcrumbs', $a );
+
+		return ap_sort_array_by_order($a);
+	}

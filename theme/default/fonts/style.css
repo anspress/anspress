@@ -1,10 +1,10 @@
 @font-face {
 	font-family: 'anspress';
-	src:url('fonts/anspress.eot?ydg628');
-	src:url('fonts/anspress.eot?#iefixydg628') format('embedded-opentype'),
-		url('fonts/anspress.woff?ydg628') format('woff'),
-		url('fonts/anspress.ttf?ydg628') format('truetype'),
-		url('fonts/anspress.svg?ydg628#anspress') format('svg');
+	src:url('fonts/anspress.eot?-2lbq88');
+	src:url('fonts/anspress.eot?#iefix-2lbq88') format('embedded-opentype'),
+		url('fonts/anspress.woff?-2lbq88') format('woff'),
+		url('fonts/anspress.ttf?-2lbq88') format('truetype'),
+		url('fonts/anspress.svg?-2lbq88#anspress') format('svg');
 	font-weight: normal;
 	font-style: normal;
 }
@@ -21,6 +21,22 @@
 	/* Better Font Rendering =========== */
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
+}
+
+.apicon-home:before {
+	content: "\e611";
+}
+
+.apicon-thumbs-up-down:before {
+	content: "\e600";
+}
+
+.apicon-thumb-up:before {
+	content: "\e601";
+}
+
+.apicon-thumb-down:before {
+	content: "\e602";
 }
 
 .apicon-toggle-on:before {
@@ -115,20 +131,8 @@
 	content: "\f04e";
 }
 
-.apicon-file-code:before {
-	content: "\f010";
-}
-
-.apicon-fold:before {
-	content: "\f0cc";
-}
-
 .apicon-gear:before {
 	content: "\f02f";
-}
-
-.apicon-gist:before {
-	content: "\f00e";
 }
 
 .apicon-gist-secret:before {
@@ -199,28 +203,8 @@
 	content: "\f080";
 }
 
-.apicon-organization:before {
-	content: "\f037";
-}
-
-.apicon-paintcan:before {
-	content: "\f0d1";
-}
-
-.apicon-pencil:before {
-	content: "\f058";
-}
-
-.apicon-person:before {
-	content: "\f018";
-}
-
 .apicon-pin:before {
 	content: "\f041";
-}
-
-.apicon-plug:before {
-	content: "\f0d4";
 }
 
 .apicon-plus:before {
@@ -237,10 +221,6 @@
 
 .apicon-question:before {
 	content: "\f02c";
-}
-
-.apicon-quote:before {
-	content: "\f063";
 }
 
 .apicon-rss:before {
@@ -289,17 +269,5 @@
 
 .apicon-anspress-icon:before {
 	content: "\e605";
-}
-
-.apicon-thumbs-up-down:before {
-	content: "\e600";
-}
-
-.apicon-thumb-up:before {
-	content: "\e601";
-}
-
-.apicon-thumb-down:before {
-	content: "\e602";
 }
 
