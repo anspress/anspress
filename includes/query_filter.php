@@ -147,7 +147,7 @@ class AnsPress_Query_Filter
 			else
 				$meta = "AND ( mt1.meta_key = '_ap_best_answer' AND CAST(mt1.meta_value AS CHAR) != '1' )";
 			
-			$sql['where'] = $sql['where'].$wpdb->prepare(" OR ( wp_posts.post_author = %d AND wp_posts.post_type ='answer' AND wp_posts.post_parent = %d $meta) ", get_current_user_id(), $query->args['question_id']);
+			$sql['where'] = $sql['where'].$wpdb->prepare(" OR ( ".$wpdb->posts.".post_author = %d AND ".$wpdb->posts.".post_type ='answer' AND ".$wpdb->posts.".post_parent = %d $meta) ", get_current_user_id(), $query->args['question_id']);
 		}
 
 		return $sql;
