@@ -1693,3 +1693,15 @@ h3.ap-dash-title {
   text-align: center;
   width: 22px;
 }
+#anspress .ap-wrap {
+  position: relative;
+}
+#anspress .ap-wrap-side {
+  position: absolute;
+  width: 250px;
+  right: 0;
+  top: 0;
+}
+#anspress .ap-wrap-left {
+  margin-right: 270px;
+}
