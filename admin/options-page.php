@@ -417,8 +417,8 @@ class AnsPress_Options_Page
 			),
 			array(
 				'name' => 'anspress_opt[disallow_op_to_answer]',
-				'label' => __('Asker cant answer', 'ap') ,
-				'desc' => __('Disallow asker to answer his own question.', 'ap') ,
+				'label' => __('Asker can answer', 'ap') ,
+				'desc' => __('Allow asker to answer his own question.', 'ap') ,
 				'type' => 'checkbox',
 				'value' => $settings['disallow_op_to_answer'],
 				'show_desc_tip' => false,

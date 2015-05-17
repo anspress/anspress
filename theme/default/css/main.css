@@ -2347,6 +2347,19 @@
 .ap-btn-submit {
   margin-top: 10px;
 }
+#wp-link-wrap form {
+  margin: 0;
+}
+#wp-link-wrap input {
+  height: 34px;
+  margin: 0;
+}
+#wp-link-wrap input[type="checkbox"] {
+  height: auto;
+}
+#wp-link-wrap .query-results {
+  top: 245px;
+}
 #anspress .ap-comment-block,
 #anspress .have-comments {
   background: none repeat scroll 0 0 #fcfcfc;
