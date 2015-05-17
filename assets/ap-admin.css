@@ -1705,3 +1705,60 @@ h3.ap-dash-title {
 #anspress .ap-wrap-left {
   margin-right: 270px;
 }
+.ap-about .container {
+  margin: 0 !important;
+}
+.ap-about h2 {
+  border-bottom: 2px solid #e3e3e3;
+}
+.ap-about h2 .apicon-anspress {
+  color: #555555;
+  display: block;
+  font-size: 36px;
+}
+.ap-about h2 span {
+  float: right;
+  font-weight: 300;
+}
+.ap-about-feature {
+  margin-top: 40px;
+}
+.ap-about-feature h3 {
+  margin-top: 0;
+}
+.ap-about-feature .done {
+  border-bottom: 1px solid #eee;
+  display: block;
+  font-size: 16px;
+  padding: 15px 0;
+}
+.ap-about-feature .bullet-done {
+  background: none repeat scroll 0 0 #7ac494;
+  border-radius: 50%;
+  color: #fff;
+  display: block;
+  float: left;
+  font-size: 13px;
+  height: 20px;
+  line-height: 22px;
+  margin-right: 9px;
+  padding: 0;
+  text-align: center;
+  width: 20px;
+}
+.ap-donation-block {
+  background: none repeat scroll 0 0 #ffe0ab;
+  border: 2px solid #f5a216;
+  border-radius: 3px;
+  margin-bottom: 20px;
+  padding: 10px;
+}
+.ap-donation-block h3 {
+  margin-top: 0;
+}
+.ap-changelog {
+  background: none repeat scroll 0 0 #fff;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  padding: 15px;
+}

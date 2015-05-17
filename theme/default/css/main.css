@@ -1742,6 +1742,7 @@
   background-image: linear-gradient(#ffffff, #fcfcfc);
   border: 1px solid rgba(0, 0, 0, 0.15);
   border-radius: 3px;
+  color: #333333;
   font-weight: 600;
   line-height: 1.6;
   padding: 4px 10px;
@@ -2452,6 +2453,7 @@
   background-image: linear-gradient(#ffffff, #fcfcfc);
   border: 1px solid rgba(0, 0, 0, 0.15);
   border-radius: 3px;
+  color: #333333;
   font-weight: 600;
   line-height: 1.6;
   padding: 4px 10px;
@@ -2480,6 +2482,7 @@
   background-image: linear-gradient(#ffffff, #fcfcfc);
   border: 1px solid rgba(0, 0, 0, 0.15);
   border-radius: 3px;
+  color: #333333;
   font-weight: 600;
   line-height: 1.6;
   padding: 4px 10px;
@@ -2585,16 +2588,15 @@
   display: block;
   float: left;
   font-size: 12px;
-  height: 13px;
+  height: 22px;
   left: 15px;
-  line-height: 15px;
+  line-height: 24px;
   margin-left: -5px;
   margin-right: 10px;
-  padding: 3px;
   position: absolute;
   text-align: center;
   top: 10px;
-  width: 13px;
+  width: 22px;
 }
 .ap-widget-pos {
   margin-bottom: 25px;
