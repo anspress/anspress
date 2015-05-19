@@ -15,7 +15,7 @@
  * Plugin URI:        http://wp3.in/tags-for-anspress
  * Description:       Extension for AnsPress. Add tags in AnsPress.
  * Donate link: https://www.paypal.com/cgi-bin/webscr?business=rah12@live.com&cmd=_xclick&item_name=Donation%20to%20AnsPress%20development
- * Version:           1.2.6
+ * Version:           1.2.7
  * Author:            Rahul Aryan
  * Author URI:        http://wp3.in
  * Text Domain:       ap
@@ -93,8 +93,8 @@ class Tags_For_AnsPress
         add_filter('term_link', array($this, 'term_link_filter'), 10, 3);
         add_action('ap_ask_form_fields', array($this, 'ask_from_tag_field'), 10, 2);
         add_action('ap_ask_fields_validation', array($this, 'ap_ask_fields_validation'));
-        add_action( 'ap_after_new_question', array($this, 'after_new_question'), 10, 2 );
-        add_action( 'ap_after_update_question', array($this, 'after_new_question'), 10, 2 );
+        add_action( 'ap_processed_new_question', array($this, 'after_new_question'), 0, 2 );
+        add_action( 'ap_processed_update_question', array($this, 'after_new_question'), 0, 2 );
         add_filter('ap_page_title', array($this, 'page_title'));        
         add_filter('ap_breadcrumbs', array($this, 'ap_breadcrumbs'));        
 
@@ -524,9 +524,12 @@ function ap_question_have_tags($question_id = false){
     return false;
 }
 
-function is_question_tag(){
-    if('tag' == get_query_var( 'ap_page' ))
-        return true;
-        
-    return false;
+if(!function_exists('is_question_tag')){
+    function is_question_tag(){
+        if('tag' == get_query_var( 'ap_page' ))
+            return true;
+            
+        return false;
+    }
 }
+
