@@ -191,7 +191,7 @@ function ap_meta_total_count($type, $actionid=false, $userid = false, $group = f
 /**
  * @param string $type
  */
-function ap_meta_user_done($type, $userid, $actionid, $value = false){	
+function ap_meta_user_done($type, $userid, $actionid, $param = false, $value = false){	
 	global $wpdb;
 	
 	$where = "";
@@ -215,6 +215,9 @@ function ap_meta_user_done($type, $userid, $actionid, $value = false){
 	
 	if($value)
 		$query = $query. $wpdb->prepare('and apmeta_value = "%s"', $value);
+
+	if($param)
+		$query = $query. $wpdb->prepare('and apmeta_param = "%s"', $param);
 	
 	$key = md5($query);
 
@@ -223,7 +226,8 @@ function ap_meta_user_done($type, $userid, $actionid, $value = false){
 	if($user_done !== false)
 		return $user_done;
 		
-	$user_done = $wpdb->get_var($query);	
+	$user_done = $wpdb->get_var($query);
+	
 	wp_cache_set($key, $user_done, 'counts');
 
 	return $user_done;	

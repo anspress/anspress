@@ -257,6 +257,7 @@ if (!class_exists('AnsPress')) {
             require_once ANSPRESS_DIR.'includes/users-loop.php';
             require_once ANSPRESS_DIR.'includes/deprecated.php';
             require_once ANSPRESS_DIR.'includes/user-fields.php';
+            require_once ANSPRESS_DIR.'includes/subscriber.php';
              
         }
 

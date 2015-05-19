@@ -57,3 +57,9 @@ function ap_have_ans($id){
 	
 	return false;
 }
+
+function ap_post_subscribers_count($post_id){
+	_deprecated_function('ap_post_subscribers_count', '2.2.0.1', 'ap_subscribers_count');
+	$post_id = $post_id ? $post_id : get_question_id();
+	return ap_meta_total_count('subscriber', $post_id);
+}

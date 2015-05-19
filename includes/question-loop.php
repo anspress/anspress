@@ -425,7 +425,7 @@ function ap_question_the_subscriber_count(){
      * @since 2.1
      */
     function ap_question_get_the_subscriber_count(){
-        return ap_post_subscribers_count(ap_question_get_the_ID());
+        return ap_subscribers_count(ap_question_get_the_ID());
     }
 
 /**

@@ -352,31 +352,23 @@ class AnsPress_Process_Form
 				 * action triggered after inserting a question
 				 * @since 0.9
 				 */
-				do_action('ap_after_new_question', $post_id, $post);
+				do_action('ap_processed_new_question', $post_id, $post);
 			}else{
-				/**
-				 * ACTION: ap_after_update_question
-				 * action triggered after updating a question
-				 * @since 0.9
-				 */
-				do_action('ap_after_update_question', $post_id, $post);
+	
+				do_action('ap_processed_update_question', $post_id, $post);
 			}
 		}elseif ( $post->post_type == 'answer' ) {
 			
 			if( $updated == ''){
-				/**
-				 * ACTION: ap_after_new_answer
-				 * action triggered after inserting an answer
-				 * @since 0.9
-				 */
-				do_action('ap_after_new_answer', $post_id, $post);
+				
+				do_action('ap_processed_new_answer', $post_id, $post);
 			}else{
 				/**
 				 * ACTION: ap_after_update_answer
 				 * action triggered after updating an answer
 				 * @since 0.9
 				 */
-				do_action('ap_after_update_answer', $post_id, $post);
+				do_action('ap_processed_update_answer', $post_id, $post);
 
 			}
 		}

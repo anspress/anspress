@@ -22,11 +22,11 @@ class AnsPress_Actions
 		
 		AP_History::get_instance();
 
-		add_action( 'ap_after_new_question', array($this, 'after_new_question'), 0, 2 );
-		add_action( 'ap_after_new_answer', array($this, 'after_new_answer'), 0, 2 );
+		add_action( 'ap_processed_new_question', array($this, 'after_new_question'), 1, 2 );
+		add_action( 'ap_processed_new_answer', array($this, 'after_new_answer'), 1, 2 );
 
-		add_action( 'ap_after_update_question', array($this, 'ap_after_update_question'), 0, 2 );
-		add_action( 'ap_after_update_answer', array($this, 'ap_after_update_answer'), 0, 2 );
+		add_action( 'ap_processed_update_question', array($this, 'ap_after_update_question'), 1, 2 );
+		add_action( 'ap_processed_update_answer', array($this, 'ap_after_update_answer'), 1, 2 );
 
 		add_action( 'before_delete_post', array($this, 'before_delete'));	
 
@@ -57,7 +57,7 @@ class AnsPress_Actions
 	 * @return void
 	 * @since 1.0
 	 */
-	public function after_new_question($post_id)
+	public function after_new_question($post_id, $post)
 	{
 
 		$user_id = get_current_user_id();
@@ -77,8 +77,12 @@ class AnsPress_Actions
 		//update answer count
 		update_post_meta($post_id, ANSPRESS_ANS_META, '0');
 
-		do_action('ap_after_inserting_question', $post_id);
-		ap_do_event('new_question', $post_id, $user_id);
+		/**
+		 * ACTION: ap_after_new_question
+		 * action triggered after inserting a question
+		 * @since 0.9
+		 */
+		do_action('ap_after_new_question', $post_id, $post);
 
 	}
 	
@@ -111,14 +115,24 @@ class AnsPress_Actions
 		
 		update_post_meta($post_id, ANSPRESS_BEST_META, 0);
 		
-		do_action('ap_after_inserting_answer', $post_id);
+		/**
+		 * ACTION: ap_after_new_answer
+		 * action triggered after inserting an answer
+		 * @since 0.9
+		 */
+		do_action('ap_after_new_answer', $post_id, $post);
 	}
 
 	public function ap_after_update_question($post_id){
 		// set updated meta for sorting purpose
 		update_post_meta($post_id, ANSPRESS_UPDATED_META, current_time( 'mysql' ));
 
-		ap_do_event('edit_question', $post_id, get_current_user_id());
+		/**
+		 * ACTION: ap_after_new_answer
+		 * action triggered after inserting an answer
+		 * @since 0.9
+		 */
+		do_action('ap_after_update_question', $post_id, $post);
 	}
 
 	public function ap_after_update_answer($post_id, $post)
@@ -131,6 +145,13 @@ class AnsPress_Actions
 		$current_ans = ap_count_published_answers($post->post_parent);
 		update_post_meta($post->post_parent, ANSPRESS_ANS_META, $current_ans);
 		ap_do_event('edit_answer', $post_id, get_current_user_id(), $post->post_parent);
+
+		/**
+		 * ACTION: ap_processed_update_answer
+		 * action triggered after inserting an answer
+		 * @since 0.9
+		 */
+		do_action('ap_after_update_answer', $post_id, $post);
 	}
 
 	public function before_delete($post_id){

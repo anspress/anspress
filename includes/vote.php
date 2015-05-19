@@ -14,14 +14,19 @@ class AnsPress_Vote_Ajax extends AnsPress_Ajax
 {
 	public function __construct()
 	{
-		add_action( 'ap_ajax_subscribe_question', array($this, 'subscribe_question') ); 
+		add_action( 'ap_ajax_subscribe', array($this, 'subscribe') ); 
 		add_action( 'ap_ajax_vote', array($this, 'vote') ); 
 		add_action( 'ap_ajax_flag_post', array($this, 'flag_post') ); 
 	}
 
-	public function subscribe_question()
+	public function subscribe()
 	{
-		if(!wp_verify_nonce( $_POST['__nonce'], 'subscribe_'. (int)$_POST['question_id'] ) ){
+		
+		$action_id 	= (int)$_POST['action_id'];
+
+		$type 		= sanitize_text_field($_POST['type']);
+
+		if(!wp_verify_nonce( $_POST['__nonce'], 'subscribe_'. $action_id . '_' . $type ) ){
 			ap_send_json(ap_ajax_responce('something_wrong'));
 			return;
 		}
@@ -31,22 +36,42 @@ class AnsPress_Vote_Ajax extends AnsPress_Ajax
 			return;
 		}
 
-		if(wp_verify_nonce( $_POST['__nonce'], 'subscribe_'. (int)$_POST['question_id'] )){
+		if($type === 'category')
+			$subscribe_type =  'category' ;
 
-			$question_id = (int)$_POST['question_id'];
+		elseif($type === 'tag')
+			$subscribe_type =  'tag' ;
 
-			$is_subscribed = ap_is_user_subscribed( $question_id );
+		else
+			$subscribe_type =  false ;
 
-			if($is_subscribed){
-				ap_remove_question_subscriber($question_id);
-				ap_send_json(ap_ajax_responce(array('message' => 'unsubscribed', 'action' => 'unsubscribed', 'container' => '#subscribe_'.$question_id.' b', 'do' => 'updateHtml', 'html' =>__('Subscribe', 'ap'))));
-				return;
-			}else{
-				ap_add_question_subscriber($question_id);
-				ap_send_json(ap_ajax_responce(array('message' => 'subscribed', 'action' => 'subscribed', 'container' => '#subscribe_'.$question_id.' b', 'do' => 'updateHtml', 'html' => __('Unsubscribe', 'ap'))));
-			}
+		$user_id = get_current_user_id();
+
+		$is_subscribed = ap_is_user_subscribed( $action_id, $user_id, $subscribe_type );
+
+		if($is_subscribed){
 			
+			if($subscribe_type === false)				
+				ap_remove_question_subscriber($action_id);
+			else
+				ap_remove_subscriber( $user_id, $action_id, $subscribe_type );
+			
+
+			ap_send_json(ap_ajax_responce(array('message' => 'unsubscribed', 'action' => 'unsubscribed', 'container' => '#subscribe_'.$action_id.' b', 'do' => 'updateHtml', 'html' =>__('Subscribe', 'ap'))));
+
+			return;
+
+		}else{
+			
+			if($subscribe_type === false)
+				ap_add_question_subscriber($action_id);
+			else
+				ap_add_subscriber( $user_id, $action_id, $subscribe_type );
+
+			ap_send_json(ap_ajax_responce(array('message' => 'subscribed', 'action' => 'subscribed', 'container' => '#subscribe_'.$action_id.' b', 'do' => 'updateHtml', 'html' => __('Unsubscribe', 'ap'))));
+
 		}
+
 	}
 
 	/**
@@ -359,21 +384,6 @@ function ap_is_user_voted($actionid, $type, $userid = false){
 	return false;
 }
 
-//check if user added post to subscribe
-function ap_is_user_subscribed($postid){
-	if(is_user_logged_in()){
-		$userid = get_current_user_id();
-		$done = ap_meta_user_done('subscriber', $userid, $postid);
-		return $done > 0 ? true : false;
-	}
-	return false;
-}
-
-function ap_post_subscribers_count($postid = false){
-	$postid = $postid ? $postid : get_question_id();
-	return ap_meta_total_count('subscriber', $postid);
-}
-
 /**
  * Output voting button
  * @param  int $post 
@@ -413,33 +423,6 @@ function ap_vote_btn($post = false, $echo = true){
 	}else{
 		return $html;
 	}
-}
-
-/**
- * Output subscribe btn HTML
- * @return string
- * @since 2.0.1
- */
-function ap_subscribe_btn_html($question_id = false){
-	if(!$question_id)
-		$question_id = get_question_id();
-	
-	//$total_favs = ap_post_subscribers_count($question_id);
-	$subscribed = ap_is_user_subscribed($question_id);
-
-	$nonce = wp_create_nonce( 'subscribe_'.$question_id );
-	$title = (!$subscribed) ? __('Subscribe', 'ap') : __('Unsubscribe', 'ap');
-
-	?>
-	<div class="ap-subscribe" id="<?php echo 'subscribe_'.$question_id; ?>">
-		<a href="#" class="ap-btn-toggle<?php echo ($subscribed) ? ' active' :''; ?>" data-query="ap_ajax_action=subscribe_question&question_id=<?php echo $question_id ?>&__nonce=<?php echo $nonce ?>" data-action="ap_subscribe" data-args="<?php echo $question_id.'-'.$nonce; ?>">
-			<span class="apicon-toggle-on"></span>
-			<span class="apicon-toggle-off"></span>
-		</a>
-		<b><?php echo $title ?></b>
-	</div>
-
-	<?php
 }
 
 
@@ -534,115 +517,3 @@ function ap_flag_btn_html($echo = false){
 }
 
 
-/**
- * Return subscriber count in human readable format
- * @return string
- * @since 2.0.0-alpha2
- */
-function ap_subscriber_count_html($post = false)
-{
-	if(!$post)
-		global $post;
-	
-	$subscribed = ap_is_user_subscribed($post->ID);
-	$total_subscribers = ap_post_subscribers_count($post->ID);
-
-	if( $total_subscribers =='1' && $subscribed)
-		return __('Only you are subscribed to this question.', 'ap'); 
-	elseif($subscribed)
-		return sprintf( __( 'You and <strong>%s people</strong> subscribed to this question.', 'ap' ), ($total_subscribers -1));
-	elseif($total_subscribers == 0)
-		return __( 'No one is subscribed to this question.', 'ap' );
-	else
-		return sprintf( __( '<strong>%d people</strong> subscribed to this question.', 'ap' ), $total_subscribers);	
-}
-
-function ap_question_subscribers($question_id = false, $avatar_size = 30){
-	if($question_id === false)
-		$question_id = get_question_id();
-
-	$subscribers = ap_get_question_subscribers($question_id);
-
-	if($subscribers){
-		echo '<div class="ap-question-subscribers clearfix">';
-			echo '<div class="ap-question-subscribers-inner">';
-			foreach($subscribers as $subscriber){
-				echo '<a href="'.ap_user_link($subscriber->apmeta_userid).'">'.get_avatar($subscriber->apmeta_userid, $avatar_size).'</a>';
-			}
-			echo '</div>';
-		echo '</div>';
-	}
-}
-
-/**
- * Return all subscribers of a question
- * @param  integer $question_id
- * @return array
- * @since 2.1
- */
-function ap_get_question_subscribers($question_id){
-	global $wpdb;
-
-	$where = array(
-		'apmeta_type' => array('value' => 'subscriber', 'compare' => '=', 'relation' => 'AND'), 
-	);
-	$where['apmeta_actionid'] = array('value' => $question_id, 'compare' => '=', 'relation' => 'AND');
-
-	return ap_get_all_meta(array(
-		'where' => $where,
-		'group' => array(
-			'apmeta_userid' => array('relation' => 'AND'),
-		)));
-}
-
-function ap_add_question_subscriber($question_id, $user_id = false){
-	$is_subscribed = ap_is_user_subscribed( $question_id );
-
-	if($user_id === false)
-		$user_id = get_current_user_id();
-
-	if($user_id < 1)
-		return false;
-
-	if(!$is_subscribed){
-
-		ap_add_vote($user_id, 'subscriber', $question_id);
-		$counts = ap_post_subscribers_count($question_id);
-		
-		//update post meta
-		update_post_meta($question_id, ANSPRESS_SUBSCRIBER_META, $counts);
-		
-		//register an action
-		do_action('ap_added_subscriber', $question_id, $counts);
-
-		return array('count' => $counts, 'action' => 'subscribed');
-	}
-
-	return false;
-}
-
-function ap_remove_question_subscriber($question_id, $user_id = false){
-	$is_subscribed = ap_is_user_subscribed( $question_id );
-
-	if($user_id === false)
-		$user_id = get_current_user_id();	
-
-	if($is_subscribed){
-
-		// if already subscribed then remove	
-		ap_remove_vote('subscriber', $user_id, $question_id);
-		
-		$counts = ap_post_subscribers_count($question_id);
-		
-		//update post meta
-		update_post_meta($question_id, ANSPRESS_SUBSCRIBER_META, $counts);
-		
-		//register an action
-		do_action('ap_removed_subscriber', $question_id, $counts);
-
-		return array('count' => $counts, 'action' => 'unsubscribed');
-
-	}
-
-	return false;
-}

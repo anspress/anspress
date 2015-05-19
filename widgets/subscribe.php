@@ -31,7 +31,7 @@ class AnsPress_Subscribe_Widget extends WP_Widget {
 		}
 
 		ap_subscribe_btn_html();
-		ap_question_subscribers();
+		ap_question_subscribers();		
 
 		echo $args['after_widget'];
 	}
@@ -41,7 +41,7 @@ class AnsPress_Subscribe_Widget extends WP_Widget {
 			$title = $instance[ 'title' ];
 		}
 		else {
-			$title = __( 'Subscribe questions', 'ap' );
+			$title = __( 'Subscribe', 'ap' );
 		}
 		?>
 		<p>

@@ -150,6 +150,38 @@ function is_ap_users(){
 	return false;
 }
 
+/**
+ * Check if anspress categories page
+ * @return boolean
+ * @since  1.0
+ */
+if(!function_exists('is_question_categories')){
+    function is_question_categories(){
+        if('categories' == get_query_var( 'ap_page' ))
+            return true;
+            
+        return false;
+    }
+}
+
+if(!function_exists('is_question_category')){
+	function is_question_category(){
+	    if('category' == get_query_var( 'ap_page' ))
+	        return true;
+	        
+	    return false;
+	}
+}
+
+if(!function_exists('is_question_tag')){
+	function is_question_tag(){
+	    if('tag' == get_query_var( 'ap_page' ))
+	        return true;
+	        
+	    return false;
+	}
+}
+
 function get_question_id(){
 	if(is_question() && get_query_var('question_id')){
 		return (int)get_query_var('question_id');
@@ -917,7 +949,7 @@ function ap_link_to($sub){
 			}
 		}
 
-		return $base. $args ;
+		return apply_filters( 'ap_link_to', $base. $args, $sub );
 	}
 
 

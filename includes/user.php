@@ -117,7 +117,6 @@ function ap_user_display_name($args = array())
 
     if ($user_id > 0) {
         $user = get_userdata($user_id);
-
         if (!$html) {
             $return = $user->display_name;
         } else {
