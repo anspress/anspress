@@ -48,9 +48,9 @@ class AnsPress_Reputation_Table extends WP_List_Table
     public function get_columns()
     {
         $columns = array(
-            'title'       	=> 'Title',
-            'reputation'        => 'Points',
-            'event'    		=> 'Event'
+            'title'       	=> _('Title', 'ap'),
+            'reputation'        => _(Points', 'ap'),
+            'event'    		=> _('Event', 'ap')
         );
  
         return $columns;
