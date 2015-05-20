@@ -16,6 +16,7 @@ $clearfix_class = array('ap-questions-item clearfix');
 
 ?>
 <div id="question-<?php ap_question_the_ID(); ?>" <?php post_class($clearfix_class); ?>>
+	<?php if(ap_is_featured_question()) echo '<i class="ap-questions-featured apicon-star ap-tip" title="'.__('Featured question', 'ap').'"></i>'; ?>
 	<div class="ap-questions-inner">
 		<div class="ap-avatar ap-pull-left">
 			<a href="<?php ap_question_the_author_link() ; ?>">

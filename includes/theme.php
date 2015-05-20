@@ -426,6 +426,9 @@ function ap_post_actions_buttons($disable = array())
 	if(is_user_logged_in())
 		$actions['dropdown']['flag'] = ap_flag_btn_html();
 
+	if(is_super_admin() && $post->post_type == 'question')
+		$actions['dropdown']['featured'] = ap_featured_post_btn();
+
 	if(ap_user_can_delete($post->ID) && $post->post_status != 'trash')
 		$actions['dropdown']['delete'] = ap_post_delete_btn_html();
 

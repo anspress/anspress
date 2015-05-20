@@ -27,6 +27,7 @@ class AnsPress_Ajax
 		add_action('ap_ajax_permanent_delete_post', array($this, 'permanent_delete_post'));
 		add_action('ap_ajax_change_post_status', array($this, 'change_post_status'));
 		add_action('ap_ajax_load_user_field_form', array($this, 'load_user_field_form'));
+		add_action('ap_ajax_set_featured', array($this, 'set_featured'));
 		
 		add_action('wp_ajax_ap_suggest_tags', array($this, 'ap_suggest_tags'));
 		add_action('wp_ajax_nopriv_ap_suggest_tags', array($this, 'ap_suggest_tags'));
@@ -435,6 +436,58 @@ class AnsPress_Ajax
 		}
 		
 		die(json_encode(array('status' => false)));
+	}
+
+	public function set_featured(){
+		$post_id = (int) $_POST['post_id'];
+
+		if(!is_super_admin() || !wp_verify_nonce( $_POST['__nonce'], 'set_featured_'.$post_id )){
+			ap_send_json( ap_ajax_responce('no_permission'));
+			die();
+		}else{		
+			$post = get_post($post_id);
+			$featured_questions = get_option('featured_questions');
+
+			if(($post->post_type == 'question')){
+				if(!empty($featured_questions) && is_array($featured_questions) && in_array($post->ID, $featured_questions)){
+
+					foreach ($featured_questions as $key => $q) {
+						if($q == $post->ID)
+							unset($featured_questions[$key]);
+					}
+					
+					update_option('featured_questions', $featured_questions);
+
+					ap_send_json( ap_ajax_responce(array(
+						'action' 		=> 'unset_featured_question',
+						'message' 		=> 'unset_featured_question',
+						'do'			=> array('updateHtml'),
+						'container'		=> '#set_featured_'.$post->ID,
+						'html'			=> __('Set as featured', 'ap'),
+					)));
+
+				}else{			
+					
+					if(empty($featured_questions) || !is_array($featured_questions) || !$featured_questions)
+						$featured_questions = array($post->ID);
+					else
+						$featured_questions[] = $post->ID;
+
+					update_option('featured_questions', $featured_questions);
+
+					ap_send_json( ap_ajax_responce(array(
+						'action' 		=> 'set_featured_question',
+						'message' 		=> 'set_featured_question',
+						'do'			=> array('updateHtml'),
+						'container'		=> '#set_featured_'.$post->ID,
+						'html'			=> __('Unset as featured', 'ap'),
+					)));
+
+				}
+			}			
+		}
+		ap_send_json( ap_ajax_responce('something_wrong'));
+		die();
 	}
 
 }

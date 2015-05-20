@@ -61,15 +61,21 @@ class AnsPress_Theme
     public function question_answer_post_class($classes) 
     {
         global $post;
+        
         if ($post->post_type == 'question') 
         {
-            if (ap_question_best_answer_selected($post->post_id)) $classes[] = 'answer-selected';
+            if (ap_question_best_answer_selected($post->ID)) 
+                $classes[] = 'answer-selected';
+
+            if (ap_is_featured_question($post->ID))
+                $classes[] = 'featured-question';
             
             $classes[] = 'answer-count-' . ap_count_answer_meta();
         }
         if ($post->post_type == 'answer') 
         {
-            if (ap_answer_is_best($post->post_id)) $classes[] = 'best-answer';
+            if (ap_answer_is_best($post->ID))
+                $classes[] = 'best-answer';
         }
         
         return $classes;

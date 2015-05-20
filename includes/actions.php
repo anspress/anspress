@@ -60,7 +60,6 @@ class AnsPress_Actions
 	public function after_new_question($post_id, $post)
 	{
 
-		$user_id = get_current_user_id();
 		update_post_meta($post_id, ANSPRESS_VOTE_META, '0');
 		update_post_meta($post_id, ANSPRESS_SUBSCRIBER_META, '0');
 		update_post_meta($post_id, ANSPRESS_CLOSE_META, '0');
@@ -68,8 +67,6 @@ class AnsPress_Actions
 		update_post_meta($post_id, ANSPRESS_VIEW_META, '0');
 		update_post_meta($post_id, ANSPRESS_UPDATED_META, current_time( 'mysql' ));
 		update_post_meta($post_id, ANSPRESS_SELECTED_META, false);
-		
-		//ap_add_parti($post_id, $user_id, 'question');
 
 		// subscribe to current question
 		ap_add_question_subscriber($post_id);
@@ -83,7 +80,6 @@ class AnsPress_Actions
 		 * @since 0.9
 		 */
 		do_action('ap_after_new_question', $post_id, $post);
-
 	}
 	
 	/**
@@ -123,7 +119,7 @@ class AnsPress_Actions
 		do_action('ap_after_new_answer', $post_id, $post);
 	}
 
-	public function ap_after_update_question($post_id){
+	public function ap_after_update_question($post_id, $post){
 		// set updated meta for sorting purpose
 		update_post_meta($post_id, ANSPRESS_UPDATED_META, current_time( 'mysql' ));
 

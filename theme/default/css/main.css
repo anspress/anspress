@@ -1259,8 +1259,9 @@
   box-shadow: none;
   display: table;
   margin: 0;
-  padding: 15px 0;
+  padding: 15px 15px;
   width: 100%;
+  position: relative;
 }
 #anspress .ap-questions-item.hentry {
   margin: 0;
@@ -1331,6 +1332,17 @@
   font-size: 11px;
   margin: 0;
   padding: 0 6px;
+}
+#anspress .ap-questions-featured {
+  color: #d56f56;
+  font-size: 17px;
+  left: -20px;
+  position: absolute;
+  top: 14px;
+}
+#anspress .ap-questions .featured-question {
+  background: none repeat scroll 0 0 #fffae1;
+  border-bottom-color: #efe7bc;
 }
 #anspress .selected,
 #anspress .ap-best-answer-label {

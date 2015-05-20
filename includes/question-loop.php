@@ -42,7 +42,7 @@ class Question_Query extends WP_Query {
 
         $defaults = array(
             'showposts'     => ap_opt('question_per_page'),
-            'paged'         => $paged,
+            'paged'         => $paged
         );
 
         $args['post_status'][] = 'publish'; 
@@ -138,11 +138,13 @@ function ap_get_questions($args = array()){
 
     $args = wp_parse_args( $args, array(
         'showposts'     => ap_opt('question_per_page'),
-        'paged'         => $paged
+        'paged'         => $paged,
+        'ap_query'      => 'featured_post'
     ));
 
     anspress()->questions = new Question_Query($args);
 }
+
 
 /**
  * Get an question by ID
@@ -470,4 +472,22 @@ function ap_question_the_time_relative($question_id = false){
 function ap_question_get_the_time_relative($question_id = false){
     $question_id = ap_parameter_empty($question_id, @ap_question_get_the_ID());
     return ap_human_time(ap_question_get_the_time($question_id, 'U')) .__(' ago', 'ap');
+}
+
+/**
+ * Check if current post is marked as featured
+ * @param  boolean|integer      $question_id    Question ID to check
+ * @return boolean
+ * @since 2.2.0.1
+ */
+function ap_is_featured_question($question_id = false){
+    if(false === $question_id)
+        $question_id = get_the_ID();
+
+    $featured = get_option('featured_questions');
+
+    if(in_array($question_id, $featured))
+        return true;
+
+    return false;
 }

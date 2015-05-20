@@ -43,6 +43,7 @@
             this.ap_post_upload_field();
             this.tinyMCEeditorToggle();
             this.tab();
+            this.set_featured();
         },
         doAjax: function(query, success, context, before, abort) {
             /** Shorthand method for calling ajax */
@@ -496,6 +497,18 @@
                 $('.ap-tab-nav >li').removeClass('active');
                 $(this).parent().addClass('active');
                 $(container).toggleClass('active');
+            });
+        },
+
+        set_featured: function(){
+            $('body').delegate('[data-action="set_featured"]', 'click', function(e) {
+                e.preventDefault();
+                var c = $(this).closest('ul').prev();
+                AnsPress.site.showLoading(c);
+                var q = $(this).attr('data-query');
+                ApSite.doAjax(apAjaxData(q), function(data) {
+                    AnsPress.site.hideLoading(c);
+                }, this, false, true);
             });
         }
     }

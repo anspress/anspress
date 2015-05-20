@@ -109,27 +109,15 @@ class AnsPress_Query_Filter
 	
 	public function main_question_query($sql, $query){
 		global $wpdb;
-		if(isset($query->query['ap_query']) && $query->query['ap_query'] == 'main_questions_active'){
-			$sql['orderby'] = 'case when mt1.post_id IS NULL then '.$wpdb->posts.'.post_date else '.$wpdb->postmeta.'.meta_value end DESC';
-			//var_dump($sql);
-		}elseif(isset($query->query['ap_query']) && $query->query['ap_query'] == 'related'){
-			$keywords = explode(' ', $query->query['ap_title']);
+		
+		if(isset($query->query['ap_query']) && $query->query['ap_query'] == 'featured_post'){
 
-			$where = "AND (";
-			$i =1;
-			foreach ($keywords as $key){
-				if(strlen($key) > 1){
-					$key = $wpdb->esc_like( $key );
-					if($i != 1)
-					$where .= "OR ";
-					$where .= "(($wpdb->posts.post_title LIKE '%$key%') AND ($wpdb->posts.post_content LIKE '%$key%')) ";
-					$i++;
-				}
+			$featured = get_option('featured_questions');
+
+			if(is_array($featured) && !empty($featured)){
+				$post_ids = implode(', ', $featured);
+				$sql['orderby'] = " $wpdb->posts.ID IN ($post_ids) DESC, ". $sql['orderby'];
 			}
-			$where .= ")";
-			
-			$sql['where'] = $sql['where'].' '.$where;
-
 		}
 		return $sql;
 	}
