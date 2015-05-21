@@ -1,10 +1,5 @@
 ﻿# Tags for AnsPress
 
-Tags for AnsPress is an extension for AnsPress, which add tags (taxonomy) support for questions. An auto suggest tags fields is added in ask form. This extensions will add a page in AnsPress:
-
-  - Tag page (Single tag page, list questions of a specfic tag)
-
-=======
 ﻿Tags for AnsPress is an extension for AnsPress, which add tags (taxonomy) support for questions. An auto suggest tags fields is added in ask form. This extensions will add a page in AnsPress:
 
   - Tag page (Single tag page, list questions of a specfic tag)
