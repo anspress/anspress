@@ -8,16 +8,27 @@ Stable tag: 1.2.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Extension for AnsPress. Add tags in AnsPress. Extension will work with AnsPress 2.0 or later.
+Add tag (taxonomy) support in AnsPress
 
 == Description ==
-Support forum: http://wp3.in/questions/
+Support forum: http://anspress.io/questions/
 
-AnsPress is a question and answer plugin for WordPress
-Visit AnsPress: http://wp3.in/anspress
+Tags for AnsPress is an extension for AnsPress, which add tags (taxonomy) support for questions. An auto suggest tags fields is added in ask form. This extensions will add a page in AnsPress:
+
+* Tag page (Single tag page, list questions of a specfic tag)
+
+This extension will also add tags widget, which can be used to to show popular question tags anywhere in WordPress.
 
 == Installation ==
-Install from WordPress plugin manager.
+
+Simply go to WordPress plugin installer and search for tags for anspress and click on install button and then activate it.
+
+Or if you want to install it manually simple follow this:
+
+1. Download the extension zip file, uncompress it.
+2. Upload tags-for-anspress folder to the /wp-content/plugins/ directory
+3. Activate the plugin through the 'Plugins' menu in WordPress
+
 
 == Changelog ==
 
