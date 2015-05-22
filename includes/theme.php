@@ -426,9 +426,6 @@ function ap_post_actions_buttons($disable = array())
 	if(is_user_logged_in())
 		$actions['dropdown']['flag'] = ap_flag_btn_html();
 
-	if(is_super_admin() && $post->post_type == 'question')
-		$actions['dropdown']['featured'] = ap_featured_post_btn();
-
 	if(ap_user_can_delete($post->ID) && $post->post_status != 'trash')
 		$actions['dropdown']['delete'] = ap_post_delete_btn_html();
 
@@ -503,12 +500,16 @@ function ap_questions_tab($current_url = ''){
 	 * @since 2.0.1
 	 */
 	$navs = apply_filters('ap_questions_tab', $navs );
-
-	echo '<ul id="ap-question-tab" class="ap-questions-tab ap-ul-inline clearfix">';
-	foreach ($navs as $k => $nav) {
-		echo '<li class="ap-questions-tab-'.esc_attr($k).( $sort == $k ? ' active' : '') .'"><a href="'. esc_url($nav['link']) .'">'. $nav['title'] .'</a></li>';
-	}
-	echo '</ul>';
+	
+	echo '<div class="clear-both"></div>';
+	echo '<div id="div-ap-question-tab">';
+		echo '<ul id="ap-question-tab" class="ap-questions-tab ap-ul-inline clearfix">';
+		foreach ($navs as $k => $nav) {
+			echo '<li class="ap-questions-tab-'.esc_attr($k).( $sort == $k ? ' active' : '') .'"><a href="'. esc_url($nav['link']) .'">'. $nav['title'] .'</a></li>';
+		}
+		echo '</ul>';
+		echo '<div class="clear-both"></div>';
+	echo '</div>';
 
 	?>
 	<?php
