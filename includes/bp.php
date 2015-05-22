@@ -186,7 +186,7 @@ class AnsPress_BP
 		global $post;
 		
 		if ( !function_exists( 'bp_activity_at_name_filter' ) )
-			require_once '/bp-activity/bp-activity-filters.php';
+			require_once WP_PLUGIN_DIR.'/buddypress/bp-activity/bp-activity-filters.php';
 		
 		if($post->post_type == 'answer')
 			return bp_activity_at_name_filter($content);

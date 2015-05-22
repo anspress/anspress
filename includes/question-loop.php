@@ -486,7 +486,7 @@ function ap_is_featured_question($question_id = false){
 
     $featured = get_option('featured_questions');
 
-    if(in_array($question_id, $featured))
+    if(is_array($featured) && in_array($question_id, $featured))
         return true;
 
     return false;
