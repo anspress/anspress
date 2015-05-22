@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: AnsPress\n"
 "POT-Creation-Date: 2015-05-22 04:26-0300\n"
-"PO-Revision-Date: 2015-05-22 08:44-0300\n"
+"PO-Revision-Date: 2015-05-22 10:49-0300\n"
 "Last-Translator: \n"
 "Language-Team: Wp3.in <rah12@live.com>\n"
 "Language: pt_BR\n"
@@ -530,7 +530,7 @@ msgstr "Ativo"
 #: includes/theme.php:488 includes/theme.php:535 includes/user.php:381
 #: widgets/questions.php:53
 msgid "Newest"
-msgstr "O mais novo"
+msgstr "Recentes"
 
 #: admin/options-page.php:174 includes/functions.php:446
 #: includes/theme.php:536
@@ -1067,7 +1067,7 @@ msgstr "Enviar perqunta"
 
 #: includes/ask-form.php:57
 msgid "Question in one sentence"
-msgstr "Pergunta em uma frase"
+msgstr "Pergunte com uma frase"
 
 #: includes/ask-form.php:58
 msgid "Write a meaningful title for the question."
@@ -2321,7 +2321,7 @@ msgstr "Respondeu"
 
 #: includes/theme.php:495 widgets/questions.php:56
 msgid "Unanswered"
-msgstr "Sem reposta"
+msgstr "Sem resposta"
 
 #: includes/theme.php:496
 msgid "Unsolved"
@@ -2329,7 +2329,7 @@ msgstr "Sem solução"
 
 #: includes/theme.php:629
 msgid "Ask question"
-msgstr "Fazer pergunta"
+msgstr "Perguntar"
 
 #: includes/theme.php:726 includes/theme.php:729
 msgid ".."
