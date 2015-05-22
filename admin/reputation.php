@@ -49,7 +49,7 @@ class AnsPress_Reputation_Table extends WP_List_Table
     {
         $columns = array(
             'title'       	=> __('Title', 'ap'),
-            'reputation'        => __(Points', 'ap'),
+            'reputation'    => __('Points', 'ap'),
             'event'    		=> __('Event', 'ap')
         );
  
