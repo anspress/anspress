@@ -20,7 +20,7 @@
 	"features":[
 		{
 			"title": "Voting up & down",
-			"icon": "icon-reputation",
+			"icon": "apicon-thumbs-up-down",
 			"desc": "Registered user can vote up and down on both question and answers"
 		},
 		{
@@ -35,7 +35,7 @@
 		},
 		{
 			"title": "Best answer",
-			"icon": "icon-lock",
+			"icon": "apicon-check",
 			"desc": "Original poster or admin can select a best answer for a question."
 		},
 		{
@@ -47,6 +47,36 @@
 			"title": "User profile",
 			"icon": "icon-user",
 			"desc": "Frontend profile management and users activities, status and notifications"
+		},
+		{
+			"title": "Subscription and notification",
+			"icon": "icon-plane",
+			"desc": "Let user subscribe to tags, categories or question and notify them for activities"
+		},
+		{
+			"title": "Categories",
+			"icon": "icon-folder",
+			"desc": "Category extension for adding category (taxonomy) support for questions"
+		},
+		{
+			"title": "Tags",
+			"icon": "icon-tags",
+			"desc": "Tag extension for adding tag (taxonomy) support for questions"
+		},
+		{
+			"title": "Widgets",
+			"icon": "icon-puzzle",
+			"desc": "Inbuilt widgets to show AnsPress questions and answer anywhere"
+		},
+		{
+			"title": "Image upload",
+			"icon": "apicon-image",
+			"desc": "Inbuilt image uploader which allows user to attach images in question or answer"
+		},
+		{
+			"title": "Social login",
+			"icon": "icon-facebook",
+			"desc": "Allow visitors to quickly login using their social account"
 		}
 	]
 }
