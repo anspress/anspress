@@ -18,12 +18,22 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  */
 function anspress_activate( $network_wide ) {
 	$category_ext = 'categories-for-anspress/categories-for-anspress.php';
-	$category_ext_data = get_plugin_data( WP_PLUGIN_DIR.'/'.$category_ext);
+
+	$category_error = false;
+	if(file_exists(WP_PLUGIN_DIR.'/'.$category_ext)){
+		$category_ext_data = get_plugin_data( WP_PLUGIN_DIR.'/'.$category_ext);
+		$category_error = !version_compare ( $category_ext_data['Version'], '1.3.5', '>=') ? true : false;
+	}	
 
 	$tag_ext = 'tags-for-anspress/tags-for-anspress.php';
-	$tag_ext_data = get_plugin_data( WP_PLUGIN_DIR.'/'.$tag_ext);
 
-	if ( !version_compare ( $category_ext_data['Version'], '1.3.5', '>=') || !version_compare ( $category_ext_data['Version'], '1.2.7', '>=') ) {
+	$tag_error = false;
+	if(file_exists(WP_PLUGIN_DIR.'/'.$tag_ext)){
+		$tag_ext_data = get_plugin_data( WP_PLUGIN_DIR.'/'.$tag_ext);
+		$tag_error = !version_compare ( $tag_ext_data['Version'], '1.2.7', '>=') ? true : false;
+	}
+
+	if ( $category_error || $tag_error ) {
 	    echo '<h3>'.__('Please update all AnsPress extensions before activating. <a target="_blank" href="http://anspress.io/questions/ask/">Ask for help</a>', 'ap').'</h3>';
 	    @trigger_error(__('Please update all AnsPress extensions before activating.', 'ap'), E_USER_ERROR);
 	}
