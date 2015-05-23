@@ -222,12 +222,12 @@ class AnsPress_Process_Form
 			$status = 'private_post';
 			
 		$question_array = array(
-			'post_title'	=> $fields['title'],
-			'post_author'	=> $user_id,
-			'post_content' 	=>  wp_kses($fields['description'], ap_form_allowed_tags()),
-			'post_type' 	=> 'question',
-			'post_status' 	=> $status,
-			'comment_status' => 'open',
+			'post_title'		=> 	$fields['title'],
+			'post_author'		=> 	$user_id,
+			'post_content' 		=>  apply_filters('ap_form_contents_filter', $fields['description']),
+			'post_type' 		=> 	'question',
+			'post_status' 		=> 	$status,
+			'comment_status' 	=> 	'open',
 		);
 		
 		if(isset($fields['parent_id']))
@@ -299,7 +299,7 @@ class AnsPress_Process_Form
 			'post_author'	=> $post->post_author,
 			'post_title'	=> $this->fields['title'],
 			'post_name'		=> sanitize_title($this->fields['title']),
-			'post_content' 	=> $this->fields['description'],
+			'post_content' 	=> apply_filters('ap_form_contents_filter', $fields['description']),
 			'post_status' 	=> $status,
 		);
 
@@ -550,7 +550,7 @@ class AnsPress_Process_Form
 		$answer_array = array(
 			'ID'			=> $this->fields['edit_post_id'],
 			'post_author'	=> $answer->post_author,
-			'post_content' 	=> $this->fields['description'],
+			'post_content' 	=> apply_filters('ap_form_contents_filter', $this->fields['description']),
 			'post_status' 	=> $status
 		);
 

@@ -1214,3 +1214,8 @@ function ap_featured_post_btn( $post_id = false ){
 	
 	return $output;
 }
+
+
+function ap_trim_traling_space($contents){
+	return preg_replace( "#(^(&nbsp;|\s)+|(&nbsp;|\s)+$)#", "", $contents );
+}

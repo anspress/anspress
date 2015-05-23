@@ -47,6 +47,7 @@ class AnsPress_Actions
 
 		add_filter( 'teeny_mce_buttons', array($this, 'editor_buttons'), 10, 2 );
 		add_filter( 'wp_insert_post_data', array($this, 'wp_insert_post_data'), 10, 2 );
+		add_filter( 'ap_form_contents_filter', array($this, 'ap_trim_traling_space') );
 
 	}
 
@@ -393,6 +394,10 @@ class AnsPress_Actions
 		}
 
 		return $data;
+	}
+
+	public function ap_trim_traling_space($contents){
+		return ap_trim_traling_space($contents);
 	}
 
 }
