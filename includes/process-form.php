@@ -299,7 +299,7 @@ class AnsPress_Process_Form
 			'post_author'	=> $post->post_author,
 			'post_title'	=> $this->fields['title'],
 			'post_name'		=> sanitize_title($this->fields['title']),
-			'post_content' 	=> apply_filters('ap_form_contents_filter', $fields['description']),
+			'post_content' 	=> apply_filters('ap_form_contents_filter', $this->fields['description']),
 			'post_status' 	=> $status,
 		);
 

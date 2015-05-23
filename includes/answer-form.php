@@ -54,7 +54,7 @@ function ap_answer_form($question_id, $editing = false){
             array(
                 'name' => 'description',
                 'type'  => 'editor',
-                'value' => ( $editing ? $editing_post->post_content : @$_POST['description']  ),
+                'value' => ( $editing ? apply_filters('the_content', $editing_post->post_content) : @$_POST['description']  ),
                 'settings' => apply_filters( 'ap_answer_form_editor_settings', array(
                     'textarea_rows' => 8,
                     'tinymce'           => ap_opt('answer_text_editor') ? false : true,
