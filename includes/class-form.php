@@ -410,16 +410,20 @@ class AnsPress_Form {
         if(isset($field['label']))
             $this->label();
 
+        if($field['settings']['tinymce'] !== false)
+            $field['settings']['tinymce'] = array( 
+                'content_css' => ap_get_theme_url('css/editor.css') 
+            );
+
         /**
          * FILTER: ap_pre_editor_settings
          * Can be used to mody wp_editor settings
          * @var array
          * @since 2.0.1
          */
-        $field['settings']['tinymce'] = array( 
-            'content_css' => ap_get_theme_url('css/editor.css') 
-       );
+        
         $settings = apply_filters('ap_pre_editor_settings', $field['settings'] );
+
         $this->output .= '<div class="ap-form-fields-in">';
         // Turn on the output buffer
         ob_start();

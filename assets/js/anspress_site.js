@@ -447,7 +447,8 @@
                         $('body').trigger('postUploadForm', data);
 
                         if(typeof data['html'] !== 'undefined' )
-                            ApSite.addImageInEditor(data['html'])
+                            ApSite.addImageInEditor(data['html']);
+
                     },
                     url: ajaxurl,
                     dataType: 'json'
@@ -468,8 +469,11 @@
             });
         },
         addImageInEditor: function(html){
+            console.log(html);
             if(typeof tinyMCE !== 'undefined')
                 tinyMCE.activeEditor.execCommand('mceInsertContent',false, html);
+            else
+                $('.wp-editor-area').val($('.wp-editor-area').val() + html);
         },
         previewLocalImage: function readURL(input) {
             if (input.files && input.files[0]) {
