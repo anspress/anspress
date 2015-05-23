@@ -373,7 +373,7 @@ class AnsPress_Form {
         if(isset($field['label']))
             $this->label();
         $this->output .= '<div class="ap-form-fields-in">';
-        $this->output .= wp_dropdown_pages( array('selected'=> @$field['value'],'name'=> @$field['name'],'post_type'=> 'page', 'echo' => false) );
+        $this->output .= wp_dropdown_pages( array('show_option_none' => __('Select a page', 'ap'), 'selected'=> @$field['value'],'name'=> @$field['name'],'post_type'=> 'page', 'echo' => false) );
         $this->error_messages();
         if(!$this->field['show_desc_tip'])
             $this->desc();

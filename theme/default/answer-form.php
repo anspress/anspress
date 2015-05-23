@@ -10,7 +10,9 @@
 				<a href="#" class="apicon-screen-full pull-right ap-btn-fullscreen" data-action="ap_fullscreen_toggle"><?php _e('Toggle fullscreen'); ?></a>
 				<ul class="ap-form-head-tab ap-ul-inline clearfix ap-tab-nav">
 					<li class="active"><a href="#ap-form-main"><?php _e('Write', 'ap'); ?></a></li>
-					<li><a href="#ap-form-help"><?php _e('How to answer', 'ap'); ?></a></li>
+					<?php if(ap_opt('answer_help_page') != '') : ?>
+						<li><a href="#ap-form-help"><?php _e('How to answer', 'ap'); ?></a></li>
+					<?php endif; ?>
 				</ul>				
 			</div>
 			<div class="ap-tab-container">
@@ -18,9 +20,7 @@
 					<?php ap_answer_form(get_question_id()); ?>
 				</div>
 				<div id="ap-form-help" class="ap-tab-item">
-					<?php if(ap_opt('answer_help_page') == ''): ?>
-						<?php _e('Describe instructions about guidelines to answer a question. You can add content to this section by creating a new page and then select that page in AnsPress->options->general "help page"', 'ap') ?>
-					<?php else: ?>
+					<?php if(ap_opt('answer_help_page') != ''): ?>						
 						<?php ap_how_to_answer(); ?>
 					<?php endif; ?>
 				</div>
