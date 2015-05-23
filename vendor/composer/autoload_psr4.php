@@ -7,4 +7,6 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'ReCaptcha\\' => array($vendorDir . '/google/recaptcha/src/ReCaptcha'),
+    'Imgur\\' => array($vendorDir . '/dsawardekar/imgur-api/lib/Imgur'),
+    'Encase\\' => array($vendorDir . '/dsawardekar/encase-php/src/Encase'),
 );

@@ -1,0 +1,10 @@
+{
+  "src/Encase/*.php": {
+    "type": "library",
+    "test": "tests/Encase/%sTest.php"
+  },
+  "tests/Encase/*Test.php": {
+    "type": "test",
+    "alternate": "src/Encase/%s.php"
+  }
+}

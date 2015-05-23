@@ -1,0 +1,6 @@
+*.swo
+*.swp
+notes.txt
+tmp
+vendor
+clover.xml

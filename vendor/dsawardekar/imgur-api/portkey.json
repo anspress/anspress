@@ -1,0 +1,10 @@
+{
+  "lib/Imgur/*.php": {
+    "type": "library",
+    "test": "test/Imgur/%sTest.php"
+  },
+  "test/Imgur/*Test.php": {
+    "type": "test",
+    "alternate": "lib/Imgur/%s.php"
+  }
+}
