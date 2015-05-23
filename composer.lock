@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "ca13b384e1bcf247d84b8a78b5e1463a",
+    "hash": "1995648328a8cd0c15c48ef2c13fd47e",
     "packages": [
         {
             "name": "google/recaptcha",
@@ -50,6 +50,98 @@
                 "spam"
             ],
             "time": "2015-03-16 13:45:08"
+        },
+        {
+            "name": "jjaffeux/avatars-io-php",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/jjaffeux/avatars-io-php.git",
+                "reference": "a9f4ac225eaa86e8cb1771a41c3e71ac00426b3d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/jjaffeux/avatars-io-php/zipball/a9f4ac225eaa86e8cb1771a41c3e71ac00426b3d",
+                "reference": "a9f4ac225eaa86e8cb1771a41c3e71ac00426b3d",
+                "shasum": ""
+            },
+            "require": {
+                "kriswallsmith/buzz": "v0.7",
+                "php": ">=5.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "AvatarsIo": "lib/"
+                }
+            },
+            "notification-url": "http://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Joffrey Jaffeux",
+                    "email": "j.jaffeux@gmail.com",
+                    "homepage": "http://www.twitter.com/joffreyjaffeux"
+                }
+            ],
+            "description": "AvatarIo api wrapper",
+            "homepage": "https://github.com/jjaffeux/avatars-io-php",
+            "keywords": [
+                "api",
+                "avatars",
+                "avatars io",
+                "facebook",
+                "instagram",
+                "twitter"
+            ],
+            "time": "2012-06-27 22:54:06"
+        },
+        {
+            "name": "kriswallsmith/buzz",
+            "version": "v0.7",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/kriswallsmith/Buzz.git",
+                "reference": "62a5a27fcfa5569010483f0f164e67b32e6f6b80"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/kriswallsmith/Buzz/zipball/62a5a27fcfa5569010483f0f164e67b32e6f6b80",
+                "reference": "62a5a27fcfa5569010483f0f164e67b32e6f6b80",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "suggest": {
+                "ext-curl": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Buzz": "lib/"
+                }
+            },
+            "notification-url": "http://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Kris Wallsmith",
+                    "email": "kris.wallsmith@gmail.com",
+                    "homepage": "http://kriswallsmith.net/"
+                }
+            ],
+            "description": "Lightweight HTTP client",
+            "homepage": "https://github.com/kriswallsmith/Buzz",
+            "keywords": [
+                "curl",
+                "http client"
+            ],
+            "time": "2012-06-25 19:01:38"
         }
     ],
     "packages-dev": [],
