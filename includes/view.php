@@ -40,11 +40,11 @@ class anspress_view {
 	}
 
 	public function insert_views($template){
-		if(is_question()){
+		if(is_question())
 			
-			if(!ap_is_already_viewed(get_current_user_id(), get_question_id()))
+			
 				ap_insert_views(get_question_id(), 'question');
-		}
+		
 	}
 }
 
@@ -57,12 +57,17 @@ class anspress_view {
 function ap_insert_views($data_id, $type){
 	if($type == 'question'){
 		$userid = get_current_user_id();
-		$row = ap_add_meta($userid, 'post_view', $data_id, $_SERVER['REMOTE_ADDR'] );
 		
-		//$view = ap_get_views_db($data_id);
+		// log in DB only if not viewed before and not anonymous
+		if(!ap_is_already_viewed(get_current_user_id(), get_question_id()) || $userid == 0)
+			ap_add_meta($userid, 'post_view', $data_id, $_SERVER['REMOTE_ADDR'] );
+		
 		$view = ap_get_qa_views($data_id);
+
 		$view = $view+1;
+
 		update_post_meta( $data_id, ANSPRESS_VIEW_META, apply_filters('ap_insert_views', $view ));
+
 		do_action('after_insert_views', $data_id, $view);
 
 		return true;
