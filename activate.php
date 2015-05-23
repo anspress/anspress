@@ -17,6 +17,16 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  * @param $network_wide
  */
 function anspress_activate( $network_wide ) {
+	$category_ext = 'categories-for-anspress/categories-for-anspress.php';
+	$category_ext_data = get_plugin_data( WP_PLUGIN_DIR.'/'.$category_ext);
+
+	$tag_ext = 'tags-for-anspress/tags-for-anspress.php';
+	$tag_ext_data = get_plugin_data( WP_PLUGIN_DIR.'/'.$tag_ext);
+
+	if ( !version_compare ( $category_ext_data['Version'], '1.3.5', '>=') || !version_compare ( $category_ext_data['Version'], '1.2.7', '>=') ) {
+	    echo '<h3>'.__('Please update all AnsPress extensions before activating. <a target="_blank" href="http://anspress.io/questions/ask/">Ask for help</a>', 'ap').'</h3>';
+	    @trigger_error(__('Please update all AnsPress extensions before activating.', 'ap'), E_USER_ERROR);
+	}
 
 	// add roles
 	$ap_roles = new AP_Roles;
