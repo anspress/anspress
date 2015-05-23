@@ -4,100 +4,8 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "8ca843e45cd05b7965484bb5ce578c5d",
+    "hash": "1995648328a8cd0c15c48ef2c13fd47e",
     "packages": [
-        {
-            "name": "dsawardekar/encase-php",
-            "version": "0.2.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/dsawardekar/encase-php.git",
-                "reference": "348784176c8666ea5eceeed5d429b2ddbf4ab7e0"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/dsawardekar/encase-php/zipball/348784176c8666ea5eceeed5d429b2ddbf4ab7e0",
-                "reference": "348784176c8666ea5eceeed5d429b2ddbf4ab7e0",
-                "shasum": ""
-            },
-            "require-dev": {
-                "phpunit/phpunit": "~3.7.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Encase\\": "src/Encase"
-                }
-            },
-            "notification-url": "http://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Darshan Sawardekar",
-                    "email": "darshan@sawardekar.org",
-                    "homepage": "http://pressing-matters.io",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Lightweight IOC container for PHP",
-            "homepage": "http://github.com/dsawardekar/encase-php",
-            "keywords": [
-                "container",
-                "dependency injection",
-                "ioc"
-            ],
-            "time": "2014-06-06 11:58:13"
-        },
-        {
-            "name": "dsawardekar/imgur-api",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/dsawardekar/imgur-api.git",
-                "reference": "e651f9a291cb543bc68e229a73e35834c93fba11"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/dsawardekar/imgur-api/zipball/e651f9a291cb543bc68e229a73e35834c93fba11",
-                "reference": "e651f9a291cb543bc68e229a73e35834c93fba11",
-                "shasum": ""
-            },
-            "require": {
-                "dsawardekar/encase-php": "~0.2.0",
-                "rmccue/requests": ">=1.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "~3.7.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Imgur\\": "lib/Imgur"
-                }
-            },
-            "notification-url": "http://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Darshan Sawardekar",
-                    "email": "darshan@sawardekar.org",
-                    "homepage": "http://pressing-matters.io",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Library for using the Imgur API in PHP",
-            "homepage": "http://github.com/dsawardekar/imgur-api",
-            "keywords": [
-                "api",
-                "images",
-                "imgur"
-            ],
-            "time": "2014-06-28 10:50:47"
-        },
         {
             "name": "google/recaptcha",
             "version": "1.1.1",
@@ -142,63 +50,12 @@
                 "spam"
             ],
             "time": "2015-03-16 13:45:08"
-        },
-        {
-            "name": "rmccue/requests",
-            "version": "v1.6.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/rmccue/Requests.git",
-                "reference": "6aac485666c2955077d77b796bbdd25f0013a4ea"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/rmccue/Requests/zipball/6aac485666c2955077d77b796bbdd25f0013a4ea",
-                "reference": "6aac485666c2955077d77b796bbdd25f0013a4ea",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.2"
-            },
-            "require-dev": {
-                "satooshi/php-coveralls": "dev-master"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "Requests": "library/"
-                }
-            },
-            "notification-url": "http://packagist.org/downloads/",
-            "license": [
-                "ISC"
-            ],
-            "authors": [
-                {
-                    "name": "Ryan McCue",
-                    "homepage": "http://ryanmccue.info"
-                }
-            ],
-            "description": "A HTTP library written in PHP, for human beings.",
-            "homepage": "http://github.com/rmccue/Requests",
-            "keywords": [
-                "curl",
-                "fsockopen",
-                "http",
-                "idna",
-                "ipv6",
-                "iri",
-                "sockets"
-            ],
-            "time": "2014-05-18 04:59:02"
         }
     ],
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "dsawardekar/imgur-api": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],
