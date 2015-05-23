@@ -721,8 +721,10 @@ class AnsPress_Process_Form
 
 	public function upload_post_image(){
 
-		if(!ap_user_can_upload_image())
+		if(!ap_user_can_upload_image()){
+			$this->result  = array('message' => 'no_permission');
 			return;
+		}
 
 		$user_id = get_current_user_id();
 		

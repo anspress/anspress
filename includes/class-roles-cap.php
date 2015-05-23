@@ -439,7 +439,7 @@ function ap_user_can_change_status_to_moderate(){
 }
 
 function ap_user_can_upload_image(){
-	if(is_user_logged_in() && ap_opt('allow_upload_image') && get_question_id() > 0)
+	if(is_user_logged_in() && ap_opt('allow_upload_image'))
 		return true;
 
 	return false;
