@@ -1215,7 +1215,21 @@ function ap_featured_post_btn( $post_id = false ){
 	return $output;
 }
 
-
+/**
+ * Remove white space from string
+ * @param  string $contents
+ * @return string
+ */
 function ap_trim_traling_space($contents){
 	return preg_replace( "#(^(&nbsp;|\s)+|(&nbsp;|\s)+$)#", "", $contents );
+}
+
+function ap_replace_square_bracket($contents){
+	
+	$contents = str_replace('[', '&#91;', $contents);
+
+	$contents = str_replace(']', '&#93;', $contents);
+
+	return $contents;
+	
 }

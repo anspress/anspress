@@ -162,7 +162,7 @@ class AnsPress_Process_Form
 				'validate' => array('required' => true, 'length_check' => ap_opt('minimum_qtitle_length'))
 			),
 			'description' => array(
-				'sanitize' => array('remove_more', 'strip_shortcodes', 'encode_pre_code', 'wp_kses'),
+				'sanitize' => array('remove_more', 'encode_pre_code', 'wp_kses'),
 				'validate' => array('required' => true, 'length_check' => ap_opt('minimum_question_length'))
 			),
 			'is_private' => array(
@@ -391,7 +391,7 @@ class AnsPress_Process_Form
 
 		$args = array(
 			'description' => array(
-				'sanitize' => array('remove_more', 'strip_shortcodes', 'encode_pre_code', 'wp_kses'),
+				'sanitize' => array('remove_more', 'encode_pre_code', 'wp_kses'),
 				'validate' => array('required' => true, 'length_check' => ap_opt('minimum_question_length'))
 			),
 			'is_private' => array(
