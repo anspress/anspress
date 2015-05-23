@@ -36,14 +36,14 @@ class anspress_view {
 	 * and styles.
 	 */
 	private function __construct() {
-		add_action( 'the_post', array($this, 'insert_views') );
+		add_action( 'template_redirect', array($this, 'insert_views') );
 	}
 
-	public function insert_views($post){
-		if(is_question() && $post->post_type == 'question'){
+	public function insert_views($template){
+		if(is_question()){
 			
-			if(!ap_is_already_viewed(get_current_user_id(), $post->ID))
-				ap_insert_views($post->ID, $post->post_type);
+			if(!ap_is_already_viewed(get_current_user_id(), get_question_id()))
+				ap_insert_views(get_question_id(), 'question');
 		}
 	}
 }
@@ -57,7 +57,7 @@ class anspress_view {
 function ap_insert_views($data_id, $type){
 	if($type == 'question'){
 		$userid = get_current_user_id();
-		//$row = ap_add_meta($userid, 'post_view', $data_id, $_SERVER['REMOTE_ADDR'] );
+		$row = ap_add_meta($userid, 'post_view', $data_id, $_SERVER['REMOTE_ADDR'] );
 		
 		//$view = ap_get_views_db($data_id);
 		$view = ap_get_qa_views($data_id);
@@ -89,7 +89,7 @@ function ap_is_already_viewed($user_id, $data_id, $type ='question'){
 	
 	$ip = sanitize_text_field($_SERVER['REMOTE_ADDR']);
 	
-	$done = ap_meta_user_done('post_view', $user_id, $data_id, $ip);
-	
+	$done = ap_meta_user_done('post_view', $user_id, $data_id, false, $ip);
+
 	return $done > 0 ? true : false;
 }
