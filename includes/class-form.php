@@ -410,10 +410,12 @@ class AnsPress_Form {
         if(isset($field['label']))
             $this->label();
 
-        if($field['settings']['tinymce'] !== false)
+        if($field['settings']['tinymce'] !== false){
             $field['settings']['tinymce'] = array( 
-                'content_css' => ap_get_theme_url('css/editor.css') 
+                'content_css' => ap_get_theme_url('css/editor.css'),
+                'wp_autoresize_on' => true
             );
+        }
 
         /**
          * FILTER: ap_pre_editor_settings

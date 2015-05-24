@@ -1291,7 +1291,7 @@ function ap_set_attachment_post_parent($attachment_id, $post_parent){
 }
 
 function ap_count_users_temproary_attachments($user_id){
-	$attachments = $attach = get_posts(array('post_type' => 'attachment', 'orderby' => 'meta_value', 'meta_key' => '_ap_temp_image', 'author' => $user_id));
+	$attachments = get_posts(array('post_type' => 'attachment', 'orderby' => 'meta_value', 'meta_key' => '_ap_temp_image', 'author' => $user_id));
 	
 	return count($attachments);	
 }
