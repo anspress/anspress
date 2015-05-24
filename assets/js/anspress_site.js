@@ -446,8 +446,10 @@
                         ApSite.hideLoading(cont);
                         $('body').trigger('postUploadForm', data);
 
-                        if(typeof data['html'] !== 'undefined' )
+                        if(typeof data['html'] !== 'undefined' ){
                             ApSite.addImageInEditor(data['html']);
+                            $('.ap-post-upload-form').append('<input type="hidden" name="attachment_ids[]" value="'+data['attachment_id']+'" />');
+                        }
 
                     },
                     url: ajaxurl,

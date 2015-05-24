@@ -476,6 +476,14 @@ class AnsPress_Options_Page
 				'value' => $settings['allow_upload_image'],
 				'show_desc_tip' => false,
 			),
+			array(
+				'name' => 'anspress_opt[image_per_post]',
+				'label' => __('Max images per post', 'ap') ,
+				'desc' => __('Set how many images user can upload for each post.', 'ap') ,
+				'type' => 'checkbox',
+				'value' => $settings['image_per_post'],
+				'show_desc_tip' => false,
+			),
 		));
 		
 		// register moderate settings

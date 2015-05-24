@@ -23,9 +23,8 @@ class AnsPress_Process_Form
 	 */
 	public function __construct()
 	{
-
 		add_action('init', array($this, 'non_ajax_form'), 0);
-		add_action( 'save_post', array($this, 'action_on_new_post'), 10, 3 );
+		add_action('save_post', array($this, 'action_on_new_post'), 10, 3 );
 		add_action('wp_ajax_ap_ajax', array($this, 'ap_ajax'));
 		add_action('wp_ajax_nopriv_ap_ajax', array($this, 'ap_ajax'));
 	}
@@ -247,12 +246,6 @@ class AnsPress_Process_Form
 			
 			// Update Custom Meta
 			
-			/**
-			 * TODO: EXTENSTION - move to tags extension
-			 */
-			//if(isset($fields['tags']))
-				//wp_set_post_terms( $post_id, $fields['tags'], 'question_tags' );
-				
 			if (!is_user_logged_in() && ap_opt('allow_anonymous') && !empty($fields['name']))
 				update_post_meta($post_id, 'anonymous_name', $fields['name']);
 			
@@ -267,6 +260,7 @@ class AnsPress_Process_Form
 			);
 		}
 
+		$this->process_image_uploads($post_id, $user_id);
 
 	}
 
@@ -324,6 +318,8 @@ class AnsPress_Process_Form
 				'redirect_to'	=> $this->redirect
 			);
 		}
+
+		$this->process_image_uploads($post->ID, $post->post_author);
 	}
 
 	/**
@@ -525,6 +521,8 @@ class AnsPress_Process_Form
 				
 			}
 		}
+
+		$this->process_image_uploads($post_id, $user_id);
 	}
 
 	public function edit_answer($question)
@@ -570,6 +568,8 @@ class AnsPress_Process_Form
 
 			$this->redirect = get_permalink($post_id);
 		}
+
+		$this->process_image_uploads($post_id, $answer->post_author);
 	}
 
 	public function comment_form()
@@ -729,24 +729,46 @@ class AnsPress_Process_Form
 		$user_id = get_current_user_id();
 		
 		$file = $_FILES['post_upload_image'];
-		$question_id = (int)$_POST['question_id'];
+
+		if(ap_user_upload_limit_crossed($user_id)){
+			$this->result  = array('message' => 'upload_limit_crossed');
+			return;
+		}
 
 		if(!is_user_logged_in()){
 			$this->result  = array('message' => 'no_permission');
 			return;
 		}
 
-		if(!isset($_POST['__nonce']) || !wp_verify_nonce( $_POST['__nonce'], 'upload_image_'.$user_id.'_'. $question_id ) )
+		if(!isset($_POST['__nonce']) || !wp_verify_nonce( $_POST['__nonce'], 'upload_image_'.$user_id ) )
 			ap_send_json( ap_ajax_responce('something_wrong'));
 
 		if( ! empty( $file ) && is_array( $file ) && $file['error'] === 0 ) {
 			
-			$attachment_id = ap_upload_user_file( $file, $question_id );
+			$attachment_id = ap_upload_user_file( $file );
 			
 			if($attachment_id !== false)
-				ap_send_json( ap_ajax_responce( array('action' => 'upload_post_image', 'html' => wp_get_attachment_image($attachment_id, 'full'), 'message' => 'post_image_uploaded' ) ));
+				ap_send_json( ap_ajax_responce( array('action' => 'upload_post_image', 'html' => wp_get_attachment_image($attachment_id, 'full'), 'message' => 'post_image_uploaded', 'attachment_id' => $attachment_id ) ));
 		}
 
 		ap_send_json( ap_ajax_responce('something_wrong'));
+	}
+
+	public function process_image_uploads($post_id, $user_id)
+	{
+		$attachment_ids = $_POST['attachment_ids'];
+
+		//If attchment ids present then user have uploaded images
+		if(is_array($attachment_ids) && count($attachment_ids) > 0){
+			foreach($attachment_ids as $id){
+				$attach = get_post($id);
+				
+				if($attach && 'attachment' == $attach->post_type && $user_id == $attach->post_author)
+					ap_set_attachment_post_parent($attach->ID, $post_id);
+			}
+		}
+
+		//remove all unused atthements by user
+		ap_clear_unused_attachments($user_id);
 	}
 }

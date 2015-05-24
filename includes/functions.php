@@ -766,6 +766,7 @@ function ap_responce_message($id, $only_message = false)
 		'answer_deleted_permanently' => array('type' => 'success', 'message' => __('Answer has been deleted permanently', 'ap')),
 		'set_featured_question' => array('type' => 'success', 'message' => __('Question is marked as featured.', 'ap')),
 		'unset_featured_question' => array('type' => 'success', 'message' => __('Question is unmarked as featured.', 'ap')),
+		'upload_limit_crossed' => array('type' => 'warning', 'message' => __('You have already attached maximum numbers of allowed uploads.', 'ap')),
 		);
 
 	/**
@@ -1148,11 +1149,12 @@ function ap_post_upload_form($post_id = false){
         		<a data-action="post_image_ok" class="apicon-check ap-btn" href="#"></a>
         		<a data-action="post_image_close" class="apicon-x ap-btn" href="#"></a>
         	</div>
+        	<input type="hidden" name="attachment_ids[]" value="" />
         </div>';
         
         if(ap_user_can_upload_image())
 	        	$html .= '<script id="ap_post_upload_field" type="application/json">
-        	'.json_encode(array( '__nonce' => wp_create_nonce( 'upload_image_'.get_current_user_id().'_'.get_question_id() ), 'post_id' => $post_id, 'question_id' => get_question_id() )).'
+        	'.json_encode(array( '__nonce' => wp_create_nonce( 'upload_image_'.get_current_user_id()), 'post_id' => $post_id )).'
         	</script>';
 
     $html .= '</div>';
@@ -1170,29 +1172,52 @@ function ap_post_upload_hidden_form(){
 		</form>';
 }
 
-function ap_upload_user_file( $file = array(), $question_id ) {
+/**
+ * Upload and create an attachment. Set attachment meta _ap_temp_image, 
+ * later it will be removed when post parent is set.
+ *
+ * If no post parent is set then probably user canceled form submission hence we 
+ * don't need to keep this attachment and will removed while saving question or answer.
+ * 
+ * @param  array  			$file    	$_FILE variable
+ * @param  integer 			$post_id 	question or answer or base page ID
+ * @return integer|boolean
+ */
+function ap_upload_user_file( $file = array() ) {
+
 	require_once( ABSPATH . 'wp-admin/includes/admin.php' );
+	
 	$file_return = wp_handle_upload( $file, array('test_form' => false, 'mimes' => array (
-                'jpg|jpeg'=>'image/jpeg',
-                'gif'=>'image/gif',
-                'png'=>'image/png'
-            ) ) );
+        'jpg|jpeg'	=>	'image/jpeg',
+        'gif'		=>	'image/gif',
+        'png'		=>	'image/png'
+    )));
+	
 	if( isset( $file_return['error'] ) || isset( $file_return['upload_error_handler'] ) ) {
 		return false;
 	} else {
+		
 		$filename = $file_return['file'];
+
 		$attachment = array(
-			'post_parent' => $question_id,
-			'post_mime_type' => $file_return['type'],
-			'post_title' => preg_replace( '/\.[^.]+$/', '', basename( $filename ) ),
-			'post_content' => '',
-			'post_status' => 'inherit',
-			'guid' => $file_return['url']
-			);
+			//'post_parent' 		=> $post_id,
+			'post_mime_type' 	=> $file_return['type'],
+			'post_title' 		=> preg_replace( '/\.[^.]+$/', '', basename( $filename ) ),
+			'post_content' 		=> '',
+			'post_status' 		=> 'inherit',
+			'guid' 				=> $file_return['url']
+		);
+
 		$attachment_id = wp_insert_attachment( $attachment, $file_return['url'] );
+
+		update_post_meta( $attachment_id, '_ap_temp_image', true );
+
 		require_once(ABSPATH . 'wp-admin/includes/image.php');
+
 		$attachment_data = wp_generate_attachment_metadata( $attachment_id, $filename );
+
 		wp_update_attachment_metadata( $attachment_id, $attachment_data );
+
 		if( 0 < intval( $attachment_id ) ) {
 			return $attachment_id;
 		}
@@ -1232,4 +1257,48 @@ function ap_replace_square_bracket($contents){
 
 	return $contents;
 	
+}
+
+function ap_clear_unused_attachments(){
+	$attach = get_posts(array('post_type' => 'attachment', 'orderby' => 'meta_value', 'meta_key' => '_ap_temp_image'));
+
+	if($attach)
+		foreach($attach as $a){
+			//delete unused attachments permanently
+			wp_delete_attachment($a->ID, true);
+		}
+}
+
+function ap_set_attachment_post_parent($attachment_id, $post_parent){
+	
+	$attach = get_post($attachment_id);
+	
+	if($attach && $attach->post_type == 'attachment'){
+		
+		$postarr = array(
+			'ID' 			=> $attach->ID,
+			'post_parent' 	=> $post_parent
+		);
+
+		wp_update_post( $postarr );
+
+		delete_post_meta( $attach->ID, '_ap_temp_image' );
+
+		return true;
+	}
+
+	return false;
+}
+
+function ap_count_users_temproary_attachments($user_id){
+	$attachments = $attach = get_posts(array('post_type' => 'attachment', 'orderby' => 'meta_value', 'meta_key' => '_ap_temp_image', 'author' => $user_id));
+	
+	return count($attachments);	
+}
+
+function ap_user_upload_limit_crossed($user_id){	
+	if( ap_count_users_temproary_attachments($user_id) >= ap_opt('image_per_post') )
+		return true;
+
+	return false;
 }
