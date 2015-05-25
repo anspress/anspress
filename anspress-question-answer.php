@@ -94,7 +94,7 @@ if (!class_exists('AnsPress')) {
                 add_action('plugins_loaded', array( self::$instance, 'load_textdomain' ));
                 
                 
-                add_action('bp_init', array( self::$instance, 'bp_include' ));
+                add_action('bp_loaded', array( self::$instance, 'bp_include' ));
 
                 global $ap_classes;
                 $ap_classes = array();
