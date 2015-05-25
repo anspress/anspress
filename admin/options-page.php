@@ -480,7 +480,7 @@ class AnsPress_Options_Page
 				'name' => 'anspress_opt[image_per_post]',
 				'label' => __('Max images per post', 'ap') ,
 				'desc' => __('Set how many images user can upload for each post.', 'ap') ,
-				'type' => 'checkbox',
+				'type' => 'number',
 				'value' => $settings['image_per_post'],
 				'show_desc_tip' => false,
 			),
