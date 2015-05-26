@@ -50,8 +50,8 @@ class AnsPress_Actions
 		add_filter( 'wp_insert_post_data', array($this, 'wp_insert_post_data'), 10, 2 );
 		add_filter( 'ap_form_contents_filter', array($this, 'sanitize_description') );
 
-		add_action( 'wp', array( $this, 'remove_head_items' ) );
-		add_action('wp_head', array($this, 'wp_head'));
+		add_action( 'wp', array( $this, 'remove_head_items' ), 10 );
+		add_action('wp_head', array($this, 'wp_head'), 11);
 
 	}
 

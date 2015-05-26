@@ -44,6 +44,7 @@
             this.tinyMCEeditorToggle();
             this.tab();
             this.set_featured();
+            this.modal();
         },
         doAjax: function(query, success, context, before, abort) {
             /** Shorthand method for calling ajax */
@@ -515,6 +516,28 @@
                 ApSite.doAjax(apAjaxData(q), function(data) {
                     AnsPress.site.hideLoading(c);
                 }, this, false, true);
+            });
+        },
+
+        modal: function(){
+            $('body').delegate('[data-action="ap_modal"]', 'click', function(e) {
+                e.preventDefault();
+
+                var modal       = $( $(this).data('toggle') );
+                modal.addClass('open');
+                
+                var mod_in      = modal.find('.ap-modal-inner');
+                var mod_w       = mod_in.width();
+                var mod_h       = mod_in.height();
+                var screen_w    = $(window).width();
+                var screen_h    = $(window).height();               
+
+                mod_in.css({ 'left' : (screen_w - mod_w)/2, 'top' :  (screen_h/2) - (mod_h/2) });
+
+            });
+
+            $('body').delegate('[data-action="ap_modal_close"]', 'click', function(e) {
+                $('.ap-modal').removeClass('open');
             });
         }
     }

@@ -15,11 +15,11 @@
  * Enqueue scripts
  *
  */
-add_action('wp_enqueue_scripts', 'init_scripts_front', 11);
-function init_scripts_front(){
+add_action('wp_enqueue_scripts', 'ap_scripts_front', 1);
+function ap_scripts_front(){
 	//if(is_anspress()){
 		wp_enqueue_script( 'jquery');				
-		wp_enqueue_script( 'jquery-form', array('jquery'), false, true );			
+		wp_enqueue_script( 'jquery-form', array('jquery'), false );			
 		wp_enqueue_script( 'ap-functions-js', ANSPRESS_URL.'assets/ap-functions.js', 'jquery');		
 		wp_enqueue_script( 'waypoints', ap_get_theme_url('js/jquery.waypoints.min.js'), 'jquery', AP_VERSION);	
 		wp_enqueue_script( 'anspress_acript', ANSPRESS_URL.'assets/prod/anspress_site.min.js', 'jquery', AP_VERSION);		

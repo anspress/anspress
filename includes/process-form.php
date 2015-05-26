@@ -743,7 +743,7 @@ class AnsPress_Process_Form
 		if(!isset($_POST['__nonce']) || !wp_verify_nonce( $_POST['__nonce'], 'upload_image_'.$user_id ) )
 			ap_send_json( ap_ajax_responce('something_wrong'));
 
-		if( ! empty( $file ) && is_array( $file ) && $file['error'] === 0 ) {
+		if( ! empty( $file ) && is_array( $file ) && $file['error'] == 0 ) {
 			
 			$attachment_id = ap_upload_user_file( $file );
 			
