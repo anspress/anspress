@@ -2620,92 +2620,92 @@
   top: 10px;
   width: 22px;
 }
-.ap-widget-pos {
+#anspress .ap-widget-pos {
   margin-bottom: 25px;
 }
-.ap-stats-widget {
+#anspress .ap-stats-widget {
   padding: 0;
   margin: 0;
   list-style: none;
   border: solid 1px #ddd;
   border-radius: 3px;
 }
-.ap-stats-widget li {
+#anspress .ap-stats-widget li {
   border-bottom: 1px solid #eee;
   list-style: outside none none;
   margin: 0;
   padding: 10px;
   font-size: 13px;
 }
-.ap-stats-widget li .stat-value {
+#anspress .ap-stats-widget li .stat-value {
   color: #888;
   float: right;
 }
-.ap-stats-widget li .stat-label {
+#anspress .ap-stats-widget li .stat-label {
   font-size: 12px;
   font-weight: 600;
 }
-.ap-stats-widget li .stat-label:before {
+#anspress .ap-stats-widget li .stat-label:before {
   color: #888;
   display: inline-block;
   width: 25px;
 }
-.ap-stats-widget li:last-child {
+#anspress .ap-stats-widget li:last-child {
   border-bottom: none;
 }
-.ap-rq-widget .ap-rq-post {
+#anspress .ap-rq-widget .ap-rq-post {
   border-bottom: 1px solid #f7f7f7;
   color: #888;
   display: block;
   margin-bottom: 0;
   padding: 10px 0;
 }
-.ap-rq-widget .ap-rq-post a {
+#anspress .ap-rq-widget .ap-rq-post a {
   margin-bottom: 5px;
   display: block;
 }
-.ap-questions-widget .ap-question-item {
+#anspress .ap-questions-widget .ap-question-item {
   border-bottom: 1px solid #f8f8f8;
   margin-bottom: 10px;
   padding-bottom: 10px;
 }
-.ap-questions-widget .ap-question-title {
+#anspress .ap-questions-widget .ap-question-title {
   display: block;
   margin-bottom: 5px;
 }
-.ap-cat-wid {
+#anspress .ap-cat-wid {
   list-style: none;
   padding: 0;
   margin: 0;
 }
-.ap-cat-wid > li {
+#anspress .ap-cat-wid > li {
   border-bottom: 1px solid #eee;
   margin: 0;
   padding: 0;
 }
-.ap-cat-wid > li:last-child {
+#anspress .ap-cat-wid > li:last-child {
   border-bottom: none;
 }
-.ap-cat-wid > li > a {
+#anspress .ap-cat-wid > li > a {
   display: block;
   padding: 7px 2px;
 }
-.ap-cat-wid > li > a > span {
+#anspress .ap-cat-wid > li > a > span {
   float: right;
 }
-.ap-cat-wid > li > a > i {
+#anspress .ap-cat-wid > li > a > i {
   display: block;
   font-size: 13px;
   font-style: normal;
 }
-.ap-question-subscribers-inner {
+#anspress .ap-question-subscribers-inner {
   margin: -5px;
 }
-.ap-question-subscribers a {
+#anspress .ap-question-subscribers a {
   margin: 5px;
   display: inline-block;
 }
-.ap-question-subscribers a > img {
+#anspress .ap-question-subscribers a > img {
   margin: 0;
   display: block;
 }
