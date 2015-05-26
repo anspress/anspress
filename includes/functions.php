@@ -655,6 +655,9 @@ function ap_is_ajax(){
  * @since 0.9
  */
 function ap_form_allowed_tags(){
+	global $ap_kses_check;
+    $ap_kses_check = true;
+    
 	$allowed_style = array(
 		'align' => true
 	);

@@ -52,6 +52,7 @@ class AnsPress_Actions
 
 		add_action( 'wp', array( $this, 'remove_head_items' ), 10 );
 		add_action('wp_head', array($this, 'wp_head'), 11);
+		add_action('safe_style_css', array($this, 'safe_style_css'), 11);
 
 	}
 
@@ -439,6 +440,15 @@ class AnsPress_Actions
 			echo '<link rel="canonical" href="'.get_permalink(get_question_id()).'">';
 			echo '<link rel="shortlink" href="'.wp_get_shortlink(get_question_id()).'" />';
 		}
+	}
+
+	public function safe_style_css($attr)
+	{
+		global $ap_kses_checkc; // Check if wp_kses is called by AnsPress
+		if(isset($ap_kses_check) && $ap_kses_check){
+			$attr = array('text-decoration', 'text-align');
+		}
+		return $attr;
 	}
 
 }

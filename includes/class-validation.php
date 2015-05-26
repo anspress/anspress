@@ -135,7 +135,7 @@ class AnsPress_Validation
      * @since 2.0.1
      */
     private function wp_kses($field)
-    {
+    {        
         $this->fields[$field] = wp_kses($this->fields[$field], ap_form_allowed_tags());
     }
 
