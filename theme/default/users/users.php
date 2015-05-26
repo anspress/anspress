@@ -1,4 +1,3 @@
-<?php dynamic_sidebar( 'ap-top' ); ?>
 <div class="row">
 	<div id="ap-users" class="ap-users <?php echo is_active_sidebar( 'ap-sidebar' ) && is_anspress() ? 'col-md-8' : 'col-md-12' ?>">
 		<?php ap_users_tab(); ?>

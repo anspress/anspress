@@ -53,6 +53,7 @@ class AnsPress_Actions
 		add_action( 'wp', array( $this, 'remove_head_items' ), 10 );
 		add_action('wp_head', array($this, 'wp_head'), 11);
 		add_action('safe_style_css', array($this, 'safe_style_css'), 11);
+		add_action('save_post', array($this, 'base_page_update'), 10, 2);
 
 	}
 
@@ -449,6 +450,15 @@ class AnsPress_Actions
 			$attr = array('text-decoration', 'text-align');
 		}
 		return $attr;
+	}
+
+	public function base_page_update($post_id, $post)
+	{
+		if(wp_is_post_revision( $post ))
+			return;
+
+		if($post_id == ap_opt('base_page'))
+			ap_opt('ap_flush', 'true');
 	}
 
 }
