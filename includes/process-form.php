@@ -746,7 +746,7 @@ class AnsPress_Process_Form
 		if( ! empty( $file ) && is_array( $file ) && $file['error'] == 0 ) {
 			
 			$attachment_id = ap_upload_user_file( $file );
-			
+
 			if($attachment_id !== false)
 				ap_send_json( ap_ajax_responce( array('action' => 'upload_post_image', 'html' => wp_get_attachment_image($attachment_id, 'full'), 'message' => 'post_image_uploaded', 'attachment_id' => $attachment_id ) ));
 		}

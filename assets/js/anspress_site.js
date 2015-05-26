@@ -79,7 +79,7 @@
                 //if (typeof self[action] === 'function')
                 self[action]('[data-action="' + action + '"]');
                 /*else
-				console.log('No "'+action+'" method found in AnsPress.site{}');*/
+                console.log('No "'+action+'" method found in AnsPress.site{}');*/
             });
         },
         /**
@@ -256,8 +256,8 @@
 
                     if(!data.view_default){
                         if ($(data.html).is('.ap-comment-block')) {
-                        	var c = button.closest('.ap-q-inner');
-                        	c.find('.ap-comment-block').remove();
+                            var c = button.closest('.ap-q-inner');
+                            c.find('.ap-comment-block').remove();
                             c.append(data.html);
                          } else {
                             $('.ap-comment-form').remove();
@@ -421,19 +421,13 @@
                 }, this, false);
             });
         },
-        add_hidden_fields_to_upload: function(){
-            if($('#ap_post_upload_field').length == 0)
-                return;
-
-            var json = $.parseJSON($('#ap_post_upload_field').html());
-
-            $.each(json, function(index, el) {
-                $('#hidden-post-upload').append('<input type="hidden" name="'+index+'" value="'+el+'" />');
+        ap_post_upload_field: function() {            
+            $('body').delegate('[data-action="ap_post_upload_field"]', 'click', function(e) {
+                e.preventDefault();
+                $('[name="post_upload_image"]').click();
             });
-        },
-        ap_post_upload_field: function() {
-            this.add_hidden_fields_to_upload();
-            $('body').delegate('[data-action="ap_post_upload_field"]', 'change', function(e) {
+
+            $('body').delegate('[name="post_upload_image"]', 'change', function(e) {
                 var clone = $(this).clone();
                 $(clone).appendTo('#hidden-post-upload');
                 $('#hidden-post-upload').submit();
@@ -441,8 +435,11 @@
 
             $('body').delegate( '#hidden-post-upload', 'submit', function() {
                 var cont = $('[data-action="ap_post_upload_field"]').closest('.ap-upload-o');
-                ApSite.showLoading(cont);
+                
                 $(this).ajaxSubmit({
+                    beforeSubmit: function(){
+                        ApSite.showLoading(cont);
+                    },
                     success: function(data) {
                         ApSite.hideLoading(cont);
                         $('body').trigger('postUploadForm', data);
@@ -454,9 +451,11 @@
 
                     },
                     url: ajaxurl,
-                    dataType: 'json'
+                    dataType: 'json',
+                    type: 'POST'
                 });
-                return false
+
+                return false;
             });
 
             $('body').delegate('.ap-upload-remote-link, [data-action="post_image_close"]', 'click', function(e) {

@@ -1136,10 +1136,10 @@ function ap_post_upload_form($post_id = false){
         	<span>'.__('Add image to editor', 'ap').'</span>';
         	if(ap_user_can_upload_image())
 	        	$html .= '	
-	            <span class="ap-upload-link">
+	            <a class="ap-upload-link" href="#" data-action="ap_post_upload_field">
 	            	'.__('upload', 'ap').'
-	            	<input type="file" name="post_upload_image" class="ap-upload-input" data-action="ap_post_upload_field">
-	            </span> '.__('or', 'ap');
+	            	
+	            </a> '.__('or', 'ap');
 
             $html .= '<span class="ap-upload-remote-link">
             	'.__('add image from link', 'ap').'            	
@@ -1151,11 +1151,6 @@ function ap_post_upload_form($post_id = false){
         	</div>
         	<input type="hidden" name="attachment_ids[]" value="" />
         </div>';
-        
-        if(ap_user_can_upload_image())
-	        	$html .= '<script id="ap_post_upload_field" type="application/json">
-        	'.json_encode(array( '__nonce' => wp_create_nonce( 'upload_image_'.get_current_user_id()), 'post_id' => $post_id )).'
-        	</script>';
 
     $html .= '</div>';
 
@@ -1166,8 +1161,10 @@ function ap_post_upload_form($post_id = false){
 function ap_post_upload_hidden_form(){
 	if(ap_opt('allow_upload_image'))
 		return '<form id="hidden-post-upload" enctype="multipart/form-data" method="POST" style="display:none">
+			<input type="file" name="post_upload_image" class="ap-upload-input">
 			<input type="hidden" name="ap_ajax_action" value="upload_post_image" />
 			<input type="hidden" name="ap_form_action" value="upload_post_image" />
+			<input type="hidden" name="__nonce" value="'.wp_create_nonce( 'upload_image_'.get_current_user_id()).'" />
 			<input type="hidden" name="action" value="ap_ajax" />
 		</form>';
 }
@@ -1192,7 +1189,7 @@ function ap_upload_user_file( $file = array() ) {
         'gif'		=>	'image/gif',
         'png'		=>	'image/png'
     )));
-	
+
 	if( isset( $file_return['error'] ) || isset( $file_return['upload_error_handler'] ) ) {
 		return false;
 	} else {
