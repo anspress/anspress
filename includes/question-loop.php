@@ -136,6 +136,9 @@ function ap_get_questions($args = array()){
     if(is_super_admin() || current_user_can('ap_view_moderate'))
         $args['post_status'][] = 'moderate';
 
+    if(is_super_admin())
+        $args['post_status'][] = 'trash';
+
     $args = wp_parse_args( $args, array(
         'showposts'     => ap_opt('question_per_page'),
         'paged'         => $paged,

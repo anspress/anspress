@@ -1267,6 +1267,9 @@
   margin: 0;
   border-top: none;
 }
+#anspress .ap-questions-item.status-trash {
+  background: #ffeaea;
+}
 #anspress .ap-questions-history {
   margin-top: 5px;
 }

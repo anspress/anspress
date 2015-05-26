@@ -109,6 +109,11 @@ class AnsPress_Query_Filter
 	
 	public function main_question_query($sql, $query){
 		global $wpdb;
+
+		if( isset($query->query['ap_query']) && is_user_logged_in() && isset($query->args['meta_query'])){
+		
+			$sql['where'] = $sql['where'].$wpdb->prepare(" OR ( ".$wpdb->posts.".post_author = %d AND ".$wpdb->posts.".post_type ='question') ", get_current_user_id());
+		}
 		
 		if(isset($query->query['ap_query']) && $query->query['ap_query'] == 'featured_post'){
 
@@ -119,6 +124,7 @@ class AnsPress_Query_Filter
 				$sql['orderby'] = " $wpdb->posts.ID IN ($post_ids) DESC, ". $sql['orderby'];
 			}
 		}
+
 		return $sql;
 	}
 
