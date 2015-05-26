@@ -458,7 +458,7 @@ class AnsPress_Form {
      * @since 2.0.1
      */
     private function have_error(){
-        if(isset($this->errors[$this->field['name']]))
+        if(isset($this->field['name']) && isset($this->errors[$this->field['name']]))
             return true;
 
         return false;
