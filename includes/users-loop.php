@@ -235,8 +235,12 @@ function ap_the_user(){
     return $users_query->the_user();  
 }
 
-function ap_user_the_object(){
-    global $users_query; 
+function ap_user_the_object($user_id = false){
+    global $users_query;
+
+    if(!isset($users_query->user) && $user_id)
+        return get_user_by( 'id', $user_id );
+
     return $users_query->user;
 }
 
@@ -254,8 +258,8 @@ function ap_user_the_ID(){
     function ap_user_get_the_ID(){
         global $users_query;
 
-        if(!isset($users_query))
-            return;
+        if(!isset($users_query->user))
+            return ap_get_displayed_user_id();
 
         $user = $users_query->user;
         return $user->data->ID;
@@ -336,14 +340,22 @@ function ap_users_the_pagination(){
     ap_pagination($users_query->paged, $users_query->total_pages, $base);
 }
 
-function ap_user_get_the_meta($key = false){
-    $meta = array_map('ap_meta_array_map', get_user_meta( ap_user_get_the_ID() )) ;
+function ap_user_get_the_meta($key = false, $user_id = false){
+    if(!$user_id)
+        $user_id = ap_user_get_the_ID();
+
+    $meta = get_user_meta( $user_id );
     
-    $meta['user_login']         = ap_user_the_object()->user_login;
-    $meta['user_nicename']      = ap_user_the_object()->user_nicename;
-    $meta['user_email']         = ap_user_the_object()->user_email;
-    $meta['user_registered']    = ap_user_the_object()->user_registered;
-    $meta['display_name']       = ap_user_the_object()->display_name;
+    if(is_array($meta))
+        $meta = array_map('ap_meta_array_map', $meta) ;
+
+    $obj = ap_user_the_object($user_id);
+
+    $meta['user_login']         = $obj->user_login;
+    $meta['user_nicename']      = $obj->user_nicename;
+    $meta['user_email']         = $obj->user_email;
+    $meta['user_registered']    = $obj->user_registered;
+    $meta['display_name']       = $obj->display_name;
 
     if($key !== false && !empty($meta[$key]))
         return $meta[$key];
@@ -359,7 +371,7 @@ function ap_user_get_the_meta($key = false){
  */
 function ap_user_get_display_name_option($user_id = false){
     $user_id = ap_parameter_empty(@$user_id, @ap_user_get_the_ID());
-    $user = ap_user_get_the_meta($user_id);
+    $user = ap_user_get_the_meta(false, $user_id);
 
     $public_display = array();
 

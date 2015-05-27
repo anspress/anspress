@@ -10,20 +10,13 @@
 
 <?php //ap_profile_user_stats_counts() ?>
 
-<!-- start about me -->		
-<?php /*if($description != '') : ?>
-	<div class="ap-profile-box ap-about-me">
-		<h3 class="ap-box-title"><?php _e('About Me', 'ap'); ?></h3>
-		<p class="about-me">
-			<?php echo $description; ?>
-		</p>
-	</div>			
-<?php endif; */?>
-<!-- End about me -->
 
 <div class="ap-profile-box clearfix">
-	<?php
-		ap_user_fields();
-	?>
+	<div class="ap-profile-tab-c clearfix">
+		<?php ap_user_profile_tab(); ?>
+	</div>
+	<div class="ap-profile-form clearfix">
+		<?php ap_user_fields(); ?>
+	</div>
 </div>
 

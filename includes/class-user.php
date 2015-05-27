@@ -43,7 +43,7 @@ class AnsPress_User
 
         // Register user pages
         ap_register_user_page('activity', __('Activity', 'ap'), array($this, 'activity_page'));
-        ap_register_user_page('profile', __('Profile', 'ap'), array($this, 'profile_page'));
+        ap_register_user_page('profile', __('Profile', 'ap'), array($this, 'profile_page'), true, false);
         ap_register_user_page('questions', __('Questions', 'ap'), array($this, 'questions_page'));
         ap_register_user_page('answers', __('Answers', 'ap'), array($this, 'answers_page'));
     }
@@ -75,7 +75,13 @@ class AnsPress_User
      * Output for profile page
      * @since 2.1
      */
-    public function profile_page(){        
+    public function profile_page(){
+
+        if(!ap_is_user_page_public('profile') && !ap_is_my_profile()){
+            ap_get_template_part('not-found');
+            return;
+        }
+
         include ap_get_theme_location('user/profile.php');
     }
 

@@ -33,7 +33,7 @@
                 "ReCaptcha\\": "src/ReCaptcha"
             }
         },
-        "notification-url": "https://packagist.org/downloads/",
+        "notification-url": "http://packagist.org/downloads/",
         "license": [
             "BSD-3-Clause"
         ],

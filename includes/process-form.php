@@ -102,8 +102,8 @@ class AnsPress_Process_Form
 				$this->options_form();
 				break;
 
-			case 'ap_user_profile_field':
-				$this->ap_user_profile_field();
+			case 'ap_user_profile_form':
+				$this->ap_user_profile_form();
 				break;
 
 			case 'upload_post_image':
@@ -685,38 +685,69 @@ class AnsPress_Process_Form
 		
 	}
 
-	public function ap_user_profile_field(){
+	public function ap_user_profile_form(){
+		
 		$user_id = get_current_user_id();
+		$group = sanitize_text_field( $_POST['group'] );
 		
 		if(!is_user_logged_in()){
 			$this->result  = array('message' => 'no_permission');
 			return;
 		}
 
-		if(!isset($_POST['__nonce']) || !wp_verify_nonce( $_POST['__nonce'], 'nonce_user_profile_'.$user_id ) )
+		if(!isset($_POST['__nonce']) || !wp_verify_nonce( $_POST['__nonce'], 'nonce_user_profile_'.$user_id.'_'.$group ) )
 			ap_send_json( ap_ajax_responce('something_wrong'));
 
-		if(ap_has_users(array('ID' => $user_id ) )){
-			while ( ap_users() ) : ap_the_user();
-				
-				$form = ap_user_get_fields(array('form' => array('field_hidden' => true, 'hide_footer' => true)));
+		$user_fields = ap_get_user_fields($group, $user_id);
 
-				$field = array_values(array_intersect($form->fields_name, array_keys($_POST)));
-				$field_name = $field[0];
+		$validate_fields = array();
 
-				if(!empty($_POST[$field_name]))
-					$form->update_field($field_name);
-
-				$form = ap_user_get_fields(array('show_only' => $field_name, 'form' => array('field_hidden' => true, 'hide_footer' => true)));
-
-				$this->result  = array(
-					'action' 		=> 'updated_user_field',
-					'do'			=> 'updateHtml',
-					'container'		=> '#user_field_form_'.$field_name,
-					'html'			=> $form->get_form()
-				);
-			endwhile;
+		foreach($user_fields as $field){
+			@$validate_fields[$field['name']]['sanitize'] = @$field['sanitize'];
+			@$validate_fields[$field['name']]['validate'] = @$field['validate'];
 		}
+
+		$validate = new AnsPress_Validation($validate_fields);
+
+		$ap_errors = $validate->get_errors();
+		
+		// if error in form then return
+		if($validate->have_error()){
+			ap_send_json( ap_ajax_responce(array(
+				'form' 			=> $_POST['ap_form_action'],
+				'message_type' 	=> 'error',
+				'message'		=> __('Check missing fields and then re-submit.', 'ap'),
+				'errors'		=> $ap_errors
+			)));
+			return;
+		}
+
+		$fields = $validate->get_sanitized_fields();
+
+		if(is_array($user_fields) && !empty($user_fields))
+			foreach($user_fields as $field){
+				if(!empty($fields[$field['name']]) && ($field['name'] == 'first_name' || $field['name'] == 'last_name' || $field['name'] == 'nickname' || $field['name'] == 'display_name'|| $field['name'] == 'user_email'|| $field['name'] == 'description'|| $field['name'] == 'password') ){
+					
+					if($field['name'] == 'password' && $fields['password'] == $_POST['password-1'])
+						wp_set_password( $fields['password'], $user_id );
+					else
+						wp_update_user( array( 'ID' => $user_id, $field['name'] => $fields[$field['name']] ) );
+
+				}elseif(!empty($fields[$field['name']])){
+					
+					update_user_meta( $user_id, $field['name'], $fields[$field['name']] );
+
+				}
+
+			}
+
+		$this->result  = array(
+			'message' 		=> 'profile_updated_successfully',
+			'action' 		=> 'updated_user_field',
+			'do'			=> 'updateHtml',
+			'container'		=> '#ap_user_profile_form',
+			'html'			=> ap_user_get_fields('', $group)
+		);
 	}
 
 	public function upload_post_image(){

@@ -18,8 +18,8 @@
  * @since 2.0.1
  */
 
-function ap_register_user_page($page_slug, $page_title, $func, $show_in_menu = true){
-    anspress()->user_pages[$page_slug] = array('title' => $page_title, 'func' => $func, 'show_in_menu' => $show_in_menu);
+function ap_register_user_page($page_slug, $page_title, $func, $show_in_menu = true, $public = true){
+    anspress()->user_pages[$page_slug] = array('title' => $page_title, 'func' => $func, 'show_in_menu' => $show_in_menu, 'public' => $public);
 }
 /**
  * Count user posts by post type
@@ -246,7 +246,7 @@ function ap_user_menu()
 
     foreach ($user_pages as $k => $args) {
         $link        = ap_user_link($userid, $k);
-        $menus[$k]    = array( 'slug' => $k, 'title' => $args['title'], 'link' => $link, 'order' => 10);
+        $menus[$k]    = array( 'slug' => $k, 'title' => $args['title'], 'link' => $link, 'order' => 10, 'show_in_menu' => $args['show_in_menu'], 'public' => $args['public']);
     }
 
     /**
@@ -261,10 +261,11 @@ function ap_user_menu()
 
     if (!empty($menus) && is_array($menus)) {
         $o = '<ul id="ap-user-menu" class="ap-user-menu clearfix">';
-        foreach ($menus as $m) {            
-            //if(!((isset($m['own']) && $m['own']) && $userid != get_current_user_id()))
-            $class = !empty($m['class']) ? ' '.$m['class'] : '';
-            $o .= '<li'.($active_user_page == $m['slug'] ? ' class="active"' : '').'><a href="'.$m['link'].'" class="ap-user-menu-'.$m['slug'].$class.'">'.$m['title'].'</a></li>';
+        foreach ($menus as $m) {
+            if( (!$m['public'] && ap_is_my_profile()) || $m['public'] ){
+                $class = !empty($m['class']) ? ' '.$m['class'] : '';
+                $o .= '<li'.($active_user_page == $m['slug'] ? ' class="active"' : '').'><a href="'.$m['link'].'" class="ap-user-menu-'.$m['slug'].$class.'">'.$m['title'].'</a></li>';
+            }
         }
         $o .= '</ul>';
         echo $o;
@@ -543,4 +544,58 @@ function ap_avatar_upload_form(){
         </form>
         <?php
     }
+}
+
+/**
+ * Output user profile tab
+ * @return string
+ */
+function ap_user_profile_tab(){
+    $param = array();
+
+    $group = isset($_GET['group']) ? $_GET['group'] : 'basic';
+
+    $link = ap_user_link(false, 'profile');
+    
+    $navs = array(
+        'basic' => array('link' => add_query_arg(array('group' => 'basic'), $link), 'title' => __('Basic', 'ap')), 
+        'account' => array('link' => add_query_arg(array('group' => 'account'), $link), 'title' => __('Account', 'ap'))
+    );
+
+    
+    /**
+     * FILTER: ap_questions_tab
+     * Before prepering questions list tab.
+     * @var array
+     * @since 2.0.1
+     */
+    $navs = apply_filters('ap_user_profile_tab', $navs );
+
+    echo '<ul id="ap-profile-tab" class="ap-questions-tab ap-ul-inline clearfix">';
+    foreach ($navs as $k => $nav) {
+        echo '<li class="ap-profile-tab-'.esc_attr($k).( $group == $k ? ' active' : '') .'"><a href="'. esc_url($nav['link']) .'">'. $nav['title'] .'</a></li>';
+    }
+    echo '</ul>';
+
+    ?>
+    <?php
+}
+
+function ap_is_my_profile($user_id = false){
+    if(!$user_id)
+        $user_id = get_current_user_id();
+
+    if(is_user_logged_in() && $user_id == ap_get_displayed_user_id())
+        return true;
+
+    return false;
+}
+
+function ap_is_user_page_public($page){
+    $user_pages = anspress()->user_pages;
+
+    if(isset($user_pages[$page]) && $user_pages[$page]['public'])
+        return true;
+
+    return false;
 }
