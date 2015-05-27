@@ -48,10 +48,7 @@ class AnsPress_Actions
 		///add_filter( 'teeny_mce_plugins', array($this, 'editor_plugins'), 10, 2 );
 		
 		add_filter( 'wp_insert_post_data', array($this, 'wp_insert_post_data'), 10, 2 );
-		add_filter( 'ap_form_contents_filter', array($this, 'sanitize_description') );
-
-		add_action( 'wp', array( $this, 'remove_head_items' ), 10 );
-		add_action('wp_head', array($this, 'wp_head'), 11);
+		add_filter( 'ap_form_contents_filter', array($this, 'sanitize_description') );		
 		add_action('safe_style_css', array($this, 'safe_style_css'), 11);
 		add_action('save_post', array($this, 'base_page_update'), 10, 2);
 
@@ -415,32 +412,6 @@ class AnsPress_Actions
 		$contents = ap_replace_square_bracket($contents);
 
 		return $contents;
-	}
-
-	public function remove_head_items(){
-		if(is_anspress()){
-			remove_action('wp_head', 'rsd_link');
-			remove_action('wp_head', 'wlwmanifest_link');
-			remove_action('wp_head', 'adjacent_posts_rel_link_wp_head', 10, 0 );
-			remove_action('wp_head', 'rel_canonical');
-			remove_action('wp_head', 'wp_shortlink_wp_head', 10, 0 );
-			remove_action('wp_head', 'feed_links_extra', 3 );
-			remove_action('wp_head', 'feed_links', 2 );
-		}
-	}
-
-	public function wp_head(){
-		if(is_anspress()){
-			$q_feed = get_post_type_archive_feed_link( 'question' );
-			$a_feed = get_post_type_archive_feed_link( 'answer' );
-			echo '<link rel="alternate" type="application/rss+xml" title="'.__('Question feed', 'ap').'" href="'.$q_feed.'" />';
-			echo '<link rel="alternate" type="application/rss+xml" title="'.__('Answers feed', 'ap').'" href="'.$a_feed.'" />';
-		}
-		
-		if(is_question()){
-			echo '<link rel="canonical" href="'.get_permalink(get_question_id()).'">';
-			echo '<link rel="shortlink" href="'.wp_get_shortlink(get_question_id()).'" />';
-		}
 	}
 
 	public function safe_style_css($attr)

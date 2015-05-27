@@ -35,7 +35,10 @@ class AnsPress_Theme
         add_filter('wpseo_title', array( $this, 'wpseo_title' ) , 10, 2);
         add_filter('the_title', array( $this, 'the_title' ) , 10, 2);
         add_filter('wp_head', array( $this, 'feed_link' ) , 9);
+        add_filter('wpseo_canonical', array( $this, 'wpseo_canonical' ));
         add_action('ap_before', array( $this, 'ap_before_html_body' ));
+        add_action( 'wp', array( $this, 'remove_head_items' ), 10 );
+        add_action('wp_head', array($this, 'wp_head'), 11);
     }
 
     public function init_actions()
@@ -196,6 +199,37 @@ class AnsPress_Theme
     public function ap_before_html_body() 
     {
         dynamic_sidebar('ap-before');
+    }
+
+    public function remove_head_items(){
+        if(is_anspress()){
+            remove_action('wp_head', 'rsd_link');
+            remove_action('wp_head', 'wlwmanifest_link');
+            remove_action('wp_head', 'adjacent_posts_rel_link_wp_head', 10, 0 );
+            remove_action('wp_head', 'rel_canonical');
+            remove_action('wp_head', 'wp_shortlink_wp_head', 10, 0 );
+            remove_action('wp_head', 'feed_links_extra', 3 );
+            remove_action('wp_head', 'feed_links', 2 );
+        }
+    }
+
+    public function wp_head(){
+        if(is_anspress()){
+            $q_feed = get_post_type_archive_feed_link( 'question' );
+            $a_feed = get_post_type_archive_feed_link( 'answer' );
+            echo '<link rel="alternate" type="application/rss+xml" title="'.__('Question feed', 'ap').'" href="'.$q_feed.'" />';
+            echo '<link rel="alternate" type="application/rss+xml" title="'.__('Answers feed', 'ap').'" href="'.$a_feed.'" />';
+        }
+        
+        if(is_question()){
+            echo '<link rel="canonical" href="'.get_permalink(get_question_id()).'">';
+            echo '<link rel="shortlink" href="'.wp_get_shortlink(get_question_id()).'" />';
+        }
+    }
+
+    public function wpseo_canonical($canonical){
+        if(is_question())
+            return get_permalink(get_question_id());
     }
 
 }
