@@ -929,7 +929,7 @@ function ap_link_to($sub){
 		$args = '';
 
 		if(get_option('permalink_structure') != ''){		
-			if(!is_array($sub))
+			if(!is_array($sub) && $sub != 'base')
 				$args = $sub ? '/'.$sub : '';
 
 			elseif(is_array($sub)){
@@ -938,9 +938,9 @@ function ap_link_to($sub){
 				if(!empty($sub))
 					foreach($sub as $s)
 						$args .= $s.'/';
-				}
+			}
 
-				$args = rtrim($args, '/').'/';
+			$args = rtrim($args, '/').'/';
 		}else{
 
 			if(!is_array($sub))
