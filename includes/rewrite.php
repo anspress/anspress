@@ -72,6 +72,7 @@ class AnsPress_Rewrite
 		
 		$slug = ap_base_page_slug().'/';
 
+		$user_page = ap_opt('base_before_user_perma') ? $slug.'user/' : ap_opt('user_page_slug').'/';
 		
 
 		$new_rules = array(  
@@ -107,11 +108,11 @@ class AnsPress_Rewrite
 
 		$new_rules[$slug."question/([^/]+)/([^/]+)/?$"]  = "index.php?page_id=".$base_page_id."&question_id=".$wp_rewrite->preg_index(1)."&question_name=".$wp_rewrite->preg_index(2);
 
-		$new_rules[$slug. "user/([^/]+)/([^/]+)/page/?([0-9]{1,})/?$"] = "index.php?page_id=".$base_page_id."&ap_page=user&ap_user=". $wp_rewrite->preg_index(1)."&user_page=". $wp_rewrite->preg_index(2)."&paged=".$wp_rewrite->preg_index(3);
+		$new_rules[$user_page. "([^/]+)/([^/]+)/page/?([0-9]{1,})/?$"] = "index.php?page_id=".$base_page_id."&ap_page=user&ap_user=". $wp_rewrite->preg_index(1)."&user_page=". $wp_rewrite->preg_index(2)."&paged=".$wp_rewrite->preg_index(3);
 
-		$new_rules[$slug. "user/([^/]+)/([^/]+)/?"] = "index.php?page_id=".$base_page_id."&ap_page=user&ap_user=". $wp_rewrite->preg_index(1)."&user_page=". $wp_rewrite->preg_index(2);
+		$new_rules[$user_page. "([^/]+)/([^/]+)/?"] = "index.php?page_id=".$base_page_id."&ap_page=user&ap_user=". $wp_rewrite->preg_index(1)."&user_page=". $wp_rewrite->preg_index(2);
 
-		$new_rules[$slug. "user/([^/]+)/?"] = "index.php?page_id=".$base_page_id."&ap_page=user&ap_user=".$wp_rewrite->preg_index(1);
+		$new_rules[$user_page. "([^/]+)/?"] = "index.php?page_id=".$base_page_id."&ap_page=user&ap_user=".$wp_rewrite->preg_index(1);
 
 		$new_rules[$slug. "search/([^/]+)/?"] = "index.php?page_id=".$base_page_id."&ap_page=search&ap_s=". $wp_rewrite->preg_index(1);
 

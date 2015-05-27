@@ -65,12 +65,28 @@ class AnsPress_Options_Page
 			),
 			array(
 				'name' => 'anspress_opt[question_permalink_follow]',
-				'label' => __('Show question permalink under base page', 'ap') ,
+				'label' => __('Base page slug before question permalink', 'ap') ,
 				'desc' => __('i.e. '.home_url('/BASE_PAGE/question/QUESTION_TITLE'), 'ap') ,
 				'type' => 'checkbox',
 				'value' => @$settings['question_permalink_follow'],
 				'show_desc_tip' => false,
 			),
+			array(
+				'name' => 'anspress_opt[base_before_user_perma]',
+				'label' => __('Base page slug before user page permalink', 'ap') ,
+				'desc' => __('i.e. '.home_url('/BASE_PAGE/user/USER_NAME'), 'ap') ,
+				'type' => 'checkbox',
+				'value' => @$settings['base_before_user_perma'],
+				'show_desc_tip' => false,
+			),
+			array(
+				'name' => 'anspress_opt[user_page_slug]',
+				'label' => __('User page slug', 'ap') ,
+				'desc' => __('Enter slug for user page, make sure no page or post exists with same slug.', 'ap') ,
+				'type' => 'text',
+				'value' => @$settings['user_page_slug'],
+				'show_desc_tip' => false,
+			)
 		));
 		
 		//Register layout settings

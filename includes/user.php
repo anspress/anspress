@@ -189,20 +189,43 @@ function ap_user_link($user_id = false, $sub = false)
     if ($user_id == 0)
         return false;
 
-    $user = get_userdata($user_id);
+    $user = get_user_by('id', $user_id);
 
-    if($sub === false){
-        $sub = array('ap_page' => 'user', 'user' => $user->user_login);
-    }
-    elseif(is_array($sub)){
-       $sub['ap_page']  = 'user';
-       $sub['user']     = $user->user_login;
-    }
-    elseif(!is_array($sub)){
-        $sub = array('ap_page' => 'user', 'user' => $user->user_login, 'user_page' => $sub);
+    if(ap_opt('base_before_user_perma')){
+
+        if($sub === false){
+            $sub = array('ap_page' => 'user', 'user' => $user->user_login);
+        }
+        elseif(is_array($sub)){
+           $sub['ap_page']  = 'user';
+           $sub['user']     = $user->user_login;
+        }
+        elseif(!is_array($sub)){
+            $sub = array('ap_page' => 'user', 'user' => $user->user_login, 'user_page' => $sub);
+        }
+
+        $link = ap_get_link_to($sub);
+
+    }else{
+        $base = home_url( '/'.ap_opt('user_page_slug').'/' );
+
+        if($sub === false){
+            $link = $base. $user->user_login.'/';
+        }
+        elseif(is_array($sub)){
+            $link = $base . $user->user_login.'/';
+            
+            if(!empty($sub)){
+                foreach($sub as $s)
+                    $link .= $s.'/';
+            }
+        }
+        elseif(!is_array($sub)){
+            $link = $base. $user->user_login.'/'.$sub.'/';
+        }
     }
 
-    return apply_filters('ap_user_link', ap_get_link_to($sub), $user_id);
+    return apply_filters('ap_user_link', $link, $user_id);
 }
 
 /**

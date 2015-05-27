@@ -124,6 +124,7 @@ function ap_default_options(){
 		'answer_help_page' 		=> '',		
 		'disable_answer_nav' 	=> false,		
 		'image_per_post' 		=> 3,		
+		'user_page_slug' 		=> 'users',	
 	);
 	
 	/**
