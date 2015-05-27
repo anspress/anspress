@@ -1,6 +1,6 @@
 # AnsPress - Question and answer plugin #
 **Contributors:** nerdaryan  
-**Donate link:** https://www.paypal.com/cgi-bin/webscr?business=rah12@live.com&cmd=_xclick&item_name=Donation%20to%20AnsPress%20development  
+**Donate link:** https://www.paypal.com/cgi-bin/webscr?business=support@anspress.io&cmd=_xclick&item_name=Donation%20to%20AnsPress%20development  
 **Tags:** question, answer, q&a, forum, profile, stackoverflow, quora, buddypress  
 **Requires at least:** 4.1.1  
 **Tested up to:** 4.2  
@@ -68,61 +68,6 @@ Read full documentation here http://anspress.io/documents/
 ## Frequently Asked Questions ##
 
 Read full FAQ here http://anspress.io/documents/doc_page=faq
-
-## Screenshots ##
-
-### 1. List of question in home page, category, or tags page. ###
-![List of question in home page, category, or tags page.](http://s.wordpress.org/extend/plugins/anspress---question-and-answer-plugin/screenshot-1.png)
-
-
-### 2. Single page layout with selected answer ###
-![Single page layout with selected answer](http://s.wordpress.org/extend/plugins/anspress---question-and-answer-plugin/screenshot-2.png)
-
-
-### 3. User profile ###
-![User profile](http://s.wordpress.org/extend/plugins/anspress---question-and-answer-plugin/screenshot-3.png)
-
-
-### 4. User's messages and conversations ###
-![User's messages and conversations](http://s.wordpress.org/extend/plugins/anspress---question-and-answer-plugin/screenshot-4.png)
-
-
-### 5. Users page ###
-![Users page](http://s.wordpress.org/extend/plugins/anspress---question-and-answer-plugin/screenshot-5.png)
-
-
-### 6. Tags suggestion in ask form ###
-![Tags suggestion in ask form](http://s.wordpress.org/extend/plugins/anspress---question-and-answer-plugin/screenshot-6.png)
-
-
-### 7. Categories page with sub categories ###
-![Categories page with sub categories](http://s.wordpress.org/extend/plugins/anspress---question-and-answer-plugin/screenshot-7.png)
-
-
-### 8. Tags page ###
-![Tags page](http://s.wordpress.org/extend/plugins/anspress---question-and-answer-plugin/screenshot-8.png)
-
-
-### 9. AnsPress options page ###
-![AnsPress options page](http://s.wordpress.org/extend/plugins/anspress---question-and-answer-plugin/screenshot-9.png)
-
-
-### 10. AnsPress admin menu ###
-![AnsPress admin menu](http://s.wordpress.org/extend/plugins/anspress---question-and-answer-plugin/screenshot-10.png)
-
-
-### 11. AnsPress labels ###
-![AnsPress labels](http://s.wordpress.org/extend/plugins/anspress---question-and-answer-plugin/screenshot-11.png)
-
-
-### 12. AnsPress auto installation page ###
-![AnsPress auto installation page](http://s.wordpress.org/extend/plugins/anspress---question-and-answer-plugin/screenshot-12.png)
-
-
-### 13. User pages ###
-![User pages](http://s.wordpress.org/extend/plugins/anspress---question-and-answer-plugin/screenshot-13.png)
-
-
 
 ## Changelog ##
 

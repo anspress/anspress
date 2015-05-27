@@ -31,8 +31,9 @@ class AnsPress_Theme
         add_filter('body_class', array( $this, 'body_class' ));        
         add_filter('comments_template', array( $this, 'comment_template' ));
         add_action('after_setup_theme', array( $this, 'includes' ));
-        add_filter('wp_title', array( $this, 'ap_title' ) , 1, 2);
-        add_filter('the_title', array( $this, 'the_title' ) , 1, 2);
+        add_filter('wp_title', array( $this, 'ap_title' ) , 10, 2);
+        add_filter('wpseo_title', array( $this, 'wpseo_title' ) , 10, 2);
+        add_filter('the_title', array( $this, 'the_title' ) , 10, 2);
         add_filter('wp_head', array( $this, 'feed_link' ) , 9);
         add_action('ap_before', array( $this, 'ap_before_html_body' ));
     }
@@ -133,9 +134,36 @@ class AnsPress_Theme
             ));
 
             $new_title = ap_page_title();
-            
-            $new_title = str_replace('ANSPRESS_TITLE', $new_title, $title);
+
+            if(strpos($title, 'ANSPRESS_TITLE') !== false)
+                $new_title = str_replace('ANSPRESS_TITLE', $new_title, $title);
+            else
+                $new_title = $new_title.' | ';
+
             $new_title = apply_filters('ap_title', $new_title);
+            
+            return $new_title;
+        }
+        
+        return $title;
+    }
+
+    public function wpseo_title($title){
+        if (is_anspress()) 
+        {
+            remove_filter('wpseo_title', array(
+                $this,
+                'wpseo_title'
+            ));
+
+            $new_title = ap_page_title();
+
+            if(strpos($title, 'ANSPRESS_TITLE') !== false)
+                $new_title = str_replace('ANSPRESS_TITLE', $new_title, $title). ' | ' . get_bloginfo( 'name' );
+            else
+                $new_title = $new_title.' | '. get_bloginfo( 'name' );
+
+            $new_title = apply_filters('ap_wpseo_title', $new_title);
             
             return $new_title;
         }
