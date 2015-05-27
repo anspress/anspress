@@ -1,43 +1,454 @@
-AnsPress - The most advance community question and answer system for WordPress.
-=========
+# AnsPress - Question and answer plugin #
+**Contributors:** nerdaryan  
+**Donate link:** https://www.paypal.com/cgi-bin/webscr?business=rah12@live.com&cmd=_xclick&item_name=Donation%20to%20AnsPress%20development  
+**Tags:** question, answer, q&a, forum, profile, stackoverflow, quora, buddypress  
+**Requires at least:** 4.1.1  
+**Tested up to:** 4.2  
+**Stable tag:** 2.2.0.2  
+**License:** GPLv2 or later  
+**License URI:** http://www.gnu.org/licenses/gpl-2.0.html  
 
-[![Code Quality](https://scrutinizer-ci.com/g/anspress/anspress/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/anspress/anspress/?branch=master) [![Build Status](https://travis-ci.org/anspress/anspress.svg?branch=master)](https://travis-ci.org/anspress/anspress) [![WordPress](https://img.shields.io/badge/download-25.6k-brightgreen.svg)](https://wordpress.org/plugins/anspress-question-answer)
+Free question and answer plugin for WordPress. Made with developers in mind, highly customizable.
 
-![AnsPress Cover](https://raw.githubusercontent.com/open-wp/anspress/master/screenshot.png "AnsPress cover image")
+## Description ##
 
-Demo & support forum: http://wp3.in/questions/
+**Demo & support forum:** http://anspress.io/  
+**GitHub repo:** [Git AnsPress](https://github.com/anspress/anspress/)  
 
-AnsPress is the most complete question and answer system for WordPress. AnsPress is made with developers in mind, highly customizable. AnsPress provide an easy to use override system for theme. List of features:
+Easily add question and answer section like stackoverflow.com or quora.com in your WordPress.
+AnsPress is a most complete question and answer system for WordPress. AnsPress is made with developers in mind, highly customizable. AnsPress provide an easy to use override system for theme. 
 
-  - Sorting question and answer by many options.
-  - Ajax based form submissin
-  - Theme system
-  - Flag and moderate posts
-  - Voting on question and answer
-  - Question tags and categories
-  - Question labels (i.e. Open, close, duplicate) new labels can be added easily.
-  - Select best answer
-  - Comment on question and answer
-  - Private messaging system
-  - Point based permission (under development)
-  - reCaptcha
-  - User level : Participants, Editor, Moderator (in future it can be customised and you can add your own levels)
-  - Email notification
-  - User can add questions to his favorite
-  - User can edit profile
-  - User can upload cover photo
-  - Friends and followers system
-  - User points system (reputation)
-  - User ranking
-  - User badge
-  - User profile
-  - Pages : Tags, categories, users etc.
+Extensions:
+
+  * [AnsPress email notification](http://anspress.io/downloads/anspress-email/)
+  * [Categories for AnsPress](http://anspress.io/downloads/categories-for-anspress/)
+  * [Tags for AnsPress](http://anspress.io/downloads/tags-for-anspress/)
+
+Developers tool
+
+  * [AnsPress extension boilerplate builder](http://anspress.io/downloads/anspress-boilerplate-extension/)
+
+List of features:
+
+  * Sorting question and answer by many options.
+  * Ajax based form submission
+  * Theme system
+  * Flag and moderate posts
+  * Voting on question and answer
+  * Question tags and categories
+  * Question labels (i.e. Open, close, duplicate) new labels can be added easily.
+  * Select best answer
+  * Tags suggestions
+  * Comment on question and answer
+  * reCaptcha
+  * User level : Participant, Editor, Moderator  
+  * Email notification
+  * User can add questions to his favorite
+  * User can edit profile
+  * User can upload cover photo
+  * Friends and followers system
+  * User points system (reputation)
+
+
+### Help & Support ###
+For fast help and support, please post on our forum http://anspress.io/questions/
+
+
+**Page Shortcodes**
+
+Use this shortcode in base to AnsPress work properly
+`[anspress]`
+
+
+## Installation ##
+
+Read full documentation here http://anspress.io/documents/
+
+
+## Frequently Asked Questions ##
+
+Read full FAQ here http://anspress.io/documents/doc_page=faq
+
+## Screenshots ##
+
+### 1. List of question in home page, category, or tags page. ###
+![List of question in home page, category, or tags page.](http://s.wordpress.org/extend/plugins/anspress---question-and-answer-plugin/screenshot-1.png)
+
+
+### 2. Single page layout with selected answer ###
+![Single page layout with selected answer](http://s.wordpress.org/extend/plugins/anspress---question-and-answer-plugin/screenshot-2.png)
+
+
+### 3. User profile ###
+![User profile](http://s.wordpress.org/extend/plugins/anspress---question-and-answer-plugin/screenshot-3.png)
+
+
+### 4. User's messages and conversations ###
+![User's messages and conversations](http://s.wordpress.org/extend/plugins/anspress---question-and-answer-plugin/screenshot-4.png)
+
+
+### 5. Users page ###
+![Users page](http://s.wordpress.org/extend/plugins/anspress---question-and-answer-plugin/screenshot-5.png)
+
+
+### 6. Tags suggestion in ask form ###
+![Tags suggestion in ask form](http://s.wordpress.org/extend/plugins/anspress---question-and-answer-plugin/screenshot-6.png)
+
+
+### 7. Categories page with sub categories ###
+![Categories page with sub categories](http://s.wordpress.org/extend/plugins/anspress---question-and-answer-plugin/screenshot-7.png)
+
+
+### 8. Tags page ###
+![Tags page](http://s.wordpress.org/extend/plugins/anspress---question-and-answer-plugin/screenshot-8.png)
+
+
+### 9. AnsPress options page ###
+![AnsPress options page](http://s.wordpress.org/extend/plugins/anspress---question-and-answer-plugin/screenshot-9.png)
+
+
+### 10. AnsPress admin menu ###
+![AnsPress admin menu](http://s.wordpress.org/extend/plugins/anspress---question-and-answer-plugin/screenshot-10.png)
+
+
+### 11. AnsPress labels ###
+![AnsPress labels](http://s.wordpress.org/extend/plugins/anspress---question-and-answer-plugin/screenshot-11.png)
+
+
+### 12. AnsPress auto installation page ###
+![AnsPress auto installation page](http://s.wordpress.org/extend/plugins/anspress---question-and-answer-plugin/screenshot-12.png)
+
+
+### 13. User pages ###
+![User pages](http://s.wordpress.org/extend/plugins/anspress---question-and-answer-plugin/screenshot-13.png)
 
 
 
+## Changelog ##
 
-[Open-WP]:http://wp3.in/
-[Rahul Aryan]:http://wp3.in/
-[Support forum]:http://wp3.in/questions
-[@openwp]:http://twitter.com/wp3in
+### 2.2.0.1 ###
 
+### 2.2 ###
+
+* Form error message below input field
+* DB error in Answer sorting 
+* While try to edit answer format get cleared 
+* BuddyPress reputation count shows 1
+* Load minified assets 
+* Improved admin dashboard 
+* popup add link box in tinymce cuts off content. 
+* Add breadcrumbs widget 
+* Add breadcrumbs function 
+* Improve popup notification style 
+* Dont show delete button if post already trashed 
+* Add permanenet delete button from frontend 
+* error 404 when no trailing slash 
+* highlight trashed post 
+* Changes author when editing a question 
+* Private answers are not visible to its author 
+* Improve editor mode toggle buttons 
+* Add loading animation in post/edit comment button 
+* Improve subscribe button 
+* disable view count ap_meta entry 
+* Add icons in stats widget 
+* Check comments as general user 
+* Show question filter tab on Category and Tag pages 
+* BuddyPress not working 
+* Short category dropdown in ask form as defined 
+* Rename "voted" tab to vote 
+* Unsolved also shows questions with selected answers 
+* On Single Question page , Active | Voted | Newest | Oldest should be ajax based 
+* Ask page title option not working 
+* Dont let reputation to be negative 
+* Improve UI of button 
+* Add sticky answer navigation 
+* Comment loading shows success 
+* Add answer form help content 
+* Improve answer form UI 
+* Added fullscreen toggle in Answer form 
+* Improve UI of question page 
+* Check UI of comments when comments are shown by default 
+* Change font weight of question and answer action links 
+* Improve UI of comments 
+* Pending comment is highlighted 
+* Add comment author name and time 
+* Commentrs are not subscribed by default 
+* User is not unsubscribed when his comment or answer is deleted 
+* Anonymous cant answer if question is created by anonymous 
+* Reputation showing wrong count 
+* white space when user don't have permission to view answers 
+* Improve admin answer table
+* Improve admin question table 
+* Added image from link in question and answer 
+* Add image uploader in question and answer
+
+### 2.1.6 ###
+
+* [option] added option for toggling question sidebar
+* [fix] Search widget and form
+* [fix] Check if array
+* [fix] anspress trash action hooks
+* [fix] Add translation support for "ago"-string #283
+* [fix] User can't edit his own answer
+* [fix] Some documentation error
+
+
+### 2.1.5 ###
+
+* [fix] minor bugs
+* [fix] Check undefined in ap_get_avatar_scr()
+* [new] Added avatar upload
+* [fix] ask and answer form button on update
+* [fix] Hide close test in editor modal
+* [fix] added blockquote style in editor
+* [fix] Dropdown not work for ajax content
+
+### 2.1.4 ###
+
+* [fix] allowed style align property
+* [fix] allowed strikethorugh (del) tag for editor
+* [fix] Allowed ul, ol, li tags in editor
+* [new] Added filter for ask and answer form editors
+* [fix] "status updated" message when post status get updated
+* [fix] Answers shorting
+* [fix] sanitize_text_field breaks loading question with non-ansi symbols in url #281
+
+### 2.1.1 ###
+
+* Tested with WP 4.2
+* [option] Toggle question permalink
+
+### 2.1.1 ###
+
+* Minor issues fixed
+
+### 2.1 ###
+
+* [new]adding user profile fields
+* [theme] improved button
+* [fix] Questions widget #279
+* [fix] let admin answer even if question is closed
+* [fix] Answer permalink #279
+* [fix] Possible XSS vulnerability
+* [theme] added default widget in question sidebar
+* [fix] dropdown #279
+* [new] subscribe on own question
+* [fix] User page not found if space in user_name #274
+* [theme] Answer form
+* [fix] Answers pagination
+* [fix] chnage_status to change_status #278
+* [fix] Answers loop and count
+* [new] Ajaxified change status
+* [new] Change post status
+* [theme] added post status sticker
+* [fix] Query "private_post" and "moderate" only if user have permission
+* Padding for no-questions element
+* [theme] Question list meta improved
+* [theme] Improved single question page layout
+* [theme] question page layout
+* [fix] Answer loop
+* [added] search form before questions list
+* Updated question permalink, removed base page
+* Replaced .anspress-container to #anspress
+* [fix] Bugs
+* [removed] Unused file responce_message.php
+* [fix] 12 major bugs
+* [fix] Removed var dump
+* [fix] Major bugs
+* [fix] Question and answer moderation
+* [new] user question and answer page
+* User posts styled
+* [new] User posts page added
+* Improved question query and loop
+* [fix] Shows login message when user dont have permission to ask or answer
+* [added] user page, initial.min.js
+* Improved user menu
+* [added] option for toggle user directory page
+* user link improved
+* [fix] Sorting user by reputation
+* [fix] page titles
+* [added] styles for users loop
+* [added] option for "users per page"
+* [added] user page and loop
+* [added] Option for toggling reputations
+* [fix] 404 causing infinite loop
+* Added ap_ prefix
+
+
+### 2.0.5 ###
+
+* [fix] Removed anonymous function for older version compatibility
+* Improved user answers list
+* [Added] do_action( 'wordpress_social_login' );
+* Removed history loading after plugin initiate
+* [fix] History
+* [disabled] ap_post_votes() for each post to decrease DB query
+* Added trailing slash in question url to prevent 301 redirect
+* [fix] Related questions was missing
+* Order reputation by date
+
+
+
+### 2.0.4 ###
+
+* [fix] AnsPress options
+* [fix] hide any existing loding animation
+* [fix] Wrong redirect after deleting question
+* [added] ap_get_all_reputation
+* Updated admin menu position
+* Loading animation for select button
+* [added] loading animation and improved notification
+
+
+### 2.0.3 ###
+
+* Check empty comment before posting
+* refresh question suggestion on backspace
+* Include previous version point count
+* Remove unused options
+
+
+### 2.0.2 ###
+
+* Rename old tags
+* Added category widget
+* Added widget position in base page
+* fix button sizes
+* Added two options; - Disable OP to answer their question (not applied for admin) - Disallow multiple answer per question 9not applied for admin) [fix] - Show wrong message when user already answered
+* fixed voting button on answer
+* Added requirement checker
+* [fix] undefined index
+* Removed unused functions
+* Load buddypress file on bp_loaded
+* Added notification for answers and comments
+* fixed some major bugs
+* added doc comments for anspress_sc
+* Added parameters for [anspress] shortcode
+* [fix] sorting on home page
+* [fix] run flush_rules only ap_opt('ap_flush') == 'true'
+* Best practice issues
+* Don't let reputation to negative
+* flush apmeta when related post gets deleted
+* [fix] delete flag meta on post trash
+* fixed bug in reputation.php
+* Improved question page style
+* Improved list style
+* added reputation page in buddypress
+* Disable reputation for anonymous
+* Check metions in answers
+* Check mention in questions
+* Added reputation and fixed meta delete
+* replace action link
+* [new] add question and answer to buddypress activity stream
+* [fix] pagination in buddypress
+* Added answers in buddypress
+* Added questions tab in buddypress
+* Detect buddypress and change user link to BP profile
+* removed .updated class
+* Added captcha in Answer form
+* Added reCaptcha
+* Styled editor
+* Added questions list widget
+* hook option on admin_init
+* Disable quicktags in questions
+* [fix] related questions widget
+* Improved subscribe button
+* Exclude best answer from main Answers_Query
+* [fix] Answer sorting
+* Added author credit
+* Clear editor after posting answer
+* Added option to disable voting
+* Update comment count on new comment
+* Auto update comment count
+* Added publish class in time
+* Fix answer count in answers list
+* [fix] ajax loading comments in answers
+* [fix] ajax loading after editing comment
+* Posts actions as dropdown menu
+* Checkbox inline description
+* [fix] allow anonymous for answer
+* Removed editor toggle and moved media button
+* Added option showing title in question page
+* Fixed ajax loading while answer is first.
+* Added .published class in time
+* Fixed user link
+* Lost MEDIA library option from admins menu
+* Updated style
+* declare the visibility for methods
+* Added uninstall hook
+* Removed unused files
+* [fix] questions page paging rewrite
+* Missing argument 2 for AnsPress_Theme::the_title()
+* Improved admin style and added option for locking delete action
+* Show CPT menu for delete_pages
+* Show AnsPress menu if user have manage_options
+* Load shortcode on init
+* Held for moderation
+* Fixed some bugs and added grunt
+* [fix] Subscribe button
+* Fixed conflicts with profile
+* [fix] use question title in answer title
+* Made it compatible with profile plugin
+* [fix] Rewrite rule when base page is child page
+* Disable comments option added
+* [fix] Question detail is appearing for all posts
+* [fix] Search page
+* Added anspress menu
+* [fix] form get cleared even if there is error
+* [fix] Toggle private post
+* [fix] Language files were not loading
+* Added option for switching text editor as default
+* [fix] TwentyFifteen compatibility
+* Show this label "No questions match your search criteria" when nothing found in search
+* Improved question list
+* Improved dashboard
+* Added question select
+* Improved flagging system
+* Disallow answer for closed question
+* Add private question & moderate sticker in question
+* Enable question sidebar only if there is widget in it
+* Flag button fixed
+* Hide comments be default
+* Added related questions widget
+* Added question stats widget
+* Added participants and subscribe widget
+* Improved question and list page style
+* Added action and filter for search
+* Added search functionality
+* Removed user.php and added required functions to functions.php
+* Enable user link only if user extension installed
+* Added extensions listing
+* [fix] replaced icon- class to apicon-
+* Check array before output menu
+* [fix] Editing own comment only possible after refresh
+* [removed] ap-site.js
+* [new] Dynamic option group and fields
+* Removed main.php
+* Removed messages.php
+* [fix] Participants caps were empty
+* [fix] After deleting a question, troublesome redirection
+* Improved form validation
+* Added vote and view meta in list
+* [fix] show register or login message for non-logged in
+* [fix] Annonymous is unchecked in the backend but user can still ask question
+* [fix] link of ask question button when there is no question
+* [fixed] Answer permalink
+* [fixed] Participant is not being inserted to DB
+* [fixed] After comment actions are not working
+* [fixed] Entering space in ask question title field show all questions
+* [fixed] User page ap_meta_array_map function missing
+* [fix]When AnsPress is set to home page then sorting does not work
+* Rename sort query arg to ap_sort
+* [fixed] unsolved question listing
+* [fixed] Answer count update on ajax request
+* [fixed] Wrong answer count
+* [fixed] delete button
+* [fixed] Select best answer
+* [fixed] JS and ajax request
+* [fixed] Answer form validation
+* [fixed] Ajax answer submission
+* [removed] Installation screen and cleaned up codes.
+
+### 1.4.3 ###
+
+* Made compatible with WordPress 4.1.1
