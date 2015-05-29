@@ -54,6 +54,7 @@ if (!class_exists('AnsPress')) {
         public $questions;
         public $answers;
         public $form;
+        public $reputations;
 
         /**
          * Filter object
@@ -107,7 +108,7 @@ if (!class_exists('AnsPress')) {
                 self::$instance->anspress_query_filter       = new AnsPress_Query_Filter();
                 self::$instance->anspress_theme              = new AnsPress_Theme();
                 self::$instance->anspress_cpt                = new AnsPress_PostTypes();
-                self::$instance->anspress_reputation         = new AnsPress_Reputation();
+                self::$instance->anspress_reputation         = new AP_Reputation();
                 self::$instance->anspress_users              = new AnsPress_User();
 
                 /**

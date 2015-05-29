@@ -7,10 +7,6 @@
  * @package AnsPress
  */
 ?>
-
-<?php //ap_profile_user_stats_counts() ?>
-
-
 <div class="ap-profile-box clearfix">
 	<div class="ap-profile-tab-c clearfix">
 		<?php ap_user_profile_tab(); ?>

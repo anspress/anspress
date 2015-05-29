@@ -9,7 +9,7 @@
  * @copyright 2014 Rahul Aryan
  */
 
-class AnsPress_Reputation {
+class AP_Reputation {
 	
 	public function __construct(){
 		add_action('init', array($this, 'init'));
@@ -20,6 +20,8 @@ class AnsPress_Reputation {
 		// return if reputation is disabled
 		if(ap_opt('disable_reputation'))
 			return;
+		
+		ap_register_user_page('reputation', __('Reputation', 'ap'), array($this, 'reputation_page'));
 
 		add_action('ap_after_new_question', array($this, 'new_question'));
 		add_action('ap_untrash_question', array($this, 'new_question'));
@@ -43,6 +45,10 @@ class AnsPress_Reputation {
 		add_filter('ap_user_display_meta_array', array($this, 'display_meta'), 10, 2);
 		add_action('ap_user_left_after_name', array( $this, 'ap_user_left_after_name' ));
 	}
+
+	public function reputation_page(){
+        ap_get_template_part('user/reputation');
+    }
 	
 	/**
 	 * Update reputation of user created question 
@@ -294,6 +300,331 @@ class AnsPress_Reputation {
 		echo '</span>';
 	}
 }
+
+/**
+ * Fetch user reputations from database
+ * @since 2.3
+ */
+class AnsPress_Reputation
+{
+	/**
+     * The loop iterator.
+     *
+     * @access public
+     * @var int
+     */
+    var $current = -1;
+
+    /**
+     * The number of rows returned by the paged query.
+     *
+     * @access public
+     * @var int
+     */
+    var $count;
+
+    /**
+     * Array of users located by the query.
+     *
+     * @access public
+     * @var array
+     */
+    var $reputations;
+
+    /**
+     * The reputation object currently being iterated on.
+     *
+     * @access public
+     * @var object
+     */
+    var $reputation;
+
+    /**
+     * A flag for whether the loop is currently being iterated.
+     *
+     * @access public
+     * @var bool
+     */
+    var $in_the_loop;
+
+    /**
+     * The total number of rows matching the query parameters.
+     *
+     * @access public
+     * @var int
+     */
+    var $total_count;
+
+    /**
+     * Items to show per page
+     *
+     * @access public
+     * @var int
+     */
+    var $per_page;
+
+    var $total_pages = 1;
+
+    var $paged;
+
+    var $offset;
+
+	public function __construct($args = '')
+	{
+		$this->per_page = 20;
+		// grab the current page number and set to 1 if no page number is set
+        $this->paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
+    
+        $this->offset = $this->per_page * ($this->paged - 1);
+
+		$this->args =  wp_parse_args( $args, array(
+            'user_id' 	=> get_current_user_id(),
+            'number' 	=> $this->per_page,
+            'offset' 	=> $this->offset,
+            'sortby' 	=> 'date'
+        ));
+
+        $this->query();
+	}
+
+	private function query()
+	{
+		global $wpdb;
+
+		$query = $wpdb->prepare("SELECT SQL_CALC_FOUND_ROWS v.apmeta_id as id,v.apmeta_userid as user_id, v.apmeta_actionid as action_id, v.apmeta_value as reputation, v.apmeta_param as event, v.apmeta_date as rep_date FROM ".$wpdb->prefix."ap_meta v WHERE v.apmeta_type='reputation' AND v.apmeta_userid = %d order by rep_date DESC LIMIT %d", $this->args['user_id'], $this->args['number']);
+
+		$key = md5($query);
+
+		$result = wp_cache_get( $key, 'ap');
+		$this->total_count = wp_cache_get( $key.'_count', 'ap');
+
+		if($result === false){
+			$result = $wpdb->get_results($query);
+			$this->total_count = $wpdb->get_var( apply_filters( 'ap_reputations_found_rows', "SELECT FOUND_ROWS()", $this ) );		
+			wp_cache_set( $key.'_count', $this->total_count, 'ap' );
+			wp_cache_set( $key, $result, 'ap' );
+		}
+
+		$this->reputations 	= $result;
+		$this->total_pages 	= ceil($this->total_count / $this->per_page);
+		$this->count 		= count($result);
+
+	}
+
+	public function reputations()
+    {
+        if ( $this->current + 1 < $this->count ) {
+            return true;
+        } 
+        elseif ( $this->current + 1 == $this->count ) {
+
+            do_action('ap_reputations_loop_end');
+            
+            // Do some cleaning up after the loop
+            $this->rewind_reputation();
+        }
+
+        $this->in_the_loop = false;
+        return false;
+    }
+
+    /**
+     * Rewind the reputations and reset index.
+     */
+    public function rewind_reputation() {
+        $this->current = -1;
+        if ( $this->count > 0 ) {
+            $this->reputation = $this->reputations[0];
+        }
+    }
+
+    /**
+     * Check if there are reputation in loop
+     *
+     * @return bool
+     */
+    public  function has_reputations() {
+        if ( $this->count )
+            return true;
+
+        return false;
+    }
+
+    /**
+     * Set up the next reputation and iterate index.
+     *
+     * @return object The next reputation to iterate over.
+     */
+    public function next_reputation() {
+        $this->current++;
+        $this->reputation = $this->reputations[$this->current];
+
+        return $this->reputation;
+    }
+
+    /**
+     * Set up the current reputation inside the loop.
+     */
+    public function the_reputation() {
+
+        $this->in_the_loop 		= true;
+        $this->reputation      	= $this->next_reputation();
+
+        // loop has just started
+        if ( 0 == $this->current ) {
+
+            /**
+             * Fires if the current reputation is the first in the loop.
+             */
+            do_action( 'ap_reputation_loop_start' );
+        }
+
+    }
+}
+
+/**
+ * Setup reputation loop
+ * @param  string|array $args
+ * @return object
+ */
+function ap_has_reputations($args = ''){
+
+    $sortby = ap_get_sort() != '' ? ap_get_sort() : 'date';
+
+    $args = wp_parse_args( $args, array( 'sortby' => $sortby ) );
+
+    anspress()->reputations =  new AnsPress_Reputation($args);
+
+    return anspress()->reputations->has_reputations();
+}
+
+function ap_reputations(){
+    return anspress()->reputations->reputations();
+}
+
+function ap_the_reputation(){
+    return anspress()->reputations->the_reputation();  
+}
+
+/**
+ * Return the current reputation obejct
+ * @return object
+ */
+function ap_reputation_the_object(){
+    $rep = anspress()->reputations->reputation;
+    return $rep;
+}
+
+function ap_reputation_get_the_id(){
+	echo ap_reputation_get_id();
+}
+
+	function ap_reputation_get_id(){
+		return ap_reputation_the_object()->id;
+	}
+
+function ap_reputation_get_the_action_id(){
+	echo ap_reputation_get_action_id();
+}
+	function ap_reputation_get_action_id(){
+		return ap_reputation_the_object()->action_id;
+	}
+
+function ap_reputation_get_the_event(){
+	echo ap_reputation_get_event();
+}
+
+	function ap_reputation_get_event(){
+		return ap_reputation_the_object()->event;
+	}
+
+function ap_reputation_get_the_reputation(){
+	$rep = ap_reputation_get_reputation();
+
+	if($rep > 0)
+		printf(__('+%d', 'ap'), $rep);
+	else
+		echo $rep;
+}
+
+	function ap_reputation_get_reputation(){
+		return ap_reputation_the_object()->reputation;
+	}
+
+function ap_reputation_get_the_class(){
+	echo ap_reputation_get_class();
+}
+
+	function ap_reputation_get_class(){
+		$rep = ap_reputation_get_reputation();
+		
+		if( $rep > 0)
+			return 'positive';
+		elseif($rep < 0)
+			return 'negative';
+		else
+			return 'neutral';
+	}
+
+function ap_reputation_get_the_date(){
+	printf( __('%s ago', 'ap'), ap_human_time(ap_reputation_get_date(), false));
+}
+	function ap_reputation_get_date(){
+		return ap_reputation_the_object()->rep_date;
+	}
+
+function ap_reputation_get_the_info($event = false, $action_id = false){
+	if(!$event)
+		$event = ap_reputation_get_event();
+
+	if(!$action_id)
+		$action_id = ap_reputation_get_action_id();
+
+	echo ap_reputation_get_info($event, $action_id);
+}
+
+	function ap_reputation_get_info($event, $action_id){
+		
+		switch ($event) {
+			case 'question':
+				$info = sprintf(__('%sAsked %s', 'ap'), '<span class="ap-reputation-event">', '</span><a href="'.get_permalink($action_id).'">'.get_the_title($action_id).'</a>');
+				break;
+
+			case 'answer':
+				$info = sprintf(__('%sAnswered %s', 'ap'), '<span class="ap-reputation-event">','</span><a href="'.get_permalink($action_id).'">'. get_the_title($action_id).'</a>') ;
+				break;
+
+			case 'comment':
+				$info = sprintf(__('%sCommented %s', 'ap'), '<span class="ap-reputation-event">', '</span><a href="'.get_comment_link($action_id).'">'. get_comment_text($action_id).'</a>');
+				break;
+
+			case 'selecting_answer':
+				$info = sprintf(__('%sSelected answer %s','ap'), '<span class="ap-reputation-event">', '</span><a href="'.get_permalink($action_id).'">'. get_the_title($action_id).'</a>');
+				break;
+
+			case 'vote_up':
+				$info = sprintf(__('%sDown vote %s %s','ap'), '<span class="ap-reputation-event">', '</span>'.get_post_type($action_id), '<a href="'.get_permalink($action_id).'">'.get_the_title($action_id).'</a>');
+				break;
+
+			case 'vote_down':
+				$info = sprintf(__('%sUp vote %s %s','ap'), '<span class="ap-reputation-event">', '</span>'.get_post_type($action_id), '<a href="'.get_permalink($action_id).'">'.get_the_title($action_id).'</a>' );
+				break;
+
+			case 'voted_down':
+				$info = sprintf(__('%sDown voted %s','ap'), '<span class="ap-reputation-event">', '</span>'.get_post_type($action_id) );
+				break;
+
+			case 'best_answer':
+				$info = sprintf(__('%sBest answer %s','ap'), '<span class="ap-reputation-event">', '</span>'.get_post_type($action_id) );
+				break;
+			
+			default:
+				$info = apply_filters( 'ap_reputation_info_event',  $event, $action_id);
+				break;
+		}
+
+		return apply_filters( 'ap_reputation_info',  $info);
+	}
 
 function ap_reputation_option(){
 	$data  	= wp_cache_get('ap_reputation', 'ap');
@@ -613,18 +944,3 @@ function ap_get_user_reputation_share($user_id){
 	return ($user_points * ap_total_reputation()) / 100;
 }
 
-function ap_get_reputation_info($meta){
-	$info = array(
-		'answer' 		=> sprintf(__('Answered a question %s'), '<a href="'.get_permalink($meta->apmeta_actionid).'">'. get_the_title($meta->apmeta_actionid)) .'</a>',
-		'question' 		=> sprintf(__('Asked %s'), '<a href="'.get_permalink($meta->apmeta_actionid).'">'.get_the_title($meta->apmeta_actionid)).'</a>',
-		'comment' 		=> sprintf(__('Commented %s'), '<a href="'.get_comment_link($meta->apmeta_actionid).'">'. get_comment_text($meta->apmeta_actionid)).'</a>',
-		'selecting_answer' => sprintf(__('Selected a best answer for %s'), '<a href="'.get_permalink($meta->apmeta_actionid).'">'. get_the_title($meta->apmeta_actionid)).'</a>',
-		'vote_up' 		=> sprintf(__('Received a down vote on %s %s'), get_post_type($meta->apmeta_actionid), '<a href="'.get_permalink($meta->apmeta_actionid).'">'.get_the_title($meta->apmeta_actionid) ).'</a>',
-		'vote_down' 	=> sprintf(__('Received a down vote on on %s %s'), get_post_type($meta->apmeta_actionid), '<a href="'.get_permalink($meta->apmeta_actionid).'">'.get_the_title($meta->apmeta_actionid).'</a>' ),
-		'voted_down' 	=> sprintf(__('Voted down on %s'), get_post_type($meta->apmeta_actionid) ),
-		'best_answer' 	=> sprintf(__('Answer on a question is selected as best, %s'), get_post_type($meta->apmeta_actionid) ),
-	);
-
-	if(isset($info[$meta->apmeta_param]))
-		return $info[$meta->apmeta_param];
-}

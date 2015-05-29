@@ -703,8 +703,11 @@ class AnsPress_Process_Form
 		$validate_fields = array();
 
 		foreach($user_fields as $field){
-			@$validate_fields[$field['name']]['sanitize'] = @$field['sanitize'];
-			@$validate_fields[$field['name']]['validate'] = @$field['validate'];
+			if(isset($field['sanitize']))
+				$validate_fields[$field['name']]['sanitize'] = $field['sanitize'];
+
+			if($field['validate'])
+				$validate_fields[$field['name']]['validate'] = $field['validate'];
 		}
 
 		$validate = new AnsPress_Validation($validate_fields);

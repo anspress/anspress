@@ -21,5 +21,43 @@
 		font-weight: 600;
 		display: block;
 	}
+}
 
+.ap-reputation-item{
+    border-top: 1px solid #eee;
+    padding: 12px 0;
+    .point {
+	    border: 1px solid rgba(0, 0, 0, 0.1);
+	    border-radius: 3px;
+	    float: left;
+	    font-size: 13px;
+	    font-weight: 600;
+	    margin-right: 15px;
+	    padding: 0;
+	    text-align: center;
+	    width: 35px;
+	}
+	&.negative .point{
+		background: #FFD5D5;
+	}
+	&.positive .point{
+		background: #D8F9DB;
+	}
+	.time {
+	    color: #777;
+	    display: block;
+	    float: right;
+	    margin-left: 15px;
+	}
+	.info {
+	    display: block;
+	    overflow: hidden;
+	    white-space: nowrap;
+	}
+	.ap-reputation-event{
+	    display: block;
+	    float: left;
+	    margin-right: 10px;
+	    width: 110px;
+	}
 }

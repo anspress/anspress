@@ -89,7 +89,7 @@ class AnsPress_BP
 		
 		$reputation = ap_get_all_reputation($user_id);
     	echo '<div id="anspress">';
-	    include ap_get_theme_location('user-reputation.php');
+	    include ap_get_template_part('user/reputation');
 	    echo '</div>';
 	}
 
