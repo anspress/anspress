@@ -15,9 +15,9 @@
 			while ( ap_reputations() ) : ap_the_reputation();
 				ap_get_template_part('user/reputation-content');
 			endwhile;
-
+			ap_pagination(false, anspress()->reputations->total_pages);
 		}else{
-			_e('No users found');
+			_e('No reputation earned yet.', 'ap');
 		}
 
 	?>

@@ -22,6 +22,7 @@ class AP_Reputation {
 			return;
 		
 		ap_register_user_page('reputation', __('Reputation', 'ap'), array($this, 'reputation_page'));
+		add_filter('ap_user_menu', array($this, 'sort_reputation_page'));
 
 		add_action('ap_after_new_question', array($this, 'new_question'));
 		add_action('ap_untrash_question', array($this, 'new_question'));
@@ -48,6 +49,14 @@ class AP_Reputation {
 
 	public function reputation_page(){
         ap_get_template_part('user/reputation');
+    }
+
+    public function sort_reputation_page($menu)
+    {
+    	if(isset($menu['reputation']))
+    		$menu['reputation']['order'] = 12;
+    	
+    	return $menu;
     }
 	
 	/**
@@ -391,7 +400,7 @@ class AnsPress_Reputation
 	{
 		global $wpdb;
 
-		$query = $wpdb->prepare("SELECT SQL_CALC_FOUND_ROWS v.apmeta_id as id,v.apmeta_userid as user_id, v.apmeta_actionid as action_id, v.apmeta_value as reputation, v.apmeta_param as event, v.apmeta_date as rep_date FROM ".$wpdb->prefix."ap_meta v WHERE v.apmeta_type='reputation' AND v.apmeta_userid = %d order by rep_date DESC LIMIT %d", $this->args['user_id'], $this->args['number']);
+		$query = $wpdb->prepare("SELECT SQL_CALC_FOUND_ROWS v.apmeta_id as id,v.apmeta_userid as user_id, v.apmeta_actionid as action_id, v.apmeta_value as reputation, v.apmeta_param as event, v.apmeta_date as rep_date FROM ".$wpdb->prefix."ap_meta v WHERE v.apmeta_type='reputation' AND v.apmeta_userid = %d order by rep_date DESC LIMIT %d,%d", $this->args['user_id'], $this->offset, $this->per_page);
 
 		$key = md5($query);
 
