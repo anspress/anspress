@@ -331,7 +331,7 @@ function ap_icon($name, $html = false){
 		'mute'				=> 'apicon-mute',
 		'unmute'			=> 'apicon-unmute',
 		'tag'				=> 'apicon-tag',
-		'history'				=> 'apicon-history',
+		'history'			=> 'apicon-history',
 		'image'				=> 'apicon-image',
 	);
 	
@@ -340,13 +340,13 @@ function ap_icon($name, $html = false){
 
 	if(isset($icons[$name]))
 		$icon = $icons[$name];
+	else
+		$icon = 'apicon-'.$name;
 
 	if($html)
 		return '<i class="'.$icon.'"></i> ';
 
 	return $icon;
-		
-	return '';
 }
 
 /**

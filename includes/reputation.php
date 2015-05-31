@@ -311,7 +311,14 @@ class AP_Reputation {
 }
 
 /**
- * Fetch user reputations from database
+ * User reputations loop
+ *
+ * Query wrapper for fetching reputations of a specific user by ID
+ * 
+ * @param array|string $args arguments passed to class.
+ *                           @param string $user_id WordPress user_id, default is current user_id
+ *                           @param integer $number Numbers of rows to fetch from database, default is 20
+ *                           @param integer $offset Rows to offset
  * @since 2.3
  */
 class AnsPress_Reputation
@@ -370,7 +377,7 @@ class AnsPress_Reputation
      * @access public
      * @var int
      */
-    var $per_page;
+    var $per_page = 20;
 
     var $total_pages = 1;
 
@@ -380,18 +387,19 @@ class AnsPress_Reputation
 
 	public function __construct($args = '')
 	{
-		$this->per_page = 20;
+
 		// grab the current page number and set to 1 if no page number is set
         $this->paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
     
         $this->offset = $this->per_page * ($this->paged - 1);
 
 		$this->args =  wp_parse_args( $args, array(
-            'user_id' 	=> get_current_user_id(),
+            'user_id' 	=> ap_get_displayed_user_id(),
             'number' 	=> $this->per_page,
-            'offset' 	=> $this->offset,
-            'sortby' 	=> 'date'
+            'offset' 	=> $this->offset
         ));
+
+        $this->per_page = $this->args['number'];
 
         $this->query();
 	}

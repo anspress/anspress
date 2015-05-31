@@ -12,52 +12,61 @@
 
 <?php while ( ap_users() ) : ap_the_user(); ?>
 	<div id="ap-user" class="ap-user clearfix" data-id="<?php ap_displayed_user_id(); ?>">
-		<?php
-
-			/*<div class="ap-profile-cover clearfix">
-					<div data-view="cover" class="ap-cover-bg" <?php ap_user_cover_style($user_id); ?>></div>
-					<div class="ap-profile-head clearfix">
-						
-						<div class="ap-user-summery">
-							<?php ap_follow_btn_html($user_id); ?>
-							<?php //ap_message_btn_html($user_id, $ap_user_data->display_name); ?>				
-							
-							<span class="ap-user-rank"><?php //echo ap_get_rank_title($user_id); ?></span>			
-						</div>
-						<div class="ap-cover-bottom">
-							
-						</div>
-					</div>		
-				</div>*/
-			?>
-
-			<!-- Start  ap-profile-lr -->
-			<div class="ap-user-lr row">
-				<div class="col-md-3 ap-user-left">
-					<div class="ap-user-info clearfix">
-						<div class="ap-user-avatar ap-pull-left">
-							<?php ap_user_the_avatar(100); ?>
-							<?php ap_avatar_upload_form(); ?>
-						</div>
-						<div class="ap-user-data no-overflow">
-							<a class="ap-user-name" href="<?php ap_user_the_link(); ?>"><?php ap_user_the_display_name(); ?></a>
-							<?php
-								/**
-								 * ACTION: ap_user_left_after_name
-								 */
-								do_action('ap_user_left_after_name');
-							?>
-						</div>					
-					</div>
-					<?php ap_user_menu(); ?>
+		<div class="ap-user-navigation clearfix">
+			<!--<div class="ap-user-info ">
+				<div class="ap-user-avatar ap-pull-left">
+					<?php ap_user_the_avatar(40); ?>
+					<?php ap_avatar_upload_form(); ?>
 				</div>
-				<div class="col-md-9 ap-user-right">					
-					<?php 
-						/* include proper user template */
-						ap_user_page();
+				<div class="ap-user-data no-overflow">
+					<a class="ap-user-name" href="<?php ap_user_the_link(); ?>"><?php ap_user_the_display_name(); ?></a>
+					<?php
+						/**
+						 * ACTION: ap_user_left_after_name
+						 */
+						do_action('ap_user_left_after_name');
 					?>
+				</div>					
+			</div>-->
+			<?php ap_user_menu(); ?>
+		</div>
+		<?php if(ap_active_user_page() == 'about'): ?>
+			<div class="ap-user-cover clearfix">
+
+			</div>
+			<div class="ap-user-head clearfix">
+				<div class="ap-user-avatar">
+					<?php ap_user_the_avatar(150); ?>
+					<?php ap_avatar_upload_form(); ?>
+				</div>
+				<a class="ap-user-name" href="<?php ap_user_the_link(); ?>"><?php ap_user_the_display_name(); ?></a>
+				<div class="ap-user-mini-status">
+					<span>22.6k Rep.</span>
+					<span>302 Answers</span>
+					<span>22 Questions</span>
+					<span>1.2k Followers</span>
+					<span>22 Following</span>
+				</div>
+				<?php if(ap_user_meta_exists('description')): ?>
+					<div class="ap-user-dscription">
+						<div class="ap-user-description-in">
+							<div id="user-summery">
+								<?php ap_user_the_meta('description'); ?>
+							</div>
+						</div>
+						<a href="#" data-action="ap_expand" data-expand="#user-summery"><?php echo ap_icon('ellipsis', true); ?></a>
+					</div>
+				<?php endif; ?>
+				<div class="ap-user-buttons clearfix">
+					<a href="#" class="ap-btn ap-btn-follow"><?php _e('Follow', 'ap'); ?></a>
+					<a href="#" class="ap-btn ap-btn-message"><?php _e('Message', 'ap'); ?></a>
 				</div>
 			</div>
-			<!-- End ap-profile-lr -->
+		<?php endif; ?>
+		<!-- Start  ap-profile-lr -->
+		<div class="ap-user-lr">				
+			<?php ap_user_page(); ?>
+		</div>
+		<!-- End ap-profile-lr -->
 	</div>
 <?php endwhile; ?>

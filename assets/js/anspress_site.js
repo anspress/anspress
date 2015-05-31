@@ -45,6 +45,7 @@
             this.tab();
             this.set_featured();
             this.modal();
+            this.expand();
         },
         doAjax: function(query, success, context, before, abort) {
             /** Shorthand method for calling ajax */
@@ -537,6 +538,18 @@
 
             $('body').delegate('[data-action="ap_modal_close"]', 'click', function(e) {
                 $('.ap-modal').removeClass('open');
+            });
+        },
+        expand: function(){
+            $('body').delegate('[data-action="ap_expand"]', 'click', function(e) {
+                e.preventDefault();
+                var el = $(this).data('expand'),
+                    parent = $(el).parent();
+
+                $(parent).animate({ 'height' : $(el).height() });
+
+                $(this).hide();
+
             });
         }
     }

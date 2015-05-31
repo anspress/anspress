@@ -340,27 +340,56 @@ function ap_users_the_pagination(){
     ap_pagination($users_query->paged, $users_query->total_pages, $base);
 }
 
-function ap_user_get_the_meta($key = false, $user_id = false){
-    if(!$user_id)
-        $user_id = ap_user_get_the_ID();
-
-    $meta = get_user_meta( $user_id );
+/**
+ * Echo user meta
+ * @param  string           $key        user meta key
+ * @param  boolean|integer  $user_id    user id
+ */
+function ap_user_the_meta($key, $user_id = false){
+    $meta = ap_user_get_the_meta($key, $user_id);
     
-    if(is_array($meta))
-        $meta = array_map('ap_meta_array_map', $meta) ;
-
-    $obj = ap_user_the_object($user_id);
-
-    $meta['user_login']         = $obj->user_login;
-    $meta['user_nicename']      = $obj->user_nicename;
-    $meta['user_email']         = $obj->user_email;
-    $meta['user_registered']    = $obj->user_registered;
-    $meta['display_name']       = $obj->display_name;
-
-    if($key !== false && !empty($meta[$key]))
-        return $meta[$key];
+    if(!is_array($meta))
+        echo ap_user_get_the_meta($key, $user_id);
+}
     
-    return $meta;
+    /**
+     * Get the user meta by key
+     * if key is false then all metas of user will be returned.
+     * 
+     * @param  boolean|string   $key        meta key
+     * @param  boolean|integer  $user_id    user id
+     * @return array|string     
+     */
+    function ap_user_get_the_meta($key = false, $user_id = false){
+        if(!$user_id)
+            $user_id = ap_user_get_the_ID();
+
+        $meta = get_user_meta( $user_id );
+        
+        if(is_array($meta))
+            $meta = array_map('ap_meta_array_map', $meta) ;
+
+        $obj = ap_user_the_object($user_id);
+
+        $meta['user_login']         = $obj->user_login;
+        $meta['user_nicename']      = $obj->user_nicename;
+        $meta['user_email']         = $obj->user_email;
+        $meta['user_registered']    = $obj->user_registered;
+        $meta['display_name']       = $obj->display_name;
+
+        if($key !== false && !empty($meta[$key]))
+            return $meta[$key];
+        
+        return $meta;
+    }
+
+function ap_user_meta_exists($key, $user_id = false){
+    $meta = ap_user_get_the_meta($key, $user_id);
+    
+    if(!is_array($meta))
+        return true;
+
+    return false;
 }
 
 /**

@@ -225,6 +225,14 @@ jQuery(document).ready(function() {
         e.preventDefault();
         jQuery(this).hide();
     });
+
+    if(jQuery('[data-action="ap_chart"]').length > 0){
+        jQuery('[data-action="ap_chart"]').each(function(index, el) {
+            var type = jQuery(this).data('type');
+            jQuery(this).peity(type);
+        });
+
+    }
 });
 
 function ap_chk_activity_scroll(e) {

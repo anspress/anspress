@@ -150,6 +150,13 @@ function is_ap_users(){
 	return false;
 }
 
+function is_ap_user(){
+	if(is_anspress() && get_query_var('ap_page')=='user')
+		return true;
+		
+	return false;
+}
+
 /**
  * Check if anspress categories page
  * @return boolean

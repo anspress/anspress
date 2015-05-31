@@ -240,7 +240,7 @@ function ap_user_menu()
 
     $userid             = ap_get_displayed_user_id();
     $active_user_page   = get_query_var('user_page');
-    $active_user_page   = $active_user_page ? $active_user_page : 'profile';
+    $active_user_page   = $active_user_page ? $active_user_page : 'activity';
 
     $menus = array();
 
@@ -268,32 +268,6 @@ function ap_user_menu()
             }
         }
         $o .= '</ul>';
-        echo $o;
-    }
-}
-
-function ap_user_page_menu()
-{
-    if (!is_my_profile()) {
-        return;
-    }
-
-    $userid = ap_get_displayed_user_id();
-    $user_page = get_query_var('user_page');
-    $user_page = $user_page ? $user_page : 'profile';
-
-    $menus = array();
-
-    /* filter for overriding menu */
-    $menus = apply_filters('ap_user_page_menu', $menus, $userid);
-
-    if (!empty($menus)) {
-        $o = '<ul class="ap-user-personal-menu ap-inline-list clearfix">';
-        foreach ($menus as $k => $m) {
-            $o .= '<li'.($user_page == $k ? ' class="active"' : '').'><a href="'.$m['link'].'" class="'.$m['icon'].' ap-user-menu-'.$k.'"'.(isset($m['attributes']) ? ' '.$m['attributes'] : '').'>'.$m['name'].'</a></li>';
-        }
-        $o .= '</ul>';
-
         echo $o;
     }
 }
@@ -337,7 +311,7 @@ function ap_user_page()
 function ap_active_user_page()
 {
     $user_page        = sanitize_text_field(get_query_var('user_page'));
-    return  $user_page ? $user_page : 'profile';
+    return  $user_page ? $user_page : 'activity';
 }
 
 /**

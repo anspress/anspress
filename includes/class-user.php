@@ -32,7 +32,7 @@ class AnsPress_User
         add_action('wp_ajax_ap_avatar_upload', array($this, 'avatar_upload'));
         add_filter( 'avatar_defaults' , array($this, 'default_avatar') );
         add_filter('get_avatar', array($this, 'get_avatar'), 10, 5);
-        //add_filter('ap_user_menu', array($this, 'ap_user_menu_icons'));
+        add_filter('ap_user_menu', array($this, 'ap_user_menu_icons'));
     }
 
     public function init_actions()
@@ -42,10 +42,13 @@ class AnsPress_User
         ap_register_page('user', __('User', 'ap'), array($this, 'user_page'), false);
 
         // Register user pages
+        ap_register_user_page('about', __('About', 'ap'), array($this, 'about_page'));
         ap_register_user_page('activity', __('Activity', 'ap'), array($this, 'activity_page'));
         ap_register_user_page('profile', __('Profile', 'ap'), array($this, 'profile_page'), true, false);
         ap_register_user_page('questions', __('Questions', 'ap'), array($this, 'questions_page'));
         ap_register_user_page('answers', __('Answers', 'ap'), array($this, 'answers_page'));
+
+        add_filter( 'ap_page_title', array($this, 'ap_page_title') );
     }
 
     public function users_page(){
@@ -61,6 +64,14 @@ class AnsPress_User
         }else{
             _e('No user found', 'ap');
         }
+    }
+
+    /**
+     * Output user about page
+     * @since 2.3
+     */
+    public function about_page(){        
+        ap_get_template_part('user/about');
     }
 
     /**
@@ -103,6 +114,36 @@ class AnsPress_User
         ap_get_answers(array('author' => ap_get_displayed_user_id()));
         include ap_get_theme_location('user/user-answers.php');
         wp_reset_postdata();
+    }
+
+    public function ap_page_title($title)
+    {
+        if(is_ap_user()){
+            
+            $active = ap_active_user_page();
+            $name = ap_user_get_the_display_name();
+            $my = ap_is_my_profile();
+
+            if('activity' == $active)
+                $title = $my ?  __('My activity', 'ap') : sprintf(__('%s\'s activity', 'ap'), $name);
+
+            elseif('profile' == $active)
+                $title = $my ?  __('My profile', 'ap') : sprintf(__('%s\'s profile', 'ap'), $name);
+
+            elseif('questions' == $active)
+                $title = $my ?  __('My questions', 'ap') : sprintf(__('%s\'s questions', 'ap'), $name);
+
+            elseif('answers' == $active)
+                $title = $my ?  __('My answers', 'ap') : sprintf(__('%s\'s answers', 'ap'), $name);
+
+            elseif('reputation' == $active)
+                $title = $my ?  __('My reputation', 'ap') : sprintf(__('%s\'s reputation', 'ap'), $name);
+
+            elseif('about' == $active)
+                $title = $my ?  __('About me', 'ap') : sprintf(__('%s', 'ap'), $name);
+        }
+
+        return $title;
     }
 
     /* For modifying WP_User_Query, if passed with a var ap_followers_query */
@@ -327,17 +368,23 @@ class AnsPress_User
      */
     public function ap_user_menu_icons($menus)
     {
-        if (isset($menus['profile'])) {
-            $menus['profile']['class'] = ap_icon('home');
-        }
+        if (isset($menus['about']))
+            $menus['about']['class'] = ap_icon('home');
 
-        if (isset($menus['questions'])) {
+        if (isset($menus['profile']))
+            $menus['profile']['class'] = ap_icon('board');
+
+        if (isset($menus['questions'])) 
             $menus['questions']['class'] = ap_icon('question');
-        }
 
-        if (isset($menus['answers'])) {
+        if (isset($menus['answers'])) 
             $menus['answers']['class'] = ap_icon('answer');
-        }
+
+        if (isset($menus['activity'])) 
+            $menus['activity']['class'] = ap_icon('pulse');
+
+        if (isset($menus['reputation'])) 
+            $menus['reputation']['class'] = ap_icon('reputation');        
 
         return $menus;
     }

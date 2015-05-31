@@ -221,7 +221,7 @@ class AnsPress_Theme
             echo '<link rel="alternate" type="application/rss+xml" title="'.__('Answers feed', 'ap').'" href="'.$a_feed.'" />';
         }
         
-        if(is_question()){
+        if(is_question() && get_query_var('ap_page') != 'base'){
             echo '<link rel="canonical" href="'.get_permalink(get_question_id()).'">';
             echo '<link rel="shortlink" href="'.wp_get_shortlink(get_question_id()).'" />';
         }
