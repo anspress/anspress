@@ -115,9 +115,8 @@
                    
                    if (typeof data.view !== 'undefined') {
                         $.each(data.view, function(i, view) {
-                            
-                            if(typeof data.view_html !== 'undefined' && html.is('[data-view="' + i + '"]')){
-                                var html = $(view);
+                            var html = $(view);
+                            if(typeof data.view_html !== 'undefined' && html.is('[data-view="' + i + '"]')){               
                                 html = html.children();
                                 $('[data-view="' + i + '"]').html(html);
                             }else{
