@@ -383,6 +383,9 @@ function ap_user_the_meta($key, $user_id = false){
         if(!isset($meta['__total_answers']))
             $meta['__total_answers'] = 0;
 
+        if(!isset($meta['__profile_views']))
+            $meta['__profile_views'] = 0;
+
         if($key !== false && !empty($meta[$key]))
             return $meta[$key];
         else
