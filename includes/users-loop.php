@@ -302,8 +302,8 @@ function ap_user_the_avatar($size = 40){
 
     /**
      * Retrive active user avatar
-     * @param  integer $size height and width of avatar
-     * @return string return avatar <img> tag
+     * @param  integer      $size       height and width of avatar
+     * @return string       return avatar <img> tag
      */
     function ap_user_get_the_avatar($size = 40){
         if(is_ap_users() && 40 == $size)
@@ -314,7 +314,7 @@ function ap_user_the_avatar($size = 40){
 
 /**
  * Echo active user reputation
- * @param  boolean $short Shorten count like 2.8k
+ * @param  boolean      $short      Shorten count like 2.8k
  */
 function ap_user_the_reputation($short = true){
     echo ap_user_get_the_reputation($short);
@@ -377,8 +377,16 @@ function ap_user_the_meta($key, $user_id = false){
         $meta['user_registered']    = $obj->user_registered;
         $meta['display_name']       = $obj->display_name;
 
+        if(!isset($meta['__total_questions']))
+            $meta['__total_questions'] = 0;
+
+        if(!isset($meta['__total_answers']))
+            $meta['__total_answers'] = 0;
+
         if($key !== false && !empty($meta[$key]))
             return $meta[$key];
+        else
+            return;
         
         return $meta;
     }

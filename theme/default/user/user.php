@@ -41,9 +41,9 @@
 				</div>
 				<a class="ap-user-name" href="<?php ap_user_the_link(); ?>"><?php ap_user_the_display_name(); ?></a>
 				<div class="ap-user-mini-status">
-					<span>22.6k Rep.</span>
-					<span>302 Answers</span>
-					<span>22 Questions</span>
+					<span><?php printf(__('%s Rep.', 'ap'), ap_user_get_the_reputation()); ?></span>
+					<span><?php printf(__('%d Answers', 'ap'), ap_user_get_the_meta('__total_answers')); ?></span>
+					<span><?php printf(__('%d Questions', 'ap'), ap_user_get_the_meta('__total_questions')); ?></span>
 					<span>1.2k Followers</span>
 					<span>22 Following</span>
 				</div>

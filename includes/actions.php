@@ -77,6 +77,8 @@ class AnsPress_Actions
 		//update answer count
 		update_post_meta($post_id, ANSPRESS_ANS_META, '0');
 
+		ap_update_user_questions_count_meta($post_id);
+
 		/**
 		 * ACTION: ap_after_new_question
 		 * action triggered after inserting a question
@@ -113,6 +115,8 @@ class AnsPress_Actions
 		update_post_meta($question->ID, ANSPRESS_ANS_META, $current_ans);
 		
 		update_post_meta($post_id, ANSPRESS_BEST_META, 0);
+
+		ap_update_user_answers_count_meta($post_id);
 		
 		/**
 		 * ACTION: ap_after_new_answer
