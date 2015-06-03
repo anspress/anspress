@@ -354,7 +354,7 @@ class AnsPress_User
         if(strpos($avatar, 'ANSPRESS_AVATAR_SRC') !== false){
             $display_name = ap_user_display_name(array('user_id' => $id_or_email));
 
-            return '<span data-view="user_avatar_'.$id_or_email.'"><img data-cont="avatar_' . $id_or_email . '" alt="' . $alt . '" data-name="' . $display_name . '" data-height="' . $size . '" data-width="' . $size . '" data-char-count="1" class="ap-dynamic-avatar"/></span>';
+            return '<span data-view="user_avatar_'.$id_or_email.'"><span data-cont="avatar_' . $id_or_email . '" alt="' . $alt . '" class="ap-dynamic-avatar letter-'.strtolower(substr($display_name, 0, 1)).'" style="height: '.$size.'px; width: '.$size.'px;line-height: '.$size.'px;">'.substr($display_name, 0, 2).'</span></span>';
         }
 
         return $avatar;

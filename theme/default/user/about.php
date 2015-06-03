@@ -90,7 +90,6 @@
 				<li><?php echo ap_icon('history', true); ?><?php printf(__('Member for %s', 'ap'), ap_user_get_member_for()); ?></li>
 				<li><?php echo ap_icon('eye', true); ?><?php printf(__('%d profile views', 'ap'), ap_user_get_the_meta('__profile_views')); ?></li>
 				<li><?php echo ap_icon('clock', true); ?><?php printf(__('Last seen %s ago', 'ap'), ap_human_time(ap_user_get_the_meta('__last_active'), false)); ?></li>
-				<li><?php echo ap_icon('calendar', true); ?> Visited 186 days, 11 consecutive </li>
 			</ul>
 			<h3 class="ap-widget-title">Followers (1.2k)<a href="#" class="ap-pull-right">View all</a></h3>
 			<div class="ap-followers-widget">				

@@ -173,13 +173,6 @@ jQuery(document).ready(function() {
         jQuery(this).css(width, 'auto');
     });
 
-
-    jQuery('.ap-dynamic-avatar').initial({fontSize:15, fontWeight:600});
-    jQuery( document ).ajaxComplete(function( event, data, settings ) {
-        jQuery('.ap-dynamic-avatar').initial({fontSize:15, fontWeight:600});
-    });
-
-
     jQuery('#answers .answer').waypoint(function(direction, pos) {
         jQuery('#answers .answer').removeClass('active');
         var total = parseInt(jQuery('[data-view="ap_answer_nav_total"]').text());

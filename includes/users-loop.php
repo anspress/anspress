@@ -400,7 +400,7 @@ function ap_user_the_meta($key, $user_id = false){
 function ap_user_meta_exists($key, $user_id = false){
     $meta = ap_user_get_the_meta($key, $user_id);
     
-    if(!is_array($meta))
+    if(!empty($meta))
         return true;
 
     return false;
