@@ -22,22 +22,26 @@
 			<a class="ap-users-avatar" href="<?php ap_user_the_link(); ?>">
 				<?php ap_user_the_avatar()  ?>
 			</a>
-			<div class="no-overflow">
-				<a class="ap-users-name" href="<?php ap_user_the_link(); ?>"><?php ap_user_the_display_name(); ?></a>
-			</div>
 		</div>
-		<div class="ap-users-metas clearfix">
-			<?php if(!ap_opt('disable_reputation')): ?>
-				<a class="ap-users-metas-rep" href="<?php echo ap_user_link(ap_user_get_the_ID(), 'points'); ?>" title="<?php _e('Reputation', 'ap') ?>"><span data-view="ap-points"><?php ap_user_the_reputation(); ?></span> <?php _e('Rep'); ?></a>
-			<?php endif; ?>
-			<?php 
-	            /**
-	             * ACTION: ap_users_loop_meta
-	             * Used to hook into loop item meta
-	             * @since 2.1.0
-	             */
-	            do_action('ap_users_loop_meta'); 
-	        ?>
+		<div class="no-overflow clearfix">
+			<a class="ap-users-name" href="<?php ap_user_the_link(); ?>"><?php ap_user_the_display_name(); ?></a>
+			<div class="ap-users-mini-status">
+				<span><?php printf(__('%s Rep.', 'ap'), ap_user_get_the_reputation()); ?></span>
+				<span><?php printf(__('%d Answers', 'ap'), ap_user_get_the_meta('__total_answers')); ?></span>
+				<span><?php printf(__('%d Questions', 'ap'), ap_user_get_the_meta('__total_questions')); ?></span>
+				<?php 
+		            /**
+		             * ACTION: ap_users_loop_meta
+		             * Used to hook into loop item meta
+		             * @since 2.1.0
+		             */
+		            do_action('ap_users_loop_meta'); 
+		        ?>
+	        </div>
+	        <div class="ap-users-buttons clearfix">
+				<a href="#" class="ap-btn ap-btn-follow"><?php _e('Follow', 'ap'); ?></a>
+				<a href="#" class="ap-btn ap-btn-message"><?php _e('Message', 'ap'); ?></a>
+			</div>
 		</div>
 	</div>
 </div>

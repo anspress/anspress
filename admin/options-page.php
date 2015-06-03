@@ -368,7 +368,7 @@ class AnsPress_Options_Page
 			
 			array(
 				'name' => 'anspress_opt[users_page_avatar_size]',
-				'label' => __('Users avatar size', 'ap') ,
+				'label' => __('Users page avatar size', 'ap') ,
 				'desc' => __('Set user avatar size for users page item.', 'ap') ,
 				'type' => 'number',
 				'value' => $settings['users_page_avatar_size'],

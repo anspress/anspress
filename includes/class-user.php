@@ -47,6 +47,7 @@ class AnsPress_User
         ap_register_user_page('profile', __('Profile', 'ap'), array($this, 'profile_page'), true, false);
         ap_register_user_page('questions', __('Questions', 'ap'), array($this, 'questions_page'));
         ap_register_user_page('answers', __('Answers', 'ap'), array($this, 'answers_page'));
+        ap_register_user_page('followers', __('Followers', 'ap'), array($this, 'followers_page'));
 
         add_filter( 'ap_page_title', array($this, 'ap_page_title') );
     }
@@ -116,6 +117,10 @@ class AnsPress_User
         wp_reset_postdata();
     }
 
+    public function followers_page(){
+        include ap_get_theme_location('user/followers.php');
+    }
+
     public function ap_page_title($title)
     {
         if(is_ap_user()){
@@ -141,6 +146,9 @@ class AnsPress_User
 
             elseif('about' == $active)
                 $title = $my ?  __('About me', 'ap') : sprintf(__('%s', 'ap'), $name);
+
+            elseif('followers' == $active)
+                $title = $my ?  __('My followers', 'ap') : sprintf(__('%s\'s followers', 'ap'), $name);
         }
 
         return $title;

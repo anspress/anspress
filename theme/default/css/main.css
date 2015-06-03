@@ -1383,13 +1383,13 @@
 #anspress .ap-display-meta-item i {
   font-style: normal;
 }
-.ap-list-head {
+#anspress .ap-list-head {
   background: none repeat scroll 0 0 #f8f8f8;
   border: 1px solid #eee;
   border-radius: 3px;
   padding: 14px;
 }
-.ap-list-head .ap-btn-ask {
+#anspress .ap-list-head .ap-btn-ask {
   float: right;
   background: #f14f4f;
   border-radius: 2px;
@@ -1397,7 +1397,7 @@
   margin-left: 15px;
   padding: 5px 10px;
 }
-.ap-list-head .ap-btn-ask:visited {
+#anspress .ap-list-head .ap-btn-ask:visited {
   color: #fff;
 }
 .tooltipster-default.ap-tip-style {
@@ -2565,6 +2565,9 @@
   display: block;
   box-shadow: none;
 }
+#anspress .ap-user-avatar .ap-dynamic-avatar {
+  border-radius: 50%;
+}
 #anspress .ap-user-name {
   display: block;
   font-weight: 600;
@@ -3108,19 +3111,56 @@
   margin: 0;
   display: block;
 }
-.ap-users-item {
+#anspress .ap-users-loop {
+  margin: 0 -5px;
+}
+#anspress .ap-users-item {
   float: left;
-  width: 25%;
-  padding: 10px;
+  width: 33.33%;
+  padding: 5px;
 }
-.ap-users-inner {
-  text-align: center;
-}
-.ap-users-name {
+#anspress .ap-users-name {
+  display: block;
+  font-size: 14px;
   font-weight: 600;
+  margin-bottom: 4px;
+  white-space: nowrap;
+  color: #333333;
 }
-.ap-users-avatar img {
-  border-radius: 50%;
+#anspress .ap-users-summary {
+  float: left;
+  margin-right: 15px;
+}
+#anspress .ap-users .avatar,
+#anspress .ap-users .ap-dynamic-avatar {
+  display: block;
+}
+#anspress .ap-users-mini-status {
+  font-size: 13px;
+}
+#anspress .ap-users-mini-status span {
+  border-right: 1px solid #ddd;
+  margin-right: 5px;
+  padding-right: 5px;
+}
+#anspress .ap-users-mini-status span:last-child {
+  border-right: none;
+  padding-right: 0;
+  margin-right: 0;
+}
+#anspress .ap-users-buttons {
+  margin-top: 10px;
+}
+#anspress .ap-users-buttons .ap-btn {
+  display: inline-block;
+  font-size: 11px;
+  padding: 0 9px;
+}
+#anspress .ap-users-inner {
+  border: 1px solid #eaeaea;
+  border-radius: 2px;
+  min-height: 110px;
+  padding: 7px;
 }
 .ap-user-posts h3 {
   border-bottom: 2px solid #eee;

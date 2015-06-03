@@ -306,7 +306,7 @@ function ap_user_the_avatar($size = 40){
      * @return string       return avatar <img> tag
      */
     function ap_user_get_the_avatar($size = 40){
-        if(is_ap_users() && 40 == $size)
+        if(is_ap_users())
             $size = ap_opt('users_page_avatar_size');
 
         return get_avatar( ap_user_get_the_ID(), $size );
