@@ -109,6 +109,18 @@ class AP_Users_Query
                         $args['order']      = 'DESC';
                         break;
                     
+                    case 'active':                   
+                        $args['ap_query']    = 'user_sort_by_active';
+                        $args['orderby']    = 'meta_value date';
+                        $args['order']      = 'ASC';
+                        $args['meta_query'] = array(
+                            array(
+                                'key' => '__last_active'                            
+                            )
+                        );
+                        
+                        break;
+
                     default:                   
                         $args['ap_query']    = 'user_sort_by_reputation';
                         $args['orderby']    = 'meta_value';
