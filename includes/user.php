@@ -599,3 +599,44 @@ function ap_update_user_answers_count_meta($answer_id){
     if($post->post_type == 'answer')
         update_user_meta( $post->post_author, '__total_answers', ap_user_answer_count($post->post_author) );
 }
+
+function ap_user_get_28_days_reputation($user_id = false, $format = 'string'){
+
+    if($user_id === false)
+        $user_id = ap_get_displayed_user_id();
+
+    global $wpdb;
+    
+    $current_time = current_time('mysql');
+
+    $query = $wpdb->prepare("SELECT sum(v.apmeta_value) as points, DAY(v.apmeta_date) as day FROM ".$wpdb->prefix."ap_meta v WHERE v.apmeta_type='reputation' AND v.apmeta_userid = %d AND v.apmeta_date BETWEEN %s - INTERVAL 28 DAY AND %s group by DAY(v.apmeta_date)", $user_id, $current_time, $current_time);
+
+    $key = md5($query);
+
+    $result = wp_cache_get( $key, 'ap');
+
+    if($result === false){
+        $result = $wpdb->get_results($query);
+        wp_cache_set( $key, $result, 'ap' );
+    }
+    
+    $days = array();
+    
+    for ($i=0; $i<30; $i++)
+    {
+        $days[date("d", strtotime($i." days ago"))] = 0;
+    }
+
+    if($result)
+        foreach ($result as $reputation) {
+            $days[$reputation->day]  = $reputation->points;
+        }
+
+    if($format == 'string')
+        return implode(',', $days);
+    
+    elseif($format == 'object')
+        return (object) $days;
+
+    return $days;
+}

@@ -725,7 +725,7 @@ function ap_get_reputation($uid = false, $short = false) {
 	if(!$uid)
 		$uid = get_current_user_id();
 		
-	$reputation = get_user_meta($uid, 'ap_reputation', true) + get_user_meta($uid, 'ap_points', true);
+	$reputation = get_user_meta($uid, 'ap_reputation', true);
 	
 	if ($reputation == '') {
 		return 0;

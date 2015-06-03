@@ -16,10 +16,10 @@
 					<div class="ap-about-rep clearfix">
 						<div class="ap-pull-left">
 							<span class="ap-about-rep-label"><?php _e('Total', 'ap'); ?></span>
-							<span class="ap-about-rep-count">22.6k</span>
+							<span class="ap-about-rep-count"><?php ap_user_the_reputation(); ?></span>
 						</div>
 						<div class="ap-about-rep-chart">
-							<span data-action="ap_chart" data-type="bar" data-peity='{"fill" : ["#8fc77e"], "height": 45, "width": "100%"}'>1,2,3,6,5,9,7,4,0,0,3,0,5,9,7,3,5,6,3,5,9,8,6,4,5,9,7,3,5,6,0</span>		
+							<span data-action="ap_chart" data-type="bar" data-peity='{"fill" : ["#8fc77e"], "height": 45, "width": "100%"}'><?php echo ap_user_get_28_days_reputation(); ?></span>		
 						</div>
 						<div class="ap-user-rep">
 							<?php
