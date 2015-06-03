@@ -386,6 +386,9 @@ function ap_user_the_meta($key, $user_id = false){
         if(!isset($meta['__profile_views']))
             $meta['__profile_views'] = 0;
 
+        if(!isset($meta['__last_active']))
+            $meta['__last_active'] = $obj->user_registered;
+
         if($key !== false && !empty($meta[$key]))
             return $meta[$key];
         else

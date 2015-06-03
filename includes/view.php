@@ -40,6 +40,10 @@ class anspress_view {
 	}
 
 	public function insert_views($template){
+		//Log current time as user meta, so later we can check when user was active.
+		if(is_user_logged_in())
+			update_user_meta( get_current_user_id(), '__last_active', current_time('mysql'));
+
 		if(is_question())		
 			ap_insert_views(get_question_id(), 'question');
 		if(is_ap_user() && ap_get_displayed_user_id() != get_current_user_id() && ap_get_displayed_user_id())		
@@ -85,7 +89,7 @@ function ap_insert_views($data_id, $type){
 
 		$view = $view+1;
 
-		update_user_meta( $data_id, '__profile_views', apply_filters('ap_insert_views', $view ));
+		update_user_meta( $data_id, '__profile_views', apply_filters('ap_insert_views', $view ));		
 
 		do_action('after_insert_views', $data_id, $view);
 
