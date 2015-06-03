@@ -600,7 +600,15 @@ function ap_update_user_answers_count_meta($answer_id){
         update_user_meta( $post->post_author, '__total_answers', ap_user_answer_count($post->post_author) );
 }
 
-function ap_user_get_28_days_reputation($user_id = false, $format = 'string'){
+/**
+ * Get last 28 days reputation earned by user group by day.
+ * This data is used in bard chart
+ * 
+ * @param  boolean|integer      $user_id    WordPress user ID if false @see ap_get_displayed_user_id() will be used
+ * @param  boolean              $object     Return object or string
+ * @return string|object
+ */
+function ap_user_get_28_days_reputation($user_id = false, $object = false){
 
     if($user_id === false)
         $user_id = ap_get_displayed_user_id();
@@ -609,7 +617,7 @@ function ap_user_get_28_days_reputation($user_id = false, $format = 'string'){
     
     $current_time = current_time('mysql');
 
-    $query = $wpdb->prepare("SELECT sum(v.apmeta_value) as points, DAY(v.apmeta_date) as day FROM ".$wpdb->prefix."ap_meta v WHERE v.apmeta_type='reputation' AND v.apmeta_userid = %d AND v.apmeta_date BETWEEN %s - INTERVAL 28 DAY AND %s group by DAY(v.apmeta_date)", $user_id, $current_time, $current_time);
+    $query = $wpdb->prepare("SELECT sum(v.apmeta_value) as points, date_format(v.apmeta_date, '%%m.%%d') as day FROM ".$wpdb->prefix."ap_meta v WHERE v.apmeta_type='reputation' AND v.apmeta_userid = %d AND v.apmeta_date BETWEEN %s - INTERVAL 28 DAY AND %s group by date_format(v.apmeta_date,'%%m.%%d')", $user_id, $current_time, $current_time);
 
     $key = md5($query);
 
@@ -622,9 +630,9 @@ function ap_user_get_28_days_reputation($user_id = false, $format = 'string'){
     
     $days = array();
     
-    for ($i=0; $i<30; $i++)
+    for ($i=0; $i<28; $i++)
     {
-        $days[date("d", strtotime($i." days ago"))] = 0;
+        $days[date("m.d", strtotime($i." days ago"))] = 0;
     }
 
     if($result)
@@ -632,11 +640,10 @@ function ap_user_get_28_days_reputation($user_id = false, $format = 'string'){
             $days[$reputation->day]  = $reputation->points;
         }
 
-    if($format == 'string')
+    $days = array_reverse($days);
+
+    if($object === false)
         return implode(',', $days);
     
-    elseif($format == 'object')
-        return (object) $days;
-
-    return $days;
+    return (object) $days;
 }
