@@ -431,3 +431,36 @@ function ap_user_get_display_name_option($user_id = false){
 
     return $public_display;
 }
+
+function ap_user_get_member_for(){
+    $registered = new DateTime(ap_user_get_registered_date());
+    $now = new DateTime(current_time('mysql'));
+    $diff = date_diff($registered, $now);
+    
+    $time = '';
+
+    if($diff->y > 0)
+        $time .= sprintf(__('%d years, ', 'ap'), $diff->y);
+
+    if($diff->m > 0)
+        $time .= sprintf(__('%d months, ', 'ap'), $diff->m);
+
+    if($diff->d > 0)
+        $time .= sprintf(__('%d days', 'ap'), $diff->d);
+
+    return $time;
+}
+
+/**
+ * Get users registartion date
+ * @return string   Date
+ */
+function ap_user_get_registered_date(){
+    global $users_query;
+
+    if(!isset($users_query->user))
+        return ap_get_displayed_user_id();
+
+    $user = $users_query->user;
+    return $user->data->user_registered;
+}

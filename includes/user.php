@@ -89,6 +89,24 @@ function ap_user_best_answer_count($user_id)
     return apply_filters('ap_user_best_answer_count', $count, $user_id);
 }
 
+function ap_user_solved_answer_count($user_id)
+{
+    global $wpdb;
+    $query = $wpdb->prepare("SELECT count(DISTINCT pm.post_id) FROM $wpdb->postmeta pm JOIN $wpdb->posts p ON (p.ID = pm.post_id) WHERE pm.meta_key = '".ANSPRESS_SELECTED_META."' AND pm.meta_value is not null AND pm.meta_value != 0 AND p.post_type = 'question' AND p.post_author = %d", $user_id);
+
+    $key = md5($query);
+    $cache = wp_cache_get($key, 'count');
+
+    if ($cache === false) {
+        $count = $wpdb->get_var($query);
+        wp_cache_set($key, $count, 'count');
+    } else {
+        $count = $cache;
+    }
+
+    return apply_filters('ap_user_best_answer_count', $count, $user_id);
+}
+
 /**
  * For user display name
  * It can be filtered for adding cutom HTML
@@ -598,6 +616,26 @@ function ap_update_user_answers_count_meta($answer_id){
     
     if($post->post_type == 'answer')
         update_user_meta( $post->post_author, '__total_answers', ap_user_answer_count($post->post_author) );
+}
+
+/**
+ * Update users best answer count
+ * @param  integer $user_id     WordPress user ID
+ * @return void
+ * @since 2.3
+ */
+function ap_update_user_best_answers_count_meta($user_id = false){
+    if(!$user_id)
+        $user_id = get_current_user_id();
+
+    update_user_meta( $user_id, '__best_answers', ap_user_best_answer_count($user_id) );
+}
+
+function ap_update_user_solved_answers_count_meta($user_id = false){
+    if(!$user_id)
+        $user_id = get_current_user_id();
+
+    update_user_meta( $user_id, '__solved_answers', ap_user_solved_answer_count($user_id) );
 }
 
 /**

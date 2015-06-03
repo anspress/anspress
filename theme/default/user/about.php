@@ -85,9 +85,9 @@
 		</div>
 		<div class="col-md-4">
 			<ul class="ap-about-stats">
-				<li><?php echo ap_icon('answer', true); ?> 302 answers, 286 selected</li>
-				<li><?php echo ap_icon('question', true); ?> 22 question, 6 solved</li>
-				<li><?php echo ap_icon('history', true); ?> Member for 6 years, 4 months</li>
+				<li><?php echo ap_icon('answer', true); ?><?php printf(__('%d answers, %d selected', 'ap'), ap_user_get_the_meta('__total_answers'), ap_user_get_the_meta('__best_answers')); ?></li>
+				<li><?php echo ap_icon('question', true); ?><?php printf(__('%d questions, %d solved', 'ap'), ap_user_get_the_meta('__total_questions'), ap_user_get_the_meta('__solved_answers')); ?></li>
+				<li><?php echo ap_icon('history', true); ?><?php printf(__('Member for %s', 'ap'), ap_user_get_member_for()); ?></li>
 				<li><?php echo ap_icon('eye', true); ?> 320 profile views</li>
 				<li><?php echo ap_icon('clock', true); ?> Last seen 28 mins ago</li>
 				<li><?php echo ap_icon('calendar', true); ?> Visited 186 days, 11 consecutive </li>

@@ -208,17 +208,22 @@ class AnsPress_Ajax
 		$user_id = get_current_user_id();
 		
 		if(ap_question_best_answer_selected($post->post_parent)){
+			
 			do_action('ap_unselect_answer', $user_id, $post->post_parent, $post->ID);
+
 			update_post_meta($post->ID, ANSPRESS_BEST_META, 0);
+
 			update_post_meta($post->post_parent, ANSPRESS_SELECTED_META, false);
+
 			update_post_meta($post->post_parent, ANSPRESS_UPDATED_META, current_time( 'mysql' ));
 
 			if(ap_opt('close_after_selecting'))
 				wp_update_post( array('ID' => $post->post_parent, 'post_status' => 'publish') );
 
+			ap_update_user_best_answers_count_meta($user_id);
+			ap_update_user_solved_answers_count_meta($user_id);
+
 			ap_send_json( ap_ajax_responce(array('message' => 'unselected_the_answer', 'action' => 'unselected_answer', 'do' => 'reload')));
-
-
 
 		}else{
 			do_action('ap_select_answer', $user_id, $post->post_parent, $post->ID);
@@ -228,6 +233,9 @@ class AnsPress_Ajax
 
 			if(ap_opt('close_after_selecting'))
 				wp_update_post( array('ID' => $post->post_parent, 'post_status' => 'closed') );
+
+			ap_update_user_best_answers_count_meta($user_id);
+			ap_update_user_solved_answers_count_meta($user_id);
 
 			$html = ap_select_answer_btn_html($answer_id);
 			ap_send_json( ap_ajax_responce(array('message' => 'selected_the_answer', 'action' => 'selected_answer', 'do' => 'reload', 'html' => $html)));
