@@ -121,6 +121,30 @@ class AP_Users_Query
                         
                         break;
 
+                    case 'best_answer':                   
+                        $args['ap_query']    = 'user_sort_by_best_answer';
+                        $args['orderby']    = 'meta_value date';
+                        $args['order']      = 'ASC';
+                        $args['meta_query'] = array(
+                            array(
+                                'key' => '__best_answers'                            
+                            )
+                        );
+                        
+                        break;
+
+                    case 'answer':                   
+                        $args['ap_query']    = 'user_sort_by_answer';
+                        $args['orderby']    = 'meta_value date';
+                        $args['order']      = 'ASC';
+                        $args['meta_query'] = array(
+                            array(
+                                'key' => '__total_answers'                            
+                            )
+                        );
+                        
+                        break;
+
                     default:                   
                         $args['ap_query']    = 'user_sort_by_reputation';
                         $args['orderby']    = 'meta_value';

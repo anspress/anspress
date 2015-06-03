@@ -27,6 +27,7 @@
 			<a class="ap-users-name" href="<?php ap_user_the_link(); ?>"><?php ap_user_the_display_name(); ?></a>
 			<div class="ap-users-mini-status">
 				<span><?php printf(__('%s Rep.', 'ap'), ap_user_get_the_reputation()); ?></span>
+				<span><?php printf(__('%d Best', 'ap'), ap_user_get_the_meta('__best_answers')); ?></span>
 				<span><?php printf(__('%d Answers', 'ap'), ap_user_get_the_meta('__total_answers')); ?></span>
 				<span><?php printf(__('%d Questions', 'ap'), ap_user_get_the_meta('__total_questions')); ?></span>
 				<?php 
