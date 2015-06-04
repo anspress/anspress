@@ -3142,6 +3142,7 @@
   border-right: 1px solid #ddd;
   margin-right: 5px;
   padding-right: 5px;
+  white-space: nowrap;
 }
 #anspress .ap-users-mini-status span:last-child {
   border-right: none;

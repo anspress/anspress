@@ -118,7 +118,12 @@ class AnsPress_User
     }
 
     public function followers_page(){
-        include ap_get_theme_location('user/followers.php');
+        $followers = new AP_Users_Query(array('user_id' => ap_get_displayed_user_id(), 'sortby' => 'followers' ));
+        if( $followers->has_users() ){
+            include ap_get_theme_location('user/followers.php');
+        }else{
+            _e('No followers found', 'ap');
+        }
     }
 
     public function ap_page_title($title)
@@ -157,12 +162,14 @@ class AnsPress_User
     /* For modifying WP_User_Query, if passed with a var ap_followers_query */
     public function follower_query($query)
     {
-        if (isset($query->query_vars['ap_followers_query'])) {
+        if (isset($query->query_vars['ap_query']) && $query->query_vars['ap_query'] == 'user_sort_by_followers' && isset($query->query_vars['user_id'])) {
             global $wpdb;
 
             $query->query_from = $query->query_from." LEFT JOIN ".$wpdb->prefix."ap_meta M ON $wpdb->users.ID = M.apmeta_userid";
-            $userid = $query->query_vars['userid'];
-            $query->query_where = $query->query_where." AND M.apmeta_type = 'follow' AND M.apmeta_actionid = $userid";
+            
+            $userid = $query->query_vars['user_id'];
+
+            $query->query_where = $query->query_where." AND M.apmeta_type = 'follower' AND M.apmeta_actionid = $userid";
         }
 
         return $query;
@@ -392,7 +399,10 @@ class AnsPress_User
             $menus['activity']['class'] = ap_icon('pulse');
 
         if (isset($menus['reputation'])) 
-            $menus['reputation']['class'] = ap_icon('reputation');        
+            $menus['reputation']['class'] = ap_icon('reputation'); 
+
+        if (isset($menus['followers'])) 
+            $menus['followers']['class'] = ap_icon('users');        
 
         return $menus;
     }

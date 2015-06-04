@@ -145,6 +145,11 @@ class AP_Users_Query
                         
                         break;
 
+                    case 'followers':                   
+                        $args['ap_query']    = 'user_sort_by_followers';
+                        
+                        break;
+
                     default:                   
                         $args['ap_query']    = 'user_sort_by_reputation';
                         $args['orderby']    = 'meta_value';
@@ -228,9 +233,11 @@ class AP_Users_Query
      * Set up the current user inside the loop.
      */
     public function the_user() {
+        global $loop_user;
 
         $this->in_the_loop = true;
         $this->user      = $this->next_user();
+        $loop_user = $this->user;
 
         // loop has just started
         if ( 0 == $this->current_user ) {
@@ -272,12 +279,12 @@ function ap_the_user(){
 }
 
 function ap_user_the_object($user_id = false){
-    global $users_query;
+    global $loop_user;
 
-    if(!isset($users_query->user) && $user_id)
+    if(!isset($loop_user) && $user_id)
         return get_user_by( 'id', $user_id );
 
-    return $users_query->user;
+    return $loop_user;
 }
 
 /**
@@ -292,13 +299,11 @@ function ap_user_the_ID(){
      * @return integer
      */
     function ap_user_get_the_ID(){
-        global $users_query;
+        $obj = ap_user_the_object();
 
-        if(!isset($users_query->user))
+        if(!isset($obj))
             return ap_get_displayed_user_id();
-
-        $user = $users_query->user;
-        return $user->data->ID;
+        return $obj->ID;
     }
 
 /**

@@ -46,6 +46,7 @@
             this.set_featured();
             this.modal();
             this.expand();
+            this.follow();
         },
         doAjax: function(query, success, context, before, abort) {
             /** Shorthand method for calling ajax */
@@ -223,6 +224,9 @@
         },
         append: function(data) {
             if (typeof data.container !== 'undefined') $(data.container).append(data.html);
+        },
+        updateText: function(data) {
+            if (typeof data.container !== 'undefined') $(data.container).text(data.text);
         },
         updateHtml: function(data) {
             if (typeof data.container !== 'undefined') $(data.container).html(data.html);
@@ -550,7 +554,24 @@
                 $(this).hide();
 
             });
-        }
+        },
+        follow: function() {
+            $('[data-action="ap_follow"]').click(function(e) {
+                e.preventDefault();
+                AnsPress.site.showLoading(this);
+                var q = $(this).attr('data-query');
+                ApSite.doAjax(apAjaxData(q), function(data) {
+                    AnsPress.site.hideLoading(this);
+                    if (data.action == 'follow') {
+                        $(this).addClass('active');
+                    } else {
+                        $(this).removeClass('active');
+                    }
+                }, this, function() {
+                    $(this).toggleClass('active');
+                });
+            });
+        },
     }
 })(jQuery);
 

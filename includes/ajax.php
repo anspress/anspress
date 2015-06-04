@@ -28,11 +28,10 @@ class AnsPress_Ajax
 		add_action('ap_ajax_change_post_status', array($this, 'change_post_status'));
 		add_action('ap_ajax_load_user_field_form', array($this, 'load_user_field_form'));
 		add_action('ap_ajax_set_featured', array($this, 'set_featured'));
+		add_action('ap_ajax_follow', array($this, 'follow'));
 		
 		add_action('wp_ajax_ap_suggest_tags', array($this, 'ap_suggest_tags'));
 		add_action('wp_ajax_nopriv_ap_suggest_tags', array($this, 'ap_suggest_tags'));
-
-
     }
 
     
@@ -405,19 +404,6 @@ class AnsPress_Ajax
 		ap_send_json( ap_ajax_responce('something_wrong'));
 		die();
 	}
-
-	
-	public function check_email(){
-	   $email = sanitize_text_field($_POST['email']);
-
-	   /* use the email as the username */
-       if ( email_exists( $email ) || username_exists($email) )
-           echo 'false' ;
-		else
-			echo 'true';
-		
-		die();
-	}
 	
 	public function ap_suggest_tags(){
 		$keyword = sanitize_text_field($_POST['q']);
@@ -498,4 +484,39 @@ class AnsPress_Ajax
 		die();
 	}
 
+	public function follow()
+	{
+		
+		$user_to_follow 	= (int)$_POST['user_id'];
+		$current_user_id 	= get_current_user_id();
+
+		if(!wp_verify_nonce( $_POST['__nonce'], 'follow_'. $user_to_follow . '_' . $current_user_id ) ){
+			ap_send_json(ap_ajax_responce('something_wrong'));
+			return;
+		}
+
+		if(!is_user_logged_in()){
+			ap_send_json(ap_ajax_responce('please_login'));
+			return;
+		}
+
+		$is_following = ap_is_user_following($user_to_follow, $current_user_id);
+
+		if($is_following){
+			
+			ap_remove_follower($current_user_id, $user_to_follow);			
+
+			ap_send_json(ap_ajax_responce(array('message' => 'unfollow', 'action' => 'unfollow', 'container' => '#follow_'.$user_to_follow, 'do' => 'updateText', 'text' =>__('Follow', 'ap'))));
+
+			return;
+
+		}else{
+			
+			ap_add_follower($current_user_id, $user_to_follow);
+
+			ap_send_json(ap_ajax_responce(array('message' => 'follow', 'action' => 'follow', 'container' => '#follow_'.$user_to_follow, 'do' => 'updateText', 'text' => __('Unfollow', 'ap'))));
+
+		}
+
+	}
 }

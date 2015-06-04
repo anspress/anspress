@@ -40,7 +40,7 @@
 		        ?>
 	        </div>
 	        <div class="ap-users-buttons clearfix">
-				<a href="#" class="ap-btn ap-btn-follow"><?php _e('Follow', 'ap'); ?></a>
+				<?php ap_follow_button(ap_user_get_the_ID()); ?>
 				<a href="#" class="ap-btn ap-btn-message"><?php _e('Message', 'ap'); ?></a>
 			</div>
 		</div>

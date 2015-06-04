@@ -778,6 +778,8 @@ function ap_responce_message($id, $only_message = false)
 		'unset_featured_question' => array('type' => 'success', 'message' => __('Question is unmarked as featured.', 'ap')),
 		'upload_limit_crossed' => array('type' => 'warning', 'message' => __('You have already attached maximum numbers of allowed uploads.', 'ap')),
 		'profile_updated_successfully' => array('type' => 'success', 'message' => __('Your profile has been updated successfully.', 'ap')),
+		'unfollow' => array('type' => 'success', 'message' => __('Successfully unfollowed.', 'ap')),
+		'follow' => array('type' => 'success', 'message' => __('Successfully followed.', 'ap')),
 		);
 
 	/**
