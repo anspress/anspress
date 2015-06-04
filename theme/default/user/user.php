@@ -44,8 +44,8 @@
 					<span><?php printf(__('%s Rep.', 'ap'), ap_user_get_the_reputation()); ?></span>
 					<span><?php printf(__('%d Answers', 'ap'), ap_user_get_the_meta('__total_answers')); ?></span>
 					<span><?php printf(__('%d Questions', 'ap'), ap_user_get_the_meta('__total_questions')); ?></span>
-					<span>1.2k Followers</span>
-					<span>22 Following</span>
+					<span><?php printf(__('%d Followers', 'ap'), ap_user_get_the_meta('__total_followers')); ?></span>
+					<span><?php printf(__('%d Following', 'ap'), ap_user_get_the_meta('__total_following')); ?></span>
 				</div>
 				<?php if(ap_user_meta_exists('description')): ?>
 					<div class="ap-user-dscription">

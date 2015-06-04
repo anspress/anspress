@@ -49,8 +49,10 @@ class AnsPress_Actions
 		
 		add_filter( 'wp_insert_post_data', array($this, 'wp_insert_post_data'), 10, 2 );
 		add_filter( 'ap_form_contents_filter', array($this, 'sanitize_description') );		
-		add_action('safe_style_css', array($this, 'safe_style_css'), 11);
-		add_action('save_post', array($this, 'base_page_update'), 10, 2);
+		add_action( 'safe_style_css', array($this, 'safe_style_css'), 11);
+		add_action( 'save_post', array($this, 'base_page_update'), 10, 2);
+		add_action( 'ap_added_follower', array($this, 'ap_added_follower'), 10, 2);
+		add_action( 'ap_removed_follower', array($this, 'ap_added_follower'), 10, 2);
 
 	}
 
@@ -434,6 +436,21 @@ class AnsPress_Actions
 
 		if($post_id == ap_opt('base_page'))
 			ap_opt('ap_flush', 'true');
+	}
+
+	/**
+	 * Update total followers and following count meta
+	 * @param  integer  $user_to_follow
+	 * @param  integer  $current_user_id
+	 * @return void
+	 */
+	public function ap_added_follower($user_to_follow, $current_user_id)
+	{
+		// update total followers count meta
+		update_user_meta( $user_to_follow, '__total_followers', ap_followers_count($user_to_follow) );
+
+		// update total following count meta
+		update_user_meta( $current_user_id, '__total_following', ap_following_count($current_user_id) );
 	}
 
 }

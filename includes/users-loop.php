@@ -438,6 +438,12 @@ function ap_user_the_meta($key, $user_id = false){
         if(!isset($meta['__last_active']))
             $meta['__last_active'] = $obj->user_registered;
 
+        if(!isset($meta['__total_followers']))
+            $meta['__total_followers'] = 0;
+
+        if(!isset($meta['__total_following']))
+            $meta['__total_following'] = 0;
+
         if($key !== false && !empty($meta[$key]))
             return $meta[$key];
         else
