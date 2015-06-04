@@ -780,6 +780,7 @@ function ap_responce_message($id, $only_message = false)
 		'profile_updated_successfully' => array('type' => 'success', 'message' => __('Your profile has been updated successfully.', 'ap')),
 		'unfollow' => array('type' => 'success', 'message' => __('Successfully unfollowed.', 'ap')),
 		'follow' => array('type' => 'success', 'message' => __('Successfully followed.', 'ap')),
+		'cannot_follow_yourself' => array('type' => 'warning', 'message' => __('You cannot follow yourself.', 'ap')),
 		);
 
 	/**

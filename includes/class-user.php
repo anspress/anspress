@@ -48,19 +48,29 @@ class AnsPress_User
         ap_register_user_page('questions', __('Questions', 'ap'), array($this, 'questions_page'));
         ap_register_user_page('answers', __('Answers', 'ap'), array($this, 'answers_page'));
         ap_register_user_page('followers', __('Followers', 'ap'), array($this, 'followers_page'));
+        ap_register_user_page('following', __('Following', 'ap'), array($this, 'following_page'));
 
         add_filter( 'ap_page_title', array($this, 'ap_page_title') );
     }
 
     public function users_page(){
-        if(ap_opt('enable_users_directory'))
+        if(ap_opt('enable_users_directory')){
+
+            global $ap_user_query;        
+            $ap_user_query = ap_has_users();
             include ap_get_theme_location('users/users.php');
-        else
+
+        }else{
             _e('User directory is disabled.', 'ap');
+        }
     }
 
     public function user_page(){
-        if(ap_has_users(array('ID' => ap_get_displayed_user_id() ) )){
+        global $ap_user_query;
+        
+        $ap_user_query = ap_has_users(array('ID' => ap_get_displayed_user_id() ) );
+        
+        if($ap_user_query->has_users()){
             include ap_get_theme_location('user/user.php');
         }else{
             _e('No user found', 'ap');
@@ -118,12 +128,24 @@ class AnsPress_User
     }
 
     public function followers_page(){
-        $followers = new AP_Users_Query(array('user_id' => ap_get_displayed_user_id(), 'sortby' => 'followers' ));
-        if( $followers->has_users() ){
+        $followers = ap_has_users(array('user_id' => ap_get_displayed_user_id(), 'sortby' => 'followers' ));
+
+        if($followers->has_users())
             include ap_get_theme_location('user/followers.php');
-        }else{
+        else
             _e('No followers found', 'ap');
-        }
+        
+    }
+
+    public function following_page(){
+        $following = ap_has_users(array('user_id' => ap_get_displayed_user_id(), 'sortby' => 'following' ));
+
+        if($following->has_users())
+            include ap_get_theme_location('user/following.php');
+
+        else
+            _e('You are not following anyone.', 'ap');
+        
     }
 
     public function ap_page_title($title)
@@ -154,6 +176,9 @@ class AnsPress_User
 
             elseif('followers' == $active)
                 $title = $my ?  __('My followers', 'ap') : sprintf(__('%s\'s followers', 'ap'), $name);
+
+            elseif('following' == $active)
+                $title = __('Following', 'ap');
         }
 
         return $title;
@@ -177,12 +202,12 @@ class AnsPress_User
 
     public function following_query($query)
     {
-        if (isset($query->query_vars['ap_following_query'])) {
+        if (isset($query->query_vars['ap_query']) && $query->query_vars['ap_query'] == 'user_sort_by_following' && isset($query->query_vars['user_id'])) {
             global $wpdb;
 
             $query->query_from = $query->query_from." LEFT JOIN ".$wpdb->prefix."ap_meta M ON $wpdb->users.ID = M.apmeta_actionid";
-            $userid = $query->query_vars['userid'];
-            $query->query_where = $query->query_where." AND M.apmeta_type = 'follow' AND M.apmeta_userid = $userid";
+            $userid = $query->query_vars['user_id'];
+            $query->query_where = $query->query_where." AND M.apmeta_type = 'follower' AND M.apmeta_userid = $userid";
         }
 
         return $query;

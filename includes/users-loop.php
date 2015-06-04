@@ -11,7 +11,7 @@
  * @copyright 2014 Rahul Aryan
  */
 
-class AP_Users_Query
+class AP_user_query
 {
 /**
      * The loop iterator.
@@ -141,13 +141,15 @@ class AP_Users_Query
                             array(
                                 'key' => '__total_answers'                            
                             )
-                        );
-                        
+                        );                        
                         break;
 
                     case 'followers':                   
-                        $args['ap_query']    = 'user_sort_by_followers';
-                        
+                        $args['ap_query']    = 'user_sort_by_followers';                        
+                        break;
+
+                    case 'following':                   
+                        $args['ap_query']    = 'user_sort_by_following';                        
                         break;
 
                     default:                   
@@ -169,11 +171,11 @@ class AP_Users_Query
                 }
             }
 
-            $users_query = new WP_User_Query( $args );
-            $this->users = $users_query->results;        
+            $ap_user_query = new WP_User_Query( $args );
+            $this->users = $ap_user_query->results;        
 
             // count the number of users found in the query
-            $this->total_user_count = $users_query->get_total();
+            $this->total_user_count = $ap_user_query->get_total();
             $this->total_pages = ceil($this->total_user_count / $this->per_page);
 
             $this->user_count = count($this->users);
@@ -233,11 +235,11 @@ class AP_Users_Query
      * Set up the current user inside the loop.
      */
     public function the_user() {
-        global $loop_user;
+        global $ap_the_user;
 
-        $this->in_the_loop = true;
-        $this->user      = $this->next_user();
-        $loop_user = $this->user;
+        $this->in_the_loop  = true;
+        $this->user         = $this->next_user();
+        $ap_the_user        = $this->user;
 
         // loop has just started
         if ( 0 == $this->current_user ) {
@@ -249,6 +251,17 @@ class AP_Users_Query
         }
 
     }
+
+    public function is_main_query(){
+        global $ap_user_query;
+        return $ap_user_query === $this;
+    }
+
+    public function the_pagination()
+    {
+        $base = ap_get_link_to('users') . '/%_%';
+        ap_pagination($this->paged, $this->total_pages, $base);
+    }
 }
 
 /**
@@ -257,34 +270,30 @@ class AP_Users_Query
  * @return object
  */
 function ap_has_users($args = ''){
-    global $users_query;
-
     $sortby = ap_get_sort() != '' ? ap_get_sort() : 'reputation';
 
     $args = wp_parse_args( $args, array( 'sortby' => $sortby ) );
 
-    $users_query = new AP_Users_Query($args);
-
-    return $users_query->has_users();
+    return new AP_user_query($args);
 }
 
 function ap_users(){
-    global $users_query;    
-    return $users_query->users();
+    global $ap_user_query;    
+    return $ap_user_query->users();
 }
 
 function ap_the_user(){
-    global $users_query;     
-    return $users_query->the_user();  
+    global $ap_user_query;     
+    return $ap_user_query->the_user();  
 }
 
 function ap_user_the_object($user_id = false){
-    global $loop_user;
+    global $ap_the_user;
 
-    if(!isset($loop_user) && $user_id)
+    if(!isset($ap_the_user) && $user_id)
         return get_user_by( 'id', $user_id );
 
-    return $loop_user;
+    return $ap_the_user;
 }
 
 /**
@@ -299,11 +308,12 @@ function ap_user_the_ID(){
      * @return integer
      */
     function ap_user_get_the_ID(){
-        $obj = ap_user_the_object();
+        $user = ap_user_the_object();
 
-        if(!isset($obj))
+        if(!isset($user))
             return ap_get_displayed_user_id();
-        return $obj->ID;
+
+        return $user->data->ID;
     }
 
 /**
@@ -375,10 +385,8 @@ function ap_user_the_reputation($short = true){
  * @return string pagination html tag
  */
 function ap_users_the_pagination(){
-    global $users_query;
-
-    $base = ap_get_link_to('users') . '/%_%';
-    ap_pagination($users_query->paged, $users_query->total_pages, $base);
+    global $ap_user_query;
+    $ap_user_query->the_pagination();    
 }
 
 /**
@@ -503,11 +511,12 @@ function ap_user_get_member_for(){
  * @return string   Date
  */
 function ap_user_get_registered_date(){
-    global $users_query;
+    global $ap_user_query;
 
-    if(!isset($users_query->user))
+    if(!isset($ap_user_query->user))
         return ap_get_displayed_user_id();
 
-    $user = $users_query->user;
+    $user = $ap_user_query->user;
     return $user->data->user_registered;
 }
+

@@ -500,6 +500,11 @@ class AnsPress_Ajax
 			return;
 		}
 
+		if($user_to_follow == $current_user_id){
+			ap_send_json(ap_ajax_responce('cannot_follow_yourself'));
+			return;
+		}
+
 		$is_following = ap_is_user_following($user_to_follow, $current_user_id);
 
 		if($is_following){
