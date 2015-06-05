@@ -1011,12 +1011,6 @@
 #anspress .ap-tab li a:hover {
   background: #eeeeee;
 }
-#anspress .ap-widget-title {
-  font-size: 13px;
-  font-weight: 600;
-  margin-bottom: 5px;
-  margin-top: 0;
-}
 #anspress .block {
   display: block;
 }
@@ -2850,27 +2844,6 @@
   text-align: center;
   width: 25px;
 }
-#anspress .ap-followers-widget {
-  border: 1px solid #eee;
-  border-radius: 2px;
-  padding: 10px;
-}
-#anspress .ap-followers-widget ul {
-  margin: -5px;
-}
-#anspress .ap-followers-widget li {
-  margin: 0;
-  width: 20%;
-}
-#anspress .ap-followers-widget li a {
-  display: block;
-  padding: 5px;
-}
-#anspress .ap-followers-widget img {
-  box-shadow: none;
-  display: block;
-  max-width: 47px;
-}
 .ap-dynamic-avatar {
   background: none repeat scroll 0 0 #a3a3a3;
   border-radius: 2px;
@@ -3022,94 +2995,125 @@
   top: 10px;
   width: 22px;
 }
-#anspress .ap-widget-pos {
+#anspress .ap-widget-title {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 5px;
+  margin-top: 0;
+}
+.ap-widget-pos {
   margin-bottom: 25px;
 }
-#anspress .ap-stats-widget {
+.ap-widget-pos .ap-stats-widget {
   padding: 0;
   margin: 0;
   list-style: none;
   border: solid 1px #ddd;
   border-radius: 3px;
 }
-#anspress .ap-stats-widget li {
+.ap-widget-pos .ap-stats-widget li {
   border-bottom: 1px solid #eee;
   list-style: outside none none;
   margin: 0;
   padding: 10px;
   font-size: 13px;
 }
-#anspress .ap-stats-widget li .stat-value {
+.ap-widget-pos .ap-stats-widget li .stat-value {
   color: #888;
   float: right;
 }
-#anspress .ap-stats-widget li .stat-label {
+.ap-widget-pos .ap-stats-widget li .stat-label {
   font-size: 12px;
   font-weight: 600;
 }
-#anspress .ap-stats-widget li .stat-label:before {
+.ap-widget-pos .ap-stats-widget li .stat-label:before {
   color: #888;
   display: inline-block;
   width: 25px;
 }
-#anspress .ap-stats-widget li:last-child {
+.ap-widget-pos .ap-stats-widget li:last-child {
   border-bottom: none;
 }
-#anspress .ap-rq-widget .ap-rq-post {
+.ap-widget-pos .ap-rq-widget .ap-rq-post {
   border-bottom: 1px solid #f7f7f7;
   color: #888;
   display: block;
   margin-bottom: 0;
   padding: 10px 0;
 }
-#anspress .ap-rq-widget .ap-rq-post a {
+.ap-widget-pos .ap-rq-widget .ap-rq-post a {
   margin-bottom: 5px;
   display: block;
 }
-#anspress .ap-questions-widget .ap-question-item {
+.ap-widget-pos .ap-questions-widget .ap-question-item {
   border-bottom: 1px solid #f8f8f8;
   margin-bottom: 10px;
   padding-bottom: 10px;
 }
-#anspress .ap-questions-widget .ap-question-title {
+.ap-widget-pos .ap-questions-widget .ap-question-title {
   display: block;
   margin-bottom: 5px;
 }
-#anspress .ap-cat-wid {
+.ap-widget-pos .ap-cat-wid {
   list-style: none;
   padding: 0;
   margin: 0;
 }
-#anspress .ap-cat-wid > li {
+.ap-widget-pos .ap-cat-wid > li {
   border-bottom: 1px solid #eee;
   margin: 0;
   padding: 0;
 }
-#anspress .ap-cat-wid > li:last-child {
+.ap-widget-pos .ap-cat-wid > li:last-child {
   border-bottom: none;
 }
-#anspress .ap-cat-wid > li > a {
+.ap-widget-pos .ap-cat-wid > li > a {
   display: block;
   padding: 7px 2px;
 }
-#anspress .ap-cat-wid > li > a > span {
+.ap-widget-pos .ap-cat-wid > li > a > span {
   float: right;
 }
-#anspress .ap-cat-wid > li > a > i {
+.ap-widget-pos .ap-cat-wid > li > a > i {
   display: block;
   font-size: 13px;
   font-style: normal;
 }
-#anspress .ap-question-subscribers-inner {
+.ap-widget-pos .ap-question-subscribers-inner {
   margin: -5px;
 }
-#anspress .ap-question-subscribers a {
+.ap-widget-pos .ap-question-subscribers a {
   margin: 5px;
   display: inline-block;
 }
-#anspress .ap-question-subscribers a > img {
+.ap-widget-pos .ap-question-subscribers a > img {
   margin: 0;
   display: block;
+}
+.ap-widget-pos .ap-followers-widget {
+  border: 1px solid #eee;
+  border-radius: 2px;
+  padding: 10px;
+}
+.ap-widget-pos .ap-followers-widget ul {
+  margin: -5px -5px 0;
+}
+.ap-widget-pos .ap-followers-widget li {
+  margin: 0;
+  width: 20%;
+}
+.ap-widget-pos .ap-followers-widget li a {
+  display: block;
+  padding: 5px;
+}
+.ap-widget-pos .ap-followers-widget img {
+  box-shadow: none;
+  display: block;
+  max-width: 47px;
+}
+.ap-widget-pos .ap-widget-all-link {
+  display: block;
+  padding: 4px;
 }
 #anspress .ap-users-loop {
   margin: 0 -5px;

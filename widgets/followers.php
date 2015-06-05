@@ -9,23 +9,26 @@ class AP_followers_Widget extends WP_Widget {
 	public function widget( $args, $instance ) {
 		$title = apply_filters( 'widget_title', $instance['title'] );
 		$number = $instance['number'] ;
+		$avatar_size = $instance['avatar_size'] ;
 
 		echo $args['before_widget'];
 		if ( ! empty( $title ) ) {
 			echo $args['before_title'] . $title . $args['after_title'];
 		}
 		
-		$user_a = array(
-			'number'    	=> $number,
-			'ap_query'  	=> 'sort_points',
-			'meta_key'		=> 'ap_points',
-			'orderby' 		=> 'meta_value'
-		);
-		// The Query
-		$users = new WP_User_Query( $user_a );
-		include(ap_get_theme_location('users-widget.php'));
 		
-		
+		if(is_ap_user()){
+			$followers = ap_has_users(array('user_id' => ap_get_displayed_user_id(), 'sortby' => 'followers' ));
+	        if($followers->has_users()){
+	            include ap_get_theme_location('widgets/followers.php');            
+	        }
+	        else{
+	            _e('No followers yet', 'ap');
+	        }
+	    }else{
+	    	_e('This widget can only be used in user page.', 'ap');
+	    }
+				
 		echo $args['after_widget'];
 	}
 
@@ -34,13 +37,13 @@ class AP_followers_Widget extends WP_Widget {
 			$title = $instance[ 'title' ];
 		}
 		else {
-			$title = __( 'Users', 'ap' );
+			$title = __( 'Followers', 'ap' );
 		}
-		$avatar 		= 30;
-		$number 		= 5;
+		$avatar_size 		= 30;
+		$number 			= 20;
 		
-		if ( isset( $instance[ 'avatar' ] ) )
-			$avatar = $instance[ 'avatar' ];
+		if ( isset( $instance[ 'avatar_size' ] ) )
+			$avatar = $instance[ 'avatar_size' ];
 		
 		if ( isset( $instance[ 'number' ] ) ) 
 			$number = $instance[ 'number' ];
@@ -51,11 +54,11 @@ class AP_followers_Widget extends WP_Widget {
 			<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>">
 		</p>
 		<p>
-			<label for="<?php echo $this->get_field_id( 'avatar' ); ?>"><?php _e( 'Avatar:', 'ap' ); ?></label> 
-			<input class="widefat" id="<?php echo $this->get_field_id( 'avatar' ); ?>" name="<?php echo $this->get_field_name( 'avatar' ); ?>" type="text" value="<?php echo esc_attr( $avatar ); ?>">
+			<label for="<?php echo $this->get_field_id( 'avatar_size' ); ?>"><?php _e( 'Avatar size:', 'ap' ); ?></label> 
+			<input class="widefat" id="<?php echo $this->get_field_id( 'avatar_size' ); ?>" name="<?php echo $this->get_field_name( 'avatar_size' ); ?>" type="text" value="<?php echo esc_attr( $avatar_size ); ?>">
 		</p>
 		<p>
-			<label for="<?php echo $this->get_field_id( 'number' ); ?>"><?php _e( 'Show', 'ap' ); ?></label> 
+			<label for="<?php echo $this->get_field_id( 'number' ); ?>"><?php _e( 'Numbers of user to show:', 'ap' ); ?></label> 
 			<input class="widefat" id="<?php echo $this->get_field_id( 'number' ); ?>" name="<?php echo $this->get_field_name( 'number' ); ?>" type="text" value="<?php echo esc_attr( $number ); ?>">
 		</p>
 		<?php 
@@ -64,14 +67,15 @@ class AP_followers_Widget extends WP_Widget {
 	public function update( $new_instance, $old_instance ) {
 		$instance = array();
 		$instance['title'] = ( ! empty( $new_instance['title'] ) ) ? strip_tags( $new_instance['title'] ) : '';
-		$instance['number'] = ( ! empty( $new_instance['number'] ) ) ? strip_tags( $new_instance['number'] ) : 5;
+		$instance['number'] = ( ! empty( $new_instance['number'] ) ) ? strip_tags( $new_instance['number'] ) : 20;
+		$instance['avatar_size'] = ( ! empty( $new_instance['avatar_size'] ) ) ? strip_tags( $new_instance['avatar_size'] ) : 30;
 
 		return $instance;
 	}
 }
 
-function ap_users_register_widgets() {
+function ap_followers_register_widgets() {
 	register_widget( 'AP_followers_Widget' );
 }
 
-add_action( 'widgets_init', 'ap_users_register_widgets' );
+add_action( 'widgets_init', 'ap_followers_register_widgets' );

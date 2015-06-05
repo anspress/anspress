@@ -5,20 +5,13 @@
 			    <input name="ap_s" type="text" class="ap-form-control" placeholder="<?php _e('Search users...', 'ap'); ?>" value="<?php echo sanitize_text_field( get_query_var('ap_s') ); ?>" />
 			</form>
 			<?php ap_users_tab(); ?>
-		</div>
-		
+		</div>		
 
 		<div class="ap-users-loop clearfix">
-			<?php		
-				if(ap_has_users()){
-
-					while ( ap_users() ) : ap_the_user();
-						global $users_query;
-						include(ap_get_theme_location('users/loop-item.php'));
-					endwhile;
-				}else{
-					_e('No users found');
-				}
+			<?php
+				while ( ap_users() ) : ap_the_user();
+					include(ap_get_theme_location('users/loop-item.php'));
+				endwhile;
 			?>
 		</div>
 		<?php ap_users_the_pagination(); ?>

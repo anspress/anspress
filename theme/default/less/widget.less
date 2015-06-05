@@ -1,10 +1,15 @@
 //
 // widget styles
 // --------------------------------------------------
-#anspress{
-	.ap-widget-pos {
-	    margin-bottom: 25px;
-	}
+#anspress .ap-widget-title {
+	font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 5px;
+    margin-top: 0;
+}
+.ap-widget-pos{
+	margin-bottom: 25px;
+
 	.ap-stats-widget{
 		padding: 0;
 		margin:0;
@@ -100,5 +105,31 @@
 				display: block;
 			}
 		}
+	}
+	.ap-followers-widget{
+	    border: 1px solid #eee;
+	    border-radius: 2px;
+	    padding: 10px;
+		ul{
+			margin: -5px -5px 0;
+		}
+		li{
+		    margin: 0;
+		    width: 20%;
+			a{
+			    display: block;
+			    padding: 5px;
+			}
+		}
+
+		img{
+		    box-shadow: none;
+		    display: block;
+		    max-width: 47px;
+		}
+	}
+	.ap-widget-all-link{
+	    display: block;
+	    padding: 4px;
 	}
 }

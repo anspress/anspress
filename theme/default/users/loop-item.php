@@ -41,7 +41,6 @@
 	        </div>
 	        <div class="ap-users-buttons clearfix">
 				<?php ap_follow_button(ap_user_get_the_ID()); ?>
-				<a href="#" class="ap-btn ap-btn-message"><?php _e('Message', 'ap'); ?></a>
 			</div>
 		</div>
 	</div>

@@ -33,7 +33,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="ap-about-block">
+			<!--<div class="ap-about-block">
 				<h3><?php echo ap_icon('rank', true); ?> <?php _e('Ranks', 'ap'); ?></h3>
 				<div class="ap-about-description ap-about-block-c">
 					<ul class="ap-rank-list">
@@ -62,7 +62,7 @@
 						</li>
 					</ul>
 				</div>
-			</div>
+			</div>-->
 			<div class="ap-about-block">
 				<h3><?php echo ap_icon('thumbs-up-down', true); ?> <?php _e('Votes', 'ap'); ?></h3>
 				<div class="ap-about-block-c">		
@@ -91,15 +91,7 @@
 				<li><?php echo ap_icon('eye', true); ?><?php printf(__('%d profile views', 'ap'), ap_user_get_the_meta('__profile_views')); ?></li>
 				<li><?php echo ap_icon('clock', true); ?><?php printf(__('Last seen %s ago', 'ap'), ap_human_time(ap_user_get_the_meta('__last_active'), false)); ?></li>
 			</ul>
-			<h3 class="ap-widget-title">Followers (1.2k)<a href="#" class="ap-pull-right">View all</a></h3>
-			<div class="ap-followers-widget">				
-				<ul class="ap-ul-inline clearfix">
-					<?php $users = range(1, 20); $url = ANSPRESS_URL; ?>
-					<?php foreach($users as $user): ?>
-						<li><a href="#"><img src="<?php echo $url; ?>demo/128_<?php echo str_pad($user, 3, '0', STR_PAD_LEFT); ?>.jpg" /></a></li>
-					<?php endforeach; ?>
-				</ul>
-			</div>
+			<?php dynamic_sidebar( 'ap-user-about' ); ?>
 		</div>
 	</div>
 </div>

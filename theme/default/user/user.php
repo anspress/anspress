@@ -59,7 +59,6 @@
 				<?php endif; ?>
 				<div class="ap-user-buttons clearfix">
 					<?php ap_follow_button(ap_get_displayed_user_id()); ?>
-					<a href="#" class="ap-btn ap-btn-message"><?php _e('Message', 'ap'); ?></a>
 				</div>
 			</div>
 		<?php endif; ?>
