@@ -2,14 +2,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: AnsPress\n"
 "POT-Creation-Date: 2015-05-22 04:26-0300\n"
-"PO-Revision-Date: 2015-05-22 10:49-0300\n"
+"PO-Revision-Date: 2015-06-05 16:45-0300\n"
 "Last-Translator: \n"
 "Language-Team: Wp3.in <rah12@live.com>\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.8\n"
+"X-Generator: Poedit 1.8.1\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
@@ -535,7 +535,7 @@ msgstr "Recentes"
 #: admin/options-page.php:174 includes/functions.php:446
 #: includes/theme.php:536
 msgid "Oldest"
-msgstr "O mais antigo"
+msgstr "Mais antigo"
 
 #: admin/options-page.php:182
 msgid "Toggle"
@@ -1055,7 +1055,7 @@ msgstr "votos"
 #: includes/answer-loop.php:430 includes/question-loop.php:460
 #, php-format
 msgid "<time itemprop=\"datePublished\" datetime=\"%s\">%s Ago</time>"
-msgstr "<time itemprop=\"datePublished\" datetime=\"%s\">%s Atrás</time>"
+msgstr "<time itemprop=\"datePublished\" datetime=\"%s\">%s atrás</time>"
 
 #: includes/ask-form.php:51
 msgid "Update question"
@@ -1090,17 +1090,17 @@ msgstr "Respostas %s"
 #: includes/bp.php:141
 #, php-format
 msgid "%1$s asked a new <a href=\"AP_CPT_LINK\">question</a>"
-msgstr "%1$s fazer uma nova <a href=\"AP_CPT_LINK\">pergunta</a>"
+msgstr "%1$s fez uma nova <a href=\"AP_CPT_LINK\">pergunta</a>"
 
 #: includes/bp.php:142
 #, php-format
 msgid "%1$s asked a new <a href=\"AP_CPT_LINK\">question</a>, on the site %3$s"
-msgstr "%1$s fazer um anova<a href=\"AP_CPT_LINK\">pergunta</a>, no site %3$s"
+msgstr "%1$s fez uma nova<a href=\"AP_CPT_LINK\">pergunta</a>, no site %3$s"
 
 #: includes/bp.php:151
 #, php-format
 msgid "%1$s <a href=\"AP_CPT_LINK\">answered</a> a question"
-msgstr "%1$s <a href=\"AP_CPT_LINK\">respondeu</a> uma pergunta"
+msgstr "%1$s respondeu uma <a href=\"AP_CPT_LINK\"pergunta></a> "
 
 #: includes/bp.php:152
 #, php-format
@@ -1218,7 +1218,7 @@ msgstr "Está muito curto o mínimo de caracteres é %d"
 #: includes/class-validation.php:93
 #, php-format
 msgid "It must be minimum %d characters"
-msgstr "Deve conter no mínimo %d caracteres"
+msgstr "Deve conter no mínimo %d tags"
 
 #: includes/class-validation.php:100
 msgid "Not a valid email address"
@@ -2317,7 +2317,7 @@ msgstr "Mais ação"
 
 #: includes/theme.php:494
 msgid "Answered"
-msgstr "Respondeu"
+msgstr "Respondido"
 
 #: includes/theme.php:495 widgets/questions.php:56
 msgid "Unanswered"
@@ -2818,7 +2818,7 @@ msgstr "Ver todos os post por %s <span class=\"meta-nav\">&rarr;</span>"
 
 #: theme/default/question.php:87 widgets/question_stats.php:53
 msgid "Question stats"
-msgstr "Estatísticas de perguntas"
+msgstr "Estatísticas da pergunta"
 
 #: theme/default/user-reputation.php:9
 #, php-format
