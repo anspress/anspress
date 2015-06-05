@@ -396,9 +396,9 @@ function ap_users_the_pagination(){
  */
 function ap_user_the_meta($key, $user_id = false){
     $meta = ap_user_get_the_meta($key, $user_id);
-    
+
     if(!is_array($meta))
-        echo ap_user_get_the_meta($key, $user_id);
+        echo $meta;
 }
     
     /**
@@ -444,7 +444,19 @@ function ap_user_the_meta($key, $user_id = false){
         if(!isset($meta['__total_following']))
             $meta['__total_following'] = 0;
 
-        if($key !== false && !empty($meta[$key]))
+        if(empty($meta['__up_vote_casted']))
+            $meta['__up_vote_casted'] = 0;
+
+        if(empty($meta['__down_vote_casted']))
+            $meta['__down_vote_casted'] = 0;
+
+        if(empty($meta['__up_vote_received']))
+            $meta['__up_vote_received'] = 0;
+
+        if(empty($meta['__down_vote_received']))
+            $meta['__down_vote_received'] = 0;
+
+        if($key !== false && isset($meta[$key]))
             return $meta[$key];
         else
             return;
@@ -459,6 +471,22 @@ function ap_user_meta_exists($key, $user_id = false){
         return true;
 
     return false;
+}
+
+/**
+ * Count total numbers of vote received by current user
+ * @return integer
+ */
+function ap_user_total_votes_received(){
+    return ap_user_get_the_meta('__up_vote_received') + ap_user_get_the_meta('__down_vote_received');
+}
+
+/**
+ * Count total numbers of votes casted by current user
+ * @return integer
+ */
+function ap_user_total_votes_casted(){
+    return ap_user_get_the_meta('__up_vote_casted') + ap_user_get_the_meta('__down_vote_casted');
 }
 
 /**

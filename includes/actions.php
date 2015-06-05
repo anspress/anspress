@@ -53,6 +53,8 @@ class AnsPress_Actions
 		add_action( 'save_post', array($this, 'base_page_update'), 10, 2);
 		add_action( 'ap_added_follower', array($this, 'ap_added_follower'), 10, 2);
 		add_action( 'ap_removed_follower', array($this, 'ap_added_follower'), 10, 2);
+		add_action( 'ap_vote_casted', array($this, 'update_user_vote_casted_count'), 10, 4);
+		add_action( 'ap_vote_removed', array($this, 'update_user_vote_casted_count'), 10, 4);
 
 	}
 
@@ -453,4 +455,16 @@ class AnsPress_Actions
 		update_user_meta( $current_user_id, '__total_following', ap_following_count($current_user_id) );
 	}
 
+
+	public function update_user_vote_casted_count($userid, $type, $actionid, $receiving_userid)
+	{
+
+		// Update total casted vote of user
+		update_user_meta( $userid, '__up_vote_casted', ap_count_vote($userid, 'vote_up') );
+		update_user_meta( $userid, '__down_vote_casted', ap_count_vote($userid, 'vote_down'));
+
+		// Update total received vote of user
+		update_user_meta( $receiving_userid, '__up_vote_received', ap_count_vote(false, 'vote_up', false, $receiving_userid) );
+		update_user_meta( $receiving_userid, '__down_vote_received', ap_count_vote(false, 'vote_down', false, $receiving_userid));
+	}
 }

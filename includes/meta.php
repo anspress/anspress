@@ -159,8 +159,9 @@ function ap_get_meta($where){
 /**
  * @param string $type
  */
-function ap_meta_total_count($type, $actionid=false, $userid = false, $group = false){
+function ap_meta_total_count($type, $actionid=false, $userid = false, $group = false, $value = false){
 	global $wpdb;
+
 	$where_query = '';
 	$group_query = '';
 	
@@ -170,9 +171,12 @@ function ap_meta_total_count($type, $actionid=false, $userid = false, $group = f
 	if($userid)
 		$where_query .= " apmeta_userid = $userid";
 	
-	if($group){
+	if($group)
 		$group_query .= 'GROUP BY '.$group;
-	}
+
+	if($value)
+		$where_query .= "apmeta_value = '$value'";
+	
 		
 	$query = "SELECT IFNULL(count(*), 0) FROM " .$wpdb->prefix ."ap_meta where apmeta_type = '$type' and $where_query $group_query";
 

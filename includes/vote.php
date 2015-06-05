@@ -109,7 +109,7 @@ class AnsPress_Vote_Ajax extends AnsPress_Ajax
 		if(is_object($is_voted) && $is_voted->count > 0){
 			// if user already voted and click that again then reverse
 			if($is_voted->type == $type){
-				ap_remove_vote($type, $userid, $post_id);
+				ap_remove_vote($type, $userid, $post_id, $post->post_author);
 				$counts = ap_post_votes($post_id);
 
 				//update post meta
@@ -128,7 +128,8 @@ class AnsPress_Vote_Ajax extends AnsPress_Ajax
 				
 		}else{
 
-			ap_add_vote($userid, $type, $post_id);				
+			ap_add_vote($userid, $type, $post_id, $post->post_author);				
+			
 			$counts = ap_post_votes($post_id);
 			
 			//update post meta
@@ -275,29 +276,58 @@ class anspress_vote
 }
 
 /**
- * @param string $type
+ * Add vote meta
+ * @param  integer 		$current_userid    User ID of user casting the vote
+ * @param  string 		$type              Type of vote, "vote_up" or "vote_down"
+ * @param  integer 		$actionid          Post ID
+ * @param  integer 		$receiveing_userid User ID of user receiving the vote. @since 2.3
+ * @return integer|boolean
  */
-function ap_add_vote($userid, $type, $actionid){	
-	return ap_add_meta($userid, $type, $actionid );
+function ap_add_vote($current_userid, $type, $actionid, $receiving_userid){	
+	$row = ap_add_meta($current_userid, $type, $actionid, $receiving_userid );
+	
+	if($row !== false)
+		do_action( 'ap_vote_casted', $current_userid, $type, $actionid, $receiving_userid );
+
+	return $row;
 }
 
 /**
  * @param string $type
  */
-function ap_remove_vote($type, $userid, $actionid){
-	return ap_delete_meta(array('apmeta_type' => $type, 'apmeta_userid' => $userid, 'apmeta_actionid' => $actionid));
+function ap_remove_vote($type, $userid, $actionid, $receiving_userid){
+	$row = ap_delete_meta(array('apmeta_type' => $type, 'apmeta_userid' => $userid, 'apmeta_actionid' => $actionid));
+
+	if($row !== false)
+		do_action( 'ap_vote_removed', $userid, $type, $actionid, $receiving_userid );
+
+	return $row;
 }
 
 /**
- * @param string $type
+ * Retrieve vote count
+ * If $actionid is passed then it count numbers of vote for a post
+ * If $userid is passed then it count votes casted by a user.
+ * If $receiving_userid is passed then it count numbers of votes received
+ * 
+ * @param  boolean|integer 				$userid           User ID of user casting the vote
+ * @param  string 						$type             Type of vote, "vote_up" or "vote_down"
+ * @param  boolean|integer 				$actionid         Post ID
+ * @param  boolean|integer 				$receiving_userid User ID of user who received the vote
+ * @return integer
  */
-function ap_count_vote($userid = false, $type, $actionid =false, $value = 1){
-	global $wpdb;
-	if(!$userid){
+function ap_count_vote($userid = false, $type, $actionid =false, $receiving_userid = false){
+
+	if($actionid !== false)
 		return ap_meta_total_count($type, $actionid);		
-	}elseif($userid && !$actionid){
+	
+	elseif($userid!== false)
 		return ap_meta_total_count($type, false, $userid);
-	}
+	
+	elseif($receiving_userid!== false)
+		return ap_meta_total_count($type, false, false, false, $receiving_userid);
+
+	return 0;
 }
 
 // get $post up votes
