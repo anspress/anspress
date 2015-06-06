@@ -503,13 +503,14 @@ function ap_questions_tab($current_url = ''){
 	 * @since 2.0.1
 	 */
 	$navs = apply_filters('ap_questions_tab', $navs );
-
-	echo '<ul id="ap-question-tab" class="ap-questions-tab ap-ul-inline clearfix">';
-	foreach ($navs as $k => $nav) {
-		echo '<li class="ap-questions-tab-'.esc_attr($k).( $sort == $k ? ' active' : '') .'"><a href="'. esc_url($nav['link']) .'">'. $nav['title'] .'</a></li>';
-	}
-	echo '</ul>';
-
+	echo '<form id="ap-question-sorting" class="ap-questions-sorting">';
+		echo '<label>'.__('Sorty by:', 'ap').'</label>';
+		echo '<select class="ap-form-control">';
+		foreach ($navs as $k => $nav) {
+			echo '<option '.selected( $sort, $k, false ).' value="'.esc_url($nav['link']).'">'. $nav['title'] .'</option>';
+		}
+		echo '</select>';
+	echo '</form>';
 	?>
 	<?php
 }

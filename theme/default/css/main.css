@@ -1284,9 +1284,10 @@
   text-decoration: none;
 }
 #anspress .ap-questions-count {
-  border: 1px solid #eee;
+  background: #fff;
+  border: 2px solid #eee;
   border-radius: 2px;
-  color: #888;
+  color: #333333;
   display: block;
   float: left;
   font-size: 13px;
@@ -1305,12 +1306,12 @@
   margin-top: 4px;
 }
 #anspress .ap-questions-acount {
-  background: #61c17d;
-  border-color: rgba(0, 0, 0, 0.08);
-  color: #fff;
+  background: #fff;
+  border-color: #61c17d;
+  color: #333333;
 }
 #anspress .ap-questions-acount span {
-  color: #fff;
+  color: #333333;
 }
 #anspress .ap-questions-summery {
   padding-right: 10px;
@@ -1378,7 +1379,6 @@
   font-style: normal;
 }
 #anspress .ap-list-head {
-  background: none repeat scroll 0 0 #f8f8f8;
   border: 1px solid #eee;
   border-radius: 3px;
   padding: 14px;
@@ -1393,6 +1393,19 @@
 }
 #anspress .ap-list-head .ap-btn-ask:visited {
   color: #fff;
+}
+#anspress #ap-question-sorting {
+  float: right;
+}
+#anspress #ap-question-sorting label {
+  display: inline;
+  font-weight: 600;
+  margin-right: 5px;
+}
+#anspress #ap-question-sorting select {
+  display: inline;
+  margin: 0;
+  width: auto;
 }
 .tooltipster-default.ap-tip-style {
   background: #000000;
@@ -2563,10 +2576,11 @@
   border-radius: 50%;
 }
 #anspress .ap-user-name {
+  color: #333;
   display: block;
+  font-size: 16px;
   font-weight: 600;
   white-space: nowrap;
-  color: #333;
 }
 #anspress .ap-user-cover {
   background: url("../../../demo/bg.jpg") repeat scroll 0 0 #eaeaea;
@@ -2628,6 +2642,18 @@
   font-size: 15px;
   height: 42px;
   overflow: hidden;
+}
+#anspress .ap-user-info {
+  margin-bottom: 15px;
+  display: table;
+}
+#anspress .ap-user-info > * {
+  display: table-cell;
+  padding-right: 15px;
+  vertical-align: middle;
+}
+#anspress .ap-user-info .ap-avatar-upload-form {
+  display: none;
 }
 #anspress #ap-profile-tab {
   float: none;
@@ -3001,9 +3027,7 @@
   margin-bottom: 5px;
   margin-top: 0;
 }
-.ap-widget-pos {
-  margin-bottom: 25px;
-}
+.widget .ap-stats-widget,
 .ap-widget-pos .ap-stats-widget {
   padding: 0;
   margin: 0;
@@ -3011,107 +3035,135 @@
   border: solid 1px #ddd;
   border-radius: 3px;
 }
+.widget .ap-stats-widget li,
 .ap-widget-pos .ap-stats-widget li {
   border-bottom: 1px solid #eee;
+  font-size: 14px;
   list-style: outside none none;
   margin: 0;
-  padding: 10px;
-  font-size: 13px;
+  padding: 15px;
 }
+.widget .ap-stats-widget li .stat-value,
 .ap-widget-pos .ap-stats-widget li .stat-value {
   color: #888;
   float: right;
 }
+.widget .ap-stats-widget li .stat-label,
 .ap-widget-pos .ap-stats-widget li .stat-label {
   font-size: 12px;
   font-weight: 600;
 }
+.widget .ap-stats-widget li .stat-label:before,
 .ap-widget-pos .ap-stats-widget li .stat-label:before {
   color: #888;
   display: inline-block;
   width: 25px;
 }
+.widget .ap-stats-widget li:last-child,
 .ap-widget-pos .ap-stats-widget li:last-child {
   border-bottom: none;
 }
-.ap-widget-pos .ap-rq-widget .ap-rq-post {
+.widget .ap-question-subscribers-inner,
+.ap-widget-pos .ap-question-subscribers-inner {
+  margin: -5px;
+}
+.widget .ap-question-subscribers a,
+.ap-widget-pos .ap-question-subscribers a {
+  margin: 5px;
+  display: inline-block;
+}
+.widget .ap-question-subscribers a > img,
+.ap-widget-pos .ap-question-subscribers a > img {
+  margin: 0;
+  display: block;
+}
+.ap-widget-pos,
+.widget {
+  margin-bottom: 25px;
+}
+.ap-widget-pos .ap-rq-widget .ap-rq-post,
+.widget .ap-rq-widget .ap-rq-post {
   border-bottom: 1px solid #f7f7f7;
   color: #888;
   display: block;
   margin-bottom: 0;
   padding: 10px 0;
 }
-.ap-widget-pos .ap-rq-widget .ap-rq-post a {
+.ap-widget-pos .ap-rq-widget .ap-rq-post a,
+.widget .ap-rq-widget .ap-rq-post a {
   margin-bottom: 5px;
   display: block;
 }
-.ap-widget-pos .ap-questions-widget .ap-question-item {
+.ap-widget-pos .ap-questions-widget .ap-question-item,
+.widget .ap-questions-widget .ap-question-item {
   border-bottom: 1px solid #f8f8f8;
   margin-bottom: 10px;
   padding-bottom: 10px;
 }
-.ap-widget-pos .ap-questions-widget .ap-question-title {
+.ap-widget-pos .ap-questions-widget .ap-question-title,
+.widget .ap-questions-widget .ap-question-title {
   display: block;
   margin-bottom: 5px;
 }
-.ap-widget-pos .ap-cat-wid {
+.ap-widget-pos .ap-cat-wid,
+.widget .ap-cat-wid {
   list-style: none;
   padding: 0;
   margin: 0;
 }
-.ap-widget-pos .ap-cat-wid > li {
+.ap-widget-pos .ap-cat-wid > li,
+.widget .ap-cat-wid > li {
   border-bottom: 1px solid #eee;
   margin: 0;
   padding: 0;
 }
-.ap-widget-pos .ap-cat-wid > li:last-child {
+.ap-widget-pos .ap-cat-wid > li:last-child,
+.widget .ap-cat-wid > li:last-child {
   border-bottom: none;
 }
-.ap-widget-pos .ap-cat-wid > li > a {
+.ap-widget-pos .ap-cat-wid > li > a,
+.widget .ap-cat-wid > li > a {
   display: block;
   padding: 7px 2px;
 }
-.ap-widget-pos .ap-cat-wid > li > a > span {
+.ap-widget-pos .ap-cat-wid > li > a > span,
+.widget .ap-cat-wid > li > a > span {
   float: right;
 }
-.ap-widget-pos .ap-cat-wid > li > a > i {
+.ap-widget-pos .ap-cat-wid > li > a > i,
+.widget .ap-cat-wid > li > a > i {
   display: block;
   font-size: 13px;
   font-style: normal;
 }
-.ap-widget-pos .ap-question-subscribers-inner {
-  margin: -5px;
-}
-.ap-widget-pos .ap-question-subscribers a {
-  margin: 5px;
-  display: inline-block;
-}
-.ap-widget-pos .ap-question-subscribers a > img {
-  margin: 0;
-  display: block;
-}
-.ap-widget-pos .ap-followers-widget {
+.ap-widget-pos .ap-followers-widget,
+.widget .ap-followers-widget {
   border: 1px solid #eee;
   border-radius: 2px;
   padding: 10px;
 }
-.ap-widget-pos .ap-followers-widget ul {
+.ap-widget-pos .ap-followers-widget ul,
+.widget .ap-followers-widget ul {
   margin: -5px -5px 0;
 }
-.ap-widget-pos .ap-followers-widget li {
+.ap-widget-pos .ap-followers-widget li,
+.widget .ap-followers-widget li {
   margin: 0;
   width: 20%;
 }
-.ap-widget-pos .ap-followers-widget li a {
+.ap-widget-pos .ap-followers-widget li a,
+.widget .ap-followers-widget li a {
   display: block;
   padding: 5px;
 }
-.ap-widget-pos .ap-followers-widget img {
+.ap-widget-pos .ap-followers-widget img,
+.widget .ap-followers-widget img {
   box-shadow: none;
   display: block;
   max-width: 47px;
 }
-.ap-widget-pos .ap-widget-all-link {
+.ap-widget-pos .ap-widget-all-link,
+.widget .ap-widget-all-link {
   display: block;
   padding: 4px;
 }

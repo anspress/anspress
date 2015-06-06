@@ -44,7 +44,6 @@ class AP_Reputation {
 		add_action('ap_unpublish_comment', array($this, 'delete_comment'));
 
 		add_filter('ap_user_display_meta_array', array($this, 'display_meta'), 10, 2);
-		add_action('ap_user_left_after_name', array( $this, 'ap_user_left_after_name' ));
 	}
 
 	public function reputation_page(){
@@ -298,16 +297,6 @@ class AP_Reputation {
 		return $metas;
 	}
 
-	/**
-	 * Display user reputation below user name in profile page
-	 * @return void
-	 * @since 2.1
-	 */
-	public function ap_user_left_after_name(){
-		echo '<span class="ap-user-reputation">';
-		printf(__('%s Rep.', 'ap'), ap_user_get_the_reputation());
-		echo '</span>';
-	}
 }
 
 /**

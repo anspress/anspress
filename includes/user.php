@@ -258,7 +258,7 @@ function ap_user_menu()
 
     $userid             = ap_get_displayed_user_id();
     $active_user_page   = get_query_var('user_page');
-    $active_user_page   = $active_user_page ? $active_user_page : 'activity';
+    $active_user_page   = $active_user_page ? $active_user_page : 'about';
 
     $menus = array();
 
@@ -329,7 +329,7 @@ function ap_user_page()
 function ap_active_user_page()
 {
     $user_page        = sanitize_text_field(get_query_var('user_page'));
-    return  $user_page ? $user_page : 'activity';
+    return  $user_page ? $user_page : 'about';
 }
 
 /**

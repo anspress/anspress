@@ -206,10 +206,9 @@ jQuery(document).ready(function() {
         }, 500);
     });
 
-    jQuery('body').delegate('#ap-question-tab a', 'click', function(e) {
-        e.preventDefault();
-        var load = AnsPress.site.showLoading(this);
-        var link = jQuery(this).attr('href');
+    jQuery('body').delegate('#ap-question-sorting select', 'change', function(e) {
+        var load = AnsPress.site.showLoading(jQuery(this).parent());
+        var link = jQuery(this).val();
         var anc = this;
         jQuery('#anspress').load(link + ' #anspress', function(){jQuery(load).hide()});
     });

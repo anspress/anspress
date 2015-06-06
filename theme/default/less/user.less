@@ -25,10 +25,11 @@
 
 		}
 		&-name{
+		    color: #333;
 		    display: block;
+		    font-size: 16px;
 		    font-weight: 600;
 		    white-space: nowrap;
-		    color:#333;
 		}
 		&-navigation {
 
@@ -94,6 +95,18 @@
 		    font-size: 15px;
 		    height: 42px;
 		    overflow: hidden;
+		}
+		&-info{
+			margin-bottom: 15px;
+			display: table;
+			> *{
+			    display: table-cell;
+			    padding-right: 15px;
+			    vertical-align: middle;
+			}
+			.ap-avatar-upload-form{
+				display: none;
+			}
 		}
 	}
 	#ap-profile-tab{

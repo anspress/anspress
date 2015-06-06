@@ -39,9 +39,10 @@
 		    }
 		}
 		&-count{
-		    border: 1px solid #eee;
+			background: #fff;
+		    border: 2px solid #eee;
 		    border-radius: 2px;
-		    color: #888;
+		    color: @default-color;
 		    display: block;
 		    float: left;
 		    font-size: 13px;
@@ -61,11 +62,11 @@
 		}
 
 		&-acount{
-			background: @main-color;
-			border-color: rgba(0, 0, 0, 0.08);
-    		color: #fff;
+			background: #fff;
+			border-color: @main-color;
+    		color: @default-color;
     		span{
-    			color: #fff;
+    			color: @default-color;
     		}
 		}
 
@@ -135,7 +136,6 @@
 		}
 	}
 	.ap-list-head{
-	    background: none repeat scroll 0 0 #f8f8f8;
 	    border: 1px solid #eee;
 	    border-radius: 3px;
 	    padding: 14px;
@@ -151,5 +151,17 @@
 		    }
 		}
 	}
-
+	#ap-question-sorting{
+		float: right; 
+		label{
+			display: inline;
+			font-weight: 600;
+			margin-right: 5px;
+		}
+		select{
+		    display: inline;
+		    margin: 0;
+		    width: auto;
+		}
+	}
 }
