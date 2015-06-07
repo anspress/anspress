@@ -80,7 +80,7 @@ class Question_Query extends WP_Query {
                 $this->args[ 'meta_key' ] = ANSPRESS_ANS_META;
             break;
             case 'unanswered' :
-                $this->args[ 'orderby' ] = 'meta_value_num';
+                $this->args[ 'orderby' ] = 'meta_value_num date';
                 $this->args[ 'meta_key' ] = ANSPRESS_ANS_META ;
                 $this->args[ 'meta_value' ] = 0 ;
             break;
@@ -89,9 +89,9 @@ class Question_Query extends WP_Query {
                 $this->args['meta_key'] = ANSPRESS_VOTE_META;
             break;
             case 'unsolved' :
-                $this->args['orderby'] = 'meta_value_num';
+                $this->args['orderby'] = 'meta_value_num date';
                 $this->args['meta_key'] = ANSPRESS_SELECTED_META;
-                $this->args['meta_compare'] = '==';
+                $this->args['meta_compare'] = '=';
                 $this->args['meta_value'] = false;
 
  

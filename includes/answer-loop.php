@@ -38,12 +38,12 @@ class Answers_Query extends WP_Query {
         $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
         
         $defaults = array(
-            'question_id'  => get_question_id(),
-            'ap_answers_query'  => true,
-            'showposts'         => ap_opt('answers_per_page'),
-            'paged'             => $paged,
-            'only_best_answer'  => false,
-            'include_best_answer'  => false,
+            'question_id'           => get_question_id(),
+            'ap_answers_query'      => true,
+            'showposts'             => ap_opt('answers_per_page'),
+            'paged'                 => $paged,
+            'only_best_answer'      => false,
+            'include_best_answer'   => false,
         );
 
         $args['post_status'][] = 'publish'; 
