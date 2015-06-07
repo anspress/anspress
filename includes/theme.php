@@ -465,10 +465,12 @@ function ap_post_actions_buttons($disable = array())
 }
 
 /**
- * Output questions list tab
- * @return string
+ * Output question list sorting dropdown
+ * @param  string 		$current_url
+ * @return void
+ * @since 2.3
  */
-function ap_questions_tab($current_url = ''){
+function ap_question_sorting($current_url = ''){
 	if(is_home() || is_front_page())
 		$current_url = home_url('/');
 
@@ -497,12 +499,12 @@ function ap_questions_tab($current_url = ''){
 
 	
 	/**
-	 * FILTER: ap_questions_tab
+	 * FILTER: ap_question_sorting
 	 * Before prepering questions list tab.
 	 * @var array
-	 * @since 2.0.1
+	 * @since 2.3
 	 */
-	$navs = apply_filters('ap_questions_tab', $navs );
+	$navs = apply_filters('ap_question_sorting', $navs );
 	echo '<form id="ap-question-sorting" class="ap-questions-sorting">';
 		echo '<label>'.__('Sorty by:', 'ap').'</label>';
 		echo '<select class="ap-form-control">';

@@ -386,8 +386,7 @@ function ap_check_if_photogenic($user_id)
 function ap_users_tab(){
     $active = isset($_GET['ap_sort']) ? $_GET['ap_sort'] : 'reputation';
     
-    $link = '?ap_sort=';
-
+    $link = ap_get_link_to('users').'?ap_sort=';
     
     ?>
     <ul class="ap-questions-tab ap-ul-inline clearfix" role="tablist">

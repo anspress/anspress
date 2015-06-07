@@ -1,8 +1,9 @@
 <div class="row">
 	<div id="ap-users" class="ap-users <?php echo is_active_sidebar( 'ap-sidebar' ) && is_anspress() ? 'col-md-8' : 'col-md-12' ?>">
 		<div class="ap-list-head clearfix">			
-			<form id="ap-search-form" class="ap-search-form pull-left" action="<?php echo ap_get_link_to('search'); ?>">
+			<form id="ap-search-form" class="ap-search-form pull-left" action="<?php echo ap_get_link_to('search'); ?>?type=user">
 			    <input name="ap_s" type="text" class="ap-form-control" placeholder="<?php _e('Search users...', 'ap'); ?>" value="<?php echo sanitize_text_field( get_query_var('ap_s') ); ?>" />
+			    <input name="type" type="hidden" value="user" />
 			</form>
 			<?php ap_users_tab(); ?>
 		</div>		

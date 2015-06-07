@@ -110,7 +110,7 @@ class AnsPress_Query_Filter
 	public function main_question_query($sql, $query){
 		global $wpdb;
 
-		if(isset($query->query['ap_query']) && $query->query['ap_query'] == 'featured_post'){
+		if(isset($query->query['ap_query']) && $query->query['ap_query'] == 'featured_post' && !isset($query->query['s']) ){
 			
 			$sql['where'] = $sql['where'].$wpdb->prepare(" OR ( ".$wpdb->posts.".post_author = %d AND ".$wpdb->posts.".post_type ='question') ", get_current_user_id());
 

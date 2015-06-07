@@ -126,6 +126,7 @@ class AnsPress_Admin
 			wp_enqueue_script('masonry');
 
 		wp_enqueue_script( 'jquery-form', array('jquery'), false, true );
+		wp_enqueue_script('ap-initial.js', ap_get_theme_url('js/initial.min.js'), 'jquery', AP_VERSION);
 		wp_enqueue_script( 'ap-admin-js', ANSPRESS_URL.'assets/prod/ap-admin.min.js');
 	}
 

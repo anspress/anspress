@@ -396,39 +396,11 @@ jQuery(document).ready(function (jQuery){
 	
 	ap_option_flag_note();
 	ap_submit_menu();
-	//wpNavMenu.init();
 
-	
-  /*  var frame;
-
-    jQuery('#default_avatar_upload').on('click', function( event ) {
-        var $el = jQuery(this);
-        event.preventDefault();
-
-        // Create the media frame.
-        frame = wp.media.frames.customHeader = wp.media({
-            title: $el.data('choose'),
-            library: { // remove these to show all
-                type: 'image', // specific mime
-                author: userSettings.uid // specific user-posted attachment
-            },
-            button: {
-                text: $el.data('update'), // button text
-                close: true // whether click closes 
-            }
-        });
-
-        // When an image is selected, run a callback.
-        frame.on( 'select', function() {
-            // Grab the selected attachment.
-            var attachment = frame.state().get('selection').first(),
-                link = $el.data('updateLink');
-
-            $el.prev('input').val( attachment.attributes.id );
-        });
-
-        frame.open();
-    }); */
+	jQuery('.ap-dynamic-avatar').initial({fontSize:14, fontWeight:600});
+    jQuery( document ).ajaxComplete(function( event, data, settings ) {
+        jQuery('.ap-dynamic-avatar').initial({fontSize:14, fontWeight:600});
+    });
 	
 }); 
 

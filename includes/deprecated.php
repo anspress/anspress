@@ -63,3 +63,9 @@ function ap_post_subscribers_count($post_id){
 	$post_id = $post_id ? $post_id : get_question_id();
 	return ap_meta_total_count('subscriber', $post_id);
 }
+
+function ap_questions_tab($current_url = ''){
+	_deprecated_function('ap_questions_tab', '2.3', 'ap_question_sorting');
+
+	ap_question_sorting($current_url);
+}

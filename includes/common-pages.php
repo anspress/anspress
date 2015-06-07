@@ -125,8 +125,16 @@ class AnsPress_Common_Pages
     public function search_page()
     {
         $keywords   = sanitize_text_field( get_query_var( 'ap_s' ));
-        ap_get_questions(array('keywords' => $keywords));
-        include(ap_get_theme_location('base.php'));
+        $type       = sanitize_text_field( @$_GET['type'] );
+        
+        if($type == ''){
+            ap_get_questions(array('s' => $keywords));
+            include(ap_get_theme_location('base.php'));
+        }elseif($type == 'user' && ap_opt('enable_users_directory')){
+            global $ap_user_query;        
+            $ap_user_query = ap_has_users(array('search' => $keywords, 'search_columns' => array('user_login', 'user_email', 'user_nicename')));
+            include(ap_get_theme_location('users/users.php'));
+        }
     }
 
 }
