@@ -106,6 +106,8 @@
     }
 })(jQuery);
 
+jq = jQuery;
+
 jQuery(document).ready(function() {
     jQuery(document).click(function(e) {
         var target = e.target;
@@ -230,6 +232,30 @@ jQuery(document).ready(function() {
     jQuery( document ).ajaxComplete(function( event, data, settings ) {
         jQuery('.ap-dynamic-avatar').initial({fontSize:14, fontWeight:600});
     });
+
+    if(jq('.ap_collapse_menu').length > 0){
+        var menu = jq('.ap_collapse_menu'),
+            menuwidth = menu.width(),
+            dropdown = menu.find('.ap-dropdown .ap-dropdown-menu');
+        
+        var itemwidth = 0;
+        var start_moving = false;
+
+        menu.find('.ap-dropdown').hide();
+        
+        menu.find('li').each(function(index, el) {            
+            itemwidth = parseInt(itemwidth) + parseInt(jq(this).width());
+            if(itemwidth > menuwidth)
+                start_moving = true;
+                
+            if(start_moving && !jq(this).is('.ap-user-menu-more')){
+                dropdown.append(jq(this).clone());
+                jq(this).remove();
+                menu.find('.ap-dropdown').show();
+            }
+            
+        });
+    } 
 });
 
 function ap_chk_activity_scroll(e) {

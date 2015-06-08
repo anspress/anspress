@@ -1878,7 +1878,7 @@
   background: none repeat scroll 0 0 #fff;
   border: 1px solid #ddd;
   border-radius: 3px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
   display: none;
   position: absolute;
   right: 0;
@@ -1891,8 +1891,9 @@
 }
 #anspress .ap-dropdown .ap-dropdown-menu > li > a {
   border-bottom: 1px solid #f9f9f9;
+  color: #333;
   display: block;
-  padding: 5px 15px;
+  padding: 10px 15px;
 }
 #anspress .ap-dropdown .ap-dropdown-menu > li > a:hover {
   background: #fcfcfc;
@@ -2660,8 +2661,8 @@
   margin-bottom: 15px;
 }
 #anspress .ap-reputation-item {
-  border-top: 1px solid #eee;
-  padding: 12px 0;
+  border-top: 1px solid #f4f4f4;
+  padding: 15px 0;
 }
 #anspress .ap-reputation-item .point {
   border: 1px solid rgba(0, 0, 0, 0.1);
@@ -2698,7 +2699,7 @@
   width: 110px;
 }
 #anspress #ap-user-menu {
-  border: 1px solid #eee;
+  border: 1px solid #ddd;
   list-style: outside none none;
   margin: 0 0 20px;
   padding: 0;
@@ -2716,17 +2717,20 @@
   font-weight: 600;
   padding: 10px 15px;
 }
-#anspress #ap-user-menu > li > a:before {
-  height: 20px;
-  margin-right: 10px;
-  text-align: center;
-  width: 12px;
-}
 #anspress #ap-user-menu > li > a:hover {
   background: #FCFCFC;
 }
 #anspress #ap-user-menu > li.active > a {
   background: none repeat scroll 0 0 #f5f5f5;
+}
+#anspress #ap-user-menu > li:last-child {
+  border-right: none;
+}
+#anspress #ap-user-menu > li a:before {
+  height: 20px;
+  margin-right: 10px;
+  text-align: center;
+  width: 12px;
 }
 #anspress .ap-about-block {
   position: relative;
@@ -2869,96 +2873,6 @@
   margin-right: 15px;
   text-align: center;
   width: 25px;
-}
-.ap-dynamic-avatar {
-  background: none repeat scroll 0 0 #a3a3a3;
-  border-radius: 2px;
-  color: #fff;
-  display: block;
-  font-size: 14px;
-  font-weight: 600;
-  line-height: 45px;
-  text-align: center;
-  text-transform: uppercase;
-  overflow: hidden;
-}
-.ap-dynamic-avatar.letter-a {
-  background: #1abc9c;
-}
-.ap-dynamic-avatar.letter-b {
-  background: #16a085;
-}
-.ap-dynamic-avatar.letter-c {
-  background: #f1c40f;
-}
-.ap-dynamic-avatar.letter-d {
-  background: #2ecc71;
-}
-.ap-dynamic-avatar.letter-e {
-  background: #27ae60;
-}
-.ap-dynamic-avatar.letter-f {
-  background: #e67e22;
-}
-.ap-dynamic-avatar.letter-g {
-  background: #d35400;
-}
-.ap-dynamic-avatar.letter-h {
-  background: #3498db;
-}
-.ap-dynamic-avatar.letter-i {
-  background: #2980b9;
-}
-.ap-dynamic-avatar.letter-j {
-  background: #e74c3c;
-}
-.ap-dynamic-avatar.letter-k {
-  background: #c0392b;
-}
-.ap-dynamic-avatar.letter-l {
-  background: #9b59b6;
-}
-.ap-dynamic-avatar.letter-m {
-  background: #8e44ad;
-}
-.ap-dynamic-avatar.letter-n {
-  background: #bdc3c7;
-}
-.ap-dynamic-avatar.letter-o {
-  background: #34495e;
-}
-.ap-dynamic-avatar.letter-p {
-  background: #2c3e50;
-}
-.ap-dynamic-avatar.letter-q {
-  background: #95a5a6;
-}
-.ap-dynamic-avatar.letter-r {
-  background: #7f8c8d;
-}
-.ap-dynamic-avatar.letter-s {
-  background: #ec87bf;
-}
-.ap-dynamic-avatar.letter-t {
-  background: #d870ad;
-}
-.ap-dynamic-avatar.letter-u {
-  background: #f69785;
-}
-.ap-dynamic-avatar.letter-v {
-  background: #9ba37e;
-}
-.ap-dynamic-avatar.letter-w {
-  background: #b49255;
-}
-.ap-dynamic-avatar.letter-x {
-  background: #b49255;
-}
-.ap-dynamic-avatar.letter-y {
-  background: #a94136;
-}
-.ap-dynamic-avatar.letter-z {
-  background: #cccccc;
 }
 #ap-notify {
   bottom: 20px;

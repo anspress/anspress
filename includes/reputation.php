@@ -53,7 +53,7 @@ class AP_Reputation {
     public function sort_reputation_page($menu)
     {
     	if(isset($menu['reputation']))
-    		$menu['reputation']['order'] = 12;
+    		$menu['reputation']['order'] = 10;
     	
     	return $menu;
     }

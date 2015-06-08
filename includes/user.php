@@ -262,9 +262,12 @@ function ap_user_menu()
 
     $menus = array();
 
+    $i = 1;
     foreach ($user_pages as $k => $args) {
         $link        = ap_user_link($userid, $k);
-        $menus[$k]    = array( 'slug' => $k, 'title' => $args['title'], 'link' => $link, 'order' => 10, 'show_in_menu' => $args['show_in_menu'], 'public' => $args['public']);
+        $menus[$k]    = array( 'slug' => $k, 'title' => $args['title'], 'link' => $link, 'order' => 5+$i, 'show_in_menu' => $args['show_in_menu'], 'public' => $args['public']);
+
+        $i++;
     }
 
     /**
@@ -278,13 +281,14 @@ function ap_user_menu()
     $menus = ap_sort_array_by_order($menus);
 
     if (!empty($menus) && is_array($menus)) {
-        $o = '<ul id="ap-user-menu" class="ap-user-menu clearfix">';
+        $o = '<ul id="ap-user-menu" class="ap-user-menu ap_collapse_menu clearfix">';
         foreach ($menus as $m) {
             if( (!$m['public'] && ap_is_my_profile()) || $m['public'] ){
                 $class = !empty($m['class']) ? ' '.$m['class'] : '';
                 $o .= '<li'.($active_user_page == $m['slug'] ? ' class="active"' : '').'><a href="'.$m['link'].'" class="ap-user-menu-'.$m['slug'].$class.'">'.$m['title'].'</a></li>';
             }
         }
+        $o .= '<li class="ap-user-menu-more ap-dropdown"><a href="#" class="ap-dropdown-toggle">'.__('More', 'ap').ap_icon('chevron-down', true).'</a><ul class="ap-dropdown-menu"></ul></li>';
         $o .= '</ul>';
         echo $o;
     }

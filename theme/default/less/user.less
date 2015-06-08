@@ -115,8 +115,8 @@
 	}
 
 	.ap-reputation-item{
-	    border-top: 1px solid #eee;
-	    padding: 12px 0;
+        border-top: 1px solid #f4f4f4;
+		padding: 15px 0;
 	    .point {
 		    border: 1px solid rgba(0, 0, 0, 0.1);
 		    border-radius: 3px;
@@ -154,7 +154,7 @@
 	}
 
 	#ap-user-menu{
-	    border: 1px solid #eee;
+	    border: 1px solid #ddd;
 	    list-style: outside none none;
 	    margin: 0 0 20px;
 	    padding: 0;
@@ -169,14 +169,7 @@
 			    display: block;
 			    font-size: 13px;
 			    font-weight: 600;
-			    padding: 10px 15px;
-
-			    &:before{
-				    height: 20px;
-				    margin-right: 10px;
-				    text-align: center;
-				    width: 12px;
-			    }
+			    padding: 10px 15px;			    
 			    &:hover{
 			    	background: #FCFCFC;
 			    }
@@ -184,6 +177,15 @@
 			&.active > a{
 				background: none repeat scroll 0 0 #f5f5f5;
 			}
+			&:last-child{
+				border-right: none;
+			}
+			a:before{
+			    height: 20px;
+			    margin-right: 10px;
+			    text-align: center;
+			    width: 12px;
+		    }
 		}
 	}
 
@@ -336,95 +338,4 @@
 		    width: 25px;
 		}
 	}	
-}
-.ap-dynamic-avatar {
-    background: none repeat scroll 0 0 #a3a3a3;
-    border-radius: 2px;
-    color: #fff;
-    display: block;
-    font-size: 14px;
-    font-weight: 600;
-    line-height: 45px;
-    text-align: center;
-    text-transform: uppercase;
-    overflow: hidden;
-   
-    &.letter-a{
-    	background: #1abc9c;
-    }
-    &.letter-b{
-    	background: #16a085;
-    }
-    &.letter-c{
-    	background: #f1c40f;
-    }
-    &.letter-d{
-    	background: #2ecc71;
-    }
-    &.letter-e{
-    	background: #27ae60;
-    }
-    &.letter-f{
-    	background: #e67e22;
-    }
-    &.letter-g{
-    	background: #d35400;
-    }
-    &.letter-h{
-    	background: #3498db;
-    }
-    &.letter-i{
-    	background: #2980b9;
-    }
-    &.letter-j{
-    	background: #e74c3c;
-    }
-    &.letter-k{
-    	background: #c0392b;
-    }
-    &.letter-l{
-    	background: #9b59b6;
-    }
-    &.letter-m{
-    	background: #8e44ad;
-    }
-    &.letter-n{
-    	background: #bdc3c7;
-    }
-    &.letter-o{
-    	background: #34495e;
-    }
-    &.letter-p{
-    	background: #2c3e50;
-    }
-    &.letter-q{
-    	background: #95a5a6;
-    }
-    &.letter-r{
-    	background: #7f8c8d;
-    }
-    &.letter-s{
-    	background: #ec87bf;
-    }
-    &.letter-t{
-    	background: #d870ad;
-    }
-    &.letter-u{
-    	background: #f69785;
-    }
-    &.letter-v{
-    	background: #9ba37e;
-    }
-    &.letter-w{
-    	background: #b49255;
-    }
-    &.letter-x{
-    	background: #b49255;
-    }
-    &.letter-y{
-    	background: #a94136;
-    }
-    &.letter-z{
-    	background: #cccccc;
-    }
 }

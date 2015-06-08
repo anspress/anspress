@@ -195,6 +195,9 @@ class AnsPress_User
 
             elseif('following' == $active)
                 $title = __('Following', 'ap');
+
+            elseif('subscription' == $active)
+                $title = __('My subscriptions', 'ap');
         }
 
         return $title;
@@ -443,7 +446,13 @@ class AnsPress_User
             $menus['reputation']['class'] = ap_icon('reputation'); 
 
         if (isset($menus['followers'])) 
-            $menus['followers']['class'] = ap_icon('users');        
+            $menus['followers']['class'] = ap_icon('users'); 
+
+        if (isset($menus['following'])) 
+            $menus['following']['class'] = ap_icon('users'); 
+
+        if (isset($menus['subscription'])) 
+            $menus['subscription']['class'] = ap_icon('rss');        
 
         return $menus;
     }
