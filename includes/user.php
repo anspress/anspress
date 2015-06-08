@@ -560,7 +560,7 @@ function ap_avatar_upload_form(){
     if(ap_get_displayed_user_id() == get_current_user_id()){
         ?>
         <form method="post" action="#" enctype="multipart/form-data" data-action="ap_upload_form" class="ap-avatar-upload-form">
-            <div class="ap-btn ap-tip ap-upload-o <?php echo ap_icon('upload'); ?>" title="<?php _e('Upload an avatar', 'ap'); ?>">
+            <div class="ap-btn ap-upload-o <?php echo ap_icon('upload'); ?>" title="<?php _e('Upload an avatar', 'ap'); ?>">
                 <span><?php _e('Upload avatar', 'ap'); ?></span>
                 <input type="file" name="thumbnail" class="ap-upload-input" data-action="ap_upload_field">
             </div>
@@ -717,4 +717,38 @@ function ap_user_get_28_days_reputation($user_id = false, $object = false){
         return implode(',', $days);
     
     return (object) $days;
+}
+
+function ap_cover_upload_form(){
+    if(ap_get_displayed_user_id() == get_current_user_id()){
+        ?>
+        <form method="post" action="#" enctype="multipart/form-data" data-action="ap_upload_form" class="ap-avatar-upload-form">
+            <div class="ap-btn ap-upload-o <?php echo ap_icon('upload'); ?>" title="<?php _e('Upload a cover photo', 'ap'); ?>">
+                <span><?php _e('Upload cover', 'ap'); ?></span>
+                <input type="file" name="image" class="ap-upload-input" data-action="ap_upload_field">
+            </div>
+            <input type='hidden' value='<?php echo wp_create_nonce( 'upload_cover_'.get_current_user_id() ); ?>' name='__nonce' />
+            <input type="hidden" name="action" id="action" value="ap_cover_upload">
+        </form>
+        <?php
+    }
+}
+
+function ap_get_cover_src($user_id = false, $small = false) {
+
+    if($user_id === false)
+        $user_id = ap_get_displayed_user_id();
+
+    $cover = get_user_meta( $user_id, '_ap_cover', true );
+
+    if(is_array($cover) && !empty($cover)){
+
+        if($small && file_exists($cover['small_file']))
+            return $cover['small_url'];
+
+        if(file_exists($cover['file']))
+            return $cover['url'];
+    }
+
+    return false;
 }

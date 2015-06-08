@@ -39,7 +39,8 @@
 
 		<?php if(ap_active_user_page() == 'about'): ?>
 			<div class="ap-user-cover clearfix">
-
+				<?php ap_cover_upload_form(); ?>
+				<div class="ap-user-cover-img" style="background-image:url(<?php echo ap_get_cover_src(); ?>)" data-view="user_cover_<?php ap_displayed_user_id(); ?>"></div>
 			</div>
 			<div class="ap-user-head clearfix">
 				<div class="ap-user-avatar">

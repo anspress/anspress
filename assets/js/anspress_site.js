@@ -47,6 +47,7 @@
             this.modal();
             this.expand();
             this.follow();
+            this.updateCover();
         },
         doAjax: function(query, success, context, before, abort) {
             /** Shorthand method for calling ajax */
@@ -572,6 +573,14 @@
                 });
             });
         },
+        updateCover: function(){
+            $(document).on('ap_after_ajax', function(e, data) {
+                console.log('[data-view="user_cover_'+ data.user_id +'"]');
+                if (typeof data.action !== 'undefined' && data.action === 'cover_uploaded') {
+                    $('[data-view="user_cover_'+ data.user_id +'"]').css({'background-image': 'url('+data.image+')'});
+                }
+            });
+        }
     }
 })(jQuery);
 

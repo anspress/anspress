@@ -288,21 +288,51 @@ class AnsPress_User
 
     public function cover_upload()
     {
-        /*if (ap_user_can_upload_cover() && wp_verify_nonce($_POST['nonce'], 'upload')) {
-            $attach_id = $this->upload_file();
+        if (wp_verify_nonce($_POST['__nonce'], 'upload_cover_'.get_current_user_id()) && is_user_logged_in()) {
+            
+            $photo = $this->upload_photo('image');
+            
+            $file = str_replace('\\', '\\\\', $photo['file']);
+            $photo['file'] = $file;
+
+            $photo['small_url'] = str_replace(basename($photo['url']), 'small_'.basename($photo['url']), $photo['url']);
+
+            $small_name = str_replace(basename($photo['file']), 'small_'.basename($photo['file']), $photo['file']);
+
+            $photo['small_file'] = $small_name;
+
+            if($photo === false)
+                ap_send_json( ap_ajax_responce(array('message' => $this->upload_error, 'type' => 'error')));
+
             $userid = get_current_user_id();
+            
+            // Remove previous image
             $previous_cover = get_user_meta($userid, '_ap_cover', true);
-            wp_delete_attachment($previous_cover, true);
-            update_user_meta($userid, '_ap_cover', $attach_id);
+            
+            if($previous_cover['file'] && file_exists($previous_cover['file']))
+                unlink( $previous_cover['file'] );
 
-            $result = array('status' => true, 'message' => __('Cover uploaded successfully.', 'ap'), 'view' => '[data-view="cover"]', 'background-image' => 'background-image:url('.ap_get_user_cover($userid).')');
+            if($previous_cover['small_file'] && file_exists($previous_cover['small_file']))
+                unlink( $previous_cover['small_file'] );
 
-            do_action('ap_after_cover_upload', $userid, $attach_id);
-        } else {
-            $result = array('status' => false, 'message' => __('Unable to upload cover.', 'ap'));
+            // resize thumbnail
+            $image = wp_get_image_editor( $file );
+
+            if ( ! is_wp_error( $image ) ) {
+                $image->resize( 960, 250, true );
+                $image->save( $file );
+                $image->resize( 300, 180, true );
+                $image->save( $small_name );
+            }
+
+            update_user_meta($userid, '_ap_cover', $photo);
+
+            do_action('ap_after_cover_upload', $userid, $photo);
+
+            ap_send_json( ap_ajax_responce(array('action' => 'cover_uploaded', 'status' => true, 'message' => __('Cover photo uploaded successfully.', 'ap'), 'user_id' => $userid , 'image' => ap_get_cover_src($userid)  )));            
         }
-
-        die(json_encode($result));*/
+        
+        ap_send_json( ap_ajax_responce(array('message' => __('There was an error while uploading cover photo, please check your image and try again.', 'ap'), 'type' => 'error'))); 
     }
 
     /**
@@ -311,7 +341,7 @@ class AnsPress_User
      */
     public function avatar_upload()
     {
-        if (wp_verify_nonce($_POST['__nonce'], 'upload_avatar_'.get_current_user_id())) {
+        if (wp_verify_nonce($_POST['__nonce'], 'upload_avatar_'.get_current_user_id()) && is_user_logged_in()) {
             
             $photo = $this->upload_photo('thumbnail');
             

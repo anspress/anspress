@@ -2588,6 +2588,16 @@
   border-radius: 3px;
   height: 250px;
   margin-bottom: 20px;
+  position: relative;
+}
+#anspress .ap-user-cover .ap-user-cover-img {
+  background-repeat: no-repeat;
+  background-size: cover;
+  display: block;
+  height: 100%;
+}
+#anspress .ap-user-cover .ap-avatar-upload-form {
+  position: absolute;
 }
 #anspress .ap-user-head {
   border-bottom: 1px solid #efefef;
