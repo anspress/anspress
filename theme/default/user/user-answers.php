@@ -1,10 +1,12 @@
 <div id="ap-lists">
-	<?php //ap_questions_tab(ap_user_link(ap_get_displayed_user_id(), 'ans')); ?>
+	<h3 class="ap-user-page-title clearfix">
+		<?php echo ap_page_title() ?>
+	</h3>
 	<?php if ( ap_have_answers() ) : ?>
 		<div class="ap-answers">
 			<?php					
 				while ( ap_have_answers() ) : ap_the_answer();
-					include(ap_get_theme_location('answer-list.php'));
+					ap_get_template_part('user/list-answer');
 				endwhile ;
 			?>
 		</div>

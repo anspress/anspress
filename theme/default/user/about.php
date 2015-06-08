@@ -81,6 +81,47 @@
 						</div>						
 					</div>
 				</div>
+			</div>
+			<div class="ap-about-block top-answers">
+				<h3><?php echo ap_icon('answer', true); ?> <?php _e('Top Answers', 'ap'); ?></h3>
+				<div class="ap-about-block-c">		
+					<?php ap_get_answers(array('author' => ap_get_displayed_user_id(), 'showposts' => 5, 'sortby' => 'voted')); ?>		
+					<?php if(ap_have_answers()): ?>
+						<?php while ( ap_answers() ) : ap_the_answer(); ?>
+							<?php ap_get_template_part('user/list-answer'); ?>
+						<?php endwhile; ?>
+						<div class="ap-user-posts-footer">
+							<?php printf(__('More answers by %s', 'ap'), ap_user_get_the_display_name()); ?>
+							<a href="<?php echo ap_user_link(ap_get_displayed_user_id(), 'answers'); ?>"><?php _e('view', 'ap'); ?>&rarr;</a>
+						</div>
+					<?php else: ?>
+						<?php _e('No answer posted yet!', 'ap'); ?>
+					<?php endif; ?>
+				</div>
+			</div>
+			<div class="ap-about-block top-answers">
+				<h3><?php echo ap_icon('question', true); ?> <?php _e('New questions', 'ap'); ?></h3>
+				<div class="ap-about-block-c">		
+					<?php ap_get_questions(array('author' => ap_get_displayed_user_id(), 'showposts' => 5, 'sortby' => 'newest')); ?>		
+					
+					<?php if(ap_have_questions()): ?>
+
+						<?php while ( ap_questions() ) : ap_the_question(); ?>
+							<?php ap_get_template_part('user/list-question'); ?>
+						<?php endwhile; ?>
+						
+						<div class="ap-user-posts-footer">
+							<?php printf(__('More questions by %s', 'ap'), ap_user_get_the_display_name()); ?>
+							<a href="<?php echo ap_user_link(ap_get_displayed_user_id(), 'questions'); ?>"><?php _e('view', 'ap'); ?>&rarr;</a>
+						</div>
+					<?php else: ?>
+
+						<?php _e('No question asked yet!', 'ap'); ?>
+
+					<?php endif; ?>
+					
+					<?php wp_reset_postdata(); ?>
+				</div>
 			</div>		
 		</div>
 		<div class="col-md-4">

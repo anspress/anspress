@@ -7,6 +7,9 @@
  */
 ?>
 <div id="ap-users" class="ap-users ap-following">
+	<h3 class="ap-user-page-title clearfix">
+		<?php echo ap_page_title() ?>
+	</h3>
 	<div class="ap-users-loop clearfix">
 		<?php
 			while ( $following->users() ) : $following->the_user();

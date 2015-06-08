@@ -7,7 +7,7 @@
 		<?php if(ap_have_questions()): ?>
 
 			<?php while ( ap_questions() ) : ap_the_question(); ?>
-				<?php ap_get_template_part('user/list-item'); ?>
+				<?php ap_get_template_part('user/list-question'); ?>
 			<?php endwhile; ?>
 
 			<?php ap_questions_the_pagination(); ?>

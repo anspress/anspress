@@ -21,7 +21,7 @@ function ap_scripts_front(){
 		wp_enqueue_script('jquery');				
 		wp_enqueue_script('jquery-form', array('jquery'), false );			
 		wp_enqueue_script('ap-functions-js', ANSPRESS_URL.'assets/ap-functions.js', 'jquery');		
-		wp_enqueue_script('ap-waypoints', ap_get_theme_url('js/jquery.waypoints.min.js'), 'jquery', AP_VERSION);	
+		//wp_enqueue_script('ap-waypoints', ap_get_theme_url('js/jquery.waypoints.min.js'), 'jquery', AP_VERSION);	
 		wp_enqueue_script('ap-anspress_script', ANSPRESS_URL.'assets/prod/anspress_site.min.js', 'jquery', AP_VERSION);		
 		wp_enqueue_script('ap-tooltipster', ap_get_theme_url('js/jquery.tooltipster.min.js'), 'jquery', AP_VERSION);
 		wp_enqueue_script('ap-peity-js', ap_get_theme_url('js/jquery.peity.min.js'), 'jquery', AP_VERSION);

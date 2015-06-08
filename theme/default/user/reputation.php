@@ -8,7 +8,11 @@
  * @package AnsPress
  */
 ?>
-<div class="ap-user-rep">	
+<h3 class="ap-user-page-title clearfix">
+	<?php echo ap_page_title() ?>
+</h3>
+<div class="ap-user-rep">
+
 	<div class="ap-about-rep clearfix">
 		<div class="ap-pull-left">
 			<span class="ap-about-rep-label"><?php _e('Total', 'ap'); ?></span>

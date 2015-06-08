@@ -8,6 +8,9 @@
  */
 ?>
 <div class="ap-profile-box clearfix">
+	<h3 class="ap-user-page-title clearfix">
+		<?php echo ap_page_title() ?>
+	</h3>
 	<div class="ap-profile-tab-c clearfix">
 		<?php ap_user_profile_tab(); ?>
 	</div>

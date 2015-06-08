@@ -175,7 +175,7 @@ jQuery(document).ready(function() {
         jQuery(this).css(width, 'auto');
     });
 
-    jQuery('#answers .answer').waypoint(function(direction, pos) {
+    /*jQuery('#answers .answer').waypoint(function(direction, pos) {
         jQuery('#answers .answer').removeClass('active');
         var total = parseInt(jQuery('[data-view="ap_answer_nav_total"]').text());
         var index = parseInt(jQuery(this.element).data('index'));
@@ -206,7 +206,7 @@ jQuery(document).ready(function() {
         jQuery('html, body').animate({
             scrollTop: (jQuery('#answers .answer:nth-child('+cur+')').offset().top) - 99
         }, 500);
-    });
+    });*/
 
     jQuery('body').delegate('#ap-question-sorting select', 'change', function(e) {
         var load = AnsPress.site.showLoading(jQuery(this).parent());

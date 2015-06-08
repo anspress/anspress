@@ -2658,7 +2658,7 @@
 }
 #anspress .ap-user-page-title {
   border-bottom: 1px solid #eee;
-  margin-bottom: 0;
+  margin-bottom: 15px;
   margin-top: 0;
   padding-bottom: 10px;
 }
@@ -2835,6 +2835,12 @@
   display: block;
   font-size: 16px;
   margin-bottom: 12px;
+}
+#anspress .ap-about .top-answers h3 {
+  margin-bottom: 0;
+}
+#anspress .ap-about .top-answers .ap-user-posts-item {
+  padding: 10px 0;
 }
 #anspress .ap-rank-label {
   background: none repeat scroll 0 0 #ddd;

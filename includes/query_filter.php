@@ -174,7 +174,7 @@ class AnsPress_Query_Filter
 
 	public function ap_answers_query($sql, $query){		
 		
-		if( isset($query->query['ap_answers_query']) && @$query->args['only_best_answer'] !== true && is_user_logged_in() && isset($query->args['meta_query'])){
+		if( !isset($query->query['ap_query']) && isset($query->query['ap_answers_query']) && @$query->args['only_best_answer'] !== true && is_user_logged_in() && isset($query->args['meta_query'])){
 			
 			global $wpdb;
 

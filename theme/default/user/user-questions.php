@@ -1,6 +1,6 @@
 <div id="ap-lists">
 	<h3 class="ap-user-page-title clearfix">
-		<?php the_title(); ?>
+		<?php echo ap_page_title() ?>
 		<?php ap_question_sorting(ap_user_link(ap_get_displayed_user_id(), 'questions')); ?>
 	</h3>
 	<?php if ( ap_have_questions() ) : ?>
@@ -8,7 +8,7 @@
 			<?php					
 				/* Start the Loop */
 				while ( ap_questions() ) : ap_the_question();
-					include(ap_get_theme_location('user/list-item.php'));
+					ap_get_template_part('user/list-question');
 				endwhile;
 			?>
 		</div>
