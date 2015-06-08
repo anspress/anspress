@@ -49,6 +49,7 @@ class AnsPress_User
         ap_register_user_page('answers', __('Answers', 'ap'), array($this, 'answers_page'));
         ap_register_user_page('followers', __('Followers', 'ap'), array($this, 'followers_page'));
         ap_register_user_page('following', __('Following', 'ap'), array($this, 'following_page'));
+        ap_register_user_page('subscription', __('Subscription', 'ap'), array($this, 'subscription_page'), true, false);
 
         add_filter( 'ap_page_title', array($this, 'ap_page_title') );
     }
@@ -146,6 +147,20 @@ class AnsPress_User
         else
             _e('You are not following anyone.', 'ap');
         
+    }
+
+    /**
+     * Register user subscription page
+     * @since 2.3
+     */
+    public function subscription_page(){
+
+        if(!ap_is_user_page_public('profile') && !ap_is_my_profile()){
+            ap_get_template_part('not-found');
+            return;
+        }
+
+        include ap_get_theme_location('user/subscription.php');
     }
 
     public function ap_page_title($title)

@@ -1,38 +1,53 @@
-.ap-user-posts h3 {
+#anspress .ap-user-posts h3 {
   border-bottom: 2px solid #eee;
   margin-bottom: 0;
   margin-top: 0;
   padding: 5px 0;
 }
-.ap-user-posts-item {
-  border-bottom: 1px solid #eee;
-  padding: 12px 0;
+#anspress .ap-user-posts-item {
+  border-bottom: 1px solid #f8f8f8;
+  padding: 15px 0;
 }
-.ap-user-posts-vcount {
-  background: #eee;
+#anspress .ap-user-posts-vcount {
+  background: none repeat scroll 0 0 #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: 2px;
-  color: #888888;
+  color: #333333;
   display: block;
   float: left;
+  font-size: 12px;
   font-weight: 600;
   height: 25px;
+  line-height: 23px;
   margin-right: 15px;
   text-align: center;
   width: 50px;
 }
-.ap-user-posts-vcount i {
+#anspress .ap-user-posts-vcount i {
+  background: none repeat scroll 0 0 rgba(0, 0, 0, 0.05);
+  border-radius: 2px 0 0 2px;
+  color: #888888;
+  display: block;
+  float: left;
+  font-size: 12px;
+  height: 25px;
   margin-right: 2px;
+  width: 25px;
 }
-.ap-user-posts-vcount.positive,
-.ap-user-posts-vcount.answer-selected {
+#anspress .ap-user-posts-vcount.positive,
+#anspress .ap-user-posts-vcount.answer-selected {
   background: #73c88c;
   color: #fff;
 }
-.ap-user-posts-vcount.negative {
+#anspress .ap-user-posts-vcount.positive i,
+#anspress .ap-user-posts-vcount.answer-selected i {
+  color: #fff;
+}
+#anspress .ap-user-posts-vcount.negative {
   background: #ed6b4e;
   color: #fff;
 }
-.ap-user-posts-active {
+#anspress .ap-user-posts-active {
   color: #888888;
   float: right;
   overflow: hidden;
@@ -40,24 +55,17 @@
   white-space: nowrap;
   width: 70px;
 }
-.ap-user-posts-title {
-  color: #333333;
-  font-weight: 600;
-}
-.ap-user-posts-ccount {
-  border: 1px solid #eee;
-  border-radius: 2px;
+#anspress .ap-user-posts-ccount {
   color: #888888;
   float: right;
   margin-right: 10px;
   text-align: center;
-  width: 50px;
 }
-.ap-user-posts-footer {
+#anspress .ap-user-posts-footer {
   color: #888888;
   padding: 10px 0;
 }
-.ap-user-posts-footer > a {
+#anspress .ap-user-posts-footer > a {
   border: 1px solid #eee;
   border-radius: 3px;
   padding: 2px 10px;

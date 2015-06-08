@@ -26,6 +26,7 @@ class AnsPress_Query_Filter
 		
 		add_action( 'posts_clauses', array($this, 'main_question_query'), 10, 2 );
 		add_action( 'posts_clauses', array($this, 'ap_answers_query'), 10, 2 );
+		add_action( 'posts_clauses', array($this, 'ap_question_subscription_query'), 10, 2 );
 
     }
 
@@ -193,6 +194,19 @@ class AnsPress_Query_Filter
 	
 	public function question_feed(){
 		include ap_get_theme_location('feed-question.php');
+	}
+
+	public function ap_question_subscription_query($sql, $query)
+	{
+		// First check if this is right query to append filters
+		if(isset($query->query['ap_query']) && $query->query['ap_query'] == 'ap_subscription_query' ){
+			global $wpdb;
+
+			$sql['join'] = "JOIN ".$wpdb->prefix."ap_meta apmeta ON $wpdb->posts.ID = apmeta.apmeta_actionid";
+			$sql['where'] = $sql['where']." AND apmeta.apmeta_type='subscriber' AND apmeta.apmeta_userid='".$query->query['user_id']."'";
+		}
+
+		return $sql;
 	}
 
 }

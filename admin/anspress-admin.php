@@ -176,23 +176,24 @@ class AnsPress_Admin
 		
 		add_submenu_page('anspress', __( 'Flagged question & answer', 'ap' ), __( 'Flagged', 'ap' ).$Flagcount,	'delete_pages', 'anspress_flagged', array( $this, 'display_flagged_page' ));		
 		
-		add_submenu_page('anspress', __( 'Reputation', 'ap' ), __( 'Reputation', 'ap' ),	'manage_options', 'anspress_reputation', array( $this, 'display_reputation_page' ));
-
-		add_submenu_page('anspress', __( 'AnsPress Options', 'ap' ), __( 'Options', 'ap' ),	'manage_options', 'anspress_options', array( $this, 'display_plugin_admin_page' ));
+		add_submenu_page('anspress', __( 'Reputation', 'ap' ), __( 'Reputation', 'ap' ),	'manage_options', 'anspress_reputation', array( $this, 'display_reputation_page' ));		
 		
 		//add_submenu_page('anspress', __( 'Extensions', 'ap' ), __( 'Extensions', 'ap' ),	'manage_options', 'anspress_ext', array( $this, 'display_plugin_addons_page' ));
 		
-		add_submenu_page('anspress-sub', __( 'About AnsPress', 'ap' ), __( 'About AnsPress', 'ap' ),	'manage_options', 'anspress_about', array( $this, 'display_plugin_about_page' ));
 
 		 add_submenu_page('ap_post_flag', __( 'Post flag', 'ap' ), __( 'Post flag', 'ap' ), 'delete_pages', 'ap_post_flag', array( $this, 'display_post_flag' ));
+		 
 		 add_submenu_page('ap_select_question', __( 'Select question', 'ap' ), __( 'Select question', 'ap' ), 'delete_pages', 'ap_select_question', array( $this, 'display_select_question' ));
 
 		/**
 		 * ACTION: ap_admin_menu
 		 * @since unknown
 		 */
-		do_action('ap_admin_menu');		
+		do_action('ap_admin_menu');
+
+		add_submenu_page('anspress', __( 'About AnsPress', 'ap' ), __( 'About AnsPress', 'ap' ),	'manage_options', 'anspress_about', array( $this, 'display_plugin_about_page' ));
 		
+		add_submenu_page('anspress', __( 'AnsPress Options', 'ap' ), __( 'Options', 'ap' ),	'manage_options', 'anspress_options', array( $this, 'display_plugin_admin_page' ));
 	}
 	
 	/**
