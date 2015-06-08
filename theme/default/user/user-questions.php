@@ -1,12 +1,14 @@
 <div id="ap-lists">
-	<?php ap_questions_tab(ap_user_link(ap_get_displayed_user_id(), 'questions')); ?>
+	<h3 class="ap-user-page-title clearfix">
+		<?php the_title(); ?>
+		<?php ap_question_sorting(ap_user_link(ap_get_displayed_user_id(), 'questions')); ?>
+	</h3>
 	<?php if ( ap_have_questions() ) : ?>
 		<div class="ap-questions">
 			<?php					
 				/* Start the Loop */
 				while ( ap_questions() ) : ap_the_question();
-					global $post;
-					include(ap_get_theme_location('content-list.php'));
+					include(ap_get_theme_location('user/list-item.php'));
 				endwhile;
 			?>
 		</div>

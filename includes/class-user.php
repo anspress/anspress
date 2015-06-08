@@ -427,32 +427,21 @@ class AnsPress_User
      */
     public function ap_user_menu_icons($menus)
     {
-        if (isset($menus['about']))
-            $menus['about']['class'] = ap_icon('home');
+        $icons = array(
+            'about'         => ap_icon('home'),
+            'profile'       => ap_icon('board'),
+            'questions'     => ap_icon('question'),
+            'answers'       => ap_icon('answer'),
+            'activity'      => ap_icon('pulse'),
+            'reputation'    => ap_icon('reputation'),
+            'followers'     => ap_icon('users'),
+            'following'     => ap_icon('users'),
+            'subscription'  => ap_icon('rss'),
+        );
 
-        if (isset($menus['profile']))
-            $menus['profile']['class'] = ap_icon('board');
-
-        if (isset($menus['questions'])) 
-            $menus['questions']['class'] = ap_icon('question');
-
-        if (isset($menus['answers'])) 
-            $menus['answers']['class'] = ap_icon('answer');
-
-        if (isset($menus['activity'])) 
-            $menus['activity']['class'] = ap_icon('pulse');
-
-        if (isset($menus['reputation'])) 
-            $menus['reputation']['class'] = ap_icon('reputation'); 
-
-        if (isset($menus['followers'])) 
-            $menus['followers']['class'] = ap_icon('users'); 
-
-        if (isset($menus['following'])) 
-            $menus['following']['class'] = ap_icon('users'); 
-
-        if (isset($menus['subscription'])) 
-            $menus['subscription']['class'] = ap_icon('rss');        
+        foreach($icons as $k => $i)
+            if (isset($menus[$k])) 
+                $menus[$k]['class'] = $i;        
 
         return $menus;
     }
