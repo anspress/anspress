@@ -4,6 +4,9 @@
   margin-top: 0;
   padding: 5px 0;
 }
+#anspress .ap-user-posts h3 li {
+  margin-right: 15px;
+}
 #anspress .ap-user-posts-item {
   border-bottom: 1px solid #f8f8f8;
   padding: 15px 0;

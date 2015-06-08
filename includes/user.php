@@ -481,6 +481,33 @@ function ap_user_top_posts_tab(){
 }
 
 /**
+ * User's subscription tab
+ * @return void
+ * @since 2.1
+ */
+function ap_user_subscription_tab(){
+    $active = isset($_GET['tab']) ? sanitize_text_field($_GET['tab']) : 'question';
+    
+    $link = '?tab=';
+
+    printf(__('My subscriptions', 'ap'), $active);
+    
+    ?>
+    <ul id="ap-user-posts-tab" class="ap-flat-tab ap-ul-inline clearfix" role="tablist">
+        <li class="<?php echo $active == 'question' ? ' active' : ''; ?>"><a href="<?php echo $link.'question'; ?>"><?php _e('Questions', 'ap'); ?></a></li>        
+        <?php 
+            /**
+             * ACTION: ap_user_subscription_tab
+             * Used to hook into users page tab
+             * @since 2.3
+             */
+            do_action('ap_user_subscription_tab', $active); 
+        ?>
+    </ul>
+    <?php
+}
+
+/**
  * Display user meta
  * @param   boolean         $html  for html output
  * @param   false|integer   $user_id  User id, if empty then post author witll be user

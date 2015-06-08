@@ -160,6 +160,7 @@ class AnsPress_User
             return;
         }
 
+        ap_get_questions(array( 'ap_query' => 'ap_subscription_query', 'user_id' => get_current_user_id(), 'sortby' => 'newest'));
         include ap_get_theme_location('user/subscription.php');
     }
 
