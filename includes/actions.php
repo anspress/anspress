@@ -384,7 +384,7 @@ class AnsPress_Actions
 		if(!in_array('anspress-page-profile', $item->classes))
 			return $item_output;
 
-		$menus = ap_get_user_menu();
+		$menus = ap_get_user_menu(get_current_user_id());
 		$active_user_page   = get_query_var('user_page');
     	$active_user_page   = $active_user_page ? $active_user_page : 'about';
 
@@ -395,7 +395,7 @@ class AnsPress_Actions
 		foreach($menus as $m){
 			
 			$class = !empty($m['class']) ? ' '.$m['class'] : '';
-            
+
             $item_output .= '<li'.($active_user_page == $m['slug'] ? ' class="active"' : '').'><a href="'.$m['link'].'" class="ap-user-link-'.$m['slug'].$class.'">'.$m['title'].'</a></li>';
         }
 

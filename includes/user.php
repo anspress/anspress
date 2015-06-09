@@ -246,10 +246,13 @@ function ap_user_link($user_id = false, $sub = false)
     return apply_filters('ap_user_link', $link, $user_id);
 }
 
-function ap_get_user_menu(){
+function ap_get_user_menu($user_id = false){
+
+    if($user_id === false)
+        $user_id = ap_get_displayed_user_id();
+
     $user_pages = anspress()->user_pages;
 
-    $userid             = ap_get_displayed_user_id();
     $active_user_page   = get_query_var('user_page');
     $active_user_page   = $active_user_page ? $active_user_page : 'about';
 
@@ -257,7 +260,7 @@ function ap_get_user_menu(){
 
     $i = 1;
     foreach ($user_pages as $k => $args) {
-        $link        = ap_user_link($userid, $k);
+        $link        = ap_user_link($user_id, $k);
         $menus[$k]    = array( 'slug' => $k, 'title' => $args['title'], 'link' => $link, 'order' => 5+$i, 'show_in_menu' => $args['show_in_menu'], 'public' => $args['public']);
 
         $i++;

@@ -729,7 +729,13 @@ function ap_breadcrumbs(){
 			$a['page'] = array( 'title' => substr($title, 0, 30). (strlen($title)>30 ? __('..', 'ap') : ''), 'link' => get_permalink( get_question_id() ), 'order' => 10 );
 		}
 		elseif($current_page != 'base' && $current_page != ''){
-			$a['page'] = array( 'title' => substr($title, 0, 30). (strlen($title)>30 ? __('..', 'ap') : ''), 'link' => ap_get_link_to($current_page), 'order' => 10 );
+
+			if($current_page == 'user'){				
+				$a['page'] = array( 'title' => __('User', 'ap'), 'link' => ap_user_link(ap_get_displayed_user_id()), 'order' => 10 );
+				$a['user_page'] = array( 'title' => substr($title, 0, 30). (strlen($title)>30 ? __('..', 'ap') : ''), 'link' => ap_user_link(ap_get_displayed_user_id(), get_query_var('user_page')), 'order' => 10 );
+			}else{
+				$a['page'] = array( 'title' => substr($title, 0, 30). (strlen($title)>30 ? __('..', 'ap') : ''), 'link' => ap_get_link_to($current_page), 'order' => 10 );
+			}
 		}
 
 		$a = apply_filters('ap_breadcrumbs', $a );
