@@ -30,7 +30,7 @@ class AnsPress_User
         add_filter('pre_user_query', array($this, 'user_sort_by_reputation'));
         add_action('wp_ajax_ap_cover_upload', array($this, 'cover_upload'));
         add_action('wp_ajax_ap_avatar_upload', array($this, 'avatar_upload'));
-        add_filter( 'avatar_defaults' , array($this, 'default_avatar') );
+        add_filter('avatar_defaults' , array($this, 'default_avatar') );
         add_filter('get_avatar', array($this, 'get_avatar'), 10, 5);
         add_filter('ap_user_menu', array($this, 'ap_user_menu_icons'));
     }

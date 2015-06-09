@@ -728,7 +728,7 @@ function ap_breadcrumbs(){
 		elseif(is_question()){			
 			$a['page'] = array( 'title' => substr($title, 0, 30). (strlen($title)>30 ? __('..', 'ap') : ''), 'link' => get_permalink( get_question_id() ), 'order' => 10 );
 		}
-		else{
+		elseif($current_page != 'base' && $current_page != ''){
 			$a['page'] = array( 'title' => substr($title, 0, 30). (strlen($title)>30 ? __('..', 'ap') : ''), 'link' => ap_get_link_to($current_page), 'order' => 10 );
 		}
 
