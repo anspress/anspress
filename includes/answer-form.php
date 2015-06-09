@@ -82,18 +82,21 @@ function ap_answer_form($question_id, $editing = false){
             'order' => 12,
             'show_desc_tip' => false
         );
-
+    if(ap_opt('recaptcha_site_key') == '')
+        $reCaptcha_html = '<div class="ap-notice red">'.__('reCaptach keys missing, please add keys', 'ap').'</div>';
+    else
+        $reCaptcha_html = '<div class="g-recaptcha" id="recaptcha" data-sitekey="'.ap_opt('recaptcha_site_key').'"></div><script type="text/javascript"
+src="https://www.google.com/recaptcha/api.js?hl='.get_locale().'&onload=onloadCallback&render=explicit"  async defer></script><script type="text/javascript">var onloadCallback = function() {
+        widgetId1 = grecaptcha.render("recaptcha", {
+          "sitekey" : "'.ap_opt('recaptcha_site_key').'"
+        });
+      };</script>';
     if(ap_opt('enable_recaptcha'))
         $args['fields'][] = array(
             'name' => 'captcha',
             'type'  => 'custom',
             'order' => 100,
-            'html' => '<div class="g-recaptcha" id="recaptcha" data-sitekey="'.ap_opt('recaptcha_site_key').'"></div><script type="text/javascript"
-src="https://www.google.com/recaptcha/api.js?hl='.get_locale().'&onload=onloadCallback&render=explicit"  async defer></script><script type="text/javascript">var onloadCallback = function() {
-        widgetId1 = grecaptcha.render("recaptcha", {
-          "sitekey" : "'.ap_opt('recaptcha_site_key').'"
-        });
-      };</script>'
+            'html' => $reCaptcha_html
         );
     
     /**
