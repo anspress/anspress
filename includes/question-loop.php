@@ -220,6 +220,10 @@ function ap_question_the_post_parent(){
         return $question->post_parent;
     }
 
+function ap_question_get_the_author_id(){
+    echo ap_question_get_author_id();
+}
+
 function ap_question_get_author_id(){
     $question = ap_question_the_object();
     return $question->post_author;

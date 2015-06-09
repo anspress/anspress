@@ -752,3 +752,12 @@ function ap_get_cover_src($user_id = false, $small = false) {
 
     return false;
 }
+
+function ap_hover_card_ajax_query($user_id = false){
+    if($user_id === false)
+        $user_id = ap_get_displayed_user_id();
+
+    $nonce = wp_create_nonce( 'load_cover' );
+
+    return 'action=ap_ajax&ap_ajax_action=user_cover&user_id='.$user_id.'&__nonce='.$nonce;
+}

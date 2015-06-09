@@ -33,36 +33,6 @@
 					</div>
 				</div>
 			</div>
-			<!--<div class="ap-about-block">
-				<h3><?php echo ap_icon('rank', true); ?> <?php _e('Ranks', 'ap'); ?></h3>
-				<div class="ap-about-description ap-about-block-c">
-					<ul class="ap-rank-list">
-						<li class="clearfix">
-							<span class="ap-rank-list-index">1</span>
-							<div class="ap-rank-list-c">
-								<span class="ap-rank-label ap-rank-type-core-developer" style="background:#2cc4ff;">Core Developer</span>
-							</div>
-							<span class="ap-rank-list-info">User is a AnsPress core contributor.</span>
-							<a href="#" class="ap-rank-list-help"><?php echo ap_icon('info', true); ?></a>
-						</li>
-						<li class="clearfix">
-							<span class="ap-rank-list-index">2</span>
-							<div class="ap-rank-list-c">
-								<span class="ap-rank-label ap-rank-type-staff" style="background:#FF8E2C;">Staff</span>
-							</div>
-							<span class="ap-rank-list-info">User is a AnsPress support staff.</span>
-							<a href="#" class="ap-rank-list-help"><?php echo ap_icon('info', true); ?></a>
-						<li class="clearfix">
-							<span class="ap-rank-list-index">3</span>
-							<div class="ap-rank-list-c">
-								<span class="ap-rank-label ap-rank-type-contributor" style="background:#ff5a48;">Contributor</span>
-							</div>
-							<span class="ap-rank-list-info">User contributed in AnsPress development.</span>
-							<a href="#" class="ap-rank-list-help"><?php echo ap_icon('info', true); ?></a>
-						</li>
-					</ul>
-				</div>
-			</div>-->
 			<div class="ap-about-block">
 				<h3><?php echo ap_icon('thumbs-up-down', true); ?> <?php _e('Votes', 'ap'); ?></h3>
 				<div class="ap-about-block-c">		

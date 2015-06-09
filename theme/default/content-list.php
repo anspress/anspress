@@ -19,7 +19,7 @@ $clearfix_class = array('ap-questions-item clearfix');
 	<?php if(ap_is_featured_question()) echo '<i class="ap-questions-featured apicon-star ap-tip" title="'.__('Featured question', 'ap').'"></i>'; ?>
 	<div class="ap-questions-inner">
 		<div class="ap-avatar ap-pull-left">
-			<a href="<?php ap_question_the_author_link() ; ?>">
+			<a href="<?php ap_question_the_author_link() ; ?>" <?php if(ap_question_get_author_id() > 0): ?>data-userid="<?php ap_question_get_the_author_id(); ?>" data-action="ap_hover_card" data-query="<?php echo ap_hover_card_ajax_query(ap_question_get_author_id()); ?>"<?php endif; ?>>
 				<?php ap_question_the_author_avatar(ap_opt('avatar_size_list')); ?>
 			</a>
 		</div>

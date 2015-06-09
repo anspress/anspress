@@ -32,6 +32,7 @@ class AnsPress_Ajax
 		
 		add_action('wp_ajax_ap_suggest_tags', array($this, 'ap_suggest_tags'));
 		add_action('wp_ajax_nopriv_ap_suggest_tags', array($this, 'ap_suggest_tags'));
+		add_action('ap_ajax_user_cover', array($this, 'ap_user_cover'));
     }
 
     
@@ -523,5 +524,30 @@ class AnsPress_Ajax
 
 		}
 
+	}
+
+	public function ap_user_cover()
+	{
+		$user_id = (int)$_POST['user_id'];
+		
+		if(!wp_verify_nonce( $_POST['__nonce'], 'load_cover') || !is_user_logged_in() ){
+			ap_send_json(ap_ajax_responce('something_wrong'));
+			return;
+		}
+
+		global $ap_user_query;        
+        $ap_user_query = ap_has_users(array('ID' => $user_id ) );
+
+        if($ap_user_query->has_users()){
+
+        	while ( ap_users() ) : ap_the_user();
+            	ap_get_template_part('user/user-card');
+            endwhile;
+
+        }else{
+            ap_send_json(ap_ajax_responce('something_wrong'));
+        }
+
+		die();
 	}
 }

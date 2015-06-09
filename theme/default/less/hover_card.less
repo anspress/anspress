@@ -1,0 +1,98 @@
+.ap-hover-card{
+    background: none repeat scroll 0 0 #fff;
+    border: 1px solid #a0a0a0;
+    border-radius: 2px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    color: @default-color;
+    font-family: Arial,sans-serif;
+    font-size: 14px;
+    line-height: 16px;
+    padding: 0;
+    width: 350px;
+
+    .ap-user-cover{
+	    background-image: url("../images/small_cover.jpg");
+	    background-repeat: no-repeat;
+	    background-size: cover;
+	    display: block;
+	    height: 95px;
+	    position: relative;
+    }
+    .ap-card-gr{
+	    background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.9));
+	    bottom: 0;
+	    display: block;
+	    height: 70px;
+	    left: 0;
+	    position: absolute;
+	    width: 100%;
+    }
+
+    .ap-card-content{
+	    margin-top: -55px;
+	    padding: 10px;
+	    position: relative;
+    }
+    .ap-avatar{
+	    float: left;
+	    margin-right: 15px;
+	    max-width: 80px;
+    }
+    .avatar{
+    	max-width: 80px;
+    }
+
+	.ap-card-name {
+	    color: #fff;
+	    display: block;
+	    font-size: 17px;
+	    font-weight: 600;
+	    text-decoration: none;
+	    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+	    span{
+	    	font-size: 13px;
+	    }
+	}
+	.ap-card-reputation{
+	    color: #fff;
+	    display: table;
+	    margin-top: 3px;
+	    span{
+		    background: none repeat scroll 0 0 #ff6a15;
+		    border-radius: 2px;
+		    display: inline-block;
+		    font-size: 12px;
+		    font-weight: 600;
+		    padding: 0 4px;
+		    margin-right: 3px;
+	    }
+	}
+	.ap-card-stats {
+	    margin-top: 20px;
+	    span{
+		    color: #888;
+		    display: block;
+		    font-size: 12px;
+		    margin-bottom: 7px;
+	    }
+	}
+	.ap-btn{
+	    background-image: linear-gradient(#ffffff, #fcfcfc);
+	    border: 1px solid rgba(0, 0, 0, 0.15);
+	    border-radius: 3px;
+	    color: #333333;
+	    display: block;
+	    font-size: 12px;
+	    font-weight: 600;
+	    line-height: 1.6;
+	    margin-top: 7px;
+	    padding: 2px 0;
+	    text-align: center;
+	    text-decoration: none;
+	    vertical-align: middle;
+	    &.active {
+		    background: none repeat scroll 0 0 #eee;
+		    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2) inset;
+		}
+	}
+}
