@@ -1250,6 +1250,32 @@
 .no-overflow {
   overflow: hidden;
 }
+#ap-user-menu-anchor img {
+  border-radius: 2px;
+  display: inline;
+  margin-right: 5px;
+  vertical-align: text-bottom;
+  width: 20px;
+}
+#ap-user-menu-link {
+  list-style: none;
+  border: solid 1px #ddd;
+  padding: 0;
+  margin: 0;
+}
+#ap-user-menu-link li {
+  padding: 0;
+  margin: 0;
+}
+#ap-user-menu-link li > a {
+  background: #fff;
+}
+#ap-user-menu-link li > a:before {
+  margin-right: 10px;
+}
+#ap-user-menu-link li > a:hover {
+  background: #fcfcfc;
+}
 #anspress .ap-questions-item {
   border-bottom: 1px solid #F8F8F8;
   -webkit-box-shadow: none;

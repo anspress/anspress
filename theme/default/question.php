@@ -24,7 +24,7 @@
 					do_action('ap_before_question_content');
 				?>				
 				<div class="ap-avatar ap-pull-left">
-					<a href="<?php ap_question_the_author_link(); ?>">
+					<a href="<?php ap_question_the_author_link(); ?>"<?php ap_hover_card_attributes(ap_question_get_author_id()); ?>>
 						<?php ap_question_the_author_avatar( ap_opt('avatar_size_qquestion') ); ?>
 					</a>						
 				</div>

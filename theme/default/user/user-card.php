@@ -7,14 +7,15 @@
  * @package AnsPress
  */
 $cover = ap_get_cover_src(ap_user_get_the_ID());
+
 ?>
-<div id="user_<?php ap_user_the_ID(); ?>_cover" style="display:none">
+<div id="user_<?php ap_user_the_ID(); ?>_card" style="display:none">
 	<div class="ap-user-cover"<?php if($cover): ?> style="background-image:url(<?php echo $cover; ?>)"<?php endif; ?>>
 		<div class="ap-card-gr"></div>
 	</div>
 	<div class="ap-card-content">
 	    <div class="ap-avatar">
-			<a href="<?php ap_user_the_link() ; ?>" data-userid="<?php ap_user_the_ID(); ?>" data-action="ap_hover_card" data-query="<?php echo ap_hover_card_ajax_query(ap_user_get_the_ID()); ?>">
+			<a href="<?php ap_user_the_link() ; ?>">
 				<?php ap_user_the_avatar(80); ?>
 			</a>
 	        <?php ap_follow_button(ap_user_get_the_ID()); ?>

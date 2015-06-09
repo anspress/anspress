@@ -594,9 +594,9 @@
                     continueTooltip();
                     var q = $(this).attr('data-query'),
                         user_id = $(this).attr('data-userid');
-                    
+
                     // next, we want to check if our data has already been cached
-                    if ( $('#user_'+user_id+'_cover').length == 0) {                        
+                    if ( $('#user_'+user_id+'_card').length == 0) {                        
                         $.ajax({
                             type: 'POST',
                             url: ajaxurl,
@@ -609,7 +609,7 @@
                             }
                         });
                     }else{
-                        var html = $('#user_'+user_id+'_cover').html();
+                        var html = $('#user_'+user_id+'_card').html();
                         origin.tooltipster('content', $(html).show() );
                     }
                 }

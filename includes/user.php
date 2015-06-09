@@ -246,14 +246,7 @@ function ap_user_link($user_id = false, $sub = false)
     return apply_filters('ap_user_link', $link, $user_id);
 }
 
-/**
- * Output user menu
- * Extract menu from registered user pages
- * @return void
- * @since 2.0.1
- */
-function ap_user_menu()
-{
+function ap_get_user_menu(){
     $user_pages = anspress()->user_pages;
 
     $userid             = ap_get_displayed_user_id();
@@ -280,14 +273,34 @@ function ap_user_menu()
 
     $menus = ap_sort_array_by_order($menus);
 
+    foreach ($menus as $k => $m) {
+        if( (!$m['public'] && !ap_is_my_profile()))
+            unset($menus[$k]);
+    }
+
+    return $menus;
+}
+
+/**
+ * Output user menu
+ * Extract menu from registered user pages
+ * @return void
+ * @since 2.0.1
+ */
+function ap_user_menu()
+{
+    $menus = ap_get_user_menu();
+    $active_user_page   = get_query_var('user_page');
+    $active_user_page   = $active_user_page ? $active_user_page : 'about';
+
     if (!empty($menus) && is_array($menus)) {
         $o = '<ul id="ap-user-menu" class="ap-user-menu ap_collapse_menu clearfix">';
         foreach ($menus as $m) {
-            if( (!$m['public'] && ap_is_my_profile()) || $m['public'] ){
-                $class = !empty($m['class']) ? ' '.$m['class'] : '';
-                $o .= '<li'.($active_user_page == $m['slug'] ? ' class="active"' : '').'><a href="'.$m['link'].'" class="ap-user-menu-'.$m['slug'].$class.'">'.$m['title'].'</a></li>';
-            }
+            $class = !empty($m['class']) ? ' '.$m['class'] : '';
+            $o .= '<li'.($active_user_page == $m['slug'] ? ' class="active"' : '').'><a href="'.$m['link'].'" class="ap-user-menu-'.$m['slug'].$class.'">'.$m['title'].'</a></li>';
+
         }
+        
         $o .= '<li class="ap-user-menu-more ap-dropdown"><a href="#" class="ap-dropdown-toggle">'.__('More', 'ap').ap_icon('chevron-down', true).'</a><ul class="ap-dropdown-menu"></ul></li>';
         $o .= '</ul>';
         echo $o;
@@ -760,4 +773,9 @@ function ap_hover_card_ajax_query($user_id = false){
     $nonce = wp_create_nonce( 'load_cover' );
 
     return 'action=ap_ajax&ap_ajax_action=user_cover&user_id='.$user_id.'&__nonce='.$nonce;
+}
+
+function ap_hover_card_attributes($user_id){
+    if($user_id > 0)
+        echo ' data-userid="'.$user_id.'" data-action="ap_hover_card" data-query="'.ap_hover_card_ajax_query($user_id).'"';
 }

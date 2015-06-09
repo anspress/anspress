@@ -42,6 +42,7 @@ class AnsPress_Actions
 		add_action( 'ap_unpublish_comment', array($this, 'unpublish_comment'));
 		add_filter( 'wp_get_nav_menu_items', array($this, 'update_menu_url'));
 		add_filter( 'nav_menu_css_class', array($this, 'fix_nav_current_class'), 10, 2 );
+		add_filter( 'walker_nav_menu_start_el', array($this, 'walker_nav_menu_start_el'), 10, 4 );
 
 		add_action( 'wp_loaded', array( $this, 'flush_rules' ) );
 		add_filter( 'mce_buttons', array($this, 'editor_buttons'), 10, 2 );
@@ -325,14 +326,24 @@ class AnsPress_Actions
 	 * @param  array $items
 	 * @return array
 	 */
-	public function update_menu_url( $items ) {		
+	public function update_menu_url( $items ) {
+		if(is_admin())
+			return $items;
+
 		$pages = anspress()->pages;
+		$pages['profile'] = array('title' => __('My profile', 'ap'), 'show_in_menu' => true);
+
 		if(!empty($items) && is_array($items))
 			foreach ( $items as $key => $item ) {
 				foreach($pages as $slug => $args){	
 
 					if(strpos($item->url, strtoupper('ANSPRESS_PAGE_URL_'.$slug)) !== FALSE ){
-						$item->url = ap_get_link_to($slug);
+
+						if($slug == 'profile')
+							$item->url = is_user_logged_in() ? ap_user_link(get_current_user_id()) : wp_login_url( );
+						else
+							$item->url = ap_get_link_to($slug);
+
 						$item->classes[] = 'anspress-page-link';
 						$item->classes[] = 'anspress-page-'.$slug;
 						
@@ -368,6 +379,30 @@ class AnsPress_Actions
 		}
 		return $class;
 	}
+
+	public function walker_nav_menu_start_el($item_output, $item, $depth, $args) {
+		if(!in_array('anspress-page-profile', $item->classes))
+			return $item_output;
+
+		$menus = ap_get_user_menu();
+		$active_user_page   = get_query_var('user_page');
+    	$active_user_page   = $active_user_page ? $active_user_page : 'about';
+
+		$item_output = '<a id="ap-user-menu-anchor" href="#">'.get_avatar(get_current_user_id(), 20).ap_user_display_name(get_current_user_id()).ap_icon('chevron-down', true).'</a>';
+		
+		$item_output .= '<ul id="ap-user-menu-link" class="ap-dropdown-menu ap-user-dropdown-menu">';
+		
+		foreach($menus as $m){
+			
+			$class = !empty($m['class']) ? ' '.$m['class'] : '';
+            
+            $item_output .= '<li'.($active_user_page == $m['slug'] ? ' class="active"' : '').'><a href="'.$m['link'].'" class="ap-user-link-'.$m['slug'].$class.'">'.$m['title'].'</a></li>';
+        }
+
+		$item_output .= '</ul>';
+
+		return $item_output;
+	} 
 
 	/**
 	 * Check if flushing rewrite rule is needed

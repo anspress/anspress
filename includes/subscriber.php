@@ -168,7 +168,9 @@ function ap_question_subscribers($action_id = false, $type = '', $avatar_size = 
 		echo '<div class="ap-question-subscribers clearfix">';
 			echo '<div class="ap-question-subscribers-inner">';
 			foreach($subscribers as $subscriber){
-				echo '<a href="'.ap_user_link($subscriber->apmeta_userid).'">'.get_avatar($subscriber->apmeta_userid, $avatar_size).'</a>';
+				echo '<a href="'.ap_user_link($subscriber->apmeta_userid).'"';
+				ap_hover_card_attributes($subscriber->apmeta_userid);
+				echo '>'.get_avatar($subscriber->apmeta_userid, $avatar_size).'</a>';
 			}
 			echo '</div>';
 		echo '</div>';

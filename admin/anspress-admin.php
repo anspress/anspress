@@ -848,6 +848,9 @@ class AnsPress_Admin
 		echo '<div class="aplinks" id="aplinks">';
 		echo '<input type="hidden" value="custom" name="menu-item['.$_nav_menu_placeholder.'][menu-item-type]" />';
 		echo '<ul>';
+
+		$pages['profile'] = array('title' => __('User profile', 'ap'), 'show_in_menu' => true);
+
 		foreach($pages as $k => $args){
 			if($args['show_in_menu']){
 				echo '<li>';

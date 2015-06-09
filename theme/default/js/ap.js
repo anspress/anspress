@@ -244,8 +244,8 @@ jQuery(document).ready(function() {
         menu.find('.ap-dropdown').hide();
         
         menu.find('li').each(function(index, el) {            
-            itemwidth = parseInt(itemwidth) + parseInt(jq(this).width());
-            if(itemwidth > menuwidth)
+            itemwidth = parseInt(itemwidth) + parseInt(jq(this).outerWidth());
+            if((itemwidth + parseInt(jq(this).next().outerWidth())) > menuwidth)
                 start_moving = true;
                 
             if(start_moving && !jq(this).is('.ap-user-menu-more')){

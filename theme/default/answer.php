@@ -18,7 +18,7 @@ if(!ap_answer_user_can_view()){
 	<div class="ap-content">
 		<div class="ap-single-vote"><?php ap_answer_the_vote_button(); ?></div>
 		<div class="ap-avatar ap-pull-left">
-			<a href="<?php ap_answer_the_author_link(); ?>">
+			<a href="<?php ap_answer_the_author_link(); ?>"<?php ap_hover_card_attributes(ap_answer_get_author_id()); ?>>
 				<?php ap_answer_the_author_avatar(); ?>
 			</a>		
 		</div>
