@@ -781,6 +781,8 @@ function ap_responce_message($id, $only_message = false)
 		'unfollow' => array('type' => 'success', 'message' => __('Successfully unfollowed.', 'ap')),
 		'follow' => array('type' => 'success', 'message' => __('Successfully followed.', 'ap')),
 		'cannot_follow_yourself' => array('type' => 'warning', 'message' => __('You cannot follow yourself.', 'ap')),
+		'delete_notification' => array('type' => 'success', 'message' => __('Notification deleted successfully.', 'ap')),
+		'mark_read_notification' => array('type' => 'success', 'message' => __('Notification is marked as read.', 'ap')),
 		);
 
 	/**
@@ -1313,3 +1315,68 @@ function ap_user_upload_limit_crossed($user_id){
 
 	return false;
 }
+
+/**
+ * Create base page for AnsPress
+ * 
+ * This function is called in plugin activation. This function checks if base page already exists,
+ * if not then it create a new one and update the option.
+ *
+ * @see anspress_activate 
+ * @since 2.3
+ */
+function ap_create_base_page(){
+	// check if page already exists
+	$page_id = ap_opt("base_page");
+	
+	$post = get_post($page_id);
+	
+	if(!$post){
+		$args = array();
+		$args['post_type']    		= "page";
+		$args['post_content'] 		= "[anspress]";
+		$args['post_status']  		= "publish";
+		$args['post_title']   		= "ANSPRESS_TITLE";
+		$args['post_name']   		= "questions";
+		$args['comment_status']   	= 'closed';
+		
+		// now create post
+		$new_page_id = wp_insert_post ($args);
+	
+		if($new_page_id){
+			$page = get_post($new_page_id);
+			ap_opt("base_page", $page->ID);
+			ap_opt("base_page_id", $page->post_name);
+		}
+	}
+}
+
+/**
+ * vsprintf, sprintf, and printf do not allow for associative arrays to perform replacements `sprintf_assoc` 
+ * resolves this by using the key of the array in the lookup for string replacement. 
+ * http://php.net/manual/en/function.vsprintf.php
+ * 
+ * @param  string 		$string           	hey stack
+ * @param  array  		$replacement_vars 	needles
+ * @param  string 		$prefix_character
+ * @return string
+ * @author codearachnid <https://gist.github.com/codearachnid/4462713>
+ * 
+ */
+function ap_sprintf_assoc( $string = '', $replacement_vars = array(), $prefix_character = '##' ) {
+	
+	if ( ! $string ) return '';
+
+	if ( is_array( $replacement_vars ) && count( $replacement_vars ) > 0 ) {
+		foreach ( $replacement_vars as $key => $value ) {
+			$string = str_replace( $prefix_character . $key, $value, $string );
+		}
+	}
+
+	return $string;
+}
+
+
+function ap_printf_assoc( $string = '', $replacement_vars = array(), $prefix_character = '##' ) {	
+	echo sprintf_assoc( $string, $replacement_vars, $prefix_character );
+} 

@@ -26,6 +26,7 @@ function ap_scripts_front(){
 		wp_enqueue_script('ap-tooltipster', ap_get_theme_url('js/jquery.tooltipster.min.js'), 'jquery', AP_VERSION);
 		wp_enqueue_script('ap-peity-js', ap_get_theme_url('js/jquery.peity.min.js'), 'jquery', AP_VERSION);
 		wp_enqueue_script('ap-initial.js', ap_get_theme_url('js/initial.min.js'), 'jquery', AP_VERSION);
+		wp_enqueue_script('ap-scrollbar.js', ap_get_theme_url('js/jquery.scrollbar.min.js'), 'jquery', AP_VERSION);
 		wp_enqueue_script('ap-js', ap_get_theme_url('prod/ap.min.js'), 'jquery', AP_VERSION);
 		
 		wp_enqueue_style('tooltipster', ap_get_theme_url('css/tooltipster.css'), array(), AP_VERSION);
@@ -51,7 +52,8 @@ function ap_scripts_front(){
 		
 		?>
 			<script type="text/javascript">
-				var ajaxurl = '<?php echo admin_url('admin-ajax.php'); ?>',
+				var ajaxurl 	= '<?php echo admin_url('admin-ajax.php'); ?>',
+				    ap_nonce 	= '<?php echo wp_create_nonce( "ap_ajax_nonce" ); ?>',
 				    ap_max_tags = '<?php echo ap_opt('max_tags'); ?>';
 			</script>
 		<?php

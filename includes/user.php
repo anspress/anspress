@@ -117,6 +117,7 @@ function ap_user_solved_answer_count($user_id)
 function ap_user_display_name($args = array())
 {
     global $post;
+
     $defaults = array(
         'user_id'            => get_the_author_meta('ID'),
         'html'                => false,
@@ -261,7 +262,10 @@ function ap_get_user_menu($user_id = false){
     $i = 1;
     foreach ($user_pages as $k => $args) {
         $link        = ap_user_link($user_id, $k);
-        $menus[$k]    = array( 'slug' => $k, 'title' => $args['title'], 'link' => $link, 'order' => 5+$i, 'show_in_menu' => $args['show_in_menu'], 'public' => $args['public']);
+
+        $title = $k == 'notification' ? $args['title'].ap_get_the_total_unread_notification($user_id, false): $args['title'];
+
+        $menus[$k]    = array( 'slug' => $k, 'title' => $title, 'link' => $link, 'order' => 5+$i, 'show_in_menu' => $args['show_in_menu'], 'public' => $args['public']);
 
         $i++;
     }
@@ -448,7 +452,7 @@ function ap_displayed_user_id(){
         if($user_id > 0)
             return $user_id;
 
-        return 0;
+        return get_current_user_id();
     }
 
 
@@ -775,10 +779,24 @@ function ap_hover_card_ajax_query($user_id = false){
 
     $nonce = wp_create_nonce( 'load_cover' );
 
-    return 'action=ap_ajax&ap_ajax_action=user_cover&user_id='.$user_id.'&__nonce='.$nonce;
+    return 'action=ap_ajax&ap_ajax_action=user_cover&user_id='.$user_id;
 }
 
-function ap_hover_card_attributes($user_id){
-    if($user_id > 0)
-        echo ' data-userid="'.$user_id.'" data-action="ap_hover_card" data-query="'.ap_hover_card_ajax_query($user_id).'"';
+function ap_hover_card_attributes($user_id, $echo = true){
+    if($user_id > 0){
+        $attr = ' data-userid="'.$user_id.'" data-action="ap_hover_card" data-query="'.ap_hover_card_ajax_query($user_id).'"';
+
+        if($echo)
+            echo $attr;
+        else
+            return $attr;
+    }
+}
+
+function ap_user_link_avatar($user_id, $size = 30){
+    echo '<a href="'.ap_user_link($user_id).'"';
+    ap_hover_card_attributes($user_id);
+    echo '>';
+    echo get_avatar($user_id, $size);
+    echo '</a>';
 }

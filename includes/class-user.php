@@ -43,7 +43,8 @@ class AnsPress_User
 
         // Register user pages
         ap_register_user_page('about', __('About', 'ap'), array($this, 'about_page'));
-        ap_register_user_page('profile', __('Profile', 'ap'), array($this, 'profile_page'), true, false);
+        ap_register_user_page('notification', __('Notification', 'ap'), array($this, 'notification_page'), true, false);
+        ap_register_user_page('profile', __('Profile', 'ap'), array($this, 'profile_page'), true, false);        
         ap_register_user_page('questions', __('Questions', 'ap'), array($this, 'questions_page'));
         ap_register_user_page('answers', __('Answers', 'ap'), array($this, 'answers_page'));
         ap_register_user_page('followers', __('Followers', 'ap'), array($this, 'followers_page'));
@@ -83,6 +84,23 @@ class AnsPress_User
      */
     public function about_page(){        
         ap_get_template_part('user/about');
+    }
+
+    /**
+     * Output notification page
+     * @since 2.3
+     */
+    public function notification_page(){
+        if(!ap_is_user_page_public('profile') && !ap_is_my_profile()){
+            ap_get_template_part('not-found');
+            return;
+        }
+        
+        global $ap_notifications;
+
+        $ap_notifications = ap_get_user_notifications();
+        
+        ap_get_template_part('user/notification');
     }
 
     /**
@@ -197,6 +215,9 @@ class AnsPress_User
 
             elseif('subscription' == $active)
                 $title = __('My subscriptions', 'ap');
+
+            elseif('notification' == $active)
+                $title = __('My notification', 'ap');
         }
 
         return $title;
@@ -320,7 +341,7 @@ class AnsPress_User
             if ( ! is_wp_error( $image ) ) {
                 $image->resize( 960, 250, true );
                 $image->save( $file );
-                $image->resize( 300, 180, true );
+                $image->resize( 350, 95, true );
                 $image->save( $small_name );
             }
 
@@ -466,6 +487,7 @@ class AnsPress_User
             'followers'     => ap_icon('users'),
             'following'     => ap_icon('users'),
             'subscription'  => ap_icon('rss'),
+            'notification'  => ap_icon('globe'),
         );
 
         foreach($icons as $k => $i)

@@ -56,7 +56,8 @@ class AnsPress_Actions
 		add_action( 'ap_removed_follower', array($this, 'ap_added_follower'), 10, 2);
 		add_action( 'ap_vote_casted', array($this, 'update_user_vote_casted_count'), 10, 4);
 		add_action( 'ap_vote_removed', array($this, 'update_user_vote_casted_count'), 10, 4);
-
+		add_action( 'ap_added_follower', array($this, 'notify_user_about_follower'), 10, 2);
+		add_action( 'ap_vote_casted', array($this, 'notify_upvote'), 10, 4);
 	}
 
 	/**
@@ -67,7 +68,6 @@ class AnsPress_Actions
 	 */
 	public function after_new_question($post_id, $post)
 	{
-
 		update_post_meta($post_id, ANSPRESS_VOTE_META, '0');
 		update_post_meta($post_id, ANSPRESS_SUBSCRIBER_META, '0');
 		update_post_meta($post_id, ANSPRESS_CLOSE_META, '0');
@@ -122,6 +122,8 @@ class AnsPress_Actions
 		update_post_meta($post_id, ANSPRESS_BEST_META, 0);
 
 		ap_update_user_answers_count_meta($post_id);
+
+		ap_insert_notification( $post->post_author, $question->post_author, 'new_answer', array('post_id' => $post_id) );
 		
 		/**
 		 * ACTION: ap_after_new_answer
@@ -134,6 +136,8 @@ class AnsPress_Actions
 	public function ap_after_update_question($post_id, $post){
 		// set updated meta for sorting purpose
 		update_post_meta($post_id, ANSPRESS_UPDATED_META, current_time( 'mysql' ));
+
+		ap_insert_notification( get_current_user_id(), $question->post_author, 'question_update', array('post_id' => $post_id) );
 
 		/**
 		 * ACTION: ap_after_new_answer
@@ -152,7 +156,7 @@ class AnsPress_Actions
 		//update answer count
 		$current_ans = ap_count_published_answers($post->post_parent);
 		update_post_meta($post->post_parent, ANSPRESS_ANS_META, $current_ans);
-		ap_do_event('edit_answer', $post_id, get_current_user_id(), $post->post_parent);
+		ap_insert_notification( get_current_user_id(), $post->post_author, 'answer_update', array('post_id' => $post_id) );
 
 		/**
 		 * ACTION: ap_processed_update_answer
@@ -281,9 +285,9 @@ class AnsPress_Actions
 	public function publish_comment($comment){
 		$comment = (object) $comment;
 
-		$post_type = get_post_type( $comment->comment_post_ID );
+		$post = get_post( $comment->comment_post_ID );
 
-		if ($post_type == 'question') {
+		if ($post->post_type == 'question') {
 			// set updated meta for sorting purpose
 			update_post_meta($comment->comment_post_ID, ANSPRESS_UPDATED_META, current_time( 'mysql' ));
 
@@ -292,16 +296,16 @@ class AnsPress_Actions
 
 			// subscribe to current question
 			ap_add_question_subscriber($comment->comment_post_ID, $comment->user_id);
+			ap_insert_notification( $comment->user_id, $post->post_author, 'comment_on_question', array('post_id' => $post->ID, 'comment_id' => $comment->comment_ID ) );
 
-		}elseif($post_type == 'answer'){
+		}elseif($post->post_type == 'answer'){
 
 			$post_id = wp_get_post_parent_id($comment->comment_post_ID);
 			// set updated meta for sorting purpose
 			update_post_meta($post_id, ANSPRESS_UPDATED_META, current_time( 'mysql' ));
-			// add participant only
-			//ap_add_parti($post_id, $comment->user_id, 'comment');
-
 			ap_add_question_subscriber($post_id, $comment->user_id);
+
+			ap_insert_notification( $comment->user_id, $post->post_author, 'comment_on_answer', array('post_id' => $post->ID, 'comment_id' => $comment->comment_ID) );
 		}
 
 	}
@@ -331,11 +335,16 @@ class AnsPress_Actions
 			return $items;
 
 		$pages = anspress()->pages;
-		$pages['profile'] = array('title' => __('My profile', 'ap'), 'show_in_menu' => true);
+
+		$pages['profile'] = array('title' => __('My profile', 'ap'), 'show_in_menu' => true, 'logged_in' => true);
+		$pages['notification'] = array('title' => __('My notification', 'ap'), 'show_in_menu' => true, 'logged_in' => true);
 
 		if(!empty($items) && is_array($items))
 			foreach ( $items as $key => $item ) {
-				foreach($pages as $slug => $args){	
+				foreach($pages as $slug => $args){
+
+					if(isset($pages['logged_in']) && $pages['logged_in'] && !is_user_logged_in())
+						unset($items[$key]);
 
 					if(strpos($item->url, strtoupper('ANSPRESS_PAGE_URL_'.$slug)) !== FALSE ){
 
@@ -380,28 +389,59 @@ class AnsPress_Actions
 		return $class;
 	}
 
+	/**
+	 * Add user dropdown and notification menu
+	 * @param  string 		$item_output		Menu html
+	 * @param  object 		$item        		Menu item object
+	 * @param  integer 		$depth       		Menu depth
+	 * @param  object 		$args
+	 * @return string
+	 */
 	public function walker_nav_menu_start_el($item_output, $item, $depth, $args) {
-		if(!in_array('anspress-page-profile', $item->classes))
-			return $item_output;
 
-		$menus = ap_get_user_menu(get_current_user_id());
-		$active_user_page   = get_query_var('user_page');
-    	$active_user_page   = $active_user_page ? $active_user_page : 'about';
+		if(!is_user_logged_in() && (in_array('anspress-page-profile', $item->classes) || in_array('anspress-page-notification', $item->classes) )) {
+			$item_output = '';
+		}
 
-		$item_output = '<a id="ap-user-menu-anchor" href="#">'.get_avatar(get_current_user_id(), 20).ap_user_display_name(get_current_user_id()).ap_icon('chevron-down', true).'</a>';
-		
-		$item_output .= '<ul id="ap-user-menu-link" class="ap-dropdown-menu ap-user-dropdown-menu">';
-		
-		foreach($menus as $m){
+		if(in_array('anspress-page-profile', $item->classes) && is_user_logged_in()){
+
+			$menus = ap_get_user_menu(get_current_user_id());
+
+			$active_user_page   = get_query_var('user_page');
+
+	    	$active_user_page   = $active_user_page ? $active_user_page : 'about';
+
+			$item_output = '<a id="ap-user-menu-anchor" href="#">'.get_avatar(get_current_user_id(), 20).ap_user_display_name(get_current_user_id()).ap_icon('chevron-down', true).'</a>';
 			
-			$class = !empty($m['class']) ? ' '.$m['class'] : '';
+			$item_output .= '<ul id="ap-user-menu-link" class="ap-dropdown-menu ap-user-dropdown-menu">';
+			
+			foreach($menus as $m){
+				
+				$class = !empty($m['class']) ? ' '.$m['class'] : '';
 
-            $item_output .= '<li'.($active_user_page == $m['slug'] ? ' class="active"' : '').'><a href="'.$m['link'].'" class="ap-user-link-'.$m['slug'].$class.'">'.$m['title'].'</a></li>';
-        }
+	            $item_output .= '<li'.($active_user_page == $m['slug'] ? ' class="active"' : '').'><a href="'.$m['link'].'" class="ap-user-link-'.$m['slug'].$class.'">'.$m['title'].'</a></li>';
+	        }
 
-		$item_output .= '</ul>';
+			$item_output .= '</ul>';
+
+		}elseif(in_array('anspress-page-notification', $item->classes) && is_user_logged_in()){
+
+			$item_output = '<a id="ap-user-notification-anchor" href="#">'.ap_icon('globe', true).ap_get_the_total_unread_notification(false, false).'</a>';
+		
+			global $ap_notifications;
+
+			ob_start();
+
+	        $ap_notifications = ap_get_user_notifications(array('per_page' => 10));
+	        
+	        ap_get_template_part('user/notification-dropdown');
+
+	        $item_output .= ob_get_clean();
+			
+		}
 
 		return $item_output;
+
 	} 
 
 	/**
@@ -493,7 +533,6 @@ class AnsPress_Actions
 
 	public function update_user_vote_casted_count($userid, $type, $actionid, $receiving_userid)
 	{
-
 		// Update total casted vote of user
 		update_user_meta( $userid, '__up_vote_casted', ap_count_vote($userid, 'vote_up') );
 		update_user_meta( $userid, '__down_vote_casted', ap_count_vote($userid, 'vote_down'));
@@ -501,5 +540,16 @@ class AnsPress_Actions
 		// Update total received vote of user
 		update_user_meta( $receiving_userid, '__up_vote_received', ap_count_vote(false, 'vote_up', false, $receiving_userid) );
 		update_user_meta( $receiving_userid, '__down_vote_received', ap_count_vote(false, 'vote_down', false, $receiving_userid));
+	}
+
+	public function notify_upvote($userid, $type, $actionid, $receiving_userid)
+	{
+		if($type == 'vote_up')
+			ap_insert_notification( $userid, $receiving_userid, 'vote_up', array('post_id' => $actionid) );
+	}
+
+	public function notify_user_about_follower($user_to_follow, $current_user_id)
+	{
+		ap_insert_notification( $current_user_id, $user_to_follow, 'new_follower');
 	}
 }

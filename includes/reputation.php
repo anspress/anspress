@@ -44,6 +44,8 @@ class AP_Reputation {
 		add_action('ap_unpublish_comment', array($this, 'delete_comment'));
 
 		add_filter('ap_user_display_meta_array', array($this, 'display_meta'), 10, 2);
+
+		add_action('ap_added_reputation', array($this, 'ap_added_reputation'), 10, 5);
 	}
 
 	public function reputation_page(){
@@ -84,8 +86,9 @@ class AP_Reputation {
 	 * @return boolean|null
 	 */
 	public function new_answer($postid) {
+		$post = get_post( $postid );
 		$reputation = ap_reputation_by_event('new_answer', true);
-		return ap_reputation('answer', get_current_user_id(), $reputation, $postid);
+		return ap_reputation('answer', get_current_user_id(), $reputation, $postid, $post->post_author);
 	}
 	
 	/**
@@ -111,9 +114,9 @@ class AP_Reputation {
 		$answer = get_post($answer_id);
 		
 		if($answer->post_author != $userid)
-			ap_reputation('best_answer', $answer->post_author, $reputation, $answer_id);
+			ap_reputation('best_answer', $answer->post_author, $reputation, $answer_id, $answer->post_author);
 			
-		ap_reputation('selecting_answer', $userid, $selector_reputation, $answer_id);
+		ap_reputation('selecting_answer', $userid, $selector_reputation, $answer_id, $answer->post_author);
 		return;
 	}	
 	
@@ -152,7 +155,7 @@ class AP_Reputation {
 			$reputation = ap_reputation_by_event('answer_upvote', true);
 		
 		$uid = $post->post_author;
-		
+
 		if(!empty($reputation))
 			ap_reputation('vote_up', $uid, $reputation, $postid);
 		
@@ -295,6 +298,10 @@ class AP_Reputation {
 			$metas['reputation'] = '<span class="ap-user-meta ap-user-meta-reputation" title="'.__('Reputation', 'ap').'">'. sprintf(__('%s Rep.', 'ap'), ap_get_reputation($user_id, true)) .'</span>';
 
 		return $metas;
+	}
+
+	public function ap_added_reputation($user_id, $action_id, $reputation, $type, $current_user_id){
+		ap_insert_notification( $current_user_id, $user_id, 'received_reputation', array('reputation' => $reputation, 'type' => $type) );
 	}
 
 }
@@ -745,13 +752,17 @@ function ap_get_all_reputation($user_id, $limit = 10){
 /**
  * @param string $type
  */
-function ap_reputation($type, $uid, $reputation, $data){
+function ap_reputation($type, $uid, $reputation, $data, $current_user_id = false){
+
 	if($uid == 0)
 		return;
 
+	if($current_user_id === false)
+		$current_user_id = get_current_user_id();
+
 	$reputation = apply_filters('ap_reputation',$reputation, $type, $uid, $data);
 	ap_alter_reputation($uid, $reputation);
-	ap_reputation_log($type, $uid, $reputation, $data);
+	ap_reputation_log($type, $uid, $reputation, $data, $current_user_id);
 }
 
 //update reputation
@@ -769,16 +780,21 @@ function ap_alter_reputation($uid, $reputation) {
 }
 
 // add reputation logs to DB
-function ap_reputation_log($type, $uid, $reputation, $data){
+function ap_reputation_log($type, $uid, $reputation, $action_id, $current_user_id){
 	$userinfo = get_userdata($uid);
-	
+
 	if($userinfo->user_login=='')
 		return false; 
-		
-	if($reputation==0 && $type!='reset')
+
+	if($reputation==0)
 		return false; 
 	
-	return ap_add_meta($uid, 'reputation', $data, $reputation, $type);
+	$row = ap_add_meta($uid, 'reputation', $action_id, $reputation, $type);
+
+	if($row !== false)
+		do_action('ap_added_reputation', $uid, $action_id, $reputation, $type, $current_user_id);
+
+	return $row;
 }
 
 /**
@@ -791,14 +807,6 @@ function ap_reputation_log_delete($type, $uid, $reputation =NULL, $data =NULL){
 	update_user_meta($uid, 'ap_reputation', $new_reputation);
 
 	return $row;
-}
-
-
-function ap_set_reputation($type, $uid, $reputation, $data){
-	$reputation = apply_filters('ap_set_reputation',$reputation, $type, $uid, $data);
-	$difference = $reputation - ap_get_reputation($uid);
-	ap_update_reputation($uid, $reputation);
-	ap_reputation_log($type, $uid, $difference, $data);
 }
 
 function ap_default_reputation(){

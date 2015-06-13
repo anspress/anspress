@@ -849,7 +849,8 @@ class AnsPress_Admin
 		echo '<input type="hidden" value="custom" name="menu-item['.$_nav_menu_placeholder.'][menu-item-type]" />';
 		echo '<ul>';
 
-		$pages['profile'] = array('title' => __('User profile', 'ap'), 'show_in_menu' => true);
+		$pages['profile'] 		= array('title' => __('User profile', 'ap'), 'show_in_menu' => true);
+		$pages['notification'] 	= array('title' => __('User notification', 'ap'), 'show_in_menu' => true);
 
 		foreach($pages as $k => $args){
 			if($args['show_in_menu']){
@@ -859,6 +860,7 @@ class AnsPress_Admin
 				echo '</li>';
 			}
 		}
+
 		echo '</ul><p class="button-controls">
 					<span class="add-to-menu">
 						<input type="submit"'.wp_nav_menu_disabled_check( $nav_menu_selected_id ).' class="button-secondary submit-add-to-menu right" value="'.__('Add to Menu', 'ap').'" name="add-custom-menu-item" id="submit-aplinks" />
@@ -871,7 +873,6 @@ class AnsPress_Admin
 
 	public function taxonomy_rename()
 	{
-
 		global $pagenow;
 
 		if(ap_opt('tags_taxo_renamed') == 'true' || !taxonomy_exists('question_tag'))

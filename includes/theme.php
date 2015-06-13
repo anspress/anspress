@@ -213,6 +213,10 @@ function ap_have_parent_post($post_id = false){
  * @return string
  */
 function ap_pagination( $current = false, $total = false, $format = '?paged=%#%'){
+
+	if($total == '1')
+		return;
+	
 	global $ap_max_num_pages, $ap_current;
 
 	$big = 999999999; // need an unlikely integer

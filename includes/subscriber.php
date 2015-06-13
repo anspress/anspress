@@ -30,7 +30,7 @@ function ap_add_subscriber($user_id, $action_id, $type = false, $sub_id = false)
 	
 	$row = ap_add_meta($user_id, 'subscriber', $action_id, $sub_id, $subscribe_type);
 
-	if($row === false)
+	if($row !== false)
 		do_action('ap_added_subscriber', $action_id, $subscribe_type, $sub_id);
 
 	return $row;

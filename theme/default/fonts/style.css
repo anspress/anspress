@@ -1,10 +1,10 @@
 @font-face {
 	font-family: 'anspress';
-	src:url('fonts/anspress.eot?fk65j4');
-	src:url('fonts/anspress.eot?#iefixfk65j4') format('embedded-opentype'),
-		url('fonts/anspress.ttf?fk65j4') format('truetype'),
-		url('fonts/anspress.woff?fk65j4') format('woff'),
-		url('fonts/anspress.svg?fk65j4#anspress') format('svg');
+	src:url('fonts/anspress.eot?-a7k1tr');
+	src:url('fonts/anspress.eot?#iefix-a7k1tr') format('embedded-opentype'),
+		url('fonts/anspress.ttf?-a7k1tr') format('truetype'),
+		url('fonts/anspress.woff?-a7k1tr') format('woff'),
+		url('fonts/anspress.svg?-a7k1tr#anspress') format('svg');
 	font-weight: normal;
 	font-style: normal;
 }
@@ -23,41 +23,8 @@
 	-moz-osx-font-smoothing: grayscale;
 }
 
-.apicon-google-plus-square:before {
-	content: "\e61b";
-}
-.apicon-twitter-square:before {
-	content: "\e61c";
-}
-.apicon-facebook-square:before {
-	content: "\e61d";
-}
-.apicon-toggle-on:before {
-	content: "\e60f";
-}
-.apicon-toggle-off:before {
-	content: "\e610";
-}
-.apicon-image:before {
-	content: "\e608";
-}
-.apicon-category:before {
-	content: "\e606";
-}
-.apicon-tag:before {
-	content: "\e607";
-}
-.apicon-comments:before {
-	content: "\e603";
-}
-.apicon-rank:before {
-	content: "\e61a";
-}
-.apicon-anspress:before {
-	content: "\e604";
-}
-.apicon-anspress-icon:before {
-	content: "\e605";
+.apicon-pencil:before {
+	content: "\e61e";
 }
 .apicon-users:before {
 	content: "\e614";
@@ -214,6 +181,42 @@
 }
 .apicon-x:before {
 	content: "\f081";
+}
+.apicon-google-plus-square:before {
+	content: "\e61b";
+}
+.apicon-twitter-square:before {
+	content: "\e61c";
+}
+.apicon-facebook-square:before {
+	content: "\e61d";
+}
+.apicon-toggle-on:before {
+	content: "\e60f";
+}
+.apicon-toggle-off:before {
+	content: "\e610";
+}
+.apicon-image:before {
+	content: "\e608";
+}
+.apicon-category:before {
+	content: "\e606";
+}
+.apicon-tag:before {
+	content: "\e607";
+}
+.apicon-comments:before {
+	content: "\e603";
+}
+.apicon-rank:before {
+	content: "\e61a";
+}
+.apicon-anspress:before {
+	content: "\e604";
+}
+.apicon-anspress-icon:before {
+	content: "\e605";
 }
 .apicon-board:before {
 	content: "\e613";

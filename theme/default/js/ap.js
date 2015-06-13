@@ -255,7 +255,8 @@ jQuery(document).ready(function() {
             }
             
         });
-    } 
+    }
+    jQuery('.ap-notification-scroll').scrollbar();
 });
 
 function ap_chk_activity_scroll(e) {

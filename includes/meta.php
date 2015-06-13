@@ -197,7 +197,7 @@ function ap_meta_total_count($type, $actionid=false, $userid = false, $group = f
 /**
  * @param string $type
  */
-function ap_meta_user_done($type, $userid, $actionid, $param = false, $value = false){	
+function ap_meta_user_done($type, $userid = false, $actionid, $param = false, $value = false){	
 	global $wpdb;
 	
 	$where = "";
@@ -216,8 +216,11 @@ function ap_meta_user_done($type, $userid, $actionid, $param = false, $value = f
 	}else{
 		$where .= "apmeta_type = '$type'";
 	}
+
+	if($userid !== false)
+		$where .= $wpdb->prepare("and apmeta_userid = %d", $userid);
 	
-	$query = $wpdb->prepare('SELECT IFNULL(count(*), 0) FROM ' .$wpdb->prefix .'ap_meta where '.$where.' and apmeta_userid = %d and apmeta_actionid = %d ', $userid, $actionid);
+	$query = $wpdb->prepare('SELECT IFNULL(count(*), 0) FROM ' .$wpdb->prefix .'ap_meta where '.$where.' and apmeta_actionid = %d ', $actionid);
 	
 	if($value)
 		$query = $query. $wpdb->prepare('and apmeta_value = "%s"', $value);

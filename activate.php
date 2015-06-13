@@ -42,42 +42,15 @@ function anspress_activate( $network_wide ) {
 	$ap_roles = new AP_Roles;
 	$ap_roles->add_roles();
 	$ap_roles->add_capabilities();
-	
-	
-	global $wpdb;
 
-		
-	// check if page already exists
-	$page_id = ap_opt("base_page");
-	
-	$post = get_post($page_id);
-	
-	if(!$post){
-		$args = array();
-		$args['post_type']    		= "page";
-		$args['post_content'] 		= "[anspress]";
-		$args['post_status']  		= "publish";
-		$args['post_title']   		= "ANSPRESS_TITLE";
-		$args['comment_status']   	= 'closed';
-		
-		// now create post
-		$new_page_id = wp_insert_post ($args);
-	
-		if($new_page_id){
-			$page = get_post($new_page_id);
-			ap_opt("base_page", $page->ID);
-			ap_opt("base_page_id", $page->post_name);
-		}
-	}
-
-	
-	
+	ap_create_base_page();
 	
 	if( ap_opt ('ap_version') != AP_VERSION ) {
 		ap_opt('ap_installed', 'false');
 		ap_opt('ap_version', AP_VERSION);
 	}
 	
+	global $wpdb;
 	/**
 	 * Run DB quries only if AP_DB_VERSION does not match
 	 */
