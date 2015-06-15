@@ -182,9 +182,9 @@ function ap_user_display_name($args = array())
 }
 
 /**
- * Link to user user pages
- * @param  int $user_id 	user id
- * @param  string $sub 		page slug
+ * Return Link to user pages
+ * @param  boolean|integer      $user_id 	user id
+ * @param  string               $sub 		page slug
  * @return string
  * @since  unknown
  */
@@ -247,15 +247,17 @@ function ap_user_link($user_id = false, $sub = false)
     return apply_filters('ap_user_link', $link, $user_id);
 }
 
+/**
+ * Get user menu array items
+ * @param  boolean|integer  $user_id
+ * @return array
+ */
 function ap_get_user_menu($user_id = false){
 
     if($user_id === false)
         $user_id = ap_get_displayed_user_id();
 
     $user_pages = anspress()->user_pages;
-
-    $active_user_page   = get_query_var('user_page');
-    $active_user_page   = $active_user_page ? $active_user_page : 'about';
 
     $menus = array();
 
@@ -776,9 +778,6 @@ function ap_get_cover_src($user_id = false, $small = false) {
 function ap_hover_card_ajax_query($user_id = false){
     if($user_id === false)
         $user_id = ap_get_displayed_user_id();
-
-    $nonce = wp_create_nonce( 'load_cover' );
-
     return 'action=ap_ajax&ap_ajax_action=user_cover&user_id='.$user_id;
 }
 

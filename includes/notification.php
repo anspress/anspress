@@ -16,7 +16,9 @@ class AnsPress_Notifications
 	var $count;
 	var $in_the_loop;
 	var $notifications;
+	var $notification;
 	var $total_count;
+	var $total_pages;
 	var $paged;
 	var $per_page = 20;
 	var $offset;
@@ -52,13 +54,13 @@ class AnsPress_Notifications
 		$read_unread = '';
 
 		if($this->args['unread'] && $this->args['read'])
-			$read_unread = "apmeta_type = 'notification' OR apmeta_type = 'unread_notification'";			
+			$read_unread .= "apmeta_type = 'notification' OR apmeta_type = 'unread_notification'";			
 
 		elseif($this->args['read'])
-			$read_unread = "apmeta_type = 'notification'";
+			$read_unread .= "apmeta_type = 'notification'";
 
 		else
-			$read_unread = "apmeta_type = 'unread_notification'";
+			$read_unread .= "apmeta_type = 'unread_notification'";
 
 		$query = $wpdb->prepare("SELECT SQL_CALC_FOUND_ROWS apmeta_id as id, apmeta_userid as user_id, apmeta_actionid as affected_user_id, apmeta_param as type, apmeta_value as args, apmeta_type as is_unread, apmeta_date as date FROM ".$wpdb->prefix."ap_meta WHERE (".$read_unread.") AND apmeta_actionid = %d ORDER BY CASE apmeta_type WHEN 'unread_notification' THEN 1 ELSE -1 END DESC, apmeta_date DESC LIMIT %d,%d", $this->args['user_id'], $this->offset, $this->per_page);
 
@@ -310,7 +312,6 @@ function ap_insert_notification( $current_user_id, $affected_user_id, $notificat
 	if($args === false)
 		$args = array();
 
-	$str_args = array();
 	switch ($notification_type) {
 		case 'new_answer':
 		case 'question_update':
@@ -352,7 +353,7 @@ function ap_insert_notification( $current_user_id, $affected_user_id, $notificat
 			break;
 		
 		default:
-			$str_args = apply_filters( 'ap_notification_args', $args, func_get_args() );
+			$args = apply_filters( 'ap_notification_args', $args, func_get_args() );
 			break;
 	}
 

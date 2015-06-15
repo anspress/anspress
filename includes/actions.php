@@ -137,7 +137,7 @@ class AnsPress_Actions
 		// set updated meta for sorting purpose
 		update_post_meta($post_id, ANSPRESS_UPDATED_META, current_time( 'mysql' ));
 
-		ap_insert_notification( get_current_user_id(), $question->post_author, 'question_update', array('post_id' => $post_id) );
+		ap_insert_notification( get_current_user_id(), $post->post_author, 'question_update', array('post_id' => $post_id) );
 
 		/**
 		 * ACTION: ap_after_new_answer
