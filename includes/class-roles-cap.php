@@ -154,7 +154,7 @@ function ap_user_can_ask(){
 	if(is_super_admin())
 		return true;
 
-	if(current_user_can('ap_new_question') || ap_allow_anonymous())
+	if(is_user_logged_in() || ap_allow_anonymous())
 		return true;
 	
 	return false;
@@ -176,7 +176,7 @@ function ap_user_can_answer($question_id){
 	if(ap_allow_anonymous() && !is_user_logged_in())
 		return true;
 
-	if((current_user_can('ap_new_answer'))){
+	if(is_user_logged_in()){
 		if(!ap_opt('multiple_answers') && ap_is_user_answered($question_id, get_current_user_id()) && get_current_user_id() != '0')
 			return false;
 		else
@@ -218,14 +218,15 @@ function ap_user_can_edit_ans($post_id){
 	if(current_user_can('ap_edit_others_answer') || is_super_admin()){
 		return true;
 	}
+
+	if(!is_user_logged_in())
+		return false;
 	
-	if(current_user_can('ap_edit_answer')){
-		$post = get_post($post_id);
-		
-		if($post->post_author ==  get_current_user_id())
-			return true;
-	}
+	$post = get_post($post_id);
 	
+	if($post->post_author ==  get_current_user_id())
+		return true;
+
 	return false;
 }
 
@@ -238,14 +239,14 @@ function ap_user_can_edit_question($post_id = false){
 	if(is_super_admin() || current_user_can('ap_edit_others_question') )
 		return true;
 		
-	if(current_user_can('ap_edit_question') || current_user_can('ap_edit_others_question') || is_super_admin()){
-		global $current_user;
+	if(is_user_logged_in()){
+		
 		if($post_id )
 			$post = get_post($post_id);
 		else
 			global $post;
 			
-		if(($current_user->ID == $post->post_author) && current_user_can('ap_edit_question'))
+		if(get_current_user_id() == $post->post_author)
 			return true;
 	}
 	return false;
@@ -259,7 +260,7 @@ function ap_user_can_change_label(){
 }
 
 function ap_user_can_comment(){
-	if(is_super_admin() || current_user_can('ap_new_comment') || ap_opt('anonymous_comment'))
+	if(is_super_admin() || is_user_logged_in() || ap_opt('anonymous_comment'))
 		return true;
 
 	return false;
@@ -267,9 +268,8 @@ function ap_user_can_comment(){
 function ap_user_can_edit_comment($comment_id){
 	if(is_super_admin() || current_user_can('ap_mod_comment'))
 		return true;
-	
-	global $current_user;	
-	if( current_user_can('ap_edit_comment') && ($current_user->ID == get_comment($comment_id)->user_id))
+
+	if(get_current_user_id() == get_comment($comment_id)->user_id)
 		return true;
 
 	return false;
@@ -278,9 +278,8 @@ function ap_user_can_edit_comment($comment_id){
 function ap_user_can_delete_comment($comment_id){
 	if(is_super_admin() || current_user_can('ap_mod_comment'))
 		return true;
-	
-	global $current_user;	
-	if( current_user_can('ap_delete_comment') && ($current_user->ID == get_comment($comment_id)->user_id))
+
+	if( get_current_user_id() == get_comment($comment_id)->user_id)
 		return true;
 
 	return false;
@@ -291,9 +290,8 @@ function ap_user_can_delete($postid){
 		return true;
 	
 	$post = get_post($postid);
-	global $current_user;
 	
-	if($current_user->ID == $post->post_author){
+	if(get_current_user_id() == $post->post_author){
 		if( ($post->post_type == 'question' || $post->post_type == 'answer') && current_user_can('ap_delete_question'))
 			return true;
 	}else{
@@ -314,14 +312,14 @@ function ap_user_can_permanent_delete(){
 }
 
 function ap_user_can_upload_cover(){
-	if(is_super_admin() || current_user_can('ap_upload_cover'))
+	if(is_super_admin() || is_user_logged_in())
 		return true;
 	
 	return false;
 }
 
 function ap_user_can_message(){
-	if(is_super_admin() || current_user_can('ap_message'))
+	if(is_super_admin() || is_user_logged_in())
 		return true;
 	
 	return false;
@@ -418,7 +416,7 @@ function ap_user_can_change_status($post_id){
 
 	$post = get_post( $post_id );
 
-	if(current_user_can('ap_change_status') && $post->post_author == get_current_user_id())
+	if($post->post_author == get_current_user_id())
 		return true;
 
 	return false;
