@@ -1,12 +1,12 @@
 {
 	"name": "AnsPress",
-	"version": "2.2.0.1",
+	"version": "2.3-beta",
 	"tested_up_to": "4.2",
 	"updated": "",
 	"licence": "GPL-3.0+",
 	"licence_link": "http://www.gnu.org/licenses/gpl.txt",
 	"text_domain": "ap",
-	"languages": ["fr_FR", "ru_RU"],
+	"languages": ["fr_FR", "ru_RU", "pt_BR", "es_ES", "de_DE"],
 	"download": {
 		"stable":{
 			"wp" : "https://downloads.wordpress.org/plugin/anspress-question-answer.zip",
