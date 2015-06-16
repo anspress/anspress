@@ -15,7 +15,7 @@
 		<a href="#" data-action="ap_markread_notification" data-query="ap_ajax_action=markread_notification&__nonce='.wp_create_nonce( 'ap_markread_notification_'.get_current_user_id() ).'"><?php _e('Mark all as read', 'ap'); ?></a>
 	</li>
 	<?php if(ap_has_notifications()): ?>
-		<li class="ap-notification-items">
+		<li class="ap-notification-items clearfix">
 			<div class="ap-notification-scroll scrollbar-dynamic">
 				<?php while ( ap_notifications() ) : ap_the_notification(); ?>
 					<div class="ap-notification-<?php ap_notification_the_id(); ?> ap-notification-item clearfix<?php echo ap_notification_is_unread() ? ' unread' : ''; ?>">
@@ -33,5 +33,5 @@
 	<?php else: ?>
 		<li class="ap-no-notification"><?php _e('No notification', 'ap'); ?></li>
 	<?php endif; ?>
-	<li class="ap-notification-footer clearfix"><a href="<?php echo ap_user_link(get_current_user_id(), 'notification'); ?>"><?php _e('View all notification', 'ap'); ?></a></li>
+	<li class="ap-notification-footer clearfix"><a href="<?php echo ap_user_link(get_current_user_id(), 'notification'); ?>"><?php _e('View all notifications', 'ap'); ?></a></li>
 </ul>

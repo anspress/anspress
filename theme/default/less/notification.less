@@ -1,11 +1,5 @@
-#ap-user-notification-anchor{
-    background: #FBFBFB;
-    border: 1px solid #ddd;
-    border-radius: 3px;
-    display: block;
-    font-size: 18px;
-    line-height: 100%;
-    padding: 2px 4px;
+body #ap-user-notification-anchor{
+    font-size: 20px;
     position: relative;
 
     .counter{
@@ -23,7 +17,7 @@
 	    width: 13px;
     }
 }
-#ap-notification-dropdown{
+body ul ul#ap-notification-dropdown{
     border: 1px solid #ddd;
     border-radius: 2px;
     box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
@@ -35,7 +29,7 @@
     li{
 	    background: none repeat scroll 0 0 #fbfbfb;    
 	    display: block;
-	    float: none;
+	    float: none !important;
 	    margin: 0;
 	    padding: 0;
 
@@ -45,6 +39,9 @@
 	    .ap-notification-item{
 	    	padding: 10px;
 	    	border-bottom: 1px solid #eeeeee;
+	    }
+	    a:hover{
+	    	color: @default-color;
 	    }
     }
 
@@ -60,6 +57,9 @@
 	    padding: 0;
 	    text-decoration: none;
 	    text-transform: none;
+	    &:hover{
+	    	color: @default-color;
+	    }
     }    
     
     .ap-notification-time{
@@ -76,6 +76,7 @@
 		    float: right;
 		    width: auto;
 	    	color: @link-color;
+	    	background: none;
 	    }
 
     	b{

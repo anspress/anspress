@@ -1250,12 +1250,29 @@
 .no-overflow {
   overflow: hidden;
 }
-#ap-user-menu-anchor img {
-  border-radius: 2px;
+ul #ap-user-menu-anchor img {
+  border-radius: 0;
   display: inline;
   margin-right: 5px;
   vertical-align: text-bottom;
   width: 20px;
+}
+ul > li:hover ul.ap-dropdown-menu {
+  display: block;
+}
+ul ul.ap-dropdown-menu {
+  background: none repeat scroll 0 0 #fff;
+  display: none;
+  list-style: outside none none;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  right: 0;
+  top: 100%;
+  z-index: 9;
+}
+ul li.anspress-page-link {
+  position: relative;
 }
 #ap-user-menu-link {
   list-style: none;
@@ -1268,7 +1285,11 @@
   margin: 0;
 }
 #ap-user-menu-link li > a {
-  background: #fff;
+  background: none repeat scroll 0 0 #fff;
+  display: block;
+  min-width: 160px;
+  padding: 11px 15px;
+  color: #333333;
 }
 #ap-user-menu-link li > a:before {
   margin-right: 10px;
@@ -3511,17 +3532,11 @@
   background: none repeat scroll 0 0 #eee;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.2) inset;
 }
-#ap-user-notification-anchor {
-  background: #FBFBFB;
-  border: 1px solid #ddd;
-  border-radius: 3px;
-  display: block;
-  font-size: 18px;
-  line-height: 100%;
-  padding: 2px 4px;
+body #ap-user-notification-anchor {
+  font-size: 20px;
   position: relative;
 }
-#ap-user-notification-anchor .counter {
+body #ap-user-notification-anchor .counter {
   background: none repeat scroll 0 0 #ff3737;
   border-radius: 2px;
   color: #fff;
@@ -3535,7 +3550,7 @@
   top: -7px;
   width: 13px;
 }
-#ap-notification-dropdown {
+body ul ul#ap-notification-dropdown {
   border: 1px solid #ddd;
   border-radius: 2px;
   box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
@@ -3544,21 +3559,24 @@
   width: 350px;
   font-size: 13px;
 }
-#ap-notification-dropdown li {
+body ul ul#ap-notification-dropdown li {
   background: none repeat scroll 0 0 #fbfbfb;
   display: block;
-  float: none;
+  float: none !important;
   margin: 0;
   padding: 0;
 }
-#ap-notification-dropdown li .unread {
+body ul ul#ap-notification-dropdown li .unread {
   background: #F1FCFF;
 }
-#ap-notification-dropdown li .ap-notification-item {
+body ul ul#ap-notification-dropdown li .ap-notification-item {
   padding: 10px;
   border-bottom: 1px solid #eeeeee;
 }
-#ap-notification-dropdown a {
+body ul ul#ap-notification-dropdown li a:hover {
+  color: #333333;
+}
+body ul ul#ap-notification-dropdown a {
   background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
   border: medium none;
   color: #333333;
@@ -3571,36 +3589,40 @@
   text-decoration: none;
   text-transform: none;
 }
-#ap-notification-dropdown .ap-notification-time {
+body ul ul#ap-notification-dropdown a:hover {
+  color: #333333;
+}
+body ul ul#ap-notification-dropdown .ap-notification-time {
   color: #888;
   display: block;
   margin-top: 4px;
 }
-#ap-notification-dropdown .ap-notification-head {
+body ul ul#ap-notification-dropdown .ap-notification-head {
   background: none repeat scroll 0 0 #fff;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   padding: 10px;
 }
-#ap-notification-dropdown .ap-notification-head a {
+body ul ul#ap-notification-dropdown .ap-notification-head a {
   float: right;
   width: auto;
   color: #2488b7;
+  background: none;
 }
-#ap-notification-dropdown .ap-notification-head b {
+body ul ul#ap-notification-dropdown .ap-notification-head b {
   font-size: 13px;
 }
-#ap-notification-dropdown .ap-notification-footer {
+body ul ul#ap-notification-dropdown .ap-notification-footer {
   background: none repeat scroll 0 0 #fff;
   text-align: center;
   padding: 10px;
 }
-#ap-notification-dropdown .ap-notification-footer a {
+body ul ul#ap-notification-dropdown .ap-notification-footer a {
   color: #2488b7;
 }
-#ap-notification-dropdown .ap-notification-scroll {
+body ul ul#ap-notification-dropdown .ap-notification-scroll {
   height: 300px;
 }
-#ap-notification-dropdown .ap-no-notification {
+body ul ul#ap-notification-dropdown .ap-no-notification {
   padding: 10px;
 }
 #anspress .ap-notification-item {

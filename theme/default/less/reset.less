@@ -332,13 +332,35 @@
 	overflow: hidden;
 }
 
-#ap-user-menu-anchor{
+ul #ap-user-menu-anchor{
+
 	img{
-	    border-radius: 2px;
+	    border-radius: 0;
 	    display: inline;
 	    margin-right: 5px;
 	    vertical-align: text-bottom;
 	    width: 20px;
+	}
+}
+ul{
+	> li:hover{
+		ul.ap-dropdown-menu{
+			display: block;
+		}
+	}
+	ul.ap-dropdown-menu{
+	    background: none repeat scroll 0 0 #fff;
+	    display: none;
+	    list-style: outside none none;
+	    margin: 0;
+	    padding: 0;
+	    position: absolute;
+	    right: 0;
+	    top: 100%;
+	    z-index: 9;
+	}
+	li.anspress-page-link{
+		position: relative;
 	}
 }
 #ap-user-menu-link{
@@ -350,7 +372,11 @@
 		padding: 0;
 		margin: 0;
 		> a{
-			background: #fff;
+		    background: none repeat scroll 0 0 #fff;
+		    display: block;
+		    min-width: 160px;
+		    padding: 11px 15px;
+			color:@default-color;
 			&:before{
 				margin-right: 10px;
 			}
