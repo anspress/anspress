@@ -3,7 +3,7 @@ class AP_Categories_Widget extends WP_Widget {
 
 	public function AP_Categories_Widget() {
 		// Instantiate the parent object
-		parent::__construct( false, '(AnsPress) Categories' );
+		parent::__construct( false, '(AnsPress) Categories', array('description', __('Display AnsPress categories', 'ap')) );
 	}
 
 	public function widget( $args, $instance ) {
@@ -21,6 +21,7 @@ class AP_Categories_Widget extends WP_Widget {
 			'orderby'       => $instance['orderby'],
 			'order'         => $instance['order'],
 		);
+		
 		$categories = get_terms( 'question_category' , $cat_args);
 		?>
 			<ul class="ap-cat-wid">
