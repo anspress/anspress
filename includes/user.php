@@ -196,12 +196,13 @@ function ap_user_link($user_id = false, $sub = false)
     }
 
     if($user_id <1)
-        return '#';
+        return '#AnonymousUser';
 
     $is_enabled = apply_filters('ap_user_profile_active', true);
 
     if(function_exists('bp_core_get_userlink') && !$is_enabled)
         return bp_core_get_userlink($user_id, false, true);
+
     elseif(!$is_enabled)
         return get_author_posts_url($user_id);
     
@@ -210,22 +211,7 @@ function ap_user_link($user_id = false, $sub = false)
 
     $user = get_user_by('id', $user_id);
 
-    if(ap_opt('base_before_user_perma')){
-
-        if($sub === false){
-            $sub = array('ap_page' => 'user', 'user' => $user->user_login);
-        }
-        elseif(is_array($sub)){
-           $sub['ap_page']  = 'user';
-           $sub['user']     = $user->user_login;
-        }
-        elseif(!is_array($sub)){
-            $sub = array('ap_page' => 'user', 'user' => $user->user_login, 'user_page' => $sub);
-        }
-
-        $link = ap_get_link_to($sub);
-
-    }else{
+    if(!ap_opt('base_before_user_perma') && get_option('permalink_structure') != ''){
         $base = home_url( '/'.ap_opt('user_page_slug').'/' );
 
         if($sub === false){
@@ -241,7 +227,21 @@ function ap_user_link($user_id = false, $sub = false)
         }
         elseif(!is_array($sub)){
             $link = $base. $user->user_login.'/'.$sub.'/';
+        }        
+
+    }else{
+        if($sub === false){
+            $sub = array('ap_page' => 'user', 'ap_user' => $user->user_login);
         }
+        elseif(is_array($sub)){
+           $sub['ap_page']  = 'user';
+           $sub['ap_user']     = $user->user_login;
+        }
+        elseif(!is_array($sub)){
+            $sub = array('ap_page' => 'user', 'ap_user' => $user->user_login, 'user_page' => $sub);
+        }
+
+        $link = ap_get_link_to($sub);
     }
 
     return apply_filters('ap_user_link', $link, $user_id);

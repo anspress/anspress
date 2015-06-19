@@ -945,10 +945,10 @@ function ap_link_to($sub){
 			'user' 		=> ap_opt('user_page_slug'),
 		);
 
-		if(is_array($sub) && isset($sub['ap_page']) && isset($default_pages[$sub['ap_page']]) )
+		if(is_array($sub) && isset($sub['ap_page']) && in_array($sub['ap_page'],$default_pages) )
 			$sub['ap_page'] = $default_pages[$sub['ap_page']];
 
-		elseif(!empty($sub) && isset($default_pages[$sub]))
+		elseif(!empty($sub) && in_array($sub,$default_pages))
 			$sub = $default_pages[$sub];
 		
 		$base = rtrim(get_permalink(ap_opt('base_page')), '/');
