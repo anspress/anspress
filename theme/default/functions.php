@@ -136,7 +136,7 @@ if ( ! function_exists( 'ap_comment' ) ) :
 						?>
 					</div>
 					<div class="ap-comment-texts">
-						<?php echo get_comment_text(); ?>						
+						<?php comment_text(); ?>						
 					</div>
 					<?php
 						/**
