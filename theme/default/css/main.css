@@ -1761,19 +1761,6 @@ ul li.anspress-page-link {
 #ap-answers-c .ap-answers-tab li.active a {
   padding: 6px 12px;
 }
-.ap-question-right {
-  padding-left: 30px;
-}
-.ap-question-right > div {
-  margin-bottom: 20px;
-}
-.ap-question-right .ap-widget-title {
-  color: #303030;
-  display: block;
-  font-size: 16px;
-  line-height: 1.8;
-  margin-bottom: 5px;
-}
 .ap-participants-list {
   display: block;
   margin: 0 -5px -5px;
@@ -3034,6 +3021,51 @@ ul li.anspress-page-link {
   font-weight: 600;
   margin-bottom: 5px;
   margin-top: 0;
+}
+#anspress .ap-user-widget {
+  border: 1px solid #eee;
+  border-radius: 4px;
+  padding: 5px;
+}
+#anspress .ap-user-widget .ap-user-cover {
+  display: block;
+  height: 90px;
+  margin-bottom: 0;
+  width: 100%;
+}
+#anspress .ap-user-widget .ap-user-cover-img {
+  background-position: center center;
+  border-radius: 3px;
+}
+#anspress .ap-user-widget .ap-user-head .ap-user-avatar {
+  margin-top: -30px;
+}
+#anspress .ap-user-widget .ap-user-head .ap-user-name {
+  font-size: 16px;
+  margin-top: 5px;
+}
+#anspress .ap-user-widget .ap-user-head {
+  border-bottom: medium none;
+  margin-bottom: 10px;
+}
+#anspress .ap-user-widget .ap-user-widget-links {
+  padding: 0;
+  list-style: none;
+  margin: 0;
+}
+#anspress .ap-user-widget .ap-user-widget-links li {
+  display: block;
+  padding: 0;
+  margin: 0;
+}
+#anspress .ap-user-widget .ap-user-widget-links a {
+  border-top: 1px solid #f8f8f8;
+  display: block;
+  font-size: 13px;
+  padding: 10px 15px;
+}
+#anspress .ap-user-widget .ap-user-widget-links a:before {
+  margin-right: 10px;
 }
 .widget .ap-stats-widget,
 .ap-widget-pos .ap-stats-widget {

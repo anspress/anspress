@@ -208,7 +208,7 @@ if (!class_exists('AnsPress')) {
             require_once ANSPRESS_DIR.'includes/subscriber.php';
             require_once ANSPRESS_DIR.'includes/follow.php';
             require_once ANSPRESS_DIR.'includes/notification.php';
-             
+            require_once ANSPRESS_DIR.'widgets/user.php'; 
         }
 
         /**

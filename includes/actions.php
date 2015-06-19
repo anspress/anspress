@@ -370,6 +370,7 @@ class AnsPress_Actions
 					if(get_query_var('ap_page') == $slug)
 						$item->classes[] = 'anspress-active-menu-link';
 				}
+
 			}
 
 		return $items;

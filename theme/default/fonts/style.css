@@ -1,10 +1,10 @@
 @font-face {
 	font-family: 'anspress';
-	src:url('fonts/anspress.eot?-a7k1tr');
-	src:url('fonts/anspress.eot?#iefix-a7k1tr') format('embedded-opentype'),
-		url('fonts/anspress.ttf?-a7k1tr') format('truetype'),
-		url('fonts/anspress.woff?-a7k1tr') format('woff'),
-		url('fonts/anspress.svg?-a7k1tr#anspress') format('svg');
+	src:url('fonts/anspress.eot?-r2jrt9');
+	src:url('fonts/anspress.eot?#iefix-r2jrt9') format('embedded-opentype'),
+		url('fonts/anspress.ttf?-r2jrt9') format('truetype'),
+		url('fonts/anspress.woff?-r2jrt9') format('woff'),
+		url('fonts/anspress.svg?-r2jrt9#anspress') format('svg');
 	font-weight: normal;
 	font-style: normal;
 }
@@ -23,6 +23,21 @@
 	-moz-osx-font-smoothing: grayscale;
 }
 
+.apicon-answer:before {
+	content: "\e61f";
+}
+.apicon-question:before {
+	content: "\e620";
+}
+.apicon-rank:before {
+	content: "\e61a";
+}
+.apicon-anspress:before {
+	content: "\e604";
+}
+.apicon-anspress-icon:before {
+	content: "\e605";
+}
 .apicon-pencil:before {
 	content: "\e61e";
 }
@@ -71,15 +86,6 @@
 .apicon-cloud-upload:before {
 	content: "\f00c";
 }
-.apicon-answer:before {
-	content: "\f02b";
-}
-.apicon-comment-discussion:before {
-	content: "\f04f";
-}
-.apicon-dash:before {
-	content: "\f0ca";
-}
 .apicon-ellipsis:before {
 	content: "\f09a";
 }
@@ -97,21 +103,6 @@
 }
 .apicon-heart:before {
 	content: "\2665";
-}
-.apicon-history:before {
-	content: "\f07e";
-}
-.apicon-info:before {
-	content: "\f059";
-}
-.apicon-issue-closed:before {
-	content: "\f028";
-}
-.apicon-issue-opened:before {
-	content: "\f026";
-}
-.apicon-issue-reopened:before {
-	content: "\f027";
 }
 .apicon-link:before {
 	content: "\f05c";
@@ -149,9 +140,6 @@
 .apicon-puzzle:before {
 	content: "\f0c0";
 }
-.apicon-question:before {
-	content: "\f02c";
-}
 .apicon-rss:before {
 	content: "\f034";
 }
@@ -167,14 +155,8 @@
 .apicon-sync:before {
 	content: "\f087";
 }
-.apicon-three-bars:before {
-	content: "\f05e";
-}
 .apicon-trashcan:before {
 	content: "\f0d0";
-}
-.apicon-unfold:before {
-	content: "\f039";
 }
 .apicon-unmute:before {
 	content: "\f0ba";
@@ -208,15 +190,6 @@
 }
 .apicon-comments:before {
 	content: "\e603";
-}
-.apicon-rank:before {
-	content: "\e61a";
-}
-.apicon-anspress:before {
-	content: "\e604";
-}
-.apicon-anspress-icon:before {
-	content: "\e605";
 }
 .apicon-board:before {
 	content: "\e613";
