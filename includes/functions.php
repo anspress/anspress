@@ -938,6 +938,19 @@ function ap_link_to($sub){
 	 */
 	function ap_get_link_to($sub){
 		
+		$default_pages = array(
+			'question' 	=> ap_opt('question_page_slug'),
+			'ask' 		=> ap_opt('ask_page_slug'),
+			'users' 	=> ap_opt('users_page_slug'),
+			'user' 		=> ap_opt('user_page_slug'),
+		);
+
+		if(is_array($sub) && isset($sub['ap_page']) && isset($default_pages[$sub['ap_page']]) )
+			$sub['ap_page'] = $default_pages[$sub['ap_page']];
+
+		elseif(!empty($sub) && isset($default_pages[$sub]))
+			$sub = $default_pages[$sub];
+		
 		$base = rtrim(get_permalink(ap_opt('base_page')), '/');
 		$args = '';
 

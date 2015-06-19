@@ -33,8 +33,8 @@ class AnsPress_Common_Pages
     public function register_common_pages()
     {
         ap_register_page('base', __('Questions', 'ap'), array($this, 'base_page'));
-        ap_register_page('question', __('Question', 'ap'), array($this, 'question_page'), false);
-        ap_register_page('ask', __('Ask', 'ap'), array($this, 'ask_page'));
+        ap_register_page(ap_opt('question_page_slug'), __('Question', 'ap'), array($this, 'question_page'), false);
+        ap_register_page(ap_opt('ask_page_slug'), __('Ask', 'ap'), array($this, 'ask_page'));
         ap_register_page('edit', __('Edit', 'ap'), array($this, 'edit_page'), false);
         ap_register_page('search', __('Search', 'ap'), array($this, 'search_page'), false);
     }

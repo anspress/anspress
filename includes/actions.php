@@ -336,8 +336,13 @@ class AnsPress_Actions
 
 		$pages = anspress()->pages;
 
-		$pages['profile'] = array('title' => __('My profile', 'ap'), 'show_in_menu' => true, 'logged_in' => true);
-		$pages['notification'] = array('title' => __('My notification', 'ap'), 'show_in_menu' => true, 'logged_in' => true);
+		$pages['profile'] 		= array('title' => __('My profile', 'ap'), 'show_in_menu' => true, 'logged_in' => true);
+		$pages['notification'] 	= array('title' => __('My notification', 'ap'), 'show_in_menu' => true, 'logged_in' => true);
+		
+		$pages['ask'] 				= array();
+		$pages['question'] 			= array();
+		$pages['users'] 			= array();
+		$pages['user'] 				= array();
 
 		if(!empty($items) && is_array($items))
 			foreach ( $items as $key => $item ) {
@@ -345,8 +350,9 @@ class AnsPress_Actions
 
 					if(isset($pages['logged_in']) && $pages['logged_in'] && !is_user_logged_in())
 						unset($items[$key]);
-
-					if(strpos($item->url, strtoupper('ANSPRESS_PAGE_URL_'.$slug)) !== FALSE ){
+					
+					$up_slug = strtoupper($slug);
+					if('http://ANSPRESS_PAGE_URL_'.$up_slug == $item->url || 'https://ANSPRESS_PAGE_URL_'.$up_slug == $item->url ){
 
 						if($slug == 'profile')
 							$item->url = is_user_logged_in() ? ap_user_link(get_current_user_id()) : wp_login_url( );

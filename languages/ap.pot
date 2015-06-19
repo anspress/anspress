@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: AnsPress 2.3-beta\n"
 "Report-Msgid-Bugs-To: "
 "http://wordpress.org/support/plugin/anspress-question-answer\n"
-"POT-Creation-Date: 2015-06-15 09:11:23+00:00\n"
+"POT-Creation-Date: 2015-06-16 16:54:45+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -2273,7 +2273,7 @@ msgid "Unsolved"
 msgstr ""
 
 #: includes/theme.php:513
-msgid "Sorty by:"
+msgid "Sort by:"
 msgstr ""
 
 #: includes/theme.php:636
@@ -2513,195 +2513,195 @@ msgstr ""
 msgid "No question asked yet!, be the first to ask a question."
 msgstr ""
 
-#: theme/default/functions.php:62
+#: theme/default/functions.php:63
 msgid "Password not matching"
 msgstr ""
 
-#: theme/default/functions.php:63
+#: theme/default/functions.php:64
 msgid "Password length must be 6 or higher"
 msgstr ""
 
-#: theme/default/functions.php:64
+#: theme/default/functions.php:65
 msgid "Not a valid email"
 msgstr ""
 
-#: theme/default/functions.php:65
+#: theme/default/functions.php:66
 msgid "Username length must be 4 or higher"
 msgstr ""
 
-#: theme/default/functions.php:66
+#: theme/default/functions.php:67
 msgid "Username not available"
 msgstr ""
 
-#: theme/default/functions.php:67
+#: theme/default/functions.php:68
 msgid "Email already in use. %sDo you want to reset your password?%s"
 msgstr ""
 
-#: theme/default/functions.php:68
+#: theme/default/functions.php:69
 msgid "Loading"
 msgstr ""
 
-#: theme/default/functions.php:69
+#: theme/default/functions.php:70
 msgid "Sending request"
 msgstr ""
 
-#: theme/default/functions.php:70
+#: theme/default/functions.php:71
 msgid "Adding question to your favorites"
 msgstr ""
 
-#: theme/default/functions.php:71
+#: theme/default/functions.php:72
 msgid "Sending your vote"
 msgstr ""
 
-#: theme/default/functions.php:72
+#: theme/default/functions.php:73
 msgid "Requesting for closing this question"
 msgstr ""
 
-#: theme/default/functions.php:73
+#: theme/default/functions.php:74
 msgid "Submitting request"
 msgstr ""
 
-#: theme/default/functions.php:74
+#: theme/default/functions.php:75
 msgid "Loading comment form"
 msgstr ""
 
-#: theme/default/functions.php:75
+#: theme/default/functions.php:76
 msgid "Sending your question"
 msgstr ""
 
-#: theme/default/functions.php:76
+#: theme/default/functions.php:77
 msgid "Sending your answer"
 msgstr ""
 
-#: theme/default/functions.php:77
+#: theme/default/functions.php:78
 msgid "Sending your comment"
 msgstr ""
 
-#: theme/default/functions.php:78
+#: theme/default/functions.php:79
 msgid "Deleting comment"
 msgstr ""
 
-#: theme/default/functions.php:79
+#: theme/default/functions.php:80
 msgid "Updating comment"
 msgstr ""
 
-#: theme/default/functions.php:80
+#: theme/default/functions.php:81
 msgid "Loading form"
 msgstr ""
 
-#: theme/default/functions.php:81
+#: theme/default/functions.php:82
 msgid "Saving labels"
 msgstr ""
 
-#: theme/default/functions.php:82
+#: theme/default/functions.php:83
 msgid "Loading suggestions"
 msgstr ""
 
-#: theme/default/functions.php:83
+#: theme/default/functions.php:84
 msgid "Uploading cover"
 msgstr ""
 
-#: theme/default/functions.php:84
+#: theme/default/functions.php:85
 msgid "Saving profile"
 msgstr ""
 
-#: theme/default/functions.php:85
+#: theme/default/functions.php:86
 msgid "Sending message"
 msgstr ""
 
-#: theme/default/functions.php:86
+#: theme/default/functions.php:87
 msgid "Loading conversation"
 msgstr ""
 
-#: theme/default/functions.php:87
+#: theme/default/functions.php:88
 msgid "Loading new message form"
 msgstr ""
 
-#: theme/default/functions.php:88
+#: theme/default/functions.php:89
 msgid "Loading more conversations"
 msgstr ""
 
-#: theme/default/functions.php:89
+#: theme/default/functions.php:90
 msgid "Searching conversations"
 msgstr ""
 
-#: theme/default/functions.php:90
+#: theme/default/functions.php:91
 msgid "Loading message form"
 msgstr ""
 
-#: theme/default/functions.php:91
+#: theme/default/functions.php:92
 msgid "Updating message"
 msgstr ""
 
-#: theme/default/functions.php:92
+#: theme/default/functions.php:93
 msgid "Deleting message"
 msgstr ""
 
-#: theme/default/functions.php:93
+#: theme/default/functions.php:94
 msgid "Uploading"
 msgstr ""
 
-#: theme/default/functions.php:128
+#: theme/default/functions.php:129
 msgid "ago"
 msgstr ""
 
-#: theme/default/functions.php:149
+#: theme/default/functions.php:150
 msgid "Your comment is awaiting moderation."
 msgstr ""
 
-#: theme/default/functions.php:160
+#: theme/default/functions.php:161
 msgid "AP Before"
 msgstr ""
 
-#: theme/default/functions.php:164
+#: theme/default/functions.php:165
 msgid "Widgets in this area will be shown before anspress body."
 msgstr ""
 
-#: theme/default/functions.php:170
+#: theme/default/functions.php:171
 msgid "AP Lists Top"
 msgstr ""
 
-#: theme/default/functions.php:174
+#: theme/default/functions.php:175
 msgid "Widgets in this area will be shown before questions list."
 msgstr ""
 
-#: theme/default/functions.php:180
+#: theme/default/functions.php:181
 msgid "AP Sidebar"
 msgstr ""
 
-#: theme/default/functions.php:184
+#: theme/default/functions.php:185
 msgid "Widgets in this area will be shown in AnsPress sidebar."
 msgstr ""
 
-#: theme/default/functions.php:190
+#: theme/default/functions.php:191
 msgid "AP Question Sidebar"
 msgstr ""
 
-#: theme/default/functions.php:194
+#: theme/default/functions.php:195
 msgid "Widgets in this area will be shown in question page sidebar."
 msgstr ""
 
-#: theme/default/functions.php:200
+#: theme/default/functions.php:201
 msgid "AP Category Page"
 msgstr ""
 
-#: theme/default/functions.php:204
+#: theme/default/functions.php:205
 msgid "Widgets in this area will be shown in category listing page."
 msgstr ""
 
-#: theme/default/functions.php:210
+#: theme/default/functions.php:211
 msgid "AP Tag page"
 msgstr ""
 
-#: theme/default/functions.php:214
+#: theme/default/functions.php:215
 msgid "Widgets in this area will be shown in tag listing page."
 msgstr ""
 
-#: theme/default/functions.php:220
+#: theme/default/functions.php:221
 msgid "AP about user"
 msgstr ""
 
-#: theme/default/functions.php:224
+#: theme/default/functions.php:225
 msgid "Widgets in this area will be shown in about user page."
 msgstr ""
 
@@ -2855,7 +2855,7 @@ msgid "No notification"
 msgstr ""
 
 #: theme/default/user/notification-dropdown.php:36
-msgid "View all notification"
+msgid "View all notifications"
 msgstr ""
 
 #: theme/default/user/notification.php:24

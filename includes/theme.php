@@ -35,6 +35,9 @@ function ap_page_title() {
 	elseif(is_ask())
 		$new_title = ap_opt('ask_page_title');
 
+	elseif(is_ap_users())
+		$new_title = ap_opt('users_page_title');
+
 	elseif($current_page == '' && !is_question() && get_query_var('question_name') == '')
 		$new_title = ap_opt('base_page_title');
 

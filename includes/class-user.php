@@ -38,8 +38,8 @@ class AnsPress_User
     public function init_actions()
     {
         // Register AnsPress pages
-        ap_register_page('users', __('Users', 'ap'), array($this, 'users_page'));
-        ap_register_page('user', __('User', 'ap'), array($this, 'user_page'), false);
+        ap_register_page(ap_opt('users_page_slug'), __('Users', 'ap'), array($this, 'users_page'));
+        ap_register_page(ap_opt('user_page_slug'), __('User', 'ap'), array($this, 'user_page'), false);
 
         // Register user pages
         ap_register_user_page('about', __('About', 'ap'), array($this, 'about_page'));
