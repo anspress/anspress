@@ -344,30 +344,32 @@ class AnsPress_Actions
 		$pages['users'] 			= array();
 		$pages['user'] 				= array();
 
+		$page_url = array();
+		
+		foreach($pages as $slug => $args){
+			$page_url[$slug] = 'ANSPRESS_PAGE_URL_'.strtoupper($slug);
+		}
+
 		if(!empty($items) && is_array($items))
-			foreach ( $items as $key => $item ) {
-				foreach($pages as $slug => $args){
+			foreach ( $items as $key => $item ) {			
+				
+				if(false !== $slug = array_search(str_replace(array('http://', 'https://'), '', $item->url), $page_url)){
+					$page = $pages[$slug];
 
-					if(isset($pages['logged_in']) && $pages['logged_in'] && !is_user_logged_in())
+					if(isset($page['logged_in']) && $page['logged_in'] && !is_user_logged_in())
 						unset($items[$key]);
-					
-					$up_slug = strtoupper($slug);
-					if('http://ANSPRESS_PAGE_URL_'.$up_slug == $item->url || 'https://ANSPRESS_PAGE_URL_'.$up_slug == $item->url ){
 
-						if($slug == 'profile')
-							$item->url = is_user_logged_in() ? ap_user_link(get_current_user_id()) : wp_login_url( );
-						else
-							$item->url = ap_get_link_to($slug);
+					if($slug == 'profile')
+						$item->url = is_user_logged_in() ? ap_user_link(get_current_user_id()) : wp_login_url( );
+					else
+						$item->url = ap_get_link_to($slug);
 
-						$item->classes[] = 'anspress-page-link';
-						$item->classes[] = 'anspress-page-'.$slug;
-						
-						if(get_query_var('ap_page') == $slug)
-							$item->classes[] = 'anspress-active-menu-link';
-					}
+					$item->classes[] = 'anspress-page-link';
+					$item->classes[] = 'anspress-page-'.$slug;
 					
+					if(get_query_var('ap_page') == $slug)
+						$item->classes[] = 'anspress-active-menu-link';
 				}
-
 			}
 
 		return $items;
