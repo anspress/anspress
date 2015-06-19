@@ -764,6 +764,11 @@ class AnsPress_Process_Form
 		
 		$file = $_FILES['post_upload_image'];
 
+		if($file['size'] > ap_opt('max_upload_size')){
+			$this->result  = array('message_type' => 'error', 'message' => sprintf(__('File cannot be uploaded, size is bigger then %d Byte'), ap_opt('max_upload_size')) );
+			return;
+		}
+
 		if(ap_user_upload_limit_crossed($user_id)){
 			$this->result  = array('message' => 'upload_limit_crossed');
 			return;

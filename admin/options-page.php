@@ -547,6 +547,14 @@ class AnsPress_Options_Page
 				'value' => $settings['image_per_post'],
 				'show_desc_tip' => false,
 			),
+			array(
+				'name' => 'anspress_opt[max_upload_size]',
+				'label' => __('Max upload size', 'ap') ,
+				'desc' => __('Set maximum upload size.', 'ap') ,
+				'type' => 'text',
+				'value' => $settings['max_upload_size'],
+				'show_desc_tip' => false,
+			),
 		));
 		
 		// register moderate settings

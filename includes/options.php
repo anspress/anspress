@@ -131,6 +131,7 @@ function ap_default_options(){
 		'users_page_slug' 			=> 'users',	
 		'users_page_title' 			=> __('Users', 'ap'),	
 		'users_page_title' 			=> false,	
+		'max_upload_size' 			=> 500000,	
 	);
 	
 	/**

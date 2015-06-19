@@ -284,6 +284,11 @@ class AnsPress_User
      */
     public function upload_photo($file_name)
     {
+        if($_FILES[ $file_name ]['size'] > ap_opt('max_upload_size')){
+            $this->upload_error  = sprintf(__('File cannot be uploaded, size is bigger then %d Byte'), ap_opt('max_upload_size'));
+            return false;
+        }
+        
         require_once ABSPATH."wp-admin".'/includes/image.php';
         require_once ABSPATH."wp-admin".'/includes/file.php';
         require_once ABSPATH."wp-admin".'/includes/media.php';
@@ -311,6 +316,9 @@ class AnsPress_User
         if (wp_verify_nonce($_POST['__nonce'], 'upload_cover_'.get_current_user_id()) && is_user_logged_in()) {
             
             $photo = $this->upload_photo('image');
+
+            if($photo === false)
+                ap_send_json( ap_ajax_responce(array('message' => $this->upload_error, 'message_type' => 'error')));
             
             $file = str_replace('\\', '\\\\', $photo['file']);
             $photo['file'] = $file;
@@ -320,9 +328,6 @@ class AnsPress_User
             $small_name = str_replace(basename($photo['file']), 'small_'.basename($photo['file']), $photo['file']);
 
             $photo['small_file'] = $small_name;
-
-            if($photo === false)
-                ap_send_json( ap_ajax_responce(array('message' => $this->upload_error, 'type' => 'error')));
 
             $userid = get_current_user_id();
             
@@ -352,7 +357,7 @@ class AnsPress_User
             ap_send_json( ap_ajax_responce(array('action' => 'cover_uploaded', 'status' => true, 'message' => __('Cover photo uploaded successfully.', 'ap'), 'user_id' => $userid , 'image' => ap_get_cover_src($userid)  )));            
         }
         
-        ap_send_json( ap_ajax_responce(array('message' => __('There was an error while uploading cover photo, please check your image and try again.', 'ap'), 'type' => 'error'))); 
+        ap_send_json( ap_ajax_responce(array('message' => __('There was an error while uploading cover photo, please check your image and try again.', 'ap'), 'message_type' => 'error'))); 
     }
 
     /**
@@ -364,6 +369,9 @@ class AnsPress_User
         if (wp_verify_nonce($_POST['__nonce'], 'upload_avatar_'.get_current_user_id()) && is_user_logged_in()) {
             
             $photo = $this->upload_photo('thumbnail');
+
+            if($photo === false)
+                ap_send_json( ap_ajax_responce(array('message' => $this->upload_error, 'message_type' => 'error')));
             
             $file = str_replace('\\', '\\\\', $photo['file']);
             $photo['file'] = $file;
@@ -373,9 +381,6 @@ class AnsPress_User
             $small_name = str_replace(basename($photo['file']), 'small_'.basename($photo['file']), $photo['file']);
 
             $photo['small_file'] = $small_name;
-
-            if($photo === false)
-                ap_send_json( ap_ajax_responce(array('message' => $this->upload_error, 'type' => 'error')));
 
             $userid = get_current_user_id();
             
@@ -405,7 +410,7 @@ class AnsPress_User
             ap_send_json( ap_ajax_responce(array('status' => true, 'message' => __('Avatar uploaded successfully.', 'ap'), 'view' => array('user_avatar_'.$userid => get_avatar($userid, 150)), 'view_html' => true  )));            
         }
         
-        ap_send_json( ap_ajax_responce(array('message' => __('There was an error while uploading avatar, please check your image', 'ap'), 'type' => 'error')));        
+        ap_send_json( ap_ajax_responce(array('message' => __('There was an error while uploading avatar, please check your image', 'ap'), 'message_type' => 'error')));        
 
     }
 
