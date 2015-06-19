@@ -1392,4 +1392,19 @@ function ap_sprintf_assoc( $string = '', $replacement_vars = array(), $prefix_ch
 
 function ap_printf_assoc( $string = '', $replacement_vars = array(), $prefix_character = '##' ) {	
 	echo sprintf_assoc( $string, $replacement_vars, $prefix_character );
-} 
+}
+
+/**
+ * Return question id with solved prefix if answer is accepted
+ * @param  	boolean|integer 		$question_id
+ * @return 	string
+ * @since  	2.3 [@see ap_page_title]
+ */
+function ap_question_title_with_solved_prefix($question_id = false){	
+	if($question_id === false)
+		$question_id = get_question_id();
+
+	$solved = ap_question_best_answer_selected($question_id);
+
+	return ($solved ? __('[Solved] ', 'ap'): '') .  get_the_title($question_id);
+}

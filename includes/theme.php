@@ -24,7 +24,7 @@ function ap_page_title() {
 	$current_page  = get_query_var('ap_page');
 
 	if(is_question())
-		$new_title = get_the_title(get_question_id());
+		$new_title = ap_question_title_with_solved_prefix();
 
 	elseif(is_ap_edit())
 		$new_title = __('Edit post', 'ap');
@@ -265,7 +265,7 @@ function ap_display_question_metas($question_id =  false){
 	$metas = array();
 	if(!is_question()){
 		if(ap_question_best_answer_selected())
-			$metas['solved'] = '<span class="ap-best-answer-label ap-tip" title="'.__('answer accepted', 'ap').'">'.__('Selected', 'ap').'</span>';
+			$metas['solved'] = '<span class="ap-best-answer-label ap-tip" title="'.__('answer accepted', 'ap').'">'.__('Solved', 'ap').'</span>';
 
 		$view_count = ap_get_qa_views();
 		$metas['views'] = sprintf( __('<i>%d views</i>', 'ap'), $view_count) ;
