@@ -531,6 +531,9 @@ class AnsPress_Ajax
 
 	public function ap_user_cover()
 	{
+		if(ap_opt('disable_hover_card'))
+			ap_send_json(ap_ajax_responce('something_wrong'));
+
 		$user_id = (int)$_POST['user_id'];
 		
 		if(!wp_verify_nonce( $_POST['ap_ajax_nonce'], 'ap_ajax_nonce') ){

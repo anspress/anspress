@@ -537,6 +537,8 @@
             });
         },
         hoverCard:function(){
+            console.log(!disable_hover_card);
+            if(!disable_hover_card)
             $('[data-action="ap_hover_card"]').tooltipster({
                 theme: 'ap-hover-card',
                 delay:500,

@@ -130,6 +130,7 @@ function ap_default_options(){
 		'question_page_slug' 		=> 'question',	
 		'users_page_slug' 			=> 'users',	
 		'users_page_title' 			=> __('Users', 'ap'),	
+		'users_page_title' 			=> false,	
 	);
 	
 	/**

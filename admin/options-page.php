@@ -78,7 +78,15 @@ class AnsPress_Options_Page
 				'type' => 'checkbox',
 				'value' => @$settings['base_before_user_perma'],
 				'show_desc_tip' => false,
-			)
+			),
+			array(
+				'name' => 'anspress_opt[disable_hover_card]',
+				'label' => __('Disable hover card', 'ap') ,
+				'desc' => __('Dont show user hover card on mouseover.', 'ap') ,
+				'type' => 'checkbox',
+				'value' => @$settings['disable_hover_card'],
+				'show_desc_tip' => false,
+			),
 			
 		));
 		

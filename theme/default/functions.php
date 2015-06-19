@@ -56,6 +56,7 @@ function ap_scripts_front(){
 				var ajaxurl 	= '<?php echo admin_url('admin-ajax.php'); ?>',
 				    ap_nonce 	= '<?php echo wp_create_nonce( "ap_ajax_nonce" ); ?>',
 				    ap_max_tags = '<?php echo ap_opt('max_tags'); ?>';
+				    disable_hover_card = <?php echo ap_opt('disable_hover_card') ? 'true' : 'false'; ?>;
 			</script>
 		<?php
 
