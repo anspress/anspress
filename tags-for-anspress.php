@@ -7,17 +7,17 @@
  * @package   Tags for AnsPress
  * @author    Rahul Aryan <wp3@rahularyan.com>
  * @license   GPL-2.0+
- * @link      http://wp3.in/tags-for-anspress
- * @copyright 2014 WP3.in & Rahul Aryan
+ * @link      http://anspress.io/tags-for-anspress
+ * @copyright 2014 anspress.io & Rahul Aryan
  *
  * @wordpress-plugin
  * Plugin Name:       Tags for AnsPress
- * Plugin URI:        http://wp3.in/tags-for-anspress
+ * Plugin URI:        http://anspress.io/tags-for-anspress
  * Description:       Extension for AnsPress. Add tags in AnsPress.
  * Donate link: https://www.paypal.com/cgi-bin/webscr?business=rah12@live.com&cmd=_xclick&item_name=Donation%20to%20AnsPress%20development
  * Version:           1.2.7
  * Author:            Rahul Aryan
- * Author URI:        http://wp3.in
+ * Author URI:        http://anspress.io
  * Text Domain:       ap
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
@@ -117,11 +117,7 @@ class Tags_For_AnsPress
         $question_tag       = get_term_by( is_numeric($tag_id) ? 'id' : 'slug', $tag_id, 'question_tag');
         
         $questions = ap_get_questions($question_args);
-
-        if(ap_have_questions())
-            include(ap_get_theme_location('tag.php', TAGS_FOR_ANSPRESS_DIR));
-        else
-            include(ap_get_theme_location('not-found.php'));
+        include(ap_get_theme_location('tag.php', TAGS_FOR_ANSPRESS_DIR));
     }
 
     public function load_options()
