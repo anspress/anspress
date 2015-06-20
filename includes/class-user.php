@@ -69,6 +69,11 @@ class AnsPress_User
     public function user_page(){
         global $ap_user_query;
         
+        if(ap_get_displayed_user_id() == 0 && !is_user_logged_in()){
+            ap_get_template_part('login-signup');
+            return;
+        }
+
         $ap_user_query = ap_has_users(array('ID' => ap_get_displayed_user_id() ) );
         
         if($ap_user_query->has_users()){

@@ -112,6 +112,7 @@ class AnsPress_Rewrite
 
 		$new_rules[$user_page. "([^/]+)/([^/]+)/?"] = "index.php?page_id=".$base_page_id."&ap_page=user&ap_user=". $wp_rewrite->preg_index(1)."&user_page=". $wp_rewrite->preg_index(2);
 
+		$new_rules[$user_page. "?"] = "index.php?page_id=".$base_page_id."&ap_page=user";
 		$new_rules[$user_page. "([^/]+)/?"] = "index.php?page_id=".$base_page_id."&ap_page=user&ap_user=".$wp_rewrite->preg_index(1);
 
 		$new_rules[$slug. "search/([^/]+)/?"] = "index.php?page_id=".$base_page_id."&ap_page=search&ap_s=". $wp_rewrite->preg_index(1);
