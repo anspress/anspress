@@ -2428,6 +2428,9 @@ ul li.anspress-page-link {
   top: 1px;
   z-index: 999999;
 }
+#anspress .ap-field-description.ap-have-error .ap-form-error-message {
+  margin-bottom: 30px;
+}
 #ap-search-form {
   margin-bottom: 0;
 }
