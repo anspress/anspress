@@ -1274,30 +1274,36 @@ ul ul.ap-dropdown-menu {
 ul li.anspress-page-link {
   position: relative;
 }
-#ap-user-menu-link {
+body ul li:hover ul#ap-user-menu-link {
+  display: none;
+}
+body ul li.open ul#ap-user-menu-link {
+  display: block;
+}
+body ul ul#ap-user-menu-link {
   list-style: none;
   border: solid 1px #ddd;
   padding: 0;
   margin: 0;
 }
-#ap-user-menu-link li {
+body ul ul#ap-user-menu-link li {
   padding: 0;
   margin: 0;
 }
-#ap-user-menu-link li > a {
+body ul ul#ap-user-menu-link li > a {
   background: none repeat scroll 0 0 #fff;
   display: block;
   min-width: 160px;
   padding: 11px 15px;
   color: #333333;
 }
-#ap-user-menu-link li > a:before {
+body ul ul#ap-user-menu-link li > a:before {
   margin-right: 10px;
 }
-#ap-user-menu-link li > a:hover {
+body ul ul#ap-user-menu-link li > a:hover {
   background: #fcfcfc;
 }
-#ap-user-menu-link li > a .count {
+body ul ul#ap-user-menu-link li > a .count {
   background: none repeat scroll 0 0 #ff3737;
   border-radius: 2px;
   color: #fff;
@@ -2965,65 +2971,51 @@ ul li.anspress-page-link {
   width: 25px;
 }
 #ap-notify {
-  bottom: 20px;
   font-family: "Helvetica", Arial, sans-serif;
-  font-size: 13px;
+  font-size: 14px;
   left: 10px;
   line-height: 1.6;
   overflow: hidden;
   position: fixed;
+  top: 10%;
   z-index: 9999;
 }
 #ap-notify .ap-notify-item {
-  width: 320px;
-  background: #ffffff;
-  border: 1px solid #ddd;
-  -webkit-border-radius: 3px;
-  -webkit-background-clip: padding-box;
-  -moz-border-radius: 3px;
-  -moz-background-clip: padding;
-  border-radius: 3px;
-  background-clip: padding-box;
-  display: block;
-  font-size: 13px;
-  padding: 10px 15px 10px 40px;
-  width: 250px;
-  -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-  -moz-box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-  margin-bottom: 20px;
-  margin-left: -300px;
-  position: relative;
+  background: none repeat scroll 0 0 #343434;
+  border-radius: 4px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
+  color: #c5c5c5;
+  display: table;
+  font-size: 14px;
+  margin: 10px;
   min-height: 20px;
+  padding: 12px;
+  position: relative;
+  width: 250px;
 }
 #ap-notify .ap-notify-item:last-child {
   margin-bottom: 0;
 }
 #ap-notify .ap-notify-item.error i {
-  background: #eb5837;
+  color: #eb5837;
 }
 #ap-notify .ap-notify-item.success i {
-  background: #61c17d;
+  color: #61c17d;
 }
 #ap-notify .ap-notify-item.warning i {
-  background: #f4ac20;
+  color: #f4ac20;
 }
 #ap-notify .ap-notify-item i {
-  background: #eb5837;
-  border-radius: 2px;
   color: #fff;
-  display: block;
-  float: left;
-  font-size: 12px;
-  height: 22px;
-  left: 15px;
+  display: table-cell;
+  font-size: 18px;
   line-height: 24px;
-  margin-left: -5px;
-  margin-right: 10px;
-  position: absolute;
-  text-align: center;
-  top: 10px;
-  width: 22px;
+  padding-right: 10px;
+  vertical-align: middle;
+}
+#ap-notify .ap-notify-item .ap-notify-content {
+  display: table-cell;
+  vertical-align: middle;
 }
 #anspress .ap-widget-title {
   font-size: 15px;
@@ -3577,6 +3569,9 @@ body #ap-user-notification-anchor {
   font-size: 20px;
   position: relative;
 }
+body #ap-user-notification-anchor > i {
+  display: block;
+}
 body #ap-user-notification-anchor .counter {
   background: none repeat scroll 0 0 #ff3737;
   border-radius: 2px;
@@ -3590,6 +3585,12 @@ body #ap-user-notification-anchor .counter {
   text-align: center;
   top: -7px;
   width: 13px;
+}
+body ul li:hover ul#ap-notification-dropdown {
+  display: none;
+}
+body ul li.open ul#ap-notification-dropdown {
+  display: block;
 }
 body ul ul#ap-notification-dropdown {
   border: 1px solid #ddd;

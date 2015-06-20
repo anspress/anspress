@@ -2,6 +2,10 @@ body #ap-user-notification-anchor{
     font-size: 20px;
     position: relative;
 
+    >i{
+    	display: block;
+    }
+
     .counter{
 	    background: none repeat scroll 0 0 #ff3737;
 	    border-radius: 2px;
@@ -16,6 +20,12 @@ body #ap-user-notification-anchor{
 	    top: -7px;
 	    width: 13px;
     }
+}
+body ul li:hover ul#ap-notification-dropdown{
+	display: none;
+}
+body ul li.open ul#ap-notification-dropdown{
+	display: block;
 }
 body ul ul#ap-notification-dropdown{
     border: 1px solid #ddd;

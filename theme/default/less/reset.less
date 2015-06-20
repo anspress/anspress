@@ -363,7 +363,13 @@ ul{
 		position: relative;
 	}
 }
-#ap-user-menu-link{
+body ul li:hover ul#ap-user-menu-link{
+	display: none;
+}
+body ul li.open ul#ap-user-menu-link{
+	display: block;
+}
+body ul ul#ap-user-menu-link{
 	list-style: none;
 	border: solid 1px #ddd;
 	padding: 0;

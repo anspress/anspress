@@ -392,6 +392,8 @@ class AnsPress_Actions
 						$pos = array_search('current-menu-item', $class);
 						unset($class[$pos]);
 					}
+					if(!in_array('ap-dropdown', $class) && (in_array('anspress-page-notification', $class) || in_array('anspress-page-profile', $class)) )
+						$class[] = 'ap-dropdown';
 				}
 			}
 		}
@@ -420,7 +422,7 @@ class AnsPress_Actions
 
 	    	$active_user_page   = $active_user_page ? $active_user_page : 'about';
 
-			$item_output = '<a id="ap-user-menu-anchor" href="#">'.get_avatar(get_current_user_id(), 20).ap_user_display_name(get_current_user_id()).ap_icon('chevron-down', true).'</a>';
+			$item_output = '<a id="ap-user-menu-anchor" class="ap-dropdown-toggle"  href="#">'.get_avatar(get_current_user_id(), 20).ap_user_display_name(get_current_user_id()).ap_icon('chevron-down', true).'</a>';
 			
 			$item_output .= '<ul id="ap-user-menu-link" class="ap-dropdown-menu ap-user-dropdown-menu">';
 			
@@ -435,7 +437,7 @@ class AnsPress_Actions
 
 		}elseif(in_array('anspress-page-notification', $item->classes) && is_user_logged_in()){
 
-			$item_output = '<a id="ap-user-notification-anchor" href="#">'.ap_icon('globe', true).ap_get_the_total_unread_notification(false, false).'</a>';
+			$item_output = '<a id="ap-user-notification-anchor" class="ap-dropdown-toggle '.ap_icon('globe').'" href="#">'.ap_get_the_total_unread_notification(false, false).'</a>';
 		
 			global $ap_notifications;
 

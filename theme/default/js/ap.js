@@ -111,8 +111,9 @@ jq = jQuery;
 jQuery(document).ready(function() {
     jQuery(document).click(function(e) {
         var target = e.target;
+        console.log(!jQuery(target).is('.ap-dropdown-toggle'));
         if (!jQuery(target).is('.ap-dropdown-toggle') && !jQuery(target).parent().is('.open')) {
-            jQuery('.ap-dropdown').removeClass('open');
+           jQuery('.ap-dropdown').removeClass('open');
         }
     });
 

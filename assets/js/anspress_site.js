@@ -169,7 +169,7 @@
         },
         addMessage: function(message, type) {
             var icon = aplang[type];
-            $('<div class="ap-notify-item ' + type + '"><i class="' + icon + '"></i>' + message + '</div>').appendTo('#ap-notify').animate({
+            $('<div class="ap-notify-item ' + type + '"><i class="' + icon + '"></i><div class="ap-notify-content">' + message + '</div></div>').appendTo('#ap-notify').animate({
                 'margin-left': 0
             }, 500).delay(5000).fadeOut(200);
         },

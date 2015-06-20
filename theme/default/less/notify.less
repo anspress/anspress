@@ -1,29 +1,27 @@
 // Style for notify bubble
 
 #ap-notify{
-    bottom: 20px;
     font-family: "Helvetica",Arial,sans-serif;
-    font-size: 13px;
+    font-size: 14px;
     left: 10px;
     line-height: 1.6;
     overflow: hidden;
     position: fixed;
+    top: 10%;
     z-index: 9999;
 
     .ap-notify-item {
-    	width: 320px;
-    	background: @white;
-	    border: 1px solid #ddd;
-	    .border-radius(3px);
-	    display: block;
-	    font-size: 13px;
-	    padding: 10px 15px 10px 40px;
-	    width: 250px;
-	    .box-shadow(0 0 5px rgba(0, 0, 0, 0.1));
-	    margin-bottom: 20px;
-	    margin-left: -300px;
-	    position: relative;
+	    background: none repeat scroll 0 0 #343434;
+	    border-radius: 4px;
+	    box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
+	    color: #c5c5c5;
+	    display: table;
+	    font-size: 14px;
+	    margin: 10px;
 	    min-height: 20px;
+	    padding: 12px;
+	    position: relative;
+	    width: 250px;
 
 	    &:last-child{
 	    	margin-bottom: 0;
@@ -31,35 +29,30 @@
 
 	    &.error{
 	    	i{
-	    		background: @error-color;
+	    		color: @error-color;
 	    	}
 	    }
 	    &.success{
 	    	i{
-	    		background: @main-color;
+	    		color: @main-color;
 	    	}
 	    }
 	    &.warning{
 	    	i{
-	    		background: @yellow-color;
+	    		color: @yellow-color;
 	    	}
 	    }
 	    i{
-	    	background: @error-color;
-		    border-radius: 2px;
 		    color: #fff;
-		    display: block;
-		    float: left;
-		    font-size: 12px;
-		    height: 22px;
-		    left: 15px;
+		    display: table-cell;
+		    font-size: 18px;
 		    line-height: 24px;
-		    margin-left: -5px;
-		    margin-right: 10px;
-		    position: absolute;
-		    text-align: center;
-		    top: 10px;
-		    width: 22px;
+		    padding-right: 10px;
+		    vertical-align: middle;
+	    }
+	    .ap-notify-content{
+	    	display: table-cell;
+	    	vertical-align: middle;
 	    }
 	}
 }
