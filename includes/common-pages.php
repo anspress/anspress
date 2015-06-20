@@ -66,6 +66,15 @@ class AnsPress_Common_Pages
             );
         }
 
+        if(isset($_GET['question_tag'])){
+            $cat = (int) $_GET['question_tag'];
+            $args['tax_query'][] = array(
+                'taxonomy' => 'question_tag',
+                'field'    => 'term_id',
+                'terms'    => array($cat),
+            );
+        }
+
         if(!empty($tags) && is_array($tags)){
             $args['tax_query'][] = array(
                 'taxonomy' => 'question_tag',
@@ -83,7 +92,7 @@ class AnsPress_Common_Pages
                 'operator' => $categories_operator,
             );
         }
-        var_dump($args['tax_query']);
+
         ap_get_questions($args);
 		include(ap_get_theme_location('base.php'));
     }

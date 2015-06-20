@@ -500,7 +500,6 @@ function ap_question_sorting($current_url = ''){
 	 * @since 2.3
 	 */
 	$navs = apply_filters('ap_question_sorting', $navs );
-		echo '<label>'.__('Sort by:', 'ap').'</label>';
 		echo '<select class="ap-form-control" name="ap_sort">';
 		foreach ($navs as $k => $nav) {
 			echo '<option '.selected( $sort, $k, false ).' value="'.$k.'">'. $nav['title'] .'</option>';
