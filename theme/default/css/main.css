@@ -1808,6 +1808,12 @@ ul li.anspress-page-link {
   margin-right: 40px;
   margin-top: 20px;
   padding-top: 0;
+  position: relative;
+}
+#answer-form-c .ap-avatar {
+  left: 0;
+  position: absolute;
+  top: 0;
 }
 #anspress .ap-btn {
   background-image: linear-gradient(#ffffff, #fcfcfc);
