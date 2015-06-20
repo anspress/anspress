@@ -96,8 +96,8 @@ class Tags_For_AnsPress
         add_action( 'ap_processed_new_question', array($this, 'after_new_question'), 0, 2 );
         add_action( 'ap_processed_update_question', array($this, 'after_new_question'), 0, 2 );
         add_filter('ap_page_title', array($this, 'page_title'));        
-        add_filter('ap_breadcrumbs', array($this, 'ap_breadcrumbs'));        
-
+        add_filter('ap_breadcrumbs', array($this, 'ap_breadcrumbs'));
+        add_action('ap_list_head', array($this, 'ap_list_head'));
     }
 
     public function tag_page()
@@ -411,6 +411,11 @@ class Tags_For_AnsPress
         return $navs;
     }
 
+    public function ap_list_head()
+    {
+        ap_tag_sorting();
+    }
+
 }
 
 /**
@@ -529,3 +534,14 @@ if(!function_exists('is_question_tag')){
     }
 }
 
+function ap_tag_sorting(){
+    $args = array( 
+        'show_option_all'   => __('All tags', 'ap'),
+        'taxonomy'          => 'question_tag',
+        'hierarchical'      => true,
+        'hide_if_empty'     => true,
+        'name'              => 'question_tag',
+        'selected'          => sanitize_text_field($_GET['question_tag']),
+    );
+    wp_dropdown_categories( $args );
+}
