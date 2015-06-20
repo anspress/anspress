@@ -27,10 +27,6 @@
 			</div>
 		</div>
 	</div>
-<?php elseif (is_user_logged_in()): ?>
-	<div class="ap-no-permission">
-		<?php _e('You dont have permission to answer this question.', 'ap'); ?>
-	</div>
 <?php endif; ?>
 
 <?php ap_get_template_part('login-signup'); ?>
