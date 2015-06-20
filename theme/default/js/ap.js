@@ -177,44 +177,26 @@ jQuery(document).ready(function() {
         jQuery(this).css(width, 'auto');
     });
 
-    /*jQuery('#answers .answer').waypoint(function(direction, pos) {
-        jQuery('#answers .answer').removeClass('active');
-        var total = parseInt(jQuery('[data-view="ap_answer_nav_total"]').text());
-        var index = parseInt(jQuery(this.element).data('index'));
-        var nav = jQuery('.ap-answers-nav');
-
-        if((index == 1 && direction == 'up') || (index == total) )
-            nav.hide();
-        else
-            nav.show();
-
-        jQuery('[data-view="ap_answer_nav_cur"]').text(index);
-        jQuery(this.element).addClass('active');
-    }, {
-        offset: '100'
+    jQuery('body').delegate('#ap-question-sorting select', 'change', function(e) {        
+        jQuery(this).closest('form').submit();
     });
 
-    jQuery('[data-acton="ap_answer_prev"]').click(function(e) {
-        e.preventDefault();
-        var cur = parseInt(jQuery('[data-view="ap_answer_nav_cur"]').text()) - 1;
-        jQuery('html, body').animate({
-            scrollTop: (jQuery('#answers .answer:nth-child('+cur+')').offset().top) - 100
-        }, 500);
-    });
-
-    jQuery('[data-acton="ap_answer_next"]').click(function(e) {
-        e.preventDefault();
-        var cur = parseInt( jQuery('[data-view="ap_answer_nav_cur"]').text()) + 1;
-        jQuery('html, body').animate({
-            scrollTop: (jQuery('#answers .answer:nth-child('+cur+')').offset().top) - 99
-        }, 500);
-    });*/
-
-    jQuery('body').delegate('#ap-question-sorting select', 'change', function(e) {
-        var load = AnsPress.site.showLoading(jQuery(this).parent());
-        var link = jQuery(this).val();
-        var anc = this;
-        jQuery('#anspress').load(link + ' #anspress', function(){jQuery(load).hide()});
+    jQuery('body').delegate('#ap-question-sorting', 'submit', function(){
+        AnsPress.site.showLoading(this);
+        jQuery.ajax({
+            type: 'GET',
+            dataType: 'html',
+            data: jQuery(this).serializeArray(),
+            success: function(data){
+                AnsPress.site.hideLoading('#ap-question-sorting');
+                var html = jQuery(data);
+                window.history.pushState(null, null, this.url);
+                
+                jQuery('#anspress').html(html.find('#anspress'));
+            }
+        });
+        
+        return false;
     });
 
     jQuery('body').delegate('.ap-notify-item', 'click', function(e) {

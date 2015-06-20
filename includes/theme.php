@@ -481,16 +481,16 @@ function ap_question_sorting($current_url = ''){
 	$link = add_query_arg($param, $current_url);
 	
 	$navs = array(
-		'active' => array('link' => add_query_arg(array('ap_sort' => 'active'), $link), 'title' => __('Active', 'ap')), 
-		'newest' => array('link' => add_query_arg(array('ap_sort' => 'newest'), $link), 'title' => __('Newest', 'ap'))
+		'active' 		=> array('title' => __('Active', 'ap')), 
+		'newest' 		=> array('title' => __('Newest', 'ap'))
 	);
 
 	if(!ap_opt('disable_voting_on_question'))
-		$navs['voted'] =  array('link' => add_query_arg(array('ap_sort' => 'voted'), $link), 'title' => __('Voted', 'ap'));
+		$navs['voted'] 	=  array('title' => __('Voted', 'ap'));
 
-	$navs['answers'] = array('link' => add_query_arg(array('ap_sort' => 'answers'), $link), 'title' => __('Answered', 'ap'));
-	$navs['unanswered'] = array('link' => add_query_arg(array('ap_sort' => 'unanswered'), $link), 'title' => __('Unanswered', 'ap'));
-	$navs['unsolved'] = array('link' => add_query_arg(array('ap_sort' => 'unsolved'), $link), 'title' => __('Unsolved', 'ap')); 
+	$navs['answers'] 	= array('title' => __('Answered', 'ap'));
+	$navs['unanswered'] = array('title' => __('Unanswered', 'ap'));
+	$navs['unsolved'] 	= array('title' => __('Unsolved', 'ap')); 
 
 	
 	/**
@@ -500,14 +500,12 @@ function ap_question_sorting($current_url = ''){
 	 * @since 2.3
 	 */
 	$navs = apply_filters('ap_question_sorting', $navs );
-	echo '<form id="ap-question-sorting" class="ap-questions-sorting">';
 		echo '<label>'.__('Sort by:', 'ap').'</label>';
-		echo '<select class="ap-form-control">';
+		echo '<select class="ap-form-control" name="ap_sort">';
 		foreach ($navs as $k => $nav) {
-			echo '<option '.selected( $sort, $k, false ).' value="'.esc_url($nav['link']).'">'. $nav['title'] .'</option>';
+			echo '<option '.selected( $sort, $k, false ).' value="'.$k.'">'. $nav['title'] .'</option>';
 		}
 		echo '</select>';
-	echo '</form>';
 	?>
 	<?php
 }

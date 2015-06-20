@@ -3,5 +3,8 @@
 	    <input name="ap_s" type="text" class="ap-form-control" placeholder="<?php _e('Search questions...', 'ap'); ?>" value="<?php echo sanitize_text_field( get_query_var('ap_s') ); ?>" />
 	</form>
 	<?php ap_ask_btn(); ?>
-	<?php ap_question_sorting(); ?>
+	<form id="ap-question-sorting" class="ap-questions-sorting">
+		<?php ap_question_sorting(); ?>
+		<?php do_action('ap_list_head'); ?>
+	</form>
 </div>
