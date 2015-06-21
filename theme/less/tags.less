@@ -3,124 +3,126 @@
 //--------------------------
 // Categories styles
 //-------------------------
-
-.ap-term-tag-box{
-	list-style: none;
-	padding: 0;
-	margin: 0;
-	>li{
-	    border-bottom: 1px dashed @default-border-color;
-	    float: left;
-	    margin-bottom: 30px;
-	    padding: 0 15px 20px;
-	    width: 25%;
-	    .ap-term-title{
-	    	background: @blue-color;
-	    }
-	    .ap-term-count{
-		    color: @light-color;
-		    font-style: italic;
-		    line-height: 28px;
-		    text-align: right;
-		    width: 140px;
-	    }
-
-		.term-title{
-		    background: @blue-color;
-		    .border-radius(2px);
-		    color: @white;
-		    margin-right: 10px;
-		    padding: 3px 10px;
-		    text-decoration: none;
-		    text-transform: lowercase;
-		}
-		.ap-taxo-description {
-		    color: @light-color;
-		    font-size: 12px;
-		    height: 65px;
-		    line-height: 20px;		    
-		    margin-top: 15px;
-		    overflow: hidden;
-		}
-	}
-	
-}
-
-.sub-taxo-label{
-    font-size: 14px;
-    font-weight: bold;
-    margin-bottom: 15px;
-    margin-top: 10px;
-}
-.ap-sub-taxo{
-    margin-bottom: 30px;
-	li{
-	    margin: 0 10px 15px 0;
-	    min-width: 145px;
-	    a{
-		    background: @white;
-		    border: 1px solid @default-border-color;
-		    .border-radius(2px);
-		    color: @light-color;
-		    display: block;
-		    font-size: 15px;
-		    padding: 7px 12px;
-		    text-decoration: none;
-
-		    span{
-		    	float: right;
+#anspress{
+	.ap-term-tag-box{
+		list-style: none;
+		padding: 0;
+		margin: 0 -15px;
+		>li{
+		    border-bottom: 1px dashed #e4e4e4;
+		    float: left;
+		    margin: 0 0 20px;
+		    padding: 0 0 10px;
+		    width: 25%;
+		    .ap-tags-item {
+			    padding: 0 15px;
+			}
+		    .ap-term-count{
+			    color: #888888;
+			    font-size: 12px;
+			    font-style: italic;
+			    line-height: 28px;
+			    text-align: right;
 		    }
 
-		    &:hover{
-		    	border-color: @blue-color;
-		    }
-	    }
+			.term-title{
+			    background: none repeat scroll 0 0 padding-box #f4f4f4;
+			    border: 1px solid #ddd;
+			    border-radius: 2px;
+			    color: #333;
+			    margin-right: 10px;
+			    padding: 3px 12px;
+			    text-decoration: none;
+			    text-transform: lowercase;
+			}
+			.ap-taxo-description {
+			    color: #888888;
+			    font-size: 12px;
+			    height: 65px;
+			    line-height: 21px;
+			    margin-top: 15px;
+			    overflow: hidden;
+			}
+		}
+		
 	}
-}
-.ap-taxo-detail {
-    background: none repeat scroll 0 0 #f8f8f8;
-    .border-radius(5px);
-    margin-bottom: 25px;
-    padding: 15px 20px;
-    .ap-tax-item-count {
-	    background: @blue-color;
-	    color: @white;
-	    float: right;
-	    font-size: 17px;
-	    padding: 5px 10px;
-	    .border-radius(2px);
-	}
-	.ap-taxo-description {
-	    line-height: 28px;
-	}
-	.ap-term-sub {
-	    margin-top: 20px;
+
+	.sub-taxo-label{
+	    font-size: 14px;
+	    font-weight: bold;
+	    margin-bottom: 15px;
+	    margin-top: 10px;
 	}
 	.ap-sub-taxo{
-		margin:0;
+	    margin-bottom: 30px;
+		li{
+		    margin: 0 10px 15px 0;
+		    min-width: 145px;
+		    a{
+			    background: @white;
+			    border: 1px solid @default-border-color;
+			    .border-radius(2px);
+			    color: @light-color;
+			    display: block;
+			    font-size: 15px;
+			    padding: 7px 12px;
+			    text-decoration: none;
+
+			    span{
+			    	float: right;
+			    }
+
+			    &:hover{
+			    	border-color: @blue-color;
+			    }
+		    }
+		}
 	}
-}
+	.ap-taxo-detail {
+	    background: none repeat scroll 0 0 #f8f8f8;
+	    .border-radius(5px);
+	    margin-bottom: 25px;
+	    padding: 15px 20px;
+	    .ap-tax-item-count {
+		    background: @blue-color;
+		    color: @white;
+		    float: right;
+		    font-size: 17px;
+		    padding: 5px 10px;
+		    .border-radius(2px);
+		}
+		.ap-taxo-description {
+		    line-height: 28px;
+		}
+		.ap-term-sub {
+		    margin-top: 20px;
+		}
+		.ap-sub-taxo{
+			margin:0;
+		}
+	}
 
-.ap-tag-suggestions {
-    background: none repeat scroll 0 0 #fff;
-    border: 1px solid #ddd;
-    .border-radius(4px);
-    .box-shadow(0 0 5px rgba(0, 0, 0, 0.08));
-    list-style: outside none none;
-    margin: 0;
-    position: absolute;
-    padding: 5px;
-    width: 150px;
+	.ap-tag-suggestions {
+	    background: none repeat scroll 0 0 #fff;
+	    border: 1px solid #ddd;
+	    .border-radius(4px);
+	    .box-shadow(0 0 5px rgba(0, 0, 0, 0.08));
+	    list-style: outside none none;
+	    margin: 0;
+	    position: absolute;
+	    padding: 5px;
+	    width: 150px;
 
-    a{
-	    display: block;
-	    padding: 6px 15px;
-	    .border-radius(2px);
+	    a{
+		    display: block;
+		    padding: 6px 15px;
+		    .border-radius(2px);
 
-	    &:hover{
-	    	text-decoration: none;
-	    	background: @blue-color;
-	    	color: @white;
+		    &:hover{
+		    	text-decoration: none;
+		    	background: @blue-color;
+		    	color: @white;
+		    }
 	    }
-    }
+	}
 }

@@ -29,7 +29,6 @@ if ( ! defined( 'WPINC' ) ) {
     die;
 }
 
-
 class Tags_For_AnsPress
 {
 
@@ -75,6 +74,7 @@ class Tags_For_AnsPress
         
 
         ap_register_page('tag', __('Tag', 'ap'), array($this, 'tag_page'), false);
+        ap_register_page('tags', __('Tags', 'ap'), array($this, 'tags_page'));
 
         // internationalization
         add_action( 'admin_init', array( $this, 'load_options' ) );
@@ -84,9 +84,6 @@ class Tags_For_AnsPress
         add_action('init', array($this, 'register_question_tag'), 1);
         add_filter('ap_default_options', array($this, 'ap_default_options') );
         add_action('ap_admin_menu', array($this, 'admin_tags_menu'));
-
-        add_action('ap_option_navigation', array($this, 'option_navigation' ));
-
         add_action('ap_display_question_metas', array($this, 'ap_display_question_metas' ), 10, 2);
         add_action('ap_question_info', array($this, 'ap_question_info' ));
         add_action( 'ap_enqueue', array( $this, 'ap_enqueue' ) );
@@ -118,6 +115,37 @@ class Tags_For_AnsPress
         
         $questions = ap_get_questions($question_args);
         include(ap_get_theme_location('tag.php', TAGS_FOR_ANSPRESS_DIR));
+    }
+
+    public function tags_page()
+    {
+        global $question_tags, $ap_max_num_pages, $ap_per_page;
+
+        $paged              = get_query_var('paged') ? get_query_var('paged') : 1;
+        $per_page           = ap_opt('tags_per_page');
+        $total_terms        = wp_count_terms('question_tag');  
+        $offset             = $per_page * ( $paged - 1) ;
+        $ap_max_num_pages   = ceil($total_terms / $per_page) ;
+
+        $tag_args = array(
+            'parent'        => 0,
+            'number'        => $per_page,
+            'offset'        => $offset,
+            'hide_empty'    => false,
+            'orderby'       => 'count',
+            'order'         => 'DESC',
+        );
+
+        /**
+         * FILTER: ap_tags_shortcode_args
+         * Filter applied before getting categories.
+         * @var array
+         */
+        $tag_args = apply_filters('ap_tags_shortcode_args', $tag_args );
+
+        $question_tags = get_terms( 'question_tag' , $tag_args);
+        
+        include ap_get_theme_location('tags.php', TAGS_FOR_ANSPRESS_DIR);
     }
 
     public function load_options()
@@ -211,7 +239,7 @@ class Tags_For_AnsPress
 
         $defaults['max_tags']       = 5;
         $defaults['min_tags']       = 1;
-        $defaults['tags_per_page']   = 36;
+        $defaults['tags_per_page']   = 20;
 
         return $defaults;
     }
@@ -224,18 +252,6 @@ class Tags_For_AnsPress
     public function admin_tags_menu(){
         add_submenu_page('anspress', __('Questions Tags', 'tags_for_anspress'), __('Tags', 'tags_for_anspress'), 'manage_options', 'edit-tags.php?taxonomy=question_tag');
     }
-
-    /**
-     * Register tags option tab in AnsPress options
-     * @param  array $navs Default navigation array
-     * @return array
-     * @since 1.0
-     */
-    public function option_navigation($navs){
-        $navs['tags'] =  __('Tags', 'tags_for_anspress');
-        return $navs;
-    }
-
     /**
      * Register option fields
      * @return void
@@ -248,6 +264,13 @@ class Tags_For_AnsPress
         
         $settings = ap_opt();
         ap_register_option_group( 'tags', __('Tags', 'ap'), array(
+            array(
+                'name'              => 'anspress_opt[tags_per_page]',
+                'label'             => __('Tags to show', 'ap'),
+                'description'       => __('Numbers of tags to show in tags page.', 'ap'),
+                'type'              => 'number',
+                'value'             => $settings['tags_per_page'],
+            ),
             array(
                 'name'              => 'anspress_opt[max_tags]',
                 'label'             => __('Maximum tags', 'ap'),
