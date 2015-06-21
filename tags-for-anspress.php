@@ -95,6 +95,8 @@ class Tags_For_AnsPress
         add_filter('ap_page_title', array($this, 'page_title'));        
         add_filter('ap_breadcrumbs', array($this, 'ap_breadcrumbs'));
         add_action('ap_list_head', array($this, 'ap_list_head'));
+        add_filter( 'terms_clauses', array($this, 'terms_clauses'), 10, 3);
+        add_filter( 'get_terms', array($this, 'get_terms'), 10, 3);
     }
 
     public function tag_page()
@@ -119,22 +121,37 @@ class Tags_For_AnsPress
 
     public function tags_page()
     {
-        global $question_tags, $ap_max_num_pages, $ap_per_page;
+        global $question_tags, $ap_max_num_pages, $ap_per_page, $tags_rows_found;
 
         $paged              = get_query_var('paged') ? get_query_var('paged') : 1;
         $per_page           = ap_opt('tags_per_page');
-        $total_terms        = wp_count_terms('question_tag');  
+        $total_terms        = $tags_rows_found;  
         $offset             = $per_page * ( $paged - 1) ;
         $ap_max_num_pages   = ceil($total_terms / $per_page) ;
 
         $tag_args = array(
+            'ap_tags_query' => 'num_rows',
             'parent'        => 0,
             'number'        => $per_page,
             'offset'        => $offset,
             'hide_empty'    => false,
-            'orderby'       => 'count',
             'order'         => 'DESC',
         );
+
+        if(@$_GET['ap_sort'] == 'new'){
+            $tag_args['orderby'] = 'id';
+            $tag_args['order']      = 'ASC';
+        }
+        elseif(@$_GET['ap_sort'] == 'name'){
+            $tag_args['orderby']    = 'name';
+            $tag_args['order']      = 'ASC';
+        }
+        else{
+            $tag_args['orderby'] = 'count';
+        }
+
+        if(isset($_GET['ap_s']))
+            $tag_args['search'] = sanitize_text_field( $_GET['ap_s'] );
 
         /**
          * FILTER: ap_tags_shortcode_args
@@ -439,6 +456,23 @@ class Tags_For_AnsPress
         ap_tag_sorting();
     }
 
+    public function terms_clauses($query, $taxonomies, $args){
+        if(isset($args['ap_tags_query']) && $args['ap_tags_query'] == 'num_rows'){
+            $query['fields'] = "SQL_CALC_FOUND_ROWS ". $query['fields'];
+        }
+        return $query;
+    }
+
+    public function get_terms($terms, $taxonomies, $args){
+        if(isset($args['ap_tags_query']) && $args['ap_tags_query'] == 'num_rows'){
+            global $tags_rows_found,  $wpdb;
+
+            $tags_rows_found = $wpdb->get_var( apply_filters( 'ap_get_terms_found_rows', "SELECT FOUND_ROWS()", $terms, $taxonomies, $args ) );     
+            //wp_cache_set( $this->cache_key.'_count', $this->total_count, 'ap' );
+        }
+        return $terms;
+    }
+
 }
 
 /**
@@ -567,4 +601,25 @@ function ap_tag_sorting(){
         'selected'          => sanitize_text_field($_GET['question_tag']),
     );
     wp_dropdown_categories( $args );
+}
+
+function ap_tags_tab(){
+    $active = isset($_GET['ap_sort']) ? $_GET['ap_sort'] : 'popular';
+    
+    $link = ap_get_link_to('tags').'?ap_sort=';
+    
+    ?>
+    <ul class="ap-questions-tab ap-ul-inline clearfix" role="tablist">
+        <li class="<?php echo $active == 'popular' ? ' active' : ''; ?>"><a href="<?php echo $link.'popular'; ?>"><?php _e('Popular', 'ap'); ?></a></li>
+        <li class="<?php echo $active == 'new' ? ' active' : ''; ?>"><a href="<?php echo $link.'new'; ?>"><?php _e('New', 'ap'); ?></a></li>        
+        <li class="<?php echo $active == 'name' ? ' active' : ''; ?>"><a href="<?php echo $link.'name'; ?>"><?php _e('Name', 'ap'); ?></a></li>        
+        <?php 
+            /**
+             * ACTION: ap_tags_tab
+             * Used to hook into tags page tab
+             */
+            do_action('ap_tags_tab', $active); 
+        ?>
+    </ul>
+    <?php
 }
