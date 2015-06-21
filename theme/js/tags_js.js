@@ -76,5 +76,11 @@ jQuery(document).ready(function(){
 		jQuery('#ap-tag-suggestions').hide();
 	});
 
+	jQuery('body').delegate('#ask_form .ap-btn-submit', 'click', function() {
+		console.log(jQuery('.bootstrap-tagsinput input').val());
+        jQuery('[data-role="ap-tagsinput"]').tagsinput('add', jQuery('.bootstrap-tagsinput input').val());
+        jQuery('.bootstrap-tagsinput input').val('')
+    });
+
 });
 
