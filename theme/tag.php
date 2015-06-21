@@ -13,8 +13,8 @@
 			<?php if($question_tag->description !=''): ?>
 				<p class="ap-taxo-description"><?php echo $question_tag->description; ?></p>
 			<?php endif; ?>
-			<?php ap_subscribe_btn_html($question_tag->term_id, 'term'); ?>
-			<?php ap_question_subscribers(); ?>
+			<?php ap_subscribe_btn_html($question_tag->term_id, 'tag'); ?>
+			<?php ap_question_subscribers($question_tag->term_id, 'tag'); ?>
 		</div>
 		<?php ap_get_template_part('list-head'); ?>
 		<?php if ( ap_have_questions() ) : ?>

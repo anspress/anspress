@@ -97,6 +97,8 @@ class Tags_For_AnsPress
         add_action('ap_list_head', array($this, 'ap_list_head'));
         add_filter( 'terms_clauses', array($this, 'terms_clauses'), 10, 3);
         add_filter( 'get_terms', array($this, 'get_terms'), 10, 3);
+        add_action('ap_user_subscription_tab', array($this, 'subscription_tab'));
+        add_action('ap_user_subscription_page', array($this, 'subscription_page'));
     }
 
     public function tag_page()
@@ -460,6 +462,14 @@ class Tags_For_AnsPress
         if(isset($args['ap_tags_query']) && $args['ap_tags_query'] == 'num_rows'){
             $query['fields'] = "SQL_CALC_FOUND_ROWS ". $query['fields'];
         }
+        
+        if(in_array('question_tag', $taxonomies) && isset($args['ap_query']) && $args['ap_query'] == 'tags_subscription'){
+            global $wpdb;
+
+            $query['join']     = $query['join']." INNER JOIN ".$wpdb->prefix."ap_meta apmeta ON t.term_id = apmeta.apmeta_actionid";
+            $query['where']    = $query['where']." AND apmeta.apmeta_type='subscriber' AND apmeta.apmeta_param='tag' AND apmeta.apmeta_userid='".$args['user_id']."'";
+        }
+
         return $query;
     }
 
@@ -471,6 +481,57 @@ class Tags_For_AnsPress
             //wp_cache_set( $this->cache_key.'_count', $this->total_count, 'ap' );
         }
         return $terms;
+    }
+
+    public function subscription_tab($active)
+    {
+        echo '<li class="'.($active == 'tag' ? 'active' : '').'"><a href="?tab=tag">'.__('Tag', 'ap').'</a></li>';
+    }
+
+    public function subscription_page($active)
+    {
+        $active = isset($_GET['tab']) ? sanitize_text_field($_GET['tab']) : 'question';
+
+        if($active != 'tag')
+            return;
+
+        global $question_tags, $ap_max_num_pages, $ap_per_page, $tags_rows_found;
+
+        $paged              = get_query_var('paged') ? get_query_var('paged') : 1;
+        $per_page           = ap_opt('tags_per_page');
+        $total_terms        = $tags_rows_found;  
+        $offset             = $per_page * ( $paged - 1) ;
+        $ap_max_num_pages   = ceil($total_terms / $per_page) ;
+
+        $tag_args = array(
+            'ap_tags_query' => 'num_rows',
+            'ap_query'      => 'tags_subscription',
+            'parent'        => 0,
+            'number'        => $per_page,
+            'offset'        => $offset,
+            'hide_empty'    => false,
+            'order'         => 'DESC',
+            'user_id'       => get_current_user_id(),
+        );
+
+        if(@$_GET['ap_sort'] == 'new'){
+            $tag_args['orderby'] = 'id';
+            $tag_args['order']      = 'ASC';
+        }
+        elseif(@$_GET['ap_sort'] == 'name'){
+            $tag_args['orderby']    = 'name';
+            $tag_args['order']      = 'ASC';
+        }
+        else{
+            $tag_args['orderby'] = 'count';
+        }
+
+        if(isset($_GET['ap_s']))
+            $tag_args['search'] = sanitize_text_field( $_GET['ap_s'] );
+
+        $question_tags = get_terms( 'question_tag' , $tag_args);
+        
+        include ap_get_theme_location('tags.php', TAGS_FOR_ANSPRESS_DIR);
     }
 
 }
