@@ -215,10 +215,7 @@ function ap_have_parent_post($post_id = false){
  * @param  string  $format 
  * @return string
  */
-function ap_pagination( $current = false, $total = false, $format = '?paged=%#%'){
-
-	if($total == '1')
-		return;
+function ap_pagination( $current = false, $total = false, $format = '?paged=%#%'){	
 	
 	global $ap_max_num_pages, $ap_current;
 
@@ -240,6 +237,9 @@ function ap_pagination( $current = false, $total = false, $format = '?paged=%#%'
 		$total = $questions->max_num_pages;
 	}
 	$page_num_link = str_replace(array('&amp;', '&#038;'), '&', get_pagenum_link( $big ));
+
+	if($total == '1')
+		return;
 
 	echo '<div class="ap-pagination clearfix">';
 	echo paginate_links( array(

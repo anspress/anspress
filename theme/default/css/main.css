@@ -1448,6 +1448,7 @@ body ul ul#ap-user-menu-link li > a .count {
 #anspress .ap-list-head {
   border: 1px solid #eee;
   border-radius: 3px;
+  margin-bottom: 25px;
   padding: 14px;
 }
 #anspress .ap-list-head .ap-btn-ask {

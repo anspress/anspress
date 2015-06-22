@@ -371,8 +371,7 @@ function ap_add_item_to_menu(menuItem, callback) {
 	});
 }
 jQuery(document).ready(function (jQuery){  
-
-		
+	
 	jQuery('#select-question-for-answer').on('keyup', function(){
 		if(jQuery.trim(jQuery(this).val()) == '')
 			return;
@@ -401,6 +400,37 @@ jQuery(document).ready(function (jQuery){
     jQuery( document ).ajaxComplete(function( event, data, settings ) {
         jQuery('.ap-dynamic-avatar').initial({fontSize:14, fontWeight:600});
     });
+
+    jQuery('#ap-category-upload').click(function(e) {
+    	e.preventDefault();
+		var image = wp.media({
+			title: 'Upload Image',
+			// mutiple: true if you want to upload multiple files at once
+			multiple: false
+		}).open().on('select', function(e){
+			// This will return the selected image from the Media Uploader, the result is an object
+			var uploaded_image = image.state().get('selection').first();
+			// We convert uploaded_image to a JSON object to make accessing it easier
+			// Output to the console uploaded_image
+			console.log(uploaded_image);
+			var image_url = uploaded_image.toJSON().url;
+			var image_id = uploaded_image.toJSON().id;
+			// Let's assign the url value to the input field
+			jQuery('#ap_category_media_url').val(image_url);
+			jQuery('#ap_category_media_id').val(image_id);
+			jQuery('#ap_category_media_url').before('<img id="ap_category_media_preview" src="'+image_url+'" />');
+		});       
+	});
+
+	jQuery('#ap-category-upload-remove').click(function(e){
+		e.preventDefault();
+		jQuery('#ap_category_media_url').val('');
+		jQuery('#ap_category_media_id').val('');
+		jQuery('#ap_category_media_preview').remove();
+	});
+	jQuery(document).ready(function($){
+	    $('#ap-category-color').wpColorPicker();
+	});
 	
 }); 
 

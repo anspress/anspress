@@ -675,3 +675,13 @@ function apGetValueFromStr(q, name) {
         results = regex.exec(q);
     return results == null ? false : decodeURIComponent(results[1].replace(/\+/g, " "));
 }
+
+function apCenterBox(elm){
+    var elm         = jQuery(elm);
+    var parent      = elm.parent();
+
+    parent.css({position: 'relative'});
+
+    elm.css("left", (parent.width()-elm.width())/2);
+    elm.css("top", (parent.height()-elm.height())/2);
+}
