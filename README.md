@@ -1,6 +1,6 @@
 # AnsPress - Question and answer plugin #
 **Contributors:** nerdaryan  
-**Donate link:** https://www.paypal.com/cgi-bin/webscr?business=support@anspress.io&cmd=_xclick&item_name=Donation%20to%20AnsPress%20development  
+**Donate link:** https://www.paypal.com/cgi-bin/webscr?business=rah12@live.com&cmd=_xclick&item_name=Donation%20to%20AnsPress%20development  
 **Tags:** question, answer, q&a, forum, profile, stackoverflow, quora, buddypress  
 **Requires at least:** 4.1.1  
 **Tested up to:** 4.2  
@@ -11,6 +11,8 @@
 Free question and answer plugin for WordPress. Made with developers in mind, highly customizable.
 
 ## Description ##
+
+**Try new beta version, [Download 2.3-beta.zip](http://anspress.io/questions/question/2-3-beta-is-here-try-and-let-us-know/)**
 
 **Demo & support forum:** http://anspress.io/  
 **GitHub repo:** [Git AnsPress](https://github.com/anspress/anspress/)  
@@ -41,7 +43,7 @@ List of features:
   * Tags suggestions
   * Comment on question and answer
   * reCaptcha
-  * User level : Participant, Editor, Moderator  
+**  * User level :** Participant, Editor, Moderator  
   * Email notification
   * User can add questions to his favorite
   * User can edit profile
@@ -68,6 +70,34 @@ Read full documentation here http://anspress.io/documents/
 ## Frequently Asked Questions ##
 
 Read full FAQ here http://anspress.io/documents/doc_page=faq
+
+## Screenshots ##
+
+### 1. Question list page. ###
+![Question list page.](http://s.wordpress.org/extend/plugins/anspress---question-and-answer-plugin/screenshot-1.png)
+
+
+### 2. Single question page. ###
+![Single question page.](http://s.wordpress.org/extend/plugins/anspress---question-and-answer-plugin/screenshot-2.png)
+
+
+### 3. User profile ###
+![User profile](http://s.wordpress.org/extend/plugins/anspress---question-and-answer-plugin/screenshot-3.png)
+
+
+### 4. User hover card ###
+![User hover card](http://s.wordpress.org/extend/plugins/anspress---question-and-answer-plugin/screenshot-4.png)
+
+
+### 5. Users directory ###
+![Users directory](http://s.wordpress.org/extend/plugins/anspress---question-and-answer-plugin/screenshot-5.png)
+
+
+### 6. Notifications ###
+![Notifications](http://s.wordpress.org/extend/plugins/anspress---question-and-answer-plugin/screenshot-6.png)
+
+
+
 
 ## Changelog ##
 
@@ -295,7 +325,7 @@ Read full FAQ here http://anspress.io/documents/doc_page=faq
 * Styled editor
 * Added questions list widget
 * hook option on admin_init
-* Disable quicktags in questions
+* #262 Disable quicktags in questions
 * [fix] related questions widget
 * Improved subscribe button
 * Exclude best answer from main Answers_Query
