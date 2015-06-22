@@ -658,9 +658,12 @@ function ap_tag_sorting(){
         'taxonomy'          => 'question_tag',
         'hierarchical'      => true,
         'hide_if_empty'     => true,
-        'name'              => 'question_tag',
-        'selected'          => sanitize_text_field($_GET['question_tag']),
+        'name'              => 'question_tag'
     );
+
+    if(isset($_GET['question_tag']))
+        $args['selected'] = sanitize_text_field($_GET['question_tag']);
+
     wp_dropdown_categories( $args );
 }
 
