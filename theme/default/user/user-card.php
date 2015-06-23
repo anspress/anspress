@@ -21,7 +21,7 @@ $cover = ap_get_cover_src(ap_user_get_the_ID());
 	        <?php ap_follow_button(ap_user_get_the_ID()); ?>
 	    </div>
 	    <div class="no-overflow">
-	        <a href="#" class="ap-card-name"><?php ap_user_the_display_name(); ?></a>
+	        <a href="<?php ap_user_the_link() ; ?>" class="ap-card-name"><?php ap_user_the_display_name(); ?></a>
 	        <div class="ap-card-reputation"><span><?php ap_user_the_reputation(); ?></span><?php _e('Reputation', 'ap'); ?></div>
 	        <div class="ap-card-stats">
 	            <span><?php echo ap_icon('answer', true); ?><?php printf(__('%d answers, %d selected', 'ap'), ap_user_get_the_meta('__total_answers'), ap_user_get_the_meta('__best_answers')); ?></span>
