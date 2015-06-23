@@ -42,9 +42,8 @@ class AnsPress_Common_Pages
     public function base_page()
     {
     	global $questions, $wp;
-        
-        $tags = @$wp->query_vars['ap_sc_atts_tags'];
-        $categories = @$wp->query_vars['ap_sc_atts_categories'];
+        $query = $wp->query_vars;
+
         $tax_relation = @$wp->query_vars['ap_sc_atts_tax_relation'];
         $tax_relation = !empty($tax_relation) ? $tax_relation : 'OR';
 
@@ -57,42 +56,37 @@ class AnsPress_Common_Pages
         $args = array();
         $args['tax_query'] = array('relation' => $tax_relation);
 
-        if(isset($_GET['question_cat'])){
-            $cat = (int) $_GET['question_cat'];
-            $args['tax_query'][] = array(
-                'taxonomy' => 'question_category',
-                'field'    => 'term_id',
-                'terms'    => array($cat),
-            );
-        }
-
-        if(isset($_GET['question_tag'])){
-            $cat = (int) $_GET['question_tag'];
-            $args['tax_query'][] = array(
-                'taxonomy' => 'question_tag',
-                'field'    => 'term_id',
-                'terms'    => array($cat),
-            );
-        }
-
-        if(!empty($tags) && is_array($tags)){
+        if(isset($query['ap_sc_atts_tags']) && is_array($query['ap_sc_atts_tags'])){
             $args['tax_query'][] = array(
                 'taxonomy' => 'question_tag',
                 'field'    => 'slug',
-                'terms'    => $tags,
+                'terms'    => $query['ap_sc_atts_tags'],
                 'operator' => $tags_operator,
             );
-        }
-
-        if(!empty($categories) && is_array($categories)){
+        }elseif(isset($_GET['ap_tag_sort']) && $_GET['ap_tag_sort'] != 0){
+            $cat = (int) $_GET['ap_tag_sort'];
             $args['tax_query'][] = array(
-                'taxonomy' => 'question_category',
-                'field'    => 'slug',
-                'terms'    => $categories,
-                'operator' => $categories_operator,
+                'taxonomy' => 'question_tag',
+                'field'    => 'term_id',
+                'terms'    => array($cat),
             );
         }
 
+        if(isset($query['ap_sc_atts_categories']) && is_array($query['ap_sc_atts_categories'])){
+            $args['tax_query'][] = array(
+                'taxonomy' => 'question_category',
+                'field'    => 'slug',
+                'terms'    => $query['ap_sc_atts_categories'],
+                'operator' => $categories_operator,
+            );
+        }elseif(isset($_GET['ap_cat_sort']) && $_GET['ap_cat_sort'] != 0){
+            $cat = (int) $_GET['ap_cat_sort'];
+            $args['tax_query'][] = array(
+                'taxonomy' => 'question_category',
+                'field'    => 'term_id',
+                'terms'    => array($cat),
+            );
+        }
         ap_get_questions($args);
 		include(ap_get_theme_location('base.php'));
     }

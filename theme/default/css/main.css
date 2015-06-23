@@ -3147,37 +3147,6 @@ body ul ul#ap-user-menu-link li > a .count {
   display: block;
   margin-bottom: 5px;
 }
-.ap-widget-pos .ap-cat-wid,
-.widget .ap-cat-wid {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-.ap-widget-pos .ap-cat-wid > li,
-.widget .ap-cat-wid > li {
-  border-bottom: 1px solid #eee;
-  margin: 0;
-  padding: 0;
-}
-.ap-widget-pos .ap-cat-wid > li:last-child,
-.widget .ap-cat-wid > li:last-child {
-  border-bottom: none;
-}
-.ap-widget-pos .ap-cat-wid > li > a,
-.widget .ap-cat-wid > li > a {
-  display: block;
-  padding: 7px 2px;
-}
-.ap-widget-pos .ap-cat-wid > li > a > span,
-.widget .ap-cat-wid > li > a > span {
-  float: right;
-}
-.ap-widget-pos .ap-cat-wid > li > a > i,
-.widget .ap-cat-wid > li > a > i {
-  display: block;
-  font-size: 13px;
-  font-style: normal;
-}
 .ap-widget-pos .ap-followers-widget,
 .widget .ap-followers-widget {
   border: 1px solid #eee;
