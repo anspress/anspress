@@ -112,8 +112,9 @@ class AnsPress_Rewrite
 
 		$new_rules[$user_page. "([^/]+)/([^/]+)/?"] = "index.php?page_id=".$base_page_id."&ap_page=user&ap_user=". $wp_rewrite->preg_index(1)."&user_page=". $wp_rewrite->preg_index(2);
 
-		$new_rules[$user_page. "?"] = "index.php?page_id=".$base_page_id."&ap_page=user";
-		$new_rules[$user_page. "([^/]+)/?"] = "index.php?page_id=".$base_page_id."&ap_page=user&ap_user=".$wp_rewrite->preg_index(1);
+		$new_rules[$user_page. "([^/]+)/?$"] = "index.php?page_id=".$base_page_id."&ap_page=user&ap_user=".$wp_rewrite->preg_index(1);
+
+		$new_rules[$user_page. "?$"] = "index.php?page_id=".$base_page_id."&ap_page=user";
 
 		$new_rules[$slug. "search/([^/]+)/?"] = "index.php?page_id=".$base_page_id."&ap_page=search&ap_s=". $wp_rewrite->preg_index(1);
 
@@ -147,7 +148,6 @@ class AnsPress_Rewrite
 	        if($question)
 	        	$wp->set_query_var('question_id', $question->ID);
 	    }
-
 	    if(!empty($wp->query_vars['ap_user'])){
 	       	$user = get_user_by( 'login', sanitize_text_field(urldecode ($wp->query_vars['ap_user']) ) );
 	       	
