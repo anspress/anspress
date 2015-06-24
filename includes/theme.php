@@ -367,7 +367,7 @@ function ap_page(){
 	$current_page  = get_query_var('ap_page');
 
 	if(is_question())
-		$current_page = 'question';
+		$current_page = ap_opt('question_page_slug');
 	
 	elseif($current_page == '' && !is_question() && get_query_var('question_name') == '')
 		$current_page = 'base';

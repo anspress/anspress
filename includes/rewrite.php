@@ -71,9 +71,9 @@ class AnsPress_Rewrite
 		$base_page_id 		= ap_opt('base_page');
 		
 		$slug = ap_base_page_slug().'/';
+		$question_slug = ap_opt('question_page_slug');
 
-		$user_page = ap_opt('base_before_user_perma') ? $slug.'user/' : ap_opt('user_page_slug').'/';
-		
+		$user_page = ap_opt('base_before_user_perma') ? $slug.'user/' : ap_opt('user_page_slug').'/';		
 
 		$new_rules = array(  
 			
@@ -95,18 +95,18 @@ class AnsPress_Rewrite
 
 		if(!ap_opt('question_permalink_follow')){
 			
-			$new_rules["question/([^/]+)/page/?([0-9]{1,})/?$"] =  "index.php?page_id=".$base_page_id."&question_name=".$wp_rewrite->preg_index(1)."&paged=".$wp_rewrite->preg_index(2);
+			$new_rules[$question_slug."/([^/]+)/page/?([0-9]{1,})/?$"] =  "index.php?page_id=".$base_page_id."&question_name=".$wp_rewrite->preg_index(1)."&paged=".$wp_rewrite->preg_index(2);
 			
-			$new_rules["question/([^/]+)/?$"]  = "index.php?page_id=".$base_page_id."&question_name=".$wp_rewrite->preg_index(1);
+			$new_rules[$question_slug."/([^/]+)/?$"]  = "index.php?page_id=".$base_page_id."&question_name=".$wp_rewrite->preg_index(1);
 
 		}else{
 
-			$new_rules[$slug."question/([^/]+)/page/?([0-9]{1,})/?$"] = "index.php?page_id=".$base_page_id."&question_name=".$wp_rewrite->preg_index(1)."&paged=".$wp_rewrite->preg_index(2);
+			$new_rules[$slug.$question_slug."/([^/]+)/page/?([0-9]{1,})/?$"] = "index.php?page_id=".$base_page_id."&question_name=".$wp_rewrite->preg_index(1)."&paged=".$wp_rewrite->preg_index(2);
 			
-			$new_rules[$slug."question/([^/]+)/?$"] = "index.php?page_id=".$base_page_id."&question_name=".$wp_rewrite->preg_index(1);
+			$new_rules[$slug.$question_slug."/([^/]+)/?$"] = "index.php?page_id=".$base_page_id."&question_name=".$wp_rewrite->preg_index(1);
 		}
 
-		$new_rules[$slug."question/([^/]+)/([^/]+)/?$"]  = "index.php?page_id=".$base_page_id."&question_id=".$wp_rewrite->preg_index(1)."&question_name=".$wp_rewrite->preg_index(2);
+		$new_rules[$slug.$question_slug."/([^/]+)/([^/]+)/?$"]  = "index.php?page_id=".$base_page_id."&question_id=".$wp_rewrite->preg_index(1)."&question_name=".$wp_rewrite->preg_index(2);
 
 		$new_rules[$user_page. "([^/]+)/([^/]+)/page/?([0-9]{1,})/?$"] = "index.php?page_id=".$base_page_id."&ap_page=user&ap_user=". $wp_rewrite->preg_index(1)."&user_page=". $wp_rewrite->preg_index(2)."&paged=".$wp_rewrite->preg_index(3);
 
