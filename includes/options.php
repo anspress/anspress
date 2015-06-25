@@ -125,7 +125,7 @@ function ap_default_options(){
 		'disable_answer_nav' 		=> false,		
 		'image_per_post' 			=> 3,		
 		'base_before_user_perma' 	=> false,		
-		'user_page_slug' 			=> 'users',	
+		'user_page_slug' 			=> 'user',	
 		'ask_page_slug' 			=> 'ask',	
 		'question_page_slug' 		=> 'question',	
 		'users_page_slug' 			=> 'users',	
