@@ -15,7 +15,7 @@
  * Plugin URI:        http://anspress.io/tags-for-anspress
  * Description:       Extension for AnsPress. Add tags in AnsPress.
  * Donate link: https://www.paypal.com/cgi-bin/webscr?business=rah12@live.com&cmd=_xclick&item_name=Donation%20to%20AnsPress%20development
- * Version:           1.2.8-beta
+ * Version:           1.2.8
  * Author:            Rahul Aryan
  * Author URI:        http://anspress.io
  * Text Domain:       ap
@@ -455,7 +455,10 @@ class Tags_For_AnsPress
 
     public function ap_list_head()
     {
-        ap_tag_sorting();
+        global $wp;
+
+        if(!isset($wp->query_vars['ap_sc_atts_tags']))
+            ap_tag_sorting();
     }
 
     public function terms_clauses($query, $taxonomies, $args){
@@ -658,11 +661,11 @@ function ap_tag_sorting(){
         'taxonomy'          => 'question_tag',
         'hierarchical'      => true,
         'hide_if_empty'     => true,
-        'name'              => 'question_tag'
+        'name'              => 'ap_tag_sort'
     );
 
-    if(isset($_GET['question_tag']))
-        $args['selected'] = sanitize_text_field($_GET['question_tag']);
+    if(isset($_GET['ap_tag_sort']))
+        $args['selected'] = sanitize_text_field($_GET['ap_tag_sort']);
 
     wp_dropdown_categories( $args );
 }
