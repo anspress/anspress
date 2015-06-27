@@ -2,11 +2,11 @@
 # This file is distributed under the GPL-3.0+.
 msgid ""
 msgstr ""
-"Project-Id-Version: AnsPress 2.3-beta\n"
+"Project-Id-Version: AnsPress 2.3\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/anspress-question-"
 "answer\n"
 "POT-Creation-Date: 2015-06-27 12:47+0100\n"
-"PO-Revision-Date: 2015-06-27 12:55+0100\n"
+"PO-Revision-Date: 2015-06-27 13:05+0100\n"
 "Last-Translator: Castey@CLLPSD <castey@cllpsd.com>\n"
 "Language-Team: CLLPSD <info@cllpsd.com>\n"
 "Language: pl_PL\n"
