@@ -799,3 +799,4 @@ function ap_user_link_avatar($user_id, $size = 30){
     echo get_avatar($user_id, $size);
     echo '</a>';
 }
+

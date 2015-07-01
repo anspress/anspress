@@ -553,3 +553,26 @@ function ap_user_get_registered_date(){
     return $user->data->user_registered;
 }
 
+/**
+ * Count user votes received in percentage
+ * @return integer
+ */
+function ap_user_votes_received_percent(){
+    $meta       = (int) ap_user_get_the_meta('__up_vote_received');
+    $total_vote = (int) ap_user_total_votes_received();
+
+    if($total_vote == 0 || $meta == 0)
+        return 0;
+    else
+        return ceil(($meta/$total_vote)*100);
+}
+
+function ap_user_votes_casted_percent(){
+    $meta       = (int) ap_user_get_the_meta('__up_vote_casted');
+    $total_vote = (int) ap_user_total_votes_casted();
+
+    if($total_vote == 0 || $meta == 0)
+        return 0;
+    else
+        return ceil(($meta/$total_vote)*100);
+}

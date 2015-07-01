@@ -39,13 +39,13 @@
 					<div class="ap-about-votes row">
 						<div class="col-md-6">
 							<span class="ap-about-vote-label"><?php printf(__('%d votes received', 'ap'), ap_user_total_votes_received()); ?></span>
-							<span data-action="ap_chart" data-type="donut" data-peity='{ "fill": ["#9087FF", "#eeeeee"],   "innerRadius": 20, "radius": 25 }'><?php echo ceil((ap_user_get_the_meta('__up_vote_received')/ap_user_total_votes_received())*100); ?>/100</span>
+							<span data-action="ap_chart" data-type="donut" data-peity='{ "fill": ["#9087FF", "#eeeeee"],   "innerRadius": 20, "radius": 25 }'><?php echo ap_user_votes_received_percent(); ?>/100</span>
 							<span class="ap-vote-count"><b><?php ap_user_the_meta('__up_vote_received'); ?></b><?php _e('up', 'ap'); ?></span>
 							<span class="ap-vote-count"><b><?php ap_user_the_meta('__down_vote_received'); ?></b><?php _e('down', 'ap'); ?></span>	
 						</div>
 						<div class="col-md-6">
 							<span class="ap-about-vote-label"><?php printf(__('%d votes casted', 'ap'), ap_user_total_votes_casted()); ?></span>
-							<span data-action="ap_chart" data-type="donut" data-peity='{ "fill": ["#9087FF", "#eeeeee"],   "innerRadius": 20, "radius": 25 }'><?php echo ceil((ap_user_get_the_meta('__up_vote_casted')/ap_user_total_votes_casted())*100); ?>/100</span>
+							<span data-action="ap_chart" data-type="donut" data-peity='{ "fill": ["#9087FF", "#eeeeee"],   "innerRadius": 20, "radius": 25 }'><?php echo ap_user_votes_casted_percent(); ?>/100</span>
 							<span class="ap-vote-count"><b><?php ap_user_the_meta('__up_vote_casted'); ?></b><?php _e('up', 'ap'); ?></span>
 							<span class="ap-vote-count"><b><?php ap_user_the_meta('__down_vote_casted'); ?></b><?php _e('down', 'ap'); ?></span>							
 						</div>						
