@@ -661,7 +661,8 @@ function ap_tag_sorting(){
         'taxonomy'          => 'question_tag',
         'hierarchical'      => true,
         'hide_if_empty'     => true,
-        'name'              => 'ap_tag_sort'
+        'name'              => 'ap_tag_sort',
+        'class'             => 'ap-form-control ap-tag-sorting',
     );
 
     if(isset($_GET['ap_tag_sort']))
