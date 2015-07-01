@@ -2012,6 +2012,9 @@ body ul ul#ap-user-menu-link li > a .count {
   width: auto;
   height: auto;
 }
+#anspress textarea.ap-form-control {
+  height: auto;
+}
 #anspress label > input[type="checkbox"] {
   float: left;
   margin-right: 10px !important;

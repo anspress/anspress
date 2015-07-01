@@ -458,10 +458,9 @@ function ap_user_the_meta($key, $user_id = false){
 
         if($key !== false && isset($meta[$key]))
             return $meta[$key];
-        else
-            return;
         
-        return $meta;
+        if($key === false)
+            return $meta;
     }
 
 function ap_user_meta_exists($key, $user_id = false){

@@ -602,7 +602,7 @@ function ap_user_profile_tab(){
 
     $group = isset($_GET['group']) ? $_GET['group'] : 'basic';
 
-    $link = ap_user_link(false, 'profile');
+    $link = ap_user_link(ap_get_displayed_user_id(), 'profile');
     
     $navs = array(
         'basic' => array('link' => add_query_arg(array('group' => 'basic'), $link), 'title' => __('Basic', 'ap')), 
