@@ -23,6 +23,9 @@ function ap_follow_button($user_to_follow){
 	function ap_get_follow_button($user_to_follow){
 		$current_user = get_current_user_id();
 		
+		if($current_user == $user_to_follow)
+			return;
+
 		$nonce = wp_create_nonce( 'follow_'.$user_to_follow.'_'.$current_user );
 
 		$following = ap_is_user_following($user_to_follow, $current_user);
