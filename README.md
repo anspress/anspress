@@ -1,19 +1,16 @@
-# AnsPress - Question and answer plugin #
+# AnsPress - Question and answer #
 **Contributors:** nerdaryan  
 **Donate link:** https://www.paypal.com/cgi-bin/webscr?business=rah12@live.com&cmd=_xclick&item_name=Donation%20to%20AnsPress%20development  
 **Tags:** question, answer, q&a, forum, profile, stackoverflow, quora, buddypress  
 **Requires at least:** 4.1.1  
 **Tested up to:** 4.2  
-**Stable tag:** 2.2.0.2  
+**Stable tag:** 2.3.1  
 **License:** GPLv2 or later  
 **License URI:** http://www.gnu.org/licenses/gpl-2.0.html  
 
 Free question and answer plugin for WordPress. Made with developers in mind, highly customizable.
 
 ## Description ##
-
-**Try new beta version, [Download 2.3-beta.zip](http://anspress.io/questions/question/2-3-beta-is-here-try-and-let-us-know/)**
-
 **Demo & support forum:** http://anspress.io/  
 **GitHub repo:** [Git AnsPress](https://github.com/anspress/anspress/)  
 
@@ -32,6 +29,8 @@ Developers tool
 
 List of features:
 
+  * Notification
+  * Featured Question
   * Sorting question and answer by many options.
   * Ajax based form submission
   * Theme system
@@ -74,34 +73,161 @@ Read full FAQ here http://anspress.io/documents/doc_page=faq
 ## Screenshots ##
 
 ### 1. Question list page. ###
-![Question list page.](http://s.wordpress.org/extend/plugins/anspress---question-and-answer-plugin/screenshot-1.png)
+![Question list page.](http://s.wordpress.org/extend/plugins/anspress---question-and-answer/screenshot-1.png)
 
 
 ### 2. Single question page. ###
-![Single question page.](http://s.wordpress.org/extend/plugins/anspress---question-and-answer-plugin/screenshot-2.png)
+![Single question page.](http://s.wordpress.org/extend/plugins/anspress---question-and-answer/screenshot-2.png)
 
 
 ### 3. User profile ###
-![User profile](http://s.wordpress.org/extend/plugins/anspress---question-and-answer-plugin/screenshot-3.png)
+![User profile](http://s.wordpress.org/extend/plugins/anspress---question-and-answer/screenshot-3.png)
 
 
 ### 4. User hover card ###
-![User hover card](http://s.wordpress.org/extend/plugins/anspress---question-and-answer-plugin/screenshot-4.png)
+![User hover card](http://s.wordpress.org/extend/plugins/anspress---question-and-answer/screenshot-4.png)
 
 
 ### 5. Users directory ###
-![Users directory](http://s.wordpress.org/extend/plugins/anspress---question-and-answer-plugin/screenshot-5.png)
+![Users directory](http://s.wordpress.org/extend/plugins/anspress---question-and-answer/screenshot-5.png)
 
 
 ### 6. Notifications ###
-![Notifications](http://s.wordpress.org/extend/plugins/anspress---question-and-answer-plugin/screenshot-6.png)
+![Notifications](http://s.wordpress.org/extend/plugins/anspress---question-and-answer/screenshot-6.png)
 
 
 
 
 ## Changelog ##
 
-### 2.2.0.1 ###
+### 2.3.1 ###
+
+* Mark notification as read after viewing
+* Upvotes are misinterpreted as Downvotes in User’s Reputation page
+* Reputation notification should hyperlinked to user’s reputation page
+* Dont show follow button for own profile
+* Grammatical error: comment to commented
+* fix: division by zero warning in about page
+* User profile fields empty, account tab redirect to admin profile.
+* Polish language updated to 2.3
+
+### 2.3 ###
+
+* Updated version and pot
+* Improved categories page
+* Close question after selecting if option enabled
+* Notification as dropdown
+* Redirect user to login page if non loggedin user try to visit profile
+* Error message on description field is overlapped by upload field
+* How to ask tab
+* Add category and tags filter in question list
+* Added category sorting
+* Improve category widget
+* Image upload size
+* add option to disable hover card
+* added users widget
+* Paragraph in comments
+* improved method update_menu_url
+* Add [solved] in question title
+* User page show anonymous when permalink not enabled
+* Allow filtering page slug
+* Fixed UI and typo issues* Don't check for basic roles
+* Updated plugin version
+* Fixed minor and major bugs
+* Notification system
+* Fixed breadcrumbs for user pages
+* The breadcrumb on the base page is duplicating
+* if recaptcha is enabled and keys missing then show warning
+* Added user dropdown menu item
+* User hover card
+* Added cover upload
+* Improved user pages
+* Improved coding standards
+* Removed plugin-activation.php
+* fixed Complexity in codes
+* Added "more" in user menu
+* Add subscribe page for user
+* Add subscribe page for user
+* Improved question query clauses
+* member search
+* Question sorting tab to select
+* Added vote count meta
+* Added followers widget
+* Added followers and following count meta
+* Improved users loop,
+* Added followers page button
+* Added users sorting by answers and best answers
+* Added users sorting by last active
+* Users page tab UI improvement
+* fixed avatar
+* Added last seen meta
+* Added profile views
+* User registered date
+* Improved reputation chart data
+* fixed reputation count
+* added user question and answer meta
+* Avatar upload ajax error
+* Added about page
+* Added reputation page
+* User reputation loop
+* Improved user profile fields
+* fix canonical url when wpseo plugin installed
+* Title conflict when wpseo plugin installed
+* Removed base from permalink when ap_page is base
+* Direct user link
+* [fix] Auto flush rewrite rule when base page updated
+* [fix] include current users post in list
+* [fix] Safe CSS attributes
+* [theme] Login popup improved
+* [fix] Image uploader not working in webkit browser
+* [theme]Added login modal
+* [fix] Max images per post option as number
+* [fix] ap_the_answer_content on bp_init
+* [fix] Load BP hooks on bp_init
+* [fix] conical and short link in head
+* [new] Added Crayon Syntax Highlighter button
+* [new] Add tinymce Autogrow
+* [improved] Image upload in posts
+* Check file exist before triggering error
+* Check for category and tags extension
+* [new] Hide how to answer tab if no page selected
+* Allowed support for GitHub Updater plugin
+* [fix] Do not log view in meta table if already viewed or anonymous
+* [fix] View counts updated for every page view
+* [fix] Strip shortcode from Answer and question
+* [fix] Format get cleared while editing
+* [fix] remove extra white space from contents
+* [fix] Editor toggle  in answer form
+* [fix] Switch editors not working in ask form, image upload in quick-tag editor
+* [fix] Buddypress hooks
+* [fix] Image upload not working
+* updated plugin.json
+* [fix] missing colon
+* fixed translation function to the wordpress one
+* fixed translation issue cussed by missing gettext function
+* fixed translation function to the wordpress one
+* added translation support for author credits
+* [fix] require loading wrong path
+* [new] Featured question (sticky post)
+* [added] Improved subscriber system, allow community to subscribe for tags and categories
+* [translation] Spanish-Spain by Pelayo de Salvador Morell
+* [translation] German translation added by bloggerpro.de
+* [fix] db table prefix
+* Updated languages/ap.pot
+* Added about page
+* Updated dashboard
+* [option] label update: Asker can answer
+* [fix] Form error message below input field
+* [fix] minor doc bug fixes
+* [fix] Minor and major issues
+* [fix] DB error in Answer sorting
+* [fix] BuddyPress reputation count shows 1
+* [new] load minified assets
+* [theme] Improved admin dashboard
+* [added] Added breadcrumbs widget
+* [new] Breadcrumbs function
+* [fix] Improve popup notification style
+* [fix] Don't show delete button if question is already trashed
 
 ### 2.2 ###
 
