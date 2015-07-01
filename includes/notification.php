@@ -349,7 +349,7 @@ function ap_insert_notification( $current_user_id, $affected_user_id, $notificat
 
 		case 'received_reputation':
 			$args['reputation'] 	= $args['reputation'];
-			$args['permalink'] 		= ap_user_link($current_user_id, 'reputation');
+			$args['permalink'] 		= ap_user_link($affected_user_id, 'reputation');
 			break;
 		
 		default:
