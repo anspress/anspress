@@ -88,6 +88,9 @@ class AnsPress_Notifications
 			$this->notification->is_unread 			= $this->notification->is_unread == 'unread_notification' ? true : false;
 			$this->notification->content 			= ap_sprintf_assoc(ap_get_notification_title($this->notification->type, $this->notification->args), $this->notification->args );
 			$this->notification->icon 				= ap_get_notification_icon($this->notification->type);
+			
+			if(isset($this->notification->args['permalink']))
+				$this->notification->args['permalink'] 	= add_query_arg(array('ap_notification_read' => $this->id() ), $this->notification->args['permalink']);
 		}
 	}
 
@@ -470,7 +473,25 @@ function ap_get_notification_by_id($id){
 	return ap_get_meta(array('apmeta_id' => (int) $id));
 }
 
-
+/**
+ * Set all unread notifications as read
+ * @param  integer $user_id 
+ * @return integer
+ */
 function ap_notification_mark_all_read($user_id){
 	return ap_update_meta(array('apmeta_type' => 'notification'), array('apmeta_type' => 'unread_notification','apmeta_actionid' => (int)$user_id));
+}
+
+/**
+ * Mark a notification as read
+ * @param  integer 				$id 		notification id
+ * @return integer|boolean		Return FALSE on failure
+ */
+function ap_notification_mark_as_read($id){
+	$row = ap_update_meta(array('apmeta_type' => 'notification'), array('apmeta_id' => (int)$id));
+	
+	if($row !== false)
+		do_action('ap_notification_marked_as_read', $id);
+
+	return $row;
 }

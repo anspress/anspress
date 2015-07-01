@@ -35,6 +35,8 @@ class AnsPress_Process_Form
 	 */
 	public function non_ajax_form()
 	{
+		$this->mark_notification_as_read();
+
 		//return if ap_form_action is not set, probably its not our form
 		if(!isset($_REQUEST['ap_form_action']) || isset($_REQUEST['ap_ajax_action']))
 			return;
@@ -45,6 +47,20 @@ class AnsPress_Process_Form
 		if(!empty($this->redirect)){
 			wp_redirect( $this->redirect );
 			exit;
+		}
+	}
+
+	public function mark_notification_as_read()
+	{
+		if(isset($_GET['ap_notification_read'])){
+			$id = (int)$_GET['ap_notification_read'];
+			
+			$notification = ap_get_notification_by_id($id);
+
+			if($notification && ($notification['apmeta_actionid'] == get_current_user_id() ) ){
+				$row = ap_notification_mark_as_read($id);
+			}
+
 		}
 	}
 
