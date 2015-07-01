@@ -616,11 +616,11 @@ function ap_reputation_get_the_info($event = false, $action_id = false){
 				break;
 
 			case 'vote_up':
-				$info = sprintf(__('%sDown vote %s %s','ap'), '<span class="ap-reputation-event">', '</span>'.get_post_type($action_id), '<a href="'.get_permalink($action_id).'">'.get_the_title($action_id).'</a>');
+				$info = sprintf(__('%sUp vote %s %s','ap'), '<span class="ap-reputation-event">', '</span>'.get_post_type($action_id), '<a href="'.get_permalink($action_id).'">'.get_the_title($action_id).'</a>');
 				break;
 
 			case 'vote_down':
-				$info = sprintf(__('%sUp vote %s %s','ap'), '<span class="ap-reputation-event">', '</span>'.get_post_type($action_id), '<a href="'.get_permalink($action_id).'">'.get_the_title($action_id).'</a>' );
+				$info = sprintf(__('%sDown vote %s %s','ap'), '<span class="ap-reputation-event">', '</span>'.get_post_type($action_id), '<a href="'.get_permalink($action_id).'">'.get_the_title($action_id).'</a>' );
 				break;
 
 			case 'voted_down':
