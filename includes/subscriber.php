@@ -26,7 +26,7 @@ function ap_add_subscriber($user_id, $action_id, $type = false, $sub_id = false)
 		$subscribe_type =  'tag' ;
 
 	else
-		$subscribe_type =  '' ;
+		$subscribe_type =  $type ;
 	
 	$row = ap_add_meta($user_id, 'subscriber', $action_id, $sub_id, $subscribe_type);
 
@@ -217,7 +217,7 @@ function ap_get_subscribers($action_id, $type = false){
  * @param  boolean|integer 	$user_id
  * @return boolean|array
  */
-function ap_add_question_subscriber($question_id, $user_id = false){
+function ap_add_question_subscriber($question_id, $user_id = false, $type = '', $secondary_id = ''){
 	$is_subscribed = ap_is_user_subscribed( $question_id );
 
 	if($user_id === false)
@@ -228,7 +228,7 @@ function ap_add_question_subscriber($question_id, $user_id = false){
 
 	if(!$is_subscribed){
 
-		ap_add_subscriber($user_id, $question_id);
+		ap_add_subscriber($user_id, $question_id, $type, $secondary_id);
 		
 		$counts = ap_subscribers_count($question_id);
 		

@@ -295,7 +295,7 @@ class AnsPress_Actions
 			//ap_add_parti($comment->comment_post_ID, $comment->user_id, 'comment');
 
 			// subscribe to current question
-			ap_add_question_subscriber($comment->comment_post_ID, $comment->user_id);
+			ap_add_question_subscriber($comment->comment_post_ID, $comment->user_id, 'comment', $comment->comment_post_ID);
 			ap_insert_notification( $comment->user_id, $post->post_author, 'comment_on_question', array('post_id' => $post->ID, 'comment_id' => $comment->comment_ID ) );
 
 		}elseif($post->post_type == 'answer'){
@@ -303,7 +303,7 @@ class AnsPress_Actions
 			$post_id = wp_get_post_parent_id($comment->comment_post_ID);
 			// set updated meta for sorting purpose
 			update_post_meta($post_id, ANSPRESS_UPDATED_META, current_time( 'mysql' ));
-			ap_add_question_subscriber($post_id, $comment->user_id);
+			ap_add_question_subscriber($post_id, $comment->user_id, 'comment', $comment->comment_post_ID);
 
 			ap_insert_notification( $comment->user_id, $post->post_author, 'comment_on_answer', array('post_id' => $post->ID, 'comment_id' => $comment->comment_ID) );
 		}

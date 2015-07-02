@@ -1408,3 +1408,4 @@ function ap_question_title_with_solved_prefix($question_id = false){
 
 	return ($solved ? __('[Solved] ', 'ap'): '') .  get_the_title($question_id);
 }
+
