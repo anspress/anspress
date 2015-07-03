@@ -216,7 +216,7 @@ function ap_get_latest_history_html($post_id, $initial = false, $avatar = false,
 			$html .= '<a class="ap-avatar" href="'.ap_user_link($history['user_id']).'">'.get_avatar($history['user_id'], 22).'</a>';		
 
 		$title = ap_history_title($history['type']);
-		$html .= '<span class="ap-post-history">'.ap_icon('history', true).sprintf( __(' %s %s <time datetime="'. mysql2date('c', $history['date']) .'">%s</time> ago', 'ap'), ap_user_display_name($history['user_id']), $title, ap_human_time( $history['date'], false)) .'</span>';
+		$html .= '<span class="ap-post-history">'.ap_icon('history', true).sprintf( __(' %s %s %s ago', 'ap'), ap_user_display_name($history['user_id']), $title, '<time datetime="'. mysql2date('c', $history['date']) .'">'.ap_human_time( $history['date'], false).'</time>') .'</span>';
 
 		
 	}
