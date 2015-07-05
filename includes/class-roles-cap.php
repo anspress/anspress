@@ -162,6 +162,9 @@ function ap_user_can_ask(){
 
 /* Check if a user can answer on a question */
 function ap_user_can_answer($question_id){
+	if(ap_opt('only_admin_can_answer') && is_user_logged_in() && !current_user_can('activate_plugins'))
+		return false;
+	
 	if(is_super_admin())
 		return true;
 	
