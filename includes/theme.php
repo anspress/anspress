@@ -649,9 +649,9 @@ function ap_how_to_ask(){
 	 * @since 2.2
 	 */
 	function ap_get_how_to_ask(){
-		if(ap_opt('qustion_help_page') != ''){
+		if(ap_opt('question_help_page') != ''){
 			$help = get_post((int)ap_opt('question_help_page'));
-			return $help->the_content();
+			return $help->post_content;
 		}
 		return false;
 	}

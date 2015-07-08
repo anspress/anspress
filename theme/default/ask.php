@@ -33,7 +33,7 @@
 					</div>
 					<div id="ap-form-help" class="ap-tab-item">
 						<?php if(ap_opt('question_help_page') != ''): ?>						
-							<?php ap_how_to_answer(); ?>
+							<?php ap_how_to_ask(); ?>
 						<?php endif; ?>
 					</div>
 				</div>				
