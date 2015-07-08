@@ -7,7 +7,6 @@
 /node_modules
 /docs
 /bin
-/Gruntfile.js
 /theme/default/fonts/selection.json
 /theme/default/fonts/demo-files
 /theme/default/fonts/demo.html
