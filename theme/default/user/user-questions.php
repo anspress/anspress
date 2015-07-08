@@ -1,7 +1,7 @@
 <div id="ap-lists">
 	<h3 class="ap-user-page-title clearfix">
 		<?php echo ap_page_title() ?>
-		<?php ap_question_sorting(ap_user_link(ap_get_displayed_user_id(), 'questions')); ?>
+		<?php ap_get_template_part('list-head'); ?>
 	</h3>
 	<?php if ( ap_have_questions() ) : ?>
 		<div class="ap-questions">

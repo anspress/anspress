@@ -80,6 +80,7 @@ if (!class_exists('AnsPress')) {
         public $anspress_reputation;
         public $anspress_bp;
         public $anspress_users;
+        public $third_party;
 
 
         /**
@@ -110,6 +111,7 @@ if (!class_exists('AnsPress')) {
                 self::$instance->anspress_cpt                = new AnsPress_PostTypes();
                 self::$instance->anspress_reputation         = new AP_Reputation();
                 self::$instance->anspress_users              = new AnsPress_User();
+                ///self::$instance->third_party                 = new AnsPress_3rd_party();
 
                 /**
                  * ACTION: anspress_loaded
@@ -208,6 +210,7 @@ if (!class_exists('AnsPress')) {
             require_once ANSPRESS_DIR.'includes/follow.php';
             require_once ANSPRESS_DIR.'includes/notification.php';
             require_once ANSPRESS_DIR.'widgets/user.php'; 
+            require_once ANSPRESS_DIR.'includes/3rd-party.php'; 
         }
 
         /**
