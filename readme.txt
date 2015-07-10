@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?business=rah12@live.com&cmd=_
 Tags: anspress, question, answer, tags, q&a, forum, stackoverflow, quora
 Requires at least: 4.1.1
 Tested up to: 4.2
-Stable tag: 1.2.9
+Stable tag: 1.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -41,4 +41,4 @@ Or if you want to install it manually simple follow this:
 * Hooked to ask form
 * Added theme layout
 * Hooked tags in question
-* Added default options 
+* Added default options

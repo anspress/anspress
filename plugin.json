@@ -1,7 +1,7 @@
 {
 	"name": "Tags for AnsPress",
 	"description": "Add tag support in AnsPress",
-	"version": "1.2.9",
+	"version": "1.3",
 	"tested_up_to": "4.2",
 	"updated": "",
 	"licence": "GPL-3.0+",
