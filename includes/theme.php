@@ -372,10 +372,15 @@ function ap_page(){
 	elseif($current_page == '' && !is_question() && get_query_var('question_name') == '')
 		$current_page = 'base';
 
-	if(isset($pages[$current_page]['func']))
+	if(isset($pages[$current_page]['func'])){
 		call_user_func($pages[$current_page]['func']);
-	else
+	}
+	else{
+		global $wp_query;
+	    $wp_query->set_404();
+	    status_header(404);
 		include(ap_get_theme_location('not-found.php'));
+	}
 }
 
 /**
