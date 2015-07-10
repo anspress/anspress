@@ -1410,23 +1410,6 @@ body ul ul#ap-user-menu-link li > a .count {
   background: none repeat scroll 0 0 #fffae1;
   border-bottom-color: #efe7bc;
 }
-#anspress .selected,
-#anspress .ap-best-answer-label {
-  background: #86cf9b;
-  -webkit-border-radius: 2px;
-  -webkit-background-clip: padding-box;
-  -moz-border-radius: 2px;
-  -moz-background-clip: padding;
-  border-radius: 2px;
-  background-clip: padding-box;
-  color: #ffffff;
-  font-size: 10px;
-  line-height: 14px;
-  padding: 1px 3px;
-  text-align: center;
-  text-transform: uppercase;
-  margin-right: 10px;
-}
 #anspress .ap-display-meta-item:before {
   background: #dadada;
   border-radius: 50%;
