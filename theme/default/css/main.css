@@ -915,6 +915,7 @@
   font-size: 14px;
   line-height: 1.4;
   word-wrap: break-word;
+  background: #fff;
 }
 #anspress ul {
   line-height: 1.4;
@@ -1446,17 +1447,52 @@ body ul ul#ap-user-menu-link li > a .count {
   color: #fff;
 }
 #anspress #ap-question-sorting {
+  border: 1px solid #ddd;
+  border-radius: 2px;
   float: right;
 }
-#anspress #ap-question-sorting label {
-  display: inline;
-  font-weight: 600;
-  margin-right: 5px;
-}
-#anspress #ap-question-sorting select {
-  display: inline;
+#anspress #ap-question-sorting > * {
+  display: block;
   margin: 0;
   width: auto;
+  float: left;
+}
+#anspress #ap-question-sorting .ap-dropdown-toggle {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 10px;
+  border-right: solid 1px #eee;
+}
+#anspress #ap-question-sorting .ap-dropdown-toggle.active {
+  background: #61c17d;
+  color: #fff;
+  margin: -1px;
+  padding: 7px 10px;
+}
+#anspress #ap-question-sorting > *:first-child .ap-dropdown-toggle {
+  border-radius: 2px 2px 0 0;
+}
+#anspress #ap-question-sorting > *:last-child .ap-dropdown-toggle {
+  border-right: none;
+}
+#anspress #ap-question-sorting .ap-dropdown-menu {
+  border: 2px solid #ddd;
+  padding: 5px;
+}
+#anspress #ap-question-sorting .ap-dropdown-menu a {
+  border: medium none;
+  border-radius: 2px;
+  font-size: 13px;
+  padding: 6px 10px;
+}
+#anspress #ap-question-sorting #ap-question-sorting-reset {
+  color: #888;
+  display: block;
+  height: 30px;
+  line-height: 32px;
+  text-align: center;
+  width: 30px;
 }
 .tooltipster-default.ap-tip-style {
   background: #000000;
@@ -3042,6 +3078,17 @@ body ul ul#ap-user-menu-link li > a .count {
 #anspress .ap-user-widget .ap-user-widget-links a:before {
   margin-right: 10px;
 }
+#anspress .ap-user-widget .ap-user-widget-links a .counter {
+  background: none repeat scroll 0 0 #ff3737;
+  border-radius: 2px;
+  color: #fff;
+  font-size: 10px;
+  margin-left: 5px;
+  padding: 1px 2px;
+  width: 13px;
+  display: inline-block;
+  text-align: center;
+}
 .widget .ap-stats-widget,
 .ap-widget-pos .ap-stats-widget {
   padding: 0;
@@ -3516,7 +3563,7 @@ body #ap-user-notification-anchor > i {
   display: block;
 }
 body #ap-user-notification-anchor .counter {
-  background: none repeat scroll 0 0 #ff3737;
+  background: #ff3737 none repeat scroll 0 0;
   border-radius: 2px;
   color: #fff;
   font-size: 11px;
@@ -3524,9 +3571,9 @@ body #ap-user-notification-anchor .counter {
   line-height: 100%;
   padding: 2px;
   position: absolute;
-  right: -12px;
+  right: 0;
   text-align: center;
-  top: -7px;
+  top: 0;
   width: 13px;
 }
 body ul li:hover ul#ap-notification-dropdown {

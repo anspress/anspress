@@ -18,8 +18,9 @@
 			ap_ask_btn();
 		endif;
 	?>
-	<form id="ap-question-sorting" class="ap-questions-sorting">
+	<form id="ap-question-sorting" class="ap-questions-sorting clearfix">
 		<?php ap_question_sorting(); ?>
 		<?php do_action('ap_list_head'); ?>
+		<a id="ap-question-sorting-reset" href="#" title="<?php _e('Reset sorting and filter', 'ap'); ?>"><?php echo ap_icon('x', true); ?></a>
 	</form>
 </div>

@@ -471,6 +471,7 @@ function ap_post_actions_buttons($disable = array())
  * @since 2.3
  */
 function ap_question_sorting($current_url = ''){
+
 	if(is_home() || is_front_page())
 		$current_url = home_url('/');
 
@@ -505,13 +506,16 @@ function ap_question_sorting($current_url = ''){
 	 * @since 2.3
 	 */
 	$navs = apply_filters('ap_question_sorting', $navs );
-		echo '<select class="ap-form-control" name="ap_sort">';
+	echo '<div class="ap-dropdown">';
+		echo '<a id="ap-sort-anchor" class="ap-dropdown-toggle'.($sort != '' ? ' active' : '').'" href="#">'.__('Sort by', 'ap').'</a>';
+		echo '<div class="ap-dropdown-menu">';
 		foreach ($navs as $k => $nav) {
-			echo '<option '.selected( $sort, $k, false ).' value="'.$k.'">'. $nav['title'] .'</option>';
+			echo '<li '.( $sort == $k ? 'class="active" ' : '').'><a href="#" data-value="'.$k.'">'. $nav['title'] .'</a></li>';
 		}
-		echo '</select>';
-	?>
-	<?php
+
+		echo '<input name="ap_sort" type="hidden" value="'.$sort.'" />';
+		echo '</div>';
+	echo '</div>';
 }
 
 /**

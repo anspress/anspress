@@ -114,7 +114,9 @@
                $('.ap-dropdown').removeClass('open');
             }
         });
-
+        $('body').delegate('.ap-dropdown-menu a', 'click', function(e){
+            $(this).closest('.ap-dropdown').removeClass('open');
+        });
         // Dropdown toggle
         $('body').delegate('.ap-dropdown-toggle', 'click', function(e){
             e.preventDefault();
@@ -175,7 +177,14 @@
             $(this).css(width, 'auto');
         });
 
-        $('body').delegate('#ap-question-sorting select', 'change', function(e) {
+        $('body').delegate('#ap-question-sorting .ap-dropdown-menu a', 'click', function(e) {
+            var val = $(this).data('value');
+            $(this).closest('.ap-dropdown-menu').find('input[type="hidden"]').val(val);
+            $(this).closest('form').submit();
+        });
+
+        $('body').delegate('#ap-question-sorting-reset', 'click', function(e) {
+            $('#ap-question-sorting').find('input[type="hidden"]').val('');
             $(this).closest('form').submit();
         });
 

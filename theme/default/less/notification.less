@@ -7,7 +7,7 @@ body #ap-user-notification-anchor{
     }
 
     .counter{
-	    background: none repeat scroll 0 0 #ff3737;
+	    background: #ff3737 none repeat scroll 0 0;
 	    border-radius: 2px;
 	    color: #fff;
 	    font-size: 11px;
@@ -15,9 +15,9 @@ body #ap-user-notification-anchor{
 	    line-height: 100%;
 	    padding: 2px;
 	    position: absolute;
-	    right: -12px;
+	    right: 0;
 	    text-align: center;
-	    top: -7px;
+	    top: 0;
 	    width: 13px;
     }
 }
@@ -34,10 +34,10 @@ body ul ul#ap-notification-dropdown{
     font-family: "helvetica",arial,serif;
     text-transform: none;
     width: 350px;
-    font-size: 13px;    
+    font-size: 13px;
 
     li{
-	    background: none repeat scroll 0 0 #fbfbfb;    
+	    background: none repeat scroll 0 0 #fbfbfb;
 	    display: block;
 	    float: none !important;
 	    margin: 0;
@@ -70,8 +70,8 @@ body ul ul#ap-notification-dropdown{
 	    &:hover{
 	    	color: @default-color;
 	    }
-    }    
-    
+    }
+
     .ap-notification-time{
 	    color: #888;
 	    display: block;
@@ -81,7 +81,7 @@ body ul ul#ap-notification-dropdown{
 	    background: none repeat scroll 0 0 #fff;
 	    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 	    padding: 10px;
-    	
+
     	a{
 		    float: right;
 		    width: auto;
@@ -93,12 +93,12 @@ body ul ul#ap-notification-dropdown{
 	    	font-size: 13px;
 	    }
     }
-    
+
     .ap-notification-footer{
 	    background: none repeat scroll 0 0 #fff;
 	    text-align: center;
 	    padding: 10px;
-	    
+
 	    a{
 		    color: @link-color;
 		}
@@ -108,7 +108,7 @@ body ul ul#ap-notification-dropdown{
     }
     .ap-no-notification{
     	padding: 10px;
-    	
+
     }
 }
 #anspress{
@@ -189,5 +189,5 @@ body ul ul#ap-notification-dropdown{
     }
     &.answer_selected{
     	background:#BEAEFC;
-    }	    
+    }
 }

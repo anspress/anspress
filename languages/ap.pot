@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: AnsPress 2.3.1\n"
 "Report-Msgid-Bugs-To: "
 "http://wordpress.org/support/plugin/anspress-question-answer\n"
-"POT-Creation-Date: 2015-07-03 15:48:00+00:00\n"
+"POT-Creation-Date: 2015-07-10 05:01:12+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -179,8 +179,8 @@ msgstr ""
 msgid "This question is orphan, no question is selected for this answer"
 msgstr ""
 
-#: admin/anspress-admin.php:761 includes/ajax.php:70 includes/ajax.php:73
-#: includes/ajax.php:273 includes/ajax.php:315 includes/process-form.php:523
+#: admin/anspress-admin.php:761 includes/ajax.php:69 includes/ajax.php:72
+#: includes/ajax.php:272 includes/ajax.php:314 includes/process-form.php:523
 msgid "1 Answer"
 msgid_plural "%d Answer"
 msgstr[0] ""
@@ -314,7 +314,7 @@ msgstr ""
 #: admin/reputation.php:152 includes/class-form.php:505
 #: includes/common-pages.php:38 includes/functions.php:358
 #: includes/functions.php:360 includes/functions.php:376
-#: includes/post_types.php:395 includes/theme.php:587
+#: includes/post_types.php:395 includes/theme.php:597
 #: theme/default/part/question.php:46
 msgid "Edit"
 msgstr ""
@@ -344,7 +344,7 @@ msgid "Answers"
 msgstr ""
 
 #: admin/meta_box.php:58
-msgid "<span class=\"when\">Answered about %s ago</span>"
+msgid "%sAnswered about %s ago%s"
 msgstr ""
 
 #: admin/meta_box.php:64
@@ -531,22 +531,22 @@ msgstr ""
 msgid "Sort answers by default."
 msgstr ""
 
-#: admin/options-page.php:179 includes/functions.php:454 includes/theme.php:489
-#: includes/theme.php:528 widgets/questions.php:70
+#: admin/options-page.php:179 includes/functions.php:454 includes/theme.php:495
+#: includes/theme.php:538 widgets/questions.php:70
 msgid "Voted"
 msgstr ""
 
-#: admin/options-page.php:180 includes/theme.php:484 includes/theme.php:524
+#: admin/options-page.php:180 includes/theme.php:490 includes/theme.php:534
 #: includes/user.php:422 widgets/question_stats.php:40 widgets/questions.php:68
 msgid "Active"
 msgstr ""
 
-#: admin/options-page.php:181 includes/functions.php:452 includes/theme.php:485
-#: includes/theme.php:530 includes/user.php:425 widgets/questions.php:69
+#: admin/options-page.php:181 includes/functions.php:452 includes/theme.php:491
+#: includes/theme.php:540 includes/user.php:425 widgets/questions.php:69
 msgid "Newest"
 msgstr ""
 
-#: admin/options-page.php:182 includes/functions.php:453 includes/theme.php:531
+#: admin/options-page.php:182 includes/functions.php:453 includes/theme.php:541
 msgid "Oldest"
 msgstr ""
 
@@ -953,7 +953,7 @@ msgstr ""
 
 #: admin/reputation.php:153 includes/class-form.php:235
 #: includes/class-form.php:242 includes/functions.php:523
-#: includes/theme.php:592
+#: includes/theme.php:602
 msgid "Delete"
 msgstr ""
 
@@ -1049,63 +1049,63 @@ msgstr ""
 msgid "My notification"
 msgstr ""
 
-#: includes/ajax.php:61
+#: includes/ajax.php:60
 msgid "%d similar questions found"
 msgstr ""
 
-#: includes/ajax.php:62
+#: includes/ajax.php:61
 msgid ""
 "We found similar questions that have already been asked, click to read "
 "them. Avoid creating duplicate questions, it will be deleted."
 msgstr ""
 
-#: includes/ajax.php:73 includes/functions.php:501
+#: includes/ajax.php:72 includes/functions.php:501
 msgid "Select"
 msgstr ""
 
-#: includes/ajax.php:78
+#: includes/ajax.php:77
 msgid "No related questions found"
 msgstr ""
 
-#: includes/ajax.php:104 includes/ajax.php:122
+#: includes/ajax.php:103 includes/ajax.php:121
 msgid "Update comment"
 msgstr ""
 
-#: includes/ajax.php:117 includes/functions.php:312 includes/reputation.php:851
+#: includes/ajax.php:116 includes/functions.php:312 includes/reputation.php:851
 msgid "Comment"
 msgstr ""
 
-#: includes/ajax.php:117
+#: includes/ajax.php:116
 msgid "Respond to the post."
 msgstr ""
 
-#: includes/ajax.php:150 includes/ajax.php:181 includes/process-form.php:672
+#: includes/ajax.php:149 includes/ajax.php:180 includes/process-form.php:672
 msgid "One comment"
 msgid_plural "%d comments"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/ajax.php:172 includes/ajax.php:262
+#: includes/ajax.php:171 includes/ajax.php:261
 msgid "This post was created %s ago, its locked hence you cannot delete it."
 msgstr ""
 
-#: includes/ajax.php:398
+#: includes/ajax.php:397
 msgid "Update"
 msgstr ""
 
-#: includes/ajax.php:464 includes/functions.php:1263
+#: includes/ajax.php:463 includes/functions.php:1263
 msgid "Set as featured"
 msgstr ""
 
-#: includes/ajax.php:481 includes/functions.php:1263
+#: includes/ajax.php:480 includes/functions.php:1263
 msgid "Unset as featured"
 msgstr ""
 
-#: includes/ajax.php:518 includes/follow.php:33
+#: includes/ajax.php:517 includes/follow.php:33
 msgid "Follow"
 msgstr ""
 
-#: includes/ajax.php:526 includes/follow.php:33
+#: includes/ajax.php:525 includes/follow.php:33
 msgid "Unfollow"
 msgstr ""
 
@@ -1142,8 +1142,8 @@ msgstr ""
 msgid "votes"
 msgstr ""
 
-#: includes/answer-loop.php:430 includes/question-loop.php:467
-msgid "<time itemprop=\"datePublished\" datetime=\"%s\">%s Ago</time>"
+#: includes/answer-loop.php:436
+msgid "%s Ago"
 msgstr ""
 
 #: includes/ask-form.php:51
@@ -1266,7 +1266,7 @@ msgstr ""
 msgid "Answers feed"
 msgstr ""
 
-#: includes/class-user.php:42 includes/theme.php:726
+#: includes/class-user.php:42 includes/theme.php:736
 msgid "User"
 msgstr ""
 
@@ -1422,7 +1422,7 @@ msgstr ""
 msgid "Comment deleted successfully"
 msgstr ""
 
-#: includes/form.php:130 includes/form.php:153 includes/theme.php:717
+#: includes/form.php:130 includes/form.php:153 includes/theme.php:727
 msgid "Tags"
 msgstr ""
 
@@ -2001,6 +2001,10 @@ msgstr ""
 msgid "ans"
 msgstr ""
 
+#: includes/question-loop.php:467
+msgid "%s Ago</time>"
+msgstr ""
+
 #: includes/question-loop.php:481
 msgid " ago"
 msgstr ""
@@ -2147,7 +2151,7 @@ msgstr ""
 msgid "When user down vote others answers"
 msgstr ""
 
-#: includes/reputation.php:915 includes/theme.php:553 includes/user.php:423
+#: includes/reputation.php:915 includes/theme.php:563 includes/user.php:423
 #: theme/default/best_answer.php:18
 msgid "Best answer"
 msgstr ""
@@ -2325,27 +2329,31 @@ msgstr ""
 msgid "<i>%d views</i>"
 msgstr ""
 
-#: includes/theme.php:450
+#: includes/theme.php:455
 msgid "More action"
 msgstr ""
 
-#: includes/theme.php:491
+#: includes/theme.php:497
 msgid "Answered"
 msgstr ""
 
-#: includes/theme.php:492 widgets/questions.php:72
+#: includes/theme.php:498 widgets/questions.php:72
 msgid "Unanswered"
 msgstr ""
 
-#: includes/theme.php:493
+#: includes/theme.php:499
 msgid "Unsolved"
 msgstr ""
 
-#: includes/theme.php:624
+#: includes/theme.php:510
+msgid "Sort by"
+msgstr ""
+
+#: includes/theme.php:634
 msgid "Ask question"
 msgstr ""
 
-#: includes/theme.php:721 includes/theme.php:727 includes/theme.php:729
+#: includes/theme.php:731 includes/theme.php:737 includes/theme.php:739
 msgid ".."
 msgstr ""
 
@@ -2770,7 +2778,7 @@ msgstr ""
 msgid "Widgets in this area will be shown in about user page."
 msgstr ""
 
-#: theme/default/list-head.php:3
+#: theme/default/list-head.php:13
 msgid "Search questions..."
 msgstr ""
 
