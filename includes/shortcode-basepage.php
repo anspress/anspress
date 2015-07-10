@@ -25,7 +25,7 @@ class AnsPress_BasePage_Shortcode {
 	 * Control the output of [anspress] shortcode
 	 * @param  array $atts  {
 	 *    Attributes of the shortcode.
-	 *    
+	 *
 	 * 	  $categories slug of question_category
 	 * 	  $tags slug of question_tag
 	 * 	  $tax_relation taxonomy relation, see here http://codex.wordpress.org/Taxonomies
@@ -44,7 +44,7 @@ class AnsPress_BasePage_Shortcode {
 			// append $atts in global $wp so that we can use it later
 			$wp->set_query_var('ap_sc_atts_categories', $categories);
 		}
-		
+
 		if(isset($atts['tags'])){
 			$tags = explode (',', str_replace(', ', ',', $atts['tags']));
 			$wp->set_query_var('ap_sc_atts_tags', $tags);
@@ -67,7 +67,7 @@ class AnsPress_BasePage_Shortcode {
 
 		ob_start();
 		echo '<div id="anspress">';
-			
+
 			/**
 			 * ACTION: ap_before
 			 * Action is fired before loading AnsPress body.
@@ -81,9 +81,9 @@ class AnsPress_BasePage_Shortcode {
 				echo '<div class="ap-cradit">' . __('Question and answer is powered by <a href="http://anspress.io" traget="_blank">AnsPress</a>', 'ap') . '</div>';
 		echo '</div>';
 		wp_reset_postdata();
-		
-		return ob_get_clean();				
+
+		return ob_get_clean();
 	}
-	
+
 }
 

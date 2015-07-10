@@ -17,8 +17,8 @@ class AP_Roles{
 	 *
 	 * @since 2.0.1
 	 */
-	public function add_roles(){		
-	
+	public function add_roles(){
+
 		add_role( 'ap_moderator', __( 'AnsPress Moderator', 'ap' ), array(
 			'read'                   => true,
 			'edit_posts'             => true,
@@ -44,9 +44,9 @@ class AP_Roles{
 			'read_private_posts'     => true
 		) );
 
-		add_role( 'ap_participant', __( 'AnsPress Participants', 'ap' ), array() );		
+		add_role( 'ap_participant', __( 'AnsPress Participants', 'ap' ), array() );
 	}
-	
+
 	/**
 	 * Add new capabilities
 	 *
@@ -67,71 +67,71 @@ class AP_Roles{
 			$base_caps = array(
 				'ap_read_question'         	=> true,
 				'ap_read_answer'			=> true,
-				
+
 				'ap_new_question'			=> true,
 				'ap_new_answer'				=> true,
 				'ap_new_comment'			=> true,
-				
+
 				'ap_edit_question'			=> true,
 				'ap_edit_answer'			=> true,
 				'ap_edit_comment'			=> true,
-				
+
 				'ap_hide_question'			=> true,
 				'ap_hide_answer'			=> true,
-				
+
 				'ap_delete_question'		=> true,
 				'ap_delete_answer'			=> true,
 				'ap_delete_comment'			=> true,
-				
+
 				'ap_vote_up'				=> true,
 				'ap_vote_down'				=> true,
 				'ap_vote_flag'				=> true,
 				'ap_vote_close'				=> true,
-				
+
 				'ap_upload_cover'			=> true,
 				'ap_message'				=> true,
-				
+
 				'ap_new_tag'				=> true,
 				'ap_change_status'			=> true,
 			);
-			
-			$mod_caps = array(				
+
+			$mod_caps = array(
 				'ap_edit_others_question'	=> true,
 				'ap_edit_others_answer'		=> true,
-				'ap_edit_others_comment'	=> true,				
+				'ap_edit_others_comment'	=> true,
 				'ap_hide_others_question'	=> true,
 				'ap_hide_others_answer'		=> true,
-				'ap_hide_others_comment'	=> true,				
+				'ap_hide_others_comment'	=> true,
 				'ap_delete_others_question'	=> true,
 				'ap_delete_others_answer'	=> true,
-				'ap_delete_others_comment'	=> true,				
+				'ap_delete_others_comment'	=> true,
 				'ap_change_label'			=> true,
 				'ap_view_private'			=> true,
 				'ap_view_moderate'			=> true,
 				'ap_change_status_other'	=> true,
 			);
-			
+
 			$roles = array('editor', 'contributor', 'author', 'ap_participant', 'ap_moderator', 'subscriber');
-			
+
 			foreach ($roles as $role_name) {
-				
+
 				// add base cpas to all roles
 				foreach ($base_caps as $k => $grant){
-					$wp_roles->add_cap($role_name, $k ); 				
+					$wp_roles->add_cap($role_name, $k );
 				}
-				
+
 				if($role_name == 'editor' || $role_name == 'ap_moderator'){
 					foreach ($mod_caps as $k => $grant){
-						$wp_roles->add_cap($role_name, $k ); 				
+						$wp_roles->add_cap($role_name, $k );
 					}
 				}
 			}
-		
+
 		}
 
 	}
-	
-	
+
+
 	public function remove_roles(){
 		global $wp_roles;
 
@@ -156,7 +156,7 @@ function ap_user_can_ask(){
 
 	if(is_user_logged_in() || ap_allow_anonymous())
 		return true;
-	
+
 	return false;
 }
 
@@ -164,10 +164,10 @@ function ap_user_can_ask(){
 function ap_user_can_answer($question_id){
 	if(ap_opt('only_admin_can_answer') && is_user_logged_in() && !current_user_can('activate_plugins'))
 		return false;
-	
+
 	if(is_super_admin())
 		return true;
-	
+
 	$question = get_post($question_id);
 
 	if(!ap_opt('disallow_op_to_answer') && $question->post_author == get_current_user_id() && get_current_user_id() > 0)
@@ -192,7 +192,7 @@ function ap_user_can_answer($question_id){
 function ap_user_can_see_answers(){
 	if(is_super_admin())
 		return true;
-	
+
 	if(ap_opt('logged_in_can_see_ans') && !is_user_logged_in() )
 		return false;
 
@@ -205,13 +205,13 @@ function ap_user_can_select_answer($post_id){
 
 	if(is_super_admin())
 		return true;
-	
+
 	$post 		= get_post($post_id);
 	$question 	= get_post($post->post_parent);
-	
+
 	if($post->post_type == 'answer' && $question->post_author ==  get_current_user_id())
 		return true;
-	
+
 	return false;
 }
 
@@ -224,9 +224,9 @@ function ap_user_can_edit_ans($post_id){
 
 	if(!is_user_logged_in())
 		return false;
-	
+
 	$post = get_post($post_id);
-	
+
 	if($post->post_author ==  get_current_user_id())
 		return true;
 
@@ -241,14 +241,14 @@ function ap_user_can_edit_ans($post_id){
 function ap_user_can_edit_question($post_id = false){
 	if(is_super_admin() || current_user_can('ap_edit_others_question') )
 		return true;
-		
+
 	if(is_user_logged_in()){
-		
+
 		if($post_id )
 			$post = get_post($post_id);
 		else
 			global $post;
-			
+
 		if(get_current_user_id() == $post->post_author)
 			return true;
 	}
@@ -291,9 +291,9 @@ function ap_user_can_delete_comment($comment_id){
 function ap_user_can_delete($postid){
 	if(is_super_admin())
 		return true;
-	
+
 	$post = get_post($postid);
-	
+
 	if(get_current_user_id() == $post->post_author){
 		if( ($post->post_type == 'question' || $post->post_type == 'answer') && current_user_can('ap_delete_question'))
 			return true;
@@ -301,7 +301,7 @@ function ap_user_can_delete($postid){
 		if( $post->post_type == 'question' && current_user_can('ap_delete_others_question'))
 			return true;
 		elseif( $post->post_type == 'answer' && current_user_can('ap_delete_others_answer'))
-			return true;	
+			return true;
 	}
 
 	return false;
@@ -317,21 +317,21 @@ function ap_user_can_permanent_delete(){
 function ap_user_can_upload_cover(){
 	if(is_super_admin() || is_user_logged_in())
 		return true;
-	
+
 	return false;
 }
 
 function ap_user_can_message(){
 	if(is_super_admin() || is_user_logged_in())
 		return true;
-	
+
 	return false;
 }
 
 function ap_user_can_create_tag(){
 	if(is_super_admin() || (current_user_can('ap_new_tag') && ap_get_points() >= ap_opt('min_point_new_tag') ))
 		return true;
-	
+
 	return false;
 }
 
@@ -352,11 +352,11 @@ function ap_user_can_view_private_post($post_id){
 
 	if(is_super_admin() || current_user_can('ap_view_private'))
 		return true;
-	
+
 
 	if($post->post_type == 'answer'){
 		$question = get_post($post->post_parent);
-		
+
 		if($question->post_author == get_current_user_id())
 			return true;
 	}
@@ -367,12 +367,12 @@ function ap_user_can_view_private_post($post_id){
 function ap_user_can_view_moderate_post($question_id){
 	if(is_super_admin() || current_user_can('ap_view_moderate'))
 		return true;
-	
+
 	$post = get_post( $question_id );
-	
+
 	if($post->post_author == get_current_user_id())
 		return true;
-	
+
 	return false;
 }
 
@@ -384,23 +384,23 @@ function ap_user_can_view_moderate_post($question_id){
 function ap_user_can_view_post($post_id = false){
 	if(is_super_admin())
 		return true;
-		
+
 	if(!$post_id)
 		$post_id = get_the_ID();
-	
+
 	$post = get_post( $post_id );
-	
+
 	if( $post->post_status == 'private_post' && ap_user_can_view_private_post($post_id))
 		return true;
 
 	if( $post->post_status == 'moderate' && ap_user_can_view_moderate_post($post_id))
 		return true;
-	
+
 	if( $post->post_status == 'publish' || $post->post_status == 'closed')
 		return true;
-	
+
 	return false;
-	
+
 }
 
 function ap_allow_anonymous(){
@@ -428,14 +428,14 @@ function ap_user_can_change_status($post_id){
 function ap_user_can_change_status_to_closed(){
 	if(is_super_admin() || current_user_can('ap_change_status_other'))
 		return true;
-	
+
 	return false;
 }
 
 function ap_user_can_change_status_to_moderate(){
 	if(is_super_admin() || current_user_can('ap_change_status_other'))
 		return true;
-	
+
 	return false;
 }
 

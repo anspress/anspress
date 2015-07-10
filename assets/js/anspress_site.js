@@ -69,7 +69,8 @@
                 success: success,
                 dataType: 'json',
                 context: context,
-                global: true
+                global: true,
+                cache:false
             });
             ApSite.ajax_id[action] = req;
             return req;
@@ -192,7 +193,7 @@
             if (typeof data.toggle_active_class_container !== 'undefined'){
                 $(data.toggle_active_class_container).find('li').removeClass('active');
                 $(data.toggle_active_class_container).find(data.active).addClass('active');
-            } 
+            }
         },
         append_before: function(data) {
             if (typeof data.append_before_container !== 'undefined')
@@ -203,7 +204,7 @@
                 $(data.remove_if_exists_container).remove();
         },
         clearForm: function(data) {
-            if (typeof tinyMCE !== 'undefined') 
+            if (typeof tinyMCE !== 'undefined')
                 tinyMCE.activeEditor.setContent('');
         },
         load_comment_form: function() {
@@ -227,13 +228,13 @@
                     }else{
                         $(data.container).append(data.html);
                     }
-                    
+
                     if ($(data.container).length > 0) $('html, body').animate({
                         scrollTop: ($(data.container).offset().top) - 150
                     }, 500);
 
                     jQuery('textarea.autogrow, textarea#post_content').keyup();
-                    
+
                     if (typeof button.attr('data-toggle') !== 'undefined') $(button.attr('data-toggle')).hide();
                     $('#ap-comment-textarea').focus();
                     $(button.attr('href')).addClass('have-comments').removeClass('no-comment');
@@ -382,7 +383,7 @@
                 }, this, false);
             });
         },
-        ap_post_upload_field: function() {            
+        ap_post_upload_field: function() {
             $('body').delegate('[data-action="ap_post_upload_field"]', 'click', function(e) {
                 e.preventDefault();
                 $('[name="post_upload_image"]').click();
@@ -396,7 +397,7 @@
 
             $('body').delegate( '#hidden-post-upload', 'submit', function() {
                 var cont = $('[data-action="ap_post_upload_field"]').closest('.ap-upload-o');
-                
+
                 $(this).ajaxSubmit({
                     beforeSubmit: function(){
                         ApSite.showLoading(cont);
@@ -449,11 +450,11 @@
                 reader.readAsDataURL(input.files[0]);
             }
         },
-        tinyMCEeditorToggle: function(){            
+        tinyMCEeditorToggle: function(){
             $('body').delegate('[data-action="ap_fullscreen_toggle"]', 'click', function(e) {
                 e.preventDefault();
                 $(this).toggleClass('active');
-                tinyMCE.activeEditor.execCommand('mceFullscreen');                
+                tinyMCE.activeEditor.execCommand('mceFullscreen');
             });
         },
         tab: function(){
@@ -485,12 +486,12 @@
 
                 var modal       = $( $(this).data('toggle') );
                 modal.addClass('open');
-                
+
                 var mod_in      = modal.find('.ap-modal-inner');
                 var mod_w       = mod_in.width();
                 var mod_h       = mod_in.height();
                 var screen_w    = $(window).width();
-                var screen_h    = $(window).height();               
+                var screen_h    = $(window).height();
 
                 mod_in.css({ 'left' : (screen_w - mod_w)/2, 'top' :  (screen_h/2) - (mod_h/2) });
 
@@ -553,7 +554,7 @@
                         user_id = $(this).attr('data-userid');
 
                     // next, we want to check if our data has already been cached
-                    if ( $('#user_'+user_id+'_card').length == 0) {                        
+                    if ( $('#user_'+user_id+'_card').length == 0) {
                         $.ajax({
                             type: 'POST',
                             url: ajaxurl,
@@ -619,12 +620,12 @@
             if (typeof data.message !== 'undefined') {
                 var type = typeof data.message_type === 'undefined' ? 'success' : data.message_type;
                 ApSite.addMessage(data.message, type);
-                
+
                 if(typeof grecaptcha !== 'undefined' && data.message_type !== 'success')
                     grecaptcha.reset(widgetId1);
             }
             $(document).trigger('ap_after_ajax', data);
-            
+
             if (typeof data.do !=='undefined'){
                 if($.isArray(data.do)){
                     $.each(data.do, function(index, el) {
@@ -640,7 +641,7 @@
             if (typeof data.view !== 'undefined') {
                 $.each(data.view, function(i, view) {
                     var html = $(view);
-                    if(typeof data.view_html !== 'undefined' && html.is('[data-view="' + i + '"]')){               
+                    if(typeof data.view_html !== 'undefined' && html.is('[data-view="' + i + '"]')){
                         html = html.children();
                         $('[data-view="' + i + '"]').html(html);
                     }else{
@@ -650,7 +651,7 @@
                 });
             }
         }
-        
+
     });
 })(jQuery);
 

@@ -28,7 +28,7 @@ class AnsPress_Ajax
 		add_action('ap_ajax_load_user_field_form', array($this, 'load_user_field_form'));
 		add_action('ap_ajax_set_featured', array($this, 'set_featured'));
 		add_action('ap_ajax_follow', array($this, 'follow'));
-		
+
 		add_action('wp_ajax_ap_suggest_tags', array($this, 'ap_suggest_tags'));
 		add_action('wp_ajax_nopriv_ap_suggest_tags', array($this, 'ap_suggest_tags'));
 		add_action('ap_ajax_user_cover', array($this, 'ap_user_cover'));
@@ -36,7 +36,7 @@ class AnsPress_Ajax
 		add_action('ap_ajax_markread_notification', array($this, 'markread_notification'));
     }
 
-    
+
 
     /**
      * Show similar questions when asking a question
@@ -54,8 +54,8 @@ class AnsPress_Ajax
 			'showposts'   	=> 10,
 			's' 			=> $keyword,
 		));
-		
-		
+
+
 		if($questions){
 			$items = '<div class="ap-similar-questions-head">';
 			$items .= '<h3>'.ap_icon('check', true). sprintf(__('%d similar questions found', 'ap'), count($questions)) .'</h3>';
@@ -65,7 +65,7 @@ class AnsPress_Ajax
 			foreach ($questions as $p){
 				$count = ap_count_answer_meta($p->ID);
 				$p->post_title = ap_highlight_words($p->post_title, $keyword);
-				
+
 				if(!isset($_POST['is_admin']))
 					$items .= '<a class="ap-sqitem clearfix" href="'.get_permalink($p->ID).'"><span class="acount">'. sprintf(_n('1 Answer', '%d Answers', $count, 'ap' ), $count) .'</span><span class="ap-title">'.$p->post_title.'</span></a>';
 
@@ -77,7 +77,7 @@ class AnsPress_Ajax
 		}else{
 			$result = array('status' => false, 'message' => __('No related questions found', 'ap'));
 		}
-		
+
 		ap_send_json($result);
     }
 
@@ -93,7 +93,7 @@ class AnsPress_Ajax
     	);
 
 		if((wp_verify_nonce( $_REQUEST['__nonce'], 'comment_form_nonce' )) || (wp_verify_nonce( $_REQUEST['__nonce'], 'edit_comment_'.(int)$_REQUEST['comment_ID'] ))){
-			
+
 			$comment_args  = array();
 			$content = '';
 			$commentid = '';
@@ -117,7 +117,7 @@ class AnsPress_Ajax
 				'comment_field' => '<div class="ap-comment-submit"><input type="submit" value="'.__('Comment', 'ap').'" name="submit"></div><div class="ap-comment-textarea"><textarea name="comment" rows="3" aria-required="true" id="ap-comment-textarea" class="ap-form-control autogrow" placeholder="'.__('Respond to the post.', 'ap').'">'.$content.'</textarea></div><input type="hidden" name="ap_form_action" value="comment_form"/><input type="hidden" name="ap_ajax_action" value="comment_form"/><input type="hidden" name="__nonce" value="'.$nonce.'"/>'.$commentid,
 				'comment_notes_after' => ''
 			);
-			
+
 			if(isset($_REQUEST['comment_ID']))
 				$comment_args['label_submit'] = __('Update comment', 'ap');
 
@@ -137,7 +137,7 @@ class AnsPress_Ajax
 						echo '</div>';
 					//}
 					if(!ap_opt('show_comments_by_default')){
-						while( $post->have_posts() ) : $post->the_post();					
+						while( $post->have_posts() ) : $post->the_post();
 						comments_template();
 						endwhile;
 						wp_reset_postdata();
@@ -163,18 +163,18 @@ class AnsPress_Ajax
      */
     public function delete_comment(){
     	$comment_id = (int) $_POST['comment_ID'];
-    	
+
     	if(isset($_POST['comment_ID']) && ap_user_can_delete_comment($comment_id ) && wp_verify_nonce( $_POST['__nonce'], 'delete_comment' )){
 
     		$comment = get_comment( $comment_id );
-    		
+
     		if (time() > (get_comment_date( 'U', (int)$_POST['comment_ID'] ) + (int)ap_opt('disable_delete_after')) && !is_super_admin()) {
 				ap_send_json( ap_ajax_responce(array('message_type' => 'warning', 'message' => sprintf(__('This post was created %s ago, its locked hence you cannot delete it.', 'ap'), ap_human_time( get_comment_date( 'U', (int)$_POST['comment_ID'] )) ))));
 				return;
 			}
 
     		$delete = wp_delete_comment( (int)$_POST['comment_ID'], true );
-    		
+
     		if($delete){
     			do_action( 'ap_after_deleting_comment', $comment );
     			$count = get_comment_count( $comment->comment_post_ID );
@@ -194,7 +194,7 @@ class AnsPress_Ajax
      */
     public function select_best_answer(){
 		$answer_id = (int)$_POST['answer_id'];
-		
+
 		if(!is_user_logged_in()){
 			ap_send_json( ap_ajax_responce('no_permission'));
 			return;
@@ -207,9 +207,9 @@ class AnsPress_Ajax
 
 		$post = get_post($answer_id);
 		$user_id = get_current_user_id();
-		
+
 		if(ap_question_best_answer_selected($post->post_parent)){
-			
+
 			do_action('ap_unselect_answer', $user_id, $post->post_parent, $post->ID);
 
 			update_post_meta($post->ID, ANSPRESS_BEST_META, 0);
@@ -249,13 +249,13 @@ class AnsPress_Ajax
 	{
 		$post_id = (int) $_POST['post_id'];
 
-		$action = 'delete_post_'.$post_id;	
-		
+		$action = 'delete_post_'.$post_id;
+
 		if(!wp_verify_nonce( $_POST['__nonce'], $action ) || !ap_user_can_delete($post_id)){
 			ap_send_json( ap_ajax_responce('something_wrong'));
 			return;
 		}
-		
+
 		$post = get_post( $post_id );
 
 		if( (time() > (get_the_time('U', $post->ID) + (int)ap_opt('disable_delete_after'))) && !is_super_admin( ) ){
@@ -273,7 +273,7 @@ class AnsPress_Ajax
 			$count_label = sprintf( _n('1 Answer', '%d Answers', $current_ans, 'ap'), $current_ans);
 			$remove = (!$current_ans ? true : false);
 			ap_send_json( ap_ajax_responce(array(
-				'action' 		=> 'delete_answer', 
+				'action' 		=> 'delete_answer',
 				'div_id' 		=> '#answer_'.$post_id,
 				'count' 		=> $current_ans,
 				'count_label' 	=> $count_label,
@@ -281,24 +281,24 @@ class AnsPress_Ajax
 				'message' 		=> 'answer_moved_to_trash',
 				'view'			=> array('answer_count' => $current_ans, 'answer_count_label' => $count_label))));
 		}
-		
+
 	}
 
 	public function permanent_delete_post()
 	{
 		$post_id = (int) $_POST['post_id'];
 
-		$action = 'delete_post_'.$post_id;	
-		
+		$action = 'delete_post_'.$post_id;
+
 		if(!wp_verify_nonce( $_POST['__nonce'], $action ) || !ap_user_can_permanent_delete()){
 			ap_send_json( ap_ajax_responce('something_wrong'));
 			return;
 		}
-		
+
 		$post = get_post( $post_id );
 
 		wp_trash_post( $post_id );
-		
+
 		if($post->post_type == 'question'){
 			do_action('ap_wp_trash_question', $post_id);
 
@@ -315,7 +315,7 @@ class AnsPress_Ajax
 			$count_label = sprintf( _n('1 Answer', '%d Answers', $current_ans, 'ap'), $current_ans);
 			$remove = (!$current_ans ? true : false);
 			ap_send_json( ap_ajax_responce(array(
-				'action' 		=> 'delete_answer', 
+				'action' 		=> 'delete_answer',
 				'div_id' 		=> '#answer_'.$post_id,
 				'count' 		=> $current_ans,
 				'count_label' 	=> $count_label,
@@ -323,7 +323,7 @@ class AnsPress_Ajax
 				'message' 		=> 'answer_deleted_permanently',
 				'view'			=> array('answer_count' => $current_ans, 'answer_count_label' => $count_label))));
 		}
-		
+
 	}
 
 	/**
@@ -338,7 +338,7 @@ class AnsPress_Ajax
 		if(!is_user_logged_in() || !wp_verify_nonce( $_POST['__nonce'], 'change_post_status_'.$post_id ) || !ap_user_can_change_status($post_id)){
 			ap_send_json( ap_ajax_responce('no_permission'));
 			die();
-		}else{		
+		}else{
 			$post = get_post($post_id);
 			if(($post->post_type == 'question' || $post->post_type == 'answer') && $post->post_status != $status){
 				$update_data = array();
@@ -360,7 +360,7 @@ class AnsPress_Ajax
 
 				$update_data['ID'] = $post->ID;
 				wp_update_post( $update_data );
-				
+
 				ap_add_history(get_current_user_id(), $post_id, '', 'status_updated');
 
 				add_action('ap_post_status_updated', $post->ID);
@@ -380,7 +380,7 @@ class AnsPress_Ajax
 					'html'			=> $html,
 				)));
 				die();
-			}			
+			}
 		}
 		ap_send_json( ap_ajax_responce('something_wrong'));
 		die();
@@ -394,7 +394,7 @@ class AnsPress_Ajax
 			ap_send_json( ap_ajax_responce('no_permission'));
 		}else{
 			if(ap_has_users(array('ID' => $user_id ) )){
-				while ( ap_users() ) : ap_the_user(); 
+				while ( ap_users() ) : ap_the_user();
 					$form = ap_user_get_fields(array('show_only' => $field_name, 'form' => array('field_hidden' => false, 'hide_footer' => false, 'show_cancel' => true, 'is_ajaxified' => true, 'submit_button' => __('Update', 'ap'))));
 					ap_send_json( ap_ajax_responce(array(
 						'action' 		=> 'user_field_form_loaded',
@@ -408,7 +408,7 @@ class AnsPress_Ajax
 		ap_send_json( ap_ajax_responce('something_wrong'));
 		die();
 	}
-	
+
 	public function ap_suggest_tags(){
 		$keyword = sanitize_text_field($_POST['q']);
 		$tags = get_terms( 'question_tag', array(
@@ -418,7 +418,7 @@ class AnsPress_Ajax
 			'search' 		=> $keyword,
 			'number' 		=> 8
 		));
-		
+
 		//$new_tag_html = '';
 		//if(ap_user_can_create_tag())
 			//$new_tag_html = '<div class="ap-cntlabel"><a href="#" id="ap-load-new-tag-form" data-args="'.wp_create_nonce('new_tag_form').'">'.__('Create new tag', 'ap').'</a></div>';
@@ -432,7 +432,7 @@ class AnsPress_Ajax
 			$result = array('status' => true, 'items' => $items);
 			die(json_encode($result));
 		}
-		
+
 		die(json_encode(array('status' => false)));
 	}
 
@@ -442,7 +442,7 @@ class AnsPress_Ajax
 		if(!is_super_admin() || !wp_verify_nonce( $_POST['__nonce'], 'set_featured_'.$post_id )){
 			ap_send_json( ap_ajax_responce('no_permission'));
 			die();
-		}else{		
+		}else{
 			$post = get_post($post_id);
 			$featured_questions = get_option('featured_questions');
 
@@ -453,7 +453,7 @@ class AnsPress_Ajax
 						if($q == $post->ID)
 							unset($featured_questions[$key]);
 					}
-					
+
 					update_option('featured_questions', $featured_questions);
 
 					ap_send_json( ap_ajax_responce(array(
@@ -464,8 +464,8 @@ class AnsPress_Ajax
 						'html'			=> __('Set as featured', 'ap'),
 					)));
 
-				}else{			
-					
+				}else{
+
 					if(empty($featured_questions) || !is_array($featured_questions) || !$featured_questions)
 						$featured_questions = array($post->ID);
 					else
@@ -482,7 +482,7 @@ class AnsPress_Ajax
 					)));
 
 				}
-			}			
+			}
 		}
 		ap_send_json( ap_ajax_responce('something_wrong'));
 		die();
@@ -490,7 +490,7 @@ class AnsPress_Ajax
 
 	public function follow()
 	{
-		
+
 		$user_to_follow 	= (int)$_POST['user_id'];
 		$current_user_id 	= get_current_user_id();
 
@@ -512,15 +512,15 @@ class AnsPress_Ajax
 		$is_following = ap_is_user_following($user_to_follow, $current_user_id);
 
 		if($is_following){
-			
-			ap_remove_follower($current_user_id, $user_to_follow);			
+
+			ap_remove_follower($current_user_id, $user_to_follow);
 
 			ap_send_json(ap_ajax_responce(array('message' => 'unfollow', 'action' => 'unfollow', 'container' => '#follow_'.$user_to_follow, 'do' => 'updateText', 'text' =>__('Follow', 'ap'))));
 
 			return;
 
 		}else{
-			
+
 			ap_add_follower($current_user_id, $user_to_follow);
 
 			ap_send_json(ap_ajax_responce(array('message' => 'follow', 'action' => 'follow', 'container' => '#follow_'.$user_to_follow, 'do' => 'updateText', 'text' => __('Unfollow', 'ap'))));
@@ -535,13 +535,13 @@ class AnsPress_Ajax
 			ap_send_json(ap_ajax_responce('something_wrong'));
 
 		$user_id = (int)$_POST['user_id'];
-		
+
 		if(!wp_verify_nonce( $_POST['ap_ajax_nonce'], 'ap_ajax_nonce') ){
 			ap_send_json(ap_ajax_responce('something_wrong'));
 			return;
 		}
 
-		global $ap_user_query;        
+		global $ap_user_query;
         $ap_user_query = ap_has_users(array('ID' => $user_id ) );
 
         if($ap_user_query->has_users()){
@@ -568,7 +568,7 @@ class AnsPress_Ajax
 
 		if($notification && ($notification['apmeta_userid'] == get_current_user_id() || is_super_admin( )) ){
 			$row = ap_delete_notification($notification['apmeta_id']);
-			
+
 			if($row !== false)
 				ap_send_json(ap_ajax_responce(array('message' => 'delete_notification', 'action' => 'delete_notification', 'container' => '#ap-notification-'.$notification['apmeta_id'])));
 		}
@@ -595,7 +595,7 @@ class AnsPress_Ajax
 
 			if($notification && ($notification['apmeta_actionid'] == get_current_user_id() || is_super_admin( )) ){
 				$row = ap_update_meta(array('apmeta_type' => 'notification'), array('apmeta_id' => $notification['apmeta_id']));
-				
+
 				if($row !== false)
 					ap_send_json(ap_ajax_responce(array('message' => 'mark_read_notification', 'action' => 'mark_read_notification', 'container' => '.ap-notification-'.$notification['apmeta_id'], 'view' => array('notification_count' => ap_get_total_unread_notification()))));
 			}

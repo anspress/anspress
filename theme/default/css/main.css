@@ -1479,9 +1479,10 @@ body ul ul#ap-user-menu-link li > a .count {
   background: #000000;
   font-size: 11px;
   font-family: arial, helvetica, sans-serif;
+  max-width: 200px;
 }
 .tooltipster-default.ap-tip-style .tooltipster-content {
-  font-size: 13px;
+  font-size: 12px;
 }
 .tooltipster-default.ap-tip-style .tooltipster-content a {
   font-weight: 600;

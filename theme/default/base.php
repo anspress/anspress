@@ -4,7 +4,7 @@
 		<?php ap_get_template_part('list-head'); ?>
 		<?php if ( ap_have_questions() ) : ?>
 			<div class="ap-questions">
-				<?php					
+				<?php
 					/* Start the Loop */
 					while ( ap_questions() ) : ap_the_question();
 						ap_get_template_part('content-list');
@@ -13,10 +13,10 @@
 			</div>
 		<?php ap_questions_the_pagination(); ?>
 		<?php
-			else : 
+			else :
 				ap_get_template_part('content-none');
-			endif; 
-		?>	
+			endif;
+		?>
 	</div>
 	<?php if ( is_active_sidebar( 'ap-sidebar' ) && is_anspress()){ ?>
 		<div class="ap-question-right col-md-3">

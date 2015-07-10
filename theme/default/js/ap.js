@@ -31,7 +31,7 @@
             var min, clone;
             elem = $(elem);
             //if the element is "invisible", we get an incorrect height value
-            //to get correct value, clone and append to the body. 
+            //to get correct value, clone and append to the body.
             if (elem.is(':visible') || parseInt(elem.css('height'), 10) > 0) {
                 min = parseInt(elem.css('height'), 10) || elem.innerHeight();
             } else {
@@ -45,7 +45,7 @@
                 clone.remove();
             }
             if (opts.fixMinHeight) {
-                elem.data('autogrow-start-height', min); //set min height                                
+                elem.data('autogrow-start-height', min); //set min height
             }
             elem.css('height', min);
             if (opts.onInitialize && elem.length) {
@@ -88,7 +88,7 @@
                         newHeight = clone[0].scrollHeight - 1;
                         clone.innerHeight(newHeight);
                     } while (newHeight === clone[0].scrollHeight);
-                    newHeight++; //adding one back eliminates a wiggle on deletion 
+                    newHeight++; //adding one back eliminates a wiggle on deletion
                     clone.remove();
                     box.focus(); // Fix issue with Chrome losing focus from the textarea.
                     //if user selects all and deletes or holds down delete til beginning
@@ -106,26 +106,23 @@
     }
 })(jQuery);
 
-jq = jQuery;
+(function($){
 
-jQuery(document).ready(function() {
-    jQuery(document).click(function(e) {
-        var target = e.target;
-        console.log(!jQuery(target).is('.ap-dropdown-toggle'));
-        if (!jQuery(target).is('.ap-dropdown-toggle') && !jQuery(target).parent().is('.open')) {
-           jQuery('.ap-dropdown').removeClass('open');
-        }
-    });
+    $(document).ready(function() {
+        $(document).click(function(e) {
+            if (!$(e.target).is('.ap-dropdown-toggle') && !$(e.target).parent().is('.open') && !$(e.target).closest('form').is('form')) {
+               $('.ap-dropdown').removeClass('open');
+            }
+        });
 
-    // Dropdown toggle
-    jQuery('body').delegate('.ap-dropdown-toggle', 'click', function(e){
-        e.preventDefault();
-        jQuery('.ap-dropdown').removeClass('open');
-        jQuery(this).closest('.ap-dropdown').addClass('open');
-    });
+        // Dropdown toggle
+        $('body').delegate('.ap-dropdown-toggle', 'click', function(e){
+            e.preventDefault();
+            $('.ap-dropdown').removeClass('open');
+            $(this).closest('.ap-dropdown').addClass('open');
+        });
 
-    if(typeof tooltipster !== 'undefined')
-        jQuery('.ap-tip').tooltipster({
+        $('.ap-tip').tooltipster({
             contentAsHTML: true,
             animation: 'fade',
             theme: 'tooltipster-default ap-tip-style',
@@ -133,122 +130,130 @@ jQuery(document).ready(function() {
             functionBefore: function(origin, continueTooltip) {
                 var pos = ap_default(origin.data('tipposition'), 'top');
                 var theme = ap_default(origin.data('tipclass'), 'top');
-                jQuery(this).tooltipster('option', 'position', pos);
-                jQuery(this).tooltipster('option', 'theme', 'tooltipster-default ap-tip-style ' + theme);
+                $(this).tooltipster('option', 'position', pos);
+                $(this).tooltipster('option', 'theme', 'tooltipster-default ap-tip-style ' + theme);
                 continueTooltip();
             }
         });
-    
-    jQuery('#ap-conversation-scroll').scrollTop(0);
 
-    jQuery('textarea.autogrow, textarea#post_content').autogrow({
-        onInitialize: true
-    });
+        $('#ap-conversation-scroll').scrollTop(0);
 
-    jQuery('.ap-categories-list li .ap-icon-arrow-down').click(function(e) {
-        e.preventDefault();
-        jQuery(this).parent().next().slideToggle(200);
-    });
-    if ((jQuery('#ask_question_form #post_content, #answer_form #post_content').length > 0) && typeof jQuery.jStorage !== 'undefined') {
-        jQuery('#post_content').on('blur', function() {
-            jQuery.jStorage.set('post_content', jQuery(this).val());
+        $('textarea.autogrow, textarea#post_content').autogrow({
+            onInitialize: true
         });
-        jQuery('#post_title').on('blur', function() {
-            jQuery.jStorage.set('post_title', jQuery(this).val());
+
+        $('.ap-categories-list li .ap-icon-arrow-down').click(function(e) {
+            e.preventDefault();
+            $(this).parent().next().slideToggle(200);
         });
-        jQuery('select#category').on('blur', function() {
-            jQuery.jStorage.set('category', jQuery(this).val());
+        if (($('#ask_question_form #post_content, #answer_form #post_content').length > 0) && typeof $.jStorage !== 'undefined') {
+            $('#post_content').on('blur', function() {
+                $.jStorage.set('post_content', $(this).val());
+            });
+            $('#post_title').on('blur', function() {
+                $.jStorage.set('post_title', $(this).val());
+            });
+            $('select#category').on('blur', function() {
+                $.jStorage.set('category', $(this).val());
+            });
+            $('.anspress').delegate('[data-action="ap-add-tag"]', 'click touchstart', function() {
+                $.jStorage.set('tags', $('[data-role="ap-tagsinput"]').tagsinput('items'));
+            });
+            if (typeof $.jStorage.get('post_content') !== 'undefined') $('#post_content').val($.jStorage.get('post_content'));
+            if (typeof $.jStorage.get('post_title') !== 'undefined') $('#post_title').val($.jStorage.get('post_title'));
+            if (typeof $.jStorage.get('category') !== 'undefined') $('select#category option[value="' + $.jStorage.get('category') + '"]').prop('selected', true);
+            if (typeof $.jStorage.get('tags') !== 'undefined' && $.jStorage.get('tags')) {
+                $.each($.jStorage.get('tags'), function(k, v) {
+                    $('[data-role="ap-tagsinput"]').tagsinput('add', v);
+                });
+            }
+        }
+        $('.ap-radio-btn').click(function() {
+            $(this).toggleClass('active');
         });
-        jQuery('.anspress').delegate('[data-action="ap-add-tag"]', 'click touchstart', function() {
-            jQuery.jStorage.set('tags', jQuery('[data-role="ap-tagsinput"]').tagsinput('items'));
+        $('.bootstrap-tagsinput > input').keyup(function(event) {
+            $(this).css(width, 'auto');
         });
-        if (typeof jQuery.jStorage.get('post_content') !== 'undefined') jQuery('#post_content').val(jQuery.jStorage.get('post_content'));
-        if (typeof jQuery.jStorage.get('post_title') !== 'undefined') jQuery('#post_title').val(jQuery.jStorage.get('post_title'));
-        if (typeof jQuery.jStorage.get('category') !== 'undefined') jQuery('select#category option[value="' + jQuery.jStorage.get('category') + '"]').prop('selected', true);
-        if (typeof jQuery.jStorage.get('tags') !== 'undefined' && jQuery.jStorage.get('tags')) {
-            jQuery.each(jQuery.jStorage.get('tags'), function(k, v) {
-                jQuery('[data-role="ap-tagsinput"]').tagsinput('add', v);
+
+        $('body').delegate('#ap-question-sorting select', 'change', function(e) {
+            $(this).closest('form').submit();
+        });
+
+        $('body').delegate('#ap-question-sorting', 'submit', function(){
+            AnsPress.site.showLoading(this);
+            $.ajax({
+                type: 'GET',
+                dataType: 'html',
+                data: $(this).serializeArray(),
+                success: function(data){
+                    AnsPress.site.hideLoading('#ap-question-sorting');
+                    var html = $(data);
+                    window.history.pushState(null, null, this.url);
+
+                    $('#anspress').html(html.find('#anspress'));
+                }
+            });
+
+            return false;
+        });
+
+        $('body').delegate('.ap-notify-item', 'click', function(e) {
+            e.preventDefault();
+            $(this).hide();
+        });
+
+        if($('[data-action="ap_chart"]').length > 0){
+            $('[data-action="ap_chart"]').each(function(index, el) {
+                var type = $(this).data('type');
+                $(this).peity(type);
+            });
+
+        }
+
+        $('.ap-dynamic-avatar').initial({fontSize:14, fontWeight:600});
+        $( document ).ajaxComplete(function( event, data, settings ) {
+            $('.ap-dynamic-avatar').initial({fontSize:14, fontWeight:600});
+        });
+
+        if($('.ap_collapse_menu').length > 0){
+            var menu = $('.ap_collapse_menu'),
+                menuwidth = menu.width(),
+                dropdown = menu.find('.ap-dropdown .ap-dropdown-menu');
+
+            var itemwidth = 0;
+            var start_moving = false;
+
+            menu.find('.ap-dropdown').hide();
+
+            menu.find('li').each(function(index, el) {
+                itemwidth = parseInt(itemwidth) + parseInt($(this).outerWidth());
+                if((itemwidth + parseInt($(this).next().outerWidth())) > menuwidth)
+                    start_moving = true;
+
+                if(start_moving && !$(this).is('.ap-user-menu-more')){
+                    dropdown.append($(this).clone());
+                    $(this).remove();
+                    menu.find('.ap-dropdown').show();
+                }
+
             });
         }
-    }
-    jQuery('.ap-radio-btn').click(function() {
-        jQuery(this).toggleClass('active');
-    });
-    jQuery('.bootstrap-tagsinput > input').keyup(function(event) {
-        jQuery(this).css(width, 'auto');
+        $('.ap-notification-scroll').scrollbar();
+
+        $('.ap-label-form-item').click(function(e) {
+            e.preventDefault();
+            $(this).toggleClass('active');
+            var hidden = $(this).find('input[type="hidden"]');
+            hidden.val(hidden.val() == '' ? $(this).data('label') : '');
+        });
     });
 
-    jQuery('body').delegate('#ap-question-sorting select', 'change', function(e) {        
-        jQuery(this).closest('form').submit();
-    });
-
-    jQuery('body').delegate('#ap-question-sorting', 'submit', function(){
-        AnsPress.site.showLoading(this);
-        jQuery.ajax({
-            type: 'GET',
-            dataType: 'html',
-            data: jQuery(this).serializeArray(),
-            success: function(data){
-                AnsPress.site.hideLoading('#ap-question-sorting');
-                var html = jQuery(data);
-                window.history.pushState(null, null, this.url);
-                
-                jQuery('#anspress').html(html.find('#anspress'));
+    function ap_chk_activity_scroll(e) {
+        if (($('#ap-conversation-scroll .ap-no-more-message').length == 0)) {
+            var elem = $(e.currentTarget);
+            if (elem[0].scrollHeight - elem.scrollTop() == elem.outerHeight()) {
+                APjs.site.loadMoreConversations(elem);
             }
-        });
-        
-        return false;
-    });
-
-    jQuery('body').delegate('.ap-notify-item', 'click', function(e) {
-        e.preventDefault();
-        jQuery(this).hide();
-    });
-
-    if(jQuery('[data-action="ap_chart"]').length > 0){
-        jQuery('[data-action="ap_chart"]').each(function(index, el) {
-            var type = jQuery(this).data('type');
-            jQuery(this).peity(type);
-        });
-
-    }
-
-    jQuery('.ap-dynamic-avatar').initial({fontSize:14, fontWeight:600});
-    jQuery( document ).ajaxComplete(function( event, data, settings ) {
-        jQuery('.ap-dynamic-avatar').initial({fontSize:14, fontWeight:600});
-    });
-
-    if(jq('.ap_collapse_menu').length > 0){
-        var menu = jq('.ap_collapse_menu'),
-            menuwidth = menu.width(),
-            dropdown = menu.find('.ap-dropdown .ap-dropdown-menu');
-        
-        var itemwidth = 0;
-        var start_moving = false;
-
-        menu.find('.ap-dropdown').hide();
-        
-        menu.find('li').each(function(index, el) {            
-            itemwidth = parseInt(itemwidth) + parseInt(jq(this).outerWidth());
-            if((itemwidth + parseInt(jq(this).next().outerWidth())) > menuwidth)
-                start_moving = true;
-                
-            if(start_moving && !jq(this).is('.ap-user-menu-more')){
-                dropdown.append(jq(this).clone());
-                jq(this).remove();
-                menu.find('.ap-dropdown').show();
-            }
-            
-        });
-    }
-    jQuery('.ap-notification-scroll').scrollbar();
-});
-
-function ap_chk_activity_scroll(e) {
-    if ((jQuery('#ap-conversation-scroll .ap-no-more-message').length == 0)) {
-        var elem = jQuery(e.currentTarget);
-        if (elem[0].scrollHeight - elem.scrollTop() == elem.outerHeight()) {
-            APjs.site.loadMoreConversations(elem);
         }
     }
-}
+})(jQuery);

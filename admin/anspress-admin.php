@@ -25,7 +25,7 @@ class AnsPress_Admin
 {
 
 	/**
-	 * Instance of this class.	 
+	 * Instance of this class.
 	 * @var      object
 	 */
 	protected static $instance = null;
@@ -33,26 +33,26 @@ class AnsPress_Admin
 	protected $plugin_slug = 'anspress';
 
 	/**
-	 * Slug of the plugin screen.	 
+	 * Slug of the plugin screen.
 	 * @var      string
 	 */
 	protected $plugin_screen_hook_suffix = null;
-	
+
 	// Name of the array
 	protected $option_name = 'anspress_opt';
 
-	
+
 	/**
 	 * Initialize the plugin by loading admin scripts & styles and adding a
 	 * settings page and menu.
 	 *
 	 */
 	private function __construct() {
-		
+
 		$this->includes();
 		new AnsPress_Options_Page;
 
-		add_action( 'save_post', array($this, 'ans_parent_post'), 10, 2 ); 
+		add_action( 'save_post', array($this, 'ans_parent_post'), 10, 2 );
 
 		// Load admin style sheet and JavaScript.
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_styles' ) );
@@ -62,24 +62,24 @@ class AnsPress_Admin
 		add_action( 'admin_menu', array( $this, 'add_plugin_admin_menu' ) );
 		$plugin_basename = plugin_basename( plugin_dir_path( __DIR__ ) . $this->plugin_slug . '.php' );
 		add_filter( 'plugin_action_links_' . $plugin_basename, array( $this, 'add_action_links' ) );
-		
-		add_action('admin_init', array($this, 'register_setting'));		
+
+		add_action('admin_init', array($this, 'register_setting'));
 		// flush rewrite rule if option updated
-		add_action('admin_init', array($this, 'init_actions'));		
-		add_action('parent_file', array($this, 'tax_menu_correction'));		
+		add_action('admin_init', array($this, 'init_actions'));
+		add_action('parent_file', array($this, 'tax_menu_correction'));
 		add_action( 'load-post.php', array($this, 'question_meta_box_class') );
-		add_action( 'load-post-new.php', array($this, 'question_meta_box_class') );		
+		add_action( 'load-post-new.php', array($this, 'question_meta_box_class') );
 		add_action( 'wp_ajax_ap_edit_reputation', array($this, 'ap_edit_reputation') );
 		add_action( 'wp_ajax_ap_save_reputation', array($this, 'ap_save_reputation') );
 		add_action( 'wp_ajax_ap_new_reputation_form', array($this, 'ap_new_reputation_form') );
 		add_action( 'wp_ajax_ap_delete_reputation', array($this, 'ap_delete_reputation') );
-		add_action( 'admin_menu', array($this, 'change_post_menu_label') );		
+		add_action( 'admin_menu', array($this, 'change_post_menu_label') );
 		add_action( 'wp_ajax_ap_edit_badges', array($this, 'ap_edit_badges') );
 		add_action( 'wp_ajax_ap_save_badges', array($this, 'ap_save_badges') );
 		add_action( 'wp_ajax_ap_new_badge_form', array($this, 'ap_new_badge_form') );
 		add_action( 'wp_ajax_ap_taxo_rename', array($this, 'ap_taxo_rename') );
-		add_action( 'wp_ajax_ap_delete_flag', array($this, 'ap_delete_flag') );		
-		add_action( 'edit_form_after_title', array($this, 'edit_form_after_title') );		       
+		add_action( 'wp_ajax_ap_delete_flag', array($this, 'ap_delete_flag') );
+		add_action( 'edit_form_after_title', array($this, 'edit_form_after_title') );
         add_filter('wp_insert_post_data', array($this, 'post_data_check'), 99);
         add_filter('post_updated_messages', array($this,'post_custom_message'));
         add_action( 'admin_head-nav-menus.php', array($this, 'ap_menu_metaboxes') );
@@ -101,8 +101,8 @@ class AnsPress_Admin
 
 	public function includes()
 	{
-		require_once('functions.php'); 
-		require_once('options-page.php'); 
+		require_once('functions.php');
+		require_once('options-page.php');
 		require_once('extensions.php');
 	}
 
@@ -137,52 +137,52 @@ class AnsPress_Admin
 
 		if(!current_user_can('delete_pages'))
 			return;
-		
+
 		$flagged_count = ap_flagged_posts_count();
 		$flagged_count = $flagged_count->total > 0 ? $flagged_count->total : 0;
-		
+
 		$num_posts = wp_count_posts( 'question', 'readable' );
 		$status = "moderate";
 		$mod_count = 0;
-		
+
 		if ( !empty($num_posts->$status) )
 			$mod_count = $num_posts->$status;
-		
+
 		$total = $flagged_count + $mod_count;
-		
+
 		$Totalcount = '';
 		if($total > 0)
 			$Totalcount = ' <span class="update-plugins count"><span class="plugin-count">'.number_format_i18n($total).'</span></span>';
-		
+
 		$Flagcount = '';
 		if($flagged_count > 0)
 			$Flagcount = ' <span class="update-plugins count"><span class="plugin-count">'.number_format_i18n($flagged_count).'</span></span>';
-		
-		$Modcount =	'';	
+
+		$Modcount =	'';
 		if($mod_count > 0)
 			$Modcount = ' <span class="update-plugins count"><span class="plugin-count">'.number_format_i18n($mod_count).'</span></span>';
-		
+
 		$pos = $this->get_free_menu_position(42.9);
 
 		add_menu_page( 'AnsPress', 'AnsPress'.$Totalcount, 'delete_pages', 'anspress', array($this, 'dashboard_page'), ANSPRESS_URL . '/assets/answer.png', $pos );
-		
+
 		add_submenu_page('anspress', __( 'All Questions', 'ap' ), __( 'All Questions', 'ap' ),	'delete_pages', 'edit.php?post_type=question', '');
-		
+
 		add_submenu_page('anspress', __( 'New Question', 'ap' ), __( 'New Question', 'ap' ),	'delete_pages', 'post-new.php?post_type=question', '');
-		
+
 		add_submenu_page('anspress', __( 'All Answers', 'ap' ), __( 'All Answers', 'ap' ),	'delete_pages', 'edit.php?post_type=answer', '');
-		
+
 		add_submenu_page('anspress', __( 'Moderate question & answer', 'ap' ), __( 'Moderate', 'ap' ).$Modcount,	'manage_options', 'anspress_moderate', array( $this, 'display_moderate_page' ));
-		
-		add_submenu_page('anspress', __( 'Flagged question & answer', 'ap' ), __( 'Flagged', 'ap' ).$Flagcount,	'delete_pages', 'anspress_flagged', array( $this, 'display_flagged_page' ));		
-		
-		add_submenu_page('anspress', __( 'Reputation', 'ap' ), __( 'Reputation', 'ap' ),	'manage_options', 'anspress_reputation', array( $this, 'display_reputation_page' ));		
-		
+
+		add_submenu_page('anspress', __( 'Flagged question & answer', 'ap' ), __( 'Flagged', 'ap' ).$Flagcount,	'delete_pages', 'anspress_flagged', array( $this, 'display_flagged_page' ));
+
+		add_submenu_page('anspress', __( 'Reputation', 'ap' ), __( 'Reputation', 'ap' ),	'manage_options', 'anspress_reputation', array( $this, 'display_reputation_page' ));
+
 		//add_submenu_page('anspress', __( 'Extensions', 'ap' ), __( 'Extensions', 'ap' ),	'manage_options', 'anspress_ext', array( $this, 'display_plugin_addons_page' ));
-		
+
 
 		 add_submenu_page('ap_post_flag', __( 'Post flag', 'ap' ), __( 'Post flag', 'ap' ), 'delete_pages', 'ap_post_flag', array( $this, 'display_post_flag' ));
-		 
+
 		 add_submenu_page('ap_select_question', __( 'Select question', 'ap' ), __( 'Select question', 'ap' ), 'delete_pages', 'ap_select_question', array( $this, 'display_select_question' ));
 
 		/**
@@ -192,10 +192,10 @@ class AnsPress_Admin
 		do_action('ap_admin_menu');
 
 		add_submenu_page('anspress', __( 'About AnsPress', 'ap' ), __( 'About AnsPress', 'ap' ),	'manage_options', 'anspress_about', array( $this, 'display_plugin_about_page' ));
-		
+
 		add_submenu_page('anspress', __( 'AnsPress Options', 'ap' ), __( 'Options', 'ap' ),	'manage_options', 'anspress_options', array( $this, 'display_plugin_admin_page' ));
 	}
-	
+
 	/**
 	 * @param integer $start
 	 */
@@ -204,16 +204,16 @@ class AnsPress_Admin
         foreach ($GLOBALS['menu'] as $key => $menu) {
             $menus_positions[] = $key;
         }
- 
+
         if (!in_array($start, $menus_positions)) return $start;
- 
+
         /* the position is already reserved find the closet one */
         while (in_array($start, $menus_positions)) {
             $start += $increment;
         }
         return $start;
     }
-	
+
 	// highlight the proper top level menu
 	public function tax_menu_correction($parent_file) {
 		global $current_screen;
@@ -229,7 +229,7 @@ class AnsPress_Admin
 	public function display_plugin_admin_page() {
 		include_once( 'views/admin.php' );
 	}
-	
+
 	public function display_plugin_addons_page() {
 		include_once( 'views/addons.php' );
 	}
@@ -237,13 +237,13 @@ class AnsPress_Admin
 	public function display_plugin_about_page() {
 		include_once( 'views/about.php' );
 	}
-	
+
 	public function display_reputation_page() {
 		include_once('reputation.php');
 		$reputation_table = new AnsPress_Reputation_Table();
 		$reputation_table->prepare_items();
 		?>
-		<div class="wrap">        
+		<div class="wrap">
 			<div id="apicon-users" class="icon32"><br/></div>
 			<h2>
 				<?php _e('AnsPress Points', 'ap'); ?>
@@ -256,13 +256,13 @@ class AnsPress_Admin
 		</div>
 		<?php
 	}
-	
+
 	public function display_badges_page() {
 		include_once('badges.php');
 		$badge_table = new AP_Badges_Table();
 		$badge_table->prepare_items();
 		?>
-		<div class="wrap">        
+		<div class="wrap">
 			<div id="apicon-users" class="icon32"><br/></div>
 			<h2>
 				<?php _e('AnsPress Badges', 'ap'); ?>
@@ -276,17 +276,17 @@ class AnsPress_Admin
 		</div>
 		<?php
 	}
-	
+
 	public function dashboard_page() {
 		include_once( 'views/dashboard.php' );
 	}
-	
+
 	public function display_moderate_page() {
 		include_once('moderate.php');
 		$moderate_table = new AP_Moderate_Table();
 		$moderate_table->prepare_items();
 		?>
-		<div class="wrap">        
+		<div class="wrap">
 			<div id="apicon-users" class="icon32"><br/></div>
 			<h2><?php _e('Posts waiting moderation', 'ap'); ?></h2>
 			<?php do_action('ap_after_admin_page_title') ?>
@@ -299,13 +299,13 @@ class AnsPress_Admin
 		</div>
 		<?php
 	}
-	
+
 	public function display_flagged_page() {
 		include_once('flagged.php');
 		$flagged_table = new AP_Flagged_Table();
 		$flagged_table->prepare_items();
 		?>
-		<div class="wrap">        
+		<div class="wrap">
 			<div id="apicon-users" class="icon32"><br/></div>
 			<h2><?php _e('Flagged question & answer', 'ap'); ?></h2>
 			<?php do_action('ap_after_admin_page_title') ?>
@@ -360,10 +360,10 @@ class AnsPress_Admin
 	public function init_actions(){
 
 		$GLOBALS['wp']->add_query_var( 'post_parent' );
-		
-		// flush_rules if option updated	
+
+		// flush_rules if option updated
 		if(isset($_GET['page']) && ('anspress_options' == $_GET['page']) && isset($_GET['settings-updated']) && $_GET['settings-updated']){
-			$options = ap_opt();			
+			$options = ap_opt();
 			$page = get_page(ap_opt('base_page'));
 			$options['base_page_slug'] = $page->post_name;
 			update_option( 'anspress_opt', $options);
@@ -380,13 +380,13 @@ class AnsPress_Admin
 		   wp_redirect( admin_url( 'admin.php?page=ap_select_question' ) );
 		}
 	}
-	
+
 	public function question_meta_box_class(){
-		require_once('meta_box.php'); 
+		require_once('meta_box.php');
 		new AP_Question_Meta_Box();
 	}
 
-	public function user_roles_fields( $user ) { 
+	public function user_roles_fields( $user ) {
 	?>
 
 		<h3><?php _e('AnsPress Options', 'ap'); ?></h3>
@@ -407,16 +407,16 @@ class AnsPress_Admin
 			</tr>
 		</table>
 	<?php }
-	
+
 	public function save_user_roles_fields( $user_id ) {
 		update_usermeta( $user_id, 'ap_role', sanitize_text_field($_POST['ap_role']) );
 	}
-	
+
 	public function ap_edit_reputation(){
 		if(current_user_can('manage_options')){
 			$id = sanitize_text_field($_POST['id']);
 			$reputation = ap_reputation_by_id($id);
-			
+
 			$html = '
 				<div id="ap-reputation-edit">
 					<form method="POST" data-action="ap-save-reputation">
@@ -453,14 +453,14 @@ class AnsPress_Admin
 					</form>
 				</div>
 			';
-			
+
 			$result = array('status' => true, 'html' => $html);
 			$result = apply_filters('ap_edit_reputation_result', $result);
 			echo json_encode( $result );
 		}
 		die();
 	}
-	
+
 	public function ap_save_reputation(){
 		if(current_user_can('manage_options')){
 			$nonce 	= sanitize_text_field($_POST['nonce']);
@@ -470,26 +470,26 @@ class AnsPress_Admin
 			$event 	= sanitize_text_field($_POST['event']);
 			if(wp_verify_nonce($nonce, 'ap_save_reputation')){
 				if(isset($_POST['id'])){
-					$id 	= sanitize_text_field($_POST['id']);				
+					$id 	= sanitize_text_field($_POST['id']);
 					ap_reputation_option_update($id, $title, $desc, $reputation, $event);
 				}else{
 					ap_reputation_option_new($title, $desc, $reputation, $event);
 				}
-				
+
 				ob_start();
 				$this->display_reputation_page();
 				$html = ob_get_clean();
-				
+
 				$result =  array(
 					'status' => true, 'html' => $html
 				);
-				
+
 				echo json_encode( $result );
 			}
 		}
-		
+
 		die();
-	}	
+	}
 	public function ap_new_reputation_form(){
 		if(current_user_can('manage_options')){
 			$html = '
@@ -527,14 +527,14 @@ class AnsPress_Admin
 					</form>
 				</div>
 			';
-			
+
 			$result = array('status' => true, 'html' => $html);
 			$result = apply_filters('ap_new_reputation_form_result', $result);
 			echo json_encode( $result );
 		}
 		die();
 	}
-	
+
 	public function ap_delete_reputation(){
 		if(current_user_can('manage_options')){
 			$args = explode('-', sanitize_text_field($_POST['args']));
@@ -545,20 +545,20 @@ class AnsPress_Admin
 				echo json_encode( $result );
 			}
 		}
-		
+
 		die();
 	}
-	
+
 	public function ap_edit_badges(){
 		if(current_user_can('manage_options')){
 			$id = sanitize_text_field($_POST['id']);
 			$badge = ap_badge_by_id($id);
-			
+
 			$badges_opt = '';
 			foreach(ap_badge_types() as $k => $b){
 				$badges_opt .= "<option value='{$k}' ".selected($k, $badge['type'], false).">{$b}</option>";
 			}
-			
+
 			$html = '
 				<div id="ap-badge-edit">
 					<form method="POST" data-action="ap-save-badge">
@@ -607,7 +607,7 @@ class AnsPress_Admin
 					</form>
 				</div>
 			';
-			
+
 			$result = array('status' => true, 'html' => $html);
 			$result = apply_filters('ap_edit_badge_result', $result);
 			echo json_encode( $result );
@@ -626,34 +626,34 @@ class AnsPress_Admin
 			$multiple 	= (int)$_POST['multiple'];
 			if(wp_verify_nonce($nonce, 'ap_save_badge')){
 				if(isset($_POST['id'])){
-					$id 	= sanitize_text_field($_POST['id']);				
+					$id 	= sanitize_text_field($_POST['id']);
 					ap_badge_option_update($id, $title, $desc, $type, $min_reputation, $event, $multiple);
 				}else{
 					ap_badge_option_new($id, $title, $desc, $type, $min_reputation, $event, $multiple);
 				}
-				
+
 				ob_start();
 				$this->display_badges_page();
 				$html = ob_get_clean();
-				
+
 				$result =  array(
 					'status' => true, 'html' => $html
 				);
-				
+
 				echo json_encode( $result );
 			}
 		}
 		die();
 	}
-	
+
 	public function ap_new_badge_form(){
 		if(current_user_can('manage_options')){
-			
+
 			$badges_opt = '';
 			foreach(ap_badge_types() as $k => $b){
 				$badges_opt .= "<option value='{$k}'>{$b}</option>";
 			}
-			
+
 			$html = '
 				<div id="ap-badge-edit">
 					<form method="POST" data-action="ap-save-badge">
@@ -701,14 +701,14 @@ class AnsPress_Admin
 					</form>
 				</div>
 			';
-			
+
 			$result = array('status' => true, 'html' => $html);
 			$result = apply_filters('ap_new_badge_result', $result);
 			echo json_encode( $result );
 		}
 		die();
 	}
-		
+
 	public function ap_taxo_rename(){
 
 		if(current_user_can('manage_options')){
@@ -718,18 +718,18 @@ class AnsPress_Admin
 
 			ap_opt('tags_taxo_renamed', 'true');
 		}
-		
+
 		die();
 	}
-	
+
 	public function change_post_menu_label() {
 		global $menu;
 		global $submenu;
 		$submenu['anspress'][0][0] = 'AnsPress';
 	}
-	
-	
-	
+
+
+
 	public function ap_delete_flag(){
 		$id = (int)sanitize_text_field($_POST['id']);
 		if(wp_verify_nonce($_POST['__nonce'], 'flag_delete'.$id) && current_user_can('manage_options')){
@@ -748,9 +748,9 @@ class AnsPress_Admin
 		global $typenow, $pagenow, $post;
 
 		if (in_array( $pagenow, array( 'post-new.php', 'post.php' ) ) && $post->post_type == 'answer' && ( (isset($_GET['action']) && $_GET['action'] == 'edit') )){
-			
+
 			$post_parent = isset($_GET['action']) ? $post->post_parent : (int)$_GET['post_parent'];
-			
+
 			echo '<div class="ap-selected-question">';
 				if(!isset($post_parent)){
 					echo '<p class="no-q-selected">'.__('This question is orphan, no question is selected for this answer').'</p>';
@@ -768,7 +768,7 @@ class AnsPress_Admin
 	/**
 	 * Set answer CPT post parent when saving
 	 * @param  integer $post_id
-	 * @param  object $post 
+	 * @param  object $post
 	 * @return void
 	 * @since 2.0.0-alpha2
 	 */
@@ -781,7 +781,7 @@ class AnsPress_Admin
 
 		if ( !current_user_can( 'edit_post', $post->ID ))
 			return $post->ID;
-		
+
 		if ( $post->post_type == 'answer' ) {
 			$parent_q = (int) $_GET['post_parent'];
 			if( !isset( $parent_q ) || $parent_q == '0' || $parent_q =='' ){
@@ -790,7 +790,7 @@ class AnsPress_Admin
 				global $wpdb;
 				$wpdb->update( $wpdb->posts, array( 'post_parent' => $parent_q ), array( 'ID' => $post->ID ) );
 			}
-			
+
 		}
 	}
 
@@ -807,20 +807,20 @@ class AnsPress_Admin
                 return;
             }
         }
-        
+
         return $data;
     }
 
     public function post_custom_message($messages)
     {
         global $post;
-        
+
         if ($post->post_type == 'answer' && isset($_REQUEST['message']) && $_REQUEST['message'] == 99)
             add_action('admin_notices', array(
                 $this,
                 'ans_notice'
             ));
-        
+
         return $messages;
     }
 

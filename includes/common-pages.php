@@ -27,7 +27,7 @@ class AnsPress_Common_Pages
         global $questions;
 
         add_action('init', array($this, 'register_common_pages'));
-        
+
     }
 
     public function register_common_pages()
@@ -100,18 +100,18 @@ class AnsPress_Common_Pages
         global $questions;
 
         ap_get_question(get_question_id());
-        
+
         if(ap_have_questions()){
             while ( anspress()->questions->have_posts() ) : anspress()->questions->the_post();
                 global $post;
-                setup_postdata( $post );                 
+                setup_postdata( $post );
             endwhile;
             include(ap_get_theme_location('question.php'));
             wp_reset_postdata();
         }else{
             include(ap_get_theme_location('not-found.php'));
         }
-        
+
     }
 
     public function ask_page()
@@ -128,7 +128,7 @@ class AnsPress_Common_Pages
         }else{
             global $editing_post;
             $editing_post = get_post($post_id);
-            
+
             // include theme file
             include ap_get_theme_location('edit.php');
         }
@@ -138,12 +138,12 @@ class AnsPress_Common_Pages
     {
         $keywords   = sanitize_text_field( get_query_var( 'ap_s' ));
         $type       = sanitize_text_field( @$_GET['type'] );
-        
+
         if($type == ''){
             ap_get_questions(array('s' => $keywords));
             include(ap_get_theme_location('base.php'));
         }elseif($type == 'user' && ap_opt('enable_users_directory')){
-            global $ap_user_query;        
+            global $ap_user_query;
             $ap_user_query = ap_has_users(array('search' => $keywords, 'search_columns' => array('user_login', 'user_email', 'user_nicename')));
             include(ap_get_theme_location('users/users.php'));
         }
