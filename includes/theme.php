@@ -477,7 +477,7 @@ function ap_question_sorting($current_url = ''){
 
 	$param = array();
 
-	$sort = isset($_GET['ap_sort']) ? $_GET['ap_sort'] : 'active';
+	$sort = isset($_GET['ap_sort']) ? sanitize_text_field($_GET['ap_sort']) : 'active';
 
 	$search_q = sanitize_text_field(get_query_var('ap_s'));
 
