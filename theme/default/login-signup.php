@@ -1,4 +1,4 @@
-<?php if(!is_user_logged_in()): ?>
+<?php if(!is_user_logged_in() && !ap_opt('allow_anonymous')): ?>
 	<div class="ap-please-login">
 		<?php printf(__('Please %s or %s.', 'ap'), '<a data-action="ap_modal" data-toggle="#ap-login-modal" href="'.wp_login_url(get_permalink()).'">'.__('Login', 'ap').'</a>', '<a href="'.wp_registration_url().'">'.__('Sign up', 'ap').'</a>') ?>
 		<?php do_action( 'wordpress_social_login' ); ?>
