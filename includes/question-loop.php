@@ -45,8 +45,8 @@ class Question_Query extends WP_Query {
             'paged'         => $paged
         );
 
-        $args['post_status'][] = 'publish'; 
-        $args['post_status'][] = 'closed'; 
+        $args['post_status'][] = 'publish';
+        $args['post_status'][] = 'closed';
 
         if($post_parent)
             $this->args['post_parent'] = $post_parent;
@@ -59,7 +59,7 @@ class Question_Query extends WP_Query {
         if(isset($this->args[ 'sortby' ]))
             $this->orderby_questions();
 
-        $this->args['post_type'] = 'question';        
+        $this->args['post_type'] = 'question';
 
         $args = $this->args;
 
@@ -94,7 +94,7 @@ class Question_Query extends WP_Query {
                 $this->args['meta_compare'] = '=';
                 $this->args['meta_value'] = false;
 
- 
+
             break;
             case 'oldest' :
                 $this->args['orderby'] = 'date';
@@ -113,7 +113,7 @@ class Question_Query extends WP_Query {
 
             //TOOD: Add more orderby like most viewed, and user order like 'answered by user_id', 'asked_by_user_id'
         }
-         
+
     }
 
 }
@@ -164,19 +164,19 @@ function ap_get_question($question_id){
     if(ap_user_can_view_moderate_post($question_id))
        $args['post_status'][] = 'moderate';
 
-    anspress()->questions = new Question_Query($args); 
+    anspress()->questions = new Question_Query($args);
 }
 
 function ap_have_questions(){
     return anspress()->questions->have_posts();
 }
 
-function ap_questions(){  
+function ap_questions(){
    return anspress()->questions->have_posts();
 }
 
 function ap_the_question(){
-    return anspress()->questions->the_post(); 
+    return anspress()->questions->the_post();
 }
 
 function ap_question_the_object(){
@@ -208,7 +208,7 @@ function ap_question_the_ID(){
 function ap_question_the_post_parent(){
     echo ap_question_get_the_post_parent();
 }
-    
+
     /**
      * Returns the question post parent ID
      * @return integer
@@ -291,7 +291,7 @@ function ap_question_the_net_vote(){
                 <span><?php echo ap_question_get_the_net_vote(); ?></span>
                 <?php  _e('votes', 'ap'); ?>
             </span>
-        <?php 
+        <?php
     }
 }
 
@@ -312,7 +312,7 @@ function ap_question_the_net_vote(){
 function ap_question_the_permalink(){
     echo ap_question_get_the_permalink();
 }
-    
+
     /**
      * Return active question permalink
      * @return string
@@ -340,7 +340,7 @@ function ap_question_the_vote_button(){
 }
 
 /**
- * Get active question post status 
+ * Get active question post status
  * @return void
  * @since 2.1
  */
@@ -359,7 +359,7 @@ function ap_question_the_status(){
  * @since 2.1
  */
 function ap_question_the_comments(){
-    if(ap_opt('show_comments_by_default') && !ap_opt('disable_comments_on_question')) 
+    if(ap_opt('show_comments_by_default') && !ap_opt('disable_comments_on_question'))
         comments_template();
 }
 
@@ -377,9 +377,9 @@ function ap_question_the_answer_form(){
  * @return void
  * @since 2.1
  */
-function ap_question_the_answers(){              
+function ap_question_the_answers(){
     include(ap_get_theme_location('best_answer.php'));
-    
+
     ap_get_answers();
 
     include(ap_get_theme_location('answers.php'));
@@ -394,7 +394,7 @@ function ap_question_the_answers(){
 function ap_question_the_active_ago(){
     echo ap_human_time(ap_question_get_the_active_ago(), false);
 }
-    
+
     /**
      * Return the question active ago time
      * @return string
@@ -411,7 +411,7 @@ function ap_question_the_active_ago(){
 function ap_question_the_view_count(){
     echo ap_question_get_the_view_count();
 }
-    
+
     /**
      * Return total view count
      * @return integer
@@ -444,12 +444,12 @@ function ap_question_the_subscriber_count(){
  */
 function ap_question_best_answer_selected($question_id = false){
     $question_id = ap_parameter_empty($question_id, @ap_question_get_the_ID());
-    
+
     $meta = get_post_meta($question_id, ANSPRESS_SELECTED_META, true);
 
     if(!$meta)
         return false;
-    
+
     return true;
 }
 
@@ -464,7 +464,7 @@ function ap_question_get_the_active_time($question_id = false){
 
 function ap_question_the_time($question_id = false, $format = 'U'){
     $question_id = ap_parameter_empty($question_id, @ap_question_get_the_ID());
-    printf( __( '<time itemprop="datePublished" datetime="%s">%s Ago</time>', 'ap' ), ap_question_get_the_time(false, 'c'), ap_human_time(ap_question_get_the_time($question_id, $format)));
+    printf( __( '%s Ago</time>', 'ap' ), '<time itemprop="datePublished" datetime="'.ap_question_get_the_time(false, 'c').'">'.ap_human_time(ap_question_get_the_time($question_id, $format)).'</time>' );
 }
 
 function ap_question_get_the_time($question_id = false, $format = ''){

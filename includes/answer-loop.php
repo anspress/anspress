@@ -36,7 +36,7 @@ class Answers_Query extends WP_Query {
         global $answers;
 
         $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
-        
+
         $defaults = array(
             'question_id'           => get_question_id(),
             'ap_answers_query'      => true,
@@ -46,11 +46,11 @@ class Answers_Query extends WP_Query {
             'include_best_answer'   => false,
         );
 
-        $args['post_status'][] = 'publish'; 
+        $args['post_status'][] = 'publish';
         $args['post_status'][] = 'closed';
 
         $this->args = wp_parse_args( $args, $defaults );
-        
+
         if(isset($this->args['question_id']))
             $question_id = $this->args['question_id'];
 
@@ -70,7 +70,7 @@ class Answers_Query extends WP_Query {
                 )
             );
 
-        $this->args['post_type'] = 'answer';        
+        $this->args['post_type'] = 'answer';
 
         $args = $this->args;
 
@@ -123,7 +123,7 @@ class Answers_Query extends WP_Query {
                 'compare'       => '!=',
                 'value'         => '1'
             );
-         
+
     }
 
 }
@@ -149,7 +149,7 @@ function ap_get_answers($args = array()){
 
     if(is_super_admin() || current_user_can('ap_view_moderate'))
         $args['post_status'][] = 'moderate';
-    
+
     if(isset($_GET['show_answer'])){
         $args['ap_query'] = 'order_answer_to_top';
         $args['order_answer_id'] = (int)$_GET['show_answer'];
@@ -168,16 +168,16 @@ function ap_get_answer($answer_id){
     anspress()->answers = new Answers_Query(array('p' => $answer_id));
 }
 
-/** 
+/**
  * Get select answer object
  * @since   2.0
  */
 function ap_get_best_answer($question_id = false){
 
-    if(!$question_id) 
+    if(!$question_id)
         $question_id = get_question_id();
 
-    
+
     $args = array('only_best_answer' => true);
 
     /*if(ap_user_can_view_private_post($answer_id))
@@ -194,12 +194,12 @@ function ap_have_answers(){
     return anspress()->answers->have_posts();
 }
 
-function ap_answers(){  
+function ap_answers(){
    return anspress()->answers->have_posts();
 }
 
 function ap_the_answer(){
-    return anspress()->answers->the_post(); 
+    return anspress()->answers->the_post();
 }
 
 function ap_answer_the_object(){
@@ -217,7 +217,7 @@ function ap_answer_the_object(){
 function ap_answer_the_answer_id(){
     echo ap_answer_get_the_answer_id();
 }
-    
+
     /**
      * Get the active answer id
      * @return integer
@@ -238,7 +238,7 @@ function ap_answer_the_answer_id(){
 function ap_answer_the_question_id(){
     echo ap_answer_get_the_question_id();
 }
-    
+
     /**
      * Get the active answer question id
      * @return integer
@@ -266,9 +266,9 @@ function ap_answer_is_best($answer_id = false){
     $answer_id = ap_parameter_empty($answer_id, @ap_answer_get_the_answer_id());
 
     $meta = get_post_meta($answer_id, ANSPRESS_BEST_META, true);
-    
+
     if($meta) return true;
-    
+
     return false;
 }
 
@@ -325,7 +325,7 @@ function ap_answer_the_vote_button(){
  * @since 2.1
  */
 function ap_answer_the_comments(){
-    if(ap_opt('show_comments_by_default') && !ap_opt('disable_comments_on_answer')) 
+    if(ap_opt('show_comments_by_default') && !ap_opt('disable_comments_on_answer'))
         comments_template();
 }
 
@@ -337,7 +337,7 @@ function ap_answer_the_comments(){
 function ap_answer_the_active_ago(){
     echo ap_human_time(ap_answer_get_the_active_ago(), false);
 }
-    
+
     /**
      * Return the answer active ago time
      * @return string
@@ -355,7 +355,7 @@ function ap_answer_the_active_ago(){
 function ap_answer_the_permalink(){
     echo ap_answer_get_the_permalink();
 }
-    
+
     /**
      * Return active answer permalink
      * @return string
@@ -377,7 +377,7 @@ function ap_answer_the_net_vote(){
                 <span><?php echo ap_answer_get_the_net_vote(); ?></span>
                 <?php  _e('votes', 'ap'); ?>
             </span>
-        <?php 
+        <?php
     }
 }
 
@@ -386,7 +386,7 @@ function ap_answer_the_net_vote(){
      * @return integer
      * @since 2.1
      */
-    function ap_answer_get_the_net_vote(){        
+    function ap_answer_get_the_net_vote(){
         return ap_net_vote(ap_answer_the_object());
     }
 
@@ -400,7 +400,7 @@ function ap_answer_the_vote_class(){
  */
 function ap_answer_get_the_vote_class(){
     $vote = ap_answer_get_the_net_vote();
-    
+
     if($vote > 0)
         return 'positive';
     elseif($vote < 0)
@@ -425,11 +425,23 @@ function ap_answer_the_active_time($answer_id = false){
         return ap_get_latest_history_html($answer_id);
     }
 
+/**
+ * Output answer time in human readable format
+ * @param  boolean|integer  $answer_id      If outside of loop, post ID can be passed
+ * @param  integer          $format         WP time format
+ * @return void
+ */
 function ap_answer_the_time($answer_id = false, $format = 'U'){
     $answer_id = ap_parameter_empty($answer_id, @ap_answer_get_the_answer_id());
-    printf( __( '<time itemprop="datePublished" datetime="%s">%s Ago</time>', 'ap' ), ap_answer_get_the_time(false, 'c'), ap_human_time(ap_answer_get_the_time($answer_id, $format)));
+    printf( __( '%s Ago', 'ap' ), '<time itemprop="datePublished" datetime="%s">'.ap_human_time(ap_answer_get_the_time($answer_id, $format)).'</time>');
 }
 
+/**
+ * Return answer time
+ * @param  boolean|integer  $answer_id      If outside of loop, post ID can be passed
+ * @param  integer          $format         WP time format
+ * @return void
+ */
 function ap_answer_get_the_time($answer_id = false, $format = ''){
     $answer_id = ap_parameter_empty($answer_id, @ap_answer_get_the_answer_id());
     return get_the_time($format, $answer_id);

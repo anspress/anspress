@@ -205,7 +205,7 @@ function ap_user_link($user_id = false, $sub = false)
 
     elseif(!$is_enabled)
         return get_author_posts_url($user_id);
-    
+
     if ($user_id == 0)
         return false;
 
@@ -219,7 +219,7 @@ function ap_user_link($user_id = false, $sub = false)
         }
         elseif(is_array($sub)){
             $link = $base . $user->user_login.'/';
-            
+
             if(!empty($sub)){
                 foreach($sub as $s)
                     $link .= $s.'/';
@@ -227,7 +227,7 @@ function ap_user_link($user_id = false, $sub = false)
         }
         elseif(!is_array($sub)){
             $link = $base. $user->user_login.'/'.$sub.'/';
-        }        
+        }
 
     }else{
         if($sub === false){
@@ -309,7 +309,7 @@ function ap_user_menu()
             $o .= '<li'.($active_user_page == $m['slug'] ? ' class="active"' : '').'><a href="'.$m['link'].'" class="ap-user-menu-'.$m['slug'].$class.'">'.$m['title'].'</a></li>';
 
         }
-        
+
         $o .= '<li class="ap-user-menu-more ap-dropdown"><a href="#" class="ap-dropdown-toggle">'.__('More', 'ap').ap_icon('chevron-down', true).'</a><ul class="ap-dropdown-menu"></ul></li>';
         $o .= '</ul>';
         echo $o;
@@ -411,9 +411,9 @@ function ap_check_if_photogenic($user_id)
  */
 function ap_users_tab(){
     $active = isset($_GET['ap_sort']) ? $_GET['ap_sort'] : 'reputation';
-    
+
     $link = ap_get_link_to('users').'?ap_sort=';
-    
+
     ?>
     <ul class="ap-questions-tab ap-ul-inline clearfix" role="tablist">
         <?php if(!ap_opt('disable_reputation')): ?>
@@ -422,14 +422,14 @@ function ap_users_tab(){
         <li class="<?php echo $active == 'active' ? ' active' : ''; ?>"><a href="<?php echo $link.'active'; ?>"><?php _e('Active', 'ap'); ?></a></li>
         <li class="<?php echo $active == 'best_answer' ? ' active' : ''; ?>"><a href="<?php echo $link.'best_answer'; ?>"><?php _e('Best answer', 'ap'); ?></a></li>
         <li class="<?php echo $active == 'answer' ? ' active' : ''; ?>"><a href="<?php echo $link.'answer'; ?>"><?php _e('Answer', 'ap'); ?></a></li>
-        <li class="<?php echo $active == 'newest' ? ' active' : ''; ?>"><a href="<?php echo $link.'newest'; ?>"><?php _e('Newest', 'ap'); ?></a></li>        
-        <?php 
+        <li class="<?php echo $active == 'newest' ? ' active' : ''; ?>"><a href="<?php echo $link.'newest'; ?>"><?php _e('Newest', 'ap'); ?></a></li>
+        <?php
             /**
              * ACTION: ap_users_tab
              * Used to hook into users page tab
              * @since 2.1.0
              */
-            do_action('ap_users_tab', $active); 
+            do_action('ap_users_tab', $active);
         ?>
     </ul>
     <?php
@@ -450,7 +450,7 @@ function ap_displayed_user_id(){
      */
     function ap_get_displayed_user_id(){
         $user_id =  (int)get_query_var('ap_user_id');
-        
+
         if($user_id > 0)
             return $user_id;
 
@@ -487,20 +487,20 @@ function ap_get_avatar_src($user_id, $small = true) {
  */
 function ap_user_top_posts_tab(){
     $active = isset($_GET['tab']) ? sanitize_text_field($_GET['tab']) : 'answers';
-    
+
     $link = '?tab=';
     ?>
     <?php printf(__('Top %s', 'ap'), $active); ?>
     <ul id="ap-user-posts-tab" class="ap-flat-tab ap-ul-inline clearfix" role="tablist">
         <li class="<?php echo $active == 'answers' ? ' active' : ''; ?>"><a href="<?php echo $link.'answers'; ?>"><?php _e('Answers', 'ap'); ?></a></li>
         <li class="<?php echo $active == 'questions' ? ' active' : ''; ?>"><a href="<?php echo $link.'questions'; ?>"><?php _e('Questions', 'ap'); ?></a></li>
-        <?php 
+        <?php
             /**
              * ACTION: ap_users_tab
              * Used to hook into users page tab
              * @since 2.1.0
              */
-            do_action('ap_users_tab', $active); 
+            do_action('ap_users_tab', $active);
         ?>
     </ul>
     <?php
@@ -513,21 +513,21 @@ function ap_user_top_posts_tab(){
  */
 function ap_user_subscription_tab(){
     $active = isset($_GET['tab']) ? sanitize_text_field($_GET['tab']) : 'question';
-    
+
     $link = '?tab=';
 
     printf(__('My subscriptions', 'ap'), $active);
-    
+
     ?>
     <ul id="ap-user-posts-tab" class="ap-flat-tab ap-ul-inline clearfix" role="tablist">
-        <li class="<?php echo $active == 'question' ? ' active' : ''; ?>"><a href="<?php echo $link.'question'; ?>"><?php _e('Questions', 'ap'); ?></a></li>        
-        <?php 
+        <li class="<?php echo $active == 'question' ? ' active' : ''; ?>"><a href="<?php echo $link.'question'; ?>"><?php _e('Questions', 'ap'); ?></a></li>
+        <?php
             /**
              * ACTION: ap_user_subscription_tab
              * Used to hook into users page tab
              * @since 2.3
              */
-            do_action('ap_user_subscription_tab', $active); 
+            do_action('ap_user_subscription_tab', $active);
         ?>
     </ul>
     <?php
@@ -542,8 +542,8 @@ function ap_user_subscription_tab(){
  */
 function ap_user_display_meta($html = false, $user_id = false, $echo = false)
 {
-    if (false === $user_id) 
-        $user_id = get_the_author_meta('ID');   
+    if (false === $user_id)
+        $user_id = get_the_author_meta('ID');
 
     $metas = array();
 
@@ -603,13 +603,13 @@ function ap_user_profile_tab(){
     $group = isset($_GET['group']) ? $_GET['group'] : 'basic';
 
     $link = ap_user_link(ap_get_displayed_user_id(), 'profile');
-    
+
     $navs = array(
-        'basic' => array('link' => add_query_arg(array('group' => 'basic'), $link), 'title' => __('Basic', 'ap')), 
+        'basic' => array('link' => add_query_arg(array('group' => 'basic'), $link), 'title' => __('Basic', 'ap')),
         'account' => array('link' => add_query_arg(array('group' => 'account'), $link), 'title' => __('Account', 'ap'))
     );
 
-    
+
     /**
      * FILTER: ap_questions_tab
      * Before prepering questions list tab.
@@ -655,7 +655,7 @@ function ap_is_user_page_public($page){
  */
 function ap_update_user_questions_count_meta($question_id){
     $post = get_post( $question_id );
-    
+
     if($post->post_type == 'question')
         update_user_meta( $post->post_author, '__total_questions', ap_user_question_count($post->post_author) );
 }
@@ -668,7 +668,7 @@ function ap_update_user_questions_count_meta($question_id){
  */
 function ap_update_user_answers_count_meta($answer_id){
     $post = get_post( $answer_id );
-    
+
     if($post->post_type == 'answer')
         update_user_meta( $post->post_author, '__total_answers', ap_user_answer_count($post->post_author) );
 }
@@ -696,7 +696,7 @@ function ap_update_user_solved_answers_count_meta($user_id = false){
 /**
  * Get last 28 days reputation earned by user group by day.
  * This data is used in bard chart
- * 
+ *
  * @param  boolean|integer      $user_id    WordPress user ID if false @see ap_get_displayed_user_id() will be used
  * @param  boolean              $object     Return object or string
  * @return string|object
@@ -707,7 +707,7 @@ function ap_user_get_28_days_reputation($user_id = false, $object = false){
         $user_id = ap_get_displayed_user_id();
 
     global $wpdb;
-    
+
     $current_time = current_time('mysql');
 
     $query = $wpdb->prepare("SELECT sum(v.apmeta_value) as points, date_format(v.apmeta_date, '%%m.%%d') as day FROM ".$wpdb->prefix."ap_meta v WHERE v.apmeta_type='reputation' AND v.apmeta_userid = %d AND v.apmeta_date BETWEEN %s - INTERVAL 28 DAY AND %s group by date_format(v.apmeta_date,'%%m.%%d')", $user_id, $current_time, $current_time);
@@ -720,9 +720,9 @@ function ap_user_get_28_days_reputation($user_id = false, $object = false){
         $result = $wpdb->get_results($query);
         wp_cache_set( $key, $result, 'ap' );
     }
-    
+
     $days = array();
-    
+
     for ($i=0; $i<28; $i++)
     {
         $days[date("m.d", strtotime($i." days ago"))] = 0;
@@ -737,7 +737,7 @@ function ap_user_get_28_days_reputation($user_id = false, $object = false){
 
     if($object === false)
         return implode(',', $days);
-    
+
     return (object) $days;
 }
 

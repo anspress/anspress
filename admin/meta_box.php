@@ -3,7 +3,7 @@
 // Exit if accessed directly
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-/** 
+/**
  * The Class.
  */
 class AP_Question_Meta_Box {
@@ -16,12 +16,12 @@ class AP_Question_Meta_Box {
 	public function add_meta_box( $post_type ) {
         $post_types = array('question');     //limit meta box to certain post types
         if ( in_array( $post_type, $post_types )) {
-			add_meta_box('ap_answers_meta_box' ,__( 'Answers', 'ap' ), array( $this,'answers_meta_box_content' ), $post_type, 'normal', 'high' );			
-			add_meta_box('ap_question_meta_box' ,__( 'Question', 'ap' ), array( $this,'question_meta_box_content' ), $post_type, 'side', 'high' );			
+			add_meta_box('ap_answers_meta_box' ,__( 'Answers', 'ap' ), array( $this,'answers_meta_box_content' ), $post_type, 'normal', 'high' );
+			add_meta_box('ap_question_meta_box' ,__( 'Question', 'ap' ), array( $this,'question_meta_box_content' ), $post_type, 'side', 'high' );
         }
-		
+
 		/*if ( in_array( $post_type, array('question', 'answer') )) {
-			add_meta_box('ap_flag_meta_box' ,__( 'Flag & report', 'ap' ), array( $this,'flag_meta_box_content' ), $post_type, 'normal', 'high' );		
+			add_meta_box('ap_flag_meta_box' ,__( 'Flag & report', 'ap' ), array( $this,'flag_meta_box_content' ), $post_type, 'normal', 'high' );
         }*/
 	}
 
@@ -39,11 +39,11 @@ class AP_Question_Meta_Box {
 			'order' => 'DESC'
 		);
 
-	
+
 		$ans_args = apply_filters('ap_meta_box_answers_query_args', $ans_args);
-	
-		$answers = get_posts($ans_args);	
-		
+
+		$answers = get_posts($ans_args);
+
 		if(!empty($answers)){
 		foreach ($answers as $ans){
 		?>
@@ -54,8 +54,8 @@ class AP_Question_Meta_Box {
 				</div>
 				<div class="answer-content">
 					<div class="submitted-on">
-						<?php 
-							printf( __( '<span class="when">Answered about %s ago</span>', 'ap' ), ap_human_time( get_the_time('U', $ans)));
+						<?php
+							printf( __( '%sAnswered about %s ago%s', 'ap' ), '<span class="when">', '</span>', ap_human_time( get_the_time('U', $ans)));
 						?>
 					</div>
 					<p><?php echo $ans->post_content; ?></p>
@@ -73,7 +73,7 @@ class AP_Question_Meta_Box {
 		}
 		wp_reset_postdata();
 	}
-		
+
 	public function question_meta_box_content($post){
 		$ans_count = ap_count_answer_meta($post->ID);
 		$vote_count = get_post_meta($post->ID, ANSPRESS_VOTE_META, true);

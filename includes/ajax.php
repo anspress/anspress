@@ -55,7 +55,6 @@ class AnsPress_Ajax
 			's' 			=> $keyword,
 		));
 
-
 		if($questions){
 			$items = '<div class="ap-similar-questions-head">';
 			$items .= '<h3>'.ap_icon('check', true). sprintf(__('%d similar questions found', 'ap'), count($questions)) .'</h3>';

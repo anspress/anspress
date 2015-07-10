@@ -545,7 +545,7 @@
                 delay:500,
                 animation: 'fade',
                 interactive:true,
-                content: 'Loading...',
+                content: aplang.loading,
                 functionBefore: function(origin, continueTooltip) {
 
                     // we'll make this function asynchronous and allow the tooltip to go ahead and show the loading notification while fetching our data
