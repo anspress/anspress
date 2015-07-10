@@ -15,7 +15,7 @@
  * Plugin URI:        http://anspress.io
  * Description:       The most advance community question and answer system for WordPress
  * Donate link: https://www.paypal.com/cgi-bin/webscr?business=support@anspress.io&cmd=_xclick&item_name=Donation%20to%20AnsPress%20development
- * Version:           2.3.1
+ * Version:           2.3.2
  * Author:            Rahul Aryan
  * Author URI:        http://anspress.io
  * Text Domain:       ap
@@ -39,12 +39,12 @@ if (!class_exists('AnsPress')) {
     class AnsPress
     {
 
-        private $_plugin_version = '2.3.1';
+        private $_plugin_version = '2.3.2';
 
         public static $instance = null;
 
         public $anspress_actions;
-        
+
         public $anspress_ajax;
 
         public $pages;
@@ -92,10 +92,10 @@ if (!class_exists('AnsPress')) {
             if (! isset(self::$instance) && ! (self::$instance instanceof AnsPress)) {
                 self::$instance = new AnsPress();
                 self::$instance->_setup_constants();
-                
+
                 add_action('plugins_loaded', array( self::$instance, 'load_textdomain' ));
-                
-                
+
+
                 add_action('bp_loaded', array( self::$instance, 'bp_include' ));
 
                 global $ap_classes;
@@ -198,8 +198,8 @@ if (!class_exists('AnsPress')) {
             require_once ANSPRESS_DIR.'widgets/questions.php';
             require_once ANSPRESS_DIR.'widgets/breadcrumbs.php';
             require_once ANSPRESS_DIR.'widgets/followers.php';
-            require_once ANSPRESS_DIR.'includes/rewrite.php';            
-            require_once ANSPRESS_DIR.'includes/reputation.php';            
+            require_once ANSPRESS_DIR.'includes/rewrite.php';
+            require_once ANSPRESS_DIR.'includes/reputation.php';
             require_once ANSPRESS_DIR.'vendor/autoload.php';
             require_once ANSPRESS_DIR.'includes/class-user.php';
             require_once ANSPRESS_DIR.'includes/user.php';
@@ -209,8 +209,8 @@ if (!class_exists('AnsPress')) {
             require_once ANSPRESS_DIR.'includes/subscriber.php';
             require_once ANSPRESS_DIR.'includes/follow.php';
             require_once ANSPRESS_DIR.'includes/notification.php';
-            require_once ANSPRESS_DIR.'widgets/user.php'; 
-            require_once ANSPRESS_DIR.'includes/3rd-party.php'; 
+            require_once ANSPRESS_DIR.'widgets/user.php';
+            require_once ANSPRESS_DIR.'includes/3rd-party.php';
         }
 
         /**
@@ -280,7 +280,7 @@ function anspress_uninstall()
         return;
 
     check_admin_referer( 'bulk-plugins' );
-    
+
 
     if(!ap_opt('db_cleanup'))
         return;

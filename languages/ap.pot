@@ -2,10 +2,10 @@
 # This file is distributed under the GPL-3.0+.
 msgid ""
 msgstr ""
-"Project-Id-Version: AnsPress 2.3.1\n"
+"Project-Id-Version: AnsPress 2.3.2\n"
 "Report-Msgid-Bugs-To: "
 "http://wordpress.org/support/plugin/anspress-question-answer\n"
-"POT-Creation-Date: 2015-07-10 05:01:12+00:00\n"
+"POT-Creation-Date: 2015-07-10 08:52:00+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -314,7 +314,7 @@ msgstr ""
 #: admin/reputation.php:152 includes/class-form.php:505
 #: includes/common-pages.php:38 includes/functions.php:358
 #: includes/functions.php:360 includes/functions.php:376
-#: includes/post_types.php:395 includes/theme.php:597
+#: includes/post_types.php:395 includes/theme.php:596
 #: theme/default/part/question.php:46
 msgid "Edit"
 msgstr ""
@@ -532,21 +532,21 @@ msgid "Sort answers by default."
 msgstr ""
 
 #: admin/options-page.php:179 includes/functions.php:454 includes/theme.php:495
-#: includes/theme.php:538 widgets/questions.php:70
+#: includes/theme.php:537 widgets/questions.php:70
 msgid "Voted"
 msgstr ""
 
-#: admin/options-page.php:180 includes/theme.php:490 includes/theme.php:534
+#: admin/options-page.php:180 includes/theme.php:490 includes/theme.php:533
 #: includes/user.php:422 widgets/question_stats.php:40 widgets/questions.php:68
 msgid "Active"
 msgstr ""
 
 #: admin/options-page.php:181 includes/functions.php:452 includes/theme.php:491
-#: includes/theme.php:540 includes/user.php:425 widgets/questions.php:69
+#: includes/theme.php:539 includes/user.php:425 widgets/questions.php:69
 msgid "Newest"
 msgstr ""
 
-#: admin/options-page.php:182 includes/functions.php:453 includes/theme.php:541
+#: admin/options-page.php:182 includes/functions.php:453 includes/theme.php:540
 msgid "Oldest"
 msgstr ""
 
@@ -953,7 +953,7 @@ msgstr ""
 
 #: admin/reputation.php:153 includes/class-form.php:235
 #: includes/class-form.php:242 includes/functions.php:523
-#: includes/theme.php:602
+#: includes/theme.php:601
 msgid "Delete"
 msgstr ""
 
@@ -1266,7 +1266,7 @@ msgstr ""
 msgid "Answers feed"
 msgstr ""
 
-#: includes/class-user.php:42 includes/theme.php:736
+#: includes/class-user.php:42 includes/theme.php:735
 msgid "User"
 msgstr ""
 
@@ -1422,7 +1422,7 @@ msgstr ""
 msgid "Comment deleted successfully"
 msgstr ""
 
-#: includes/form.php:130 includes/form.php:153 includes/theme.php:727
+#: includes/form.php:130 includes/form.php:153 includes/theme.php:726
 msgid "Tags"
 msgstr ""
 
@@ -2151,7 +2151,7 @@ msgstr ""
 msgid "When user down vote others answers"
 msgstr ""
 
-#: includes/reputation.php:915 includes/theme.php:563 includes/user.php:423
+#: includes/reputation.php:915 includes/theme.php:562 includes/user.php:423
 #: theme/default/best_answer.php:18
 msgid "Best answer"
 msgstr ""
@@ -2349,11 +2349,11 @@ msgstr ""
 msgid "Sort by"
 msgstr ""
 
-#: includes/theme.php:634
+#: includes/theme.php:633
 msgid "Ask question"
 msgstr ""
 
-#: includes/theme.php:731 includes/theme.php:737 includes/theme.php:739
+#: includes/theme.php:730 includes/theme.php:736 includes/theme.php:738
 msgid ".."
 msgstr ""
 
@@ -2780,6 +2780,10 @@ msgstr ""
 
 #: theme/default/list-head.php:13
 msgid "Search questions..."
+msgstr ""
+
+#: theme/default/list-head.php:24
+msgid "Reset sorting and filter"
 msgstr ""
 
 #: theme/default/login-signup.php:3

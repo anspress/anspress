@@ -4,7 +4,7 @@
 **Tags:** question, answer, q&a, forum, profile, stackoverflow, quora, buddypress  
 **Requires at least:** 4.1.1  
 **Tested up to:** 4.2  
-**Stable tag:** 2.3.1  
+**Stable tag:** 2.3.2  
 **License:** GPLv2 or later  
 **License URI:** http://www.gnu.org/licenses/gpl-2.0.html  
 
@@ -15,7 +15,7 @@ Free question and answer plugin for WordPress. Made with developers in mind, hig
 **GitHub repo:** [Git AnsPress](https://github.com/anspress/anspress/)  
 
 Easily add question and answer section like stackoverflow.com or quora.com in your WordPress.
-AnsPress is a most complete question and answer system for WordPress. AnsPress is made with developers in mind, highly customizable. AnsPress provide an easy to use override system for theme. 
+AnsPress is a most complete question and answer system for WordPress. AnsPress is made with developers in mind, highly customizable. AnsPress provide an easy to use override system for theme.
 
 Extensions:
 
@@ -232,55 +232,55 @@ Read full FAQ here http://anspress.io/documents/doc_page=faq
 ### 2.2 ###
 
 * Form error message below input field
-* DB error in Answer sorting 
-* While try to edit answer format get cleared 
+* DB error in Answer sorting
+* While try to edit answer format get cleared
 * BuddyPress reputation count shows 1
-* Load minified assets 
-* Improved admin dashboard 
-* popup add link box in tinymce cuts off content. 
-* Add breadcrumbs widget 
-* Add breadcrumbs function 
-* Improve popup notification style 
-* Dont show delete button if post already trashed 
-* Add permanenet delete button from frontend 
-* error 404 when no trailing slash 
-* highlight trashed post 
-* Changes author when editing a question 
-* Private answers are not visible to its author 
-* Improve editor mode toggle buttons 
-* Add loading animation in post/edit comment button 
-* Improve subscribe button 
-* disable view count ap_meta entry 
-* Add icons in stats widget 
-* Check comments as general user 
-* Show question filter tab on Category and Tag pages 
-* BuddyPress not working 
-* Short category dropdown in ask form as defined 
-* Rename "voted" tab to vote 
-* Unsolved also shows questions with selected answers 
-* On Single Question page , Active | Voted | Newest | Oldest should be ajax based 
-* Ask page title option not working 
-* Dont let reputation to be negative 
-* Improve UI of button 
-* Add sticky answer navigation 
-* Comment loading shows success 
-* Add answer form help content 
-* Improve answer form UI 
-* Added fullscreen toggle in Answer form 
-* Improve UI of question page 
-* Check UI of comments when comments are shown by default 
-* Change font weight of question and answer action links 
-* Improve UI of comments 
-* Pending comment is highlighted 
-* Add comment author name and time 
-* Commentrs are not subscribed by default 
-* User is not unsubscribed when his comment or answer is deleted 
-* Anonymous cant answer if question is created by anonymous 
-* Reputation showing wrong count 
-* white space when user don't have permission to view answers 
+* Load minified assets
+* Improved admin dashboard
+* popup add link box in tinymce cuts off content.
+* Add breadcrumbs widget
+* Add breadcrumbs function
+* Improve popup notification style
+* Dont show delete button if post already trashed
+* Add permanenet delete button from frontend
+* error 404 when no trailing slash
+* highlight trashed post
+* Changes author when editing a question
+* Private answers are not visible to its author
+* Improve editor mode toggle buttons
+* Add loading animation in post/edit comment button
+* Improve subscribe button
+* disable view count ap_meta entry
+* Add icons in stats widget
+* Check comments as general user
+* Show question filter tab on Category and Tag pages
+* BuddyPress not working
+* Short category dropdown in ask form as defined
+* Rename "voted" tab to vote
+* Unsolved also shows questions with selected answers
+* On Single Question page , Active | Voted | Newest | Oldest should be ajax based
+* Ask page title option not working
+* Dont let reputation to be negative
+* Improve UI of button
+* Add sticky answer navigation
+* Comment loading shows success
+* Add answer form help content
+* Improve answer form UI
+* Added fullscreen toggle in Answer form
+* Improve UI of question page
+* Check UI of comments when comments are shown by default
+* Change font weight of question and answer action links
+* Improve UI of comments
+* Pending comment is highlighted
+* Add comment author name and time
+* Commentrs are not subscribed by default
+* User is not unsubscribed when his comment or answer is deleted
+* Anonymous cant answer if question is created by anonymous
+* Reputation showing wrong count
+* white space when user don't have permission to view answers
 * Improve admin answer table
-* Improve admin question table 
-* Added image from link in question and answer 
+* Improve admin question table
+* Added image from link in question and answer
 * Add image uploader in question and answer
 
 ### 2.1.6 ###
