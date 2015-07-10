@@ -551,7 +551,7 @@ class Tags_For_AnsPress
 function tags_for_anspress() {
     $discounts = new Tags_For_AnsPress();
 }
-add_action( 'plugins_loaded', 'ap' );
+add_action( 'plugins_loaded', 'tags_for_anspress' );
 
 
 /**
