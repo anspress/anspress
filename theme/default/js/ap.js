@@ -200,6 +200,8 @@
                     window.history.pushState(null, null, this.url);
 
                     $('#anspress').html(html.find('#anspress'));
+
+                    $('body').trigger('apAfterSorting');
                 }
             });
 
