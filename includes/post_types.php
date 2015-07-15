@@ -41,7 +41,7 @@ class AnsPress_PostTypes
      * @since 2.0.1
      */
     public function register_question_cpt(){
-        
+
         // question CPT labels
         $labels = array(
             'name'              => _x('Questions', 'Post Type General Name', 'ap'),
@@ -58,7 +58,7 @@ class AnsPress_PostTypes
             'not_found'         => __('No question found', 'ap'),
             'not_found_in_trash' => __('No questions found in Trash', 'ap')
         );
-        
+
         /**
          * FILTER: ap_question_cpt_labels
          * filter is called before registering question CPT
@@ -98,7 +98,7 @@ class AnsPress_PostTypes
 
 
         /**
-         * FILTER: ap_question_cpt_args 
+         * FILTER: ap_question_cpt_args
          * filter is called before registering question CPT
          */
         $args = apply_filters('ap_question_cpt_args', $args);
@@ -131,11 +131,11 @@ class AnsPress_PostTypes
         );
 
         /**
-         * FILTER: ap_answer_cpt_label 
+         * FILTER: ap_answer_cpt_label
          * filter is called before registering answer CPT
          */
         $labels = apply_filters('ap_answer_cpt_label', $labels);
-        
+
         // Answers CPT arguments
         $args   = array(
             'label' => __('answer', 'ap'),
@@ -163,9 +163,9 @@ class AnsPress_PostTypes
             'capability_type' => 'post',
             'rewrite' => false,
         );
-        
+
         /**
-         * FILTER: ap_answer_cpt_args 
+         * FILTER: ap_answer_cpt_args
          * filter is called before registering answer CPT
          */
         $args = apply_filters('ap_answer_cpt_args', $args);
@@ -177,7 +177,7 @@ class AnsPress_PostTypes
     /**
      * Alter question and answer CPT permalink
      * @param  string $link
-     * @param  object $post 
+     * @param  object $post
      * @return string
      * @since 2.0.0-alpha2
      */
@@ -186,14 +186,26 @@ class AnsPress_PostTypes
             $question_slug = ap_opt('question_page_slug');
             if(get_option('permalink_structure')){
                 if(ap_opt('question_permalink_follow'))
-                    return  rtrim(ap_base_page_link(), '/').'/'.$question_slug.'/'.$post->post_name.'/';
+                    $link =  rtrim(ap_base_page_link(), '/').'/'.$question_slug.'/'.$post->post_name.'/';
                 else
-                    return home_url( '/'.$question_slug.'/'.$post->post_name.'/');
+                    $link = home_url( '/'.$question_slug.'/'.$post->post_name.'/');
             }else{
-                return add_query_arg( array('apq' => false, 'question_id' =>$post->ID), ap_base_page_link());
+                $link = add_query_arg( array('apq' => false, 'question_id' =>$post->ID), ap_base_page_link());
             }
+            /**
+             * FILTER: ap_question_post_type_link
+             * Allow overriding of question post type permalink
+             */
+            return apply_filters( 'ap_question_post_type_link', $link );
+
         }elseif ($post->post_type == 'answer' && $post->post_parent != 0) {
-           return get_permalink( $post->post_parent ) ."?show_answer=$post->ID#answer_{$post->ID}";
+           $link = get_permalink( $post->post_parent ) ."?show_answer=$post->ID#answer_{$post->ID}";
+
+           /**
+            * FILTER: ap_answer_post_type_link
+            * Allow overriding of answer post type permalink
+            */
+           return apply_filters( 'ap_answer_post_type_link', $link );
         }
         return $link;
     }
@@ -216,12 +228,12 @@ class AnsPress_PostTypes
 
         if(taxonomy_exists( 'question_tag' ))
             $columns["question_tag"]       = __('Tag', 'ap');
-        
+
         $columns["status"]      = __('Status', 'ap');
         $columns["answers"]     = __('Ans', 'ap');
         $columns["comments"]    = __('Comments', 'ap');
-        $columns["vote"]        = __('Vote', 'ap');           
-        $columns["flag"]        = __('Flag', 'ap');           
+        $columns["vote"]        = __('Vote', 'ap');
+        $columns["flag"]        = __('Flag', 'ap');
         $columns["date"]        = __('Date', 'ap');
 
         return $columns;
@@ -235,13 +247,13 @@ class AnsPress_PostTypes
             return $column;
 
         if ('asker' == $column || 'answerer' == $column) {
-            
+
             echo get_avatar(get_the_author_meta('user_email'), 40);
-        
-        }elseif ('status' == $column) {            
-            
+
+        }elseif ('status' == $column) {
+
             echo '<span class="post-status">';
-            
+
                 if('private_post' == $post->post_status)
                     echo __('Private', 'ap');
 
@@ -267,10 +279,10 @@ class AnsPress_PostTypes
                     echo __('Open', 'ap');
 
             echo '</span>';
-        
+
         } elseif ('question_category' == $column && taxonomy_exists( 'question_category' )) {
 
-            $category = get_the_terms($post->ID, 'question_category');            
+            $category = get_the_terms($post->ID, 'question_category');
 
             if (!empty($category)) {
                 $out = array();
@@ -280,45 +292,45 @@ class AnsPress_PostTypes
                 }
                 echo join(', ', $out);
             }
-            
+
             else {
                 _e('--');
             }
         } elseif ('question_tag' == $column && taxonomy_exists( 'question_tag' )) {
-            
+
             $terms = get_the_terms($post->ID, 'question_tag');
-            
-            
+
+
             if (!empty($terms)) {
                 $out = array();
-                
-                
+
+
                 foreach ($terms as $term) {
                     $out[] = sprintf('<a href="%s">%s</a>', esc_url(add_query_arg(array(
                         'post_type' => $post->post_type,
                         'question_tag' => $term->slug
                     ), 'edit.php')), esc_html(sanitize_term_field('name', $term->name, $term->term_id, 'question_tag', 'display')));
                 }
-                
+
                 echo join(', ', $out);
             }
-            
-            
+
+
             else {
                 _e('--', 'ap');
             }
         } elseif ('answers' == $column) {
             $a_count = ap_count_answer_meta();
-            
+
             /* If terms were found. */
             if (!empty($a_count)) {
-                
+
                 echo '<a class="ans-count" title="' . $a_count . __('answers', 'ap') . '" href="' . esc_url(add_query_arg(array(
                     'post_type' => 'answer',
                     'post_parent' => $post->ID
                 ), 'edit.php')) . '">' . $a_count . '</a>';
             }
-            
+
             /* If no terms were found, output a default message. */
             else {
                 echo '<a class="ans-count" title="0' . __('answers', 'ap') . '">0</a>';
@@ -360,7 +372,7 @@ class AnsPress_PostTypes
     public function answer_row_actions($column, $post_id)
     {
         global $post, $mode;
-        
+
         if ('answer_content' != $column)
             return;
 
@@ -370,21 +382,21 @@ class AnsPress_PostTypes
         $content = get_the_excerpt();
         // get the first 80 words from the content and added to the $abstract variable
         preg_match('/^([^.!?\s]*[\.!?\s]+){0,40}/', strip_tags($content), $abstract);
-        // pregmatch will return an array and the first 80 chars will be in the first element 
+        // pregmatch will return an array and the first 80 chars will be in the first element
         echo $abstract[0] . '...';
-        
+
         //First set up some variables
         $actions          = array();
         $post_type_object = get_post_type_object($post->post_type);
         $can_edit_post    = current_user_can($post_type_object->cap->edit_post, $post->ID);
-        
+
         //Actions to delete/trash
         if (current_user_can($post_type_object->cap->delete_post, $post->ID)) {
             if ('trash' == $post->post_status) {
                 $_wpnonce           = wp_create_nonce('untrash-post_' . $post_id);
                 $url                = admin_url('post.php?post=' . $post_id . '&action=untrash&_wpnonce=' . $_wpnonce);
                 $actions['untrash'] = "<a title='" . esc_attr(__('Restore this item from the Trash')) . "' href='" . $url . "'>" . __('Restore') . "</a>";
-                
+
             } elseif (EMPTY_TRASH_DAYS) {
                 $actions['trash'] = "<a class='submitdelete' title='" . esc_attr(__('Move this item to the Trash')) . "' href='" . get_delete_post_link($post->ID) . "'>" . __('Trash') . "</a>";
             }
@@ -393,7 +405,7 @@ class AnsPress_PostTypes
         }
         if ($can_edit_post)
             $actions['edit'] = '<a href="' . get_edit_post_link($post->ID, '', true) . '" title="' . esc_attr(sprintf(__('Preview &#8220;%s&#8221;'),$post->title)) . '" rel="permalink">' . __('Edit') . '</a>';
-            
+
         //Actions to view/preview
         if (in_array($post->post_status, array(
             'pending',
@@ -402,13 +414,13 @@ class AnsPress_PostTypes
         ))) {
             if ($can_edit_post)
                 $actions['view'] = '<a href="' . esc_url(add_query_arg('preview', 'true', get_permalink($post->ID))) . '" title="' . esc_attr(sprintf(__('Preview &#8220;%s&#8221;'),$post->title)) . '" rel="permalink">' . __('Preview') . '</a>';
-            
+
         } elseif ('trash' != $post->post_status) {
             $actions['view'] = '<a href="' . get_permalink($post->ID) . '" title="' . esc_attr(__('View &#8220;%s&#8221; question')) . '" rel="permalink">' . __('View') . '</a>';
         }
-        
+
         //***** END  -- Our actions  *******//
-        
+
         //Echo the 'actions' HTML, let WP_List_Table do the hard work
         $WP_List_Table = new WP_List_Table();
         echo $WP_List_Table->row_actions($actions);
@@ -419,14 +431,14 @@ class AnsPress_PostTypes
         $columns['flag'] = 'flag';
         return $columns;
     }
-    
+
     public function admin_column_sort_flag_by($query)
     {
         if (!is_admin())
             return;
-        
+
         $orderby = $query->get('orderby');
-        
+
         if ('flag' == $orderby) {
             $query->set('meta_key', ANSPRESS_FLAG_META);
             $query->set('orderby', 'meta_value_num');
