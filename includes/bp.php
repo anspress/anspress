@@ -16,7 +16,7 @@ class AnsPress_BP
 	 * @since 2.0.1
 	 */
 	public function __construct()
-	{	
+	{
 
 		add_action( 'bp_init', array( $this, 'bp_init') );
 		//add_action( 'ap_enqueue', 'bp_activity_mentions_script' );
@@ -28,11 +28,11 @@ class AnsPress_BP
 		add_filter( 'bp_activity_custom_post_type_post_action', array($this, 'activity_action'), 10, 2 );
 		add_filter( 'bp_before_member_header_meta', array($this, 'bp_profile_header_meta'));
 		add_filter( 'ap_the_question_content', array($this, 'ap_the_question_content'));
-		
+
 		add_action( 'bp_setup_globals', array($this, 'notifier_setup_globals') );
 
 		add_action( 'ap_after_new_answer', array($this, 'add_new_answer_notification'));
-		add_action( 'ap_publish_comment', array($this, 'add_new_comment_notification'));		
+		add_action( 'ap_publish_comment', array($this, 'add_new_comment_notification'));
 		add_action( 'ap_trash_answer', array($this, 'remove_answer_notify') );
 		add_action( 'ap_unpublish_comment', array($this, 'remove_comment_notify') );
 	}
@@ -86,7 +86,7 @@ class AnsPress_BP
 	public function reputation_screen_content() {
 		global $wpdb;
 		$user_id = bp_displayed_user_id();
-		
+
 		$reputation = ap_get_all_reputation($user_id);
     	echo '<div id="anspress">';
 	    include ap_get_template_part('user/reputation');
@@ -108,7 +108,7 @@ class AnsPress_BP
 
     	$questions 		 = new Question_Query(array('author' => bp_displayed_user_id()));
     	echo '<div id="anspress">';
-	    include ap_get_theme_location('user-questions.php');
+	    include ap_get_theme_location('buddypress/user-questions.php');
 	    echo '</div>';
 	    wp_reset_postdata();
 	}
@@ -128,7 +128,7 @@ class AnsPress_BP
 
     	$answers 		 = new Answers_Query(array('author' => bp_displayed_user_id()));
     	echo '<div id="anspress">';
-	    include ap_get_theme_location('user-answers.php');
+	    include ap_get_theme_location('buddypress/user-answers.php');
 	    echo '</div>';
 	    wp_reset_postdata();
 	}
@@ -138,7 +138,7 @@ class AnsPress_BP
 	    if ( !function_exists('bp_is_active') || ! bp_is_active( 'activity' ) ) {
 	        return;
 	    }
-	 
+
 	    bp_activity_set_post_type_tracking_args( 'question', array(
 	        'component_id'             => 'activity',
 	        'action_id'                => 'new_question',
@@ -167,7 +167,7 @@ class AnsPress_BP
 	}
 
 	public function activity_action($action, $activity)
-	{	
+	{
 		if($activity->type == 'new_question' || $activity->type == 'new_answer')
 			return str_replace('AP_CPT_LINK', get_permalink( $activity->secondary_item_id ), $action);
 
@@ -191,10 +191,10 @@ class AnsPress_BP
 
 	public function ap_the_answer_content($content){
 		global $post;
-		
+
 		if ( !function_exists( 'bp_activity_at_name_filter' ) )
 			require_once WP_PLUGIN_DIR.'/buddypress/bp-activity/bp-activity-filters.php';
-		
+
 		if($post->post_type == 'answer')
 			return bp_activity_at_name_filter($content);
 
@@ -212,10 +212,10 @@ class AnsPress_BP
 	    do_action( 'ap_notifier_setup_globals' );
 	}
 
-	public function ap_notifier_format_notifications( $action, $activity_id, $secondary_item_id, $total_items, $format = 'string' ) {		
-	   	
+	public function ap_notifier_format_notifications( $action, $activity_id, $secondary_item_id, $total_items, $format = 'string' ) {
+
 	   	$amount = 'single';
-	   	
+
 	   	if(strrpos($action, 'new_answer') !== false){
 	   		$answer = get_post($activity_id);
 			$notification_link  = get_permalink($answer->ID);
@@ -230,7 +230,7 @@ class AnsPress_BP
 				$text =  sprintf( __( '%1$s answered on - %2$s', 'ap' ), $user_fullname, $title );
 			}
 		}elseif(strrpos($action, 'new_comment') !== false ){
-			$comment = get_comment($activity_id);			
+			$comment = get_comment($activity_id);
 			$post  = get_post($comment->comment_post_ID);
 			$notification_link  = get_permalink($comment->comment_post_ID);
 
@@ -264,7 +264,7 @@ class AnsPress_BP
 		return $return;
 	}
 
-	public function add_new_answer_notification( $post_id ) {		
+	public function add_new_answer_notification( $post_id ) {
 	    if ( bp_is_active( 'notifications' ) ) {
 	    	global $bp;
 	    	$answer = get_post($post_id);
@@ -282,7 +282,7 @@ class AnsPress_BP
 
 	    	if(!empty($participants) && is_array($participants))
 		    	foreach($participants as $p){
-		    		if($p->apmeta_userid != $answer->post_author){		    		
+		    		if($p->apmeta_userid != $answer->post_author){
 		    			$notification_args['user_id'] = $p->apmeta_userid;
 		        		bp_notifications_add_notification( $notification_args );
 		        	}
@@ -303,7 +303,7 @@ class AnsPress_BP
 	    		$participants = ap_get_parti($comment->comment_post_ID);
 
 	    	$notification_args = array(
-	            'item_id'           => $comment->comment_ID, 
+	            'item_id'           => $comment->comment_ID,
 	            'secondary_item_id' => $comment->user_id,
 	            'component_name'    => $bp->ap_notifier->id,
 	            'component_action'  => 'new_comment_'.$post->ID,
@@ -313,14 +313,14 @@ class AnsPress_BP
 
 	    	if(!empty($participants) && is_array($participants))
 		    	foreach($participants as $p){
-		    		if($p->apmeta_userid != $comment->user_id){		    		
+		    		if($p->apmeta_userid != $comment->user_id){
 		    			$notification_args['user_id'] = $p->apmeta_userid;
 		        		bp_notifications_add_notification( $notification_args );
 		        	}
 		        }
 	    }
 	}
-	
+
 	/**
 	 * Remove question notification when corresponding question get deleted
 	 * @param  integer $post_id
@@ -330,7 +330,7 @@ class AnsPress_BP
 	{
 		if ( bp_is_active( 'notifications' ) )
 			bp_notifications_delete_all_notifications_by_type( $post_id, buddypress()->ap_notifier->id, 'new_answer_'.$post_id );
-		
+
 	}
 
 	/**
@@ -342,7 +342,7 @@ class AnsPress_BP
 	{
 		if ( bp_is_active( 'notifications' ) )
 			bp_notifications_delete_all_notifications_by_type( $comment->comment_post_ID, buddypress()->ap_notifier->id, 'new_comment_'.$comment->comment_post_ID );
-		
+
 	}
 
 }

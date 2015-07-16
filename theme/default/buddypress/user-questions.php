@@ -1,9 +1,11 @@
 <div id="ap-lists" class="clearfix">
-	<?php ap_questions_tab(get_permalink()); ?>
+	<h3 class="ap-user-page-title clearfix">
+		<?php ap_get_template_part('list-head'); ?>
+	</h3>
 	<?php if ( $questions->have_posts() ) : ?>
 		<div class="question-list">
 			<?php
-				
+
 				/* Start the Loop */
 				while ( $questions->have_posts() ) : $questions->the_post();
 					global $post;
@@ -11,12 +13,12 @@
 				endwhile;
 			?>
 		</div>
-	<?php 
+	<?php
 		ap_pagination();
 	?>
 	<?php
-		else : 
+		else :
 			include(ap_get_theme_location('content-none.php'));
-		endif; 
-	?>	
+		endif;
+	?>
 </div>

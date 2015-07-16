@@ -5,7 +5,7 @@
 	</h3>
 	<?php if ( ap_have_questions() ) : ?>
 		<div class="ap-questions">
-			<?php					
+			<?php
 				/* Start the Loop */
 				while ( ap_questions() ) : ap_the_question();
 					ap_get_template_part('user/list-question');
@@ -14,8 +14,8 @@
 		</div>
 	<?php ap_questions_the_pagination(); ?>
 	<?php
-		else : 
+		else :
 			include(ap_get_theme_location('content-none.php'));
-		endif; 
-	?>	
+		endif;
+	?>
 </div>

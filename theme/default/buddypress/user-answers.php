@@ -2,7 +2,7 @@
 	<?php if ( $answers->have_posts() ) : ?>
 		<div class="question-list">
 			<?php
-				
+
 				/* Start the Loop */
 				while ( $answers->have_posts() ) : $answers->the_post();
 					global $post;
@@ -10,12 +10,12 @@
 				endwhile;
 			?>
 		</div>
-	<?php 
+	<?php
 		ap_pagination(false, $answers->max_num_pages);
 	?>
 	<?php
-		else : 
+		else :
 			include(ap_get_theme_location('content-none.php'));
-		endif; 
-	?>	
+		endif;
+	?>
 </div>
