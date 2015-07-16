@@ -250,7 +250,8 @@
                     if (data['action'] == 'new_comment' && data['message_type'] == 'success') {
                         $('#comments-' + data['comment_post_ID'] + ' ul.ap-commentlist').append($(data['html']).hide().slideDown(100));
                     } else if (data['action'] == 'edit_comment' && data['message_type'] == 'success') {
-                        $('#li-comment-' + data.comment_ID).replaceWith($(data['html']).hide().slideDown(100));
+                        $('#li-comment-' + data.comment_ID+ ' .ap-comment-texts').html(data.html);
+                        $('#li-comment-' + data.comment_ID).slideDown(400);
                         $('.ap-comment-form').remove();
                     }
                     $(this)[0].reset();
@@ -645,6 +646,8 @@
 
                     try {
                        var html = $(view);
+                    }catch(err){
+                        console.log(err);
                     }
 
                     if(typeof data.view_html !== 'undefined' && typeof html !== 'undefined' && html.is('[data-view="' + i + '"]')){

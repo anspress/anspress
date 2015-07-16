@@ -12,7 +12,7 @@ class AnsPress_Process_Form
 	private $fields;
 
 	private $result;
-	
+
 	private $request;
 
 	private $redirect ;
@@ -54,7 +54,7 @@ class AnsPress_Process_Form
 	{
 		if(isset($_GET['ap_notification_read'])){
 			$id = (int)$_GET['ap_notification_read'];
-			
+
 			$notification = ap_get_notification_by_id($id);
 
 			if($notification && ($notification['apmeta_actionid'] == get_current_user_id() ) ){
@@ -65,7 +65,7 @@ class AnsPress_Process_Form
 	}
 
 	/**
-     * Handle all anspress ajax requests 
+     * Handle all anspress ajax requests
      * @return void
      * @since 2.0.1
      */
@@ -73,7 +73,7 @@ class AnsPress_Process_Form
     {
     	if(!isset($_REQUEST['ap_ajax_action']))
     		return;
-    	
+
     	$this->request = $_REQUEST;
 
     	if(isset($_POST['ap_form_action'])){
@@ -125,7 +125,7 @@ class AnsPress_Process_Form
 			case 'upload_post_image':
 				$this->upload_post_image();
 				break;
-			
+
 			default:
 				/**
 				 * ACTION: ap_process_form_[action]
@@ -142,7 +142,7 @@ class AnsPress_Process_Form
 	{
 		$recaptcha = new \ReCaptcha\ReCaptcha(ap_opt('recaptcha_secret_key'));
 		$resp = $recaptcha->verify($_POST['g-recaptcha-response'], $_SERVER['REMOTE_ADDR']);
-		
+
 		if ($resp->isSuccess())
 			return true;
 
@@ -205,7 +205,7 @@ class AnsPress_Process_Form
 		$validate = new AnsPress_Validation($args);
 
 		$ap_errors = $validate->get_errors();
-		
+
 		// if error in form then return
 		if($validate->have_error()){
 			$this->result = array(
@@ -229,13 +229,13 @@ class AnsPress_Process_Form
 		$user_id = get_current_user_id();
 
 		$status = 'publish';
-		
+
 		if(ap_opt('new_question_status') == 'moderate' || (ap_opt('new_question_status') == 'reputation' && ap_get_points($user_id) < ap_opt('mod_question_point')))
 			$status = 'moderate';
-		
+
 		if(isset($fields['is_private']) && $fields['is_private'])
 			$status = 'private_post';
-			
+
 		$question_array = array(
 			'post_title'		=> 	$fields['title'],
 			'post_author'		=> 	$user_id,
@@ -244,7 +244,7 @@ class AnsPress_Process_Form
 			'post_status' 		=> 	$status,
 			'comment_status' 	=> 	'open',
 		);
-		
+
 		if(isset($fields['parent_id']))
 			$question_array['post_parent'] = (int)$fields['parent_id'];
 
@@ -259,13 +259,13 @@ class AnsPress_Process_Form
 		$post_id = wp_insert_post($question_array);
 
 		if($post_id){
-			
+
 			// Update Custom Meta
-			
+
 			if (!is_user_logged_in() && ap_opt('allow_anonymous') && !empty($fields['name']))
 				update_post_meta($post_id, 'anonymous_name', $fields['name']);
-			
-			
+
+
 			$this->redirect =  get_permalink($post_id);
 
 			$this->result = array(
@@ -288,7 +288,7 @@ class AnsPress_Process_Form
 	public function edit_question()
 	{
 		global $ap_errors, $validate;
-		
+
 		// return if user do not have permission to edit this question
 		if( !ap_user_can_edit_question($this->fields['edit_post_id']))
 			return;
@@ -297,10 +297,10 @@ class AnsPress_Process_Form
 		$user_id = get_current_user_id();
 
 		$status = 'publish';
-		
+
 		if(ap_opt('edit_question_status') == 'moderate' || (ap_opt('edit_question_status') == 'point' && ap_get_points($user_id) < ap_opt('mod_answer_point')))
 			$status = 'moderate';
-		
+
 		if(isset($this->fields['is_private']) && $this->fields['is_private'])
 			$status = 'private_post';
 
@@ -323,8 +323,8 @@ class AnsPress_Process_Form
 
 		$post_id = wp_update_post($question_array);
 
-		if($post_id){				
-			
+		if($post_id){
+
 			$this->redirect = get_permalink($post_id);
 
 			$this->result = array(
@@ -341,23 +341,23 @@ class AnsPress_Process_Form
 	/**
 	 * add _o actions after inserting question and answer
 	 * @param  int $post_id
-	 * @param  object $post    
-	 * @return void          
+	 * @param  object $post
+	 * @return void
 	 * @since  2.0
 	 */
 	public function action_on_new_post( $post_id, $post, $update ) {
 
 		// return on autosave
 		if(defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) { return; }
-		
+
 		if ( wp_is_post_revision( $post_id ) || $post->post_status == 'trash'|| $post->post_status == 'auto-draft')
 			return;
-		
+
 		$updated = get_post_meta($post_id, ANSPRESS_UPDATED_META, true);
-		
+
 		if ( $post->post_type == 'question' ) {
 			//check if post have updated meta, if not this is a new post :D
-			
+
 			if($updated == '' ){
 				/**
 				 * ACTION: ap_after_new_question
@@ -366,13 +366,13 @@ class AnsPress_Process_Form
 				 */
 				do_action('ap_processed_new_question', $post_id, $post);
 			}else{
-	
+
 				do_action('ap_processed_update_question', $post_id, $post);
 			}
 		}elseif ( $post->post_type == 'answer' ) {
-			
+
 			if( $updated == ''){
-				
+
 				do_action('ap_processed_new_answer', $post_id, $post);
 			}else{
 				/**
@@ -399,7 +399,7 @@ class AnsPress_Process_Form
 			return;
 		}
 
-		$question = get_post((int)$_POST['form_question_id']);		
+		$question = get_post((int)$_POST['form_question_id']);
 
 		$args = array(
 			'description' => array(
@@ -431,7 +431,7 @@ class AnsPress_Process_Form
 		$validate = new AnsPress_Validation($args);
 
 		$ap_errors = $validate->get_errors();
-		
+
 		// if error in form then return
 		if($validate->have_error()){
 			$this->result = array(
@@ -460,13 +460,13 @@ class AnsPress_Process_Form
 		$user_id = get_current_user_id();
 
 		$status = 'publish';
-		
+
 		if(ap_opt('new_answer_status') == 'moderate' || (ap_opt('new_answer_status') == 'point' && ap_get_points($user_id) < ap_opt('new_answer_status')))
 			$status = 'moderate';
-		
+
 		if(isset($this->fields['is_private']) && $this->fields['is_private'])
 			$status = 'private_post';
-			
+
 		$answer_array = array(
 			'post_title'	=> $question->post_title,
 			'post_author'	=> $user_id,
@@ -487,16 +487,16 @@ class AnsPress_Process_Form
 
 		$post_id = wp_insert_post($answer_array);
 
-		if($post_id){				
+		if($post_id){
 			// get existing answer count
 			$current_ans = ap_count_published_answers($question->ID);
 
 			if (!is_user_logged_in() && ap_opt('allow_anonymous') && isset($fields['name']))
 				update_post_meta($post_id, 'anonymous_name', $fields['name']);
-			
+
 
 			if($this->is_ajax){
-				
+
 
 				if($current_ans == 1){
 					global $post;
@@ -507,23 +507,23 @@ class AnsPress_Process_Form
 					$post = get_post($post_id);
 					setup_postdata($post);
 				}
-				
+
 				ob_start();
 
-				if($current_ans == 1){								
+				if($current_ans == 1){
 					ap_get_answers(array('question_id' => $question->ID));
 					ap_get_template_part('answers');
 				}else{
 					ap_get_answer( $post_id );
 					ap_get_template_part('answer');
 				}
-				
+
 				$html = ob_get_clean();
-				
+
 				$count_label = sprintf( _n('1 Answer', '%d Answers', $current_ans, 'ap'), $current_ans);
-				
+
 				$result = array(
-					'postid' 		=> $post_id, 
+					'postid' 		=> $post_id,
 					'action' 		=> 'new_answer',
 					'div_id' 		=> '#answer_'.get_the_ID(),
 					'can_answer' 	=> ap_user_can_answer($post->ID),
@@ -532,9 +532,9 @@ class AnsPress_Process_Form
 					'do' 			=> 'clearForm',
 					'view'			=> array('answer_count' => $current_ans, 'answer_count_label' => $count_label)
 				);
-				
+
 				$this->result = $result;
-				
+
 			}
 		}
 
@@ -550,14 +550,14 @@ class AnsPress_Process_Form
 			$this->result = ap_ajax_responce( 'no_permission');
 			return;
 		}
-		
+
 		$answer = get_post($this->fields['edit_post_id']);
-		
+
 		$status = 'publish';
-		
+
 		if(ap_opt('edit_answer_status') == 'moderate' || (ap_opt('edit_answer_status') == 'point' && ap_get_points(get_current_user_id()) < ap_opt('new_answer_status')))
 			$status = 'moderate';
-		
+
 		if(isset($this->fields['is_private']) && $this->fields['is_private'])
 			$status = 'private_post';
 
@@ -569,10 +569,10 @@ class AnsPress_Process_Form
 		);
 
 		$answer_array = apply_filters( 'ap_pre_update_answer', $answer_array );
-		
+
 		$post_id = wp_update_post($answer_array);
-		
-		if($post_id){					
+
+		if($post_id){
 			if($this->is_ajax){
 				$this->result = array(
 					'action' 		=> 'answer_edited',
@@ -605,7 +605,7 @@ class AnsPress_Process_Form
 			if(!ap_user_can_edit_comment((int)$_REQUEST['comment_ID'] ) || !wp_verify_nonce( $_REQUEST['__nonce'], 'comment_'.(int)$_REQUEST['comment_ID'] )){
 				$this->result = ap_ajax_responce( 'no_permission');
 				return;
-			}			
+			}
 		}
 
 		$comment_post_ID = (int) $_POST['comment_post_ID'];
@@ -621,12 +621,21 @@ class AnsPress_Process_Form
 		}
 
 		if ( isset( $_POST['comment_ID'] ) ){
-			$comment_id = wp_update_comment( array('comment_ID' => (int)$_POST['comment_ID'], 'comment_content' => trim( $_POST['comment'] )) );
-			$comment = get_comment($comment_id);
-			ob_start();
-			ap_comment($comment);		
-			$html = ob_get_clean();
-			$this->result = ap_ajax_responce(  array( 'action' => 'edit_comment', 'comment_ID' => $comment->comment_ID, 'comment_post_ID' => $comment->comment_post_ID, 'comment_content' => $comment->comment_content, 'html' => $html, 'message' => 'comment_edit_success'));
+
+			$comment_id = (int)$_POST['comment_ID'];
+
+			$updated = wp_update_comment( array('comment_ID' => $comment_id, 'comment_content' => trim( $_POST['comment'] )) );
+
+			if($updated){
+
+				$comment = get_comment($comment_id);
+
+				ob_start();
+				comment_text($comment_id);
+				$html = ob_get_clean();
+
+				$this->result = ap_ajax_responce(  array( 'action' => 'edit_comment', 'comment_ID' => $comment->comment_ID, 'comment_post_ID' => $comment->comment_post_ID, 'comment_content' => $comment->comment_content, 'html' => $html, 'message' => 'comment_edit_success'));
+			}
 
 			return;
 		}else{
@@ -666,7 +675,7 @@ class AnsPress_Process_Form
 				$comment = get_comment($comment_id);
 				do_action( 'ap_after_new_comment', $comment );
 				ob_start();
-				ap_comment($comment);		
+				ap_comment($comment);
 				$html = ob_get_clean();
 				$count = get_comment_count( $comment->comment_post_ID );
 				$this->result = ap_ajax_responce(  array( 'action' => 'new_comment', 'status' => true, 'comment_ID' => $comment->comment_ID, 'comment_post_ID' => $comment->comment_post_ID, 'comment_content' => $comment->comment_content, 'html' => $html, 'message' => 'comment_success', 'view' => array('comments_count_'.$comment->comment_post_ID => '('.$count['approved'].')', 'comment_count_label_'.$comment->comment_post_ID => sprintf(_n('One comment', '%d comments', $count['approved'], 'ap'), $count['approved']) )));
@@ -678,7 +687,7 @@ class AnsPress_Process_Form
 	}
 
 	public function options_form()
-	{		
+	{
 		if(!isset($_POST['__nonce']) || !wp_verify_nonce( $_POST['__nonce'], 'nonce_option_form' ) || !current_user_can('manage_options'))
 			return;
 
@@ -688,7 +697,7 @@ class AnsPress_Process_Form
 
 		if(!empty($options) && is_array($options)){
 			$old_options = get_option('anspress_opt');
-			
+
 			foreach($options as $k => $opt){
 				$old_options[$k] = $opt;
 			}
@@ -698,14 +707,14 @@ class AnsPress_Process_Form
 			$_POST['anspress_opt_updated'] = true;
 			//$result = array('status' => true, 'html' => '<div class="updated fade" style="display:none"><p><strong>'.__( 'AnsPress options updated successfully', 'ap' ).'</strong></p></div>');
 		}
-		
+
 	}
 
 	public function ap_user_profile_form(){
-		
+
 		$user_id = get_current_user_id();
 		$group = sanitize_text_field( $_POST['group'] );
-		
+
 		if(!is_user_logged_in()){
 			$this->result  = array('message' => 'no_permission');
 			return;
@@ -729,7 +738,7 @@ class AnsPress_Process_Form
 		$validate = new AnsPress_Validation($validate_fields);
 
 		$ap_errors = $validate->get_errors();
-		
+
 		// if error in form then return
 		if($validate->have_error()){
 			ap_send_json( ap_ajax_responce(array(
@@ -746,14 +755,14 @@ class AnsPress_Process_Form
 		if(is_array($user_fields) && !empty($user_fields))
 			foreach($user_fields as $field){
 				if(!empty($fields[$field['name']]) && ($field['name'] == 'first_name' || $field['name'] == 'last_name' || $field['name'] == 'nickname' || $field['name'] == 'display_name'|| $field['name'] == 'user_email'|| $field['name'] == 'description'|| $field['name'] == 'password') ){
-					
+
 					if($field['name'] == 'password' && $fields['password'] == $_POST['password-1'])
 						wp_set_password( $fields['password'], $user_id );
 					else
 						wp_update_user( array( 'ID' => $user_id, $field['name'] => $fields[$field['name']] ) );
 
 				}elseif(!empty($fields[$field['name']])){
-					
+
 					update_user_meta( $user_id, $field['name'], $fields[$field['name']] );
 
 				}
@@ -777,7 +786,7 @@ class AnsPress_Process_Form
 		}
 
 		$user_id = get_current_user_id();
-		
+
 		$file = $_FILES['post_upload_image'];
 
 		if($file['size'] > ap_opt('max_upload_size')){
@@ -799,7 +808,7 @@ class AnsPress_Process_Form
 			ap_send_json( ap_ajax_responce('something_wrong'));
 
 		if( ! empty( $file ) && is_array( $file ) && $file['error'] == 0 ) {
-			
+
 			$attachment_id = ap_upload_user_file( $file );
 
 			if($attachment_id !== false)
@@ -817,7 +826,7 @@ class AnsPress_Process_Form
 		if(is_array($attachment_ids) && count($attachment_ids) > 0){
 			foreach($attachment_ids as $id){
 				$attach = get_post($id);
-				
+
 				if($attach && 'attachment' == $attach->post_type && $user_id == $attach->post_author)
 					ap_set_attachment_post_parent($attach->ID, $post_id);
 			}
