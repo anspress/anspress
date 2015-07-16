@@ -637,11 +637,17 @@
                         ApSite[data.do](data);
                 }
             }
-            console.log(data.view);
+
             if (typeof data.view !== 'undefined') {
+
                 $.each(data.view, function(i, view) {
-                    var html = $(view);
-                    if(typeof data.view_html !== 'undefined' && html.is('[data-view="' + i + '"]')){
+                    console.log(view);
+
+                    try {
+                       var html = $(view);
+                    }
+
+                    if(typeof data.view_html !== 'undefined' && typeof html !== 'undefined' && html.is('[data-view="' + i + '"]')){
                         html = html.children();
                         $('[data-view="' + i + '"]').html(html);
                     }else{
