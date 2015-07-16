@@ -87,6 +87,14 @@ class AnsPress_Common_Pages
                 'terms'    => array($cat),
             );
         }
+
+        /**
+         * FILTER: ap_main_questions_args
+         * Filter main question list args
+         * @var array
+         */
+        $args = apply_filters( 'ap_main_questions_args', $args );
+
         ap_get_questions($args);
 		include(ap_get_theme_location('base.php'));
     }
