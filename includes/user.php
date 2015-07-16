@@ -303,11 +303,12 @@ function ap_user_menu()
     $active_user_page   = $active_user_page ? $active_user_page : 'about';
 
     if (!empty($menus) && is_array($menus)) {
+
         $o = '<ul id="ap-user-menu" class="ap-user-menu ap_collapse_menu clearfix">';
+
         foreach ($menus as $m) {
             $class = !empty($m['class']) ? ' '.$m['class'] : '';
             $o .= '<li'.($active_user_page == $m['slug'] ? ' class="active"' : '').'><a href="'.$m['link'].'" class="ap-user-menu-'.$m['slug'].$class.'">'.$m['title'].'</a></li>';
-
         }
 
         $o .= '<li class="ap-user-menu-more ap-dropdown"><a href="#" class="ap-dropdown-toggle">'.__('More', 'ap').ap_icon('chevron-down', true).'</a><ul class="ap-dropdown-menu"></ul></li>';

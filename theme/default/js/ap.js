@@ -178,15 +178,18 @@
         });
 
         $('body').delegate('#ap-question-sorting .ap-dropdown-menu a', 'click', function(e) {
+            e.preventDefault();
             var val = $(this).data('value');
             $(this).closest('.ap-dropdown-menu').find('input[type="hidden"]').val(val);
             $(this).closest('form').submit();
         });
 
         $('body').delegate('#ap-question-sorting-reset', 'click', function(e) {
+            e.preventDefault();
             $('#ap-question-sorting').find('input[type="hidden"]').val('');
             $(this).closest('form').submit();
         });
+
 
         $('body').delegate('#ap-question-sorting', 'submit', function(){
             AnsPress.site.showLoading(this);
@@ -201,7 +204,7 @@
 
                     $('#anspress').html(html.find('#anspress'));
 
-                    $('body').trigger('apAfterSorting');
+                    $(document).trigger('apAfterSorting');
                 }
             });
 

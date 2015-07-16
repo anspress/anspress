@@ -196,7 +196,7 @@ class AnsPress_PostTypes
              * FILTER: ap_question_post_type_link
              * Allow overriding of question post type permalink
              */
-            return apply_filters( 'ap_question_post_type_link', $link );
+            return apply_filters( 'ap_question_post_type_link', $link, $post );
 
         }elseif ($post->post_type == 'answer' && $post->post_parent != 0) {
            $link = get_permalink( $post->post_parent ) ."?show_answer=$post->ID#answer_{$post->ID}";
@@ -205,7 +205,7 @@ class AnsPress_PostTypes
             * FILTER: ap_answer_post_type_link
             * Allow overriding of answer post type permalink
             */
-           return apply_filters( 'ap_answer_post_type_link', $link );
+           return apply_filters( 'ap_answer_post_type_link', $link, $post );
         }
         return $link;
     }

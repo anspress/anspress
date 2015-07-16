@@ -110,11 +110,16 @@ class AnsPress_Common_Pages
         ap_get_question(get_question_id());
 
         if(ap_have_questions()){
+            /**
+             * Set current question as global post
+             * @since 2.3.3
+             */
+
             while ( anspress()->questions->have_posts() ) : anspress()->questions->the_post();
                 global $post;
                 setup_postdata( $post );
+                include(ap_get_theme_location('question.php'));
             endwhile;
-            include(ap_get_theme_location('question.php'));
             wp_reset_postdata();
         }else{
             include(ap_get_theme_location('not-found.php'));

@@ -5,12 +5,12 @@ class AnsPress_Options_Page
 	{
 		add_action('init', array($this, 'add_option_groups'), 11 );
 	}
-	
-	public function add_option_groups() 
+
+	public function add_option_groups()
 	{
 
 		$settings = ap_opt();
-		
+
 		// Register general settings
 		ap_register_option_group('general', __('General', 'ap') , array(
 			array(
@@ -87,9 +87,9 @@ class AnsPress_Options_Page
 				'value' => @$settings['disable_hover_card'],
 				'show_desc_tip' => false,
 			),
-			
+
 		));
-		
+
 		//Register layout settings
 		ap_register_option_group('layout', __('Layout', 'ap') , array(
 			array(
@@ -204,7 +204,7 @@ class AnsPress_Options_Page
 				'type' => 'checkbox',
 				'value' => $settings['show_question_sidebar'],
 				'show_desc_tip' => false,
-			),			
+			),
 		));
 
 		//Register pages settings
@@ -284,7 +284,7 @@ class AnsPress_Options_Page
 				'show_desc_tip' => false,
 			)
 		));
-		
+
 		// Register question settings
 		ap_register_option_group('question', __('Question', 'ap') , array(
 			array(
@@ -336,7 +336,7 @@ class AnsPress_Options_Page
 				'show_desc_tip' => false,
 			) ,
 		));
-		
+
 		// Register answer settings
 		ap_register_option_group('answer', __('Answer', 'ap') , array(
 			array(
@@ -388,7 +388,7 @@ class AnsPress_Options_Page
 				'show_desc_tip' => false,
 			) ,
 		));
-		
+
 		// register user settings
 		ap_register_option_group('users', __('Users', 'ap') , array(
 			array(
@@ -412,7 +412,7 @@ class AnsPress_Options_Page
 				'value' => $settings['disable_reputation'],
 				'show_desc_tip' => false,
 			) ,
-			
+
 			array(
 				'name' => 'anspress_opt[users_page_avatar_size]',
 				'label' => __('Users page avatar size', 'ap') ,
@@ -467,7 +467,7 @@ class AnsPress_Options_Page
 				'show_desc_tip' => false,
 			) ,
 		));
-		
+
 		// register permission settings
 		ap_register_option_group('permission', __('Permission', 'ap') , array(
 			array(
@@ -556,7 +556,7 @@ class AnsPress_Options_Page
 				'show_desc_tip' => false,
 			),
 		));
-		
+
 		// register moderate settings
 		ap_register_option_group('moderate', __('Moderate', 'ap') , array(
 			array(
