@@ -540,7 +540,7 @@ function ap_answers_tab($base = false){
 	$navs['oldest'] = array('link' => add_query_arg(  array('ap_sort' => 'oldest'), $base), 'title' => __('Oldest', 'ap'));
 
 
-	echo '<ul class="ap-answers-tab ap-ul-inline ap-pull-right clearfix">';
+	echo '<ul class="ap-answers-tab ap-ul-inline clearfix">';
 	foreach ($navs as $k => $nav) {
 		echo '<li'.( $sort == $k ? ' class="active"' : '') .'><a href="'. $nav['link'] .'">'. $nav['title'] .'</a></li>';
 	}

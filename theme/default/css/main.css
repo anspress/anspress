@@ -1054,10 +1054,11 @@
   text-align: center;
 }
 #anspress .ap-please-login {
-  background: none repeat scroll 0 0 #e0fbff;
+  border: 2px solid #eee;
   border-radius: 3px;
-  margin-bottom: 20px;
-  padding: 15px;
+  display: table;
+  margin: 20px auto 0;
+  padding: 6px 10px;
   text-align: center;
 }
 #anspress .ap-questions-tab,
@@ -1686,11 +1687,12 @@ body ul ul#ap-user-menu-link li > a .count {
   font-size: 12px;
 }
 #anspress .ap-answers-label {
-  display: block;
-  font-size: 16px;
-  margin: 0;
-  padding: 5px 0;
   color: #333333;
+  display: block;
+  font-size: 20px;
+  line-height: 100%;
+  margin: 0 15px 0 0;
+  padding: 4px 0;
   white-space: nowrap;
 }
 .ap-content .ap-question-actions-history {
@@ -1749,10 +1751,6 @@ body ul ul#ap-user-menu-link li > a .count {
 #ap-best-answer .type-answer {
   margin-top: 20px;
 }
-#answers .type-answer:first-child,
-#ap-best-answer .type-answer:first-child {
-  margin-top: 0;
-}
 #answers .type-answer.active .ap-a-cells,
 #ap-best-answer .type-answer.active .ap-a-cells {
   border-color: #6AB17F;
@@ -1779,7 +1777,7 @@ body ul ul#ap-user-menu-link li > a .count {
   margin-top: 30px;
 }
 #ap-answers-c .ap-answers-tab {
-  margin-top: 7px;
+  margin-top: 0;
 }
 #ap-answers-c .ap-answers-tab > li a {
   font-size: 12px;
