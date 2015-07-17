@@ -27,7 +27,7 @@ function ap_add_subscriber($user_id, $action_id, $type = false, $sub_id = false)
 
 	else
 		$subscribe_type =  $type ;
-	
+
 	$row = ap_add_meta($user_id, 'subscriber', $action_id, $sub_id, $subscribe_type);
 
 	if($row !== false)
@@ -48,26 +48,26 @@ function ap_remove_subscriber($user_id, $action_id, $type = false, $sub_id = fal
 	global $wpdb;
 
 	if($type == 'category')
-		$subscribe_type =  "AND apmeta_value = 'category'";
+		$subscribe_type =  "AND apmeta_param = 'category'";
 
 	elseif($type == 'tag')
-		$subscribe_type =  "AND apmeta_value = 'tag'" ;
+		$subscribe_type =  "AND apmeta_param = 'tag'" ;
 
 	else
 		$subscribe_type =  '' ;
 
-	$param = "";
+	$apmeta_value = "";
 
 	if($sub_id !== false)
-		$param =  $wpdb->prepare("AND apmeta_param = %d", $sub_id);	
+		$apmeta_value =  $wpdb->prepare("AND apmeta_value = %d", $sub_id);
 
-	$row = $wpdb->query( 
-		$wpdb->prepare( 
+	$row = $wpdb->query(
+		$wpdb->prepare(
 			"DELETE FROM ".$wpdb->prefix."ap_meta
 			 WHERE apmeta_actionid = %d
 			 AND apmeta_userid = %d
-			 AND apmeta_type = 'subscriber' 
-			 ".$subscribe_type." ".$param,
+			 AND apmeta_type = 'subscriber'
+			 ".$subscribe_type." ".$apmeta_value,
 	        $action_id, $user_id
         )
 	);
@@ -87,7 +87,7 @@ function ap_remove_subscriber($user_id, $action_id, $type = false, $sub_id = fal
  * @since unknown
  */
 function ap_is_user_subscribed($action_id, $user_id = false, $type = false){
-	
+
 	if($user_id === false)
 		$user_id = get_current_user_id();
 
@@ -103,7 +103,7 @@ function ap_is_user_subscribed($action_id, $user_id = false, $type = false){
 			$subscribe_type =  false ;
 
 		$row = ap_meta_user_done('subscriber', $user_id, $action_id, $subscribe_type);
-		
+
 		return $row > 0 ? true : false;
 	}
 
@@ -131,18 +131,18 @@ function ap_subscriber_count_html($post = false)
 {
 	if(!$post)
 		global $post;
-	
+
 	$subscribed = ap_is_user_subscribed($post->ID);
 	$total_subscribers = ap_subscribers_count($post->ID);
 
 	if( $total_subscribers =='1' && $subscribed)
-		return __('Only you are subscribed to this question.', 'ap'); 
+		return __('Only you are subscribed to this question.', 'ap');
 	elseif($subscribed)
 		return sprintf( __( 'You and <strong>%s people</strong> subscribed to this question.', 'ap' ), ($total_subscribers -1));
 	elseif($total_subscribers == 0)
 		return __( 'No one is subscribed to this question.', 'ap' );
 	else
-		return sprintf( __( '<strong>%d people</strong> subscribed to this question.', 'ap' ), $total_subscribers);	
+		return sprintf( __( '<strong>%d people</strong> subscribed to this question.', 'ap' ), $total_subscribers);
 }
 
 function ap_question_subscribers($action_id = false, $type = '', $avatar_size = 30){
@@ -196,7 +196,7 @@ function ap_get_subscribers($action_id, $type = false){
 		$subscribe_type =  false ;
 
 	$where = array(
-		'apmeta_type' => array('value' => 'subscriber', 'compare' => '=', 'relation' => 'AND') 
+		'apmeta_type' => array('value' => 'subscriber', 'compare' => '=', 'relation' => 'AND')
 	);
 
 	if($subscribe_type !== false)
@@ -229,9 +229,9 @@ function ap_add_question_subscriber($question_id, $user_id = false, $type = '', 
 	if(!$is_subscribed){
 
 		ap_add_subscriber($user_id, $question_id, $type, $secondary_id);
-		
+
 		$counts = ap_subscribers_count($question_id);
-		
+
 		//update post meta
 		update_post_meta($question_id, ANSPRESS_SUBSCRIBER_META, $counts);
 
@@ -251,14 +251,14 @@ function ap_remove_question_subscriber($question_id, $user_id = false){
 	$is_subscribed = ap_is_user_subscribed( $question_id );
 
 	if($user_id === false)
-		$user_id = get_current_user_id();	
+		$user_id = get_current_user_id();
 
 	if($is_subscribed){
 
 		ap_remove_subscriber($user_id, $question_id);
-		
+
 		$counts = ap_subscribers_count($question_id);
-		
+
 		//update post meta
 		update_post_meta($question_id, ANSPRESS_SUBSCRIBER_META, $counts);
 
@@ -289,7 +289,7 @@ function ap_subscribe_btn_html($action_id = false, $type = false){
 		elseif(is_question_tag())
 			$action_id = $question_tag->term_id;
 	}
-	
+
 	if($type == false){
 		if(is_question_category())
 			$subscribe_type =  'category' ;
@@ -305,12 +305,12 @@ function ap_subscribe_btn_html($action_id = false, $type = false){
 		else
 			$subscribe_type =  false ;
 	}
-	
+
 	$subscribed = ap_is_user_subscribed($action_id, false, $subscribe_type);
 
 	$nonce = wp_create_nonce( 'subscribe_'.$action_id.'_'.$subscribe_type );
 	$title = (!$subscribed) ? __('Subscribe', 'ap') : __('Unsubscribe', 'ap');
-	
+
 	?>
 	<div class="ap-subscribe" id="<?php echo 'subscribe_'.$action_id; ?>">
 		<a href="#" class="ap-btn-toggle<?php echo ($subscribed) ? ' active' :''; ?>" data-query="ap_ajax_action=subscribe&action_id=<?php echo $action_id ?>&__nonce=<?php echo $nonce ?>&type=<?php echo $subscribe_type; ?>" data-action="ap_subscribe" data-args="<?php echo $action_id.'-'.$nonce; ?>">
