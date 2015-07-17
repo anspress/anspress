@@ -89,7 +89,7 @@ class AnsPress_BP
 
 		$reputation = ap_get_all_reputation($user_id);
     	echo '<div id="anspress">';
-	    include ap_get_template_part('user/reputation');
+	    ap_get_template_part('user/reputation');
 	    echo '</div>';
 	}
 
@@ -218,16 +218,19 @@ class AnsPress_BP
 
 	   	if(strrpos($action, 'new_answer') !== false){
 	   		$answer = get_post($activity_id);
-			$notification_link  = get_permalink($answer->ID);
 
-			$title = substr(strip_tags($answer->post_title), 0, 35). (strlen($answer->post_title)> 35 ? '...' : '') ;
+	   		if($answer){
+				$notification_link  = get_permalink($answer->ID);
 
-			if ( (int) $total_items > 1 ) {
-				$text = sprintf( __( '%1$d answers on - %2$s', 'ap' ), (int) $total_items, $title );
-				$amount = 'multiple';
-			} else {
-				$user_fullname = bp_core_get_user_displayname( $secondary_item_id );
-				$text =  sprintf( __( '%1$s answered on - %2$s', 'ap' ), $user_fullname, $title );
+				$title = substr(strip_tags($answer->post_title), 0, 35). (strlen($answer->post_title)> 35 ? '...' : '') ;
+
+				if ( (int) $total_items > 1 ) {
+					$text = sprintf( __( '%1$d answers on - %2$s', 'ap' ), (int) $total_items, $title );
+					$amount = 'multiple';
+				} else {
+					$user_fullname = bp_core_get_user_displayname( $secondary_item_id );
+					$text =  sprintf( __( '%1$s answered on - %2$s', 'ap' ), $user_fullname, $title );
+				}
 			}
 		}elseif(strrpos($action, 'new_comment') !== false ){
 			$comment = get_comment($activity_id);
@@ -254,8 +257,8 @@ class AnsPress_BP
 		} else {
 
 			$return = apply_filters( 'ap_notifier_' . $amount . '_at_mentions_notification', array(
-				'text' => $text,
-				'link' => $notification_link
+				'text' => @$text,
+				'link' => @$notification_link
 			), $notification_link, (int) $total_items, $activity_id, $secondary_item_id );
 		}
 

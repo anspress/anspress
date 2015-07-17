@@ -16,11 +16,11 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 /**
- * To retrive AnsPress option 		
+ * To retrive AnsPress option
  * @param  string $key   Name of option to retrive,
  *                       Keep it blank to get all options of AnsPress
  * @param  string $value Enter value to update existing option
- * @return string         
+ * @return string
  * @since 0.1
  */
 function ap_opt($key = false, $value = null){
@@ -31,12 +31,12 @@ function ap_opt($key = false, $value = null){
 		if(!$settings)
 			$settings = array();
 		$settings = $settings + ap_default_options();
-		
+
 		wp_cache_set('ap_opt', $settings, 'options');
-	}	
+	}
 	if(!is_null($value)){
 
-		$settings[$key] = $value;		
+		$settings[$key] = $value;
 		update_option( 'anspress_opt', $settings);
 
 		// clear cache if option updated
@@ -47,12 +47,12 @@ function ap_opt($key = false, $value = null){
 
 	if(false === $key)
 		return $settings;
-		
+
 	if(isset($settings[$key]))
 		return $settings[$key];
 	else
 		return NULL;
-	
+
 	return false;
 }
 
@@ -115,25 +115,27 @@ function ap_default_options(){
 		'recaptcha_secret_key' 		=> '',
 		'disable_reputation' 		=> false,
 		'users_page_avatar_size'	=> 60,
-		'users_per_page' 			=> 39,		
-		'enable_users_directory'	=> true,		
-		'question_permalink_follow' => true,		
-		'show_question_sidebar' 	=> true,		
-		'allow_upload_image' 		=> true,		
-		'question_help_page' 		=> '',		
-		'answer_help_page' 			=> '',		
-		'disable_answer_nav' 		=> false,		
-		'image_per_post' 			=> 3,		
-		'base_before_user_perma' 	=> false,		
-		'user_page_slug' 			=> 'user',	
-		'ask_page_slug' 			=> 'ask',	
-		'question_page_slug' 		=> 'question',	
-		'users_page_slug' 			=> 'users',	
-		'users_page_title' 			=> __('Users', 'ap'),	
-		'users_page_title' 			=> false,	
-		'max_upload_size' 			=> 500000,	
+		'users_per_page' 			=> 39,
+		'enable_users_directory'	=> true,
+		'question_permalink_follow' => true,
+		'show_question_sidebar' 	=> true,
+		'allow_upload_image' 		=> true,
+		'question_help_page' 		=> '',
+		'answer_help_page' 			=> '',
+		'disable_answer_nav' 		=> false,
+		'image_per_post' 			=> 3,
+		'base_before_user_perma' 	=> false,
+		'user_page_slug' 			=> 'user',
+		'ask_page_slug' 			=> 'ask',
+		'question_page_slug' 		=> 'question',
+		'users_page_slug' 			=> 'users',
+		'users_page_title' 			=> __('Users', 'ap'),
+		'users_page_title' 			=> false,
+		'max_upload_size' 			=> 500000,
+		'disable_down_vote_on_question'=> false,
+		'disable_down_vote_on_answer'=> false,
 	);
-	
+
 	/**
 	 * FILTER: ap_default_options
 	 * Filter to be used by extensions for including their default options.

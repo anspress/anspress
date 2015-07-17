@@ -54,7 +54,7 @@ class AnsPress_Notifications
 		$read_unread = '';
 
 		if($this->args['unread'] && $this->args['read'])
-			$read_unread .= "apmeta_type = 'notification' OR apmeta_type = 'unread_notification'";			
+			$read_unread .= "apmeta_type = 'notification' OR apmeta_type = 'unread_notification'";
 
 		elseif($this->args['read'])
 			$read_unread .= "apmeta_type = 'notification'";
@@ -72,7 +72,7 @@ class AnsPress_Notifications
 			$result = $wpdb->get_results($query);
 			wp_cache_set( $this->cache_key, $result, 'ap' );
 
-			$this->total_count = $wpdb->get_var( apply_filters( 'ap_notification_found_rows', "SELECT FOUND_ROWS()", $this ) );		
+			$this->total_count = $wpdb->get_var( apply_filters( 'ap_notification_found_rows', "SELECT FOUND_ROWS()", $this ) );
 			wp_cache_set( $this->cache_key.'_count', $this->total_count, 'ap' );
 		}
 
@@ -83,12 +83,12 @@ class AnsPress_Notifications
 	}
 
 	private function set_args(){
-		if($this->notification && !is_array($this->notification->args)){	
+		if($this->notification && !is_array($this->notification->args)){
 			$this->notification->args 				= wp_parse_args( urldecode($this->notification->args) );
 			$this->notification->is_unread 			= $this->notification->is_unread == 'unread_notification' ? true : false;
 			$this->notification->content 			= ap_sprintf_assoc(ap_get_notification_title($this->notification->type, $this->notification->args), $this->notification->args );
 			$this->notification->icon 				= ap_get_notification_icon($this->notification->type);
-			
+
 			if(isset($this->notification->args['permalink']))
 				$this->notification->args['permalink'] 	= add_query_arg(array('ap_notification_read' => $this->id() ), $this->notification->args['permalink']);
 		}
@@ -98,11 +98,11 @@ class AnsPress_Notifications
     {
         if ( $this->current + 1 < $this->count ) {
             return true;
-        } 
+        }
         elseif ( $this->current + 1 == $this->count ) {
 
             do_action('ap_notifications_loop_end');
-            
+
             // Do some cleaning up after the loop
             $this->rewind_notification();
         }
@@ -138,7 +138,7 @@ class AnsPress_Notifications
      *
      * @return object The next notification to iterate over.
      */
-    public function next_notification() { 
+    public function next_notification() {
 
         $this->current++;
         $this->notification = $this->notifications[$this->current];
@@ -298,7 +298,7 @@ function ap_notification_pagination(){
 
 /**
  * Insert notification in ap_meta table
- *  
+ *
  * @param  integer  		$current_user_id   	User id of user triggering this hook
  * @param  integer  		$affected_user_id  	User id of user who is being affected
  * @param  string 			$notification_type 	Type of notification
@@ -319,7 +319,7 @@ function ap_insert_notification( $current_user_id, $affected_user_id, $notificat
 		case 'new_answer':
 		case 'question_update':
 		case 'answer_update':
-			$post 					= get_post($args['post_id']);			
+			$post 					= get_post($args['post_id']);
 			$args['permalink'] 		= get_permalink( $post->ID );
 			$args['post_title'] 	= ap_truncate_chars($post->post_title, 50);
 
@@ -338,7 +338,7 @@ function ap_insert_notification( $current_user_id, $affected_user_id, $notificat
 			$args['permalink'] 		= get_permalink( $post->ID );
 			$args['post_title'] 	= ap_truncate_chars($post->post_title, 50);
 			break;
-		
+
 		case 'new_follower':
 			$args['permalink'] 		= ap_user_link($current_user_id);
 			$args['user_id'] 		= $current_user_id;
@@ -347,14 +347,14 @@ function ap_insert_notification( $current_user_id, $affected_user_id, $notificat
 		case 'answer_selected':
 			$post 					= get_post($args['post_id']);
 			$args['permalink'] 		= get_permalink( $post->ID );
-			$args['post_title'] 	= ap_truncate_chars($post->post_title, 50);	
+			$args['post_title'] 	= ap_truncate_chars($post->post_title, 50);
 			break;
 
 		case 'received_reputation':
 			$args['reputation'] 	= $args['reputation'];
 			$args['permalink'] 		= ap_user_link($affected_user_id, 'reputation');
 			break;
-		
+
 		default:
 			$args = apply_filters( 'ap_notification_args', $args, func_get_args() );
 			break;
@@ -392,13 +392,13 @@ function ap_get_notification_title($notification, $args){
 	);
 
 	$title = apply_filters( 'ap_notification_title', $title );
-	
+
 	if(isset($title[$notification]))
 		return $title[$notification];
 }
 
 function ap_get_notification_icon($type){
-	
+
 	$icons = array(
 		'new_question' 				=> ap_icon('question', true),
 		'new_answer' 				=> ap_icon('answer', true),
@@ -431,12 +431,12 @@ function ap_get_the_total_unread_notification($user_id = false, $echo = false){
 }
 	/**
 	 * Count total numbers of unread notification
-	 * @param  boolean|integer 		$user_id 
+	 * @param  boolean|integer 		$user_id
 	 * @return integer
 	 * @since  2.3
 	 */
 	function ap_get_total_unread_notification($user_id = false){
-		
+
 		if($user_id === false)
 			$user_id = get_current_user_id();
 
@@ -448,10 +448,10 @@ function ap_delete_notification($meta_id = false, $current_user_id = false, $aff
 	global $wpdb;
 
 	if($meta_id !== false){
-		$row = ap_delete_meta(false, $meta_id);		
+		$row = ap_delete_meta(false, $meta_id);
 	}else{
-		$row = $wpdb->query( 
-			$wpdb->prepare( 
+		$row = $wpdb->query(
+			$wpdb->prepare(
 				"DELETE FROM ".$wpdb->prefix."ap_meta
 				 WHERE apmeta_actionid = %d
 				 AND apmeta_userid = %d
@@ -475,7 +475,7 @@ function ap_get_notification_by_id($id){
 
 /**
  * Set all unread notifications as read
- * @param  integer $user_id 
+ * @param  integer $user_id
  * @return integer
  */
 function ap_notification_mark_all_read($user_id){
@@ -489,7 +489,7 @@ function ap_notification_mark_all_read($user_id){
  */
 function ap_notification_mark_as_read($id){
 	$row = ap_update_meta(array('apmeta_type' => 'notification'), array('apmeta_id' => (int)$id));
-	
+
 	if($row !== false)
 		do_action('ap_notification_marked_as_read', $id);
 

@@ -783,6 +783,7 @@ function ap_responce_message($id, $only_message = false)
 		'cannot_follow_yourself' => array('type' => 'warning', 'message' => __('You cannot follow yourself.', 'ap')),
 		'delete_notification' => array('type' => 'success', 'message' => __('Notification deleted successfully.', 'ap')),
 		'mark_read_notification' => array('type' => 'success', 'message' => __('Notification is marked as read.', 'ap')),
+		'voting_down_disabled' => array('type' => 'warning', 'message' => __('Voting down is disabled.', 'ap')),
 		);
 
 	/**

@@ -328,6 +328,14 @@ class AnsPress_Options_Page
 				'show_desc_tip' => false,
 			) ,
 			array(
+				'name' => 'anspress_opt[disable_down_vote_on_question]',
+				'label' => __('Disable down voting', 'ap') ,
+				'desc' => __('Disable down voting on questions.', 'ap') ,
+				'type' => 'checkbox',
+				'value' => $settings['disable_down_vote_on_question'],
+				'show_desc_tip' => false,
+			) ,
+			array(
 				'name' => 'anspress_opt[close_selected]',
 				'label' => __('Close question after selecting answer', 'ap') ,
 				'desc' => __('If enabled this will prevent user to submit answer on solved question.', 'ap') ,
@@ -377,6 +385,14 @@ class AnsPress_Options_Page
 				'desc' => __('Disable voting on answers.', 'ap') ,
 				'type' => 'checkbox',
 				'value' => $settings['disable_voting_on_answer'],
+				'show_desc_tip' => false,
+			) ,
+			array(
+				'name' => 'anspress_opt[disable_down_vote_on_answer]',
+				'label' => __('Disable down voting', 'ap') ,
+				'desc' => __('Disable down voting on answers.', 'ap') ,
+				'type' => 'checkbox',
+				'value' => $settings['disable_down_vote_on_answer'],
 				'show_desc_tip' => false,
 			) ,
 			array(
