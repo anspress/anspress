@@ -4,7 +4,7 @@
  *
  * @link http://anspress.io
  * @since 0.1
- * @license GPL 2+ 
+ * @license GPL 2+
  * @package AnsPress
  */
 
@@ -23,7 +23,7 @@ $clearfix_class = array('ap-questions-item clearfix');
 				<?php ap_question_the_author_avatar(ap_opt('avatar_size_list')); ?>
 			</a>
 		</div>
-		<div class="pull-right">
+		<div class="ap-list-counts">
 			<?php ap_question_the_answer_count(); ?>
 			<?php ap_question_the_net_vote(); ?>
 		</div>
@@ -31,10 +31,10 @@ $clearfix_class = array('ap-questions-item clearfix');
 			<span class="ap-questions-title entry-title" itemprop="title">
 				<?php ap_question_the_status(); ?>
 				<a class="ap-questions-hyperlink" itemprop="url" href="<?php ap_question_the_permalink(); ?>" rel="bookmark" title="<?php the_title(); ?>"><?php the_title(); ?></a>
-			</span>			
+			</span>
 			<div class="ap-display-question-meta">
 				<?php echo ap_display_question_metas() ?>
 			</div>
-		</div>				
-	</div>	
+		</div>
+	</div>
 </div><!-- list item -->

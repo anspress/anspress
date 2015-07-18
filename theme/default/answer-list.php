@@ -4,7 +4,7 @@
  *
  * @link http://anspress.io
  * @since 0.1
- * @license GPL 2+ 
+ * @license GPL 2+
  * @package AnsPress
  */
 
@@ -20,7 +20,7 @@ $clearfix_class = array('ap-questions-item clearfix');
 		<div class="private-question-label clearfix">
 			<span><?php _e( 'Private Answer', 'ap' ); ?></span>
 		</div>
-	<?php endif; ?>		
+	<?php endif; ?>
 	<div class="ap-questions-inner">
 		<div class="ap-avatar ap-pull-left">
 			<a href="<?php echo ap_user_link(); ?>">
@@ -28,7 +28,7 @@ $clearfix_class = array('ap-questions-item clearfix');
 				<?php echo get_avatar( get_the_author_meta( 'ID' ), 45 ); ?>
 			</a>
 		</div>
-		<div class="pull-right">
+		<div class="ap-list-counts">
 			<?php if(!ap_opt('disable_voting_on_question')){ ?>
 				<span class="ap-questions-count ap-questions-vcount">
 					<span><?php echo ap_net_vote() ?></span>
@@ -39,10 +39,10 @@ $clearfix_class = array('ap-questions-item clearfix');
 		<div class="ap-questions-summery no-overflow">
 			<span class="ap-questions-title entry-title" itemprop="title">
 				<a class="ap-questions-hyperlink" itemprop="url" href="<?php the_permalink(); ?>" rel="bookmark" title="<?php the_title(); ?>"><?php the_title(); ?></a>
-			</span>			
+			</span>
 			<div class="ap-display-question-meta">
 				<?php echo ap_display_answer_metas() ?>
 			</div>
-		</div>				
-	</div>	
+		</div>
+	</div>
 </div><!-- list item -->

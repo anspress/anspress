@@ -1412,6 +1412,9 @@ body ul ul#ap-user-menu-link li > a .count {
   background: none repeat scroll 0 0 #fffae1;
   border-bottom-color: #efe7bc;
 }
+#anspress .ap-list-counts {
+  float: right;
+}
 #anspress .ap-display-meta-item:before {
   background: #dadada;
   border-radius: 50%;
@@ -1446,6 +1449,9 @@ body ul ul#ap-user-menu-link li > a .count {
 }
 #anspress .ap-list-head .ap-btn-ask:visited {
   color: #fff;
+}
+#anspress .ap-list-head .ap-search-form {
+  float: left;
 }
 #anspress #ap-question-sorting {
   border: 1px solid #ddd;

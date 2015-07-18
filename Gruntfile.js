@@ -58,12 +58,14 @@ module.exports = function(grunt) {
 		    },
 		    files: {
 		      "theme/default/css/main.css": "theme/default/less/main.less",
+		      "theme/default/css/responsive.css": "theme/default/less/responsive.less",
 		      "assets/ap-admin.css": "assets/ap-admin.less"
 		    }
 		  },
 		  production: {
 		    files: {
 		      "theme/default/css/main.css": "theme/default/less/main.less",
+		      "theme/default/css/responsive.css": "theme/default/less/responsive.less",
 		      "assets/ap-admin.css": "assets/ap-admin.less"
 
 		    }

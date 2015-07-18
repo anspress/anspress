@@ -49,6 +49,7 @@ function ap_scripts_front(){
 
 		do_action('ap_enqueue');
 
+		wp_enqueue_style( 'ap-responsive', ap_get_theme_url('css/responsive.css'), array(), AP_VERSION);
 		wp_enqueue_style( 'ap-overrides', ap_get_theme_url('css/overrides.css'), array(), AP_VERSION);
 
 		?>
