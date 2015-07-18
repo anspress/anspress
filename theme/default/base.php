@@ -1,3 +1,15 @@
+<?php
+	/**
+	 * Display question list
+	 *
+	 * This template is used in base page, category, tag , etc
+	 *
+	 * @link http://anspress.io
+	 * @since unknown
+	 *
+	 * @package AnsPress
+	 */
+?>
 <?php dynamic_sidebar( 'ap-top' ); ?>
 <div class="row">
 	<div id="ap-lists" class="<?php echo is_active_sidebar( 'ap-sidebar' ) && is_anspress() ? 'col-md-9' : 'col-md-12' ?>">

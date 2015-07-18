@@ -7,6 +7,8 @@ class AP_Questions_Widget extends WP_Widget {
 	}
 
 	public function widget( $args, $instance ) {
+		global $questions;
+
 		$title 			= apply_filters( 'widget_title', $instance['title'] );
 		$order 			= $instance[ 'order' ];
 		$limit			= $instance[ 'limit' ];
@@ -17,9 +19,9 @@ class AP_Questions_Widget extends WP_Widget {
 		}
 
 		echo $args['before_widget'];
-		if ( ! empty( $title ) ) 
+		if ( ! empty( $title ) )
 			echo $args['before_title'] . $title . $args['after_title'];
-		
+
 		$question_args = array(
 			'showposts' 	=> $limit,
 			'orderby' 		=> $order,
@@ -32,7 +34,7 @@ class AP_Questions_Widget extends WP_Widget {
                 'terms'    => $category_ids
             );
         }
-		
+
 		$questions = ap_get_questions( $question_args );
 		ap_get_template_part('widget-questions');
 		echo $args['after_widget'];
@@ -44,10 +46,10 @@ class AP_Questions_Widget extends WP_Widget {
 		$order			= 'active';
 		$limit			= 5;
 		$category_ids   = '';
-		
+
 		if ( isset( $instance[ 'title' ] ) )
 			$title = $instance[ 'title' ];
-		
+
 		if ( isset( $instance[ 'order' ] ) )
 			$order = $instance[ 'order' ];
 
@@ -56,14 +58,14 @@ class AP_Questions_Widget extends WP_Widget {
 
 		if ( isset( $instance[ 'category_ids' ] ) )
 			$category_ids = $instance[ 'category_ids' ];
-		
+
 		?>
 		<p>
-			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:' ); ?></label> 
-			<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>">			
+			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:' ); ?></label>
+			<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>">
 		</p>
 		<p>
-			<label for="<?php echo $this->get_field_id( 'order' ); ?>"><?php _e( 'Order by:', 'ap' ); ?></label> 
+			<label for="<?php echo $this->get_field_id( 'order' ); ?>"><?php _e( 'Order by:', 'ap' ); ?></label>
 			<select class="widefat" id="<?php echo $this->get_field_id( 'order' ); ?>" name="<?php echo $this->get_field_name( 'order' ); ?>">
 				<option <?php selected($order, 'active'); ?> value="active"><?php _e( 'Active', 'ap' ); ?></option>
 				<option <?php selected($order, 'newest'); ?> value="newest"><?php _e( 'Newest', 'ap' ); ?></option>
@@ -74,17 +76,17 @@ class AP_Questions_Widget extends WP_Widget {
 		</p>
 		<?php if(taxonomy_exists( 'question_category' )): ?>
 			<p>
-				<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Category IDs:' ); ?></label> 
+				<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Category IDs:' ); ?></label>
 				<input class="widefat" id="<?php echo $this->get_field_id( 'category_ids' ); ?>" name="<?php echo $this->get_field_name( 'category_ids' ); ?>" type="text" value="<?php echo esc_attr( $category_ids ); ?>">
 				<small><?php _e('Comma separted AnsPress category ids', 'ap'); ?></small>
 			</p>
-		<?php endif; ?>	
+		<?php endif; ?>
 		<p>
-			<label for="<?php echo $this->get_field_id( 'limit' ); ?>"><?php _e( 'Limit:' ); ?></label> 
+			<label for="<?php echo $this->get_field_id( 'limit' ); ?>"><?php _e( 'Limit:' ); ?></label>
 			<input class="widefat" id="<?php echo $this->get_field_id( 'limit' ); ?>" name="<?php echo $this->get_field_name( 'limit' ); ?>" type="text" value="<?php echo esc_attr( $limit ); ?>">
 		</p>
 
-		<?php 
+		<?php
 	}
 
 	public function update( $new_instance, $old_instance ) {

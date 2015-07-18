@@ -75,16 +75,14 @@ class AP_user_query
 
     public function __construct($args = '')
     {
-
-
         $this->per_page = ap_opt('users_per_page');
 
-       
+
         // grab the current page number and set to 1 if no page number is set
         $this->paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
-    
+
         $this->offset = $this->per_page * ($this->paged - 1);
-        
+
 
         $args =  wp_parse_args( $args, array(
             'number' => $this->per_page,
@@ -108,71 +106,71 @@ class AP_user_query
                         $args['orderby']    = 'registered';
                         $args['order']      = 'DESC';
                         break;
-                    
-                    case 'active':                   
+
+                    case 'active':
                         $args['ap_query']    = 'user_sort_by_active';
                         $args['orderby']    = 'meta_value date';
                         $args['order']      = 'ASC';
                         $args['meta_query'] = array(
                             array(
-                                'key' => '__last_active'                            
+                                'key' => '__last_active'
                             )
                         );
-                        
+
                         break;
 
-                    case 'best_answer':                   
+                    case 'best_answer':
                         $args['ap_query']    = 'user_sort_by_best_answer';
                         $args['orderby']    = 'meta_value date';
                         $args['order']      = 'ASC';
                         $args['meta_query'] = array(
                             array(
-                                'key' => '__best_answers'                            
+                                'key' => '__best_answers'
                             )
                         );
-                        
+
                         break;
 
-                    case 'answer':                   
+                    case 'answer':
                         $args['ap_query']    = 'user_sort_by_answer';
                         $args['orderby']    = 'meta_value date';
                         $args['order']      = 'ASC';
                         $args['meta_query'] = array(
                             array(
-                                'key' => '__total_answers'                            
+                                'key' => '__total_answers'
                             )
-                        );                        
+                        );
                         break;
 
-                    case 'followers':                   
-                        $args['ap_query']    = 'user_sort_by_followers';                        
+                    case 'followers':
+                        $args['ap_query']    = 'user_sort_by_followers';
                         break;
 
-                    case 'following':                   
-                        $args['ap_query']    = 'user_sort_by_following';                        
+                    case 'following':
+                        $args['ap_query']    = 'user_sort_by_following';
                         break;
 
-                    default:                   
+                    default:
                         $args['ap_query']    = 'user_sort_by_reputation';
                         $args['orderby']    = 'meta_value';
                         $args['order']      = 'DESC';
                         $args['meta_query'] = array(
                             'relation' => 'OR',
                             array(
-                                'key' => 'ap_reputation'                            
+                                'key' => 'ap_reputation'
                             ),
                             array(
                                 'key' => 'ap_reputation',
                                 'compare' => 'NOT EXISTS'
                             )
                         );
-                        
+
                         break;
                 }
             }
 
             $ap_user_query = new WP_User_Query( $args );
-            $this->users = $ap_user_query->results;        
+            $this->users = $ap_user_query->results;
 
             // count the number of users found in the query
             $this->total_user_count = $ap_user_query->get_total();
@@ -278,13 +276,13 @@ function ap_has_users($args = ''){
 }
 
 function ap_users(){
-    global $ap_user_query;    
+    global $ap_user_query;
     return $ap_user_query->users();
 }
 
 function ap_the_user(){
-    global $ap_user_query;     
-    return $ap_user_query->the_user();  
+    global $ap_user_query;
+    return $ap_user_query->the_user();
 }
 
 function ap_user_the_object($user_id = false){
@@ -370,7 +368,7 @@ function ap_user_the_avatar($size = 40){
 function ap_user_the_reputation($short = true){
     echo ap_user_get_the_reputation($short);
 }
-    
+
     /**
      * Get active user reputation
      * @param  boolean $short Shorten count like 2.8k
@@ -386,7 +384,7 @@ function ap_user_the_reputation($short = true){
  */
 function ap_users_the_pagination(){
     global $ap_user_query;
-    $ap_user_query->the_pagination();    
+    $ap_user_query->the_pagination();
 }
 
 /**
@@ -400,21 +398,21 @@ function ap_user_the_meta($key, $user_id = false){
     if(!is_array($meta))
         echo $meta;
 }
-    
+
     /**
      * Get the user meta by key
      * if key is false then all metas of user will be returned.
-     * 
+     *
      * @param  boolean|string   $key        meta key
      * @param  boolean|integer  $user_id    user id
-     * @return array|string     
+     * @return array|string
      */
     function ap_user_get_the_meta($key = false, $user_id = false){
         if(!$user_id)
             $user_id = ap_user_get_the_ID();
 
         $meta = get_user_meta( $user_id );
-        
+
         if(is_array($meta))
             $meta = array_map('ap_meta_array_map', $meta) ;
 
@@ -458,14 +456,14 @@ function ap_user_the_meta($key, $user_id = false){
 
         if($key !== false && isset($meta[$key]))
             return $meta[$key];
-        
+
         if($key === false)
             return $meta;
     }
 
 function ap_user_meta_exists($key, $user_id = false){
     $meta = ap_user_get_the_meta($key, $user_id);
-    
+
     if(!empty($meta))
         return true;
 
@@ -524,7 +522,7 @@ function ap_user_get_member_for(){
     $registered = new DateTime(ap_user_get_registered_date());
     $now = new DateTime(current_time('mysql'));
     $diff = date_diff($registered, $now);
-    
+
     $time = '';
 
     if($diff->y > 0)

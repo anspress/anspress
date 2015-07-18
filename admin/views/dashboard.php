@@ -13,6 +13,8 @@ if (! defined('WPINC')) {
     die;
 }
 
+global $questions;
+
 $question_count = ap_total_posts_count('question');
 $answer_count = ap_total_posts_count('answer');
 $flagged_count = ap_total_posts_count('both', 'flag');
@@ -55,7 +57,7 @@ $flagged_count = ap_total_posts_count('both', 'flag');
 			<div class="ap-dash-tile-in ap-dash-questions">
 				<h3 class="ap-dash-title"><?php _e('Latest Questions', 'ap') ?></h3>
 				<?php
-					ap_get_questions(array('sortby' => 'newest'));
+					$questions = ap_get_questions(array('sortby' => 'newest'));
 					if ( ap_have_questions() ):
 				?>
 				<div class="ap-user-posts">
@@ -64,18 +66,18 @@ $flagged_count = ap_total_posts_count('both', 'flag');
 							<a class="ap-user-posts-vcount ap-tip<?php echo ap_question_best_answer_selected() ? ' answer-selected' :''; ?>" href="<?php ap_question_the_permalink(); ?>" title="<?php _e('Answers'); ?>"><?php echo ap_icon('answer', true); ?><?php echo ap_question_get_the_answer_count(); ?></a>
 							<span class="ap-user-posts-active"><?php ap_question_the_active_ago(); ?></span>
 							<a class="ap-user-posts-ccount ap-tip" href="<?php ap_question_the_permalink(); ?>" title="<?php _e('Comments', 'ap'); ?>"><?php echo ap_icon('comment', true); ?><?php echo get_comments_number(); ?></a>
-							<div class="no-overflow"><a href="<?php ap_question_the_permalink(); ?>" class="ap-user-posts-title"><?php the_title(); ?></a></div>				
-						</div>	
-					
-					<?php 
+							<div class="no-overflow"><a href="<?php ap_question_the_permalink(); ?>" class="ap-user-posts-title"><?php the_title(); ?></a></div>
+						</div>
+
+					<?php
 						endwhile;
 						wp_reset_postdata();
 					?>
 
-					<?php 
-						else: 
+					<?php
+						else:
 							_e('There is no question yet.', 'ap');
-						endif; 
+						endif;
 					?>
 				</div>
 			</div>
@@ -128,7 +130,7 @@ $flagged_count = ap_total_posts_count('both', 'flag');
 			</div>
 
 		</div>
-		
+
 	</div>
 
 </div>

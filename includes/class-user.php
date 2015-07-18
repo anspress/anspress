@@ -44,7 +44,7 @@ class AnsPress_User
         // Register user pages
         ap_register_user_page('about', __('About', 'ap'), array($this, 'about_page'));
         ap_register_user_page('notification', __('Notification', 'ap'), array($this, 'notification_page'), true, false);
-        ap_register_user_page('profile', __('Profile', 'ap'), array($this, 'profile_page'), true, false);        
+        ap_register_user_page('profile', __('Profile', 'ap'), array($this, 'profile_page'), true, false);
         ap_register_user_page('questions', __('Questions', 'ap'), array($this, 'questions_page'));
         ap_register_user_page('answers', __('Answers', 'ap'), array($this, 'answers_page'));
         ap_register_user_page('followers', __('Followers', 'ap'), array($this, 'followers_page'));
@@ -57,7 +57,7 @@ class AnsPress_User
     public function users_page(){
         if(ap_opt('enable_users_directory')){
 
-            global $ap_user_query;        
+            global $ap_user_query;
             $ap_user_query = ap_has_users();
             include ap_get_theme_location('users/users.php');
 
@@ -75,7 +75,7 @@ class AnsPress_User
         }
 
         $ap_user_query = ap_has_users(array('ID' => ap_get_displayed_user_id() ) );
-        
+
         if($ap_user_query->has_users()){
             include ap_get_theme_location('user/user.php');
         }else{
@@ -87,7 +87,7 @@ class AnsPress_User
      * Output user about page
      * @since 2.3
      */
-    public function about_page(){        
+    public function about_page(){
         ap_get_template_part('user/about');
     }
 
@@ -100,11 +100,11 @@ class AnsPress_User
             ap_get_template_part('not-found');
             return;
         }
-        
+
         global $ap_notifications;
 
         $ap_notifications = ap_get_user_notifications();
-        
+
         ap_get_template_part('user/notification');
     }
 
@@ -112,7 +112,7 @@ class AnsPress_User
      * Output for activity page
      * @since 2.1
      */
-    public function activity_page(){        
+    public function activity_page(){
         include ap_get_theme_location('user/activity.php');
     }
 
@@ -135,8 +135,9 @@ class AnsPress_User
      * @since 2.1
      */
     public function questions_page(){
-        ap_get_questions(array('author' => ap_get_displayed_user_id()));
-        include ap_get_theme_location('user/user-questions.php');
+        global $questions;
+        $questions = ap_get_questions(array('author' => ap_get_displayed_user_id()));
+        ap_get_template_part('user/user-questions');
         wp_reset_postdata();
     }
 
@@ -157,7 +158,7 @@ class AnsPress_User
             include ap_get_theme_location('user/followers.php');
         else
             _e('No followers found', 'ap');
-        
+
     }
 
     public function following_page(){
@@ -168,7 +169,7 @@ class AnsPress_User
 
         else
             _e('You are not following anyone.', 'ap');
-        
+
     }
 
     /**
@@ -176,20 +177,21 @@ class AnsPress_User
      * @since 2.3
      */
     public function subscription_page(){
+        global $questions;
 
         if(!ap_is_user_page_public('profile') && !ap_is_my_profile()){
             ap_get_template_part('not-found');
             return;
         }
 
-        ap_get_questions(array( 'ap_query' => 'ap_subscription_query', 'user_id' => get_current_user_id(), 'sortby' => 'newest'));
-        include ap_get_theme_location('user/subscription.php');
+        $questions = ap_get_questions(array( 'ap_query' => 'ap_subscription_query', 'user_id' => get_current_user_id(), 'sortby' => 'newest'));
+        ap_get_template_part('user/subscription');
     }
 
     public function ap_page_title($title)
     {
         if(is_ap_user()){
-            
+
             $active = ap_active_user_page();
             $name = ap_user_get_the_display_name();
             $my = ap_is_my_profile();
@@ -235,7 +237,7 @@ class AnsPress_User
             global $wpdb;
 
             $query->query_from = $query->query_from." LEFT JOIN ".$wpdb->prefix."ap_meta M ON $wpdb->users.ID = M.apmeta_userid";
-            
+
             $userid = $query->query_vars['user_id'];
 
             $query->query_where = $query->query_where." AND M.apmeta_type = 'follower' AND M.apmeta_actionid = $userid";
@@ -260,7 +262,7 @@ class AnsPress_User
     public function user_sort_by_reputation($query)
     {
         if (isset($query->query_vars['ap_query']) && $query->query_vars['ap_query'] == 'user_sort_by_reputation') {
-            global $wpdb;            
+            global $wpdb;
             $query->query_orderby = 'ORDER BY cast(mt1.meta_value AS DECIMAL) DESC';
         }
 
@@ -279,7 +281,7 @@ class AnsPress_User
         global $user_id;
         $md5 = md5($user_id.time());
         return $md5 . $ext;
-    } 
+    }
 
     /**
      * Upload a photo to server. Before uploading it check for valid image type
@@ -293,11 +295,11 @@ class AnsPress_User
             $this->upload_error  = sprintf(__('File cannot be uploaded, size is bigger then %d Byte'), ap_opt('max_upload_size'));
             return false;
         }
-        
+
         require_once ABSPATH."wp-admin".'/includes/image.php';
         require_once ABSPATH."wp-admin".'/includes/file.php';
         require_once ABSPATH."wp-admin".'/includes/media.php';
-        
+
         if ( !empty( $_FILES[ $file_name ][ 'name' ] ) && is_uploaded_file( $_FILES[ $file_name ]['tmp_name'] )) {
             $mimes = array (
                 'jpg|jpeg|jpe'=>'image/jpeg',
@@ -319,12 +321,12 @@ class AnsPress_User
     public function cover_upload()
     {
         if (wp_verify_nonce($_POST['__nonce'], 'upload_cover_'.get_current_user_id()) && is_user_logged_in()) {
-            
+
             $photo = $this->upload_photo('image');
 
             if($photo === false)
                 ap_send_json( ap_ajax_responce(array('message' => $this->upload_error, 'message_type' => 'error')));
-            
+
             $file = str_replace('\\', '\\\\', $photo['file']);
             $photo['file'] = $file;
 
@@ -335,10 +337,10 @@ class AnsPress_User
             $photo['small_file'] = $small_name;
 
             $userid = get_current_user_id();
-            
+
             // Remove previous image
             $previous_cover = get_user_meta($userid, '_ap_cover', true);
-            
+
             if($previous_cover['file'] && file_exists($previous_cover['file']))
                 unlink( $previous_cover['file'] );
 
@@ -359,10 +361,10 @@ class AnsPress_User
 
             do_action('ap_after_cover_upload', $userid, $photo);
 
-            ap_send_json( ap_ajax_responce(array('action' => 'cover_uploaded', 'status' => true, 'message' => __('Cover photo uploaded successfully.', 'ap'), 'user_id' => $userid , 'image' => ap_get_cover_src($userid)  )));            
+            ap_send_json( ap_ajax_responce(array('action' => 'cover_uploaded', 'status' => true, 'message' => __('Cover photo uploaded successfully.', 'ap'), 'user_id' => $userid , 'image' => ap_get_cover_src($userid)  )));
         }
-        
-        ap_send_json( ap_ajax_responce(array('message' => __('There was an error while uploading cover photo, please check your image and try again.', 'ap'), 'message_type' => 'error'))); 
+
+        ap_send_json( ap_ajax_responce(array('message' => __('There was an error while uploading cover photo, please check your image and try again.', 'ap'), 'message_type' => 'error')));
     }
 
     /**
@@ -372,12 +374,12 @@ class AnsPress_User
     public function avatar_upload()
     {
         if (wp_verify_nonce($_POST['__nonce'], 'upload_avatar_'.get_current_user_id()) && is_user_logged_in()) {
-            
+
             $photo = $this->upload_photo('thumbnail');
 
             if($photo === false)
                 ap_send_json( ap_ajax_responce(array('message' => $this->upload_error, 'message_type' => 'error')));
-            
+
             $file = str_replace('\\', '\\\\', $photo['file']);
             $photo['file'] = $file;
 
@@ -388,10 +390,10 @@ class AnsPress_User
             $photo['small_file'] = $small_name;
 
             $userid = get_current_user_id();
-            
+
             // Remove previous image
             $previous_avatar = get_user_meta($userid, '_ap_avatar', true);
-            
+
             if($previous_avatar['file'] && file_exists($previous_avatar['file']))
                 unlink( $previous_avatar['file'] );
 
@@ -412,10 +414,10 @@ class AnsPress_User
 
             do_action('ap_after_avatar_upload', $userid, $photo);
 
-            ap_send_json( ap_ajax_responce(array('status' => true, 'message' => __('Avatar uploaded successfully.', 'ap'), 'view' => array('user_avatar_'.$userid => get_avatar($userid, 150)), 'view_html' => true  )));            
+            ap_send_json( ap_ajax_responce(array('status' => true, 'message' => __('Avatar uploaded successfully.', 'ap'), 'view' => array('user_avatar_'.$userid => get_avatar($userid, 150)), 'view_html' => true  )));
         }
-        
-        ap_send_json( ap_ajax_responce(array('message' => __('There was an error while uploading avatar, please check your image', 'ap'), 'message_type' => 'error')));        
+
+        ap_send_json( ap_ajax_responce(array('message' => __('There was an error while uploading avatar, please check your image', 'ap'), 'message_type' => 'error')));
 
     }
 
@@ -457,7 +459,7 @@ class AnsPress_User
                 }else{
                     $id_or_email = 0;
                 }
-            } 
+            }
             elseif (is_email($id_or_email)) {
                 $u           = get_user_by('email', $id_or_email);
                 $id_or_email = $u->ID;
@@ -467,7 +469,7 @@ class AnsPress_User
 
             if ($ap_avatar !== false) {
                 return "<span data-view='user_avatar_{$id_or_email}'><img data-cont='avatar_{$id_or_email}' alt='{$alt}' src='{$ap_avatar}' class='avatar avatar-{$size} photo' height='{$size}' width='{$size}' /></span>";
-            } 
+            }
         }
 
         if(strpos($avatar, 'ANSPRESS_AVATAR_SRC') !== false){
@@ -501,8 +503,8 @@ class AnsPress_User
         );
 
         foreach($icons as $k => $i)
-            if (isset($menus[$k])) 
-                $menus[$k]['class'] = $i;        
+            if (isset($menus[$k]))
+                $menus[$k]['class'] = $i;
 
         return $menus;
     }

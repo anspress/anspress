@@ -7,10 +7,12 @@ class AP_Related_questions extends WP_Widget {
 	}
 
 	public function widget( $args, $instance ) {
+		global $questions;
+
 		$title 			= apply_filters( 'widget_title', $instance['title'] );
 
 		echo $args['before_widget'];
-		if ( ! empty( $title ) ) 
+		if ( ! empty( $title ) )
 			echo $args['before_title'] . $title . $args['after_title'];
 
 		if(!class_exists('Tags_For_AnsPress')){
@@ -37,7 +39,7 @@ class AP_Related_questions extends WP_Widget {
 			'post__not_in' 	=> array(get_question_id()),
 		);
 
-		ap_get_questions($question_args);
+		$questions = ap_get_questions($question_args);
 		include ap_get_theme_location('widget-related_questions.php');
 		wp_reset_postdata();
 		echo $args['after_widget'];
@@ -47,17 +49,15 @@ class AP_Related_questions extends WP_Widget {
 	public function form( $instance ) {
 		$title 			= __( 'Related Questions', 'ap' );
 
-		
 		if ( isset( $instance[ 'title' ] ) )
-			$title = $instance[ 'title' ];		
-		
+			$title = $instance[ 'title' ];
 		?>
 		<p>
-			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:' ); ?></label> 
+			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:' ); ?></label>
 			<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>">
 		</p>
-		
-		<?php 
+
+		<?php
 	}
 
 	public function update( $new_instance, $old_instance ) {

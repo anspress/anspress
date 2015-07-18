@@ -145,7 +145,7 @@ function ap_get_questions($args = array()){
         'ap_query'      => 'featured_post'
     ));
 
-    anspress()->questions = new Question_Query($args);
+    return new Question_Query($args);
 }
 
 
@@ -164,23 +164,31 @@ function ap_get_question($question_id){
     if(ap_user_can_view_moderate_post($question_id))
        $args['post_status'][] = 'moderate';
 
-    anspress()->questions = new Question_Query($args);
+    return new Question_Query($args);
 }
 
+/**
+ * Check if there is post in loop
+ * @return boolean
+ */
 function ap_have_questions(){
-    return anspress()->questions->have_posts();
+    global $questions;
+    return $questions->have_posts();
 }
 
 function ap_questions(){
-   return anspress()->questions->have_posts();
+    global $questions;
+    return $questions->have_posts();
 }
 
 function ap_the_question(){
-    return anspress()->questions->the_post();
+    global $questions;
+    return $questions->the_post();
 }
 
 function ap_question_the_object(){
-    return anspress()->questions->post;
+    global $questions;
+    return $questions->post;
 }
 
 /**
@@ -327,7 +335,7 @@ function ap_question_the_permalink(){
  * @return string pagination html tag
  */
 function ap_questions_the_pagination(){
-    $questions = anspress()->questions;
+    global $questions;
     ap_pagination(false, $questions->max_num_pages);
 }
 

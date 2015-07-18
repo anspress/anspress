@@ -108,7 +108,7 @@ class AnsPress_BP
 
     	$questions 		 = new Question_Query(array('author' => bp_displayed_user_id()));
     	echo '<div id="anspress">';
-	    include ap_get_theme_location('buddypress/user-questions.php');
+	    ap_get_template_part('buddypress/user-questions');
 	    echo '</div>';
 	    wp_reset_postdata();
 	}
