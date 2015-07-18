@@ -14,10 +14,10 @@
 
 		<?php else: ?>
 
-			<?php _e('No question subscribed yet!', 'ap'); ?>
+			<?php _e('Not following any question yet!', 'ap'); ?>
 
 		<?php endif; ?>
-		
+
 		<?php wp_reset_postdata(); ?>
 
 	<?php endif; ?>

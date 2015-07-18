@@ -57,7 +57,7 @@ class AnsPress_Vote_Ajax extends AnsPress_Ajax
 				$row = ap_remove_subscriber( $user_id, $action_id, $subscribe_type );
 
 			if(FALSE !== $row)
-				ap_send_json(ap_ajax_responce(array('message' => 'unsubscribed', 'action' => 'unsubscribed', 'container' => '#subscribe_'.$action_id.' b', 'do' => 'updateHtml', 'html' =>__('Subscribe', 'ap'))));
+				ap_send_json(ap_ajax_responce(array('message' => 'unsubscribed', 'action' => 'unsubscribed', 'container' => '#subscribe_'.$action_id.' b', 'do' => 'updateHtml', 'html' =>__('Follow question', 'ap'))));
 
 		}else{
 
@@ -66,7 +66,7 @@ class AnsPress_Vote_Ajax extends AnsPress_Ajax
 			else
 				ap_add_subscriber( $user_id, $action_id, $subscribe_type );
 
-			ap_send_json(ap_ajax_responce(array('message' => 'subscribed', 'action' => 'subscribed', 'container' => '#subscribe_'.$action_id.' b', 'do' => 'updateHtml', 'html' => __('Unsubscribe', 'ap'))));
+			ap_send_json(ap_ajax_responce(array('message' => 'subscribed', 'action' => 'subscribed', 'container' => '#subscribe_'.$action_id.' b', 'do' => 'updateHtml', 'html' => __('Unfollow question', 'ap'))));
 
 		}
 

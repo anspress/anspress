@@ -309,8 +309,8 @@ function ap_subscribe_btn_html($action_id = false, $type = false){
 	$subscribed = ap_is_user_subscribed($action_id, false, $subscribe_type);
 
 	$nonce = wp_create_nonce( 'subscribe_'.$action_id.'_'.$subscribe_type );
-	$title = (!$subscribed) ? __('Subscribe', 'ap') : __('Unsubscribe', 'ap');
 
+	$title = (!$subscribed) ? __('Follow question', 'ap') : __('Unfollow question', 'ap');
 	?>
 	<div class="ap-subscribe" id="<?php echo 'subscribe_'.$action_id; ?>">
 		<a href="#" class="ap-btn-toggle<?php echo ($subscribed) ? ' active' :''; ?>" data-query="ap_ajax_action=subscribe&action_id=<?php echo $action_id ?>&__nonce=<?php echo $nonce ?>&type=<?php echo $subscribe_type; ?>" data-action="ap_subscribe" data-args="<?php echo $action_id.'-'.$nonce; ?>">

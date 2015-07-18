@@ -107,7 +107,7 @@ class AnsPress_Common_Pages
     {
         global $questions;
 
-        ap_get_question(get_question_id());
+        $questions = ap_get_question(get_question_id());
 
         if(ap_have_questions()){
             /**
@@ -115,7 +115,7 @@ class AnsPress_Common_Pages
              * @since 2.3.3
              */
 
-            while ( anspress()->questions->have_posts() ) : anspress()->questions->the_post();
+            while ( ap_questions() ) : ap_the_question();
                 global $post;
                 setup_postdata( $post );
                 include(ap_get_theme_location('question.php'));

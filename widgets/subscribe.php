@@ -7,7 +7,7 @@
  * @license GPL 2+ GNU GPL licence above 2+
  * @link http://anspress.io
  * @since 2.0.0-alpha2
- *  
+ *
  */
 
 // If this file is called directly, abort.
@@ -19,7 +19,7 @@ class AnsPress_Subscribe_Widget extends WP_Widget {
 
 	public function AnsPress_Subscribe_Widget() {
 		// Instantiate the parent object
-		parent::__construct( false, __('AnsPress Subscribe', 'ap') );
+		parent::__construct( false, __('AnsPress Question follow', 'ap') );
 	}
 
 	public function widget( $args, $instance ) {
@@ -31,7 +31,7 @@ class AnsPress_Subscribe_Widget extends WP_Widget {
 		}
 
 		ap_subscribe_btn_html();
-		ap_question_subscribers();		
+		ap_question_subscribers();
 
 		echo $args['after_widget'];
 	}
@@ -45,10 +45,10 @@ class AnsPress_Subscribe_Widget extends WP_Widget {
 		}
 		?>
 		<p>
-			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:' ); ?></label> 
+			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:' ); ?></label>
 			<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>">
 		</p>
-		<?php 
+		<?php
 	}
 
 	/**

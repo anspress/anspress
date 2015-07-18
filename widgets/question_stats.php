@@ -7,7 +7,7 @@
  * @license GPL 2+ GNU GPL licence above 2+
  * @link http://anspress.io
  * @since 2.0.0-alpha2
- *  
+ *
  */
 
 // If this file is called directly, abort.
@@ -38,9 +38,9 @@ class AnsPress_Stats_Widget extends WP_Widget {
 		if(is_question()){
 			echo '<ul class="ap-stats-widget">';
 			echo '<li><span class="stat-label apicon-pulse">'.__('Active', 'ap'). '</span><span class="stat-value"><time class="published updated" itemprop="dateModified" datetime="'.mysql2date('c', $last_active).'">'.ap_human_time( mysql2date('U', $last_active)).'</time> '.__('Ago', 'ap').'</span></li>' ;
-			echo '<li><span class="stat-label apicon-eye">'.__('Views', 'ap'). '</span><span class="stat-value">'.sprintf(_n('One time', '%d times', $view_count, 'ap'), $view_count).'</span></li>' ;		
-			echo '<li><span class="stat-label apicon-answer">'.__('Answers', 'ap'). '</span><span class="stat-value">'.sprintf(_n('%2$s1%3$s answer', '%2$s%1$d%3$s answers', $ans_count, 'ap'), $ans_count, '<span data-view="answer_count">', '</span>').'</span></li>' ;		
-			echo '<li><span class="stat-label apicon-mail">'.__('Subscribers', 'ap'). '</span><span class="stat-value">'.sprintf(_n('1 Subscriber', '%d subscribers', $total_subs, 'ap'), $total_subs).'</span></li>' ;		
+			echo '<li><span class="stat-label apicon-eye">'.__('Views', 'ap'). '</span><span class="stat-value">'.sprintf(_n('One time', '%d times', $view_count, 'ap'), $view_count).'</span></li>' ;
+			echo '<li><span class="stat-label apicon-answer">'.__('Answers', 'ap'). '</span><span class="stat-value">'.sprintf(_n('%2$s1%3$s answer', '%2$s%1$d%3$s answers', $ans_count, 'ap'), $ans_count, '<span data-view="answer_count">', '</span>').'</span></li>' ;
+			echo '<li><span class="stat-label apicon-mail">'.__('Followers', 'ap'). '</span><span class="stat-value">'.sprintf(_n('1 follower', '%d followers', $total_subs, 'ap'), $total_subs).'</span></li>' ;
 			echo '</ul>';
 		}else{
 			_e('This widget can only be used in single question page', 'ap');
@@ -58,10 +58,10 @@ class AnsPress_Stats_Widget extends WP_Widget {
 		}
 		?>
 		<p>
-			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:' ); ?></label> 
+			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:' ); ?></label>
 			<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>">
 		</p>
-		<?php 
+		<?php
 	}
 
 	/**
