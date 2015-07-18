@@ -206,7 +206,7 @@ function ap_user_link($user_id = false, $sub = false)
     elseif(!$is_enabled)
         return get_author_posts_url($user_id);
 
-    else
+    elseif(!$is_enabled)
         return apply_filters('ap_user_custom_profile_link', $user_id, $sub);
 
     if ($user_id == 0)

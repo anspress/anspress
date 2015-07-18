@@ -3,13 +3,13 @@
 function ap_user_fields($args = '', $group = false){
     if(ap_get_displayed_user_id() != get_current_user_id())
         return;
-    
+
     if(!$group)
         $group = !isset($_GET['group']) ? 'basic' : sanitize_text_field( $_GET['group'] );
 
     echo ap_user_get_fields($args, $group);
 }
-    
+
     /**
      * Return fields of users
      * @param  string|array $args
@@ -52,7 +52,7 @@ function ap_get_user_fields($group = 'basic', $user_id = false){
 
     $form_fields = array();
 
-    $form_fields['basic'] = array(                        
+    $form_fields['basic'] = array(
         array(
             'name' => 'first_name',
             'label' => __('First name', 'ap'),
@@ -102,7 +102,7 @@ function ap_get_user_fields($group = 'basic', $user_id = false){
             'rows' => 5,
             'order' => 5,
             'sanitize' => array('strip_tags', 'sanitize_text_field')
-        )       
+        )
     );
 
     $form_fields['account'] = array(
@@ -113,8 +113,8 @@ function ap_get_user_fields($group = 'basic', $user_id = false){
             'placeholder'  => __('Your username', 'ap'),
             'desc'  => __('This cannot be changed.', 'ap'),
             'value' => $fields_value['user_login'],
-            'order' => 5,                    
-            'attr' => 'disabled="disabled"',                    
+            'order' => 5,
+            'attr' => 'disabled="disabled"',
             'autocomplete' => false,
             'sanitize' => array('sanitize_text_field'),
             'visibility' => 'me',
@@ -127,7 +127,7 @@ function ap_get_user_fields($group = 'basic', $user_id = false){
             'value' => $fields_value['user_email'],
             'order' => 5,
             'autocomplete' => false,
-            'edit_disabled' => true,  
+            'edit_disabled' => true,
             'sanitize' => array('is_email'),
             'validate' => array('is_email'),
             'visibility' => 'me',

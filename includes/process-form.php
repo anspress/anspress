@@ -752,19 +752,19 @@ class AnsPress_Process_Form
 
 		$fields = $validate->get_sanitized_fields();
 
+		$default_fields = array('name', 'first_name', 'last_name', 'nickname', 'display_name', 'user_email', 'description');
+
 		if(is_array($user_fields) && !empty($user_fields))
 			foreach($user_fields as $field){
-				if(!empty($fields[$field['name']]) && ($field['name'] == 'first_name' || $field['name'] == 'last_name' || $field['name'] == 'nickname' || $field['name'] == 'display_name'|| $field['name'] == 'user_email'|| $field['name'] == 'description'|| $field['name'] == 'password') ){
-
-					if($field['name'] == 'password' && $fields['password'] == $_POST['password-1'])
-						wp_set_password( $fields['password'], $user_id );
-					else
-						wp_update_user( array( 'ID' => $user_id, $field['name'] => $fields[$field['name']] ) );
-
-				}elseif(!empty($fields[$field['name']])){
-
+				print_r($field['name']);
+				if(!empty($fields[$field['name']]) && ( in_array($field['name'], $default_fields) ) ){
+					wp_update_user( array( 'ID' => $user_id, $field['name'] => $fields[$field['name']] ) );
+				}
+				elseif($field['name'] == 'password' && $_POST['password'] == $_POST['password-1']){
+					wp_set_password( $_POST['password'], $user_id );
+				}
+				elseif(!empty($fields[$field['name']])){
 					update_user_meta( $user_id, $field['name'], $fields[$field['name']] );
-
 				}
 
 			}
