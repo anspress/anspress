@@ -259,7 +259,7 @@ class AnsPress_BP
 			$return = apply_filters( 'ap_notifier_' . $amount . '_at_mentions_notification', array(
 				'text' => @$text,
 				'link' => @$notification_link
-			), $notification_link, (int) $total_items, $activity_id, $secondary_item_id );
+			), @$notification_link, (int) $total_items, $activity_id, $secondary_item_id );
 		}
 
 		do_action( 'ap_notifier_format_notifications', $action, $activity_id, $secondary_item_id, $total_items );
