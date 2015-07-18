@@ -1,10 +1,10 @@
 @font-face {
 	font-family: 'anspress';
-	src:url('fonts/anspress.eot?-rdrqlm');
-	src:url('fonts/anspress.eot?#iefix-rdrqlm') format('embedded-opentype'),
-		url('fonts/anspress.ttf?-rdrqlm') format('truetype'),
-		url('fonts/anspress.woff?-rdrqlm') format('woff'),
-		url('fonts/anspress.svg?-rdrqlm#anspress') format('svg');
+	src:url('fonts/anspress.eot');
+	src:url('fonts/anspress.eot?#iefix') format('embedded-opentype'),
+		url('fonts/anspress.ttf') format('truetype'),
+		url('fonts/anspress.woff') format('woff'),
+		url('fonts/anspress.svg?#anspress') format('svg');
 	font-weight: normal;
 	font-style: normal;
 }
