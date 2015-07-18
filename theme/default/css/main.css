@@ -1549,6 +1549,7 @@ body ul ul#ap-user-menu-link li > a .count {
 #anspress .ap-q .ap-avatar {
   margin-right: 0x;
   position: absolute;
+  float: left;
 }
 #anspress .ap-q-head {
   margin-bottom: 20px;

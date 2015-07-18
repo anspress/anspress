@@ -33,7 +33,7 @@
 			    width: 20px;
 			}
 		}
-		.ap-list-counts, .ap-questions-item  .ap-avatar {
+		.ap-list-counts, .ap-questions-item  .ap-avatar, #answer-form-c .ap-avatar {
 		    display: none;
 		}
 		.ap-questions-title{
@@ -61,6 +61,38 @@
 		    border-radius: 1px;
 		    font-size: 10px;
 		    padding: 1px 4px;
+		}
+		.ap-q .ap-avatar img{
+			max-width: 30px;
+			height: auto;
+		}
+		.ap-q .ap-avatar {
+		    float: none;
+    		position: static;
+		}
+		.ap-q-cells, .ap-a-cells{
+		    font-size: 12px;
+		    margin-left: 0 !important;
+		}
+		.ap-q-content {
+		    font-size: 12px;
+		    line-height: 1.2;
+		}
+
+		.ap-content {
+		    padding-right: 0;
+		}
+		.ap-single-vote{
+			position: absolute;
+		    right: 0;
+		    top: 3px;
+
+			.ap-vote > * {
+			    display: inline-block;
+			}
+			.ap-vote > span{
+				width: 30px;
+			}
 		}
 	}
 
