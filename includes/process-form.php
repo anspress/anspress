@@ -178,7 +178,7 @@ class AnsPress_Process_Form
 			),
 			'description' => array(
 				'sanitize' => array('remove_more', 'encode_pre_code', 'wp_kses'),
-				'validate' => array('required' => true, 'length_check' => ap_opt('minimum_question_length'))
+				'validate' => array('length_check' => ap_opt('minimum_question_length'))
 			),
 			'is_private' => array(
 				'sanitize' => array('only_boolean')

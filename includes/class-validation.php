@@ -76,7 +76,7 @@ class AnsPress_Validation
      */
     private function length_check($field, $param)
     {
-        if(!isset($this->fields[$field]) || mb_strlen($this->fields[$field]) < $param )
+        if($param != 0 && (!isset($this->fields[$field]) || mb_strlen(strip_tags($this->fields[$field])) <= $param ))
             $this->errors[$field] = sprintf(__('Its too short, it must be minimum %d characters', 'ap'), $param);
     }
 
@@ -135,7 +135,7 @@ class AnsPress_Validation
      * @since 2.0.1
      */
     private function wp_kses($field)
-    {        
+    {
         $this->fields[$field] = wp_kses($this->fields[$field], ap_form_allowed_tags());
     }
 
@@ -186,18 +186,18 @@ class AnsPress_Validation
     /**
      * Strip all tags
      * @param  string $field
-     * @return void       
+     * @return void
      * @since  2.0
      */
     private function strip_tags($field)
     {
-       $this->fields[$field] = strip_tags($this->fields[$field]); 
+       $this->fields[$field] = strip_tags($this->fields[$field]);
     }
 
     /**
      * Santitize tags field
      * @param  string $field
-     * @return void       
+     * @return void
      * @since  2.0
      */
     private function sanitize_tags($field)
@@ -213,10 +213,10 @@ class AnsPress_Validation
             $i = 1;
             foreach ($tags  as $tag) {
                 $sanitized_tags .= sanitize_text_field( $tag ) ;
-                
+
                 if($count != $i)
                     $sanitized_tags .= ',';
-                
+
                 $i++;
             }
        }
@@ -239,43 +239,43 @@ class AnsPress_Validation
                     $this->sanitize_text_field($field);
                     break;
 
-                case 'only_boolean':                    
+                case 'only_boolean':
                     $this->only_boolean($field);
                     break;
 
-                case 'only_int':                    
+                case 'only_int':
                     $this->only_int($field);
                     break;
 
-                case 'wp_kses':                    
+                case 'wp_kses':
                     $this->wp_kses($field);
                     break;
 
-                case 'remove_more':                    
+                case 'remove_more':
                     $this->remove_more($field);
                     break;
 
-                case 'strip_shortcodes':                    
+                case 'strip_shortcodes':
                     $this->strip_shortcodes($field);
                     break;
 
-                case 'encode_pre_code':                    
+                case 'encode_pre_code':
                     $this->encode_pre_code($field);
                     break;
 
-                case 'strip_tags':                    
+                case 'strip_tags':
                     $this->strip_tags($field);
                     break;
 
-                case 'sanitize_tags':                    
+                case 'sanitize_tags':
                     $this->sanitize_tags($field);
                     break;
 
-                case 'is_email':                    
+                case 'is_email':
                     $this->is_email($field);
                     break;
 
-                
+
                 default:
                     $this->fields[$field] = apply_filters('ap_validation_sanitize_field', $field, $actions );
                     break;
@@ -285,9 +285,9 @@ class AnsPress_Validation
 
     /**
      * Validate a field based on actions passed
-     * @param  string $field   
+     * @param  string $field
      * @param  array $actions
-     * @return void          
+     * @return void
      * @since 2.0.1
      */
     private function validate($field, $actions)
@@ -313,7 +313,7 @@ class AnsPress_Validation
                 case 'is_email':
                     $this->is_email($field);
                     break;
-                
+
                 default:
                     $this->errors[$field] = apply_filters('ap_validation_validate_field', $field, $actions );
                     break;
@@ -335,7 +335,7 @@ class AnsPress_Validation
             if(isset($actions['validate']))
                 $this->validate($field, $actions['validate']);
         }
-            
+
     }
 
     /**
