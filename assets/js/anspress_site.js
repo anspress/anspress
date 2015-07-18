@@ -211,7 +211,7 @@
             if ($('#ap-commentform').length > 0) $('html, body').animate({
                 scrollTop: ($('#ap-commentform').offset().top) - 150
             }, 500);
-        }
+        },
         load_comment_form: function() {
             $('body').delegate('[data-action="load_comment_form"]', 'click', function(e) {
                 e.preventDefault();
@@ -591,7 +591,9 @@
                 ApSite.doAjax(apAjaxData(q), function(data) {
                     AnsPress.site.hideLoading(this);
                     if(typeof data.container !== 'undefined')
-                        $(data.container).remove();
+                        $(data.container).slideUp('400', function() {
+                            $(data.container).remove();
+                        });
                 }, this);
             });
         },
