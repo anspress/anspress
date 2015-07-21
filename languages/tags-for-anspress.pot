@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: "
 "http://wordpress.org/support/plugin/anspress-question-answer\n"
-"POT-Creation-Date: 2015-07-10 08:59:11+00:00\n"
+"POT-Creation-Date: 2015-07-21 04:21:51+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -25,13 +25,13 @@ msgstr ""
 "X-Poedit-Bookmarks: \n"
 "X-Textdomain-Support: yes\n"
 
-#: tags-for-anspress.php:76 tags-for-anspress.php:491
+#: tags-for-anspress.php:76 tags-for-anspress.php:496
 msgid "Tag"
 msgstr ""
 
 #: tags-for-anspress.php:77 tags-for-anspress.php:272 tags-for-anspress.php:285
 #: tags-for-anspress.php:335 tags-for-anspress.php:384
-#: tags-for-anspress.php:671
+#: tags-for-anspress.php:676
 msgid "Tags"
 msgstr ""
 
@@ -99,36 +99,36 @@ msgstr ""
 msgid "Slowly type for suggestions"
 msgstr ""
 
-#: tags-for-anspress.php:436 theme/tag.php:12
-msgid "Question tag: %s"
-msgstr ""
-
-#: tags-for-anspress.php:449
+#: tags-for-anspress.php:454
 msgid "Categories"
 msgstr ""
 
-#: tags-for-anspress.php:570
+#: tags-for-anspress.php:575
 msgid "Tagged"
 msgstr ""
 
-#: tags-for-anspress.php:629
+#: tags-for-anspress.php:634
 msgid "Questions"
 msgstr ""
 
-#: tags-for-anspress.php:689
+#: tags-for-anspress.php:694
 msgid "Popular"
 msgstr ""
 
-#: tags-for-anspress.php:690
+#: tags-for-anspress.php:695
 msgid "New"
 msgstr ""
 
-#: tags-for-anspress.php:691
+#: tags-for-anspress.php:696
 msgid "Name"
 msgstr ""
 
 #: theme/no-tags-found.php:15
 msgid "No tags is set!"
+msgstr ""
+
+#: theme/tag.php:12
+msgid "Question tag: %s"
 msgstr ""
 
 #: theme/tag.php:12

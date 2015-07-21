@@ -15,7 +15,7 @@
  * Plugin URI:        http://anspress.io/tags-for-anspress
  * Description:       Extension for AnsPress. Add tags in AnsPress.
  * Donate link: https://www.paypal.com/cgi-bin/webscr?business=rah12@live.com&cmd=_xclick&item_name=Donation%20to%20AnsPress%20development
- * Version:           1.3
+ * Version:           1.4
  * Author:            Rahul Aryan
  * Author URI:        http://anspress.io
  * Text Domain:       ap
