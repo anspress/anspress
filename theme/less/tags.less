@@ -44,7 +44,7 @@
 			    overflow: hidden;
 			}
 		}
-		
+
 	}
 
 	.sub-taxo-label{
@@ -101,28 +101,27 @@
 			margin:0;
 		}
 	}
+}
+.ap-tag-suggestions {
+    background: none repeat scroll 0 0 #fff;
+    border: 1px solid #ddd;
+    .border-radius(4px);
+    .box-shadow(0 0 5px rgba(0, 0, 0, 0.08));
+    list-style: outside none none;
+    margin: 0;
+    position: absolute;
+    padding: 5px;
+    width: 150px;
 
-	.ap-tag-suggestions {
-	    background: none repeat scroll 0 0 #fff;
-	    border: 1px solid #ddd;
-	    .border-radius(4px);
-	    .box-shadow(0 0 5px rgba(0, 0, 0, 0.08));
-	    list-style: outside none none;
-	    margin: 0;
-	    position: absolute;
-	    padding: 5px;
-	    width: 150px;
+    a{
+	    display: block;
+	    padding: 6px 15px;
+	    .border-radius(2px);
 
-	    a{
-		    display: block;
-		    padding: 6px 15px;
-		    .border-radius(2px);
-
-		    &:hover{
-		    	text-decoration: none;
-		    	background: @blue-color;
-		    	color: @white;
-		    }
+	    &:hover{
+	    	text-decoration: none;
+	    	background: @blue-color;
+	    	color: @white;
 	    }
-	}
+    }
 }
