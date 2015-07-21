@@ -429,11 +429,16 @@ class Tags_For_AnsPress
         }
     }
 
+    /**
+     * Tags page title
+     * @param  string $title
+     * @return string
+     */
     public function page_title($title){
         if(is_question_tag()){
             $tag_id = sanitize_text_field( get_query_var( 'q_tag'));
             $tag = get_term_by(is_numeric($tag_id) ? 'id' : 'slug', $tag_id, 'question_tag');
-            $title = sprintf(__('Question tag: %s', 'ap'), $tag->name);
+            $title = $tag->name;
         }
 
         return $title;
