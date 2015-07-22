@@ -19,7 +19,7 @@ class AnsPress_Actions
 	{
 		new AnsPress_Post_Status;
 		new AnsPress_Rewrite;
-		
+
 		AP_History::get_instance();
 
 		add_action( 'ap_processed_new_question', array($this, 'after_new_question'), 1, 2 );
@@ -28,7 +28,7 @@ class AnsPress_Actions
 		add_action( 'ap_processed_update_question', array($this, 'ap_after_update_question'), 1, 2 );
 		add_action( 'ap_processed_update_answer', array($this, 'ap_after_update_answer'), 1, 2 );
 
-		add_action( 'before_delete_post', array($this, 'before_delete'));	
+		add_action( 'before_delete_post', array($this, 'before_delete'));
 
 		add_action( 'wp_trash_post', array($this, 'trash_post_action'));
 		add_action( 'untrash_post', array($this, 'untrash_ans_on_question_untrash'));
@@ -47,9 +47,9 @@ class AnsPress_Actions
 		add_action( 'wp_loaded', array( $this, 'flush_rules' ) );
 		add_filter( 'mce_buttons', array($this, 'editor_buttons'), 10, 2 );
 		///add_filter( 'teeny_mce_plugins', array($this, 'editor_plugins'), 10, 2 );
-		
+
 		add_filter( 'wp_insert_post_data', array($this, 'wp_insert_post_data'), 10, 2 );
-		add_filter( 'ap_form_contents_filter', array($this, 'sanitize_description') );		
+		add_filter( 'ap_form_contents_filter', array($this, 'sanitize_description') );
 		add_action( 'safe_style_css', array($this, 'safe_style_css'), 11);
 		add_action( 'save_post', array($this, 'base_page_update'), 10, 2);
 		add_action( 'ap_added_follower', array($this, 'ap_added_follower'), 10, 2);
@@ -78,7 +78,7 @@ class AnsPress_Actions
 
 		// subscribe to current question
 		ap_add_question_subscriber($post_id);
-		
+
 		//update answer count
 		update_post_meta($post_id, ANSPRESS_ANS_META, '0');
 
@@ -91,7 +91,7 @@ class AnsPress_Actions
 		 */
 		do_action('ap_after_new_question', $post_id, $post);
 	}
-	
+
 	/**
 	 * Things to do after creating an answer
 	 * @param  int $post_id
@@ -101,30 +101,30 @@ class AnsPress_Actions
 	 */
 	public function after_new_answer($post_id, $post)
 	{
-		
+
 		$question = get_post($post->post_parent);
 		// set default value for meta
 		update_post_meta($post_id, ANSPRESS_VOTE_META, '0');
-		
+
 		// set updated meta for sorting purpose
 		update_post_meta($question->ID, ANSPRESS_UPDATED_META, current_time( 'mysql' ));
 		update_post_meta($post_id, ANSPRESS_UPDATED_META, current_time( 'mysql' ));
 
 		// subscribe to current question
-		ap_add_question_subscriber($question->ID);	
-		
+		ap_add_question_subscriber($question->ID);
+
 		// get existing answer count
 		$current_ans = ap_count_published_answers($question->ID);
-		
+
 		//update answer count
 		update_post_meta($question->ID, ANSPRESS_ANS_META, $current_ans);
-		
+
 		update_post_meta($post_id, ANSPRESS_BEST_META, 0);
 
 		ap_update_user_answers_count_meta($post_id);
 
 		ap_insert_notification( $post->post_author, $question->post_author, 'new_answer', array('post_id' => $post_id) );
-		
+
 		/**
 		 * ACTION: ap_after_new_answer
 		 * action triggered after inserting an answer
@@ -149,10 +149,10 @@ class AnsPress_Actions
 
 	public function ap_after_update_answer($post_id, $post)
 	{
-		
+
 		update_post_meta($post_id, ANSPRESS_UPDATED_META, current_time( 'mysql' ));
 		update_post_meta($post->post_parent, ANSPRESS_UPDATED_META, current_time( 'mysql' ));
-		
+
 		//update answer count
 		$current_ans = ap_count_published_answers($post->post_parent);
 		update_post_meta($post->post_parent, ANSPRESS_ANS_META, $current_ans);
@@ -194,7 +194,7 @@ class AnsPress_Actions
 			);
 			$ans = get_posts($arg);
 			if($ans>0){
-				foreach( $ans as $p){					
+				foreach( $ans as $p){
 					//ap_remove_parti($p->post_parent, $p->post_author, 'answer');
 					do_action('ap_trash_multi_answer', $post);
 					ap_delete_meta(array('apmeta_type' => 'flag', 'apmeta_actionid' => $p->ID));
@@ -223,11 +223,11 @@ class AnsPress_Actions
 	 */
 	public function untrash_ans_on_question_untrash ($post_id) {
 		$post = get_post( $post_id );
-		
+
 		if( $post->post_type == 'question') {
 			do_action('ap_untrash_question', $post->ID);
 			//ap_add_parti($post->ID, $post->post_author, 'question');
-			
+
 			$arg = array(
 			  'post_type' => 'answer',
 			  'post_status' => 'trash',
@@ -243,12 +243,12 @@ class AnsPress_Actions
 				}
 			}
 		}
-		
+
 		if( $post->post_type == 'answer') {
 			$ans = ap_count_published_answers( $post->post_parent );
 			do_action('untrash_answer', $post->ID, $post->post_author);
 			//ap_add_parti($post->post_parent, $post->post_author, 'answer');
-			
+
 			//update answer count
 			update_post_meta($post->post_parent, ANSPRESS_ANS_META, $ans+1);
 		}
@@ -280,7 +280,7 @@ class AnsPress_Actions
 	/**
 	 * Actions to run after posting a comment
 	 * @param  object $comment
-	 * @return null|integer   
+	 * @return null|integer
 	 */
 	public function publish_comment($comment){
 		$comment = (object) $comment;
@@ -338,21 +338,21 @@ class AnsPress_Actions
 
 		$pages['profile'] 		= array('title' => __('My profile', 'ap'), 'show_in_menu' => true, 'logged_in' => true);
 		$pages['notification'] 	= array('title' => __('My notification', 'ap'), 'show_in_menu' => true, 'logged_in' => true);
-		
+
 		$pages['ask'] 				= array();
 		$pages['question'] 			= array();
 		$pages['users'] 			= array();
 		$pages['user'] 				= array();
 
 		$page_url = array();
-		
+
 		foreach($pages as $slug => $args){
 			$page_url[$slug] = 'ANSPRESS_PAGE_URL_'.strtoupper($slug);
 		}
 
 		if(!empty($items) && is_array($items))
-			foreach ( $items as $key => $item ) {			
-				
+			foreach ( $items as $key => $item ) {
+
 				if(false !== $slug = array_search(str_replace(array('http://', 'https://'), '', $item->url), $page_url)){
 					$page = $pages[$slug];
 
@@ -366,7 +366,7 @@ class AnsPress_Actions
 
 					$item->classes[] = 'anspress-page-link';
 					$item->classes[] = 'anspress-page-'.$slug;
-					
+
 					if(get_query_var('ap_page') == $slug)
 						$item->classes[] = 'anspress-active-menu-link';
 				}
@@ -383,7 +383,7 @@ class AnsPress_Actions
 	 * @return array
 	 * @since  2.1
 	 */
-	public function fix_nav_current_class( $class, $item ) {		
+	public function fix_nav_current_class( $class, $item ) {
 		$pages = anspress()->pages;
 		if(!empty($item) && is_object($item)){
 			foreach($pages as $slug => $args){
@@ -422,12 +422,12 @@ class AnsPress_Actions
 
 	    	$active_user_page   = $active_user_page ? $active_user_page : 'about';
 
-			$item_output = '<a id="ap-user-menu-anchor" class="ap-dropdown-toggle"  href="#">'.get_avatar(get_current_user_id(), 20).ap_user_display_name(get_current_user_id()).ap_icon('chevron-down', true).'</a>';
-			
+			$item_output = '<a id="ap-user-menu-anchor" class="ap-dropdown-toggle"  href="#">'.get_avatar(get_current_user_id(), 20).'<span class="name">'.ap_user_display_name(get_current_user_id()).'</span>'.ap_icon('chevron-down', true).'</a>';
+
 			$item_output .= '<ul id="ap-user-menu-link" class="ap-dropdown-menu ap-user-dropdown-menu">';
-			
+
 			foreach($menus as $m){
-				
+
 				$class = !empty($m['class']) ? ' '.$m['class'] : '';
 
 	            $item_output .= '<li'.($active_user_page == $m['slug'] ? ' class="active"' : '').'><a href="'.$m['link'].'" class="ap-user-link-'.$m['slug'].$class.'">'.$m['title'].'</a></li>';
@@ -438,22 +438,22 @@ class AnsPress_Actions
 		}elseif(in_array('anspress-page-notification', $item->classes) && is_user_logged_in()){
 
 			$item_output = '<a id="ap-user-notification-anchor" class="ap-dropdown-toggle '.ap_icon('globe').'" href="#">'.ap_get_the_total_unread_notification(false, false).'</a>';
-		
+
 			global $ap_notifications;
 
 			ob_start();
 
 	        $ap_notifications = ap_get_user_notifications(array('per_page' => 10));
-	        
+
 	        ap_get_template_part('user/notification-dropdown');
 
 	        $item_output .= ob_get_clean();
-			
+
 		}
 
 		return $item_output;
 
-	} 
+	}
 
 	/**
 	 * Check if flushing rewrite rule is needed
@@ -488,7 +488,7 @@ class AnsPress_Actions
 	 * @param  array $data
 	 * @param  array $args
 	 * @return array
-	 * @since 2.2 
+	 * @since 2.2
 	 */
 	public function wp_insert_post_data( $data, $args )
 	{

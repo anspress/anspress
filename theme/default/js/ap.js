@@ -110,7 +110,8 @@
 
     $(document).ready(function() {
         $(document).click(function(e) {
-            if (!$(e.target).is('.ap-dropdown-toggle') && !$(e.target).parent().is('.open') && !$(e.target).closest('form').is('form')) {
+            e.stopPropagation();
+            if (!$(e.target).is('.ap-dropdown-toggle') && !$(e.target).closest('.open').is('.open') && !$(e.target).closest('form').is('form')) {
                $('.ap-dropdown').removeClass('open');
             }
         });
