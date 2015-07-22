@@ -60,7 +60,7 @@ function ap_answer_form($question_id, $editing = false){
                     'tinymce'           => ap_opt('answer_text_editor') ? false : true,
                     'quicktags'         => ap_opt('answer_text_editor') ? true : false ,
                     //'teeny'=>true,
-                    'media_buttons'=>false,                  
+                    'media_buttons'=>false,
                 )),
                 'placeholder'  => __('Your answer..'),
             ),
@@ -98,7 +98,13 @@ src="https://www.google.com/recaptcha/api.js?hl='.get_locale().'&onload=onloadCa
             'order' => 100,
             'html' => $reCaptcha_html
         );
-    
+    $args['fields'][] = array(
+        'name'  => 'ap_upload',
+        'type'  => 'custom',
+        'html' => ap_post_upload_form(),
+        'order' => 11
+    );
+
     /**
      * FILTER: ap_ask_form_fields
      * Filter for modifying $args
@@ -106,15 +112,6 @@ src="https://www.google.com/recaptcha/api.js?hl='.get_locale().'&onload=onloadCa
      * @since  2.0
      */
     $args = apply_filters( 'ap_answer_form_fields', $args, $editing );
-
-    
-    $args['fields'][] = array(
-        'name'  => 'ap_upload',
-        'type'  => 'custom',
-        'html' => ap_post_upload_form(),
-        'order' => 11
-    );
-    
 
     if($editing){
         $args['fields'][] = array(
