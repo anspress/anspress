@@ -15,7 +15,7 @@ class AnsPress_Form {
     private $args = array();
 
     private $output = '';
-    
+
     private $field;
 
     private $errors;
@@ -54,7 +54,7 @@ class AnsPress_Form {
     {
         if(!isset($this->args['fields']))
             return;
-        
+
         foreach($this->args['fields'] as $k => $field){
             if(!isset($field['order']))
                 $this->args['fields'][$k]['order'] = 10;
@@ -74,11 +74,11 @@ class AnsPress_Form {
         if(!isset($this->args['fields']))
             return;
 
-        $this->args['fields'] = ap_sort_array_by_order($this->args['fields']);        
+        $this->args['fields'] = ap_sort_array_by_order($this->args['fields']);
     }
 
     /**
-     * Build the form 
+     * Build the form
      * @return void
      * @since 2.0.1
      */
@@ -127,7 +127,7 @@ class AnsPress_Form {
      * @since 2.0.1
      */
     private function form_footer()
-    { 
+    {
         ob_start();
         /**
          * ACTION: ap_form_bottom_[form_name]
@@ -138,7 +138,7 @@ class AnsPress_Form {
         $this->output .= ob_get_clean();
 
         $this->output .= '<button type="submit" class="ap-btn ap-btn-submit">'.$this->args['submit_button'].'</button>';
-        
+
         if(@$this->args['show_cancel'] === true)
             $this->output .= '<button type="button" class="ap-btn ap-btn-cancel">'.__('Cancel', 'ap').'</button>';
 
@@ -158,10 +158,10 @@ class AnsPress_Form {
      */
     private function hidden_fields()
     {
-        if($this->args['is_ajaxified'])
-            $this->output .= '<input type="hidden" name="ap_ajax_action" value="'.$this->name.'">';
-           
-            $this->output .= '<input type="hidden" name="ap_form_action" value="'.$this->name.'">';
+        //if($this->args['is_ajaxified'])
+            //$this->output .= '<input type="hidden" name="ap_ajax_action" value="'.$this->name.'">';
+
+        $this->output .= '<input type="hidden" name="ap_form_action" value="'.$this->name.'">';
 
         $this->nonce();
     }
@@ -187,7 +187,7 @@ class AnsPress_Form {
      * @return string
      * @since 2.0.1
      */
-    private function placeholder(){        
+    private function placeholder(){
         return !empty($this->field['placeholder']) ? ' placeholder="'.$this->field['placeholder'].'"' : '';
     }
 
@@ -221,7 +221,7 @@ class AnsPress_Form {
         $this->output .= '<div class="ap-form-fields-in">';
 
         if(!isset($field['repeatable']) || !$field['repeatable'] ){
-            
+
             $this->output .= '<input id="'. @$field['name'] .'" type="'.$type.'" class="ap-form-control" value="'. @$field['value'] .'" name="'. @$field['name'] .'"'.$placeholder.' '. @$field['attr'] .$autocomplete.' />';
 
             if($type == 'password')
@@ -230,7 +230,7 @@ class AnsPress_Form {
         }else{
             if(!empty($field['value']) && is_array($field['value'])){
                 $this->output .= '<div id="ap-repeat-c-'. @$field['name'] .'" class="ap-repeatbable-field">';
-                foreach($field['value'] as $k => $rep_f){                    
+                foreach($field['value'] as $k => $rep_f){
                     $this->output .= '<div id="ap_text_rep_'. @$field['name'] .'_'.$k.'" class="ap-repeatbable-field"><input id="'. @$field['name'] .'_'.$k.'" type="text" class="ap-form-control ap-repeatable-text" value="'. @$rep_f .'" name="'. @$field['name'] .'['.$k.']"'.$placeholder.' '. @$field['attr'] .$autocomplete.' />';
                     $this->output .= '<button data-action="ap_delete_field" type="button" data-toggle="'. @$field['name'] .'_'.$k.'">'.__('Delete').'</button>';
                     $this->output .= '</div>';
@@ -286,7 +286,7 @@ class AnsPress_Form {
     {
         if(isset($field['label']))
             $this->label();
-        
+
         $this->output .= '<div class="ap-form-fields-in">';
 
         if(!empty($field['desc']))
@@ -352,7 +352,7 @@ class AnsPress_Form {
         if(isset($field['label']))
             $this->label();
         $this->output .= '<div class="ap-form-fields-in">';
-        
+
         $taxonomies = wp_dropdown_categories( array('taxonomy' => $field['taxonomy'], 'orderby' => @$field['orderby'], 'hide_empty' => 0, 'hierarchical' => 1, 'selected' => @$field['value'], 'name' => @$field['name'], 'class' => 'ap-form-control', 'id' => @$field['name'], 'echo' => false) );
         $this->output .= $taxonomies;
 
@@ -402,7 +402,7 @@ class AnsPress_Form {
     /**
      * Create wp_editor field
      * @param  array  $field
-     * @return void      
+     * @return void
      * @since 2.0.1
      */
     private function editor_field($field = array())
@@ -411,7 +411,7 @@ class AnsPress_Form {
             $this->label();
 
         if($field['settings']['tinymce'] !== false){
-            $field['settings']['tinymce'] = array( 
+            $field['settings']['tinymce'] = array(
                 'content_css' => ap_get_theme_url('css/editor.css'),
                 'wp_autoresize_on' => true
             );
@@ -423,7 +423,7 @@ class AnsPress_Form {
          * @var array
          * @since 2.0.1
          */
-        
+
         $settings = apply_filters('ap_pre_editor_settings', $field['settings'] );
 
         $this->output .= '<div class="ap-form-fields-in">';
@@ -466,7 +466,7 @@ class AnsPress_Form {
     private function error_messages(){
         if(isset($this->errors[$this->field['name']])){
             $this->output .= '<div class="ap-form-error-messages">';
-            
+
             foreach($this->errors[$this->field['name']] as $error)
                 $this->output .= '<p class="ap-form-error-message">'. $error .'</p>';
 
@@ -488,13 +488,13 @@ class AnsPress_Form {
          * @since 2.0.1
          */
         $this->args['fields'] =  apply_filters('ap_pre_form_fields', $this->args['fields'] );
-        
+
         foreach($this->args['fields'] as $field){
 
             $this->field = $field;
 
             $error_class = $this->have_error() ? ' ap-have-error' : '';
-           
+
             if(isset($this->args['field_hidden']) && $this->args['field_hidden']) {
                 if(isset($field['name']) && $field['type'] != 'hidden' && (@$field['visibility'] != 'me' || ( @$field['visibility'] == 'me' && $this->args['user_id'] == get_current_user_id())) ){
                     $nonce = wp_create_nonce( 'user_field_form_'.$field['name'].'_'.$this->args['user_id'] );
@@ -507,7 +507,7 @@ class AnsPress_Form {
                     $this->output .= '</div>';
                 }
             }else{
-            
+
                 switch ($field['type']) {
 
                     case 'text':
@@ -571,7 +571,7 @@ class AnsPress_Form {
                     case 'custom':
                         $this->custom_field($field);
                         break;
-                    
+
                     default:
                         /**
                          * FILTER: ap_form_fields_[type]
@@ -579,8 +579,8 @@ class AnsPress_Form {
                          */
                         $this->output .= apply_filters( 'ap_form_fields_'.$field['type'],  $field);
                         break;
-                }  
-            }         
+                }
+            }
         }
     }
 

@@ -135,6 +135,10 @@
         ap_ajax_form: function() {
             $('body').delegate('[data-action="ap_ajax_form"]', 'submit', function() {
                 AnsPress.site.showLoading(this);
+
+                //Add this to form so this form can be identified as ajax form
+                $(this).append('<input type="hidden" name="ap_ajax_action" value="'+ $(this).attr('name') +'">');
+
                 if (typeof tinyMCE !== 'undefined') tinyMCE.triggerSave();
                 ApSite.doAjax(apAjaxData($(this).formSerialize()), function(data) {
                     AnsPress.site.hideLoading(this);

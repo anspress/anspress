@@ -66,7 +66,7 @@ function ap_ask_form($editing = false){
                 'type'  => 'custom',
                 'order' => 5,
                 'html' => '<div id="similar_suggestions"></div>'
-            ),            
+            ),
             array(
                 'name' => 'description',
                 'label' => __('Description', 'ap'),
@@ -77,7 +77,7 @@ function ap_ask_form($editing = false){
                     'textarea_rows'     => 8,
                     'tinymce'           => ap_opt('question_text_editor') ? false : true,
                     'quicktags'         => ap_opt('question_text_editor') ? true : false ,
-                    'media_buttons'     =>false,  
+                    'media_buttons'     =>false,
                 )),
             ),
             array(
@@ -91,7 +91,7 @@ function ap_ask_form($editing = false){
                 'type'  => 'hidden',
                 'value' => ( $editing ? $editing_post->post_parent : get_query_var('parent')  ),
                 'order' => 20
-            ),
+            )
         ),
     );
 
@@ -122,7 +122,7 @@ src="https://www.google.com/recaptcha/api.js?hl='.get_locale().'&onload=onloadCa
             'order' => 100,
             'html' => $reCaptcha_html
         );
-    
+
     /**
      * FILTER: ap_ask_form_fields
      * Filter for modifying $args
