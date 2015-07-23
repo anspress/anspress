@@ -276,7 +276,8 @@ function ap_question_the_author_avatar($size = 45){
     }
 
 function ap_question_the_answer_count(){
-    echo '<a class="ap-questions-count ap-questions-acount" href="'.ap_answers_link().'"><span>'. ap_question_get_the_answer_count().'</span>'.__('ans', 'ap').'</a>';
+    $count = ap_question_get_the_answer_count();
+    echo '<a class="ap-questions-count ap-questions-acount" href="'.ap_answers_link().'">'. sprintf(_n('%s ans', '%s ans', $count, 'ap'), '<span>'.$count.'</span>').'</a>';
 }
     /**
      * Return active question answer count
