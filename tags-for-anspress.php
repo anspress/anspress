@@ -127,9 +127,7 @@ class Tags_For_AnsPress
 
         $paged              = get_query_var('paged') ? get_query_var('paged') : 1;
         $per_page           = ap_opt('tags_per_page');
-        $total_terms        = $tags_rows_found;
         $offset             = $per_page * ( $paged - 1) ;
-        $ap_max_num_pages   = ceil($total_terms / $per_page) ;
 
         $tag_args = array(
             'ap_tags_query' => 'num_rows',
@@ -163,6 +161,8 @@ class Tags_For_AnsPress
         $tag_args = apply_filters('ap_tags_shortcode_args', $tag_args );
 
         $question_tags = get_terms( 'question_tag' , $tag_args);
+        $total_terms        = $tags_rows_found;
+        $ap_max_num_pages   = ceil($total_terms / $per_page) ;
 
         include ap_get_theme_location('tags.php', TAGS_FOR_ANSPRESS_DIR);
     }
