@@ -27,11 +27,11 @@
 								printf(__('%s Rep.', 'ap'), ap_user_get_the_reputation());
 								echo '</span>';
 							}
-						?>					
+						?>
 					</div>
 					<div class="ap-user-info-btns">
 						<?php ap_follow_button(ap_get_displayed_user_id()); ?>
-					</div>			
+					</div>
 				</div>
 			<?php endif; ?>
 			<?php ap_user_menu(); ?>
@@ -71,7 +71,7 @@
 			</div>
 		<?php endif; ?>
 		<!-- Start  ap-profile-lr -->
-		<div class="ap-user-lr">				
+		<div class="ap-user-lr">
 			<?php ap_user_page(); ?>
 		</div>
 		<!-- End ap-profile-lr -->

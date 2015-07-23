@@ -774,9 +774,13 @@ function ap_get_cover_src($user_id = false, $small = false) {
 
         if(file_exists($cover['file']))
             return $cover['url'];
-    }
+    }else{
+        if($small)
+            return ap_get_theme_url('images/small_cover.jpg');
 
-    return false;
+        if(file_exists($cover['file']))
+            return ap_get_theme_url('images/cover.jpg');
+    }
 }
 
 function ap_hover_card_ajax_query($user_id = false){

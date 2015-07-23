@@ -223,6 +223,7 @@ function ap_pagination( $current = false, $total = false, $format = '?paged=%#%'
 
 	if($current === false)
 		$current = max( 1, get_query_var('paged') );
+
 	elseif(!empty($ap_current))
 		$current = $ap_current;
 
