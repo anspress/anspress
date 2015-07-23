@@ -424,35 +424,25 @@ function ap_user_the_meta($key, $user_id = false){
         $meta['user_registered']    = $obj->user_registered;
         $meta['display_name']       = $obj->display_name;
 
-        if(!isset($meta['__total_questions']))
-            $meta['__total_questions'] = 0;
+        $ap_metas = array(
+            '__total_questions',
+            '__total_answers',
+            '__profile_views',
+            '__last_active',
+            '__total_followers',
+            '__total_following',
+            '__up_vote_casted',
+            '__down_vote_casted',
+            '__up_vote_received',
+            '__down_vote_received',
+            '__best_answers',
+        );
 
-        if(!isset($meta['__total_answers']))
-            $meta['__total_answers'] = 0;
-
-        if(!isset($meta['__profile_views']))
-            $meta['__profile_views'] = 0;
-
-        if(!isset($meta['__last_active']))
-            $meta['__last_active'] = $obj->user_registered;
-
-        if(!isset($meta['__total_followers']))
-            $meta['__total_followers'] = 0;
-
-        if(!isset($meta['__total_following']))
-            $meta['__total_following'] = 0;
-
-        if(empty($meta['__up_vote_casted']))
-            $meta['__up_vote_casted'] = 0;
-
-        if(empty($meta['__down_vote_casted']))
-            $meta['__down_vote_casted'] = 0;
-
-        if(empty($meta['__up_vote_received']))
-            $meta['__up_vote_received'] = 0;
-
-        if(empty($meta['__down_vote_received']))
-            $meta['__down_vote_received'] = 0;
+        // Set the default value for anspress meta
+        foreach($ap_metas as $ap_meta){
+            if(!isset($ap_meta[$ap_meta]))
+                $meta[$ap_meta] = 0;
+        }
 
         if($key !== false && isset($meta[$key]))
             return $meta[$key];
