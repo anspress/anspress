@@ -1967,7 +1967,7 @@ body ul ul#ap-user-menu-link li > a .count {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
   display: none;
   position: absolute;
-  right: 0;
+  left: 0;
   width: 160px;
   z-index: 99;
 }
