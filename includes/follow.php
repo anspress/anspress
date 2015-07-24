@@ -8,21 +8,23 @@
 
 /**
  * Output follow button HTML
- * @param  integer $user_to_follow
+ * @param  integer 		$user_to_follow
+ * @param  array 		$text 					custom button text
  * @return string
  */
-function ap_follow_button($user_to_follow){
-	echo ap_get_follow_button($user_to_follow);
+function ap_follow_button($user_to_follow , $text = false){
+	echo ap_get_follow_button($user_to_follow, $text);
 }
-	
+
 	/**
 	 * Get follow button html
-	 * @param  integer $user_to_follow user_id to follow or unfollow
+	 * @param  integer 		$user_to_follow 		user_id to follow or unfollow
+	 * @param  array 		$text 					custom button text
 	 * @return string
 	 */
-	function ap_get_follow_button($user_to_follow){
+	function ap_get_follow_button($user_to_follow, $text = false){
 		$current_user = get_current_user_id();
-		
+
 		if($current_user == $user_to_follow)
 			return;
 
@@ -30,7 +32,10 @@ function ap_follow_button($user_to_follow){
 
 		$following = ap_is_user_following($user_to_follow, $current_user);
 
-		$title =  $following ? __('Unfollow', 'ap') : __('Follow', 'ap');
+		if(false === $text)
+			$title =  $following ? __('Unfollow', 'ap') : __('Follow', 'ap');
+		else
+			$title =  $following ? $text[0] : $text[1];
 
 		$output = '<a href="#" id="follow_'.$user_to_follow.'" class="ap-btn ap-btn-follow'.($following ? ' active' : '').'" data-action="ap_follow" data-query="ap_ajax_action=follow&user_id='.$user_to_follow.'&__nonce='.$nonce.'">'.$title.'</a>';
 
@@ -44,7 +49,7 @@ function ap_follow_button($user_to_follow){
  * @return bollean|integer
  */
 function ap_add_follower($current_user_id, $user_to_follow){
-	
+
 	$row = ap_add_meta($current_user_id, 'follower', $user_to_follow);
 
 	if($row !== false)
@@ -69,13 +74,13 @@ function ap_remove_follower($current_user_id, $user_to_follow){
 }
 
 function ap_is_user_following($user_to_follow, $current_user_id = false){
-	
+
 	if($current_user_id === false)
 		$user_id = get_current_user_id();
 
 	if($current_user_id > 0){
 		$row = ap_meta_user_done('follower', $current_user_id, $user_to_follow);
-		
+
 		return $row > 0 ? true : false;
 	}
 
@@ -92,7 +97,7 @@ function ap_followers_count($user_id){
 }
 
 /**
- * Count total numbers of following user 
+ * Count total numbers of following user
  * @param  integer 		$user_id
  * @return integer
  */
