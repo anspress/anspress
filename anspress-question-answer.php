@@ -15,7 +15,7 @@
  * Plugin URI:        http://anspress.io
  * Description:       The most advance community question and answer system for WordPress
  * Donate link: https://www.paypal.com/cgi-bin/webscr?business=support@anspress.io&cmd=_xclick&item_name=Donation%20to%20AnsPress%20development
- * Version:           2.3.4
+ * Version:           2.3.5
  * Author:            Rahul Aryan
  * Author URI:        http://anspress.io
  * Text Domain:       ap
@@ -39,7 +39,7 @@ if (!class_exists('AnsPress')) {
     class AnsPress
     {
 
-        private $_plugin_version = '2.3.4';
+        private $_plugin_version = '2.3.5';
 
         public static $instance = null;
 
