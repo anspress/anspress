@@ -260,6 +260,14 @@ class AnsPress_Options_Page
 				'show_desc_tip' => false,
 			) ,
 			array(
+				'name' => 'anspress_opt[show_solved_prefix]',
+				'label' => __('Show solved prefix', 'ap') ,
+				'desc' => __('If an answer is selected for question then [solved] prefix will be added in title.', 'ap') ,
+				'type' => 'checkbox',
+				'value' => $settings['show_solved_prefix'],
+				'show_desc_tip' => false,
+			) ,
+			array(
 				'name' => 'anspress_opt[base_page_title]',
 				'label' => __('Base page title', 'ap') ,
 				'desc' => __('Main questions list page title', 'ap') ,

@@ -1407,6 +1407,9 @@ function ap_question_title_with_solved_prefix($question_id = false){
 
 	$solved = ap_question_best_answer_selected($question_id);
 
-	return ($solved ? __('[Solved] ', 'ap'): '') .  get_the_title($question_id);
+	if(ap_opt('show_solved_prefix'))
+		return ($solved ? __('[Solved] ', 'ap'): '') .  get_the_title($question_id);
+
+	return get_the_title($question_id);
 }
 

@@ -9,6 +9,15 @@
  */
 ?>
 <div id="ap-single" class="ap-q clearfix" itemtype="http://schema.org/Question" itemscope="">
+	<?php
+		/**
+		 * By default this title is hidden
+		 */
+		if(ap_opt('show_title_in_question')) :
+	?>
+		<h1 class="entry-title"><a href="<?php get_permalink() ?>"><?php the_title(); ?></a></h1>
+	<?php endif; ?>
+
 	<div class="ap-question-lr row">
 		<div class="ap-q-left <?php echo (is_active_sidebar( 'ap-qsidebar' ) || ap_opt('show_question_sidebar')) ? 'col-md-8' : 'col-md-12'; ?>">
 			<div class="ap-question-meta clearfix">

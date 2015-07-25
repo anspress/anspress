@@ -134,6 +134,7 @@ function ap_default_options(){
 		'max_upload_size' 			=> 500000,
 		'disable_down_vote_on_question'=> false,
 		'disable_down_vote_on_answer'=> false,
+		'show_solved_prefix'		=> true,
 	);
 
 	/**

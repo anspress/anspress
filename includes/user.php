@@ -203,8 +203,8 @@ function ap_user_link($user_id = false, $sub = false)
     if(function_exists('bp_core_get_userlink') && !$is_enabled)
         return bp_core_get_userlink($user_id, false, true);
 
-    elseif(!$is_enabled)
-        return get_author_posts_url($user_id);
+    /*elseif(!$is_enabled)
+        return get_author_posts_url($user_id);*/
 
     elseif(!$is_enabled)
         return apply_filters('ap_user_custom_profile_link', $user_id, $sub);
