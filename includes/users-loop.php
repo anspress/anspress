@@ -79,7 +79,7 @@ class AP_user_query
 
 
         // grab the current page number and set to 1 if no page number is set
-        $this->paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
+        $this->paged = isset($args['paged']) ? (int)$args['paged'] : (get_query_var('paged') ? get_query_var('paged') : 1);
 
         $this->offset = $this->per_page * ($this->paged - 1);
 
