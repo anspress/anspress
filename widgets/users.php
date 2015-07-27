@@ -14,7 +14,7 @@ class AP_Users_Widget extends WP_Widget {
 		if ( ! empty( $title ) ) {
 			echo $args['before_title'] . $title . $args['after_title'];
 		}
-		
+
 		$user_a = array(
 			'number'    	=> $number,
 			'ap_query'  	=> 'sort_points',
@@ -23,9 +23,11 @@ class AP_Users_Widget extends WP_Widget {
 		);
 		// The Query
 		$users = new WP_User_Query( $user_a );
+
+		echo '<div class="ap-widget-inner">';
 		include(ap_get_theme_location('users-widget.php'));
-		
-		
+		echo '</div>';
+
 		echo $args['after_widget'];
 	}
 
@@ -38,27 +40,27 @@ class AP_Users_Widget extends WP_Widget {
 		}
 		$avatar 		= 30;
 		$number 		= 5;
-		
+
 		if ( isset( $instance[ 'avatar' ] ) )
 			$avatar = $instance[ 'avatar' ];
-		
-		if ( isset( $instance[ 'number' ] ) ) 
+
+		if ( isset( $instance[ 'number' ] ) )
 			$number = $instance[ 'number' ];
-			
+
 		?>
 		<p>
-			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:' ); ?></label> 
+			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:' ); ?></label>
 			<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>">
 		</p>
 		<p>
-			<label for="<?php echo $this->get_field_id( 'avatar' ); ?>"><?php _e( 'Avatar:', 'ap' ); ?></label> 
+			<label for="<?php echo $this->get_field_id( 'avatar' ); ?>"><?php _e( 'Avatar:', 'ap' ); ?></label>
 			<input class="widefat" id="<?php echo $this->get_field_id( 'avatar' ); ?>" name="<?php echo $this->get_field_name( 'avatar' ); ?>" type="text" value="<?php echo esc_attr( $avatar ); ?>">
 		</p>
 		<p>
-			<label for="<?php echo $this->get_field_id( 'number' ); ?>"><?php _e( 'Show', 'ap' ); ?></label> 
+			<label for="<?php echo $this->get_field_id( 'number' ); ?>"><?php _e( 'Show', 'ap' ); ?></label>
 			<input class="widefat" id="<?php echo $this->get_field_id( 'number' ); ?>" name="<?php echo $this->get_field_name( 'number' ); ?>" type="text" value="<?php echo esc_attr( $number ); ?>">
 		</p>
-		<?php 
+		<?php
 	}
 
 	public function update( $new_instance, $old_instance ) {

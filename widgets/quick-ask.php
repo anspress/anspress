@@ -14,7 +14,9 @@ class AP_QuickAsk_Widget extends WP_Widget {
 			echo $args['before_title'] . $title . $args['after_title'];
 		}
 		?>
-			<?php ap_ask_form(); ?>
+			<div class="ap-widget-inner">
+				<?php ap_ask_form(); ?>
+			</div>
 		<?php
 		echo $args['after_widget'];
 	}
@@ -28,10 +30,10 @@ class AP_QuickAsk_Widget extends WP_Widget {
 		}
 		?>
 		<p>
-			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:' ); ?></label> 
+			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:' ); ?></label>
 			<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>">
 		</p>
-		<?php 
+		<?php
 	}
 
 	/**

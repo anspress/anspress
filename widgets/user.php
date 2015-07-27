@@ -10,23 +10,27 @@ class AP_User_Widget extends WP_Widget {
 		$title = apply_filters( 'widget_title', $instance['title'] );
 		echo $args['before_widget'];
 
-		if ( ! empty( $title ) ) 
+		if ( ! empty( $title ) )
 			echo $args['before_title'] . $title . $args['after_title'];
-		
+
 		global $ap_user_query;
-        
+
+		echo '<div class="ap-widget-inner">';
+
         if(is_user_logged_in()){
 	        $ap_user_query = ap_has_users(array('ID' => ap_get_displayed_user_id() ) );
-	        
+
 	        if($ap_user_query->has_users()){
-	        	while ( ap_users() ) : ap_the_user(); 
+	        	while ( ap_users() ) : ap_the_user();
 					ap_get_template_part('widgets/user');
 				endwhile;
 			}
 		}else{
 			_e('Login to see your profile links', 'ap');
 		}
-		
+
+		echo '</div>';
+
 		echo $args['after_widget'];
 	}
 
@@ -39,10 +43,10 @@ class AP_User_Widget extends WP_Widget {
 		}
 		?>
 		<p>
-			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:' ); ?></label> 
+			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:' ); ?></label>
 			<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>">
 		</p>
-		<?php 
+		<?php
 	}
 
 	public function update( $new_instance, $old_instance ) {

@@ -35,6 +35,8 @@ class AnsPress_Stats_Widget extends WP_Widget {
 		$total_subs 	= ap_question_get_the_subscriber_count();
 		$view_count 	= ap_question_get_the_view_count();
 
+		echo '<div class="ap-widget-inner">';
+
 		if(is_question()){
 			echo '<ul class="ap-stats-widget">';
 			echo '<li><span class="stat-label apicon-pulse">'.__('Active', 'ap'). '</span><span class="stat-value"><time class="published updated" itemprop="dateModified" datetime="'.mysql2date('c', $last_active).'">'.ap_human_time( mysql2date('U', $last_active)).'</time> '.__('Ago', 'ap').'</span></li>' ;
@@ -45,6 +47,8 @@ class AnsPress_Stats_Widget extends WP_Widget {
 		}else{
 			_e('This widget can only be used in single question page', 'ap');
 		}
+
+		echo '</div>';
 
 		echo $args['after_widget'];
 	}

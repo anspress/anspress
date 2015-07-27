@@ -15,6 +15,7 @@ class AP_Related_questions extends WP_Widget {
 		if ( ! empty( $title ) )
 			echo $args['before_title'] . $title . $args['after_title'];
 
+		echo '<div class="ap-widget-inner">';
 		if(!class_exists('Tags_For_AnsPress')){
 			echo 'Tags plugin must be installed for related question. Get <a href="https://wordpress.org/plugins/tags-for-anspress">Tags for AnsPress</a>';
 			return;
@@ -42,6 +43,7 @@ class AP_Related_questions extends WP_Widget {
 		$questions = ap_get_questions($question_args);
 		include ap_get_theme_location('widget-related_questions.php');
 		wp_reset_postdata();
+		echo '</div>';
 		echo $args['after_widget'];
 
 	}

@@ -36,7 +36,9 @@ class AP_Questions_Widget extends WP_Widget {
         }
 
 		$questions = ap_get_questions( $question_args );
+		echo '<div class="ap-widget-inner">';
 		ap_get_template_part('widget-questions');
+		echo '</div>';
 		echo $args['after_widget'];
 		wp_reset_postdata();
 	}

@@ -15,12 +15,12 @@ class AP_followers_Widget extends WP_Widget {
 		if ( ! empty( $title ) ) {
 			echo $args['before_title'] . $title . $args['after_title'];
 		}
-		
-		
+
+		echo '<div class="ap-widget-inner">';
 		if(is_ap_user()){
 			$followers = ap_has_users(array('user_id' => ap_get_displayed_user_id(), 'sortby' => 'followers' ));
 	        if($followers->has_users()){
-	            include ap_get_theme_location('widgets/followers.php');            
+	            include ap_get_theme_location('widgets/followers.php');
 	        }
 	        else{
 	            _e('No followers yet', 'ap');
@@ -28,7 +28,8 @@ class AP_followers_Widget extends WP_Widget {
 	    }else{
 	    	_e('This widget can only be used in user page.', 'ap');
 	    }
-				
+	    echo '</div>';
+
 		echo $args['after_widget'];
 	}
 
@@ -41,27 +42,27 @@ class AP_followers_Widget extends WP_Widget {
 		}
 		$avatar_size 		= 30;
 		$number 			= 20;
-		
+
 		if ( isset( $instance[ 'avatar_size' ] ) )
 			$avatar = $instance[ 'avatar_size' ];
-		
-		if ( isset( $instance[ 'number' ] ) ) 
+
+		if ( isset( $instance[ 'number' ] ) )
 			$number = $instance[ 'number' ];
-			
+
 		?>
 		<p>
-			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:' ); ?></label> 
+			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:' ); ?></label>
 			<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>">
 		</p>
 		<p>
-			<label for="<?php echo $this->get_field_id( 'avatar_size' ); ?>"><?php _e( 'Avatar size:', 'ap' ); ?></label> 
+			<label for="<?php echo $this->get_field_id( 'avatar_size' ); ?>"><?php _e( 'Avatar size:', 'ap' ); ?></label>
 			<input class="widefat" id="<?php echo $this->get_field_id( 'avatar_size' ); ?>" name="<?php echo $this->get_field_name( 'avatar_size' ); ?>" type="text" value="<?php echo esc_attr( $avatar_size ); ?>">
 		</p>
 		<p>
-			<label for="<?php echo $this->get_field_id( 'number' ); ?>"><?php _e( 'Numbers of user to show:', 'ap' ); ?></label> 
+			<label for="<?php echo $this->get_field_id( 'number' ); ?>"><?php _e( 'Numbers of user to show:', 'ap' ); ?></label>
 			<input class="widefat" id="<?php echo $this->get_field_id( 'number' ); ?>" name="<?php echo $this->get_field_name( 'number' ); ?>" type="text" value="<?php echo esc_attr( $number ); ?>">
 		</p>
-		<?php 
+		<?php
 	}
 
 	public function update( $new_instance, $old_instance ) {
