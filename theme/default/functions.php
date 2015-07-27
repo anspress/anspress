@@ -220,15 +220,6 @@ function ap_widgets_positions(){
 	));
 
 	register_sidebar( array(
-		'name'         	=> __( 'AP about user', 'ap' ),
-		'id'           	=> 'ap-user-about',
-		'before_widget' => '<div id="%1$s" class="ap-widget-pos %2$s">',
-		'after_widget' 	=> '</div>',
-		'description'  	=> __( 'Widgets in this area will be shown in about user page.', 'ap' ),
-		'before_title' 	=> '<h3 class="ap-widget-title">',
-		'after_title'  	=> '</h3>',
-	));
-	register_sidebar( array(
 		'name'         	=> __( 'AP User', 'ap' ),
 		'id'           	=> 'ap-user',
 		'before_widget' => '<div id="%1$s" class="ap-widget-pos %2$s">',

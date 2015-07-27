@@ -2875,21 +2875,30 @@ body ul ul#ap-user-menu-link li > a .count {
   width: 2px;
 }
 #anspress .ap-about-stats {
-  border: 1px solid #eee;
   list-style: outside none none;
+  padding: 0;
+  margin: 0;
 }
 #anspress .ap-about-stats li {
-  border-bottom: 1px solid #eee;
-  font-size: 12px;
+  float: left;
+  font-size: 14px;
   margin: 0;
-  padding: 15px;
-  font-weight: 600;
+  padding: 0;
+  width: 50%;
 }
 #anspress .ap-about-stats li:last-child {
   border-bottom: none;
 }
 #anspress .ap-about-stats li i {
+  color: #888;
+  display: inline-block;
   margin-right: 10px;
+  width: 17px;
+}
+#anspress .ap-about-stats li .ap-about-stats-item {
+  border-radius: 2px;
+  margin-bottom: 10px;
+  padding: 2px;
 }
 #anspress .ap-about-rep-count {
   font-size: 25px;
