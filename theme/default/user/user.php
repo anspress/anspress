@@ -9,9 +9,9 @@
  */
 
 ?>
-
 <?php while ( ap_users() ) : ap_the_user(); ?>
-	<div id="ap-user" class="ap-user clearfix" data-id="<?php ap_displayed_user_id(); ?>">
+
+	<div id="ap-user" class="ap-user" data-id="<?php ap_displayed_user_id(); ?>">
 		<div class="ap-user-navigation clearfix">
 			<?php if(ap_active_user_page() != 'about'): ?>
 				<div class="ap-user-info ">
@@ -71,9 +71,18 @@
 			</div>
 		<?php endif; ?>
 		<!-- Start  ap-profile-lr -->
-		<div class="ap-user-lr">
-			<?php ap_user_page(); ?>
+		<div class="ap-user-lr row">
+			<div class="<?php echo is_active_sidebar( 'ap-user' ) ? 'col-md-9' : 'col-md-12' ?>">
+				<?php ap_user_page(); ?>
+			</div>
+
+			<?php if ( is_active_sidebar( 'ap-user' ) && is_anspress()){ ?>
+				<div class="ap-user-right col-md-3">
+					<?php dynamic_sidebar( 'ap-user' ); ?>
+				</div>
+			<?php } ?>
 		</div>
 		<!-- End ap-profile-lr -->
 	</div>
+
 <?php endwhile; ?>
