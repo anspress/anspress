@@ -778,7 +778,7 @@ function ap_get_cover_src($user_id = false, $small = false) {
         if($small)
             return ap_get_theme_url('images/small_cover.jpg');
 
-        if(file_exists($cover['file']))
+        else
             return ap_get_theme_url('images/cover.jpg');
     }
 }
