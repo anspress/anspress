@@ -299,7 +299,7 @@ function ap_get_user_menu($user_id = false){
  * @return void
  * @since 2.0.1
  */
-function ap_user_menu()
+function ap_user_menu($collapse = true)
 {
     $menus = ap_get_user_menu();
     $active_user_page   = get_query_var('user_page');
@@ -307,14 +307,16 @@ function ap_user_menu()
 
     if (!empty($menus) && is_array($menus)) {
 
-        $o = '<ul id="ap-user-menu" class="ap-user-menu ap_collapse_menu clearfix">';
+        $o = '<ul id="ap-user-menu" class="ap-user-menu '.($collapse ? 'ap_collapse_menu' : '').' clearfix">';
 
         foreach ($menus as $m) {
             $class = !empty($m['class']) ? ' '.$m['class'] : '';
             $o .= '<li'.($active_user_page == $m['slug'] ? ' class="active"' : '').'><a href="'.$m['link'].'" class="ap-user-menu-'.$m['slug'].$class.'">'.$m['title'].'</a></li>';
         }
 
-        $o .= '<li class="ap-user-menu-more ap-dropdown"><a href="#" class="ap-dropdown-toggle">'.__('More', 'ap').ap_icon('chevron-down', true).'</a><ul class="ap-dropdown-menu"></ul></li>';
+        if($collapse)
+            $o .= '<li class="ap-user-menu-more ap-dropdown"><a href="#" class="ap-dropdown-toggle">'.__('More', 'ap').ap_icon('chevron-down', true).'</a><ul class="ap-dropdown-menu"></ul></li>';
+
         $o .= '</ul>';
         echo $o;
     }
