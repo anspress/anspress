@@ -772,10 +772,10 @@ function ap_get_cover_src($user_id = false, $small = false) {
     if(is_array($cover) && !empty($cover)){
 
         if($small && file_exists($cover['small_file']))
-            return $cover['small_url'];
+            return esc_url($cover['small_url']);
 
         if(file_exists($cover['file']))
-            return $cover['url'];
+            return esc_url($cover['url']);
     }else{
         if($small)
             return ap_get_theme_url('images/small_cover.jpg');
