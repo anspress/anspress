@@ -79,6 +79,7 @@ class Tags_For_AnsPress
         // internationalization
         add_action( 'admin_init', array( $this, 'load_options' ) );
         add_action( 'init', array( $this, 'textdomain' ) );
+        add_action( 'widgets_init', array($this, 'widget_positions') );
 
         //Register question tag
         add_action('init', array($this, 'register_question_tag'), 1);
@@ -188,6 +189,19 @@ class Tags_For_AnsPress
         // Load the translations
         load_plugin_textdomain( 'ap', false, $lang_dir );
 
+    }
+
+    public function widget_positions()
+    {
+        register_sidebar( array(
+            'name'          => __( 'AP Tags', 'ap' ),
+            'id'            => 'ap-tags',
+            'before_widget' => '<div id="%1$s" class="ap-widget-pos %2$s">',
+            'after_widget'  => '</div>',
+            'description'   => __( 'Widgets in this area will be shown in anspress tags page.', 'ap' ),
+            'before_title'  => '<h3 class="ap-widget-title">',
+            'after_title'   => '</h3>',
+        ) );
     }
 
     /**
