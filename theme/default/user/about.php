@@ -39,7 +39,15 @@ global $questions;
 				</li>
 				<li>
 					<div class="ap-about-stats-item">
-						<?php echo ap_icon('clock', true); ?><?php printf(__('Last seen %s ago', 'ap'), ap_human_time(ap_user_get_the_meta('__last_active'), false)); ?>
+						<?php
+							echo ap_icon('clock', true);
+
+							if(ap_user_get_the_meta('__last_active') != 0){
+								printf(__('Last seen %s ago', 'ap'), ap_human_time(ap_user_get_the_meta('__last_active'), false));
+							}else{
+								_e('Never logged in', 'ap');
+							}
+						?>
 					</div>
 				</li>
 			</ul><!-- close .ap-about-stats -->

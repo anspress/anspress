@@ -440,7 +440,7 @@ function ap_user_the_meta($key, $user_id = false){
 
         // Set the default value for anspress meta
         foreach($ap_metas as $ap_meta){
-            if(!isset($ap_meta[$ap_meta]))
+            if(!isset($meta[$ap_meta]))
                 $meta[$ap_meta] = 0;
         }
 
