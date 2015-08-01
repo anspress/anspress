@@ -255,7 +255,7 @@ function ap_user_link($user_id = false, $sub = false)
  * @param  boolean|integer  $user_id
  * @return array
  */
-function ap_get_user_menu($user_id = false){
+function ap_get_user_menu($user_id = false, $private = false){
 
     if($user_id === false)
         $user_id = ap_get_displayed_user_id();
@@ -285,11 +285,6 @@ function ap_get_user_menu($user_id = false){
 
     $menus = ap_sort_array_by_order($menus);
 
-    foreach ($menus as $k => $m) {
-        if( (!$m['public'] && !ap_is_my_profile()))
-            unset($menus[$k]);
-    }
-
     return $menus;
 }
 
@@ -301,7 +296,12 @@ function ap_get_user_menu($user_id = false){
  */
 function ap_user_menu($collapse = true)
 {
-    $menus = ap_get_user_menu();
+    $user_id = get_current_user_id();
+    $menus = ap_get_user_menu($user_id);
+    foreach ($menus as $k => $m) {
+        if( (!$m['public'] && !ap_is_my_profile($user_id)))
+            unset($menus[$k]);
+    }
     $active_user_page   = get_query_var('user_page');
     $active_user_page   = $active_user_page ? $active_user_page : 'about';
 

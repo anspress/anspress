@@ -502,22 +502,28 @@ function ap_close_vote_html(){
 	<?php
 }
 
-
-/* ---------------Flag btn-------------------
-------------------------------------------- */
 /**
- * @param integer $actionid
+ * Add flag vote data to ap_meta table
+ * @param  integer 		$userid
+ * @param  integer 		$actionid
+ * @param  null|mixed 	$value
+ * @param  null|mixed 	$param
+ * @return false|integer
  */
 function ap_add_flag($userid, $actionid, $value =NULL, $param =NULL){
 	return ap_add_meta($userid, 'flag', $actionid, $value, $param );
 }
 
-// count flags on the post
+/**
+ * Count post flag votes
+ * @param  boolean|integer $postid
+ * @return integer
+ */
 function ap_post_flag_count($postid=false){
 	global $post;
 
 	$postid = $postid ? $postid : $post->ID;
-	return ap_meta_total_count('flag', $postid);
+	return apply_filters('ap_post_flag_count', ap_meta_total_count('flag', $postid));
 }
 
 //check if user flagged on post
