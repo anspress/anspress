@@ -398,14 +398,12 @@
             });
         },
         ap_post_upload_field: function() {
-            $('body').delegate('[data-action="ap_post_upload_field"]', 'click', function(e) {
+            $('body').unbind('click').on('click', '[data-action="ap_post_upload_field"]', function(e) {
                 e.preventDefault();
-                $('[name="post_upload_image"]').click();
+                $('input[name="post_upload_image"]').trigger('click');
             });
 
             $('body').delegate('[name="post_upload_image"]', 'change', function(e) {
-                var clone = $(this).clone();
-                $(clone).appendTo('#hidden-post-upload');
                 $('#hidden-post-upload').submit();
             });
 

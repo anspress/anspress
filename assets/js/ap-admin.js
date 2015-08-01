@@ -1,20 +1,20 @@
 (function ($) {
-	/* 
+	/*
 	* for getting unchecked fields
-	* source: http://tdanemar.wordpress.com/2010/08/24/jquery-serialize-method-and-checkboxes/ 
+	* source: http://tdanemar.wordpress.com/2010/08/24/jquery-serialize-method-and-checkboxes/
 	*/
      $.fn.serialize = function (options) {
          return $.param(this.serializeArray(options));
      };
- 
+
      $.fn.serializeArray = function (options) {
          var o = $.extend({
          checkboxesAsBools: false
      }, options || {});
- 
+
      var rselectTextarea = /select|textarea/i;
      var rinput = /text|hidden|password|search/i;
- 
+
      return this.map(function () {
          return this.elements ? $.makeArray(this.elements) : this;
      })
@@ -41,26 +41,26 @@
              };
          }).get();
      };
- 
+
 })(jQuery);
 
 /* on start */
 jQuery(function() {
-     
+
     /* create document */
     APjs.admin = new APjs.admin();
     /* need to call init manually with jQuery */
     APjs.admin.initialize();
- 
+
 });
- 
+
 /* namespace */
 window.APjs = {};
 APjs.admin = function() {};
- 
+
 
 APjs.admin.prototype = {
-	
+
 	/* automatically called */
 	initialize: function() {
 		this.saveOptions();
@@ -72,7 +72,7 @@ APjs.admin.prototype = {
 		this.badges();
 		this.deleteFlag();
 	},
-	
+
 	saveOptions: function(){
 		jQuery('#options_form').submit(function(){
 			jQuery.each(jQuery(this).find('input:checkbox:not(:checked)'), function(index, val) {
@@ -90,14 +90,14 @@ APjs.admin.prototype = {
 		jQuery('.ap-rename-taxo').click(function(e){
 			e.preventDefault();
 
-			jQuery.ajax({ 
+			jQuery.ajax({
 				url: ajaxurl,
 				data: {action: 'ap_taxo_rename'},
 				context:this,
 				success: function(data){
 					jQuery(this).closest('.error').remove();
-					location.reload(); 
-				} 
+					location.reload();
+				}
 			});
 			return false;
 		});
@@ -107,12 +107,12 @@ APjs.admin.prototype = {
 			e.preventDefault();
 			var id = jQuery(this).attr('href');
 			jQuery.ajax({
-				type: 'POST',  
-				url: ajaxurl,  
+				type: 'POST',
+				url: ajaxurl,
 				data: {
 					action: 'ap_edit_reputation',
 					id: id
-				},  
+				},
 				context:this,
 				dataType:'json',
 				success: function(data){
@@ -131,8 +131,8 @@ APjs.admin.prototype = {
 			jQuery('.button-primary', this).attr('disabled', 'disabled');
 			var id = jQuery(this).attr('href');
 			jQuery.ajax({
-				type: 'POST',  
-				url: ajaxurl, 
+				type: 'POST',
+				url: ajaxurl,
 				cache: false,
 				data:  jQuery(this).serialize({ checkboxesAsBools: true }),
 				context:this,
@@ -143,7 +143,7 @@ APjs.admin.prototype = {
 					}
 				}
 			});
-			
+
 			return false;
 		});
 	},
@@ -151,8 +151,8 @@ APjs.admin.prototype = {
 		jQuery('.wp-admin').delegate('[data-button="ap-new-reputation"]', 'click', function(e){
 			e.preventDefault();
 			jQuery.ajax({
-				type: 'POST',  
-				url: ajaxurl,  
+				type: 'POST',
+				url: ajaxurl,
 				data:  {
 					action: 'ap_new_reputation_form'
 				},
@@ -164,7 +164,7 @@ APjs.admin.prototype = {
 					jQuery('#anspress-reputation-table').after(data['html']);
 				}
 			});
-			
+
 			return false;
 		});
 	},
@@ -174,8 +174,8 @@ APjs.admin.prototype = {
 			var id = jQuery(this).attr('href');
 			var args = jQuery(this).data('args');
 			jQuery.ajax({
-				type: 'POST',  
-				url: ajaxurl,  
+				type: 'POST',
+				url: ajaxurl,
 				data:  {
 					action: 'ap_delete_reputation',
 					args: args
@@ -186,7 +186,7 @@ APjs.admin.prototype = {
 					jQuery(this).closest('tr').slideUp(200);
 				}
 			});
-			
+
 			return false;
 		});
 	},
@@ -195,12 +195,12 @@ APjs.admin.prototype = {
 			e.preventDefault();
 			var id = jQuery(this).attr('href');
 			jQuery.ajax({
-				type: 'POST',  
-				url: ajaxurl,  
+				type: 'POST',
+				url: ajaxurl,
 				data: {
 					action: 'ap_edit_badges',
 					id: id
-				},  
+				},
 				context:this,
 				dataType:'json',
 				success: function(data){
@@ -212,14 +212,14 @@ APjs.admin.prototype = {
 				}
 			});
 		});
-		
+
 		jQuery('.wp-admin').delegate('[data-action="ap-save-badge"]', 'submit', function(e){
 			e.preventDefault();
 			jQuery('.button-primary', this).attr('disabled', 'disabled');
 			var id = jQuery(this).attr('href');
 			jQuery.ajax({
-				type: 'POST',  
-				url: ajaxurl,  
+				type: 'POST',
+				url: ajaxurl,
 				data:  jQuery(this).serialize({ checkboxesAsBools: true }),
 				context:this,
 				dataType:'json',
@@ -229,14 +229,14 @@ APjs.admin.prototype = {
 					}
 				}
 			});
-			
+
 			return false;
 		});
 		jQuery('.wp-admin').delegate('[data-button="ap-new-badge"]', 'click', function(e){
 			e.preventDefault();
 			jQuery.ajax({
-				type: 'POST',  
-				url: ajaxurl,  
+				type: 'POST',
+				url: ajaxurl,
 				data:  {
 					action: 'ap_new_badge_form'
 				},
@@ -248,7 +248,7 @@ APjs.admin.prototype = {
 					jQuery('#anspress-badge-table').after(data['html']);
 				}
 			});
-			
+
 			return false;
 		});
 		jQuery('.wp-admin').delegate('[data-button="ap-delete-badge"]', 'click', function(e){
@@ -256,8 +256,8 @@ APjs.admin.prototype = {
 			var id = jQuery(this).attr('href');
 			var args = jQuery(this).data('args');
 			jQuery.ajax({
-				type: 'POST',  
-				url: ajaxurl,  
+				type: 'POST',
+				url: ajaxurl,
 				data:  {
 					action: 'ap_delete_badge',
 					args: args
@@ -268,21 +268,21 @@ APjs.admin.prototype = {
 					jQuery(this).closest('tr').slideUp(200);
 				}
 			});
-			
+
 			return false;
 		});
 	},
-	
-	
+
+
 	deleteFlag : function(){
 		jQuery('[data-action="ap-delete-flag"]').click(function(e){
 			e.preventDefault();
 			jQuery.ajax({
-				type: 'POST',  
-				url: ajaxurl,  
+				type: 'POST',
+				url: ajaxurl,
 				data:  jQuery(this).attr('href'),
 				context:this,
-				success: function(data){					
+				success: function(data){
 					jQuery(this).closest('.flag-item').remove();
 				}
 			});
@@ -329,8 +329,8 @@ function ap_submit_menu(){
 	jQuery('.aplinks #submit-aplinks').click(function(){
 		wpNavMenu.addApLink( wpNavMenu.addMenuItemToBottom );
 	});
-	
-	
+
+
 }
 function ap_add_link_to_menu(url, label, callback) {
 	callback = callback || function(){};
@@ -347,7 +347,7 @@ function ap_add_item_to_menu(menuItem, callback) {
 	var menu = jQuery('#menu').val(),
 		nonce = jQuery('#menu-settings-column-nonce').val(),
 		params;
-		
+
 	callback = callback || function(){};
 
 	params = {
@@ -360,7 +360,7 @@ function ap_add_item_to_menu(menuItem, callback) {
 	jQuery.post( ajaxurl, params, function(menuMarkup) {
 		var ins = jQuery('#menu-instructions');
 		menuMarkup = jQuery.trim( menuMarkup ); // Trim leading whitespaces
-	
+
 		// Make it stand out a bit more visually, by adding a fadeIn
 		jQuery( 'li.pending' ).hide().fadeIn('slow');
 		jQuery( '.drag-instructions' ).show();
@@ -370,29 +370,29 @@ function ap_add_item_to_menu(menuItem, callback) {
 		callback();
 	});
 }
-jQuery(document).ready(function (jQuery){  
-	
+jQuery(document).ready(function (jQuery){
+
 	jQuery('#select-question-for-answer').on('keyup', function(){
 		if(jQuery.trim(jQuery(this).val()) == '')
 			return;
 		jQuery.ajax({
 			type: 'POST',
-			url: ajaxurl, 
+			url: ajaxurl,
 			data: {
 				action: 'ap_ajax',
 				ap_ajax_action: 'suggest_similar_questions',
 				value: jQuery(this).val(),
 				is_admin: true
-			}, 
+			},
 			success: function(data){
 				if(typeof data['html'] !== 'undefined')
 					jQuery('#similar_suggestions').html(data['html']);
-			}, 
+			},
 			dataType: 'json',
 			context: this,
 		});
 	});
-	
+
 	ap_option_flag_note();
 	ap_submit_menu();
 
@@ -419,7 +419,7 @@ jQuery(document).ready(function (jQuery){
 			jQuery('#ap_category_media_url').val(image_url);
 			jQuery('#ap_category_media_id').val(image_id);
 			jQuery('#ap_category_media_url').before('<img id="ap_category_media_preview" src="'+image_url+'" />');
-		});       
+		});
 	});
 
 	jQuery('#ap-category-upload-remove').click(function(e){
@@ -431,6 +431,6 @@ jQuery(document).ready(function (jQuery){
 	jQuery(document).ready(function($){
 	    $('#ap-category-color').wpColorPicker();
 	});
-	
-}); 
+
+});
 
