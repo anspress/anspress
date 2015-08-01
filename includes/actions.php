@@ -184,7 +184,6 @@ class AnsPress_Actions
 
 		if( $post->post_type == 'question') {
 			do_action('ap_trash_question', $post);
-			//ap_remove_parti($post->ID, $post->post_author, 'question');
 			ap_delete_meta(array('apmeta_type' => 'flag', 'apmeta_actionid' => $post->ID));
 			$arg = array(
 			  'post_type' => 'answer',
@@ -195,9 +194,9 @@ class AnsPress_Actions
 			$ans = get_posts($arg);
 			if($ans>0){
 				foreach( $ans as $p){
-					//ap_remove_parti($p->post_parent, $p->post_author, 'answer');
 					do_action('ap_trash_multi_answer', $post);
 					ap_delete_meta(array('apmeta_type' => 'flag', 'apmeta_actionid' => $p->ID));
+					ap_remove_new_answer_history($p->ID);
 					wp_trash_post($p->ID);
 				}
 			}
@@ -206,10 +205,18 @@ class AnsPress_Actions
 		if( $post->post_type == 'answer') {
 			$ans = ap_count_published_answers($post->post_parent);
 			$ans = $ans > 0 ? $ans - 1 : 0;
+
 			do_action('ap_trash_answer', $post);
-			//ap_remove_parti($post->post_parent, $post->post_author, 'answer');
+
 			ap_delete_meta(array('apmeta_type' => 'flag', 'apmeta_actionid' => $post->ID));
+
 			ap_remove_question_subscriber($post->post_parent, $post->post_author);
+
+			ap_remove_new_answer_history($post->ID, $post->post_parent);
+
+			// Restore question history
+			ap_restore_question_history($post->post_parent);
+
 			//update answer count
 			update_post_meta($post->post_parent, ANSPRESS_ANS_META, $ans);
 		}
@@ -238,16 +245,16 @@ class AnsPress_Actions
 			if($ans>0){
 				foreach( $ans as $p){
 					do_action('ap_untrash_answer', $p->ID);
-					//ap_add_parti($p->ID, $p->post_author, 'answer');
 					wp_untrash_post($p->ID);
 				}
 			}
+			// Restore question history
+			ap_restore_question_history($post_id);
 		}
 
 		if( $post->post_type == 'answer') {
 			$ans = ap_count_published_answers( $post->post_parent );
 			do_action('untrash_answer', $post->ID, $post->post_author);
-			//ap_add_parti($post->post_parent, $post->post_author, 'answer');
 
 			//update answer count
 			update_post_meta($post->post_parent, ANSPRESS_ANS_META, $ans+1);

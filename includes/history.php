@@ -47,7 +47,7 @@ class AP_History
 	}
 	public function new_answer($answer_id) {
 		$post = get_post($answer_id);
-		ap_add_history(get_current_user_id(), $post->post_parent, '', 'new_answer');
+		ap_add_history(get_current_user_id(), $post->post_parent, $answer_id, 'new_answer');
 	}
 
 	public function edit_question($post_id) {
@@ -80,7 +80,12 @@ class AP_History
 }
 
 /**
- * @param string $param
+ * Insert history to database
+ * @param  boolean|integer 		$userid  	If not set current user_id will be used
+ * @param  integer  			$post_id
+ * @param  string  				$value
+ * @param  string  				$param
+ * @return false|integer
  */
 function ap_add_history($userid = false, $post_id, $value, $param=NULL){
 
@@ -223,4 +228,29 @@ function ap_get_latest_history_html($post_id, $initial = false, $avatar = false,
 		return apply_filters('ap_latest_history_html', $html);
 
 	return false;
+}
+
+/**
+ * Restore __ap_history meta of question or answer
+ * @param  integer $post_id
+ * @return void
+ */
+function ap_restore_question_history($post_id) {
+	$history = ap_get_latest_history($post_id);
+
+	if(!$history)
+		delete_post_meta($post_id, '__ap_history');
+	else
+		update_post_meta( $post_id, '__ap_history', array('type' => $history['type'], 'user_id' => $history['user_id'], 'date' => $history['date']) );
+}
+
+/**
+ * Remove new answer history from ap_meta table and update post meta history
+ * @param  integer $answer_id
+ * @return integer|false
+ */
+function ap_remove_new_answer_history($answer_id, $question_id) {
+	$row = ap_delete_meta(array('apmeta_type' => 'history', 'apmeta_value' => $answer_id, 'apmeta_param' => 'new_answer'));
+
+	return $row;
 }
