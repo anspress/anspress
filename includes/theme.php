@@ -222,7 +222,7 @@ function ap_pagination( $current = false, $total = false, $format = '?paged=%#%'
 	$big = 999999999; // need an unlikely integer
 
 	if($current === false)
-		$current = max( 1, get_query_var('paged') );
+		$current = is_front_page() ? max( 1, (int)$_GET['paged'] ) : max( 1, get_query_var('paged') );
 
 	elseif(!empty($ap_current))
 		$current = $ap_current;

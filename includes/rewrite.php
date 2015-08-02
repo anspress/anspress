@@ -20,10 +20,11 @@ class AnsPress_Rewrite
 	 */
 	public function __construct()
 	{
-		add_filter('query_vars', array($this, 'query_var'));
-		add_action('generate_rewrite_rules', array( $this, 'rewrites'), 1);
+		add_filter( 'query_vars', array($this, 'query_var'));
+		add_action( 'generate_rewrite_rules', array( $this, 'rewrites'), 1);
 		add_filter( 'paginate_links', array($this, 'bp_com_paged') );
-		add_filter('parse_request', array( $this, 'add_query_var' ));
+		add_filter( 'paginate_links', array($this, 'paginate_links') );
+		add_filter( 'parse_request', array( $this, 'add_query_var' ));
 	}
 
 	/**
@@ -137,6 +138,14 @@ class AnsPress_Rewrite
 		}
 
 		return $args;
+	}
+
+	public function paginate_links($link)
+	{
+		if(is_front_page())
+			return preg_replace('/page.([0-9]+)./', '?paged=$1', $link);
+
+		return $link;
 	}
 
 	public function add_query_var($wp) {

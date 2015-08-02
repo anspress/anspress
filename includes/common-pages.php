@@ -88,6 +88,9 @@ class AnsPress_Common_Pages
             );
         }
 
+        if( is_home())
+            $args['paged'] = get_query_var('page') ? get_query_var('page') : 1;
+
         /**
          * FILTER: ap_main_questions_args
          * Filter main question list args
