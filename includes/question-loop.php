@@ -33,7 +33,10 @@ class Question_Query extends WP_Query {
      */
     public function __construct( $args = array() ) {
 
-        $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
+        if(is_front_page())
+            $paged = (isset($_GET['paged'])) ? (int)$_GET['paged'] : 1;
+        else
+            $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
 
         if(isset($args['post_parent']))
             $post_parent = $args['post_parent'];
@@ -122,7 +125,10 @@ class Question_Query extends WP_Query {
 endif;
 
 function ap_get_questions($args = array()){
-    $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
+    if(is_front_page())
+        $paged = (isset($_GET['paged'])) ? (int)$_GET['paged'] : 1;
+    else
+        $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
 
     if(!isset($args['post_parent']))
         $args['post_parent'] = (get_query_var('parent')) ? get_query_var('parent') : false;

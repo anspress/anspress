@@ -401,7 +401,7 @@
             });
         },
         ap_post_upload_field: function() {
-            $('body').unbind('click').on('click', '[data-action="ap_post_upload_field"]', function(e) {
+            $('body').on('click', '[data-action="ap_post_upload_field"]', function(e) {
                 e.preventDefault();
                 $('input[name="post_upload_image"]').trigger('click');
             });
