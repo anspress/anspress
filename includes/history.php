@@ -249,7 +249,7 @@ function ap_restore_question_history($post_id) {
  * @param  integer $answer_id
  * @return integer|false
  */
-function ap_remove_new_answer_history($answer_id, $question_id) {
+function ap_remove_new_answer_history($answer_id) {
 	$row = ap_delete_meta(array('apmeta_type' => 'history', 'apmeta_value' => $answer_id, 'apmeta_param' => 'new_answer'));
 
 	return $row;
