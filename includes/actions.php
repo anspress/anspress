@@ -77,7 +77,7 @@ class AnsPress_Actions
 		update_post_meta($post_id, ANSPRESS_SELECTED_META, false);
 
 		// subscribe to current question
-		ap_add_question_subscriber($post_id);
+		ap_add_question_subscriber($post_id, $post->post_author);
 
 		//update answer count
 		update_post_meta($post_id, ANSPRESS_ANS_META, '0');

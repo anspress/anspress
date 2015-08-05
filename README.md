@@ -4,7 +4,7 @@
 **Tags:** question, answer, q&a, forum, profile, stackoverflow, quora, buddypress  
 **Requires at least:** 4.1.1  
 **Tested up to:** 4.2  
-**Stable tag:** 2.3.2  
+**Stable tag:** 2.3.6  
 **License:** GPLv2 or later  
 **License URI:** http://www.gnu.org/licenses/gpl-2.0.html  
 
@@ -99,6 +99,68 @@ Read full FAQ here http://anspress.io/documents/doc_page=faq
 
 
 ## Changelog ##
+
+### 2.3.6 ###
+### 2.3.5 ###
+
+* Updated paged variable when in home page
+* Removed unused arg
+* Fixed pagination on home page
+* Restore question history after deleting answer
+* Upload field triggered twice
+* All links of user menu not shown if in other profile page
+* Updated french translation by Shad
+* User active time shown as Last seen 46 years ago
+* Escaped cover photo url
+* Added option for disabling user menu collapse
+* Improved user page and stats
+* Registered user widget position
+* Added widget wrapper div
+* Warning: Illegal string offset ‘file’
+* Get paged args in user loop
+* Fixed infinite loop in question page
+
+### 2.3.4 ###
+
+* Added option for toggle [solved] prefix
+* Added custom follow button text
+* Improved user meta function
+* Return default cover when there is not cover photo
+
+### 2.3.3 ###
+
+* Fallback for form if JS/Ajax fails
+* Moved upload field before filter, so it can be filtered
+* enqueue script dependency
+* Italian translation .mo missing #305
+* Allow empty question description when limit is set to 0
+* Added a filter to disable logging IP for view count
+* Remove notification item after ajax delete
+* Fix for "anonymous ask" and "only admin can answer" option conflict
+* Multiple click on comments open more then one comment field
+* Added responsive styles for question page
+* Fix for Icon fonts are not rendering
+* Added responsive styles for question list
+* Change subscribe to "subscribe" to "follow question"
+* Password cannot be chnaged
+* Fixed warning on buddyPress pages
+* Improved question loop to use global
+* Unsubscribe is not working
+* Added option for disabling vote down
+* Update POT
+* Fixed ago translation
+* Notice: ap_questions_tab is deprecated
+* Comment is not shown after editing
+* Syntax error: unrecognized expression
+* Notice: Trying to get property of non-object
+* Improved login and answer tab UI
+* Moved question.php inside loop
+* Added filter for main question query
+* Wrong variable $ap_rules
+* Added filters for overriding question and answer CPT
+* Added after sorting callback
+* Added french translation by Romain DELOUF
+* Sanitized ap_sort
 
 ### 2.3.1 ###
 
