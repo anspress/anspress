@@ -9,9 +9,7 @@
 .ap-admin-container {
     max-width: 800px;
 }
-.wp-list-table th#asker, .wp-list-table th#answerer {
-    width: 60px;
-}
+
 .wp-list-table {
     th#answers {
         width: 30px;
@@ -38,9 +36,27 @@
     .vote-count {
         text-align: center;
     }
-    .type-answer {
-        .answerer {
-            width: 50px;
+    th#ap_author {
+        width: 145px;
+    }
+    .column-ap_author{
+        line-height: 100%;
+        .ap-author-col {
+            display: block;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+        img{
+            border-radius: 2px;
+            display: block;
+            float: left;
+            margin-right: 6px;
+        }
+        .user-login{
+            color: #888;
+            display: block;
+            font-size: 12px;
+            margin-top: 2px;
         }
     }
 }
@@ -657,7 +673,7 @@ h3.ap-dash-title {
     border-radius: 4px;
     padding: 10px;
     text-align: center;
-    
+
     i{
         background: none repeat scroll 0 0 #14ccff;
         border-radius: 50%;
@@ -819,7 +835,7 @@ h3.ap-dash-title {
     text-align: center;
     text-transform: uppercase;
     overflow: hidden;
-   
+
     &.letter-a{
         background: #1abc9c;
     }

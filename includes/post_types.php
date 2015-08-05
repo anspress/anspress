@@ -220,7 +220,7 @@ class AnsPress_PostTypes
     {
         $columns = array();
         $columns["cb"]          = "<input type=\"checkbox\" />";
-        $columns["asker"]      = __('Author', 'ap');
+        $columns["ap_author"]      = __('Author', 'ap');
         $columns["title"]       = __('Title', 'ap');
 
         if(taxonomy_exists( 'question_category' ))
@@ -246,9 +246,11 @@ class AnsPress_PostTypes
         if(!($post->post_type != 'question' || $post->post_type != 'answer'))
             return $column;
 
-        if ('asker' == $column || 'answerer' == $column) {
-
-            echo get_avatar(get_the_author_meta('user_email'), 40);
+        if ('ap_author' == $column) {
+            echo '<a class="ap-author-col" href="'.ap_user_link($post->post_author).'" class="">';
+            echo get_avatar(get_the_author_meta('user_email'), 28);
+            echo get_the_author_meta( 'display_name' ) .'<span class="user-login">'.get_the_author_meta( 'user_login' ).'</span>';
+            echo '</a>';
 
         }elseif ('status' == $column) {
 
@@ -357,14 +359,14 @@ class AnsPress_PostTypes
     public function cpt_answer_columns($columns)
     {
         $columns = array(
-            "cb" => "<input type=\"checkbox\" />",
-            "answerer" => __('Author', 'ap'),
-            "answer_content" => __('Content', 'ap'),
-            "status" => __('Status', 'ap'),
-            "comments" => __('Comments', 'ap'),
-            "vote" => __('Vote', 'ap'),
-            "flag" => __('Flag', 'ap'),
-            "date" => __('Date', 'ap')
+            "cb"                => "<input type=\"checkbox\" />",
+            "ap_author"         => __('Author', 'ap'),
+            "answer_content"    => __('Content', 'ap'),
+            "status"            => __('Status', 'ap'),
+            "comments"          => __('Comments', 'ap'),
+            "vote"              => __('Vote', 'ap'),
+            "flag"              => __('Flag', 'ap'),
+            "date"              => __('Date', 'ap')
         );
         return $columns;
     }

@@ -994,10 +994,6 @@
 .ap-admin-container {
   max-width: 800px;
 }
-.wp-list-table th#asker,
-.wp-list-table th#answerer {
-  width: 60px;
-}
 .wp-list-table th#answers {
   width: 30px;
 }
@@ -1021,8 +1017,28 @@
 .wp-list-table .vote-count {
   text-align: center;
 }
-.wp-list-table .type-answer .answerer {
-  width: 50px;
+.wp-list-table th#ap_author {
+  width: 145px;
+}
+.wp-list-table .column-ap_author {
+  line-height: 100%;
+}
+.wp-list-table .column-ap_author .ap-author-col {
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.wp-list-table .column-ap_author img {
+  border-radius: 2px;
+  display: block;
+  float: left;
+  margin-right: 6px;
+}
+.wp-list-table .column-ap_author .user-login {
+  color: #888;
+  display: block;
+  font-size: 12px;
+  margin-top: 2px;
 }
 .wp-list-table th#question_category,
 .wp-list-table th#question_tags {
