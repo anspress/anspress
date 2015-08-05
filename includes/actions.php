@@ -429,7 +429,7 @@ class AnsPress_Actions
 
 	    	$active_user_page   = $active_user_page ? $active_user_page : 'about';
 
-			$item_output = '<a id="ap-user-menu-anchor" class="ap-dropdown-toggle"  href="#">'.get_avatar(get_current_user_id(), 20).'<span class="name">'.ap_user_display_name(get_current_user_id()).'</span>'.ap_icon('chevron-down', true).'</a>';
+			$item_output = '<a id="ap-user-menu-anchor" class="ap-dropdown-toggle"  href="#">'.get_avatar(get_current_user_id(), 80).'<span class="name">'.ap_user_display_name(get_current_user_id()).'</span>'.ap_icon('chevron-down', true).'</a>';
 
 			$item_output .= '<ul id="ap-user-menu-link" class="ap-dropdown-menu ap-user-dropdown-menu">';
 
