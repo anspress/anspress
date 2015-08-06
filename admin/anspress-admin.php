@@ -64,9 +64,8 @@ class AnsPress_Admin
 		add_filter( 'plugin_action_links_' . $plugin_basename, array( $this, 'add_action_links' ) );
 
 		add_action('admin_init', array($this, 'register_setting'));
-		// flush rewrite rule if option updated
-		add_action('admin_init', array($this, 'init_actions'));
-		add_action('parent_file', array($this, 'tax_menu_correction'));
+		add_action( 'admin_init', array($this, 'init_actions'));
+		add_action( 'parent_file', array($this, 'tax_menu_correction'));
 		add_action( 'load-post.php', array($this, 'question_meta_box_class') );
 		add_action( 'load-post-new.php', array($this, 'question_meta_box_class') );
 		add_action( 'wp_ajax_ap_edit_reputation', array($this, 'ap_edit_reputation') );
@@ -74,16 +73,14 @@ class AnsPress_Admin
 		add_action( 'wp_ajax_ap_new_reputation_form', array($this, 'ap_new_reputation_form') );
 		add_action( 'wp_ajax_ap_delete_reputation', array($this, 'ap_delete_reputation') );
 		add_action( 'admin_menu', array($this, 'change_post_menu_label') );
-		add_action( 'wp_ajax_ap_edit_badges', array($this, 'ap_edit_badges') );
-		add_action( 'wp_ajax_ap_save_badges', array($this, 'ap_save_badges') );
-		add_action( 'wp_ajax_ap_new_badge_form', array($this, 'ap_new_badge_form') );
 		add_action( 'wp_ajax_ap_taxo_rename', array($this, 'ap_taxo_rename') );
 		add_action( 'wp_ajax_ap_delete_flag', array($this, 'ap_delete_flag') );
 		add_action( 'edit_form_after_title', array($this, 'edit_form_after_title') );
-        add_filter('wp_insert_post_data', array($this, 'post_data_check'), 99);
-        add_filter('post_updated_messages', array($this,'post_custom_message'));
+        add_filter( 'wp_insert_post_data', array($this, 'post_data_check'), 99);
+        add_filter( 'post_updated_messages', array($this,'post_custom_message'));
         add_action( 'admin_head-nav-menus.php', array($this, 'ap_menu_metaboxes') );
         add_action( 'admin_notices', array($this, 'taxonomy_rename') );
+        //add_filter( 'pre_get_posts', array($this, 'serach_qa_by_userid') );
 	}
 
 	/**
@@ -549,166 +546,6 @@ class AnsPress_Admin
 		die();
 	}
 
-	public function ap_edit_badges(){
-		if(current_user_can('manage_options')){
-			$id = sanitize_text_field($_POST['id']);
-			$badge = ap_badge_by_id($id);
-
-			$badges_opt = '';
-			foreach(ap_badge_types() as $k => $b){
-				$badges_opt .= "<option value='{$k}' ".selected($k, $badge['type'], false).">{$b}</option>";
-			}
-
-			$html = '
-				<div id="ap-badge-edit">
-					<form method="POST" data-action="ap-save-badge">
-						<table class="form-table">
-							<tr valign="top">
-								<th scope="row"><label for="title">'. __('Title', 'ap').'</label></th>
-								<td>
-									<input id="title" type="text" name="title" value="'.$badge['title'].'" />
-								</td>
-							</tr>
-							<tr valign="top">
-								<th scope="row"><label for="description">'. __('Description', 'ap').'</label></th>
-								<td>
-									<textarea cols="50" id="description" name="description">'.$badge['description'].'</textarea>
-								</td>
-							</tr>
-							<tr valign="top">
-								<th scope="row"><label for="type">'. __('Type', 'ap').'</label></th>
-								<td>
-									<select id="type" name="type">'.$badges_opt.'</select>
-								</td>
-							</tr>
-							<tr valign="top">
-								<th scope="row"><label for="min_reputation">'. __('Min. Points', 'ap').'</label></th>
-								<td>
-									<input id="min_reputation" type="text" name="min_reputation" value="'.$badge['min_reputation'].'" />
-								</td>
-							</tr>
-							<tr valign="top">
-								<th scope="row"><label for="event">'. __('Event', 'ap').'</label></th>
-								<td>
-									<input type="text" name="event" value="'.$badge['event'].'" />
-								</td>
-							</tr>
-							<tr valign="top">
-								<th scope="row"><label for="multiple">'. __('Multiple', 'ap').'</label></th>
-								<td>
-									<input type="checkbox" name="multiple" '.checked($badge['multiple'], 1, false).'value="1" />
-								</td>
-							</tr>
-						</table>
-						<input class="button-primary" type="submit" value="'.__('Save badge', 'ap').'">
-						<input type="hidden" name="id" value="'.$badge['id'].'">
-						<input type="hidden" name="action" value="ap_save_badges">
-						<input type="hidden" name="nonce" value="'.wp_create_nonce('ap_save_badge').'">
-					</form>
-				</div>
-			';
-
-			$result = array('status' => true, 'html' => $html);
-			$result = apply_filters('ap_edit_badge_result', $result);
-			echo json_encode( $result );
-		}
-		die();
-	}
-	public function ap_save_badges(){
-		if(current_user_can('manage_options')){
-			$nonce 		= sanitize_text_field($_POST['nonce']);
-			$id 		= (int)sanitize_text_field($_POST['id']);
-			$title 		= sanitize_text_field($_POST['title']);
-			$desc 		= sanitize_text_field($_POST['description']);
-			$type 		= sanitize_text_field($_POST['type']);
-			$min_reputation = sanitize_text_field($_POST['min_reputation']);
-			$event 		= sanitize_text_field($_POST['event']);
-			$multiple 	= (int)$_POST['multiple'];
-			if(wp_verify_nonce($nonce, 'ap_save_badge')){
-				if(isset($_POST['id'])){
-					$id 	= sanitize_text_field($_POST['id']);
-					ap_badge_option_update($id, $title, $desc, $type, $min_reputation, $event, $multiple);
-				}else{
-					ap_badge_option_new($id, $title, $desc, $type, $min_reputation, $event, $multiple);
-				}
-
-				ob_start();
-				$this->display_badges_page();
-				$html = ob_get_clean();
-
-				$result =  array(
-					'status' => true, 'html' => $html
-				);
-
-				echo json_encode( $result );
-			}
-		}
-		die();
-	}
-
-	public function ap_new_badge_form(){
-		if(current_user_can('manage_options')){
-
-			$badges_opt = '';
-			foreach(ap_badge_types() as $k => $b){
-				$badges_opt .= "<option value='{$k}'>{$b}</option>";
-			}
-
-			$html = '
-				<div id="ap-badge-edit">
-					<form method="POST" data-action="ap-save-badge">
-						<table class="form-table">
-							<tr valign="top">
-								<th scope="row"><label for="title">'. __('Title', 'ap').'</label></th>
-								<td>
-									<input id="title" type="text" name="title" value="" />
-								</td>
-							</tr>
-							<tr valign="top">
-								<th scope="row"><label for="description">'. __('Description', 'ap').'</label></th>
-								<td>
-									<textarea cols="50" id="description" name="description"></textarea>
-								</td>
-							</tr>
-							<tr valign="top">
-								<th scope="row"><label for="type">'. __('Type', 'ap').'</label></th>
-								<td>
-									<select id="type" name="type">'.$badges_opt.'</select>
-								</td>
-							</tr>
-							<tr valign="top">
-								<th scope="row"><label for="min_reputation">'. __('Min. Points', 'ap').'</label></th>
-								<td>
-									<input id="min_reputation" type="text" name="min_reputation" value="" />
-								</td>
-							</tr>
-							<tr valign="top">
-								<th scope="row"><label for="event">'. __('Event', 'ap').'</label></th>
-								<td>
-									<input type="text" name="event" value="" />
-								</td>
-							</tr>
-							<tr valign="top">
-								<th scope="row"><label for="multiple">'. __('Multiple', 'ap').'</label></th>
-								<td>
-									<input type="checkbox" name="multiple" value="1" />
-								</td>
-							</tr>
-						</table>
-						<input class="button-primary" type="submit" value="'.__('Save badge', 'ap').'">
-						<input type="hidden" name="action" value="ap_save_badges">
-						<input type="hidden" name="nonce" value="'.wp_create_nonce('ap_save_badge').'">
-					</form>
-				</div>
-			';
-
-			$result = array('status' => true, 'html' => $html);
-			$result = apply_filters('ap_new_badge_result', $result);
-			echo json_encode( $result );
-		}
-		die();
-	}
-
 	public function ap_taxo_rename(){
 
 		if(current_user_can('manage_options')){
@@ -886,6 +723,14 @@ class AnsPress_Admin
 	        <p><?php printf(__( 'Hide message %s', 'ap' ), '<a class="ap-rename-taxo" href="#">'.__('dismiss', 'ap').'</a>'); ?></p>
 	    </div>
 	    <?php
+	}
+
+	public function serach_qa_by_userid($query) {
+		if ( $query->is_main_query() && isset($query->query_vars['s']) ) {
+			var_dump($query);
+		}
+
+		return $query;
 	}
 
 }

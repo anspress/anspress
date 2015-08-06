@@ -1,13 +1,14 @@
 <?php
+
 /**
  * The WordPress Question and Answer Plugin.
  *
  * The most advance community question and answer system for WordPress
  *
- * @package   AnsPress
  * @author    Rahul Aryan <support@rahularyan.com>
  * @copyright 2014 WP3.in & Rahul Aryan
  * @license   GPL-2.0+ http://www.gnu.org/licenses/gpl-2.0.txt
+ *
  * @link      http://anspress.io
  *
  * @wordpress-plugin
@@ -26,229 +27,332 @@
  */
 
 // If this file is called directly, abort.
-if (! defined('WPINC')) {
-	die;
+if (!defined('WPINC')) {
+    die;
 }
 
 if (!class_exists('AnsPress')) {
-
     /**
-     * Main AnsPress class
-     * @package AnsPress
-     */
-    class AnsPress
-    {
+	 * Main AnsPress class.
+	 */
+	class AnsPress
+	{
+	    private $_plugin_version = '2.3.6';
 
-    	private $_plugin_version = '2.3.6';
+	    public static $instance = null;
 
-    	public static $instance = null;
+	    public $anspress_actions;
 
-    	public $anspress_actions;
+	    public $anspress_ajax;
 
-    	public $anspress_ajax;
+	    public $pages;
+	    public $user_pages;
+	    public $users;
+	    public $menu;
+	    public $questions;
+	    public $answers;
+	    public $form;
+	    public $reputations;
 
-    	public $pages;
-    	public $user_pages;
-    	public $users;
-    	public $menu;
-    	public $questions;
-    	public $answers;
-    	public $form;
-    	public $reputations;
+		/**
+		 * The array of actions registered with WordPress.
+		 *
+		 * @since    1.0.0
+		 *
+		 * @var array The actions registered with WordPress to fire when the plugin loads.
+		 */
+		protected $actions;
 
-        /**
-         * Filter object
-         * @var object
-         */
-        public $anspress_query_filter;
+		/**
+		 * The array of filters registered with WordPress.
+		 *
+		 * @since    1.0.0
+		 *
+		 * @var array The filters registered with WordPress to fire when the plugin loads.
+		 */
+		protected $filters;
 
-        /**
-         * Theme object
-         * @var object
-         * @since 2.0.1
-         */
-        public $anspress_theme;
+		/**
+		 * Filter object.
+		 *
+		 * @var object
+		 */
+		public $anspress_query_filter;
 
-        /**
-         * Post type object
-         * @var object
-         * @since 2.0.1
-         */
-        public $anspress_cpt;
+		/**
+		 * Theme object.
+		 *
+		 * @var object
+		 *
+		 * @since 2.0.1
+		 */
+		public $anspress_theme;
 
-        public $anspress_forms;
-        public $anspress_reputation;
-        public $anspress_bp;
-        public $anspress_users;
-        public $third_party;
+		/**
+		 * Post type object.
+		 *
+		 * @var object
+		 *
+		 * @since 2.0.1
+		 */
+		public $anspress_cpt;
 
+	    public $anspress_forms;
+	    public $anspress_reputation;
+	    public $anspress_bp;
+	    public $anspress_users;
+	    public $third_party;
 
-        /**
-         * Initializes the plugin by setting localization, hooks, filters, and administrative functions.
-         * @return instance
-         */
-        public static function instance()
-        {
-        	if (! isset(self::$instance) && ! (self::$instance instanceof AnsPress)) {
-        		self::$instance = new AnsPress();
-        		self::$instance->_setup_constants();
+		/**
+		 * Initializes the plugin by setting localization, hooks, filters, and administrative functions.
+		 *
+		 * @return instance
+		 */
+		public static function instance()
+		{
+		    if (!isset(self::$instance) && !(self::$instance instanceof self)) {
+		        self::$instance = new self();
+		        self::$instance->setup_constants();
+		        self::$instance->actions = array();
+		        self::$instance->filters = array();
 
-        		add_action('plugins_loaded', array( self::$instance, 'load_textdomain' ));
+		        add_action('plugins_loaded', array(self::$instance, 'load_textdomain'));
 
+		        add_action('bp_loaded', array(self::$instance, 'bp_include'));
 
-        		add_action('bp_loaded', array( self::$instance, 'bp_include' ));
+		        global $ap_classes;
+		        $ap_classes = array();
 
-        		global $ap_classes;
-        		$ap_classes = array();
+		        self::$instance->includes();
 
-        		self::$instance->includes();
+		        self::$instance->ajax_hooks();
 
-        		self::$instance->anspress_forms              = new AnsPress_Process_Form();
-        		self::$instance->anspress_actions            = new AnsPress_Actions();
-        		self::$instance->anspress_ajax               = new AnsPress_Ajax();
-        		self::$instance->anspress_query_filter       = new AnsPress_Query_Filter();
-        		self::$instance->anspress_theme              = new AnsPress_Theme();
-        		self::$instance->anspress_cpt                = new AnsPress_PostTypes();
-        		self::$instance->anspress_reputation         = new AP_Reputation();
-        		self::$instance->anspress_users              = new AnsPress_User();
-                ///self::$instance->third_party                 = new AnsPress_3rd_party();
+		        self::$instance->anspress_forms 		= new AnsPress_Process_Form();
+		        self::$instance->anspress_actions 		= new AnsPress_Actions();
+		        self::$instance->anspress_query_filter 	= new AnsPress_Query_Filter();
+		        self::$instance->anspress_theme 		= new AnsPress_Theme();
+		        self::$instance->anspress_cpt 			= new AnsPress_PostTypes();
+		        self::$instance->anspress_reputation 	= new AP_Reputation();
+		        self::$instance->anspress_users 		= new AnsPress_User();
 
-                /**
-                 * ACTION: anspress_loaded
-                 * Hooks for extension to load their codes after AnsPress is leaded
-                 */
-                do_action('anspress_loaded');
-            }
+				/*
+				 * ACTION: anspress_loaded
+				 * Hooks for extension to load their codes after AnsPress is leaded
+				 */
+				do_action('anspress_loaded');
 
-            return self::$instance;
-        }
+		        self::$instance->setup_hooks();
+		    }
 
-         /**
-          * Setup plugin constants
-          *
-          * @access private
-          * @since  2.0.1
-          * @return void
-          */
-         private function _setup_constants()
-         {
+		    return self::$instance;
+		}
 
+		/**
+		 * Setup plugin constants.
+		 *
+		 * @since  2.0.1
+		 */
+		private function setup_constants()
+		{
+		    $constants = array(
+				'DS' 						=> DIRECTORY_SEPARATOR,
+				'AP_VERSION' 				=> $this->_plugin_version,
+				'AP_DB_VERSION' 			=> 12,
+				'ANSPRESS_DIR' 				=> plugin_dir_path(__FILE__),
+				'ANSPRESS_URL' 				=> plugin_dir_url(__FILE__),
+				'ANSPRESS_WIDGET_DIR' 		=> plugin_dir_path(__FILE__).'widgets'.DIRECTORY_SEPARATOR,
+				'ANSPRESS_THEME_DIR' 		=> plugin_dir_path(__FILE__).'theme',
+				'ANSPRESS_THEME_URL' 		=> plugin_dir_url(__FILE__).'theme',
+				'ANSPRESS_VOTE_META' 		=> '_ap_vote',
+				'ANSPRESS_SUBSCRIBER_META' 	=> '_ap_subscriber',
+				'ANSPRESS_CLOSE_META' 		=> '_ap_close',
+				'ANSPRESS_FLAG_META' 		=> '_ap_flag',
+				'ANSPRESS_VIEW_META' 		=> '_views',
+				'ANSPRESS_UPDATED_META' 	=> '_ap_updated',
+				'ANSPRESS_ANS_META' 		=> '_ap_answers',
+				'ANSPRESS_SELECTED_META' 	=> '_ap_selected',
+				'ANSPRESS_BEST_META' 		=> '_ap_best_answer',
+				'ANSPRESS_PARTI_META' 		=> '_ap_participants',
+			);
 
-         	if (!defined('DS'))
-         		define('DS', DIRECTORY_SEPARATOR);
+		    foreach ($constants as $k => $val) {
+		        if (!defined($k)) {
+		            define($k, $val);
+		        }
+		    }
+		}
 
-         	define('AP_VERSION', $this->_plugin_version);
-         	define('AP_DB_VERSION', '12');
-         	define('ANSPRESS_DIR', plugin_dir_path(__FILE__));
-         	define('ANSPRESS_URL', plugin_dir_url(__FILE__));
-         	define('ANSPRESS_WIDGET_DIR', ANSPRESS_DIR.'widgets'.DS);
-         	define('ANSPRESS_THEME_DIR', plugin_dir_path(__FILE__).'theme');
-         	define('ANSPRESS_THEME_URL', plugin_dir_url(__FILE__).'theme');
-         	define('ANSPRESS_VOTE_META', '_ap_vote');
-         	define('ANSPRESS_SUBSCRIBER_META', '_ap_subscriber');
-         	define('ANSPRESS_CLOSE_META', '_ap_close');
-         	define('ANSPRESS_FLAG_META', '_ap_flag');
-         	define('ANSPRESS_VIEW_META', '_views');
-         	define('ANSPRESS_UPDATED_META', '_ap_updated');
-         	define('ANSPRESS_ANS_META', '_ap_answers');
-         	define('ANSPRESS_SELECTED_META', '_ap_selected');
-         	define('ANSPRESS_BEST_META', '_ap_best_answer');
-         	define('ANSPRESS_PARTI_META', '_ap_participants');
-         }
+		/**
+		 * Include required files.
+		 *
+		 * @since 2.0.1
+		 */
+		private function includes()
+		{
+		    global $ap_options;
 
-        /**
-         * Include required files
-         *
-         * @access private
-         * @since 2.0.1
-         * @return void
-         */
-        private function includes()
-        {
-        	global $ap_options;
+		    require_once ANSPRESS_DIR.'includes/options.php';
+		    require_once ANSPRESS_DIR.'activate.php';
+		    require_once ANSPRESS_DIR.'includes/functions.php';
+		    require_once ANSPRESS_DIR.'includes/actions.php';
+		    require_once ANSPRESS_DIR.'includes/ajax.php';
+		    require_once ANSPRESS_DIR.'includes/class-roles-cap.php';
+		    require_once ANSPRESS_DIR.'includes/question-loop.php';
+		    require_once ANSPRESS_DIR.'includes/answer-loop.php';
+		    require_once ANSPRESS_DIR.'includes/class-theme.php';
+		    require_once ANSPRESS_DIR.'includes/post_types.php';
+		    require_once ANSPRESS_DIR.'includes/query_filter.php';
+		    require_once ANSPRESS_DIR.'includes/post_status.php';
+		    require_once ANSPRESS_DIR.'includes/meta.php';
+		    require_once ANSPRESS_DIR.'includes/vote.php';
+		    require_once ANSPRESS_DIR.'includes/view.php';
+		    require_once ANSPRESS_DIR.'includes/theme.php';
+		    require_once ANSPRESS_DIR.'includes/form.php';
+		    require_once ANSPRESS_DIR.'includes/participants.php';
+		    require_once ANSPRESS_DIR.'includes/history.php';
+		    require_once ANSPRESS_DIR.'includes/shortcode-basepage.php';
+		    require_once ANSPRESS_DIR.'includes/common-pages.php';
+		    require_once ANSPRESS_DIR.'includes/class-form.php';
+		    require_once ANSPRESS_DIR.'includes/class-validation.php';
+		    require_once ANSPRESS_DIR.'includes/process-form.php';
+		    require_once ANSPRESS_DIR.'includes/ask-form.php';
+		    require_once ANSPRESS_DIR.'includes/answer-form.php';
+		    require_once ANSPRESS_DIR.'widgets/search.php';
+		    require_once ANSPRESS_DIR.'widgets/subscribe.php';
+		    require_once ANSPRESS_DIR.'widgets/question_stats.php';
+		    require_once ANSPRESS_DIR.'widgets/related_questions.php';
+		    require_once ANSPRESS_DIR.'widgets/questions.php';
+		    require_once ANSPRESS_DIR.'widgets/breadcrumbs.php';
+		    require_once ANSPRESS_DIR.'widgets/followers.php';
+		    require_once ANSPRESS_DIR.'includes/rewrite.php';
+		    require_once ANSPRESS_DIR.'includes/reputation.php';
+		    require_once ANSPRESS_DIR.'vendor/autoload.php';
+		    require_once ANSPRESS_DIR.'includes/class-user.php';
+		    require_once ANSPRESS_DIR.'includes/user.php';
+		    require_once ANSPRESS_DIR.'includes/users-loop.php';
+		    require_once ANSPRESS_DIR.'includes/deprecated.php';
+		    require_once ANSPRESS_DIR.'includes/user-fields.php';
+		    require_once ANSPRESS_DIR.'includes/subscriber.php';
+		    require_once ANSPRESS_DIR.'includes/follow.php';
+		    require_once ANSPRESS_DIR.'includes/notification.php';
+		    require_once ANSPRESS_DIR.'widgets/user.php';
+		    require_once ANSPRESS_DIR.'includes/3rd-party.php';
+		    require_once ANSPRESS_DIR.'includes/flag.php';
+		}
 
-        	require_once ANSPRESS_DIR.'includes/options.php';
-        	require_once ANSPRESS_DIR.'activate.php';
-        	require_once ANSPRESS_DIR.'includes/functions.php';
-        	require_once ANSPRESS_DIR.'includes/actions.php';
-        	require_once ANSPRESS_DIR.'includes/ajax.php';
-        	require_once ANSPRESS_DIR.'includes/class-roles-cap.php';
-        	require_once ANSPRESS_DIR.'includes/question-loop.php';
-        	require_once ANSPRESS_DIR.'includes/answer-loop.php';
-        	require_once ANSPRESS_DIR.'includes/class-theme.php';
-        	require_once ANSPRESS_DIR.'includes/post_types.php';
-        	require_once ANSPRESS_DIR.'includes/query_filter.php';
-        	require_once ANSPRESS_DIR.'includes/post_status.php';
-        	require_once ANSPRESS_DIR.'includes/meta.php';
-        	require_once ANSPRESS_DIR.'includes/vote.php';
-        	require_once ANSPRESS_DIR.'includes/view.php';
-        	require_once ANSPRESS_DIR.'includes/theme.php';
-        	require_once ANSPRESS_DIR.'includes/form.php';
-        	require_once ANSPRESS_DIR.'includes/participants.php';
-        	require_once ANSPRESS_DIR.'includes/history.php';
-        	require_once ANSPRESS_DIR.'includes/shortcode-basepage.php';
-        	require_once ANSPRESS_DIR.'includes/common-pages.php';
-        	require_once ANSPRESS_DIR.'includes/class-form.php';
-        	require_once ANSPRESS_DIR.'includes/class-validation.php';
-        	require_once ANSPRESS_DIR.'includes/process-form.php';
-        	require_once ANSPRESS_DIR.'includes/ask-form.php';
-        	require_once ANSPRESS_DIR.'includes/answer-form.php';
-        	require_once ANSPRESS_DIR.'widgets/search.php';
-        	require_once ANSPRESS_DIR.'widgets/subscribe.php';
-        	require_once ANSPRESS_DIR.'widgets/question_stats.php';
-        	require_once ANSPRESS_DIR.'widgets/related_questions.php';
-        	require_once ANSPRESS_DIR.'widgets/questions.php';
-        	require_once ANSPRESS_DIR.'widgets/breadcrumbs.php';
-        	require_once ANSPRESS_DIR.'widgets/followers.php';
-        	require_once ANSPRESS_DIR.'includes/rewrite.php';
-        	require_once ANSPRESS_DIR.'includes/reputation.php';
-        	require_once ANSPRESS_DIR.'vendor/autoload.php';
-        	require_once ANSPRESS_DIR.'includes/class-user.php';
-        	require_once ANSPRESS_DIR.'includes/user.php';
-        	require_once ANSPRESS_DIR.'includes/users-loop.php';
-        	require_once ANSPRESS_DIR.'includes/deprecated.php';
-        	require_once ANSPRESS_DIR.'includes/user-fields.php';
-        	require_once ANSPRESS_DIR.'includes/subscriber.php';
-        	require_once ANSPRESS_DIR.'includes/follow.php';
-        	require_once ANSPRESS_DIR.'includes/notification.php';
-        	require_once ANSPRESS_DIR.'widgets/user.php';
-        	require_once ANSPRESS_DIR.'includes/3rd-party.php';
-        }
+		/**
+		 * Load translations.
+		 *
+		 * @since 2.0.1
+		 */
+		public function load_textdomain()
+		{
+		    $locale = apply_filters('plugin_locale', get_locale(), 'ap');
 
-        /**
-         * Load translations
-         *
-         * @access private
-         * @since 2.0.1
-         * @return void
-         */
-        public function load_textdomain()
-        {
-        	$locale = apply_filters( 'plugin_locale', get_locale(), 'ap' );
+		    if ($loaded = load_textdomain('ap', trailingslashit(WP_LANG_DIR).'ap'.'/'.'ap'.'-'.$locale.'.mo')) {
+		        return $loaded;
+		    } else {
+		        load_plugin_textdomain('ap', false, basename(dirname(__FILE__)).'/languages/');
+		    }
+		}
 
+		/**
+		 * Register ajax hooks
+		 */
+		public function ajax_hooks()
+		{
+		    $this->anspress_ajax = new AnsPress_Ajax($this);
+		}
 
-        	if ( $loaded = load_textdomain( 'ap', trailingslashit( WP_LANG_DIR ) . 'ap' . '/' . 'ap' . '-' . $locale . '.mo' ) ) {
-        		return $loaded;
-        	} else {
-        		load_plugin_textdomain( 'ap', FALSE, basename( dirname( __FILE__ ) ) . '/languages/' );
-        	}
-        }
+	    public function bp_include()
+	    {
+	        if (!class_exists('BuddyPress')) {
+	            return;
+	        }
 
-        public function bp_include()
-        {
-        	if ( !class_exists( 'BuddyPress' ) )
-        		return;
+	        require_once ANSPRESS_DIR.'includes/bp.php';
+	        self::$instance->anspress_bp = new AnsPress_BP();
+	    }
 
-        	require_once ANSPRESS_DIR.'includes/bp.php';
-        	self::$instance->anspress_bp = new AnsPress_BP;
-        }
+		/**
+		 * Add a new action to the collection to be registered with WordPress.
+		 *
+		 * @since    2.4
+		 *
+		 * @param string            $hook          The name of the WordPress action that is being registered.
+		 * @param object            $component     A reference to the instance of the object on which the action is defined.
+		 * @param string            $callback      The name of the function definition on the $component.
+		 * @param int      Optional $priority      The priority at which the function should be fired.
+		 * @param int      Optional $accepted_args The number of arguments that should be passed to the $callback.
+		 */
+		public function add_action($hook, $component, $callback, $priority = 10, $accepted_args = 1)
+		{
+		    $this->actions = $this->add($this->actions, $hook, $component, $callback, $priority, $accepted_args);
+		}
 
-    }
+		/**
+		 * Add a new filter to the collection to be registered with WordPress.
+		 *
+		 * @since    2.4
+		 *
+		 * @param string            $hook          The name of the WordPress filter that is being registered.
+		 * @param object            $component     A reference to the instance of the object on which the filter is defined.
+		 * @param string            $callback      The name of the function definition on the $component.
+		 * @param int      Optional $priority      The priority at which the function should be fired.
+		 * @param int      Optional $accepted_args The number of arguments that should be passed to the $callback.
+		 */
+		public function add_filter($hook, $component, $callback, $priority = 10, $accepted_args = 1)
+		{
+		    $this->filters = $this->add($this->filters, $hook, $component, $callback, $priority, $accepted_args);
+		}
+
+		/**
+		 * A utility function that is used to register the actions and hooks into a single
+		 * collection.
+		 *
+		 * @since    2.4
+		 *
+		 * @param array             $hooks         The collection of hooks that is being registered (that is, actions or filters).
+		 * @param string            $hook          The name of the WordPress filter that is being registered.
+		 * @param object            $component     A reference to the instance of the object on which the filter is defined.
+		 * @param string            $callback      The name of the function definition on the $component.
+		 * @param int      Optional $priority      The priority at which the function should be fired.
+		 * @param int      Optional $accepted_args The number of arguments that should be passed to the $callback.
+		 *
+		 * @return type The collection of actions and filters registered with WordPress.
+		 */
+		private function add($hooks, $hook, $component, $callback, $priority, $accepted_args)
+		{
+		    $hooks[] = array(
+				'hook' => $hook,
+				'component' => $component,
+				'callback' => $callback,
+				'priority' => $priority,
+				'accepted_args' => $accepted_args,
+			);
+
+		    return $hooks;
+		}
+
+		/**
+		 * Register the filters and actions with WordPress.
+		 */
+		private function setup_hooks()
+		{
+		    foreach ($this->filters as $hook) {
+		        add_filter($hook['hook'], array($hook['component'], $hook['callback']), $hook['priority'], $hook['accepted_args']);
+		    }
+
+		    foreach ($this->actions as $hook) {
+		        add_action($hook['hook'], array($hook['component'], $hook['callback']), $hook['priority'], $hook['accepted_args']);
+		    }
+		}
+	}
 }
 
 function anspress()
 {
-	return AnsPress::instance();
+    return AnsPress::instance();
 }
 
 anspress();
@@ -262,10 +366,9 @@ anspress();
  */
 
 if (is_admin()) {
-	require_once plugin_dir_path(__FILE__).'admin/anspress-admin.php';
-	add_action('plugins_loaded', array( 'AnsPress_Admin', 'get_instance' ));
+    require_once plugin_dir_path(__FILE__).'admin/anspress-admin.php';
+    add_action('plugins_loaded', array('AnsPress_Admin', 'get_instance'));
 }
-
 
 /*
  * Register hooks that are fired when the plugin is activated or deactivated.
@@ -277,42 +380,40 @@ register_activation_hook(__FILE__, 'anspress_activate');
 register_uninstall_hook(__FILE__, 'anspress_uninstall');
 function anspress_uninstall()
 {
+    if (!current_user_can('activate_plugins')) {
+        return;
+    }
 
-	if ( ! current_user_can( 'activate_plugins' ) )
-		return;
+    check_admin_referer('bulk-plugins');
 
-	check_admin_referer( 'bulk-plugins' );
+    if (!ap_opt('db_cleanup')) {
+        return;
+    }
 
+    global $wpdb;
 
-	if(!ap_opt('db_cleanup'))
-		return;
-
-	global $wpdb;
-
-    // remove question and answer cpt
+	// remove question and answer cpt
 	$wpdb->query("DELETE FROM $wpdb->posts WHERE post_type = 'question'");
-	$wpdb->query("DELETE FROM $wpdb->posts WHERE post_type = 'answer'");
+    $wpdb->query("DELETE FROM $wpdb->posts WHERE post_type = 'answer'");
 
-    // remove meta table
-	$meta_table = $wpdb->prefix."ap_meta";
-	$wpdb->query("DROP TABLE IF EXISTS $meta_table");
+	// remove meta table
+	$meta_table = $wpdb->prefix.'ap_meta';
+    $wpdb->query("DROP TABLE IF EXISTS $meta_table");
 
-    //remove option
-	delete_option( 'anspress_opt' );
-	delete_option( 'ap_reputation' );
+	//remove option
+	delete_option('anspress_opt');
+    delete_option('ap_reputation');
 
-    //Remove user roles
+	//Remove user roles
 	AP_Roles::remove_roles();
 }
 
-add_action('plugins_loaded', array( 'anspress_vote', 'get_instance' ));
-add_action('plugins_loaded', array( 'anspress_view', 'get_instance' ));
+add_action('plugins_loaded', array('anspress_view', 'get_instance'));
 
-function ap_activation_redirect( $plugin ) {
-	if( $plugin == plugin_basename( __FILE__ ) ) {
-		exit( wp_redirect( admin_url( 'admin.php?page=anspress_about' ) ) );
-	}
+function ap_activation_redirect($plugin)
+{
+    if ($plugin == plugin_basename(__FILE__)) {
+        exit(wp_redirect(admin_url('admin.php?page=anspress_about')));
+    }
 }
-add_action( 'activated_plugin', 'ap_activation_redirect' );
-
-
+add_action('activated_plugin', 'ap_activation_redirect');
