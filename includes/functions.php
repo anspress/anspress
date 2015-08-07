@@ -1639,3 +1639,11 @@ function ap_verify_nonce($action)
 {
     return wp_verify_nonce($_REQUEST['__nonce'], $action);
 }
+
+/**
+ * Verify default ajax nonce field
+ * @return boolean
+ */
+function ap_verify_default_nonce() {
+    return wp_verify_nonce( $_REQUEST['ap_ajax_nonce'], 'ap_ajax_nonce' );
+}
