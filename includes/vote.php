@@ -1,10 +1,8 @@
 <?php
 /**
- * Handle all function related to voting system
+ * Handle all function related to voting system.
  *
  * @link http://anspress.io
- *
- * @package AnsPress
  */
 
 /**
@@ -202,24 +200,18 @@ function ap_vote_btn($post = false, $echo = true)
     $voted = $vote ? true : false;
     $type = $vote ? $vote->type : '';
 
-    ob_start();
-    ?>
-		<div data-id="<?php echo $post->ID; ?>" class="ap-vote net-vote" data-action="vote">
-			<a class="<?php echo ap_icon('vote_up') ?> ap-tip vote-up<?php echo $voted ? ' voted' : ''; echo ($type == 'vote_down') ? ' disable' : ''; ?>" data-query="ap_ajax_action=vote&type=up&post_id=<?php echo $post->ID; ?>&__nonce=<?php echo $nonce ?>" href="#" title="<?php _e('Up vote this post', 'ap'); ?>"></a>
+    $html = '';
+    $html .= '<div data-id="'.$post->ID.'" class="ap-vote net-vote" data-action="vote">';
+    $html .= '<a class="'.ap_icon('vote_up').' ap-tip vote-up'.($voted ? ' voted' : '').($type == 'vote_down' ? ' disable' : '').'" data-query="ap_ajax_action=vote&type=up&post_id='.$post->ID.'&__nonce='.$nonce.'" href="#" title="'.__('Up vote this post', 'ap').'"></a>';
 
-			<span class="net-vote-count" data-view="ap-net-vote" itemprop="upvoteCount"><?php echo ap_net_vote(); ?></span>
+    $html .= '<span class="net-vote-count" data-view="ap-net-vote" itemprop="upvoteCount">'.ap_net_vote().'</span>';
 
-			<?php if (('question' == $post->post_type && !ap_opt('disable_down_vote_on_question')) || ('answer' == $post->post_type && !ap_opt('disable_down_vote_on_answer'))): ?>
-				<a data-tipposition="bottom" class="<?php echo ap_icon('vote_down') ?> ap-tip vote-down<?php echo $voted ? ' voted' : '';
-    echo ($type == 'vote_up') ? ' disable' : '';
-    ?>" data-query="ap_ajax_action=vote&type=down&post_id=<?php echo $post->ID;
-    ?>&__nonce=<?php echo $nonce ?>" href="#" title="<?php _e('Down vote this post', 'ap');
-    ?>"></a>
-			<?php endif;
-    ?>
-		</div>
-	<?php
-	$html = ob_get_clean();
+    if (('question' == $post->post_type && !ap_opt('disable_down_vote_on_question')) ||
+		('answer' == $post->post_type && !ap_opt('disable_down_vote_on_answer'))) {
+        $html .= '<a data-tipposition="bottom" class="'.ap_icon('vote_down').' ap-tip vote-down'.($voted ? ' voted' : '').($type == ' vote_up' ? ' disable' : '').'" data-query="ap_ajax_action=vote&type=down&post_id='.$post->ID.'&__nonce='.$nonce.'" href="#" title="'.__('Down vote this post', 'ap').'"></a>';
+    }
+
+    $html .= '</div>';
 
     if ($echo) {
         echo $html;
@@ -228,9 +220,13 @@ function ap_vote_btn($post = false, $echo = true)
     }
 }
 
-/* ------------close button----------------- */
-
-// post close vote count
+/**
+ * post close vote count.
+ *
+ * @param bool|int $postid
+ *
+ * @return int
+ */
 function ap_post_close_vote($postid = false)
 {
     global $post;
@@ -277,78 +273,4 @@ function ap_close_vote_html()
 		</a>
 	<?php
 
-}
-
-/**
- * Add flag vote data to ap_meta table.
- *
- * @param int        $userid
- * @param int        $actionid
- * @param null|mixed $value
- * @param null|mixed $param
- *
- * @return false|int
- */
-function ap_add_flag($userid, $actionid, $value = null, $param = null)
-{
-    return ap_add_meta($userid, 'flag', $actionid, $value, $param);
-}
-
-/**
- * Count post flag votes.
- *
- * @param bool|int $postid
- *
- * @return int
- */
-function ap_post_flag_count($postid = false)
-{
-    global $post;
-
-    $postid = $postid ? $postid : $post->ID;
-
-    return apply_filters('ap_post_flag_count', ap_meta_total_count('flag', $postid));
-}
-
-//check if user flagged on post
-function ap_is_user_flagged($postid = false)
-{
-    if (is_user_logged_in()) {
-        global $post;
-        $postid = $postid ? $postid : $post->ID;
-        $userid = get_current_user_id();
-        $done = ap_meta_user_done('flag', $userid, $postid);
-
-        return $done > 0 ? true : false;
-    }
-
-    return false;
-}
-
-/**
- * Flag button html.
- *
- * @return string
- *
- * @since 0.9
- */
-function ap_flag_btn_html($echo = false)
-{
-    if (!is_user_logged_in()) {
-        return;
-    }
-
-    global $post;
-    $flagged = ap_is_user_flagged();
-    $total_flag = ap_post_flag_count();
-    $nonce = wp_create_nonce('flag_'.$post->ID);
-    $title = (!$flagged) ? (__('Flag this post', 'ap')) : (__('You have flagged this post', 'ap'));
-
-    $output = '<a id="flag_'.$post->ID.'" data-query="ap_ajax_action=flag_post&post_id='.$post->ID.'&__nonce='.$nonce.'" data-action="ap_subscribe" class="flag-btn'.(!$flagged ? ' can-flagged' : '').'" href="#" title="'.$title.'">'.__('Flag ', 'ap').'<span class="ap-data-view ap-view-count-'.$total_flag.'" data-view="'.$post->ID.'_flag_count">'.$total_flag.'</span></a>';
-
-    if ($echo) {
-        echo $output;
-    } else {
-        return $output;
-    }
 }

@@ -1040,6 +1040,17 @@
   font-size: 12px;
   margin-top: 2px;
 }
+#comment_flag {
+  width: 50px;
+}
+.ap-comment-col-flag {
+  background: #ff5555 none repeat scroll 0 0;
+  border-radius: 2px;
+  color: #fff;
+  font-weight: bold;
+  padding: 2px 7px;
+  text-align: center;
+}
 .wp-list-table th#question_category,
 .wp-list-table th#question_tags {
   width: 100px;
