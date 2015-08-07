@@ -1140,7 +1140,7 @@ function ap_link_to($sub)
 	        }
 	    }
 
-	    return apply_filters('ap_link_to', $base.$args, $sub);
+	    return esc_url(apply_filters('ap_link_to', $base.$args, $sub));
 	}
 
 /**
