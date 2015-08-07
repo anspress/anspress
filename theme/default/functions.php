@@ -47,7 +47,7 @@ function ap_scripts_front()
 		echo 'var ajaxurl = "'.admin_url('admin-ajax.php').'",';
 		echo 'ap_nonce 	= "'.wp_create_nonce('ap_ajax_nonce').'",';
 	    echo 'ap_max_tags = "'.ap_opt('max_tags').'",';
-	    echo 'disable_hover_card = "'.(ap_opt('disable_hover_card') ? 'true' : 'false').'"';
+	    echo 'disable_hover_card = "'.(ap_opt('disable_hover_card') ? true : false).'"';
 	echo '</script>';
 
 	wp_localize_script('ap-anspress_script', 'aplang', array(

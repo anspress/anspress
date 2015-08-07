@@ -614,7 +614,7 @@ class AnsPress_Ajax
 				ap_get_template_part( 'user/user-card' );
 			endwhile;
 		}
-		$this->something_wrong();
+
 	}
 
 	/**

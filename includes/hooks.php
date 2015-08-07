@@ -9,64 +9,61 @@
  * @copyright 2014 Rahul Aryan
  */
 
-/**
- * Register all public faced hoooks in WordPress
- */
 class AnsPress_Actions
 {
 	/**
-	 * AnsPress main class
-	 * @var object
-	 */
-	protected $ap;
-
-	/**
 	 * Initialize the class
-	 * @param object $ap Parent object class.
 	 * @since 2.0.1
 	 */
-	public function __construct($ap) {
+	public function __construct() {
+
 	    new AnsPress_Post_Status;
 	    new AnsPress_Rewrite;
 
 	    AP_History::get_instance();
 
-	    $ap->add_action( 'ap_processed_new_question', $this, 'after_new_question', 1, 2 );
-	    $ap->add_action( 'ap_processed_new_answer', $this, 'after_new_answer', 1, 2 );
-	    $ap->add_action( 'ap_processed_update_question', $this, 'ap_after_update_question', 1, 2 );
-	    $ap->add_action( 'ap_processed_update_answer', $this, 'ap_after_update_answer', 1, 2 );
-	    $ap->add_action( 'before_delete_post', $this, 'before_delete' );
-	    $ap->add_action( 'wp_trash_post', $this, 'trash_post_action' );
-	    $ap->add_action( 'untrash_post', $this, 'untrash_ans_on_question_untrash' );
-	    $ap->add_action( 'comment_post', $this, 'new_comment_approve', 10, 2 );
-	    $ap->add_action( 'comment_unapproved_to_approved', $this, 'comment_approve' );
-	    $ap->add_action( 'comment_approved_to_unapproved', $this, 'comment_unapproved' );
-	    $ap->add_action( 'trashed_comment', $this, 'comment_trash' );
-	    $ap->add_action( 'delete_comment ', $this, 'comment_trash' );
-	    $ap->add_action( 'ap_publish_comment', $this, 'publish_comment' );
-	    $ap->add_action( 'ap_unpublish_comment', $this, 'unpublish_comment' );
-	    $ap->add_filter( 'wp_get_nav_menu_items', $this, 'update_menu_url' );
-	    $ap->add_filter( 'nav_menu_css_class', $this, 'fix_nav_current_class', 10, 2 );
-	    $ap->add_filter( 'walker_nav_menu_start_el', $this, 'walker_nav_menu_start_el', 10, 4 );
-	    $ap->add_action( 'wp_loaded', $this, 'flush_rules' );
-	    $ap->add_filter( 'mce_buttons', $this, 'editor_buttons', 10, 2 );
-		$ap->add_filter( 'wp_insert_post_data', $this, 'wp_insert_post_data', 10, 2 );
-	    $ap->add_filter( 'ap_form_contents_filter', $this, 'sanitize_description' );
-	    $ap->add_action( 'safe_style_css', $this, 'safe_style_css', 11 );
-	    $ap->add_action( 'save_post', $this, 'base_page_update', 10, 2 );
-	    $ap->add_action( 'ap_added_follower', $this, 'ap_added_follower', 10, 2 );
-	    $ap->add_action( 'ap_removed_follower', $this, 'ap_added_follower', 10, 2 );
-	    $ap->add_action( 'ap_vote_casted', $this, 'update_user_vote_casted_count', 10, 4 );
-	    $ap->add_action( 'ap_vote_removed', $this, 'update_user_vote_casted_count', 10, 4 );
-	    $ap->add_action( 'ap_added_follower', $this, 'notify_user_about_follower', 10, 2 );
-	    $ap->add_action( 'ap_vote_casted', $this, 'notify_upvote', 10, 4 );
-	    $ap->add_action( 'the_post', $this, 'ap_append_vote_count' );
+	    add_action( 'ap_processed_new_question', array( $this, 'after_new_question' ), 1, 2 );
+	    add_action( 'ap_processed_new_answer', array( $this, 'after_new_answer' ), 1, 2 );
+
+	    add_action( 'ap_processed_update_question', array( $this, 'ap_after_update_question' ), 1, 2 );
+	    add_action( 'ap_processed_update_answer', array( $this, 'ap_after_update_answer' ), 1, 2 );
+
+	    add_action( 'before_delete_post', array( $this, 'before_delete' ) );
+
+	    add_action( 'wp_trash_post', array( $this, 'trash_post_action' ) );
+	    add_action( 'untrash_post', array( $this, 'untrash_ans_on_question_untrash' ) );
+
+	    add_action( 'comment_post', array( $this, 'new_comment_approve' ), 10, 2 );
+	    add_action( 'comment_unapproved_to_approved', array( $this, 'comment_approve' ) );
+	    add_action( 'comment_approved_to_unapproved', array( $this, 'comment_unapproved' ) );
+	    add_action( 'trashed_comment', array( $this, 'comment_trash' ) );
+	    add_action( 'delete_comment ', array( $this, 'comment_trash' ) );
+	    add_action( 'ap_publish_comment', array( $this, 'publish_comment' ) );
+	    add_action( 'ap_unpublish_comment', array( $this, 'unpublish_comment' ) );
+	    add_filter( 'wp_get_nav_menu_items', array( $this, 'update_menu_url' ) );
+	    add_filter( 'nav_menu_css_class', array( $this, 'fix_nav_current_class' ), 10, 2 );
+	    add_filter( 'walker_nav_menu_start_el', array( $this, 'walker_nav_menu_start_el' ), 10, 4 );
+
+	    add_action( 'wp_loaded', array( $this, 'flush_rules' ) );
+	    add_filter( 'mce_buttons', array( $this, 'editor_buttons' ), 10, 2 );
+		// add_filter( 'teeny_mce_plugins', array($this, 'editor_plugins'), 10, 2 );
+		add_filter( 'wp_insert_post_data', array( $this, 'wp_insert_post_data' ), 10, 2 );
+	    add_filter( 'ap_form_contents_filter', array( $this, 'sanitize_description' ) );
+	    add_action( 'safe_style_css', array( $this, 'safe_style_css' ), 11 );
+	    add_action( 'save_post', array( $this, 'base_page_update' ), 10, 2 );
+	    add_action( 'ap_added_follower', array( $this, 'ap_added_follower' ), 10, 2 );
+	    add_action( 'ap_removed_follower', array( $this, 'ap_added_follower' ), 10, 2 );
+	    add_action( 'ap_vote_casted', array( $this, 'update_user_vote_casted_count' ), 10, 4 );
+	    add_action( 'ap_vote_removed', array( $this, 'update_user_vote_casted_count' ), 10, 4 );
+	    add_action( 'ap_added_follower', array( $this, 'notify_user_about_follower' ), 10, 2 );
+	    add_action( 'ap_vote_casted', array( $this, 'notify_upvote' ), 10, 4 );
+	    add_action( 'the_post', array( $this, 'ap_append_vote_count' ) );
 	}
 
 	/**
 	 * Things to do after creating a question
-	 * @param  int    $post_id    Question or answer id.
-	 * @param  object $post       WordPress post object.
+	 * @param  int $post_id
+	 * @return void
 	 * @since 1.0
 	 */
 	public function after_new_question($post_id, $post) {
@@ -482,6 +479,15 @@ class AnsPress_Actions
 		}
 
 		return $buttons;
+	}
+
+	public function editor_plugins($plugin, $editor_id) {
+
+		if ( is_anspress() ) {
+			$plugin[] = 'wpautoresize';
+		}
+
+		return $plugin;
 	}
 
 	/**
