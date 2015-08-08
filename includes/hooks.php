@@ -110,7 +110,7 @@ class AnsPress_Actions
 	    update_post_meta( $post_id, ANSPRESS_UPDATED_META, current_time( 'mysql' ) );
 
 		// subscribe to current question
-		ap_add_question_subscriber( $question->ID );
+		ap_add_question_subscriber( $question->ID, $post->post_author );
 
 		// get existing answer count
 		$current_ans = ap_count_published_answers( $question->ID );
