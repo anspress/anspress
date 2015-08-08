@@ -70,7 +70,7 @@ class AP_Roles
 				'ap_new_tag'				=> true,
 				'ap_change_status'			=> true,
 				'ap_upload_avatar'			=> true,
-				'ap_edit_profile'			=> true,
+				'ap_edit_profile'			=> true
 			);
 
 			$mod_caps = array(

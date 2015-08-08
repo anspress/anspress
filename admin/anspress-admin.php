@@ -770,13 +770,31 @@ class AnsPress_Admin
 	    <?php
 	}
 
+	/**
+	 * Add author args in query
+	 * @param  object $query WP_Query object.
+	 */
 	public function serach_qa_by_userid($query) {
+		$screen = get_current_screen();
+		if ( ($screen->id == 'edit-question' && $screen->post_type == 'question' || $screen->id == 'edit-answer' && $screen->post_type == 'answer' ) && $query->is_main_query() && isset( $query->query_vars['s'] ) ) {
+			$search_q = ap_parse_search_string( get_search_query( ) );
 
-		if ( $query->is_main_query() && isset( $query->query_vars['s'] ) ) {
-			// var_dump( $query );
+			// Set author args.
+			if ( ! empty( $search_q['author_id'] ) && is_array( $search_q['author_id'] ) ) {
+
+				$user_ids = '';
+
+				foreach ( $search_q['author_id'] as $id ) {
+					$user_ids .= (int) $id.','; }
+
+				set_query_var( 'author', rtrim( $user_ids, ',' ) );
+
+			}
+
+			if ( ! empty( $search_q['q'] ) ) {
+				set_query_var( 's', $search_q['q'] );
+			}
 		}
-
-		return $query;
 	}
 
 	/**

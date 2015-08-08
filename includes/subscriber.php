@@ -218,7 +218,7 @@ function ap_get_subscribers($action_id, $type = false){
  * @return boolean|array
  */
 function ap_add_question_subscriber($question_id, $user_id = false, $type = '', $secondary_id = ''){
-	$is_subscribed = ap_is_user_subscribed( $question_id );
+	$is_subscribed = ap_is_user_subscribed( $question_id, $user_id );
 
 	if($user_id === false)
 		$user_id = get_current_user_id();
