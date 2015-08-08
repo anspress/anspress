@@ -6,15 +6,15 @@
  *
  * @author    Rahul Aryan <support@rahularyan.com>
  * @copyright 2014 WP3.in & Rahul Aryan
- * @license   GPL-2.0+ http://www.gnu.org/licenses/gpl-2.0.txt
- *
+ * @license   GPL-2.0+ http://www.gnu.org/licenses/gpl-2.0.txt *
  * @link      http://anspress.io
+ * @package   AnsPress
  *
  * @wordpress-plugin
  * Plugin Name:       AnsPress
  * Plugin URI:        http://anspress.io
  * Description:       The most advance community question and answer system for WordPress
- * Donate link: https://www.paypal.com/cgi-bin/webscr?business=support@anspress.io&cmd=_xclick&item_name=Donation%20to%20AnsPress%20development
+ * Donate link: 	  https://goo.gl/ffainr
  * Version:           2.3.6
  * Author:            Rahul Aryan
  * Author URI:        http://anspress.io
@@ -31,72 +31,124 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 if ( ! class_exists( 'AnsPress' ) ) {
+
 	/**
 	 * Main AnsPress class.
 	 */
 	class AnsPress
 	{
+		/**
+		 * AnsPress version
+		 * @var string
+		 */
 	    private $_plugin_version = '2.3.6';
 
+	    /**
+	     * Class instance
+	     * @var null
+	     */
 	    public static $instance = null;
 
+	    /**
+	     * AnsPress hooks
+	     * @var object Register all AnsPress hooks
+	     */
 	    public $anspress_hooks;
 
+	    /**
+	     * AnsPress ajax
+	     * @var object Register all AnsPress ajax hooks
+	     */
 	    public $anspress_ajax;
 
+	    /**
+	     * AnsPress pages
+	     * @var array All AnsPress pages
+	     */
 	    public $pages;
+
+	    /**
+	     * AnsPress users pages
+	     * @var array AnsPress user pages
+	     */
 	    public $user_pages;
+
+	    /**
+	     * AnsPress user
+	     * @var object AnsPress users loop
+	     */
 	    public $users;
+
+	    /**
+	     * AnsPress menu
+	     * @var array AnsPress menu
+	     */
 	    public $menu;
+
+	    /**
+	     * AnsPress question loop
+	     * @var object AnsPress question query loop
+	     */
 	    public $questions;
+
+	    /**
+	     * AnsPress answers loop
+	     * @var object Answer query loop
+	     */
 	    public $answers;
+
+	    /**
+	     * AnsPress form
+	     * @var object AnsPress form
+	     */
 	    public $form;
+
+	    /**
+	     * AnsPress reputation
+	     * @var object
+	     */
 	    public $reputations;
 
 		/**
 		 * The array of actions registered with WordPress.
-		 *
 		 * @since    1.0.0
-		 *
 		 * @var array The actions registered with WordPress to fire when the plugin loads.
 		 */
 		protected $actions;
 
 		/**
 		 * The array of filters registered with WordPress.
-		 *
 		 * @since    1.0.0
-		 *
 		 * @var array The filters registered with WordPress to fire when the plugin loads.
 		 */
 		protected $filters;
 
 		/**
 		 * Filter object.
-		 *
 		 * @var object
 		 */
 		public $anspress_query_filter;
 
 		/**
 		 * Theme object.
-		 *
 		 * @var object
-		 *
 		 * @since 2.0.1
 		 */
 		public $anspress_theme;
 
 		/**
 		 * Post type object.
-		 *
 		 * @var object
-		 *
 		 * @since 2.0.1
 		 */
 		public $anspress_cpt;
 
+		/**
+		 * AnsPress form object
+		 * @var object
+		 */
 	    public $anspress_forms;
+
 	    public $anspress_reputation;
 	    public $anspress_bp;
 	    public $anspress_users;
@@ -243,8 +295,9 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		 */
 		public function load_textdomain() {
 		    $locale = apply_filters( 'plugin_locale', get_locale(), 'ap' );
+		    $loaded = load_textdomain( 'ap', trailingslashit( WP_LANG_DIR ).'ap'.'/'.'ap'.'-'.$locale.'.mo' );
 
-		    if ( $loaded = load_textdomain( 'ap', trailingslashit( WP_LANG_DIR ).'ap'.'/'.'ap'.'-'.$locale.'.mo' ) ) {
+		    if ( $loaded ) {
 		        return $loaded;
 		    } else {
 		        load_plugin_textdomain( 'ap', false, basename( dirname( __FILE__ ) ).'/languages/' );
@@ -255,14 +308,19 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		 * Register ajax hooks
 		 */
 		public function ajax_hooks() {
-			// Load ajax hooks only if DOING_AJAX defined
-			if(defined('DOING_AJAX') && DOING_AJAX){
+			// Load ajax hooks only if DOING_AJAX defined.
+			if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
 		    	$this->anspress_ajax = new AnsPress_Ajax( $this );
 			}
 		}
 
+		/**
+		 * Include all public classes
+		 */
 		public function site_hooks() {
 		    self::$instance->anspress_hooks = new AnsPress_Actions( $this );
+
+		    $roles = new AP_Roles();
 		}
 
 		/**
@@ -349,8 +407,11 @@ if ( ! class_exists( 'AnsPress' ) ) {
 	}
 }
 
+/**
+ * Run AnsPress thingy
+ * @return object
+ */
 function anspress() {
-
 	return AnsPress::instance();
 }
 

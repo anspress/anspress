@@ -158,11 +158,13 @@ class AP_Roles
  */
 function ap_user_can_ask() {
 
-	if ( is_super_admin() ) {
-		return true; }
+	if ( is_super_admin() || current_user_can( 'ap_new_question' ) ) {
+		return true;
+	}
 
-	if ( is_user_logged_in() || ap_allow_anonymous() ) {
-		return true; }
+	if ( ! is_user_logged_in() && ap_allow_anonymous() ) {
+		return true;
+	}
 
 	return false;
 }
@@ -174,27 +176,36 @@ function ap_user_can_ask() {
  */
 function ap_user_can_answer($question_id) {
 	if ( ap_opt( 'only_admin_can_answer' ) && ! is_super_admin( ) ) {
-		return false; }
+		return false;
+	}
 
 	if ( is_super_admin() ) {
-		return true; }
+		return true;
+	}
 
 	$question = get_post( $question_id );
 
-	if ( ! ap_opt( 'disallow_op_to_answer' ) && $question->post_author == get_current_user_id() && get_current_user_id() > 0 ) {
-		return false; }
+	// Check if user is original poster and dont allow them to answer their own question.
+	if ( ! ap_opt( 'disallow_op_to_answer' ) && $question->post_author == get_current_user_id() && ! is_user_logged_in() ) {
+		return false;
+	}
 
+	// Bail out if question is closed
 	if ( $question->post_type == 'closed' ) {
-		return false; }
+		return false;
+	}
 
-	if ( ap_allow_anonymous() && ! is_user_logged_in() ) {
-		return true; }
-
-	if ( is_user_logged_in() ) {
-		if ( ! ap_opt( 'multiple_answers' ) && ap_is_user_answered( $question_id, get_current_user_id() ) && get_current_user_id() != '0' ) {
+	// Check if user already answered and if multiple answer disabled then down't allow them to answer.
+	if ( current_user_can( 'ap_new_answer' ) ) {
+		if ( ! ap_opt( 'multiple_answers' ) && ap_is_user_answered( $question_id, get_current_user_id() ) ) {
 			return false; } else {
 			return true; }
 	}
+
+	if ( ap_allow_anonymous() && ! is_user_logged_in() ) {
+		return true;
+	}
+
 	return false;
 }
 
@@ -259,11 +270,12 @@ function ap_user_can_edit_ans($post_id) {
 	}
 
 	if ( ! is_user_logged_in() ) {
-		return false; }
+		return false;
+	}
 
 	$answer = get_post( $post_id );
 
-	if ( get_current_user_id() == $answer->post_author ) {
+	if ( get_current_user_id() == $answer->post_author && current_user_can( 'ap_edit_answer' ) ) {
 		return true;
 	}
 
@@ -284,14 +296,14 @@ function ap_user_can_edit_question($post_id = false) {
 		return false;
 	}
 
-	if ( $post_id ) {
+	if ( false !== $post_id ) {
 		$question = get_post( $post_id );
 	} else {
 		global $post;
 		$question = $post;
 	}
 
-	if ( get_current_user_id() == $post->post_author ) {
+	if ( get_current_user_id() == $question->post_author && current_user_can( 'ap_edit_question' ) ) {
 		return true;
 	}
 
@@ -299,7 +311,7 @@ function ap_user_can_edit_question($post_id = false) {
 }
 
 /**
- * Check if user can chnage post label.
+ * Check if user can change post label.
  * @return boolean
  */
 function ap_user_can_change_label() {
@@ -311,11 +323,11 @@ function ap_user_can_change_label() {
 }
 
 /**
- * Check if user can comment on anspress posts
+ * Check if user can comment on AnsPress posts
  * @return boolean
  */
 function ap_user_can_comment() {
-	if ( is_super_admin() || is_user_logged_in() || ap_opt( 'anonymous_comment' ) ) {
+	if ( is_super_admin() || current_user_can( 'ap_new_comment' ) || ap_opt( 'anonymous_comment' ) ) {
 		return true;
 	}
 
@@ -324,7 +336,7 @@ function ap_user_can_comment() {
 
 /**
  * Check if user can edit comment
- * @param  integer $comment_id Comment ID.
+ * @param  integer $comment_id     Comment ID.
  * @return boolean
  */
 function ap_user_can_edit_comment($comment_id) {
@@ -332,7 +344,7 @@ function ap_user_can_edit_comment($comment_id) {
 		return true;
 	}
 
-	if ( get_current_user_id() == get_comment( $comment_id )->user_id ) {
+	if ( current_user_can( 'ap_edit_comment' ) && get_current_user_id() == get_comment( $comment_id )->user_id ) {
 		return true;
 	}
 
@@ -349,7 +361,7 @@ function ap_user_can_delete_comment($comment_id) {
 		return true;
 	}
 
-	if ( get_current_user_id() == get_comment( $comment_id )->user_id ) {
+	if ( current_user_can( 'ap_delete_comment' ) && get_current_user_id() == get_comment( $comment_id )->user_id ) {
 		return true;
 	}
 
@@ -369,8 +381,9 @@ function ap_user_can_delete($post_id) {
 	$post_o = get_post( $post_id );
 
 	if ( get_current_user_id() == $post_o->post_author ) {
-		if ( ($post_o->post_type == 'question' || $post_o->post_type == 'answer') && current_user_can( 'ap_delete_question' ) ) {
-			return true; }
+		if ( ($post_o->post_type == 'question' && current_user_can( 'ap_delete_question' )) || ($post_o->post_type == 'answer' && current_user_can( 'ap_delete_answer' ) ) ) {
+			return true;
+		}
 	} else {
 		if ( $post_o->post_type == 'question' && current_user_can( 'ap_delete_others_question' ) ) {
 			return true;
@@ -399,7 +412,7 @@ function ap_user_can_permanent_delete() {
  * @return boolean
  */
 function ap_user_can_upload_cover() {
-	if ( is_super_admin() || is_user_logged_in() ) {
+	if ( is_super_admin() || current_user_can( 'ap_upload_cover' ) ) {
 		return true;
 	}
 
@@ -414,21 +427,18 @@ function ap_user_can_upload_cover() {
  * @since 2.0.1
  */
 function ap_user_can_view_private_post($post_id) {
-	$post_o = get_post( $post_id );
-
-	if ( $post_o->post_status != 'private_post' ) {
+	if ( is_super_admin() || current_user_can( 'ap_view_private' ) ) {
 		return true;
 	}
+
+	$post_o = get_post( $post_id );
 
 	if ( $post_o->post_author == get_current_user_id() ) {
 		return true;
 	}
 
-	if ( is_super_admin() || current_user_can( 'ap_view_private' ) ) {
-		return true;
-	}
-
-	if ( $post_o->post_type == 'answer' ) {
+	// Also allow question author to see all private answers.
+	if ( 'answer' == $post_o->post_type ) {
 		$question = get_post( $post_o->post_parent );
 
 		if ( $question->post_author == get_current_user_id() ) {
@@ -468,7 +478,7 @@ function ap_user_can_view_post($post_id = false) {
 		return true;
 	}
 
-	if ( ! $post_id ) {
+	if ( false !== $post_id ) {
 		$post_id = get_the_ID();
 	}
 
@@ -510,7 +520,7 @@ function ap_user_can_change_status($post_id) {
 
 	$post_o = get_post( $post_id );
 
-	if ( $post_o->post_author == get_current_user_id() ) {
+	if ( current_user_can( 'ap_change_status' ) && $post_o->post_author == get_current_user_id() ) {
 		return true;
 	}
 
