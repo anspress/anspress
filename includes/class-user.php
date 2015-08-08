@@ -12,501 +12,499 @@ $user_pages = array();
 
 class AnsPress_User
 {
-    /**
-     * Store upload error
-     * @var string
-     */
-    private $upload_error;
+	/**
+	 * Store upload error
+	 * @var string
+	 */
+	private $upload_error;
 
-    /**
-     * Initialize the plugin by setting localization and loading public scripts
-     * and styles.
-     */
-    public function __construct()
-    {
-        add_action('init', array($this, 'init_actions'));
-        add_filter('pre_user_query', array($this, 'follower_query'));
-        add_filter('pre_user_query', array($this, 'following_query'));
-        add_filter('pre_user_query', array($this, 'user_sort_by_reputation'));
-        add_action('wp_ajax_ap_cover_upload', array($this, 'cover_upload'));
-        add_action('wp_ajax_ap_avatar_upload', array($this, 'avatar_upload'));
-        add_filter('avatar_defaults' , array($this, 'default_avatar') );
-        add_filter('get_avatar', array($this, 'get_avatar'), 10, 5);
-        add_filter('ap_user_menu', array($this, 'ap_user_menu_icons'));
-    }
+	/**
+	 * Initialize the plugin by setting localization and loading public scripts
+	 * and styles.
+	 */
+	public function __construct() {
 
-    public function init_actions()
-    {
-        // Register AnsPress pages
-        ap_register_page(ap_opt('users_page_slug'), __('Users', 'ap'), array($this, 'users_page'));
-        ap_register_page(ap_opt('user_page_slug'), __('User', 'ap'), array($this, 'user_page'), false);
+		add_action( 'init', array( $this, 'init_actions' ) );
+		add_filter( 'pre_user_query', array( $this, 'follower_query' ) );
+		add_filter( 'pre_user_query', array( $this, 'following_query' ) );
+		add_filter( 'pre_user_query', array( $this, 'user_sort_by_reputation' ) );
+		add_action( 'wp_ajax_ap_cover_upload', array( $this, 'cover_upload' ) );
+		add_action( 'wp_ajax_ap_avatar_upload', array( $this, 'avatar_upload' ) );
+		add_filter( 'avatar_defaults' , array( $this, 'default_avatar' ) );
+		add_filter( 'get_avatar', array( $this, 'get_avatar' ), 10, 5 );
+		add_filter( 'ap_user_menu', array( $this, 'ap_user_menu_icons' ) );
+	}
 
-        // Register user pages
-        ap_register_user_page('about', __('About', 'ap'), array($this, 'about_page'));
-        ap_register_user_page('notification', __('Notification', 'ap'), array($this, 'notification_page'), true, false);
-        ap_register_user_page('profile', __('Profile', 'ap'), array($this, 'profile_page'), true, false);
-        ap_register_user_page('questions', __('Questions', 'ap'), array($this, 'questions_page'));
-        ap_register_user_page('answers', __('Answers', 'ap'), array($this, 'answers_page'));
-        ap_register_user_page('followers', __('Followers', 'ap'), array($this, 'followers_page'));
-        ap_register_user_page('following', __('Following', 'ap'), array($this, 'following_page'));
-        ap_register_user_page('subscription', __('Subscription', 'ap'), array($this, 'subscription_page'), true, false);
+	public function init_actions() {
 
-        add_filter( 'ap_page_title', array($this, 'ap_page_title') );
-    }
+		// Register AnsPress pages
+		ap_register_page( ap_opt( 'users_page_slug' ), __( 'Users', 'ap' ), array( $this, 'users_page' ) );
+		ap_register_page( ap_opt( 'user_page_slug' ), __( 'User', 'ap' ), array( $this, 'user_page' ), false );
 
-    public function users_page(){
-        if(ap_opt('enable_users_directory')){
+		// Register user pages
+		ap_register_user_page( 'about', __( 'About', 'ap' ), array( $this, 'about_page' ) );
+		ap_register_user_page( 'notification', __( 'Notification', 'ap' ), array( $this, 'notification_page' ), true, false );
+		ap_register_user_page( 'profile', __( 'Profile', 'ap' ), array( $this, 'profile_page' ), true, false );
+		ap_register_user_page( 'questions', __( 'Questions', 'ap' ), array( $this, 'questions_page' ) );
+		ap_register_user_page( 'answers', __( 'Answers', 'ap' ), array( $this, 'answers_page' ) );
+		ap_register_user_page( 'followers', __( 'Followers', 'ap' ), array( $this, 'followers_page' ) );
+		ap_register_user_page( 'following', __( 'Following', 'ap' ), array( $this, 'following_page' ) );
+		ap_register_user_page( 'subscription', __( 'Subscription', 'ap' ), array( $this, 'subscription_page' ), true, false );
 
-            global $ap_user_query;
-            $ap_user_query = ap_has_users();
-            include ap_get_theme_location('users/users.php');
+		add_filter( 'ap_page_title', array( $this, 'ap_page_title' ) );
+	}
 
-        }else{
-            _e('User directory is disabled.', 'ap');
-        }
-    }
+	public function users_page() {
+		if ( ap_opt( 'enable_users_directory' ) ) {
 
-    public function user_page(){
-        global $ap_user_query;
+			global $ap_user_query;
+			$ap_user_query = ap_has_users();
+			include ap_get_theme_location( 'users/users.php' );
 
-        if(ap_get_displayed_user_id() == 0 && !is_user_logged_in()){
-            ap_get_template_part('login-signup');
-            return;
-        }
+		} else {
+			_e( 'User directory is disabled.', 'ap' );
+		}
+	}
 
-        $ap_user_query = ap_has_users(array('ID' => ap_get_displayed_user_id() ) );
+	public function user_page() {
+		global $ap_user_query;
 
-        if($ap_user_query->has_users()){
-            include ap_get_theme_location('user/user.php');
-        }else{
-            _e('No user found', 'ap');
-        }
-    }
+		if ( ap_get_displayed_user_id() == 0 && ! is_user_logged_in() ) {
+			ap_get_template_part( 'login-signup' );
+			return;
+		}
 
-    /**
-     * Output user about page
-     * @since 2.3
-     */
-    public function about_page(){
-        ap_get_template_part('user/about');
-    }
+		$ap_user_query = ap_has_users( array( 'ID' => ap_get_displayed_user_id() ) );
 
-    /**
-     * Output notification page
-     * @since 2.3
-     */
-    public function notification_page(){
-        if(!ap_is_user_page_public('profile') && !ap_is_my_profile()){
-            ap_get_template_part('not-found');
-            return;
-        }
+		if ( $ap_user_query->has_users() ) {
+			include ap_get_theme_location( 'user/user.php' );
+		} else {
+			_e( 'No user found', 'ap' );
+		}
+	}
 
-        global $ap_notifications;
+	/**
+	 * Output user about page
+	 * @since 2.3
+	 */
+	public function about_page() {
+		ap_get_template_part( 'user/about' );
+	}
 
-        $ap_notifications = ap_get_user_notifications();
+	/**
+	 * Output notification page
+	 * @since 2.3
+	 */
+	public function notification_page() {
+		if ( ! ap_is_user_page_public( 'profile' ) && ! ap_is_my_profile() ) {
+			ap_get_template_part( 'not-found' );
+			return;
+		}
 
-        ap_get_template_part('user/notification');
-    }
+		global $ap_notifications;
 
-    /**
-     * Output for activity page
-     * @since 2.1
-     */
-    public function activity_page(){
-        include ap_get_theme_location('user/activity.php');
-    }
+		$ap_notifications = ap_get_user_notifications();
 
-    /**
-     * Output for profile page
-     * @since 2.1
-     */
-    public function profile_page(){
+		ap_get_template_part( 'user/notification' );
+	}
 
-        if(!ap_is_user_page_public('profile') && !ap_is_my_profile()){
-            ap_get_template_part('not-found');
-            return;
-        }
+	/**
+	 * Output for activity page
+	 * @since 2.1
+	 */
+	public function activity_page() {
+		include ap_get_theme_location( 'user/activity.php' );
+	}
 
-        include ap_get_theme_location('user/profile.php');
-    }
+	/**
+	 * Output for profile page
+	 * @since 2.1
+	 */
+	public function profile_page() {
 
-    /**
-     * Output for user questions page
-     * @since 2.1
-     */
-    public function questions_page(){
-        global $questions;
-        $questions = ap_get_questions(array('author' => ap_get_displayed_user_id()));
-        ap_get_template_part('user/user-questions');
-        wp_reset_postdata();
-    }
+		if ( ! ap_is_user_page_public( 'profile' ) && ! ap_is_my_profile() ) {
+			ap_get_template_part( 'not-found' );
+			return;
+		}
 
-    /**
-     * Output for user answers page
-     * @since 2.0.1
-     */
-    public function answers_page(){
-        ap_get_answers(array('author' => ap_get_displayed_user_id()));
-        include ap_get_theme_location('user/user-answers.php');
-        wp_reset_postdata();
-    }
+		include ap_get_theme_location( 'user/profile.php' );
+	}
 
-    public function followers_page(){
-        $followers = ap_has_users(array('user_id' => ap_get_displayed_user_id(), 'sortby' => 'followers' ));
+	/**
+	 * Output for user questions page
+	 * @since 2.1
+	 */
+	public function questions_page() {
+		global $questions;
+		$questions = ap_get_questions( array( 'author' => ap_get_displayed_user_id() ) );
+		ap_get_template_part( 'user/user-questions' );
+		wp_reset_postdata();
+	}
 
-        if($followers->has_users())
-            include ap_get_theme_location('user/followers.php');
-        else
-            _e('No followers found', 'ap');
+	/**
+	 * Output for user answers page
+	 * @since 2.0.1
+	 */
+	public function answers_page() {
+		ap_get_answers( array( 'author' => ap_get_displayed_user_id() ) );
+		include ap_get_theme_location( 'user/user-answers.php' );
+		wp_reset_postdata();
+	}
 
-    }
+	public function followers_page() {
+		$followers = ap_has_users( array( 'user_id' => ap_get_displayed_user_id(), 'sortby' => 'followers' ) );
 
-    public function following_page(){
-        $following = ap_has_users(array('user_id' => ap_get_displayed_user_id(), 'sortby' => 'following' ));
+		if ( $followers->has_users() ) {
+			include ap_get_theme_location( 'user/followers.php' ); } else {
+			_e( 'No followers found', 'ap' ); }
 
-        if($following->has_users())
-            include ap_get_theme_location('user/following.php');
+	}
 
-        else
-            _e('You are not following anyone.', 'ap');
+	public function following_page() {
+		$following = ap_has_users( array( 'user_id' => ap_get_displayed_user_id(), 'sortby' => 'following' ) );
 
-    }
+		if ( $following->has_users() ) {
+			include ap_get_theme_location( 'user/following.php' ); } else {
+			_e( 'You are not following anyone.', 'ap' ); }
 
-    /**
-     * Register user subscription page
-     * @since 2.3
-     */
-    public function subscription_page(){
-        global $questions;
+	}
 
-        if(!ap_is_user_page_public('profile') && !ap_is_my_profile()){
-            ap_get_template_part('not-found');
-            return;
-        }
+	/**
+	 * Register user subscription page
+	 * @since 2.3
+	 */
+	public function subscription_page() {
+		global $questions;
 
-        $questions = ap_get_questions(array( 'ap_query' => 'ap_subscription_query', 'user_id' => get_current_user_id(), 'sortby' => 'newest'));
-        ap_get_template_part('user/subscription');
-    }
+		if ( ! ap_is_user_page_public( 'profile' ) && ! ap_is_my_profile() ) {
+			ap_get_template_part( 'not-found' );
+			return;
+		}
 
-    public function ap_page_title($title)
-    {
-        if(is_ap_user()){
+		$questions = ap_get_questions( array( 'ap_query' => 'ap_subscription_query', 'user_id' => get_current_user_id(), 'sortby' => 'newest' ) );
+		ap_get_template_part( 'user/subscription' );
+	}
 
-            $active = ap_active_user_page();
-            $name = ap_user_get_the_display_name();
-            $my = ap_is_my_profile();
+	public function ap_page_title($title) {
 
-            if('activity' == $active)
-                $title = $my ?  __('My activity', 'ap') : sprintf(__('%s\'s activity', 'ap'), $name);
+		if ( is_ap_user() ) {
 
-            elseif('profile' == $active)
-                $title = $my ?  __('My profile', 'ap') : sprintf(__('%s\'s profile', 'ap'), $name);
+			$active = ap_active_user_page();
+			$name = ap_user_get_the_display_name();
+			$my = ap_is_my_profile();
 
-            elseif('questions' == $active)
-                $title = $my ?  __('My questions', 'ap') : sprintf(__('%s\'s questions', 'ap'), $name);
+			if ( 'activity' == $active ) {
+				$title = $my ?  __( 'My activity', 'ap' ) : sprintf( __( '%s\'s activity', 'ap' ), $name ); } elseif ('profile' == $active)
+				$title = $my ?  __( 'My profile', 'ap' ) : sprintf( __( '%s\'s profile', 'ap' ), $name );
 
-            elseif('answers' == $active)
-                $title = $my ?  __('My answers', 'ap') : sprintf(__('%s\'s answers', 'ap'), $name);
+			elseif ('questions' == $active)
+				$title = $my ?  __( 'My questions', 'ap' ) : sprintf( __( '%s\'s questions', 'ap' ), $name );
 
-            elseif('reputation' == $active)
-                $title = $my ?  __('My reputation', 'ap') : sprintf(__('%s\'s reputation', 'ap'), $name);
+			elseif ('answers' == $active)
+				$title = $my ?  __( 'My answers', 'ap' ) : sprintf( __( '%s\'s answers', 'ap' ), $name );
 
-            elseif('about' == $active)
-                $title = $my ?  __('About me', 'ap') : sprintf(__('%s', 'ap'), $name);
+			elseif ('reputation' == $active)
+				$title = $my ?  __( 'My reputation', 'ap' ) : sprintf( __( '%s\'s reputation', 'ap' ), $name );
 
-            elseif('followers' == $active)
-                $title = $my ?  __('My followers', 'ap') : sprintf(__('%s\'s followers', 'ap'), $name);
+			elseif ('about' == $active)
+				$title = $my ?  __( 'About me', 'ap' ) : sprintf( __( '%s', 'ap' ), $name );
 
-            elseif('following' == $active)
-                $title = __('Following', 'ap');
+			elseif ('followers' == $active)
+				$title = $my ?  __( 'My followers', 'ap' ) : sprintf( __( '%s\'s followers', 'ap' ), $name );
 
-            elseif('subscription' == $active)
-                $title = __('My subscriptions', 'ap');
+			elseif ('following' == $active)
+				$title = __( 'Following', 'ap' );
 
-            elseif('notification' == $active)
-                $title = __('My notification', 'ap');
-        }
+			elseif ('subscription' == $active)
+				$title = __( 'My subscriptions', 'ap' );
 
-        return $title;
-    }
+			elseif ('notification' == $active)
+				$title = __( 'My notification', 'ap' );
+		}
 
-    /* For modifying WP_User_Query, if passed with a var ap_followers_query */
-    public function follower_query($query)
-    {
-        if (isset($query->query_vars['ap_query']) && $query->query_vars['ap_query'] == 'user_sort_by_followers' && isset($query->query_vars['user_id'])) {
-            global $wpdb;
+		return $title;
+	}
 
-            $query->query_from = $query->query_from." LEFT JOIN ".$wpdb->prefix."ap_meta M ON $wpdb->users.ID = M.apmeta_userid";
+	/* For modifying WP_User_Query, if passed with a var ap_followers_query */
+	public function follower_query($query) {
 
-            $userid = $query->query_vars['user_id'];
+		if ( isset( $query->query_vars['ap_query'] ) && $query->query_vars['ap_query'] == 'user_sort_by_followers' && isset( $query->query_vars['user_id'] ) ) {
+			global $wpdb;
 
-            $query->query_where = $query->query_where." AND M.apmeta_type = 'follower' AND M.apmeta_actionid = $userid";
-        }
+			$query->query_from = $query->query_from.' LEFT JOIN '.$wpdb->prefix."ap_meta M ON $wpdb->users.ID = M.apmeta_userid";
 
-        return $query;
-    }
+			$userid = $query->query_vars['user_id'];
 
-    public function following_query($query)
-    {
-        if (isset($query->query_vars['ap_query']) && $query->query_vars['ap_query'] == 'user_sort_by_following' && isset($query->query_vars['user_id'])) {
-            global $wpdb;
+			$query->query_where = $query->query_where." AND M.apmeta_type = 'follower' AND M.apmeta_actionid = $userid";
+		}
 
-            $query->query_from = $query->query_from." LEFT JOIN ".$wpdb->prefix."ap_meta M ON $wpdb->users.ID = M.apmeta_actionid";
-            $userid = $query->query_vars['user_id'];
-            $query->query_where = $query->query_where." AND M.apmeta_type = 'follower' AND M.apmeta_userid = $userid";
-        }
+		return $query;
+	}
 
-        return $query;
-    }
+	public function following_query($query) {
 
-    public function user_sort_by_reputation($query)
-    {
-        if (isset($query->query_vars['ap_query']) && $query->query_vars['ap_query'] == 'user_sort_by_reputation') {
-            global $wpdb;
-            $query->query_orderby = 'ORDER BY cast(mt1.meta_value AS DECIMAL) DESC';
-        }
+		if ( isset( $query->query_vars['ap_query'] ) && $query->query_vars['ap_query'] == 'user_sort_by_following' && isset( $query->query_vars['user_id'] ) ) {
+			global $wpdb;
 
-        return $query;
-    }
+			$query->query_from = $query->query_from.' LEFT JOIN '.$wpdb->prefix."ap_meta M ON $wpdb->users.ID = M.apmeta_actionid";
+			$userid = $query->query_vars['user_id'];
+			$query->query_where = $query->query_where." AND M.apmeta_type = 'follower' AND M.apmeta_userid = $userid";
+		}
 
-    /**
-     * Create unique name for files
-     * @param  string $dir
-     * @param  integer $user_id
-     * @param  string $ext
-     * @return string
-     * @since 2.1.5
-     */
-    public function unique_filename_callback( $dir, $user_id, $ext ) {
-        global $user_id;
-        $md5 = md5($user_id.time());
-        return $md5 . $ext;
-    }
+		return $query;
+	}
 
-    /**
-     * Upload a photo to server. Before uploading it check for valid image type
-     * @uses wp_handle_upload
-     * @param  string $file_name Name of file input field
-     * @return array|false
-     */
-    public function upload_photo($file_name)
-    {
-        if($_FILES[ $file_name ]['size'] > ap_opt('max_upload_size')){
-            $this->upload_error  = sprintf(__('File cannot be uploaded, size is bigger then %d Byte'), ap_opt('max_upload_size'));
-            return false;
-        }
+	public function user_sort_by_reputation($query) {
 
-        require_once ABSPATH."wp-admin".'/includes/image.php';
-        require_once ABSPATH."wp-admin".'/includes/file.php';
-        require_once ABSPATH."wp-admin".'/includes/media.php';
+		if ( isset( $query->query_vars['ap_query'] ) && $query->query_vars['ap_query'] == 'user_sort_by_reputation' ) {
+			global $wpdb;
+			$query->query_orderby = 'ORDER BY cast(mt1.meta_value AS DECIMAL) DESC';
+		}
 
-        if ( !empty( $_FILES[ $file_name ][ 'name' ] ) && is_uploaded_file( $_FILES[ $file_name ]['tmp_name'] )) {
-            $mimes = array (
-                'jpg|jpeg|jpe'=>'image/jpeg',
-                'gif'=>'image/gif',
-                'png'=>'image/png'
-            );
+		return $query;
+	}
 
-            $photo = wp_handle_upload( $_FILES[ $file_name ], array ( 'mimes'=>$mimes, 'test_form'=>false, 'unique_filename_callback'=>array ( $this, 'unique_filename_callback' ) ) );
+	/**
+	 * Create unique name for files
+	 * @param  string  $dir
+	 * @param  integer $user_id
+	 * @param  string  $ext
+	 * @return string
+	 * @since 2.1.5
+	 */
+	public function unique_filename_callback( $dir, $user_id, $ext ) {
+		global $user_id;
+		$md5 = md5( $user_id.time() );
+		return $md5 . $ext;
+	}
 
-            if ( empty( $photo[ 'file' ] ) || isset( $photo['error'] ) ) { // handle failures
-                $this->upload_error = __('There was an error while uploading avatar, please check your image', 'ap');
-                return false;
+	/**
+	 * Upload a photo to server. Before uploading it check for valid image type
+	 * @uses wp_handle_upload
+	 * @param  string $file_name Name of file input field
+	 * @return array|false
+	 */
+	public function upload_photo($file_name) {
+
+		if ( $_FILES[ $file_name ]['size'] > ap_opt( 'max_upload_size' ) ) {
+			$this->upload_error  = sprintf( __( 'File cannot be uploaded, size is bigger then %d Byte' ), ap_opt( 'max_upload_size' ) );
+			return false;
+		}
+
+		require_once ABSPATH.'wp-admin'.'/includes/image.php';
+		require_once ABSPATH.'wp-admin'.'/includes/file.php';
+		require_once ABSPATH.'wp-admin'.'/includes/media.php';
+
+		if ( ! empty( $_FILES[ $file_name ][ 'name' ] ) && is_uploaded_file( $_FILES[ $file_name ]['tmp_name'] ) ) {
+			$mimes = array(
+				'jpg|jpeg|jpe' => 'image/jpeg',
+				'gif' => 'image/gif',
+				'png' => 'image/png',
+			);
+
+			$photo = wp_handle_upload( $_FILES[ $file_name ], array( 'mimes' => $mimes, 'test_form' => false, 'unique_filename_callback' => array( $this, 'unique_filename_callback' ) ) );
+
+			if ( empty( $photo[ 'file' ] ) || isset( $photo['error'] ) ) { // handle failures
+				$this->upload_error = __( 'There was an error while uploading avatar, please check your image', 'ap' );
+				return false;
+			}
+
+			return $photo;
+		}
+	}
+
+	public function cover_upload() {
+
+		if ( ap_user_can_upload_cover() && ap_verify_nonce( 'upload_cover_'.get_current_user_id() ) ) {
+
+			$photo = $this->upload_photo( 'image' );
+
+			if ( $photo === false ) {
+				ap_send_json( ap_ajax_responce( array( 'message' => $this->upload_error, 'message_type' => 'error' ) ) ); }
+
+			$file = str_replace( '\\', '\\\\', $photo['file'] );
+			$photo['file'] = $file;
+
+			$photo['small_url'] = str_replace( basename( $photo['url'] ), 'small_'.basename( $photo['url'] ), $photo['url'] );
+
+			$small_name = str_replace( basename( $photo['file'] ), 'small_'.basename( $photo['file'] ), $photo['file'] );
+
+			$photo['small_file'] = $small_name;
+
+			$userid = get_current_user_id();
+
+			// Remove previous image
+			$previous_cover = get_user_meta( $userid, '_ap_cover', true );
+
+			if ( $previous_cover['file'] && file_exists( $previous_cover['file'] ) ) {
+				unlink( $previous_cover['file'] ); }
+
+			if ( $previous_cover['small_file'] && file_exists( $previous_cover['small_file'] ) ) {
+				unlink( $previous_cover['small_file'] ); }
+
+			// resize thumbnail
+			$image = wp_get_image_editor( $file );
+
+			if ( ! is_wp_error( $image ) ) {
+				$image->resize( 960, 250, true );
+				$image->save( $file );
+				$image->resize( 350, 95, true );
+				$image->save( $small_name );
+			}
+
+			update_user_meta( $userid, '_ap_cover', $photo );
+
+			do_action( 'ap_after_cover_upload', $userid, $photo );
+
+			ap_send_json( ap_ajax_responce( array( 'action' => 'cover_uploaded', 'status' => true, 'message' => __( 'Cover photo uploaded successfully.', 'ap' ), 'user_id' => $userid, 'image' => ap_get_cover_src( $userid ) ) ) );
+		}
+
+		ap_send_json( ap_ajax_responce( array( 'message' => __( 'There was an error while uploading cover photo, please check your image and try again.', 'ap' ), 'message_type' => 'error' ) ) );
+	}
+
+	/**
+	 * Process ajax user avatar upload request. Sanitize file and pass to upload_file(). Rename image to md5 and store file * name in user meta. Also remove existing avtar if exists
+	 * @return void
+	 */
+	public function avatar_upload() {
+
+		if ( ap_user_can_upload_avatar() && ap_verify_nonce( 'upload_avatar_'.get_current_user_id() ) ) {
+
+			$photo = $this->upload_photo( 'thumbnail' );
+
+			if ( false === $photo ) {
+				ap_send_json( ap_ajax_responce( array( 'message' => $this->upload_error, 'message_type' => 'error' ) ) );
             }
 
-            return $photo;
-        }
-    }
+			$file = wp_unslash( $photo['file'] );
+			$photo['file'] = $file;
 
-    public function cover_upload()
-    {
-        if (wp_verify_nonce($_POST['__nonce'], 'upload_cover_'.get_current_user_id()) && is_user_logged_in()) {
+			$photo['small_url'] = str_replace( basename( $photo['url'] ), 'small_'.basename( $photo['url'] ), $photo['url'] );
 
-            $photo = $this->upload_photo('image');
+			$small_name = str_replace( basename( $photo['file'] ), 'small_'.basename( $photo['file'] ), $photo['file'] );
 
-            if($photo === false)
-                ap_send_json( ap_ajax_responce(array('message' => $this->upload_error, 'message_type' => 'error')));
+			$photo['small_file'] = $small_name;
 
-            $file = str_replace('\\', '\\\\', $photo['file']);
-            $photo['file'] = $file;
+			$userid = get_current_user_id();
 
-            $photo['small_url'] = str_replace(basename($photo['url']), 'small_'.basename($photo['url']), $photo['url']);
+			// Remove previous image.
+			$previous_avatar = get_user_meta( $userid, '_ap_avatar', true );
 
-            $small_name = str_replace(basename($photo['file']), 'small_'.basename($photo['file']), $photo['file']);
-
-            $photo['small_file'] = $small_name;
-
-            $userid = get_current_user_id();
-
-            // Remove previous image
-            $previous_cover = get_user_meta($userid, '_ap_cover', true);
-
-            if($previous_cover['file'] && file_exists($previous_cover['file']))
-                unlink( $previous_cover['file'] );
-
-            if($previous_cover['small_file'] && file_exists($previous_cover['small_file']))
-                unlink( $previous_cover['small_file'] );
-
-            // resize thumbnail
-            $image = wp_get_image_editor( $file );
-
-            if ( ! is_wp_error( $image ) ) {
-                $image->resize( 960, 250, true );
-                $image->save( $file );
-                $image->resize( 350, 95, true );
-                $image->save( $small_name );
+			if ( $previous_avatar['file'] && file_exists( $previous_avatar['file'] ) ) {
+				unlink( $previous_avatar['file'] );
             }
 
-            update_user_meta($userid, '_ap_cover', $photo);
-
-            do_action('ap_after_cover_upload', $userid, $photo);
-
-            ap_send_json( ap_ajax_responce(array('action' => 'cover_uploaded', 'status' => true, 'message' => __('Cover photo uploaded successfully.', 'ap'), 'user_id' => $userid , 'image' => ap_get_cover_src($userid)  )));
-        }
-
-        ap_send_json( ap_ajax_responce(array('message' => __('There was an error while uploading cover photo, please check your image and try again.', 'ap'), 'message_type' => 'error')));
-    }
-
-    /**
-     * Process ajax user avatar upload request. Sanitize file and pass to upload_file(). Rename image to md5 and store file * name in user meta. Also remove existing avtar if exists
-     * @return void
-     */
-    public function avatar_upload()
-    {
-        if (wp_verify_nonce($_POST['__nonce'], 'upload_avatar_'.get_current_user_id()) && is_user_logged_in()) {
-
-            $photo = $this->upload_photo('thumbnail');
-
-            if($photo === false)
-                ap_send_json( ap_ajax_responce(array('message' => $this->upload_error, 'message_type' => 'error')));
-
-            $file = str_replace('\\', '\\\\', $photo['file']);
-            $photo['file'] = $file;
-
-            $photo['small_url'] = str_replace(basename($photo['url']), 'small_'.basename($photo['url']), $photo['url']);
-
-            $small_name = str_replace(basename($photo['file']), 'small_'.basename($photo['file']), $photo['file']);
-
-            $photo['small_file'] = $small_name;
-
-            $userid = get_current_user_id();
-
-            // Remove previous image
-            $previous_avatar = get_user_meta($userid, '_ap_avatar', true);
-
-            if($previous_avatar['file'] && file_exists($previous_avatar['file']))
-                unlink( $previous_avatar['file'] );
-
-            if($previous_avatar['small_file'] && file_exists($previous_avatar['small_file']))
-                unlink( $previous_avatar['small_file'] );
-
-            // resize thumbnail
-            $image = wp_get_image_editor( $file );
-
-            if ( ! is_wp_error( $image ) ) {
-                $image->resize( 200, 200, true );
-                $image->save( $file );
-                $image->resize( 50, 50, true );
-                $image->save( $small_name );
+			if ( $previous_avatar['small_file'] && file_exists( $previous_avatar['small_file'] ) ) {
+				unlink( $previous_avatar['small_file'] );
             }
 
-            update_user_meta($userid, '_ap_avatar', $photo);
+			// Resize thumbnail.
+			$image = wp_get_image_editor( $file );
 
-            do_action('ap_after_avatar_upload', $userid, $photo);
+			if ( ! is_wp_error( $image ) ) {
+				$image->resize( 200, 200, true );
+				$image->save( $file );
+				$image->resize( 50, 50, true );
+				$image->save( $small_name );
+			}
 
-            ap_send_json( ap_ajax_responce(array('status' => true, 'message' => __('Avatar uploaded successfully.', 'ap'), 'view' => array('user_avatar_'.$userid => get_avatar($userid, 150)), 'view_html' => true  )));
-        }
+			update_user_meta( $userid, '_ap_avatar', $photo );
 
-        ap_send_json( ap_ajax_responce(array('message' => __('There was an error while uploading avatar, please check your image', 'ap'), 'message_type' => 'error')));
+			do_action( 'ap_after_avatar_upload', $userid, $photo );
 
-    }
+			ap_send_json( ap_ajax_responce( array( 'status' => true, 'message' => __( 'Avatar uploaded successfully.', 'ap' ), 'view' => array( 'user_avatar_'.$userid => get_avatar( $userid, 150 ) ), 'view_html' => true ) ) );
+		}
 
-    public function default_avatar($avatar_defaults){
-        $new_avatar = 'ANSPRESS_AVATAR_SRC';
-        $avatar_defaults[$new_avatar] = 'AnsPress';
+		ap_send_json( ap_ajax_responce( array( 'message' => __( 'There was an error while uploading avatar, please check your image', 'ap' ), 'message_type' => 'error' ) ) );
 
-        return $avatar_defaults;
-    }
+	}
 
-    /**
-     * Override get_avatar
-     * @param  string $avatar
-     * @param  integar|string $id_or_email
-     * @param  string $size
-     * @param  string $default
-     * @param  string $alt
-     * @return string
-     */
-    public function get_avatar($avatar, $id_or_email, $size, $default, $alt) {
+	public function default_avatar($avatar_defaults) {
+		$new_avatar = 'ANSPRESS_AVATAR_SRC';
+		$avatar_defaults[$new_avatar] = 'AnsPress';
 
-        if (!empty($id_or_email)) {
+		return $avatar_defaults;
+	}
 
-            if (is_object($id_or_email)) {
-                $allowed_comment_types = apply_filters('get_avatar_comment_types', array(
-                    'comment'
-                    ));
+	/**
+	 * Override get_avatar
+	 * @param  string         $avatar
+	 * @param  integar|string $id_or_email
+	 * @param  string         $size
+	 * @param  string         $default
+	 * @param  string         $alt
+	 * @return string
+	 */
+	public function get_avatar($avatar, $id_or_email, $size, $default, $alt) {
 
-                if (!empty($id_or_email->comment_type) && !in_array($id_or_email->comment_type, (array)$allowed_comment_types)) {
-                    return $avatar;
-                }
+		if ( ! empty( $id_or_email ) ) {
 
-                if (!empty($id_or_email->user_id)) {
-                    $id          = (int)$id_or_email->user_id;
-                    $user        = get_userdata($id);
-                    if ($user) {
-                        $id_or_email = $user->ID;
-                    }
-                }else{
-                    $id_or_email = 0;
-                }
-            }
-            elseif (is_email($id_or_email)) {
-                $u           = get_user_by('email', $id_or_email);
-                $id_or_email = $u->ID;
-            }
+			if ( is_object( $id_or_email ) ) {
+				$allowed_comment_types = apply_filters('get_avatar_comment_types', array(
+					'comment'
+					));
 
-            $ap_avatar     = ap_get_avatar_src($id_or_email, ($size > 50 ? false:  true) );
+				if ( ! empty( $id_or_email->comment_type ) && ! in_array( $id_or_email->comment_type, (array) $allowed_comment_types ) ) {
+					return $avatar;
+				}
 
-            if ($ap_avatar !== false) {
-                return "<span data-view='user_avatar_{$id_or_email}'><img data-cont='avatar_{$id_or_email}' alt='{$alt}' src='{$ap_avatar}' class='avatar avatar-{$size} photo' height='{$size}' width='{$size}' /></span>";
-            }
-        }
+				if ( ! empty( $id_or_email->user_id ) ) {
+					$id          = (int) $id_or_email->user_id;
+					$user        = get_userdata( $id );
+					if ( $user ) {
+						$id_or_email = $user->ID;
+					}
+				} else {
+					$id_or_email = 0;
+				}
+			} elseif ( is_email( $id_or_email ) ) {
+				$u           = get_user_by( 'email', $id_or_email );
+				$id_or_email = $u->ID;
+			}
 
-        if(strpos($avatar, 'ANSPRESS_AVATAR_SRC') !== false){
-            $display_name = ap_user_display_name(array('user_id' => $id_or_email));
+			$ap_avatar     = ap_get_avatar_src( $id_or_email, ($size > 50 ? false:  true) );
 
-            return '<span data-view="user_avatar_'.$id_or_email.'"><img data-cont="avatar_' . $id_or_email . '" alt="' . $alt . '" data-name="' . $display_name . '" data-height="' . $size . '" data-width="' . $size . '" data-char-count="2" class="ap-dynamic-avatar"/></span>';
-        }
+			if ( $ap_avatar !== false ) {
+				return "<span data-view='user_avatar_{$id_or_email}'><img data-cont='avatar_{$id_or_email}' alt='{$alt}' src='{$ap_avatar}' class='avatar avatar-{$size} photo' height='{$size}' width='{$size}' /></span>";
+			}
+		}
 
-        return $avatar;
-    }
+		if ( strpos( $avatar, 'ANSPRESS_AVATAR_SRC' ) !== false ) {
+			$display_name = ap_user_display_name( array( 'user_id' => $id_or_email ) );
 
-    /**
-     * Set icon class for user menus
-     * @param  arrat $menus
-     * @return array
-     * @since 2.0.1
-     */
-    public function ap_user_menu_icons($menus)
-    {
-        $icons = array(
-            'about'         => ap_icon('home'),
-            'profile'       => ap_icon('board'),
-            'questions'     => ap_icon('question'),
-            'answers'       => ap_icon('answer'),
-            'activity'      => ap_icon('pulse'),
-            'reputation'    => ap_icon('reputation'),
-            'followers'     => ap_icon('users'),
-            'following'     => ap_icon('users'),
-            'subscription'  => ap_icon('rss'),
-            'notification'  => ap_icon('globe'),
-        );
+			return '<span data-view="user_avatar_'.$id_or_email.'"><img data-cont="avatar_' . $id_or_email . '" alt="' . $alt . '" data-name="' . $display_name . '" data-height="' . $size . '" data-width="' . $size . '" data-char-count="2" class="ap-dynamic-avatar"/></span>';
+		}
 
-        foreach($icons as $k => $i)
-            if (isset($menus[$k]))
-                $menus[$k]['class'] = $i;
+		return $avatar;
+	}
 
-        return $menus;
-    }
+	/**
+	 * Set icon class for user menus
+	 * @param  arrat $menus
+	 * @return array
+	 * @since 2.0.1
+	 */
+	public function ap_user_menu_icons($menus) {
+
+		$icons = array(
+			'about'         => ap_icon( 'home' ),
+			'profile'       => ap_icon( 'board' ),
+			'questions'     => ap_icon( 'question' ),
+			'answers'       => ap_icon( 'answer' ),
+			'activity'      => ap_icon( 'pulse' ),
+			'reputation'    => ap_icon( 'reputation' ),
+			'followers'     => ap_icon( 'users' ),
+			'following'     => ap_icon( 'users' ),
+			'subscription'  => ap_icon( 'rss' ),
+			'notification'  => ap_icon( 'globe' ),
+		);
+
+		foreach ( $icons as $k => $i ) {
+			if ( isset( $menus[$k] ) ) {
+				$menus[$k]['class'] = $i; }
+		}
+
+		return $menus;
+	}
 }
 

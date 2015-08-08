@@ -23,31 +23,11 @@ class AP_Roles
 	public function add_roles() {
 
 		add_role( 'ap_moderator', __( 'AnsPress Moderator', 'ap' ), array(
-			'read'                   => true,
-			'edit_posts'             => true,
-			'delete_posts'           => true,
-			'upload_files'           => true,
-			'delete_others_pages'    => true,
-			'delete_others_posts'    => true,
-			'delete_private_pages'   => true,
-			'delete_private_posts'   => true,
-			'delete_published_pages' => true,
-			'delete_published_posts' => true,
-			'edit_others_posts'      => true,
-			'edit_private_pages'     => true,
-			'edit_private_posts'     => true,
-			'edit_published_pages'   => true,
-			'edit_published_posts'   => true,
-			'manage_categories'      => true,
-			'manage_links'           => true,
-			'moderate_comments'      => true,
-			'publish_pages'          => true,
-			'publish_posts'          => true,
-			'read_private_pages'     => true,
-			'read_private_posts'     => true,
+			'read' => true,
 		) );
 
-		add_role( 'ap_participant', __( 'AnsPress Participants', 'ap' ), array() );
+		add_role( 'ap_participant', __( 'AnsPress Participants', 'ap' ), array( 'read' => true ) );
+		add_role( 'ap_banned', __( 'AnsPress Banned', 'ap' ), array( 'read' => true ) );
 	}
 
 	/**
@@ -70,32 +50,27 @@ class AP_Roles
 			$base_caps = array(
 				'ap_read_question'         	=> true,
 				'ap_read_answer'			=> true,
-
 				'ap_new_question'			=> true,
 				'ap_new_answer'				=> true,
 				'ap_new_comment'			=> true,
-
 				'ap_edit_question'			=> true,
 				'ap_edit_answer'			=> true,
 				'ap_edit_comment'			=> true,
-
 				'ap_hide_question'			=> true,
 				'ap_hide_answer'			=> true,
-
 				'ap_delete_question'		=> true,
 				'ap_delete_answer'			=> true,
 				'ap_delete_comment'			=> true,
-
 				'ap_vote_up'				=> true,
 				'ap_vote_down'				=> true,
 				'ap_vote_flag'				=> true,
 				'ap_vote_close'				=> true,
-
 				'ap_upload_cover'			=> true,
 				'ap_message'				=> true,
-
 				'ap_new_tag'				=> true,
 				'ap_change_status'			=> true,
+				'ap_upload_avatar'			=> true,
+				'ap_edit_profile'			=> true,
 			);
 
 			$mod_caps = array(
@@ -114,7 +89,7 @@ class AP_Roles
 				'ap_change_status_other'	=> true,
 			);
 
-			$roles = array( 'editor', 'contributor', 'author', 'ap_participant', 'ap_moderator', 'subscriber' );
+			$roles = array( 'editor', 'administrator', 'contributor', 'author', 'ap_participant', 'ap_moderator', 'subscriber' );
 
 			foreach ( $roles as $role_name ) {
 
@@ -123,7 +98,7 @@ class AP_Roles
 					$wp_roles->add_cap( $role_name, $k );
 				}
 
-				if ( 'editor' == $role_name || 'ap_moderator' == $role_name ) {
+				if ( 'editor' == $role_name || 'administrator' == $role_name || 'ap_moderator' == $role_name ) {
 					foreach ( $mod_caps as $k => $grant ) {
 						$wp_roles->add_cap( $role_name, $k );
 					}
@@ -145,8 +120,8 @@ class AP_Roles
 			}
 		}
 		$wp_roles->remove_role( 'ap_participant' );
-		$wp_roles->remove_role( 'ap_editor' );
 		$wp_roles->remove_role( 'ap_moderator' );
+		$wp_roles->remove_role( 'ap_banned' );
 
 	}
 }
@@ -408,19 +383,6 @@ function ap_user_can_permanent_delete() {
 }
 
 /**
- * Check if user can upload a cover image
- * @return boolean
- */
-function ap_user_can_upload_cover() {
-	if ( is_super_admin() || current_user_can( 'ap_upload_cover' ) ) {
-		return true;
-	}
-
-	return false;
-}
-
-
-/**
  * Check if user have permission to view post
  * @param  int $post_id post ID.
  * @return boolean
@@ -556,7 +518,42 @@ function ap_user_can_change_status_to_moderate() {
  * @return boolean
  */
 function ap_user_can_upload_image() {
-	if ( is_user_logged_in() && ap_opt( 'allow_upload_image' ) ) {
+	if ( is_super_admin() || ap_opt( 'allow_upload_image' ) ) {
+		return true;
+	}
+
+	return false;
+}
+
+/**
+ * Check if user can upload an avatar
+ * @since 2.4
+ */
+function ap_user_can_upload_avatar() {
+	if ( is_super_admin() || current_user_can( 'ap_upload_avatar' ) ) {
+		return true;
+	}
+
+	return false;
+}
+
+/**
+ * Check if user can upload a cover image
+ * @since 2.4
+ */
+function ap_user_can_upload_cover() {
+	if ( is_super_admin() || current_user_can( 'ap_upload_cover' ) ) {
+		return true;
+	}
+
+	return false;
+}
+
+/**
+ * Check if user can edit their profile
+ */
+function ap_user_can_edit_profile() {
+	if ( is_super_admin() || current_user_can( 'ap_edit_profile' ) ) {
 		return true;
 	}
 

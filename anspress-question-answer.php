@@ -45,7 +45,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 
 	    /**
 	     * Class instance
-	     * @var null
+	     * @var object
 	     */
 	    public static $instance = null;
 
@@ -439,6 +439,10 @@ if ( is_admin() ) {
 register_activation_hook( __FILE__, 'anspress_activate' );
 
 register_uninstall_hook( __FILE__, 'anspress_uninstall' );
+
+/**
+ * Plugin un-installation hook, called by WP while removing AnsPress
+ */
 function anspress_uninstall() {
 
 	if ( ! current_user_can( 'activate_plugins' ) ) {
