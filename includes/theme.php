@@ -256,10 +256,14 @@ function ap_have_parent_post($post_id = false) {
 function ap_pagination($current = false, $total = false, $format = '?paged=%#%') {
 	global $ap_max_num_pages, $ap_current;
 
+	if ( is_front_page() ) {
+		$format = '';
+	}
+
 	$big = 999999999; // Need an unlikely integer.
 
 	if ( false === $current ) {
-	    $paged = isset( $_GET['paged'] ) ? (int) $_GET['paged'] : 1;
+	    $paged = isset( $_GET['ap_paged'] ) ? (int) $_GET['ap_paged'] : 1;
 	    $current = is_front_page() ? max( 1, $paged ) : max( 1, get_query_var( 'paged' ) );
 	} elseif ( ! empty( $ap_current ) ) {
 	    $current = $ap_current;
@@ -273,13 +277,19 @@ function ap_pagination($current = false, $total = false, $format = '?paged=%#%')
 	}
 	$page_num_link = str_replace( array( '&amp;', '&#038;' ), '&', get_pagenum_link( $big ) );
 
+	if ( is_front_page() ) {
+		$base = add_query_arg( array('ap_paged'	=> '%#%'), home_url('/') );
+	}else{
+		$base = str_replace( $big, '%#%', $page_num_link );
+	}
+
 	if ( '1' == $total ) {
 		return;
 	}
 
 	echo '<div class="ap-pagination clearfix">';
 	echo paginate_links(array(
-		'base' => str_replace( $big, '%#%', $page_num_link ),
+		'base' => $base,
 		'format' => $format,
 		'current' => $current,
 		'total' => $total,
