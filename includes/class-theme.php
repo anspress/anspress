@@ -73,18 +73,20 @@ class AnsPress_Theme
 	public function question_answer_post_class($classes) {
 		global $post;
 
-		if ( $post->post_type == 'question' ) {
+		if ( 'question' == $post->post_type ) {
 			if ( ap_question_best_answer_selected( $post->ID ) ) {
-				$classes[] = 'answer-selected'; }
+				$classes[] = 'answer-selected';
+			}
 
 			if ( ap_is_featured_question( $post->ID ) ) {
-				$classes[] = 'featured-question'; }
+				$classes[] = 'featured-question';
+			}
 
 			$classes[] = 'answer-count-' . ap_count_answer_meta();
-		}
-		if ( $post->post_type == 'answer' ) {
+		}elseif( 'answer' == $post->post_type ) {
 			if ( ap_answer_is_best( $post->ID ) ) {
-				$classes[] = 'best-answer'; }
+				$classes[] = 'best-answer';
+			}
 		}
 
 		return $classes;
@@ -98,7 +100,9 @@ class AnsPress_Theme
 	 */
 	public function body_class($classes) {
 		// Add anspress class to body.
-		if ( get_the_ID() == ap_opt( 'questions_page_id' ) || get_the_ID() == ap_opt( 'question_page_id' ) || is_singular( 'question' ) ) { $classes[] = 'anspress'; }
+		if ( get_the_ID() == ap_opt( 'questions_page_id' ) || get_the_ID() == ap_opt( 'question_page_id' ) || is_singular( 'question' ) ) {
+			$classes[] = 'anspress';
+		}
 
 		return $classes;
 	}
@@ -132,12 +136,14 @@ class AnsPress_Theme
 			$new_title = ap_page_title();
 
 			if ( strpos( $title, 'ANSPRESS_TITLE' ) !== false ) {
-				$new_title = str_replace( 'ANSPRESS_TITLE', $new_title, $title ); } else {
-				$new_title = $new_title.' | '; }
+				$new_title = str_replace( 'ANSPRESS_TITLE', $new_title, $title );
+			} else {
+				$new_title = $new_title.' | ';
+			}
 
-				$new_title = apply_filters( 'ap_title', $new_title );
+			$new_title = apply_filters( 'ap_title', $new_title );
 
-				return $new_title;
+			return $new_title;
 		}
 
 		return $title;
@@ -158,12 +164,14 @@ class AnsPress_Theme
 			$new_title = ap_page_title();
 
 			if ( strpos( $title, 'ANSPRESS_TITLE' ) !== false ) {
-				$new_title = str_replace( 'ANSPRESS_TITLE', $new_title, $title ). ' | ' . get_bloginfo( 'name' ); } else {
-				$new_title = $new_title.' | '. get_bloginfo( 'name' ); }
+				$new_title = str_replace( 'ANSPRESS_TITLE', $new_title, $title ). ' | ' . get_bloginfo( 'name' );
+			} else {
+				$new_title = $new_title.' | '. get_bloginfo( 'name' );
+			}
 
-				$new_title = apply_filters( 'ap_wpseo_title', $new_title );
+			$new_title = apply_filters( 'ap_wpseo_title', $new_title );
 
-				return $new_title;
+			return $new_title;
 		}
 
 		return $title;
@@ -240,7 +248,7 @@ class AnsPress_Theme
 	 * @param  string $canonical conical url.
 	 * @return string
 	 */
-	public function wpseo_canonical($canonical) {
+	public function wpseo_canonical() {
 		if ( is_question() ) {
 			return get_permalink( get_question_id() ); }
 	}
