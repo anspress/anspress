@@ -39,22 +39,13 @@ class AnsPress_Hooks
 	 */
 	public function __construct($ap) {
 		$this->ap = $ap;
-
-	    new AnsPress_Post_Status;
-	    new AnsPress_Rewrite;
-
-	    AP_History::get_instance();
-
 	    $this->ap->add_action( 'ap_processed_new_question', $this, 'after_new_question', 1, 2 );
 	    $this->ap->add_action( 'ap_processed_new_answer', $this, 'after_new_answer', 1, 2 );
 	    $this->ap->add_action( 'ap_processed_update_question', $this, 'ap_after_update_question', 1, 2 );
 	    $this->ap->add_action( 'ap_processed_update_answer', $this, 'ap_after_update_answer', 1, 2 );
-
 	    $this->ap->add_action( 'before_delete_post', $this, 'before_delete' );
-
 	    $this->ap->add_action( 'wp_trash_post', $this, 'trash_post_action' );
 	    $this->ap->add_action( 'untrash_post', $this, 'untrash_ans_on_question_untrash' );
-
 	    $this->ap->add_action( 'comment_post', $this, 'new_comment_approve', 10, 2 );
 	    $this->ap->add_action( 'comment_unapproved_to_approved', $this, 'comment_approve' );
 	    $this->ap->add_action( 'comment_approved_to_unapproved', $this, 'comment_unapproved' );
@@ -210,17 +201,23 @@ class AnsPress_Hooks
 
 	    if ( $post->post_type == 'question' ) {
 	        do_action( 'ap_trash_question', $post );
-	        ap_delete_meta( array( 'apmeta_type' => 'flag', 'apmeta_actionid' => $post->ID ) );
-	        $arg = array(
-			  'post_type' => 'answer',
-			  'post_status' => 'publish',
-			  'post_parent' => $post_id,
-			  'showposts' => -1,
-			);
-	        $ans = get_posts( $arg );
+
+	        // Delete post ap_meta.
+	        ap_delete_meta( array(
+	        	'apmeta_type' => 'flag',
+	        	'apmeta_actionid' => $post->ID,
+	        ) );
+
+	        $ans = get_posts( array(
+				'post_type' => 'answer',
+				'post_status' => 'publish',
+				'post_parent' => $post_id,
+				'showposts' => -1,
+			));
+
 	        if ( $ans > 0 ) {
 	            foreach ( $ans as $p ) {
-	                do_action( 'ap_trash_multi_answer', $post );
+	                do_action( 'ap_trash_multi_answer', $p );
 	                ap_delete_meta( array( 'apmeta_type' => 'flag', 'apmeta_actionid' => $p->ID ) );
 	                ap_remove_new_answer_history( $p->ID );
 	                wp_trash_post( $p->ID );
@@ -255,14 +252,13 @@ class AnsPress_Hooks
 	    if ( $post->post_type == 'question' ) {
 	        do_action( 'ap_untrash_question', $post->ID );
 
-			$arg = array(
-			  'post_type' => 'answer',
-			  'post_status' => 'trash',
-			  'post_parent' => $post_id,
-			  'showposts' => -1,
-			);
+	        $ans = get_posts( array(
+				'post_type' => 'answer',
+				'post_status' => 'trash',
+				'post_parent' => $post_id,
+				'showposts' => -1,
+			));
 
-	        $ans = get_posts( $arg );
 	        if ( $ans > 0 ) {
 	            foreach ( $ans as $p ) {
 	                do_action( 'ap_untrash_answer', $p->ID );
@@ -385,20 +381,21 @@ class AnsPress_Hooks
 	        return $items;
 	    }
 
-	    $this->pages = anspress()->pages;
-
-	    $this->pages['profile'] 		= array( 'title' => __( 'My profile', 'ap' ), 'show_in_menu' => true, 'logged_in' => true );
-	    $this->pages['notification'] 	= array( 'title' => __( 'My notification', 'ap' ), 'show_in_menu' => true, 'logged_in' => true );
-	    $this->pages['ask'] 			= array();
-	    $this->pages['question'] 		= array();
-	    $this->pages['users'] 			= array();
-	    $this->pages['user'] 			= array();
+	    $this->pages = array_merge(anspress()->pages, array(
+	    	'profile' 	=> array( 'title' => __( 'My profile', 'ap' ), 'show_in_menu' => true, 'logged_in' => true ),
+	    	'notification' => array( 'title' => __( 'My notification', 'ap' ), 'show_in_menu' => true, 'logged_in' => true ),
+	    	'ask' 		=> array(),
+	    	'question' 	=> array(),
+	    	'users' 	=> array(),
+	    	'user' 		=> array(),
+	    ));
 
 	    $this->page_urls();
 
 	    if ( ! empty( $items ) && is_array( $items ) ) {
 	        foreach ( $items as $key => $item ) {
-	            if ( false !== $slug = array_search( str_replace( array( 'http://', 'https://' ), '', $item->url ), $this->page_url ) ) {
+	        	$slug = array_search( str_replace( array( 'http://', 'https://' ), '', $item->url ), $this->page_url );
+	            if ( false !== $slug ) {
 
 	                if ( isset( $this->pages[ $slug ]['logged_in'] ) && $this->pages[ $slug ]['logged_in'] && ! is_user_logged_in() ) {
 	                    unset( $items[ $key ] );
@@ -451,16 +448,16 @@ class AnsPress_Hooks
 
 	/**
 	 * Add user dropdown and notification menu
-	 * @param  string  $item_output        Menu html.
+	 * @param  string  $o        		   Menu html.
 	 * @param  object  $item               Menu item object.
 	 * @param  integer $depth              Menu depth.
 	 * @param  object  $args 			   Menu args.
 	 * @return string
 	 */
-	public function walker_nav_menu_start_el($item_output, $item, $depth, $args) {
+	public function walker_nav_menu_start_el($o, $item, $depth, $args) {
 
 	    if ( ! is_user_logged_in() && (in_array( 'anspress-page-profile', $item->classes ) || in_array( 'anspress-page-notification', $item->classes )) ) {
-	        $item_output = '';
+	        $o = '';
 	    }
 
 	    if ( in_array( 'anspress-page-profile', $item->classes ) && is_user_logged_in() ) {
@@ -468,39 +465,35 @@ class AnsPress_Hooks
 
 	        $active_user_page   = get_query_var( 'user_page' ) ? esc_attr( get_query_var( 'user_page' ) ) : 'about';
 
-	        $item_output  = '<a id="ap-user-menu-anchor" class="ap-dropdown-toggle"  href="#">';
-	        $item_output .= get_avatar( get_current_user_id(), 80 );
-	        $item_output .= '<span class="name">'. ap_user_display_name( get_current_user_id() ) .'</span>';
-	        $item_output .= ap_icon( 'chevron-down', true );
-	        $item_output .= '</a>';
+	        $o  = '<a id="ap-user-menu-anchor" class="ap-dropdown-toggle" href="#">';
+	        $o .= get_avatar( get_current_user_id(), 80 );
+	        $o .= '<span class="name">'. ap_user_display_name( get_current_user_id() ) .'</span>';
+	        $o .= ap_icon( 'chevron-down', true );
+	        $o .= '</a>';
 
-	        $item_output .= '<ul id="ap-user-menu-link" class="ap-dropdown-menu ap-user-dropdown-menu">';
+	        $o .= '<ul id="ap-user-menu-link" class="ap-dropdown-menu ap-user-dropdown-menu">';
 
 	        foreach ( $menus as $m ) {
 	            $class = ! empty( $m['class'] ) ? ' '.$m['class'] : '';
 
-	            $item_output .= '<li'.($active_user_page == $m['slug'] ? ' class="active"' : '').'>';
-	            $item_output .= '<a href="'.$m['link'].'" class="ap-user-link-'.$m['slug'].$class.'">';
-	            $item_output .= esc_attr( $m['title'] ).'</a>';
-	            $item_output .= '</li>';
+	            $o .= '<li'.($active_user_page == $m['slug'] ? ' class="active"' : '').'>';
+	            $o .= '<a href="'.$m['link'].'" class="ap-user-link-'.$m['slug'].$class.'">';
+	            $o .= esc_attr( $m['title'] ).'</a>';
+	            $o .= '</li>';
 	        }
 
-	        $item_output .= '</ul>';
+	        $o .= '</ul>';
 	    } elseif ( in_array( 'anspress-page-notification', $item->classes ) && is_user_logged_in() ) {
-	        $item_output = '<a id="ap-user-notification-anchor" class="ap-dropdown-toggle '.ap_icon( 'globe' ).'" href="#">'.ap_get_the_total_unread_notification( false, false ).'</a>';
+	        $o = '<a id="ap-user-notification-anchor" class="ap-dropdown-toggle '.ap_icon( 'globe' ).'" href="#">'.ap_get_the_total_unread_notification( false, false ).'</a>';
 
 	        global $ap_notifications;
-
 	        ob_start();
-
 	        $ap_notifications = ap_get_user_notifications( array( 'per_page' => 10 ) );
-
 	        ap_get_template_part( 'user/notification-dropdown' );
-
-	        $item_output .= ob_get_clean();
+	        $o .= ob_get_clean();
 	    }
 
-	    return $item_output;
+	    return $o;
 	}
 
 	/**
