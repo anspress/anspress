@@ -32,8 +32,6 @@ class AnsPress_Theme
 	public function __construct($ap) {
 		$this->ap = $ap;
 
-		AnsPress_Common_Pages::get_instance();
-
 		$this->ap->add_action( 'init', $this, 'init_actions' );
 		$this->ap->add_filter( 'post_class', $this, 'question_answer_post_class' );
 		$this->ap->add_filter( 'body_class', $this, 'body_class' );
@@ -83,7 +81,7 @@ class AnsPress_Theme
 			}
 
 			$classes[] = 'answer-count-' . ap_count_answer_meta();
-		}elseif( 'answer' == $post->post_type ) {
+		} elseif ( 'answer' == $post->post_type ) {
 			if ( ap_answer_is_best( $post->ID ) ) {
 				$classes[] = 'best-answer';
 			}
@@ -245,7 +243,6 @@ class AnsPress_Theme
 
 	/**
 	 * Update concal link when wpseo plugin installed
-	 * @param  string $canonical conical url.
 	 * @return string
 	 */
 	public function wpseo_canonical() {
