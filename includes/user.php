@@ -251,7 +251,8 @@ function ap_user_link($user_id = false, $sub = false) {
 function ap_get_user_menu($user_id = false, $private = false) {
 
 	if ( $user_id === false ) {
-		$user_id = ap_get_displayed_user_id(); }
+		$user_id = ap_get_displayed_user_id();
+    }
 
 	$user_pages = anspress()->user_pages;
 
@@ -287,9 +288,11 @@ function ap_get_user_menu($user_id = false, $private = false) {
  * @return void
  * @since 2.0.1
  */
-function ap_user_menu($collapse = true) {
+function ap_user_menu($collapse = true, $user_id = false) {
 
-	$user_id = get_current_user_id();
+    if(false === $user_id)
+	   $user_id = ap_get_displayed_user_id();
+
 	$menus = ap_get_user_menu( $user_id );
 	foreach ( $menus as $k => $m ) {
 		if ( ( ! $m['public'] && ! ap_is_my_profile( $user_id )) ) {
@@ -690,14 +693,14 @@ function ap_update_user_solved_answers_count_meta($user_id = false) {
 	update_user_meta( $user_id, '__solved_answers', ap_user_solved_answer_count( $user_id ) );
 }
 
-	/**
-	 * Get last 28 days reputation earned by user group by day.
-	 * This data is used in bard chart
-	 *
-	 * @param  boolean|integer $user_id    WordPress user ID if false @see ap_get_displayed_user_id() will be used
-	 * @param  boolean         $object     Return object or string
-	 * @return string|object
-	 */
+/**
+ * Get last 28 days reputation earned by user group by day.
+ * This data is used in bard chart
+ *
+ * @param  boolean|integer $user_id    WordPress user ID if false @see ap_get_displayed_user_id() will be used
+ * @param  boolean         $object     Return object or string
+ * @return string|object
+ */
 function ap_user_get_28_days_reputation($user_id = false, $object = false) {
 
 	if ( $user_id === false ) {
@@ -738,9 +741,9 @@ function ap_user_get_28_days_reputation($user_id = false, $object = false) {
 	return (object) $days;
 }
 
-	/**
-	 * Output user cover upload form
-	 */
+/**
+ * Output user cover upload form
+ */
 function ap_cover_upload_form() {
 	if ( ap_user_can_upload_cover() ) {
 		?>
