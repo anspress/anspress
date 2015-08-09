@@ -803,9 +803,8 @@ class AnsPress_Admin
 
 			}
 
-			if ( ! empty( $search_q['q'] ) ) {
-				set_query_var( 's', $search_q['q'] );
-			}
+			set_query_var( 's', $search_q['q'] );
+
 		}
 	}
 
