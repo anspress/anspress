@@ -3,9 +3,9 @@
  * AnsPresss admin class
  *
  * @package   AnsPress
- * @author    Rahul Aryan <admin@rahularyan.com>
+ * @author    Rahul Aryan <support@anspress.io>
  * @license   GPL-2.0+
- * @link      http://rahularyan.com
+ * @link      http://anspress.io
  * @copyright 2014 Rahul Aryan
  */
 
