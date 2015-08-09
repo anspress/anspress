@@ -177,11 +177,10 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		        self::$instance->includes();
 
 		        self::$instance->ajax_hooks();
-		        self::$instance->site_hooks();
+		        self::$instance->site_include();
 
 		        self::$instance->anspress_forms 		= new AnsPress_Process_Form();
 		        self::$instance->anspress_query_filter 	= new AnsPress_Query_Filter();
-		        self::$instance->anspress_theme 		= new AnsPress_Theme();
 		        self::$instance->anspress_cpt 			= new AnsPress_PostTypes();
 		        self::$instance->anspress_reputation 	= new AP_Reputation();
 		        self::$instance->anspress_users 		= new AnsPress_User();
@@ -317,10 +316,9 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		/**
 		 * Include all public classes
 		 */
-		public function site_hooks() {
-		    self::$instance->anspress_hooks = new AnsPress_Actions( $this );
-
-		    $roles = new AP_Roles();
+		public function site_include() {
+		    self::$instance->anspress_hooks 	= new AnsPress_Actions( $this );
+		    self::$instance->anspress_theme 	= new AnsPress_Theme( $this );
 		}
 
 		/**

@@ -313,6 +313,9 @@ class AnsPress_User
 		}
 	}
 
+    /**
+     * Process cover upload form
+     */
 	public function cover_upload() {
 
 		if ( ap_user_can_upload_cover() && ap_verify_nonce( 'upload_cover_'.get_current_user_id() ) ) {
@@ -333,16 +336,17 @@ class AnsPress_User
 
 			$userid = get_current_user_id();
 
-			// Remove previous image
+			// Remove previous cover image.
 			$previous_cover = get_user_meta( $userid, '_ap_cover', true );
 
 			if ( $previous_cover['file'] && file_exists( $previous_cover['file'] ) ) {
-				unlink( $previous_cover['file'] ); }
+				unlink( $previous_cover['file'] );
+            }
 
 			if ( $previous_cover['small_file'] && file_exists( $previous_cover['small_file'] ) ) {
 				unlink( $previous_cover['small_file'] ); }
 
-			// resize thumbnail
+			// Resize thumbnail.
 			$image = wp_get_image_editor( $file );
 
 			if ( ! is_wp_error( $image ) ) {
