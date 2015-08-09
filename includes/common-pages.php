@@ -26,7 +26,7 @@ class AnsPress_Common_Pages
 	 */
 	public function __construct($ap) {
 		$this->ap = $ap;
-		$this->ap->add_action( 'init', array( $this, 'register_common_pages' ) );
+		$this->ap->add_action( 'init', $this, 'register_common_pages' );
 	}
 
 	/**
