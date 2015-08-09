@@ -46,7 +46,6 @@ class AnsPress_Actions
 
 	    add_action( 'wp_loaded', array( $this, 'flush_rules' ) );
 	    add_filter( 'mce_buttons', array( $this, 'editor_buttons' ), 10, 2 );
-		// add_filter( 'teeny_mce_plugins', array($this, 'editor_plugins'), 10, 2 );
 		add_filter( 'wp_insert_post_data', array( $this, 'wp_insert_post_data' ), 10, 2 );
 	    add_filter( 'ap_form_contents_filter', array( $this, 'sanitize_description' ) );
 	    add_action( 'safe_style_css', array( $this, 'safe_style_css' ), 11 );
@@ -479,15 +478,6 @@ class AnsPress_Actions
 		}
 
 		return $buttons;
-	}
-
-	public function editor_plugins($plugin, $editor_id) {
-
-		if ( is_anspress() ) {
-			$plugin[] = 'wpautoresize';
-		}
-
-		return $plugin;
 	}
 
 	/**

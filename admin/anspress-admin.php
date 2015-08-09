@@ -77,6 +77,7 @@ class AnsPress_Admin
 		add_action( 'admin_head-nav-menus.php', array( $this, 'ap_menu_metaboxes' ) );
 		add_action( 'admin_notices', array( $this, 'taxonomy_rename' ) );
 		add_filter( 'pre_get_posts', array( $this, 'serach_qa_by_userid' ) );
+		add_filter( 'posts_clauses', array( $this, 'join_by_author_name' ), 10, 2 );
 		add_filter( 'manage_edit-comments_columns', array( $this, 'comment_flag_column' ) );
 		add_filter( 'manage_comments_custom_column', array( $this, 'comment_flag_column_data' ), 10, 2 );
 		add_filter( 'comment_status_links', array( $this, 'comment_flag_view' ) );
@@ -777,6 +778,7 @@ class AnsPress_Admin
 	public function serach_qa_by_userid($query) {
 		$screen = get_current_screen();
 		if ( ($screen->id == 'edit-question' && $screen->post_type == 'question' || $screen->id == 'edit-answer' && $screen->post_type == 'answer' ) && $query->is_main_query() && isset( $query->query_vars['s'] ) ) {
+
 			$search_q = ap_parse_search_string( get_search_query( ) );
 
 			// Set author args.
@@ -788,6 +790,16 @@ class AnsPress_Admin
 					$user_ids .= (int) $id.','; }
 
 				set_query_var( 'author', rtrim( $user_ids, ',' ) );
+
+			} elseif ( ! empty( $search_q['author_name'] ) && is_array( $search_q['author_name'] ) ) {
+
+				$author_names = array();
+
+				foreach ( $search_q['author_name'] as $id ) {
+					$author_names[] = sanitize_title_for_query( $id );
+				}
+
+				set_query_var( 'ap_author_name', $author_names );
 
 			}
 
@@ -861,6 +873,26 @@ class AnsPress_Admin
 		$clauses['join'] = "JOIN $wpdb->commentmeta ON $wpdb->comments.comment_ID = $wpdb->commentmeta.comment_id AND meta_key = '_ap_flag'";
 
 		return $clauses;
+	}
+
+	/**
+	 * Join users table in post table for searching posts by on user_login
+	 * @param  array  $pieces Wp_Query mysql clauses.
+	 * @param  object $query  Parent class.
+	 * @return array
+	 * @since 2.4
+	 */
+	public function join_by_author_name($pieces, $query) {
+		if ( isset( $query->query_vars['ap_author_name'] ) && is_array( $query->query_vars['ap_author_name'] ) && count( $query->query_vars['ap_author_name'] ) > 0 )  {
+
+			global $wpdb;
+			$authors = $query->query_vars['ap_author_name'];
+			$authors = implode( "','", array_map( 'sanitize_title_for_query', array_unique( (array) $authors ) ) );
+			$authors = "'". rtrim( $authors, ",'" )."'";
+			$pieces['join'] = " JOIN $wpdb->users users ON users.ID = $wpdb->posts.post_author AND users.user_login IN ($authors)";
+		}
+
+		return $pieces;
 	}
 
 
