@@ -138,12 +138,23 @@
 
                 //Add this to form so this form can be identified as ajax form
                 $(this).append('<input type="hidden" name="ap_ajax_action" value="'+ $(this).attr('name') +'">');
+                $(this).append('<input type="hidden" name="action" value="ap_ajax">');
 
                 if (typeof tinyMCE !== 'undefined') tinyMCE.triggerSave();
-                ApSite.doAjax(apAjaxData($(this).formSerialize()), function(data) {
-                    AnsPress.site.hideLoading(this);
-                    if (typeof tinyMCE !== 'undefined' && typeof data.type !== 'undefined' && data.type == 'success') tinyMCE.activeEditor.setContent('');
-                }, this);
+
+                $(this).ajaxSubmit({
+                    type: 'POST',
+                    url: ajaxurl,
+                    success: function(data) {
+                        AnsPress.site.hideLoading(this);
+                        if (typeof tinyMCE !== 'undefined' && typeof data.type !== 'undefined' && data.type == 'success') tinyMCE.activeEditor.setContent('');
+                    },
+                    dataType: 'json',
+                    context: this,
+                    global: true,
+                    cache:false
+                });
+
                 return false;
             })
         },

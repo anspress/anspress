@@ -1432,7 +1432,7 @@ function ap_upload_user_file($file = array()) {
 			'guid' => $file_return['url'],
 		);
 
-		$attachment_id = wp_insert_attachment( $attachment, $file_return['url'] );
+		$attachment_id = wp_insert_attachment( $attachment, $file_return['file'] );
 
 		update_post_meta( $attachment_id, '_ap_temp_image', true );
 

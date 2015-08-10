@@ -33,6 +33,7 @@ class AnsPress_Form {
                 'action'            => '',
                 'is_ajaxified'      => false,
                 'class'             => 'ap-form',
+                'multipart'         => false,
                 'submit_button'     => __('Submit', 'ap'),
             );
 
@@ -117,8 +118,9 @@ class AnsPress_Form {
         do_action('ap_form_before_'. $this->name);
         $this->output .= ob_get_clean();
 
+        $multipart = $this->args['multipart'] ? ' enctype="multipart/form-data"' : '';
         if(!isset($this->args['hide_footer']) || $this->args['hide_footer'] !== false)
-            $this->output .= '<form id="'.$this->args['name'].'" method="'.$this->args['method'].'" action="'.$this->args['action'].'"'.$attr.'>';
+            $this->output .= '<form name="'.$this->args['name'].'" id="'.$this->args['name'].'" method="'.$this->args['method'].'" action="'.$this->args['action'].'"'.$attr.$multipart.'>';
     }
 
     /**
