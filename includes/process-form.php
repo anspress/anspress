@@ -748,7 +748,7 @@ class AnsPress_Process_Form
 
 		if ( is_array( $user_fields ) && ! empty( $user_fields ) ) {
 			foreach ( $user_fields as $field ) {
-				print_r( $field['name'] );
+
 				if ( ! empty( $fields[$field['name']] ) && ( in_array( $field['name'], $default_fields ) ) ) {
 					wp_update_user( array( 'ID' => $user_id, $field['name'] => $fields[$field['name']] ) );
 				} elseif ( $field['name'] == 'password' && $_POST['password'] == $_POST['password-1'] ) {
