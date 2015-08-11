@@ -777,7 +777,8 @@ class AnsPress_Admin
 	 */
 	public function serach_qa_by_userid($query) {
 		$screen = get_current_screen();
-		if ( ($screen->id == 'edit-question' && $screen->post_type == 'question' || $screen->id == 'edit-answer' && $screen->post_type == 'answer' ) && $query->is_main_query() && isset( $query->query_vars['s'] ) ) {
+
+		if ( isset( $query->query_vars['s'], $screen->id, $screen->post_type ) && ($screen->id == 'edit-question' && $screen->post_type == 'question' || $screen->id == 'edit-answer' && $screen->post_type == 'answer' ) && $query->is_main_query() ) {
 
 			$search_q = ap_parse_search_string( get_search_query( ) );
 
