@@ -38,7 +38,7 @@ function anspress_activate( $network_wide ) {
 
 		$charset_collate = !empty($wpdb->charset) ? "DEFAULT CHARACTER SET ".$wpdb->charset : '';
 
-		$meta_table = "CREATE TABLE IF NOT EXISTS `".$wpdb->base_prefix."ap_meta` (
+		$meta_table = "CREATE TABLE IF NOT EXISTS `".$wpdb->prefix."ap_meta` (
 				  `apmeta_id` bigint(20) NOT NULL AUTO_INCREMENT,
 				  `apmeta_userid` bigint(20) DEFAULT NULL,
 				  `apmeta_type` varchar(256) DEFAULT NULL,
