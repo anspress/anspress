@@ -48,13 +48,6 @@
 						<div class="question-content ap-q-content" itemprop="text">
 							<?php the_content(); ?>
 						</div>
-						<?php
-							/**
-							 * ACTION: ap_after_question_content
-							 * @since 	2.0
-							 */
-							do_action('ap_after_question_content');
-						?>
 
 						<?php
 							/**

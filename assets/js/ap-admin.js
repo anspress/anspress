@@ -429,7 +429,8 @@ jQuery(document).ready(function (jQuery){
 		jQuery('#ap_category_media_preview').remove();
 	});
 	jQuery(document).ready(function($){
-	    $('#ap-category-color').wpColorPicker();
+		if(typeof wpColorPicker !== 'undefined')
+	   		$('#ap-category-color').wpColorPicker();
 	});
 
 });
