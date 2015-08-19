@@ -6,14 +6,14 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/anspress-question-"
 "answer\n"
 "POT-Creation-Date: 2015-07-30 16:21-0400\n"
-"PO-Revision-Date: 2015-07-31 06:03+0530\n"
+"PO-Revision-Date: 2015-08-19 11:55-0400\n"
 "Last-Translator: \n"
 "Language-Team: Romain <bbig86@gmail.com>\n"
 "Language: fr_FR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.7.3\n"
+"X-Generator: Poedit 1.8.4\n"
 "X-Poedit-KeywordsList: __;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;"
 "_nx_noop:1,2,3c;esc_attr__;esc_html__;esc_attr_e;esc_html_e;esc_attr_x:1,2c;"
 "esc_html_x:1,2c\n"
@@ -64,16 +64,15 @@ msgstr "A Modérer"
 
 #: admin/anspress-admin.php:177 admin/anspress-admin.php:310
 msgid "Flagged question & answer"
-msgstr "Questions & réponses taguées"
+msgstr "Questions & réponses signalées"
 
 #: admin/anspress-admin.php:177 admin/views/dashboard.php:52
 msgid "Flagged"
-msgstr "Tagué"
+msgstr "Signalé"
 
 #: admin/anspress-admin.php:179 includes/bp.php:51 includes/bp.php:83
-#: includes/reputation.php:24 includes/reputation.php:298
-#: includes/user.php:424 theme/default/user/about.php:15
-#: theme/default/user/user-card.php:25
+#: includes/reputation.php:24 includes/reputation.php:298 includes/user.php:424
+#: theme/default/user/about.php:15 theme/default/user/user-card.php:25
 msgid "Reputation"
 msgstr "Réputation"
 
@@ -212,7 +211,9 @@ msgstr "Ajouter au menu"
 #, php-format
 msgid ""
 "Is your existing question tags are not appearing ? click here to fix it %s"
-msgstr "Si vos tags de question n'apparaissent pas ? Cliquez ici pour fixer %s"
+msgstr ""
+"Si vos mots-clés de question n'apparaissent pas ? Cliquez ici pour corriger "
+"le problème %s"
 
 #: admin/anspress-admin.php:885
 msgid "Fix question tags"
@@ -376,8 +377,8 @@ msgid_plural "<strong>%d</strong> Votes"
 msgstr[0] "<strong>1</strong> Vote"
 msgstr[1] "<strong>%d</strong> Votes"
 
-#: admin/moderate.php:92 includes/functions.php:565
-#: includes/post_types.php:232 includes/post_types.php:363
+#: admin/moderate.php:92 includes/functions.php:565 includes/post_types.php:232
+#: includes/post_types.php:363
 msgid "Status"
 msgstr "Statut"
 
@@ -548,25 +549,22 @@ msgstr "Tri par défaut"
 msgid "Sort answers by default."
 msgstr "Ordre de tri par defaut"
 
-#: admin/options-page.php:179 includes/functions.php:454
-#: includes/theme.php:495 includes/theme.php:537 widgets/questions.php:72
+#: admin/options-page.php:179 includes/functions.php:454 includes/theme.php:495
+#: includes/theme.php:537 widgets/questions.php:72
 msgid "Voted"
 msgstr "Voté"
 
 #: admin/options-page.php:180 includes/theme.php:490 includes/theme.php:533
-#: includes/user.php:426 widgets/question_stats.php:40
-#: widgets/questions.php:70
+#: includes/user.php:426 widgets/question_stats.php:40 widgets/questions.php:70
 msgid "Active"
 msgstr "En cours"
 
-#: admin/options-page.php:181 includes/functions.php:452
-#: includes/theme.php:491 includes/theme.php:539 includes/user.php:429
-#: widgets/questions.php:71
+#: admin/options-page.php:181 includes/functions.php:452 includes/theme.php:491
+#: includes/theme.php:539 includes/user.php:429 widgets/questions.php:71
 msgid "Newest"
 msgstr "Nouveaux"
 
-#: admin/options-page.php:182 includes/functions.php:453
-#: includes/theme.php:540
+#: admin/options-page.php:182 includes/functions.php:453 includes/theme.php:540
 msgid "Oldest"
 msgstr "Anciens"
 
@@ -588,7 +586,9 @@ msgstr "Afficher la sidebar"
 
 #: admin/options-page.php:203
 msgid "Subbscribe and and stats widget will shown in question page."
-msgstr "Widget des statistiques de la question"
+msgstr ""
+"Les widgets d'inscription et des statistiques seront présent dans la page "
+"des questions."
 
 #: admin/options-page.php:211
 msgid "Pages"
@@ -596,7 +596,7 @@ msgstr "Pages"
 
 #: admin/options-page.php:215
 msgid "Page slug"
-msgstr "Page mot clef (url)"
+msgstr "Page slug"
 
 #: admin/options-page.php:219
 msgid "Ask page slug"
@@ -608,7 +608,7 @@ msgstr "Mot clé pour la page d'une nouvelle question"
 
 #: admin/options-page.php:227
 msgid "Question page slug"
-msgstr "Page du mode d'emploi des questions"
+msgstr "Page slug des questions"
 
 #: admin/options-page.php:228
 msgid "Enter slug for question page."
@@ -719,7 +719,7 @@ msgstr "Désactiver les votes négatifs sur les questions."
 
 #: admin/options-page.php:340
 msgid "Close question after selecting answer"
-msgstr "Questions & réponses taguées"
+msgstr "Fermer les questions lorsqu'une réponse est sélectionnée"
 
 #: admin/options-page.php:341
 msgid "If enabled this will prevent user to submit answer on solved question."
@@ -1121,8 +1121,7 @@ msgstr "Aucune questions en rapport trouvée."
 msgid "Update comment"
 msgstr "Mettre à jour le commentaire"
 
-#: includes/ajax.php:116 includes/functions.php:312
-#: includes/reputation.php:851
+#: includes/ajax.php:116 includes/functions.php:312 includes/reputation.php:851
 msgid "Comment"
 msgstr "Commenter"
 
@@ -1277,8 +1276,7 @@ msgstr "%1$s répondu sur - %2$s"
 msgid "question"
 msgstr "question"
 
-#: includes/bp.php:240 includes/post_types.php:141
-#: theme/default/answers.php:18
+#: includes/bp.php:240 includes/post_types.php:141 theme/default/answers.php:18
 msgid "answer"
 msgstr "réponse"
 
@@ -1288,9 +1286,9 @@ msgid "%1$d comments on your %3$s - %2$s"
 msgstr "%1$d commentaires sur %3$s - %2$s"
 
 #: includes/bp.php:250
-#, fuzzy, php-format
+#, php-format
 msgid "%1$s commented on your %3$s - %2$s"
-msgstr "%1$d commentés sur %3$s - %2$s"
+msgstr "%1$s commentés sur %3$s - %2$s"
 
 #: includes/class-form.php:36
 msgid "Submit"
@@ -1401,9 +1399,9 @@ msgid "My questions"
 msgstr "Poser une question"
 
 #: includes/class-user.php:206
-#, fuzzy, php-format
+#, php-format
 msgid "%s's questions"
-msgstr "Poser une question"
+msgstr "%s questions"
 
 #: includes/class-user.php:209
 msgid "My answers"
@@ -1419,9 +1417,9 @@ msgid "My reputation"
 msgstr "Nouvelle réputation"
 
 #: includes/class-user.php:212
-#, fuzzy, php-format
+#, php-format
 msgid "%s's reputation"
-msgstr "Nouvelle réputation"
+msgstr "%s réputations"
 
 #: includes/class-user.php:215
 msgid "About me"
@@ -1527,11 +1525,11 @@ msgstr "Vous n'avez pas de compte ?  %sEnregistrez vous%s."
 
 #: includes/form.php:235
 msgid "Unable to create tag, please try again."
-msgstr "Impossible de créer le tag, merci de réessayer."
+msgstr "Impossible de créer le mot clé, merci de réessayer."
 
 #: includes/form.php:238
 msgid "Successfully created a tag."
-msgstr "Tag créé correctement."
+msgstr "Mot clé créé avec succès."
 
 #: includes/form.php:245
 msgid "Unable to load form, please try again."
@@ -1551,15 +1549,15 @@ msgstr "Créer un nouveau tag"
 
 #: includes/form.php:297
 msgid "Enter tag"
-msgstr "Nom du Tag"
+msgstr "Entrez un mot clé"
 
 #: includes/form.php:298
 msgid "Description of tag."
-msgstr "Description du tag."
+msgstr "Description du mot clé."
 
 #: includes/form.php:299
 msgid "Create tag"
-msgstr "Créer le tag"
+msgstr "Créer le mot clé"
 
 #: includes/functions.php:220
 msgid "Please login or register to continue this action."
@@ -2056,7 +2054,7 @@ msgstr "Auteur"
 
 #: includes/post_types.php:230
 msgid "Tag"
-msgstr "Tag"
+msgstr "Mot clé"
 
 #: includes/post_types.php:233
 msgid "Ans"
@@ -2150,9 +2148,9 @@ msgid "+%d"
 msgstr "+%d"
 
 #: includes/reputation.php:603
-#, fuzzy, php-format
+#, php-format
 msgid "%sAsked %s"
-msgstr "Demandé %d"
+msgstr "%sDemandé %s"
 
 #: includes/reputation.php:607
 #, php-format
@@ -2464,9 +2462,9 @@ msgid "No one is subscribed to this question."
 msgstr "Personne ne suit cette question."
 
 #: includes/subscriber.php:145
-#, fuzzy, php-format
+#, php-format
 msgid "<strong>%d people</strong> subscribed to this question."
-msgstr "<strong>%s people</strong> subscribed to this question."
+msgstr "<strong>%d personnes</strong> sont inscrits à cette question."
 
 #: includes/subscriber.php:313 includes/vote.php:60
 msgid "Follow question"
@@ -2944,11 +2942,12 @@ msgstr ""
 
 #: theme/default/functions.php:213
 msgid "AP Tag page"
-msgstr "Page de base"
+msgstr "AP Page des mots-clés"
 
 #: theme/default/functions.php:217
 msgid "Widgets in this area will be shown in tag listing page."
-msgstr "Cette zone de widget est visibile sur la page de listing des tags."
+msgstr ""
+"Cette zone de widget est visibile sur la page de listing des mots-clés."
 
 #: theme/default/functions.php:223
 msgid "AP about user"
@@ -3112,9 +3111,9 @@ msgid "Last seen %s ago"
 msgstr "Vu pour la dernière fois il y a %s"
 
 #: theme/default/user/list-question.php:4
-#, fuzzy, php-format
+#, php-format
 msgid "%d answers"
-msgstr "Réponses"
+msgstr "%d réponses"
 
 #: theme/default/user/notification-dropdown.php:14
 msgid "Notifications"
@@ -3143,7 +3142,7 @@ msgstr "Supprimer cette notification"
 
 #: theme/default/user/reputation.php:32
 msgid "No reputation earned yet."
-msgstr "Nouvelle réputation"
+msgstr "Aucune réputation n'a été encore gagné."
 
 #: theme/default/user/subscription.php:17
 msgid "Not following any question yet!"
@@ -3155,14 +3154,14 @@ msgid "%d Followers, %d following"
 msgstr "%d Followers, %d abonnements"
 
 #: theme/default/user/user.php:53 theme/default/users/loop-item.php:31
-#, fuzzy, php-format
+#, php-format
 msgid "%d Answers"
-msgstr "Réponses"
+msgstr "%d réponses"
 
 #: theme/default/user/user.php:54 theme/default/users/loop-item.php:32
-#, fuzzy, php-format
+#, php-format
 msgid "%d Questions"
-msgstr "Toutes les questions"
+msgstr "%d questions"
 
 #: theme/default/user/user.php:55
 #, php-format
