@@ -13,6 +13,7 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
+
 /**
  * Generate answer form
  * @param  integer $question_id  Question iD.
@@ -59,6 +60,17 @@ function ap_answer_form($question_id, $editing = false) {
 			),
 		),
 	);
+
+	if ( ! is_user_logged_in() && ap_opt( 'allow_anonymous' ) ) {
+		$args['fields'][] = array(
+			'name' 		=> 'name',
+			'label' 	=> __( 'Name', 'ap' ),
+			'type'  	=> 'text',
+			'placeholder'  => __( 'Enter your name to display', 'ap' ),
+			'value' 	=> sanitize_text_field( @$_POST['name'] ),
+			'order' 	=> 12,
+		);
+	}
 
 	// If private posts is allowed then show the checkbox.
 	if ( ap_opt( 'allow_private_posts' ) ) {
