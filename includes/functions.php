@@ -1705,3 +1705,7 @@ function ap_parse_search_string($str) {
 
 	return $output;
 }
+
+function ap_ajax_json( $response ){
+	ap_send_json( ap_ajax_responce( $response ) );
+}

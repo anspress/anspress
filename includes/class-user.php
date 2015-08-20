@@ -22,26 +22,25 @@ class AnsPress_User
 	 * Initialize the plugin by setting localization and loading public scripts
 	 * and styles.
 	 */
-	public function __construct() {
-
-		add_action( 'init', array( $this, 'init_actions' ) );
-		add_filter( 'pre_user_query', array( $this, 'follower_query' ) );
-		add_filter( 'pre_user_query', array( $this, 'following_query' ) );
-		add_filter( 'pre_user_query', array( $this, 'user_sort_by_reputation' ) );
-		add_action( 'wp_ajax_ap_cover_upload', array( $this, 'cover_upload' ) );
-		add_action( 'wp_ajax_ap_avatar_upload', array( $this, 'avatar_upload' ) );
-		add_filter( 'avatar_defaults' , array( $this, 'default_avatar' ) );
-		add_filter( 'get_avatar', array( $this, 'get_avatar' ), 10, 5 );
-		add_filter( 'ap_user_menu', array( $this, 'ap_user_menu_icons' ) );
+	public function __construct( $ap ) {
+		$ap->add_action( 'init', $this, 'init_actions' );
+		$ap->add_filter( 'pre_user_query', $this, 'follower_query' );
+		$ap->add_filter( 'pre_user_query', $this, 'following_query' );
+		$ap->add_filter( 'pre_user_query', $this, 'user_sort_by_reputation' );
+		$ap->add_action( 'wp_ajax_ap_cover_upload', $this, 'cover_upload' );
+		$ap->add_action( 'wp_ajax_ap_avatar_upload', $this, 'avatar_upload' );
+		$ap->add_filter( 'avatar_defaults' , $this, 'default_avatar' );
+		$ap->add_filter( 'get_avatar', $this, 'get_avatar', 10, 5 );
+		$ap->add_filter( 'ap_user_menu', $this, 'ap_user_menu_icons' );
 	}
 
+	/**
+	 * Actions to do in init
+	 */
 	public function init_actions() {
-
-		// Register AnsPress pages
+		// Register AnsPress pages.
 		ap_register_page( ap_opt( 'users_page_slug' ), __( 'Users', 'ap' ), array( $this, 'users_page' ) );
 		ap_register_page( ap_opt( 'user_page_slug' ), __( 'User', 'ap' ), array( $this, 'user_page' ), false );
-
-		// Register user pages
 		ap_register_user_page( 'about', __( 'About', 'ap' ), array( $this, 'about_page' ) );
 		ap_register_user_page( 'notification', __( 'Notification', 'ap' ), array( $this, 'notification_page' ), true, false );
 		ap_register_user_page( 'profile', __( 'Profile', 'ap' ), array( $this, 'profile_page' ), true, false );
@@ -54,6 +53,9 @@ class AnsPress_User
 		add_filter( 'ap_page_title', array( $this, 'ap_page_title' ) );
 	}
 
+	/**
+	 * Register users directory page in AnsPress
+	 */
 	public function users_page() {
 		if ( ap_opt( 'enable_users_directory' ) ) {
 
@@ -66,6 +68,9 @@ class AnsPress_User
 		}
 	}
 
+	/**
+	 * Register user page in AnsPress
+	 */
 	public function user_page() {
 		global $ap_user_query;
 
@@ -151,21 +156,34 @@ class AnsPress_User
 		wp_reset_postdata();
 	}
 
+	/**
+	 * Register user foloowers page.
+	 */
 	public function followers_page() {
-		$followers = ap_has_users( array( 'user_id' => ap_get_displayed_user_id(), 'sortby' => 'followers' ) );
+		$followers = ap_has_users( array(
+			'user_id' 	=> ap_get_displayed_user_id(),
+			'sortby' 	=> 'followers',
+		) );
 
 		if ( $followers->has_users() ) {
-			include ap_get_theme_location( 'user/followers.php' ); } else {
-			_e( 'No followers found', 'ap' ); }
+			include ap_get_theme_location( 'user/followers.php' );
+		} else {
+			esc_attr_e( 'No followers found', 'ap' );
+		}
 
 	}
 
+	/**
+	 * Register followers page in AnsPress
+	 */
 	public function following_page() {
 		$following = ap_has_users( array( 'user_id' => ap_get_displayed_user_id(), 'sortby' => 'following' ) );
 
 		if ( $following->has_users() ) {
-			include ap_get_theme_location( 'user/following.php' ); } else {
-			_e( 'You are not following anyone.', 'ap' ); }
+			include ap_get_theme_location( 'user/following.php' );
+		} else {
+			esc_attr_e( 'You are not following anyone.', 'ap' );
+		}
 
 	}
 
@@ -181,10 +199,20 @@ class AnsPress_User
 			return;
 		}
 
-		$questions = ap_get_questions( array( 'ap_query' => 'ap_subscription_query', 'user_id' => get_current_user_id(), 'sortby' => 'newest' ) );
+		$questions = ap_get_questions( array(
+			'ap_query' 	=> 'ap_subscription_query',
+			'user_id' 	=> get_current_user_id(),
+			'sortby' 	=> 'newest',
+		) );
+
 		ap_get_template_part( 'user/subscription' );
 	}
 
+	/**
+	 * Filter AnsPress page title for user sub pages
+	 * @param  string $title Title.
+	 * @return string
+	 */
 	public function ap_page_title($title) {
 
 		if ( is_ap_user() ) {
@@ -194,7 +222,8 @@ class AnsPress_User
 			$my = ap_is_my_profile();
 
 			if ( 'activity' == $active ) {
-				$title = $my ?  __( 'My activity', 'ap' ) : sprintf( __( '%s\'s activity', 'ap' ), $name ); } elseif ('profile' == $active)
+				$title = $my ?  __( 'My activity', 'ap' ) : sprintf( __( '%s\'s activity', 'ap' ), $name );
+			} elseif ('profile' == $active)
 				$title = $my ?  __( 'My profile', 'ap' ) : sprintf( __( '%s\'s profile', 'ap' ), $name );
 
 			elseif ('questions' == $active)
@@ -225,10 +254,17 @@ class AnsPress_User
 		return $title;
 	}
 
-	/* For modifying WP_User_Query, if passed with a var ap_followers_query */
-	public function follower_query($query) {
+	/**
+	 * For modifying WP_User_Query, if passed with a var ap_followers_query
+	 * @param  array $query Mysql clauses.
+	 * @return array
+	 */
+	public function follower_query( $query ) {
 
-		if ( isset( $query->query_vars['ap_query'] ) && $query->query_vars['ap_query'] == 'user_sort_by_followers' && isset( $query->query_vars['user_id'] ) ) {
+		if ( isset( $query->query_vars['ap_query'] ) &&
+			$query->query_vars['ap_query'] == 'user_sort_by_followers' &&
+			isset( $query->query_vars['user_id'] ) ) {
+
 			global $wpdb;
 
 			$query->query_from = $query->query_from.' LEFT JOIN '.$wpdb->prefix."ap_meta M ON $wpdb->users.ID = M.apmeta_userid";
@@ -241,9 +277,17 @@ class AnsPress_User
 		return $query;
 	}
 
+	/**
+	 * Modify user query to get following users
+	 * @param  array $query Mysql claueses
+	 * @return array
+	 */
 	public function following_query($query) {
 
-		if ( isset( $query->query_vars['ap_query'] ) && $query->query_vars['ap_query'] == 'user_sort_by_following' && isset( $query->query_vars['user_id'] ) ) {
+		if ( isset( $query->query_vars['ap_query'] ) &&
+			$query->query_vars['ap_query'] == 'user_sort_by_following' &&
+			isset( $query->query_vars['user_id'] ) ) {
+
 			global $wpdb;
 
 			$query->query_from = $query->query_from.' LEFT JOIN '.$wpdb->prefix."ap_meta M ON $wpdb->users.ID = M.apmeta_actionid";
@@ -254,6 +298,11 @@ class AnsPress_User
 		return $query;
 	}
 
+	/**
+	 * Filter user query so that it can be sorted by user reputation
+	 * @param  array $query Mysql claueses.
+	 * @return array
+	 */
 	public function user_sort_by_reputation($query) {
 
 		if ( isset( $query->query_vars['ap_query'] ) && $query->query_vars['ap_query'] == 'user_sort_by_reputation' ) {
@@ -266,11 +315,11 @@ class AnsPress_User
 
 	/**
 	 * Create unique name for files
-	 * @param  string  $dir
-	 * @param  integer $user_id
-	 * @param  string  $ext
+	 * @param  string  $dir 	 Directory.
+	 * @param  integer $user_id  User ID.
+	 * @param  string  $ext      Image extension.
 	 * @return string
-	 * @since 2.1.5
+	 * @since  2.1.5
 	 */
 	public function unique_filename_callback( $dir, $user_id, $ext ) {
 		global $user_id;
@@ -280,31 +329,36 @@ class AnsPress_User
 
 	/**
 	 * Upload a photo to server. Before uploading it check for valid image type
-	 * @uses wp_handle_upload
-	 * @param  string $file_name Name of file input field
-	 * @return array|false
+	 * @uses 	wp_handle_upload
+	 * @param  	string $file_name      Name of file input field.
+	 * @return 	array|false
 	 */
 	public function upload_photo($file_name) {
 
 		if ( $_FILES[ $file_name ]['size'] > ap_opt( 'max_upload_size' ) ) {
-			$this->upload_error  = sprintf( __( 'File cannot be uploaded, size is bigger then %d Byte' ), ap_opt( 'max_upload_size' ) );
+			$this->upload_error  = sprintf( __( 'File cannot be uploaded, size is bigger then %d Byte', 'ap' ), ap_opt( 'max_upload_size' ) );
 			return false;
 		}
 
-		require_once ABSPATH.'wp-admin'.'/includes/image.php';
-		require_once ABSPATH.'wp-admin'.'/includes/file.php';
-		require_once ABSPATH.'wp-admin'.'/includes/media.php';
+		require_once ABSPATH.'wp-admin/includes/image.php';
+		require_once ABSPATH.'wp-admin/includes/file.php';
+		require_once ABSPATH.'wp-admin/includes/media.php';
 
 		if ( ! empty( $_FILES[ $file_name ][ 'name' ] ) && is_uploaded_file( $_FILES[ $file_name ]['tmp_name'] ) ) {
 			$mimes = array(
-				'jpg|jpeg|jpe' => 'image/jpeg',
-				'gif' => 'image/gif',
-				'png' => 'image/png',
+				'jpg|jpeg|jpe' 	=> 'image/jpeg',
+				'gif' 			=> 'image/gif',
+				'png' 			=> 'image/png',
 			);
 
-			$photo = wp_handle_upload( $_FILES[ $file_name ], array( 'mimes' => $mimes, 'test_form' => false, 'unique_filename_callback' => array( $this, 'unique_filename_callback' ) ) );
+			$photo = wp_handle_upload( $_FILES[ $file_name ], array(
+				'mimes' => $mimes,
+				'test_form' => false,
+				'unique_filename_callback' => array( $this, 'unique_filename_callback' ),
+			 ) );
 
-			if ( empty( $photo[ 'file' ] ) || isset( $photo['error'] ) ) { // handle failures
+			if ( empty( $photo[ 'file' ] ) || isset( $photo['error'] ) ) {
+				// Handle failures.
 				$this->upload_error = __( 'There was an error while uploading avatar, please check your image', 'ap' );
 				return false;
 			}
@@ -313,9 +367,9 @@ class AnsPress_User
 		}
 	}
 
-    /**
-     * Process cover upload form
-     */
+	/**
+	 * Process cover upload form
+	 */
 	public function cover_upload() {
 
 		if ( ap_user_can_upload_cover() && ap_verify_nonce( 'upload_cover_'.get_current_user_id() ) ) {
@@ -325,7 +379,7 @@ class AnsPress_User
 			if ( $photo === false ) {
 				ap_send_json( ap_ajax_responce( array( 'message' => $this->upload_error, 'message_type' => 'error' ) ) ); }
 
-			$file = str_replace( '\\', '\\\\', $photo['file'] );
+			$file = str_replace( '\\', '\\\\', wp_unslash( $photo['file'] ) );
 			$photo['file'] = $file;
 
 			$photo['small_url'] = str_replace( basename( $photo['url'] ), 'small_'.basename( $photo['url'] ), $photo['url'] );
@@ -341,10 +395,12 @@ class AnsPress_User
 
 			if ( $previous_cover['file'] && file_exists( $previous_cover['file'] ) ) {
 				unlink( $previous_cover['file'] );
-            }
+			}
 
+			// Delete previous image.
 			if ( $previous_cover['small_file'] && file_exists( $previous_cover['small_file'] ) ) {
-				unlink( $previous_cover['small_file'] ); }
+				unlink( $previous_cover['small_file'] );
+			}
 
 			// Resize thumbnail.
 			$image = wp_get_image_editor( $file );
@@ -356,18 +412,30 @@ class AnsPress_User
 				$image->save( $small_name );
 			}
 
+			// Update new photo link.
 			update_user_meta( $userid, '_ap_cover', $photo );
 
 			do_action( 'ap_after_cover_upload', $userid, $photo );
 
-			ap_send_json( ap_ajax_responce( array( 'action' => 'cover_uploaded', 'status' => true, 'message' => __( 'Cover photo uploaded successfully.', 'ap' ), 'user_id' => $userid, 'image' => ap_get_cover_src( $userid ) ) ) );
+			ap_ajax_json( array(
+				'action' 	=> 'cover_uploaded',
+				'status' 	=> true,
+				'message' 	=> __( 'Cover photo uploaded successfully.', 'ap' ),
+				'user_id' 	=> $userid,
+				'image' 	=> ap_get_cover_src( $userid ),
+			) );
 		}
 
-		ap_send_json( ap_ajax_responce( array( 'message' => __( 'There was an error while uploading cover photo, please check your image and try again.', 'ap' ), 'message_type' => 'error' ) ) );
+		ap_ajax_json( array(
+			'message' => __( 'There was an error while uploading cover photo, please check your image and try again.', 'ap' ),
+			'message_type' => 'error',
+		) );
 	}
 
 	/**
-	 * Process ajax user avatar upload request. Sanitize file and pass to upload_file(). Rename image to md5 and store file * name in user meta. Also remove existing avtar if exists
+	 * Process ajax user avatar upload request.
+	 * Sanitize file and pass to upload_file(). Rename image to md5 and store file
+	 * name in user meta. Also remove existing avtar if exists
 	 * @return void
 	 */
 	public function avatar_upload() {
@@ -378,7 +446,7 @@ class AnsPress_User
 
 			if ( false === $photo ) {
 				ap_send_json( ap_ajax_responce( array( 'message' => $this->upload_error, 'message_type' => 'error' ) ) );
-            }
+			}
 
 			$file = wp_unslash( $photo['file'] );
 			$photo['file'] = $file;
@@ -396,11 +464,11 @@ class AnsPress_User
 
 			if ( $previous_avatar['file'] && file_exists( $previous_avatar['file'] ) ) {
 				unlink( $previous_avatar['file'] );
-            }
+			}
 
 			if ( $previous_avatar['small_file'] && file_exists( $previous_avatar['small_file'] ) ) {
 				unlink( $previous_avatar['small_file'] );
-            }
+			}
 
 			// Resize thumbnail.
 			$image = wp_get_image_editor( $file );
@@ -416,13 +484,26 @@ class AnsPress_User
 
 			do_action( 'ap_after_avatar_upload', $userid, $photo );
 
-			ap_send_json( ap_ajax_responce( array( 'status' => true, 'message' => __( 'Avatar uploaded successfully.', 'ap' ), 'view' => array( 'user_avatar_'.$userid => get_avatar( $userid, 150 ) ), 'view_html' => true ) ) );
+			ap_ajax_json( array(
+				'status' 	=> true,
+				'message' 	=> __( 'Avatar uploaded successfully.', 'ap' ),
+				'view' 		=> array( 'user_avatar_'.$userid => get_avatar( $userid, 150 ) ),
+				'view_html' => true,
+			) );
 		}
 
-		ap_send_json( ap_ajax_responce( array( 'message' => __( 'There was an error while uploading avatar, please check your image', 'ap' ), 'message_type' => 'error' ) ) );
+		ap_ajax_json( array(
+			'message' 		=> __( 'There was an error while uploading avatar, please check your image', 'ap' ),
+			'message_type' 	=> 'error',
+		) );
 
 	}
 
+	/**
+	 * Add AnsPress avtar in Wp discussion setting
+	 * @param  array $avatar_defaults Avatar types.
+	 * @return array
+	 */
 	public function default_avatar($avatar_defaults) {
 		$new_avatar = 'ANSPRESS_AVATAR_SRC';
 		$avatar_defaults[$new_avatar] = 'AnsPress';
@@ -432,11 +513,11 @@ class AnsPress_User
 
 	/**
 	 * Override get_avatar
-	 * @param  string         $avatar
-	 * @param  integar|string $id_or_email
-	 * @param  string         $size
-	 * @param  string         $default
-	 * @param  string         $alt
+	 * @param  string         $avatar 		Avatar image.
+	 * @param  integar|string $id_or_email 	User id or email.
+	 * @param  string         $size 		Avatar size.
+	 * @param  string         $default 		Default avatar.
+	 * @param  string         $alt 			Avatar image alternate text.
 	 * @return string
 	 */
 	public function get_avatar($avatar, $id_or_email, $size, $default, $alt) {
@@ -484,7 +565,7 @@ class AnsPress_User
 
 	/**
 	 * Set icon class for user menus
-	 * @param  arrat $menus
+	 * @param  array $menus AnsPress user menu.
 	 * @return array
 	 * @since 2.0.1
 	 */
@@ -504,8 +585,9 @@ class AnsPress_User
 		);
 
 		foreach ( $icons as $k => $i ) {
-			if ( isset( $menus[$k] ) ) {
-				$menus[$k]['class'] = $i; }
+			if ( isset( $menus[ $k ] ) ) {
+				$menus[ $k ]['class'] = $i;
+			}
 		}
 
 		return $menus;

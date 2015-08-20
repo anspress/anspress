@@ -234,10 +234,12 @@ class AnsPress_Form {
 	 * @since 2.0.1
 	 */
 	private function desc() {
-
 		if ( ! $this->field['show_desc_tip'] ) {
-			$this->output .= ( ! empty( $this->field['desc'] ) ? '<p class="ap-field-desc">'.$this->field['desc'].'</p>' : ''); } else {
-			$this->output .= ( ! empty( $this->field['desc'] ) ? '<span class="ap-tip ap-field-desc" data-tipposition="right" title="'.esc_html( $this->field['desc'] ).'">?</span>' : ''); }
+			$this->output .= ( ! empty( $this->field['desc'] ) ? '<p class="ap-field-desc">'.$this->field['desc'].'</p>' : '');
+		} else {
+
+			$this->output .= ( ! empty( $this->field['desc'] ) ? '<span class="ap-tip ap-field-desc" data-tipposition="right" title="'.esc_html( $this->field['desc'] ).'">?</span>' : '');
+		}
 	}
 
 	/**
@@ -249,7 +251,8 @@ class AnsPress_Form {
 	private function text_field($field = array(), $type = 'text') {
 
 		if ( isset( $field['label'] ) ) {
-			$this->label(); }
+			$this->label();
+		}
 
 		$placeholder = $this->placeholder();
 		$autocomplete = isset( $field['autocomplete'] )  ? ' autocomplete="off"' : '';
@@ -283,7 +286,8 @@ class AnsPress_Form {
 		$this->error_messages();
 
 		if ( ! $this->field['show_desc_tip'] ) {
-			$this->desc(); }
+			$this->desc();
+		}
 
 		$this->output .= '</div>';
 	}
@@ -297,7 +301,8 @@ class AnsPress_Form {
 	private function number_field($field = array()) {
 
 		if ( isset( $field['label'] ) ) {
-			$this->label(); }
+			$this->label();
+		}
 
 		$placeholder = $this->placeholder();
 		$autocomplete = isset( $field['autocomplete'] )  ? ' autocomplete="off"' : '';
@@ -306,7 +311,8 @@ class AnsPress_Form {
 		$this->error_messages();
 
 		if ( ! $this->field['show_desc_tip'] ) {
-			$this->desc(); }
+			$this->desc();
+		}
 
 		$this->output .= '</div>';
 	}
@@ -329,21 +335,20 @@ class AnsPress_Form {
 
 		$this->output .= '<input id="'. @$field['name'] .'" type="checkbox" class="ap-form-control" value="1" name="'. @$field['name'] .'" '.checked( (bool) $field['value'], true, false ).' '. @$field['attr'] .' />';
 
-		// hack for getting value of unchecked checkbox
+		// Hack for getting value of unchecked checkbox.
 		$this->output .= '<input type="hidden" value="0" name="_hidden_'. @$field['name'] .'" />';
 
 		if ( ! empty( $field['desc'] ) ) {
-			$this->output .= @$field['desc'].'</label>'; }
+			$this->output .= @$field['desc'].'</label>';
+		}
 
 		$this->error_messages();
 
-		// if(!$this->field['show_desc_tip'])
-			// $this->desc();
 		$this->output .= '</div>';
 	}
 
 	/**
-	 * output select field options
+	 * Output select field options
 	 * @param  array $field
 	 * @return void
 	 * @since 2.0.1
