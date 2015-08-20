@@ -6,7 +6,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/anspress-question-"
 "answer\n"
 "POT-Creation-Date: 2015-08-20 15:26-0400\n"
-"PO-Revision-Date: 2015-08-20 15:44-0400\n"
+"PO-Revision-Date: 2015-08-20 16:42-0400\n"
 "Last-Translator: \n"
 "Language-Team: Romain <bbig86@gmail.com>\n"
 "Language: fr_FR\n"
@@ -1651,11 +1651,11 @@ msgstr "Le commentaire a bien été supprimé."
 
 #: includes/functions.php:892
 msgid "You are following this question."
-msgstr "Vous suivez cette question"
+msgstr "Vous suivez  maintenant ce type de question."
 
 #: includes/functions.php:893 includes/functions.php:919
 msgid "Successfully unfollowed."
-msgstr "Annulation prise en compte."
+msgstr "Vous ne suivez plus ce type de question."
 
 #: includes/functions.php:894
 msgid "Question submitted successfully"
