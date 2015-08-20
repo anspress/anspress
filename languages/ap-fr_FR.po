@@ -1,0 +1,166 @@
+# Copyright (C) 2015 
+# This file is distributed under the same license as the  package.
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/anspress-question-"
+"answer\n"
+"POT-Creation-Date: 2015-08-19 13:07-0400\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2015-08-19 13:23-0400\n"
+"Language-Team: \n"
+"X-Generator: Poedit 1.8.4\n"
+"X-Poedit-KeywordsList: __;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;"
+"_nx_noop:1,2,3c;esc_attr__;esc_html__;esc_attr_e;esc_html_e;esc_attr_x:1,2c;"
+"esc_html_x:1,2c\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-Basepath: ..\n"
+"X-Textdomain-Support: yes\n"
+"Last-Translator: \n"
+"Language: fr_FR\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: tags-for-anspress.php:76 tags-for-anspress.php:496
+msgid "Tag"
+msgstr "Mot-clé"
+
+#: tags-for-anspress.php:77 tags-for-anspress.php:272 tags-for-anspress.php:285
+#: tags-for-anspress.php:335 tags-for-anspress.php:384
+#: tags-for-anspress.php:676
+msgid "Tags"
+msgstr "Mots-clés"
+
+#: tags-for-anspress.php:206
+msgid "Question Tags"
+msgstr "Mots-clés de la question"
+
+#: tags-for-anspress.php:208
+msgid "All Tags"
+msgstr "Toutes les mots-clés"
+
+#: tags-for-anspress.php:210
+msgid "Edit Tag"
+msgstr "Modifier le mot-clé"
+
+#: tags-for-anspress.php:211
+msgid "New Tag"
+msgstr "Nouveau mot-clé"
+
+#: tags-for-anspress.php:212
+msgid "View Tag"
+msgstr "Voir le mot-clé"
+
+#: tags-for-anspress.php:213
+msgid "Search Tag"
+msgstr "Rechercher le mot-clé"
+
+#: tags-for-anspress.php:214
+msgid "Nothing Found"
+msgstr "Rien n'a été trouvé"
+
+#: tags-for-anspress.php:215
+msgid "Nothing found in Trash"
+msgstr "Rien n'a été trouvé dans la corbeille"
+
+#: tags-for-anspress.php:272
+msgid "Questions Tags"
+msgstr "Mots-clés des questions"
+
+#: tags-for-anspress.php:288
+msgid "Tags to show"
+msgstr "Mots-clés à afficher"
+
+#: tags-for-anspress.php:289
+msgid "Numbers of tags to show in tags page."
+msgstr "Nombre de mots-clés à affciher dans la page des mots-clés"
+
+#: tags-for-anspress.php:295
+msgid "Maximum tags"
+msgstr "Maximum de mots-clés"
+
+#: tags-for-anspress.php:296
+msgid "Maximum numbers of tags that user can add when asking."
+msgstr ""
+"Nombre maximum de mots-clés que l'utilisateur peut ajouter lorsque demandé"
+
+#: tags-for-anspress.php:302
+msgid "Minimum tags"
+msgstr "Minimum de mots-clés"
+
+#: tags-for-anspress.php:303
+msgid "minimum numbers of tags that user must add when asking."
+msgstr ""
+"Nombre minimum de mots-clés que l'utilisateur doit ajouter lorsque demandé"
+
+#: tags-for-anspress.php:388
+msgid "Slowly type for suggestions"
+msgstr "Tapez lentement pour obtenir des suggestions"
+
+#: tags-for-anspress.php:454
+msgid "Categories"
+msgstr "Catégories"
+
+#: tags-for-anspress.php:575
+msgid "Tagged"
+msgstr "Étiquetés"
+
+#: tags-for-anspress.php:634
+msgid "Questions"
+msgstr "Questions"
+
+#: tags-for-anspress.php:694
+msgid "Popular"
+msgstr "Populaire"
+
+#: tags-for-anspress.php:695
+msgid "New"
+msgstr "Nouveau"
+
+#: tags-for-anspress.php:696
+msgid "Name"
+msgstr "Nom"
+
+#: theme/no-tags-found.php:15
+msgid "No tags is set!"
+msgstr "Aucun mot-clé est disponible!"
+
+#: theme/tag.php:12
+msgid "Question tag: %s"
+msgstr "Mots-clés : %s"
+
+#: theme/tag.php:12
+msgid "1 Question"
+msgid_plural "%s Questions"
+msgstr[0] "1 question"
+msgstr[1] "%s questions"
+
+#: theme/tags-question-list.php:22
+msgid "View all questions"
+msgstr "Voir toutes les questions"
+
+#: theme/tags.php:20
+msgid "Search tags..."
+msgstr "Recherche de mots-clés"
+
+#: theme/tags.php:34
+msgid "%d Question"
+msgid_plural "%d Questions"
+msgstr[0] "%d question"
+msgstr[1] "%d questions"
+
+#: theme/tags.php:43
+msgid "No description."
+msgstr "Aucune description."
+
+#: tags-for-anspress.php:207
+msgctxt "ap"
+msgid "Tag"
+msgstr "Mot-clé"
+
+#: tags-for-anspress.php:209
+msgctxt "ap"
+msgid "Add New Tag"
+msgstr "Ajouter un nouveau mot-clé"
