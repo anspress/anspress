@@ -6,7 +6,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/anspress-question-"
 "answer\n"
 "POT-Creation-Date: 2015-08-20 15:26-0400\n"
-"PO-Revision-Date: 2015-08-20 16:42-0400\n"
+"PO-Revision-Date: 2015-08-26 13:17-0400\n"
 "Last-Translator: \n"
 "Language-Team: Romain <bbig86@gmail.com>\n"
 "Language: fr_FR\n"
@@ -444,7 +444,7 @@ msgstr "Avatar"
 
 #: admin/options-page.php:102
 msgid "List avatar size"
-msgstr "Taille de la list des avatars"
+msgstr "Taille de l'avatar dans la liste"
 
 #: admin/options-page.php:103
 msgid "User avatar size for questions list."
@@ -492,7 +492,7 @@ msgstr "Réponses par page"
 
 #: admin/options-page.php:156
 msgid "Answers to show per page."
-msgstr "Réponses à afficher sur une page"
+msgstr "Réponses à afficher sur une page."
 
 #: admin/options-page.php:163
 msgid "Users per page"
@@ -565,23 +565,23 @@ msgstr "Page slug"
 
 #: admin/options-page.php:219
 msgid "Ask page slug"
-msgstr "Titre de la page de réponse"
+msgstr "Slug de la page Poser une question"
 
 #: admin/options-page.php:220
 msgid "Enter slug for ask page."
-msgstr "Mot clé pour la page d'une nouvelle question"
+msgstr "Entrer le slug pour la page Poser une question"
 
 #: admin/options-page.php:227
 msgid "Question page slug"
-msgstr "Page slug des questions"
+msgstr "Page slug d'une question"
 
 #: admin/options-page.php:228
 msgid "Enter slug for question page."
-msgstr "Nombre de caractères minimum pour le titre."
+msgstr "Entrer le slug pour la page des questions"
 
 #: admin/options-page.php:235
 msgid "Users page slug"
-msgstr "Titre par défaut"
+msgstr "Slug de la page des utilisateurs"
 
 #: admin/options-page.php:236
 msgid "Enter slug for users page."
@@ -589,7 +589,7 @@ msgstr "Réponses à afficher sur une page"
 
 #: admin/options-page.php:243
 msgid "User page slug"
-msgstr "Titre par defaut"
+msgstr "Slug de la page utilisateur"
 
 #: admin/options-page.php:244
 msgid ""
@@ -608,7 +608,7 @@ msgstr "Afficher le titre de la question"
 
 #: admin/options-page.php:257
 msgid "Show question title in single question page."
-msgstr "Afficher le titre de la question sur la page question (Balise Title)."
+msgstr "Afficher la question dans un titre de la page question."
 
 #: admin/options-page.php:264
 msgid "Show solved prefix"
@@ -624,7 +624,7 @@ msgstr ""
 
 #: admin/options-page.php:272
 msgid "Base page title"
-msgstr "Titre par défaut"
+msgstr "Titre de la page de base"
 
 #: admin/options-page.php:273
 msgid "Main questions list page title"
@@ -632,15 +632,15 @@ msgstr "Titre de la page principale"
 
 #: admin/options-page.php:280
 msgid "Ask page title"
-msgstr "Titre de la page de réponse"
+msgstr "Titre de la page pour poser une question"
 
 #: admin/options-page.php:281
 msgid "Title of the ask page"
-msgstr "Titre de la page réponse"
+msgstr "Titre de la page pour poser une question"
 
 #: admin/options-page.php:288
 msgid "Users page title"
-msgstr "Titre par defaut"
+msgstr "Titre de la page des utilisateurs"
 
 #: admin/options-page.php:289
 msgid "Title of the users page"
@@ -664,11 +664,11 @@ msgstr "Nombre de caractères minimum pour le contenu."
 
 #: admin/options-page.php:316 admin/options-page.php:376
 msgid "Use text editor ?"
-msgstr "Utiliser l'éditeur de text ?"
+msgstr "Utiliser l'éditeur de texte html ?"
 
 #: admin/options-page.php:317 admin/options-page.php:377
 msgid "Text editor as default."
-msgstr "Editeur de texte par défaut."
+msgstr "Éditeur de texte html comme éditeur par défaut"
 
 #: admin/options-page.php:324 admin/options-page.php:384
 msgid "Disable comments"
@@ -680,7 +680,7 @@ msgstr "Interdire les commentaire sur une question."
 
 #: admin/options-page.php:332 admin/options-page.php:392
 msgid "Disable voting"
-msgstr "Desactiver les votes"
+msgstr "Désactiver les votes"
 
 #: admin/options-page.php:333
 msgid "Disable voting on questions."
@@ -701,7 +701,8 @@ msgstr "Fermer les questions lorsqu'une réponse est sélectionnée"
 #: admin/options-page.php:349
 msgid "If enabled this will prevent user to submit answer on solved question."
 msgstr ""
-"Autoriser la possibiliter d'avoir plusieurs réponses pour une question."
+"Si cette option est cochée, les utilisateurs ne pourront pas répondre à une "
+"question déjà résolue."
 
 #: admin/options-page.php:360
 msgid "Multiple Answers"
@@ -1273,7 +1274,7 @@ msgstr "%1$s commentés sur %3$s - %2$s"
 
 #: includes/class-form.php:37
 msgid "Submit"
-msgstr "Envoyer"
+msgstr "Soumettre"
 
 #: includes/class-form.php:145
 msgid "Cancel"
@@ -1412,7 +1413,7 @@ msgstr "%s réputations"
 
 #: includes/class-user.php:210
 msgid "About me"
-msgstr "A propos d'anspress"
+msgstr "À propos de moi"
 
 #: includes/class-user.php:210
 #, php-format
@@ -1481,7 +1482,7 @@ msgstr "Adresse email invalide"
 
 #: includes/common-pages.php:38
 msgid "Ask"
-msgstr "Demander"
+msgstr "Poser une question"
 
 #: includes/common-pages.php:147
 msgid "You don't have permission to access this page."
@@ -2157,7 +2158,7 @@ msgstr " "
 #: theme/default/widgets/user.php:13
 #, php-format
 msgid "%s Rep."
-msgstr "%s Rep."
+msgstr "%s réponses"
 
 #: includes/reputation.php:558
 #, php-format
@@ -2699,11 +2700,9 @@ msgid "Private Answer"
 msgstr "Réponse privé"
 
 #: theme/default/answers.php:37
-#, fuzzy, php-format
+#, php-format
 msgid "Please %s or %s to view answers and comments"
-msgstr ""
-"Merci de vous <a href=\"/login/\">connecter</a> ou <a href=\"/inscription/"
-"\">créer un compte</a> pour voir les questions et les commentaires"
+msgstr "Merci de %s ou %s pour voir les réponses et commentaires"
 
 #: theme/default/ask.php:26
 msgid "How to ask"
@@ -2948,11 +2947,9 @@ msgid "Reset sorting and filter"
 msgstr "Réinitialiser le tri et le filtre"
 
 #: theme/default/login-signup.php:3
-#, fuzzy, php-format
+#, php-format
 msgid "Please %s or %s."
-msgstr ""
-"Merci de vous <a href=\"/login/\">connecter</a> ou <a href=\"/inscription/"
-"\">créer un compte</a> pour poser une question"
+msgstr "Merci de %s ou %s."
 
 #: theme/default/login-signup.php:3 theme/default/login-signup.php:11
 msgid "Login"
@@ -3221,7 +3218,7 @@ msgstr "Ce widget est vu uniquement sur la page utilisateur."
 #: widgets/search.php:52 widgets/subscribe.php:52 widgets/user.php:46
 #: widgets/users.php:52
 msgid "Title:"
-msgstr "Titre:"
+msgstr "Titre :"
 
 #: widgets/followers.php:58 widgets/participants.php:47
 msgid "Avatar size:"
