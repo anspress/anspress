@@ -119,7 +119,6 @@ class AnsPress_Admin
 	 * Register and enqueue admin-specific JavaScript.
 	 */
 	public function enqueue_admin_scripts() {
-
 		global $typenow, $pagenow;
 
 		if ( in_array( $pagenow, array( 'admin.php' ) ) &&  (isset( $_GET['page'] ) && 'anspress' == $_GET['page'] ) ) {
@@ -135,10 +134,11 @@ class AnsPress_Admin
 	 * Register the administration menu for this plugin into the WordPress Dashboard menu.
 	 */
 	public function add_plugin_admin_menu() {
-
 		if ( ! current_user_can( 'delete_pages' ) ) {
 			return;
 		}
+
+		global $submenu;
 
 		$flagged_count = ap_flagged_posts_count();
 		$flagged_count = $flagged_count->total > 0 ? $flagged_count->total : 0;
@@ -184,7 +184,6 @@ class AnsPress_Admin
 
 		add_submenu_page( 'anspress', __( 'Reputation', 'ap' ), __( 'Reputation', 'ap' ), 'manage_options', 'anspress_reputation', array( $this, 'display_reputation_page' ) );
 
-		// Add_submenu_page('anspress', __( 'Extensions', 'ap' ), __( 'Extensions', 'ap' ),  'manage_options', 'anspress_ext', array( $this, 'display_plugin_addons_page' ));
 		 add_submenu_page( 'ap_post_flag', __( 'Post flag', 'ap' ), __( 'Post flag', 'ap' ), 'delete_pages', 'ap_post_flag', array( $this, 'display_post_flag' ) );
 
 		 add_submenu_page( 'ap_select_question', __( 'Select question', 'ap' ), __( 'Select question', 'ap' ), 'delete_pages', 'ap_select_question', array( $this, 'display_select_question' ) );
@@ -195,9 +194,12 @@ class AnsPress_Admin
 		 */
 		do_action( 'ap_admin_menu' );
 
+		add_submenu_page( 'anspress', __( 'AnsPress Options', 'ap' ), __( 'Options', 'ap' ), 'manage_options', 'anspress_options', array( $this, 'display_plugin_admin_page' ) );
+
+		$submenu['anspress'][500] = array( 'Theme & Extensions', 'manage_options' , 'http://anspress.io/themes/' );
+
 		add_submenu_page( 'anspress', __( 'About AnsPress', 'ap' ), __( 'About AnsPress', 'ap' ), 'manage_options', 'anspress_about', array( $this, 'display_plugin_about_page' ) );
 
-		add_submenu_page( 'anspress', __( 'AnsPress Options', 'ap' ), __( 'Options', 'ap' ), 'manage_options', 'anspress_options', array( $this, 'display_plugin_admin_page' ) );
 	}
 
 	/**
@@ -216,7 +218,7 @@ class AnsPress_Admin
 			return $start;
 		}
 
-		/* the position is already reserved find the closet one */
+		// This position is already reserved find the closet one
 		while ( in_array( $start, $menus_positions ) ) {
 			$start += $increment;
 		}
@@ -231,6 +233,7 @@ class AnsPress_Admin
 	public function tax_menu_correction($parent_file) {
 		global $current_screen;
 		$taxonomy = $current_screen->taxonomy;
+
 		if ( 'question_category' == $taxonomy || 'question_tags' == $taxonomy || 'question_label' == $taxonomy || 'rank' == $taxonomy || 'badge' == $taxonomy ) {
 			$parent_file = 'anspress';
 		}
@@ -265,19 +268,7 @@ class AnsPress_Admin
 		include_once( 'reputation.php' );
 		$reputation_table = new AnsPress_Reputation_Table();
 		$reputation_table->prepare_items();
-		?>
-		<div class="wrap">
-			<div id="apicon-users" class="icon32"><br/></div>
-			<h2>
-				<?php esc_attr_e( 'AnsPress Points', 'ap' ); ?>
-				<a class="add-new-h2" href="#" data-button="ap-new-reputation"><?php esc_attr_e( 'New reputation', 'ap' ); ?></a>
-			</h2>
-			<form id="anspress-reputation-table" method="get">
-				<input type="hidden" name="page" value="<?php echo sanitize_text_field( $_REQUEST['page'] ); ?>" />
-				<?php $reputation_table->display() ?>
-			</form>
-		</div>
-		<?php
+		include( 'views/reputation.php' );
 	}
 
 
@@ -293,46 +284,20 @@ class AnsPress_Admin
 	 * Load layout and post table for moderate posts page
 	 */
 	public function display_moderate_page() {
-
 		include_once( 'moderate.php' );
 		$moderate_table = new AP_Moderate_Table();
 		$moderate_table->prepare_items();
-		?>
-		<div class="wrap">
-			<div id="apicon-users" class="icon32"><br/></div>
-			<h2><?php esc_attr_e( 'Posts waiting moderation', 'ap' ); ?></h2>
-			<?php do_action( 'ap_after_admin_page_title' ) ?>
-			<form id="moderate-filter" method="get">
-				<input type="hidden" name="page" value="<?php echo sanitize_text_field( $_REQUEST['page'] ); ?>" />
-				<?php $moderate_table->views() ?>
-				<?php $moderate_table->advanced_filters(); ?>
-				<?php $moderate_table->display() ?>
-			</form>
-		</div>
-		<?php
+		include_once( 'views/moderate.php' );
 	}
 
 	/**
 	 * Display flag page layout
 	 */
 	public function display_flagged_page() {
-
 		include_once( 'flagged.php' );
 		$flagged_table = new AP_Flagged_Table();
 		$flagged_table->prepare_items();
-		?>
-		<div class="wrap">
-			<div id="apicon-users" class="icon32"><br/></div>
-			<h2><?php esc_attr_e( 'Flagged question & answer', 'ap' ); ?></h2>
-			<?php do_action( 'ap_after_admin_page_title' ) ?>
-			<form id="flagged-filter" method="get">
-				<input type="hidden" name="page" value="<?php echo sanitize_text_field( $_REQUEST['page'] ); ?>" />
-				<?php $flagged_table->views() ?>
-				<?php $flagged_table->advanced_filters(); ?>
-				<?php $flagged_table->display() ?>
-			</form>
-		</div>
-		<?php
+		include_once( 'views/flagged.php' );
 	}
 
 	/**
@@ -341,7 +306,6 @@ class AnsPress_Admin
 	 * @since 2.0.0-alpha2
 	 */
 	public function display_post_flag() {
-
 		include_once( 'views/post_flag.php' );
 	}
 
@@ -384,11 +348,13 @@ class AnsPress_Admin
 		return $input;
 	}
 
+	/**
+	 * Hook to run on init
+	 */
 	public function init_actions() {
-
 		$GLOBALS['wp']->add_query_var( 'post_parent' );
 
-		// flush_rules if option updated
+		// Flush_rules if option updated.
 		if ( isset( $_GET['page'] ) && ('anspress_options' == $_GET['page']) && isset( $_GET['settings-updated'] ) && $_GET['settings-updated'] ) {
 			$options = ap_opt();
 			$page = get_page( ap_opt( 'base_page' ) );
@@ -397,9 +363,8 @@ class AnsPress_Admin
 			ap_opt( 'ap_flush', 'true' );
 		}
 
-		// If creating a new question then first set a question ID
+		// If creating a new question then first set a question ID.
 		global $typenow;
-
 		global $pagenow;
 
 		if ( in_array( $pagenow, array( 'post-new.php' ) ) && $typenow == 'answer' && ! isset( $_GET['post_parent'] ) ) {
@@ -408,7 +373,6 @@ class AnsPress_Admin
 	}
 
 	public function question_meta_box_class() {
-
 		require_once( 'meta_box.php' );
 		new AP_Question_Meta_Box();
 	}
@@ -605,8 +569,6 @@ class AnsPress_Admin
 		$submenu['anspress'][0][0] = 'AnsPress';
 	}
 
-
-
 	public function ap_delete_flag() {
 
 		$id = (int) sanitize_text_field( $_POST['id'] );
@@ -753,7 +715,6 @@ class AnsPress_Admin
 	}
 
 	public function taxonomy_rename() {
-
 		global $pagenow;
 
 		if ( ap_opt( 'tags_taxo_renamed' ) == 'true' || ! taxonomy_exists( 'question_tag' ) ) {

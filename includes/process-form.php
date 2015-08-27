@@ -143,7 +143,9 @@ class AnsPress_Process_Form
 		$resp = $recaptcha->verify( $_POST['g-recaptcha-response'], $_SERVER['REMOTE_ADDR'] );
 
 		if ( $resp->isSuccess() ) {
-			return true; }
+			do_action('ap_form_captch_verified');
+			return true;
+		}
 
 		return false;
 	}
@@ -157,7 +159,7 @@ class AnsPress_Process_Form
 
 		global $ap_errors, $validate;
 
-		if ( ap_opt( 'enable_recaptcha' ) && ! $this->check_recaptcha() ) {
+		if ( ap_show_captcha_to_user() && ! $this->check_recaptcha() ) {
 			$this->result = array(
 				'form' 			=> $_POST['ap_form_action'],
 				'message'		=> 'captcha_error',

@@ -98,24 +98,25 @@ function ap_ask_form($editing = false) {
 		);
 	}
 
-	// Show recpatcha if key exists and enabled.
-	if ( ap_opt( 'recaptcha_site_key' ) == '' ) {
-		$reCaptcha_html = '<div class="ap-notice red">'.__( 'reCaptach keys missing, please add keys', 'ap' ).'</div>';
-	} else {
+	if ( ap_show_captcha_to_user() ) {
+		// Show recpatcha if key exists and enabled.
+		if ( ap_opt( 'recaptcha_site_key' ) == '' ) {
+			$reCaptcha_html = '<div class="ap-notice red">'.__( 'reCaptach keys missing, please add keys', 'ap' ).'</div>';
+		} else {
 
-		$reCaptcha_html = '<div class="g-recaptcha" id="recaptcha" data-sitekey="'.ap_opt( 'recaptcha_site_key' ).'"></div>';
+			$reCaptcha_html = '<div class="g-recaptcha" id="recaptcha" data-sitekey="'.ap_opt( 'recaptcha_site_key' ).'"></div>';
 
-		$reCaptcha_html .= '<script type="text/javascript" src="https://www.google.com/recaptcha/api.js?hl='.get_locale().'&onload=onloadCallback&render=explicit" async defer></script>';
+			$reCaptcha_html .= '<script type="text/javascript" src="https://www.google.com/recaptcha/api.js?hl='.get_locale().'&onload=onloadCallback&render=explicit" async defer></script>';
 
-		$reCaptcha_html .= '<script type="text/javascript">';
-		$reCaptcha_html .= 'var onloadCallback = function() {';
-		$reCaptcha_html .= 'widgetId1 = grecaptcha.render("recaptcha", {';
-		$reCaptcha_html .= '"sitekey" : "'.ap_opt( 'recaptcha_site_key' ).'"';
-		$reCaptcha_html .= '});';
-		$reCaptcha_html .= '};</script>';
-	}
+			$reCaptcha_html .= '<script type="text/javascript">';
+			$reCaptcha_html .= 'var onloadCallback = function() {';
+			$reCaptcha_html .= 'widgetId1 = grecaptcha.render("recaptcha", {';
+			$reCaptcha_html .= '"sitekey" : "'.ap_opt( 'recaptcha_site_key' ).'"';
+			$reCaptcha_html .= '});';
+			$reCaptcha_html .= '};</script>';
+		}
 
-	if ( ap_opt( 'enable_recaptcha' ) ) {
+
 		$args['fields'][] = array(
 			'name'  => 'captcha',
 			'type'  => 'custom',

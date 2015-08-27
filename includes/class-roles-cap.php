@@ -70,7 +70,7 @@ class AP_Roles
 				'ap_new_tag'				=> true,
 				'ap_change_status'			=> true,
 				'ap_upload_avatar'			=> true,
-				'ap_edit_profile'			=> true
+				'ap_edit_profile'			=> true,
 			);
 
 			$mod_caps = array(
@@ -554,6 +554,22 @@ function ap_user_can_upload_cover() {
  */
 function ap_user_can_edit_profile() {
 	if ( is_super_admin() || current_user_can( 'ap_edit_profile' ) ) {
+		return true;
+	}
+
+	return false;
+}
+
+function ap_show_captcha_to_user( $user_id = false ) {
+	if ( false === $user_id ) {
+		$user_id = get_current_user_id();
+	}
+
+	if ( apply_filters( 'ap_show_captcha', false ) ) {
+		return false;
+	}
+
+	if ( ap_opt( 'recaptcha_site_key' ) != '' && ap_opt( 'enable_recaptcha' ) ) {
 		return true;
 	}
 

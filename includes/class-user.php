@@ -379,7 +379,7 @@ class AnsPress_User
 			if ( $photo === false ) {
 				ap_send_json( ap_ajax_responce( array( 'message' => $this->upload_error, 'message_type' => 'error' ) ) ); }
 
-			$file = str_replace( '\\', '\\\\', wp_unslash( $photo['file'] ) );
+			$file = str_replace( '\\', '\\\\', $photo['file'] );
 			$photo['file'] = $file;
 
 			$photo['small_url'] = str_replace( basename( $photo['url'] ), 'small_'.basename( $photo['url'] ), $photo['url'] );
@@ -448,7 +448,7 @@ class AnsPress_User
 				ap_send_json( ap_ajax_responce( array( 'message' => $this->upload_error, 'message_type' => 'error' ) ) );
 			}
 
-			$file = wp_unslash( $photo['file'] );
+			$file = str_replace( '\\', '\\\\', $photo['file'] );
 			$photo['file'] = $file;
 
 			$photo['small_url'] = str_replace( basename( $photo['url'] ), 'small_'.basename( $photo['url'] ), $photo['url'] );
