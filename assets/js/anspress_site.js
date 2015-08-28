@@ -201,6 +201,10 @@
         updateText: function(data) {
             if (typeof data.container !== 'undefined') $(data.container).text(data.text);
         },
+        replaceWith: function(data) {
+            if (typeof data.container !== 'undefined')
+                $(data.container).replaceWith(data.html);
+        },
         updateHtml: function(data) {
             if (typeof data.container !== 'undefined') $(data.container).html(data.html);
         },

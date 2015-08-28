@@ -487,8 +487,9 @@ class AnsPress_User
 			ap_ajax_json( array(
 				'status' 	=> true,
 				'message' 	=> __( 'Avatar uploaded successfully.', 'ap' ),
-				'view' 		=> array( 'user_avatar_'.$userid => get_avatar( $userid, 150 ) ),
-				'view_html' => true,
+				'do' 		=> 'replaceWith',
+				'html' 		=> get_avatar( $userid, 150 ),
+				'container' => '[data-view="user_avatar_'.$userid.'"]',
 			) );
 		}
 
@@ -550,14 +551,14 @@ class AnsPress_User
 			$ap_avatar     = ap_get_avatar_src( $id_or_email, ($size > 50 ? false:  true) );
 
 			if ( $ap_avatar !== false ) {
-				return "<span data-view='user_avatar_{$id_or_email}'><img data-cont='avatar_{$id_or_email}' alt='{$alt}' src='{$ap_avatar}' class='avatar avatar-{$size} photo' height='{$size}' width='{$size}' /></span>";
+				return "<img data-view='user_avatar_{$id_or_email}' alt='{$alt}' src='{$ap_avatar}' class='avatar avatar-{$size} photo' height='{$size}' width='{$size}' />";
 			}
 		}
 
 		if ( strpos( $avatar, 'ANSPRESS_AVATAR_SRC' ) !== false ) {
 			$display_name = ap_user_display_name( array( 'user_id' => $id_or_email ) );
 
-			return '<span data-view="user_avatar_'.$id_or_email.'"><img data-cont="avatar_' . $id_or_email . '" alt="' . $alt . '" data-name="' . $display_name . '" data-height="' . $size . '" data-width="' . $size . '" data-char-count="2" class="ap-dynamic-avatar"/></span>';
+			return '<img data-view="user_avatar_'.$id_or_email.'" alt="' . $alt . '" data-name="' . $display_name . '" data-height="' . $size . '" data-width="' . $size . '" class="avatar avatar-' . $size . ' photo ap-dynamic-avatar" />';
 		}
 
 		return $avatar;
