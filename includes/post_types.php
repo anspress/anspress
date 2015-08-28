@@ -184,6 +184,10 @@ class AnsPress_PostTypes
     public function post_type_link($link, $post) {
         if ($post->post_type == 'question') {
             $question_slug = ap_opt('question_page_slug');
+
+            if( empty($question_slug) )
+                $question_slug = 'question';
+
             if(get_option('permalink_structure')){
                 if(ap_opt('question_permalink_follow'))
                     $link =  rtrim(ap_base_page_link(), '/').'/'.$question_slug.'/'.$post->post_name.'/';

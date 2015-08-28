@@ -478,7 +478,7 @@ class AnsPress_Hooks
 
 	            $o .= '<li'.($active_user_page == $m['slug'] ? ' class="active"' : '').'>';
 	            $o .= '<a href="'.$m['link'].'" class="ap-user-link-'.$m['slug'].$class.'">';
-	            $o .= esc_attr( $m['title'] ).'</a>';
+	            $o .= $m['title'].'</a>';
 	            $o .= '</li>';
 	        }
 

@@ -82,6 +82,7 @@ class AnsPress_Admin
 		add_filter( 'manage_comments_custom_column', array( $this, 'comment_flag_column_data' ), 10, 2 );
 		add_filter( 'comment_status_links', array( $this, 'comment_flag_view' ) );
 		add_action( 'current_screen', array( $this, 'comments_flag_query' ), 10, 2 );
+		add_action( 'get_pages', array( $this, 'get_pages' ), 10, 2 );
 	}
 
 	/**
@@ -844,7 +845,7 @@ class AnsPress_Admin
 	 * @since 2.4
 	 */
 	public function join_by_author_name($pieces, $query) {
-		if ( isset( $query->query_vars['ap_author_name'] ) && is_array( $query->query_vars['ap_author_name'] ) && count( $query->query_vars['ap_author_name'] ) > 0 )  {
+		if ( isset( $query->query_vars['ap_author_name'] ) && is_array( $query->query_vars['ap_author_name'] ) && count( $query->query_vars['ap_author_name'] ) > 0 ) {
 
 			global $wpdb;
 			$authors = $query->query_vars['ap_author_name'];
@@ -854,6 +855,20 @@ class AnsPress_Admin
 		}
 
 		return $pieces;
+	}
+
+	public function get_pages($pages, $r) {
+		if ( isset( $r['name'] ) && 'page_on_front' == $r['name'] ) {
+			if ( $pages ) {
+				foreach ( $pages as $k => $page ) {
+					if ( $page->ID == ap_opt( 'base_page' ) ) {
+						unset( $pages[$k] );
+					}
+				}
+			}
+		}
+
+		return $pages;
 	}
 
 

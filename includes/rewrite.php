@@ -72,7 +72,11 @@ class AnsPress_Rewrite
 		$base_page_id 		= ap_opt( 'base_page' );
 
 		$slug = ap_base_page_slug().'/';
+
 		$question_slug = ap_opt( 'question_page_slug' );
+
+		if( empty($question_slug) )
+			$question_slug = 'question';
 
 		$user_page = ap_opt( 'base_before_user_perma' ) ? $slug.'user/' : ap_opt( 'user_page_slug' ).'/';
 
