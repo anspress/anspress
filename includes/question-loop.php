@@ -323,20 +323,20 @@ function ap_question_get_the_net_vote() {
 	return ap_net_vote( ap_question_the_object() );
 }
 
-	/**
-	 * Echo active question permalink
-	 * @return void
-	 * @since 2.1
-	 */
+/**
+ * Echo active question permalink
+ * @return void
+ * @since 2.1
+ */
 function ap_question_the_permalink() {
 	echo ap_question_get_the_permalink();
 }
 
-	/**
-	 * Return active question permalink
-	 * @return string
-	 * @since 2.1
-	 */
+/**
+ * Return active question permalink
+ * @return string
+ * @since 2.1
+ */
 function ap_question_get_the_permalink() {
 	return get_the_permalink( ap_question_get_the_ID() );
 }

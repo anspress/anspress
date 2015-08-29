@@ -190,17 +190,17 @@
             $(this).closest('form').submit();
         });
 
-
         $('body').delegate('#ap-question-sorting', 'submit', function(){
             AnsPress.site.showLoading(this);
+            var form_data = $(this).serialize().replace(/[^&]+=&/g, '').replace(/&[^&]+=$/g, '');
             $.ajax({
                 type: 'GET',
                 dataType: 'html',
-                data: $(this).serializeArray(),
+                data: form_data,
                 success: function(data){
                     AnsPress.site.hideLoading('#ap-question-sorting');
                     var html = $(data);
-                    window.history.pushState(null, null, this.url);
+                    window.history.replaceState('', '', '?' + form_data);
 
                     $('#anspress').html(html.find('#anspress'));
 
