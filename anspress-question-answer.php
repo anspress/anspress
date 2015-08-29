@@ -41,7 +41,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		 * AnsPress version
 		 * @var string
 		 */
-	    private $_plugin_version = '2.3.6';
+	    private $_plugin_version = '2.4-RC';
 
 	    /**
 	     * Class instance
@@ -151,8 +151,12 @@ if ( ! class_exists( 'AnsPress' ) ) {
 
 	    public $anspress_reputation;
 	    public $anspress_bp;
-	    public $anspress_users;
 	    public $third_party;
+	    public $common_pages;
+	    public $post_status;
+	    public $users_class;
+	    public $rewrite_class;
+	    public $history_class;
 
 		/**
 		 * Initializes the plugin by setting localization, hooks, filters, and administrative functions.
@@ -318,11 +322,11 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		public function site_include() {
 		    self::$instance->anspress_hooks 	= new AnsPress_Hooks( $this );
 		    self::$instance->anspress_theme 	= new AnsPress_Theme( $this );
-		    new AnsPress_Common_Pages( $this );
-		    new AnsPress_Post_Status( $this );
-		    new AnsPress_User( $this );
-	    	new AnsPress_Rewrite( $this );
-	    	AP_History::get_instance();
+		    self::$instance->common_pages 		= new AnsPress_Common_Pages( $this );
+		    self::$instance->post_status 		= new AnsPress_Post_Status( $this );
+		    self::$instance->users_class 		= new AnsPress_User( $this );
+	    	self::$instance->rewrite_class 		= new AnsPress_Rewrite( $this );
+	    	self::$instance->history_class 		= new AnsPress_History( $this );
 		}
 
 		/**

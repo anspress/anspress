@@ -76,7 +76,7 @@ class AnsPress_Admin
 		add_filter( 'post_updated_messages', array( $this, 'post_custom_message' ) );
 		add_action( 'admin_head-nav-menus.php', array( $this, 'ap_menu_metaboxes' ) );
 		add_action( 'admin_notices', array( $this, 'taxonomy_rename' ) );
-		add_filter( 'pre_get_posts', array( $this, 'serach_qa_by_userid' ) );
+
 		add_filter( 'posts_clauses', array( $this, 'join_by_author_name' ), 10, 2 );
 		add_filter( 'manage_edit-comments_columns', array( $this, 'comment_flag_column' ) );
 		add_filter( 'manage_comments_custom_column', array( $this, 'comment_flag_column_data' ), 10, 2 );
@@ -371,6 +371,8 @@ class AnsPress_Admin
 		if ( in_array( $pagenow, array( 'post-new.php' ) ) && $typenow == 'answer' && ! isset( $_GET['post_parent'] ) ) {
 			wp_redirect( admin_url( 'admin.php?page=ap_select_question' ) );
 		}
+
+		add_filter( 'pre_get_posts', array( $this, 'serach_qa_by_userid' ) );
 	}
 
 	public function question_meta_box_class() {
