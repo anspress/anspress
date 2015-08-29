@@ -530,6 +530,11 @@ function ap_user_can_upload_image() {
  * @since 2.4
  */
 function ap_user_can_upload_avatar() {
+	// Return false if profile is not active.
+	if ( ! ap_is_profile_active() ) {
+		return false;
+	}
+
 	if ( is_super_admin() || current_user_can( 'ap_upload_avatar' ) ) {
 		return true;
 	}
@@ -542,6 +547,12 @@ function ap_user_can_upload_avatar() {
  * @since 2.4
  */
 function ap_user_can_upload_cover() {
+
+	// Return false if profile is not active.
+	if ( ! ap_is_profile_active() ) {
+		return false;
+	}
+
 	if ( is_super_admin() || current_user_can( 'ap_upload_cover' ) ) {
 		return true;
 	}
@@ -553,6 +564,11 @@ function ap_user_can_upload_cover() {
  * Check if user can edit their profile
  */
 function ap_user_can_edit_profile() {
+	// Return false if profile is not active.
+	if ( ! ap_is_profile_active() ) {
+		return false;
+	}
+
 	if ( is_super_admin() || current_user_can( 'ap_edit_profile' ) ) {
 		return true;
 	}

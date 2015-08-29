@@ -1,5 +1,4 @@
 /* https://github.com/ultimatedelman/autogrow */
-;
 (function($) {
 
     //pass in just the context as a $(obj) or a settings JS object
@@ -103,13 +102,13 @@
             }
         }
         return that;
-    }
+    };
 })(jQuery);
 
 (function($){
 
-    $(document).ready(function() {
-        $(document).click(function(e) {
+    $(document).ready(function () {
+        $( document ).click(function (e) {
             e.stopPropagation();
             if (!$(e.target).is('.ap-dropdown-toggle') && !$(e.target).closest('.open').is('.open') && !$(e.target).closest('form').is('form')) {
                $('.ap-dropdown').removeClass('open');
@@ -226,6 +225,7 @@
         }
 
         $('.ap-dynamic-avatar').initial({fontSize:14, fontWeight:600});
+
         $( document ).ajaxComplete(function( event, data, settings ) {
             $('.ap-dynamic-avatar').initial({fontSize:14, fontWeight:600});
         });

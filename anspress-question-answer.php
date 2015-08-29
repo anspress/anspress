@@ -157,6 +157,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 	    public $users_class;
 	    public $rewrite_class;
 	    public $history_class;
+	    public $notification_class;
 
 		/**
 		 * Initializes the plugin by setting localization, hooks, filters, and administrative functions.
@@ -289,6 +290,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		    require_once ANSPRESS_DIR.'widgets/user.php';
 		    require_once ANSPRESS_DIR.'includes/3rd-party.php';
 		    require_once ANSPRESS_DIR.'includes/flag.php';
+		    require_once ANSPRESS_DIR.'includes/class-notification.php';
 		}
 
 		/**
@@ -327,6 +329,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		    self::$instance->users_class 		= new AnsPress_User( $this );
 	    	self::$instance->rewrite_class 		= new AnsPress_Rewrite( $this );
 	    	self::$instance->history_class 		= new AnsPress_History( $this );
+	    	self::$instance->notification_class = new AP_Notification( $this );
 		}
 
 		/**

@@ -1709,3 +1709,22 @@ function ap_parse_search_string($str) {
 function ap_ajax_json( $response ){
 	ap_send_json( ap_ajax_responce( $response ) );
 }
+
+/**
+ * check if object is notification menu item
+ * @param  object 	$menu 	Menu Object.
+ * @return boolean
+ */
+function ap_is_notification_menu($menu) {
+	return in_array( 'anspress-page-notification', $menu->classes );
+}
+
+/**
+ * Check if object is profile menu item
+ * @param  object 	$menu 	Menu Object.
+ * @return boolean
+ */
+function ap_is_profile_menu($menu) {
+	return in_array( 'anspress-page-profile', $menu->classes );
+}
+

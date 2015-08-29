@@ -40,6 +40,7 @@ class AnsPress_User
 	public function init_actions() {
 		// Register AnsPress pages.
 		ap_register_page( ap_opt( 'users_page_slug' ), __( 'Users', 'ap' ), array( $this, 'users_page' ) );
+
 		ap_register_page( ap_opt( 'user_page_slug' ), __( 'User', 'ap' ), array( $this, 'user_page' ), false );
 		ap_register_user_page( 'about', __( 'About', 'ap' ), array( $this, 'about_page' ) );
 		ap_register_user_page( 'notification', __( 'Notification', 'ap' ), array( $this, 'notification_page' ), true, false );
@@ -72,6 +73,11 @@ class AnsPress_User
 	 * Register user page in AnsPress
 	 */
 	public function user_page() {
+		// Return if user profile is not active
+		if( !ap_is_profile_active() ){
+			return;
+		}
+
 		global $ap_user_query;
 
 		if ( ap_get_displayed_user_id() == 0 && ! is_user_logged_in() ) {
@@ -377,7 +383,8 @@ class AnsPress_User
 			$photo = $this->upload_photo( 'image' );
 
 			if ( $photo === false ) {
-				ap_send_json( ap_ajax_responce( array( 'message' => $this->upload_error, 'message_type' => 'error' ) ) ); }
+				ap_send_json( ap_ajax_responce( array( 'message' => $this->upload_error, 'message_type' => 'error' ) ) );
+			}
 
 			$file = str_replace( '\\', '\\\\', $photo['file'] );
 			$photo['file'] = $file;

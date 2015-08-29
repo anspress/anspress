@@ -98,7 +98,7 @@ function ap_get_user_fields($group = 'basic', $user_id = false){
             'label' => __('Description', 'ap'),
             'type'  => 'textarea',
             'value' => $fields_value['description'],
-            'placeholder'  => __('Write something about yourself'),
+            'placeholder'  => __('Write something about yourself', 'ap'),
             'rows' => 5,
             'order' => 5,
             'sanitize' => array('strip_tags', 'sanitize_text_field')

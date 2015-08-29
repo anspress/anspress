@@ -56,7 +56,6 @@ function ap_count_user_posts_by_type($userid, $post_type = 'question') {
  * @since unknown
  */
 function ap_user_question_count($userid) {
-
 	return ap_count_user_posts_by_type( $userid, $post_type = 'question' );
 }
 
@@ -67,7 +66,6 @@ function ap_user_question_count($userid) {
  * @since unknown
  */
 function ap_user_answer_count($userid) {
-
 	return ap_count_user_posts_by_type( $userid, $post_type = 'answer' );
 }
 
@@ -190,25 +188,23 @@ function ap_user_display_name($args = array()) {
  */
 function ap_user_link($user_id = false, $sub = false) {
 
-	if ( $user_id === false ) {
+	if ( false === $user_id ) {
 		$user_id = get_the_author_meta( 'ID' );
 	}
 
 	if ( $user_id < 1 ) {
-		return '#AnonymousUser'; }
+		return '#AnonymousUser';
+	}
 
-	$is_enabled = apply_filters( 'ap_user_profile_active', true );
-
-	if ( function_exists( 'bp_core_get_userlink' ) && ! $is_enabled ) {
-		return bp_core_get_userlink( $user_id, false, true ); } /*
-	elseif(!$is_enabled)
-        return get_author_posts_url($user_id);*/
-
-	elseif ( ! $is_enabled)
+	if ( function_exists( 'bp_core_get_userlink' ) && ! ap_is_profile_active() ) {
+		return bp_core_get_userlink( $user_id, false, true );
+	} elseif ( ! ap_is_profile_active() ) {
 		return apply_filters( 'ap_user_custom_profile_link', $user_id, $sub );
+	}
 
-	if ( $user_id == 0 ) {
-		return false; }
+	if ( 0 == $user_id ) {
+		return false;
+	}
 
 	$user = get_user_by( 'id', $user_id );
 
@@ -252,7 +248,7 @@ function ap_get_user_menu($user_id = false, $private = false) {
 
 	if ( $user_id === false ) {
 		$user_id = ap_get_displayed_user_id();
-    }
+	}
 
 	$user_pages = anspress()->user_pages;
 
@@ -290,8 +286,8 @@ function ap_get_user_menu($user_id = false, $private = false) {
  */
 function ap_user_menu($collapse = true, $user_id = false) {
 
-    if(false === $user_id)
-	   $user_id = ap_get_displayed_user_id();
+	if ( false === $user_id ) {
+		$user_id = ap_get_displayed_user_id(); }
 
 	$menus = ap_get_user_menu( $user_id );
 
@@ -637,9 +633,9 @@ function ap_user_profile_tab() {
  * @return boolean
  */
 function ap_is_my_profile($user_id = false) {
-	if(false === $user_id){
-		_deprecated_argument( __FUNCTION__, '2.4', __('Passing user_id in ap_is_my_profile is deprecated, function will check again currently logged in user.', 'ap') );
-    }
+	if ( false === $user_id ) {
+		_deprecated_argument( __FUNCTION__, '2.4', __( 'Passing user_id in ap_is_my_profile is deprecated, function will check again currently logged in user.', 'ap' ) );
+	}
 
 	$user_id = get_current_user_id();
 
@@ -816,3 +812,6 @@ function ap_user_link_avatar($user_id, $size = 30) {
 	echo '</a>';
 }
 
+function ap_is_profile_active() {
+	return apply_filters( 'ap_user_profile_active', true );
+}

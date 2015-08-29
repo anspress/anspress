@@ -176,3 +176,4 @@ function ap_widgets_positions()
 		'after_title' => '</h3>',
 	));
 }
+
