@@ -184,7 +184,7 @@ function is_ap_users() {
 
 function is_ap_user() {
 
-	if ( is_anspress() && get_query_var( 'ap_page' ) == 'user' ) {
+	if ( is_anspress() && get_query_var( 'ap_page' ) == ap_get_user_page_slug() ) {
 		return true;
 	}
 
@@ -1097,10 +1097,10 @@ function ap_link_to($sub) {
 function ap_get_link_to($sub) {
 
 	$default_pages = array(
-		'question' => ap_opt( 'question_page_slug' ),
-		'ask' => ap_opt( 'ask_page_slug' ),
-		'users' => ap_opt( 'users_page_slug' ),
-		'user' => ap_opt( 'user_page_slug' ),
+		'question' 	=> ap_opt( 'question_page_slug' ),
+		'ask' 		=> ap_opt( 'ask_page_slug' ),
+		'users' 	=> ap_opt( 'users_page_slug' ),
+		'user' 		=> ap_opt( 'user_page_slug' ),
 	);
 
 	if ( is_array( $sub ) && isset( $sub['ap_page'] ) && @isset( $default_pages[$sub] ) ) {
@@ -1706,13 +1706,13 @@ function ap_parse_search_string($str) {
 	return $output;
 }
 
-function ap_ajax_json( $response ){
+function ap_ajax_json( $response ) {
 	ap_send_json( ap_ajax_responce( $response ) );
 }
 
 /**
  * check if object is notification menu item
- * @param  object 	$menu 	Menu Object.
+ * @param  object $menu   Menu Object.
  * @return boolean
  */
 function ap_is_notification_menu($menu) {
@@ -1721,7 +1721,7 @@ function ap_is_notification_menu($menu) {
 
 /**
  * Check if object is profile menu item
- * @param  object 	$menu 	Menu Object.
+ * @param  object $menu   Menu Object.
  * @return boolean
  */
 function ap_is_profile_menu($menu) {

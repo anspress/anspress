@@ -208,8 +208,13 @@ function ap_user_link($user_id = false, $sub = false) {
 
 	$user = get_user_by( 'id', $user_id );
 
-	if ( ! ap_opt( 'base_before_user_perma' ) && get_option( 'permalink_structure' ) != '' ) {
-		$base = home_url( '/'.ap_opt( 'user_page_slug' ).'/' );
+	if ( get_option( 'permalink_structure' ) != '' ) {
+
+		if ( ! ap_opt( 'base_before_user_perma' ) ){
+			$base = home_url( '/'.ap_get_user_page_slug().'/' );
+		}else{
+			$base = ap_get_link_to( ap_get_user_page_slug() );
+		}
 
 		if ( $sub === false ) {
 			$link = $base. $user->user_login.'/';
@@ -343,8 +348,10 @@ function ap_user_page() {
 	$callback       = @$user_pages[$user_page]['func'];
 
 	if ( $user_id > 0 && ((is_array( $callback ) && method_exists( $callback[0], $callback[1] )) || ( ! is_array( $callback ) && function_exists( $callback )) ) ) {
-		call_user_func( $callback ); } else {
-		echo '<div class="ap-page-template-404">'.__( 'Page not found or registered.', 'ap' ).'</div>'; }
+		call_user_func( $callback );
+	} else {
+		echo '<div class="ap-page-template-404">'.__( 'Page not found or registered.', 'ap' ).'</div>';
+	}
 }
 
 /**
@@ -353,7 +360,6 @@ function ap_user_page() {
  * @since 2.0.1
  */
 function ap_active_user_page() {
-
 	$user_page        = sanitize_text_field( get_query_var( 'user_page' ) );
 	return  $user_page ? $user_page : 'about';
 }
@@ -814,4 +820,18 @@ function ap_user_link_avatar($user_id, $size = 30) {
 
 function ap_is_profile_active() {
 	return apply_filters( 'ap_user_profile_active', true );
+}
+
+/**
+ * Return the slug of user page
+ * @return string
+ */
+function ap_get_user_page_slug() {
+	$slug = ap_opt( 'user_page_slug' );
+
+	if( !empty( $slug )){
+		return $slug;
+	}
+
+	return 'user';
 }
