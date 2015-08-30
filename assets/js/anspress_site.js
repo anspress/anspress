@@ -149,6 +149,11 @@
                         AnsPress.site.hideLoading(this);
                         if (typeof tinyMCE !== 'undefined' && typeof data.type !== 'undefined' && data.type == 'success') tinyMCE.activeEditor.setContent('');
                     },
+                    error: function(jqXHR, textStatus, errorThrown){
+                        console.log(errorThrown);
+                        AnsPress.site.hideLoading(this);
+                        AnsPress.site.addMessage(aplang['not_valid_response'], 'error');
+                    },
                     dataType: 'json',
                     context: this,
                     global: true,

@@ -86,6 +86,7 @@ function ap_scripts_front()
 		'error' => ap_icon('error'),
 		'warning' => ap_icon('warning'),
 		'success' => ap_icon('success'),
+		'not_valid_response' => __('Something went wrong in server side, not a valid response.', 'ap'),
 	));
 
     wp_localize_script('ap-site-js', 'apoptions', array(

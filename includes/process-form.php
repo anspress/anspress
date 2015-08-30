@@ -246,7 +246,8 @@ class AnsPress_Process_Form
 		);
 
 		if ( isset( $fields['parent_id'] ) ) {
-			$question_array['post_parent'] = (int) $fields['parent_id']; }
+			$question_array['post_parent'] = (int) $fields['parent_id'];
+		}
 
 		/**
 		 * FILTER: ap_pre_insert_question
