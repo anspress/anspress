@@ -476,13 +476,17 @@ function ap_allow_anonymous() {
  * @since 2.1
  **/
 function ap_user_can_change_status($post_id) {
+
+	if(!is_user_logged_in())
+		return false;
+
 	if ( current_user_can( 'ap_change_status_other' ) || is_super_admin() ) {
 		return true;
 	}
 
 	$post_o = get_post( $post_id );
 
-	if ( current_user_can( 'ap_change_status' ) && $post_o->post_author == get_current_user_id() ) {
+	if ( current_user_can( 'ap_change_status' ) && ($post_o->post_author > 0 && $post_o->post_author == get_current_user_id() ) ) {
 		return true;
 	}
 
