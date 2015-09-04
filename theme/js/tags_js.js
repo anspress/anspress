@@ -1,46 +1,46 @@
-function ap_tags_item(items){
-	tagsitems = '';
-	jQuery.each(items, function(i){
-		tagsitems += '<li><a href=# data-action="ap-add-tag" data-name="'+ this +'">'+ this +'</a></li>';
-	});
-	return tagsitems;
-}
+(function($){
+	'use strict';
 
-jQuery(document).ready(function(){
-	if(jQuery('[data-role="ap-tagsinput"]').length > 0){
+	function apSanitizeTitle(str) {
+	  str = str.replace(/^\s+|\s+$/g, ''); // trim
+	  str = str.toLowerCase();
 
-		jQuery('[data-role="ap-tagsinput"]').tagsinput({
-			freeInput: true,
-			addOnBlur: false,
-			maxTags: ap_max_tags,
-		});
+	  // remove accents, swap ñ for n, etc
+	  var from = "ãàáäâẽèéëêìíïîõòóöôùúüûñç·/_,:;";
+	  var to   = "aaaaaeeeeeiiiiooooouuuunc------";
 
-		jQuery('[data-role="ap-tagsinput"]').tagsinput('input').blur(function(e){
-			jQuery(document).mouseup(function (e){
-				var container = jQuery('#ap-suggestions');
+	  for (var i=0, l=from.length ; i<l ; i++) {
+	  	str = str.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i));
+	  }
 
-				if (!container.is(e.target)	&& container.has(e.target).length === 0){
-					container.hide();
-				}
-			});
-		});
+	  str = str.replace(/[^a-z0-9 -]/g, '') // remove invalid chars
+	    .replace(/\s+/g, '-') // collapse whitespace and replace by -
+	    .replace(/-+/g, '-'); // collapse dashes
 
+	    return str;
 	}
 
-	jQuery('body').delegate('.bootstrap-tagsinput input', 'keyup', function(){
-		var value = jQuery(this).val();
+	function apAddTag(str, append){
+		str = str.replace(/,/g, '');
+		str = str.trim();
+		str = apSanitizeTitle(str);
 
-		if(value.length == 0)
-			return;
+		if( str.length > 0 ){
+			var html = $('<span class="ap-tags-item" style="display:none">'+str+'<i class="ap-tag-remove">×</i><input type="hidden" name="tags[]" value="'+str+'" /></span>');
 
-		/* abort previous ajax request */
-		if(typeof tagsquery !== 'undefined'){
-			tagsquery.abort();
+			if(typeof append === 'undefined'){
+				html.appendTo('#ap-tags-holder').fadeIn(300);
+			}else{
+				return html;
+			}
 		}
+	}
 
-		AnsPress.site.showLoading(this);
-
-		tagsquery = jQuery.ajax({
+	function apTagsSuggestion(value){
+		if(typeof window.tagsquery !== 'undefined'){
+			window.tagsquery.abort();
+		}
+		window.tagsquery = jQuery.ajax({
 			type: 'POST',
 			url: ajaxurl,
 			data: {
@@ -58,30 +58,61 @@ jQuery(document).ready(function(){
 				var container = jQuery(this).closest('.bootstrap-tagsinput'),
 					position = container.offset();
 
-				if(jQuery('#ap-tag-suggestions').length ==0)
-					jQuery('body').append('<ul id="ap-tag-suggestions" class="ap-tag-suggestions" style="display:none"></ul>');
+				$('#ap-tags-suggestion').html('');
 
 				if(data['items']){
-					var html = ap_tags_item(data['items']);
-					jQuery('#ap-tag-suggestions').html(html).css({'top': (position.top + container.height() + 20), 'left': position.left}).show();
+					$.each(data['items'], function(index, val) {
+						var html = apAddTag(val, false);
+						$('#ap-tags-suggestion').append($(html).fadeIn(300));
+					});
 				}
 
 			}
 		});
-	});
+	}
 
-	jQuery('body').delegate('[data-action="ap-add-tag"]', 'click touchstart', function(e){
-		e.preventDefault();
-		jQuery('[data-role="ap-tagsinput"]').tagsinput('add', jQuery(this).attr('data-name'));
-		jQuery('[data-role="ap-tagsinput"]').tagsinput('input').val('');
-		jQuery('#ap-tag-suggestions').hide();
-	});
+	$(document).ready(function(){
 
-	jQuery('body').delegate('#ask_form .ap-btn-submit', 'click', function() {
-		console.log(jQuery('.bootstrap-tagsinput input').val());
-        jQuery('[data-role="ap-tagsinput"]').tagsinput('add', jQuery('.bootstrap-tagsinput input').val());
-        jQuery('.bootstrap-tagsinput input').val('')
-    });
+		$(window).keydown(function(event){
+			if( event.keyCode == 13 && $(event.target).is('#ap-tags-input') ) {
+				event.preventDefault();
+				return false;
+			}
+		});
 
-});
+		$('#tags').on('apAddNewTag',function(e){
+			e.preventDefault();
+			apAddTag($(this).val().trim(','));
+			$(this).val('');
+		});
 
+		$('#tags').keyup(function(e){
+			e.preventDefault();
+			if(e.keyCode == 13 || e.keyCode == 188 )
+			{
+				clearTimeout(window.tagtime);
+				$(this).trigger('apAddNewTag');
+			}
+		});
+
+		$('body').delegate('.ap-tags-item', 'click', function(event) {
+			$(this).remove();
+		});
+
+		$('#tags').keypress(function(e) {
+			var val = $(this).val().trim();
+			clearTimeout(window.tagtime);
+			window.tagtime = setTimeout(function() {
+				if(val.length > 1){
+					apTagsSuggestion(val);
+				}
+			}, 300);
+		});
+
+		$('#ap-tags-suggestion').delegate('span', 'click', function(e) {
+			apAddTag($(this).text());
+			$(this).remove();
+		});
+	})
+
+})(jQuery)
