@@ -29,7 +29,22 @@
 			var html = $('<span class="ap-tags-item" style="display:none">'+str+'<i class="ap-tag-remove">×</i><input type="hidden" name="tags[]" value="'+str+'" /></span>');
 
 			if(typeof append === 'undefined'){
-				html.appendTo('#ap-tags-holder').fadeIn(300);
+				var exsists = false;
+				var exsist_el = false;
+				$('#ap-tags-holder .ap-tags-item').each(function(index, el) {
+					if(apSanitizeTitle($(this).text()) == str){
+						exsists = true;
+						exsist_el = $(this);
+					}
+				});
+
+				if(exsists){
+					$(exsist_el).animate({opacity: 0}, 100, function(){
+						$(this).animate({opacity: 1}, 400);
+					});
+				}else{
+					html.appendTo('#ap-tags-holder').fadeIn(300);
+				}
 			}else{
 				return html;
 			}
@@ -44,7 +59,7 @@
 			type: 'POST',
 			url: ajaxurl,
 			data: {
-				action:'ap_suggest_tags',
+				action:'ap_tags_suggestion',
 				q: value
 			},
 			context:this,
@@ -106,7 +121,7 @@
 				if(val.length > 1){
 					apTagsSuggestion(val);
 				}
-			}, 300);
+			}, 200);
 		});
 
 		$('#ap-tags-suggestion').delegate('span', 'click', function(e) {

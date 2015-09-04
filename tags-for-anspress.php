@@ -29,7 +29,7 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-if(version_compare(AP_VERSION, '2.3')){
+if(!version_compare(AP_VERSION, '2.3', '>')){
 	function ap_tag_admin_error_notice() {
 	    echo '<div class="update-nag error"> <p>'.sprintf(__('Tags extension require AnsPress 2.4-RC or above. Download from Github %shttp://github.com/anspress/anspress%s', 'tags-for-anspress'), '<a target="_blank" href="http://github.com/anspress/anspress">', '</a>').'</p></div>';
 	}
@@ -106,6 +106,8 @@ class Tags_For_AnsPress
 		add_filter( 'get_terms', array( $this, 'get_terms' ), 10, 3 );
 		add_action( 'ap_user_subscription_tab', array( $this, 'subscription_tab' ) );
 		add_action( 'ap_user_subscription_page', array( $this, 'subscription_page' ) );
+		add_action( 'wp_ajax_ap_tags_suggestion', array( $this, 'ap_tags_suggestion') );
+	    add_action( 'wp_ajax_nopriv_ap_tags_suggestion', array( $this, 'ap_tags_suggestion') );
 	}
 
 	public function tag_page() {
@@ -592,6 +594,33 @@ class Tags_For_AnsPress
 		include ap_get_theme_location( 'tags.php', TAGS_FOR_ANSPRESS_DIR );
 	}
 
+	/**
+	 * Handle tags suggestion on question form
+	 */
+	public function ap_tags_suggestion() {
+		$keyword = sanitize_text_field( wp_unslash( $_POST['q'] ) );
+
+		$tags = get_terms('question_tag', array(
+			'orderby' => 'count',
+			'order' => 'DESC',
+			'hide_empty' => false,
+			'search' => $keyword,
+			'number' => 8,
+		));
+
+		if ( $tags ) {
+			$items = array();
+			foreach ( $tags as $k => $t ) {
+				$items [ $k ] = $t->slug;
+			}
+
+			$result = array( 'status' => true, 'items' => $items );
+			die( json_encode( $result ) );
+		}
+
+		die( json_encode( array( 'status' => false ) ) );
+	}
+
 }
 
 /**
@@ -669,7 +698,6 @@ function ap_question_tags_html($args = array()) {
 
 		return $o;
 	}
-
 }
 
 
