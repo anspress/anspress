@@ -114,6 +114,7 @@ class Tags_For_AnsPress
 	    add_action( 'ap_rewrite_rules', array( $this, 'rewrite_rules' ), 10, 3 );
 		add_filter( 'ap_default_pages', array( $this, 'tags_default_page' ) );
 		add_filter( 'ap_default_page_slugs', array( $this, 'default_page_slugs' ) );
+		add_filter( 'ap_subscribe_btn_type', array( $this, 'subscribe_type' ) );
 	}
 
 	/**
@@ -303,11 +304,12 @@ class Tags_For_AnsPress
 	 */
 	public function ap_default_options($defaults) {
 
-		$defaults['max_tags']       = 5;
-		$defaults['min_tags']       = 1;
-		$defaults['tags_per_page']   = 20;
-		$defaults['tags_page_slug']   = 'tags';
-		$defaults['tag_page_slug']   = 'tag';
+		$defaults['max_tags']       	= 5;
+		$defaults['min_tags']       	= 1;
+		$defaults['tags_page_title']   	= __('Tags', 'tags-for-anspress');
+		$defaults['tags_per_page']   	= 20;
+		$defaults['tags_page_slug']   	= 'tags';
+		$defaults['tag_page_slug']   	= 'tag';
 
 		return $defaults;
 	}
@@ -352,6 +354,14 @@ class Tags_For_AnsPress
 				'description'       => __( 'minimum numbers of tags that user must add when asking.', 'tags-for-anspress' ),
 				'type'              => 'number',
 				'value'             => $settings['min_tags'],
+			),
+			array(
+				'name' 		=> 'anspress_opt[tags_page_title]',
+				'label' 	=> __( 'Tags page title', 'tags-for-anspress' ),
+				'desc' 		=> __( 'Title for tags page', 'tags-for-anspress' ),
+				'type' 		=> 'text',
+				'value' 	=> $settings['tags_page_title'],
+				'show_desc_tip' => false,
 			),
 			array(
 				'name' 		=> 'anspress_opt[tags_page_slug]',
@@ -524,7 +534,9 @@ class Tags_For_AnsPress
 	 * @return string
 	 */
 	public function page_title($title) {
-		if ( is_question_tag() ) {
+		if ( is_question_tags() ) {
+			$title = ap_opt('tags_page_title');
+		}elseif ( is_question_tag() ) {
 			$tag_id = sanitize_title( get_query_var( 'q_tag' ) );
 			$tag = get_term_by( is_numeric( $tag_id ) ? 'id' : 'slug', $tag_id, 'question_tag' );
 			$title = $tag->name;
@@ -697,6 +709,13 @@ class Tags_For_AnsPress
 		$default_slugs['tags'] 	= ap_get_tags_slug();
 		$default_slugs['tag'] 	= ap_get_tag_slug();
 		return $default_slugs;
+	}
+
+	public function subscribe_type($type) {
+		if(is_question_tag())
+			$subscribe_type =  'tag';
+		else
+			return $type;
 	}
 
 }

@@ -91,10 +91,24 @@ function ap_question_have_tags($question_id = false) {
 	return false;
 }
 
-if ( ! function_exists( 'is_question_tag' ) ) {
+
+if ( ! function_exists( 'is_question_tag' )) {
 	function is_question_tag() {
-		if ( 'tag' == get_query_var( 'ap_page' ) ) {
-			return true; }
+
+		if ( ap_get_tag_slug() == get_query_var( 'ap_page' ) ) {
+			return true;
+		}
+
+		return false;
+	}
+}
+
+if ( ! function_exists( 'is_question_tags' ) ) {
+	function is_question_tags() {
+
+		if ( ap_get_tags_slug() == get_query_var( 'ap_page' ) ) {
+			return true;
+		}
 
 		return false;
 	}
