@@ -108,7 +108,7 @@
 #anspress .ap-tags-input {
   margin-bottom: 10px;
 }
-#anspress .ap-tags-input .ap-tags-item {
+#anspress .ap-tags-input .ap-tagssugg-item {
   background: #eee none repeat scroll 0 0;
   border-color: #ddd #ddd #ddd #c6c1c1;
   border-image: none;
@@ -121,7 +121,7 @@
   margin-right: 5px;
   padding: 5px 10px;
 }
-#anspress .ap-tags-input .ap-tags-item:hover {
+#anspress .ap-tags-input .ap-tagssugg-item:hover {
   border-color: #ffb0b0;
 }
 #anspress .ap-tags-input .ap-tag-remove {

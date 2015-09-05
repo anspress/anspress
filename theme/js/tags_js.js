@@ -26,12 +26,12 @@
 		str = apSanitizeTitle(str);
 
 		if( str.length > 0 ){
-			var html = $('<span class="ap-tags-item" style="display:none">'+str+'<i class="ap-tag-remove">×</i><input type="hidden" name="tags[]" value="'+str+'" /></span>');
+			var html = $('<span class="ap-tagssugg-item" style="display:none">'+str+'<i class="ap-tag-remove">×</i><input type="hidden" name="tags[]" value="'+str+'" /></span>');
 
 			if(typeof append === 'undefined'){
 				var exsists = false;
 				var exsist_el = false;
-				$('#ap-tags-holder .ap-tags-item').each(function(index, el) {
+				$('#ap-tags-holder .ap-tagssugg-item').each(function(index, el) {
 					if(apSanitizeTitle($(this).text()) == str){
 						exsists = true;
 						exsist_el = $(this);
@@ -110,7 +110,7 @@
 			}
 		});
 
-		$('body').delegate('.ap-tags-item', 'click', function(event) {
+		$('body').delegate('.ap-tagssugg-item', 'click', function(event) {
 			$(this).remove();
 		});
 

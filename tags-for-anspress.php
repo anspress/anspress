@@ -71,23 +71,26 @@ class Tags_For_AnsPress
 	public function __construct() {
 
 		if ( ! class_exists( 'AnsPress' ) ) {
-			return; // AnsPress not installed
+			return; // AnsPress not installed.
 		}
+
 		if ( ! defined( 'TAGS_FOR_ANSPRESS_DIR' ) ) {
-			define( 'TAGS_FOR_ANSPRESS_DIR', plugin_dir_path( __FILE__ ) ); }
+			define( 'TAGS_FOR_ANSPRESS_DIR', plugin_dir_path( __FILE__ ) );
+		}
 
 		if ( ! defined( 'TAGS_FOR_ANSPRESS_URL' ) ) {
-				define( 'TAGS_FOR_ANSPRESS_URL', plugin_dir_url( __FILE__ ) ); }
+			define( 'TAGS_FOR_ANSPRESS_URL', plugin_dir_url( __FILE__ ) );
+		}
 
-		ap_register_page( 'tag', __( 'Tag', 'tags-for-anspress' ), array( $this, 'tag_page' ), false );
-		ap_register_page( 'tags', __( 'Tags', 'tags-for-anspress' ), array( $this, 'tags_page' ) );
+		$this->includes();
 
-		// internationalization
+		ap_register_page( ap_get_tag_slug(), __( 'Tag', 'tags-for-anspress' ), array( $this, 'tag_page' ), false );
+		ap_register_page( ap_get_tags_slug(), __( 'Tags', 'tags-for-anspress' ), array( $this, 'tags_page' ) );
+
 		add_action( 'admin_init', array( $this, 'load_options' ) );
 		add_action( 'init', array( $this, 'textdomain' ) );
 		add_action( 'widgets_init', array( $this, 'widget_positions' ) );
 
-		// Register question tag
 		add_action( 'init', array( $this, 'register_question_tag' ), 1 );
 		add_filter( 'ap_default_options', array( $this, 'ap_default_options' ) );
 		add_action( 'ap_admin_menu', array( $this, 'admin_tags_menu' ) );
@@ -108,22 +111,34 @@ class Tags_For_AnsPress
 		add_action( 'ap_user_subscription_page', array( $this, 'subscription_page' ) );
 		add_action( 'wp_ajax_ap_tags_suggestion', array( $this, 'ap_tags_suggestion') );
 	    add_action( 'wp_ajax_nopriv_ap_tags_suggestion', array( $this, 'ap_tags_suggestion') );
+	    add_action( 'ap_rewrite_rules', array( $this, 'rewrite_rules' ), 10, 3 );
+		add_filter( 'ap_default_pages', array( $this, 'tags_default_page' ) );
+		add_filter( 'ap_default_page_slugs', array( $this, 'default_page_slugs' ) );
 	}
 
+	/**
+	 * Include required files
+	 */
+	public function includes() {
+		require_once( TAGS_FOR_ANSPRESS_DIR . 'functions.php' );
+	}
+
+	/**
+	 * Tag page layout.
+	 */
 	public function tag_page() {
 
 		global $questions, $question_tag;
-
 		$tag_id = sanitize_title( get_query_var( 'q_tag' ) );
 
 		$question_args = array(
-		'tax_query' => array(
-			array(
-				'taxonomy' => 'question_tag',
-				'field' => is_numeric( $tag_id ) ? 'id' : 'slug',
-				'terms' => array( $tag_id ),
+			'tax_query' => array(
+				array(
+					'taxonomy' => 'question_tag',
+					'field' => is_numeric( $tag_id ) ? 'id' : 'slug',
+					'terms' => array( $tag_id ),
+				),
 			),
-		),
 		);
 
 		$question_tag       = get_term_by( is_numeric( $tag_id ) ? 'id' : 'slug', $tag_id, 'question_tag' );
@@ -190,7 +205,6 @@ class Tags_For_AnsPress
 	}
 
 	public function load_options() {
-
 		$this->option_fields();
 	}
 
@@ -238,15 +252,15 @@ class Tags_For_AnsPress
 		 */
 
 		$tag_labels = array(
-			'name' => __( 'Question Tags', 'tags-for-anspress' ),
-			'singular_name' => _x( 'Tag', 'tags-for-anspress' ),
-			'all_items' => __( 'All Tags', 'tags-for-anspress' ),
-			'add_new_item' => _x( 'Add New Tag', 'tags-for-anspress' ),
-			'edit_item' => __( 'Edit Tag', 'tags-for-anspress' ),
-			'new_item' => __( 'New Tag', 'tags-for-anspress' ),
-			'view_item' => __( 'View Tag', 'tags-for-anspress' ),
-			'search_items' => __( 'Search Tag', 'tags-for-anspress' ),
-			'not_found' => __( 'Nothing Found', 'tags-for-anspress' ),
+			'name' 				=> __( 'Question Tags', 'tags-for-anspress' ),
+			'singular_name' 	=> _x( 'Tag', 'tags-for-anspress' ),
+			'all_items' 		=> __( 'All Tags', 'tags-for-anspress' ),
+			'add_new_item' 		=> _x( 'Add New Tag', 'tags-for-anspress' ),
+			'edit_item' 		=> __( 'Edit Tag', 'tags-for-anspress' ),
+			'new_item' 			=> __( 'New Tag', 'tags-for-anspress' ),
+			'view_item' 		=> __( 'View Tag', 'tags-for-anspress' ),
+			'search_items' 		=> __( 'Search Tag', 'tags-for-anspress' ),
+			'not_found' 		=> __( 'Nothing Found', 'tags-for-anspress' ),
 			'not_found_in_trash' => __( 'Nothing found in Trash', 'tags-for-anspress' ),
 			'parent_item_colon' => '',
 		);
@@ -292,6 +306,8 @@ class Tags_For_AnsPress
 		$defaults['max_tags']       = 5;
 		$defaults['min_tags']       = 1;
 		$defaults['tags_per_page']   = 20;
+		$defaults['tags_page_slug']   = 'tags';
+		$defaults['tag_page_slug']   = 'tag';
 
 		return $defaults;
 	}
@@ -336,6 +352,23 @@ class Tags_For_AnsPress
 				'description'       => __( 'minimum numbers of tags that user must add when asking.', 'tags-for-anspress' ),
 				'type'              => 'number',
 				'value'             => $settings['min_tags'],
+			),
+			array(
+				'name' 		=> 'anspress_opt[tags_page_slug]',
+				'label' 	=> __( 'Tags page slug', 'tags-for-anspress' ),
+				'desc' 		=> __( 'Slug tags page', 'tags-for-anspress' ),
+				'type' 		=> 'text',
+				'value' 	=> $settings['tags_page_slug'],
+				'show_desc_tip' => false,
+			),
+
+			array(
+				'name' 		=> 'anspress_opt[tag_page_slug]',
+				'label' 	=> __( 'Tag page slug', 'tags-for-anspress' ),
+				'desc' 		=> __( 'Slug for tag page', 'tags-for-anspress' ),
+				'type' 		=> 'text',
+				'value' 	=> $settings['tag_page_slug'],
+				'show_desc_tip' => false,
 			),
 		));
 	}
@@ -389,8 +422,10 @@ class Tags_For_AnsPress
 	public function term_link_filter( $url, $term, $taxonomy ) {
 		if ( 'question_tag' == $taxonomy ) {
 			if ( get_option( 'permalink_structure' ) != '' ) {
-				 return ap_get_link_to( array( 'ap_page' => 'tag', 'q_tag' => $term->slug ) ); } else {
-				return ap_get_link_to( array( 'ap_page' => 'tag', 'q_tag' => $term->term_id ) ); }
+				return ap_get_link_to( array( 'ap_page' => ap_get_tag_slug(), 'q_tag' => $term->slug ) );
+			} else {
+				return ap_get_link_to( array( 'ap_page' => ap_get_tag_slug(), 'q_tag' => $term->term_id ) );
+			}
 		}
 		return $url;
 	}
@@ -422,7 +457,7 @@ class Tags_For_AnsPress
 
 		if(!empty($tag_val) && is_array($tag_val)){
 			foreach($tag_val as $tag){
-				$tag_field .= '<span class="ap-tags-item">tag<i class="ap-tag-remove">&times;</i><input type="hidden" name="tags[]" value="'. $tag .'" /></span>';
+				$tag_field .= '<span class="ap-tagssugg-item">tag<i class="ap-tag-remove">&times;</i><input type="hidden" name="tags[]" value="'. $tag .'" /></span>';
 			}
 		}
 
@@ -621,6 +656,49 @@ class Tags_For_AnsPress
 		die( json_encode( array( 'status' => false ) ) );
 	}
 
+	/**
+	 * Add category pages rewrite rule
+	 * @param  array $rules AnsPress rules.
+	 * @return array
+	 */
+	public function rewrite_rules($rules, $slug, $base_page_id) {
+		global $wp_rewrite;
+
+		$tags_rules = array();
+
+		$tags_rules[$slug. ap_get_tag_slug() .'/([^/]+)/?'] = 'index.php?page_id='.$base_page_id.'&ap_page='. ap_get_tag_slug() .'&q_tag='.$wp_rewrite->preg_index( 1 );
+
+		$tags_rules[$slug. ap_get_tag_slug() . '/([^/]+)/page/?([0-9]{1,})/?$'] = 'index.php?page_id='.$base_page_id.'&ap_page='. ap_get_tag_slug() .'&q_tag='.$wp_rewrite->preg_index( 1 ).'&paged='.$wp_rewrite->preg_index( 2 );
+
+		$tags_rules[$slug. ap_get_tags_slug(). '/?'] = 'index.php?page_id='.$base_page_id.'&ap_page='.ap_get_tags_slug();
+
+		return $tags_rules + $rules;
+	}
+
+	/**
+	 * Add default tags page, so that tags page should work properly after
+	 * Changing tags page slug.
+	 * @param  array $default_pages AnsPress default pages.
+	 * @return array
+	 */
+	public function tags_default_page($default_pages) {
+		$default_pages['tags'] = array();
+		$default_pages['tag'] = array();
+
+		return $default_pages;
+	}
+
+	/**
+	 * Add default page slug
+	 * @param  array $default_slugs AnsPress pages slug.
+	 * @return array
+	 */
+	public function default_page_slugs($default_slugs) {
+		$default_slugs['tags'] 	= ap_get_tags_slug();
+		$default_slugs['tag'] 	= ap_get_tag_slug();
+		return $default_slugs;
+	}
+
 }
 
 /**
@@ -637,148 +715,3 @@ function tags_for_anspress() {
 }
 add_action( 'plugins_loaded', 'tags_for_anspress' );
 
-
-/**
- * Output tags html
- * @param  array $args
- * @return string
- * @since 1.0
- */
-function ap_question_tags_html($args = array()) {
-
-	$defaults  = array(
-		'question_id'   => get_the_ID(),
-		'list'           => false,
-		'tag'           => 'span',
-		'class'         => 'question-tags',
-		'label'         => __( 'Tagged', 'tags-for-anspress' ),
-		'echo'          => false,
-		'show'          => 0,
-	);
-
-	if ( ! is_array( $args ) ) {
-		$defaults['question_id '] = $args;
-		$args = $defaults;
-	} else {
-		$args = wp_parse_args( $args, $defaults );
-	}
-
-	$tags = get_the_terms( $args['question_id'], 'question_tag' );
-
-	if ( $tags && count( $tags ) > 0 ) {
-		$o = '';
-		if ( $args['list'] ) {
-			$o = '<ul class="'.$args['class'].'">';
-			foreach ( $tags as $t ) {
-				$o .= '<li><a href="'.esc_url( get_term_link( $t ) ).'" title="'.$t->description.'">'. $t->name .' &times; <i class="tax-count">'.$t->count.'</i></a></li>';
-			}
-			$o .= '</ul>';
-		} else {
-			$o = $args['label'];
-			$o .= '<'.$args['tag'].' class="'.$args['class'].'">';
-			$i = 1;
-			foreach ( $tags as $t ) {
-				$o .= '<a href="'.esc_url( get_term_link( $t ) ).'" title="'.$t->description.'">'. $t->name .'</a> ';
-				/*
-				if($args['show'] > 0 && $i == $args['show']){
-                    $o_n = '';
-                    foreach($tags as $tag_n)
-                        $o_n .= '<a href="'.esc_url( get_term_link($tag_n)).'" title="'.$tag_n->description.'">'. $tag_n->name .'</a> ';
-
-                    $o .= '<a class="ap-tip" data-tipclass="tags-list" title="'.esc_html($o_n).'" href="#">'. sprintf(__('%d More', 'tags-for-anspress'), count($tags)) .'</a>';
-                    break;
-                }*/
-				$i++;
-			}
-			$o .= '</'.$args['tag'].'>';
-		}
-
-		if ( $args['echo'] ) {
-			echo $o; }
-
-		return $o;
-	}
-}
-
-
-function ap_tag_details() {
-
-	$var = get_query_var( 'question_tag' );
-
-	$tag = get_term_by( 'slug', $var, 'question_tag' );
-	echo '<div class="clearfix">';
-	echo '<h3><a href="'.get_tag_link( $tag ).'">'. $tag->name .'</a></h3>';
-	echo '<div class="ap-taxo-meta">';
-	echo '<span class="count">'. $tag->count .' '.__( 'Questions', 'tags-for-anspress' ).'</span>';
-	echo '<a class="aicon-rss feed-link" href="' . get_term_feed_link( $tag->term_id, 'question_tag' ) . '" title="Subscribe to '. $tag->name .'" rel="nofollow"></a>';
-	echo '</div>';
-	echo '</div>';
-
-	echo '<p class="desc clearfix">'. $tag->description .'</p>';
-}
-
-function ap_question_have_tags($question_id = false) {
-	if ( ! $question_id ) {
-		$question_id = get_the_ID(); }
-
-	$tags = wp_get_post_terms( $question_id, 'question_tag' );
-
-	if ( ! empty( $tags ) ) {
-		return true; }
-
-	return false;
-}
-
-if ( ! function_exists( 'is_question_tag' ) ) {
-	function is_question_tag() {
-		if ( 'tag' == get_query_var( 'ap_page' ) ) {
-			return true; }
-
-		return false;
-	}
-}
-
-function ap_tag_sorting() {
-	$args = array(
-		'hierarchical'      => true,
-		'hide_if_empty'     => true,
-		'number'            => 10,
-	);
-
-	$terms = get_terms( 'question_tag', $args );
-
-	$selected = isset( $_GET['ap_tag_sort'] ) ? sanitize_text_field( $_GET['ap_tag_sort'] ) : '';
-
-	if ( $terms ) {
-		echo '<div class="ap-dropdown">';
-			echo '<a id="ap-sort-anchor" class="ap-dropdown-toggle'.($selected != '' ? ' active' : '').'" href="#">'.__( 'Tags', 'tags-for-anspress' ).'</a>';
-			echo '<div class="ap-dropdown-menu">';
-		foreach ( $terms as $t ) {
-			echo '<li '.($selected == $t->term_id ? 'class="active" ' : '').'><a href="#" data-value="'.$t->term_id.'">'. $t->name .'</a></li>';
-		}
-			echo '<input name="ap_tag_sort" type="hidden" value="'.$selected.'" />';
-			echo '</div>';
-		echo '</div>';
-	}
-}
-
-function ap_tags_tab() {
-	$active = isset( $_GET['ap_sort'] ) ? $_GET['ap_sort'] : 'popular';
-
-	$link = ap_get_link_to( 'tags' ).'?ap_sort=';
-
-	?>
-    <ul class="ap-questions-tab ap-ul-inline clearfix" role="tablist">
-        <li class="<?php echo $active == 'popular' ? ' active' : ''; ?>"><a href="<?php echo $link.'popular'; ?>"><?php _e( 'Popular', 'tags-for-anspress' ); ?></a></li>
-        <li class="<?php echo $active == 'new' ? ' active' : ''; ?>"><a href="<?php echo $link.'new'; ?>"><?php _e( 'New', 'tags-for-anspress' ); ?></a></li>
-        <li class="<?php echo $active == 'name' ? ' active' : ''; ?>"><a href="<?php echo $link.'name'; ?>"><?php _e( 'Name', 'tags-for-anspress' ); ?></a></li>
-        <?php
-			/**
-			 * ACTION: ap_tags_tab
-			 * Used to hook into tags page tab
-			 */
-			do_action( 'ap_tags_tab', $active );
-		?>
-    </ul>
-    <?php
-}
