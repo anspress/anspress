@@ -377,14 +377,27 @@ class AnsPress_Hooks
 	        return $items;
 	    }
 
-	    $this->pages = array_merge(anspress()->pages, array(
+	    /**
+	     * Define default AnsPress pages
+	     * So that default pages should work properly after
+	     * Changing categories page slug.
+	     * @var array
+	     */
+
+	    $default_pages  =  array(
 	    	'profile' 	=> array( 'title' => __( 'My profile', 'ap' ), 'show_in_menu' => true, 'logged_in' => true ),
 	    	'notification' => array( 'title' => __( 'My notification', 'ap' ), 'show_in_menu' => true, 'logged_in' => true ),
 	    	'ask' 		=> array(),
 	    	'question' 	=> array(),
 	    	'users' 	=> array(),
 	    	'user' 		=> array(),
-	    ));
+	    );
+
+	    /**
+	     * FILTER: ap_default_pages
+	     * @var array
+	     */
+	    $this->pages = array_merge(anspress()->pages, apply_filters( 'ap_default_pages', $default_pages ));
 
 	    $this->page_urls();
 

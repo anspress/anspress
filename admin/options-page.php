@@ -212,6 +212,7 @@ class AnsPress_Options_Page
 			array(
 				'name' => '__sep',
 				'type' => 'custom',
+				'order' => 5,
 				'html' => '<span class="ap-form-separator">' . __('Page slug') . '</span>',
 			),
 			array(
@@ -221,6 +222,7 @@ class AnsPress_Options_Page
 				'type' => 'text',
 				'value' => @$settings['ask_page_slug'],
 				'show_desc_tip' => false,
+				'order' => 5,
 			),
 			array(
 				'name' => 'anspress_opt[question_page_slug]',
@@ -229,6 +231,7 @@ class AnsPress_Options_Page
 				'type' => 'text',
 				'value' => @$settings['question_page_slug'],
 				'show_desc_tip' => false,
+				'order' => 5,
 			),
 			array(
 				'name' => 'anspress_opt[users_page_slug]',
@@ -237,6 +240,7 @@ class AnsPress_Options_Page
 				'type' => 'text',
 				'value' => @$settings['users_page_slug'],
 				'show_desc_tip' => false,
+				'order' => 5,
 			),
 			array(
 				'name' => 'anspress_opt[user_page_slug]',
@@ -245,6 +249,7 @@ class AnsPress_Options_Page
 				'type' => 'text',
 				'value' => @$settings['user_page_slug'],
 				'show_desc_tip' => false,
+				'order' => 5,
 			),
 			array(
 				'name' => '__sep',

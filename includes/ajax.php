@@ -37,8 +37,6 @@ class AnsPress_Ajax
 	    $ap->add_action( 'ap_ajax_load_user_field_form', $this, 'load_user_field_form' );
 	    $ap->add_action( 'ap_ajax_set_featured', $this, 'set_featured' );
 	    $ap->add_action( 'ap_ajax_follow', $this, 'follow' );
-	    $ap->add_action( 'wp_ajax_ap_suggest_tags', $this, 'ap_suggest_tags' );
-	    $ap->add_action( 'wp_ajax_nopriv_ap_suggest_tags', $this, 'ap_suggest_tags' );
 	    $ap->add_action( 'ap_ajax_user_cover', $this, 'ap_user_card' );
 	    $ap->add_action( 'ap_ajax_delete_notification', $this, 'delete_notification' );
 	    $ap->add_action( 'ap_ajax_markread_notification', $this, 'markread_notification' );
@@ -466,33 +464,6 @@ class AnsPress_Ajax
 			}
 		}
 		$this->something_wrong();
-	}
-
-	/**
-	 * Handle tags suggestion on question form
-	 */
-	public function ap_suggest_tags() {
-		$keyword = sanitize_text_field( wp_unslash( $_POST['q'] ) );
-
-		$tags = get_terms('question_tag', array(
-			'orderby' => 'count',
-			'order' => 'DESC',
-			'hide_empty' => false,
-			'search' => $keyword,
-			'number' => 8,
-		));
-
-		if ( $tags ) {
-			$items = array();
-			foreach ( $tags as $k => $t ) {
-				$items [ $k ] = $t->name;
-			}
-
-			$result = array( 'status' => true, 'items' => $items );
-			die( json_encode( $result ) );
-		}
-
-		die( json_encode( array( 'status' => false ) ) );
 	}
 
 	/**

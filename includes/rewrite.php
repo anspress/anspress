@@ -84,11 +84,7 @@ class AnsPress_Rewrite
 
 			$slug. 'parent/([^/]+)/?' => 'index.php?page_id='.$base_page_id.'&parent='.$wp_rewrite->preg_index( 1 ),
 
-			$slug. 'category/([^/]+)/page/?([0-9]{1,})/?$' => 'index.php?page_id='.$base_page_id.'&ap_page=category&q_cat='.$wp_rewrite->preg_index( 1 ).'&paged='.$wp_rewrite->preg_index( 2 ),
-
 			$slug. 'tag/([^/]+)/page/?([0-9]{1,})/?$' => 'index.php?page_id='.$base_page_id.'&ap_page=tag&q_tag='.$wp_rewrite->preg_index( 1 ).'&paged='.$wp_rewrite->preg_index( 2 ),
-
-			$slug. 'category/([^/]+)/?' => 'index.php?page_id='.$base_page_id.'&ap_page=category&q_cat='.$wp_rewrite->preg_index( 1 ),
 
 			$slug. 'tag/([^/]+)/?' => 'index.php?page_id='.$base_page_id.'&ap_page=tag&q_tag='.$wp_rewrite->preg_index( 1 ),
 
@@ -127,7 +123,7 @@ class AnsPress_Rewrite
 
 		$new_rules[$slug. '([^/]+)/?'] = 'index.php?page_id='.$base_page_id.'&ap_page='.$wp_rewrite->preg_index( 1 );
 
-		$ap_rules = apply_filters( 'ap_rewrite_rules', $new_rules );
+		$ap_rules = apply_filters( 'ap_rewrite_rules', $new_rules, $slug, $base_page_id );
 
 		return $wp_rewrite->rules = $ap_rules + $wp_rewrite->rules;
 	}

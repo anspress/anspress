@@ -291,19 +291,14 @@ function ap_subscribe_btn_html($action_id = false, $type = false){
 	}
 
 	if($type == false){
-		if(is_question_category())
-			$subscribe_type =  'category' ;
-		elseif(is_question_tag())
-			$subscribe_type =  'tag' ;
-		else
-			$subscribe_type =  false ;
+		$subscribe_type =  apply_filters('ap_subscribe_btn_type', false);
 	}else{
 		if($type === 'category')
-			$subscribe_type =  'category' ;
+			$subscribe_type =  'category';
 		elseif($type === 'tag')
-			$subscribe_type =  'tag' ;
+			$subscribe_type =  'tag';
 		else
-			$subscribe_type =  false ;
+			$subscribe_type =  false;
 	}
 
 	$subscribed = ap_is_user_subscribed($action_id, false, $subscribe_type);
