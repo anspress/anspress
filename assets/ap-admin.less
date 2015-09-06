@@ -132,31 +132,36 @@ td.column-vote_note strong, td.column-post_title &>a {
     margin-top: 30px;
 }
 .option-nav-tab {
-    background: none repeat scroll 0 0 #F8F8F8;
-    border-color: #ddd #ddd transparent;
-    border-style: solid solid none;
-    border-width: 1px 1px medium;
+    background: #fff none repeat scroll 0 0;
+    border: 2px solid #e1e1e1;
+    border-radius: 3px;
+    float: left;
+    margin-right: -1px;
+    width: 200px;
 }
 #ap_opt_nav {
     margin: 0;
     li {
-        float: left;
         margin-bottom: 0;
+        padding: 5px;
         a {
-            font-size: 13px;
+            font-size: 14px;
             font-weight: 600;
             display: block;
-            padding: 12px 15px;
+            padding: 8px 15px;
             text-decoration: none;
             color: #555;
+            &:hover{
+                background: #eee;
+            }
         }
     }
     li.active {
         a {
-            background: none repeat scroll 0 0 #fff;
-            border-top: 2px solid #40bcff;
-            color: #666;
-            margin-bottom: -1px;
+            background: #6db55a none repeat scroll 0 0;
+            border-radius: 2px;
+            color: #fcfcfc;
+            margin:0;
         }
     }
 }
@@ -269,122 +274,7 @@ th.column-category {
     color: #fff;
     background: rgba(0, 0, 0, .7);
 }
-.ap-install {
-    & > h2 {
-        margin-bottom: 20px;
-        padding: 0;
-        text-align: center;
-        & > * {
-            display: block;
-        }
-    }
-}
-.ap-install-indi {
-    position: absolute;
-    left: 50%;
-    display: block;
-    width: 10px;
-    height: 170px;
-    margin-top: 35px;
-    margin-left: -5px;
-    content: '';
-    transition: all 1s ease 0s;
-    border-radius: 10px;
-    background: #fff;
-    & > span {
-        display: block;
-        width: 10px;
-        height: 0;
-        transition: all .5s ease 0s;
-        background: #49c742;
-    }
-}
-.ap-install-box {
-    position: relative;
-    display: block;
-    overflow: hidden;
-    height: 300px;
-    margin: 0 auto;
-    border: 1px solid #eee;
-    border-radius: 4px;
-    background: #fbfbfb;
-}
-.ap-start-installation {
-    position: relative;
-    display: table;
-    margin: 0 auto 30px;
-    padding: 12px 30px;
-    cursor: pointer;
-    color: #fff;
-    border: medium none;
-    border-radius: 3px;
-    background: #ff8041;
-}
-.ap-install-steps {
-    position: absolute;
-    width: 3010px;
-    margin: 0;
-    transition: all 1s ease 0s;
-    & > li {
-        display: block;
-        float: left;
-        width: 480px;
-        height: 300px;
-        margin-top: 0;
-        margin-bottom: 0;
-        margin-left: 0;
-        padding: 10px;
-        text-align: center;
-    }
 
-    li {
-        .done {
-            transition: all .5s ease 0s;
-            color: #fff;
-            background: #49c742;
-        }
-        &:last-child a {
-            margin: 0;
-        }
-    }
-}
-.ap-install-steps li a, .ap-install-steps .twitter-button {
-    font-size: 17px;
-    display: block;
-    margin-bottom: 15px;
-    padding: 15px;
-    text-align: center;
-    text-decoration: none;
-}
-.install-popup {
-    padding: 10px;
-    border-radius: 8px;
-    background: #fff;
-    select {
-        display: table;
-        margin: 0 auto;
-    }
-}
-.ap-continue {
-    display: block;
-    margin: 0 auto;
-    padding: 1px 10px;
-    color: #fff;
-    border: medium none;
-    border-radius: 2px;
-    background: #49c742;
-}
-.twitter-button {
-    & > small {
-        font-size: 12px;
-        display: block;
-        margin-top: 6px;
-    }
-}
-.escape_install {
-    display: block;
-    text-align: center;
-}
 .badge-type {
     display: block;
     width: 50px;
@@ -404,10 +294,11 @@ th.column-category {
     background: #c26f27;
 }
 .ap-group-options {
+    background: #fff none repeat scroll 0 0;
+    border: 1px solid #e6e6e6;
+    border-radius: 4px;
+    margin-left: 215px;
     padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 2px;
-    background: #fff;
 }
 .ap-form-label {
     font-size: 13px;
@@ -421,9 +312,12 @@ th.column-category {
     overflow: hidden;
 }
 .ap-form-fields {
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid #fbfbfb;
     margin: 0;
-    padding: 20px 10px;
+    padding: 12px 10px;
+    &:last-child{
+        border-bottom: none;
+    }
 }
 .ap-field-desc {
     margin-bottom: 0;
@@ -728,11 +622,19 @@ h3.ap-dash-title {
     a{
         text-decoration: none;
     }
-    h2 {
+    .admin-title {
         font-size: 23px;
         font-weight: 600;
-        line-height: 60px;
-        padding: 9px 15px 4px 3px;
+        margin-top: 25px;
+        padding: 0;
+        a{
+            background: #fc8e4e none repeat scroll 0 0;
+            border-radius: 3px;
+            color: #fff;
+            font-size: 14px;
+            padding: 4px 12px;
+            vertical-align: text-bottom;
+        }
     }
     .anspress-links{
         background: none repeat scroll 0 0 #fff;
@@ -925,4 +827,29 @@ h3.ap-dash-title {
     &.letter-z{
         background: #cccccc;
     }
+}
+.ap-optionform-title {
+    background: #fbfbfb none repeat scroll 0 0;
+    border-radius: 2px 2px 0 0;
+    margin: -20px -20px 10px;
+    padding: 15px;
+}
+.ap-btn-submit{
+    background: #00a0d2 none repeat scroll 0 0;
+    border-color: #0073aa;
+    border-radius: 3px;
+    border-style: solid;
+    border-width: 1px;
+    box-shadow: 0 1px 0 rgba(120, 200, 230, 0.5) inset, 0 1px 0 rgba(0, 0, 0, 0.15);
+    box-sizing: border-box;
+    color: #fff;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 13px;
+    height: 28px;
+    line-height: 26px;
+    margin: 15px 0 0;
+    padding: 0 10px 1px;
+    text-decoration: none;
+    white-space: nowrap;
 }

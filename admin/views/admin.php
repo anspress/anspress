@@ -3,7 +3,7 @@
 /**
  * AnsPress options page
  *
- * 
+ *
  * @link http://anspress.io/anspress
  * @since 2.0.1
  * @package AnsPress
@@ -23,15 +23,20 @@ $settings = ap_opt();
 ?>
 
 <div id="anspress" class="wrap">
-	<?php screen_icon(); echo '<h2>' . __( 'AnsPress Options' ) . '</h2>';
-	// This shows the page's name and an icon if one has been provided ?>
-			
+	<h2 class="admin-title">
+		<?php _e( 'AnsPress Options' ); ?>
+		<a href="http://github.com/anspress/anspress" target="_blank">GitHub</a>
+		<a href="https://wordpress.org/plugins/anspress-question-answer/" target="_blank">WordPress.org</a>
+		<a href="https://twitter.com/anspress_io" target="_blank">@anspress_io</a>
+		<a href="https://www.facebook.com/wp.anspress" target="_blank">Facebook</a>
+	</h2>
+
 	<?php if ( @$_POST['anspress_opt_updated'] === true ) : ?>
 		<div class="updated fade"><p><strong><?php _e( 'AnsPress options updated', 'ap' ); ?></strong></p></div>
 	<?php endif; // If the form has just been submitted, this shows the notification ?>
-	
+
 	<div class="ap-wrap">
-		<div class="anspress-options ap-wrap-left">
+		<div class="anspress-options ap-wrap-left clearfix">
 			<div class="option-nav-tab clearfix">
 				<?php ap_options_nav(); ?>
 			</div>
@@ -87,5 +92,5 @@ $settings = ap_opt();
 			</div>
 		</div>
 	</div>
-	
+
 </div>
