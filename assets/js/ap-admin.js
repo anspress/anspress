@@ -428,10 +428,24 @@ jQuery(document).ready(function (jQuery){
 		jQuery('#ap_category_media_id').val('');
 		jQuery('#ap_category_media_preview').remove();
 	});
+
 	jQuery(document).ready(function($){
 		if(typeof wpColorPicker !== 'undefined')
-	   		$('#ap-category-color').wpColorPicker();
+	   		jQuery('#ap-category-color').wpColorPicker();
 	});
+
+	jQuery('.checkall').click(function(){
+		var checkbox = jQuery(this).closest('.ap-tools-ck').find('input[type="checkbox"]:not(.checkall)');
+		checkbox.prop('checked', jQuery(this).prop("checked"));
+	})
+
+	jQuery('#' + jQuery('#ap-tools-selectroles').val()).slideDown();
+
+	jQuery('#ap-tools-selectroles').change(function(){
+		var id = '#' + jQuery(this).val();
+		jQuery('.ap-tools-roleitem').hide();
+		jQuery(id).fadeIn(300);
+	})
 
 });
 

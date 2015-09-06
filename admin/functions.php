@@ -31,9 +31,9 @@ function ap_flagged_posts_count() {
  * @return void
  * @since 2.0.0-alpha2
  */
-function ap_register_option_group($group_slug, $group_title, $fields) {
+function ap_register_option_group($group_slug, $group_title, $fields, $form = true) {
 	$fields = apply_filters( 'ap_option_group_'.$group_slug, $fields );
-	ap_append_to_global_var( 'ap_option_tabs', $group_slug , array( 'title' => $group_title, 'fields' => $fields ) );
+	ap_append_to_global_var( 'ap_option_tabs', $group_slug , array( 'title' => $group_title, 'fields' => $fields, 'form' => $form ) );
 }
 
 /**
@@ -77,28 +77,69 @@ function ap_options_nav() {
  */
 function ap_option_group_fields() {
 	global $ap_option_tabs;
+
 	$active = (isset( $_REQUEST['option_page'] )) ? sanitize_text_field( $_REQUEST['option_page'] ) : 'general' ;
 
 	if ( empty( $ap_option_tabs ) && is_array( $ap_option_tabs ) ) {
-		return; }
+		return;
+	}
 
 	$fields = $ap_option_tabs[$active]['fields'];
 
-	$args = array(
-		'name'              => 'options_form',
-		'is_ajaxified'      => false,
-		'submit_button'     => __( 'Save options', 'ap' ),
-		'nonce_name'        => 'nonce_option_form',
-		'fields'            => $fields,
-	);
+	if($ap_option_tabs[$active]['form']){
 
-	$form = new AnsPress_Form( $args );
+		$args = array(
+			'name'              => 'options_form',
+			'is_ajaxified'      => false,
+			'submit_button'     => __( 'Save options', 'ap' ),
+			'nonce_name'        => 'nonce_option_form',
+			'fields'            => $fields,
+		);
 
-	echo '<div class="ap-optionform-title">';
-	echo '<strong>'. $ap_option_tabs[$active]['title'] .'</strong>';
+		$form = new AnsPress_Form( $args );
 
-	echo '</div>';
+		echo '<div class="ap-optionform-title">';
+		echo '<strong>'. $ap_option_tabs[$active]['title'] .'</strong>';
+		echo '</div>';
+		echo $form->get_form();
 
-	echo $form->get_form();
+	}else{
+		call_user_func($fields);
+	}
 }
 
+/**
+ * Update user role
+ * @param  string $role_slug Role slug.
+ * @param  array  $caps      Allowed caps array.
+ * @return boolean
+ */
+function ap_update_caps_for_role($role_slug, $caps = array()){
+
+	$role_slug = sanitize_text_field( $role_slug );
+
+	$role = get_role( $role_slug );
+
+
+
+	if( !$role || !is_array($caps) ){
+		return false;
+	}
+
+	$ap_roles = new AP_Roles;
+
+	$all_caps = $ap_roles->base_caps + $ap_roles->mod_caps;
+
+	foreach($all_caps as $cap => $val){
+
+		if( isset($caps[$cap])){
+			$role->add_cap( $cap );
+				var_dump($role);
+		}else{
+			$role->remove_cap( $cap );
+		}
+
+	}
+
+	return true;
+}

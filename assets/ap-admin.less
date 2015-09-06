@@ -298,6 +298,7 @@ th.column-category {
     border: 1px solid #e6e6e6;
     border-radius: 4px;
     margin-left: 215px;
+    overflow: hidden;
     padding: 20px;
 }
 .ap-form-label {
@@ -853,3 +854,41 @@ h3.ap-dash-title {
     text-decoration: none;
     white-space: nowrap;
 }
+.ap-tools{
+    &-ck{
+        border: 1px solid #ddd;
+        margin-bottom: 20px;
+        margin-top: 5px;
+        padding: 10px;
+        strong{
+            background: #fff none repeat scroll 0 0;
+            border: 1px solid #ddd;
+            display: table;
+            margin-bottom: 5px;
+            margin-top: -22px;
+            padding: 2px 5px;
+        }
+        label{
+            display: inline-block;
+            width: 215px;
+        }
+    }
+    &-roletitle{
+        display: block;
+        font-size: 23px;
+        margin-bottom: 25px;
+        > a{
+            font-size: 12px;
+        }
+    }
+    .checkall{
+        margin-left: 5px;
+    }
+    &-roleitem {
+        margin-top: 20px;
+    }
+}
+#ap-tools-selectroles{
+    margin-bottom: 10px;
+}
+

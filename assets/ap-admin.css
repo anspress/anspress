@@ -1369,6 +1369,7 @@ th.column-category {
   border: 1px solid #e6e6e6;
   border-radius: 4px;
   margin-left: 215px;
+  overflow: hidden;
   padding: 20px;
 }
 .ap-form-label {
@@ -1896,4 +1897,39 @@ h3.ap-dash-title {
   padding: 0 10px 1px;
   text-decoration: none;
   white-space: nowrap;
+}
+.ap-tools-ck {
+  border: 1px solid #ddd;
+  margin-bottom: 20px;
+  margin-top: 5px;
+  padding: 10px;
+}
+.ap-tools-ck strong {
+  background: #fff none repeat scroll 0 0;
+  border: 1px solid #ddd;
+  display: table;
+  margin-bottom: 5px;
+  margin-top: -22px;
+  padding: 2px 5px;
+}
+.ap-tools-ck label {
+  display: inline-block;
+  width: 215px;
+}
+.ap-tools-roletitle {
+  display: block;
+  font-size: 23px;
+  margin-bottom: 25px;
+}
+.ap-tools-roletitle > a {
+  font-size: 12px;
+}
+.ap-tools .checkall {
+  margin-left: 5px;
+}
+.ap-tools-roleitem {
+  margin-top: 20px;
+}
+#ap-tools-selectroles {
+  margin-bottom: 10px;
 }

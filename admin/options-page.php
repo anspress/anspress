@@ -667,18 +667,10 @@ class AnsPress_Options_Page
 			) ,
 		));
 
-		ap_register_option_group('tools', __('Tools', 'ap') , array(
-			array(
-				'name' => '__sep',
-				'type' => 'custom',
-				'html' => $this->tools_page()
-			)
-		));
+		ap_register_option_group('tools', __('Tools', 'ap') , array($this, 'tools_page'), false);
 	}
 
 	public function tools_page(){
-		ob_start();
 		include 'views/tools.php';
-		return ob_get_clean();
 	}
 }
