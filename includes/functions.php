@@ -169,7 +169,7 @@ function is_question() {
 }
 
 function is_ask() {
-	if ( is_anspress() && get_query_var( 'ap_page' ) == 'ask' ) {
+	if ( is_anspress() && ap_current_page() == 'ask' ) {
 		return true;
 	}
 
@@ -177,7 +177,7 @@ function is_ask() {
 }
 
 function is_ap_users() {
-	if ( is_anspress() && get_query_var( 'ap_page' ) == 'users' ) {
+	if ( is_anspress() && ap_current_page() == 'users' ) {
 		return true;
 	}
 
@@ -185,7 +185,7 @@ function is_ap_users() {
 }
 
 function is_ap_user() {
-	if ( is_anspress() && get_query_var( 'ap_page' ) == ap_get_user_page_slug() ) {
+	if ( is_anspress() && ap_current_page() == ap_get_user_page_slug() ) {
 		return true;
 	}
 

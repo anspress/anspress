@@ -421,7 +421,7 @@ function ap_register_page($page_slug, $page_title, $func, $show_in_menu = true) 
  */
 function ap_page() {
 	$pages = anspress()->pages;
-	$current_page = get_query_var( 'ap_page' );
+	$current_page = ap_current_page();
 
 	if ( is_question() ) {
 		$current_page = ap_opt( 'question_page_slug' );
@@ -812,7 +812,7 @@ function ap_breadcrumbs() {
  * @return array
  */
 function ap_get_breadcrumbs() {
-	$current_page = get_query_var( 'ap_page' );
+	$current_page = ap_current_page();
 	$title = ap_page_title();
 	$a = array();
 
@@ -834,4 +834,12 @@ function ap_get_breadcrumbs() {
 	$a = apply_filters( 'ap_breadcrumbs', $a );
 
 	return ap_sort_array_by_order( $a );
+}
+
+/**
+ * Return current AnsPress page
+ * @return string
+ */
+function ap_current_page(){
+	return apply_filters( 'ap_current_page', get_query_var( 'ap_page' ) );
 }

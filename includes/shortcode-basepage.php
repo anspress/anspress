@@ -9,60 +9,70 @@
  * @copyright 2014 Rahul Aryan
  */
 
+/**
+ * Class for AnsPress base page shortcode
+ */
 class AnsPress_BasePage_Shortcode {
 
-	protected static $instance = NULL;
+	protected static $instance = null;
 
-    public static function get_instance()
-    {
-        // create an object
-        NULL === self::$instance && self::$instance = new self;
+	public static function get_instance() {
 
-        return self::$instance; // return the object
-    }
+		// create an object
+		null === self::$instance && self::$instance = new self;
+
+		return self::$instance; // return the object
+	}
 
 	/**
 	 * Control the output of [anspress] shortcode
-	 * @param  array $atts  {
-	 *    Attributes of the shortcode.
 	 *
-	 * 	  $categories slug of question_category
-	 * 	  $tags slug of question_tag
-	 * 	  $tax_relation taxonomy relation, see here http://codex.wordpress.org/Taxonomies
-	 * 	  $tags_operator operator for question_tag taxnomomy
-	 * 	  $categories_operator operator for question_category taxnomomy
-	 * }
+	 * @param  array  $atts  {
+	 *     Attributes of the shortcode.
+	 *
+	 *     $categories slug of question_category
+	 *     $tags slug of question_tag
+	 *     $tax_relation taxonomy relation, see here http://codex.wordpress.org/Taxonomies
+	 *     $tags_operator operator for question_tag taxnomomy
+	 *     $categories_operator operator for question_category taxnomomy
+	 *  }
 	 * @param  string $content
 	 * @return string
 	 * @since 2.0.0-beta
 	 */
-	public function anspress_sc( $atts, $content="" ) {
+	public function anspress_sc( $atts, $content='' ) {
 		global $questions, $wp;
 
-		if(isset($atts['categories'])){
-			$categories = explode (',', str_replace(', ', ',', $atts['categories']));
+		if ( isset( $atts['categories'] ) ) {
+			$categories = explode( ',', str_replace( ', ', ',', $atts['categories'] ) );
 			// append $atts in global $wp so that we can use it later
-			$wp->set_query_var('ap_sc_atts_categories', $categories);
+			$wp->set_query_var( 'ap_sc_atts_categories', $categories );
 		}
 
-		if(isset($atts['tags'])){
-			$tags = explode (',', str_replace(', ', ',', $atts['tags']));
-			$wp->set_query_var('ap_sc_atts_tags', $tags);
+		if ( isset( $atts['tags'] ) ) {
+			$tags = explode( ',', str_replace( ', ', ',', $atts['tags'] ) );
+			$wp->set_query_var( 'ap_sc_atts_tags', $tags );
 		}
 
-		if(isset($atts['tax_relation'])){
+		if ( isset( $atts['tax_relation'] ) ) {
 			$tax_relation = $atts['tax_relation'];
-			$wp->set_query_var('ap_sc_atts_tax_relation', $tax_relation);
+			$wp->set_query_var( 'ap_sc_atts_tax_relation', $tax_relation );
 		}
 
-		if(isset($atts['tags_operator'])){
+		if ( isset( $atts['tags_operator'] ) ) {
 			$tags_operator = $atts['tags_operator'];
-			$wp->set_query_var('ap_sc_atts_tags_operator', $tags_operator);
+			$wp->set_query_var( 'ap_sc_atts_tags_operator', $tags_operator );
 		}
 
-		if(isset($atts['categories_operator'])){
+		if ( isset( $atts['categories_operator'] ) ) {
 			$categories_operator = $atts['categories_operator'];
-			$wp->set_query_var('ap_sc_atts_categories_operator', $categories_operator);
+			$wp->set_query_var( 'ap_sc_atts_categories_operator', $categories_operator );
+		}
+
+		// Load specefic AnsPress page.
+		if ( isset( $atts['page'] ) ) {
+			set_query_var( 'ap_page', $atts['page'] );
+			$_GET['ap_page'] = $atts['page'];
 		}
 
 		ob_start();
@@ -72,13 +82,13 @@ class AnsPress_BasePage_Shortcode {
 			 * ACTION: ap_before
 			 * Action is fired before loading AnsPress body.
 			 */
-			do_action('ap_before');
+			do_action( 'ap_before' );
 
-			// include theme file
+			// Include theme file.
 			ap_page();
 
-			if(!ap_opt('author_credits'))
-				echo '<div class="ap-cradit">' . __('Question and answer is powered by <a href="http://anspress.io" traget="_blank">AnsPress</a>', 'ap') . '</div>';
+		if ( ! ap_opt( 'author_credits' ) ) {
+			echo '<div class="ap-cradit">' . __( 'Question and answer is powered by <a href="http://anspress.io" traget="_blank">AnsPress</a>', 'ap' ) . '</div>'; }
 		echo '</div>';
 		wp_reset_postdata();
 
