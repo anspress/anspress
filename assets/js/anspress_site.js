@@ -287,10 +287,10 @@
                         $('#li-comment-' + data.comment_ID).slideDown(400);
                         $('.ap-comment-form').remove();
                     }
-                    $(this)[0].reset();
                     $('.ap-comment-form').fadeOut(200, function() {
                         $(this).remove()
                     });
+                    $('a[href="#comments-' + data.comment_post_ID+ '"]').removeClass('loaded');
                 }, this);
                 return false;
             })
