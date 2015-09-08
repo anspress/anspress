@@ -25,7 +25,7 @@ function ap_page_title() {
 
 	$pages = anspress()->pages;
 
-	$current_page = get_query_var( 'ap_page' );
+	$current_page = ap_current_page();
 
 	if ( is_question() ) {
 		$new_title = ap_question_title_with_solved_prefix();

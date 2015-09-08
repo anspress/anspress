@@ -161,6 +161,7 @@ function is_anspress() {
  */
 function is_question() {
 	$question_id = (int) get_query_var( 'question_id' );
+
 	if ( is_anspress() && $question_id > 0 ) {
 		return true;
 	}
