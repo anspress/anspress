@@ -50,6 +50,7 @@
             this.hoverCard();
             this.delete_notification();
             this.mark_as_read();
+            this.cancel_comment();
         },
         doAjax: function(query, success, context, before, abort) {
             /** Shorthand method for calling ajax */
@@ -643,6 +644,15 @@
                 }
             });
         },
+
+        cancel_comment: function(){
+            $('body').delegate('[data-action="cancel-comment"]', 'click', function(e) {
+                e.preventDefault();
+                var postID = $(this).data('id');
+                $('[href="#comments-'+postID+'"]').removeClass('loaded');
+                $(this).closest('.ap-comment-form').remove();
+            });
+        }
 
     }
 })(jQuery);

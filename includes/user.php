@@ -776,7 +776,8 @@ function ap_cover_upload_form() {
 function ap_get_cover_src($user_id = false, $small = false) {
 
 	if ( $user_id === false ) {
-		$user_id = ap_get_displayed_user_id(); }
+		$user_id = ap_get_displayed_user_id();
+	}
 
 	$cover = get_user_meta( $user_id, '_ap_cover', true );
 
