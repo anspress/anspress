@@ -1,0 +1,183 @@
+# Copyright (C) 2015 
+# This file is distributed under the same license as the  package.
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/anspress-question-"
+"answer\n"
+"POT-Creation-Date: 2015-09-08 17:44+0300\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2015-09-09 13:22+0530\n"
+"Language-Team: \n"
+"X-Generator: Poedit 1.7.3\n"
+"X-Poedit-KeywordsList: __;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;"
+"_nx_noop:1,2,3c;esc_attr__;esc_html__;esc_attr_e;esc_html_e;esc_attr_x:1,2c;"
+"esc_html_x:1,2c\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-Basepath: ..\n"
+"X-Textdomain-Support: yes\n"
+"Last-Translator: \n"
+"Language: tr_TR\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: tags-for-anspress.php:34
+msgid ""
+"Tags extension require AnsPress 2.4-RC or above. Download from Github "
+"%shttp://github.com/anspress/anspress%s"
+msgstr ""
+"Etiket eklentisi AnsPress 2.4-RC veya daha üstüne ihtiyaç duyar. Github  "
+"%shttp://github.com/anspress/anspress%s  linkinden download edin."
+
+#: tags-for-anspress.php:82 tags-for-anspress.php:550
+msgid "Tag"
+msgstr "Etiket"
+
+#: tags-for-anspress.php:83 tags-for-anspress.php:305
+#: tags-for-anspress.php:318 tags-for-anspress.php:368
+#: tags-for-anspress.php:419 tags-for-anspress.php:437
+#: tags-for-anspress.php:754
+msgid "Tags"
+msgstr "Etiketler"
+
+#: tags-for-anspress.php:218
+msgid "AP Tags"
+msgstr "AP Etiketleri"
+
+#: tags-for-anspress.php:222
+msgid "Widgets in this area will be shown in anspress tags page."
+msgstr "Bu alandaki bileşen AnsPress etiket sayfasında gösterilecektir."
+
+#: tags-for-anspress.php:241
+msgid "Question Tags"
+msgstr "Soru Etiketleri"
+
+#: tags-for-anspress.php:243
+msgid "All Tags"
+msgstr "Tüm Etiketler"
+
+#: tags-for-anspress.php:245
+msgid "Edit Tag"
+msgstr "Etiketi Düzenle"
+
+#: tags-for-anspress.php:246
+msgid "New Tag"
+msgstr "Yeni Etiket"
+
+#: tags-for-anspress.php:247
+msgid "View Tag"
+msgstr "Etiketi Görüntüle"
+
+#: tags-for-anspress.php:248
+msgid "Search Tag"
+msgstr "Etiket Ara"
+
+#: tags-for-anspress.php:249
+msgid "Nothing Found"
+msgstr "Hiçbir şey bulunmadı"
+
+#: tags-for-anspress.php:250
+msgid "Nothing found in Trash"
+msgstr "Çöpte hiçbirşey bulunmadı"
+
+#: tags-for-anspress.php:305
+msgid "Questions Tags"
+msgstr "Soru Etiketleri"
+
+#: tags-for-anspress.php:321
+msgid "Tags to show"
+msgstr "Gösterilecek Etiketler"
+
+#: tags-for-anspress.php:322
+msgid "Numbers of tags to show in tags page."
+msgstr "Etiketler sayfasında gözükecek etiket sayısı"
+
+#: tags-for-anspress.php:328
+msgid "Maximum tags"
+msgstr "Maksimum etiket"
+
+#: tags-for-anspress.php:329
+msgid "Maximum numbers of tags that user can add when asking."
+msgstr "Soru sorarken kullanıcının ekleyebileceği maksimum etiket sayısı."
+
+#: tags-for-anspress.php:335
+msgid "Minimum tags"
+msgstr "Minimum etiket"
+
+#: tags-for-anspress.php:336
+msgid "minimum numbers of tags that user must add when asking."
+msgstr "Soru sorarken kullanıcının eklemesi gereken minimum etiket sayısı."
+
+#: tags-for-anspress.php:430
+msgid "Type and hit enter"
+msgstr "Girin ve Enter Tuşuna basın"
+
+#: tags-for-anspress.php:441
+msgid "Slowly type for suggestions"
+msgstr "Yorumlarınızı yavaşca tuşlayın"
+
+#: tags-for-anspress.php:508
+msgid "Categories"
+msgstr "Kategoriler"
+
+#: tags-for-anspress.php:654
+msgid "Tagged"
+msgstr "Etiketlendi"
+
+#: tags-for-anspress.php:712
+msgid "Questions"
+msgstr "Sorular"
+
+#: tags-for-anspress.php:772
+msgid "Popular"
+msgstr "Popüler"
+
+#: tags-for-anspress.php:773
+msgid "New"
+msgstr "Yeni"
+
+#: tags-for-anspress.php:774
+msgid "Name"
+msgstr "İsim"
+
+#: theme/no-tags-found.php:15
+msgid "No tags is set!"
+msgstr "Hiçbir etiket belirlenmedi!"
+
+#: theme/tag.php:12
+msgid "Question tag: %s"
+msgstr "Soru etiket: %s"
+
+#: theme/tag.php:12
+msgid "1 Question"
+msgid_plural "%s Questions"
+msgstr[0] "%s Soru"
+
+#: theme/tags-question-list.php:22
+msgid "View all questions"
+msgstr "Tüm soruları görüntüle"
+
+#: theme/tags.php:23
+msgid "Search tags..."
+msgstr "Etiketleri ara..."
+
+#: theme/tags.php:38
+msgid "%d Question"
+msgid_plural "%d Questions"
+msgstr[0] "%d Soru"
+
+#: theme/tags.php:47
+msgid "No description."
+msgstr "Açıklama yok."
+
+#: tags-for-anspress.php:242
+msgctxt "tags-for-anspress"
+msgid "Tag"
+msgstr "Etiket"
+
+#: tags-for-anspress.php:244
+msgctxt "tags-for-anspress"
+msgid "Add New Tag"
+msgstr "Yeni etiket ekle"
