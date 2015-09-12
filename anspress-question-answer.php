@@ -210,7 +210,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		    $constants = array(
 				'DS' 						=> DIRECTORY_SEPARATOR,
 				'AP_VERSION' 				=> $this->_plugin_version,
-				'AP_DB_VERSION' 			=> 12,
+				'AP_DB_VERSION' 			=> 14,
 				'ANSPRESS_DIR' 				=> plugin_dir_path( __FILE__ ),
 				'ANSPRESS_URL' 				=> plugin_dir_url( __FILE__ ),
 				'ANSPRESS_WIDGET_DIR' 		=> plugin_dir_path( __FILE__ ).'widgets'.DIRECTORY_SEPARATOR,
@@ -261,7 +261,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		    require_once ANSPRESS_DIR.'includes/theme.php';
 		    require_once ANSPRESS_DIR.'includes/form.php';
 		    require_once ANSPRESS_DIR.'includes/participants.php';
-		    require_once ANSPRESS_DIR.'includes/history.php';
+		    require_once ANSPRESS_DIR.'includes/activity-hooks.php';
 		    require_once ANSPRESS_DIR.'includes/shortcode-basepage.php';
 		    require_once ANSPRESS_DIR.'includes/common-pages.php';
 		    require_once ANSPRESS_DIR.'includes/class-form.php';
@@ -291,6 +291,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		    require_once ANSPRESS_DIR.'includes/3rd-party.php';
 		    require_once ANSPRESS_DIR.'includes/flag.php';
 		    require_once ANSPRESS_DIR.'includes/class-notification.php';
+		    require_once ANSPRESS_DIR.'includes/activity.php';
 		}
 
 		/**
@@ -328,7 +329,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		    self::$instance->post_status 		= new AnsPress_Post_Status( $this );
 		    self::$instance->users_class 		= new AnsPress_User( $this );
 	    	self::$instance->rewrite_class 		= new AnsPress_Rewrite( $this );
-	    	self::$instance->history_class 		= new AnsPress_History( $this );
+	    	self::$instance->history_class 		= new AnsPress_Activity_Hook( $this );
 	    	self::$instance->notification_class = new AP_Notification( $this );
 		}
 

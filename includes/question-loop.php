@@ -477,7 +477,7 @@ function ap_question_the_active_time($question_id = false) {
 
 function ap_question_get_the_active_time($question_id = false) {
 	$question_id = ap_parameter_empty( $question_id, @ap_question_get_the_ID() );
-	return ap_get_latest_history_html( $question_id );
+	return ap_latest_post_activity_html( $question_id );
 }
 
 function ap_question_the_time($question_id = false, $format = 'U') {

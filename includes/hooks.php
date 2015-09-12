@@ -39,6 +39,7 @@ class AnsPress_Hooks
 	 */
 	public function __construct($ap) {
 		$this->ap = $ap;
+	    $this->ap->add_action( 'registered_taxonomy', $this, 'add_ap_tables' );
 	    $this->ap->add_action( 'ap_processed_new_question', $this, 'after_new_question', 1, 2 );
 	    $this->ap->add_action( 'ap_processed_new_answer', $this, 'after_new_answer', 1, 2 );
 	    $this->ap->add_action( 'ap_processed_update_question', $this, 'ap_after_update_question', 1, 2 );
@@ -67,6 +68,16 @@ class AnsPress_Hooks
 	    $this->ap->add_action( 'ap_vote_casted', $this, 'update_user_vote_casted_count', 10, 4 );
 	    $this->ap->add_action( 'ap_vote_removed', $this, 'update_user_vote_casted_count' , 10, 4 );
 	    $this->ap->add_action( 'the_post', $this, 'ap_append_vote_count' );
+	}
+
+	/**
+	 * Add AnsPress tables in $wpdb.
+	 */
+	public function add_ap_tables(){
+		global $wpdb;
+		$wpdb->ap_meta = $wpdb->prefix . 'ap_meta';
+		$wpdb->ap_activity = $wpdb->prefix . 'ap_activity';
+		$wpdb->ap_activitymeta = $wpdb->prefix . 'ap_activitymeta';
 	}
 
 	/**
@@ -215,7 +226,6 @@ class AnsPress_Hooks
 	            foreach ( $ans as $p ) {
 	                do_action( 'ap_trash_multi_answer', $p );
 	                ap_delete_meta( array( 'apmeta_type' => 'flag', 'apmeta_actionid' => $p->ID ) );
-	                ap_remove_new_answer_history( $p->ID );
 	                wp_trash_post( $p->ID );
 	            }
 	        }
@@ -227,10 +237,6 @@ class AnsPress_Hooks
 	        do_action( 'ap_trash_answer', $post );
 	        ap_delete_meta( array( 'apmeta_type' => 'flag', 'apmeta_actionid' => $post->ID ) );
 	        ap_remove_question_subscriber( $post->post_parent, $post->post_author );
-	        ap_remove_new_answer_history( $post->ID, $post->post_parent );
-
-			// Restore question history.
-			ap_restore_question_history( $post->post_parent );
 
 			// Update answer count.
 			update_post_meta( $post->post_parent, ANSPRESS_ANS_META, $ans );
@@ -261,9 +267,6 @@ class AnsPress_Hooks
 	                wp_untrash_post( $p->ID );
 	            }
 	        }
-
-			// Restore question history.
-			ap_restore_question_history( $post_id );
 	    }
 
 	    if ( $post->post_type == 'answer' ) {

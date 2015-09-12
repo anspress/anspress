@@ -317,7 +317,7 @@ function ap_display_question_metas($question_id = false) {
 
 		$view_count = ap_get_qa_views();
 		$metas['views'] = sprintf( __( '<i>%d views</i>', 'ap' ), $view_count );
-		$metas['history'] = ap_get_latest_history_html( $question_id, true );
+		$metas['history'] = ap_latest_post_activity_html( $question_id );
 	}
 
 	/*

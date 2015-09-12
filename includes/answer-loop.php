@@ -455,7 +455,7 @@ function ap_answer_the_active_time($answer_id = false) {
  */
 function ap_answer_get_the_active_time($answer_id = false) {
 	$answer_id = ap_parameter_empty( $answer_id, @ap_answer_get_the_answer_id() );
-	return ap_get_latest_history_html( $answer_id );
+	return ap_latest_post_activity_html( $answer_id );
 }
 
 /**

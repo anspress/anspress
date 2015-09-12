@@ -813,7 +813,7 @@ class AnsPress_Process_Form
 
 		$attachment_ids = $_POST['attachment_ids'];
 
-		// If attchment ids present then user have uploaded images
+		// If attchment ids present then user have uploaded images.
 		if ( is_array( $attachment_ids ) && count( $attachment_ids ) > 0 ) {
 			foreach ( $attachment_ids as $id ) {
 				$attach = get_post( $id );
@@ -823,7 +823,7 @@ class AnsPress_Process_Form
 			}
 		}
 
-		// remove all unused atthements by user
+		// Remove all unused atthements by user.
 		ap_clear_unused_attachments( $user_id );
 	}
 }
