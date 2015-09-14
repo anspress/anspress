@@ -1,0 +1,3309 @@
+# Copyright (C) 2015 Rahul Aryan
+# This file is distributed under the GPL-3.0+.
+msgid ""
+msgstr ""
+"Project-Id-Version: AnsPress 2.3\n"
+"Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/anspress-question-"
+"answer\n"
+"POT-Creation-Date: 2015-06-27 12:47+0100\n"
+"PO-Revision-Date: 2015-06-27 17:13+0530\n"
+"Last-Translator: Castey@CLLPSD <castey@cllpsd.com>\n"
+"Language-Team: CLLPSD <info@cllpsd.com>\n"
+"Language: pl_PL\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.7.3\n"
+"X-Poedit-KeywordsList: __;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;"
+"_nx_noop:1,2,3c;esc_attr__;esc_html__;esc_attr_e;esc_html_e;esc_attr_x:1,2c;"
+"esc_html_x:1,2c\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
+"|| n%100>=20) ? 1 : 2);\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-Basepath: ../\n"
+"X-Textdomain-Support: yes\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: activate.php:37
+msgid ""
+"Please update all AnsPress extensions before activating. <a target=\"_blank"
+"\" href=\"http://anspress.io/questions/ask/\">Ask for help</a>"
+msgstr ""
+"Zaktualizuj wszystkie rozszerzenia AnsPress przed jego aktywacją. <a target="
+"\"_blank\" href=\"http://anspress.io/questions/ask/\">Pomoc</a>"
+
+#: activate.php:38
+msgid "Please update all AnsPress extensions before activating."
+msgstr "Zaktualizuj wszystkie rozszerzenia AnsPress przed jego aktywacją."
+
+#: admin/anspress-admin.php:169 includes/post_types.php:51
+msgid "All Questions"
+msgstr "Wszystkie pytania"
+
+#: admin/anspress-admin.php:171 includes/post_types.php:54
+msgid "New Question"
+msgstr "Nowe pytania"
+
+#: admin/anspress-admin.php:173 includes/post_types.php:122
+msgid "All Answers"
+msgstr "Wszystkie odpowiedzi"
+
+#: admin/anspress-admin.php:175
+msgid "Moderate question & answer"
+msgstr "Moderuj pytania & odpowiedzi"
+
+#: admin/anspress-admin.php:175 admin/flagged.php:100 admin/moderate.php:80
+#: admin/options-page.php:561 admin/options-page.php:570
+#: admin/options-page.php:582 admin/options-page.php:594
+#: admin/options-page.php:606 admin/views/dashboard.php:44
+#: includes/functions.php:561 includes/post_status.php:30
+#: includes/post_types.php:251 includes/query_filter.php:89
+#: includes/query_filter.php:102 includes/question-loop.php:351
+msgid "Moderate"
+msgstr "Moderacja"
+
+#: admin/anspress-admin.php:177 admin/anspress-admin.php:310
+msgid "Flagged question & answer"
+msgstr "Oznaczone pytania & odpowiedzi"
+
+#: admin/anspress-admin.php:177 admin/views/dashboard.php:50
+msgid "Flagged"
+msgstr "Oznaczone"
+
+#: admin/anspress-admin.php:179 includes/bp.php:51 includes/bp.php:83
+#: includes/reputation.php:24 includes/reputation.php:298
+#: includes/user.php:420 theme/default/user/about.php:14
+#: theme/default/user/user-card.php:25
+msgid "Reputation"
+msgstr "Reputacja"
+
+#: admin/anspress-admin.php:184 admin/views/post_flag.php:35
+msgid "Post flag"
+msgstr "Zgłoś post"
+
+#: admin/anspress-admin.php:186
+msgid "Select question"
+msgstr "Wybierz pytanie"
+
+#: admin/anspress-admin.php:194 admin/views/about.php:116
+#: admin/views/admin.php:76 admin/views/dashboard.php:117
+msgid "About AnsPress"
+msgstr "O AnsPress"
+
+#: admin/anspress-admin.php:196 admin/anspress-admin.php:392
+#: admin/views/admin.php:26
+msgid "AnsPress Options"
+msgstr "Ustawienia AnsPress"
+
+#: admin/anspress-admin.php:196
+msgid "Options"
+msgstr "Ustawienia"
+
+#: admin/anspress-admin.php:249
+msgid "AnsPress Points"
+msgstr "Punkty AnsPress"
+
+#: admin/anspress-admin.php:250
+msgid "New reputation"
+msgstr "Dodaj nową reputację"
+
+#: admin/anspress-admin.php:268
+msgid "AnsPress Badges"
+msgstr "Odznaki AnsPress"
+
+#: admin/anspress-admin.php:269
+msgid "New badge"
+msgstr "Nowa odznaka"
+
+#: admin/anspress-admin.php:291
+msgid "Posts waiting moderation"
+msgstr "Posty oczekujące na moderację"
+
+#: admin/anspress-admin.php:347
+msgid "Settings"
+msgstr "Ustawienia"
+
+#: admin/anspress-admin.php:396
+msgid "AnsPress Role"
+msgstr "Role AnsPress"
+
+#: admin/anspress-admin.php:405
+msgid "Role and permission for AnsPress"
+msgstr "Role i uprawnienia AnsPress"
+
+#: admin/anspress-admin.php:425 admin/anspress-admin.php:500
+#: admin/anspress-admin.php:567 admin/anspress-admin.php:662
+#: admin/flagged.php:116 admin/moderate.php:93 admin/reputation.php:51
+#: includes/ask-form.php:55 includes/post_types.php:211
+msgid "Title"
+msgstr "Tytuł"
+
+#: admin/anspress-admin.php:431 admin/anspress-admin.php:506
+#: admin/anspress-admin.php:573 admin/anspress-admin.php:668
+#: includes/ask-form.php:72 includes/user-fields.php:98
+msgid "Description"
+msgstr "Opis"
+
+#: admin/anspress-admin.php:437 admin/anspress-admin.php:512
+#: admin/reputation.php:52 theme/default/content-user.php:17
+msgid "Points"
+msgstr "Punkty"
+
+#: admin/anspress-admin.php:443 admin/anspress-admin.php:518
+#: admin/anspress-admin.php:591 admin/anspress-admin.php:686
+#: admin/reputation.php:53
+msgid "Event"
+msgstr "Wydarzenie"
+
+#: admin/anspress-admin.php:449 admin/anspress-admin.php:524
+msgid "Save Point"
+msgstr "Zapisz punkty"
+
+#: admin/anspress-admin.php:579 admin/anspress-admin.php:674
+#: admin/flagged.php:115
+msgid "Type"
+msgstr "Typ"
+
+#: admin/anspress-admin.php:585 admin/anspress-admin.php:680
+msgid "Min. Points"
+msgstr "Punkty minimalne"
+
+#: admin/anspress-admin.php:597 admin/anspress-admin.php:692
+msgid "Multiple"
+msgstr "Wiele"
+
+#: admin/anspress-admin.php:603 admin/anspress-admin.php:698
+msgid "Save badge"
+msgstr "Zapisz odznakę"
+
+#: admin/anspress-admin.php:756
+msgid "This question is orphan, no question is selected for this answer"
+msgstr "To porzucone pytanie, nie znaleziono pytania do tej odpowiedzi"
+
+#: admin/anspress-admin.php:761 includes/ajax.php:70 includes/ajax.php:73
+#: includes/ajax.php:273 includes/ajax.php:315 includes/process-form.php:507
+msgid "1 Answer"
+msgid_plural "%d Answer"
+msgstr[0] "1 Odpowiedź"
+msgstr[1] "%d Odpowiedzi"
+msgstr[2] "%d Odpowiedzi"
+
+#: admin/anspress-admin.php:761
+msgid "Edit question"
+msgstr "Edytuj pytanie"
+
+#: admin/anspress-admin.php:833
+msgid "AnsPress Pages"
+msgstr "Strony AnsPress"
+
+#: admin/anspress-admin.php:852
+msgid "User profile"
+msgstr "Profil użytkownika"
+
+#: admin/anspress-admin.php:853
+msgid "User notification"
+msgstr "Powiadomienia użytkownika"
+
+#: admin/anspress-admin.php:866
+msgid "Add to Menu"
+msgstr "Dodaj do menu"
+
+#: admin/anspress-admin.php:885
+msgid ""
+"Is your existing question tags are not appearing ? click here to fix it %s"
+msgstr ""
+"Jeśli taki w Twoim istniejącym pytaniu się nie pojawiają, kliknij to %s, aby "
+"to naprawić"
+
+#: admin/anspress-admin.php:885
+msgid "Fix question tags"
+msgstr "Napraw tagi pytań"
+
+#: admin/anspress-admin.php:886
+msgid "Hide message %s"
+msgstr "Ukryj wiadomość %s"
+
+#: admin/anspress-admin.php:886
+msgid "dismiss"
+msgstr "odrzuć"
+
+#: admin/extensions.php:69
+msgid "Download"
+msgstr "Pobierz"
+
+#: admin/extensions.php:74
+msgid "By %s"
+msgstr "Przez %s"
+
+#: admin/extensions.php:79
+msgid "Last Updated:"
+msgstr "Ostatnio zaktualizowane:"
+
+#: admin/extensions.php:83
+msgid "Untested with your version of WordPress"
+msgstr "Nie przetestowano z Twoją wersją Wordpressa"
+
+#: admin/extensions.php:85
+msgid "<strong>Compatible</strong> with your version of WordPress"
+msgstr "<strong>Kompatybilne</strong> z Twoją wersją Wordpressa"
+
+#: admin/flagged.php:70 admin/moderate.php:61 includes/common-pages.php:39
+#: widgets/search.php:36
+msgid "Search"
+msgstr "Szukaj"
+
+#: admin/flagged.php:97
+msgid "All"
+msgstr "Wszystkie"
+
+#: admin/flagged.php:98 admin/options-page.php:569 admin/options-page.php:581
+#: admin/options-page.php:593 admin/options-page.php:605
+msgid "Publish"
+msgstr "Publikuj"
+
+#: admin/flagged.php:99 admin/flagged.php:234 admin/moderate.php:209
+#: includes/post_types.php:260
+msgid "Pending"
+msgstr "Oczekujące"
+
+#: admin/flagged.php:101 includes/post_status.php:22
+#: includes/post_types.php:248 includes/query_filter.php:95
+#: includes/query_filter.php:104 includes/question-loop.php:353
+msgid "Closed"
+msgstr "Zamknięte"
+
+#: admin/flagged.php:102 includes/post_types.php:257
+msgid "Draft"
+msgstr "Szkice"
+
+#: admin/flagged.php:103 admin/flagged.php:183 admin/meta_box.php:65
+#: admin/moderate.php:157 includes/post_types.php:263
+#: includes/post_types.php:388
+msgid "Trash"
+msgstr "Kosz"
+
+#: admin/flagged.php:117 admin/moderate.php:94 includes/post_types.php:223
+#: includes/post_types.php:353
+msgid "Flag"
+msgstr "Oznaczone"
+
+#: admin/flagged.php:162 admin/meta_box.php:20 admin/options-page.php:289
+#: includes/bp.php:146 includes/bp.php:147 includes/common-pages.php:36
+#: includes/functions.php:1127 includes/post_types.php:71
+#: includes/reputation.php:837
+msgid "Question"
+msgstr "Pytnie"
+
+#: admin/flagged.php:164 admin/options-page.php:341 includes/bp.php:156
+#: includes/bp.php:157 includes/bp.php:166 includes/functions.php:1127
+#: includes/post_types.php:142 includes/reputation.php:844
+#: includes/user.php:424
+msgid "Answer"
+msgstr "Odpowiedź"
+
+#: admin/flagged.php:175
+msgid "Edit flags"
+msgstr "Edytuj flagi"
+
+#: admin/flagged.php:178 admin/flagged.php:228 admin/moderate.php:151
+#: admin/moderate.php:203 includes/post_types.php:385
+msgid "Restore"
+msgstr "Przywróć"
+
+#: admin/flagged.php:179 admin/flagged.php:229 admin/moderate.php:152
+#: admin/moderate.php:204 includes/functions.php:540
+msgid "Delete permanently"
+msgstr "Usuń permametnie"
+
+#: admin/flagged.php:182 admin/meta_box.php:63 admin/moderate.php:156
+#: admin/reputation.php:152 includes/class-form.php:505
+#: includes/common-pages.php:38 includes/functions.php:358
+#: includes/functions.php:360 includes/functions.php:376
+#: includes/post_types.php:394 includes/theme.php:587
+#: theme/default/part/question.php:46
+msgid "Edit"
+msgstr "Edytuj"
+
+#: admin/flagged.php:184 admin/moderate.php:158 includes/post_types.php:406
+msgid "View"
+msgstr "Pokaż"
+
+#: admin/flagged.php:233 admin/moderate.php:208
+msgid "Published"
+msgstr "Opublikowany"
+
+#: admin/flagged.php:235 admin/moderate.php:210
+msgid "Move to trash"
+msgstr "Umieść w koszu"
+
+#: admin/functions.php:92
+msgid "Save options"
+msgstr "Zapisz ustawienia"
+
+#: admin/meta_box.php:19 admin/views/dashboard.php:38
+#: admin/views/dashboard.php:64 includes/bp.php:123 includes/class-user.php:49
+#: includes/post_types.php:120 includes/user.php:495
+#: theme/default/user/list-question.php:4 widgets/question_stats.php:42
+#: widgets/questions.php:55
+msgid "Answers"
+msgstr "Odpowiedzi"
+
+#: admin/meta_box.php:58
+msgid "<span class=\"when\">Answered about %s ago</span>"
+msgstr "<span class=\"when\">Odpowiedziano około %s temu</span>"
+
+#: admin/meta_box.php:64
+msgid "Hide"
+msgstr "Ukryj"
+
+#: admin/meta_box.php:72
+msgid "No answers yet"
+msgstr "Brak odpowiedzi"
+
+#: admin/meta_box.php:82
+msgid "<strong>1</strong> Answer"
+msgid_plural "<strong>%d</strong> Answers"
+msgstr[0] "<strong>1</strong> Odpowiedź"
+msgstr[1] "<strong>%d</strong> Odpowiedzi"
+msgstr[2] "<strong>%d</strong> Odpowiedzi"
+
+#: admin/meta_box.php:83
+msgid "<strong>1</strong> Vote"
+msgid_plural "<strong>%d</strong> Votes"
+msgstr[0] "<strong>1</strong> Głos"
+msgstr[1] "<strong>%d</strong> Głosów"
+msgstr[2] "<strong>%d</strong> Głosów"
+
+#: admin/moderate.php:92 includes/functions.php:565
+#: includes/post_types.php:219 includes/post_types.php:350
+msgid "Status"
+msgstr "Status"
+
+#: admin/moderate.php:95 includes/post_types.php:214
+msgid "Category"
+msgstr "Kategoria"
+
+#: admin/moderate.php:190 includes/post_types.php:284
+#: includes/post_types.php:307
+msgid "--"
+msgstr "--"
+
+#: admin/options-page.php:15
+msgid "General"
+msgstr "Ogólne"
+
+#: admin/options-page.php:18
+msgid "Base page"
+msgstr "Strona podstawowa"
+
+#: admin/options-page.php:19
+msgid "Select page for displaying anspress."
+msgstr "Wybierz stronę, na której ma wyświetlać się AnsPress"
+
+#: admin/options-page.php:26
+msgid "Question Help page"
+msgstr "Strona pomocy o pytaniach"
+
+#: admin/options-page.php:27
+msgid "Direction for asking a question."
+msgstr "Porady odnośnie zadawania pytań"
+
+#: admin/options-page.php:34
+msgid "Answer Help page"
+msgstr "Strona pomocy o odpowiedziach"
+
+#: admin/options-page.php:35
+msgid "Direction for answring a question."
+msgstr "Porady odnośnie odpowiadania na pytania"
+
+#: admin/options-page.php:42
+msgid "Hide author credits"
+msgstr "Ukryj informację o autorach"
+
+#: admin/options-page.php:43
+msgid "Show your love by showing link to AnsPress project site."
+msgstr "Pokaż nam swą miłość wyświetlając link do naszego projektu."
+
+#: admin/options-page.php:51
+msgid "Allow private posts"
+msgstr "Pozwól na prywatne posty"
+
+#: admin/options-page.php:52
+msgid "Allow users to create private question and answer."
+msgstr "Pozwól użytkownikom na tworzenie prywatnych pytań i odpowiedzi"
+
+#: admin/options-page.php:60
+msgid "Clean DB"
+msgstr "Wyczyść Bazę"
+
+#: admin/options-page.php:61
+msgid ""
+"check this to remove all anspress data including posts on deactivating "
+"plugin."
+msgstr ""
+"Zaznacz tą opcję jeśli chcesz usunąć wszystkie dane AnsPress przy wyłączeniu "
+"wtyczki."
+
+#: admin/options-page.php:68
+msgid "Base page slug before question permalink"
+msgstr "Link bazowy do pytań"
+
+#: admin/options-page.php:76
+msgid "Base page slug before user page permalink"
+msgstr "Link bazowy do profilu użytkownika"
+
+#: admin/options-page.php:84
+msgid "Disable hover card"
+msgstr "Wyłącz wizytówkę"
+
+#: admin/options-page.php:85
+msgid "Dont show user hover card on mouseover."
+msgstr "Wyłącz wyświetlanie wisytówki przy najechaniu na avatar użytkownika."
+
+#: admin/options-page.php:94
+msgid "Layout"
+msgstr "Układ"
+
+#: admin/options-page.php:98
+msgid "Avatar"
+msgstr "Avatar"
+
+#: admin/options-page.php:102
+msgid "List avatar size"
+msgstr "Rozmiar avatara na liście"
+
+#: admin/options-page.php:103
+msgid "User avatar size for questions list."
+msgstr "Rozmiar avatara na liście pytań."
+
+#: admin/options-page.php:110
+msgid "Question avatar size"
+msgstr "Rozmiar avatara w pytaniach"
+
+#: admin/options-page.php:111
+msgid "User avatar size for question."
+msgstr "Rozmiar awatarów użytkowników w pytaniach."
+
+#: admin/options-page.php:118 admin/options-page.php:126
+msgid "Answer avatar size"
+msgstr "Rozmiar awatara w odpowiedziach"
+
+#: admin/options-page.php:119 admin/options-page.php:127
+msgid "User avatar size for answer."
+msgstr "Rozmiar awatarów użytkowników w odpowiedziach."
+
+#: admin/options-page.php:134
+msgid "Comment avatar size"
+msgstr "Rozmiar avatara w komentarzach"
+
+#: admin/options-page.php:135
+msgid "User avatar size for comments."
+msgstr "Rozmiar awatarów użytkowników w komentarzach."
+
+#: admin/options-page.php:143
+msgid "Items to show per page"
+msgstr "Elementy do wyświetlenia na stronie"
+
+#: admin/options-page.php:147
+msgid "Questions per page"
+msgstr "Pytań na stronie"
+
+#: admin/options-page.php:148
+msgid "Questions to show per page."
+msgstr "Ilość pytań do wyświetlenia na stronie."
+
+#: admin/options-page.php:155
+msgid "Answers per page"
+msgstr "Odpowiedzi na stronie"
+
+#: admin/options-page.php:156
+msgid "Answers to show per page."
+msgstr "Ilość odpowiedzi do wyświetlenia na stronie."
+
+#: admin/options-page.php:163
+msgid "Users per page"
+msgstr "Użytkowników na stronie"
+
+#: admin/options-page.php:164
+msgid "Users to show per page."
+msgstr "Ilość użytkowników do wyświetlenia na stronie."
+
+#: admin/options-page.php:171
+msgid "Sorting"
+msgstr "Sortowanie"
+
+#: admin/options-page.php:175
+msgid "Default answer sort"
+msgstr "Domyślne sortowanie odpowiedzi"
+
+#: admin/options-page.php:176
+msgid "Sort answers by default."
+msgstr "Sortuj odpowiedzi z domyślnymi ustawieniami."
+
+#: admin/options-page.php:179 includes/functions.php:454
+#: includes/theme.php:489 includes/theme.php:528 widgets/questions.php:54
+msgid "Voted"
+msgstr "Ilość głosów"
+
+#: admin/options-page.php:180 includes/theme.php:484 includes/theme.php:524
+#: includes/user.php:422 widgets/question_stats.php:40
+#: widgets/questions.php:52
+msgid "Active"
+msgstr "Aktywne"
+
+#: admin/options-page.php:181 includes/functions.php:452
+#: includes/theme.php:485 includes/theme.php:530 includes/user.php:425
+#: widgets/questions.php:53
+msgid "Newest"
+msgstr "Najnowsze"
+
+#: admin/options-page.php:182 includes/functions.php:453
+#: includes/theme.php:531
+msgid "Oldest"
+msgstr "Najstarsze"
+
+#: admin/options-page.php:190
+msgid "Toggle"
+msgstr "Ciągłe"
+
+#: admin/options-page.php:194
+msgid "Show comments"
+msgstr "Pokaż komentarze"
+
+#: admin/options-page.php:195
+msgid "Show comments by default."
+msgstr "Pokazuj komentarze domyślnie."
+
+#: admin/options-page.php:202
+msgid "Show question sidebar"
+msgstr "Pokaż kolumnę w pytaniach"
+
+#: admin/options-page.php:203
+msgid "Subbscribe and and stats widget will shown in question page."
+msgstr "Subskrypcje i statystyki będą się wyświetlać na stronie z pytaniem."
+
+#: admin/options-page.php:211
+msgid "Pages"
+msgstr "Strony"
+
+#: admin/options-page.php:215
+msgid "Page slug"
+msgstr "Alias stryny"
+
+#: admin/options-page.php:219
+msgid "Ask page slug"
+msgstr "Alias strony zadawania pytań"
+
+#: admin/options-page.php:220
+msgid "Enter slug for ask page."
+msgstr "Wprowadź alias dla zadawania pytań."
+
+#: admin/options-page.php:227
+msgid "Question page slug"
+msgstr "Alias strony odpowiedzi."
+
+#: admin/options-page.php:228
+msgid "Enter slug for question page."
+msgstr "Wprowadź alias strony z odpowiedziami."
+
+#: admin/options-page.php:235
+msgid "Users page slug"
+msgstr "Alias stron użytkowników"
+
+#: admin/options-page.php:236
+msgid "Enter slug for users page."
+msgstr "Wprowadź alias dla stron użytkowników."
+
+#: admin/options-page.php:243
+msgid "User page slug"
+msgstr "Alias strony użytkownika"
+
+#: admin/options-page.php:244
+msgid ""
+"Enter slug for user page, make sure no page or post exists with same slug."
+msgstr ""
+"Wprowadź alias dla strony użytkownika, miej na uwadze to, aby żaden post ani "
+"strona go nie zajmowała."
+
+#: admin/options-page.php:252
+msgid "Page titles"
+msgstr "Tytuły strony"
+
+#: admin/options-page.php:256
+msgid "Show question title"
+msgstr "Pokaż tytuł pytania"
+
+#: admin/options-page.php:257
+msgid "Show question title in single question page."
+msgstr "Pokaż tytuł pytania na stronach poszczególnych pytań."
+
+#: admin/options-page.php:264
+msgid "Base page title"
+msgstr "Pokaż tytuł bazowy"
+
+#: admin/options-page.php:265
+msgid "Main questions list page title"
+msgstr "Tytuł głównej listy pytań"
+
+#: admin/options-page.php:272
+msgid "Ask page title"
+msgstr "Tytuł strony pytań"
+
+#: admin/options-page.php:273
+msgid "Title of the ask page"
+msgstr "Tytuł strony do zadawania pytań"
+
+#: admin/options-page.php:280
+msgid "Users page title"
+msgstr "Tytuł stron użytkowników"
+
+#: admin/options-page.php:281
+msgid "Title of the users page"
+msgstr "Tytuł dla strony użytkowników"
+
+#: admin/options-page.php:292
+msgid "Minimum title length"
+msgstr "Minimalna długość tytułu pytania"
+
+#: admin/options-page.php:293
+msgid "Set minimum letters for a question title."
+msgstr "Ustaw minimalna długość tytułu pytania."
+
+#: admin/options-page.php:300 admin/options-page.php:352
+msgid "Minimum question content"
+msgstr "Minimalna długość pytania"
+
+#: admin/options-page.php:301
+msgid "Set minimum letters for a question contents."
+msgstr "Ustaw minimalną długość pytania."
+
+#: admin/options-page.php:308 admin/options-page.php:360
+msgid "Use text editor ?"
+msgstr "Używaj edytora tekstu"
+
+#: admin/options-page.php:309 admin/options-page.php:361
+msgid "Text editor as default."
+msgstr "Domyślnie korzystaj z edytora tekstu."
+
+#: admin/options-page.php:316 admin/options-page.php:368
+msgid "Disable comments"
+msgstr "Wyłącz komentarze"
+
+#: admin/options-page.php:317
+msgid "Disable comments on questions."
+msgstr "Wyłącz komentarze w pytaniach."
+
+#: admin/options-page.php:324 admin/options-page.php:376
+msgid "Disable voting"
+msgstr "Wyłącz głosy"
+
+#: admin/options-page.php:325
+msgid "Disable voting on questions."
+msgstr "Wyłącz głosowanie w pytaniach."
+
+#: admin/options-page.php:332
+msgid "Close question after selecting answer"
+msgstr "Zamknij pytanie po wybraniu odpowiedzi"
+
+#: admin/options-page.php:333
+msgid "If enabled this will prevent user to submit answer on solved question."
+msgstr ""
+"Jeśli to aktywujesz, zablokujesz użytkownikom wysyłanie odpowiedzi do "
+"rozwiązanych pytań."
+
+#: admin/options-page.php:344
+msgid "Multiple Answers"
+msgstr "Wiele odpowiedzi"
+
+#: admin/options-page.php:345
+msgid "Allow an user to submit multiple answers on a single question."
+msgstr "Pozwól użytkownikom na udzielanie wielu odpowiedzi w jednym pytaniu."
+
+#: admin/options-page.php:353
+msgid "Set minimum letters for a answer contents."
+msgstr "Ustaw minimalną ilość znaków w odpowiedzi."
+
+#: admin/options-page.php:369
+msgid "Disable comments on answer."
+msgstr "Wyłącz komentarze do odpowiedzi."
+
+#: admin/options-page.php:377
+msgid "Disable voting on answers."
+msgstr "Wyłącz głosowanie w odpowiedziach."
+
+#: admin/options-page.php:384
+msgid "Disable navigation"
+msgstr "Wyłącz nawigację"
+
+#: admin/options-page.php:385
+msgid "Disable answer navigation."
+msgstr "Wyłącz nawigację odpowiedzi."
+
+#: admin/options-page.php:393 includes/class-user.php:41
+#: includes/options.php:132 widgets/users.php:37
+msgid "Users"
+msgstr "Użytkownicy"
+
+#: admin/options-page.php:396
+msgid "Show users directory"
+msgstr "Pokaż katalog użytkowników."
+
+#: admin/options-page.php:397
+msgid "When enabled public can see directory of users."
+msgstr "Kiedy jest właczone, każdy może zobaczyć katalog użytkowników."
+
+#: admin/options-page.php:405
+msgid "Features"
+msgstr "Dodatki"
+
+#: admin/options-page.php:409
+msgid "Disable reputation"
+msgstr "Wyłącz reputację"
+
+#: admin/options-page.php:410
+msgid "Disable reputation for user"
+msgstr "Wyłącz reputację dla użytkowników."
+
+#: admin/options-page.php:418
+msgid "Users page avatar size"
+msgstr "Rozmiar avatara na stronie użytkownika."
+
+#: admin/options-page.php:419
+msgid "Set user avatar size for users page item."
+msgstr "Ustaw rozmiar avatara na stronie użytkownika."
+
+#: admin/options-page.php:427
+msgid "Cover width"
+msgstr "Szerokość okładki"
+
+#: admin/options-page.php:428
+msgid "Set width of user cover photo."
+msgstr "Ustaw szerokość okładki użytkownika."
+
+#: admin/options-page.php:435
+msgid "Cover height"
+msgstr "Wysokość okładki"
+
+#: admin/options-page.php:436
+msgid "Set height of user cover photo."
+msgstr "Ustaw wysokość okładki użytkownika."
+
+#: admin/options-page.php:443
+msgid "Cover thumb width"
+msgstr "Szerokość miniatury okładki"
+
+#: admin/options-page.php:444
+msgid "Set width of user cover photo thumbnail."
+msgstr "Ustaw szerokość miniatury okładki użytkownika."
+
+#: admin/options-page.php:451
+msgid "Small cover height"
+msgstr "Wysokość miniatury okładki"
+
+#: admin/options-page.php:452
+msgid "Set height of user cover photo thumbnail."
+msgstr "Ustaw wysokość miniatury okładki użytkownika."
+
+#: admin/options-page.php:459
+msgid "Default rank"
+msgstr "Ranga domyślna"
+
+#: admin/options-page.php:460
+msgid "Assign a default rank for newly registered user."
+msgstr "Ustaw domyślną rangę użytkowników."
+
+#: admin/options-page.php:472
+msgid "Permission"
+msgstr "Uprawnienia"
+
+#: admin/options-page.php:475
+msgid "Multiple answers"
+msgstr "Wiele odpowiedzi."
+
+#: admin/options-page.php:476
+msgid "Allow user to submit multiple answer per question."
+msgstr "Pozwól użytkownikom na udzielanie wielu odpowiedzi w jednym pytaniu."
+
+#: admin/options-page.php:483
+msgid "Asker can answer"
+msgstr "Pytający może odpowiadać"
+
+#: admin/options-page.php:484
+msgid "Allow asker to answer his own question."
+msgstr "Pozwól pytającemu na udzielenie odpowiedzi na własne pytanie."
+
+#: admin/options-page.php:491
+msgid "Allow anonymous"
+msgstr "Pozwól anonimowym"
+
+#: admin/options-page.php:492
+msgid "Non-loggedin user can post questions and answers."
+msgstr "Niezalogowani użytkownicy mogą pisać pytania i odpowiedzi."
+
+#: admin/options-page.php:499
+msgid "Only admin can answer"
+msgstr "Tylko administrator może odpowiadać."
+
+#: admin/options-page.php:500
+msgid "Only allow admin to answer question."
+msgstr "Tylko administrator może udzielać odpowiedzi na pytania."
+
+#: admin/options-page.php:507
+msgid "Only logged in can see answers"
+msgstr "Tylko zalogowani widzą odpowiedzi"
+
+#: admin/options-page.php:508
+msgid "non-loggedin user cannot see answers."
+msgstr "Tylko zalogowani użytkownicy mogą widzieć odpowiedzi."
+
+#: admin/options-page.php:515
+msgid "Only logged in can see comment"
+msgstr "Tylko zalogowani widzą komentarze"
+
+#: admin/options-page.php:516
+msgid "non-loggedin user cannot see comments."
+msgstr "Tylko zalogowani użytkownicy mogą widzieć komentarze."
+
+#: admin/options-page.php:523
+msgid "Lock delete action"
+msgstr "Blokada usuwania"
+
+#: admin/options-page.php:524
+msgid ""
+"Lock comment or post after a period so that user cannot delete it. Set the "
+"time in epoch i.e. 86400 = 1 day."
+msgstr ""
+"Zablokuj możliwość usunięcia komentarza lub postu po określonym czasie. Czas "
+"podawany jest w sekundach np. 86400 = 1 day"
+
+#: admin/options-page.php:532
+msgid "Upload"
+msgstr "Wrzuć"
+
+#: admin/options-page.php:536
+msgid "Allow image upload"
+msgstr "Pozwól na wrzucanie zdjęć"
+
+#: admin/options-page.php:537
+msgid "Allow logged-in users to upload image."
+msgstr "Pozwól zalogowanym użytkownikom na wrzucanie zdjęć."
+
+#: admin/options-page.php:544
+msgid "Max images per post"
+msgstr "Maks zdjęć na post"
+
+#: admin/options-page.php:545
+msgid "Set how many images user can upload for each post."
+msgstr "Ustaw ile użytkownik będzie mógł wrzucić zdjęć do postu."
+
+#: admin/options-page.php:552
+msgid "Max upload size"
+msgstr "Maksymalny rozmiar pliku"
+
+#: admin/options-page.php:553
+msgid "Set maximum upload size."
+msgstr "Ustaw maksymalny rozmiar wrzucanego pliku."
+
+#: admin/options-page.php:564
+msgid "Status of new question"
+msgstr "Status nowego pytania"
+
+#: admin/options-page.php:565
+msgid "Set post status of new question."
+msgstr "Ustaw status dla nowego pytania."
+
+#: admin/options-page.php:576
+msgid "Status of edited question"
+msgstr "Status pytań edytowanych"
+
+#: admin/options-page.php:577
+msgid "Set post status of edited question."
+msgstr "Ustaw status edytowanego pytania."
+
+#: admin/options-page.php:588
+msgid "Status of new answer"
+msgstr "Status nowej odpowiedzi"
+
+#: admin/options-page.php:589
+msgid "Set post status of new answer."
+msgstr "Ustaw status nowej odpowiedzi."
+
+#: admin/options-page.php:600
+msgid "Status of edited answer"
+msgstr "Status edytowanej odpowiedzi"
+
+#: admin/options-page.php:601
+msgid "Set post status of edited answer."
+msgstr "Ustaw status edytowanej odpowiedzi."
+
+#: admin/options-page.php:613
+msgid "reCaptacha"
+msgstr "reCaptacha"
+
+#: admin/options-page.php:617
+msgid "Enable reCaptcha"
+msgstr "Włącz reCaptacha'e"
+
+#: admin/options-page.php:618
+msgid "Use this for preventing spam posts."
+msgstr "używaj tego, aby zapobiec botom."
+
+#: admin/options-page.php:625
+msgid "Recaptcha site key"
+msgstr "Klucz strony"
+
+#: admin/options-page.php:626
+msgid ""
+"Enter your site key, if you dont have it get it from here https://www.google."
+"com/recaptcha/admin"
+msgstr ""
+"Jeśli nie posiadasz kluczy, możesz je uzyskać tutaj: https://www.google.com/"
+"recaptcha/admin"
+
+#: admin/options-page.php:633
+msgid "Recaptcha secret key"
+msgstr "Klucz prywatny"
+
+#: admin/options-page.php:634
+msgid "Enter your secret key"
+msgstr "Wprowadź swój klucz prywatny"
+
+#: admin/reputation.php:152 admin/reputation.php:153
+msgid "Delete this reputation"
+msgstr "Usuń tą reputację"
+
+#: admin/reputation.php:153 includes/class-form.php:235
+#: includes/class-form.php:242 includes/functions.php:523
+#: includes/theme.php:592
+msgid "Delete"
+msgstr "Usuń"
+
+#: admin/views/about.php:19
+msgid "Welcome to AnsPress 2.2"
+msgstr "Witaj w AnsPress 2.2"
+
+#: admin/views/about.php:117 admin/views/admin.php:77
+#: admin/views/dashboard.php:118
+msgid "Support Q&A"
+msgstr "Wsparcie Q&A"
+
+#: admin/views/about.php:118 admin/views/admin.php:78
+#: admin/views/dashboard.php:119
+msgid "AnsPress Themes"
+msgstr "Szablony AnsPress"
+
+#: admin/views/about.php:119 admin/views/admin.php:79
+#: admin/views/dashboard.php:120
+msgid "Github Repo"
+msgstr "Repo GitHub'a"
+
+#: admin/views/addons.php:18
+msgid "AnsPress Extensions"
+msgstr "Rozszerzenia AnsPress"
+
+#: admin/views/admin.php:30
+msgid "AnsPress options updated"
+msgstr "Zaktualizowano ustawienia AnsPress"
+
+#: admin/views/dashboard.php:23
+msgid "AnsPress Dashboard"
+msgstr "Kokpit AnsPress"
+
+#: admin/views/dashboard.php:32 includes/bp.php:103 includes/class-user.php:48
+#: includes/common-pages.php:35 includes/post_types.php:49
+#: includes/user.php:496 includes/user.php:523 widgets/questions.php:31
+msgid "Questions"
+msgstr "Pytania"
+
+#: admin/views/dashboard.php:56
+msgid "Latest Questions"
+msgstr "Ostatnie pytania"
+
+#: admin/views/dashboard.php:66 includes/functions.php:312
+#: includes/post_types.php:221 includes/post_types.php:351
+msgid "Comments"
+msgstr "Komentarze"
+
+#: admin/views/dashboard.php:77
+msgid "There is no question yet."
+msgstr "Nie ma pytań."
+
+#: admin/views/post_flag.php:41
+msgid "Total <b>%d flag</b>"
+msgstr "Łącznie <b> %d oznaczonych</b>"
+
+#: admin/views/post_flag.php:42 includes/theme.php:30
+msgid "Edit post"
+msgstr "Edytuj post"
+
+#: admin/views/post_flag.php:43
+msgid "Trash post"
+msgstr "Przenieś do kosza"
+
+#: admin/views/post_flag.php:55
+msgid "%s flagged this post %s ago"
+msgstr "%s oznaczono ten post %s temu"
+
+#: admin/views/post_flag.php:56
+msgid "Remove"
+msgstr "Usuń"
+
+#: admin/views/post_flag.php:61
+msgid "No one flagged this post yet"
+msgstr "Nik jeszcze nie oznaczył tego postu"
+
+#: admin/views/select_question.php:20
+msgid "Select a question for new answer"
+msgstr "Wybierz pytanie do nowej odpowiedzi"
+
+#: admin/views/select_question.php:21
+msgid ""
+"Slowly type for question suggestion and then click select button right to "
+"question title."
+msgstr ""
+"Wprowadź powoli sugestię do pytania i kliknij w przycisk po prawej od tytuły "
+"pytania."
+
+#: includes/actions.php:339 includes/class-user.php:201 widgets/user.php:38
+msgid "My profile"
+msgstr "Mój profil"
+
+#: includes/actions.php:340 includes/class-user.php:225
+msgid "My notification"
+msgstr "Moje powiadomienia"
+
+#: includes/ajax.php:61
+msgid "%d similar questions found"
+msgstr "Znaleziono %d podobnych pytań"
+
+#: includes/ajax.php:62
+msgid ""
+"We found similar questions that have already been asked, click to read them. "
+"Avoid creating duplicate questions, it will be deleted."
+msgstr ""
+"Znaleźliśmy podobne pytanie, na które udzielono już odpowiedzi, kliknij aby "
+"je przeczytać. Unikaj powielania pytań, mogą one zostać usunięte."
+
+#: includes/ajax.php:73 includes/functions.php:501
+msgid "Select"
+msgstr "Wybierz"
+
+#: includes/ajax.php:78
+msgid "No related questions found"
+msgstr "Nie znaleziono podobnych pytań."
+
+#: includes/ajax.php:104 includes/ajax.php:122
+msgid "Update comment"
+msgstr "Zaktualizuj komentarz"
+
+#: includes/ajax.php:117 includes/functions.php:312
+#: includes/reputation.php:851
+msgid "Comment"
+msgstr "Komentarz"
+
+#: includes/ajax.php:117
+msgid "Respond to the post."
+msgstr "Odpowiedz na post"
+
+#: includes/ajax.php:150 includes/ajax.php:181 includes/process-form.php:656
+msgid "One comment"
+msgid_plural "%d comments"
+msgstr[0] "Jeden kometarz"
+msgstr[1] "%d komentarzy"
+msgstr[2] "%d komentarzy"
+
+#: includes/ajax.php:172 includes/ajax.php:262
+msgid "This post was created %s ago, its locked hence you cannot delete it."
+msgstr ""
+"Ten post stworzono %s temu. Został on zablokowany, tak więc nie możesz go "
+"już usunąć."
+
+#: includes/ajax.php:398
+msgid "Update"
+msgstr "Zaktualizuj"
+
+#: includes/ajax.php:464 includes/functions.php:1263
+msgid "Set as featured"
+msgstr "Ustaw jako wyróżniony"
+
+#: includes/ajax.php:481 includes/functions.php:1263
+msgid "Unset as featured"
+msgstr "Przestań wyróżniać"
+
+#: includes/ajax.php:518 includes/follow.php:30
+msgid "Follow"
+msgstr "Śledź"
+
+#: includes/ajax.php:526 includes/follow.php:30
+msgid "Unfollow"
+msgstr "Przestań śledzić"
+
+#: includes/answer-form.php:18 includes/ask-form.php:22
+#: widgets/categories.php:107
+msgid "Name"
+msgstr "Nazwa"
+
+#: includes/answer-form.php:20 includes/ask-form.php:24
+msgid "Enter your name to display"
+msgstr "Wprowadź swoją wyświetlaną nazwę "
+
+#: includes/answer-form.php:51 includes/post_types.php:127
+msgid "Update answer"
+msgstr "Zaktualizuj pytanie"
+
+#: includes/answer-form.php:51
+msgid "Post answer"
+msgstr "Wyślij odpowiedź"
+
+#: includes/answer-form.php:65
+msgid "Your answer.."
+msgstr "Twoja odpowiedź.."
+
+#: includes/answer-form.php:80 includes/ask-form.php:102
+msgid "Only visible to admin and moderator."
+msgstr "Widoczne jedynie dla administracji i moderatorów."
+
+#: includes/answer-form.php:86 includes/ask-form.php:109
+msgid "reCaptach keys missing, please add keys"
+msgstr "Brakuje kluczy reCaptcha, uzupełnij je"
+
+#: includes/answer-loop.php:378 includes/question-loop.php:292
+#: theme/default/answer-list.php:35
+msgid "votes"
+msgstr "głosów"
+
+#: includes/answer-loop.php:430 includes/question-loop.php:467
+msgid "<time itemprop=\"datePublished\" datetime=\"%s\">%s Ago</time>"
+msgstr "<time itemprop=\"datePublished\" datetime=\"%s\">%s Temu</time>"
+
+#: includes/ask-form.php:51
+msgid "Update question"
+msgstr "Zaktualizuj pytanie"
+
+#: includes/ask-form.php:51
+msgid "Post question"
+msgstr "Wyślij pytanie"
+
+#: includes/ask-form.php:57
+msgid "Question in one sentence"
+msgstr "Pytanie w jednym zdaniu"
+
+#: includes/ask-form.php:58
+msgid "Write a meaningful title for the question."
+msgstr "Napisz wspaniały tytuł dla pytania"
+
+#: includes/ask-form.php:74
+msgid "Write description for the question."
+msgstr "Opisz dokładniej swoje pytanie/problem"
+
+#: includes/bp.php:59
+msgid "Questions %s"
+msgstr "Odpowiedzi %s"
+
+#: includes/bp.php:67
+msgid "Answers %s"
+msgstr "Pytania%s"
+
+#: includes/bp.php:148
+msgid "%1$s asked a new <a href=\"AP_CPT_LINK\">question</a>"
+msgstr "%1$s zadał nowe <a href=\"AP_CPT_LINK\">pytanie</a>"
+
+#: includes/bp.php:149
+msgid "%1$s asked a new <a href=\"AP_CPT_LINK\">question</a>, on the site %3$s"
+msgstr "%1$s zadał nowe <a href=\"AP_CPT_LINK\">pytanie</a>, na stronie %3$s"
+
+#: includes/bp.php:158
+msgid "%1$s <a href=\"AP_CPT_LINK\">answered</a> a question"
+msgstr "%1$s <a href=\"AP_CPT_LINK\">odpowiedział</a> na pytanie"
+
+#: includes/bp.php:159
+msgid "%1$s <a href=\"AP_CPT_LINK\">answered</a> a question, on the site %3$s"
+msgstr ""
+"%1$s <a href=\"AP_CPT_LINK\">odpowiedział</a> na pytanie, na stronie %3$s"
+
+#: includes/bp.php:166
+msgid "Answer this question"
+msgstr "Odpowiedz na pytanie"
+
+#: includes/bp.php:181
+msgid "%s Reputation"
+msgstr "%s Reputacji"
+
+#: includes/bp.php:226
+msgid "%1$d answers on - %2$s"
+msgstr "%1$d odpowiedzi na - %2$s"
+
+#: includes/bp.php:230
+msgid "%1$s answered on - %2$s"
+msgstr "%1$s odpowiedział na - %2$s"
+
+#: includes/bp.php:237 includes/post_types.php:70
+msgid "question"
+msgstr "pytanie"
+
+#: includes/bp.php:237 includes/post_types.php:141
+#: theme/default/answers.php:18
+msgid "answer"
+msgstr "odpoweidź"
+
+#: includes/bp.php:243
+msgid "%1$d comments on your %3$s - %2$s"
+msgstr "%1$d komentarzy na %3$s - %2$s"
+
+#: includes/bp.php:247
+msgid "%1$s commented on your %3$s - %2$s"
+msgstr "%1$d  skomentował %3$s - %2$s"
+
+#: includes/class-form.php:36
+msgid "Submit"
+msgstr "Wyślij"
+
+#: includes/class-form.php:143
+msgid "Cancel"
+msgstr "Anuluj"
+
+#: includes/class-form.php:228
+msgid "Repeat your password"
+msgstr "Powtórz hasło"
+
+#: includes/class-form.php:244
+msgid "Add more"
+msgstr "Dodaj więcej"
+
+#: includes/class-form.php:376
+msgid "Select a page"
+msgstr "Wybierz stronę"
+
+#: includes/class-form.php:595
+msgid "No fields found"
+msgstr "Nie znaleziono żadnych pól"
+
+#: includes/class-roles-cap.php:22
+msgid "AnsPress Moderator"
+msgstr "Moderator"
+
+#: includes/class-roles-cap.php:47 widgets/participants.php:22
+msgid "AnsPress Participants"
+msgstr "Uczestnik"
+
+#: includes/class-theme.php:195
+msgid "Question Feed"
+msgstr "Kanał Pytań"
+
+#: includes/class-theme.php:220
+msgid "Question feed"
+msgstr "Kanał pytań"
+
+#: includes/class-theme.php:221
+msgid "Answers feed"
+msgstr "Kanał odpowiedzi"
+
+#: includes/class-user.php:42 includes/theme.php:726
+msgid "User"
+msgstr "Użytkownik"
+
+#: includes/class-user.php:45
+msgid "About"
+msgstr "O"
+
+#: includes/class-user.php:46
+msgid "Notification"
+msgstr "Powiadomienia"
+
+#: includes/class-user.php:47
+msgid "Profile"
+msgstr "Profil"
+
+#: includes/class-user.php:50 theme/default/content-user.php:15
+#: widgets/followers.php:40
+msgid "Followers"
+msgstr "Obserwatorzy"
+
+#: includes/class-user.php:51 includes/class-user.php:219
+#: theme/default/content-user.php:16
+msgid "Following"
+msgstr "Obserwowani"
+
+#: includes/class-user.php:52
+msgid "Subscription"
+msgstr "Subskrypcje"
+
+#: includes/class-user.php:65
+msgid "User directory is disabled."
+msgstr "Katalog użytkowników jest wyłączony."
+
+#: includes/class-user.php:82
+msgid "No user found"
+msgstr "Nie odnaleziono użytkownika"
+
+#: includes/class-user.php:159
+msgid "No followers found"
+msgstr "Nie odnaleziono obserwatorów"
+
+#: includes/class-user.php:170
+msgid "You are not following anyone."
+msgstr "Nikogo nie obserwujesz"
+
+#: includes/class-user.php:198
+msgid "My activity"
+msgstr "Moja aktywność"
+
+#: includes/class-user.php:198
+msgid "%s's activity"
+msgstr "Aktywność %s"
+
+#: includes/class-user.php:201
+msgid "%s's profile"
+msgstr "Profil %s"
+
+#: includes/class-user.php:204
+msgid "My questions"
+msgstr "Moje pytania"
+
+#: includes/class-user.php:204
+msgid "%s's questions"
+msgstr "Pytania %s"
+
+#: includes/class-user.php:207
+msgid "My answers"
+msgstr "Moje odpowiedzi"
+
+#: includes/class-user.php:207
+msgid "%s's answers"
+msgstr "Odpowiedzi %s"
+
+#: includes/class-user.php:210
+msgid "My reputation"
+msgstr "Moja reputacja"
+
+#: includes/class-user.php:210
+msgid "%s's reputation"
+msgstr "Reputacja %s"
+
+#: includes/class-user.php:213
+msgid "About me"
+msgstr "O mnie"
+
+#: includes/class-user.php:213
+msgid "%s"
+msgstr "%s"
+
+#: includes/class-user.php:216
+msgid "My followers"
+msgstr "Moi obserwatorzy"
+
+#: includes/class-user.php:216
+msgid "%s's followers"
+msgstr "Obserwatorzy %s"
+
+#: includes/class-user.php:222 includes/user.php:519
+msgid "My subscriptions"
+msgstr "Moje subskrypcje"
+
+#: includes/class-user.php:293 includes/process-form.php:768
+msgid "File cannot be uploaded, size is bigger then %d Byte"
+msgstr "Nie możesz wrzucić pliku większego niż %d Bajtów"
+
+#: includes/class-user.php:311 includes/class-user.php:418
+msgid "There was an error while uploading avatar, please check your image"
+msgstr ""
+"Wystąpił problem z wrzuceniem avatara. Sprawdź czy zdjęcie nie jest "
+"uszkodzone."
+
+#: includes/class-user.php:362
+msgid "Cover photo uploaded successfully."
+msgstr "Okładka została poprawnie wrzucona."
+
+#: includes/class-user.php:365
+msgid ""
+"There was an error while uploading cover photo, please check your image and "
+"try again."
+msgstr ""
+"Wystąpił problem z wrzuceniem okładki. Sprawdź czy zdjęcie nie jest "
+"uszkodzone."
+
+#: includes/class-user.php:415
+msgid "Avatar uploaded successfully."
+msgstr "Avatar został poprawnie wrzucony."
+
+#: includes/class-validation.php:55
+msgid "This field is required"
+msgstr "To pole jest wymagane"
+
+#: includes/class-validation.php:80
+msgid "Its too short, it must be minimum %d characters"
+msgstr "Za krótkie, musi mieć minimum %d długości"
+
+#: includes/class-validation.php:93
+msgid "It must be minimum %d characters"
+msgstr "Musi mieć minimum %d długości"
+
+#: includes/class-validation.php:100
+msgid "Not a valid email address"
+msgstr "Nieprawidłowy adres email"
+
+#: includes/common-pages.php:37
+msgid "Ask"
+msgstr "Zapytaj"
+
+#: includes/common-pages.php:132
+msgid "You don't have permission to access this page."
+msgstr "Nie masz uprawnień do oglądania tej strony."
+
+#: includes/form.php:66
+msgid "You do not have permission to delete this comment"
+msgstr "Nie masz uprawnień do usunięcia tego komentarza."
+
+#: includes/form.php:83
+msgid "Comment deleted successfully"
+msgstr "Komentarz został usunięty poprawnie."
+
+#: includes/form.php:130 includes/form.php:153 includes/theme.php:717
+msgid "Tags"
+msgstr "Tagi"
+
+#: includes/form.php:174 includes/form.php:180
+msgid "Form loaded."
+msgstr "Załadowano formularz."
+
+#: includes/form.php:182
+msgid "You do not have permission to edit this question."
+msgstr "Nie masz uprawnień do edycji tego pytania."
+
+#: includes/form.php:185
+msgid "Something went wrong, please try again."
+msgstr "Coś poszło nie tak. Spróbuj ponownie."
+
+#: includes/form.php:217
+msgid "Don't have a user account? %sRegister now%s."
+msgstr "Nie masz jeszcze konta? %sZarejestruj się%s."
+
+#: includes/form.php:235
+msgid "Unable to create tag, please try again."
+msgstr "Nie udało się stworzyć taga, spróbuj ponownie."
+
+#: includes/form.php:238
+msgid "Successfully created a tag."
+msgstr "Tag został stworzony."
+
+#: includes/form.php:245
+msgid "Unable to load form, please try again."
+msgstr "Nie udało się załadować formularza, spróbuj ponownie."
+
+#: includes/form.php:247
+msgid "Successfully loaded form."
+msgstr "Formularz załadowany poprawnie."
+
+#: includes/form.php:289
+msgid "Update Answer"
+msgstr "Zaktualizuj odpowiedź"
+
+#: includes/form.php:296
+msgid "Create new tag"
+msgstr "Stwórz nowy tag"
+
+#: includes/form.php:297
+msgid "Enter tag"
+msgstr "Wprowadź tag"
+
+#: includes/form.php:298
+msgid "Description of tag."
+msgstr "Opis taga"
+
+#: includes/form.php:299
+msgid "Create tag"
+msgstr "Stwórz tag"
+
+#: includes/functions.php:220
+msgid "Please login or register to continue this action."
+msgstr "Zaloguj się, aby kontynuować."
+
+#: includes/functions.php:358
+msgid "Edit this question"
+msgstr "Edytuj pytanie"
+
+#: includes/functions.php:360
+msgid "Edit this answer"
+msgstr "Edytuj odpowiedź"
+
+#: includes/functions.php:376
+msgid "Edit Answer"
+msgstr "Edytuj odpowiedź"
+
+#: includes/functions.php:387
+msgid "Edited on"
+msgstr "Zedytowano"
+
+#: includes/functions.php:501
+msgid "Select this answer as best"
+msgstr "Wybierz tą odpowiedź jako najlepszą"
+
+#: includes/functions.php:504
+msgid "Unselect this answer"
+msgstr "Odznacz odpowiedź"
+
+#: includes/functions.php:504
+msgid "Unselect"
+msgstr "Odznacz"
+
+#: includes/functions.php:561 includes/vote.php:251 includes/vote.php:260
+msgid "Close"
+msgstr "Zamknij"
+
+#: includes/functions.php:561 includes/post_types.php:266
+msgid "Open"
+msgstr "Otwórz"
+
+#: includes/functions.php:561 includes/post_types.php:245
+#: includes/post_types.php:254 includes/question-loop.php:349
+msgid "Private"
+msgstr "Prywante"
+
+#: includes/functions.php:564
+msgid "Change status of post"
+msgstr "Zmień status posta"
+
+#: includes/functions.php:746
+msgid "Success"
+msgstr "Sukces"
+
+#: includes/functions.php:747
+msgid "You need to login before doing this action."
+msgstr "Musisz być zalogowany, aby wykonać ta czynność."
+
+#: includes/functions.php:748
+msgid "Something went wrong, last action failed."
+msgstr "Coś poszło nie tak. Ostatnia akcja się nie powiodła."
+
+#: includes/functions.php:749
+msgid "You do not have permission to do this action."
+msgstr "Nie masz do tego wystarczających uprawnień."
+
+#: includes/functions.php:750
+msgid "You are commenting on a draft post."
+msgstr "Komentujesz szkic."
+
+#: includes/functions.php:751
+msgid "Comment successfully posted."
+msgstr "Komentarz został pomyślnie dodany."
+
+#: includes/functions.php:752
+msgid "Comment updated successfully."
+msgstr "Komentarz został pomyślnie zaktualizowany."
+
+#: includes/functions.php:753
+msgid "Comment deleted successfully."
+msgstr "Komentarz został pomyślnie usunięty."
+
+#: includes/functions.php:754
+msgid "You are subscribed to this question."
+msgstr "Subskrybujesz to pytanie."
+
+#: includes/functions.php:755
+msgid "Successfully unsubscribed."
+msgstr "Pomyślnie wypisano."
+
+#: includes/functions.php:756
+msgid "Question submitted successfully"
+msgstr "Pytanie zostało pomyślnie wysłane."
+
+#: includes/functions.php:757
+msgid "Question updated successfully"
+msgstr "Pytanie zostało pomyślnie zaktualizowane."
+
+#: includes/functions.php:758
+msgid "Answer submitted successfully"
+msgstr "Odpowiedź została pomyślnie dodana."
+
+#: includes/functions.php:759
+msgid "Answer updated successfully"
+msgstr "Odpowiedź została pomyślnie zaktualizowana."
+
+#: includes/functions.php:760
+msgid "Thank you for voting."
+msgstr "Dziękujemy za Twój głos."
+
+#: includes/functions.php:761
+msgid "Your vote has been removed."
+msgstr "Twój glos został usunięty."
+
+#: includes/functions.php:762
+msgid "Undo your vote first."
+msgstr "Najpierw cofnij swój głos."
+
+#: includes/functions.php:763
+msgid "You cannot vote on your own question or answer."
+msgstr "Nie możesz zagłosować na własne pytanie."
+
+#: includes/functions.php:764
+msgid "Best answer is unselected for your question."
+msgstr "Odznaczono najlepszą odpowiedź do Twojego pytania."
+
+#: includes/functions.php:765
+msgid "Best answer is selected for your question."
+msgstr "Wybrano najlepsza odpowiedź na Twoje pytanie."
+
+#: includes/functions.php:766
+msgid "Question moved to trash."
+msgstr "Pytanie zostało wyrzucone do kosza."
+
+#: includes/functions.php:767
+msgid "Answer moved to trash."
+msgstr "Odpowiedź trafiła do kosza."
+
+#: includes/functions.php:768
+msgid "You dont have permission to view private posts."
+msgstr "Nie masz uprawnień do wyświetlenia prywatnych postów."
+
+#: includes/functions.php:769
+msgid "Thank you for reporting this post."
+msgstr "Dziękujemy za zgłoszenie tego postu."
+
+#: includes/functions.php:770
+msgid "You have already reported this post."
+msgstr "Już zgłosiłeś ten post."
+
+#: includes/functions.php:771
+msgid "Please check captcha field and resubmit it again."
+msgstr "Sprawdź czy uzupełniłeś reCaptche."
+
+#: includes/functions.php:772
+msgid "Comment content is empty."
+msgstr "Treść komentarza jest pusta."
+
+#: includes/functions.php:773
+msgid "Post status updated successfully"
+msgstr "Zmiana statusu przebiegła pomyślnie."
+
+#: includes/functions.php:774
+msgid "Image uploaded successfully"
+msgstr "Wrzucono obrazek."
+
+#: includes/functions.php:775
+msgid "Question has been deleted permanently"
+msgstr "Pytanie zostało usunięte na stałe."
+
+#: includes/functions.php:776
+msgid "Answer has been deleted permanently"
+msgstr "Odpowiedź została usunięta na stałe."
+
+#: includes/functions.php:777
+msgid "Question is marked as featured."
+msgstr "Pytanie zostało oznaczone jako wyróżnione."
+
+#: includes/functions.php:778
+msgid "Question is unmarked as featured."
+msgstr "Pytanie zostało oznaczone jako zwykłe."
+
+#: includes/functions.php:779
+msgid "You have already attached maximum numbers of allowed uploads."
+msgstr "Osiągnąłeś limit wrzuconych zdjęć."
+
+#: includes/functions.php:780
+msgid "Your profile has been updated successfully."
+msgstr "Profil został zaktualizowany pomyślnie."
+
+#: includes/functions.php:781
+msgid "Successfully unfollowed."
+msgstr "Pomyślnie usunięto z obserwowanych."
+
+#: includes/functions.php:782
+msgid "Successfully followed."
+msgstr "Pomyślnie dodano do obserwowanych."
+
+#: includes/functions.php:783
+msgid "You cannot follow yourself."
+msgstr "Nie możesz obserwować samego siebie."
+
+#: includes/functions.php:784
+msgid "Notification deleted successfully."
+msgstr "Powiadomienie zostało usunięte."
+
+#: includes/functions.php:785
+msgid "Notification is marked as read."
+msgstr "Powiadomienie zostało oznaczone jako przeczytane."
+
+#: includes/functions.php:1132
+msgid "Question is asked for %s."
+msgstr "Pytanie jest o %s"
+
+#: includes/functions.php:1138
+msgid "%s is marked as a private, only admin and post author can see."
+msgstr ""
+"%s zostało oznaczone jako prywatne. Tylko administrator i autor mogą "
+"zobaczyć ten post."
+
+#: includes/functions.php:1144
+msgid "%s is waiting for approval by moderator."
+msgstr "%s oczekuje na moderacje."
+
+#: includes/functions.php:1150
+msgid "%s is closed, new answer are not accepted."
+msgstr "%s jest zamknięty, nowe odpowiedzi nie są już przyjmowane."
+
+#: includes/functions.php:1156
+msgid "%s has been trashed, you can delete it permanently from wp-admin."
+msgstr "%s został usunięty. Możesz je usunąć na stałe w panelu administratora."
+
+#: includes/functions.php:1165
+msgid "Add image to editor"
+msgstr "Dodaj zdjęcie do edytora"
+
+#: includes/functions.php:1169
+msgid "upload"
+msgstr "wrzuć"
+
+#: includes/functions.php:1171
+msgid "or"
+msgstr "lub"
+
+#: includes/functions.php:1174
+msgid "add image from link"
+msgstr "dodaj zdjęcie z linku"
+
+#: includes/functions.php:1177
+msgid "Enter images link"
+msgstr "Wprowadź link zdjęcia"
+
+#: includes/functions.php:1263
+msgid "Make this question featured"
+msgstr "Oznacz to pytanie jako wyróżnione"
+
+#: includes/functions.php:1409
+msgid "[Solved] "
+msgstr "[Rozwiązane]"
+
+#: includes/history.php:136
+msgid "asked"
+msgstr "zapytał"
+
+#: includes/history.php:137
+msgid "answered"
+msgstr "odpowiedział"
+
+#: includes/history.php:138
+msgid "commented"
+msgstr "skomentował"
+
+#: includes/history.php:139
+msgid "comment on answer"
+msgstr "skomentował pytanie"
+
+#: includes/history.php:140
+msgid "edited question"
+msgstr "zedytował pytanie"
+
+#: includes/history.php:141
+msgid "edited answer"
+msgstr "zedytował odpowiedź"
+
+#: includes/history.php:142
+msgid "edited comment"
+msgstr "zedytował komentarz"
+
+#: includes/history.php:143
+msgid "selected answer"
+msgstr "wybrana odpowiedź"
+
+#: includes/history.php:144
+msgid "unselected answer"
+msgstr "niewybrana odpowiedź"
+
+#: includes/history.php:145
+msgid "updated status"
+msgstr "zaktualizowano status"
+
+#: includes/history.php:195
+msgid "%s %s about %s ago"
+msgstr "%s %s o %s temu"
+
+#: includes/history.php:197
+msgid "Active %s ago"
+msgstr "Aktywny %s temu"
+
+#: includes/notification.php:281 includes/reputation.php:583
+msgid "%s ago"
+msgstr "%s temu"
+
+#: includes/notification.php:379
+msgid "New question <b>##post_title</b>"
+msgstr "Nowe pytanie <b>##post_title</b>"
+
+#: includes/notification.php:380
+msgid "New answer on <b>##post_title</b>"
+msgstr "Nowa odpowiedź na <b>##post_title</b>"
+
+#: includes/notification.php:381
+msgid "Your question <b>##post_title</b> has been edited"
+msgstr "Twoje pytanie <b>##post_title</b> zostało zedytowane"
+
+#: includes/notification.php:382
+msgid "Your answer on <b>##post_title</b> has been edited"
+msgstr "Twoja odpowiedź na <b>##post_title</b> została zedytowana"
+
+#: includes/notification.php:383
+msgid "New comment on question <b>##post_title</b>"
+msgstr "Nowy komentarz do pytania <b>##post_title</b>"
+
+#: includes/notification.php:384
+msgid "New comment on answer <b>##post_title</b>"
+msgstr "Nowy komentarz do odpowiedzi <b>##post_title</b>"
+
+#: includes/notification.php:385
+msgid "<b>%s</b> started following you"
+msgstr "<b>%s</b> zaczął Cię obserwować"
+
+#: includes/notification.php:386
+msgid "%s up voted on your post <b>##post_title</b>"
+msgstr "%s zagłosowało za <b>##post_title</b>"
+
+#: includes/notification.php:387
+msgid "Your answer on <b>##post_title</b> has been selected as best"
+msgstr "Twoja odpowiedź na<b>##post_title</b> została wybraną za najlepszą"
+
+#: includes/notification.php:388
+msgid "You have received <b>##reputation</b> reputation points"
+msgstr "Zyskałeś <b>##reputation</b> punktów reputacji"
+
+#: includes/notification.php:421
+msgid "9+"
+msgstr "9+"
+
+#: includes/participants.php:82
+msgid "<span>1</span> Participant"
+msgid_plural "<span>%d</span> Participants"
+msgstr[0] "<span>1</span> Użytkownik"
+msgstr[1] "<span>%d</span> Użytkowników"
+msgstr[2] "<span>%d</span> Użytkowników"
+
+#: includes/post_status.php:26
+msgid "Closed <span class=\"count\">(%s)</span>"
+msgid_plural "Moderate <span class=\"count\">(%s)</span>"
+msgstr[0] "Zamkniętych <span class=\"count\">(%s)</span>"
+msgstr[1] "Zamknietych<span class=\"count\">(%s)</span>"
+msgstr[2] "Zamknietych<span class=\"count\">(%s)</span>"
+
+#: includes/post_status.php:34
+msgid "Moderate <span class=\"count\">(%s)</span>"
+msgid_plural "Moderate <span class=\"count\">(%s)</span>"
+msgstr[0] "Moderowanych<span class=\"count\">(%s)</span>"
+msgstr[1] "Moderowanych <span class=\"count\">(%s)</span>"
+msgstr[2] "Moderowanych <span class=\"count\">(%s)</span>"
+
+#: includes/post_status.php:38 includes/query_filter.php:92
+#: includes/query_filter.php:103
+msgid "Private Post"
+msgstr "Post prywanty"
+
+#: includes/post_status.php:42
+msgid "Private Post <span class=\"count\">(%s)</span>"
+msgid_plural "Private Post <span class=\"count\">(%s)</span>"
+msgstr[0] "Prywatnych postów <span class=\"count\">(%s)</span>"
+msgstr[1] "Prywatnych postów <span class=\"count\">(%s)</span>"
+msgstr[2] "Prywatnych postów <span class=\"count\">(%s)</span>"
+
+#: includes/post_types.php:50
+msgid "Parent Question:"
+msgstr "Pytanie nadrzędne:"
+
+#: includes/post_types.php:52
+msgid "View Question"
+msgstr "Pokaż pytanie"
+
+#: includes/post_types.php:53
+msgid "Add New Question"
+msgstr "Dodaj pytanie"
+
+#: includes/post_types.php:55
+msgid "Edit Question"
+msgstr "Edytuj pytanie"
+
+#: includes/post_types.php:56
+msgid "Update Question"
+msgstr "Zaktualizuj pytanie"
+
+#: includes/post_types.php:57
+msgid "Search question"
+msgstr "Szukaj pytania"
+
+#: includes/post_types.php:58
+msgid "No question found"
+msgstr "Nie znaleziono pytania"
+
+#: includes/post_types.php:59
+msgid "No questions found in Trash"
+msgstr "Nie znaleziono pytań w koszu"
+
+#: includes/post_types.php:121
+msgid "Parent Answer:"
+msgstr "Nadrzedna odpowiedź:"
+
+#: includes/post_types.php:123
+msgid "View Answer"
+msgstr "Pokaż odpowiedź"
+
+#: includes/post_types.php:124
+msgid "Add New Answer"
+msgstr "Dodaj odpowiedź"
+
+#: includes/post_types.php:125
+msgid "New answer"
+msgstr "Nowa odpowiedź"
+
+#: includes/post_types.php:126
+msgid "Edit answer"
+msgstr "Edytuj odpowiedź"
+
+#: includes/post_types.php:128
+msgid "Search answer"
+msgstr "Szukaj odpowiedzi"
+
+#: includes/post_types.php:129
+msgid "No answer found"
+msgstr "Nie ma odpowiedzi"
+
+#: includes/post_types.php:130
+msgid "No answer found in Trash"
+msgstr "Nie ma odpowiedzi w koszu"
+
+#: includes/post_types.php:210 includes/post_types.php:348
+msgid "Author"
+msgstr "Autor"
+
+#: includes/post_types.php:217
+msgid "Tag"
+msgstr "Tag"
+
+#: includes/post_types.php:220
+msgid "Ans"
+msgstr "Odp"
+
+#: includes/post_types.php:222 includes/post_types.php:352
+msgid "Vote"
+msgstr "Głos"
+
+#: includes/post_types.php:224 includes/post_types.php:354
+msgid "Date"
+msgstr "data"
+
+#: includes/post_types.php:315 includes/post_types.php:323
+msgid "answers"
+msgstr "odpowiedzi"
+
+#: includes/post_types.php:349
+msgid "Content"
+msgstr "Treść"
+
+#: includes/post_types.php:385
+msgid "Restore this item from the Trash"
+msgstr "Przywróć ten element z kosza"
+
+#: includes/post_types.php:388
+msgid "Move this item to the Trash"
+msgstr "Przenieś element do kosza"
+
+#: includes/post_types.php:391
+msgid "Delete this item permanently"
+msgstr "Usuń element na stałe"
+
+#: includes/post_types.php:391
+msgid "Delete Permanently"
+msgstr "usuń na stałe"
+
+#: includes/post_types.php:394 includes/post_types.php:403
+msgid "Preview &#8220;%s&#8221;"
+msgstr "Podglad &#8220;%s&#8221;"
+
+#: includes/post_types.php:403
+msgid "Preview"
+msgstr "Podgląd"
+
+#: includes/post_types.php:406
+msgid "View &#8220;%s&#8221; question"
+msgstr "Pokaż &#8220;%s&#8221; pytanie"
+
+#: includes/process-form.php:149 includes/process-form.php:381
+msgid "Bot verification failed."
+msgstr "Weryfikacja bota zakończyła się niepowodzeniem"
+
+#: includes/process-form.php:198 includes/process-form.php:424
+#: includes/process-form.php:722
+msgid "Check missing fields and then re-submit."
+msgstr "Sprawdź brakujące pola i spróbuj ponownie."
+
+#: includes/query_filter.php:50
+msgid "Please fill parent question field, Answer was not saved!"
+msgstr "Uzupełnij pole pytania, odpowiedź nie została zapisana."
+
+#: includes/question-loop.php:271
+msgid "ans"
+msgstr "odp"
+
+#: includes/question-loop.php:481
+msgid " ago"
+msgstr "temu"
+
+#: includes/reputation.php:298 theme/default/user/user.php:27
+#: theme/default/user/user.php:52 theme/default/users/loop-item.php:29
+#: theme/default/widgets/user.php:13
+msgid "%s Rep."
+msgstr "%s Rep."
+
+#: includes/reputation.php:558
+msgid "+%d"
+msgstr "+%d"
+
+#: includes/reputation.php:603
+msgid "%sAsked %s"
+msgstr "%Zapytał %s"
+
+#: includes/reputation.php:607
+msgid "%sAnswered %s"
+msgstr "%sOdpowiedział %s"
+
+#: includes/reputation.php:611
+msgid "%sCommented %s"
+msgstr "%sSkomentował %s"
+
+#: includes/reputation.php:615
+msgid "%sSelected answer %s"
+msgstr "%sWybrał odpowiedź%s"
+
+#: includes/reputation.php:619
+msgid "%sDown vote %s %s"
+msgstr "%sZagłosował przeciw%s %s"
+
+#: includes/reputation.php:623
+msgid "%sUp vote %s %s"
+msgstr "%sZagłosował za%s %s"
+
+#: includes/reputation.php:627
+msgid "%sDown voted %s"
+msgstr "%sZostało przegłosowane %s"
+
+#: includes/reputation.php:631
+msgid "%sBest answer %s"
+msgstr "%sNajlepsza odpowiedź %s"
+
+#: includes/reputation.php:816
+msgid "New Registration"
+msgstr "Nowe konto"
+
+#: includes/reputation.php:817
+msgid "Points given to newly registered user."
+msgstr "Punkty przyznawane nowym użytkownikom."
+
+#: includes/reputation.php:823
+msgid "Uploading avatar"
+msgstr "Avatar"
+
+#: includes/reputation.php:824
+msgid "Awarded for uploading an profile picture."
+msgstr "Punkty za wrzucenie avatara."
+
+#: includes/reputation.php:830
+msgid "Completing profile"
+msgstr "Uzupełnienie profilu"
+
+#: includes/reputation.php:831
+msgid "Awarded for completing profile fields."
+msgstr "Punkty za uzupełnienie wszystkich pól w profilu."
+
+#: includes/reputation.php:838
+msgid "For asking a question."
+msgstr "Za zadanie pytania."
+
+#: includes/reputation.php:845
+msgid "For answering a question."
+msgstr "Punkty za zadanie pytania."
+
+#: includes/reputation.php:852
+msgid "For new comment."
+msgstr "Za komentarz."
+
+#: includes/reputation.php:858
+msgid "Receive upvote on question"
+msgstr "Za otrzymanie głosu poparcia za pytanie"
+
+#: includes/reputation.php:859
+msgid "When user receive an upvote on question"
+msgstr "Za uzyskanie głosu poparcia przy pytaniu"
+
+#: includes/reputation.php:865
+msgid "Receive upvote on answer"
+msgstr "Za otrzymanie głosu poparcia za odpoweidź"
+
+#: includes/reputation.php:866
+msgid "When user receive an upvote on answer"
+msgstr "Przyznawane za otrzymanie głosu poparcia przy odpowiedzi"
+
+#: includes/reputation.php:872
+msgid "Receive down vote on question"
+msgstr "Za głos sprzeciwu za pytanie"
+
+#: includes/reputation.php:873
+msgid "When user receive an down vote on question"
+msgstr "Przyznawane za głos sprzeciwu przy pytaniu"
+
+#: includes/reputation.php:879
+msgid "Receive down vote on answer"
+msgstr "Za głos sprzeciwu za odpowiedź"
+
+#: includes/reputation.php:880
+msgid "When user receive an down vote on answer"
+msgstr "Przyznawane za głos sprzeciwu przy odpowiedzi"
+
+#: includes/reputation.php:886
+msgid "Up voted questions"
+msgstr "Za oddanie głosu za przy pytaniu"
+
+#: includes/reputation.php:887
+msgid "When user upvote others question"
+msgstr "Przyznawane za oddanie głosu za przy pytaniu"
+
+#: includes/reputation.php:893
+msgid "Up voted answers"
+msgstr "Za oddanie głosu za przy odpowiedzi"
+
+#: includes/reputation.php:894
+msgid "When user upvote others answer"
+msgstr "Przyznawane za oddanie głosu za przy odpowiedzi"
+
+#: includes/reputation.php:900
+msgid "Down voted questions"
+msgstr "Za oddanie głosu przeciw przy pytaniu"
+
+#: includes/reputation.php:901
+msgid "When user down vote others question"
+msgstr "Przyznawane za oddanie głosu przeciw przy pytaniu"
+
+#: includes/reputation.php:907
+msgid "Down voted answers"
+msgstr "Za oddanie głosu przeciw przy odpowiedzi"
+
+#: includes/reputation.php:908
+msgid "When user down vote others answers"
+msgstr "Przyznawane za oddanie głosu przeciw przy odpowiedzi"
+
+#: includes/reputation.php:915 includes/theme.php:553 includes/user.php:423
+#: theme/default/best_answer.php:18
+msgid "Best answer"
+msgstr "Najlepsza odpowiedź"
+
+#: includes/reputation.php:916
+msgid "When user's answer get selected as best"
+msgstr "Gdy odpowiedź użytkownika zostanie wybrana za najlepszą"
+
+#: includes/reputation.php:922
+msgid "Selecting answer"
+msgstr "Wybieranie odpowiedzi"
+
+#: includes/reputation.php:923
+msgid "When user user select an answer."
+msgstr "Kiedy użytkownik wybierze odpowiedź"
+
+#: includes/requirements.php:75
+msgid "Install Required Plugins"
+msgstr "Zainstaluj wymagane wtyczki"
+
+#: includes/requirements.php:76
+msgid "Install Plugins"
+msgstr "Zainstaluj wtyczki"
+
+#: includes/requirements.php:77
+msgid "Installing Plugin: %s"
+msgstr "Instalowanie wtyczki: %s"
+
+#: includes/requirements.php:78
+msgid "Something went wrong with the plugin API."
+msgstr "Coś poszło nie tak z API"
+
+#: includes/requirements.php:79
+msgid "AnsPress requires the following plugin: %1$s."
+msgid_plural "AnsPress requires the following plugins: %1$s."
+msgstr[0] "AnsPress wymaga następującej wtyczki: %1$s"
+msgstr[1] "AnsPress wymaga następujących wtyczek: %1$s"
+msgstr[2] "AnsPress wymaga następujących wtyczek: %1$s"
+
+#: includes/requirements.php:80
+msgid "AnsPress recommends the following plugin: %1$s."
+msgid_plural "AnsPress recommends the following plugins: %1$s."
+msgstr[0] "AnsPress zaleca następującą wtyczkę: %1$s"
+msgstr[1] "AnsPress zaleca następujące wtyczi: %1$s"
+msgstr[2] "AnsPress zaleca następujące wtyczi: %1$s"
+
+#: includes/requirements.php:81
+msgid ""
+"Sorry, but you do not have the correct permissions to install the %s plugin. "
+"Contact the administrator of this site for help on getting the plugin "
+"installed."
+msgid_plural ""
+"Sorry, but you do not have the correct permissions to install the %s "
+"plugins. Contact the administrator of this site for help on getting the "
+"plugins installed."
+msgstr[0] ""
+"Wybacz, ale nie masz wystarczających uprawnień, aby zainstalować %s wtyczki. "
+"Skontaktuj się z administratorem strony."
+msgstr[1] ""
+"Wybacz, ale nie masz wystarczających uprawnień, aby zainstalować %s wtyczek. "
+"Skontaktuj się z administratorem strony."
+msgstr[2] ""
+"Wybacz, ale nie masz wystarczających uprawnień, aby zainstalować %s "
+"wtyczek . Skontaktuj się z administratorem strony."
+
+#: includes/requirements.php:82
+msgid "The following required plugin is currently inactive: %1$s."
+msgid_plural "The following required plugins are currently inactive: %1$s."
+msgstr[0] "Następująca wymagana wtyczka jest obecnie nieaktywna: %1$s."
+msgstr[1] "Następujące wymagane wtyczki są obecnie nieaktywne: %1$s."
+msgstr[2] "Następujące wymagane wtyczki są obecnie nieaktywne: %1$s."
+
+#: includes/requirements.php:83
+msgid "The following recommended plugin is currently inactive: %1$s."
+msgid_plural "The following recommended plugins are currently inactive: %1$s."
+msgstr[0] "Następująca proponowana wtyczka jest obecnie nieaktywna: %1$s."
+msgstr[1] "Następujące proponowane wtyczki są obecnie nieaktywne: %1$s."
+msgstr[2] "Następujące proponowane wtyczki są obecnie nieaktywne: %1$s."
+
+#: includes/requirements.php:84
+msgid ""
+"Sorry, but you do not have the correct permissions to activate the %s "
+"plugin. Contact the administrator of this site for help on getting the "
+"plugin activated."
+msgid_plural ""
+"Sorry, but you do not have the correct permissions to activate the %s "
+"plugins. Contact the administrator of this site for help on getting the "
+"plugins activated."
+msgstr[0] ""
+"Wybacz, ale nie masz wystarczających uprawnień, aby aktywować %s wtyczkę. "
+"Skontaktuj się z administratorem strony."
+msgstr[1] ""
+"Wybacz, ale nie masz wystarczających uprawnień, aby aktywować %s wtyczki. "
+"Skontaktuj się z administratorem strony."
+msgstr[2] ""
+"Wybacz, ale nie masz wystarczających uprawnień, aby aktywować %s wtyczki. "
+"Skontaktuj się z administratorem strony."
+
+#: includes/requirements.php:85
+msgid ""
+"The following plugin needs to be updated to its latest version to ensure "
+"maximum compatibility with this theme: %1$s."
+msgid_plural ""
+"The following plugins need to be updated to their latest version to ensure "
+"maximum compatibility with this theme: %1$s."
+msgstr[0] ""
+"Wtyczka musi zostać zaktualizowana, aby zapewnić maksimum kompatybilności z "
+"tym szablonem: %1$s."
+msgstr[1] ""
+"Następujące wtyczki muszą zostać zaktualizowane, aby zapewnić maksimum "
+"kompatybilności z tym szablonem: %1$s."
+msgstr[2] ""
+"Następujące wtyczki muszą zostać zaktualizowane, aby zapewnić maksimum "
+"kompatybilności z tym szablonem: %1$s."
+
+#: includes/requirements.php:86
+msgid ""
+"Sorry, but you do not have the correct permissions to update the %s plugin. "
+"Contact the administrator of this site for help on getting the plugin "
+"updated."
+msgid_plural ""
+"Sorry, but you do not have the correct permissions to update the %s plugins. "
+"Contact the administrator of this site for help on getting the plugins "
+"updated."
+msgstr[0] ""
+"Wybacz, ale nie masz wystarczających uprawnień, aby zaktualizować wtyczkę "
+"%s. Skontaktuj się z administratorem strony."
+msgstr[1] ""
+"Wybacz, ale nie masz wystarczających uprawnień, aby zaktualizować %s "
+"wtyczek . Skontaktuj się z administratorem strony."
+msgstr[2] ""
+"Wybacz, ale nie masz wystarczających uprawnień, aby zaktualizować %s "
+"wtyczek . Skontaktuj się z administratorem strony."
+
+#: includes/requirements.php:87
+msgid "Begin installing plugin"
+msgid_plural "Begin installing plugins"
+msgstr[0] "Rozpoczynam instalację wtyczki"
+msgstr[1] "Rozpoczynam instalację wtyczek"
+msgstr[2] "Rozpoczynam instalację wtyczek"
+
+#: includes/requirements.php:88
+msgid "Begin activating plugin"
+msgid_plural "Begin activating plugins"
+msgstr[0] "Rozpoczynam aktywację wtyczki"
+msgstr[1] "Rozpoczynam aktywacje wtyczek"
+msgstr[2] "Rozpoczynam aktywacje wtyczek"
+
+#: includes/requirements.php:89
+msgid "Return to Required Plugins Installer"
+msgstr "Powrót do instalatora wymaganych wtyczek"
+
+#: includes/requirements.php:90
+msgid "Plugin activated successfully."
+msgstr "Wtyczka została aktywowana pomyślnie."
+
+#: includes/requirements.php:91
+msgid "All plugins installed and activated successfully. %s"
+msgstr "Wszystkie wtyczki zostały zainstalowane i aktywowane. %s"
+
+#: includes/shortcode-basepage.php:81
+msgid ""
+"Question and answer is powered by <a href=\"http://anspress.io\" traget="
+"\"_blank\">AnsPress</a>"
+msgstr ""
+"Pytania i odpowiedzi są napędzane przez <a href=\"http://anspress.io\" "
+"traget=\"_blank\">AnsPress</a>"
+
+#: includes/subscriber.php:139
+msgid "Only you are subscribed to this question."
+msgstr "Tylko Ty subskrybujesz to pytanie."
+
+#: includes/subscriber.php:141
+msgid "You and <strong>%s people</strong> subscribed to this question."
+msgstr "Ty i <stron>%d osób</strong> subskrybuje to pytanie."
+
+#: includes/subscriber.php:143
+msgid "No one is subscribed to this question."
+msgstr "Nikt nie subskrybuje tego pytania."
+
+#: includes/subscriber.php:145
+msgid "<strong>%d people</strong> subscribed to this question."
+msgstr "<stron>%d osób</strong> subskrybuje to pytanie."
+
+#: includes/subscriber.php:312 includes/vote.php:60 widgets/subscribe.php:44
+msgid "Subscribe"
+msgstr "Subskrybuj"
+
+#: includes/subscriber.php:312 includes/vote.php:71
+msgid "Unsubscribe"
+msgstr "Wypisz się"
+
+#: includes/theme.php:45 theme/default/on-post.php:4
+msgid "Discussion on \"%s\""
+msgstr "Dyskutuj o %s"
+
+#: includes/theme.php:51 theme/default/no-user-found.php:1
+#: theme/default/not-found.php:1
+msgid "Error 404"
+msgstr "Błąd 404"
+
+#: includes/theme.php:268
+msgid "answer accepted"
+msgstr "odpowiedź zaakceptowana"
+
+#: includes/theme.php:268
+msgid "Solved"
+msgstr "Rozwiązane"
+
+#: includes/theme.php:271
+msgid "<i>%d views</i>"
+msgstr "<i> %d wyświetleń</i>"
+
+#: includes/theme.php:450
+msgid "More action"
+msgstr "Więcej czynności"
+
+#: includes/theme.php:491
+msgid "Answered"
+msgstr "Z odpowiedzią"
+
+#: includes/theme.php:492 widgets/questions.php:56
+msgid "Unanswered"
+msgstr "Bez odpowiedzi"
+
+#: includes/theme.php:493
+msgid "Unsolved"
+msgstr "Nierozwiązane"
+
+#: includes/theme.php:624
+msgid "Ask question"
+msgstr "Zadaj pytanie"
+
+#: includes/theme.php:721 includes/theme.php:727 includes/theme.php:729
+msgid ".."
+msgstr ".."
+
+#: includes/user-fields.php:58
+msgid "First name"
+msgstr "Imię"
+
+#: includes/user-fields.php:60
+msgid "Your first name"
+msgstr "Twoje imię"
+
+#: includes/user-fields.php:68
+msgid "Last name"
+msgstr "Nazwisko"
+
+#: includes/user-fields.php:70
+msgid "Your surname"
+msgstr "Twoje nazwisko"
+
+#: includes/user-fields.php:78
+msgid "Nickname"
+msgstr "Ksywka"
+
+#: includes/user-fields.php:80
+msgid "Your nickname"
+msgstr "Twoja ksywka"
+
+#: includes/user-fields.php:88
+msgid "Display name"
+msgstr "Przedstaw mnie jako"
+
+#: includes/user-fields.php:101
+msgid "Write something about yourself"
+msgstr "Napisz coś o sobie"
+
+#: includes/user-fields.php:111
+msgid "Username"
+msgstr "Nazwa uzytkownika"
+
+#: includes/user-fields.php:113
+msgid "Your username"
+msgstr "Twoja nazwa uzytkownika"
+
+#: includes/user-fields.php:114
+msgid "This cannot be changed."
+msgstr "Nie możesz tego zmienić."
+
+#: includes/user-fields.php:124
+msgid "Email"
+msgstr "Email"
+
+#: includes/user-fields.php:126
+msgid "Your contact email"
+msgstr "Adres kontaktowy"
+
+#: includes/user-fields.php:137
+msgid "Password"
+msgstr "Hasło"
+
+#: includes/user-fields.php:139
+msgid "Update your password"
+msgstr "Zmień swoje hasło"
+
+#: includes/user.php:125
+msgid "Anonymous"
+msgstr "Anonimowy"
+
+#: includes/user.php:155
+msgid " (anonymous)"
+msgstr " (anonimowy)"
+
+#: includes/user.php:313
+msgid "More"
+msgstr "Więcej"
+
+#: includes/user.php:347
+msgid "Page not found or registered."
+msgstr "Strona nieznaleziona lub niezarejestrowana."
+
+#: includes/user.php:493
+msgid "Top %s"
+msgstr "Top %s"
+
+#: includes/user.php:585
+msgid "Upload an avatar"
+msgstr "Wrzuć swój avatar"
+
+#: includes/user.php:586
+msgid "Upload avatar"
+msgstr "Wrzuć awatar"
+
+#: includes/user.php:608
+msgid "Basic"
+msgstr "Podstawowy"
+
+#: includes/user.php:609
+msgid "Account"
+msgstr "Konto"
+
+#: includes/user.php:748
+msgid "Upload a cover photo"
+msgstr "Wrzuć zdjęcie okładki"
+
+#: includes/user.php:749
+msgid "Upload cover"
+msgstr "Wrzuć okładkę"
+
+#: includes/users-loop.php:532
+msgid "%d years, "
+msgstr "%d lat,"
+
+#: includes/users-loop.php:535
+msgid "%d months, "
+msgstr "%d miesięcy,"
+
+#: includes/users-loop.php:538
+msgid "%d days"
+msgstr "%d dni"
+
+#: includes/vote.php:164
+msgid "You already flagged this post"
+msgstr "Już oznaczyłeś ten post"
+
+#: includes/vote.php:231
+msgid "Please login for adding question to your subscribe"
+msgstr "Zaloguj się, aby dodać pytanie do subskrybowanych"
+
+#: includes/vote.php:251 includes/vote.php:488
+msgid "Vote for closing"
+msgstr "Zagłosuj o zamknięcie"
+
+#: includes/vote.php:251
+msgid "Your close request has been removed"
+msgstr "Twoje zgłoszenie zamknięcia zostało usunięte"
+
+#: includes/vote.php:260 includes/vote.php:488
+msgid "Undo your vote"
+msgstr "Cofnij swój głos"
+
+#: includes/vote.php:260
+msgid "Your close request has been sent"
+msgstr "Twoje zgłoszenie zamknięcia zostało wysłane"
+
+#: includes/vote.php:265
+msgid "Something went wrong"
+msgstr "Coś poszło nie tak"
+
+#: includes/vote.php:272
+msgid "Please login for requesting closing this question."
+msgstr "Zaloguj się, aby zgłosić chęć zamknięcia tego pytania."
+
+#: includes/vote.php:442
+msgid "Up vote this post"
+msgstr "Oddaj pozytywny głos na post"
+
+#: includes/vote.php:446
+msgid "Down vote this post"
+msgstr "Oddaj negatywny głos na post"
+
+#: includes/vote.php:491
+msgid "Close "
+msgstr "Zamknij"
+
+#: includes/vote.php:539
+msgid "Flag this post"
+msgstr "Oznacz ten post"
+
+#: includes/vote.php:539
+msgid "You have flagged this post"
+msgstr "Oznaczyłeś ten post"
+
+#: includes/vote.php:541
+msgid "Flag "
+msgstr "Oznacz"
+
+#: theme/default/answer-form.php:10 theme/default/ask.php:22
+msgid "Toggle fullscreen"
+msgstr "Tryb pełnoekranowy"
+
+#: theme/default/answer-form.php:12 theme/default/ask.php:24
+msgid "Write"
+msgstr "Pisanie"
+
+#: theme/default/answer-form.php:14
+msgid "How to answer"
+msgstr "Jak udzielać odpowiedzi"
+
+#: theme/default/answer-list.php:21
+msgid "Private Answer"
+msgstr "Prywatna odpowiedź"
+
+#: theme/default/answers.php:37
+msgid "Please %s or %s to view answers and comments"
+msgstr "Proszę %s lub %s, aby zobaczyć pytania i odpowiedzi"
+
+#: theme/default/ask.php:26
+msgid "How to ask"
+msgstr "Jak zadawać pytania"
+
+#: theme/default/ask.php:44
+msgid "You dont have permission to ask question."
+msgstr "Nie masz uprawnień do zadawania pytań."
+
+#: theme/default/comments.php:15
+msgid "Comment navigation"
+msgstr "Nawigacja komentarzy"
+
+#: theme/default/comments.php:16
+msgid "&larr; Older Comments"
+msgstr "&larr; Najstarsze komentarze"
+
+#: theme/default/comments.php:17
+msgid "Newer Comments &rarr;"
+msgstr "Najnowsze komentarze &rarr;"
+
+#: theme/default/content-answer.php:18
+msgid "Total votes"
+msgstr "Głosów łącznie"
+
+#: theme/default/content-answer.php:18 theme/default/user/about.php:37
+#: theme/default/user/list-answer.php:2 theme/default/user/list-question.php:2
+msgid "Votes"
+msgstr "Głosów"
+
+#: theme/default/content-list.php:19
+msgid "Featured question"
+msgstr "Wyróżnione pytanie"
+
+#: theme/default/content-none.php:9
+msgid "No question asked yet!, be the first to ask a question."
+msgstr "Nie ma jeszcze pytań! Zadaj jakieś jako pierwszy."
+
+#: theme/default/functions.php:64
+msgid "Password not matching"
+msgstr "Hasła różnią się między sobą"
+
+#: theme/default/functions.php:65
+msgid "Password length must be 6 or higher"
+msgstr "Hasło musi się składać z co najmniej 6 znaków."
+
+#: theme/default/functions.php:66
+msgid "Not a valid email"
+msgstr "Adres email jest niepoprawny"
+
+#: theme/default/functions.php:67
+msgid "Username length must be 4 or higher"
+msgstr "Nazwa użytkownika musi się składać z co najmniej 4 znaków."
+
+#: theme/default/functions.php:68
+msgid "Username not available"
+msgstr "Nazwa użytkownika jest niedostępna"
+
+#: theme/default/functions.php:69
+msgid "Email already in use. %sDo you want to reset your password?%s"
+msgstr "Adres email jest obecnie w użytku. %sChcesz zresetować hasło?%s"
+
+#: theme/default/functions.php:70
+msgid "Loading"
+msgstr "Ładowanie"
+
+#: theme/default/functions.php:71
+msgid "Sending request"
+msgstr "Wysyłanie zgłoszenia"
+
+#: theme/default/functions.php:72
+msgid "Adding question to your favorites"
+msgstr "dodawanie pytania do ulubionych"
+
+#: theme/default/functions.php:73
+msgid "Sending your vote"
+msgstr "Wysyłanie głosu"
+
+#: theme/default/functions.php:74
+msgid "Requesting for closing this question"
+msgstr "Wysyłanie zgłoszenia o zamknięcie pytania"
+
+#: theme/default/functions.php:75
+msgid "Submitting request"
+msgstr "Wysyłanie zgłoszenia"
+
+#: theme/default/functions.php:76
+msgid "Loading comment form"
+msgstr "ładowanie formularza komentarzy"
+
+#: theme/default/functions.php:77
+msgid "Sending your question"
+msgstr "Wysyłanie twojego pytania"
+
+#: theme/default/functions.php:78
+msgid "Sending your answer"
+msgstr "Wysyłanie Twojej odpowiedzi"
+
+#: theme/default/functions.php:79
+msgid "Sending your comment"
+msgstr "Wysyłanie Twojego komentarza"
+
+#: theme/default/functions.php:80
+msgid "Deleting comment"
+msgstr "usuwanie komentarza"
+
+#: theme/default/functions.php:81
+msgid "Updating comment"
+msgstr "Aktualizowanie komentarza"
+
+#: theme/default/functions.php:82
+msgid "Loading form"
+msgstr "ładowanie formularza"
+
+#: theme/default/functions.php:83
+msgid "Saving labels"
+msgstr "Ładowanie etykiet"
+
+#: theme/default/functions.php:84
+msgid "Loading suggestions"
+msgstr "Ładowanie sugestii"
+
+#: theme/default/functions.php:85
+msgid "Uploading cover"
+msgstr "Wgrywanie okładki"
+
+#: theme/default/functions.php:86
+msgid "Saving profile"
+msgstr "Zapisywanie profilu"
+
+#: theme/default/functions.php:87
+msgid "Sending message"
+msgstr "Wysyłanie wiadomości"
+
+#: theme/default/functions.php:88
+msgid "Loading conversation"
+msgstr "Ładowanie dyskusji"
+
+#: theme/default/functions.php:89
+msgid "Loading new message form"
+msgstr "Ładowanie formularza nowej wiadomości"
+
+#: theme/default/functions.php:90
+msgid "Loading more conversations"
+msgstr "Ładowanie więcej dyskusji"
+
+#: theme/default/functions.php:91
+msgid "Searching conversations"
+msgstr "Wyszukiwanie dyskusji"
+
+#: theme/default/functions.php:92
+msgid "Loading message form"
+msgstr "ładowanie formularza wiadomości"
+
+#: theme/default/functions.php:93
+msgid "Updating message"
+msgstr "Aktualizowanie wiadomości"
+
+#: theme/default/functions.php:94
+msgid "Deleting message"
+msgstr "Usuwanie wiadomości"
+
+#: theme/default/functions.php:95
+msgid "Uploading"
+msgstr "Wgrywanie"
+
+#: theme/default/functions.php:130
+msgid "ago"
+msgstr "temu"
+
+#: theme/default/functions.php:151
+msgid "Your comment is awaiting moderation."
+msgstr "Twój komentarz oczekuje na moderację."
+
+#: theme/default/functions.php:162
+msgid "AP Before"
+msgstr "AP Przed Stroną"
+
+#: theme/default/functions.php:166
+msgid "Widgets in this area will be shown before anspress body."
+msgstr "Wiget w tym miejscu pojawi się przed stroną anspress."
+
+#: theme/default/functions.php:172
+msgid "AP Lists Top"
+msgstr "AP Przed Listą"
+
+#: theme/default/functions.php:176
+msgid "Widgets in this area will be shown before questions list."
+msgstr "Wiget w tym miejscu pojawi się przed listą pytań."
+
+#: theme/default/functions.php:182
+msgid "AP Sidebar"
+msgstr "AP Kolumna"
+
+#: theme/default/functions.php:186
+msgid "Widgets in this area will be shown in AnsPress sidebar."
+msgstr "Wiget w tym miejscu pojawi się w kolumnie w AnsPress."
+
+#: theme/default/functions.php:192
+msgid "AP Question Sidebar"
+msgstr "AP Kolumna Pytania"
+
+#: theme/default/functions.php:196
+msgid "Widgets in this area will be shown in question page sidebar."
+msgstr "Wiget w tym miejscu pojawi się w kolumnie na stronie pytania."
+
+#: theme/default/functions.php:202
+msgid "AP Category Page"
+msgstr "AP Kategorie"
+
+#: theme/default/functions.php:206
+msgid "Widgets in this area will be shown in category listing page."
+msgstr "Wiget w tym miejscu pojawi się na stronie o kategoriach."
+
+#: theme/default/functions.php:212
+msgid "AP Tag page"
+msgstr "AP Tagi"
+
+#: theme/default/functions.php:216
+msgid "Widgets in this area will be shown in tag listing page."
+msgstr "Wiget w tym miejscu pojawi się na stronie o tagach."
+
+#: theme/default/functions.php:222
+msgid "AP about user"
+msgstr "AP O Uzytkowniku"
+
+#: theme/default/functions.php:226
+msgid "Widgets in this area will be shown in about user page."
+msgstr "Wiget w tym miejscu pojawi się na stronie o użytkowniku."
+
+#: theme/default/list-head.php:3
+msgid "Search questions..."
+msgstr "Szukaj pytań..."
+
+#: theme/default/login-signup.php:3
+msgid "Please %s or %s."
+msgstr "Proszę %s albo %s"
+
+#: theme/default/login-signup.php:3 theme/default/login-signup.php:11
+msgid "Login"
+msgstr "Zaloguj się"
+
+#: theme/default/login-signup.php:3
+msgid "Sign up"
+msgstr "Zarejestruj się"
+
+#: theme/default/no-permission-post.php:5
+msgid "This is a private %s."
+msgstr "Prywatne %s"
+
+#: theme/default/no-permission-post.php:7
+msgid "This %s waiting for moderation."
+msgstr "%s czeka na moderację."
+
+#: theme/default/no-permission-post.php:9
+msgid "This has been trashed or waiting for approval."
+msgstr "Trafiło to do kosza lub czeka na zaakceptowanie."
+
+#: theme/default/part/question.php:14
+msgid "Featured post"
+msgstr "Wyróżniony post"
+
+#: theme/default/part/question.php:28
+msgid "Leave a reply"
+msgstr "Zostaw odpowiedź"
+
+#: theme/default/part/question.php:28
+msgid "1 Reply"
+msgstr "1 Odpowiedź"
+
+#: theme/default/part/question.php:28
+msgid "% Replies"
+msgstr "% Odpowiedzi"
+
+#: theme/default/part/question.php:39
+msgid "Continue reading <span class=\"meta-nav\">&rarr;</span>"
+msgstr "Kontynuuj czytanie <span class=\"meta-nav\">&rarr;</span>"
+
+#: theme/default/part/question.php:40
+msgid "Pages:"
+msgstr "Strony:"
+
+#: theme/default/part/question.php:53
+msgid "About %s"
+msgstr "O %s"
+
+#: theme/default/part/question.php:57
+msgid "View all posts by %s <span class=\"meta-nav\">&rarr;</span>"
+msgstr "Pokaż wszystkie posty %s <span class=\"meta-nav\">&rarr;</span>"
+
+#: theme/default/question.php:87 widgets/question_stats.php:57
+msgid "Question stats"
+msgstr "Statystyki pytania"
+
+#: theme/default/user/about.php:18 theme/default/user/reputation.php:18
+msgid "Total"
+msgstr "Łącznie"
+
+#: theme/default/user/about.php:41
+msgid "%d votes received"
+msgstr "%d głosów otrzymanych"
+
+#: theme/default/user/about.php:43 theme/default/user/about.php:49
+msgid "up"
+msgstr "góra"
+
+#: theme/default/user/about.php:44 theme/default/user/about.php:50
+msgid "down"
+msgstr "dół"
+
+#: theme/default/user/about.php:47
+msgid "%d votes casted"
+msgstr "%d głosów zostało oddanych"
+
+#: theme/default/user/about.php:56
+msgid "Top Answers"
+msgstr "Najlepsze odpowiedzi"
+
+#: theme/default/user/about.php:64
+msgid "More answers by %s"
+msgstr "Więcej odpowiedzi udzielonych przez %s"
+
+#: theme/default/user/about.php:65 theme/default/user/about.php:85
+msgid "view"
+msgstr "pokaż"
+
+#: theme/default/user/about.php:68
+msgid "No answer posted yet!"
+msgstr "Nie udzielono jeszcze odpowiedzi!"
+
+#: theme/default/user/about.php:73
+msgid "New questions"
+msgstr "Nowe pytania"
+
+#: theme/default/user/about.php:84
+msgid "More questions by %s"
+msgstr "Więcej pytań zadanych przez %s"
+
+#: theme/default/user/about.php:89
+msgid "No question asked yet!"
+msgstr "Nie zadałeś jeszcze żadnego pytania!"
+
+#: theme/default/user/about.php:99 theme/default/user/user-card.php:27
+msgid "%d answers, %d selected"
+msgstr "%d odpowiedzi, %wybranych"
+
+#: theme/default/user/about.php:100 theme/default/user/user-card.php:28
+msgid "%d questions, %d solved"
+msgstr "%d pytań, %d rozwiązanych"
+
+#: theme/default/user/about.php:101
+msgid "Member for %s"
+msgstr "Członek %s"
+
+#: theme/default/user/about.php:102
+msgid "%d profile views"
+msgstr "%d wyświetleń profilu"
+
+#: theme/default/user/about.php:103
+msgid "Last seen %s ago"
+msgstr "Ostatnio widziany %s temu"
+
+#: theme/default/user/list-question.php:4
+msgid "%d answers"
+msgstr "%d odpowiedzi"
+
+#: theme/default/user/notification-dropdown.php:14
+msgid "Notifications"
+msgstr "Powiadomienia"
+
+#: theme/default/user/notification-dropdown.php:15
+msgid "Mark all as read"
+msgstr "Oznacz wszystko jako przeczytane"
+
+#: theme/default/user/notification-dropdown.php:34
+#: theme/default/user/notification.php:41
+msgid "No notification"
+msgstr "Brak powiadomień"
+
+#: theme/default/user/notification-dropdown.php:36
+msgid "View all notifications"
+msgstr "Pokaż wszystkie powiadomienia"
+
+#: theme/default/user/notification.php:24
+msgid "Mark as read"
+msgstr "Oznacz jako przeczytane"
+
+#: theme/default/user/notification.php:26
+msgid "Delete notificaton"
+msgstr "Usuń powiadomienie"
+
+#: theme/default/user/reputation.php:32
+msgid "No reputation earned yet."
+msgstr "Nie zdobyłeś jeszcze reputacji."
+
+#: theme/default/user/subscription.php:17
+msgid "No question subscribed yet!"
+msgstr "Nie subskrybujesz jeszcze żadnego pytania!"
+
+#: theme/default/user/user-card.php:29
+msgid "%d Followers, %d following"
+msgstr "%d Obserwujących, %d obserowanych"
+
+#: theme/default/user/user.php:53 theme/default/users/loop-item.php:31
+msgid "%d Answers"
+msgstr "%d Odpowiedzi"
+
+#: theme/default/user/user.php:54 theme/default/users/loop-item.php:32
+msgid "%d Questions"
+msgstr "%d Pytań"
+
+#: theme/default/user/user.php:55
+msgid "%d Followers"
+msgstr "%d Obserwujących"
+
+#: theme/default/user/user.php:56
+msgid "%d Following"
+msgstr "%d Obserwowanych"
+
+#: theme/default/users/loop-item.php:30
+msgid "%d Best"
+msgstr "%d Najlepszych"
+
+#: theme/default/users/users.php:5
+msgid "Search users..."
+msgstr "Szukaj użytkowników..."
+
+#: theme/default/users-widget.php:21
+msgid "No users found."
+msgstr "Nie znaleziono odpowiedzi."
+
+#: theme/default/widget-questions.php:11
+#: theme/default/widget-related_questions.php:11
+msgid "1 answer"
+msgid_plural "%d answers"
+msgstr[0] "1 odpowiedź"
+msgstr[1] "%d odpowiedzi"
+msgstr[2] "%d odpowiedzi"
+
+#: theme/default/widget-questions.php:12
+#: theme/default/widget-related_questions.php:12
+msgid "1 vote"
+msgid_plural "%d votes"
+msgstr[0] "1 głos"
+msgstr[1] "%d głosy"
+msgstr[2] "%d głosów"
+
+#: theme/default/widget-questions.php:17
+msgid "No questions found."
+msgstr "Nie znaleziono pytań."
+
+#: theme/default/widget-related_questions.php:17
+msgid "No related questions found."
+msgstr "Nie znaleziono podobnych pytań."
+
+#: theme/default/widgets/followers.php:11
+msgid "View all followers &rarr;"
+msgstr "Pokaż wszystkich obserwatorów &rarr;"
+
+#: widgets/breadcrumbs.php:22
+msgid "(AnsPress) Breadcrumbs"
+msgstr "(AnsPress) Okruszki"
+
+#: widgets/categories.php:6
+msgid "Display AnsPress categories"
+msgstr "Wyświetl kategorie AnsPress"
+
+#: widgets/categories.php:37
+msgid "%d sub categories"
+msgstr "%d subkategorii"
+
+#: widgets/categories.php:51
+msgid "Categories"
+msgstr "Kategorie"
+
+#: widgets/categories.php:82 widgets/followers.php:53
+#: widgets/participants.php:43 widgets/question_stats.php:61
+#: widgets/questions.php:46 widgets/quick-ask.php:31
+#: widgets/related_questions.php:56 widgets/search.php:52
+#: widgets/subscribe.php:48 widgets/user.php:42 widgets/users.php:50
+msgid "Title:"
+msgstr "Tytuł:"
+
+#: widgets/categories.php:86
+msgid "Parent:"
+msgstr "Rodzic:"
+
+#: widgets/categories.php:88
+msgid "Top level"
+msgstr "Najwyższy poziom"
+
+#: widgets/categories.php:98
+msgid "Number:"
+msgstr "Numer:"
+
+#: widgets/categories.php:102
+msgid "Order By:"
+msgstr "Sortuj po:"
+
+#: widgets/categories.php:104
+msgid "None"
+msgstr "Brak"
+
+#: widgets/categories.php:105
+msgid "Count"
+msgstr "Ilość"
+
+#: widgets/categories.php:106
+msgid "ID"
+msgstr "ID"
+
+#: widgets/categories.php:108
+msgid "Slug"
+msgstr "Alias"
+
+#: widgets/categories.php:109
+msgid "Term group"
+msgstr "Określenie grupy"
+
+#: widgets/categories.php:113
+msgid "Order:"
+msgstr "Sortuj:"
+
+#: widgets/categories.php:115
+msgid "DESC"
+msgstr "Malejąco"
+
+#: widgets/categories.php:116
+msgid "ASC"
+msgstr "Rosnąco"
+
+#: widgets/followers.php:26
+msgid "No followers yet"
+msgstr "Brak obserwatorów"
+
+#: widgets/followers.php:29
+msgid "This widget can only be used in user page."
+msgstr "Ten widget może zostać uzyty tylko na stronie użytkownika."
+
+#: widgets/followers.php:57 widgets/participants.php:47
+msgid "Avatar size:"
+msgstr "Rozmiar avatara:"
+
+#: widgets/followers.php:61
+msgid "Numbers of user to show:"
+msgstr "Liczba użytkowników do wyświetlenia:"
+
+#: widgets/post_discussion.php:19
+msgid "No options"
+msgstr "Brak opcji"
+
+#: widgets/question_stats.php:22
+msgid "AnsPress Stats"
+msgstr "Statystyki AnsPress"
+
+#: widgets/question_stats.php:40
+msgid "Ago"
+msgstr "Temu"
+
+#: widgets/question_stats.php:41
+msgid "Views"
+msgstr "Wyświetleń"
+
+#: widgets/question_stats.php:41
+msgid "One time"
+msgid_plural "%d times"
+msgstr[0] "Jeden raz"
+msgstr[1] "%d razy"
+msgstr[2] "%d razy"
+
+#: widgets/question_stats.php:42
+msgid "%2$s1%3$s answer"
+msgid_plural "%2$s%1$d%3$s answers"
+msgstr[0] "%2$s1%3$s odpowiedź"
+msgstr[1] "%2$s%1$d%3$s odpowiedzi"
+msgstr[2] "%2$s%1$d%3$s odpowiedzi"
+
+#: widgets/question_stats.php:43
+msgid "Subscribers"
+msgstr "Subskrybenci"
+
+#: widgets/question_stats.php:43
+msgid "1 Subscriber"
+msgid_plural "%d subscribers"
+msgstr[0] "1 Subskrybent"
+msgstr[1] "%d Subskrybentów"
+msgstr[2] "%d Subskrybentów"
+
+#: widgets/question_stats.php:46
+msgid "This widget can only be used in single question page"
+msgstr "Ten wiget może zostać użyty tylko na stronie pytania"
+
+#: widgets/questions.php:6
+msgid "Shows list of question shorted by option"
+msgstr "Pokaż listę pytań sortując po opcji"
+
+#: widgets/questions.php:50
+msgid "Order by:"
+msgstr "Sortuj po:"
+
+#: widgets/questions.php:61
+msgid "Limit:"
+msgstr "Limit:"
+
+#: widgets/quick-ask.php:27
+msgid "Ask questions"
+msgstr "Zadaj pytanie"
+
+#: widgets/related_questions.php:48
+msgid "Related Questions"
+msgstr "Podobne Pytania"
+
+#: widgets/search.php:35
+msgid "Search questions & answers"
+msgstr "Szukaj pytań & odpowiedzi"
+
+#: widgets/search.php:48
+msgid "Search questions"
+msgstr "Szukaj pytań"
+
+#: widgets/subscribe.php:22
+msgid "AnsPress Subscribe"
+msgstr "Subskrybuj AnsPress"
+
+#: widgets/user.php:6
+msgid "Display current logged in users detail and links."
+msgstr "Wyświetl obecnie zalogowanych użytkowników w szczegółach i linkach."
+
+#: widgets/user.php:27
+msgid "Login to see your profile links"
+msgstr "Zaloguj się, aby zobaczyć swoje linki profilowe."
+
+#: widgets/users.php:54
+msgid "Avatar:"
+msgstr "Avatar:"
+
+#: widgets/users.php:58
+msgid "Show"
+msgstr "Pokaż"
+
+#. Plugin Name of the plugin/theme
+msgid "AnsPress"
+msgstr "AnsPress"
+
+#. Author URI of the plugin/theme
+msgid "http://anspress.io"
+msgstr "http://anspress.io"
+
+#. Description of the plugin/theme
+msgid "The most advance community question and answer system for WordPress"
+msgstr "Najbardziej rozbudowana wtyczka pytań i odpowiedzi dla Worpdressa."
+
+#. Author of the plugin/theme
+msgid "Rahul Aryan"
+msgstr "Rahul Aryan"
+
+#: includes/post_types.php:47
+msgctxt "Post Type General Name"
+msgid "Questions"
+msgstr "Pytania"
+
+#: includes/post_types.php:118
+msgctxt "Post Type General Name"
+msgid "Answers"
+msgstr "Odpowiedzi"
+
+#: includes/post_types.php:48
+msgctxt "Post Type Singular Name"
+msgid "Question"
+msgstr "Pytanie"
+
+#: includes/post_types.php:119
+msgctxt "Post Type Singular Name"
+msgid "Answer"
+msgstr "Odpowiedź"
+
+#~ msgid "Theme"
+#~ msgstr "Szablon"
+
+#~ msgid "Select theme for AnsPress."
+#~ msgstr "Wybierz szablon dla AnsPress"
+
+#~ msgid "Selected"
+#~ msgstr "Wybrane"
+
+#~ msgid "Sort by:"
+#~ msgstr "Sortuj po:"
+
+#~ msgid "You dont have permission to answer this question."
+#~ msgstr "nie masz uprawnień, aby odpowiedzieć na to pytanie."
+
+#~ msgid "Please %s or %s to answer this question."
+#~ msgstr "Proszę %s lub %s, aby odpowiedzieć na to pytanie."

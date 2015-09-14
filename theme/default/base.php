@@ -1,31 +1,40 @@
-<h1 class="entry-title">
-	<?php if (!ap_opt('double_titles')){
-	the_title();}
-	else {
-	echo '<span style="visibility:hidden">'.get_the_title().'</span>';}
-	?>
-	<?php ap_ask_btn(); ?>
-</h1>
+<?php
+	/**
+	 * Display question list
+	 *
+	 * This template is used in base page, category, tag , etc
+	 *
+	 * @link http://anspress.io
+	 * @since unknown
+	 *
+	 * @package AnsPress
+	 */
+?>
 <?php dynamic_sidebar( 'ap-top' ); ?>
-<div id="ap-lists" class="clearfix">
-	<?php ap_questions_tab(); ?>
-	<?php if ( $question->have_posts() ) : ?>
-		<div class="question-list">
-	<?php
-		
-		/* Start the Loop */
-		while ( $question->have_posts() ) : $question->the_post();
-			global $post;
-			include(ap_get_theme_location('content-list.php'));
-		endwhile;
-	?>
+<div class="row">
+	<div id="ap-lists" class="<?php echo is_active_sidebar( 'ap-sidebar' ) && is_anspress() ? 'col-md-9' : 'col-md-12' ?>">
+		<?php ap_get_template_part('list-head'); ?>
+		<?php if ( ap_have_questions() ) : ?>
+			<div class="ap-questions">
+				<?php
+					/* Start the Loop */
+					while ( ap_questions() ) : ap_the_question();
+						ap_get_template_part('content-list');
+					endwhile;
+				?>
+			</div>
+		<?php ap_questions_the_pagination(); ?>
+		<?php
+			else :
+				ap_get_template_part('content-none');
+			endif;
+		?>
+	</div>
+	<?php if ( is_active_sidebar( 'ap-sidebar' ) && is_anspress()){ ?>
+		<div class="ap-question-right col-md-3">
+			<?php dynamic_sidebar( 'ap-sidebar' ); ?>
 		</div>
-	<?php ap_pagination('', 2, $paged, $question); ?>
-	<?php
-		else : 
-			include(ap_get_theme_location('content-none.php'));
-		endif; 
-	?>	
+	<?php } ?>
 </div>
 
 

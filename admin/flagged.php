@@ -40,6 +40,10 @@ class AP_Flagged_Table extends WP_List_Table {
 		$this->get_posts_counts();		
 		$this->current_status =  isset($_GET['status']) ? sanitize_text_field($_GET['status']) : 'publish' ;
 	}
+
+	/**
+	 * @param string $input_id
+	 */
 	public function search_box( $text, $input_id ) {
 		if ( empty( $_REQUEST['s'] ) && !$this->has_items() )
 			return;
@@ -79,19 +83,22 @@ class AP_Flagged_Table extends WP_List_Table {
 	 */
 	public function get_views() {
 
-		$current        = isset( $_GET['status'] ) ? $_GET['status'] : 'publish';
+		$current        = isset( $_GET['status'] ) ? $_GET['status'] : 'all';
 		$total_count    = '&nbsp;<span class="count">(' . $this->total_count    . ')</span>';
 		$published_count = '&nbsp;<span class="count">(' . $this->published_count . ')</span>';
 		$pending_count  = '&nbsp;<span class="count">(' . $this->pending_count  . ')</span>';
 		$draft_count = '&nbsp;<span class="count">(' . $this->draft_count . ')</span>';
 		$trash_count   = '&nbsp;<span class="count">(' . $this->trash_count   . ')</span>';
 		$moderate_count   = '&nbsp;<span class="count">(' . $this->moderate_count   . ')</span>';
+		$closed_count   = '&nbsp;<span class="count">(' . $this->closed_count   . ')</span>';
 		
 
 		$views = array(
+			'all'	=> sprintf( '<a href="%s"%s>%s</a>', add_query_arg( array( 'paged' => FALSE ) ), $current === 'all' ? ' class="current"' : '', __('All', 'ap') . $total_count ),
 			'publish'	=> sprintf( '<a href="%s"%s>%s</a>', add_query_arg( array( 'status' => 'publish', 'paged' => FALSE ) ), $current === 'publish' ? ' class="current"' : '', __('Publish', 'ap') . $published_count ),
 			'pending'	=> sprintf( '<a href="%s"%s>%s</a>', add_query_arg( array( 'status' => 'pending', 'paged' => FALSE ) ), $current === 'pending' ? ' class="current"' : '', __('Pending', 'ap') . $pending_count ),
 			'moderate'	=> sprintf( '<a href="%s"%s>%s</a>', add_query_arg( array( 'status' => 'moderate', 'paged' => FALSE ) ), $current === 'moderate' ? ' class="current"' : '', __('Moderate', 'ap') . $moderate_count ),
+			'closed'	=> sprintf( '<a href="%s"%s>%s</a>', add_query_arg( array( 'status' => 'closed', 'paged' => FALSE ) ), $current === 'closed' ? ' class="current"' : '', __('Closed', 'ap') . $closed_count ),
 			'draft'	=> sprintf( '<a href="%s"%s>%s</a>', add_query_arg( array( 'status' => 'draft', 'paged' => FALSE ) ), $current === 'draft' ? ' class="current"' : '', __('Draft', 'ap') . $draft_count ),
 			'trash'	=> sprintf( '<a href="%s"%s>%s</a>', add_query_arg( array( 'status' => 'trash', 'paged' => FALSE ) ), $current === 'trash' ? ' class="current"' : '', __('Trash', 'ap') . $trash_count )
 		);
@@ -108,7 +115,7 @@ class AP_Flagged_Table extends WP_List_Table {
 			'post_type'  		=> __( 'Type', 'ap' ),
 			'post_title'  		=> __( 'Title', 'ap' ),
 			'flag'  			=> __( 'Flag', 'ap' ),
-			'category'  		=> __( 'Category', 'ap' )
+			//'category'  		=> __( 'Category', 'ap' )
 		);
 
 		return apply_filters( 'ap_moderate_table_columns', $columns );
@@ -158,23 +165,23 @@ class AP_Flagged_Table extends WP_List_Table {
 	}
 	
 	public function column_post_title( $post ) {
+		$edit_flag = esc_url(add_query_arg(array('post_id' => $post->ID), 'admin.php?page=ap_post_flag'));
 		if($post->post_type =='question')
-			$title ='<a href="'.esc_url(add_query_arg(array('post' => $post->ID, 'action' => 'edit'), 'post.php')).'" class="row-title">'.$post->post_title.'</a>';
+			$title ='<a href="'.$edit_flag.'" class="row-title">'.$post->post_title.'</a>';
 		else
-			$title =  '<a href="'.esc_url(add_query_arg(array('post' => $post->ID, 'action' => 'edit'
-			), 'post.php')).'" class="row-title">'. ap_truncate_chars(strip_tags($post->post_content), 80).'</a>';
+			$title =  '<a href="'.$edit_flag.'" class="row-title">'. ap_truncate_chars(strip_tags($post->post_content), 80).'</a>';
 		
+		$actions = array();
+		$actions['edit_flag'] = sprintf('<a href="%s">%s</a>', $edit_flag, __('Edit flags', 'ap'));
+
 		if('trash' == $this->current_status){
-			$actions = array(
-				'untrash' => sprintf('<a href="%s">%s</a>', ap_untrash_post($post->ID), __('Restore', 'ap')),
-				'delete' => sprintf('<a href="%s">%s</a>', get_delete_post_link($post->ID, null,  true), __('Delete permanently', 'ap')),
-			);
+			$actions['untrash'] = sprintf('<a href="%s">%s</a>', ap_untrash_post($post->ID), __('Restore', 'ap'));
+			$actions['delete'] = sprintf('<a href="%s">%s</a>', get_delete_post_link($post->ID, null,  true), __('Delete permanently', 'ap'));
+
 		}else{		
-			$actions = array(
-				'edit'      => sprintf('<a href="%s">%s</a>', get_edit_post_link($post->ID), __('Edit', 'ap')),
-				'trash'      => sprintf('<a href="%s">%s</a>', get_delete_post_link($post->ID), __('Trash', 'ap')),
-				'view'      => sprintf('<a href="%s">%s</a>', get_permalink($post->ID), __('View', 'ap'))
-			);
+			$actions['edit'] = sprintf('<a href="%s">%s</a>', get_edit_post_link($post->ID), __('Edit', 'ap'));
+			$actions['trash'] = sprintf('<a href="%s">%s</a>', get_delete_post_link($post->ID), __('Trash', 'ap'));
+			$actions['view'] = sprintf('<a href="%s">%s</a>', get_permalink($post->ID), __('View', 'ap'));
 		}
 
 
@@ -187,27 +194,27 @@ class AP_Flagged_Table extends WP_List_Table {
 		return '<span class="flag-count' . ($flag_count ? ' flagged' : '') . '">' . $flag_count . '</span>';
 	}
 	
-	public function column_category( $post ) {
-		/* Get the genres for the post. */
+	/*public function column_category( $post ) {
+		//Get the genres for the post.
 		$category = get_the_terms($post->ID, ANSPRESS_CAT_TAX);
 		
-		/* If terms were found. */
+		//If terms were found.
 		if (!empty($category)) {
 			$out = array();
 			
-			/* Loop through each term, linking to the 'edit posts' page for the specific term. */
+			 Loop through each term, linking to the 'edit posts' page for the specific term. 
 			foreach ($category as $cat) {
 				$out[] = edit_term_link($cat->name, '', '', $cat, false);
 			}
-			/* Join the terms, separating them with a comma. */
+			/* Join the terms, separating them with a comma.
 			return join(', ', $out);
 		}
 		
-		/* If no terms were found, output a default message. */
+		//If no terms were found, output a default message.
 		else {
 			return __('--');
 		}
-	}
+	}*/
 
 
 	/**
@@ -290,20 +297,18 @@ class AP_Flagged_Table extends WP_List_Table {
 		$this->trash_count   	= $counts->trash;
 		$this->draft_count  	= $counts->draft;
 		$this->moderate_count  	= $counts->moderate;
-
-		foreach( $counts as $count ) {
-			$this->total_count += $count;
-		}
+		$this->closed_count  	= $counts->closed;
+		$this->total_count      = $counts->total;
 	}
 
 	public function posts_data() {
 		global $wpdb;
 
-		$status =  isset($_GET['status']) ? sanitize_text_field($_GET['status']) : 'publish' ;
+		$status =  isset($_GET['status']) ? "AND p.post_status = '".sanitize_text_field($_GET['status'])."'" : '' ;
 		$paged = isset( $_GET['paged'] ) ? sanitize_text_field($_GET['paged']) : 1;
 		
 		// Preparing your query
-        $query = "SELECT p.*, v.apmeta_userid as vote_user, v.apmeta_value as vote_value, v.apmeta_param as vote_note, v.apmeta_date FROM $wpdb->posts p INNER JOIN ".$wpdb->prefix."ap_meta v ON v.apmeta_actionid = p.ID AND v.apmeta_type='flag' WHERE (p.post_type = 'answer' OR p.post_type = 'question') AND p.post_status = '$status' ";
+        $query = "SELECT p.*, v.apmeta_userid as vote_user, v.apmeta_value as vote_value, v.apmeta_param as vote_note, v.apmeta_date FROM $wpdb->posts p INNER JOIN ".$wpdb->prefix."ap_meta v ON v.apmeta_actionid = p.ID AND v.apmeta_type='flag' WHERE (p.post_type = 'answer' OR p.post_type = 'question') $status ";
 		
 		//adjust the query to take pagination
 		if(!empty($paged) && !empty($this->per_page)){
@@ -332,6 +337,7 @@ class AP_Flagged_Table extends WP_List_Table {
 
 		$this->_column_headers = array( $columns, $hidden, $sortable );
 
+		$total_items = 0;
 		switch ( $status ) {
 			case 'publish':
 				$total_items = $this->published_count;

@@ -1,0 +1,108 @@
+{
+	"name": "AnsPress",
+	"version": "2.3.6",
+	"tested_up_to": "4.2",
+	"updated": "",
+	"licence": "GPL-3.0+",
+	"licence_link": "http://www.gnu.org/licenses/gpl.txt",
+	"text_domain": "ap",
+	"languages": ["fr_FR", "ru_RU", "pt_BR", "es_ES", "de_DE"],
+	"download": {
+		"stable":{
+			"wp" : "https://downloads.wordpress.org/plugin/anspress-question-answer.zip",
+			"github" : "https://github.com/anspress/anspress/archive/master.zip"
+		},
+		"dev":{
+			"wp" : "https://downloads.wordpress.org/plugin/anspress-question-answer.zip",
+			"github" : "https://github.com/anspress/anspress/archive/master.zip"
+		}
+	},
+	"major_features":[
+		{
+			"title": "Notification",
+			"icon": " icon-notifications",
+			"desc": "Shows all user notifications. Inbuilt menu item and user page.",
+			"image": "notification.jpg"
+		},
+		{
+			"title": "Votes",
+			"icon": "apicon-thumb-up",
+			"desc": "Registered user can vote up and down on both question and answers.",
+			"image": "vote.jpg"
+		},
+		{
+			"title": "Subscription",
+			"icon": "icon-plane",
+			"desc": "User can subscribe to tags, categories or question and get notified for activities.",
+			"image": "subscribers.jpg"
+		},
+		{
+			"title": "Points and Reputation",
+			"icon": "apicon-reputation",
+			"desc": "User gain or loss defined reputation points for every activity. Can be configured.",
+			"image": "reputation.jpg"
+		},
+		{
+			"title": "Flag and moderate",
+			"icon": "icon-flag",
+			"desc": "Hold new posts for moderation and allow community to flag posts.",
+			"image": "flag.jpg"
+		},
+		{
+			"title": "Best answer",
+			"icon": "apicon-check",
+			"desc": "Original poster or admin can select a best answer for a question.",
+			"image": "best-answer.jpg"
+		},
+		{
+			"title": "Private q&a",
+			"icon": "icon-gist-secret",
+			"desc": "User can ask private posts which are only visible to user level above moderator.",
+			"image": "private.jpg"
+		},
+		{
+			"title": "Categories",
+			"icon": "icon-folder",
+			"desc": "Category extension for adding category (taxonomy) support for questions.",
+			"image": "categories.jpg"
+		},
+		{
+			"title": "Tags",
+			"icon": "icon-tags",
+			"desc": "Tag extension for adding tag (taxonomy) support for questions.",
+			"image": "tags.jpg"
+		}
+	],
+	"features":[
+		{
+			"title": "Comments",
+			"icon": "icon-comment-discussion",
+			"desc": "Allow registered user to comment on both question an answer."
+		},
+		{
+			"title": "Featured questions",
+			"icon": "apicon-star",
+			"desc": "Mark a question as featured and it will stick to the top of question list."
+		},
+		{
+			"title": "Widgets",
+			"icon": "icon-puzzle",
+			"desc": "More then 5+ inbuilt widgets for showing AnsPress contents and links anywhere on your site."
+		},
+		{
+			"title": "Image upload",
+			"icon": "apicon-image",
+			"desc": "Inbuilt image uploader which allows user to attach images in question or answer"
+		},
+		{
+			"title": "Social login",
+			"icon": "icon-facebook",
+			"desc": "Allow visitors to quickly login using their social account. Read the <a href='http://anspress.io/documents/?doc_page=requirements'>instructions</a>."
+		},
+		{
+			"title": "Syntax Highlighter",
+			"icon": "icon-edit",
+			"desc": "Allow visitors to add codes in question and answer and highlight it. Read the <a href='http://anspress.io/documents/?doc_page=code-and-syntax-highlighter'>instructions</a>."
+		}
+	]
+}

@@ -1,0 +1,58 @@
+// Style for notify bubble
+
+#ap-notify{
+    font-family: "Helvetica",Arial,sans-serif;
+    font-size: 14px;
+    left: 10px;
+    line-height: 1.6;
+    overflow: hidden;
+    position: fixed;
+    top: 10%;
+    z-index: 9999;
+
+    .ap-notify-item {
+	    background: none repeat scroll 0 0 #343434;
+	    border-radius: 4px;
+	    box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
+	    color: #c5c5c5;
+	    display: table;
+	    font-size: 14px;
+	    margin: 10px;
+	    min-height: 20px;
+	    padding: 12px;
+	    position: relative;
+	    width: 250px;
+
+	    &:last-child{
+	    	margin-bottom: 0;
+	    }
+
+	    &.error{
+	    	i{
+	    		color: @error-color;
+	    	}
+	    }
+	    &.success{
+	    	i{
+	    		color: @main-color;
+	    	}
+	    }
+	    &.warning{
+	    	i{
+	    		color: @yellow-color;
+	    	}
+	    }
+	    i{
+		    color: #fff;
+		    display: table-cell;
+		    font-size: 18px;
+		    line-height: 24px;
+		    padding-right: 10px;
+		    vertical-align: middle;
+	    }
+	    .ap-notify-content{
+	    	display: table-cell;
+	    	vertical-align: middle;
+	    }
+	}
+}

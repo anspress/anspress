@@ -1,0 +1,36 @@
+//
+// User styles
+// --------------------------------------------------
+
+.ap-answers-nav{
+    background: @main-color;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+    color: #fff;
+    font-weight: 600;    
+    text-align: center;
+
+	&.fix{
+	    bottom: 0;
+	    position: fixed;
+	    z-index: 99;
+	}
+	&-count, a{
+		color: #fff;
+	    display: inline-block;
+	    padding: 5px 10px;	    
+	}
+	&-count{
+		padding: 5px 14px;
+		font-weight: 700;
+	}
+	> a{
+		background: rgba(0, 0, 0, 0.05);
+		&:visited{
+	    	color: #fff;
+	    }
+	    &:hover{
+	    	background: rgba(0, 0, 0, 0.1);
+	    }
+	}
+
+}

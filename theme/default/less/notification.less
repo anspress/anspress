@@ -1,0 +1,193 @@
+body #ap-user-notification-anchor{
+    font-size: 20px;
+    position: relative;
+
+    >i{
+    	display: block;
+    }
+
+    .counter{
+	    background: #ff3737 none repeat scroll 0 0;
+	    border-radius: 2px;
+	    color: #fff;
+	    font-size: 11px;
+	    font-weight: 600;
+	    line-height: 100%;
+	    padding: 2px;
+	    position: absolute;
+	    right: 0;
+	    text-align: center;
+	    top: 0;
+	    width: 13px;
+    }
+}
+body ul li:hover ul#ap-notification-dropdown{
+	display: none;
+}
+body ul li.open ul#ap-notification-dropdown{
+	display: block;
+}
+body ul ul#ap-notification-dropdown{
+    border: 1px solid #ddd;
+    border-radius: 2px;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+    font-family: "helvetica",arial,serif;
+    text-transform: none;
+    width: 350px;
+    font-size: 13px;
+
+    li{
+	    background: none repeat scroll 0 0 #fbfbfb;
+	    display: block;
+	    float: none !important;
+	    margin: 0;
+	    padding: 0;
+
+	    .unread{
+	    	background: #F1FCFF;
+	    }
+	    .ap-notification-item{
+	    	padding: 10px;
+	    	border-bottom: 1px solid #eeeeee;
+	    }
+	    a:hover{
+	    	color: @default-color;
+	    }
+    }
+
+    a{
+	    background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
+	    border: medium none;
+	    color: @default-color;
+	    display: inline;
+	    font-family: "helvetica",arial,serif;
+	    font-size: 12px;
+	    line-height: 1.3;
+	    margin: 0;
+	    padding: 0;
+	    text-decoration: none;
+	    text-transform: none;
+	    &:hover{
+	    	color: @default-color;
+	    }
+    }
+
+    .ap-notification-time{
+	    color: #888;
+	    display: block;
+	    margin-top: 4px;
+    }
+    .ap-notification-head{
+	    background: none repeat scroll 0 0 #fff;
+	    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+	    padding: 10px;
+
+    	a{
+		    float: right;
+		    width: auto;
+	    	color: @link-color;
+	    	background: none;
+	    }
+
+    	b{
+	    	font-size: 13px;
+	    }
+    }
+
+    .ap-notification-footer{
+	    background: none repeat scroll 0 0 #fff;
+	    text-align: center;
+	    padding: 10px;
+
+	    a{
+		    color: @link-color;
+		}
+    }
+    .ap-notification-scroll{
+    	height: 300px;
+    }
+    .ap-no-notification{
+    	padding: 10px;
+
+    }
+}
+#anspress{
+	.ap-notification-item{
+	    border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+	    padding: 12px 15px;
+		&.unread{
+		    background: none repeat scroll 0 0 #F1FCFF;
+		    border-color: rgba(0, 0, 0, 0.05);
+		}
+		.ap-notification-icon{
+		    height: 35px;
+		    line-height: 28px;
+		    margin-right: 15px;
+		    width: 35px;
+		}
+		.ap-notification-time {
+		    color: #777;
+		    display: block;
+		    font-size: 13px;
+		}
+		.ap-notification-btns{
+			margin-left: 10px;
+		}
+		.ap-notification-btns .ap-btn{
+		    display: inline-block;
+		    height: 25px;
+		    line-height: 20px;
+		    margin-left: 3px;
+		    padding: 3px 5px;
+		    text-align: center;
+		    width: 25px;
+		}
+	}
+	.ap-notification-icon{
+		color: #fff;
+	}
+	.ap-notification-content a{
+		color: @default-color;
+		b{
+			color: @link-color;
+			font-weight: normal;
+		}
+	}
+}
+
+.ap-notification-icon{
+    background: none repeat scroll 0 0 #c1c1c1;
+    border-radius: 2px;
+    display: block;
+    color: #fff;
+    float: left;
+    font-size: 18px;
+    height: 25px;
+    line-height: 25px;
+    margin-right: 10px;
+    padding: 4px;
+    text-align: center;
+    width: 25px;
+
+    &.comment_on_answer, &.comment_on_question{
+    	background:#FF8589;
+    }
+    &.question_update, &.answer_update{
+    	background:#8DC5ED;
+    }
+    &.new_answer{
+    	background:@main-color;
+    }
+    &.new_follower{
+    	background:#C9B4FF;
+    }
+    &.vote_up{
+    	background:#74D3DC;
+    }
+    &.received_reputation{
+    	background:#FFB85C;
+    }
+    &.answer_selected{
+    	background:#BEAEFC;
+    }
+}

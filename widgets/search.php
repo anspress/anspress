@@ -1,7 +1,23 @@
 <?php
+/**
+ * AnsPress search widget
+ * An ajax based search widget for searching questions and answers
+ * @package AnsPress
+ * @author Rahul Aryan <support@anspress.io>
+ * @license GPL 2+ GNU GPL licence above 2+
+ * @link http://anspress.io
+ * @since 2.0.0-alpha2
+ *  
+ */
+
+// If this file is called directly, abort.
+if ( ! defined( 'WPINC' ) ) {
+    die;
+}
+
 class AP_Search_Widget extends WP_Widget {
 
-	function AP_Search_Widget() {
+	public  function AP_Search_Widget() {
 		// Instantiate the parent object
 		parent::__construct( false, 'AnsPress Search' );
 	}
@@ -14,9 +30,9 @@ class AP_Search_Widget extends WP_Widget {
 			echo $args['before_title'] . $title . $args['after_title'];
 		}
 		?>
-			<form class="ap-quick-ask" action="<?php echo ap_get_link_to('search'); ?>" method="GET">
+			<form id="ap-search-form" class="ap-search-form" action="<?php echo ap_get_link_to('search'); ?>" method="GET">
 				<div class="ap-qaf-inner">
-					<input class="form-control" type="text" name="ap_s" id="ap-quick-ask-input" placeholder="<?php _e('Search questions', 'ap'); ?>" value="<?php echo sanitize_text_field(get_query_var('ap_s')); ?>" autocomplete="off" />
+					<input class="form-control" type="text" name="ap_s" id="ap-quick-ask-input" placeholder="<?php _e('Search questions & answers', 'ap'); ?>" value="<?php echo sanitize_text_field(get_query_var('ap_s')); ?>" autocomplete="off" />
 					<button type="submit" ><?php _e('Search', 'ap'); ?></button>
 				</div>
 			</form>
