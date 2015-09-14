@@ -6,7 +6,7 @@
  * @author    Rahul Aryan <admin@rahularyan.com>
  * @license   GPL-2.0+
  * @link      http://rahularyan.com
- * @copyright 2014 Rahul Aryan
+ * @copyright 2015 Rahul Aryan
  */
 
 // If this file is called directly, abort.

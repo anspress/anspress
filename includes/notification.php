@@ -6,7 +6,7 @@
  * @author    Rahul Aryan <admin@rahularyan.com>
  * @license   GPL-2.0+
  * @link      http://anspress.io
- * @copyright 2014 Rahul Aryan secondary
+ * @copyright 2015 Rahul Aryan secondary
  */
 
 class AnsPress_Notifications

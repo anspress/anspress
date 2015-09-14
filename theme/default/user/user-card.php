@@ -2,7 +2,7 @@
 /**
  * Display user card
  *
- * @link http://wp3.in
+ * @link http://anspress.io
  * @since unknown
  * @package AnsPress
  */

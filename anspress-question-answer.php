@@ -5,7 +5,7 @@
  * The most advance community question and answer system for WordPress
  *
  * @author    Rahul Aryan <support@rahularyan.com>
- * @copyright 2014 WP3.in & Rahul Aryan
+ * @copyright 2015 Anspress.io & Rahul Aryan
  * @license   GPL-2.0+ http://www.gnu.org/licenses/gpl-2.0.txt *
  * @link      http://anspress.io
  * @package   AnsPress

@@ -7,7 +7,7 @@
  *
  * @link      http://rahularyan.com
  *
- * @copyright 2014 Rahul Aryan
+ * @copyright 2015 Rahul Aryan
  * @package AnsPress/theme
  */
 
