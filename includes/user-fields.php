@@ -1,8 +1,6 @@
 <?php
 
 function ap_user_fields($args = '', $group = false){
-    if(ap_get_displayed_user_id() != get_current_user_id())
-        return;
 
     if(!$group)
         $group = !isset($_GET['group']) ? 'basic' : sanitize_text_field( $_GET['group'] );
@@ -10,43 +8,43 @@ function ap_user_fields($args = '', $group = false){
     echo ap_user_get_fields($args, $group);
 }
 
-    /**
-     * Return fields of users
-     * @param  string|array $args
-     * @return object
-     */
-    function ap_user_get_fields($args = '', $group = 'basic'){
+/**
+ * Return fields of users
+ * @param  string|array $args
+ * @return object
+ */
+function ap_user_get_fields($args = '', $group = 'basic'){
 
-        $defaults = array(
-            'user_id' => get_current_user_id(),
-            'form'  => array(),
-        );
+	$defaults = array(
+		'user_id' => ap_user_get_the_ID(),
+		'form'  => array(),
+	);
 
-        $args = wp_parse_args( $args, $defaults );
+	$args = wp_parse_args( $args, $defaults );
 
-        $args['form'] = wp_parse_args($args['form'], array(
-            'is_ajaxified'      => true,
-            'name'              => 'ap_user_profile_form',
-            'user_id'           => $args['user_id'],
-            'nonce_name'        => 'nonce_user_profile_'.$args['user_id'].'_'.$group,
-            'fields'            => ap_get_user_fields($group)
-        ));
+	$args['form'] = wp_parse_args($args['form'], array(
+		'is_ajaxified'      => true,
+		'name'              => 'ap_user_profile_form',
+		'user_id'           => $args['user_id'],
+		'nonce_name'        => 'nonce_user_profile_'.$args['user_id'].'_'.$group,
+		'fields'            => ap_get_user_fields($group)
+	));
 
-        $args['form']['fields'][]= array(
-            'name'          => 'group',
-            'type'          => 'hidden',
-            'value'         => $group
-        );
+	$args['form']['fields'][]= array(
+		'name'          => 'group',
+		'type'          => 'hidden',
+		'value'         => $group
+	);
 
-        anspress()->form = new AnsPress_Form($args['form']);
+	anspress()->form = new AnsPress_Form($args['form']);
 
-        return anspress()->form->get_form();
-    }
+	return anspress()->form->get_form();
+}
 
 function ap_get_user_fields($group = 'basic', $user_id = false){
 
     if(!$user_id)
-        $user_id = get_current_user_id();
+        $user_id = ap_user_get_the_ID();
 
     $fields_value = ap_user_get_the_meta(false, $user_id);
 

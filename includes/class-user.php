@@ -44,7 +44,7 @@ class AnsPress_User
 		ap_register_page( ap_opt( 'user_page_slug' ), __( 'User', 'ap' ), array( $this, 'user_page' ), false );
 		ap_register_user_page( 'about', __( 'About', 'ap' ), array( $this, 'about_page' ) );
 		ap_register_user_page( 'notification', __( 'Notification', 'ap' ), array( $this, 'notification_page' ), true, false );
-		ap_register_user_page( 'profile', __( 'Profile', 'ap' ), array( $this, 'profile_page' ), true, false );
+		ap_register_user_page( 'profile', __( 'Profile', 'ap' ), array( $this, 'profile_page' ), true, false, true );
 		ap_register_user_page( 'questions', __( 'Questions', 'ap' ), array( $this, 'questions_page' ) );
 		ap_register_user_page( 'answers', __( 'Answers', 'ap' ), array( $this, 'answers_page' ) );
 		ap_register_user_page( 'followers', __( 'Followers', 'ap' ), array( $this, 'followers_page' ) );
@@ -133,7 +133,7 @@ class AnsPress_User
 	 */
 	public function profile_page() {
 
-		if ( ! ap_is_user_page_public( 'profile' ) && ! ap_is_my_profile() ) {
+		if ( ! ap_is_user_page_public( 'profile' ) && ! ap_is_my_profile() && ! ap_can_admin_view_user_page( 'profile' ) ) {
 			ap_get_template_part( 'not-found' );
 			return;
 		}

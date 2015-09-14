@@ -18,8 +18,8 @@
  * @since 2.0.1
  */
 
-function ap_register_user_page($page_slug, $page_title, $func, $show_in_menu = true, $public = true) {
-	anspress()->user_pages[$page_slug] = array( 'title' => $page_title, 'func' => $func, 'show_in_menu' => $show_in_menu, 'public' => $public );
+function ap_register_user_page($page_slug, $page_title, $func, $show_in_menu = true, $public = true, $admin_can_view = false) {
+	anspress()->user_pages[$page_slug] = array( 'title' => $page_title, 'func' => $func, 'show_in_menu' => $show_in_menu, 'public' => $public, 'admin_can_view' => $admin_can_view );
 }
 /**
  * Count user posts by post type
@@ -265,7 +265,7 @@ function ap_get_user_menu($user_id = false, $private = false) {
 
 		$title = $k == 'notification' ? $args['title'].ap_get_the_total_unread_notification( $user_id, false ): $args['title'];
 
-		$menus[$k]    = array( 'slug' => $k, 'title' => $title, 'link' => $link, 'order' => 5 + $i, 'show_in_menu' => $args['show_in_menu'], 'public' => $args['public'] );
+		$menus[$k]    = array( 'slug' => $k, 'title' => $title, 'link' => $link, 'order' => 5 + $i, 'show_in_menu' => $args['show_in_menu'], 'public' => $args['public'], 'admin_can_view' => $args['admin_can_view'] );
 
 		$i++;
 	}
@@ -297,7 +297,7 @@ function ap_user_menu($collapse = true, $user_id = false) {
 	$menus = ap_get_user_menu( $user_id );
 
 	foreach ( $menus as $k => $m ) {
-		if ( ( false === $m['public'] && ! ap_is_my_profile( )) ) {
+		if ( ( false === $m['public'] && ! ap_is_my_profile( ) && ! ( true === $m['admin_can_view'] && current_user_can('administrator'))) ) {
 			unset( $menus[$k] );
 		}
 	}
@@ -656,6 +656,15 @@ function ap_is_user_page_public($page) {
 	$user_pages = anspress()->user_pages;
 
 	if ( isset( $user_pages[$page] ) && $user_pages[$page]['public'] ) {
+		return true; }
+
+	return false;
+}
+
+function ap_can_admin_view_user_page($page) {
+	$user_pages = anspress()->user_pages;
+
+	if ( isset( $user_pages[$page] ) && $user_pages[$page]['admin_can_view'] && current_user_can('edit_users') ) {
 		return true; }
 
 	return false;
