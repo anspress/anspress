@@ -175,7 +175,7 @@
             $(this).toggleClass('active');
         });
         $('.bootstrap-tagsinput > input').keyup(function(event) {
-            $(this).css(width, 'auto');
+            $(this).css('width', 'auto');
         });
 
         $('body').delegate('#ap-question-sorting .ap-dropdown-menu a', 'click', function(e) {
