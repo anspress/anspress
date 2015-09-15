@@ -193,7 +193,7 @@ class AnsPress_Hooks
 	public function before_delete($post_id) {
 		$post = get_post( $post_id );
 		if ( $post->post_type == 'question' || $post->post_type == 'answer' ) {
-			do_action( 'ap_before_delete_'.$post->post_type, $post->ID, $post->post_author );
+			do_action( 'ap_before_delete_'.$post->post_type, $post->ID, $post );
 			ap_delete_meta( array( 'apmeta_actionid' => $post->ID ) );
 		}
 	}
@@ -207,7 +207,7 @@ class AnsPress_Hooks
 	    $post = get_post( $post_id );
 
 	    if ( $post->post_type == 'question' ) {
-	        do_action( 'ap_trash_question', $post );
+	        do_action( 'ap_trash_question', $post->ID, $post );
 
 	        // Delete post ap_meta.
 	        ap_delete_meta( array(
@@ -224,7 +224,7 @@ class AnsPress_Hooks
 
 	        if ( $ans > 0 ) {
 	            foreach ( $ans as $p ) {
-	                do_action( 'ap_trash_multi_answer', $p );
+	                do_action( 'ap_trash_answer', $p->ID, $p );
 	                ap_delete_meta( array( 'apmeta_type' => 'flag', 'apmeta_actionid' => $p->ID ) );
 	                wp_trash_post( $p->ID );
 	            }
@@ -234,7 +234,7 @@ class AnsPress_Hooks
 	    if ( $post->post_type == 'answer' ) {
 	        $ans = ap_count_published_answers( $post->post_parent );
 	        $ans = $ans > 0 ? $ans - 1 : 0;
-	        do_action( 'ap_trash_answer', $post );
+	        do_action( 'ap_trash_answer', $post->ID, $post );
 	        ap_delete_meta( array( 'apmeta_type' => 'flag', 'apmeta_actionid' => $post->ID ) );
 	        ap_remove_question_subscriber( $post->post_parent, $post->post_author );
 
@@ -263,7 +263,7 @@ class AnsPress_Hooks
 
 	        if ( $ans > 0 ) {
 	            foreach ( $ans as $p ) {
-	                do_action( 'ap_untrash_answer', $p->ID );
+	                do_action( 'ap_untrash_answer', $p->ID, $p );
 	                wp_untrash_post( $p->ID );
 	            }
 	        }
@@ -271,7 +271,7 @@ class AnsPress_Hooks
 
 	    if ( $post->post_type == 'answer' ) {
 	        $ans = ap_count_published_answers( $post->post_parent );
-	        do_action( 'untrash_answer', $post->ID, $post->post_author );
+	        do_action( 'ap_untrash_answer', $post->ID, $ans );
 
 			// Update answer count.
 			update_post_meta( $post->post_parent, ANSPRESS_ANS_META, $ans + 1 );

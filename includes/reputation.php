@@ -26,11 +26,11 @@ class AP_Reputation {
 
 		add_action( 'ap_after_new_question', array( $this, 'new_question' ) );
 		add_action( 'ap_untrash_question', array( $this, 'new_question' ) );
-		add_action( 'ap_trash_question', array( $this, 'delete_question' ) );
+		add_action( 'ap_trash_question', array( $this, 'trash_question' ), 10, 2 );
 
 		add_action( 'ap_after_new_answer', array( $this, 'new_answer' ) );
 		add_action( 'ap_untrash_answer', array( $this, 'new_answer' ) );
-		add_action( 'ap_trash_multi_answer', array( $this, 'delete_answer' ) );
+		add_action( 'ap_trash_answer', array( $this, 'delete_answer' ), 10, 2 );
 
 		add_action( 'ap_select_answer', array( $this, 'select_answer' ), 10, 3 );
 		add_action( 'ap_unselect_answer', array( $this, 'unselect_answer' ), 10, 3 );
@@ -75,7 +75,7 @@ class AP_Reputation {
 	 * @param  integer $postid
 	 * @return boolean
 	 */
-	public function delete_question($post) {
+	public function trash_question($post_id, $post) {
 		$reputation = ap_reputation_by_event( 'new_question', true );
 		return ap_reputation_log_delete( 'question', get_current_user_id(), $reputation, $post->ID );
 	}
@@ -96,9 +96,9 @@ class AP_Reputation {
 	 * @param  integer $postid
 	 * @return boolean
 	 */
-	public function delete_answer($post) {
+	public function delete_answer($post_id, $post) {
 		$reputation = ap_reputation_by_event( 'new_answer', true );
-		return ap_reputation_log_delete( 'answer', get_current_user_id(), $reputation, $post->ID );
+		return ap_reputation_log_delete( 'answer', get_current_user_id(), $reputation, $post_id );
 	}
 
 	/**

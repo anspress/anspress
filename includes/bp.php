@@ -32,7 +32,7 @@ class AnsPress_BP
 
 		add_action( 'ap_after_new_answer', array( $this, 'add_new_answer_notification' ) );
 		add_action( 'ap_publish_comment', array( $this, 'add_new_comment_notification' ) );
-		add_action( 'ap_trash_answer', array( $this, 'remove_answer_notify' ) );
+		//add_action( 'ap_trash_answer', array( $this, 'remove_answer_notify' ) );
 		add_action( 'ap_unpublish_comment', array( $this, 'remove_comment_notify' ) );
 	}
 
