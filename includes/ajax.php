@@ -37,8 +37,6 @@ class AnsPress_Ajax
 	    $ap->add_action( 'ap_ajax_load_user_field_form', $this, 'load_user_field_form' );
 	    $ap->add_action( 'ap_ajax_set_featured', $this, 'set_featured' );
 	    $ap->add_action( 'ap_ajax_follow', $this, 'follow' );
-	    $ap->add_action( 'wp_ajax_ap_suggest_tags', $this, 'ap_suggest_tags' );
-	    $ap->add_action( 'wp_ajax_nopriv_ap_suggest_tags', $this, 'ap_suggest_tags' );
 	    $ap->add_action( 'ap_ajax_user_cover', $this, 'ap_user_card' );
 	    $ap->add_action( 'ap_ajax_delete_notification', $this, 'delete_notification' );
 	    $ap->add_action( 'ap_ajax_markread_notification', $this, 'markread_notification' );
@@ -125,11 +123,15 @@ class AnsPress_Ajax
 	            $nonce = wp_create_nonce( 'comment_'.(int) $_REQUEST['post'] );
 	        }
 
+	        ob_start();
+	        include ap_get_theme_location('comment-form.php');
+	        $html = ob_get_clean();
+
 	        $comment_args = array(
 				'id_form' => 'ap-commentform',
 				'title_reply' => '',
 				'logged_in_as' => '',
-				'comment_field' => '<div class="ap-comment-submit"><input type="submit" value="'.__( 'Comment', 'ap' ).'" name="submit"></div><div class="ap-comment-textarea"><textarea name="comment" rows="3" aria-required="true" id="ap-comment-textarea" class="ap-form-control autogrow" placeholder="'.__( 'Respond to the post.', 'ap' ).'">'.$content.'</textarea></div><input type="hidden" name="ap_form_action" value="comment_form"/><input type="hidden" name="ap_ajax_action" value="comment_form"/><input type="hidden" name="__nonce" value="'.$nonce.'"/>'.$commentid,
+				'comment_field' => $html.'<input type="hidden" name="ap_form_action" value="comment_form"/><input type="hidden" name="ap_ajax_action" value="comment_form"/><input type="hidden" name="__nonce" value="'.$nonce.'"/>'.$commentid,
 				'comment_notes_after' => '',
 			);
 
@@ -466,33 +468,6 @@ class AnsPress_Ajax
 			}
 		}
 		$this->something_wrong();
-	}
-
-	/**
-	 * Handle tags suggestion on question form
-	 */
-	public function ap_suggest_tags() {
-		$keyword = sanitize_text_field( wp_unslash( $_POST['q'] ) );
-
-		$tags = get_terms('question_tag', array(
-			'orderby' => 'count',
-			'order' => 'DESC',
-			'hide_empty' => false,
-			'search' => $keyword,
-			'number' => 8,
-		));
-
-		if ( $tags ) {
-			$items = array();
-			foreach ( $tags as $k => $t ) {
-				$items [ $k ] = $t->name;
-			}
-
-			$result = array( 'status' => true, 'items' => $items );
-			die( json_encode( $result ) );
-		}
-
-		die( json_encode( array( 'status' => false ) ) );
 	}
 
 	/**

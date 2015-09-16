@@ -50,6 +50,7 @@ class AnsPress_Admin
 	private function __construct() {
 		$this->includes();
 		new AnsPress_Options_Page;
+		new AnsPress_Admin_Ajax;
 
 		$plugin_basename = plugin_basename( plugin_dir_path( __DIR__ ) . 'anspress-question-answer.php' );
 		add_filter( 'plugin_action_links_' . $plugin_basename, array( $this, 'add_action_links' ) );
@@ -57,31 +58,25 @@ class AnsPress_Admin
 		// Load admin style sheet and JavaScript.
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_styles' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_scripts' ) );
-		// Add the options page and menu item.
+
 		add_action( 'admin_menu', array( $this, 'add_plugin_admin_menu' ) );
 		add_action( 'admin_init', array( $this, 'register_setting' ) );
 		add_action( 'admin_init', array( $this, 'init_actions' ) );
 		add_action( 'parent_file', array( $this, 'tax_menu_correction' ) );
 		add_action( 'load-post.php', array( $this, 'question_meta_box_class' ) );
 		add_action( 'load-post-new.php', array( $this, 'question_meta_box_class' ) );
-		add_action( 'wp_ajax_ap_edit_reputation', array( $this, 'ap_edit_reputation' ) );
-		add_action( 'wp_ajax_ap_save_reputation', array( $this, 'ap_save_reputation' ) );
-		add_action( 'wp_ajax_ap_new_reputation_form', array( $this, 'ap_new_reputation_form' ) );
-		add_action( 'wp_ajax_ap_delete_reputation', array( $this, 'ap_delete_reputation' ) );
 		add_action( 'admin_menu', array( $this, 'change_post_menu_label' ) );
-		add_action( 'wp_ajax_ap_taxo_rename', array( $this, 'ap_taxo_rename' ) );
-		add_action( 'wp_ajax_ap_delete_flag', array( $this, 'ap_delete_flag' ) );
 		add_action( 'edit_form_after_title', array( $this, 'edit_form_after_title' ) );
 		add_filter( 'wp_insert_post_data', array( $this, 'post_data_check' ), 99 );
 		add_filter( 'post_updated_messages', array( $this, 'post_custom_message' ) );
 		add_action( 'admin_head-nav-menus.php', array( $this, 'ap_menu_metaboxes' ) );
 		add_action( 'admin_notices', array( $this, 'taxonomy_rename' ) );
-		add_filter( 'pre_get_posts', array( $this, 'serach_qa_by_userid' ) );
 		add_filter( 'posts_clauses', array( $this, 'join_by_author_name' ), 10, 2 );
 		add_filter( 'manage_edit-comments_columns', array( $this, 'comment_flag_column' ) );
 		add_filter( 'manage_comments_custom_column', array( $this, 'comment_flag_column_data' ), 10, 2 );
 		add_filter( 'comment_status_links', array( $this, 'comment_flag_view' ) );
 		add_action( 'current_screen', array( $this, 'comments_flag_query' ), 10, 2 );
+		add_action( 'get_pages', array( $this, 'get_pages' ), 10, 2 );
 	}
 
 	/**
@@ -102,6 +97,7 @@ class AnsPress_Admin
 	 * Include files required in wp-admin
 	 */
 	public function includes() {
+		require_once( 'ajax.php' );
 		require_once( 'functions.php' );
 		require_once( 'options-page.php' );
 		require_once( 'extensions.php' );
@@ -119,7 +115,6 @@ class AnsPress_Admin
 	 * Register and enqueue admin-specific JavaScript.
 	 */
 	public function enqueue_admin_scripts() {
-
 		global $typenow, $pagenow;
 
 		if ( in_array( $pagenow, array( 'admin.php' ) ) &&  (isset( $_GET['page'] ) && 'anspress' == $_GET['page'] ) ) {
@@ -135,10 +130,11 @@ class AnsPress_Admin
 	 * Register the administration menu for this plugin into the WordPress Dashboard menu.
 	 */
 	public function add_plugin_admin_menu() {
-
 		if ( ! current_user_can( 'delete_pages' ) ) {
 			return;
 		}
+
+		global $submenu;
 
 		$flagged_count = ap_flagged_posts_count();
 		$flagged_count = $flagged_count->total > 0 ? $flagged_count->total : 0;
@@ -184,7 +180,6 @@ class AnsPress_Admin
 
 		add_submenu_page( 'anspress', __( 'Reputation', 'ap' ), __( 'Reputation', 'ap' ), 'manage_options', 'anspress_reputation', array( $this, 'display_reputation_page' ) );
 
-		// Add_submenu_page('anspress', __( 'Extensions', 'ap' ), __( 'Extensions', 'ap' ),  'manage_options', 'anspress_ext', array( $this, 'display_plugin_addons_page' ));
 		 add_submenu_page( 'ap_post_flag', __( 'Post flag', 'ap' ), __( 'Post flag', 'ap' ), 'delete_pages', 'ap_post_flag', array( $this, 'display_post_flag' ) );
 
 		 add_submenu_page( 'ap_select_question', __( 'Select question', 'ap' ), __( 'Select question', 'ap' ), 'delete_pages', 'ap_select_question', array( $this, 'display_select_question' ) );
@@ -195,9 +190,12 @@ class AnsPress_Admin
 		 */
 		do_action( 'ap_admin_menu' );
 
+		add_submenu_page( 'anspress', __( 'AnsPress Options', 'ap' ), __( 'Options', 'ap' ), 'manage_options', 'anspress_options', array( $this, 'display_plugin_admin_page' ) );
+
+		$submenu['anspress'][500] = array( 'Theme & Extensions', 'manage_options' , 'http://anspress.io/themes/' );
+
 		add_submenu_page( 'anspress', __( 'About AnsPress', 'ap' ), __( 'About AnsPress', 'ap' ), 'manage_options', 'anspress_about', array( $this, 'display_plugin_about_page' ) );
 
-		add_submenu_page( 'anspress', __( 'AnsPress Options', 'ap' ), __( 'Options', 'ap' ), 'manage_options', 'anspress_options', array( $this, 'display_plugin_admin_page' ) );
 	}
 
 	/**
@@ -216,7 +214,7 @@ class AnsPress_Admin
 			return $start;
 		}
 
-		/* the position is already reserved find the closet one */
+		// This position is already reserved find the closet one
 		while ( in_array( $start, $menus_positions ) ) {
 			$start += $increment;
 		}
@@ -231,6 +229,7 @@ class AnsPress_Admin
 	public function tax_menu_correction($parent_file) {
 		global $current_screen;
 		$taxonomy = $current_screen->taxonomy;
+
 		if ( 'question_category' == $taxonomy || 'question_tags' == $taxonomy || 'question_label' == $taxonomy || 'rank' == $taxonomy || 'badge' == $taxonomy ) {
 			$parent_file = 'anspress';
 		}
@@ -265,19 +264,7 @@ class AnsPress_Admin
 		include_once( 'reputation.php' );
 		$reputation_table = new AnsPress_Reputation_Table();
 		$reputation_table->prepare_items();
-		?>
-		<div class="wrap">
-			<div id="apicon-users" class="icon32"><br/></div>
-			<h2>
-				<?php esc_attr_e( 'AnsPress Points', 'ap' ); ?>
-				<a class="add-new-h2" href="#" data-button="ap-new-reputation"><?php esc_attr_e( 'New reputation', 'ap' ); ?></a>
-			</h2>
-			<form id="anspress-reputation-table" method="get">
-				<input type="hidden" name="page" value="<?php echo sanitize_text_field( $_REQUEST['page'] ); ?>" />
-				<?php $reputation_table->display() ?>
-			</form>
-		</div>
-		<?php
+		include( 'views/reputation.php' );
 	}
 
 
@@ -293,46 +280,20 @@ class AnsPress_Admin
 	 * Load layout and post table for moderate posts page
 	 */
 	public function display_moderate_page() {
-
 		include_once( 'moderate.php' );
 		$moderate_table = new AP_Moderate_Table();
 		$moderate_table->prepare_items();
-		?>
-		<div class="wrap">
-			<div id="apicon-users" class="icon32"><br/></div>
-			<h2><?php esc_attr_e( 'Posts waiting moderation', 'ap' ); ?></h2>
-			<?php do_action( 'ap_after_admin_page_title' ) ?>
-			<form id="moderate-filter" method="get">
-				<input type="hidden" name="page" value="<?php echo sanitize_text_field( $_REQUEST['page'] ); ?>" />
-				<?php $moderate_table->views() ?>
-				<?php $moderate_table->advanced_filters(); ?>
-				<?php $moderate_table->display() ?>
-			</form>
-		</div>
-		<?php
+		include_once( 'views/moderate.php' );
 	}
 
 	/**
 	 * Display flag page layout
 	 */
 	public function display_flagged_page() {
-
 		include_once( 'flagged.php' );
 		$flagged_table = new AP_Flagged_Table();
 		$flagged_table->prepare_items();
-		?>
-		<div class="wrap">
-			<div id="apicon-users" class="icon32"><br/></div>
-			<h2><?php esc_attr_e( 'Flagged question & answer', 'ap' ); ?></h2>
-			<?php do_action( 'ap_after_admin_page_title' ) ?>
-			<form id="flagged-filter" method="get">
-				<input type="hidden" name="page" value="<?php echo sanitize_text_field( $_REQUEST['page'] ); ?>" />
-				<?php $flagged_table->views() ?>
-				<?php $flagged_table->advanced_filters(); ?>
-				<?php $flagged_table->display() ?>
-			</form>
-		</div>
-		<?php
+		include_once( 'views/flagged.php' );
 	}
 
 	/**
@@ -341,7 +302,6 @@ class AnsPress_Admin
 	 * @since 2.0.0-alpha2
 	 */
 	public function display_post_flag() {
-
 		include_once( 'views/post_flag.php' );
 	}
 
@@ -384,11 +344,13 @@ class AnsPress_Admin
 		return $input;
 	}
 
+	/**
+	 * Hook to run on init
+	 */
 	public function init_actions() {
-
 		$GLOBALS['wp']->add_query_var( 'post_parent' );
 
-		// flush_rules if option updated
+		// Flush_rules if option updated.
 		if ( isset( $_GET['page'] ) && ('anspress_options' == $_GET['page']) && isset( $_GET['settings-updated'] ) && $_GET['settings-updated'] ) {
 			$options = ap_opt();
 			$page = get_page( ap_opt( 'base_page' ) );
@@ -397,24 +359,28 @@ class AnsPress_Admin
 			ap_opt( 'ap_flush', 'true' );
 		}
 
-		// If creating a new question then first set a question ID
+		// If creating a new question then first set a question ID.
 		global $typenow;
-
 		global $pagenow;
 
 		if ( in_array( $pagenow, array( 'post-new.php' ) ) && $typenow == 'answer' && ! isset( $_GET['post_parent'] ) ) {
 			wp_redirect( admin_url( 'admin.php?page=ap_select_question' ) );
 		}
+
+		add_filter( 'pre_get_posts', array( $this, 'serach_qa_by_userid' ) );
+
+		if(isset($_POST['ap_admin_form']) && $_POST['ap_admin_form'] == 'role_update' && wp_verify_nonce( $_POST['__nonce'], 'ap_role_'.$_POST['role_name'].'_update' ) && is_super_admin( )){
+			$caps = isset($_POST['c']) ? $_POST['c'] : array();
+			ap_update_caps_for_role( $_POST['role_name'], $caps );
+		}
 	}
 
 	public function question_meta_box_class() {
-
 		require_once( 'meta_box.php' );
 		new AP_Question_Meta_Box();
 	}
 
 	public function user_roles_fields($user) {
-
 	?>
 
 		<h3><?php _e( 'AnsPress Options', 'ap' ); ?></h3>
@@ -443,177 +409,13 @@ class AnsPress_Admin
 		update_usermeta( $user_id, 'ap_role', sanitize_text_field( $_POST['ap_role'] ) );
 	}
 
-	public function ap_edit_reputation() {
 
-		if ( current_user_can( 'manage_options' ) ) {
-			$id = sanitize_text_field( $_POST['id'] );
-			$reputation = ap_reputation_by_id( $id );
-
-			$html = '
-				<div id="ap-reputation-edit">
-					<form method="POST" data-action="ap-save-reputation">
-						<table class="form-table">
-							<tr valign="top">
-								<th scope="row"><label for="title">'. __( 'Title', 'ap' ).'</label></th>
-								<td>
-									<input id="title" type="text" name="title" value="'.$reputation['title'].'" />
-								</td>
-							</tr>
-							<tr valign="top">
-								<th scope="row"><label for="description">'. __( 'Description', 'ap' ).'</label></th>
-								<td>
-									<textarea cols="50" id="description" name="description">'.$reputation['description'].'</textarea>
-								</td>
-							</tr>
-							<tr valign="top">
-								<th scope="row"><label for="reputation">'. __( 'Points', 'ap' ).'</label></th>
-								<td>
-									<input id="reputation" type="text" name="reputation" value="'.$reputation['reputation'].'" />
-								</td>
-							</tr>
-							<tr valign="top">
-								<th scope="row"><label for="event">'. __( 'Event', 'ap' ).'</label></th>
-								<td>
-									<input type="text" name="event" value="'.$reputation['event'].'" />
-								</td>
-							</tr>
-						</table>
-						<input class="button-primary" type="submit" value="'.__( 'Save Point', 'ap' ).'">
-						<input type="hidden" name="id" value="'.$reputation['id'].'">
-						<input type="hidden" name="action" value="ap_save_reputation">
-						<input type="hidden" name="nonce" value="'.wp_create_nonce( 'ap_save_reputation' ).'">
-					</form>
-				</div>
-			';
-
-			$result = array( 'status' => true, 'html' => $html );
-			$result = apply_filters( 'ap_edit_reputation_result', $result );
-			echo json_encode( $result );
-		}
-		die();
-	}
-
-	public function ap_save_reputation() {
-
-		if ( current_user_can( 'manage_options' ) ) {
-			$nonce  = sanitize_text_field( $_POST['nonce'] );
-			$title  = sanitize_text_field( $_POST['title'] );
-			$desc   = sanitize_text_field( $_POST['description'] );
-			$reputation = sanitize_text_field( $_POST['reputation'] );
-			$event  = sanitize_text_field( $_POST['event'] );
-			if ( wp_verify_nonce( $nonce, 'ap_save_reputation' ) ) {
-				if ( isset( $_POST['id'] ) ) {
-					$id     = sanitize_text_field( $_POST['id'] );
-					ap_reputation_option_update( $id, $title, $desc, $reputation, $event );
-				} else {
-					ap_reputation_option_new( $title, $desc, $reputation, $event );
-				}
-
-				ob_start();
-				$this->display_reputation_page();
-				$html = ob_get_clean();
-
-				$result = array(
-					'status' => true,
-				'html' => $html,
-				);
-
-				echo json_encode( $result );
-			}
-		}
-
-		die();
-	}
-	public function ap_new_reputation_form() {
-
-		if ( current_user_can( 'manage_options' ) ) {
-			$html = '
-				<div id="ap-reputation-edit">
-					<form method="POST" data-action="ap-save-reputation">
-						<table class="form-table">
-							<tr valign="top">
-								<th scope="row"><label for="title">'. __( 'Title', 'ap' ).'</label></th>
-								<td>
-									<input id="title" type="text" name="title" value="" />
-								</td>
-							</tr>
-							<tr valign="top">
-								<th scope="row"><label for="description">'. __( 'Description', 'ap' ).'</label></th>
-								<td>
-									<textarea cols="50" id="description" name="description"></textarea>
-								</td>
-							</tr>
-							<tr valign="top">
-								<th scope="row"><label for="reputation">'. __( 'Points', 'ap' ).'</label></th>
-								<td>
-									<input id="reputation" type="text" name="reputation" value="" />
-								</td>
-							</tr>
-							<tr valign="top">
-								<th scope="row"><label for="event">'. __( 'Event', 'ap' ).'</label></th>
-								<td>
-									<input type="text" name="event" value="" />
-								</td>
-							</tr>
-						</table>
-						<input class="button-primary" type="submit" value="'.__( 'Save Point', 'ap' ).'">
-						<input type="hidden" name="action" value="ap_save_reputation">
-						<input type="hidden" name="nonce" value="'.wp_create_nonce( 'ap_save_reputation' ).'">
-					</form>
-				</div>
-			';
-
-			$result = array( 'status' => true, 'html' => $html );
-			$result = apply_filters( 'ap_new_reputation_form_result', $result );
-			echo json_encode( $result );
-		}
-		die();
-	}
-
-	public function ap_delete_reputation() {
-
-		if ( current_user_can( 'manage_options' ) ) {
-			$args = explode( '-', sanitize_text_field( $_POST['args'] ) );
-			if ( wp_verify_nonce( $args[1], 'delete_reputation' ) ) {
-				ap_reputation_option_delete( $args[0] );
-				$result = array( 'status' => true );
-				$result = apply_filters( 'ap_delete_reputation_form_result', $result );
-				echo json_encode( $result );
-			}
-		}
-
-		die();
-	}
-
-	public function ap_taxo_rename() {
-
-		if ( current_user_can( 'manage_options' ) ) {
-			global $wpdb;
-
-			$wpdb->query( 'UPDATE '.$wpdb->prefix."term_taxonomy SET taxonomy = 'question_tag' WHERE  taxonomy = 'question_tags'" );
-
-			ap_opt( 'tags_taxo_renamed', 'true' );
-		}
-
-		die();
-	}
 
 	public function change_post_menu_label() {
 
 		global $menu;
 		global $submenu;
 		$submenu['anspress'][0][0] = 'AnsPress';
-	}
-
-
-
-	public function ap_delete_flag() {
-
-		$id = (int) sanitize_text_field( $_POST['id'] );
-		if ( wp_verify_nonce( $_POST['__nonce'], 'flag_delete'.$id ) && current_user_can( 'manage_options' ) ) {
-			return ap_delete_meta( false, $id );
-		}
-		die();
 	}
 
 	/**
@@ -753,7 +555,6 @@ class AnsPress_Admin
 	}
 
 	public function taxonomy_rename() {
-
 		global $pagenow;
 
 		if ( ap_opt( 'tags_taxo_renamed' ) == 'true' || ! taxonomy_exists( 'question_tag' ) ) {
@@ -883,7 +684,7 @@ class AnsPress_Admin
 	 * @since 2.4
 	 */
 	public function join_by_author_name($pieces, $query) {
-		if ( isset( $query->query_vars['ap_author_name'] ) && is_array( $query->query_vars['ap_author_name'] ) && count( $query->query_vars['ap_author_name'] ) > 0 )  {
+		if ( isset( $query->query_vars['ap_author_name'] ) && is_array( $query->query_vars['ap_author_name'] ) && count( $query->query_vars['ap_author_name'] ) > 0 ) {
 
 			global $wpdb;
 			$authors = $query->query_vars['ap_author_name'];
@@ -893,6 +694,20 @@ class AnsPress_Admin
 		}
 
 		return $pieces;
+	}
+
+	public function get_pages($pages, $r) {
+		if ( isset( $r['name'] ) && 'page_on_front' == $r['name'] ) {
+			if ( $pages ) {
+				foreach ( $pages as $k => $page ) {
+					if ( $page->ID == ap_opt( 'base_page' ) ) {
+						unset( $pages[$k] );
+					}
+				}
+			}
+		}
+
+		return $pages;
 	}
 
 

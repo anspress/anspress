@@ -14,6 +14,74 @@
  */
 class AP_Roles
 {
+	/**
+	 * Base user capabilities
+	 * @var array
+	 */
+	public $base_caps = array();
+
+	/**
+	 * Moderator level permissions
+	 * @var array
+	 */
+	public $mod_caps = array();
+
+	/**
+	 * Initialize the class
+	 */
+	public function __construct(){
+
+		/**
+		 * Base user caps
+		 * @var array
+		 */
+		$this->base_caps = array(
+			'ap_read_question'         	=> true,
+			'ap_read_answer'			=> true,
+			'ap_new_question'			=> true,
+			'ap_new_answer'				=> true,
+			'ap_new_comment'			=> true,
+			'ap_edit_question'			=> true,
+			'ap_edit_answer'			=> true,
+			'ap_edit_comment'			=> true,
+			'ap_hide_question'			=> true,
+			'ap_hide_answer'			=> true,
+			'ap_delete_question'		=> true,
+			'ap_delete_answer'			=> true,
+			'ap_delete_comment'			=> true,
+			'ap_vote_up'				=> true,
+			'ap_vote_down'				=> true,
+			'ap_vote_flag'				=> true,
+			'ap_vote_close'				=> true,
+			'ap_upload_cover'			=> true,
+			'ap_message'				=> true,
+			'ap_new_tag'				=> true,
+			'ap_change_status'			=> true,
+			'ap_upload_avatar'			=> true,
+			'ap_edit_profile'			=> true,
+		);
+
+		/**
+		 * Admin level caps
+		 * @var array
+		 */
+		$this->mod_caps = array(
+			'ap_edit_others_question'	=> true,
+			'ap_edit_others_answer'		=> true,
+			'ap_edit_others_comment'	=> true,
+			'ap_hide_others_question'	=> true,
+			'ap_hide_others_answer'		=> true,
+			'ap_hide_others_comment'	=> true,
+			'ap_delete_others_question'	=> true,
+			'ap_delete_others_answer'	=> true,
+			'ap_delete_others_comment'	=> true,
+			'ap_change_label'			=> true,
+			'ap_view_private'			=> true,
+			'ap_view_moderate'			=> true,
+			'ap_change_status_other'	=> true,
+		);
+
+	}
 
 	/**
 	 * Add roles and cap, called on plugin activation
@@ -47,59 +115,18 @@ class AP_Roles
 			}
 		}
 		if ( is_object( $wp_roles ) ) {
-			$base_caps = array(
-				'ap_read_question'         	=> true,
-				'ap_read_answer'			=> true,
-				'ap_new_question'			=> true,
-				'ap_new_answer'				=> true,
-				'ap_new_comment'			=> true,
-				'ap_edit_question'			=> true,
-				'ap_edit_answer'			=> true,
-				'ap_edit_comment'			=> true,
-				'ap_hide_question'			=> true,
-				'ap_hide_answer'			=> true,
-				'ap_delete_question'		=> true,
-				'ap_delete_answer'			=> true,
-				'ap_delete_comment'			=> true,
-				'ap_vote_up'				=> true,
-				'ap_vote_down'				=> true,
-				'ap_vote_flag'				=> true,
-				'ap_vote_close'				=> true,
-				'ap_upload_cover'			=> true,
-				'ap_message'				=> true,
-				'ap_new_tag'				=> true,
-				'ap_change_status'			=> true,
-				'ap_upload_avatar'			=> true,
-				'ap_edit_profile'			=> true
-			);
-
-			$mod_caps = array(
-				'ap_edit_others_question'	=> true,
-				'ap_edit_others_answer'		=> true,
-				'ap_edit_others_comment'	=> true,
-				'ap_hide_others_question'	=> true,
-				'ap_hide_others_answer'		=> true,
-				'ap_hide_others_comment'	=> true,
-				'ap_delete_others_question'	=> true,
-				'ap_delete_others_answer'	=> true,
-				'ap_delete_others_comment'	=> true,
-				'ap_change_label'			=> true,
-				'ap_view_private'			=> true,
-				'ap_view_moderate'			=> true,
-				'ap_change_status_other'	=> true,
-			);
 
 			$roles = array( 'editor', 'administrator', 'contributor', 'author', 'ap_participant', 'ap_moderator', 'subscriber' );
 
 			foreach ( $roles as $role_name ) {
 
 				// Add base cpas to all roles.
-				foreach ( $base_caps as $k => $grant ) {
+				foreach ( $this->base_caps as $k => $grant ) {
 					$wp_roles->add_cap( $role_name, $k );
 				}
 
 				if ( 'editor' == $role_name || 'administrator' == $role_name || 'ap_moderator' == $role_name ) {
-					foreach ( $mod_caps as $k => $grant ) {
+					foreach ( $this->mod_caps as $k => $grant ) {
 						$wp_roles->add_cap( $role_name, $k );
 					}
 				}
@@ -476,13 +503,17 @@ function ap_allow_anonymous() {
  * @since 2.1
  **/
 function ap_user_can_change_status($post_id) {
+
+	if(!is_user_logged_in())
+		return false;
+
 	if ( current_user_can( 'ap_change_status_other' ) || is_super_admin() ) {
 		return true;
 	}
 
 	$post_o = get_post( $post_id );
 
-	if ( current_user_can( 'ap_change_status' ) && $post_o->post_author == get_current_user_id() ) {
+	if ( current_user_can( 'ap_change_status' ) && ($post_o->post_author > 0 && $post_o->post_author == get_current_user_id() ) ) {
 		return true;
 	}
 
@@ -530,6 +561,11 @@ function ap_user_can_upload_image() {
  * @since 2.4
  */
 function ap_user_can_upload_avatar() {
+	// Return false if profile is not active.
+	if ( ! ap_is_profile_active() ) {
+		return false;
+	}
+
 	if ( is_super_admin() || current_user_can( 'ap_upload_avatar' ) ) {
 		return true;
 	}
@@ -542,6 +578,12 @@ function ap_user_can_upload_avatar() {
  * @since 2.4
  */
 function ap_user_can_upload_cover() {
+
+	// Return false if profile is not active.
+	if ( ! ap_is_profile_active() ) {
+		return false;
+	}
+
 	if ( is_super_admin() || current_user_can( 'ap_upload_cover' ) ) {
 		return true;
 	}
@@ -553,7 +595,28 @@ function ap_user_can_upload_cover() {
  * Check if user can edit their profile
  */
 function ap_user_can_edit_profile() {
+	// Return false if profile is not active.
+	if ( ! ap_is_profile_active() ) {
+		return false;
+	}
+
 	if ( is_super_admin() || current_user_can( 'ap_edit_profile' ) ) {
+		return true;
+	}
+
+	return false;
+}
+
+function ap_show_captcha_to_user( $user_id = false ) {
+	if ( false === $user_id ) {
+		$user_id = get_current_user_id();
+	}
+
+	if ( apply_filters( 'ap_show_captcha', false ) ) {
+		return false;
+	}
+
+	if ( ap_opt( 'recaptcha_site_key' ) != '' && ap_opt( 'enable_recaptcha' ) ) {
 		return true;
 	}
 

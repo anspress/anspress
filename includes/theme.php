@@ -25,7 +25,7 @@ function ap_page_title() {
 
 	$pages = anspress()->pages;
 
-	$current_page = get_query_var( 'ap_page' );
+	$current_page = ap_current_page();
 
 	if ( is_question() ) {
 		$new_title = ap_question_title_with_solved_prefix();
@@ -317,7 +317,7 @@ function ap_display_question_metas($question_id = false) {
 
 		$view_count = ap_get_qa_views();
 		$metas['views'] = sprintf( __( '<i>%d views</i>', 'ap' ), $view_count );
-		$metas['history'] = ap_get_latest_history_html( $question_id, true );
+		$metas['history'] = ap_latest_post_activity_html( $question_id );
 	}
 
 	/*
@@ -421,7 +421,7 @@ function ap_register_page($page_slug, $page_title, $func, $show_in_menu = true) 
  */
 function ap_page() {
 	$pages = anspress()->pages;
-	$current_page = get_query_var( 'ap_page' );
+	$current_page = ap_current_page();
 
 	if ( is_question() ) {
 		$current_page = ap_opt( 'question_page_slug' );
@@ -812,7 +812,7 @@ function ap_breadcrumbs() {
  * @return array
  */
 function ap_get_breadcrumbs() {
-	$current_page = get_query_var( 'ap_page' );
+	$current_page = ap_current_page();
 	$title = ap_page_title();
 	$a = array();
 
@@ -834,4 +834,12 @@ function ap_get_breadcrumbs() {
 	$a = apply_filters( 'ap_breadcrumbs', $a );
 
 	return ap_sort_array_by_order( $a );
+}
+
+/**
+ * Return current AnsPress page
+ * @return string
+ */
+function ap_current_page(){
+	return apply_filters( 'ap_current_page', get_query_var( 'ap_page' ) );
 }

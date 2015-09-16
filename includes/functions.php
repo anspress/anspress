@@ -106,7 +106,7 @@ function ap_get_theme_url($file, $plugin = false) {
 	// checks if the file exists in the theme first,
 	// otherwise serve the file from the plugin
 	if ( locate_template( array( 'anspress/'.$file ) ) ) {
-	    $template_url = get_template_directory_uri().'/anspress/'.$file;
+	    $template_url = get_stylesheet_directory_uri().'/anspress/'.$file;
 	} elseif ( $plugin !== false ) {
 	    $template_url = $plugin.'theme/'.$file;
 	} else {
@@ -155,9 +155,13 @@ function is_anspress() {
 	return false;
 }
 
+/**
+ * Check if current page is question page
+ * @return boolean
+ */
 function is_question() {
-
 	$question_id = (int) get_query_var( 'question_id' );
+
 	if ( is_anspress() && $question_id > 0 ) {
 		return true;
 	}
@@ -166,16 +170,15 @@ function is_question() {
 }
 
 function is_ask() {
-
-	if ( is_anspress() && get_query_var( 'ap_page' ) == 'ask' ) {
+	if ( is_anspress() && ap_current_page() == 'ask' ) {
 		return true;
 	}
 
 	return false;
 }
-function is_ap_users() {
 
-	if ( is_anspress() && get_query_var( 'ap_page' ) == 'users' ) {
+function is_ap_users() {
+	if ( is_anspress() && ap_current_page() == 'users' ) {
 		return true;
 	}
 
@@ -183,50 +186,11 @@ function is_ap_users() {
 }
 
 function is_ap_user() {
-
-	if ( is_anspress() && get_query_var( 'ap_page' ) == 'user' ) {
+	if ( is_anspress() && ap_current_page() == ap_get_user_page_slug() ) {
 		return true;
 	}
 
 	return false;
-}
-
-/*
- * Check if anspress categories page
- * @return boolean
- * @since  1.0
- */
-if ( ! function_exists( 'is_question_categories' ) ) {
-	function is_question_categories() {
-
-		if ( 'categories' == get_query_var( 'ap_page' ) ) {
-			return true;
-		}
-
-		return false;
-	}
-}
-
-if ( ! function_exists( 'is_question_category' ) ) {
-	function is_question_category() {
-
-		if ( 'category' == get_query_var( 'ap_page' ) ) {
-			return true;
-		}
-
-		return false;
-	}
-}
-
-if ( ! function_exists( 'is_question_tag' ) ) {
-	function is_question_tag() {
-
-		if ( 'tag' == get_query_var( 'ap_page' ) ) {
-			return true;
-		}
-
-		return false;
-	}
 }
 
 function get_question_id() {
@@ -1009,12 +973,9 @@ function ap_current_page_url($args) {
 
 /**
  * Sort array by order value. Group array which have same order number and then sort them.
- *
  * @param array $array
- *
  * @return array
- *
- * @since 2.0.0-alpha2
+ * @since 2.0.0
  */
 function ap_sort_array_by_order($array) {
 
@@ -1042,7 +1003,6 @@ function ap_sort_array_by_order($array) {
 }
 
 function ap_sort_order_callback($a, $b) {
-
 	return $a['order'] - $b['order'];
 }
 
@@ -1096,12 +1056,18 @@ function ap_link_to($sub) {
 	 */
 function ap_get_link_to($sub) {
 
+	/**
+	 * Define default AnsPress page slugs
+	 * @var array
+	 */
 	$default_pages = array(
-		'question' => ap_opt( 'question_page_slug' ),
-		'ask' => ap_opt( 'ask_page_slug' ),
-		'users' => ap_opt( 'users_page_slug' ),
-		'user' => ap_opt( 'user_page_slug' ),
+		'question' 	=> ap_opt( 'question_page_slug' ),
+		'ask' 		=> ap_opt( 'ask_page_slug' ),
+		'users' 	=> ap_opt( 'users_page_slug' ),
+		'user' 		=> ap_opt( 'user_page_slug' ),
 	);
+
+	$default_pages = apply_filters( 'ap_default_page_slugs', $default_pages );
 
 	if ( is_array( $sub ) && isset( $sub['ap_page'] ) && @isset( $default_pages[$sub] ) ) {
 		$sub['ap_page'] = $default_pages[$sub['ap_page']];
@@ -1705,3 +1671,26 @@ function ap_parse_search_string($str) {
 
 	return $output;
 }
+
+function ap_ajax_json( $response ) {
+	ap_send_json( ap_ajax_responce( $response ) );
+}
+
+/**
+ * check if object is notification menu item
+ * @param  object $menu   Menu Object.
+ * @return boolean
+ */
+function ap_is_notification_menu($menu) {
+	return in_array( 'anspress-page-notification', $menu->classes );
+}
+
+/**
+ * Check if object is profile menu item
+ * @param  object $menu   Menu Object.
+ * @return boolean
+ */
+function ap_is_profile_menu($menu) {
+	return in_array( 'anspress-page-profile', $menu->classes );
+}
+

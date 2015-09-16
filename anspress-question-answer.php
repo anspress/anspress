@@ -41,7 +41,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		 * AnsPress version
 		 * @var string
 		 */
-	    private $_plugin_version = '2.3.6';
+	    private $_plugin_version = '2.4-RC';
 
 	    /**
 	     * Class instance
@@ -151,8 +151,13 @@ if ( ! class_exists( 'AnsPress' ) ) {
 
 	    public $anspress_reputation;
 	    public $anspress_bp;
-	    public $anspress_users;
 	    public $third_party;
+	    public $common_pages;
+	    public $post_status;
+	    public $users_class;
+	    public $rewrite_class;
+	    public $history_class;
+	    public $notification_class;
 
 		/**
 		 * Initializes the plugin by setting localization, hooks, filters, and administrative functions.
@@ -183,7 +188,6 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		        self::$instance->anspress_query_filter 	= new AnsPress_Query_Filter();
 		        self::$instance->anspress_cpt 			= new AnsPress_PostTypes();
 		        self::$instance->anspress_reputation 	= new AP_Reputation();
-		        self::$instance->anspress_users 		= new AnsPress_User();
 
 				/*
 				 * ACTION: anspress_loaded
@@ -206,7 +210,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		    $constants = array(
 				'DS' 						=> DIRECTORY_SEPARATOR,
 				'AP_VERSION' 				=> $this->_plugin_version,
-				'AP_DB_VERSION' 			=> 12,
+				'AP_DB_VERSION' 			=> 14,
 				'ANSPRESS_DIR' 				=> plugin_dir_path( __FILE__ ),
 				'ANSPRESS_URL' 				=> plugin_dir_url( __FILE__ ),
 				'ANSPRESS_WIDGET_DIR' 		=> plugin_dir_path( __FILE__ ).'widgets'.DIRECTORY_SEPARATOR,
@@ -257,7 +261,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		    require_once ANSPRESS_DIR.'includes/theme.php';
 		    require_once ANSPRESS_DIR.'includes/form.php';
 		    require_once ANSPRESS_DIR.'includes/participants.php';
-		    require_once ANSPRESS_DIR.'includes/history.php';
+		    require_once ANSPRESS_DIR.'includes/activity-hooks.php';
 		    require_once ANSPRESS_DIR.'includes/shortcode-basepage.php';
 		    require_once ANSPRESS_DIR.'includes/common-pages.php';
 		    require_once ANSPRESS_DIR.'includes/class-form.php';
@@ -286,6 +290,8 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		    require_once ANSPRESS_DIR.'widgets/user.php';
 		    require_once ANSPRESS_DIR.'includes/3rd-party.php';
 		    require_once ANSPRESS_DIR.'includes/flag.php';
+		    require_once ANSPRESS_DIR.'includes/class-notification.php';
+		    require_once ANSPRESS_DIR.'includes/activity.php';
 		}
 
 		/**
@@ -319,10 +325,12 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		public function site_include() {
 		    self::$instance->anspress_hooks 	= new AnsPress_Hooks( $this );
 		    self::$instance->anspress_theme 	= new AnsPress_Theme( $this );
-		    new AnsPress_Common_Pages( $this );
-		    new AnsPress_Post_Status( $this );
-	    	new AnsPress_Rewrite( $this );
-	    	AP_History::get_instance();
+		    self::$instance->common_pages 		= new AnsPress_Common_Pages( $this );
+		    self::$instance->post_status 		= new AnsPress_Post_Status( $this );
+		    self::$instance->users_class 		= new AnsPress_User( $this );
+	    	self::$instance->rewrite_class 		= new AnsPress_Rewrite( $this );
+	    	self::$instance->history_class 		= new AnsPress_Activity_Hook( $this );
+	    	self::$instance->notification_class = new AP_Notification( $this );
 		}
 
 		/**

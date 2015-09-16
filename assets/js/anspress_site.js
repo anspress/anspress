@@ -50,6 +50,7 @@
             this.hoverCard();
             this.delete_notification();
             this.mark_as_read();
+            this.cancel_comment();
         },
         doAjax: function(query, success, context, before, abort) {
             /** Shorthand method for calling ajax */
@@ -149,6 +150,11 @@
                         AnsPress.site.hideLoading(this);
                         if (typeof tinyMCE !== 'undefined' && typeof data.type !== 'undefined' && data.type == 'success') tinyMCE.activeEditor.setContent('');
                     },
+                    error: function(jqXHR, textStatus, errorThrown){
+                        console.log(errorThrown);
+                        AnsPress.site.hideLoading(this);
+                        AnsPress.site.addMessage(aplang['not_valid_response'], 'error');
+                    },
                     dataType: 'json',
                     context: this,
                     global: true,
@@ -200,6 +206,10 @@
         },
         updateText: function(data) {
             if (typeof data.container !== 'undefined') $(data.container).text(data.text);
+        },
+        replaceWith: function(data) {
+            if (typeof data.container !== 'undefined')
+                $(data.container).replaceWith(data.html);
         },
         updateHtml: function(data) {
             if (typeof data.container !== 'undefined') $(data.container).html(data.html);
@@ -278,10 +288,10 @@
                         $('#li-comment-' + data.comment_ID).slideDown(400);
                         $('.ap-comment-form').remove();
                     }
-                    $(this)[0].reset();
                     $('.ap-comment-form').fadeOut(200, function() {
                         $(this).remove()
                     });
+                    $('a[href="#comments-' + data.comment_post_ID+ '"]').removeClass('loaded');
                 }, this);
                 return false;
             })
@@ -634,6 +644,15 @@
                 }
             });
         },
+
+        cancel_comment: function(){
+            $('body').delegate('[data-action="cancel-comment"]', 'click', function(e) {
+                e.preventDefault();
+                var postID = $(this).data('id');
+                $('[href="#comments-'+postID+'"]').removeClass('loaded');
+                $(this).closest('.ap-comment-form').remove();
+            });
+        }
 
     }
 })(jQuery);

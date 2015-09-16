@@ -89,17 +89,28 @@ class AnsPress_Validation
      */
     private function comma_separted_count($field, $param)
     {
-        if(!isset($this->fields[$field]) || count(explode(',', $this->fields[$field])) < $param )
-            $this->errors[$field] = sprintf(__('It must be minimum %d characters', 'ap'), $param);
+        if(!isset($this->fields[$field]) ){
+            $tags = $this->fields[$field];
+
+            if(!is_array($tags)){
+                $tags = count(explode(',', $tags)) < $param;
+            }
+
+            if(count($tags) < $param){
+                $this->errors[$field] = sprintf(__('It must be minimum %d characters', 'ap'), $param);
+            }
+        }
     }
 
     private function is_email($field)
     {
         $email = is_email($this->fields[$field]);
-        if(!$email )
+
+        if(!$email ){
             $this->errors[$field] = __('Not a valid email address', 'ap');
-        else
+        }else{
             $this->fields[$field] = $email;
+        }
     }
 
     /**
@@ -204,7 +215,10 @@ class AnsPress_Validation
     {
        $this->fields[$field] = $this->fields[$field];
 
-       $tags = explode(',', $this->fields[$field]);
+       $tags = $this->fields[$field];
+
+        if(!is_array($tags))
+            $tags = explode(',', $tags);
 
        $sanitized_tags = '';
 

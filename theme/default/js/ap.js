@@ -1,5 +1,4 @@
 /* https://github.com/ultimatedelman/autogrow */
-;
 (function($) {
 
     //pass in just the context as a $(obj) or a settings JS object
@@ -103,13 +102,13 @@
             }
         }
         return that;
-    }
+    };
 })(jQuery);
 
 (function($){
 
-    $(document).ready(function() {
-        $(document).click(function(e) {
+    $(document).ready(function () {
+        $( document ).click(function (e) {
             e.stopPropagation();
             if (!$(e.target).is('.ap-dropdown-toggle') && !$(e.target).closest('.open').is('.open') && !$(e.target).closest('form').is('form')) {
                $('.ap-dropdown').removeClass('open');
@@ -175,7 +174,7 @@
             $(this).toggleClass('active');
         });
         $('.bootstrap-tagsinput > input').keyup(function(event) {
-            $(this).css('width', 'auto');
+            $(this).css(width, 'auto');
         });
 
         $('body').delegate('#ap-question-sorting .ap-dropdown-menu a', 'click', function(e) {
@@ -191,17 +190,17 @@
             $(this).closest('form').submit();
         });
 
-
         $('body').delegate('#ap-question-sorting', 'submit', function(){
             AnsPress.site.showLoading(this);
+            var form_data = $(this).serialize().replace(/[^&]+=&/g, '').replace(/&[^&]+=$/g, '');
             $.ajax({
                 type: 'GET',
                 dataType: 'html',
-                data: $(this).serializeArray(),
+                data: form_data,
                 success: function(data){
                     AnsPress.site.hideLoading('#ap-question-sorting');
                     var html = $(data);
-                    window.history.pushState(null, null, this.url);
+                    window.history.replaceState('', '', '?' + form_data);
 
                     $('#anspress').html(html.find('#anspress'));
 
@@ -226,6 +225,7 @@
         }
 
         $('.ap-dynamic-avatar').initial({fontSize:14, fontWeight:600});
+
         $( document ).ajaxComplete(function( event, data, settings ) {
             $('.ap-dynamic-avatar').initial({fontSize:14, fontWeight:600});
         });

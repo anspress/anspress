@@ -125,31 +125,32 @@ function ap_get_questions($args = array()) {
 
 	if ( is_front_page() ) {
 		$paged = (isset( $_GET['ap_paged'] )) ? (int) $_GET['ap_paged'] : 1;
-    } else {
+	} else {
 		$paged = (get_query_var( 'paged' )) ? get_query_var( 'paged' ) : 1;
-    }
+	}
 
+	if ( ! isset( $args['post_parent'] ) ) {
+		$args['post_parent'] = (get_query_var( 'parent' )) ? get_query_var( 'parent' ) : false;
+	}
 
-		if ( ! isset( $args['post_parent'] ) ) {
-			$args['post_parent'] = (get_query_var( 'parent' )) ? get_query_var( 'parent' ) : false; }
+	if ( ! isset( $args['sortby'] ) ) {
+		$args['sortby'] = (isset( $_GET['ap_sort'] )) ? $_GET['ap_sort'] : 'active';
+	}
 
-		if ( ! isset( $args['sortby'] ) ) {
-			$args['sortby'] = (isset( $_GET['ap_sort'] )) ? $_GET['ap_sort'] : 'active'; }
+	if ( is_super_admin() || current_user_can( 'ap_view_private' ) ) {
+		$args['post_status'][] = 'private_post';
+	}
 
-		if ( is_super_admin() || current_user_can( 'ap_view_private' ) ) {
-			$args['post_status'][] = 'private_post'; }
+	if ( is_super_admin() || current_user_can( 'ap_view_moderate' ) ) {
+		$args['post_status'][] = 'moderate';
+	}
 
-		if ( is_super_admin() || current_user_can( 'ap_view_moderate' ) ) {
-			$args['post_status'][] = 'moderate'; }
+	$args = wp_parse_args( $args, array(
+		'showposts'     => ap_opt( 'question_per_page' ),
+		'paged'         => $paged,
+		'ap_query'      => 'featured_post',
+	));
 
-		if ( is_super_admin() ) {
-			$args['post_status'][] = 'trash'; }
-
-		$args = wp_parse_args( $args, array(
-			'showposts'     => ap_opt( 'question_per_page' ),
-			'paged'         => $paged,
-			'ap_query'      => 'featured_post',
-		));
 	return new Question_Query( $args );
 }
 
@@ -214,19 +215,20 @@ function ap_question_get_the_ID() {
 
 	return false;
 }
-	/**
-	 * echo current question post_parent
-	 * @since 2.1
-	 */
+
+/**
+ * echo current question post_parent
+ * @since 2.1
+ */
 function ap_question_the_post_parent() {
 	echo ap_question_get_the_post_parent();
 }
 
-	/**
-	 * Returns the question post parent ID
-	 * @return integer
-	 * @since 2.1
-	 */
+/**
+ * Returns the question post parent ID
+ * @return integer
+ * @since 2.1
+ */
 function ap_question_get_the_post_parent() {
 	$question = ap_question_the_object();
 
@@ -242,27 +244,28 @@ function ap_question_get_author_id() {
 	return $question->post_author;
 }
 
-	/**
-	 * Check if active post is private post
-	 * @return boolean
-	 * @since  2.1
-	 */
+/**
+ * Check if active post is private post
+ * @return boolean
+ * @since  2.1
+ */
 function ap_question_is_private() {
 	return is_private_post();
 }
 
-	/**
-	 * echo user profile link
-	 * @return 2.1
-	 */
+/**
+ * echo user profile link
+ * @return 2.1
+ */
 function ap_question_the_author_link() {
 	echo ap_user_link();
 }
-	/**
-	 * Return the author profile link
-	 * @return string
-	 * @since 2.1
-	 */
+
+/**
+ * Return the author profile link
+ * @return string
+ * @since 2.1
+ */
 function ap_question_get_the_author_link() {
 	return ap_user_link( ap_question_get_author_id() );
 }
@@ -270,12 +273,13 @@ function ap_question_get_the_author_link() {
 function ap_question_the_author_avatar($size = 45) {
 	echo ap_question_get_the_author_avatar( $size );
 }
-	/**
-	 * Return question author avatar
-	 * @param  integer $size
-	 * @return string
-	 * @since 2.1
-	 */
+
+/**
+ * Return question author avatar
+ * @param  integer $size
+ * @return string
+ * @since 2.1
+ */
 function ap_question_get_the_author_avatar($size = 45) {
 	return get_avatar( ap_question_get_author_id(), $size );
 }
@@ -284,20 +288,21 @@ function ap_question_the_answer_count() {
 	$count = ap_question_get_the_answer_count();
 	echo '<a class="ap-questions-count ap-questions-acount" href="'.ap_answers_link().'">'. sprintf( _n( '%s ans', '%s ans', $count, 'ap' ), '<span>'.$count.'</span>' ).'</a>';
 }
-	/**
-	 * Return active question answer count
-	 * @return integer
-	 * @since 2.1
-	 */
+
+/**
+ * Return active question answer count
+ * @return integer
+ * @since 2.1
+ */
 function ap_question_get_the_answer_count() {
 	return ap_count_answer_meta( ap_question_get_the_ID() );
 }
 
-	/**
-	 * Echo active question total vote
-	 * @return void
-	 * @since 2.1
-	 */
+/**
+ * Echo active question total vote
+ * @return void
+ * @since 2.1
+ */
 function ap_question_the_net_vote() {
 	if ( ! ap_opt( 'disable_voting_on_question' ) ) {
 		?>
@@ -318,20 +323,20 @@ function ap_question_get_the_net_vote() {
 	return ap_net_vote( ap_question_the_object() );
 }
 
-	/**
-	 * Echo active question permalink
-	 * @return void
-	 * @since 2.1
-	 */
+/**
+ * Echo active question permalink
+ * @return void
+ * @since 2.1
+ */
 function ap_question_the_permalink() {
 	echo ap_question_get_the_permalink();
 }
 
-	/**
-	 * Return active question permalink
-	 * @return string
-	 * @since 2.1
-	 */
+/**
+ * Return active question permalink
+ * @return string
+ * @since 2.1
+ */
 function ap_question_get_the_permalink() {
 	return get_the_permalink( ap_question_get_the_ID() );
 }
@@ -472,12 +477,12 @@ function ap_question_the_active_time($question_id = false) {
 
 function ap_question_get_the_active_time($question_id = false) {
 	$question_id = ap_parameter_empty( $question_id, @ap_question_get_the_ID() );
-	return ap_get_latest_history_html( $question_id );
+	return ap_latest_post_activity_html( $question_id );
 }
 
 function ap_question_the_time($question_id = false, $format = 'U') {
 	$question_id = ap_parameter_empty( $question_id, @ap_question_get_the_ID() );
-	printf( __( '%s ago%s', 'ap' ), '<time itemprop="datePublished" datetime="'.ap_question_get_the_time( false, 'c' ).'">'.ap_human_time( ap_question_get_the_time( $question_id, $format ) ), '</time>' );
+	printf( __( '%s ago%s', 'ap' ), '<a href="'. get_permalink( $question_id ) .'"><time itemprop="datePublished" datetime="'.ap_question_get_the_time( false, 'c' ).'">'.ap_human_time( ap_question_get_the_time( $question_id, $format ) ), '</time></a>' );
 }
 
 function ap_question_get_the_time($question_id = false, $format = '') {

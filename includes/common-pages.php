@@ -108,6 +108,12 @@ class AnsPress_Common_Pages
 	 */
 	public function question_page() {
 
+		// Set Header as 404 if question id is not set.
+		if( false === get_question_id() ){
+			$this->set_404();
+			return;
+		}
+
 		global $questions;
 
 		$questions = ap_get_question( get_question_id() );
@@ -126,7 +132,7 @@ class AnsPress_Common_Pages
 
 			wp_reset_postdata();
 		} else {
-			include( ap_get_theme_location( 'not-found.php' ) );
+			$this->set_404();
 		}
 
 	}
@@ -171,6 +177,16 @@ class AnsPress_Common_Pages
 			$ap_user_query = ap_has_users( array( 'search' => $keywords, 'search_columns' => array( 'user_login', 'user_email', 'user_nicename' ) ) );
 			include( ap_get_theme_location( 'users/users.php' ) );
 		}
+	}
+
+	/**
+	 * If page is not found then set header as 404
+	 */
+	public function set_404() {
+		global $wp_query;
+		$wp_query->set_404();
+		status_header( 404 );
+		include ap_get_theme_location( 'not-found.php' );
 	}
 
 }
