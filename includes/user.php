@@ -549,7 +549,8 @@ function ap_user_subscription_tab() {
 function ap_user_display_meta($html = false, $user_id = false, $echo = false) {
 
 	if ( false === $user_id ) {
-		$user_id = get_the_author_meta( 'ID' ); }
+		$user_id = get_the_author_meta( 'ID' );
+	}
 
 	$metas = array();
 

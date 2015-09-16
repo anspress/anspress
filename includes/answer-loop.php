@@ -467,7 +467,7 @@ function ap_answer_get_the_active_time($answer_id = false) {
 function ap_answer_the_time($answer_id = false, $format = 'U') {
 	$answer_id = ap_parameter_empty( $answer_id, @ap_answer_get_the_answer_id() );
 	printf( esc_attr__( '%s Ago', 'ap' ),
-		'<time itemprop="datePublished" datetime="%s">'. ap_human_time( ap_answer_get_the_time( $answer_id, $format ) ) .'</time>'
+		'<a href="'. get_permalink( $answer_id ) .'"><time itemprop="datePublished" datetime="%s">'. ap_human_time( ap_answer_get_the_time( $answer_id, $format ) ) .'</time></a>'
 	);
 }
 

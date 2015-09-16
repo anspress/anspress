@@ -728,7 +728,7 @@ function ap_latest_post_activity_html($post_id = false) {
 		$html .= sprintf( __( ' %s %s %s ago', 'ap' ),
 			'<a href="'.ap_user_link( $activity['user_id'] ).'">'. ap_user_display_name( $activity['user_id'] ) .'</a>',
 			$title,
-			'<time datetime="'. mysql2date( 'c', $activity['date'] ) .'">'. ap_human_time( $activity['date'], false ) .'</time>'
+			'<a href="'. get_permalink( $post ) .'"><time datetime="'. mysql2date( 'c', $activity['date'] ) .'">'. ap_human_time( $activity['date'], false ) .'</time></a>'
 		);
 		$html .= '</span>';
 	}
