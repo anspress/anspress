@@ -15,29 +15,29 @@
  *
  * @return int|bool
  */
-function ap_add_vote($current_userid, $type, $actionid, $receiving_userid)
-{
-    $row = ap_add_meta($current_userid, $type, $actionid, $receiving_userid);
+function ap_add_vote($current_userid, $type, $actionid, $receiving_userid) {
 
-    if ($row !== false) {
-        do_action('ap_vote_casted', $current_userid, $type, $actionid, $receiving_userid);
-    }
+	$row = ap_add_meta( $current_userid, $type, $actionid, $receiving_userid );
 
-    return $row;
+	if ( $row !== false ) {
+		do_action( 'ap_vote_casted', $current_userid, $type, $actionid, $receiving_userid );
+	}
+
+	return $row;
 }
 
 /**
  * @param string $type
  */
-function ap_remove_vote($type, $userid, $actionid, $receiving_userid)
-{
-    $row = ap_delete_meta(array('apmeta_type' => $type, 'apmeta_userid' => $userid, 'apmeta_actionid' => $actionid));
+function ap_remove_vote($type, $userid, $actionid, $receiving_userid) {
 
-    if ($row !== false) {
-        do_action('ap_vote_removed', $userid, $type, $actionid, $receiving_userid);
-    }
+	$row = ap_delete_meta( array( 'apmeta_type' => $type, 'apmeta_userid' => $userid, 'apmeta_actionid' => $actionid ) );
 
-    return $row;
+	if ( $row !== false ) {
+		do_action( 'ap_vote_removed', $userid, $type, $actionid, $receiving_userid );
+	}
+
+	return $row;
 }
 
 /**
@@ -53,81 +53,81 @@ function ap_remove_vote($type, $userid, $actionid, $receiving_userid)
  *
  * @return int
  */
-function ap_count_vote($userid = false, $type, $actionid = false, $receiving_userid = false)
-{
-    if ($actionid !== false) {
-        return ap_meta_total_count($type, $actionid);
-    } elseif ($userid !== false) {
-        return ap_meta_total_count($type, false, $userid);
-    } elseif ($receiving_userid !== false) {
-        return ap_meta_total_count($type, false, false, false, $receiving_userid);
-    }
+function ap_count_vote($userid = false, $type, $actionid = false, $receiving_userid = false) {
 
-    return 0;
+	if ( $actionid !== false ) {
+		return ap_meta_total_count( $type, $actionid );
+	} elseif ( $userid !== false ) {
+		return ap_meta_total_count( $type, false, $userid );
+	} elseif ( $receiving_userid !== false ) {
+		return ap_meta_total_count( $type, false, false, false, $receiving_userid );
+	}
+
+	return 0;
 }
 
 // get $post up votes
-function ap_up_vote($echo = false)
-{
-    global $post;
+function ap_up_vote($echo = false) {
 
-    if ($echo) {
-        echo $post->voted_up;
-    } else {
-        return $post->voted_up;
-    }
+	global $post;
+
+	if ( $echo ) {
+		echo $post->voted_up;
+	} else {
+		return $post->voted_up;
+	}
 }
 
 // get $post down votes
-function ap_down_vote($echo = false)
-{
-    global $post;
+function ap_down_vote($echo = false) {
 
-    if ($echo) {
-        echo $post->voted_down;
-    } else {
-        return $post->voted_down;
-    }
+	global $post;
+
+	if ( $echo ) {
+		echo $post->voted_down;
+	} else {
+		return $post->voted_down;
+	}
 }
 
 // get $post net votes
-function ap_net_vote($post = false)
-{
-    if (!$post) {
-        global $post;
-    }
+function ap_net_vote($post = false) {
 
-    $net = $post->net_vote;
+	if ( ! $post ) {
+		global $post;
+	}
 
-    return $net ? $net : 0;
+	$net = $post->net_vote;
+
+	return $net ? $net : 0;
 }
 
-function ap_net_vote_meta($post_id = false)
-{
-    if (!$post_id) {
-        $post_id = get_the_ID();
-    }
-    $net = get_post_meta($post_id, ANSPRESS_VOTE_META, true);
+function ap_net_vote_meta($post_id = false) {
 
-    return $net ? $net : 0;
+	if ( ! $post_id ) {
+		$post_id = get_the_ID();
+	}
+	$net = get_post_meta( $post_id, ANSPRESS_VOTE_META, true );
+
+	return $net ? $net : 0;
 }
 
 /**
  * @param int $postid
  */
-function ap_post_votes($postid)
-{
-    $vote = array();
-	//voted up count
-	$vote['voted_up'] = ap_meta_total_count('vote_up', $postid);
+function ap_post_votes($postid) {
 
-	//voted down count
-	$vote['voted_down'] = ap_meta_total_count('vote_down', $postid);
+	$vote = array();
+	// voted up count
+	$vote['voted_up'] = ap_meta_total_count( 'vote_up', $postid );
+
+	// voted down count
+	$vote['voted_down'] = ap_meta_total_count( 'vote_down', $postid );
 
 	// net vote
 	$vote['net_vote'] = $vote['voted_up'] - $vote['voted_down'];
 
-    return $vote;
+	return $vote;
 }
 
 /**
@@ -141,34 +141,34 @@ function ap_post_votes($postid)
  *
  * @since 	2.0
  */
-function ap_is_user_voted($actionid, $type, $userid = false)
-{
-    if (false === $userid) {
-        $userid = get_current_user_id();
-    }
+function ap_is_user_voted($actionid, $type, $userid = false) {
 
-    if ($type == 'vote' && is_user_logged_in()) {
-        global $wpdb;
+	if ( false === $userid ) {
+		$userid = get_current_user_id();
+	}
 
-        $query = $wpdb->prepare('SELECT apmeta_type as type, IFNULL(count(*), 0) as count FROM '.$wpdb->prefix.'ap_meta where (apmeta_type = "vote_up" OR apmeta_type = "vote_down") and apmeta_userid = %d and apmeta_actionid = %d GROUP BY apmeta_type', $userid, $actionid);
+	if ( $type == 'vote' && is_user_logged_in() ) {
+		global $wpdb;
 
-        $key = md5($query);
+		$query = $wpdb->prepare( 'SELECT apmeta_type as type, IFNULL(count(*), 0) as count FROM '.$wpdb->prefix.'ap_meta where (apmeta_type = "vote_up" OR apmeta_type = "vote_down") and apmeta_userid = %d and apmeta_actionid = %d GROUP BY apmeta_type', $userid, $actionid );
 
-        $user_done = wp_cache_get($key, 'counts');
+		$key = md5( $query );
 
-        if ($user_done === false) {
-            $user_done = $wpdb->get_row($query);
-            wp_cache_set($key, $user_done, 'counts');
-        }
+		$user_done = wp_cache_get( $key, 'counts' );
 
-        return $user_done;
-    } elseif (is_user_logged_in()) {
-        $done = ap_meta_user_done($type, $userid, $actionid);
+		if ( $user_done === false ) {
+			$user_done = $wpdb->get_row( $query );
+			wp_cache_set( $key, $user_done, 'counts' );
+		}
 
-        return $done > 0 ? true : false;
-    }
+		return $user_done;
+	} elseif ( is_user_logged_in() ) {
+		$done = ap_meta_user_done( $type, $userid, $actionid );
 
-    return false;
+		return $done > 0 ? true : false;
+	}
+
+	return false;
 }
 
 /**
@@ -180,44 +180,44 @@ function ap_is_user_voted($actionid, $type, $userid = false)
  *
  * @since 0.1
  */
-function ap_vote_btn($post = false, $echo = true)
-{
-    if (false === $post) {
-        global $post;
-    }
+function ap_vote_btn($post = false, $echo = true) {
 
-    if ('answer' == $post->post_type && ap_opt('disable_voting_on_answer')) {
-        return;
-    }
+	if ( false === $post ) {
+		global $post;
+	}
 
-    if ('question' == $post->post_type && ap_opt('disable_voting_on_question')) {
-        return;
-    }
+	if ( 'answer' == $post->post_type && ap_opt( 'disable_voting_on_answer' ) ) {
+		return;
+	}
 
-    $nonce = wp_create_nonce('vote_'.$post->ID);
-    $vote = ap_is_user_voted($post->ID, 'vote');
+	if ( 'question' == $post->post_type && ap_opt( 'disable_voting_on_question' ) ) {
+		return;
+	}
 
-    $voted = $vote ? true : false;
-    $type = $vote ? $vote->type : '';
+	$nonce = wp_create_nonce( 'vote_'.$post->ID );
+	$vote = ap_is_user_voted( $post->ID, 'vote' );
 
-    $html = '';
-    $html .= '<div data-id="'.$post->ID.'" class="ap-vote net-vote" data-action="vote">';
-    $html .= '<a class="'.ap_icon('vote_up').' ap-tip vote-up'.($voted ? ' voted' : '').($type == 'vote_down' ? ' disable' : '').'" data-query="ap_ajax_action=vote&type=up&post_id='.$post->ID.'&__nonce='.$nonce.'" href="#" title="'.__('Up vote this post', 'ap').'"></a>';
+	$voted = $vote ? true : false;
+	$type = $vote ? $vote->type : '';
 
-    $html .= '<span class="net-vote-count" data-view="ap-net-vote" itemprop="upvoteCount">'.ap_net_vote().'</span>';
+	$html = '';
+	$html .= '<div data-id="'.$post->ID.'" class="ap-vote net-vote" data-action="vote">';
+	$html .= '<a class="'.ap_icon( 'vote_up' ).' ap-tip vote-up'.($voted ? ' voted' : '').($type == 'vote_down' ? ' disable' : '').'" data-query="ap_ajax_action=vote&type=up&post_id='.$post->ID.'&__nonce='.$nonce.'" href="#" title="'.__( 'Up vote this post', 'ap' ).'"></a>';
 
-    if (('question' == $post->post_type && !ap_opt('disable_down_vote_on_question')) ||
-		('answer' == $post->post_type && !ap_opt('disable_down_vote_on_answer'))) {
-        $html .= '<a data-tipposition="bottom" class="'.ap_icon('vote_down').' ap-tip vote-down'.($voted ? ' voted' : '').($type == ' vote_up' ? ' disable' : '').'" data-query="ap_ajax_action=vote&type=down&post_id='.$post->ID.'&__nonce='.$nonce.'" href="#" title="'.__('Down vote this post', 'ap').'"></a>';
-    }
+	$html .= '<span class="net-vote-count" data-view="ap-net-vote" itemprop="upvoteCount">'.ap_net_vote().'</span>';
 
-    $html .= '</div>';
+	if ( ('question' == $post->post_type && ! ap_opt( 'disable_down_vote_on_question' )) ||
+		('answer' == $post->post_type && ! ap_opt( 'disable_down_vote_on_answer' )) ) {
+		$html .= '<a data-tipposition="bottom center" class="'.ap_icon( 'vote_down' ).' ap-tip vote-down'.($voted ? ' voted' : '').($type == ' vote_up' ? ' disable' : '').'" data-query="ap_ajax_action=vote&type=down&post_id='.$post->ID.'&__nonce='.$nonce.'" href="#" title="'.__( 'Down vote this post', 'ap' ).'"></a>';
+	}
 
-    if ($echo) {
-        echo $html;
-    } else {
-        return $html;
-    }
+	$html .= '</div>';
+
+	if ( $echo ) {
+		echo $html;
+	} else {
+		return $html;
+	}
 }
 
 /**
@@ -227,50 +227,50 @@ function ap_vote_btn($post = false, $echo = true)
  *
  * @return int
  */
-function ap_post_close_vote($postid = false)
-{
-    global $post;
+function ap_post_close_vote($postid = false) {
 
-    $postid = $postid ? $postid : $post->ID;
+	global $post;
 
-    return ap_meta_total_count('close', $postid);
+	$postid = $postid ? $postid : $post->ID;
+
+	return ap_meta_total_count( 'close', $postid );
 }
 
-//check if user voted for close
-function ap_is_user_voted_closed($postid = false)
-{
-    if (is_user_logged_in()) {
-        global $post;
-        $postid = $postid ? $postid : $post->ID;
-        $userid = get_current_user_id();
-        $done = ap_meta_user_done('close', $userid, $postid);
+// check if user voted for close
+function ap_is_user_voted_closed($postid = false) {
 
-        return $done > 0 ? true : false;
-    }
+	if ( is_user_logged_in() ) {
+		global $post;
+		$postid = $postid ? $postid : $post->ID;
+		$userid = get_current_user_id();
+		$done = ap_meta_user_done( 'close', $userid, $postid );
 
-    return false;
+		return $done > 0 ? true : false;
+	}
+
+	return false;
 }
 
-//TODO: re-add closing system as an extension
-function ap_close_vote_html()
-{
-    if (!is_user_logged_in()) {
-        return;
-    }
+// TODO: re-add closing system as an extension
+function ap_close_vote_html() {
 
-    global $post;
-    $nonce = wp_create_nonce('close_'.$post->ID);
-    $title = (!$post->voted_closed) ? (__('Vote for closing', 'ap')) : (__('Undo your vote', 'ap'));
-    ?>
+	if ( ! is_user_logged_in() ) {
+		return;
+	}
+
+	global $post;
+	$nonce = wp_create_nonce( 'close_'.$post->ID );
+	$title = ( ! $post->voted_closed) ? (__( 'Vote for closing', 'ap' )) : (__( 'Undo your vote', 'ap' ));
+	?>
 		<a id="<?php echo 'close_'.$post->ID;
-    ?>" data-action="close-question" class="close-btn<?php echo ($post->voted_closed) ? ' closed' : '';
-    ?>" data-args="<?php echo $post->ID.'-'.$nonce;
-    ?>" href="#" title="<?php echo $title;
-    ?>">
-			<?php _e('Close ', 'ap');
-    echo($post->closed > 0 ? '<span>('.$post->closed.')</span>' : '');
-    ?>
-		</a>
+	?>" data-action="close-question" class="close-btn<?php echo ($post->voted_closed) ? ' closed' : '';
+	?>" data-args="<?php echo $post->ID.'-'.$nonce;
+	?>" href="#" title="<?php echo $title;
+	?>">
+			<?php _e( 'Close ', 'ap' );
+			echo($post->closed > 0 ? '<span>('.$post->closed.')</span>' : '');
+	?>
+        </a>
 	<?php
 
 }

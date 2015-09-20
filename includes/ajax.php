@@ -43,8 +43,8 @@ class AnsPress_Ajax
 	    $ap->add_action( 'ap_ajax_flag_post', $this, 'flag_post' );
 	    $ap->add_action( 'ap_ajax_subscribe', $this, 'subscribe' );
 	    $ap->add_action( 'ap_ajax_vote', $this, 'vote' );
-	    //$ap->add_action( 'wp_ajax_ap_vote_for_close', $this, 'ap_vote_for_close' );
-	    //$ap->add_action( 'wp_ajax_nopriv_ap_vote_for_close', $this, 'ap_nopriv_vote_for_close' );
+	    // $ap->add_action( 'wp_ajax_ap_vote_for_close', $this, 'ap_vote_for_close' );
+	    // $ap->add_action( 'wp_ajax_nopriv_ap_vote_for_close', $this, 'ap_nopriv_vote_for_close' );
 	    $ap->add_action( 'ap_ajax_flag_comment', $this, 'flag_comment' );
 	}
 
@@ -55,8 +55,8 @@ class AnsPress_Ajax
 	 */
 	public function suggest_similar_questions() {
 
-	    if ( empty( $_POST['value'] ) && ! current_user_can( 'manage_options' ) ) {
-	        return;
+	    if ( empty( $_POST['value'] ) || ( ! ap_verify_default_nonce() && !current_user_can( 'manage_options' ) ) ) {
+	        die('false');
 	    }
 
 	    $keyword = sanitize_text_field( wp_unslash( $_POST['value'] ) );
@@ -68,22 +68,29 @@ class AnsPress_Ajax
 		));
 
 	    if ( $questions ) {
-	        $items = '<div class="ap-similar-questions-head">';
-	        $items .= '<h3>'.ap_icon( 'check', true ).sprintf( __( '%d similar questions found', 'ap' ), count( $questions ) ).'</h3>';
-	        $items .= '<p>'.__( 'We found similar questions that have already been asked, click to read them. Avoid creating duplicate questions, it will be deleted.' ).'</p>';
-	        $items .= '</div>';
-	        $items .= '<div class="ap-similar-questions">';
+	    	if ( is_admin() ) {
+		        $items = '<div class="ap-similar-questions-head">';
+		        $items .= '<h3>'.ap_icon( 'check', true ).sprintf( __( '%d similar questions found', 'ap' ), count( $questions ) ).'</h3>';
+		        $items .= '<p>'.__( 'We found similar questions that have already been asked, click to read them. Avoid creating duplicate questions, it will be deleted.' ).'</p>';
+		        $items .= '</div>';
+		        $items .= '<div class="ap-similar-questions">';
+		    }
+
 	        foreach ( $questions as $p ) {
 	            $count = ap_count_answer_meta( $p->ID );
 	            $p->post_title = ap_highlight_words( $p->post_title, $keyword );
 
-	            if ( ! isset( $_POST['is_admin'] ) ) {
-	                $items .= '<a class="ap-sqitem clearfix" href="'.get_permalink( $p->ID ).'"><span class="acount">'.sprintf( _n( '1 Answer', '%d Answers', $count, 'ap' ), $count ).'</span><span class="ap-title">'.$p->post_title.'</span></a>';
-	            } else {
-	                $items .= '<div class="ap-q-suggestion-item clearfix"><a class="select-question-button button button-primary button-small" href="'.add_query_arg( array( 'post_type' => 'answer', 'post_parent' => $p->ID ), admin_url( 'post-new.php' ) ).'">'.__( 'Select', 'ap' ).'</a><span class="question-title">'.$p->post_title.'</span><span class="acount">'.sprintf( _n( '1 Answer', '%d Answers', $count, 'ap' ), $count ).'</span></div>';
-	            }
+	            if(is_admin()){
+	            	$items .= '<div class="ap-q-suggestion-item clearfix"><a class="select-question-button button button-primary button-small" href="'.add_query_arg( array( 'post_type' => 'answer', 'post_parent' => $p->ID ), admin_url( 'post-new.php' ) ).'">'.__( 'Select', 'ap' ).'</a><span class="question-title">'.$p->post_title.'</span><span class="acount">'.sprintf( _n( '1 Answer', '%d Answers', $count, 'ap' ), $count ).'</span></div>';
+	            }else{
+		            $items .= '<a class="ap-sqitem clearfix" target="_blank" href="'.get_permalink( $p->ID ).'"><span class="acount">'.sprintf( _n( '1 Answer', '%d Answers', $count, 'ap' ), $count ).'</span><span class="ap-title">'.$p->post_title.'</span></a>';
+		        }
 	        }
-	        $items .= '</div>';
+
+	        if ( is_admin() ) {
+	       		$items .= '</div>';
+	       	}
+
 	        $result = array( 'status' => true, 'html' => $items );
 	    } else {
 	        $result = array( 'status' => false, 'message' => __( 'No related questions found', 'ap' ) );
@@ -124,7 +131,7 @@ class AnsPress_Ajax
 	        }
 
 	        ob_start();
-	        include ap_get_theme_location('comment-form.php');
+	        include ap_get_theme_location( 'comment-form.php' );
 	        $html = ob_get_clean();
 
 	        $comment_args = array(
@@ -837,10 +844,11 @@ class AnsPress_Ajax
 	 * Handle ajax callback if non-logged in user try to subscribe
 	 */
 	public function ap_add_to_subscribe_nopriv() {
-		$this->send(array( 'action' => false, 'message' => __( 'Please login for adding question to your subscribe', 'ap' )));
+		$this->send( array( 'action' => false, 'message' => __( 'Please login for adding question to your subscribe', 'ap' ) ) );
 	}
 
-	/*public function ap_vote_for_close() {
+	/*
+	public function ap_vote_for_close() {
 
 		$args = explode( '-', sanitize_text_field( $_POST['args'] ) );
 		if ( wp_verify_nonce( $args[1], 'close_'.$args[0] ) ) {
@@ -873,7 +881,8 @@ class AnsPress_Ajax
 		die( json_encode( $result ) );
 	}*/
 
-	/*public function ap_nopriv_vote_for_close() {
+	/*
+	public function ap_nopriv_vote_for_close() {
 
 		echo json_encode( array( 'action' => false, 'message' => __( 'Please login for requesting closing this question.', 'ap' ) ) );
 		die();
@@ -906,7 +915,7 @@ class AnsPress_Ajax
 	        	'message' 	=> 'flagged_comment',
 	        	'action' 	=> 'flagged',
 	        	'view' 		=> array( $comment_id.'_comment_flag' => $count ),
-	        	'count' 	=> $count
+	        	'count' 	=> $count,
 	        ) );
 	    }
 	    $this->something_wrong();

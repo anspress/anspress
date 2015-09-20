@@ -75,6 +75,7 @@ module.exports = function(grunt) {
 			my_target: {
 			  files: {
 			    'assets/prod/anspress_site.min.js': ['assets/js/anspress_site.js'],
+			    'assets/prod/ap-functions.min.js': ['assets/js/ap-functions.js'],
 			    'assets/prod/ap-admin.min.js': ['assets/js/ap-admin.js'],
 			    'theme/default/prod/ap.min.js': ['theme/default/js/ap.js']
 			  }

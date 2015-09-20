@@ -132,6 +132,10 @@ class AnsPress_Form {
 
 		$attr = '';
 
+		if ( $this->args['attr'] ) {
+			$attr .= $this->args['attr'];
+		}
+
 		if ( $this->args['is_ajaxified'] ) {
 			$attr .= ' data-action="ap_ajax_form"';
 		}

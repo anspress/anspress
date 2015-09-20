@@ -28,7 +28,6 @@
             this.appendMessageBox();
             this.ap_comment_form();
             this.afterPostingAnswer();
-            //this.suggest_similar_questions();
             this.ap_ajax_form();
             this.load_comment_form();
             this.delete_comment();
@@ -125,17 +124,18 @@
         hideLoading: function(elm) {
             $($(elm).data('loading')).hide();
         },
-        suggest_similar_questions: function() {
-            $('[data-action="suggest_similar_questions"]').on('keyup keydown', function() {
-                if ($.trim($(this).val()) == '') return;
-                ApSite.doAjax(apAjaxData('ap_ajax_action=suggest_similar_questions&value=' + $(this).val()), function(data) {
-                    if (typeof data['html'] !== 'undefined') $('#similar_suggestions').html(data['html']);
-                }, this, false, true);
-            });
-        },
         ap_ajax_form: function() {
             $('body').delegate('[data-action="ap_ajax_form"]', 'submit', function() {
                 AnsPress.site.showLoading(this);
+
+                //Before submitting form callback
+                if($(this).is('[data-before]')){
+                    var before_callback = $(this).data('before');
+
+                    if(typeof ApSite[before_callback] === 'function'){
+                        if(false === ApSite[ before_callback](this) ) return false;
+                    }
+                }
 
                 //Add this to form so this form can be identified as ajax form
                 $(this).append('<input type="hidden" name="ap_ajax_action" value="'+ $(this).attr('name') +'">');
@@ -573,7 +573,7 @@
             });
         },
         hoverCard:function(){
-            if(!disable_hover_card)
+            /*if(!disable_hover_card)
             $('[data-action="ap_hover_card"]').tooltipster({
                 theme: 'ap-hover-card',
                 delay:500,
@@ -605,7 +605,7 @@
                         origin.tooltipster('content', $(html).show() );
                     }
                 }
-            });
+            });*/
         },
         delete_notification: function() {
             $('body').delegate('[data-action="ap_delete_notification"]', 'click', function(e) {
@@ -652,6 +652,26 @@
                 $('[href="#comments-'+postID+'"]').removeClass('loaded');
                 $(this).closest('.ap-comment-form').remove();
             });
+        },
+
+        apShowSimilarQuestions: function(form){
+            console.log($('body').data('apSuggestionLoaded'));
+            if($('body').data('apSuggestionLoaded')){
+                return true;
+            }
+
+            var title = $(form).find('#title').val();
+            $("#qsuggestion").show();
+            $("#qsuggestion").center();
+
+            ApSite.doAjax(apAjaxData('action=ap_ajax&ap_ajax_action=suggest_similar_questions&ap_ajax_nonce='+ap_nonce+'&value='+title), function(data) {
+                $("#qsuggestion .ap-qsuggestion-list").html(data.html);
+                $("#qsuggestion").center();
+                $("#qsuggestion .ap-qsuggestion-inner").css("height" , ($("#qsuggestion").height() - $(".ap-qsuggestion-header").outerHeight()) - $(".ap-qsuggestion-footer").outerHeight() );
+                $('body').data('apSuggestionLoaded', true);
+            }, this, false, true);
+
+            return false;
         }
 
     }
@@ -706,34 +726,4 @@
     });
 })(jQuery);
 
-function apAjaxData(param) {
-    param = param + '&action=ap_ajax';
-    return param;
-}
 
-function apQueryStringToJSON(string) {
-    var pairs = string.split('&');
-    var result = {};
-    pairs.forEach(function(pair) {
-        pair = pair.split('=');
-        result[pair[0]] = encodeURIComponent(pair[1] || '');
-    });
-    return JSON.parse(JSON.stringify(result));
-}
-
-function apGetValueFromStr(q, name) {
-    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
-    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
-        results = regex.exec(q);
-    return results == null ? false : decodeURIComponent(results[1].replace(/\+/g, " "));
-}
-
-function apCenterBox(elm){
-    var elm         = jQuery(elm);
-    var parent      = elm.parent();
-
-    parent.css({position: 'relative'});
-
-    elm.css("left", (parent.width()-elm.width())/2);
-    elm.css("top", (parent.height()-elm.height())/2);
-}

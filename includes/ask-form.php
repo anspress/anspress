@@ -27,6 +27,7 @@ function ap_ask_form($editing = false) {
 		'name'              => 'ask_form',
 		'is_ajaxified'      => true,
 		'multipart'         => true,
+		'attr'         		=> ' data-before="apShowSimilarQuestions"',
 		'submit_button'     => ($editing ? __( 'Update question', 'ap' ) : __( 'Post question', 'ap' )),
 		'fields'            => array(
 			array(
