@@ -4,88 +4,165 @@
  * @license GPL 2+
  * @since 2.0
  */
-;(function($){
+ ;(function($){
 
-	$.fn.aptip = function(settings) {
-		function altertitle(el){
-			if(typeof $(el).attr('title') !== 'undefined'){
-				$(el).data('aptiptitle', $(el).attr('title'));
-				$(el).removeAttr('title');
-			}
-		}
+ 	$.fn.aptip = function(settings) {
 
-		function showtip(el){
-			altertitle(el);
+ 		var config = $.extend( {
+ 			'theme': '',
+ 			'delay': '',
+ 			'title': '',
+ 			'before': '',
+ 			'ajax': '',
+ 			'position': 'top center'
+ 		}, settings);
 
-			var title = $(el).data('aptiptitle');
 
-			tip = $('<div class="ap-tooltip"><div class="ap-tooltip-in">'+ title +'<span class="arrow"></span></div></div>');
+ 		this.ajax_running = false;
 
-			tip.appendTo('body');
+ 		var plug = this;
 
-			var offset 	= $(el).offset();
-            var height 	= $(el).outerHeight();
-            var width 	= $(el).outerWidth();
+ 		function altertitle(el){
+ 			if(typeof $(el).attr('title') !== 'undefined'){
+ 				$(el).data('aptiptitle', $(el).attr('title'));
+ 				$(el).removeAttr('title');
+ 			}
+ 		}
 
-            var setpos = config.position.split(/ +/);
+ 		function position(el){
+ 			var offset 	= $(el).offset();
+ 			var height 	= $(el).outerHeight();
+ 			var width 	= $(el).outerWidth();
 
-            if(typeof $(el).data('tipposition') !== 'undefined'){
-            	setpos =  $(el).data('tipposition').split(/ +/);
-            }
+ 			var setpos = config.position.split(/ +/);
 
-            var x = 'top';
-            switch(setpos[0]){
-            	case 'bottom':
-            		x = offset.top + height + 10;
-            		break;
+ 			if(typeof $(el).data('tipposition') !== 'undefined'){
+ 				setpos =  $(el).data('tipposition').split(/ +/);
+ 			}
 
-            	case 'center':
-            		x = offset.top + (height/2)  - (tip.outerHeight()/2);
-            		break;
+ 			var x = 'top';
+ 			switch(setpos[0]){
+ 				case 'bottom':
+ 				x = offset.top + height + 10;
+ 				break;
 
-            	default:
-            		x = offset.top - tip.outerHeight() - 10;
-            		break;
-            }
+ 				case 'center':
+ 				x = offset.top + (height/2)  - (tip.outerHeight()/2);
+ 				break;
 
-            var y = 'right';
-            switch(setpos[1]){
-            	case 'left':
-            		y = offset.left - width;
-            		break;
+ 				default:
+ 				x = offset.top - tip.outerHeight() - 10;
+ 				break;
+ 			}
 
-            	case 'center':
-            		y = offset.left + (width/2)  - (tip.outerWidth()/2);
-            		break;
+ 			var y = 'right';
+ 			switch(setpos[1]){
+ 				case 'left':
+ 				y = offset.left - width;
+ 				break;
 
-            	default:
-            		y = offset.left + width;
-            		break;
-            }
-            tip.addClass('x-'+ setpos[0] +' y-'+setpos[1])
-			tip.css({
-				overflow: 'absolute',
-				top: x,
-				left: y
-			});
-		}
+ 				case 'center':
+ 				y = offset.left + (width/2)  - (tip.outerWidth()/2);
+ 				break;
 
-		  var config = $.extend( {
-			  'position': 'top center'
-		  }, settings);
+ 				default:
+ 				y = offset.left + width;
+ 				break;
+ 			}
+ 			tip.addClass('x-'+ setpos[0] +' y-'+setpos[1]);
+ 			tip.css({
+ 				overflow: 'absolute',
+ 				top: x,
+ 				left: y
+ 			});
+ 		}
 
-		  return this.each(function() {
-			  $this = $(this);
+ 		function showtip(el){
 
-			  $this.mouseenter(function(){
-				 showtip(this);
-			  })
+	 		if( typeof $(el).data('action') !== 'undefined' &&  $(el).data('action') == 'ap_hover_card' && typeof $(el).data('tipquery') === 'undefined' ){
+	 			$(el).data('tipquery', 'action=ap_ajax&ap_ajax_action=user_cover&user_id='+ $(el).data('userid'));
+	 		}
 
-			  .mouseleave(function(){
-				tip.remove();
-			  })
-		  });
-	}
+	 		if( typeof $(el).data('tipquery') !== 'undefined' ){
+	 			config.ajax = $(el).data('tipquery');
+	 		}
+
+ 			altertitle(el);
+
+ 			if(config.title == ''){
+ 				var title = $(el).data('aptiptitle');
+ 			}else{
+ 				var title = config.title;
+ 			}
+
+ 			tip = $('<div class="ap-tooltip '+ config.theme +'"><div class="ap-tooltip-in">'+ title +'<span class="arrow"></span></div></div>');
+
+ 			if(config.ajax != '' && !plug.ajax_running){
+
+ 				if ( typeof plug.data_id === 'undefined' && $('.'+plug.data_id).length == 0) {
+ 					plug.ajax_running = true;
+	 				$.ajax({
+	                    type: 'POST',
+	                    url: ajaxurl,
+	                    data: config.ajax+'&ap_ajax_nonce='+ap_nonce,
+	                    success: function(data) {
+	                    	var html = $(data);
+	                    	var count = parseInt( $('.aptip-data').length );
+	                    	plug.data_id = 'aptipd-'+ (count+1);
+	                    	html.addClass( 'aptip-data '+ plug.data_id );
+	                        $('body').append(html.clone());
+	                        tip.find('.ap-tooltip-in').html(html.show());
+	                        position(el);
+	                        plug.ajax_running = false;
+	                    }
+	                });
+	            }else{
+	            	var html = $('.'+ plug.data_id ).html();
+                    tip.find('.ap-tooltip-in').html($(html).show());
+	            }
+
+ 			}
+
+ 			if(config.before != ''){
+ 				var before_callback = config.before;
+ 				before_callback(tip, el, function(){
+ 					position(el);
+ 				});
+ 			}
+
+
+ 			tip.appendTo('body');
+ 			position(el);
+ 		}
+
+		this.each(function() {
+			$this = $(this);
+
+			var item = this;
+
+			$this.mouseenter(function(){
+				if(config.delay != ''){
+					delay = setTimeout(function() {
+						showtip(item);
+					}, config.delay);
+				}else{
+					showtip(this);					
+				}
+
+			}).mouseleave(function(){
+				if(typeof tip !== 'undefined'){
+					tip.remove();
+				}
+
+				if(typeof delay !== 'undefined'){
+					clearTimeout( delay );
+				}
+			})
+		});
+
+		return this;
+
+ 	}
 
 	//pass in just the context as a $(obj) or a settings JS object
 	$.fn.autogrow = function(opts) {
@@ -93,9 +170,9 @@
 			overflow: 'hidden',
 			resize: 'none'
 		}) //prevent scrollies
-			,
-			selector = that.selector,
-			defaults = {
+		,
+		selector = that.selector,
+		defaults = {
 				context: $(document) //what to wire events to
 				,
 				animate: true //if you want the size change to animate
@@ -108,13 +185,13 @@
 				,
 				onInitialize: false //resizes the textareas when the plugin is initialized
 			};
-		opts = $.isPlainObject(opts) ? opts : {
-			context: opts ? opts : $(document)
-		};
-		opts = $.extend({}, defaults, opts);
-		that.each(function(i, elem) {
-			var min, clone;
-			elem = $(elem);
+			opts = $.isPlainObject(opts) ? opts : {
+				context: opts ? opts : $(document)
+			};
+			opts = $.extend({}, defaults, opts);
+			that.each(function(i, elem) {
+				var min, clone;
+				elem = $(elem);
 			//if the element is "invisible", we get an incorrect height value
 			//to get correct value, clone and append to the body.
 			if (elem.is(':visible') || parseInt(elem.css('height'), 10) > 0) {
@@ -137,10 +214,10 @@
 				resize.call(elem[0]);
 			}
 		});
-		opts.context.on('keyup paste', selector, resize);
+			opts.context.on('keyup paste', selector, resize);
 
-		function resize(e) {
-			var box = $(this),
+			function resize(e) {
+				var box = $(this),
 				oldHeight = box.innerHeight(),
 				newHeight = this.scrollHeight,
 				minHeight = box.data('autogrow-start-height') || 0,
@@ -170,9 +247,9 @@
 					.val(box.val());
 					box.after(clone); //append as close to the box as possible for best CSS matching for clone
 					do { //reduce height until they don't match
-						newHeight = clone[0].scrollHeight - 1;
-						clone.innerHeight(newHeight);
-					} while (newHeight === clone[0].scrollHeight);
+					newHeight = clone[0].scrollHeight - 1;
+					clone.innerHeight(newHeight);
+				} while (newHeight === clone[0].scrollHeight);
 					newHeight++; //adding one back eliminates a wiggle on deletion
 					clone.remove();
 					box.focus(); // Fix issue with Chrome losing focus from the textarea.
@@ -201,7 +278,7 @@
 		}
 
 		this.css("left", Math.max(0, (($(window).width() - $(this).outerWidth()) / 2) +
-														$(window).scrollLeft()) + "px");
+			$(window).scrollLeft()) + "px");
 		return this;
 	}
 
@@ -214,48 +291,48 @@
  * @return {string}
  * @since 2.0
  **/
-function ap_default($value, $default){
-	if(typeof $value !== 'undefined')
-		return $value;
+ function ap_default($value, $default){
+ 	if(typeof $value !== 'undefined')
+ 		return $value;
 
-	return $default;
-}
+ 	return $default;
+ }
 
-function apLoadingDot(){
-	i = 0;
-	setInterval(function() {
-		jQuery('.ap-loading-dot').html( Array( (++i % 4)+1 ).join('.') );
-	}, 300);
-}
+ function apLoadingDot(){
+ 	i = 0;
+ 	setInterval(function() {
+ 		jQuery('.ap-loading-dot').html( Array( (++i % 4)+1 ).join('.') );
+ 	}, 300);
+ }
 
-function apAjaxData(param) {
-	param = param + '&action=ap_ajax';
-	return param;
-}
+ function apAjaxData(param) {
+ 	param = param + '&action=ap_ajax';
+ 	return param;
+ }
 
-function apQueryStringToJSON(string) {
-	var pairs = string.split('&');
-	var result = {};
-	pairs.forEach(function(pair) {
-		pair = pair.split('=');
-		result[pair[0]] = encodeURIComponent(pair[1] || '');
-	});
-	return JSON.parse(JSON.stringify(result));
-}
+ function apQueryStringToJSON(string) {
+ 	var pairs = string.split('&');
+ 	var result = {};
+ 	pairs.forEach(function(pair) {
+ 		pair = pair.split('=');
+ 		result[pair[0]] = encodeURIComponent(pair[1] || '');
+ 	});
+ 	return JSON.parse(JSON.stringify(result));
+ }
 
-function apGetValueFromStr(q, name) {
-	name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
-	var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
-		results = regex.exec(q);
-	return results == null ? false : decodeURIComponent(results[1].replace(/\+/g, " "));
-}
+ function apGetValueFromStr(q, name) {
+ 	name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+ 	var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+ 	results = regex.exec(q);
+ 	return results == null ? false : decodeURIComponent(results[1].replace(/\+/g, " "));
+ }
 
-function apCenterBox(elm){
-	var elm         = jQuery(elm);
-	var parent      = elm.parent();
+ function apCenterBox(elm){
+ 	var elm         = jQuery(elm);
+ 	var parent      = elm.parent();
 
-	parent.css({position: 'relative'});
+ 	parent.css({position: 'relative'});
 
-	elm.css("left", (parent.width()-elm.width())/2);
-	elm.css("top", (parent.height()-elm.height())/2);
-}
+ 	elm.css("left", (parent.width()-elm.width())/2);
+ 	elm.css("top", (parent.height()-elm.height())/2);
+ }

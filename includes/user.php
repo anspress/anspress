@@ -804,7 +804,7 @@ function ap_hover_card_ajax_query($user_id = false) {
 
 function ap_hover_card_attributes($user_id, $echo = true) {
 	if ( $user_id > 0 ) {
-		$attr = ' data-userid="'.$user_id.'" data-action="ap_hover_card" data-query="'.ap_hover_card_ajax_query( $user_id ).'"';
+		$attr = ' data-userid="'.$user_id.'" data-action="ap_hover_card"';
 
 		if ( $echo ) {
 			echo $attr; } else {

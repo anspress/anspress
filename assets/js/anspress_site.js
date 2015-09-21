@@ -573,39 +573,13 @@
             });
         },
         hoverCard:function(){
-            /*if(!disable_hover_card)
-            $('[data-action="ap_hover_card"]').tooltipster({
+            if(!disable_hover_card)
+            $('[data-action="ap_hover_card"]').aptip({
                 theme: 'ap-hover-card',
-                delay:500,
-                animation: 'fade',
                 interactive:true,
-                content: aplang.loading,
-                functionBefore: function(origin, continueTooltip) {
-
-                    // we'll make this function asynchronous and allow the tooltip to go ahead and show the loading notification while fetching our data
-                    continueTooltip();
-                    var q = $(this).attr('data-query'),
-                        user_id = $(this).attr('data-userid');
-
-                    // next, we want to check if our data has already been cached
-                    if ( $('#user_'+user_id+'_card').length == 0) {
-                        $.ajax({
-                            type: 'POST',
-                            url: ajaxurl,
-                            data: q+'&ap_ajax_nonce='+ap_nonce,
-                            success: function(data) {
-                                $('body').append(data);
-                                // update our tooltip content with our returned data and cache it
-                                origin.tooltipster('content', $(data).show() );
-                                $(data).show();
-                            }
-                        });
-                    }else{
-                        var html = $('#user_'+user_id+'_card').html();
-                        origin.tooltipster('content', $(html).show() );
-                    }
-                }
-            });*/
+                delay:500,
+                title: aplang.loading
+            });
         },
         delete_notification: function() {
             $('body').delegate('[data-action="ap_delete_notification"]', 'click', function(e) {

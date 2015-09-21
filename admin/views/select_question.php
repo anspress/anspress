@@ -15,16 +15,17 @@ if (! defined('WPINC')) {
 
 ?>
 <div id="ap-admin-dashboard" class="wrap">
-	<?php do_action('ap_before_admin_page_title') ?>	
+	<?php do_action('ap_before_admin_page_title') ?>
 
 	<h2><?php _e('Select a question for new answer', 'ap') ?></h2>
 	<p><?php _e('Slowly type for question suggestion and then click select button right to question title.', 'ap') ?></p>
-	
-	<?php do_action('ap_after_admin_page_title') ?>	
+
+	<?php do_action('ap_after_admin_page_title') ?>
 
 	<div class="ap-admin-container">
 		<form class="question-selection">
 			<input type="text" name="question_id" class="ap-select-question" id="select-question-for-answer" />
+			<input type="hidden" name="is_admin" value="true" />
 		</form>
 		<div id="similar_suggestions">
 		</div>

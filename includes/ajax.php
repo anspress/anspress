@@ -61,6 +61,8 @@ class AnsPress_Ajax
 
 	    $keyword = sanitize_text_field( wp_unslash( $_POST['value'] ) );
 
+	    $is_admin = (bool) $_POST['is_admin'];
+
 	    $questions = get_posts(array(
 			'post_type' => 'question',
 			'showposts' => 10,
@@ -68,7 +70,8 @@ class AnsPress_Ajax
 		));
 
 	    if ( $questions ) {
-	    	if ( is_admin() ) {
+
+	    	if ( $is_admin ) {
 		        $items = '<div class="ap-similar-questions-head">';
 		        $items .= '<h3>'.ap_icon( 'check', true ).sprintf( __( '%d similar questions found', 'ap' ), count( $questions ) ).'</h3>';
 		        $items .= '<p>'.__( 'We found similar questions that have already been asked, click to read them. Avoid creating duplicate questions, it will be deleted.' ).'</p>';
@@ -80,14 +83,14 @@ class AnsPress_Ajax
 	            $count = ap_count_answer_meta( $p->ID );
 	            $p->post_title = ap_highlight_words( $p->post_title, $keyword );
 
-	            if(is_admin()){
+	            if($is_admin){
 	            	$items .= '<div class="ap-q-suggestion-item clearfix"><a class="select-question-button button button-primary button-small" href="'.add_query_arg( array( 'post_type' => 'answer', 'post_parent' => $p->ID ), admin_url( 'post-new.php' ) ).'">'.__( 'Select', 'ap' ).'</a><span class="question-title">'.$p->post_title.'</span><span class="acount">'.sprintf( _n( '1 Answer', '%d Answers', $count, 'ap' ), $count ).'</span></div>';
 	            }else{
 		            $items .= '<a class="ap-sqitem clearfix" target="_blank" href="'.get_permalink( $p->ID ).'"><span class="acount">'.sprintf( _n( '1 Answer', '%d Answers', $count, 'ap' ), $count ).'</span><span class="ap-title">'.$p->post_title.'</span></a>';
 		        }
 	        }
 
-	        if ( is_admin() ) {
+	        if ( $is_admin ) {
 	       		$items .= '</div>';
 	       	}
 
@@ -596,6 +599,8 @@ class AnsPress_Ajax
 				ap_get_template_part( 'user/user-card' );
 			endwhile;
 		}
+
+		die();
 
 	}
 
