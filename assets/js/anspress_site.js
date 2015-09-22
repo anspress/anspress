@@ -639,10 +639,17 @@
             $("#qsuggestion").center();
 
             ApSite.doAjax(apAjaxData('action=ap_ajax&ap_ajax_action=suggest_similar_questions&ap_ajax_nonce='+ap_nonce+'&value='+title), function(data) {
+                $('body').data('apSuggestionLoaded', true);
+                if(data == false){
+                    $('#ask_form').submit();
+                    $('#qsuggestion').hide();
+                    return;
+                }
+
                 $("#qsuggestion .ap-qsuggestion-list").html(data.html);
                 $("#qsuggestion").center();
                 $("#qsuggestion .ap-qsuggestion-inner").css("height" , ($("#qsuggestion").height() - $(".ap-qsuggestion-header").outerHeight()) - $(".ap-qsuggestion-footer").outerHeight() );
-                $('body').data('apSuggestionLoaded', true);
+                
             }, this, false, true);
 
             return false;

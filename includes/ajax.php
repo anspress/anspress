@@ -43,8 +43,6 @@ class AnsPress_Ajax
 	    $ap->add_action( 'ap_ajax_flag_post', $this, 'flag_post' );
 	    $ap->add_action( 'ap_ajax_subscribe', $this, 'subscribe' );
 	    $ap->add_action( 'ap_ajax_vote', $this, 'vote' );
-	    // $ap->add_action( 'wp_ajax_ap_vote_for_close', $this, 'ap_vote_for_close' );
-	    // $ap->add_action( 'wp_ajax_nopriv_ap_vote_for_close', $this, 'ap_nopriv_vote_for_close' );
 	    $ap->add_action( 'ap_ajax_flag_comment', $this, 'flag_comment' );
 	}
 
