@@ -12,7 +12,6 @@
 /**
  * Show best answer
  */
-ap_get_best_answer();
 if(ap_have_answers()){
 	echo '<div id="ap-best-answer">';
 		echo '<h3 class="ap-answers-label"><span>' . __('Best answer', 'ap') .'</span></h3>';		

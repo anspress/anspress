@@ -169,22 +169,58 @@ function is_question() {
 	return false;
 }
 
+/**
+ * Is ask page.
+ * @return boolean
+ */
 function is_ask() {
-	if ( is_anspress() && ap_current_page() == 'ask' ) {
+	if ( is_anspress() && ap_current_page() == ap_get_ask_page_slug() ) {
 		return true;
 	}
 
 	return false;
+}
+
+/**
+ * Ask page slug.
+ * @return string
+ */
+function ap_get_ask_page_slug() {
+	$opt = ap_opt( 'ask_page_slug' );
+
+	if ( $opt ) {
+		return $opt;
+	}
+
+	return 'ask';
 }
 
 function is_ap_users() {
-	if ( is_anspress() && ap_current_page() == 'users' ) {
+	if ( is_anspress() && ap_current_page() == ap_get_users_page_slug() ) {
 		return true;
 	}
 
 	return false;
 }
 
+/**
+ * Get users page slug
+ * @return string
+ */
+function ap_get_users_page_slug() {
+	$opt = ap_opt( 'users_page_slug' );
+
+	if ( $opt ) {
+		return $opt;
+	}
+
+	return 'users';
+}
+
+/**
+ * Check if current page is user page
+ * @return boolean
+ */
 function is_ap_user() {
 	if ( is_anspress() && ap_current_page() == ap_get_user_page_slug() ) {
 		return true;
@@ -192,6 +228,7 @@ function is_ap_user() {
 
 	return false;
 }
+
 
 function get_question_id() {
 

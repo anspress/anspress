@@ -396,9 +396,12 @@ function ap_question_the_answer_form() {
 	 * @since 2.1
 	 */
 function ap_question_the_answers() {
+	global $answers;
+
+	$answers = ap_get_best_answer();
 	include( ap_get_theme_location( 'best_answer.php' ) );
 
-	ap_get_answers();
+	$answers = ap_get_answers();
 
 	include( ap_get_theme_location( 'answers.php' ) );
 	wp_reset_postdata();

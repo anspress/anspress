@@ -157,7 +157,8 @@ class AnsPress_User
 	 * @since 2.0.1
 	 */
 	public function answers_page() {
-		ap_get_answers( array( 'author' => ap_get_displayed_user_id() ) );
+		global $answers;
+		$answers = ap_get_answers( array( 'author' => ap_get_displayed_user_id() ) );
 		include ap_get_theme_location( 'user/user-answers.php' );
 		wp_reset_postdata();
 	}

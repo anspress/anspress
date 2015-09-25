@@ -171,7 +171,7 @@ function ap_get_answers($args = array()) {
 		$args['order_answer_id'] = (int) $_GET['show_answer'];
 	}
 
-	anspress()->answers = new Answers_Query( $args );
+	return new Answers_Query( $args );
 }
 
 /**
@@ -181,7 +181,7 @@ function ap_get_answers($args = array()) {
  * @since 2.1
  */
 function ap_get_answer($answer_id) {
-	anspress()->answers = new Answers_Query( array( 'p' => $answer_id ) );
+	return new Answers_Query( array( 'p' => $answer_id ) );
 }
 
 /**
@@ -196,7 +196,7 @@ function ap_get_best_answer($question_id = false) {
 	}
 
 	$args = array( 'only_best_answer' => true );
-	anspress()->answers = new Answers_Query( $args );
+	return new Answers_Query( $args );
 }
 
 /**
@@ -204,15 +204,18 @@ function ap_get_best_answer($question_id = false) {
  * @return boolean
  */
 function ap_have_answers() {
-	return anspress()->answers->have_posts();
+	global $answers;
+	return $answers->have_posts();
 }
 
 function ap_answers() {
-	return anspress()->answers->have_posts();
+	global $answers;
+	return $answers->have_posts();
 }
 
 function ap_the_answer() {
-	return anspress()->answers->the_post();
+	global $answers;
+	return $answers->the_post();
 }
 
 /**
@@ -220,11 +223,12 @@ function ap_the_answer() {
  * @return object
  */
 function ap_answer_the_object() {
-	if ( ! @anspress()->answers ) {
+	global $answers;
+	if ( ! $answers ) {
 		return;
 	}
 
-	return anspress()->answers->post;
+	return $answers->post;
 }
 
 /**
@@ -436,7 +440,7 @@ function ap_answer_get_the_vote_class() {
  * output answers pagination
  */
 function ap_answers_the_pagination() {
-	$answers = anspress()->answers;
+	global $answers;
 	ap_pagination( false, $answers->max_num_pages );
 }
 
@@ -496,5 +500,6 @@ function ap_answer_the_count() {
  * @since 2.1
  */
 function ap_answer_get_the_count() {
-	return anspress()->answers->found_posts;
+	global $answers;
+	return $answers->found_posts;
 }

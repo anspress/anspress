@@ -14,9 +14,9 @@
 	</form>
 	<?php
 		// Hide ask button if user page
-		if(!is_ap_user()):
+		if( !is_ap_user() ){
 			ap_ask_btn();
-		endif;
+		}
 	?>
 	<form id="ap-question-sorting" class="ap-questions-sorting clearfix">
 		<?php ap_question_sorting(); ?>

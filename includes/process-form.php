@@ -388,7 +388,7 @@ class AnsPress_Process_Form
 
 		global $ap_errors, $validate;
 
-		if ( ap_opt( 'enable_recaptcha' ) && ! $this->check_recaptcha() ) {
+		if ( ap_show_captcha_to_user() && ! $this->check_recaptcha() ) {
 			$this->result = array(
 				'form' 			=> $_POST['ap_form_action'],
 				'message'		=> 'captcha_error',
@@ -490,7 +490,8 @@ class AnsPress_Process_Form
 			$current_ans = ap_count_published_answers( $question->ID );
 
 			if ( ! is_user_logged_in() && ap_opt( 'allow_anonymous' ) && isset( $fields['name'] ) ) {
-				update_post_meta( $post_id, 'anonymous_name', $fields['name'] ); }
+				update_post_meta( $post_id, 'anonymous_name', $fields['name'] );
+			}
 
 			if ( $this->is_ajax ) {
 
@@ -505,12 +506,12 @@ class AnsPress_Process_Form
 				}
 
 				ob_start();
-
+				global $answers;
 				if ( $current_ans == 1 ) {
-					ap_get_answers( array( 'question_id' => $question->ID ) );
+					$answers = ap_get_answers( array( 'question_id' => $question->ID ) );
 					ap_get_template_part( 'answers' );
 				} else {
-					ap_get_answer( $post_id );
+					$answers = ap_get_answer( $post_id );
 					ap_get_template_part( 'answer' );
 				}
 
