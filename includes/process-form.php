@@ -384,6 +384,9 @@ class AnsPress_Process_Form
 		}
 	}
 
+	/**
+	 * Process answer form
+	 */
 	public function process_answer_form() {
 
 		global $ap_errors, $validate;
@@ -463,7 +466,8 @@ class AnsPress_Process_Form
 			$status = 'moderate'; }
 
 		if ( isset( $this->fields['is_private'] ) && $this->fields['is_private'] ) {
-			$status = 'private_post'; }
+			$status = 'private_post';
+		}
 
 		$answer_array = array(
 			'post_title'	=> $question->post_title,
@@ -511,8 +515,10 @@ class AnsPress_Process_Form
 					$answers = ap_get_answers( array( 'question_id' => $question->ID ) );
 					ap_get_template_part( 'answers' );
 				} else {
-					$answers = ap_get_answer( $post_id );
-					ap_get_template_part( 'answer' );
+					$answers = ap_get_answers(  array( 'p' => $post_id ) );
+					while ( ap_have_answers() ) : ap_the_answer();
+						ap_get_template_part( 'answer' );
+					endwhile;
 				}
 
 				$html = ob_get_clean();

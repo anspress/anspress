@@ -13,6 +13,7 @@ if(!ap_answer_user_can_view()){
 	include ap_get_theme_location('no-permission-post.php');
 	return;
 }
+
 ?>
 <div id="answer_<?php the_ID(); ?>" <?php post_class() ?> data-id="<?php the_ID(); ?>" data-index="<?php echo @$i; ?>" itemprop="suggestedAnswer<?php echo ap_answer_is_best() ? ' acceptedAnswer' : ''; ?>" itemtype="http://schema.org/Answer" itemscope="">
 	<div class="ap-content">
