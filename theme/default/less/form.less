@@ -1,0 +1,403 @@
+//
+// Form and editor styles
+// --------------------------------------------------
+#anspress{
+	.ap-form-control {
+	    border: 1px solid #ddd;
+	    border-radius: 1px;
+	    box-shadow: 0 0 2px rgba(0, 0, 0, 0.02) inset;
+	    display: block;
+	    height: 33px;
+	    margin-bottom: 15px;
+	    padding: 5px 10px;
+	    width: 100%;
+
+	    &.autogrow{
+	    	overflow: hidden;
+	    }
+
+	    &[type="checkbox"]{
+		    display: inline;
+		    margin: 0;
+		    padding: 0;
+		    width: auto;
+		    height: auto;
+	    }
+	}
+	textarea.ap-form-control{
+		height: auto;
+	}
+	label > input[type="checkbox"] {
+	    float: left;
+	    margin-right: 10px !important;
+	    margin-top: 3px !important;
+	}
+	label.inline-cb{
+		margin-bottom: 15px;
+	}
+	.ap-checkbox-withdesc{
+		margin-bottom: 15px;
+		[type="checkbox"]{
+		    float: left;
+		    height: 20px;
+		    line-height: 100%;
+		    margin-right: 10px;
+		}
+		p{
+		    color: @light-color;
+		    font-size: 13px;
+		    margin-bottom: 0;
+		}
+	}
+	.ap-form-fields{
+		position: relative;
+		&.ap-have-error{
+			.ap-form-control, .ap-editor, .bootstrap-tagsinput{
+				border: solid 1px @error-color;
+				background: lighten(@error-color, 40%);
+			}
+			.ap-editor{
+				padding: 10px;
+			}
+			&.being-edited{
+				.ap-form-control, .ap-editor{
+					border-color: @yellow-color;
+					background: @white;
+				}
+				.ap-form-error-message{
+					background: @yellow-color;
+				}
+			}
+		}
+
+		.ap-form-error-message{
+		    border-radius: 2px;
+		    color: @error-color;
+		    display: table;
+		    font-size: 13px;
+		    font-weight: 600;
+		    margin: -10px 0 10px;
+		    padding: 0;
+		}
+		&-wrap{
+			border-bottom: 1px solid #f7f7f7;
+    		padding: 10px 0;
+    		.ap-btn-submit, .ap-btn-cancel{
+			    color: #777;
+			    font-size: 12px;
+			    line-height: 15px;
+			    margin-right: 7px;
+			    padding: 2px 5px;
+    		}
+    		.ap-btn-cancel{
+    			background: none;
+    			box-shadow: none;
+    			border: none;
+    		}
+    		.ap-form-control{
+    			margin-bottom: 5px;
+    		}
+    	}
+		&-wrap-label{
+		    float: left;
+		    font-weight: 600;
+		    width: 150px;
+		}
+		&-wrap-inner{
+			overflow: hidden;
+			> a{
+				float: right;
+    			font-style: normal;
+			}
+		}
+		&-edit{
+			float: right;
+		}
+
+	}
+	.ap-editor{
+	    margin-bottom: 20px;
+	    iframe{
+	    	margin: 0;
+	    }
+		.quicktags-toolbar{
+			background: none;
+			border:none;
+		}
+		.mce-edit-area {
+		    background: none repeat scroll 0 0 #fcfcfc;
+		    border: 1px solid #ddd !important;
+		    border-radius: 3px;
+		    box-shadow: 0 0 2px rgba(0, 0, 0, 0.05) inset;
+		    padding: 7px;
+		}
+
+		.quicktags-toolbar input.button, .mce-btn button{
+		    background: #fff;
+		    border: medium none;
+		    .border-radius(2px);
+		    .box-shadow(none);
+		    color: #aaa;
+
+		    i{
+		    	padding: 0;
+		    }
+		    &:hover{
+		    	background: #eee;
+		    }
+		}
+		.mce-toolbar-grp{
+		    background: none repeat scroll 0 0 #fff;
+		    border-bottom: medium none;
+		    border-radius: 4px 4px 0 0;
+		}
+		.html-active .switch-html, .tmce-active .switch-tmce {
+		    background: #fff;
+		    border-bottom-color: #fff;
+		}
+		div.mce-toolbar-grp > div {
+		    padding: 0;
+		}
+		.mce-toolbar .mce-btn-group .mce-btn {
+		    border: medium none;
+		    margin: 0;
+		    padding: 3px;
+		}
+		.mce-toolbar .mce-btn-group .mce-btn:hover{
+		    background: transparent;
+		    border-color: #ddd;
+		}
+		.wp-editor-tools {
+		    background: #f8f8f8;
+		    padding: 5px;
+		}
+		.mce-statusbar{
+			display: none;
+		}
+		.wp-media-buttons {
+		    position: absolute;
+		    right: 3px;
+		    top: 1px;
+		    #insert-media-button{
+			    background: none repeat scroll 0 0 #fff;
+			    border-color: #eee;
+			    border-image: none;
+			    border-radius: 0;
+			    border-style: none none none solid;
+			    border-width: 1px;
+			    box-shadow: none;
+			    height: 30px;
+			    margin-bottom: -3px;
+			    margin-right: -2px;
+			    margin-top: -1px;
+			    overflow: hidden;
+			    padding: 2px 10px;
+			    width: 36px;
+		    }
+		}
+		#wp-description-editor-tools {
+		    padding: 0;
+		}
+		.mce-toolbar.mce-first.mce-stack-layout-item {
+		    margin-right: 36px;
+		}
+		textarea.wp-editor-area {
+		    background: none repeat scroll 0 0 #ffffff;
+		    border: 1px solid #ddd;
+		    box-shadow: 0 0 2px rgba(0, 0, 0, 0.05) inset;
+		}
+		.quicktags-toolbar input.button.button-small{
+		    background: none repeat scroll 0 0 #f8f8f8;
+		    border: 1px solid #ddd;
+		    color: #333;
+		}
+	}
+
+	.btn-submit-ans{
+		padding: 10px 20px;
+	}
+	.ap-form-label{
+	    display: block;
+	    font-weight: bold;
+	    margin-bottom: 10px;
+	    font-size: 14px;
+		.ap-field-desc {
+		    background: #bbb;
+		    .border-radius(50%);
+		    color: @white;
+		    display: inline-block;
+		    font-size: 11px;
+		    height: 15px;
+		    line-height: 16px;
+		    margin-left: 7px;
+		    text-align: center;
+		    width: 15px;
+
+		    &:hover{
+		    	background: @blue-color;
+		    	cursor: pointer;
+		    }
+		}
+	}
+
+	#answer_form{
+		.ap-editor-answer-label{
+		    color: #888;
+		    display: block !important;
+		    padding: 5px 10px;
+		}
+	}
+
+	.ap-avatar-upload-form{
+		.ap-upload-o{
+		    background: none repeat scroll 0 0 rgba(0, 0, 0, 0.89);
+		    border: 2px solid #fff;
+		    border-radius: 50%;
+		    color: #fff;
+		    font-size: 17px;
+		    height: 30px;
+		    line-height: 26px;
+		    padding: 1px;
+		    position: relative;
+		    text-align: center;
+		    width: 30px;
+			> span{
+				display: none;
+			}
+		}
+		.ap-upload-input{
+			cursor: pointer;
+		    height: 100%;
+		    left: 0;
+		    opacity: 0;
+		    position: absolute;
+		    top: 0;
+		    width: 100%;
+			.opacity(0);
+		}
+	}
+	.ap-post-upload-form{
+	    background: #fcfcfc;
+	    border-color: #ddd;
+	    border-image: none;
+	    border-radius: 0 0 4px 4px;
+	    border-right: 1px solid #ddd;
+	    border-style: dashed solid solid;
+	    border-width: 1px;
+	    font-size: 13px;
+	    margin-bottom: 15px;
+	    margin-top: -22px;
+	    padding: 0;
+	    position: relative;
+	    .ap-upload-o{
+		   	background: none;
+		    border: medium none;
+		    box-shadow: none;
+		    color: #888;
+		    font-weight: 400;
+	    }
+	    .ap-upload-link{
+	    	color: @link-color;
+	    	position: relative;
+	    }
+	    .ap-upload-remote-link{
+	    	color: @link-color;
+	    	cursor: pointer;
+	    }
+	    .ap-upload-input{
+		    cursor: pointer;
+		    height: 100%;
+		    left: 0;
+		    opacity: 0;
+		    position: absolute;
+		    right: 0;
+		    top: 0;
+		    width: 100%;
+	    }
+	    .ap-upload-link-rc {
+		    background: none repeat scroll 0 0 #fcfcfc;
+		    border-radius: 2px;
+		    display: none;
+		    left: 0;
+		    padding: 3px;
+		    position: absolute;
+		    right: 0;
+		    top: 0;
+		    z-index: 9;
+
+		    .ap-form-control{
+		    	margin: 0;
+		    	width: auto;
+		    }
+
+		    > *{
+		    	display: inline-block;
+		    }
+
+		    > a{
+			    border-radius: 2px;
+			    height: 28px;
+			    padding: 2px;
+			    text-align: center;
+			    vertical-align: top;
+			    width: 28px;
+		    }
+		}
+	}
+	.ap-form-head{
+	    background: #f8f8f8;
+	    border-bottom: 1px solid #e7e7e7;
+	    margin: -10px -10px 10px;
+	    padding: 8px;
+	    .ap-btn-fullscreen{
+		    font-size: 12px;
+		    padding: 2px 0;
+	    	&:before{
+	    		margin-right: 5px;
+	    	}
+	    	&.active {
+			    background: none repeat scroll 0 0 #ededed;
+			    border: 1px solid #ddd;
+			    line-height: 20px;
+			    margin-top: 2px;
+			    padding: 1px 9px;
+			    position: fixed;
+			    right: 5px;
+			    top: 1px;
+			    z-index: 999999;
+			}
+	    }
+	}
+	.ap-field-description.ap-have-error .ap-form-error-message{
+		margin-bottom: 30px;
+	}
+}
+
+#ap-search-form {
+	margin-bottom: 0;
+	.ap-form-control{
+		vertical-align: top;
+		margin: 0;
+	}
+}
+.screen-reader-text{
+	display: none;
+}
+.ap-btn-submit {
+    margin-top: 10px;
+}
+#wp-link-wrap{
+	form{
+		margin: 0;
+	}
+	input {
+	    height: 34px;
+	    margin: 0;
+	}
+	input[type="checkbox"] {
+	    height: auto;
+	}
+	.query-results {
+	    top: 245px;
+	}
+}

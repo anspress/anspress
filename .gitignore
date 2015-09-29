@@ -1,3 +1,17 @@
 /.svn
 /readme.txt
 /addons/realtime
+/.buildpath
+/.project
+/addons
+/node_modules
+/docs
+/bin
+/theme/default/fonts/selection.json
+/theme/default/fonts/demo-files
+/theme/default/fonts/demo.html
+/phpdoc.dist.xml
+/tasks.TODO
+/*.TODO
+/demo
+/theme/default/images/cover.psd

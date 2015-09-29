@@ -1,0 +1,115 @@
+//
+// Comments
+// --------------------------------------------------
+#anspress{
+	.ap-comment-block, .have-comments {
+	    background: none repeat scroll 0 0 #fcfcfc;
+	    border: medium none;
+	    border-radius: 0 0 3px 3px;
+	    font-size: 13px;
+	    margin: 5px -10px -10px;
+	}
+	#respond {
+	    margin: 0;
+	}
+	.ap-commentlist {
+	    list-style: none outside none;
+	    margin: 0;
+	    padding: 0;
+	    >li{
+		    border-top: 1px solid #eee;
+		    margin: 0;
+		    padding: 10px;
+		    .ap-avatar{
+		    	margin-top: 5px;
+		    }
+		    &:nth-child(2n) {
+			    background: #fff;
+			}
+			&.pending {
+			    background: #fff8ee;
+			}
+	    }
+	    article{
+		    border-color: #eee transparent transparent;
+		    border-image: none;
+		    border-right: medium none transparent;
+		    border-style: solid none none;
+		    border-width: 1px medium medium;
+		    margin: 0;
+		    padding: 10px;
+	    }
+	    .comment{
+		    border-top: 1px solid #eee;
+		    margin-bottom: 0;
+		    padding: 10px;
+
+		    &:first-child{
+		    	border-bottom: none;
+		    }
+
+		    .ap-avatar{
+		    	margin-top: 3px;
+		    }
+		    .ap-comment-time{
+		    	margin-right: 10px;
+		    }
+		    .ap-comment-action{
+		    	margin-right:5px;
+		    	white-space: nowrap;
+		    	a{
+		    		text-decoration: none;
+		    		color: @link-color;
+		    	}
+		    	i{
+		    		font-size: 10px;
+		    	}
+		    }
+	    }
+	    .ap-comment-time {
+		    color: #777;
+		    margin-right: 10px;
+		}
+		.ap-comment-action{
+			margin-left:10px;
+		}
+		.children{
+		    list-style: outside none none;
+		    margin-top: 5px;
+	    }
+	}
+
+	.ap-comment-form{
+	    padding: 10px;
+	    form#ap-commentform{
+	    	margin: 0;
+	    }
+	    #ap-comment-textarea{
+	    	min-height: 42px;
+	    	margin: 0;
+	    }
+		.form-submit{
+			display: none;
+		}
+		#submit{
+			#anspress .ap-btn;
+		}
+		.ap-comment-submit {
+		    float: right;
+		    margin-left: 10px;
+		}
+		input[type="submit"]{
+			#anspress .ap-btn;
+			margin-bottom: 5px;
+		}
+		.ap-comment-textarea {
+		    overflow: hidden;
+		}
+		.comment-reply-title {
+		    display: none;
+		}
+	}
+	.ap-comment-header{
+		font-size: 12px;
+	}
+}

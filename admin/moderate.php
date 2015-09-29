@@ -31,6 +31,10 @@ class AP_Moderate_Table extends WP_List_Table {
 		$this->get_posts_counts();		
 		$this->current_status =  isset($_GET['status']) ? sanitize_text_field($_GET['status']) : 'publish' ;
 	}
+
+	/**
+	 * @param string $input_id
+	 */
 	public function search_box( $text, $input_id ) {
 		if ( empty( $_REQUEST['s'] ) && !$this->has_items() )
 			return;
@@ -73,7 +77,7 @@ class AP_Moderate_Table extends WP_List_Table {
 		
 
 		$views = array(
-			'moderate'	=> sprintf( '<a href="%s"%s>%s</a>', add_query_arg( array( 'status' => 'moderate', 'paged' => FALSE ) ), $current === 'moderate' ? ' class="current"' : '', __('Moderate', 'ap') . $moderate_count )
+			'moderate'	=> sprintf( '<a href="%s"%s>%s</a>', add_query_arg( array( 'status' => 'moderate', 'paged' => FALSE ) ), $this->current_status === 'moderate' ? ' class="current"' : '', __('Moderate', 'ap') . $moderate_count )
 		);
 
 		return apply_filters( 'ap_moderate_table_views', $views );
@@ -264,7 +268,6 @@ class AP_Moderate_Table extends WP_List_Table {
 		$num_posts = wp_count_posts( 'question', 'readable' );
 		$status = "moderate";
 		$mod_count = 0;
-		$count = '';
 		
 		if ( !empty($num_posts->$status) )
 			$mod_count = $num_posts->$status;
@@ -279,7 +282,7 @@ class AP_Moderate_Table extends WP_List_Table {
 	public function posts_data() {
 		global $wpdb;
 
-		$status =  isset($_GET['status']) ? sanitize_text_field($_GET['status']) : 'publish' ;
+		//$status =  isset($_GET['status']) ? sanitize_text_field($_GET['status']) : 'publish' ;
 		$paged = isset( $_GET['paged'] ) ? sanitize_text_field($_GET['paged']) : 1;
 		
 		// Preparing your query

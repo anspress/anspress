@@ -1,7 +1,7 @@
 <?php
 class AP_PostDiscussion_Widget extends WP_Widget {
 
-	function AP_PostDiscussion_Widget() {
+	public function AP_PostDiscussion_Widget() {
 		// Instantiate the parent object
 		parent::__construct( false, 'AnsPress Post Discussion' );
 	}

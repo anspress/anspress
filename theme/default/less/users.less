@@ -1,0 +1,59 @@
+//
+// Users styles
+// --------------------------------------------------
+
+#anspress{
+	.ap-users{
+		&-loop{
+			margin: 0 -5px;
+		}
+		&-item{
+			float:left;
+			width: 33.33%;
+			padding: 5px;
+		}
+		&-name{
+		    display: block;
+		    font-size: 15px;
+		    font-weight: 600;
+		    margin-bottom: 4px;
+		    white-space: nowrap;
+		    color: @default-color ;
+		}
+		&-summary{
+		    float: left;
+		    margin-right: 15px;
+		}
+		.avatar, .ap-dynamic-avatar{
+			display: block;
+		}
+		&-mini-status{
+			font-size: 13px;
+			span{
+			    border-right: 1px solid #ddd;
+			    margin-right: 5px;
+			    padding-right: 5px;
+			    white-space: nowrap;
+			    &:last-child{
+			    	border-right: none;
+			    	padding-right: 0;
+			    	margin-right: 0;
+			    }
+			}
+		}
+		&-buttons{
+			margin-top: 10px;
+			.ap-btn{
+			    display: inline-block;
+			    font-size: 11px;
+			    padding: 0 9px;
+			}
+		}
+		&-inner{
+		    border: 1px solid #eaeaea;
+		    border-radius: 2px;
+		    min-height: 110px;
+		    padding: 7px;
+		}
+	}
+}

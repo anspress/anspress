@@ -1,0 +1,33 @@
+//
+// Tooltip styles
+// --------------------------------------------------
+
+.ap-tooltip{
+	position: absolute;
+	z-index: 9999;
+	&-in{
+	    background: #000 none repeat scroll 0 0;
+	    border-radius: 3px;
+	    color: #fff;
+	    font-size: 13px;
+	    padding: 5px;
+	    position: relative;
+	}
+	.arrow{
+		background: transparent none repeat scroll 0 0;
+	    border-color: #333 transparent transparent;
+	    border-image: none;
+	    border-style: solid;
+	    border-width: 6px;
+	    bottom: -12px;
+	    display: block;
+	    left: 50%;
+	    margin-left: -5px;
+	    position: absolute;
+	}
+	&.x-bottom .arrow{
+		bottom: auto;
+		top: -12px;
+		border-color: transparent transparent #333;
+	}
+}

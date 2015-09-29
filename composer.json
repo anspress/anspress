@@ -1,0 +1,8 @@
+{
+    "name": "anspress/anspress",
+    "description": "Question and answer plugin for WordPress",
+    "license": "GPL-3.0+",
+    "require": {
+        "google/recaptcha": "~1.1"
+    }
+}

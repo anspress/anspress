@@ -1,56 +1,41 @@
-<div id="answer_<?php echo get_the_ID(); ?>" class="answer<?php echo ap_is_best_answer(get_the_ID()) ? ' selected' : ''; ?>" data-id="<?php echo get_the_ID(); ?>" itemprop="suggestedAnswer<?php echo ap_is_best_answer(get_the_ID()) ? ' acceptedAnswer' : ''; ?>" itemtype="http://schema.org/Answer" itemscope="">
-	<div class="ap-content clearfix">		
+<?php
+/**
+ * Answer content
+ *
+ * @author Rahul Aryan <support@anspress.io>
+ * @link http://anspress.io/anspress
+ * @since 0.1
+ *
+ * @package AnsPress
+ */
+
+if(!ap_answer_user_can_view()){
+	include ap_get_theme_location('no-permission-post.php');
+	return;
+}
+?>
+<div id="answer_<?php the_ID(); ?>" <?php post_class() ?> data-id="<?php the_ID(); ?>" data-index="<?php echo @$i; ?>" itemprop="suggestedAnswer<?php echo ap_answer_is_best() ? ' acceptedAnswer' : ''; ?>" itemtype="http://schema.org/Answer" itemscope="">
+	<div class="ap-content">
+		<div class="ap-single-vote"><?php ap_answer_the_vote_button(); ?></div>
 		<div class="ap-avatar">
-			<a href="<?php echo ap_user_link(get_the_author_meta('ID')); ?>">
-				<?php echo get_avatar( get_the_author_meta( 'user_email' ), ap_opt('avatar_size_qanswer') ); ?>
+			<a href="<?php ap_answer_the_author_link(); ?>"<?php ap_hover_card_attributes(ap_answer_get_author_id()); ?>>
+				<?php ap_answer_the_author_avatar(); ?>
 			</a>
-			<?php echo ap_select_answer_btn_html(get_the_ID()); ?>
 		</div>
-		<div class="ap-content-inner no-overflow">
-			<div class="ap-amainc">
-				<div class="ap-user-meta">
-					<div class="ap-single-vote">
-							<?php ap_vote_html(); ?>
-					</div>
-					<div class="ap-meta">
-						<?php
-							$a=" e ";$b=" ";$time=get_option('date_format').$b.get_option('time_format').$a.get_option('gmt_offset');
-							printf( '<a href="%6$s" class="author"><span>%s</span></a> <span>%5$s</span> <a href="#answer_%7$s"><time datetime="%3$s" title="%3$s" is="relative-time">%s %4$s</time></a>',
-							ap_user_display_name(false, true) ,
-							ap_human_time( get_the_time('U')),
-							get_the_time($time),
-							__('ago','ap'),
-							__('answered about','ap'),
-							ap_user_link(get_the_author_meta('ID')),
-							get_the_ID()
-							);
-						?>						
-					</div>			
+		<div class="ap-a-cells clearfix">
+			<div class="ap-q-metas">
+				<?php ap_user_display_meta(true, false, true); ?>
+				<?php ap_answer_the_time(); ?>
+			</div>
+			<div class="ap-q-inner">
+				<div class="ap-answer-content ap-q-content" itemprop="text">
+					<?php the_content(); ?>
 				</div>
-				<div class="answer-content" itemprop="text">
-					<?php
-						the_content();
-					?>
-				</div>			
-				<ul class="ap-user-actions clearfix">
-					<li><?php ap_edit_a_btn_html() ; ?></li>					
-					<li><?php ap_comment_btn_html(); ?></li>
-					<li><?php ap_flag_btn_html(); ?></li>
-					<li><?php ap_post_delete_btn_html(); ?></li>
-				</ul>
-				<?php ap_post_edited_time();?>
+				<?php ap_answer_the_active_time(); ?>
+				<?php ap_post_status_description(ap_answer_get_the_answer_id()) ?>
+				<?php ap_post_actions_buttons() ?>
 			</div>
-			<?php
-				$history = ap_get_latest_history_html(get_the_ID(), true, true);
-				if($history):
-			?>	
-			<div class="ap-qfooter">							
-				<div class="ap-tlitem">
-					<?php echo ap_get_latest_history_html(get_the_ID(), true, true); ?>
-				</div>				
-			</div>
-			<?php endif; ?>
-			<?php comments_template(); ?>
-		</div>			
-	</div>	
+			<?php ap_answer_the_comments(); ?>
+		</div>
+	</div>
 </div>

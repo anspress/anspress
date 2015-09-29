@@ -1,0 +1,35 @@
+# Travis CI Configuration File
+
+# Tell Travis CI we're using PHP
+language: php
+
+# PHP version used in first build configuration.
+php:
+    - "5.5"
+
+# WordPress version used in first build configuration.
+env:
+    - WP_VERSION=master
+
+matrix:
+  include:
+    - php: "5.3"
+      env: WP_VERSION=master
+
+# Clones WordPress and configures our testing environment.
+before_script:
+    - export PLUGIN_SLUG=$(basename $(pwd))
+    - git clone https://github.com/tierra/wordpress.git /tmp/wordpress
+# - git clone . "/tmp/wordpress/src/wp-content/plugins/$PLUGIN_SLUG"
+    - cd ..
+    - mv $PLUGIN_SLUG "/tmp/wordpress/src/wp-content/plugins/$PLUGIN_SLUG"
+    - cd /tmp/wordpress
+    - git checkout $WP_VERSION
+    - mysql -e "CREATE DATABASE wordpress_tests;" -uroot
+    - cp wp-tests-config-sample.php wp-tests-config.php
+    - sed -i "s/rahularyan/wordpress_tests/" wp-tests-config.php
+    - sed -i "s/rahularyan/travis/" wp-tests-config.php
+    - sed -i "s/rahularyan//" wp-tests-config.php
+    - cd "/tmp/wordpress/src/wp-content/plugins/$PLUGIN_SLUG"
+
+script: phpunit

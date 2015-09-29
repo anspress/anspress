@@ -1,0 +1,97 @@
+/* for mobile phones: Portrait and Landscape */
+@media only screen and (max-width: 480px) {
+  #anspress {
+    /*list style*/
+  }
+  #anspress .ap-list-head .ap-search-form {
+    float: none;
+    margin-bottom: 5px;
+  }
+  #anspress .ap-list-head .ap-search-form .ap-form-control {
+    width: 100%;
+  }
+  #anspress .ap-list-head .ap-btn-ask {
+    display: block;
+    float: none;
+    margin: 0;
+    text-align: center;
+  }
+  #anspress #ap-question-sorting {
+    float: none;
+    margin-top: 5px;
+  }
+  #anspress #ap-question-sorting .ap-dropdown-toggle {
+    padding: 3px 5px;
+  }
+  #anspress #ap-question-sorting .ap-dropdown-toggle.active {
+    padding: 4px 5px;
+  }
+  #anspress #ap-question-sorting #ap-question-sorting-reset {
+    height: 20px;
+    line-height: 18px;
+    padding: 3px 5px;
+    width: 20px;
+  }
+  #anspress .ap-list-counts,
+  #anspress .ap-questions-item .ap-avatar,
+  #anspress #answer-form-c .ap-avatar {
+    display: none;
+  }
+  #anspress .ap-questions-title {
+    font-size: 13px;
+    margin-bottom: 0;
+  }
+  #anspress .ap-questions .ap-display-meta-item {
+    font-size: 11px;
+  }
+  #anspress .ap-questions .ap-display-meta-item.history {
+    display: none;
+  }
+  #anspress .ap-display-meta-item:before {
+    width: 4px;
+    height: 4px;
+  }
+  #anspress .ap-questions-item {
+    padding: 8px 2px;
+  }
+  #anspress .ap-questions .ap-post-type {
+    font-size: 10px;
+    padding: 1px;
+  }
+  #anspress .ap-label-name {
+    border-radius: 1px;
+    font-size: 10px;
+    padding: 1px 4px;
+  }
+  #anspress .ap-q .ap-avatar img {
+    max-width: 30px;
+    height: auto;
+  }
+  #anspress .ap-q .ap-avatar {
+    float: none;
+    position: static;
+  }
+  #anspress .ap-q-cells,
+  #anspress .ap-a-cells {
+    font-size: 12px;
+    margin-left: 0 !important;
+  }
+  #anspress .ap-q-content {
+    font-size: 12px;
+    line-height: 1.2;
+  }
+  #anspress .ap-content {
+    padding-right: 0;
+  }
+  #anspress .ap-single-vote {
+    position: absolute;
+    right: 0;
+    top: 3px;
+  }
+  #anspress .ap-single-vote .ap-vote > * {
+    display: inline-block;
+  }
+  #anspress .ap-single-vote .ap-vote > span {
+    width: 30px;
+  }
+}
