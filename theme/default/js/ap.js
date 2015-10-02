@@ -6,9 +6,11 @@
                $('.ap-dropdown').removeClass('open');
             }
         });
+        
         $('body').delegate('.ap-dropdown-menu a', 'click', function(e){
             $(this).closest('.ap-dropdown').removeClass('open');
         });
+
         // Dropdown toggle
         $('body').delegate('.ap-dropdown-toggle', 'click', function(e){
             e.preventDefault();
@@ -28,31 +30,12 @@
             e.preventDefault();
             $(this).parent().next().slideToggle(200);
         });
-        if (($('#ask_question_form #post_content, #answer_form #post_content').length > 0) && typeof $.jStorage !== 'undefined') {
-            $('#post_content').on('blur', function() {
-                $.jStorage.set('post_content', $(this).val());
-            });
-            $('#post_title').on('blur', function() {
-                $.jStorage.set('post_title', $(this).val());
-            });
-            $('select#category').on('blur', function() {
-                $.jStorage.set('category', $(this).val());
-            });
-            $('.anspress').delegate('[data-action="ap-add-tag"]', 'click touchstart', function() {
-                $.jStorage.set('tags', $('[data-role="ap-tagsinput"]').tagsinput('items'));
-            });
-            if (typeof $.jStorage.get('post_content') !== 'undefined') $('#post_content').val($.jStorage.get('post_content'));
-            if (typeof $.jStorage.get('post_title') !== 'undefined') $('#post_title').val($.jStorage.get('post_title'));
-            if (typeof $.jStorage.get('category') !== 'undefined') $('select#category option[value="' + $.jStorage.get('category') + '"]').prop('selected', true);
-            if (typeof $.jStorage.get('tags') !== 'undefined' && $.jStorage.get('tags')) {
-                $.each($.jStorage.get('tags'), function(k, v) {
-                    $('[data-role="ap-tagsinput"]').tagsinput('add', v);
-                });
-            }
-        }
+        
+
         $('.ap-radio-btn').click(function() {
             $(this).toggleClass('active');
         });
+
         $('.bootstrap-tagsinput > input').keyup(function(event) {
             $(this).css(width, 'auto');
         });
@@ -133,6 +116,7 @@
 
             });
         }
+
         $('.ap-notification-scroll').scrollbar();
 
         $('.ap-label-form-item').click(function(e) {
@@ -160,6 +144,19 @@
             }
         }
     }
+
+    /**
+     * Ajax callback for subscribe button.
+     * @param  {object} data Ajax success data.
+     */
+    apFunctions.apSubscribeBtnCB = function ( data, el ){
+        if (data.action == 'subscribed') {
+            $(el).addClass('active');
+        } else {
+            $(el).removeClass('active');
+        }
+    }
+
 
 })(jQuery);
 

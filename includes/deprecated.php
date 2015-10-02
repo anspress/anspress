@@ -135,3 +135,48 @@ function ap_get_latest_history($post_id) {
 function ap_delete_history($user_id, $action_id, $value, $param = null) {
 	_deprecated_function( 'ap_delete_history', '2.4', 'ap_delete_activity' );
 }
+
+/**
+ * Insert notification in ap_meta table
+ *
+ * @param  integer       $current_user_id    User id of user triggering this hook.
+ * @param  integer       $affected_user_id   User id of user who is being affected.
+ * @param  string        $notification_type  Type of notification.
+ * @param  boolean|array $args               arguments for the notification.
+ * @deprecated 2.4 This function is deprecated and replaced by ap_new_notification.
+ */
+function ap_insert_notification( $current_user_id, $affected_user_id, $notification_type, $args = false) {
+	_deprecated_function( 'ap_insert_notification', '2.4', 'ap_new_notification' );
+}
+
+/**
+ * Insert subscriber for question or term
+ * @param  integer         $user_id    WP user ID
+ * @param  integer         $action_id  Question ID or Term ID
+ * @param  boolean|integer $sub_id     Any sub ID
+ * @param  boolean|integer $type       Type of subscriber, empty string for question
+ * @deprecated 2.4 This function is deprecated and replaced by ap_new_subscriber.
+ */
+function ap_add_subscriber($user_id, $action_id, $type = false, $sub_id = false) {
+	_deprecated_function( 'ap_add_subscriber', '2.4', 'ap_new_subscriber' );
+}
+
+/**
+ * Subscribe a question
+ * @param  integer         $question_id
+ * @param  boolean|integer $user_id
+ * @deprecated 2.4 This function is deprecated.
+ */
+function ap_add_question_subscriber($question_id, $user_id = false, $type = '', $secondary_id = '') {
+	_deprecated_function( 'ap_add_question_subscriber', '2.4' );
+}
+
+/**
+ * Unscubscribe user from a question
+ * @param  integer         $question_id Questions ID
+ * @param  boolean|integer $user_id
+ * @deprecated 2.4 This function is deprecated.
+ */
+function ap_remove_question_subscriber($question_id, $user_id = false) {
+	_deprecated_function( 'ap_remove_question_subscriber', '2.4' );
+}

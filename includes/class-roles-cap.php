@@ -192,7 +192,7 @@ function ap_user_can_answer($question_id) {
 		return false;
 	}
 
-	// Bail out if question is closed
+	// Bail out if question is closed.
 	if ( $question->post_type == 'closed' ) {
 		return false;
 	}

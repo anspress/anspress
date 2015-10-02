@@ -74,18 +74,40 @@ function anspress_activate( $network_wide ) {
 			  PRIMARY KEY (`meta_id`)
 			)".$charset_collate.";";
 
+		$notifications = "CREATE TABLE IF NOT EXISTS `".$wpdb->base_prefix."ap_notifications` (
+			    `id` bigint(20) NOT NULL AUTO_INCREMENT,
+			    `activity_id` bigint(20) NOT NULL,
+				`user_id` bigint(20) NOT NULL,
+				`status` varchar(225) NOT NULL,				
+				`date` date NOT NULL,
+				PRIMARY KEY (`id`)
+			)".$charset_collate.";";
+
+		$subscribers = "CREATE TABLE IF NOT EXISTS `".$wpdb->base_prefix."ap_subscribers` (
+			    `id` bigint(20) NOT NULL AUTO_INCREMENT,			    
+				`user_id` bigint(20) NOT NULL,
+				`item_id` bigint(20) NOT NULL,
+				`activity` varchar(225) NOT NULL,
+				PRIMARY KEY (`id`)
+			)".$charset_collate.";";
+
 		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 
 		dbDelta( $meta_table );
 		dbDelta( $activity_table );
 		dbDelta( $activity_meta );
+		dbDelta( $notifications );
+		dbDelta( $subscribers );
 
 		ap_opt( 'ap_db_version', AP_DB_VERSION );
 	}
 
 	if ( ! get_option( 'anspress_opt' ) ) {
 		update_option( 'anspress_opt', ap_default_options() );
-	} else { 	update_option( 'anspress_opt', get_option( 'anspress_opt' ) + ap_default_options() ); }
+	} 
+	else { 	
+		update_option( 'anspress_opt', get_option( 'anspress_opt' ) + ap_default_options() );
+	}
 
 	ap_opt( 'ap_flush', 'true' );
 	flush_rewrite_rules( false );

@@ -6,6 +6,8 @@
  * @license GPL 2+
  */
 (function($) {
+    apFunctions = {}
+
     /* on start */
     $(function() {
         /* create document */
@@ -26,12 +28,12 @@
             this.ajaxData;
             this.appendFormError();
             this.appendMessageBox();
+            this.ajax_btn();
             this.ap_comment_form();
             this.afterPostingAnswer();
             this.ap_ajax_form();
             this.load_comment_form();
             this.delete_comment();
-            this.ap_subscribe();
             this.vote();
             this.select_answer();
             this.ap_delete_post();
@@ -236,6 +238,23 @@
             if ($('#ap-commentform').length > 0) $('html, body').animate({
                 scrollTop: ($('#ap-commentform').offset().top) - 150
             }, 500);
+        },
+        ajax_btn: function() {
+            $('[data-action="ajax_btn"]').click(function(e) {
+                e.preventDefault();
+                AnsPress.site.showLoading(this);
+                var q = $(this).apAjaxQueryString();
+
+                ApSite.doAjax(q, function(data) {
+                    AnsPress.site.hideLoading(this);
+                    if( typeof $(this).data('cb') !== 'undefined' ){
+                        var cb = $(this).data("cb");                       
+                        if( typeof apFunctions[cb] === 'function' ){
+                            apFunctions[cb](data, this);
+                        }
+                    }
+                }, this);
+            });
         },
         load_comment_form: function() {
             $('body').delegate('[data-action="load_comment_form"]', 'click', function(e) {
@@ -656,6 +675,7 @@
         }
 
     }
+
 })(jQuery);
 
 (function($) {
@@ -704,7 +724,9 @@
             }
         }
 
-    });
+    });   
+    
+
 })(jQuery);
 
 

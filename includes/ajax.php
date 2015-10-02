@@ -16,7 +16,7 @@ class AnsPress_Ajax
 {
 	/**
 	 * AnsPress main class
-	 * @var [type]
+	 * @var object
 	 */
 	protected $ap;
 
@@ -275,8 +275,6 @@ class AnsPress_Ajax
 
 	        ap_update_user_best_answers_count_meta( $user_id );
 	        ap_update_user_solved_answers_count_meta( $user_id );
-
-	        ap_insert_notification( $user_id, $post->post_author, 'answer_selected', array( 'post_id' => $post->ID ) );
 
 	        $html = ap_select_answer_btn_html( $answer_id );
 	        $this->send( array(
@@ -712,9 +710,9 @@ class AnsPress_Ajax
 	 * Process ajax subscribe request.
 	 */
 	public function subscribe() {
-		$action_id = (int) $_POST['action_id'];
+		$action_id = (int) $_POST['args'][0];
 
-		$type = sanitize_text_field( $_POST['type'] );
+		$type = sanitize_text_field( $_POST['args'][1] );
 
 		if ( ! ap_verify_nonce( 'subscribe_'.$action_id.'_'.$type ) ) {
 			$this->something_wrong();
@@ -724,49 +722,49 @@ class AnsPress_Ajax
 			$this->send( 'please_login' );
 		}
 
-		if ( 'category' === $type ) {
-			$subscribe_type = 'category';
-		} elseif ( 'tag' === $type ) {
-			$subscribe_type = 'tag';
+		if ( 'category' === $type || 'tag' === $type ) {
+			$subscribe_type = 'tax_new_q';
 		} else {
-			$subscribe_type = false;
+			$subscribe_type = 'q_all';
 		}
 
 		$user_id = get_current_user_id();
 
-		$is_subscribed = ap_is_user_subscribed( $action_id, $user_id, $subscribe_type );
+		$is_subscribed = ap_is_user_subscribed( $action_id, $subscribe_type, $user_id );
 
 		if ( $is_subscribed ) {
-			if ( false === $subscribe_type ) {
-				$row = ap_remove_question_subscriber( $action_id );
-			} else {
-				$row = ap_remove_subscriber( $user_id, $action_id, $subscribe_type );
-			}
+			$row = ap_remove_subscriber( $action_id, $user_id, $subscribe_type );
 
 			if ( false !== $row ) {
+				$count = ap_subscribers_count( $action_id, $subscribe_type );
 				$this->send( array(
 					'message' 		=> 'unsubscribed',
 					'action' 		=> 'unsubscribed',
-					'container' 	=> '#subscribe_'.$action_id.' b',
+					'container' 	=> '#subscribe_'.$action_id.' .text',
 					'do' 			=> 'updateHtml',
-					'html' 			=> __( 'Follow question', 'ap' ),
+					'count' 		=> $count,
+					'html' 			=> __( 'Follow', 'ap' ),
+					'view' 			=> array( 'subscribe_'.$action_id => $count ),
 				) );
 			}
 		} else {
-			if ( false === $subscribe_type ) {
-				ap_add_question_subscriber( $action_id );
-			} else {
-				ap_add_subscriber( $user_id, $action_id, $subscribe_type );
-			}
+			$row = ap_new_subscriber( $user_id, $action_id, $subscribe_type );			
 
-			$this->send( array(
-				'message' 	=> 'subscribed',
-				'action' 	=> 'subscribed',
-				'container' => '#subscribe_'.$action_id.' b',
-				'do' 		=> 'updateHtml',
-				'html' 		=> __( 'Unfollow question', 'ap' ),
-			) );
+			$count = ap_subscribers_count( $action_id, $subscribe_type );
+			if ( false !== $row ) {
+				$this->send( array(
+					'message' 		=> 'subscribed',
+					'action' 		=> 'subscribed',
+					'container' 	=> '#subscribe_'.$action_id.' .text',
+					'do' 			=> 'updateHtml',
+					'count' 		=> $count,
+					'html' 			=> __( 'Unfollow', 'ap' ),
+					'view' 			=> array( 'subscribe_'.$action_id => $count ),
+				) );
+			}
 		}
+
+		$this->something_wrong();
 	}
 
 	/**

@@ -282,6 +282,29 @@
 		return this;
 	}
 
+	$.fn.apAjaxQueryString = function () {
+		var query = $(this).data('query').split("::");		
+		
+		var newQuery = {};
+	
+		newQuery['action'] = 'ap_ajax';
+		newQuery['ap_ajax_action'] = query[0];
+		newQuery['__nonce'] = query[1];
+		newQuery['args'] = {};
+
+		var newi = 0;
+		$.each(query,function(i){
+			if(i != 0 && i != 1){
+		   		newQuery['args'][newi] = query[i];
+		   		newi++;
+			}		   
+		});
+
+		console.log(newQuery);
+
+		return newQuery;
+	}	
+
 })(jQuery);
 
 /**

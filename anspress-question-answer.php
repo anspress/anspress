@@ -158,6 +158,8 @@ if ( ! class_exists( 'AnsPress' ) ) {
 	    public $rewrite_class;
 	    public $history_class;
 	    public $notification_class;
+	    public $notification_hooks;
+	    public $subscriber_hooks;
 
 		/**
 		 * Initializes the plugin by setting localization, hooks, filters, and administrative functions.
@@ -210,7 +212,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		    $constants = array(
 				'DS' 						=> DIRECTORY_SEPARATOR,
 				'AP_VERSION' 				=> $this->_plugin_version,
-				'AP_DB_VERSION' 			=> 14,
+				'AP_DB_VERSION' 			=> 16,
 				'ANSPRESS_DIR' 				=> plugin_dir_path( __FILE__ ),
 				'ANSPRESS_URL' 				=> plugin_dir_url( __FILE__ ),
 				'ANSPRESS_WIDGET_DIR' 		=> plugin_dir_path( __FILE__ ).'widgets'.DIRECTORY_SEPARATOR,
@@ -292,6 +294,8 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		    require_once ANSPRESS_DIR.'includes/flag.php';
 		    require_once ANSPRESS_DIR.'includes/class-notification.php';
 		    require_once ANSPRESS_DIR.'includes/activity.php';
+		    require_once ANSPRESS_DIR.'includes/notification-hooks.php';
+		    require_once ANSPRESS_DIR.'includes/subscriber-hooks.php';
 		}
 
 		/**
@@ -331,6 +335,8 @@ if ( ! class_exists( 'AnsPress' ) ) {
 	    	self::$instance->rewrite_class 		= new AnsPress_Rewrite( $this );
 	    	self::$instance->history_class 		= new AnsPress_Activity_Hook( $this );
 	    	self::$instance->notification_class = new AP_Notification( $this );
+	    	self::$instance->notification_hooks = new AnsPress_Notifications_Hooks( $this );
+	    	self::$instance->subscriber_hooks 	= new AnsPress_Subscriber_Hooks( $this );
 		}
 
 		/**

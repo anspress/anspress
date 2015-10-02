@@ -53,7 +53,6 @@ class AnsPress_Hooks
 	    $this->ap->add_action( 'trashed_comment', $this, 'comment_trash' );
 	    $this->ap->add_action( 'delete_comment ', $this, 'comment_trash' );
 	    $this->ap->add_action( 'ap_publish_comment', $this, 'publish_comment' );
-	    $this->ap->add_action( 'ap_unpublish_comment', $this, 'unpublish_comment' );
 	    $this->ap->add_filter( 'wp_get_nav_menu_items', $this, 'update_menu_url' );
 	    $this->ap->add_filter( 'nav_menu_css_class', $this, 'fix_nav_current_class', 10, 2 );
 	    $this->ap->add_filter( 'walker_nav_menu_start_el', $this, 'walker_nav_menu_start_el', 10, 4 );
@@ -73,11 +72,15 @@ class AnsPress_Hooks
 	/**
 	 * Add AnsPress tables in $wpdb.
 	 */
-	public function add_ap_tables(){
+	public function add_ap_tables() {
 		global $wpdb;
-		$wpdb->ap_meta = $wpdb->prefix . 'ap_meta';
-		$wpdb->ap_activity = $wpdb->prefix . 'ap_activity';
-		$wpdb->ap_activitymeta = $wpdb->prefix . 'ap_activitymeta';
+
+		$wpdb->ap_meta 			= $wpdb->prefix . 'ap_meta';
+		$wpdb->ap_activity 		= $wpdb->prefix . 'ap_activity';
+		$wpdb->ap_activitymeta 	= $wpdb->prefix . 'ap_activitymeta';
+		$wpdb->ap_notifications = $wpdb->prefix . 'ap_notifications';
+		$wpdb->ap_subscribers	= $wpdb->prefix . 'ap_subscribers';
+
 	}
 
 	/**
@@ -95,12 +98,10 @@ class AnsPress_Hooks
 	    update_post_meta( $post_id, ANSPRESS_UPDATED_META, current_time( 'mysql' ) );
 	    update_post_meta( $post_id, ANSPRESS_SELECTED_META, false );
 
-		// Subscribe to current question.
-		ap_add_question_subscriber( $post_id, $post->post_author );
-
 		// Update answer count.
 		update_post_meta( $post_id, ANSPRESS_ANS_META, '0' );
 
+		// Update user question count meta.
 	    ap_update_user_questions_count_meta( $post_id );
 
 		/**
@@ -127,9 +128,6 @@ class AnsPress_Hooks
 		update_post_meta( $question->ID, ANSPRESS_UPDATED_META, current_time( 'mysql' ) );
 	    update_post_meta( $post_id, ANSPRESS_UPDATED_META, current_time( 'mysql' ) );
 
-		// Subscribe to current question.
-		ap_add_question_subscriber( $question->ID, $post->post_author );
-
 		// Get existing answer count.
 		$current_ans = ap_count_published_answers( $question->ID );
 
@@ -137,7 +135,6 @@ class AnsPress_Hooks
 		update_post_meta( $question->ID, ANSPRESS_ANS_META, $current_ans );
 	    update_post_meta( $post_id, ANSPRESS_BEST_META, 0 );
 	    ap_update_user_answers_count_meta( $post_id );
-
 
 		/**
 		 * ACTION: ap_after_new_answer
@@ -236,7 +233,6 @@ class AnsPress_Hooks
 	        $ans = $ans > 0 ? $ans - 1 : 0;
 	        do_action( 'ap_trash_answer', $post->ID, $post );
 	        ap_delete_meta( array( 'apmeta_type' => 'flag', 'apmeta_actionid' => $post->ID ) );
-	        ap_remove_question_subscriber( $post->post_parent, $post->post_author );
 
 			// Update answer count.
 			update_post_meta( $post->post_parent, ANSPRESS_ANS_META, $ans );
@@ -329,33 +325,12 @@ class AnsPress_Hooks
 	        // Set updated meta for sorting purpose.
 			update_post_meta( $comment->comment_post_ID, ANSPRESS_UPDATED_META, current_time( 'mysql' ) );
 
-			// Subscribe to current question.
-			ap_add_question_subscriber( $comment->comment_post_ID, $comment->user_id, 'comment', $comment->comment_post_ID );
-
 	    } elseif ( $post->post_type == 'answer' ) {
 	        $post_id = wp_get_post_parent_id( $comment->comment_post_ID );
 
 			// Set updated meta for sorting purpose.
 			update_post_meta( $post_id, ANSPRESS_UPDATED_META, current_time( 'mysql' ) );
-	        ap_add_question_subscriber( $post_id, $comment->user_id, 'comment', $comment->comment_post_ID );
-
 	    }
-	}
-
-	/**
-	 * Action triggred after unpublishing a comment.
-	 * @param  object|array $comment Comment obejct.
-	 */
-	public function unpublish_comment($comment) {
-		$comment = (object) $comment;
-		$post = get_post( $comment->comment_post_ID );
-
-		if ( $post->post_type == 'question' ) {
-			ap_remove_question_subscriber( $post->ID, $comment->user_id );
-		} elseif ( $post->post_type == 'answer' ) {
-			$post_id = wp_get_post_parent_id( $comment->comment_post_ID );
-			ap_remove_question_subscriber( $post_id, $comment->user_id );
-		}
 	}
 
 	/**
@@ -387,7 +362,7 @@ class AnsPress_Hooks
 	     * @var array
 	     */
 
-	    $default_pages  =  array(
+	    $default_pages  = array(
 	    	'profile' 	=> array( 'title' => __( 'My profile', 'ap' ), 'show_in_menu' => true, 'logged_in' => true ),
 	    	'notification' => array( 'title' => __( 'My notification', 'ap' ), 'show_in_menu' => true, 'logged_in' => true ),
 	    	'ask' 		=> array(),
@@ -400,7 +375,7 @@ class AnsPress_Hooks
 	     * FILTER: ap_default_pages
 	     * @var array
 	     */
-	    $this->pages = array_merge(anspress()->pages, apply_filters( 'ap_default_pages', $default_pages ));
+	    $this->pages = array_merge( anspress()->pages, apply_filters( 'ap_default_pages', $default_pages ) );
 
 	    $this->page_urls();
 
