@@ -183,7 +183,7 @@ function ap_remove_question_subscriber($question_id, $user_id = false) {
 
 /**
  * Check if there are notifications in loop
- * @return bool
+ * @return boolean|null
  */
 function ap_has_notifications() {
 	_deprecated_function( 'ap_has_notifications', '2.4' );
