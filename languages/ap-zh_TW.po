@@ -3,10 +3,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: AnsPress 2.3.6\n"
-"Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/anspress-question-"
-"answer\n"
+"Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/anspress-question-answer\n"
 "POT-Creation-Date: 2015-07-24 15:51+0200\n"
-"PO-Revision-Date: 2015-10-04 14:34+0530\n"
+"PO-Revision-Date: 2015-10-08 07:05+0530\n"
 "Last-Translator: Tunghua Tai <tunghua@me.com>\n"
 "Language-Team: \n"
 "Language: zh_TW\n"
@@ -14,17 +13,16 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 1.7.3\n"
-"X-Poedit-KeywordsList: __;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;"
-"_nx_noop:1,2,3c;esc_attr__;esc_html__;esc_attr_e;esc_html_e;esc_attr_x:1,2c;"
-"esc_html_x:1,2c\n"
+"X-Poedit-KeywordsList: __;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;_nx_noop:1,2,3c;esc_attr__;"
+"esc_html__;esc_attr_e;esc_html_e;esc_attr_x:1,2c;esc_html_x:1,2c\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-Basepath: ..\n"
 "X-Textdomain-Support: yes\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: admin/anspress-admin.php:761 includes/ajax.php:69 includes/ajax.php:72
-#: includes/ajax.php:272 includes/ajax.php:314 includes/process-form.php:523 loco:#: 55e3972514d725560a8b4567
+#: admin/anspress-admin.php:761 includes/ajax.php:69 includes/ajax.php:72 includes/ajax.php:272
+#: includes/ajax.php:314 includes/process-form.php:523 loco:#: 55e3972514d725560a8b4567
 msgid "1 Answer"
 msgstr "一個回答"
 
@@ -54,7 +52,7 @@ msgstr "審核 (%s)"
 
 #: includes/post_status.php:42 loco:55e3972514d725560a8b4575
 msgid "Private Post <span class=\"count\">(%s)</span>"
-msgstr "私密文章 (%s)\n"
+msgstr "私密文章 (%s)"
 
 #: includes/question-loop.php:280 loco:55e3972514d725560a8b4577
 msgid "%s ans"
@@ -62,7 +60,7 @@ msgstr "%s 回應"
 
 #: includes/requirements.php:79 loco:55e3972514d725560a8b4579
 msgid "AnsPress requires the following plugin: %1$s."
-msgstr "AnsPress 需要以下外掛 %1$s\n"
+msgstr "AnsPress 需要以下外掛 %1$s"
 
 #: includes/requirements.php:80 loco:55e3972514d725560a8b457b
 msgid "AnsPress recommends the following plugin: %1$s."
@@ -70,9 +68,8 @@ msgstr "AnsPress 推薦以下外掛 %1$s"
 
 #: includes/requirements.php:81 loco:55e3972514d725560a8b457d
 msgid ""
-"Sorry, but you do not have the correct permissions to install the %s plugin. "
-"Contact the administrator of this site for help on getting the plugin "
-"installed."
+"Sorry, but you do not have the correct permissions to install the %s plugin. Contact the administrator of "
+"this site for help on getting the plugin installed."
 msgstr "抱歉，你沒有足夠的權限來安裝 %s 外掛，請與網站管理員聯絡安裝外掛。"
 
 #: includes/requirements.php:82 loco:55e3972514d725560a8b457f
@@ -85,21 +82,20 @@ msgstr "建議使用的外掛目前沒啟用：%1$s"
 
 #: includes/requirements.php:84 loco:55e3972514d725560a8b4583
 msgid ""
-"Sorry, but you do not have the correct permissions to activate the %s plugin. "
-"Contact the administrator of this site for help on getting the plugin "
-"activated."
+"Sorry, but you do not have the correct permissions to activate the %s plugin. Contact the administrator of "
+"this site for help on getting the plugin activated."
 msgstr "抱歉，你沒有足夠的權限開啟 %s 外掛，請與網站管理員聯絡開啟外掛。"
 
 #: includes/requirements.php:85 loco:55e3972514d725560a8b4585
 msgid ""
-"The following plugin needs to be updated to its latest version to ensure "
-"maximum compatibility with this theme: %1$s."
+"The following plugin needs to be updated to its latest version to ensure maximum compatibility with this "
+"theme: %1$s."
 msgstr "以下的外掛需要更新到最新版本以確保與主題版型相容：%1$s"
 
 #: includes/requirements.php:86 loco:55e3972514d725560a8b4587
 msgid ""
-"Sorry, but you do not have the correct permissions to update the %s plugin. "
-"Contact the administrator of this site for help on getting the plugin updated."
+"Sorry, but you do not have the correct permissions to update the %s plugin. Contact the administrator of this "
+"site for help on getting the plugin updated."
 msgstr "抱歉，你沒有足夠的權限更新 %s 外掛，請與網站管理員聯絡更新外掛。"
 
 #: includes/requirements.php:87 loco:55e3972514d725560a8b4589
@@ -110,13 +106,13 @@ msgstr "開始安裝外掛"
 msgid "Begin activating plugin"
 msgstr "開始啟動外掛"
 
-#: theme/default/widget-questions.php:11
-#: theme/default/widget-related_questions.php:11 loco:55e3972514d725560a8b458d
+#: theme/default/widget-questions.php:11 theme/default/widget-related_questions.php:11
+#: loco:55e3972514d725560a8b458d
 msgid "1 answer"
 msgstr "1 個回答"
 
-#: theme/default/widget-questions.php:12
-#: theme/default/widget-related_questions.php:12 loco:55e3972514d725560a8b458f
+#: theme/default/widget-questions.php:12 theme/default/widget-related_questions.php:12
+#: loco:55e3972514d725560a8b458f
 msgid "1 vote"
 msgstr "1 個投票"
 
@@ -134,8 +130,8 @@ msgstr "追蹤者"
 
 #: activate.php:37 loco:55e3972514d725560a8b4597
 msgid ""
-"Please update all AnsPress extensions before activating. <a target=\"_blank\" "
-"href=\"http://anspress.io/questions/ask/\">Ask for help</a>"
+"Please update all AnsPress extensions before activating. <a target=\"_blank\" href=\"http://anspress.io/"
+"questions/ask/\">Ask for help</a>"
 msgstr "在啟動前請更新所有的 AnsPress extensions，取得幫助。"
 
 #: activate.php:38 loco:55e3972514d725560a8b4598
@@ -158,13 +154,11 @@ msgstr "所有回答"
 msgid "Moderate question & answer"
 msgstr "管理提問與回答"
 
-#: admin/anspress-admin.php:175 admin/flagged.php:100 admin/moderate.php:80
-#: admin/options-page.php:585 admin/options-page.php:594
-#: admin/options-page.php:606 admin/options-page.php:618
-#: admin/options-page.php:630 admin/views/dashboard.php:46
-#: includes/functions.php:561 includes/post_status.php:30
-#: includes/post_types.php:264 includes/query_filter.php:89
-#: includes/query_filter.php:102 includes/question-loop.php:360 loco:#: 55e3972514d725560a8b459d
+#: admin/anspress-admin.php:175 admin/flagged.php:100 admin/moderate.php:80 admin/options-page.php:585
+#: admin/options-page.php:594 admin/options-page.php:606 admin/options-page.php:618 admin/options-page.php:630
+#: admin/views/dashboard.php:46 includes/functions.php:561 includes/post_status.php:30
+#: includes/post_types.php:264 includes/query_filter.php:89 includes/query_filter.php:102
+#: includes/question-loop.php:360 loco:#: 55e3972514d725560a8b459d
 msgid "Moderate"
 msgstr "管理審查"
 
@@ -176,9 +170,9 @@ msgstr "被檢舉的提問與回答"
 msgid "Flagged"
 msgstr "檢舉"
 
-#: admin/anspress-admin.php:179 includes/bp.php:51 includes/bp.php:83
-#: includes/reputation.php:24 includes/reputation.php:298 includes/user.php:424
-#: theme/default/user/about.php:15 theme/default/user/user-card.php:25 loco:#: 55e3972514d725560a8b45a0
+#: admin/anspress-admin.php:179 includes/bp.php:51 includes/bp.php:83 includes/reputation.php:24
+#: includes/reputation.php:298 includes/user.php:424 theme/default/user/about.php:15
+#: theme/default/user/user-card.php:25 loco:#: 55e3972514d725560a8b45a0
 msgid "Reputation"
 msgstr "聲望"
 
@@ -190,13 +184,13 @@ msgstr "貼出檢舉"
 msgid "Select question"
 msgstr "選擇提問"
 
-#: admin/anspress-admin.php:194 admin/views/about.php:116
-#: admin/views/admin.php:76 admin/views/dashboard.php:119 loco:#: 55e3972514d725560a8b45a3
+#: admin/anspress-admin.php:194 admin/views/about.php:116 admin/views/admin.php:76
+#: admin/views/dashboard.php:119 loco:#: 55e3972514d725560a8b45a3
 msgid "About AnsPress"
 msgstr "關於 AnsPress"
 
-#: admin/anspress-admin.php:196 admin/anspress-admin.php:392
-#: admin/views/admin.php:26 loco:55e3972514d725560a8b45a4
+#: admin/anspress-admin.php:196 admin/anspress-admin.php:392 admin/views/admin.php:26
+#: loco:55e3972514d725560a8b45a4
 msgid "AnsPress Options"
 msgstr "AnsPress 選項"
 
@@ -236,27 +230,25 @@ msgstr "AnsPress 角色"
 msgid "Role and permission for AnsPress"
 msgstr "AnsPress 的角色與權限"
 
-#: admin/anspress-admin.php:425 admin/anspress-admin.php:500
-#: admin/anspress-admin.php:567 admin/anspress-admin.php:662
-#: admin/flagged.php:116 admin/moderate.php:93 admin/reputation.php:51
+#: admin/anspress-admin.php:425 admin/anspress-admin.php:500 admin/anspress-admin.php:567
+#: admin/anspress-admin.php:662 admin/flagged.php:116 admin/moderate.php:93 admin/reputation.php:51
 #: includes/ask-form.php:55 includes/post_types.php:224 loco:#: 55e3972514d725560a8b45ae
 msgid "Title"
 msgstr "抬頭"
 
-#: admin/anspress-admin.php:431 admin/anspress-admin.php:506
-#: admin/anspress-admin.php:573 admin/anspress-admin.php:668
-#: includes/ask-form.php:72 includes/user-fields.php:98 loco:#: 55e3972514d725560a8b45af
+#: admin/anspress-admin.php:431 admin/anspress-admin.php:506 admin/anspress-admin.php:573
+#: admin/anspress-admin.php:668 includes/ask-form.php:72 includes/user-fields.php:98 loco:#:
+#: 55e3972514d725560a8b45af
 msgid "Description"
 msgstr "描述"
 
-#: admin/anspress-admin.php:437 admin/anspress-admin.php:512
-#: admin/reputation.php:52 theme/default/content-user.php:17 loco:#: 55e3972514d725560a8b45b0
+#: admin/anspress-admin.php:437 admin/anspress-admin.php:512 admin/reputation.php:52
+#: theme/default/content-user.php:17 loco:#: 55e3972514d725560a8b45b0
 msgid "Points"
 msgstr "點數"
 
-#: admin/anspress-admin.php:443 admin/anspress-admin.php:518
-#: admin/anspress-admin.php:591 admin/anspress-admin.php:686
-#: admin/reputation.php:53 loco:55e3972514d725560a8b45b1
+#: admin/anspress-admin.php:443 admin/anspress-admin.php:518 admin/anspress-admin.php:591
+#: admin/anspress-admin.php:686 admin/reputation.php:53 loco:55e3972514d725560a8b45b1
 msgid "Event"
 msgstr "活動"
 
@@ -264,8 +256,8 @@ msgstr "活動"
 msgid "Save Point"
 msgstr "儲存點數"
 
-#: admin/anspress-admin.php:579 admin/anspress-admin.php:674
-#: admin/flagged.php:115 loco:55e3972514d725560a8b45b3
+#: admin/anspress-admin.php:579 admin/anspress-admin.php:674 admin/flagged.php:115
+#: loco:55e3972514d725560a8b45b3
 msgid "Type"
 msgstr "類型"
 
@@ -341,8 +333,8 @@ msgstr "在你的 WordPress 版本上未測試"
 msgid "<strong>Compatible</strong> with your version of WordPress"
 msgstr "與你的 WordPress 版本相容"
 
-#: admin/flagged.php:70 admin/moderate.php:61 includes/common-pages.php:39
-#: widgets/search.php:36 loco:55e3972514d725560a8b45c6
+#: admin/flagged.php:70 admin/moderate.php:61 includes/common-pages.php:39 widgets/search.php:36
+#: loco:55e3972514d725560a8b45c6
 msgid "Search"
 msgstr "搜尋"
 
@@ -350,18 +342,17 @@ msgstr "搜尋"
 msgid "All"
 msgstr "全部"
 
-#: admin/flagged.php:98 admin/options-page.php:593 admin/options-page.php:605
-#: admin/options-page.php:617 admin/options-page.php:629 loco:#: 55e3972514d725560a8b45c8
+#: admin/flagged.php:98 admin/options-page.php:593 admin/options-page.php:605 admin/options-page.php:617
+#: admin/options-page.php:629 loco:#: 55e3972514d725560a8b45c8
 msgid "Publish"
 msgstr "發行"
 
-#: admin/flagged.php:99 admin/flagged.php:234 admin/moderate.php:209
-#: includes/post_types.php:273 loco:55e3972514d725560a8b45c9
+#: admin/flagged.php:99 admin/flagged.php:234 admin/moderate.php:209 includes/post_types.php:273
+#: loco:55e3972514d725560a8b45c9
 msgid "Pending"
 msgstr "等待中"
 
-#: admin/flagged.php:101 includes/post_status.php:22
-#: includes/post_types.php:261 includes/query_filter.php:95
+#: admin/flagged.php:101 includes/post_status.php:22 includes/post_types.php:261 includes/query_filter.php:95
 #: includes/query_filter.php:104 includes/question-loop.php:362 loco:#: 55e3972514d725560a8b45ca
 msgid "Closed"
 msgstr "關閉的"
@@ -370,28 +361,25 @@ msgstr "關閉的"
 msgid "Draft"
 msgstr "草稿"
 
-#: admin/flagged.php:103 admin/flagged.php:183 admin/meta_box.php:65
-#: admin/moderate.php:157 includes/post_types.php:276
-#: includes/post_types.php:401 loco:55e3972514d725560a8b45cc
+#: admin/flagged.php:103 admin/flagged.php:183 admin/meta_box.php:65 admin/moderate.php:157
+#: includes/post_types.php:276 includes/post_types.php:401 loco:55e3972514d725560a8b45cc
 msgid "Trash"
 msgstr "垃圾"
 
-#: admin/flagged.php:117 admin/moderate.php:94 includes/post_types.php:236
-#: includes/post_types.php:366 loco:55e3972514d725560a8b45cd
+#: admin/flagged.php:117 admin/moderate.php:94 includes/post_types.php:236 includes/post_types.php:366
+#: loco:55e3972514d725560a8b45cd
 msgid "Flag"
 msgstr "檢舉"
 
-#: admin/flagged.php:162 admin/meta_box.php:20 admin/options-page.php:297
-#: includes/bp.php:146 includes/bp.php:147 includes/common-pages.php:36
-#: includes/functions.php:1128 includes/post_types.php:71
+#: admin/flagged.php:162 admin/meta_box.php:20 admin/options-page.php:297 includes/bp.php:146
+#: includes/bp.php:147 includes/common-pages.php:36 includes/functions.php:1128 includes/post_types.php:71
 #: includes/reputation.php:837 loco:55e3972514d725560a8b45ce
 msgid "Question"
 msgstr "提問"
 
-#: admin/flagged.php:164 admin/options-page.php:357 includes/bp.php:156
-#: includes/bp.php:157 includes/bp.php:166 includes/functions.php:1128
-#: includes/post_types.php:142 includes/reputation.php:844
-#: includes/user.php:428 loco:55e3972514d725560a8b45cf
+#: admin/flagged.php:164 admin/options-page.php:357 includes/bp.php:156 includes/bp.php:157 includes/bp.php:166
+#: includes/functions.php:1128 includes/post_types.php:142 includes/reputation.php:844 includes/user.php:428
+#: loco:55e3972514d725560a8b45cf
 msgid "Answer"
 msgstr "回答"
 
@@ -399,21 +387,19 @@ msgstr "回答"
 msgid "Edit flags"
 msgstr "編輯檢舉"
 
-#: admin/flagged.php:178 admin/flagged.php:228 admin/moderate.php:151
-#: admin/moderate.php:203 includes/post_types.php:398 loco:#: 55e3972514d725560a8b45d1
+#: admin/flagged.php:178 admin/flagged.php:228 admin/moderate.php:151 admin/moderate.php:203
+#: includes/post_types.php:398 loco:#: 55e3972514d725560a8b45d1
 msgid "Restore"
 msgstr "回朔"
 
-#: admin/flagged.php:179 admin/flagged.php:229 admin/moderate.php:152
-#: admin/moderate.php:204 includes/functions.php:540 loco:55e3972514d725560a8b45d2
+#: admin/flagged.php:179 admin/flagged.php:229 admin/moderate.php:152 admin/moderate.php:204
+#: includes/functions.php:540 loco:55e3972514d725560a8b45d2
 msgid "Delete permanently"
 msgstr "永遠刪除"
 
-#: admin/flagged.php:182 admin/meta_box.php:63 admin/moderate.php:156
-#: admin/reputation.php:152 includes/class-form.php:505
-#: includes/common-pages.php:38 includes/functions.php:358
-#: includes/functions.php:360 includes/functions.php:376
-#: includes/post_types.php:407 includes/theme.php:597
+#: admin/flagged.php:182 admin/meta_box.php:63 admin/moderate.php:156 admin/reputation.php:152
+#: includes/class-form.php:505 includes/common-pages.php:38 includes/functions.php:358
+#: includes/functions.php:360 includes/functions.php:376 includes/post_types.php:407 includes/theme.php:597
 #: theme/default/part/question.php:46 loco:55e3972514d725560a8b45d3
 msgid "Edit"
 msgstr "編輯"
@@ -434,11 +420,10 @@ msgstr "移到垃圾桶"
 msgid "Save options"
 msgstr "儲存選項"
 
-#: admin/meta_box.php:19 admin/views/dashboard.php:40
-#: admin/views/dashboard.php:66 includes/bp.php:123 includes/class-user.php:49
-#: includes/post_types.php:120 includes/user.php:499
-#: theme/default/user/list-question.php:4 widgets/question_stats.php:42
-#: widgets/questions.php:73 loco:55e3972514d725560a8b45d8
+#: admin/meta_box.php:19 admin/views/dashboard.php:40 admin/views/dashboard.php:66 includes/bp.php:123
+#: includes/class-user.php:49 includes/post_types.php:120 includes/user.php:499
+#: theme/default/user/list-question.php:4 widgets/question_stats.php:42 widgets/questions.php:73
+#: loco:55e3972514d725560a8b45d8
 msgid "Answers"
 msgstr "回答數"
 
@@ -454,8 +439,8 @@ msgstr "隱藏"
 msgid "No answers yet"
 msgstr "未有回答"
 
-#: admin/moderate.php:92 includes/functions.php:565 includes/post_types.php:232
-#: includes/post_types.php:363 loco:55e3972514d725560a8b45dc
+#: admin/moderate.php:92 includes/functions.php:565 includes/post_types.php:232 includes/post_types.php:363
+#: loco:55e3972514d725560a8b45dc
 msgid "Status"
 msgstr "狀態"
 
@@ -463,8 +448,7 @@ msgstr "狀態"
 msgid "Category"
 msgstr "討論版"
 
-#: admin/moderate.php:190 includes/post_types.php:297
-#: includes/post_types.php:320 loco:55e3972514d725560a8b45de
+#: admin/moderate.php:190 includes/post_types.php:297 includes/post_types.php:320 loco:55e3972514d725560a8b45de
 msgid "--"
 msgstr "--"
 
@@ -616,22 +600,23 @@ msgstr "預設回答排列方式"
 msgid "Sort answers by default."
 msgstr "使用預設的回答排序"
 
-#: admin/options-page.php:179 includes/functions.php:454 includes/theme.php:496
-#: includes/theme.php:538 widgets/questions.php:72 loco:55e3972514d725560a8b4604
+#: admin/options-page.php:179 includes/functions.php:454 includes/theme.php:496 includes/theme.php:538
+#: widgets/questions.php:72 loco:55e3972514d725560a8b4604
 msgid "Voted"
 msgstr "投票"
 
-#: admin/options-page.php:180 includes/theme.php:491 includes/theme.php:534
-#: includes/user.php:426 widgets/question_stats.php:40 widgets/questions.php:70 #: loco:55e3972514d725560a8b4605
+#: admin/options-page.php:180 includes/theme.php:491 includes/theme.php:534 includes/user.php:426
+#: widgets/question_stats.php:40 widgets/questions.php:70 #: loco:55e3972514d725560a8b4605
 msgid "Active"
 msgstr "活躍"
 
-#: admin/options-page.php:181 includes/functions.php:452 includes/theme.php:492
-#: includes/theme.php:540 includes/user.php:429 widgets/questions.php:71 loco:#: 55e3972514d725560a8b4606
+#: admin/options-page.php:181 includes/functions.php:452 includes/theme.php:492 includes/theme.php:540
+#: includes/user.php:429 widgets/questions.php:71 loco:#: 55e3972514d725560a8b4606
 msgid "Newest"
 msgstr "最新"
 
-#: admin/options-page.php:182 includes/functions.php:453 includes/theme.php:541 #: loco:55e3972514d725560a8b4607
+#: admin/options-page.php:182 includes/functions.php:453 includes/theme.php:541 #:
+#: loco:55e3972514d725560a8b4607
 msgid "Oldest"
 msgstr "最舊"
 
@@ -693,7 +678,7 @@ msgstr "使用者頁面代稱"
 
 #: admin/options-page.php:244 loco:55e3972514d725560a8b4616
 msgid "Enter slug for user page, make sure no page or post exists with same slug."
-msgstr "輸入使用者頁面的代稱，請注意代稱不能跟其他頁面或文章的代稱相衝突\n"
+msgstr "輸入使用者頁面的代稱，請注意代稱不能跟其他頁面或文章的代稱相衝突"
 
 #: admin/options-page.php:252 loco:55e3972514d725560a8b4617
 msgid "Page titles"
@@ -712,9 +697,7 @@ msgid "Show solved prefix"
 msgstr "顯示【已解決】字首"
 
 #: admin/options-page.php:265 loco:55e3972514d725560a8b461b
-msgid ""
-"If an answer is selected for question then [solved] prefix will be added in "
-"title."
+msgid "If an answer is selected for question then [solved] prefix will be added in title."
 msgstr "如果問題已經有最佳回答了，【已解決】字頭就會加到問題標題上去。"
 
 #: admin/options-page.php:272 loco:55e3972514d725560a8b461c
@@ -829,8 +812,8 @@ msgstr "停用導航欄"
 msgid "Disable answer navigation."
 msgstr "停用答案導航欄。"
 
-#: admin/options-page.php:417 includes/class-user.php:41
-#: includes/options.php:132 widgets/users.php:37 loco:55e3972514d725560a8b4638
+#: admin/options-page.php:417 includes/class-user.php:41 includes/options.php:132 widgets/users.php:37
+#: loco:55e3972514d725560a8b4638
 msgid "Users"
 msgstr "使用者"
 
@@ -960,8 +943,7 @@ msgstr "鎖住防止刪除"
 
 #: admin/options-page.php:548 loco:55e3972514d725560a8b4658
 msgid ""
-"Lock comment or post after a period so that user cannot delete it. Set the "
-"time in epoch i.e. 86400 = 1 day."
+"Lock comment or post after a period so that user cannot delete it. Set the time in epoch i.e. 86400 = 1 day."
 msgstr "在多少秒之後使用者就不能刪除這個貼文，86400 秒 = 1天"
 
 #: admin/options-page.php:556 loco:55e3972514d725560a8b4659
@@ -1041,9 +1023,7 @@ msgid "Recaptcha site key"
 msgstr "重新產生網站驗證碼"
 
 #: admin/options-page.php:650 loco:55e3972514d725560a8b466c
-msgid ""
-"Enter your site key, if you dont have it get it from here https://www.google."
-"com/recaptcha/admin"
+msgid "Enter your site key, if you dont have it get it from here https://www.google.com/recaptcha/admin"
 msgstr "輸入網站驗證碼，如果沒有驗證碼請到這裡申請：www.google.com/recaptcha/admin"
 
 #: admin/options-page.php:657 loco:55e3972514d725560a8b466d
@@ -1058,8 +1038,7 @@ msgstr "輸入你的密鑰"
 msgid "Delete this reputation"
 msgstr "刪除這個聲譽"
 
-#: admin/reputation.php:153 includes/class-form.php:235
-#: includes/class-form.php:242 includes/functions.php:523
+#: admin/reputation.php:153 includes/class-form.php:235 includes/class-form.php:242 includes/functions.php:523
 #: includes/theme.php:602 loco:55e3972514d725560a8b4670
 msgid "Delete"
 msgstr "刪除"
@@ -1068,18 +1047,18 @@ msgstr "刪除"
 msgid "Welcome to AnsPress 2.2"
 msgstr "歡迎使用 AnsPress 2.2"
 
-#: admin/views/about.php:117 admin/views/admin.php:77
-#: admin/views/dashboard.php:120 loco:55e3972514d725560a8b4672
+#: admin/views/about.php:117 admin/views/admin.php:77 admin/views/dashboard.php:120
+#: loco:55e3972514d725560a8b4672
 msgid "Support Q&A"
 msgstr "支援 Q&A"
 
-#: admin/views/about.php:118 admin/views/admin.php:78
-#: admin/views/dashboard.php:121 loco:55e3972514d725560a8b4673
+#: admin/views/about.php:118 admin/views/admin.php:78 admin/views/dashboard.php:121
+#: loco:55e3972514d725560a8b4673
 msgid "AnsPress Themes"
 msgstr "AnsPress 主題"
 
-#: admin/views/about.php:119 admin/views/admin.php:79
-#: admin/views/dashboard.php:122 loco:55e3972514d725560a8b4674
+#: admin/views/about.php:119 admin/views/admin.php:79 admin/views/dashboard.php:122
+#: loco:55e3972514d725560a8b4674
 msgid "Github Repo"
 msgstr "Github Repo"
 
@@ -1095,9 +1074,9 @@ msgstr "AnsPress 選項已更新"
 msgid "AnsPress Dashboard"
 msgstr "AnsPress 儀表板"
 
-#: admin/views/dashboard.php:34 includes/bp.php:103 includes/class-user.php:48
-#: includes/common-pages.php:35 includes/post_types.php:49
-#: includes/user.php:500 includes/user.php:527 widgets/questions.php:45 loco:#: 55e3972514d725560a8b4678
+#: admin/views/dashboard.php:34 includes/bp.php:103 includes/class-user.php:48 includes/common-pages.php:35
+#: includes/post_types.php:49 includes/user.php:500 includes/user.php:527 widgets/questions.php:45 loco:#:
+#: 55e3972514d725560a8b4678
 msgid "Questions"
 msgstr "問題討論"
 
@@ -1105,8 +1084,8 @@ msgstr "問題討論"
 msgid "Latest Questions"
 msgstr "最新問題"
 
-#: admin/views/dashboard.php:68 includes/functions.php:312
-#: includes/post_types.php:234 includes/post_types.php:364 loco:#: 55e3972514d725560a8b467a
+#: admin/views/dashboard.php:68 includes/functions.php:312 includes/post_types.php:234
+#: includes/post_types.php:364 loco:#: 55e3972514d725560a8b467a
 msgid "Comments"
 msgstr "回應"
 
@@ -1128,7 +1107,7 @@ msgstr "刪除貼文"
 
 #: admin/views/post_flag.php:55 loco:55e3972514d725560a8b467f
 msgid "%s flagged this post %s ago"
-msgstr "%s 個檢舉這個貼文在 %s 前\n"
+msgstr "%s 個檢舉這個貼文在 %s 前"
 
 #: admin/views/post_flag.php:56 loco:55e3972514d725560a8b4680
 msgid "Remove"
@@ -1143,9 +1122,7 @@ msgid "Select a question for new answer"
 msgstr "選擇一個問題來回答"
 
 #: admin/views/select_question.php:21 loco:55e3972514d725560a8b4683
-msgid ""
-"Slowly type for question suggestion and then click select button right to "
-"question title."
+msgid "Slowly type for question suggestion and then click select button right to question title."
 msgstr "慢慢輸入問題建議，然後在問題抬頭右邊點擊\"選取\""
 
 #: includes/actions.php:339 includes/class-user.php:203 widgets/user.php:38 loco:#: 55e3972514d725560a8b4684
@@ -1162,8 +1139,8 @@ msgstr "找到 %d 則類似問題"
 
 #: includes/ajax.php:61 loco:55e3972514d725560a8b4687
 msgid ""
-"We found similar questions that have already been asked, click to read them. "
-"Avoid creating duplicate questions, it will be deleted."
+"We found similar questions that have already been asked, click to read them. Avoid creating duplicate "
+"questions, it will be deleted."
 msgstr "我們發現類似的提問，請先爬文後發文。"
 
 #: includes/ajax.php:72 includes/functions.php:501 loco:55e3972514d725560a8b4688
@@ -1178,7 +1155,8 @@ msgstr "找不到相關提問"
 msgid "Update comment"
 msgstr "更新回應"
 
-#: includes/ajax.php:116 includes/functions.php:312 includes/reputation.php:851 #: loco:55e3972514d725560a8b468b
+#: includes/ajax.php:116 includes/functions.php:312 includes/reputation.php:851 #:
+#: loco:55e3972514d725560a8b468b
 msgid "Comment"
 msgstr "回應"
 
@@ -1238,8 +1216,8 @@ msgstr "僅發給站長及管理員"
 msgid "reCaptach keys missing, please add keys"
 msgstr "沒有 reCaptach keys, 請輸入"
 
-#: includes/answer-loop.php:378 includes/question-loop.php:301
-#: theme/default/answer-list.php:35 loco:55e3972514d725560a8b469a
+#: includes/answer-loop.php:378 includes/question-loop.php:301 theme/default/answer-list.php:35
+#: loco:55e3972514d725560a8b469a
 msgid "votes"
 msgstr "投票"
 
@@ -1277,11 +1255,11 @@ msgstr "回答 %s"
 
 #: includes/bp.php:148 loco:55e3972514d725560a8b46a3
 msgid "%1$s asked a new <a href=\"AP_CPT_LINK\">question</a>"
-msgstr "%1$s 提出了一個新<a href=\"AP_CPT_LINK\">問題</a>\n"
+msgstr "%1$s 提出了一個新<a href=\"AP_CPT_LINK\">問題</a>"
 
 #: includes/bp.php:149 loco:55e3972514d725560a8b46a4
 msgid "%1$s asked a new <a href=\"AP_CPT_LINK\">question</a>, on the site %3$s"
-msgstr "%1$s 發了一個新<a href=\"AP_CPT_LINK\">問題</a>, 在%3$s\n"
+msgstr "%1$s 發了一個新<a href=\"AP_CPT_LINK\">問題</a>, 在%3$s"
 
 #: includes/bp.php:158 loco:55e3972514d725560a8b46a5
 msgid "%1$s <a href=\"AP_CPT_LINK\">answered</a> a question"
@@ -1301,27 +1279,28 @@ msgstr "% 的聲譽"
 
 #: includes/bp.php:228 loco:55e3972514d725560a8b46a9
 msgid "%1$d answers on - %2$s"
-msgstr "%1$d個回答在 - %2$s\n"
+msgstr "%1$d個回答在 - %2$s"
 
 #: includes/bp.php:232 loco:55e3972514d725560a8b46aa
 msgid "%1$s answered on - %2$s"
-msgstr "%1$s個回答在 - %2$s\n"
+msgstr "%1$s個回答在 - %2$s"
 
 #: includes/bp.php:240 includes/post_types.php:70 loco:55e3972514d725560a8b46ab
 msgid "question"
 msgstr "提問"
 
-#: includes/bp.php:240 includes/post_types.php:141 theme/default/answers.php:18 #: loco:55e3972514d725560a8b46ac
+#: includes/bp.php:240 includes/post_types.php:141 theme/default/answers.php:18 #:
+#: loco:55e3972514d725560a8b46ac
 msgid "answer"
 msgstr "回答"
 
 #: includes/bp.php:246 loco:55e3972514d725560a8b46ad
 msgid "%1$d comments on your %3$s - %2$s"
-msgstr "%1$d個回應在你的 %3$s - %2$s\n"
+msgstr "%1$d個回應在你的 %3$s - %2$s"
 
 #: includes/bp.php:250 loco:55e3972514d725560a8b46ae
 msgid "%1$s commented on your %3$s - %2$s"
-msgstr "%1$s回應了你的 %3$s - %2$s\n"
+msgstr "%1$s回應了你的 %3$s - %2$s"
 
 #: includes/class-form.php:36 loco:55e3972514d725560a8b46af
 msgid "Submit"
@@ -1383,13 +1362,13 @@ msgstr "通知"
 msgid "Profile"
 msgstr "個人檔案"
 
-#: includes/class-user.php:50 theme/default/content-user.php:15
-#: widgets/followers.php:40 widgets/question_stats.php:43 loco:#: 55e3972514d725560a8b46be
+#: includes/class-user.php:50 theme/default/content-user.php:15 widgets/followers.php:40
+#: widgets/question_stats.php:43 loco:#: 55e3972514d725560a8b46be
 msgid "Followers"
 msgstr "追蹤者"
 
-#: includes/class-user.php:51 includes/class-user.php:221
-#: theme/default/content-user.php:16 loco:55e3972514d725560a8b46bf
+#: includes/class-user.php:51 includes/class-user.php:221 theme/default/content-user.php:16
+#: loco:55e3972514d725560a8b46bf
 msgid "Following"
 msgstr "正在追蹤"
 
@@ -1482,9 +1461,7 @@ msgid "Cover photo uploaded successfully."
 msgstr "封面圖片上傳成功"
 
 #: includes/class-user.php:367 loco:55e3972514d725560a8b46d6
-msgid ""
-"There was an error while uploading cover photo, please check your image and "
-"try again."
+msgid "There was an error while uploading cover photo, please check your image and try again."
 msgstr "圖片上傳失敗，請確認您的圖片。"
 
 #: includes/class-user.php:417 loco:55e3972514d725560a8b46d7
@@ -1619,8 +1596,8 @@ msgstr "關閉"
 msgid "Open"
 msgstr "公開"
 
-#: includes/functions.php:561 includes/post_types.php:258
-#: includes/post_types.php:267 includes/question-loop.php:358 loco:#: 55e3972514d725560a8b46f8
+#: includes/functions.php:561 includes/post_types.php:258 includes/post_types.php:267
+#: includes/question-loop.php:358 loco:#: 55e3972514d725560a8b46f8
 msgid "Private"
 msgstr "私密"
 
@@ -1936,8 +1913,8 @@ msgstr "你得到了 ##reputation 聲望點數"
 msgid "9+"
 msgstr "9+"
 
-#: includes/post_status.php:38 includes/query_filter.php:92
-#: includes/query_filter.php:103 loco:55e3972514d725560a8b4747
+#: includes/post_status.php:38 includes/query_filter.php:92 includes/query_filter.php:103
+#: loco:55e3972514d725560a8b4747
 msgid "Private Post"
 msgstr "私密文章"
 
@@ -2065,8 +2042,8 @@ msgstr "檢視 “%s” 問題"
 msgid "Bot verification failed."
 msgstr "驗證失敗"
 
-#: includes/process-form.php:214 includes/process-form.php:440
-#: includes/process-form.php:747 loco:55e3972514d725560a8b4767
+#: includes/process-form.php:214 includes/process-form.php:440 includes/process-form.php:747
+#: loco:55e3972514d725560a8b4767
 msgid "Check missing fields and then re-submit."
 msgstr "請檢查缺的欄位然後重新送出"
 
@@ -2082,9 +2059,8 @@ msgstr "%s 前%s"
 msgid " ago"
 msgstr " 前"
 
-#: includes/reputation.php:298 theme/default/user/user.php:27
-#: theme/default/user/user.php:52 theme/default/users/loop-item.php:29
-#: theme/default/widgets/user.php:13 loco:55e3972514d725560a8b476b
+#: includes/reputation.php:298 theme/default/user/user.php:27 theme/default/user/user.php:52
+#: theme/default/users/loop-item.php:29 theme/default/widgets/user.php:13 loco:55e3972514d725560a8b476b
 msgid "%s Rep."
 msgstr "%s 聲譽"
 
@@ -2102,7 +2078,7 @@ msgstr "%s 回應了 %s"
 
 #: includes/reputation.php:611 loco:55e3972514d725560a8b476f
 msgid "%sCommented %s"
-msgstr "%s回應了 %s\n"
+msgstr "%s回應了 %s"
 
 #: includes/reputation.php:615 loco:55e3972514d725560a8b4770
 msgid "%sSelected answer %s"
@@ -2122,7 +2098,7 @@ msgstr "%s扣票 %s"
 
 #: includes/reputation.php:631 loco:55e3972514d725560a8b4774
 msgid "%sBest answer %s"
-msgstr "%s 最佳回答 %s\n"
+msgstr "%s 最佳回答 %s"
 
 #: includes/reputation.php:816 loco:55e3972514d725560a8b4775
 msgid "New Registration"
@@ -2224,8 +2200,8 @@ msgstr "對這個回答扣票"
 msgid "When user down vote others answers"
 msgstr "當使用者對其他回答扣票"
 
-#: includes/reputation.php:915 includes/theme.php:563 includes/user.php:427
-#: theme/default/best_answer.php:18 loco:55e3972514d725560a8b478e
+#: includes/reputation.php:915 includes/theme.php:563 includes/user.php:427 theme/default/best_answer.php:18
+#: loco:55e3972514d725560a8b478e
 msgid "Best answer"
 msgstr "最佳回答"
 
@@ -2270,9 +2246,7 @@ msgid "All plugins installed and activated successfully. %s"
 msgstr "所有外掛啟動成功 %s"
 
 #: includes/shortcode-basepage.php:81 loco:55e3972514d725560a8b4799
-msgid ""
-"Question and answer is powered by <a href=\"http://anspress.io\" traget=\"_blank\">"
-"AnsPress</a>"
+msgid "Question and answer is powered by <a href=\"http://anspress.io\" traget=\"_blank\">AnsPress</a>"
 msgstr "問答系統由 AnsPress 驅動"
 
 #: includes/subscriber.php:139 loco:55e3972514d725560a8b479a
@@ -2303,8 +2277,8 @@ msgstr "取消追蹤提問"
 msgid "Discussion on \"%s\""
 msgstr "\"%s\" 上的討論"
 
-#: includes/theme.php:51 theme/default/no-user-found.php:1
-#: theme/default/not-found.php:1 loco:55e3972514d725560a8b47a1
+#: includes/theme.php:51 theme/default/no-user-found.php:1 theme/default/not-found.php:1
+#: loco:55e3972514d725560a8b47a1
 msgid "Error 404"
 msgstr "404 錯誤"
 
@@ -2564,8 +2538,8 @@ msgstr "更新的回應 →"
 msgid "Total votes"
 msgstr "總票數"
 
-#: theme/default/content-answer.php:18 theme/default/user/about.php:38
-#: theme/default/user/list-answer.php:2 theme/default/user/list-question.php:2 #: loco:55e3972514d725560a8b47e2
+#: theme/default/content-answer.php:18 theme/default/user/about.php:38 theme/default/user/list-answer.php:2
+#: theme/default/user/list-question.php:2 #: loco:55e3972514d725560a8b47e2
 msgid "Votes"
 msgstr "投票"
 
@@ -2917,8 +2891,8 @@ msgstr "通知"
 msgid "Mark all as read"
 msgstr "全部標示為已閱讀"
 
-#: theme/default/user/notification-dropdown.php:34
-#: theme/default/user/notification.php:41 loco:55e3972514d725560a8b483a
+#: theme/default/user/notification-dropdown.php:34 theme/default/user/notification.php:41
+#: loco:55e3972514d725560a8b483a
 msgid "No notification"
 msgstr "沒有通知"
 
@@ -2998,11 +2972,9 @@ msgstr "未有追蹤者"
 msgid "This widget can only be used in user page."
 msgstr "這個小工具只能夠用在使用者頁面"
 
-#: widgets/followers.php:53 widgets/participants.php:43
-#: widgets/question_stats.php:61 widgets/questions.php:64
-#: widgets/quick-ask.php:31 widgets/related_questions.php:56
-#: widgets/search.php:52 widgets/subscribe.php:48 widgets/user.php:42
-#: widgets/users.php:50 loco:55e3972514d725560a8b484e
+#: widgets/followers.php:53 widgets/participants.php:43 widgets/question_stats.php:61 widgets/questions.php:64
+#: widgets/quick-ask.php:31 widgets/related_questions.php:56 widgets/search.php:52 widgets/subscribe.php:48
+#: widgets/user.php:42 widgets/users.php:50 loco:55e3972514d725560a8b484e
 msgid "Title:"
 msgstr "標題："
 

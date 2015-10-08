@@ -6,14 +6,14 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/anspress-question-"
 "answer\n"
 "POT-Creation-Date: 2015-10-07 11:18+0900\n"
-"PO-Revision-Date: 2015-10-07 11:45+0900\n"
+"PO-Revision-Date: 2015-10-08 07:01+0530\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ja_JP\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.8.5\n"
+"X-Generator: Poedit 1.7.3\n"
 "X-Poedit-KeywordsList: __;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;"
 "_nx_noop:1,2,3c;esc_attr__;esc_html__;esc_attr_e;esc_html_e;esc_attr_x:1,2c;"
 "esc_html_x:1,2c\n"
@@ -58,8 +58,9 @@ msgid "Flagged"
 msgstr "フラグ付き"
 
 #: admin/anspress-admin.php:179 includes/bp.php:51 includes/bp.php:83
-#: includes/reputation.php:24 includes/reputation.php:298 includes/user.php:420
-#: theme/default/user/about.php:60 theme/default/user/user-card.php:25
+#: includes/reputation.php:24 includes/reputation.php:298
+#: includes/user.php:420 theme/default/user/about.php:60
+#: theme/default/user/user-card.php:25
 msgid "Reputation"
 msgstr "ポイント"
 
@@ -359,8 +360,8 @@ msgid "<strong>1</strong> Vote"
 msgid_plural "<strong>%d</strong> Votes"
 msgstr[0] "<strong>%d</strong> 投票"
 
-#: admin/moderate.php:92 includes/functions.php:565 includes/post_types.php:232
-#: includes/post_types.php:365
+#: admin/moderate.php:92 includes/functions.php:565
+#: includes/post_types.php:232 includes/post_types.php:365
 msgid "Status"
 msgstr "状況"
 
@@ -531,22 +532,25 @@ msgstr "基本回答ソート"
 msgid "Sort answers by default."
 msgstr "デフォルトで回答をソートします"
 
-#: admin/options-page.php:179 includes/functions.php:454 includes/theme.php:498
-#: includes/theme.php:540 widgets/questions.php:74
+#: admin/options-page.php:179 includes/functions.php:454
+#: includes/theme.php:498 includes/theme.php:540 widgets/questions.php:74
 msgid "Voted"
 msgstr "投票済"
 
 #: admin/options-page.php:180 includes/theme.php:493 includes/theme.php:536
-#: includes/user.php:422 widgets/question_stats.php:42 widgets/questions.php:72
+#: includes/user.php:422 widgets/question_stats.php:42
+#: widgets/questions.php:72
 msgid "Active"
 msgstr "有効"
 
-#: admin/options-page.php:181 includes/functions.php:452 includes/theme.php:494
-#: includes/theme.php:542 includes/user.php:425 widgets/questions.php:73
+#: admin/options-page.php:181 includes/functions.php:452
+#: includes/theme.php:494 includes/theme.php:542 includes/user.php:425
+#: widgets/questions.php:73
 msgid "Newest"
 msgstr "新しい"
 
-#: admin/options-page.php:182 includes/functions.php:453 includes/theme.php:543
+#: admin/options-page.php:182 includes/functions.php:453
+#: includes/theme.php:543
 msgid "Oldest"
 msgstr "古い"
 
@@ -1107,7 +1111,8 @@ msgstr "関連する質問はありません"
 msgid "Update comment"
 msgstr "コメントを更新"
 
-#: includes/ajax.php:116 includes/functions.php:312 includes/reputation.php:851
+#: includes/ajax.php:116 includes/functions.php:312
+#: includes/reputation.php:851
 msgid "Comment"
 msgstr "コメント"
 
@@ -1258,7 +1263,8 @@ msgstr "%1$s answered on - %2$s"
 msgid "question"
 msgstr "質問"
 
-#: includes/bp.php:240 includes/post_types.php:141 theme/default/answers.php:18
+#: includes/bp.php:240 includes/post_types.php:141
+#: theme/default/answers.php:18
 msgid "answer"
 msgstr "回答"
 
