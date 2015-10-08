@@ -35,6 +35,9 @@ class AnsPress_Activity_Hook
 		$ap->add_action( 'trashed_comment', $this, 'trash_comment' );
 		$ap->add_action( 'comment_trash_to_approved', $this, 'comment_approved' );
 		$ap->add_action( 'delete_comment', $this, 'delete_comment' );
+		$ap->add_action( 'ap_added_follower', $this, 'follower', 10, 2 );
+		$ap->add_action( 'ap_vote_casted', $this, 'notify_upvote', 10, 4 );
+		$ap->add_action( 'ap_added_reputation', $this, 'ap_added_reputation', 10, 4 );
 	}
 
 
@@ -52,10 +55,13 @@ class AnsPress_Activity_Hook
 			'permalink' 		=> get_permalink( $question_id ),
 		);
 
-		ap_new_activity( $activity_arr );
+		$activity_id = ap_new_activity( $activity_arr );
 
 		// Add question activity meta.
 		update_post_meta( $question_id, '__ap_activity', array( 'type' => 'new_question', 'user_id' => $question->post_author, 'date' => current_time( 'mysql' ) ) );
+
+		// Notify users.
+		ap_new_notification($activity_id, $question->post_author);
 	}
 
 	/**
@@ -75,13 +81,18 @@ class AnsPress_Activity_Hook
 			'permalink' 		=> get_permalink( $answer_id ),
 		);
 
-		ap_new_activity( $activity_arr );
+		$activity_id = ap_new_activity( $activity_arr );
 
 		// Add question activity meta.
 		update_post_meta( $answer->post_parent, '__ap_activity', array( 'type' => 'new_answer', 'user_id' => $answer->post_author, 'date' => current_time( 'mysql' ) ) );
 
 		// Add answer activity meta.
 		update_post_meta( $answer_id, '__ap_activity', array( 'type' => 'new_answer', 'user_id' => $answer->post_author, 'date' => current_time( 'mysql' ) ) );
+
+		// Notify users.
+		$subscribers = ap_subscriber_ids( $answer->post_parent );
+
+		ap_new_notification( $activity_id, $subscribers );
 	}
 
 	/**
@@ -172,13 +183,15 @@ class AnsPress_Activity_Hook
 			'permalink' 		=> get_permalink( $answer_id ),
 		);
 
-		ap_new_activity( $activity_arr );
+		$activity_id = ap_new_activity( $activity_arr );
 
 		// Add question activity meta.
 		update_post_meta( $question_id, '__ap_activity', array( 'type' => 'answer_selected', 'user_id' => $user_id, 'date' => current_time( 'mysql' ) ) );
 
 		// Add answer activity meta.
 		update_post_meta( $answer_id, '__ap_activity', array( 'type' => 'best_answer', 'user_id' => $user_id, 'date' => current_time( 'mysql' ) ) );
+
+		//ap_new_notification( $activity_id, $user_id );
 	}
 
 	/**
@@ -287,6 +300,76 @@ class AnsPress_Activity_Hook
 		}
 	}
 
+	/**
+	 * Insert activity about new follower
+	 * @param  integer $user_to_follow  Whom to follow.
+	 * @param  integer $current_user_id Current user ID.
+	 */
+	public function follower($user_to_follow, $current_user_id) {
+		$activity_arr = array(
+			'user_id' 			=> $current_user_id,
+			'type' 				=> 'follower',
+			'secondary_user' 	=> $user_to_follow,
+			'item_id' 			=> $user_to_follow,
+			'parent_type' 		=> 'user',
+			'permalink' 		=> ap_user_link( $user_to_follow ),
+		);
+
+		$activity_id = ap_new_activity( $activity_arr );
+		//ap_new_notification( $activity_id, $user_to_follow );
+	}
+
+	/**
+	 * Insert activity about upvote
+	 * @param  integer $userid           User ID who is voting.
+	 * @param  string  $type             Vote type.
+	 * @param  integer $actionid         Post ID.
+	 * @param  integer $receiving_userid User who is receiving vote.
+	 */
+	public function notify_upvote($userid, $type, $actionid, $receiving_userid) {
+
+		if ( 'vote_up' == $type ) {
+			
+			$activity_arr = array(
+				'user_id' 			=> $userid,
+				'type' 				=> 'vote_up',
+				'secondary_user' 	=> $receiving_userid,
+				'item_id' 			=> $actionid,
+				'parent_type' 		=> 'post',
+				'permalink' 		=> get_permalink( $actionid ),
+			);
+
+			$activity_id = ap_new_activity( $activity_arr );
+
+			// Insert a notification.
+			//ap_new_notification( $activity_id, $receiving_userid );
+		}
+	}
+
+	/**
+	 * Add activitt for new reputation
+	 * @param  integer $user_id    User ID.
+	 * @param  integer $action_id  Action ID.
+	 * @param  integer $reputation Points earned.
+	 * @param  string  $type       Vote type.
+	 */
+	public function ap_added_reputation( $user_id, $action_id, $reputation, $type ) {
+		$activity_arr = array(
+			'user_id' 			=> $user_id,
+			'type' 				=> 'reputation_gain',
+			'item_id' 			=> $action_id,
+			'parent_type' 		=> 'user',
+			'permalink' 		=> get_permalink( $action_id ),
+			'reputation' 		=> $reputation,
+			'reputation_type' 	=> $type,
+		);
+
+		$activity_id = ap_new_activity( $activity_arr );
+
+		// Insert a notification.
+		// ap_new_notification( $activity_id, $user_id );
+	}
+
 }
 
 /**
@@ -314,3 +397,4 @@ function ap_remove_new_answer_history($answer_id) {
 
 	return $row;
 }
+

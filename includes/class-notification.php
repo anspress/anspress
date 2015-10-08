@@ -26,36 +26,11 @@ class AP_Notification
 	 * @param AnsPress $ap Parent class object.
 	 */
 	public function __construct($ap) {
-	    $ap->add_action( 'ap_added_follower', $this, 'notify_user_about_follower', 10, 2 );
-	    $ap->add_action( 'ap_vote_casted', $this, 'notify_upvote', 10, 4 );
-	    $ap->add_action( 'ap_after_new_answer', $this, 'after_new_answer', 10, 2 );
-	    $ap->add_action( 'ap_after_update_question', $this, 'after_update_question', 10, 2 );
-	    $ap->add_action( 'ap_after_update_answer', $this, 'after_update_answer', 10, 2 );
-	    $ap->add_action( 'ap_publish_comment', $this, 'publish_comment' );
-	}
-
-	/**
-	 * Insert notification about upvote
-	 * @param  integer $userid           User ID who is voting.
-	 * @param  string  $type             Vote type.
-	 * @param  integer $actionid         Post ID.
-	 * @param  integer $receiving_userid User who is receiving vote.
-	 */
-	public function notify_upvote($userid, $type, $actionid, $receiving_userid) {
-		if ( 'vote_up' == $type && ap_is_profile_active() ) {
-			ap_insert_notification( $userid, $receiving_userid, 'vote_up', array( 'post_id' => $actionid ) );
-		}
-	}
-
-	/**
-	 * Insert notification about new follower
-	 * @param  integer $user_to_follow  Whom to follow.
-	 * @param  integer $current_user_id Current user ID.
-	 */
-	public function notify_user_about_follower($user_to_follow, $current_user_id) {
-		if ( ap_is_profile_active() ) {
-			ap_insert_notification( $current_user_id, $user_to_follow, 'new_follower' );
-		}
+	    
+	    //$ap->add_action( 'ap_after_new_answer', $this, 'after_new_answer', 10, 2 );
+	    //$ap->add_action( 'ap_after_update_question', $this, 'after_update_question', 10, 2 );
+	    //$ap->add_action( 'ap_after_update_answer', $this, 'after_update_answer', 10, 2 );
+	    //$ap->add_action( 'ap_publish_comment', $this, 'publish_comment' );
 	}
 
 	/**

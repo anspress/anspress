@@ -636,11 +636,11 @@ function ap_user_profile_tab() {
 
 /**
  * Check if currently displayed user profile is for current user
- * @param  boolean $user_id Its deprecated since 2.4.
+ * @param  boolean $user_id Its @deprecated since 2.4.
  * @return boolean
  */
 function ap_is_my_profile($user_id = false) {
-	if ( false === $user_id ) {
+	if ( false !== $user_id ) {
 		_deprecated_argument( __FUNCTION__, '2.4', __( 'Passing user_id in ap_is_my_profile is deprecated, function will check again currently logged in user.', 'ap' ) );
 	}
 

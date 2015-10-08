@@ -3,12 +3,16 @@
  * AnsPress notification functions.
  *
  * @package   AnsPress
- * @author    Rahul Aryan <admin@rahularyan.com>
+ * @author    Rahul Aryan <support@anspress.io>
  * @license   GPL-2.0+
  * @link      http://anspress.io
- * @copyright 2014 Rahul Aryan secondary
+ * @copyright 2014 Rahul Aryan
  */
 
+/**
+ * Notification class
+ * @deprecated 2.4
+ */
 class AnsPress_Notifications
 {
 	var $args = array();
@@ -47,20 +51,16 @@ class AnsPress_Notifications
 		$this->query();
 	}
 
+	/**
+	 * MySql uery for notification
+	 */
 	public function query() {
 
 		global $wpdb;
 
 		$read_unread = '';
 
-		if ( $this->args['unread'] && $this->args['read'] ) {
-			$read_unread .= "apmeta_type = 'notification' OR apmeta_type = 'unread_notification'"; } elseif ($this->args['read'])
-			$read_unread .= "apmeta_type = 'notification'";
-
-		else {
-			$read_unread .= "apmeta_type = 'unread_notification'"; }
-
-		$query = $wpdb->prepare( 'SELECT SQL_CALC_FOUND_ROWS apmeta_id as id, apmeta_userid as user_id, apmeta_actionid as affected_user_id, apmeta_param as type, apmeta_value as args, apmeta_type as is_unread, apmeta_date as date FROM '.$wpdb->prefix.'ap_meta WHERE ('.$read_unread.") AND apmeta_actionid = %d ORDER BY CASE apmeta_type WHEN 'unread_notification' THEN 1 ELSE -1 END DESC, apmeta_date DESC LIMIT %d,%d", $this->args['user_id'], $this->offset, $this->per_page );
+		$query = $wpdb->prepare( "SELECT SQL_CALC_FOUND_ROWS * FROM $wpdb->ap_activity activity INNER JOIN $wpdb->ap_notifications noti ON activity.id = noti.noti_activity_id WHERE activity.user_id=%d LIMIT %d, %d", $this->args['user_id'], $this->offset, $this->per_page );
 
 		$this->cache_key 		= md5( $query );
 		$result 				= wp_cache_get( $this->cache_key, 'ap' );
@@ -71,6 +71,7 @@ class AnsPress_Notifications
 			wp_cache_set( $this->cache_key, $result, 'ap' );
 
 			$this->total_count = $wpdb->get_var( apply_filters( 'ap_notification_found_rows', 'SELECT FOUND_ROWS()', $this ) );
+
 			wp_cache_set( $this->cache_key.'_count', $this->total_count, 'ap' );
 		}
 
@@ -78,18 +79,6 @@ class AnsPress_Notifications
 
 		$this->total_pages 		= ceil( $this->total_count / $this->per_page );
 		$this->count 			= count( $result );
-	}
-
-	private function set_args() {
-		if ( $this->notification && ! is_array( $this->notification->args ) ) {
-			$this->notification->args 				= wp_parse_args( urldecode( $this->notification->args ) );
-			$this->notification->is_unread 			= $this->notification->is_unread == 'unread_notification' ? true : false;
-			$this->notification->content 			= ap_sprintf_assoc( ap_get_notification_title( $this->notification->type, $this->notification->args ), $this->notification->args );
-			$this->notification->icon 				= ap_get_notification_icon( $this->notification->type );
-
-			if ( isset( $this->notification->args['permalink'] ) ) {
-				$this->notification->args['permalink'] 	= add_query_arg( array( 'ap_notification_read' => $this->id() ), $this->notification->args['permalink'] ); }
-		}
 	}
 
 	public function notifications() {
@@ -100,7 +89,7 @@ class AnsPress_Notifications
 
 			do_action( 'ap_notifications_loop_end' );
 
-			// Do some cleaning up after the loop
+			// Do some cleaning up after the loop.
 			$this->rewind_notification();
 		}
 
@@ -120,27 +109,24 @@ class AnsPress_Notifications
 
 	/**
 	 * Check if there are notifications in loop
-	 *
 	 * @return bool
 	 */
 	public  function has_notifications() {
 		if ( $this->count ) {
-			return true; }
+			return true;
+		}
 
 		return false;
 	}
 
 	/**
 	 * Set up the next notification and iterate index.
-	 *
 	 * @return object The next notification to iterate over.
 	 */
 	public function next_notification() {
 
 		$this->current++;
 		$this->notification = $this->notifications[$this->current];
-
-		$this->set_args();
 		return $this->notification;
 	}
 
@@ -168,201 +154,105 @@ class AnsPress_Notifications
 	public function id() {
 
 		if ( $this->in_the_loop ) {
-			return $this->notification->id; }
+			return $this->notification->id;
+		}
 	}
 
 	public function is_unread() {
-
 		if ( $this->in_the_loop ) {
-			return $this->notification->is_unread; }
+			return $this->notification->is_unread;
+		}
 	}
 
 	public function permalink() {
-
 		if ( $this->in_the_loop ) {
-			return $this->notification->args['permalink']; }
+			return $this->notification->args['permalink'];
+		}
 	}
 
 	public function the_pagination() {
-
 		$base = ap_user_link( $this->args['user_id'], 'notification' ) . '/%_%';
 		ap_pagination( $this->paged, $this->total_pages, $base );
 	}
 }
 
+/**
+ * Return notification class query
+ * @param  string|array $args Notification query arguments.
+ * @return object       Notification query object
+ */
 function ap_get_user_notifications($args = '') {
 	return new AnsPress_Notifications( $args );
 }
 
-function ap_has_notifications() {
-	global $ap_notifications;
-
-	return $ap_notifications->has_notifications();
-}
-
-function ap_notifications() {
-	global $ap_notifications;
-	return $ap_notifications->notifications();
-}
-
-function ap_the_notification() {
-	global $ap_notifications;
-	return $ap_notifications->the_notification();
-}
-
-function ap_notification_object() {
-	global $ap_notification;
-
-	if ( $ap_notification ) {
-		return $ap_notification; }
-}
-
-function ap_notification_the_id() {
-	echo ap_notification_id();
-}
-
-function ap_notification_id() {
-	$notification = ap_notification_object();
-
-	if ( $notification ) {
-		return $notification->id; }
-}
-
-function ap_notification_is_unread() {
-	$notification = ap_notification_object();
-
-	if ( $notification ) {
-		return $notification->is_unread; }
-}
-
-function ap_notification_the_permalink() {
-	echo ap_notification_permalink();
-}
-
-function ap_notification_permalink() {
-	$notification = ap_notification_object();
-
-	if ( $notification ) {
-		return $notification->args['permalink']; }
-}
-
-function ap_notification_the_type() {
-	echo ap_notification_type();
-}
-
-function ap_notification_type() {
-	$notification = ap_notification_object();
-
-	if ( $notification ) {
-		return $notification->type; }
-}
-
-function ap_notification_the_icon() {
-	echo ap_notification_icon();
-}
-function ap_notification_icon() {
-	$notification = ap_notification_object();
-
-	if ( $notification ) {
-		return $notification->icon; }
-}
-
-function ap_notification_the_content() {
-	echo ap_notification_content();
-}
-function ap_notification_content() {
-	$notification = ap_notification_object();
-
-	if ( $notification ) {
-		return $notification->content; }
-}
-
-function ap_notification_the_date() {
-	printf( __( '%s ago', 'ap' ), ap_human_time( ap_notification_date(), false ) );
-}
-function ap_notification_date() {
-	$notification = ap_notification_object();
-
-	if ( $notification ) {
-		return $notification->date; }
-}
-
-function ap_notification_pagination() {
-	global $ap_notifications;
-
-	$ap_notifications->the_pagination();
-}
-
 /**
  * Insert new notification for a user
- * @param  integer         $activity_id    Activity id.
- * @param  boolean|integer $user_id        User id.
- * @param  string          $status         Type of status. Default is 0. 0 = unread 1 = read.
- * @param  boolean|string  $date           Date.
+ * @param  integer               $activity_id    Activity id.
+ * @param  boolean|integer|array $user_id        User id or arrays of user ids. If array passed then bulk insert will be done.
+ * @param  string                $status         Type of status. Default is 0. 0 = unread 1 = read.
+ * @param  boolean|string        $date           Date.
  * @return false|integer
  */
 function ap_new_notification( $activity_id, $user_id = false, $status = '0', $date = false ) {
 
 	global $wpdb;
 
+	$user_ids = array();
+
 	if ( false === $user_id ) {
-		$user_id = get_current_user_id();
+		$user_ids[] = get_current_user_id();
+	}elseif(!is_array($user_id)){
+		$user_ids[] = $user_id;
+	}
+
+	if ( is_array($user_id) ) {
+
+		// Check user_ids exists in array else return.
+		if(count($user_id) == 0){
+			return false;
+		}
+		
+		// Make sure ids are positive integer.
+		foreach($user_id as $k => $uid){
+			$uid = (int) abs( $uid );
+
+			if($uid != 0){
+				$user_ids[] = $uid;
+			}
+		}
+
+		// Bail if no ids exists.
+		if( count($user_ids) == 0){
+			return false;
+		}
 	}
 
 	if ( false === $date ) {
 		$date = current_time( 'mysql' );
 	}
 
-	$row = $wpdb->insert(
-		$wpdb->ap_notifications,
-		array(
-			'activity_id' 	=> $activity_id,
-			'user_id' 		=> $user_id,
-			'status' 		=> $status,
-			'date' 			=> $date,
-		),
-		array(
-			'%d',
-			'%d',
-			'%s',
-			'%s',
-		)
-	);
+	$query = "INSERT INTO $wpdb->ap_notifications (noti_activity_id, noti_user_id, noti_status, noti_date) ";
 
-	// Return insert_id if not false.
-	if ( false !== $row ) {
-		return $wpdb->insert_id;
+	// multiple lists of column values.
+	if( $user_ids ){
+		$i = 1;
+		foreach( $user_ids as $id ){
+			$query .= $wpdb->prepare("VALUES (%d, %d, %s, %s)", $activity_id, $user_id, $status, $date );
+
+			if(count($user_ids) != $i){
+				$query .= ", ";
+			}
+
+			$i++;
+			
+		}
 	}
+
+	$row = $wpdb->query( $query );
 
 	return $row;
 }
 
-/**
- * Return notification title
- * @param  string $notification   notification type
- * @return string
- * @since  2.3
- */
-function ap_get_notification_title($notification, $args) {
-
-	$title = array(
-		'new_question' 				=> __( 'New question <b>##post_title</b>', 'ap' ),
-		'new_answer' 				=> __( 'New answer on <b>##post_title</b>', 'ap' ),
-		'question_update' 			=> __( 'Your question <b>##post_title</b> has been edited', 'ap' ),
-		'answer_update' 			=> __( 'Your answer on <b>##post_title</b> has been edited', 'ap' ),
-		'comment_on_question' 		=> __( 'New comment on question <b>##post_title</b>', 'ap' ),
-		'comment_on_answer' 		=> __( 'New comment on answer <b>##post_title</b>', 'ap' ),
-		'new_follower' 				=> sprintf( __( '<b>%s</b> started following you', 'ap' ), ap_user_display_name( $args['user_id'] ) ),
-		'vote_up' 					=> sprintf( __( '%s up voted on your post <b>##post_title</b>', 'ap' ), ap_user_display_name( $args['user_id'] ) ),
-		'answer_selected' 			=> __( 'Your answer on <b>##post_title</b> has been selected as best', 'ap' ),
-		'received_reputation' 		=> __( 'You have received <b>##reputation</b> reputation points', 'ap' ),
-	);
-
-	$title = apply_filters( 'ap_notification_title', $title );
-
-	if ( isset( $title[$notification] ) ) {
-		return $title[$notification]; }
-}
 
 function ap_get_notification_icon($type) {
 
@@ -462,3 +352,4 @@ function ap_notification_mark_as_read($id) {
 
 	return $row;
 }
+

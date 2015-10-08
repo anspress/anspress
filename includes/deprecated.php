@@ -180,3 +180,98 @@ function ap_add_question_subscriber($question_id, $user_id = false, $type = '', 
 function ap_remove_question_subscriber($question_id, $user_id = false) {
 	_deprecated_function( 'ap_remove_question_subscriber', '2.4' );
 }
+
+/**
+ * Check if there are notifications in loop
+ * @return bool
+ */
+function ap_has_notifications() {
+	_deprecated_function( 'ap_has_notifications', '2.4' );
+}
+
+function ap_notifications() {
+	_deprecated_function( 'ap_notifications', '2.4' );
+}
+
+function ap_the_notification() {
+	_deprecated_function( 'ap_the_notification', '2.4' );
+}
+
+function ap_notification_object() {
+	_deprecated_function( 'ap_notification_object', '2.4' );
+}
+
+/**
+ * Output notification id.
+ */
+function ap_notification_the_id() {
+	_deprecated_function( 'ap_notification_the_id', '2.4' );
+}
+
+/**
+ * Get notification id
+ * @return integer
+ */
+function ap_notification_id() {
+	_deprecated_function( 'ap_notification_id', '2.4' );
+}
+
+function ap_notification_the_permalink() {
+	_deprecated_function( 'ap_notification_the_permalink', '2.4' );
+}
+
+function ap_notification_permalink() {
+	_deprecated_function( 'ap_notification_permalink', '2.4' );
+}
+
+function ap_notification_the_type() {
+	_deprecated_function( 'ap_notification_the_type', '2.4' );
+}
+
+function ap_notification_type() {
+	_deprecated_function( 'ap_notification_type', '2.4' );
+}
+
+function ap_notification_the_content() {
+	_deprecated_function( 'ap_notification_the_content', '2.4' );
+}
+
+function ap_notification_content() {
+	_deprecated_function( 'ap_notification_content', '2.4' );
+}
+
+/**
+ * Return notification title
+ * @param  string $notification   notification type
+ * @deprecated 2.4 This function is deprecated.
+ * @since  2.3
+ */
+function ap_get_notification_title($notification, $args) {
+	_deprecated_function( 'ap_get_notification_title', '2.4' );
+}
+
+/**
+ * Output notification date
+ */
+function ap_notification_the_date() {
+	_deprecated_function( 'ap_notification_the_date', '2.4' );
+}
+
+/**
+ * Return notification date.
+ * @return string
+ */
+function ap_notification_date() {
+	_deprecated_function( 'ap_notification_date', '2.4' );
+}
+
+function ap_notification_the_icon() {
+	_deprecated_function( 'ap_notification_the_icon', '2.4' );
+}
+function ap_notification_icon() {
+	_deprecated_function( 'ap_notification_icon', '2.4' );
+}
+
+function ap_notification_pagination() {
+	_deprecated_function( 'ap_notification_pagination', '2.4' );
+}

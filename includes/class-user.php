@@ -112,9 +112,9 @@ class AnsPress_User
 			return;
 		}
 
-		global $ap_notifications;
+		global $ap_activities;
 
-		$ap_notifications = ap_get_user_notifications();
+		$ap_activities = ap_get_activities( array('notification' => true) );
 
 		ap_get_template_part( 'user/notification' );
 	}

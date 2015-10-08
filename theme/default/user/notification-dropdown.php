@@ -7,6 +7,8 @@
  *
  * @package AnsPress
  */
+
+return;
 ?>
 
 <ul id="ap-notification-dropdown" class="ap-dropdown-menu ap-user-dropdown-menu ap-notification-items">
@@ -14,7 +16,7 @@
 		<b><?php _e('Notifications', 'ap'); ?></b>
 		<a href="#" data-action="ap_markread_notification" data-query="ap_ajax_action=markread_notification&__nonce='.wp_create_nonce( 'ap_markread_notification_'.get_current_user_id() ).'"><?php _e('Mark all as read', 'ap'); ?></a>
 	</li>
-	<?php if(ap_has_notifications()): ?>
+	<?php if(ap_has_activities()): ?>
 		<li class="ap-notification-items clearfix">
 			<div class="ap-notification-scroll scrollbar-dynamic">
 				<?php while ( ap_notifications() ) : ap_the_notification(); ?>

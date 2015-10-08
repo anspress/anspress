@@ -43,9 +43,7 @@ class AP_Reputation {
 		add_action( 'ap_publish_comment', array( $this, 'new_comment' ) );
 		add_action( 'ap_unpublish_comment', array( $this, 'delete_comment' ) );
 
-		add_filter( 'ap_user_display_meta_array', array( $this, 'display_meta' ), 10, 2 );
-
-		add_action( 'ap_added_reputation', array( $this, 'ap_added_reputation' ), 10, 5 );
+		add_filter( 'ap_user_display_meta_array', array( $this, 'display_meta' ), 10, 2 );		
 	}
 
 	public function reputation_page() {
@@ -290,10 +288,6 @@ class AP_Reputation {
 			$metas['reputation'] = '<span class="ap-user-meta ap-user-meta-reputation" title="'.__( 'Reputation', 'ap' ).'">'. sprintf( __( '%s Rep.', 'ap' ), ap_get_reputation( $user_id, true ) ) .'</span>'; }
 
 		return $metas;
-	}
-
-	public function ap_added_reputation($user_id, $action_id, $reputation, $type, $current_user_id) {
-		ap_insert_notification( $current_user_id, $user_id, 'received_reputation', array( 'reputation' => $reputation, 'type' => $type ) );
 	}
 
 }
@@ -781,7 +775,8 @@ function ap_reputation_log($type, $uid, $reputation, $action_id, $current_user_i
 	$row = ap_add_meta( $uid, 'reputation', $action_id, $reputation, $type );
 
 	if ( $row !== false ) {
-		do_action( 'ap_added_reputation', $uid, $action_id, $reputation, $type, $current_user_id ); }
+		do_action( 'ap_added_reputation', $uid, $action_id, $reputation, $type, $current_user_id );
+	}
 
 	return $row;
 }

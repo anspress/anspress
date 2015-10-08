@@ -111,10 +111,11 @@ class AnsPress_Activity_Query
 		$this->offset = $this->per_page * ($this->paged - 1);
 
 		$this->args = wp_parse_args( $args, array(
-			'number' 	=> $this->per_page,
-			'offset' 	=> $this->offset,
-			'orderby' 	=> 'date',
-			'order' 	=> 'DESC',
+			'number' 		=> $this->per_page,
+			'offset' 		=> $this->offset,
+			'orderby' 		=> 'date',
+			'order' 		=> 'DESC',
+			'notification' 	=> false,
 		));
 
 		// Process meta query arguments.
@@ -146,6 +147,7 @@ class AnsPress_Activity_Query
 		if ( isset( $this->meta_query_sql['join'] ) ) {
 			$query .= $this->meta_query_sql['join'];
 		}
+		$query .= $this->join();
 
 		$query .= $this->where_clauses( $this->args );
 
@@ -173,6 +175,22 @@ class AnsPress_Activity_Query
 			$this->cache_activity();
 		}
 
+	}
+
+	/**
+	 * Join statement
+	 * @return string
+	 */
+	public function join(){
+		global $wpdb;
+
+		$join = "";
+		
+		if( $this->args['notification']){
+			$join .= " LEFT JOIN $wpdb->ap_notifications ON id = noti_activity_id ";
+		}
+
+		return $join;
 	}
 
 	/**
@@ -498,66 +516,84 @@ function ap_get_activity_action_title($args) {
 
 	$primary_user_link = ap_user_link( $args['user_id'] );
 	$primary_user_name = ap_user_display_name( array( 'user_id' => $args['user_id'] ) );
-	$user = '<a href="'. $primary_user_link .'">'.$primary_user_name.'</a>';
+	$user = '<a class="ap-user-link" href="'. $primary_user_link .'">'.$primary_user_name.'</a>';
 
 	switch ( $type ) {
 
 		case 'new_question':
-			$question_title = '<a href="'. get_permalink( $args['question_id'] ) .'">'. get_the_title( $args['question_id'] ) .'</a>';
+			$question_title = '<a class="ap-q-link" href="'. get_permalink( $args['question_id'] ) .'">'. get_the_title( $args['question_id'] ) .'</a>';
 			$content .= sprintf( __( '%s asked question %s', 'ap' ), $user, $question_title );
 			break;
 
 		case 'new_answer':
-			$answer_title = '<a href="'. get_permalink( $args['item_id'] ) .'">'. get_the_title( $args['item_id'] ) .'</a>';
+			$answer_title = '<a class="ap-q-link" href="'. get_permalink( $args['answer_id'] ) .'">'. get_the_title( $args['answer_id'] ) .'</a>';
 			$content .= sprintf( __( '%s answered on %s', 'ap' ), $user, $answer_title );
 			break;
 
 		case 'new_comment':
-			$question_title = '<a href="'. get_permalink( $args['question_id'] ) .'">'. get_the_title( $args['question_id'] ) .'</a>';
+			$question_title = '<a class="ap-q-link" href="'. get_permalink( $args['question_id'] ) .'">'. get_the_title( $args['question_id'] ) .'</a>';
 			$comment = '<span class="ap-comment-excerpt"><a href="'. get_comment_link( $args['item_id'] ) .'">'. get_comment_excerpt( $args['item_id'] ) .'</a></span>';
 			$content .= sprintf( __( '%s commented on question %s %s', 'ap' ), $user, $question_title, $comment );
 			break;
 
 		case 'new_comment_answer':
-			$title = '<a href="'. get_permalink( $args['question_id'] ) .'">'. get_the_title( $args['question_id'] ) .'</a>';
+			$title = '<a class="ap-q-link" href="'. get_permalink( $args['question_id'] ) .'">'. get_the_title( $args['question_id'] ) .'</a>';
 			$comment = '<span class="ap-comment-excerpt"><a href="'. get_comment_link( $args['item_id'] ) .'">'. get_comment_excerpt( $args['item_id'] ) .'</a></span>';
 			$content .= sprintf( __( '%s commented on answer %s %s', 'ap' ), $user, $title, $comment );
 			break;
 
 		case 'edit_question':
-			$question_title = '<a href="'. get_permalink( $args['question_id'] ) .'">'. get_the_title( $args['question_id'] ) .'</a>';
+			$question_title = '<a class="ap-q-link" href="'. get_permalink( $args['question_id'] ) .'">'. get_the_title( $args['question_id'] ) .'</a>';
 			$content .= sprintf( __( '%s edited question %s', 'ap' ), $user, $question_title );
 			break;
 
 		case 'edit_answer':
-			$answer_title = '<a href="'. get_permalink( $args['item_id'] ) .'">'. get_the_title( $args['item_id'] ) .'</a>';
+			$answer_title = '<a class="ap-q-link" href="'. get_permalink( $args['item_id'] ) .'">'. get_the_title( $args['item_id'] ) .'</a>';
 			$content .= sprintf( __( '%s edited answer %s', 'ap' ), $user, $answer_title );
 			break;
 
 		case 'edit_comment':
-			$comment = '<a href="'. get_comment_link( $args['item_id'] ) .'">'. get_comment_excerpt( $args['item_id'] ) .'</a>';
-			$question_title = '<a href="'. get_permalink( $args['question_id'] ) .'">'. get_the_title( $args['question_id'] ) .'</a>';
+			$comment = '<a class="ap-c-link" href="'. get_comment_link( $args['item_id'] ) .'">'. get_comment_excerpt( $args['item_id'] ) .'</a>';
+			$question_title = '<a class="ap-q-link" href="'. get_permalink( $args['question_id'] ) .'">'. get_the_title( $args['question_id'] ) .'</a>';
 			$content .= sprintf( __( '%s edited comment on %s %s', 'ap' ), $user, $question_title, $comment );
 			break;
 
 		case 'answer_selected':
-			$question_title = '<a href="'. get_permalink( $args['question_id'] ) .'">'. get_the_title( $args['question_id'] ) .'</a>';
+			$question_title = '<a class="ap-q-link" href="'. get_permalink( $args['question_id'] ) .'">'. get_the_title( $args['question_id'] ) .'</a>';
 			$content .= sprintf( __( '%s selected best answer for %s', 'ap' ), $user, $question_title );
 			break;
 
 		case 'answer_unselected':
-			$question_title = '<a href="'. get_permalink( $args['question_id'] ) .'">'. get_the_title( $args['question_id'] ) .'</a>';
+			$question_title = '<a class="ap-q-link" href="'. get_permalink( $args['question_id'] ) .'">'. get_the_title( $args['question_id'] ) .'</a>';
 			$content .= sprintf( __( '%s unselected best answer for question %s', 'ap' ), $user, $question_title );
 			break;
 
 		case 'status_updated':
-			$title = '<a href="'. get_permalink( $args['question_id'] ) .'">'. get_the_title( $args['question_id'] ) .'</a>';
+			$title = '<a class="ap-q-link" href="'. get_permalink( $args['question_id'] ) .'">'. get_the_title( $args['question_id'] ) .'</a>';
 			$content .= sprintf( __( '%s updated status of question %s', 'ap' ), $user, $title );
 			break;
 
 		case 'status_updated_answer':
-			$title = '<a href="'. get_permalink( $args['item_id'] ) .'">'. get_the_title( $args['item_id'] ) .'</a>';
+			$title = '<a class="ap-q-link" href="'. get_permalink( $args['item_id'] ) .'">'. get_the_title( $args['item_id'] ) .'</a>';
 			$content .= sprintf( __( '%s updated status of answer %s', 'ap' ), $user, $title );
+			break;
+
+		case 'follower':
+			$title = '<a class="ap-q-link" href="'. $args['permalink'] .'">'. ap_user_display_name( $args['item_id'] ) .'</a>';
+			$content .= sprintf( __( '%s started following %s', 'ap' ), $user, $title );
+			break;
+
+		case 'vote_up':
+			$post = get_post( $args['item_id'] );
+			$cpt_type = $post->post_type == 'question' ? __('question', 'ap') : __('answer', 'ap');
+			$title = '<a class="ap-q-link" href="'. $args['permalink'] .'">'. $post->post_title .'</a>';
+			$content .= sprintf( __( '%s voted up on %s %s', 'ap' ), $user, $cpt_type, $title );
+			break;
+
+		case 'reputation_gain':
+			$post = get_post( $args['item_id'] );
+			$title = '<a class="ap-q-link" href="'. $args['permalink'] .'">'. $post->post_title .'</a>';
+			$content .= sprintf( __( '%s received %d reputation on %s', 'ap' ), $user, $args['reputation'], $title );
 			break;
 	}
 
@@ -573,18 +609,18 @@ function ap_new_activity( $args = array() ) {
 	$user_id = get_current_user_id();
 
 	$defaults = array(
-		'user_id' => $user_id,
-		'secondary_user' => 0,
-		'type' => '',
-		'parent_type' => 'post',
-		'status' => 'publish',
-		'content' => '',
-		'permalink' => '',
-		'question_id' => '',
-		'answer_id' => '',
-		'item_id' => '',
-		'created' => '',
-		'updated' => '',
+		'user_id' 			=> $user_id,
+		'secondary_user' 	=> 0,
+		'type' 				=> '',
+		'parent_type' 		=> 'post',
+		'status' 			=> 'publish',
+		'content' 			=> '',
+		'permalink' 		=> '',
+		'question_id' 		=> '',
+		'answer_id' 		=> '',
+		'item_id' 			=> '',
+		'created' 			=> '',
+		'updated' 			=> '',
 	);
 
 	$args = wp_parse_args( $args, $defaults );
@@ -747,8 +783,7 @@ function ap_latest_post_activity_html($post_id = false) {
  * @since  2.4
  */
 function ap_get_activities( $args = '' ) {
-	$activities = new AnsPress_Activity_Query( $args );
-	return $activities;
+	return new AnsPress_Activity_Query( $args );
 }
 
 /**
@@ -898,3 +933,184 @@ function ap_delete_activity($id) {
 
 	return $row;
 }
+
+/**
+ * Check if there are notifications in loop
+ * @return bool
+ */
+function ap_has_activities() {
+	global $ap_activities;
+	return $ap_activities->has_activities();
+}
+
+function ap_activities() {
+	global $ap_activities;
+	return $ap_activities->activities();
+}
+
+function ap_the_activity() {
+	global $ap_activities;
+	return $ap_activities->the_activity();
+}
+
+function ap_activity_object() {
+	global $ap_the_activity;
+
+	if ( $ap_the_activity ) {
+		return $ap_the_activity;
+	}
+}
+
+/**
+ * Output activity id.
+ */
+function ap_activity_the_id() {
+	echo ap_activity_id();
+}
+
+/**
+ * Get activity id
+ * @return integer
+ */
+function ap_activity_id() {
+	$activity = ap_activity_object();
+
+	if ( $activity ) {
+		return $activity->id;
+	}
+}
+
+/**
+ * Output activity id.
+ */
+function ap_activity_the_noti_id(){
+	echo ap_activity_noti_id();
+}
+
+/**
+ * Get activity id
+ * @return integer
+ */
+function ap_activity_noti_id() {
+	$activity = ap_activity_object();
+
+	if ( $activity ) {
+		return $activity->noti_id;
+	}
+}
+
+/**
+ * Is notification is unread
+ * @return boolean
+ */
+function ap_notification_is_unread() {
+	$activity = ap_activity_object();
+
+	if ( is_object( $activity ) && $activity->noti_status == 0 ) {
+		return true;
+	}
+
+	return false;
+}
+
+/**
+ * Output activity permalink
+ */
+function ap_activity_the_permalink() {
+	echo ap_activity_permalink();
+}
+
+/**
+ * Return activity permalink
+ * @return string
+ */
+function ap_activity_permalink() {
+	$activity = ap_activity_object();
+
+	if ( $activity ) {
+		return $activity->permalink;
+	}
+}
+
+/**
+ * Output activity type
+ */
+function ap_activity_the_type() {
+	echo ap_activity_type();
+}
+
+/**
+ * Return activity type
+ * @return string
+ */
+function ap_activity_type() {
+	$activity = ap_activity_object();
+
+	if ( $activity ) {
+		return $activity->type;
+	}
+}
+
+/**
+ * Output activity content
+ */
+function ap_activity_the_content() {
+	echo ap_activity_content();
+}
+
+/**
+ * Return activity contnet
+ * @return string 	return formatted content.
+ */
+function ap_activity_content() {
+	$activity = ap_activity_object();
+
+	if ( $activity ) {
+		return html_entity_decode( $activity->content );
+	}
+}
+
+function ap_activity_the_icon() {
+	echo ap_activity_icon();
+}
+
+function ap_activity_icon() {
+	$activity = ap_activity_object();
+
+	if ( $activity ) {
+		return ap_get_notification_icon( $activity->type );
+	}
+}
+
+/**
+ * Activity date
+ */
+function ap_activity_the_date() {
+	printf( __( '%s ago', 'ap' ), ap_human_time( ap_activity_date(), false ) );
+}
+
+/**
+ * Return activity update date.
+ * @return string
+ */
+function ap_activity_date() {
+	$activity = ap_activity_object();
+
+	if ( $activity ) {
+		return $activity->updated;
+	}
+}
+
+function ap_activity_user_id() {
+	$activity = ap_activity_object();
+
+	if ( $activity ) {
+		return $activity->user_id;
+	}
+}
+
+function ap_activity_pagination() {
+	global $ap_activities;
+	$ap_activities->the_pagination();
+}
+

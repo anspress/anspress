@@ -3761,6 +3761,14 @@ body ul ul#ap-notification-dropdown .ap-no-notification {
   text-align: center;
   width: 25px;
 }
+#anspress .ap-notification-item .ap-user-link {
+  font-weight: bold;
+}
+#anspress .ap-notification-item .ap-q-link {
+  color: #6c6c6c;
+  display: block;
+  margin-bottom: 5px;
+}
 #anspress .ap-notification-icon {
   color: #fff;
 }

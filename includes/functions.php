@@ -1,21 +1,17 @@
 <?php
 /**
- * AnsPress.
+ * AnsPress common functions.
  *
- * @author    Rahul Aryan <admin@rahularyan.com>
- * @license   GPL-2.0+
- *
- * @link      http://rahularyan.com
- *
+ * @author    Rahul Aryan <support@anspress.io>
+ * @license   GPL-3.0+
+ * @link      http://anspress.io
  * @copyright 2014 Rahul Aryan
  */
 
 /**
  * Get slug of base page.
- *
  * @return string
- *
- * @since 2.0.0-beta
+ * @since 2.0.0
  */
 function ap_base_page_slug() {
 
@@ -32,11 +28,9 @@ function ap_base_page_slug() {
 }
 
 /**
- * Retrive permalink to base page.
- *
+ * Retrive permalink to base page
  * @return string URL to AnsPress base page
- *
- * @since 2.0.0-beta
+ * @since 2.0.0
  */
 function ap_base_page_link() {
 
@@ -1735,3 +1729,13 @@ function ap_is_profile_menu($menu) {
 	return in_array( 'anspress-page-profile', $menu->classes );
 }
 
+/**
+ * Get the IDs of answer by question ID.
+ * @param  integer $question_id Question post ID.
+ * @return object
+ * @since  2.4
+ */
+function ap_questions_answer_ids( $question_id ) {
+	global $wpdb;
+	return $wpdb->get_col( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_type = 'answer' AND post_parent=%d", $question_id ) );
+}

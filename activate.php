@@ -75,12 +75,12 @@ function anspress_activate( $network_wide ) {
 			)".$charset_collate.";";
 
 		$notifications = "CREATE TABLE IF NOT EXISTS `".$wpdb->base_prefix."ap_notifications` (
-			    `id` bigint(20) NOT NULL AUTO_INCREMENT,
-			    `activity_id` bigint(20) NOT NULL,
-				`user_id` bigint(20) NOT NULL,
-				`status` varchar(225) NOT NULL,				
-				`date` date NOT NULL,
-				PRIMARY KEY (`id`)
+			    `noti_id` bigint(20) NOT NULL AUTO_INCREMENT,
+			    `noti_activity_id` bigint(20) NOT NULL,
+				`noti_user_id` bigint(20) NOT NULL,
+				`noti_status` varchar(225) NOT NULL,				
+				`noti_date` date NOT NULL,
+				PRIMARY KEY (`noti_id`)
 			)".$charset_collate.";";
 
 		$subscribers = "CREATE TABLE IF NOT EXISTS `".$wpdb->base_prefix."ap_subscribers` (

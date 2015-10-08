@@ -293,6 +293,8 @@ function ap_pagination($current = false, $total = false, $format = '?paged=%#%')
 		'format' => $format,
 		'current' => $current,
 		'total' => $total,
+		'end_size' => 3,
+		'mid_size' => 3,
 	));
 	echo '</div>';
 }

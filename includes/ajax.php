@@ -207,6 +207,8 @@ class AnsPress_Ajax
 	            return;
 	        }
 
+	        do_action( 'ap_unpublish_comment', $comment );
+
 	        $delete = wp_delete_comment( (int) $_POST['comment_ID'], true );
 
 	        if ( $delete ) {

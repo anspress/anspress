@@ -96,13 +96,17 @@ function ap_remove_subscriber($item_id, $user_id = false, $activity = false, $su
  */
 function ap_is_user_subscribed($item_id, $activity, $user_id = false) {
 
+	if ( ! is_user_logged_in() ) {
+		return false;
+	}
+
 	if ( $user_id === false ) {
 		$user_id = get_current_user_id();
 	}
 
 	global $wpdb;
 
-	$key = $item_id.'_'.$activity .'_'. $user_id;
+	$key = $item_id .'::'. $activity .'::'. $user_id;
 
 	$cache = wp_cache_get( $key, 'ap_subscriber_count' );
 
@@ -114,11 +118,7 @@ function ap_is_user_subscribed($item_id, $activity, $user_id = false) {
 
 	wp_cache_set( $key, $count, 'ap_subscriber_count' );
 
-	if ( $count > 0 ) {
-		return true;
-	}
-
-	return false;
+	return $count > 0;
 }
 
 /**
@@ -199,7 +199,7 @@ function ap_subscriber_count_html($post = false) {
  * @return array
  * @since  2.1
  */
-function ap_get_subscribers( $action_id, $activity = 'q_all') {
+function ap_get_subscribers( $action_id, $activity = 'q_all', $limit = 10 ) {
 	global $wpdb;
 
 	$key = $action_id.'_'.$activity;
@@ -210,7 +210,7 @@ function ap_get_subscribers( $action_id, $activity = 'q_all') {
 		return $cache;
 	}
 
-	$results = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM '.$wpdb->ap_subscribers.' where item_id=%d AND activity="%s" LIMIT 0 , 10', $action_id, $activity ) );
+	$results = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM '.$wpdb->ap_subscribers.' where item_id=%d AND activity="%s" LIMIT 0 , %d', $action_id, $activity, $limit ) );
 
 	// Set individual cache for subscriber.
 	if ( $results ) {
@@ -307,17 +307,63 @@ function ap_question_subscribers($action_id = false, $type = '', $avatar_size = 
  * Subscribe a user for a question.
  * @param  integer|object $question question ID or post object.
  */
-function ap_subscribe_question( $question ) {
-	if ( ! is_object( $question ) || ! isset( $question->post_type ) ) {
-		$question = get_post( $question );
+function ap_subscribe_question( $posta, $user_id = false ) {
+	if ( ! is_object( $posta ) || ! isset( $posta->post_type ) ) {
+		$posta = get_post( $posta );
 	}
 
 	// Return if not question.
-	if ( 'question' != $question->post_type ) {
+	if ( 'question' != $posta->post_type ) {
 		return false;
 	}
 
-	if ( ! ap_is_user_subscribed( $question->ID, 'q_all', $question->post_author ) ) {
-		ap_new_subscriber( $question->post_author, $question->ID, 'q_all' );
+	if ( false === $user_id ) {
+		$user_id = $posta->post_author;
 	}
+
+	if ( ! ap_is_user_subscribed( $posta->ID, 'q_all', $user_id ) ) {
+		ap_new_subscriber( $user_id, $posta->ID, 'q_all' );
+	}
+}
+
+/**
+ * Return all subscribers id
+ * @param  integer      $item_id Item id.
+ * @param  string|array $activity Activity type.
+ * @return array   Ids of subscribed user.
+ */
+function ap_subscriber_ids( $item_id, $activity = 'q_all' ) {
+	global $wpdb;
+
+	$key = $item_id . '::' . $activity;
+
+	$cache = wp_cache_get( $key, 'ap_subscribers_ids' );
+
+	if ( false !== $cache ) {
+		return $cache;
+	}
+
+	$activity_q = "AND ";
+
+	$i = 1;
+	if ( is_array( $activity ) && count( $activity ) > 0 ) {
+		$activity_q .= '(';
+		
+		foreach ( $activity as $a ) {
+			$activity_q .= $wpdb->prepare( "activity = '%s' ", $activity );
+			if ( $i != count( $activity ) ) {
+				$activity_q .= 'AND ';
+			}
+			$i++;
+		}
+
+		$activity_q .= ') ';
+	} else {
+		$activity_q = $wpdb->prepare( "activity = '%s'", $activity );
+	}
+
+	$results = $wpdb->get_col( $wpdb->prepare( "SELECT user_id FROM $wpdb->ap_subscribers WHERE item_id = %d $activity_q", $item_id ) );
+
+	wp_cache_set( $key, $results, 'ap_subscribers_ids' );
+	return $results;
 }

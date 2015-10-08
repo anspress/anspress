@@ -189,10 +189,20 @@ class AnsPress_Hooks
 	 */
 	public function before_delete($post_id) {
 		$post = get_post( $post_id );
-		if ( $post->post_type == 'question' || $post->post_type == 'answer' ) {
-			do_action( 'ap_before_delete_'.$post->post_type, $post->ID, $post );
-			ap_delete_meta( array( 'apmeta_actionid' => $post->ID ) );
-		}
+
+		if ( $post->post_type == 'question' ) {
+			do_action( 'ap_before_delete_question', $post->ID );
+			$answers = ap_questions_answer_ids( $post->ID );
+
+	        if ( $answers > 0 ) {
+	            foreach ( $answers as $a ) {
+	                do_action( 'ap_before_delete_answer', $a );
+	                wp_delete_post( $a, true );
+	            }
+	        }
+	    } elseif ( $post->post_type == 'answer' ) {
+	    	do_action( 'ap_before_delete_answer', $post->ID );
+	    }
 	}
 
 	/**
@@ -483,7 +493,7 @@ class AnsPress_Hooks
 
 	        global $ap_notifications;
 	        ob_start();
-	        $ap_notifications = ap_get_user_notifications( array( 'per_page' => 10 ) );
+	        // $ap_notifications = ap_get_user_notifications( array( 'per_page' => 10 ) );
 	        ap_get_template_part( 'user/notification-dropdown' );
 	        $o .= ob_get_clean();
 	    }

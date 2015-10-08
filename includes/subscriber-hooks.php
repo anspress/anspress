@@ -33,6 +33,7 @@ class AnsPress_Subscriber_Hooks
 		$ap->add_action( 'ap_publish_comment', $this, 'after_new_comment' );
 		$ap->add_action( 'ap_unpublish_comment', $this, 'unpublish_comment' );
 		$ap->add_action( 'ap_before_delete_question', $this, 'delete_question' );
+		$ap->add_action( 'ap_before_delete_answer', $this, 'delete_answer' );
 	}
 
 	/**
@@ -67,8 +68,6 @@ class AnsPress_Subscriber_Hooks
 	 * @param  object  $answer    	Answer object.
 	 */
 	public function after_new_answer($answer_id, $answer) {
-		ap_subscribe_question( $answer->post_parent );
-
 		if ( ! ap_is_user_subscribed( $answer->ID, 'a_all', $answer->post_author ) ) {
 			ap_new_subscriber( $answer->post_author, $answer->ID, 'a_all' );
 		}
@@ -83,14 +82,14 @@ class AnsPress_Subscriber_Hooks
 
 		ap_subscribe_question( $post );
 
-		$type = 'q_comment';
+		$type = 'q_post';
 		
 		if ( 'answer' == $post->post_type ) {
-			$type = 'a_comment';
+			$type = 'a_all';
 		}
 
-		if ( ! ap_is_user_subscribed( $comment->comment_post_ID, $type, get_current_user_id() ) ) {
-			ap_new_subscriber( get_current_user_id(), $comment->comment_post_ID, $type );
+		if ( ! ap_is_user_subscribed( $comment->comment_post_ID, $type, $comment->user_id ) ) {
+			ap_new_subscriber( $comment->user_id, $comment->comment_post_ID, $type );
 		}
 	}
 
@@ -103,10 +102,9 @@ class AnsPress_Subscriber_Hooks
 		$post = get_post( $comment->comment_post_ID );
 
 		if ( $post->post_type == 'question' ) {
-			ap_remove_subscriber( $post->ID, $comment->user_id, 'q_comment' );
+			ap_remove_subscriber( $post->ID, $comment->user_id, 'q_post' );
 		} elseif ( $post->post_type == 'answer' ) {
-			$post_id = wp_get_post_parent_id( $comment->comment_post_ID );
-			ap_remove_subscriber( $post_id, $comment->user_id, 'a_comment' );
+			ap_remove_subscriber( $post->ID, $comment->user_id, 'a_all' );
 		}
 	}
 
@@ -116,6 +114,14 @@ class AnsPress_Subscriber_Hooks
 	 */
 	public function delete_question( $question_id) {
 		ap_remove_subscriber( $question_id, false, 'q_all' );
+	}
+
+	/**
+	 * Remove answer subscriptions before delete
+	 * @param  integer $answer_id answer ID.
+	 */
+	public function delete_answer( $answer_id ) {
+		ap_remove_subscriber( $answer_id, false, 'a_all' );
 	}
 
 }
