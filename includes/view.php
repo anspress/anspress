@@ -134,6 +134,9 @@ function ap_get_views_db($id){
 	return ap_meta_total_count('post_view', $id);
 }
 
+/**
+ * @param integer $data_id
+ */
 function ap_is_already_viewed($user_id, $data_id, $type ='post_view'){
 
 	$ip = sanitize_text_field($_SERVER['REMOTE_ADDR']);

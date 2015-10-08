@@ -264,7 +264,7 @@ class AP_user_query
 /**
  * Setup users loop
  * @param  string|array $args
- * @return object
+ * @return AP_user_query
  */
 function ap_has_users($args = ''){
     $sortby = ap_get_sort() != '' ? ap_get_sort() : 'reputation';

@@ -705,7 +705,7 @@ function ap_activity_short_title( $type ) {
 /**
  * Get last active time
  * @param  integer $post_id Question or answer ID.
- * @return boolean $html    HTML formatted?
+ * @return string $html    HTML formatted?
  * @since  2.0.1
  */
 function ap_post_active_time($post_id = false, $html = true) {
@@ -779,7 +779,7 @@ function ap_latest_post_activity_html($post_id = false) {
 /**
  * Get activities query
  * @param  string|array $args Arguments.
- * @return string
+ * @return AnsPress_Activity_Query
  * @since  2.4
  */
 function ap_get_activities( $args = '' ) {
@@ -812,6 +812,9 @@ function ap_post_activities_id($post_id) {
 
 }
 
+/**
+ * @param string $type
+ */
 function ap_activity_ids_by_item_id( $item_id, $type ){
 	global $wpdb;
 
@@ -821,7 +824,6 @@ function ap_activity_ids_by_item_id( $item_id, $type ){
 /**
  * Update multiple activities.
  * @param  array $where     	Where clauses.
- * @param  array $values 		Columns to update.
  * @return boolean|integer
  */
 function ap_update_activities( $where, $columns ) {

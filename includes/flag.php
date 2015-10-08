@@ -19,7 +19,7 @@
  * @param null|mixed $value
  * @param null|mixed $param
  *
- * @return false|int
+ * @return integer
  */
 function ap_add_flag($userid, $actionid, $value = null, $param = null)
 {
@@ -29,7 +29,7 @@ function ap_add_flag($userid, $actionid, $value = null, $param = null)
 /**
  * Count post flag votes.
  *
- * @param bool|int $postid
+ * @param integer $postid
  *
  * @return int
  */
@@ -99,7 +99,7 @@ function ap_flag_btn_html($echo = false)
  * @param mixed $value
  * @param mixed $param
  *
- * @return false|int
+ * @return integer
  */
 function ap_insert_comment_flag($user_id, $action_id, $value = null, $param = null)
 {
@@ -159,7 +159,6 @@ function ap_get_comment_flag_btn($comment_id = false, $label = false)
 /**
  * Count comment flag votes.
  *
- * @param bool|int $postid
  *
  * @return int
  */

@@ -390,6 +390,8 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		 * @param string            $callback      The name of the function definition on the $component.
 		 * @param int      Optional $priority      The priority at which the function should be fired.
 		 * @param int      Optional $accepted_args The number of arguments that should be passed to the $callback.
+		 * @param integer $priority
+		 * @param integer $accepted_args
 		 *
 		 * @return type The collection of actions and filters registered with WordPress.
 		 */

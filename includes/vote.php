@@ -11,9 +11,9 @@
  * @param int    $current_userid    User ID of user casting the vote
  * @param string $type              Type of vote, "vote_up" or "vote_down"
  * @param int    $actionid          Post ID
- * @param int    $receiveing_userid User ID of user receiving the vote. @since 2.3
+ * @param int    $receiving_userid User ID of user receiving the vote. @since 2.3
  *
- * @return int|bool
+ * @return integer
  */
 function ap_add_vote($current_userid, $type, $actionid, $receiving_userid) {
 
@@ -28,6 +28,7 @@ function ap_add_vote($current_userid, $type, $actionid, $receiving_userid) {
 
 /**
  * @param string $type
+ * @param integer $actionid
  */
 function ap_remove_vote($type, $userid, $actionid, $receiving_userid) {
 
@@ -48,8 +49,8 @@ function ap_remove_vote($type, $userid, $actionid, $receiving_userid) {
  *
  * @param bool|int $userid           User ID of user casting the vote
  * @param string   $type             Type of vote, "vote_up" or "vote_down"
- * @param bool|int $actionid         Post ID
- * @param bool|int $receiving_userid User ID of user who received the vote
+ * @param boolean $actionid         Post ID
+ * @param integer $receiving_userid User ID of user who received the vote
  *
  * @return int
  */

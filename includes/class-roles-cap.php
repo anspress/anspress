@@ -459,7 +459,7 @@ function ap_user_can_view_moderate_post($question_id) {
 
 /**
  * Check if user can view post
- * @param  false|integer $post_id Question or answer ID.
+ * @param  integer $post_id Question or answer ID.
  * @return boolean
  */
 function ap_user_can_view_post($post_id = false) {
