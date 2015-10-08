@@ -145,7 +145,7 @@ endif;
 /**
  * Display answers of a question
  * @param  array $args Answers query arguments.
- * @return void
+ * @return Answers_Query
  * @since  2.0
  */
 function ap_get_answers($args = array()) {
@@ -177,7 +177,7 @@ function ap_get_answers($args = array()) {
 /**
  * Get an answer by ID
  * @param  integer $answer_id Answers ID.
- * @return void
+ * @return Answers_Query
  * @since 2.1
  */
 function ap_get_answer($answer_id) {

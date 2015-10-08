@@ -34,7 +34,7 @@ class AnsPress_Hooks
 
 	/**
 	 * Initialize the class
-	 * @param object $ap Parent class object.
+	 * @param AnsPress $ap Parent class object.
 	 * @since 2.0.1
 	 */
 	public function __construct($ap) {

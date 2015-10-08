@@ -16,7 +16,7 @@ class AnsPress_Activity_Hook
 {
 	/**
 	 * Construct class
-	 * @param object $ap Parent class.
+	 * @param AnsPress $ap Parent class.
 	 */
 	public function __construct($ap) {
 		$ap->add_action( 'ap_after_new_question', $this, 'new_question' );
@@ -236,7 +236,6 @@ class AnsPress_Activity_Hook
 
 	/**
 	 * Delete activities of an answer when its get deleted.
-	 * @param  integer $answer_id Answer id.
 	 * @param  object  $answer    Post object.
 	 */
 	public function delete_post( $answer_id ) {
@@ -390,7 +389,7 @@ function ap_restore_question_history($post_id) {
 /**
  * Remove new answer history from ap_meta table and update post meta history
  * @param  integer $answer_id
- * @return integer|false
+ * @return boolean
  */
 function ap_remove_new_answer_history($answer_id) {
 	$row = ap_delete_meta( array( 'apmeta_type' => 'history', 'apmeta_value' => $answer_id, 'apmeta_param' => 'new_answer' ) );

@@ -158,7 +158,7 @@ function ap_get_questions($args = array()) {
 /**
  * Get an question by ID
  * @param  integer $question_id
- * @return void
+ * @return Question_Query
  * @since 2.1
  */
 function ap_get_question($question_id) {

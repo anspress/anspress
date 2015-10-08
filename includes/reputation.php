@@ -70,7 +70,7 @@ class AP_Reputation {
 
 	/**
 	 * Update point of trashing question
-	 * @param  integer $postid
+	 * @param  integer $post_id
 	 * @return boolean
 	 */
 	public function trash_question($post_id, $post) {
@@ -91,7 +91,7 @@ class AP_Reputation {
 
 	/**
 	 * Update reputation on trasing answer
-	 * @param  integer $postid
+	 * @param  integer $post_id
 	 * @return boolean
 	 */
 	public function delete_answer($post_id, $post) {
@@ -763,6 +763,9 @@ function ap_alter_reputation($uid, $reputation) {
 }
 
 // add reputation logs to DB
+/**
+ * @param string $type
+ */
 function ap_reputation_log($type, $uid, $reputation, $action_id, $current_user_id) {
 	$userinfo = get_userdata( $uid );
 
