@@ -52,6 +52,7 @@
             this.delete_notification();
             this.mark_as_read();
             this.cancel_comment();
+            this.questionSuggestion();
         },
         doAjax: function(query, success, context, before, abort) {
             /** Shorthand method for calling ajax */
@@ -647,31 +648,20 @@
             });
         },
 
-        apShowSimilarQuestions: function(form){
-            console.log($('body').data('apSuggestionLoaded'));
-            if($('body').data('apSuggestionLoaded')){
-                return true;
-            }
-
-            var title = $(form).find('#title').val();
-            $("#qsuggestion").show();
-            $("#qsuggestion").center();
-
-            ApSite.doAjax(apAjaxData('action=ap_ajax&ap_ajax_action=suggest_similar_questions&ap_ajax_nonce='+ap_nonce+'&value='+title), function(data) {
-                $('body').data('apSuggestionLoaded', true);
-                if(data == false){
-                    $('#ask_form').submit();
-                    $('#qsuggestion').hide();
+        questionSuggestion: function(){
+            
+            $('[data-action="suggest_similar_questions"]').on('blur', function(){
+                console.log(title);
+                var title = $(this).val();
+                console.log(title);
+                if(title.length == 0)
                     return;
-                }
 
-                $("#qsuggestion .ap-qsuggestion-list").html(data.html);
-                $("#qsuggestion").center();
-                $("#qsuggestion .ap-qsuggestion-inner").css("height" , ($("#qsuggestion").height() - $(".ap-qsuggestion-header").outerHeight()) - $(".ap-qsuggestion-footer").outerHeight() );
-                
-            }, this, false, true);
+                ApSite.doAjax(apAjaxData('action=ap_ajax&ap_ajax_action=suggest_similar_questions&ap_ajax_nonce='+ap_nonce+'&value='+title), function(data) {
 
-            return false;
+                    $("#similar_suggestions").html(data.html);      
+                }, this, false, true);
+            });
         }
 
     }

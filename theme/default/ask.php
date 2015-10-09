@@ -39,22 +39,6 @@
 				</div>
 			</div>
 		</div>
-		<div id="qsuggestion" class="ap-qsuggestion">
-
-			<div class="ap-qsuggestion-header">
-				<h3><?php _e('We found some similar questions', 'ap'); ?></h3>
-				<p><?php _e('Check if your question is listed below, check them before posting new one.', 'ap'); ?></p>
-			</div>
-			<div class="ap-qsuggestion-inner">
-				<div class="ap-qsuggestion-list clearfix">
-					<span class="loading"><?php _e('Hold tight! loading similar questions', 'ap'); ?><b class="ap-loading-dot"></b></span>
-				</div>
-			</div>
-			<div class="ap-qsuggestion-footer clearfix">
-				<button class="ap-btn" data-action="confNewQuestion"><?php _e('I don\'t see my question, submit my question', 'ap'); ?></button>
-			</div>
-
-		</div>
 	<?php elseif (is_user_logged_in()): ?>
 		<div class="ap-no-permission">
 			<?php _e('You don\'t have permission to ask question.', 'ap'); ?>

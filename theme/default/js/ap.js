@@ -128,12 +128,6 @@
 
         apLoadingDot();
 
-        $('body').delegate('[data-action="confNewQuestion"]', 'click', function(e) {
-            e.preventDefault();
-            $('#ask_form').submit();
-            $('#qsuggestion').hide();
-        });
-
     });
 
     function ap_chk_activity_scroll(e) {

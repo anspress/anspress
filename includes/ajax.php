@@ -69,14 +69,14 @@ class AnsPress_Ajax
 
 	    if ( $questions ) {
 
-	    	if ( $is_admin ) {
-		        $items = '<div class="ap-similar-questions-head">';
-		        $items .= '<h3>'.ap_icon( 'check', true ).sprintf( __( '%d similar questions found', 'ap' ), count( $questions ) ).'</h3>';
-		        $items .= '<p>'.__( 'We found similar questions that have already been asked, click to read them. Avoid creating duplicate questions, it will be deleted.' ).'</p>';
-		        $items .= '</div>';
-		        $items .= '<div class="ap-similar-questions">';
-		    }
 
+	        $items = '<div class="ap-similar-questions-head">';
+	        $items .= '<h3>'.ap_icon( 'check', true ).sprintf( __( '%d similar questions found', 'ap' ), count( $questions ) ).'</h3>';
+	        $items .= '<p>'.__( 'We\'ve found similar questions that have already been asked, click to read them.' ).'</p>';
+	        $items .= '</div>';
+		        
+		    
+		    $items .= '<div class="ap-similar-questions">';
 	        foreach ( $questions as $p ) {
 	            $count = ap_count_answer_meta( $p->ID );
 	            $p->post_title = ap_highlight_words( $p->post_title, $keyword );
@@ -88,9 +88,7 @@ class AnsPress_Ajax
 		        }
 	        }
 
-	        if ( $is_admin ) {
-	       		$items .= '</div>';
-	       	}
+	       	$items .= '</div>';	       	
 
 	        $result = array( 'status' => true, 'html' => $items );
 	    } else {

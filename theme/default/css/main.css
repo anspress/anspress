@@ -4595,60 +4595,38 @@ body ul ul#ap-notification-dropdown .ap-no-notification {
 .scrollbar-chrome > .scroll-element.scroll-y.scroll-scrollx_visible .scroll-element_track {
   top: -19px;
 }
-#anspress .ap-qsuggestion {
-  background: #fff none repeat scroll 0 0;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  box-shadow: 0 0 6px rgba(0, 0, 0, 0.06);
-  padding: 15px;
-  position: fixed;
-  top: 20%;
-  width: 500px;
-  display: none;
-  z-index: 999;
+#anspress #similar_suggestions h3 {
+  margin: 0;
 }
-#anspress .ap-qsuggestion-header {
-  border-bottom: solid 1px #eee;
+#anspress #similar_suggestions p {
+  margin-bottom: 10px;
 }
-#anspress .ap-qsuggestion-header h3 {
-  margin-bottom: 0;
-  margin-top: 0;
+#anspress .ap-similar-questions {
+  border: 1px solid #e7e7e7;
+  border-radius: 2px;
+  margin-bottom: 15px;
+  max-height: 200px;
+  overflow-x: auto;
 }
-#anspress .ap-qsuggestion-header p {
-  font-size: 12px;
-  margin: 0 0 15px;
-}
-#anspress .ap-qsuggestion .loading {
-  background: #f8f8f8 none repeat scroll 0 0;
-  border-radius: 3px;
+#anspress .ap-similar-questions .ap-sqitem {
+  border-bottom: 1px solid #eee;
+  color: #5e5e5e;
   display: block;
-  margin: 10px auto 0;
-  padding: 10px;
-  text-align: center;
+  margin: 0 10px;
+  padding: 10px 5px;
 }
-#anspress .ap-qsuggestion-footer {
-  padding-top: 10px;
+#anspress .ap-similar-questions .ap-sqitem:last-child {
+  border-bottom: none;
 }
-#anspress .ap-qsuggestion .ap-sqitem {
-  color: #333333;
-  background: #fcfcfc none repeat scroll 0 0;
-  border-bottom: 1px solid #f7f7f7;
-  display: block;
-  font-size: 13px;
-  padding: 10px 15px;
+#anspress .ap-similar-questions .ap-sqitem:hover {
+  background: #FCFCFC;
 }
-#anspress .ap-qsuggestion .ap-sqitem:nth-child(2n) {
-  background: #fff;
-}
-#anspress .ap-qsuggestion .acount {
+#anspress .ap-similar-questions .acount {
   float: right;
 }
-#anspress .ap-qsuggestion .ap-title {
-  display: block;
-  height: 20px;
+#anspress .ap-similar-questions .ap-title {
+  font-weight: bold;
+  white-space: nowrap;
   overflow: hidden;
-  padding-right: 15px;
-}
-#anspress .ap-qsuggestion-inner {
-  overflow: auto;
+  font-size: 13px;
 }
