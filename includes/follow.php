@@ -46,7 +46,7 @@ function ap_follow_button($user_to_follow , $text = false){
  * Add a follower
  * @param  integer  		$current_user_id   	Current user_id
  * @param  integer  		$user_to_follow 	user to follow
- * @return bollean|integer
+ * @return integer
  */
 function ap_add_follower($current_user_id, $user_to_follow){
 
@@ -62,7 +62,7 @@ function ap_add_follower($current_user_id, $user_to_follow){
  * Remove a follower
  * @param  integer 		$current_user_id 		Current user id
  * @param  integer 		$user_to_follow  		user id to unfollow
- * @return boolean|integer
+ * @return boolean
  */
 function ap_remove_follower($current_user_id, $user_to_follow){
 	$row = ap_delete_meta(array('apmeta_type' => 'follower', 'apmeta_userid' => $current_user_id, 'apmeta_actionid' => $user_to_follow));
@@ -73,6 +73,9 @@ function ap_remove_follower($current_user_id, $user_to_follow){
 	return $row;
 }
 
+/**
+ * @param integer $user_to_follow
+ */
 function ap_is_user_following($user_to_follow, $current_user_id = false){
 
 	if($current_user_id === false)

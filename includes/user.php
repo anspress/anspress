@@ -653,6 +653,9 @@ function ap_is_my_profile($user_id = false) {
 	return false;
 }
 
+/**
+ * @param string $page
+ */
 function ap_is_user_page_public($page) {
 	$user_pages = anspress()->user_pages;
 

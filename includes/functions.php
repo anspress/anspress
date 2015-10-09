@@ -263,6 +263,9 @@ function ap_please_login() {
 }
 
 // check if user answered on a question
+/**
+ * @param integer $question_id
+ */
 function ap_is_user_answered($question_id, $user_id) {
 
 	global $wpdb;
@@ -1398,7 +1401,6 @@ function ap_post_upload_hidden_form() {
  * don't need to keep this attachment and will removed while saving question or answer.
  *
  * @param array $file    $_FILE variable
- * @param int   $post_id question or answer or base page ID
  *
  * @return int|bool
  */
@@ -1476,6 +1478,9 @@ function ap_trim_traling_space($contents) {
 	return preg_replace( '#(^(&nbsp;|\s)+|(&nbsp;|\s)+$)#', '', $contents );
 }
 
+/**
+ * @param string $contents
+ */
 function ap_replace_square_bracket($contents) {
 
 	$contents = str_replace( '[', '&#91;', $contents );

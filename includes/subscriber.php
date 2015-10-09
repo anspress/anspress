@@ -51,7 +51,7 @@ function ap_new_subscriber( $user_id, $item_id, $actiity ) {
  * Remove subscriber for question or term
  * @param  integer         $item_id  	Question ID or Term ID
  * @param  integer         $user_id    	WP user ID
- * @param  boolean|integer $activity    Any sub ID
+ * @param  string $activity    Any sub ID
  * @param  boolean|integer $sub_id      @deprecated Type of subscriber, empty string for question
  * @return bollean|integer
  */
@@ -305,7 +305,6 @@ function ap_question_subscribers($action_id = false, $type = '', $avatar_size = 
 
 /**
  * Subscribe a user for a question.
- * @param  integer|object $question question ID or post object.
  */
 function ap_subscribe_question( $posta, $user_id = false ) {
 	if ( ! is_object( $posta ) || ! isset( $posta->post_type ) ) {

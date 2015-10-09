@@ -179,7 +179,7 @@ class AnsPress_Notifications
 /**
  * Return notification class query
  * @param  string|array $args Notification query arguments.
- * @return object       Notification query object
+ * @return AnsPress_Notifications       Notification query object
  */
 function ap_get_user_notifications($args = '') {
 	return new AnsPress_Notifications( $args );
@@ -326,6 +326,9 @@ function ap_delete_notification($meta_id = false, $current_user_id = false, $aff
 	return $row;
 }
 
+/**
+ * @param integer $id
+ */
 function ap_get_notification_by_id($id) {
 	return ap_get_meta( array( 'apmeta_id' => (int) $id ) );
 }
