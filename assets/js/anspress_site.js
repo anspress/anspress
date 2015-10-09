@@ -648,8 +648,7 @@
             });
         },
 
-        questionSuggestion: function(){
-            
+        questionSuggestion: function(){            
             $('[data-action="suggest_similar_questions"]').on('blur', function(){
                 console.log(title);
                 var title = $(this).val();

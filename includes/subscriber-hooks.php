@@ -69,7 +69,7 @@ class AnsPress_Subscriber_Hooks
 	 */
 	public function after_new_answer($answer_id, $answer) {
 		if ( ! ap_is_user_subscribed( $answer->ID, 'a_all', $answer->post_author ) ) {
-			ap_new_subscriber( $answer->post_author, $answer->ID, 'a_all' );
+			ap_new_subscriber( $answer->post_author, $answer->ID, 'a_all', $answer->post_parent );
 		}
 	}
 
@@ -80,16 +80,16 @@ class AnsPress_Subscriber_Hooks
 	public function after_new_comment($comment) {
 		$post = get_post( $comment->comment_post_ID );
 
-		ap_subscribe_question( $post );
-
 		$type = 'q_post';
+		$question_id = $post->ID;
 		
 		if ( 'answer' == $post->post_type ) {
 			$type = 'a_all';
+			$question_id = $post->post_parent;
 		}
 
 		if ( ! ap_is_user_subscribed( $comment->comment_post_ID, $type, $comment->user_id ) ) {
-			ap_new_subscriber( $comment->user_id, $comment->comment_post_ID, $type );
+			ap_new_subscriber( $comment->user_id, $comment->comment_post_ID, $type, $question_id );
 		}
 	}
 

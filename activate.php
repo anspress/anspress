@@ -79,13 +79,14 @@ function anspress_activate( $network_wide ) {
 			    `noti_activity_id` bigint(20) NOT NULL,
 				`noti_user_id` bigint(20) NOT NULL,
 				`noti_status` varchar(225) NOT NULL,				
-				`noti_date` date NOT NULL,
+				`noti_date` timestamp NOT NULL,
 				PRIMARY KEY (`noti_id`)
 			)".$charset_collate.";";
 
 		$subscribers = "CREATE TABLE IF NOT EXISTS `".$wpdb->base_prefix."ap_subscribers` (
 			    `id` bigint(20) NOT NULL AUTO_INCREMENT,			    
 				`user_id` bigint(20) NOT NULL,
+				`question_id` bigint(20) NOT NULL,
 				`item_id` bigint(20) NOT NULL,
 				`activity` varchar(225) NOT NULL,
 				PRIMARY KEY (`id`)

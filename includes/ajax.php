@@ -722,10 +722,12 @@ class AnsPress_Ajax
 			$this->send( 'please_login' );
 		}
 
+		$question_id = 0;
 		if ( 'category' === $type || 'tag' === $type ) {
 			$subscribe_type = 'tax_new_q';
 		} else {
 			$subscribe_type = 'q_all';
+			$question_id = $action_id;
 		}
 
 		$user_id = get_current_user_id();
@@ -748,7 +750,8 @@ class AnsPress_Ajax
 				) );
 			}
 		} else {
-			$row = ap_new_subscriber( $user_id, $action_id, $subscribe_type );			
+
+			$row = ap_new_subscriber( $user_id, $action_id, $subscribe_type, $question_id );			
 
 			$count = ap_subscribers_count( $action_id, $subscribe_type );
 			if ( false !== $row ) {

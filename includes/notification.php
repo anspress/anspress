@@ -201,28 +201,28 @@ function ap_new_notification( $activity_id, $user_id = false, $status = '0', $da
 
 	if ( false === $user_id ) {
 		$user_ids[] = get_current_user_id();
-	}elseif(!is_array($user_id)){
+	} elseif ( ! is_array( $user_id ) ) {
 		$user_ids[] = $user_id;
 	}
 
-	if ( is_array($user_id) ) {
+	if ( is_array( $user_id ) ) {
 
 		// Check user_ids exists in array else return.
-		if(count($user_id) == 0){
+		if ( count( $user_id ) == 0 ) {
 			return false;
 		}
-		
+
 		// Make sure ids are positive integer.
-		foreach($user_id as $k => $uid){
+		foreach ( $user_id as $k => $uid ) {
 			$uid = (int) abs( $uid );
 
-			if($uid != 0){
+			if ( $uid != 0 ) {
 				$user_ids[] = $uid;
 			}
 		}
 
 		// Bail if no ids exists.
-		if( count($user_ids) == 0){
+		if ( count( $user_ids ) == 0 ) {
 			return false;
 		}
 	}
@@ -231,23 +231,22 @@ function ap_new_notification( $activity_id, $user_id = false, $status = '0', $da
 		$date = current_time( 'mysql' );
 	}
 
-	$query = "INSERT INTO $wpdb->ap_notifications (noti_activity_id, noti_user_id, noti_status, noti_date) ";
+	$query = "INSERT INTO $wpdb->ap_notifications (noti_activity_id, noti_user_id, noti_status, noti_date) VALUES ";
 
-	// multiple lists of column values.
-	if( $user_ids ){
+	// Multiple lists of column values.
+	if ( $user_ids ) {
 		$i = 1;
-		foreach( $user_ids as $id ){
-			$query .= $wpdb->prepare("VALUES (%d, %d, %s, %s)", $activity_id, $user_id, $status, $date );
+		foreach ( $user_ids as $id ) {
+			$query .= $wpdb->prepare( '(%d, %d, %s, %s)', $activity_id, $id, $status, $date );
 
-			if(count($user_ids) != $i){
-				$query .= ", ";
+			if ( count( $user_ids ) != $i ) {
+				$query .= ', ';
 			}
 
 			$i++;
-			
+
 		}
 	}
-
 	$row = $wpdb->query( $query );
 
 	return $row;

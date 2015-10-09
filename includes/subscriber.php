@@ -16,7 +16,7 @@
  * @param  string  $actiity Activity name.
  * @return false|integer
  */
-function ap_new_subscriber( $user_id, $item_id, $actiity ) {
+function ap_new_subscriber( $user_id, $item_id, $actiity, $question_id = 0 ) {
 	global $wpdb;
 
 	// Bail if user_id or item_id is 0.
@@ -28,10 +28,12 @@ function ap_new_subscriber( $user_id, $item_id, $actiity ) {
 		$wpdb->ap_subscribers,
 		array(
 			'user_id' => $user_id,
+			'question_id' => $question_id,
 			'item_id' => $item_id,
 			'activity' => $actiity,
 		),
 		array(
+			'%d',
 			'%d',
 			'%d',
 			'%s',
@@ -39,7 +41,7 @@ function ap_new_subscriber( $user_id, $item_id, $actiity ) {
 	);
 
 	if ( false !== $row ) {
-		do_action( 'ap_new_subscriber', $user_id, $item_id, $actiity );
+		do_action( 'ap_new_subscriber', $user_id, $question_id, $item_id, $actiity );
 		return $wpdb->insert_id;
 	}
 
@@ -51,7 +53,7 @@ function ap_new_subscriber( $user_id, $item_id, $actiity ) {
  * Remove subscriber for question or term
  * @param  integer         $item_id  	Question ID or Term ID
  * @param  integer         $user_id    	WP user ID
- * @param  string $activity    Any sub ID
+ * @param  string          $activity    Any sub ID
  * @param  boolean|integer $sub_id      @deprecated Type of subscriber, empty string for question
  * @return bollean|integer
  */
@@ -321,7 +323,7 @@ function ap_subscribe_question( $posta, $user_id = false ) {
 	}
 
 	if ( ! ap_is_user_subscribed( $posta->ID, 'q_all', $user_id ) ) {
-		ap_new_subscriber( $user_id, $posta->ID, 'q_all' );
+		ap_new_subscriber( $user_id, $posta->ID, 'q_all', $posta->ID );
 	}
 }
 
@@ -331,10 +333,10 @@ function ap_subscribe_question( $posta, $user_id = false ) {
  * @param  string|array $activity Activity type.
  * @return array   Ids of subscribed user.
  */
-function ap_subscriber_ids( $item_id, $activity = 'q_all' ) {
+function ap_subscriber_ids( $item_id =false, $activity = 'q_all', $question_id = 0 ) {
 	global $wpdb;
 
-	$key = $item_id . '::' . $activity;
+	$key = $item_id . '::' . $activity .'::'. $question_id;
 
 	$cache = wp_cache_get( $key, 'ap_subscribers_ids' );
 
@@ -342,26 +344,30 @@ function ap_subscriber_ids( $item_id, $activity = 'q_all' ) {
 		return $cache;
 	}
 
-	$activity_q = "AND ";
+	$item = "";
+
+	if ( false !== $item_id ) {
+		$item = $wpdb->prepare( "item_id = %d AND", $item_id );
+	}
 
 	$i = 1;
 	if ( is_array( $activity ) && count( $activity ) > 0 ) {
-		$activity_q .= '(';
-		
+		$activity_q .= ' activity IN(';
+
 		foreach ( $activity as $a ) {
-			$activity_q .= $wpdb->prepare( "activity = '%s' ", $activity );
+			$activity_q .= $wpdb->prepare( "'%s'", $activity );
 			if ( $i != count( $activity ) ) {
-				$activity_q .= 'AND ';
+				$activity_q .= ', ';
 			}
 			$i++;
 		}
 
 		$activity_q .= ') ';
 	} else {
-		$activity_q = $wpdb->prepare( "activity = '%s'", $activity );
+		$activity_q = $wpdb->prepare( "AND activity = '%s'", $activity );
 	}
 
-	$results = $wpdb->get_col( $wpdb->prepare( "SELECT user_id FROM $wpdb->ap_subscribers WHERE item_id = %d $activity_q", $item_id ) );
+	$results = $wpdb->get_col( $wpdb->prepare( "SELECT user_id FROM $wpdb->ap_subscribers WHERE $item $activity_q AND question_id=%d GROUP BY user_id", $item_id, $question_id ) );
 
 	wp_cache_set( $key, $results, 'ap_subscribers_ids' );
 	return $results;

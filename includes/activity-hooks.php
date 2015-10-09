@@ -61,7 +61,7 @@ class AnsPress_Activity_Hook
 		update_post_meta( $question_id, '__ap_activity', array( 'type' => 'new_question', 'user_id' => $question->post_author, 'date' => current_time( 'mysql' ) ) );
 
 		// Notify users.
-		ap_new_notification($activity_id, $question->post_author);
+		//ap_new_notification($activity_id, $question->post_author);
 	}
 
 	/**
@@ -90,7 +90,7 @@ class AnsPress_Activity_Hook
 		update_post_meta( $answer_id, '__ap_activity', array( 'type' => 'new_answer', 'user_id' => $answer->post_author, 'date' => current_time( 'mysql' ) ) );
 
 		// Notify users.
-		$subscribers = ap_subscriber_ids( $answer->post_parent );
+		$subscribers = ap_subscriber_ids( $answer->post_parent, 'q_all' );
 
 		ap_new_notification( $activity_id, $subscribers );
 	}
@@ -109,10 +109,15 @@ class AnsPress_Activity_Hook
 			'permalink' 		=> get_permalink( $post_id ),
 		);
 
-		ap_new_activity( $activity_arr );
+		$activity_id = ap_new_activity( $activity_arr );
 
 		// Add question activity meta.
 		update_post_meta( $post_id, '__ap_activity', array( 'type' => 'edit_question', 'user_id' => $question->post_author, 'date' => current_time( 'mysql' ) ) );
+
+		// Notify users.
+		$subscribers = ap_subscriber_ids( false, array( 'q_all', 'a_all' ), $post_id );
+
+		ap_new_notification( $activity_id, $subscribers );
 	}
 
 	/**
