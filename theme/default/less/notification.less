@@ -24,20 +24,23 @@ body #ap-user-notification-anchor{
 body ul li:hover ul#ap-notification-dropdown{
 	display: none;
 }
-body ul li.open ul#ap-notification-dropdown{
+body ul li.open #ap-notification-dropdown{
 	display: block;
 }
-body ul ul#ap-notification-dropdown{
+body ul #ap-notification-dropdown, body ul #ap-notifiside{
     border: 1px solid #ddd;
+    display: none;
+    position: absolute;
     border-radius: 2px;
     box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
     font-family: "helvetica",arial,serif;
     text-transform: none;
     width: 350px;
     font-size: 13px;
+    z-index: 999;
 
-    li{
-	    background: none repeat scroll 0 0 #fbfbfb;
+    .ap-notification-head, .ap-notification-items, .ap-notification-footer{
+	    background: none repeat scroll 0 0 #FFFFFF;
 	    display: block;
 	    float: none !important;
 	    margin: 0;
@@ -52,6 +55,13 @@ body ul ul#ap-notification-dropdown{
 	    }
 	    a:hover{
 	    	color: @default-color;
+	    }
+	    .ap-avatar{
+		    float: left;
+		    margin-right: 10px;
+	    }
+	    .ap-comment-excerpt{
+	    	display: none;
 	    }
     }
 
@@ -95,9 +105,10 @@ body ul ul#ap-notification-dropdown{
     }
 
     .ap-notification-footer{
-	    background: none repeat scroll 0 0 #fff;
-	    text-align: center;
+	    background: #fcfcfc none repeat scroll 0 0;
+	    border-top: 1px solid #efeeee;
 	    padding: 10px;
+	    text-align: center;
 
 	    a{
 		    color: @link-color;
@@ -110,6 +121,31 @@ body ul ul#ap-notification-dropdown{
     	padding: 10px;
 
     }
+    .ap-notification-more.clearfix {
+	    padding: 12px;
+	    text-align: center;
+	}
+}
+body ul #ap-notifiside {
+    background: #fff none repeat scroll 0 0;
+    display: none;
+    position: fixed;
+    right: 0;
+    top: 33px;
+    width: 300px;
+    bottom: 0;
+    .ap-notification-scroll.scroll-wrapper{
+	    height: 100%;
+	    margin-top: 45px;
+    }
+    .ap-notification-items{
+    	height: 100%;
+    }
+    .ap-notification-head {
+	    margin-bottom: -43px !important;
+	    position: relative;
+	    z-index: 9999;
+	}
 }
 #anspress{
 	.ap-notification-item{

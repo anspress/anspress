@@ -128,7 +128,16 @@
 
         apLoadingDot();
 
+        $('.ap-sidetoggle').click(function(){            
+            $('#ap-notifiside').toggle();
+            apNotiScrollHeight();
+        });
+
     });
+
+    function apNotiScrollHeight(){
+        $('#ap-notifiside .ap-notification-scroll.scroll-wrapper').css({ 'height':  $('.ap-notification-items').outerHeight() - $('.ap-notification-head').outerHeight() })
+    }
 
     function ap_chk_activity_scroll(e) {
         if (($('#ap-conversation-scroll .ap-no-more-message').length == 0)) {

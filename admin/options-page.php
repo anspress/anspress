@@ -205,6 +205,14 @@ class AnsPress_Options_Page
 				'value' => $settings['show_question_sidebar'],
 				'show_desc_tip' => false,
 			),
+			array(
+				'name' => 'anspress_opt[notification_sidebar]',
+				'label' => __('Show notification sidebar', 'ap') ,
+				'desc' => __('Show dropdown notification as sidebar', 'ap') ,
+				'type' => 'checkbox',
+				'value' => $settings['notification_sidebar'],
+				'show_desc_tip' => false,
+			),
 		));
 
 		//Register pages settings

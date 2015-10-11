@@ -135,6 +135,7 @@ function ap_default_options(){
 		'disable_down_vote_on_question'=> false,
 		'disable_down_vote_on_answer'=> false,
 		'show_solved_prefix'		=> true,
+		'notification_sidebar'		=> false,
 	);
 
 	/**

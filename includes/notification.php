@@ -281,7 +281,8 @@ function ap_get_the_total_unread_notification($user_id = false, $echo = false) {
 	$count = $count != 0 ? '<span class="counter" data-view="notification_count">'.$count.'</span>' : '';
 
 	if ( $echo ) {
-		echo $count; }
+		echo $count;
+	}
 
 	return $count;
 }
@@ -292,11 +293,25 @@ function ap_get_the_total_unread_notification($user_id = false, $echo = false) {
 	 * @since  2.3
 	 */
 function ap_get_total_unread_notification($user_id = false) {
+	global $wpdb;
 
 	if ( $user_id === false ) {
-		$user_id = get_current_user_id(); }
+		$user_id = get_current_user_id();
+	}
 
-	return ap_meta_user_done( 'unread_notification', false, $user_id );
+	$key = 'noti_count::'.$user_id;
+
+	$cache = wp_cache_get( $key, 'ap_notifications' );
+
+	if ( false !== $cache ) {
+		return $cache;
+	}
+
+	$count = $wpdb->get_var( $wpdb->prepare( " SELECT count(*) FROM $wpdb->ap_notifications WHERE noti_status = 0 AND noti_user_id = %d", $user_id ) );
+
+	wp_cache_set( $key, $count, 'ap_notifications' );
+
+	return $count;
 }
 
 

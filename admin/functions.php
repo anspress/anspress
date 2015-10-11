@@ -134,7 +134,6 @@ function ap_update_caps_for_role($role_slug, $caps = array()){
 
 		if( isset($caps[$cap])){
 			$role->add_cap( $cap );
-				var_dump($role);
 		}else{
 			$role->remove_cap( $cap );
 		}

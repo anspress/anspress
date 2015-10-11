@@ -489,11 +489,12 @@ class AnsPress_Hooks
 
 	        $o .= '</ul>';
 	    } elseif ( in_array( 'anspress-page-notification', $item->classes ) && is_user_logged_in() ) {
-	        $o = '<a id="ap-user-notification-anchor" class="ap-dropdown-toggle '.ap_icon( 'globe' ).'" href="#">'.ap_get_the_total_unread_notification( false, false ).'</a>';
+	        $o = '<a id="ap-user-notification-anchor" class="ap-dropdown-toggle ap-sidetoggle '.ap_icon( 'globe' ).'" href="#">'.ap_get_the_total_unread_notification( false, false ).'</a>';
 
-	        global $ap_notifications;
+	        global $ap_activities;
+	        $ap_activities = ap_get_activities( array( 'per_page' => 20, 'notification' => true, 'user_id' => ap_get_displayed_user_id() ) );
+
 	        ob_start();
-	        // $ap_notifications = ap_get_user_notifications( array( 'per_page' => 10 ) );
 	        ap_get_template_part( 'user/notification-dropdown' );
 	        $o .= ob_get_clean();
 	    }

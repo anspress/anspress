@@ -345,7 +345,8 @@ class AnsPress_Activity_Query
 	 */
 	public function has_activities() {
 	    if ( $this->activity_count ) {
-	        return true; }
+	        return true;
+	    }
 
 	    return false;
 	}
@@ -903,17 +904,26 @@ function ap_delete_activity($id) {
  */
 function ap_has_activities() {
 	global $ap_activities;
-	return $ap_activities->has_activities();
+
+	if( $ap_activities ){
+		return $ap_activities->has_activities();
+	}
 }
 
 function ap_activities() {
 	global $ap_activities;
-	return $ap_activities->activities();
+	
+	if( $ap_activities ){
+		return $ap_activities->activities();
+	}
 }
 
 function ap_the_activity() {
 	global $ap_activities;
-	return $ap_activities->the_activity();
+
+	if( $ap_activities ){
+		return $ap_activities->the_activity();
+	}
 }
 
 function ap_activity_object() {

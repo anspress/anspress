@@ -3652,36 +3652,78 @@ body #ap-user-notification-anchor .counter {
 body ul li:hover ul#ap-notification-dropdown {
   display: none;
 }
-body ul li.open ul#ap-notification-dropdown {
+body ul li.open #ap-notification-dropdown {
   display: block;
 }
-body ul ul#ap-notification-dropdown {
+body ul #ap-notification-dropdown,
+body ul #ap-notifiside {
   border: 1px solid #ddd;
+  display: none;
+  position: absolute;
   border-radius: 2px;
   box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
   font-family: "helvetica", arial, serif;
   text-transform: none;
   width: 350px;
   font-size: 13px;
+  z-index: 999;
 }
-body ul ul#ap-notification-dropdown li {
-  background: none repeat scroll 0 0 #fbfbfb;
+body ul #ap-notification-dropdown .ap-notification-head,
+body ul #ap-notifiside .ap-notification-head,
+body ul #ap-notification-dropdown .ap-notification-items,
+body ul #ap-notifiside .ap-notification-items,
+body ul #ap-notification-dropdown .ap-notification-footer,
+body ul #ap-notifiside .ap-notification-footer {
+  background: none repeat scroll 0 0 #FFFFFF;
   display: block;
   float: none !important;
   margin: 0;
   padding: 0;
 }
-body ul ul#ap-notification-dropdown li .unread {
+body ul #ap-notification-dropdown .ap-notification-head .unread,
+body ul #ap-notifiside .ap-notification-head .unread,
+body ul #ap-notification-dropdown .ap-notification-items .unread,
+body ul #ap-notifiside .ap-notification-items .unread,
+body ul #ap-notification-dropdown .ap-notification-footer .unread,
+body ul #ap-notifiside .ap-notification-footer .unread {
   background: #F1FCFF;
 }
-body ul ul#ap-notification-dropdown li .ap-notification-item {
+body ul #ap-notification-dropdown .ap-notification-head .ap-notification-item,
+body ul #ap-notifiside .ap-notification-head .ap-notification-item,
+body ul #ap-notification-dropdown .ap-notification-items .ap-notification-item,
+body ul #ap-notifiside .ap-notification-items .ap-notification-item,
+body ul #ap-notification-dropdown .ap-notification-footer .ap-notification-item,
+body ul #ap-notifiside .ap-notification-footer .ap-notification-item {
   padding: 10px;
   border-bottom: 1px solid #eeeeee;
 }
-body ul ul#ap-notification-dropdown li a:hover {
+body ul #ap-notification-dropdown .ap-notification-head a:hover,
+body ul #ap-notifiside .ap-notification-head a:hover,
+body ul #ap-notification-dropdown .ap-notification-items a:hover,
+body ul #ap-notifiside .ap-notification-items a:hover,
+body ul #ap-notification-dropdown .ap-notification-footer a:hover,
+body ul #ap-notifiside .ap-notification-footer a:hover {
   color: #333333;
 }
-body ul ul#ap-notification-dropdown a {
+body ul #ap-notification-dropdown .ap-notification-head .ap-avatar,
+body ul #ap-notifiside .ap-notification-head .ap-avatar,
+body ul #ap-notification-dropdown .ap-notification-items .ap-avatar,
+body ul #ap-notifiside .ap-notification-items .ap-avatar,
+body ul #ap-notification-dropdown .ap-notification-footer .ap-avatar,
+body ul #ap-notifiside .ap-notification-footer .ap-avatar {
+  float: left;
+  margin-right: 10px;
+}
+body ul #ap-notification-dropdown .ap-notification-head .ap-comment-excerpt,
+body ul #ap-notifiside .ap-notification-head .ap-comment-excerpt,
+body ul #ap-notification-dropdown .ap-notification-items .ap-comment-excerpt,
+body ul #ap-notifiside .ap-notification-items .ap-comment-excerpt,
+body ul #ap-notification-dropdown .ap-notification-footer .ap-comment-excerpt,
+body ul #ap-notifiside .ap-notification-footer .ap-comment-excerpt {
+  display: none;
+}
+body ul #ap-notification-dropdown a,
+body ul #ap-notifiside a {
   background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
   border: medium none;
   color: #333333;
@@ -3694,41 +3736,77 @@ body ul ul#ap-notification-dropdown a {
   text-decoration: none;
   text-transform: none;
 }
-body ul ul#ap-notification-dropdown a:hover {
+body ul #ap-notification-dropdown a:hover,
+body ul #ap-notifiside a:hover {
   color: #333333;
 }
-body ul ul#ap-notification-dropdown .ap-notification-time {
+body ul #ap-notification-dropdown .ap-notification-time,
+body ul #ap-notifiside .ap-notification-time {
   color: #888;
   display: block;
   margin-top: 4px;
 }
-body ul ul#ap-notification-dropdown .ap-notification-head {
+body ul #ap-notification-dropdown .ap-notification-head,
+body ul #ap-notifiside .ap-notification-head {
   background: none repeat scroll 0 0 #fff;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   padding: 10px;
 }
-body ul ul#ap-notification-dropdown .ap-notification-head a {
+body ul #ap-notification-dropdown .ap-notification-head a,
+body ul #ap-notifiside .ap-notification-head a {
   float: right;
   width: auto;
   color: #2488b7;
   background: none;
 }
-body ul ul#ap-notification-dropdown .ap-notification-head b {
+body ul #ap-notification-dropdown .ap-notification-head b,
+body ul #ap-notifiside .ap-notification-head b {
   font-size: 13px;
 }
-body ul ul#ap-notification-dropdown .ap-notification-footer {
-  background: none repeat scroll 0 0 #fff;
-  text-align: center;
+body ul #ap-notification-dropdown .ap-notification-footer,
+body ul #ap-notifiside .ap-notification-footer {
+  background: #fcfcfc none repeat scroll 0 0;
+  border-top: 1px solid #efeeee;
   padding: 10px;
+  text-align: center;
 }
-body ul ul#ap-notification-dropdown .ap-notification-footer a {
+body ul #ap-notification-dropdown .ap-notification-footer a,
+body ul #ap-notifiside .ap-notification-footer a {
   color: #2488b7;
 }
-body ul ul#ap-notification-dropdown .ap-notification-scroll {
+body ul #ap-notification-dropdown .ap-notification-scroll,
+body ul #ap-notifiside .ap-notification-scroll {
   height: 300px;
 }
-body ul ul#ap-notification-dropdown .ap-no-notification {
+body ul #ap-notification-dropdown .ap-no-notification,
+body ul #ap-notifiside .ap-no-notification {
   padding: 10px;
+}
+body ul #ap-notification-dropdown .ap-notification-more.clearfix,
+body ul #ap-notifiside .ap-notification-more.clearfix {
+  padding: 12px;
+  text-align: center;
+}
+body ul #ap-notifiside {
+  background: #fff none repeat scroll 0 0;
+  display: none;
+  position: fixed;
+  right: 0;
+  top: 33px;
+  width: 300px;
+  bottom: 0;
+}
+body ul #ap-notifiside .ap-notification-scroll.scroll-wrapper {
+  height: 100%;
+  margin-top: 45px;
+}
+body ul #ap-notifiside .ap-notification-items {
+  height: 100%;
+}
+body ul #ap-notifiside .ap-notification-head {
+  margin-bottom: -43px !important;
+  position: relative;
+  z-index: 9999;
 }
 #anspress .ap-notification-item {
   border-bottom: 1px solid rgba(0, 0, 0, 0.04);
