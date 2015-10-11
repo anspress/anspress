@@ -115,7 +115,7 @@ class AnsPress_User
 
 		global $ap_activities;
 
-		$ap_activities = ap_get_activities( array('notification' => true) );
+		$ap_activities = ap_get_activities( array( 'notification' => true, 'user_id' => ap_get_displayed_user_id() ) );
 
 		ap_get_template_part( 'user/notification' );
 	}

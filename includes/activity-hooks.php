@@ -36,8 +36,8 @@ class AnsPress_Activity_Hook
 		$ap->add_action( 'comment_trash_to_approved', $this, 'comment_approved' );
 		$ap->add_action( 'delete_comment', $this, 'delete_comment' );
 		$ap->add_action( 'ap_added_follower', $this, 'follower', 10, 2 );
-		$ap->add_action( 'ap_vote_casted', $this, 'notify_upvote', 10, 4 );
-		$ap->add_action( 'ap_added_reputation', $this, 'ap_added_reputation', 10, 4 );
+		//$ap->add_action( 'ap_vote_casted', $this, 'notify_upvote', 10, 4 );
+		//$ap->add_action( 'ap_added_reputation', $this, 'ap_added_reputation', 10, 4 );
 	}
 
 
@@ -47,12 +47,15 @@ class AnsPress_Activity_Hook
 	 */
 	public function new_question($question_id) {
 		$question = get_post( $question_id );
+		
+		$question_title = '<a class="ap-q-link" href="'. get_permalink( $question_id ) .'">'. get_the_title( $question_id ) .'</a>';
 
 		$activity_arr = array(
 			'user_id' 			=> $question->post_author,
 			'type' 				=> 'new_question',
 			'question_id' 		=> $question_id,
 			'permalink' 		=> get_permalink( $question_id ),
+			'content'			=> sprintf( __( '%s asked question %s', 'ap' ), ap_activity_user_name($question->post_author), $question_title ),
 		);
 
 		$activity_id = ap_new_activity( $activity_arr );
@@ -61,7 +64,7 @@ class AnsPress_Activity_Hook
 		update_post_meta( $question_id, '__ap_activity', array( 'type' => 'new_question', 'user_id' => $question->post_author, 'date' => current_time( 'mysql' ) ) );
 
 		// Notify users.
-		//ap_new_notification($activity_id, $question->post_author);
+		// ap_new_notification($activity_id, $question->post_author);
 	}
 
 	/**
@@ -72,6 +75,8 @@ class AnsPress_Activity_Hook
 		$answer = get_post( $answer_id );
 		$question = get_post( $answer->post_parent );
 
+		$answer_title = '<a class="ap-q-link" href="'. get_permalink( $answer_id ) .'">'. get_the_title( $answer_id ) .'</a>';
+
 		$activity_arr = array(
 			'user_id' 			=> $answer->post_author,
 			'secondary_user' 	=> $question->post_author,
@@ -79,6 +84,7 @@ class AnsPress_Activity_Hook
 			'question_id' 		=> $answer->post_parent,
 			'answer_id' 		=> $answer_id,
 			'permalink' 		=> get_permalink( $answer_id ),
+			'content'			=> sprintf( __( '%s answered on %s', 'ap' ), ap_activity_user_name($question->post_author), $answer_title ),
 		);
 
 		$activity_id = ap_new_activity( $activity_arr );
@@ -92,6 +98,9 @@ class AnsPress_Activity_Hook
 		// Notify users.
 		$subscribers = ap_subscriber_ids( $answer->post_parent, 'q_all' );
 
+		// Remove current user from subscribers.
+		$subscribers = ap_unset_current_user_from_subscribers( $subscribers );
+
 		ap_new_notification( $activity_id, $subscribers );
 	}
 
@@ -102,11 +111,14 @@ class AnsPress_Activity_Hook
 	public function edit_question($post_id) {
 		$question = get_post( $post_id );
 
+		$question_title = '<a class="ap-q-link" href="'. get_permalink( $post_id ) .'">'. get_the_title( $post_id ) .'</a>';
+
 		$activity_arr = array(
 			'user_id' 			=> get_current_user_id(),
 			'type' 				=> 'edit_question',
 			'question_id'		=> $post_id,
 			'permalink' 		=> get_permalink( $post_id ),
+			'content' 			=> sprintf( __( '%s edited question %s', 'ap' ), ap_activity_user_name(get_current_user_id()), $question_title ),
 		);
 
 		$activity_id = ap_new_activity( $activity_arr );
@@ -116,6 +128,9 @@ class AnsPress_Activity_Hook
 
 		// Notify users.
 		$subscribers = ap_subscriber_ids( false, array( 'q_all', 'a_all' ), $post_id );
+
+		// Remove current user from subscribers.
+		$subscribers = ap_unset_current_user_from_subscribers( $subscribers );
 
 		ap_new_notification( $activity_id, $subscribers );
 	}
@@ -127,18 +142,29 @@ class AnsPress_Activity_Hook
 	public function edit_answer($post_id) {
 		$answer = get_post( $post_id );
 
+		$answer_title = '<a class="ap-q-link" href="'. get_permalink( $post_id ) .'">'. get_the_title( $post_id ) .'</a>';
+
 		$activity_arr = array(
 			'secondary_user' 	=> $answer->post_author,
 			'type' 				=> 'edit_answer',
 			'question_id'		=> $answer->post_parent,
 			'answer_id' 		=> $post_id,
 			'permalink' 		=> get_permalink( $post_id ),
+			'content'			=> sprintf( __( '%s edited answer %s', 'ap' ), ap_activity_user_name($answer->post_author), $answer_title )
 		);
 
-		ap_new_activity( $activity_arr );
+		$activity_id = ap_new_activity( $activity_arr );
 
 		// Add answer activity meta.
 		update_post_meta( $post_id, '__ap_activity', array( 'type' => 'edit_answer', 'user_id' => $answer->post_author, 'date' => current_time( 'mysql' ) ) );
+
+		// Notify users.
+		$subscribers = ap_subscriber_ids( $post_id, 'a_all' );
+
+		// Remove current user from subscribers.
+		$subscribers = ap_unset_current_user_from_subscribers( $subscribers );
+
+		ap_new_notification( $activity_id, $subscribers );
 	}
 
 	/**
@@ -158,19 +184,38 @@ class AnsPress_Activity_Hook
 			'parent_type' => 'comment',
 		);
 
+		$user = ap_activity_user_name( get_current_user_id() );
+		
+		$comment_excerpt = '<span class="ap-comment-excerpt"><a href="'. get_comment_link( $comment->comment_ID ) .'">'. get_comment_excerpt( $comment->comment_ID ) .'</a></span>';
+
+		$post_title = '<a class="ap-q-link" href="'. get_permalink( $comment->comment_post_ID ) .'">'. get_the_title( $comment->comment_post_ID ) .'</a>';
+
 		if ( $post->post_type == 'question' ) {
 			$activity_arr['type'] = 'new_comment';
 			$activity_arr['question_id'] = $comment->comment_post_ID;
+			$activity_arr['content'] = sprintf( __( '%s commented on question %s %s', 'ap' ), $user, $post_title, $comment_excerpt );
 		} else {
 			$activity_arr['type'] = 'new_comment_answer';
 			$activity_arr['question_id'] = $post->post_parent;
 			$activity_arr['answer_id'] = $comment->comment_post_ID;
+			$activity_arr['content'] = sprintf( __( '%s commented on answer %s %s', 'ap' ), $user, $post_title, $comment_excerpt );
 		}
 
-		ap_new_activity( $activity_arr );
+		$activity_id = ap_new_activity( $activity_arr );
 
 		// Add comment activity meta.
 		update_post_meta( $comment->comment_post_ID, '__ap_activity', array( 'type' => 'new_comment', 'user_id' => $comment->user_id, 'date' => current_time( 'mysql' ) ) );
+
+		if ( $post->post_type == 'question' ) {
+			$subscribers = ap_subscriber_ids( $comment->comment_post_ID, array( 'q_post', 'q_all' ) );
+		} else {
+			$subscribers = ap_subscriber_ids( $comment->comment_post_ID, 'a_all' );
+		}
+
+		// Remove current user from subscribers.
+		$subscribers = ap_unset_current_user_from_subscribers( $subscribers );
+
+		ap_new_notification( $activity_id, $subscribers );
 	}
 
 	/**
@@ -180,12 +225,19 @@ class AnsPress_Activity_Hook
 	 * @param  integer $answer_id   Answer ID.
 	 */
 	public function select_answer($user_id, $question_id, $answer_id) {
+
+		$question = get_post( $question_id );
+		$answer = get_post( $answer_id );
+
+		$question_title = '<a class="ap-q-link" href="'. get_permalink( $question_id ) .'">'. $question->post_title .'</a>';
+
 		$activity_arr = array(
 			'user_id' 			=> $user_id,
 			'type' 				=> 'answer_selected',
 			'question_id'		=> $question_id,
 			'answer_id' 		=> $answer_id,
 			'permalink' 		=> get_permalink( $answer_id ),
+			'content' 			=> sprintf( __( '%s selected best answer for %s', 'ap' ), ap_activity_user_name( $user_id ), $question_title ),
 		);
 
 		$activity_id = ap_new_activity( $activity_arr );
@@ -196,7 +248,13 @@ class AnsPress_Activity_Hook
 		// Add answer activity meta.
 		update_post_meta( $answer_id, '__ap_activity', array( 'type' => 'best_answer', 'user_id' => $user_id, 'date' => current_time( 'mysql' ) ) );
 
-		//ap_new_notification( $activity_id, $user_id );
+		$user_ids = array( $answer->post_author );
+
+		if ( get_current_user_id() != $question->post_author ) {
+			$user_ids[] = $question->post_author;
+		}
+
+		ap_new_notification( $activity_id, $user_ids );
 	}
 
 	/**
@@ -206,12 +264,15 @@ class AnsPress_Activity_Hook
 	 * @param  integer $answer_id   Answer ID.
 	 */
 	public function unselect_answer($user_id, $question_id, $answer_id) {
+		$question_title = '<a class="ap-q-link" href="'. get_permalink( $question_id ) .'">'. get_the_title( $question_id ) .'</a>';
+
 		$activity_arr = array(
 			'user_id' 			=> $user_id,
 			'type' 				=> 'answer_unselected',
 			'question_id'		=> $question_id,
 			'answer_id' 		=> $answer_id,
 			'permalink' 		=> get_permalink( $answer_id ),
+			'content' 			=> sprintf( __( '%s unselected best answer for question %s', 'ap' ), ap_activity_user_name( $user_id ), $question_title ),
 		);
 
 		ap_new_activity( $activity_arr );
@@ -241,7 +302,7 @@ class AnsPress_Activity_Hook
 
 	/**
 	 * Delete activities of an answer when its get deleted.
-	 * @param  object  $answer    Post object.
+	 * @param  object $answer    Post object.
 	 */
 	public function delete_post( $answer_id ) {
 		$activity_ids = ap_post_activities_id( $answer_id );
@@ -310,17 +371,19 @@ class AnsPress_Activity_Hook
 	 * @param  integer $current_user_id Current user ID.
 	 */
 	public function follower($user_to_follow, $current_user_id) {
+
 		$activity_arr = array(
-			'user_id' 			=> $current_user_id,
+			'user_id' 			=> $user_to_follow,
 			'type' 				=> 'follower',
-			'secondary_user' 	=> $user_to_follow,
-			'item_id' 			=> $user_to_follow,
+			'secondary_user' 	=> $current_user_id,
+			'item_id' 			=> $current_user_id,
 			'parent_type' 		=> 'user',
 			'permalink' 		=> ap_user_link( $user_to_follow ),
+			'content' 			=> sprintf( __( '%s started following %s', 'ap' ), ap_activity_user_name( $current_user_id ), ap_activity_user_name( $user_to_follow ) ),
 		);
 
 		$activity_id = ap_new_activity( $activity_arr );
-		//ap_new_notification( $activity_id, $user_to_follow );
+		ap_new_notification( $activity_id, $user_to_follow );
 	}
 
 	/**
@@ -333,7 +396,7 @@ class AnsPress_Activity_Hook
 	public function notify_upvote($userid, $type, $actionid, $receiving_userid) {
 
 		if ( 'vote_up' == $type ) {
-			
+
 			$activity_arr = array(
 				'user_id' 			=> $userid,
 				'type' 				=> 'vote_up',
@@ -346,7 +409,7 @@ class AnsPress_Activity_Hook
 			$activity_id = ap_new_activity( $activity_arr );
 
 			// Insert a notification.
-			//ap_new_notification( $activity_id, $receiving_userid );
+			// ap_new_notification( $activity_id, $receiving_userid );
 		}
 	}
 
@@ -374,31 +437,5 @@ class AnsPress_Activity_Hook
 		// ap_new_notification( $activity_id, $user_id );
 	}
 
-}
-
-/**
- * Restore __ap_history meta of question or answer
- * @param  integer $post_id
- * @return void
- */
-function ap_restore_question_history($post_id) {
-	$history = ap_get_latest_history( $post_id );
-
-	if ( ! $history ) {
-		delete_post_meta( $post_id, '__ap_history' );
-	} else {
-		update_post_meta( $post_id, '__ap_history', array( 'type' => $history['type'], 'user_id' => $history['user_id'], 'date' => $history['date'] ) );
-	}
-}
-
-/**
- * Remove new answer history from ap_meta table and update post meta history
- * @param  integer $answer_id
- * @return boolean
- */
-function ap_remove_new_answer_history($answer_id) {
-	$row = ap_delete_meta( array( 'apmeta_type' => 'history', 'apmeta_value' => $answer_id, 'apmeta_param' => 'new_answer' ) );
-
-	return $row;
 }
 

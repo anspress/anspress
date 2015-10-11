@@ -275,3 +275,21 @@ function ap_notification_icon() {
 function ap_notification_pagination() {
 	_deprecated_function( 'ap_notification_pagination', '2.4' );
 }
+
+/**
+ * Restore __ap_history meta of question or answer
+ * @param  integer $post_id
+ * @deprecated since 2.4
+ */
+function ap_restore_question_history($post_id) {
+	_deprecated_function( 'ap_restore_question_history', '2.4' );
+}
+
+/**
+ * Remove new answer history from ap_meta table and update post meta history
+ * @param  integer $answer_id
+ * @deprecated since 2.4
+ */
+function ap_remove_new_answer_history($answer_id) {
+	_deprecated_function( 'ap_remove_new_answer_history', '2.4' );
+}

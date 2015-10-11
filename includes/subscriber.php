@@ -344,10 +344,15 @@ function ap_subscriber_ids( $item_id =false, $activity = 'q_all', $question_id =
 		return $cache;
 	}
 
-	$item = "";
+	$item = '';
 
 	if ( false !== $item_id ) {
-		$item = $wpdb->prepare( "item_id = %d AND", $item_id );
+		$item = $wpdb->prepare( 'item_id = %d AND', $item_id );
+	}
+
+	$question = '';
+	if ( 0 != $question_id ) {
+		$question = $wpdb->prepare( 'AND question_id=%d', $question_id );
 	}
 
 	$i = 1;
@@ -364,11 +369,25 @@ function ap_subscriber_ids( $item_id =false, $activity = 'q_all', $question_id =
 
 		$activity_q .= ') ';
 	} else {
-		$activity_q = $wpdb->prepare( "AND activity = '%s'", $activity );
+		$activity_q = $wpdb->prepare( " activity = '%s' ", $activity );
 	}
 
-	$results = $wpdb->get_col( $wpdb->prepare( "SELECT user_id FROM $wpdb->ap_subscribers WHERE $item $activity_q AND question_id=%d GROUP BY user_id", $item_id, $question_id ) );
+	$results = $wpdb->get_col( "SELECT user_id FROM $wpdb->ap_subscribers WHERE $item $activity_q $question GROUP BY user_id" );
 
 	wp_cache_set( $key, $results, 'ap_subscribers_ids' );
 	return $results;
+}
+
+/**
+ * Remove current user id from subscribers id
+ * @param  array $subscribers Subscribers user_id.
+ * @return array
+ */
+function ap_unset_current_user_from_subscribers($subscribers) {
+	// Remove current user from subscribers.
+	if ( ! empty( $subscribers ) && ($key = array_search( get_current_user_id(), $subscribers )) !== false ) {
+	    unset( $subscribers[$key] );
+	}
+
+	return $subscribers;
 }

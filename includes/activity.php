@@ -181,12 +181,13 @@ class AnsPress_Activity_Query
 	 * Join statement
 	 * @return string
 	 */
-	public function join(){
+	public function join() {
 		global $wpdb;
 
-		$join = "";
-		
-		if( $this->args['notification']){
+		$join = '';
+
+		if ( $this->args['notification'] ) {
+			$join .= "";
 			$join .= " LEFT JOIN $wpdb->ap_notifications ON id = noti_activity_id ";
 		}
 
@@ -198,6 +199,7 @@ class AnsPress_Activity_Query
 	 * @return string
 	 */
 	public function where_clauses($args) {
+		global $wpdb;
 		$where = ' WHERE 1=1';
 
 		if ( isset( $args['id'] ) ) {
@@ -207,7 +209,7 @@ class AnsPress_Activity_Query
 
 		} else {
 
-			if ( isset( $args['user_id'] ) ) {
+			if ( isset( $args['user_id'] ) && !$this->args['notification'] ) {
 
 				$ids 	= (int) $args['user_id'];
 				$where .= " AND user_id = $ids";
@@ -275,6 +277,10 @@ class AnsPress_Activity_Query
 				$item_id 	= sanitize_text_field( strip_tags( $args['item_id'] ) );
 				$where 			.= " AND item_id ='$item_id'";
 			}
+		}
+
+		if ( $this->args['notification'] ) {
+			$where .= $wpdb->prepare(" AND noti_user_id=%d", $args['user_id']);
 		}
 
 		return $where;
@@ -390,7 +396,7 @@ class AnsPress_Activity_Query
 /**
  * Set AnsPress tables in $wpdb if not already set.
  */
-function ap_wpdb_tables(){
+function ap_wpdb_tables() {
 	global $wpdb;
 
 	// Add ap_activity in $wpdb if not defined already.
@@ -503,6 +509,12 @@ function ap_insert_activity( $args ) {
 	return false;
 }
 
+function ap_activity_user_name($user_id) {
+	$primary_user_link = ap_user_link( $user_id );
+	$primary_user_name = ap_user_display_name( array( 'user_id' => $user_id ) );
+	return '<a class="ap-user-link" href="'. $primary_user_link .'">'.$primary_user_name.'</a>';
+}
+
 /**
  * Return activity action title
  * @param  array $args Activity arguments.
@@ -520,52 +532,10 @@ function ap_get_activity_action_title($args) {
 
 	switch ( $type ) {
 
-		case 'new_question':
-			$question_title = '<a class="ap-q-link" href="'. get_permalink( $args['question_id'] ) .'">'. get_the_title( $args['question_id'] ) .'</a>';
-			$content .= sprintf( __( '%s asked question %s', 'ap' ), $user, $question_title );
-			break;
-
-		case 'new_answer':
-			$answer_title = '<a class="ap-q-link" href="'. get_permalink( $args['answer_id'] ) .'">'. get_the_title( $args['answer_id'] ) .'</a>';
-			$content .= sprintf( __( '%s answered on %s', 'ap' ), $user, $answer_title );
-			break;
-
-		case 'new_comment':
-			$question_title = '<a class="ap-q-link" href="'. get_permalink( $args['question_id'] ) .'">'. get_the_title( $args['question_id'] ) .'</a>';
-			$comment = '<span class="ap-comment-excerpt"><a href="'. get_comment_link( $args['item_id'] ) .'">'. get_comment_excerpt( $args['item_id'] ) .'</a></span>';
-			$content .= sprintf( __( '%s commented on question %s %s', 'ap' ), $user, $question_title, $comment );
-			break;
-
-		case 'new_comment_answer':
-			$title = '<a class="ap-q-link" href="'. get_permalink( $args['question_id'] ) .'">'. get_the_title( $args['question_id'] ) .'</a>';
-			$comment = '<span class="ap-comment-excerpt"><a href="'. get_comment_link( $args['item_id'] ) .'">'. get_comment_excerpt( $args['item_id'] ) .'</a></span>';
-			$content .= sprintf( __( '%s commented on answer %s %s', 'ap' ), $user, $title, $comment );
-			break;
-
-		case 'edit_question':
-			$question_title = '<a class="ap-q-link" href="'. get_permalink( $args['question_id'] ) .'">'. get_the_title( $args['question_id'] ) .'</a>';
-			$content .= sprintf( __( '%s edited question %s', 'ap' ), $user, $question_title );
-			break;
-
-		case 'edit_answer':
-			$answer_title = '<a class="ap-q-link" href="'. get_permalink( $args['item_id'] ) .'">'. get_the_title( $args['item_id'] ) .'</a>';
-			$content .= sprintf( __( '%s edited answer %s', 'ap' ), $user, $answer_title );
-			break;
-
 		case 'edit_comment':
 			$comment = '<a class="ap-c-link" href="'. get_comment_link( $args['item_id'] ) .'">'. get_comment_excerpt( $args['item_id'] ) .'</a>';
 			$question_title = '<a class="ap-q-link" href="'. get_permalink( $args['question_id'] ) .'">'. get_the_title( $args['question_id'] ) .'</a>';
 			$content .= sprintf( __( '%s edited comment on %s %s', 'ap' ), $user, $question_title, $comment );
-			break;
-
-		case 'answer_selected':
-			$question_title = '<a class="ap-q-link" href="'. get_permalink( $args['question_id'] ) .'">'. get_the_title( $args['question_id'] ) .'</a>';
-			$content .= sprintf( __( '%s selected best answer for %s', 'ap' ), $user, $question_title );
-			break;
-
-		case 'answer_unselected':
-			$question_title = '<a class="ap-q-link" href="'. get_permalink( $args['question_id'] ) .'">'. get_the_title( $args['question_id'] ) .'</a>';
-			$content .= sprintf( __( '%s unselected best answer for question %s', 'ap' ), $user, $question_title );
 			break;
 
 		case 'status_updated':
@@ -578,14 +548,9 @@ function ap_get_activity_action_title($args) {
 			$content .= sprintf( __( '%s updated status of answer %s', 'ap' ), $user, $title );
 			break;
 
-		case 'follower':
-			$title = '<a class="ap-q-link" href="'. $args['permalink'] .'">'. ap_user_display_name( $args['item_id'] ) .'</a>';
-			$content .= sprintf( __( '%s started following %s', 'ap' ), $user, $title );
-			break;
-
 		case 'vote_up':
 			$post = get_post( $args['item_id'] );
-			$cpt_type = $post->post_type == 'question' ? __('question', 'ap') : __('answer', 'ap');
+			$cpt_type = $post->post_type == 'question' ? __( 'question', 'ap' ) : __( 'answer', 'ap' );
 			$title = '<a class="ap-q-link" href="'. $args['permalink'] .'">'. $post->post_title .'</a>';
 			$content .= sprintf( __( '%s voted up on %s %s', 'ap' ), $user, $cpt_type, $title );
 			break;
@@ -624,10 +589,6 @@ function ap_new_activity( $args = array() ) {
 	);
 
 	$args = wp_parse_args( $args, $defaults );
-
-	if ( isset( $args['type'] ) && empty( $args['content'] ) ) {
-		$args['content'] = ap_get_activity_action_title( $args );
-	}
 
 	return ap_insert_activity( $args );
 }
@@ -803,22 +764,22 @@ function ap_post_activities_id($post_id) {
 	$where = 'WHERE ';
 
 	if ( 'question' == $post_arr->post_type ) {
-		$where .= "question_id = ". $post_arr->ID;
+		$where .= 'question_id = '. $post_arr->ID;
 	} elseif ( 'answer' == $post_arr->post_type ) {
-		$where .= "answer_id = ". $post_arr->ID;
+		$where .= 'answer_id = '. $post_arr->ID;
 	}
 
-	return $wpdb->get_col( "SELECT id FROM $wpdb->ap_activity $where");
+	return $wpdb->get_col( "SELECT id FROM $wpdb->ap_activity $where" );
 
 }
 
 /**
  * @param string $type
  */
-function ap_activity_ids_by_item_id( $item_id, $type ){
+function ap_activity_ids_by_item_id( $item_id, $type ) {
 	global $wpdb;
 
-	return $wpdb->get_col( $wpdb->prepare( "SELECT id FROM $wpdb->ap_activity WHERE item_id = %d AND parent_type = %s", $item_id, $type) );
+	return $wpdb->get_col( $wpdb->prepare( "SELECT id FROM $wpdb->ap_activity WHERE item_id = %d AND parent_type = %s", $item_id, $type ) );
 }
 
 /**
@@ -985,7 +946,7 @@ function ap_activity_id() {
 /**
  * Output activity id.
  */
-function ap_activity_the_noti_id(){
+function ap_activity_the_noti_id() {
 	echo ap_activity_noti_id();
 }
 
