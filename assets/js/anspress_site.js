@@ -53,6 +53,7 @@
             this.mark_as_read();
             this.cancel_comment();
             this.questionSuggestion();
+            this.checkboxUncheck();
         },
         doAjax: function(query, success, context, before, abort) {
             /** Shorthand method for calling ajax */
@@ -671,6 +672,20 @@
         	}
 
         	ApSite.doAjax(apAjaxData('ap_ajax_action=set_notifications_as_read&__nonce='+ap_nonce+'&ids='+ids ));
+        },
+
+        checkboxUncheck: function(){
+            $('#anspress input[type="checkbox"]').click(function(){
+                var name = $(this).attr('name');
+                console.log($(this).is(':checked'));
+                if ($(this).is(':checked')){
+                    $('input[name="'+ name +'"][type="hidden"]').attr('name', '_hidden_'+ name );
+                }else{
+                    $('input[name="_hidden_'+ name +'"]').attr('name', name );
+                }
+
+                
+            })
         }
 
     }

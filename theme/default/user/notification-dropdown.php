@@ -30,7 +30,7 @@ $noti_ids = array();
 							<a href="<?php echo ap_user_link( ap_activity_user_id() ); ?>"><?php echo get_avatar( ap_activity_user_id(), 35 ); ?></a>
 						</div>
 						<div class="no-overflow">
-							<a href="<?php ap_notification_the_permalink() ?>" class="clearfix">
+							<a href="<?php ap_activity_the_permalink() ?>" class="clearfix">
 								<span class="ap-notification-content"><?php ap_activity_the_content(); ?></span>
 								<span class="ap-notification-time"><?php ap_activity_the_date(); ?></span>
 							</a>

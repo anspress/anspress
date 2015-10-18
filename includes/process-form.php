@@ -515,7 +515,7 @@ class AnsPress_Process_Form
 					$answers = ap_get_answers( array( 'question_id' => $question->ID ) );
 					ap_get_template_part( 'answers' );
 				} else {
-					$answers = ap_get_answers(  array( 'p' => $post_id ) );
+					$answers = ap_get_answers( array( 'p' => $post_id ) );
 					while ( ap_have_answers() ) : ap_the_answer();
 						ap_get_template_part( 'answer' );
 					endwhile;
@@ -721,7 +721,8 @@ class AnsPress_Process_Form
 		}
 
 		if ( ! ap_verify_nonce( 'nonce_user_profile_'.$user_id.'_'.$group ) ) {
-			ap_send_json( ap_ajax_responce( 'something_wrong' ) ); }
+			ap_send_json( ap_ajax_responce( 'something_wrong' ) );
+		}
 
 		$user_fields = ap_get_user_fields( $group, $user_id );
 
@@ -729,17 +730,19 @@ class AnsPress_Process_Form
 
 		foreach ( $user_fields as $field ) {
 			if ( isset( $field['sanitize'] ) ) {
-				$validate_fields[$field['name']]['sanitize'] = $field['sanitize']; }
+				$validate_fields[$field['name']]['sanitize'] = $field['sanitize'];
+			}
 
 			if ( $field['validate'] ) {
-				$validate_fields[$field['name']]['validate'] = $field['validate']; }
+				$validate_fields[$field['name']]['validate'] = $field['validate'];
+			}
 		}
 
 		$validate = new AnsPress_Validation( $validate_fields );
 
 		$ap_errors = $validate->get_errors();
 
-		// if error in form then return
+		// If error in form then return.
 		if ( $validate->have_error() ) {
 			ap_send_json( ap_ajax_responce(array(
 				'form' 			=> $_POST['ap_form_action'],
@@ -757,11 +760,11 @@ class AnsPress_Process_Form
 		if ( is_array( $user_fields ) && ! empty( $user_fields ) ) {
 			foreach ( $user_fields as $field ) {
 
-				if ( ! empty( $fields[$field['name']] ) && ( in_array( $field['name'], $default_fields ) ) ) {
+				if ( isset( $fields[$field['name']] ) && ( in_array( $field['name'], $default_fields ) ) ) {
 					wp_update_user( array( 'ID' => $user_id, $field['name'] => $fields[$field['name']] ) );
 				} elseif ( $field['name'] == 'password' && $_POST['password'] == $_POST['password-1'] ) {
 					wp_set_password( $_POST['password'], $user_id );
-				} elseif ( ! empty( $fields[$field['name']] ) ) {
+				} elseif ( isset( $fields[$field['name']] ) ) {
 					update_user_meta( $user_id, $field['name'], $fields[$field['name']] );
 				}
 			}

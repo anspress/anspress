@@ -75,7 +75,7 @@ class AnsPress_User
 	 */
 	public function user_page() {
 		// Return if user profile is not active
-		if( !ap_is_profile_active() ){
+		if ( ! ap_is_profile_active() ) {
 			return;
 		}
 
@@ -312,10 +312,17 @@ class AnsPress_User
 	 * @return array
 	 */
 	public function user_sort_by_reputation($query) {
+		global $wpdb;
 
-		if ( isset( $query->query_vars['ap_query'] ) && $query->query_vars['ap_query'] == 'user_sort_by_reputation' ) {
-			global $wpdb;
-			$query->query_orderby = 'ORDER BY cast(mt1.meta_value AS DECIMAL) DESC';
+		if ( isset( $query->query_vars['ap_query'] ) ) {
+
+			$query->query_where = $query->query_where." AND (apm1.user_id IS NULL OR (  apm1.meta_value != 1) )";
+
+			$query->query_from = $query->query_from. " LEFT JOIN wp_usermeta AS apm1 ON ( wp_users.ID = apm1.user_id AND apm1.meta_key = 'hide_profile' )";
+
+			if ( $query->query_vars['ap_query'] == 'user_sort_by_reputation' ) {
+				$query->query_orderby = 'ORDER BY cast(mt1.meta_value AS DECIMAL) DESC';
+			}
 		}
 
 		return $query;
