@@ -683,7 +683,7 @@ class AnsPress_Ajax
 		$ids = sanitize_text_field( $_POST['ids'] );
 		$ids = explode(',', $ids);
 
-		if( count($ids)==0 ){
+		if( count($ids) == 0 ){
 			die();
 		}
 
@@ -698,14 +698,11 @@ class AnsPress_Ajax
 			}
 		}
 
-			
+		$this->send( array(
+			'container' => '#ap-notification-dropdown',
+			'view' => array( 'notification_count' => ap_get_total_unread_notification() ),
+		) );
 
-		if ( false !== $row ) {
-			$this->send( array(
-				'container' => '#ap-notification-dropdown',
-				'view' => array( 'notification_count' => ap_get_total_unread_notification() ),
-			) );
-		}
 
 		die();
 	}
