@@ -652,7 +652,7 @@
             $('[data-action="suggest_similar_questions"]').on('blur', function(){
                 console.log(title);
                 var title = $(this).val();
-                console.log(title);
+
                 if(title.length == 0)
                     return;
 
@@ -661,6 +661,16 @@
                     $("#similar_suggestions").html(data.html);      
                 }, this, false, true);
             });
+        },
+
+        notificationAsRead: function(){
+        	var ids = $('input[name="ap_loaded_notifications"]').val();
+        	
+        	if( ids.length == 0 || $(this).parent().is('.open') ){
+        		return;
+        	}
+
+        	ApSite.doAjax(apAjaxData('ap_ajax_action=set_notifications_as_read&__nonce='+ap_nonce+'&ids='+ids ));
         }
 
     }

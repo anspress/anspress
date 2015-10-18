@@ -35,6 +35,7 @@ class AnsPress_Activity_Hook
 		$ap->add_action( 'trashed_comment', $this, 'trash_comment' );
 		$ap->add_action( 'comment_trash_to_approved', $this, 'comment_approved' );
 		$ap->add_action( 'delete_comment', $this, 'delete_comment' );
+		$ap->add_action( 'edit_comment', $this, 'edit_comment' );
 		$ap->add_action( 'ap_added_follower', $this, 'follower', 10, 2 );
 		//$ap->add_action( 'ap_vote_casted', $this, 'notify_upvote', 10, 4 );
 		//$ap->add_action( 'ap_added_reputation', $this, 'ap_added_reputation', 10, 4 );
@@ -435,6 +436,54 @@ class AnsPress_Activity_Hook
 
 		// Insert a notification.
 		// ap_new_notification( $activity_id, $user_id );
+	}
+
+	public function edit_comment($comment_id){
+		$comment = get_comment($comment_id);
+		$post = get_post( $comment->comment_post_ID );
+
+		if ( ! ('question' == $post->post_type || 'answer' == $post->post_type) ) {
+			return;
+		}
+
+		$activity_arr = array(
+			'item_id'	=> $comment->comment_ID,
+			'permalink' => get_comment_link( $comment ),
+			'parent_type' => 'comment',
+		);
+
+		$user = ap_activity_user_name( get_current_user_id() );
+		
+		$comment_excerpt = '<span class="ap-comment-excerpt"><a href="'. get_comment_link( $comment->comment_ID ) .'">'. get_comment_excerpt( $comment->comment_ID ) .'</a></span>';
+
+		$post_title = '<a class="ap-q-link" href="'. get_permalink( $comment->comment_post_ID ) .'">'. get_the_title( $comment->comment_post_ID ) .'</a>';
+
+		if ( $post->post_type == 'question' ) {
+			$activity_arr['type'] = 'new_comment';
+			$activity_arr['question_id'] = $comment->comment_post_ID;
+			$activity_arr['content'] = sprintf( __( '%s commented on question %s %s', 'ap' ), $user, $post_title, $comment_excerpt );
+		} else {
+			$activity_arr['type'] = 'new_comment_answer';
+			$activity_arr['question_id'] = $post->post_parent;
+			$activity_arr['answer_id'] = $comment->comment_post_ID;
+			$activity_arr['content'] = sprintf( __( '%s commented on answer %s %s', 'ap' ), $user, $post_title, $comment_excerpt );
+		}
+
+		$activity_id = ap_new_activity( $activity_arr );
+
+		// Add comment activity meta.
+		update_post_meta( $comment->comment_post_ID, '__ap_activity', array( 'type' => 'new_comment', 'user_id' => $comment->user_id, 'date' => current_time( 'mysql' ) ) );
+
+		if ( $post->post_type == 'question' ) {
+			$subscribers = ap_subscriber_ids( $comment->comment_post_ID, array( 'q_post', 'q_all' ) );
+		} else {
+			$subscribers = ap_subscriber_ids( $comment->comment_post_ID, 'a_all' );
+		}
+
+		// Remove current user from subscribers.
+		$subscribers = ap_unset_current_user_from_subscribers( $subscribers );
+
+		ap_new_notification( $activity_id, $subscribers );
 	}
 
 }

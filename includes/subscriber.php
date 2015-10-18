@@ -336,7 +336,15 @@ function ap_subscribe_question( $posta, $user_id = false ) {
 function ap_subscriber_ids( $item_id =false, $activity = 'q_all', $question_id = 0 ) {
 	global $wpdb;
 
-	$key = $item_id . '::' . $activity .'::'. $question_id;
+	if( is_array( $activity ) ){
+		$activity_k = implode('::', $activity);
+	}else{
+		$activity_k = $activity;
+	}
+
+	$key = $item_id . '::' . $activity_k .'::'. $question_id;
+
+	$activity_q = '';
 
 	$cache = wp_cache_get( $key, 'ap_subscribers_ids' );
 
@@ -360,7 +368,7 @@ function ap_subscriber_ids( $item_id =false, $activity = 'q_all', $question_id =
 		$activity_q .= ' activity IN(';
 
 		foreach ( $activity as $a ) {
-			$activity_q .= $wpdb->prepare( "'%s'", $activity );
+			$activity_q .= '"'. sanitize_title_for_query( $a ) .'"';
 			if ( $i != count( $activity ) ) {
 				$activity_q .= ', ';
 			}
@@ -369,10 +377,10 @@ function ap_subscriber_ids( $item_id =false, $activity = 'q_all', $question_id =
 
 		$activity_q .= ') ';
 	} else {
-		$activity_q = $wpdb->prepare( " activity = '%s' ", $activity );
+		$activity_q = ' activity = "'. sanitize_title_for_query( $activity ) .'"';
 	}
 
-	$results = $wpdb->get_col( "SELECT user_id FROM $wpdb->ap_subscribers WHERE $item $activity_q $question GROUP BY user_id" );
+	$results = $wpdb->get_col( 'SELECT user_id FROM '.$wpdb->ap_subscribers.' WHERE '.$item.' '. $activity_q .' '. $question .' GROUP BY user_id' );
 
 	wp_cache_set( $key, $results, 'ap_subscribers_ids' );
 	return $results;

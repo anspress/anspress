@@ -252,6 +252,22 @@ function ap_new_notification( $activity_id, $user_id = false, $status = '0', $da
 	return $row;
 }
 
+function ap_update_notification( $id, $args = array() ) {
+	global $wpdb;
+
+	if ( ! is_array( $id ) ) {
+		$id = array( 'noti_id' => 1 );
+	}
+
+	return $wpdb->update(
+		$wpdb->ap_notifications,
+		$args,
+		$id,
+		array( '%s', '%s', '%s', '%s' ),
+		array( '%s', '%s' )
+	);
+}
+
 
 function ap_get_notification_icon($type) {
 
@@ -315,27 +331,20 @@ function ap_get_total_unread_notification($user_id = false) {
 }
 
 
-function ap_delete_notification($meta_id = false, $current_user_id = false, $affected_user_id = false, $type = false) {
+function ap_delete_notification($noti_id = false, $current_user_id = false, $affected_user_id = false, $type = false) {
 	global $wpdb;
 
-	if ( $meta_id !== false ) {
-		$row = ap_delete_meta( false, $meta_id );
-	} else {
-		$row = $wpdb->query(
-			$wpdb->prepare(
-				'DELETE FROM '.$wpdb->prefix."ap_meta
-                 WHERE apmeta_actionid = %d
-                 AND apmeta_userid = %d
-                 AND apmeta_param = %s
-                 AND (apmeta_type = 'notification' OR apmeta_type = 'unread_notification')
-				 ",
-		        $affected_user_id, $current_user_id, $type
-	        )
-		);
-	}
+	
+	$row = $wpdb->query(
+		$wpdb->prepare(
+			'DELETE FROM '.$wpdb->ap_notifications.' WHERE noti_id = %d',
+	        $noti_id
+        )
+	);
 
 	if ( false !== $row ) {
-		do_action( 'ap_delete_notification', $current_user_id, $affected_user_id, $type ); }
+		do_action( 'ap_delete_notification', $noti_id );
+	}
 
 	return $row;
 }
@@ -343,8 +352,25 @@ function ap_delete_notification($meta_id = false, $current_user_id = false, $aff
 /**
  * @param integer $id
  */
-function ap_get_notification_by_id($id) {
-	return ap_get_meta( array( 'apmeta_id' => (int) $id ) );
+function ap_get_notification_by_id( $id ) {
+
+	if ( ! is_integer( $id ) ) {
+		return;
+	}
+
+	global $wpdb;
+
+	$cache = wp_cache_get( $id, 'ap_notifications' );
+
+	if ( false !== $cache ) {
+		return $cache;
+	}
+
+	$result = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $wpdb->ap_notifications WHERE noti_id = %d ", $id ) );
+
+	wp_cache_set( $id, $result, 'ap_notifications' );
+
+	return $result;
 }
 
 /**
@@ -353,20 +379,23 @@ function ap_get_notification_by_id($id) {
  * @return integer
  */
 function ap_notification_mark_all_read($user_id) {
-	return ap_update_meta( array( 'apmeta_type' => 'notification' ), array( 'apmeta_type' => 'unread_notification', 'apmeta_actionid' => (int) $user_id ) );
+	global $wpdb;
+	return $wpdb->query( $wpdb->prepare( "UPDATE $wpdb->ap_notifications SET noti_status = 1 WHERE noti_user_id = %d", $user_id ) );
 }
 
 /**
  * Mark a notification as read
- * @param  integer $id         notification id
- * @return integer|boolean		Return FALSE on failure
+ * @param  integer $id         notification id.
+ * @param  integer $user_id    notification user id.
+ * @return integer|boolean	   Return FALSE on failure
  */
-function ap_notification_mark_as_read($id) {
-	$row = ap_update_meta( array( 'apmeta_type' => 'notification' ), array( 'apmeta_id' => (int) $id ) );
+function ap_notification_mark_as_read($id, $user_id = false) {
+	$where = array( 'noti_id' => $id );
 
-	if ( $row !== false ) {
-		do_action( 'ap_notification_marked_as_read', $id ); }
+	if ( false !== $user_id ) {
+		$where['noti_user_id'] = $user_id;
+	}
 
-	return $row;
+	return ap_update_notification( $where, array( 'noti_status' => 1 ) );
 }
 

@@ -131,6 +131,7 @@
         $('.ap-sidetoggle').click(function(){            
             $('#ap-notifiside').toggle();
             apNotiScrollHeight();
+            ApSite.notificationAsRead();
         });
 
     });

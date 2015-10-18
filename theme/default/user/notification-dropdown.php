@@ -7,7 +7,7 @@
  *
  * @package AnsPress
  */
-
+$noti_ids = array();
 ?>
 
 <?php if(!ap_opt('notification_sidebar')): ?>
@@ -37,7 +37,9 @@
 						</div>
 						
 					</div>
+					<?php $noti_ids[] = ap_activity_noti_id(); ?>
 				<?php endwhile; ?>
+				<input type="hidden" name="ap_loaded_notifications" value="<?php echo implode(',', $noti_ids) ?>" />
 				<div class="ap-notification-more clearfix"><a href="<?php echo ap_user_link(get_current_user_id(), 'notification'); ?>"><?php _e('View all notifications', 'ap'); ?></a></div>
 			</div>
 		</div>

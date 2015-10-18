@@ -40,6 +40,7 @@ class AnsPress_Ajax
 	    $ap->add_action( 'ap_ajax_user_cover', $this, 'ap_user_card' );
 	    $ap->add_action( 'ap_ajax_delete_notification', $this, 'delete_notification' );
 	    $ap->add_action( 'ap_ajax_markread_notification', $this, 'markread_notification' );
+	    $ap->add_action( 'ap_ajax_set_notifications_as_read', $this, 'set_notifications_as_read' );
 	    $ap->add_action( 'ap_ajax_flag_post', $this, 'flag_post' );
 	    $ap->add_action( 'ap_ajax_subscribe', $this, 'subscribe' );
 	    $ap->add_action( 'ap_ajax_vote', $this, 'vote' );
@@ -611,15 +612,16 @@ class AnsPress_Ajax
 
 		$notification = ap_get_notification_by_id( (int) $_POST['id'] );
 
-		if ( $notification && ( get_current_user_id() == $notification['apmeta_userid'] || is_super_admin() ) ) {
-			$row = ap_delete_notification( $notification['apmeta_id'] );
+		if ( $notification && ( get_current_user_id() == $notification->noti_user_id || is_super_admin() ) ) {
+			
+			$row = ap_delete_notification( $notification->noti_id );
 
 			if ( false !== $row ) {
 				$this->send(
 					array(
 						'message' 	=> 'delete_notification',
 						'action' 	=> 'delete_notification',
-						'container' => '#ap-notification-'.$notification['apmeta_id'],
+						'container' => '#ap-notification-'.$notification->noti_id,
 					)
 				);
 			}
@@ -644,14 +646,15 @@ class AnsPress_Ajax
 		if ( isset( $_POST['id'] ) ) {
 			$notification = ap_get_notification_by_id( $id );
 
-			if ( $notification && ( get_current_user_id() == $notification['apmeta_actionid'] || is_super_admin()) ) {
-				$row = ap_update_meta( array( 'apmeta_type' => 'notification' ), array( 'apmeta_id' => $notification['apmeta_id'] ) );
+			if ( $notification && ( get_current_user_id() == $notification->noti_user_id || is_super_admin()) ) {
+
+				$row = ap_update_notification( array( 'noti_id' => $id, 'noti_user_id' => get_current_user_id() ), array( 'noti_status' => 1 ) );
 
 				if ( false !== $row ) {
 					$this->send( array(
 						'message' 		=> 'mark_read_notification',
 						'action' 		=> 'mark_read_notification',
-						'container' 	=> '.ap-notification-'.$notification['apmeta_id'],
+						'container' 	=> '.ap-notification-'.$notification->noti_id,
 						'view' 			=> array( 'notification_count' => ap_get_total_unread_notification() ),
 					) );
 				}
@@ -661,15 +664,50 @@ class AnsPress_Ajax
 
 			if ( false !== $row ) {
 				$this->send( array(
-					'message' => 'mark_read_notification',
-					'action' => 'mark_all_read',
+					'message' 	=> 'mark_read_notification',
+					'action' 	=> 'mark_all_read',
 					'container' => '#ap-notification-dropdown',
-					'view' => array( 'notification_count' => '0' ),
+					'view' 		=> array( 'notification_count' => '0' ),
 				) );
 			}
 		}
 
 		$this->something_wrong();
+	}
+
+	/**
+	 * Handle ajax callback for mark all notification as read
+	 */
+	public function set_notifications_as_read() {
+
+		$ids = sanitize_text_field( $_POST['ids'] );
+		$ids = explode(',', $ids);
+
+		if( count($ids)==0 ){
+			die();
+		}
+
+		if ( !ap_verify_default_nonce() && ! is_user_logged_in() ) {
+			die();
+		}
+
+		foreach( $ids as $id ){
+			$id = (int) $id;
+			if( 0 != $id ){				
+				ap_notification_mark_as_read( $id, get_current_user_id() );
+			}
+		}
+
+			
+
+		if ( false !== $row ) {
+			$this->send( array(
+				'container' => '#ap-notification-dropdown',
+				'view' => array( 'notification_count' => ap_get_total_unread_notification() ),
+			) );
+		}
+
+		die();
 	}
 
 	/**
@@ -850,47 +888,6 @@ class AnsPress_Ajax
 	public function ap_add_to_subscribe_nopriv() {
 		$this->send( array( 'action' => false, 'message' => __( 'Please login for adding question to your subscribe', 'ap' ) ) );
 	}
-
-	/*
-	public function ap_vote_for_close() {
-
-		$args = explode( '-', sanitize_text_field( $_POST['args'] ) );
-		if ( wp_verify_nonce( $args[1], 'close_'.$args[0] ) ) {
-			$voted_closed = ap_is_user_voted_closed( $args[0] );
-			$type = 'close';
-			$userid = get_current_user_id();
-
-			if ( $voted_closed ) {
-				// if already in voted for close then remove it
-				$row = ap_remove_vote( $type, $userid, $args[0] );
-
-				$counts = ap_post_close_vote( $args[0] );
-				// update post meta
-				update_post_meta( $args[0], ANSPRESS_CLOSE_META, $counts );
-
-				$result = apply_filters( 'ap_cast_unclose_result', array( 'row' => $row, 'action' => 'removed', 'text' => __( 'Close', 'ap' ).' ('.$counts.')', 'title' => __( 'Vote for closing', 'ap' ), 'message' => __( 'Your close request has been removed', 'ap' ) ) );
-			} else {
-				$row = ap_add_vote( $userid, $type, $args[0] );
-
-				$counts = ap_post_close_vote( $args[0] );
-				// update post meta
-				update_post_meta( $args[0], ANSPRESS_CLOSE_META, $counts );
-
-				$result = apply_filters( 'ap_cast_close_result', array( 'row' => $row, 'action' => 'added', 'text' => __( 'Close', 'ap' ).' ('.$counts.')', 'title' => __( 'Undo your vote', 'ap' ), 'message' => __( 'Your close request has been sent', 'ap' ) ) );
-			}
-		} else {
-			$result = array( 'action' => false, 'message' => _( 'Something went wrong', 'ap' ) );
-		}
-
-		die( json_encode( $result ) );
-	}*/
-
-	/*
-	public function ap_nopriv_vote_for_close() {
-
-		echo json_encode( array( 'action' => false, 'message' => __( 'Please login for requesting closing this question.', 'ap' ) ) );
-		die();
-	}*/
 
 	/**
 	 * Ajax callback for processing comment flag button.
