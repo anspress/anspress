@@ -179,12 +179,18 @@ function ap_get_question($question_id) {
  */
 function ap_have_questions() {
 	global $questions;
-	return $questions->have_posts();
+
+	if( $questions ){
+		return $questions->have_posts();
+	}
 }
 
 function ap_questions() {
 	global $questions;
-	return $questions->have_posts();
+
+	if( $questions ){
+		return $questions->have_posts();
+	}
 }
 
 function ap_the_question() {
@@ -193,8 +199,13 @@ function ap_the_question() {
 }
 
 function ap_question_the_object() {
-	global $questions;
-	return $questions->post;
+	global $questions, $post;
+
+	if($questions){
+		return $questions->post;
+	}
+	
+	return $post;
 }
 
 /**

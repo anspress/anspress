@@ -295,6 +295,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		    require_once ANSPRESS_DIR.'includes/class-notification.php';
 		    require_once ANSPRESS_DIR.'includes/activity.php';
 		    require_once ANSPRESS_DIR.'includes/subscriber-hooks.php';
+		    require_once ANSPRESS_DIR.'includes/shortcode-question.php';
 		}
 
 		/**
