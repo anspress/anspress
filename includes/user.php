@@ -196,10 +196,14 @@ function ap_user_link($user_id = false, $sub = false) {
 		return '#AnonymousUser';
 	}
 
-	if ( function_exists( 'bp_core_get_userlink' ) && ! ap_is_profile_active() ) {
-		return bp_core_get_userlink( $user_id, false, true );
-	} elseif ( ! ap_is_profile_active() ) {
+	if ( ap_opt( 'user_profile' ) == '' ) {
 		return apply_filters( 'ap_user_custom_profile_link', $user_id, $sub );
+	}
+	elseif ( function_exists( 'bp_core_get_userlink' ) && ap_opt( 'user_profile' ) == 'buddypress' ) {
+		return bp_core_get_userlink( $user_id, false, true );
+	}elseif ( ap_opt( 'user_profile' ) == 'userpro' ) {
+		global $userpro;
+		return $userpro->permalink( $user_id );
 	}
 
 	if ( 0 == $user_id ) {
@@ -208,11 +212,12 @@ function ap_user_link($user_id = false, $sub = false) {
 
 	$user = get_user_by( 'id', $user_id );
 
+	// If permalink is enabled.
 	if ( get_option( 'permalink_structure' ) != '' ) {
 
-		if ( ! ap_opt( 'base_before_user_perma' ) ){
+		if ( ! ap_opt( 'base_before_user_perma' ) ) {
 			$base = home_url( '/'.ap_get_user_page_slug().'/' );
-		}else{
+		} else {
 			$base = ap_get_link_to( ap_get_user_page_slug() );
 		}
 
@@ -229,7 +234,7 @@ function ap_user_link($user_id = false, $sub = false) {
 			$link = $base. $user->user_login.'/'.$sub.'/';
 		}
 	} else {
-		if ( $sub === false ) {
+		if ( false === $sub ) {
 			$sub = array( 'ap_page' => 'user', 'ap_user' => $user->user_login );
 		} elseif ( is_array( $sub ) ) {
 			$sub['ap_page']  = 'user';
@@ -508,7 +513,7 @@ function ap_user_top_posts_tab() {
 		 */
 		do_action( 'ap_users_tab', $active );
 	?>
-	</ul>
+    </ul>
 	<?php
 }
 
@@ -525,7 +530,7 @@ function ap_user_subscription_tab() {
 	printf( __( 'My subscriptions', 'ap' ), $active );
 
 	?>
-	<ul id="ap-user-posts-tab" class="ap-flat-tab ap-ul-inline clearfix" role="tablist">
+    <ul id="ap-user-posts-tab" class="ap-flat-tab ap-ul-inline clearfix" role="tablist">
 	<li class="<?php echo $active == 'question' ? ' active' : ''; ?>"><a href="<?php echo $link.'question'; ?>"><?php _e( 'Questions', 'ap' ); ?></a></li>
 	<?php
 		/**
@@ -535,7 +540,7 @@ function ap_user_subscription_tab() {
 		 */
 		do_action( 'ap_user_subscription_tab', $active );
 	?>
-	</ul>
+    </ul>
 	<?php
 }
 
@@ -588,7 +593,7 @@ function ap_user_display_meta($html = false, $user_id = false, $echo = false) {
 function ap_avatar_upload_form() {
 	if ( ap_user_can_upload_avatar() ) {
 		?>
-			<form method="post" action="#" enctype="multipart/form-data" data-action="ap_upload_form" class="ap-avatar-upload-form">
+            <form method="post" action="#" enctype="multipart/form-data" data-action="ap_upload_form" class="ap-avatar-upload-form">
             <div class="ap-btn ap-upload-o <?php echo ap_icon( 'upload' ); ?>" title="<?php _e( 'Upload an avatar', 'ap' ); ?>">
                 <span><?php _e( 'Upload avatar', 'ap' ); ?></span>
                 <input type="file" name="thumbnail" class="ap-upload-input" data-action="ap_upload_field">
@@ -765,7 +770,7 @@ function ap_user_get_28_days_reputation($user_id = false, $object = false) {
 function ap_cover_upload_form() {
 	if ( ap_user_can_upload_cover() ) {
 		?>
-			<form method="post" action="#" enctype="multipart/form-data" data-action="ap_upload_form" class="ap-avatar-upload-form">
+            <form method="post" action="#" enctype="multipart/form-data" data-action="ap_upload_form" class="ap-avatar-upload-form">
             <div class="ap-btn ap-upload-o <?php echo ap_icon( 'upload' ); ?>" title="<?php _e( 'Upload a cover photo', 'ap' ); ?>">
                 <span><?php _e( 'Upload cover', 'ap' ); ?></span>
                 <input type="file" name="image" class="ap-upload-input" data-action="ap_upload_field">
@@ -823,8 +828,18 @@ function ap_user_link_avatar($user_id, $size = 30) {
 	echo '</a>';
 }
 
+/**
+ * Check if AnsPress profile is active.
+ * @return boolean Return true if AnsPress profile is active.
+ */
 function ap_is_profile_active() {
-	return apply_filters( 'ap_user_profile_active', true );
+	$option = ap_opt( 'user_profile' );
+
+	if ( empty( $option ) ) {
+		$option = 'anspress';
+	}
+
+	return apply_filters( 'ap_user_profile_active', 'anspress' == $option );
 }
 
 /**
@@ -834,7 +849,7 @@ function ap_is_profile_active() {
 function ap_get_user_page_slug() {
 	$slug = ap_opt( 'user_page_slug' );
 
-	if( !empty( $slug )){
+	if ( ! empty( $slug ) ) {
 		return $slug;
 	}
 
