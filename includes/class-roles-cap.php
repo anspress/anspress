@@ -188,7 +188,7 @@ function ap_user_can_answer($question_id) {
 	$question = get_post( $question_id );
 
 	// Check if user is original poster and dont allow them to answer their own question.
-	if ( ! ap_opt( 'disallow_op_to_answer' ) && $question->post_author == get_current_user_id() && ! is_user_logged_in() ) {
+	if ( ! ap_opt( 'disallow_op_to_answer' ) && $question->post_author == get_current_user_id() && is_user_logged_in() ) {
 		return false;
 	}
 
