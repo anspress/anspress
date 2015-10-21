@@ -64,7 +64,7 @@
 					
 				</div>
 			</div>
-			<a class="ap-eq-view-ans" href="">
+			<a class="ap-eq-view-ans" href="<?php echo get_the_permalink() ?>">
 				<?php _e('View all answers', 'ap'); ?>
 			</a>
 		</div>

@@ -71,10 +71,15 @@ function ap_get_theme() {
  */
 function ap_get_theme_location($file, $plugin = false) {
 
+	$child_path = get_stylesheet_directory().'/anspress/'.$file;
+	$parent_path = get_template_directory().'/anspress/'.$file;
+
 	// checks if the file exists in the theme first,
 	// otherwise serve the file from the plugin
-	if ( $theme_file = locate_template( array( 'anspress/'.$file ) ) ) {
-	    $template_path = $theme_file;
+	if ( file_exists( $child_path ) ) {
+	    $template_path = $child_path;
+	} elseif ( file_exists( $parent_path ) ) {
+	    $template_path = $parent_path;
 	} elseif ( $plugin !== false ) {
 	    $template_path = $plugin.'/theme/'.$file;
 	} else {
@@ -88,19 +93,22 @@ function ap_get_theme_location($file, $plugin = false) {
  * Get url to a file
  * Used for enqueue CSS or JS.
  *
- * @param string $file
- * @param mixed  $plugin
- *
+ * @param  string  $file   File name.
+ * @param  mixed   $plugin Plugin path, if calling from AnsPress extension.
  * @return string
- *
- * @since  		2.0
+ * @since  2.0
  */
 function ap_get_theme_url($file, $plugin = false) {
 
-	// checks if the file exists in the theme first,
-	// otherwise serve the file from the plugin
-	if ( locate_template( array( 'anspress/'.$file ) ) ) {
+	$child_path = get_stylesheet_directory().'/anspress/'.$file;
+	$parent_path = get_template_directory().'/anspress/'.$file;
+
+	// Checks if the file exists in the theme first.
+	// Otherwise serve the file from the plugin.
+	if ( file_exists( $child_path ) ) {
 	    $template_url = get_stylesheet_directory_uri().'/anspress/'.$file;
+	} elseif ( file_exists( $parent_path ) ) {
+	    $template_url = get_template_directory_uri().'/anspress/'.$file;
 	} elseif ( $plugin !== false ) {
 	    $template_url = $plugin.'theme/'.$file;
 	} else {
@@ -538,7 +546,7 @@ function ap_ans_list_tab() {
 
 	$link = '?ap_sort=';
 	?>
-	<ul class="ap-ans-tab ap-tabs clearfix" role="tablist">
+    <ul class="ap-ans-tab ap-tabs clearfix" role="tablist">
 		<li class="<?php echo $order == 'newest' ? ' active' : '';
 	?>"><a href="<?php echo $link.'newest';
 	?>"><?php _e( 'Newest', 'ap' );
@@ -551,7 +559,7 @@ function ap_ans_list_tab() {
 	?>"><a href="<?php echo $link.'voted';
 	?>"><?php _e( 'Voted', 'ap' );
 	?></a></li>
-	</ul>
+    </ul>
 	<?php
 
 }
@@ -679,7 +687,7 @@ function ap_post_change_status_btn_html($post_id = false) {
 		$output = '<div class="ap-dropdown">
 			<a class="ap-tip ap-dropdown-toggle" title="'.__( 'Change status of post', 'ap' ).'" href="#" >
 				'.__( 'Status', 'ap' ).' <i class="caret"></i>
-			</a>
+            </a>
 			<ul id="ap_post_status_toggle_'.$post_id.'" class="ap-dropdown-menu" role="menu">';
 
 		foreach ( $status as $k => $title ) {
@@ -829,8 +837,8 @@ function ap_form_allowed_tags() {
 		);
 
 	/*
-	 * FILTER: ap_allowed_tags
-	 * Before passing allowed tags
+     * FILTER: ap_allowed_tags
+     * Before passing allowed tags
 	 */
 	return apply_filters( 'ap_allowed_tags', $allowed_tags );
 }
@@ -925,10 +933,10 @@ function ap_responce_message($id, $only_message = false) {
 		);
 
 	/*
-	 * FILTER: ap_responce_message
-	 * Can be used to alter response messages
-	 * @var array
-	 * @since 2.0.1
+     * FILTER: ap_responce_message
+     * Can be used to alter response messages
+     * @var array
+     * @since 2.0.1
 	 */
 	$msg = apply_filters( 'ap_responce_message', $msg );
 
@@ -963,10 +971,10 @@ function ap_ajax_responce($results) {
 	}
 
 	/*
-	 * FILTER: ap_ajax_responce
-	 * Can be used to alter ap_ajax_responce
-	 * @var array
-	 * @since 2.0.1
+     * FILTER: ap_ajax_responce
+     * Can be used to alter ap_ajax_responce
+     * @var array
+     * @since 2.0.1
 	 */
 	$results = apply_filters( 'ap_ajax_responce', $results );
 
@@ -1358,7 +1366,7 @@ function ap_post_upload_form($post_id = false) {
         	<span>'.__( 'Add image to editor', 'ap' ).'</span>';
 	if ( ap_user_can_upload_image() ) {
 		$html .= '
-	            <a class="ap-upload-link" href="#" data-action="ap_post_upload_field">
+                <a class="ap-upload-link" href="#" data-action="ap_post_upload_field">
 	            	'.__( 'upload', 'ap' ).'
 
 	            </a> '.__( 'or', 'ap' );
@@ -1369,10 +1377,10 @@ function ap_post_upload_form($post_id = false) {
             </span>
             <div class="ap-upload-link-rc">
         		<input type="text" name="post_remote_image" class="ap-form-control" placeholder="'.__( 'Enter images link', 'ap' ).'" data-action="post_remote_image">
-        		<a data-action="post_image_ok" class="apicon-check ap-btn" href="#"></a>
-        		<a data-action="post_image_close" class="apicon-x ap-btn" href="#"></a>
-        	</div>
-        	<input type="hidden" name="attachment_ids[]" value="" />
+                <a data-action="post_image_ok" class="apicon-check ap-btn" href="#"></a>
+                <a data-action="post_image_close" class="apicon-x ap-btn" href="#"></a>
+            </div>
+            <input type="hidden" name="attachment_ids[]" value="" />
         </div>';
 
 	$html .= '</div>';
@@ -1384,11 +1392,11 @@ function ap_post_upload_hidden_form() {
 
 	if ( ap_opt( 'allow_upload_image' ) ) {
 		return '<form id="hidden-post-upload" enctype="multipart/form-data" method="POST" style="display:none">
-			<input type="file" name="post_upload_image" class="ap-upload-input">
-			<input type="hidden" name="ap_ajax_action" value="upload_post_image" />
-			<input type="hidden" name="ap_form_action" value="upload_post_image" />
+            <input type="file" name="post_upload_image" class="ap-upload-input">
+            <input type="hidden" name="ap_ajax_action" value="upload_post_image" />
+            <input type="hidden" name="ap_form_action" value="upload_post_image" />
 			<input type="hidden" name="__nonce" value="'.wp_create_nonce( 'upload_image_'.get_current_user_id() ).'" />
-			<input type="hidden" name="action" value="ap_ajax" />
+            <input type="hidden" name="action" value="ap_ajax" />
 		</form>';
 	}
 }
