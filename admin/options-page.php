@@ -13,11 +13,11 @@ class AnsPress_Options_Page
 		// Register general settings
 		ap_register_option_group('general', __( 'General', 'ap' ) , array(
 			array(
-				'name' => 'anspress_opt[base_page]',
-				'label' => __( 'Base page', 'ap' ),
-				'desc' => __( 'Select page for displaying anspress.', 'ap' ),
-				'type' => 'page_select',
-				'value' => @$settings['base_page'],
+				'name' 			=> 'anspress_opt[base_page]',
+				'label' 		=> __( 'Base page', 'ap' ),
+				'desc' 			=> __( 'Select page for displaying anspress.', 'ap' ),
+				'type' 			=> 'page_select',
+				'value' 		=> @$settings['base_page'],
 				'show_desc_tip' => false,
 			),
 			array(

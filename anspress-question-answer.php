@@ -15,7 +15,7 @@
  * Plugin URI:        http://anspress.io
  * Description:       The most advance community question and answer system for WordPress
  * Donate link: 	  https://goo.gl/ffainr
- * Version:           2.4-RC
+ * Version:           2.4-beta
  * Author:            Rahul Aryan
  * Author URI:        http://anspress.io
  * Text Domain:       ap
@@ -41,7 +41,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		 * AnsPress version
 		 * @var string
 		 */
-	    private $_plugin_version = '2.4-RC';
+	    private $_plugin_version = '';
 
 	    /**
 	     * Class instance

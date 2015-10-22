@@ -7,11 +7,16 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-copy');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-wp-readme-to-markdown');
+	grunt.loadNpmTasks('grunt-version');
+	grunt.loadNpmTasks('grunt-git');
+	grunt.loadNpmTasks('grunt-phplint');
+	grunt.loadNpmTasks('grunt-contrib-compress');
 
 	grunt.initConfig({
-	    makepot: {
-	        target: {
-	            options: {
+		pkg: grunt.file.readJSON( 'package.json' ),
+		makepot: {
+			target: {
+				options: {
 	                //cwd: '',                          // Directory of files to internationalize.
 	                domainPath: '/languages',                   // Where to save the POT file.
 	                exclude: ['.git/.*', '.svn/.*', '.node_modules/.*', '.vendor/.*'],
@@ -29,65 +34,100 @@ module.exports = function(grunt) {
 	            }
 	        }
 	    },
+
 	    phpdocumentor: {
-	        dist: {
-	            options: {
-	                directory : './',
-	                target : 'E:\\wamp\\www\\anspress-doc',
-	                ignore: 'node_modules'
-	            }
-	        }
+	    	dist: {
+	    		options: {
+	    			directory : './',
+	    			target : 'E:\\wamp\\www\\anspress-doc',
+	    			ignore: 'node_modules'
+	    		}
+	    	}
 	    },
 	    csscomb: {
-	        files: ['**/*.css'],
-			tasks: ['csscomb'],
+	    	files: ['**/*.css'],
+	    	tasks: ['csscomb'],
 	    },
 
-		copy: {
-		    main: {
-		        files: [
-		            {nonull:true, expand: true, cwd: 'E:\\wamp\\www\\anspress\\wp-content\\plugins\\anspress-question-answer', src: ['**/*', '!**/.git/**', '!**/.svn/**', '!**/node_modules/**', '!**/bin/**', '!**/docs/**', '!**/tests/**'], dest: 'E:\\wamp\\www\\answerbox\\wp-content\\plugins\\anspress-question-answer'},
-		            {nonull:true, expand: true, cwd: 'E:\\wamp\\www\\anspress\\wp-content\\plugins\\anspress-question-answer', src: ['**/*', '!**/.git/**', '!**/.svn/**', '!**/node_modules/**', '!**/bin/**', '!**/docs/**', '!**/tests/**'], dest: 'E:\\wamp\\www\\wp3\\wp-content\\plugins\\anspress-question-answer'}
-		        ]
-		    }
-		},
-		less: {
-		  development: {
-		    options: {
-		      paths: ["less"]
-		    },
-		    files: {
-		      "theme/default/css/main.css": "theme/default/less/main.less",
-		      "theme/default/css/responsive.css": "theme/default/less/responsive.less",
-		      "assets/ap-admin.css": "assets/ap-admin.less"
-		    }
-		  },
-		  production: {
-		    files: {
-		      "theme/default/css/main.css": "theme/default/less/main.less",
-		      "theme/default/css/responsive.css": "theme/default/less/responsive.less",
-		      "assets/ap-admin.css": "assets/ap-admin.less"
+	    copy: {
+	    	main: {
+	    		files: [
+	    		{nonull:true, expand: true, cwd: 'E:\\wamp\\www\\anspress\\wp-content\\plugins\\anspress-question-answer', src: ['**/*', '!**/.git/**', '!**/.svn/**', '!**/node_modules/**', '!**/bin/**', '!**/docs/**', '!**/tests/**'], dest: 'E:\\wamp\\www\\answerbox\\wp-content\\plugins\\anspress-question-answer'},
+	    		{nonull:true, expand: true, cwd: 'E:\\wamp\\www\\anspress\\wp-content\\plugins\\anspress-question-answer', src: ['**/*', '!**/.git/**', '!**/.svn/**', '!**/node_modules/**', '!**/bin/**', '!**/docs/**', '!**/tests/**'], dest: 'E:\\wamp\\www\\wp3\\wp-content\\plugins\\anspress-question-answer'}
+	    		]
+	    	}
+	    },
+	    version: {
+	    	css: {
+	    		options: {
+	    			prefix: 'Version\\:\\s'
+	    		},
+	    		src: [ 'style.css' ],
+	    	},
+	    	php: {
+	    		options: {
+	    			prefix: 'Version\\:\\s+'
+	    		},
+	    		src: [ 'anspress-question-answer.php' ],
+	    	},
+	    	php: {
+	    		options: {
+	    			pattern: '\$_plugin_version = (?:\')(.+)(?:\')'
+	    		},
+	    		src: [ 'anspress-question-answer.php' ],
+	    	},
+	    	project: {
+	    		src: ['plugin.json']
+	    	}
+	    },
+	    less: {
+	    	main: {
+	    		options: {
+	    			paths: ["less"]
+	    		},
+	    		files: {
+	    			"theme/default/css/main.css": "theme/default/less/main.less",
+	    			"theme/default/css/responsive.css": "theme/default/less/responsive.less",
+	    			"assets/ap-admin.css": "assets/ap-admin.less"
+	    		}
+	    	},
+	    },
+	    uglify: {
+	    	my_target: {
+	    		files: {
+	    			'assets/prod/anspress_site.min.js': ['assets/js/anspress_site.js'],
+	    			'assets/prod/ap-functions.min.js': ['assets/js/ap-functions.js'],
+	    			'assets/prod/ap-admin.min.js': ['assets/js/ap-admin.js'],
+	    			'theme/default/prod/ap.min.js': ['theme/default/js/ap.js']
+	    		}
+	    	}
+	    },
+	    wp_readme_to_markdown: {
+	    	your_target: {
+	    		files: {
+	    			'README.md': 'readme.txt'
+	    		},
+	    	},
+	    },
 
+	    compress: {
+	    	main: {
+	    		options: {
+	    			archive: 'build/<%= pkg.name %>.zip'
+	    		},
+		        //cwd: 'build/',
+		        expand: true,
+		        src: ['**','!**/tests/**','!**/node_modules/**','!**/.git/**','!**/.svn/**','!**/.gitignore','!**/.scrutinizer.yml','!**/.scrutinizer.yml','!**/.travis.yml','!**/npm-debug.log','!**/phpdoc.dist.xml','!**/phpunit.xml','!**/plugin.json','!**/tasks.TODO','!**/build']
 		    }
-		  }
 		},
-		uglify: {
-			my_target: {
-			  files: {
-			    'assets/prod/anspress_site.min.js': ['assets/js/anspress_site.js'],
-			    'assets/prod/ap-functions.min.js': ['assets/js/ap-functions.js'],
-			    'assets/prod/ap-admin.min.js': ['assets/js/ap-admin.js'],
-			    'theme/default/prod/ap.min.js': ['theme/default/js/ap.js']
-			  }
-			}
-		},
-		wp_readme_to_markdown: {
-			your_target: {
-				files: {
-				  'README.md': 'readme.txt'
-				},
+
+		phplint : {
+			options : {
+				spawn : false
 			},
+			all: ['**/*.php']
 		},
+		
 		watch: {
 			less: {
 				files: ['**/*.less'],
@@ -99,5 +139,7 @@ module.exports = function(grunt) {
 			}
 		},
 	});
+
+grunt.registerTask( 'build', [ 'phplint', 'wp_readme_to_markdown', 'makepot', 'csscomb', 'version', 'less', 'uglify', 'copy', 'compress' ]);
 
 }
