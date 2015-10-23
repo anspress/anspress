@@ -700,7 +700,8 @@ class AnsPress_Process_Form
 			$old_options = get_option( 'anspress_opt' );
 
 			foreach ( $options as $k => $opt ) {
-				$old_options[ $k ] = sanitize_text_field( wp_unslash( $opt ) );
+				$value = implode( "\n", array_map( 'sanitize_text_field', explode( "\n", $opt ) ) );
+				$old_options[ $k ] = wp_unslash( $value );
 			}
 
 			update_option( 'anspress_opt', $old_options );
