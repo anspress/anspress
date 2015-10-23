@@ -72,7 +72,7 @@ module.exports = function(grunt) {
 	    	},
 	    	php: {
 	    		options: {
-	    			pattern: '\$_plugin_version = (?:\')(.+)(?:\')'
+	    			pattern: '\$_plugin_version = (?:\')(.+)(?:\')/g'
 	    		},
 	    		src: [ 'anspress-question-answer.php' ],
 	    	},

@@ -41,7 +41,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		 * AnsPress version
 		 * @var string
 		 */
-	    private $_plugin_version = '';
+	    private $_plugin_version = '2.4-beta';
 
 	    /**
 	     * Class instance
