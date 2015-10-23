@@ -1283,9 +1283,8 @@
   display: block;
 }
 .ap-loading-icon {
-  background: rgba(255, 255, 255, 0.8);
   border-radius: 2px;
-  color: rgba(0, 0, 0, 0.4);
+  color: rgba(0, 0, 0);
   display: block;
   height: 16px;
   position: absolute;
@@ -2080,28 +2079,28 @@ body ul ul#ap-user-menu-link li > a .count {
 #anspress .ap-dropdown.open .ap-dropdown-menu {
   display: block;
 }
-#anspress .ap-btn-toggle {
+.ap-btn-toggle {
   display: inline-block;
 }
-#anspress .ap-btn-toggle span {
+.ap-btn-toggle span {
   font-size: 25px;
   color: #888;
   line-height: 1.6;
 }
-#anspress .ap-btn-toggle .apicon-toggle-on {
+.ap-btn-toggle .apicon-toggle-on {
   display: none;
 }
-#anspress .ap-btn-toggle .apicon-toggle-off {
+.ap-btn-toggle .apicon-toggle-off {
   display: inline;
 }
-#anspress .ap-btn-toggle.active .apicon-toggle-on {
+.ap-btn-toggle.active .apicon-toggle-on {
   display: inline;
   color: #61c17d;
 }
-#anspress .ap-btn-toggle.active .apicon-toggle-off {
+.ap-btn-toggle.active .apicon-toggle-off {
   display: none;
 }
-#anspress .ap-btn-toggle:focus {
+.ap-btn-toggle:focus {
   outline: none;
 }
 #anspress .ap-subscribe-btn {
