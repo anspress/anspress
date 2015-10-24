@@ -1090,16 +1090,16 @@
 .wp-list-table th#answers {
   width: 30px;
 }
-.wp-list-table th#vote {
+.wp-list-table .column-vote {
   width: 60px;
 }
-.wp-list-table th#status {
+.wp-list-table .column-status {
   width: 60px;
 }
-.wp-list-table th#parent_question {
+.wp-list-table .column-parent_question {
   width: 30%;
 }
-.wp-list-table th#flag {
+.wp-list-table .column-flag {
   width: 40px;
 }
 .wp-list-table .type-question .ans-count {
@@ -1110,10 +1110,8 @@
 .wp-list-table .vote-count {
   text-align: center;
 }
-.wp-list-table th#ap_author {
-  width: 145px;
-}
 .wp-list-table .column-ap_author {
+  width: 50px;
   line-height: 100%;
 }
 .wp-list-table .column-ap_author .ap-author-col {
