@@ -37,8 +37,8 @@ class AnsPress_Activity_Hook
 		$ap->add_action( 'delete_comment', $this, 'delete_comment' );
 		$ap->add_action( 'edit_comment', $this, 'edit_comment' );
 		$ap->add_action( 'ap_added_follower', $this, 'follower', 10, 2 );
-		//$ap->add_action( 'ap_vote_casted', $this, 'notify_upvote', 10, 4 );
-		//$ap->add_action( 'ap_added_reputation', $this, 'ap_added_reputation', 10, 4 );
+		// $ap->add_action( 'ap_vote_casted', $this, 'notify_upvote', 10, 4 );
+		// $ap->add_action( 'ap_added_reputation', $this, 'ap_added_reputation', 10, 4 );
 	}
 
 
@@ -48,7 +48,7 @@ class AnsPress_Activity_Hook
 	 */
 	public function new_question($question_id) {
 		$question = get_post( $question_id );
-		
+
 		$question_title = '<a class="ap-q-link" href="'. get_permalink( $question_id ) .'">'. get_the_title( $question_id ) .'</a>';
 
 		$activity_arr = array(
@@ -56,13 +56,15 @@ class AnsPress_Activity_Hook
 			'type' 				=> 'new_question',
 			'question_id' 		=> $question_id,
 			'permalink' 		=> get_permalink( $question_id ),
-			'content'			=> sprintf( __( '%s asked question %s', 'ap' ), ap_activity_user_name($question->post_author), $question_title ),
+			'content'			=> sprintf( __( '%s asked question %s', 'ap' ), ap_activity_user_name( $question->post_author ), $question_title ),
 		);
 
 		$activity_id = ap_new_activity( $activity_arr );
 
 		// Add question activity meta.
 		update_post_meta( $question_id, '__ap_activity', array( 'type' => 'new_question', 'user_id' => $question->post_author, 'date' => current_time( 'mysql' ) ) );
+
+		$this->check_mentions( $question_id, $question->post_content, $question_title, $question->post_author, __( 'question', 'ap' ) );
 
 		// Notify users.
 		// ap_new_notification($activity_id, $question->post_author);
@@ -85,7 +87,7 @@ class AnsPress_Activity_Hook
 			'question_id' 		=> $answer->post_parent,
 			'answer_id' 		=> $answer_id,
 			'permalink' 		=> get_permalink( $answer_id ),
-			'content'			=> sprintf( __( '%s answered on %s', 'ap' ), ap_activity_user_name($question->post_author), $answer_title ),
+			'content'			=> sprintf( __( '%s answered on %s', 'ap' ), ap_activity_user_name( $question->post_author ), $answer_title ),
 		);
 
 		$activity_id = ap_new_activity( $activity_arr );
@@ -103,6 +105,8 @@ class AnsPress_Activity_Hook
 		$subscribers = ap_unset_current_user_from_subscribers( $subscribers );
 
 		ap_new_notification( $activity_id, $subscribers );
+
+		$this->check_mentions( $answer->post_parent, $answer->post_content, $question_title, $question->post_author, __( 'answer', 'ap' ), $answer_id );
 	}
 
 	/**
@@ -119,7 +123,7 @@ class AnsPress_Activity_Hook
 			'type' 				=> 'edit_question',
 			'question_id'		=> $post_id,
 			'permalink' 		=> get_permalink( $post_id ),
-			'content' 			=> sprintf( __( '%s edited question %s', 'ap' ), ap_activity_user_name(get_current_user_id()), $question_title ),
+			'content' 			=> sprintf( __( '%s edited question %s', 'ap' ), ap_activity_user_name( get_current_user_id() ), $question_title ),
 		);
 
 		$activity_id = ap_new_activity( $activity_arr );
@@ -151,7 +155,7 @@ class AnsPress_Activity_Hook
 			'question_id'		=> $answer->post_parent,
 			'answer_id' 		=> $post_id,
 			'permalink' 		=> get_permalink( $post_id ),
-			'content'			=> sprintf( __( '%s edited answer %s', 'ap' ), ap_activity_user_name($answer->post_author), $answer_title )
+			'content'			=> sprintf( __( '%s edited answer %s', 'ap' ), ap_activity_user_name( $answer->post_author ), $answer_title ),
 		);
 
 		$activity_id = ap_new_activity( $activity_arr );
@@ -186,7 +190,7 @@ class AnsPress_Activity_Hook
 		);
 
 		$user = ap_activity_user_name( get_current_user_id() );
-		
+
 		$comment_excerpt = '<span class="ap-comment-excerpt"><a href="'. get_comment_link( $comment->comment_ID ) .'">'. get_comment_excerpt( $comment->comment_ID ) .'</a></span>';
 
 		$post_title = '<a class="ap-q-link" href="'. get_permalink( $comment->comment_post_ID ) .'">'. get_the_title( $comment->comment_post_ID ) .'</a>';
@@ -438,8 +442,8 @@ class AnsPress_Activity_Hook
 		// ap_new_notification( $activity_id, $user_id );
 	}
 
-	public function edit_comment($comment_id){
-		$comment = get_comment($comment_id);
+	public function edit_comment($comment_id) {
+		$comment = get_comment( $comment_id );
 		$post = get_post( $comment->comment_post_ID );
 
 		if ( ! ('question' == $post->post_type || 'answer' == $post->post_type) ) {
@@ -453,7 +457,7 @@ class AnsPress_Activity_Hook
 		);
 
 		$user = ap_activity_user_name( get_current_user_id() );
-		
+
 		$comment_excerpt = '<span class="ap-comment-excerpt"><a href="'. get_comment_link( $comment->comment_ID ) .'">'. get_comment_excerpt( $comment->comment_ID ) .'</a></span>';
 
 		$post_title = '<a class="ap-q-link" href="'. get_permalink( $comment->comment_post_ID ) .'">'. get_the_title( $comment->comment_post_ID ) .'</a>';
@@ -484,6 +488,30 @@ class AnsPress_Activity_Hook
 		$subscribers = ap_unset_current_user_from_subscribers( $subscribers );
 
 		ap_new_notification( $activity_id, $subscribers );
+	}
+
+	public function check_mentions($question_id, $contents, $title, $user_id, $type, $answer_id = 0) {
+		$users = ap_find_mentioned_users( $contents );
+
+		if ( false !== $users ) {
+			$user_title = ap_activity_user_name( $user_id );
+			foreach ( $users as $user ) {
+				if ( $user->id != $user_id ) {
+					$activity_arr = array(
+						'user_id' 			=> $user_id,
+						'type' 				=> 'mention',
+						'secondary_user' 	=> $user->id,
+						'question_id' 		=> $question_id,
+						'answer_id' 		=> $answer_id,
+						'permalink' 		=> get_permalink( $question_id ),
+						'content'			=> sprintf( __( '%s mentioned you in %s %s', 'ap' ), $user_title, $type, $title ),
+					);
+
+					$activity_id = ap_new_activity( $activity_arr );
+					ap_new_notification( $activity_id, $user->id );
+				}
+			}
+		}
 	}
 
 }

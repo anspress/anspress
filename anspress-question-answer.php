@@ -159,6 +159,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 	    public $history_class;
 	    public $notification_class;
 	    public $subscriber_hooks;
+	    public $mention_hooks;
 
 		/**
 		 * Initializes the plugin by setting localization, hooks, filters, and administrative functions.
@@ -296,6 +297,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		    require_once ANSPRESS_DIR.'includes/activity.php';
 		    require_once ANSPRESS_DIR.'includes/subscriber-hooks.php';
 		    require_once ANSPRESS_DIR.'includes/shortcode-question.php';
+		    require_once ANSPRESS_DIR.'includes/mention.php';
 		}
 
 		/**
@@ -336,6 +338,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 	    	self::$instance->history_class 		= new AnsPress_Activity_Hook( $this );
 	    	self::$instance->notification_class = new AP_Notification( $this );
 	    	self::$instance->subscriber_hooks 	= new AnsPress_Subscriber_Hooks( $this );
+	    	self::$instance->mention_hooks 		= new AP_Mentions_Hooks( $this );
 		}
 
 		/**
