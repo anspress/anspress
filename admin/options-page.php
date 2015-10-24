@@ -199,7 +199,7 @@ class AnsPress_Options_Page
 			array(
 				'name' => 'anspress_opt[show_question_sidebar]',
 				'label' => __( 'Show question sidebar', 'ap' ),
-				'desc' => __( 'Subbscribe and and stats widget will shown in question page.', 'ap' ),
+				'desc' => __( 'Subscribe and Stats widgets will be shown on question page.', 'ap' ),
 				'type' => 'checkbox',
 				'value' => $settings['show_question_sidebar'],
 				'show_desc_tip' => false,
