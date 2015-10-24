@@ -157,7 +157,6 @@ if ( ! class_exists( 'AnsPress' ) ) {
 	    public $users_class;
 	    public $rewrite_class;
 	    public $history_class;
-	    public $notification_class;
 	    public $subscriber_hooks;
 	    public $mention_hooks;
 
@@ -293,7 +292,6 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		    require_once ANSPRESS_DIR.'widgets/user.php';
 		    require_once ANSPRESS_DIR.'includes/3rd-party.php';
 		    require_once ANSPRESS_DIR.'includes/flag.php';
-		    require_once ANSPRESS_DIR.'includes/class-notification.php';
 		    require_once ANSPRESS_DIR.'includes/activity.php';
 		    require_once ANSPRESS_DIR.'includes/subscriber-hooks.php';
 		    require_once ANSPRESS_DIR.'includes/shortcode-question.php';
@@ -336,7 +334,6 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		    self::$instance->users_class 		= new AnsPress_User( $this );
 	    	self::$instance->rewrite_class 		= new AnsPress_Rewrite( $this );
 	    	self::$instance->history_class 		= new AnsPress_Activity_Hook( $this );
-	    	self::$instance->notification_class = new AP_Notification( $this );
 	    	self::$instance->subscriber_hooks 	= new AnsPress_Subscriber_Hooks( $this );
 	    	self::$instance->mention_hooks 		= new AP_Mentions_Hooks( $this );
 		}
