@@ -2,10 +2,10 @@
 # This file is distributed under the GPL-3.0+.
 msgid ""
 msgstr ""
-"Project-Id-Version: AnsPress 2.4-beta\n"
+"Project-Id-Version: AnsPress 2.4-beta2\n"
 "Report-Msgid-Bugs-To: "
 "http://wordpress.org/support/plugin/anspress-question-answer\n"
-"POT-Creation-Date: 2015-10-22 04:41:01+00:00\n"
+"POT-Creation-Date: 2015-10-24 11:28:55+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -521,7 +521,7 @@ msgid "Show question sidebar"
 msgstr ""
 
 #: admin/options-page.php:202
-msgid "Subbscribe and and stats widget will shown in question page."
+msgid "Subscribe and Stats widgets will be shown on question page."
 msgstr ""
 
 #: admin/options-page.php:209
@@ -1066,36 +1066,50 @@ msgstr ""
 msgid "%s asked question %s"
 msgstr ""
 
-#: includes/activity-hooks.php:88
+#: includes/activity-hooks.php:67 includes/activity.php:554 includes/bp.php:239
+#: includes/post_types.php:70
+msgid "question"
+msgstr ""
+
+#: includes/activity-hooks.php:90
 msgid "%s answered on %s"
 msgstr ""
 
-#: includes/activity-hooks.php:122
+#: includes/activity-hooks.php:109 includes/activity.php:554
+#: includes/bp.php:239 includes/post_types.php:140 theme/default/answers.php:18
+msgid "answer"
+msgstr ""
+
+#: includes/activity-hooks.php:126
 msgid "%s edited question %s"
 msgstr ""
 
-#: includes/activity-hooks.php:154
+#: includes/activity-hooks.php:158
 msgid "%s edited answer %s"
 msgstr ""
 
-#: includes/activity-hooks.php:197 includes/activity-hooks.php:464
+#: includes/activity-hooks.php:201 includes/activity-hooks.php:468
 msgid "%s commented on question %s %s"
 msgstr ""
 
-#: includes/activity-hooks.php:202 includes/activity-hooks.php:469
+#: includes/activity-hooks.php:206 includes/activity-hooks.php:473
 msgid "%s commented on answer %s %s"
 msgstr ""
 
-#: includes/activity-hooks.php:241
+#: includes/activity-hooks.php:245
 msgid "%s selected best answer for %s"
 msgstr ""
 
-#: includes/activity-hooks.php:276
+#: includes/activity-hooks.php:280
 msgid "%s unselected best answer for question %s"
 msgstr ""
 
-#: includes/activity-hooks.php:383
+#: includes/activity-hooks.php:387
 msgid "%s started following %s"
+msgstr ""
+
+#: includes/activity-hooks.php:507
+msgid "%s mentioned you in %s %s"
 msgstr ""
 
 #: includes/activity.php:539
@@ -1108,15 +1122,6 @@ msgstr ""
 
 #: includes/activity.php:549
 msgid "%s updated status of answer %s"
-msgstr ""
-
-#: includes/activity.php:554 includes/bp.php:239 includes/post_types.php:70
-msgid "question"
-msgstr ""
-
-#: includes/activity.php:554 includes/bp.php:239 includes/post_types.php:140
-#: theme/default/answers.php:18
-msgid "answer"
 msgstr ""
 
 #: includes/activity.php:556
@@ -1512,7 +1517,7 @@ msgstr ""
 msgid "My notification"
 msgstr ""
 
-#: includes/class-user.php:354 includes/process-form.php:794
+#: includes/class-user.php:354 includes/process-form.php:795
 msgid "File cannot be uploaded, size is bigger then %d Byte"
 msgstr ""
 
@@ -2066,7 +2071,7 @@ msgid "Bot verification failed."
 msgstr ""
 
 #: includes/process-form.php:215 includes/process-form.php:441
-#: includes/process-form.php:750
+#: includes/process-form.php:751
 msgid "Check missing fields and then re-submit."
 msgstr ""
 
