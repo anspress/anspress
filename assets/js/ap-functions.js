@@ -79,7 +79,7 @@
 
  		function showtip(el){
 
-	 		if( typeof $(el).data('action') !== 'undefined' &&  $(el).data('action') == 'ap_hover_card' && typeof $(el).data('tipquery') === 'undefined' ){
+	 		if( typeof $(el).data('action') !== 'undefined' &&  $(el).data('action') === 'ap_hover_card' && typeof $(el).data('tipquery') === 'undefined' ){
 	 			$(el).data('tipquery', 'action=ap_ajax&ap_ajax_action=user_cover&user_id='+ $(el).data('userid'));
 	 		}
 
@@ -89,13 +89,13 @@
 
  			altertitle(el);
 
- 			if(config.title == ''){
+ 			if(config.title === ''){
  				var title = $(el).data('aptiptitle');
  			}else{
  				var title = config.title;
  			}
 
- 			tip = $('<div class="ap-tooltip '+ config.theme +'"><div class="ap-tooltip-in">'+ title +'<span class="arrow"></span></div></div>');
+ 			var tip = $('<div class="ap-tooltip '+ config.theme +'"><div class="ap-tooltip-in">'+ title +'<span class="arrow"></span></div></div>');
 
  			if(config.ajax != '' && !plug.ajax_running){
 
@@ -142,7 +142,7 @@
 
 			$this.mouseenter(function(){
 				if(config.delay != ''){
-					delay = setTimeout(function() {
+					var delay = setTimeout(function() {
 						showtip(item);
 					}, config.delay);
 				}else{
@@ -315,14 +315,15 @@
  * @since 2.0
  **/
  function ap_default($value, $default){
- 	if(typeof $value !== 'undefined')
+ 	if(typeof $value !== 'undefined'){
  		return $value;
+ 	}
 
  	return $default;
  }
 
  function apLoadingDot(){
- 	i = 0;
+ 	var i = 0;
  	setInterval(function() {
  		jQuery('.ap-loading-dot').html( Array( (++i % 4)+1 ).join('.') );
  	}, 300);
