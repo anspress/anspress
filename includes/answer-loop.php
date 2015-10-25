@@ -205,17 +205,24 @@ function ap_get_best_answer($question_id = false) {
  */
 function ap_have_answers() {
 	global $answers;
-	return $answers->have_posts();
+	
+	if($answers){
+		return $answers->have_posts();
+	}
 }
 
 function ap_answers() {
 	global $answers;
-	return $answers->have_posts();
+	if($answers){
+		return $answers->have_posts();
+	}
 }
 
 function ap_the_answer() {
 	global $answers;
-	return $answers->the_post();
+	if($answers){
+		return $answers->the_post();
+	}
 }
 
 /**

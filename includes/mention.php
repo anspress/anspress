@@ -38,14 +38,14 @@ function ap_linkyfy_mentions($content) {
 	}
 
 	// Find mentions and wrap with anchor.
-	return preg_replace( '/@([^@ ]+)/', '<a class="ap-mention-link" href="'.$base.'$1">@$1</a> ', $content );
+	return preg_replace( '/(?:[\s.]|^)@(\w+)/', '<a class="ap-mention-link" href="'.$base.'$1">@$1</a> ', $content );
 }
 
 function ap_find_mentioned_users( $content ) {
 	global $wpdb;
 
 	// Find all mentions in content.
-	preg_match_all( '/(@\w+)/', $content, $matches );
+	preg_match_all( '/(?:[\s.]|^)@(\w+)/', $content, $matches );
 
 	if ( is_array( $matches ) && count( $matches ) > 0 && ! empty( $matches[0] ) ) {
 		$user_logins = array();

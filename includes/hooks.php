@@ -629,7 +629,7 @@ class AnsPress_Hooks
 	        }
 	    }
 
-	    if( ap_opt( 'base_page' ) == $post->ID ){
+	    if( ap_opt( 'base_page' ) == $post->ID && !is_admin() ){
 	    	$post->post_title = ap_page_title();
 	    }
 	}
