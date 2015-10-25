@@ -628,5 +628,9 @@ class AnsPress_Hooks
 	            $post->net_vote = ap_net_vote_meta( $post->ID );
 	        }
 	    }
+
+	    if( ap_opt( 'base_page' ) == $post->ID ){
+	    	$post->post_title = ap_page_title();
+	    }
 	}
 }
