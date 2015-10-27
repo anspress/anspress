@@ -16,8 +16,9 @@ if (! defined('WPINC')) {
 ?>
 <div id="anspress" class="wrap ap-about">
 	<h2>
-		<span><?php _e('Welcome to AnsPress 2.2', 'ap') ?></span>
-		<i class="apicon-anspress"></i>		
+		<i class="apicon-anspress"></i>
+		<span><?php echo AP_VERSION; ?></span>
+		
 	</h2>
 
 	<div class="container">

@@ -401,10 +401,11 @@ jQuery(document).ready(function (jQuery){
         jQuery('.ap-dynamic-avatar').initial({fontSize:14, fontWeight:600});
     });
 
-    jQuery('#ap-category-upload').click(function(e) {
+    jQuery('[data-action="ap_media_uplaod"]').click(function(e) {
     	e.preventDefault();
+    	$btn = jQuery(this);
 		var image = wp.media({
-			title: 'Upload Image',
+			title: jQuery(this).data('title'),
 			// mutiple: true if you want to upload multiple files at once
 			multiple: false
 		}).open().on('select', function(e){
@@ -412,21 +413,24 @@ jQuery(document).ready(function (jQuery){
 			var uploaded_image = image.state().get('selection').first();
 			// We convert uploaded_image to a JSON object to make accessing it easier
 			// Output to the console uploaded_image
-			console.log(uploaded_image);
 			var image_url = uploaded_image.toJSON().url;
 			var image_id = uploaded_image.toJSON().id;
-			// Let's assign the url value to the input field
-			jQuery('#ap_category_media_url').val(image_url);
-			jQuery('#ap_category_media_id').val(image_id);
-			jQuery('#ap_category_media_url').before('<img id="ap_category_media_preview" src="'+image_url+'" />');
+
+			// Let's assign the url value to the input field			
+			jQuery($btn.data('urlc')).val(image_url);
+			jQuery($btn.data('idc')).val(image_id);
+
+			if(!jQuery($btn.data('urlc')).prev().is('img'))
+				jQuery($btn.data('urlc')).before('<img id="ap_category_media_preview" src="'+image_url+'" />');
+			else
+				jQuery($btn.data('urlc')).prev().attr('src', image_url);
 		});
 	});
 
-	jQuery('#ap-category-upload-remove').click(function(e){
+	jQuery('[data-action="ap_media_remove"]').click(function(e){
 		e.preventDefault();
-		jQuery('#ap_category_media_url').val('');
-		jQuery('#ap_category_media_id').val('');
-		jQuery('#ap_category_media_preview').remove();
+		jQuery('input[data-action="ap_media_value"]').val('');
+		jQuery('img[data-action="ap_media_value"]').remove();
 	});
 
 	jQuery(document).ready(function($){

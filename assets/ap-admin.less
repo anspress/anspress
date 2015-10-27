@@ -681,15 +681,18 @@ h3.ap-dash-title {
         margin: 0 !important;
     }
     h2{
-        border-bottom: 2px solid #e3e3e3;
         .apicon-anspress{
             color: #555555;
-            display: block;
-            font-size: 36px;
+            font-size: 50px;
         }
         span{
-            float: right;
-            font-weight: 300;
+            background: #ff6d6d none repeat scroll 0 0;
+            border-radius: 10px;
+            color: #fff;
+            font-size: 12px;
+            font-weight: bold;
+            padding: 3px 8px;
+            vertical-align: top;
         }
     }
     &-feature{
@@ -890,3 +893,29 @@ h3.ap-dash-title {
     margin-bottom: 10px;
 }
 
+.ap-ansm{
+    border-bottom: 1px solid #eee;
+    padding: 10px;
+    &-inner{
+        overflow: hidden;
+        p{
+            margin: 0;
+        }
+    }
+    &-name, &-avatar{
+        display: block;
+        float: left;
+    }
+    &-name{
+        margin-left: 10px;
+    }
+    &-meta{
+        margin-bottom: 5px;
+        a{
+            text-decoration: none;
+        }
+    }
+    &-content p{
+        font-size: 14px;
+    }
+}

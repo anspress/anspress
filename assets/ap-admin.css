@@ -1727,17 +1727,18 @@ h3.ap-dash-title {
 .ap-about .container {
   margin: 0 !important;
 }
-.ap-about h2 {
-  border-bottom: 2px solid #e3e3e3;
-}
 .ap-about h2 .apicon-anspress {
   color: #555555;
-  display: block;
-  font-size: 36px;
+  font-size: 50px;
 }
 .ap-about h2 span {
-  float: right;
-  font-weight: 300;
+  background: #ff6d6d none repeat scroll 0 0;
+  border-radius: 10px;
+  color: #fff;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 3px 8px;
+  vertical-align: top;
 }
 .ap-about-feature {
   margin-top: 40px;
@@ -1930,4 +1931,31 @@ h3.ap-dash-title {
 }
 #ap-tools-selectroles {
   margin-bottom: 10px;
+}
+.ap-ansm {
+  border-bottom: 1px solid #eee;
+  padding: 10px;
+}
+.ap-ansm-inner {
+  overflow: hidden;
+}
+.ap-ansm-inner p {
+  margin: 0;
+}
+.ap-ansm-name,
+.ap-ansm-avatar {
+  display: block;
+  float: left;
+}
+.ap-ansm-name {
+  margin-left: 10px;
+}
+.ap-ansm-meta {
+  margin-bottom: 5px;
+}
+.ap-ansm-meta a {
+  text-decoration: none;
+}
+.ap-ansm-content p {
+  font-size: 14px;
 }

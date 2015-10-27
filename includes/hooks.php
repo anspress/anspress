@@ -622,14 +622,15 @@ class AnsPress_Hooks
 	 * @param Object $post Post object.
 	 */
 	public function ap_append_vote_count($post) {
-
+		
 	    if ( $post->post_type == 'question' || $post->post_type == 'answer' ) {
 	        if ( is_object( $post ) ) {
 	            $post->net_vote = ap_net_vote_meta( $post->ID );
 	        }
 	    }
 
-	    if( ap_opt( 'base_page' ) == $post->ID && !is_admin() ){
+	    if( ap_opt( 'base_page' ) == $post->ID ){
+	    	
 	    	$post->post_title = ap_page_title();
 	    }
 	}

@@ -216,7 +216,8 @@ class AnsPress_Theme
 	/**
 	 * Remove some unwanted things from wp_head
 	 */
-	public function remove_head_items() {
+	public function remove_head_items($WP) {
+		global $wp_query;
 		if ( is_anspress() ) {
 			remove_action( 'wp_head', 'rsd_link' );
 			remove_action( 'wp_head', 'wlwmanifest_link' );
@@ -225,6 +226,7 @@ class AnsPress_Theme
 			remove_action( 'wp_head', 'wp_shortlink_wp_head', 10, 0 );
 			remove_action( 'wp_head', 'feed_links_extra', 3 );
 			remove_action( 'wp_head', 'feed_links', 2 );
+			$wp_query->queried_object->post_title = ap_page_title();
 		}
 	}
 
