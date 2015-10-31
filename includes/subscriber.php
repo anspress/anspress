@@ -240,13 +240,14 @@ function ap_subscribe_btn_html($action_id = false, $type = false) {
 
 	global $question_category, $question_tag;
 
-	if ( false === $action_id ) {
-		if ( is_question() ) {
-			$action_id = get_question_id();
-		} elseif (is_question_category())
-			$action_id = $question_category->term_id;
-	} elseif ( is_question_tag() ) {
-		$action_id = $question_tag->term_id;
+	$filter = apply_filters( 'ap_subscribe_btn_action_type', array( 'action_id' => $action_id, 'type' => $type ) );
+
+
+	$action_id 	= $filter['action_id'];
+	$type 		= $filter['type'];
+
+	if( false === $action_id ){
+		$action_id = get_question_id();
 	}
 
 	$subscribe_type = 'q_all';
@@ -336,9 +337,9 @@ function ap_subscribe_question( $posta, $user_id = false ) {
 function ap_subscriber_ids( $item_id =false, $activity = 'q_all', $question_id = 0 ) {
 	global $wpdb;
 
-	if( is_array( $activity ) ){
-		$activity_k = implode('::', $activity);
-	}else{
+	if ( is_array( $activity ) ) {
+		$activity_k = implode( '::', $activity );
+	} else {
 		$activity_k = $activity;
 	}
 

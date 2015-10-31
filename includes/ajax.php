@@ -758,7 +758,8 @@ class AnsPress_Ajax
 		}
 
 		$question_id = 0;
-		if ( 'category' === $type || 'tag' === $type ) {
+
+		if ( 'tax_new_q' === $type ) {
 			$subscribe_type = 'tax_new_q';
 		} else {
 			$subscribe_type = 'q_all';

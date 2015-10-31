@@ -43,7 +43,7 @@ class AP_Reputation {
 		add_action( 'ap_publish_comment', array( $this, 'new_comment' ) );
 		add_action( 'ap_unpublish_comment', array( $this, 'delete_comment' ) );
 
-		add_filter( 'ap_user_display_meta_array', array( $this, 'display_meta' ), 10, 2 );		
+		add_filter( 'ap_user_display_meta_array', array( $this, 'display_meta' ), 10, 2 );
 	}
 
 	public function reputation_page() {
@@ -741,7 +741,8 @@ function ap_reputation($type, $uid, $reputation, $data, $current_user_id = false
 		return; }
 
 	if ( $current_user_id === false ) {
-		$current_user_id = get_current_user_id(); }
+		$current_user_id = get_current_user_id();
+	}
 
 	$reputation = apply_filters( 'ap_reputation',$reputation, $type, $uid, $data );
 	ap_alter_reputation( $uid, $reputation );
@@ -943,5 +944,29 @@ function ap_get_user_reputation_share($user_id) {
 	$user_points = ap_get_reputation( $user_id );
 
 	return ($user_points * ap_total_reputation()) / 100;
+}
+
+/**
+ * Get top 10 ranked users with ID and reputation.
+ * @return object
+ */
+function ap_get_top_10_ranked_users() {
+	global $wpdb;
+
+	$query = "SELECT u.ID, m.meta_value FROM $wpdb->users u LEFT JOIN $wpdb->usermeta m ON u.ID = m.user_id WHERE m.meta_key = 'ap_reputation' ORDER BY CAST(m.meta_value AS UNSIGNED ) DESC LIMIT 0,10";
+
+	$key = md5( $query );
+
+	$cache = wp_cache_get( $key, 'ap_reputation' );
+
+	if ( false !== $cache ) {
+		return $cache;
+	}
+
+	$results = $wpdb->get_results( $key );
+
+	wp_cache_set( $key, $results, 'ap_reputation' );
+
+	return $results;
 }
 
