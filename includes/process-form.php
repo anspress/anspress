@@ -39,7 +39,8 @@ class AnsPress_Process_Form
 
 		// return if ap_form_action is not set, probably its not our form
 		if ( ! isset( $_REQUEST['ap_form_action'] ) || isset( $_REQUEST['ap_ajax_action'] ) ) {
-			return; }
+			return;
+		}
 
 		$this->request = $_REQUEST;
 		$this->process_form();
@@ -711,6 +712,9 @@ class AnsPress_Process_Form
 
 	}
 
+	/**
+	 * Process user profile and account fields
+	 */
 	public function ap_user_profile_form() {
 
 		$user_id = get_current_user_id();
@@ -762,7 +766,13 @@ class AnsPress_Process_Form
 			foreach ( $user_fields as $field ) {
 
 				if ( isset( $fields[$field['name']] ) && ( in_array( $field['name'], $default_fields ) ) ) {
+
 					wp_update_user( array( 'ID' => $user_id, $field['name'] => $fields[$field['name']] ) );
+
+					// If email is updated then send verification email.
+					if ( $field['name'] == 'user_email' ) {
+						wp_new_user_notification( $user_id, null, 'both' );
+					}
 				} elseif ( $field['name'] == 'password' && $_POST['password'] == $_POST['password-1'] ) {
 					wp_set_password( $_POST['password'], $user_id );
 				} elseif ( isset( $fields[$field['name']] ) ) {
