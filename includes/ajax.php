@@ -709,11 +709,11 @@ class AnsPress_Ajax
 
 	/**
 	 * Ajax callback to process post flag button
-	 * @since 2.0.0-alpha2
+	 * @since 2.0.0
 	 */
 	public function flag_post() {
-
-	    $post_id = (int) $_POST['post_id'];
+	    $post_id = (int) $_POST['args'][0];
+	    
 	    if ( ! ap_verify_nonce( 'flag_'.$post_id ) || ! is_user_logged_in() ) {
 	        $this->something_wrong();
 	    }
