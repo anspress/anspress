@@ -278,8 +278,8 @@ function ap_pagination($current = false, $total = false, $format = '?paged=%#%')
 	$page_num_link = str_replace( array( '&amp;', '&#038;' ), '&', get_pagenum_link( $big ) );
 
 	if ( is_front_page() ) {
-		$base = add_query_arg( array('ap_paged'	=> '%#%'), home_url('/') );
-	}else{
+		$base = add_query_arg( array( 'ap_paged' => '%#%' ), home_url( '/' ) );
+	} else {
 		$base = str_replace( $big, '%#%', $page_num_link );
 	}
 
@@ -323,8 +323,8 @@ function ap_display_question_metas($question_id = false) {
 	}
 
 	/*
-	 * FILTER: ap_display_question_meta
-	 * Used to filter question display meta
+     * FILTER: ap_display_question_meta
+     * Used to filter question display meta
 	 */
 	$metas = apply_filters( 'ap_display_question_metas', $metas, $question_id );
 
@@ -458,15 +458,15 @@ function ap_post_actions_buttons($disable = array()) {
 	$actions = array();
 
 	/*
-	 * Select answer button
-	 * @var string
+     * Select answer button
+     * @var string
 	 */
 	if ( $post->post_type == 'answer' ) {
 	    $actions['select_answer'] = ap_select_answer_btn_html( $post->ID );
 	}
 
 	/*
-	 * Comment button
+     * Comment button
 	 */
 	if ( ap_user_can_comment() ) {
 	    $actions['comment'] = ap_comment_btn_html();
@@ -475,7 +475,7 @@ function ap_post_actions_buttons($disable = array()) {
 	$actions['status'] = ap_post_change_status_btn_html( $post->ID );
 
 	/*
-	 * edit question link
+     * edit question link
 	 */
 	if ( ap_user_can_edit_question( $post->ID ) && $post->post_type == 'question' ) {
 	    $actions['dropdown']['edit_question'] = ap_edit_post_link_html();
@@ -502,10 +502,10 @@ function ap_post_actions_buttons($disable = array()) {
 	}
 
 	/*
-	 * FILTER: ap_post_actions_buttons
-	 * For filtering post actions buttons
-	 * @var 	string
-	 * @since 	2.0
+     * FILTER: ap_post_actions_buttons
+     * For filtering post actions buttons
+     * @var     string
+     * @since   2.0
 	 */
 	$actions = apply_filters( 'ap_post_actions_buttons', $actions );
 
@@ -571,10 +571,10 @@ function ap_question_sorting($current_url = '') {
 	$navs['unsolved'] = array( 'title' => __( 'Unsolved', 'ap' ) );
 
 	/*
-	 * FILTER: ap_question_sorting
-	 * Before prepering questions list tab.
-	 * @var array
-	 * @since 2.3
+     * FILTER: ap_question_sorting
+     * Before prepering questions list tab.
+     * @var array
+     * @since 2.3
 	 */
 	$navs = apply_filters( 'ap_question_sorting', $navs );
 	echo '<div class="ap-dropdown">';
@@ -638,9 +638,9 @@ function ap_display_answer_metas($answer_id = false) {
 	$metas['history'] = ap_last_active_time( $answer_id );
 
 	/*
-	 * FILTER: ap_display_answer_meta
-	 * Used to filter answer display meta
-	 * @since 2.0.1
+     * FILTER: ap_display_answer_meta
+     * Used to filter answer display meta
+     * @since 2.0.1
 	 */
 	$metas = apply_filters( 'ap_display_answer_metas', $metas, $answer_id );
 
@@ -682,10 +682,10 @@ function ap_comment_actions_buttons() {
 	}
 
 	/*
-	 * FILTER: ap_comment_actions_buttons
-	 * For filtering post actions buttons
-	 * @var 	string
-	 * @since 	2.0
+     * FILTER: ap_comment_actions_buttons
+     * For filtering post actions buttons
+     * @var     string
+     * @since   2.0
 	 */
 	$actions = apply_filters( 'ap_comment_actions_buttons', $actions );
 
@@ -842,6 +842,14 @@ function ap_get_breadcrumbs() {
  * Return current AnsPress page
  * @return string
  */
-function ap_current_page(){
-	return apply_filters( 'ap_current_page', get_query_var( 'ap_page' ) );
+function ap_current_page() {
+	$query_var = get_query_var( 'ap_page' );
+
+	if( is_question() ){
+		$query_var = 'question';
+	}elseif( '' == $query_var ){
+		$query_var = 'base';
+	}
+
+	return apply_filters( 'ap_current_page', esc_attr( $query_var ) );
 }
