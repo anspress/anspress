@@ -724,7 +724,7 @@ function ap_latest_post_activity_html($post_id = false) {
 
 		$html .= '<span class="ap-post-history">';
 		$html .= sprintf( __( ' %s %s %s ago', 'ap' ),
-			'<a href="'.ap_user_link( $activity['user_id'] ).'">'. ap_user_display_name( $activity['user_id'] ) .'</a>',
+			ap_user_link_anchor($activity['user_id'], false),
 			$title,
 			'<a href="'. get_permalink( $post ) .'"><time datetime="'. mysql2date( 'c', $activity['date'] ) .'">'. ap_human_time( $activity['date'], false ) .'</time></a>'
 		);

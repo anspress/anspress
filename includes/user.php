@@ -198,10 +198,9 @@ function ap_user_link($user_id = false, $sub = false) {
 
 	if ( ap_opt( 'user_profile' ) == '' ) {
 		return apply_filters( 'ap_user_custom_profile_link', $user_id, $sub );
-	}
-	elseif ( function_exists( 'bp_core_get_userlink' ) && ap_opt( 'user_profile' ) == 'buddypress' ) {
+	} elseif ( function_exists( 'bp_core_get_userlink' ) && ap_opt( 'user_profile' ) == 'buddypress' ) {
 		return bp_core_get_userlink( $user_id, false, true );
-	}elseif ( ap_opt( 'user_profile' ) == 'userpro' ) {
+	} elseif ( ap_opt( 'user_profile' ) == 'userpro' ) {
 		global $userpro;
 		return $userpro->permalink( $user_id );
 	}
@@ -820,6 +819,12 @@ function ap_hover_card_attributes($user_id, $echo = true) {
 	}
 }
 
+/**
+ * Ouput user avatar with link.
+ * @param  integer $user_id User id.
+ * @param  integer $size    Avatar size.
+ * @return void
+ */
 function ap_user_link_avatar($user_id, $size = 30) {
 	echo '<a href="'.ap_user_link( $user_id ).'"';
 	ap_hover_card_attributes( $user_id );
@@ -854,4 +859,27 @@ function ap_get_user_page_slug() {
 	}
 
 	return 'user';
+}
+
+function ap_user_link_anchor($user_id, $echo = true) {
+
+	$name = ap_user_display_name( $user_id );
+
+	if ( $user_id < 1 ) {
+		if ( $echo ) {
+			echo $name;
+		} else {
+			return $name;
+		}
+	}
+
+	$html = '<a href="'.ap_user_link( $user_id ).'"' . ap_hover_card_attributes( $user_id, false ). '>';
+	$html .= $name;
+	$html .= '</a>';
+
+	if ( $echo ) {
+		echo $html;
+	}
+
+	return $html;
 }
