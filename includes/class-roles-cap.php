@@ -549,6 +549,10 @@ function ap_user_can_change_status_to_moderate() {
  * @return boolean
  */
 function ap_user_can_upload_image() {
+	if ( !is_user_logged_in() ) {
+		return false;
+	}
+	
 	if ( is_super_admin() || ap_opt( 'allow_upload_image' ) ) {
 		return true;
 	}
