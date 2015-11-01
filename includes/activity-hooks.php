@@ -87,7 +87,7 @@ class AnsPress_Activity_Hook
 			'question_id' 		=> $answer->post_parent,
 			'answer_id' 		=> $answer_id,
 			'permalink' 		=> get_permalink( $answer_id ),
-			'content'			=> sprintf( __( '%s answered on %s', 'ap' ), ap_activity_user_name( $question->post_author ), $answer_title ),
+			'content'			=> sprintf( __( '%s answered on %s', 'ap' ), ap_activity_user_name( $answer->post_author ), $answer_title ),
 		);
 
 		$activity_id = ap_new_activity( $activity_arr );
