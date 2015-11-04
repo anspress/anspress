@@ -17,9 +17,15 @@ if ( ! defined( 'WPINC' ) ) {
 
 class AP_Search_Widget extends WP_Widget {
 
-	public  function AP_Search_Widget() {
-		// Instantiate the parent object
-		parent::__construct( false, 'AnsPress Search' );
+	/**
+	 * Initialize the class
+	 */
+	public function __construct() {
+		parent::__construct(
+			'AP_Search_Widget',
+			__( '(AnsPress) Search', 'ap' ),
+			array( 'description' => __( 'Question and answer search form.', 'ap' ) )
+		);
 	}
 
 	public function widget( $args, $instance ) {
