@@ -17,9 +17,15 @@ if ( ! defined( 'WPINC' ) ) {
 
 class AnsPress_Subscribe_Widget extends WP_Widget {
 
-	public function AnsPress_Subscribe_Widget() {
-		// Instantiate the parent object
-		parent::__construct( false, __('AnsPress Question follow', 'ap') );
+	/**
+	 * Initialize the class
+	 */
+	public function __construct() {
+		parent::__construct(
+			'ap_subscribe_widget',
+			__( '(AnsPress) Subscribe', 'ap' ),
+			array( 'description' => __( 'Subscribe button for single question and terms page.', 'ap' ) )
+		);
 	}
 
 	public function widget( $args, $instance ) {

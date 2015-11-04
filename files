@@ -1,0 +1,115 @@
+#yelow #short
+{
+    color: #fea;
+}
+#yelow #long
+{
+    color: #fea;
+}
+#yelow #rgba
+{
+    color: rgba(255, 238, 170, .1);
+}
+#yelow #argb
+{
+    color: #1afea;
+}
+#blue #short
+{
+    color: #00f;
+}
+#blue #long
+{
+    color: #00f;
+}
+#blue #rgba
+{
+    color: rgba(0, 0, 255, .1);
+}
+#blue #argb
+{
+    color: #1a00f;
+}
+#alpha #hsla
+{
+    color: rgba(61, 45, 41, .6);
+}
+#overflow .a
+{
+    color: #000;
+}
+#overflow .b
+{
+    color: #fff;
+}
+#overflow .c
+{
+    color: #fff;
+}
+#overflow .d
+{
+    color: #0f0;
+}
+#overflow .e
+{
+    color: rgba(0, 31, 255, .42);
+}
+#grey
+{
+    color: #c8c8c8;
+}
+#333333
+{
+    color: #333;
+}
+#808080
+{
+    color: #808080;
+}
+#00ff00
+{
+    color: #0f0;
+}
+.lightenblue
+{
+    color: #33f;
+}
+.darkenblue
+{
+    color: #00c;
+}
+.unknowncolors
+{
+    color: blue2;
+    border: 2px solid superred;
+}
+.transparent
+{
+    color: transparent;
+    background-color: rgba(0, 0, 0, 0);
+}
+#alpha #fromvar
+{
+    opacity: .7;
+}
+#alpha #short
+{
+    opacity: 1;
+}
+#alpha #long
+{
+    opacity: 1;
+}
+#alpha #rgba
+{
+    opacity: .2;
+}
+#alpha #hsl
+{
+    opacity: 1;
+}
+#percentage
+{
+    color: 255;
+    border-color: rgba(255, 0, 0, .5);
+}

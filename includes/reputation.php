@@ -963,7 +963,7 @@ function ap_get_top_10_ranked_users() {
 		return $cache;
 	}
 
-	$results = $wpdb->get_results( $key );
+	$results = $wpdb->get_results( $query );
 
 	wp_cache_set( $key, $results, 'ap_reputation' );
 

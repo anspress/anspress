@@ -1,9 +1,15 @@
 <?php
-class AP_QuickAsk_Widget extends WP_Widget {
+class AP_Askform_Widget extends WP_Widget {
 
-	public function AP_QuickAsk_Widget() {
-		// Instantiate the parent object
-		parent::__construct( false, 'AnsPress Ask Form' );
+	/**
+	 * Initialize the class
+	 */
+	public function __construct() {
+		parent::__construct(
+			'ap_quickask_widget',
+			__( '(AnsPress) Ask form', 'ap' ),
+			array( 'description' => __( 'Shows ask form.', 'ap' ) )
+		);
 	}
 
 	public function widget( $args, $instance ) {
@@ -14,9 +20,9 @@ class AP_QuickAsk_Widget extends WP_Widget {
 			echo $args['before_title'] . $title . $args['after_title'];
 		}
 		?>
-			<div class="ap-widget-inner">
+            <div class="ap-widget-inner">
 				<?php ap_ask_form(); ?>
-			</div>
+            </div>
 		<?php
 		echo $args['after_widget'];
 	}
@@ -24,15 +30,14 @@ class AP_QuickAsk_Widget extends WP_Widget {
 	public function form( $instance ) {
 		if ( isset( $instance[ 'title' ] ) ) {
 			$title = $instance[ 'title' ];
-		}
-		else {
+		} else {
 			$title = __( 'Ask questions', 'ap' );
 		}
 		?>
-		<p>
+        <p>
 			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:' ); ?></label>
 			<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>">
-		</p>
+        </p>
 		<?php
 	}
 
@@ -55,7 +60,7 @@ class AP_QuickAsk_Widget extends WP_Widget {
 }
 
 function ap_quickask_register_widgets() {
-	register_widget( 'AP_QuickAsk_Widget' );
+	register_widget( 'AP_Askform_Widget' );
 }
 
 add_action( 'widgets_init', 'ap_quickask_register_widgets' );

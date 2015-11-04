@@ -93,8 +93,8 @@ function ap_get_theme_location($file, $plugin = false) {
  * Get url to a file
  * Used for enqueue CSS or JS.
  *
- * @param  string  $file   File name.
- * @param  mixed   $plugin Plugin path, if calling from AnsPress extension.
+ * @param  string $file   File name.
+ * @param  mixed  $plugin Plugin path, if calling from AnsPress extension.
  * @return string
  * @since  2.0
  */
@@ -1751,4 +1751,14 @@ function ap_is_profile_menu($menu) {
 function ap_questions_answer_ids( $question_id ) {
 	global $wpdb;
 	return $wpdb->get_col( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_type = 'answer' AND post_parent=%d", $question_id ) );
+}
+
+/**
+ * Whitelist array items
+ * @param  array $master_keys Master keys.
+ * @param  array $array       Array to filter.
+ * @return array
+ */
+function ap_whitelist_array( $master_keys, $array ) {
+	return array_intersect_key( $array, array_flip( $master_keys ) );
 }

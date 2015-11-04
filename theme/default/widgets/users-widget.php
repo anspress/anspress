@@ -6,7 +6,7 @@
 				$current_user_meta = array_map( function( $a ){ return $a[0]; }, get_user_meta($f->ID));
 				?>
 				<div class="apw-user-summary clearfix">
-					<?php ap_follow_btn_html($f->ID, true); ?>
+					<?php ap_follow_button($f->ID); ?>
 					<a class="ap-user-avatar" href="<?php echo ap_user_link($f->ID); ?>">
 						<?php echo get_avatar( $f->ID, 40 ); ?>
 					</a>

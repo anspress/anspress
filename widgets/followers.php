@@ -1,9 +1,28 @@
 <?php
+/**
+ * AnsPress followers widget.
+ * Register followers widget in WP.
+ *
+ * @link  	https://anspress.io
+ * @since 	2.4
+ * @author  Rahul Aryan <support@anspress.io>
+ * @package AnsPress/AP_followers_Widget
+ */
+
+/**
+ * Register followers widget in WP.
+ */
 class AP_followers_Widget extends WP_Widget {
 
-	public function AP_followers_Widget() {
-		// Instantiate the parent object
-		parent::__construct( false, '(AnsPress) Followers' );
+	/**
+	 * Initialize the class
+	 */
+	public function __construct() {
+		parent::__construct(
+			'ap_followers_widget',
+			__( '(AnsPress) Followers', 'ap' ),
+			array( 'description' => __( 'Show followers of currently displayed user.', 'ap' ) )
+		);
 	}
 
 	public function widget( $args, $instance ) {

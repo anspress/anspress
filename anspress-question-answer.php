@@ -278,6 +278,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		    require_once ANSPRESS_DIR.'widgets/breadcrumbs.php';
 		    require_once ANSPRESS_DIR.'widgets/followers.php';
 		    require_once ANSPRESS_DIR.'widgets/user_notification.php';
+		    require_once ANSPRESS_DIR.'widgets/users.php';
 		    require_once ANSPRESS_DIR.'includes/rewrite.php';
 		    require_once ANSPRESS_DIR.'includes/reputation.php';
 		    require_once ANSPRESS_DIR.'vendor/autoload.php';
@@ -290,6 +291,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		    require_once ANSPRESS_DIR.'includes/follow.php';
 		    require_once ANSPRESS_DIR.'includes/notification.php';
 		    require_once ANSPRESS_DIR.'widgets/user.php';
+		    require_once ANSPRESS_DIR.'widgets/ask-form.php';
 		    require_once ANSPRESS_DIR.'includes/3rd-party.php';
 		    require_once ANSPRESS_DIR.'includes/flag.php';
 		    require_once ANSPRESS_DIR.'includes/activity.php';

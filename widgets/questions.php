@@ -1,9 +1,15 @@
 <?php
 class AP_Questions_Widget extends WP_Widget {
 
-	public function AP_Questions_Widget() {
-		// Instantiate the parent object
-		parent::__construct( false, '(AnsPress) Questions', array( 'desc' => __( 'Shows list of question shorted by option', 'ap' ) ) );
+	/**
+	 * Initialize the class
+	 */
+	public function __construct() {
+		parent::__construct(
+			'ap_questions_widget',
+			__( '(AnsPress) Questions', 'ap' ),
+			array( 'description' => __( 'Shows list of question shorted by option.', 'ap' ) )
+		);
 	}
 
 	public function widget( $args, $instance ) {

@@ -132,7 +132,7 @@ class AnsPress_Form {
 
 		$attr = '';
 
-		if ( $this->args['attr'] ) {
+		if ( !empty( $this->args['attr'] ) ) {
 			$attr .= $this->args['attr'];
 		}
 

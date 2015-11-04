@@ -10,6 +10,8 @@ global $questions;
 ?>
 <div class="ap-about">
 
+	<?php do_action( 'ap_user_about_block_top'); ?>
+
     <div class="ap-about-block user-stats">
 
 		<h3><?php echo ap_icon( 'rss', true ); ?> <?php _e( 'Stats', 'ap' ); ?></h3>
@@ -56,6 +58,8 @@ global $questions;
         </div><!-- close .ap-about-block-c -->
 
     </div><!-- close .ap-about-block.user-stats -->
+
+    <?php do_action( 'ap_user_about_block_after_status'); ?>
 
     <div class="ap-about-block">
 		<h3><?php echo ap_icon( 'reputation', true ); ?> <?php _e( 'Reputation', 'ap' ); ?></h3>
@@ -163,5 +167,7 @@ global $questions;
 			<?php wp_reset_postdata(); ?>
         </div>
     </div>
+
+    <?php do_action( 'ap_user_about_block_bottom'); ?>
 
 </div>

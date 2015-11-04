@@ -1,32 +1,39 @@
 <?php
 class AP_User_Widget extends WP_Widget {
 
-	public function AP_User_Widget() {
-		// Instantiate the parent object
-		parent::__construct( false, '(AnsPress) Users', array('description' => __('Display current logged in users detail and links.', 'ap')) );
+	/**
+	 * Initialize the class
+	 */
+	public function __construct() {
+		parent::__construct(
+			'ap_user_widget',
+			__( '(AnsPress) User menu and profile', 'ap' ),
+			array( 'description' => __( 'Display current logged in users detail and menu.', 'ap' ) )
+		);
 	}
 
 	public function widget( $args, $instance ) {
 		$title = apply_filters( 'widget_title', $instance['title'] );
 		echo $args['before_widget'];
 
-		if ( ! empty( $title ) )
+		if ( ! empty( $title ) ) {
 			echo $args['before_title'] . $title . $args['after_title'];
+		}
 
 		global $ap_user_query;
 
 		echo '<div class="ap-widget-inner">';
 
-        if(is_user_logged_in()){
-	        $ap_user_query = ap_has_users(array('ID' => ap_get_displayed_user_id() ) );
+		if ( is_user_logged_in() ) {
+	        $ap_user_query = ap_has_users( array( 'ID' => ap_get_displayed_user_id() ) );
 
-	        if($ap_user_query->has_users()){
+	        if ( $ap_user_query->has_users() ) {
 	        	while ( ap_users() ) : ap_the_user();
-					ap_get_template_part('widgets/user');
+					ap_get_template_part( 'widgets/user' );
 				endwhile;
 			}
-		}else{
-			_e('Login to see your profile links', 'ap');
+		} else {
+			_e( 'Login to see your profile links', 'ap' );
 		}
 
 		echo '</div>';
@@ -37,15 +44,14 @@ class AP_User_Widget extends WP_Widget {
 	public function form( $instance ) {
 		if ( isset( $instance[ 'title' ] ) ) {
 			$title = $instance[ 'title' ];
-		}
-		else {
+		} else {
 			$title = __( 'My profile', 'ap' );
 		}
 		?>
-		<p>
+        <p>
 			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:' ); ?></label>
 			<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>">
-		</p>
+        </p>
 		<?php
 	}
 

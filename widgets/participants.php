@@ -7,19 +7,24 @@
  * @license GPL 2+ GNU GPL licence above 2+
  * @link http://anspress.io
  * @since 2.0.0-alpha2
- *  
  */
 
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
-    die;
+	wp_die();
 }
 
 class AnsPress_Participants_Widget extends WP_Widget {
+	/**
+	 * Initialize the class
+	 */
+	public function __construct() {
+		parent::__construct(
+			'AnsPress_Participants_Widget',
+			__( '(AnsPress) Participants', 'ap' ),
+			array( 'description' => __( 'Show question participants', 'ap' ) )
+		);
 
-	public function AnsPress_Participants_Widget() {
-		// Instantiate the parent object
-		parent::__construct( false, __('AnsPress Participants', 'ap') );
 	}
 
 	public function widget( $args, $instance ) {
@@ -30,7 +35,7 @@ class AnsPress_Participants_Widget extends WP_Widget {
 		if ( ! empty( $title ) ) {
 			echo $args['before_title'] . $title . $args['after_title'];
 		}
-		ap_get_all_parti($avatar_size);
+		ap_get_all_parti( $avatar_size );
 		echo $args['after_widget'];
 	}
 
@@ -39,15 +44,15 @@ class AnsPress_Participants_Widget extends WP_Widget {
 		$avatar_size 	= isset( $instance[ 'avatar_size' ] ) ? $instance[ 'avatar_size' ] : 30;
 
 		?>
-		<p>
+        <p>
 			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:', 'ap' ); ?></label> 
 			<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>">
-		</p>
-		<p>
+        </p>
+        <p>
 			<label for="<?php echo $this->get_field_id( 'avatar_size' ); ?>"><?php _e( 'Avatar size:', 'ap' ); ?></label> 
 			<input class="widefat" id="<?php echo $this->get_field_id( 'avatar_size' ); ?>" name="<?php echo $this->get_field_name( 'avatar_size' ); ?>" type="text" value="<?php echo esc_attr( $avatar_size ); ?>">
-		</p>
-		<?php 
+        </p>
+		<?php
 	}
 
 	/**
@@ -74,3 +79,4 @@ function ap_participants_register_widgets() {
 }
 
 add_action( 'widgets_init', 'ap_participants_register_widgets' );
+

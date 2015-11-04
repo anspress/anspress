@@ -12,14 +12,20 @@
 
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
-    die;
+    wp_die();
 }
 
 class AnsPress_Stats_Widget extends WP_Widget {
 
-	public function AnsPress_Stats_Widget() {
-		// Instantiate the parent object
-		parent::__construct( false, __('AnsPress Stats', 'ap') );
+	/**
+	 * Initialize the class
+	 */
+	public function __construct() {
+		parent::__construct(
+			'ap_status_widget',
+			__( '(AnsPress) Question Stats', 'ap' ),
+			array( 'description' => __( 'Shows question stats in single question page.', 'ap' ) )
+		);
 	}
 
 	public function widget( $args, $instance ) {
