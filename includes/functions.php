@@ -844,9 +844,21 @@ function ap_form_allowed_tags() {
 }
 
 function ap_send_json($result = array()) {
-
 	$result['is_ap_ajax'] = true;
+	$message_type = isset( $result['message_type'] ) ? $result['message_type'] : 'success';
 
+	header( sprintf( 'X-ANSPRESS-MT: %s', $message_type ) );
+
+	if ( isset( $result['message'] ) ) {
+		header( sprintf( 'X-ANSPRESS-MESSAGE: %s', $result['message'] ) );
+	}
+
+	if ( isset( $result['do'] ) ) {
+		$do = is_array( $result['do'] ) ? json_encode( $result['do'] ) : $result['do'];
+		header( sprintf( 'X-ANSPRESS-DO: %s', $do ) );
+	}
+
+	echo 'dfdfd';
 	wp_send_json( $result );
 }
 
@@ -1761,4 +1773,36 @@ function ap_questions_answer_ids( $question_id ) {
  */
 function ap_whitelist_array( $master_keys, $array ) {
 	return array_intersect_key( $array, array_flip( $master_keys ) );
+}
+
+/**
+ * Read env file of AnsPress
+ * @return string
+ */
+function ap_read_env() {
+	$file = ANSPRESS_DIR.'/env';
+	$cache = wp_cache_get( 'ap_env', 'ap' );
+	if ( false !== $cache ) {
+		return $cache;
+	}
+
+	if ( file_exists( $file ) ) {
+		// Get the contents of env file
+		$content = file_get_contents( $file );
+		wp_cache_set( 'ap_env', $content, 'ap' );
+	}
+
+	return $content;
+}
+
+/**
+ * Check if anspress environment is development.
+ * @return boolean
+ */
+function ap_env_dev() {
+	if ( ap_read_env() == 'development' ) {
+		return true;
+	}
+
+	return false;
 }

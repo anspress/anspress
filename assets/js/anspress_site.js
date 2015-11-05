@@ -199,8 +199,8 @@
                 'margin-left': 0
             }, 500).delay(5000).fadeOut(200);
         },
-        redirect: function(data) {
-            if (typeof data.redirect_to !== 'undefined') window.location.replace(data.redirect_to);
+        redirect: function(url) {
+            if (typeof url !== 'undefined') window.location.replace(url);
         },
         reload: function(data) {
             location.reload();
@@ -693,41 +693,51 @@
 })(jQuery);
 
 (function($) {
-    $(document).ajaxComplete(function(event, data, settings) {
+    $(document).ajaxComplete(function(event, response, settings) {
 
-        if (typeof data !== 'undefined' && typeof data.responseJSON !== 'undefined' && typeof data.responseJSON.ap_responce !== 'undefined') {
-            var data = data.responseJSON;
-            if (typeof data.message !== 'undefined') {
-                var type = typeof data.message_type === 'undefined' ? 'success' : data.message_type;
-                ApSite.addMessage(data.message, type);
+        if (typeof response.getResponseHeader('X-ANSPRESS-MESSAGE') !== 'undefined') {
+            var type = typeof response.getResponseHeader('X-ANSPRESS-MT') === 'undefined' ? 'success' : response.getResponseHeader('X-ANSPRESS-MT');
+            var message = response.getResponseHeader('X-ANSPRESS-MESSAGE');
 
-                if(typeof grecaptcha !== 'undefined' && data.message_type !== 'success')
-                    grecaptcha.reset(widgetId1);
+            console.log('' != type ,'' != message);
+            
+            if( '' != type && '' != message){
+                ApSite.addMessage(message, type);
             }
-            $(document).trigger('ap_after_ajax', data);
 
-            if (typeof data.do !=='undefined'){
-                if($.isArray(data.do)){
-                    $.each(data.do, function(index, el) {
-                        if(typeof ApSite[data.do[index]] === 'function')
-                            ApSite[data.do[index]](data);
-                    });
-                }else{
-                    if(typeof ApSite[data.do] === 'function')
-                        ApSite[data.do](data);
+            if(typeof grecaptcha !== 'undefined' && type !== 'success')
+                grecaptcha.reset(widgetId1);
+
+            $(document).trigger('ap_after_ajax', response);
+        }
+           
+        if (typeof response.getResponseHeader('X-ANSPRESS-DO') !== 'undefined') {
+            var doaction = response.getResponseHeader('X-ANSPRESS-DO');
+            if( apIsJsonString(doaction) ){
+                doaction = $.parseJSON(doaction);
+
+                $.each(doaction, function(index, el) {
+                    console.log(index, el);
+                    if(typeof ApSite[index] === 'function')
+                        ApSite[index](el);
+                });
+            }else{
+                if(typeof ApSite[doaction] === 'function'){
+                    ApSite[doaction](response);
                 }
             }
+            
 
-            if (typeof data.view !== 'undefined') {
+            if (typeof response.view !== 'undefined') {
 
-                $.each(data.view, function(i, view) {
+                $.each(response.view, function(i, view) {
                     try {
                        var html = $(view);
                     }catch(err){
                         console.log(err);
                     }
 
-                    if(typeof data.view_html !== 'undefined' && typeof html !== 'undefined' && html.is('[data-view="' + i + '"]')){
+                    if(typeof response.view_html !== 'undefined' && typeof html !== 'undefined' && html.is('[data-view="' + i + '"]')){
                         html = html.children();
                         $('[data-view="' + i + '"]').html(html);
                     }else{

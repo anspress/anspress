@@ -14,15 +14,17 @@
  */
 add_action( 'wp_enqueue_scripts', 'ap_scripts_front', 1 );
 function ap_scripts_front() {
+	$dir = ap_env_dev() ? 'js' : 'min';
+	$min = ap_env_dev() ? '' : '.min';
 
 	wp_enqueue_script( 'jquery' );
 	wp_enqueue_script( 'jquery-form', array( 'jquery' ), false );
-	wp_enqueue_script( 'ap-functions-js', ANSPRESS_URL.'assets/prod/ap-functions.min.js', array( 'jquery', 'jquery-form' ) );
-	wp_enqueue_script( 'ap-anspress_script', ANSPRESS_URL.'assets/prod/anspress_site.min.js', array( 'jquery', 'jquery-form' ), AP_VERSION );
+	wp_enqueue_script( 'ap-functions-js', ANSPRESS_URL.'assets/'.$dir.'/ap-functions'.$min.'.js', array( 'jquery', 'jquery-form' ) );
+	wp_enqueue_script( 'ap-anspress_script', ANSPRESS_URL.'assets/'.$dir.'/anspress_site'.$min.'.js', array( 'jquery', 'jquery-form' ), AP_VERSION );
 	wp_enqueue_script( 'peity-js', ap_get_theme_url( 'js/jquery.peity.min.js' ), 'jquery', AP_VERSION );
 	wp_enqueue_script( 'ap-initial.js', ap_get_theme_url( 'js/initial.min.js' ), 'jquery', AP_VERSION );
 	wp_enqueue_script( 'ap-scrollbar.js', ap_get_theme_url( 'js/jquery.scrollbar.min.js' ), 'jquery', AP_VERSION );
-	wp_enqueue_script( 'ap-js', ap_get_theme_url( 'prod/ap.min.js' ), array( 'jquery', 'jquery-form' ), AP_VERSION );
+	wp_enqueue_script( 'ap-js', ap_get_theme_url( $dir.'/ap'.$min.'.js' ), array( 'jquery', 'jquery-form' ), AP_VERSION );
 	wp_enqueue_style( 'ap-style', ap_get_theme_url( 'css/main.css' ), array(), AP_VERSION );
 
 	$custom_css = '
@@ -37,7 +39,9 @@ function ap_scripts_front() {
 
 	wp_add_inline_style( 'ap-style', $custom_css );
 	wp_enqueue_style( 'ap-fonts', ap_get_theme_url( 'fonts/style.css' ), array(), AP_VERSION );
+	
 	do_action( 'ap_enqueue' );
+	
 	wp_enqueue_style( 'ap-responsive', ap_get_theme_url( 'css/responsive.css' ), array(), AP_VERSION );
 	wp_enqueue_style( 'ap-overrides', ap_get_theme_url( 'css/overrides.css' ), array(), AP_VERSION );
 

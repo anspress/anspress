@@ -271,8 +271,7 @@ class AnsPress_Process_Form
 			$this->result = array(
 				'action' 		=> 'new_question',
 				'message'		=> 'question_submitted',
-				'redirect_to'	=> get_permalink( $post_id ),
-				'do'			=> 'redirect',
+				'do'			=> array('redirect' => get_permalink( $post_id )),
 			);
 		}
 

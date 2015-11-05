@@ -199,6 +199,7 @@ function ap_vote_btn($post = false, $echo = true) {
 	$vote = ap_is_user_voted( $post->ID, 'vote' );
 
 	$voted = $vote ? true : false;
+
 	$type = $vote ? $vote->type : '';
 
 	$html = '';
@@ -209,7 +210,7 @@ function ap_vote_btn($post = false, $echo = true) {
 
 	if ( ('question' == $post->post_type && ! ap_opt( 'disable_down_vote_on_question' )) ||
 		('answer' == $post->post_type && ! ap_opt( 'disable_down_vote_on_answer' )) ) {
-		$html .= '<a data-tipposition="bottom center" class="'.ap_icon( 'vote_down' ).' ap-tip vote-down'.($voted ? ' voted' : '').($type == ' vote_up' ? ' disable' : '').'" data-query="ap_ajax_action=vote&type=down&post_id='.$post->ID.'&__nonce='.$nonce.'" href="#" title="'.__( 'Down vote this post', 'ap' ).'"></a>';
+		$html .= '<a data-tipposition="bottom center" class="'.ap_icon( 'vote_down' ).' ap-tip vote-down'.($voted ? ' voted' : '').($type == 'vote_up' ? ' disable' : '').'" data-query="ap_ajax_action=vote&type=down&post_id='.$post->ID.'&__nonce='.$nonce.'" href="#" title="'.__( 'Down vote this post', 'ap' ).'"></a>';
 	}
 
 	$html .= '</div>';

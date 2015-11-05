@@ -293,3 +293,7 @@ function ap_restore_question_history($post_id) {
 function ap_remove_new_answer_history($answer_id) {
 	_deprecated_function( 'ap_remove_new_answer_history', '2.4' );
 }
+
+function ap_qa_on_post(){
+	_deprecated_function( 'ap_qa_on_post', '2.4' );
+}

@@ -359,3 +359,12 @@
  	elm.css("left", (parent.width()-elm.width())/2);
  	elm.css("top", (parent.height()-elm.height())/2);
  }
+
+ function apIsJsonString(str) {
+    try {
+        JSON.parse(str);
+    } catch (e) {
+        return false;
+    }
+    return true;
+}
