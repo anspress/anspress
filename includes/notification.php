@@ -197,6 +197,10 @@ function ap_new_notification( $activity_id, $user_id = false, $status = '0', $da
 
 	global $wpdb;
 
+	if( !is_integer($activity_id) ){
+		return new WP_Error('not_integer', __('$activity_id is not a valid integer.', 'ap'));
+	}
+
 	$user_ids = array();
 
 	if ( false === $user_id ) {

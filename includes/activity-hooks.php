@@ -106,7 +106,7 @@ class AnsPress_Activity_Hook
 
 		ap_new_notification( $activity_id, $subscribers );
 
-		$this->check_mentions( $answer->post_parent, $answer->post_content, $question_title, $question->post_author, __( 'answer', 'ap' ), $answer_id );
+		$this->check_mentions( $answer->post_parent, $answer->post_content, $answer_title, $question->post_author, __( 'answer', 'ap' ), $answer_id );
 	}
 
 	/**

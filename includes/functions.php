@@ -1790,9 +1790,11 @@ function ap_read_env() {
 		// Get the contents of env file
 		$content = file_get_contents( $file );
 		wp_cache_set( 'ap_env', $content, 'ap' );
+
+		return $content;
 	}
 
-	return $content;
+	
 }
 
 /**
