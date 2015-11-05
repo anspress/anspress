@@ -329,8 +329,7 @@ class AnsPress_Process_Form
 			$this->result = array(
 				'action' 		=> 'edited_question',
 				'message'		=> 'question_updated',
-				'do'			=> 'redirect',
-				'redirect_to'	=> $this->redirect,
+				'do'			=> array( 'redirect' => $this->redirect ),
 			);
 		}
 
@@ -783,8 +782,7 @@ class AnsPress_Process_Form
 		$this->result  = array(
 			'message' 		=> 'profile_updated_successfully',
 			'action' 		=> 'updated_user_field',
-			'do'			=> 'updateHtml',
-			'container'		=> '#ap_user_profile_form',
+			'do'			=> array('updateHtml' => '#ap_user_profile_form'),
 			'html'			=> ap_user_get_fields( '', $group ),
 		);
 	}

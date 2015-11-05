@@ -503,7 +503,7 @@ class AnsPress_User
 			ap_ajax_json( array(
 				'status' 	=> true,
 				'message' 	=> __( 'Avatar uploaded successfully.', 'ap' ),
-				'do' 		=> 'replaceWith',
+				'do' 		=> array('replaceWith'),
 				'html' 		=> get_avatar( $userid, 150 ),
 				'container' => '[data-view="user_avatar_'.$userid.'"]',
 			) );

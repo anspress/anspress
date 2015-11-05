@@ -89,8 +89,7 @@
                 actions[action] = '1';
                 //if (typeof self[action] === 'function')
                 self[action]('[data-action="' + action + '"]');
-                /*else
-                console.log('No "'+action+'" method found in AnsPress.site{}');*/
+                
             });
         },
         uniqueId: function() {
@@ -125,9 +124,14 @@
 
             return '#apuid-' + uid;
         },
+        
         hideLoading: function(elm) {
-            $($(elm).data('loading')).hide();
+            if( 'all' == elm )
+                $('.ap-loading-icon').hide();
+            else
+                $($(elm).data('loading')).hide();
         },
+
         ap_ajax_form: function() {
             $('body').delegate('[data-action="ap_ajax_form"]', 'submit', function() {
                 AnsPress.site.showLoading(this);
@@ -157,7 +161,6 @@
                     error: function(jqXHR, textStatus, errorThrown){
                         console.log(errorThrown);
                         AnsPress.site.hideLoading(this);
-                        AnsPress.site.addMessage(aplang['not_valid_response'], 'error');
                     },
                     dataType: 'json',
                     context: this,
@@ -208,34 +211,72 @@
         append: function(data) {
             if (typeof data.container !== 'undefined') $(data.container).append(data.html);
         },
-        updateText: function(data) {
-            if (typeof data.container !== 'undefined') $(data.container).text(data.text);
+
+        /**
+         * Update text of an element.
+         * @param  {string} elm  Selector to update.
+         * @param  {string} text Text.
+         */
+        updateText: function(elm, text) {
+            if (text != '') $(elm).text(text);
         },
-        replaceWith: function(data) {
-            if (typeof data.container !== 'undefined')
-                $(data.container).replaceWith(data.html);
+
+        /**
+         * Replace content with new content.
+         * @param  {string} elm  Element selector.
+         * @param  {object} data Ajax success object.
+         */
+        replaceWith: function(elm, data) {
+            if (typeof data.html !== 'undefined')
+                $(elm).replaceWith(data.html);
         },
-        updateHtml: function(data) {
-            if (typeof data.container !== 'undefined') $(data.container).html(data.html);
+
+        /**
+         * Update html of an element
+         * @param  {string} elm  Selector.  
+         * @param  {object} data Ajax success response.
+         */
+        updateHtml: function(elm, data) {
+            console.log(data);
+            if (typeof data.html !== 'undefined') $(elm).html(data.html);
         },
-        toggle_active_class: function(data) {
-            if (typeof data.toggle_active_class_container !== 'undefined'){
-                $(data.toggle_active_class_container).find('li').removeClass('active');
-                $(data.toggle_active_class_container).find(data.active).addClass('active');
+
+        /**
+         * Toggle active class of an element.
+         * @param  {string} data    Element selector.
+         * @param  {string} active  Currently active selector.
+         */
+        toggle_active_class: function(elm, active) {
+            if (typeof elm !== 'undefined'){
+                $(elm).find('li').removeClass('active');
+                $(elm).find(active).addClass('active');
             }
         },
-        append_before: function(data) {
-            if (typeof data.append_before_container !== 'undefined')
-                $(data.append_before_container).before(data.html);
+
+        /**
+         * Append html before a selector.
+         * @param  {string} elm Selector.
+         */
+        append_before: function(elm, data) {
+            console.log(data);
+            if (typeof elm !== 'undefined')
+                $(elm).before(data.html);
         },
-        remove_if_exists: function(data) {
-            if (typeof data.remove_if_exists_container !== 'undefined' && $(data.remove_if_exists_container).length > 0)
-                $(data.remove_if_exists_container).remove();
+        
+        /**
+         * Remove an element if exists
+         * @param  {string} elm elment selector.
+         */
+        remove_if_exists: function(elm) {
+            if (typeof elm !== 'undefined' && $(elm).length > 0)
+                $(elm).remove();
         },
+        
         clearForm: function(data) {
             if (typeof tinyMCE !== 'undefined')
                 tinyMCE.activeEditor.setContent('');
         },
+
         scrollToCommentForm: function(){
             if ($('#ap-commentform').length > 0) $('html, body').animate({
                 scrollTop: ($('#ap-commentform').offset().top) - 150
@@ -373,12 +414,15 @@
         },
         afterPostingAnswer: function() {
             $(document).on('ap_after_ajax', function(e, data) {
+                console.log(data);
                 if (typeof data.action !== 'undefined' && data.action == 'new_answer') {
                     if ($('#answers').length === 0) {
                         $('#question').after($(data['html']));
                         $(data['div_id']).hide();
-                    } else $('#answers').append($(data['html']).hide());
-                    $(data.div_id).slideDown(500);
+                    } else{
+                        $('#answers').append($(data['html']).hide());
+                        $(data.div_id).slideDown(500);
+                    }
                 }
             });
         },
@@ -651,7 +695,6 @@
 
         questionSuggestion: function(){            
             $('[data-action="suggest_similar_questions"]').on('blur', function(){
-                console.log(title);
                 var title = $(this).val();
 
                 if(title.length == 0)
@@ -677,7 +720,6 @@
         checkboxUncheck: function(){
             $('#anspress input[type="checkbox"]').click(function(){
                 var name = $(this).attr('name');
-                console.log($(this).is(':checked'));
                 if ($(this).is(':checked')){
                     $('input[name="'+ name +'"][type="hidden"]').attr('name', '_hidden_'+ name );
                 }else{
@@ -695,11 +737,9 @@
 (function($) {
     $(document).ajaxComplete(function(event, response, settings) {
 
-        if (typeof response.getResponseHeader('X-ANSPRESS-MESSAGE') !== 'undefined') {
+        if (response.getResponseHeader('X-ANSPRESS-MESSAGE') !== null) {
             var type = typeof response.getResponseHeader('X-ANSPRESS-MT') === 'undefined' ? 'success' : response.getResponseHeader('X-ANSPRESS-MT');
             var message = response.getResponseHeader('X-ANSPRESS-MESSAGE');
-
-            console.log('' != type ,'' != message);
             
             if( '' != type && '' != message){
                 ApSite.addMessage(message, type);
@@ -708,44 +748,51 @@
             if(typeof grecaptcha !== 'undefined' && type !== 'success')
                 grecaptcha.reset(widgetId1);
 
-            $(document).trigger('ap_after_ajax', response);
+            $(document).trigger('ap_after_ajax', response.responseJSON);
+
+            AnsPress.site.hideLoading('all');
         }
-           
-        if (typeof response.getResponseHeader('X-ANSPRESS-DO') !== 'undefined') {
+
+        if (response.getResponseHeader('X-ANSPRESS-DO') !== null) {            
             var doaction = response.getResponseHeader('X-ANSPRESS-DO');
             if( apIsJsonString(doaction) ){
                 doaction = $.parseJSON(doaction);
 
                 $.each(doaction, function(index, el) {
-                    console.log(index, el);
-                    if(typeof ApSite[index] === 'function')
-                        ApSite[index](el);
+                    if(typeof ApSite[index] === 'function'){                        
+                        if( typeof el === 'object' ){
+                            el.data = response.responseJSON;
+                            ApSite[index].apply(ApSite, el);
+                        }
+                        else{
+                            ApSite[index](el, response.responseJSON);
+                        }
+                    }
                 });
             }else{
                 if(typeof ApSite[doaction] === 'function'){
-                    ApSite[doaction](response);
+                    ApSite[doaction](response.responseJSON);
                 }
             }
-            
+        }
 
-            if (typeof response.view !== 'undefined') {
+        if (typeof response.is_ap_ajax !== 'undefined' && typeof response.view !== 'undefined') {
 
-                $.each(response.view, function(i, view) {
-                    try {
-                       var html = $(view);
-                    }catch(err){
-                        console.log(err);
-                    }
+            $.each(response.view, function(i, view) {
+                try {
+                   var html = $(view);
+                }catch(err){
+                    console.log(err);
+                }
 
-                    if(typeof response.view_html !== 'undefined' && typeof html !== 'undefined' && html.is('[data-view="' + i + '"]')){
-                        html = html.children();
-                        $('[data-view="' + i + '"]').html(html);
-                    }else{
-                        $('[data-view="' + i + '"]').text(view);
-                        $('[data-view="' + i + '"]').removeClass('ap-view-count-0');
-                    }
-                });
-            }
+                if(typeof response.view_html !== 'undefined' && typeof html !== 'undefined' && html.is('[data-view="' + i + '"]')){
+                    html = html.children();
+                    $('[data-view="' + i + '"]').html(html);
+                }else{
+                    $('[data-view="' + i + '"]').text(view);
+                    $('[data-view="' + i + '"]').removeClass('ap-view-count-0');
+                }
+            });
         }
 
     });   
