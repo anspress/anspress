@@ -307,7 +307,7 @@ class AnsPress_Activity_Hook
 
 	/**
 	 * Delete activities of an answer when its get deleted.
-	 * @param  object $answer    Post object.
+	 * @param  object $answer_id    Post object.
 	 */
 	public function delete_post( $answer_id ) {
 		$activity_ids = ap_post_activities_id( $answer_id );

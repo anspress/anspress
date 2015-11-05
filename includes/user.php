@@ -861,6 +861,9 @@ function ap_get_user_page_slug() {
 	return 'user';
 }
 
+/**
+ * @param string $user_id
+ */
 function ap_user_link_anchor($user_id, $echo = true) {
 
 	$name = ap_user_display_name( $user_id );
