@@ -37,12 +37,12 @@ class AP_Question_Meta_Box {
 		if ( ap_have_answers() ) {
 			while ( ap_have_answers() ) : ap_the_answer();
 			?>
-            <div id="answer_<?php the_ID(); ?>" data-id="<?php the_ID(); ?>" data-index="<?php echo @$i; ?>" class="ap-ansm clearfix">
+            <div id="answer_<?php the_ID(); ?>" data-id="<?php the_ID(); ?>" class="ap-ansm clearfix">
                 <div class="author">
 					<a class="ap-ansm-avatar" href="<?php ap_answer_the_author_link(); ?>"<?php ap_hover_card_attributes( ap_answer_get_author_id() ); ?>>
 						<?php ap_answer_the_author_avatar(); ?>
 					</a>
-					<strong class="ap-ansm-name"><?php echo ap_user_display_name( $ans->post_author ); ?></strong>
+					<strong class="ap-ansm-name"><?php echo ap_user_display_name( ap_answer_get_author_id() ); ?></strong>
                 </div>
 
                 <div class="ap-ansm-inner">
@@ -56,7 +56,7 @@ class AP_Question_Meta_Box {
 					<div class="answer-actions">
 
 						<span><a href="<?php echo get_edit_post_link( get_the_ID() ); ?>"><?php _e( 'Edit', 'ap' ); ?></a></span>
-						<span class="delete vim-d vim-destructive"> | <a href="<?php echo get_delete_post_link( $ans->ID ); ?>"><?php _e( 'Trash', 'ap' ); ?></a></span>
+						<span class="delete vim-d vim-destructive"> | <a href="<?php echo get_delete_post_link( get_the_ID() ); ?>"><?php _e( 'Trash', 'ap' ); ?></a></span>
 					</div>
 
 				</div>

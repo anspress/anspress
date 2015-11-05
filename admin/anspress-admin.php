@@ -50,7 +50,7 @@ class AnsPress_Admin
 	private function __construct() {
 		$this->includes();
 		new AnsPress_Options_Page;
-		new AnsPress_Admin_Ajax;
+		new AnsPress_Admin_Ajax($this);
 
 		$plugin_basename = plugin_basename( plugin_dir_path( __DIR__ ) . 'anspress-question-answer.php' );
 		add_filter( 'plugin_action_links_' . $plugin_basename, array( $this, 'add_action_links' ) );

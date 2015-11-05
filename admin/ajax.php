@@ -23,10 +23,12 @@ if ( ! defined( 'WPINC' ) ) {
  */
 class AnsPress_Admin_Ajax
 {
+	private $ap_admin;
 	/**
 	 * Initialize admin ajax
 	 */
-	public function __construct() {
+	public function __construct($ap_admin) {
+		$this->ap_admin = $ap_admin;
 		add_action( 'wp_ajax_ap_edit_reputation', array( $this, 'ap_edit_reputation' ) );
 		add_action( 'wp_ajax_ap_save_reputation', array( $this, 'ap_save_reputation' ) );
 		add_action( 'wp_ajax_ap_new_reputation_form', array( $this, 'ap_new_reputation_form' ) );
@@ -108,7 +110,7 @@ class AnsPress_Admin_Ajax
 				}
 
 				ob_start();
-				$this->display_reputation_page();
+				$this->ap_admin->display_reputation_page();
 				$html = ob_get_clean();
 
 				$result = array(

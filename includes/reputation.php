@@ -19,7 +19,8 @@ class AP_Reputation {
 
 		// return if reputation is disabled
 		if ( ap_opt( 'disable_reputation' ) ) {
-			return; }
+			return;
+		}
 
 		ap_register_user_page( 'reputation', __( 'Reputation', 'ap' ), array( $this, 'reputation_page' ) );
 		add_filter( 'ap_user_menu', array( $this, 'sort_reputation_page' ) );
@@ -44,6 +45,7 @@ class AP_Reputation {
 		add_action( 'ap_unpublish_comment', array( $this, 'delete_comment' ) );
 
 		add_filter( 'ap_user_display_meta_array', array( $this, 'display_meta' ), 10, 2 );
+		add_filter( 'user_register', array( $this, 'user_register' ) );
 	}
 
 	public function reputation_page() {
@@ -290,6 +292,11 @@ class AP_Reputation {
 		return $metas;
 	}
 
+	public function user_register( $user_id ){
+		$reputation = ap_reputation_by_event( 'registration', true );
+		ap_reputation( 'registration', $user_id, $reputation, $user_id );
+	}
+
 }
 
 /**
@@ -477,6 +484,8 @@ class AnsPress_Reputation
 		}
 
 	}
+
+	
 }
 
 /**
