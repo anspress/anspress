@@ -27,7 +27,7 @@ class AnsPress_Theme
 
 	/**
 	 * Initialize the class
-	 * @param object $ap parent class.
+	 * @param AnsPress $ap parent class.
 	 */
 	public function __construct($ap) {
 		$this->ap = $ap;
