@@ -2926,16 +2926,6 @@ body ul ul#ap-user-menu-link li > a .count {
   padding-bottom: 30px;
   padding-left: 40px;
 }
-#anspress .ap-about-block:before {
-  background: none repeat scroll 0 0 #eee;
-  content: "";
-  display: block;
-  height: 100%;
-  left: 13px;
-  position: absolute;
-  top: 0;
-  width: 2px;
-}
 #anspress .ap-about-stats {
   list-style: outside none none;
   padding: 0;

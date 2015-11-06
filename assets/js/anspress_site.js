@@ -742,7 +742,7 @@
             var message = response.getResponseHeader('X-ANSPRESS-MESSAGE');
             
             if( '' != type && '' != message){
-                ApSite.addMessage(message, type);
+                ApSite.addMessage($.parseJSON(message), type);
             }
 
             if(typeof grecaptcha !== 'undefined' && type !== 'success')

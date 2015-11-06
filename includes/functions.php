@@ -850,7 +850,7 @@ function ap_send_json($result = array()) {
 	header( sprintf( 'X-ANSPRESS-MT: %s', $message_type ) );
 
 	if ( isset( $result['message'] ) ) {
-		header( sprintf( 'X-ANSPRESS-MESSAGE: %s', $result['message'] ) );
+		header( sprintf( 'X-ANSPRESS-MESSAGE: %s', json_encode ($result['message'] ) ) );
 	}
 
 	if ( isset( $result['do'] ) ) {

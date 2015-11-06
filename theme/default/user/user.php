@@ -12,30 +12,29 @@
 <?php while ( ap_users() ) : ap_the_user(); ?>
 
 	<div id="ap-user" class="ap-user" data-id="<?php ap_displayed_user_id(); ?>">
-		<div class="ap-user-navigation clearfix">
-			<?php if(ap_active_user_page() != 'about'): ?>
-				<div class="ap-user-info ">
-					<div class="ap-user-avatar">
-						<?php ap_user_the_avatar(40); ?>
-						<?php ap_avatar_upload_form(); ?>
-					</div>
-					<div class="ap-user-data">
-						<a class="ap-user-name" href="<?php ap_user_the_link(); ?>"><?php ap_user_the_display_name(); ?></a>
-						<?php
-							if(!ap_opt('disable_reputation')){
-								echo '<span class="ap-user-reputation">';
-								printf(__('%s Rep.', 'ap'), ap_user_get_the_reputation());
-								echo '</span>';
-							}
-						?>
-					</div>
-					<div class="ap-user-info-btns">
-						<?php ap_follow_button(ap_get_displayed_user_id()); ?>
-					</div>
+		
+		<?php if(ap_active_user_page() != 'about'): ?>
+			<div class="ap-user-info ">
+				<div class="ap-user-avatar">
+					<?php ap_user_the_avatar(40); ?>
+					<?php ap_avatar_upload_form(); ?>
 				</div>
-			<?php endif; ?>
-			<?php ap_user_menu(); ?>
-		</div>
+				<div class="ap-user-data">
+					<a class="ap-user-name" href="<?php ap_user_the_link(); ?>"><?php ap_user_the_display_name(); ?></a>
+					<?php
+						if(!ap_opt('disable_reputation')){
+							echo '<span class="ap-user-reputation">';
+							printf(__('%s Rep.', 'ap'), ap_user_get_the_reputation());
+							echo '</span>';
+						}
+					?>
+				</div>
+				<div class="ap-user-info-btns">
+					<?php ap_follow_button(ap_get_displayed_user_id()); ?>
+				</div>
+			</div>
+		<?php endif; ?>
+
 
 		<?php if(ap_active_user_page() == 'about'): ?>
 			<div class="ap-user-cover clearfix">
@@ -70,6 +69,11 @@
 				</div>
 			</div>
 		<?php endif; ?>
+		
+		<div class="ap-user-navigation clearfix">
+			<?php ap_user_menu(); ?>
+		</div>
+
 		<!-- Start  ap-profile-lr -->
 		<div class="ap-user-lr row">
 			<div class="<?php echo is_active_sidebar( 'ap-user' ) ? 'col-md-9' : 'col-md-12' ?>">
