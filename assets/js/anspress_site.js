@@ -736,6 +736,7 @@
 
 (function($) {
     $(document).ajaxComplete(function(event, response, settings) {
+        var data = response.responseJSON;
 
         if (response.getResponseHeader('X-ANSPRESS-MESSAGE') !== null) {
             var type = typeof response.getResponseHeader('X-ANSPRESS-MT') === 'undefined' ? 'success' : response.getResponseHeader('X-ANSPRESS-MT');
@@ -748,7 +749,7 @@
             if(typeof grecaptcha !== 'undefined' && type !== 'success')
                 grecaptcha.reset(widgetId1);
 
-            $(document).trigger('ap_after_ajax', response.responseJSON);
+            $(document).trigger('ap_after_ajax', data);
 
             AnsPress.site.hideLoading('all');
         }
@@ -761,31 +762,31 @@
                 $.each(doaction, function(index, el) {
                     if(typeof ApSite[index] === 'function'){                        
                         if( typeof el === 'object' ){
-                            el.data = response.responseJSON;
+                            el.data = data;
                             ApSite[index].apply(ApSite, el);
                         }
                         else{
-                            ApSite[index](el, response.responseJSON);
+                            ApSite[index](el, data);
                         }
                     }
                 });
             }else{
                 if(typeof ApSite[doaction] === 'function'){
-                    ApSite[doaction](response.responseJSON);
+                    ApSite[doaction](data);
                 }
             }
         }
 
-        if (typeof response.is_ap_ajax !== 'undefined' && typeof response.view !== 'undefined') {
+        if (typeof data.is_ap_ajax !== 'undefined' && typeof data.view !== 'undefined') {
 
-            $.each(response.view, function(i, view) {
+            $.each(data.view, function(i, view) {
                 try {
                    var html = $(view);
                 }catch(err){
                     console.log(err);
                 }
 
-                if(typeof response.view_html !== 'undefined' && typeof html !== 'undefined' && html.is('[data-view="' + i + '"]')){
+                if(typeof data.view_html !== 'undefined' && typeof html !== 'undefined' && html.is('[data-view="' + i + '"]')){
                     html = html.children();
                     $('[data-view="' + i + '"]').html(html);
                 }else{

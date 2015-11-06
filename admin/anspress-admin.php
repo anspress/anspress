@@ -117,13 +117,16 @@ class AnsPress_Admin
 	public function enqueue_admin_scripts() {
 		global $typenow, $pagenow;
 
+		$dir = ap_env_dev() ? 'js' : 'min';
+		$min = ap_env_dev() ? '' : '.min';
+
 		if ( in_array( $pagenow, array( 'admin.php' ) ) &&  (isset( $_GET['page'] ) && 'anspress' == $_GET['page'] ) ) {
 			wp_enqueue_script( 'masonry' );
 		}
 
 		wp_enqueue_script( 'jquery-form', array( 'jquery' ), false, true );
 		wp_enqueue_script( 'ap-initial.js', ap_get_theme_url( 'js/initial.min.js' ), 'jquery', AP_VERSION );
-		wp_enqueue_script( 'ap-admin-js', ANSPRESS_URL.'assets/prod/ap-admin.min.js' );
+		wp_enqueue_script( 'ap-admin-js', ANSPRESS_URL.'assets/'.$dir.'/ap-admin'.$min.'.js' );
 	}
 
 	/**
