@@ -318,10 +318,10 @@ function ap_user_menu($collapse = true, $user_id = false) {
 			$o .= '<li'.($active_user_page == $m['slug'] ? ' class="active"' : '').'><a href="'.$m['link'].'" class="ap-user-menu-'.$m['slug'].$class.'">'.$m['title'].'</a></li>';
 		}
 
-		if ( $collapse ) {
+		/*if ( $collapse ) {
 			$o .= '<li class="ap-user-menu-more ap-dropdown"><a href="#" class="ap-dropdown-toggle">'.__( 'More', 'ap' ).ap_icon( 'chevron-down', true ).'</a><ul class="ap-dropdown-menu"></ul></li>'; }
 
-		$o .= '</ul>';
+		$o .= '</ul>';*/
 		echo $o;
 	}
 }

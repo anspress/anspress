@@ -93,7 +93,7 @@
             $('.ap-dynamic-avatar').initial({fontSize:14, fontWeight:600});
         });
 
-        if($('.ap_collapse_menu').length > 0){
+        /*if($('.ap_collapse_menu').length > 0){
             var menu = $('.ap_collapse_menu'),
                 menuwidth = menu.width(),
                 dropdown = menu.find('.ap-dropdown .ap-dropdown-menu');
@@ -115,7 +115,7 @@
                 }
 
             });
-        }
+        }*/
 
         $('.ap-notification-scroll').scrollbar();
 

@@ -2720,6 +2720,10 @@ body ul ul#ap-user-menu-link li > a .count {
   font-weight: 600;
   white-space: nowrap;
 }
+#anspress .ap-user-navigation {
+  float: left;
+  width: 200px;
+}
 #anspress .ap-user-cover {
   background: url("../images/cover.jpg") repeat scroll 0 0 #eaeaea;
   border-radius: 3px;
@@ -2859,7 +2863,6 @@ body ul ul#ap-user-menu-link li > a .count {
 }
 #anspress #ap-user-menu > li {
   border-right: 1px solid #eee;
-  float: left;
   margin: 0;
   padding: 0;
 }

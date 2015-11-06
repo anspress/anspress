@@ -579,8 +579,7 @@ class AnsPress_Process_Form
 				$this->result = array(
 					'action' 		=> 'answer_edited',
 					'message'		=> 'answer_updated',
-					'redirect_to'	=> get_permalink( $answer->post_parent ),
-					'do'			=> 'redirect',
+					'do'			=> array('redirect' => get_permalink( $answer->post_parent )),
 				);
 			}
 
