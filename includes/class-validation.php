@@ -9,379 +9,377 @@
 
 class AnsPress_Validation
 {
-    private $args = array();
+	private $args = array();
 
-    private $errors = array();
+	private $errors = array();
 
-    private $fields = array();
+	private $fields = array();
 
-    /**
-     * Initialize the class
-     * @param array $args
-     */
-    public function __construct($args = array())
-    {
-        if(empty($args))
-            return;
+	/**
+	 * Initialize the class
+	 * @param array $args
+	 */
+	public function __construct($args = array()) {
 
-        $this->args = $args;
+		if ( empty( $args ) ) {
+			return; }
 
-        $this->fields_to_include();
+		$this->args = $args;
 
-        $this->actions();
-    }
+		$this->fields_to_include();
 
-    /**
-     * Check fields to process
-     * @return void
-     * @since 2.0.1
-     */
-    private function fields_to_include()
-    {
-        foreach($this->args as $field => $actions){
-            $this->fields[$field] = @$_REQUEST[$field];
-        }
-    }
+		$this->actions();
+	}
 
-    /**
-     * Check if field is empty or not set
-     * @param  string $field
-     * @return void
-     * @since 2.0.1
-     */
-    public function required($field)
-    {
-        if(!isset($this->fields[$field]) ||  $this->fields[$field] =='' )
-            $this->errors[$field] = __('This field is required', 'ap');
-    }
+	/**
+	 * Check fields to process
+	 * @return void
+	 * @since 2.0.1
+	 */
+	private function fields_to_include() {
 
-    /**
-     * Sanitize text fields
-     * @param  string $field
-     * @return void
-     * @since 2.0.1
-     */
-    private function sanitize_text_field($field)
-    {
-        if(isset($this->fields[$field]))
-            $this->fields[$field] = sanitize_text_field($this->fields[$field]);
-    }
+		foreach ( $this->args as $field => $actions ) {
+			$this->fields[$field] = @$_REQUEST[$field];
+		}
+	}
 
-    /**
-     * Check length of a string, if less then specified then return error
-     * @param  string $field
-     * @param  string $param
-     * @return void
-     * @since  2.0
-     */
-    private function length_check($field, $param)
-    {
-        if($param != 0 && (!isset($this->fields[$field]) || mb_strlen(strip_tags($this->fields[$field])) <= $param ))
-            $this->errors[$field] = sprintf(__('Its too short, it must be minimum %d characters', 'ap'), $param);
-    }
+	/**
+	 * Check if field is empty or not set
+	 * @param  string $field
+	 * @return void
+	 * @since 2.0.1
+	 */
+	public function required($field) {
 
-    /**
-     * Count comma separated strings
-     * @param  string $field
-     * @param  string $param
-     * @return void
-     * @since  2.0
-     */
-    private function comma_separted_count($field, $param)
-    {
-        if(!isset($this->fields[$field]) ){
-            $tags = $this->fields[$field];
+		if ( ! isset( $this->fields[$field] ) ||  $this->fields[$field] == '' ) {
+			$this->errors[$field] = __( 'This field is required', 'ap' ); }
+	}
 
-            if(!is_array($tags)){
-                $tags = count(explode(',', $tags)) < $param;
-            }
+	/**
+	 * Sanitize text fields
+	 * @param  string $field
+	 * @return void
+	 * @since 2.0.1
+	 */
+	private function sanitize_text_field($field) {
 
-            if(count($tags) < $param){
-                $this->errors[$field] = sprintf(__('It must be minimum %d characters', 'ap'), $param);
-            }
-        }
-    }
+		if ( isset( $this->fields[$field] ) ) {
+			$this->fields[$field] = sanitize_text_field( $this->fields[$field] ); }
+	}
 
-    private function is_email($field)
-    {
-        $email = is_email($this->fields[$field]);
+	/**
+	 * Check length of a string, if less then specified then return error
+	 * @param  string $field
+	 * @param  string $param
+	 * @return void
+	 * @since  2.0
+	 */
+	private function length_check($field, $param) {
 
-        if(!$email ){
-            $this->errors[$field] = __('Not a valid email address', 'ap');
-        }else{
-            $this->fields[$field] = $email;
-        }
-    }
+		if ( $param != 0 && ( ! isset( $this->fields[$field] ) || mb_strlen( strip_tags( $this->fields[$field] ) ) <= $param ) ) {
+			$this->errors[$field] = sprintf( __( 'Its too short, it must be minimum %d characters', 'ap' ), $param ); }
+	}
 
-    /**
-     * Sanitize as a boolean value
-     * @param  string $field
-     * @return void
-     * @since 2.0.1
-     */
-    private function only_boolean($field)
-    {
+	/**
+	 * Count comma separated strings
+	 * @param  string $field
+	 * @param  string $param
+	 * @return void
+	 * @since  2.0
+	 */
+	private function comma_separted_count($field, $param) {
 
-        $this->fields[$field] = (bool) $this->fields[$field];
+		if ( ! isset( $this->fields[$field] ) ) {
+			$tags = $this->fields[$field];
 
-    }
+			if ( ! is_array( $tags ) ) {
+				$tags = count( explode( ',', $tags ) ) < $param;
+			}
 
-    /**
-     * Sanitize as a integer value
-     * @param  string $field
-     * @return void
-     * @since 2.0.1
-     */
-    private function only_int($field)
-    {
+			if ( count( $tags ) < $param ) {
+				$this->errors[$field] = sprintf( __( 'It must be minimum %d characters', 'ap' ), $param );
+			}
+		} elseif ( $param > 0 ) {
+			$this->errors[$field] = sprintf( __( 'It must be minimum %d characters', 'ap' ), $param );
+		}
+	}
 
-        $this->fields[$field] = (int) $this->fields[$field];
+	private function is_email($field) {
 
-    }
+		$email = is_email( $this->fields[$field] );
 
-    /**
-     * Sanitize field using wp_kses
-     * @param  string $field
-     * @return void
-     * @since 2.0.1
-     */
-    private function wp_kses($field)
-    {
-        $this->fields[$field] = wp_kses($this->fields[$field], ap_form_allowed_tags());
-    }
+		if ( ! $email ) {
+			$this->errors[$field] = __( 'Not a valid email address', 'ap' );
+		} else {
+			$this->fields[$field] = $email;
+		}
+	}
 
-    /**
-     * Remove wordpress read more tag
-     * @param  string $field
-     * @return void
-     * @since 2.0.1
-     */
-    private function remove_more($field)
-    {
-        $this->fields[$field] = str_replace('<!--more-->', '', $this->fields[$field]);
-    }
+	/**
+	 * Sanitize as a boolean value
+	 * @param  string $field
+	 * @return void
+	 * @since 2.0.1
+	 */
+	private function only_boolean($field) {
 
-    /**
-     * Stripe shortcode tags
-     * @param  string $field
-     * @return void
-     * @since 2.0.1
-     */
-    private function strip_shortcodes($field)
-    {
-        $this->fields[$field] = strip_shortcodes($this->fields[$field]);
-    }
+		$this->fields[$field] = (bool) $this->fields[$field];
 
-    /**
-     * Encode contents inside pre and code tag
-     * @param  string $field
-     * @return void
-     * @since 2.0.1
-     */
-    private function encode_pre_code($field)
-    {
-        $this->fields[$field] = preg_replace_callback('/<pre.*?>(.*?)<\/pre>/imsu', array($this, 'pre_content'), $this->fields[$field]);
-        $this->fields[$field] = preg_replace_callback('/<code.*?>(.*?)<\/code>/imsu', array($this, 'code_content'), $this->fields[$field]);
-    }
+	}
 
-    private function pre_content($matches)
-    {
-        return '<pre>'.esc_html($matches[1]).'</pre>';
-    }
+	/**
+	 * Sanitize as a integer value
+	 * @param  string $field
+	 * @return void
+	 * @since 2.0.1
+	 */
+	private function only_int($field) {
 
-    private function code_content($matches)
-    {
-        return '<code>'.esc_html($matches[1]).'</code>';
-    }
+		$this->fields[$field] = (int) $this->fields[$field];
 
-    /**
-     * Strip all tags
-     * @param  string $field
-     * @return void
-     * @since  2.0
-     */
-    private function strip_tags($field)
-    {
-       $this->fields[$field] = strip_tags($this->fields[$field]);
-    }
+	}
 
-    /**
-     * Santitize tags field
-     * @param  string $field
-     * @return void
-     * @since  2.0
-     */
-    private function sanitize_tags($field)
-    {
-       $this->fields[$field] = $this->fields[$field];
+	/**
+	 * Sanitize field using wp_kses
+	 * @param  string $field
+	 * @return void
+	 * @since 2.0.1
+	 */
+	private function wp_kses($field) {
 
-       $tags = $this->fields[$field];
+		$this->fields[$field] = wp_kses( $this->fields[$field], ap_form_allowed_tags() );
+	}
 
-        if(!is_array($tags))
-            $tags = explode(',', $tags);
+	/**
+	 * Remove wordpress read more tag
+	 * @param  string $field
+	 * @return void
+	 * @since 2.0.1
+	 */
+	private function remove_more($field) {
 
-       $sanitized_tags = '';
+		$this->fields[$field] = str_replace( '<!--more-->', '', $this->fields[$field] );
+	}
 
-       if(is_array($tags)){
-            $count = count($tags);
-            $i = 1;
-            foreach ($tags  as $tag) {
-                $sanitized_tags .= sanitize_text_field( $tag ) ;
+	/**
+	 * Stripe shortcode tags
+	 * @param  string $field
+	 * @return void
+	 * @since 2.0.1
+	 */
+	private function strip_shortcodes($field) {
 
-                if($count != $i)
-                    $sanitized_tags .= ',';
+		$this->fields[$field] = strip_shortcodes( $this->fields[$field] );
+	}
 
-                $i++;
-            }
-       }
+	/**
+	 * Encode contents inside pre and code tag
+	 * @param  string $field
+	 * @return void
+	 * @since 2.0.1
+	 */
+	private function encode_pre_code($field) {
 
-       $this->fields[$field] = $sanitized_tags;
-    }
+		$this->fields[$field] = preg_replace_callback( '/<pre.*?>(.*?)<\/pre>/imsu', array( $this, 'pre_content' ), $this->fields[$field] );
+		$this->fields[$field] = preg_replace_callback( '/<code.*?>(.*?)<\/code>/imsu', array( $this, 'code_content' ), $this->fields[$field] );
+	}
 
-    /**
-     * Sanitize field based on actions passed
-     * @param  string $field
-     * @param  array $actions
-     * @return void
-     * @since 2.0.1
-     */
-    private function sanitize($field, $actions)
-    {
-        foreach($actions as $type ){
-            switch ($type) {
-                case 'sanitize_text_field':
-                    $this->sanitize_text_field($field);
-                    break;
+	private function pre_content($matches) {
 
-                case 'only_boolean':
-                    $this->only_boolean($field);
-                    break;
+		return '<pre>'.esc_html( $matches[1] ).'</pre>';
+	}
 
-                case 'only_int':
-                    $this->only_int($field);
-                    break;
+	private function code_content($matches) {
 
-                case 'wp_kses':
-                    $this->wp_kses($field);
-                    break;
+		return '<code>'.esc_html( $matches[1] ).'</code>';
+	}
 
-                case 'remove_more':
-                    $this->remove_more($field);
-                    break;
+	/**
+	 * Strip all tags
+	 * @param  string $field
+	 * @return void
+	 * @since  2.0
+	 */
+	private function strip_tags($field) {
 
-                case 'strip_shortcodes':
-                    $this->strip_shortcodes($field);
-                    break;
+		$this->fields[$field] = strip_tags( $this->fields[$field] );
+	}
 
-                case 'encode_pre_code':
-                    $this->encode_pre_code($field);
-                    break;
+	/**
+	 * Santitize tags field
+	 * @param  string $field
+	 * @return void
+	 * @since  2.0
+	 */
+	private function sanitize_tags($field) {
 
-                case 'strip_tags':
-                    $this->strip_tags($field);
-                    break;
+		$this->fields[$field] = $this->fields[$field];
 
-                case 'sanitize_tags':
-                    $this->sanitize_tags($field);
-                    break;
+		$tags = $this->fields[$field];
 
-                case 'is_email':
-                    $this->is_email($field);
-                    break;
+		if ( ! is_array( $tags ) ) {
+			$tags = explode( ',', $tags ); }
 
+		$sanitized_tags = '';
 
-                default:
-                    $this->fields[$field] = apply_filters('ap_validation_sanitize_field', $field, $actions );
-                    break;
-            }
-        }
-    }
+		if ( is_array( $tags ) ) {
+			$count = count( $tags );
+			$i = 1;
+			foreach ( $tags  as $tag ) {
+				$sanitized_tags .= sanitize_text_field( $tag );
 
-    /**
-     * Validate a field based on actions passed
-     * @param  string $field
-     * @param  array $actions
-     * @return void
-     * @since 2.0.1
-     */
-    private function validate($field, $actions)
-    {
+				if ( $count != $i ) {
+					$sanitized_tags .= ','; }
 
-        foreach($actions as $type => $param){
-            if(isset($this->errors[$field]))
-                return;
+				$i++;
+			}
+		}
 
-            switch ($type) {
-                case 'required':
-                    $this->required($field);
-                    break;
+		$this->fields[$field] = $sanitized_tags;
+	}
 
-                case 'length_check':
-                    $this->length_check($field, $param);
-                    break;
+	/**
+	 * Sanitize field based on actions passed
+	 * @param  string $field
+	 * @param  array  $actions
+	 * @return void
+	 * @since 2.0.1
+	 */
+	private function sanitize($field, $actions) {
 
-                case 'comma_separted_count':
-                    $this->comma_separted_count($field, $param);
-                    break;
+		foreach ( $actions as $type ) {
+			switch ( $type ) {
+				case 'sanitize_text_field':
+					$this->sanitize_text_field( $field );
+					break;
 
-                case 'is_email':
-                    $this->is_email($field);
-                    break;
+				case 'only_boolean':
+					$this->only_boolean( $field );
+					break;
 
-                default:
-                    $this->errors[$field] = apply_filters('ap_validation_validate_field', $field, $actions );
-                    break;
-            }
-        }
-    }
+				case 'only_int':
+					$this->only_int( $field );
+					break;
 
-    /**
-     * Field is being checked and sanitized
-     * @return void
-     * @since 2.0.1
-     */
-    private function actions()
-    {
-        foreach($this->args as $field => $actions){
-            if(isset($actions['sanitize']))
-                $this->sanitize($field, $actions['sanitize']);
+				case 'wp_kses':
+					$this->wp_kses( $field );
+					break;
 
-            if(isset($actions['validate']))
-                $this->validate($field, $actions['validate']);
-        }
+				case 'remove_more':
+					$this->remove_more( $field );
+					break;
 
-    }
+				case 'strip_shortcodes':
+					$this->strip_shortcodes( $field );
+					break;
 
-    /**
-     * Check if fields have any error
-     * @return boolean
-     * @since 2.0.1
-     */
-    public function have_error(){
-        if(count($this->errors) > 0)
-            return true;
+				case 'encode_pre_code':
+					$this->encode_pre_code( $field );
+					break;
 
-        return false;
-    }
+				case 'strip_tags':
+					$this->strip_tags( $field );
+					break;
 
-    /**
-     * Get all errors
-     * @return array | boolean
-     */
-    public function get_errors(){
-        if(count($this->errors) > 0)
-            return $this->errors;
+				case 'sanitize_tags':
+					$this->sanitize_tags( $field );
+					break;
 
-        return false;
-    }
+				case 'is_email':
+					$this->is_email( $field );
+					break;
 
-    /**
-     * Return all sanitized fields
-     * @return array
-     * @since 2.0.1
-     */
-    public function get_sanitized_fields()
-    {
-        return $this->fields;
-    }
+				default:
+					$this->fields[$field] = apply_filters( 'ap_validation_sanitize_field', $field, $actions );
+					break;
+			}
+		}
+	}
+
+	/**
+	 * Validate a field based on actions passed
+	 * @param  string $field
+	 * @param  array  $actions
+	 * @return void
+	 * @since 2.0.1
+	 */
+	private function validate($field, $actions) {
+
+		foreach ( $actions as $type => $param ) {
+			if ( isset( $this->errors[$field] ) ) {
+				return; }
+
+			switch ( $type ) {
+				case 'required':
+					$this->required( $field );
+					break;
+
+				case 'length_check':
+					$this->length_check( $field, $param );
+					break;
+
+				case 'comma_separted_count':
+					$this->comma_separted_count( $field, $param );
+					break;
+
+				case 'is_email':
+					$this->is_email( $field );
+					break;
+
+				default:
+					$this->errors[$field] = apply_filters( 'ap_validation_validate_field', $field, $actions );
+					break;
+			}
+		}
+	}
+
+	/**
+	 * Field is being checked and sanitized
+	 * @return void
+	 * @since 2.0.1
+	 */
+	private function actions() {
+
+		foreach ( $this->args as $field => $actions ) {
+			if ( isset( $actions['sanitize'] ) ) {
+				$this->sanitize( $field, $actions['sanitize'] ); }
+
+			if ( isset( $actions['validate'] ) ) {
+				$this->validate( $field, $actions['validate'] ); }
+		}
+
+	}
+
+	/**
+	 * Check if fields have any error
+	 * @return boolean
+	 * @since 2.0.1
+	 */
+	public function have_error() {
+		if ( count( $this->errors ) > 0 ) {
+			return true; }
+
+		return false;
+	}
+
+	/**
+	 * Get all errors
+	 * @return array | boolean
+	 */
+	public function get_errors() {
+		if ( count( $this->errors ) > 0 ) {
+			return $this->errors; }
+
+		return false;
+	}
+
+	/**
+	 * Return all sanitized fields
+	 * @return array
+	 * @since 2.0.1
+	 */
+	public function get_sanitized_fields() {
+
+		return $this->fields;
+	}
 }

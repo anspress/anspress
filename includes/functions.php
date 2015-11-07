@@ -252,7 +252,7 @@ function get_question_id() {
 }
 
 function ap_human_time($time, $unix = true) {
-
+	$time = '';
 	if ( ! $unix ) {
 		$time = strtotime( $time );
 	}
