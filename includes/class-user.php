@@ -318,7 +318,7 @@ class AnsPress_User
 
 			$query->query_where = $query->query_where." AND (apm1.user_id IS NULL OR (  apm1.meta_value != 1) )";
 
-			$query->query_from = $query->query_from. " LEFT JOIN wp_usermeta AS apm1 ON ( wp_users.ID = apm1.user_id AND apm1.meta_key = 'hide_profile' )";
+			$query->query_from = $query->query_from. " LEFT JOIN {$wpdb->usermeta} AS apm1 ON ( {$wpdb->users}.ID = apm1.user_id AND apm1.meta_key = 'hide_profile' )";
 
 			if ( $query->query_vars['ap_query'] == 'user_sort_by_reputation' ) {
 				$query->query_orderby = 'ORDER BY cast(mt1.meta_value AS DECIMAL) DESC';
