@@ -691,9 +691,9 @@ function ap_post_active_time($post_id = false, $html = true) {
 	}
 
 	$title = ap_activity_short_title( $activity['type'] );
-	$title = esc_html( '<span class="ap-post-history">'.sprintf( __( '%s %s about %s ago', 'ap' ), ap_user_display_name( $activity['user_id'] ), $title, '<time datetime="'. mysql2date( 'c', $activity['date'] ) .'">'.ap_human_time( mysql2date( 'U', $activity['date'] ) ).'</time>' ).'</span>' );
+	$title = esc_html( '<span class="ap-post-history">'.sprintf( __( '%s %s %s', 'ap' ), ap_user_display_name( $activity['user_id'] ), $title, '<time datetime="'. mysql2date( 'c', $activity['date'] ) .'">'.ap_human_time( mysql2date( 'U', $activity['date'] ) ).'</time>' ).'</span>' );
 
-	return sprintf( __( 'Active %s ago', 'ap' ), '<a class="ap-tip" href="#" title="'. $title .'"><time datetime="'. mysql2date( 'c', $activity['date'] ) .'">'.ap_human_time( mysql2date( 'U', $activity['date'] ) ) ).'</time></a>';
+	return sprintf( __( 'Active %s', 'ap' ), '<a class="ap-tip" href="#" title="'. $title .'"><time datetime="'. mysql2date( 'c', $activity['date'] ) .'">'.ap_human_time( mysql2date( 'U', $activity['date'] ) ) ).'</time></a>';
 }
 
 /**
@@ -723,7 +723,7 @@ function ap_latest_post_activity_html($post_id = false) {
 		$title = ap_activity_short_title( $activity['type'] );
 
 		$html .= '<span class="ap-post-history">';
-		$html .= sprintf( __( ' %s %s %s ago', 'ap' ),
+		$html .= sprintf( __( ' %s %s %s', 'ap' ),
 			ap_user_link_anchor($activity['user_id'], false),
 			$title,
 			'<a href="'. get_permalink( $post ) .'"><time datetime="'. mysql2date( 'c', $activity['date'] ) .'">'. ap_human_time( $activity['date'], false ) .'</time></a>'
@@ -1059,7 +1059,7 @@ function ap_activity_icon() {
  * Activity date
  */
 function ap_activity_the_date() {
-	printf( __( '%s ago', 'ap' ), ap_human_time( ap_activity_date(), false ) );
+	echo ap_human_time( ap_activity_date(), false );
 }
 
 /**

@@ -201,7 +201,7 @@ class AnsPress_Ajax
 	        $comment = get_comment( $comment_id );
 
 	        if ( time() > (get_comment_date( 'U', (int) $_POST['comment_ID'] ) + (int) ap_opt( 'disable_delete_after' )) && ! is_super_admin() ) {
-	            ap_send_json( ap_ajax_responce( array( 'message_type' => 'warning', 'message' => sprintf( __( 'This post was created %s ago, its locked hence you cannot delete it.', 'ap' ), ap_human_time( get_comment_date( 'U', (int) $_POST['comment_ID'] ) ) ) ) ) );
+	            ap_send_json( ap_ajax_responce( array( 'message_type' => 'warning', 'message' => sprintf( __( 'This post was created %s, its locked hence you cannot delete it.', 'ap' ), ap_human_time( get_comment_date( 'U', (int) $_POST['comment_ID'] ) ) ) ) ) );
 
 	            return;
 	        }
@@ -314,7 +314,7 @@ class AnsPress_Ajax
 
 			$this->send( array(
 				'message_type' => 'warning',
-				'message' => sprintf( __( 'This post was created %s ago, its locked hence you cannot delete it.','ap' ), ap_human_time( get_the_time( 'U', $post->ID ) ) ),
+				'message' => sprintf( __( 'This post was created %s, its locked hence you cannot delete it.','ap' ), ap_human_time( get_the_time( 'U', $post->ID ) ) ),
 			) );
 		}
 

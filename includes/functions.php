@@ -251,13 +251,23 @@ function get_question_id() {
 	return false;
 }
 
-function ap_human_time($time, $unix = true) {
-	$time = '';
+/**
+ * Return human readable time format
+ * @param  string  $time 			Time.
+ * @param  boolean $unix 			Is $time is unix?
+ * @param  integer $show_full_date 	Show full date after some period. Default is 7 days in epoch.
+ * @return string|null
+ */
+function ap_human_time($time, $unix = true, $show_full_date = 604800, $format = 'd M, Y') {
 	if ( ! $unix ) {
 		$time = strtotime( $time );
 	}
 
-	return human_time_diff( $time, current_time( 'timestamp' ) );
+	if ( $time ) {
+		if ( $show_full_date + $time > current_time( 'timestamp', true ) ) {
+			return human_time_diff( $time, current_time( 'timestamp', true ) ) .' '.__( 'ago', 'ap' );
+		} else { 			return date( $format, $time ); }
+	}
 }
 
 function ap_please_login() {
@@ -850,7 +860,7 @@ function ap_send_json($result = array()) {
 	header( sprintf( 'X-ANSPRESS-MT: %s', $message_type ) );
 
 	if ( isset( $result['message'] ) ) {
-		header( sprintf( 'X-ANSPRESS-MESSAGE: %s', json_encode ($result['message'] ) ) );
+		header( sprintf( 'X-ANSPRESS-MESSAGE: %s', json_encode( $result['message'] ) ) );
 	}
 
 	if ( isset( $result['do'] ) ) {
@@ -858,7 +868,7 @@ function ap_send_json($result = array()) {
 		header( sprintf( 'X-ANSPRESS-DO: %s', $do ) );
 	}
 
-	//echo 'dfdfd';
+	// echo 'dfdfd';
 	wp_send_json( $result );
 }
 
@@ -1794,7 +1804,6 @@ function ap_read_env() {
 		return $content;
 	}
 
-	
 }
 
 /**

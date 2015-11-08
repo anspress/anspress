@@ -180,7 +180,7 @@ function ap_get_question($question_id) {
 function ap_have_questions() {
 	global $questions;
 
-	if( $questions ){
+	if ( $questions ) {
 		return $questions->have_posts();
 	}
 }
@@ -188,7 +188,7 @@ function ap_have_questions() {
 function ap_questions() {
 	global $questions;
 
-	if( $questions ){
+	if ( $questions ) {
 		return $questions->have_posts();
 	}
 }
@@ -201,10 +201,10 @@ function ap_the_question() {
 function ap_question_the_object() {
 	global $questions, $post;
 
-	if($questions){
+	if ( $questions ) {
 		return $questions->post;
 	}
-	
+
 	return $post;
 }
 
@@ -496,7 +496,7 @@ function ap_question_get_the_active_time($question_id = false) {
 
 function ap_question_the_time($question_id = false, $format = 'U') {
 	$question_id = ap_parameter_empty( $question_id, @ap_question_get_the_ID() );
-	printf( __( '%s ago%s', 'ap' ), '<a href="'. get_permalink( $question_id ) .'"><time itemprop="datePublished" datetime="'.ap_question_get_the_time( false, 'c' ).'">'.ap_human_time( ap_question_get_the_time( $question_id, $format ) ), '</time></a>' );
+	printf( __( '%s %s', 'ap' ), '<a href="'. get_permalink( $question_id ) .'"><time itemprop="datePublished" datetime="'.ap_question_get_the_time( false, 'c' ).'">'.ap_human_time( ap_question_get_the_time( $question_id, $format ) ), '</time></a>' );
 }
 
 function ap_question_get_the_time($question_id = false, $format = '') {
@@ -510,7 +510,7 @@ function ap_question_the_time_relative($question_id = false) {
 
 function ap_question_get_the_time_relative($question_id = false) {
 	$question_id = ap_parameter_empty( $question_id, @ap_question_get_the_ID() );
-	return ap_human_time( ap_question_get_the_time( $question_id, 'U' ) ) .__( ' ago', 'ap' );
+	return ap_question_get_the_time( $question_id, 'U' );
 }
 
 	/**

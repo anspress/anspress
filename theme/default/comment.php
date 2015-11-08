@@ -21,12 +21,11 @@
 				<a href="<?php echo ap_user_link($comment->user_id); ?>" class="ap-comment-author"><?php echo ap_user_display_name($comment->user_id); ?></a>
 
 				<?php $a = ' e ';$b = ' ';$time = get_option('date_format').$b.get_option('time_format').$a.get_option('gmt_offset');
-						printf(' - <a title="%4$s" href="#li-comment-%5$s" class="ap-comment-time"><time datetime="%1$s">%2$s %3$s</time></a>',
+						printf(' - <a title="%3$s" href="#li-comment-%4$s" class="ap-comment-time"><time datetime="%1$s">%2$s</time></a>',
 						get_comment_time('c'),
 						ap_human_time(get_comment_time('U')),
-						__('ago', 'ap'),
 						get_comment_time($time),
-						$comment_id = get_comment_ID()
+						get_comment_ID()
 					);
 
 					// Comment actions

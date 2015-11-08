@@ -571,7 +571,7 @@ function ap_reputation_get_class() {
 }
 
 function ap_reputation_get_the_date() {
-	printf( __( '%s ago', 'ap' ), ap_human_time( ap_reputation_get_date(), false ) );
+	echo ap_human_time( ap_reputation_get_date(), false );
 }
 function ap_reputation_get_date() {
 	return ap_reputation_the_object()->rep_date;
