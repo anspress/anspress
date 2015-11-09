@@ -951,8 +951,7 @@ function ap_total_reputation() {
 
 function ap_get_user_reputation_share($user_id) {
 	$user_points = ap_get_reputation( $user_id );
-
-	return ($user_points * ap_total_reputation()) / 100;
+	return ($user_points / ap_total_reputation()) * 100;
 }
 
 /**

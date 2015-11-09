@@ -616,7 +616,7 @@ function ap_show_captcha_to_user( $user_id = false ) {
 		$user_id = get_current_user_id();
 	}
 
-	if ( apply_filters( 'ap_show_captcha', false ) ) {
+	if ( apply_filters( 'ap_show_captcha', false, $user_id ) ) {
 		return false;
 	}
 
@@ -626,3 +626,4 @@ function ap_show_captcha_to_user( $user_id = false ) {
 
 	return false;
 }
+
