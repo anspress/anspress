@@ -378,10 +378,10 @@ class AnsPress_Activity_Hook
 	public function follower($user_to_follow, $current_user_id) {
 
 		$activity_arr = array(
-			'user_id' 			=> $user_to_follow,
+			'user_id' 			=> $current_user_id,
 			'type' 				=> 'follower',
-			'secondary_user' 	=> $current_user_id,
-			'item_id' 			=> $current_user_id,
+			'secondary_user' 	=> $user_to_follow,
+			'item_id' 			=> $user_to_follow,
 			'parent_type' 		=> 'user',
 			'permalink' 		=> ap_user_link( $user_to_follow ),
 			'content' 			=> sprintf( __( '%s started following %s', 'ap' ), ap_activity_user_name( $current_user_id ), ap_activity_user_name( $user_to_follow ) ),
