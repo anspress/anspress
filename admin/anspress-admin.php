@@ -77,6 +77,7 @@ class AnsPress_Admin
 		add_filter( 'comment_status_links', array( $this, 'comment_flag_view' ) );
 		add_action( 'current_screen', array( $this, 'comments_flag_query' ), 10, 2 );
 		add_action( 'get_pages', array( $this, 'get_pages' ), 10, 2 );
+		add_action( 'wp_insert_post_data', array( $this, 'modify_answer_title' ), 10, 2 );
 	}
 
 	/**
@@ -713,5 +714,16 @@ class AnsPress_Admin
 		return $pages;
 	}
 
-
+	/**
+	 * Modify answer title before saving, in wp-admin
+	 * @param  array $data    Raw post data.
+	 * @param  array $postarr Post array.
+	 * @return array
+	 */
+	public function modify_answer_title($data , $postarr){
+		if($data['post_type'] == 'answer') {
+			$data['post_title'] = get_the_title( $data['post_parent'] );
+		}
+		return $data;
+	}
 }

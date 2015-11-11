@@ -248,10 +248,9 @@ class AnsPress_Ajax
 	    }
 
 	    $post = get_post( $answer_id );
-	    $user_id = get_current_user_id();
 
 	    if ( ap_question_best_answer_selected( $post->post_parent ) ) {
-	        do_action( 'ap_unselect_answer', $user_id, $post->post_parent, $post->ID );
+	        do_action( 'ap_unselect_answer', $post->post_author, $post->post_parent, $post->ID );
 
 	        update_post_meta( $post->ID, ANSPRESS_BEST_META, 0 );
 
@@ -263,8 +262,8 @@ class AnsPress_Ajax
 	            wp_update_post( array( 'ID' => $post->post_parent, 'post_status' => 'publish' ) );
 	        }
 
-	        ap_update_user_best_answers_count_meta( $user_id );
-	        ap_update_user_solved_answers_count_meta( $user_id );
+	        ap_update_user_best_answers_count_meta( $post->post_author );
+	        ap_update_user_solved_answers_count_meta( $post->post_author );
 
 	        $this->send( array(
 	        	'message' 	=> 'unselected_the_answer',
@@ -273,7 +272,7 @@ class AnsPress_Ajax
 	        ) );
 
 	    } else {
-	        do_action( 'ap_select_answer', $user_id, $post->post_parent, $post->ID );
+	        do_action( 'ap_select_answer', $post->post_author, $post->post_parent, $post->ID );
 	        update_post_meta( $post->ID, ANSPRESS_BEST_META, 1 );
 	        update_post_meta( $post->post_parent, ANSPRESS_SELECTED_META, $post->ID );
 	        update_post_meta( $post->post_parent, ANSPRESS_UPDATED_META, current_time( 'mysql' ) );
@@ -282,8 +281,8 @@ class AnsPress_Ajax
 	            wp_update_post( array( 'ID' => $post->post_parent, 'post_status' => 'closed' ) );
 	        }
 
-	        ap_update_user_best_answers_count_meta( $user_id );
-	        ap_update_user_solved_answers_count_meta( $user_id );
+	        ap_update_user_best_answers_count_meta( $post->post_author );
+	        ap_update_user_solved_answers_count_meta( $post->post_author );
 
 	        $html = ap_select_answer_btn_html( $answer_id );
 	        $this->send( array(
