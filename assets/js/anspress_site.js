@@ -414,11 +414,11 @@
         },
         afterPostingAnswer: function() {
             $(document).on('ap_after_ajax', function(e, data) {
-                console.log(data);
                 if (typeof data.action !== 'undefined' && data.action == 'new_answer') {
                     if ($('#answers').length === 0) {
                         $('#question').after($(data['html']));
-                        $(data['div_id']).hide();
+                        $(data.div_id).hide();
+                        $(data.div_id).slideDown(500);
                     } else{
                         $('#answers').append($(data['html']).hide());
                         $(data.div_id).slideDown(500);
