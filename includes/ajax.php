@@ -45,6 +45,7 @@ class AnsPress_Ajax
 	    $ap->add_action( 'ap_ajax_subscribe', $this, 'subscribe' );
 	    $ap->add_action( 'ap_ajax_vote', $this, 'vote' );
 	    $ap->add_action( 'ap_ajax_flag_comment', $this, 'flag_comment' );
+	    $ap->add_action( 'ap_ajax_delete_activity', $this, 'delete_activity' );
 	}
 
 	/**
@@ -54,8 +55,8 @@ class AnsPress_Ajax
 	 */
 	public function suggest_similar_questions() {
 
-	    if ( empty( $_POST['value'] ) || ( ! ap_verify_default_nonce() && !current_user_can( 'manage_options' ) ) ) {
-	        die('false');
+	    if ( empty( $_POST['value'] ) || ( ! ap_verify_default_nonce() && ! current_user_can( 'manage_options' ) ) ) {
+	        die( 'false' );
 	    }
 
 	    $keyword = sanitize_text_field( wp_unslash( $_POST['value'] ) );
@@ -70,26 +71,24 @@ class AnsPress_Ajax
 
 	    if ( $questions ) {
 
-
 	        $items = '<div class="ap-similar-questions-head">';
 	        $items .= '<h3>'.ap_icon( 'check', true ).sprintf( __( '%d similar questions found', 'ap' ), count( $questions ) ).'</h3>';
 	        $items .= '<p>'.__( 'We\'ve found similar questions that have already been asked, click to read them.' ).'</p>';
 	        $items .= '</div>';
-		        
-		    
+
 		    $items .= '<div class="ap-similar-questions">';
 	        foreach ( $questions as $p ) {
 	            $count = ap_count_answer_meta( $p->ID );
 	            $p->post_title = ap_highlight_words( $p->post_title, $keyword );
 
-	            if($is_admin){
+	            if ( $is_admin ) {
 	            	$items .= '<div class="ap-q-suggestion-item clearfix"><a class="select-question-button button button-primary button-small" href="'.add_query_arg( array( 'post_type' => 'answer', 'post_parent' => $p->ID ), admin_url( 'post-new.php' ) ).'">'.__( 'Select', 'ap' ).'</a><span class="question-title">'.$p->post_title.'</span><span class="acount">'.sprintf( _n( '1 Answer', '%d Answers', $count, 'ap' ), $count ).'</span></div>';
-	            }else{
+	            } else {
 		            $items .= '<a class="ap-sqitem clearfix" target="_blank" href="'.get_permalink( $p->ID ).'"><span class="acount">'.sprintf( _n( '1 Answer', '%d Answers', $count, 'ap' ), $count ).'</span><span class="ap-title">'.$p->post_title.'</span></a>';
 		        }
 	        }
 
-	       	$items .= '</div>';	       	
+	       	$items .= '</div>';
 
 	        $result = array( 'status' => true, 'html' => $items );
 	    } else {
@@ -213,14 +212,14 @@ class AnsPress_Ajax
 	        if ( $delete ) {
 	            do_action( 'ap_after_deleting_comment', $comment );
 	            $count = get_comment_count( $comment->comment_post_ID );
-	            $this->send( array( 
+	            $this->send( array(
 	            	'action' 		=> 'delete_comment',
 	            	'comment_ID' 	=> (int) $_POST['comment_ID'],
 	            	'message' 		=> 'comment_delete_success',
-	            	'view' 			=> array( 
+	            	'view' 			=> array(
 	            			'comments_count_'.$comment->comment_post_ID => '('.$count['approved'].')',
-	            			'comment_count_label_'.$comment->comment_post_ID => sprintf( _n( 'One comment', '%d comments', $count['approved'], 'ap' ), $count['approved'] )
-	            		)
+	            			'comment_count_label_'.$comment->comment_post_ID => sprintf( _n( 'One comment', '%d comments', $count['approved'], 'ap' ), $count['approved'] ),
+	            		),
 	            ) );
 	        }
 	        $this->something_wrong();
@@ -323,7 +322,7 @@ class AnsPress_Ajax
 			do_action( 'ap_wp_trash_question', $post_id );
 			$this->send( array(
 				'action' 		=> 'delete_question',
-				'do' 			=> array('redirect' => ap_base_page_link()),
+				'do' 			=> array( 'redirect' => ap_base_page_link() ),
 				'message' 		=> 'question_moved_to_trash',
 			) );
 		} else {
@@ -370,7 +369,7 @@ class AnsPress_Ajax
 		if ( $post->post_type == 'question' ) {
 			$this->send( array(
 				'action' 		=> 'delete_question',
-				'do' 			=> array('redirect' => ap_base_page_link()),
+				'do' 			=> array( 'redirect' => ap_base_page_link() ),
 				'message' 		=> 'question_deleted_permanently',
 			) );
 		} else {
@@ -434,10 +433,10 @@ class AnsPress_Ajax
 	            $this->send(array(
 					'action' 		=> 'status_updated',
 					'message' 		=> 'status_updated',
-					'do' 			=> array( 
-						'remove_if_exists' => '#ap_post_status_desc_'.$post->ID, 
-						'toggle_active_class' => array('#ap_post_status_toggle_'.$post->ID, '.'.$status), 
-						'append_before' => '#ap_post_actions_'.$post->ID 
+					'do' 			=> array(
+						'remove_if_exists' => '#ap_post_status_desc_'.$post->ID,
+						'toggle_active_class' => array( '#ap_post_status_toggle_'.$post->ID, '.'.$status ),
+						'append_before' => '#ap_post_actions_'.$post->ID,
 					),
 					'html' 			=> $html,
 				));
@@ -472,7 +471,7 @@ class AnsPress_Ajax
 
 					$this->send(array(
 						'action' 	=> 'user_field_form_loaded',
-						'do' 		=> array('updateHtml' => '#user_field_form_'.$field_name),
+						'do' 		=> array( 'updateHtml' => '#user_field_form_'.$field_name ),
 						'html' 		=> $form->get_form(),
 					));
 				}
@@ -558,7 +557,7 @@ class AnsPress_Ajax
 			$this->send( array(
 				'message' 		=> 'unfollow',
 				'action' 		=> 'unfollow',
-				'do' 			=> array('updateText' => array('#follow_'.$user_to_follow, __( 'Follow', 'ap' )) ),
+				'do' 			=> array( 'updateText' => array( '#follow_'.$user_to_follow, __( 'Follow', 'ap' ) ) ),
 			) );
 		} else {
 			ap_add_follower( $current_user_id, $user_to_follow );
@@ -566,7 +565,7 @@ class AnsPress_Ajax
 			$this->send( array(
 				'message' 		=> 'follow',
 				'action' 		=> 'follow',
-				'do' 			=> array('updateText' => array( '#follow_'.$user_to_follow, __( 'Unfollow', 'ap' )) ),
+				'do' 			=> array( 'updateText' => array( '#follow_'.$user_to_follow, __( 'Unfollow', 'ap' ) ) ),
 			) );
 		}
 	}
@@ -611,7 +610,7 @@ class AnsPress_Ajax
 		$notification = ap_get_notification_by_id( (int) $_POST['id'] );
 
 		if ( $notification && ( get_current_user_id() == $notification->noti_user_id || is_super_admin() ) ) {
-			
+
 			$row = ap_delete_notification( $notification->noti_id );
 
 			if ( false !== $row ) {
@@ -679,19 +678,19 @@ class AnsPress_Ajax
 	public function set_notifications_as_read() {
 
 		$ids = sanitize_text_field( $_POST['ids'] );
-		$ids = explode(',', $ids);
+		$ids = explode( ',', $ids );
 
-		if( count($ids) == 0 ){
+		if ( count( $ids ) == 0 ) {
 			die();
 		}
 
-		if ( !ap_verify_default_nonce() && ! is_user_logged_in() ) {
+		if ( ! ap_verify_default_nonce() && ! is_user_logged_in() ) {
 			die();
 		}
 
-		foreach( $ids as $id ){
+		foreach ( $ids as $id ) {
 			$id = (int) $id;
-			if( 0 != $id ){				
+			if ( 0 != $id ) {
 				ap_notification_mark_as_read( $id, get_current_user_id() );
 			}
 		}
@@ -700,7 +699,6 @@ class AnsPress_Ajax
 			'container' => '#ap-notification-dropdown',
 			'view' => array( 'notification_count' => ap_get_total_unread_notification() ),
 		) );
-
 
 		die();
 	}
@@ -711,7 +709,7 @@ class AnsPress_Ajax
 	 */
 	public function flag_post() {
 	    $post_id = (int) $_POST['args'][0];
-	    
+
 	    if ( ! ap_verify_nonce( 'flag_'.$post_id ) || ! is_user_logged_in() ) {
 	        $this->something_wrong();
 	    }
@@ -776,7 +774,7 @@ class AnsPress_Ajax
 				$this->send( array(
 					'message' 		=> 'unsubscribed',
 					'action' 		=> 'unsubscribed',
-					'do' 			=> array('updateHtml' => '#subscribe_'.$action_id.' .text'),
+					'do' 			=> array( 'updateHtml' => '#subscribe_'.$action_id.' .text' ),
 					'count' 		=> $count,
 					'html' 			=> __( 'Follow', 'ap' ),
 					'view' 			=> array( 'subscribe_'.$action_id => $count ),
@@ -784,14 +782,14 @@ class AnsPress_Ajax
 			}
 		} else {
 
-			$row = ap_new_subscriber( $user_id, $action_id, $subscribe_type, $question_id );			
+			$row = ap_new_subscriber( $user_id, $action_id, $subscribe_type, $question_id );
 
 			$count = ap_subscribers_count( $action_id, $subscribe_type );
 			if ( false !== $row ) {
 				$this->send( array(
 					'message' 		=> 'subscribed',
 					'action' 		=> 'subscribed',
-					'do' 			=> array('updateHtml' => '#subscribe_'.$action_id.' .text'),
+					'do' 			=> array( 'updateHtml' => '#subscribe_'.$action_id.' .text' ),
 					'count' 		=> $count,
 					'html' 			=> __( 'Unfollow', 'ap' ),
 					'view' 			=> array( 'subscribe_'.$action_id => $count ),
@@ -931,5 +929,25 @@ class AnsPress_Ajax
 	 */
 	public function send($result) {
 	    ap_send_json( ap_ajax_responce( $result ) );
+	}
+
+	public function delete_activity() {
+	    if ( ! ap_verify_nonce( 'ap_delete_activity' ) || ! is_super_admin() || ! isset( $_POST['args'][0] ) ) {
+	        $this->something_wrong();
+	    }
+
+	    $activity_id = (int) $_POST['args'][0];
+
+	    $row = ap_delete_activity( $activity_id );
+
+	    if ( false !== $row ) {
+	        $this->send( array(
+	        	'message' 	=> 'delete_activity',
+	        	'action' 	=> 'delete_activity',
+	        	'do' 		=> array('remove_if_exists' => '#activity-'.$activity_id ),
+	        ) );
+	    }
+
+	    $this->something_wrong();
 	}
 }

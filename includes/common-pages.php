@@ -38,6 +38,7 @@ class AnsPress_Common_Pages
 		ap_register_page( ap_opt( 'ask_page_slug' ), __( 'Ask', 'ap' ), array( $this, 'ask_page' ) );
 		ap_register_page( 'edit', __( 'Edit', 'ap' ), array( $this, 'edit_page' ), false );
 		ap_register_page( 'search', __( 'Search', 'ap' ), array( $this, 'search_page' ), false );
+		ap_register_page( 'activity', __( 'Activity feed', 'ap' ), array( $this, 'activity_page' ) );
 	}
 
 	/**
@@ -177,6 +178,13 @@ class AnsPress_Common_Pages
 			$ap_user_query = ap_has_users( array( 'search' => $keywords, 'search_columns' => array( 'user_login', 'user_email', 'user_nicename' ) ) );
 			include( ap_get_theme_location( 'users/users.php' ) );
 		}
+	}
+
+	public function activity_page() {
+		global $ap_activities;
+	    $ap_activities = ap_get_activities( array( 'per_page' => 20) );
+
+		include( ap_get_theme_location( 'activity/index.php' ) );
 	}
 
 	/**

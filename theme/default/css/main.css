@@ -2862,7 +2862,6 @@ body ul ul#ap-user-menu-link li > a .count {
   padding: 0;
 }
 #anspress #ap-user-menu > li {
-  border-right: 1px solid #eee;
   margin: 0;
   padding: 0;
 }
@@ -4725,4 +4724,29 @@ body ul #ap-notifiside .ap-notification-head {
   margin-top: 15px;
   padding: 10px;
   text-align: center;
+}
+#anspress .ap-activity {
+  border-bottom: 1px solid #eeeeee;
+  padding: 10px 0;
+}
+#anspress .ap-activity .ap-avatar {
+  float: left;
+  margin-right: 15px;
+}
+#anspress .ap-activity .ap-user-link:first-child {
+  color: #333;
+  display: block;
+  font-weight: bold;
+}
+#anspress .ap-activity-actions {
+  color: #888;
+  display: block;
+  font-size: 13px;
+  margin-top: 4px;
+}
+#anspress .ap-activity-actions > a {
+  color: #888;
+}
+#anspress .ap-activity-actions > * {
+  margin-right: 5px;
 }

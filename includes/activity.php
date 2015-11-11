@@ -103,7 +103,7 @@ class AnsPress_Activity_Query
 	public function __construct($args = '') {
 		global $wpdb;
 		ap_wpdb_tables();
-		$this->per_page = 20;
+		$this->per_page = isset($args['per_page']) ? (int)$args['per_page'] : 20;
 
 		// Grab the current page number and set to 1 if no page number is set.
 		$this->paged = isset( $args['paged'] ) ? (int) $args['paged'] : 1;
@@ -157,9 +157,7 @@ class AnsPress_Activity_Query
 
 		$query .= $this->order_clauses( $this->args );
 
-		if ( isset( $this->args['numbers'] ) ) {
-			$query .= ' LIMIT '.$this->per_page;
-		}
+		$query .= ' LIMIT '.$this->per_page;
 
 		$this->query = $query;
 
@@ -1087,3 +1085,13 @@ function ap_activity_pagination() {
 	$ap_activities->the_pagination();
 }
 
+function ap_activity_delete_btn(){
+	
+	if( is_super_admin( ) ){
+		return '<a href="#" class="ap-activity-delete" data-action="ajax_btn" data-query="delete_activity::'. wp_create_nonce( 'ap_delete_activity' ).'::'.ap_activity_id().'">'.__('Delete', 'ap').'</a>';
+	}
+}
+
+function ap_activity_the_delete_btn(){
+	echo ap_activity_delete_btn();
+}
