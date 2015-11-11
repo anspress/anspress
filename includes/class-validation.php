@@ -88,12 +88,11 @@ class AnsPress_Validation
 	 * @since  2.0
 	 */
 	private function comma_separted_count($field, $param) {
-
-		if ( ! isset( $this->fields[$field] ) ) {
+		if ( isset( $this->fields[$field] ) ) {
 			$tags = $this->fields[$field];
 
 			if ( ! is_array( $tags ) ) {
-				$tags = count( explode( ',', $tags ) ) < $param;
+				$tags = explode( ',', $tags );
 			}
 
 			if ( count( $tags ) < $param ) {
