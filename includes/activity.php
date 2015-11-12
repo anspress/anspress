@@ -106,9 +106,9 @@ class AnsPress_Activity_Query
 		$this->per_page = isset($args['per_page']) ? (int)$args['per_page'] : 20;
 
 		// Grab the current page number and set to 1 if no page number is set.
-		$this->paged = isset( $args['paged'] ) ? (int) $args['paged'] : 1;
+		$this->paged = isset( $args['paged'] ) ? (int) $args['paged'] : (int)get_query_var( 'paged' );
 
-		$this->offset = $this->per_page * ($this->paged - 1);
+		$this->offset = $this->per_page * $this->paged;
 
 		$this->args = wp_parse_args( $args, array(
 			'number' 		=> $this->per_page,
@@ -134,6 +134,8 @@ class AnsPress_Activity_Query
 
 		$this->total_activity_count = $wpdb->get_var( apply_filters( 'ap_found_activity_query', 'SELECT FOUND_ROWS()', $this ) );
 
+		$this->total_pages = ceil( $this->total_activity_count/ $this->per_page );
+
 	}
 
 	/**
@@ -157,7 +159,7 @@ class AnsPress_Activity_Query
 
 		$query .= $this->order_clauses( $this->args );
 
-		$query .= ' LIMIT '.$this->per_page;
+		$query .= ' LIMIT '.$this->args['offset'].','.$this->per_page;
 
 		$this->query = $query;
 
@@ -388,7 +390,11 @@ class AnsPress_Activity_Query
 			 */
 			do_action( 'ap_activity_loop_start' );
 		}
+	}
 
+	public function the_pagination() {
+		$base = ap_get_link_to( 'activity' ) . '/%_%';
+		ap_pagination( $this->paged, $this->total_pages, $base );
 	}
 }
 
@@ -709,7 +715,7 @@ function ap_latest_post_activity_html($post_id = false) {
 	$activity = ap_post_activity_meta( $post_id );
 
 	if ( ! $activity ) {
-		$activity['date'] 	= get_the_time( 'c', $post_id );
+		$activity['date'] 	= get_post_time( 'U', true, $post_id);
 		$activity['user_id'] = $post->post_author;
 		$activity['type'] 	= 'new_'.$post->post_type;
 	}
@@ -1095,3 +1101,4 @@ function ap_activity_delete_btn(){
 function ap_activity_the_delete_btn(){
 	echo ap_activity_delete_btn();
 }
+
