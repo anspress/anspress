@@ -2813,6 +2813,9 @@ body ul ul#ap-user-menu-link li > a .count {
   margin-top: 0;
   padding-bottom: 10px;
 }
+#anspress .ap-user-lr {
+  margin-left: 210px !important;
+}
 #anspress #ap-profile-tab {
   float: none;
   margin-bottom: 15px;
@@ -2856,21 +2859,25 @@ body ul ul#ap-user-menu-link li > a .count {
   width: 110px;
 }
 #anspress #ap-user-menu {
-  border: 1px solid #ddd;
+  border-right: 2px solid #f1f1f1;
   list-style: outside none none;
   margin: 0 0 20px;
-  padding: 0;
+  padding: 0 15px 0 0;
 }
 #anspress #ap-user-menu > li {
+  border-bottom: 1px solid #eee;
   margin: 0;
   padding: 0;
+}
+#anspress #ap-user-menu > li:last-child {
+  border-bottom: none;
 }
 #anspress #ap-user-menu > li > a {
   color: #555;
   display: block;
   font-size: 13px;
   font-weight: 600;
-  padding: 10px 15px;
+  padding: 15px 15px;
 }
 #anspress #ap-user-menu > li > a:hover {
   background: #FCFCFC;
@@ -2893,37 +2900,31 @@ body ul ul#ap-user-menu-link li > a .count {
   border-right: none;
 }
 #anspress #ap-user-menu > li a:before {
-  height: 20px;
+  border-right: 1px solid #eee;
+  display: block;
+  float: left;
+  font-size: 17px;
+  height: 49px;
+  line-height: 51px;
+  margin-left: -15px;
   margin-right: 10px;
+  margin-top: -16px;
   text-align: center;
-  width: 12px;
+  width: 49px;
 }
 #anspress .ap-about-block {
   position: relative;
 }
 #anspress .ap-about-block h3 {
+  border-bottom: 2px solid #eee;
   margin: 0 0 15px;
+  padding-bottom: 5px;
 }
 #anspress .ap-about-block h3 i {
-  background: none repeat scroll 0 0 #fff;
-  border: 2px solid #eee;
-  border-radius: 50%;
-  color: #9d9d9d;
-  display: block;
-  float: left;
-  font-size: 14px;
-  height: 35px;
-  line-height: 32px;
-  margin-left: -3px;
-  margin-right: 10px;
-  padding: 0;
-  position: relative;
-  text-align: center;
-  width: 35px;
+  margin-right: 5px;
 }
 #anspress .ap-about-block-c {
   padding-bottom: 30px;
-  padding-left: 40px;
 }
 #anspress .ap-about-stats {
   list-style: outside none none;

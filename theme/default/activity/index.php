@@ -22,7 +22,7 @@
 					endwhile;
 				?>
 			</div>
-		<?php //ap_questions_the_pagination(); ?>
+		<?php ap_activity_pagination(); ?>
 		<?php
 			else :
 				ap_get_template_part('content-none');
