@@ -83,7 +83,7 @@ class AnsPress_Activity_Query
 	 * @access public
 	 * @var int
 	 */
-	var $paged;
+	var $paged = 1;
 
 	/**
 	 * offset
@@ -106,9 +106,9 @@ class AnsPress_Activity_Query
 		$this->per_page = isset($args['per_page']) ? (int)$args['per_page'] : 20;
 
 		// Grab the current page number and set to 1 if no page number is set.
-		$this->paged = isset( $args['paged'] ) ? (int) $args['paged'] : (int)get_query_var( 'paged' );
+		$this->paged = isset( $args['paged'] ) ? (int) $args['paged'] : $this->paged;
 
-		$this->offset = $this->per_page * $this->paged;
+		$this->offset = $this->per_page * max($this->paged -1, 0);
 
 		$this->args = wp_parse_args( $args, array(
 			'number' 		=> $this->per_page,
@@ -116,6 +116,8 @@ class AnsPress_Activity_Query
 			'orderby' 		=> 'date',
 			'order' 		=> 'DESC',
 			'notification' 	=> false,
+			'subscriber' 	=> false,
+			'user_id' 		=> false,
 		));
 
 		// Process meta query arguments.
@@ -144,17 +146,23 @@ class AnsPress_Activity_Query
 	public function parse_query() {
 		global $wpdb;
 
-		$query = 'SELECT SQL_CALC_FOUND_ROWS * from '.$wpdb->prefix.'ap_activity ';
+		$base = 'SELECT SQL_CALC_FOUND_ROWS * from '.$wpdb->prefix.'ap_activity activity ';
 
-		if ( isset( $this->meta_query_sql['join'] ) ) {
-			$query .= $this->meta_query_sql['join'];
-		}
-		$query .= $this->join();
+		if ( $this->args['subscriber'] && $this->args['user_id'] ) {
+			$query = $this->subscriber_q();
+		}else{
+			$query = $base;
 
-		$query .= $this->where_clauses( $this->args );
+			if ( isset( $this->meta_query_sql['join'] ) ) {
+				$query .= $this->meta_query_sql['join'];
+			}
+			$query .= $this->join();
 
-		if ( isset( $this->meta_query_sql['where'] ) ) {
-			$query .= $this->meta_query_sql['where'];
+			$query .= $this->where_clauses( $this->args );
+
+			if ( isset( $this->meta_query_sql['where'] ) ) {
+				$query .= $this->meta_query_sql['where'];
+			}			
 		}
 
 		$query .= $this->order_clauses( $this->args );
@@ -177,6 +185,24 @@ class AnsPress_Activity_Query
 
 	}
 
+	public function subscriber_q(){
+		global $wpdb;
+		$q = 'SELECT SQL_CALC_FOUND_ROWS * FROM (';
+		$base = "SELECT * from {$wpdb->prefix}ap_activity activity";
+			
+		$q .= $base . " JOIN {$wpdb->ap_subscribers} subscriber ON subscriber.subs_item_id = activity.question_id AND subscriber.subs_activity = 'q_all' AND subscriber.subs_user_id=". (int)$this->args['user_id'] ." union all ";
+		
+		$q .= $base . " JOIN {$wpdb->ap_subscribers} subscriber1 ON subscriber1.subs_item_id = activity.answer_id AND subscriber1.subs_activity = 'a_all' AND subscriber1.subs_user_id=". (int)$this->args['user_id'] ."  union all ";
+
+		$q .= $base . " JOIN {$wpdb->ap_subscribers} subscriber2 ON subscriber2.subs_item_id = activity.user_id AND subscriber2.subs_activity = 'u_all' AND subscriber2.subs_user_id=". (int)$this->args['user_id'] ." union all ";
+		
+		$q .= $base . " JOIN {$wpdb->ap_subscribers} subscriber3 ON FIND_IN_SET(subscriber3.subs_item_id, activity.term_ids) AND subscriber3.subs_activity = 'tax_new_q' AND subscriber3.subs_user_id=". (int)$this->args['user_id'] ." WHERE activity.type = 'new_question' AND activity.term_ids IS NOT NULL ";
+
+		$q .= ") as activity GROUP BY activity.id";
+
+		return $q;
+	}
+
 	/**
 	 * Join statement
 	 * @return string
@@ -187,9 +213,8 @@ class AnsPress_Activity_Query
 		$join = '';
 
 		if ( $this->args['notification'] ) {
-			$join .= "";
-			$join .= " LEFT JOIN $wpdb->ap_notifications ON id = noti_activity_id ";
-		}
+			$join .= " LEFT JOIN {$wpdb->ap_notifications} noti ON activity.id = noti.noti_activity_id ";
+		}	
 
 		return $join;
 	}
@@ -205,14 +230,14 @@ class AnsPress_Activity_Query
 		if ( isset( $args['id'] ) ) {
 
 			$id 	= (int) $args['id'];
-			$where .= " AND id = $id";
+			$where .= " AND activity.id = $id";
 
 		} else {
 
-			if ( isset( $args['user_id'] ) && !$this->args['notification'] ) {
+			if ( false !== $args['user_id'] && !$this->args['notification'] && !$this->args['subscriber'] ) {
 
 				$ids 	= (int) $args['user_id'];
-				$where .= " AND user_id = $ids";
+				$where .= " AND activity.user_id = $ids";
 
 			} elseif ( isset( $args['user_id__in'] ) ) {
 
@@ -224,11 +249,11 @@ class AnsPress_Activity_Query
 					}
 
 					$ids = rtrim( $ids, ', ' );
-					$where .= " AND user_id IN ($ids)";
+					$where .= " AND activity.user_id IN ($ids)";
 
 				} else {
 					$ids 	= (int) $args['user_id__in'];
-					$where .= " AND user_id IN($ids)";
+					$where .= " AND activity.user_id IN($ids)";
 				}
 			}
 
@@ -242,11 +267,11 @@ class AnsPress_Activity_Query
 					}
 
 					$status = rtrim( $status, ', ' );
-					$where .= " AND status IN ($status)";
+					$where .= " AND activity.status IN ($status)";
 
 				} else {
 					$status 	= sanitize_text_field( strip_tags( $args['status'] ) );
-					$where 		.= " AND status =$status";
+					$where 		.= " AND activity.status =$status";
 				}
 			}
 
@@ -260,27 +285,27 @@ class AnsPress_Activity_Query
 					}
 
 					$type = rtrim( $type, ', ' );
-					$where .= " AND type IN ($type)";
+					$where .= " AND activity.type IN ($type)";
 
 				} else {
 					$type 		= sanitize_text_field( strip_tags( $args['type'] ) );
-					$where 		.= " AND type =$type";
+					$where 		.= " AND activity.type =$type";
 				}
 			}
 
 			if ( isset( $args['question_id'] ) ) {
 				$question_id 		= (int) $args['question_id'];
-				$where 		.= " AND question_id ='$question_id'";
+				$where 		.= " AND activity.question_id ='$question_id'";
 			}
 
 			if ( isset( $args['item_id'] ) ) {
 				$item_id 	= sanitize_text_field( strip_tags( $args['item_id'] ) );
-				$where 			.= " AND item_id ='$item_id'";
+				$where 			.= " AND activity.item_id ='$item_id'";
 			}
 		}
 
 		if ( $this->args['notification'] ) {
-			$where .= $wpdb->prepare(" AND noti_user_id=%d", $args['user_id']);
+			$where .= $wpdb->prepare(" AND noti.noti_user_id=%d", $args['user_id']);
 		}
 
 		return $where;
@@ -295,12 +320,12 @@ class AnsPress_Activity_Query
 		$order = '';
 
 		if ( ! isset( $args['orderby'] ) ) {
-			$order .= ' ORDER BY id';
+			$order .= ' ORDER BY activity.id';
 		} else {
 			$orderby 		= sanitize_text_field( strip_tags( $args['orderby'] ) );
 			$orderby_field 	= array( 'id', 'question_id', 'item_id', 'updated', 'created' );
 			$orderby 		= in_array( $orderby, $orderby_field ) ? $orderby : 'id';
-			$order 			.= " ORDER BY $orderby";
+			$order 			.= " ORDER BY activity.$orderby";
 		}
 
 		// Order.
@@ -392,8 +417,10 @@ class AnsPress_Activity_Query
 		}
 	}
 
-	public function the_pagination() {
-		$base = ap_get_link_to( 'activity' ) . '/%_%';
+	public function the_pagination($base = false) {
+		if( false === $base ){
+			$base = ap_get_link_to( 'activity' ) . '/%_%';
+		}
 		ap_pagination( $this->paged, $this->total_pages, $base );
 	}
 }
@@ -448,6 +475,7 @@ function ap_insert_activity( $args ) {
 		'question_id' => '',
 		'answer_id' => '',
 		'item_id' => '',
+		'term_ids' => '',
 		'created' => '',
 		'updated' => '',
 	);
@@ -466,6 +494,7 @@ function ap_insert_activity( $args ) {
 	$args['question_id'] = (int) $args['question_id'];
 	$args['answer_id'] = (int) $args['answer_id'];
 	$args['item_id'] = (int) $args['item_id'];
+	$args['term_ids'] = sanitize_comma_delimited( $args['term_ids'] );
 
 	if ( empty( $args['created'] ) || '0000-00-00 00:00:00' == $args['created'] ) {
 		$args['created'] = current_time( 'mysql' );
@@ -589,6 +618,7 @@ function ap_new_activity( $args = array() ) {
 		'question_id' 		=> '',
 		'answer_id' 		=> '',
 		'item_id' 			=> '',
+		'term_ids' 			=> '',
 		'created' 			=> '',
 		'updated' 			=> '',
 	);
@@ -1086,9 +1116,9 @@ function ap_activity_user_id() {
 	}
 }
 
-function ap_activity_pagination() {
+function ap_activity_pagination( $base = false) {
 	global $ap_activities;
-	$ap_activities->the_pagination();
+	$ap_activities->the_pagination($base);
 }
 
 function ap_activity_delete_btn(){

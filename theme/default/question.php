@@ -7,6 +7,7 @@
  * @license    http://opensource.org/licenses/gpl-license.php  GNU Public License
  * @author    Rahul Aryan <support@anspress.io>
  */
+
 ?>
 <div id="ap-single" class="ap-q clearfix" itemtype="http://schema.org/Question" itemscope="">
 	<?php

@@ -27,10 +27,10 @@ function ap_new_subscriber( $user_id, $item_id, $actiity, $question_id = 0 ) {
 	$row = $wpdb->insert(
 		$wpdb->ap_subscribers,
 		array(
-			'user_id' => $user_id,
-			'question_id' => $question_id,
-			'item_id' => $item_id,
-			'activity' => $actiity,
+			'subs_user_id' => $user_id,
+			'subs_question_id' => $question_id,
+			'subs_item_id' => $item_id,
+			'subs_activity' => $actiity,
 		),
 		array(
 			'%d',
@@ -64,14 +64,14 @@ function ap_remove_subscriber($item_id, $user_id = false, $activity = false, $su
 
 	global $wpdb;
 
-	$cols = array( 'item_id' => (int) $item_id );
+	$cols = array( 'subs_item_id' => (int) $item_id );
 
 	if ( false !== $user_id ) {
-		$cols['user_id'] = (int) $user_id;
+		$cols['subs_user_id'] = (int) $user_id;
 	}
 
 	if ( false !== $activity ) {
-		$cols['activity'] = sanitize_title_for_query( $activity );
+		$cols['subs_activity'] = sanitize_title_for_query( $activity );
 	}
 
 	$row = $wpdb->delete(
@@ -116,7 +116,7 @@ function ap_is_user_subscribed($item_id, $activity, $user_id = false) {
 		return $cache > 0;
 	}
 
-	$count = $wpdb->get_var( $wpdb->prepare( 'SELECT count(*) FROM '. $wpdb->ap_subscribers .' WHERE item_id=%d AND activity="%s" AND user_id = %d', $item_id, $activity, $user_id ) );
+	$count = $wpdb->get_var( $wpdb->prepare( 'SELECT count(*) FROM '. $wpdb->ap_subscribers .' WHERE subs_item_id=%d AND subs_activity="%s" AND subs_user_id = %d', $item_id, $activity, $user_id ) );
 
 	wp_cache_set( $key, $count, 'ap_subscriber_count' );
 
@@ -142,7 +142,7 @@ function ap_subscribers_count($item_id = false, $activity = 'q_all') {
 		return $cache;
 	}
 
-	$count = $wpdb->get_var( $wpdb->prepare( 'SELECT count(*) FROM '. $wpdb->ap_subscribers .' WHERE item_id=%d AND activity="%s"', $item_id, $activity ) );
+	$count = $wpdb->get_var( $wpdb->prepare( 'SELECT count(*) FROM '. $wpdb->ap_subscribers .' WHERE subs_item_id=%d AND subs_activity="%s"', $item_id, $activity ) );
 
 	wp_cache_set( $key, $count, 'ap_subscriber_count' );
 
@@ -212,7 +212,7 @@ function ap_get_subscribers( $action_id, $activity = 'q_all', $limit = 10 ) {
 		return $cache;
 	}
 
-	$results = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM '.$wpdb->ap_subscribers.' where item_id=%d AND activity="%s" LIMIT 0 , %d', $action_id, $activity, $limit ) );
+	$results = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM '.$wpdb->ap_subscribers.' where subs_item_id=%d AND subs_activity="%s" LIMIT 0 , %d', $action_id, $activity, $limit ) );
 
 	// Set individual cache for subscriber.
 	if ( $results ) {
@@ -356,17 +356,17 @@ function ap_subscriber_ids( $item_id =false, $activity = 'q_all', $question_id =
 	$item = '';
 
 	if ( false !== $item_id ) {
-		$item = $wpdb->prepare( 'item_id = %d AND', $item_id );
+		$item = $wpdb->prepare( 'subs_item_id = %d AND', $item_id );
 	}
 
 	$question = '';
 	if ( 0 != $question_id ) {
-		$question = $wpdb->prepare( 'AND question_id=%d', $question_id );
+		$question = $wpdb->prepare( 'AND subs_question_id=%d', $question_id );
 	}
 
 	$i = 1;
 	if ( is_array( $activity ) && count( $activity ) > 0 ) {
-		$activity_q .= ' activity IN(';
+		$activity_q .= ' subs_activity IN(';
 
 		foreach ( $activity as $a ) {
 			$activity_q .= '"'. sanitize_title_for_query( $a ) .'"';
@@ -378,10 +378,10 @@ function ap_subscriber_ids( $item_id =false, $activity = 'q_all', $question_id =
 
 		$activity_q .= ') ';
 	} else {
-		$activity_q = ' activity = "'. sanitize_title_for_query( $activity ) .'"';
+		$activity_q = ' subs_activity = "'. sanitize_title_for_query( $activity ) .'"';
 	}
 
-	$results = $wpdb->get_col( 'SELECT user_id FROM '.$wpdb->ap_subscribers.' WHERE '.$item.' '. $activity_q .' '. $question .' GROUP BY user_id' );
+	$results = $wpdb->get_col( 'SELECT subs_user_id FROM '.$wpdb->ap_subscribers.' WHERE '.$item.' '. $activity_q .' '. $question .' GROUP BY subs_user_id' );
 
 	wp_cache_set( $key, $results, 'ap_subscribers_ids' );
 	return $results;

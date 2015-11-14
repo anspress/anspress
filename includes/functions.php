@@ -259,8 +259,8 @@ function get_question_id() {
  * @return string|null
  */
 function ap_human_time($time, $unix = true, $show_full_date = 604800, $format = 'd M, Y') {
-	if ( ! $unix ) {
-		$time = strtotime( $time );
+	if(!is_numeric($time) && !$unix ){
+		$time = strtotime($time);
 	}
 
 	if ( $time ) {

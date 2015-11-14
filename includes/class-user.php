@@ -44,14 +44,13 @@ class AnsPress_User
 
 		ap_register_page( ap_opt( 'user_page_slug' ), __( 'User', 'ap' ), array( $this, 'user_page' ), false );
 		ap_register_user_page( 'about', __( 'About', 'ap' ), array( $this, 'about_page' ) );
+		ap_register_user_page( 'activity-feed', __( 'Activity Feed', 'ap' ), array( $this, 'feed_page' ), true );
 		ap_register_user_page( 'notification', __( 'Notification', 'ap' ), array( $this, 'notification_page' ), true, false );
 		ap_register_user_page( 'profile', __( 'Profile', 'ap' ), array( $this, 'profile_page' ), true, false );
 		ap_register_user_page( 'questions', __( 'Questions', 'ap' ), array( $this, 'questions_page' ) );
 		ap_register_user_page( 'answers', __( 'Answers', 'ap' ), array( $this, 'answers_page' ) );
 		ap_register_user_page( 'followers', __( 'Followers', 'ap' ), array( $this, 'followers_page' ) );
 		ap_register_user_page( 'following', __( 'Following', 'ap' ), array( $this, 'following_page' ) );
-		ap_register_user_page( 'subscription', __( 'Subscription', 'ap' ), array( $this, 'subscription_page' ), true, false );
-
 		add_filter( 'ap_page_title', array( $this, 'ap_page_title' ) );
 	}
 
@@ -101,6 +100,17 @@ class AnsPress_User
 	 */
 	public function about_page() {
 		ap_get_template_part( 'user/about' );
+	}
+
+	/**
+	 * Output user feed page.
+	 * @since 2.4
+	 */
+	public function feed_page() {
+		global $ap_activities;
+		$paged = get_query_var( 'paged', 1 );
+	    $ap_activities = ap_get_activities( array( 'per_page' => 20, 'subscriber' => true, 'user_id' => ap_get_displayed_user_id(), 'orderby' => 'created', 'order' => 'DESC', 'paged' => $paged ) );
+		ap_get_template_part( 'user/activity-feed' );
 	}
 
 	/**
@@ -192,30 +202,9 @@ class AnsPress_User
 		} else {
 			esc_attr_e( 'You are not following anyone.', 'ap' );
 		}
-
 	}
 
-	/**
-	 * Register user subscription page
-	 * @since 2.3
-	 */
-	public function subscription_page() {
-		global $questions;
-
-		if ( ! ap_is_user_page_public( 'profile' ) && ! ap_is_my_profile() ) {
-			ap_get_template_part( 'not-found' );
-			return;
-		}
-
-		$questions = ap_get_questions( array(
-			'ap_query' 	=> 'ap_subscription_query',
-			'user_id' 	=> get_current_user_id(),
-			'sortby' 	=> 'newest',
-		) );
-
-		ap_get_template_part( 'user/subscription' );
-	}
-
+	
 	/**
 	 * Filter AnsPress page title for user sub pages
 	 * @param  string $title Title.
@@ -228,6 +217,7 @@ class AnsPress_User
 			$active = ap_active_user_page();
 			$name = ap_user_get_the_display_name();
 			$my = ap_is_my_profile();
+			$user_pages = anspress()->user_pages;
 
 			if ( 'activity' == $active ) {
 				$title = $my ?  __( 'My activity', 'ap' ) : sprintf( __( '%s\'s activity', 'ap' ), $name );
@@ -257,6 +247,8 @@ class AnsPress_User
 
 			elseif ('notification' == $active)
 				$title = __( 'My notification', 'ap' );
+			else
+				$title = $user_pages[$active]['title'];
 		}
 
 		return $title;
@@ -597,8 +589,9 @@ class AnsPress_User
 			'reputation'    => ap_icon( 'reputation' ),
 			'followers'     => ap_icon( 'users' ),
 			'following'     => ap_icon( 'users' ),
-			'subscription'  => ap_icon( 'rss' ),
+			'subscription'  => ap_icon( 'mail' ),
 			'notification'  => ap_icon( 'globe' ),
+			'activity-feed'  		=> ap_icon( 'rss' ),
 		);
 
 		foreach ( $icons as $k => $i ) {
