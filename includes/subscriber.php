@@ -217,7 +217,7 @@ function ap_get_subscribers( $action_id, $activity = 'q_all', $limit = 10 ) {
 	// Set individual cache for subscriber.
 	if ( $results ) {
 		foreach ( $results as $s ) {
-			$s_key = $s->item_id .'_'. $s->activity .'_'. $s->user_id;
+			$s_key = $s->subs_item_id .'_'. $s->subs_activity .'_'. $s->subs_user_id;
 			$old_cache = wp_cache_get( $s_key, 'ap_subscribers' );
 
 			if ( false !== $old_cache ) {
@@ -297,9 +297,9 @@ function ap_question_subscribers($action_id = false, $type = '', $avatar_size = 
 		echo '<div class="ap-question-subscribers clearfix">';
 		echo '<div class="ap-question-subscribers-inner">';
 		foreach ( $subscribers as $subscriber ) {
-			echo '<a href="'.ap_user_link( $subscriber->user_id ).'"';
-			ap_hover_card_attributes( $subscriber->user_id );
-			echo '>'.get_avatar( $subscriber->user_id, $avatar_size ).'</a>';
+			echo '<a href="'.ap_user_link( $subscriber->subs_user_id ).'"';
+			ap_hover_card_attributes( $subscriber->subs_user_id );
+			echo '>'.get_avatar( $subscriber->subs_user_id, $avatar_size ).'</a>';
 		}
 		echo '</div>';
 		echo '</div>';

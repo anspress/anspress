@@ -307,7 +307,7 @@ function ap_user_menu($collapse = true, $user_id = false) {
 	}
 
 	$active_user_page   = get_query_var( 'user_page' );
-	$active_user_page   = $active_user_page ? $active_user_page : 'about';
+	$active_user_page   = ap_active_user_page();
 
 	if ( ! empty( $menus ) && is_array( $menus ) ) {
 
@@ -365,7 +365,12 @@ function ap_user_page() {
  */
 function ap_active_user_page() {
 	$user_page        = sanitize_text_field( get_query_var( 'user_page' ) );
-	return  $user_page ? $user_page : 'about';
+
+	if( !empty($user_page)){
+		return $user_page;
+	}
+
+	return  ap_is_my_profile() ? 'activity-feed' : 'about';
 }
 
 /**
