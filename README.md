@@ -11,8 +11,8 @@
 Free question and answer plugin for WordPress. Made with developers in mind, highly customizable.
 
 ## Description ##
-**Demo & support forum:** http://anspress.io/  
-**GitHub repo:** [Git AnsPress](https://github.com/anspress/anspress/)  
+Demo & support forum: http://anspress.io/
+GitHub repo: [Git AnsPress](https://github.com/anspress/anspress/)
 
 Easily add question and answer section like stackoverflow.com or quora.com in your WordPress.
 AnsPress is a most complete question and answer system for WordPress. AnsPress is made with developers in mind, highly customizable. AnsPress provide an easy to use override system for theme.
@@ -42,7 +42,7 @@ List of features:
   * Tags suggestions
   * Comment on question and answer
   * reCaptcha
-**  * User level :** Participant, Editor, Moderator  
+  * User level : Participant, Editor, Moderator
   * Email notification
   * User can add questions to his favorite
   * User can edit profile
@@ -73,27 +73,27 @@ Read full FAQ here http://anspress.io/documents/doc_page=faq
 ## Screenshots ##
 
 ### 1. Question list page. ###
-![Question list page.](http://s.wordpress.org/extend/plugins/anspress---question-and-answer/screenshot-1.png)
+![Question list page.](http://ps.w.org/anspress---question-and-answer/assets/screenshot-1.png)
 
 
 ### 2. Single question page. ###
-![Single question page.](http://s.wordpress.org/extend/plugins/anspress---question-and-answer/screenshot-2.png)
+![Single question page.](http://ps.w.org/anspress---question-and-answer/assets/screenshot-2.png)
 
 
 ### 3. User profile ###
-![User profile](http://s.wordpress.org/extend/plugins/anspress---question-and-answer/screenshot-3.png)
+![User profile](http://ps.w.org/anspress---question-and-answer/assets/screenshot-3.png)
 
 
 ### 4. User hover card ###
-![User hover card](http://s.wordpress.org/extend/plugins/anspress---question-and-answer/screenshot-4.png)
+![User hover card](http://ps.w.org/anspress---question-and-answer/assets/screenshot-4.png)
 
 
 ### 5. Users directory ###
-![Users directory](http://s.wordpress.org/extend/plugins/anspress---question-and-answer/screenshot-5.png)
+![Users directory](http://ps.w.org/anspress---question-and-answer/assets/screenshot-5.png)
 
 
 ### 6. Notifications ###
-![Notifications](http://s.wordpress.org/extend/plugins/anspress---question-and-answer/screenshot-6.png)
+![Notifications](http://ps.w.org/anspress---question-and-answer/assets/screenshot-6.png)
 
 
 

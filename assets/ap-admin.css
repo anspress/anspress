@@ -29,7 +29,7 @@
 #anspress .ap-user-posts-vcount i {
   background: none repeat scroll 0 0 rgba(0, 0, 0, 0.05);
   border-radius: 2px 0 0 2px;
-  color: #888888;
+  color: #888;
   display: block;
   float: left;
   font-size: 12px;
@@ -51,7 +51,7 @@
   color: #fff;
 }
 #anspress .ap-user-posts-active {
-  color: #888888;
+  color: #888;
   float: right;
   overflow: hidden;
   text-align: right;
@@ -59,13 +59,13 @@
   width: 70px;
 }
 #anspress .ap-user-posts-ccount {
-  color: #888888;
+  color: #888;
   float: right;
   margin-right: 10px;
   text-align: center;
 }
 #anspress .ap-user-posts-footer {
-  color: #888888;
+  color: #888;
   padding: 10px 0;
 }
 #anspress .ap-user-posts-footer > a {

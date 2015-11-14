@@ -45,7 +45,7 @@ module.exports = function(grunt) {
 	    	}
 	    },
 	    csscomb: {
-	    	files: ['**/*.css'],
+	    	files: ['**/*.css', '!**/node_modules/**'],
 	    	tasks: ['csscomb'],
 	    },
 
@@ -140,6 +140,6 @@ module.exports = function(grunt) {
 		},
 	});
 
-grunt.registerTask( 'build', [ 'phplint', 'wp_readme_to_markdown', 'makepot', 'csscomb', 'version', 'less', 'uglify', 'copy', 'compress' ]);
+grunt.registerTask( 'build', [ 'phplint', 'wp_readme_to_markdown', 'makepot', 'version', 'less', 'uglify', 'compress' ]);
 
 }

@@ -1026,7 +1026,7 @@
 }
 #anspress a {
   text-decoration: none;
-  color: #2488b7;
+  color: #2488B7;
 }
 #anspress .ap-pull-right {
   float: right !important;
@@ -1076,12 +1076,12 @@
   display: none;
 }
 #anspress .ap-tab {
-  border-bottom: solid 2px #eeeeee;
+  border-bottom: solid 2px #eee;
   margin-bottom: 10px;
 }
 #anspress .ap-tab li.active a {
-  background: #ffffff;
-  border-color: #eeeeee #eeeeee transparent;
+  background: #fff;
+  border-color: #eee #eee transparent;
   border-style: solid solid none;
   border-width: 1px 1px medium;
   margin-bottom: -2px;
@@ -1093,7 +1093,7 @@
   -moz-background-clip: padding;
   border-radius: 3px 3px 0 0;
   background-clip: padding-box;
-  color: #333333;
+  color: #333;
 }
 #anspress .ap-tab li:first-child {
   margin-left: 5px;
@@ -1102,11 +1102,11 @@
   display: block;
   padding: 10px 15px;
   text-decoration: none;
-  color: #888888;
+  color: #888;
   font-weight: 600;
 }
 #anspress .ap-tab li a:hover {
-  background: #eeeeee;
+  background: #eee;
 }
 #anspress .block {
   display: block;
@@ -1117,7 +1117,7 @@
 }
 #anspress .ap-pagination span,
 #anspress .ap-pagination a {
-  border: 1px solid #eeeeee;
+  border: 1px solid #eee;
   display: block;
   float: left;
   margin-right: 5px;
@@ -1131,13 +1131,13 @@
   background-clip: padding-box;
 }
 #anspress .ap-pagination span {
-  background: #eeeeee;
+  background: #eee;
 }
 #anspress .ap-notice {
   display: block;
 }
 #anspress .border-top {
-  border-top: solid 1px #eeeeee;
+  border-top: solid 1px #eee;
 }
 #anspress .margin-top-20 {
   margin-top: 20px;
@@ -1172,7 +1172,7 @@
 }
 #anspress .ap-questions-tab > li.active a,
 #anspress .ap-answers-tab > li.active a {
-  background: #61c17d;
+  background: #61C17D;
   color: #fff;
   margin: -1px;
   padding: 6px 10px;
@@ -1230,7 +1230,7 @@
   margin-right: 15px;
 }
 #anspress .ap-pending-notice {
-  background: #f4ac20;
+  background: #F4AC20;
   border-radius: 2px;
   margin: 0 15px 10px;
   padding: 20px;
@@ -1394,7 +1394,7 @@ body ul ul#ap-user-menu-link li > a {
   display: block;
   min-width: 160px;
   padding: 11px 15px;
-  color: #333333;
+  color: #333;
 }
 body ul ul#ap-user-menu-link li > a:before {
   margin-right: 10px;
@@ -1454,14 +1454,14 @@ body ul ul#ap-user-menu-link li > a .count {
   margin-top: 0;
 }
 #anspress .ap-questions-title a {
-  color: #2488b7;
+  color: #2488B7;
   text-decoration: none;
 }
 #anspress .ap-questions-count {
   background: #fff;
   border: 2px solid #ddd;
   border-radius: 2px;
-  color: #333333;
+  color: #333;
   display: block;
   float: left;
   font-size: 13px;
@@ -1481,20 +1481,20 @@ body ul ul#ap-user-menu-link li > a .count {
 }
 #anspress .ap-questions-acount {
   background: #fff;
-  border-color: #61c17d;
-  color: #333333;
+  border-color: #61C17D;
+  color: #333;
 }
 #anspress .ap-questions-acount span {
-  color: #333333;
+  color: #333;
 }
 #anspress .ap-questions-summery {
   padding-right: 10px;
 }
 #anspress .ap-questions .ap-display-meta-item {
-  color: #777777;
+  color: #777;
 }
 #anspress .ap-questions .ap-display-meta-item a {
-  color: #777777;
+  color: #777;
 }
 #anspress .ap-questions .ap-display-meta-item i:before {
   color: #aaa;
@@ -1577,7 +1577,7 @@ body ul ul#ap-user-menu-link li > a .count {
   border-right: solid 1px #eee;
 }
 #anspress #ap-question-sorting .ap-dropdown-toggle.active {
-  background: #61c17d;
+  background: #61C17D;
   color: #fff;
   margin: -1px;
   padding: 7px 10px;
@@ -1698,7 +1698,7 @@ body ul ul#ap-user-menu-link li > a .count {
 #anspress .ap-q-actions .ap-dropdown-toggle {
   background: none;
   border: medium none;
-  color: #2488b7;
+  color: #2488B7;
   display: block;
   font-size: 12px;
   line-height: 25px;
@@ -1707,11 +1707,11 @@ body ul ul#ap-user-menu-link li > a .count {
 }
 #anspress .ap-q-actions > li.ap-post-action > a:visited,
 #anspress .ap-q-actions .ap-dropdown-toggle:visited {
-  color: #2488b7;
+  color: #2488B7;
 }
 #anspress .ap-q-actions > li.ap-post-action > a:hover,
 #anspress .ap-q-actions .ap-dropdown-toggle:hover {
-  color: #333333;
+  color: #333;
   background: none;
 }
 #anspress .ap-q-actions > li.ap-post-action > a i,
@@ -1760,11 +1760,11 @@ body ul ul#ap-user-menu-link li > a .count {
 #anspress .ap-question-meta > .ap-display-meta-item i {
   vertical-align: middle;
   margin-right: 4px;
-  color: #888888;
+  color: #888;
 }
 #anspress .ap-question-meta .question-tags a,
 #anspress .ap-question-meta .question-categories a {
-  color: #333333;
+  color: #333;
   border: 1px solid #e1e1e1;
   border-radius: 3px;
   font-size: 13px;
@@ -1773,21 +1773,21 @@ body ul ul#ap-user-menu-link li > a .count {
 }
 #anspress .ap-question-meta .question-tags a:hover,
 #anspress .ap-question-meta .question-categories a:hover {
-  color: #333333;
+  color: #333;
 }
 #anspress .ap-question-meta .question-tags a:last-child,
 #anspress .ap-question-meta .question-categories a:last-child {
   margin-right: 0;
 }
 #anspress .ap-user-meta a {
-  color: #2488b7;
+  color: #2488B7;
 }
 #anspress .ap-user-meta-reputation {
   color: #888;
   font-size: 12px;
 }
 #anspress .ap-answers-label {
-  color: #333333;
+  color: #333;
   display: block;
   font-size: 20px;
   line-height: 100%;
@@ -1829,8 +1829,8 @@ body ul ul#ap-user-menu-link li > a .count {
   font-style: normal;
 }
 .ap-post-tags li a:hover {
-  border-color: #61c17d;
-  color: #333333;
+  border-color: #61C17D;
+  color: #333;
 }
 .ap-post-tags li:last-child a {
   margin-bottom: 0;
@@ -1903,7 +1903,7 @@ body ul ul#ap-user-menu-link li > a .count {
   top: 0;
 }
 .comment-awaiting-moderation {
-  background: #f4ac20;
+  background: #F4AC20;
   -webkit-border-radius: 2px;
   -webkit-background-clip: padding-box;
   -moz-border-radius: 2px;
@@ -1944,7 +1944,7 @@ body ul ul#ap-user-menu-link li > a .count {
   background-image: linear-gradient(#ffffff, #fcfcfc);
   border: 1px solid rgba(0, 0, 0, 0.15);
   border-radius: 3px;
-  color: #333333;
+  color: #333;
   font-weight: 600;
   line-height: 1.6;
   padding: 4px 10px;
@@ -1994,7 +1994,7 @@ body ul ul#ap-user-menu-link li > a .count {
   opacity: 0.3;
 }
 #anspress .ap-vote .net-vote-count {
-  color: #333333;
+  color: #333;
   display: block;
   font-size: 13px;
   font-weight: bold;
@@ -2043,8 +2043,8 @@ body ul ul#ap-user-menu-link li > a .count {
   outline: none;
 }
 #anspress .ap-radio-btn.active {
-  background: #61c17d;
-  border-color: #61c17d;
+  background: #61C17D;
+  border-color: #61C17D;
 }
 #anspress .ap-radio-btn.active:before {
   right: 0;
@@ -2096,7 +2096,7 @@ body ul ul#ap-user-menu-link li > a .count {
 }
 #anspress .ap-btn-toggle.active .apicon-toggle-on {
   display: inline;
-  color: #61c17d;
+  color: #61C17D;
 }
 #anspress .ap-btn-toggle.active .apicon-toggle-off {
   display: none;
@@ -2180,7 +2180,7 @@ body ul ul#ap-user-menu-link li > a .count {
   margin-right: 10px;
 }
 #anspress .ap-checkbox-withdesc p {
-  color: #888888;
+  color: #888;
   font-size: 13px;
   margin-bottom: 0;
 }
@@ -2198,11 +2198,11 @@ body ul ul#ap-user-menu-link li > a .count {
 }
 #anspress .ap-form-fields.ap-have-error.being-edited .ap-form-control,
 #anspress .ap-form-fields.ap-have-error.being-edited .ap-editor {
-  border-color: #f4ac20;
-  background: #ffffff;
+  border-color: #F4AC20;
+  background: #fff;
 }
 #anspress .ap-form-fields.ap-have-error.being-edited .ap-form-error-message {
-  background: #f4ac20;
+  background: #F4AC20;
 }
 #anspress .ap-form-fields .ap-form-error-message {
   border-radius: 2px;
@@ -2371,7 +2371,7 @@ body ul ul#ap-user-menu-link li > a .count {
   -moz-background-clip: padding;
   border-radius: 50%;
   background-clip: padding-box;
-  color: #ffffff;
+  color: #fff;
   display: inline-block;
   font-size: 11px;
   height: 15px;
@@ -2440,11 +2440,11 @@ body ul ul#ap-user-menu-link li > a .count {
   font-weight: 400;
 }
 #anspress .ap-post-upload-form .ap-upload-link {
-  color: #2488b7;
+  color: #2488B7;
   position: relative;
 }
 #anspress .ap-post-upload-form .ap-upload-remote-link {
-  color: #2488b7;
+  color: #2488B7;
   cursor: pointer;
 }
 #anspress .ap-post-upload-form .ap-upload-input {
@@ -2595,7 +2595,7 @@ body ul ul#ap-user-menu-link li > a .count {
 }
 #anspress .ap-commentlist .comment .ap-comment-action a {
   text-decoration: none;
-  color: #2488b7;
+  color: #2488B7;
 }
 #anspress .ap-commentlist .comment .ap-comment-action i {
   font-size: 10px;
@@ -2628,7 +2628,7 @@ body ul ul#ap-user-menu-link li > a .count {
   background-image: linear-gradient(#ffffff, #fcfcfc);
   border: 1px solid rgba(0, 0, 0, 0.15);
   border-radius: 3px;
-  color: #333333;
+  color: #333;
   font-weight: 600;
   line-height: 1.6;
   padding: 4px 10px;
@@ -2657,7 +2657,7 @@ body ul ul#ap-user-menu-link li > a .count {
   background-image: linear-gradient(#ffffff, #fcfcfc);
   border: 1px solid rgba(0, 0, 0, 0.15);
   border-radius: 3px;
-  color: #333333;
+  color: #333;
   font-weight: 600;
   line-height: 1.6;
   padding: 4px 10px;
@@ -3076,10 +3076,10 @@ body ul ul#ap-user-menu-link li > a .count {
   color: #eb5837;
 }
 #ap-notify .ap-notify-item.success i {
-  color: #61c17d;
+  color: #61C17D;
 }
 #ap-notify .ap-notify-item.warning i {
-  color: #f4ac20;
+  color: #F4AC20;
 }
 #ap-notify .ap-notify-item i {
   color: #fff;
@@ -3278,7 +3278,7 @@ body ul ul#ap-user-menu-link li > a .count {
   font-weight: 600;
   margin-bottom: 4px;
   white-space: nowrap;
-  color: #333333;
+  color: #333;
 }
 #anspress .ap-users-summary {
   float: left;
@@ -3347,7 +3347,7 @@ body ul ul#ap-user-menu-link li > a .count {
 #anspress .ap-user-posts-vcount i {
   background: none repeat scroll 0 0 rgba(0, 0, 0, 0.05);
   border-radius: 2px 0 0 2px;
-  color: #888888;
+  color: #888;
   display: block;
   float: left;
   font-size: 12px;
@@ -3369,7 +3369,7 @@ body ul ul#ap-user-menu-link li > a .count {
   color: #fff;
 }
 #anspress .ap-user-posts-active {
-  color: #888888;
+  color: #888;
   float: right;
   overflow: hidden;
   text-align: right;
@@ -3377,13 +3377,13 @@ body ul ul#ap-user-menu-link li > a .count {
   width: 70px;
 }
 #anspress .ap-user-posts-ccount {
-  color: #888888;
+  color: #888;
   float: right;
   margin-right: 10px;
   text-align: center;
 }
 #anspress .ap-user-posts-footer {
-  color: #888888;
+  color: #888;
   padding: 10px 0;
 }
 #anspress .ap-user-posts-footer > a {
@@ -3413,15 +3413,15 @@ body ul ul#ap-user-menu-link li > a .count {
   display: block;
 }
 #anspress .ap-dropdown-menu li.active a {
-  background: #61c17d;
+  background: #61C17D;
   color: #fff;
 }
 #anspress .ap-dropdown-menu li.active a:hover {
-  background: #61c17d;
+  background: #61C17D;
   color: #fff;
 }
 .ap-answers-nav {
-  background: #61c17d;
+  background: #61C17D;
   box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
   color: #fff;
   font-weight: 600;
@@ -3471,7 +3471,7 @@ body ul ul#ap-user-menu-link li > a .count {
   margin: 0;
 }
 #anspress .ap-breadcrumbs > li a {
-  color: #2488b7;
+  color: #2488B7;
 }
 .ap-modal {
   bottom: 0;
@@ -3531,7 +3531,7 @@ body ul ul#ap-user-menu-link li > a .count {
   border: 1px solid #a0a0a0;
   border-radius: 2px;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
-  color: #333333;
+  color: #333;
   font-family: Arial, sans-serif;
   font-size: 14px;
   line-height: 16px;
@@ -3696,7 +3696,7 @@ body ul #ap-notification-dropdown .ap-notification-items a:hover,
 body ul #ap-notifiside .ap-notification-items a:hover,
 body ul #ap-notification-dropdown .ap-notification-footer a:hover,
 body ul #ap-notifiside .ap-notification-footer a:hover {
-  color: #333333;
+  color: #333;
 }
 body ul #ap-notification-dropdown .ap-notification-head .ap-avatar,
 body ul #ap-notifiside .ap-notification-head .ap-avatar,
@@ -3719,7 +3719,7 @@ body ul #ap-notification-dropdown a,
 body ul #ap-notifiside a {
   background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
   border: medium none;
-  color: #333333;
+  color: #333;
   display: inline;
   font-family: "helvetica", arial, serif;
   font-size: 12px;
@@ -3731,7 +3731,7 @@ body ul #ap-notifiside a {
 }
 body ul #ap-notification-dropdown a:hover,
 body ul #ap-notifiside a:hover {
-  color: #333333;
+  color: #333;
 }
 body ul #ap-notification-dropdown .ap-notification-time,
 body ul #ap-notifiside .ap-notification-time {
@@ -3749,7 +3749,7 @@ body ul #ap-notification-dropdown .ap-notification-head a,
 body ul #ap-notifiside .ap-notification-head a {
   float: right;
   width: auto;
-  color: #2488b7;
+  color: #2488B7;
   background: none;
 }
 body ul #ap-notification-dropdown .ap-notification-head b,
@@ -3765,7 +3765,7 @@ body ul #ap-notifiside .ap-notification-footer {
 }
 body ul #ap-notification-dropdown .ap-notification-footer a,
 body ul #ap-notifiside .ap-notification-footer a {
-  color: #2488b7;
+  color: #2488B7;
 }
 body ul #ap-notification-dropdown .ap-notification-scroll,
 body ul #ap-notifiside .ap-notification-scroll {
@@ -3844,10 +3844,10 @@ body ul #ap-notifiside .ap-notification-head {
   color: #fff;
 }
 #anspress .ap-notification-content a {
-  color: #333333;
+  color: #333;
 }
 #anspress .ap-notification-content a b {
-  color: #2488b7;
+  color: #2488B7;
   font-weight: normal;
 }
 .ap-notification-icon {
@@ -3873,7 +3873,7 @@ body ul #ap-notifiside .ap-notification-head {
   background: #8DC5ED;
 }
 .ap-notification-icon.new_answer {
-  background: #61c17d;
+  background: #61C17D;
 }
 .ap-notification-icon.new_follower {
   background: #C9B4FF;
