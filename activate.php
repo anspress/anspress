@@ -25,6 +25,10 @@ function anspress_activate( $network_wide ) {
 
 	ap_create_base_page();
 
+	if(  in_array(ap_opt( 'ap_version' ), array('2.3.8', '2.4-beta1', '2.4-beta2', '2.4-beta3', '2.4-beta4'))  ){
+		update_option( 'ap_update_helper', true );
+	}
+
 	if ( ap_opt( 'ap_version' ) != AP_VERSION ) {
 		ap_opt( 'ap_installed', 'false' );
 		ap_opt( 'ap_version', AP_VERSION );

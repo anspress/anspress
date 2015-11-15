@@ -78,6 +78,7 @@ class AnsPress_Admin
 		add_action( 'current_screen', array( $this, 'comments_flag_query' ), 10, 2 );
 		add_action( 'get_pages', array( $this, 'get_pages' ), 10, 2 );
 		add_action( 'wp_insert_post_data', array( $this, 'modify_answer_title' ), 10, 2 );
+		add_action( 'admin_action_ap_update_helper', array( $this, 'update_helper' ));
 	}
 
 	/**
@@ -561,6 +562,13 @@ class AnsPress_Admin
 	public function taxonomy_rename() {
 		global $pagenow;
 
+		if( get_option( 'ap_update_helper') ){
+			?>
+				<div class="update-nag">
+			        <h3><?php printf(__('AnsPress update is not complete yet! click %shere%s to continue.','ap'), '<a href="'.admin_url( 'admin.php?action=ap_update_helper&__nonce'.wp_create_nonce( 'ap_update_help' ) ).'">', '</a>'); ?></h3>
+			    </div>
+		    <?php
+		}
 		if ( ap_opt( 'tags_taxo_renamed' ) == 'true' || ! taxonomy_exists( 'question_tag' ) ) {
 			return;
 		}
@@ -725,5 +733,18 @@ class AnsPress_Admin
 			$data['post_title'] = get_the_title( $data['post_parent'] );
 		}
 		return $data;
+	}
+
+	public function update_helper(){
+		require_once (ANSPRESS_DIR.'admin/update.php');
+
+		$ap_update_helper = new AP_Update_Helper;
+
+		// Move subscribers.
+		if( get_option( 'ap_subscribers_moved', false ) ){
+			$ap_update_helper->move_subscribers();
+		}
+		wp_redirect( 'admin.php?page=anspress' );
+		exit;
 	}
 }

@@ -13,10 +13,10 @@
  * Insert new subscriber.
  * @param  integer $user_id User id.
  * @param  integer $item_id Item id i.e. post ID, term ID etc..
- * @param  string  $actiity Activity name.
+ * @param  string  $activity Activity name.
  * @return false|integer
  */
-function ap_new_subscriber( $user_id, $item_id, $actiity, $question_id = 0 ) {
+function ap_new_subscriber( $user_id, $item_id, $activity, $question_id = 0 ) {
 	global $wpdb;
 
 	// Bail if user_id or item_id is 0.
@@ -30,7 +30,7 @@ function ap_new_subscriber( $user_id, $item_id, $actiity, $question_id = 0 ) {
 			'subs_user_id' => $user_id,
 			'subs_question_id' => $question_id,
 			'subs_item_id' => $item_id,
-			'subs_activity' => $actiity,
+			'subs_activity' => $activity,
 		),
 		array(
 			'%d',
@@ -41,7 +41,7 @@ function ap_new_subscriber( $user_id, $item_id, $actiity, $question_id = 0 ) {
 	);
 
 	if ( false !== $row ) {
-		do_action( 'ap_new_subscriber', $user_id, $question_id, $item_id, $actiity );
+		do_action( 'ap_new_subscriber', $user_id, $question_id, $item_id, $activity );
 		return $wpdb->insert_id;
 	}
 
