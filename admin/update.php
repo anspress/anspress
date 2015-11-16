@@ -52,8 +52,7 @@ class AP_Update_Helper
 		$count = $wpdb->get_var( "SELECT count(*) FROM {$wpdb->prefix}ap_meta WHERE apmeta_type = 'subscriber' " );
 
 		if ( $count < 1 ) {
-			update_option( 'ap_subscribers_moved', true );
-			delete_option( 'ap_update_helper' );
+			update_option( 'ap_subscribers_moved', true );			
 		}
 	}
 }

@@ -744,6 +744,7 @@ class AnsPress_Admin
 		if( get_option( 'ap_subscribers_moved', false ) ){
 			$ap_update_helper->move_subscribers();
 		}
+		delete_option( 'ap_update_helper' );
 		wp_redirect( 'admin.php?page=anspress' );
 		exit;
 	}

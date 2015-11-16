@@ -29,8 +29,8 @@ class AP_Roles
 	/**
 	 * Initialize the class
 	 */
-	public function __construct(){
-
+	public function __construct() {
+		
 		/**
 		 * Base user caps
 		 * @var array
@@ -183,6 +183,12 @@ function ap_user_can_answer($question_id) {
 
 	if ( is_super_admin() ) {
 		return true;
+	}
+
+	// Filter for applying custom conditions.
+	$filter = apply_filters( 'ap_user_can_answer', false );
+	if ( false !== $filter ) {
+		return $filter;
 	}
 
 	$question = get_post( $question_id );
@@ -504,8 +510,8 @@ function ap_allow_anonymous() {
  **/
 function ap_user_can_change_status($post_id) {
 
-	if(!is_user_logged_in())
-		return false;
+	if ( ! is_user_logged_in() ) {
+		return false; }
 
 	if ( current_user_can( 'ap_change_status_other' ) || is_super_admin() ) {
 		return true;
@@ -549,10 +555,10 @@ function ap_user_can_change_status_to_moderate() {
  * @return boolean
  */
 function ap_user_can_upload_image() {
-	if ( !is_user_logged_in() ) {
+	if ( ! is_user_logged_in() ) {
 		return false;
 	}
-	
+
 	if ( is_super_admin() || ap_opt( 'allow_upload_image' ) ) {
 		return true;
 	}
