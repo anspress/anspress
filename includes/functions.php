@@ -779,9 +779,16 @@ function ap_short_num($num, $precision = 2) {
 	return $n_format;
 }
 
+/**
+ * Sanitize comma delimited strings
+ * @param  string $str Comma delimited string.	
+ * @return string
+ */
 function sanitize_comma_delimited($str) {
-
-	return implode( ',', array_map( 'intval', explode( ',', $str ) ) );
+	if( !empty($str) && !is_array( $str ) ){
+		$str = wp_unslash( $str );
+		return implode( ',', array_map( 'intval', explode( ',', $str ) ) );
+	}
 }
 
 /**

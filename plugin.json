@@ -1,7 +1,7 @@
 {
 	"name": "AnsPress",
-	"version": "2.4-beta4",
-	"tested_up_to": "4.3",
+	"version": "2.4",
+	"tested_up_to": "4.4",
 	"updated": "",
 	"licence": "GPL-3.0+",
 	"licence_link": "http://www.gnu.org/licenses/gpl.txt",

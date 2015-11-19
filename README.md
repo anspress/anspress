@@ -3,8 +3,8 @@
 **Donate link:** https://www.paypal.com/cgi-bin/webscr?business=rah12@live.com&cmd=_xclick&item_name=Donation%20to%20AnsPress%20development  
 **Tags:** question, answer, q&a, forum, profile, stackoverflow, quora, buddypress  
 **Requires at least:** 4.2  
-**Tested up to:** 4.3  
-**Stable tag:** 2.3.6  
+**Tested up to:** 4.4  
+**Stable tag:** 2.4  
 **License:** GPLv2 or later  
 **License URI:** http://www.gnu.org/licenses/gpl-2.0.html  
 
@@ -99,6 +99,113 @@ Read full FAQ here http://anspress.io/documents/doc_page=faq
 
 
 ## Changelog ##
+
+### 2.4 ###
+
+New: added activity feed page
+Fix: Answers left through admin don’t show up in user stats, but show up for admin stats
+Fix: The name of question author is not completely shown on the back-end
+Fix: The avatar of “… started following …” is incorrect
+Fix: Tag validation
+Tweak: Improved reputation functions
+Tweak: Improved ap_human_time()
+Fix: table name in user query
+Fix:  view data update
+Fix: Don't check minimum characters when it is zero
+Fix: view data update
+Fix: utf-8 encoding in message
+Fix: answer edit redirect
+Fix: Reputation points on new registration
+Tweak: Improved ap ajax response
+New: Added option to switch environment
+Fix: widget deprecated notice
+Language: Updated de_DE
+Tweak: Add unique body class for anspress pages
+Fix: Shows wrong user in notification for answer
+Fix: Question widget sorting not working
+Tweak: Improved flag button
+Tweak: Remove link from anonymous user
+Fix: Non Logged Users can Initiate an image Upload
+Tweak: Confirm changed email
+Tweak: subscribe button
+Language: Updated Russian from POT
+Tweak: Change base title in wp hook
+Tweak: Improved mention RegX
+Fix: page title issue :)
+Fix: coding style in ap-functions.js
+Fix: overqualified style
+Tweak: Remove unused class AP_Notification
+Tweak: Update options-page.php
+New: Added mention functionality
+Fix: New lines are cleared on saving email options
+Fix: missing version number in main plugin file
+Tweak: Locate anspress directory in parent theme if not found in child
+New: Added question shortcode
+Fix: Asker can answer own question even if option is disabled.
+New: Added option to switch user profile
+New: Added an option in user profile so they can hide themselves from public
+New: Added notification widget
+Tweak: Updated notification functions for new notification table
+Tweak: Show notification as sidebar
+Fix: subscription and notification
+Tweak: Edit question notification
+Tweak: Improved question suggestion
+Language: Added Japanese .po file
+Language: added zh-CN and zh-TW translation files
+Tweak: Improved activity system
+Tweak: Improved subscriber system
+Tweak: When answer is posted as private ajax shows anonymous avatar
+Fix: Hide suggestion if no related question found
+Tweak: Improved anspress tooltip
+Tweak: Wrap post time in anchor
+New: Replaced history by activity
+Fix: Set header as 404 if question id is false
+New: Add link to cancel comment (add/edit)
+Fix: Comment form not loading after once loaded
+New: Add page attribute in anspresss shortcode
+New: Tool to customize anspress capabilities
+Tweak: Improved admin option page
+Tweak: Removed extension specific functions
+Fix: When Anonymous posting is activate, there is a Status option shown
+Fix: breadcrumbs widget
+Fix: If user page slug is anything other then "user" it gives 404 error
+Tweak: Show a warning message if ajax does not return valid JSON
+Tweak: Added #anspress before grid class
+Fix: Duplicate query strings while sorting using ajax
+Fix: Do not include trash post status in question query
+New: overrides via a child-theme
+Fix: Insert notification only if profile is active
+Language: French translation update
+Tweak: Removed span form avatar
+Fix: Exclude anspress base page from "Front page" page list
+Tweak: Improved CS for form
+Tweak: Improved CS of class-user.php
+Tweak: Improved CS of class-form.php
+Tweak: Improved CS of answer-form.php, answer-loop.php
+Language: Turkish translation submitted by nsaral
+Fix: compatibility issue with multisite subsites
+Tweak: Modified activate.php to use $wpdb->prefix instead of base_prefix for compatibility on multisite subsites.
+Fix: ap_is_my_profile()
+Fix: Removed print_r from profile form
+Fix:  undefined object
+Tweak: Added multipart form
+Tweak: Improved hooks.php
+Tweak: Improved standard of hooks.php
+Tweak: Improved coding standard of common-pages.php
+Tweak: class-theme.php code improved
+Fix: Search post by blank search phrase
+Fix:  user menu link
+New: Search question and answer by user_login in wp-admin
+Fix: pagination in home page
+New: Added post search by author_id in wp-admin post table
+New: Added "banned" user role
+New: Renamed actions.php to hooks.php
+New: Improved roles check
+Tweak: Improved coding standard of class-roles-cap.php
+Tweak: Improved coding standard of ajax.php
+Tweak: Improved coding standard in theme.php
+New: Added comment flagging
+Language: Italian translation
 
 ### 2.3.6 ###
 ### 2.3.5 ###
@@ -344,274 +451,3 @@ Read full FAQ here http://anspress.io/documents/doc_page=faq
 * Improve admin question table
 * Added image from link in question and answer
 * Add image uploader in question and answer
-
-### 2.1.6 ###
-
-* [option] added option for toggling question sidebar
-* [fix] Search widget and form
-* [fix] Check if array
-* [fix] anspress trash action hooks
-* [fix] Add translation support for "ago"-string #283
-* [fix] User can't edit his own answer
-* [fix] Some documentation error
-
-
-### 2.1.5 ###
-
-* [fix] minor bugs
-* [fix] Check undefined in ap_get_avatar_scr()
-* [new] Added avatar upload
-* [fix] ask and answer form button on update
-* [fix] Hide close test in editor modal
-* [fix] added blockquote style in editor
-* [fix] Dropdown not work for ajax content
-
-### 2.1.4 ###
-
-* [fix] allowed style align property
-* [fix] allowed strikethorugh (del) tag for editor
-* [fix] Allowed ul, ol, li tags in editor
-* [new] Added filter for ask and answer form editors
-* [fix] "status updated" message when post status get updated
-* [fix] Answers shorting
-* [fix] sanitize_text_field breaks loading question with non-ansi symbols in url #281
-
-### 2.1.1 ###
-
-* Tested with WP 4.2
-* [option] Toggle question permalink
-
-### 2.1.1 ###
-
-* Minor issues fixed
-
-### 2.1 ###
-
-* [new]adding user profile fields
-* [theme] improved button
-* [fix] Questions widget #279
-* [fix] let admin answer even if question is closed
-* [fix] Answer permalink #279
-* [fix] Possible XSS vulnerability
-* [theme] added default widget in question sidebar
-* [fix] dropdown #279
-* [new] subscribe on own question
-* [fix] User page not found if space in user_name #274
-* [theme] Answer form
-* [fix] Answers pagination
-* [fix] chnage_status to change_status #278
-* [fix] Answers loop and count
-* [new] Ajaxified change status
-* [new] Change post status
-* [theme] added post status sticker
-* [fix] Query "private_post" and "moderate" only if user have permission
-* Padding for no-questions element
-* [theme] Question list meta improved
-* [theme] Improved single question page layout
-* [theme] question page layout
-* [fix] Answer loop
-* [added] search form before questions list
-* Updated question permalink, removed base page
-* Replaced .anspress-container to #anspress
-* [fix] Bugs
-* [removed] Unused file responce_message.php
-* [fix] 12 major bugs
-* [fix] Removed var dump
-* [fix] Major bugs
-* [fix] Question and answer moderation
-* [new] user question and answer page
-* User posts styled
-* [new] User posts page added
-* Improved question query and loop
-* [fix] Shows login message when user dont have permission to ask or answer
-* [added] user page, initial.min.js
-* Improved user menu
-* [added] option for toggle user directory page
-* user link improved
-* [fix] Sorting user by reputation
-* [fix] page titles
-* [added] styles for users loop
-* [added] option for "users per page"
-* [added] user page and loop
-* [added] Option for toggling reputations
-* [fix] 404 causing infinite loop
-* Added ap_ prefix
-
-
-### 2.0.5 ###
-
-* [fix] Removed anonymous function for older version compatibility
-* Improved user answers list
-* [Added] do_action( 'wordpress_social_login' );
-* Removed history loading after plugin initiate
-* [fix] History
-* [disabled] ap_post_votes() for each post to decrease DB query
-* Added trailing slash in question url to prevent 301 redirect
-* [fix] Related questions was missing
-* Order reputation by date
-
-
-
-### 2.0.4 ###
-
-* [fix] AnsPress options
-* [fix] hide any existing loding animation
-* [fix] Wrong redirect after deleting question
-* [added] ap_get_all_reputation
-* Updated admin menu position
-* Loading animation for select button
-* [added] loading animation and improved notification
-
-
-### 2.0.3 ###
-
-* Check empty comment before posting
-* refresh question suggestion on backspace
-* Include previous version point count
-* Remove unused options
-
-
-### 2.0.2 ###
-
-* Rename old tags
-* Added category widget
-* Added widget position in base page
-* fix button sizes
-* Added two options; - Disable OP to answer their question (not applied for admin) - Disallow multiple answer per question 9not applied for admin) [fix] - Show wrong message when user already answered
-* fixed voting button on answer
-* Added requirement checker
-* [fix] undefined index
-* Removed unused functions
-* Load buddypress file on bp_loaded
-* Added notification for answers and comments
-* fixed some major bugs
-* added doc comments for anspress_sc
-* Added parameters for [anspress] shortcode
-* [fix] sorting on home page
-* [fix] run flush_rules only ap_opt('ap_flush') == 'true'
-* Best practice issues
-* Don't let reputation to negative
-* flush apmeta when related post gets deleted
-* [fix] delete flag meta on post trash
-* fixed bug in reputation.php
-* Improved question page style
-* Improved list style
-* added reputation page in buddypress
-* Disable reputation for anonymous
-* Check metions in answers
-* Check mention in questions
-* Added reputation and fixed meta delete
-* replace action link
-* [new] add question and answer to buddypress activity stream
-* [fix] pagination in buddypress
-* Added answers in buddypress
-* Added questions tab in buddypress
-* Detect buddypress and change user link to BP profile
-* removed .updated class
-* Added captcha in Answer form
-* Added reCaptcha
-* Styled editor
-* Added questions list widget
-* hook option on admin_init
-* #262 Disable quicktags in questions
-* [fix] related questions widget
-* Improved subscribe button
-* Exclude best answer from main Answers_Query
-* [fix] Answer sorting
-* Added author credit
-* Clear editor after posting answer
-* Added option to disable voting
-* Update comment count on new comment
-* Auto update comment count
-* Added publish class in time
-* Fix answer count in answers list
-* [fix] ajax loading comments in answers
-* [fix] ajax loading after editing comment
-* Posts actions as dropdown menu
-* Checkbox inline description
-* [fix] allow anonymous for answer
-* Removed editor toggle and moved media button
-* Added option showing title in question page
-* Fixed ajax loading while answer is first.
-* Added .published class in time
-* Fixed user link
-* Lost MEDIA library option from admins menu
-* Updated style
-* declare the visibility for methods
-* Added uninstall hook
-* Removed unused files
-* [fix] questions page paging rewrite
-* Missing argument 2 for AnsPress_Theme::the_title()
-* Improved admin style and added option for locking delete action
-* Show CPT menu for delete_pages
-* Show AnsPress menu if user have manage_options
-* Load shortcode on init
-* Held for moderation
-* Fixed some bugs and added grunt
-* [fix] Subscribe button
-* Fixed conflicts with profile
-* [fix] use question title in answer title
-* Made it compatible with profile plugin
-* [fix] Rewrite rule when base page is child page
-* Disable comments option added
-* [fix] Question detail is appearing for all posts
-* [fix] Search page
-* Added anspress menu
-* [fix] form get cleared even if there is error
-* [fix] Toggle private post
-* [fix] Language files were not loading
-* Added option for switching text editor as default
-* [fix] TwentyFifteen compatibility
-* Show this label "No questions match your search criteria" when nothing found in search
-* Improved question list
-* Improved dashboard
-* Added question select
-* Improved flagging system
-* Disallow answer for closed question
-* Add private question & moderate sticker in question
-* Enable question sidebar only if there is widget in it
-* Flag button fixed
-* Hide comments be default
-* Added related questions widget
-* Added question stats widget
-* Added participants and subscribe widget
-* Improved question and list page style
-* Added action and filter for search
-* Added search functionality
-* Removed user.php and added required functions to functions.php
-* Enable user link only if user extension installed
-* Added extensions listing
-* [fix] replaced icon- class to apicon-
-* Check array before output menu
-* [fix] Editing own comment only possible after refresh
-* [removed] ap-site.js
-* [new] Dynamic option group and fields
-* Removed main.php
-* Removed messages.php
-* [fix] Participants caps were empty
-* [fix] After deleting a question, troublesome redirection
-* Improved form validation
-* Added vote and view meta in list
-* [fix] show register or login message for non-logged in
-* [fix] Annonymous is unchecked in the backend but user can still ask question
-* [fix] link of ask question button when there is no question
-* [fixed] Answer permalink
-* [fixed] Participant is not being inserted to DB
-* [fixed] After comment actions are not working
-* [fixed] Entering space in ask question title field show all questions
-* [fixed] User page ap_meta_array_map function missing
-* [fix]When AnsPress is set to home page then sorting does not work
-* Rename sort query arg to ap_sort
-* [fixed] unsolved question listing
-* [fixed] Answer count update on ajax request
-* [fixed] Wrong answer count
-* [fixed] delete button
-* [fixed] Select best answer
-* [fixed] JS and ajax request
-* [fixed] Answer form validation
-* [fixed] Ajax answer submission
-* [removed] Installation screen and cleaned up codes.
-
-### 1.4.3 ###
-
-* Made compatible with WordPress 4.1.1

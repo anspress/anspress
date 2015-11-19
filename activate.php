@@ -65,6 +65,7 @@ function anspress_activate( $network_wide ) {
 		    `question_id` bigint(20) DEFAULT NULL,
 		    `answer_id` bigint(20) DEFAULT NULL,
 		    `item_id` bigint(20) DEFAULT NULL,
+		    `term_ids` LONGTEXT DEFAULT NULL,
 		    `created` timestamp NULL DEFAULT NULL,
 		    `updated` timestamp NULL DEFAULT NULL,
 		    PRIMARY KEY (`id`)
