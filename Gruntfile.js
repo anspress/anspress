@@ -113,7 +113,7 @@ module.exports = function(grunt) {
 	    compress: {
 	    	main: {
 	    		options: {
-	    			archive: 'build/<%= pkg.name %>.zip'
+	    			archive: 'build/anspress-question-answer.zip'
 	    		},
 		        //cwd: 'build/',
 		        expand: true,
