@@ -95,6 +95,10 @@
  				var title = config.title;
  			}
 
+ 			if( title.length == 0 ){
+ 				return;
+ 			}
+
  			tip = $('<div class="ap-tooltip '+ config.theme +'"><div class="ap-tooltip-in">'+ title +'<span class="arrow"></span></div></div>');
 
  			if(config.ajax != '' && !plug.ajax_running){

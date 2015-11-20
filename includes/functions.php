@@ -1596,7 +1596,7 @@ function ap_create_base_page() {
 		$args['post_type'] = 'page';
 		$args['post_content'] = '[anspress]';
 		$args['post_status'] = 'publish';
-		$args['post_title'] = 'ANSPRESS_TITLE';
+		$args['post_title'] = __('Questions', 'ap');
 		$args['post_name'] = 'questions';
 		$args['comment_status'] = 'closed';
 
@@ -1607,6 +1607,10 @@ function ap_create_base_page() {
 			$page = get_post( $new_page_id );
 			ap_opt( 'base_page', $page->ID );
 			ap_opt( 'base_page_id', $page->post_name );
+		}
+	}else{
+		if( $post->post_title == 'ANSPRESS_TITLE' ){
+			wp_update_post( array( 'ID' => $page->ID, 'post_title' => ap_opt('base_page_title') )  );
 		}
 	}
 }

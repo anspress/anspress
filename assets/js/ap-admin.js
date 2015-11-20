@@ -433,10 +433,10 @@ jQuery(document).ready(function (jQuery){
 		jQuery('img[data-action="ap_media_value"]').remove();
 	});
 
-	jQuery(document).ready(function($){
-		if(typeof wpColorPicker !== 'undefined')
-	   		jQuery('#ap-category-color').wpColorPicker();
-	});
+
+	//if(typeof wpColorPicker !== 'undefined')
+   		jQuery('#ap-category-color').wpColorPicker();
+
 
 	jQuery('.checkall').click(function(){
 		var checkbox = jQuery(this).closest('.ap-tools-ck').find('input[type="checkbox"]:not(.checkall)');
