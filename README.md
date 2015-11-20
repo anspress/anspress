@@ -102,110 +102,110 @@ Read full FAQ here http://anspress.io/documents/doc_page=faq
 
 ### 2.4 ###
 
-New: added activity feed page
-Fix: Answers left through admin don’t show up in user stats, but show up for admin stats
-Fix: The name of question author is not completely shown on the back-end
-Fix: The avatar of “… started following …” is incorrect
-Fix: Tag validation
-Tweak: Improved reputation functions
-Tweak: Improved ap_human_time()
-Fix: table name in user query
-Fix:  view data update
-Fix: Don't check minimum characters when it is zero
-Fix: view data update
-Fix: utf-8 encoding in message
-Fix: answer edit redirect
-Fix: Reputation points on new registration
-Tweak: Improved ap ajax response
-New: Added option to switch environment
-Fix: widget deprecated notice
-Language: Updated de_DE
-Tweak: Add unique body class for anspress pages
-Fix: Shows wrong user in notification for answer
-Fix: Question widget sorting not working
-Tweak: Improved flag button
-Tweak: Remove link from anonymous user
-Fix: Non Logged Users can Initiate an image Upload
-Tweak: Confirm changed email
-Tweak: subscribe button
-Language: Updated Russian from POT
-Tweak: Change base title in wp hook
-Tweak: Improved mention RegX
-Fix: page title issue :)
-Fix: coding style in ap-functions.js
-Fix: overqualified style
-Tweak: Remove unused class AP_Notification
-Tweak: Update options-page.php
-New: Added mention functionality
-Fix: New lines are cleared on saving email options
-Fix: missing version number in main plugin file
-Tweak: Locate anspress directory in parent theme if not found in child
-New: Added question shortcode
-Fix: Asker can answer own question even if option is disabled.
-New: Added option to switch user profile
-New: Added an option in user profile so they can hide themselves from public
-New: Added notification widget
-Tweak: Updated notification functions for new notification table
-Tweak: Show notification as sidebar
-Fix: subscription and notification
-Tweak: Edit question notification
-Tweak: Improved question suggestion
-Language: Added Japanese .po file
-Language: added zh-CN and zh-TW translation files
-Tweak: Improved activity system
-Tweak: Improved subscriber system
-Tweak: When answer is posted as private ajax shows anonymous avatar
-Fix: Hide suggestion if no related question found
-Tweak: Improved anspress tooltip
-Tweak: Wrap post time in anchor
-New: Replaced history by activity
-Fix: Set header as 404 if question id is false
-New: Add link to cancel comment (add/edit)
-Fix: Comment form not loading after once loaded
-New: Add page attribute in anspresss shortcode
-New: Tool to customize anspress capabilities
-Tweak: Improved admin option page
-Tweak: Removed extension specific functions
-Fix: When Anonymous posting is activate, there is a Status option shown
-Fix: breadcrumbs widget
-Fix: If user page slug is anything other then "user" it gives 404 error
-Tweak: Show a warning message if ajax does not return valid JSON
-Tweak: Added #anspress before grid class
-Fix: Duplicate query strings while sorting using ajax
-Fix: Do not include trash post status in question query
-New: overrides via a child-theme
-Fix: Insert notification only if profile is active
-Language: French translation update
-Tweak: Removed span form avatar
-Fix: Exclude anspress base page from "Front page" page list
-Tweak: Improved CS for form
-Tweak: Improved CS of class-user.php
-Tweak: Improved CS of class-form.php
-Tweak: Improved CS of answer-form.php, answer-loop.php
-Language: Turkish translation submitted by nsaral
-Fix: compatibility issue with multisite subsites
-Tweak: Modified activate.php to use $wpdb->prefix instead of base_prefix for compatibility on multisite subsites.
-Fix: ap_is_my_profile()
-Fix: Removed print_r from profile form
-Fix:  undefined object
-Tweak: Added multipart form
-Tweak: Improved hooks.php
-Tweak: Improved standard of hooks.php
-Tweak: Improved coding standard of common-pages.php
-Tweak: class-theme.php code improved
-Fix: Search post by blank search phrase
-Fix:  user menu link
-New: Search question and answer by user_login in wp-admin
-Fix: pagination in home page
-New: Added post search by author_id in wp-admin post table
-New: Added "banned" user role
-New: Renamed actions.php to hooks.php
-New: Improved roles check
-Tweak: Improved coding standard of class-roles-cap.php
-Tweak: Improved coding standard of ajax.php
-Tweak: Improved coding standard in theme.php
-New: Added comment flagging
-Language: Italian translation
+ * New: added activity feed page
+ * Fix: Answers left through admin don’t show up in user stats, but show up for admin stats
+ * Fix: The name of question author is not completely shown on the back-end
+ * Fix: The avatar of “… started following …” is incorrect
+ * Fix: Tag validation
+ * Tweak: Improved reputation functions
+ * Tweak: Improved ap_human_time()
+ * Fix: table name in user query
+ * Fix:  view data update
+ * Fix: Don't check minimum characters when it is zero
+ * Fix: view data update
+ * Fix: utf-8 encoding in message
+ * Fix: answer edit redirect
+ * Fix: Reputation points on new registration
+ * Tweak: Improved ap ajax response
+ * New: Added option to switch environment
+ * Fix: widget deprecated notice
+ * Language: Updated de_DE
+ * Tweak: Add unique body class for anspress pages
+ * Fix: Shows wrong user in notification for answer
+ * Fix: Question widget sorting not working
+ * Tweak: Improved flag button
+ * Tweak: Remove link from anonymous user
+ * Fix: Non Logged Users can Initiate an image Upload
+ * Tweak: Confirm changed email
+ * Tweak: subscribe button
+ * Language: Updated Russian from POT
+ * Tweak: Change base title in wp hook
+ * Tweak: Improved mention RegX
+ * Fix: page title issue :)
+ * Fix: coding style in ap-functions.js
+ * Fix: overqualified style
+ * Tweak: Remove unused class AP_Notification
+ * Tweak: Update options-page.php
+ * New: Added mention functionality
+ * Fix: New lines are cleared on saving email options
+ * Fix: missing version number in main plugin file
+ * Tweak: Locate anspress directory in parent theme if not found in child
+ * New: Added question shortcode
+ * Fix: Asker can answer own question even if option is disabled.
+ * New: Added option to switch user profile
+ * New: Added an option in user profile so they can hide themselves from public
+ * New: Added notification widget
+ * Tweak: Updated notification functions for new notification table
+ * Tweak: Show notification as sidebar
+ * Fix: subscription and notification
+ * Tweak: Edit question notification
+ * Tweak: Improved question suggestion
+ * Language: Added Japanese .po file
+ * Language: added zh-CN and zh-TW translation files
+ * Tweak: Improved activity system
+ * Tweak: Improved subscriber system
+ * Tweak: When answer is posted as private ajax shows anonymous avatar
+ * Fix: Hide suggestion if no related question found
+ * Tweak: Improved anspress tooltip
+ * Tweak: Wrap post time in anchor
+ * New: Replaced history by activity
+ * Fix: Set header as 404 if question id is false
+ * New: Add link to cancel comment (add/edit)
+ * Fix: Comment form not loading after once loaded
+ * New: Add page attribute in anspresss shortcode
+ * New: Tool to customize anspress capabilities
+ * Tweak: Improved admin option page
+ * Tweak: Removed extension specific functions
+ * Fix: When Anonymous posting is activate, there is a Status option shown
+ * Fix: breadcrumbs widget
+ * Fix: If user page slug is anything other then "user" it gives 404 error
+ * Tweak: Show a warning message if ajax does not return valid JSON
+ * Tweak: Added #anspress before grid class
+ * Fix: Duplicate query strings while sorting using ajax
+ * Fix: Do not include trash post status in question query
+ * New: overrides via a child-theme
+ * Fix: Insert notification only if profile is active
+ * Language: French translation update
+ * Tweak: Removed span form avatar
+ * Fix: Exclude anspress base page from "Front page" page list
+ * Tweak: Improved CS for form
+ * Tweak: Improved CS of class-user.php
+ * Tweak: Improved CS of class-form.php
+ * Tweak: Improved CS of answer-form.php, answer-loop.php
+ * Language: Turkish translation submitted by nsaral
+ * Fix: compatibility issue with multisite subsites
+ * Tweak: Modified activate.php to use $wpdb->prefix instead of base_prefix for compatibility on multisite subsites.
+ * Fix: ap_is_my_profile()
+ * Fix: Removed print_r from profile form
+ * Fix:  undefined object
+ * Tweak: Added multipart form
+ * Tweak: Improved hooks.php
+ * Tweak: Improved standard of hooks.php
+ * Tweak: Improved coding standard of common-pages.php
+ * Tweak: class-theme.php code improved
+ * Fix: Search post by blank search phrase
+ * Fix:  user menu link
+ * New: Search question and answer by user_login in wp-admin
+ * Fix: pagination in home page
+ * New: Added post search by author_id in wp-admin post table
+ * New: Added "banned" user role
+ * New: Renamed actions.php to hooks.php
+ * New: Improved roles check
+ * Tweak: Improved coding standard of class-roles-cap.php
+ * Tweak: Improved coding standard of ajax.php
+ * Tweak: Improved coding standard in theme.php
+ * New: Added comment flagging
+ * Language: Italian translation
 
 ### 2.3.6 ###
 ### 2.3.5 ###
