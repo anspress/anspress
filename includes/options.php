@@ -3,7 +3,7 @@
  * AnsPress options
  *
  * @package   AnsPress
- * @author    Rahul Aryan <admin@rahularyan.com>
+ * @author    Rahul Aryan <support@anspress.io>
  * @license   GPL-2.0+
  * @link      http://rahularyan.com
  * @copyright 2014 Rahul Aryan
@@ -23,21 +23,24 @@ if ( ! defined( 'WPINC' ) ) {
  * @return string
  * @since 0.1
  */
-function ap_opt($key = false, $value = null){
-	$settings = wp_cache_get('ap_opt', 'options');
+function ap_opt($key = false, $value = null) {
+	$settings = wp_cache_get('ap_opt', 'options' );
 
-	if($settings === false){
-		$settings = get_option( 'anspress_opt');
-		if(!$settings)
-			$settings = array();
-		$settings = $settings + ap_default_options();
+	if ( $settings === false ) {
+		$settings = get_option( 'anspress_opt' );
 
-		wp_cache_set('ap_opt', $settings, 'options');
+		if ( ! $settings ) {
+			$settings = array(); }
+
+		wp_cache_set('ap_opt', $settings, 'options' );
 	}
-	if(!is_null($value)){
+
+	$settings = $settings + ap_default_options();
+
+	if ( ! is_null($value ) ) {
 
 		$settings[$key] = $value;
-		update_option( 'anspress_opt', $settings);
+		update_option( 'anspress_opt', $settings );
 
 		// clear cache if option updated
 		wp_cache_delete( 'ap_opt', 'options' );
@@ -45,13 +48,15 @@ function ap_opt($key = false, $value = null){
 		return;
 	}
 
-	if(false === $key)
-		return $settings;
+	if ( false === $key ) {
+		return $settings; 
+	}
 
-	if(isset($settings[$key]))
-		return $settings[$key];
-	else
-		return NULL;
+	if ( isset($settings[$key] ) ) {
+		return $settings[$key]; 
+	} else {
+		return null; 
+	}
 
 	return false;
 }
@@ -61,8 +66,14 @@ function ap_opt($key = false, $value = null){
  * @return array
  * @since 2.0.1
  */
-function ap_default_options(){
-	$defaults =  array(
+function ap_default_options() {
+	$cache = wp_cache_get( 'ap_default_options', 'ap' );
+
+	if ( false !== $cache ) {
+		return $cache;
+	}
+
+	$defaults = array(
 		'show_login_signup' 		=> true,
 		'show_login' 				=> true,
 		'show_signup' 				=> true,
@@ -100,8 +111,8 @@ function ap_default_options(){
 		'base_page_title'			=> 'Questions',
 		'ask_page_title'			=> 'Ask question',
 		'search_page_title'			=> 'Search "%s"',
-		'disable_comments_on_question'=> false,
-		'disable_comments_on_answer'=> false,
+		'disable_comments_on_question' => false,
+		'disable_comments_on_answer' => false,
 		'new_question_status'		=> 'publish',
 		'new_answer_status'			=> 'publish',
 		'edit_question_status'		=> 'publish',
@@ -129,11 +140,11 @@ function ap_default_options(){
 		'ask_page_slug' 			=> 'ask',
 		'question_page_slug' 		=> 'question',
 		'users_page_slug' 			=> 'users',
-		'users_page_title' 			=> __('Users', 'ap'),
+		'users_page_title' 			=> __('Users', 'ap' ),
 		'users_page_title' 			=> false,
 		'max_upload_size' 			=> 500000,
-		'disable_down_vote_on_question'=> false,
-		'disable_down_vote_on_answer'=> false,
+		'disable_down_vote_on_question' => false,
+		'disable_down_vote_on_answer' => false,
 		'show_solved_prefix'		=> true,
 		'notification_sidebar'		=> false,
 		'user_profile'				=> 'anspress',
@@ -146,6 +157,8 @@ function ap_default_options(){
 	 * @since 0.1
 	 */
 	$defaults = apply_filters('ap_default_options', $defaults );
+
+	wp_cache_set( 'ap_default_options', $defaults, 'ap' );
 
 	return $defaults;
 }
