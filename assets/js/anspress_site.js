@@ -777,7 +777,7 @@
             }
         }
 
-        if (typeof data.is_ap_ajax !== 'undefined' && typeof data.view !== 'undefined') {
+        if (typeof data !== 'undefined' && typeof data.is_ap_ajax !== 'undefined' && typeof data.view !== 'undefined') {
 
             $.each(data.view, function(i, view) {
                 try {
