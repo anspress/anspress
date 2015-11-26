@@ -78,19 +78,19 @@
  		}
 
  		function showtip(el){
-
-	 		if( typeof $(el).data('action') !== 'undefined' &&  $(el).data('action') == 'ap_hover_card' && typeof $(el).data('tipquery') === 'undefined' ){
-	 			$(el).data('tipquery', 'action=ap_ajax&ap_ajax_action=user_cover&user_id='+ $(el).data('userid'));
+ 			var elm = $(el);
+ 	 		if( typeof elm.data('action') !== 'undefined' &&  elm.data('action') == 'ap_hover_card' && typeof elm.data('tipquery') === 'undefined' ){
+	 			elm.data('tipquery', 'action=ap_ajax&ap_ajax_action=user_cover&user_id='+ elm.data('userid'));
 	 		}
 
 	 		if( typeof $(el).data('tipquery') !== 'undefined' ){
-	 			config.ajax = $(el).data('tipquery');
+	 			config.ajax = elm.data('tipquery');
 	 		}
 
  			altertitle(el);
 
  			if(config.title == ''){
- 				var title = $(el).data('aptiptitle');
+ 				var title = elm.data('aptiptitle');
  			}else{
  				var title = config.title;
  			}
@@ -102,8 +102,7 @@
  			tip = $('<div class="ap-tooltip '+ config.theme +'"><div class="ap-tooltip-in">'+ title +'<span class="arrow"></span></div></div>');
 
  			if(config.ajax != '' && !plug.ajax_running){
-
- 				if ( typeof plug.data_id === 'undefined' && $('.'+plug.data_id).length == 0) {
+ 				if ( $(elm.attr('data-ajax')).length == 0) {
  					plug.ajax_running = true;
 	 				$.ajax({
 	                    type: 'POST',
@@ -114,6 +113,7 @@
 	                    	var count = parseInt( $('.aptip-data').length );
 	                    	plug.data_id = 'aptipd-'+ (count+1);
 	                    	html.addClass( 'aptip-data '+ plug.data_id );
+	                    	elm.attr('data-ajax', '.'+plug.data_id);
 	                        $('body').append(html.clone());
 	                        tip.find('.ap-tooltip-in').html(html.show());
 	                        position(el);
@@ -121,7 +121,7 @@
 	                    }
 	                });
 	            }else{
-	            	var html = $('.'+ plug.data_id ).html();
+	            	var html = $( elm.attr('data-ajax') ).html();
                     tip.find('.ap-tooltip-in').html($(html).show());
 	            }
 

@@ -760,8 +760,6 @@
             AnsPress.site.hideLoading('all');
         }
 
-        console.log(response.getResponseHeader('X-ANSPRESS-DO'));
-
         if (response.getResponseHeader('X-ANSPRESS-DO') !== null) {            
             var doaction = response.getResponseHeader('X-ANSPRESS-DO');
             if( apIsJsonString(doaction) ){
