@@ -875,7 +875,6 @@ function ap_send_json($result = array()) {
 		header( sprintf( 'X-ANSPRESS-DO: %s', $do ) );
 	}
 
-	echo 'dfdfd';
 	wp_send_json( $result );
 }
 

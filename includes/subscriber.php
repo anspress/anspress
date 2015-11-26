@@ -201,7 +201,7 @@ function ap_subscriber_count_html($post = false) {
  * @return array
  * @since  2.1
  */
-function ap_get_subscribers( $action_id, $activity = 'q_all', $limit = 10 ) {
+function ap_get_subscribers( $action_id, $activity = 'q_all', $limit = 10, $user_info = '' ) {
 	global $wpdb;
 
 	$key = $action_id.'_'.$activity;
@@ -212,7 +212,11 @@ function ap_get_subscribers( $action_id, $activity = 'q_all', $limit = 10 ) {
 		return $cache;
 	}
 
-	$results = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM '.$wpdb->ap_subscribers.' where subs_item_id=%d AND subs_activity="%s" LIMIT 0 , %d', $action_id, $activity, $limit ) );
+	if( true === $user_info){
+		$user_info = "JOIN {$wpdb->prefix}users on subs_user_id = ID";
+	}
+
+	$results = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM ".$wpdb->ap_subscribers." {$user_info} where subs_item_id=%d AND subs_activity='%s' LIMIT 0 , %d", $action_id, $activity, $limit ) );
 
 	// Set individual cache for subscriber.
 	if ( $results ) {
