@@ -173,7 +173,7 @@
         },
         appendFormError: function() {
             $(document).on('ap_after_ajax', function(e, data) {
-                if (typeof data.errors !== 'undefined') {
+                if (typeof data !== 'undefined' && typeof data.errors !== 'undefined') {
                     ApSite.clearFormErrors(data.form);
                     $.each(data.errors, function(i, message) {
                         var parent = $('#' + data.form).find('#' + i).closest('.ap-form-fields');
@@ -414,7 +414,7 @@
         },
         afterPostingAnswer: function() {
             $(document).on('ap_after_ajax', function(e, data) {
-                if (typeof data.action !== 'undefined' && data.action == 'new_answer') {
+                if (typeof data !== 'undefined' && typeof data.action !== 'undefined' && data.action == 'new_answer') {
                     if ($('#answers').length === 0) {
                         $('#question').after($(data['html']));
                         $(data.div_id).hide();
@@ -749,10 +749,18 @@
             if(typeof grecaptcha !== 'undefined' && type !== 'success')
                 grecaptcha.reset(widgetId1);
 
+            if( typeof data === 'undefined' ){
+                data = {};
+            }
+
+            console.log(data);
+
             $(document).trigger('ap_after_ajax', data);
 
             AnsPress.site.hideLoading('all');
         }
+
+        console.log(response.getResponseHeader('X-ANSPRESS-DO'));
 
         if (response.getResponseHeader('X-ANSPRESS-DO') !== null) {            
             var doaction = response.getResponseHeader('X-ANSPRESS-DO');
