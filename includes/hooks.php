@@ -197,6 +197,10 @@ class AnsPress_Hooks
 	        if ( $answers > 0 ) {
 	            foreach ( $answers as $a ) {
 	                do_action( 'ap_before_delete_answer', $a );
+	                $selcted_answer = ap_selected_answer();
+	                if( $selcted_answer == $a->ID){
+	                	update_post_meta( $p->post_parent, ANSPRESS_SELECTED_META, false );
+	                }
 	                wp_delete_post( $a, true );
 	            }
 	        }
@@ -232,6 +236,12 @@ class AnsPress_Hooks
 	        if ( $ans > 0 ) {
 	            foreach ( $ans as $p ) {
 	                do_action( 'ap_trash_answer', $p->ID, $p );
+	                $selcted_answer = ap_selected_answer();
+	                
+	                if( $selcted_answer == $p->ID){
+	                	update_post_meta( $p->post_parent, ANSPRESS_SELECTED_META, false );
+	                }
+
 	                ap_delete_meta( array( 'apmeta_type' => 'flag', 'apmeta_actionid' => $p->ID ) );
 	                wp_trash_post( $p->ID );
 	            }
