@@ -38,13 +38,21 @@
 
 		<?php if(ap_active_user_page() == 'about'): ?>
 			<div class="ap-user-cover clearfix">
-				<?php ap_cover_upload_form(); ?>
+				<?php 
+					if(ap_is_my_profile()){
+						ap_cover_upload_form();
+					}
+				?>
 				<div class="ap-user-cover-img" style="background-image:url(<?php echo ap_get_cover_src(); ?>)" data-view="user_cover_<?php ap_displayed_user_id(); ?>"></div>
 			</div>
 			<div class="ap-user-head clearfix">
 				<div class="ap-user-avatar">
 					<?php ap_user_the_avatar(150); ?>
-					<?php ap_avatar_upload_form(); ?>
+					<?php 
+						if(ap_is_my_profile()){
+							ap_avatar_upload_form();
+						}
+					?>
 				</div>
 				<a class="ap-user-name" href="<?php ap_user_the_link(); ?>"><?php ap_user_the_display_name(); ?></a>
 				<div class="ap-user-mini-status">
