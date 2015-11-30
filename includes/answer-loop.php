@@ -488,7 +488,7 @@ function ap_answer_the_time($answer_id = false, $format = 'U') {
  */
 function ap_answer_get_the_time($answer_id = false, $format = '') {
 	$answer_id = ap_parameter_empty( $answer_id, @ap_answer_get_the_answer_id() );
-	return get_the_time( $format, $answer_id );
+	return get_post_time( $format, true, $answer_id, true );
 }
 
 /**

@@ -501,7 +501,7 @@ function ap_question_the_time($question_id = false, $format = 'U') {
 
 function ap_question_get_the_time($question_id = false, $format = '') {
 	$question_id = ap_parameter_empty( $question_id, @ap_question_get_the_ID() );
-	return get_the_time( $format, $question_id );
+	return get_post_time( $format, true, $question_id, true );
 }
 
 function ap_question_the_time_relative($question_id = false) {

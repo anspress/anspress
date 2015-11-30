@@ -744,6 +744,10 @@ function ap_latest_post_activity_html($post_id = false) {
 	$post = get_post( $post_id );
 	$activity = ap_post_activity_meta( $post_id );
 
+	if ( $activity ) {
+		$activity['date'] = get_gmt_from_date($activity['date']);
+	}
+
 	if ( ! $activity ) {
 		$activity['date'] 	= get_post_time( 'U', true, $post_id);
 		$activity['user_id'] = $post->post_author;
