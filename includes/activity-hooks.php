@@ -51,16 +51,27 @@ class AnsPress_Activity_Hook
 
 		$question_title = '<a class="ap-q-link" href="'. get_permalink( $question_id ) .'">'. get_the_title( $question_id ) .'</a>';
 
-		$terms = get_the_terms( $question_id, array('question_category','question_tag') );
-		$term_ids = array();
+		$txo_type = array();
 
-		if( $terms ){
-			foreach ($terms as $t) {
-				$term_ids[] = $t->term_id;
-			}
-			$term_ids = implode(',', $term_ids);
+		if ( taxonomy_exists( 'question_category' ) ) {
+			$txo_type[] = 'question_category';
 		}
 
+		if ( taxonomy_exists( 'question_tag' ) ) {
+			$txo_type[] = 'question_tag';
+		}
+
+		$term_ids = array();
+		if ( ! empty( $txo_type ) ) {
+			$terms = get_the_terms( $question_id, $txo_type );
+
+			if ( $terms ) {
+				foreach ( $terms as $t ) {
+					$term_ids[] = $t->term_id;
+				}
+				$term_ids = implode(',', $term_ids );
+			}
+		}
 
 		$activity_arr = array(
 			'user_id' 			=> $question->post_author,
@@ -68,7 +79,7 @@ class AnsPress_Activity_Hook
 			'question_id' 		=> $question_id,
 			'permalink' 		=> get_permalink( $question_id ),
 			'content'			=> sprintf( __( '%s asked question %s', 'ap' ), ap_activity_user_name( $question->post_author ), $question_title ),
-			'term_ids'			=> $term_ids
+			'term_ids'			=> $term_ids,
 		);
 
 		$activity_id = ap_new_activity( $activity_arr );

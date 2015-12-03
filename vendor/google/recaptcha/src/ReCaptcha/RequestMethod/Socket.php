@@ -51,9 +51,8 @@ class Socket
 
         if ($this->handle != false && $errno === 0 && $errstr === '') {
             return $this->handle;
-        } else {
-            return false;
         }
+        return false;
     }
 
     /**
@@ -74,6 +73,7 @@ class Socket
      * 
      * @see http://php.net/fgets
      * @param int $length
+     * @return string
      */
     public function fgets($length = null)
     {
