@@ -100,7 +100,18 @@ Read full FAQ here http://anspress.io/documents/doc_page=faq
 
 ## Changelog ##
 
-### 2.4 ###
+### 2.4.1 ###
+
+  * Fix: Hide cover and avatar upload if not ap_is_my_profile()
+  * Fix: Hover card is not changing from user to user
+  * Improved: ap_get_subscribers
+  * Added and option for including user data in ap_get_subscribers
+  * Fix: undefined after ajax request
+  * Tags suggestion improvement
+  * Improved: ap_opt()
+  * Fixed color picker in wp-admin
+
+ = 2.4 =
 
  * New: added activity feed page
  * Fix: Answers left through admin don’t show up in user stats, but show up for admin stats
