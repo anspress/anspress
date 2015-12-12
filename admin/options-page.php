@@ -39,7 +39,7 @@ class AnsPress_Options_Page
 			array(
 				'name' => 'anspress_opt[author_credits]',
 				'label' => __( 'Hide author credits', 'ap' ),
-				'desc' => __( 'Show your love by showing link to AnsPress project site.', 'ap' ),
+				'desc' => __( 'Hide link to AnsPress project site.', 'ap' ),
 				'type' => 'checkbox',
 				'value' => @$settings['author_credits'],
 				'order' => '1',

@@ -31,7 +31,7 @@
 					 * ACTION: ap_before_question_title
 					 * @since 	2.0
 					 */
-					do_action('ap_before_question_content');
+					do_action('ap_before_question_title');
 				?>
 				<div class="ap-avatar">
 					<a href="<?php ap_question_the_author_link(); ?>"<?php ap_hover_card_attributes(ap_question_get_author_id()); ?>>
@@ -46,6 +46,13 @@
 
 					<!-- Start ap-content-inner -->
 					<div class="ap-q-inner">
+						<?php
+							/**
+							 * ACTION: ap_before_question_content
+							 * @since 	2.0.0
+							 */
+							do_action('ap_before_question_content');
+						?>
 						<div class="question-content ap-q-content" itemprop="text">
 							<?php the_content(); ?>
 						</div>

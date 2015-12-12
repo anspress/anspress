@@ -267,11 +267,11 @@ class AnsPress_User
 
 			global $wpdb;
 
-			$query->query_from = $query->query_from.' LEFT JOIN '.$wpdb->prefix."ap_meta M ON $wpdb->users.ID = M.apmeta_userid";
+			$query->query_from = $query->query_from.' LEFT JOIN '.$wpdb->ap_subscribers." ON ID = subs_user_id";
 
 			$userid = $query->query_vars['user_id'];
 
-			$query->query_where = $query->query_where." AND M.apmeta_type = 'follower' AND M.apmeta_actionid = $userid";
+			$query->query_where = $query->query_where." AND subs_activity = 'u_all' AND subs_item_id = $userid";
 		}
 
 		return $query;
@@ -290,9 +290,9 @@ class AnsPress_User
 
 			global $wpdb;
 
-			$query->query_from = $query->query_from.' LEFT JOIN '.$wpdb->prefix."ap_meta M ON $wpdb->users.ID = M.apmeta_actionid";
+			$query->query_from = $query->query_from.' LEFT JOIN '.$wpdb->ap_subscribers." ON ID = subs_item_id";
 			$userid = $query->query_vars['user_id'];
-			$query->query_where = $query->query_where." AND M.apmeta_type = 'follower' AND M.apmeta_userid = $userid";
+			$query->query_where = $query->query_where." AND subs_activity = 'u_all' AND subs_user_id = $userid";
 		}
 
 		return $query;
