@@ -22,7 +22,8 @@ class AnsPress_Validation
 	public function __construct($args = array()) {
 
 		if ( empty( $args ) ) {
-			return; }
+			return;
+		}
 
 		$this->args = $args;
 
@@ -52,7 +53,8 @@ class AnsPress_Validation
 	public function required($field) {
 
 		if ( ! isset( $this->fields[$field] ) ||  $this->fields[$field] == '' ) {
-			$this->errors[$field] = __( 'This field is required', 'ap' ); }
+			$this->errors[$field] = __( 'This field is required', 'ap' );
+		}
 	}
 
 	/**
@@ -333,6 +335,15 @@ class AnsPress_Validation
 	}
 
 	/**
+	 * Append error to a field
+	 * @param  string $field  field name.
+	 * @param  string $error  Error message.
+	 */
+	private function append_errors($field, $errors){
+		$this->errors[$field] = $errors;
+	}
+
+	/**
 	 * Field is being checked and sanitized
 	 * @return void
 	 * @since 2.0.1
@@ -341,10 +352,16 @@ class AnsPress_Validation
 
 		foreach ( $this->args as $field => $actions ) {
 			if ( isset( $actions['sanitize'] ) ) {
-				$this->sanitize( $field, $actions['sanitize'] ); }
+				$this->sanitize( $field, $actions['sanitize'] );
+			}
 
 			if ( isset( $actions['validate'] ) ) {
-				$this->validate( $field, $actions['validate'] ); }
+				$this->validate( $field, $actions['validate'] );
+			}
+
+			if ( isset( $actions['error'] ) ) {
+				$this->append_errors( $field, $actions['error'] );
+			}
 		}
 
 	}
@@ -367,7 +384,8 @@ class AnsPress_Validation
 	 */
 	public function get_errors() {
 		if ( count( $this->errors ) > 0 ) {
-			return $this->errors; }
+			return $this->errors;
+		}
 
 		return false;
 	}

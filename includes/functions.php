@@ -1442,7 +1442,7 @@ function ap_post_upload_hidden_form() {
  *
  * @return int|bool
  */
-function ap_upload_user_file($file = array()) {
+function ap_upload_user_file($file = array(), $temp = true ) {
 
 	require_once ABSPATH.'wp-admin/includes/admin.php';
 
@@ -1471,7 +1471,9 @@ function ap_upload_user_file($file = array()) {
 
 		$attachment_id = wp_insert_attachment( $attachment, $file_return['file'] );
 
-		update_post_meta( $attachment_id, '_ap_temp_image', true );
+		if( $temp ){
+			update_post_meta( $attachment_id, '_ap_temp_image', true );
+		}
 
 		require_once ABSPATH.'wp-admin/includes/image.php';
 

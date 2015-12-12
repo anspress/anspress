@@ -1108,7 +1108,7 @@ function ap_activity_date() {
 	$activity = ap_activity_object();
 
 	if ( $activity ) {
-		return $activity->updated;
+		return $activity->created;
 	}
 }
 
