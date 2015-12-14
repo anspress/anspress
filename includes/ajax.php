@@ -110,7 +110,7 @@ class AnsPress_Ajax
 			'action' => 'load_comment_form',
 		);
 
-		$comment_id = (int) $_POST['comment_ID'];
+		$comment_id = (int) @$_POST['comment_ID'];
 
 	    if ( ap_verify_nonce( 'comment_form_nonce' ) || ap_verify_nonce( 'edit_comment_'.$comment_id ) ) {
 	        $comment_args = array();

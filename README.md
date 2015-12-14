@@ -4,7 +4,7 @@
 **Tags:** question, answer, q&a, forum, profile, stackoverflow, quora, buddypress  
 **Requires at least:** 4.2  
 **Tested up to:** 4.4  
-**Stable tag:** 2.4.1  
+**Stable tag:** 2.4.2  
 **License:** GPLv2 or later  
 **License URI:** http://www.gnu.org/licenses/gpl-2.0.html  
 
@@ -100,6 +100,12 @@ Read full FAQ here http://anspress.io/documents/doc_page=faq
 
 ## Changelog ##
 
+### 2.4.2 ###
+
+  * Updated reCaptcha
+  * Fixed: Date translation and GMT offset
+  * Fix: question page title
+
 ### 2.4.1 ###
 
   * Fix: Hide cover and avatar upload if not ap_is_my_profile()
@@ -111,7 +117,7 @@ Read full FAQ here http://anspress.io/documents/doc_page=faq
   * Improved: ap_opt()
   * Fixed color picker in wp-admin
 
- = 2.4 =
+### 2.4 ###
 
  * New: added activity feed page
  * Fix: Answers left through admin don’t show up in user stats, but show up for admin stats

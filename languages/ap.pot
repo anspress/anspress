@@ -2,10 +2,10 @@
 # This file is distributed under the GPL-3.0+.
 msgid ""
 msgstr ""
-"Project-Id-Version: AnsPress 2.4.1\n"
+"Project-Id-Version: AnsPress 2.4.2\n"
 "Report-Msgid-Bugs-To: "
 "https://wordpress.org/support/plugin/anspress-question-answer\n"
-"POT-Creation-Date: 2015-12-06 00:57:42+00:00\n"
+"POT-Creation-Date: 2015-12-14 07:05:19+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -368,7 +368,7 @@ msgid "Hide author credits"
 msgstr ""
 
 #: admin/options-page.php:42
-msgid "Show your love by showing link to AnsPress project site."
+msgid "Hide link to AnsPress project site."
 msgstr ""
 
 #: admin/options-page.php:50
@@ -974,7 +974,7 @@ msgid "AnsPress Dashboard"
 msgstr ""
 
 #: admin/views/dashboard.php:34 includes/bp.php:102 includes/class-user.php:50
-#: includes/functions.php:1600 includes/post_types.php:49 includes/user.php:512
+#: includes/functions.php:1602 includes/post_types.php:49 includes/user.php:512
 #: includes/user.php:539 widgets/questions.php:53
 msgid "Questions"
 msgstr ""
@@ -1242,11 +1242,11 @@ msgstr ""
 msgid "Update"
 msgstr ""
 
-#: includes/ajax.php:510 includes/functions.php:1501
+#: includes/ajax.php:510 includes/functions.php:1503
 msgid "Set as featured"
 msgstr ""
 
-#: includes/ajax.php:525 includes/functions.php:1501
+#: includes/ajax.php:525 includes/functions.php:1503
 msgid "Unset as featured"
 msgstr ""
 
@@ -1545,19 +1545,19 @@ msgstr ""
 msgid "Avatar uploaded successfully."
 msgstr ""
 
-#: includes/class-validation.php:55
+#: includes/class-validation.php:56
 msgid "This field is required"
 msgstr ""
 
-#: includes/class-validation.php:80
+#: includes/class-validation.php:82
 msgid "Its too short, it must be minimum %d characters"
 msgstr ""
 
-#: includes/class-validation.php:99 includes/class-validation.php:102
+#: includes/class-validation.php:101 includes/class-validation.php:104
 msgid "It must be minimum %d characters"
 msgstr ""
 
-#: includes/class-validation.php:111
+#: includes/class-validation.php:113
 msgid "Not a valid email address"
 msgstr ""
 
@@ -1919,11 +1919,11 @@ msgstr ""
 msgid "Enter images link"
 msgstr ""
 
-#: includes/functions.php:1501
+#: includes/functions.php:1503
 msgid "Make this question featured"
 msgstr ""
 
-#: includes/functions.php:1670
+#: includes/functions.php:1672
 msgid "[Solved] "
 msgstr ""
 
@@ -2932,7 +2932,7 @@ msgstr ""
 msgid "View all posts by %s <span class=\"meta-nav\">&rarr;</span>"
 msgstr ""
 
-#: theme/default/question.php:90 widgets/question_stats.php:65
+#: theme/default/question.php:97 widgets/question_stats.php:65
 msgid "Question stats"
 msgstr ""
 
