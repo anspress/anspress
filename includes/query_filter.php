@@ -47,7 +47,7 @@ class AnsPress_Query_Filter
     public function ans_notice()
     {
         echo '<div class="error">
-           <p>' . __('Please fill parent question field, Answer was not saved!', 'ap') . '</p>
+           <p>' . __('Please fill parent question field, Answer was not saved!', 'anspress-question-answer') . '</p>
         </div>';
     }
 
@@ -86,22 +86,22 @@ class AnsPress_Query_Filter
 		 if($post->post_type == 'question' || $post->post_type == 'answer'){
 			  if($post->post_status == 'moderate'){
 				   $complete = ' selected=\'selected\'';
-				   $label = '<span id=\'post-status-display\'>'.__('Moderate', 'ap').'</span>';
+				   $label = '<span id=\'post-status-display\'>'.__('Moderate', 'anspress-question-answer').'</span>';
 			  }elseif($post->post_status == 'private_post'){
 				   $complete = ' selected=\'selected\'';
-				   $label = '<span id=\'post-status-display\'>'.__('Private Post', 'ap').'</span>';
+				   $label = '<span id=\'post-status-display\'>'.__('Private Post', 'anspress-question-answer').'</span>';
 			  }elseif($post->post_status == 'closed'){
 				   $complete = ' selected=\'selected\'';
-				   $label = '<span id=\'post-status-display\'>'.__('Closed', 'ap').'</span>';
+				   $label = '<span id=\'post-status-display\'>'.__('Closed', 'anspress-question-answer').'</span>';
 			  }
 			  ?>
 
 			  <?php
 			  echo '<script>
 					  jQuery(document).ready(function(){
-						   jQuery("select#post_status").append("<option value=\'moderate\' '.$complete.'>'.__('Moderate', 'ap').'</option>");
-						   jQuery("select#post_status").append("<option value=\'private_post\' '.$complete.'>'.__('Private Post', 'ap').'</option>");
-						   jQuery("select#post_status").append("<option value=\'closed\' '.$complete.'>'.__('Closed', 'ap').'</option>");
+						   jQuery("select#post_status").append("<option value=\'moderate\' '.$complete.'>'.__('Moderate', 'anspress-question-answer').'</option>");
+						   jQuery("select#post_status").append("<option value=\'private_post\' '.$complete.'>'.__('Private Post', 'anspress-question-answer').'</option>");
+						   jQuery("select#post_status").append("<option value=\'closed\' '.$complete.'>'.__('Closed', 'anspress-question-answer').'</option>");
 						   jQuery(".misc-pub-section label").append("'.$label.'");
 					  });
 			  </script>';

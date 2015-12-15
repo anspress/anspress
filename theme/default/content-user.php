@@ -12,9 +12,9 @@
 			</div>
 		</div>
 		<ul class="ap-point-ff ap-inline-list clearfix">
-			<li><a href="<?php echo ap_user_link($f->ID, 'followers'); ?>"><b data-view="ap-followers"><?php echo ap_get_current_user_meta('followers') ?></b><span><?php _e('Followers', 'ap') ?></span></a></li>
-			<li><a href="<?php echo ap_user_link($f->ID, 'following'); ?>"><b data-view="ap-following"><?php echo ap_get_current_user_meta('following') ?></b><span><?php _e('Following', 'ap') ?></span></a></li>
-			<li><a href="<?php echo ap_user_link($f->ID, 'points'); ?>"><b data-view="ap-points"><?php echo ap_get_points($f->ID, true); ?></b><span><?php _e('Points', 'ap') ?></span></a></li>
+			<li><a href="<?php echo ap_user_link($f->ID, 'followers'); ?>"><b data-view="ap-followers"><?php echo ap_get_current_user_meta('followers') ?></b><span><?php _e('Followers', 'anspress-question-answer') ?></span></a></li>
+			<li><a href="<?php echo ap_user_link($f->ID, 'following'); ?>"><b data-view="ap-following"><?php echo ap_get_current_user_meta('following') ?></b><span><?php _e('Following', 'anspress-question-answer') ?></span></a></li>
+			<li><a href="<?php echo ap_user_link($f->ID, 'points'); ?>"><b data-view="ap-points"><?php echo ap_get_points($f->ID, true); ?></b><span><?php _e('Points', 'anspress-question-answer') ?></span></a></li>
 		</ul>
 	</div>
 </div>

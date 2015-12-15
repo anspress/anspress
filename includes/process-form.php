@@ -164,7 +164,7 @@ class AnsPress_Process_Form
 			$this->result = array(
 				'form' 			=> $_POST['ap_form_action'],
 				'message'		=> 'captcha_error',
-				'errors'		=> array( 'captcha' => __( 'Bot verification failed.', 'ap' ) ),
+				'errors'		=> array( 'captcha' => __( 'Bot verification failed.', 'anspress-question-answer' ) ),
 			);
 			return;
 		}
@@ -213,7 +213,7 @@ class AnsPress_Process_Form
 			$this->result = array(
 				'form' 			=> $_POST['ap_form_action'],
 				'message_type' 	=> 'error',
-				'message'		=> __( 'Check missing fields and then re-submit.', 'ap' ),
+				'message'		=> __( 'Check missing fields and then re-submit.', 'anspress-question-answer' ),
 				'errors'		=> $ap_errors,
 			);
 			return;
@@ -394,7 +394,7 @@ class AnsPress_Process_Form
 			$this->result = array(
 				'form' 			=> $_POST['ap_form_action'],
 				'message'		=> 'captcha_error',
-				'errors'		=> array( 'captcha' => __( 'Bot verification failed.', 'ap' ) ),
+				'errors'		=> array( 'captcha' => __( 'Bot verification failed.', 'anspress-question-answer' ) ),
 			);
 			return;
 		}
@@ -437,7 +437,7 @@ class AnsPress_Process_Form
 			$this->result = array(
 				'form' 			=> $_POST['ap_form_action'],
 				'message_type' 	=> 'error',
-				'message'		=> __( 'Check missing fields and then re-submit.', 'ap' ),
+				'message'		=> __( 'Check missing fields and then re-submit.', 'anspress-question-answer' ),
 				'errors'		=> $ap_errors,
 			);
 			return;
@@ -522,7 +522,7 @@ class AnsPress_Process_Form
 
 				$html = ob_get_clean();
 
-				$count_label = sprintf( _n( '1 Answer', '%d Answers', $current_ans, 'ap' ), $current_ans );
+				$count_label = sprintf( _n( '1 Answer', '%d Answers', $current_ans, 'anspress-question-answer' ), $current_ans );
 
 				$result = array(
 					'postid' 		=> $post_id,
@@ -679,7 +679,7 @@ class AnsPress_Process_Form
 				ap_comment( $comment );
 				$html = ob_get_clean();
 				$count = get_comment_count( $comment->comment_post_ID );
-				$this->result = ap_ajax_responce( array( 'action' => 'new_comment', 'status' => true, 'comment_ID' => $comment->comment_ID, 'comment_post_ID' => $comment->comment_post_ID, 'comment_content' => $comment->comment_content, 'html' => $html, 'message' => 'comment_success', 'view' => array( 'comments_count_'.$comment->comment_post_ID => '('.$count['approved'].')', 'comment_count_label_'.$comment->comment_post_ID => sprintf( _n( 'One comment', '%d comments', $count['approved'], 'ap' ), $count['approved'] ) ) ) );
+				$this->result = ap_ajax_responce( array( 'action' => 'new_comment', 'status' => true, 'comment_ID' => $comment->comment_ID, 'comment_post_ID' => $comment->comment_post_ID, 'comment_content' => $comment->comment_content, 'html' => $html, 'message' => 'comment_success', 'view' => array( 'comments_count_'.$comment->comment_post_ID => '('.$count['approved'].')', 'comment_count_label_'.$comment->comment_post_ID => sprintf( _n( 'One comment', '%d comments', $count['approved'], 'anspress-question-answer' ), $count['approved'] ) ) ) );
 			} else {
 				$this->result = ap_ajax_responce( 'something_wrong' );
 			}
@@ -749,7 +749,7 @@ class AnsPress_Process_Form
 			ap_send_json( ap_ajax_responce(array(
 				'form' 			=> $_POST['ap_form_action'],
 				'message_type' 	=> 'error',
-				'message'		=> __( 'Check missing fields and then re-submit.', 'ap' ),
+				'message'		=> __( 'Check missing fields and then re-submit.', 'anspress-question-answer' ),
 				'errors'		=> $ap_errors,
 			)));
 			return;
@@ -798,7 +798,7 @@ class AnsPress_Process_Form
 		$file = $_FILES['post_upload_image'];
 
 		if ( $file['size'] > ap_opt( 'max_upload_size' ) ) {
-			$this->result  = array( 'message_type' => 'error', 'message' => sprintf( __( 'File cannot be uploaded, size is bigger then %d Byte' ), ap_opt( 'max_upload_size' ) ) );
+			$this->result  = array( 'message_type' => 'error', 'message' => sprintf( __( 'File cannot be uploaded, size is bigger then %d Byte', 'anspress-question-answer' ), ap_opt( 'max_upload_size' ) ) );
 			return;
 		}
 

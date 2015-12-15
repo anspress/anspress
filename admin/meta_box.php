@@ -16,8 +16,8 @@ class AP_Question_Meta_Box {
 	public function add_meta_box( $post_type ) {
 		$post_types = array( 'question' );     // limit meta box to certain post types
 		if ( in_array( $post_type, $post_types ) ) {
-			add_meta_box( 'ap_answers_meta_box' ,__( 'Answers', 'ap' ), array( $this, 'answers_meta_box_content' ), $post_type, 'normal', 'high' );
-			add_meta_box( 'ap_question_meta_box' ,__( 'Question', 'ap' ), array( $this, 'question_meta_box_content' ), $post_type, 'side', 'high' );
+			add_meta_box( 'ap_answers_meta_box' ,__( 'Answers', 'anspress-question-answer' ), array( $this, 'answers_meta_box_content' ), $post_type, 'normal', 'high' );
+			add_meta_box( 'ap_question_meta_box' ,__( 'Question', 'anspress-question-answer' ), array( $this, 'question_meta_box_content' ), $post_type, 'side', 'high' );
 		}
 
 		/*
@@ -55,8 +55,8 @@ class AP_Question_Meta_Box {
 					
 					<div class="answer-actions">
 
-						<span><a href="<?php echo get_edit_post_link( get_the_ID() ); ?>"><?php _e( 'Edit', 'ap' ); ?></a></span>
-						<span class="delete vim-d vim-destructive"> | <a href="<?php echo get_delete_post_link( get_the_ID() ); ?>"><?php _e( 'Trash', 'ap' ); ?></a></span>
+						<span><a href="<?php echo get_edit_post_link( get_the_ID() ); ?>"><?php _e( 'Edit', 'anspress-question-answer' ); ?></a></span>
+						<span class="delete vim-d vim-destructive"> | <a href="<?php echo get_delete_post_link( get_the_ID() ); ?>"><?php _e( 'Trash', 'anspress-question-answer' ); ?></a></span>
 					</div>
 
 				</div>
@@ -67,8 +67,8 @@ class AP_Question_Meta_Box {
 		} else {
 			?>
             <div class="inside">
-				<a href="#addanswerbtn" class="button"><?php _e( 'Add answer', 'ap' ); ?></a>
-				<?php _e( 'No answers yet', 'ap' ); ?>
+				<a href="#addanswerbtn" class="button"><?php _e( 'Add answer', 'anspress-question-answer' ); ?></a>
+				<?php _e( 'No answers yet', 'anspress-question-answer' ); ?>
             </div>
             
 			<?php
@@ -81,8 +81,8 @@ class AP_Question_Meta_Box {
 		$vote_count = get_post_meta( $post->ID, ANSPRESS_VOTE_META, true );
 		?>
             <ul>
-				<li> <?php printf( _n( '<strong>1</strong> Answer', '<strong>%d</strong> Answers', $ans_count, 'ap' ), $ans_count ); ?> </li>
-				<li> <?php printf( _n( '<strong>1</strong> Vote', '<strong>%d</strong> Votes', $vote_count, 'ap' ), $vote_count ); ?> </li>
+				<li> <?php printf( _n( '<strong>1</strong> Answer', '<strong>%d</strong> Answers', $ans_count, 'anspress-question-answer' ), $ans_count ); ?> </li>
+				<li> <?php printf( _n( '<strong>1</strong> Vote', '<strong>%d</strong> Votes', $vote_count, 'anspress-question-answer' ), $vote_count ); ?> </li>
             </ul>
 		<?php
 	}

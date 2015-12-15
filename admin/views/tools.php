@@ -18,11 +18,11 @@ $ap_roles = new AP_Roles;
 ?>
 <div class="ap-tools clearfix">
 	<div class="ap-tools-roles">
-		<h2><?php _e( 'AnsPress capabilities', 'ap' ); ?></h3>
-		<span><?php _e( 'Add AnsPress capabilities to 3rd party roles', 'ap' ); ?></span>
+		<h2><?php _e( 'AnsPress capabilities', 'anspress-question-answer' ); ?></h3>
+		<span><?php _e( 'Add AnsPress capabilities to 3rd party roles', 'anspress-question-answer' ); ?></span>
 		<br />
 		<br />
-		<label for="ap-tools-selectroles"><?php _e('Select user role', 'ap'); ?></label>
+		<label for="ap-tools-selectroles"><?php _e('Select user role', 'anspress-question-answer'); ?></label>
 		<select id="ap-tools-selectroles">
 			<?php foreach ( $wp_roles->roles as $key => $role ) : ?>
 				<option value="role_<?php echo $key; ?>" <?php selected( sanitize_text_field( $_POST['role_name'] ), $key ); ?>><?php echo $role['name']; ?></option>
@@ -35,7 +35,7 @@ $ap_roles = new AP_Roles;
 					<?php echo $role['name']; ?>
 				</strong>
 				<div class="ap-tools-basecaps ap-tools-ck">
-					<strong><?php _e( 'Basic Capabilities', 'ap' ); ?><input type="checkbox" class="checkall" /></strong>
+					<strong><?php _e( 'Basic Capabilities', 'anspress-question-answer' ); ?><input type="checkbox" class="checkall" /></strong>
 					<?php foreach ( $ap_roles->base_caps as $cap => $val ) :   ?>
 						<label for="<?php echo $key.'_'.$cap; ?>">
 							<input id="<?php echo $key.'_'.$cap; ?>" type="checkbox" name="c[<?php echo $cap; ?>]" <?php echo isset( $role['capabilities'][$cap] ) && $role['capabilities'][$cap] ? ' checked="checked"' : ''; ?> />
@@ -44,7 +44,7 @@ $ap_roles = new AP_Roles;
 					<?php endforeach; ?>
 				</div>
 				<div class="ap-tools-modcaps ap-tools-ck">
-					<strong><?php _e( 'Moderator Capabilities', 'ap' ); ?><input type="checkbox" class="checkall" /></strong>
+					<strong><?php _e( 'Moderator Capabilities', 'anspress-question-answer' ); ?><input type="checkbox" class="checkall" /></strong>
 					<?php foreach ( $ap_roles->mod_caps as $cap => $val ) :   ?>
 						<label for="<?php echo $key.'_'.$cap; ?>">
 							<input id="<?php echo $key.'_'.$cap; ?>" type="checkbox" name="c[<?php echo $cap; ?>]" <?php echo isset( $role['capabilities'][$cap] ) && $role['capabilities'][$cap] ? ' checked="checked"' : ''; ?> />

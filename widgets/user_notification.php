@@ -25,8 +25,8 @@ class AnsPress_User_Notifications_Widget extends WP_Widget {
 	public function __construct() {
 		parent::__construct(
 			'ap_user_notifications_widget',
-			__( '(AnsPress) User Notifications', 'ap' ),
-			array( 'description' => __( 'Show logged in user notifications', 'ap' ) )
+			__( '(AnsPress) User Notifications', 'anspress-question-answer' ),
+			array( 'description' => __( 'Show logged in user notifications', 'anspress-question-answer' ) )
 		);
 	}
 

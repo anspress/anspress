@@ -15,7 +15,7 @@ if ( ! defined( 'WPINC' ) ) {
 ?>
 <div class="wrap">
 	<div id="apicon-users" class="icon32"><br/></div>
-	<h2><?php esc_attr_e( 'Posts awaiting moderation', 'ap' ); ?></h2>
+	<h2><?php esc_attr_e( 'Posts awaiting moderation', 'anspress-question-answer' ); ?></h2>
 	<?php do_action( 'ap_after_admin_page_title' ) ?>
 	<form id="moderate-filter" method="get">
 		<input type="hidden" name="page" value="<?php echo sanitize_text_field( $_REQUEST['page'] ); ?>" />

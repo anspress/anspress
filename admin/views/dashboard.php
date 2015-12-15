@@ -22,7 +22,7 @@ $flagged_count = ap_total_posts_count('both', 'flag');
 ?>
 <div id="anspress" class="wrap">
 	<?php do_action('ap_before_admin_page_title') ?>
-	<h2><?php _e('AnsPress Dashboard', 'ap') ?></h2>
+	<h2><?php _e('AnsPress Dashboard', 'anspress-question-answer') ?></h2>
 
 	<div class="row ap-dash-tiles">
 		<div class="ap-dash-tile col-md-6">
@@ -31,31 +31,31 @@ $flagged_count = ap_total_posts_count('both', 'flag');
 					<li>
 						<a href="<?php echo admin_url( 'edit.php?post_type=question' ); ?>">
 							<strong><?php echo $question_count->publish; ?></strong>
-							<span><?php _e('Questions', 'ap') ?></span>
+							<span><?php _e('Questions', 'anspress-question-answer') ?></span>
 						</a>
 					</li>
 					<li>
 						<a href="<?php echo admin_url( 'edit.php?post_type=answer' ); ?>">
 							<strong><?php echo $answer_count->publish; ?></strong>
-							<span><?php _e('Answers', 'ap') ?></span>
+							<span><?php _e('Answers', 'anspress-question-answer') ?></span>
 						</a>
 					</li>
 					<li>
 						<a href="<?php echo admin_url( 'admin.php?page=anspress_moderate' ); ?>">
 							<strong><?php echo $question_count->moderate + $answer_count->moderate. ($question_count->moderate + $answer_count->moderate > 0 ? '<i class="ap-need-att">i</i>' : ''); ?></strong>
-							<span><?php _e('Moderate', 'ap') ?></span>
+							<span><?php _e('Moderate', 'anspress-question-answer') ?></span>
 						</a>
 					</li>
 					<li>
 						<a href="<?php echo admin_url( 'admin.php?page=anspress_flagged' ); ?>">
 							<strong><?php echo $flagged_count->total. ($flagged_count->total > 0 ? '<i class="ap-need-att">i</i>' : ''); ?></strong>
-							<span><?php _e('Flagged', 'ap') ?></span>
+							<span><?php _e('Flagged', 'anspress-question-answer') ?></span>
 						</a>
 					</li>
 				</ul>
 			</div>
 			<div class="ap-dash-tile-in ap-dash-questions">
-				<h3 class="ap-dash-title"><?php _e('Latest Questions', 'ap') ?></h3>
+				<h3 class="ap-dash-title"><?php _e('Latest Questions', 'anspress-question-answer') ?></h3>
 				<?php
 					$questions = ap_get_questions(array('sortby' => 'newest'));
 					if ( ap_have_questions() ):
@@ -63,9 +63,9 @@ $flagged_count = ap_total_posts_count('both', 'flag');
 				<div class="ap-user-posts">
 					<?php while ( ap_questions() ) : ap_the_question(); ?>
 						<div class="ap-user-posts-item clearfix">
-							<a class="ap-user-posts-vcount ap-tip<?php echo ap_question_best_answer_selected() ? ' answer-selected' :''; ?>" href="<?php ap_question_the_permalink(); ?>" title="<?php _e('Answers'); ?>"><?php echo ap_icon('answer', true); ?><?php echo ap_question_get_the_answer_count(); ?></a>
+							<a class="ap-user-posts-vcount ap-tip<?php echo ap_question_best_answer_selected() ? ' answer-selected' :''; ?>" href="<?php ap_question_the_permalink(); ?>" title="<?php _e('Answers', 'anspress-question-answer'); ?>"><?php echo ap_icon('answer', true); ?><?php echo ap_question_get_the_answer_count(); ?></a>
 							<span class="ap-user-posts-active"><?php ap_question_the_active_ago(); ?></span>
-							<a class="ap-user-posts-ccount ap-tip" href="<?php ap_question_the_permalink(); ?>" title="<?php _e('Comments', 'ap'); ?>"><?php echo ap_icon('comment', true); ?><?php echo get_comments_number(); ?></a>
+							<a class="ap-user-posts-ccount ap-tip" href="<?php ap_question_the_permalink(); ?>" title="<?php _e('Comments', 'anspress-question-answer'); ?>"><?php echo ap_icon('comment', true); ?><?php echo get_comments_number(); ?></a>
 							<div class="no-overflow"><a href="<?php ap_question_the_permalink(); ?>" class="ap-user-posts-title"><?php the_title(); ?></a></div>
 						</div>
 
@@ -76,7 +76,7 @@ $flagged_count = ap_total_posts_count('both', 'flag');
 
 					<?php
 						else:
-							_e('There is no question yet.', 'ap');
+							_e('There is no question yet.', 'anspress-question-answer');
 						endif;
 					?>
 				</div>

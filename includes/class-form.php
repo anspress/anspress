@@ -56,7 +56,7 @@ class AnsPress_Form {
 			'is_ajaxified'      => false,
 			'class'             => 'ap-form',
 			'multipart'         => false,
-			'submit_button'     => __( 'Submit', 'ap' ),
+			'submit_button'     => __( 'Submit', 'anspress-question-answer' ),
 		);
 
 		// Merge defaults args.
@@ -183,7 +183,7 @@ class AnsPress_Form {
 		$this->output .= '<button type="submit" class="ap-btn ap-btn-submit">'.$this->args['submit_button'].'</button>';
 
 		if ( @$this->args['show_cancel'] === true ) {
-			$this->output .= '<button type="button" class="ap-btn ap-btn-cancel">'.__( 'Cancel', 'ap' ).'</button>'; }
+			$this->output .= '<button type="button" class="ap-btn ap-btn-cancel">'.__( 'Cancel', 'anspress-question-answer' ).'</button>'; }
 
 		$this->output .= '</form>';
 	}
@@ -268,22 +268,22 @@ class AnsPress_Form {
 			$this->output .= '<input id="'. @$field['name'] .'" type="'.$type.'" class="ap-form-control" value="'. @$field['value'] .'" name="'. @$field['name'] .'"'.$placeholder.' '. @$field['attr'] .$autocomplete.' />';
 
 			if ( $type == 'password' ) {
-				$this->output .= '<input id="'. @$field['name'] .'-1" type="'.$type.'" class="ap-form-control" value="'. @$field['value'] .'" name="'. @$field['name'] .'-1" placeholder="'.__( 'Repeat your password', 'ap' ).'" '. @$field['attr'] .$autocomplete.' />'; }
+				$this->output .= '<input id="'. @$field['name'] .'-1" type="'.$type.'" class="ap-form-control" value="'. @$field['value'] .'" name="'. @$field['name'] .'-1" placeholder="'.__( 'Repeat your password', 'anspress-question-answer' ).'" '. @$field['attr'] .$autocomplete.' />'; }
 		} else {
 			if ( ! empty( $field['value'] ) && is_array( $field['value'] ) ) {
 				$this->output .= '<div id="ap-repeat-c-'. @$field['name'] .'" class="ap-repeatbable-field">';
 				foreach ( $field['value'] as $k => $rep_f ) {
 					$this->output .= '<div id="ap_text_rep_'. @$field['name'] .'_'.$k.'" class="ap-repeatbable-field"><input id="'. @$field['name'] .'_'.$k.'" type="text" class="ap-form-control ap-repeatable-text" value="'. @$rep_f .'" name="'. @$field['name'] .'['.$k.']"'.$placeholder.' '. @$field['attr'] .$autocomplete.' />';
-					$this->output .= '<button data-action="ap_delete_field" type="button" data-toggle="'. @$field['name'] .'_'.$k.'">'.__( 'Delete' ).'</button>';
+					$this->output .= '<button data-action="ap_delete_field" type="button" data-toggle="'. @$field['name'] .'_'.$k.'">'.__( 'Delete', 'anspress-question-answer' ).'</button>';
 					$this->output .= '</div>';
 				}
 				$this->output .= '</div>';
 
 				$this->output .= '<div id="ap-repeatbable-field-'. @$field['name'] .'" class="ap-reapt-field-copy">';
 				$this->output .= '<div id="ap_text_rep_'. @$field['name'] .'_#" class="ap-repeatbable-field"><input id="'. @$field['name'] .'_#" type="text" class="ap-form-control ap-repeatable-text" value="" name="'. @$field['name'] .'[#]"'.$placeholder.' '. @$field['attr'] .$autocomplete.' />';
-				$this->output .= '<button data-action="ap_delete_field" type="button" data-toggle="'. @$field['name'] .'_#">'.__( 'Delete' ).'</button>';
+				$this->output .= '<button data-action="ap_delete_field" type="button" data-toggle="'. @$field['name'] .'_#">'.__( 'Delete', 'anspress-question-answer' ).'</button>';
 				$this->output .= '</div></div>';
-				$this->output .= '<button data-action="ap_add_field" type="button" data-field="ap-repeat-c-'. @$field['name'] .'" data-copy="ap-repeatbable-field-'. @$field['name'] .'">'.__( 'Add more' ).'</button>';
+				$this->output .= '<button data-action="ap_add_field" type="button" data-field="ap-repeat-c-'. @$field['name'] .'" data-copy="ap-repeatbable-field-'. @$field['name'] .'">'.__( 'Add more', 'anspress-question-answer' ).'</button>';
 			}
 		}
 
@@ -416,7 +416,7 @@ class AnsPress_Form {
 		if ( isset( $field['label'] ) ) {
 			$this->label(); }
 		$this->output .= '<div class="ap-form-fields-in">';
-		$this->output .= wp_dropdown_pages( array( 'show_option_none' => __( 'Select a page', 'ap' ), 'selected' => @$field['value'], 'name' => @$field['name'], 'post_type' => 'page', 'echo' => false ) );
+		$this->output .= wp_dropdown_pages( array( 'show_option_none' => __( 'Select a page', 'anspress-question-answer' ), 'selected' => @$field['value'], 'name' => @$field['name'], 'post_type' => 'page', 'echo' => false ) );
 		$this->error_messages();
 		if ( ! $this->field['show_desc_tip'] ) {
 			$this->desc(); }
@@ -547,7 +547,7 @@ class AnsPress_Form {
 					$this->output .= '<div id="'.@$field['name'].'_field_wrap" class="clearfix ap-form-fields-wrap'.$error_class.'">';
 						$this->output .= '<label class="ap-form-fields-wrap-label">'.@$field['label'].'</label>';
 					if ( @$field['edit_disabled'] !== true && $this->args['user_id'] == get_current_user_id() ) {
-						$this->output .= '<a class="ap-form-fields-edit" data-action="ap_load_user_field_form" data-query="ap_ajax_action=load_user_field_form&field='.$field['name'].'&__nonce='.$nonce.'" href="#">'.__( 'Edit', 'ap' ).'</a>'; }
+						$this->output .= '<a class="ap-form-fields-edit" data-action="ap_load_user_field_form" data-query="ap_ajax_action=load_user_field_form&field='.$field['name'].'&__nonce='.$nonce.'" href="#">'.__( 'Edit', 'anspress-question-answer' ).'</a>'; }
 						$this->output .= '<div id="user_field_form_'.$field['name'].'" class="ap-form-fields-wrap-inner"><span>'.@$field['value'].'</apn></div>';
 					$this->output .= '</div>';
 				}
@@ -637,7 +637,7 @@ class AnsPress_Form {
 	public function get_form() {
 
 		if ( empty( $this->args['fields'] ) ) {
-			return __( 'No fields found', 'ap' ); }
+			return __( 'No fields found', 'anspress-question-answer' ); }
 
 		$this->build();
 

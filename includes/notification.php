@@ -198,7 +198,7 @@ function ap_new_notification( $activity_id, $user_id = false, $status = '0', $da
 	global $wpdb;
 
 	if( !is_integer($activity_id) ){
-		return new WP_Error('not_integer', __('$activity_id is not a valid integer.', 'ap'));
+		return new WP_Error('not_integer', __('$activity_id is not a valid integer.', 'anspress-question-answer'));
 	}
 
 	$user_ids = array();
@@ -297,7 +297,7 @@ function ap_get_notification_icon($type) {
 function ap_get_the_total_unread_notification($user_id = false, $echo = false) {
 	$count = ap_get_total_unread_notification();
 
-	$count = $count >= 10 ? __( '9+', 'ap' ) : $count;
+	$count = $count >= 10 ? __( '9+', 'anspress-question-answer' ) : $count;
 	$count = $count != 0 ? '<span class="counter" data-view="notification_count">'.$count.'</span>' : '';
 
 	if ( $echo ) {

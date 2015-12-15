@@ -19,7 +19,7 @@
 
 		<div class="ap-reputation-graph">
 			<div class="ap-pull-left">
-				<span class="ap-about-rep-label"><?php _e('Total', 'ap'); ?></span>
+				<span class="ap-about-rep-label"><?php _e('Total', 'anspress-question-answer'); ?></span>
 				<span class="ap-about-rep-count"><?php ap_user_the_reputation(); ?></span>
 			</div>
 
@@ -40,7 +40,7 @@
 
 				ap_pagination(false, anspress()->reputations->total_pages);
 			}else{
-				_e('No reputation earned yet.', 'ap');
+				_e('No reputation earned yet.', 'anspress-question-answer');
 			}
 		?>
 

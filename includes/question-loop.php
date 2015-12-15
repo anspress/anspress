@@ -297,7 +297,7 @@ function ap_question_get_the_author_avatar($size = 45) {
 
 function ap_question_the_answer_count() {
 	$count = ap_question_get_the_answer_count();
-	echo '<a class="ap-questions-count ap-questions-acount" href="'.ap_answers_link().'">'. sprintf( _n( '%s ans', '%s ans', $count, 'ap' ), '<span>'.$count.'</span>' ).'</a>';
+	echo '<a class="ap-questions-count ap-questions-acount" href="'.ap_answers_link().'">'. sprintf( _n( '%s ans', '%s ans', $count, 'anspress-question-answer' ), '<span>'.$count.'</span>' ).'</a>';
 }
 
 /**
@@ -319,7 +319,7 @@ function ap_question_the_net_vote() {
 		?>
             <span class="ap-questions-count ap-questions-vcount">
                 <span><?php echo ap_question_get_the_net_vote(); ?></span>
-                <?php  _e( 'votes', 'ap' ); ?>
+                <?php  _e( 'votes', 'anspress-question-answer' ); ?>
             </span>
         <?php
 	}
@@ -376,10 +376,10 @@ function ap_question_the_vote_button() {
 	 */
 function ap_question_the_status() {
 	if ( ap_question_the_object()->post_status == 'private_post' ) {
-		echo '<span class="ap-post-type private ap-notice gray">'.__( 'Private', 'ap' ).'</span>'; } elseif (ap_question_the_object()->post_status == 'moderate')
-	echo '<span class="ap-post-type moderate ap-notice yellow">'.__( 'Moderate', 'ap' ).'</span>';
+		echo '<span class="ap-post-type private ap-notice gray">'.__( 'Private', 'anspress-question-answer' ).'</span>'; } elseif (ap_question_the_object()->post_status == 'moderate')
+	echo '<span class="ap-post-type moderate ap-notice yellow">'.__( 'Moderate', 'anspress-question-answer' ).'</span>';
 	elseif (ap_question_the_object()->post_status == 'closed')
-	echo '<span class="ap-post-type closed ap-notice red">'.__( 'Closed', 'ap' ).'</span>';
+	echo '<span class="ap-post-type closed ap-notice red">'.__( 'Closed', 'anspress-question-answer' ).'</span>';
 }
 
 	/**
@@ -496,7 +496,7 @@ function ap_question_get_the_active_time($question_id = false) {
 
 function ap_question_the_time($question_id = false, $format = 'U') {
 	$question_id = ap_parameter_empty( $question_id, @ap_question_get_the_ID() );
-	printf( __( '%s %s', 'ap' ), '<a href="'. get_permalink( $question_id ) .'"><time itemprop="datePublished" datetime="'.ap_question_get_the_time( $question_id, 'c' ).'">'.ap_human_time( ap_question_get_the_time( $question_id, $format ) ), '</time></a>' );
+	printf( __( '%s %s', 'anspress-question-answer' ), '<a href="'. get_permalink( $question_id ) .'"><time itemprop="datePublished" datetime="'.ap_question_get_the_time( $question_id, 'c' ).'">'.ap_human_time( ap_question_get_the_time( $question_id, $format ) ), '</time></a>' );
 }
 
 function ap_question_get_the_time($question_id = false, $format = '') {

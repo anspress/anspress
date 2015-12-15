@@ -15,7 +15,7 @@
 	<div id="ap-answers-c">
 		<div class="ap-sorting-tab clearfix">
 			<h3 class="ap-answers-label ap-pull-left">
-				<?php echo '<span data-view="answer_count">'.ap_answer_get_the_count().'</span> ' .sprintf(_n('answer', 'answers', ap_answer_get_the_count(), 'ap')); ?>
+				<?php echo '<span data-view="answer_count">'.ap_answer_get_the_count().'</span> ' .sprintf(_n('answer', 'answers', ap_answer_get_the_count(), 'anspress-question-answer')); ?>
 			</h3>
 			<?php ap_answers_tab(ap_question_get_the_permalink()); ?>
 		</div>
@@ -34,7 +34,7 @@
 		<?php else: ?>
 			<div class="ap-login-to-see-ans">
 				<?php 
-					printf(__('Please %s or %s to view answers and comments', 'ap'), '<a class="ap-open-modal ap-btn" title="Click here to login if you already have an account on this site." href="#ap_login_modal">Login</a>', '<a class="ap-open-modal ap-btn" title="Click here to signup if you do not have an account on this site." href="#ap_signup_modal">Sign Up</a>'); 
+					printf(__('Please %s or %s to view answers and comments', 'anspress-question-answer'), '<a class="ap-open-modal ap-btn" title="Click here to login if you already have an account on this site." href="#ap_login_modal">Login</a>', '<a class="ap-open-modal ap-btn" title="Click here to signup if you do not have an account on this site." href="#ap_signup_modal">Sign Up</a>'); 
 				?>
 			</div>
 			<?php do_action('ap_after_answer_form'); ?>

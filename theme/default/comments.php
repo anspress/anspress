@@ -19,9 +19,9 @@ if (post_password_required() || (ap_opt('logged_in_can_see_comment') && !is_user
 
 			<?php if (get_comment_pages_count() > 1 && get_option('page_comments')) : ?>
 				<nav id="comment-nav-below" class="navigation" role="navigation">
-					<h1 class="assistive-text section-heading"><?php _e('Comment navigation', 'ap'); ?></h1>
-					<div class="nav-previous"><?php previous_comments_link(__('&larr; Older Comments', 'ap')); ?></div>
-					<div class="nav-next"><?php next_comments_link(__('Newer Comments &rarr;', 'ap')); ?></div>
+					<h1 class="assistive-text section-heading"><?php _e('Comment navigation', 'anspress-question-answer'); ?></h1>
+					<div class="nav-previous"><?php previous_comments_link(__('&larr; Older Comments', 'anspress-question-answer')); ?></div>
+					<div class="nav-next"><?php next_comments_link(__('Newer Comments &rarr;', 'anspress-question-answer')); ?></div>
 				</nav>
 			<?php endif; ?>
 		</div><!-- close .ap-comments -->

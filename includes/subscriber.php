@@ -186,12 +186,12 @@ function ap_subscriber_count_html($post = false) {
 	$total_subscribers = ap_subscribers_count( $post->ID );
 
 	if ( $total_subscribers == '1' && $subscribed ) {
-		return __( 'Only you are subscribed to this question.', 'ap' ); } elseif ($subscribed)
-		return sprintf( __( 'You and <strong>%s people</strong> subscribed to this question.', 'ap' ), ($total_subscribers -1) );
+		return __( 'Only you are subscribed to this question.', 'anspress-question-answer' ); } elseif ($subscribed)
+		return sprintf( __( 'You and <strong>%s people</strong> subscribed to this question.', 'anspress-question-answer' ), ($total_subscribers -1) );
 	elseif ($total_subscribers == 0)
-		return __( 'No one is subscribed to this question.', 'ap' );
+		return __( 'No one is subscribed to this question.', 'anspress-question-answer' );
 	else {
-		return sprintf( __( '<strong>%d people</strong> subscribed to this question.', 'ap' ), $total_subscribers ); }
+		return sprintf( __( '<strong>%d people</strong> subscribed to this question.', 'anspress-question-answer' ), $total_subscribers ); }
 }
 
 /**
@@ -283,7 +283,7 @@ function ap_subscribe_btn_html($action_id = false, $type = false) {
 
 	$nonce = wp_create_nonce( 'subscribe_'.$action_id.'_'.$subscribe_type );
 
-	$title = ( ! $subscribed) ? __( 'Follow', 'ap' ) : __( 'Unfollow', 'ap' );
+	$title = ( ! $subscribed) ? __( 'Follow', 'anspress-question-answer' ) : __( 'Unfollow', 'anspress-question-answer' );
 	?>
 	<div class="ap-subscribe-btn" id="<?php echo 'subscribe_'.$action_id; ?>">
 		<a href="#" class="ap-btn<?php echo ($subscribed) ? ' active' :''; ?>" data-query="<?php echo 'subscribe::'. $nonce .'::'. $action_id .'::'. $subscribe_type; ?>" data-action="ajax_btn" data-cb="apSubscribeBtnCB">

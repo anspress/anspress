@@ -383,8 +383,8 @@ class AnsPress_Hooks
 	     */
 
 	    $default_pages  = array(
-	    	'profile' 	=> array( 'title' => __( 'My profile', 'ap' ), 'show_in_menu' => true, 'logged_in' => true ),
-	    	'notification' => array( 'title' => __( 'My notification', 'ap' ), 'show_in_menu' => true, 'logged_in' => true ),
+	    	'profile' 	=> array( 'title' => __( 'My profile', 'anspress-question-answer' ), 'show_in_menu' => true, 'logged_in' => true ),
+	    	'notification' => array( 'title' => __( 'My notification', 'anspress-question-answer' ), 'show_in_menu' => true, 'logged_in' => true ),
 	    	'ask' 		=> array(),
 	    	'question' 	=> array(),
 	    	'users' 	=> array(),

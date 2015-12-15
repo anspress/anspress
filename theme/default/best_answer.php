@@ -14,7 +14,7 @@
  */
 if(ap_have_answers()){
 	echo '<div id="ap-best-answer">';
-		echo '<h3 class="ap-answers-label"><span>' . __('Best answer', 'ap') .'</span></h3>';		
+		echo '<h3 class="ap-answers-label"><span>' . __('Best answer', 'anspress-question-answer') .'</span></h3>';		
 		while ( ap_have_answers() ) : ap_the_answer();
 	        include(ap_get_theme_location('answer.php'));
 	    endwhile ;

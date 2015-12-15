@@ -34,6 +34,24 @@ module.exports = function(grunt) {
 	            }
 	        }
 	    },
+	    
+	    addtextdomain: {
+	    	options: {
+	            textdomain: 'anspress-question-answer',    // Project text domain.
+	            updateDomains: ['ap']  // List of text domains to replace.
+	        },
+	        target: {
+	            files: {
+	                src: [
+	                    '*.php',
+	                    '**/*.php',
+	                    '!node_modules/**',
+	                    '!tests/**',
+	                    '!.git/.*', '!.svn/.*', '!.vendor/.*'
+	                ]
+	            }
+	        }
+	    },
 
 	    phpdocumentor: {
 	    	dist: {

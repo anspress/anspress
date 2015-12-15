@@ -18,7 +18,7 @@
  * Version:           2.4.3
  * Author:            Rahul Aryan
  * Author URI:        http://anspress.io
- * Text Domain:       ap
+ * Text Domain:       anspress-question-answer
  * License:           GPL-3.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Domain Path:       /languages

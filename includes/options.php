@@ -140,7 +140,7 @@ function ap_default_options() {
 		'ask_page_slug' 			=> 'ask',
 		'question_page_slug' 		=> 'question',
 		'users_page_slug' 			=> 'users',
-		'users_page_title' 			=> __('Users', 'ap' ),
+		'users_page_title' 			=> __('Users', 'anspress-question-answer' ),
 		'users_page_title' 			=> false,
 		'max_upload_size' 			=> 500000,
 		'disable_down_vote_on_question' => false,

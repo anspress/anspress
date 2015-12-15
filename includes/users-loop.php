@@ -513,13 +513,13 @@ function ap_user_get_member_for() {
 	$time = '';
 
 	if ( $diff->y > 0 ) {
-		$time .= sprintf( __( '%d years, ', 'ap' ), $diff->y ); }
+		$time .= sprintf( __( '%d years, ', 'anspress-question-answer' ), $diff->y ); }
 
 	if ( $diff->m > 0 ) {
-		$time .= sprintf( __( '%d months, ', 'ap' ), $diff->m ); }
+		$time .= sprintf( __( '%d months, ', 'anspress-question-answer' ), $diff->m ); }
 
 	if ( $diff->d > 0 ) {
-		$time .= sprintf( __( '%d days', 'ap' ), $diff->d ); }
+		$time .= sprintf( __( '%d days', 'anspress-question-answer' ), $diff->d ); }
 
 	return $time;
 }

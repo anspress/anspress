@@ -11,8 +11,8 @@ $noti_ids = array();
 ?>
 <div class="ap-notification-items">
 	<div class="ap-notification-head clearfix">
-		<b><?php _e('Notifications', 'ap'); ?></b>
-		<a href="#" data-action="ap_markread_notification" data-query="ap_ajax_action=markread_notification&__nonce='.wp_create_nonce( 'ap_markread_notification_'.get_current_user_id() ).'"><?php _e('Mark all as read', 'ap'); ?></a>
+		<b><?php _e('Notifications', 'anspress-question-answer'); ?></b>
+		<a href="#" data-action="ap_markread_notification" data-query="ap_ajax_action=markread_notification&__nonce='.wp_create_nonce( 'ap_markread_notification_'.get_current_user_id() ).'"><?php _e('Mark all as read', 'anspress-question-answer'); ?></a>
 	</div>
 	<?php if(ap_has_activities()): ?>
 		<div class="ap-notification-items clearfix">
@@ -34,11 +34,11 @@ $noti_ids = array();
 					<?php $noti_ids[] = ap_activity_noti_id(); ?>
 				<?php endwhile; ?>
 				<input type="hidden" name="ap_loaded_notifications" value="<?php echo implode(',', $noti_ids) ?>" />
-				<div class="ap-notification-more clearfix"><a href="<?php echo ap_user_link(get_current_user_id(), 'notification'); ?>"><?php _e('View all notifications', 'ap'); ?></a></div>
+				<div class="ap-notification-more clearfix"><a href="<?php echo ap_user_link(get_current_user_id(), 'notification'); ?>"><?php _e('View all notifications', 'anspress-question-answer'); ?></a></div>
 			</div>
 		</div>
 	<?php else: ?>
-		<div class="ap-no-notification"><?php _e('No notification', 'ap'); ?></div>
+		<div class="ap-no-notification"><?php _e('No notification', 'anspress-question-answer'); ?></div>
 	<?php endif; ?>
 	
 </div>

@@ -8,13 +8,13 @@
 				?>
 				<div class="ap-rq-post">
 					<a href="<?php the_permalink() ?>"><?php the_title() ?></a>
-					<span class="ap-ans-count"><?php printf( _n('1 answer', '%d answers', $ans_count, 'ap'), $ans_count) ?></span>
-					<span class="ap-vote-count"><?php printf( _n('1 vote', '%d votes', $net_vote, 'ap'), $net_vote) ?></span>
+					<span class="ap-ans-count"><?php printf( _n('1 answer', '%d answers', $ans_count, 'anspress-question-answer'), $ans_count) ?></span>
+					<span class="ap-vote-count"><?php printf( _n('1 vote', '%d votes', $net_vote, 'anspress-question-answer'), $net_vote) ?></span>
 				</div>
 				<?php
 			endwhile;
 		}else{
-			_e('No related questions found.', 'ap');
+			_e('No related questions found.', 'anspress-question-answer');
 		}
 	?>	
 </div>

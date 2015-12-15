@@ -51,31 +51,31 @@ class AnsPress_Admin_Ajax
 					<form method="POST" data-action="ap-save-reputation">
 						<table class="form-table">
 							<tr valign="top">
-								<th scope="row"><label for="title">'. __( 'Title', 'ap' ).'</label></th>
+								<th scope="row"><label for="title">'. __( 'Title', 'anspress-question-answer' ).'</label></th>
 								<td>
 									<input id="title" type="text" name="title" value="'.$reputation['title'].'" />
 								</td>
 							</tr>
 							<tr valign="top">
-								<th scope="row"><label for="description">'. __( 'Description', 'ap' ).'</label></th>
+								<th scope="row"><label for="description">'. __( 'Description', 'anspress-question-answer' ).'</label></th>
 								<td>
 									<textarea cols="50" id="description" name="description">'.$reputation['description'].'</textarea>
 								</td>
 							</tr>
 							<tr valign="top">
-								<th scope="row"><label for="reputation">'. __( 'Points', 'ap' ).'</label></th>
+								<th scope="row"><label for="reputation">'. __( 'Points', 'anspress-question-answer' ).'</label></th>
 								<td>
 									<input id="reputation" type="text" name="reputation" value="'.$reputation['reputation'].'" />
 								</td>
 							</tr>
 							<tr valign="top">
-								<th scope="row"><label for="event">'. __( 'Event', 'ap' ).'</label></th>
+								<th scope="row"><label for="event">'. __( 'Event', 'anspress-question-answer' ).'</label></th>
 								<td>
 									<input type="text" name="event" value="'.$reputation['event'].'" />
 								</td>
 							</tr>
 						</table>
-						<input class="button-primary" type="submit" value="'.__( 'Save Point', 'ap' ).'">
+						<input class="button-primary" type="submit" value="'.__( 'Save Point', 'anspress-question-answer' ).'">
 						<input type="hidden" name="id" value="'.$reputation['id'].'">
 						<input type="hidden" name="action" value="ap_save_reputation">
 						<input type="hidden" name="nonce" value="'.wp_create_nonce( 'ap_save_reputation' ).'">
@@ -136,31 +136,31 @@ class AnsPress_Admin_Ajax
 					<form method="POST" data-action="ap-save-reputation">
 						<table class="form-table">
 							<tr valign="top">
-								<th scope="row"><label for="title">'. __( 'Title', 'ap' ).'</label></th>
+								<th scope="row"><label for="title">'. __( 'Title', 'anspress-question-answer' ).'</label></th>
 								<td>
 									<input id="title" type="text" name="title" value="" />
 								</td>
 							</tr>
 							<tr valign="top">
-								<th scope="row"><label for="description">'. __( 'Description', 'ap' ).'</label></th>
+								<th scope="row"><label for="description">'. __( 'Description', 'anspress-question-answer' ).'</label></th>
 								<td>
 									<textarea cols="50" id="description" name="description"></textarea>
 								</td>
 							</tr>
 							<tr valign="top">
-								<th scope="row"><label for="reputation">'. __( 'Points', 'ap' ).'</label></th>
+								<th scope="row"><label for="reputation">'. __( 'Points', 'anspress-question-answer' ).'</label></th>
 								<td>
 									<input id="reputation" type="text" name="reputation" value="" />
 								</td>
 							</tr>
 							<tr valign="top">
-								<th scope="row"><label for="event">'. __( 'Event', 'ap' ).'</label></th>
+								<th scope="row"><label for="event">'. __( 'Event', 'anspress-question-answer' ).'</label></th>
 								<td>
 									<input type="text" name="event" value="" />
 								</td>
 							</tr>
 						</table>
-						<input class="button-primary" type="submit" value="'.__( 'Save Point', 'ap' ).'">
+						<input class="button-primary" type="submit" value="'.__( 'Save Point', 'anspress-question-answer' ).'">
 						<input type="hidden" name="action" value="ap_save_reputation">
 						<input type="hidden" name="nonce" value="'.wp_create_nonce( 'ap_save_reputation' ).'">
 					</form>

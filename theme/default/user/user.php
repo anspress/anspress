@@ -24,7 +24,7 @@
 					<?php
 						if(!ap_opt('disable_reputation')){
 							echo '<span class="ap-user-reputation">';
-							printf(__('%s Rep.', 'ap'), ap_user_get_the_reputation());
+							printf(__('%s Rep.', 'anspress-question-answer'), ap_user_get_the_reputation());
 							echo '</span>';
 						}
 					?>
@@ -56,11 +56,11 @@
 				</div>
 				<a class="ap-user-name" href="<?php ap_user_the_link(); ?>"><?php ap_user_the_display_name(); ?></a>
 				<div class="ap-user-mini-status">
-					<span><?php printf(__('%s Rep.', 'ap'), ap_user_get_the_reputation()); ?></span>
-					<span><?php printf(__('%d Answers', 'ap'), ap_user_get_the_meta('__total_answers')); ?></span>
-					<span><?php printf(__('%d Questions', 'ap'), ap_user_get_the_meta('__total_questions')); ?></span>
-					<span><?php printf(__('%d Followers', 'ap'), ap_user_get_the_meta('__total_followers')); ?></span>
-					<span><?php printf(__('%d Following', 'ap'), ap_user_get_the_meta('__total_following')); ?></span>
+					<span><?php printf(__('%s Rep.', 'anspress-question-answer'), ap_user_get_the_reputation()); ?></span>
+					<span><?php printf(__('%d Answers', 'anspress-question-answer'), ap_user_get_the_meta('__total_answers')); ?></span>
+					<span><?php printf(__('%d Questions', 'anspress-question-answer'), ap_user_get_the_meta('__total_questions')); ?></span>
+					<span><?php printf(__('%d Followers', 'anspress-question-answer'), ap_user_get_the_meta('__total_followers')); ?></span>
+					<span><?php printf(__('%d Following', 'anspress-question-answer'), ap_user_get_the_meta('__total_following')); ?></span>
 				</div>
 				<?php if(ap_user_meta_exists('description')): ?>
 					<div class="ap-user-dscription">

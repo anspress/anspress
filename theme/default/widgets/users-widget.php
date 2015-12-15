@@ -18,7 +18,7 @@
 				<?php
 			}
 		} else {
-			_e('No users found.', 'ap');
+			_e('No users found.', 'anspress-question-answer');
 		} 
 	?>	
 </div>

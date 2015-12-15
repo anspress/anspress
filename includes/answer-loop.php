@@ -412,7 +412,7 @@ function ap_answer_the_net_vote() {
 		?>
 			<span class="ap-questions-count ap-questions-vcount">
 				<span><?php echo ap_answer_get_the_net_vote(); ?></span>
-				<?php  esc_attr_e( 'votes', 'ap' ); ?>
+				<?php  esc_attr_e( 'votes', 'anspress-question-answer' ); ?>
 			</span>
 		<?php
 	}

@@ -67,7 +67,7 @@ class AP_Flagged_Table extends WP_List_Table {
 	public function advanced_filters() {
 		?>
 				<div id="ap-moderate-filters">	
-					<?php $this->search_box( __( 'Search', 'ap' ), 'ap-moderates' ); ?>
+					<?php $this->search_box( __( 'Search', 'anspress-question-answer' ), 'ap-moderates' ); ?>
 				</div>
 
 		<?php
@@ -94,13 +94,13 @@ class AP_Flagged_Table extends WP_List_Table {
 		
 
 		$views = array(
-			'all'	=> sprintf( '<a href="%s"%s>%s</a>', add_query_arg( array( 'paged' => FALSE ) ), $current === 'all' ? ' class="current"' : '', __('All', 'ap') . $total_count ),
-			'publish'	=> sprintf( '<a href="%s"%s>%s</a>', add_query_arg( array( 'status' => 'publish', 'paged' => FALSE ) ), $current === 'publish' ? ' class="current"' : '', __('Publish', 'ap') . $published_count ),
-			'pending'	=> sprintf( '<a href="%s"%s>%s</a>', add_query_arg( array( 'status' => 'pending', 'paged' => FALSE ) ), $current === 'pending' ? ' class="current"' : '', __('Pending', 'ap') . $pending_count ),
-			'moderate'	=> sprintf( '<a href="%s"%s>%s</a>', add_query_arg( array( 'status' => 'moderate', 'paged' => FALSE ) ), $current === 'moderate' ? ' class="current"' : '', __('Moderate', 'ap') . $moderate_count ),
-			'closed'	=> sprintf( '<a href="%s"%s>%s</a>', add_query_arg( array( 'status' => 'closed', 'paged' => FALSE ) ), $current === 'closed' ? ' class="current"' : '', __('Closed', 'ap') . $closed_count ),
-			'draft'	=> sprintf( '<a href="%s"%s>%s</a>', add_query_arg( array( 'status' => 'draft', 'paged' => FALSE ) ), $current === 'draft' ? ' class="current"' : '', __('Draft', 'ap') . $draft_count ),
-			'trash'	=> sprintf( '<a href="%s"%s>%s</a>', add_query_arg( array( 'status' => 'trash', 'paged' => FALSE ) ), $current === 'trash' ? ' class="current"' : '', __('Trash', 'ap') . $trash_count )
+			'all'	=> sprintf( '<a href="%s"%s>%s</a>', add_query_arg( array( 'paged' => FALSE ) ), $current === 'all' ? ' class="current"' : '', __('All', 'anspress-question-answer') . $total_count ),
+			'publish'	=> sprintf( '<a href="%s"%s>%s</a>', add_query_arg( array( 'status' => 'publish', 'paged' => FALSE ) ), $current === 'publish' ? ' class="current"' : '', __('Publish', 'anspress-question-answer') . $published_count ),
+			'pending'	=> sprintf( '<a href="%s"%s>%s</a>', add_query_arg( array( 'status' => 'pending', 'paged' => FALSE ) ), $current === 'pending' ? ' class="current"' : '', __('Pending', 'anspress-question-answer') . $pending_count ),
+			'moderate'	=> sprintf( '<a href="%s"%s>%s</a>', add_query_arg( array( 'status' => 'moderate', 'paged' => FALSE ) ), $current === 'moderate' ? ' class="current"' : '', __('Moderate', 'anspress-question-answer') . $moderate_count ),
+			'closed'	=> sprintf( '<a href="%s"%s>%s</a>', add_query_arg( array( 'status' => 'closed', 'paged' => FALSE ) ), $current === 'closed' ? ' class="current"' : '', __('Closed', 'anspress-question-answer') . $closed_count ),
+			'draft'	=> sprintf( '<a href="%s"%s>%s</a>', add_query_arg( array( 'status' => 'draft', 'paged' => FALSE ) ), $current === 'draft' ? ' class="current"' : '', __('Draft', 'anspress-question-answer') . $draft_count ),
+			'trash'	=> sprintf( '<a href="%s"%s>%s</a>', add_query_arg( array( 'status' => 'trash', 'paged' => FALSE ) ), $current === 'trash' ? ' class="current"' : '', __('Trash', 'anspress-question-answer') . $trash_count )
 		);
 
 		return apply_filters( 'ap_moderate_table_views', $views );
@@ -112,9 +112,9 @@ class AP_Flagged_Table extends WP_List_Table {
 	public function get_columns() {
 		$columns = array(
 			'cb'        		=> '<input type="checkbox" />', //Render a checkbox instead of text		
-			'post_type'  		=> __( 'Type', 'ap' ),
-			'post_title'  		=> __( 'Title', 'ap' ),
-			'flag'  			=> __( 'Flag', 'ap' ),
+			'post_type'  		=> __( 'Type', 'anspress-question-answer' ),
+			'post_title'  		=> __( 'Title', 'anspress-question-answer' ),
+			'flag'  			=> __( 'Flag', 'anspress-question-answer' ),
 			//'category'  		=> __( 'Category', 'ap' )
 		);
 
@@ -159,9 +159,9 @@ class AP_Flagged_Table extends WP_List_Table {
 	
 	public function column_post_type( $post ) {
 		if($post->post_type == 'question')
-			return __('Question', 'ap');
+			return __('Question', 'anspress-question-answer');
 		
-		return __('Answer', 'ap');
+		return __('Answer', 'anspress-question-answer');
 	}
 	
 	public function column_post_title( $post ) {
@@ -172,16 +172,16 @@ class AP_Flagged_Table extends WP_List_Table {
 			$title =  '<a href="'.$edit_flag.'" class="row-title">'. ap_truncate_chars(strip_tags($post->post_content), 80).'</a>';
 		
 		$actions = array();
-		$actions['edit_flag'] = sprintf('<a href="%s">%s</a>', $edit_flag, __('Edit flags', 'ap'));
+		$actions['edit_flag'] = sprintf('<a href="%s">%s</a>', $edit_flag, __('Edit flags', 'anspress-question-answer'));
 
 		if('trash' == $this->current_status){
-			$actions['untrash'] = sprintf('<a href="%s">%s</a>', ap_untrash_post($post->ID), __('Restore', 'ap'));
-			$actions['delete'] = sprintf('<a href="%s">%s</a>', get_delete_post_link($post->ID, null,  true), __('Delete permanently', 'ap'));
+			$actions['untrash'] = sprintf('<a href="%s">%s</a>', ap_untrash_post($post->ID), __('Restore', 'anspress-question-answer'));
+			$actions['delete'] = sprintf('<a href="%s">%s</a>', get_delete_post_link($post->ID, null,  true), __('Delete permanently', 'anspress-question-answer'));
 
 		}else{		
-			$actions['edit'] = sprintf('<a href="%s">%s</a>', get_edit_post_link($post->ID), __('Edit', 'ap'));
-			$actions['trash'] = sprintf('<a href="%s">%s</a>', get_delete_post_link($post->ID), __('Trash', 'ap'));
-			$actions['view'] = sprintf('<a href="%s">%s</a>', get_permalink($post->ID), __('View', 'ap'));
+			$actions['edit'] = sprintf('<a href="%s">%s</a>', get_edit_post_link($post->ID), __('Edit', 'anspress-question-answer'));
+			$actions['trash'] = sprintf('<a href="%s">%s</a>', get_delete_post_link($post->ID), __('Trash', 'anspress-question-answer'));
+			$actions['view'] = sprintf('<a href="%s">%s</a>', get_permalink($post->ID), __('View', 'anspress-question-answer'));
 		}
 
 
@@ -225,14 +225,14 @@ class AP_Flagged_Table extends WP_List_Table {
 		
 		if('trash' == $status){
 			$actions = array(
-				'restore' => __( 'Restore', 'ap' ), 
-				'delete' => __( 'Delete permanently', 'ap' ),
+				'restore' => __( 'Restore', 'anspress-question-answer' ), 
+				'delete' => __( 'Delete permanently', 'anspress-question-answer' ),
 			);
 		}else{
 			$actions = array(
-				'publish'   => __( 'Published', 'ap' ),
-				'pending'   => __( 'Pending', 'ap' ),
-				'trash'   	=> __( 'Move to trash', 'ap' ),
+				'publish'   => __( 'Published', 'anspress-question-answer' ),
+				'pending'   => __( 'Pending', 'anspress-question-answer' ),
+				'trash'   	=> __( 'Move to trash', 'anspress-question-answer' ),
 				
 			);
 		}

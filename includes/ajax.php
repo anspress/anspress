@@ -72,8 +72,8 @@ class AnsPress_Ajax
 	    if ( $questions ) {
 
 	        $items = '<div class="ap-similar-questions-head">';
-	        $items .= '<h3>'.ap_icon( 'check', true ).sprintf( __( '%d similar questions found', 'ap' ), count( $questions ) ).'</h3>';
-	        $items .= '<p>'.__( 'We\'ve found similar questions that have already been asked, click to read them.' ).'</p>';
+	        $items .= '<h3>'.ap_icon( 'check', true ).sprintf( __( '%d similar questions found', 'anspress-question-answer' ), count( $questions ) ).'</h3>';
+	        $items .= '<p>'.__( 'We\'ve found similar questions that have already been asked, click to read them.', 'anspress-question-answer' ).'</p>';
 	        $items .= '</div>';
 
 		    $items .= '<div class="ap-similar-questions">';
@@ -82,9 +82,9 @@ class AnsPress_Ajax
 	            $p->post_title = ap_highlight_words( $p->post_title, $keyword );
 
 	            if ( $is_admin ) {
-	            	$items .= '<div class="ap-q-suggestion-item clearfix"><a class="select-question-button button button-primary button-small" href="'.add_query_arg( array( 'post_type' => 'answer', 'post_parent' => $p->ID ), admin_url( 'post-new.php' ) ).'">'.__( 'Select', 'ap' ).'</a><span class="question-title">'.$p->post_title.'</span><span class="acount">'.sprintf( _n( '1 Answer', '%d Answers', $count, 'ap' ), $count ).'</span></div>';
+	            	$items .= '<div class="ap-q-suggestion-item clearfix"><a class="select-question-button button button-primary button-small" href="'.add_query_arg( array( 'post_type' => 'answer', 'post_parent' => $p->ID ), admin_url( 'post-new.php' ) ).'">'.__( 'Select', 'anspress-question-answer' ).'</a><span class="question-title">'.$p->post_title.'</span><span class="acount">'.sprintf( _n( '1 Answer', '%d Answers', $count, 'anspress-question-answer' ), $count ).'</span></div>';
 	            } else {
-		            $items .= '<a class="ap-sqitem clearfix" target="_blank" href="'.get_permalink( $p->ID ).'"><span class="acount">'.sprintf( _n( '1 Answer', '%d Answers', $count, 'ap' ), $count ).'</span><span class="ap-title">'.$p->post_title.'</span></a>';
+		            $items .= '<a class="ap-sqitem clearfix" target="_blank" href="'.get_permalink( $p->ID ).'"><span class="acount">'.sprintf( _n( '1 Answer', '%d Answers', $count, 'anspress-question-answer' ), $count ).'</span><span class="ap-title">'.$p->post_title.'</span></a>';
 		        }
 	        }
 
@@ -92,7 +92,7 @@ class AnsPress_Ajax
 
 	        $result = array( 'status' => true, 'html' => $items );
 	    } else {
-	        $result = array( 'status' => false, 'message' => __( 'No related questions found', 'ap' ) );
+	        $result = array( 'status' => false, 'message' => __( 'No related questions found', 'anspress-question-answer' ) );
 	    }
 
 	    $this->send( $result );
@@ -120,7 +120,7 @@ class AnsPress_Ajax
 	            $comment = get_comment( $comment_id );
 	            $comment_post_ID = $comment->comment_post_ID;
 	            $nonce = wp_create_nonce( 'comment_'.$comment->comment_ID );
-	            $comment_args['label_submit'] = __( 'Update comment', 'ap' );
+	            $comment_args['label_submit'] = __( 'Update comment', 'anspress-question-answer' );
 
 	            $content = $comment->comment_content;
 	            $commentid = '<input type="hidden" name="comment_ID" value="'.$comment->comment_ID.'"/>';
@@ -142,7 +142,7 @@ class AnsPress_Ajax
 			);
 
 	        if ( isset( $_REQUEST['comment_ID'] ) ) {
-	            $comment_args['label_submit'] = __( 'Update comment', 'ap' );
+	            $comment_args['label_submit'] = __( 'Update comment', 'anspress-question-answer' );
 	        }
 
 			// $current_user = get_userdata( get_current_user_id() );
@@ -179,7 +179,7 @@ class AnsPress_Ajax
 	        $result['container'] = '#comments-'.$comment_post_ID;
 			// $result['message'] = 'success';
 			$result['view_default'] = ap_opt( 'show_comments_by_default' );
-	        $result['view'] = array( 'comments_count_'.$comment_post_ID => '('.$count['approved'].')', 'comment_count_label_'.$comment_post_ID => sprintf( _n( 'One comment', '%d comments', $count['approved'], 'ap' ), $count['approved'] ) );
+	        $result['view'] = array( 'comments_count_'.$comment_post_ID => '('.$count['approved'].')', 'comment_count_label_'.$comment_post_ID => sprintf( _n( 'One comment', '%d comments', $count['approved'], 'anspress-question-answer' ), $count['approved'] ) );
 	    } else {
 	        $result['message'] = 'no_permission';
 	    }
@@ -200,7 +200,7 @@ class AnsPress_Ajax
 	        $comment = get_comment( $comment_id );
 
 	        if ( time() > (get_comment_date( 'U', (int) $_POST['comment_ID'] ) + (int) ap_opt( 'disable_delete_after' )) && ! is_super_admin() ) {
-	            ap_send_json( ap_ajax_responce( array( 'message_type' => 'warning', 'message' => sprintf( __( 'This post was created %s, its locked hence you cannot delete it.', 'ap' ), ap_human_time( get_comment_date( 'U', (int) $_POST['comment_ID'] ) ) ) ) ) );
+	            ap_send_json( ap_ajax_responce( array( 'message_type' => 'warning', 'message' => sprintf( __( 'This post was created %s, its locked hence you cannot delete it.', 'anspress-question-answer' ), ap_human_time( get_comment_date( 'U', (int) $_POST['comment_ID'] ) ) ) ) ) );
 
 	            return;
 	        }
@@ -218,7 +218,7 @@ class AnsPress_Ajax
 	            	'message' 		=> 'comment_delete_success',
 	            	'view' 			=> array(
 	            			'comments_count_'.$comment->comment_post_ID => '('.$count['approved'].')',
-	            			'comment_count_label_'.$comment->comment_post_ID => sprintf( _n( 'One comment', '%d comments', $count['approved'], 'ap' ), $count['approved'] ),
+	            			'comment_count_label_'.$comment->comment_post_ID => sprintf( _n( 'One comment', '%d comments', $count['approved'], 'anspress-question-answer' ), $count['approved'] ),
 	            		),
 	            ) );
 	        }
@@ -312,7 +312,7 @@ class AnsPress_Ajax
 
 			$this->send( array(
 				'message_type' => 'warning',
-				'message' => sprintf( __( 'This post was created %s, its locked hence you cannot delete it.','ap' ), ap_human_time( get_the_time( 'U', $post->ID ) ) ),
+				'message' => sprintf( __( 'This post was created %s, its locked hence you cannot delete it.','anspress-question-answer' ), ap_human_time( get_the_time( 'U', $post->ID ) ) ),
 			) );
 		}
 
@@ -328,7 +328,7 @@ class AnsPress_Ajax
 		} else {
 			do_action( 'ap_wp_trash_answer', $post_id );
 			$current_ans = ap_count_published_answers( $post->post_parent );
-			$count_label = sprintf( _n( '1 Answer', '%d Answers', $current_ans, 'ap' ), $current_ans );
+			$count_label = sprintf( _n( '1 Answer', '%d Answers', $current_ans, 'anspress-question-answer' ), $current_ans );
 			$remove = ( ! $current_ans ? true : false);
 			$this->send(array(
 				'action' 		=> 'delete_answer',
@@ -374,7 +374,7 @@ class AnsPress_Ajax
 			) );
 		} else {
 			$current_ans = ap_count_published_answers( $post->post_parent );
-			$count_label = sprintf( _n( '1 Answer', '%d Answers', $current_ans, 'ap' ), $current_ans );
+			$count_label = sprintf( _n( '1 Answer', '%d Answers', $current_ans, 'anspress-question-answer' ), $current_ans );
 			$remove = ( ! $current_ans ? true : false);
 			$this->send(array(
 				'action' 		=> 'delete_answer',
@@ -465,7 +465,7 @@ class AnsPress_Ajax
 							'hide_footer' 	=> false,
 							'show_cancel' 	=> true,
 							'is_ajaxified' 	=> true,
-							'submit_button' => __( 'Update', 'ap' ),
+							'submit_button' => __( 'Update', 'anspress-question-answer' ),
 						),
 					));
 
@@ -507,7 +507,7 @@ class AnsPress_Ajax
 						'action' 		=> 'unset_featured_question',
 						'message' 		=> 'unset_featured_question',
 						'do' 			=> array( 'updateHtml' => '#set_featured_'.$post->ID ),
-						'html' 			=> __( 'Set as featured', 'ap' ),
+						'html' 			=> __( 'Set as featured', 'anspress-question-answer' ),
 					));
 				} else {
 					if ( empty( $featured_questions ) || ! is_array( $featured_questions ) || ! $featured_questions ) {
@@ -522,7 +522,7 @@ class AnsPress_Ajax
 						'action' 		=> 'set_featured_question',
 						'message' 		=> 'set_featured_question',
 						'do' 			=> array( 'updateHtml' => '#set_featured_'.$post->ID ),
-						'html' 			=> __( 'Unset as featured', 'ap' ),
+						'html' 			=> __( 'Unset as featured', 'anspress-question-answer' ),
 					));
 				}
 			}
@@ -557,7 +557,7 @@ class AnsPress_Ajax
 			$this->send( array(
 				'message' 		=> 'unfollow',
 				'action' 		=> 'unfollow',
-				'do' 			=> array( 'updateText' => array( '#follow_'.$user_to_follow, __( 'Follow', 'ap' ) ) ),
+				'do' 			=> array( 'updateText' => array( '#follow_'.$user_to_follow, __( 'Follow', 'anspress-question-answer' ) ) ),
 			) );
 		} else {
 			ap_add_follower( $current_user_id, $user_to_follow );
@@ -565,7 +565,7 @@ class AnsPress_Ajax
 			$this->send( array(
 				'message' 		=> 'follow',
 				'action' 		=> 'follow',
-				'do' 			=> array( 'updateText' => array( '#follow_'.$user_to_follow, __( 'Unfollow', 'ap' ) ) ),
+				'do' 			=> array( 'updateText' => array( '#follow_'.$user_to_follow, __( 'Unfollow', 'anspress-question-answer' ) ) ),
 			) );
 		}
 	}
@@ -776,7 +776,7 @@ class AnsPress_Ajax
 					'action' 		=> 'unsubscribed',
 					'do' 			=> array( 'updateHtml' => '#subscribe_'.$action_id.' .text' ),
 					'count' 		=> $count,
-					'html' 			=> __( 'Follow', 'ap' ),
+					'html' 			=> __( 'Follow', 'anspress-question-answer' ),
 					'view' 			=> array( 'subscribe_'.$action_id => $count ),
 				) );
 			}
@@ -791,7 +791,7 @@ class AnsPress_Ajax
 					'action' 		=> 'subscribed',
 					'do' 			=> array( 'updateHtml' => '#subscribe_'.$action_id.' .text' ),
 					'count' 		=> $count,
-					'html' 			=> __( 'Unfollow', 'ap' ),
+					'html' 			=> __( 'Unfollow', 'anspress-question-answer' ),
 					'view' 			=> array( 'subscribe_'.$action_id => $count ),
 				) );
 			}
@@ -878,7 +878,7 @@ class AnsPress_Ajax
 	 * Handle ajax callback if non-logged in user try to subscribe
 	 */
 	public function ap_add_to_subscribe_nopriv() {
-		$this->send( array( 'action' => false, 'message' => __( 'Please login for adding question to your subscribe', 'ap' ) ) );
+		$this->send( array( 'action' => false, 'message' => __( 'Please login for adding question to your subscribe', 'anspress-question-answer' ) ) );
 	}
 
 	/**

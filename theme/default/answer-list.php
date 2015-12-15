@@ -18,7 +18,7 @@ $clearfix_class = array('ap-questions-item clearfix');
 <div id="answer-<?php the_ID(); ?>" <?php post_class($clearfix_class); ?>>
 	<?php if ( is_private_post()) : ?>
 		<div class="private-question-label clearfix">
-			<span><?php _e( 'Private Answer', 'ap' ); ?></span>
+			<span><?php _e( 'Private Answer', 'anspress-question-answer' ); ?></span>
 		</div>
 	<?php endif; ?>
 	<div class="ap-questions-inner">
@@ -32,7 +32,7 @@ $clearfix_class = array('ap-questions-item clearfix');
 			<?php if(!ap_opt('disable_voting_on_question')){ ?>
 				<span class="ap-questions-count ap-questions-vcount">
 					<span><?php echo ap_net_vote() ?></span>
-					<?php  _e('votes', 'ap'); ?>
+					<?php  _e('votes', 'anspress-question-answer'); ?>
 				</span>
 			<?php } ?>
 		</div>

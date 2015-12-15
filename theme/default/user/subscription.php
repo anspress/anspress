@@ -29,7 +29,7 @@
 
 		<?php else: ?>
 
-			<?php _e('Not following any question yet!', 'ap'); ?>
+			<?php _e('Not following any question yet!', 'anspress-question-answer'); ?>
 
 		<?php endif; ?>
 

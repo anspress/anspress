@@ -28,14 +28,14 @@ function ap_ask_form($editing = false) {
 		'is_ajaxified'      => true,
 		'multipart'         => true,
 		//'attr'         		=> ' data-before="apShowSimilarQuestions"',
-		'submit_button'     => ($editing ? __( 'Update question', 'ap' ) : __( 'Post question', 'ap' )),
+		'submit_button'     => ($editing ? __( 'Update question', 'anspress-question-answer' ) : __( 'Post question', 'anspress-question-answer' )),
 		'fields'            => array(
 			array(
 				'name' => 'title',
-				'label' => __( 'Title', 'ap' ),
+				'label' => __( 'Title', 'anspress-question-answer' ),
 				'type'  => 'text',
-				'placeholder'  => __( 'Question in one sentence', 'ap' ),
-				'desc'  => __( 'Write a meaningful title for the question.', 'ap' ),
+				'placeholder'  => __( 'Question in one sentence', 'anspress-question-answer' ),
+				'desc'  => __( 'Write a meaningful title for the question.', 'anspress-question-answer' ),
 				'value' => ( $editing ? $editing_post->post_title : sanitize_text_field( @$_POST['title'] ) ),
 				'order' => 5,
 				'attr' => 'data-action="suggest_similar_questions"',
@@ -49,9 +49,9 @@ function ap_ask_form($editing = false) {
 			),
 			array(
 				'name' => 'description',
-				'label' => __( 'Description', 'ap' ),
+				'label' => __( 'Description', 'anspress-question-answer' ),
 				'type'  => 'editor',
-				'desc'  => __( 'Write description for the question.', 'ap' ),
+				'desc'  => __( 'Write description for the question.', 'anspress-question-answer' ),
 				'value' => ( $editing ? apply_filters( 'the_content', $editing_post->post_content ) : @$_POST['description']  ),
 				'settings' => apply_filters( 'ap_ask_form_editor_settings', array(
 					'textarea_rows'     => 8,
@@ -79,9 +79,9 @@ function ap_ask_form($editing = false) {
 	if ( ! is_user_logged_in() && ap_opt( 'allow_anonymous' ) ) {
 		$args['fields'][] = array(
 			'name'      => 'name',
-			'label'     => __( 'Name', 'ap' ),
+			'label'     => __( 'Name', 'anspress-question-answer' ),
 			'type'      => 'text',
-			'placeholder'  => __( 'Enter your name to display', 'ap' ),
+			'placeholder'  => __( 'Enter your name to display', 'anspress-question-answer' ),
 			'value'     => sanitize_text_field( @$_POST['name'] ),
 			'order'     => 12,
 		);
@@ -92,7 +92,7 @@ function ap_ask_form($editing = false) {
 		$args['fields'][] = array(
 			'name' => 'is_private',
 			'type'  => 'checkbox',
-			'desc'  => __( 'Only visible to admin and moderator.', 'ap' ),
+			'desc'  => __( 'Only visible to admin and moderator.', 'anspress-question-answer' ),
 			'value' => $is_private,
 			'order' => 12,
 			'show_desc_tip' => false,
@@ -102,7 +102,7 @@ function ap_ask_form($editing = false) {
 	if ( ap_show_captcha_to_user() ) {
 		// Show recpatcha if key exists and enabled.
 		if ( ap_opt( 'recaptcha_site_key' ) == '' ) {
-			$reCaptcha_html = '<div class="ap-notice red">'.__( 'reCaptach keys missing, please add keys', 'ap' ).'</div>';
+			$reCaptcha_html = '<div class="ap-notice red">'.__( 'reCaptach keys missing, please add keys', 'anspress-question-answer' ).'</div>';
 		} else {
 
 			$reCaptcha_html = '<div class="g-recaptcha" id="recaptcha" data-sitekey="'.ap_opt( 'recaptcha_site_key' ).'"></div>';

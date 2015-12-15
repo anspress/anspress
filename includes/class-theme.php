@@ -203,7 +203,7 @@ class AnsPress_Theme
 	 */
 	public function feed_link() {
 		if ( is_anspress() ) {
-			echo '<link href="' . esc_url( home_url( '/feed/question-feed' ) ) . '" title="' . esc_attr__( 'Question Feed', 'ap' ) . '" type="application/rss+xml" rel="alternate">';
+			echo '<link href="' . esc_url( home_url( '/feed/question-feed' ) ) . '" title="' . esc_attr__( 'Question Feed', 'anspress-question-answer' ) . '" type="application/rss+xml" rel="alternate">';
 		}
 	}
 
@@ -238,8 +238,8 @@ class AnsPress_Theme
 		if ( is_anspress() ) {
 			$q_feed = get_post_type_archive_feed_link( 'question' );
 			$a_feed = get_post_type_archive_feed_link( 'answer' );
-			echo '<link rel="alternate" type="application/rss+xml" title="'.esc_attr__( 'Question feed', 'ap' ).'" href="'.esc_url( $q_feed ).'" />';
-			echo '<link rel="alternate" type="application/rss+xml" title="'.esc_attr__( 'Answers feed', 'ap' ).'" href="'.esc_url( $a_feed ).'" />';
+			echo '<link rel="alternate" type="application/rss+xml" title="'.esc_attr__( 'Question feed', 'anspress-question-answer' ).'" href="'.esc_url( $q_feed ).'" />';
+			echo '<link rel="alternate" type="application/rss+xml" title="'.esc_attr__( 'Answers feed', 'anspress-question-answer' ).'" href="'.esc_url( $a_feed ).'" />';
 		}
 
 		if ( is_question() && get_query_var( 'ap_page' ) != 'base' ) {

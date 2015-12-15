@@ -89,9 +89,9 @@ function ap_flag_btn_html($echo = false)
     $flagged = ap_is_user_flagged();
     $total_flag = ap_flagged_post_meta( $post->ID );
     $nonce = wp_create_nonce('flag_'.$post->ID);
-    $title = (!$flagged) ? (__('Flag this post', 'ap')) : (__('You have flagged this post', 'ap'));
+    $title = (!$flagged) ? (__('Flag this post', 'anspress-question-answer')) : (__('You have flagged this post', 'anspress-question-answer'));
 
-    $output = '<a id="flag_'.$post->ID.'" data-action="ajax_btn" data-query="flag_post::'.$nonce.'::'.$post->ID.'" class="flag-btn'.(!$flagged ? ' can-flagged' : '').'" href="#" title="'.$title.'">'.__('Flag ', 'ap').'<span class="ap-data-view ap-view-count-'.$total_flag.'" data-view="'.$post->ID.'_flag_count">'.$total_flag.'</span></a>';
+    $output = '<a id="flag_'.$post->ID.'" data-action="ajax_btn" data-query="flag_post::'.$nonce.'::'.$post->ID.'" class="flag-btn'.(!$flagged ? ' can-flagged' : '').'" href="#" title="'.$title.'">'.__('Flag ', 'anspress-question-answer').'<span class="ap-data-view ap-view-count-'.$total_flag.'" data-view="'.$post->ID.'_flag_count">'.$total_flag.'</span></a>';
 
     if ($echo) {
         echo $output;
@@ -145,7 +145,7 @@ function ap_get_comment_flag_btn($comment_id = false, $label = false)
     }
 
     if (false === $label) {
-        $label = __('Flag', 'ap');
+        $label = __('Flag', 'anspress-question-answer');
     }
 
     if (false === $comment_id) {
@@ -158,7 +158,7 @@ function ap_get_comment_flag_btn($comment_id = false, $label = false)
     $nonce = wp_create_nonce('flag_'.$comment_id);
 
     $output = '<a id="flag_'.$comment_id.'" data-query="ap_ajax_action=flag_comment&comment_id='.$comment_id.'&__nonce='.$nonce.'"
-    	data-action="ap_subscribe" class="flag-btn'.(!$flagged ? ' can-flag' : '').'" href="#" title="'.__('Report this comment to moderaor', 'ap').'">
+    	data-action="ap_subscribe" class="flag-btn'.(!$flagged ? ' can-flag' : '').'" href="#" title="'.__('Report this comment to moderaor', 'anspress-question-answer').'">
     	'.$label.'<span class="ap-data-view ap-view-count-'.$total_flag.'" data-view="'.$comment_id.'_comment_flag">'.$total_flag.'</span>
     </a>';
 

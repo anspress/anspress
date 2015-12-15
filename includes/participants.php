@@ -79,7 +79,7 @@ function ap_get_all_parti($avatar_size = 40, $post_id = false){
 		
 	$parti = ap_get_parti($post_id);
 
-	echo '<span class="ap-widget-title">'. sprintf( _n('<span>1</span> Participant', '<span>%d</span> Participants', count($parti), 'ap'), count($parti)) .'</span>';
+	echo '<span class="ap-widget-title">'. sprintf( _n('<span>1</span> Participant', '<span>%d</span> Participants', count($parti), 'anspress-question-answer'), count($parti)) .'</span>';
 	
 	echo '<div class="ap-participants-list clearfix">';	
 	foreach($parti as $p){

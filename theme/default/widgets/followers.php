@@ -8,5 +8,5 @@
 			</li>
 		<?php endwhile;	?>		
 	</ul>
-	<a class="ap-widget-all-link" href="<?php echo ap_user_link(ap_get_displayed_user_id(), 'followers'); ?>"><?php _e('View all followers &rarr;', 'ap'); ?></a>
+	<a class="ap-widget-all-link" href="<?php echo ap_user_link(ap_get_displayed_user_id(), 'followers'); ?>"><?php _e('View all followers &rarr;', 'anspress-question-answer'); ?></a>
 </div>

@@ -24,9 +24,9 @@
 
 						<div class="ap-notification-btns ap-pull-right">
 							<?php if(ap_notification_is_unread()): ?>
-								<a class="ap-btn ap-btn-markread ap-tip <?php echo ap_icon('check'); ?>" href="#" data-action="ap_markread_notification" data-query="<?php echo 'id='.ap_activity_noti_id().'&ap_ajax_action=markread_notification&__nonce='.wp_create_nonce('ap_markread_notification_'.ap_activity_noti_id()); ?>" title="<?php _e('Mark as read', 'ap'); ?>"></a>
+								<a class="ap-btn ap-btn-markread ap-tip <?php echo ap_icon('check'); ?>" href="#" data-action="ap_markread_notification" data-query="<?php echo 'id='.ap_activity_noti_id().'&ap_ajax_action=markread_notification&__nonce='.wp_create_nonce('ap_markread_notification_'.ap_activity_noti_id()); ?>" title="<?php _e('Mark as read', 'anspress-question-answer'); ?>"></a>
 							<?php endif; ?>
-							<a class="ap-btn ap-btn-delete ap-tip" href="#" data-action="ap_delete_notification" data-query="<?php echo 'id='.ap_activity_noti_id().'&ap_ajax_action=delete_notification&__nonce='.wp_create_nonce('delete_notification'); ?>" title="<?php _e('Delete notificaton', 'ap'); ?>"><?php echo ap_icon('trashcan', true); ?></a>
+							<a class="ap-btn ap-btn-delete ap-tip" href="#" data-action="ap_delete_notification" data-query="<?php echo 'id='.ap_activity_noti_id().'&ap_ajax_action=delete_notification&__nonce='.wp_create_nonce('delete_notification'); ?>" title="<?php _e('Delete notificaton', 'anspress-question-answer'); ?>"><?php echo ap_icon('trashcan', true); ?></a>
 
 						</div>
 						<div class="no-overflow">
@@ -43,6 +43,6 @@
 		</div>
 		<?php ap_notification_pagination(); ?>
 	<?php else: ?>
-		<?php _e('No notification', 'ap'); ?>
+		<?php _e('No notification', 'anspress-question-answer'); ?>
 	<?php endif; ?>
 </div>

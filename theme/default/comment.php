@@ -45,7 +45,7 @@
 				do_action('ap_after_comment_content', $comment);
 			?>
 			<?php if ('0' == $comment->comment_approved) : ?>
-				<p class="comment-awaiting-moderation"><?php _e('Your comment is awaiting moderation.', 'ap'); ?></p>
+				<p class="comment-awaiting-moderation"><?php _e('Your comment is awaiting moderation.', 'anspress-question-answer'); ?></p>
 			<?php endif; ?>
 		</div><!-- close .ap-comment-content -->
 	</div><!-- close #comment-* -->

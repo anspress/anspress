@@ -78,7 +78,7 @@ class AnsPress_Activity_Hook
 			'type' 				=> 'new_question',
 			'question_id' 		=> $question_id,
 			'permalink' 		=> get_permalink( $question_id ),
-			'content'			=> sprintf( __( '%s asked question %s', 'ap' ), ap_activity_user_name( $question->post_author ), $question_title ),
+			'content'			=> sprintf( __( '%s asked question %s', 'anspress-question-answer' ), ap_activity_user_name( $question->post_author ), $question_title ),
 			'term_ids'			=> $term_ids,
 		);
 
@@ -87,7 +87,7 @@ class AnsPress_Activity_Hook
 		// Add question activity meta.
 		update_post_meta( $question_id, '__ap_activity', array( 'type' => 'new_question', 'user_id' => $question->post_author, 'date' => current_time( 'mysql' ) ) );
 
-		$this->check_mentions( $question_id, $question->post_content, $question_title, $question->post_author, __( 'question', 'ap' ) );
+		$this->check_mentions( $question_id, $question->post_content, $question_title, $question->post_author, __( 'question', 'anspress-question-answer' ) );
 
 		// Notify users.
 		// ap_new_notification($activity_id, $question->post_author);
@@ -110,7 +110,7 @@ class AnsPress_Activity_Hook
 			'question_id' 		=> $answer->post_parent,
 			'answer_id' 		=> $answer_id,
 			'permalink' 		=> get_permalink( $answer_id ),
-			'content'			=> sprintf( __( '%s answered on %s', 'ap' ), ap_activity_user_name( $answer->post_author ), $answer_title ),
+			'content'			=> sprintf( __( '%s answered on %s', 'anspress-question-answer' ), ap_activity_user_name( $answer->post_author ), $answer_title ),
 		);
 
 		$activity_id = ap_new_activity( $activity_arr );
@@ -129,7 +129,7 @@ class AnsPress_Activity_Hook
 
 		ap_new_notification( $activity_id, $subscribers );
 
-		$this->check_mentions( $answer->post_parent, $answer->post_content, $answer_title, $question->post_author, __( 'answer', 'ap' ), $answer_id );
+		$this->check_mentions( $answer->post_parent, $answer->post_content, $answer_title, $question->post_author, __( 'answer', 'anspress-question-answer' ), $answer_id );
 	}
 
 	/**
@@ -146,7 +146,7 @@ class AnsPress_Activity_Hook
 			'type' 				=> 'edit_question',
 			'question_id'		=> $post_id,
 			'permalink' 		=> get_permalink( $post_id ),
-			'content' 			=> sprintf( __( '%s edited question %s', 'ap' ), ap_activity_user_name( get_current_user_id() ), $question_title ),
+			'content' 			=> sprintf( __( '%s edited question %s', 'anspress-question-answer' ), ap_activity_user_name( get_current_user_id() ), $question_title ),
 		);
 
 		$activity_id = ap_new_activity( $activity_arr );
@@ -178,7 +178,7 @@ class AnsPress_Activity_Hook
 			'question_id'		=> $answer->post_parent,
 			'answer_id' 		=> $post_id,
 			'permalink' 		=> get_permalink( $post_id ),
-			'content'			=> sprintf( __( '%s edited answer %s', 'ap' ), ap_activity_user_name( $answer->post_author ), $answer_title ),
+			'content'			=> sprintf( __( '%s edited answer %s', 'anspress-question-answer' ), ap_activity_user_name( $answer->post_author ), $answer_title ),
 		);
 
 		$activity_id = ap_new_activity( $activity_arr );
@@ -221,12 +221,12 @@ class AnsPress_Activity_Hook
 		if ( $post->post_type == 'question' ) {
 			$activity_arr['type'] = 'new_comment';
 			$activity_arr['question_id'] = $comment->comment_post_ID;
-			$activity_arr['content'] = sprintf( __( '%s commented on question %s %s', 'ap' ), $user, $post_title, $comment_excerpt );
+			$activity_arr['content'] = sprintf( __( '%s commented on question %s %s', 'anspress-question-answer' ), $user, $post_title, $comment_excerpt );
 		} else {
 			$activity_arr['type'] = 'new_comment_answer';
 			$activity_arr['question_id'] = $post->post_parent;
 			$activity_arr['answer_id'] = $comment->comment_post_ID;
-			$activity_arr['content'] = sprintf( __( '%s commented on answer %s %s', 'ap' ), $user, $post_title, $comment_excerpt );
+			$activity_arr['content'] = sprintf( __( '%s commented on answer %s %s', 'anspress-question-answer' ), $user, $post_title, $comment_excerpt );
 		}
 
 		$activity_id = ap_new_activity( $activity_arr );
@@ -265,7 +265,7 @@ class AnsPress_Activity_Hook
 			'question_id'		=> $question_id,
 			'answer_id' 		=> $answer_id,
 			'permalink' 		=> get_permalink( $answer_id ),
-			'content' 			=> sprintf( __( '%s selected best answer for %s', 'ap' ), ap_activity_user_name( $user_id ), $question_title ),
+			'content' 			=> sprintf( __( '%s selected best answer for %s', 'anspress-question-answer' ), ap_activity_user_name( $user_id ), $question_title ),
 		);
 
 		$activity_id = ap_new_activity( $activity_arr );
@@ -300,7 +300,7 @@ class AnsPress_Activity_Hook
 			'question_id'		=> $question_id,
 			'answer_id' 		=> $answer_id,
 			'permalink' 		=> get_permalink( $answer_id ),
-			'content' 			=> sprintf( __( '%s unselected best answer for question %s', 'ap' ), ap_activity_user_name( $user_id ), $question_title ),
+			'content' 			=> sprintf( __( '%s unselected best answer for question %s', 'anspress-question-answer' ), ap_activity_user_name( $user_id ), $question_title ),
 		);
 
 		ap_new_activity( $activity_arr );
@@ -407,7 +407,7 @@ class AnsPress_Activity_Hook
 			'item_id' 			=> $user_to_follow,
 			'parent_type' 		=> 'user',
 			'permalink' 		=> ap_user_link( $user_to_follow ),
-			'content' 			=> sprintf( __( '%s started following %s', 'ap' ), ap_activity_user_name( $current_user_id ), ap_activity_user_name( $user_to_follow ) ),
+			'content' 			=> sprintf( __( '%s started following %s', 'anspress-question-answer' ), ap_activity_user_name( $current_user_id ), ap_activity_user_name( $user_to_follow ) ),
 		);
 
 		$activity_id = ap_new_activity( $activity_arr );
@@ -488,12 +488,12 @@ class AnsPress_Activity_Hook
 		if ( $post->post_type == 'question' ) {
 			$activity_arr['type'] = 'new_comment';
 			$activity_arr['question_id'] = $comment->comment_post_ID;
-			$activity_arr['content'] = sprintf( __( '%s commented on question %s %s', 'ap' ), $user, $post_title, $comment_excerpt );
+			$activity_arr['content'] = sprintf( __( '%s commented on question %s %s', 'anspress-question-answer' ), $user, $post_title, $comment_excerpt );
 		} else {
 			$activity_arr['type'] = 'new_comment_answer';
 			$activity_arr['question_id'] = $post->post_parent;
 			$activity_arr['answer_id'] = $comment->comment_post_ID;
-			$activity_arr['content'] = sprintf( __( '%s commented on answer %s %s', 'ap' ), $user, $post_title, $comment_excerpt );
+			$activity_arr['content'] = sprintf( __( '%s commented on answer %s %s', 'anspress-question-answer' ), $user, $post_title, $comment_excerpt );
 		}
 
 		$activity_id = ap_new_activity( $activity_arr );
@@ -527,7 +527,7 @@ class AnsPress_Activity_Hook
 						'question_id' 		=> $question_id,
 						'answer_id' 		=> $answer_id,
 						'permalink' 		=> get_permalink( $question_id ),
-						'content'			=> sprintf( __( '%s mentioned you in %s %s', 'ap' ), $user_title, $type, $title ),
+						'content'			=> sprintf( __( '%s mentioned you in %s %s', 'anspress-question-answer' ), $user_title, $type, $title ),
 					);
 
 					$activity_id = ap_new_activity( $activity_arr );

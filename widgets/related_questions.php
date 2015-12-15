@@ -20,8 +20,8 @@ class AP_Related_questions extends WP_Widget {
 	public function __construct() {
 		parent::__construct(
 			'ap_related_questions',
-			__( '(AnsPress) Related Questions', 'ap' ),
-			array( 'description' => __( 'For showing related question. This widget will only work in question page.', 'ap' ) )
+			__( '(AnsPress) Related Questions', 'anspress-question-answer' ),
+			array( 'description' => __( 'For showing related question. This widget will only work in question page.', 'anspress-question-answer' ) )
 		);
 	}
 
@@ -69,13 +69,13 @@ class AP_Related_questions extends WP_Widget {
 	}
 
 	public function form( $instance ) {
-		$title 			= __( 'Related Questions', 'ap' );
+		$title 			= __( 'Related Questions', 'anspress-question-answer' );
 
 		if ( isset( $instance[ 'title' ] ) ) {
 			$title = $instance[ 'title' ]; }
 		?>
         <p>
-			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:' ); ?></label>
+			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:', 'anspress-question-answer' ); ?></label>
 			<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>">
         </p>
 

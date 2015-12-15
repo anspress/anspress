@@ -23,7 +23,7 @@ $settings = ap_opt();
 
 <div id="anspress" class="wrap">
     <h2 class="admin-title">
-		<?php _e( 'AnsPress Options' ); ?>
+		<?php _e( 'AnsPress Options', 'anspress-question-answer' ); ?>
         <a href="http://github.com/anspress/anspress" target="_blank">GitHub</a>
         <a href="https://wordpress.org/plugins/anspress-question-answer/" target="_blank">WordPress.org</a>
         <a href="https://twitter.com/anspress_io" target="_blank">@anspress_io</a>
@@ -31,7 +31,7 @@ $settings = ap_opt();
     </h2>
 
 	<?php if ( @$_POST['anspress_opt_updated'] === true ) : ?>
-		<div class="updated fade"><p><strong><?php _e( 'AnsPress options updated', 'ap' ); ?></strong></p></div>
+		<div class="updated fade"><p><strong><?php _e( 'AnsPress options updated', 'anspress-question-answer' ); ?></strong></p></div>
 	<?php endif; // If the form has just been submitted, this shows the notification ?>
 
     <div class="ap-wrap">

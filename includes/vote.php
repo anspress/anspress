@@ -204,13 +204,13 @@ function ap_vote_btn($post = false, $echo = true) {
 
 	$html = '';
 	$html .= '<div data-id="'.$post->ID.'" class="ap-vote net-vote" data-action="vote">';
-	$html .= '<a class="'.ap_icon( 'vote_up' ).' ap-tip vote-up'.($voted ? ' voted' : '').($type == 'vote_down' ? ' disable' : '').'" data-query="ap_ajax_action=vote&type=up&post_id='.$post->ID.'&__nonce='.$nonce.'" href="#" title="'.__( 'Up vote this post', 'ap' ).'"></a>';
+	$html .= '<a class="'.ap_icon( 'vote_up' ).' ap-tip vote-up'.($voted ? ' voted' : '').($type == 'vote_down' ? ' disable' : '').'" data-query="ap_ajax_action=vote&type=up&post_id='.$post->ID.'&__nonce='.$nonce.'" href="#" title="'.__( 'Up vote this post', 'anspress-question-answer' ).'"></a>';
 
 	$html .= '<span class="net-vote-count" data-view="ap-net-vote" itemprop="upvoteCount">'.ap_net_vote().'</span>';
 
 	if ( ('question' == $post->post_type && ! ap_opt( 'disable_down_vote_on_question' )) ||
 		('answer' == $post->post_type && ! ap_opt( 'disable_down_vote_on_answer' )) ) {
-		$html .= '<a data-tipposition="bottom center" class="'.ap_icon( 'vote_down' ).' ap-tip vote-down'.($voted ? ' voted' : '').($type == 'vote_up' ? ' disable' : '').'" data-query="ap_ajax_action=vote&type=down&post_id='.$post->ID.'&__nonce='.$nonce.'" href="#" title="'.__( 'Down vote this post', 'ap' ).'"></a>';
+		$html .= '<a data-tipposition="bottom center" class="'.ap_icon( 'vote_down' ).' ap-tip vote-down'.($voted ? ' voted' : '').($type == 'vote_up' ? ' disable' : '').'" data-query="ap_ajax_action=vote&type=down&post_id='.$post->ID.'&__nonce='.$nonce.'" href="#" title="'.__( 'Down vote this post', 'anspress-question-answer' ).'"></a>';
 	}
 
 	$html .= '</div>';
@@ -262,14 +262,14 @@ function ap_close_vote_html() {
 
 	global $post;
 	$nonce = wp_create_nonce( 'close_'.$post->ID );
-	$title = ( ! $post->voted_closed) ? (__( 'Vote for closing', 'ap' )) : (__( 'Undo your vote', 'ap' ));
+	$title = ( ! $post->voted_closed) ? (__( 'Vote for closing', 'anspress-question-answer' )) : (__( 'Undo your vote', 'anspress-question-answer' ));
 	?>
 		<a id="<?php echo 'close_'.$post->ID;
 	?>" data-action="close-question" class="close-btn<?php echo ($post->voted_closed) ? ' closed' : '';
 	?>" data-args="<?php echo $post->ID.'-'.$nonce;
 	?>" href="#" title="<?php echo $title;
 	?>">
-			<?php _e( 'Close ', 'ap' );
+			<?php _e( 'Close ', 'anspress-question-answer' );
 			echo($post->closed > 0 ? '<span>('.$post->closed.')</span>' : '');
 	?>
         </a>

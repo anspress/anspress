@@ -33,7 +33,7 @@ function ap_follow_button($user_to_follow , $text = false){
 		$following = ap_is_user_following($user_to_follow, $current_user);
 
 		if(false === $text)
-			$title =  $following ? __('Unfollow', 'ap') : __('Follow', 'ap');
+			$title =  $following ? __('Unfollow', 'anspress-question-answer') : __('Follow', 'anspress-question-answer');
 		else
 			$title =  $following ? $text[0] : $text[1];
 

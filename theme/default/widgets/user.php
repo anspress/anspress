@@ -10,7 +10,7 @@
 		<?php
 			if(!ap_opt('disable_reputation')){
 				echo '<span class="ap-user-reputation">';
-				printf(__('%s Rep.', 'ap'), ap_user_get_the_reputation());
+				printf(__('%s Rep.', 'anspress-question-answer'), ap_user_get_the_reputation());
 				echo '</span>';
 			}
 		?>

@@ -34,11 +34,11 @@ class AnsPress_Common_Pages
 	 */
 	public function register_common_pages() {
 		ap_register_page( 'base', ap_opt( 'base_page_title' ), array( $this, 'base_page' ) );
-		ap_register_page( ap_opt( 'question_page_slug' ), __( 'Question', 'ap' ), array( $this, 'question_page' ), false );
-		ap_register_page( ap_opt( 'ask_page_slug' ), __( 'Ask', 'ap' ), array( $this, 'ask_page' ) );
-		ap_register_page( 'edit', __( 'Edit', 'ap' ), array( $this, 'edit_page' ), false );
-		ap_register_page( 'search', __( 'Search', 'ap' ), array( $this, 'search_page' ), false );
-		ap_register_page( 'activity', __( 'Activity feed', 'ap' ), array( $this, 'activity_page' ) );
+		ap_register_page( ap_opt( 'question_page_slug' ), __( 'Question', 'anspress-question-answer' ), array( $this, 'question_page' ), false );
+		ap_register_page( ap_opt( 'ask_page_slug' ), __( 'Ask', 'anspress-question-answer' ), array( $this, 'ask_page' ) );
+		ap_register_page( 'edit', __( 'Edit', 'anspress-question-answer' ), array( $this, 'edit_page' ), false );
+		ap_register_page( 'search', __( 'Search', 'anspress-question-answer' ), array( $this, 'search_page' ), false );
+		ap_register_page( 'activity', __( 'Activity feed', 'anspress-question-answer' ), array( $this, 'activity_page' ) );
 	}
 
 	/**
@@ -151,7 +151,7 @@ class AnsPress_Common_Pages
 	public function edit_page() {
 		$post_id = (int) sanitize_text_field( get_query_var( 'edit_post_id' ) );
 		if ( ! ap_user_can_edit_question( $post_id ) ) {
-				echo '<p>'.esc_attr__( 'You don\'t have permission to access this page.', 'ap' ).'</p>';
+				echo '<p>'.esc_attr__( 'You don\'t have permission to access this page.', 'anspress-question-answer' ).'</p>';
 				return;
 		} else {
 			global $editing_post;

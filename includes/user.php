@@ -120,7 +120,7 @@ function ap_user_display_name($args = array()) {
 		'user_id'            => get_the_author_meta( 'ID' ),
 		'html'                => false,
 		'echo'                => false,
-		'anonymous_label'    => __( 'Anonymous', 'ap' ),
+		'anonymous_label'    => __( 'Anonymous', 'anspress-question-answer' ),
 	);
 
 	if ( ! is_array( $args ) ) {
@@ -151,7 +151,7 @@ function ap_user_display_name($args = array()) {
 			}
 		} else {
 			if ( $name != '' ) {
-				$return = '<span class="who">'.$name.__( ' (anonymous)', 'ap' ).'</span>';
+				$return = '<span class="who">'.$name.__( ' (anonymous)', 'anspress-question-answer' ).'</span>';
 			} else {
 				$return = '<span class="who">'.$anonymous_label.'</span>';
 			}
@@ -355,7 +355,7 @@ function ap_user_page() {
 	if ( $user_id > 0 && ((is_array( $callback ) && method_exists( $callback[0], $callback[1] )) || ( ! is_array( $callback ) && function_exists( $callback )) ) ) {
 		call_user_func( $callback );
 	} else {
-		echo '<div class="ap-page-template-404">'.__( 'Page not found or registered.', 'ap' ).'</div>';
+		echo '<div class="ap-page-template-404">'.__( 'Page not found or registered.', 'anspress-question-answer' ).'</div>';
 	}
 }
 
@@ -433,12 +433,12 @@ function ap_users_tab() {
 	?>
     <ul class="ap-questions-tab ap-ul-inline clearfix" role="tablist">
         <?php if ( ! ap_opt( 'disable_reputation' ) ) : ?>
-            <li class="<?php echo $active == 'reputation' ? ' active' : ''; ?>"><a href="<?php echo $link.'reputation'; ?>"><?php _e( 'Reputation', 'ap' ); ?></a></li>
+            <li class="<?php echo $active == 'reputation' ? ' active' : ''; ?>"><a href="<?php echo $link.'reputation'; ?>"><?php _e( 'Reputation', 'anspress-question-answer' ); ?></a></li>
         <?php endif; ?>
-        <li class="<?php echo $active == 'active' ? ' active' : ''; ?>"><a href="<?php echo $link.'active'; ?>"><?php _e( 'Active', 'ap' ); ?></a></li>
-        <li class="<?php echo $active == 'best_answer' ? ' active' : ''; ?>"><a href="<?php echo $link.'best_answer'; ?>"><?php _e( 'Best answer', 'ap' ); ?></a></li>
-        <li class="<?php echo $active == 'answer' ? ' active' : ''; ?>"><a href="<?php echo $link.'answer'; ?>"><?php _e( 'Answer', 'ap' ); ?></a></li>
-        <li class="<?php echo $active == 'newest' ? ' active' : ''; ?>"><a href="<?php echo $link.'newest'; ?>"><?php _e( 'Newest', 'ap' ); ?></a></li>
+        <li class="<?php echo $active == 'active' ? ' active' : ''; ?>"><a href="<?php echo $link.'active'; ?>"><?php _e( 'Active', 'anspress-question-answer' ); ?></a></li>
+        <li class="<?php echo $active == 'best_answer' ? ' active' : ''; ?>"><a href="<?php echo $link.'best_answer'; ?>"><?php _e( 'Best answer', 'anspress-question-answer' ); ?></a></li>
+        <li class="<?php echo $active == 'answer' ? ' active' : ''; ?>"><a href="<?php echo $link.'answer'; ?>"><?php _e( 'Answer', 'anspress-question-answer' ); ?></a></li>
+        <li class="<?php echo $active == 'newest' ? ' active' : ''; ?>"><a href="<?php echo $link.'newest'; ?>"><?php _e( 'Newest', 'anspress-question-answer' ); ?></a></li>
         <?php
 			/**
 			 * ACTION: ap_users_tab
@@ -506,10 +506,10 @@ function ap_user_top_posts_tab() {
 
 	$link = '?tab=';
 	?>
-	<?php printf( __( 'Top %s', 'ap' ), $active ); ?>
+	<?php printf( __( 'Top %s', 'anspress-question-answer' ), $active ); ?>
     <ul id="ap-user-posts-tab" class="ap-flat-tab ap-ul-inline clearfix" role="tablist">
-	<li class="<?php echo $active == 'answers' ? ' active' : ''; ?>"><a href="<?php echo $link.'answers'; ?>"><?php _e( 'Answers', 'ap' ); ?></a></li>
-	<li class="<?php echo $active == 'questions' ? ' active' : ''; ?>"><a href="<?php echo $link.'questions'; ?>"><?php _e( 'Questions', 'ap' ); ?></a></li>
+	<li class="<?php echo $active == 'answers' ? ' active' : ''; ?>"><a href="<?php echo $link.'answers'; ?>"><?php _e( 'Answers', 'anspress-question-answer' ); ?></a></li>
+	<li class="<?php echo $active == 'questions' ? ' active' : ''; ?>"><a href="<?php echo $link.'questions'; ?>"><?php _e( 'Questions', 'anspress-question-answer' ); ?></a></li>
 	<?php
 		/**
 		 * ACTION: ap_users_tab
@@ -532,11 +532,11 @@ function ap_user_subscription_tab() {
 
 	$link = '?tab=';
 
-	printf( __( 'My subscriptions', 'ap' ), $active );
+	printf( __( 'My subscriptions', 'anspress-question-answer' ), $active );
 
 	?>
     <ul id="ap-user-posts-tab" class="ap-flat-tab ap-ul-inline clearfix" role="tablist">
-	<li class="<?php echo $active == 'question' ? ' active' : ''; ?>"><a href="<?php echo $link.'question'; ?>"><?php _e( 'Questions', 'ap' ); ?></a></li>
+	<li class="<?php echo $active == 'question' ? ' active' : ''; ?>"><a href="<?php echo $link.'question'; ?>"><?php _e( 'Questions', 'anspress-question-answer' ); ?></a></li>
 	<?php
 		/**
 		 * ACTION: ap_user_subscription_tab
@@ -599,8 +599,8 @@ function ap_avatar_upload_form() {
 	if ( ap_user_can_upload_avatar() ) {
 		?>
             <form method="post" action="#" enctype="multipart/form-data" data-action="ap_upload_form" class="ap-avatar-upload-form">
-            <div class="ap-btn ap-upload-o <?php echo ap_icon( 'upload' ); ?>" title="<?php _e( 'Upload an avatar', 'ap' ); ?>">
-                <span><?php _e( 'Upload avatar', 'ap' ); ?></span>
+            <div class="ap-btn ap-upload-o <?php echo ap_icon( 'upload' ); ?>" title="<?php _e( 'Upload an avatar', 'anspress-question-answer' ); ?>">
+                <span><?php _e( 'Upload avatar', 'anspress-question-answer' ); ?></span>
                 <input type="file" name="thumbnail" class="ap-upload-input" data-action="ap_upload_field">
             </div>
             <input type='hidden' value='<?php echo wp_create_nonce( 'upload_avatar_'.get_current_user_id() ); ?>' name='__nonce' />
@@ -622,8 +622,8 @@ function ap_user_profile_tab() {
 	$link = ap_user_link( ap_get_displayed_user_id(), 'profile' );
 
 	$navs = array(
-	'basic' => array( 'link' => add_query_arg( array( 'group' => 'basic' ), $link ), 'title' => __( 'Basic', 'ap' ) ),
-	'account' => array( 'link' => add_query_arg( array( 'group' => 'account' ), $link ), 'title' => __( 'Account', 'ap' ) ),
+	'basic' => array( 'link' => add_query_arg( array( 'group' => 'basic' ), $link ), 'title' => __( 'Basic', 'anspress-question-answer' ) ),
+	'account' => array( 'link' => add_query_arg( array( 'group' => 'account' ), $link ), 'title' => __( 'Account', 'anspress-question-answer' ) ),
 	);
 
 	/**
@@ -651,7 +651,7 @@ function ap_user_profile_tab() {
  */
 function ap_is_my_profile($user_id = false) {
 	if ( false !== $user_id ) {
-		_deprecated_argument( __FUNCTION__, '2.4', __( 'Passing user_id in ap_is_my_profile is deprecated, function will check again currently logged in user.', 'ap' ) );
+		_deprecated_argument( __FUNCTION__, '2.4', __( 'Passing user_id in ap_is_my_profile is deprecated, function will check again currently logged in user.', 'anspress-question-answer' ) );
 	}
 
 	$user_id = get_current_user_id();
@@ -776,8 +776,8 @@ function ap_cover_upload_form() {
 	if ( ap_user_can_upload_cover() ) {
 		?>
             <form method="post" action="#" enctype="multipart/form-data" data-action="ap_upload_form" class="ap-avatar-upload-form">
-            <div class="ap-btn ap-upload-o <?php echo ap_icon( 'upload' ); ?>" title="<?php _e( 'Upload a cover photo', 'ap' ); ?>">
-                <span><?php _e( 'Upload cover', 'ap' ); ?></span>
+            <div class="ap-btn ap-upload-o <?php echo ap_icon( 'upload' ); ?>" title="<?php _e( 'Upload a cover photo', 'anspress-question-answer' ); ?>">
+                <span><?php _e( 'Upload cover', 'anspress-question-answer' ); ?></span>
                 <input type="file" name="image" class="ap-upload-input" data-action="ap_upload_field">
             </div>
             <input type='hidden' value='<?php echo wp_create_nonce( 'upload_cover_'.get_current_user_id() ); ?>' name='__nonce' />

@@ -569,30 +569,30 @@ function ap_get_activity_action_title($args) {
 		case 'edit_comment':
 			$comment = '<a class="ap-c-link" href="'. get_comment_link( $args['item_id'] ) .'">'. get_comment_excerpt( $args['item_id'] ) .'</a>';
 			$question_title = '<a class="ap-q-link" href="'. get_permalink( $args['question_id'] ) .'">'. get_the_title( $args['question_id'] ) .'</a>';
-			$content .= sprintf( __( '%s edited comment on %s %s', 'ap' ), $user, $question_title, $comment );
+			$content .= sprintf( __( '%s edited comment on %s %s', 'anspress-question-answer' ), $user, $question_title, $comment );
 			break;
 
 		case 'status_updated':
 			$title = '<a class="ap-q-link" href="'. get_permalink( $args['question_id'] ) .'">'. get_the_title( $args['question_id'] ) .'</a>';
-			$content .= sprintf( __( '%s updated status of question %s', 'ap' ), $user, $title );
+			$content .= sprintf( __( '%s updated status of question %s', 'anspress-question-answer' ), $user, $title );
 			break;
 
 		case 'status_updated_answer':
 			$title = '<a class="ap-q-link" href="'. get_permalink( $args['item_id'] ) .'">'. get_the_title( $args['item_id'] ) .'</a>';
-			$content .= sprintf( __( '%s updated status of answer %s', 'ap' ), $user, $title );
+			$content .= sprintf( __( '%s updated status of answer %s', 'anspress-question-answer' ), $user, $title );
 			break;
 
 		case 'vote_up':
 			$post = get_post( $args['item_id'] );
-			$cpt_type = $post->post_type == 'question' ? __( 'question', 'ap' ) : __( 'answer', 'ap' );
+			$cpt_type = $post->post_type == 'question' ? __( 'question', 'anspress-question-answer' ) : __( 'answer', 'anspress-question-answer' );
 			$title = '<a class="ap-q-link" href="'. $args['permalink'] .'">'. $post->post_title .'</a>';
-			$content .= sprintf( __( '%s voted up on %s %s', 'ap' ), $user, $cpt_type, $title );
+			$content .= sprintf( __( '%s voted up on %s %s', 'anspress-question-answer' ), $user, $cpt_type, $title );
 			break;
 
 		case 'reputation_gain':
 			$post = get_post( $args['item_id'] );
 			$title = '<a class="ap-q-link" href="'. $args['permalink'] .'">'. $post->post_title .'</a>';
-			$content .= sprintf( __( '%s received %d reputation on %s', 'ap' ), $user, $args['reputation'], $title );
+			$content .= sprintf( __( '%s received %d reputation on %s', 'anspress-question-answer' ), $user, $args['reputation'], $title );
 			break;
 	}
 
@@ -675,18 +675,18 @@ function ap_post_activity_meta( $post_id = false ) {
  */
 function ap_activity_short_title( $type ) {
 	$title = array(
-		'new_question' 		=> __( 'asked', 'ap' ),
-		'new_answer' 		=> __( 'answered', 'ap' ),
-		'new_comment' 		=> __( 'commented', 'ap' ),
-		'new_comment_answer' => __( 'commented on answer', 'ap' ),
-		'edit_question' 	=> __( 'edited question', 'ap' ),
-		'edit_answer' 		=> __( 'edited answer', 'ap' ),
-		'edit_comment' 		=> __( 'edited comment', 'ap' ),
-		'answer_selected' 	=> __( 'selected answer', 'ap' ),
-		'answer_unselected' => __( 'unselected answer', 'ap' ),
-		'status_updated' 	=> __( 'updated status', 'ap' ),
-		'best_answer' 		=> __( 'selected as best answer', 'ap' ),
-		'unselected_best_answer' 	=> __( 'unselected as best answer', 'ap' ),
+		'new_question' 		=> __( 'asked', 'anspress-question-answer' ),
+		'new_answer' 		=> __( 'answered', 'anspress-question-answer' ),
+		'new_comment' 		=> __( 'commented', 'anspress-question-answer' ),
+		'new_comment_answer' => __( 'commented on answer', 'anspress-question-answer' ),
+		'edit_question' 	=> __( 'edited question', 'anspress-question-answer' ),
+		'edit_answer' 		=> __( 'edited answer', 'anspress-question-answer' ),
+		'edit_comment' 		=> __( 'edited comment', 'anspress-question-answer' ),
+		'answer_selected' 	=> __( 'selected answer', 'anspress-question-answer' ),
+		'answer_unselected' => __( 'unselected answer', 'anspress-question-answer' ),
+		'status_updated' 	=> __( 'updated status', 'anspress-question-answer' ),
+		'best_answer' 		=> __( 'selected as best answer', 'anspress-question-answer' ),
+		'unselected_best_answer' 	=> __( 'unselected as best answer', 'anspress-question-answer' ),
 	);
 
 	$title = apply_filters( 'ap_activity_short_title', $title );
@@ -725,9 +725,9 @@ function ap_post_active_time($post_id = false, $html = true) {
 	}
 
 	$title = ap_activity_short_title( $activity['type'] );
-	$title = esc_html( '<span class="ap-post-history">'.sprintf( __( '%s %s %s', 'ap' ), ap_user_display_name( $activity['user_id'] ), $title, '<time datetime="'. mysql2date( 'c', $activity['date'] ) .'">'.ap_human_time( mysql2date( 'U', $activity['date'] ) ).'</time>' ).'</span>' );
+	$title = esc_html( '<span class="ap-post-history">'.sprintf( __( '%s %s %s', 'anspress-question-answer' ), ap_user_display_name( $activity['user_id'] ), $title, '<time datetime="'. mysql2date( 'c', $activity['date'] ) .'">'.ap_human_time( mysql2date( 'U', $activity['date'] ) ).'</time>' ).'</span>' );
 
-	return sprintf( __( 'Active %s', 'ap' ), '<a class="ap-tip" href="#" title="'. $title .'"><time datetime="'. mysql2date( 'c', $activity['date'] ) .'">'.ap_human_time( mysql2date( 'U', $activity['date'] ) ) ).'</time></a>';
+	return sprintf( __( 'Active %s', 'anspress-question-answer' ), '<a class="ap-tip" href="#" title="'. $title .'"><time datetime="'. mysql2date( 'c', $activity['date'] ) .'">'.ap_human_time( mysql2date( 'U', $activity['date'] ) ) ).'</time></a>';
 }
 
 /**
@@ -761,7 +761,7 @@ function ap_latest_post_activity_html($post_id = false) {
 		$title = ap_activity_short_title( $activity['type'] );
 
 		$html .= '<span class="ap-post-history">';
-		$html .= sprintf( __( ' %s %s %s', 'ap' ),
+		$html .= sprintf( __( ' %s %s %s', 'anspress-question-answer' ),
 			ap_user_link_anchor($activity['user_id'], false),
 			$title,
 			'<a href="'. get_permalink( $post ) .'"><time datetime="'. mysql2date( 'c', $activity['date'] ) .'">'. ap_human_time( $activity['date'], false ) .'</time></a>'
@@ -1128,7 +1128,7 @@ function ap_activity_pagination( $base = false) {
 function ap_activity_delete_btn(){
 	
 	if( is_super_admin( ) ){
-		return '<a href="#" class="ap-activity-delete" data-action="ajax_btn" data-query="delete_activity::'. wp_create_nonce( 'ap_delete_activity' ).'::'.ap_activity_id().'">'.__('Delete', 'ap').'</a>';
+		return '<a href="#" class="ap-activity-delete" data-action="ajax_btn" data-query="delete_activity::'. wp_create_nonce( 'ap_delete_activity' ).'::'.ap_activity_id().'">'.__('Delete', 'anspress-question-answer').'</a>';
 	}
 }
 

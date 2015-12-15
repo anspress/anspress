@@ -26,10 +26,10 @@
 		<div class="no-overflow clearfix">
 			<a class="ap-users-name" href="<?php ap_user_the_link(); ?>"><?php ap_user_the_display_name(); ?></a>
 			<div class="ap-users-mini-status">
-				<span><?php printf(__('%s Rep.', 'ap'), ap_user_get_the_reputation()); ?></span>
-				<span><?php printf(__('%d Best', 'ap'), ap_user_get_the_meta('__best_answers')); ?></span>
-				<span><?php printf(__('%d Answers', 'ap'), ap_user_get_the_meta('__total_answers')); ?></span>
-				<span><?php printf(__('%d Questions', 'ap'), ap_user_get_the_meta('__total_questions')); ?></span>
+				<span><?php printf(__('%s Rep.', 'anspress-question-answer'), ap_user_get_the_reputation()); ?></span>
+				<span><?php printf(__('%d Best', 'anspress-question-answer'), ap_user_get_the_meta('__best_answers')); ?></span>
+				<span><?php printf(__('%d Answers', 'anspress-question-answer'), ap_user_get_the_meta('__total_answers')); ?></span>
+				<span><?php printf(__('%d Questions', 'anspress-question-answer'), ap_user_get_the_meta('__total_questions')); ?></span>
 				<?php 
 		            /**
 		             * ACTION: ap_users_loop_meta

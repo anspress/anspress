@@ -30,7 +30,7 @@ function ap_page_title() {
 	if ( is_question() ) {
 		$new_title = ap_question_title_with_solved_prefix();
 	} elseif ( is_ap_edit() ) {
-		$new_title = __( 'Edit post', 'ap' );
+		$new_title = __( 'Edit post', 'anspress-question-answer' );
 	} elseif ( is_ap_search() ) {
 		$new_title = sprintf( ap_opt( 'search_page_title' ), sanitize_text_field( get_query_var( 'ap_s' ) ) );
 	} elseif ( is_ask() ) {
@@ -40,11 +40,11 @@ function ap_page_title() {
 	} elseif ( '' == $current_page && ! is_question() && '' == get_query_var( 'question_name' ) ) {
 		$new_title = ap_opt( 'base_page_title' );
 	} elseif ( get_query_var( 'parent' ) != '' ) {
-		$new_title = sprintf( __( 'Discussion on "%s"', 'ap' ), get_the_title( get_query_var( 'parent' ) ) );
+		$new_title = sprintf( __( 'Discussion on "%s"', 'anspress-question-answer' ), get_the_title( get_query_var( 'parent' ) ) );
 	} elseif ( isset( $pages[ $current_page ]['title'] ) ) {
 		$new_title = $pages[ $current_page ]['title'];
 	} else {
-		$new_title = __( 'Error 404', 'ap' );
+		$new_title = __( 'Error 404', 'anspress-question-answer' );
 	}
 
 	$new_title = apply_filters( 'ap_page_title', $new_title );
@@ -314,11 +314,11 @@ function ap_display_question_metas($question_id = false) {
 	$metas = array();
 	if ( ! is_question() ) {
 		if ( ap_question_best_answer_selected() ) {
-			$metas['solved'] = '<span class="ap-best-answer-label ap-tip" title="'.__( 'answer accepted', 'ap' ).'">'.__( 'Solved', 'ap' ).'</span>';
+			$metas['solved'] = '<span class="ap-best-answer-label ap-tip" title="'.__( 'answer accepted', 'anspress-question-answer' ).'">'.__( 'Solved', 'anspress-question-answer' ).'</span>';
 		}
 
 		$view_count = ap_get_qa_views();
-		$metas['views'] = sprintf( __( '<i>%d views</i>', 'ap' ), $view_count );
+		$metas['views'] = sprintf( __( '<i>%d views</i>', 'anspress-question-answer' ), $view_count );
 		$metas['history'] = ap_latest_post_activity_html( $question_id );
 	}
 
@@ -519,7 +519,7 @@ function ap_post_actions_buttons($disable = array()) {
 		if ( ! empty( $actions['dropdown'] ) ) {
 			echo '<li class="ap-post-action dropdown">';
 			echo '<div id="ap_post_action_'.$post->ID.'" class="ap-dropdown">';
-			echo '<a class="apicon-ellipsis more-actions ap-tip ap-dropdown-toggle" title="'.__( 'More action', 'ap' ).'" href="#"></a>';
+			echo '<a class="apicon-ellipsis more-actions ap-tip ap-dropdown-toggle" title="'.__( 'More action', 'anspress-question-answer' ).'" href="#"></a>';
 			echo '<ul class="ap-dropdown-menu">';
 			foreach ( $actions['dropdown'] as $sk => $sub ) {
 				echo '<li class="ap-post-action ap-action-'.$sk.'">'.$sub.'</li>';
@@ -558,17 +558,17 @@ function ap_question_sorting($current_url = '') {
 	$link = add_query_arg( $param, $current_url );
 
 	$navs = array(
-		'active' => array( 'title' => __( 'Active', 'ap' ) ),
-		'newest' => array( 'title' => __( 'Newest', 'ap' ) ),
+		'active' => array( 'title' => __( 'Active', 'anspress-question-answer' ) ),
+		'newest' => array( 'title' => __( 'Newest', 'anspress-question-answer' ) ),
 	);
 
 	if ( ! ap_opt( 'disable_voting_on_question' ) ) {
-		$navs['voted'] = array( 'title' => __( 'Voted', 'ap' ) );
+		$navs['voted'] = array( 'title' => __( 'Voted', 'anspress-question-answer' ) );
 	}
 
-	$navs['answers'] = array( 'title' => __( 'Answered', 'ap' ) );
-	$navs['unanswered'] = array( 'title' => __( 'Unanswered', 'ap' ) );
-	$navs['unsolved'] = array( 'title' => __( 'Unsolved', 'ap' ) );
+	$navs['answers'] = array( 'title' => __( 'Answered', 'anspress-question-answer' ) );
+	$navs['unanswered'] = array( 'title' => __( 'Unanswered', 'anspress-question-answer' ) );
+	$navs['unsolved'] = array( 'title' => __( 'Unsolved', 'anspress-question-answer' ) );
 
 	/*
      * FILTER: ap_question_sorting
@@ -578,7 +578,7 @@ function ap_question_sorting($current_url = '') {
 	 */
 	$navs = apply_filters( 'ap_question_sorting', $navs );
 	echo '<div class="ap-dropdown">';
-	echo '<a id="ap-sort-anchor" class="ap-dropdown-toggle'.('' != $sort ? ' active' : '').'" href="#">'.__( 'Sort by', 'ap' ).'</a>';
+	echo '<a id="ap-sort-anchor" class="ap-dropdown-toggle'.('' != $sort ? ' active' : '').'" href="#">'.__( 'Sort by', 'anspress-question-answer' ).'</a>';
 	echo '<div class="ap-dropdown-menu">';
 	foreach ( $navs as $k => $nav ) {
 		echo '<li '.( $k == $sort ? 'class="active" ' : '').'><a href="#" data-value="'.$k.'">'.$nav['title'].'</a></li>';
@@ -602,15 +602,15 @@ function ap_answers_tab($base = false) {
 	}
 
 	$navs = array(
-		'active' => array( 'link' => add_query_arg( array( 'ap_sort' => 'active' ), $base ), 'title' => __( 'Active', 'ap' ) ),
+		'active' => array( 'link' => add_query_arg( array( 'ap_sort' => 'active' ), $base ), 'title' => __( 'Active', 'anspress-question-answer' ) ),
 	);
 
 	if ( ! ap_opt( 'disable_voting_on_answer' ) ) {
-		$navs['voted'] = array( 'link' => add_query_arg( array( 'ap_sort' => 'voted' ), $base ), 'title' => __( 'Voted', 'ap' ) );
+		$navs['voted'] = array( 'link' => add_query_arg( array( 'ap_sort' => 'voted' ), $base ), 'title' => __( 'Voted', 'anspress-question-answer' ) );
 	}
 
-	$navs['newest'] = array( 'link' => add_query_arg( array( 'ap_sort' => 'newest' ), $base ), 'title' => __( 'Newest', 'ap' ) );
-	$navs['oldest'] = array( 'link' => add_query_arg( array( 'ap_sort' => 'oldest' ), $base ), 'title' => __( 'Oldest', 'ap' ) );
+	$navs['newest'] = array( 'link' => add_query_arg( array( 'ap_sort' => 'newest' ), $base ), 'title' => __( 'Newest', 'anspress-question-answer' ) );
+	$navs['oldest'] = array( 'link' => add_query_arg( array( 'ap_sort' => 'oldest' ), $base ), 'title' => __( 'Oldest', 'anspress-question-answer' ) );
 
 	echo '<ul class="ap-answers-tab ap-ul-inline clearfix">';
 	foreach ( $navs as $k => $nav ) {
@@ -632,7 +632,7 @@ function ap_display_answer_metas($answer_id = false) {
 
 	$metas = array();
 	if ( ap_answer_is_best( $answer_id ) ) {
-		$metas['best_answer'] = '<span class="ap-best-answer-label">'.__( 'Best answer', 'ap' ).'</span>';
+		$metas['best_answer'] = '<span class="ap-best-answer-label">'.__( 'Best answer', 'anspress-question-answer' ).'</span>';
 	}
 
 	$metas['history'] = ap_last_active_time( $answer_id );
@@ -669,12 +669,12 @@ function ap_comment_actions_buttons() {
 
 	if ( ap_user_can_edit_comment( get_comment_ID() ) ) {
 		$nonce = wp_create_nonce( 'edit_comment_'.get_comment_ID() );
-		$actions['edit'] = '<a class="comment-edit-btn" href="#" data-toggle="#li-comment-'.get_comment_ID().'" data-action="load_comment_form" data-query="ap_ajax_action=load_comment_form&comment_ID='.get_comment_ID().'&__nonce='.$nonce.'">'.__( 'Edit', 'ap' ).'</a>';
+		$actions['edit'] = '<a class="comment-edit-btn" href="#" data-toggle="#li-comment-'.get_comment_ID().'" data-action="load_comment_form" data-query="ap_ajax_action=load_comment_form&comment_ID='.get_comment_ID().'&__nonce='.$nonce.'">'.__( 'Edit', 'anspress-question-answer' ).'</a>';
 	}
 
 	if ( ap_user_can_delete_comment( get_comment_ID() ) ) {
 		$nonce = wp_create_nonce( 'delete_comment' );
-		$actions['delete'] = '<a class="comment-delete-btn" href="#" data-toggle="#li-comment-'.get_comment_ID().'" data-action="delete_comment" data-query="ap_ajax_action=delete_comment&comment_ID='.get_comment_ID().'&__nonce='.$nonce.'">'.__( 'Delete', 'ap' ).'</a>';
+		$actions['delete'] = '<a class="comment-delete-btn" href="#" data-toggle="#li-comment-'.get_comment_ID().'" data-action="delete_comment" data-query="ap_ajax_action=delete_comment&comment_ID='.get_comment_ID().'&__nonce='.$nonce.'">'.__( 'Delete', 'anspress-question-answer' ).'</a>';
 	}
 
 	if ( is_user_logged_in() ) {
@@ -710,7 +710,7 @@ function ap_ask_btn() {
  * @since 2.1
  */
 function ap_get_ask_btn() {
-	return '<a class="ap-btn-ask" href="'.ap_get_link_to( 'ask' ).'">'.__( 'Ask question', 'ap' ).'</a>';
+	return '<a class="ap-btn-ask" href="'.ap_get_link_to( 'ask' ).'">'.__( 'Ask question', 'anspress-question-answer' ).'</a>';
 }
 
 /**
@@ -821,15 +821,15 @@ function ap_get_breadcrumbs() {
 	$a['base'] = array( 'title' => ap_opt( 'base_page_title' ), 'link' => ap_base_page_link(), 'order' => 0 );
 
 	if ( is_question_tag() ) {
-		$a['tag'] = array( 'title' => __( 'Tags', 'ap' ), 'link' => '', 'order' => 10 );
+		$a['tag'] = array( 'title' => __( 'Tags', 'anspress-question-answer' ), 'link' => '', 'order' => 10 );
 	} elseif ( is_question() ) {
-		$a['page'] = array( 'title' => substr( $title, 0, 30 ).(strlen( $title ) > 30 ? __( '..', 'ap' ) : ''), 'link' => get_permalink( get_question_id() ), 'order' => 10 );
+		$a['page'] = array( 'title' => substr( $title, 0, 30 ).(strlen( $title ) > 30 ? __( '..', 'anspress-question-answer' ) : ''), 'link' => get_permalink( get_question_id() ), 'order' => 10 );
 	} elseif ( 'base' != $current_page && '' != $current_page ) {
 		if ( 'user' == $current_page ) {
-			$a['page'] = array( 'title' => __( 'User', 'ap' ), 'link' => ap_user_link( ap_get_displayed_user_id() ), 'order' => 10 );
-			$a['user_page'] = array( 'title' => substr( $title, 0, 30 ).(strlen( $title ) > 30 ? __( '..', 'ap' ) : ''), 'link' => ap_user_link( ap_get_displayed_user_id(), get_query_var( 'user_page' ) ), 'order' => 10 );
+			$a['page'] = array( 'title' => __( 'User', 'anspress-question-answer' ), 'link' => ap_user_link( ap_get_displayed_user_id() ), 'order' => 10 );
+			$a['user_page'] = array( 'title' => substr( $title, 0, 30 ).(strlen( $title ) > 30 ? __( '..', 'anspress-question-answer' ) : ''), 'link' => ap_user_link( ap_get_displayed_user_id(), get_query_var( 'user_page' ) ), 'order' => 10 );
 		} else {
-			$a['page'] = array( 'title' => substr( $title, 0, 30 ).(strlen( $title ) > 30 ? __( '..', 'ap' ) : ''), 'link' => ap_get_link_to( $current_page ), 'order' => 10 );
+			$a['page'] = array( 'title' => substr( $title, 0, 30 ).(strlen( $title ) > 30 ? __( '..', 'anspress-question-answer' ) : ''), 'link' => ap_get_link_to( $current_page ), 'order' => 10 );
 		}
 	}
 

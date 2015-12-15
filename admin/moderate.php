@@ -58,7 +58,7 @@ class AP_Moderate_Table extends WP_List_Table {
 	public function advanced_filters() {
 		?>
 				<div id="ap-moderate-filters">	
-					<?php $this->search_box( __( 'Search', 'ap' ), 'ap-moderates' ); ?>
+					<?php $this->search_box( __( 'Search', 'anspress-question-answer' ), 'ap-moderates' ); ?>
 				</div>
 
 		<?php
@@ -77,7 +77,7 @@ class AP_Moderate_Table extends WP_List_Table {
 		
 
 		$views = array(
-			'moderate'	=> sprintf( '<a href="%s"%s>%s</a>', add_query_arg( array( 'status' => 'moderate', 'paged' => FALSE ) ), $this->current_status === 'moderate' ? ' class="current"' : '', __('Moderate', 'ap') . $moderate_count )
+			'moderate'	=> sprintf( '<a href="%s"%s>%s</a>', add_query_arg( array( 'status' => 'moderate', 'paged' => FALSE ) ), $this->current_status === 'moderate' ? ' class="current"' : '', __('Moderate', 'anspress-question-answer') . $moderate_count )
 		);
 
 		return apply_filters( 'ap_moderate_table_views', $views );
@@ -89,10 +89,10 @@ class AP_Moderate_Table extends WP_List_Table {
 	public function get_columns() {
 		$columns = array(
 			'cb'        		=> '<input type="checkbox" />', //Render a checkbox instead of text		
-			'question_status'  	=> __( 'Status', 'ap' ),
-			'post_title'  		=> __( 'Title', 'ap' ),
-			'flag'  			=> __( 'Flag', 'ap' ),
-			'category'  		=> __( 'Category', 'ap' )
+			'question_status'  	=> __( 'Status', 'anspress-question-answer' ),
+			'post_title'  		=> __( 'Title', 'anspress-question-answer' ),
+			'flag'  			=> __( 'Flag', 'anspress-question-answer' ),
+			'category'  		=> __( 'Category', 'anspress-question-answer' )
 		);
 
 		return apply_filters( 'ap_moderate_table_columns', $columns );
@@ -148,14 +148,14 @@ class AP_Moderate_Table extends WP_List_Table {
 		
 		if('trash' == $this->current_status){
 			$actions = array(
-				'untrash' => sprintf('<a href="%s">%s</a>', ap_untrash_post($post->ID), __('Restore', 'ap')),
-				'delete' => sprintf('<a href="%s">%s</a>', get_delete_post_link($post->ID, null,  true), __('Delete permanently', 'ap')),
+				'untrash' => sprintf('<a href="%s">%s</a>', ap_untrash_post($post->ID), __('Restore', 'anspress-question-answer')),
+				'delete' => sprintf('<a href="%s">%s</a>', get_delete_post_link($post->ID, null,  true), __('Delete permanently', 'anspress-question-answer')),
 			);
 		}else{		
 			$actions = array(
-				'edit'      => sprintf('<a href="%s">%s</a>', get_edit_post_link($post->ID), __('Edit', 'ap')),
-				'trash'      => sprintf('<a href="%s">%s</a>', get_delete_post_link($post->ID), __('Trash', 'ap')),
-				'view'      => sprintf('<a href="%s">%s</a>', get_permalink($post->ID), __('View', 'ap'))
+				'edit'      => sprintf('<a href="%s">%s</a>', get_edit_post_link($post->ID), __('Edit', 'anspress-question-answer')),
+				'trash'      => sprintf('<a href="%s">%s</a>', get_delete_post_link($post->ID), __('Trash', 'anspress-question-answer')),
+				'view'      => sprintf('<a href="%s">%s</a>', get_permalink($post->ID), __('View', 'anspress-question-answer'))
 			);
 		}
 
@@ -187,7 +187,7 @@ class AP_Moderate_Table extends WP_List_Table {
 		
 		/* If no terms were found, output a default message. */
 		else {
-			return __('--');
+			return __('--', 'anspress-question-answer');
 		}
 	}
 
@@ -200,14 +200,14 @@ class AP_Moderate_Table extends WP_List_Table {
 		
 		if('trash' == $status){
 			$actions = array(
-				'restore' => __( 'Restore', 'ap' ), 
-				'delete' => __( 'Delete permanently', 'ap' ),
+				'restore' => __( 'Restore', 'anspress-question-answer' ), 
+				'delete' => __( 'Delete permanently', 'anspress-question-answer' ),
 			);
 		}else{
 			$actions = array(
-				'publish'   => __( 'Published', 'ap' ),
-				'pending'   => __( 'Pending', 'ap' ),
-				'trash'   	=> __( 'Move to trash', 'ap' ),
+				'publish'   => __( 'Published', 'anspress-question-answer' ),
+				'pending'   => __( 'Pending', 'anspress-question-answer' ),
+				'trash'   	=> __( 'Move to trash', 'anspress-question-answer' ),
 				
 			);
 		}

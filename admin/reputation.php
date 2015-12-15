@@ -48,9 +48,9 @@ class AnsPress_Reputation_Table extends WP_List_Table
     public function get_columns()
     {
         $columns = array(
-            'title'       	=> __('Title', 'ap'),
-            'reputation'    => __('Points', 'ap'),
-            'event'    		=> __('Event', 'ap')
+            'title'       	=> __('Title', 'anspress-question-answer'),
+            'reputation'    => __('Points', 'anspress-question-answer'),
+            'event'    		=> __('Event', 'anspress-question-answer')
         );
  
         return $columns;
@@ -149,8 +149,8 @@ class AnsPress_Reputation_Table extends WP_List_Table
 		$nonce = wp_create_nonce( 'delete_reputation' );
 		return '<a class="row-title" href="#">'.$reputation['title'].'</a><div>'.$reputation['description'].'<div>
 		<div class="row-actions">
-			<span class="edit"><a title="'.__('Delete this reputation', 'ap').'" href="'.$reputation['id'].'" data-action="ap-edit-reputation">'.__('Edit', 'ap').'</a> | </span>
-			<span class="edit"><a title="'.__('Delete this reputation', 'ap').'" href="'.$reputation['id'].'" data-button="ap-delete-reputation" data-args="'.$reputation['id'].'-'.$nonce.'">'.__('Delete', 'ap').'</a></span>
+			<span class="edit"><a title="'.__('Delete this reputation', 'anspress-question-answer').'" href="'.$reputation['id'].'" data-action="ap-edit-reputation">'.__('Edit', 'anspress-question-answer').'</a> | </span>
+			<span class="edit"><a title="'.__('Delete this reputation', 'anspress-question-answer').'" href="'.$reputation['id'].'" data-button="ap-delete-reputation" data-args="'.$reputation['id'].'-'.$nonce.'">'.__('Delete', 'anspress-question-answer').'</a></span>
 		</div>';
 	}
 	

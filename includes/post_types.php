@@ -44,19 +44,19 @@ class AnsPress_PostTypes
 
 		// question CPT labels
 		$labels = array(
-			'name'              => _x( 'Questions', 'Post Type General Name', 'ap' ),
-			'singular_name'     => _x( 'Question', 'Post Type Singular Name', 'ap' ),
-			'menu_name'         => __( 'Questions', 'ap' ),
-			'parent_item_colon' => __( 'Parent Question:', 'ap' ),
-			'all_items'         => __( 'All Questions', 'ap' ),
-			'view_item'         => __( 'View Question', 'ap' ),
-			'add_new_item'      => __( 'Add New Question', 'ap' ),
-			'add_new'           => __( 'New Question', 'ap' ),
-			'edit_item'         => __( 'Edit Question', 'ap' ),
-			'update_item'       => __( 'Update Question', 'ap' ),
-			'search_items'      => __( 'Search question', 'ap' ),
-			'not_found'         => __( 'No question found', 'ap' ),
-			'not_found_in_trash' => __( 'No questions found in Trash', 'ap' ),
+			'name'              => _x( 'Questions', 'Post Type General Name', 'anspress-question-answer' ),
+			'singular_name'     => _x( 'Question', 'Post Type Singular Name', 'anspress-question-answer' ),
+			'menu_name'         => __( 'Questions', 'anspress-question-answer' ),
+			'parent_item_colon' => __( 'Parent Question:', 'anspress-question-answer' ),
+			'all_items'         => __( 'All Questions', 'anspress-question-answer' ),
+			'view_item'         => __( 'View Question', 'anspress-question-answer' ),
+			'add_new_item'      => __( 'Add New Question', 'anspress-question-answer' ),
+			'add_new'           => __( 'New Question', 'anspress-question-answer' ),
+			'edit_item'         => __( 'Edit Question', 'anspress-question-answer' ),
+			'update_item'       => __( 'Update Question', 'anspress-question-answer' ),
+			'search_items'      => __( 'Search question', 'anspress-question-answer' ),
+			'not_found'         => __( 'No question found', 'anspress-question-answer' ),
+			'not_found_in_trash' => __( 'No questions found in Trash', 'anspress-question-answer' ),
 		);
 
 		/**
@@ -67,8 +67,8 @@ class AnsPress_PostTypes
 
 		// question CPT arguments
 		$args   = array(
-			'label' => __( 'question', 'ap' ),
-			'description' => __( 'Question', 'ap' ),
+			'label' => __( 'question', 'anspress-question-answer' ),
+			'description' => __( 'Question', 'anspress-question-answer' ),
 			'labels' => $labels,
 			'supports' => array(
 				'title',
@@ -114,19 +114,19 @@ class AnsPress_PostTypes
 	public function register_answer_cpt() {
 		// Answer CPT labels
 		$labels = array(
-			'name'          => _x( 'Answers', 'Post Type General Name', 'ap' ),
-			'singular_name' => _x( 'Answer', 'Post Type Singular Name', 'ap' ),
-			'menu_name' => __( 'Answers', 'ap' ),
-			'parent_item_colon' => __( 'Parent Answer:', 'ap' ),
-			'all_items' => __( 'All Answers', 'ap' ),
-			'view_item' => __( 'View Answer', 'ap' ),
-			'add_new_item' => __( 'Add New Answer', 'ap' ),
-			'add_new' => __( 'New answer', 'ap' ),
-			'edit_item' => __( 'Edit answer', 'ap' ),
-			'update_item' => __( 'Update answer', 'ap' ),
-			'search_items' => __( 'Search answer', 'ap' ),
-			'not_found' => __( 'No answer found', 'ap' ),
-			'not_found_in_trash' => __( 'No answer found in Trash', 'ap' ),
+			'name'          => _x( 'Answers', 'Post Type General Name', 'anspress-question-answer' ),
+			'singular_name' => _x( 'Answer', 'Post Type Singular Name', 'anspress-question-answer' ),
+			'menu_name' => __( 'Answers', 'anspress-question-answer' ),
+			'parent_item_colon' => __( 'Parent Answer:', 'anspress-question-answer' ),
+			'all_items' => __( 'All Answers', 'anspress-question-answer' ),
+			'view_item' => __( 'View Answer', 'anspress-question-answer' ),
+			'add_new_item' => __( 'Add New Answer', 'anspress-question-answer' ),
+			'add_new' => __( 'New answer', 'anspress-question-answer' ),
+			'edit_item' => __( 'Edit answer', 'anspress-question-answer' ),
+			'update_item' => __( 'Update answer', 'anspress-question-answer' ),
+			'search_items' => __( 'Search answer', 'anspress-question-answer' ),
+			'not_found' => __( 'No answer found', 'anspress-question-answer' ),
+			'not_found_in_trash' => __( 'No answer found in Trash', 'anspress-question-answer' ),
 		);
 
 		/**
@@ -137,8 +137,8 @@ class AnsPress_PostTypes
 
 		// Answers CPT arguments
 		$args   = array(
-			'label' => __( 'answer', 'ap' ),
-			'description' => __( 'Answer', 'ap' ),
+			'label' => __( 'answer', 'anspress-question-answer' ),
+			'description' => __( 'Answer', 'anspress-question-answer' ),
 			'labels' => $labels,
 			'supports' => array(
 				'editor',
@@ -222,21 +222,21 @@ class AnsPress_PostTypes
 
 		$columns = array();
 		$columns['cb']          = '<input type="checkbox" />';
-		$columns['ap_author']      = __( 'Author', 'ap' );
-		$columns['title']       = __( 'Title', 'ap' );
+		$columns['ap_author']      = __( 'Author', 'anspress-question-answer' );
+		$columns['title']       = __( 'Title', 'anspress-question-answer' );
 
 		if ( taxonomy_exists( 'question_category' ) ) {
-			$columns['question_category']       = __( 'Category', 'ap' ); }
+			$columns['question_category']       = __( 'Category', 'anspress-question-answer' ); }
 
 		if ( taxonomy_exists( 'question_tag' ) ) {
-			$columns['question_tag']       = __( 'Tag', 'ap' ); }
+			$columns['question_tag']       = __( 'Tag', 'anspress-question-answer' ); }
 
-		$columns['status']      = __( 'Status', 'ap' );
-		$columns['answers']     = __( 'Ans', 'ap' );
-		$columns['comments']    = __( 'Comments', 'ap' );
-		$columns['vote']        = __( 'Vote', 'ap' );
-		$columns['flag']        = __( 'Flag', 'ap' );
-		$columns['date']        = __( 'Date', 'ap' );
+		$columns['status']      = __( 'Status', 'anspress-question-answer' );
+		$columns['answers']     = __( 'Ans', 'anspress-question-answer' );
+		$columns['comments']    = __( 'Comments', 'anspress-question-answer' );
+		$columns['vote']        = __( 'Vote', 'anspress-question-answer' );
+		$columns['flag']        = __( 'Flag', 'anspress-question-answer' );
+		$columns['date']        = __( 'Date', 'anspress-question-answer' );
 
 		return $columns;
 	}
@@ -259,26 +259,26 @@ class AnsPress_PostTypes
 			echo '<span class="post-status">';
 
 			if ( 'private_post' == $post->post_status ) {
-				echo __( 'Private', 'ap' ); } elseif ('closed' == $post->post_status)
-					echo __( 'Closed', 'ap' );
+				echo __( 'Private', 'anspress-question-answer' ); } elseif ('closed' == $post->post_status)
+					echo __( 'Closed', 'anspress-question-answer' );
 
 				elseif ('moderate' == $post->post_status)
-					echo __( 'Moderate', 'ap' );
+					echo __( 'Moderate', 'anspress-question-answer' );
 
 				elseif ('private' == $post->post_status)
-					echo __( 'Private', 'ap' );
+					echo __( 'Private', 'anspress-question-answer' );
 
 				elseif ('darft' == $post->post_status)
-					echo __( 'Draft', 'ap' );
+					echo __( 'Draft', 'anspress-question-answer' );
 
 				elseif ('pending' == $post->post_status)
-					echo __( 'Pending', 'ap' );
+					echo __( 'Pending', 'anspress-question-answer' );
 
 				elseif ('trash' == $post->post_status)
-					echo __( 'Trash', 'ap' );
+					echo __( 'Trash', 'anspress-question-answer' );
 
 			else {
-				echo __( 'Open', 'ap' ); }
+				echo __( 'Open', 'anspress-question-answer' ); }
 
 			echo '</span>';
 
@@ -294,7 +294,7 @@ class AnsPress_PostTypes
 				}
 				echo join( ', ', $out );
 			} else {
-				_e( '--' );
+				_e( '--', 'anspress-question-answer' );
 			}
 		} elseif ( 'question_tag' == $column && taxonomy_exists( 'question_tag' ) ) {
 
@@ -312,7 +312,7 @@ class AnsPress_PostTypes
 
 				echo join( ', ', $out );
 			} else {
-				_e( '--', 'ap' );
+				_e( '--', 'anspress-question-answer' );
 			}
 		} elseif ( 'answers' == $column ) {
 			$a_count = ap_count_answer_meta();
@@ -320,13 +320,13 @@ class AnsPress_PostTypes
 			/* If terms were found. */
 			if ( ! empty( $a_count ) ) {
 
-				echo '<a class="ans-count" title="' . $a_count . __( 'answers', 'ap' ) . '" href="' . esc_url(add_query_arg(array(
+				echo '<a class="ans-count" title="' . $a_count . __( 'answers', 'anspress-question-answer' ) . '" href="' . esc_url(add_query_arg(array(
 					'post_type' => 'answer',
 					'post_parent' => $post->ID,
 				), 'edit.php')) . '">' . $a_count . '</a>';
 			} /* If no terms were found, output a default message. */
 			else {
-				echo '<a class="ans-count" title="0' . __( 'answers', 'ap' ) . '">0</a>';
+				echo '<a class="ans-count" title="0' . __( 'answers', 'anspress-question-answer' ) . '">0</a>';
 			}
 		} elseif ( 'parent_question' == $column ) {
 			echo '<a class="parent_question" href="' . esc_url(add_query_arg(array(
@@ -351,13 +351,13 @@ class AnsPress_PostTypes
 
 		$columns = array(
 			'cb'                => '<input type="checkbox" />',
-			'ap_author'         => __( 'Author', 'ap' ),
-			'answer_content'    => __( 'Content', 'ap' ),
-			'status'            => __( 'Status', 'ap' ),
-			'comments'          => __( 'Comments', 'ap' ),
-			'vote'              => __( 'Vote', 'ap' ),
-			'flag'              => __( 'Flag', 'ap' ),
-			'date'              => __( 'Date', 'ap' ),
+			'ap_author'         => __( 'Author', 'anspress-question-answer' ),
+			'answer_content'    => __( 'Content', 'anspress-question-answer' ),
+			'status'            => __( 'Status', 'anspress-question-answer' ),
+			'comments'          => __( 'Comments', 'anspress-question-answer' ),
+			'vote'              => __( 'Vote', 'anspress-question-answer' ),
+			'flag'              => __( 'Flag', 'anspress-question-answer' ),
+			'date'              => __( 'Date', 'anspress-question-answer' ),
 		);
 		return $columns;
 	}
@@ -388,16 +388,16 @@ class AnsPress_PostTypes
 			if ( 'trash' == $post->post_status ) {
 				$_wpnonce           = wp_create_nonce( 'untrash-post_' . $post_id );
 				$url                = admin_url( 'post.php?post=' . $post_id . '&action=untrash&_wpnonce=' . $_wpnonce );
-				$actions['untrash'] = "<a title='" . esc_attr( __( 'Restore this item from the Trash' ) ) . "' href='" . $url . "'>" . __( 'Restore' ) . '</a>';
+				$actions['untrash'] = "<a title='" . esc_attr( __( 'Restore this item from the Trash', 'anspress-question-answer' ) ) . "' href='" . $url . "'>" . __( 'Restore', 'anspress-question-answer' ) . '</a>';
 
 			} elseif ( EMPTY_TRASH_DAYS ) {
-				$actions['trash'] = "<a class='submitdelete' title='" . esc_attr( __( 'Move this item to the Trash' ) ) . "' href='" . get_delete_post_link( $post->ID ) . "'>" . __( 'Trash' ) . '</a>';
+				$actions['trash'] = "<a class='submitdelete' title='" . esc_attr( __( 'Move this item to the Trash', 'anspress-question-answer' ) ) . "' href='" . get_delete_post_link( $post->ID ) . "'>" . __( 'Trash', 'anspress-question-answer' ) . '</a>';
 			}
 			if ( 'trash' == $post->post_status || ! EMPTY_TRASH_DAYS ) {
-				$actions['delete'] = "<a class='submitdelete' title='" . esc_attr( __( 'Delete this item permanently' ) ) . "' href='" . get_delete_post_link( $post->ID, '', true ) . "'>" . __( 'Delete Permanently' ) . '</a>'; }
+				$actions['delete'] = "<a class='submitdelete' title='" . esc_attr( __( 'Delete this item permanently', 'anspress-question-answer' ) ) . "' href='" . get_delete_post_link( $post->ID, '', true ) . "'>" . __( 'Delete Permanently', 'anspress-question-answer' ) . '</a>'; }
 		}
 		if ( $can_edit_post ) {
-			$actions['edit'] = '<a href="' . get_edit_post_link( $post->ID, '', true ) . '" title="' . esc_attr( sprintf( __( 'Preview &#8220;%s&#8221;' ),$post->title ) ) . '" rel="permalink">' . __( 'Edit' ) . '</a>'; }
+			$actions['edit'] = '<a href="' . get_edit_post_link( $post->ID, '', true ) . '" title="' . esc_attr( sprintf( __( 'Preview &#8220;%s&#8221;', 'anspress-question-answer' ),$post->title ) ) . '" rel="permalink">' . __( 'Edit', 'anspress-question-answer' ) . '</a>'; }
 
 		// Actions to view/preview
 		if ( in_array($post->post_status, array(
@@ -406,9 +406,9 @@ class AnsPress_PostTypes
 			'future',
 		)) ) {
 			if ( $can_edit_post ) {
-				$actions['view'] = '<a href="' . esc_url( add_query_arg( 'preview', 'true', get_permalink( $post->ID ) ) ) . '" title="' . esc_attr( sprintf( __( 'Preview &#8220;%s&#8221;' ),$post->title ) ) . '" rel="permalink">' . __( 'Preview' ) . '</a>'; }
+				$actions['view'] = '<a href="' . esc_url( add_query_arg( 'preview', 'true', get_permalink( $post->ID ) ) ) . '" title="' . esc_attr( sprintf( __( 'Preview &#8220;%s&#8221;', 'anspress-question-answer' ),$post->title ) ) . '" rel="permalink">' . __( 'Preview', 'anspress-question-answer' ) . '</a>'; }
 		} elseif ( 'trash' != $post->post_status ) {
-			$actions['view'] = '<a href="' . get_permalink( $post->ID ) . '" title="' . esc_attr( __( 'View &#8220;%s&#8221; question' ) ) . '" rel="permalink">' . __( 'View' ) . '</a>';
+			$actions['view'] = '<a href="' . get_permalink( $post->ID ) . '" title="' . esc_attr( __( 'View &#8220;%s&#8221; question', 'anspress-question-answer' ) ) . '" rel="permalink">' . __( 'View', 'anspress-question-answer' ) . '</a>';
 		}
 
 		// ***** END  -- Our actions  *******//

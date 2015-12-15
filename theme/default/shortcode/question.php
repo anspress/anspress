@@ -65,7 +65,7 @@
 				</div>
 			</div>
 			<a class="ap-eq-view-ans" href="<?php echo get_the_permalink() ?>">
-				<?php _e('View all answers', 'ap'); ?>
+				<?php _e('View all answers', 'anspress-question-answer'); ?>
 			</a>
 		</div>
 

@@ -265,7 +265,7 @@ function ap_human_time($time, $unix = true, $show_full_date = 604800, $format = 
 
 	if ( $time ) {
 		if ( $show_full_date + $time > current_time( 'timestamp', true ) ) {
-			return human_time_diff( $time, current_time( 'timestamp', true ) ) .' '.__( 'ago', 'ap' );
+			return human_time_diff( $time, current_time( 'timestamp', true ) ) .' '.__( 'ago', 'anspress-question-answer' );
 		} else {
 			return date_i18n( $format, $time );
 		}
@@ -276,7 +276,7 @@ function ap_please_login() {
 
 	$o = '<div id="please-login">';
 	$o .= '<button>x</button>';
-	$o .= __( 'Please login or register to continue this action.', 'ap' );
+	$o .= __( 'Please login or register to continue this action.', 'anspress-question-answer' );
 	$o .= '</div>';
 
 	echo apply_filters( 'ap_please_login', $o );
@@ -396,7 +396,7 @@ function ap_comment_btn_html($echo = false) {
 
 		$nonce = wp_create_nonce( 'comment_form_nonce' );
 		$comment_count = get_comments_number( get_the_ID() );
-		$output = '<a href="#comments-'.get_the_ID().'" class="comment-btn ap-tip" data-action="load_comment_form" data-query="ap_ajax_action=load_comment_form&post='.get_the_ID().'&__nonce='.$nonce.'" title="'.__( 'Comments', 'ap' ).'">'.__( 'Comment', 'ap' ).'<span class="ap-data-view ap-view-count-'.$comment_count.'" data-view="comments_count_'.get_the_ID().'">('.$comment_count.')</span></a>';
+		$output = '<a href="#comments-'.get_the_ID().'" class="comment-btn ap-tip" data-action="load_comment_form" data-query="ap_ajax_action=load_comment_form&post='.get_the_ID().'&__nonce='.$nonce.'" title="'.__( 'Comments', 'anspress-question-answer' ).'">'.__( 'Comment', 'anspress-question-answer' ).'<span class="ap-data-view ap-view-count-'.$comment_count.'" data-view="comments_count_'.get_the_ID().'">('.$comment_count.')</span></a>';
 
 		if ( $echo ) {
 			echo $output;
@@ -453,9 +453,9 @@ function ap_edit_post_link_html($echo = false, $post_id_or_object = false) {
 	$output = '';
 
 	if ( $post->post_type == 'question' && ap_user_can_edit_question( $post->ID ) ) {
-		$output = "<a href='$edit_link' data-button='ap-edit-post' title='".__( 'Edit this question', 'ap' )."' class='apEditBtn'>".__( 'Edit', 'ap' ).'</a>';
+		$output = "<a href='$edit_link' data-button='ap-edit-post' title='".__( 'Edit this question', 'anspress-question-answer' )."' class='apEditBtn'>".__( 'Edit', 'anspress-question-answer' ).'</a>';
 	} elseif ( $post->post_type == 'answer' && ap_user_can_edit_ans( $post->ID ) ) {
-		$output = "<a href='$edit_link' data-button='ap-edit-post' title='".__( 'Edit this answer', 'ap' )."' class='apEditBtn'>".__( 'Edit', 'ap' ).'</a>';
+		$output = "<a href='$edit_link' data-button='ap-edit-post' title='".__( 'Edit this answer', 'anspress-question-answer' )."' class='apEditBtn'>".__( 'Edit', 'anspress-question-answer' ).'</a>';
 	}
 
 	if ( $echo ) {
@@ -474,7 +474,7 @@ function ap_edit_a_btn_html($echo = false) {
 	$post_id = get_edit_answer_id();
 	if ( ap_user_can_edit_ans( $post_id ) ) {
 		$edit_link = ap_answer_edit_link();
-		$output .= "<a href='$edit_link.' class='edit-btn ' data-button='ap-edit-post' title='".__( 'Edit Answer', 'ap' )."'>".__( 'Edit', 'ap' ).'</a>';
+		$output .= "<a href='$edit_link.' class='edit-btn ' data-button='ap-edit-post' title='".__( 'Edit Answer', 'anspress-question-answer' )."'>".__( 'Edit', 'anspress-question-answer' ).'</a>';
 	}
 	if ( $echo ) {
 		echo $output;
@@ -487,7 +487,7 @@ function ap_post_edited_time() {
 
 	if ( get_the_time( 's' ) != get_the_modified_time( 's' ) ) {
 		printf('<span class="edited-text">%1$s</span> <span class="edited-time">%2$s</span>',
-			__( 'Edited on', 'ap' ),
+			__( 'Edited on', 'anspress-question-answer' ),
 			get_the_modified_time()
 		);
 	}
@@ -561,15 +561,15 @@ function ap_ans_list_tab() {
     <ul class="ap-ans-tab ap-tabs clearfix" role="tablist">
 		<li class="<?php echo $order == 'newest' ? ' active' : '';
 	?>"><a href="<?php echo $link.'newest';
-	?>"><?php _e( 'Newest', 'ap' );
+	?>"><?php _e( 'Newest', 'anspress-question-answer' );
 	?></a></li>
 		<li class="<?php echo $order == 'oldest' ? ' active' : '';
 	?>"><a href="<?php echo $link.'oldest';
-	?>"><?php _e( 'Oldest', 'ap' );
+	?>"><?php _e( 'Oldest', 'anspress-question-answer' );
 	?></a></li>
 		<li class="<?php echo $order == 'voted' ? ' active' : '';
 	?>"><a href="<?php echo $link.'voted';
-	?>"><?php _e( 'Voted', 'ap' );
+	?>"><?php _e( 'Voted', 'anspress-question-answer' );
 	?></a></li>
     </ul>
 	<?php
@@ -627,9 +627,9 @@ function ap_select_answer_btn_html($post_id) {
 	$nonce = wp_create_nonce( $action );
 
 	if ( ! ap_question_best_answer_selected( $ans->post_parent ) ) {
-		return '<a href="#" class="ap-btn-select ap-sicon '.ap_icon( 'check' ).' ap-tip" data-action="select_answer" data-query="answer_id='.$post_id.'&__nonce='.$nonce.'&ap_ajax_action=select_best_answer" title="'.__( 'Select this answer as best', 'ap' ).'">'.__( 'Select', 'ap' ).'</a>';
+		return '<a href="#" class="ap-btn-select ap-sicon '.ap_icon( 'check' ).' ap-tip" data-action="select_answer" data-query="answer_id='.$post_id.'&__nonce='.$nonce.'&ap_ajax_action=select_best_answer" title="'.__( 'Select this answer as best', 'anspress-question-answer' ).'">'.__( 'Select', 'anspress-question-answer' ).'</a>';
 	} elseif ( ap_question_best_answer_selected( $ans->post_parent ) && ap_answer_is_best( $ans->ID ) ) {
-		return '<a href="#" class="ap-btn-select ap-sicon '.ap_icon( 'cross' ).' active ap-tip" data-action="select_answer" data-query="answer_id='.$post_id.'&__nonce='.$nonce.'&ap_ajax_action=select_best_answer" title="'.__( 'Unselect this answer', 'ap' ).'">'.__( 'Unselect', 'ap' ).'</a>';
+		return '<a href="#" class="ap-btn-select ap-sicon '.ap_icon( 'cross' ).' active ap-tip" data-action="select_answer" data-query="answer_id='.$post_id.'&__nonce='.$nonce.'&ap_ajax_action=select_best_answer" title="'.__( 'Unselect this answer', 'anspress-question-answer' ).'">'.__( 'Unselect', 'anspress-question-answer' ).'</a>';
 	}
 }
 
@@ -650,7 +650,7 @@ function ap_post_delete_btn_html($post_id = false, $echo = false) {
 		$action = 'delete_post_'.$post_id;
 		$nonce = wp_create_nonce( $action );
 
-		$output = '<a href="#" class="delete-btn" data-action="ap_delete_post" data-query="post_id='.$post_id.'&__nonce='.$nonce.'&ap_ajax_action=delete_post" title="'.__( 'Delete', 'ap' ).'">'.__( 'Delete', 'ap' ).'</a>';
+		$output = '<a href="#" class="delete-btn" data-action="ap_delete_post" data-query="post_id='.$post_id.'&__nonce='.$nonce.'&ap_ajax_action=delete_post" title="'.__( 'Delete', 'anspress-question-answer' ).'">'.__( 'Delete', 'anspress-question-answer' ).'</a>';
 
 		if ( $echo ) {
 			echo $output;
@@ -669,7 +669,7 @@ function ap_post_permanent_delete_btn_html($post_id = false, $echo = false) {
 		$action = 'delete_post_'.$post_id;
 		$nonce = wp_create_nonce( $action );
 
-		$output = '<a href="#" class="delete-btn" data-action="ap_delete_post" data-query="post_id='.$post_id.'&__nonce='.$nonce.'&ap_ajax_action=permanent_delete_post" title="'.__( 'Delete permanently', 'ap' ).'">'.__( 'Delete permanently', 'ap' ).'</a>';
+		$output = '<a href="#" class="delete-btn" data-action="ap_delete_post" data-query="post_id='.$post_id.'&__nonce='.$nonce.'&ap_ajax_action=permanent_delete_post" title="'.__( 'Delete permanently', 'anspress-question-answer' ).'">'.__( 'Delete permanently', 'anspress-question-answer' ).'</a>';
 
 		if ( $echo ) {
 			echo $output;
@@ -694,11 +694,11 @@ function ap_post_change_status_btn_html($post_id = false) {
 		$action = 'change_post_status_'.$post_id;
 		$nonce = wp_create_nonce( $action );
 
-		$status = apply_filters( 'ap_change_status_dropdown', array( 'closed' => __( 'Close', 'ap' ), 'publish' => __( 'Open', 'ap' ), 'moderate' => __( 'Moderate', 'ap' ), 'private_post' => __( 'Private', 'ap' ) ) );
+		$status = apply_filters( 'ap_change_status_dropdown', array( 'closed' => __( 'Close', 'anspress-question-answer' ), 'publish' => __( 'Open', 'anspress-question-answer' ), 'moderate' => __( 'Moderate', 'anspress-question-answer' ), 'private_post' => __( 'Private', 'anspress-question-answer' ) ) );
 
 		$output = '<div class="ap-dropdown">
-			<a class="ap-tip ap-dropdown-toggle" title="'.__( 'Change status of post', 'ap' ).'" href="#" >
-				'.__( 'Status', 'ap' ).' <i class="caret"></i>
+			<a class="ap-tip ap-dropdown-toggle" title="'.__( 'Change status of post', 'anspress-question-answer' ).'" href="#" >
+				'.__( 'Status', 'anspress-question-answer' ).' <i class="caret"></i>
             </a>
 			<ul id="ap_post_status_toggle_'.$post_id.'" class="ap-dropdown-menu" role="menu">';
 
@@ -917,49 +917,49 @@ function ap_highlight_words($text, $words) {
 function ap_responce_message($id, $only_message = false) {
 
 	$msg = array(
-		'success' => array( 'type' => 'success', 'message' => __( 'Success', 'ap' ) ),
-		'please_login' => array( 'type' => 'warning', 'message' => __( 'You need to login before doing this action.', 'ap' ) ),
-		'something_wrong' => array( 'type' => 'error', 'message' => __( 'Something went wrong, last action failed.', 'ap' ) ),
-		'no_permission' => array( 'type' => 'warning', 'message' => __( 'You do not have permission to do this action.', 'ap' ) ),
-		'draft_comment_not_allowed' => array( 'type' => 'warning', 'message' => __( 'You are commenting on a draft post.', 'ap' ) ),
-		'comment_success' => array( 'type' => 'success', 'message' => __( 'Comment successfully posted.', 'ap' ) ),
-		'comment_edit_success' => array( 'type' => 'success', 'message' => __( 'Comment updated successfully.', 'ap' ) ),
-		'comment_delete_success' => array( 'type' => 'success', 'message' => __( 'Comment deleted successfully.', 'ap' ) ),
-		'subscribed' => array( 'type' => 'success', 'message' => __( 'You are following this question.', 'ap' ) ),
-		'unsubscribed' => array( 'type' => 'success', 'message' => __( 'Successfully unfollowed.', 'ap' ) ),
-		'question_submitted' => array( 'type' => 'success', 'message' => __( 'Question submitted successfully', 'ap' ) ),
-		'question_updated' => array( 'type' => 'success', 'message' => __( 'Question updated successfully', 'ap' ) ),
-		'answer_submitted' => array( 'type' => 'success', 'message' => __( 'Answer submitted successfully', 'ap' ) ),
-		'answer_updated' => array( 'type' => 'success', 'message' => __( 'Answer updated successfully', 'ap' ) ),
-		'voted' => array( 'type' => 'success', 'message' => __( 'Thank you for voting.', 'ap' ) ),
-		'undo_vote' => array( 'type' => 'success', 'message' => __( 'Your vote has been removed.', 'ap' ) ),
-		'undo_vote_your_vote' => array( 'type' => 'warning', 'message' => __( 'Undo your vote first.', 'ap' ) ),
-		'cannot_vote_own_post' => array( 'type' => 'warning', 'message' => __( 'You cannot vote on your own question or answer.', 'ap' ) ),
-		'unselected_the_answer' => array( 'type' => 'success', 'message' => __( 'Best answer is unselected for your question.', 'ap' ) ),
-		'selected_the_answer' => array( 'type' => 'success', 'message' => __( 'Best answer is selected for your question.', 'ap' ) ),
-		'question_moved_to_trash' => array( 'type' => 'success', 'message' => __( 'Question moved to trash.', 'ap' ) ),
-		'answer_moved_to_trash' => array( 'type' => 'success', 'message' => __( 'Answer moved to trash.', 'ap' ) ),
-		'no_permission_to_view_private' => array( 'type' => 'warning', 'message' => __( 'You dont have permission to view private posts.', 'ap' ) ),
-		'flagged' => array( 'type' => 'success', 'message' => __( 'Thank you for reporting this post.', 'ap' ) ),
-		'already_flagged' => array( 'type' => 'warning', 'message' => __( 'You have already reported this post.', 'ap' ) ),
-		'captcha_error' => array( 'type' => 'error', 'message' => __( 'Please check captcha field and resubmit it again.', 'ap' ) ),
-		'comment_content_empty' => array( 'type' => 'error', 'message' => __( 'Comment content is empty.', 'ap' ) ),
-		'status_updated' => array( 'type' => 'success', 'message' => __( 'Post status updated successfully', 'ap' ) ),
-		'post_image_uploaded' => array( 'type' => 'success', 'message' => __( 'Image uploaded successfully', 'ap' ) ),
-		'question_deleted_permanently' => array( 'type' => 'success', 'message' => __( 'Question has been deleted permanently', 'ap' ) ),
-		'answer_deleted_permanently' => array( 'type' => 'success', 'message' => __( 'Answer has been deleted permanently', 'ap' ) ),
-		'set_featured_question' => array( 'type' => 'success', 'message' => __( 'Question is marked as featured.', 'ap' ) ),
-		'unset_featured_question' => array( 'type' => 'success', 'message' => __( 'Question is unmarked as featured.', 'ap' ) ),
-		'upload_limit_crossed' => array( 'type' => 'warning', 'message' => __( 'You have already attached maximum numbers of allowed uploads.', 'ap' ) ),
-		'profile_updated_successfully' => array( 'type' => 'success', 'message' => __( 'Your profile has been updated successfully.', 'ap' ) ),
-		'unfollow' => array( 'type' => 'success', 'message' => __( 'Successfully unfollowed.', 'ap' ) ),
-		'follow' => array( 'type' => 'success', 'message' => __( 'Successfully followed.', 'ap' ) ),
-		'cannot_follow_yourself' => array( 'type' => 'warning', 'message' => __( 'You cannot follow yourself.', 'ap' ) ),
-		'delete_notification' => array( 'type' => 'success', 'message' => __( 'Notification deleted successfully.', 'ap' ) ),
-		'mark_read_notification' => array( 'type' => 'success', 'message' => __( 'Notification is marked as read.', 'ap' ) ),
-		'voting_down_disabled' => array( 'type' => 'warning', 'message' => __( 'Voting down is disabled.', 'ap' ) ),
-		'flagged_comment' => array( 'type' => 'success', 'message' => __( 'This comment has been reported to site moderator', 'ap' ) ),
-		'already_flagged_comment' => array( 'type' => 'warning', 'message' => __( 'You have already reported this comment', 'ap' ) ),
+		'success' => array( 'type' => 'success', 'message' => __( 'Success', 'anspress-question-answer' ) ),
+		'please_login' => array( 'type' => 'warning', 'message' => __( 'You need to login before doing this action.', 'anspress-question-answer' ) ),
+		'something_wrong' => array( 'type' => 'error', 'message' => __( 'Something went wrong, last action failed.', 'anspress-question-answer' ) ),
+		'no_permission' => array( 'type' => 'warning', 'message' => __( 'You do not have permission to do this action.', 'anspress-question-answer' ) ),
+		'draft_comment_not_allowed' => array( 'type' => 'warning', 'message' => __( 'You are commenting on a draft post.', 'anspress-question-answer' ) ),
+		'comment_success' => array( 'type' => 'success', 'message' => __( 'Comment successfully posted.', 'anspress-question-answer' ) ),
+		'comment_edit_success' => array( 'type' => 'success', 'message' => __( 'Comment updated successfully.', 'anspress-question-answer' ) ),
+		'comment_delete_success' => array( 'type' => 'success', 'message' => __( 'Comment deleted successfully.', 'anspress-question-answer' ) ),
+		'subscribed' => array( 'type' => 'success', 'message' => __( 'You are following this question.', 'anspress-question-answer' ) ),
+		'unsubscribed' => array( 'type' => 'success', 'message' => __( 'Successfully unfollowed.', 'anspress-question-answer' ) ),
+		'question_submitted' => array( 'type' => 'success', 'message' => __( 'Question submitted successfully', 'anspress-question-answer' ) ),
+		'question_updated' => array( 'type' => 'success', 'message' => __( 'Question updated successfully', 'anspress-question-answer' ) ),
+		'answer_submitted' => array( 'type' => 'success', 'message' => __( 'Answer submitted successfully', 'anspress-question-answer' ) ),
+		'answer_updated' => array( 'type' => 'success', 'message' => __( 'Answer updated successfully', 'anspress-question-answer' ) ),
+		'voted' => array( 'type' => 'success', 'message' => __( 'Thank you for voting.', 'anspress-question-answer' ) ),
+		'undo_vote' => array( 'type' => 'success', 'message' => __( 'Your vote has been removed.', 'anspress-question-answer' ) ),
+		'undo_vote_your_vote' => array( 'type' => 'warning', 'message' => __( 'Undo your vote first.', 'anspress-question-answer' ) ),
+		'cannot_vote_own_post' => array( 'type' => 'warning', 'message' => __( 'You cannot vote on your own question or answer.', 'anspress-question-answer' ) ),
+		'unselected_the_answer' => array( 'type' => 'success', 'message' => __( 'Best answer is unselected for your question.', 'anspress-question-answer' ) ),
+		'selected_the_answer' => array( 'type' => 'success', 'message' => __( 'Best answer is selected for your question.', 'anspress-question-answer' ) ),
+		'question_moved_to_trash' => array( 'type' => 'success', 'message' => __( 'Question moved to trash.', 'anspress-question-answer' ) ),
+		'answer_moved_to_trash' => array( 'type' => 'success', 'message' => __( 'Answer moved to trash.', 'anspress-question-answer' ) ),
+		'no_permission_to_view_private' => array( 'type' => 'warning', 'message' => __( 'You dont have permission to view private posts.', 'anspress-question-answer' ) ),
+		'flagged' => array( 'type' => 'success', 'message' => __( 'Thank you for reporting this post.', 'anspress-question-answer' ) ),
+		'already_flagged' => array( 'type' => 'warning', 'message' => __( 'You have already reported this post.', 'anspress-question-answer' ) ),
+		'captcha_error' => array( 'type' => 'error', 'message' => __( 'Please check captcha field and resubmit it again.', 'anspress-question-answer' ) ),
+		'comment_content_empty' => array( 'type' => 'error', 'message' => __( 'Comment content is empty.', 'anspress-question-answer' ) ),
+		'status_updated' => array( 'type' => 'success', 'message' => __( 'Post status updated successfully', 'anspress-question-answer' ) ),
+		'post_image_uploaded' => array( 'type' => 'success', 'message' => __( 'Image uploaded successfully', 'anspress-question-answer' ) ),
+		'question_deleted_permanently' => array( 'type' => 'success', 'message' => __( 'Question has been deleted permanently', 'anspress-question-answer' ) ),
+		'answer_deleted_permanently' => array( 'type' => 'success', 'message' => __( 'Answer has been deleted permanently', 'anspress-question-answer' ) ),
+		'set_featured_question' => array( 'type' => 'success', 'message' => __( 'Question is marked as featured.', 'anspress-question-answer' ) ),
+		'unset_featured_question' => array( 'type' => 'success', 'message' => __( 'Question is unmarked as featured.', 'anspress-question-answer' ) ),
+		'upload_limit_crossed' => array( 'type' => 'warning', 'message' => __( 'You have already attached maximum numbers of allowed uploads.', 'anspress-question-answer' ) ),
+		'profile_updated_successfully' => array( 'type' => 'success', 'message' => __( 'Your profile has been updated successfully.', 'anspress-question-answer' ) ),
+		'unfollow' => array( 'type' => 'success', 'message' => __( 'Successfully unfollowed.', 'anspress-question-answer' ) ),
+		'follow' => array( 'type' => 'success', 'message' => __( 'Successfully followed.', 'anspress-question-answer' ) ),
+		'cannot_follow_yourself' => array( 'type' => 'warning', 'message' => __( 'You cannot follow yourself.', 'anspress-question-answer' ) ),
+		'delete_notification' => array( 'type' => 'success', 'message' => __( 'Notification deleted successfully.', 'anspress-question-answer' ) ),
+		'mark_read_notification' => array( 'type' => 'success', 'message' => __( 'Notification is marked as read.', 'anspress-question-answer' ) ),
+		'voting_down_disabled' => array( 'type' => 'warning', 'message' => __( 'Voting down is disabled.', 'anspress-question-answer' ) ),
+		'flagged_comment' => array( 'type' => 'success', 'message' => __( 'This comment has been reported to site moderator', 'anspress-question-answer' ) ),
+		'already_flagged_comment' => array( 'type' => 'warning', 'message' => __( 'You have already reported this comment', 'anspress-question-answer' ) ),
 		);
 
 	/*
@@ -1344,13 +1344,13 @@ function ap_post_status_description($post_id = false) {
 
 	$post_id = ap_parameter_empty( $post_id, @ap_question_get_the_ID() );
 	$post = get_post( $post_id );
-	$post_type = $post->post_type == 'question' ? __( 'Question', 'ap' ) : __( 'Answer', 'ap' );
+	$post_type = $post->post_type == 'question' ? __( 'Question', 'anspress-question-answer' ) : __( 'Answer', 'anspress-question-answer' );
 
 	if ( ap_have_parent_post( $post_id ) && $post->post_type != 'answer' ) : ?>
         <div id="ap_post_status_desc_<?php echo $post_id;
 	?>" class="ap-notice blue clearfix">
             <?php echo ap_icon( 'link', true ) ?>
-            <span><?php printf( __( 'Question is asked for %s.', 'ap' ), '<a href="'.get_permalink( ap_question_get_the_post_parent() ).'">'.get_the_title( ap_question_get_the_post_parent() ).'</a>' );
+            <span><?php printf( __( 'Question is asked for %s.', 'anspress-question-answer' ), '<a href="'.get_permalink( ap_question_get_the_post_parent() ).'">'.get_the_title( ap_question_get_the_post_parent() ).'</a>' );
 	?></span>
         </div>
     <?php endif;
@@ -1358,7 +1358,7 @@ function ap_post_status_description($post_id = false) {
 	if ( is_private_post( $post_id ) ) : ?>
         <div id="ap_post_status_desc_<?php echo $post_id;
 	?>" class="ap-notice gray clearfix">
-            <i class="apicon-lock"></i><span><?php printf( __( '%s is marked as a private, only admin and post author can see.', 'ap' ), $post_type );
+            <i class="apicon-lock"></i><span><?php printf( __( '%s is marked as a private, only admin and post author can see.', 'anspress-question-answer' ), $post_type );
 	?></span>
         </div>
     <?php endif;
@@ -1366,7 +1366,7 @@ function ap_post_status_description($post_id = false) {
 	if ( is_post_waiting_moderation( $post_id ) ) : ?>
         <div id="ap_post_status_desc_<?php echo $post_id;
 	?>" class="ap-notice yellow clearfix">
-            <i class="apicon-info"></i><span><?php printf( __( '%s is waiting for approval by moderator.', 'ap' ), $post_type );
+            <i class="apicon-info"></i><span><?php printf( __( '%s is waiting for approval by moderator.', 'anspress-question-answer' ), $post_type );
 	?></span>
         </div>
     <?php endif;
@@ -1374,7 +1374,7 @@ function ap_post_status_description($post_id = false) {
 	if ( is_post_closed( $post_id ) && $post->post_type != 'answer' ) : ?>
         <div id="ap_post_status_desc_<?php echo $post_id;
 	?>" class="ap-notice red clearfix">
-            <?php echo ap_icon( 'cross', true ) ?><span><?php printf( __( '%s is closed, new answer are not accepted.', 'ap' ), $post_type );
+            <?php echo ap_icon( 'cross', true ) ?><span><?php printf( __( '%s is closed, new answer are not accepted.', 'anspress-question-answer' ), $post_type );
 	?></span>
         </div>
     <?php endif;
@@ -1382,7 +1382,7 @@ function ap_post_status_description($post_id = false) {
 	if ( $post->post_status == 'trash' ) : ?>
         <div id="ap_post_status_desc_<?php echo $post_id;
 	?>" class="ap-notice red clearfix">
-            <?php echo ap_icon( 'cross', true ) ?><span><?php printf( __( '%s has been trashed, you can delete it permanently from wp-admin.', 'ap' ), $post_type );
+            <?php echo ap_icon( 'cross', true ) ?><span><?php printf( __( '%s has been trashed, you can delete it permanently from wp-admin.', 'anspress-question-answer' ), $post_type );
 	?></span>
         </div>
     <?php endif;
@@ -1393,20 +1393,20 @@ function ap_post_upload_form($post_id = false) {
 	$html = '
     <div class="ap-post-upload-form">
         <div class="ap-btn ap-upload-o '.ap_icon( 'image' ).'">
-        	<span>'.__( 'Add image to editor', 'ap' ).'</span>';
+        	<span>'.__( 'Add image to editor', 'anspress-question-answer' ).'</span>';
 	if ( ap_user_can_upload_image() ) {
 		$html .= '
                 <a class="ap-upload-link" href="#" data-action="ap_post_upload_field">
-	            	'.__( 'upload', 'ap' ).'
+	            	'.__( 'upload', 'anspress-question-answer' ).'
 
-	            </a> '.__( 'or', 'ap' );
+	            </a> '.__( 'or', 'anspress-question-answer' );
 	}
 
 	$html .= '<span class="ap-upload-remote-link">
-            	'.__( 'add image from link', 'ap' ).'
+            	'.__( 'add image from link', 'anspress-question-answer' ).'
             </span>
             <div class="ap-upload-link-rc">
-        		<input type="text" name="post_remote_image" class="ap-form-control" placeholder="'.__( 'Enter images link', 'ap' ).'" data-action="post_remote_image">
+        		<input type="text" name="post_remote_image" class="ap-form-control" placeholder="'.__( 'Enter images link', 'anspress-question-answer' ).'" data-action="post_remote_image">
                 <a data-action="post_image_ok" class="apicon-check ap-btn" href="#"></a>
                 <a data-action="post_image_close" class="apicon-x ap-btn" href="#"></a>
             </div>
@@ -1500,7 +1500,7 @@ function ap_featured_post_btn($post_id = false) {
 	}
 
 	if ( is_super_admin() ) {
-		$output = '<a href="#" class="ap-btn-set-featured" id="set_featured_'.$post_id.'" data-action="set_featured" data-query="ap_ajax_action=set_featured&post_id='.$post_id.'&__nonce='.wp_create_nonce( 'set_featured_'.$post_id ).'" title="'.__( 'Make this question featured', 'ap' ).'">'.(ap_is_featured_question( $post_id ) ? __( 'Unset as featured', 'ap' ) : __( 'Set as featured', 'ap' )).'</a>';
+		$output = '<a href="#" class="ap-btn-set-featured" id="set_featured_'.$post_id.'" data-action="set_featured" data-query="ap_ajax_action=set_featured&post_id='.$post_id.'&__nonce='.wp_create_nonce( 'set_featured_'.$post_id ).'" title="'.__( 'Make this question featured', 'anspress-question-answer' ).'">'.(ap_is_featured_question( $post_id ) ? __( 'Unset as featured', 'anspress-question-answer' ) : __( 'Set as featured', 'anspress-question-answer' )).'</a>';
 	}
 
 	return $output;
@@ -1599,7 +1599,7 @@ function ap_create_base_page() {
 		$args['post_type'] = 'page';
 		$args['post_content'] = '[anspress]';
 		$args['post_status'] = 'publish';
-		$args['post_title'] = __('Questions', 'ap');
+		$args['post_title'] = __('Questions', 'anspress-question-answer');
 		$args['post_name'] = 'questions';
 		$args['comment_status'] = 'closed';
 
@@ -1669,7 +1669,7 @@ function ap_question_title_with_solved_prefix($question_id = false) {
 	$solved = ap_question_best_answer_selected( $question_id );
 
 	if ( ap_opt( 'show_solved_prefix' ) ) {
-		return ($solved ? __( '[Solved] ', 'ap' ) : '').get_the_title( $question_id );
+		return ($solved ? __( '[Solved] ', 'anspress-question-answer' ) : '').get_the_title( $question_id );
 	}
 
 	return get_the_title( $question_id );

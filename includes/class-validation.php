@@ -53,7 +53,7 @@ class AnsPress_Validation
 	public function required($field) {
 
 		if ( ! isset( $this->fields[$field] ) ||  $this->fields[$field] == '' ) {
-			$this->errors[$field] = __( 'This field is required', 'ap' );
+			$this->errors[$field] = __( 'This field is required', 'anspress-question-answer' );
 		}
 	}
 
@@ -79,7 +79,7 @@ class AnsPress_Validation
 	private function length_check($field, $param) {
 
 		if ( $param != 0 && ( ! isset( $this->fields[$field] ) || mb_strlen( strip_tags( $this->fields[$field] ) ) <= $param ) ) {
-			$this->errors[$field] = sprintf( __( 'Its too short, it must be minimum %d characters', 'ap' ), $param ); }
+			$this->errors[$field] = sprintf( __( 'Its too short, it must be minimum %d characters', 'anspress-question-answer' ), $param ); }
 	}
 
 	/**
@@ -98,10 +98,10 @@ class AnsPress_Validation
 			}
 
 			if ( count( $tags ) < $param ) {
-				$this->errors[$field] = sprintf( __( 'It must be minimum %d characters', 'ap' ), $param );
+				$this->errors[$field] = sprintf( __( 'It must be minimum %d characters', 'anspress-question-answer' ), $param );
 			}
 		} elseif ( $param > 0 ) {
-			$this->errors[$field] = sprintf( __( 'It must be minimum %d characters', 'ap' ), $param );
+			$this->errors[$field] = sprintf( __( 'It must be minimum %d characters', 'anspress-question-answer' ), $param );
 		}
 	}
 
@@ -110,7 +110,7 @@ class AnsPress_Validation
 		$email = is_email( $this->fields[$field] );
 
 		if ( ! $email ) {
-			$this->errors[$field] = __( 'Not a valid email address', 'ap' );
+			$this->errors[$field] = __( 'Not a valid email address', 'anspress-question-answer' );
 		} else {
 			$this->fields[$field] = $email;
 		}

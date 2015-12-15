@@ -19,27 +19,27 @@ class AnsPress_Post_Status
 	public function register_post_status()
 	{
 		register_post_status( 'closed', array(
-			  'label'                     => __( 'Closed', 'ap' ),
+			  'label'                     => __( 'Closed', 'anspress-question-answer' ),
 			  'public'                    => true,
 			  'show_in_admin_all_list'    => false,
 			  'show_in_admin_status_list' => true,
-			  'label_count'               => _n_noop( 'Closed <span class="count">(%s)</span>', 'Moderate <span class="count">(%s)</span>' )
+			  'label_count'               => _n_noop( 'Closed <span class="count">(%s)</span>', 'Moderate <span class="count">(%s)</span>', 'anspress-question-answer' )
 		 ) );
 		 
 		 register_post_status( 'moderate', array(
-			  'label'                     => __( 'Moderate', 'ap' ),
+			  'label'                     => __( 'Moderate', 'anspress-question-answer' ),
 			  'public'                    => true,
 			  'show_in_admin_all_list'    => false,
 			  'show_in_admin_status_list' => true,
-			  'label_count'               => _n_noop( 'Moderate <span class="count">(%s)</span>', 'Moderate <span class="count">(%s)</span>' )
+			  'label_count'               => _n_noop( 'Moderate <span class="count">(%s)</span>', 'Moderate <span class="count">(%s)</span>', 'anspress-question-answer' )
 		 ) );
 		 
 		 register_post_status( 'private_post', array(
-			  'label'                     => __( 'Private Post', 'ap' ),
+			  'label'                     => __( 'Private Post', 'anspress-question-answer' ),
 			  'public'                    => true,
 			  'show_in_admin_all_list'    => false,
 			  'show_in_admin_status_list' => true,
-			  'label_count'               => _n_noop( 'Private Post <span class="count">(%s)</span>', 'Private Post <span class="count">(%s)</span>' )
+			  'label_count'               => _n_noop( 'Private Post <span class="count">(%s)</span>', 'Private Post <span class="count">(%s)</span>', 'anspress-question-answer' )
 		 ) );
 	}
 }

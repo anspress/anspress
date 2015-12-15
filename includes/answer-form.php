@@ -37,7 +37,7 @@ function ap_answer_form($question_id, $editing = false) {
 	$args = array(
 		'name'              => 'answer_form',
 		'is_ajaxified'      => true,
-		'submit_button'     => ($editing ? __( 'Update answer', 'ap' ) : __( 'Post answer', 'ap' )),
+		'submit_button'     => ($editing ? __( 'Update answer', 'anspress-question-answer' ) : __( 'Post answer', 'anspress-question-answer' )),
 		'nonce_name'        => 'nonce_answer_'.$question_id,
 		'fields'            => array(
 			array(
@@ -50,7 +50,7 @@ function ap_answer_form($question_id, $editing = false) {
 					'quicktags' => ap_opt( 'answer_text_editor' ) ? true : false,
 					'media_buttons' => false,
 				)),
-				'placeholder'  => __( 'Your answer..', 'ap' ),
+				'placeholder'  => __( 'Your answer..', 'anspress-question-answer' ),
 			),
 			array(
 				'name' => 'form_question_id',
@@ -64,9 +64,9 @@ function ap_answer_form($question_id, $editing = false) {
 	if ( ! is_user_logged_in() && ap_opt( 'allow_anonymous' ) ) {
 		$args['fields'][] = array(
 			'name' 		=> 'name',
-			'label' 	=> __( 'Name', 'ap' ),
+			'label' 	=> __( 'Name', 'anspress-question-answer' ),
 			'type'  	=> 'text',
-			'placeholder'  => __( 'Enter your name to display', 'ap' ),
+			'placeholder'  => __( 'Enter your name to display', 'anspress-question-answer' ),
 			'value' 	=> sanitize_text_field( @$_POST['name'] ),
 			'order' 	=> 12,
 		);
@@ -77,7 +77,7 @@ function ap_answer_form($question_id, $editing = false) {
 		$args['fields'][] = array(
 			'name'       => 'is_private',
 			'type'       => 'checkbox',
-			'desc'       => __( 'Only visible to admin and moderator.', 'ap' ),
+			'desc'       => __( 'Only visible to admin and moderator.', 'anspress-question-answer' ),
 			'value'      => $is_private,
 			'order'      => 12,
 			'show_desc_tip' => false,
@@ -87,7 +87,7 @@ function ap_answer_form($question_id, $editing = false) {
 	if ( ap_show_captcha_to_user() ) {
 		// Show recpatcha if key exists and enabled.
 		if ( ap_opt( 'recaptcha_site_key' ) == '' ) {
-			$reCaptcha_html = '<div class="ap-notice red">'.__( 'reCaptach keys missing, please add keys', 'ap' ).'</div>';
+			$reCaptcha_html = '<div class="ap-notice red">'.__( 'reCaptach keys missing, please add keys', 'anspress-question-answer' ).'</div>';
 		} else {
 
 			$reCaptcha_html = '<div class="g-recaptcha" id="recaptcha" data-sitekey="'.ap_opt( 'recaptcha_site_key' ).'"></div>';

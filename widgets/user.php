@@ -7,8 +7,8 @@ class AP_User_Widget extends WP_Widget {
 	public function __construct() {
 		parent::__construct(
 			'ap_user_widget',
-			__( '(AnsPress) User menu and profile', 'ap' ),
-			array( 'description' => __( 'Display current logged in users detail and menu.', 'ap' ) )
+			__( '(AnsPress) User menu and profile', 'anspress-question-answer' ),
+			array( 'description' => __( 'Display current logged in users detail and menu.', 'anspress-question-answer' ) )
 		);
 	}
 
@@ -33,7 +33,7 @@ class AP_User_Widget extends WP_Widget {
 				endwhile;
 			}
 		} else {
-			_e( 'Login to see your profile links', 'ap' );
+			_e( 'Login to see your profile links', 'anspress-question-answer' );
 		}
 
 		echo '</div>';
@@ -45,11 +45,11 @@ class AP_User_Widget extends WP_Widget {
 		if ( isset( $instance[ 'title' ] ) ) {
 			$title = $instance[ 'title' ];
 		} else {
-			$title = __( 'My profile', 'ap' );
+			$title = __( 'My profile', 'anspress-question-answer' );
 		}
 		?>
         <p>
-			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:' ); ?></label>
+			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:', 'anspress-question-answer' ); ?></label>
 			<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>">
         </p>
 		<?php

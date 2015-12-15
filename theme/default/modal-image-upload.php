@@ -14,11 +14,11 @@
 	<div class="ap-mediam-types">
 		<div class="ap-mediam-pc ap-mediam-type clerafix">
 			<?php echo ap_icon('cloud-upload', true); ?>
-			<?php _e('Upload from computer', 'ap'); ?>
+			<?php _e('Upload from computer', 'anspress-question-answer'); ?>
 		</div>
 		<div class="ap-mediam-pc ap-mediam-type clerafix">
 			<?php echo ap_icon('globe', true); ?>
-			<?php _e('Image from link', 'ap'); ?>
+			<?php _e('Image from link', 'anspress-question-answer'); ?>
 		</div>
 	</div>
 </div>

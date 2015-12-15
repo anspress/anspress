@@ -23,11 +23,11 @@ $cover = ap_get_cover_src(ap_user_get_the_ID());
 	    <div class="no-overflow">
 	    	<?php do_action('ap_hover_card_before_status', ap_user_get_the_ID()); ?>
 	        <a href="<?php ap_user_the_link() ; ?>" class="ap-card-name"><?php ap_user_the_display_name(); ?></a>
-	        <div class="ap-card-reputation"><span><?php ap_user_the_reputation(); ?></span><?php _e('Reputation', 'ap'); ?></div>
+	        <div class="ap-card-reputation"><span><?php ap_user_the_reputation(); ?></span><?php _e('Reputation', 'anspress-question-answer'); ?></div>
 	        <div class="ap-card-stats">
-	            <span><?php echo ap_icon('answer', true); ?><?php printf(__('%d answers, %d selected', 'ap'), ap_user_get_the_meta('__total_answers'), ap_user_get_the_meta('__best_answers')); ?></span>
-	            <span><?php echo ap_icon('question', true); ?><?php printf(__('%d questions, %d solved', 'ap'), ap_user_get_the_meta('__total_questions'), ap_user_get_the_meta('__solved_answers')); ?></span>
-	            <span><i class="apicon-comment-discussion"></i> <?php printf(__('%d Followers, %d following', 'ap'), ap_user_get_the_meta('__total_followers'), ap_user_get_the_meta('__total_following')); ?></span>
+	            <span><?php echo ap_icon('answer', true); ?><?php printf(__('%d answers, %d selected', 'anspress-question-answer'), ap_user_get_the_meta('__total_answers'), ap_user_get_the_meta('__best_answers')); ?></span>
+	            <span><?php echo ap_icon('question', true); ?><?php printf(__('%d questions, %d solved', 'anspress-question-answer'), ap_user_get_the_meta('__total_questions'), ap_user_get_the_meta('__solved_answers')); ?></span>
+	            <span><i class="apicon-comment-discussion"></i> <?php printf(__('%d Followers, %d following', 'anspress-question-answer'), ap_user_get_the_meta('__total_followers'), ap_user_get_the_meta('__total_following')); ?></span>
 	        </div>
 	        <?php do_action('ap_hover_card_after_status', ap_user_get_the_ID()); ?>
 	    </div>

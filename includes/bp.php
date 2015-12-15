@@ -47,7 +47,7 @@ class AnsPress_BP
 
 		if ( ! ap_opt( 'disable_reputation' ) ) {
 			bp_core_new_nav_item( array(
-			    'name'                  => __( 'Reputation', 'ap' ),
+			    'name'                  => __( 'Reputation', 'anspress-question-answer' ),
 			    'slug'                  => 'reputation',
 			    'screen_function'       => array( $this, 'reputation_screen_link' ),
 			    'position'              => 30,// weight on menu, change it to whatever you want
@@ -55,7 +55,7 @@ class AnsPress_BP
 
 			) ); }
 		bp_core_new_nav_item( array(
-		    'name'                  => sprintf( __( 'Questions %s', 'ap' ), '<span class="count">'.count_user_posts( bp_displayed_user_id() , 'question' ).'</span>' ),
+		    'name'                  => sprintf( __( 'Questions %s', 'anspress-question-answer' ), '<span class="count">'.count_user_posts( bp_displayed_user_id() , 'question' ).'</span>' ),
 		    'slug'                  => 'questions',
 		    'screen_function'       => array( $this, 'questions_screen_link' ),
 		    'position'              => 40,// weight on menu, change it to whatever you want
@@ -63,7 +63,7 @@ class AnsPress_BP
 
 		) );
 		bp_core_new_nav_item( array(
-		    'name'                  => sprintf( __( 'Answers %s', 'ap' ), '<span class="count">'.count_user_posts( bp_displayed_user_id() , 'answer' ).'</span>' ),
+		    'name'                  => sprintf( __( 'Answers %s', 'anspress-question-answer' ), '<span class="count">'.count_user_posts( bp_displayed_user_id() , 'answer' ).'</span>' ),
 		    'slug'                  => 'answers',
 		    'screen_function'       => array( $this, 'answers_screen_link' ),
 		    'position'              => 40,// weight on menu, change it to whatever you want
@@ -79,7 +79,7 @@ class AnsPress_BP
 	}
 
 	public function reputation_screen_title() {
-	    _e( 'Reputation', 'ap' );
+	    _e( 'Reputation', 'anspress-question-answer' );
 	}
 
 	public function reputation_screen_content() {
@@ -99,7 +99,7 @@ class AnsPress_BP
 	}
 
 	public function questions_screen_title() {
-	    _e( 'Questions', 'ap' );
+	    _e( 'Questions', 'anspress-question-answer' );
 	}
 
 	public function questions_screen_content() {
@@ -119,7 +119,7 @@ class AnsPress_BP
 	}
 
 	public function answers_screen_title() {
-	    _e( 'Answers', 'ap' );
+	    _e( 'Answers', 'anspress-question-answer' );
 	}
 
 	public function answers_screen_content() {
@@ -142,27 +142,27 @@ class AnsPress_BP
 	        'component_id'             => 'activity',
 	        'action_id'                => 'new_question',
 	        'contexts'                 => array( 'activity', 'member' ),
-	        'bp_activity_admin_filter' => __( 'Question', 'ap' ),
-			'bp_activity_front_filter' => __( 'Question', 'ap' ),
-			'bp_activity_new_post'     => __( '%1$s asked a new <a href="AP_CPT_LINK">question</a>', 'ap' ),
-			'bp_activity_new_post_ms'  => __( '%1$s asked a new <a href="AP_CPT_LINK">question</a>, on the site %3$s', 'ap' ),
+	        'bp_activity_admin_filter' => __( 'Question', 'anspress-question-answer' ),
+			'bp_activity_front_filter' => __( 'Question', 'anspress-question-answer' ),
+			'bp_activity_new_post'     => __( '%1$s asked a new <a href="AP_CPT_LINK">question</a>', 'anspress-question-answer' ),
+			'bp_activity_new_post_ms'  => __( '%1$s asked a new <a href="AP_CPT_LINK">question</a>, on the site %3$s', 'anspress-question-answer' ),
 	    ) );
 
 	    bp_activity_set_post_type_tracking_args( 'answer', array(
 	        'component_id'             => 'activity',
 	        'action_id'                => 'new_answer',
 	        'contexts'                 => array( 'activity', 'member' ),
-	        'bp_activity_admin_filter' => __( 'Answer', 'ap' ),
-			'bp_activity_front_filter' => __( 'Answer', 'ap' ),
-			'bp_activity_new_post'     => __( '%1$s <a href="AP_CPT_LINK">answered</a> a question', 'ap' ),
-			'bp_activity_new_post_ms'  => __( '%1$s <a href="AP_CPT_LINK">answered</a> a question, on the site %3$s', 'ap' ),
+	        'bp_activity_admin_filter' => __( 'Answer', 'anspress-question-answer' ),
+			'bp_activity_front_filter' => __( 'Answer', 'anspress-question-answer' ),
+			'bp_activity_new_post'     => __( '%1$s <a href="AP_CPT_LINK">answered</a> a question', 'anspress-question-answer' ),
+			'bp_activity_new_post_ms'  => __( '%1$s <a href="AP_CPT_LINK">answered</a> a question, on the site %3$s', 'anspress-question-answer' ),
 	    ) );
 	}
 
 	public function activity_buttons() {
 
 		if ( 'new_question' == bp_get_activity_type() ) {
-			echo '<a class="button answer bp-secondary-action" title="'.__( 'Answer this question', 'ap' ).'" href="'.ap_answers_link( bp_get_activity_secondary_item_id() ).'">'.__( 'Answer', 'ap' ).'</a>'; }
+			echo '<a class="button answer bp-secondary-action" title="'.__( 'Answer this question', 'anspress-question-answer' ).'" href="'.ap_answers_link( bp_get_activity_secondary_item_id() ).'">'.__( 'Answer', 'anspress-question-answer' ).'</a>'; }
 	}
 
 	public function activity_action($action, $activity) {
@@ -177,7 +177,7 @@ class AnsPress_BP
 		if ( ap_opt( 'disable_reputation' ) ) {
 			return; }
 
-		echo '<span class="ap-user-meta ap-user-meta-reputation">'. sprintf( __( '%s Reputation', 'ap' ), ap_get_reputation( bp_displayed_user_id(), true ) ) .'</span>';
+		echo '<span class="ap-user-meta ap-user-meta-reputation">'. sprintf( __( '%s Reputation', 'anspress-question-answer' ), ap_get_reputation( bp_displayed_user_id(), true ) ) .'</span>';
 	}
 
 	/**
@@ -224,11 +224,11 @@ class AnsPress_BP
 				$title = substr( strip_tags( $answer->post_title ), 0, 35 ). (strlen( $answer->post_title ) > 35 ? '...' : '') ;
 
 				if ( (int) $total_items > 1 ) {
-					$text = sprintf( __( '%1$d answers on - %2$s', 'ap' ), (int) $total_items, $title );
+					$text = sprintf( __( '%1$d answers on - %2$s', 'anspress-question-answer' ), (int) $total_items, $title );
 					$amount = 'multiple';
 				} else {
 					$user_fullname = bp_core_get_user_displayname( $secondary_item_id );
-					$text = sprintf( __( '%1$s answered on - %2$s', 'ap' ), $user_fullname, $title );
+					$text = sprintf( __( '%1$s answered on - %2$s', 'anspress-question-answer' ), $user_fullname, $title );
 				}
 			}
 		} elseif ( strrpos( $action, 'new_comment' ) !== false ) {
@@ -236,17 +236,17 @@ class AnsPress_BP
 			$post  = get_post( $comment->comment_post_ID );
 			$notification_link  = get_permalink( $comment->comment_post_ID );
 
-			$type = $post->post_type == 'question' ? __( 'question', 'ap' ) : __( 'answer', 'ap' );
+			$type = $post->post_type == 'question' ? __( 'question', 'anspress-question-answer' ) : __( 'answer', 'anspress-question-answer' );
 			$amount = 'single';
 
 			$title = substr( strip_tags( $post->post_title ), 0, 35 ). (strlen( $post->post_title ) > 35 ? '...' : '') ;
 
 			if ( (int) $total_items > 1 ) {
-				$text = sprintf( __( '%1$d comments on your %3$s - %2$s', 'ap' ), (int) $total_items, $title, $type );
+				$text = sprintf( __( '%1$d comments on your %3$s - %2$s', 'anspress-question-answer' ), (int) $total_items, $title, $type );
 				$amount = 'multiple';
 			} else {
 				$user_fullname = bp_core_get_user_displayname( $secondary_item_id );
-				$text = sprintf( __( '%1$s commented on your %3$s - %2$s', 'ap' ), $user_fullname, $title, $type );
+				$text = sprintf( __( '%1$s commented on your %3$s - %2$s', 'anspress-question-answer' ), $user_fullname, $title, $type );
 			}
 		}
 

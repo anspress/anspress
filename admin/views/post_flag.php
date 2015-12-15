@@ -32,15 +32,15 @@ $flags = ap_get_all_meta(
 ?>
 <div id="ap-admin-dashboard" class="wrap">
 	<?php do_action( 'ap_before_admin_page_title' ) ?>
-	<h2><?php _e( 'Post flag', 'ap' ) ?></h2>
+	<h2><?php _e( 'Post flag', 'anspress-question-answer' ) ?></h2>
 
     <div class="ap-admin-container">
         <div class="ap-flag-post-content">
 			<h1><?php the_title() ?></h1>
             <div class="ap-admin-sub">
-				<span><?php printf( __( 'Total <b>%d flag</b>', 'ap' ), ap_post_flag_count() ) ?></span>
-				<span> | <a href="<?php echo get_edit_post_link( get_the_ID() ) ?>"><?php _e( 'Edit post', 'ap' ) ?></a></span>
-				<span> | <a href="<?php echo get_delete_post_link( get_the_ID() ) ?>"><?php _e( 'Trash post', 'ap' ) ?></a></span>
+				<span><?php printf( __( 'Total <b>%d flag</b>', 'anspress-question-answer' ), ap_post_flag_count() ) ?></span>
+				<span> | <a href="<?php echo get_edit_post_link( get_the_ID() ) ?>"><?php _e( 'Edit post', 'anspress-question-answer' ) ?></a></span>
+				<span> | <a href="<?php echo get_delete_post_link( get_the_ID() ) ?>"><?php _e( 'Trash post', 'anspress-question-answer' ) ?></a></span>
             </div>
             <div class="post-content">
 				<?php the_content() ?>
@@ -52,13 +52,13 @@ $flags = ap_get_all_meta(
 			foreach ( $flags as $flag ) {
 				echo '<tr class="flag-item">';
 				echo '<td class="ap-user-avatar">'. get_avatar( $flag->apmeta_userid, 30 ) .'</td>';
-				echo '<td class="ap-when-flagged">'. sprintf( __( '%s flagged this post %s', 'ap' ), '<a href="'.get_edit_user_link( $flag->apmeta_userid ).'">'.ap_user_display_name( $flag->apmeta_userid ).'</a>', ap_human_time( $flag->unix_date ) ) .'</td>';
-				echo '<td class="ap-remove-flag"><a href="__nonce='. wp_create_nonce( 'flag_delete'.$flag->apmeta_id ). '&action=ap_delete_flag&id=' .$flag->apmeta_id.'" data-action="ap-delete-flag">'.__( 'Remove', 'ap' ).'</a></td>';
+				echo '<td class="ap-when-flagged">'. sprintf( __( '%s flagged this post %s', 'anspress-question-answer' ), '<a href="'.get_edit_user_link( $flag->apmeta_userid ).'">'.ap_user_display_name( $flag->apmeta_userid ).'</a>', ap_human_time( $flag->unix_date ) ) .'</td>';
+				echo '<td class="ap-remove-flag"><a href="__nonce='. wp_create_nonce( 'flag_delete'.$flag->apmeta_id ). '&action=ap_delete_flag&id=' .$flag->apmeta_id.'" data-action="ap-delete-flag">'.__( 'Remove', 'anspress-question-answer' ).'</a></td>';
 				echo '</tr>';
 			}
 			echo '</tbody></table>';
 		} else {
-			_e( 'No one flagged this post yet', 'ap' );
+			_e( 'No one flagged this post yet', 'anspress-question-answer' );
 		}
 		?>      
     </div>

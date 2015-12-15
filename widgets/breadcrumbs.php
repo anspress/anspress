@@ -25,8 +25,8 @@ class AnsPress_Breadcrumbs_Widget extends WP_Widget {
 	public function __construct() {
 		parent::__construct(
 			'ap_breadcrumbs_widget',
-			__( '(AnsPress) Breadcrumbs', 'ap' ),
-			array( 'description' => __( 'Show current anspress page navigation', 'ap' ) )
+			__( '(AnsPress) Breadcrumbs', 'anspress-question-answer' ),
+			array( 'description' => __( 'Show current anspress page navigation', 'anspress-question-answer' ) )
 		);
 	}
 

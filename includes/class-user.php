@@ -40,17 +40,17 @@ class AnsPress_User
 	 */
 	public function init_actions() {
 		// Register AnsPress pages.
-		ap_register_page( ap_opt( 'users_page_slug' ), __( 'Users', 'ap' ), array( $this, 'users_page' ) );
+		ap_register_page( ap_opt( 'users_page_slug' ), __( 'Users', 'anspress-question-answer' ), array( $this, 'users_page' ) );
 
-		ap_register_page( ap_opt( 'user_page_slug' ), __( 'User', 'ap' ), array( $this, 'user_page' ), false );
-		ap_register_user_page( 'about', __( 'About', 'ap' ), array( $this, 'about_page' ) );
-		ap_register_user_page( 'activity-feed', __( 'Activity Feed', 'ap' ), array( $this, 'feed_page' ), true );
-		ap_register_user_page( 'notification', __( 'Notification', 'ap' ), array( $this, 'notification_page' ), true, false );
-		ap_register_user_page( 'profile', __( 'Profile', 'ap' ), array( $this, 'profile_page' ), true, false );
-		ap_register_user_page( 'questions', __( 'Questions', 'ap' ), array( $this, 'questions_page' ) );
-		ap_register_user_page( 'answers', __( 'Answers', 'ap' ), array( $this, 'answers_page' ) );
-		ap_register_user_page( 'followers', __( 'Followers', 'ap' ), array( $this, 'followers_page' ) );
-		ap_register_user_page( 'following', __( 'Following', 'ap' ), array( $this, 'following_page' ) );
+		ap_register_page( ap_opt( 'user_page_slug' ), __( 'User', 'anspress-question-answer' ), array( $this, 'user_page' ), false );
+		ap_register_user_page( 'about', __( 'About', 'anspress-question-answer' ), array( $this, 'about_page' ) );
+		ap_register_user_page( 'activity-feed', __( 'Activity Feed', 'anspress-question-answer' ), array( $this, 'feed_page' ), true );
+		ap_register_user_page( 'notification', __( 'Notification', 'anspress-question-answer' ), array( $this, 'notification_page' ), true, false );
+		ap_register_user_page( 'profile', __( 'Profile', 'anspress-question-answer' ), array( $this, 'profile_page' ), true, false );
+		ap_register_user_page( 'questions', __( 'Questions', 'anspress-question-answer' ), array( $this, 'questions_page' ) );
+		ap_register_user_page( 'answers', __( 'Answers', 'anspress-question-answer' ), array( $this, 'answers_page' ) );
+		ap_register_user_page( 'followers', __( 'Followers', 'anspress-question-answer' ), array( $this, 'followers_page' ) );
+		ap_register_user_page( 'following', __( 'Following', 'anspress-question-answer' ), array( $this, 'following_page' ) );
 		add_filter( 'ap_page_title', array( $this, 'ap_page_title' ) );
 	}
 
@@ -65,7 +65,7 @@ class AnsPress_User
 			include ap_get_theme_location( 'users/users.php' );
 
 		} else {
-			_e( 'User directory is disabled.', 'ap' );
+			_e( 'User directory is disabled.', 'anspress-question-answer' );
 		}
 	}
 
@@ -90,7 +90,7 @@ class AnsPress_User
 		if ( $ap_user_query->has_users() ) {
 			include ap_get_theme_location( 'user/user.php' );
 		} else {
-			_e( 'No user found', 'ap' );
+			_e( 'No user found', 'anspress-question-answer' );
 		}
 	}
 
@@ -186,7 +186,7 @@ class AnsPress_User
 		if ( $followers->has_users() ) {
 			include ap_get_theme_location( 'user/followers.php' );
 		} else {
-			esc_attr_e( 'No followers found', 'ap' );
+			esc_attr_e( 'No followers found', 'anspress-question-answer' );
 		}
 
 	}
@@ -200,7 +200,7 @@ class AnsPress_User
 		if ( $following->has_users() ) {
 			include ap_get_theme_location( 'user/following.php' );
 		} else {
-			esc_attr_e( 'You are not following anyone.', 'ap' );
+			esc_attr_e( 'You are not following anyone.', 'anspress-question-answer' );
 		}
 	}
 
@@ -220,33 +220,33 @@ class AnsPress_User
 			$user_pages = anspress()->user_pages;
 
 			if ( 'activity' == $active ) {
-				$title = $my ?  __( 'My activity', 'ap' ) : sprintf( __( '%s\'s activity', 'ap' ), $name );
+				$title = $my ?  __( 'My activity', 'anspress-question-answer' ) : sprintf( __( '%s\'s activity', 'anspress-question-answer' ), $name );
 			} elseif ('profile' == $active)
-				$title = $my ?  __( 'My profile', 'ap' ) : sprintf( __( '%s\'s profile', 'ap' ), $name );
+				$title = $my ?  __( 'My profile', 'anspress-question-answer' ) : sprintf( __( '%s\'s profile', 'anspress-question-answer' ), $name );
 
 			elseif ('questions' == $active)
-				$title = $my ?  __( 'My questions', 'ap' ) : sprintf( __( '%s\'s questions', 'ap' ), $name );
+				$title = $my ?  __( 'My questions', 'anspress-question-answer' ) : sprintf( __( '%s\'s questions', 'anspress-question-answer' ), $name );
 
 			elseif ('answers' == $active)
-				$title = $my ?  __( 'My answers', 'ap' ) : sprintf( __( '%s\'s answers', 'ap' ), $name );
+				$title = $my ?  __( 'My answers', 'anspress-question-answer' ) : sprintf( __( '%s\'s answers', 'anspress-question-answer' ), $name );
 
 			elseif ('reputation' == $active)
-				$title = $my ?  __( 'My reputation', 'ap' ) : sprintf( __( '%s\'s reputation', 'ap' ), $name );
+				$title = $my ?  __( 'My reputation', 'anspress-question-answer' ) : sprintf( __( '%s\'s reputation', 'anspress-question-answer' ), $name );
 
 			elseif ('about' == $active)
-				$title = $my ?  __( 'About me', 'ap' ) : sprintf( __( '%s', 'ap' ), $name );
+				$title = $my ?  __( 'About me', 'anspress-question-answer' ) : sprintf( __( '%s', 'anspress-question-answer' ), $name );
 
 			elseif ('followers' == $active)
-				$title = $my ?  __( 'My followers', 'ap' ) : sprintf( __( '%s\'s followers', 'ap' ), $name );
+				$title = $my ?  __( 'My followers', 'anspress-question-answer' ) : sprintf( __( '%s\'s followers', 'anspress-question-answer' ), $name );
 
 			elseif ('following' == $active)
-				$title = __( 'Following', 'ap' );
+				$title = __( 'Following', 'anspress-question-answer' );
 
 			elseif ('subscription' == $active)
-				$title = __( 'My subscriptions', 'ap' );
+				$title = __( 'My subscriptions', 'anspress-question-answer' );
 
 			elseif ('notification' == $active)
-				$title = __( 'My notification', 'ap' );
+				$title = __( 'My notification', 'anspress-question-answer' );
 			else
 				$title = $user_pages[$active]['title'];
 		}
@@ -343,7 +343,7 @@ class AnsPress_User
 	public function upload_photo($file_name) {
 
 		if ( $_FILES[ $file_name ]['size'] > ap_opt( 'max_upload_size' ) ) {
-			$this->upload_error  = sprintf( __( 'File cannot be uploaded, size is bigger then %d Byte', 'ap' ), ap_opt( 'max_upload_size' ) );
+			$this->upload_error  = sprintf( __( 'File cannot be uploaded, size is bigger then %d Byte', 'anspress-question-answer' ), ap_opt( 'max_upload_size' ) );
 			return false;
 		}
 
@@ -366,7 +366,7 @@ class AnsPress_User
 
 			if ( empty( $photo[ 'file' ] ) || isset( $photo['error'] ) ) {
 				// Handle failures.
-				$this->upload_error = __( 'There was an error while uploading avatar, please check your image', 'ap' );
+				$this->upload_error = __( 'There was an error while uploading avatar, please check your image', 'anspress-question-answer' );
 				return false;
 			}
 
@@ -428,14 +428,14 @@ class AnsPress_User
 			ap_ajax_json( array(
 				'action' 	=> 'cover_uploaded',
 				'status' 	=> true,
-				'message' 	=> __( 'Cover photo uploaded successfully.', 'ap' ),
+				'message' 	=> __( 'Cover photo uploaded successfully.', 'anspress-question-answer' ),
 				'user_id' 	=> $userid,
 				'image' 	=> ap_get_cover_src( $userid ),
 			) );
 		}
 
 		ap_ajax_json( array(
-			'message' => __( 'There was an error while uploading cover photo, please check your image and try again.', 'ap' ),
+			'message' => __( 'There was an error while uploading cover photo, please check your image and try again.', 'anspress-question-answer' ),
 			'message_type' => 'error',
 		) );
 	}
@@ -494,7 +494,7 @@ class AnsPress_User
 
 			ap_ajax_json( array(
 				'status' 	=> true,
-				'message' 	=> __( 'Avatar uploaded successfully.', 'ap' ),
+				'message' 	=> __( 'Avatar uploaded successfully.', 'anspress-question-answer' ),
 				'do' 		=> array('replaceWith'),
 				'html' 		=> get_avatar( $userid, 150 ),
 				'container' => '[data-view="user_avatar_'.$userid.'"]',
@@ -502,7 +502,7 @@ class AnsPress_User
 		}
 
 		ap_ajax_json( array(
-			'message' 		=> __( 'There was an error while uploading avatar, please check your image', 'ap' ),
+			'message' 		=> __( 'There was an error while uploading avatar, please check your image', 'anspress-question-answer' ),
 			'message_type' 	=> 'error',
 		) );
 

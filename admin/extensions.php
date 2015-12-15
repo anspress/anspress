@@ -66,23 +66,23 @@ class AnsPress_Extensions
                     <div class="action-links">
                         <ul class="plugin-action-buttons">
                             <li>
-                                <a target="_blank" href="<?php echo $ext->plugin_link ?>" class="install-now button"><?php _e('Download', 'ap') ?></a>
+                                <a target="_blank" href="<?php echo $ext->plugin_link ?>" class="install-now button"><?php _e('Download', 'anspress-question-answer') ?></a>
                             </li>
                      </div>
                     <div class="desc column-description">
                         <p><?php echo substr(strip_tags($ext->description), 0, 100) ?></p>
-                        <p class="authors"> <cite><?php printf(__('By %s', 'ap'), '<a href="'.$ext->author_link.'">'. $ext->author.'</a>') ?></cite></p>
+                        <p class="authors"> <cite><?php printf(__('By %s', 'anspress-question-answer'), '<a href="'.$ext->author_link.'">'. $ext->author.'</a>') ?></cite></p>
                     </div>
                 </div>
                 <div class="plugin-card-bottom">
                     <div class="column-updated">
-                        <strong><?php _e('Last Updated:', 'ap') ?></strong><span><?php echo human_time_diff( $ext->last_updated, current_time('timestamp') ) . ' ago'; ?></span>
+                        <strong><?php _e('Last Updated:', 'anspress-question-answer') ?></strong><span><?php echo human_time_diff( $ext->last_updated, current_time('timestamp') ) . ' ago'; ?></span>
                     </div>
                     <div class="column-compatibility">
                         <?php if($wp_version > $ext->tested_upto): ?>
-                            <span class="compatibility-untested"><?php _e('Untested with your version of WordPress', 'ap') ?></span>
+                            <span class="compatibility-untested"><?php _e('Untested with your version of WordPress', 'anspress-question-answer') ?></span>
                         <?php else: ?>
-                            <span class="compatibility-compatible"><?php _e('<strong>Compatible</strong> with your version of WordPress', 'ap') ?></span>
+                            <span class="compatibility-compatible"><?php _e('<strong>Compatible</strong> with your version of WordPress', 'anspress-question-answer') ?></span>
                         <?php endif; ?>
                     </div>
                 </div>

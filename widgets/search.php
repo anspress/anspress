@@ -23,8 +23,8 @@ class AP_Search_Widget extends WP_Widget {
 	public function __construct() {
 		parent::__construct(
 			'AP_Search_Widget',
-			__( '(AnsPress) Search', 'ap' ),
-			array( 'description' => __( 'Question and answer search form.', 'ap' ) )
+			__( '(AnsPress) Search', 'anspress-question-answer' ),
+			array( 'description' => __( 'Question and answer search form.', 'anspress-question-answer' ) )
 		);
 	}
 
@@ -38,8 +38,8 @@ class AP_Search_Widget extends WP_Widget {
 		?>
 			<form id="ap-search-form" class="ap-search-form" action="<?php echo ap_get_link_to('search'); ?>" method="GET">
 				<div class="ap-qaf-inner">
-					<input class="form-control" type="text" name="ap_s" id="ap-quick-ask-input" placeholder="<?php _e('Search questions & answers', 'ap'); ?>" value="<?php echo sanitize_text_field(get_query_var('ap_s')); ?>" autocomplete="off" />
-					<button type="submit" ><?php _e('Search', 'ap'); ?></button>
+					<input class="form-control" type="text" name="ap_s" id="ap-quick-ask-input" placeholder="<?php _e('Search questions & answers', 'anspress-question-answer'); ?>" value="<?php echo sanitize_text_field(get_query_var('ap_s')); ?>" autocomplete="off" />
+					<button type="submit" ><?php _e('Search', 'anspress-question-answer'); ?></button>
 				</div>
 			</form>
 		<?php
@@ -51,11 +51,11 @@ class AP_Search_Widget extends WP_Widget {
 			$title = $instance[ 'title' ];
 		}
 		else {
-			$title = __( 'Search questions', 'ap' );
+			$title = __( 'Search questions', 'anspress-question-answer' );
 		}
 		?>
 		<p>
-			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:' ); ?></label> 
+			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:', 'anspress-question-answer' ); ?></label> 
 			<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>">
 		</p>
 		<?php 

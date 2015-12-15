@@ -16,7 +16,7 @@ class AP_PostDiscussion_Widget extends WP_Widget {
 	public function form( $instance ) {		
 		?>
 		<p>
-			<?php _e('No options', 'ap'); ?>
+			<?php _e('No options', 'anspress-question-answer'); ?>
 		</p>
 		<?php 
 	}

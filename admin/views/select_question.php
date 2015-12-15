@@ -17,8 +17,8 @@ if (! defined('WPINC')) {
 <div id="ap-admin-dashboard" class="wrap">
 	<?php do_action('ap_before_admin_page_title') ?>
 
-	<h2><?php _e('Select a question for new answer', 'ap') ?></h2>
-	<p><?php _e('Slowly type for question suggestion and then click select button right to question title.', 'ap') ?></p>
+	<h2><?php _e('Select a question for new answer', 'anspress-question-answer') ?></h2>
+	<p><?php _e('Slowly type for question suggestion and then click select button right to question title.', 'anspress-question-answer') ?></p>
 
 	<?php do_action('ap_after_admin_page_title') ?>
 

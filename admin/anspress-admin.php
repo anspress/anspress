@@ -174,21 +174,21 @@ class AnsPress_Admin
 
 		add_menu_page( 'AnsPress', 'AnsPress'.$Totalcount, 'delete_pages', 'anspress', array( $this, 'dashboard_page' ), ANSPRESS_URL . '/assets/answer.png', $pos );
 
-		add_submenu_page( 'anspress', __( 'All Questions', 'ap' ), __( 'All Questions', 'ap' ), 'delete_pages', 'edit.php?post_type=question', '' );
+		add_submenu_page( 'anspress', __( 'All Questions', 'anspress-question-answer' ), __( 'All Questions', 'anspress-question-answer' ), 'delete_pages', 'edit.php?post_type=question', '' );
 
-		add_submenu_page( 'anspress', __( 'New Question', 'ap' ), __( 'New Question', 'ap' ), 'delete_pages', 'post-new.php?post_type=question', '' );
+		add_submenu_page( 'anspress', __( 'New Question', 'anspress-question-answer' ), __( 'New Question', 'anspress-question-answer' ), 'delete_pages', 'post-new.php?post_type=question', '' );
 
-		add_submenu_page( 'anspress', __( 'All Answers', 'ap' ), __( 'All Answers', 'ap' ), 'delete_pages', 'edit.php?post_type=answer', '' );
+		add_submenu_page( 'anspress', __( 'All Answers', 'anspress-question-answer' ), __( 'All Answers', 'anspress-question-answer' ), 'delete_pages', 'edit.php?post_type=answer', '' );
 
-		add_submenu_page( 'anspress', __( 'Moderate question & answer', 'ap' ), __( 'Moderate', 'ap' ).$Modcount, 'manage_options', 'anspress_moderate', array( $this, 'display_moderate_page' ) );
+		add_submenu_page( 'anspress', __( 'Moderate question & answer', 'anspress-question-answer' ), __( 'Moderate', 'anspress-question-answer' ).$Modcount, 'manage_options', 'anspress_moderate', array( $this, 'display_moderate_page' ) );
 
-		add_submenu_page( 'anspress', __( 'Flagged question & answer', 'ap' ), __( 'Flagged', 'ap' ).$Flagcount, 'delete_pages', 'anspress_flagged', array( $this, 'display_flagged_page' ) );
+		add_submenu_page( 'anspress', __( 'Flagged question & answer', 'anspress-question-answer' ), __( 'Flagged', 'anspress-question-answer' ).$Flagcount, 'delete_pages', 'anspress_flagged', array( $this, 'display_flagged_page' ) );
 
-		add_submenu_page( 'anspress', __( 'Reputation', 'ap' ), __( 'Reputation', 'ap' ), 'manage_options', 'anspress_reputation', array( $this, 'display_reputation_page' ) );
+		add_submenu_page( 'anspress', __( 'Reputation', 'anspress-question-answer' ), __( 'Reputation', 'anspress-question-answer' ), 'manage_options', 'anspress_reputation', array( $this, 'display_reputation_page' ) );
 
-		 add_submenu_page( 'ap_post_flag', __( 'Post flag', 'ap' ), __( 'Post flag', 'ap' ), 'delete_pages', 'ap_post_flag', array( $this, 'display_post_flag' ) );
+		 add_submenu_page( 'ap_post_flag', __( 'Post flag', 'anspress-question-answer' ), __( 'Post flag', 'anspress-question-answer' ), 'delete_pages', 'ap_post_flag', array( $this, 'display_post_flag' ) );
 
-		 add_submenu_page( 'ap_select_question', __( 'Select question', 'ap' ), __( 'Select question', 'ap' ), 'delete_pages', 'ap_select_question', array( $this, 'display_select_question' ) );
+		 add_submenu_page( 'ap_select_question', __( 'Select question', 'anspress-question-answer' ), __( 'Select question', 'anspress-question-answer' ), 'delete_pages', 'ap_select_question', array( $this, 'display_select_question' ) );
 
 		/**
 		 * ACTION: ap_admin_menu
@@ -196,11 +196,11 @@ class AnsPress_Admin
 		 */
 		do_action( 'ap_admin_menu' );
 
-		add_submenu_page( 'anspress', __( 'AnsPress Options', 'ap' ), __( 'Options', 'ap' ), 'manage_options', 'anspress_options', array( $this, 'display_plugin_admin_page' ) );
+		add_submenu_page( 'anspress', __( 'AnsPress Options', 'anspress-question-answer' ), __( 'Options', 'anspress-question-answer' ), 'manage_options', 'anspress_options', array( $this, 'display_plugin_admin_page' ) );
 
 		$submenu['anspress'][500] = array( 'Theme & Extensions', 'manage_options' , 'http://anspress.io/themes/' );
 
-		add_submenu_page( 'anspress', __( 'About AnsPress', 'ap' ), __( 'About AnsPress', 'ap' ), 'manage_options', 'anspress_about', array( $this, 'display_plugin_about_page' ) );
+		add_submenu_page( 'anspress', __( 'About AnsPress', 'anspress-question-answer' ), __( 'About AnsPress', 'anspress-question-answer' ), 'manage_options', 'anspress_about', array( $this, 'display_plugin_about_page' ) );
 
 	}
 
@@ -327,7 +327,7 @@ class AnsPress_Admin
 	public function add_action_links($links) {
 		return array_merge(
 			array(
-				'settings' => '<a href="' . admin_url( 'admin.php?page=anspress_options' ) . '">' . __( 'Settings', 'ap' ) . '</a>',
+				'settings' => '<a href="' . admin_url( 'admin.php?page=anspress_options' ) . '">' . __( 'Settings', 'anspress-question-answer' ) . '</a>',
 			),
 			$links
 		);
@@ -389,11 +389,11 @@ class AnsPress_Admin
 	public function user_roles_fields($user) {
 	?>
 
-		<h3><?php _e( 'AnsPress Options', 'ap' ); ?></h3>
+		<h3><?php _e( 'AnsPress Options', 'anspress-question-answer' ); ?></h3>
 
 		<table class="form-table">
 			<tr>
-				<th><label for="ap_role"><?php _e( 'AnsPress Role', 'ap' ); ?></label></th>
+				<th><label for="ap_role"><?php _e( 'AnsPress Role', 'anspress-question-answer' ); ?></label></th>
 				<td>
 					<select type="text" name="ap_role" id="ap_role">
 					<?php
@@ -403,7 +403,7 @@ class AnsPress_Admin
 					}
 					?>
 					</select><br />
-					<span class="description"><?php _e( 'Role and permission for AnsPress', 'ap' ); ?></span>
+					<span class="description"><?php _e( 'Role and permission for AnsPress', 'anspress-question-answer' ); ?></span>
 				</td>
 			</tr>
 		</table>
@@ -438,12 +438,12 @@ class AnsPress_Admin
 
 			echo '<div class="ap-selected-question">';
 			if ( ! isset( $post_parent ) ) {
-				echo '<p class="no-q-selected">'.__( 'This question is orphan, no question is selected for this answer' ).'</p>';
+				echo '<p class="no-q-selected">'.__( 'This question is orphan, no question is selected for this answer', 'anspress-question-answer' ).'</p>';
 			} else {
 				$q = get_post( $post_parent );
 				$answer = get_post_meta( $q->ID, ANSPRESS_ANS_META, true );
 				echo '<a class="ap-q-title" href="'. get_permalink( $q->post_id ) .'">'. $q->post_title .'</a>';
-				echo '<div class="ap-q-meta"><span class="ap-a-count">'.sprintf( _n( '1 Answer', '%d Answer', $answer, 'ap' ), $answer ).'</span><span class="ap-edit-link">| <a href="'.get_edit_post_link( $q->ID ).'">'. __( 'Edit question', 'ap' ).'</a></span></div>';
+				echo '<div class="ap-q-meta"><span class="ap-a-count">'.sprintf( _n( '1 Answer', '%d Answer', $answer, 'anspress-question-answer' ), $answer ).'</span><span class="ap-edit-link">| <a href="'.get_edit_post_link( $q->ID ).'">'. __( 'Edit question', 'anspress-question-answer' ).'</a></span></div>';
 				echo '<div class="ap-q-content">'. $q->post_content .'</div><input type="hidden" name="post_parent" value="'.$post_parent.'" />';
 			}
 			echo '</div>';
@@ -518,7 +518,7 @@ class AnsPress_Admin
 	 */
 	public function ap_menu_metaboxes() {
 
-		add_meta_box( 'add-anspress', __( 'AnsPress Pages' ), array( $this, 'wp_nav_menu_item_anspress_meta_box' ), 'nav-menus', 'side', 'high' );
+		add_meta_box( 'add-anspress', __( 'AnsPress Pages', 'anspress-question-answer' ), array( $this, 'wp_nav_menu_item_anspress_meta_box' ), 'nav-menus', 'side', 'high' );
 	}
 
 	/**
@@ -538,8 +538,8 @@ class AnsPress_Admin
 		echo '<input type="hidden" value="custom" name="menu-item['.$_nav_menu_placeholder.'][menu-item-type]" />';
 		echo '<ul>';
 
-		$pages['profile']       = array( 'title' => __( 'User profile', 'ap' ), 'show_in_menu' => true );
-		$pages['notification']  = array( 'title' => __( 'User notification', 'ap' ), 'show_in_menu' => true );
+		$pages['profile']       = array( 'title' => __( 'User profile', 'anspress-question-answer' ), 'show_in_menu' => true );
+		$pages['notification']  = array( 'title' => __( 'User notification', 'anspress-question-answer' ), 'show_in_menu' => true );
 
 		foreach ( $pages as $k => $args ) {
 			if ( $args['show_in_menu'] ) {
@@ -552,7 +552,7 @@ class AnsPress_Admin
 
 		echo '</ul><p class="button-controls">
 					<span class="add-to-menu">
-						<input type="submit"'.wp_nav_menu_disabled_check( $nav_menu_selected_id ).' class="button-secondary submit-add-to-menu right" value="'.__( 'Add to Menu', 'ap' ).'" name="add-custom-menu-item" id="submit-aplinks" />
+						<input type="submit"'.wp_nav_menu_disabled_check( $nav_menu_selected_id ).' class="button-secondary submit-add-to-menu right" value="'.__( 'Add to Menu', 'anspress-question-answer' ).'" name="add-custom-menu-item" id="submit-aplinks" />
 						<span class="spinner"></span>
 					</span>
 				</p>';
@@ -566,7 +566,7 @@ class AnsPress_Admin
 		if( get_option( 'ap_update_helper') ){
 			?>
 				<div class="update-nag">
-			        <h3><?php printf(__('AnsPress update is not complete yet! click %shere%s to continue.','ap'), '<a href="'.admin_url( 'admin.php?action=ap_update_helper&__nonce'.wp_create_nonce( 'ap_update_help' ) ).'">', '</a>'); ?></h3>
+			        <h3><?php printf(__('AnsPress update is not complete yet! click %shere%s to continue.','anspress-question-answer'), '<a href="'.admin_url( 'admin.php?action=ap_update_helper&__nonce'.wp_create_nonce( 'ap_update_help' ) ).'">', '</a>'); ?></h3>
 			    </div>
 		    <?php
 		}
@@ -579,8 +579,8 @@ class AnsPress_Admin
 		}
 		?>
 	    <div class="error">
-	        <p><strong><?php printf( __( 'Is your existing question tags are not appearing ? click here to fix it %s', 'ap' ), '<a class="ap-rename-taxo" href="#">'.__( 'Fix question tags', 'ap' ).'</a>' ); ?></strong></p>
-	        <p><?php printf( __( 'Hide message %s', 'ap' ), '<a class="ap-rename-taxo" href="#">'.__( 'dismiss', 'ap' ).'</a>' ); ?></p>
+	        <p><strong><?php printf( __( 'Is your existing question tags are not appearing ? click here to fix it %s', 'anspress-question-answer' ), '<a class="ap-rename-taxo" href="#">'.__( 'Fix question tags', 'anspress-question-answer' ).'</a>' ); ?></strong></p>
+	        <p><?php printf( __( 'Hide message %s', 'anspress-question-answer' ), '<a class="ap-rename-taxo" href="#">'.__( 'dismiss', 'anspress-question-answer' ).'</a>' ); ?></p>
 	    </div>
 	    <?php
 	}
@@ -629,7 +629,7 @@ class AnsPress_Admin
 	 * @since 2.4
 	 */
 	public function comment_flag_column($columns) {
-		$columns['comment_flag'] = __( 'Flag', 'ap' );
+		$columns['comment_flag'] = __( 'Flag', 'anspress-question-answer' );
 		return $columns;
 	}
 
@@ -657,7 +657,7 @@ class AnsPress_Admin
 	 * @return array
 	 */
 	public function comment_flag_view( $views ) {
-		$views['flagged'] = '<a href="edit-comments.php?show_flagged=true"'.(isset( $_GET['show_flagged'] ) ? ' class="current"' : '').'>'.__( 'Flagged','ap' ).'</a>';
+		$views['flagged'] = '<a href="edit-comments.php?show_flagged=true"'.(isset( $_GET['show_flagged'] ) ? ' class="current"' : '').'>'.__( 'Flagged','anspress-question-answer' ).'</a>';
 		return $views;
 	}
 

@@ -7,8 +7,8 @@ class AP_Users_Widget extends WP_Widget {
 	public function __construct() {
 		parent::__construct(
 			'ap_users_widget',
-			__( '(AnsPress) Users', 'ap' ),
-			array( 'description' => __( 'Shows users based on selected order.', 'ap' ) )
+			__( '(AnsPress) Users', 'anspress-question-answer' ),
+			array( 'description' => __( 'Shows users based on selected order.', 'anspress-question-answer' ) )
 		);
 	}
 
@@ -45,7 +45,7 @@ class AP_Users_Widget extends WP_Widget {
 		if ( isset( $instance[ 'title' ] ) ) {
 			$title = $instance[ 'title' ];
 		} else {
-			$title = __( 'Users', 'ap' );
+			$title = __( 'Users', 'anspress-question-answer' );
 		}
 		$avatar 		= 30;
 		$number 		= 5;
@@ -65,19 +65,19 @@ class AP_Users_Widget extends WP_Widget {
 
 		?>
         <p>
-			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:' ); ?></label>
+			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:', 'anspress-question-answer' ); ?></label>
 			<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>">
         </p>
         <p>
-			<label for="<?php echo $this->get_field_id( 'avatar' ); ?>"><?php _e( 'Avatar:', 'ap' ); ?></label>
+			<label for="<?php echo $this->get_field_id( 'avatar' ); ?>"><?php _e( 'Avatar:', 'anspress-question-answer' ); ?></label>
 			<input class="widefat" id="<?php echo $this->get_field_id( 'avatar' ); ?>" name="<?php echo $this->get_field_name( 'avatar' ); ?>" type="text" value="<?php echo esc_attr( $avatar ); ?>">
         </p>
         <p>
-			<label for="<?php echo $this->get_field_id( 'number' ); ?>"><?php _e( 'Show', 'ap' ); ?></label>
+			<label for="<?php echo $this->get_field_id( 'number' ); ?>"><?php _e( 'Show', 'anspress-question-answer' ); ?></label>
 			<input class="widefat" id="<?php echo $this->get_field_id( 'number' ); ?>" name="<?php echo $this->get_field_name( 'number' ); ?>" type="text" value="<?php echo esc_attr( $number ); ?>">
         </p>
         <p>
-			<label for="<?php echo $this->get_field_id( 'sortby' ); ?>"><?php _e( 'Sort by', 'ap' ); ?></label>
+			<label for="<?php echo $this->get_field_id( 'sortby' ); ?>"><?php _e( 'Sort by', 'anspress-question-answer' ); ?></label>
 			<input class="widefat" id="<?php echo $this->get_field_id( 'sortby' ); ?>" name="<?php echo $this->get_field_name( 'sortby' ); ?>" type="text" value="<?php echo esc_attr( $sortby ); ?>">
         </p>
 		<?php

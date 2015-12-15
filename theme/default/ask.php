@@ -19,11 +19,11 @@
 			</div>
 			<div class="ap-a-cells clearfix">
 				<div class="ap-form-head">
-					<a href="#" class="apicon-screen-full pull-right ap-btn-fullscreen" data-action="ap_fullscreen_toggle"><?php _e('Toggle fullscreen', 'ap'); ?></a>
+					<a href="#" class="apicon-screen-full pull-right ap-btn-fullscreen" data-action="ap_fullscreen_toggle"><?php _e('Toggle fullscreen', 'anspress-question-answer'); ?></a>
 					<ul class="ap-form-head-tab ap-ul-inline clearfix ap-tab-nav">
-						<li class="active"><a href="#ap-form-main"><?php _e('Write', 'ap'); ?></a></li>
+						<li class="active"><a href="#ap-form-main"><?php _e('Write', 'anspress-question-answer'); ?></a></li>
 						<?php if(ap_opt('question_help_page') != '') : ?>
-							<li><a href="#ap-form-help"><?php _e('How to ask', 'ap'); ?></a></li>
+							<li><a href="#ap-form-help"><?php _e('How to ask', 'anspress-question-answer'); ?></a></li>
 						<?php endif; ?>
 					</ul>
 				</div>
@@ -41,7 +41,7 @@
 		</div>
 	<?php elseif (is_user_logged_in()): ?>
 		<div class="ap-no-permission">
-			<?php _e('You don\'t have permission to ask question.', 'ap'); ?>
+			<?php _e('You don\'t have permission to ask question.', 'anspress-question-answer'); ?>
 		</div>
 	<?php endif; ?>
 	<?php ap_get_template_part('login-signup'); ?>

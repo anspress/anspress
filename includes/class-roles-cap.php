@@ -90,12 +90,12 @@ class AP_Roles
 	 */
 	public function add_roles() {
 
-		add_role( 'ap_moderator', __( 'AnsPress Moderator', 'ap' ), array(
+		add_role( 'ap_moderator', __( 'AnsPress Moderator', 'anspress-question-answer' ), array(
 			'read' => true,
 		) );
 
-		add_role( 'ap_participant', __( 'AnsPress Participants', 'ap' ), array( 'read' => true ) );
-		add_role( 'ap_banned', __( 'AnsPress Banned', 'ap' ), array( 'read' => true ) );
+		add_role( 'ap_participant', __( 'AnsPress Participants', 'anspress-question-answer' ), array( 'read' => true ) );
+		add_role( 'ap_banned', __( 'AnsPress Banned', 'anspress-question-answer' ), array( 'read' => true ) );
 	}
 
 	/**

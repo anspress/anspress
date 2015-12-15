@@ -91,7 +91,7 @@ function ap_option_group_fields() {
 		$args = array(
 			'name'              => 'options_form',
 			'is_ajaxified'      => false,
-			'submit_button'     => __( 'Save options', 'ap' ),
+			'submit_button'     => __( 'Save options', 'anspress-question-answer' ),
 			'nonce_name'        => 'nonce_option_form',
 			'fields'            => $fields,
 		);
