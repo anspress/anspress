@@ -1,0 +1,3322 @@
+# Copyright (C) 2015 Rahul Aryan
+# This file is distributed under the GPL-3.0+.
+msgid ""
+msgstr ""
+"Project-Id-Version: AnsPress 2.4\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/anspress-question-"
+"answer\n"
+"POT-Creation-Date: 2015-12-14 08:41:30+00:00\n"
+"PO-Revision-Date: 2015-12-15 09:18+0530\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: hi_IN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.7.3\n"
+"X-Poedit-KeywordsList: __;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;"
+"_nx_noop:1,2,3c;esc_attr__;esc_html__;esc_attr_e;esc_html_e;esc_attr_x:1,2c;"
+"esc_html_x:1,2c\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-Basepath: ..\n"
+"X-Textdomain-Support: yes\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: admin/ajax.php:54 admin/ajax.php:139 admin/flagged.php:116 admin/moderate.php:93
+#: admin/reputation.php:51 includes/ask-form.php:35 includes/post_types.php:226
+msgid "Title"
+msgstr "शीर्शक"
+
+#: admin/ajax.php:60 admin/ajax.php:145 includes/ask-form.php:52
+#: includes/user-fields.php:109
+msgid "Description"
+msgstr "ब्यौरा"
+
+#: admin/ajax.php:66 admin/ajax.php:151 admin/reputation.php:52
+#: theme/default/content-user.php:17
+msgid "Points"
+msgstr "0 अंक"
+
+#: admin/ajax.php:72 admin/ajax.php:157 admin/reputation.php:53
+msgid "Event"
+msgstr "घटना"
+
+#: admin/ajax.php:78 admin/ajax.php:163
+msgid "Save Point"
+msgstr "अंक संचित करे"
+
+#: admin/anspress-admin.php:177 includes/post_types.php:51
+msgid "All Questions"
+msgstr "सभी सवाल"
+
+#: admin/anspress-admin.php:179 includes/post_types.php:54
+msgid "New Question"
+msgstr "नया सवाल"
+
+#: admin/anspress-admin.php:181 includes/post_types.php:121
+msgid "All Answers"
+msgstr "सभी जवाब"
+
+#: admin/anspress-admin.php:183
+msgid "Moderate question & answer"
+msgstr "सवाल जवाब संयमित करे"
+
+#: admin/anspress-admin.php:183 admin/flagged.php:100 admin/moderate.php:80
+#: admin/options-page.php:606 admin/options-page.php:615 admin/options-page.php:627
+#: admin/options-page.php:639 admin/options-page.php:651 admin/views/dashboard.php:46
+#: includes/functions.php:697 includes/post_status.php:30 includes/post_types.php:266
+#: includes/query_filter.php:89 includes/query_filter.php:102
+#: includes/question-loop.php:380
+msgid "Moderate"
+msgstr "संयमित करे"
+
+#: admin/anspress-admin.php:185 admin/views/flagged.php:18
+msgid "Flagged question & answer"
+msgstr "अलग किये सवाल जवाब"
+
+#: admin/anspress-admin.php:185 admin/anspress-admin.php:660
+#: admin/views/dashboard.php:52
+msgid "Flagged"
+msgstr "अलग"
+
+#: admin/anspress-admin.php:187 includes/bp.php:50 includes/bp.php:82
+#: includes/reputation.php:25 includes/reputation.php:290 includes/user.php:436
+#: theme/default/user/about.php:65 theme/default/user/user-card.php:26
+msgid "Reputation"
+msgstr "ख्याति"
+
+#: admin/anspress-admin.php:189 admin/views/post_flag.php:35
+msgid "Post flag"
+msgstr "अलग करे"
+
+#: admin/anspress-admin.php:191
+msgid "Select question"
+msgstr "सवाल चुने"
+
+#: admin/anspress-admin.php:199 admin/anspress-admin.php:392 admin/views/admin.php:26
+msgid "AnsPress Options"
+msgstr "AnsPress विकल्प"
+
+#: admin/anspress-admin.php:199
+msgid "Options"
+msgstr "विकल्प"
+
+#: admin/anspress-admin.php:203 admin/views/about.php:117 admin/views/sidebar.php:4
+msgid "About AnsPress"
+msgstr "AnsPress के बारेमें"
+
+#: admin/anspress-admin.php:330
+msgid "Settings"
+msgstr "व्यवस्थापन"
+
+#: admin/anspress-admin.php:396
+msgid "AnsPress Role"
+msgstr ""
+
+#: admin/anspress-admin.php:406
+msgid "Role and permission for AnsPress"
+msgstr ""
+
+#: admin/anspress-admin.php:441
+msgid "This question is orphan, no question is selected for this answer"
+msgstr "ये सवाल लावारिस है, इस जवाब के लिए किसी सवाल का चुनाव नहीं है"
+
+#: admin/anspress-admin.php:446 includes/ajax.php:85 includes/ajax.php:87
+#: includes/ajax.php:331 includes/ajax.php:377 includes/process-form.php:525
+msgid "1 Answer"
+msgid_plural "%d Answer"
+msgstr[0] "१ जवाब"
+msgstr[1] "%d जवाब"
+
+#: admin/anspress-admin.php:446
+msgid "Edit question"
+msgstr "सवाल को बदलिये"
+
+#: admin/anspress-admin.php:521
+msgid "AnsPress Pages"
+msgstr ""
+
+#: admin/anspress-admin.php:541 admin/options-page.php:432
+msgid "User profile"
+msgstr "दोस्त परिचय"
+
+#: admin/anspress-admin.php:542
+msgid "User notification"
+msgstr "दोस्त सूचना"
+
+#: admin/anspress-admin.php:555
+msgid "Add to Menu"
+msgstr "सूचि में जोड़िए"
+
+#: admin/anspress-admin.php:569
+msgid "AnsPress update is not complete yet! click %shere%s to continue."
+msgstr ""
+
+#: admin/anspress-admin.php:582
+msgid "Is your existing question tags are not appearing ? click here to fix it %s"
+msgstr "आपके सवाल बिल्ले नहीं दिखाई दे रहे है? ठीक करने के लिए यहाँ क्लिक करे %s"
+
+#: admin/anspress-admin.php:582
+msgid "Fix question tags"
+msgstr "सवाल बिल्ले ठीक करे"
+
+#: admin/anspress-admin.php:583
+msgid "Hide message %s"
+msgstr "सन्देश छुपइए %s"
+
+#: admin/anspress-admin.php:583
+msgid "dismiss"
+msgstr "हटाइये"
+
+#: admin/anspress-admin.php:632 admin/flagged.php:117 admin/moderate.php:94
+#: includes/flag.php:148 includes/post_types.php:238 includes/post_types.php:359
+msgid "Flag"
+msgstr "अलग करे"
+
+#: admin/extensions.php:69
+msgid "Download"
+msgstr "डाउनलोड"
+
+#: admin/extensions.php:74
+msgid "By %s"
+msgstr "% ने"
+
+#: admin/extensions.php:79
+msgid "Last Updated:"
+msgstr "आखरी बार बदला:"
+
+#: admin/extensions.php:83
+msgid "Untested with your version of WordPress"
+msgstr "आपके वर्डप्रेस वर्शन में अनजाँचा"
+
+#: admin/extensions.php:85
+msgid "<strong>Compatible</strong> with your version of WordPress"
+msgstr "आपके वर्डप्रेस वर्शन के <strong>अनुकूल</strong>"
+
+#: admin/flagged.php:70 admin/moderate.php:61 includes/common-pages.php:40
+#: widgets/search.php:42
+msgid "Search"
+msgstr "खोजें"
+
+#: admin/flagged.php:97
+msgid "All"
+msgstr "सभी"
+
+#: admin/flagged.php:98 admin/options-page.php:614 admin/options-page.php:626
+#: admin/options-page.php:638 admin/options-page.php:650
+msgid "Publish"
+msgstr "प्रकाशित करे"
+
+#: admin/flagged.php:99 admin/flagged.php:234 admin/moderate.php:209
+#: includes/post_types.php:275
+msgid "Pending"
+msgstr "बाकी"
+
+#: admin/flagged.php:101 includes/post_status.php:22 includes/post_types.php:263
+#: includes/query_filter.php:95 includes/query_filter.php:104
+#: includes/question-loop.php:382
+msgid "Closed"
+msgstr "बंद"
+
+#: admin/flagged.php:102 includes/post_types.php:272
+msgid "Draft"
+msgstr "ढांचा"
+
+#: admin/flagged.php:103 admin/flagged.php:183 admin/meta_box.php:59
+#: admin/moderate.php:157 includes/post_types.php:278 includes/post_types.php:394
+msgid "Trash"
+msgstr "कचरे में"
+
+#: admin/flagged.php:115
+msgid "Type"
+msgstr "प्ररूप"
+
+#: admin/flagged.php:162 admin/meta_box.php:20 admin/options-page.php:309
+#: includes/bp.php:145 includes/bp.php:146 includes/common-pages.php:37
+#: includes/functions.php:1347 includes/post_types.php:71 includes/reputation.php:834
+msgid "Question"
+msgstr "सवाल"
+
+#: admin/flagged.php:164 admin/options-page.php:369 includes/bp.php:155
+#: includes/bp.php:156 includes/bp.php:165 includes/functions.php:1347
+#: includes/post_types.php:141 includes/reputation.php:841 includes/user.php:440
+msgid "Answer"
+msgstr "जवाब"
+
+#: admin/flagged.php:175
+msgid "Edit flags"
+msgstr "अलग सूचक को बदलिये"
+
+#: admin/flagged.php:178 admin/flagged.php:228 admin/moderate.php:151
+#: admin/moderate.php:203 includes/post_types.php:391
+msgid "Restore"
+msgstr "बहाल करे"
+
+#: admin/flagged.php:179 admin/flagged.php:229 admin/moderate.php:152
+#: admin/moderate.php:204 includes/functions.php:672
+msgid "Delete permanently"
+msgstr "हमेशा के लिए हटाइये"
+
+#: admin/flagged.php:182 admin/meta_box.php:58 admin/moderate.php:156
+#: admin/reputation.php:152 includes/class-form.php:550 includes/common-pages.php:39
+#: includes/functions.php:456 includes/functions.php:458 includes/functions.php:477
+#: includes/post_types.php:400 includes/theme.php:672
+#: theme/default/part/question.php:46
+msgid "Edit"
+msgstr "बदलिये"
+
+#: admin/flagged.php:184 admin/moderate.php:158 includes/post_types.php:411
+msgid "View"
+msgstr "देखिए"
+
+#: admin/flagged.php:233 admin/moderate.php:208
+msgid "Published"
+msgstr "प्रकाशित"
+
+#: admin/flagged.php:235 admin/moderate.php:210
+msgid "Move to trash"
+msgstr "कचरे में डालिये"
+
+#: admin/functions.php:94
+msgid "Save options"
+msgstr "विकल्प जमा करे"
+
+#: admin/meta_box.php:19 admin/views/dashboard.php:40 admin/views/dashboard.php:66
+#: includes/bp.php:122 includes/class-user.php:51 includes/post_types.php:119
+#: includes/user.php:511 theme/default/user/list-question.php:4
+#: widgets/question_stats.php:49 widgets/questions.php:85
+msgid "Answers"
+msgstr "जवाब"
+
+#: admin/meta_box.php:70
+msgid "Add answer"
+msgstr "जवाब जोड़िए"
+
+#: admin/meta_box.php:71
+msgid "No answers yet"
+msgstr "कोई जवाब नहीं"
+
+#: admin/meta_box.php:84
+msgid "<strong>1</strong> Answer"
+msgid_plural "<strong>%d</strong> Answers"
+msgstr[0] "<strong>1</strong>जवाब"
+msgstr[1] "<strong>%d</strong>जवाब"
+
+#: admin/meta_box.php:85
+msgid "<strong>1</strong> Vote"
+msgid_plural "<strong>%d</strong> Votes"
+msgstr[0] "<strong>1</strong> मतदान"
+msgstr[1] "<strong>%d</strong> मतदान"
+
+#: admin/moderate.php:92 includes/functions.php:701 includes/post_types.php:234
+#: includes/post_types.php:356
+msgid "Status"
+msgstr "स्थिति"
+
+#: admin/moderate.php:95 includes/post_types.php:229
+msgid "Category"
+msgstr "वर्ग"
+
+#: admin/moderate.php:190 includes/post_types.php:297 includes/post_types.php:315
+msgid "--"
+msgstr "--"
+
+#: admin/options-page.php:14
+msgid "General"
+msgstr "सामान्य"
+
+#: admin/options-page.php:17
+msgid "Base page"
+msgstr "आधार पेज"
+
+#: admin/options-page.php:18
+msgid "Select page for displaying anspress."
+msgstr ""
+
+#: admin/options-page.php:25
+msgid "Question Help page"
+msgstr "सवाल मदत पेज"
+
+#: admin/options-page.php:26
+msgid "Direction for asking a question."
+msgstr "सवाल पूछने के लिए मार्गदर्शन"
+
+#: admin/options-page.php:33
+msgid "Answer Help page"
+msgstr "जवाब मदत पेज"
+
+#: admin/options-page.php:34
+msgid "Direction for answring a question."
+msgstr "जवाब देने के लिए मार्गदर्शन"
+
+#: admin/options-page.php:41
+msgid "Hide author credits"
+msgstr "लेखक की पहचान छुपइए"
+
+#: admin/options-page.php:42
+msgid "Hide link to AnsPress project site."
+msgstr ""
+
+#: admin/options-page.php:50
+msgid "Allow private posts"
+msgstr "निजी पोस्ट करने दे"
+
+#: admin/options-page.php:51
+msgid "Allow users to create private question and answer."
+msgstr ""
+
+#: admin/options-page.php:59
+msgid "Clean DB"
+msgstr ""
+
+#: admin/options-page.php:60
+msgid "check this to remove all anspress data including posts on deactivating plugin."
+msgstr ""
+
+#: admin/options-page.php:67
+msgid "Base page slug before question permalink"
+msgstr ""
+
+#: admin/options-page.php:75
+msgid "Base page slug before user page permalink"
+msgstr ""
+
+#: admin/options-page.php:83
+msgid "Disable hover card"
+msgstr ""
+
+#: admin/options-page.php:84
+msgid "Dont show user hover card on mouseover."
+msgstr ""
+
+#: admin/options-page.php:93
+msgid "Layout"
+msgstr "नक़्शा"
+
+#: admin/options-page.php:97
+msgid "Avatar"
+msgstr "अवतार"
+
+#: admin/options-page.php:101
+msgid "List avatar size"
+msgstr ""
+
+#: admin/options-page.php:102
+msgid "User avatar size for questions list."
+msgstr ""
+
+#: admin/options-page.php:109
+msgid "Question avatar size"
+msgstr ""
+
+#: admin/options-page.php:110
+msgid "User avatar size for question."
+msgstr ""
+
+#: admin/options-page.php:117 admin/options-page.php:125
+msgid "Answer avatar size"
+msgstr ""
+
+#: admin/options-page.php:118 admin/options-page.php:126
+msgid "User avatar size for answer."
+msgstr ""
+
+#: admin/options-page.php:133
+msgid "Comment avatar size"
+msgstr ""
+
+#: admin/options-page.php:134
+msgid "User avatar size for comments."
+msgstr ""
+
+#: admin/options-page.php:142
+msgid "Items to show per page"
+msgstr ""
+
+#: admin/options-page.php:146
+msgid "Questions per page"
+msgstr "एक पेज पर दिखाए सवाल"
+
+#: admin/options-page.php:147
+msgid "Questions to show per page."
+msgstr "एक पेज पर दिखाए सवाल"
+
+#: admin/options-page.php:154
+msgid "Answers per page"
+msgstr "एक पेज पर दिखाए जवाब"
+
+#: admin/options-page.php:155
+msgid "Answers to show per page."
+msgstr "एक पेज पर दिखाए जवाब"
+
+#: admin/options-page.php:162
+msgid "Users per page"
+msgstr "एक पेज पर दिखाए उपयोगकर्ता"
+
+#: admin/options-page.php:163
+msgid "Users to show per page."
+msgstr "एक पेज पर दिखाए उपयोगकर्ता"
+
+#: admin/options-page.php:170
+msgid "Sorting"
+msgstr "छँटाई"
+
+#: admin/options-page.php:174
+msgid "Default answer sort"
+msgstr "मुख्य जबाब छटाई"
+
+#: admin/options-page.php:175
+msgid "Sort answers by default."
+msgstr "मुख्य तरीके से जवाब छाटीए"
+
+#: admin/options-page.php:178 includes/functions.php:572 includes/theme.php:566
+#: includes/theme.php:609 widgets/questions.php:84
+msgid "Voted"
+msgstr "मतदान किया"
+
+#: admin/options-page.php:179 includes/theme.php:561 includes/theme.php:605
+#: includes/user.php:438 widgets/question_stats.php:47 widgets/questions.php:82
+msgid "Active"
+msgstr "सक्रिय"
+
+#: admin/options-page.php:180 includes/functions.php:564 includes/theme.php:562
+#: includes/theme.php:612 includes/user.php:441 widgets/questions.php:83
+msgid "Newest"
+msgstr "सबसे नया"
+
+#: admin/options-page.php:181 includes/functions.php:568 includes/theme.php:613
+msgid "Oldest"
+msgstr "सबसे पुराना"
+
+#: admin/options-page.php:189
+msgid "Toggle"
+msgstr "अदल बदल"
+
+#: admin/options-page.php:193
+msgid "Show comments"
+msgstr "टिप्पणियाँ दिखाइए"
+
+#: admin/options-page.php:194
+msgid "Show comments by default."
+msgstr "मुख्य तरीके से टिप्पणियाँ दिखाइए"
+
+#: admin/options-page.php:201
+msgid "Show question sidebar"
+msgstr "सवाल बगल पट्टी दिखाइए"
+
+#: admin/options-page.php:202
+msgid "Subscribe and Stats widgets will be shown on question page."
+msgstr ""
+
+#: admin/options-page.php:209
+msgid "Show notification sidebar"
+msgstr "सूचना बगल पट्टी दिखाइए"
+
+#: admin/options-page.php:210
+msgid "Show dropdown notification as sidebar"
+msgstr "गिरती सूचना बगल पट्टी के रूप  में दिखाइए"
+
+#: admin/options-page.php:218
+msgid "Pages"
+msgstr "पेज"
+
+#: admin/options-page.php:223
+msgid "Page slug"
+msgstr ""
+
+#: admin/options-page.php:227
+msgid "Ask page slug"
+msgstr ""
+
+#: admin/options-page.php:228
+msgid "Enter slug for ask page."
+msgstr ""
+
+#: admin/options-page.php:236
+msgid "Question page slug"
+msgstr ""
+
+#: admin/options-page.php:237
+msgid "Enter slug for question page."
+msgstr ""
+
+#: admin/options-page.php:245
+msgid "Users page slug"
+msgstr ""
+
+#: admin/options-page.php:246
+msgid "Enter slug for users page."
+msgstr ""
+
+#: admin/options-page.php:254
+msgid "User page slug"
+msgstr ""
+
+#: admin/options-page.php:255
+msgid "Enter slug for user page, make sure no page or post exists with same slug."
+msgstr ""
+
+#: admin/options-page.php:264
+msgid "Page titles"
+msgstr ""
+
+#: admin/options-page.php:268
+msgid "Show question title"
+msgstr ""
+
+#: admin/options-page.php:269
+msgid "Show question title in single question page."
+msgstr ""
+
+#: admin/options-page.php:276
+msgid "Show solved prefix"
+msgstr ""
+
+#: admin/options-page.php:277
+msgid ""
+"If an answer is selected for question then [solved] prefix will be added in title."
+msgstr ""
+
+#: admin/options-page.php:284
+msgid "Base page title"
+msgstr ""
+
+#: admin/options-page.php:285
+msgid "Main questions list page title"
+msgstr ""
+
+#: admin/options-page.php:292
+msgid "Ask page title"
+msgstr ""
+
+#: admin/options-page.php:293
+msgid "Title of the ask page"
+msgstr ""
+
+#: admin/options-page.php:300
+msgid "Users page title"
+msgstr ""
+
+#: admin/options-page.php:301
+msgid "Title of the users page"
+msgstr ""
+
+#: admin/options-page.php:312
+msgid "Minimum title length"
+msgstr ""
+
+#: admin/options-page.php:313
+msgid "Set minimum letters for a question title."
+msgstr ""
+
+#: admin/options-page.php:320 admin/options-page.php:380
+msgid "Minimum question content"
+msgstr ""
+
+#: admin/options-page.php:321
+msgid "Set minimum letters for a question contents."
+msgstr ""
+
+#: admin/options-page.php:328 admin/options-page.php:388
+msgid "Use text editor ?"
+msgstr ""
+
+#: admin/options-page.php:329 admin/options-page.php:389
+msgid "Text editor as default."
+msgstr ""
+
+#: admin/options-page.php:336 admin/options-page.php:396
+msgid "Disable comments"
+msgstr ""
+
+#: admin/options-page.php:337
+msgid "Disable comments on questions."
+msgstr ""
+
+#: admin/options-page.php:344 admin/options-page.php:404
+msgid "Disable voting"
+msgstr ""
+
+#: admin/options-page.php:345
+msgid "Disable voting on questions."
+msgstr ""
+
+#: admin/options-page.php:352 admin/options-page.php:412
+msgid "Disable down voting"
+msgstr ""
+
+#: admin/options-page.php:353
+msgid "Disable down voting on questions."
+msgstr ""
+
+#: admin/options-page.php:360
+msgid "Close question after selecting answer"
+msgstr ""
+
+#: admin/options-page.php:361
+msgid "If enabled this will prevent user to submit answer on solved question."
+msgstr ""
+
+#: admin/options-page.php:372
+msgid "Multiple Answers"
+msgstr ""
+
+#: admin/options-page.php:373
+msgid "Allow an user to submit multiple answers on a single question."
+msgstr ""
+
+#: admin/options-page.php:381
+msgid "Set minimum letters for a answer contents."
+msgstr ""
+
+#: admin/options-page.php:397
+msgid "Disable comments on answer."
+msgstr ""
+
+#: admin/options-page.php:405
+msgid "Disable voting on answers."
+msgstr ""
+
+#: admin/options-page.php:413
+msgid "Disable down voting on answers."
+msgstr ""
+
+#: admin/options-page.php:420
+msgid "Disable navigation"
+msgstr ""
+
+#: admin/options-page.php:421
+msgid "Disable answer navigation."
+msgstr ""
+
+#: admin/options-page.php:429 includes/class-user.php:43 includes/options.php:143
+#: widgets/users.php:48
+msgid "Users"
+msgstr "दोस्त"
+
+#: admin/options-page.php:433
+msgid "Select which user profile you'd like to use."
+msgstr "कोनसी पहचान आप इस्तेमाल करना चाहते है"
+
+#: admin/options-page.php:441
+msgid "Show users directory"
+msgstr "दोस्तों की निर्देशिका  दिखाइए"
+
+#: admin/options-page.php:442
+msgid "When enabled public can see directory of users."
+msgstr ""
+
+#: admin/options-page.php:450
+msgid "Features"
+msgstr "सुविधाऐं"
+
+#: admin/options-page.php:454
+msgid "Disable reputation"
+msgstr "ख्याति रोके"
+
+#: admin/options-page.php:455
+msgid "Disable reputation for user"
+msgstr "उपयोगकर्ता के लिए ख्याति रोके"
+
+#: admin/options-page.php:463
+msgid "Users page avatar size"
+msgstr ""
+
+#: admin/options-page.php:464
+msgid "Set user avatar size for users page item."
+msgstr ""
+
+#: admin/options-page.php:472
+msgid "Cover width"
+msgstr "कवर चौड़ाई"
+
+#: admin/options-page.php:473
+msgid "Set width of user cover photo."
+msgstr ""
+
+#: admin/options-page.php:480
+msgid "Cover height"
+msgstr "कवर उचाई"
+
+#: admin/options-page.php:481
+msgid "Set height of user cover photo."
+msgstr ""
+
+#: admin/options-page.php:488
+msgid "Cover thumb width"
+msgstr "छोटा कवर चौड़ाई"
+
+#: admin/options-page.php:489
+msgid "Set width of user cover photo thumbnail."
+msgstr ""
+
+#: admin/options-page.php:496
+msgid "Small cover height"
+msgstr ""
+
+#: admin/options-page.php:497
+msgid "Set height of user cover photo thumbnail."
+msgstr ""
+
+#: admin/options-page.php:504
+msgid "Default rank"
+msgstr ""
+
+#: admin/options-page.php:505
+msgid "Assign a default rank for newly registered user."
+msgstr ""
+
+#: admin/options-page.php:517
+msgid "Permission"
+msgstr "अनुमति"
+
+#: admin/options-page.php:520
+msgid "Multiple answers"
+msgstr "एकाधिक सवाल"
+
+#: admin/options-page.php:521
+msgid "Allow user to submit multiple answer per question."
+msgstr ""
+
+#: admin/options-page.php:528
+msgid "Asker can answer"
+msgstr ""
+
+#: admin/options-page.php:529
+msgid "Allow asker to answer his own question."
+msgstr ""
+
+#: admin/options-page.php:536
+msgid "Allow anonymous"
+msgstr ""
+
+#: admin/options-page.php:537
+msgid "Non-loggedin user can post questions and answers."
+msgstr ""
+
+#: admin/options-page.php:544
+msgid "Only admin can answer"
+msgstr "केवल एडमिन ही जवाब दे सकता है"
+
+#: admin/options-page.php:545
+msgid "Only allow admin to answer question."
+msgstr "केवल एडमिन ही जवाब देने की अनुमति दे"
+
+#: admin/options-page.php:552
+msgid "Only logged in can see answers"
+msgstr "लॉगिन करने पर ही सवाल देख सकते हैं"
+
+#: admin/options-page.php:553
+msgid "non-loggedin user cannot see answers."
+msgstr "जब तक लॉगिन नहीं करते, तब तक सवाल दिखाई नहीं देंगे"
+
+#: admin/options-page.php:560
+msgid "Only logged in can see comment"
+msgstr "लॉगिन करने पर ही टिप्पणियाँ देख सकते हैं"
+
+#: admin/options-page.php:561
+msgid "non-loggedin user cannot see comments."
+msgstr "जब तक लॉगिन नहीं करते, तब तक टिप्पणियाँ दिखाई नहीं देंगे"
+
+#: admin/options-page.php:568
+msgid "Lock delete action"
+msgstr "हटाने की गतिविधि बंद करे"
+
+#: admin/options-page.php:569
+msgid ""
+"Lock comment or post after a period so that user cannot delete it. Set the time in "
+"epoch i.e. 86400 = 1 day."
+msgstr ""
+
+#: admin/options-page.php:577
+msgid "Upload"
+msgstr "उपलोड"
+
+#: admin/options-page.php:581
+msgid "Allow image upload"
+msgstr ""
+
+#: admin/options-page.php:582
+msgid "Allow logged-in users to upload image."
+msgstr ""
+
+#: admin/options-page.php:589
+msgid "Max images per post"
+msgstr "पोस्ट पर के सर्वाधिक इमेजेस"
+
+#: admin/options-page.php:590
+msgid "Set how many images user can upload for each post."
+msgstr "हटाइये"
+
+#: admin/options-page.php:597
+msgid "Max upload size"
+msgstr "अधिकतम अपलोड आकार"
+
+#: admin/options-page.php:598
+msgid "Set maximum upload size."
+msgstr ""
+
+#: admin/options-page.php:609
+msgid "Status of new question"
+msgstr ""
+
+#: admin/options-page.php:610
+msgid "Set post status of new question."
+msgstr ""
+
+#: admin/options-page.php:621
+msgid "Status of edited question"
+msgstr ""
+
+#: admin/options-page.php:622
+msgid "Set post status of edited question."
+msgstr ""
+
+#: admin/options-page.php:633
+msgid "Status of new answer"
+msgstr ""
+
+#: admin/options-page.php:634
+msgid "Set post status of new answer."
+msgstr ""
+
+#: admin/options-page.php:645
+msgid "Status of edited answer"
+msgstr ""
+
+#: admin/options-page.php:646
+msgid "Set post status of edited answer."
+msgstr ""
+
+#: admin/options-page.php:658
+msgid "reCaptacha"
+msgstr ""
+
+#: admin/options-page.php:662
+msgid "Enable reCaptcha"
+msgstr ""
+
+#: admin/options-page.php:663
+msgid "Use this for preventing spam posts."
+msgstr ""
+
+#: admin/options-page.php:670
+msgid "Recaptcha site key"
+msgstr ""
+
+#: admin/options-page.php:671
+msgid ""
+"Enter your site key, if you dont have it get it from here https://www.google.com/"
+"recaptcha/admin"
+msgstr ""
+
+#: admin/options-page.php:678
+msgid "Recaptcha secret key"
+msgstr ""
+
+#: admin/options-page.php:679
+msgid "Enter your secret key"
+msgstr ""
+
+#: admin/options-page.php:686
+msgid "Tools"
+msgstr ""
+
+#: admin/reputation.php:152 admin/reputation.php:153
+msgid "Delete this reputation"
+msgstr ""
+
+#: admin/reputation.php:153 includes/activity.php:1131 includes/class-form.php:277
+#: includes/class-form.php:284 includes/functions.php:653 includes/theme.php:677
+msgid "Delete"
+msgstr "हटाइये"
+
+#: admin/views/about.php:118 admin/views/sidebar.php:5
+msgid "Support Q&A"
+msgstr ""
+
+#: admin/views/about.php:119 admin/views/sidebar.php:6
+msgid "AnsPress Themes"
+msgstr ""
+
+#: admin/views/about.php:120 admin/views/sidebar.php:7
+msgid "Github Repo"
+msgstr ""
+
+#: admin/views/addons.php:18
+msgid "AnsPress Extensions"
+msgstr ""
+
+#: admin/views/admin.php:34
+msgid "AnsPress options updated"
+msgstr ""
+
+#: admin/views/dashboard.php:25
+msgid "AnsPress Dashboard"
+msgstr ""
+
+#: admin/views/dashboard.php:34 includes/bp.php:102 includes/class-user.php:50
+#: includes/functions.php:1602 includes/post_types.php:49 includes/user.php:512
+#: includes/user.php:539 widgets/questions.php:53
+msgid "Questions"
+msgstr "सवाल"
+
+#: admin/views/dashboard.php:58
+msgid "Latest Questions"
+msgstr "नवीनतम सवाल"
+
+#: admin/views/dashboard.php:68 includes/functions.php:399
+#: includes/post_types.php:236 includes/post_types.php:357
+msgid "Comments"
+msgstr "टिप्पणियाँ"
+
+#: admin/views/dashboard.php:79
+msgid "There is no question yet."
+msgstr "अभी तक कोई सवाल नहीं."
+
+#: admin/views/moderate.php:18
+msgid "Posts awaiting moderation"
+msgstr "पोस्ट सभापति के अनुमति के लिए रुके है"
+
+#: admin/views/post_flag.php:41
+msgid "Total <b>%d flag</b>"
+msgstr "अलग सूचक गिनती <b>%d </b>"
+
+#: admin/views/post_flag.php:42 includes/theme.php:33
+msgid "Edit post"
+msgstr "पोस्ट बदलिये"
+
+#: admin/views/post_flag.php:43
+msgid "Trash post"
+msgstr "पोस्ट कचरे में डालिये"
+
+#: admin/views/post_flag.php:55
+msgid "%s flagged this post %s"
+msgstr "%s ने इस पोस्ट को %s कर अलग किया है"
+
+#: admin/views/post_flag.php:56
+msgid "Remove"
+msgstr "हटाइये"
+
+#: admin/views/post_flag.php:61
+msgid "No one flagged this post yet"
+msgstr "अभी तक किसी ने इस पोस्ट को अलग नहीं किया"
+
+#: admin/views/reputation.php:19
+msgid "AnsPress Reputation"
+msgstr ""
+
+#: admin/views/reputation.php:20
+msgid "New reputation"
+msgstr "नई ख्याति"
+
+#: admin/views/select_question.php:20
+msgid "Select a question for new answer"
+msgstr "नए जवाब के लिए एक सवाल चुनिए"
+
+#: admin/views/select_question.php:21
+msgid ""
+"Slowly type for question suggestion and then click select button right to question "
+"title."
+msgstr ""
+
+#: admin/views/tools.php:21
+msgid "AnsPress capabilities"
+msgstr ""
+
+#: admin/views/tools.php:22
+msgid "Add AnsPress capabilities to 3rd party roles"
+msgstr ""
+
+#: admin/views/tools.php:25
+msgid "Select user role"
+msgstr ""
+
+#: admin/views/tools.php:38
+msgid "Basic Capabilities"
+msgstr ""
+
+#: admin/views/tools.php:47
+msgid "Moderator Capabilities"
+msgstr ""
+
+#: admin/views/updates.php:6
+msgid "Actions"
+msgstr ""
+
+#: admin/views/updates.php:15 admin/views/updates.php:26
+msgid "Move old subscribers"
+msgstr ""
+
+#: admin/views/updates.php:16 admin/views/updates.php:27
+msgid ""
+"Since 2.4 subscribers are stored in diffrent table, so move all subscribers data to "
+"new table."
+msgstr ""
+
+#: admin/views/updates.php:20 admin/views/updates.php:31
+msgid "Start"
+msgstr "सुरु करे"
+
+#: includes/activity-hooks.php:81
+msgid "%s asked question %s"
+msgstr "%s ने सवाल पूछा है की %s"
+
+#: includes/activity-hooks.php:90 includes/activity.php:587 includes/bp.php:239
+#: includes/post_types.php:70
+msgid "question"
+msgstr "सवाल"
+
+#: includes/activity-hooks.php:113
+msgid "%s answered on %s"
+msgstr "%s जवाब है %s पर"
+
+#: includes/activity-hooks.php:132 includes/activity.php:587 includes/bp.php:239
+#: includes/post_types.php:140 theme/default/answers.php:18
+msgid "answer"
+msgstr "जवाब"
+
+#: includes/activity-hooks.php:149
+msgid "%s edited question %s"
+msgstr "%s ने %s ये सवाल बदला"
+
+#: includes/activity-hooks.php:181
+msgid "%s edited answer %s"
+msgstr "%s ने %s ये जवाब बदला"
+
+#: includes/activity-hooks.php:224 includes/activity-hooks.php:491
+msgid "%s commented on question %s %s"
+msgstr "%s ने %s %s इस सवाल पर टिप्पणी दी है"
+
+#: includes/activity-hooks.php:229 includes/activity-hooks.php:496
+msgid "%s commented on answer %s %s"
+msgstr "%s ने %s %s इस जवाब पर टिप्पणी दी है"
+
+#: includes/activity-hooks.php:268
+msgid "%s selected best answer for %s"
+msgstr "%s ने सर्वोत्तम जवाब के रूप में %s इस सवाल के लिए चुना है"
+
+#: includes/activity-hooks.php:303
+msgid "%s unselected best answer for question %s"
+msgstr "%s ने सर्वोत्तम जवाब के रूप में %s इस सवाल के लिए चुनाव हटाया है"
+
+#: includes/activity-hooks.php:410
+msgid "%s started following %s"
+msgstr "%s ने %s का अनुकरण सुरु किया है"
+
+#: includes/activity-hooks.php:530
+msgid "%s mentioned you in %s %s"
+msgstr "%s ने %s %s में आपका उल्लेख किया है"
+
+#: includes/activity.php:572
+msgid "%s edited comment on %s %s"
+msgstr "%s ने %s %s को टिप्पणी बदली है"
+
+#: includes/activity.php:577
+msgid "%s updated status of question %s"
+msgstr "%s ने %s %s को सवाल की स्थिति बदली है"
+
+#: includes/activity.php:582
+msgid "%s updated status of answer %s"
+msgstr "%s ने %s %s को जवाब की स्थिति बदली है"
+
+#: includes/activity.php:589
+msgid "%s voted up on %s %s"
+msgstr "%s ने % %s को अच्छा मत उँचा किया है"
+
+#: includes/activity.php:595
+msgid "%s received %d reputation on %s"
+msgstr "%s को %s पर ज्यादा %d ख्याति प्राप्त हुई है"
+
+#: includes/activity.php:678
+msgid "asked"
+msgstr "ने पूछा की"
+
+#: includes/activity.php:679
+msgid "answered"
+msgstr "ने जवाब दिया"
+
+#: includes/activity.php:680
+msgid "commented"
+msgstr "ने टिप्पणी की"
+
+#: includes/activity.php:681
+msgid "commented on answer"
+msgstr "ने जवाब पर टिप्पणी की"
+
+#: includes/activity.php:682
+msgid "edited question"
+msgstr "ने सवाल बदला"
+
+#: includes/activity.php:683
+msgid "edited answer"
+msgstr "ने जवाब बदला "
+
+#: includes/activity.php:684
+msgid "edited comment"
+msgstr "ने टीप्पणी बदली"
+
+#: includes/activity.php:685
+msgid "selected answer"
+msgstr "चुना सवाल"
+
+#: includes/activity.php:686
+msgid "unselected answer"
+msgstr "अनचुना सवाल"
+
+#: includes/activity.php:687
+msgid "updated status"
+msgstr "बदली स्थिति"
+
+#: includes/activity.php:688
+msgid "selected as best answer"
+msgstr "सबसे अच्छे जवाब के रूप में स्वीकृत"
+
+#: includes/activity.php:689
+msgid "unselected as best answer"
+msgstr "सबसे अच्छे जवाब के रूप में अस्वीकृत"
+
+#: includes/activity.php:728
+msgid "%s %s %s"
+msgstr "%s %s %s"
+
+#: includes/activity.php:730
+msgid "Active %s"
+msgstr "सक्रिय %s"
+
+#: includes/activity.php:764
+msgid " %s %s %s"
+msgstr " %s %s %s"
+
+#: includes/ajax.php:75
+msgid "%d similar questions found"
+msgstr "%d सामान सवाल पाये गए"
+
+#: includes/ajax.php:76
+msgid ""
+"We've found similar questions that have already been asked, click to read them."
+msgstr "हमें कुछ सामान सवाल पाये गए है. पढ़ने के लिए क्लिक करे"
+
+#: includes/ajax.php:85 includes/functions.php:630
+msgid "Select"
+msgstr "चुने"
+
+#: includes/ajax.php:95
+msgid "No related questions found"
+msgstr "कोई समरूप सवाल पाया नहीं गया"
+
+#: includes/ajax.php:123 includes/ajax.php:145
+msgid "Update comment"
+msgstr "टिप्पणी बदलिये"
+
+#: includes/ajax.php:182 includes/ajax.php:221 includes/process-form.php:682
+msgid "One comment"
+msgid_plural "%d comments"
+msgstr[0] "१ टिप्पणी"
+msgstr[1] "%d टिप्पणीयाँ"
+
+#: includes/ajax.php:203 includes/ajax.php:315
+msgid "This post was created %s, its locked hence you cannot delete it."
+msgstr "ये पोस्ट %s बनाई गयी थी और इसलिए हटाई नहीं जा सकती"
+
+#: includes/ajax.php:468
+msgid "Update"
+msgstr "बदलिये"
+
+#: includes/ajax.php:510 includes/functions.php:1503
+msgid "Set as featured"
+msgstr "विशेष श्रेणी दीजिये"
+
+#: includes/ajax.php:525 includes/functions.php:1503
+msgid "Unset as featured"
+msgstr "विशेष श्रेणी हटाइये"
+
+#: includes/ajax.php:560 includes/ajax.php:779 includes/follow.php:36
+#: includes/subscriber.php:286
+msgid "Follow"
+msgstr "अनुसरण करे"
+
+#: includes/ajax.php:568 includes/ajax.php:794 includes/follow.php:36
+#: includes/subscriber.php:286
+msgid "Unfollow"
+msgstr "अनुसरण बंद करे"
+
+#: includes/ajax.php:881
+msgid "Please login for adding question to your subscribe"
+msgstr "कृपया लॉगिन करे और सवाल अनुसरण यदि में जोड़े"
+
+#: includes/answer-form.php:40 includes/post_types.php:126
+msgid "Update answer"
+msgstr "जवाब बदलिये"
+
+#: includes/answer-form.php:40
+msgid "Post answer"
+msgstr "जवाब भेजिए"
+
+#: includes/answer-form.php:53
+msgid "Your answer.."
+msgstr "आपका जवाब.."
+
+#: includes/answer-form.php:67 includes/ask-form.php:82
+msgid "Name"
+msgstr "नाम"
+
+#: includes/answer-form.php:69 includes/ask-form.php:84
+msgid "Enter your name to display"
+msgstr "प्रदर्शित किया जानेवाला  नाम लिखिए"
+
+#: includes/answer-form.php:80 includes/ask-form.php:95
+msgid "Only visible to admin and moderator."
+msgstr "केवल एडमिन और सभापति देख सकते है."
+
+#: includes/answer-form.php:90 includes/ask-form.php:105
+msgid "reCaptach keys missing, please add keys"
+msgstr ""
+
+#: includes/answer-loop.php:415 includes/question-loop.php:322
+#: theme/default/answer-list.php:35
+msgid "votes"
+msgstr "मत"
+
+#: includes/ask-form.php:31
+msgid "Update question"
+msgstr "सवाल बदलिये"
+
+#: includes/ask-form.php:31
+msgid "Post question"
+msgstr "सवाल भेजिए"
+
+#: includes/ask-form.php:37
+msgid "Question in one sentence"
+msgstr "सवाल केवल एक वाक्य में"
+
+#: includes/ask-form.php:38
+msgid "Write a meaningful title for the question."
+msgstr "सार्थक सवाल शीर्षक लिखिए"
+
+#: includes/ask-form.php:54
+msgid "Write description for the question."
+msgstr "सवाल का विवरण लिखिए"
+
+#: includes/bp.php:58
+msgid "Questions %s"
+msgstr "पूछते है"
+
+#: includes/bp.php:66
+msgid "Answers %s"
+msgstr "जवाब देते है"
+
+#: includes/bp.php:147
+msgid "%1$s asked a new <a href=\"AP_CPT_LINK\">question</a>"
+msgstr "%1$s ने नया <a href=\"AP_CPT_LINK\">सवाल</a> किया हैं"
+
+#: includes/bp.php:148
+msgid "%1$s asked a new <a href=\"AP_CPT_LINK\">question</a>, on the site %3$s"
+msgstr "%1$s ने साईट पर नया <a href=\"AP_CPT_LINK\">सवाल</a> किया हैं"
+
+#: includes/bp.php:157
+msgid "%1$s <a href=\"AP_CPT_LINK\">answered</a> a question"
+msgstr "%1$s ने सवाल का <a href=\"AP_CPT_LINK\">जवाब</a> दिया है"
+
+#: includes/bp.php:158
+msgid "%1$s <a href=\"AP_CPT_LINK\">answered</a> a question, on the site %3$s"
+msgstr "%1$s ने साईट पर सवाल का <a href=\"AP_CPT_LINK\">जवाब</a> दिया है"
+
+#: includes/bp.php:165
+msgid "Answer this question"
+msgstr "इस सवाल का जवाब दे"
+
+#: includes/bp.php:180
+msgid "%s Reputation"
+msgstr "%d ख्याति"
+
+#: includes/bp.php:227
+msgid "%1$d answers on - %2$s"
+msgstr "%1$d  जवाब  %2$s पर"
+
+#: includes/bp.php:231
+msgid "%1$s answered on - %2$s"
+msgstr "%1$s ने जवाब दिया %2$s पर"
+
+#: includes/bp.php:245
+msgid "%1$d comments on your %3$s - %2$s"
+msgstr "%1$d टिप्पणियाँ आपके %3$s - %2$s पर है"
+
+#: includes/bp.php:249
+msgid "%1$s commented on your %3$s - %2$s"
+msgstr "%1$s ने आपके %3$s - %2$s पर टिप्पणी की है"
+
+#: includes/class-form.php:59
+msgid "Submit"
+msgstr "प्रस्तुत करे"
+
+#: includes/class-form.php:186 theme/default/comment-form.php:11
+msgid "Cancel"
+msgstr "स्थगित करे"
+
+#: includes/class-form.php:271
+msgid "Repeat your password"
+msgstr "दोबारा पासवर्ड लिखे"
+
+#: includes/class-form.php:286
+msgid "Add more"
+msgstr "और जोड़े"
+
+#: includes/class-form.php:419
+msgid "Select a page"
+msgstr "पेज चुनिए"
+
+#: includes/class-form.php:640
+msgid "No fields found"
+msgstr "कोई विस्तार नहीं"
+
+#: includes/class-roles-cap.php:93
+msgid "AnsPress Moderator"
+msgstr "सभापति"
+
+#: includes/class-roles-cap.php:97
+msgid "AnsPress Participants"
+msgstr "साझीदार"
+
+#: includes/class-roles-cap.php:98
+msgid "AnsPress Banned"
+msgstr ""
+
+#: includes/class-theme.php:206
+msgid "Question Feed"
+msgstr "सवाल सूचि"
+
+#: includes/class-theme.php:241
+msgid "Question feed"
+msgstr "सवाल सूचि "
+
+#: includes/class-theme.php:242
+msgid "Answers feed"
+msgstr "जवाब सूचि"
+
+#: includes/class-user.php:45 includes/theme.php:829
+msgid "User"
+msgstr "साथी"
+
+#: includes/class-user.php:46
+msgid "About"
+msgstr "के बारेमें"
+
+#: includes/class-user.php:47
+msgid "Activity Feed"
+msgstr "गतिविधि सूचि"
+
+#: includes/class-user.php:48
+msgid "Notification"
+msgstr "सूचना"
+
+#: includes/class-user.php:49
+msgid "Profile"
+msgstr "परिचय"
+
+#: includes/class-user.php:52 theme/default/content-user.php:15
+#: widgets/followers.php:60 widgets/question_stats.php:50
+msgid "Followers"
+msgstr "अनुयायी"
+
+#: includes/class-user.php:53 includes/class-user.php:243
+#: theme/default/content-user.php:16
+msgid "Following"
+msgstr "अनुकरण"
+
+#: includes/class-user.php:68
+msgid "User directory is disabled."
+msgstr "साथी सूचि उपलभ्ध नहीं"
+
+#: includes/class-user.php:93
+msgid "No user found"
+msgstr "कोई साथी नहीं मिला"
+
+#: includes/class-user.php:189
+msgid "No followers found"
+msgstr "कोई अनुयायी नहीं मिला"
+
+#: includes/class-user.php:203
+msgid "You are not following anyone."
+msgstr "आप किसी का अनुकरण नहीं कर रहे."
+
+#: includes/class-user.php:223
+msgid "My activity"
+msgstr "आपकी गतिविधियाँ"
+
+#: includes/class-user.php:223
+msgid "%s's activity"
+msgstr "%s की गतिविधि"
+
+#: includes/class-user.php:225 includes/hooks.php:386 widgets/user.php:48
+msgid "My profile"
+msgstr "मेरा परिचय"
+
+#: includes/class-user.php:225
+msgid "%s's profile"
+msgstr "%s का परिचय"
+
+#: includes/class-user.php:228
+msgid "My questions"
+msgstr "मेरे सवाल"
+
+#: includes/class-user.php:228
+msgid "%s's questions"
+msgstr "%s के सवाल"
+
+#: includes/class-user.php:231
+msgid "My answers"
+msgstr "मेरे जवाब"
+
+#: includes/class-user.php:231
+msgid "%s's answers"
+msgstr "%s के जवाब"
+
+#: includes/class-user.php:234
+msgid "My reputation"
+msgstr "मेरी ख्याति"
+
+#: includes/class-user.php:234
+msgid "%s's reputation"
+msgstr "%s की ख्याति"
+
+#: includes/class-user.php:237
+msgid "About me"
+msgstr "मेरे बारे में"
+
+#: includes/class-user.php:237
+msgid "%s"
+msgstr "%w"
+
+#: includes/class-user.php:240
+msgid "My followers"
+msgstr "मेरे अनुयायी"
+
+#: includes/class-user.php:240
+msgid "%s's followers"
+msgstr "%s के अनुयायी"
+
+#: includes/class-user.php:246 includes/user.php:535
+msgid "My subscriptions"
+msgstr "मेरे समर्षन"
+
+#: includes/class-user.php:249 includes/hooks.php:387
+msgid "My notification"
+msgstr "मेरी सूचनाएँ"
+
+#: includes/class-user.php:346 includes/process-form.php:801
+msgid "File cannot be uploaded, size is bigger then %d Byte"
+msgstr "फाइल अपलोड नहीं हूँ सकती, आकार % बाईट से बड़ा है"
+
+#: includes/class-user.php:369 includes/class-user.php:505
+msgid "There was an error while uploading avatar, please check your image"
+msgstr "आपका अवतार उपलोड नहीं हो पाया, कृपया इमेज जाँच ले"
+
+#: includes/class-user.php:431
+msgid "Cover photo uploaded successfully."
+msgstr "पृष्ठ छवि सफलता पूर्वक अपलोड हो गयी"
+
+#: includes/class-user.php:438
+msgid ""
+"There was an error while uploading cover photo, please check your image and try "
+"again."
+msgstr "आपकी पृष्ठ छवि उपलोड नहीं हो पायी, कृपया इमेज जाँच ले"
+
+#: includes/class-user.php:497
+msgid "Avatar uploaded successfully."
+msgstr "अवतार सफलता पूर्वक अपलोड हो गया."
+
+#: includes/class-validation.php:56
+msgid "This field is required"
+msgstr "ये क्षेत्र जरुरी है"
+
+#: includes/class-validation.php:82
+msgid "Its too short, it must be minimum %d characters"
+msgstr "ये बहुत छोटा है, %d अक्षर से ज्यादा होना चाहिए"
+
+#: includes/class-validation.php:101 includes/class-validation.php:104
+msgid "It must be minimum %d characters"
+msgstr "काम से काम अक्षर होने चाहिए"
+
+#: includes/class-validation.php:113
+msgid "Not a valid email address"
+msgstr "ईमेल अवैध है"
+
+#: includes/common-pages.php:38
+msgid "Ask"
+msgstr "पूछिये"
+
+#: includes/common-pages.php:41
+msgid "Activity feed"
+msgstr "गतिविधि सूचि"
+
+#: includes/common-pages.php:154
+msgid "You don't have permission to access this page."
+msgstr "इस पेज को देखने की आपको अनुमति नहीं"
+
+#: includes/flag.php:92
+msgid "Flag this post"
+msgstr "इस पोस्ट को अलग करे"
+
+#: includes/flag.php:92
+msgid "You have flagged this post"
+msgstr "आपने इस पोस्ट को अलग किया है"
+
+#: includes/flag.php:94
+msgid "Flag "
+msgstr "अलग"
+
+#: includes/flag.php:161
+msgid "Report this comment to moderaor"
+msgstr "ये टिप्पणी सभापति को सूचित करे"
+
+#: includes/form.php:66
+msgid "You do not have permission to delete this comment"
+msgstr "आपको ये टिप्पणी हटाने की अनुमति नहीं"
+
+#: includes/form.php:83
+msgid "Comment deleted successfully"
+msgstr "टिप्पणी सफलता पूर्वक हटा दी गयी"
+
+#: includes/form.php:130 includes/form.php:153 includes/theme.php:824
+msgid "Tags"
+msgstr "बिल्ले"
+
+#: includes/form.php:174 includes/form.php:180
+msgid "Form loaded."
+msgstr "फ़ार्म भर दिया गया है"
+
+#: includes/form.php:182
+msgid "You do not have permission to edit this question."
+msgstr "आपको ये सवाल बदलने की अनुमति नहीं"
+
+#: includes/form.php:185
+msgid "Something went wrong, please try again."
+msgstr "कुछ तो गलत हो गया, कृपा पूनः प्रयास करे"
+
+#: includes/form.php:217
+msgid "Don't have a user account? %sRegister now%s."
+msgstr "आपका साथी खता नहीं, कृपया %रजिस्टर करे%s."
+
+#: includes/form.php:235
+msgid "Unable to create tag, please try again."
+msgstr "बल्ला नहीं बना पाये, फिर से प्रयास करे"
+
+#: includes/form.php:238
+msgid "Successfully created a tag."
+msgstr "सफलता पूर्वक बिल्ला बना दिया"
+
+#: includes/form.php:245
+msgid "Unable to load form, please try again."
+msgstr "फार्म नहीं जोड़ पाये, फिर से प्रयास करे"
+
+#: includes/form.php:247
+msgid "Successfully loaded form."
+msgstr "फार्म लोड हो गया"
+
+#: includes/form.php:289
+msgid "Update Answer"
+msgstr "जवाब बदलिये"
+
+#: includes/form.php:296
+msgid "Create new tag"
+msgstr "नया बिल्ला बनाये"
+
+#: includes/form.php:297
+msgid "Enter tag"
+msgstr "बिल्ला लिखे"
+
+#: includes/form.php:298
+msgid "Description of tag."
+msgstr "बिल्ले का विस्तार"
+
+#: includes/form.php:299
+msgid "Create tag"
+msgstr "नया बिल्ला बनाये"
+
+#: includes/functions.php:268
+msgid "ago"
+msgstr "पूर्व"
+
+#: includes/functions.php:279
+msgid "Please login or register to continue this action."
+msgstr "ये कार्य पूर्ण करने के लिए कृपया लॉग इन या पंजीकरण करे"
+
+#: includes/functions.php:399 includes/reputation.php:848
+#: theme/default/comment-form.php:10
+msgid "Comment"
+msgstr "टिप्पणी"
+
+#: includes/functions.php:456
+msgid "Edit this question"
+msgstr "ये सवाल बदलिये"
+
+#: includes/functions.php:458
+msgid "Edit this answer"
+msgstr "ये जवाब बदलिये"
+
+#: includes/functions.php:477
+msgid "Edit Answer"
+msgstr "जवाब बदलिये"
+
+#: includes/functions.php:490
+msgid "Edited on"
+msgstr "को बदल गया "
+
+#: includes/functions.php:630
+msgid "Select this answer as best"
+msgstr "इस जवाब को सर्वोत्तम चुने"
+
+#: includes/functions.php:632
+msgid "Unselect this answer"
+msgstr "इस जवाब का चुनाव हटाइये"
+
+#: includes/functions.php:632
+msgid "Unselect"
+msgstr "चुनाव हटाइये"
+
+#: includes/functions.php:697
+msgid "Close"
+msgstr "बंद करे"
+
+#: includes/functions.php:697 includes/post_types.php:281
+msgid "Open"
+msgstr "खोले"
+
+#: includes/functions.php:697 includes/post_types.php:262 includes/post_types.php:269
+#: includes/question-loop.php:379
+msgid "Private"
+msgstr "निजी"
+
+#: includes/functions.php:700
+msgid "Change status of post"
+msgstr "पोस्ट की स्थिति बदलिये"
+
+#: includes/functions.php:920
+msgid "Success"
+msgstr "सफलता"
+
+#: includes/functions.php:921
+msgid "You need to login before doing this action."
+msgstr "इस कार्य को करने के लिए लॉगइन  करना जरुरी है"
+
+#: includes/functions.php:922
+msgid "Something went wrong, last action failed."
+msgstr "कुछ तो गलत हुआ है, पिछला कार्य नहीं हो पाया"
+
+#: includes/functions.php:923
+msgid "You do not have permission to do this action."
+msgstr "आपको ये कार्य करने की अनुमति नहीं"
+
+#: includes/functions.php:924
+msgid "You are commenting on a draft post."
+msgstr "आप प्रारूप पोस्ट पर टिपण्णी करे रहे है"
+
+#: includes/functions.php:925
+msgid "Comment successfully posted."
+msgstr "टिप्पणी सफ़लता पूर्वक भर दी गयी है"
+
+#: includes/functions.php:926
+msgid "Comment updated successfully."
+msgstr "टिप्पणी सफ़लता पूर्वक बदल  दी गयी है"
+
+#: includes/functions.php:927
+msgid "Comment deleted successfully."
+msgstr "टिप्पणी सफ़लता पूर्वक हटा दी गयी है"
+
+#: includes/functions.php:928
+msgid "You are following this question."
+msgstr "आप इस सवाल का अनुकरण कर रहे है."
+
+#: includes/functions.php:929 includes/functions.php:955
+msgid "Successfully unfollowed."
+msgstr "अनुकरण सफलता पूर्वक बंद हो गया."
+
+#: includes/functions.php:930
+msgid "Question submitted successfully"
+msgstr "सवाल सफलता पूर्वक चढ़ा दिया गया है"
+
+#: includes/functions.php:931
+msgid "Question updated successfully"
+msgstr "सवाल सफलता पूर्वक बदल दिया गया है"
+
+#: includes/functions.php:932
+msgid "Answer submitted successfully"
+msgstr "जवाब सफलता पूर्वक चढ़ा दिया गया है"
+
+#: includes/functions.php:933
+msgid "Answer updated successfully"
+msgstr "जवाब सफलता पूर्वक बदल दिया गया है"
+
+#: includes/functions.php:934
+msgid "Thank you for voting."
+msgstr "मतदान के लिए शुक्रिया."
+
+#: includes/functions.php:935
+msgid "Your vote has been removed."
+msgstr "आपका मत हटा दिया गया है."
+
+#: includes/functions.php:936
+msgid "Undo your vote first."
+msgstr "पहले आपका मत बदलिये."
+
+#: includes/functions.php:937
+msgid "You cannot vote on your own question or answer."
+msgstr "आपके सवाल या जवाब को आप मत नहीं दे सकते."
+
+#: includes/functions.php:938
+msgid "Best answer is unselected for your question."
+msgstr "आपके सवाल का सर्वोत्तम उत्तर बदल दिया गया है."
+
+#: includes/functions.php:939
+msgid "Best answer is selected for your question."
+msgstr "आपके सवाल का सर्वोत्तम उत्तर चुना गया है"
+
+#: includes/functions.php:940
+msgid "Question moved to trash."
+msgstr "सवाल को कचरे में डाला गया है"
+
+#: includes/functions.php:941
+msgid "Answer moved to trash."
+msgstr "आपके जवाब को कचरे में डाला गया है."
+
+#: includes/functions.php:942
+msgid "You dont have permission to view private posts."
+msgstr "निजी पोस्ट देखने की आपको अनुमति नहीं."
+
+#: includes/functions.php:943
+msgid "Thank you for reporting this post."
+msgstr "इस पोस्ट को सूचित करने के लिए धन्यवाद."
+
+#: includes/functions.php:944
+msgid "You have already reported this post."
+msgstr "आपने इस पोस्ट को पेहेले ही सूचित किया है."
+
+#: includes/functions.php:945
+msgid "Please check captcha field and resubmit it again."
+msgstr "पहले captcha क्षेत्र जाँचिए और फिर से भेजिए"
+
+#: includes/functions.php:946
+msgid "Comment content is empty."
+msgstr "टिप्पणी क्षेत्र  खाली है."
+
+#: includes/functions.php:947
+msgid "Post status updated successfully"
+msgstr "पोस्ट स्थिति सफलता पूर्वक बदल दी गयी है."
+
+#: includes/functions.php:948
+msgid "Image uploaded successfully"
+msgstr "छवि सफलता पूर्वक भेज दी गयी है."
+
+#: includes/functions.php:949
+msgid "Question has been deleted permanently"
+msgstr "सवाल हमेशा के लिए हटा दिया गया है"
+
+#: includes/functions.php:950
+msgid "Answer has been deleted permanently"
+msgstr "जवाब हमेशा के लिए हटा दिया गया है."
+
+#: includes/functions.php:951
+msgid "Question is marked as featured."
+msgstr "सवाल को विशेष चुना गया है."
+
+#: includes/functions.php:952
+msgid "Question is unmarked as featured."
+msgstr "सवाल का विशेष चुनाव हटा दिअय गया है."
+
+#: includes/functions.php:953
+msgid "You have already attached maximum numbers of allowed uploads."
+msgstr "अधिकतम वैध अपलोड आप कर चुके है."
+
+#: includes/functions.php:954
+msgid "Your profile has been updated successfully."
+msgstr "आपका परिचय बदल दिया गया है."
+
+#: includes/functions.php:956
+msgid "Successfully followed."
+msgstr "सफलता से अनुकरण हुआ."
+
+#: includes/functions.php:957
+msgid "You cannot follow yourself."
+msgstr "आप स्वयं का अनुकरण नहीं कर सकते."
+
+#: includes/functions.php:958
+msgid "Notification deleted successfully."
+msgstr "सूचना सफलता पूर्वक  हटा दी गयी है."
+
+#: includes/functions.php:959
+msgid "Notification is marked as read."
+msgstr "ये सूचना पढ़ी हुई घोषित किया जाता है."
+
+#: includes/functions.php:960
+msgid "Voting down is disabled."
+msgstr "निचे मत करना उपलब्ध नहीं."
+
+#: includes/functions.php:961
+msgid "This comment has been reported to site moderator"
+msgstr "इस टिप्पणी को सभापति को सूचित करे."
+
+#: includes/functions.php:962
+msgid "You have already reported this comment"
+msgstr "आपने इस टिप्पणी को पेहेले ही सूचित किया है."
+
+#: includes/functions.php:1353
+msgid "Question is asked for %s."
+msgstr "सवाल %s को पूछा गया है"
+
+#: includes/functions.php:1361
+msgid "%s is marked as a private, only admin and post author can see."
+msgstr "%s निजी घोषित किया है, केवल एडमिन एवं सभापति देख सकते है."
+
+#: includes/functions.php:1369
+msgid "%s is waiting for approval by moderator."
+msgstr "%s को सभापति के अनुमति की प्रतीक्षा है."
+
+#: includes/functions.php:1377
+msgid "%s is closed, new answer are not accepted."
+msgstr "%s बंद किया गया है, और कोई जवाब नहीं दे सकता है."
+
+#: includes/functions.php:1385
+msgid "%s has been trashed, you can delete it permanently from wp-admin."
+msgstr "%s को कचरे में दाल दिया गया है, हमेशा के लिए हटाने के लिए wp-admin में जाईये."
+
+#: includes/functions.php:1396
+msgid "Add image to editor"
+msgstr "छवि को संपादक में जोड़े."
+
+#: includes/functions.php:1400
+msgid "upload"
+msgstr "अपलोड"
+
+#: includes/functions.php:1402
+msgid "or"
+msgstr "या"
+
+#: includes/functions.php:1406
+msgid "add image from link"
+msgstr "लिंक द्वारा छवि जोड़े"
+
+#: includes/functions.php:1409
+msgid "Enter images link"
+msgstr "छवि की लिंक डाले"
+
+#: includes/functions.php:1503
+msgid "Make this question featured"
+msgstr "इस सवाल को विशेष चुने."
+
+#: includes/functions.php:1672
+msgid "[Solved] "
+msgstr "[सुलझा गया "
+
+#: includes/notification.php:201
+msgid "$activity_id is not a valid integer."
+msgstr ""
+
+#: includes/notification.php:300
+msgid "9+"
+msgstr ""
+
+#: includes/participants.php:82
+msgid "<span>1</span> Participant"
+msgid_plural "<span>%d</span> Participants"
+msgstr[0] "<span>1</span> सहभागी"
+msgstr[1] "<span>%d</span> सहभागी"
+
+#: includes/post_status.php:26
+msgid "Closed <span class=\"count\">(%s)</span>"
+msgid_plural "Moderate <span class=\"count\">(%s)</span>"
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/post_status.php:34
+msgid "Moderate <span class=\"count\">(%s)</span>"
+msgid_plural "Moderate <span class=\"count\">(%s)</span>"
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/post_status.php:38 includes/query_filter.php:92
+#: includes/query_filter.php:103
+msgid "Private Post"
+msgstr "निजी पोस्ट"
+
+#: includes/post_status.php:42
+msgid "Private Post <span class=\"count\">(%s)</span>"
+msgid_plural "Private Post <span class=\"count\">(%s)</span>"
+msgstr[0] "निजी पोस्ट <span class=\"count\">(%s)</span>"
+msgstr[1] "निजी पोस्ट <span class=\"count\">(%s)</span>"
+
+#: includes/post_types.php:50
+msgid "Parent Question:"
+msgstr "जनक सवाल:"
+
+#: includes/post_types.php:52
+msgid "View Question"
+msgstr "सवाल देखे"
+
+#: includes/post_types.php:53
+msgid "Add New Question"
+msgstr "नया सवाल जोड़े"
+
+#: includes/post_types.php:55
+msgid "Edit Question"
+msgstr "सवाल को बदलिये"
+
+#: includes/post_types.php:56
+msgid "Update Question"
+msgstr "सवाल बदलिये"
+
+#: includes/post_types.php:57
+msgid "Search question"
+msgstr "सवाल खोजें"
+
+#: includes/post_types.php:58
+msgid "No question found"
+msgstr "कोई सवाल नहीं पाया गया"
+
+#: includes/post_types.php:59
+msgid "No questions found in Trash"
+msgstr "कोई सवाल कचरे नहीं पाया गया"
+
+#: includes/post_types.php:120
+msgid "Parent Answer:"
+msgstr "जनक जवाब:"
+
+#: includes/post_types.php:122
+msgid "View Answer"
+msgstr "जवाब देखिए"
+
+#: includes/post_types.php:123
+msgid "Add New Answer"
+msgstr "नया जवाब जोड़िए"
+
+#: includes/post_types.php:124
+msgid "New answer"
+msgstr "नया जवाब"
+
+#: includes/post_types.php:125
+msgid "Edit answer"
+msgstr "जवाब बदलिये"
+
+#: includes/post_types.php:127
+msgid "Search answer"
+msgstr "जवाब खोजें"
+
+#: includes/post_types.php:128
+msgid "No answer found"
+msgstr "कोई जवाब नहीं मिला"
+
+#: includes/post_types.php:129
+msgid "No answer found in Trash"
+msgstr "कचरे में कोई जवाब नहीं मिला"
+
+#: includes/post_types.php:225 includes/post_types.php:354
+msgid "Author"
+msgstr "लेखक"
+
+#: includes/post_types.php:232
+msgid "Tag"
+msgstr "बिल्ला"
+
+#: includes/post_types.php:235
+msgid "Ans"
+msgstr "जवाब"
+
+#: includes/post_types.php:237 includes/post_types.php:358
+msgid "Vote"
+msgstr "मत"
+
+#: includes/post_types.php:239 includes/post_types.php:360
+msgid "Date"
+msgstr "दिनांक"
+
+#: includes/post_types.php:323 includes/post_types.php:329
+msgid "answers"
+msgstr "जवाब"
+
+#: includes/post_types.php:355
+msgid "Content"
+msgstr "जानकारी"
+
+#: includes/post_types.php:391
+msgid "Restore this item from the Trash"
+msgstr "  इस सामग्री को कचरे से बहार निकले"
+
+#: includes/post_types.php:394
+msgid "Move this item to the Trash"
+msgstr "  इस सामग्री को कचरे में दाल दे"
+
+#: includes/post_types.php:397
+msgid "Delete this item permanently"
+msgstr "इस सामग्री को हमेशा के लिए हटाइये"
+
+#: includes/post_types.php:397
+msgid "Delete Permanently"
+msgstr "हमेशा के लिए हटाइये"
+
+#: includes/post_types.php:400 includes/post_types.php:409
+msgid "Preview &#8220;%s&#8221;"
+msgstr "पूर्व दर्शन &#8220;%s&#8221;"
+
+#: includes/post_types.php:409
+msgid "Preview"
+msgstr "पूर्व दर्शन"
+
+#: includes/post_types.php:411
+msgid "View &#8220;%s&#8221; question"
+msgstr "&#8220;%s&#8221; सवाल देखे "
+
+#: includes/process-form.php:167 includes/process-form.php:397
+msgid "Bot verification failed."
+msgstr "सुरक्षा विशेषज्ञ जाँच असफल "
+
+#: includes/process-form.php:216 includes/process-form.php:440
+#: includes/process-form.php:752
+msgid "Check missing fields and then re-submit."
+msgstr "खाली क्षेत्र जाँचे और फिर से भेजे"
+
+#: includes/query_filter.php:50
+msgid "Please fill parent question field, Answer was not saved!"
+msgstr "जनक सवाल क्षेत्र भरे, जवाब इकट्ठा नहीं हो पाया"
+
+#: includes/question-loop.php:300
+msgid "%s ans"
+msgid_plural "%s ans"
+msgstr[0] "%s जवाब"
+msgstr[1] "%s जवाब"
+
+#: includes/question-loop.php:499
+msgid "%s %s"
+msgstr ""
+
+#: includes/reputation.php:290 theme/default/user/user.php:27
+#: theme/default/user/user.php:59 theme/default/users/loop-item.php:29
+#: theme/default/widgets/user.php:13
+msgid "%s Rep."
+msgstr "%s ख्याति"
+
+#: includes/reputation.php:551
+msgid "+%d"
+msgstr ""
+
+#: includes/reputation.php:594
+msgid "%sAsked %s"
+msgstr "%s ने पूछा %s"
+
+#: includes/reputation.php:598
+msgid "%sAnswered %s"
+msgstr "%s ने जवाब दिया  %s"
+
+#: includes/reputation.php:602
+msgid "%sCommented %s"
+msgstr "%sने टिप्पणी दी  %s"
+
+#: includes/reputation.php:606
+msgid "%sSelected answer %s"
+msgstr "%s ने जवाब चुना %s"
+
+#: includes/reputation.php:610
+msgid "%sUp vote %s %s"
+msgstr "%sऊपर मत %s %s"
+
+#: includes/reputation.php:614
+msgid "%sDown vote %s %s"
+msgstr "%sनिचे मत %s %s"
+
+#: includes/reputation.php:618
+msgid "%sDown voted %s"
+msgstr "%sनिचे मत दिया  %s"
+
+#: includes/reputation.php:622
+msgid "%sBest answer %s"
+msgstr "%sसर्वोत्तम जवाब  %s"
+
+#: includes/reputation.php:813
+msgid "New Registration"
+msgstr "नया पंजीकरण"
+
+#: includes/reputation.php:814
+msgid "Points given to newly registered user."
+msgstr "नए पंजीकृत को मिले अंक"
+
+#: includes/reputation.php:820
+msgid "Uploading avatar"
+msgstr "अवतार भेज रहे है"
+
+#: includes/reputation.php:821
+msgid "Awarded for uploading an profile picture."
+msgstr "छवि चित्र जोड़ने के लिए मिले अंक."
+
+#: includes/reputation.php:827
+msgid "Completing profile"
+msgstr "परिचय खतम कर रहे है."
+
+#: includes/reputation.php:828
+msgid "Awarded for completing profile fields."
+msgstr "परिचय क्षेत्र भरने के लिए अंक."
+
+#: includes/reputation.php:835
+msgid "For asking a question."
+msgstr "सवाल पूछने लिखे लिए"
+
+#: includes/reputation.php:842
+msgid "For answering a question."
+msgstr "सवाल का जवाब देने के लिए."
+
+#: includes/reputation.php:849
+msgid "For new comment."
+msgstr "नयी टिप्पणी देने के लिए."
+
+#: includes/reputation.php:855
+msgid "Receive upvote on question"
+msgstr "सवाल पर ऊपर मत प्राप्त करे."
+
+#: includes/reputation.php:856
+msgid "When user receive an upvote on question"
+msgstr "जब साथी सवाल पर ऊपर मत प्राप्त करता है."
+
+#: includes/reputation.php:862
+msgid "Receive upvote on answer"
+msgstr "जवाब पर ऊपर मत प्राप्त करे"
+
+#: includes/reputation.php:863
+msgid "When user receive an upvote on answer"
+msgstr "जब साथी जवाब पर ऊपर मत प्राप्त करता है."
+
+#: includes/reputation.php:869
+msgid "Receive down vote on question"
+msgstr "सवाल पर निचे मत प्राप्त करे."
+
+#: includes/reputation.php:870
+msgid "When user receive an down vote on question"
+msgstr "जब साथी सवाल पर निचे मत प्राप्त करता है."
+
+#: includes/reputation.php:876
+msgid "Receive down vote on answer"
+msgstr "जवाब पर निचे मत प्राप्त करे."
+
+#: includes/reputation.php:877
+msgid "When user receive an down vote on answer"
+msgstr "जब साथी जवाब पर निचे मत प्राप्त करता है."
+
+#: includes/reputation.php:883
+msgid "Up voted questions"
+msgstr "ऊपर मत प्राप्त सवाल"
+
+#: includes/reputation.php:884
+msgid "When user upvote others question"
+msgstr "जब साथी दुसरो के सवाल को ऊपर मत देता है"
+
+#: includes/reputation.php:890
+msgid "Up voted answers"
+msgstr "ऊपर मत प्राप्त जवाब"
+
+#: includes/reputation.php:891
+msgid "When user upvote others answer"
+msgstr "जब साथी दुसरो के जवाब को ऊपर मत देता है"
+
+#: includes/reputation.php:897
+msgid "Down voted questions"
+msgstr "निचे मत प्राप्त सवाल"
+
+#: includes/reputation.php:898
+msgid "When user down vote others question"
+msgstr "जब साथी दुसरो के सवाल को निचे मत देता है"
+
+#: includes/reputation.php:904
+msgid "Down voted answers"
+msgstr "निचे मत प्राप्त जवाब"
+
+#: includes/reputation.php:905
+msgid "When user down vote others answers"
+msgstr "जब साथी दुसरो के जवाब को निचे मत देता है"
+
+#: includes/reputation.php:912 includes/theme.php:635 includes/user.php:439
+#: theme/default/best_answer.php:17
+msgid "Best answer"
+msgstr "सर्वोत्तम जवाब"
+
+#: includes/reputation.php:913
+msgid "When user's answer get selected as best"
+msgstr "जब साथी का जवाब सर्वोत्तम चुना जाता है"
+
+#: includes/reputation.php:919
+msgid "Selecting answer"
+msgstr "जवाब का चुनाव"
+
+#: includes/reputation.php:920
+msgid "When user user select an answer."
+msgstr "जब साथी जवाब का चुनाव करता है"
+
+#: includes/requirements.php:75
+msgid "Install Required Plugins"
+msgstr ""
+
+#: includes/requirements.php:76
+msgid "Install Plugins"
+msgstr ""
+
+#: includes/requirements.php:77
+msgid "Installing Plugin: %s"
+msgstr ""
+
+#: includes/requirements.php:78
+msgid "Something went wrong with the plugin API."
+msgstr ""
+
+#: includes/requirements.php:79
+msgid "AnsPress requires the following plugin: %1$s."
+msgid_plural "AnsPress requires the following plugins: %1$s."
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/requirements.php:80
+msgid "AnsPress recommends the following plugin: %1$s."
+msgid_plural "AnsPress recommends the following plugins: %1$s."
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/requirements.php:81
+msgid ""
+"Sorry, but you do not have the correct permissions to install the %s plugin. "
+"Contact the administrator of this site for help on getting the plugin installed."
+msgid_plural ""
+"Sorry, but you do not have the correct permissions to install the %s plugins. "
+"Contact the administrator of this site for help on getting the plugins installed."
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/requirements.php:82
+msgid "The following required plugin is currently inactive: %1$s."
+msgid_plural "The following required plugins are currently inactive: %1$s."
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/requirements.php:83
+msgid "The following recommended plugin is currently inactive: %1$s."
+msgid_plural "The following recommended plugins are currently inactive: %1$s."
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/requirements.php:84
+msgid ""
+"Sorry, but you do not have the correct permissions to activate the %s plugin. "
+"Contact the administrator of this site for help on getting the plugin activated."
+msgid_plural ""
+"Sorry, but you do not have the correct permissions to activate the %s plugins. "
+"Contact the administrator of this site for help on getting the plugins activated."
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/requirements.php:85
+msgid ""
+"The following plugin needs to be updated to its latest version to ensure maximum "
+"compatibility with this theme: %1$s."
+msgid_plural ""
+"The following plugins need to be updated to their latest version to ensure maximum "
+"compatibility with this theme: %1$s."
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/requirements.php:86
+msgid ""
+"Sorry, but you do not have the correct permissions to update the %s plugin. Contact "
+"the administrator of this site for help on getting the plugin updated."
+msgid_plural ""
+"Sorry, but you do not have the correct permissions to update the %s plugins. "
+"Contact the administrator of this site for help on getting the plugins updated."
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/requirements.php:87
+msgid "Begin installing plugin"
+msgid_plural "Begin installing plugins"
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/requirements.php:88
+msgid "Begin activating plugin"
+msgid_plural "Begin activating plugins"
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/requirements.php:89
+msgid "Return to Required Plugins Installer"
+msgstr ""
+
+#: includes/requirements.php:90
+msgid "Plugin activated successfully."
+msgstr ""
+
+#: includes/requirements.php:91
+msgid "All plugins installed and activated successfully. %s"
+msgstr ""
+
+#: includes/shortcode-basepage.php:91
+msgid ""
+"Question and answer is powered by <a href=\"http://anspress.io\" traget=\"_blank"
+"\">AnsPress</a>"
+msgstr ""
+
+#: includes/subscriber.php:189
+msgid "Only you are subscribed to this question."
+msgstr "केवल आप इस सवाल का अनुसरण कर रहे है"
+
+#: includes/subscriber.php:190
+msgid "You and <strong>%s people</strong> subscribed to this question."
+msgstr "आप और <strong>%s लोगो</strong> के इस सवाल का अनुसरण किया है"
+
+#: includes/subscriber.php:192
+msgid "No one is subscribed to this question."
+msgstr "कोई भी इस सवाल का अनुसरण नहीं कर रहा"
+
+#: includes/subscriber.php:194
+msgid "<strong>%d people</strong> subscribed to this question."
+msgstr "<strong>%d लोग</strong> ने इस सवाल का अनुसरण किया है"
+
+#: includes/theme.php:43 theme/default/on-post.php:4
+msgid "Discussion on \"%s\""
+msgstr "\"%s\" पर बातचीत"
+
+#: includes/theme.php:47 theme/default/no-user-found.php:1
+#: theme/default/not-found.php:1
+msgid "Error 404"
+msgstr "गलती ४०४"
+
+#: includes/theme.php:317
+msgid "answer accepted"
+msgstr "जवाब स्वीकार किया गया है"
+
+#: includes/theme.php:317
+msgid "Solved"
+msgstr "सुलझा गया"
+
+#: includes/theme.php:321
+msgid "<i>%d views</i>"
+msgstr "<i>%d ने देखा</i>"
+
+#: includes/theme.php:522
+msgid "More action"
+msgstr "और कार्रवाई"
+
+#: includes/theme.php:569
+msgid "Answered"
+msgstr "जवाब दिया गया"
+
+#: includes/theme.php:570 widgets/questions.php:86
+msgid "Unanswered"
+msgstr "जवाब नहीं दिया गया"
+
+#: includes/theme.php:571
+msgid "Unsolved"
+msgstr "अनसुलझा"
+
+#: includes/theme.php:581 widgets/users.php:80
+msgid "Sort by"
+msgstr "के अनुरूप भेद"
+
+#: includes/theme.php:713
+msgid "Ask question"
+msgstr "सवाल पूछे"
+
+#: includes/theme.php:826 includes/theme.php:830 includes/theme.php:832
+msgid ".."
+msgstr ".."
+
+#: includes/user-fields.php:58
+msgid "Hide my profile"
+msgstr "मेरा परिचय छुपाईऐ"
+
+#: includes/user-fields.php:60
+msgid "Hide your profile from public"
+msgstr "जनता से आपका परिचय छुपइए"
+
+#: includes/user-fields.php:69
+msgid "First name"
+msgstr "पहला नाम"
+
+#: includes/user-fields.php:71
+msgid "Your first name"
+msgstr "आपका पहला नाम"
+
+#: includes/user-fields.php:79
+msgid "Last name"
+msgstr "उपनाम"
+
+#: includes/user-fields.php:81
+msgid "Your surname"
+msgstr "आपका उपनाम"
+
+#: includes/user-fields.php:89
+msgid "Nickname"
+msgstr "मुंह बोला नाम"
+
+#: includes/user-fields.php:91
+msgid "Your nickname"
+msgstr "आपका मुंह बोला नाम"
+
+#: includes/user-fields.php:99
+msgid "Display name"
+msgstr "प्रदर्शित नाम"
+
+#: includes/user-fields.php:112
+msgid "Write something about yourself"
+msgstr "स्वयं के बारेमें कुछ लिखे "
+
+#: includes/user-fields.php:122
+msgid "Username"
+msgstr "यूजरनेम / पंजीकृत नाम"
+
+#: includes/user-fields.php:124
+msgid "Your username"
+msgstr "आपका यूजरनेम / पंजीकृत नाम"
+
+#: includes/user-fields.php:125
+msgid "This cannot be changed."
+msgstr "ये बदला नहीं जा सकता."
+
+#: includes/user-fields.php:135
+msgid "Email"
+msgstr "ईमेल"
+
+#: includes/user-fields.php:137
+msgid "Your contact email"
+msgstr "आपका ईमेल"
+
+#: includes/user-fields.php:138
+msgid "NOTICE: If you update email then you need to re-verify your email and account."
+msgstr "सूचना: अगर आप ईमेल बदलते है तो आपके ईमेल व खाते को फिर से परखना होगा."
+
+#: includes/user-fields.php:150
+msgid "Password"
+msgstr "पासवर्ड"
+
+#: includes/user-fields.php:152
+msgid "Update your password"
+msgstr "आपका पासवर्ड बदलिये"
+
+#: includes/user.php:123
+msgid "Anonymous"
+msgstr "बेनाम"
+
+#: includes/user.php:154
+msgid " (anonymous)"
+msgstr "(बेनाम)"
+
+#: includes/user.php:358
+msgid "Page not found or registered."
+msgstr "पेज नहीं मिल पाया या पंजीकृत हो पाया."
+
+#: includes/user.php:509
+msgid "Top %s"
+msgstr "सर्वोच्च %s"
+
+#: includes/user.php:602
+msgid "Upload an avatar"
+msgstr "अवतार भेजे"
+
+#: includes/user.php:603
+msgid "Upload avatar"
+msgstr "अवतार भेजे"
+
+#: includes/user.php:625
+msgid "Basic"
+msgstr "मूलभूत"
+
+#: includes/user.php:626
+msgid "Account"
+msgstr "खाता"
+
+#: includes/user.php:654
+msgid ""
+"Passing user_id in ap_is_my_profile is deprecated, function will check again "
+"currently logged in user."
+msgstr ""
+
+#: includes/user.php:779
+msgid "Upload a cover photo"
+msgstr "पॄष्ठ छवि भेजे"
+
+#: includes/user.php:780
+msgid "Upload cover"
+msgstr "पॄष्ठ छवि भेजे"
+
+#: includes/users-loop.php:516
+msgid "%d years, "
+msgstr "%d साल, "
+
+#: includes/users-loop.php:519
+msgid "%d months, "
+msgstr "%d महीने, "
+
+#: includes/users-loop.php:522
+msgid "%d days"
+msgstr "%d दिन. "
+
+#: includes/vote.php:207
+msgid "Up vote this post"
+msgstr "इस पोस्ट को ऊपर मत करे "
+
+#: includes/vote.php:213
+msgid "Down vote this post"
+msgstr "इस पोस्ट को निचे मत करे"
+
+#: includes/vote.php:265
+msgid "Vote for closing"
+msgstr "बंद करने के लिए मत करे"
+
+#: includes/vote.php:265
+msgid "Undo your vote"
+msgstr "आपका मत बदलिये"
+
+#: includes/vote.php:272
+msgid "Close "
+msgstr "बंद करे"
+
+#: theme/default/answer-form.php:10 theme/default/ask.php:22
+msgid "Toggle fullscreen"
+msgstr "बड़ा स्क्रीन अदल बदल"
+
+#: theme/default/answer-form.php:12 theme/default/ask.php:24
+msgid "Write"
+msgstr "लिखे"
+
+#: theme/default/answer-form.php:14
+msgid "How to answer"
+msgstr "जवाब कैसे दे"
+
+#: theme/default/answer-list.php:21
+msgid "Private Answer"
+msgstr "निजी जवाब"
+
+#: theme/default/answers.php:37
+msgid "Please %s or %s to view answers and comments"
+msgstr "जवाब और टिप्पणियाँ देखने के लिए %s या %s करे"
+
+#: theme/default/ask.php:26
+msgid "How to ask"
+msgstr "सवाल कैसे पूछे"
+
+#: theme/default/ask.php:44
+msgid "You don't have permission to ask question."
+msgstr "आपको सवाल पूछने की अनुमति नहीं."
+
+#: theme/default/comment-form.php:14
+msgid "Respond to the post."
+msgstr "पोस्ट का जवाब दे"
+
+#: theme/default/comment.php:48
+msgid "Your comment is awaiting moderation."
+msgstr "आपकी टिप्पणी सभापति की अनुमति के लिए रुकी है."
+
+#: theme/default/comments.php:22
+msgid "Comment navigation"
+msgstr "टिप्पणी परिवहण"
+
+#: theme/default/comments.php:23
+msgid "&larr; Older Comments"
+msgstr "&larr; पुरानी टिप्पणियाँ"
+
+#: theme/default/comments.php:24
+msgid "Newer Comments &rarr;"
+msgstr "नयी टिप्पणियाँ &rarr;"
+
+#: theme/default/content-answer.php:18
+msgid "Total votes"
+msgstr "कुल मत"
+
+#: theme/default/content-answer.php:18 theme/default/user/about.php:96
+#: theme/default/user/list-answer.php:2 theme/default/user/list-question.php:2
+msgid "Votes"
+msgstr "मत"
+
+#: theme/default/content-list.php:19
+msgid "Featured question"
+msgstr "श्रेष्ठ सवाल"
+
+#: theme/default/content-none.php:9
+msgid "No question asked yet!, be the first to ask a question."
+msgstr "अभी तक कोई सवाल नहीं, प्रथम सवाल करे."
+
+#: theme/default/functions.php:56
+msgid "Password not matching"
+msgstr "पासवर्ड नहीं जुड़ रहा"
+
+#: theme/default/functions.php:57
+msgid "Password length must be 6 or higher"
+msgstr "पासवर्ड की लम्बाई ६ या ज्यादा अक्षर होनी चाहिए"
+
+#: theme/default/functions.php:58
+msgid "Not a valid email"
+msgstr "अवैध ईमेल"
+
+#: theme/default/functions.php:59
+msgid "Username length must be 4 or higher"
+msgstr "यूज़रनेम / पंजीकृत नाम ४ या ज्यादा अक्षर की होनी चाहिए"
+
+#: theme/default/functions.php:60
+msgid "Username not available"
+msgstr "पंजीकृत नाम / यूज़रनेम उपलब्ध नहीं "
+
+#: theme/default/functions.php:61
+msgid "Email already in use. %sDo you want to reset your password?%s"
+msgstr "ईमेल इस्तेमाल में है, %s क्या आप अपना पासवर्ड बदलना चाहते है?%s"
+
+#: theme/default/functions.php:62
+msgid "Loading"
+msgstr "प्रतीक्षा करे"
+
+#: theme/default/functions.php:63
+msgid "Sending request"
+msgstr "अनुरोध भेज रहे है"
+
+#: theme/default/functions.php:64
+msgid "Adding question to your favorites"
+msgstr "पसंदीदा सवाल सूचि में जोड़ रहे है"
+
+#: theme/default/functions.php:65
+msgid "Sending your vote"
+msgstr "आपका मत भेज रहे है"
+
+#: theme/default/functions.php:66
+msgid "Requesting for closing this question"
+msgstr "ये सवाल बंद करने का अनुरोध कर रहे है"
+
+#: theme/default/functions.php:67
+msgid "Submitting request"
+msgstr "प्रार्थना भेज रहे है"
+
+#: theme/default/functions.php:68
+msgid "Loading comment form"
+msgstr "टिप्पणी फार्म ला रहे है"
+
+#: theme/default/functions.php:69
+msgid "Sending your question"
+msgstr "आपका सवाल भेज रहे है"
+
+#: theme/default/functions.php:70
+msgid "Sending your answer"
+msgstr "आपका जवाब भेज रहे है"
+
+#: theme/default/functions.php:71
+msgid "Sending your comment"
+msgstr "आपकी टिप्पणी भेज रहे है "
+
+#: theme/default/functions.php:72
+msgid "Deleting comment"
+msgstr "टिप्पणी हटा रहे है "
+
+#: theme/default/functions.php:73
+msgid "Updating comment"
+msgstr "टिप्पणी बदल रहे है"
+
+#: theme/default/functions.php:74
+msgid "Loading form"
+msgstr "फार्म ल रहे है "
+
+#: theme/default/functions.php:75
+msgid "Saving labels"
+msgstr "परचा संचित कर रहे  है"
+
+#: theme/default/functions.php:76
+msgid "Loading suggestions"
+msgstr "सुझाव ला रहे है"
+
+#: theme/default/functions.php:77
+msgid "Uploading cover"
+msgstr "पृष्ठ भेज रहे है"
+
+#: theme/default/functions.php:78
+msgid "Saving profile"
+msgstr "परिचय संचित कर रहे है"
+
+#: theme/default/functions.php:79
+msgid "Sending message"
+msgstr "संदेश भेज रहे है"
+
+#: theme/default/functions.php:80
+msgid "Loading conversation"
+msgstr "बातचीत ला रहे है"
+
+#: theme/default/functions.php:81
+msgid "Loading new message form"
+msgstr "नया सन्देश फार्म ला रहे है"
+
+#: theme/default/functions.php:82
+msgid "Loading more conversations"
+msgstr "अधिक बातचीत ला रहे है"
+
+#: theme/default/functions.php:83
+msgid "Searching conversations"
+msgstr "बातचीत खोज रहे है"
+
+#: theme/default/functions.php:84
+msgid "Loading message form"
+msgstr "सन्देश फॉर्म ला रहे है"
+
+#: theme/default/functions.php:85
+msgid "Updating message"
+msgstr "सन्देश बदल रहे है"
+
+#: theme/default/functions.php:86
+msgid "Deleting message"
+msgstr "सन्देश हटा रहे है"
+
+#: theme/default/functions.php:87
+msgid "Uploading"
+msgstr "भेज  रहे है"
+
+#: theme/default/functions.php:91
+msgid "Something went wrong in server side, not a valid response."
+msgstr "सरवर पर कुछ गड़बड़ है, वैध उत्तर नहीं मिल पाया है."
+
+#: theme/default/functions.php:113
+msgid "AP Before"
+msgstr ""
+
+#: theme/default/functions.php:117
+msgid "Widgets in this area will be shown before anspress body."
+msgstr ""
+
+#: theme/default/functions.php:123
+msgid "AP Lists Top"
+msgstr ""
+
+#: theme/default/functions.php:127
+msgid "Widgets in this area will be shown before questions list."
+msgstr ""
+
+#: theme/default/functions.php:133
+msgid "AP Sidebar"
+msgstr ""
+
+#: theme/default/functions.php:137
+msgid "Widgets in this area will be shown in AnsPress sidebar."
+msgstr ""
+
+#: theme/default/functions.php:143
+msgid "AP Question Sidebar"
+msgstr ""
+
+#: theme/default/functions.php:147
+msgid "Widgets in this area will be shown in question page sidebar."
+msgstr ""
+
+#: theme/default/functions.php:153
+msgid "AP Category Page"
+msgstr ""
+
+#: theme/default/functions.php:157
+msgid "Widgets in this area will be shown in category listing page."
+msgstr ""
+
+#: theme/default/functions.php:163
+msgid "AP Tag page"
+msgstr ""
+
+#: theme/default/functions.php:167
+msgid "Widgets in this area will be shown in tag listing page."
+msgstr ""
+
+#: theme/default/functions.php:173
+msgid "AP User"
+msgstr ""
+
+#: theme/default/functions.php:177
+msgid "Widgets in this area will be shown in user page."
+msgstr ""
+
+#: theme/default/functions.php:182
+msgid "AP Activity"
+msgstr ""
+
+#: theme/default/functions.php:186
+msgid "Widgets in this area will be shown AnsPress activity page."
+msgstr ""
+
+#: theme/default/list-head.php:13
+msgid "Search questions..."
+msgstr "सवाल खोजें..."
+
+#: theme/default/list-head.php:24
+msgid "Reset sorting and filter"
+msgstr "भेद व छटाई पुनर्स्थापित करे"
+
+#: theme/default/login-signup.php:3
+msgid "Please %s or %s."
+msgstr "कृपया %s या %s."
+
+#: theme/default/login-signup.php:3 theme/default/login-signup.php:11
+msgid "Login"
+msgstr "लॉगिन"
+
+#: theme/default/login-signup.php:3
+msgid "Sign up"
+msgstr "पंजीकरण करे"
+
+#: theme/default/modal-image-upload.php:17
+msgid "Upload from computer"
+msgstr "कंप्यूटर से भेजे"
+
+#: theme/default/modal-image-upload.php:21
+msgid "Image from link"
+msgstr "लिंक से छवि"
+
+#: theme/default/no-permission-post.php:5
+msgid "This is a private %s."
+msgstr "ये निजी % है."
+
+#: theme/default/no-permission-post.php:7
+msgid "This %s waiting for moderation."
+msgstr "ये %s सभापति के अनुमति की प्रतीक्षा  कर रही है."
+
+#: theme/default/no-permission-post.php:9
+msgid "This has been trashed or waiting for approval."
+msgstr "ये कचरे में है या अनुमति की प्रतीक्षा कर रही है."
+
+#: theme/default/part/question.php:14
+msgid "Featured post"
+msgstr "श्रेष्ठ पोस्ट"
+
+#: theme/default/part/question.php:28
+msgid "Leave a reply"
+msgstr "उत्तर छोड़े"
+
+#: theme/default/part/question.php:28
+msgid "1 Reply"
+msgstr "१ उत्तर"
+
+#: theme/default/part/question.php:28
+msgid "% Replies"
+msgstr "% उत्तर"
+
+#: theme/default/part/question.php:39
+msgid "Continue reading <span class=\"meta-nav\">&rarr;</span>"
+msgstr "पढ़ना जारी रखे <span class=\"meta-nav\">&rarr;</span>"
+
+#: theme/default/part/question.php:40
+msgid "Pages:"
+msgstr "पेज:"
+
+#: theme/default/part/question.php:53
+msgid "About %s"
+msgstr "%s के बारे में"
+
+#: theme/default/part/question.php:57
+msgid "View all posts by %s <span class=\"meta-nav\">&rarr;</span>"
+msgstr "%s <span class=\"meta-nav\">&rarr;</span>के सरे पोस्ट देखे "
+
+#: theme/default/question.php:97 widgets/question_stats.php:65
+msgid "Question stats"
+msgstr "सवाल के आंकड़े"
+
+#: theme/default/shortcode/question.php:68
+msgid "View all answers"
+msgstr "सभी जवाब देखे"
+
+#: theme/default/user/about.php:17
+msgid "Stats"
+msgstr "आंकड़े"
+
+#: theme/default/user/about.php:25 theme/default/user/user-card.php:28
+msgid "%d answers, %d selected"
+msgstr "%d जवाब, %d चुने गए "
+
+#: theme/default/user/about.php:30 theme/default/user/user-card.php:29
+msgid "%d questions, %d solved"
+msgstr "%d सवाल, %d सुलझे "
+
+#: theme/default/user/about.php:35
+msgid "Member for %s"
+msgstr "%s का सदस्य "
+
+#: theme/default/user/about.php:40
+msgid "%d profile views"
+msgstr "परिचय %d बार देखे गए"
+
+#: theme/default/user/about.php:49
+msgid "Last seen %s"
+msgstr "आखरी बार % को देखे गए"
+
+#: theme/default/user/about.php:51
+msgid "Never logged in"
+msgstr "कभी भी लोगिन नही किया है"
+
+#: theme/default/user/about.php:72 theme/default/user/reputation.php:22
+msgid "Total"
+msgstr "कुल"
+
+#: theme/default/user/about.php:103
+msgid "%d votes received"
+msgstr "%d मत प्राप्त हुए "
+
+#: theme/default/user/about.php:105 theme/default/user/about.php:112
+msgid "up"
+msgstr "ऊपर"
+
+#: theme/default/user/about.php:106 theme/default/user/about.php:113
+msgid "down"
+msgstr "निचे"
+
+#: theme/default/user/about.php:110
+msgid "%d votes casted"
+msgstr "कुल %d मत दिए गए "
+
+#: theme/default/user/about.php:123
+msgid "Top Answers"
+msgstr "सर्वोच्च जवाब"
+
+#: theme/default/user/about.php:137
+msgid "More answers by %s"
+msgstr "%s के अधिक जवाब "
+
+#: theme/default/user/about.php:138 theme/default/user/about.php:159
+msgid "view"
+msgstr "देखे"
+
+#: theme/default/user/about.php:141
+msgid "No answer posted yet!"
+msgstr "कोई जवाब नहीं है"
+
+#: theme/default/user/about.php:147
+msgid "New questions"
+msgstr "नए सवाल"
+
+#: theme/default/user/about.php:158
+msgid "More questions by %s"
+msgstr "%s द्वारा अधिक सवाल"
+
+#: theme/default/user/about.php:163
+msgid "No question asked yet!"
+msgstr "कोई सवाल नहीं!"
+
+#: theme/default/user/list-question.php:4
+msgid "%d answers"
+msgstr "%d जवाब"
+
+#: theme/default/user/notification-dropdown.php:20
+#: theme/default/widgets/notifications.php:14
+msgid "Notifications"
+msgstr "सूचनाएं"
+
+#: theme/default/user/notification-dropdown.php:21
+#: theme/default/widgets/notifications.php:15
+msgid "Mark all as read"
+msgstr "सभी कोई पढ़ा घोषित करे"
+
+#: theme/default/user/notification-dropdown.php:43
+#: theme/default/widgets/notifications.php:37
+msgid "View all notifications"
+msgstr "सभी सूचनाएँ देखे"
+
+#: theme/default/user/notification-dropdown.php:47
+#: theme/default/user/notification.php:46 theme/default/widgets/notifications.php:41
+msgid "No notification"
+msgstr "कोई सूचनाएँ नहीं"
+
+#: theme/default/user/notification.php:27
+msgid "Mark as read"
+msgstr "पढ़ा घोषित करे"
+
+#: theme/default/user/notification.php:29
+msgid "Delete notificaton"
+msgstr "सूचनाएँ हटाये"
+
+#: theme/default/user/reputation.php:43
+msgid "No reputation earned yet."
+msgstr "कोई ख्याति प्राप्त नहीं हुई है."
+
+#: theme/default/user/subscription.php:32
+msgid "Not following any question yet!"
+msgstr "अभी तक कोई सवाल का अनुकरण नहीं!"
+
+#: theme/default/user/user-card.php:30
+msgid "%d Followers, %d following"
+msgstr "%d अनुयायी, %d अनुकरण"
+
+#: theme/default/user/user.php:60 theme/default/users/loop-item.php:31
+msgid "%d Answers"
+msgstr "%d जवाब"
+
+#: theme/default/user/user.php:61 theme/default/users/loop-item.php:32
+msgid "%d Questions"
+msgstr "%d सवाल"
+
+#: theme/default/user/user.php:62
+msgid "%d Followers"
+msgstr "%d अनुयायी"
+
+#: theme/default/user/user.php:63
+msgid "%d Following"
+msgstr "%d अनुकरण"
+
+#: theme/default/users/loop-item.php:30
+msgid "%d Best"
+msgstr "%d श्रेष्ठ"
+
+#: theme/default/users/users.php:5
+msgid "Search users..."
+msgstr "साथी खोजे"
+
+#: theme/default/users-widget.php:21 theme/default/widgets/users-widget.php:21
+msgid "No users found."
+msgstr "कोई साथी नहीं पाये गए"
+
+#: theme/default/widget-questions.php:11
+#: theme/default/widget-related_questions.php:11
+msgid "1 answer"
+msgid_plural "%d answers"
+msgstr[0] "१ जवाब"
+msgstr[1] "%d जवाब"
+
+#: theme/default/widget-questions.php:12
+#: theme/default/widget-related_questions.php:12
+msgid "1 vote"
+msgid_plural "%d votes"
+msgstr[0] "१ मत"
+msgstr[1] "%d मत"
+
+#: theme/default/widget-questions.php:17
+msgid "No questions found."
+msgstr "कोई सवाल पाया नहीं गया"
+
+#: theme/default/widget-related_questions.php:17
+msgid "No related questions found."
+msgstr "कोई समरूप सवाल पाया नहीं गया"
+
+#: theme/default/widgets/followers.php:11
+msgid "View all followers &rarr;"
+msgstr "सारे अनुयायी को देखे"
+
+#: widgets/ask-form.php:10
+msgid "(AnsPress) Ask form"
+msgstr ""
+
+#: widgets/ask-form.php:11
+msgid "Shows ask form."
+msgstr ""
+
+#: widgets/ask-form.php:34 widgets/quick-ask.php:29
+msgid "Ask questions"
+msgstr "सवाल पूछे"
+
+#: widgets/ask-form.php:38 widgets/followers.php:73 widgets/participants.php:48
+#: widgets/question_stats.php:69 widgets/questions.php:76 widgets/quick-ask.php:33
+#: widgets/related_questions.php:78 widgets/search.php:58 widgets/subscribe.php:58
+#: widgets/user.php:52 widgets/users.php:68
+msgid "Title:"
+msgstr "शीर्शक"
+
+#: widgets/breadcrumbs.php:28
+msgid "(AnsPress) Breadcrumbs"
+msgstr ""
+
+#: widgets/breadcrumbs.php:29
+msgid "Show current anspress page navigation"
+msgstr ""
+
+#: widgets/followers.php:23
+msgid "(AnsPress) Followers"
+msgstr ""
+
+#: widgets/followers.php:24
+msgid "Show followers of currently displayed user."
+msgstr "प्रदर्शित साथी के अनुयायी दिखाए"
+
+#: widgets/followers.php:45
+msgid "No followers yet"
+msgstr "अभी तक कोई अनुयायी नहीं"
+
+#: widgets/followers.php:48
+msgid "This widget can only be used in user page."
+msgstr ""
+
+#: widgets/followers.php:77 widgets/participants.php:52
+msgid "Avatar size:"
+msgstr "अवतार आकार:"
+
+#: widgets/followers.php:81
+msgid "Numbers of user to show:"
+msgstr "कितने साथी दिखाई दे:"
+
+#: widgets/participants.php:24
+msgid "(AnsPress) Participants"
+msgstr ""
+
+#: widgets/participants.php:25
+msgid "Show question participants"
+msgstr ""
+
+#: widgets/post_discussion.php:19
+msgid "No options"
+msgstr "कोई विकल्प नही"
+
+#: widgets/question_stats.php:25
+msgid "(AnsPress) Question Stats"
+msgstr ""
+
+#: widgets/question_stats.php:26
+msgid "Shows question stats in single question page."
+msgstr "सवाल आंकड़े एक सवाल पेज माइन दिखाए"
+
+#: widgets/question_stats.php:48
+msgid "Views"
+msgstr "दर्शन"
+
+#: widgets/question_stats.php:48
+msgid "One time"
+msgid_plural "%d times"
+msgstr[0] "एक बार "
+msgstr[1] "%d बार"
+
+#: widgets/question_stats.php:49
+msgid "%2$s1%3$s answer"
+msgid_plural "%2$s%1$d%3$s answers"
+msgstr[0] "%2$s1%3$s जवाब"
+msgstr[1] "%2$s%1$d%3$s जवाब"
+
+#: widgets/question_stats.php:50
+msgid "1 follower"
+msgid_plural "%d followers"
+msgstr[0] "1 अनुयायी"
+msgstr[1] "%d अनुयायी"
+
+#: widgets/question_stats.php:53
+msgid "This widget can only be used in single question page"
+msgstr ""
+
+#: widgets/questions.php:10
+msgid "(AnsPress) Questions"
+msgstr ""
+
+#: widgets/questions.php:11
+msgid "Shows list of question shorted by option."
+msgstr ""
+
+#: widgets/questions.php:80
+msgid "Sort by:"
+msgstr ""
+
+#: widgets/questions.php:91
+msgid "Category IDs:"
+msgstr ""
+
+#: widgets/questions.php:93
+msgid "Comma separted AnsPress category ids"
+msgstr ""
+
+#: widgets/questions.php:97
+msgid "Limit:"
+msgstr ""
+
+#: widgets/related_questions.php:23
+msgid "(AnsPress) Related Questions"
+msgstr ""
+
+#: widgets/related_questions.php:24
+msgid "For showing related question. This widget will only work in question page."
+msgstr ""
+
+#: widgets/related_questions.php:72
+msgid "Related Questions"
+msgstr "समरूप सवाल"
+
+#: widgets/search.php:26
+msgid "(AnsPress) Search"
+msgstr ""
+
+#: widgets/search.php:27
+msgid "Question and answer search form."
+msgstr " सवाल जवाब खोज फॉर्म"
+
+#: widgets/search.php:41
+msgid "Search questions & answers"
+msgstr "सवाल जवाब खोजे"
+
+#: widgets/search.php:54
+msgid "Search questions"
+msgstr "सवाल खोजे"
+
+#: widgets/subscribe.php:26
+msgid "(AnsPress) Subscribe"
+msgstr ""
+
+#: widgets/subscribe.php:27
+msgid "Subscribe button for single question and terms page."
+msgstr ""
+
+#: widgets/subscribe.php:54
+msgid "Subscribe"
+msgstr "अनुसरण करे"
+
+#: widgets/user.php:10
+msgid "(AnsPress) User menu and profile"
+msgstr ""
+
+#: widgets/user.php:11
+msgid "Display current logged in users detail and menu."
+msgstr ""
+
+#: widgets/user.php:36
+msgid "Login to see your profile links"
+msgstr "परिचय लिंक के लिए लोगिन करे"
+
+#: widgets/user_notification.php:28
+msgid "(AnsPress) User Notifications"
+msgstr ""
+
+#: widgets/user_notification.php:29
+msgid "Show logged in user notifications"
+msgstr ""
+
+#: widgets/users.php:10
+msgid "(AnsPress) Users"
+msgstr ""
+
+#: widgets/users.php:11
+msgid "Shows users based on selected order."
+msgstr ""
+
+#: widgets/users.php:72
+msgid "Avatar:"
+msgstr "अवतार:"
+
+#: widgets/users.php:76
+msgid "Show"
+msgstr "दिखाओ"
+
+#. Plugin Name of the plugin/theme
+msgid "AnsPress"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "http://anspress.io"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid "The most advance community question and answer system for WordPress"
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "Rahul Aryan"
+msgstr ""
+
+#: includes/post_types.php:47
+msgctxt "Post Type General Name"
+msgid "Questions"
+msgstr ""
+
+#: includes/post_types.php:117
+msgctxt "Post Type General Name"
+msgid "Answers"
+msgstr ""
+
+#: includes/post_types.php:48
+msgctxt "Post Type Singular Name"
+msgid "Question"
+msgstr ""
+
+#: includes/post_types.php:118
+msgctxt "Post Type Singular Name"
+msgid "Answer"
+msgstr ""
