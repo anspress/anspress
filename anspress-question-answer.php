@@ -305,13 +305,13 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		 * @since 2.0.1
 		 */
 		public function load_textdomain() {
-		    $locale = apply_filters( 'plugin_locale', get_locale(), 'ap' );
-		    $loaded = load_textdomain( 'ap', trailingslashit( WP_LANG_DIR ).'ap'.'/'.'ap'.'-'.$locale.'.mo' );
+		    $locale = apply_filters( 'plugin_locale', get_locale(), 'anspress-question-answer' );
+		    $loaded = load_textdomain( 'anspress-question-answer', trailingslashit( WP_LANG_DIR ).'anspress-question-answer'.'/'.'anspress-question-answer'.'-'.$locale.'.mo' );
 
 		    if ( $loaded ) {
 		        return $loaded;
 		    } else {
-		        load_plugin_textdomain( 'ap', false, basename( dirname( __FILE__ ) ).'/languages/' );
+		        load_plugin_textdomain( 'anspress-question-answer', false, basename( dirname( __FILE__ ) ).'/languages/' );
 		    }
 		}
 
@@ -454,8 +454,7 @@ if ( is_admin() ) {
  * Register hooks that are fired when the plugin is activated or deactivated.
  * When the plugin is deleted, the uninstall.php file is loaded.
  */
-
-register_activation_hook( __FILE__, 'anspress_activate' );
+register_activation_hook( __FILE__, array('AP_Activate', 'get_instance') );
 
 register_uninstall_hook( __FILE__, 'anspress_uninstall' );
 
