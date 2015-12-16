@@ -151,9 +151,8 @@ class AP_Activate
 
 	/**
 	 * Create base pages, add roles, add caps and create tables
-	 * @param $network_wide
 	 */
-	public function activate( $network_wide ) {
+	public function activate( ) {
 
 		// add roles.
 		$ap_roles = new AP_Roles;
@@ -180,11 +179,7 @@ class AP_Activate
 			ap_opt( 'ap_db_version', AP_DB_VERSION );
 		}
 
-		if ( ! get_option( 'anspress_opt' ) ) {
-			update_option( 'anspress_opt', ap_default_options() );
-		} else {
-			update_option( 'anspress_opt', get_option( 'anspress_opt' ) + ap_default_options() );
-		}
+		update_option( 'anspress_opt', get_option( 'anspress_opt' ) + ap_default_options() );
 
 		ap_opt( 'ap_flush', 'true' );
 		flush_rewrite_rules( false );

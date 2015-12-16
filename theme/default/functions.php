@@ -29,12 +29,12 @@ function ap_scripts_front() {
 
 	$custom_css = '
         #anspress .ap-q-cells{
-                margin-left: '.(ap_opt( 'avatar_size_qquestion' ) + 10).'px;
+            margin-'.(is_rtl()? 'right' : 'left').': '.(ap_opt( 'avatar_size_qquestion' ) + 10).'px;
         }
         #anspress .ap-a-cells{
-                margin-left: '.(ap_opt( 'avatar_size_qanswer' ) + 10).'px;
+            margin-'.(is_rtl()? 'right' : 'left').': '.(ap_opt( 'avatar_size_qanswer' ) + 10).'px;
         }#anspress .ap-comment-content{
-                margin-left: '.(ap_opt( 'avatar_size_qcomment' ) + 15).'px;
+            margin-'.(is_rtl()? 'right' : 'left').': '.(ap_opt( 'avatar_size_qcomment' ) + 15).'px;
         }';
 
 	wp_add_inline_style( 'ap-style', $custom_css );
@@ -43,6 +43,10 @@ function ap_scripts_front() {
 	do_action( 'ap_enqueue' );
 	
 	wp_enqueue_style( 'ap-responsive', ap_get_theme_url( 'css/responsive.css' ), array(), AP_VERSION );
+	if(is_rtl()){
+		wp_enqueue_style( 'ap-rtl', ap_get_theme_url( 'css/RTL.css' ), array(), AP_VERSION );
+	}
+	
 	wp_enqueue_style( 'ap-overrides', ap_get_theme_url( 'css/overrides.css' ), array(), AP_VERSION );
 
 	echo '<script type="text/javascript">';

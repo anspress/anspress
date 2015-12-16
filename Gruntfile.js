@@ -106,6 +106,7 @@ module.exports = function(grunt) {
 	    		files: {
 	    			"theme/default/css/main.css": "theme/default/less/main.less",
 	    			"theme/default/css/responsive.css": "theme/default/less/responsive.less",
+	    			"theme/default/css/RTL.css": "theme/default/less/RTL.less",
 	    			"assets/ap-admin.css": "assets/ap-admin.less"
 	    		}
 	    	},
