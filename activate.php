@@ -22,58 +22,77 @@ class AP_Activate
 	protected static $instance = null;
 	public $charset_collate;
 	public $tables = array();
+	public $network_wide;
 
 	/**
 	 * Return an instance of this class.
 	 * @return    object    A single instance of this class.
 	 */
-	public static function get_instance() {
+	public static function get_instance( $network_wide = '' ) {
 
 		// If the single instance hasn't been set, set it now.
 		if ( null == self::$instance ) {
 			self::$instance = new self;
+			global $network_wide;
+			$network_wide = $network_wide;
 		}
 
 		return self::$instance;
 	}
 
-	public function __construct(){
-		$this->activate();
+	public function __construct() {
+		global $network_wide;
+		$this->network_wide = $network_wide;
+
+		// Append table names in $wpdb.
+		ap_append_table_names();
+
+		if ( $this->network_wide ) {
+			$this->network_activate();
+		} else {
+			$this->activate();
+		}
 	}
 
-	public function meta_table(){
+	public function meta_table() {
 		global $wpdb;
-		$this->tables[] = 'CREATE TABLE IF NOT EXISTS `'.$wpdb->prefix.'ap_meta` (
-            `apmeta_id` bigint(20) NOT NULL AUTO_INCREMENT,
-            `apmeta_userid` bigint(20) DEFAULT NULL,
-            `apmeta_type` varchar(256) DEFAULT NULL,
-            `apmeta_actionid` bigint(20) DEFAULT NULL,
-            `apmeta_value` text,
-            `apmeta_param` LONGTEXT DEFAULT NULL,
-            `apmeta_date` timestamp NULL DEFAULT NULL,
-            PRIMARY KEY (`apmeta_id`)
-            )'.$this->charset_collate.';';
+
+		if( $wpdb->get_var( "show tables like '{$wpdb->ap_meta}'" ) != $wpdb->ap_meta ) {
+			$this->tables[] = 'CREATE TABLE IF NOT EXISTS `'.$wpdb->ap_meta.'` (
+	            `apmeta_id` bigint(20) NOT NULL AUTO_INCREMENT,
+	            `apmeta_userid` bigint(20) DEFAULT NULL,
+	            `apmeta_type` varchar(256) DEFAULT NULL,
+	            `apmeta_actionid` bigint(20) DEFAULT NULL,
+	            `apmeta_value` text,
+	            `apmeta_param` LONGTEXT DEFAULT NULL,
+	            `apmeta_date` timestamp NULL DEFAULT NULL,
+	            PRIMARY KEY (`apmeta_id`)
+	            )'.$this->charset_collate.';';
+		}
 	}
 
-	public function activity_table(){
+	public function activity_table() {
 		global $wpdb;
-		$this->tables[] = 'CREATE TABLE IF NOT EXISTS `'.$wpdb->prefix.'ap_activity` (
-            `id` bigint(20) NOT NULL AUTO_INCREMENT,
-            `user_id` bigint(20) DEFAULT NULL,
-            `secondary_user` bigint(20) DEFAULT NULL,
-            `type` varchar(256) DEFAULT NULL,
-            `parent_type` varchar(256) DEFAULT NULL,
-            `status` varchar(256) DEFAULT NULL,
-            `content` LONGTEXT DEFAULT NULL,
-            `permalink` text DEFAULT NULL,
-            `question_id` bigint(20) DEFAULT NULL,
-            `answer_id` bigint(20) DEFAULT NULL,
-            `item_id` bigint(20) DEFAULT NULL,
-            `term_ids` LONGTEXT DEFAULT NULL,
-            `created` timestamp NULL DEFAULT NULL,
-            `updated` timestamp NULL DEFAULT NULL,
-            PRIMARY KEY (`id`)
-		    )'.$this->charset_collate.';';
+
+		if( $wpdb->get_var( "show tables like '{$wpdb->ap_activity}'" ) != $wpdb->ap_activity ) {
+			$this->tables[] = 'CREATE TABLE IF NOT EXISTS `'.$wpdb->ap_activity.'` (
+	            `id` bigint(20) NOT NULL AUTO_INCREMENT,
+	            `user_id` bigint(20) DEFAULT NULL,
+	            `secondary_user` bigint(20) DEFAULT NULL,
+	            `type` varchar(256) DEFAULT NULL,
+	            `parent_type` varchar(256) DEFAULT NULL,
+	            `status` varchar(256) DEFAULT NULL,
+	            `content` LONGTEXT DEFAULT NULL,
+	            `permalink` text DEFAULT NULL,
+	            `question_id` bigint(20) DEFAULT NULL,
+	            `answer_id` bigint(20) DEFAULT NULL,
+	            `item_id` bigint(20) DEFAULT NULL,
+	            `term_ids` LONGTEXT DEFAULT NULL,
+	            `created` timestamp NULL DEFAULT NULL,
+	            `updated` timestamp NULL DEFAULT NULL,
+	            PRIMARY KEY (`id`)
+			    )'.$this->charset_collate.';';
+		}
 	}
 
 	/**
@@ -81,13 +100,16 @@ class AP_Activate
 	 */
 	public function activity_meta_table() {
 		global $wpdb;
-		$this->tables[] = 'CREATE TABLE IF NOT EXISTS `'.$wpdb->base_prefix."ap_activitymeta` (
-	          `meta_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-	          `ap_activity_id` bigint(20) unsigned NOT NULL DEFAULT '0',
-	          `meta_key` varchar(255) DEFAULT NULL,
-	          `meta_value` longtext,
-	          PRIMARY KEY (`meta_id`)
-			)".$this->charset_collate.';';
+
+		if( $wpdb->get_var( "show tables like '{$wpdb->ap_activitymeta}'" ) != $wpdb->ap_activitymeta ) {
+			$this->tables[] = 'CREATE TABLE IF NOT EXISTS `'.$wpdb->ap_activitymeta."` (
+		          `meta_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+		          `ap_activity_id` bigint(20) unsigned NOT NULL DEFAULT '0',
+		          `meta_key` varchar(255) DEFAULT NULL,
+		          `meta_value` longtext,
+		          PRIMARY KEY (`meta_id`)
+				)".$this->charset_collate.';';
+		}
 	}
 
 	/**
@@ -95,36 +117,42 @@ class AP_Activate
 	 */
 	public function notification_table() {
 		global $wpdb;
-		$this->tables[] = 'CREATE TABLE IF NOT EXISTS `'.$wpdb->base_prefix.'ap_notifications` (
-            `noti_id` bigint(20) NOT NULL AUTO_INCREMENT,
-            `noti_activity_id` bigint(20) NOT NULL,
-            `noti_user_id` bigint(20) NOT NULL,
-            `noti_status` varchar(225) NOT NULL,                
-            `noti_date` timestamp NOT NULL,
-            PRIMARY KEY (`noti_id`)
-        )'.$this->charset_collate.';';
+
+		if( $wpdb->get_var( "show tables like '{$wpdb->ap_notifications}'" ) != $wpdb->ap_notifications ) {
+			$this->tables[] = 'CREATE TABLE IF NOT EXISTS `'.$wpdb->ap_notifications.'` (
+	            `noti_id` bigint(20) NOT NULL AUTO_INCREMENT,
+	            `noti_activity_id` bigint(20) NOT NULL,
+	            `noti_user_id` bigint(20) NOT NULL,
+	            `noti_status` varchar(225) NOT NULL,                
+	            `noti_date` timestamp NOT NULL,
+	            PRIMARY KEY (`noti_id`)
+	        )'.$this->charset_collate.';';
+		}
 	}
 
 	/**
 	 * AnsPress subscriber table.
 	 */
-	public function subscribers_table(){
+	public function subscribers_table() {
 		global $wpdb;
-		$this->tables[] = 'CREATE TABLE IF NOT EXISTS `'.$wpdb->base_prefix.'ap_subscribers` (
-            `subs_id` bigint(20) NOT NULL AUTO_INCREMENT,               
-            `subs_user_id` bigint(20) NOT NULL,
-            `subs_question_id` bigint(20) NOT NULL,
-            `subs_item_id` bigint(20) NOT NULL,
-            `subs_activity` varchar(225) NOT NULL,
-            PRIMARY KEY (`subs_id`)
-        )'.$this->charset_collate.';';
+
+		if( $wpdb->get_var( "show tables like '{$wpdb->ap_subscribers}'" ) != $wpdb->ap_subscribers ) {
+			$this->tables[] = 'CREATE TABLE IF NOT EXISTS `'.$wpdb->ap_subscribers.'` (
+	            `subs_id` bigint(20) NOT NULL AUTO_INCREMENT,               
+	            `subs_user_id` bigint(20) NOT NULL,
+	            `subs_question_id` bigint(20) NOT NULL,
+	            `subs_item_id` bigint(20) NOT NULL,
+	            `subs_activity` varchar(225) NOT NULL,
+	            PRIMARY KEY (`subs_id`)
+	        )'.$this->charset_collate.';';
+		}
 	}
 
 	/**
 	 * Insert and update tables
 	 */
 	public function insert_tables() {
-		
+
 		global $wpdb;
 		$this->charset_collate = ! empty( $wpdb->charset ) ? 'DEFAULT CHARACTER SET '.$wpdb->charset : '';
 
@@ -136,15 +164,17 @@ class AP_Activate
 
 		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 
-		foreach ( $this->tables as $table ) {
-			dbDelta( $table );
+		if( count( $this->tables ) > 0 ){
+			foreach ( $this->tables as $table ) {
+				dbDelta( $table );
+			}
 		}
 
 		if ( ap_opt( 'ap_db_version' ) == 17 ) {
-			
-			$wpdb->query( "ALTER TABLE `{$wpdb->base_prefix}ap_activity` ADD term_ids LONGTEXT after item_id;" );
 
-			$wpdb->query( "ALTER TABLE `{$wpdb->base_prefix}ap_subscribers` CHANGE id subs_id bigint(20), CHANGE user_id subs_user_id bigint(20), CHANGE question_id subs_question_id bigint(20), CHANGE item_id subs_item_id bigint(20), CHANGE activity subs_activity varchar(225);" );
+			$wpdb->query( "ALTER TABLE `{$wpdb->prefix}ap_activity` ADD term_ids LONGTEXT after item_id;" );
+
+			$wpdb->query( "ALTER TABLE `{$wpdb->prefix}ap_subscribers` CHANGE id subs_id bigint(20), CHANGE user_id subs_user_id bigint(20), CHANGE question_id subs_question_id bigint(20), CHANGE item_id subs_item_id bigint(20), CHANGE activity subs_activity varchar(225);" );
 
 		}
 	}
@@ -170,18 +200,24 @@ class AP_Activate
 			ap_opt( 'ap_version', AP_VERSION );
 		}
 
-		/**
-		 * Run DB quries only if AP_DB_VERSION does not match
-		 */
-		if ( ap_opt( 'ap_db_version' ) != AP_DB_VERSION ) {
-
-			$this->insert_tables();
-			ap_opt( 'ap_db_version', AP_DB_VERSION );
-		}
+		$this->insert_tables();
 
 		update_option( 'anspress_opt', get_option( 'anspress_opt' ) + ap_default_options() );
 
 		ap_opt( 'ap_flush', 'true' );
 		flush_rewrite_rules( false );
+	}
+
+	public function network_activate() {
+		$current_blog = $wpdb->blogid;
+
+		// Get all blogs in the network and activate plugin on each one
+		$blog_ids = $wpdb->get_col( "SELECT blog_id FROM $wpdb->blogs" );
+
+		foreach ( $blog_ids as $blog_id ) {
+			switch_to_blog( $blog_id );
+			$this->activate();
+			restore_current_blog();
+		}
 	}
 }

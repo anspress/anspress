@@ -1831,3 +1831,17 @@ function ap_env_dev() {
 
 	return false;
 }
+
+/**
+ * Append table name in $wpdb.
+ */
+function ap_append_table_names() {
+	global $wpdb;
+
+	$wpdb->ap_meta 			= $wpdb->prefix . 'ap_meta';
+	$wpdb->ap_activity 		= $wpdb->prefix . 'ap_activity';
+	$wpdb->ap_activitymeta 	= $wpdb->prefix . 'ap_activitymeta';
+	$wpdb->ap_notifications = $wpdb->prefix . 'ap_notifications';
+	$wpdb->ap_subscribers	= $wpdb->prefix . 'ap_subscribers';
+
+}

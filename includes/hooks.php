@@ -73,14 +73,7 @@ class AnsPress_Hooks
 	 * Add AnsPress tables in $wpdb.
 	 */
 	public function add_ap_tables() {
-		global $wpdb;
-
-		$wpdb->ap_meta 			= $wpdb->prefix . 'ap_meta';
-		$wpdb->ap_activity 		= $wpdb->prefix . 'ap_activity';
-		$wpdb->ap_activitymeta 	= $wpdb->prefix . 'ap_activitymeta';
-		$wpdb->ap_notifications = $wpdb->prefix . 'ap_notifications';
-		$wpdb->ap_subscribers	= $wpdb->prefix . 'ap_subscribers';
-
+		ap_append_table_names();
 	}
 
 	/**

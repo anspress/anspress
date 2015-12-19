@@ -159,6 +159,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 	    public $history_class;
 	    public $subscriber_hooks;
 	    public $mention_hooks;
+	    public $views_class;
 
 		/**
 		 * Initializes the plugin by setting localization, hooks, filters, and administrative functions.
@@ -191,8 +192,8 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		        self::$instance->anspress_reputation 	= new AP_Reputation();
 
 				/*
-				 * ACTION: anspress_loaded
-				 * Hooks for extension to load their codes after AnsPress is leaded
+                 * ACTION: anspress_loaded
+                 * Hooks for extension to load their codes after AnsPress is leaded
 				 */
 				do_action( 'anspress_loaded' );
 
@@ -338,6 +339,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 	    	self::$instance->history_class 		= new AnsPress_Activity_Hook( $this );
 	    	self::$instance->subscriber_hooks 	= new AnsPress_Subscriber_Hooks( $this );
 	    	self::$instance->mention_hooks 		= new AP_Mentions_Hooks( $this );
+	    	self::$instance->views_class 		= new AP_Views( $this );
 		}
 
 		/**
@@ -394,8 +396,8 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		 * @param string            $callback      The name of the function definition on the $component.
 		 * @param int      Optional $priority      The priority at which the function should be fired.
 		 * @param int      Optional $accepted_args The number of arguments that should be passed to the $callback.
-		 * @param integer $priority
-		 * @param integer $accepted_args
+		 * @param integer           $priority
+		 * @param integer           $accepted_args
 		 *
 		 * @return type The collection of actions and filters registered with WordPress.
 		 */
@@ -454,7 +456,7 @@ if ( is_admin() ) {
  * Register hooks that are fired when the plugin is activated or deactivated.
  * When the plugin is deleted, the uninstall.php file is loaded.
  */
-register_activation_hook( __FILE__, array('AP_Activate', 'get_instance') );
+register_activation_hook( __FILE__, array( 'AP_Activate', 'get_instance' ) );
 
 register_uninstall_hook( __FILE__, 'anspress_uninstall' );
 
@@ -491,8 +493,6 @@ function anspress_uninstall() {
 	AP_Roles::remove_roles();
 }
 
-add_action( 'plugins_loaded', array( 'anspress_view', 'get_instance' ) );
-
 function ap_activation_redirect($plugin) {
 
 	if ( $plugin == plugin_basename( __FILE__ ) ) {
@@ -500,3 +500,44 @@ function ap_activation_redirect($plugin) {
 	}
 }
 add_action( 'activated_plugin', 'ap_activation_redirect' );
+
+/**
+ * Creating table whenever a new blog is created
+ * @param  integer $blog_id Blog id.
+ * @param  integer $user_id User id.
+ * @param  string  $domain  Domain
+ * @param  string  $path    Path
+ * @param  integer $site_id Site id.
+ * @param  array   $meta    Site meta
+ */
+function ap_create_blog( $blog_id, $user_id, $domain, $path, $site_id, $meta ) {
+	if ( is_plugin_active_for_network( plugin_basename( __FILE__ ) ) ) {
+		switch_to_blog( $blog_id );
+		AP_Activate::get_instance(true );
+		restore_current_blog();
+	}
+}
+add_action( 'wpmu_new_blog', 'ap_create_blog', 10, 6 );
+
+/**
+ * Deleting the table whenever a blog is deleted
+ * @param  array $tables Table names.
+ * @return array
+ */
+function ap_drop_blog_tables( $tables, $blog_id ) {
+	if ( empty( $blog_id ) || 1 == $blog_id || $blog_id != $GLOBALS['blog_id'] ){
+		return $tables;
+	}
+
+	global $wpdb;
+
+	$tables[] 	= $wpdb->prefix . 'ap_meta';
+	$tables[] 	= $wpdb->prefix . 'ap_meta';
+	$tables[] 	= $wpdb->prefix . 'ap_activity';
+	$tables[] 	= $wpdb->prefix . 'ap_activitymeta';
+	$tables[] 	= $wpdb->prefix . 'ap_notifications';
+	$tables[]	= $wpdb->prefix . 'ap_subscribers';
+	return $tables;
+}
+add_filter( 'wpmu_drop_tables', 'ap_drop_blog_tables', 10, 2 );
+
