@@ -499,18 +499,6 @@ class AnsPress_Options_Page
 				'value' => @$settings['cover_height_small'],
 				'show_desc_tip' => false,
 			) ,
-			array(
-				'name' => 'anspress_opt[default_rank]',
-				'label' => __( 'Default rank', 'anspress-question-answer' ),
-				'desc' => __( 'Assign a default rank for newly registered user.', 'anspress-question-answer' ),
-				'type' => 'select',
-				'options' => get_terms('rank', array(
-					'hide_empty' => false,
-					'orderby' => 'id',
-				)),
-				'value' => @$settings['default_rank'],
-				'show_desc_tip' => false,
-			) ,
 		));
 
 		// register permission settings
