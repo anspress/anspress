@@ -5,8 +5,8 @@ msgstr ""
 "Project-Id-Version: AnsPress 2.2\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/anspress-question-"
 "answer\n"
-"POT-Creation-Date: 2015-12-17 13:16-0500\n"
-"PO-Revision-Date: 2016-01-07 11:40-0500\n"
+"POT-Creation-Date: 2016-01-07 13:35-0500\n"
+"PO-Revision-Date: 2016-01-07 13:36-0500\n"
 "Last-Translator: \n"
 "Language-Team: Romain <bbig86@gmail.com>\n"
 "Language: fr_FR\n"
@@ -64,9 +64,9 @@ msgid "Moderate question & answer"
 msgstr "Modérer les questions & réponses"
 
 #: admin/anspress-admin.php:183 admin/flagged.php:100 admin/moderate.php:80
-#: admin/options-page.php:606 admin/options-page.php:615
-#: admin/options-page.php:627 admin/options-page.php:639
-#: admin/options-page.php:651 admin/views/dashboard.php:46
+#: admin/options-page.php:594 admin/options-page.php:603
+#: admin/options-page.php:615 admin/options-page.php:627
+#: admin/options-page.php:639 admin/views/dashboard.php:46
 #: includes/functions.php:697 includes/post_status.php:30
 #: includes/post_types.php:266 includes/query_filter.php:89
 #: includes/query_filter.php:102 includes/question-loop.php:380
@@ -218,8 +218,8 @@ msgstr "Rechercher"
 msgid "All"
 msgstr "Tout"
 
-#: admin/flagged.php:98 admin/options-page.php:614 admin/options-page.php:626
-#: admin/options-page.php:638 admin/options-page.php:650
+#: admin/flagged.php:98 admin/options-page.php:602 admin/options-page.php:614
+#: admin/options-page.php:626 admin/options-page.php:638
 msgid "Publish"
 msgstr "Publier"
 
@@ -803,73 +803,65 @@ msgstr "Hauteur du petit bandeau "
 msgid "Set height of user cover photo thumbnail."
 msgstr "Hauteur de la photo miniature."
 
-#: admin/options-page.php:504
-msgid "Default rank"
-msgstr "Rang par défaut"
-
 #: admin/options-page.php:505
-msgid "Assign a default rank for newly registered user."
-msgstr "Assigner un rang par defaut pour un nouvel utilisateur."
-
-#: admin/options-page.php:517
 msgid "Permission"
 msgstr "Permissions"
 
-#: admin/options-page.php:520
+#: admin/options-page.php:508
 msgid "Multiple answers"
 msgstr "Plusieurs réponses"
 
-#: admin/options-page.php:521
+#: admin/options-page.php:509
 msgid "Allow user to submit multiple answer per question."
 msgstr ""
 "Autoriser un utilisateur à soumettre plusieurs réponses pour une question."
 
-#: admin/options-page.php:528
+#: admin/options-page.php:516
 msgid "Asker can answer"
 msgstr "L'auteur de la question peut répondre"
 
-#: admin/options-page.php:529
+#: admin/options-page.php:517
 msgid "Allow asker to answer his own question."
 msgstr "Auotiriser les auteurs à répondre à leurs question"
 
-#: admin/options-page.php:536
+#: admin/options-page.php:524
 msgid "Allow anonymous"
 msgstr "Autoriser les anonymes"
 
-#: admin/options-page.php:537
+#: admin/options-page.php:525
 msgid "Non-loggedin user can post questions and answers."
 msgstr ""
 "Les utilisateurs non connectés peuvent poser des questions et répondre."
 
-#: admin/options-page.php:544
+#: admin/options-page.php:532
 msgid "Only admin can answer"
 msgstr "Seulement l'administrateur peut répondre"
 
-#: admin/options-page.php:545
+#: admin/options-page.php:533
 msgid "Only allow admin to answer question."
 msgstr "Seulement l'administrateur peut répondre aux questions."
 
-#: admin/options-page.php:552
+#: admin/options-page.php:540
 msgid "Only logged in can see answers"
 msgstr "Seulement les utilisateurs connectés peuvent voir les réponses"
 
-#: admin/options-page.php:553
+#: admin/options-page.php:541
 msgid "non-loggedin user cannot see answers."
 msgstr "Les utilisateurs non connectés ne peuvent pas voir les réponses."
 
-#: admin/options-page.php:560
+#: admin/options-page.php:548
 msgid "Only logged in can see comment"
 msgstr "Seulement les utilisateurs connectés peuvent voir les commentaires."
 
-#: admin/options-page.php:561
+#: admin/options-page.php:549
 msgid "non-loggedin user cannot see comments."
 msgstr "Les utilisateurs non connectés ne peuvent pas voir les commentaires."
 
-#: admin/options-page.php:568
+#: admin/options-page.php:556
 msgid "Lock delete action"
 msgstr "Bloquer l'action de suppression"
 
-#: admin/options-page.php:569
+#: admin/options-page.php:557
 msgid ""
 "Lock comment or post after a period so that user cannot delete it. Set the "
 "time in epoch i.e. 86400 = 1 day."
@@ -877,83 +869,83 @@ msgstr ""
 "Bloquer les commentaires ou les posts après une certaine periode, il ne "
 "pourront plus être supprimés (time limit 86400s = 1day)"
 
-#: admin/options-page.php:577
+#: admin/options-page.php:565
 msgid "Upload"
 msgstr "Envoyer"
 
-#: admin/options-page.php:581
+#: admin/options-page.php:569
 msgid "Allow image upload"
 msgstr "Autoriser l'envoi d'image(s)"
 
-#: admin/options-page.php:582
+#: admin/options-page.php:570
 msgid "Allow logged-in users to upload image."
 msgstr "Autoriser les utilisateurs enregistrer d'envoyer des images(s)"
 
-#: admin/options-page.php:589
+#: admin/options-page.php:577
 msgid "Max images per post"
 msgstr "Max images par post"
 
-#: admin/options-page.php:590
+#: admin/options-page.php:578
 msgid "Set how many images user can upload for each post."
 msgstr "Combien d'images un utilisateur peut envoyer pour un post"
 
-#: admin/options-page.php:597
+#: admin/options-page.php:585
 msgid "Max upload size"
 msgstr "Taille max d'un upload"
 
-#: admin/options-page.php:598
+#: admin/options-page.php:586
 msgid "Set maximum upload size."
 msgstr "Taille maximum lors d'un upload"
 
-#: admin/options-page.php:609
+#: admin/options-page.php:597
 msgid "Status of new question"
 msgstr "Statut pour une nouvelle question"
 
-#: admin/options-page.php:610
+#: admin/options-page.php:598
 msgid "Set post status of new question."
 msgstr "Statut du post pour une nouvelle question."
 
-#: admin/options-page.php:621
+#: admin/options-page.php:609
 msgid "Status of edited question"
 msgstr "Statut d'une question éditée"
 
-#: admin/options-page.php:622
+#: admin/options-page.php:610
 msgid "Set post status of edited question."
 msgstr "Statut du post, d'une question éditée."
 
-#: admin/options-page.php:633
+#: admin/options-page.php:621
 msgid "Status of new answer"
 msgstr "Statut d'une nouvelle réponse."
 
-#: admin/options-page.php:634
+#: admin/options-page.php:622
 msgid "Set post status of new answer."
 msgstr "Status du post d'une nouvelle réponse."
 
-#: admin/options-page.php:645
+#: admin/options-page.php:633
 msgid "Status of edited answer"
 msgstr "Status d'une réponse éditée"
 
-#: admin/options-page.php:646
+#: admin/options-page.php:634
 msgid "Set post status of edited answer."
 msgstr "Statut du post d'une réponse éditée."
 
-#: admin/options-page.php:658
+#: admin/options-page.php:646
 msgid "reCaptacha"
 msgstr "reCaptacha"
 
-#: admin/options-page.php:662
+#: admin/options-page.php:650
 msgid "Enable reCaptcha"
 msgstr "Activer reCaptcha"
 
-#: admin/options-page.php:663
+#: admin/options-page.php:651
 msgid "Use this for preventing spam posts."
 msgstr "Permet de vous proteger contre les robots spammeur"
 
-#: admin/options-page.php:670
+#: admin/options-page.php:658
 msgid "Recaptcha site key"
 msgstr "Clef reCaptcha pour votre site"
 
-#: admin/options-page.php:671
+#: admin/options-page.php:659
 msgid ""
 "Enter your site key, if you dont have it get it from here https://www.google."
 "com/recaptcha/admin"
@@ -961,15 +953,15 @@ msgstr ""
 "Entrer la clef reCaptcha pour votre site, voir https://www.google.com/"
 "recaptcha/admin"
 
-#: admin/options-page.php:678
+#: admin/options-page.php:666
 msgid "Recaptcha secret key"
 msgstr "Recaptcha clef secrete"
 
-#: admin/options-page.php:679
+#: admin/options-page.php:667
 msgid "Enter your secret key"
 msgstr "Entrer votre clef"
 
-#: admin/options-page.php:686
+#: admin/options-page.php:674
 msgid "Tools"
 msgstr "Outils"
 
@@ -1509,7 +1501,7 @@ msgstr "Notification"
 
 #: includes/class-user.php:49
 msgid "Profile"
-msgstr "Profile"
+msgstr "Profil"
 
 #: includes/class-user.php:52 theme/default/content-user.php:15
 #: widgets/followers.php:60 widgets/question_stats.php:50
@@ -1546,7 +1538,7 @@ msgstr "Mon activité"
 msgid "%s's activity"
 msgstr "L'activité de %s"
 
-#: includes/class-user.php:225 includes/hooks.php:386 widgets/user.php:48
+#: includes/class-user.php:225 includes/hooks.php:379 widgets/user.php:48
 msgid "My profile"
 msgstr "Mon profil"
 
@@ -1604,7 +1596,7 @@ msgstr "Les followers de %s"
 msgid "My subscriptions"
 msgstr "Description"
 
-#: includes/class-user.php:249 includes/hooks.php:387
+#: includes/class-user.php:249 includes/hooks.php:380
 msgid "My notification"
 msgstr "Mes notifications"
 
@@ -3389,6 +3381,12 @@ msgstr "Avatar:"
 #: widgets/users.php:76
 msgid "Show"
 msgstr "Afficher"
+
+#~ msgid "Default rank"
+#~ msgstr "Rang par défaut"
+
+#~ msgid "Assign a default rank for newly registered user."
+#~ msgstr "Assigner un rang par defaut pour un nouvel utilisateur."
 
 #~ msgid "Install Required Plugins"
 #~ msgstr "Installer les plugins requis"
