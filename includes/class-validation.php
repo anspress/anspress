@@ -78,6 +78,11 @@ class AnsPress_Validation
 	 */
 	private function length_check($field, $param) {
 
+		// Dont check if Administrator.
+		if ( current_user_can( 'manage_options' ) ) {
+			return;
+		}
+
 		if ( $param != 0 && ( ! isset( $this->fields[$field] ) || mb_strlen( strip_tags( $this->fields[$field] ) ) <= $param ) ) {
 			$this->errors[$field] = sprintf( __( 'Its too short, it must be minimum %d characters', 'anspress-question-answer' ), $param ); }
 	}
@@ -339,7 +344,7 @@ class AnsPress_Validation
 	 * @param  string $field  field name.
 	 * @param  string $error  Error message.
 	 */
-	private function append_errors($field, $errors){
+	private function append_errors($field, $errors) {
 		$this->errors[$field] = $errors;
 	}
 
