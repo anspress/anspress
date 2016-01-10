@@ -42,7 +42,7 @@ class AP_License{
 	public function ap_product_license() {
 
 		if ( ! current_user_can( 'manage_options' ) || ! wp_verify_nonce( $_POST['ap_licenses_nonce'], 'ap_licenses_nonce' ) ) {
-			exit();
+			wp_die();
 		}
 
 		$licenses = get_option( 'anspress_license', array() );
@@ -50,7 +50,7 @@ class AP_License{
 
 		if ( empty($fields ) ) {
 			wp_redirect( admin_url( 'admin.php?page=anspress_licenses' ) );
-			exit();
+			wp_die();
 		}
 
 		if ( isset( $_POST['save_licenses'] ) ) {
@@ -112,7 +112,7 @@ class AP_License{
 		}
 
 		wp_redirect( admin_url( 'admin.php?page=anspress_licenses' ) );
-		exit( );
+		wp_die( );
 	}
 
 	/**

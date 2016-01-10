@@ -47,7 +47,7 @@ class AnsPress_Process_Form
 
 		if ( ! empty( $this->redirect ) ) {
 			wp_redirect( $this->redirect );
-			exit;
+			wp_die();
 		}
 	}
 

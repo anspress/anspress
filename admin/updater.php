@@ -369,7 +369,7 @@ class EDD_SL_Plugin_Updater {
 			echo '<div style="background:#fff;padding:10px;">' . $version_info->sections['changelog'] . '</div>';
 		}
 
-		exit;
+		wp_die();
 	}
 
 }

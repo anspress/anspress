@@ -749,6 +749,6 @@ class AnsPress_Admin
 		}
 		delete_option( 'ap_update_helper' );
 		wp_redirect( 'admin.php?page=anspress' );
-		exit;
+		wp_die();
 	}
 }

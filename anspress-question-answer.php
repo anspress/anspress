@@ -496,7 +496,7 @@ function anspress_uninstall() {
 function ap_activation_redirect($plugin) {
 
 	if ( $plugin == plugin_basename( __FILE__ ) ) {
-		exit( wp_redirect( admin_url( 'admin.php?page=anspress_about' ) ) );
+		wp_die( wp_redirect( admin_url( 'admin.php?page=anspress_about' ) ) );
 	}
 }
 add_action( 'activated_plugin', 'ap_activation_redirect' );
@@ -525,7 +525,7 @@ add_action( 'wpmu_new_blog', 'ap_create_blog', 10, 6 );
  * @return array
  */
 function ap_drop_blog_tables( $tables, $blog_id ) {
-	if ( empty( $blog_id ) || 1 == $blog_id || $blog_id != $GLOBALS['blog_id'] ){
+	if ( empty( $blog_id ) || 1 == $blog_id || $blog_id != $GLOBALS['blog_id'] ) {
 		return $tables;
 	}
 

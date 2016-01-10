@@ -56,7 +56,7 @@ class AnsPress_Ajax
 	public function suggest_similar_questions() {
 
 	    if ( empty( $_POST['value'] ) || ( ! ap_verify_default_nonce() && ! current_user_can( 'manage_options' ) ) ) {
-	        die( 'false' );
+	        wp_die( 'false' );
 	    }
 
 	    $keyword = sanitize_text_field( wp_unslash( $_POST['value'] ) );
@@ -594,8 +594,7 @@ class AnsPress_Ajax
 			endwhile;
 		}
 
-		die();
-
+		wp_die();
 	}
 
 	/**
@@ -681,11 +680,11 @@ class AnsPress_Ajax
 		$ids = explode( ',', $ids );
 
 		if ( count( $ids ) == 0 ) {
-			die();
+			wp_die();
 		}
 
 		if ( ! ap_verify_default_nonce() && ! is_user_logged_in() ) {
-			die();
+			wp_die();
 		}
 
 		foreach ( $ids as $id ) {
@@ -700,7 +699,7 @@ class AnsPress_Ajax
 			'view' => array( 'notification_count' => ap_get_total_unread_notification() ),
 		) );
 
-		die();
+		wp_die();
 	}
 
 	/**
@@ -944,7 +943,7 @@ class AnsPress_Ajax
 	        $this->send( array(
 	        	'message' 	=> 'delete_activity',
 	        	'action' 	=> 'delete_activity',
-	        	'do' 		=> array('remove_if_exists' => '#activity-'.$activity_id ),
+	        	'do' 		=> array( 'remove_if_exists' => '#activity-'.$activity_id ),
 	        ) );
 	    }
 
