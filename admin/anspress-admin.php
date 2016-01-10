@@ -51,6 +51,7 @@ class AnsPress_Admin
 		$this->includes();
 		new AnsPress_Options_Page;
 		new AnsPress_Admin_Ajax($this);
+		new AP_license();
 
 		$plugin_basename = plugin_basename( plugin_dir_path( __DIR__ ) . 'anspress-question-answer.php' );
 		add_filter( 'plugin_action_links_' . $plugin_basename, array( $this, 'add_action_links' ) );
@@ -78,7 +79,7 @@ class AnsPress_Admin
 		add_action( 'current_screen', array( $this, 'comments_flag_query' ), 10, 2 );
 		add_action( 'get_pages', array( $this, 'get_pages' ), 10, 2 );
 		add_action( 'wp_insert_post_data', array( $this, 'modify_answer_title' ), 10, 2 );
-		add_action( 'admin_action_ap_update_helper', array( $this, 'update_helper' ));
+		add_action( 'admin_action_ap_update_helper', array( $this, 'update_helper' ));		
 	}
 
 	/**
@@ -103,6 +104,7 @@ class AnsPress_Admin
 		require_once( 'functions.php' );
 		require_once( 'options-page.php' );
 		require_once( 'extensions.php' );
+		require_once( 'license.php' );
 	}
 
 	/**
