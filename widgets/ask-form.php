@@ -48,7 +48,7 @@ class AP_Askform_Widget extends WP_Widget {
 	 * @param array $new_instance Values just sent to be saved.	 *
 	 * @return array Updated safe values to be saved.
 	 */
-	public function update( $new_instance ) {
+	public function update( $new_instance, $old_instance ) {
 		$instance = array();
 		$instance['title'] = ( ! empty( $new_instance['title'] ) ) ? strip_tags( $new_instance['title'] ) : '';
 

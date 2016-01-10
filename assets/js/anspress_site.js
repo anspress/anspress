@@ -38,6 +38,7 @@
             this.select_answer();
             this.ap_delete_post();
             this.ap_upload_field();
+            this.avatarUploadCallback();
             this.change_status();
             this.load_profile_field();
             this.ap_post_upload_field();
@@ -61,21 +62,36 @@
             success = typeof success !== 'undefined' ? success : false;
             before = typeof before !== 'undefined' ? before : false;
             abort = typeof abort !== 'undefined' ? abort : false;
+            
             var action = apGetValueFromStr(query, 'ap_ajax_action');
+            
             if (abort && (typeof ApSite.ajax_id[action] !== 'undefined')) {
                 ApSite.ajax_id[action].abort();
             }
+
             var req = $.ajax({
                 type: 'POST',
                 url: ajaxurl,
                 data: query,
-                beforeSend: before,
-                success: success,
-                dataType: 'json',
+                beforeSend: function(){
+                    if( context )
+                        ApSite.showLoading(context);
+                    
+                    if( typeof before === 'function' )
+                        before();
+                },
+                success: function(data){
+                    ApSite.hideLoading(context);
+                    var data = $(data);
+                    var data = JSON.parse(data.filter('#ap-response').html());
+                    
+                    if( typeof success === 'function' )
+                        success(data);
+                },
                 context: context,
-                global: true,
                 cache:false
             });
+
             ApSite.ajax_id[action] = req;
             return req;
         },
@@ -162,7 +178,7 @@
                         console.log(errorThrown);
                         AnsPress.site.hideLoading(this);
                     },
-                    dataType: 'json',
+                    dataType: 'html',
                     context: this,
                     global: true,
                     cache:false
@@ -227,8 +243,7 @@
          * @param  {object} data Ajax success object.
          */
         replaceWith: function(elm, data) {
-            if (typeof data.html !== 'undefined')
-                $(elm).replaceWith(data.html);
+            $(elm).replaceWith(data);
         },
 
         /**
@@ -247,9 +262,11 @@
          * @param  {string} active  Currently active selector.
          */
         toggle_active_class: function(elm, active) {
+            console.log(elm);
             if (typeof elm !== 'undefined'){
-                $(elm).find('li').removeClass('active');
-                $(elm).find(active).addClass('active');
+                $(elm).find('li').toggleClass('active');
+                $(elm).find(active).toggleClass('active');
+                $(elm).toggleClass('active');
             }
         },
 
@@ -285,11 +302,9 @@
         ajax_btn: function() {
             $('[data-action="ajax_btn"]').click(function(e) {
                 e.preventDefault();
-                AnsPress.site.showLoading(this);
                 var q = $(this).apAjaxQueryString();
 
-                ApSite.doAjax(q, function(data) {
-                    AnsPress.site.hideLoading(this);
+                ApSite.doAjax(q, function(data) {                    
                     if( typeof $(this).data('cb') !== 'undefined' ){
                         var cb = $(this).data("cb");                       
                         if( typeof apFunctions[cb] === 'function' ){
@@ -304,10 +319,8 @@
                 e.preventDefault();
 
                 if(!$(this).is('.loaded')){
-                    ApSite.showLoading(this);
                     var q = $(this).attr('data-query');
                     ApSite.doAjax(apAjaxData(q), function(data) {
-                        ApSite.hideLoading(this);
                         var button = $(this);
                         $(this).addClass('loaded');
 
@@ -339,7 +352,6 @@
         },
         ap_comment_form: function() {
             $('body').delegate('#ap-commentform', 'submit', function() {
-                ApSite.showLoading(this);
                 if (typeof tinyMCE !== 'undefined') tinyMCE.triggerSave();
                 ApSite.doAjax(apAjaxData($(this).formSerialize()), function(data) {
                     ApSite.hideLoading(this);
@@ -362,15 +374,17 @@
             $('body').delegate('[data-action="delete_comment"]', 'click', function(e) {
                 e.preventDefault();
                 var q = $(this).attr('data-query');
+                var elm = $(this);
                 ApSite.doAjax(apAjaxData(q), function(data) {
-                    if (typeof $(this).attr('data-toggle') !== 'undefined' && data.message_type == 'success') $($(this).attr('data-toggle')).hide();
+                    console.log(elm);
+                    if (typeof elm.attr('data-toggle') !== 'undefined' && data.message_type == 'success') 
+                        $(elm.attr('data-toggle')).hide();
                 }, this, false, true);
             });
         },
         ap_subscribe: function() {
             $('[data-action="ap_subscribe"]').click(function(e) {
                 e.preventDefault();
-                AnsPress.site.showLoading(this);
                 var q = $(this).attr('data-query');
                 ApSite.doAjax(apAjaxData(q), function(data) {
                     AnsPress.site.hideLoading(this);
@@ -389,23 +403,22 @@
         vote: function() {
             $('body').delegate('[data-action="vote"] a', 'click', function(e) {
                 e.preventDefault();
-                AnsPress.site.showLoading(this);
                 var q = $(this).attr('data-query');
+                var el = $(this);
                 ApSite.doAjax(apAjaxData(q), function(data) {
-                    AnsPress.site.hideLoading(this);
-                    var vote_c = $(this).parent();
+                    var vote_c = el.parent();
                     vote_c.find('.ap-vote-fade').remove();
                     if (typeof data['action'] !== 'undefined' && data['action'] == 'voted' || data['action'] == 'undo') {
                         if (data['action'] == 'voted') {
-                            $(this).addClass('voted');
+                            el.addClass('voted');
                             if (data['type'] == 'vote_up') vote_c.find('.vote-down').addClass('disable');
                             if (data['type'] == 'vote_down') vote_c.find('.vote-up').addClass('disable');
-                            $(this).trigger('voted', data);
+                            el.trigger('voted', data);
                         } else if (data['action'] == 'undo') {
-                            $(this).removeClass('voted');
+                            el.removeClass('voted');
                             if (data['type'] == 'vote_up') vote_c.find('.vote-down').removeClass('disable');
                             if (data['type'] == 'vote_down') vote_c.find('.vote-up').removeClass('disable');
-                            $(this).trigger('undo_vote', data);
+                            el.trigger('undo_vote', data);
                         }
                         vote_c.find('.net-vote-count').text(data['count']);
                     }
@@ -429,14 +442,12 @@
         select_answer: function() {
             $('body').delegate('[data-action="select_answer"]', 'click', function(e) {
                 e.preventDefault();
-                AnsPress.site.showLoading(this);
                 var q = $(this).attr('data-query');
-                ApSite.doAjax(apAjaxData(q), function(data){AnsPress.site.hideLoading(this);});
+                ApSite.doAjax(apAjaxData(q), false, this);
             });
         },
 
         ap_delete_post: function() {
-
             $('#anspress').delegate('[data-action="ap_delete_post"]', 'click', function(e) {
                 e.preventDefault();
 
@@ -457,19 +468,28 @@
             $('[data-action="ap_upload_form"]').submit(function() {
                 $(this).ajaxSubmit({
                     success: function(data) {
+                        data = $(data);
+                        data = JSON.parse(data.filter('#ap-response').html());
                         $('body').trigger('uploadForm', data);
                     },
-                    url: ajaxurl,
-                    dataType: 'json'
+                    url: ajaxurl
                 });
                 return false
+            });
+        },
+        avatarUploadCallback: function(){
+            $(document).on('uploadForm', function(e, data) {
+                
+                if (typeof data.action !== 'undefined' && data.action === 'avatar_uploaded') {
+                    var src = $(data.html).attr('src');
+                    $('[data-view="user_avatar_'+ data.user_id +'"]').attr('src', src);
+                }
             });
         },
         change_status: function() {
             $('body').delegate('[data-action="ap_change_status"]', 'click', function(e) {
                 e.preventDefault();
                 var c = $(this).closest('ul').prev();
-                AnsPress.site.showLoading(c);
                 var q = $(this).attr('data-query');
                 ApSite.doAjax(apAjaxData(q), function(data) {
                     AnsPress.site.hideLoading(c);
@@ -479,7 +499,6 @@
         load_profile_field: function() {
             $('body').delegate('[data-action="ap_load_user_field_form"]', 'click', function(e) {
                 e.preventDefault();
-                AnsPress.site.showLoading(this);
                 var q = $(this).attr('data-query');
                 ApSite.doAjax(apAjaxData(q), function(data) {
                     AnsPress.site.hideLoading(this);
@@ -505,16 +524,17 @@
                     },
                     success: function(data) {
                         ApSite.hideLoading(cont);
+                        data = $(data);
+                        data = JSON.parse(data.filter('#ap-response').html());
                         $('body').trigger('postUploadForm', data);
 
-                        if(typeof data['html'] !== 'undefined' ){
-                            ApSite.addImageInEditor(data['html']);
+                        if(typeof data.html !== 'undefined' ){
+                            ApSite.addImageInEditor(data.html);
                             $('.ap-post-upload-form').append('<input type="hidden" name="attachment_ids[]" value="'+data['attachment_id']+'" />');
                         }
 
                     },
                     url: ajaxurl,
-                    dataType: 'json',
                     type: 'POST'
                 });
 
@@ -572,10 +592,9 @@
             $('body').delegate('[data-action="set_featured"]', 'click', function(e) {
                 e.preventDefault();
                 var c = $(this).closest('ul').prev();
-                AnsPress.site.showLoading(c);
                 var q = $(this).attr('data-query');
                 ApSite.doAjax(apAjaxData(q), function(data) {
-                    AnsPress.site.hideLoading(c);
+                    
                 }, this, false, true);
             });
         },
@@ -616,7 +635,6 @@
         follow: function() {
             $('body').delegate('[data-action="ap_follow"]', 'click', function(e) {
                 e.preventDefault();
-                AnsPress.site.showLoading(this);
                 var q = $(this).attr('data-query');
                 ApSite.doAjax(apAjaxData(q), function(data) {
                     AnsPress.site.hideLoading(this);
@@ -631,7 +649,7 @@
             });
         },
         updateCover: function(){
-            $(document).on('ap_after_ajax', function(e, data) {
+            $(document).on('uploadForm', function(e, data) {
                 if (typeof data.action !== 'undefined' && data.action === 'cover_uploaded') {
                     $('[data-view="user_cover_'+ data.user_id +'"]').css({'background-image': 'url('+data.image+')'});
                 }
@@ -649,7 +667,6 @@
         delete_notification: function() {
             $('body').delegate('[data-action="ap_delete_notification"]', 'click', function(e) {
                 e.preventDefault();
-                AnsPress.site.showLoading(this);
                 var q = $(this).attr('data-query');
                 ApSite.doAjax(apAjaxData(q), function(data) {
                     AnsPress.site.hideLoading(this);
@@ -663,7 +680,6 @@
         mark_as_read: function() {
             $('body').delegate('[data-action="ap_markread_notification"]', 'click', function(e) {
                 e.preventDefault();
-                AnsPress.site.showLoading(this);
                 var q = $(this).attr('data-query');
                 ApSite.doAjax(apAjaxData(q), function(data) {
                     AnsPress.site.hideLoading(this);
@@ -696,14 +712,18 @@
         questionSuggestion: function(){            
             $('[data-action="suggest_similar_questions"]').on('blur', function(){
                 var title = $(this).val();
-
                 if(title.length == 0)
                     return;
 
-                ApSite.doAjax(apAjaxData('action=ap_ajax&ap_ajax_action=suggest_similar_questions&ap_ajax_nonce='+ap_nonce+'&value='+title), function(data) {
-
-                    $("#similar_suggestions").html(data.html);      
-                }, this, false, true);
+                ApSite.doAjax(
+                    apAjaxData('action=ap_ajax&ap_ajax_action=suggest_similar_questions&ap_ajax_nonce='+ap_nonce+'&value='+title),
+                    function(data) {                        
+                        $("#similar_suggestions").html(data.html);      
+                    },
+                    this, 
+                    false,
+                    true
+                );
             });
         },
 
@@ -736,36 +756,38 @@
 
 (function($) {
     $(document).ajaxComplete(function(event, response, settings) {
-        var data = response.responseJSON;
+        // Get response html.
+        var dataText = $(response.responseText);
 
-        if (response.getResponseHeader('X-ANSPRESS-MESSAGE') !== null) {
-            var type = typeof response.getResponseHeader('X-ANSPRESS-MT') === 'undefined' ? 'success' : response.getResponseHeader('X-ANSPRESS-MT');
-            var message = response.getResponseHeader('X-ANSPRESS-MESSAGE');
+        //Parse response text JSON
+        var data = JSON.parse(dataText.filter('#ap-response').html());
+        console.log(data);
+        
+        if (typeof data.message_type !== 'undefined') {
             
-            if( '' != type && '' != message){
-                ApSite.addMessage($.parseJSON(message), type);
+            if( '' != data.message_type && '' != data.message){
+                ApSite.addMessage(data.message, data.message_type);
             }
 
-            if(typeof grecaptcha !== 'undefined' && type !== 'success')
+            if(typeof grecaptcha !== 'undefined' && data.message_type !== 'success')
                 grecaptcha.reset(widgetId1);
 
             if( typeof data === 'undefined' ){
                 data = {};
             }
 
-            console.log(data);
-
             $(document).trigger('ap_after_ajax', data);
 
             AnsPress.site.hideLoading('all');
         }
 
-        if (response.getResponseHeader('X-ANSPRESS-DO') !== null) {            
-            var doaction = response.getResponseHeader('X-ANSPRESS-DO');
-            if( apIsJsonString(doaction) ){
-                doaction = $.parseJSON(doaction);
+        // Trigger custom actions after ajax
+        if (typeof data.do !== 'undefined') {
+            var action = data.do;
 
-                $.each(doaction, function(index, el) {
+            //Check if data.do is object
+            if( typeof action === 'object' ){
+                $.each(action, function(index, el) {
                     if(typeof ApSite[index] === 'function'){                        
                         if( typeof el === 'object' ){
                             el.data = data;
@@ -777,19 +799,18 @@
                     }
                 });
             }else{
-                if(typeof ApSite[doaction] === 'function'){
-                    ApSite[doaction](data);
+                if(typeof ApSite[action] === 'function'){
+                    ApSite[action](data);
                 }
             }
         }
 
         if (typeof data !== 'undefined' && typeof data.is_ap_ajax !== 'undefined' && typeof data.view !== 'undefined') {
-
             $.each(data.view, function(i, view) {
                 try {
                    var html = $(view);
                 }catch(err){
-                    console.log(err);
+                    //console.log(err);
                 }
 
                 if(typeof data.view_html !== 'undefined' && typeof html !== 'undefined' && html.is('[data-view="' + i + '"]')){

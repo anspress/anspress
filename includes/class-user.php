@@ -494,10 +494,10 @@ class AnsPress_User
 
 			ap_ajax_json( array(
 				'status' 	=> true,
+				'action' 	=> 'avatar_uploaded',
+				'user_id' 	=> $userid,
 				'message' 	=> __( 'Avatar uploaded successfully.', 'anspress-question-answer' ),
-				'do' 		=> array('replaceWith'),
-				'html' 		=> get_avatar( $userid, 150 ),
-				'container' => '[data-view="user_avatar_'.$userid.'"]',
+				'html' 		=> get_avatar( $userid, 150 )
 			) );
 		}
 

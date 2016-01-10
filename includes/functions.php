@@ -863,21 +863,13 @@ function ap_form_allowed_tags() {
 }
 
 function ap_send_json($result = array()) {
+	@header( 'Content-Type: text/html; charset=' . get_option( 'blog_charset' ) );
 	$result['is_ap_ajax'] = true;
 	$message_type = isset( $result['message_type'] ) ? $result['message_type'] : 'success';
 
-	header( sprintf( 'X-ANSPRESS-MT: %s', $message_type ) );
+	$json = '<div id="ap-response">'.json_encode($result, JSON_HEX_QUOT | JSON_HEX_TAG ).'</div>';
 
-	if ( isset( $result['message'] ) ) {
-		header( sprintf( 'X-ANSPRESS-MESSAGE: %s', json_encode( $result['message'] ) ) );
-	}
-
-	if ( isset( $result['do'] ) ) {
-		$do = is_array( $result['do'] ) ? json_encode( $result['do'] ) : $result['do'];
-		header( sprintf( 'X-ANSPRESS-DO: %s', $do ) );
-	}
-
-	wp_send_json( $result );
+	wp_die( $json );
 }
 
 /**

@@ -550,14 +550,14 @@ class AnsPress_Ajax
 		}
 
 		$is_following = ap_is_user_following( $user_to_follow, $current_user_id );
-
+		$elm = '#follow_'.$user_to_follow;
 		if ( $is_following ) {
 			ap_remove_follower( $current_user_id, $user_to_follow );
-
+			
 			$this->send( array(
 				'message' 		=> 'unfollow',
 				'action' 		=> 'unfollow',
-				'do' 			=> array( 'updateText' => array( '#follow_'.$user_to_follow, __( 'Follow', 'anspress-question-answer' ) ) ),
+				'do' 			=> array( 'updateText' => array( $elm, __( 'Follow', 'anspress-question-answer' ) ), 'toggle_active_class' => $elm ),
 			) );
 		} else {
 			ap_add_follower( $current_user_id, $user_to_follow );
@@ -565,7 +565,7 @@ class AnsPress_Ajax
 			$this->send( array(
 				'message' 		=> 'follow',
 				'action' 		=> 'follow',
-				'do' 			=> array( 'updateText' => array( '#follow_'.$user_to_follow, __( 'Unfollow', 'anspress-question-answer' ) ) ),
+				'do' 			=> array( 'updateText' => array( '#follow_'.$user_to_follow, __( 'Unfollow', 'anspress-question-answer' ) ), 'toggle_active_class' => $elm ),
 			) );
 		}
 	}
@@ -765,6 +765,8 @@ class AnsPress_Ajax
 
 		$is_subscribed = ap_is_user_subscribed( $action_id, $subscribe_type, $user_id );
 
+		$elm = '#subscribe_'.$action_id.' .ap-btn';
+
 		if ( $is_subscribed ) {
 			$row = ap_remove_subscriber( $action_id, $user_id, $subscribe_type );
 
@@ -773,7 +775,7 @@ class AnsPress_Ajax
 				$this->send( array(
 					'message' 		=> 'unsubscribed',
 					'action' 		=> 'unsubscribed',
-					'do' 			=> array( 'updateHtml' => '#subscribe_'.$action_id.' .text' ),
+					'do' 			=> array( 'updateHtml' => $elm.' .text', 'toggle_active_class' => $elm ),
 					'count' 		=> $count,
 					'html' 			=> __( 'Follow', 'anspress-question-answer' ),
 					'view' 			=> array( 'subscribe_'.$action_id => $count ),
@@ -788,7 +790,7 @@ class AnsPress_Ajax
 				$this->send( array(
 					'message' 		=> 'subscribed',
 					'action' 		=> 'subscribed',
-					'do' 			=> array( 'updateHtml' => '#subscribe_'.$action_id.' .text' ),
+					'do' 			=> array( 'updateHtml' => '#subscribe_'.$action_id.' .text', 'toggle_active_class' => $elm ),
 					'count' 		=> $count,
 					'html' 			=> __( 'Unfollow', 'anspress-question-answer' ),
 					'view' 			=> array( 'subscribe_'.$action_id => $count ),
