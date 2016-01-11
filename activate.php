@@ -57,7 +57,7 @@ class AP_Activate
 	public function meta_table() {
 		global $wpdb;
 
-		if( $wpdb->get_var( "show tables like '{$wpdb->ap_meta}'" ) != $wpdb->ap_meta ) {
+		if ( $wpdb->get_var( "show tables like '{$wpdb->ap_meta}'" ) != $wpdb->ap_meta ) {
 			$this->tables[] = 'CREATE TABLE IF NOT EXISTS `'.$wpdb->ap_meta.'` (
 	            `apmeta_id` bigint(20) NOT NULL AUTO_INCREMENT,
 	            `apmeta_userid` bigint(20) DEFAULT NULL,
@@ -74,7 +74,7 @@ class AP_Activate
 	public function activity_table() {
 		global $wpdb;
 
-		if( $wpdb->get_var( "show tables like '{$wpdb->ap_activity}'" ) != $wpdb->ap_activity ) {
+		if ( $wpdb->get_var( "show tables like '{$wpdb->ap_activity}'" ) != $wpdb->ap_activity ) {
 			$this->tables[] = 'CREATE TABLE IF NOT EXISTS `'.$wpdb->ap_activity.'` (
 	            `id` bigint(20) NOT NULL AUTO_INCREMENT,
 	            `user_id` bigint(20) DEFAULT NULL,
@@ -101,7 +101,7 @@ class AP_Activate
 	public function activity_meta_table() {
 		global $wpdb;
 
-		if( $wpdb->get_var( "show tables like '{$wpdb->ap_activitymeta}'" ) != $wpdb->ap_activitymeta ) {
+		if ( $wpdb->get_var( "show tables like '{$wpdb->ap_activitymeta}'" ) != $wpdb->ap_activitymeta ) {
 			$this->tables[] = 'CREATE TABLE IF NOT EXISTS `'.$wpdb->ap_activitymeta."` (
 		          `meta_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
 		          `ap_activity_id` bigint(20) unsigned NOT NULL DEFAULT '0',
@@ -118,7 +118,7 @@ class AP_Activate
 	public function notification_table() {
 		global $wpdb;
 
-		if( $wpdb->get_var( "show tables like '{$wpdb->ap_notifications}'" ) != $wpdb->ap_notifications ) {
+		if ( $wpdb->get_var( "show tables like '{$wpdb->ap_notifications}'" ) != $wpdb->ap_notifications ) {
 			$this->tables[] = 'CREATE TABLE IF NOT EXISTS `'.$wpdb->ap_notifications.'` (
 	            `noti_id` bigint(20) NOT NULL AUTO_INCREMENT,
 	            `noti_activity_id` bigint(20) NOT NULL,
@@ -136,7 +136,7 @@ class AP_Activate
 	public function subscribers_table() {
 		global $wpdb;
 
-		if( $wpdb->get_var( "show tables like '{$wpdb->ap_subscribers}'" ) != $wpdb->ap_subscribers ) {
+		if ( $wpdb->get_var( "show tables like '{$wpdb->ap_subscribers}'" ) != $wpdb->ap_subscribers ) {
 			$this->tables[] = 'CREATE TABLE IF NOT EXISTS `'.$wpdb->ap_subscribers.'` (
 	            `subs_id` bigint(20) NOT NULL AUTO_INCREMENT,               
 	            `subs_user_id` bigint(20) NOT NULL,
@@ -164,18 +164,31 @@ class AP_Activate
 
 		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 
-		if( count( $this->tables ) > 0 ){
+		if ( count( $this->tables ) > 0 ) {
 			foreach ( $this->tables as $table ) {
 				dbDelta( $table );
 			}
 		}
 
-		if ( ap_opt( 'ap_db_version' ) == 17 ) {
+		$wpdb->query( "ALTER TABLE `{$wpdb->prefix}ap_activity` ADD term_ids LONGTEXT after item_id;" );
 
-			$wpdb->query( "ALTER TABLE `{$wpdb->prefix}ap_activity` ADD term_ids LONGTEXT after item_id;" );
+		// Check subscribers table for old column names.
+		// If exists then rename it.
+		$subscriber_cols = $wpdb->get_results("SHOW COLUMNS FROM {$wpdb->prefix}ap_subscribers" );
+		$subscriber_old_cols = array(
+			'id' 			=> 'bigint(20)',
+			'user_id' 		=> 'bigint(20)',
+			'question_id' 	=> 'bigint(20)',
+			'item_id' 		=> 'bigint(20)',
+			'activity' 		=> 'varchar(225 )',
+		);
 
-			$wpdb->query( "ALTER TABLE `{$wpdb->prefix}ap_subscribers` CHANGE id subs_id bigint(20), CHANGE user_id subs_user_id bigint(20), CHANGE question_id subs_question_id bigint(20), CHANGE item_id subs_item_id bigint(20), CHANGE activity subs_activity varchar(225);" );
-
+		if ( $subscriber_cols ) {
+			foreach ( $subscriber_cols as $col ) {
+				if ( in_array($col->Field, array_keys($subscriber_old_cols ) ) ) {
+					$wpdb->query( "ALTER TABLE `{$wpdb->prefix}ap_subscribers` CHANGE {$col->Field} subs_{$col->Field} ".$subscriber_old_cols[$col->Field] );
+				}
+			}
 		}
 	}
 

@@ -496,7 +496,7 @@ function anspress_uninstall() {
 function ap_activation_redirect($plugin) {
 
 	if ( $plugin == plugin_basename( __FILE__ ) ) {
-		wp_die( wp_redirect( admin_url( 'admin.php?page=anspress_about' ) ) );
+		exit( wp_redirect( admin_url( 'admin.php?page=anspress_about' ) ) );
 	}
 }
 add_action( 'activated_plugin', 'ap_activation_redirect' );

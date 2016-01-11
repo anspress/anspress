@@ -221,7 +221,7 @@ function ap_get_subscribers( $action_id, $activity = 'q_all', $limit = 10, $user
 		$activity_q = ' subs_activity = "'. sanitize_title_for_query( $activity ) .'"';
 	}
 
-	$key = $action_id.'_'.(is_array($activity) ? implode(':', $activity) : $activity);
+	$key = $action_id.'_'.(is_array($activity ) ? implode(':', $activity ) : $activity);
 
 	$cache = wp_cache_get( $key, 'ap_subscribers' );
 
@@ -229,11 +229,11 @@ function ap_get_subscribers( $action_id, $activity = 'q_all', $limit = 10, $user
 		return $cache;
 	}
 
-	if( true === $user_info){
+	if ( true === $user_info ) {
 		$user_info = "JOIN {$wpdb->prefix}users on subs_user_id = ID";
 	}
 
-	$results = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM ".$wpdb->ap_subscribers." {$user_info} where subs_item_id=%d AND $activity_q LIMIT 0 , %d", $action_id, $limit ) );
+	$results = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM '.$wpdb->ap_subscribers." {$user_info} where subs_item_id=%d AND $activity_q LIMIT 0 , %d", $action_id, $limit ) );
 
 	// Set individual cache for subscriber.
 	if ( $results ) {
@@ -263,11 +263,10 @@ function ap_subscribe_btn_html($action_id = false, $type = false) {
 
 	$filter = apply_filters( 'ap_subscribe_btn_action_type', array( 'action_id' => $action_id, 'type' => $type ) );
 
-
 	$action_id 	= $filter['action_id'];
 	$type 		= $filter['type'];
 
-	if( false === $action_id ){
+	if ( false === $action_id ) {
 		$action_id = get_question_id();
 	}
 
@@ -421,3 +420,4 @@ function ap_unset_current_user_from_subscribers($subscribers) {
 
 	return $subscribers;
 }
+

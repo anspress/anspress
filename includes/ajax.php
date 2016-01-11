@@ -554,7 +554,7 @@ class AnsPress_Ajax
 		$elm = '#follow_'.$user_to_follow;
 		if ( $is_following ) {
 			ap_remove_follower( $current_user_id, $user_to_follow );
-			
+
 			$this->send( array(
 				'message' 		=> 'unfollow',
 				'action' 		=> 'unfollow',
@@ -819,7 +819,7 @@ class AnsPress_Ajax
 	    }
 
 	    $post = get_post( $post_id );
-	    if ( $post->post_author == get_current_user_id() && !is_super_admin( ) ) {
+	    if ( $post->post_author == get_current_user_id() && ! is_super_admin( ) ) {
 	        $this->send( 'cannot_vote_own_post' );
 	    }
 
