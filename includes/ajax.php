@@ -216,6 +216,7 @@ class AnsPress_Ajax
 	            	'action' 		=> 'delete_comment',
 	            	'comment_ID' 	=> (int) $_POST['comment_ID'],
 	            	'message' 		=> 'comment_delete_success',
+	            	'message' 		=> 'comment_delete_success',
 	            	'view' 			=> array(
 	            			'comments_count_'.$comment->comment_post_ID => '('.$count['approved'].')',
 	            			'comment_count_label_'.$comment->comment_post_ID => sprintf( _n( 'One comment', '%d comments', $count['approved'], 'anspress-question-answer' ), $count['approved'] ),
@@ -818,7 +819,7 @@ class AnsPress_Ajax
 	    }
 
 	    $post = get_post( $post_id );
-	    if ( $post->post_author == get_current_user_id() ) {
+	    if ( $post->post_author == get_current_user_id() && !is_super_admin( ) ) {
 	        $this->send( 'cannot_vote_own_post' );
 	    }
 
