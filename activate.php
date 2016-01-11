@@ -149,6 +149,30 @@ class AP_Activate
 	}
 
 	/**
+	 * Check subscribers table for old column names.
+	 * If exists then rename it.
+	 */
+	public function fix_subscribers_table() {
+		global $wpdb;
+		$subscriber_cols = $wpdb->get_results("SHOW COLUMNS FROM {$wpdb->prefix}ap_subscribers" );
+		$subscriber_old_cols = array(
+			'id' 			=> 'bigint(20)',
+			'user_id' 		=> 'bigint(20)',
+			'question_id' 	=> 'bigint(20)',
+			'item_id' 		=> 'bigint(20)',
+			'activity' 		=> 'varchar(225 )',
+		);
+
+		if ( $subscriber_cols ) {
+			foreach ( $subscriber_cols as $col ) {
+				if ( in_array($col->Field, array_keys($subscriber_old_cols ) ) ) {
+					$wpdb->query( "ALTER TABLE `{$wpdb->prefix}ap_subscribers` CHANGE {$col->Field} subs_{$col->Field} ".$subscriber_old_cols[$col->Field] );
+				}
+			}
+		}
+	}
+
+	/**
 	 * Insert and update tables
 	 */
 	public function insert_tables() {
@@ -172,24 +196,7 @@ class AP_Activate
 
 		$wpdb->query( "ALTER TABLE `{$wpdb->prefix}ap_activity` ADD term_ids LONGTEXT after item_id;" );
 
-		// Check subscribers table for old column names.
-		// If exists then rename it.
-		$subscriber_cols = $wpdb->get_results("SHOW COLUMNS FROM {$wpdb->prefix}ap_subscribers" );
-		$subscriber_old_cols = array(
-			'id' 			=> 'bigint(20)',
-			'user_id' 		=> 'bigint(20)',
-			'question_id' 	=> 'bigint(20)',
-			'item_id' 		=> 'bigint(20)',
-			'activity' 		=> 'varchar(225 )',
-		);
-
-		if ( $subscriber_cols ) {
-			foreach ( $subscriber_cols as $col ) {
-				if ( in_array($col->Field, array_keys($subscriber_old_cols ) ) ) {
-					$wpdb->query( "ALTER TABLE `{$wpdb->prefix}ap_subscribers` CHANGE {$col->Field} subs_{$col->Field} ".$subscriber_old_cols[$col->Field] );
-				}
-			}
-		}
+		$this->fix_subscribers_table();
 	}
 
 	/**
