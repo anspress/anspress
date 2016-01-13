@@ -516,7 +516,7 @@ function ap_answer_edit_link() {
 function ap_truncate_chars($text, $limit, $ellipsis = '...') {
 
 	if ( strlen( $text ) > $limit ) {
-		$endpos = strpos( str_replace( array( "\r\n", "\r", "\n", "\t" ), ' ', $text ), ' ', $limit );
+		$endpos = strpos( str_replace( array( "\r\n", "\r", "\n", "\t" ), ' ', $text ), ' ', (string)$limit );
 		if ( $endpos !== false ) {
 			$text = trim( substr( $text, 0, $endpos ) ).$ellipsis;
 		}
