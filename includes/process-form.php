@@ -510,6 +510,9 @@ class AnsPress_Process_Form
 
 				ob_start();
 				global $answers;
+				global $withcomments;
+				$withcomments = true;
+				
 				if ( $current_ans == 1 ) {
 					$answers = ap_get_answers( array( 'question_id' => $question->ID ) );
 					ap_get_template_part( 'answers' );

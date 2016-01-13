@@ -363,7 +363,8 @@ function ap_answer_the_vote_button() {
  */
 function ap_answer_the_comments() {
 	if ( ap_opt( 'show_comments_by_default' ) && ! ap_opt( 'disable_comments_on_answer' ) ) {
-		comments_template(); }
+		comments_template();
+	}
 }
 
 /**

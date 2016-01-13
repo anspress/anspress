@@ -323,7 +323,6 @@
                     ApSite.doAjax(apAjaxData(q), function(data) {
                         var button = $(this);
                         $(this).addClass('loaded');
-
                         if(!data.view_default){
                             if ($(data.html).is('.ap-comment-block')) {
                                 var c = button.closest('.ap-q-inner');
