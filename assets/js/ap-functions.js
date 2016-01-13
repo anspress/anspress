@@ -70,6 +70,13 @@
  				break;
  			}
  			tip.addClass('x-'+ setpos[0] +' y-'+setpos[1]);
+
+ 			var s = $(document).scrollTop();
+ 			
+ 			// Keep it inside window.
+ 			if( y < 0 )	y = 5;
+ 			if( s > x )	x = offset.top + width;
+ 			
  			tip.css({
  				overflow: 'absolute',
  				top: x,
