@@ -39,6 +39,7 @@ class AnsPress_Activity_Hook
 		$ap->add_action( 'ap_added_follower', $this, 'follower', 10, 2 );
 		// $ap->add_action( 'ap_vote_casted', $this, 'notify_upvote', 10, 4 );
 		// $ap->add_action( 'ap_added_reputation', $this, 'ap_added_reputation', 10, 4 );
+		$ap->add_action( 'transition_post_status',  $this, 'change_activity_status', 10, 3 );
 	}
 
 
@@ -107,6 +108,7 @@ class AnsPress_Activity_Hook
 			'user_id' 			=> $answer->post_author,
 			'secondary_user' 	=> $question->post_author,
 			'type' 				=> 'new_answer',
+			'status'			=> $answer->post_status,
 			'question_id' 		=> $answer->post_parent,
 			'answer_id' 		=> $answer_id,
 			'permalink' 		=> get_permalink( $answer_id ),
@@ -145,6 +147,7 @@ class AnsPress_Activity_Hook
 			'user_id' 			=> get_current_user_id(),
 			'type' 				=> 'edit_question',
 			'question_id'		=> $post_id,
+			'status'			=> $question->post_status,
 			'permalink' 		=> get_permalink( $post_id ),
 			'content' 			=> sprintf( __( '%s edited question %s', 'anspress-question-answer' ), ap_activity_user_name( get_current_user_id() ), $question_title ),
 		);
@@ -175,6 +178,7 @@ class AnsPress_Activity_Hook
 		$activity_arr = array(
 			'secondary_user' 	=> $answer->post_author,
 			'type' 				=> 'edit_answer',
+			'status'			=> $answer->post_status,
 			'question_id'		=> $answer->post_parent,
 			'answer_id' 		=> $post_id,
 			'permalink' 		=> get_permalink( $post_id ),
@@ -262,6 +266,7 @@ class AnsPress_Activity_Hook
 		$activity_arr = array(
 			'user_id' 			=> $user_id,
 			'type' 				=> 'answer_selected',
+			'status'			=> $answer->post_status,
 			'question_id'		=> $question_id,
 			'answer_id' 		=> $answer_id,
 			'permalink' 		=> get_permalink( $answer_id ),
@@ -292,11 +297,13 @@ class AnsPress_Activity_Hook
 	 * @param  integer $answer_id   Answer ID.
 	 */
 	public function unselect_answer($user_id, $question_id, $answer_id) {
+		$answer = get_post( $answer_id );
 		$question_title = '<a class="ap-q-link" href="'. get_permalink( $question_id ) .'">'. get_the_title( $question_id ) .'</a>';
 
 		$activity_arr = array(
 			'user_id' 			=> $user_id,
 			'type' 				=> 'answer_unselected',
+			'status'			=> $answer->post_status,
 			'question_id'		=> $question_id,
 			'answer_id' 		=> $answer_id,
 			'permalink' 		=> get_permalink( $answer_id ),
@@ -424,10 +431,11 @@ class AnsPress_Activity_Hook
 	public function notify_upvote($userid, $type, $actionid, $receiving_userid) {
 
 		if ( 'vote_up' == $type ) {
-
+			$post = get_post( $actionid );
 			$activity_arr = array(
 				'user_id' 			=> $userid,
 				'type' 				=> 'vote_up',
+				'status'			=> $post->post_status,
 				'secondary_user' 	=> $receiving_userid,
 				'item_id' 			=> $actionid,
 				'parent_type' 		=> 'post',
@@ -534,6 +542,20 @@ class AnsPress_Activity_Hook
 					ap_new_notification( $activity_id, $user->id );
 				}
 			}
+		}
+	}
+
+	/**
+	 * Update status of activities if parent status get updated.
+	 * @param  string $new_status New status of post.
+	 * @param  string $old_status Previous status of post.
+	 * @param  object $post       Post object.
+	 */
+	public function change_activity_status( $new_status, $old_status, $post ) {
+		if ( 'question' == $post->post_type ) {
+			ap_update_activities( array( 'question_id' => $post->ID, 'parent_type' => 'post' ) , array( 'status' => $new_status ) );
+		} elseif ( 'answer' == $post->post_type ) {
+			ap_update_activities( array( 'answer_id' => $post->ID, 'parent_type' => 'post' ) , array( 'status' => $new_status ) );
 		}
 	}
 

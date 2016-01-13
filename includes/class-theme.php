@@ -37,9 +37,7 @@ class AnsPress_Theme
 		$this->ap->add_filter( 'body_class', $this, 'body_class' );
 		$this->ap->add_filter( 'comments_template', $this, 'comment_template' );
 		$this->ap->add_action( 'after_setup_theme', $this, 'includes' );
-		// $this->ap->add_filter( 'wp_title', $this, 'ap_title' , 10, 2 );
-		// $this->ap->add_filter( 'wpseo_title', $this, 'wpseo_title' , 10, 2 );
-		// $this->ap->add_filter( 'the_title', $this, 'the_title', 10, 2 );
+		$this->ap->add_filter( 'wpseo_title', $this, 'wpseo_title' , 10, 2 );
 		$this->ap->add_filter( 'wp_head', $this, 'feed_link', 9 );
 		$this->ap->add_filter( 'wpseo_canonical', $this, 'wpseo_canonical' );
 		$this->ap->add_action( 'ap_before', $this, 'ap_before_html_body' );

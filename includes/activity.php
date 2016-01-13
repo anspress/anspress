@@ -118,6 +118,7 @@ class AnsPress_Activity_Query
 			'notification' 	=> false,
 			'subscriber' 	=> false,
 			'user_id' 		=> false,
+			'status' 		=> 'publish',
 		));
 
 		// Process meta query arguments.
@@ -271,7 +272,7 @@ class AnsPress_Activity_Query
 
 				} else {
 					$status 	= sanitize_text_field( strip_tags( $args['status'] ) );
-					$where 		.= " AND activity.status =$status";
+					$where 		.= " AND activity.status ='$status'";
 				}
 			}
 
