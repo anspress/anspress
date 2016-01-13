@@ -136,6 +136,10 @@ td.column-vote_note strong, td.column-post_title &>a {
     float: left;
     margin-right: -1px;
     width: 200px;
+    @media (max-width: 767px){
+        width: auto;
+        float: none;
+    }
 }
 #ap_opt_nav {
     margin: 0;
@@ -298,6 +302,11 @@ th.column-category {
     margin-left: 215px;
     overflow: hidden;
     padding: 20px;
+    @media (max-width: 767px){
+        width: auto;
+        float: none;
+        margin-left: 0;
+    }
 }
 .ap-form-label {
     font-size: 13px;
@@ -306,6 +315,10 @@ th.column-category {
     width: 250px;
     font-size: 14px !important;
     font-weight: 600;
+    @media (max-width: 767px){
+        width: auto;
+        float: none;
+    }
 }
 .ap-form-fields-in {
     overflow: hidden;
@@ -669,9 +682,15 @@ h3.ap-dash-title {
             width: 250px;
             right: 0;
             top: 0;
+            @media (max-width: 989px){
+                position: static;
+            }
         }
         &-left{
             margin-right: 270px;
+            @media (max-width: 989px){
+                margin-right: 0;
+            }
         }
     }
 }

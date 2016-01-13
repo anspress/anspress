@@ -1213,6 +1213,12 @@ td.column-post_title  > a {
   margin-right: -1px;
   width: 200px;
 }
+@media (max-width: 767px) {
+  .option-nav-tab {
+    width: auto;
+    float: none;
+  }
+}
 #ap_opt_nav {
   margin: 0;
 }
@@ -1370,6 +1376,13 @@ th.column-category {
   overflow: hidden;
   padding: 20px;
 }
+@media (max-width: 767px) {
+  .ap-group-options {
+    width: auto;
+    float: none;
+    margin-left: 0;
+  }
+}
 .ap-form-label {
   font-size: 13px;
   display: block;
@@ -1377,6 +1390,12 @@ th.column-category {
   width: 250px;
   font-size: 14px !important;
   font-weight: 600;
+}
+@media (max-width: 767px) {
+  .ap-form-label {
+    width: auto;
+    float: none;
+  }
 }
 .ap-form-fields-in {
   overflow: hidden;
@@ -1721,8 +1740,18 @@ h3.ap-dash-title {
   right: 0;
   top: 0;
 }
+@media (max-width: 989px) {
+  #anspress .ap-wrap-side {
+    position: static;
+  }
+}
 #anspress .ap-wrap-left {
   margin-right: 270px;
+}
+@media (max-width: 989px) {
+  #anspress .ap-wrap-left {
+    margin-right: 0;
+  }
 }
 .ap-about .container {
   margin: 0 !important;
