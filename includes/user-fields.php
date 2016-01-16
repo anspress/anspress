@@ -114,6 +114,16 @@ function ap_get_user_fields($group = 'basic', $user_id = false) {
 		'order' => 5,
 		'sanitize' => array( 'strip_tags', 'sanitize_text_field' ),
 	),
+	array(
+		'name' => 'signature',
+		'label' => __( 'Signature', 'anspress-question-answer' ),
+		'type'  => 'textarea',
+		'value' => $fields_value['signature'],
+		'placeholder'  => __( 'A short signature for showing in hover card', 'anspress-question-answer' ),
+		'rows' => 5,
+		'order' => 5,
+		'sanitize' => array( 'strip_tags', 'sanitize_text_field' ),
+	),
 	);
 
 	$form_fields['account'] = array(

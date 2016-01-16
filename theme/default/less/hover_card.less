@@ -1,14 +1,18 @@
 .ap-hover-card{
-    background: none repeat scroll 0 0 #fff;
-    border: 1px solid #a0a0a0;
-    border-radius: 2px;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
-    color: @default-color;
-    font-family: Arial,sans-serif;
+    background: #fff none repeat scroll 0 0;
+    border: 1px solid rgba(0, 0, 0, 0.18);
+    border-radius: 4px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.13);
     font-size: 14px;
     line-height: 16px;
     padding: 0;
-    width: 350px;
+    width: 250px;
+    font-family: Helvetica,Arial,sans-serif;
+
+    .ap-tooltip-in{
+    	color: @default-color;
+    	background: #fff;
+    }
 
     .ap-user-cover{
 	    background-image: url("../images/small_cover.jpg");
@@ -27,9 +31,7 @@
 	    position: absolute;
 	    width: 100%;
     }
-
     .ap-card-content{
-	    margin-top: -55px;
 	    padding: 10px;
 	    position: relative;
     }
@@ -37,43 +39,88 @@
 	    float: left;
 	    margin-right: 15px;
 	    max-width: 80px;
+	    img{
+		    background: #eee none repeat scroll 0 0;
+		    border: 1px solid #ddd;
+		    border-radius: 50%;
+		    display: block;
+		    height: 40px;
+		    width: 40px;
+	    }
     }
     .avatar{
     	max-width: 80px;
     }
 
 	.ap-card-name {
-	    color: #fff;
+	    color: @default-color;
 	    display: block;
-	    font-size: 17px;
+	    font-size: 20px;
 	    font-weight: 600;
+	    margin-top: 5px;
 	    text-decoration: none;
-	    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+	}
+	.ap-card-desc {
+	    display: block;
+	    margin-top: 6px;
+	    overflow: hidden;
+	}
+	.ap-card-count {
+	    background: #f8f8f8 none repeat scroll 0 0;
+	    border: 1px solid #ddd;
+	    border-radius: 3px;
+	    display: block;
+	    margin-top: 15px;
+	    position: relative;
+	    &:before {
+		    background: #ddd none repeat scroll 0 0;
+		    content: "";
+		    display: block;
+		    height: 100%;
+		    left: 50%;
+		    position: absolute;
+		    width: 1px;
+		}
+	    > div{
+		    display: block;
+		    float: left;
+		    text-align: center;
+		    width: 50%;
+	    }
 	    span{
-	    	font-size: 13px;
+		    display: block;
+		    font-size: 15px;
+		    font-weight: bold;
+		    margin-bottom: 3px;
+		    margin-top: 8px;
+	    }
+	    i{
+		    color: #888;
+		    display: block;
+		    font-style: normal;
+		    font-size: 12px;
+		    margin-bottom: 5px;
 	    }
 	}
 	.ap-card-reputation{
-	    color: #fff;
-	    display: table;
-	    margin-top: 3px;
+
 	    span{
-		    background: none repeat scroll 0 0 #ff6a15;
-		    border-radius: 2px;
-		    display: inline-block;
-		    font-size: 12px;
-		    font-weight: 600;
-		    padding: 0 4px;
-		    margin-right: 3px;
+
 	    }
 	}
 	.ap-card-stats {
 	    margin-top: 20px;
 	    span{
-		    color: #888;
+		    color: #777;
 		    display: block;
 		    font-size: 12px;
-		    margin-bottom: 7px;
+		    line-height: 26px;
+	    }
+	    i{
+		    color: #b7b7b7;
+		    font-size: 13px;
+		    margin-right: 5px;
+		    vertical-align: middle;
 	    }
 	}
 	.ap-btn{

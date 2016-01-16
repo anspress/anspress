@@ -25,6 +25,7 @@ function ap_scripts_front() {
 	wp_enqueue_script( 'ap-initial.js', ap_get_theme_url( 'js/initial.min.js' ), 'jquery', AP_VERSION );
 	wp_enqueue_script( 'ap-scrollbar.js', ap_get_theme_url( 'js/jquery.scrollbar.min.js' ), 'jquery', AP_VERSION );
 	wp_enqueue_script( 'ap-js', ap_get_theme_url( $dir.'/ap'.$min.'.js' ), array( 'jquery', 'jquery-form' ), AP_VERSION );
+	
 	wp_enqueue_style( 'ap-style', ap_get_theme_url( 'css/main.css' ), array(), AP_VERSION );
 
 	$custom_css = '

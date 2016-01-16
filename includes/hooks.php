@@ -191,7 +191,7 @@ class AnsPress_Hooks
 	            foreach ( $answers as $a ) {
 	                do_action( 'ap_before_delete_answer', $a );
 	                $selcted_answer = ap_selected_answer();
-	                if( $selcted_answer == $a->ID){
+	                if ( $selcted_answer == $a->ID ) {
 	                	update_post_meta( $p->post_parent, ANSPRESS_SELECTED_META, false );
 	                }
 	                wp_delete_post( $a, true );
@@ -230,8 +230,8 @@ class AnsPress_Hooks
 	            foreach ( $ans as $p ) {
 	                do_action( 'ap_trash_answer', $p->ID, $p );
 	                $selcted_answer = ap_selected_answer();
-	                
-	                if( $selcted_answer == $p->ID){
+
+	                if ( $selcted_answer == $p->ID ) {
 	                	update_post_meta( $p->post_parent, ANSPRESS_SELECTED_META, false );
 	                }
 
@@ -495,7 +495,20 @@ class AnsPress_Hooks
 	        $o = '<a id="ap-user-notification-anchor" class="ap-dropdown-toggle ap-sidetoggle '.ap_icon( 'globe' ).'" href="#">'.ap_get_the_total_unread_notification( false, false ).'</a>';
 
 	        global $ap_activities;
-	        $ap_activities = ap_get_activities( array( 'per_page' => 20, 'notification' => true, 'user_id' => ap_get_displayed_user_id() ) );
+
+	        /**
+	         * Dropdown notification arguments.
+	         * Allow filtering of dropdown notification arguments.
+	         * @since 2.4.5
+	         * @var array
+	         */
+	        $notification_args = apply_filters( 'ap_dropdown_notification_args', array(
+	        	'per_page' 		=> 20,
+	        	'notification' 	=> true,
+	        	'user_id' 		=> ap_get_displayed_user_id(),
+	        ) );
+
+	        $ap_activities = ap_get_activities( $notification_args );
 
 	        ob_start();
 	        ap_get_template_part( 'user/notification-dropdown' );
@@ -625,14 +638,14 @@ class AnsPress_Hooks
 	 * @param Object $post Post object.
 	 */
 	public function ap_append_vote_count($post) {
-		
+
 	    if ( $post->post_type == 'question' || $post->post_type == 'answer' ) {
 	        if ( is_object( $post ) ) {
 	            $post->net_vote = ap_net_vote_meta( $post->ID );
 	        }
 	    }
 
-	    if( ap_opt( 'base_page' ) == $post->ID && !is_admin() ){	    	
+	    if ( ap_opt( 'base_page' ) == $post->ID && ! is_admin() ) {
 	    	$post->post_title = ap_page_title();
 	    }
 	}

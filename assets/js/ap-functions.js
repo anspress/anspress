@@ -82,6 +82,11 @@
  				top: x,
  				left: y
  			});
+
+ 			tip.find('.arrow').css({
+ 				top: x,
+ 				left: y
+ 			});
  		}
 
  		function showtip(el){
@@ -106,10 +111,10 @@
  				return;
  			}
 
- 			tip = $('<div class="ap-tooltip '+ config.theme +'"><div class="ap-tooltip-in">'+ title +'<span class="arrow"></span></div></div>');
+ 			tip = $('<div class="ap-tooltip '+ config.theme +'"><div class="ap-tooltip-in">'+ title +'</div></div>');
 
  			if(config.ajax != '' && !plug.ajax_running){
- 				if ( $(elm.attr('data-ajax')).length == 0) {
+ 				if ( $(elm.attr('data-ajax')).length == 0 && $('#user_' + elm.data('userid') + '_card').length == 0 ) {
  					plug.ajax_running = true;
 	 				$.ajax({
 	                    type: 'POST',
@@ -128,7 +133,7 @@
 	                    }
 	                });
 	            }else{
-	            	var html = $( elm.attr('data-ajax') ).html();
+	            	var html = $( '#user_' + elm.data('userid') + '_card' ).html();
                     tip.find('.ap-tooltip-in').html($(html).show());
 	            }
 

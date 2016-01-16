@@ -660,7 +660,8 @@
                 theme: 'ap-hover-card',
                 interactive:true,
                 delay:500,
-                title: aplang.loading
+                title: aplang.loading,
+                position: 'bottom right'
             });
         },
         delete_notification: function() {
@@ -757,9 +758,14 @@
     $(document).ajaxComplete(function(event, response, settings) {
         // Get response html.
         var dataText = $(response.responseText);
+        var data = {};
 
         //Parse response text JSON
-        var data = JSON.parse(dataText.filter('#ap-response').html());
+        var textJSON = dataText.filter('#ap-response').html();
+ 
+        if( typeof textJSON !== 'undefined' && textJSON.length > 2 )
+            data = JSON.parse(textJSON);
+
         console.log(data);
         
         if (typeof data.message_type !== 'undefined') {
@@ -770,10 +776,6 @@
 
             if(typeof grecaptcha !== 'undefined' && data.message_type !== 'success')
                 grecaptcha.reset(widgetId1);
-
-            if( typeof data === 'undefined' ){
-                data = {};
-            }
 
             $(document).trigger('ap_after_ajax', data);
 

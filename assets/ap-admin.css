@@ -1043,23 +1043,6 @@
     margin-left: 0;
   }
 }
-#anspress .clearfix:before,
-#anspress .clearfix:after,
-#anspress .container:before,
-#anspress .container:after,
-#anspress .container-fluid:before,
-#anspress .container-fluid:after,
-#anspress .row:before,
-#anspress .row:after {
-  content: " ";
-  display: table;
-}
-#anspress .clearfix:after,
-#anspress .container:after,
-#anspress .container-fluid:after,
-#anspress .row:after {
-  clear: both;
-}
 #anspress .center-block {
   display: block;
   margin-left: auto;
