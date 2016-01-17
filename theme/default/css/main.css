@@ -3527,15 +3527,16 @@ body ul ul#ap-user-menu-link li > a .count {
   margin-bottom: 0;
 }
 .ap-hover-card {
-  background: #fff none repeat scroll 0 0;
+  background: #fff;
   border: 1px solid rgba(0, 0, 0, 0.18);
   border-radius: 4px;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.13);
+  font-family: Helvetica, Arial, sans-serif;
   font-size: 14px;
+  height: 255px;
   line-height: 16px;
   padding: 0;
   width: 250px;
-  font-family: Helvetica, Arial, sans-serif;
 }
 .ap-hover-card .ap-tooltip-in {
   color: #333;
@@ -3661,6 +3662,24 @@ body ul ul#ap-user-menu-link li > a .count {
 .ap-hover-card .ap-btn.active {
   background: none repeat scroll 0 0 #eee;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.2) inset;
+}
+.hovercard-loading-bg {
+  -webkit-animation: fade 4s infinite 1400ms;
+  animation: 1s ease-in-out 1400ms normal none infinite running fade;
+  background: #fff url('../images/hovercard.svg') no-repeat scroll 0 0 / 253px auto;
+  height: 255px;
+  margin: -5px;
+  width: 250px;
+}
+@-webkit-keyframes fade {
+  50% {
+    opacity: 0.5;
+  }
+}
+@keyframes fade {
+  50% {
+    opacity: 0.5;
+  }
 }
 body #ap-user-notification-anchor {
   font-size: 20px;

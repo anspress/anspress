@@ -660,8 +660,8 @@
                 theme: 'ap-hover-card',
                 interactive:true,
                 delay:500,
-                title: aplang.loading,
-                position: 'bottom right'
+                position: 'bottom right',
+                title: '<div class="hovercard-loading-bg"></div>'
             });
         },
         delete_notification: function() {
