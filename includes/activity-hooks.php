@@ -50,7 +50,7 @@ class AnsPress_Activity_Hook
 	public function new_question($question_id) {
 		$question = get_post( $question_id );
 
-		$question_title = '<a class="ap-q-link" href="'. get_permalink( $question_id ) .'">'. get_the_title( $question_id ) .'</a>';
+		$question_title = '<a class="ap-q-link" href="'. wp_get_shortlink( $question_id ) .'">'. get_the_title( $question_id ) .'</a>';
 
 		$txo_type = array();
 
@@ -78,7 +78,7 @@ class AnsPress_Activity_Hook
 			'user_id' 			=> $question->post_author,
 			'type' 				=> 'new_question',
 			'question_id' 		=> $question_id,
-			'permalink' 		=> get_permalink( $question_id ),
+			'permalink' 		=> wp_get_shortlink( $question_id ),
 			'content'			=> sprintf( __( '%s asked question %s', 'anspress-question-answer' ), ap_activity_user_name( $question->post_author ), $question_title ),
 			'term_ids'			=> $term_ids,
 		);
@@ -102,7 +102,7 @@ class AnsPress_Activity_Hook
 		$answer = get_post( $answer_id );
 		$question = get_post( $answer->post_parent );
 
-		$answer_title = '<a class="ap-q-link" href="'. get_permalink( $answer_id ) .'">'. get_the_title( $answer_id ) .'</a>';
+		$answer_title = '<a class="ap-q-link" href="'. wp_get_shortlink( $answer_id ) .'">'. get_the_title( $answer_id ) .'</a>';
 
 		$activity_arr = array(
 			'user_id' 			=> $answer->post_author,
@@ -111,7 +111,7 @@ class AnsPress_Activity_Hook
 			'status'			=> $answer->post_status,
 			'question_id' 		=> $answer->post_parent,
 			'answer_id' 		=> $answer_id,
-			'permalink' 		=> get_permalink( $answer_id ),
+			'permalink' 		=> wp_get_shortlink( $answer_id ),
 			'content'			=> sprintf( __( '%s answered on %s', 'anspress-question-answer' ), ap_activity_user_name( $answer->post_author ), $answer_title ),
 		);
 
@@ -141,14 +141,14 @@ class AnsPress_Activity_Hook
 	public function edit_question($post_id) {
 		$question = get_post( $post_id );
 
-		$question_title = '<a class="ap-q-link" href="'. get_permalink( $post_id ) .'">'. get_the_title( $post_id ) .'</a>';
+		$question_title = '<a class="ap-q-link" href="'. wp_get_shortlink( $post_id ) .'">'. get_the_title( $post_id ) .'</a>';
 
 		$activity_arr = array(
 			'user_id' 			=> get_current_user_id(),
 			'type' 				=> 'edit_question',
 			'question_id'		=> $post_id,
 			'status'			=> $question->post_status,
-			'permalink' 		=> get_permalink( $post_id ),
+			'permalink' 		=> wp_get_shortlink( $post_id ),
 			'content' 			=> sprintf( __( '%s edited question %s', 'anspress-question-answer' ), ap_activity_user_name( get_current_user_id() ), $question_title ),
 		);
 
@@ -173,7 +173,7 @@ class AnsPress_Activity_Hook
 	public function edit_answer($post_id) {
 		$answer = get_post( $post_id );
 
-		$answer_title = '<a class="ap-q-link" href="'. get_permalink( $post_id ) .'">'. get_the_title( $post_id ) .'</a>';
+		$answer_title = '<a class="ap-q-link" href="'. wp_get_shortlink( $post_id ) .'">'. get_the_title( $post_id ) .'</a>';
 
 		$activity_arr = array(
 			'secondary_user' 	=> $answer->post_author,
@@ -181,7 +181,7 @@ class AnsPress_Activity_Hook
 			'status'			=> $answer->post_status,
 			'question_id'		=> $answer->post_parent,
 			'answer_id' 		=> $post_id,
-			'permalink' 		=> get_permalink( $post_id ),
+			'permalink' 		=> wp_get_shortlink( $post_id ),
 			'content'			=> sprintf( __( '%s edited answer %s', 'anspress-question-answer' ), ap_activity_user_name( $answer->post_author ), $answer_title ),
 		);
 
@@ -220,7 +220,7 @@ class AnsPress_Activity_Hook
 
 		$comment_excerpt = '<span class="ap-comment-excerpt"><a href="'. get_comment_link( $comment->comment_ID ) .'">'. get_comment_excerpt( $comment->comment_ID ) .'</a></span>';
 
-		$post_title = '<a class="ap-q-link" href="'. get_permalink( $comment->comment_post_ID ) .'">'. get_the_title( $comment->comment_post_ID ) .'</a>';
+		$post_title = '<a class="ap-q-link" href="'. wp_get_shortlink( $comment->comment_post_ID ) .'">'. get_the_title( $comment->comment_post_ID ) .'</a>';
 
 		if ( $post->post_type == 'question' ) {
 			$activity_arr['type'] = 'new_comment';
@@ -261,7 +261,7 @@ class AnsPress_Activity_Hook
 		$question = get_post( $question_id );
 		$answer = get_post( $answer_id );
 
-		$question_title = '<a class="ap-q-link" href="'. get_permalink( $question_id ) .'">'. $question->post_title .'</a>';
+		$question_title = '<a class="ap-q-link" href="'. wp_get_shortlink( $question_id ) .'">'. $question->post_title .'</a>';
 
 		$activity_arr = array(
 			'user_id' 			=> $user_id,
@@ -269,7 +269,7 @@ class AnsPress_Activity_Hook
 			'status'			=> $answer->post_status,
 			'question_id'		=> $question_id,
 			'answer_id' 		=> $answer_id,
-			'permalink' 		=> get_permalink( $answer_id ),
+			'permalink' 		=> wp_get_shortlink( $answer_id ),
 			'content' 			=> sprintf( __( '%s selected best answer for %s', 'anspress-question-answer' ), ap_activity_user_name( $user_id ), $question_title ),
 		);
 
@@ -298,7 +298,7 @@ class AnsPress_Activity_Hook
 	 */
 	public function unselect_answer($user_id, $question_id, $answer_id) {
 		$answer = get_post( $answer_id );
-		$question_title = '<a class="ap-q-link" href="'. get_permalink( $question_id ) .'">'. get_the_title( $question_id ) .'</a>';
+		$question_title = '<a class="ap-q-link" href="'. wp_get_shortlink( $question_id ) .'">'. get_the_title( $question_id ) .'</a>';
 
 		$activity_arr = array(
 			'user_id' 			=> $user_id,
@@ -306,7 +306,7 @@ class AnsPress_Activity_Hook
 			'status'			=> $answer->post_status,
 			'question_id'		=> $question_id,
 			'answer_id' 		=> $answer_id,
-			'permalink' 		=> get_permalink( $answer_id ),
+			'permalink' 		=> wp_get_shortlink( $answer_id ),
 			'content' 			=> sprintf( __( '%s unselected best answer for question %s', 'anspress-question-answer' ), ap_activity_user_name( $user_id ), $question_title ),
 		);
 
@@ -439,7 +439,7 @@ class AnsPress_Activity_Hook
 				'secondary_user' 	=> $receiving_userid,
 				'item_id' 			=> $actionid,
 				'parent_type' 		=> 'post',
-				'permalink' 		=> get_permalink( $actionid ),
+				'permalink' 		=> wp_get_shortlink( $actionid ),
 			);
 
 			$activity_id = ap_new_activity( $activity_arr );
@@ -462,7 +462,7 @@ class AnsPress_Activity_Hook
 			'type' 				=> 'reputation_gain',
 			'item_id' 			=> $action_id,
 			'parent_type' 		=> 'user',
-			'permalink' 		=> get_permalink( $action_id ),
+			'permalink' 		=> wp_get_shortlink( $action_id ),
 			'reputation' 		=> $reputation,
 			'reputation_type' 	=> $type,
 		);
@@ -491,7 +491,7 @@ class AnsPress_Activity_Hook
 
 		$comment_excerpt = '<span class="ap-comment-excerpt"><a href="'. get_comment_link( $comment->comment_ID ) .'">'. get_comment_excerpt( $comment->comment_ID ) .'</a></span>';
 
-		$post_title = '<a class="ap-q-link" href="'. get_permalink( $comment->comment_post_ID ) .'">'. get_the_title( $comment->comment_post_ID ) .'</a>';
+		$post_title = '<a class="ap-q-link" href="'. wp_get_shortlink( $comment->comment_post_ID ) .'">'. get_the_title( $comment->comment_post_ID ) .'</a>';
 
 		if ( $post->post_type == 'question' ) {
 			$activity_arr['type'] = 'new_comment';
@@ -534,7 +534,7 @@ class AnsPress_Activity_Hook
 						'secondary_user' 	=> $user->id,
 						'question_id' 		=> $question_id,
 						'answer_id' 		=> $answer_id,
-						'permalink' 		=> get_permalink( $question_id ),
+						'permalink' 		=> wp_get_shortlink( $question_id ),
 						'content'			=> sprintf( __( '%s mentioned you in %s %s', 'anspress-question-answer' ), $user_title, $type, $title ),
 					);
 
