@@ -152,6 +152,24 @@ class AnsPress_Process_Form
 	}
 
 	/**
+	 * Remove stop words from post_name.
+	 * @param  string $str String to filter.
+	 * @return string
+	 */
+	public function remove_stop_words_from_name( $str ) {
+		$str = sanitize_title( $str );
+		$post_name = ap_remove_stop_words( $str );
+
+		// Check if post name is not empty.
+		if ( ! empty($post_name ) ) {
+			return $post_name;
+		}
+
+		// if empty then return it without stripping stop words.
+		return sanitize_title( $str );
+	}
+
+	/**
 	 * Process ask form
 	 * @return void
 	 * @since 2.0.1
@@ -171,7 +189,8 @@ class AnsPress_Process_Form
 
 		// Do security check, if fails then return
 		if ( ! ap_user_can_ask() || ! isset( $_POST['__nonce'] ) || ! wp_verify_nonce( $_POST['__nonce'], 'ask_form' ) ) {
-			return; }
+			return;
+		}
 
 		$args = array(
 			'title' => array(
@@ -232,13 +251,16 @@ class AnsPress_Process_Form
 		$status = 'publish';
 
 		if ( ap_opt( 'new_question_status' ) == 'moderate' || (ap_opt( 'new_question_status' ) == 'reputation' && ap_get_points( $user_id ) < ap_opt( 'mod_question_point' )) ) {
-			$status = 'moderate'; }
+			$status = 'moderate';
+		}
 
 		if ( isset( $fields['is_private'] ) && $fields['is_private'] ) {
-			$status = 'private_post'; }
+			$status = 'private_post';
+		}
 
 		$question_array = array(
 			'post_title'		=> $fields['title'],
+			'post_name'			=> $this->remove_stop_words_from_name($fields['title']),
 			'post_author'		=> $user_id,
 			'post_content' 		=> apply_filters( 'ap_form_contents_filter', $fields['description'] ),
 			'post_type' 		=> 'question',
@@ -271,7 +293,7 @@ class AnsPress_Process_Form
 			$this->result = array(
 				'action' 		=> 'new_question',
 				'message'		=> 'question_submitted',
-				'do'			=> array('redirect' => get_permalink( $post_id )),
+				'do'			=> array( 'redirect' => get_permalink( $post_id ) ),
 			);
 		}
 
@@ -307,7 +329,7 @@ class AnsPress_Process_Form
 			'ID'			=> $post->ID,
 			'post_author'	=> $post->post_author,
 			'post_title'	=> $this->fields['title'],
-			'post_name'		=> sanitize_title( $this->fields['title'] ),
+			'post_name'		=> $this->remove_stop_words_from_name($fields['title']),
 			'post_content' 	=> apply_filters( 'ap_form_contents_filter', $this->fields['description'] ),
 			'post_status' 	=> $status,
 		);
@@ -512,7 +534,7 @@ class AnsPress_Process_Form
 				global $answers;
 				global $withcomments;
 				$withcomments = true;
-				
+
 				if ( $current_ans == 1 ) {
 					$answers = ap_get_answers( array( 'question_id' => $question->ID ) );
 					ap_get_template_part( 'answers' );
@@ -582,7 +604,7 @@ class AnsPress_Process_Form
 				$this->result = array(
 					'action' 		=> 'answer_edited',
 					'message'		=> 'answer_updated',
-					'do'			=> array('redirect' => get_permalink( $answer->post_parent )),
+					'do'			=> array( 'redirect' => get_permalink( $answer->post_parent ) ),
 				);
 			}
 
@@ -784,7 +806,7 @@ class AnsPress_Process_Form
 		$this->result  = array(
 			'message' 		=> 'profile_updated_successfully',
 			'action' 		=> 'updated_user_field',
-			'do'			=> array('updateHtml' => '#ap_user_profile_form'),
+			'do'			=> array( 'updateHtml' => '#ap_user_profile_form' ),
 			'html'			=> ap_user_get_fields( '', $group ),
 		);
 	}
