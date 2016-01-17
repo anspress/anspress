@@ -427,6 +427,7 @@
         afterPostingAnswer: function() {
             $(document).on('ap_after_ajax', function(e, data) {
                 if (typeof data !== 'undefined' && typeof data.action !== 'undefined' && data.action == 'new_answer') {
+                    $('#description').val('');
                     if ($('#answers').length === 0) {
                         $('#question').after($(data['html']));
                         $(data.div_id).hide();
