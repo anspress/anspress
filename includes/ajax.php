@@ -785,9 +785,9 @@ class AnsPress_Ajax
 		} else {
 
 			$row = ap_new_subscriber( $user_id, $action_id, $subscribe_type, $question_id );
-
-			$count = ap_subscribers_count( $action_id, $subscribe_type );
+		
 			if ( false !== $row ) {
+				$count = ap_subscribers_count( $action_id, $subscribe_type );
 				$this->send( array(
 					'message' 		=> 'subscribed',
 					'action' 		=> 'subscribed',

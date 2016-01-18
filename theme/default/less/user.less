@@ -34,6 +34,14 @@
 		&-navigation {
 			float: left;
     		width: 200px;
+    		@media (max-width: 767px){
+    			width: auto;
+    			float: none;
+    		}
+    		@media (min-width: 768px) and (max-width: 991px){
+    			width: 50px;    			
+    			overflow: hidden;
+    		}
 		}
 		&-cover{
 		    background: url("../images/cover.jpg") repeat scroll 0 0 #eaeaea;
@@ -128,6 +136,13 @@
 		}
 		&-lr {
 		    margin-left: 210px !important;
+		    @media (max-width: 767px){
+		    	margin-left: 0 !important;
+		    }
+		    @media (min-width: 768px) and (max-width: 991px){
+			    display: table;
+			    margin-left: 60px !important;
+		    }
 		}
 	}
 	#ap-profile-tab{
@@ -179,6 +194,14 @@
 	    list-style: outside none none;
 	    margin: 0 0 20px;
 	    padding: 0 15px 0 0;
+	    @media (min-width: 767px){
+	    	border: none;
+	    	margin: 0;
+	    	padding: 0;
+	    }
+	    @media (min-width: 768px) and (max-width: 991px){
+	    	border: none;
+	    }
 		>li{
 		    border-bottom: 1px solid #eee;
 		    margin: 0;
@@ -194,6 +217,9 @@
 			    font-size: 13px;
 			    font-weight: 600;
 			    padding: 15px 15px;
+			    @media (min-width: 768px) and (max-width: 991px){
+			    	white-space: nowrap;
+			    }
 			    &:hover{
 			    	background: #FCFCFC;
 			    }

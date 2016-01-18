@@ -2724,6 +2724,18 @@ body ul ul#ap-user-menu-link li > a .count {
   float: left;
   width: 200px;
 }
+@media (max-width: 767px) {
+  #anspress .ap-user-navigation {
+    width: auto;
+    float: none;
+  }
+}
+@media (min-width: 768px) and (max-width: 991px) {
+  #anspress .ap-user-navigation {
+    width: 50px;
+    overflow: hidden;
+  }
+}
 #anspress .ap-user-cover {
   background: url("../images/cover.jpg") repeat scroll 0 0 #eaeaea;
   border-radius: 3px;
@@ -2816,6 +2828,17 @@ body ul ul#ap-user-menu-link li > a .count {
 #anspress .ap-user-lr {
   margin-left: 210px !important;
 }
+@media (max-width: 767px) {
+  #anspress .ap-user-lr {
+    margin-left: 0 !important;
+  }
+}
+@media (min-width: 768px) and (max-width: 991px) {
+  #anspress .ap-user-lr {
+    display: table;
+    margin-left: 60px !important;
+  }
+}
 #anspress #ap-profile-tab {
   float: none;
   margin-bottom: 15px;
@@ -2864,6 +2887,18 @@ body ul ul#ap-user-menu-link li > a .count {
   margin: 0 0 20px;
   padding: 0 15px 0 0;
 }
+@media (min-width: 767px) {
+  #anspress #ap-user-menu {
+    border: none;
+    margin: 0;
+    padding: 0;
+  }
+}
+@media (min-width: 768px) and (max-width: 991px) {
+  #anspress #ap-user-menu {
+    border: none;
+  }
+}
 #anspress #ap-user-menu > li {
   border-bottom: 1px solid #eee;
   margin: 0;
@@ -2878,6 +2913,11 @@ body ul ul#ap-user-menu-link li > a .count {
   font-size: 13px;
   font-weight: 600;
   padding: 15px 15px;
+}
+@media (min-width: 768px) and (max-width: 991px) {
+  #anspress #ap-user-menu > li > a {
+    white-space: nowrap;
+  }
 }
 #anspress #ap-user-menu > li > a:hover {
   background: #FCFCFC;

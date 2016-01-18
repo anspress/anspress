@@ -156,7 +156,7 @@ class AP_Activate
 		global $wpdb;
 		$subscriber_cols = $wpdb->get_results("SHOW COLUMNS FROM {$wpdb->prefix}ap_subscribers" );
 		$subscriber_old_cols = array(
-			'id' 			=> 'bigint(20)',
+			'id' 			=> 'bigint(20) NOT NULL AUTO_INCREMENT',
 			'user_id' 		=> 'bigint(20)',
 			'question_id' 	=> 'bigint(20)',
 			'item_id' 		=> 'bigint(20)',
@@ -164,11 +164,13 @@ class AP_Activate
 		);
 
 		if ( $subscriber_cols ) {
+
 			foreach ( $subscriber_cols as $col ) {
 				if ( in_array($col->Field, array_keys($subscriber_old_cols ) ) ) {
 					$wpdb->query( "ALTER TABLE `{$wpdb->prefix}ap_subscribers` CHANGE {$col->Field} subs_{$col->Field} ".$subscriber_old_cols[$col->Field] );
 				}
 			}
+
 		}
 	}
 
