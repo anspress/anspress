@@ -148,6 +148,9 @@ function ap_default_options() {
 		'show_solved_prefix'		=> true,
 		'notification_sidebar'		=> false,
 		'user_profile'				=> 'anspress',
+		'check_bad_words'			=> false,
+		'bad_word_post_action'		=> 'moderate',
+		'bad_word_comment_action'	=> 'moderate',
 	);
 
 	/**

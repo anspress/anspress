@@ -160,6 +160,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 	    public $subscriber_hooks;
 	    public $mention_hooks;
 	    public $views_class;
+	    public $bad_words_class;
 
 		/**
 		 * Initializes the plugin by setting localization, hooks, filters, and administrative functions.
@@ -299,6 +300,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		    require_once ANSPRESS_DIR.'includes/subscriber-hooks.php';
 		    require_once ANSPRESS_DIR.'includes/shortcode-question.php';
 		    require_once ANSPRESS_DIR.'includes/mention.php';
+		    require_once ANSPRESS_DIR.'includes/class-bad-words.php';
 		}
 
 		/**
@@ -340,6 +342,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 	    	self::$instance->subscriber_hooks 	= new AnsPress_Subscriber_Hooks( $this );
 	    	self::$instance->mention_hooks 		= new AP_Mentions_Hooks( $this );
 	    	self::$instance->views_class 		= new AP_Views( $this );
+	    	self::$instance->bad_words_class 	= new AP_Bad_words( $this );
 		}
 
 		/**

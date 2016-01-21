@@ -52,7 +52,6 @@ class AnsPress_Process_Form
 	}
 
 	public function mark_notification_as_read() {
-
 		if ( isset( $_GET['ap_notification_read'] ) ) {
 			$id = (int) $_GET['ap_notification_read'];
 
@@ -246,6 +245,14 @@ class AnsPress_Process_Form
 			return;
 		}
 
+		$filter = apply_filters( 'ap_before_inserting_question', false, $fields['description'] );
+		if ( true === $filter || is_array( $filter ) ) {
+			if( is_array( $filter ) ){
+				$this->result = $filter;
+			}
+			return;
+		}
+
 		$user_id = get_current_user_id();
 
 		$status = 'publish';
@@ -260,7 +267,7 @@ class AnsPress_Process_Form
 
 		$question_array = array(
 			'post_title'		=> $fields['title'],
-			'post_name'			=> $this->remove_stop_words_from_name($fields['title']),
+			'post_name'			=> $this->remove_stop_words_from_name($fields['title'] ),
 			'post_author'		=> $user_id,
 			'post_content' 		=> apply_filters( 'ap_form_contents_filter', $fields['description'] ),
 			'post_type' 		=> 'question',
@@ -310,9 +317,18 @@ class AnsPress_Process_Form
 
 		global $ap_errors, $validate;
 
-		// return if user do not have permission to edit this question
+		// Return if user do not have permission to edit this question.
 		if ( ! ap_user_can_edit_question( $this->fields['edit_post_id'] ) ) {
-			return; }
+			return;
+		}
+
+		$filter = apply_filters( 'ap_before_updating_question', false, $fields['description'] );
+		if ( true === $filter || is_array( $filter ) ) {
+			if( is_array( $filter ) ){
+				$this->result = $filter;
+			}
+			return;
+		}
 
 		$post = get_post( $this->fields['edit_post_id'] );
 		$user_id = get_current_user_id();
@@ -320,16 +336,18 @@ class AnsPress_Process_Form
 		$status = 'publish';
 
 		if ( ap_opt( 'edit_question_status' ) == 'moderate' || (ap_opt( 'edit_question_status' ) == 'point' && ap_get_points( $user_id ) < ap_opt( 'mod_answer_point' )) ) {
-			$status = 'moderate'; }
+			$status = 'moderate';
+		}
 
 		if ( isset( $this->fields['is_private'] ) && $this->fields['is_private'] ) {
-			$status = 'private_post'; }
+			$status = 'private_post';
+		}
 
 		$question_array = array(
 			'ID'			=> $post->ID,
 			'post_author'	=> $post->post_author,
 			'post_title'	=> $this->fields['title'],
-			'post_name'		=> $this->remove_stop_words_from_name($fields['title']),
+			'post_name'		=> $this->remove_stop_words_from_name($fields['title'] ),
 			'post_content' 	=> apply_filters( 'ap_form_contents_filter', $this->fields['description'] ),
 			'post_status' 	=> $status,
 		);
@@ -473,6 +491,14 @@ class AnsPress_Process_Form
 			return;
 		}
 
+		$filter = apply_filters( 'ap_before_inserting_answer', false, $fields['description'] );
+		if ( true === $filter || is_array( $filter ) ) {
+			if( is_array( $filter ) ){
+				$this->result = $filter;
+			}
+			return;
+		}
+
 		// Do security check, if fails then return
 		if ( ! ap_user_can_answer( $question->ID ) || ! isset( $_POST['__nonce'] ) || ! wp_verify_nonce( $_POST['__nonce'], 'nonce_answer_'.$question->ID ) ) {
 			$this->result = ap_ajax_responce( 'no_permission' );
@@ -578,6 +604,14 @@ class AnsPress_Process_Form
 			return;
 		}
 
+		$filter = apply_filters( 'ap_before_updating_answer', false, $fields['description'] );
+		if ( true === $filter || is_array( $filter ) ) {
+			if( is_array( $filter ) ){
+				$this->result = $filter;
+			}
+			return;
+		}
+
 		$answer = get_post( $this->fields['edit_post_id'] );
 
 		$status = 'publish';
@@ -638,11 +672,23 @@ class AnsPress_Process_Form
 		$post = get_post( $comment_post_ID );
 
 		if ( ! $post || empty( $post->post_status ) ) {
-			return; }
+			return;
+		}
 
 		if ( in_array( $post->post_status, array( 'draft', 'pending', 'trash' ) ) ) {
 			$this->result = ap_ajax_responce( 'draft_comment_not_allowed' );
 
+			return;
+		}
+
+		$filter_type = isset( $_POST['comment_ID'] ) ? 'ap_before_updating_comment' : 'ap_before_inserting_comment';
+
+		$filter = apply_filters( $filter_type, false, $_POST['comment'] );
+
+		if ( true === $filter || is_array( $filter ) ) {
+			if( is_array( $filter ) ){
+				$this->result = $filter;
+			}
 			return;
 		}
 
@@ -682,7 +728,8 @@ class AnsPress_Process_Form
 			$comment_parent = 0;
 
 			if ( isset( $_POST['comment_ID'] ) ) {
-				$comment_parent = absint( $_POST['comment_ID'] ); }
+				$comment_parent = absint( $_POST['comment_ID'] );
+			}
 
 			$commentdata = compact( 'comment_post_ID', 'comment_author', 'comment_author_email', 'comment_author_url', 'comment_content', 'comment_type', 'comment_parent', 'user_ID' );
 

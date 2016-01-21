@@ -643,6 +643,20 @@ class AnsPress_Options_Page
 			array(
 				'name' => '__sep',
 				'type' => 'custom',
+				'html' => '<span class="ap-form-separator">' . __( 'Bad Words', 'anspress-question-answer' ) . '</span>',
+			),
+			array(
+				'name' => 'anspress_opt[check_bad_words]',
+				'label' => __( 'Check bad words', 'anspress-question-answer' ),
+				'desc' => __( 'Enable this to check for bad words in posts and comments. You can find bad words here ', 'anspress-question-answer' ). '<a href="https://raw.githubusercontent.com/anspress/anspress/master/theme/default/badwords.txt">badwords.txt</a>',
+				'type' => 'checkbox',
+				'value' => $settings['check_bad_words'],
+				'show_desc_tip' => false,
+			),
+
+			array(
+				'name' => '__sep',
+				'type' => 'custom',
 				'html' => '<span class="ap-form-separator">' . __( 'reCaptacha', 'anspress-question-answer' ) . '</span>',
 			) ,
 			array(

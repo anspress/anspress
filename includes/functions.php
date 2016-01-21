@@ -259,8 +259,8 @@ function get_question_id() {
  * @return string|null
  */
 function ap_human_time($time, $unix = true, $show_full_date = 604800, $format = 'd M, Y') {
-	if(!is_numeric($time) && !$unix ){
-		$time = strtotime($time);
+	if ( ! is_numeric($time ) && ! $unix ) {
+		$time = strtotime($time );
 	}
 
 	if ( $time ) {
@@ -516,7 +516,7 @@ function ap_answer_edit_link() {
 function ap_truncate_chars($text, $limit, $ellipsis = '...') {
 
 	if ( strlen( $text ) > $limit ) {
-		$endpos = strpos( str_replace( array( "\r\n", "\r", "\n", "\t" ), ' ', $text ), ' ', (string)$limit );
+		$endpos = strpos( str_replace( array( "\r\n", "\r", "\n", "\t" ), ' ', $text ), ' ', (string) $limit );
 		if ( $endpos !== false ) {
 			$text = trim( substr( $text, 0, $endpos ) ).$ellipsis;
 		}
@@ -783,11 +783,11 @@ function ap_short_num($num, $precision = 2) {
 
 /**
  * Sanitize comma delimited strings
- * @param  string $str Comma delimited string.	
+ * @param  string $str Comma delimited string.
  * @return string
  */
 function sanitize_comma_delimited($str) {
-	if( !empty($str) && !is_array( $str ) ){
+	if ( ! empty($str ) && ! is_array( $str ) ) {
 		$str = wp_unslash( $str );
 		return implode( ',', array_map( 'intval', explode( ',', $str ) ) );
 	}
@@ -1463,7 +1463,7 @@ function ap_upload_user_file($file = array(), $temp = true ) {
 
 		$attachment_id = wp_insert_attachment( $attachment, $file_return['file'] );
 
-		if( $temp ){
+		if ( $temp ) {
 			update_post_meta( $attachment_id, '_ap_temp_image', true );
 		}
 
@@ -1591,7 +1591,7 @@ function ap_create_base_page() {
 		$args['post_type'] = 'page';
 		$args['post_content'] = '[anspress]';
 		$args['post_status'] = 'publish';
-		$args['post_title'] = __('Questions', 'anspress-question-answer');
+		$args['post_title'] = __('Questions', 'anspress-question-answer' );
 		$args['post_name'] = 'questions';
 		$args['comment_status'] = 'closed';
 
@@ -1603,9 +1603,9 @@ function ap_create_base_page() {
 			ap_opt( 'base_page', $page->ID );
 			ap_opt( 'base_page_id', $page->post_name );
 		}
-	}else{
-		if( $post->post_title == 'ANSPRESS_TITLE' ){
-			wp_update_post( array( 'ID' => $page->ID, 'post_title' => ap_opt('base_page_title') )  );
+	} else {
+		if ( $post->post_title == 'ANSPRESS_TITLE' ) {
+			wp_update_post( array( 'ID' => $page->ID, 'post_title' => ap_opt('base_page_title' ) ) );
 		}
 	}
 }
@@ -1849,3 +1849,4 @@ function ap_remove_stop_words( $str ) {
 
 	return preg_replace('/\b('.implode('|',$commonWords ).')\b/','',$str );
 }
+
