@@ -521,6 +521,9 @@ class AnsPress_Activity_Hook
 		ap_new_notification( $activity_id, $subscribers );
 	}
 
+	/**
+	 * @param string $title
+	 */
 	public function check_mentions($question_id, $contents, $title, $user_id, $type, $answer_id = 0) {
 		$users = ap_find_mentioned_users( $contents );
 

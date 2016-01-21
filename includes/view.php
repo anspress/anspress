@@ -14,6 +14,7 @@ class AP_Views {
 	/**
 	 * Initialize the plugin by setting localization and loading public scripts
 	 * and styles.
+	 * @param AnsPress $ap
 	 */
 	public function __construct( $ap ) {
 		$ap->add_action( 'template_redirect', $this, 'insert_views' );
