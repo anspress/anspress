@@ -19,7 +19,7 @@ class AnsPress_Activity_Query
 	 * @access public
 	 * @var integer
 	 */
-	var $current_activity = -1;
+	public $current_activity = -1;
 
 	/**
 	 * The number of activities returned by the paged query.
@@ -27,7 +27,15 @@ class AnsPress_Activity_Query
 	 * @access public
 	 * @var int
 	 */
-	var $activity_count;
+	public $activity_count;
+
+	/**
+	 * Query arguments.
+	 *
+	 * @access public
+	 * @var int
+	 */
+	public $args;
 
 	/**
 	 * Array of activities located by the query.
@@ -35,7 +43,7 @@ class AnsPress_Activity_Query
 	 * @access public
 	 * @var array
 	 */
-	var $activities;
+	public $activities;
 
 	/**
 	 * The activity object currently being iterated on.
@@ -43,7 +51,7 @@ class AnsPress_Activity_Query
 	 * @access public
 	 * @var object
 	 */
-	var $activity;
+	public $activity;
 
 	/**
 	 * A flag for whether the loop is currently being iterated.
@@ -51,7 +59,7 @@ class AnsPress_Activity_Query
 	 * @access public
 	 * @var bool
 	 */
-	var $in_the_loop;
+	public $in_the_loop;
 
 	/**
 	 * The total number of activities matching the query parameters.
@@ -59,7 +67,7 @@ class AnsPress_Activity_Query
 	 * @access public
 	 * @var int
 	 */
-	var $total_activity_count;
+	public $total_activity_count;
 
 	/**
 	 * Items to show per page
@@ -67,7 +75,7 @@ class AnsPress_Activity_Query
 	 * @access public
 	 * @var int
 	 */
-	var $per_page;
+	public $per_page;
 
 	/**
 	 * Total pages
@@ -75,7 +83,7 @@ class AnsPress_Activity_Query
 	 * @access public
 	 * @var int
 	 */
-	var $total_pages = 1;
+	public $total_pages = 1;
 
 	/**
 	 * Paged
@@ -83,7 +91,7 @@ class AnsPress_Activity_Query
 	 * @access public
 	 * @var int
 	 */
-	var $paged = 1;
+	public $paged = 1;
 
 	/**
 	 * offset
@@ -91,11 +99,11 @@ class AnsPress_Activity_Query
 	 * @access public
 	 * @var int
 	 */
-	var $offset;
+	public $offset;
 
-	var $query;
-	var $meta_query_sql;
-	var $where_clauses;
+	public $query;
+	public $meta_query_sql;
+	public $where_clauses;
 
 	/**
 	 * Initialize the class
@@ -138,7 +146,7 @@ class AnsPress_Activity_Query
 
 		$this->total_activity_count = $wpdb->get_var( apply_filters( 'ap_found_activity_query', 'SELECT FOUND_ROWS()', $this ) );
 
-		$this->total_pages = ceil( $this->total_activity_count / $this->per_page );
+		$this->total_pages = (int) ceil( $this->total_activity_count / $this->per_page );
 
 	}
 
@@ -339,14 +347,14 @@ class AnsPress_Activity_Query
 			$order .= 'ASC' == $args['order'] ? ' ASC' : ' DESC';
 		}
 
-			return $order;
+		return $order;
 	}
 
 	/**
 	 * Cache activity
 	 */
 	public function cache_activity() {
-		if ( $this->activities && count( $this->activities ) > 0 ) {
+		if ( !empty( $this->activities ) && count( $this->activities ) > 0 ) {
 			foreach ( $this->activities as $activity ) {
 				wp_cache_set( $activity->id, 'ap_activity' );
 			}
@@ -539,7 +547,7 @@ function ap_insert_activity( $args ) {
 
 		if ( false !== $row ) {
 			wp_cache_delete( $activity_id, 'ap_activity' );
-			do_action( 'ap_after_updating_activity', $id, $args );
+			do_action( 'ap_after_updating_activity', $activity_id, $args );
 			return $row;
 		}
 	}
@@ -547,6 +555,11 @@ function ap_insert_activity( $args ) {
 	return false;
 }
 
+/**
+ * Get username of current activity author with link.
+ * @param  integer $user_id User id.
+ * @return string
+ */
 function ap_activity_user_name($user_id) {
 	$primary_user_link = ap_user_link( $user_id );
 	$primary_user_name = ap_user_display_name( array( 'user_id' => $user_id ) );
@@ -887,7 +900,7 @@ function ap_update_activities( $where, $columns ) {
 	$row = $wpdb->update( $wpdb->ap_activity, $columns, $where_s, $coulmns_f, $where_f );
 
 	if ( false !== $row ) {
-		// wp_cache_delete( $activity_id, 'ap_activity' );
+		wp_cache_delete( $activity_id, 'ap_activity' );
 		return $row;
 	}
 }
