@@ -110,6 +110,9 @@ class AnsPress_Validation
 		}
 	}
 
+	/**
+	 * @param string $field
+	 */
 	private function is_email($field) {
 
 		$email = is_email( $this->fields[$field] );
@@ -342,7 +345,7 @@ class AnsPress_Validation
 	/**
 	 * Append error to a field
 	 * @param  string $field  field name.
-	 * @param  string $error  Error message.
+	 * @param  string $errors  Error message.
 	 */
 	private function append_errors($field, $errors) {
 		$this->errors[$field] = $errors;

@@ -209,7 +209,7 @@ class AnsPress_Admin
 	/**
 	 * Get free menu position
 	 * @param integer 		$start 			position.
-	 * @param float|integer $increment		position.
+	 * @param double $increment		position.
 	 */
 	public function get_free_menu_position($start, $increment = 0.99) {
 
