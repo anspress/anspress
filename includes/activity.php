@@ -95,6 +95,7 @@ class AnsPress_Activity_Query
 
 	var $query;
 	var $meta_query_sql;
+	var $where_clauses;
 
 	/**
 	 * Initialize the class
@@ -103,12 +104,12 @@ class AnsPress_Activity_Query
 	public function __construct($args = '') {
 		global $wpdb;
 		ap_wpdb_tables();
-		$this->per_page = isset($args['per_page']) ? (int)$args['per_page'] : 20;
+		$this->per_page = isset($args['per_page'] ) ? (int) $args['per_page'] : 20;
 
 		// Grab the current page number and set to 1 if no page number is set.
 		$this->paged = isset( $args['paged'] ) ? (int) $args['paged'] : $this->paged;
 
-		$this->offset = $this->per_page * max($this->paged -1, 0);
+		$this->offset = $this->per_page * max($this->paged -1, 0 );
 
 		$this->args = wp_parse_args( $args, array(
 			'number' 		=> $this->per_page,
@@ -137,7 +138,7 @@ class AnsPress_Activity_Query
 
 		$this->total_activity_count = $wpdb->get_var( apply_filters( 'ap_found_activity_query', 'SELECT FOUND_ROWS()', $this ) );
 
-		$this->total_pages = ceil( $this->total_activity_count/ $this->per_page );
+		$this->total_pages = ceil( $this->total_activity_count / $this->per_page );
 
 	}
 
@@ -151,7 +152,7 @@ class AnsPress_Activity_Query
 
 		if ( $this->args['subscriber'] && $this->args['user_id'] ) {
 			$query = $this->subscriber_q();
-		}else{
+		} else {
 			$query = $base;
 
 			if ( isset( $this->meta_query_sql['join'] ) ) {
@@ -159,11 +160,12 @@ class AnsPress_Activity_Query
 			}
 			$query .= $this->join();
 
-			$query .= $this->where_clauses( $this->args );
+			$this->where_clauses( );
+			$query .= $this->where_clauses;
 
 			if ( isset( $this->meta_query_sql['where'] ) ) {
 				$query .= $this->meta_query_sql['where'];
-			}			
+			}
 		}
 
 		$query .= $this->order_clauses( $this->args );
@@ -186,20 +188,20 @@ class AnsPress_Activity_Query
 
 	}
 
-	public function subscriber_q(){
+	public function subscriber_q() {
 		global $wpdb;
 		$q = 'SELECT SQL_CALC_FOUND_ROWS * FROM (';
 		$base = "SELECT * from {$wpdb->prefix}ap_activity activity";
-			
-		$q .= $base . " JOIN {$wpdb->ap_subscribers} subscriber ON subscriber.subs_item_id = activity.question_id AND subscriber.subs_activity = 'q_all' AND subscriber.subs_user_id=". (int)$this->args['user_id'] ." union all ";
-		
-		$q .= $base . " JOIN {$wpdb->ap_subscribers} subscriber1 ON subscriber1.subs_item_id = activity.answer_id AND subscriber1.subs_activity = 'a_all' AND subscriber1.subs_user_id=". (int)$this->args['user_id'] ."  union all ";
 
-		$q .= $base . " JOIN {$wpdb->ap_subscribers} subscriber2 ON subscriber2.subs_item_id = activity.user_id AND subscriber2.subs_activity = 'u_all' AND subscriber2.subs_user_id=". (int)$this->args['user_id'] ." union all ";
-		
-		$q .= $base . " JOIN {$wpdb->ap_subscribers} subscriber3 ON FIND_IN_SET(subscriber3.subs_item_id, activity.term_ids) AND subscriber3.subs_activity = 'tax_new_q' AND subscriber3.subs_user_id=". (int)$this->args['user_id'] ." WHERE activity.type = 'new_question' AND activity.term_ids IS NOT NULL ";
+		$q .= $base . " JOIN {$wpdb->ap_subscribers} subscriber ON subscriber.subs_item_id = activity.question_id AND subscriber.subs_activity = 'q_all' AND subscriber.subs_user_id=". (int) $this->args['user_id'] .' union all ';
 
-		$q .= ") as activity GROUP BY activity.id";
+		$q .= $base . " JOIN {$wpdb->ap_subscribers} subscriber1 ON subscriber1.subs_item_id = activity.answer_id AND subscriber1.subs_activity = 'a_all' AND subscriber1.subs_user_id=". (int) $this->args['user_id'] .'  union all ';
+
+		$q .= $base . " JOIN {$wpdb->ap_subscribers} subscriber2 ON subscriber2.subs_item_id = activity.user_id AND subscriber2.subs_activity = 'u_all' AND subscriber2.subs_user_id=". (int) $this->args['user_id'] .' union all ';
+
+		$q .= $base . " JOIN {$wpdb->ap_subscribers} subscriber3 ON FIND_IN_SET(subscriber3.subs_item_id, activity.term_ids) AND subscriber3.subs_activity = 'tax_new_q' AND subscriber3.subs_user_id=". (int) $this->args['user_id'] ." WHERE activity.type = 'new_question' AND activity.term_ids IS NOT NULL ";
+
+		$q .= ') as activity GROUP BY activity.id';
 
 		return $q;
 	}
@@ -215,101 +217,102 @@ class AnsPress_Activity_Query
 
 		if ( $this->args['notification'] ) {
 			$join .= " LEFT JOIN {$wpdb->ap_notifications} noti ON activity.id = noti.noti_activity_id ";
-		}	
+		}
 
 		return $join;
 	}
 
 	/**
 	 * Build the where clause for mysql query
-	 * @return string
 	 */
-	public function where_clauses($args) {
+	public function where_clauses() {
 		global $wpdb;
-		$where = ' WHERE 1=1';
+		$this->where_clauses = ' WHERE 1=1';
 
-		if ( isset( $args['id'] ) ) {
+		if ( isset( $this->args['id'] ) ) {
 
-			$id 	= (int) $args['id'];
-			$where .= " AND activity.id = $id";
+			$id 	= (int) $this->args['id'];
+			$this->where_clauses .= " AND activity.id = $id";
 
 		} else {
 
-			if ( false !== $args['user_id'] && !$this->args['notification'] && !$this->args['subscriber'] ) {
+			if ( false !== $this->args['user_id'] && ! $this->args['notification'] && ! $this->args['subscriber'] ) {
 
-				$ids 	= (int) $args['user_id'];
-				$where .= " AND activity.user_id = $ids";
+				$ids 	= (int) $this->args['user_id'];
+				$this->where_clauses .= " AND activity.user_id = $ids";
 
-			} elseif ( isset( $args['user_id__in'] ) ) {
+			} elseif ( isset( $this->args['user_id__in'] ) ) {
 
-				if ( is_array( $args['user_id__in'] ) && count( $args['user_id__in'] ) > 0 ) {
+				if ( is_array( $this->args['user_id__in'] ) && count( $this->args['user_id__in'] ) > 0 ) {
 
 					$ids = '';
-					foreach ( $args['user_id__in'] as $u ) {
+					foreach ( $this->args['user_id__in'] as $u ) {
 						$ids .= (int) $u .', ';
 					}
 
 					$ids = rtrim( $ids, ', ' );
-					$where .= " AND activity.user_id IN ($ids)";
+					$this->where_clauses .= " AND activity.user_id IN ($ids)";
 
 				} else {
-					$ids 	= (int) $args['user_id__in'];
-					$where .= " AND activity.user_id IN($ids)";
-				}
-			}
-
-			// Activity status.
-			if ( isset( $args['status'] ) ) {
-				if ( is_array( $args['status'] ) && count( $args['status'] ) > 0 ) {
-
-					$status = '';
-					foreach ( $args['status'] as $s ) {
-						$status .= sanitize_text_field( strip_tags( $s ) ) .', ';
-					}
-
-					$status = rtrim( $status, ', ' );
-					$where .= " AND activity.status IN ($status)";
-
-				} else {
-					$status 	= sanitize_text_field( strip_tags( $args['status'] ) );
-					$where 		.= " AND activity.status ='$status'";
+					$ids 	= (int) $this->args['user_id__in'];
+					$this->where_clauses .= " AND activity.user_id IN($ids)";
 				}
 			}
 
 			// Activity type.
-			if ( isset( $args['type'] ) ) {
-				if ( is_array( $args['type'] ) && count( $args['type'] ) > 0 ) {
+			if ( isset( $this->args['type'] ) ) {
+				if ( is_array( $this->args['type'] ) && count( $this->args['type'] ) > 0 ) {
 
 					$type = '';
-					foreach ( $args['type'] as $s ) {
+					foreach ( $this->args['type'] as $s ) {
 						$type .= sanitize_text_field( strip_tags( $s ) ) .', ';
 					}
 
 					$type = rtrim( $type, ', ' );
-					$where .= " AND activity.type IN ($type)";
+					$this->where_clauses .= " AND activity.type IN ($type)";
 
 				} else {
-					$type 		= sanitize_text_field( strip_tags( $args['type'] ) );
-					$where 		.= " AND activity.type =$type";
+					$type 		= sanitize_text_field( strip_tags( $this->args['type'] ) );
+					$this->where_clauses 		.= " AND activity.type =$type";
 				}
 			}
 
-			if ( isset( $args['question_id'] ) ) {
-				$question_id 		= (int) $args['question_id'];
-				$where 		.= " AND activity.question_id ='$question_id'";
+			if ( isset( $this->args['question_id'] ) ) {
+				$question_id 		= (int) $this->args['question_id'];
+				$this->where_clauses 		.= " AND activity.question_id ='$question_id'";
 			}
 
-			if ( isset( $args['item_id'] ) ) {
-				$item_id 	= sanitize_text_field( strip_tags( $args['item_id'] ) );
-				$where 			.= " AND activity.item_id ='$item_id'";
+			if ( isset( $this->args['item_id'] ) ) {
+				$item_id 	= sanitize_text_field( strip_tags( $this->args['item_id'] ) );
+				$this->where_clauses 			.= " AND activity.item_id ='$item_id'";
 			}
 		}
 
 		if ( $this->args['notification'] ) {
-			$where .= $wpdb->prepare(" AND noti.noti_user_id=%d", $args['user_id']);
+			$this->where_clauses .= $wpdb->prepare(' AND noti.noti_user_id=%d', $this->args['user_id'] );
 		}
+	}
 
-		return $where;
+	/**
+	 * Appends status query in where claue
+	 */
+	public function where_status_clauses() {
+		if ( isset( $this->args['status'] ) ) {
+			if ( is_array( $this->args['status'] ) && count( $this->args['status'] ) > 0 ) {
+
+				$status = '';
+				foreach ( $this->args['status'] as $s ) {
+					$status .= sanitize_text_field( strip_tags( $s ) ) .', ';
+				}
+
+				$status = rtrim( $status, ', ' );
+				$this->where_clauses .= " AND activity.status IN ($status)";
+
+			} else {
+				$status 	= sanitize_text_field( strip_tags( $this->args['status'] ) );
+				$this->where_clauses 		.= " AND activity.status ='$status'";
+			}
+		}
 	}
 
 	/**
@@ -419,7 +422,7 @@ class AnsPress_Activity_Query
 	}
 
 	public function the_pagination($base = false) {
-		if( false === $base ){
+		if ( false === $base ) {
 			$base = ap_get_link_to( 'activity' ) . '/%_%';
 		}
 		ap_pagination( $this->paged, $this->total_pages, $base );
@@ -746,11 +749,11 @@ function ap_latest_post_activity_html($post_id = false) {
 	$activity = ap_post_activity_meta( $post_id );
 
 	if ( $activity ) {
-		$activity['date'] = get_gmt_from_date($activity['date']);
+		$activity['date'] = get_gmt_from_date($activity['date'] );
 	}
 
 	if ( ! $activity ) {
-		$activity['date'] 	= get_post_time( 'U', true, $post_id);
+		$activity['date'] 	= get_post_time( 'U', true, $post_id );
 		$activity['user_id'] = $post->post_author;
 		$activity['type'] 	= 'new_'.$post->post_type;
 	}
@@ -763,7 +766,7 @@ function ap_latest_post_activity_html($post_id = false) {
 
 		$html .= '<span class="ap-post-history">';
 		$html .= sprintf( __( ' %s %s %s', 'anspress-question-answer' ),
-			ap_user_link_anchor($activity['user_id'], false),
+			ap_user_link_anchor($activity['user_id'], false ),
 			$title,
 			'<a href="'. get_permalink( $post ) .'"><time datetime="'. mysql2date( 'c', $activity['date'] ) .'">'. ap_human_time( $activity['date'], false ) .'</time></a>'
 		);
@@ -944,15 +947,15 @@ function ap_delete_activity($id) {
 function ap_has_activities() {
 	global $ap_activities;
 
-	if( $ap_activities ){
+	if ( $ap_activities ) {
 		return $ap_activities->has_activities();
 	}
 }
 
 function ap_activities() {
 	global $ap_activities;
-	
-	if( $ap_activities ){
+
+	if ( $ap_activities ) {
 		return $ap_activities->activities();
 	}
 }
@@ -960,7 +963,7 @@ function ap_activities() {
 function ap_the_activity() {
 	global $ap_activities;
 
-	if( $ap_activities ){
+	if ( $ap_activities ) {
 		return $ap_activities->the_activity();
 	}
 }
@@ -1123,17 +1126,17 @@ function ap_activity_user_id() {
 
 function ap_activity_pagination( $base = false) {
 	global $ap_activities;
-	$ap_activities->the_pagination($base);
+	$ap_activities->the_pagination($base );
 }
 
-function ap_activity_delete_btn(){
-	
-	if( is_super_admin( ) ){
-		return '<a href="#" class="ap-activity-delete" data-action="ajax_btn" data-query="delete_activity::'. wp_create_nonce( 'ap_delete_activity' ).'::'.ap_activity_id().'">'.__('Delete', 'anspress-question-answer').'</a>';
+function ap_activity_delete_btn() {
+
+	if ( is_super_admin( ) ) {
+		return '<a href="#" class="ap-activity-delete" data-action="ajax_btn" data-query="delete_activity::'. wp_create_nonce( 'ap_delete_activity' ).'::'.ap_activity_id().'">'.__('Delete', 'anspress-question-answer' ).'</a>';
 	}
 }
 
-function ap_activity_the_delete_btn(){
+function ap_activity_the_delete_btn() {
 	echo ap_activity_delete_btn();
 }
 

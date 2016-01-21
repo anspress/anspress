@@ -41,7 +41,7 @@ class AP_Bad_words
 	 */
 	public function before_inserting_question($return, $str) {
 		$bad_words = ap_find_bad_words( $str );
-		print_r($bad_words);
+
 		if ( false === $bad_words || empty($bad_words ) ) {
 			return false;
 		}

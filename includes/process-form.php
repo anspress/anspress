@@ -247,7 +247,7 @@ class AnsPress_Process_Form
 
 		$filter = apply_filters( 'ap_before_inserting_question', false, $fields['description'] );
 		if ( true === $filter || is_array( $filter ) ) {
-			if( is_array( $filter ) ){
+			if ( is_array( $filter ) ) {
 				$this->result = $filter;
 			}
 			return;
@@ -322,9 +322,9 @@ class AnsPress_Process_Form
 			return;
 		}
 
-		$filter = apply_filters( 'ap_before_updating_question', false, $fields['description'] );
+		$filter = apply_filters( 'ap_before_updating_question', false, $this->fields['description'] );
 		if ( true === $filter || is_array( $filter ) ) {
-			if( is_array( $filter ) ){
+			if ( is_array( $filter ) ) {
 				$this->result = $filter;
 			}
 			return;
@@ -493,7 +493,7 @@ class AnsPress_Process_Form
 
 		$filter = apply_filters( 'ap_before_inserting_answer', false, $fields['description'] );
 		if ( true === $filter || is_array( $filter ) ) {
-			if( is_array( $filter ) ){
+			if ( is_array( $filter ) ) {
 				$this->result = $filter;
 			}
 			return;
@@ -594,19 +594,25 @@ class AnsPress_Process_Form
 		$this->process_image_uploads( $post_id, $user_id );
 	}
 
-	public function edit_answer($question) {
+	/**
+	 * Process edit answer form.
+	 * @param  object $question Parent question object.
+	 * @return mixed
+	 */
+	public function edit_answer( $question) {
 
 		global $ap_errors, $validate;
 
-		// return if user do not have permission to edit this answer
+		// Return if user do not have permission to edit this answer.
 		if ( ! ap_user_can_edit_ans( $this->fields['edit_post_id'] ) ) {
 			$this->result = ap_ajax_responce( 'no_permission' );
 			return;
 		}
 
-		$filter = apply_filters( 'ap_before_updating_answer', false, $fields['description'] );
+		$filter = apply_filters( 'ap_before_updating_answer', false, $this->fields['description'] );
+
 		if ( true === $filter || is_array( $filter ) ) {
-			if( is_array( $filter ) ){
+			if ( is_array( $filter ) ) {
 				$this->result = $filter;
 			}
 			return;
@@ -617,10 +623,12 @@ class AnsPress_Process_Form
 		$status = 'publish';
 
 		if ( ap_opt( 'edit_answer_status' ) == 'moderate' || (ap_opt( 'edit_answer_status' ) == 'point' && ap_get_points( get_current_user_id() ) < ap_opt( 'new_answer_status' )) ) {
-			$status = 'moderate'; }
+			$status = 'moderate';
+		}
 
 		if ( isset( $this->fields['is_private'] ) && $this->fields['is_private'] ) {
-			$status = 'private_post'; }
+			$status = 'private_post';
+		}
 
 		$answer_array = array(
 			'ID'			=> $this->fields['edit_post_id'],
@@ -686,7 +694,7 @@ class AnsPress_Process_Form
 		$filter = apply_filters( $filter_type, false, $_POST['comment'] );
 
 		if ( true === $filter || is_array( $filter ) ) {
-			if( is_array( $filter ) ){
+			if ( is_array( $filter ) ) {
 				$this->result = $filter;
 			}
 			return;
