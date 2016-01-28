@@ -4,7 +4,7 @@
 **Tags:** question, answer, q&a, forum, profile, stackoverflow, quora, buddypress  
 **Requires at least:** 4.2  
 **Tested up to:** 4.4  
-**Stable tag:** 2.4.3  
+**Stable tag:** 2.4.4  
 **License:** GPLv2 or later  
 **License URI:** http://www.gnu.org/licenses/gpl-2.0.html  
 
@@ -99,6 +99,36 @@ Read full FAQ here http://anspress.io/documents/doc_page=faq
 
 
 ## Changelog ##
+
+### 2.4.5 ###
+
+  * Improved coding standards of activity loop
+  * Improved where clause in activity
+  * New: added bad words detection
+  * Fix: User page mobile layout
+  * Remove stop words from question title
+  * Use ID based links in activity
+  * Clear text editor content after posting Answer
+  * Transition when loading hover card
+  * Improved hover card
+  * Updated fonts icon
+  * Fix: keep tooltip container inside window
+  * Fix : Warning: strpos(): Offset not contained in string
+  * Fix: Comment form is not loading for new answer loaded using ajax
+  * Fix: Options are not properly visible in mobile
+  * Apply inherited post status to activities
+  * Fix: List of questions in a user profile, shows votes instead of answers
+  * Auto fix subscriber column name
+  * Allow admin to vote own post
+  * Improved ajax response
+  * Fixed: answer description length
+  * Replace exit and die with wp_die()
+  * Removed unused $old_instance variable
+  * Added license interface for AnsPress products.
+  * Tweak: Remove default rank option
+  * New: Network activation and deactivation hooks tweak
+  * Added RTL styles
+  * Tweak: Wrap activation functions in a class
 
 ### 2.4.2 ###
 
