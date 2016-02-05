@@ -306,6 +306,10 @@ class AnsPress_Process_Form
 
 		$this->process_image_uploads( $post_id, $user_id );
 
+		// Check for spam in question.
+		if( ap_opt('akismet_validation') && !current_user_can( 'ap_edit_others_question' ) ){
+			ap_check_spam( $post_id );
+		}
 	}
 
 	/**
@@ -374,6 +378,11 @@ class AnsPress_Process_Form
 		}
 
 		$this->process_image_uploads( $post->ID, $post->post_author );
+
+		// Check for spam in question.
+		if( ap_opt('akismet_validation') && !current_user_can( 'ap_edit_others_question' ) ){
+			ap_check_spam( $post_id );
+		}
 	}
 
 	/**
@@ -592,6 +601,11 @@ class AnsPress_Process_Form
 		}
 
 		$this->process_image_uploads( $post_id, $user_id );
+
+		// Check for spam in question.
+		if( ap_opt('akismet_validation') && !current_user_can( 'ap_edit_others_answer' ) ){
+			ap_check_spam( $post_id );
+		}
 	}
 
 	/**
@@ -654,6 +668,11 @@ class AnsPress_Process_Form
 		}
 
 		$this->process_image_uploads( $post_id, $answer->post_author );
+
+		// Check for spam in question.
+		if( ap_opt('akismet_validation') && !current_user_can( 'ap_edit_others_answer' ) ){
+			ap_check_spam( $post_id );
+		}
 	}
 
 	public function comment_form() {

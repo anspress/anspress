@@ -301,6 +301,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		    require_once ANSPRESS_DIR.'includes/shortcode-question.php';
 		    require_once ANSPRESS_DIR.'includes/mention.php';
 		    require_once ANSPRESS_DIR.'includes/class-bad-words.php';
+		    require_once ANSPRESS_DIR.'includes/akismet.php';
 		}
 
 		/**

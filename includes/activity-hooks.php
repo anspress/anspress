@@ -52,14 +52,14 @@ class AnsPress_Activity_Hook
 
 		$question_title = '<a class="ap-q-link" href="'. wp_get_shortlink( $question_id ) .'">'. get_the_title( $question_id ) .'</a>';
 
-		$txo_type = array();
+		$txo_type = '';
 
 		if ( taxonomy_exists( 'question_category' ) ) {
-			$txo_type[] = 'question_category';
+			$txo_type = 'question_category';
 		}
 
 		if ( taxonomy_exists( 'question_tag' ) ) {
-			$txo_type[] = 'question_tag';
+			$txo_type = 'question_tag';
 		}
 
 		$term_ids = array();

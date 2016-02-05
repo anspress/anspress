@@ -151,6 +151,7 @@ function ap_default_options() {
 		'check_bad_words'			=> false,
 		'bad_word_post_action'		=> 'moderate',
 		'bad_word_comment_action'	=> 'moderate',
+		'akismet_validation'		=> true,
 	);
 
 	/**

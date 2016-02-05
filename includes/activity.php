@@ -900,7 +900,7 @@ function ap_update_activities( $where, $columns ) {
 	$row = $wpdb->update( $wpdb->ap_activity, $columns, $where_s, $coulmns_f, $where_f );
 
 	if ( false !== $row ) {
-		wp_cache_delete( $activity_id, 'ap_activity' );
+		//wp_cache_delete( $activity_id, 'ap_activity' );
 		return $row;
 	}
 }
