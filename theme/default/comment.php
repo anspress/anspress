@@ -27,7 +27,7 @@
 							get_comment_ID()
 						);
 
-						// Comment actions
+						// Comment actions.
 						ap_comment_actions_buttons();
 				?>
 			</div><!-- close .ap-comment-header -->
