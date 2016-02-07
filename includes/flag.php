@@ -21,9 +21,9 @@
  *
  * @return integer
  */
-function ap_add_flag($userid, $actionid, $value = null, $param = null)
-{
-    return ap_add_meta($userid, 'flag', $actionid, $value, $param);
+function ap_add_flag($userid, $actionid, $value = null, $param = null) {
+
+	return ap_add_meta($userid, 'flag', $actionid, $value, $param );
 }
 
 /**
@@ -33,13 +33,13 @@ function ap_add_flag($userid, $actionid, $value = null, $param = null)
  *
  * @return int
  */
-function ap_post_flag_count($postid = false)
-{
-    global $post;
+function ap_post_flag_count($postid = false) {
 
-    $postid = $postid ? $postid : $post->ID;    
+	global $post;
 
-    return apply_filters('ap_post_flag_count', ap_meta_total_count('flag', $postid));
+	$postid = $postid ? $postid : $post->ID;
+
+	return apply_filters('ap_post_flag_count', ap_meta_total_count('flag', $postid ) );
 }
 
 /**
@@ -47,8 +47,8 @@ function ap_post_flag_count($postid = false)
  * @param  integer $post_id Question/Answer Id.
  * @return integer
  */
-function ap_flagged_post_meta( $post_id ){
-    return (int)get_post_meta( $post_id, ANSPRESS_FLAG_META, true );
+function ap_flagged_post_meta( $post_id ) {
+	return (int) get_post_meta( $post_id, ANSPRESS_FLAG_META, true );
 }
 
 /**
@@ -58,18 +58,18 @@ function ap_flagged_post_meta( $post_id ){
  *
  * @return bool
  */
-function ap_is_user_flagged($postid = false)
-{
-    if (is_user_logged_in()) {
-        global $post;
-        $postid = $postid ? $postid : $post->ID;
-        $userid = get_current_user_id();
-        $done = ap_meta_user_done('flag', $userid, $postid);
+function ap_is_user_flagged($postid = false) {
 
-        return $done > 0 ? true : false;
-    }
+	if ( is_user_logged_in() ) {
+		global $post;
+		$postid = $postid ? $postid : $post->ID;
+		$userid = get_current_user_id();
+		$done = ap_meta_user_done('flag', $userid, $postid );
 
-    return false;
+		return $done > 0 ? true : false;
+	}
+
+	return false;
 }
 
 /**
@@ -79,25 +79,24 @@ function ap_is_user_flagged($postid = false)
  *
  * @since 0.9
  */
-function ap_flag_btn_html($echo = false)
-{
-    if (!is_user_logged_in()) {
-        return;
-    }
+function ap_flag_btn_html($echo = false) {
+	if ( ! is_user_logged_in() ) {
+		return;
+	}
 
-    global $post;
-    $flagged = ap_is_user_flagged();
-    $total_flag = ap_flagged_post_meta( $post->ID );
-    $nonce = wp_create_nonce('flag_'.$post->ID);
-    $title = (!$flagged) ? (__('Flag this post', 'anspress-question-answer')) : (__('You have flagged this post', 'anspress-question-answer'));
+	global $post;
+	$flagged = ap_is_user_flagged();
+	$total_flag = ap_flagged_post_meta( $post->ID );
+	$nonce = wp_create_nonce('flag_'.$post->ID );
+	$title = ( ! $flagged) ? (__('Flag this post', 'anspress-question-answer' )) : (__('You have flagged this post', 'anspress-question-answer' ));
 
-    $output = '<a id="flag_'.$post->ID.'" data-action="ajax_btn" data-query="flag_post::'.$nonce.'::'.$post->ID.'" class="flag-btn'.(!$flagged ? ' can-flagged' : '').'" href="#" title="'.$title.'">'.__('Flag ', 'anspress-question-answer').'<span class="ap-data-view ap-view-count-'.$total_flag.'" data-view="'.$post->ID.'_flag_count">'.$total_flag.'</span></a>';
+	$output = '<a id="flag_'.$post->ID.'" data-action="ajax_btn" data-query="flag_post::'.$nonce.'::'.$post->ID.'" class="flag-btn'.( ! $flagged ? ' can-flagged' : '').'" href="#" title="'.$title.'">'.__('Flag ', 'anspress-question-answer' ).'<span class="ap-data-view ap-view-count-'.$total_flag.'" data-view="'.$post->ID.'_flag_count">'.$total_flag.'</span></a>';
 
-    if ($echo) {
-        echo $output;
-    } else {
-        return $output;
-    }
+	if ( $echo ) {
+		echo $output;
+	} else {
+		return $output;
+	}
 }
 
 /**
@@ -110,9 +109,8 @@ function ap_flag_btn_html($echo = false)
  *
  * @return integer
  */
-function ap_insert_comment_flag($user_id, $action_id, $value = null, $param = null)
-{
-    return ap_add_meta($user_id, 'comment_flag', $action_id, $value, $param);
+function ap_insert_comment_flag($user_id, $action_id, $value = null, $param = null) {
+	return ap_add_meta($user_id, 'comment_flag', $action_id, $value, $param );
 }
 
 /**
@@ -124,9 +122,8 @@ function ap_insert_comment_flag($user_id, $action_id, $value = null, $param = nu
  *
  * @return string
  */
-function ap_comment_flag_btn($comment_id = false, $label = false)
-{
-    echo ap_get_comment_flag_btn($comment_id, $label);
+function ap_comment_flag_btn($comment_id = false, $label = false) {
+	echo ap_get_comment_flag_btn($comment_id, $label );
 }
 
 /**
@@ -138,46 +135,44 @@ function ap_comment_flag_btn($comment_id = false, $label = false)
  *
  * @return string
  */
-function ap_get_comment_flag_btn($comment_id = false, $label = false)
-{
-    if (!is_user_logged_in()) {
-        return;
-    }
+function ap_get_comment_flag_btn($comment_id = false, $label = false) {
+	if ( ! is_user_logged_in() ) {
+		return;
+	}
 
-    if (false === $label) {
-        $label = __('Flag', 'anspress-question-answer');
-    }
+	if ( false === $label ) {
+		$label = __('Flag', 'anspress-question-answer' );
+	}
 
-    if (false === $comment_id) {
-        $comment_id = get_comment_ID();
-    }
+	if ( false === $comment_id ) {
+		$comment_id = get_comment_ID();
+	}
 
-    $flagged = ap_is_user_flagged_comment($comment_id);
-    $total_flag = ap_comment_flag_count($comment_id);
+	$flagged = ap_is_user_flagged_comment($comment_id );
+	$total_flag = ap_comment_flag_count($comment_id );
 
-    $nonce = wp_create_nonce('flag_'.$comment_id);
+	$nonce = wp_create_nonce('flag_'.$comment_id );
 
-    $output = '<a id="flag_'.$comment_id.'" data-query="ap_ajax_action=flag_comment&comment_id='.$comment_id.'&__nonce='.$nonce.'"
-    	data-action="ap_subscribe" class="flag-btn'.(!$flagged ? ' can-flag' : '').'" href="#" title="'.__('Report this comment to moderaor', 'anspress-question-answer').'">
+	$output = '<a id="flag_'.$comment_id.'" data-query="ap_ajax_action=flag_comment&comment_id='.$comment_id.'&__nonce='.$nonce.'"
+    	data-action="ap_subscribe" class="flag-btn'.( ! $flagged ? ' can-flag' : '').'" href="#" title="'.__('Report this comment to moderaor', 'anspress-question-answer' ).'">
     	'.$label.'<span class="ap-data-view ap-view-count-'.$total_flag.'" data-view="'.$comment_id.'_comment_flag">'.$total_flag.'</span>
     </a>';
 
-    return $output;
+	return $output;
 }
 
 /**
  * Count comment flag votes.
  *
- *
  * @return int
  */
-function ap_comment_flag_count($comment_id = false)
-{
-    if (false === $comment_id) {
-        $comment_id = get_comment_ID();
-    }
+function ap_comment_flag_count($comment_id = false) {
 
-    return apply_filters('ap_comment_flag_count', ap_meta_total_count('comment_flag', $comment_id));
+	if ( false === $comment_id ) {
+		$comment_id = get_comment_ID();
+	}
+
+	return apply_filters('ap_comment_flag_count', ap_meta_total_count('comment_flag', $comment_id ) );
 }
 
 /**
@@ -190,21 +185,30 @@ function ap_comment_flag_count($comment_id = false)
  *
  * @return bool
  */
-function ap_is_user_flagged_comment($comment_id = false, $user_id = false)
-{
-    if (!is_user_logged_in()) {
-        return false;
-    }
+function ap_is_user_flagged_comment($comment_id = false, $user_id = false) {
 
-    if (false === $comment_id) {
-        $comment_id = get_comment_ID();
-    }
+	if ( ! is_user_logged_in() ) {
+		return false;
+	}
 
-    if (false === $user_id) {
-        $user_id = get_current_user_id();
-    }
+	if ( false === $comment_id ) {
+		$comment_id = get_comment_ID();
+	}
 
-    $done = ap_meta_user_done('comment_flag', $user_id, $comment_id);
+	if ( false === $user_id ) {
+		$user_id = get_current_user_id();
+	}
 
-    return $done > 0 ? true : false;
+	$done = ap_meta_user_done('comment_flag', $user_id, $comment_id );
+
+	return $done > 0 ? true : false;
+}
+
+/**
+ * Delete all flags vote of a post.
+ * @param  integer $post_id Post id.
+ * @return boolean
+ */
+function ap_delete_all_post_flags( $post_id ) {
+	return ap_delete_meta( array( 'apmeta_actionid' => (int)$post_id, 'apmeta_type' => 'flag' ) );
 }

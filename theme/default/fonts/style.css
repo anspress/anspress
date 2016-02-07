@@ -1,10 +1,10 @@
 @font-face {
     font-family: 'anspress';
-    src:    url('fonts/anspress.eot?qsbu07');
-    src:    url('fonts/anspress.eot?qsbu07#iefix') format('embedded-opentype'),
-        url('fonts/anspress.ttf?qsbu07') format('truetype'),
-        url('fonts/anspress.woff?qsbu07') format('woff'),
-        url('fonts/anspress.svg?qsbu07#anspress') format('svg');
+    src:    url('fonts/anspress.eot?vmoyp1');
+    src:    url('fonts/anspress.eot?vmoyp1#iefix') format('embedded-opentype'),
+        url('fonts/anspress.ttf?vmoyp1') format('truetype'),
+        url('fonts/anspress.woff?vmoyp1') format('woff'),
+        url('fonts/anspress.svg?vmoyp1#anspress') format('svg');
     font-weight: normal;
     font-style: normal;
 }
@@ -24,6 +24,9 @@
     -moz-osx-font-smoothing: grayscale;
 }
 
+.apicon-flag:before {
+    content: "\e902";
+}
 .apicon-answer:before {
     content: "\e900";
 }
@@ -35,6 +38,18 @@
 }
 .apicon-anspress-icon:before {
     content: "\e904";
+}
+.apicon-home:before {
+    content: "\e939";
+}
+.apicon-thumbs-up-down:before {
+    content: "\e93a";
+}
+.apicon-thumb-up:before {
+    content: "\e93b";
+}
+.apicon-thumb-down:before {
+    content: "\e93c";
 }
 .apicon-pencil:before {
     content: "\e905";
@@ -156,9 +171,6 @@
 .apicon-trashcan:before {
     content: "\e92c";
 }
-.apicon-unmute:before {
-    content: "\e92d";
-}
 .apicon-x:before {
     content: "\e92e";
 }
@@ -191,18 +203,6 @@
 }
 .apicon-board:before {
     content: "\e938";
-}
-.apicon-home:before {
-    content: "\e939";
-}
-.apicon-thumbs-up-down:before {
-    content: "\e93a";
-}
-.apicon-thumb-up:before {
-    content: "\e93b";
-}
-.apicon-thumb-down:before {
-    content: "\e93c";
 }
 .apicon-chevron-down:before {
     content: "\e93d";

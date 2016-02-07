@@ -90,20 +90,24 @@ function ap_delete_meta($where=false, $id=false) {
 	global $wpdb;
 
 	if ( false !== $id ) {
-		$where = array( 'apmeta_id' => $id ); }
+		$where = array( 'apmeta_id' => $id );
+	}
 
 	$meta_key = ap_meta_key( $where );
 
 	if ( is_array( $where ) ) {
 		$delete = $wpdb->delete(
 			$wpdb->prefix . 'ap_meta', $where
-		); } else {
-		return false; }
+		);
+	} else {
+		return false;
+	}
 
-		if ( $delete ) {
-			wp_cache_delete( $meta_key, 'ap_meta' ); }
+	if ( $delete ) {
+		wp_cache_delete( $meta_key, 'ap_meta' );
+	}
 
-		return $delete;
+	return $delete;
 }
 
 /**

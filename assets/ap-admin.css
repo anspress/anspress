@@ -1982,3 +1982,23 @@ h3.ap-dash-title {
   text-align: center;
   width: 20px;
 }
+ul.ap-meta-list {
+  margin: 0 -12px -12px;
+}
+ul.ap-meta-list > li {
+  border-bottom: 1px solid #F8F7F7;
+  font-size: 13px;
+  margin: 0;
+  padding: 10px 13px;
+}
+ul.ap-meta-list > li > i {
+  color: #888;
+  font-size: 15px;
+  margin-right: 8px;
+}
+ul.ap-meta-list > li > a {
+  float: right;
+}
+ul.ap-meta-list > li > a#ap-vote-up {
+  margin-right: 3px;
+}

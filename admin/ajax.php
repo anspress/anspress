@@ -35,6 +35,7 @@ class AnsPress_Admin_Ajax
 		add_action( 'wp_ajax_ap_delete_reputation', array( $this, 'ap_delete_reputation' ) );
 		add_action( 'wp_ajax_ap_taxo_rename', array( $this, 'ap_taxo_rename' ) );
 		add_action( 'wp_ajax_ap_delete_flag', array( $this, 'ap_delete_flag' ) );
+		add_action( 'ap_ajax_ap_clear_flag', array( $this, 'clear_flag' ) );
 	}
 
 	/**
@@ -216,6 +217,20 @@ class AnsPress_Admin_Ajax
 		$id = (int) sanitize_text_field( $_POST['id'] );
 		if ( wp_verify_nonce( $_POST['__nonce'], 'flag_delete'.$id ) && current_user_can( 'manage_options' ) ) {
 			return ap_delete_meta( false, $id );
+		}
+		die();
+	}
+
+	/**
+	 * Clear post flags.
+	 * @since 2.4.6
+	 */
+	public function clear_flag() {
+		$args = $_POST['args'];
+		if ( current_user_can( 'manage_options' ) && wp_verify_nonce( $_POST['__nonce'], 'clear_flag_'. $args[0] ) ) {
+			ap_delete_all_post_flags( $args[0] );
+			delete_post_meta( $args[0], ANSPRESS_FLAG_META );
+			die( _e('0' ) );
 		}
 		die();
 	}

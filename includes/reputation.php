@@ -607,7 +607,7 @@ function ap_reputation_get_info($event, $action_id) {
 			break;
 
 		case 'vote_up':
-			$info = sprintf( __( '%sUp vote %s %s','anspress-question-answer' ), '<span class="ap-reputation-event">', '</span>'.get_post_type( $action_id ), '<a href="'.get_permalink( $action_id ).'">'.get_the_title( $action_id ).'</a>' );
+			$info = sprintf( __( '%sUp vote %s %s','anspress-question-answer' ), '<span class="ap-reputation-event">', '</span>'.__( get_post_type( $action_id ) ,'anspress-question-answer' ), '<a href="'.get_permalink( $action_id ).'">'.get_the_title( $action_id ).'</a>' );
 			break;
 
 		case 'vote_down':

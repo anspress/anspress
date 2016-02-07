@@ -49,9 +49,6 @@ class AnsPress_Admin
 	 */
 	private function __construct() {
 		$this->includes();
-		new AnsPress_Options_Page;
-		new AnsPress_Admin_Ajax($this );
-		new AP_license();
 
 		$plugin_basename = plugin_basename( plugin_dir_path( __DIR__ ) . 'anspress-question-answer.php' );
 		add_filter( 'plugin_action_links_' . $plugin_basename, array( $this, 'add_action_links' ) );
@@ -105,6 +102,12 @@ class AnsPress_Admin
 		require_once( 'options-page.php' );
 		require_once( 'extensions.php' );
 		require_once( 'license.php' );
+		require_once( 'class-list-table-hooks.php' );
+
+		new AnsPress_Options_Page;
+		new AnsPress_Admin_Ajax( $this );
+		new AP_license();
+		new AP_List_Table_Hooks();
 	}
 
 	/**
@@ -131,6 +134,7 @@ class AnsPress_Admin
 
 		wp_enqueue_script( 'jquery-form', array( 'jquery' ), false, true );
 		wp_enqueue_script( 'ap-initial.js', ap_get_theme_url( 'js/initial.min.js' ), 'jquery', AP_VERSION );
+		wp_enqueue_script( 'ap-functions-js', ANSPRESS_URL.'assets/ap-functions.js', 'jquery', AP_VERSION );
 		wp_enqueue_script( 'ap-admin-js', ANSPRESS_URL.'assets/'.$dir.'/ap-admin'.$min.'.js' , array( 'wp-color-picker' ) );
 	}
 
@@ -140,14 +144,15 @@ class AnsPress_Admin
 	 * @since 2.4.6
 	 */
 	public function menu_counts() {
-		$flagged_count = ap_flagged_posts_count();
+		$q_flagged_count = ap_total_posts_count( 'question', 'flag' );
+		$a_flagged_count = ap_total_posts_count( 'answer', 'flag' );
 		$question_count = wp_count_posts( 'question', 'readable' );
 		$answer_count = wp_count_posts( 'answer', 'readable' );
 
 		$types = array(
-			'question' 	=> ! empty( $question_count->moderate ) ? $question_count->moderate : 0,
-			'answer' 	=> ! empty( $answer_count->moderate ) ? $answer_count->moderate : 0,
-			'flagged' 	=> (int) $flagged_count->total,
+			'question' 	=> ( ! empty( $question_count->moderate ) ? $question_count->moderate : 0 ) + $q_flagged_count->total,
+			'answer' 	=> ( ! empty( $answer_count->moderate ) ? $answer_count->moderate : 0 ) + $a_flagged_count->total,
+			'flagged' 	=> $q_flagged_count->total + $a_flagged_count->total,
 		);
 
 		$types['total'] = array_sum( $types );
@@ -186,13 +191,9 @@ class AnsPress_Admin
 
 		add_submenu_page( 'anspress', __( 'All Answers', 'anspress-question-answer' ), __( 'All Answers', 'anspress-question-answer' ).$counts['answer'], 'delete_pages', 'edit.php?post_type=answer', '' );
 
-		add_submenu_page( 'anspress', __( 'Flagged question & answer', 'anspress-question-answer' ), __( 'Flagged', 'anspress-question-answer' ).$counts['flagged'], 'delete_pages', 'anspress_flagged', array( $this, 'display_flagged_page' ) );
-
 		add_submenu_page( 'anspress', __( 'Reputation', 'anspress-question-answer' ), __( 'Reputation', 'anspress-question-answer' ), 'manage_options', 'anspress_reputation', array( $this, 'display_reputation_page' ) );
 
-		 add_submenu_page( 'ap_post_flag', __( 'Post flag', 'anspress-question-answer' ), __( 'Post flag', 'anspress-question-answer' ), 'delete_pages', 'ap_post_flag', array( $this, 'display_post_flag' ) );
-
-		 add_submenu_page( 'ap_select_question', __( 'Select question', 'anspress-question-answer' ), __( 'Select question', 'anspress-question-answer' ), 'delete_pages', 'ap_select_question', array( $this, 'display_select_question' ) );
+		add_submenu_page( 'ap_select_question', __( 'Select question', 'anspress-question-answer' ), __( 'Select question', 'anspress-question-answer' ), 'delete_pages', 'ap_select_question', array( $this, 'display_select_question' ) );
 
 		/**
 		 * ACTION: ap_admin_menu
@@ -284,25 +285,6 @@ class AnsPress_Admin
 	 */
 	public function dashboard_page() {
 		include_once( 'views/dashboard.php' );
-	}
-
-	/**
-	 * Display flag page layout
-	 */
-	public function display_flagged_page() {
-		include_once( 'flagged.php' );
-		$flagged_table = new AP_Flagged_Table();
-		$flagged_table->prepare_items();
-		include_once( 'views/flagged.php' );
-	}
-
-	/**
-	 * Control the output of post flag page
-	 * @return void
-	 * @since 2.0.0-alpha2
-	 */
-	public function display_post_flag() {
-		include_once( 'views/post_flag.php' );
 	}
 
 	/**

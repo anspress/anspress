@@ -7,25 +7,24 @@ if ( ! defined( 'ABSPATH' ) ) { exit; }
  * The Class.
  */
 class AP_Question_Meta_Box {
-
+	/**
+	 * Initialize the class.
+	 */
 	public function __construct() {
 		add_action( 'add_meta_boxes', array( $this, 'add_meta_box' ) );
 	}
 
-
+	/**
+	 * Hook meta boxes in post edit screen.
+	 */
 	public function add_meta_box( $post_type ) {
-		$post_types = array( 'question' );     // limit meta box to certain post types
-		if ( in_array( $post_type, $post_types ) ) {
+		if ( 'question' == $post_type ) {
 			add_meta_box( 'ap_answers_meta_box' ,__( 'Answers', 'anspress-question-answer' ), array( $this, 'answers_meta_box_content' ), $post_type, 'normal', 'high' );
+		}
+		if ( 'question' == $post_type || 'answer' == $post_type ) {
 			add_meta_box( 'ap_question_meta_box' ,__( 'Question', 'anspress-question-answer' ), array( $this, 'question_meta_box_content' ), $post_type, 'side', 'high' );
 		}
-
-		/*
-		if ( in_array( $post_type, array('question', 'answer') )) {
-            add_meta_box('ap_flag_meta_box' ,__( 'Flag & report', 'ap' ), array( $this,'flag_meta_box_content' ), $post_type, 'normal', 'high' );
-        }*/
 	}
-
 
 	/**
 	 * Render Meta Box content.
@@ -80,10 +79,30 @@ class AP_Question_Meta_Box {
 		$ans_count = ap_count_answer_meta( $post->ID );
 		$vote_count = get_post_meta( $post->ID, ANSPRESS_VOTE_META, true );
 		?>
-            <ul>
-				<li> <?php printf( _n( '<strong>1</strong> Answer', '<strong>%d</strong> Answers', $ans_count, 'anspress-question-answer' ), $ans_count ); ?> </li>
-				<li> <?php printf( _n( '<strong>1</strong> Vote', '<strong>%d</strong> Votes', $vote_count, 'anspress-question-answer' ), $vote_count ); ?> </li>
+            <ul class="ap-meta-list">
+            	<?php if( 'answer' == $post->post_type ): ?>
+					<li>
+						<i class="apicon-answer"></i>
+						<?php printf( _n( '<strong>1</strong> Answer', '<strong>%d</strong> Answers', $ans_count, 'anspress-question-answer' ), $ans_count ); ?>
+						<a href="#" class="add-answer"><?php _e('Add an answer', 'anspress-question-answer' ); ?></a>
+					</li>
+				<?php endif; ?>				
+				<li>
+					<i class="apicon-thumb-up"></i>
+					<?php printf( _n( '<strong>1</strong> Vote', '<strong>%d</strong> Votes', $vote_count, 'anspress-question-answer' ), $vote_count ); ?>					
+					<a id="ap-vote-down" href="#" class="vote button button-small"><?php _e('-', 'anspress-question-answer' ); ?></a>
+					<a id="ap-vote-up" href="#" class="vote button button-small"><?php _e('+', 'anspress-question-answer' ); ?></a>
+				</li>
+				<li><?php $this->flag_meta_box( $post ); ?> </li>
             </ul>
+		<?php
+	}
+
+	public function flag_meta_box($post) {
+		?>
+			<i class="apicon-flag"></i>
+			<strong><?php echo ap_flagged_post_meta( $post->ID ); ?></strong> <?php _e('Flag', 'anspress-question-answer' ); ?>
+			<a id="ap-clear-flag" href="#" data-query="ap_clear_flag::<?php echo wp_create_nonce( 'clear_flag_'.$post->ID ) .'::'.$post->ID; ?>" class="ap-ajax-btn flag-clear" data-cb="afterFlagClear"><?php _e('Clear flag', 'anspress-question-answer' ); ?></a>
 		<?php
 	}
 }

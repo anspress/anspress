@@ -58,237 +58,269 @@ jQuery(function() {
 window.APjs = {};
 APjs.admin = function() {};
 
+(function ($) {
+	APjs.admin.prototype = {
 
-APjs.admin.prototype = {
+		/* automatically called */
+		initialize: function() {
+			this.saveOptions();
+			this.renameTaxo();
+			this.editPoints();
+			this.savePoints();
+			this.newPointForm();
+			this.deletePoint();
+			this.badges();
+			this.deleteFlag();
+			this.ajaxBtn();
+		},
 
-	/* automatically called */
-	initialize: function() {
-		this.saveOptions();
-		this.renameTaxo();
-		this.editPoints();
-		this.savePoints();
-		this.newPointForm();
-		this.deletePoint();
-		this.badges();
-		this.deleteFlag();
-	},
+		saveOptions: function(){
+			jQuery('#options_form').submit(function(){
+				jQuery.each(jQuery(this).find('input:checkbox:not(:checked)'), function(index, val) {
+					var name = jQuery(this).attr('name');
+					console.log(name);
+					var hidden = '_hidden_'+name;
+					jQuery(this).attr('name', '');
+					jQuery('input[name="'+ hidden + '"]').attr('name', name);
+				});
 
-	saveOptions: function(){
-		jQuery('#options_form').submit(function(){
-			jQuery.each(jQuery(this).find('input:checkbox:not(:checked)'), function(index, val) {
-				var name = jQuery(this).attr('name');
-				console.log(name);
-				var hidden = '_hidden_'+name;
-				jQuery(this).attr('name', '');
-				jQuery('input[name="'+ hidden + '"]').attr('name', name);
+				return true;
 			});
+		},
+		renameTaxo: function(){
+			jQuery('.ap-rename-taxo').click(function(e){
+				e.preventDefault();
 
-			return true;
-		});
-	},
-	renameTaxo: function(){
-		jQuery('.ap-rename-taxo').click(function(e){
-			e.preventDefault();
-
-			jQuery.ajax({
-				url: ajaxurl,
-				data: {action: 'ap_taxo_rename'},
-				context:this,
-				success: function(data){
-					jQuery(this).closest('.error').remove();
-					location.reload();
-				}
+				jQuery.ajax({
+					url: ajaxurl,
+					data: {action: 'ap_taxo_rename'},
+					context:this,
+					success: function(data){
+						jQuery(this).closest('.error').remove();
+						location.reload();
+					}
+				});
+				return false;
 			});
-			return false;
-		});
-	},
-	editPoints:function(){
-		jQuery('.wp-admin').delegate('[data-action="ap-edit-reputation"]', 'click', function(e){
-			e.preventDefault();
-			var id = jQuery(this).attr('href');
-			jQuery.ajax({
-				type: 'POST',
-				url: ajaxurl,
-				data: {
-					action: 'ap_edit_reputation',
-					id: id
-				},
-				context:this,
-				dataType:'json',
-				success: function(data){
-					if(data['status']){
+		},
+		editPoints:function(){
+			jQuery('.wp-admin').delegate('[data-action="ap-edit-reputation"]', 'click', function(e){
+				e.preventDefault();
+				var id = jQuery(this).attr('href');
+				jQuery.ajax({
+					type: 'POST',
+					url: ajaxurl,
+					data: {
+						action: 'ap_edit_reputation',
+						id: id
+					},
+					context:this,
+					dataType:'json',
+					success: function(data){
+						if(data['status']){
+							jQuery('#ap-reputation-edit').remove();
+							jQuery('#anspress-reputation-table').hide();
+							jQuery('#anspress-reputation-table').after(data['html']);
+						}
+					}
+				});
+			});
+		},
+		savePoints:function(){
+			jQuery('.wp-admin').delegate('[data-action="ap-save-reputation"]', 'submit', function(e){
+				e.preventDefault();
+				jQuery('.button-primary', this).attr('disabled', 'disabled');
+				var id = jQuery(this).attr('href');
+				jQuery.ajax({
+					type: 'POST',
+					url: ajaxurl,
+					cache: false,
+					data:  jQuery(this).serialize({ checkboxesAsBools: true }),
+					context:this,
+					dataType:'json',
+					success: function(data){
+						if(data['status']){
+							jQuery('.wrap').empty().html(data['html']);
+						}
+					}
+				});
+
+				return false;
+			});
+		},
+		newPointForm:function(){
+			jQuery('.wp-admin').delegate('[data-button="ap-new-reputation"]', 'click', function(e){
+				e.preventDefault();
+				jQuery.ajax({
+					type: 'POST',
+					url: ajaxurl,
+					data:  {
+						action: 'ap_new_reputation_form'
+					},
+					context:this,
+					dataType:'json',
+					success: function(data){
 						jQuery('#ap-reputation-edit').remove();
 						jQuery('#anspress-reputation-table').hide();
 						jQuery('#anspress-reputation-table').after(data['html']);
 					}
-				}
+				});
+
+				return false;
 			});
-		});
-	},
-	savePoints:function(){
-		jQuery('.wp-admin').delegate('[data-action="ap-save-reputation"]', 'submit', function(e){
-			e.preventDefault();
-			jQuery('.button-primary', this).attr('disabled', 'disabled');
-			var id = jQuery(this).attr('href');
-			jQuery.ajax({
-				type: 'POST',
-				url: ajaxurl,
-				cache: false,
-				data:  jQuery(this).serialize({ checkboxesAsBools: true }),
-				context:this,
-				dataType:'json',
-				success: function(data){
-					if(data['status']){
-						jQuery('.wrap').empty().html(data['html']);
+		},
+		deletePoint:function(){
+			jQuery('.wp-admin').delegate('[data-button="ap-delete-reputation"]', 'click', function(e){
+				e.preventDefault();
+				var id = jQuery(this).attr('href');
+				var args = jQuery(this).data('args');
+				jQuery.ajax({
+					type: 'POST',
+					url: ajaxurl,
+					data:  {
+						action: 'ap_delete_reputation',
+						args: args
+					},
+					context:this,
+					dataType:'json',
+					success: function(data){
+						jQuery(this).closest('tr').slideUp(200);
 					}
-				}
+				});
+
+				return false;
+			});
+		},
+		badges:function(){
+			jQuery('.wp-admin').delegate('[data-action="ap-edit-badge"]', 'click', function(e){
+				e.preventDefault();
+				var id = jQuery(this).attr('href');
+				jQuery.ajax({
+					type: 'POST',
+					url: ajaxurl,
+					data: {
+						action: 'ap_edit_badges',
+						id: id
+					},
+					context:this,
+					dataType:'json',
+					success: function(data){
+						if(data['status']){
+							jQuery('#ap-badge-edit').remove();
+							jQuery('#anspress-badge-table').hide();
+							jQuery('#anspress-badge-table').after(data['html']);
+						}
+					}
+				});
 			});
 
-			return false;
-		});
-	},
-	newPointForm:function(){
-		jQuery('.wp-admin').delegate('[data-button="ap-new-reputation"]', 'click', function(e){
-			e.preventDefault();
-			jQuery.ajax({
-				type: 'POST',
-				url: ajaxurl,
-				data:  {
-					action: 'ap_new_reputation_form'
-				},
-				context:this,
-				dataType:'json',
-				success: function(data){
-					jQuery('#ap-reputation-edit').remove();
-					jQuery('#anspress-reputation-table').hide();
-					jQuery('#anspress-reputation-table').after(data['html']);
-				}
-			});
+			jQuery('.wp-admin').delegate('[data-action="ap-save-badge"]', 'submit', function(e){
+				e.preventDefault();
+				jQuery('.button-primary', this).attr('disabled', 'disabled');
+				var id = jQuery(this).attr('href');
+				jQuery.ajax({
+					type: 'POST',
+					url: ajaxurl,
+					data:  jQuery(this).serialize({ checkboxesAsBools: true }),
+					context:this,
+					dataType:'json',
+					success: function(data){
+						if(data['status']){
+							jQuery('.wrap').empty().html(data['html']);
+						}
+					}
+				});
 
-			return false;
-		});
-	},
-	deletePoint:function(){
-		jQuery('.wp-admin').delegate('[data-button="ap-delete-reputation"]', 'click', function(e){
-			e.preventDefault();
-			var id = jQuery(this).attr('href');
-			var args = jQuery(this).data('args');
-			jQuery.ajax({
-				type: 'POST',
-				url: ajaxurl,
-				data:  {
-					action: 'ap_delete_reputation',
-					args: args
-				},
-				context:this,
-				dataType:'json',
-				success: function(data){
-					jQuery(this).closest('tr').slideUp(200);
-				}
+				return false;
 			});
-
-			return false;
-		});
-	},
-	badges:function(){
-		jQuery('.wp-admin').delegate('[data-action="ap-edit-badge"]', 'click', function(e){
-			e.preventDefault();
-			var id = jQuery(this).attr('href');
-			jQuery.ajax({
-				type: 'POST',
-				url: ajaxurl,
-				data: {
-					action: 'ap_edit_badges',
-					id: id
-				},
-				context:this,
-				dataType:'json',
-				success: function(data){
-					if(data['status']){
+			jQuery('.wp-admin').delegate('[data-button="ap-new-badge"]', 'click', function(e){
+				e.preventDefault();
+				jQuery.ajax({
+					type: 'POST',
+					url: ajaxurl,
+					data:  {
+						action: 'ap_new_badge_form'
+					},
+					context:this,
+					dataType:'json',
+					success: function(data){
 						jQuery('#ap-badge-edit').remove();
 						jQuery('#anspress-badge-table').hide();
 						jQuery('#anspress-badge-table').after(data['html']);
 					}
-				}
-			});
-		});
+				});
 
-		jQuery('.wp-admin').delegate('[data-action="ap-save-badge"]', 'submit', function(e){
-			e.preventDefault();
-			jQuery('.button-primary', this).attr('disabled', 'disabled');
-			var id = jQuery(this).attr('href');
-			jQuery.ajax({
-				type: 'POST',
-				url: ajaxurl,
-				data:  jQuery(this).serialize({ checkboxesAsBools: true }),
-				context:this,
-				dataType:'json',
-				success: function(data){
-					if(data['status']){
-						jQuery('.wrap').empty().html(data['html']);
+				return false;
+			});
+			jQuery('.wp-admin').delegate('[data-button="ap-delete-badge"]', 'click', function(e){
+				e.preventDefault();
+				var id = jQuery(this).attr('href');
+				var args = jQuery(this).data('args');
+				jQuery.ajax({
+					type: 'POST',
+					url: ajaxurl,
+					data:  {
+						action: 'ap_delete_badge',
+						args: args
+					},
+					context:this,
+					dataType:'json',
+					success: function(data){
+						jQuery(this).closest('tr').slideUp(200);
 					}
-				}
+				});
+
+				return false;
 			});
+		},
 
-			return false;
-		});
-		jQuery('.wp-admin').delegate('[data-button="ap-new-badge"]', 'click', function(e){
-			e.preventDefault();
-			jQuery.ajax({
-				type: 'POST',
-				url: ajaxurl,
-				data:  {
-					action: 'ap_new_badge_form'
-				},
-				context:this,
-				dataType:'json',
-				success: function(data){
-					jQuery('#ap-badge-edit').remove();
-					jQuery('#anspress-badge-table').hide();
-					jQuery('#anspress-badge-table').after(data['html']);
-				}
+
+		deleteFlag : function(){
+			jQuery('[data-action="ap-delete-flag"]').click(function(e){
+				e.preventDefault();
+				jQuery.ajax({
+					type: 'POST',
+					url: ajaxurl,
+					data:  jQuery(this).attr('href'),
+					context:this,
+					success: function(data){
+						jQuery(this).closest('.flag-item').remove();
+					}
+				});
 			});
+		},
 
-			return false;
-		});
-		jQuery('.wp-admin').delegate('[data-button="ap-delete-badge"]', 'click', function(e){
-			e.preventDefault();
-			var id = jQuery(this).attr('href');
-			var args = jQuery(this).data('args');
-			jQuery.ajax({
-				type: 'POST',
-				url: ajaxurl,
-				data:  {
-					action: 'ap_delete_badge',
-					args: args
-				},
-				context:this,
-				dataType:'json',
-				success: function(data){
-					jQuery(this).closest('tr').slideUp(200);
-				}
-			});
+		ajaxBtn: function(){
+			$('.ap-ajax-btn').on('click', function(e) {
+	            e.preventDefault();
+	            var q = $(this).apAjaxQueryString();
 
-			return false;
-		});
-	},
+	            $.ajax({
+	            	url: ajaxurl,
+	            	data: q,
+	            	context: this,
+	            	type: 'POST',
+	            	success: function(data){
+						if( typeof $(this).data('cb') !== 'undefined' ){
+		                    var cb = $(this).data("cb");                       
+		                    if( typeof APjs.admin[cb] === 'function' ){
+		                        APjs.admin[cb](data, this);
+		                    }
+		                }
+	            	}
+	            });
+	            
+	        });
+		},
+		afterFlagClear : function(data, elm){
+			$(elm).closest('tr').find('.column-flag .flag-count').text('0');
+			$(elm).closest('tr').find('.column-flag .flag-count').removeClass('flagged');
+			$(elm).remove();
+		}
 
-
-	deleteFlag : function(){
-		jQuery('[data-action="ap-delete-flag"]').click(function(e){
-			e.preventDefault();
-			jQuery.ajax({
-				type: 'POST',
-				url: ajaxurl,
-				data:  jQuery(this).attr('href'),
-				context:this,
-				success: function(data){
-					jQuery(this).closest('.flag-item').remove();
-				}
-			});
-		});
 	}
-}
+
+})(jQuery);
 
 function ap_option_flag_note(){
 	jQuery('body').delegate('[data-action="ap_add_field"]', 'click', function(){

@@ -29,7 +29,7 @@ class AnsPress_PostTypes
 		add_filter( 'manage_edit-question_columns', array( $this, 'cpt_question_columns' ) );
 		add_action( 'manage_posts_custom_column', array( $this, 'custom_columns_value' ) );
 		add_filter( 'manage_edit-answer_columns', array( $this, 'cpt_answer_columns' ) );
-		add_action( 'manage_answer_posts_custom_column', array( $this, 'answer_row_actions' ), 10, 2 );
+		
 		add_filter( 'manage_edit-question_sortable_columns', array( $this, 'admin_column_sort_flag' ) );
 		add_filter( 'manage_edit-answer_sortable_columns', array( $this, 'admin_column_sort_flag' ) );
 		add_action( 'pre_get_posts', array( $this, 'admin_column_sort_flag_by' ) );
@@ -362,61 +362,6 @@ class AnsPress_PostTypes
 		return $columns;
 	}
 
-	public function answer_row_actions($column, $post_id) {
-
-		global $post, $mode;
-
-		if ( 'answer_content' != $column ) {
-			return; }
-
-		$question = get_post( $post->post_parent );
-		echo '<a href="'.get_permalink( $post->post_parent ).'" class="row-title">'.$question->post_title.'</a>';
-
-		$content = get_the_excerpt();
-		// get the first 80 words from the content and added to the $abstract variable
-		preg_match( '/^([^.!?\s]*[\.!?\s]+){0,40}/', strip_tags( $content ), $abstract );
-		// pregmatch will return an array and the first 80 chars will be in the first element
-		echo $abstract[0] . '...';
-
-		// First set up some variables
-		$actions          = array();
-		$post_type_object = get_post_type_object( $post->post_type );
-		$can_edit_post    = current_user_can( $post_type_object->cap->edit_post, $post->ID );
-
-		// Actions to delete/trash
-		if ( current_user_can( $post_type_object->cap->delete_post, $post->ID ) ) {
-			if ( 'trash' == $post->post_status ) {
-				$_wpnonce           = wp_create_nonce( 'untrash-post_' . $post_id );
-				$url                = admin_url( 'post.php?post=' . $post_id . '&action=untrash&_wpnonce=' . $_wpnonce );
-				$actions['untrash'] = "<a title='" . esc_attr( __( 'Restore this item from the Trash', 'anspress-question-answer' ) ) . "' href='" . $url . "'>" . __( 'Restore', 'anspress-question-answer' ) . '</a>';
-
-			} elseif ( EMPTY_TRASH_DAYS ) {
-				$actions['trash'] = "<a class='submitdelete' title='" . esc_attr( __( 'Move this item to the Trash', 'anspress-question-answer' ) ) . "' href='" . get_delete_post_link( $post->ID ) . "'>" . __( 'Trash', 'anspress-question-answer' ) . '</a>';
-			}
-			if ( 'trash' == $post->post_status || ! EMPTY_TRASH_DAYS ) {
-				$actions['delete'] = "<a class='submitdelete' title='" . esc_attr( __( 'Delete this item permanently', 'anspress-question-answer' ) ) . "' href='" . get_delete_post_link( $post->ID, '', true ) . "'>" . __( 'Delete Permanently', 'anspress-question-answer' ) . '</a>'; }
-		}
-		if ( $can_edit_post ) {
-			$actions['edit'] = '<a href="' . get_edit_post_link( $post->ID, '', true ) . '" title="' . esc_attr( sprintf( __( 'Preview &#8220;%s&#8221;', 'anspress-question-answer' ),$post->title ) ) . '" rel="permalink">' . __( 'Edit', 'anspress-question-answer' ) . '</a>'; }
-
-		// Actions to view/preview
-		if ( in_array($post->post_status, array(
-			'pending',
-			'draft',
-			'future',
-		)) ) {
-			if ( $can_edit_post ) {
-				$actions['view'] = '<a href="' . esc_url( add_query_arg( 'preview', 'true', get_permalink( $post->ID ) ) ) . '" title="' . esc_attr( sprintf( __( 'Preview &#8220;%s&#8221;', 'anspress-question-answer' ),$post->title ) ) . '" rel="permalink">' . __( 'Preview', 'anspress-question-answer' ) . '</a>'; }
-		} elseif ( 'trash' != $post->post_status ) {
-			$actions['view'] = '<a href="' . get_permalink( $post->ID ) . '" title="' . esc_attr( __( 'View &#8220;%s&#8221; question', 'anspress-question-answer' ) ) . '" rel="permalink">' . __( 'View', 'anspress-question-answer' ) . '</a>';
-		}
-
-		// ***** END  -- Our actions  *******//
-		// Echo the 'actions' HTML, let WP_List_Table do the hard work
-		$WP_List_Table = new WP_List_Table();
-		echo $WP_List_Table->row_actions( $actions );
-	}
-
 	public function admin_column_sort_flag($columns) {
 
 		$columns['flag'] = 'flag';
@@ -426,7 +371,8 @@ class AnsPress_PostTypes
 	public function admin_column_sort_flag_by($query) {
 
 		if ( ! is_admin() ) {
-			return; }
+			return;
+		}
 
 		$orderby = $query->get( 'orderby' );
 
