@@ -1,10 +1,13 @@
 <?php
 
-// Exit if accessed directly
-if ( ! defined( 'ABSPATH' ) ) { exit; }
+// Exit if accessed directly.
+if ( ! defined( 'ABSPATH' ) ) {
+	die();
+}
 
 /**
- * The Class.
+ * Meta box class.
+ * Registers meta box for admin post edit screen.
  */
 class AP_Question_Meta_Box {
 	/**
@@ -80,11 +83,11 @@ class AP_Question_Meta_Box {
 		$vote_count = get_post_meta( $post->ID, ANSPRESS_VOTE_META, true );
 		?>
             <ul class="ap-meta-list">
-            	<?php if( 'answer' == $post->post_type ): ?>
+            	<?php if ( 'answer' == $post->post_type ) :   ?>
 					<li>
 						<i class="apicon-answer"></i>
 						<?php printf( _n( '<strong>1</strong> Answer', '<strong>%d</strong> Answers', $ans_count, 'anspress-question-answer' ), $ans_count ); ?>
-						<a href="#" class="add-answer"><?php _e('Add an answer', 'anspress-question-answer' ); ?></a>
+						<a href="#" data-query="ap_admin_answer_from::<?php echo wp_create_nonce( 'admin_answer_'.$post->ID ) .'::'.$post->ID; ?>" class="ap-ajax-btn add-answer" data-cb="loadAdminAnswerForm"><?php _e('Add an answer', 'anspress-question-answer' ); ?></a>
 					</li>
 				<?php endif; ?>				
 				<li>

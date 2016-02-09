@@ -847,15 +847,12 @@ class AnsPress_Ajax
 				update_post_meta( $post_id, ANSPRESS_VOTE_META, $counts['net_vote'] );
 
 			    do_action( 'ap_undo_vote', $post_id, $counts );
-
-			    $action = 'undo';
-			    $count = $counts['net_vote'];
 			    do_action( 'ap_undo_'.$type, $post_id, $counts );
 
 			   	$this->send( array(
-			   		'action' 	=> $action,
+			   		'action' 	=> 'undo',
 			   		'type' 		=> $type,
-			   		'count' 	=> $count,
+			   		'count' 	=> $counts['net_vote'],
 			   		'message' 	=> 'undo_vote',
 			   	) );
 			} else {
@@ -865,14 +862,13 @@ class AnsPress_Ajax
 	        ap_add_vote( $userid, $type, $post_id, $post->post_author );
 
 	        $counts = ap_post_votes( $post_id );
+	        var_dump($counts);
 
 			// Update post meta.
 			update_post_meta( $post_id, ANSPRESS_VOTE_META, $counts['net_vote'] );
 	        do_action( 'ap_'.$type, $post_id, $counts );
 
-	        $action = 'voted';
-	        $count = $counts['net_vote'];
-	       	$this->send( array( 'action' => $action, 'type' => $type, 'count' => $count, 'message' => 'voted' ) );
+	       	$this->send( array( 'action' => 'voted', 'type' => $type, 'count' => $counts['net_vote'], 'message' => 'voted' ) );
 	    }
 	}
 

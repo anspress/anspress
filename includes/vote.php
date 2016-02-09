@@ -27,7 +27,7 @@ function ap_add_vote($current_userid, $type, $actionid, $receiving_userid) {
 }
 
 /**
- * @param string $type
+ * @param string  $type
  * @param integer $actionid
  */
 function ap_remove_vote($type, $userid, $actionid, $receiving_userid) {
@@ -49,8 +49,8 @@ function ap_remove_vote($type, $userid, $actionid, $receiving_userid) {
  *
  * @param bool|int $userid           User ID of user casting the vote
  * @param string   $type             Type of vote, "vote_up" or "vote_down"
- * @param boolean $actionid         Post ID
- * @param integer $receiving_userid User ID of user who received the vote
+ * @param boolean  $actionid         Post ID
+ * @param integer  $receiving_userid User ID of user who received the vote
  *
  * @return int
  */
@@ -103,30 +103,47 @@ function ap_net_vote($post = false) {
 	return $net ? $net : 0;
 }
 
+/**
+ * Count total vote count of a post.
+ * @param  boolean $post_id Post id.
+ * @return integer
+ */
 function ap_net_vote_meta($post_id = false) {
 
 	if ( ! $post_id ) {
 		$post_id = get_the_ID();
 	}
+
 	$net = get_post_meta( $post_id, ANSPRESS_VOTE_META, true );
 
 	return $net ? $net : 0;
 }
 
 /**
- * @param int $postid
+ * Count post vote count meta.
+ * @param  integer $post_id Post id.
+ * @return integer
  */
-function ap_post_votes($postid) {
+function ap_post_votes($post_id) {
+	$counts = ap_meta_total_count( array('vote_up', 'vote_down'), $post_id, false, 'apmeta_type' );
 
+	$counts_type = array('vote_up' => 0, 'vote_down' => 0);
+
+	if( $counts ){
+		foreach( $counts as $c ){
+			$counts_type[$c->type] = (int)$c->count;
+		}
+	}
+	
 	$vote = array();
-	// voted up count
-	$vote['voted_up'] = ap_meta_total_count( 'vote_up', $postid );
+	// Voted up count.
+	$vote['voted_up'] = $counts_type['vote_up'];
 
-	// voted down count
-	$vote['voted_down'] = ap_meta_total_count( 'vote_down', $postid );
+	// Voted down count.
+	$vote['voted_down'] = $counts_type['vote_down'];
 
-	// net vote
-	$vote['net_vote'] = $vote['voted_up'] - $vote['voted_down'];
+	// Net vote.
+	$vote['net_vote'] = $counts_type['vote_up'] - $counts_type['vote_down'];
 
 	return $vote;
 }

@@ -302,7 +302,14 @@ class AnsPress_Options_Page
 				'type' => 'text',
 				'value' => $settings['users_page_title'],
 				'show_desc_tip' => false,
-			),
+			),array(
+				'name' => 'anspress_opt[search_page_title]',
+				'label' => __( 'Search page title', 'anspress-question-answer' ),
+				'desc' => __( 'Title of the search page', 'anspress-question-answer' ),
+				'type' => 'text',
+				'value' => $settings['search_page_title'],
+				'show_desc_tip' => false,
+			)
 		));
 
 		// Register question settings
@@ -653,12 +660,6 @@ class AnsPress_Options_Page
 				'value' => $settings['check_bad_words'],
 				'show_desc_tip' => false,
 			),
-
-			array(
-				'name' => '__sep',
-				'type' => 'custom',
-				'html' => '<span class="ap-form-separator">' . __( 'reCaptacha', 'anspress-question-answer' ) . '</span>',
-			) ,
 			array(
 				'name' => '__sep',
 				'type' => 'custom',
@@ -672,6 +673,11 @@ class AnsPress_Options_Page
 				'value' => $settings['akismet_validation'],
 				'show_desc_tip' => false,
 			),
+			array(
+				'name' => '__sep',
+				'type' => 'custom',
+				'html' => '<span class="ap-form-separator">' . __( 'reCaptacha', 'anspress-question-answer' ) . '</span>',
+			) ,
 			array(
 				'name' => 'anspress_opt[enable_recaptcha]',
 				'label' => __( 'Enable reCaptcha', 'anspress-question-answer' ),

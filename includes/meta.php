@@ -160,41 +160,84 @@ function ap_get_meta($where) {
 	return $row;
 }
 
-/* get the total count by type and actionid */
 /**
- * @param string $type
+ * Get the total count by type and actionid.
+ * @param  array|string    $type     Array or string meta type.
+ * @param  boolean|integer $actionid Action id.
+ * @param  boolean|integer $userid   User id.
+ * @param  boolean|string  $group    Group by column name.
+ * @param  boolean|string  $value    Value.
+ * @return integer
  */
 function ap_meta_total_count($type, $actionid=false, $userid = false, $group = false, $value = false) {
 	global $wpdb;
+
+	$count_col = 'count(*)';
+
+	// Allow type value to be array.
+	if ( is_array( $type ) && count($type ) > 0 ) {
+		$type = array_map('sanitize_text_field', $type );
+		$type_q = 'apmeta_type IN("'. implode('","', $type ) .'")';
+
+		// If vote then count value numbers. So that if user has voted multiple time
+		// Then we can get correct counts.
+		if ( in_array('vote_up', $type ) || in_array('vote_down', $type ) ) {
+			$count_col = 'SUM(apmeta_value)';
+		}
+	} else {
+		$type = sanitize_title_for_query( $type );
+		$type_q = 'apmeta_type = "'.$type.'"';
+
+		// If vote then count value numbers. So that if user has voted multiple time
+		// Then we can get correct counts.
+		if ( 'vote_up' == $type || 'vote_down' == $type ) {
+			$count_col = 'SUM(apmeta_value)';
+		}
+	}
+
+	$actionid = (int) $actionid;
+	$userid = (int) $userid;
+	$group = sanitize_title_for_query( $group );
+	$value = sanitize_title_for_query( $value );
 
 	$where_query = '';
 	$group_query = '';
 
 	if ( $actionid ) {
-		$where_query .= "apmeta_actionid = $actionid"; }
+		$where_query .= "apmeta_actionid = $actionid";
+	}
 
 	if ( $userid ) {
-		$where_query .= " apmeta_userid = $userid"; }
+		$where_query .= " apmeta_userid = $userid";
+	}
 
+	$type_col = '';
 	if ( $group ) {
-		$group_query .= 'GROUP BY '.$group; }
+		$group_query .= 'GROUP BY '.$group;
+		$type_col = ', apmeta_type as type';
+	}
 
 	if ( $value ) {
-		$where_query .= " apmeta_value = '$value'"; }
+		$where_query .= " apmeta_value = '$value'";
+	}
 
-	$query = 'SELECT IFNULL(count(*), 0) FROM ' .$wpdb->prefix ."ap_meta where apmeta_type = '$type' and $where_query $group_query";
+	$query = "SELECT IFNULL($count_col, 0) as count$type_col FROM {$wpdb->prefix}ap_meta where $type_q and $where_query $group_query";
 
 	$key = md5( $query );
 
 	$cache = wp_cache_get( $key, 'count' );
 
 	if ( $cache !== false ) {
-		return $cache; }
+		return $cache;
+	}
 
-	$count = $wpdb->get_var( $query );
+	if ( false === $group ) {
+		$count = $wpdb->get_var( $query );
+	} else {
+		$count = $wpdb->get_results( $query );
+	}
 
 	wp_cache_set( $key, $count, 'count' );
-
 	return $count;
 }
 
