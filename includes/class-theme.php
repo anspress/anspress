@@ -216,17 +216,25 @@ class AnsPress_Theme
 	 * Remove some unwanted things from wp_head
 	 */
 	public function remove_head_items($WP) {
-		global $wp_query;
+		
 		if ( is_anspress() ) {
+			remove_action( 'wp_init', 'init' );
 			remove_action( 'wp_head', 'rsd_link' );
 			remove_action( 'wp_head', 'wlwmanifest_link' );
 			remove_action( 'wp_head', 'adjacent_posts_rel_link_wp_head', 10, 0 );
 			remove_action( 'wp_head', 'rel_canonical' );
 			remove_action( 'wp_head', 'wp_shortlink_wp_head', 10, 0 );
 			remove_action( 'wp_head', 'feed_links_extra', 3 );
-			remove_action( 'wp_head', 'feed_links', 2 );
-			$wp_query->queried_object->post_title = ap_page_title();
+			remove_action( 'wp_head', 'feed_links', 2 );			
 		}
+	}
+
+	/**
+	 * Set post title in init hook
+	 */
+	public function init(){
+		global $wp_query;
+		$wp_query->queried_object->post_title = ap_page_title();
 	}
 
 	/**
