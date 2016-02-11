@@ -15,7 +15,7 @@
  *
  * @return integer
  */
-function ap_add_vote( $current_userid, $type, $actionid, $receiving_userid ) {
+function ap_add_vote( $current_userid, $type, $actionid, $receiving_userid, $count = 1 ) {
 	// Snaitize varaiables.
 	$current_userid = (int) $current_userid;
 	$type = sanitize_title_for_query( $type );
@@ -29,12 +29,16 @@ function ap_add_vote( $current_userid, $type, $actionid, $receiving_userid ) {
 
 	// If vote already exists by user then update count of vote.
 	if ( $vote ) {
-		return ap_update_meta( array( 'apmeta_param' => (int) $vote['apmeta_param'] + 1 ), $where );
+		$count = $vote['apmeta_param'] + $count;
+		$row = ap_update_meta( array( 'apmeta_param' => $count ), $where );
+		ap_clear_vote_count_cache( $actionid, $current_userid, $receiving_userid );
+		return $row;
 	}
 
-	$row = ap_add_meta( $current_userid, $type, $actionid, $receiving_userid, 1 );
+	$row = ap_add_meta( $current_userid, $type, $actionid, $receiving_userid, $count );
 
 	if ( $row !== false ) {
+		ap_clear_vote_count_cache( $actionid, $current_userid, $receiving_userid );
 		do_action( 'ap_vote_casted', $current_userid, $type, $actionid, $receiving_userid );
 	}
 
@@ -48,9 +52,10 @@ function ap_add_vote( $current_userid, $type, $actionid, $receiving_userid ) {
  * @param  integer $actionid          Post ID.
  * @param  integer $receiving_userid  User ID of user receiving the vote.
  * @return array|false
+ * @since  2.5
  */
-function ap_add_post_vote( $current_userid, $type, $actionid, $receiving_userid ) {
-	$row = ap_add_vote( $current_userid, $type, $actionid, $receiving_userid );
+function ap_add_post_vote( $current_userid, $type, $actionid, $receiving_userid, $count = 1 ) {
+	$row = ap_add_vote( $current_userid, $type, $actionid, $receiving_userid, $count );
 
 	if ( false !== $row ) {
 		$counts = ap_post_votes( $actionid );
@@ -63,18 +68,45 @@ function ap_add_post_vote( $current_userid, $type, $actionid, $receiving_userid 
 }
 
 /**
- * @param string  $type
- * @param integer $actionid
+ * Remove vote meta from DB.
  */
-function ap_remove_vote($type, $userid, $actionid, $receiving_userid) {
+function ap_remove_vote( $type, $current_userid, $actionid, $receiving_userid ) {
+	// Snaitize varaiables.
+	$current_userid = (int) $current_userid;
+	$type = sanitize_title_for_query( $type );
+	$actionid = (int) $actionid;
+	$receiving_userid = (int) $receiving_userid;
 
-	$row = ap_delete_meta( array( 'apmeta_type' => $type, 'apmeta_userid' => $userid, 'apmeta_actionid' => $actionid ) );
+	$row = ap_delete_meta( array( 'apmeta_type' => $type, 'apmeta_userid' => $current_userid, 'apmeta_actionid' => $actionid ) );
 
 	if ( $row !== false ) {
-		do_action( 'ap_vote_removed', $userid, $type, $actionid, $receiving_userid );
+		ap_clear_vote_count_cache( $type, $actionid, $current_userid, 'type', $receiving_userid );
+		do_action( 'ap_vote_removed', $current_userid, $type, $actionid, $receiving_userid );
 	}
 
 	return $row;
+}
+
+/**
+ * Remove vote for post and also update post meta.
+ * @param  integer $current_userid    User ID of user casting the vote.
+ * @param  string  $type              Type of vote, "vote_up" or "vote_down".
+ * @param  integer $actionid          Post ID.
+ * @param  integer $receiving_userid  User ID of user receiving the vote.
+ * @return array|false
+ * @since  2.5
+ */
+function ap_remove_post_vote( $type, $current_userid, $actionid, $receiving_userid ) {
+	$row = ap_remove_vote($type, $current_userid, $actionid, $receiving_userid );
+
+	if ( false !== $row ) {
+		$counts = ap_post_votes( $actionid );
+		update_post_meta( $actionid, ANSPRESS_VOTE_META, $counts['net_vote'] );
+
+		return $counts;
+	}
+
+	return false;
 }
 
 
@@ -165,7 +197,6 @@ function ap_post_votes($post_id) {
 	$counts = ap_meta_total_count( array( 'vote_up', 'vote_down' ), $post_id, false, 'apmeta_type' );
 
 	$counts_type = array( 'vote_up' => 0, 'vote_down' => 0 );
-
 	if ( $counts ) {
 		foreach ( $counts as $c ) {
 			$counts_type[$c->type] = (int) $c->count;
@@ -329,4 +360,31 @@ function ap_close_vote_html() {
         </a>
 	<?php
 
+}
+
+/**
+ * Clear vote count cache.
+ * @param  string|integer $actionid         Action id.
+ * @param  string|integer $current_userid   Current user id.
+ * @param  string|integer $receiving_userid Receiving user id.
+ * @return string
+ */
+function ap_clear_vote_count_cache( $actionid = '', $current_userid = '', $receiving_userid = '' ) {
+
+	$cache_key = 'vote_up_vote_down';
+
+	if ( '' != $actionid ) {
+		$cache_key .= '_'.$actionid;
+	}
+
+	if ( '' != $current_userid ) {
+		$cache_key .= '_'. (int) $current_userid;
+	}
+
+	if ( '' != $receiving_userid ) {
+		$cache_key .= '_'. (int) $receiving_userid;
+	}
+	
+	$cache_key .= '_apmeta_type';
+	wp_cache_delete( $cache_key , 'ap_meta_count' );
 }

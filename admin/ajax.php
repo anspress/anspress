@@ -35,7 +35,7 @@ class AnsPress_Admin_Ajax
 		$ap->add_action( 'wp_ajax_ap_taxo_rename', $this, 'ap_taxo_rename' );
 		$ap->add_action( 'wp_ajax_ap_delete_flag', $this, 'ap_delete_flag' );
 		$ap->add_action( 'ap_ajax_ap_clear_flag', $this, 'clear_flag' );
-		$ap->add_action( 'ap_ajax_ap_admin_vote_up', $this, 'ap_admin_vote_up' );
+		$ap->add_action( 'ap_ajax_ap_admin_vote', $this, 'ap_admin_vote' );
 	}
 
 	/**
@@ -48,40 +48,40 @@ class AnsPress_Admin_Ajax
 			$reputation = ap_reputation_by_id( $id );
 
 			$html = '
-				<div id="ap-reputation-edit">
-					<form method="POST" data-action="ap-save-reputation">
-						<table class="form-table">
-							<tr valign="top">
+                <div id="ap-reputation-edit">
+                    <form method="POST" data-action="ap-save-reputation">
+                        <table class="form-table">
+                            <tr valign="top">
 								<th scope="row"><label for="title">'. __( 'Title', 'anspress-question-answer' ).'</label></th>
-								<td>
+                                <td>
 									<input id="title" type="text" name="title" value="'.$reputation['title'].'" />
-								</td>
-							</tr>
-							<tr valign="top">
+                                </td>
+                            </tr>
+                            <tr valign="top">
 								<th scope="row"><label for="description">'. __( 'Description', 'anspress-question-answer' ).'</label></th>
-								<td>
+                                <td>
 									<textarea cols="50" id="description" name="description">'.$reputation['description'].'</textarea>
-								</td>
-							</tr>
-							<tr valign="top">
+                                </td>
+                            </tr>
+                            <tr valign="top">
 								<th scope="row"><label for="reputation">'. __( 'Points', 'anspress-question-answer' ).'</label></th>
-								<td>
+                                <td>
 									<input id="reputation" type="text" name="reputation" value="'.$reputation['reputation'].'" />
-								</td>
-							</tr>
-							<tr valign="top">
+                                </td>
+                            </tr>
+                            <tr valign="top">
 								<th scope="row"><label for="event">'. __( 'Event', 'anspress-question-answer' ).'</label></th>
-								<td>
+                                <td>
 									<input type="text" name="event" value="'.$reputation['event'].'" />
-								</td>
-							</tr>
-						</table>
+                                </td>
+                            </tr>
+                        </table>
 						<input class="button-primary" type="submit" value="'.__( 'Save Point', 'anspress-question-answer' ).'">
 						<input type="hidden" name="id" value="'.$reputation['id'].'">
-						<input type="hidden" name="action" value="ap_save_reputation">
+                        <input type="hidden" name="action" value="ap_save_reputation">
 						<input type="hidden" name="nonce" value="'.wp_create_nonce( 'ap_save_reputation' ).'">
-					</form>
-				</div>
+                    </form>
+                </div>
 			';
 
 			$result = array( 'status' => true, 'html' => $html );
@@ -133,39 +133,39 @@ class AnsPress_Admin_Ajax
 
 		if ( current_user_can( 'manage_options' ) ) {
 			$html = '
-				<div id="ap-reputation-edit">
-					<form method="POST" data-action="ap-save-reputation">
-						<table class="form-table">
-							<tr valign="top">
+                <div id="ap-reputation-edit">
+                    <form method="POST" data-action="ap-save-reputation">
+                        <table class="form-table">
+                            <tr valign="top">
 								<th scope="row"><label for="title">'. __( 'Title', 'anspress-question-answer' ).'</label></th>
-								<td>
-									<input id="title" type="text" name="title" value="" />
-								</td>
-							</tr>
-							<tr valign="top">
+                                <td>
+                                    <input id="title" type="text" name="title" value="" />
+                                </td>
+                            </tr>
+                            <tr valign="top">
 								<th scope="row"><label for="description">'. __( 'Description', 'anspress-question-answer' ).'</label></th>
-								<td>
-									<textarea cols="50" id="description" name="description"></textarea>
-								</td>
-							</tr>
-							<tr valign="top">
+                                <td>
+                                    <textarea cols="50" id="description" name="description"></textarea>
+                                </td>
+                            </tr>
+                            <tr valign="top">
 								<th scope="row"><label for="reputation">'. __( 'Points', 'anspress-question-answer' ).'</label></th>
-								<td>
-									<input id="reputation" type="text" name="reputation" value="" />
-								</td>
-							</tr>
-							<tr valign="top">
+                                <td>
+                                    <input id="reputation" type="text" name="reputation" value="" />
+                                </td>
+                            </tr>
+                            <tr valign="top">
 								<th scope="row"><label for="event">'. __( 'Event', 'anspress-question-answer' ).'</label></th>
-								<td>
-									<input type="text" name="event" value="" />
-								</td>
-							</tr>
-						</table>
+                                <td>
+                                    <input type="text" name="event" value="" />
+                                </td>
+                            </tr>
+                        </table>
 						<input class="button-primary" type="submit" value="'.__( 'Save Point', 'anspress-question-answer' ).'">
-						<input type="hidden" name="action" value="ap_save_reputation">
+                        <input type="hidden" name="action" value="ap_save_reputation">
 						<input type="hidden" name="nonce" value="'.wp_create_nonce( 'ap_save_reputation' ).'">
-					</form>
-				</div>
+                    </form>
+                </div>
 			';
 
 			$result = array( 'status' => true, 'html' => $html );
@@ -236,16 +236,24 @@ class AnsPress_Admin_Ajax
 	}
 
 	/**
-	 * Handle ajax vote up in wp-admin post edit screen.
+	 * Handle ajax vote in wp-admin post edit screen.
+	 * Cast vote as anonymous use with ID 0, so that when this vote never get
+	 * rest if user vote.
 	 * @since 2.5
 	 */
-	public function ap_admin_vote_up() {
+	public function ap_admin_vote() {
 		$args = $_POST['args'];
-		
+
 		if ( current_user_can( 'manage_options' ) && wp_verify_nonce( $_POST['__nonce'], 'admin_vote' ) ) {
 			$post = get_post( $args[0] );
+
 			if ( $post ) {
-				$count = ap_add_post_vote( get_current_user_id(), 'vote_up', $post->ID, $post->post_author );
+				$counts = ap_post_votes( $post->ID );
+
+				$vote_type = $args[1] == 'up' ? 'vote_up' : 'vote_down';
+				$count = ( $args[1] == 'up' ? (1)  : ( -1 ) );
+
+				$count = ap_add_post_vote( 0, 'vote_up', $post->ID, 0, $count );
 				echo $count['net_vote'];
 			}
 		}

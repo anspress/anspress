@@ -22,7 +22,7 @@
 function ap_add_meta($userid=false, $type=null, $actionid =null, $value=null, $param = null, $date = false) {
 
 	// Get current user id if not set.
-	if ( ! $userid ) {
+	if ( false === $userid ) {
 		$userid = get_current_user_id();
 	}
 
@@ -148,6 +148,7 @@ function ap_get_meta($where) {
 			'apmeta_value',
 			'apmeta_param',
 			'apmeta_date',
+			'apmeta_type',
 			),
 		$where
 	);
@@ -177,6 +178,7 @@ function ap_get_meta($where) {
 	}
 
 	$row = $wpdb->get_row( $query, ARRAY_A );
+
 	wp_cache_set( $meta_key, $row, 'ap_meta' );
 
 	return $row;
@@ -196,10 +198,14 @@ function ap_meta_total_count($type, $actionid=false, $userid = false, $group = f
 
 	$count_col = 'count(*)';
 
+	$cache_key = '';
+
 	// Allow type value to be array.
 	if ( is_array( $type ) && count($type ) > 0 ) {
 		$type = array_map('sanitize_text_field', $type );
 		$type_q = 'apmeta_type IN("'. implode('","', $type ) .'")';
+
+		$cache_key = implode( '_', $type );
 
 		// If vote then count value numbers. So that if user has voted multiple time
 		// Then we can get correct counts.
@@ -209,6 +215,7 @@ function ap_meta_total_count($type, $actionid=false, $userid = false, $group = f
 	} else {
 		$type = sanitize_title_for_query( $type );
 		$type_q = 'apmeta_type = "'.$type.'"';
+		$cache_key = $type;
 
 		// If vote then count value numbers. So that if user has voted multiple time
 		// Then we can get correct counts.
@@ -226,28 +233,30 @@ function ap_meta_total_count($type, $actionid=false, $userid = false, $group = f
 	$group_query = '';
 
 	if ( $actionid ) {
-		$where_query .= "apmeta_actionid = $actionid";
+		$where_query .= "and apmeta_actionid = $actionid";
+		$cache_key .= '_'.$actionid;
 	}
 
 	if ( $userid ) {
-		$where_query .= " apmeta_userid = $userid";
+		$where_query .= " and apmeta_userid = $userid";
+		$cache_key .= '_'.$userid;
 	}
 
 	$type_col = '';
 	if ( $group ) {
 		$group_query .= 'GROUP BY '.$group;
 		$type_col = ', apmeta_type as type';
+		$cache_key .= '_'.$group;
 	}
 
 	if ( $value ) {
-		$where_query .= " apmeta_value = '$value'";
+		$where_query .= " and apmeta_value = '$value'";
+		$cache_key .= '_'.$value;
 	}
 
-	$query = "SELECT IFNULL($count_col, 0) as count$type_col FROM {$wpdb->prefix}ap_meta where $type_q and $where_query $group_query";
+	$query = "SELECT IFNULL($count_col, 0) as count$type_col FROM {$wpdb->prefix}ap_meta where $type_q $where_query $group_query";
 
-	$key = md5( $query );
-
-	$cache = wp_cache_get( $key, 'count' );
+	$cache = wp_cache_get( $cache_key, 'ap_meta_count' );
 
 	if ( $cache !== false ) {
 		return $cache;
@@ -259,7 +268,7 @@ function ap_meta_total_count($type, $actionid=false, $userid = false, $group = f
 		$count = $wpdb->get_results( $query );
 	}
 
-	wp_cache_set( $key, $count, 'count' );
+	wp_cache_set( $cache_key, $count, 'ap_meta_count' );
 	return $count;
 }
 

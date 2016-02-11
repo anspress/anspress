@@ -840,8 +840,7 @@ class AnsPress_Ajax
 	    if ( is_object( $is_voted ) && $is_voted->count > 0 ) {
 	        // If user already voted and click that again then reverse.
 			if ( $is_voted->type == $type ) {
-			    ap_remove_vote( $type, $userid, $post_id, $post->post_author );
-			    $counts = ap_post_votes( $post_id );
+			    $counts = ap_remove_post_vote( $type, $userid, $post_id, $post->post_author );
 
 				// Update post meta.
 				update_post_meta( $post_id, ANSPRESS_VOTE_META, $counts['net_vote'] );
