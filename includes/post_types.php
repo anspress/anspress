@@ -3,9 +3,9 @@
  * AnsPress post types
  *
  * @package   AnsPress
- * @author    Rahul Aryan <admin@rahularyan.com>
+ * @author    Rahul Aryan <support@anspress.io>
  * @license   GPL-2.0+
- * @link      http://rahularyan.com
+ * @link      https://anspress.io
  * @copyright 2014 Rahul Aryan
  */
 
@@ -29,7 +29,7 @@ class AnsPress_PostTypes
 		add_filter( 'manage_edit-question_columns', array( $this, 'cpt_question_columns' ) );
 		add_action( 'manage_posts_custom_column', array( $this, 'custom_columns_value' ) );
 		add_filter( 'manage_edit-answer_columns', array( $this, 'cpt_answer_columns' ) );
-		
+
 		add_filter( 'manage_edit-question_sortable_columns', array( $this, 'admin_column_sort_flag' ) );
 		add_filter( 'manage_edit-answer_sortable_columns', array( $this, 'admin_column_sort_flag' ) );
 		add_action( 'pre_get_posts', array( $this, 'admin_column_sort_flag_by' ) );

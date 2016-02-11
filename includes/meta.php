@@ -131,28 +131,50 @@ function ap_meta_key($where) {
 			return $meta_key;
 }
 
+/**
+ * Get AnsPress meta from DB.
+ * @param  array $where Array of where claues.
+ * @return array|false
+ */
 function ap_get_meta($where) {
 	global $wpdb;
+
+	// Remove non-required array items.
+	$where = ap_whitelist_array(
+		array(
+			'apmeta-id',
+			'apmeta_userid',
+			'apmeta_actionid',
+			'apmeta_value',
+			'apmeta_param',
+			'apmeta_date',
+			),
+		$where
+	);
+
+	$where = array_map('sanitize_text_field', $where );
 
 	$where_string = '';
 	$i = 1;
 	foreach ( $where as $k => $w ) {
-		$where_string .= $k .' = "'.$w.'" ';
+		$where_string .= $wpdb->prepare( "$k = '%s'", $w );
 
 		if ( count( $where ) != $i ) {
-			$where_string .= 'AND '; }
+			$where_string .= ' AND ';
+		}
 
 		$i++;
 	}
 
-	$query = 'SELECT * FROM '.$wpdb->prefix.'ap_meta WHERE ' .$where_string;
-
+	$query = "SELECT * FROM {$wpdb->prefix}ap_meta WHERE $where_string";
+	
 	$meta_key = md5( $query );
 
 	$cache = wp_cache_get( $meta_key, 'ap_meta' );
 
-	if ( $cache !== false ) {
-		return $cache; }
+	if ( false !== $cache ) {
+		return $cache;
+	}
 
 	$row = $wpdb->get_row( $query, ARRAY_A );
 	wp_cache_set( $meta_key, $row, 'ap_meta' );
@@ -182,7 +204,7 @@ function ap_meta_total_count($type, $actionid=false, $userid = false, $group = f
 		// If vote then count value numbers. So that if user has voted multiple time
 		// Then we can get correct counts.
 		if ( in_array('vote_up', $type ) || in_array('vote_down', $type ) ) {
-			$count_col = 'SUM(apmeta_value)';
+			$count_col = 'SUM(IFNULL(apmeta_param,1))';
 		}
 	} else {
 		$type = sanitize_title_for_query( $type );
@@ -191,7 +213,7 @@ function ap_meta_total_count($type, $actionid=false, $userid = false, $group = f
 		// If vote then count value numbers. So that if user has voted multiple time
 		// Then we can get correct counts.
 		if ( 'vote_up' == $type || 'vote_down' == $type ) {
-			$count_col = 'SUM(apmeta_value)';
+			$count_col = 'SUM(IFNULL(apmeta_param,1))';
 		}
 	}
 

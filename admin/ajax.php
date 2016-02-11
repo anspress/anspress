@@ -23,19 +23,19 @@ if ( ! defined( 'WPINC' ) ) {
  */
 class AnsPress_Admin_Ajax
 {
-	private $ap_admin;
+
 	/**
 	 * Initialize admin ajax
 	 */
-	public function __construct($ap_admin) {
-		$this->ap_admin = $ap_admin;
-		add_action( 'wp_ajax_ap_edit_reputation', array( $this, 'ap_edit_reputation' ) );
-		add_action( 'wp_ajax_ap_save_reputation', array( $this, 'ap_save_reputation' ) );
-		add_action( 'wp_ajax_ap_new_reputation_form', array( $this, 'ap_new_reputation_form' ) );
-		add_action( 'wp_ajax_ap_delete_reputation', array( $this, 'ap_delete_reputation' ) );
-		add_action( 'wp_ajax_ap_taxo_rename', array( $this, 'ap_taxo_rename' ) );
-		add_action( 'wp_ajax_ap_delete_flag', array( $this, 'ap_delete_flag' ) );
-		add_action( 'ap_ajax_ap_clear_flag', array( $this, 'clear_flag' ) );
+	public function __construct($ap) {
+		$ap->add_action( 'wp_ajax_ap_edit_reputation', $this, 'ap_edit_reputation' );
+		$ap->add_action( 'wp_ajax_ap_save_reputation', $this, 'ap_save_reputation' );
+		$ap->add_action( 'wp_ajax_ap_new_reputation_form', $this, 'ap_new_reputation_form' );
+		$ap->add_action( 'wp_ajax_ap_delete_reputation', $this, 'ap_delete_reputation' );
+		$ap->add_action( 'wp_ajax_ap_taxo_rename', $this, 'ap_taxo_rename' );
+		$ap->add_action( 'wp_ajax_ap_delete_flag', $this, 'ap_delete_flag' );
+		$ap->add_action( 'ap_ajax_ap_clear_flag', $this, 'clear_flag' );
+		$ap->add_action( 'ap_ajax_ap_admin_vote_up', $this, 'ap_admin_vote_up' );
 	}
 
 	/**
@@ -111,7 +111,7 @@ class AnsPress_Admin_Ajax
 				}
 
 				ob_start();
-				$this->ap_admin->display_reputation_page();
+				AnsPress_Admin::display_reputation_page();
 				$html = ob_get_clean();
 
 				$result = array(
@@ -231,6 +231,23 @@ class AnsPress_Admin_Ajax
 			ap_delete_all_post_flags( $args[0] );
 			delete_post_meta( $args[0], ANSPRESS_FLAG_META );
 			die( _e('0' ) );
+		}
+		die();
+	}
+
+	/**
+	 * Handle ajax vote up in wp-admin post edit screen.
+	 * @since 2.5
+	 */
+	public function ap_admin_vote_up() {
+		$args = $_POST['args'];
+		
+		if ( current_user_can( 'manage_options' ) && wp_verify_nonce( $_POST['__nonce'], 'admin_vote' ) ) {
+			$post = get_post( $args[0] );
+			if ( $post ) {
+				$count = ap_add_post_vote( get_current_user_id(), 'vote_up', $post->ID, $post->post_author );
+				echo $count['net_vote'];
+			}
 		}
 		die();
 	}

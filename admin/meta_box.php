@@ -83,7 +83,7 @@ class AP_Question_Meta_Box {
 		$vote_count = get_post_meta( $post->ID, ANSPRESS_VOTE_META, true );
 		?>
             <ul class="ap-meta-list">
-            	<?php if ( 'answer' == $post->post_type ) :   ?>
+            	<?php if ( 'answer' != $post->post_type ) :   ?>
 					<li>
 						<i class="apicon-answer"></i>
 						<?php printf( _n( '<strong>1</strong> Answer', '<strong>%d</strong> Answers', $ans_count, 'anspress-question-answer' ), $ans_count ); ?>
@@ -91,10 +91,11 @@ class AP_Question_Meta_Box {
 					</li>
 				<?php endif; ?>				
 				<li>
+					<?php $nonce = wp_create_nonce( 'admin_vote' ); ?>
 					<i class="apicon-thumb-up"></i>
 					<?php printf( _n( '<strong>1</strong> Vote', '<strong>%d</strong> Votes', $vote_count, 'anspress-question-answer' ), $vote_count ); ?>					
-					<a id="ap-vote-down" href="#" class="vote button button-small"><?php _e('-', 'anspress-question-answer' ); ?></a>
-					<a id="ap-vote-up" href="#" class="vote button button-small"><?php _e('+', 'anspress-question-answer' ); ?></a>
+					<a id="ap-vote-down" href="#" class="vote button button-small ap-ajax-btn" data-query="ap_admin_vote_down::<?php echo $nonce; ?>::<?php echo $post->ID; ?>" data-cb="replaceText"><?php _e('-', 'anspress-question-answer' ); ?></a>
+					<a id="ap-vote-up" href="#" class="vote button button-small ap-ajax-btn" data-query="ap_admin_vote_up::<?php echo $nonce; ?>::<?php echo $post->ID; ?>" data-cb="replaceText"><?php _e('+', 'anspress-question-answer' ); ?></a>
 				</li>
 				<li><?php $this->flag_meta_box( $post ); ?> </li>
             </ul>

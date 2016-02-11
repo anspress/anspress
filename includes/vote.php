@@ -15,15 +15,51 @@
  *
  * @return integer
  */
-function ap_add_vote($current_userid, $type, $actionid, $receiving_userid) {
+function ap_add_vote( $current_userid, $type, $actionid, $receiving_userid ) {
+	// Snaitize varaiables.
+	$current_userid = (int) $current_userid;
+	$type = sanitize_title_for_query( $type );
+	$actionid = (int) $actionid;
+	$receiving_userid = (int) $receiving_userid;
 
-	$row = ap_add_meta( $current_userid, $type, $actionid, $receiving_userid );
+	$where = array( 'apmeta_userid' => $current_userid, 'apmeta_actionid' => $actionid, 'apmeta_type' => $type, 'apmeta_value' => $receiving_userid );
+
+	// get exteing vote if exists.
+	$vote = ap_get_meta( $where );
+
+	// If vote already exists by user then update count of vote.
+	if ( $vote ) {
+		return ap_update_meta( array( 'apmeta_param' => (int) $vote['apmeta_param'] + 1 ), $where );
+	}
+
+	$row = ap_add_meta( $current_userid, $type, $actionid, $receiving_userid, 1 );
 
 	if ( $row !== false ) {
 		do_action( 'ap_vote_casted', $current_userid, $type, $actionid, $receiving_userid );
 	}
 
 	return $row;
+}
+
+/**
+ * Add vote for post and also update post meta.
+ * @param  integer $current_userid    User ID of user casting the vote.
+ * @param  string  $type              Type of vote, "vote_up" or "vote_down".
+ * @param  integer $actionid          Post ID.
+ * @param  integer $receiving_userid  User ID of user receiving the vote.
+ * @return array|false
+ */
+function ap_add_post_vote( $current_userid, $type, $actionid, $receiving_userid ) {
+	$row = ap_add_vote( $current_userid, $type, $actionid, $receiving_userid );
+
+	if ( false !== $row ) {
+		$counts = ap_post_votes( $actionid );
+		update_post_meta( $actionid, ANSPRESS_VOTE_META, $counts['net_vote'] );
+
+		return $counts;
+	}
+
+	return false;
 }
 
 /**
@@ -40,6 +76,7 @@ function ap_remove_vote($type, $userid, $actionid, $receiving_userid) {
 
 	return $row;
 }
+
 
 /**
  * Retrieve vote count
@@ -125,16 +162,16 @@ function ap_net_vote_meta($post_id = false) {
  * @return integer
  */
 function ap_post_votes($post_id) {
-	$counts = ap_meta_total_count( array('vote_up', 'vote_down'), $post_id, false, 'apmeta_type' );
+	$counts = ap_meta_total_count( array( 'vote_up', 'vote_down' ), $post_id, false, 'apmeta_type' );
 
-	$counts_type = array('vote_up' => 0, 'vote_down' => 0);
+	$counts_type = array( 'vote_up' => 0, 'vote_down' => 0 );
 
-	if( $counts ){
-		foreach( $counts as $c ){
-			$counts_type[$c->type] = (int)$c->count;
+	if ( $counts ) {
+		foreach ( $counts as $c ) {
+			$counts_type[$c->type] = (int) $c->count;
 		}
 	}
-	
+
 	$vote = array();
 	// Voted up count.
 	$vote['voted_up'] = $counts_type['vote_up'];

@@ -859,13 +859,10 @@ class AnsPress_Ajax
 			    $this->send( 'undo_vote_your_vote' );
 			}
 	    } else {
-	        ap_add_vote( $userid, $type, $post_id, $post->post_author );
-
-	        $counts = ap_post_votes( $post_id );
-	        var_dump($counts);
+	        $counts = ap_add_post_vote( $userid, $type, $post_id, $post->post_author );
 
 			// Update post meta.
-			update_post_meta( $post_id, ANSPRESS_VOTE_META, $counts['net_vote'] );
+			
 	        do_action( 'ap_'.$type, $post_id, $counts );
 
 	       	$this->send( array( 'action' => 'voted', 'type' => $type, 'count' => $counts['net_vote'], 'message' => 'voted' ) );

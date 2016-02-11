@@ -20,7 +20,7 @@ if ( ! defined( 'WPINC' ) ) {
 		<a class="add-new-h2" href="#" data-button="ap-new-reputation"><?php esc_attr_e( 'New reputation', 'anspress-question-answer' ); ?></a>
     </h2>
     <form id="anspress-reputation-table" method="get">
-		<input type="hidden" name="page" value="<?php echo sanitize_text_field( $_REQUEST['page'] ); ?>" />
+		<input type="hidden" name="page" value="<?php echo sanitize_text_field( @$_GET['page'] ); ?>" />
 		<?php $reputation_table->display() ?>
     </form>
 </div>

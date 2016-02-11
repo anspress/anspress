@@ -245,7 +245,8 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		private function includes() {
 
 		    global $ap_options;
-
+		    require_once ANSPRESS_DIR.'admin/anspress-admin.php';
+		    require_once ANSPRESS_DIR.'admin/ajax.php';
 		    require_once ANSPRESS_DIR.'includes/options.php';
 		    require_once ANSPRESS_DIR.'activate.php';
 		    require_once ANSPRESS_DIR.'includes/functions.php';
@@ -326,6 +327,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 			// Load ajax hooks only if DOING_AJAX defined.
 			if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
 		    	$this->anspress_ajax = new AnsPress_Ajax( $this );
+		    	new AnsPress_Admin_Ajax( $this );
 			}
 		}
 
@@ -451,8 +453,7 @@ anspress();
  * The code below is intended to to give the lightest footprint possible.
  */
 
-if ( is_admin() ) {
-	require_once plugin_dir_path( __FILE__ ).'admin/anspress-admin.php';
+if ( is_admin() ) {	
 	add_action( 'plugins_loaded', array( 'AnsPress_Admin', 'get_instance' ) );
 }
 

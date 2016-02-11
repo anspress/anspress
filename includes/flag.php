@@ -39,7 +39,7 @@ function ap_post_flag_count($postid = false) {
 
 	$postid = $postid ? $postid : $post->ID;
 
-	return apply_filters('ap_post_flag_count', ap_meta_total_count('flag', $postid ) );
+	return ap_flagged_post_meta( $postid );
 }
 
 /**
@@ -210,5 +210,5 @@ function ap_is_user_flagged_comment($comment_id = false, $user_id = false) {
  * @return boolean
  */
 function ap_delete_all_post_flags( $post_id ) {
-	return ap_delete_meta( array( 'apmeta_actionid' => (int)$post_id, 'apmeta_type' => 'flag' ) );
+	return ap_delete_meta( array( 'apmeta_actionid' => (int) $post_id, 'apmeta_type' => 'flag' ) );
 }

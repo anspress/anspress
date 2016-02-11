@@ -22,7 +22,6 @@ class AnsPress_Process_Form
 	 * Initialize the class
 	 */
 	public function __construct() {
-
 		add_action( 'init', array( $this, 'non_ajax_form' ), 0 );
 		add_action( 'save_post', array( $this, 'action_on_new_post' ), 10, 3 );
 		add_action( 'wp_ajax_ap_ajax', array( $this, 'ap_ajax' ) );

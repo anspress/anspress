@@ -97,7 +97,6 @@ class AnsPress_Admin
 	 * Include files required in wp-admin
 	 */
 	public function includes() {
-		require_once( 'ajax.php' );
 		require_once( 'functions.php' );
 		require_once( 'options-page.php' );
 		require_once( 'extensions.php' );
@@ -105,7 +104,6 @@ class AnsPress_Admin
 		require_once( 'class-list-table-hooks.php' );
 
 		new AnsPress_Options_Page;
-		new AnsPress_Admin_Ajax( $this );
 		new AP_license();
 		new AP_List_Table_Hooks();
 	}
@@ -271,9 +269,9 @@ class AnsPress_Admin
 	/**
 	 * Load reputation page layout
 	 */
-	public function display_reputation_page() {
+	public static function display_reputation_page() {
 		include_once( 'reputation.php' );
-		$reputation_table = new AnsPress_Reputation_Table();
+		$reputation_table = @new AnsPress_Reputation_Table();
 		$reputation_table->prepare_items();
 		include( 'views/reputation.php' );
 	}
