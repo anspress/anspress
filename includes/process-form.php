@@ -136,12 +136,20 @@ class AnsPress_Process_Form
 
 	}
 
+	/**
+	 * Validate reCaptcha field.
+	 * @return boolean
+	 */
 	public function check_recaptcha() {
+		require_once( ANSPRESS_DIR. 'includes/recaptcha.php' );
+		$reCaptcha = new gglcptch_ReCaptcha( ap_opt( 'recaptcha_secret_key' ) );
 
-		$recaptcha = new \ReCaptcha\ReCaptcha( ap_opt( 'recaptcha_secret_key' ) );
-		$resp = $recaptcha->verify( $_POST['g-recaptcha-response'], $_SERVER['REMOTE_ADDR'] );
+		$gglcptch_remote_addr = filter_var( $_SERVER['REMOTE_ADDR'], FILTER_VALIDATE_IP );
+		$gglcptch_g_recaptcha_response = stripslashes( esc_html( $_POST['g-recaptcha-response'] ) );
 
-		if ( $resp->isSuccess() ) {
+		$resp = $reCaptcha->verifyResponse( $gglcptch_remote_addr, $gglcptch_g_recaptcha_response );
+
+		if ( $resp->success ) {
 			do_action( 'ap_form_captch_verified' );
 			return true;
 		}
@@ -306,7 +314,7 @@ class AnsPress_Process_Form
 		$this->process_image_uploads( $post_id, $user_id );
 
 		// Check for spam in question.
-		if( ap_opt('akismet_validation') && !current_user_can( 'ap_edit_others_question' ) ){
+		if ( ap_opt('akismet_validation' ) && ! current_user_can( 'ap_edit_others_question' ) ) {
 			ap_check_spam( $post_id );
 		}
 	}
@@ -379,7 +387,7 @@ class AnsPress_Process_Form
 		$this->process_image_uploads( $post->ID, $post->post_author );
 
 		// Check for spam in question.
-		if( ap_opt('akismet_validation') && !current_user_can( 'ap_edit_others_question' ) ){
+		if ( ap_opt('akismet_validation' ) && ! current_user_can( 'ap_edit_others_question' ) ) {
 			ap_check_spam( $post_id );
 		}
 	}
@@ -602,7 +610,7 @@ class AnsPress_Process_Form
 		$this->process_image_uploads( $post_id, $user_id );
 
 		// Check for spam in question.
-		if( ap_opt('akismet_validation') && !current_user_can( 'ap_edit_others_answer' ) ){
+		if ( ap_opt('akismet_validation' ) && ! current_user_can( 'ap_edit_others_answer' ) ) {
 			ap_check_spam( $post_id );
 		}
 	}
@@ -669,7 +677,7 @@ class AnsPress_Process_Form
 		$this->process_image_uploads( $post_id, $answer->post_author );
 
 		// Check for spam in question.
-		if( ap_opt('akismet_validation') && !current_user_can( 'ap_edit_others_answer' ) ){
+		if ( ap_opt('akismet_validation' ) && ! current_user_can( 'ap_edit_others_answer' ) ) {
 			ap_check_spam( $post_id );
 		}
 	}

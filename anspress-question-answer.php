@@ -284,7 +284,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		    require_once ANSPRESS_DIR.'widgets/users.php';
 		    require_once ANSPRESS_DIR.'includes/rewrite.php';
 		    require_once ANSPRESS_DIR.'includes/reputation.php';
-		    require_once ANSPRESS_DIR.'vendor/autoload.php';
+		    //require_once ANSPRESS_DIR.'vendor/autoload.php';
 		    require_once ANSPRESS_DIR.'includes/class-user.php';
 		    require_once ANSPRESS_DIR.'includes/user.php';
 		    require_once ANSPRESS_DIR.'includes/users-loop.php';
