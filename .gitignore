@@ -6,7 +6,6 @@
 /addons
 /node_modules
 /docs
-/bin
 /theme/default/fonts/selection.json
 /theme/default/fonts/demo-files
 /theme/default/fonts/demo.html
@@ -17,9 +16,3 @@
 /theme/default/images/cover.psd
 /npm-debug.log
 /env
-
-tests/_output/*
-tests/_output/*
-
-
-tests/_output/*
