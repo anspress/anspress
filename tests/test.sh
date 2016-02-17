@@ -1,18 +1,21 @@
 #!/usr/bin/env bash
 
-if [ $# -lt 3 ]; then
-	echo "usage: $0 <db-name> <db-user> <db-pass> [db-host] [wp-version]"
-	exit 1
-fi
+#if [ $# -lt 3 ]; then
+	#echo "usage: $0 <db-name> <db-user> <db-pass> [db-host] [wp-version]"
+	#exit 1
+#fi
 
-DB_NAME=$1
-DB_USER=$2
-DB_PASS=$3
-DB_HOST=${4-localhost}
-WP_VERSION=${5-latest}
+DB_NAME=wptest
+DB_USER=wptest
+DB_PASS=wptest
+DB_HOST=localhost
+WP_VERSION=${1-latest}
 
-WP_TESTS_DIR=${WP_TESTS_DIR-/tmp/wordpress-tests-lib}
-WP_CORE_DIR=${WP_CORE_DIR-/tmp/wordpress/}
+WWW=/var/www
+HOST=wptest
+
+WP_TESTS_DIR=${WP_TESTS_DIR-/var/www/wordpress-tests-lib}
+WP_CORE_DIR=${WP_CORE_DIR-/var/www/wptest/}
 
 SOURCE="${BASH_SOURCE[0]}"
 while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symlink
@@ -21,6 +24,28 @@ while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symli
   [[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE" # if $SOURCE was a relative symlink, we need to resolve it relative to the path where the symlink file was located
 done
 BIN_DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
+
+vhost(){
+	# creates virtual hosts.
+	# Create the file with VirtualHost configuration in /etc/apache2/site-available/
+	echo "<VirtualHost *:80>
+	        DocumentRoot /var/www/$HOST/
+	        ServerName $HOST.localhost
+	        <Directory /var/www/$HOST/>
+                Options +Indexes +FollowSymLinks +MultiViews +Includes
+                AllowOverride All
+                Order allow,deny
+                allow from all
+	        </Directory>
+	</VirtualHost>" > /etc/apache2/sites-available/$HOST.conf
+	 
+	# Add the host to the hosts file
+	echo 127.0.0.1 $HOST.localhost >> /etc/hosts
+
+	# Enable the site
+	a2ensite $HOST
+	sudo service apache2 restart
+}
 
 
 download() {
@@ -125,20 +150,30 @@ install_db() {
 	if [ `mysqlshow --user=$DB_USER --password=$DB_PASS $DB_NAME $EXTRA  | grep -v Wildcard | grep -o $DB_NAME` == $DB_NAME ]; then
 	    mysqladmin DROP $DB_NAME -f --user="$DB_USER" --password="$DB_PASS"$EXTRA
 	fi
+	
 	mysqladmin create $DB_NAME --user="$DB_USER" --password="$DB_PASS"$EXTRA
 }
 
-copy_AnsPress(){
+copy_anspress(){
 	NEW_ANSPRESS_DIR="$WP_CORE_DIR/wp-content/plugins/anspress-question-answer"
 	
 	rm -rf "$NEW_ANSPRESS_DIR"
+	rm -rf "$WP_CORE_DIR/wp-config.php"
 	mkdir -p "$NEW_ANSPRESS_DIR"
 
 	cd $BIN_DIR
 	cp -r "../"* "$NEW_ANSPRESS_DIR/"
 }
 
+core_install(){
+	cd $WP_CORE_DIR
+	wp core config --dbname=wptest --dbuser=wptest --dbpass=wptest --allow-root
+	wp core install --url='http://wptest.localhost/' --title='AnsPress_test' --admin_user='admin' --admin_password='admin' --admin_email=support@wptest.localhost --allow-root
+}
+
+vhost
 install_wp
 install_test_suite
 install_db
-copy_AnsPress
+copy_anspress
+core_install
