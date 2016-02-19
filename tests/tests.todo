@@ -1,0 +1,73 @@
+Bash Script (install.sh):
+  Add bash script so that all tests requirements can be prepared.
+
+  ✔ Create a VHOST record for anspress_test.localhost site and restart apache2 @done (16-02-19 09:46)
+  ✔ Download latest WordPress and unzip in anspress_test document root. @done (16-02-19 09:46)
+  ☐ Download latest AnsPress and unzip in anspress_test plugin directory.
+  ✔ Create database with credential user:anspress_test password:anspress_test database name:anspress_test @done (16-02-19 09:46)
+  ✔ Install WP with credential user:admin and password:admin @done (16-02-19 09:46)
+  ✔ Enable %postname% permalink. @done (16-02-19 11:25)
+
+  Travis:
+    ☐ Setup MySql
+    ☐ Setup Apache2
+    ☐ Install composer
+    ☐ Install wp-cli
+    ☐ Install codeception
+
+Acceptance:
+ ✔ Add login method in AcceptanceTester. @done (16-02-19 11:25)
+ ✔ Add switch user method. @done (16-02-19 11:25)
+
+Basic Setup:
+ Initialize basic for WordPress test site.
+ ✔ Activate AnsPress. @done (16-02-19 11:49)
+ ✔ Install TwentyTwelve theme. @done (16-02-19 13:05)
+ ✔ Activate TwentyTwelve theme. @done (16-02-19 13:05)
+ ✔ Add Question page with title "Question" and page content "[anspress]". @done (16-02-19 13:05)
+ ☐ Add AnsPress navigation links to "Primary Menu".
+ ✔ Check if question page is working. @done (16-02-19 13:05)
+ ✔ Add 3 normal user with subscriber role. @done (16-02-19 13:11)
+   ✔ User 1 credential: user1:user1 @done (16-02-19 13:12)
+   ✔ User 2 credential: user2:user2 @done (16-02-19 13:12)
+   ✔ User 3 credential: user3:user3 @done (16-02-19 13:12)
+   ✔ User 4 credential: user4:user4 @done (16-02-19 13:12)
+
+Ask Question:
+  ✔ Post question as user1 without title, content, check error message. @done (16-02-19 14:57)
+
+Question:
+  ✔ Post a question as user1 and check if it is showing. @done (16-02-19 14:57)
+    Title "This is question 1"
+  ☐ Post a comment as user2 in question and check if showing.
+    Content "Test comment on This is question 1"
+  ☐ Cast up vote as user2 in question and check if its showing.
+  ☐ Cast down vote as admin in question and check if its showing.
+
+  Answer:
+    ☐ Post an answer as user3 and check if this is showing.
+      content "This is an interesting answer on question 1. Hope this will work."
+    ☐ Post an answer as user2 and check if this is showing.
+      content "This is an interesting question again for question 1. Hope this will work as well."
+    ☐ Select answer 2 as best as user1.
+    ☐ Up vote on both answer as user1.
+    ☐ Comment on answer 1 as user1.
+      content "This is an awesome comment on answer1. I like it."
+    ☐ Replay comment on answer1 as user2.
+      content "This is an awesome comment on answer1 again.. Maann..!! its gonna be super cool"
+  
+  Status:
+  ☐ Change status of question to private as user1.
+    ☐ Check if user4 can see question in single question page and list page (They shouldn't).
+    ☐ Check if user2 can see question in single question page and list page (They should).
+    ☐ Check if user3 can see question content in single question page and list page (They should).
+    ☐ Change status of question to publish as admin.
+  ☐ Change status of answer 1 to private as user3.
+    ☐ Check if user2 can see answer1 (They shouldn't).
+    ☐ Check if user1 can see answer1 (They should).
+    ☐ Check if admin can see answer1 (They should).
+
+
+
+
+

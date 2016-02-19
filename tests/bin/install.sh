@@ -5,11 +5,11 @@
 	#exit 1
 #fi
 
-DB_NAME=wptest
-DB_USER=wptest
-DB_PASS=wptest
-DB_HOST=localhost
-WP_VERSION=${1-latest}
+DB_NAME=${1-wptest}
+DB_USER=${2-wptest}
+DB_PASS=${3-wptest}
+WP_VERSION=${4-latest}
+DB_HOST=${5-localhost}
 
 WWW=/var/www
 HOST=wptest
@@ -25,12 +25,34 @@ while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symli
 done
 BIN_DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
+install_composer(){
+	command -v composer >/dev/null 2>&1 || {
+		stty -echo
+		sudo apt-get install curl php5-cli git -y
+		curl -sS https://getcomposer.org/installer | sudo php -- --install-dir=/usr/local/bin --filename=composer	
+		
+		composer global require codeception/codeception 
+
+		export PATH="$PATH:$HOME/.composer/vendor/bin"		
+	}
+
+	if [ ! -f /root/selenium/selenium-server-standalone-2.42.2.jar ]; then
+		cd /root
+		sudo mkdir -p selenium
+		cd selenium
+		wget https://selenium-release.storage.googleapis.com/2.42/selenium-server-standalone-2.42.2.jar
+	fi
+
+	screen -S test -d -m java -jar /root/selenium/selenium-server-standalone-2.42.2.jar -Djava.security.egd=file:///dev/urandom switch
+}
+
 vhost(){
 	# creates virtual hosts.
 	# Create the file with VirtualHost configuration in /etc/apache2/site-available/
 	echo "<VirtualHost *:80>
 	        DocumentRoot /var/www/$HOST/
 	        ServerName $HOST.localhost
+	        ServerAlias wptest.anspress.io
 	        <Directory /var/www/$HOST/>
                 Options +Indexes +FollowSymLinks +MultiViews +Includes
                 AllowOverride All
@@ -146,11 +168,14 @@ install_db() {
 	fi
 
 	# create database
+	DBS=`mysql -u$DB_USER -p$DB_PASS -Bse 'show databases'| egrep -v 'information_schema|mysql'`
+	for db in $DBS; do
+	if [ "$db" = "$DB_NAME" ]
+	then
+	mysqladmin DROP $DB_NAME -f --user="$DB_USER" --password="$DB_PASS"$EXTRA
+	  fi
+	done
 
-	if [ `mysqlshow --user=$DB_USER --password=$DB_PASS $DB_NAME $EXTRA  | grep -v Wildcard | grep -o $DB_NAME` == $DB_NAME ]; then
-	    mysqladmin DROP $DB_NAME -f --user="$DB_USER" --password="$DB_PASS"$EXTRA
-	fi
-	
 	mysqladmin create $DB_NAME --user="$DB_USER" --password="$DB_PASS"$EXTRA
 }
 
@@ -162,15 +187,26 @@ copy_anspress(){
 	mkdir -p "$NEW_ANSPRESS_DIR"
 
 	cd $BIN_DIR
-	cp -r "../"* "$NEW_ANSPRESS_DIR/"
+	cp -r "../../"* "$NEW_ANSPRESS_DIR/"
 }
 
 core_install(){
+	chown -R www-data:www-data $WP_CORE_DIR
 	cd $WP_CORE_DIR
+	echo "apache_modules:
+  - mod_rewrite" > wp-cli.yml
 	wp core config --dbname=wptest --dbuser=wptest --dbpass=wptest --allow-root
 	wp core install --url='http://wptest.localhost/' --title='AnsPress_test' --admin_user='admin' --admin_password='admin' --admin_email=support@wptest.localhost --allow-root
+	wp rewrite structure '/%postname%/' --hard --allow-root
+	wp plugin activate anspress-question-answer --allow-root
+	wp theme install twentytwelve --activate --allow-root
+	wp user create user1 user1@localhost.com --user_pass='user1' --allow-root
+	wp user create user2 user2@localhost.com --user_pass='user2' --allow-root
+	wp user create user3 user3@localhost.com --user_pass='user3' --allow-root
+	wp user create user4 user4@localhost.com --user_pass='user4' --allow-root
 }
 
+install_composer
 vhost
 install_wp
 install_test_suite

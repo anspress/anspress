@@ -16,3 +16,8 @@
 /theme/default/images/cover.psd
 /npm-debug.log
 /env
+
+tests/_output/*
+tests/_output/*
+tests/_output/*
+tests/_output/*
