@@ -30,56 +30,18 @@ class AP_Roles
 	 * Initialize the class
 	 */
 	public function __construct() {
-		
+
 		/**
 		 * Base user caps
 		 * @var array
 		 */
-		$this->base_caps = array(
-			'ap_read_question'         	=> true,
-			'ap_read_answer'			=> true,
-			'ap_new_question'			=> true,
-			'ap_new_answer'				=> true,
-			'ap_new_comment'			=> true,
-			'ap_edit_question'			=> true,
-			'ap_edit_answer'			=> true,
-			'ap_edit_comment'			=> true,
-			'ap_hide_question'			=> true,
-			'ap_hide_answer'			=> true,
-			'ap_delete_question'		=> true,
-			'ap_delete_answer'			=> true,
-			'ap_delete_comment'			=> true,
-			'ap_vote_up'				=> true,
-			'ap_vote_down'				=> true,
-			'ap_vote_flag'				=> true,
-			'ap_vote_close'				=> true,
-			'ap_upload_cover'			=> true,
-			'ap_message'				=> true,
-			'ap_new_tag'				=> true,
-			'ap_change_status'			=> true,
-			'ap_upload_avatar'			=> true,
-			'ap_edit_profile'			=> true,
-		);
+		$this->base_caps = ap_role_caps('participant');
 
 		/**
 		 * Admin level caps
 		 * @var array
 		 */
-		$this->mod_caps = array(
-			'ap_edit_others_question'	=> true,
-			'ap_edit_others_answer'		=> true,
-			'ap_edit_others_comment'	=> true,
-			'ap_hide_others_question'	=> true,
-			'ap_hide_others_answer'		=> true,
-			'ap_hide_others_comment'	=> true,
-			'ap_delete_others_question'	=> true,
-			'ap_delete_others_answer'	=> true,
-			'ap_delete_others_comment'	=> true,
-			'ap_change_label'			=> true,
-			'ap_view_private'			=> true,
-			'ap_view_moderate'			=> true,
-			'ap_change_status_other'	=> true,
-		);
+		$this->mod_caps = ap_role_caps('moderator');
 
 	}
 
@@ -633,3 +595,61 @@ function ap_show_captcha_to_user( $user_id = false ) {
 	return false;
 }
 
+/**
+ * Get AnsPress role capabilities by role key.
+ * @param  string $role Role key.
+ * @return array|false
+ * @since 2.4.6
+ */
+function ap_role_caps( $role ) {
+	$roles = array(
+		'participant' => array(
+			'ap_read_question'         	=> true,
+			'ap_read_answer'			=> true,
+			'ap_new_question'			=> true,
+			'ap_new_answer'				=> true,
+			'ap_new_comment'			=> true,
+			'ap_edit_question'			=> true,
+			'ap_edit_answer'			=> true,
+			'ap_edit_comment'			=> true,
+			'ap_hide_question'			=> true,
+			'ap_hide_answer'			=> true,
+			'ap_delete_question'		=> true,
+			'ap_delete_answer'			=> true,
+			'ap_delete_comment'			=> true,
+			'ap_vote_up'				=> true,
+			'ap_vote_down'				=> true,
+			'ap_vote_flag'				=> true,
+			'ap_vote_close'				=> true,
+			'ap_upload_cover'			=> true,
+			'ap_message'				=> true,
+			'ap_new_tag'				=> true,
+			'ap_change_status'			=> true,
+			'ap_upload_avatar'			=> true,
+			'ap_edit_profile'			=> true,
+		),
+		'moderator' => array(
+			'ap_edit_others_question'	=> true,
+			'ap_edit_others_answer'		=> true,
+			'ap_edit_others_comment'	=> true,
+			'ap_hide_others_question'	=> true,
+			'ap_hide_others_answer'		=> true,
+			'ap_hide_others_comment'	=> true,
+			'ap_delete_others_question'	=> true,
+			'ap_delete_others_answer'	=> true,
+			'ap_delete_others_comment'	=> true,
+			'ap_change_label'			=> true,
+			'ap_view_private'			=> true,
+			'ap_view_moderate'			=> true,
+			'ap_change_status_other'	=> true,
+		),
+	);
+
+	$roles = apply_filters( 'ap_role_caps', $roles );
+
+	if ( isset( $roles[ $role ] ) ) {
+		return $roles[ $role ];
+	}
+
+	return false;
+}

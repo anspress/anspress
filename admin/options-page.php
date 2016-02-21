@@ -703,11 +703,5 @@ class AnsPress_Options_Page
 				'show_desc_tip' => false,
 			) ,
 		));
-
-		ap_register_option_group( 'tools', __( 'Tools', 'anspress-question-answer' ) , array( $this, 'tools_page' ), false );
-	}
-
-	public function tools_page() {
-		include 'views/tools.php';
 	}
 }

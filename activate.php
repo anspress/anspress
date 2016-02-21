@@ -196,7 +196,12 @@ class AP_Activate
 			}
 		}
 
-		$wpdb->query( "ALTER TABLE `{$wpdb->prefix}ap_activity` ADD term_ids LONGTEXT after item_id;" );
+		$activity_cols = $wpdb->get_results("SHOW COLUMNS FROM {$wpdb->prefix}ap_activity" );
+
+		/*if( $activity_cols ){
+			if ( !in_array($col->Field, 'term_ids' ) )
+				$wpdb->query( "ALTER TABLE `{$wpdb->prefix}ap_activity` ADD term_ids LONGTEXT after item_id;" );
+		}*/
 
 		$this->fix_subscribers_table();
 	}

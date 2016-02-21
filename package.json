@@ -6,23 +6,25 @@
   "private": true,
   "devDependencies": {
     "grunt": "^0.4.5",
+    "grunt-contrib-compress": "",
     "grunt-contrib-copy": "^0.8.0",
     "grunt-contrib-jshint": "",
     "grunt-contrib-less": "",
     "grunt-contrib-uglify": "^0.9.1",
     "grunt-contrib-watch": "^0.6.1",
-    "grunt-contrib-compress": "",
     "grunt-csscomb": "",
+    "grunt-git": "",
     "grunt-phpdocumentor": "^0.4.1",
     "grunt-phplint": "",
+    "grunt-phpunit": "",
     "grunt-replace": "",
+    "grunt-version": "",
     "grunt-wp-i18n": "",
     "grunt-wp-readme-to-markdown": "",
     "load-grunt-tasks": "",
-    "grunt-version": "",
-    "grunt-git": "",
-    "grunt-phpunit": "",
-    "time-grunt": ""
+    "time-grunt": "",
+    "webdriverio": "",
+    "zombie": "^4.2.1"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

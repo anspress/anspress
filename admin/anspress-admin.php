@@ -190,6 +190,8 @@ class AnsPress_Admin
 		add_submenu_page( 'anspress', __( 'All Answers', 'anspress-question-answer' ), __( 'All Answers', 'anspress-question-answer' ).$counts['answer'], 'delete_pages', 'edit.php?post_type=answer', '' );
 
 		add_submenu_page( 'anspress', __( 'Reputation', 'anspress-question-answer' ), __( 'Reputation', 'anspress-question-answer' ), 'manage_options', 'anspress_reputation', array( $this, 'display_reputation_page' ) );
+		
+		add_submenu_page( 'anspress', __( 'Permissions & roles', 'anspress-question-answer' ), __( 'Permissions & roles', 'anspress-question-answer' ), 'manage_options', 'anspress_permissions', array( $this, 'display_permissions_page' ) );
 
 		add_submenu_page( 'ap_select_question', __( 'Select question', 'anspress-question-answer' ), __( 'Select question', 'anspress-question-answer' ), 'delete_pages', 'ap_select_question', array( $this, 'display_select_question' ) );
 
@@ -276,6 +278,14 @@ class AnsPress_Admin
 		include( 'views/reputation.php' );
 	}
 
+	/**
+	 * Includes permission layout.
+	 * @since 2.4.5
+	 */
+	public static function display_permissions_page() {
+		include( 'views/permissions.php' );
+	}
+
 
 	/**
 	 * Load dashboard page layout
@@ -348,40 +358,12 @@ class AnsPress_Admin
 		}
 
 		add_filter( 'pre_get_posts', array( $this, 'serach_qa_by_userid' ) );
-
-		if ( isset($_POST['ap_admin_form'] ) && $_POST['ap_admin_form'] == 'role_update' && wp_verify_nonce( $_POST['__nonce'], 'ap_role_'.$_POST['role_name'].'_update' ) && is_super_admin( ) ) {
-			$caps = isset($_POST['c'] ) ? $_POST['c'] : array();
-			ap_update_caps_for_role( $_POST['role_name'], $caps );
-		}
+		
 	}
 
 	public function question_meta_box_class() {
 		require_once( 'meta_box.php' );
 		new AP_Question_Meta_Box();
-	}
-
-	public function user_roles_fields($user) {
-	?>
-
-		<h3><?php _e( 'AnsPress Options', 'anspress-question-answer' ); ?></h3>
-
-        <table class="form-table">
-            <tr>
-				<th><label for="ap_role"><?php _e( 'AnsPress Role', 'anspress-question-answer' ); ?></label></th>
-                <td>
-                    <select type="text" name="ap_role" id="ap_role">
-					<?php
-
-					foreach ( ap_roles() as $k => $role ) {
-						echo '<option value="'.$k.'"'.(get_the_author_meta( 'ap_role', $user->ID ) == $k ? ' selected="selected"' : '').'>'.$role.'</option>';
-					}
-					?>
-                    </select><br />
-					<span class="description"><?php _e( 'Role and permission for AnsPress', 'anspress-question-answer' ); ?></span>
-                </td>
-            </tr>
-        </table>
-	<?php
 	}
 
 	public function save_user_roles_fields($user_id) {

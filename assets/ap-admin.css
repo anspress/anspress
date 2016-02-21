@@ -2002,3 +2002,7 @@ ul.ap-meta-list > li > a {
 ul.ap-meta-list > li > a#ap-vote-up {
   margin-right: 3px;
 }
+.white-bg {
+  background: #fff none repeat scroll 0 0;
+  padding: 15px;
+}
