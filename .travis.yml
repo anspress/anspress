@@ -7,18 +7,16 @@ notifications:
 
 services:
   - mysql
+  
 php:
   - 5.6
-  - 5.7
 
 env:
   - DB=mysql
   - WP_VERSION=latest WP_MULTISITE=0
 
-matrix:
-  include:
-    - php: 5.3
-      env: WP_VERSION=latest WP_MULTISITE=1
+install:
+  - wget http://selenium-release.storage.googleapis.com/2.42/selenium-server-standalone-2.42.2.jar
 
 before_script:
   - sudo apt-get update
@@ -29,9 +27,18 @@ before_script:
   - echo "cgi.fix_pathinfo = 1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
   - ~/.phpenv/versions/$(phpenv version-name)/sbin/php-fpm
   # configure apache virtual hosts
-  - sudo cp -f build/travis-ci-apache /etc/apache2/sites-available/default
-  - sudo sed -e "s?%TRAVIS_BUILD_DIR%?$(pwd)?g" --in-place /etc/apache2/sites-available/default
+  - echo "$(curl -fsSL https://gist.github.com/rahularyan/5b179508f63cebbce486/raw/gistfile1.txt)" | sed -e "s,PATH,`pwd`/www,g" | sudo tee /etc/apache2/sites-available/default > /dev/null
+  - echo "127.0.0.1 wptest.localhost" | sudo tee -a /etc/hosts
   - sudo service apache2 restart
-  - bash tests/bin/install.sh wptest root '' $WP_VERSION localhost
+  - sudo apt-get install git
+  - wget http://codeception.com/codecept.phar
+  - sudo curl -LsS http://codeception.com/codecept.phar -o /usr/local/bin/codecept
+  - sudo chmod a+x /usr/local/bin/codecept
+  - export DISPLAY=:99.0
+  - sh -e /etc/init.d/xvfb start
+  - java -jar selenium-server-standalone-2.42.2.jar -port 4444 -Djava.security.egd=file:///dev/urandom switch > /dev/null &
+  - sleep 5
+  - bash tests/bin/install.sh wptest root '' localhost $WP_VERSION
 
 script: codecept run --steps
+

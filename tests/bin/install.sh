@@ -8,14 +8,15 @@
 DB_NAME=${1-wptest}
 DB_USER=${2-wptest}
 DB_PASS=${3-wptest}
-WP_VERSION=${4-latest}
-DB_HOST=${5-localhost}
+DB_HOST=${4-localhost}
+WP_VERSION=${5-latest}
 
 WWW=/var/www
 HOST=wptest
 
-WP_TESTS_DIR=${WP_TESTS_DIR-/var/www/wordpress-tests-lib}
-WP_CORE_DIR=${WP_CORE_DIR-/var/www/wptest/}
+cd "$TRAVIS_BUILD_DIR"
+WP_TESTS_DIR="$TRAVIS_BUILD_DIR/wordpress-tests-lib"
+WP_CORE_DIR="$TRAVIS_BUILD_DIR/www"
 
 SOURCE="${BASH_SOURCE[0]}"
 while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symlink
@@ -30,33 +31,34 @@ install_composer(){
 		stty -echo
 		sudo apt-get install curl php5-cli git -y
 		curl -sS https://getcomposer.org/installer | sudo php -- --install-dir=/usr/local/bin --filename=composer	
-		
-		composer global require codeception/codeception 
-
-		export PATH="$PATH:$HOME/.composer/vendor/bin"		
 	}
+	#composer global require codeception/codeception
+	#echo 'export PATH="$PATH:/home/travis/.composer/vendor/bin"' >> ~/.bashrc
 
-	if [ ! -f /root/selenium/selenium-server-standalone-2.42.2.jar ]; then
-		cd /root
-		sudo mkdir -p selenium
-		cd selenium
-		wget https://selenium-release.storage.googleapis.com/2.42/selenium-server-standalone-2.42.2.jar
-	fi
+	# if [ ! -f /tmp/selenium-server-standalone-2.42.2.jar ]; then
+	# 	cd /tmp
+	# 	wget https://selenium-release.storage.googleapis.com/2.42/selenium-server-standalone-2.42.2.jar
+	# fi
 
-	screen -S test -d -m java -jar /root/selenium/selenium-server-standalone-2.42.2.jar -Djava.security.egd=file:///dev/urandom switch
+	#screen -d -m -S selenium "$TRAVIS_BUILD_DIR/anspress/anspress/tests/bin/selenium.sh"
+
+	curl -i http://localhost:4444/wd/hub/status
 }
 
 install_wpcli(){
 	command -v wp >/dev/null 2>&1 || {
-		composer create-project wp-cli/wp-cli /usr/share/wp-cli --no-dev
-		sudo ln -s /usr/share/wp-cli/bin/wp /usr/bin/wp
+		cd /tmp
+		curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+		chmod +x wp-cli.phar
+		sudo mv wp-cli.phar /usr/local/bin/wp
+		wp --info
 	}
 }
 
 vhost(){
 	# creates virtual hosts.
 	# Create the file with VirtualHost configuration in /etc/apache2/site-available/
-	echo "<VirtualHost *:80>
+	sudo echo "<VirtualHost *:80>
 	        DocumentRoot /var/www/$HOST/
 	        ServerName $HOST.localhost
 	        ServerAlias wptest.anspress.io
@@ -69,10 +71,10 @@ vhost(){
 	</VirtualHost>" > /etc/apache2/sites-available/$HOST.conf
 	 
 	# Add the host to the hosts file
-	echo 127.0.0.1 $HOST.localhost >> /etc/hosts
+	sudo echo 127.0.0.1 $HOST.localhost >> /etc/hosts
 
 	# Enable the site
-	a2ensite $HOST
+	sudo a2ensite $HOST
 	sudo service apache2 restart
 }
 
@@ -105,9 +107,9 @@ set -ex
 
 install_wp() {
 
-	if [ -d $WP_CORE_DIR ]; then
-		return;
-	fi
+	#if [ -d $WP_CORE_DIR ]; then
+		#return;
+	#fi
 
 	mkdir -p $WP_CORE_DIR
 
@@ -122,8 +124,8 @@ install_wp() {
 		else
 			local ARCHIVE_NAME="wordpress-$WP_VERSION"
 		fi
-		download https://wordpress.org/${ARCHIVE_NAME}.tar.gz  /tmp/wordpress.tar.gz
-		tar --strip-components=1 -zxmf /tmp/wordpress.tar.gz -C $WP_CORE_DIR
+		download https://wordpress.org/${ARCHIVE_NAME}.tar.gz  ${TRAVIS_BUILD_DIR}/wordpress.tar.gz
+		tar --strip-components=1 -zxmf ${TRAVIS_BUILD_DIR}/wordpress.tar.gz -C $WP_CORE_DIR
 	fi
 
 	download https://raw.github.com/markoheijnen/wp-mysqli/master/db.php $WP_CORE_DIR/wp-content/db.php
@@ -175,34 +177,40 @@ install_db() {
 	fi
 
 	# create database
-	DBS=`mysql -u$DB_USER -p$DB_PASS -Bse 'show databases'| egrep -v 'information_schema|mysql'`
-	for db in $DBS; do
-	if [ "$db" = "$DB_NAME" ]
-	then
-	mysqladmin DROP $DB_NAME -f --user="$DB_USER" --password="$DB_PASS"$EXTRA
-	  fi
-	done
+	# DBS=`mysql -u$DB_USER -p$DB_PASS -Bse 'show databases'| egrep -v 'information_schema|mysql'`
+	# for db in $DBS; do
+	# if [ "$db" = "$DB_NAME" ]
+	# then
+	# mysqladmin DROP $DB_NAME -f --user="$DB_USER" --password="$DB_PASS"$EXTRA
+	#   fi
+	# done
 
 	mysqladmin create $DB_NAME --user="$DB_USER" --password="$DB_PASS"$EXTRA
 }
 
 copy_anspress(){
+	whoami
 	NEW_ANSPRESS_DIR="$WP_CORE_DIR/wp-content/plugins/anspress-question-answer"
 	
 	rm -rf "$NEW_ANSPRESS_DIR"
 	rm -rf "$WP_CORE_DIR/wp-config.php"
-	mkdir -p "$NEW_ANSPRESS_DIR"
-
-	cd $BIN_DIR
-	cp -r "../../"* "$NEW_ANSPRESS_DIR/"
+	sudo mkdir -p "$NEW_ANSPRESS_DIR"
+	sudo chown -R travis:travis $NEW_ANSPRESS_DIR
+	cd $NEW_ANSPRESS_DIR
+	git init
+	git remote add origin "https://github.com/anspress/anspress.git"
+	git fetch origin
+	sudo git reset --hard origin/master
+	#cp -r "../../"* "$NEW_ANSPRESS_DIR/"
 }
 
-core_install(){
-	chown -R www-data:www-data $WP_CORE_DIR
+core_install(){	
 	cd $WP_CORE_DIR
-	echo "apache_modules:
+	sudo echo "apache_modules:
   - mod_rewrite" > wp-cli.yml
-	wp core config --dbname=wptest --dbuser=wptest --dbpass=wptest --allow-root
+  	sudo chown -R travis:travis $WP_CORE_DIR
+  	ls
+	wp core config --dbname=$DB_NAME --dbuser=$DB_USER --dbpass="$DB_PASS" --allow-root
 	wp core install --url='http://wptest.localhost/' --title='AnsPress_test' --admin_user='admin' --admin_password='admin' --admin_email=support@wptest.localhost --allow-root
 	wp rewrite structure '/%postname%/' --hard --allow-root
 	wp plugin activate anspress-question-answer --allow-root
@@ -211,11 +219,12 @@ core_install(){
 	wp user create user2 user2@localhost.com --user_pass='user2' --allow-root
 	wp user create user3 user3@localhost.com --user_pass='user3' --allow-root
 	wp user create user4 user4@localhost.com --user_pass='user4' --allow-root
+	curl -i http://wptest.localhost/
 }
 
 install_composer
 install_wpcli
-vhost
+#vhost
 install_wp
 install_test_suite
 install_db
