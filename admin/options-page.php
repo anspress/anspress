@@ -702,6 +702,11 @@ class AnsPress_Options_Page
 				'value' => $settings['recaptcha_secret_key'],
 				'show_desc_tip' => false,
 			) ,
+
 		));
+		ap_register_option_group( 'roles', __( 'User roles', 'anspress-question-answer' ) , array( $this, 'permissions_page' ), false );
+	}
+	public function permissions_page() {
+		include 'views/permissions.php';
 	}
 }

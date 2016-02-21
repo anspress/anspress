@@ -46,6 +46,13 @@ install_composer(){
 	screen -S test -d -m java -jar /root/selenium/selenium-server-standalone-2.42.2.jar -Djava.security.egd=file:///dev/urandom switch
 }
 
+install_wpcli(){
+	command -v wp >/dev/null 2>&1 || {
+		composer create-project wp-cli/wp-cli /usr/share/wp-cli --no-dev
+		sudo ln -s /usr/share/wp-cli/bin/wp /usr/bin/wp
+	}
+}
+
 vhost(){
 	# creates virtual hosts.
 	# Create the file with VirtualHost configuration in /etc/apache2/site-available/
@@ -207,6 +214,7 @@ core_install(){
 }
 
 install_composer
+install_wpcli
 vhost
 install_wp
 install_test_suite

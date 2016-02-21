@@ -190,8 +190,6 @@ class AnsPress_Admin
 		add_submenu_page( 'anspress', __( 'All Answers', 'anspress-question-answer' ), __( 'All Answers', 'anspress-question-answer' ).$counts['answer'], 'delete_pages', 'edit.php?post_type=answer', '' );
 
 		add_submenu_page( 'anspress', __( 'Reputation', 'anspress-question-answer' ), __( 'Reputation', 'anspress-question-answer' ), 'manage_options', 'anspress_reputation', array( $this, 'display_reputation_page' ) );
-		
-		add_submenu_page( 'anspress', __( 'Permissions & roles', 'anspress-question-answer' ), __( 'Permissions & roles', 'anspress-question-answer' ), 'manage_options', 'anspress_permissions', array( $this, 'display_permissions_page' ) );
 
 		add_submenu_page( 'ap_select_question', __( 'Select question', 'anspress-question-answer' ), __( 'Select question', 'anspress-question-answer' ), 'delete_pages', 'ap_select_question', array( $this, 'display_select_question' ) );
 
@@ -277,15 +275,6 @@ class AnsPress_Admin
 		$reputation_table->prepare_items();
 		include( 'views/reputation.php' );
 	}
-
-	/**
-	 * Includes permission layout.
-	 * @since 2.4.5
-	 */
-	public static function display_permissions_page() {
-		include( 'views/permissions.php' );
-	}
-
 
 	/**
 	 * Load dashboard page layout
