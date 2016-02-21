@@ -34,4 +34,4 @@ before_script:
   - sudo service apache2 restart
   - bash tests/bin/install.sh wptest root '' $WP_VERSION localhost
 
-script: phpunit
+script: codecept run --steps
