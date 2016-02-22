@@ -110,7 +110,7 @@ class AnsPress_Common_Pages
 	public function question_page() {
 
 		// Set Header as 404 if question id is not set.
-		if( false === get_question_id() ){
+		if ( false === get_question_id() ) {
 			$this->set_404();
 			return;
 		}
@@ -129,7 +129,15 @@ class AnsPress_Common_Pages
 				global $post;
 				setup_postdata( $post );
 			endwhile;
-			include( ap_get_theme_location( 'question.php' ) );
+
+			if ( ap_user_can_read_question() ) {
+				include( ap_get_theme_location( 'question.php' ) );
+			} else {
+				printf(
+					'<div class="ap-no-permission">%s</div>',
+					__('Sorry! you are not allowed to read this question.', 'anspress-question-answer' )
+				);
+			}
 
 			wp_reset_postdata();
 		} else {
@@ -182,7 +190,7 @@ class AnsPress_Common_Pages
 
 	public function activity_page() {
 		global $ap_activities;
-	    $ap_activities = ap_get_activities( array( 'per_page' => 20) );
+	    $ap_activities = ap_get_activities( array( 'per_page' => 20 ) );
 
 		include( ap_get_theme_location( 'activity/index.php' ) );
 	}

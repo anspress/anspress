@@ -209,7 +209,7 @@ core_install(){
 	sudo echo "apache_modules:
   - mod_rewrite" > wp-cli.yml
   	sudo chown -R travis:travis $WP_CORE_DIR
-  	ls
+
 	wp core config --dbname=$DB_NAME --dbuser=$DB_USER --dbpass="$DB_PASS" --allow-root
 	wp core install --url='http://wptest.localhost/' --title='AnsPress_test' --admin_user='admin' --admin_password='admin' --admin_email=support@wptest.localhost --allow-root
 	wp rewrite structure '/%postname%/' --hard --allow-root
@@ -219,7 +219,7 @@ core_install(){
 	wp user create user2 user2@localhost.com --user_pass='user2' --allow-root
 	wp user create user3 user3@localhost.com --user_pass='user3' --allow-root
 	wp user create user4 user4@localhost.com --user_pass='user4' --allow-root
-	curl -i http://wptest.localhost/
+	#curl -i http://wptest.localhost/
 }
 
 install_composer

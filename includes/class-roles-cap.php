@@ -35,13 +35,13 @@ class AP_Roles
 		 * Base user caps
 		 * @var array
 		 */
-		$this->base_caps = ap_role_caps('participant');
+		$this->base_caps = ap_role_caps('participant' );
 
 		/**
 		 * Admin level caps
 		 * @var array
 		 */
-		$this->mod_caps = ap_role_caps('moderator');
+		$this->mod_caps = ap_role_caps('moderator' );
 
 	}
 
@@ -652,4 +652,25 @@ function ap_role_caps( $role ) {
 	}
 
 	return false;
+}
+
+/**
+ * Check if current user can read questions
+ * @param  boolean $user_id User ID.
+ * @return boolean
+ */
+function ap_user_can_read_question( $user_id = false ) {
+	if ( false === $user_id ) {
+		$user_id = get_current_user_id();
+	}
+
+	if ( is_super_admin( ) ) {
+		return true;
+	}
+
+	if ( apply_filters( 'ap_user_can_read_question', false ) ) {
+		return true;
+	}
+
+	return user_can( $user_id, 'ap_read_question' );
 }

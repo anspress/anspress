@@ -7,12 +7,11 @@ notifications:
 
 services:
   - mysql
-  
+
 php:
   - 5.6
 
 env:
-  - DB=mysql
   - WP_VERSION=latest WP_MULTISITE=0
 
 install:
