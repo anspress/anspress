@@ -18,7 +18,6 @@ if ( ! defined( 'WPINC' ) ) {
 
 /**
  * Return current page title.
- *
  * @return string current title
  */
 function ap_page_title() {
@@ -28,7 +27,11 @@ function ap_page_title() {
 	$current_page = ap_current_page();
 
 	if ( is_question() ) {
-		$new_title = ap_question_title_with_solved_prefix();
+		if ( ! ap_user_can_read_question( get_question_id() ) ) {
+			$new_title = __('No permission', 'anspress-question-answer' );
+		} else {
+			$new_title = ap_question_title_with_solved_prefix();
+		}
 	} elseif ( is_ap_edit() ) {
 		$new_title = __( 'Edit post', 'anspress-question-answer' );
 	} elseif ( is_ap_search() ) {
@@ -845,9 +848,9 @@ function ap_get_breadcrumbs() {
 function ap_current_page() {
 	$query_var = get_query_var( 'ap_page' );
 
-	if( is_question() ){
+	if ( is_question() ) {
 		$query_var = 'question';
-	}elseif( '' == $query_var ){
+	} elseif ( '' == $query_var ) {
 		$query_var = 'base';
 	}
 

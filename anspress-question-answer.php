@@ -252,7 +252,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		    require_once ANSPRESS_DIR.'includes/functions.php';
 		    require_once ANSPRESS_DIR.'includes/hooks.php';
 		    require_once ANSPRESS_DIR.'includes/ajax.php';
-		    require_once ANSPRESS_DIR.'includes/class-roles-cap.php';
+		    require_once ANSPRESS_DIR.'includes/class/class-roles-cap.php';
 		    require_once ANSPRESS_DIR.'includes/question-loop.php';
 		    require_once ANSPRESS_DIR.'includes/answer-loop.php';
 		    require_once ANSPRESS_DIR.'includes/class-theme.php';
@@ -267,7 +267,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		    require_once ANSPRESS_DIR.'includes/participants.php';
 		    require_once ANSPRESS_DIR.'includes/activity-hooks.php';
 		    require_once ANSPRESS_DIR.'includes/shortcode-basepage.php';
-		    require_once ANSPRESS_DIR.'includes/common-pages.php';
+		    require_once ANSPRESS_DIR.'includes/class/common-pages.php';
 		    require_once ANSPRESS_DIR.'includes/class-form.php';
 		    require_once ANSPRESS_DIR.'includes/class-validation.php';
 		    require_once ANSPRESS_DIR.'includes/process-form.php';

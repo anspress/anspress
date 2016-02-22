@@ -115,6 +115,16 @@ class AnsPress_Common_Pages
 			return;
 		}
 
+		// Check if user is allowed to read this question.
+		if ( !ap_user_can_read_question( get_question_id() ) ) {
+			printf(
+				'<div class="ap-no-permission">%s</div>',
+				__('Sorry! you are not allowed to read this question.', 'anspress-question-answer' )
+			);
+
+			return;
+		}
+
 		global $questions;
 
 		$questions = ap_get_question( get_question_id() );
@@ -129,17 +139,10 @@ class AnsPress_Common_Pages
 				global $post;
 				setup_postdata( $post );
 			endwhile;
-
-			if ( ap_user_can_read_question() ) {
-				include( ap_get_theme_location( 'question.php' ) );
-			} else {
-				printf(
-					'<div class="ap-no-permission">%s</div>',
-					__('Sorry! you are not allowed to read this question.', 'anspress-question-answer' )
-				);
-			}
+			include( ap_get_theme_location( 'question.php' ) );
 
 			wp_reset_postdata();
+
 		} else {
 			$this->set_404();
 		}
@@ -204,6 +207,5 @@ class AnsPress_Common_Pages
 		status_header( 404 );
 		include ap_get_theme_location( 'not-found.php' );
 	}
-
 }
 

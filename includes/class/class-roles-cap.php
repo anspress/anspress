@@ -380,17 +380,23 @@ function ap_user_can_permanent_delete() {
 /**
  * Check if user have permission to view post
  * @param  int $post_id post ID.
+ * @param  int $user_id user ID.
  * @return boolean
- * @since 2.0.1
+ * @since  2.0.1
  */
-function ap_user_can_view_private_post($post_id) {
-	if ( is_super_admin() || current_user_can( 'ap_view_private' ) ) {
+function ap_user_can_view_private_post( $post_id, $user_id = false ) {
+
+	if ( false === $user_id ) {
+		$user_id = get_current_user_id();
+	}
+
+	if ( is_super_admin( $user_id ) || user_can( $user_id, 'ap_view_private' ) ) {
 		return true;
 	}
 
 	$post_o = get_post( $post_id );
 
-	if ( $post_o->post_author == get_current_user_id() ) {
+	if ( $post_o->post_author == $user_id ) {
 		return true;
 	}
 
@@ -398,7 +404,7 @@ function ap_user_can_view_private_post($post_id) {
 	if ( 'answer' == $post_o->post_type ) {
 		$question = get_post( $post_o->post_parent );
 
-		if ( $question->post_author == get_current_user_id() ) {
+		if ( $question->post_author == $user_id ) {
 			return true;
 		}
 	}
@@ -408,17 +414,22 @@ function ap_user_can_view_private_post($post_id) {
 
 /**
  * Check if user can view a moderate post
- * @param  integer $question_id Question ID.
+ * @param  integer $post_id Question ID.
+ * @param  integer $user_id User ID.
  * @return boolean
  */
-function ap_user_can_view_moderate_post($question_id) {
-	if ( is_super_admin() || current_user_can( 'ap_view_moderate' ) ) {
+function ap_user_can_view_moderate_post( $post_id, $user_id = false ) {
+	if ( false === $user_id ) {
+		$user_id = get_current_user_id();
+	}
+
+	if ( is_super_admin( $user_id ) || user_can( $user_id, 'ap_view_moderate' ) ) {
 		return true;
 	}
 
-	$post_o = get_post( $question_id );
+	$post_o = get_post( $post_id );
 
-	if ( $post_o->post_author == get_current_user_id() ) {
+	if ( $post_o->post_author == $user_id ) {
 		return true;
 	}
 
@@ -433,10 +444,6 @@ function ap_user_can_view_moderate_post($question_id) {
 function ap_user_can_view_post($post_id = false) {
 	if ( is_super_admin() ) {
 		return true;
-	}
-
-	if ( false !== $post_id ) {
-		$post_id = get_the_ID();
 	}
 
 	$post_o = get_post( $post_id );
@@ -655,22 +662,53 @@ function ap_role_caps( $role ) {
 }
 
 /**
- * Check if current user can read questions
- * @param  boolean $user_id User ID.
+ * Check if current user can read question
+ * @param  integer         $question_id Question ID.
+ * @param  boolean|integer $user_id     User ID.
  * @return boolean
+ * @since  2.4.6
  */
-function ap_user_can_read_question( $user_id = false ) {
+function ap_user_can_read_question( $question_id, $user_id = false ) {
 	if ( false === $user_id ) {
 		$user_id = get_current_user_id();
 	}
 
-	if ( is_super_admin( ) ) {
+	/**
+	 * Allow overriding of ap_user_can_read_question.
+	 * @param  boolean  $apply_filter Default is false.
+	 * @param  integer  $question_id  Question ID.
+	 * @param  integer  $user_id  	  User ID.
+	 * @return boolean
+	 * @since  2.4.6
+	 */
+	if ( apply_filters( 'ap_user_can_read_question', false, $question_id, $user_id ) ) {
 		return true;
 	}
 
-	if ( apply_filters( 'ap_user_can_read_question', false ) ) {
+	$post_o = get_post( $question_id );
+
+	// Check if user have capability to read question.
+	// And then check post status based access.
+	if ( user_can( $user_id, 'ap_read_question' ) ) {
+
+		if ( 'private_post' == $post_o->post_status && ap_user_can_view_private_post( $question_id, $user_id ) ) {
+			return true;
+		}
+
+		if ( 'moderate' == $post_o->post_status && ap_user_can_view_moderate_post( $question_id, $user_id ) ) {
+			return true;
+		}
+
+		if ( 'publish' == $post_o->post_status || 'closed' == $post_o->post_status ) {
+			return true;
+		}
+	}
+
+	// Also return true if user have capability to edit others question.
+	if ( user_can( $user_id, 'ap_edit_others_question' ) ) {
 		return true;
 	}
 
-	return user_can( $user_id, 'ap_read_question' );
+	// Finally return false. And break the heart :p.
+	return false;
 }
