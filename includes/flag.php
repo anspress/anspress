@@ -1,6 +1,6 @@
 <?php
 
-/*
+/**
  * All functions and classes related to flagging
  *
  * This file keep all function required by flagging system.
@@ -9,7 +9,7 @@
  * @since 2.3.4
  *
  * @package AnsPress
- */
+ **/
 
 /**
  * Add flag vote data to ap_meta table.
@@ -22,7 +22,6 @@
  * @return integer
  */
 function ap_add_flag($userid, $actionid, $value = null, $param = null) {
-
 	return ap_add_meta($userid, 'flag', $actionid, $value, $param );
 }
 
@@ -153,8 +152,8 @@ function ap_get_comment_flag_btn($comment_id = false, $label = false) {
 
 	$nonce = wp_create_nonce('flag_'.$comment_id );
 
-	$output = '<a id="flag_'.$comment_id.'" data-query="ap_ajax_action=flag_comment&comment_id='.$comment_id.'&__nonce='.$nonce.'"
-    	data-action="ap_subscribe" class="flag-btn'.( ! $flagged ? ' can-flag' : '').'" href="#" title="'.__('Report this comment to moderaor', 'anspress-question-answer' ).'">
+	$output = '<a id="flag_'.$comment_id.'" data-query="flag_comment::'.$nonce.'::'.$comment_id.'"
+    	data-action="ajax_btn" class="flag-btn'.( ! $flagged ? ' can-flag' : '').'" href="#" title="'.__('Report this comment to moderaor', 'anspress-question-answer' ).'">
     	'.$label.'<span class="ap-data-view ap-view-count-'.$total_flag.'" data-view="'.$comment_id.'_comment_flag">'.$total_flag.'</span>
     </a>';
 
@@ -162,17 +161,17 @@ function ap_get_comment_flag_btn($comment_id = false, $label = false) {
 }
 
 /**
- * Count comment flag votes.
- *
- * @return int
+ * Return total flag count for comment.
+ * @param boolean|integer $comment_id Comment ID.
+ * @return integer
  */
-function ap_comment_flag_count($comment_id = false) {
-
+function ap_comment_flag_count( $comment_id = false ) {
 	if ( false === $comment_id ) {
 		$comment_id = get_comment_ID();
 	}
 
-	return apply_filters('ap_comment_flag_count', ap_meta_total_count('comment_flag', $comment_id ) );
+	$count = ap_meta_total_count('comment_flag', $comment_id );
+	return apply_filters( 'ap_comment_flag_count', $count[0]->count );
 }
 
 /**

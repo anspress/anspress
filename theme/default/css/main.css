@@ -2139,6 +2139,13 @@ body ul ul#ap-user-menu-link li > a .count {
   position: absolute;
   top: 6px;
 }
+#anspress .flag-btn > span {
+  background: #f1f1f1 none repeat scroll 0 0;
+  color: #777;
+  font-size: 12px;
+  margin-left: 3px;
+  padding: 0 3px;
+}
 #anspress .ap-form-control {
   border: 1px solid #ddd;
   border-radius: 1px;

@@ -448,11 +448,11 @@ function ap_user_can_view_post($post_id = false) {
 
 	$post_o = get_post( $post_id );
 
-	if ( 'private_post' == $post_o->post_status && ap_user_can_view_private_post( $post_id ) ) {
+	if ( 'private_post' == $post_o->post_status && ap_user_can_view_private_post( $post_0->ID ) ) {
 		return true;
 	}
 
-	if ( 'moderate' == $post_o->post_status && ap_user_can_view_moderate_post( $post_id ) ) {
+	if ( 'moderate' == $post_o->post_status && ap_user_can_view_moderate_post( $post_0->ID ) ) {
 		return true;
 	}
 
@@ -662,53 +662,82 @@ function ap_role_caps( $role ) {
 }
 
 /**
- * Check if current user can read question
- * @param  integer         $question_id Question ID.
+ * Check if a user can read post
+ * @param  integer         $post_id 	Post ID.
  * @param  boolean|integer $user_id     User ID.
  * @return boolean
  * @since  2.4.6
  */
-function ap_user_can_read_question( $question_id, $user_id = false ) {
+function ap_user_can_read_post( $post_id, $user_id = false, $post_type = false ) {
 	if ( false === $user_id ) {
 		$user_id = get_current_user_id();
 	}
+	
+	$post_o = get_post( $post_id );
+	
+	if( false === $post_type ){
+		$post_type = $post_o->post_type;
+	}
+	
+	// If not question or answer then return true.
+	if( !in_array($post_type, array( 'question', 'answer' ) ) ){
+		return false;
+	}
 
 	/**
-	 * Allow overriding of ap_user_can_read_question.
+	 * Allow overriding of ap_user_can_read_post.
 	 * @param  boolean  $apply_filter Default is false.
-	 * @param  integer  $question_id  Question ID.
+	 * @param  integer  $post_id  	  Question ID.
 	 * @param  integer  $user_id  	  User ID.
+	 * @param  string   $post_type    Post type.
 	 * @return boolean
 	 * @since  2.4.6
 	 */
-	if ( apply_filters( 'ap_user_can_read_question', false, $question_id, $user_id ) ) {
+	if ( apply_filters( 'ap_user_can_read_post', false, $post_id, $user_id, $post_type ) ) {
 		return true;
 	}
 
-	$post_o = get_post( $question_id );
-
-	// Check if user have capability to read question.
+	// Check if user have capability to read question/answer.
 	// And then check post status based access.
-	if ( user_can( $user_id, 'ap_read_question' ) ) {
-
-		if ( 'private_post' == $post_o->post_status && ap_user_can_view_private_post( $question_id, $user_id ) ) {
+	if ( user_can( $user_id, 'ap_read_'.$post_type ) ) {
+		if ( 'private_post' == $post_o->post_status && ap_user_can_view_private_post( $post_id, $user_id ) ) {
 			return true;
-		}
-
-		if ( 'moderate' == $post_o->post_status && ap_user_can_view_moderate_post( $question_id, $user_id ) ) {
+		} elseif ( 'moderate' == $post_o->post_status && ap_user_can_view_moderate_post( $post_id, $user_id ) ) {
 			return true;
-		}
-
-		if ( 'publish' == $post_o->post_status || 'closed' == $post_o->post_status ) {
+		} elseif ( 'publish' == $post_o->post_status || 'closed' == $post_o->post_status ) {
 			return true;
 		}
 	}
 
 	// Also return true if user have capability to edit others question.
-	if ( user_can( $user_id, 'ap_edit_others_question' ) ) {
+	if ( user_can( $user_id, 'ap_edit_others_'.$post_type ) ) {
 		return true;
 	}
 
 	// Finally return false. And break the heart :p.
 	return false;
+}
+
+/**
+ * Check if a user can read question
+ * @param  integer         $question_id   Question ID.
+ * @param  boolean|integer $user_id     User ID.
+ * @return boolean
+ * @uses   ap_user_can_read_post
+ * @since  2.4.6
+ */
+function ap_user_can_read_question( $question_id, $user_id = false ) {
+	return ap_user_can_read_post( $question_id, $user_id, 'question' );
+}
+
+/**
+ * Check if a user can read answer
+ * @param  integer         $answer_id   Answer ID.
+ * @param  boolean|integer $user_id     User ID.
+ * @return boolean
+ * @uses   ap_user_can_read_post
+ * @since  2.4.6
+ */
+function ap_user_can_read_answer( $answer_id, $user_id = false ) {
+	return ap_user_can_read_post( $answer_id, $user_id, 'answer' );
 }

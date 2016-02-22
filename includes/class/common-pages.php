@@ -116,7 +116,7 @@ class AnsPress_Common_Pages
 		}
 
 		// Check if user is allowed to read this question.
-		if ( !ap_user_can_read_question( get_question_id() ) ) {
+		if ( ! ap_user_can_read_question( get_question_id() ) ) {
 			printf(
 				'<div class="ap-no-permission">%s</div>',
 				__('Sorry! you are not allowed to read this question.', 'anspress-question-answer' )

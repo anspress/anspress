@@ -880,8 +880,9 @@ class AnsPress_Ajax
 	 * @since 2.4
 	 */
 	public function flag_comment() {
+		$args = $_POST['args'];
 
-	    $comment_id = (int) $_POST['comment_id'];
+	    $comment_id = (int) $args[0];
 	    if ( ! ap_verify_nonce( 'flag_'. $comment_id ) || ! is_user_logged_in() ) {
 	        $this->something_wrong();
 	    }
