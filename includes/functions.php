@@ -952,6 +952,7 @@ function ap_responce_message($id, $only_message = false) {
 		'voting_down_disabled' => array( 'type' => 'warning', 'message' => __( 'Voting down is disabled.', 'anspress-question-answer' ) ),
 		'flagged_comment' => array( 'type' => 'success', 'message' => __( 'This comment has been reported to site moderator', 'anspress-question-answer' ) ),
 		'already_flagged_comment' => array( 'type' => 'warning', 'message' => __( 'You have already reported this comment', 'anspress-question-answer' ) ),
+		'you_cannot_vote_on_restricted' => array( 'type' => 'warning', 'message' => __( 'You cannot vote on restricted posts', 'anspress-question-answer' ) ),
 		);
 
 	/*

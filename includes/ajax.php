@@ -835,6 +835,11 @@ class AnsPress_Ajax
 
 	    $userid = get_current_user_id();
 
+	    // Check if user can read post, if not then show warning.
+	    if ( ! ap_user_can_read_post( $post->ID, $userid, $post->post_type ) ) {
+	        $this->send( 'you_cannot_vote_on_restricted' );
+	    }
+
 	    $is_voted = ap_is_user_voted( $post_id, 'vote', $userid );
 
 	    if ( is_object( $is_voted ) && $is_voted->count > 0 ) {
@@ -859,11 +864,8 @@ class AnsPress_Ajax
 			}
 	    } else {
 	        $counts = ap_add_post_vote( $userid, $type, $post_id, $post->post_author );
-
-			// Update post meta.
-			
+			// Update post meta.			
 	        do_action( 'ap_'.$type, $post_id, $counts );
-
 	       	$this->send( array( 'action' => 'voted', 'type' => $type, 'count' => $counts['net_vote'], 'message' => 'voted' ) );
 	    }
 	}
