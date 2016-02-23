@@ -127,10 +127,6 @@ function ap_current_page_is() {
 			$template = 'ask';
 		} elseif ( is_question_categories() ) {
 			$template = 'categories';
-		} elseif ( is_question_tags() ) {
-			$template = 'tags';
-		} elseif ( is_question_tag() ) {
-			$template = 'tag';
 		} elseif ( is_question_cat() ) {
 			$template = 'category';
 		} elseif ( is_question_edit() ) {
@@ -823,9 +819,7 @@ function ap_get_breadcrumbs() {
 
 	$a['base'] = array( 'title' => ap_opt( 'base_page_title' ), 'link' => ap_base_page_link(), 'order' => 0 );
 
-	if ( is_question_tag() ) {
-		$a['tag'] = array( 'title' => __( 'Tags', 'anspress-question-answer' ), 'link' => '', 'order' => 10 );
-	} elseif ( is_question() ) {
+	if ( is_question() ) {
 		$a['page'] = array( 'title' => substr( $title, 0, 30 ).(strlen( $title ) > 30 ? __( '..', 'anspress-question-answer' ) : ''), 'link' => get_permalink( get_question_id() ), 'order' => 10 );
 	} elseif ( 'base' != $current_page && '' != $current_page ) {
 		if ( 'user' == $current_page ) {
