@@ -117,16 +117,32 @@ class AP_Roles
 
 
 /**
- * Check if a user can ask a question
+ * Check if a user can ask a question.
+ * @param  integer|boolean $user_id User_id.
  * @return boolean
+ * @since  2.4.6 Added new argument `$user_id`.
  */
-function ap_user_can_ask() {
+function ap_user_can_ask( $user_id = false ) {
+	if ( false === $user_id ) {
+		$user_id = get_current_user_id();
+	}
 
-	if ( is_super_admin() || current_user_can( 'ap_new_question' ) ) {
+	if ( is_super_admin( $user_id ) ) {
 		return true;
 	}
 
-	if ( ! is_user_logged_in() && ap_allow_anonymous() ) {
+	/**
+	 * Filter to hijack ap_user_can_ask function.
+	 * @param  boolean 	$thing 		Apply this filter, false by default.
+	 * @param  integer 	$user_id 	User ID.
+	 * @return boolean
+	 * @since  2.4.6
+	 */
+	if ( apply_filters( 'ap_user_can_ask', false, $user_id ) ) {
+		return true;
+	}
+
+	if ( user_can( $user_id, 'ap_new_question' ) || ( ! is_user_logged_in() && ap_allow_anonymous()) ) {
 		return true;
 	}
 
@@ -135,28 +151,35 @@ function ap_user_can_ask() {
 
 /**
  * Check if a user can answer on a question
- * @param  integer $question_id question id.
+ * @param  integer|object  $question_id    Question id or object.
+ * @param  boolean|integer $user_id        User ID.
  * @return boolean
+ * @since  2.4.6 Added new argument `$user_id`.
  */
-function ap_user_can_answer($question_id) {
-	if ( ap_opt( 'only_admin_can_answer' ) && ! is_super_admin( ) ) {
-		return false;
+function ap_user_can_answer( $question_id, $user_id = false ) {
+	if( false === $user_id ){
+		$user_id = get_current_user_id();
 	}
-
-	if ( is_super_admin() ) {
+	
+	if ( is_super_admin( $user_id ) ) {
 		return true;
-	}
-
-	// Filter for applying custom conditions.
-	$filter = apply_filters( 'ap_user_can_answer', false );
-	if ( false !== $filter ) {
-		return $filter;
 	}
 
 	$question = get_post( $question_id );
 
-	// Check if user is original poster and dont allow them to answer their own question.
-	if ( ! ap_opt( 'disallow_op_to_answer' ) && $question->post_author == get_current_user_id() && is_user_logged_in() ) {
+	/**
+	 * Allow overriding of ap_user_can_answer.
+	 * @param boolean 		$filter 		Apply this filter, default is false.
+	 * @param integer 		$question_id 	Question ID.
+	 * @param integer 		$user_id 		User ID.
+	 * @since 2.4.6 Added 2 new arguments `$question_id` and `$user_id`.
+	 */
+	if ( apply_filters( 'ap_user_can_answer', false, $question->ID, $user_id ) ) {
+		return true;
+	}
+
+	// Check if only admin is allowed to answer.
+	if ( ap_opt( 'only_admin_can_answer' ) && ! is_super_admin( $user_id ) ) {
 		return false;
 	}
 
@@ -165,11 +188,18 @@ function ap_user_can_answer($question_id) {
 		return false;
 	}
 
+	// Check if user is original poster and dont allow them to answer their own question.
+	if ( ! ap_opt( 'disallow_op_to_answer' ) && $question->post_author == $user_id ) {
+		return false;
+	}
+
 	// Check if user already answered and if multiple answer disabled then down't allow them to answer.
-	if ( current_user_can( 'ap_new_answer' ) ) {
-		if ( ! ap_opt( 'multiple_answers' ) && ap_is_user_answered( $question_id, get_current_user_id() ) ) {
-			return false; } else {
-			return true; }
+	if ( user_can( $user_id, 'ap_new_answer' ) ) {
+		if ( ! ap_opt( 'multiple_answers' ) && ap_is_user_answered( $question_id, $user_id ) ) {
+			return false;
+		} else {
+			return true;
+		}
 	}
 
 	if ( ap_allow_anonymous() && ! is_user_logged_in() ) {

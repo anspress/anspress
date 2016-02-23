@@ -17,6 +17,7 @@ $I->fillField([ 'name' => 'title' ], $I->questions['question1'] );
 $I->fillTinyMceEditorById('description', 'Fusce iaculis condimentum nisi, nec commodo eros molestie at. Nullam libero erat, sollicitudin eu condimentum sit amet, rhoncus ut lacus. Integer vulputate nibh et diam sagittis in dictum mauris dapibus. ' );
 
 $I->click('#ask_form .ap-btn-submit' );
+$I->waitForJS( 'return jQuery.active == 0;',60 );
 $I->amOnPage( '/questions/' );
 $I->see($I->questions['question1'] );
 $I->makeScreenshot('questions_page' );

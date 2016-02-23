@@ -457,6 +457,15 @@ class AnsPress_Process_Form
 
 		$question = get_post( (int) $_POST['form_question_id'] );
 
+		// Check if user have permission to answer a question.
+		if ( !ap_user_can_answer( $question->ID ) ) {
+			$this->result = array(
+				'form' 			=> $_POST['ap_form_action'],
+				'message'		=> 'no_permission',
+			);
+			return;
+		}
+
 		$args = array(
 			'description' => array(
 				'sanitize' => array( 'remove_more', 'encode_pre_code', 'wp_kses' ),
