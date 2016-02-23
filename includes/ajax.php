@@ -814,30 +814,24 @@ class AnsPress_Ajax
 	        $this->something_wrong();
 	    }
 
-	    if ( ! is_user_logged_in() ) {
-	        $this->send( 'please_login' );
-	    }
+	    $type = sanitize_text_field( $_POST['type'] );
+	    $type = ($type == 'up' ? 'vote_up' : 'vote_down');
+
+	    $userid = get_current_user_id();
 
 	    $post = get_post( $post_id );
-	    if ( $post->post_author == get_current_user_id() && ! is_super_admin( ) ) {
-	        $this->send( 'cannot_vote_own_post' );
+	    
+	    $thing = ap_user_can_vote_on_post( $post_id, $type, $userid, true );
+
+	    // Check if WP_Error object and send error message code.
+	    if ( is_wp_error( $thing ) ) {
+	        $this->send( $thing->get_error_code() );
 	    }
-
-	    $type = sanitize_text_field( $_POST['type'] );
-
-	    $type = ($type == 'up' ? 'vote_up' : 'vote_down');
 
 	    if ( 'question' == $post->post_type && ap_opt( 'disable_down_vote_on_question' ) && 'vote_down' == $type ) {
 	        $this->send( 'voting_down_disabled' );
 	    } elseif ( 'answer' === $post->post_type && ap_opt( 'disable_down_vote_on_answer' ) && 'vote_down' === $type ) {
 	        $this->send( 'voting_down_disabled' );
-	    }
-
-	    $userid = get_current_user_id();
-
-	    // Check if user can read post, if not then show warning.
-	    if ( ! ap_user_can_read_post( $post->ID, $userid, $post->post_type ) ) {
-	        $this->send( 'you_cannot_vote_on_restricted' );
 	    }
 
 	    $is_voted = ap_is_user_voted( $post_id, 'vote', $userid );

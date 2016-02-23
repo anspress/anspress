@@ -672,15 +672,15 @@ function ap_user_can_read_post( $post_id, $user_id = false, $post_type = false )
 	if ( false === $user_id ) {
 		$user_id = get_current_user_id();
 	}
-	
+
 	$post_o = get_post( $post_id );
-	
-	if( false === $post_type ){
+
+	if ( false === $post_type ) {
 		$post_type = $post_o->post_type;
 	}
-	
+
 	// If not question or answer then return true.
-	if( !in_array($post_type, array( 'question', 'answer' ) ) ){
+	if ( ! in_array($post_type, array( 'question', 'answer' ) ) ) {
 		return false;
 	}
 
@@ -740,4 +740,67 @@ function ap_user_can_read_question( $question_id, $user_id = false ) {
  */
 function ap_user_can_read_answer( $answer_id, $user_id = false ) {
 	return ap_user_can_read_post( $answer_id, $user_id, 'answer' );
+}
+
+/**
+ * Check if user is allowed to cast a vote on post.
+ * @param  integer|object  $post_id 	Post ID or Object.
+ * @param  string          $type    	Vote type. vote_up or vote_down.
+ * @param  boolean|integer $user_id 	User ID.
+ * @param  boolean		   $wp_error 	Return WP_Error object.
+ * @return boolean
+ * @since  2.4.6
+ */
+function ap_user_can_vote_on_post( $post_id, $type, $user_id = false, $wp_error = false ) {
+	if ( false === $user_id ) {
+		$user_id = get_current_user_id();
+	}
+
+	// Return true if super admin.
+	if ( is_super_admin( $user_id ) ) {
+		return true;
+	}
+
+	$type = $type == 'vote_up' ? 'vote_up' : 'vote_down';
+
+	$post_o = get_post( $post_id );
+
+	/**
+	 * Filter to hijack ap_user_can_vote_on_post.
+	 * @param  boolean 			$apply_filter 	Apply current filter, false by default.
+	 * @param  integer|object 	$post_id 		Post ID or object.
+	 * @param  string 		 	$type 			Vote type, vote_up or vote_down.
+	 * @param  integer 			$user_id 		User ID.
+	 * @return boolean
+	 * @since  2.4.6
+	 */
+	if ( apply_filters( 'ap_user_can_vote_on_post', false, $post_id, $type, $user_id ) ) {
+		return true;
+	}
+
+	// Do not allow post author to vote on self posts.
+	if ( $post_o->post_author == $user_id ) {
+		if ( $wp_error ) {
+			return new WP_Error('cannot_vote_own_post', __('Voting on own\'s post is not allowed.', 'anspress-question-answer' ) );
+		}
+		return false;
+	}
+
+	// Check if user can read question/answer, if not then they are not allowed to vote.
+	if ( ! ap_user_can_read_post( $post_id, $user_id ) ) {
+		if ( $wp_error ) {
+			return new WP_Error('you_cannot_vote_on_restricted', __( 'Voting on restricted posts are not allowed.', 'anspress-question-answer' ) );
+		}
+		return false;
+	}
+
+	if ( user_can( $user_id, 'ap_'.$type ) ) {
+		return true;
+	}
+
+	if ( $wp_error ) {
+		return new WP_Error('no_permission', __('Its look like you do not have permission to vote.', 'anspress-question-answer' ) );
+	}
+
+	return false;
 }
