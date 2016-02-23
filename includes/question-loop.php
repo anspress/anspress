@@ -401,11 +401,10 @@ function ap_question_the_answer_form() {
 	include( ap_get_theme_location( 'answer-form.php' ) );
 }
 
-	/**
-	 * Output answer of active question.
-	 * @return void
-	 * @since 2.1
-	 */
+/**
+ * Output answers of current question.
+ * @since 2.1
+ */
 function ap_question_the_answers() {
 	global $answers;
 
@@ -418,11 +417,11 @@ function ap_question_the_answers() {
 	wp_reset_postdata();
 }
 
-	/**
-	 * Echo time current question was active
-	 * @return void
-	 * @since 2.1
-	 */
+/**
+ * Echo time current question was active
+ * @return void
+ * @since 2.1
+ */
 function ap_question_the_active_ago() {
 	echo ap_human_time( ap_question_get_the_active_ago(), false );
 }

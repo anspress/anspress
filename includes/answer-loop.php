@@ -82,8 +82,8 @@ if ( ! class_exists( 'Answers_Query' ) ) :
 			$args = $this->args;
 
 			/**
-		 * Initialize parent class
-		 */
+			 * Initialize parent class
+			 */
 			parent::__construct( $args );
 		}
 
@@ -137,7 +137,6 @@ if ( ! class_exists( 'Answers_Query' ) ) :
 				); }
 
 		}
-
 	}
 
 endif;
@@ -158,13 +157,13 @@ function ap_get_answers($args = array()) {
 		$args['sortby'] = (isset( $_GET['ap_sort'] )) ? sanitize_text_field( wp_unslash( $_GET['ap_sort'] ) ) : ap_opt( 'answers_sort' );
 	}
 
-	if ( is_super_admin() || current_user_can( 'ap_view_private' ) ) {
+	//if ( is_super_admin() || current_user_can( 'ap_view_private' ) ) {
 		$args['post_status'][] = 'private_post';
-	}
+	//}
 
-	if ( is_super_admin() || current_user_can( 'ap_view_moderate' ) ) {
+	//if ( is_super_admin() || current_user_can( 'ap_view_moderate' ) ) {
 		$args['post_status'][] = 'moderate';
-	}
+	//}
 
 	if ( isset( $_GET['show_answer'] ) ) {
 		$args['ap_query'] = 'order_answer_to_top';
@@ -205,22 +204,22 @@ function ap_get_best_answer($question_id = false) {
  */
 function ap_have_answers() {
 	global $answers;
-	
-	if($answers){
+
+	if ( $answers ) {
 		return $answers->have_posts();
 	}
 }
 
 function ap_answers() {
 	global $answers;
-	if($answers){
+	if ( $answers ) {
 		return $answers->have_posts();
 	}
 }
 
 function ap_the_answer() {
 	global $answers;
-	if($answers){
+	if ( $answers ) {
 		return $answers->the_post();
 	}
 }
@@ -411,10 +410,10 @@ function ap_answer_get_the_permalink() {
 function ap_answer_the_net_vote() {
 	if ( ! ap_opt( 'disable_voting_on_answer' ) ) {
 		?>
-			<span class="ap-questions-count ap-questions-vcount">
+            <span class="ap-questions-count ap-questions-vcount">
 				<span><?php echo ap_answer_get_the_net_vote(); ?></span>
 				<?php  esc_attr_e( 'votes', 'anspress-question-answer' ); ?>
-			</span>
+            </span>
 		<?php
 	}
 }

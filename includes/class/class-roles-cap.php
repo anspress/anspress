@@ -663,7 +663,7 @@ function ap_role_caps( $role ) {
 
 /**
  * Check if a user can read post
- * @param  integer         $post_id 	Post ID.
+ * @param  integer|object  $post_id 	Post ID.
  * @param  boolean|integer $user_id     User ID.
  * @return boolean
  * @since  2.4.6
@@ -720,7 +720,7 @@ function ap_user_can_read_post( $post_id, $user_id = false, $post_type = false )
 
 /**
  * Check if a user can read question
- * @param  integer         $question_id   Question ID.
+ * @param  integer|object  $question_id   Question ID.
  * @param  boolean|integer $user_id     User ID.
  * @return boolean
  * @uses   ap_user_can_read_post
@@ -732,7 +732,7 @@ function ap_user_can_read_question( $question_id, $user_id = false ) {
 
 /**
  * Check if a user can read answer
- * @param  integer         $answer_id   Answer ID.
+ * @param  integer|object  $answer_id   Answer ID.
  * @param  boolean|integer $user_id     User ID.
  * @return boolean
  * @uses   ap_user_can_read_post

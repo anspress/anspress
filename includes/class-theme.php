@@ -88,7 +88,10 @@ class AnsPress_Theme
 			if ( ap_answer_is_best( $post->ID ) ) {
 				$classes[] = 'best-answer';
 			}
-		}
+			if ( !ap_user_can_read_answer( $post ) ) {
+				$classes[] = 'no-permission';
+			}
+		}		
 
 		return $classes;
 	}
