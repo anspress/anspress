@@ -382,9 +382,8 @@ function ap_answers_link($question_id = false) {
  * @since 0.1
  */
 function ap_comment_btn_html($echo = false) {
-
-	if ( ap_user_can_comment() ) {
-		global $post;
+	global $post;
+	if ( ap_user_can_comment( $post->ID ) ) {		
 
 		if ( $post->post_type == 'question' && ap_opt( 'disable_comments_on_question' ) ) {
 			return;

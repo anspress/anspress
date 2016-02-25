@@ -133,13 +133,16 @@ function ap_user_can_ask( $user_id = false ) {
 
 	/**
 	 * Filter to hijack ap_user_can_ask function.
-	 * @param  boolean 	$thing 		Apply this filter, false by default.
-	 * @param  integer 	$user_id 	User ID.
+	 * @param  boolean|string 	$filter 	Apply this filter, empty string by default.
+	 * @param  integer 			$user_id 	User ID.
 	 * @return boolean
 	 * @since  2.4.6
 	 */
-	if ( apply_filters( 'ap_user_can_ask', false, $user_id ) ) {
+	$filter = apply_filters( 'ap_user_can_ask', '', $user_id );
+	if ( true === $filter ) {
 		return true;
+	} elseif ( false === $filter ) {
+		return false;
 	}
 
 	if ( user_can( $user_id, 'ap_new_question' ) || ( ! is_user_logged_in() && ap_allow_anonymous()) ) {
@@ -157,10 +160,10 @@ function ap_user_can_ask( $user_id = false ) {
  * @since  2.4.6 Added new argument `$user_id`.
  */
 function ap_user_can_answer( $question_id, $user_id = false ) {
-	if( false === $user_id ){
+	if ( false === $user_id ) {
 		$user_id = get_current_user_id();
 	}
-	
+
 	if ( is_super_admin( $user_id ) ) {
 		return true;
 	}
@@ -169,13 +172,16 @@ function ap_user_can_answer( $question_id, $user_id = false ) {
 
 	/**
 	 * Allow overriding of ap_user_can_answer.
-	 * @param boolean 		$filter 		Apply this filter, default is false.
-	 * @param integer 		$question_id 	Question ID.
-	 * @param integer 		$user_id 		User ID.
+	 * @param boolean|string $filter 		Apply this filter, default is empty string.
+	 * @param integer 		 $question_id 	Question ID.
+	 * @param integer 		 $user_id 		User ID.
 	 * @since 2.4.6 Added 2 new arguments `$question_id` and `$user_id`.
 	 */
-	if ( apply_filters( 'ap_user_can_answer', false, $question->ID, $user_id ) ) {
+	$filter = apply_filters( 'ap_user_can_answer', '', $question->ID, $user_id );
+	if ( true === $filter ) {
 		return true;
+	} elseif ( false === $filter ) {
+		return false;
 	}
 
 	// Check if only admin is allowed to answer.
@@ -202,6 +208,7 @@ function ap_user_can_answer( $question_id, $user_id = false ) {
 		}
 	}
 
+	// Check if anonymous asnwer is allowed and if yes then return true.
 	if ( ap_allow_anonymous() && ! is_user_logged_in() ) {
 		return true;
 	}
@@ -326,8 +333,40 @@ function ap_user_can_change_label() {
  * Check if user can comment on AnsPress posts
  * @return boolean
  */
-function ap_user_can_comment() {
-	if ( is_super_admin() || current_user_can( 'ap_new_comment' ) || ap_opt( 'anonymous_comment' ) ) {
+function ap_user_can_comment( $post_id = false, $user_id = false ) {
+	if ( false === $post_id ) {
+		$post_id = get_the_ID();
+	}
+
+	if ( false === $user_id ) {
+		$user_id = get_current_user_id();
+	}
+
+	if ( is_super_admin( $user_id ) ) {
+		return true;
+	}
+
+	/**
+	 * Filter to hijack ap_user_can_comment.
+	 * @param  boolean|string 	$apply_filter 	Apply current filter, empty string by default.
+	 * @param  integer|object 	$post_id 		Post ID or object.
+	 * @param  integer 			$user_id 		User ID.
+	 * @return boolean
+	 * @since  2.4.6
+	 */
+	$filter = apply_filters( 'ap_user_can_comment', '', $post_id, $user_id );
+	if ( true === $filter ) {
+		return true;
+	} elseif ( false === $filter ) {
+		return false;
+	}
+
+	// Don't allow user to comment if they don't have permission to read post.
+	if ( ! ap_user_can_read_post( $post_id, $user_id ) ) {
+		return false;
+	}
+
+	if ( current_user_can( 'ap_new_comment' ) || ap_opt( 'anonymous_comment' ) ) {
 		return true;
 	}
 
@@ -711,20 +750,23 @@ function ap_user_can_read_post( $post_id, $user_id = false, $post_type = false )
 
 	// If not question or answer then return true.
 	if ( ! in_array($post_type, array( 'question', 'answer' ) ) ) {
-		return false;
+		return true;
 	}
 
 	/**
 	 * Allow overriding of ap_user_can_read_post.
-	 * @param  boolean  $apply_filter Default is false.
-	 * @param  integer  $post_id  	  Question ID.
-	 * @param  integer  $user_id  	  User ID.
-	 * @param  string   $post_type    Post type.
+	 * @param  boolean|string  	$apply_filter Default is empty string.
+	 * @param  integer  		$post_id  	  Question ID.
+	 * @param  integer  		$user_id  	  User ID.
+	 * @param  string   		$post_type    Post type.
 	 * @return boolean
 	 * @since  2.4.6
 	 */
-	if ( apply_filters( 'ap_user_can_read_post', false, $post_id, $user_id, $post_type ) ) {
+	$filter = apply_filters( 'ap_user_can_read_post', '', $post_id, $user_id, $post_type );
+	if ( true === $filter ) {
 		return true;
+	} elseif ( false === $filter ) {
+		return false;
 	}
 
 	// Check if user have capability to read question/answer.
@@ -797,15 +839,18 @@ function ap_user_can_vote_on_post( $post_id, $type, $user_id = false, $wp_error 
 
 	/**
 	 * Filter to hijack ap_user_can_vote_on_post.
-	 * @param  boolean 			$apply_filter 	Apply current filter, false by default.
+	 * @param  boolean|string 	$apply_filter 	Apply current filter, empty string by default.
 	 * @param  integer|object 	$post_id 		Post ID or object.
 	 * @param  string 		 	$type 			Vote type, vote_up or vote_down.
 	 * @param  integer 			$user_id 		User ID.
 	 * @return boolean
 	 * @since  2.4.6
 	 */
-	if ( apply_filters( 'ap_user_can_vote_on_post', false, $post_id, $type, $user_id ) ) {
+	$filter = apply_filters( 'ap_user_can_vote_on_post', '', $post_id, $type, $user_id );
+	if ( true === $filter ) {
 		return true;
+	} elseif ( false === $filter ) {
+		return false;
 	}
 
 	// Do not allow post author to vote on self posts.

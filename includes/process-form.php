@@ -698,9 +698,11 @@ class AnsPress_Process_Form
 			return;
 		}
 
+		$comment_post_ID = (int) $_POST['comment_post_ID'];
+
 		if ( ! isset( $_REQUEST['comment_ID'] ) ) {
 			// Do security check
-			if ( ! ap_user_can_comment() || ! isset( $_POST['__nonce'] ) || ! wp_verify_nonce( $_POST['__nonce'], 'comment_' . (int) $_POST['comment_post_ID'] ) ) {
+			if ( ! ap_user_can_comment( $comment_post_ID ) || ! isset( $_POST['__nonce'] ) || ! wp_verify_nonce( $_POST['__nonce'], 'comment_' . (int) $_POST['comment_post_ID'] ) ) {
 				$this->result = ap_ajax_responce( 'no_permission' );
 				return;
 			}
@@ -711,7 +713,6 @@ class AnsPress_Process_Form
 			}
 		}
 
-		$comment_post_ID = (int) $_POST['comment_post_ID'];
 		$post = get_post( $comment_post_ID );
 
 		if ( ! $post || empty( $post->post_status ) ) {
