@@ -467,7 +467,7 @@ function ap_post_actions_buttons($disable = array()) {
 	/*
      * Comment button
 	 */
-	if ( ap_user_can_comment() ) {
+	if ( ap_user_can_comment( $post->ID ) ) {
 	    $actions['comment'] = ap_comment_btn_html();
 	}
 

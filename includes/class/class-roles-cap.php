@@ -331,7 +331,11 @@ function ap_user_can_change_label() {
 
 /**
  * Check if user can comment on AnsPress posts
+ * @param boolean|integer $post_id Post ID.
+ * @param boolean|integer $user_id User ID.
  * @return boolean
+ * @since 2.4.6 Added two arguments `$post_id` and `$user_id`. Also check if user can read post.
+ * @since 2.4.6 Added filter ap_user_can_comment.
  */
 function ap_user_can_comment( $post_id = false, $user_id = false ) {
 	if ( false === $post_id ) {
@@ -366,7 +370,7 @@ function ap_user_can_comment( $post_id = false, $user_id = false ) {
 		return false;
 	}
 
-	if ( current_user_can( 'ap_new_comment' ) || ap_opt( 'anonymous_comment' ) ) {
+	if ( user_can( $user_id, 'ap_new_comment' ) || ap_opt( 'anonymous_comment' ) ) {
 		return true;
 	}
 
@@ -377,13 +381,41 @@ function ap_user_can_comment( $post_id = false, $user_id = false ) {
  * Check if user can edit comment
  * @param  integer $comment_id     Comment ID.
  * @return boolean
+ * @since 2.4.6 Added an `$user_id`. Also check if user can read post.
+ * @since 2.4.6 Added filter ap_user_can_edit_comment.
  */
-function ap_user_can_edit_comment($comment_id) {
+function ap_user_can_edit_comment( $comment_id,  $user_id = false ) {
+	if ( false === $user_id ) {
+		$user_id = get_current_user_id();
+	}
+
 	if ( is_super_admin() || current_user_can( 'ap_mod_comment' ) ) {
 		return true;
 	}
 
-	if ( current_user_can( 'ap_edit_comment' ) && get_current_user_id() == get_comment( $comment_id )->user_id ) {
+	/**
+	 * Filter to hijack ap_user_can_edit_comment.
+	 * @param  boolean|string 	$apply_filter 	Apply current filter, empty string by default.
+	 * @param  integer|object 	$post_id 		Post ID or object.
+	 * @param  integer 			$user_id 		User ID.
+	 * @return boolean
+	 * @since  2.4.6
+	 */
+	$filter = apply_filters( 'ap_user_can_edit_comment', '', $post_id, $user_id );
+	if ( true === $filter ) {
+		return true;
+	} elseif ( false === $filter ) {
+		return false;
+	}
+
+	$comment = get_comment( $comment_id );
+
+	// Don't allow user to comment if they don't have permission to read post.
+	if ( ! ap_user_can_read_post( $comment->comment_post_ID, $user_id ) ) {
+		return false;
+	}
+
+	if ( user_can( $user_id, 'ap_edit_comment' ) && $user_id == $comment->user_id ) {
 		return true;
 	}
 
@@ -688,8 +720,6 @@ function ap_role_caps( $role ) {
 			'ap_edit_question'			=> true,
 			'ap_edit_answer'			=> true,
 			'ap_edit_comment'			=> true,
-			'ap_hide_question'			=> true,
-			'ap_hide_answer'			=> true,
 			'ap_delete_question'		=> true,
 			'ap_delete_answer'			=> true,
 			'ap_delete_comment'			=> true,
@@ -708,9 +738,6 @@ function ap_role_caps( $role ) {
 			'ap_edit_others_question'	=> true,
 			'ap_edit_others_answer'		=> true,
 			'ap_edit_others_comment'	=> true,
-			'ap_hide_others_question'	=> true,
-			'ap_hide_others_answer'		=> true,
-			'ap_hide_others_comment'	=> true,
 			'ap_delete_others_question'	=> true,
 			'ap_delete_others_answer'	=> true,
 			'ap_delete_others_comment'	=> true,

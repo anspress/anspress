@@ -14,7 +14,6 @@
     "grunt-contrib-watch": "^0.6.1",
     "grunt-csscomb": "",
     "grunt-git": "",
-    "grunt-phpdocumentor": "^0.4.1",
     "grunt-phplint": "",
     "grunt-phpunit": "",
     "grunt-replace": "",
@@ -22,9 +21,7 @@
     "grunt-wp-i18n": "",
     "grunt-wp-readme-to-markdown": "",
     "load-grunt-tasks": "",
-    "time-grunt": "",
-    "webdriverio": "",
-    "zombie": "^4.2.1"
+    "time-grunt": ""
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
