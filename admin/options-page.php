@@ -97,6 +97,14 @@ class AnsPress_Options_Page
 				'html' => '<span class="ap-form-separator">' . __( 'Avatar', 'anspress-question-answer' ) . '</span>',
 			) ,
 			array(
+				'name' => 'anspress_opt[load_assets_in_anspress_only]',
+				'label' => __( 'Load assets in AnsPress page only?', 'anspress-question-answer' ),
+				'desc' => __( 'Check this to load AnsPress JS and CSS on the AnsPress page only. Be careful, this might break layout.', 'anspress-question-answer' ),
+				'type' => 'checkbox',
+				'value' => $settings['load_assets_in_anspress_only'],
+				'show_desc_tip' => false,
+			) ,
+			array(
 				'name' => 'anspress_opt[avatar_size_list]',
 				'label' => __( 'List avatar size', 'anspress-question-answer' ),
 				'desc' => __( 'User avatar size for questions list.', 'anspress-question-answer' ),

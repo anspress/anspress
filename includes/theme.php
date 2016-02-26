@@ -850,3 +850,56 @@ function ap_current_page() {
 
 	return apply_filters( 'ap_current_page', esc_attr( $query_var ) );
 }
+
+function ap_assets( ) {
+	$dir = ap_env_dev() ? 'js' : 'min';
+	$min = ap_env_dev() ? '' : '.min';
+
+	$assets = array(
+		'js' => array(						
+			'peity-js' => array( 'src' => ap_get_theme_url( 'js/jquery.peity.min.js' ), 'dep' => array( 'jquery' ) ),
+			'ap-initial-js' => array( 'src' => ap_get_theme_url( 'js/initial.min.js' ), 'dep' => array( 'jquery' ) ),
+			'ap-scrollbar-js' => array( 'src' => ap_get_theme_url( 'js/jquery.scrollbar.min.js' ), 'dep' => array( 'jquery' ) ),
+
+			'anspress-js' => array( 'src' => ANSPRESS_URL.'assets/min/anspress.min.js', 'dep' => array( 'jquery', 'jquery-form' ) ),
+
+			'ap-theme-js' => array( 'src' => ap_get_theme_url( 'min/anspress-theme.min.js' ), 'dep' => array( 'jquery', 'anspress-js' ) ),
+		),
+		'css' => array(
+			'ap-theme-css' => array( 'src' => ap_get_theme_url( 'css/main.css' ) ),
+			'ap-fonts' => array( 'src' => ap_get_theme_url( 'fonts/style.css' ) ),
+			'ap-overrides' => array( 'src' => ap_get_theme_url( 'css/overrides.css' ), 'dep' => array( 'ap-theme-css' ) ),
+		),
+	);
+
+	if ( is_rtl() ) {
+		$assets['css']['ap-rtl'] = array( 'src' => ap_get_theme_url( 'css/RTL.css' ) );
+	}
+
+	$assets['js'] = apply_filters( 'ap_assets_js', $assets['js'] );
+	$assets['css'] = apply_filters( 'ap_assets_css', $assets['css'] );
+
+	return $assets;
+}
+
+/**
+ * Enqueue AnsPress assets.
+ * @since 2.4.6
+ */
+function ap_enqueue_scripts() {
+	$assets = ap_assets();
+
+	if ( isset( $assets['js'] ) ) {
+		foreach ( $assets['js'] as $k => $js ) {
+			$dep = isset( $js['dep'] ) ? $js['dep'] : array();
+			wp_enqueue_script( $k, $js['src'], $dep, AP_VERSION );
+		}
+	}
+
+	if ( isset( $assets['css'] ) ) {
+		foreach ( $assets['css'] as $k => $css ) {
+			$dep = isset( $css['dep'] ) ? $css['dep'] : array();
+			wp_enqueue_style( $k, $css['src'], $dep, AP_VERSION );
+		}
+	}
+}

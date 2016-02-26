@@ -8,9 +8,9 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-wp-readme-to-markdown');
 	grunt.loadNpmTasks('grunt-version');
-	grunt.loadNpmTasks('grunt-git');
 	grunt.loadNpmTasks('grunt-phplint');
 	grunt.loadNpmTasks('grunt-contrib-compress');
+	grunt.loadNpmTasks('grunt-contrib-concat');
 
 	grunt.initConfig({
 		pkg: grunt.file.readJSON( 'package.json' ),
@@ -101,11 +101,11 @@ module.exports = function(grunt) {
 	    less: {
 	    	main: {
 	    		options: {
-	    			paths: ["less"]
+	    			paths: ["less"],
+	    			compress: true
 	    		},
 	    		files: {
 	    			"theme/default/css/main.css": "theme/default/less/main.less",
-	    			"theme/default/css/responsive.css": "theme/default/less/responsive.less",
 	    			"theme/default/css/RTL.css": "theme/default/less/RTL.less",
 	    			"assets/ap-admin.css": "assets/ap-admin.less"
 	    		}
@@ -146,6 +146,19 @@ module.exports = function(grunt) {
 			},
 			all: ['**/*.php']
 		},
+		concat: {
+			options: {
+				separator: ';',
+			},
+			anspress: {
+				src: ['assets/min/ap-functions.min.js', 'assets/min/anspress_site.min.js'],
+				dest: 'assets/min/anspress.min.js',
+			},
+			theme: {
+				src: ['theme/default/js/initial.min.js', 'theme/default/js/jquery.peity.min.js', 'theme/default/js/jquery.scrollbar.min.js', 'theme/default/min/ap.min.js'],
+				dest: 'theme/default/min/anspress-theme.min.js',
+			},
+		},
 		
 		watch: {
 			less: {
@@ -154,11 +167,11 @@ module.exports = function(grunt) {
 			},
 			uglify: {
 				files: ['theme/default/js/*.js','assets/js/*.js'],
-				tasks: ['uglify'],
+				tasks: ['uglify', 'concat'],
 			}
 		},
 	});
 
-grunt.registerTask( 'build', [ 'phplint', 'wp_readme_to_markdown', 'makepot', 'version', 'less', 'uglify', 'compress' ]);
+grunt.registerTask( 'build', [ 'phplint', 'wp_readme_to_markdown', 'makepot', 'version', 'less', 'uglify', 'concat', 'compress' ]);
 
 }

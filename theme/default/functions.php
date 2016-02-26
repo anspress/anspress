@@ -14,19 +14,11 @@
  */
 add_action( 'wp_enqueue_scripts', 'ap_scripts_front', 1 );
 function ap_scripts_front() {
-	$dir = ap_env_dev() ? 'js' : 'min';
-	$min = ap_env_dev() ? '' : '.min';
+	if ( ! is_anspress() && ap_opt('load_assets_in_anspress_only' ) ) {
+		return;
+	}
 
-	wp_enqueue_script( 'jquery' );
-	wp_enqueue_script( 'jquery-form', array( 'jquery' ), false );
-	wp_enqueue_script( 'ap-functions-js', ANSPRESS_URL.'assets/'.$dir.'/ap-functions'.$min.'.js', array( 'jquery', 'jquery-form' ) );
-	wp_enqueue_script( 'ap-anspress_script', ANSPRESS_URL.'assets/'.$dir.'/anspress_site'.$min.'.js', array( 'jquery', 'jquery-form' ), AP_VERSION );
-	wp_enqueue_script( 'peity-js', ap_get_theme_url( 'js/jquery.peity.min.js' ), 'jquery', AP_VERSION );
-	wp_enqueue_script( 'ap-initial.js', ap_get_theme_url( 'js/initial.min.js' ), 'jquery', AP_VERSION );
-	wp_enqueue_script( 'ap-scrollbar.js', ap_get_theme_url( 'js/jquery.scrollbar.min.js' ), 'jquery', AP_VERSION );
-	wp_enqueue_script( 'ap-js', ap_get_theme_url( $dir.'/ap'.$min.'.js' ), array( 'jquery', 'jquery-form' ), AP_VERSION );
-	
-	wp_enqueue_style( 'ap-style', ap_get_theme_url( 'css/main.css' ), array(), AP_VERSION );
+	ap_enqueue_scripts();
 
 	$custom_css = '
         #anspress .ap-q-cells{
@@ -38,17 +30,8 @@ function ap_scripts_front() {
             margin-'.(is_rtl()? 'right' : 'left').': '.(ap_opt( 'avatar_size_qcomment' ) + 15).'px;
         }';
 
-	wp_add_inline_style( 'ap-style', $custom_css );
-	wp_enqueue_style( 'ap-fonts', ap_get_theme_url( 'fonts/style.css' ), array(), AP_VERSION );
-	
+	wp_add_inline_style( 'ap-theme-css', $custom_css );
 	do_action( 'ap_enqueue' );
-	
-	wp_enqueue_style( 'ap-responsive', ap_get_theme_url( 'css/responsive.css' ), array(), AP_VERSION );
-	if(is_rtl()){
-		wp_enqueue_style( 'ap-rtl', ap_get_theme_url( 'css/RTL.css' ), array(), AP_VERSION );
-	}
-	
-	wp_enqueue_style( 'ap-overrides', ap_get_theme_url( 'css/overrides.css' ), array(), AP_VERSION );
 
 	echo '<script type="text/javascript">';
 		echo 'var ajaxurl = "'.admin_url( 'admin-ajax.php' ).'",';
@@ -57,7 +40,7 @@ function ap_scripts_front() {
 	    echo 'disable_hover_card = "'.(ap_opt( 'disable_hover_card' ) ? true : false).'"';
 	echo '</script>';
 
-	wp_localize_script('ap-anspress_script', 'aplang', array(
+	wp_localize_script('anspress-js', 'aplang', array(
 		'password_field_not_macthing' => __( 'Password not matching', 'anspress-question-answer' ),
 		'password_length_less' => __( 'Password length must be 6 or higher', 'anspress-question-answer' ),
 		'not_valid_email' => __( 'Not a valid email', 'anspress-question-answer' ),
