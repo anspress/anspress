@@ -780,7 +780,7 @@ function ap_user_can_read_post( $post_id, $user_id = false, $post_type = false )
 		return true;
 	}
 
-	if ( ! ap_opt('logged_in_can_see_question') ) {
+	if ( ! ap_opt('logged_in_can_see_question') && $post_type == 'question' ) {
 		return true;
 	}
 

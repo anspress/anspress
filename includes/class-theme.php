@@ -219,17 +219,17 @@ class AnsPress_Theme
 	/**
 	 * Remove some unwanted things from wp_head
 	 */
-	public function remove_head_items($WP) {
-		global $wp_query;
-
-		// Check if quesied object is set, if not then set base page object.
-		if ( ! isset( $wp_query->queried_object ) ) {
-			$wp_query->queried_object = get_post( ap_opt( 'base_page' ) );
-		}
-
-		$wp_query->queried_object->post_title = ap_page_title();
+	public function remove_head_items($WP) {				
 
 		if ( is_anspress() ) {
+			global $wp_query;
+
+			// Check if quesied object is set, if not then set base page object.
+			if ( ! isset( $wp_query->queried_object ) ) {
+				$wp_query->queried_object = get_post( ap_opt( 'base_page' ) );
+			}
+			
+			$wp_query->queried_object->post_title = ap_page_title();
 			remove_action( 'wp_head', 'rsd_link' );
 			remove_action( 'wp_head', 'wlwmanifest_link' );
 			remove_action( 'wp_head', 'adjacent_posts_rel_link_wp_head', 10, 0 );
