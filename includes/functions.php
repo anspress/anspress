@@ -1203,7 +1203,7 @@ function ap_total_posts_count($post_type = 'question', $ap_type = false) {
 		$join = 'INNER JOIN '.$wpdb->prefix.'ap_meta m ON p.ID = m.apmeta_actionid';
 	}
 
-	$where = "WHERE $type $meta";
+	$where = "WHERE p.post_status NOT IN ('trash', 'draft') AND $type $meta";
 
 	$where = apply_filters( 'ap_total_posts_count', $where );
 

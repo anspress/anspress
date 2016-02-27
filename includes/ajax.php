@@ -722,15 +722,15 @@ class AnsPress_Ajax
 	    } else {
 	        ap_add_flag( $userid, $post_id );
 
-	        $count = ap_post_flag_count( $post_id );
+	        $count = ap_flag_vote( 'flag', $post_id );
 
 			// Update post meta.
-			update_post_meta( $post_id, ANSPRESS_FLAG_META, $count );
+			update_post_meta( $post_id, ANSPRESS_FLAG_META, $count[0]->count + 1 );
 	        $this->send( array(
 	        	'message' => 'flagged',
 	        	'action' => 'flagged',
-	        	'view' => array( $post_id.'_flag_count' => $count ),
-	        	'count' => $count,
+	        	'view' => array( $post_id.'_flag_count' => $count[0]->count ),
+	        	'count' => $count[0]->count,
 	        ) );
 	    }
 

@@ -26,6 +26,32 @@ function ap_add_flag($userid, $actionid, $value = null, $param = null) {
 }
 
 /**
+ * Retrieve flag vote count
+ * If $actionid is passed then it count numbers of vote for a post
+ * If $userid is passed then it count votes casted by a user.
+ * If $receiving_userid is passed then it count numbers of votes received.
+ *
+ * @param bool|int $userid           User ID of user casting the vote
+ * @param string   $type             Type of vote, "flag" or "comment_flag"
+ * @param boolean  $actionid         Post ID
+ * @param integer  $receiving_userid User ID of user who received the vote
+ *
+ * @return int
+ */
+function ap_flag_vote($type = 'flag', $actionid = false, $userid = false, $receiving_userid = false) {
+
+	if ( $actionid !== false ) {
+		return ap_meta_total_count( $type, $actionid );
+	} elseif ( $userid !== false ) {
+		return ap_meta_total_count( $type, false, $userid );
+	} elseif ( $receiving_userid !== false ) {
+		return ap_meta_total_count( $type, false, false, false, $receiving_userid );
+	}
+
+	return 0;
+}
+
+/**
  * Count post flag votes.
  *
  * @param integer $postid
@@ -211,3 +237,5 @@ function ap_is_user_flagged_comment($comment_id = false, $user_id = false) {
 function ap_delete_all_post_flags( $post_id ) {
 	return ap_delete_meta( array( 'apmeta_actionid' => (int) $post_id, 'apmeta_type' => 'flag' ) );
 }
+
+
