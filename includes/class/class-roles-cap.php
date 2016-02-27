@@ -798,7 +798,11 @@ function ap_user_can_read_post( $post_id, $user_id = false, $post_type = false )
 
 	// Check if user have capability to read question/answer.
 	// And then check post status based access.
-	if ( !user_can( $user_id, 'ap_read_'.$post_type ) && ap_opt('only_logged_in') ) {
+	if ( !user_can( $user_id, 'ap_read_'.$post_type ) && ap_opt('only_logged_in') && 'question' == $post_type ) {
+		return false;
+	}
+
+	if ( !user_can( $user_id, 'ap_read_'.$post_type ) && ap_opt('logged_in_can_see_ans') && 'answer' == $post_type ) {
 		return false;
 	}
 
