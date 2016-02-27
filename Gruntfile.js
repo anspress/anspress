@@ -172,6 +172,6 @@ module.exports = function(grunt) {
 		},
 	});
 
-grunt.registerTask( 'build', [ 'phplint', 'wp_readme_to_markdown', 'makepot', 'version', 'less', 'uglify', 'concat', 'compress' ]);
+grunt.registerTask( 'build', [ 'phplint', 'makepot', 'version', 'less', 'uglify', 'concat', 'compress' ]);
 
 }

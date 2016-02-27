@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: AnsPress 2.4.5\n"
 "Report-Msgid-Bugs-To: "
 "https://wordpress.org/support/plugin/anspress-question-answer\n"
-"POT-Creation-Date: 2016-02-27 06:32:23+00:00\n"
+"POT-Creation-Date: 2016-02-27 12:57:09+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -142,7 +142,7 @@ msgstr ""
 msgid "dismiss"
 msgstr ""
 
-#: admin/anspress-admin.php:577 admin/meta_box.php:108 includes/flag.php:143
+#: admin/anspress-admin.php:577 admin/meta_box.php:108 includes/flag.php:169
 #: includes/post_types.php:238 includes/post_types.php:359
 msgid "Flag"
 msgstr ""
@@ -1708,19 +1708,19 @@ msgstr ""
 msgid "Not a valid email address"
 msgstr ""
 
-#: includes/flag.php:90
+#: includes/flag.php:116
 msgid "Flag this post"
 msgstr ""
 
-#: includes/flag.php:90
+#: includes/flag.php:116
 msgid "You have flagged this post"
 msgstr ""
 
-#: includes/flag.php:92
+#: includes/flag.php:118
 msgid "Flag "
 msgstr ""
 
-#: includes/flag.php:156
+#: includes/flag.php:182
 msgid "Report this comment to moderaor"
 msgstr ""
 

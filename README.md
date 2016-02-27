@@ -102,6 +102,37 @@ Read full FAQ here http://anspress.io/documents/doc_page=faq
 
 ## Changelog ##
 
+### 2.4.6 ###
+
+  * Fixed: meta count
+  * Fixed: Flag view count and flag view in wp-admin
+  * Fixed: "Only logged in can see answers" option not working with new permission
+  * Improved: user_can check.
+  * Fixed: title issue
+  * Allow non-logged in to read questions
+  * Improved: AnsPress assets loading.
+  * Updated README.md
+  * Improved: comment permissions
+  * Improved: Answer permission.
+  * Improved: Voting permissions. Check for capabilities while user voting.
+  * Improved: Voting permission
+  * New: Improved answer read permission
+  * Fix: Fatal error: Call to undefined function `is_question_tag()`
+  * Fix: comment flag button
+  * Fix: do not show question title if user have not access to question.
+  * New: Check if user can read question
+  * Improved: Permission and role editing.
+  * Improved: ReCaptcha
+  * New: Vote on question form wp-admin post edit screen.
+  * New: Added button for admin for adding votes from post edit screen.
+  * Fixed: Creating default object from empty value
+  * Fixed: meta query
+  * Added: option for search page title
+  * Tweak: Improved flagging question and answer UI
+  * Tweak: Improved admin CS and removed unused menu
+  * Fix: Comment time in GMT
+  * New: added akismet verification of posts for spam
+
 ### 2.4.5 ###
 
   * Improved coding standards of activity loop
