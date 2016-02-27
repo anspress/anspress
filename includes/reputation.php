@@ -928,8 +928,8 @@ function ap_default_reputation() {
 
 function ap_received_reputation_post($post_id) {
 	$reputation 		= ap_reputation_by_event( 'question_upvote', true );
-	$vote_count = ap_meta_total_count( 'vote_up', $post_id );
-	return $vote_count * $reputation;
+	$vote_count 		= ap_meta_total_count( 'vote_up', $post_id );
+	return $vote_count->count * $reputation;
 }
 
 /**

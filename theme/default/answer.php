@@ -11,7 +11,7 @@
 global $post;
 $have_permission = ap_user_can_read_answer( $post );
 ?>
-<div id="answer_<?php the_ID(); ?>" <?php post_class() ?> data-id="<?php the_ID(); ?>" data-index="<?php echo @$i; ?>" itemprop="suggestedAnswer<?php echo ap_answer_is_best() ? ' acceptedAnswer' : ''; ?>" itemtype="http://schema.org/Answer" itemscope="">
+<div id="answer_<?php the_ID(); ?>" <?php post_class() ?> data-id="<?php the_ID(); ?>" data-index="<?php echo @$i; ?>" itemprop="suggestedAnswer<?php echo ap_answer_is_best() ? ' acceptedAnswer' : ''; ?>" itemscope itemtype="http://schema.org/Answer">
     <div class="ap-content">
 		<div class="ap-single-vote"><?php ap_answer_the_vote_button(); ?></div>
         <div class="ap-avatar">

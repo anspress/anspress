@@ -226,7 +226,7 @@ function ap_meta_total_count($type, $actionid=false, $userid = false, $group = f
 
 	$actionid = (int) $actionid;
 	$userid = (int) $userid;
-	$group = sanitize_title_for_query( $group );
+	
 	$value = sanitize_title_for_query( $value );
 
 	$where_query = '';
@@ -243,7 +243,8 @@ function ap_meta_total_count($type, $actionid=false, $userid = false, $group = f
 	}
 
 	$type_col = '';
-	if ( $group ) {
+	if ( false !== $group ) {
+		$group = sanitize_title_for_query( $group );
 		$group_query .= 'GROUP BY '.$group;
 		$type_col = ', apmeta_type as type';
 		$cache_key .= '_'.$group;
@@ -264,7 +265,7 @@ function ap_meta_total_count($type, $actionid=false, $userid = false, $group = f
 
 	if ( false === $group ) {
 		$count = $wpdb->get_var( $query );
-	} else {
+	} elseif( is_array($type) ) {
 		$count = $wpdb->get_results( $query );
 	}
 

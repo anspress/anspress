@@ -623,7 +623,7 @@ class AnsPress_Hooks
 	 * @param  integer $receiving_userid User who is receiving vote.
 	 */
 	public function update_user_vote_casted_count($userid, $type, $actionid, $receiving_userid) {
-
+		var_dump(ap_count_vote( $userid, 'vote_up' ));
 		// Update total casted vote of user.
 		update_user_meta( $userid, '__up_vote_casted', ap_count_vote( $userid, 'vote_up' ) );
 		update_user_meta( $userid, '__down_vote_casted', ap_count_vote( $userid, 'vote_down' ) );

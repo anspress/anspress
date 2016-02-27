@@ -393,6 +393,8 @@ function ap_user_can_edit_comment( $comment_id,  $user_id = false ) {
 		return true;
 	}
 
+	$comment = get_comment( $comment_id );
+
 	/**
 	 * Filter to hijack ap_user_can_edit_comment.
 	 * @param  boolean|string 	$apply_filter 	Apply current filter, empty string by default.
@@ -401,14 +403,12 @@ function ap_user_can_edit_comment( $comment_id,  $user_id = false ) {
 	 * @return boolean
 	 * @since  2.4.6
 	 */
-	$filter = apply_filters( 'ap_user_can_edit_comment', '', $post_id, $user_id );
+	$filter = apply_filters( 'ap_user_can_edit_comment', '', $comment_id, $user_id );
 	if ( true === $filter ) {
 		return true;
 	} elseif ( false === $filter ) {
 		return false;
 	}
-
-	$comment = get_comment( $comment_id );
 
 	// Don't allow user to comment if they don't have permission to read post.
 	if ( ! ap_user_can_read_post( $comment->comment_post_ID, $user_id ) ) {
@@ -549,11 +549,11 @@ function ap_user_can_view_post($post_id = false) {
 
 	$post_o = get_post( $post_id );
 
-	if ( 'private_post' == $post_o->post_status && ap_user_can_view_private_post( $post_0->ID ) ) {
+	if ( 'private_post' == $post_o->post_status && ap_user_can_view_private_post( $post_o->ID ) ) {
 		return true;
 	}
 
-	if ( 'moderate' == $post_o->post_status && ap_user_can_view_moderate_post( $post_0->ID ) ) {
+	if ( 'moderate' == $post_o->post_status && ap_user_can_view_moderate_post( $post_o->ID ) ) {
 		return true;
 	}
 

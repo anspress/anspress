@@ -720,17 +720,17 @@ class AnsPress_Ajax
 	    if ( $is_flagged ) {
 	        $this->send( array( 'message' => 'already_flagged' ) );
 	    } else {
+	        $count = ap_count_flag_vote( 'flag', $post_id );
 	        ap_add_flag( $userid, $post_id );
 
-	        $count = ap_flag_vote( 'flag', $post_id );
-
+	        $new_count = $count + 1;
 			// Update post meta.
-			update_post_meta( $post_id, ANSPRESS_FLAG_META, $count[0]->count + 1 );
+			update_post_meta( $post_id, ANSPRESS_FLAG_META, $new_count );
 	        $this->send( array(
 	        	'message' => 'flagged',
 	        	'action' => 'flagged',
-	        	'view' => array( $post_id.'_flag_count' => $count[0]->count ),
-	        	'count' => $count[0]->count,
+	        	'view' => array( $post_id.'_flag_count' => $new_count ),
+	        	'count' => $new_count,
 	        ) );
 	    }
 

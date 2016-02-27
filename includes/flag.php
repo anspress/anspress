@@ -38,17 +38,17 @@ function ap_add_flag($userid, $actionid, $value = null, $param = null) {
  *
  * @return int
  */
-function ap_flag_vote($type = 'flag', $actionid = false, $userid = false, $receiving_userid = false) {
+function ap_count_flag_vote($type = 'flag', $actionid = false, $userid = false, $receiving_userid = false) {
 
 	if ( $actionid !== false ) {
-		return ap_meta_total_count( $type, $actionid );
+		$count = ap_meta_total_count( $type, $actionid );
 	} elseif ( $userid !== false ) {
-		return ap_meta_total_count( $type, false, $userid );
+		$count = ap_meta_total_count( $type, false, $userid );
 	} elseif ( $receiving_userid !== false ) {
-		return ap_meta_total_count( $type, false, false, false, $receiving_userid );
+		$count = ap_meta_total_count( $type, false, false, false, $receiving_userid );
 	}
 
-	return 0;
+	return $count > 0 ? $count : 0 ;
 }
 
 /**
@@ -197,7 +197,7 @@ function ap_comment_flag_count( $comment_id = false ) {
 	}
 
 	$count = ap_meta_total_count('comment_flag', $comment_id );
-	return apply_filters( 'ap_comment_flag_count', $count[0]->count );
+	return apply_filters( 'ap_comment_flag_count', $count );
 }
 
 /**
