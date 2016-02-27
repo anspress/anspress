@@ -559,6 +559,14 @@ class AnsPress_Options_Page
 				'show_desc_tip' => false,
 			),
 			array(
+				'name' => 'anspress_opt[logged_in_can_see_question]',
+				'label' => __( 'Only logged in can see questions', 'anspress-question-answer' ),
+				'desc' => __( 'non-loggedin user cannot see questions.', 'anspress-question-answer' ),
+				'type' => 'checkbox',
+				'value' => $settings['logged_in_can_see_question'],
+				'show_desc_tip' => false,
+			),
+			array(
 				'name' => 'anspress_opt[logged_in_can_see_comment]',
 				'label' => __( 'Only logged in can see comment', 'anspress-question-answer' ),
 				'desc' => __( 'non-loggedin user cannot see comments.', 'anspress-question-answer' ),
