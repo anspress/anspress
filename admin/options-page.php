@@ -519,6 +519,14 @@ class AnsPress_Options_Page
 		// register permission settings
 		ap_register_option_group('permission', __( 'Permission', 'anspress-question-answer' ) , array(
 			array(
+				'name' => 'anspress_opt[only_logged_in]',
+				'label' => __( 'Only logged in can see questions, answer and comments?', 'anspress-question-answer' ),
+				'desc' => __( 'Require user to login to see AnsPress contents?.', 'anspress-question-answer' ),
+				'type' => 'checkbox',
+				'value' => $settings['only_logged_in'],
+				'show_desc_tip' => false,
+			),
+			array(
 				'name' => 'anspress_opt[multiple_answers]',
 				'label' => __( 'Multiple answers', 'anspress-question-answer' ),
 				'desc' => __( 'Allow user to submit multiple answer per question.', 'anspress-question-answer' ),
@@ -558,14 +566,7 @@ class AnsPress_Options_Page
 				'value' => $settings['logged_in_can_see_ans'],
 				'show_desc_tip' => false,
 			),
-			array(
-				'name' => 'anspress_opt[logged_in_can_see_question]',
-				'label' => __( 'Only logged in can see questions', 'anspress-question-answer' ),
-				'desc' => __( 'non-loggedin user cannot see questions.', 'anspress-question-answer' ),
-				'type' => 'checkbox',
-				'value' => $settings['logged_in_can_see_question'],
-				'show_desc_tip' => false,
-			),
+			
 			array(
 				'name' => 'anspress_opt[logged_in_can_see_comment]',
 				'label' => __( 'Only logged in can see comment', 'anspress-question-answer' ),

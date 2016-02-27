@@ -780,10 +780,6 @@ function ap_user_can_read_post( $post_id, $user_id = false, $post_type = false )
 		return true;
 	}
 
-	if ( ! ap_opt('logged_in_can_see_question') && $post_type == 'question' ) {
-		return true;
-	}
-
 	/**
 	 * Allow overriding of ap_user_can_read_post.
 	 * @param  boolean|string  	$apply_filter Default is empty string.
@@ -802,15 +798,18 @@ function ap_user_can_read_post( $post_id, $user_id = false, $post_type = false )
 
 	// Check if user have capability to read question/answer.
 	// And then check post status based access.
-	if ( user_can( $user_id, 'ap_read_'.$post_type ) ) {
-		if ( 'private_post' == $post_o->post_status && ap_user_can_view_private_post( $post_id, $user_id ) ) {
-			return true;
-		} elseif ( 'moderate' == $post_o->post_status && ap_user_can_view_moderate_post( $post_id, $user_id ) ) {
-			return true;
-		} elseif ( 'publish' == $post_o->post_status || 'closed' == $post_o->post_status ) {
-			return true;
-		}
+	if ( !user_can( $user_id, 'ap_read_'.$post_type ) && ap_opt('only_logged_in') ) {
+		return false;
 	}
+
+	if ( 'private_post' == $post_o->post_status && ap_user_can_view_private_post( $post_id, $user_id ) ) {
+		return true;
+	} elseif ( 'moderate' == $post_o->post_status && ap_user_can_view_moderate_post( $post_id, $user_id ) ) {
+		return true;
+	} elseif ( 'publish' == $post_o->post_status || 'closed' == $post_o->post_status ) {
+		return true;
+	}
+	
 
 	// Also return true if user have capability to edit others question.
 	if ( user_can( $user_id, 'ap_edit_others_'.$post_type ) ) {

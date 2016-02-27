@@ -153,7 +153,7 @@ function ap_default_options() {
 		'bad_word_comment_action'	=> 'moderate',
 		'akismet_validation'		=> true,
 		'load_assets_in_anspress_only'		=> false,
-		'logged_in_can_see_question'=> false,
+		'only_logged_in'			=> false,
 	);
 
 	/**
