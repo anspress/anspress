@@ -245,6 +245,16 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		private function includes() {
 
 		    global $ap_options;
+		    
+		    require_once ANSPRESS_DIR.'includes/class/form.php';
+		    require_once ANSPRESS_DIR.'includes/class/validation.php';
+		    require_once ANSPRESS_DIR.'includes/class/roles-cap.php';
+		    require_once ANSPRESS_DIR.'includes/class/bad-words.php';		    
+		    require_once ANSPRESS_DIR.'includes/class/activity.php';
+
+		    require_once ANSPRESS_DIR.'includes/common-pages.php';
+		    require_once ANSPRESS_DIR.'includes/class-user.php';
+		    require_once ANSPRESS_DIR.'includes/class-theme.php';
 		    require_once ANSPRESS_DIR.'admin/anspress-admin.php';
 		    require_once ANSPRESS_DIR.'admin/ajax.php';
 		    require_once ANSPRESS_DIR.'includes/options.php';
@@ -252,10 +262,10 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		    require_once ANSPRESS_DIR.'includes/functions.php';
 		    require_once ANSPRESS_DIR.'includes/hooks.php';
 		    require_once ANSPRESS_DIR.'includes/ajax.php';
-		    require_once ANSPRESS_DIR.'includes/class/class-roles-cap.php';
+		    
 		    require_once ANSPRESS_DIR.'includes/question-loop.php';
 		    require_once ANSPRESS_DIR.'includes/answer-loop.php';
-		    require_once ANSPRESS_DIR.'includes/class-theme.php';
+		    
 		    require_once ANSPRESS_DIR.'includes/post_types.php';
 		    require_once ANSPRESS_DIR.'includes/query_filter.php';
 		    require_once ANSPRESS_DIR.'includes/post_status.php';
@@ -267,9 +277,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		    require_once ANSPRESS_DIR.'includes/participants.php';
 		    require_once ANSPRESS_DIR.'includes/activity-hooks.php';
 		    require_once ANSPRESS_DIR.'includes/shortcode-basepage.php';
-		    require_once ANSPRESS_DIR.'includes/class/common-pages.php';
-		    require_once ANSPRESS_DIR.'includes/class-form.php';
-		    require_once ANSPRESS_DIR.'includes/class-validation.php';
+		    
 		    require_once ANSPRESS_DIR.'includes/process-form.php';
 		    require_once ANSPRESS_DIR.'includes/ask-form.php';
 		    require_once ANSPRESS_DIR.'includes/answer-form.php';
@@ -284,8 +292,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		    require_once ANSPRESS_DIR.'widgets/users.php';
 		    require_once ANSPRESS_DIR.'includes/rewrite.php';
 		    require_once ANSPRESS_DIR.'includes/reputation.php';
-		    //require_once ANSPRESS_DIR.'vendor/autoload.php';
-		    require_once ANSPRESS_DIR.'includes/class-user.php';
+		    
 		    require_once ANSPRESS_DIR.'includes/user.php';
 		    require_once ANSPRESS_DIR.'includes/users-loop.php';
 		    require_once ANSPRESS_DIR.'includes/deprecated.php';
@@ -297,11 +304,11 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		    require_once ANSPRESS_DIR.'widgets/ask-form.php';
 		    require_once ANSPRESS_DIR.'includes/3rd-party.php';
 		    require_once ANSPRESS_DIR.'includes/flag.php';
-		    require_once ANSPRESS_DIR.'includes/activity.php';
+		    
 		    require_once ANSPRESS_DIR.'includes/subscriber-hooks.php';
 		    require_once ANSPRESS_DIR.'includes/shortcode-question.php';
 		    require_once ANSPRESS_DIR.'includes/mention.php';
-		    require_once ANSPRESS_DIR.'includes/class-bad-words.php';
+		    
 		    require_once ANSPRESS_DIR.'includes/akismet.php';
 		}
 
