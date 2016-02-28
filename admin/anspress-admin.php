@@ -208,22 +208,19 @@ class AnsPress_Admin
 	}
 
 	/**
-	 * Get free menu position
+	 * Get free unused menu position. This function helps prevent other plugin
+	 * menu conflict when assigned to same position.
 	 * @param integer $start          position.
 	 * @param double  $increment     position.
 	 */
 	public function get_free_menu_position($start, $increment = 0.99) {
-
-		$menus_positions = array();
-		foreach ( $GLOBALS['menu'] as $key => $menu ) {
-			$menus_positions[] = $key;
-		}
+		$menus_positions = array_keys( $GLOBALS['menu'] );
 
 		if ( ! in_array( $start, $menus_positions ) ) {
 			return $start;
 		}
 
-		// This position is already reserved find the closet one
+		// This position is already reserved find the closet one.
 		while ( in_array( $start, $menus_positions ) ) {
 			$start += $increment;
 		}

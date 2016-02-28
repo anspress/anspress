@@ -170,7 +170,6 @@ class AP_Activate
 					$wpdb->query( "ALTER TABLE `{$wpdb->prefix}ap_subscribers` CHANGE {$col->Field} subs_{$col->Field} ".$subscriber_old_cols[$col->Field] );
 				}
 			}
-
 		}
 	}
 
@@ -196,9 +195,9 @@ class AP_Activate
 			}
 		}
 
-		$activity_cols = $wpdb->get_results("SHOW COLUMNS FROM {$wpdb->prefix}ap_activity" );
-
-		/*if( $activity_cols ){
+		// $activity_cols = $wpdb->get_results("SHOW COLUMNS FROM {$wpdb->prefix}ap_activity" );
+		/*
+		if( $activity_cols ){
 			if ( !in_array($col->Field, 'term_ids' ) )
 				$wpdb->query( "ALTER TABLE `{$wpdb->prefix}ap_activity` ADD term_ids LONGTEXT after item_id;" );
 		}*/
@@ -236,8 +235,8 @@ class AP_Activate
 	}
 
 	public function network_activate() {
-		$current_blog = $wpdb->blogid;
-
+		global $wpdb;
+		// $current_blog = $wpdb->blogid;
 		// Get all blogs in the network and activate plugin on each one
 		$blog_ids = $wpdb->get_col( "SELECT blog_id FROM $wpdb->blogs" );
 

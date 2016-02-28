@@ -248,11 +248,7 @@ class AnsPress_Admin_Ajax
 			$post = get_post( $args[0] );
 
 			if ( $post ) {
-				$counts = ap_post_votes( $post->ID );
-
-				$vote_type = $args[1] == 'up' ? 'vote_up' : 'vote_down';
 				$count = ( $args[1] == 'up' ? (1)  : ( -1 ) );
-
 				$count = ap_add_post_vote( 0, 'vote_up', $post->ID, 0, $count );
 				echo $count['net_vote'];
 			}
