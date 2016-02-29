@@ -57,7 +57,7 @@ class AnsPress_Process_Form
 			$notification = ap_get_notification_by_id( $id );
 
 			if ( $notification && ($notification['apmeta_actionid'] == get_current_user_id() ) ) {
-				$row = ap_notification_mark_as_read( $id );
+				ap_notification_mark_as_read( $id );
 			}
 		}
 	}
@@ -443,7 +443,6 @@ class AnsPress_Process_Form
 	 * Process answer form
 	 */
 	public function process_answer_form() {
-
 		global $ap_errors, $validate;
 
 		if ( ap_show_captcha_to_user() && ! $this->check_recaptcha() ) {

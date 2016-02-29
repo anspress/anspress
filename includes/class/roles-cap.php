@@ -290,17 +290,20 @@ function ap_user_can_edit_ans($post_id) {
 }
 
 /**
- * Check if user can edit a question
- * @param  false|integer $post_id Question ID.
+ * Check if user can edit a question.
+ * @param  boolean|integer $post_id Question ID.
+ * @param  boolean|integer $user_id User ID.
  * @return boolean
+ * @since  2.4.7 Added new argument `$user_id`.
+ * @since  2.4.7 Added new filter `ap_user_can_edit_question`.
  */
-function ap_user_can_edit_question($post_id = false) {
-	if ( is_super_admin() || current_user_can( 'ap_edit_others_question' ) ) {
-		return true;
+function ap_user_can_edit_question( $post_id = false, $user_id = false ) {
+	if ( false === $user_id ) {
+		$user_id = get_current_user_id();
 	}
 
-	if ( ! is_user_logged_in() ) {
-		return false;
+	if ( is_super_admin( $user_id ) || user_can( $user_id, 'ap_edit_others_question' ) ) {
+		return true;
 	}
 
 	if ( false !== $post_id ) {
@@ -310,7 +313,25 @@ function ap_user_can_edit_question($post_id = false) {
 		$question = $post;
 	}
 
-	if ( get_current_user_id() == $question->post_author && current_user_can( 'ap_edit_question' ) ) {
+	/**
+	 * Filter to hijack ap_user_can_edit_question. This filter will be applied if filter
+	 * returns a boolean value. To baypass return an empty string.
+	 * @param string|boolean 	$filter 		Apply this filter.
+	 * @param integer 			$question_id 	Question ID.
+	 * @param integer 			$user_id 		User ID.
+	 */
+	$filter = apply_filters( 'ap_user_can_edit_question', '', $question->ID, $user_id );
+	if ( true === $filter ) {
+		return true;
+	} elseif ( false === $filter ) {
+		return false;
+	}
+
+	if ( ! ap_user_can_read_question( $question->ID, $user_id ) ) {
+		return false;
+	}
+
+	if ( $user_id == $question->post_author && user_can( $user_id, 'ap_edit_question' ) ) {
 		return true;
 	}
 
@@ -796,28 +817,29 @@ function ap_user_can_read_post( $post_id, $user_id = false, $post_type = false )
 		return false;
 	}
 
-	// Check if user have capability to read question/answer.
-	// And then check post status based access.
-	if ( !user_can( $user_id, 'ap_read_'.$post_type ) && ap_opt('only_logged_in') && 'question' == $post_type ) {
-		return false;
-	}
-
-	if ( !user_can( $user_id, 'ap_read_'.$post_type ) && ap_opt('logged_in_can_see_ans') && 'answer' == $post_type ) {
-		return false;
-	}
-
-	if ( 'private_post' == $post_o->post_status && ap_user_can_view_private_post( $post_id, $user_id ) ) {
-		return true;
-	} elseif ( 'moderate' == $post_o->post_status && ap_user_can_view_moderate_post( $post_id, $user_id ) ) {
-		return true;
-	} elseif ( 'publish' == $post_o->post_status || 'closed' == $post_o->post_status ) {
-		return true;
-	}
-	
-
 	// Also return true if user have capability to edit others question.
 	if ( user_can( $user_id, 'ap_edit_others_'.$post_type ) ) {
 		return true;
+	}
+
+	// Check if user have capability to read question/answer.
+	// And then check post status based access.
+	if ( ! user_can( $user_id, 'ap_read_'.$post_type ) && ap_opt('only_logged_in' ) ) {
+		return false;
+	}
+
+	if ( ! user_can( $user_id, 'ap_read_'.$post_type ) && ap_opt('logged_in_can_see_ans' ) && 'answer' == $post_type ) {
+		return false;
+	}
+
+	if( user_can( $user_id, 'ap_read_'.$post_type ) ){
+		if ( 'private_post' == $post_o->post_status && ap_user_can_view_private_post( $post_id, $user_id ) ) {
+			return true;
+		} elseif ( 'moderate' == $post_o->post_status && ap_user_can_view_moderate_post( $post_id, $user_id ) ) {
+			return true;
+		} else{
+			return true;
+		}
 	}
 
 	// Finally return false. And break the heart :p.
