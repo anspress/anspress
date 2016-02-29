@@ -2,10 +2,10 @@
 # This file is distributed under the GPL-3.0+.
 msgid ""
 msgstr ""
-"Project-Id-Version: AnsPress 2.4.5\n"
+"Project-Id-Version: AnsPress 2.4.6\n"
 "Report-Msgid-Bugs-To: "
 "https://wordpress.org/support/plugin/anspress-question-answer\n"
-"POT-Creation-Date: 2016-02-27 12:57:09+00:00\n"
+"POT-Creation-Date: 2016-02-29 03:23:57+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -87,67 +87,67 @@ msgstr ""
 msgid "About AnsPress"
 msgstr ""
 
-#: admin/anspress-admin.php:303
+#: admin/anspress-admin.php:300
 msgid "Settings"
 msgstr ""
 
-#: admin/anspress-admin.php:386
+#: admin/anspress-admin.php:383
 msgid "This question is orphan, no question is selected for this answer"
 msgstr ""
 
-#: admin/anspress-admin.php:391 includes/ajax.php:85 includes/ajax.php:87
-#: includes/ajax.php:332 includes/ajax.php:378 includes/process-form.php:601
+#: admin/anspress-admin.php:388 includes/ajax.php:85 includes/ajax.php:87
+#: includes/ajax.php:332 includes/ajax.php:378 includes/process-form.php:600
 msgid "1 Answer"
 msgid_plural "%d Answer"
 msgstr[0] ""
 msgstr[1] ""
 
-#: admin/anspress-admin.php:391
+#: admin/anspress-admin.php:388
 msgid "Edit question"
 msgstr ""
 
-#: admin/anspress-admin.php:466
+#: admin/anspress-admin.php:463
 msgid "AnsPress Pages"
 msgstr ""
 
-#: admin/anspress-admin.php:486 admin/options-page.php:447
+#: admin/anspress-admin.php:483 admin/options-page.php:447
 msgid "User profile"
 msgstr ""
 
-#: admin/anspress-admin.php:487
+#: admin/anspress-admin.php:484
 msgid "User notification"
 msgstr ""
 
-#: admin/anspress-admin.php:500
+#: admin/anspress-admin.php:497
 msgid "Add to Menu"
 msgstr ""
 
-#: admin/anspress-admin.php:514
+#: admin/anspress-admin.php:511
 msgid "AnsPress update is not complete yet! click %shere%s to continue."
 msgstr ""
 
-#: admin/anspress-admin.php:527
+#: admin/anspress-admin.php:524
 msgid "Is your existing question tags are not appearing ? click here to fix it %s"
 msgstr ""
 
-#: admin/anspress-admin.php:527
+#: admin/anspress-admin.php:524
 msgid "Fix question tags"
 msgstr ""
 
-#: admin/anspress-admin.php:528
+#: admin/anspress-admin.php:525
 msgid "Hide message %s"
 msgstr ""
 
-#: admin/anspress-admin.php:528
+#: admin/anspress-admin.php:525
 msgid "dismiss"
 msgstr ""
 
-#: admin/anspress-admin.php:577 admin/meta_box.php:108 includes/flag.php:169
+#: admin/anspress-admin.php:574 admin/meta_box.php:108 includes/flag.php:169
 #: includes/post_types.php:238 includes/post_types.php:359
 msgid "Flag"
 msgstr ""
 
-#: admin/anspress-admin.php:605 admin/class-list-table-hooks.php:29
+#: admin/anspress-admin.php:602 admin/class-list-table-hooks.php:29
 #: admin/views/dashboard.php:52
 msgid "Flagged"
 msgstr ""
@@ -182,8 +182,8 @@ msgid "Edit &#8220;%s&#8221;"
 msgstr ""
 
 #: admin/class-list-table-hooks.php:90 admin/meta_box.php:60
-#: admin/reputation.php:152 includes/class/common-pages.php:39
-#: includes/class-form.php:550 includes/functions.php:455
+#: admin/reputation.php:152 includes/class/form.php:550
+#: includes/common-pages.php:39 includes/functions.php:455
 #: includes/functions.php:457 includes/functions.php:476 includes/theme.php:671
 #: theme/default/part/question.php:46
 msgid "Edit"
@@ -247,9 +247,8 @@ msgid "Answers"
 msgstr ""
 
 #: admin/meta_box.php:28 admin/options-page.php:324 includes/bp.php:145
-#: includes/bp.php:146 includes/class/common-pages.php:37
-#: includes/functions.php:1339 includes/post_types.php:71
-#: includes/reputation.php:834
+#: includes/bp.php:146 includes/common-pages.php:37 includes/functions.php:1339
+#: includes/post_types.php:71 includes/reputation.php:834
 msgid "Question"
 msgstr ""
 
@@ -959,8 +958,8 @@ msgstr ""
 msgid "Delete this reputation"
 msgstr ""
 
-#: admin/reputation.php:153 includes/activity.php:1148
-#: includes/class-form.php:277 includes/class-form.php:284
+#: admin/reputation.php:153 includes/class/activity.php:1148
+#: includes/class/form.php:277 includes/class/form.php:284
 #: includes/functions.php:652 includes/theme.php:676
 msgid "Delete"
 msgstr ""
@@ -1189,8 +1188,8 @@ msgstr ""
 msgid "%s asked question %s"
 msgstr ""
 
-#: includes/activity-hooks.php:91 includes/activity.php:604 includes/bp.php:239
-#: includes/post_types.php:70
+#: includes/activity-hooks.php:91 includes/bp.php:239
+#: includes/class/activity.php:604 includes/post_types.php:70
 msgid "question"
 msgstr ""
 
@@ -1198,8 +1197,9 @@ msgstr ""
 msgid "%s answered on %s"
 msgstr ""
 
-#: includes/activity-hooks.php:134 includes/activity.php:604
-#: includes/bp.php:239 includes/post_types.php:140 theme/default/answers.php:18
+#: includes/activity-hooks.php:134 includes/bp.php:239
+#: includes/class/activity.php:604 includes/post_types.php:140
+#: theme/default/answers.php:18
 msgid "answer"
 msgstr ""
 
@@ -1235,86 +1235,6 @@ msgstr ""
 msgid "%s mentioned you in %s %s"
 msgstr ""
 
-#: includes/activity.php:589
-msgid "%s edited comment on %s %s"
-msgstr ""
-
-#: includes/activity.php:594
-msgid "%s updated status of question %s"
-msgstr ""
-
-#: includes/activity.php:599
-msgid "%s updated status of answer %s"
-msgstr ""
-
-#: includes/activity.php:606
-msgid "%s voted up on %s %s"
-msgstr ""
-
-#: includes/activity.php:612
-msgid "%s received %d reputation on %s"
-msgstr ""
-
-#: includes/activity.php:695
-msgid "asked"
-msgstr ""
-
-#: includes/activity.php:696
-msgid "answered"
-msgstr ""
-
-#: includes/activity.php:697
-msgid "commented"
-msgstr ""
-
-#: includes/activity.php:698
-msgid "commented on answer"
-msgstr ""
-
-#: includes/activity.php:699
-msgid "edited question"
-msgstr ""
-
-#: includes/activity.php:700
-msgid "edited answer"
-msgstr ""
-
-#: includes/activity.php:701
-msgid "edited comment"
-msgstr ""
-
-#: includes/activity.php:702
-msgid "selected answer"
-msgstr ""
-
-#: includes/activity.php:703
-msgid "unselected answer"
-msgstr ""
-
-#: includes/activity.php:704
-msgid "updated status"
-msgstr ""
-
-#: includes/activity.php:705
-msgid "selected as best answer"
-msgstr ""
-
-#: includes/activity.php:706
-msgid "unselected as best answer"
-msgstr ""
-
-#: includes/activity.php:745
-msgid "%s %s %s"
-msgstr ""
-
-#: includes/activity.php:747
-msgid "Active %s"
-msgstr ""
-
-#: includes/activity.php:781
-msgid " %s %s %s"
-msgstr ""
-
 #: includes/ajax.php:75
 msgid "%d similar questions found"
 msgstr ""
@@ -1337,7 +1257,7 @@ msgstr ""
 msgid "Update comment"
 msgstr ""
 
-#: includes/ajax.php:182 includes/ajax.php:222 includes/process-form.php:798
+#: includes/ajax.php:182 includes/ajax.php:222 includes/process-form.php:797
 msgid "One comment"
 msgid_plural "%d comments"
 msgstr[0] ""
@@ -1474,78 +1394,154 @@ msgstr ""
 msgid "%1$s commented on your %3$s - %2$s"
 msgstr ""
 
-#: includes/class/class-roles-cap.php:55
-msgid "AnsPress Moderator"
+#: includes/class/activity.php:589
+msgid "%s edited comment on %s %s"
 msgstr ""
 
-#: includes/class/class-roles-cap.php:59
-msgid "AnsPress Participants"
+#: includes/class/activity.php:594
+msgid "%s updated status of question %s"
 msgstr ""
 
-#: includes/class/class-roles-cap.php:60
-msgid "AnsPress Banned"
+#: includes/class/activity.php:599
+msgid "%s updated status of answer %s"
 msgstr ""
 
-#: includes/class/class-roles-cap.php:893
-msgid "Voting on own's post is not allowed."
+#: includes/class/activity.php:606
+msgid "%s voted up on %s %s"
 msgstr ""
 
-#: includes/class/class-roles-cap.php:901
-msgid "Voting on restricted posts are not allowed."
+#: includes/class/activity.php:612
+msgid "%s received %d reputation on %s"
 msgstr ""
 
-#: includes/class/class-roles-cap.php:911
-msgid "Its look like you do not have permission to vote."
+#: includes/class/activity.php:695
+msgid "asked"
 msgstr ""
 
-#: includes/class/common-pages.php:38
-msgid "Ask"
+#: includes/class/activity.php:696
+msgid "answered"
 msgstr ""
 
-#: includes/class/common-pages.php:40 widgets/search.php:42
-msgid "Search"
+#: includes/class/activity.php:697
+msgid "commented"
 msgstr ""
 
-#: includes/class/common-pages.php:41
-msgid "Activity feed"
+#: includes/class/activity.php:698
+msgid "commented on answer"
 msgstr ""
 
-#: includes/class/common-pages.php:122
-msgid "Sorry! you are not allowed to read this question."
+#: includes/class/activity.php:699
+msgid "edited question"
 msgstr ""
 
-#: includes/class/common-pages.php:165
-msgid "You don't have permission to access this page."
+#: includes/class/activity.php:700
+msgid "edited answer"
 msgstr ""
 
-#: includes/class-bad-words.php:52
+#: includes/class/activity.php:701
+msgid "edited comment"
+msgstr ""
+
+#: includes/class/activity.php:702
+msgid "selected answer"
+msgstr ""
+
+#: includes/class/activity.php:703
+msgid "unselected answer"
+msgstr ""
+
+#: includes/class/activity.php:704
+msgid "updated status"
+msgstr ""
+
+#: includes/class/activity.php:705
+msgid "selected as best answer"
+msgstr ""
+
+#: includes/class/activity.php:706
+msgid "unselected as best answer"
+msgstr ""
+
+#: includes/class/activity.php:745
+msgid "%s %s %s"
+msgstr ""
+
+#: includes/class/activity.php:747
+msgid "Active %s"
+msgstr ""
+
+#: includes/class/activity.php:781
+msgid " %s %s %s"
+msgstr ""
+
+#: includes/class/bad-words.php:52
 msgid ""
 "Don’t use foul or abusive language. Let everything you say be good and "
 "helpful."
 msgstr ""
 
-#: includes/class-form.php:59
+#: includes/class/form.php:59
 msgid "Submit"
 msgstr ""
 
-#: includes/class-form.php:186 theme/default/comment-form.php:11
+#: includes/class/form.php:186 theme/default/comment-form.php:11
 msgid "Cancel"
 msgstr ""
 
-#: includes/class-form.php:271
+#: includes/class/form.php:271
 msgid "Repeat your password"
 msgstr ""
 
-#: includes/class-form.php:286
+#: includes/class/form.php:286
 msgid "Add more"
 msgstr ""
 
-#: includes/class-form.php:419
+#: includes/class/form.php:419
 msgid "Select a page"
 msgstr ""
 
-#: includes/class-form.php:640
+#: includes/class/form.php:640
 msgid "No fields found"
+msgstr ""
+
+#: includes/class/roles-cap.php:55
+msgid "AnsPress Moderator"
+msgstr ""
+
+#: includes/class/roles-cap.php:59
+msgid "AnsPress Participants"
+msgstr ""
+
+#: includes/class/roles-cap.php:60
+msgid "AnsPress Banned"
+msgstr ""
+
+#: includes/class/roles-cap.php:915
+msgid "Voting on own's post is not allowed."
+msgstr ""
+
+#: includes/class/roles-cap.php:923
+msgid "Voting on restricted posts are not allowed."
+msgstr ""
+
+#: includes/class/roles-cap.php:933
+msgid "Its look like you do not have permission to vote."
+msgstr ""
+
+#: includes/class/validation.php:56
+msgid "This field is required"
+msgstr ""
+
+#: includes/class/validation.php:87
+msgid "Its too short, it must be minimum %d characters"
+msgstr ""
+
+#: includes/class/validation.php:106 includes/class/validation.php:109
+msgid "It must be minimum %d characters"
+msgstr ""
+
+#: includes/class/validation.php:121
+msgid "Not a valid email address"
 msgstr ""
 
 #: includes/class-theme.php:208
@@ -1670,7 +1666,7 @@ msgstr ""
 msgid "My notification"
 msgstr ""
 
-#: includes/class-user.php:346 includes/process-form.php:917
+#: includes/class-user.php:346 includes/process-form.php:916
 msgid "File cannot be uploaded, size is bigger then %d Byte"
 msgstr ""
 
@@ -1692,20 +1688,24 @@ msgstr ""
 msgid "Avatar uploaded successfully."
 msgstr ""
 
-#: includes/class-validation.php:56
-msgid "This field is required"
+#: includes/common-pages.php:38
+msgid "Ask"
 msgstr ""
 
-#: includes/class-validation.php:87
-msgid "Its too short, it must be minimum %d characters"
+#: includes/common-pages.php:40 widgets/search.php:42
+msgid "Search"
 msgstr ""
 
-#: includes/class-validation.php:106 includes/class-validation.php:109
-msgid "It must be minimum %d characters"
+#: includes/common-pages.php:41
+msgid "Activity feed"
 msgstr ""
 
-#: includes/class-validation.php:121
-msgid "Not a valid email address"
+#: includes/common-pages.php:122
+msgid "Sorry! you are not allowed to read this question."
+msgstr ""
+
+#: includes/common-pages.php:165
+msgid "You don't have permission to access this page."
 msgstr ""
 
 #: includes/flag.php:116
@@ -2226,12 +2226,12 @@ msgstr ""
 msgid "Content"
 msgstr ""
 
-#: includes/process-form.php:191 includes/process-form.php:453
+#: includes/process-form.php:191 includes/process-form.php:452
 msgid "Bot verification failed."
 msgstr ""
 
-#: includes/process-form.php:241 includes/process-form.php:505
-#: includes/process-form.php:868
+#: includes/process-form.php:241 includes/process-form.php:504
+#: includes/process-form.php:867
 msgid "Check missing fields and then re-submit."
 msgstr ""
 
