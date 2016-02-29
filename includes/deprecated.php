@@ -297,3 +297,14 @@ function ap_remove_new_answer_history($answer_id) {
 function ap_qa_on_post(){
 	_deprecated_function( 'ap_qa_on_post', '2.4' );
 }
+
+/**
+ * Check if a user can edit answer on a question
+ * @param  integer $post_id Answer id.
+ * @return boolean
+ * @deprecated since 2.4.7
+ */
+function ap_user_can_edit_ans( $post_id ) {
+	_deprecated_function( 'ap_user_can_edit_ans', '2.4.6', 'ap_user_can_edit_answer' );
+	return ap_user_can_edit_answer( $post_id );
+}

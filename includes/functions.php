@@ -383,7 +383,7 @@ function ap_answers_link($question_id = false) {
  */
 function ap_comment_btn_html($echo = false) {
 	global $post;
-	if ( ap_user_can_comment( $post->ID ) ) {		
+	if ( ap_user_can_comment( $post->ID ) ) {
 
 		if ( $post->post_type == 'question' && ap_opt( 'disable_comments_on_question' ) ) {
 			return;
@@ -453,7 +453,7 @@ function ap_edit_post_link_html($echo = false, $post_id_or_object = false) {
 
 	if ( $post->post_type == 'question' && ap_user_can_edit_question( $post->ID ) ) {
 		$output = "<a href='$edit_link' data-button='ap-edit-post' title='".__( 'Edit this question', 'anspress-question-answer' )."' class='apEditBtn'>".__( 'Edit', 'anspress-question-answer' ).'</a>';
-	} elseif ( $post->post_type == 'answer' && ap_user_can_edit_ans( $post->ID ) ) {
+	} elseif ( $post->post_type == 'answer' && ap_user_can_edit_answer( $post->ID ) ) {
 		$output = "<a href='$edit_link' data-button='ap-edit-post' title='".__( 'Edit this answer', 'anspress-question-answer' )."' class='apEditBtn'>".__( 'Edit', 'anspress-question-answer' ).'</a>';
 	}
 
@@ -471,7 +471,7 @@ function ap_edit_a_btn_html($echo = false) {
 	}
 	$output = '';
 	$post_id = get_edit_answer_id();
-	if ( ap_user_can_edit_ans( $post_id ) ) {
+	if ( ap_user_can_edit_answer( $post_id ) ) {
 		$edit_link = ap_answer_edit_link();
 		$output .= "<a href='$edit_link.' class='edit-btn ' data-button='ap-edit-post' title='".__( 'Edit Answer', 'anspress-question-answer' )."'>".__( 'Edit', 'anspress-question-answer' ).'</a>';
 	}
@@ -497,7 +497,7 @@ function ap_post_edited_time() {
 function ap_answer_edit_link() {
 
 	$post_id = get_the_ID();
-	if ( ap_user_can_edit_ans( $post_id ) ) {
+	if ( ap_user_can_edit_answer( $post_id ) ) {
 		$action = get_post_type( $post_id ).'-'.$post_id;
 		$nonce = wp_create_nonce( $action );
 		$edit_link = add_query_arg( array( 'edit_a' => $post_id, 'ap_nonce' => $nonce ), get_permalink( ap_opt( 'base_page' ) ) );
@@ -645,7 +645,7 @@ function ap_post_delete_btn_html($post_id = false, $echo = false) {
 	if ( $post_id === false ) {
 		$post_id = get_the_ID();
 	}
-	if ( ap_user_can_delete( $post_id ) ) {
+	if ( ap_user_can_delete_post( $post_id ) ) {
 		$action = 'delete_post_'.$post_id;
 		$nonce = wp_create_nonce( $action );
 

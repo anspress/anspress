@@ -265,24 +265,44 @@ function ap_user_can_select_answer($post_id, $user_id = false) {
 	return false;
 }
 
-
 /**
  * Check if a user can edit answer on a question
- * @param  integer $post_id Answer id.
+ * @param  integer         $post_id Answer id.
+ * @param  boolean|integer $user_id User id.
  * @return boolean
+ * @since  2.4.7 Renamed function from `ap_user_can_edit_ans` to `ap_user_can_edit_answer`.
  */
-function ap_user_can_edit_ans($post_id) {
-	if ( current_user_can( 'ap_edit_others_answer' ) || is_super_admin() ) {
-		return true;
+function ap_user_can_edit_answer( $post_id, $user_id = false ) {
+	if ( false === $user_id ) {
+		$user_id = get_current_user_id();
 	}
 
-	if ( ! is_user_logged_in() ) {
-		return false;
+	if ( user_can( $user_id, 'ap_edit_others_answer' ) || is_super_admin( $user_id ) ) {
+		return true;
 	}
 
 	$answer = get_post( $post_id );
 
-	if ( get_current_user_id() == $answer->post_author && current_user_can( 'ap_edit_answer' ) ) {
+	/**
+	 * Filter to hijack ap_user_can_edit_answer. This filter will be applied if filter
+	 * returns a boolean value. To baypass return an empty string.
+	 * @param string|boolean 	$filter 		Apply this filter.
+	 * @param integer 			$question_id 	Question ID.
+	 * @param integer 			$user_id 		User ID.
+	 */
+	$filter = apply_filters( 'ap_user_can_edit_answer', '', $answer->ID, $user_id );
+	if ( true === $filter ) {
+		return true;
+	} elseif ( false === $filter ) {
+		return false;
+	}
+
+	// No point to let user edit answer if they cannot read.
+	if ( ! ap_user_can_read_answer( $answer->ID, $user_id ) ) {
+		return false;
+	}
+
+	if ( $user_id == $answer->post_author && user_can( $user_id, 'ap_edit_answer' ) ) {
 		return true;
 	}
 
@@ -461,30 +481,76 @@ function ap_user_can_delete_comment($comment_id) {
 }
 
 /**
- * Check if user can delete AnsPress posts
- * @param  integer $post_id Question or answer ID.
+ * Check if user can delete AnsPress posts.
+ * @param  integer         $post_id    Question or answer ID.
+ * @param  integer|boolean $post_id    User ID.
  * @return boolean
+ * @since  2.4.7 Renamed function name from `ap_user_can_delete`.
+ * @since  2.4.7 Added filter `ap_user_can_delete_post`.
  */
-function ap_user_can_delete($post_id) {
-	if ( is_super_admin() ) {
+function ap_user_can_delete_post( $post_id, $user_id = false ) {
+	if ( false === $user_id ) {
+		$user_id = get_current_user_id();
+	}
+
+	if ( is_super_admin( $user_id ) ) {
 		return true;
 	}
 
-	$post_o = get_post( $post_id );
+	/**
+	 * Filter to hijack ap_user_can_delete_post.
+	 * @param  boolean|string 	$apply_filter 	Apply current filter, empty string by default.
+	 * @param  integer|object 	$post_id 		Post ID or object.
+	 * @param  integer 			$user_id 		User ID.
+	 * @return boolean
+	 * @since  2.4.6
+	 */
+	$filter = apply_filters( 'ap_user_can_delete_post', '', $post_id, $user_id );
+	if ( true === $filter ) {
+		return true;
+	} elseif ( false === $filter ) {
+		return false;
+	}
 
-	if ( get_current_user_id() == $post_o->post_author ) {
-		if ( ($post_o->post_type == 'question' && current_user_can( 'ap_delete_question' )) || ($post_o->post_type == 'answer' && current_user_can( 'ap_delete_answer' ) ) ) {
-			return true;
-		}
-	} else {
-		if ( $post_o->post_type == 'question' && current_user_can( 'ap_delete_others_question' ) ) {
-			return true;
-		} elseif ( $post_o->post_type == 'answer' && current_user_can( 'ap_delete_others_answer' ) ) {
-			return true;
-		}
+	// User must not able to delete post if they cannot read post.
+	if ( ! ap_user_can_read_post( $post_id, $user_id ) ) {
+		return false;
+	}
+
+	$post_o = get_post( $post_id );
+	$type = $post_o->post_type;
+
+	if ( $user_id == $post_o->post_author && user_can( $user_id, 'ap_delete_'.$type ) ) {
+		return true;
+	} elseif ( user_can( $user_id, 'ap_delete_others_'.$type ) ) {
+		return true;
 	}
 
 	return false;
+}
+
+/**
+ * Check if user can delete a question.
+ * @param  object|integer $question   Question ID or object.
+ * @param  boolean        $user_id    User ID.
+ * @return boolean
+ * @since  2.4.7
+ * @uses   ap_user_can_delete_post
+ */
+function ap_user_can_delete_question( $question, $user_id = false ) {
+	return ap_user_can_delete_post( $question, $user_id );
+}
+
+/**
+ * Check if user can delete a answer.
+ * @param  object|integer $answer   Answer ID or object.
+ * @param  boolean        $user_id  User ID.
+ * @return boolean
+ * @since  2.4.7
+ * @uses   ap_user_can_delete_post
+ */
+function ap_user_can_delete_answer( $answer, $user_id = false ) {
+	return ap_user_can_delete_post( $answer, $user_id );
 }
 
 /**
@@ -832,12 +898,12 @@ function ap_user_can_read_post( $post_id, $user_id = false, $post_type = false )
 		return false;
 	}
 
-	if( user_can( $user_id, 'ap_read_'.$post_type ) ){
+	if ( user_can( $user_id, 'ap_read_'.$post_type ) ) {
 		if ( 'private_post' == $post_o->post_status && ap_user_can_view_private_post( $post_id, $user_id ) ) {
 			return true;
 		} elseif ( 'moderate' == $post_o->post_status && ap_user_can_view_moderate_post( $post_id, $user_id ) ) {
 			return true;
-		} else{
+		} else {
 			return true;
 		}
 	}

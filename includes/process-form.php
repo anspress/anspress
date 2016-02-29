@@ -633,7 +633,7 @@ class AnsPress_Process_Form
 		global $ap_errors, $validate;
 
 		// Return if user do not have permission to edit this answer.
-		if ( ! ap_user_can_edit_ans( $this->fields['edit_post_id'] ) ) {
+		if ( ! ap_user_can_edit_answer( $this->fields['edit_post_id'] ) ) {
 			$this->result = ap_ajax_responce( 'no_permission' );
 			return;
 		}

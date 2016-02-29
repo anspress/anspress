@@ -243,37 +243,6 @@ class AnsPress_Form_Helper
 	}
 }
 
-
-
-
-/*
- function ap_edit_answer_form($post_id){
-    global $ap_answer_form_validation;
-    $validate = $ap_answer_form_validation;
-
-    $post = get_post($post_id);
-
-    if( !ap_user_can_edit_ans($post_id)){
-        echo '<p>'.__('You don\'t have permission to edit this answer.', 'ap').'</p>';
-        return;
-    }
-
-    if(!empty($validate['has_error'])){
-        echo '<div class="alert alert-danger" data-dismiss="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>'. __('Problem submitting form, please recheck form', 'ap') .'</div>';
-    }
-
-    if(ap_user_can_edit_ans($post->ID) ){
-        echo '<form action="" id="edit_form" class="ap-content-inner" method="POST" data-action="ap-submit-answer">';
-
-        echo '<div class="form-groups">';
-        echo '<div class="ap-fom-group-label">'.__('Edit answer', 'ap').'</div>';
-        do_action('ap_edit_answer_fields', $post, $validate);
-        echo '</div>';
-
-        ap_edit_answer_form_hidden_input($post->ID);
-        echo '</form>';
-    }
-}*/
 function ap_edit_answer_form_hidden_input($post_id) {
 	wp_nonce_field('post_nonce-'.$post_id, 'nonce' );
 	echo '<input type="hidden" name="is_answer" value="true" />';

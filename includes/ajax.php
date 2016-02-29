@@ -303,7 +303,7 @@ class AnsPress_Ajax
 
 		$action = 'delete_post_'.$post_id;
 
-		if ( ! wp_verify_nonce( $_POST['__nonce'], $action ) || ! ap_user_can_delete( $post_id ) ) {
+		if ( ! wp_verify_nonce( $_POST['__nonce'], $action ) || ! ap_user_can_delete_post( $post_id ) ) {
 			$this->something_wrong();
 		}
 

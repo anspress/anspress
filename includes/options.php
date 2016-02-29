@@ -84,7 +84,7 @@ function ap_default_options() {
 		'clear_database' 			=> false,
 		'minimum_qtitle_length'		=> 10,
 		'minimum_question_length'	=> 10,
-		'multiple_answers' 			=> false,
+		'multiple_answers' 			=> true,
 		'disallow_op_to_answer' 	=> false,
 		'minimum_ans_length' 		=> 5,
 		'avatar_size_qquestion' 	=> 50,

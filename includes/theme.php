@@ -480,7 +480,7 @@ function ap_post_actions_buttons($disable = array()) {
 	    $actions['dropdown']['edit_question'] = ap_edit_post_link_html();
 	}
 
-	if ( ap_user_can_edit_ans( $post->ID ) && $post->post_type == 'answer' ) {
+	if ( ap_user_can_edit_answer( $post->ID ) && $post->post_type == 'answer' ) {
 		$actions['dropdown']['edit_answer'] = ap_edit_post_link_html();
 	}
 
@@ -492,11 +492,11 @@ function ap_post_actions_buttons($disable = array()) {
 		$actions['dropdown']['featured'] = ap_featured_post_btn();
 	}
 
-	if ( ap_user_can_delete( $post->ID ) && $post->post_status != 'trash' ) {
+	if ( ap_user_can_delete_post( $post->ID ) && $post->post_status != 'trash' ) {
 		$actions['dropdown']['delete'] = ap_post_delete_btn_html();
 	}
 
-	if ( ap_user_can_delete( $post->ID ) ) {
+	if ( ap_user_can_delete_post( $post->ID ) ) {
 		$actions['dropdown']['permanent_delete'] = ap_post_permanent_delete_btn_html();
 	}
 
