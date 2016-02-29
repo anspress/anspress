@@ -497,6 +497,9 @@ function ap_user_can_delete_post( $post_id, $user_id = false ) {
 		return true;
 	}
 
+	$post_o = get_post( $post_id );
+	$type = $post_o->post_type;
+
 	/**
 	 * Filter to hijack ap_user_can_delete_post.
 	 * @param  boolean|string 	$apply_filter 	Apply current filter, empty string by default.
@@ -505,7 +508,7 @@ function ap_user_can_delete_post( $post_id, $user_id = false ) {
 	 * @return boolean
 	 * @since  2.4.6
 	 */
-	$filter = apply_filters( 'ap_user_can_delete_post', '', $post_id, $user_id );
+	$filter = apply_filters( 'ap_user_can_delete_post', '', $post_o->ID, $user_id );
 	if ( true === $filter ) {
 		return true;
 	} elseif ( false === $filter ) {
@@ -516,9 +519,6 @@ function ap_user_can_delete_post( $post_id, $user_id = false ) {
 	if ( ! ap_user_can_read_post( $post_id, $user_id ) ) {
 		return false;
 	}
-
-	$post_o = get_post( $post_id );
-	$type = $post_o->post_type;
 
 	if ( $user_id == $post_o->post_author && user_can( $user_id, 'ap_delete_'.$type ) ) {
 		return true;
@@ -661,14 +661,17 @@ function ap_allow_anonymous() {
 
 /**
  * Check if current user can change post status i.e. private_post, moderate, closed
- * @param  integer $post_id Question id.
+ * @param  integer|object  $post_id    Question or Answer id.
+ * @param  integer|boolean $user_id    User id.
  * @return boolean
- * @since 2.1
+ * @since  2.1
+ * @since  2.4.7 Added new filter `ap_user_can_change_status`.
+ * @since  2.4.7 Added new argument `$user_id`.
  **/
-function ap_user_can_change_status($post_id) {
-
-	if ( ! is_user_logged_in() ) {
-		return false; }
+function ap_user_can_change_status( $post_id, $user_id = false ) {
+	if ( false === $user_id ) {
+		$user_id = get_current_user_id();
+	}
 
 	if ( current_user_can( 'ap_change_status_other' ) || is_super_admin() ) {
 		return true;
@@ -676,7 +679,22 @@ function ap_user_can_change_status($post_id) {
 
 	$post_o = get_post( $post_id );
 
-	if ( current_user_can( 'ap_change_status' ) && ($post_o->post_author > 0 && $post_o->post_author == get_current_user_id() ) ) {
+	/**
+	 * Filter to hijack ap_user_can_change_status.
+	 * @param  boolean|string 	$apply_filter 	Apply current filter, empty string by default.
+	 * @param  integer 			$post_id 		Post ID.
+	 * @param  integer 			$user_id 		User ID.
+	 * @return boolean
+	 * @since  2.4.6
+	 */
+	$filter = apply_filters( 'ap_user_can_change_status', '', $post_o->ID, $user_id );
+	if ( true === $filter ) {
+		return true;
+	} elseif ( false === $filter ) {
+		return false;
+	}
+
+	if ( user_can( $user_id, 'ap_change_status' ) && ($post_o->post_author > 0 && $post_o->post_author == $user_id ) ) {
 		return true;
 	}
 
@@ -745,7 +763,6 @@ function ap_user_can_upload_avatar() {
  * @since 2.4
  */
 function ap_user_can_upload_cover() {
-
 	// Return false if profile is not active.
 	if ( ! ap_is_profile_active() ) {
 		return false;
@@ -815,8 +832,6 @@ function ap_role_caps( $role ) {
 			'ap_vote_flag'				=> true,
 			'ap_vote_close'				=> true,
 			'ap_upload_cover'			=> true,
-			'ap_message'				=> true,
-			'ap_new_tag'				=> true,
 			'ap_change_status'			=> true,
 			'ap_upload_avatar'			=> true,
 			'ap_edit_profile'			=> true,
@@ -828,7 +843,6 @@ function ap_role_caps( $role ) {
 			'ap_delete_others_question'	=> true,
 			'ap_delete_others_answer'	=> true,
 			'ap_delete_others_comment'	=> true,
-			'ap_change_label'			=> true,
 			'ap_view_private'			=> true,
 			'ap_view_moderate'			=> true,
 			'ap_change_status_other'	=> true,
@@ -876,7 +890,7 @@ function ap_user_can_read_post( $post_id, $user_id = false, $post_type = false )
 	 * @return boolean
 	 * @since  2.4.6
 	 */
-	$filter = apply_filters( 'ap_user_can_read_post', '', $post_id, $user_id, $post_type );
+	$filter = apply_filters( 'ap_user_can_read_post', '', $post_o->ID, $user_id, $post_type );
 	if ( true === $filter ) {
 		return true;
 	} elseif ( false === $filter ) {
@@ -890,12 +904,12 @@ function ap_user_can_read_post( $post_id, $user_id = false, $post_type = false )
 
 	// Check if user have capability to read question/answer.
 	// And then check post status based access.
-	if ( ! user_can( $user_id, 'ap_read_'.$post_type ) && ap_opt('only_logged_in' ) ) {
-		return false;
+	if ( ! user_can( $user_id, 'ap_read_question' ) && ! ap_opt('only_logged_in' ) && 'question' == $post_type ) {
+		return true;
 	}
 
-	if ( ! user_can( $user_id, 'ap_read_'.$post_type ) && ap_opt('logged_in_can_see_ans' ) && 'answer' == $post_type ) {
-		return false;
+	if ( ! user_can( $user_id, 'ap_read_answer' ) && ! ap_opt('logged_in_can_see_ans' ) && 'answer' == $post_type ) {
+		return true;
 	}
 
 	if ( user_can( $user_id, 'ap_read_'.$post_type ) ) {
@@ -968,7 +982,7 @@ function ap_user_can_vote_on_post( $post_id, $type, $user_id = false, $wp_error 
 	 * @return boolean
 	 * @since  2.4.6
 	 */
-	$filter = apply_filters( 'ap_user_can_vote_on_post', '', $post_id, $type, $user_id );
+	$filter = apply_filters( 'ap_user_can_vote_on_post', '', $post_o->ID, $type, $user_id );
 	if ( true === $filter ) {
 		return true;
 	} elseif ( false === $filter ) {
