@@ -59,34 +59,37 @@ function ap_get_theme() {
 }
 
 /**
- * Get location to a file
- * First file is looked inside active WordPress theme directory /anspress.
- *
- * @param string $file   file name
- * @param mixed  $plugin Plugin path
- *
- * @return string
- *
+ * Get location to a file. First file is being searched in child theme and then active theme
+ * and last fall back to AnsPress theme directory.
+ * @param 	string $file   file name.
+ * @param 	mixed  $plugin Plugin path. File is search inside AnsPress extension.
+ * @return 	string
  * @since 	0.1
+ * @since   2.4.7 Added filter `ap_get_theme_location`
  */
 function ap_get_theme_location($file, $plugin = false) {
 
 	$child_path = get_stylesheet_directory().'/anspress/'.$file;
 	$parent_path = get_template_directory().'/anspress/'.$file;
 
-	// checks if the file exists in the theme first,
-	// otherwise serve the file from the plugin
+	// Checks if the file exists in the theme first,
+	// Otherwise serve the file from the plugin.
 	if ( file_exists( $child_path ) ) {
 	    $template_path = $child_path;
 	} elseif ( file_exists( $parent_path ) ) {
 	    $template_path = $parent_path;
-	} elseif ( $plugin !== false ) {
+	} elseif ( false !== $plugin ) {
 	    $template_path = $plugin.'/theme/'.$file;
 	} else {
 	    $template_path = ANSPRESS_THEME_DIR.'/'.ap_get_theme().'/'.$file;
 	}
 
-	return $template_path;
+	/**
+	 * Filter AnsPress template file.
+	 * @param string $template_path Path to template file.
+	 * @since 2.4.7
+	 */
+	return apply_filters( 'ap_get_theme_location', $template_path );
 }
 
 /**
@@ -129,16 +132,19 @@ function ap_current_user_id() {
 }
 
 function ap_question_content() {
-
 	global $post;
 	echo $post->post_content;
 }
 
+/**
+ * Check if current page is AnsPress. Also check if showing question or
+ * answer page in buddypress.
+ * @return boolean
+ */
 function is_anspress() {
-
 	$queried_object = get_queried_object();
 
-	// if buddypress installed
+	// If buddypress installed.
 	if ( function_exists( 'bp_current_component' ) ) {
 	    $bp_com = bp_current_component();
 	    if ( 'questions' == $bp_com || 'answers' == $bp_com ) {

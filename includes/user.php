@@ -360,9 +360,10 @@ function ap_user_page() {
 }
 
 /**
- * Get active user page
- * @return string
+ * Get active user page.
  * @since 2.0.1
+ * @return string
+ * @since 2.4.7 Added new filter `ap_active_user_page`.
  */
 function ap_active_user_page() {
 	$user_page        = sanitize_text_field( get_query_var( 'user_page' ) );
@@ -371,13 +372,15 @@ function ap_active_user_page() {
 		return $user_page;
 	}
 
-	return  ap_is_my_profile() ? 'activity-feed' : 'about';
+	$page = ap_is_my_profile() ? 'activity-feed' : 'about';
+
+	return apply_filters( 'ap_active_user_page', $page );
 }
 
 /**
  * Return meta of active user in user page
- * @param  string $meta key of meta
- * @return string
+ * @param   string $meta key of meta.
+ * @return  string
  * @since 	unknown
  */
 function ap_get_current_user_meta($meta) {

@@ -308,3 +308,13 @@ function ap_user_can_edit_ans( $post_id ) {
 	_deprecated_function( 'ap_user_can_edit_ans', '2.4.6', 'ap_user_can_edit_answer' );
 	return ap_user_can_edit_answer( $post_id );
 }
+
+/**
+ * Check if user can delete AnsPress posts
+ * @param  integer $post_id Question or answer ID.
+ * @return boolean
+ */
+function ap_user_can_delete( $post_id ){
+	_deprecated_function( __FUNCTION__, '2.4.7', 'ap_user_can_delete_post' );
+	return ap_user_can_delete_post( $post );
+}
