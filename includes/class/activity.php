@@ -1118,7 +1118,7 @@ function ap_activity_icon() {
  * Activity date
  */
 function ap_activity_the_date() {
-	echo ap_human_time( ap_activity_date(), false );
+	echo ap_human_time( get_gmt_from_date( ap_activity_date() ), false );
 }
 
 /**
