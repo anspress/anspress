@@ -86,7 +86,7 @@ class AnsPress_Activity_Hook
 		$activity_id = ap_new_activity( $activity_arr );
 
 		// Add question activity meta.
-		update_post_meta( $question_id, '__ap_activity', array( 'type' => 'new_question', 'user_id' => $question->post_author, 'date' => current_time( 'mysql' ) ) );
+		ap_update_post_activity_meta( $question_id, 'new_question', $question->post_author );
 
 		$this->check_mentions( $question_id, $question->post_content, $question_title, $question->post_author, __( 'question', 'anspress-question-answer' ) );
 
@@ -118,10 +118,8 @@ class AnsPress_Activity_Hook
 		$activity_id = ap_new_activity( $activity_arr );
 
 		// Add question activity meta.
-		update_post_meta( $answer->post_parent, '__ap_activity', array( 'type' => 'new_answer', 'user_id' => $answer->post_author, 'date' => current_time( 'mysql' ) ) );
-
-		// Add answer activity meta.
-		update_post_meta( $answer_id, '__ap_activity', array( 'type' => 'new_answer', 'user_id' => $answer->post_author, 'date' => current_time( 'mysql' ) ) );
+		ap_update_post_activity_meta( $answer_id, 'new_answer', $answer->post_author );
+		ap_update_post_activity_meta( $answer->post_parent, 'new_answer', $answer->post_author );
 
 		// Notify users.
 		$subscribers = ap_subscriber_ids( $answer->post_parent, 'q_all' );
@@ -155,7 +153,7 @@ class AnsPress_Activity_Hook
 		$activity_id = ap_new_activity( $activity_arr );
 
 		// Add question activity meta.
-		update_post_meta( $post_id, '__ap_activity', array( 'type' => 'edit_question', 'user_id' => $question->post_author, 'date' => current_time( 'mysql' ) ) );
+		ap_update_post_activity_meta( $post_id, 'edit_question', get_current_user_id() );
 
 		// Notify users.
 		$subscribers = ap_subscriber_ids( false, array( 'q_all', 'a_all' ), $post_id );
@@ -188,7 +186,7 @@ class AnsPress_Activity_Hook
 		$activity_id = ap_new_activity( $activity_arr );
 
 		// Add answer activity meta.
-		update_post_meta( $post_id, '__ap_activity', array( 'type' => 'edit_answer', 'user_id' => $answer->post_author, 'date' => current_time( 'mysql' ) ) );
+		ap_update_post_activity_meta( $post_id, 'edit_answer', get_current_user_id(), true );
 
 		// Notify users.
 		$subscribers = ap_subscriber_ids( $post_id, 'a_all' );
@@ -235,12 +233,11 @@ class AnsPress_Activity_Hook
 
 		$activity_id = ap_new_activity( $activity_arr );
 
-		// Add comment activity meta.
-		update_post_meta( $comment->comment_post_ID, '__ap_activity', array( 'type' => 'new_comment', 'user_id' => $comment->user_id, 'date' => current_time( 'mysql' ) ) );
-
 		if ( $post->post_type == 'question' ) {
+			ap_update_post_activity_meta( $comment->comment_post_ID, 'new_comment', $comment->user_id );
 			$subscribers = ap_subscriber_ids( $comment->comment_post_ID, array( 'q_post', 'q_all' ) );
 		} else {
+			ap_update_post_activity_meta( $comment->comment_post_ID, 'new_comment_answer', $comment->user_id, true );
 			$subscribers = ap_subscriber_ids( $comment->comment_post_ID, 'a_all' );
 		}
 
@@ -276,10 +273,10 @@ class AnsPress_Activity_Hook
 		$activity_id = ap_new_activity( $activity_arr );
 
 		// Add question activity meta.
-		update_post_meta( $question_id, '__ap_activity', array( 'type' => 'answer_selected', 'user_id' => $user_id, 'date' => current_time( 'mysql' ) ) );
+		ap_update_post_activity_meta( $question_id, 'answer_selected', $user_id );
 
 		// Add answer activity meta.
-		update_post_meta( $answer_id, '__ap_activity', array( 'type' => 'best_answer', 'user_id' => $user_id, 'date' => current_time( 'mysql' ) ) );
+		ap_update_post_activity_meta( $answer_id, 'best_answer', $user_id );
 
 		$user_ids = array( $answer->post_author );
 
@@ -313,10 +310,8 @@ class AnsPress_Activity_Hook
 		ap_new_activity( $activity_arr );
 
 		// Add question activity meta.
-		update_post_meta( $question_id, '__ap_activity', array( 'type' => 'answer_unselected', 'user_id' => $user_id, 'date' => current_time( 'mysql' ) ) );
-
-		// Add answer activity meta.
-		update_post_meta( $answer_id, '__ap_activity', array( 'type' => 'unselected_best_answer', 'user_id' => $user_id, 'date' => current_time( 'mysql' ) ) );
+		ap_update_post_activity_meta( $question_id, 'answer_unselected', $user_id );
+		ap_update_post_activity_meta( $answer_id, 'unselected_best_answer', $user_id );
 	}
 
 	/**
@@ -494,11 +489,11 @@ class AnsPress_Activity_Hook
 		$post_title = '<a class="ap-q-link" href="'. wp_get_shortlink( $comment->comment_post_ID ) .'">'. get_the_title( $comment->comment_post_ID ) .'</a>';
 
 		if ( $post->post_type == 'question' ) {
-			$activity_arr['type'] = 'new_comment';
+			$activity_arr['type'] = 'edit_comment';
 			$activity_arr['question_id'] = $comment->comment_post_ID;
 			$activity_arr['content'] = sprintf( __( '%s commented on question %s %s', 'anspress-question-answer' ), $user, $post_title, $comment_excerpt );
 		} else {
-			$activity_arr['type'] = 'new_comment_answer';
+			$activity_arr['type'] = 'edit_comment_answer';
 			$activity_arr['question_id'] = $post->post_parent;
 			$activity_arr['answer_id'] = $comment->comment_post_ID;
 			$activity_arr['content'] = sprintf( __( '%s commented on answer %s %s', 'anspress-question-answer' ), $user, $post_title, $comment_excerpt );
@@ -506,12 +501,13 @@ class AnsPress_Activity_Hook
 
 		$activity_id = ap_new_activity( $activity_arr );
 
-		// Add comment activity meta.
-		update_post_meta( $comment->comment_post_ID, '__ap_activity', array( 'type' => 'new_comment', 'user_id' => $comment->user_id, 'date' => current_time( 'mysql' ) ) );
+		ap_update_post_activity_timestamp( $post );
 
 		if ( $post->post_type == 'question' ) {
+			ap_update_post_activity_meta( $comment->comment_post_ID, 'edit_comment', get_current_user_id() );
 			$subscribers = ap_subscriber_ids( $comment->comment_post_ID, array( 'q_post', 'q_all' ) );
 		} else {
+			ap_update_post_activity_meta( $comment->comment_post_ID, 'edit_comment_answer', get_current_user_id(), true );
 			$subscribers = ap_subscriber_ids( $comment->comment_post_ID, 'a_all' );
 		}
 

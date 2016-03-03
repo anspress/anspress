@@ -164,6 +164,11 @@ class AnsPress_Process_Form
 	 */
 	public function remove_stop_words_from_name( $str ) {
 		$str = sanitize_title( $str );
+		
+		if( ap_opt( 'keep_stop_words' ) ){
+			return $str;
+		}
+
 		$post_name = ap_remove_stop_words( $str );
 
 		// Check if post name is not empty.

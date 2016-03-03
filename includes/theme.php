@@ -318,7 +318,7 @@ function ap_display_question_metas($question_id = false) {
 
 		$view_count = ap_get_qa_views();
 		$metas['views'] = sprintf( __( '<i>%d views</i>', 'anspress-question-answer' ), $view_count );
-		$metas['history'] = ap_latest_post_activity_html( $question_id );
+		$metas['history'] = ap_latest_post_activity_html( $question_id, !is_question() );
 	}
 
 	/*

@@ -178,7 +178,7 @@ class AnsPress_Activity_Query
 
 		$query .= $this->order_clauses( $this->args );
 
-		$query .= ' LIMIT '.$this->args['offset'].','.$this->per_page;
+		$query .= ' LIMIT '.$this->args['offset'].','.$this->args['number'];
 
 		$this->query = $query;
 
@@ -671,18 +671,23 @@ function ap_get_activity($id) {
 	return $row;
 }
 
-
 /**
  * Get the latest history html
  * @param  integer $post_id Post ID.
  * @return string
  */
-function ap_post_activity_meta( $post_id = false ) {
+function ap_post_activity_meta( $post_id = false, $answer_activities = false ) {
 	if ( false === $post_id ) {
 		$post_id = get_the_ID();
 	}
 
-	return get_post_meta( $post_id, '__ap_activity', true );
+	$meta = get_post_meta( $post_id, '__ap_activity', true );
+
+	if ( $answer_activities && isset( $meta['child'] ) && strtotime($meta['child']['date'] ) > strtotime($meta['date'] ) ) {
+		return $meta['child'];
+	}
+
+	return $meta;
 }
 
 /**
@@ -699,6 +704,7 @@ function ap_activity_short_title( $type ) {
 		'edit_question' 	=> __( 'edited question', 'anspress-question-answer' ),
 		'edit_answer' 		=> __( 'edited answer', 'anspress-question-answer' ),
 		'edit_comment' 		=> __( 'edited comment', 'anspress-question-answer' ),
+		'edit_comment_answer' => __( 'edited comment on answer', 'anspress-question-answer' ),
 		'answer_selected' 	=> __( 'selected answer', 'anspress-question-answer' ),
 		'answer_unselected' => __( 'unselected answer', 'anspress-question-answer' ),
 		'status_updated' 	=> __( 'updated status', 'anspress-question-answer' ),
@@ -721,7 +727,7 @@ function ap_activity_short_title( $type ) {
  * @return string $html    HTML formatted?
  * @since  2.0.1
  */
-function ap_post_active_time($post_id = false, $html = true) {
+function ap_post_active_time($post_id = false, $html = true, $answer_activities = false) {
 
 	if ( false === $post_id ) {
 		$post_id = get_the_ID();
@@ -729,7 +735,7 @@ function ap_post_active_time($post_id = false, $html = true) {
 
 	$post = get_post( $post_id );
 
-	$activity = ap_post_activity_meta( $post_id );
+	$activity = ap_post_activity_meta( $post_id, $answer_activities );
 
 	if ( ! $activity ) {
 		$activity['date'] = get_the_time( 'c', $post_id );
@@ -752,14 +758,13 @@ function ap_post_active_time($post_id = false, $html = true) {
  * @param  integer $post_id Question or answer ID.
  * @return string
  */
-function ap_latest_post_activity_html($post_id = false) {
-
+function ap_latest_post_activity_html($post_id = false, $answer_activities = false) {
 	if ( false === $post_id ) {
 		$post_id = get_the_ID();
 	}
 
 	$post = get_post( $post_id );
-	$activity = ap_post_activity_meta( $post_id );
+	$activity = ap_post_activity_meta( $post_id, $answer_activities );
 
 	if ( $activity ) {
 		$activity['date'] = get_gmt_from_date($activity['date'] );
@@ -774,7 +779,6 @@ function ap_latest_post_activity_html($post_id = false) {
 	$html = '';
 
 	if ( $activity ) {
-
 		$title = ap_activity_short_title( $activity['type'] );
 
 		$html .= '<span class="ap-post-history">';
@@ -1151,5 +1155,49 @@ function ap_activity_delete_btn() {
 
 function ap_activity_the_delete_btn() {
 	echo ap_activity_delete_btn();
+}
+
+/**
+ * Update post activity meta.
+ * @param  object|integer $post    				Question or answer.
+ * @param  string         $type    				Activity type.
+ * @param  integer        $user_id 				ID of user doing activity.
+ * @param  boolean        $append_to_question   Append activity to question.
+ * @param  boolean|string $date    				Activity date in mysql timestamp format.
+ * @return boolean
+ * @since  2.4.7
+ */
+function ap_update_post_activity_meta( $post, $type, $user_id, $append_to_question = false, $date = false ) {
+	if ( false === $date ) {
+		$date = current_time( 'mysql' );
+	}
+
+	$post_o = get_post( $post );
+	$meta_val = compact('type', 'user_id', 'date' );
+
+	// Append to question activity meta. So that it can shown in question list.
+	if ( $append_to_question ) {
+		$meta = (array) get_post_meta( $post_o->post_parent, '__ap_activity', true );
+		$meta['child'] = $meta_val;
+		update_post_meta( $post_o->post_parent, '__ap_activity', $meta );
+	}
+
+	return update_post_meta( $post_o->ID, '__ap_activity', $meta_val );
+}
+
+/**
+ * Update post activity timestamp.
+ * @param object|integer $post Post or post ID.
+ * @since 2.4.7
+ */
+function ap_update_post_activity_timestamp( $post ) {
+	$post = get_post( $post );
+
+	if ( 'answer' == $post->post_type ) {
+		update_post_meta( $post->post_parent, ANSPRESS_UPDATED_META, current_time( 'mysql' ) );
+		update_post_meta( $post->ID, ANSPRESS_UPDATED_META, current_time( 'mysql' ) );
+	} else {
+		update_post_meta( $post->ID, ANSPRESS_UPDATED_META, current_time( 'mysql' ) );
+	}
 }
 

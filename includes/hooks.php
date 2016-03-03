@@ -334,15 +334,11 @@ class AnsPress_Hooks
 	    $post = get_post( $comment->comment_post_ID );
 
 	    if ( $post->post_type == 'question' ) {
-
 	        // Set updated meta for sorting purpose.
-			update_post_meta( $comment->comment_post_ID, ANSPRESS_UPDATED_META, current_time( 'mysql' ) );
-
+			update_post_meta( $post->ID, ANSPRESS_UPDATED_META, current_time( 'mysql' ) );
 	    } elseif ( $post->post_type == 'answer' ) {
-	        $post_id = wp_get_post_parent_id( $comment->comment_post_ID );
-
 			// Set updated meta for sorting purpose.
-			update_post_meta( $post_id, ANSPRESS_UPDATED_META, current_time( 'mysql' ) );
+			update_post_meta( $post->post_parent, ANSPRESS_UPDATED_META, current_time( 'mysql' ) );
 	    }
 	}
 
