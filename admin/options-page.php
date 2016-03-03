@@ -323,6 +323,14 @@ class AnsPress_Options_Page
 		// Register question settings
 		ap_register_option_group('question', __( 'Question', 'anspress-question-answer' ) , array(
 			array(
+				'name' => 'anspress_opt[keep_stop_words]',
+				'label' => __( 'Keep stop words in question slug', 'anspress-question-answer' ),
+				'desc' => __( 'AnsPress will not strip stop words in question slug.', 'anspress-question-answer' ),
+				'type' => 'checkbox',
+				'value' => $settings['keep_stop_words'],
+				'show_desc_tip' => false,
+			) ,
+			array(
 				'name' => 'anspress_opt[minimum_qtitle_length]',
 				'label' => __( 'Minimum title length', 'anspress-question-answer' ),
 				'desc' => __( 'Set minimum letters for a question title.', 'anspress-question-answer' ),

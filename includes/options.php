@@ -154,6 +154,7 @@ function ap_default_options() {
 		'akismet_validation'		=> false,
 		'load_assets_in_anspress_only'		=> false,
 		'only_logged_in'			=> false,
+		'keep_stop_words'			=> true,
 	);
 
 	/**
