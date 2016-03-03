@@ -24,7 +24,7 @@ $I->makeScreenshot('questions_page' );
 
 // Add a dummy comment in question 1.
 $I->switch_user('user2', 'user2' );
-$I->amOnPage( '/questions/question/question-1/' );
+$I->amOnPage( '/questions/question/this-is-question-1/' );
 $I->click( '.ap-q-cells .comment-btn' );
 $I->waitForJS( 'return jQuery.active == 0;',60 );
 $I->fillField([ 'name' => 'comment' ], $I->comment['comment1'] );
