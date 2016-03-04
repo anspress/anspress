@@ -868,7 +868,6 @@ function ap_assets( ) {
 		'css' => array(
 			'ap-theme-css' => array( 'src' => ap_get_theme_url( 'css/main.css' ) ),
 			'ap-fonts' => array( 'src' => ap_get_theme_url( 'fonts/style.css' ) ),
-			'ap-overrides' => array( 'src' => ap_get_theme_url( 'css/overrides.css' ), 'dep' => array( 'ap-theme-css' ) ),
 		),
 	);
 

@@ -214,10 +214,10 @@ core_install(){
 	wp core install --url='http://wptest.localhost/' --title='AnsPress_test' --admin_user='admin' --admin_password='admin' --admin_email=support@wptest.localhost --allow-root
 	wp rewrite structure '/%postname%/' --hard --allow-root
 	wp plugin activate anspress-question-answer --allow-root
-	wp plugin install categories-for-anspress --activate
-	wp plugin install tags-for-anspress --activate
-	wp plugin install tags-for-anspress --activate
-	wp plugin install anspress-email --activate
+	wp plugin install categories-for-anspress --activate --allow-root
+	wp plugin install tags-for-anspress --activate --allow-root
+	wp plugin install tags-for-anspress --activate --allow-root
+	wp plugin install anspress-email --activate --allow-root
 	wp theme install twentytwelve --activate --allow-root
 	wp user create user1 user1@localhost.com --user_pass='user1' --allow-root
 	wp user create user2 user2@localhost.com --user_pass='user2' --allow-root

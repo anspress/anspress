@@ -32,6 +32,7 @@ function ap_scripts_front() {
 
 	wp_add_inline_style( 'ap-theme-css', $custom_css );
 	do_action( 'ap_enqueue' );
+	wp_enqueue_style( 'ap-overrides', ap_get_theme_url( 'css/overrides.css' ), array( 'ap-theme-css' ), AP_VERSION );
 
 	echo '<script type="text/javascript">';
 		echo 'var ajaxurl = "'.admin_url( 'admin-ajax.php' ).'",';
