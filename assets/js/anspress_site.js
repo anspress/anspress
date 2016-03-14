@@ -216,7 +216,7 @@
             var icon = aplang[type];
             $('<div class="ap-notify-item ' + type + '"><i class="' + icon + '"></i><div class="ap-notify-content">' + message + '</div></div>').appendTo('#ap-notify').animate({
                 'margin-left': 0
-            }, 500).delay(5000).fadeOut(200);
+            }, 500).delay(1000).fadeOut(200);
         },
         redirect: function(url) {
             if (typeof url !== 'undefined') window.location.replace(url);
@@ -264,8 +264,8 @@
         toggle_active_class: function(elm, active) {
             console.log(elm);
             if (typeof elm !== 'undefined'){
-                $(elm).find('li').toggleClass('active');
-                $(elm).find(active).toggleClass('active');
+                $(elm).find('li').removeClass('active');
+                $(elm).find(active).addClass('active');
                 $(elm).toggleClass('active');
             }
         },
