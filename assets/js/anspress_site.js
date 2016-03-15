@@ -333,6 +333,8 @@
                                 $(this).closest('.ap-q-inner').append(data.html);
                             }
                         }else{
+                            $(data.container).addClass('have-comments');
+                            $(data.container).removeClass('no-comments');
                             $(data.container).append(data.html);
                         }
 
