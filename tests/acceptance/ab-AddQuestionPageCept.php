@@ -7,8 +7,8 @@ $I = new AcceptanceTester($scenario );
 $I->wantTo('Add AnsPress base page' );
 $I->loginAsAdmin();
 $I->amOnPage('/wp-admin/post-new.php?post_type=page' );
-
-if ( $I->seeInSource('Questions', 'CSS:#the-list .row-title' ) ) {
+$I->makeScreenshot('pages' );
+//if ( $I->seeInSource('Questions', 'CSS:#the-list .row-title' ) ) {
 	$I->fillField([ 'name' => 'post_title' ] , 'Questions' );
 	$I->fillTinyMceEditorById('content', '[anspress]' );
 	$I->click('input#publish' );
@@ -16,11 +16,14 @@ if ( $I->seeInSource('Questions', 'CSS:#the-list .row-title' ) ) {
 	$I->seeInSource('Questions', 'CSS:#the-list .row-title' );
 	$I->amOnPage('/questions/' );
 	$I->seeInSource('Questions', 'CSS:h1' );
-} else {
-	$I->comment('AnsPress base page already exists.' );
-}
+	
+//} else {
+	//$I->comment('AnsPress base page already exists.' );
+//}
+
 $I->wantTo('Check AnsPress base page is selected');
 $I->amOnPage('/questions/' );
+
 
 if( !$I->seeElement('#anspress') ){
 	$I->amOnPage('/wp-admin/admin.php?page=anspress_options' );

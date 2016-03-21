@@ -18,9 +18,10 @@ $I->fillTinyMceEditorById('description', 'Fusce iaculis condimentum nisi, nec co
 
 $I->click('#ask_form .ap-btn-submit' );
 $I->waitForJS( 'return jQuery.active == 0;',60 );
+//$I->makeScreenshot('ask_form' );
 $I->amOnPage( '/questions/' );
 $I->see($I->questions['question1'] );
-$I->makeScreenshot('questions_page' );
+//$I->makeScreenshot('questions_page' );
 
 // Add a dummy comment in question 1.
 $I->switch_user('user2', 'user2' );
@@ -31,5 +32,5 @@ $I->fillField([ 'name' => 'comment' ], $I->comment['comment1'] );
 $I->click( '#ap-commentform input[name="submit"]' );
 $I->waitForJS( 'return jQuery.active == 0;',60 );
 $I->waitForText( $I->comment['comment1'], 60 );
-$I->makeScreenshot('questions_comment' );
+//$I->makeScreenshot('questions_comment' );
 
