@@ -169,13 +169,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		 */
 		public static function instance() {
 
-		    if ( ! isset( self::$instance ) && ! (self::$instance instanceof self) ) {
-		    	/*
-                 * ACTION: before_loading_anspress
-                 * Action before loading AnsPress.
-                 * @since 2.4.7
-				 */
-				do_action( 'before_loading_anspress' );
+		    if ( ! isset( self::$instance ) && ! (self::$instance instanceof self) ) {	    	
 
 		        self::$instance = new self();
 		        self::$instance->setup_constants();
@@ -456,10 +450,13 @@ function anspress() {
 	return AnsPress::instance();
 }
 
-function load_anspress(){
-	anspress();
-}
-add_action( 'plugins_loaded', 'load_anspress' );
+/*
+ * ACTION: before_loading_anspress
+ * Action before loading AnsPress.
+ * @since 2.4.7
+ */
+do_action( 'before_loading_anspress' );
+anspress();
 
 /*
  ----------------------------------------------------------------------------*
@@ -516,7 +513,6 @@ function anspress_uninstall() {
 }
 
 function ap_activation_redirect($plugin) {
-
 	if ( $plugin == plugin_basename( __FILE__ ) ) {
 		exit( wp_redirect( admin_url( 'admin.php?page=anspress_about' ) ) );
 	}
