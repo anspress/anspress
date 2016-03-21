@@ -170,6 +170,13 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		public static function instance() {
 
 		    if ( ! isset( self::$instance ) && ! (self::$instance instanceof self) ) {
+		    	/*
+                 * ACTION: before_loading_anspress
+                 * Action before loading AnsPress.
+                 * @since 2.4.7
+				 */
+				do_action( 'before_loading_anspress' );
+
 		        self::$instance = new self();
 		        self::$instance->setup_constants();
 		        self::$instance->actions = array();
