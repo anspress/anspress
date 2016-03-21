@@ -131,10 +131,10 @@ function ap_user_display_name($args = array()) {
 	}
 
 	extract( $args );
-	
+
 	$user = get_userdata( $user_id );
-	
-	if ( $user ) {		
+
+	if ( $user ) {
 		if ( ! $html ) {
 			$return = $user->display_name;
 		} else {
@@ -319,7 +319,8 @@ function ap_user_menu($collapse = true, $user_id = false) {
 			$o .= '<li'.($active_user_page == $m['slug'] ? ' class="active"' : '').'><a href="'.$m['link'].'" class="ap-user-menu-'.$m['slug'].$class.'">'.$m['title'].'</a></li>';
 		}
 
-		/*if ( $collapse ) {
+		/*
+		if ( $collapse ) {
 			$o .= '<li class="ap-user-menu-more ap-dropdown"><a href="#" class="ap-dropdown-toggle">'.__( 'More', 'ap' ).ap_icon( 'chevron-down', true ).'</a><ul class="ap-dropdown-menu"></ul></li>'; }
 
 		$o .= '</ul>';*/
@@ -368,7 +369,7 @@ function ap_user_page() {
 function ap_active_user_page() {
 	$user_page        = sanitize_text_field( get_query_var( 'user_page' ) );
 
-	if( !empty($user_page)){
+	if ( ! empty($user_page ) ) {
 		return $user_page;
 	}
 
@@ -894,4 +895,31 @@ function ap_user_link_anchor($user_id, $echo = true) {
 	}
 
 	return $html;
+}
+
+/**
+ * Count total numbers of comment by a user.
+ * @param  boolean|integer $user_id User ID.
+ * @return integer
+ * @since  2.4.7
+ */
+function ap_user_comment_count( $user_id = false ) {
+	if ( false === $user_id ) {
+		$user_id = get_current_user_id();
+	}
+
+	$key = 'user_comment_count_'.$user_id;
+
+	$cache = wp_cache_get( $key, 'ap_user_comment_count' );
+
+	if ( false !== $cache ) {
+		return $cache;
+	}
+
+	global $wpdb;
+	$count = (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->comments} WHERE user_id = %d and comment_approved = 1", $user_id ) );
+
+	wp_cache_set( $key, $count, 'ap_user_comment_count' );
+
+	return (int) $count;
 }
