@@ -456,7 +456,10 @@ function anspress() {
 	return AnsPress::instance();
 }
 
-anspress();
+function load_anspress(){
+	anspress();
+}
+add_action( 'plugins_loaded', 'load_anspress' );
 
 /*
  ----------------------------------------------------------------------------*
