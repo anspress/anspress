@@ -38,35 +38,40 @@ if ( ! class_exists( 'Question_Query' ) ) :
 				$paged = (get_query_var( 'paged' )) ? get_query_var( 'paged' ) : 1; }
 
 				if ( isset( $args['post_parent'] ) ) {
-					$post_parent = $args['post_parent']; } else {
-					$post_parent = (get_query_var( 'parent' )) ? get_query_var( 'parent' ) : false; }
+					$post_parent = $args['post_parent'];
+				} else {
+					$post_parent = (get_query_var( 'parent' )) ? get_query_var( 'parent' ) : false;
+				}
 
-					$defaults = array(
+				$defaults = array(
 					'showposts'     => ap_opt( 'question_per_page' ),
 					'paged'         => $paged,
-					);
+				);
 
-			$args['post_status'][] = 'publish';
-			$args['post_status'][] = 'closed';
+				$args['post_status'][] = 'publish';
+				$args['post_status'][] = 'closed';
 
-			if ( $post_parent ) {
-				$this->args['post_parent'] = $post_parent; }
+				if ( $post_parent ) {
+					$this->args['post_parent'] = $post_parent;
+				}
 
-			$this->args = wp_parse_args( $args, $defaults );
+				$this->args = wp_parse_args( $args, $defaults );
 
-			if ( get_query_var( 'ap_s' ) != '' ) {
-				$this->args['s'] = sanitize_text_field( get_query_var( 'ap_s' ) ); }
+				if ( get_query_var( 'ap_s' ) != '' ) {
+					$this->args['s'] = sanitize_text_field( get_query_var( 'ap_s' ) );
+				}
 
-			if ( isset( $this->args[ 'sortby' ] ) ) {
-				$this->orderby_questions(); }
+				if ( isset( $this->args[ 'sortby' ] ) ) {
+					$this->orderby_questions();
+				}
 
-			$this->args['post_type'] = 'question';
+				$this->args['post_type'] = 'question';
 
-			$args = $this->args;
+				$args = $this->args;
 
 			/**
-		 * Initialize parent class
-		 */
+			 * Initialize parent class
+			 */
 			parent::__construct( $args );
 		}
 
@@ -162,13 +167,19 @@ function ap_get_questions($args = array()) {
  * @since 2.1
  */
 function ap_get_question($question_id) {
-	$args = array( 'p' => $question_id );
+	$args = array( 'p' => $question_id, 'ap_query' => 'single_question' );
+
+	if ( ap_user_can_view_future_post( $question_id ) ) {
+		$args['post_status'][] = 'future';
+	}
 
 	if ( ap_user_can_view_private_post( $question_id ) ) {
-		$args['post_status'][] = 'private_post'; }
+		$args['post_status'][] = 'private_post';
+	}
 
 	if ( ap_user_can_view_moderate_post( $question_id ) ) {
-		$args['post_status'][] = 'moderate'; }
+		$args['post_status'][] = 'moderate';
+	}
 
 	return new Question_Query( $args );
 }

@@ -139,8 +139,17 @@ class AnsPress_Common_Pages
 				global $post;
 				setup_postdata( $post );
 			endwhile;
-			include( ap_get_theme_location( 'question.php' ) );
 
+			if( 'future' == $post->post_status ){
+				$time_to_publish = sprintf( _x( '%s', '%s = human-readable time difference', 'anspress-question-answer' ), human_time_diff( strtotime( $post->post_date ), current_time( 'timestamp', true ) ) );
+
+				echo '<div class="future-notice">';
+					echo '<strong>' .sprintf(__('Question will be published in %s', 'anspress-question-answer'), $time_to_publish ).'</strong>';
+					echo '<p>' .__('This question is in waiting queue and is not accessible by anyone until it get published.', 'anspress-question-answer').'</p>';
+				echo '</div>';
+			}
+
+			include( ap_get_theme_location( 'question.php' ) );
 			wp_reset_postdata();
 
 		} else {

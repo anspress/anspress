@@ -625,6 +625,30 @@ function ap_user_can_view_moderate_post( $post_id, $user_id = false ) {
 }
 
 /**
+ * Check if user can view a future post.
+ * @param  integer $post_id Post ID.
+ * @param  integer $user_id User ID.
+ * @return boolean
+ */
+function ap_user_can_view_future_post( $post_id, $user_id = false ) {
+	if ( false === $user_id ) {
+		$user_id = get_current_user_id();
+	}
+
+	if ( is_super_admin( $user_id ) || user_can( $user_id, 'ap_view_future' ) ) {
+		return true;
+	}
+
+	$post_o = get_post( $post_id );
+
+	if ( $post_o->post_author == $user_id ) {
+		return true;
+	}
+
+	return false;
+}
+
+/**
  * Check if user can view post
  * @param  integer $post_id Question or answer ID.
  * @return boolean
@@ -641,6 +665,10 @@ function ap_user_can_view_post($post_id = false) {
 	}
 
 	if ( 'moderate' == $post_o->post_status && ap_user_can_view_moderate_post( $post_o->ID ) ) {
+		return true;
+	}
+
+	if ( 'future' == $post_o->post_status && ap_user_can_view_future_post( $post_o->ID ) ) {
 		return true;
 	}
 
