@@ -321,7 +321,20 @@ class AnsPress_Options_Page
 		));
 
 		// Register question settings
-		ap_register_option_group('question', __( 'Question', 'anspress-question-answer' ) , array(
+		ap_register_option_group('question', __( 'Question & Answer', 'anspress-question-answer' ) , array(
+			array(
+				'name' => 'anspress_opt[default_date_format]',
+				'label' => __( 'Show default date format', 'anspress-question-answer' ),
+				'desc' => __( 'Instead of showing time passed i.e. 1 Hour ago, show default format date.', 'anspress-question-answer' ),
+				'type' => 'checkbox',
+				'value' => $settings['default_date_format'],
+				'show_desc_tip' => false,
+			) ,
+			array(
+				'name' => '__sep',
+				'type' => 'custom',
+				'html' => '<span class="ap-form-separator">' . __( 'Question', 'anspress-question-answer' ) . '</span>',
+			) ,
 			array(
 				'name' => 'anspress_opt[keep_stop_words]',
 				'label' => __( 'Keep stop words in question slug', 'anspress-question-answer' ),
@@ -386,10 +399,11 @@ class AnsPress_Options_Page
 				'value' => $settings['close_selected'],
 				'show_desc_tip' => false,
 			) ,
-		));
-
-		// Register answer settings
-		ap_register_option_group('answer', __( 'Answer', 'anspress-question-answer' ) , array(
+			array(
+				'name' => '__sep',
+				'type' => 'custom',
+				'html' => '<br /><span class="ap-form-separator">' . __( 'Answer', 'anspress-question-answer' ) . '</span>',
+			) ,
 			array(
 				'name' => 'anspress_opt[multiple_answers]',
 				'label' => __( 'Multiple Answers', 'anspress-question-answer' ),

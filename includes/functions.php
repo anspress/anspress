@@ -260,13 +260,23 @@ function get_question_id() {
 /**
  * Return human readable time format
  * @param  string  $time 			Time.
- * @param  boolean $unix 			Is $time is unix?
+ * @param  boolean $unix 			Is $time is unix.
  * @param  integer $show_full_date 	Show full date after some period. Default is 7 days in epoch.
  * @return string|null
+ * @since  2.4.7 Checks if showing default date format is enabled.
  */
-function ap_human_time($time, $unix = true, $show_full_date = 604800, $format = 'd M, Y') {
+function ap_human_time($time, $unix = true, $show_full_date = 604800, $format = false) {
+	if ( false === $format ) {
+		$format = get_option( 'date_format' );
+	}
+
 	if ( ! is_numeric($time ) && ! $unix ) {
 		$time = strtotime($time );
+	}
+
+	// If default date format is enabled then just return date.
+	if ( ap_opt( 'default_date_format' ) ) {
+		return date_i18n( $format, $time );
 	}
 
 	if ( $time ) {
@@ -278,25 +288,16 @@ function ap_human_time($time, $unix = true, $show_full_date = 604800, $format = 
 	}
 }
 
-function ap_please_login() {
-
-	$o = '<div id="please-login">';
-	$o .= '<button>x</button>';
-	$o .= __( 'Please login or register to continue this action.', 'anspress-question-answer' );
-	$o .= '</div>';
-
-	echo apply_filters( 'ap_please_login', $o );
-}
-
-// check if user answered on a question
 /**
- * @param integer $question_id
+ * Check if user answered on a question
+ * @param integer $question_id 	Question ID.
+ * @param integer $user_id 		User ID.
  */
-function ap_is_user_answered($question_id, $user_id) {
-
+function ap_is_user_answered( $question_id, $user_id ) {
 	global $wpdb;
 
 	$count = $wpdb->get_var( "SELECT COUNT(*) FROM $wpdb->posts where post_parent = $question_id AND ( post_author = $user_id AND post_type = 'answer')" );
+	
 	if ( $count ) {
 		return true;
 	}
@@ -306,11 +307,8 @@ function ap_is_user_answered($question_id, $user_id) {
 
 /**
  * Count all answers of a question includes all post status.
- *
- * @param int $id question id
- *
+ * @param int $id question id.
  * @return int
- *
  * @since 2.0.1.1
  */
 function ap_count_all_answers($id) {
