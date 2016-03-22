@@ -271,7 +271,7 @@ function ap_human_time($time, $unix = true, $show_full_date = 604800, $format = 
 
 	if ( $time ) {
 		if ( $show_full_date + $time > current_time( 'timestamp', true ) ) {
-			return human_time_diff( $time, current_time( 'timestamp', true ) ) .' '.__( 'ago', 'anspress-question-answer' );
+			return sprintf( _x( '%s ago', '%s = human-readable time difference', 'anspress-question-answer' ), human_time_diff( $time, current_time( 'timestamp', true ) ) );
 		} else {
 			return date_i18n( $format, $time );
 		}
