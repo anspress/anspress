@@ -345,7 +345,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		public function site_include() {
 		    self::$instance->anspress_hooks 	= new AnsPress_Hooks( $this );
 		    self::$instance->anspress_theme 	= new AnsPress_Theme( $this );
-		    self::$instance->common_pages 		= new AnsPress_Common_Pages( $this );
+		    self::$instance->common_pages 		= new AnsPress_Common_Pages();
 		    self::$instance->post_status 		= new AnsPress_Post_Status( $this );
 		    self::$instance->users_class 		= new AnsPress_User( $this );
 	    	self::$instance->rewrite_class 		= new AnsPress_Rewrite( $this );
