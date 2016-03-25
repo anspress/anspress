@@ -14,19 +14,12 @@
  */
 class AnsPress_Common_Pages
 {
-	/**
-	 * Parent class object
-	 * @var object
-	 */
-	protected $ap;
 
 	/**
 	 * Initialize the class
-	 * @param object $ap Parent class object.
 	 */
-	public function __construct($ap) {
-		$this->ap = $ap;
-		$this->ap->add_action( 'init', $this, 'register_common_pages' );
+	public function __construct() {
+		anspress()->add_action( 'init', $this, 'register_common_pages' );
 	}
 
 	/**
@@ -140,12 +133,25 @@ class AnsPress_Common_Pages
 				setup_postdata( $post );
 			endwhile;
 
-			if( 'future' == $post->post_status ){
+			if ( 'future' == $post->post_status ) {
 				$time_to_publish = sprintf( _x( '%s', '%s = human-readable time difference', 'anspress-question-answer' ), human_time_diff( strtotime( $post->post_date ), current_time( 'timestamp', true ) ) );
 
 				echo '<div class="future-notice">';
-					echo '<strong>' .sprintf(__('Question will be published in %s', 'anspress-question-answer'), $time_to_publish ).'</strong>';
-					echo '<p>' .__('This question is in waiting queue and is not accessible by anyone until it get published.', 'anspress-question-answer').'</p>';
+				/**
+				 * Filter to modify future post notice. If filter does not return false
+				 * then retunrd string will be shown.
+				 * @param  boolean $notice False by default.
+				 * @return boolean|string
+				 * @since  2.4.7
+				 */
+				$notice = apply_filters( 'ap_future_post_notice', false );
+				if ( false === $notice ) {
+					echo '<strong>' .sprintf(__('Question will be published in %s', 'anspress-question-answer' ), $time_to_publish ).'</strong>';
+					echo '<p>' .__('This question is in waiting queue and is not accessible by anyone until it get published.', 'anspress-question-answer' ).'</p>';
+				} else {
+					echo $notice;
+				}
+
 				echo '</div>';
 			}
 
