@@ -41,7 +41,15 @@ class AnsPress_BasePage_Shortcode {
 	 * @since 2.0.0-beta
 	 */
 	public function anspress_sc( $atts, $content='' ) {
-		global $questions, $wp;
+		global $questions, $wp, $ap_shortcode_loaded;
+
+		// Check if AnsPress shortcode already loaded.
+		if ( true === $ap_shortcode_loaded ) {
+			_e('AnsPress shortcode cannot be used inside AnsPress content.', 'anspress-question-answer' );
+			return;
+		}
+
+		$ap_shortcode_loaded = true;
 
 		if ( isset( $atts['categories'] ) ) {
 			$categories = explode( ',', str_replace( ', ', ',', $atts['categories'] ) );

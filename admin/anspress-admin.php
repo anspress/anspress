@@ -470,20 +470,18 @@ class AnsPress_Admin
 	 */
 	public function wp_nav_menu_item_anspress_meta_box() {
 
-		global $_nav_menu_placeholder, $nav_menu_selected_id;
+		global $_nav_menu_placeholder, $nav_menu_selected_id, $ap_pages;
 
 		$_nav_menu_placeholder = 0 > $_nav_menu_placeholder ? $_nav_menu_placeholder - 1 : -1;
-
-		$pages = anspress()->pages;
 
 		echo '<div class="aplinks" id="aplinks">';
 		echo '<input type="hidden" value="custom" name="menu-item['.$_nav_menu_placeholder.'][menu-item-type]" />';
 		echo '<ul>';
 
-		$pages['profile']       = array( 'title' => __( 'User profile', 'anspress-question-answer' ), 'show_in_menu' => true );
-		$pages['notification']  = array( 'title' => __( 'User notification', 'anspress-question-answer' ), 'show_in_menu' => true );
+		$ap_pages['profile']       = array( 'title' => __( 'User profile', 'anspress-question-answer' ), 'show_in_menu' => true );
+		$ap_pages['notification']  = array( 'title' => __( 'User notification', 'anspress-question-answer' ), 'show_in_menu' => true );
 
-		foreach ( $pages as $k => $args ) {
+		foreach ( $ap_pages as $k => $args ) {
 			if ( $args['show_in_menu'] ) {
 				echo '<li>';
 				echo '<label class="menu-item-title">';

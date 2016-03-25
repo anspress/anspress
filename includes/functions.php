@@ -320,7 +320,6 @@ function ap_count_all_answers($id) {
 }
 
 function ap_count_published_answers($id) {
-
 	global $wpdb;
 	$count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM $wpdb->posts where post_parent = %d AND (post_status = %s OR post_status = %s) AND post_type = %s", $id, 'publish', 'closed', 'answer' ) );
 

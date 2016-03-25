@@ -134,19 +134,19 @@ class AnsPress_Common_Pages
 			endwhile;
 
 			if ( 'future' == $post->post_status ) {
-				$time_to_publish = sprintf( _x( '%s', '%s = human-readable time difference', 'anspress-question-answer' ), human_time_diff( strtotime( $post->post_date ), current_time( 'timestamp', true ) ) );
-
 				echo '<div class="future-notice">';
 				/**
 				 * Filter to modify future post notice. If filter does not return false
 				 * then retunrd string will be shown.
-				 * @param  boolean $notice False by default.
+				 * @param  boolean $notice 		False by default.
+				 * @param  object  $question   	Post object.
 				 * @return boolean|string
 				 * @since  2.4.7
 				 */
-				$notice = apply_filters( 'ap_future_post_notice', false );
+				$notice = apply_filters( 'ap_future_post_notice', false, $post );
 				if ( false === $notice ) {
-					echo '<strong>' .sprintf(__('Question will be published in %s', 'anspress-question-answer' ), $time_to_publish ).'</strong>';
+					$time_to_publish = sprintf( _x( '%s', '%s = human-readable time difference', 'anspress-question-answer' ), human_time_diff( strtotime( $post->post_date ), current_time( 'timestamp' ) ) );
+					echo '<strong>' .sprintf(__('Question will be publish in %s', 'anspress-question-answer' ), $time_to_publish ).'</strong>';
 					echo '<p>' .__('This question is in waiting queue and is not accessible by anyone until it get published.', 'anspress-question-answer' ).'</p>';
 				} else {
 					echo $notice;
