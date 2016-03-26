@@ -11,11 +11,16 @@
 /**
  * Get slug of base page.
  * @return string
- * @since 2.0.0
+ * @since  2.0.0
+ * @since  2.4.7 Check if `$base_page` not empty.
  */
 function ap_base_page_slug() {
 
 	$base_page = get_post( ap_opt( 'base_page' ) );
+
+	if ( ! $base_page ) {
+		return;
+	}
 
 	$slug = $base_page->post_name;
 
@@ -33,12 +38,14 @@ function ap_base_page_slug() {
  * @since 2.0.0
  */
 function ap_base_page_link() {
-
 	return get_permalink( ap_opt( 'base_page' ) );
 }
 
+/**
+ * Get all theme names from AnsPress themes directory.
+ * @return array
+ */
 function ap_theme_list() {
-
 	$themes = array();
 	$dirs = array_filter( glob( ANSPRESS_THEME_DIR.'/*' ), 'is_dir' );
 	foreach ( $dirs as $dir ) {
@@ -48,8 +55,12 @@ function ap_theme_list() {
 	return $themes;
 }
 
+/**
+ * Get currently active theme of AnsPress. If no theme is
+ * selected then return `default`.
+ * @return string
+ */
 function ap_get_theme() {
-
 	$option = ap_opt( 'theme' );
 	if ( ! $option ) {
 		return 'default';
@@ -297,7 +308,7 @@ function ap_is_user_answered( $question_id, $user_id ) {
 	global $wpdb;
 
 	$count = $wpdb->get_var( "SELECT COUNT(*) FROM $wpdb->posts where post_parent = $question_id AND ( post_author = $user_id AND post_type = 'answer')" );
-	
+
 	if ( $count ) {
 		return true;
 	}
