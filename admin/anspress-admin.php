@@ -99,7 +99,6 @@ class AnsPress_Admin
 	public function includes() {
 		require_once( 'functions.php' );
 		require_once( 'options-page.php' );
-		require_once( 'extensions.php' );
 		require_once( 'license.php' );
 		require_once( 'class-list-table-hooks.php' );
 
