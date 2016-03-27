@@ -10,26 +10,34 @@
  * @since     2.4.5
  */
 
+// If this file is called directly, abort.
+if ( ! defined( 'WPINC' ) ) {
+	die;
+}
+
+/**
+ * Bad words filter hooks.
+ */
 class AP_Bad_words
 {
 	/**
 	 * Initialize the plugin by setting localization and loading public scripts
 	 * and styles.
-	 * @param AnsPress $ap
+	 * @since 2.4.8 Removed `$ap` args.
 	 */
-	public function __construct( $ap ) {
+	public function __construct( ) {
 
 		// Return if reputation is disabled.
 		if ( ! ap_check_for_bad_words() ) {
 			return;
 		}
 
-		$ap->add_action( 'ap_before_inserting_question', $this, 'before_inserting_question', 10, 2 );
-		$ap->add_action( 'ap_before_updating_question', $this, 'before_inserting_question', 10, 2 );
-		$ap->add_action( 'ap_before_inserting_answer', $this, 'before_inserting_question', 10, 2 );
-		$ap->add_action( 'ap_before_updating_answer', $this, 'before_inserting_question', 10, 2 );
-		$ap->add_action( 'ap_before_inserting_comment', $this, 'before_inserting_question', 10, 2 );
-		$ap->add_action( 'ap_before_updating_comment', $this, 'before_inserting_question', 10, 2 );
+		anspress()->add_action( 'ap_before_inserting_question', $this, 'before_inserting_question', 10, 2 );
+		anspress()->add_action( 'ap_before_updating_question', $this, 'before_inserting_question', 10, 2 );
+		anspress()->add_action( 'ap_before_inserting_answer', $this, 'before_inserting_question', 10, 2 );
+		anspress()->add_action( 'ap_before_updating_answer', $this, 'before_inserting_question', 10, 2 );
+		anspress()->add_action( 'ap_before_inserting_comment', $this, 'before_inserting_question', 10, 2 );
+		anspress()->add_action( 'ap_before_updating_comment', $this, 'before_inserting_question', 10, 2 );
 	}
 
 	/**

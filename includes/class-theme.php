@@ -20,36 +20,27 @@ if ( ! defined( 'WPINC' ) ) {
 class AnsPress_Theme
 {
 	/**
-	 * Parent class object
-	 * @var object
-	 */
-	protected $ap;
-
-	/**
 	 * Initialize the class
-	 * @param AnsPress $ap parent class.
+	 * @since 2.4.8 Removed `$ap` args.
 	 */
-	public function __construct($ap) {
-		$this->ap = $ap;
-
-		$this->ap->add_action( 'init', $this, 'init_actions' );
-		$this->ap->add_filter( 'post_class', $this, 'question_answer_post_class' );
-		$this->ap->add_filter( 'body_class', $this, 'body_class' );
-		$this->ap->add_filter( 'comments_template', $this, 'comment_template' );
-		$this->ap->add_action( 'after_setup_theme', $this, 'includes' );
-		$this->ap->add_filter( 'wpseo_title', $this, 'wpseo_title' , 10, 2 );
-		$this->ap->add_filter( 'wp_head', $this, 'feed_link', 9 );
-		$this->ap->add_filter( 'wpseo_canonical', $this, 'wpseo_canonical' );
-		$this->ap->add_action( 'ap_before', $this, 'ap_before_html_body' );
-		$this->ap->add_action( 'wp', $this, 'remove_head_items', 10 );
-		$this->ap->add_action( 'wp_head', $this, 'wp_head', 11 );
+	public function __construct() {
+		anspress()->add_action( 'init', $this, 'init_actions' );
+		anspress()->add_filter( 'post_class', $this, 'question_answer_post_class' );
+		anspress()->add_filter( 'body_class', $this, 'body_class' );
+		anspress()->add_filter( 'comments_template', $this, 'comment_template' );
+		anspress()->add_action( 'after_setup_theme', $this, 'includes' );
+		anspress()->add_filter( 'wpseo_title', $this, 'wpseo_title' , 10, 2 );
+		anspress()->add_filter( 'wp_head', $this, 'feed_link', 9 );
+		anspress()->add_filter( 'wpseo_canonical', $this, 'wpseo_canonical' );
+		anspress()->add_action( 'ap_before', $this, 'ap_before_html_body' );
+		anspress()->add_action( 'wp', $this, 'remove_head_items', 10 );
+		anspress()->add_action( 'wp_head', $this, 'wp_head', 11 );
 	}
 
 	/**
 	 * Function get called on init
 	 */
 	public function init_actions() {
-
 		// Register anspress shortcode.
 		add_shortcode( 'anspress', array( AnsPress_BasePage_Shortcode::get_instance(), 'anspress_sc' ) );
 

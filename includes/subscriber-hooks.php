@@ -6,8 +6,13 @@
  * @license   GPL-2.0+
  * @link      http://anspress.io
  * @copyright 2014 Rahul Aryan
- * @package   AnsPress/AnsPress_Notifications_Hooks
+ * @package   AnsPress/AnsPress_Subscriber_Hooks
  */
+
+// If this file is called directly, abort.
+if ( ! defined( 'WPINC' ) ) {
+	die;
+}
 
 /**
  * Register subscriber hooks
@@ -15,25 +20,19 @@
 class AnsPress_Subscriber_Hooks
 {
 	/**
-	 * AnsPress main class
-	 * @var object
-	 */
-	protected $ap;
-
-	/**
 	 * Initialize the plugin by setting localization and loading public scripts
 	 * and styles.
-	 * @param AnsPress $ap Parent class object.
+	 * @since 2.4.8 Removed `$ap` args.
 	 */
-	public function __construct($ap) {
-		$ap->add_action( 'ap_new_subscriber', $this, 'subscriber_count', 1, 3 );
-		$ap->add_action( 'ap_removed_subscriber', $this, 'subscriber_count', 1, 3 );
-		$ap->add_action( 'ap_after_new_question', $this, 'after_new_question', 10, 2 );
-		$ap->add_action( 'ap_after_new_answer', $this, 'after_new_answer', 10, 2 );
-		$ap->add_action( 'ap_publish_comment', $this, 'after_new_comment' );
-		$ap->add_action( 'ap_unpublish_comment', $this, 'unpublish_comment' );
-		$ap->add_action( 'ap_before_delete_question', $this, 'delete_question' );
-		$ap->add_action( 'ap_before_delete_answer', $this, 'delete_answer' );
+	public function __construct( ) {
+		anspress()->add_action( 'ap_new_subscriber', $this, 'subscriber_count', 1, 3 );
+		anspress()->add_action( 'ap_removed_subscriber', $this, 'subscriber_count', 1, 3 );
+		anspress()->add_action( 'ap_after_new_question', $this, 'after_new_question', 10, 2 );
+		anspress()->add_action( 'ap_after_new_answer', $this, 'after_new_answer', 10, 2 );
+		anspress()->add_action( 'ap_publish_comment', $this, 'after_new_comment' );
+		anspress()->add_action( 'ap_unpublish_comment', $this, 'unpublish_comment' );
+		anspress()->add_action( 'ap_before_delete_question', $this, 'delete_question' );
+		anspress()->add_action( 'ap_before_delete_answer', $this, 'delete_answer' );
 	}
 
 	/**

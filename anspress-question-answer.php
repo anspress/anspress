@@ -249,8 +249,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		    
 		    require_once ANSPRESS_DIR.'includes/class/form.php';
 		    require_once ANSPRESS_DIR.'includes/class/validation.php';
-		    require_once ANSPRESS_DIR.'includes/class/roles-cap.php';
-		    require_once ANSPRESS_DIR.'includes/class/bad-words.php';		    
+		    require_once ANSPRESS_DIR.'includes/class/roles-cap.php';		    	    
 		    require_once ANSPRESS_DIR.'includes/class/activity.php';
 
 		    require_once ANSPRESS_DIR.'includes/common-pages.php';
@@ -293,6 +292,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		    require_once ANSPRESS_DIR.'widgets/users.php';
 		    require_once ANSPRESS_DIR.'includes/rewrite.php';
 		    require_once ANSPRESS_DIR.'includes/reputation.php';
+		    require_once ANSPRESS_DIR.'includes/bad-words.php';	
 		    
 		    require_once ANSPRESS_DIR.'includes/user.php';
 		    require_once ANSPRESS_DIR.'includes/users-loop.php';
@@ -343,17 +343,17 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		 * Include all public classes
 		 */
 		public function site_include() {
-		    self::$instance->anspress_hooks 	= new AnsPress_Hooks( $this );
-		    self::$instance->anspress_theme 	= new AnsPress_Theme( $this );
+		    self::$instance->anspress_hooks 	= new AnsPress_Hooks( );
+		    self::$instance->anspress_theme 	= new AnsPress_Theme( );
 		    self::$instance->common_pages 		= new AnsPress_Common_Pages();
-		    self::$instance->post_status 		= new AnsPress_Post_Status( $this );
-		    self::$instance->users_class 		= new AnsPress_User( $this );
-	    	self::$instance->rewrite_class 		= new AnsPress_Rewrite( $this );
+		    self::$instance->post_status 		= new AnsPress_Post_Status( );
+		    self::$instance->users_class 		= new AnsPress_User( );
+	    	self::$instance->rewrite_class 		= new AnsPress_Rewrite( );
 	    	self::$instance->history_class 		= new AnsPress_Activity_Hook( );
-	    	self::$instance->subscriber_hooks 	= new AnsPress_Subscriber_Hooks( $this );
-	    	self::$instance->mention_hooks 		= new AP_Mentions_Hooks( $this );
-	    	self::$instance->views_class 		= new AP_Views( $this );
-	    	self::$instance->bad_words_class 	= new AP_Bad_words( $this );
+	    	self::$instance->subscriber_hooks 	= new AnsPress_Subscriber_Hooks( );
+	    	self::$instance->mention_hooks 		= new AP_Mentions_Hooks( );
+	    	self::$instance->views_class 		= new AP_Views( );
+	    	self::$instance->bad_words_class 	= new AP_Bad_words( );
 		}
 
 		/**
@@ -523,15 +523,15 @@ add_action( 'activated_plugin', 'ap_activation_redirect' );
  * Creating table whenever a new blog is created
  * @param  integer $blog_id Blog id.
  * @param  integer $user_id User id.
- * @param  string  $domain  Domain
- * @param  string  $path    Path
+ * @param  string  $domain  Domain.
+ * @param  string  $path    Path.
  * @param  integer $site_id Site id.
- * @param  array   $meta    Site meta
+ * @param  array   $meta    Site meta.
  */
 function ap_create_blog( $blog_id, $user_id, $domain, $path, $site_id, $meta ) {
 	if ( is_plugin_active_for_network( plugin_basename( __FILE__ ) ) ) {
 		switch_to_blog( $blog_id );
-		AP_Activate::get_instance(true );
+		AP_Activate::get_instance( true );
 		restore_current_blog();
 	}
 }

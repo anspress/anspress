@@ -168,7 +168,7 @@ function ap_get_meta($where) {
 	}
 
 	$query = "SELECT * FROM {$wpdb->prefix}ap_meta WHERE $where_string";
-	
+
 	$meta_key = md5( $query );
 
 	$cache = wp_cache_get( $meta_key, 'ap_meta' );
@@ -226,7 +226,7 @@ function ap_meta_total_count($type, $actionid=false, $userid = false, $group = f
 
 	$actionid = (int) $actionid;
 	$userid = (int) $userid;
-	
+
 	$value = sanitize_title_for_query( $value );
 
 	$where_query = '';
@@ -265,7 +265,7 @@ function ap_meta_total_count($type, $actionid=false, $userid = false, $group = f
 
 	if ( false === $group ) {
 		$count = $wpdb->get_var( $query );
-	} elseif( is_array($type) ) {
+	} elseif ( is_array($type ) ) {
 		$count = $wpdb->get_results( $query );
 	}
 
@@ -321,6 +321,20 @@ function ap_meta_user_done($type, $userid = false, $actionid, $param = false, $v
 	return $user_done;
 }
 
+/**
+ * Get all meta using query.
+ *
+ * @param  boolean|array $args  {
+ *     Optional. An array of arguments.
+ *
+ *     @type array $where 	Where clauses
+ *     @type array $group 	Group by fields.
+ *     @type array $orderby Order by fields.
+ * }
+ * @param  integer       $limit Numbers of rows to fetch, default is 10.
+ * @param  boolean       $query Optional mysql query. If query is passed `$args` will be ignored.
+ * @return array
+ */
 function ap_get_all_meta($args =false, $limit=10, $query = false) {
 	global $wpdb;
 

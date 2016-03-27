@@ -3,21 +3,28 @@
  * AnsPress.
  *
  * @package   AnsPress
- * @author    Rahul Aryan <admin@rahularyan.com>
+ * @author    Rahul Aryan <support@anspress.io>
  * @license   GPL-2.0+
- * @link      http://rahularyan.com
+ * @link      http://anspress.io
  * @copyright 2014 Rahul Aryan
  */
 
+// If this file is called directly, abort.
+if ( ! defined( 'WPINC' ) ) {
+	die;
+}
 
+/**
+ * Views hooks
+ */
 class AP_Views {
 	/**
 	 * Initialize the plugin by setting localization and loading public scripts
 	 * and styles.
-	 * @param AnsPress $ap
+	 * @since 2.4.8 Removed `$ap` args.
 	 */
-	public function __construct( $ap ) {
-		$ap->add_action( 'template_redirect', $this, 'insert_views' );
+	public function __construct( ) {
+		anspress()->add_action( 'template_redirect', $this, 'insert_views' );
 	}
 
 	/**
@@ -37,7 +44,6 @@ class AP_Views {
 		if ( is_ap_user() && ap_get_displayed_user_id() != get_current_user_id() && ap_get_displayed_user_id() ) {
 			ap_insert_views(ap_get_displayed_user_id(), 'profile' );
 		}
-
 	}
 }
 
@@ -98,39 +104,68 @@ function ap_insert_views($data_id, $type) {
 	return false;
 }
 
-function ap_get_qa_views($id = false) {
-	if ( ! $id ) { $id = get_the_ID(); }
-	$views = get_post_meta( $id, ANSPRESS_VIEW_META, true );
+/**
+ * Get question or answer view count from meta.
+ * @param  boolean|integer $id Post ID.
+ * @return integer
+ */
+function ap_get_qa_views( $id = false ) {
+	if ( false === $id ) {
+		$id = get_the_ID();
+	}
+
+	$views = (int) get_post_meta( $id, ANSPRESS_VIEW_META, true );
 	$views = empty($views ) ? 1 : $views;
 
-	return apply_filters('ap_post_views', $views );
-}
+	/**
+	 * Filter post view count.
+	 * @param integer $views Original view count.
+	 * @since unknown
+	 */
+	$views = apply_filters('ap_post_views', $views );
 
-function ap_get_profile_views($user_id = false) {
-
-	if ( ! $user_id ) { $user_id = ap_get_displayed_user_id(); }
-
-	$views = get_user_meta( $user_id, '__profile_views', true );
-	$views = empty($views ) ? 1 : $views;
-
-	return apply_filters('ap_profile_views', $views );
+	return (int) $views;
 }
 
 /**
- * @param integer $id
+ * Get total view of user profile.
+ * @param  boolean|integer $user_id User ID.
+ * @return integer
+ */
+function ap_get_profile_views( $user_id = false ) {
+	if ( false === $user_id ) {
+		$user_id = ap_get_displayed_user_id();
+	}
+
+	$views = (int) get_user_meta( $user_id, '__profile_views', true );
+	$views = empty($views ) ? 1 : $views;
+
+	/**
+	 * Filter profile view count.
+	 * @param integer Original view count.
+	 * @since 2.4
+	 */
+	$views = apply_filters('ap_profile_views', $views );
+
+	return $views;
+}
+
+/**
+ * Get total view count from ap meta table.
+ * @param integer $id Post or user Id.
+ * @return integer
  */
 function ap_get_views_db($id) {
 	return ap_meta_total_count('post_view', $id );
 }
 
 /**
- * @param integer $data_id
+ * Check if user already viewd post or user profile.
+ * @param integer $data_id Data ID.
+ * @return boolean
  */
-function ap_is_already_viewed($user_id, $data_id, $type ='post_view') {
-
-	$ip = sanitize_text_field($_SERVER['REMOTE_ADDR'] );
-
-	$done = ap_meta_user_done($type, $user_id, $data_id, false, $ip );
-
+function ap_is_already_viewed( $user_id, $data_id, $type ='post_view' ) {
+	$ip = sanitize_text_field( $_SERVER['REMOTE_ADDR'] );
+	$done = ap_meta_user_done( $type, $user_id, $data_id, false, $ip );
 	return $done > 0 ? true : false;
 }

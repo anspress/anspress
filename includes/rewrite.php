@@ -3,15 +3,20 @@
  * Plugin rewrite rules and query variables
  *
  * @package   AnsPress
- * @author    Rahul Aryan <admin@rahularyan.com>
+ * @author    Rahul Aryan <support@anspress.io>
  * @license   GPL-2.0+
- * @link      http://rahularyan.com
+ * @link      https://anspress.io
  * @copyright 2014 Rahul Aryan
  */
 
+// If this file is called directly, abort.
+if ( ! defined( 'WPINC' ) ) {
+	die;
+}
+
 /**
- * This class handle all rewrite rules and define quesry varibale of anspress
- * @since 2.0.0-beta
+ * This class handle all rewrite rules and define query varibale of anspress
+ * @since 2.0.0
  */
 class AnsPress_Rewrite
 {
@@ -19,20 +24,19 @@ class AnsPress_Rewrite
 	 * Initialize the class
 	 */
 	public function __construct() {
-
-		add_filter( 'query_vars', array( $this, 'query_var' ) );
-		add_action( 'generate_rewrite_rules', array( $this, 'rewrites' ), 1 );
-		add_filter( 'paginate_links', array( $this, 'bp_com_paged' ) );
+		anspress()->add_filter( 'query_vars', $this, 'query_var' );
+		anspress()->add_action( 'generate_rewrite_rules', $this, 'rewrites', 1 );
+		anspress()->add_filter( 'paginate_links', $this, 'bp_com_paged' );
 		// add_filter( 'paginate_links', array( $this, 'paginate_links' ) );
-		add_filter( 'parse_request', array( $this, 'add_query_var' ) );
+		anspress()->add_filter( 'parse_request', $this, 'add_query_var' );
 	}
 
 	/**
 	 * Register query vars
-	 * @param  array $query_vars
-	 * @return string[]
+	 * @param  array $query_vars Registered query variables.
+	 * @return array
 	 */
-	public function query_var( $query_vars) {
+	public function query_var( $query_vars ) {
 
 		$query_vars[] = 'edit_post_id';
 		$query_vars[] = 'ap_nonce';
@@ -62,7 +66,6 @@ class AnsPress_Rewrite
 	 * @return array
 	 */
 	public function rewrites() {
-
 		global $wp_rewrite;
 		global $ap_rules;
 
@@ -81,7 +84,6 @@ class AnsPress_Rewrite
 		$user_page = ap_opt( 'base_before_user_perma' ) ? $slug.ap_get_user_page_slug().'/' : ap_get_user_page_slug().'/';
 
 		$new_rules = array(
-
 			$slug. 'parent/([^/]+)/?' => 'index.php?page_id='.$base_page_id.'&parent='.$wp_rewrite->preg_index( 1 ),
 
 			$slug. 'tag/([^/]+)/page/?([0-9]{1,})/?$' => 'index.php?page_id='.$base_page_id.'&ap_page=tag&q_tag='.$wp_rewrite->preg_index( 1 ).'&paged='.$wp_rewrite->preg_index( 2 ),
@@ -91,7 +93,6 @@ class AnsPress_Rewrite
 			$slug. 'page/?([0-9]{1,})/?$' => 'index.php?page_id='.$base_page_id.'&paged='.$wp_rewrite->preg_index( 1 ),
 
 			$slug. '([^/]+)/page/?([0-9]{1,})/?$' => 'index.php?page_id='.$base_page_id.'&ap_page='.$wp_rewrite->preg_index( 1 ).'&paged='.$wp_rewrite->preg_index( 2 ),
-
 		);
 
 		if ( ! ap_opt( 'question_permalink_follow' ) ) {

@@ -9,16 +9,16 @@
  * @copyright 2014 Rahul Aryan
  */
 
+// If this file is called directly, abort.
+if ( ! defined( 'WPINC' ) ) {
+	die;
+}
+
 /**
  * Register common anspress hooks
  */
 class AnsPress_Hooks
 {
-	/**
-	 * Parent class
-	 * @var object
-	 */
-	protected $ap;
 
 	/**
 	 * AnsPress pages
@@ -34,39 +34,38 @@ class AnsPress_Hooks
 
 	/**
 	 * Initialize the class
-	 * @param AnsPress $ap Parent class object.
 	 * @since 2.0.1
+	 * @since 2.4.8 Removed `$ap` argument.
 	 */
-	public function __construct($ap) {
-		$this->ap = $ap;
-	    $this->ap->add_action( 'registered_taxonomy', $this, 'add_ap_tables' );
-	    $this->ap->add_action( 'ap_processed_new_question', $this, 'after_new_question', 1, 2 );
-	    $this->ap->add_action( 'ap_processed_new_answer', $this, 'after_new_answer', 1, 2 );
-	    $this->ap->add_action( 'ap_processed_update_question', $this, 'ap_after_update_question', 1, 2 );
-	    $this->ap->add_action( 'ap_processed_update_answer', $this, 'ap_after_update_answer', 1, 2 );
-	    $this->ap->add_action( 'before_delete_post', $this, 'before_delete' );
-	    $this->ap->add_action( 'wp_trash_post', $this, 'trash_post_action' );
-	    $this->ap->add_action( 'untrash_post', $this, 'untrash_ans_on_question_untrash' );
-	    $this->ap->add_action( 'comment_post', $this, 'new_comment_approve', 10, 2 );
-	    $this->ap->add_action( 'comment_unapproved_to_approved', $this, 'comment_approve' );
-	    $this->ap->add_action( 'comment_approved_to_unapproved', $this, 'comment_unapproved' );
-	    $this->ap->add_action( 'trashed_comment', $this, 'comment_trash' );
-	    $this->ap->add_action( 'delete_comment ', $this, 'comment_trash' );
-	    $this->ap->add_action( 'ap_publish_comment', $this, 'publish_comment' );
-	    $this->ap->add_filter( 'wp_get_nav_menu_items', $this, 'update_menu_url' );
-	    $this->ap->add_filter( 'nav_menu_css_class', $this, 'fix_nav_current_class', 10, 2 );
-	    $this->ap->add_filter( 'walker_nav_menu_start_el', $this, 'walker_nav_menu_start_el', 10, 4 );
-	    $this->ap->add_action( 'wp_loaded', $this, 'flush_rules' );
-	    $this->ap->add_filter( 'mce_buttons', $this, 'editor_buttons', 10, 2 );
-		$this->ap->add_filter( 'wp_insert_post_data', $this, 'wp_insert_post_data', 10, 2 );
-	    $this->ap->add_filter( 'ap_form_contents_filter', $this, 'sanitize_description' );
-	    $this->ap->add_action( 'safe_style_css', $this, 'safe_style_css', 11 );
-	    $this->ap->add_action( 'save_post', $this, 'base_page_update', 10, 2 );
-	    $this->ap->add_action( 'ap_added_follower', $this, 'ap_added_follower', 10, 2 );
-	    $this->ap->add_action( 'ap_removed_follower', $this, 'ap_added_follower', 10, 2 );
-	    $this->ap->add_action( 'ap_vote_casted', $this, 'update_user_vote_casted_count', 10, 4 );
-	    $this->ap->add_action( 'ap_vote_removed', $this, 'update_user_vote_casted_count' , 10, 4 );
-	    $this->ap->add_action( 'the_post', $this, 'ap_append_vote_count' );
+	public function __construct() {
+	    anspress()->add_action( 'registered_taxonomy', $this, 'add_ap_tables' );
+	    anspress()->add_action( 'ap_processed_new_question', $this, 'after_new_question', 1, 2 );
+	    anspress()->add_action( 'ap_processed_new_answer', $this, 'after_new_answer', 1, 2 );
+	    anspress()->add_action( 'ap_processed_update_question', $this, 'ap_after_update_question', 1, 2 );
+	    anspress()->add_action( 'ap_processed_update_answer', $this, 'ap_after_update_answer', 1, 2 );
+	    anspress()->add_action( 'before_delete_post', $this, 'before_delete' );
+	    anspress()->add_action( 'wp_trash_post', $this, 'trash_post_action' );
+	    anspress()->add_action( 'untrash_post', $this, 'untrash_ans_on_question_untrash' );
+	    anspress()->add_action( 'comment_post', $this, 'new_comment_approve', 10, 2 );
+	    anspress()->add_action( 'comment_unapproved_to_approved', $this, 'comment_approve' );
+	    anspress()->add_action( 'comment_approved_to_unapproved', $this, 'comment_unapproved' );
+	    anspress()->add_action( 'trashed_comment', $this, 'comment_trash' );
+	    anspress()->add_action( 'delete_comment ', $this, 'comment_trash' );
+	    anspress()->add_action( 'ap_publish_comment', $this, 'publish_comment' );
+	    anspress()->add_filter( 'wp_get_nav_menu_items', $this, 'update_menu_url' );
+	    anspress()->add_filter( 'nav_menu_css_class', $this, 'fix_nav_current_class', 10, 2 );
+	    anspress()->add_filter( 'walker_nav_menu_start_el', $this, 'walker_nav_menu_start_el', 10, 4 );
+	    anspress()->add_action( 'wp_loaded', $this, 'flush_rules' );
+	    anspress()->add_filter( 'mce_buttons', $this, 'editor_buttons', 10, 2 );
+		anspress()->add_filter( 'wp_insert_post_data', $this, 'wp_insert_post_data', 10, 2 );
+	    anspress()->add_filter( 'ap_form_contents_filter', $this, 'sanitize_description' );
+	    anspress()->add_action( 'safe_style_css', $this, 'safe_style_css', 11 );
+	    anspress()->add_action( 'save_post', $this, 'base_page_update', 10, 2 );
+	    anspress()->add_action( 'ap_added_follower', $this, 'ap_added_follower', 10, 2 );
+	    anspress()->add_action( 'ap_removed_follower', $this, 'ap_added_follower', 10, 2 );
+	    anspress()->add_action( 'ap_vote_casted', $this, 'update_user_vote_casted_count', 10, 4 );
+	    anspress()->add_action( 'ap_vote_removed', $this, 'update_user_vote_casted_count' , 10, 4 );
+	    anspress()->add_action( 'the_post', $this, 'ap_append_vote_count' );
 	}
 
 	/**

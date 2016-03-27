@@ -9,9 +9,22 @@
  * @package AnsPress
  */
 
+// If this file is called directly, abort.
+if ( ! defined( 'WPINC' ) ) {
+	die;
+}
+
+/**
+ * Mention hooks
+ */
 class AP_Mentions_Hooks{
-	public function __construct($ap) {
-		$ap->add_filter( 'ap_form_contents_filter', $this, 'linkyfy_mentions' );
+
+	/**
+	 * Initialize class
+	 * @since 2.4.8 Removed `$ap` args.
+	 */
+	public function __construct() {
+		anspress()->add_filter( 'ap_form_contents_filter', $this, 'linkyfy_mentions' );
 	}
 
 	/**
@@ -41,6 +54,11 @@ function ap_linkyfy_mentions($content) {
 	return preg_replace( '/(?:[\s.]|^)@(\w+)/', '<a class="ap-mention-link" href="'.$base.'$1">@$1</a> ', $content );
 }
 
+/**
+ * Find mentioned users in a post.
+ * @param  string $content Post or comment contents.
+ * @return array|false
+ */
 function ap_find_mentioned_users( $content ) {
 	global $wpdb;
 

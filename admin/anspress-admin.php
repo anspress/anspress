@@ -343,7 +343,7 @@ class AnsPress_Admin
 		}
 
 		add_filter( 'pre_get_posts', array( $this, 'serach_qa_by_userid' ) );
-		
+
 	}
 
 	public function question_meta_box_class() {
@@ -668,7 +668,7 @@ class AnsPress_Admin
 	 * @param  array $postarr Post array.
 	 * @return array
 	 */
-	public function modify_answer_title($data , $postarr) {
+	public function modify_answer_title($data) {
 		if ( $data['post_type'] == 'answer' ) {
 			$data['post_title'] = get_the_title( $data['post_parent'] );
 		}

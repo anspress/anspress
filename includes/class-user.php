@@ -8,6 +8,12 @@
  * @link      http://anspress.io
  * @copyright 2014 Rahul Aryan
  */
+
+// If this file is called directly, abort.
+if ( ! defined( 'WPINC' ) ) {
+	die;
+}
+
 $user_pages = array();
 
 class AnsPress_User
@@ -21,18 +27,18 @@ class AnsPress_User
 	/**
 	 * Initialize the plugin by setting localization and loading public scripts
 	 * and styles.
-	 * @param AnsPress $ap
+	 * @since 2.4.8 Removed `$ap` argument.
 	 */
-	public function __construct( $ap ) {
-		$ap->add_action( 'init', $this, 'init_actions' );
-		$ap->add_filter( 'pre_user_query', $this, 'follower_query' );
-		$ap->add_filter( 'pre_user_query', $this, 'following_query' );
-		$ap->add_filter( 'pre_user_query', $this, 'user_sort_by_reputation' );
-		$ap->add_action( 'wp_ajax_ap_cover_upload', $this, 'cover_upload' );
-		$ap->add_action( 'wp_ajax_ap_avatar_upload', $this, 'avatar_upload' );
-		$ap->add_filter( 'avatar_defaults' , $this, 'default_avatar' );
-		$ap->add_filter( 'get_avatar', $this, 'get_avatar', 10, 5 );
-		$ap->add_filter( 'ap_user_menu', $this, 'ap_user_menu_icons' );
+	public function __construct( ) {
+		anspress()->add_action( 'init', $this, 'init_actions' );
+		anspress()->add_filter( 'pre_user_query', $this, 'follower_query' );
+		anspress()->add_filter( 'pre_user_query', $this, 'following_query' );
+		anspress()->add_filter( 'pre_user_query', $this, 'user_sort_by_reputation' );
+		anspress()->add_action( 'wp_ajax_ap_cover_upload', $this, 'cover_upload' );
+		anspress()->add_action( 'wp_ajax_ap_avatar_upload', $this, 'avatar_upload' );
+		anspress()->add_filter( 'avatar_defaults' , $this, 'default_avatar' );
+		anspress()->add_filter( 'get_avatar', $this, 'get_avatar', 10, 5 );
+		anspress()->add_filter( 'ap_user_menu', $this, 'ap_user_menu_icons' );
 	}
 
 	/**
@@ -41,7 +47,6 @@ class AnsPress_User
 	public function init_actions() {
 		// Register AnsPress pages.
 		ap_register_page( ap_opt( 'users_page_slug' ), __( 'Users', 'anspress-question-answer' ), array( $this, 'users_page' ) );
-
 		ap_register_page( ap_opt( 'user_page_slug' ), __( 'User', 'anspress-question-answer' ), array( $this, 'user_page' ), false );
 		ap_register_user_page( 'about', __( 'About', 'anspress-question-answer' ), array( $this, 'about_page' ) );
 		ap_register_user_page( 'activity-feed', __( 'Activity Feed', 'anspress-question-answer' ), array( $this, 'feed_page' ), true );
