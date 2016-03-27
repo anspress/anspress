@@ -349,7 +349,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		    self::$instance->post_status 		= new AnsPress_Post_Status( $this );
 		    self::$instance->users_class 		= new AnsPress_User( $this );
 	    	self::$instance->rewrite_class 		= new AnsPress_Rewrite( $this );
-	    	self::$instance->history_class 		= new AnsPress_Activity_Hook( $this );
+	    	self::$instance->history_class 		= new AnsPress_Activity_Hook( );
 	    	self::$instance->subscriber_hooks 	= new AnsPress_Subscriber_Hooks( $this );
 	    	self::$instance->mention_hooks 		= new AP_Mentions_Hooks( $this );
 	    	self::$instance->views_class 		= new AP_Views( $this );

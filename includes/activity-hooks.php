@@ -16,30 +16,29 @@ class AnsPress_Activity_Hook
 {
 	/**
 	 * Construct class
-	 * @param AnsPress $ap Parent class.
 	 */
-	public function __construct($ap) {
-		$ap->add_action( 'ap_after_new_question', $this, 'new_question' );
-		$ap->add_action( 'ap_after_new_answer', $this, 'new_answer' );
-		$ap->add_action( 'ap_after_update_question', $this, 'edit_question' );
-		$ap->add_action( 'ap_after_update_answer', $this, 'edit_answer' );
-		$ap->add_action( 'ap_publish_comment', $this, 'new_comment' );
-		$ap->add_action( 'ap_select_answer', $this, 'select_answer', 10, 3 );
-		$ap->add_action( 'ap_unselect_answer', $this, 'unselect_answer', 10, 3 );
-		$ap->add_action( 'ap_trash_answer', $this, 'trash_post' );
-		$ap->add_action( 'ap_untrash_answer', $this, 'untrash_post' );
-		$ap->add_action( 'ap_before_delete_answer', $this, 'delete_post' );
-		$ap->add_action( 'ap_trash_question', $this, 'trash_post' );
-		$ap->add_action( 'ap_trash_question', $this, 'untrash_post' );
-		$ap->add_action( 'ap_before_delete_question', $this, 'delete_post' );
-		$ap->add_action( 'trashed_comment', $this, 'trash_comment' );
-		$ap->add_action( 'comment_trash_to_approved', $this, 'comment_approved' );
-		$ap->add_action( 'delete_comment', $this, 'delete_comment' );
-		$ap->add_action( 'edit_comment', $this, 'edit_comment' );
-		$ap->add_action( 'ap_added_follower', $this, 'follower', 10, 2 );
-		// $ap->add_action( 'ap_vote_casted', $this, 'notify_upvote', 10, 4 );
-		// $ap->add_action( 'ap_added_reputation', $this, 'ap_added_reputation', 10, 4 );
-		$ap->add_action( 'transition_post_status',  $this, 'change_activity_status', 10, 3 );
+	public function __construct() {
+		anspress()->add_action( 'ap_after_new_question', $this, 'new_question' );
+		anspress()->add_action( 'ap_after_new_answer', $this, 'new_answer' );
+		anspress()->add_action( 'ap_after_update_question', $this, 'edit_question' );
+		anspress()->add_action( 'ap_after_update_answer', $this, 'edit_answer' );
+		anspress()->add_action( 'ap_publish_comment', $this, 'new_comment' );
+		anspress()->add_action( 'ap_select_answer', $this, 'select_answer', 10, 3 );
+		anspress()->add_action( 'ap_unselect_answer', $this, 'unselect_answer', 10, 3 );
+		anspress()->add_action( 'ap_trash_answer', $this, 'trash_post' );
+		anspress()->add_action( 'ap_untrash_answer', $this, 'untrash_post' );
+		anspress()->add_action( 'ap_before_delete_answer', $this, 'delete_post' );
+		anspress()->add_action( 'ap_trash_question', $this, 'trash_post' );
+		anspress()->add_action( 'ap_trash_question', $this, 'untrash_post' );
+		anspress()->add_action( 'ap_before_delete_question', $this, 'delete_post' );
+		anspress()->add_action( 'trashed_comment', $this, 'trash_comment' );
+		anspress()->add_action( 'comment_trash_to_approved', $this, 'comment_approved' );
+		anspress()->add_action( 'delete_comment', $this, 'delete_comment' );
+		anspress()->add_action( 'edit_comment', $this, 'edit_comment' );
+		anspress()->add_action( 'ap_added_follower', $this, 'follower', 10, 2 );
+		// anspress()->add_action( 'ap_vote_casted', $this, 'notify_upvote', 10, 4 );
+		// anspress()->add_action( 'ap_added_reputation', $this, 'ap_added_reputation', 10, 4 );
+		anspress()->add_action( 'transition_post_status',  $this, 'change_activity_status', 10, 3 );
 	}
 
 
@@ -83,7 +82,7 @@ class AnsPress_Activity_Hook
 			'term_ids'			=> $term_ids,
 		);
 
-		$activity_id = ap_new_activity( $activity_arr );
+		ap_new_activity( $activity_arr );
 
 		// Add question activity meta.
 		ap_update_post_activity_meta( $question_id, 'new_question', $question->post_author );
@@ -437,7 +436,7 @@ class AnsPress_Activity_Hook
 				'permalink' 		=> wp_get_shortlink( $actionid ),
 			);
 
-			$activity_id = ap_new_activity( $activity_arr );
+			ap_new_activity( $activity_arr );
 
 			// Insert a notification.
 			// ap_new_notification( $activity_id, $receiving_userid );
@@ -462,7 +461,7 @@ class AnsPress_Activity_Hook
 			'reputation_type' 	=> $type,
 		);
 
-		$activity_id = ap_new_activity( $activity_arr );
+		ap_new_activity( $activity_arr );
 
 		// Insert a notification.
 		// ap_new_notification( $activity_id, $user_id );
