@@ -194,7 +194,6 @@ function ap_get_user_notifications($args = '') {
  * @return false|integer
  */
 function ap_new_notification( $activity_id, $user_id = false, $status = '0', $date = false ) {
-
 	global $wpdb;
 
 	if( !is_integer($activity_id) ){

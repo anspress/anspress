@@ -210,8 +210,7 @@ class AnsPress_Theme
 	/**
 	 * Remove some unwanted things from wp_head
 	 */
-	public function remove_head_items($WP) {				
-
+	public function remove_head_items() {
 		if ( is_anspress() ) {
 			global $wp_query;
 

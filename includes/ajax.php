@@ -423,7 +423,7 @@ class AnsPress_Ajax
 	            $update_data['ID'] = $post->ID;
 	            wp_update_post( $update_data );
 
-	            ap_add_history( get_current_user_id(), $post_id, '', 'status_updated' );
+	            //ap_add_history( get_current_user_id(), $post_id, '', 'status_updated' );
 
 	            add_action( 'ap_post_status_updated', $post->ID );
 
@@ -491,7 +491,7 @@ class AnsPress_Ajax
 			$this->send( 'no_permission' );
 		} else {
 			$post = get_post( $post_id );
-			$featured_questions = get_option( 'featured_questions' );
+			$featured_questions = (array)get_option( 'featured_questions' );
 
 			if ( ($post->post_type == 'question') ) {
 				if ( ! empty( $featured_questions ) && is_array( $featured_questions ) && in_array( $post->ID, $featured_questions ) ) {
@@ -511,7 +511,7 @@ class AnsPress_Ajax
 						'html' 			=> __( 'Set as featured', 'anspress-question-answer' ),
 					));
 				} else {
-					if ( empty( $featured_questions ) || ! is_array( $featured_questions ) || ! $featured_questions ) {
+					if ( empty( $featured_questions ) ) {
 						$featured_questions = array( $post->ID );
 					} else {
 						$featured_questions[] = $post->ID;

@@ -160,15 +160,17 @@ function ap_down_vote($echo = false) {
 	}
 }
 
-// get $post net votes
+/**
+ * Get net vote count of a post.
+ * @param  int|object $post Post object or ID.
+ * @return int
+ */
 function ap_net_vote($post = false) {
-
 	if ( ! $post ) {
 		global $post;
 	}
 
 	$net = $post->net_vote;
-
 	return $net ? $net : 0;
 }
 
@@ -258,12 +260,11 @@ function ap_is_user_voted($actionid, $type, $userid = false) {
 }
 
 /**
- * Output voting button.
+ * Output or return voting button.
  *
- * @param int $post
- *
- * @return null|string
- *
+ * @param 	int|object $post Post ID or object.
+ * @param 	bool       $echo Echo or return vote button.
+ * @return 	null|string
  * @since 0.1
  */
 function ap_vote_btn($post = false, $echo = true) {
@@ -384,7 +385,7 @@ function ap_clear_vote_count_cache( $actionid = '', $current_userid = '', $recei
 	if ( '' != $receiving_userid ) {
 		$cache_key .= '_'. (int) $receiving_userid;
 	}
-	
+
 	$cache_key .= '_apmeta_type';
 	wp_cache_delete( $cache_key , 'ap_meta_count' );
 }

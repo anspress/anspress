@@ -126,7 +126,9 @@ class AnsPress_Activity_Hook
 		// Remove current user from subscribers.
 		$subscribers = ap_unset_current_user_from_subscribers( $subscribers );
 
-		ap_new_notification( $activity_id, $subscribers );
+		if( $activity_id ){
+			ap_new_notification( $activity_id, $subscribers );
+		}
 
 		$this->check_mentions( $answer->post_parent, $answer->post_content, $answer_title, $question->post_author, __( 'answer', 'anspress-question-answer' ), $answer_id );
 	}
@@ -158,7 +160,9 @@ class AnsPress_Activity_Hook
 		$subscribers = ap_subscriber_ids( false, array( 'q_all', 'a_all' ), $post_id );
 
 		// Remove current user from subscribers.
-		$subscribers = ap_unset_current_user_from_subscribers( $subscribers );
+		if( $activity_id ){
+			$subscribers = ap_unset_current_user_from_subscribers( $subscribers );
+		}
 
 		ap_new_notification( $activity_id, $subscribers );
 	}
@@ -190,10 +194,12 @@ class AnsPress_Activity_Hook
 		// Notify users.
 		$subscribers = ap_subscriber_ids( $post_id, 'a_all' );
 
-		// Remove current user from subscribers.
-		$subscribers = ap_unset_current_user_from_subscribers( $subscribers );
+		if( $activity_id ){
+			// Remove current user from subscribers.
+			$subscribers = ap_unset_current_user_from_subscribers( $subscribers );
 
-		ap_new_notification( $activity_id, $subscribers );
+			ap_new_notification( $activity_id, $subscribers );
+		}
 	}
 
 	/**
@@ -243,7 +249,9 @@ class AnsPress_Activity_Hook
 		// Remove current user from subscribers.
 		$subscribers = ap_unset_current_user_from_subscribers( $subscribers );
 
-		ap_new_notification( $activity_id, $subscribers );
+		if( $activity_id ){
+			ap_new_notification( $activity_id, $subscribers );
+		}
 	}
 
 	/**
@@ -283,7 +291,9 @@ class AnsPress_Activity_Hook
 			$user_ids[] = $question->post_author;
 		}
 
-		ap_new_notification( $activity_id, $user_ids );
+		if( $activity_id ){
+			ap_new_notification( $activity_id, $user_ids );
+		}
 	}
 
 	/**
@@ -412,7 +422,9 @@ class AnsPress_Activity_Hook
 		);
 
 		$activity_id = ap_new_activity( $activity_arr );
-		ap_new_notification( $activity_id, $user_to_follow );
+		if( $activity_id ){
+			ap_new_notification( $activity_id, $user_to_follow );
+		}
 	}
 
 	/**
@@ -437,9 +449,6 @@ class AnsPress_Activity_Hook
 			);
 
 			ap_new_activity( $activity_arr );
-
-			// Insert a notification.
-			// ap_new_notification( $activity_id, $receiving_userid );
 		}
 	}
 
@@ -462,9 +471,6 @@ class AnsPress_Activity_Hook
 		);
 
 		ap_new_activity( $activity_arr );
-
-		// Insert a notification.
-		// ap_new_notification( $activity_id, $user_id );
 	}
 
 	public function edit_comment($comment_id) {
@@ -510,10 +516,12 @@ class AnsPress_Activity_Hook
 			$subscribers = ap_subscriber_ids( $comment->comment_post_ID, 'a_all' );
 		}
 
-		// Remove current user from subscribers.
-		$subscribers = ap_unset_current_user_from_subscribers( $subscribers );
+		if( $activity_id ){
+			// Remove current user from subscribers.
+			$subscribers = ap_unset_current_user_from_subscribers( $subscribers );
 
-		ap_new_notification( $activity_id, $subscribers );
+			ap_new_notification( $activity_id, $subscribers );
+		}
 	}
 
 	/**
@@ -537,7 +545,9 @@ class AnsPress_Activity_Hook
 					);
 
 					$activity_id = ap_new_activity( $activity_arr );
-					ap_new_notification( $activity_id, $user->id );
+					if( $activity_id ){
+						ap_new_notification( $activity_id, $user->id );
+					}
 				}
 			}
 		}

@@ -96,7 +96,7 @@ if ( ! class_exists( 'Answers_Query' ) ) :
 
 			switch ( $this->args['sortby'] ) {
 
-				case 'voted' :
+				case 'voted':
 					$this->args['orderby'] = 'meta_value_num' ;
 					$this->args['meta_query']  = array(
 						'relation' => 'AND',
@@ -188,17 +188,16 @@ function ap_get_answer($answer_id) {
 }
 
 /**
- * Get select answer object
- * @param integer $question_id Question ID.
- * @since   2.0
+ * Get selected answer object
+ * @param  integer $question_id Question ID.
+ * @since  2.0
  */
 function ap_get_best_answer($question_id = false) {
-
-	if ( ! $question_id ) {
+	if ( false === $question_id ) {
 		$question_id = get_question_id();
 	}
 
-	$args = array( 'only_best_answer' => true );
+	$args = array( 'only_best_answer' => true, 'question_id' => $question_id );
 	return new Answers_Query( $args );
 }
 

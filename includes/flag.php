@@ -31,12 +31,12 @@ function ap_add_flag($userid, $actionid, $value = null, $param = null) {
  * If $userid is passed then it count votes casted by a user.
  * If $receiving_userid is passed then it count numbers of votes received.
  *
- * @param bool|int $userid           User ID of user casting the vote
- * @param string   $type             Type of vote, "flag" or "comment_flag"
- * @param boolean  $actionid         Post ID
+ * @param string   $type             Type of vote, "flag" or "comment_flag".
+ * @param boolean  $actionid         Post ID.
+ * @param bool|int $userid           User ID of user casting the vote.
  * @param integer  $receiving_userid User ID of user who received the vote
  *
- * @return int
+ * @return integer
  */
 function ap_count_flag_vote($type = 'flag', $actionid = false, $userid = false, $receiving_userid = false) {
 
@@ -77,14 +77,11 @@ function ap_flagged_post_meta( $post_id ) {
 }
 
 /**
- * check if user flagged on post.
- *
- * @param bool $postid
- *
+ * Check if user already flagged a post.
+ * @param bool|integer $postid Post ID.
  * @return bool
  */
 function ap_is_user_flagged($postid = false) {
-
 	if ( is_user_logged_in() ) {
 		global $post;
 		$postid = $postid ? $postid : $post->ID;

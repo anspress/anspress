@@ -43,15 +43,15 @@ class AP_Bad_words
 	/**
 	 * Hook to check bad words before inserting question into database.
 	 * @param  boolean $return Return ajax response or boolean.
-	 * @param  array   $str    Question form fields.
+	 * @param  string  $str    Question form fields.
 	 * @return array|boolean
 	 * @since 2.4.5
 	 */
-	public function before_inserting_question($return, $str) {
+	public function before_inserting_question( $return, $str ) {
 		$bad_words = ap_find_bad_words( $str );
 
 		if ( false === $bad_words || empty($bad_words ) ) {
-			return false;
+			return $return;
 		}
 
 		return array(

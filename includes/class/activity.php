@@ -8,6 +8,12 @@
  * @since 		2.0
  */
 
+// If this file is called directly, abort.
+if ( ! defined( 'WPINC' ) ) {
+	die;
+}
+
+
 /**
  * AnsPress activity handler
  */
@@ -33,9 +39,9 @@ class AnsPress_Activity_Query
 	 * Query arguments.
 	 *
 	 * @access public
-	 * @var int
+	 * @var array
 	 */
-	public $args;
+	public $args = array();
 
 	/**
 	 * Array of activities located by the query.
@@ -325,10 +331,10 @@ class AnsPress_Activity_Query
 
 	/**
 	 * Order query
-	 * @param  array $args
+	 * @param  array $args Arguments.
 	 * @return string
 	 */
-	public function order_clauses($args) {
+	public function order_clauses( $args ) {
 		$order = '';
 
 		if ( ! isset( $args['orderby'] ) ) {
@@ -429,7 +435,7 @@ class AnsPress_Activity_Query
 		}
 	}
 
-	public function the_pagination($base = false) {
+	public function the_pagination( $base = false ) {
 		if ( false === $base ) {
 			$base = ap_get_link_to( 'activity' ) . '/%_%';
 		}
@@ -1143,7 +1149,7 @@ function ap_activity_user_id() {
 
 function ap_activity_pagination( $base = false) {
 	global $ap_activities;
-	$ap_activities->the_pagination($base );
+	$ap_activities->the_pagination( $base );
 }
 
 function ap_activity_delete_btn() {
