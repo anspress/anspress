@@ -32,9 +32,9 @@ function ap_add_flag($userid, $actionid, $value = null, $param = null) {
  * If $receiving_userid is passed then it count numbers of votes received.
  *
  * @param string   $type             Type of vote, "flag" or "comment_flag".
- * @param boolean  $actionid         Post ID.
+ * @param bool|int $actionid         Post ID.
  * @param bool|int $userid           User ID of user casting the vote.
- * @param integer  $receiving_userid User ID of user who received the vote
+ * @param int      $receiving_userid User ID of user who received the vote
  *
  * @return integer
  */

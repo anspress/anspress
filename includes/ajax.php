@@ -423,8 +423,7 @@ class AnsPress_Ajax
 	            $update_data['ID'] = $post->ID;
 	            wp_update_post( $update_data );
 
-	            //ap_add_history( get_current_user_id(), $post_id, '', 'status_updated' );
-
+	            // ap_add_history( get_current_user_id(), $post_id, '', 'status_updated' );
 	            add_action( 'ap_post_status_updated', $post->ID );
 
 	            ob_start();
@@ -489,45 +488,49 @@ class AnsPress_Ajax
 
 		if ( ! is_super_admin() || ! ap_verify_nonce( 'set_featured_'.$post_id ) ) {
 			$this->send( 'no_permission' );
-		} else {
-			$post = get_post( $post_id );
-			$featured_questions = (array)get_option( 'featured_questions' );
+		}
 
-			if ( ($post->post_type == 'question') ) {
-				if ( ! empty( $featured_questions ) && is_array( $featured_questions ) && in_array( $post->ID, $featured_questions ) ) {
+		$post = get_post( $post_id );
+		$featured_questions = (array) get_option( 'featured_questions' );
 
-					foreach ( $featured_questions as $key => $q ) {
-						if ( $q == $post->ID ) {
-							unset( $featured_questions[ $key ] );
-						}
-					}
+		// Do nothing if post type is not question.
+		if ( $post->post_type != 'question' ) {
+			$this->something_wrong();
+		}
 
-					update_option( 'featured_questions', $featured_questions );
+		if ( ! empty( $featured_questions ) && in_array( $post->ID, $featured_questions ) ) {
 
-					$this->send(array(
-						'action' 		=> 'unset_featured_question',
-						'message' 		=> 'unset_featured_question',
-						'do' 			=> array( 'updateHtml' => '#set_featured_'.$post->ID ),
-						'html' 			=> __( 'Set as featured', 'anspress-question-answer' ),
-					));
-				} else {
-					if ( empty( $featured_questions ) ) {
-						$featured_questions = array( $post->ID );
-					} else {
-						$featured_questions[] = $post->ID;
-					}
-
-					update_option( 'featured_questions', $featured_questions );
-
-					$this->send(array(
-						'action' 		=> 'set_featured_question',
-						'message' 		=> 'set_featured_question',
-						'do' 			=> array( 'updateHtml' => '#set_featured_'.$post->ID ),
-						'html' 			=> __( 'Unset as featured', 'anspress-question-answer' ),
-					));
+			foreach ( $featured_questions as $key => $q ) {
+				if ( $q == $post->ID ) {
+					unset( $featured_questions[ $key ] );
 				}
 			}
+
+			update_option( 'featured_questions', $featured_questions );
+
+			$this->send(array(
+				'action' 		=> 'unset_featured_question',
+				'message' 		=> 'unset_featured_question',
+				'do' 			=> array( 'updateHtml' => '#set_featured_'.$post->ID ),
+				'html' 			=> __( 'Set as featured', 'anspress-question-answer' ),
+			));
 		}
+
+		if ( empty( $featured_questions ) ) {
+			$featured_questions = array( $post->ID );
+		} else {
+			$featured_questions[] = $post->ID;
+		}
+
+		update_option( 'featured_questions', $featured_questions );
+
+		$this->send(array(
+			'action' 		=> 'set_featured_question',
+			'message' 		=> 'set_featured_question',
+			'do' 			=> array( 'updateHtml' => '#set_featured_'.$post->ID ),
+			'html' 			=> __( 'Unset as featured', 'anspress-question-answer' ),
+		));
+
 		$this->something_wrong();
 	}
 
@@ -785,7 +788,7 @@ class AnsPress_Ajax
 		} else {
 
 			$row = ap_new_subscriber( $user_id, $action_id, $subscribe_type, $question_id );
-		
+
 			if ( false !== $row ) {
 				$count = ap_subscribers_count( $action_id, $subscribe_type );
 				$this->send( array(
@@ -820,7 +823,7 @@ class AnsPress_Ajax
 	    $userid = get_current_user_id();
 
 	    $post = get_post( $post_id );
-	    
+
 	    $thing = ap_user_can_vote_on_post( $post_id, $type, $userid, true );
 
 	    // Check if WP_Error object and send error message code.
@@ -858,7 +861,7 @@ class AnsPress_Ajax
 			}
 	    } else {
 	        $counts = ap_add_post_vote( $userid, $type, $post_id, $post->post_author );
-			// Update post meta.			
+			// Update post meta.
 	        do_action( 'ap_'.$type, $post_id, $counts );
 	       	$this->send( array( 'action' => 'voted', 'type' => $type, 'count' => $counts['net_vote'], 'message' => 'voted' ) );
 	    }
