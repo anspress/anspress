@@ -58,18 +58,18 @@ function ap_get_user_fields($group = 'basic', $user_id = false) {
 		'label' => __( 'Hide my profile', 'anspress-question-answer' ),
 		'type'  => 'checkbox',
 		'desc'  => __( 'Hide your profile from public', 'anspress-question-answer' ),
-		'value' => $fields_value['hide_profile'],
+		'value' => @$fields_value['hide_profile'],
 		'order' => 5,
 		'autocomplete' => false,
 		'sanitize' => array( 'strip_tags', 'sanitize_text_field' ),
-        'show_desc_tip' => false,
+		'show_desc_tip' => false,
 	),
 	array(
 		'name' => 'first_name',
 		'label' => __( 'First name', 'anspress-question-answer' ),
 		'type'  => 'text',
 		'placeholder'  => __( 'Your first name', 'anspress-question-answer' ),
-		'value' => $fields_value['first_name'],
+		'value' => @$fields_value['first_name'],
 		'order' => 5,
 		'autocomplete' => false,
 		'sanitize' => array( 'strip_tags', 'sanitize_text_field' ),
@@ -79,7 +79,7 @@ function ap_get_user_fields($group = 'basic', $user_id = false) {
 		'label' => __( 'Last name', 'anspress-question-answer' ),
 		'type'  => 'text',
 		'placeholder'  => __( 'Your surname', 'anspress-question-answer' ),
-		'value' => $fields_value['last_name'],
+		'value' => @$fields_value['last_name'],
 		'order' => 5,
 		'autocomplete' => false,
 		'sanitize' => array( 'strip_tags', 'sanitize_text_field' ),
@@ -89,7 +89,7 @@ function ap_get_user_fields($group = 'basic', $user_id = false) {
 		'label' => __( 'Nickname', 'anspress-question-answer' ),
 		'type'  => 'text',
 		'placeholder'  => __( 'Your nickname', 'anspress-question-answer' ),
-		'value' => $fields_value['nickname'],
+		'value' => @$fields_value['nickname'],
 		'order' => 5,
 		'autocomplete' => false,
 		'sanitize' => array( 'strip_tags', 'sanitize_text_field' ),
@@ -99,7 +99,7 @@ function ap_get_user_fields($group = 'basic', $user_id = false) {
 		'label' => __( 'Display name', 'anspress-question-answer' ),
 		'type'  => 'select',
 		'options'  => ap_user_get_display_name_option( $user_id ),
-		'value' => $fields_value['display_name'],
+		'value' => @$fields_value['display_name'],
 		'order' => 5,
 		'autocomplete' => false,
 		'sanitize' => array( 'strip_tags', 'sanitize_text_field' ),
@@ -108,7 +108,7 @@ function ap_get_user_fields($group = 'basic', $user_id = false) {
 		'name' => 'description',
 		'label' => __( 'Description', 'anspress-question-answer' ),
 		'type'  => 'textarea',
-		'value' => $fields_value['description'],
+		'value' => @$fields_value['description'],
 		'placeholder'  => __( 'Write something about yourself', 'anspress-question-answer' ),
 		'rows' => 5,
 		'order' => 5,
@@ -118,7 +118,7 @@ function ap_get_user_fields($group = 'basic', $user_id = false) {
 		'name' => 'signature',
 		'label' => __( 'Signature', 'anspress-question-answer' ),
 		'type'  => 'textarea',
-		'value' => $fields_value['signature'],
+		'value' => @$fields_value['signature'],
 		'placeholder'  => __( 'A short signature for showing in hover card', 'anspress-question-answer' ),
 		'rows' => 5,
 		'order' => 5,
@@ -169,8 +169,9 @@ function ap_get_user_fields($group = 'basic', $user_id = false) {
 
 	$form_fields = apply_filters( 'ap_user_fields', $form_fields );
 
-	if ( isset( $form_fields[$group] ) ) {
-		return $form_fields[$group]; }
+	if ( isset( $form_fields[ $group ] ) ) {
+		return $form_fields[ $group ];
+	}
 
 	return false;
 }

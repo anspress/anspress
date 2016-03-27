@@ -270,10 +270,11 @@ function ap_pagination($current = false, $total = false, $format = '?paged=%#%')
 
 	if ( ! empty( $ap_max_num_pages ) ) {
 		$total = $ap_max_num_pages;
-	} elseif ( false === $total ) {
+	} elseif ( false === $total && isset( $questions->max_num_pages ) ) {
 		global $questions;
 		$total = $questions->max_num_pages;
 	}
+
 	$page_num_link = str_replace( array( '&amp;', '&#038;' ), '&', get_pagenum_link( $big ) );
 
 	if ( is_front_page() ) {

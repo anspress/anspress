@@ -371,6 +371,7 @@ function ap_count_other_answer($question_id = false) {
  * Get last active time form post meta.
  * @param  boolean|integer $post_id Post ID.
  * @return string
+ * @since  2.4.8 Convert mysql date to GMT.
  */
 function ap_last_active($post_id = false) {
 	if ( ! $post_id ) {
@@ -379,14 +380,17 @@ function ap_last_active($post_id = false) {
 
 	$date = get_post_meta( $post_id, ANSPRESS_UPDATED_META, true );
 
-	if( !empty( $date ) ){
+	if ( ! empty( $date ) ) {
 		return get_gmt_from_date( $date );
 	}
 }
 
-// link to asnwers
-function ap_answers_link($question_id = false) {
-
+/**
+ * Return link to asnwers.
+ * @param  boolean|integer $question_id Question ID.
+ * @return string
+ */
+function ap_answers_link( $question_id = false ) {
 	if ( ! $question_id ) {
 		return get_permalink().'#answers';
 	}
@@ -396,11 +400,8 @@ function ap_answers_link($question_id = false) {
 
 /**
  * Load comment form button.
- *
- * @param bool $echo
- *
+ * @param bool $echo Echo html.
  * @return string
- *
  * @since 0.1
  */
 function ap_comment_btn_html($echo = false) {
