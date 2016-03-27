@@ -145,7 +145,7 @@ class AnsPress_Common_Pages
 				 */
 				$notice = apply_filters( 'ap_future_post_notice', false, $post );
 				if ( false === $notice ) {
-					$time_to_publish = sprintf( _x( '%s', '%s = human-readable time difference', 'anspress-question-answer' ), human_time_diff( strtotime( $post->post_date ), current_time( 'timestamp' ) ) );
+					$time_to_publish = sprintf( _x( '%s', '%s = human-readable time difference', 'anspress-question-answer' ), human_time_diff( strtotime( $post->post_date ), current_time( 'timestamp', true ) ) );
 					echo '<strong>' .sprintf(__('Question will be publish in %s', 'anspress-question-answer' ), $time_to_publish ).'</strong>';
 					echo '<p>' .__('This question is in waiting queue and is not accessible by anyone until it get published.', 'anspress-question-answer' ).'</p>';
 				} else {

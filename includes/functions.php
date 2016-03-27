@@ -367,13 +367,21 @@ function ap_count_other_answer($question_id = false) {
 	return (int) $count;
 }
 
+/**
+ * Get last active time form post meta.
+ * @param  boolean|integer $post_id Post ID.
+ * @return string
+ */
 function ap_last_active($post_id = false) {
-
 	if ( ! $post_id ) {
 		$post_id = get_the_ID();
 	}
 
-	return get_post_meta( $post_id, ANSPRESS_UPDATED_META, true );
+	$date = get_post_meta( $post_id, ANSPRESS_UPDATED_META, true );
+
+	if( !empty( $date ) ){
+		return get_gmt_from_date( $date );
+	}
 }
 
 // link to asnwers
