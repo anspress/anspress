@@ -202,6 +202,9 @@ copy_anspress(){
 	git fetch origin
 	sudo git reset --hard origin/master
 	#cp -r "../../"* "$NEW_ANSPRESS_DIR/"
+	#sed -i -e '2i include "'$TRAVIS_BUILD_DIR'/c3.php"; define("MY_APP_STARTED", true);\ ' anspress-question-answer.php
+	#cd $TRAVIS_BUILD_DIR	
+	#wget https://raw.github.com/Codeception/c3/2.0/c3.php
 }
 
 core_install(){	

@@ -41,7 +41,8 @@ before_script:
   - sleep 5
   - bash tests/bin/install.sh wptest root '' localhost $WP_VERSION
 
-script: codecept run --steps
+script:
+  - codecept run --steps
 
 after_failure:
   - bash tests/bin/upload.sh

@@ -21,7 +21,8 @@ modules:
             dump: tests/_data/dump.sql
 coverage:
     enabled: true
+    remote: true
+    c3_url: 'http://wptest.localhost/c3.php'
     exclude:
         - tests/*
-        - node_modules/*
         - build/*

@@ -523,12 +523,12 @@ function ap_question_get_the_time_relative($question_id = false) {
 	return ap_question_get_the_time( $question_id, 'U' );
 }
 
-	/**
-	 * Check if current post is marked as featured
-	 * @param  boolean|integer $question_id    Question ID to check
-	 * @return boolean
-	 * @since 2.2.0.1
-	 */
+/**
+ * Check if current post is marked as featured
+ * @param  boolean|integer $question_id    Question ID to check.
+ * @return boolean
+ * @since 2.2.0.1
+ */
 function ap_is_featured_question($question_id = false) {
 	if ( false === $question_id ) {
 		$question_id = get_the_ID(); }
@@ -536,7 +536,8 @@ function ap_is_featured_question($question_id = false) {
 	$featured = get_option( 'featured_questions' );
 
 	if ( is_array( $featured ) && in_array( $question_id, $featured ) ) {
-		return true; }
+		return true;
+	}
 
 	return false;
 }
