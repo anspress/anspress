@@ -26,24 +26,25 @@ if ( ! defined( 'WPINC' ) ) {
 function ap_opt($key = false, $value = null) {
 	$settings = wp_cache_get('ap_opt', 'options' );
 
-	if ( $settings === false ) {
+	if ( false === $settings ) {
 		$settings = get_option( 'anspress_opt' );
 
 		if ( ! $settings ) {
-			$settings = array(); }
+			$settings = array();
+		}
 
-		wp_cache_set('ap_opt', $settings, 'options' );
+		wp_cache_set('anspress_opt', $settings, 'options' );
 	}
 
 	$settings = $settings + ap_default_options();
 
-	if ( ! is_null($value ) ) {
+	if ( ! is_null( $value ) ) {
 
 		$settings[$key] = $value;
 		update_option( 'anspress_opt', $settings );
 
-		// clear cache if option updated
-		wp_cache_delete( 'ap_opt', 'options' );
+		// Clear cache if option updated.
+		wp_cache_delete( 'anspress_opt', 'options' );
 
 		return;
 	}

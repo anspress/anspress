@@ -74,12 +74,18 @@ class AnsPress_Rewrite
 
 		$base_page_id 		= ap_opt( 'base_page' );
 
+		// Try to create base page if doesn't exists.
+		if ( ! get_post( $base_page_id ) ) {
+			ap_create_base_page();
+		}
+
 		$slug = ap_base_page_slug().'/';
 
 		$question_slug = ap_opt( 'question_page_slug' );
 
 		if ( empty( $question_slug ) ) {
-			$question_slug = 'question'; }
+			$question_slug = 'question';
+		}
 
 		$user_page = ap_opt( 'base_before_user_perma' ) ? $slug.ap_get_user_page_slug().'/' : ap_get_user_page_slug().'/';
 
@@ -135,7 +141,8 @@ class AnsPress_Rewrite
 			$bp_com = bp_current_component();
 
 			if ( 'questions' == $bp_com || 'answers' == $bp_com ) {
-				return preg_replace( '/page.([0-9]+)./', '?paged=$1', $args ); }
+				return preg_replace( '/page.([0-9]+)./', '?paged=$1', $args );
+			}
 		}
 
 		return $args;

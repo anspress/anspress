@@ -450,13 +450,17 @@ function anspress() {
 	return AnsPress::instance();
 }
 
-/*
- * ACTION: before_loading_anspress
- * Action before loading AnsPress.
- * @since 2.4.7
- */
-do_action( 'before_loading_anspress' );
-anspress();
+function load_anspress(){
+	/*
+	 * ACTION: before_loading_anspress
+	 * Action before loading AnsPress.
+	 * @since 2.4.7
+	 */
+	do_action( 'before_loading_anspress' );
+	anspress();
+}
+
+add_action( 'plugins_loaded', 'load_anspress' );
 
 /*
  ----------------------------------------------------------------------------*

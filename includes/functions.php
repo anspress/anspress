@@ -12,14 +12,13 @@
  * Get slug of base page.
  * @return string
  * @since  2.0.0
- * @since  2.4.7 Check if `$base_page` not empty.
+ * @since  3.0.0 Return `questions` if base page is not selected.
  */
 function ap_base_page_slug() {
-
 	$base_page = get_post( ap_opt( 'base_page' ) );
 
 	if ( ! $base_page ) {
-		return;
+		return 'questions';
 	}
 
 	$slug = $base_page->post_name;
@@ -36,8 +35,12 @@ function ap_base_page_slug() {
  * Retrive permalink to base page
  * @return string URL to AnsPress base page
  * @since 2.0.0
+ * @since 3.0.0 Return link to questions page if base page not selected.
  */
 function ap_base_page_link() {
+	if( empty( ap_opt( 'base_page' ) ) ){
+		return home_url( '/questions/' );
+	}
 	return get_permalink( ap_opt( 'base_page' ) );
 }
 
@@ -523,7 +526,7 @@ function ap_answer_edit_link() {
 	if ( ap_user_can_edit_answer( $post_id ) ) {
 		$action = get_post_type( $post_id ).'-'.$post_id;
 		$nonce = wp_create_nonce( $action );
-		$edit_link = add_query_arg( array( 'edit_a' => $post_id, 'ap_nonce' => $nonce ), get_permalink( ap_opt( 'base_page' ) ) );
+		$edit_link = add_query_arg( array( 'edit_a' => $post_id, 'ap_nonce' => $nonce ), ap_base_page_link() );
 
 		return apply_filters( 'ap_answer_edit_link', $edit_link );
 	}
@@ -1162,7 +1165,7 @@ function ap_get_link_to($sub) {
 		$sub = $default_pages[$sub];
 	}
 
-	$base = rtrim( get_permalink( ap_opt( 'base_page' ) ), '/' );
+	$base = rtrim( ap_base_page_link(), '/' );
 	$args = '';
 
 	if ( get_option( 'permalink_structure' ) != '' ) {
@@ -1603,8 +1606,7 @@ function ap_user_upload_limit_crossed($user_id) {
  * @since 2.3
  */
 function ap_create_base_page() {
-
-	// check if page already exists
+	// Check if page already exists.
 	$page_id = ap_opt( 'base_page' );
 
 	$post = get_post( $page_id );
