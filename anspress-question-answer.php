@@ -169,7 +169,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		 */
 		public static function instance() {
 
-		    if ( ! isset( self::$instance ) && ! (self::$instance instanceof self) ) {	    	
+		    if ( ! isset( self::$instance ) && ! (self::$instance instanceof self) ) {
 
 		        self::$instance = new self();
 		        self::$instance->setup_constants();
@@ -246,10 +246,10 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		private function includes() {
 
 		    global $ap_options;
-		    
+
 		    require_once ANSPRESS_DIR.'includes/class/form.php';
 		    require_once ANSPRESS_DIR.'includes/class/validation.php';
-		    require_once ANSPRESS_DIR.'includes/class/roles-cap.php';		    	    
+		    require_once ANSPRESS_DIR.'includes/class/roles-cap.php';
 		    require_once ANSPRESS_DIR.'includes/class/activity.php';
 
 		    require_once ANSPRESS_DIR.'includes/common-pages.php';
@@ -258,14 +258,13 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		    require_once ANSPRESS_DIR.'admin/anspress-admin.php';
 		    require_once ANSPRESS_DIR.'admin/ajax.php';
 		    require_once ANSPRESS_DIR.'includes/options.php';
-		    require_once ANSPRESS_DIR.'activate.php';
 		    require_once ANSPRESS_DIR.'includes/functions.php';
 		    require_once ANSPRESS_DIR.'includes/hooks.php';
 		    require_once ANSPRESS_DIR.'includes/ajax.php';
-		    
+
 		    require_once ANSPRESS_DIR.'includes/question-loop.php';
 		    require_once ANSPRESS_DIR.'includes/answer-loop.php';
-		    
+
 		    require_once ANSPRESS_DIR.'includes/post_types.php';
 		    require_once ANSPRESS_DIR.'includes/query_filter.php';
 		    require_once ANSPRESS_DIR.'includes/post_status.php';
@@ -277,7 +276,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		    require_once ANSPRESS_DIR.'includes/participants.php';
 		    require_once ANSPRESS_DIR.'includes/activity-hooks.php';
 		    require_once ANSPRESS_DIR.'includes/shortcode-basepage.php';
-		    
+
 		    require_once ANSPRESS_DIR.'includes/process-form.php';
 		    require_once ANSPRESS_DIR.'includes/ask-form.php';
 		    require_once ANSPRESS_DIR.'includes/answer-form.php';
@@ -292,8 +291,8 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		    require_once ANSPRESS_DIR.'widgets/users.php';
 		    require_once ANSPRESS_DIR.'includes/rewrite.php';
 		    require_once ANSPRESS_DIR.'includes/reputation.php';
-		    require_once ANSPRESS_DIR.'includes/bad-words.php';	
-		    
+		    require_once ANSPRESS_DIR.'includes/bad-words.php';
+
 		    require_once ANSPRESS_DIR.'includes/user.php';
 		    require_once ANSPRESS_DIR.'includes/users-loop.php';
 		    require_once ANSPRESS_DIR.'includes/deprecated.php';
@@ -305,11 +304,11 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		    require_once ANSPRESS_DIR.'widgets/ask-form.php';
 		    require_once ANSPRESS_DIR.'includes/3rd-party.php';
 		    require_once ANSPRESS_DIR.'includes/flag.php';
-		    
+
 		    require_once ANSPRESS_DIR.'includes/subscriber-hooks.php';
 		    require_once ANSPRESS_DIR.'includes/shortcode-question.php';
 		    require_once ANSPRESS_DIR.'includes/mention.php';
-		    
+
 		    require_once ANSPRESS_DIR.'includes/akismet.php';
 		}
 
@@ -446,120 +445,124 @@ if ( ! class_exists( 'AnsPress' ) ) {
  * Run AnsPress thingy
  * @return object
  */
-function anspress() {
-	return AnsPress::instance();
+if ( ! function_exists('anspress' ) ) {
+	function anspress() {
+		return AnsPress::instance();
+	}
 }
 
-function load_anspress(){
-	/*
-	 * ACTION: before_loading_anspress
-	 * Action before loading AnsPress.
-	 * @since 2.4.7
-	 */
-	do_action( 'before_loading_anspress' );
-	anspress();
+if ( ! class_exists( 'AnsPress_Init' ) ) {
+	class AnsPress_Init{
+		public static function load_anspress() {
+			/*
+             * ACTION: before_loading_anspress
+             * Action before loading AnsPress.
+             * @since 2.4.7
+			 */
+			do_action( 'before_loading_anspress' );
+			anspress();
+		}
+
+		/**
+		 * Plugin un-installation hook, called by WP while removing AnsPress
+		 */
+		public static function anspress_uninstall() {
+			if ( ! current_user_can( 'activate_plugins' ) ) {
+				return;
+			}
+
+			check_admin_referer( 'bulk-plugins' );
+
+			if ( ! ap_opt( 'db_cleanup' ) ) {
+				return;
+			}
+
+			global $wpdb;
+
+			// remove question and answer cpt
+			$wpdb->query( "DELETE FROM $wpdb->posts WHERE post_type = 'question'" );
+			$wpdb->query( "DELETE FROM $wpdb->posts WHERE post_type = 'answer'" );
+
+			// remove meta table
+			$meta_table = $wpdb->prefix.'ap_meta';
+			$wpdb->query( "DROP TABLE IF EXISTS $meta_table" );
+
+			// remove option
+			delete_option( 'anspress_opt' );
+			delete_option( 'ap_reputation' );
+
+			// Remove user roles
+			AP_Roles::remove_roles();
+		}
+
+		/**
+		 * After activation redirect
+		 * @param  string $plugin Plugin base name.
+		 */
+		public static function activation_redirect($plugin) {
+			if ( $plugin == plugin_basename( __FILE__ ) ) {
+				exit( wp_redirect( admin_url( 'admin.php?page=anspress_about' ) ) );
+			}
+		}
+
+		/**
+		 * Creating table whenever a new blog is created
+		 * @param  integer $blog_id Blog id.
+		 * @param  integer $user_id User id.
+		 * @param  string  $domain  Domain.
+		 * @param  string  $path    Path.
+		 * @param  integer $site_id Site id.
+		 * @param  array   $meta    Site meta.
+		 */
+		public static function create_blog( $blog_id, $user_id, $domain, $path, $site_id, $meta ) {
+			if ( is_plugin_active_for_network( plugin_basename( __FILE__ ) ) ) {
+				switch_to_blog( $blog_id );
+				AP_Activate::get_instance( true );
+				restore_current_blog();
+			}
+		}
+
+		/**
+		 * Deleting the table whenever a blog is deleted
+		 * @param  array $tables Table names.
+		 * @return array
+		 */
+		public static function drop_blog_tables( $tables, $blog_id ) {
+			if ( empty( $blog_id ) || 1 == $blog_id || $blog_id != $GLOBALS['blog_id'] ) {
+				return $tables;
+			}
+
+			global $wpdb;
+
+			$tables[] 	= $wpdb->prefix . 'ap_meta';
+			$tables[] 	= $wpdb->prefix . 'ap_meta';
+			$tables[] 	= $wpdb->prefix . 'ap_activity';
+			$tables[] 	= $wpdb->prefix . 'ap_activitymeta';
+			$tables[] 	= $wpdb->prefix . 'ap_notifications';
+			$tables[]	= $wpdb->prefix . 'ap_subscribers';
+			return $tables;
+		}
+	}
 }
 
-add_action( 'plugins_loaded', 'load_anspress' );
+
+add_action( 'plugins_loaded', [ 'AnsPress_Init', 'load_anspress' ] );
+add_action( 'activated_plugin', [ 'AnsPress_Init', 'activation_redirect' ] );
+add_action( 'wpmu_new_blog', [ 'AnsPress_Init', 'create_blog' ], 10, 6 );
+add_filter( 'wpmu_drop_tables', [ 'AnsPress_Init', 'drop_blog_tables' ], 10, 2 );
 
 /*
- ----------------------------------------------------------------------------*
  * Dashboard and Administrative Functionality
- *----------------------------------------------------------------------------*/
-
-/*
- * The code below is intended to to give the lightest footprint possible.
  */
-
-if ( is_admin() ) {	
-	add_action( 'plugins_loaded', array( 'AnsPress_Admin', 'get_instance' ) );
+if ( is_admin() ) {
+	add_action( 'plugins_loaded', [ 'AnsPress_Admin', 'get_instance' ] );
 }
+
 
 /*
  * Register hooks that are fired when the plugin is activated or deactivated.
  * When the plugin is deleted, the uninstall.php file is loaded.
  */
-register_activation_hook( __FILE__, array( 'AP_Activate', 'get_instance' ) );
-
-register_uninstall_hook( __FILE__, 'anspress_uninstall' );
-
-/**
- * Plugin un-installation hook, called by WP while removing AnsPress
- */
-function anspress_uninstall() {
-
-	if ( ! current_user_can( 'activate_plugins' ) ) {
-		return;
-	}
-
-	check_admin_referer( 'bulk-plugins' );
-
-	if ( ! ap_opt( 'db_cleanup' ) ) {
-		return;
-	}
-
-	global $wpdb;
-
-	// remove question and answer cpt
-	$wpdb->query( "DELETE FROM $wpdb->posts WHERE post_type = 'question'" );
-	$wpdb->query( "DELETE FROM $wpdb->posts WHERE post_type = 'answer'" );
-
-	// remove meta table
-	$meta_table = $wpdb->prefix.'ap_meta';
-	$wpdb->query( "DROP TABLE IF EXISTS $meta_table" );
-
-	// remove option
-	delete_option( 'anspress_opt' );
-	delete_option( 'ap_reputation' );
-
-	// Remove user roles
-	AP_Roles::remove_roles();
-}
-
-function ap_activation_redirect($plugin) {
-	if ( $plugin == plugin_basename( __FILE__ ) ) {
-		exit( wp_redirect( admin_url( 'admin.php?page=anspress_about' ) ) );
-	}
-}
-add_action( 'activated_plugin', 'ap_activation_redirect' );
-
-/**
- * Creating table whenever a new blog is created
- * @param  integer $blog_id Blog id.
- * @param  integer $user_id User id.
- * @param  string  $domain  Domain.
- * @param  string  $path    Path.
- * @param  integer $site_id Site id.
- * @param  array   $meta    Site meta.
- */
-function ap_create_blog( $blog_id, $user_id, $domain, $path, $site_id, $meta ) {
-	if ( is_plugin_active_for_network( plugin_basename( __FILE__ ) ) ) {
-		switch_to_blog( $blog_id );
-		AP_Activate::get_instance( true );
-		restore_current_blog();
-	}
-}
-add_action( 'wpmu_new_blog', 'ap_create_blog', 10, 6 );
-
-/**
- * Deleting the table whenever a blog is deleted
- * @param  array $tables Table names.
- * @return array
- */
-function ap_drop_blog_tables( $tables, $blog_id ) {
-	if ( empty( $blog_id ) || 1 == $blog_id || $blog_id != $GLOBALS['blog_id'] ) {
-		return $tables;
-	}
-
-	global $wpdb;
-
-	$tables[] 	= $wpdb->prefix . 'ap_meta';
-	$tables[] 	= $wpdb->prefix . 'ap_meta';
-	$tables[] 	= $wpdb->prefix . 'ap_activity';
-	$tables[] 	= $wpdb->prefix . 'ap_activitymeta';
-	$tables[] 	= $wpdb->prefix . 'ap_notifications';
-	$tables[]	= $wpdb->prefix . 'ap_subscribers';
-	return $tables;
-}
-add_filter( 'wpmu_drop_tables', 'ap_drop_blog_tables', 10, 2 );
-
+require_once dirname(__FILE__ ).'/activate.php';
+register_activation_hook( __FILE__, [ 'AP_Activate', 'get_instance' ] );
+register_uninstall_hook( __FILE__, [ 'AnsPress_Init', 'anspress_uninstall' ] );

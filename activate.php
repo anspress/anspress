@@ -32,6 +32,7 @@ class AP_Activate
 
 		// If the single instance hasn't been set, set it now.
 		if ( null == self::$instance ) {
+			anspress();
 			self::$instance = new self;
 			global $network_wide;
 			$network_wide = $network_wide;
