@@ -22,7 +22,6 @@ class AnsPress_Process_Form
 	 * Initialize the class
 	 */
 	public function __construct() {
-		add_action( 'init', array( $this, 'non_ajax_form' ), 0 );
 		add_action( 'save_post', array( $this, 'action_on_new_post' ), 10, 3 );
 		add_action( 'wp_ajax_ap_ajax', array( $this, 'ap_ajax' ) );
 		add_action( 'wp_ajax_nopriv_ap_ajax', array( $this, 'ap_ajax' ) );
@@ -33,7 +32,6 @@ class AnsPress_Process_Form
 	 * @return void
 	 */
 	public function non_ajax_form() {
-
 		$this->mark_notification_as_read();
 
 		// return if ap_form_action is not set, probably its not our form
@@ -88,6 +86,9 @@ class AnsPress_Process_Form
 	    	 */
 	    	do_action( 'ap_ajax_'.$action );
 		}
+
+		// If reached to this point then there is something wrong.
+		ap_send_json( ap_ajax_responce( 'something_wrong' ) );
 	}
 
 
@@ -97,7 +98,6 @@ class AnsPress_Process_Form
 	 * @since 2.0.1
 	 */
 	public function process_form() {
-
 		$action = sanitize_text_field( $_POST['ap_form_action'] );
 
 		switch ( $action ) {
@@ -133,51 +133,6 @@ class AnsPress_Process_Form
 				do_action( 'ap_process_form_'.$action );
 				break;
 		}
-
-	}
-
-	/**
-	 * Validate reCaptcha field.
-	 * @return boolean
-	 */
-	public function check_recaptcha() {
-		require_once( ANSPRESS_DIR. 'includes/recaptcha.php' );
-		$reCaptcha = new gglcptch_ReCaptcha( ap_opt( 'recaptcha_secret_key' ) );
-
-		$gglcptch_remote_addr = filter_var( $_SERVER['REMOTE_ADDR'], FILTER_VALIDATE_IP );
-		$gglcptch_g_recaptcha_response = stripslashes( esc_html( $_POST['g-recaptcha-response'] ) );
-
-		$resp = $reCaptcha->verifyResponse( $gglcptch_remote_addr, $gglcptch_g_recaptcha_response );
-
-		if ( $resp->success ) {
-			do_action( 'ap_form_captch_verified' );
-			return true;
-		}
-
-		return false;
-	}
-
-	/**
-	 * Remove stop words from post_name.
-	 * @param  string $str String to filter.
-	 * @return string
-	 */
-	public function remove_stop_words_from_name( $str ) {
-		$str = sanitize_title( $str );
-		
-		if( ap_opt( 'keep_stop_words' ) ){
-			return $str;
-		}
-
-		$post_name = ap_remove_stop_words( $str );
-
-		// Check if post name is not empty.
-		if ( ! empty($post_name ) ) {
-			return $post_name;
-		}
-
-		// if empty then return it without stripping stop words.
-		return sanitize_title( $str );
 	}
 
 	/**
@@ -186,10 +141,9 @@ class AnsPress_Process_Form
 	 * @since 2.0.1
 	 */
 	public function process_ask_form() {
-
 		global $ap_errors, $validate;
 
-		if ( ap_show_captcha_to_user() && ! $this->check_recaptcha() ) {
+		if ( ap_show_captcha_to_user() && false === ap_check_recaptcha() ) {
 			$this->result = array(
 				'form' 			=> $_POST['ap_form_action'],
 				'message'		=> 'captcha_error',
@@ -203,39 +157,14 @@ class AnsPress_Process_Form
 			return;
 		}
 
-		$args = array(
-			'title' => array(
-				'sanitize' => array( 'sanitize_text_field' ),
-				'validate' => array( 'required' => true, 'length_check' => ap_opt( 'minimum_qtitle_length' ) ),
-			),
-			'description' => array(
-				'sanitize' => array( 'remove_more', 'encode_pre_code', 'wp_kses' ),
-				'validate' => array( 'length_check' => ap_opt( 'minimum_question_length' ) ),
-			),
-			'is_private' => array(
-				'sanitize' => array( 'only_boolean' ),
-			),
-			'name' => array(
-				'sanitize' => array( 'strip_tags', 'sanitize_text_field' ),
-			),
-			'parent_id' => array(
-				'sanitize' => array( 'only_int' ),
-			),
-			'edit_post_id' => array(
-				'sanitize' => array( 'only_int' ),
-			),
-		);
-
 		/**
 		 * FILTER: ap_ask_fields_validation
 		 * Filter can be used to modify ask question fields.
-		 * @var void
+		 * @param array $args Ask form validation arguments.
 		 * @since 2.0.1
 		 */
-		$args = apply_filters( 'ap_ask_fields_validation', $args );
-
+		$args = apply_filters( 'ap_ask_fields_validation', ap_get_ask_form_fields( $_REQUEST['edit_post_id'] ) );
 		$validate = new AnsPress_Validation( $args );
-
 		$ap_errors = $validate->get_errors();
 
 		// if error in form then return
@@ -250,6 +179,7 @@ class AnsPress_Process_Form
 		}
 
 		$fields = $validate->get_sanitized_fields();
+
 		$this->fields = $fields;
 
 		if ( ! empty( $fields['edit_post_id'] ) ) {
@@ -267,46 +197,29 @@ class AnsPress_Process_Form
 
 		$user_id = get_current_user_id();
 
-		$status = 'publish';
-
-		if ( ap_opt( 'new_question_status' ) == 'moderate' || (ap_opt( 'new_question_status' ) == 'reputation' && ap_get_points( $user_id ) < ap_opt( 'mod_question_point' )) ) {
-			$status = 'moderate';
-		}
-
-		if ( isset( $fields['is_private'] ) && $fields['is_private'] ) {
-			$status = 'private_post';
-		}
-
 		$question_array = array(
 			'post_title'		=> $fields['title'],
-			'post_name'			=> $this->remove_stop_words_from_name($fields['title'] ),
 			'post_author'		=> $user_id,
-			'post_content' 		=> apply_filters( 'ap_form_contents_filter', $fields['description'] ),
-			'post_type' 		=> 'question',
-			'post_status' 		=> $status,
-			'comment_status' 	=> 'open',
+			'post_content' 		=> $fields['description'],
+			'attach_uploads' 	=> true,
 		);
+
+		if ( ap_opt( 'new_question_status' ) == 'moderate' || (ap_opt( 'new_question_status' ) == 'reputation' && ap_get_points( $user_id ) < ap_opt( 'mod_question_point' )) ) {
+			$question_array['post_status'] = 'moderate';
+		}
+
+		// Check if anonymous post and have name.
+		if ( ! is_user_logged_in() && ap_opt( 'allow_anonymous' ) && ! empty( $fields['anonymous_name'] ) ) {
+			$question_array['anonymous_name'] = $fields['name'];
+		}
 
 		if ( isset( $fields['parent_id'] ) ) {
 			$question_array['post_parent'] = (int) $fields['parent_id'];
 		}
 
-		/**
-		 * FILTER: ap_pre_insert_question
-		 * Can be used to modify args before inserting question
-		 * @var array
-		 * @since 2.0.1
-		 */
-		$question_array = apply_filters( 'ap_pre_insert_question', $question_array );
-
-		$post_id = wp_insert_post( $question_array );
+		$post_id = ap_save_question( $question_array, true );
 
 		if ( $post_id ) {
-
-			// Update Custom Meta
-			if ( ! is_user_logged_in() && ap_opt( 'allow_anonymous' ) && ! empty( $fields['name'] ) ) {
-				update_post_meta( $post_id, 'anonymous_name', $fields['name'] ); }
-
 			$this->redirect = get_permalink( $post_id );
 
 			$this->result = array(
@@ -316,12 +229,8 @@ class AnsPress_Process_Form
 			);
 		}
 
-		$this->process_image_uploads( $post_id, $user_id );
-
-		// Check for spam in question.
-		if ( ap_opt('akismet_validation' ) && ! current_user_can( 'ap_edit_others_question' ) ) {
-			ap_check_spam( $post_id );
-		}
+		// Remove all unused atthements by user.
+		ap_clear_unused_attachments( $user_id );
 	}
 
 	/**
@@ -330,7 +239,6 @@ class AnsPress_Process_Form
 	 * @since 2.0.1
 	 */
 	public function edit_question() {
-
 		global $ap_errors, $validate;
 
 		// Return if user do not have permission to edit this question.
@@ -349,37 +257,25 @@ class AnsPress_Process_Form
 		$post = get_post( $this->fields['edit_post_id'] );
 		$user_id = get_current_user_id();
 
-		$status = 'publish';
-
-		if ( ap_opt( 'edit_question_status' ) == 'moderate' || (ap_opt( 'edit_question_status' ) == 'point' && ap_get_points( $user_id ) < ap_opt( 'mod_answer_point' )) ) {
-			$status = 'moderate';
-		}
-
-		if ( isset( $this->fields['is_private'] ) && $this->fields['is_private'] ) {
-			$status = 'private_post';
-		}
-
 		$question_array = array(
-			'ID'			=> $post->ID,
-			'post_author'	=> $post->post_author,
-			'post_title'	=> $this->fields['title'],
-			'post_name'		=> $this->remove_stop_words_from_name($fields['title'] ),
-			'post_content' 	=> apply_filters( 'ap_form_contents_filter', $this->fields['description'] ),
-			'post_status' 	=> $status,
+			'ID'				=> $post->ID,
+			'post_title'		=> $this->fields['title'],
+			'post_content' 		=> $this->fields['description'],
+			'attach_uploads' 	=> true,
 		);
 
-		/**
-		 * FILTER: ap_pre_update_question
-		 * Can be used to modify $args before updating question
-		 * @var array
-		 * @since 2.0.1
-		 */
-		$question_array = apply_filters( 'ap_pre_update_question', $question_array );
+		if ( ap_opt( 'edit_question_status' ) == 'moderate' || (ap_opt( 'edit_question_status' ) == 'point' && ap_get_points( $user_id ) < ap_opt( 'mod_answer_point' )) ) {
+			$question_array['post_status'] = 'moderate';
+		}
 
-		$post_id = wp_update_post( $question_array );
+		// Check if anonymous post and have name.
+		if ( ! is_user_logged_in() && ap_opt( 'allow_anonymous' ) && ! empty( $this->fields['anonymous_name'] ) ) {
+			$question_array['anonymous_name'] = $this->fields['name'];
+		}
+
+		$post_id = ap_save_question( $question_array );
 
 		if ( $post_id ) {
-
 			$this->redirect = get_permalink( $post_id );
 
 			$this->result = array(
@@ -389,12 +285,8 @@ class AnsPress_Process_Form
 			);
 		}
 
-		$this->process_image_uploads( $post->ID, $post->post_author );
-
-		// Check for spam in question.
-		if ( ap_opt('akismet_validation' ) && ! current_user_can( 'ap_edit_others_question' ) ) {
-			ap_check_spam( $post_id );
-		}
+		// Remove all unused atthements by user.
+		ap_clear_unused_attachments( $user_id );
 	}
 
 	/**
@@ -405,7 +297,6 @@ class AnsPress_Process_Form
 	 * @since  2.0
 	 */
 	public function action_on_new_post( $post_id, $post, $update ) {
-
 		// return on autosave
 		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) { return; }
 
@@ -414,20 +305,7 @@ class AnsPress_Process_Form
 
 		$updated = get_post_meta( $post_id, ANSPRESS_UPDATED_META, true );
 
-		if ( $post->post_type == 'question' ) {
-			// check if post have updated meta, if not this is a new post :D
-			if ( $updated == '' ) {
-				/**
-				 * ACTION: ap_after_new_question
-				 * action triggered after inserting a question
-				 * @since 0.9
-				 */
-				do_action( 'ap_processed_new_question', $post_id, $post );
-			} else {
-
-				do_action( 'ap_processed_update_question', $post_id, $post );
-			}
-		} elseif ( $post->post_type == 'answer' ) {
+		if ( $post->post_type == 'answer' ) {
 
 			if ( $updated == '' ) {
 
@@ -450,7 +328,7 @@ class AnsPress_Process_Form
 	public function process_answer_form() {
 		global $ap_errors, $validate;
 
-		if ( ap_show_captcha_to_user() && ! $this->check_recaptcha() ) {
+		if ( ap_show_captcha_to_user() && ! false === ap_check_recaptcha() ) {
 			$this->result = array(
 				'form' 			=> $_POST['ap_form_action'],
 				'message'		=> 'captcha_error',

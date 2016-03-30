@@ -15,37 +15,29 @@
 class AnsPress_Ajax
 {
 	/**
-	 * AnsPress main class
-	 * @var object
-	 */
-	protected $ap;
-
-	/**
 	 * Initialize the plugin by setting localization and loading public scripts
 	 * and styles.
-	 * @param AnsPress $ap Parent class object.
 	 */
-	public function __construct($ap) {
-
-	    $ap->add_action( 'ap_ajax_suggest_similar_questions', $this, 'suggest_similar_questions' );
-	    $ap->add_action( 'ap_ajax_load_comment_form', $this, 'load_comment_form' );
-	    $ap->add_action( 'ap_ajax_delete_comment', $this, 'delete_comment' );
-	    $ap->add_action( 'ap_ajax_select_best_answer', $this, 'select_best_answer' );
-	    $ap->add_action( 'ap_ajax_delete_post', $this, 'delete_post' );
-	    $ap->add_action( 'ap_ajax_permanent_delete_post', $this, 'permanent_delete_post' );
-	    $ap->add_action( 'ap_ajax_change_post_status', $this, 'change_post_status' );
-	    $ap->add_action( 'ap_ajax_load_user_field_form', $this, 'load_user_field_form' );
-	    $ap->add_action( 'ap_ajax_set_featured', $this, 'set_featured' );
-	    $ap->add_action( 'ap_ajax_follow', $this, 'follow' );
-	    $ap->add_action( 'ap_ajax_user_cover', $this, 'ap_user_card' );
-	    $ap->add_action( 'ap_ajax_delete_notification', $this, 'delete_notification' );
-	    $ap->add_action( 'ap_ajax_markread_notification', $this, 'markread_notification' );
-	    $ap->add_action( 'ap_ajax_set_notifications_as_read', $this, 'set_notifications_as_read' );
-	    $ap->add_action( 'ap_ajax_flag_post', $this, 'flag_post' );
-	    $ap->add_action( 'ap_ajax_subscribe', $this, 'subscribe' );
-	    $ap->add_action( 'ap_ajax_vote', $this, 'vote' );
-	    $ap->add_action( 'ap_ajax_flag_comment', $this, 'flag_comment' );
-	    $ap->add_action( 'ap_ajax_delete_activity', $this, 'delete_activity' );
+	public function __construct() {
+	    anspress()->add_action( 'ap_ajax_suggest_similar_questions', $this, 'suggest_similar_questions' );
+	    anspress()->add_action( 'ap_ajax_load_comment_form', $this, 'load_comment_form' );
+	    anspress()->add_action( 'ap_ajax_delete_comment', $this, 'delete_comment' );
+	    anspress()->add_action( 'ap_ajax_select_best_answer', $this, 'select_best_answer' );
+	    anspress()->add_action( 'ap_ajax_delete_post', $this, 'delete_post' );
+	    anspress()->add_action( 'ap_ajax_permanent_delete_post', $this, 'permanent_delete_post' );
+	    anspress()->add_action( 'ap_ajax_change_post_status', $this, 'change_post_status' );
+	    anspress()->add_action( 'ap_ajax_load_user_field_form', $this, 'load_user_field_form' );
+	    anspress()->add_action( 'ap_ajax_set_featured', $this, 'set_featured' );
+	    anspress()->add_action( 'ap_ajax_follow', $this, 'follow' );
+	    anspress()->add_action( 'ap_ajax_user_cover', $this, 'ap_user_card' );
+	    anspress()->add_action( 'ap_ajax_delete_notification', $this, 'delete_notification' );
+	    anspress()->add_action( 'ap_ajax_markread_notification', $this, 'markread_notification' );
+	    anspress()->add_action( 'ap_ajax_set_notifications_as_read', $this, 'set_notifications_as_read' );
+	    anspress()->add_action( 'ap_ajax_flag_post', $this, 'flag_post' );
+	    anspress()->add_action( 'ap_ajax_subscribe', $this, 'subscribe' );
+	    anspress()->add_action( 'ap_ajax_vote', $this, 'vote' );
+	    anspress()->add_action( 'ap_ajax_flag_comment', $this, 'flag_comment' );
+	    anspress()->add_action( 'ap_ajax_delete_activity', $this, 'delete_activity' );
 	}
 
 	/**
@@ -54,7 +46,6 @@ class AnsPress_Ajax
 	 * @since 2.0.1
 	 */
 	public function suggest_similar_questions() {
-
 	    if ( empty( $_POST['value'] ) || ( ! ap_verify_default_nonce() && ! current_user_can( 'manage_options' ) ) ) {
 	        wp_die( 'false' );
 	    }

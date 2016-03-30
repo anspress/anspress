@@ -1159,7 +1159,7 @@ function ap_get_link_to($sub) {
 
 	$default_pages = apply_filters( 'ap_default_page_slugs', $default_pages );
 
-	if ( is_array( $sub ) && isset( $sub['ap_page'] ) && @isset( $default_pages[$sub] ) ) {
+	if ( is_array( $sub ) && isset( $sub['ap_page'] ) && @isset( $default_pages[ $sub['ap_page'] ] ) ) {
 		$sub['ap_page'] = $default_pages[$sub['ap_page']];
 	} elseif ( ! empty( $sub ) && @isset( $default_pages[$sub] ) ) {
 		$sub = $default_pages[$sub];

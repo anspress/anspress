@@ -23,26 +23,24 @@ if ( ! defined( 'WPINC' ) ) {
  */
 class AnsPress_Admin_Ajax
 {
-
 	/**
 	 * Initialize admin ajax
 	 */
-	public function __construct($ap) {
-		$ap->add_action( 'wp_ajax_ap_edit_reputation', $this, 'ap_edit_reputation' );
-		$ap->add_action( 'wp_ajax_ap_save_reputation', $this, 'ap_save_reputation' );
-		$ap->add_action( 'wp_ajax_ap_new_reputation_form', $this, 'ap_new_reputation_form' );
-		$ap->add_action( 'wp_ajax_ap_delete_reputation', $this, 'ap_delete_reputation' );
-		$ap->add_action( 'wp_ajax_ap_taxo_rename', $this, 'ap_taxo_rename' );
-		$ap->add_action( 'wp_ajax_ap_delete_flag', $this, 'ap_delete_flag' );
-		$ap->add_action( 'ap_ajax_ap_clear_flag', $this, 'clear_flag' );
-		$ap->add_action( 'ap_ajax_ap_admin_vote', $this, 'ap_admin_vote' );
+	public function __construct() {
+		anspress()->add_action( 'wp_ajax_ap_edit_reputation', $this, 'ap_edit_reputation' );
+		anspress()->add_action( 'wp_ajax_ap_save_reputation', $this, 'ap_save_reputation' );
+		anspress()->add_action( 'wp_ajax_ap_new_reputation_form', $this, 'ap_new_reputation_form' );
+		anspress()->add_action( 'wp_ajax_ap_delete_reputation', $this, 'ap_delete_reputation' );
+		anspress()->add_action( 'wp_ajax_ap_taxo_rename', $this, 'ap_taxo_rename' );
+		anspress()->add_action( 'wp_ajax_ap_delete_flag', $this, 'ap_delete_flag' );
+		anspress()->add_action( 'ap_ajax_ap_clear_flag', $this, 'clear_flag' );
+		anspress()->add_action( 'ap_ajax_ap_admin_vote', $this, 'ap_admin_vote' );
 	}
 
 	/**
 	 * Ajax callback for reputation edit form
 	 */
 	public function ap_edit_reputation() {
-
 		if ( current_user_can( 'manage_options' ) ) {
 			$id = sanitize_text_field( $_POST['id'] );
 			$reputation = ap_reputation_by_id( $id );

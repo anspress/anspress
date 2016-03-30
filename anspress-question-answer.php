@@ -60,6 +60,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 	     * @var object Register all AnsPress ajax hooks
 	     */
 	    public $anspress_ajax;
+	    public $admin_ajax;
 
 	    /**
 	     * AnsPress pages
@@ -333,8 +334,8 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		public function ajax_hooks() {
 			// Load ajax hooks only if DOING_AJAX defined.
 			if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
-		    	$this->anspress_ajax = new AnsPress_Ajax( $this );
-		    	new AnsPress_Admin_Ajax( $this );
+		    	self::$instance->anspress_ajax = new AnsPress_Ajax( );
+		    	self::$instance->admin_ajax = new AnsPress_Admin_Ajax( );
 			}
 		}
 

@@ -9,7 +9,7 @@
 
 class AnsPress_Validation
 {
-	private $args = array();
+	public $args = array();
 
 	private $errors = array();
 
@@ -27,9 +27,24 @@ class AnsPress_Validation
 
 		$this->args = $args;
 
+		$this->name_to_key();
 		$this->fields_to_include();
-
 		$this->actions();
+	}
+
+	/**
+	 * Add name value as array key.
+	 * @since 3.0.0
+	 */
+	private function name_to_key() {
+		foreach ( (array) $this->args as $k => $f ) {
+			if ( isset( $f['name'] ) ) {
+				$name = $f['name'];
+				unset( $f['name'] );
+				unset( $this->args[ $k ] );
+				$this->args[ $name ] = $f;
+			}
+		}
 	}
 
 	/**
@@ -38,9 +53,8 @@ class AnsPress_Validation
 	 * @since 2.0.1
 	 */
 	private function fields_to_include() {
-
-		foreach ( $this->args as $field => $actions ) {
-			$this->fields[$field] = @$_REQUEST[$field];
+		foreach ( (array) $this->args as $field => $actions ) {
+			$this->fields[ $field ] = @$_REQUEST[ $field ];
 		}
 	}
 
@@ -51,22 +65,21 @@ class AnsPress_Validation
 	 * @since 2.0.1
 	 */
 	public function required($field) {
-
-		if ( ! isset( $this->fields[$field] ) ||  $this->fields[$field] == '' ) {
-			$this->errors[$field] = __( 'This field is required', 'anspress-question-answer' );
+		if ( ! isset( $this->fields[$field] ) || '' == $this->fields[ $field ] ) {
+			$this->errors[ $field ] = __( 'This field is required', 'anspress-question-answer' );
 		}
 	}
 
 	/**
 	 * Sanitize text fields
-	 * @param  string $field
-	 * @return void
-	 * @since 2.0.1
+	 * @param  	string $field Field name.
+	 * @return 	void
+	 * @since 	2.0.1
 	 */
-	private function sanitize_text_field($field) {
-
-		if ( isset( $this->fields[$field] ) ) {
-			$this->fields[$field] = sanitize_text_field( $this->fields[$field] ); }
+	private function sanitize_text_field( $field ) {
+		if ( isset( $this->fields[ $field ] ) ) {
+			$this->fields[ $field ] = sanitize_text_field( $this->fields[ $field ] );
+		}
 	}
 
 	/**
@@ -77,14 +90,14 @@ class AnsPress_Validation
 	 * @since  2.0
 	 */
 	private function length_check($field, $param) {
-
 		// Dont check if Administrator.
 		if ( current_user_can( 'manage_options' ) ) {
 			return;
 		}
 
 		if ( $param != 0 && ( ! isset( $this->fields[$field] ) || mb_strlen( strip_tags( $this->fields[$field] ) ) <= $param ) ) {
-			$this->errors[$field] = sprintf( __( 'Its too short, it must be minimum %d characters', 'anspress-question-answer' ), $param ); }
+			$this->errors[$field] = sprintf( __( 'Its too short, it must be minimum %d characters', 'anspress-question-answer' ), $param );
+		}
 	}
 
 	/**
@@ -358,7 +371,7 @@ class AnsPress_Validation
 	 */
 	private function actions() {
 
-		foreach ( $this->args as $field => $actions ) {
+		foreach ( (array) $this->args as $field => $actions ) {
 			if ( isset( $actions['sanitize'] ) ) {
 				$this->sanitize( $field, $actions['sanitize'] );
 			}
