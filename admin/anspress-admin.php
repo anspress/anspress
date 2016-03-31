@@ -458,7 +458,6 @@ class AnsPress_Admin
 	 * @since unknown
 	 */
 	public function ap_menu_metaboxes() {
-
 		add_meta_box( 'add-anspress', __( 'AnsPress Pages', 'anspress-question-answer' ), array( $this, 'wp_nav_menu_item_anspress_meta_box' ), 'nav-menus', 'side', 'high' );
 	}
 
@@ -468,14 +467,15 @@ class AnsPress_Admin
 	 * @since unknown
 	 */
 	public function wp_nav_menu_item_anspress_meta_box() {
-
-		global $_nav_menu_placeholder, $nav_menu_selected_id, $ap_pages;
+		global $_nav_menu_placeholder, $nav_menu_selected_id;
 
 		$_nav_menu_placeholder = 0 > $_nav_menu_placeholder ? $_nav_menu_placeholder - 1 : -1;
 
 		echo '<div class="aplinks" id="aplinks">';
 		echo '<input type="hidden" value="custom" name="menu-item['.$_nav_menu_placeholder.'][menu-item-type]" />';
 		echo '<ul>';
+
+		$ap_pages = anspress()->pages;
 
 		$ap_pages['profile']       = array( 'title' => __( 'User profile', 'anspress-question-answer' ), 'show_in_menu' => true );
 		$ap_pages['notification']  = array( 'title' => __( 'User notification', 'anspress-question-answer' ), 'show_in_menu' => true );
