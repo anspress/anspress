@@ -16,6 +16,8 @@
  */
 function ap_get_ask_form_fields( $post_id = false ) {
 	global $editing_post;
+	$editing = false;
+
 	if( $post_id && ap_user_can_edit_question( (int) $post_id ) ){
 		$editing = true;
 		$editing_post = get_post( (int) $post_id );
@@ -34,7 +36,7 @@ function ap_get_ask_form_fields( $post_id = false ) {
 			'type'  => 'text',
 			'placeholder'  => __( 'Question in one sentence', 'anspress-question-answer' ),
 			'desc'  => __( 'Write a meaningful title for the question.', 'anspress-question-answer' ),
-			'value' => ( $editing ? $editing_post->post_title : sanitize_text_field( @$_POST['title'] ) ),
+			'value' => ( $editing ? $editing_post->post_title : ap_isset_post_value( 'title', '' ) ),
 			'order' => 5,
 			'attr' => 'data-action="suggest_similar_questions"',
 			'autocomplete' => false,
@@ -52,7 +54,7 @@ function ap_get_ask_form_fields( $post_id = false ) {
 			'label' => __( 'Description', 'anspress-question-answer' ),
 			'type'  => 'editor',
 			'desc'  => __( 'Write description for the question.', 'anspress-question-answer' ),
-			'value' => ( $editing ? apply_filters( 'the_content', $editing_post->post_content ) : @$_POST['description']  ),
+			'value' => ( $editing ? apply_filters( 'the_content', $editing_post->post_content ) : ap_isset_post_value( 'description', '' )  ),
 			'settings' => apply_filters( 'ap_ask_form_editor_settings', array(
 				'textarea_rows'     => 8,
 				'tinymce'           => ap_opt( 'question_text_editor' ) ? false : true,
@@ -84,7 +86,7 @@ function ap_get_ask_form_fields( $post_id = false ) {
 			'label'     => __( 'Name', 'anspress-question-answer' ),
 			'type'      => 'text',
 			'placeholder'  => __( 'Enter your name to display', 'anspress-question-answer' ),
-			'value'     => sanitize_text_field( @$_POST['name'] ),
+			'value'     => ap_isset_post_value( 'name', '' ),
 			'order'     => 12,
 			'sanitize' => array( 'strip_tags', 'sanitize_text_field' ),
 		);

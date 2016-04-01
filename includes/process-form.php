@@ -112,10 +112,6 @@ class AnsPress_Process_Form
 			case 'comment_form':
 				$this->comment_form();
 
-			case 'options_form':
-				$this->options_form();
-				break;
-
 			case 'ap_user_profile_form':
 				$this->ap_user_profile_form();
 				break;
@@ -157,17 +153,20 @@ class AnsPress_Process_Form
 			return;
 		}
 
+		$editing_post_id = ap_isset_post_value( 'edit_post_id', false );
+
 		/**
 		 * FILTER: ap_ask_fields_validation
 		 * Filter can be used to modify ask question fields.
 		 * @param array $args Ask form validation arguments.
 		 * @since 2.0.1
 		 */
-		$args = apply_filters( 'ap_ask_fields_validation', ap_get_ask_form_fields( $_REQUEST['edit_post_id'] ) );
+		$args = apply_filters( 'ap_ask_fields_validation', ap_get_ask_form_fields( $editing_post_id ) );
+
 		$validate = new AnsPress_Validation( $args );
 		$ap_errors = $validate->get_errors();
 
-		// if error in form then return
+		// If error in form then return.
 		if ( $validate->have_error() ) {
 			$this->result = array(
 				'form' 			=> $_POST['ap_form_action'],
@@ -684,34 +683,10 @@ class AnsPress_Process_Form
 		}
 	}
 
-	public function options_form() {
-		if ( ! isset( $_POST['__nonce'] ) || ! wp_verify_nonce( $_POST['__nonce'], 'nonce_option_form' ) || ! current_user_can( 'manage_options' ) ) {
-			return;
-		}
-
-		flush_rewrite_rules();
-		$options = $_POST['anspress_opt'];
-
-		if ( ! empty( $options ) && is_array( $options ) ) {
-			$old_options = get_option( 'anspress_opt' );
-
-			foreach ( $options as $k => $opt ) {
-				$value = implode( "\n", array_map( 'sanitize_text_field', explode( "\n", $opt ) ) );
-				$old_options[ $k ] = wp_unslash( $value );
-			}
-
-			update_option( 'anspress_opt', $old_options );
-			wp_cache_delete( 'ap_opt', 'options' );
-			$_POST['anspress_opt_updated'] = true;
-		}
-
-	}
-
 	/**
 	 * Process user profile and account fields
 	 */
 	public function ap_user_profile_form() {
-
 		$user_id = get_current_user_id();
 		$group = sanitize_text_field( $_POST['group'] );
 

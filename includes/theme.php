@@ -740,13 +740,12 @@ function ap_how_to_ask() {
  * @since 2.2
  */
 function ap_get_how_to_ask() {
-
 	if ( ap_opt( 'question_help_page' ) != '' ) {
 		$help = get_post( (int) ap_opt( 'question_help_page' ) );
-
-		return apply_filters( 'the_content', $help->post_content );
+		if( $help ){
+			return apply_filters( 'the_content', $help->post_content );
+		}
 	}
-
 	return false;
 }
 

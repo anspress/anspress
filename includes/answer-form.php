@@ -43,7 +43,7 @@ function ap_answer_form($question_id, $editing = false) {
 			array(
 				'name'          => 'description',
 				'type'          => 'editor',
-				'value'         => ( $editing ? apply_filters( 'the_content', $editing_post->post_content ) : wp_kses_post( @$_POST['description'] ) ),
+				'value'         => ( $editing ? apply_filters( 'the_content', $editing_post->post_content ) : wp_kses_post( ap_isset_post_value('description', '') ) ),
 				'settings'      => apply_filters( 'ap_answer_form_editor_settings', array(
 					'textarea_rows' => 8,
 					'tinymce'   => ap_opt( 'answer_text_editor' ) ? false : true,

@@ -12,8 +12,23 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-$settings = ap_opt();
+if ( isset( $_POST['__nonce'] ) && wp_verify_nonce( $_POST['__nonce'], 'nonce_option_form' ) && current_user_can( 'manage_options' ) ) {
+    flush_rewrite_rules();
+    $options = $_POST['anspress_opt'];
 
+    $settings = get_option( 'anspress_opt', array() );
+
+    foreach ( (array) $options as $k => $opt ) {
+        $value = implode( "\n", array_map( 'sanitize_text_field', explode( "\n", $opt ) ) );
+        $settings[ $k ] = wp_unslash( $value );
+    }
+
+    update_option( 'anspress_opt', $settings );
+    wp_cache_delete( 'ap_opt', 'options' );
+    $_POST['anspress_opt_updated'] = true;
+}
+
+$settings = ap_opt();
 
 /**
  * Anspress option navigation

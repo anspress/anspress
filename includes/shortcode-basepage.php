@@ -87,7 +87,6 @@ class AnsPress_BasePage_Shortcode {
 		echo '<div id="anspress">';
 
 			/**
-			 * ACTION: ap_before
 			 * Action is fired before loading AnsPress body.
 			 */
 			do_action( 'ap_before' );
@@ -96,10 +95,10 @@ class AnsPress_BasePage_Shortcode {
 			ap_page();
 
 		if ( ! ap_opt( 'author_credits' ) ) {
-			echo '<div class="ap-cradit">' . __( 'Question and answer is powered by <a href="http://anspress.io" traget="_blank">AnsPress</a>', 'anspress-question-answer' ) . '</div>'; }
+			echo '<div class="ap-cradit">' . __( 'Question and answer is powered by', 'anspress-question-answer' ). ' <a href="http://anspress.io" traget="_blank">AnsPress</a>' . '</div>'; }
 		echo '</div>';
 		wp_reset_postdata();
-
+		$ap_shortcode_loaded = false;
 		return ob_get_clean();
 	}
 

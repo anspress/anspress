@@ -157,6 +157,10 @@ function ap_default_options() {
 		'only_logged_in'			=> false,
 		'keep_stop_words'			=> true,
 		'default_date_format'		=> false,
+		'cover_height'				=> 250,
+		'cover_width'				=> 950,
+		'cover_width_small'			=> 320,
+		'cover_height_small'		=> 95,
 	);
 
 	/**

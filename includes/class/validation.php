@@ -54,7 +54,8 @@ class AnsPress_Validation
 	 */
 	private function fields_to_include() {
 		foreach ( (array) $this->args as $field => $actions ) {
-			$this->fields[ $field ] = @$_REQUEST[ $field ];
+			$value = isset( $_REQUEST[ $field ] ) ? $_REQUEST[ $field ] : '';
+			$this->fields[ $field ] = $value;
 		}
 	}
 
