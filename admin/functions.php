@@ -32,6 +32,7 @@ function ap_flagged_posts_count() {
  * @since 2.0.0-alpha2
  */
 function ap_register_option_group($group_slug, $group_title, $fields, $form = true) {
+	global $ap_option_tabs;
 	$fields = apply_filters( 'ap_option_group_'.$group_slug, $fields );
 	ap_append_to_global_var( 'ap_option_tabs', $group_slug , array( 'title' => $group_title, 'fields' => $fields, 'form' => $form ) );
 }
@@ -42,26 +43,25 @@ function ap_register_option_group($group_slug, $group_title, $fields, $form = tr
  * @since 2.0.0-alpha2
  */
 function ap_options_nav() {
-	global $ap_option_tabs;
+	$groups = ap_get_option_groups();
 	$active = (isset( $_REQUEST['option_page'] )) ? $_REQUEST['option_page'] : 'general' ;
 
 	$menus = array();
 
-	foreach ( $ap_option_tabs as $k => $args ) {
+	foreach ( (array) $groups as $k => $args ) {
 		$link 		= admin_url( "admin.php?page=anspress_options&option_page={$k}" );
 		$menus[$k] 	= array( 'title' => $args['title'], 'link' => $link );
 	}
 
 	/**
-	 * FILTER: ap_option_tab_nav
-	 * filter is applied before showing option tab navigation
+	 * Filter is applied before showing option tab navigation
 	 * @var array
-	 * @since  2.0.0-alpha2
+	 * @since  2.0.0
 	 */
 	$menus = apply_filters( 'ap_option_tab_nav', $menus );
 
 	$o = '<ul id="ap_opt_nav" class="nav nav-tabs">';
-	foreach ( $menus as $k => $m ) {
+	foreach ( (array) $menus as $k => $m ) {
 		$class = ! empty( $m['class'] ) ? ' '. $m['class'] : '';
 			$o .= '<li'.( $active == $k ? ' class="active"' : '' ).'><a href="'. $m['link'] .'" class="ap-user-menu-'.$k.$class.'">'.$m['title'].'</a></li>';
 	}
@@ -76,18 +76,17 @@ function ap_options_nav() {
  * @since 2.0.0
  */
 function ap_option_group_fields() {
-	global $ap_option_tabs;
+	$groups = ap_get_option_groups();
 
 	$active = (isset( $_REQUEST['option_page'] )) ? sanitize_text_field( $_REQUEST['option_page'] ) : 'general' ;
 
-	if ( empty( $ap_option_tabs ) && is_array( $ap_option_tabs ) ) {
+	if ( empty( $groups ) && is_array( $groups ) ) {
 		return;
 	}
 
-	$fields = $ap_option_tabs[$active]['fields'];
+	$fields = $groups[ $active ]['fields'];
 
-	if($ap_option_tabs[$active]['form']){
-
+	if ( isset( $groups[ $active ]['form'] ) ) {
 		$args = array(
 			'name'              => 'options_form',
 			'is_ajaxified'      => false,
@@ -99,12 +98,12 @@ function ap_option_group_fields() {
 		$form = new AnsPress_Form( $args );
 
 		echo '<div class="ap-optionform-title">';
-		echo '<strong>'. $ap_option_tabs[$active]['title'] .'</strong>';
+		echo '<strong>'. $groups[ $active ]['title'] .'</strong>';
 		echo '</div>';
 		echo $form->get_form();
 
-	}else{
-		call_user_func($fields);
+	} else {
+		call_user_func($fields );
 	}
 }
 
@@ -114,31 +113,35 @@ function ap_option_group_fields() {
  * @param  array  $caps      Allowed caps array.
  * @return boolean
  */
-function ap_update_caps_for_role($role_slug, $caps = array()){
-
+function ap_update_caps_for_role($role_slug, $caps = array()) {
 	$role_slug = sanitize_text_field( $role_slug );
-
 	$role = get_role( $role_slug );
 
-
-
-	if( !$role || !is_array($caps) ){
+	if ( ! $role || ! is_array( $caps ) ) {
 		return false;
 	}
 
 	$ap_roles = new AP_Roles;
-
 	$all_caps = $ap_roles->base_caps + $ap_roles->mod_caps;
 
-	foreach($all_caps as $cap => $val){
-
-		if( isset($caps[$cap])){
+	foreach ( (array) $all_caps as $cap => $val ) {
+		if ( isset( $caps[ $cap ] ) ) {
 			$role->add_cap( $cap );
-		}else{
+		} else {
 			$role->remove_cap( $cap );
 		}
-
 	}
 
 	return true;
+}
+
+/**
+ * Return all option groups.
+ * @return array
+ * @since 3.0.0
+ */
+function ap_get_option_groups() {
+	global $ap_option_tabs;
+	do_action( 'ap_option_groups' );
+	return apply_filters( 'ap_get_option_groups', $ap_option_tabs );
 }

@@ -98,11 +98,9 @@ class AnsPress_Admin
 	 */
 	public function includes() {
 		require_once( 'functions.php' );
-		require_once( 'options-page.php' );
+		require_once( 'options-fields.php' );
 		require_once( 'license.php' );
 		require_once( 'class-list-table-hooks.php' );
-
-		new AnsPress_Options_Page;
 		new AP_license();
 		new AP_List_Table_Hooks();
 	}

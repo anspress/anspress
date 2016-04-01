@@ -1,9 +1,8 @@
 <?php
-class AnsPress_Options_Page
+class AnsPress_Options_Fields
 {
 	public function __construct() {
-
-		add_action( 'init', array( $this, 'add_option_groups' ), 11 );
+		$this->add_option_groups();
 	}
 
 	public function add_option_groups() {
