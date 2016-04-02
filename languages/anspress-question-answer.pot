@@ -2,10 +2,10 @@
 # This file is distributed under the GPL-3.0+.
 msgid ""
 msgstr ""
-"Project-Id-Version: AnsPress 2.4.7\n"
+"Project-Id-Version: AnsPress 2.4.8\n"
 "Report-Msgid-Bugs-To: "
 "https://wordpress.org/support/plugin/anspress-question-answer\n"
-"POT-Creation-Date: 2016-03-31 02:34:57+00:00\n"
+"POT-Creation-Date: 2016-04-02 03:11:19+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1634,7 +1634,7 @@ msgstr ""
 msgid "%s's activity"
 msgstr ""
 
-#: includes/class-user.php:225 includes/hooks.php:375 widgets/user.php:48
+#: includes/class-user.php:225 includes/hooks.php:376 widgets/user.php:48
 msgid "My profile"
 msgstr ""
 
@@ -1686,7 +1686,7 @@ msgstr ""
 msgid "My subscriptions"
 msgstr ""
 
-#: includes/class-user.php:249 includes/hooks.php:376
+#: includes/class-user.php:249 includes/hooks.php:377
 msgid "My notification"
 msgstr ""
 
@@ -2101,6 +2101,50 @@ msgstr ""
 msgid "[Solved] "
 msgstr ""
 
+#: includes/hooks.php:660
+msgid "few seconds"
+msgstr ""
+
+#: includes/hooks.php:661
+msgid "minute"
+msgstr ""
+
+#: includes/hooks.php:662
+msgid "minutes"
+msgstr ""
+
+#: includes/hooks.php:663
+msgid "hour"
+msgstr ""
+
+#: includes/hooks.php:664
+msgid "hours"
+msgstr ""
+
+#: includes/hooks.php:665
+msgid "day"
+msgstr ""
+
+#: includes/hooks.php:666
+msgid "days"
+msgstr ""
+
+#: includes/hooks.php:667
+msgid "week"
+msgstr ""
+
+#: includes/hooks.php:668
+msgid "weeks"
+msgstr ""
+
+#: includes/hooks.php:669
+msgid "year"
+msgstr ""
+
+#: includes/hooks.php:670
+msgid "years"
+msgstr ""
+
 #: includes/notification.php:201
 msgid "$activity_id is not a valid integer."
 msgstr ""
@@ -2450,10 +2494,8 @@ msgstr ""
 msgid "AnsPress shortcode cannot be used inside AnsPress content."
 msgstr ""
 
-#: includes/shortcode-basepage.php:99
-msgid ""
-"Question and answer is powered by <a href=\"http://anspress.io\" "
-"traget=\"_blank\">AnsPress</a>"
+#: includes/shortcode-basepage.php:97
+msgid "Question and answer is powered by"
 msgstr ""
 
 #: includes/subscriber.php:189
