@@ -471,7 +471,7 @@ class AnsPress_Hooks
 	        $active_user_page   = get_query_var( 'user_page' ) ? esc_attr( get_query_var( 'user_page' ) ) : 'about';
 
 	        $o  = '<a id="ap-user-menu-anchor" class="ap-dropdown-toggle" href="#">';
-	        $o .= get_avatar( get_current_user_id(), 80 );
+	        $o .= get_avatar( get_current_user_id(), 20 );
 	        $o .= '<span class="name">'. ap_user_display_name( get_current_user_id() ) .'</span>';
 	        $o .= ap_icon( 'chevron-down', true );
 	        $o .= '</a>';
