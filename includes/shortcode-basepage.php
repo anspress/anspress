@@ -45,8 +45,7 @@ class AnsPress_BasePage_Shortcode {
 
 		// Check if AnsPress shortcode already loaded.
 		if ( true === $ap_shortcode_loaded ) {
-			_e('AnsPress shortcode cannot be used inside AnsPress content.', 'anspress-question-answer' );
-			return;
+			return __('AnsPress shortcode cannot be used inside AnsPress content.', 'anspress-question-answer' );
 		}
 
 		$ap_shortcode_loaded = true;
