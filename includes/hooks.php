@@ -67,6 +67,7 @@ class AnsPress_Hooks
 	    $this->ap->add_action( 'ap_vote_casted', $this, 'update_user_vote_casted_count', 10, 4 );
 	    $this->ap->add_action( 'ap_vote_removed', $this, 'update_user_vote_casted_count' , 10, 4 );
 	    $this->ap->add_action( 'the_post', $this, 'ap_append_vote_count' );
+	    anspress()->add_filter( 'human_time_diff', $this, 'human_time_diff' );
 	}
 
 	/**
@@ -643,5 +644,32 @@ class AnsPress_Hooks
 	    if ( ap_opt( 'base_page' ) == $post->ID && ! is_admin() ) {
 	    	$post->post_title = ap_page_title();
 	    }
+	}
+
+	/**
+	 * Make human_time_diff strings translatable.
+	 * @param  string $since Time since.
+	 * @param  string $diff  Time Difference.
+	 * @param  string $from  From time.
+	 * @param  string $to    To time.
+	 * @return string
+	 * @since  2.4.8
+	 */
+	public function human_time_diff ( $since, $diff, $from, $to ) {
+		$replace = array(
+	        '1 min'  	=> __('few seconds', 'anspress-question-answer' ),
+	        'min'  		=> __('minute', 'anspress-question-answer' ),
+	        'mins'  	=> __('minutes', 'anspress-question-answer' ),
+	        'hour'  	=> __('hour', 'anspress-question-answer' ),
+	        'hours' 	=> __('hours', 'anspress-question-answer' ),
+	        'day'   	=> __('day', 'anspress-question-answer' ),
+	        'days'  	=> __('days', 'anspress-question-answer' ),
+	        'week'  	=> __('week', 'anspress-question-answer' ),
+	        'weeks'  	=> __('weeks', 'anspress-question-answer' ),
+	        'year'  	=> __('year', 'anspress-question-answer' ),
+	        'years'  	=> __('years', 'anspress-question-answer' ),
+		);
+
+		return strtr( $since, $replace );
 	}
 }
