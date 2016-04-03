@@ -654,48 +654,6 @@ function ap_display_answer_metas($answer_id = false) {
 }
 
 /**
- * Output comment action links
- */
-function ap_comment_actions_buttons() {
-	global $comment;
-	$post_o = get_post( $comment->comment_post_ID );
-
-	if ( ! $post_o->post_type == 'question' || ! $post_o->post_type == 'answer' ) {
-		return;
-	}
-
-	$actions = array();
-
-	if ( ap_user_can_edit_comment( get_comment_ID() ) ) {
-		$nonce = wp_create_nonce( 'edit_comment_'.get_comment_ID() );
-		$actions['edit'] = '<a class="comment-edit-btn" href="#" data-toggle="#li-comment-'.get_comment_ID().'" data-action="load_comment_form" data-query="ap_ajax_action=load_comment_form&comment_ID='.get_comment_ID().'&__nonce='.$nonce.'">'.__( 'Edit', 'anspress-question-answer' ).'</a>';
-	}
-
-	if ( ap_user_can_delete_comment( get_comment_ID() ) ) {
-		$nonce = wp_create_nonce( 'delete_comment' );
-		$actions['delete'] = '<a class="comment-delete-btn" href="#" data-toggle="#li-comment-'.get_comment_ID().'" data-action="delete_comment" data-query="ap_ajax_action=delete_comment&comment_ID='.get_comment_ID().'&__nonce='.$nonce.'">'.__( 'Delete', 'anspress-question-answer' ).'</a>';
-	}
-
-	if ( is_user_logged_in() ) {
-		$actions['flag'] = ap_get_comment_flag_btn( get_comment_ID() );
-	}
-
-	/*
-     * FILTER: ap_comment_actions_buttons
-     * For filtering post actions buttons
-     * @var     string
-     * @since   2.0
-	 */
-	$actions = apply_filters( 'ap_comment_actions_buttons', $actions );
-
-	if ( ! empty( $actions ) && count( $actions ) > 0 ) {
-		foreach ( $actions as $k => $action ) {
-			echo '<span class="ap-comment-action ap-action-'.esc_attr( $k ).'">'.$action.'</span>';
-		}
-	}
-}
-
-/**
  * Echo ask button.
  * @since 2.1
  */

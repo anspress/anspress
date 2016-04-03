@@ -77,19 +77,21 @@ class AnsPress_Form {
 	 * Add fields default values.
 	 */
 	private function add_default_in_field() {
-
 		if ( ! isset( $this->args['fields'] ) ) {
 			return;
 		}
 
-		if ( is_array( $this->args['fields'] ) ) {
-			foreach ( $this->args['fields'] as $k => $field ) {
-				if ( ! isset( $field['order'] ) ) {
-					$this->args['fields'][$k]['order'] = 10;
-				}
+		foreach ( (array) $this->args['fields'] as $k => $field ) {
+			if ( ! is_array( $field ) ) {
+				return;
+			}
+			
+			if ( ! isset( $field['order'] ) ) {
+				$this->args['fields'][ $k ]['order'] = 10;
+			}
 
-				if ( ! isset( $field['show_desc_tip'] ) ) {
-					$this->args['fields'][$k]['show_desc_tip'] = true; }
+			if ( ! isset( $field['show_desc_tip'] ) ) {
+				$this->args['fields'][ $k ]['show_desc_tip'] = true;
 			}
 		}
 	}
@@ -132,7 +134,7 @@ class AnsPress_Form {
 
 		$attr = '';
 
-		if ( !empty( $this->args['attr'] ) ) {
+		if ( ! empty( $this->args['attr'] ) ) {
 			$attr .= $this->args['attr'];
 		}
 
@@ -485,7 +487,7 @@ class AnsPress_Form {
 	}
 	/**
 	 * For creating hidden input fields
-	 * @param  array $field 
+	 * @param  array $field
 	 * @return void
 	 * @since 2.0.1
 	 */
@@ -497,7 +499,7 @@ class AnsPress_Form {
 		$this->output .= $field['html'];
 	}
 
-	private function attr( $field ){
+	private function attr( $field ) {
 		return isset( $field['attr'] ) ? $field['attr'] : '';
 	}
 
@@ -513,7 +515,7 @@ class AnsPress_Form {
 
 		return false;
 	}
-	
+
 	private function error_messages() {
 		if ( isset( $this->errors[$this->field['name']] ) ) {
 			$this->output .= '<div class="ap-form-error-messages">';

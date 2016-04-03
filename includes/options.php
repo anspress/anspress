@@ -106,7 +106,6 @@ function ap_default_options() {
 		'only_admin_can_answer'		=> false,
 		'logged_in_can_see_ans'		=> false,
 		'logged_in_can_see_comment'	=> false,
-		'show_comments_by_default'	=> true,
 		'question_text_editor'		=> false,
 		'answer_text_editor'		=> false,
 		'base_page_title'			=> 'Questions',

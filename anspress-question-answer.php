@@ -169,7 +169,6 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		 * @return instance
 		 */
 		public static function instance() {
-
 		    if ( ! isset( self::$instance ) && ! (self::$instance instanceof self) ) {
 
 		        self::$instance = new self();
@@ -245,7 +244,6 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		 * @since 2.0.1
 		 */
 		private function includes() {
-
 		    global $ap_options;
 
 		    require_once ANSPRESS_DIR.'includes/class/form.php';
@@ -309,8 +307,8 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		    require_once ANSPRESS_DIR.'includes/subscriber-hooks.php';
 		    require_once ANSPRESS_DIR.'includes/shortcode-question.php';
 		    require_once ANSPRESS_DIR.'includes/mention.php';
-
 		    require_once ANSPRESS_DIR.'includes/akismet.php';
+		    require_once ANSPRESS_DIR.'includes/comments.php';
 		}
 
 		/**
@@ -343,7 +341,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		 * Include all public classes
 		 */
 		public function site_include() {
-		    self::$instance->anspress_hooks 	= new AnsPress_Hooks( );
+		    self::$instance->anspress_hooks 	= AnsPress_Hooks::init();
 		    self::$instance->anspress_theme 	= new AnsPress_Theme( );
 		    self::$instance->common_pages 		= new AnsPress_Common_Pages();
 		    self::$instance->post_status 		= new AnsPress_Post_Status( );

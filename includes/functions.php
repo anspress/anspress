@@ -401,35 +401,6 @@ function ap_answers_link( $question_id = false ) {
 	return get_permalink( $question_id ).'#answers';
 }
 
-/**
- * Load comment form button.
- * @param bool $echo Echo html.
- * @return string
- * @since 0.1
- */
-function ap_comment_btn_html($echo = false) {
-	global $post;
-	if ( ap_user_can_comment( $post->ID ) ) {
-
-		if ( $post->post_type == 'question' && ap_opt( 'disable_comments_on_question' ) ) {
-			return;
-		}
-
-		if ( $post->post_type == 'answer' && ap_opt( 'disable_comments_on_answer' ) ) {
-			return;
-		}
-
-		$nonce = wp_create_nonce( 'comment_form_nonce' );
-		$comment_count = get_comments_number( get_the_ID() );
-		$output = '<a href="#comments-'.get_the_ID().'" class="comment-btn ap-tip" data-action="load_comment_form" data-query="ap_ajax_action=load_comment_form&post='.get_the_ID().'&__nonce='.$nonce.'" title="'.__( 'Comments', 'anspress-question-answer' ).'">'.__( 'Comment', 'anspress-question-answer' ).'<span class="ap-data-view ap-view-count-'.$comment_count.'" data-view="comments_count_'.get_the_ID().'">('.$comment_count.')</span></a>';
-
-		if ( $echo ) {
-			echo $output;
-		} else {
-			return $output;
-		}
-	}
-}
 
 /**
  * Return edit link for question and answer.
@@ -1072,7 +1043,10 @@ function ap_sort_array_by_order($array) {
 	$new_array = array();
 	if ( ! empty( $array ) && is_array( $array ) ) {
 		$group = array();
-		foreach ( $array as $k => $a ) {
+		foreach ( (array) $array as $k => $a ) {
+			if( !is_array( $a ) ){
+				return;
+			}
 			$order = $a['order'];
 			$group[$order][] = $a;
 			$group[$order]['order'] = $order;
@@ -1080,8 +1054,8 @@ function ap_sort_array_by_order($array) {
 
 		usort( $group, 'ap_sort_order_callback' );
 
-		foreach ( $group as $a ) {
-			foreach ( $a as $k => $newa ) {
+		foreach ( (array) $group as $a ) {
+			foreach ( (array) $a as $k => $newa ) {
 				if ( $k !== 'order' ) {
 					$new_array[] = $newa;
 				}
@@ -1773,6 +1747,10 @@ function ap_parse_search_string($str) {
 	return $output;
 }
 
+/**
+ * Send properly formatted AnsPress json string.
+ * @param  array $response Response array.
+ */
 function ap_ajax_json( $response ) {
 	ap_send_json( ap_ajax_responce( $response ) );
 }

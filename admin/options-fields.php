@@ -196,14 +196,6 @@ class AnsPress_Options_Fields
 				'html' => '<span class="ap-form-separator">' . __( 'Toggle', 'anspress-question-answer' ) . '</span>',
 			) ,
 			array(
-				'name' => 'anspress_opt[show_comments_by_default]',
-				'label' => __( 'Show comments', 'anspress-question-answer' ),
-				'desc' => __( 'Show comments by default.', 'anspress-question-answer' ),
-				'type' => 'checkbox',
-				'value' => $settings['show_comments_by_default'],
-				'show_desc_tip' => false,
-			) ,
-			array(
 				'name' => 'anspress_opt[show_question_sidebar]',
 				'label' => __( 'Show question sidebar', 'anspress-question-answer' ),
 				'desc' => __( 'Subscribe and Stats widgets will be shown on question page.', 'anspress-question-answer' ),

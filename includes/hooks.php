@@ -19,60 +19,47 @@ if ( ! defined( 'WPINC' ) ) {
  */
 class AnsPress_Hooks
 {
-
-	/**
-	 * AnsPress pages
-	 * @var array
-	 */
-	public $pages;
-
-	/**
-	 * AnsPress page urls
-	 * @var array
-	 */
-	public $page_url = array();
-
 	/**
 	 * Initialize the class
 	 * @since 2.0.1
 	 * @since 2.4.8 Removed `$ap` argument.
 	 */
-	public function __construct() {
-	    anspress()->add_action( 'registered_taxonomy', $this, 'add_ap_tables' );
-	    anspress()->add_action( 'ap_processed_new_question', $this, 'after_new_question', 1, 2 );
-	    anspress()->add_action( 'ap_processed_new_answer', $this, 'after_new_answer', 1, 2 );
-	    anspress()->add_action( 'ap_processed_update_question', $this, 'ap_after_update_question', 1, 2 );
-	    anspress()->add_action( 'ap_processed_update_answer', $this, 'ap_after_update_answer', 1, 2 );
-	    anspress()->add_action( 'before_delete_post', $this, 'before_delete' );
-	    anspress()->add_action( 'wp_trash_post', $this, 'trash_post_action' );
-	    anspress()->add_action( 'untrash_post', $this, 'untrash_ans_on_question_untrash' );
-	    anspress()->add_action( 'comment_post', $this, 'new_comment_approve', 10, 2 );
-	    anspress()->add_action( 'comment_unapproved_to_approved', $this, 'comment_approve' );
-	    anspress()->add_action( 'comment_approved_to_unapproved', $this, 'comment_unapproved' );
-	    anspress()->add_action( 'trashed_comment', $this, 'comment_trash' );
-	    anspress()->add_action( 'delete_comment ', $this, 'comment_trash' );
-	    anspress()->add_action( 'ap_publish_comment', $this, 'publish_comment' );
-	    anspress()->add_filter( 'wp_get_nav_menu_items', $this, 'update_menu_url' );
-	    anspress()->add_filter( 'nav_menu_css_class', $this, 'fix_nav_current_class', 10, 2 );
-	    anspress()->add_filter( 'walker_nav_menu_start_el', $this, 'walker_nav_menu_start_el', 10, 4 );
-	    anspress()->add_action( 'wp_loaded', $this, 'flush_rules' );
-	    anspress()->add_filter( 'mce_buttons', $this, 'editor_buttons', 10, 2 );
-		anspress()->add_filter( 'wp_insert_post_data', $this, 'wp_insert_post_data', 10, 2 );
-	    anspress()->add_filter( 'ap_form_contents_filter', $this, 'sanitize_description' );
-	    anspress()->add_action( 'safe_style_css', $this, 'safe_style_css', 11 );
-	    anspress()->add_action( 'save_post', $this, 'base_page_update', 10, 2 );
-	    anspress()->add_action( 'ap_added_follower', $this, 'ap_added_follower', 10, 2 );
-	    anspress()->add_action( 'ap_removed_follower', $this, 'ap_added_follower', 10, 2 );
-	    anspress()->add_action( 'ap_vote_casted', $this, 'update_user_vote_casted_count', 10, 4 );
-	    anspress()->add_action( 'ap_vote_removed', $this, 'update_user_vote_casted_count' , 10, 4 );
-	    anspress()->add_action( 'the_post', $this, 'ap_append_vote_count' );
-	    anspress()->add_filter( 'human_time_diff', $this, 'human_time_diff' );
+	public static function init() {
+	    anspress()->add_action( 'registered_taxonomy', __CLASS__, 'add_ap_tables' );
+	    anspress()->add_action( 'ap_processed_new_question', __CLASS__, 'after_new_question', 1, 2 );
+	    anspress()->add_action( 'ap_processed_new_answer', __CLASS__, 'after_new_answer', 1, 2 );
+	    anspress()->add_action( 'ap_processed_update_question', __CLASS__, 'ap_after_update_question', 1, 2 );
+	    anspress()->add_action( 'ap_processed_update_answer', __CLASS__, 'ap_after_update_answer', 1, 2 );
+	    anspress()->add_action( 'before_delete_post', __CLASS__, 'before_delete' );
+	    anspress()->add_action( 'wp_trash_post', __CLASS__, 'trash_post_action' );
+	    anspress()->add_action( 'untrash_post', __CLASS__, 'untrash_ans_on_question_untrash' );
+	    anspress()->add_action( 'comment_post', __CLASS__, 'new_comment_approve', 10, 2 );
+	    anspress()->add_action( 'comment_unapproved_to_approved', __CLASS__, 'comment_approve' );
+	    anspress()->add_action( 'comment_approved_to_unapproved', __CLASS__, 'comment_unapproved' );
+	    anspress()->add_action( 'trashed_comment', __CLASS__, 'comment_trash' );
+	    anspress()->add_action( 'delete_comment ', __CLASS__, 'comment_trash' );
+	    anspress()->add_action( 'ap_publish_comment', __CLASS__, 'publish_comment' );
+	    anspress()->add_filter( 'wp_get_nav_menu_items', __CLASS__, 'update_menu_url' );
+	    anspress()->add_filter( 'nav_menu_css_class', __CLASS__, 'fix_nav_current_class', 10, 2 );
+	    anspress()->add_filter( 'walker_nav_menu_start_el', __CLASS__, 'walker_nav_menu_start_el', 10, 4 );
+	    anspress()->add_action( 'wp_loaded', __CLASS__, 'flush_rules' );
+	    anspress()->add_filter( 'mce_buttons', __CLASS__, 'editor_buttons', 10, 2 );
+		anspress()->add_filter( 'wp_insert_post_data', __CLASS__, 'wp_insert_post_data', 10, 2 );
+	    anspress()->add_filter( 'ap_form_contents_filter', __CLASS__, 'sanitize_description' );
+	    anspress()->add_action( 'safe_style_css', __CLASS__, 'safe_style_css', 11 );
+	    anspress()->add_action( 'save_post', __CLASS__, 'base_page_update', 10, 2 );
+	    anspress()->add_action( 'ap_added_follower', __CLASS__, 'ap_added_follower', 10, 2 );
+	    anspress()->add_action( 'ap_removed_follower', __CLASS__, 'ap_added_follower', 10, 2 );
+	    anspress()->add_action( 'ap_vote_casted', __CLASS__, 'update_user_vote_casted_count', 10, 4 );
+	    anspress()->add_action( 'ap_vote_removed', __CLASS__, 'update_user_vote_casted_count' , 10, 4 );
+	    anspress()->add_action( 'the_post', __CLASS__, 'ap_append_vote_count' );
+	    anspress()->add_filter( 'human_time_diff', __CLASS__, 'human_time_diff' );
 	}
 
 	/**
 	 * Add AnsPress tables in $wpdb.
 	 */
-	public function add_ap_tables() {
+	public static function add_ap_tables() {		
 		ap_append_table_names();
 	}
 
@@ -82,7 +69,7 @@ class AnsPress_Hooks
 	 * @param  object  $post Question post object.
 	 * @since  1.0
 	 */
-	public function after_new_question($post_id, $post) {
+	public static function after_new_question($post_id, $post) {
 	    update_post_meta( $post_id, ANSPRESS_VOTE_META, '0' );
 	    update_post_meta( $post_id, ANSPRESS_SUBSCRIBER_META, '0' );
 	    update_post_meta( $post_id, ANSPRESS_CLOSE_META, '0' );
@@ -111,7 +98,7 @@ class AnsPress_Hooks
 	 * @param  object  $post answer post object.
 	 * @since 2.0.1
 	 */
-	public function after_new_answer($post_id, $post) {
+	public static function after_new_answer($post_id, $post) {
 	    $question = get_post( $post->post_parent );
 
 		// Set default value for meta.
@@ -142,7 +129,7 @@ class AnsPress_Hooks
 	 * @param  integer $post_id Question ID.
 	 * @param  object  $post    Question post object.
 	 */
-	public function ap_after_update_question($post_id, $post) {
+	public static function ap_after_update_question($post_id, $post) {
 
 		// Set updated meta for sorting purpose.
 		update_post_meta( $post_id, ANSPRESS_UPDATED_META, current_time( 'mysql' ) );
@@ -160,7 +147,7 @@ class AnsPress_Hooks
 	 * @param  integer $post_id  Answer ID.
 	 * @param  object  $post     Answer post object.
 	 */
-	public function ap_after_update_answer($post_id, $post) {
+	public static function ap_after_update_answer($post_id, $post) {
 		update_post_meta( $post_id, ANSPRESS_UPDATED_META, current_time( 'mysql' ) );
 		update_post_meta( $post->post_parent, ANSPRESS_UPDATED_META, current_time( 'mysql' ) );
 
@@ -180,7 +167,7 @@ class AnsPress_Hooks
 	 * Before deleting a question or answer.
 	 * @param  integer $post_id Question or answer ID.
 	 */
-	public function before_delete($post_id) {
+	public static function before_delete($post_id) {
 		$post = get_post( $post_id );
 
 		if ( $post->post_type == 'question' ) {
@@ -207,7 +194,7 @@ class AnsPress_Hooks
 	 * @param  integer $post_id Post ID.
 	 * @since 2.0.0
 	 */
-	public function trash_post_action($post_id) {
+	public static function trash_post_action($post_id) {
 	    $post = get_post( $post_id );
 
 	    if ( $post->post_type == 'question' ) {
@@ -257,7 +244,7 @@ class AnsPress_Hooks
 	 * @param  integer $post_id Post ID.
 	 * @since 2.0.0
 	 */
-	public function untrash_ans_on_question_untrash($post_id) {
+	public static function untrash_ans_on_question_untrash($post_id) {
 	    $post = get_post( $post_id );
 
 	    if ( $post->post_type == 'question' ) {
@@ -292,7 +279,7 @@ class AnsPress_Hooks
 	 * @param  integer       $comment_id Comment ID.
 	 * @param  integer|false $approved   1 if comment is approved else false.
 	 */
-	public function new_comment_approve($comment_id, $approved) {
+	public static function new_comment_approve($comment_id, $approved) {
 		if ( 1 === $approved ) {
 			$comment = get_comment( $comment_id );
 			do_action( 'ap_publish_comment', $comment );
@@ -303,7 +290,7 @@ class AnsPress_Hooks
 	 * Used to create an action when comment get approved.
 	 * @param  array|object $comment Comment object.
 	 */
-	public function comment_approve($comment) {
+	public static function comment_approve($comment) {
 		do_action( 'ap_publish_comment', $comment );
 	}
 
@@ -311,7 +298,7 @@ class AnsPress_Hooks
 	 * Used to create an action when comment get unapproved.
 	 * @param  array|object $comment Comment object.
 	 */
-	public function comment_unapprove($comment) {
+	public static function comment_unapprove($comment) {
 		do_action( 'ap_unpublish_comment', $comment );
 	}
 
@@ -319,7 +306,7 @@ class AnsPress_Hooks
 	 * Used to create an action when comment get trashed.
 	 * @param  integer $comment_id Comment ID.
 	 */
-	public function comment_trash($comment_id) {
+	public static function comment_trash($comment_id) {
 		$comment = get_comment( $comment_id );
 		do_action( 'ap_unpublish_comment', $comment );
 	}
@@ -328,7 +315,7 @@ class AnsPress_Hooks
 	 * Actions to run after posting a comment
 	 * @param  object|array $comment Comment object.
 	 */
-	public function publish_comment($comment) {
+	public static function publish_comment($comment) {
 	    $comment = (object) $comment;
 
 	    $post = get_post( $comment->comment_post_ID );
@@ -346,10 +333,12 @@ class AnsPress_Hooks
 	 * Build anspress page url constants
 	 * @since 2.4
 	 */
-	public function page_urls() {
-		foreach ( $this->pages as $slug => $args ) {
-	        $this->page_url[ $slug ] = 'ANSPRESS_PAGE_URL_'.strtoupper( $slug );
+	public static function page_urls( $pages ) {
+		$page_url = array();
+		foreach ( (array) $pages as $slug => $args ) {
+	        $page_url[ $slug ] = 'ANSPRESS_PAGE_URL_'.strtoupper( $slug );
 	    }
+	    return $page_url;
 	}
 
 	/**
@@ -357,8 +346,7 @@ class AnsPress_Hooks
 	 * @param  array $items Menu item.
 	 * @return array
 	 */
-	public function update_menu_url($items) {
-
+	public static function update_menu_url( $items ) {
 		// If this is admin then we dont want to update url.
 	    if ( is_admin() ) {
 	        return $items;
@@ -381,41 +369,40 @@ class AnsPress_Hooks
 	    );
 
 	    /**
-	     * FILTER: ap_default_pages
-	     * @var array
+	     * Modify default pages of AnsPress
+	     * @param  array $default_pages Default pages of AnsPress.
+	     * @return array
 	     */
-	    $this->pages = array_merge( anspress()->pages, apply_filters( 'ap_default_pages', $default_pages ) );
+	    $pages = array_merge( anspress()->pages, apply_filters( 'ap_default_pages', $default_pages ) );
 
-	    $this->page_urls();
+	    $page_url = SELF::page_urls( $pages );
 
-	    if ( ! empty( $items ) && is_array( $items ) ) {
-	        foreach ( $items as $key => $item ) {
-	        	$slug = array_search( str_replace( array( 'http://', 'https://' ), '', $item->url ), $this->page_url );
-	            if ( false !== $slug ) {
+        foreach ( (array) $items as $key => $item ) {
+        	$slug = array_search( str_replace( array( 'http://', 'https://' ), '', $item->url ), $page_url );
+            
+            if ( false !== $slug ) {
+                if ( isset( $pages[ $slug ]['logged_in'] ) && $pages[ $slug ]['logged_in'] && ! is_user_logged_in() ) {
+                    unset( $items[ $key ] );
+                }
 
-	                if ( isset( $this->pages[ $slug ]['logged_in'] ) && $this->pages[ $slug ]['logged_in'] && ! is_user_logged_in() ) {
-	                    unset( $items[ $key ] );
-	                }
+                if ( ! ap_is_profile_active() && ('profile' == $slug || 'notification' == $slug ) ) {
+                    unset( $items[ $key ] );
+                }
 
-	                if ( ! ap_is_profile_active() && ('profile' == $slug || 'notification' == $slug ) ) {
-	                    unset( $items[ $key ] );
-	                }
+                if ( 'profile' == $slug ) {
+                    $item->url = is_user_logged_in() ? ap_user_link( get_current_user_id() ) : wp_login_url();
+                } else {
+                    $item->url = ap_get_link_to( $slug );
+                }
 
-	                if ( 'profile' == $slug ) {
-	                    $item->url = is_user_logged_in() ? ap_user_link( get_current_user_id() ) : wp_login_url();
-	                } else {
-	                    $item->url = ap_get_link_to( $slug );
-	                }
+                $item->classes[] = 'anspress-page-link';
+                $item->classes[] = 'anspress-page-'.$slug;
 
-	                $item->classes[] = 'anspress-page-link';
-	                $item->classes[] = 'anspress-page-'.$slug;
-
-	                if ( get_query_var( 'ap_page' ) == $slug ) {
-	                    $item->classes[] = 'anspress-active-menu-link';
-	                }
-	            }
-	        }
-	    }
+                if ( get_query_var( 'ap_page' ) == $slug ) {
+                    $item->classes[] = 'anspress-active-menu-link';
+                }
+            }
+        }
 
 	    return $items;
 	}
@@ -427,7 +414,7 @@ class AnsPress_Hooks
 	 * @return array menu item.
 	 * @since  2.1
 	 */
-	public function fix_nav_current_class($class, $item) {
+	public static function fix_nav_current_class($class, $item) {
 
 	    $pages = anspress()->pages;
 	    if ( ! empty( $item ) && is_object( $item ) ) {
@@ -454,7 +441,7 @@ class AnsPress_Hooks
 	 * @param  object  $args 			   Menu args.
 	 * @return string
 	 */
-	public function walker_nav_menu_start_el($o, $item, $depth, $args) {
+	public static function walker_nav_menu_start_el($o, $item, $depth, $args) {
 
 	    if ( ! is_user_logged_in() && ( ap_is_notification_menu( $item ) || ap_is_profile_menu( $item ) )  ) {
 	        $o = '';
@@ -518,7 +505,7 @@ class AnsPress_Hooks
 	 * Check if flushing rewrite rule is needed
 	 * @return void
 	 */
-	public function flush_rules() {
+	public static function flush_rules() {
 	    if ( ap_opt( 'ap_flush' ) != 'false' ) {
 	        flush_rewrite_rules();
 	        ap_opt( 'ap_flush', 'false' );
@@ -531,7 +518,7 @@ class AnsPress_Hooks
 	 * @param  string $editor_id Editor ID.
 	 * @return array
 	 */
-	public function editor_buttons($buttons, $editor_id) {
+	public static function editor_buttons($buttons, $editor_id) {
 		if ( is_anspress() ) {
 			return array( 'bold', 'italic', 'underline', 'strikethrough', 'bullist', 'numlist', 'link', 'unlink', 'blockquote', 'pre' );
 		}
@@ -546,7 +533,7 @@ class AnsPress_Hooks
 	 * @return array
 	 * @since 2.2
 	 */
-	public function wp_insert_post_data($data, $args) {
+	public static function wp_insert_post_data($data, $args) {
 	    if ( 'question' == $args['post_type'] || 'answer' == $args['post_type'] ) {
 	        if ( '0' == $args['post_author'] ) {
 	            $data['post_author'] = '0';
@@ -561,7 +548,7 @@ class AnsPress_Hooks
 	 * @param  string $contents Post content.
 	 * @return string           Return sanitized post content.
 	 */
-	public function sanitize_description($contents) {
+	public static function sanitize_description($contents) {
 		$contents = ap_trim_traling_space( $contents );
 		$contents = ap_replace_square_bracket( $contents );
 
@@ -573,7 +560,7 @@ class AnsPress_Hooks
 	 * @param  array $attr Allowed CSS attributes.
 	 * @return array
 	 */
-	public function safe_style_css($attr) {
+	public static function safe_style_css($attr) {
 		global $ap_kses_checkc; // Check if wp_kses is called by AnsPress.
 
 		if ( isset( $ap_kses_check ) && $ap_kses_check ) {
@@ -587,7 +574,7 @@ class AnsPress_Hooks
 	 * @param  integer $post_id Base page ID.
 	 * @param  object  $post    Post object.
 	 */
-	public function base_page_update($post_id, $post) {
+	public static function base_page_update($post_id, $post) {
 
 		if ( wp_is_post_revision( $post ) ) {
 			return;
@@ -603,7 +590,7 @@ class AnsPress_Hooks
 	 * @param  integer $user_to_follow  User ID whom to follow.
 	 * @param  integer $current_user_id User iD who is following.
 	 */
-	public function ap_added_follower($user_to_follow, $current_user_id) {
+	public static function ap_added_follower($user_to_follow, $current_user_id) {
 	    // Update total followers count meta.
 		update_user_meta( $user_to_follow, '__total_followers', ap_followers_count( $user_to_follow ) );
 
@@ -618,7 +605,7 @@ class AnsPress_Hooks
 	 * @param  integer $actionid         Post ID.
 	 * @param  integer $receiving_userid User who is receiving vote.
 	 */
-	public function update_user_vote_casted_count($userid, $type, $actionid, $receiving_userid) {
+	public static function update_user_vote_casted_count($userid, $type, $actionid, $receiving_userid) {
 		// Update total casted vote of user.
 		update_user_meta( $userid, '__up_vote_casted', ap_count_vote( $userid, 'vote_up' ) );
 		update_user_meta( $userid, '__down_vote_casted', ap_count_vote( $userid, 'vote_down' ) );
@@ -632,7 +619,7 @@ class AnsPress_Hooks
 	 * Append variable to post Object.
 	 * @param Object $post Post object.
 	 */
-	public function ap_append_vote_count($post) {
+	public static function ap_append_vote_count($post) {
 
 	    if ( $post->post_type == 'question' || $post->post_type == 'answer' ) {
 	        if ( is_object( $post ) ) {
@@ -648,13 +635,10 @@ class AnsPress_Hooks
 	/**
 	 * Make human_time_diff strings translatable.
 	 * @param  string $since Time since.
-	 * @param  string $diff  Time Difference.
-	 * @param  string $from  From time.
-	 * @param  string $to    To time.
 	 * @return string
 	 * @since  2.4.8
 	 */
-	public function human_time_diff ( $since, $diff, $from, $to ) {
+	public static function human_time_diff ( $since ) {
 		$replace = array(
 	        '1 min'  	=> __('few seconds', 'anspress-question-answer' ),
 	        'min'  		=> __('minute', 'anspress-question-answer' ),

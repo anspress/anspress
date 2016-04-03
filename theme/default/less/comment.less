@@ -78,16 +78,20 @@
 		    margin-top: 5px;
 	    }
 	}
-
+	#ap-comment-textarea{
+    	min-height: 42px;
+    	margin: 0 0 10px;
+    }
 	.ap-comment-form{
+	    background: #f8f8f8 none repeat scroll 0 0;
+	    border-top: 1px solid #e4e4e4;
 	    padding: 10px;
 	    form#ap-commentform{
 	    	margin: 0;
 	    }
-	    #ap-comment-textarea{
-	    	min-height: 42px;
-	    	margin: 0;
-	    }
+	    .ap-avatar{
+	    	position: static;
+	    }	    
 		.form-submit{
 			display: none;
 		}
@@ -111,5 +115,16 @@
 	}
 	.ap-comment-header{
 		font-size: 12px;
+	}
+	.ap-comment-cancel{
+		float: right;		
+	}
+	.ap-comment-footer{
+		line-height: 32px;
+		label{
+			input{
+				float: none;
+			}
+		}
 	}
 }
