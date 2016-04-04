@@ -701,7 +701,7 @@ function ap_user_can_change_status( $post_id, $user_id = false ) {
 		$user_id = get_current_user_id();
 	}
 
-	if ( current_user_can( 'ap_change_status_other' ) || is_super_admin() ) {
+	if ( user_can( $user_id, 'ap_change_status_other' ) || is_super_admin( $user_id ) ) {
 		return true;
 	}
 
@@ -722,7 +722,11 @@ function ap_user_can_change_status( $post_id, $user_id = false ) {
 		return false;
 	}
 
-	if ( user_can( $user_id, 'ap_change_status' ) && ($post_o->post_author > 0 && $post_o->post_author == $user_id ) ) {
+	if ( ( ! ap_user_can_edit_answer( $post_o->ID, $user_id ) && 'answer' === $post_o->post_type ) || ( ! ap_user_can_edit_question( $post_o->ID, $user_id ) && 'question' === $post_o->post_type ) ) {
+		return false;
+	}
+
+	if ( user_can( $user_id, 'ap_change_status' ) && $post_o->post_author > 0 && $user_id == $post_o->post_author && 'moderate' !== $post_o->post_status && 'closed' !== $post_o->post_status ) {
 		return true;
 	}
 
@@ -930,22 +934,18 @@ function ap_user_can_read_post( $post_id, $user_id = false, $post_type = false )
 		return true;
 	}
 
-	// Check if user have capability to read question/answer.
-	// And then check post status based access.
-	if ( ! user_can( $user_id, 'ap_read_question' ) && ! ap_opt('only_logged_in' ) && 'question' == $post_type ) {
-		return true;
-	}
-
-	if ( ! user_can( $user_id, 'ap_read_answer' ) && ! ap_opt('logged_in_can_see_ans' ) && 'answer' == $post_type ) {
-		return true;
-	}
-
 	if ( user_can( $user_id, 'ap_read_'.$post_type ) ) {
-		if ( 'private_post' == $post_o->post_status && ap_user_can_view_private_post( $post_id, $user_id ) ) {
+		if ( 'private_post' == $post_o->post_status && ! ap_user_can_view_private_post( $post_id, $user_id ) ) {
+			return false;
+		} elseif ( 'moderate' == $post_o->post_status && ! ap_user_can_view_moderate_post( $post_id, $user_id ) ) {
+			return false;
+		}
+
+		if ( ! ap_opt('only_logged_in' ) && 'question' == $post_type ) {
 			return true;
-		} elseif ( 'moderate' == $post_o->post_status && ap_user_can_view_moderate_post( $post_id, $user_id ) ) {
-			return true;
-		} else {
+		}
+
+		if ( ! ap_opt('logged_in_can_see_ans' ) && 'answer' == $post_type ) {
 			return true;
 		}
 	}
