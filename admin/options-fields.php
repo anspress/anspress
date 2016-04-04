@@ -696,14 +696,6 @@ class AnsPress_Options_Fields
 				'html' => '<span class="ap-form-separator">' . __( 'Akismet check', 'anspress-question-answer' ) . '</span>',
 			) ,
 			array(
-				'name' => 'anspress_opt[akismet_validation]',
-				'label' => __( 'Use akismet API', 'anspress-question-answer' ),
-				'desc' => __( 'Enable this to check for spam using Akismet API. You must have installed and activated Akismet plugin.', 'anspress-question-answer' ),
-				'type' => 'checkbox',
-				'value' => $settings['akismet_validation'],
-				'show_desc_tip' => false,
-			),
-			array(
 				'name' => '__sep',
 				'type' => 'custom',
 				'html' => '<span class="ap-form-separator">' . __( 'reCaptacha', 'anspress-question-answer' ) . '</span>',

@@ -340,9 +340,9 @@ function ap_save_question($args, $wp_error = false) {
 		}
 
 		// Check for Spam in question.
-		if ( ap_opt('akismet_validation' ) && ! current_user_can( 'ap_edit_others_question' ) && ! is_super_admin( ) ) {
+		/*if ( ap_opt('akismet_validation' ) && ! current_user_can( 'ap_edit_others_question' ) && ! is_super_admin( ) ) {
 			ap_check_spam( $post_id );
-		}
+		}*/
 	}
 
 	return $post_id;
