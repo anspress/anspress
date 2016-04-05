@@ -214,7 +214,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		    $constants = array(
 				'DS' 						=> DIRECTORY_SEPARATOR,
 				'AP_VERSION' 				=> $this->_plugin_version,
-				'AP_DB_VERSION' 			=> 18,
+				'AP_DB_VERSION' 			=> 19,
 				'ANSPRESS_DIR' 				=> plugin_dir_path( __FILE__ ),
 				'ANSPRESS_URL' 				=> plugin_dir_url( __FILE__ ),
 				'ANSPRESS_WIDGET_DIR' 		=> plugin_dir_path( __FILE__ ).'widgets'.DIRECTORY_SEPARATOR,

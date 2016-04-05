@@ -60,14 +60,14 @@ class AP_Activate
 
 		if ( $wpdb->get_var( "show tables like '{$wpdb->ap_meta}'" ) != $wpdb->ap_meta ) {
 			$this->tables[] = 'CREATE TABLE IF NOT EXISTS `'.$wpdb->ap_meta.'` (
-	            `apmeta_id` bigint(20) NOT NULL AUTO_INCREMENT,
-	            `apmeta_userid` bigint(20) DEFAULT NULL,
-	            `apmeta_type` varchar(256) DEFAULT NULL,
-	            `apmeta_actionid` bigint(20) DEFAULT NULL,
-	            `apmeta_value` text,
-	            `apmeta_param` LONGTEXT DEFAULT NULL,
-	            `apmeta_date` timestamp NULL DEFAULT NULL,
-	            PRIMARY KEY (`apmeta_id`)
+                `apmeta_id` bigint(20) NOT NULL AUTO_INCREMENT,
+                `apmeta_userid` bigint(20) DEFAULT NULL,
+                `apmeta_type` varchar(256) DEFAULT NULL,
+                `apmeta_actionid` bigint(20) DEFAULT NULL,
+                `apmeta_value` text,
+                `apmeta_param` LONGTEXT DEFAULT NULL,
+                `apmeta_date` timestamp NULL DEFAULT NULL,
+                PRIMARY KEY (`apmeta_id`)
 	            )'.$this->charset_collate.';';
 		}
 	}
@@ -77,21 +77,21 @@ class AP_Activate
 
 		if ( $wpdb->get_var( "show tables like '{$wpdb->ap_activity}'" ) != $wpdb->ap_activity ) {
 			$this->tables[] = 'CREATE TABLE IF NOT EXISTS `'.$wpdb->ap_activity.'` (
-	            `id` bigint(20) NOT NULL AUTO_INCREMENT,
-	            `user_id` bigint(20) DEFAULT NULL,
-	            `secondary_user` bigint(20) DEFAULT NULL,
-	            `type` varchar(256) DEFAULT NULL,
-	            `parent_type` varchar(256) DEFAULT NULL,
-	            `status` varchar(256) DEFAULT NULL,
-	            `content` LONGTEXT DEFAULT NULL,
-	            `permalink` text DEFAULT NULL,
-	            `question_id` bigint(20) DEFAULT NULL,
-	            `answer_id` bigint(20) DEFAULT NULL,
-	            `item_id` bigint(20) DEFAULT NULL,
-	            `term_ids` LONGTEXT DEFAULT NULL,
-	            `created` timestamp NULL DEFAULT NULL,
-	            `updated` timestamp NULL DEFAULT NULL,
-	            PRIMARY KEY (`id`)
+                `id` bigint(20) NOT NULL AUTO_INCREMENT,
+                `user_id` bigint(20) DEFAULT NULL,
+                `secondary_user` bigint(20) DEFAULT NULL,
+                `type` varchar(256) DEFAULT NULL,
+                `parent_type` varchar(256) DEFAULT NULL,
+                `status` varchar(256) DEFAULT NULL,
+                `content` LONGTEXT DEFAULT NULL,
+                `permalink` text DEFAULT NULL,
+                `question_id` bigint(20) DEFAULT NULL,
+                `answer_id` bigint(20) DEFAULT NULL,
+                `item_id` bigint(20) DEFAULT NULL,
+                `term_ids` LONGTEXT DEFAULT NULL,
+                `created` timestamp NULL DEFAULT NULL,
+                `updated` timestamp NULL DEFAULT NULL,
+                PRIMARY KEY (`id`)
 			    )'.$this->charset_collate.';';
 		}
 	}
@@ -104,11 +104,11 @@ class AP_Activate
 
 		if ( $wpdb->get_var( "show tables like '{$wpdb->ap_activitymeta}'" ) != $wpdb->ap_activitymeta ) {
 			$this->tables[] = 'CREATE TABLE IF NOT EXISTS `'.$wpdb->ap_activitymeta."` (
-		          `meta_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-		          `ap_activity_id` bigint(20) unsigned NOT NULL DEFAULT '0',
-		          `meta_key` varchar(255) DEFAULT NULL,
-		          `meta_value` longtext,
-		          PRIMARY KEY (`meta_id`)
+                  `meta_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+                  `ap_activity_id` bigint(20) unsigned NOT NULL DEFAULT '0',
+                  `meta_key` varchar(255) DEFAULT NULL,
+                  `meta_value` longtext,
+                  PRIMARY KEY (`meta_id`)
 				)".$this->charset_collate.';';
 		}
 	}
@@ -121,12 +121,12 @@ class AP_Activate
 
 		if ( $wpdb->get_var( "show tables like '{$wpdb->ap_notifications}'" ) != $wpdb->ap_notifications ) {
 			$this->tables[] = 'CREATE TABLE IF NOT EXISTS `'.$wpdb->ap_notifications.'` (
-	            `noti_id` bigint(20) NOT NULL AUTO_INCREMENT,
-	            `noti_activity_id` bigint(20) NOT NULL,
-	            `noti_user_id` bigint(20) NOT NULL,
-	            `noti_status` varchar(225) NOT NULL,                
-	            `noti_date` timestamp NOT NULL,
-	            PRIMARY KEY (`noti_id`)
+                `noti_id` bigint(20) NOT NULL AUTO_INCREMENT,
+                `noti_activity_id` bigint(20) NOT NULL,
+                `noti_user_id` bigint(20) NOT NULL,
+                `noti_status` varchar(225) NOT NULL,                
+                `noti_date` timestamp NOT NULL,
+                PRIMARY KEY (`noti_id`)
 	        )'.$this->charset_collate.';';
 		}
 	}
@@ -139,13 +139,21 @@ class AP_Activate
 
 		if ( $wpdb->get_var( "show tables like '{$wpdb->ap_subscribers}'" ) != $wpdb->ap_subscribers ) {
 			$this->tables[] = 'CREATE TABLE IF NOT EXISTS `'.$wpdb->ap_subscribers.'` (
-	            `subs_id` bigint(20) NOT NULL AUTO_INCREMENT,               
-	            `subs_user_id` bigint(20) NOT NULL,
-	            `subs_question_id` bigint(20) NOT NULL,
-	            `subs_item_id` bigint(20) NOT NULL,
-	            `subs_activity` varchar(225) NOT NULL,
-	            PRIMARY KEY (`subs_id`)
+                `subs_id` bigint(20) NOT NULL AUTO_INCREMENT,               
+                `subs_user_id` bigint(20) NOT NULL,
+                `subs_question_id` bigint(20) NOT NULL,
+                `subs_item_id` bigint(20) NOT NULL,
+                `subs_activity` varchar(225) NOT NULL,
+                PRIMARY KEY (`subs_id`)
 	        )'.$this->charset_collate.';';
+		}
+
+		// Check if answer_id column exists if not add it.
+		if ( $wpdb->get_var( "show tables like '{$wpdb->ap_subscribers}'" ) == $wpdb->ap_subscribers ) {
+	        $ap_subscribers_cols = $wpdb->get_results("SHOW COLUMNS FROM `$wpdb->ap_subscribers`" );
+	        if ( $ap_subscribers_cols && isset( $ap_subscribers_cols->Field ) && ! in_array( $ap_subscribers_cols->Field, 'answer_id' ) ) {
+				$wpdb->query( "ALTER TABLE `$wpdb->ap_subscribers` ADD subs_answer_id bigint(20) NOT NULL after subs_question_id;" );
+			}
 		}
 	}
 
@@ -196,11 +204,10 @@ class AP_Activate
 			}
 		}
 
-		// $activity_cols = $wpdb->get_results("SHOW COLUMNS FROM {$wpdb->prefix}ap_activity" );
 		/*
-		if( $activity_cols ){
-			if ( !in_array($col->Field, 'term_ids' ) )
-				$wpdb->query( "ALTER TABLE `{$wpdb->prefix}ap_activity` ADD term_ids LONGTEXT after item_id;" );
+        if( $activity_cols ){
+            if ( !in_array($col->Field, 'term_ids' ) )
+                $wpdb->query( "ALTER TABLE `{$wpdb->prefix}ap_activity` ADD term_ids LONGTEXT after item_id;" );
 		}*/
 
 		$this->fix_subscribers_table();
@@ -228,7 +235,6 @@ class AP_Activate
 		}
 
 		$this->insert_tables();
-
 		update_option( 'anspress_opt', get_option( 'anspress_opt' ) + ap_default_options() );
 
 		ap_opt( 'ap_flush', 'true' );
