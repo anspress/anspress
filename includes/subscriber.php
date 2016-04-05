@@ -10,13 +10,17 @@
  */
 
 /**
- * Insert new subscriber.
- * @param  integer $user_id User id.
- * @param  integer $item_id Item id i.e. post ID, term ID etc..
- * @param  string  $activity Activity name.
+ * Insert new subscriber into database.
+ * @param  int    $user_id        User id.
+ * @param  int    $item_id        Item id i.e. post ID, term ID etc..
+ * @param  string $activity       Activity name.
+ * @param  int    $question_id    Question ID.
+ * @param  int    $answer_id      Answer ID.
  * @return false|integer
+ * @since  unknown
+ * @since  3.0.0  Added `$answer_id` args.
  */
-function ap_new_subscriber( $user_id, $item_id, $activity, $question_id = 0 ) {
+function ap_new_subscriber( $user_id, $item_id, $activity, $question_id = 0, $answer_id = 0 ) {
 	global $wpdb;
 
 	// Bail if user_id or item_id is 0.
@@ -27,21 +31,33 @@ function ap_new_subscriber( $user_id, $item_id, $activity, $question_id = 0 ) {
 	$row = $wpdb->insert(
 		$wpdb->ap_subscribers,
 		array(
-			'subs_user_id' => $user_id,
-			'subs_question_id' => $question_id,
-			'subs_item_id' => $item_id,
-			'subs_activity' => $activity,
+			'subs_user_id' 		=> $user_id,
+			'subs_question_id' 	=> $question_id,
+			'subs_item_id' 		=> $item_id,
+			'subs_activity' 	=> $activity,
+			'subs_answer_id' 	=> $answer_id,
 		),
 		array(
 			'%d',
 			'%d',
 			'%d',
 			'%s',
+			'%d',
 		)
 	);
 
 	if ( false !== $row ) {
-		do_action( 'ap_new_subscriber', $user_id, $question_id, $item_id, $activity );
+		/**
+		 * Action trigged right after inserting new subscriber in DB.
+		 * @param int 		$user_id 		User ID.
+		 * @param int 		$question_id 	Question ID.
+		 * @param int 		$item_id 		Subscribed item ID.
+		 * @param string 	$activity 		Activity type.
+		 * @param int 		$answer_id 		Answer ID.
+		 * @since unknown
+		 * @since 3.0.0  Added `$answer_id` args.
+		 */
+		do_action( 'ap_new_subscriber', $user_id, $question_id, $item_id, $activity, $answer_id );
 		return $wpdb->insert_id;
 	}
 
@@ -55,9 +71,11 @@ function ap_new_subscriber( $user_id, $item_id, $activity, $question_id = 0 ) {
  * @param  integer         $user_id    	WP user ID
  * @param  string          $activity    Any sub ID
  * @param  boolean|integer $sub_id      @deprecated Type of subscriber, empty string for question
+ * @param  int|false       $question_id    Question id.
+ * @param  int|false       $answer_id      Answer id.
  * @return bollean|integer
  */
-function ap_remove_subscriber($item_id, $user_id = false, $activity = false, $sub_id = false) {
+function ap_remove_subscriber($item_id, $user_id = false, $activity = false, $sub_id = false, $question_id = false, $answer_id = false) {
 	if ( false !== $sub_id ) {
 		_deprecated_argument( __FUNCTION__, '3.0', '$sub_id argument deprecated since 2.4' );
 	}
@@ -66,25 +84,49 @@ function ap_remove_subscriber($item_id, $user_id = false, $activity = false, $su
 
 	$cols = array( 'subs_item_id' => (int) $item_id );
 
+	$data_type = array( '%d' );
+
 	if ( false !== $user_id ) {
 		$cols['subs_user_id'] = (int) $user_id;
+		$data_type[] = '%d';
 	}
 
 	if ( false !== $activity ) {
 		$cols['subs_activity'] = sanitize_title_for_query( $activity );
+		$data_type[] = '%s';
+	}
+
+	if ( false !== $question_id ) {
+		$cols['subs_question_id'] = (int) $question_id;
+		$data_type[] = '%d';
+	}
+
+	if ( false !== $answer_id ) {
+		$cols['subs_answer_id'] = (int) $answer_id;
+		$data_type[] = '%d';
 	}
 
 	$row = $wpdb->delete(
 		$wpdb->ap_subscribers,
 		$cols,
-		array( '%d', '%d', '%s' )
+		$data_type
 	);
 
 	if ( false === $row ) {
 		return false;
 	}
 
-	do_action( 'ap_removed_subscriber', $user_id, $item_id, $activity );
+	/**
+	 * Action trigged right after removing subscriber from database.
+	 * @param int 			$user_id 		User ID.
+	 * @param int 			$item_id 		Item id.
+	 * @param string|false 	$activity 		Activity type.
+	 * @param int|false 	$question_id 	Question id.
+	 * @param int|false		$answer_id 		Answer id.
+	 * @since unknown
+	 * @since 3.0.0 Added two arguments `$question_id` and `$answer_id`.
+	 */
+	do_action( 'ap_removed_subscriber', $user_id, $item_id, $activity, $question_id, $answer_id );
 
 	return $row;
 }
@@ -421,3 +463,40 @@ function ap_unset_current_user_from_subscribers($subscribers) {
 	return $subscribers;
 }
 
+/**
+ * Add comment subscriber in database.
+ * @param  object|int $comment Comment object or ID.
+ * @param  bool|int   $user_id User ID.
+ * @return bool|int
+ * @since  3.0.0
+ */
+function ap_add_comment_subscriber( $comment, $user_id = false ) {
+	if ( false === $user_id ) {
+		$user_id = get_current_user_id();
+	}
+
+	$comment = get_comment( $comment );
+	$post = get_post( $comment->comment_post_ID );
+	$question_id = $post->post_type == 'question' ? $post->ID : $post->post_parent;
+	$answer_id = $post->post_type == 'answer' ? $post->ID : 0;
+	return ap_new_subscriber( $user_id, $post->ID, 'comment', $question_id, $answer_id );
+}
+
+/**
+ * Remove comment subscriber from database.
+ * @param  object|int $comment Comment object or ID.
+ * @param  bool|int   $user_id User ID.
+ * @return bool|int
+ * @since  3.0.0
+ */
+function ap_remove_comment_subscriber( $comment, $user_id = false ) {
+	if ( false === $user_id ) {
+		$user_id = get_current_user_id();
+	}
+
+	$comment = get_comment( $comment );
+	$post = get_post( $comment->comment_post_ID );
+	$question_id = $post->post_type == 'question' ? $post->ID : $post->post_parent;
+	$answer_id = $post->post_type == 'answer' ? $post->ID : 0;
+	return ap_remove_subscriber( $post->ID, $user_id, 'comment', false, $question_id, $answer_id );
+}

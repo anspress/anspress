@@ -25,7 +25,7 @@ class AnsPress_Ajax
 	public function __construct() {
 	    anspress()->add_action( 'ap_ajax_suggest_similar_questions', $this, 'suggest_similar_questions' );
 	    anspress()->add_action( 'ap_ajax_load_comment_form', 'AnsPress_Comment_Hooks', 'load_comment_form' );
-	    anspress()->add_action( 'ap_ajax_delete_comment', $this, 'delete_comment' );
+	    anspress()->add_action( 'ap_ajax_delete_comment', 'AnsPress_Comment_Hooks', 'delete_comment' );
 	    anspress()->add_action( 'ap_ajax_select_best_answer', $this, 'select_best_answer' );
 	    anspress()->add_action( 'ap_ajax_delete_post', $this, 'delete_post' );
 	    anspress()->add_action( 'ap_ajax_permanent_delete_post', $this, 'permanent_delete_post' );
@@ -92,47 +92,6 @@ class AnsPress_Ajax
 	    }
 
 	    $this->send( $result );
-	}
-
-	/**
-	 * Ajax action for deleting comment.
-	 *
-	 * @since 2.0.0
-	 */
-	public function delete_comment() {
-
-	    $comment_id = (int) $_POST['comment_ID'];
-
-	    if ( isset( $_POST['comment_ID'] ) && ap_user_can_delete_comment( $comment_id ) && wp_verify_nonce( $_POST['__nonce'], 'delete_comment' ) ) {
-	        $comment = get_comment( $comment_id );
-
-	        if ( time() > (get_comment_date( 'U', (int) $_POST['comment_ID'] ) + (int) ap_opt( 'disable_delete_after' )) && ! is_super_admin() ) {
-	            ap_send_json( ap_ajax_responce( array( 'message_type' => 'warning', 'message' => sprintf( __( 'This post was created %s, its locked hence you cannot delete it.', 'anspress-question-answer' ), ap_human_time( get_comment_date( 'U', (int) $_POST['comment_ID'] ) ) ) ) ) );
-
-	            return;
-	        }
-
-	        do_action( 'ap_unpublish_comment', $comment );
-
-	        $delete = wp_delete_comment( (int) $_POST['comment_ID'], true );
-
-	        if ( $delete ) {
-	            do_action( 'ap_after_deleting_comment', $comment );
-	            $count = get_comment_count( $comment->comment_post_ID );
-	            $this->send( array(
-	            	'action' 		=> 'delete_comment',
-	            	'comment_ID' 	=> (int) $_POST['comment_ID'],
-	            	'message' 		=> 'comment_delete_success',
-	            	'message' 		=> 'comment_delete_success',
-	            	'view' 			=> array(
-	            			'comments_count_'.$comment->comment_post_ID => '('.$count['approved'].')',
-	            			'comment_count_label_'.$comment->comment_post_ID => sprintf( _n( 'One comment', '%d comments', $count['approved'], 'anspress-question-answer' ), $count['approved'] ),
-	            		),
-	            ) );
-	        }
-	        $this->something_wrong();
-	    }
-	    $this->send( 'no_permission' );
 	}
 
 	/**

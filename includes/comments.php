@@ -22,7 +22,7 @@ class AnsPress_Comment_Hooks
 			$comment_id = (int) $_POST['comment_ID'];
 
 			// Check if user can edit comment.
-			if( !ap_user_can_edit_comment( $comment_id, get_current_user_id() ) ){
+			if ( ! ap_user_can_edit_comment( $comment_id, get_current_user_id() ) ) {
 				ap_ajax_json( 'no_permission' );
 			}
 
@@ -31,7 +31,7 @@ class AnsPress_Comment_Hooks
 			$result['container'] = '#comments-'.$comment->comment_post_ID;
 			ap_ajax_json( $result );
 	    }
-			
+
 		$post_id = (int) $_POST['post'];
 
 		// Check if they have permission to comment.
@@ -66,7 +66,7 @@ class AnsPress_Comment_Hooks
 		}
 
 		// Check if user can edit comment.
-		if( isset( $_POST['comment_ID'] ) && !ap_user_can_edit_comment( (int) $_POST['comment_ID'], get_current_user_id() ) ){
+		if ( isset( $_POST['comment_ID'] ) && ! ap_user_can_edit_comment( (int) $_POST['comment_ID'], get_current_user_id() ) ) {
 			ap_ajax_json( 'no_permission' );
 		}
 
@@ -93,15 +93,43 @@ class AnsPress_Comment_Hooks
 			ap_ajax_json( $filter );
 		}
 
-		if ( isset( $_POST['comment_ID'] ) ) {			
+		if ( isset( $_POST['comment_ID'] ) ) {
 			$comment_id = (int) $_POST['comment_ID'];
+			$comment = get_comment( $comment_id );
+			$comment_content = trim( $_POST['content'] );
+
+			$subscribed = ap_is_user_subscribed( $comment->comment_post_ID, 'comment', $comment->user_id );
+			$content_changed = $comment_content != $comment->comment_content;
+			$subscription = false;
+
+			// Toggle subscription.
+			if( isset( $_POST['notify'] ) && !$subscribed ){
+				$subscription = ap_add_comment_subscriber( $comment_id, $comment->user_id );
+			} elseif( !isset( $_POST['notify'] ) && $subscribed ) {
+				$subscription = ap_remove_comment_subscriber( $comment_id, $comment->user_id );
+			}
+
+			if( !$content_changed && $subscription ){
+				ap_ajax_json( [
+					'message' => __('Your comment subscription updated successfully', 'anspress-question-answer'),
+					'message_type' => 'success',
+				] );
+			}
+
+			if( !$content_changed ){
+				ap_ajax_json( [
+					'message' => __('Nothing changed!', 'anspress-question-answer'),
+					'message_type' => 'warning',
+				] );
+			}
+
 			$updated = wp_update_comment( array(
 				'comment_ID' => $comment_id,
-				'comment_content' => trim( $_POST['content'] ),
+				'comment_content' => $comment_content,
 			) );
 
 			if ( $updated ) {
-				$comment = get_comment( $comment_id );
+				$comment = get_comment( $comment_id );				
 
 				ob_start();
 				comment_text( $comment_id );
@@ -139,8 +167,14 @@ class AnsPress_Comment_Hooks
 		$comment_id = wp_new_comment( $commentdata );
 
 		if ( false !== $comment_id ) {
-			do_action( 'ap_after_new_comment', $comment );
+			// Add comment subscriber if checked about new notification.
+			if( isset( $_POST['notify'] ) ){
+				ap_add_comment_subscriber( $comment_id, $user->ID );
+			}
+
 			$comment = get_comment( $comment_id );
+			do_action( 'ap_after_new_comment', $comment );
+			
 			$count = get_comment_count( $comment->comment_post_ID );
 
 			ob_start();
@@ -165,6 +199,53 @@ class AnsPress_Comment_Hooks
 
 		// If execution reached to this point then there must be something wrong.
 		ap_ajax_json( 'something_wrong' );
+	}
+
+	/**
+	 * Ajax action for deleting comment.
+	 * @since 2.0.0
+	 * @since 3.0.0 Moved from ajax.php to here.
+	 */
+	public static function delete_comment() {
+	    if ( ! isset( $_POST['comment_ID'] ) || ! ap_user_can_delete_comment( (int) $_POST['comment_ID'] ) || ! ap_verify_nonce( 'delete_comment' ) ) {
+	    	ap_ajax_json( 'something_wrong' );
+	    }
+
+	    $comment_id = (int) $_POST['comment_ID'];
+
+		$comment = get_comment( $comment_id );
+
+		// Check if deleting comment is locked.
+		if ( ap_comment_delete_locked( $comment->comment_ID ) && ! is_super_admin() ) {
+			$date = mysql2date('U', $comment->comment_date_gmt );
+
+			ap_ajax_json( array(
+				'message_type' => 'warning',
+				'message' => sprintf(
+					__( 'This post was created %s, its locked hence you cannot delete it.', 'anspress-question-answer' ),
+					ap_human_time( $date )
+				),
+			) );
+		}
+
+		$delete = wp_delete_comment( (int) $comment->comment_ID, true );
+
+		if ( $delete ) {
+			do_action( 'ap_unpublish_comment', $comment );
+			do_action( 'ap_after_deleting_comment', $comment );
+			$count = get_comment_count( $comment->comment_post_ID );
+			ap_ajax_json( array(
+				'action' 		=> 'delete_comment',
+				'comment_ID' 	=> $comment->comment_ID,
+				'message' 		=> 'comment_delete_success',
+				'view' 			=> array(
+						'comments_count_'.$comment->comment_post_ID => '('.$count['approved'].')',
+						'comment_count_label_'.$comment->comment_post_ID => sprintf( _n( 'One comment', '%d comments', $count['approved'], 'anspress-question-answer' ), $count['approved'] ),
+					),
+			) );
+		}
+
+	    ap_ajax_json( 'something_wrong' );
 	}
 }
 
@@ -278,4 +359,14 @@ function ap_get_comment_form( $post_id = false, $comment_id = false ) {
 
 function ap_comment_form( $post_id = false, $comment_id = false ) {
 	echo ap_get_comment_form( $post_id, $comment_id );
+}
+
+/**
+ * Check if comment delete is locked.
+ * @param  int $comment_ID     Comment ID.
+ * @return bool
+ * @since  3.0.0
+ */
+function ap_comment_delete_locked( $comment_ID ) {
+	return current_time( 'timestamp', true ) < ( get_comment_date( 'U', $comment_ID ) + (int) ap_opt( 'disable_delete_after' ) );
 }
