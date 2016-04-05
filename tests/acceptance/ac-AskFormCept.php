@@ -6,6 +6,7 @@
 $I = new AcceptanceTester($scenario );
 $I->wantTo('Check AnsPress form error message' );
 $I->switch_user('user1', 'user1' );
+$I->switch_user('user1', 'user1' );
 $I->amOnPage( '/questions/ask/' );
 $I->seeElement('#ask_form' );
 
@@ -28,8 +29,9 @@ $I->switch_user('user2', 'user2' );
 $I->amOnPage( '/questions/question/this-is-question-1/' );
 $I->click( '.ap-q-cells .comment-btn' );
 $I->waitForJS( 'return jQuery.active == 0;',60 );
-$I->fillField([ 'name' => 'comment' ], $I->comment['comment1'] );
+$I->fillField('#ap-comment-textarea', $I->comment['comment1'] );
 $I->click( '#ap-commentform input[name="submit"]' );
+$I->makeScreenshot('questions_comment' );
 $I->waitForJS( 'return jQuery.active == 0;',60 );
 $I->waitForText( $I->comment['comment1'], 60 );
 //$I->makeScreenshot('questions_comment' );

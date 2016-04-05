@@ -19,7 +19,7 @@ class AnsPress_Comment_Hooks
 		);
 
 	    if ( isset( $_POST['comment_ID'] ) ) {
-			$comment_id = (int) $_POST['comment_ID'];
+			$comment_id = (integer) $_POST['comment_ID'];
 
 			// Check if user can edit comment.
 			if ( ! ap_user_can_edit_comment( $comment_id, get_current_user_id() ) ) {
@@ -32,7 +32,7 @@ class AnsPress_Comment_Hooks
 			ap_ajax_json( $result );
 	    }
 
-		$post_id = (int) $_POST['post'];
+		$post_id = (integer) $_POST['post'];
 
 		// Check if they have permission to comment.
 		if ( ! ap_user_can_comment( $post_id ) ) {
@@ -50,7 +50,7 @@ class AnsPress_Comment_Hooks
 	 * @since 3.0.0
 	 */
 	public static function submit_comment() {
-		$post_id = (int) $_POST['post_id'];
+		$post_id = (integer) $_POST['post_id'];
 		if ( ! is_user_logged_in() || ! ap_verify_nonce( $post_id . '_comment' ) ) {
 			ap_ajax_json( 'something_wrong' );
 		}
@@ -66,7 +66,7 @@ class AnsPress_Comment_Hooks
 		}
 
 		// Check if user can edit comment.
-		if ( isset( $_POST['comment_ID'] ) && ! ap_user_can_edit_comment( (int) $_POST['comment_ID'], get_current_user_id() ) ) {
+		if ( isset( $_POST['comment_ID'] ) && ! ap_user_can_edit_comment( (integer) $_POST['comment_ID'], get_current_user_id() ) ) {
 			ap_ajax_json( 'no_permission' );
 		}
 
@@ -93,57 +93,9 @@ class AnsPress_Comment_Hooks
 			ap_ajax_json( $filter );
 		}
 
+		// If comment_ID exists then update comment.
 		if ( isset( $_POST['comment_ID'] ) ) {
-			$comment_id = (int) $_POST['comment_ID'];
-			$comment = get_comment( $comment_id );
-			$comment_content = trim( $_POST['content'] );
-
-			$subscribed = ap_is_user_subscribed( $comment->comment_post_ID, 'comment', $comment->user_id );
-			$content_changed = $comment_content != $comment->comment_content;
-			$subscription = false;
-
-			// Toggle subscription.
-			if( isset( $_POST['notify'] ) && !$subscribed ){
-				$subscription = ap_add_comment_subscriber( $comment_id, $comment->user_id );
-			} elseif( !isset( $_POST['notify'] ) && $subscribed ) {
-				$subscription = ap_remove_comment_subscriber( $comment_id, $comment->user_id );
-			}
-
-			if( !$content_changed && $subscription ){
-				ap_ajax_json( [
-					'message' => __('Your comment subscription updated successfully', 'anspress-question-answer'),
-					'message_type' => 'success',
-				] );
-			}
-
-			if( !$content_changed ){
-				ap_ajax_json( [
-					'message' => __('Nothing changed!', 'anspress-question-answer'),
-					'message_type' => 'warning',
-				] );
-			}
-
-			$updated = wp_update_comment( array(
-				'comment_ID' => $comment_id,
-				'comment_content' => $comment_content,
-			) );
-
-			if ( $updated ) {
-				$comment = get_comment( $comment_id );				
-
-				ob_start();
-				comment_text( $comment_id );
-				$html = ob_get_clean();
-
-				ap_ajax_json( array(
-					'action' 			=> 'edit_comment',
-					'comment_ID' 		=> $comment->comment_ID,
-					'comment_post_ID' 	=> $comment->comment_post_ID,
-					'comment_content' 	=> $comment->comment_content,
-					'html' 				=> $html,
-					'message' 			=> 'comment_edit_success',
-				) );
-			}
+			SELF::update_comment();
 		}
 
 		// Get current user object.
@@ -168,13 +120,13 @@ class AnsPress_Comment_Hooks
 
 		if ( false !== $comment_id ) {
 			// Add comment subscriber if checked about new notification.
-			if( isset( $_POST['notify'] ) ){
+			if ( isset( $_POST['notify'] ) ) {
 				ap_add_comment_subscriber( $comment_id, $user->ID );
 			}
 
 			$comment = get_comment( $comment_id );
 			do_action( 'ap_after_new_comment', $comment );
-			
+
 			$count = get_comment_count( $comment->comment_post_ID );
 
 			ob_start();
@@ -202,16 +154,73 @@ class AnsPress_Comment_Hooks
 	}
 
 	/**
+	 * Updates comment.
+	 * @since 3.0.0
+	 */
+	public static function update_comment() {
+		$comment_id = (integer) $_POST['comment_ID'];
+		$comment = get_comment( $comment_id );
+		$comment_content = trim( $_POST['content'] );
+
+		$subscribed = ap_is_user_subscribed( $comment->comment_post_ID, 'comment', $comment->user_id );
+		$content_changed = $comment_content != $comment->comment_content;
+		$subscription = false;
+
+		// Toggle subscription.
+		if ( isset( $_POST['notify'] ) && ! $subscribed ) {
+			$subscription = ap_add_comment_subscriber( $comment_id, $comment->user_id );
+		} elseif ( ! isset( $_POST['notify'] ) && $subscribed ) {
+			$subscription = ap_remove_comment_subscriber( $comment_id, $comment->user_id );
+		}
+
+		if ( ! $content_changed && $subscription ) {
+			ap_ajax_json( [
+				'message' => __('Your comment subscription updated successfully', 'anspress-question-answer' ),
+				'message_type' => 'success',
+			] );
+		}
+
+		if ( ! $content_changed ) {
+			ap_ajax_json( [
+				'message' => __('Nothing changed!', 'anspress-question-answer' ),
+				'message_type' => 'warning',
+			] );
+		}
+
+		$updated = wp_update_comment( array(
+			'comment_ID' => $comment_id,
+			'comment_content' => $comment_content,
+		) );
+
+		if ( $updated ) {
+			$comment = get_comment( $comment_id );
+
+			ob_start();
+			comment_text( $comment_id );
+			$html = ob_get_clean();
+
+			ap_ajax_json( array(
+				'action' 			=> 'edit_comment',
+				'comment_ID' 		=> $comment->comment_ID,
+				'comment_post_ID' 	=> $comment->comment_post_ID,
+				'comment_content' 	=> $comment->comment_content,
+				'html' 				=> $html,
+				'message' 			=> 'comment_edit_success',
+			) );
+		}
+	}
+
+	/**
 	 * Ajax action for deleting comment.
 	 * @since 2.0.0
 	 * @since 3.0.0 Moved from ajax.php to here.
 	 */
 	public static function delete_comment() {
-	    if ( ! isset( $_POST['comment_ID'] ) || ! ap_user_can_delete_comment( (int) $_POST['comment_ID'] ) || ! ap_verify_nonce( 'delete_comment' ) ) {
+	    if ( ! isset( $_POST['comment_ID'] ) || ! ap_user_can_delete_comment( (integer) $_POST['comment_ID'] ) || ! ap_verify_nonce( 'delete_comment' ) ) {
 	    	ap_ajax_json( 'something_wrong' );
 	    }
 
-	    $comment_id = (int) $_POST['comment_ID'];
+	    $comment_id = (integer) $_POST['comment_ID'];
 
 		$comment = get_comment( $comment_id );
 
@@ -228,7 +237,7 @@ class AnsPress_Comment_Hooks
 			) );
 		}
 
-		$delete = wp_delete_comment( (int) $comment->comment_ID, true );
+		$delete = wp_delete_comment( (integer) $comment->comment_ID, true );
 
 		if ( $delete ) {
 			do_action( 'ap_unpublish_comment', $comment );
@@ -323,7 +332,7 @@ function ap_comment_actions_buttons() {
 
 /**
  * Get comment form.
- * @param  bool|int $comment_id Comment ID.
+ * @param  bool|integer $comment_id Comment ID.
  * @return string
  * @since  3.0.0
  */
@@ -363,10 +372,10 @@ function ap_comment_form( $post_id = false, $comment_id = false ) {
 
 /**
  * Check if comment delete is locked.
- * @param  int $comment_ID     Comment ID.
+ * @param  integer $comment_ID     Comment ID.
  * @return bool
  * @since  3.0.0
  */
 function ap_comment_delete_locked( $comment_ID ) {
-	return current_time( 'timestamp', true ) < ( get_comment_date( 'U', $comment_ID ) + (int) ap_opt( 'disable_delete_after' ) );
+	return current_time( 'timestamp', true ) < ( get_comment_date( 'U', $comment_ID ) + (integer) ap_opt( 'disable_delete_after' ) );
 }

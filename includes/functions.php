@@ -1749,7 +1749,7 @@ function ap_parse_search_string($str) {
 
 /**
  * Send properly formatted AnsPress json string.
- * @param  array $response Response array.
+ * @param  array|string $response Response array or string.
  */
 function ap_ajax_json( $response ) {
 	ap_send_json( ap_ajax_responce( $response ) );

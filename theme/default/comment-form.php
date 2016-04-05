@@ -9,7 +9,7 @@ $subscribed = false;
 if( is_object( $ap_comment ) ){
 	$subscribed = ap_is_user_subscribed( $ap_comment->comment_post_ID, 'comment', $ap_comment->user_id );
 }
-var_dump($subscribed);
+
 ?>
 <div class="ap-avatar ap-pull-left">
 	<?php echo get_avatar( get_current_user_id(), 30 ); ?>
