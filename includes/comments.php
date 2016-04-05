@@ -14,8 +14,7 @@ class AnsPress_Comment_Hooks
 
 	    $result = array(
 			'ap_responce' => true,
-			'action' => 'load_comment_form',
-			'view_default' => ap_opt( 'show_comments_by_default' ),
+			'action' => 'load_comment_form'
 		);
 
 	    if ( isset( $_POST['comment_ID'] ) ) {

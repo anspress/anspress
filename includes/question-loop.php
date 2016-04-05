@@ -399,8 +399,14 @@ function ap_question_the_status() {
 	 * @since 2.1
 	 */
 function ap_question_the_comments() {
-	if ( ap_opt( 'show_comments_by_default' ) && ! ap_opt( 'disable_comments_on_question' ) ) {
-		comments_template(); }
+	if ( ! ap_opt( 'disable_comments_on_question' ) ) {
+		echo '<div id="ap-comment-area-'.get_the_ID().'">';
+		echo '<div id="comments-'.get_the_ID().'" class="ap-comments comment-container '.( have_comments() ? 'have' : 'no' ).'-comments">';
+		echo '<ul class="ap-commentlist">';
+		comments_template();
+		echo '</ul>';
+		echo '</div>';
+	}
 }
 
 	/**
