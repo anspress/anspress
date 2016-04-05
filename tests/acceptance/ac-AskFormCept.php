@@ -20,11 +20,13 @@ $I->fillTinyMceEditorById('description', 'Fusce iaculis condimentum nisi, nec co
 $I->click('#ask_form .ap-btn-submit' );
 $I->waitForJS( 'return jQuery.active == 0;',60 );
 //$I->makeScreenshot('ask_form' );
+$I->wantTo('Check if new question is showing' );
 $I->amOnPage( '/questions/' );
-$I->see($I->questions['question1'] );
+$I->see( $I->questions['question1'] );
 //$I->makeScreenshot('questions_page' );
 
 // Add a dummy comment in question 1.
+$I->wantTo('Submit new comment' );
 $I->switch_user('user2', 'user2' );
 $I->amOnPage( '/questions/question/this-is-question-1/' );
 $I->click( '.ap-q-cells .comment-btn' );
