@@ -400,11 +400,8 @@ function ap_question_the_status() {
 	 */
 function ap_question_the_comments() {
 	if ( ! ap_opt( 'disable_comments_on_question' ) ) {
-		echo '<div id="ap-comment-area-'.get_the_ID().'">';
-		echo '<div id="comments-'.get_the_ID().'" class="ap-comments comment-container '.( have_comments() ? 'have' : 'no' ).'-comments">';
-		echo '<ul class="ap-commentlist">';
+		echo '<div id="post-c-'.get_the_ID().'" class="ap-comments comment-container '.( have_comments() ? 'have' : 'no' ).'-comments">';
 		comments_template();
-		echo '</ul>';
 		echo '</div>';
 	}
 }

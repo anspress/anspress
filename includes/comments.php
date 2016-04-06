@@ -27,7 +27,7 @@ class AnsPress_Comment_Hooks
 
 			$comment = get_comment( $comment_id );
 			$result['html'] = ap_get_comment_form( $comment->comment_post_ID, $comment->comment_ID );
-			$result['container'] = '#comments-'.$comment->comment_post_ID;
+			$result['container'] = '#post-c-'.$comment->comment_post_ID;
 			ap_ajax_json( $result );
 	    }
 
@@ -39,7 +39,7 @@ class AnsPress_Comment_Hooks
 		}
 
 		$result['html'] = ap_get_comment_form( $post_id );
-		$result['container'] = '#comments-'.$post_id;
+		$result['container'] = '#post-c-'.$post_id;
 
 		ap_ajax_json( $result );
 	}

@@ -348,10 +348,10 @@
                 ApSite.doAjax(apAjaxData($(this).formSerialize()), function(data) {
                     ApSite.hideLoading(this);
                     if (data['action'] == 'new_comment' && data['message_type'] == 'success') {
-                        $('#comments-' + data['comment_post_ID'] + ' ul.ap-commentlist').append($(data['html']).hide().slideDown(100));
+                        $('#post-c-' + data['comment_post_ID'] ).append($(data['html']).hide().slideDown(100));
                     } else if (data['action'] == 'edit_comment' && data['message_type'] == 'success') {
-                        $('#li-comment-' + data.comment_ID+ ' .ap-comment-texts').html(data.html);
-                        $('#li-comment-' + data.comment_ID).slideDown(400);
+                        $('#comment-' + data.comment_ID+ ' .ap-comment-texts').html(data.html);
+                        $('#comment-' + data.comment_ID).slideDown(400);
                         $('.ap-comment-form').remove();
                     }
                     $('.ap-comment-form').fadeOut(200, function() {
