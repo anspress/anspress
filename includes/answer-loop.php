@@ -36,18 +36,17 @@ if ( ! class_exists( 'Answers_Query' ) ) :
 		 * @since  2.0
 		 */
 		public function __construct( $args = array() ) {
-
 			global $answers;
 
 			$paged = (get_query_var( 'paged' )) ? get_query_var( 'paged' ) : 1;
 
 			$defaults = array(
-			'question_id'           => get_question_id(),
-			'ap_answers_query'      => true,
-			'showposts'             => ap_opt( 'answers_per_page' ),
-			'paged'                 => $paged,
-			'only_best_answer'      => false,
-			'include_best_answer'   => false,
+				'question_id'           => get_question_id(),
+				'ap_answers_query'      => true,
+				'showposts'             => ap_opt( 'answers_per_page' ),
+				'paged'                 => $paged,
+				'only_best_answer'      => false,
+				'include_best_answer'   => false,
 			);
 
 			$args['post_status'][] = 'publish';
@@ -56,10 +55,12 @@ if ( ! class_exists( 'Answers_Query' ) ) :
 			$this->args = wp_parse_args( $args, $defaults );
 
 			if ( isset( $this->args['question_id'] ) ) {
-				$question_id = $this->args['question_id']; }
+				$question_id = $this->args['question_id'];
+			}
 
 			if ( ! empty( $question_id ) ) {
-				$this->args['post_parent'] = $question_id; }
+				$this->args['post_parent'] = $question_id;
+			}
 
 			if ( isset( $this->args['sortby'] ) ) {
 				$this->orderby_answers();
@@ -161,10 +162,10 @@ function ap_get_answers($args = array()) {
 		$args['post_status'][] = 'private_post';
 	//}
 
-	//if ( is_super_admin() || current_user_can( 'ap_view_moderate' ) ) {
+	if ( is_super_admin() || current_user_can( 'ap_view_moderate' ) ) {
 		$args['post_status'][] = 'moderate';
-	//}
-	//
+	}
+	
 	if ( is_super_admin() ) {
 		$args['post_status'][] = 'trash';
 	}

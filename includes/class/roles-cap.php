@@ -934,20 +934,19 @@ function ap_user_can_read_post( $post_id, $user_id = false, $post_type = false )
 		return true;
 	}
 
-	if ( user_can( $user_id, 'ap_read_'.$post_type ) ) {
-		if ( 'private_post' == $post_o->post_status && ! ap_user_can_view_private_post( $post_id, $user_id ) ) {
-			return false;
-		} elseif ( 'moderate' == $post_o->post_status && ! ap_user_can_view_moderate_post( $post_id, $user_id ) ) {
-			return false;
-		}
+	
+	if ( 'private_post' == $post_o->post_status && ! ap_user_can_view_private_post( $post_id, $user_id ) ) {
+		return false;
+	} elseif ( 'moderate' == $post_o->post_status && ! ap_user_can_view_moderate_post( $post_id, $user_id ) ) {
+		return false;
+	}	
 
-		if ( ! ap_opt('only_logged_in' ) && 'question' == $post_type ) {
-			return true;
-		}
+	if ( ! ap_opt('only_logged_in' ) && 'question' == $post_type ) {
+		return true;
+	}
 
-		if ( ! ap_opt('logged_in_can_see_ans' ) && 'answer' == $post_type ) {
-			return true;
-		}
+	if ( ! ap_opt('logged_in_can_see_ans' ) && 'answer' == $post_type ) {
+		return true;
 	}
 
 	// Finally return false. And break the heart :p.
