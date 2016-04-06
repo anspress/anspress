@@ -198,7 +198,7 @@ function ap_check_recaptcha() {
 	$resp = $reCaptcha->verifyResponse( $gglcptch_remote_addr, $gglcptch_g_recaptcha_response );
 
 	if ( $resp->success ) {
-		do_action( 'ap_form_captch_verified' );
+		do_action( 'ap_form_captcha_verified' );
 		return true;
 	}
 
@@ -338,11 +338,6 @@ function ap_save_question($args, $wp_error = false) {
 			 */
 			do_action( 'ap_processed_new_question', $post_id, $post );
 		}
-
-		// Check for Spam in question.
-		/*if ( ap_opt('akismet_validation' ) && ! current_user_can( 'ap_edit_others_question' ) && ! is_super_admin( ) ) {
-			ap_check_spam( $post_id );
-		}*/
 	}
 
 	return $post_id;

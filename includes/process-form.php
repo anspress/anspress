@@ -103,7 +103,6 @@ class AnsPress_Process_Form
 	 */
 	public function process_form() {
 		$action = sanitize_text_field( $_POST['ap_form_action'] );
-
 		switch ( $action ) {
 			case 'ask_form':
 				$this->process_ask_form();
@@ -139,7 +138,6 @@ class AnsPress_Process_Form
 	 */
 	public function process_ask_form() {
 		global $ap_errors, $validate;
-
 		if ( ap_show_captcha_to_user() && false === ap_check_recaptcha() ) {
 			$this->result = array(
 				'form' 			=> $_POST['ap_form_action'],
@@ -169,13 +167,12 @@ class AnsPress_Process_Form
 
 		// If error in form then return.
 		if ( $validate->have_error() ) {
-			$this->result = array(
+			ap_ajax_json( array(
 				'form' 			=> $_POST['ap_form_action'],
 				'message_type' 	=> 'error',
 				'message'		=> __( 'Check missing fields and then re-submit.', 'anspress-question-answer' ),
 				'errors'		=> $ap_errors,
-			);
-			return;
+			) );
 		}
 
 		$fields = $validate->get_sanitized_fields();
@@ -220,13 +217,11 @@ class AnsPress_Process_Form
 		$post_id = ap_save_question( $question_array, true );
 
 		if ( $post_id ) {
-			$this->redirect = get_permalink( $post_id );
-
-			$this->result = array(
+			ap_ajax_json( array(
 				'action' 		=> 'new_question',
 				'message'		=> 'question_submitted',
 				'do'			=> array( 'redirect' => get_permalink( $post_id ) ),
-			);
+			) );
 		}
 
 		// Remove all unused atthements by user.
@@ -278,11 +273,11 @@ class AnsPress_Process_Form
 		if ( $post_id ) {
 			$this->redirect = get_permalink( $post_id );
 
-			$this->result = array(
+			ap_ajax_json( array(
 				'action' 		=> 'edited_question',
 				'message'		=> 'question_updated',
 				'do'			=> array( 'redirect' => $this->redirect ),
-			);
+			) );
 		}
 
 		// Remove all unused atthements by user.
@@ -328,7 +323,7 @@ class AnsPress_Process_Form
 	public function process_answer_form() {
 		global $ap_errors, $validate;
 
-		if ( ap_show_captcha_to_user() && ! false === ap_check_recaptcha() ) {
+		if ( ap_show_captcha_to_user() && false === ap_check_recaptcha() ) {
 			$this->result = array(
 				'form' 			=> $_POST['ap_form_action'],
 				'message'		=> 'captcha_error',

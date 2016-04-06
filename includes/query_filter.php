@@ -218,19 +218,18 @@ class AnsPress_Query_Filter
 	 * @since  2.4.6
 	 */
 	public function restricted_answer_contents( $posts, $query ) {
-		if ( isset( $query->args['ap_answers_query'] ) && $posts ) {
-			foreach ( $posts as $key => $p ) {
-				if ( ! ap_user_can_read_answer( $p ) ) {
-					$message = array(
-						'private_post' => __('Answer is private, only moderator and participants can read.', 'anspress-question-answer' ),
-						'moderate' => __('Answer is pending approval by moderator. ', 'anspress-question-answer' ),
-						'publish' => __('You do not have permission to read this answer. ', 'anspress-question-answer' ),
-					);
-					$calss = $p->post_status == 'moderate' ? 'yellow' : 'gray';
-					$posts[$key]->post_content = sprintf('<div class="ap-notice %s clearfix"><i class="apicon-lock"></i><span>%s</span></div>', $calss, $message[ $p->post_status ] );
-				}
+		foreach ( (array) $posts as $key => $p ) {
+			if ( $p->post_type == 'answer' && ! ap_user_can_read_answer( $p ) ) {
+				$message = array(
+					'private_post' => __('Answer is private, only moderator and participants can read.', 'anspress-question-answer' ),
+					'moderate' => __('Answer is pending approval by moderator. ', 'anspress-question-answer' ),
+					'publish' => __('You do not have permission to read this answer. ', 'anspress-question-answer' ),
+				);
+				$calss = $p->post_status == 'moderate' ? 'yellow' : 'gray';
+				$posts[$key]->post_content = sprintf('<div class="ap-notice %s clearfix"><i class="apicon-lock"></i><span>%s</span></div>', $calss, $message[ $p->post_status ] );
 			}
 		}
+
 		return $posts;
 	}
 

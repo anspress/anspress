@@ -32,7 +32,7 @@ $I->amOnPage( '/questions/question/this-is-question-1/' );
 $I->click( '.ap-q-cells .comment-btn' );
 $I->waitForJS( 'return jQuery.active == 0;',60 );
 $I->fillField('#ap-comment-textarea', $I->comment['comment1'] );
-$I->click( '#ap-commentform input[name="submit"]' );
+$I->click( '#ap-commentform .ap-comment-submit' );
 $I->makeScreenshot('questions_comment' );
 $I->waitForJS( 'return jQuery.active == 0;',60 );
 $I->waitForText( $I->comment['comment1'], 60 );

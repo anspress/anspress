@@ -929,7 +929,6 @@ function ap_user_can_read_post( $post_id, $user_id = false, $post_type = false )
 	if ( user_can( $user_id, 'ap_edit_others_'.$post_type ) ) {
 		return true;
 	}
-
 	
 	if ( 'private_post' == $post_o->post_status && ! ap_user_can_view_private_post( $post_id, $user_id ) ) {
 		return false;
