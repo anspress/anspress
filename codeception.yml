@@ -11,9 +11,9 @@ settings:
 modules:
     config:
         Db:
-            dsn: 'mysql:host=localhost;dbname=wptest'
-            user: wptest
-            password: wptest
+            dsn: 'mysql:host=localhost;dbname=wptestloader'
+            user: wptestloader
+            password: wptestloader
             dump: tests/_data/dump.sql
         WPBrowser:
             url: 'http://wptest.localhost'
@@ -21,20 +21,20 @@ modules:
             adminPassword: admin
             adminUrl: /wp-admin
         WPDb:
-            dsn: 'mysql:host=localhost;dbname=wptest'
-            user: wptest
-            password: wptest
+            dsn: 'mysql:host=localhost;dbname=wptestloader'
+            user: root
+            password: 
             dump: tests/_data/dump.sql
-            #populate: true
-            #cleanup: true
+            populate: true
+            cleanup: true
             url: 'http://wptest.localhost'
             tablePrefix: wp_
         WPLoader:
-            wpRootFolder: /var/www/wptest
-            dbName: wptestloader
+            wpRootFolder: /home/travis/build/anspress/anspress/www
+            dbName: wptest
             dbHost: localhost
-            dbUser: wptestloader
-            dbPassword: wptestloader
+            dbUser: root
+            dbPassword: 
             wpDebug: true
             dbCharset: utf8
             dbCollate: ''
@@ -52,7 +52,7 @@ modules:
             browser: phantomjs
             port: 4444
             restart: true
-            wait: 2
+            wait: 0
             adminUsername: admin
             adminPassword: admin
             adminUrl: /wp-admin

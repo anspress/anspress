@@ -32,16 +32,8 @@ install_composer(){
 		sudo apt-get install curl php5-cli git -y
 		curl -sS https://getcomposer.org/installer | sudo php -- --install-dir=/usr/local/bin --filename=composer	
 	}
-	#composer global require codeception/codeception
+	
 	#echo 'export PATH="$PATH:/home/travis/.composer/vendor/bin"' >> ~/.bashrc
-
-	# if [ ! -f /tmp/selenium-server-standalone-2.42.2.jar ]; then
-	# 	cd /tmp
-	# 	wget https://selenium-release.storage.googleapis.com/2.42/selenium-server-standalone-2.42.2.jar
-	# fi
-
-	#screen -d -m -S selenium "$TRAVIS_BUILD_DIR/anspress/anspress/tests/bin/selenium.sh"
-
 	curl -i http://localhost:4444/wd/hub/status
 }
 

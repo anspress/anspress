@@ -5,8 +5,7 @@
 
 $I = new UITester($scenario );
 $I->wantTo('Check AnsPress form error message' );
-$I->switch_user('user1', 'user1' );
-$I->switch_user('user1', 'user1' );
+$I->loginAs('user1', 'user1' );
 $I->amOnPage( '/questions/ask/' );
 $I->seeElement('#ask_form' );
 
@@ -27,7 +26,7 @@ $I->see( $I->questions['question1'] );
 
 // Add a dummy comment in question 1.
 $I->wantTo('Submit new comment' );
-$I->switch_user('user2', 'user2' );
+$I->loginAs('user2', 'user2' );
 $I->amOnPage( '/questions/question/this-is-question-1/' );
 $I->click( '.ap-q-cells .comment-btn' );
 $I->waitForJS( 'return jQuery.active == 0;',60 );

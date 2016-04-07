@@ -21,12 +21,12 @@ install:
 before_script:
   - sudo apt-get update
   - sudo apt-get install apache2 libapache2-mod-fastcgi
-  - sudo apt-get install fbi
   # enable php-fpm
   - sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf
   - sudo a2enmod rewrite actions fastcgi alias
   - echo "cgi.fix_pathinfo = 1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
   - ~/.phpenv/versions/$(phpenv version-name)/sbin/php-fpm
+  - mysql -e 'create database wptestloader;'
   # configure apache virtual hosts
   - echo "$(curl -fsSL https://gist.github.com/rahularyan/5b179508f63cebbce486/raw/gistfile1.txt)" | sed -e "s,PATH,`pwd`/www,g" | sudo tee /etc/apache2/sites-available/default > /dev/null
   - echo "127.0.0.1 wptest.localhost" | sudo tee -a /etc/hosts
@@ -35,15 +35,16 @@ before_script:
   - wget http://codeception.com/codecept.phar
   - sudo curl -LsS http://codeception.com/codecept.phar -o /usr/local/bin/codecept
   - sudo chmod a+x /usr/local/bin/codecept
-  - sudo composer global require lucatume/wp-browser master@dev
+  - codecept
+  - composer require lucatume/wp-browser master@dev
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
   - java -jar selenium-server-standalone-2.42.2.jar -port 4444 -Djava.security.egd=file:///dev/urandom switch > /dev/null &
-  - sleep 5
+  - sleep 10
   - bash tests/bin/install.sh wptest root '' localhost $WP_VERSION
 
 script:
-  - codecept run --steps
+  - ./vendor/bin/wpcept run --steps --debug
 
 after_failure:
   - bash tests/bin/upload.sh

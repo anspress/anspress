@@ -9,7 +9,7 @@ $I->loginAsAdmin();
 
 $I->wantTo('Check if AnsPress is installed');
 $I->amOnPluginPage();
-$I->seeInSource('AnsPress', 'CSS:tr#anspress .plugin-title>strong');
+$I->seePluginActivated('anspress-question-answer');
 $I->wantTo('Check if AnsPress is active');
 $I->seeElement('tr#anspress .plugin-title .deactivate');
 //$I->makeScreenshot('admin' );

@@ -20,9 +20,6 @@ class UITester extends \Codeception\Actor
 {
     use _generated\UITesterActions;
 
-   /**
-    * Define custom actions here
-    */
    public $admin_username = 'admin';
 	public $admin_password = 'admin';
 	public $users = array( 'user1', 'user2', 'user3', 'user4' );
