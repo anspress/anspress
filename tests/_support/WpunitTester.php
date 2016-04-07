@@ -16,9 +16,9 @@
  *
  * @SuppressWarnings(PHPMD)
 */
-class AcceptanceTester extends \Codeception\Actor
+class WpunitTester extends \Codeception\Actor
 {
-    use _generated\AcceptanceTesterActions;
+    use _generated\WpunitTesterActions;
 
    /**
     * Define custom actions here

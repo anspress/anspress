@@ -3,26 +3,56 @@ paths:
     tests: tests
     log: tests/_output
     data: tests/_data
-    support: tests/_support
-    envs: tests/_envs
+    helpers: tests/_support
 settings:
     bootstrap: _bootstrap.php
     colors: true
     memory_limit: 1024M
-extensions:
-    enabled:
-        - Codeception\Extension\RunFailed
 modules:
     config:
         Db:
-            dsn: ''
-            user: ''
-            password: ''
+            dsn: 'mysql:host=localhost;dbname=wptest'
+            user: wptest
+            password: wptest
             dump: tests/_data/dump.sql
-coverage:
-    enabled: true
-    remote: true
-    c3_url: 'http://wptest.localhost/c3.php'
-    exclude:
-        - tests/*
-        - build/*
+        WPBrowser:
+            url: 'http://wptest.localhost'
+            adminUsername: admin
+            adminPassword: admin
+            adminUrl: /wp-admin
+        WPDb:
+            dsn: 'mysql:host=localhost;dbname=wptest'
+            user: wptest
+            password: wptest
+            dump: tests/_data/dump.sql
+            #populate: true
+            #cleanup: true
+            url: 'http://wptest.localhost'
+            tablePrefix: wp_
+        WPLoader:
+            wpRootFolder: /var/www/wptest
+            dbName: wptestloader
+            dbHost: localhost
+            dbUser: wptestloader
+            dbPassword: wptestloader
+            wpDebug: true
+            dbCharset: utf8
+            dbCollate: ''
+            tablePrefix: wp_
+            domain: wptest.localhost
+            adminEmail: admin@wptest.localhost
+            title: 'WP Tests'
+            phpBinary: php
+            language: ''
+            plugins: [hello.php, anspress-question-answer/anspress-question-answer.php]
+            activatePlugins: [hello.php, anspress-question-answer/anspress-question-answer.php]
+            bootstrapActions: [my-first-action, my-second-action]
+        WPWebDriver:
+            url: 'http://wptest.localhost'
+            browser: phantomjs
+            port: 4444
+            restart: true
+            wait: 2
+            adminUsername: admin
+            adminPassword: admin
+            adminUrl: /wp-admin

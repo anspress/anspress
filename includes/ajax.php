@@ -57,7 +57,7 @@ class AnsPress_Ajax
 
 	    $keyword = sanitize_text_field( wp_unslash( $_POST['value'] ) );
 
-	    $is_admin = (bool) $_POST['is_admin'];
+	    $is_admin = (bool) ap_isset_post_value('is_admin', false);
 
 	    $questions = get_posts(array(
 			'post_type' => 'question',
@@ -73,7 +73,7 @@ class AnsPress_Ajax
 	        $items .= '</div>';
 
 		    $items .= '<div class="ap-similar-questions">';
-	        foreach ( $questions as $p ) {
+	        foreach ( (array) $questions as $p ) {
 	            $count = ap_count_answer_meta( $p->ID );
 	            $p->post_title = ap_highlight_words( $p->post_title, $keyword );
 
@@ -91,7 +91,7 @@ class AnsPress_Ajax
 	        $result = array( 'status' => false, 'message' => __( 'No related questions found', 'anspress-question-answer' ) );
 	    }
 
-	    $this->send( $result );
+	    ap_ajax_json( $result );
 	}
 
 	/**
@@ -676,11 +676,10 @@ class AnsPress_Ajax
 	 * @since 2.0.1.1
 	 */
 	public function vote() {
-
 	    $post_id = (int) $_POST['post_id'];
 
 	    if ( ! ap_verify_nonce( 'vote_'.$post_id ) ) {
-	        $this->something_wrong();
+	        ap_ajax_json('something_wrong');
 	    }
 
 	    $type = sanitize_text_field( $_POST['type'] );
@@ -694,13 +693,13 @@ class AnsPress_Ajax
 
 	    // Check if WP_Error object and send error message code.
 	    if ( is_wp_error( $thing ) ) {
-	        $this->send( $thing->get_error_code() );
+	        ap_ajax_json( $thing->get_error_code() );
 	    }
 
 	    if ( 'question' == $post->post_type && ap_opt( 'disable_down_vote_on_question' ) && 'vote_down' == $type ) {
-	        $this->send( 'voting_down_disabled' );
+	        ap_ajax_json( 'voting_down_disabled' );
 	    } elseif ( 'answer' === $post->post_type && ap_opt( 'disable_down_vote_on_answer' ) && 'vote_down' === $type ) {
-	        $this->send( 'voting_down_disabled' );
+	        ap_ajax_json( 'voting_down_disabled' );
 	    }
 
 	    $is_voted = ap_is_user_voted( $post_id, 'vote', $userid );
@@ -716,20 +715,20 @@ class AnsPress_Ajax
 			    do_action( 'ap_undo_vote', $post_id, $counts );
 			    do_action( 'ap_undo_'.$type, $post_id, $counts );
 
-			   	$this->send( array(
+			   	ap_ajax_json( array(
 			   		'action' 	=> 'undo',
 			   		'type' 		=> $type,
 			   		'count' 	=> $counts['net_vote'],
 			   		'message' 	=> 'undo_vote',
 			   	) );
 			} else {
-			    $this->send( 'undo_vote_your_vote' );
+			    ap_ajax_json( 'undo_vote_your_vote' );
 			}
 	    } else {
 	        $counts = ap_add_post_vote( $userid, $type, $post_id, $post->post_author );
 			// Update post meta.
 	        do_action( 'ap_'.$type, $post_id, $counts );
-	       	$this->send( array( 'action' => 'voted', 'type' => $type, 'count' => $counts['net_vote'], 'message' => 'voted' ) );
+	       	ap_ajax_json( array( 'action' => 'voted', 'type' => $type, 'count' => $counts['net_vote'], 'message' => 'voted' ) );
 	    }
 	}
 

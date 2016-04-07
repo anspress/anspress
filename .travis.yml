@@ -35,6 +35,7 @@ before_script:
   - wget http://codeception.com/codecept.phar
   - sudo curl -LsS http://codeception.com/codecept.phar -o /usr/local/bin/codecept
   - sudo chmod a+x /usr/local/bin/codecept
+  - sudo composer global require lucatume/wp-browser master@dev
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
   - java -jar selenium-server-standalone-2.42.2.jar -port 4444 -Djava.security.egd=file:///dev/urandom switch > /dev/null &

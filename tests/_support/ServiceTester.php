@@ -16,9 +16,9 @@
  *
  * @SuppressWarnings(PHPMD)
 */
-class AcceptanceTester extends \Codeception\Actor
+class ServiceTester extends \Codeception\Actor
 {
-    use _generated\AcceptanceTesterActions;
+    use _generated\ServiceTesterActions;
 
    /**
     * Define custom actions here

@@ -26,7 +26,7 @@ class AnsPress_Post_Status
 	/**
 	 * Register post status for question and answer CPT
 	 */
-	public function register_post_status() {
+	public static function register_post_status() {
 
 		register_post_status( 'closed', array(
 			  'label'                     => __( 'Closed', 'anspress-question-answer' ),
