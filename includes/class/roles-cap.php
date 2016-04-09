@@ -299,6 +299,11 @@ function ap_user_can_edit_answer( $post_id, $user_id = false ) {
 		return false;
 	}
 
+	// Do not allow to edit if moderate.
+	if ( 'moderate' === $answer->post_status) {
+		return false;
+	}
+
 	// No point to let user edit answer if they cannot read.
 	if ( ! ap_user_can_read_answer( $answer->ID, $user_id ) ) {
 		return false;
@@ -346,6 +351,11 @@ function ap_user_can_edit_question( $post_id = false, $user_id = false ) {
 	if ( true === $filter ) {
 		return true;
 	} elseif ( false === $filter ) {
+		return false;
+	}
+
+	// Do not allow to edit if moderate.
+	if ( 'moderate' === $question->post_status) {
 		return false;
 	}
 
@@ -405,6 +415,13 @@ function ap_user_can_comment( $post_id = false, $user_id = false ) {
 	if ( true === $filter ) {
 		return true;
 	} elseif ( false === $filter ) {
+		return false;
+	}
+
+	$post_o = get_post( $post_id );
+
+	// Do not allow to comment if post is moderate.
+	if( 'moderate' === $post_o->post_status ){
 		return false;
 	}
 
@@ -470,12 +487,16 @@ function ap_user_can_edit_comment( $comment_id,  $user_id = false ) {
  * @param  integer $comment_id Comment_ID.
  * @return boolean
  */
-function ap_user_can_delete_comment($comment_id) {
-	if ( is_super_admin() || current_user_can( 'ap_mod_comment' ) ) {
+function ap_user_can_delete_comment($comment_id, $user_id = false) {
+	if( false === $user_id ){
+		$user_id = get_current_user_id();
+	}
+
+	if ( is_super_admin($user_id) || user_can( $user_id, 'ap_delete_others_comment' ) ) {
 		return true;
 	}
 
-	if ( current_user_can( 'ap_delete_comment' ) && get_current_user_id() == get_comment( $comment_id )->user_id ) {
+	if ( user_can( $user_id, 'ap_delete_comment' ) && $user_id == get_comment( $comment_id )->user_id ) {
 		return true;
 	}
 
@@ -655,22 +676,26 @@ function ap_user_can_view_future_post( $post_id, $user_id = false ) {
  * @param  integer $post_id Question or answer ID.
  * @return boolean
  */
-function ap_user_can_view_post($post_id = false) {
-	if ( is_super_admin() ) {
+function ap_user_can_view_post($post_id = false, $user_id = false) {
+	if ( false === $user_id ) {
+		$user_id = get_current_user_id();
+	}
+
+	if ( is_super_admin( $user_id ) ) {
 		return true;
 	}
 
 	$post_o = get_post( $post_id );
 
-	if ( 'private_post' == $post_o->post_status && ap_user_can_view_private_post( $post_o->ID ) ) {
+	if ( 'private_post' == $post_o->post_status && ap_user_can_view_private_post( $post_o->ID, $user_id ) ) {
 		return true;
 	}
 
-	if ( 'moderate' == $post_o->post_status && ap_user_can_view_moderate_post( $post_o->ID ) ) {
+	if ( 'moderate' == $post_o->post_status && ap_user_can_view_moderate_post( $post_o->ID, $user_id ) ) {
 		return true;
 	}
 
-	if ( 'future' == $post_o->post_status && ap_user_can_view_future_post( $post_o->ID ) ) {
+	if ( 'future' == $post_o->post_status && ap_user_can_view_future_post( $post_o->ID, $user_id ) ) {
 		return true;
 	}
 
@@ -930,6 +955,21 @@ function ap_user_can_read_post( $post_id, $user_id = false, $post_type = false )
 	// Also return true if user have capability to edit others question.
 	if ( user_can( $user_id, 'ap_edit_others_'.$post_type ) ) {
 		return true;
+	}
+
+	// Do not allow to read trash post.
+	if ( 'trash' === $post_o->post_status ) {
+		return false;
+	}
+
+	// If Answer, check if user can read parent question.
+	if ( 'answer' == $post_type ) {
+		$answer = get_post( $post_o->post_parent );
+		if ( 'private_post' == $answer->post_status && ! ap_user_can_view_private_post( $answer->ID, $user_id ) ) {
+		return false;
+		} elseif ( 'moderate' == $answer->post_status && ! ap_user_can_view_moderate_post( $answer->ID, $user_id ) ) {
+			return false;
+		}
 	}
 	
 	if ( 'private_post' == $post_o->post_status && ! ap_user_can_view_private_post( $post_id, $user_id ) ) {
