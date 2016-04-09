@@ -184,13 +184,18 @@ function ap_user_can_answer( $question_id, $user_id = false ) {
 		return false;
 	}
 
+	// Return if user cannot read question.
+	if ( !ap_allow_anonymous() && !ap_user_can_read_question($question_id, $user_id) ) {
+		return false;
+	}
+
 	// Check if only admin is allowed to answer.
 	if ( ap_opt( 'only_admin_can_answer' ) && ! is_super_admin( $user_id ) ) {
 		return false;
 	}
 
 	// Bail out if question is closed.
-	if ( $question->post_type == 'closed' ) {
+	if ( $question->post_status == 'closed' ) {
 		return false;
 	}
 
@@ -225,7 +230,8 @@ function ap_user_can_see_answers() {
 		return true; }
 
 	if ( ap_opt( 'logged_in_can_see_ans' ) && ! is_user_logged_in() ) {
-		return false; }
+		return false;
+	}
 
 	return true;
 }
@@ -237,16 +243,12 @@ function ap_user_can_see_answers() {
  * @return boolean
  */
 function ap_user_can_select_answer($post_id, $user_id = false) {
-	if ( ! is_user_logged_in() ) {
-		return false;
-	}
-
-	if ( is_super_admin() ) {
-		return true;
-	}
-
 	if ( false === $user_id ) {
 		$user_id = get_current_user_id();
+	}
+
+	if ( is_super_admin( $user_id ) ) {
+		return true;
 	}
 
 	$answer 	= get_post( $post_id );
