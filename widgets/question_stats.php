@@ -21,7 +21,7 @@ class AnsPress_Stats_Widget extends WP_Widget {
 	 */
 	public function __construct() {
 		parent::__construct(
-			'ap_status_widget',
+			'ap_stats_widget',
 			__( '(AnsPress) Question Stats', 'anspress-question-answer' ),
 			array( 'description' => __( 'Shows question stats in single question page.', 'anspress-question-answer' ) )
 		);

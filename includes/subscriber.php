@@ -3,7 +3,7 @@
  * AnsPress subscribe and subscriber related functions
  *
  * @package   AnsPress
- * @author    Rahul Aryan <admin@rahularyan.com>
+ * @author    Rahul Aryan <support@anspress.io>
  * @license   GPL-2.0+
  * @link      http://anspress.io
  * @copyright 2014 Rahul Aryan
@@ -21,6 +21,12 @@
  * @since  3.0.0  Added `$answer_id` args.
  */
 function ap_new_subscriber( $user_id, $item_id, $activity, $question_id = 0, $answer_id = 0 ) {
+	// Check if subscriber table need update.
+	if ( ap_db_version_is_lower() ) {
+		ap_db_subscriber_answer_id_col();
+		ap_opt( 'db_version', AP_DB_VERSION );
+	}
+
 	global $wpdb;
 
 	// Bail if user_id or item_id is 0.

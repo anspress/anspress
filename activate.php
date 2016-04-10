@@ -144,17 +144,13 @@ class AP_Activate
                 `subs_question_id` bigint(20) NOT NULL,
                 `subs_item_id` bigint(20) NOT NULL,
                 `subs_activity` varchar(225) NOT NULL,
+                `subs_answer_id` bigint(20) NOT NULL,
                 PRIMARY KEY (`subs_id`)
 	        )'.$this->charset_collate.';';
 		}
 
 		// Check if answer_id column exists if not add it.
-		if ( $wpdb->get_var( "show tables like '{$wpdb->ap_subscribers}'" ) == $wpdb->ap_subscribers ) {
-	        $ap_subscribers_cols = $wpdb->get_results("SHOW COLUMNS FROM `$wpdb->ap_subscribers`" );
-	        if ( $ap_subscribers_cols && isset( $ap_subscribers_cols->Field ) && ! in_array( $ap_subscribers_cols->Field, 'answer_id' ) ) {
-				$wpdb->query( "ALTER TABLE `$wpdb->ap_subscribers` ADD subs_answer_id bigint(20) NOT NULL after subs_question_id;" );
-			}
-		}
+		ap_db_subscriber_answer_id_col();
 	}
 
 	/**
@@ -186,7 +182,6 @@ class AP_Activate
 	 * Insert and update tables
 	 */
 	public function insert_tables() {
-
 		global $wpdb;
 		$this->charset_collate = ! empty( $wpdb->charset ) ? 'DEFAULT CHARACTER SET '.$wpdb->charset : '';
 
@@ -235,6 +230,7 @@ class AP_Activate
 		}
 
 		$this->insert_tables();
+		ap_opt('db_version', AP_DB_VERSION );
 		update_option( 'anspress_opt', get_option( 'anspress_opt' ) + ap_default_options() );
 
 		ap_opt( 'ap_flush', 'true' );
@@ -251,6 +247,34 @@ class AP_Activate
 			switch_to_blog( $blog_id );
 			$this->activate();
 			restore_current_blog();
+		}
+	}
+}
+
+/**
+ * Check if DB version in database is not equal to current.
+ * @return boolean
+ */
+function ap_db_version_is_lower() {
+	ap_opt( 'db_version', 18 );
+	$opt = ap_opt('db_version' );
+	if ( ! empty( $opt ) && $opt > AP_DB_VERSION  ) {
+		return false;
+	}
+
+	return true;
+}
+
+/**
+ * Add `subs_answer_id` col in ap_subscribers table.
+ * @since 3.0.0
+ */
+function ap_db_subscriber_answer_id_col() {
+	global $wpdb;
+	if ( $wpdb->get_var( "show tables like '{$wpdb->ap_subscribers}'" ) == $wpdb->ap_subscribers ) {
+		$ap_subscribers_cols = $wpdb->get_col("SHOW COLUMNS FROM `$wpdb->ap_subscribers`" );
+		if ( ! in_array( 'subs_answer_id', $ap_subscribers_cols ) ) {
+			$wpdb->query( "ALTER TABLE `$wpdb->ap_subscribers` ADD subs_answer_id bigint(20) NOT NULL after subs_question_id;" );
 		}
 	}
 }

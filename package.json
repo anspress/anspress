@@ -22,7 +22,8 @@
     "grunt-wp-i18n": "",
     "grunt-wp-readme-to-markdown": "",
     "load-grunt-tasks": "",
-    "time-grunt": ""
+    "time-grunt": "",
+    "grunt-phpdocumentor": ""
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

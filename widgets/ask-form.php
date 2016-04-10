@@ -6,7 +6,7 @@ class AP_Askform_Widget extends WP_Widget {
 	 */
 	public function __construct() {
 		parent::__construct(
-			'ap_quickask_widget',
+			'ap_askform_widget',
 			__( '(AnsPress) Ask form', 'anspress-question-answer' ),
 			array( 'description' => __( 'Shows ask form.', 'anspress-question-answer' ) )
 		);

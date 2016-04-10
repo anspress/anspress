@@ -434,4 +434,41 @@ class RoleTest extends \Codeception\TestCase\WPTestCase
 		$this->assertTrue( ap_user_can_read_post( $question_id ), 'Moderator should be able to read others post' );
 	}
 
+	function test_user_can_change_status(){
+		$this->_setRole( 'subscriber' );
+		$question_id = $this->factory->post->create( array( 'post_title' => 'Test question another', 'post_type' => 'question', 'post_status' => 'publish' ) );
+
+		$this->assertTrue( ap_user_can_change_status( $question_id ), 'User should be able to change their question status' );
+
+		$this->_setRole( 'ap_moderator' );
+		$this->assertTrue( ap_user_can_change_status( $question_id ), 'Moderator should be able to change question status' );
+
+		$this->_setRole( 'subscriber' );
+		$this->assertFalse( ap_user_can_change_status( $question_id ), 'Subscriber shouldn\'t be able to change others question status' );
+	}
+
+	function test_user_can_vote_on_post(){
+		$this->_setRole( 'subscriber' );
+		$question_id = $this->factory->post->create( array( 'post_title' => 'Test question another', 'post_type' => 'question', 'post_status' => 'publish' ) );
+
+		$this->assertFalse( ap_user_can_vote_on_post( $question_id, 'vote_up' ), 'Subscriber shouldn\'t be able to vote up on thier posts' );
+		
+		$this->assertFalse( ap_user_can_vote_on_post( $question_id, 'vote_down' ), 'Subscriber shouldn\'t be able to vote down on thier posts' );
+
+		$this->_setRole( 'subscriber' );
+		$this->assertTrue( ap_user_can_vote_on_post( $question_id, 'vote_up' ), 'Subscriber should be able to vote up on others posts' );
+		
+		$this->assertTrue( ap_user_can_vote_on_post( $question_id, 'vote_down' ), 'Subscriber should be able to vote down on others posts' );
+
+		wp_update_post( [ 'ID' => $question_id, 'post_status' => 'private_post' ] );
+		$this->assertFalse( ap_user_can_vote_on_post( $question_id, 'vote_up' ), 'Subscriber shouldn\'t be able to vote up on private posts' );
+
+		wp_update_post( [ 'ID' => $question_id, 'post_status' => 'moderate' ] );
+		$this->assertFalse( ap_user_can_vote_on_post( $question_id, 'vote_up' ), 'Subscriber shouldn\'t be able to vote up on moderate posts' );
+
+		$this->_setRole( 'administrator' );
+		$question_id = $this->factory->post->create( array( 'post_title' => 'Test question another 1', 'post_type' => 'question', 'post_status' => 'publish' ) );
+		
+		$this->assertTrue( ap_user_can_change_status( $question_id ), 'Administrator should be able to vote on own posts' );
+	}
 }

@@ -95,13 +95,14 @@ class InstallTest extends \Codeception\TestCase\WPTestCase
 				'subs_question_id',
 				'subs_item_id',
 				'subs_activity',
+				'subs_answer_id',
 			),
 		);
 
 		foreach ( $tables as $table => $cols ) {
-			$cols_q = $wpdb->get_results("SHOW COLUMNS FROM `{$wpdb->$table}`" );
-			foreach ( $cols_q as $col_q ) {
-				$this->assertTrue( in_array($col_q->Field, $cols ) );
+			$cols_q = $wpdb->get_col("SHOW COLUMNS FROM `{$wpdb->$table}`" );
+			foreach ( $cols as $col ) {
+				$this->assertContains( $col, $cols_q , "$col column doesn't exists" );
 			}
 		}
 	}
