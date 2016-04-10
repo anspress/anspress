@@ -1840,6 +1840,7 @@ function ap_append_table_names() {
 	$wpdb->ap_subscribers	= $wpdb->prefix . 'ap_subscribers';
 
 }
+ap_append_table_names();
 
 /**
  * Remove stop words from a string
