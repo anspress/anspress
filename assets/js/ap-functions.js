@@ -91,14 +91,18 @@
 
  		function showtip(el){
  			var elm = $(el);
- 	 		if( typeof elm.data('action') !== 'undefined' &&  elm.data('action') == 'ap_hover_card' && typeof elm.data('tipquery') === 'undefined' ){
-	 			elm.data('tipquery', 'action=ap_ajax&ap_ajax_action=user_cover&user_id='+ elm.data('userid'));
+            var user_id = elm.data('userid') || false;
+            var action = elm.data('action') || false;
+            var tipquery = elm.data('tipquery') || false;
+            
+ 	 		if( user_id && !tipquery ){
+	 			elm.data('tipquery', 'action=ap_ajax&ap_ajax_action=user_cover&user_id='+ user_id);
+                tipquery = elm.data('tipquery');
 	 		}
 
-	 		if( typeof $(el).data('tipquery') !== 'undefined' ){
-	 			config.ajax = elm.data('tipquery');
-	 		}
-
+	 		if( tipquery !== false )
+	 			config.ajax = tipquery;
+	 		
  			altertitle(el);
 
  			if(config.title == ''){
@@ -114,7 +118,7 @@
  			tip = $('<div class="ap-tooltip '+ config.theme +'"><div class="ap-tooltip-in">'+ title +'</div></div>');
 
  			if(config.ajax != '' && !plug.ajax_running){
- 				if ( $(elm.attr('data-ajax')).length == 0 && $('#user_' + elm.data('userid') + '_card').length == 0 ) {
+ 				if ( $(elm.attr('data-ajax')).length == 0 && $('#user_' + user_id + '_card').length == 0 ) {
  					plug.ajax_running = true;
 	 				$.ajax({
 	                    type: 'POST',
@@ -133,8 +137,8 @@
 	                    }
 	                });
 	            }else{
-	            	var html = $( '#user_' + elm.data('userid') + '_card' ).html();
-                    tip.find('.ap-tooltip-in').html($(html).show());
+	            	var html = $( '#user_' + user_id + '_card' ).html();
+                    tip.find('.ap-tooltip-in').html( $(html).show() );
 	            }
 
  			}
@@ -145,7 +149,6 @@
  					position(el);
  				});
  			}
-
 
  			tip.appendTo('body');
  			position(el);
@@ -177,7 +180,6 @@
 		});
 
 		return this;
-
  	}
 
 	//pass in just the context as a $(obj) or a settings JS object

@@ -320,8 +320,8 @@ function ap_user_menu($collapse = true, $user_id = false) {
 		}
 
 		/*
-		if ( $collapse ) {
-			$o .= '<li class="ap-user-menu-more ap-dropdown"><a href="#" class="ap-dropdown-toggle">'.__( 'More', 'ap' ).ap_icon( 'chevron-down', true ).'</a><ul class="ap-dropdown-menu"></ul></li>'; }
+        if ( $collapse ) {
+            $o .= '<li class="ap-user-menu-more ap-dropdown"><a href="#" class="ap-dropdown-toggle">'.__( 'More', 'ap' ).ap_icon( 'chevron-down', true ).'</a><ul class="ap-dropdown-menu"></ul></li>'; }
 
 		$o .= '</ul>';*/
 		echo $o;
@@ -819,26 +819,32 @@ function ap_hover_card_ajax_query($user_id = false) {
 	return 'action=ap_ajax&ap_ajax_action=user_cover&user_id='.$user_id;
 }
 
+/**
+ * Return or echo hovercard data attribute.
+ * @param  integer $user_id User id.
+ * @param  boolean $echo    Echo or return? default is true.
+ * @return string
+ */
 function ap_hover_card_attributes($user_id, $echo = true) {
 	if ( $user_id > 0 ) {
-		$attr = ' data-userid="'.$user_id.'" data-action="ap_hover_card"';
+		$attr = ' data-userid="'.$user_id.'"';
 
-		if ( $echo ) {
-			echo $attr; } else {
-			return $attr; }
+		if ( true !== $echo ) {
+			return $attr;
+		}
+
+		echo $attr;
 	}
 }
 
 /**
- * Ouput user avatar with link.
+ * Ouput user avatar with link and hovercard attribute.
  * @param  integer $user_id User id.
  * @param  integer $size    Avatar size.
  * @return void
  */
-function ap_user_link_avatar($user_id, $size = 30) {
-	echo '<a href="'.ap_user_link( $user_id ).'"';
-	ap_hover_card_attributes( $user_id );
-	echo '>';
+function ap_user_link_avatar( $user_id, $size = 30 ) {
+	echo '<a href="'.ap_user_link( $user_id ).'" '. ap_hover_card_attributes( $user_id, false ) .'>';
 	echo get_avatar( $user_id, $size );
 	echo '</a>';
 }

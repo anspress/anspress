@@ -650,7 +650,7 @@
         },
         hoverCard:function(){
             if(!disable_hover_card)
-            $('[data-action="ap_hover_card"]').aptip({
+            $('[data-userid]').aptip({
                 theme: 'ap-hover-card',
                 interactive:true,
                 delay:500,

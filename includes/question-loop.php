@@ -400,7 +400,7 @@ function ap_question_the_status() {
 	 */
 function ap_question_the_comments() {
 	if ( ! ap_opt( 'disable_comments_on_question' ) ) {
-		echo '<div id="post-c-'.get_the_ID().'" class="ap-comments comment-container '.( have_comments() ? 'have' : 'no' ).'-comments">';
+		echo '<div id="post-c-'.get_the_ID().'" class="ap-comments comment-container '. ( get_comments_number() > 0 ? 'have' : 'no' ) .'-comments">';
 		comments_template();
 		echo '</div>';
 	}

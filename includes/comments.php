@@ -378,3 +378,4 @@ function ap_comment_form( $post_id = false, $comment_id = false ) {
 function ap_comment_delete_locked( $comment_ID ) {
 	return current_time( 'timestamp', true ) < ( get_comment_date( 'U', $comment_ID ) + (integer) ap_opt( 'disable_delete_after' ) );
 }
+

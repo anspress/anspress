@@ -6,12 +6,9 @@
  * @since 2.4
  */
 ?>
-<div id="comment-<?php comment_ID(); ?>" <?php comment_class( 'clearfix' ); ?>>
+<div id="comment-<?php comment_ID(); ?>" <?php comment_class( 'ap-comment clearfix' ); ?>>
 	<div class="ap-avatar ap-pull-left">
-		<a href="<?php echo ap_user_link($comment->user_id ); ?>">
-		<!-- TODO: OPTION - Avatar size -->
-		<?php echo get_avatar($comment->user_id, 30 ); ?>
-		</a>
+		<?php ap_user_link_avatar( $comment->user_id, 30 ); ?>
 	</div><!-- close .ap-avatar -->
 	<div class="ap-comment-content no-overflow">
 		<div class="ap-comment-header">
