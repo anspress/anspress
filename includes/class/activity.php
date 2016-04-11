@@ -117,7 +117,6 @@ class AnsPress_Activity_Query
 	 */
 	public function __construct($args = '') {
 		global $wpdb;
-		ap_wpdb_tables();
 		$this->per_page = isset($args['per_page'] ) ? (int) $args['per_page'] : 20;
 
 		// Grab the current page number and set to 1 if no page number is set.
@@ -480,10 +479,9 @@ function ap_wpdb_tables() {
  */
 function ap_insert_activity( $args ) {
 	global $wpdb;
-	$user_id = get_current_user_id();
 
 	$defaults = array(
-		'user_id' => $user_id,
+		'user_id' => get_current_user_id(),
 		'secondary_user' => 0,
 		'type' => '',
 		'parent_type' => 'post',
@@ -897,7 +895,7 @@ function ap_update_activities( $where, $columns ) {
 		return false;
 	}
 
-	foreach ( $columns as $key => $value ) {
+	foreach ( (array) $columns as $key => $value ) {
 		if ( 'user_id' == $key || 'secondary_user' == $key || 'question_id' == $key || 'item_id' == $key ) {
 			$coulmns_f[] = '%d';
 			$columns[ $key ] = (int) $value;
@@ -907,12 +905,14 @@ function ap_update_activities( $where, $columns ) {
 		}
 	}
 
+	if ( empty( $where_s ) ) {
+		return false;
+	}
+
 	$row = $wpdb->update( $wpdb->ap_activity, $columns, $where_s, $coulmns_f, $where_f );
 
-	if ( false !== $row ) {
-		// wp_cache_delete( $activity_id, 'ap_activity' );
-		return $row;
-	}
+	// wp_cache_delete( $activity_id, 'ap_activity' );
+	return $row;
 }
 
 /**
