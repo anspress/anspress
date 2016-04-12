@@ -393,7 +393,7 @@ function ap_icon($name, $html = false) {
 	$icon = esc_attr( $icon ); // Escape attribute.
 
 	if ( $html ) {
-		return '<i class="'.$icon.'"></i> ';
+		return '<span class="'.$icon.'"></span> ';
 	}
 
 	return $icon;
