@@ -471,4 +471,20 @@ class RoleTest extends \Codeception\TestCase\WPTestCase
 		
 		$this->assertTrue( ap_user_can_change_status( $question_id ), 'Administrator should be able to vote on own posts' );
 	}
+
+	function test_user_can_approve_comment(){
+		$this->_setRole( 'subscriber' );
+		$question_id = $this->factory->post->create( array( 'post_title' => 'Test question another', 'post_type' => 'question', 'post_status' => 'publish' ) );
+		
+		$comment_id = $this->factory->comment->create( array( 'comment_content' => 'Test question another comment', 'comment_post_ID' => $question_id, 'user_id' => get_current_user_id() ) );
+
+		$this->assertTrue( ap_user_can_edit_comment( $comment_id ), 'User should be able to edit their comment' );
+
+		wp_set_comment_status( $comment_id, 'hold' );
+
+		$this->assertFalse( ap_user_can_edit_comment( $comment_id ), 'User shouldn\'t be able to edit unapproved comment' );
+
+		$this->_setRole( 'ap_moderator' );
+		$this->assertTrue( ap_user_can_approve_comment( ), 'Moderator should be able to approve comment' );
+	}
 }
