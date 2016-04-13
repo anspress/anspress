@@ -6,10 +6,7 @@
 
 $I = new UITester($scenario);
 $I->loginAsAdmin();
-
-$I->wantTo('Check if AnsPress is installed');
 $I->amOnPluginPage();
-$I->seePluginActivated('anspress-question-answer');
 $I->wantTo('Check if AnsPress is active');
-$I->seeElement('tr#anspress .plugin-title .deactivate');
+$I->seeElement('[data-slug="anspress-question-answer"] .deactivate');
 //$I->makeScreenshot('admin' );
