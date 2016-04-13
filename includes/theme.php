@@ -2,10 +2,10 @@
 /**
  * AnsPress theme and template handling.
  *
- * @author    Rahul Aryan <admin@rahularyan.com>
+ * @author    Rahul Aryan <support@anspress.io>
  * @license   GPL-2.0+
  *
- * @link      http://rahularyan.com
+ * @link      http://anspress.io
  *
  * @copyright 2014 Rahul Aryan
  * @package AnsPress/theme
@@ -579,7 +579,7 @@ function ap_question_sorting($current_url = '') {
 	echo '<div class="ap-dropdown">';
 	echo '<a id="ap-sort-anchor" class="ap-dropdown-toggle'.('' != $sort ? ' active' : '').'" href="#">'.__( 'Sort by', 'anspress-question-answer' ).'</a>';
 	echo '<div class="ap-dropdown-menu">';
-	foreach ( $navs as $k => $nav ) {
+	foreach ( (array) $navs as $k => $nav ) {
 		echo '<li '.( $k == $sort ? 'class="active" ' : '').'><a href="#" data-value="'.$k.'">'.$nav['title'].'</a></li>';
 	}
 

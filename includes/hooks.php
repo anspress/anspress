@@ -54,6 +54,7 @@ class AnsPress_Hooks
 	    anspress()->add_action( 'ap_vote_removed', __CLASS__, 'update_user_vote_casted_count' , 10, 4 );
 	    anspress()->add_action( 'the_post', __CLASS__, 'ap_append_vote_count' );
 	    anspress()->add_filter( 'human_time_diff', __CLASS__, 'human_time_diff' );
+	    anspress()->add_filter( 'comments_template_query_args', 'AnsPress_Comment_Hooks', 'comments_template_query_args' );
 	}
 
 	/**

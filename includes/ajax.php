@@ -43,6 +43,7 @@ class AnsPress_Ajax
 	    anspress()->add_action( 'ap_ajax_flag_comment', $this, 'flag_comment' );
 	    anspress()->add_action( 'ap_ajax_delete_activity', $this, 'delete_activity' );
 	    anspress()->add_action( 'ap_ajax_submit_comment', 'AnsPress_Comment_Hooks','submit_comment' );
+	    anspress()->add_action( 'ap_ajax_approve_comment', 'AnsPress_Comment_Hooks','approve_comment' );
 	}
 
 	/**

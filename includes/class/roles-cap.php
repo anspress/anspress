@@ -470,6 +470,11 @@ function ap_user_can_edit_comment( $comment_id,  $user_id = false ) {
 		return false;
 	}
 
+	// Do not allow to edit if not approved.
+	if( '0' == $comment->comment_approved ){
+		return false;
+	}
+
 	// Don't allow user to comment if they don't have permission to read post.
 	if ( ! ap_user_can_read_post( $comment->comment_post_ID, $user_id ) ) {
 		return false;
@@ -901,6 +906,7 @@ function ap_role_caps( $role ) {
 			'ap_view_private'			=> true,
 			'ap_view_moderate'			=> true,
 			'ap_change_status_other'	=> true,
+			'ap_approve_comment'		=> true,
 		),
 	);
 
@@ -1075,6 +1081,38 @@ function ap_user_can_vote_on_post( $post_id, $type, $user_id = false, $wp_error 
 
 	if ( $wp_error ) {
 		return new WP_Error('no_permission', __('Its look like you do not have permission to vote.', 'anspress-question-answer' ) );
+	}
+
+	return false;
+}
+
+/**
+ * Check if user can delete comment
+ * @param  integer|boolean $user_id User ID.
+ * @return boolean
+ */
+function ap_user_can_approve_comment( $user_id = false ) {
+	if( false === $user_id ){
+		$user_id = get_current_user_id();
+	}
+
+	/**
+	 * Filter to hijack ap_user_can_approve_comment.
+	 * @param  boolean|string 	$apply_filter 	Apply current filter, empty string by default.
+	 * @param  integer 			$user_id 		User ID.
+	 * @return boolean
+	 * @since  3.0.0
+	 */
+	$filter = apply_filters( 'ap_user_can_approve_comment', '', $user_id );
+	if ( true === $filter ) {
+		return true;
+	} elseif ( false === $filter ) {
+		return false;
+	}
+
+
+	if ( is_super_admin($user_id) || user_can( $user_id, 'ap_approve_comment' ) ) {
+		return true;
 	}
 
 	return false;

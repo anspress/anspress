@@ -87,10 +87,7 @@ function ap_scripts_front() {
 
 if ( ! function_exists( 'ap_comment' ) ) :
 	function ap_comment($comment) {
-
 	    $GLOBALS['comment'] = $comment;
-	    $class = '0' == $comment->comment_approved ? ' pending' : '';
-
 	    include ap_get_theme_location( 'comment.php' );
 	}
 endif;

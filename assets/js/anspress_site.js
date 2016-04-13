@@ -269,6 +269,18 @@
                 $(elm).toggleClass('active');
             }
         },
+        
+        /**
+         * Remove a class from an element.
+         * @param  {string} elm    Element selector.
+         * @param  {string} classToRemove  Class to remove from selector.
+         */
+        removeClass: function(elm, classToRemove) {
+            console.log(elm);
+            if ($(elm).length > 0){
+               $(elm).removeClass(classToRemove);
+            }
+        },
 
         /**
          * Append html before a selector.
@@ -749,6 +761,18 @@
 })(jQuery);
 
 (function($) {
+    function apDoActions(action, args, data){
+        data = data|| '';
+        if(typeof ApSite[action] === 'function'){                        
+            if( typeof args === 'object' ){
+                args.data = data;
+                ApSite[action].apply(ApSite, args);
+            }
+            else{
+                ApSite[action](args, data);
+            }
+        }
+    }
     $(document).ajaxComplete(function(event, response, settings) {
         // Get response html.
         var dataText = $(response.responseText);
@@ -783,15 +807,16 @@
             //Check if data.do is object
             if( typeof action === 'object' ){
                 $.each(action, function(index, el) {
-                    if(typeof ApSite[index] === 'function'){                        
-                        if( typeof el === 'object' ){
-                            el.data = data;
-                            ApSite[index].apply(ApSite, el);
-                        }
-                        else{
-                            ApSite[index](el, data);
-                        }
+                    console.log(el);
+                    if(typeof ApSite[index] === 'function'){  
+                        apDoActions(index, el, data);
+                    }else if(typeof el === 'object'){
+                        $.each(el, function(i, obj) {
+                            if( typeof obj.action !== 'undefined' && typeof ApSite[obj.action] === 'function' )
+                                apDoActions(obj.action, obj.args, data);
+                        });
                     }
+                    
                 });
             }else{
                 if(typeof ApSite[action] === 'function'){

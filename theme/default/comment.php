@@ -5,8 +5,9 @@
  * @link http://anspress.io
  * @since 2.4
  */
+$class = '0' == $comment->comment_approved ? ' unapproved' : '';
 ?>
-<div id="comment-<?php comment_ID(); ?>" <?php comment_class( 'ap-comment clearfix' ); ?>>
+<div id="comment-<?php comment_ID(); ?>" <?php comment_class( 'ap-comment clearfix'. $class ); ?>>
 	<div class="ap-avatar ap-pull-left">
 		<?php ap_user_link_avatar( $comment->user_id, 30 ); ?>
 	</div><!-- close .ap-avatar -->
@@ -38,7 +39,7 @@
 			do_action('ap_after_comment_content', $comment );
 		?>
 		<?php if ( '0' == $comment->comment_approved ) : ?>
-			<p class="comment-awaiting-moderation"><?php _e('Your comment is awaiting moderation.', 'anspress-question-answer' ); ?></p>
+			<p class="comment-awaiting-moderation"><?php _e('This comment is awaiting moderation.', 'anspress-question-answer' ); ?></p>
 		<?php endif; ?>
 	</div><!-- close .ap-comment-content -->
 </div><!-- close #comment-* -->

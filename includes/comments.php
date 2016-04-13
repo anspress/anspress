@@ -14,7 +14,7 @@ class AnsPress_Comment_Hooks
 
 	    $result = array(
 			'ap_responce' => true,
-			'action' => 'load_comment_form'
+			'action' => 'load_comment_form',
 		);
 
 	    if ( isset( $_POST['comment_ID'] ) ) {
@@ -255,6 +255,46 @@ class AnsPress_Comment_Hooks
 
 	    ap_ajax_json( 'something_wrong' );
 	}
+
+	/**
+	 * Modify comment query args for showing pending comments to moderator.
+	 * @param  array $args Comment args.
+	 * @return array
+	 * @since  3.0.0
+	 */
+	public static function comments_template_query_args( $args ) {
+		if ( ap_user_can_approve_comment() ) {
+			$args['status'] = 'all';
+		}
+		return $args;
+	}
+
+	public static function approve_comment(){
+		$args = $_POST['args'];
+		if ( ! ap_verify_nonce( 'approve_comment_'. (int) $args[0] ) || ! ap_user_can_approve_comment( ) ) {
+	    	ap_ajax_json( 'something_wrong' );
+	    }
+
+	    $comment_id = (int) $args[0];
+
+		$success = wp_set_comment_status( $comment_id, 'approve' );
+		if( $success ){
+			ap_ajax_json( array(
+				'action' 		=> 'approve_comment',
+				'comment_ID' 	=> $comment_id,
+				'message' 		=> __('Comment approved successfully', 'anspress-question-answer'),
+				'do'			=> array( 
+					'removeClass' => [ '#comment-'.$comment_id, 'unapproved' ],
+					array(
+						['action' => 'remove_if_exists', 'args' => '#comment-'.$comment_id .' .comment-awaiting-moderation'],
+						['action' => 'remove_if_exists', 'args' => '#comment-'.$comment_id .' .ap-comment-approve'],
+					)
+				),
+			) );
+		}
+
+		ap_ajax_json( 'something_wrong' );
+	} 
 }
 
 /**
@@ -310,22 +350,23 @@ function ap_comment_actions_buttons() {
 		$actions['delete'] = '<a class="comment-delete-btn" href="#" data-toggle="#li-comment-'.get_comment_ID().'" data-action="delete_comment" data-query="ap_ajax_action=delete_comment&comment_ID='.get_comment_ID().'&__nonce='.$nonce.'">'.__( 'Delete', 'anspress-question-answer' ).'</a>';
 	}
 
-	if ( is_user_logged_in() ) {
+	if ( '0' != $comment->comment_approved && is_user_logged_in() ) {
 		$actions['flag'] = ap_get_comment_flag_btn( get_comment_ID() );
 	}
 
+	if ( '0' == $comment->comment_approved && ap_user_can_approve_comment( ) ) {
+		$nonce = wp_create_nonce( 'approve_comment_'.get_comment_ID() );
+		$actions['approve'] = '<a class="ap-comment-approve" href="#" data-action="ajax_btn" data-query="approve_comment::'.$nonce.'::'.get_comment_ID().'">'.__( 'Approve', 'anspress-question-answer' ).'</a>';
+	}
+
 	/*
-     * FILTER: ap_comment_actions_buttons
-     * For filtering post actions buttons
-     * @var     string
-     * @since   2.0
+     * For filtering comment action buttons.
+     * @param array $actions Comment actions.
+     * @since   2.0.0
 	 */
 	$actions = apply_filters( 'ap_comment_actions_buttons', $actions );
-
-	if ( ! empty( $actions ) && count( $actions ) > 0 ) {
-		foreach ( $actions as $k => $action ) {
-			echo '<span class="ap-comment-action ap-action-'.esc_attr( $k ).'">'.$action.'</span>';
-		}
+	foreach ( (array) $actions as $k => $action ) {
+		echo '<span class="ap-comment-action ap-action-'.esc_attr( $k ).'">'.$action.'</span>';
 	}
 }
 
