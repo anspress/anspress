@@ -170,7 +170,7 @@ function ap_user_display_name($args = array()) {
 	 * @var string
 	 * @since 2.0.1
 	 */
-	$return = apply_filters( 'ap_user_display_name', $return );
+	$return = apply_filters( 'ap_user_display_name', $return, $args );
 
 	if ( $echo !== false ) {
 		echo $return;
