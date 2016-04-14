@@ -35,7 +35,7 @@ class AnsPress_Hooks
 	    anspress()->add_action( 'untrash_post', __CLASS__, 'untrash_ans_on_question_untrash' );
 	    anspress()->add_action( 'comment_post', __CLASS__, 'new_comment_approve', 10, 2 );
 	    anspress()->add_action( 'comment_unapproved_to_approved', __CLASS__, 'comment_approve' );
-	    anspress()->add_action( 'comment_approved_to_unapproved', __CLASS__, 'comment_unapproved' );
+	    anspress()->add_action( 'comment_approved_to_unapproved', __CLASS__, 'comment_unapprove' );
 	    anspress()->add_action( 'trashed_comment', __CLASS__, 'comment_trash' );
 	    anspress()->add_action( 'delete_comment ', __CLASS__, 'comment_trash' );
 	    anspress()->add_action( 'ap_publish_comment', __CLASS__, 'publish_comment' );
