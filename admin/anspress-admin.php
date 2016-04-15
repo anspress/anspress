@@ -109,6 +109,9 @@ class AnsPress_Admin
 	 * Register and enqueue admin-specific style sheet.
 	 */
 	public function enqueue_admin_styles() {
+		if( !ap_load_admin_assets() ){
+			return;
+		}
 		wp_enqueue_style( 'ap-admin-css', ANSPRESS_URL.'assets/ap-admin.css' );
 		wp_enqueue_style( 'wp-color-picker' );
 		wp_enqueue_style( 'ap-fonts', ap_get_theme_url( 'fonts/style.css' ), array(), AP_VERSION );
@@ -118,14 +121,12 @@ class AnsPress_Admin
 	 * Register and enqueue admin-specific JavaScript.
 	 */
 	public function enqueue_admin_scripts() {
-		global $typenow, $pagenow;
+		if( !ap_load_admin_assets() ){
+			return;
+		}
 
 		$dir = ap_env_dev() ? 'js' : 'min';
 		$min = ap_env_dev() ? '' : '.min';
-
-		if ( in_array( $pagenow, array( 'admin.php' ) ) &&  (isset( $_GET['page'] ) && 'anspress' == $_GET['page'] ) ) {
-			wp_enqueue_script( 'masonry' );
-		}
 
 		wp_enqueue_script( 'jquery-form', array( 'jquery' ), false, true );
 		wp_enqueue_script( 'ap-initial.js', ap_get_theme_url( 'js/initial.min.js' ), 'jquery', AP_VERSION );

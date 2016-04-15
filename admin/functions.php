@@ -146,3 +146,20 @@ function ap_get_option_groups() {
 	do_action( 'ap_option_groups' );
 	return apply_filters( 'ap_get_option_groups', $ap_option_tabs );
 }
+
+/**
+ * Check if AnsPress admin assets need to be loaded.
+ * @return boolean
+ * @since  3.0.0
+ */
+function ap_load_admin_assets(){
+	$page = get_current_screen();
+	$load = 'question' === $page->post_type || 'answer' === $page->post_type || strpos($page->base, 'anspress') !== false;
+	
+	/**
+	 * Filter ap_load_admin_assets to load admin assets in custom page.
+	 * @param boolean $load Pass a boolean value if need to load assets.
+	 * @return boolean
+	 */
+	return apply_filters( 'ap_load_admin_assets', $load );
+}
