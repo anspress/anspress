@@ -662,13 +662,13 @@
         },
         hoverCard:function(){
             if(!disable_hover_card)
-            $('[data-userid]').aptip({
-                theme: 'ap-hover-card',
-                interactive:true,
-                delay:500,
-                position: 'bottom right',
-                title: '<div class="hovercard-loading-bg"></div>'
-            });
+                $('[data-userid], [data-catid]').aptip({
+                    theme: 'ap-hover-card',
+                    interactive:true,
+                    delay:500,
+                    position: 'bottom right',
+                    title: '<div class="hovercard-loading-bg"></div>'
+                });
         },
         delete_notification: function() {
             $('body').delegate('[data-action="ap_delete_notification"]', 'click', function(e) {

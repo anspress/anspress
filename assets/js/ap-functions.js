@@ -30,14 +30,16 @@
  		}
 
  		function position(el){
+ 			var winheight 	= $(window).height();
  			var offset 	= $(el).offset();
  			var height 	= $(el).outerHeight();
  			var width 	= $(el).outerWidth();
+ 			var tipposition 	= $(el).data('tipposition') || false;
 
  			var setpos = config.position.split(/ +/);
 
- 			if(typeof $(el).data('tipposition') !== 'undefined'){
- 				setpos =  $(el).data('tipposition').split(/ +/);
+ 			if( tipposition ){
+ 				setpos =  tipposition.split(/ +/);
  			}
 
  			var x = 'top';
@@ -76,6 +78,11 @@
  			// Keep it inside window.
  			if( y < 0 )	y = 5;
  			if( s > x )	x = offset.top + width;
+
+ 			var inside_x = $(window).scrollTop() + winheight - tip.outerHeight();
+
+ 			if( x > inside_x )
+ 				x = x - tip.outerHeight();
  			
  			tip.css({
  				overflow: 'absolute',
@@ -91,12 +98,15 @@
 
  		function showtip(el){
  			var elm = $(el);
-            var user_id = elm.data('userid') || false;
+            var id = elm.data('userid') || elm.data('catid') || false;
             var action = elm.data('action') || false;
             var tipquery = elm.data('tipquery') || false;
             
- 	 		if( user_id && !tipquery ){
-	 			elm.data('tipquery', 'action=ap_ajax&ap_ajax_action=user_cover&user_id='+ user_id);
+ 	 		if( id && !tipquery ){
+ 	 			var is_term = elm.data('catid') || false;
+ 	 			is_term = is_term? '&type=cat' : '';
+ 	 			console.log(is_term);
+	 			elm.data('tipquery', 'action=ap_ajax&ap_ajax_action=hover_card&id='+ id+ is_term);
                 tipquery = elm.data('tipquery');
 	 		}
 
@@ -118,7 +128,7 @@
  			tip = $('<div class="ap-tooltip '+ config.theme +'"><div class="ap-tooltip-in">'+ title +'</div></div>');
 
  			if(config.ajax != '' && !plug.ajax_running){
- 				if ( $(elm.attr('data-ajax')).length == 0 && $('#user_' + user_id + '_card').length == 0 ) {
+ 				if ( $(elm.attr('data-ajax')).length == 0 && $('#' + id + '_card').length == 0 ) {
  					plug.ajax_running = true;
 	 				$.ajax({
 	                    type: 'POST',
@@ -137,7 +147,7 @@
 	                    }
 	                });
 	            }else{
-	            	var html = $( '#user_' + user_id + '_card' ).html();
+	            	var html = $( '#' + id + '_card' ).html();
                     tip.find('.ap-tooltip-in').html( $(html).show() );
 	            }
 
@@ -321,7 +331,16 @@
 		console.log(newQuery);
 
 		return newQuery;
-	}	
+	}
+
+	/* Nano Templates - https://github.com/trix/nano */
+	$.fn.apTemplate = function (template, data) {
+		return template.replace(/\{([\w\.]*)\}/g, function(str, key) {
+			var keys = key.split("."), v = data[keys.shift()];
+			for (var i = 0, l = keys.length; i < l; i++) v = v[keys[i]];
+			return (typeof v !== "undefined" && v !== null) ? v : "";
+		});
+	}
 
 })(jQuery);
 
