@@ -5,7 +5,6 @@
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.13);
     font-family: Helvetica,Arial,sans-serif;
     font-size: 14px;
-    height: 255px;
     line-height: 16px;
     padding: 0;
     width: 250px;
@@ -33,7 +32,7 @@
 	    width: 100%;
     }
     .ap-card-content{
-	    padding: 10px;
+	    padding: 5px;
 	    position: relative;
     }
     .ap-avatar{
@@ -142,6 +141,51 @@
 		    background: none repeat scroll 0 0 #eee;
 		    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2) inset;
 		}
+	}
+}
+.ap-hcard{
+	&-catimg{
+	    margin-bottom: 10px;
+	    overflow: hidden;
+		img{
+			width: 100%;
+		}
+	}
+	&-caticon{
+		float: left;
+		text-decoration: none;
+		margin-right: 10px;
+		span{
+		    border-radius: 2px;
+		    color: #fff;
+		    display: block;
+		    font-size: 20px;
+		    height: 20px;
+		    padding: 8px;
+		    text-align: center;		    
+		    width: 20px;
+		}
+	}
+	&-ctitle {
+	    display: block;
+	    font-size: 15px;
+	    font-weight: bold;
+	}
+	&-qcount {
+	    color: #777;
+	    display: block;
+	    font-size: 12px;
+	    margin-top: 4px;
+	}
+	&-cdesc {
+	    font-size: 11px;
+	    margin-top: 6px;
+	}
+	&-csub {
+	    display: block;
+	    font-size: 13px;
+	    font-weight: bold;
+	    margin-top: 5px;
 	}
 }
 

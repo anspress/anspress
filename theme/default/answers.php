@@ -15,7 +15,14 @@
 	<div id="ap-answers-c">
 		<div class="ap-sorting-tab clearfix">
 			<h3 class="ap-answers-label ap-pull-left">
-				<?php echo '<span data-view="answer_count">'.ap_answer_get_the_count().'</span> ' .sprintf(_n('answer', 'answers', ap_answer_get_the_count(), 'anspress-question-answer')); ?>
+				<?php 
+					printf(
+						_n('%s%d%s answer', '%s%d%s answers', ap_answer_get_the_count(), 'anspress-question-answer'),
+						'<span data-view="answer_count">',
+						ap_answer_get_the_count(),
+						'</span>'
+					);
+				?>				
 			</h3>
 			<?php ap_answers_tab(ap_question_get_the_permalink()); ?>
 		</div>

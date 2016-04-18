@@ -7,7 +7,7 @@
  * @package AnsPress
  */
 ?>
-<div id="user_<?php ap_user_the_ID(); ?>_card" style="display:none">
+<div id="<?php ap_user_the_ID(); ?>_card" style="display:none">
 	<div class="ap-card-content">
 		<div class="ap-avatar">
 			<a href="<?php ap_user_the_link(); ?>">

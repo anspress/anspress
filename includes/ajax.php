@@ -33,7 +33,7 @@ class AnsPress_Ajax
 	    anspress()->add_action( 'ap_ajax_load_user_field_form', $this, 'load_user_field_form' );
 	    anspress()->add_action( 'ap_ajax_set_featured', $this, 'set_featured' );
 	    anspress()->add_action( 'ap_ajax_follow', $this, 'follow' );
-	    anspress()->add_action( 'ap_ajax_user_cover', $this, 'ap_user_card' );
+	    anspress()->add_action( 'ap_ajax_hover_card', $this, 'hover_card' );
 	    anspress()->add_action( 'ap_ajax_delete_notification', $this, 'delete_notification' );
 	    anspress()->add_action( 'ap_ajax_markread_notification', $this, 'markread_notification' );
 	    anspress()->add_action( 'ap_ajax_set_notifications_as_read', $this, 'set_notifications_as_read' );
@@ -444,28 +444,51 @@ class AnsPress_Ajax
 	/**
 	 * Handle Ajax callback for user hover card
 	 */
-	public function ap_user_card() {
+	public function hover_card() {
 		if ( ap_opt( 'disable_hover_card' ) ) {
 			$this->something_wrong();
 		}
 
-		$user_id = (int) $_POST['user_id'];
+		$id = (int) $_POST['id'];
 
 		if ( ! ap_verify_default_nonce() ) {
 			$this->something_wrong();
 		}
 
+		if( isset( $_POST['type'] ) && 'cat' == $_POST['type'] ){
+			SELF::hover_card_category( $id );
+		}else{
+			SELF::hover_card_user( $id );
+		}
+
+		wp_die();
+	}
+
+	/**
+	 * Output hover card for term.
+	 * @param  integer $id User ID.
+	 * @since  3.0.0
+	 */
+	public static function hover_card_category( $id ) {
+		$category = get_term( $id, 'question_category' );
+		include ap_get_theme_location( 'hover-card/category.php' );
+	}
+
+	/**
+	 * Output hover card for user.
+	 * @param  integer $id User ID.
+	 * @since  3.0.0
+	 */
+	public static function hover_card_user( $id ) {
 		global $ap_user_query;
-		$ap_user_query = ap_has_users( array( 'ID' => $user_id ) );
+		$ap_user_query = ap_has_users( array( 'ID' => $id ) );
 
 		if ( $ap_user_query->has_users() ) {
 			while ( ap_users() ) :
 				ap_the_user();
-				ap_get_template_part( 'user/user-card' );
+				ap_get_template_part( 'hover-card/user' );
 			endwhile;
 		}
-
-		wp_die();
 	}
 
 	/**
