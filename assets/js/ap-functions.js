@@ -195,13 +195,11 @@
 				}
 
 			}).mouseleave(function(){
-				if(typeof tip !== 'undefined'){
-					//tip.remove();
-				}
+				if(typeof tip !== 'undefined')
+					tip.remove();
 
-				if(typeof delay !== 'undefined'){
+				if(typeof delay !== 'undefined')
 					clearTimeout( delay );
-				}
 			})
 		});
 
@@ -475,6 +473,25 @@ function apParseLoopInTemplate(template, data){
 	return template;
 }
 
+function apParseHideInTemplate(template, data){
+	if( jQuery(template).find('[ap-hide]').length === 0 )
+		return template;
+
+	jQuery(template).find('[ap-hide]').each(function(index, el) {
+		var outerHtml = jQuery(el).prop('outerHTML');
+		var exp = jQuery(el).attr('ap-hide');
+		var f = new Function(exp);
+
+		if(f()){
+			jQuery(el).hide();
+			jQuery(el).removeAttr('ap-hide');
+			var newOuterHtml = jQuery(el).prop('outerHTML');		
+			template = template.replace(outerHtml, newOuterHtml);
+		}
+	});
+	return template;
+}
+
 /* Nano Templates - https://github.com/trix/nano */
 function apParseTemplate(template, data, cb, templateStr) {
 	template = template || false;
@@ -500,6 +517,7 @@ function apParseTemplate(template, data, cb, templateStr) {
 		for (var i = 0, l = keys.length; i < l; i++) v = v[keys[i]];
 		return (typeof v !== "undefined" && v !== null) ? v : "";
 	});
+	temp = apParseHideInTemplate(temp, data);
 
 	if(cb) cb(temp);
 	return temp;

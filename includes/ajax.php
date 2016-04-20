@@ -470,9 +470,40 @@ class AnsPress_Ajax
 	 * @since  3.0.0
 	 */
 	public static function hover_card_category( $id ) {
+		$cache = get_transient( 'ap_category_card_'.$id );
+
+		if ( false !== $cache ) {
+			ap_ajax_json( $cache );
+		}
+
 		$category = get_term( $id, 'question_category' );
-		include ap_get_theme_location( 'hover-card/category.php' );
-		// ap_ajax_json( [ 'template' => 'user-card', 'apData' => $category ] );
+		$sub_cat_count = count(get_term_children( $category->term_id, 'question_category' ) );
+
+		$data = array(
+			'template' => 'category-hover',
+			'apData' => array(
+				'id' 			=> $category->term_id,
+				'name' 			=> $category->name,
+				'link' 			=> get_category_link( $category ),
+				'image' 		=> ap_get_category_image( $category->term_id, 90 ),
+				'icon' 			=> ap_get_category_icon( $category->term_id ),
+				'description' 	=> $category->description,
+				'question_count' 	=> sprintf( _n('1 Question', '%s Questions', $category->count, 'categories-for-anspress' ),  $category->count ),
+				'sub_category' 	=> array(
+					'have' => $sub_cat_count > 0,
+					'count' => sprintf(_n('%d Sub category', '%d Sub categories', $sub_cat_count, 'categories-for-anspress' ), $sub_cat_count ),
+				),
+			),
+		);
+		/**
+		 * Filter user hover card data.
+		 * @param  array $data Card data.
+		 * @return array
+		 * @since  3.0.0
+		 */
+		$data = apply_filters( 'ap_category_hover_data', $data );
+		set_transient( 'ap_category_card_'.$id, $data, HOUR_IN_SECONDS );
+		ap_ajax_json( $data );
 	}
 
 	/**
@@ -483,10 +514,10 @@ class AnsPress_Ajax
 	public static function hover_card_user( $id ) {
 		$cache = get_transient( 'ap_user_card_'.$id );
 
-		if( false !== $cache ){
+		if ( false !== $cache ) {
 			ap_ajax_json( $cache );
 		}
-		
+
 		global $ap_user_query;
 		$ap_user_query = ap_has_users( array( 'ID' => $id ) );
 
@@ -502,18 +533,25 @@ class AnsPress_Ajax
 						'avatar' 		=> ap_user_get_the_avatar( 80 ),
 						'signature' 	=> ap_get_user_signature(),
 						'reputation' 	=> ap_user_get_the_reputation(),
-						'stats'			=>array(
-							['label' => __('Answers', 'anspress-question-answer'), 'count' => ap_user_get_the_meta('__total_answers' )],
-							['label' => __('Best', 'anspress-question-answer'), 'count' => ap_user_get_the_meta('__best_answers' )],
-							['label' => __('Question', 'anspress-question-answer'), 'count' => ap_user_get_the_meta('__total_questions' )],						
-							['label' => __('comments', 'anspress-question-answer'), 'count' => ap_user_comment_count()],						
-							['label' => __('Followers', 'anspress-question-answer'), 'count' => ap_user_get_the_meta('__total_followers' )],
-							['label' => __('Following', 'anspress-question-answer'), 'count' => ap_user_get_the_meta('__total_following' )],
+						'stats'			=> array(
+							[ 'label' => __('Answers', 'anspress-question-answer' ), 'count' => ap_user_get_the_meta('__total_answers' ) ],
+							[ 'label' => __('Best', 'anspress-question-answer' ), 'count' => ap_user_get_the_meta('__best_answers' ) ],
+							[ 'label' => __('Question', 'anspress-question-answer' ), 'count' => ap_user_get_the_meta('__total_questions' ) ],
+							[ 'label' => __('comments', 'anspress-question-answer' ), 'count' => ap_user_comment_count() ],
+							[ 'label' => __('Followers', 'anspress-question-answer' ), 'count' => ap_user_get_the_meta('__total_followers' ) ],
+							[ 'label' => __('Following', 'anspress-question-answer' ), 'count' => ap_user_get_the_meta('__total_following' ) ],
 						),
 						'active' 		=> sprintf( __( 'Last seen %s', 'anspress-question-answer' ), ap_human_time( ap_user_get_the_meta( '__last_active' ), false ) ),
 					),
 				);
-				//set_transient( 'ap_user_card_'.$id, $data, MINUTE_IN_SECONDS );
+				/**
+				 * Filter user hover card data.
+				 * @param  array $data Card data.
+				 * @return array
+				 * @since  3.0.0
+				 */
+				$data = apply_filters( 'ap_user_hover_data', $data );
+				set_transient( 'ap_user_card_'.$id, $data, MINUTE_IN_SECONDS );
 				ap_ajax_json( $data );
 			endwhile;
 		}
