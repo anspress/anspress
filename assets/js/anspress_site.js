@@ -252,7 +252,6 @@
          * @param  {object} data Ajax success response.
          */
         updateHtml: function(elm, data) {
-            console.log(data);
             if (typeof data.html !== 'undefined') $(elm).html(data.html);
         },
 
@@ -262,7 +261,6 @@
          * @param  {string} active  Currently active selector.
          */
         toggle_active_class: function(elm, active) {
-            console.log(elm);
             if (typeof elm !== 'undefined'){
                 $(elm).find('li').removeClass('active');
                 $(elm).find(active).addClass('active');
@@ -276,7 +274,6 @@
          * @param  {string} classToRemove  Class to remove from selector.
          */
         removeClass: function(elm, classToRemove) {
-            console.log(elm);
             if ($(elm).length > 0){
                $(elm).removeClass(classToRemove);
             }
@@ -287,7 +284,6 @@
          * @param  {string} elm Selector.
          */
         append_before: function(elm, data) {
-            console.log(data);
             if (typeof elm !== 'undefined')
                 $(elm).before(data.html);
         },
@@ -380,7 +376,6 @@
                 var q = $(this).attr('data-query');
                 var elm = $(this);
                 ApSite.doAjax(apAjaxData(q), function(data) {
-                    console.log(elm);
                     if (typeof elm.attr('data-toggle') !== 'undefined' && data.message_type == 'success') 
                         $(elm.attr('data-toggle')).hide();
                 }, this, false, true);
@@ -784,10 +779,16 @@
         if( typeof textJSON !== 'undefined' && textJSON.length > 2 )
             data = JSON.parse(textJSON);
 
-        console.log(data);
+        // Store template in global object.
+        /*if( (data.apTemplate||false) && 'object' === typeof data.apTemplate )
+            apLoadTemplate(data.apTemplate.name, data.apTemplate.template);*/
+
+        /*if( (data.apData||false) && 'object' === typeof data.apData )
+            $.each(data.apData, function(name, data) {
+                $('apData').trigger(name, data);
+            });*/
         
-        if (typeof data.message_type !== 'undefined') {
-            
+        if (typeof data.message_type !== 'undefined') {            
             if( '' != data.message_type && '' != data.message){
                 ApSite.addMessage(data.message, data.message_type);
             }
@@ -807,7 +808,6 @@
             //Check if data.do is object
             if( typeof action === 'object' ){
                 $.each(action, function(index, el) {
-                    console.log(el);
                     if(typeof ApSite[index] === 'function'){  
                         apDoActions(index, el, data);
                     }else if(typeof el === 'object'){

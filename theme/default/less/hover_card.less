@@ -7,7 +7,7 @@
     font-size: 14px;
     line-height: 16px;
     padding: 0;
-    width: 250px;
+    width: 300px;
 
     .ap-tooltip-in{
     	color: @default-color;
@@ -42,10 +42,10 @@
 	    img{
 		    background: #eee none repeat scroll 0 0;
 		    border: 1px solid #ddd;
-		    border-radius: 50%;
+		    border-radius: 3px;
 		    display: block;
-		    height: 40px;
-		    width: 40px;
+		    height: 80px;
+		    width: 80px;
 	    }
     }
     .avatar{
@@ -55,66 +55,59 @@
 	.ap-card-name {
 	    color: @default-color;
 	    display: block;
-	    font-size: 20px;
+	    font-size: 15px;
 	    font-weight: 600;
 	    margin-top: 5px;
+	    overflow: hidden;
 	    text-decoration: none;
+	    white-space: nowrap;
 	}
 	.ap-card-desc {
 	    display: block;
-	    margin-top: 6px;
+	    margin-top: 3px;
 	    overflow: hidden;
+	    color: #777;
 	}
-	.ap-card-count {
-	    background: #f8f8f8 none repeat scroll 0 0;
-	    border: 1px solid #ddd;
-	    border-radius: 3px;
+	.ap-card-header {
+	    padding-bottom: 10px;
+	}
+	.ap-card-active {
+	    color: #777;
 	    display: block;
-	    margin-top: 15px;
-	    position: relative;
-	    &:before {
-		    background: #ddd none repeat scroll 0 0;
-		    content: "";
-		    display: block;
-		    height: 100%;
-		    left: 50%;
-		    position: absolute;
-		    width: 1px;
-		}
-	    > div{
-		    display: block;
-		    float: left;
-		    text-align: center;
-		    width: 50%;
-	    }
-	    span{
-		    display: block;
-		    font-size: 15px;
-		    font-weight: bold;
-		    margin-bottom: 3px;
-		    margin-top: 8px;
-	    }
-	    i{
-		    color: #888;
-		    display: block;
-		    font-style: normal;
-		    font-size: 12px;
-		    margin-bottom: 5px;
-	    }
+	    font-size: 11px;
+	    margin-top: 6px;
 	}
-	.ap-card-reputation{
 
-	    span{
-
-	    }
-	}
 	.ap-card-stats {
-	    margin-top: 20px;
-	    span{
+	    border-bottom: 1px solid #ddd;
+	    border-left: 1px solid #ddd;
+	    border-radius: 4px;
+	    line-height: 100%;
+	    margin: 0 -12px -11px -11px;
+	    overflow: hidden;
+	    padding: 0;
+	    .stat{
+		    border-top: 1px solid #e7e7e7;
 		    color: #777;
+		    display: inline-block;
+		    float: left;
+		    font-size: 11px;
+		    line-height: 100%;
+		    text-align: center;
+		    width: 33.33%;
+			span{
+			    background: #f7f7f7 none repeat scroll 0 0;
+			    border-right: 1px solid #e7e7e7;
+			    display: block;
+			    padding: 6px;
+			}
+	    }
+	    b{
+		    color: #333;
 		    display: block;
-		    font-size: 12px;
-		    line-height: 26px;
+		    font-size: 14px;
+		    line-height: 100%;
+		    margin-bottom: 6px;
 	    }
 	    i{
 		    color: #b7b7b7;
@@ -122,6 +115,9 @@
 		    margin-right: 5px;
 		    vertical-align: middle;
 	    }
+	}
+	.ap-card-mention{
+		text-decoration: none;
 	}
 	.ap-btn{
 	    background-image: linear-gradient(#ffffff, #fcfcfc);

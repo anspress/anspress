@@ -58,7 +58,7 @@ class AnsPress_Ajax
 
 	    $keyword = sanitize_text_field( wp_unslash( $_POST['value'] ) );
 
-	    $is_admin = (bool) ap_isset_post_value('is_admin', false);
+	    $is_admin = (bool) ap_isset_post_value('is_admin', false );
 
 	    $questions = get_posts(array(
 			'post_type' => 'question',
@@ -455,9 +455,9 @@ class AnsPress_Ajax
 			$this->something_wrong();
 		}
 
-		if( isset( $_POST['type'] ) && 'cat' == $_POST['type'] ){
+		if ( isset( $_POST['type'] ) && 'cat' == $_POST['type'] ) {
 			SELF::hover_card_category( $id );
-		}else{
+		} else {
 			SELF::hover_card_user( $id );
 		}
 
@@ -472,6 +472,7 @@ class AnsPress_Ajax
 	public static function hover_card_category( $id ) {
 		$category = get_term( $id, 'question_category' );
 		include ap_get_theme_location( 'hover-card/category.php' );
+		// ap_ajax_json( [ 'template' => 'user-card', 'apData' => $category ] );
 	}
 
 	/**
@@ -480,13 +481,40 @@ class AnsPress_Ajax
 	 * @since  3.0.0
 	 */
 	public static function hover_card_user( $id ) {
+		$cache = get_transient( 'ap_user_card_'.$id );
+
+		if( false !== $cache ){
+			ap_ajax_json( $cache );
+		}
+		
 		global $ap_user_query;
 		$ap_user_query = ap_has_users( array( 'ID' => $id ) );
 
 		if ( $ap_user_query->has_users() ) {
-			while ( ap_users() ) :
-				ap_the_user();
-				ap_get_template_part( 'hover-card/user' );
+			while ( ap_users() ) : ap_the_user();
+				$data = array(
+					'template' => 'user-hover',
+					'apData' => array(
+						'id' 			=> ap_user_get_the_ID(),
+						'name' 			=> ap_user_get_the_display_name(),
+						'mention' 		=> '@'.ap_user_get_the_user_login(),
+						'profile_link' 	=> ap_user_get_the_link(),
+						'avatar' 		=> ap_user_get_the_avatar( 80 ),
+						'signature' 	=> ap_get_user_signature(),
+						'reputation' 	=> ap_user_get_the_reputation(),
+						'stats'			=>array(
+							['label' => __('Answers', 'anspress-question-answer'), 'count' => ap_user_get_the_meta('__total_answers' )],
+							['label' => __('Best', 'anspress-question-answer'), 'count' => ap_user_get_the_meta('__best_answers' )],
+							['label' => __('Question', 'anspress-question-answer'), 'count' => ap_user_get_the_meta('__total_questions' )],						
+							['label' => __('comments', 'anspress-question-answer'), 'count' => ap_user_comment_count()],						
+							['label' => __('Followers', 'anspress-question-answer'), 'count' => ap_user_get_the_meta('__total_followers' )],
+							['label' => __('Following', 'anspress-question-answer'), 'count' => ap_user_get_the_meta('__total_following' )],
+						),
+						'active' 		=> sprintf( __( 'Last seen %s', 'anspress-question-answer' ), ap_human_time( ap_user_get_the_meta( '__last_active' ), false ) ),
+					),
+				);
+				//set_transient( 'ap_user_card_'.$id, $data, MINUTE_IN_SECONDS );
+				ap_ajax_json( $data );
 			endwhile;
 		}
 	}
@@ -703,7 +731,7 @@ class AnsPress_Ajax
 	    $post_id = (int) $_POST['post_id'];
 
 	    if ( ! ap_verify_nonce( 'vote_'.$post_id ) ) {
-	        ap_ajax_json('something_wrong');
+	        ap_ajax_json('something_wrong' );
 	    }
 
 	    $type = sanitize_text_field( $_POST['type'] );

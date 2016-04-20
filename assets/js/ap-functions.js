@@ -105,7 +105,6 @@
  	 		if( id && !tipquery ){
  	 			var is_term = elm.data('catid') || false;
  	 			is_term = is_term? '&type=cat' : '';
- 	 			console.log(is_term);
 	 			elm.data('tipquery', 'action=ap_ajax&ap_ajax_action=hover_card&id='+ id+ is_term);
                 tipquery = elm.data('tipquery');
 	 		}
@@ -135,14 +134,31 @@
 	                    url: ajaxurl,
 	                    data: config.ajax+'&ap_ajax_nonce='+ap_nonce,
 	                    success: function(data) {
-	                    	var html = $(data);
-	                    	var count = parseInt( $('.aptip-data').length );
-	                    	plug.data_id = 'aptipd-'+ (count+1);
-	                    	html.addClass( 'aptip-data '+ plug.data_id );
-	                    	elm.attr('data-ajax', '.'+plug.data_id);
-	                        $('body').append(html.clone());
-	                        tip.find('.ap-tooltip-in').html(html.show());
-	                        position(el);
+	                    	var dataText = $(data);
+					        var data = {};
+
+					        //Parse response text JSON
+					        var textJSON = dataText.filter('#ap-response').html();
+					 
+					        if( typeof textJSON !== 'undefined' && textJSON.length > 2 )
+					            data = JSON.parse(textJSON);
+					            if( (data.apTemplate||false) && 'object' === typeof data.apTemplate )
+					            
+					            apLoadTemplate(data.apTemplate.name, data.apTemplate.template, function(template){
+					            	apParseTemplate(data.apTemplate.name, data.apData, function(temp){
+					            		var html = $(temp);
+					                	var count = parseInt( $('.aptip-data').length );
+					                	plug.data_id = 'aptipd-'+ (count+1);
+					                	html.addClass( 'aptip-data '+ plug.data_id );
+					                	elm.attr('data-ajax', '.'+plug.data_id);
+					                    $('body').append(html.clone());
+					                    tip.find('.ap-tooltip-in').html(html.show());
+					                    position(el);
+					            	});
+						                    	
+					            });
+	                    	
+	                    	
 	                        plug.ajax_running = false;
 	                    }
 	                });
@@ -180,7 +196,7 @@
 
 			}).mouseleave(function(){
 				if(typeof tip !== 'undefined'){
-					tip.remove();
+					//tip.remove();
 				}
 
 				if(typeof delay !== 'undefined'){
@@ -328,20 +344,8 @@
 			}		   
 		});
 
-		console.log(newQuery);
-
 		return newQuery;
 	}
-
-	/* Nano Templates - https://github.com/trix/nano */
-	$.fn.apTemplate = function (template, data) {
-		return template.replace(/\{([\w\.]*)\}/g, function(str, key) {
-			var keys = key.split("."), v = data[keys.shift()];
-			for (var i = 0, l = keys.length; i < l; i++) v = v[keys[i]];
-			return (typeof v !== "undefined" && v !== null) ? v : "";
-		});
-	}
-
 })(jQuery);
 
 /**
@@ -420,4 +424,83 @@ function apLoadCssJs(filename, filetype){
     }
     if (typeof fileref!="undefined")
         document.getElementsByTagName("head")[0].appendChild(fileref)
+}
+
+function apLoadTemplate(name, template, cb) {
+	cb = cb || false;
+	if(typeof window.apTemplates === 'undefined')
+		window.apTemplates = {};
+	
+	if(typeof window.apTemplates[name] === 'undefined'){
+		jQuery.get(template, function(data) {
+			window.apTemplates[name] = data;
+			jQuery(window.apTemplates[name]).trigger(name, template);
+			if(cb) cb(data);
+			return;
+		});
+	}	
+
+	if(cb) cb(window.apTemplates[name]);
+}
+
+function apParseRepeatTag(template, data, repeatObj){
+	var newTemplate = '';
+	jQuery.each(data[repeatObj[1]], function(index, val) {
+		newdata = {};	
+		newdata[repeatObj[0]] = {};
+		newdata[repeatObj[0]] = jQuery.extend({}, val);
+		newTemplate += apParseTemplate(false, newdata, false, template);
+	});
+	return newTemplate;
+}
+
+function apParseLoopInTemplate(template, data){
+	if( jQuery(template).find('[ap-repeat]').length === 0 )
+		return template;
+
+	jQuery(template).find('[ap-repeat]').each(function(index, el) {
+		var outerHtml = jQuery(el).prop('outerHTML');
+		var repeatAttr = jQuery(el).attr('ap-repeat');
+		var repeatObj = repeatAttr.split('in');
+		// Apply trim to all individual items of array.
+		repeatObj = jQuery.map(repeatObj, jQuery.trim);
+
+		var html = jQuery(el).html();
+		var processedRepeat = apParseRepeatTag(html, data, repeatObj);
+		jQuery(el).html(processedRepeat);
+		jQuery(el).removeAttr('ap-repeat');
+		var newOuterHtml = jQuery(el).prop('outerHTML');		
+		template = template.replace(outerHtml, newOuterHtml);		
+	});
+	return template;
+}
+
+/* Nano Templates - https://github.com/trix/nano */
+function apParseTemplate(template, data, cb, templateStr) {
+	template = template || false;
+	cb = cb || false;
+	templateStr = templateStr || false;
+	
+	if(typeof window.apTemplates === 'undefined')
+		window.apTemplates = {};
+
+	if( template && !templateStr ){
+		var temp = window.apTemplates[template] || '';		
+	}else{
+		var temp = templateStr;
+	}
+
+	if('' === temp)
+		return false;
+
+	temp = apParseLoopInTemplate(temp, data);
+
+	temp = temp.replace(/\{([\w\.]*)\}/g, function(str, key) {
+		var keys = key.split("."), v = data[keys.shift()];
+		for (var i = 0, l = keys.length; i < l; i++) v = v[keys[i]];
+		return (typeof v !== "undefined" && v !== null) ? v : "";
+	});
+
+	if(cb) cb(temp);
+	return temp;
 }

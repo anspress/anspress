@@ -132,7 +132,7 @@ function ap_get_theme_url($file, $plugin = false) {
 	    $template_url = ANSPRESS_THEME_URL.'/'.ap_get_theme().'/'.$file;
 	}
 
-	return $template_url;
+	return apply_filters( 'ap_theme_url', $template_url.'?v='.AP_VERSION );
 }
 
 // get current user id
@@ -861,7 +861,7 @@ function ap_form_allowed_tags() {
 function ap_send_json($result = array()) {
 	@header( 'Content-Type: text/html; charset=' . get_option( 'blog_charset' ) );
 	$result['is_ap_ajax'] = true;
-	$message_type = isset( $result['message_type'] ) ? $result['message_type'] : 'success';	
+	$message_type = isset( $result['message_type'] ) ? $result['message_type'] : 'success';
 	$json = '<div id="ap-response">'.json_encode($result, JSON_HEX_QUOT | JSON_HEX_TAG ).'</div>';
 
 	wp_die( $json );
@@ -988,6 +988,18 @@ function ap_ajax_responce($results) {
 		}
 	}
 
+	// Send requested template.
+	if ( isset( $results['template'] ) ) {
+		$template_file = ap_get_theme_url( 'js-template/'.$results['template'].'.html' );
+		if( ap_env_dev() ){
+			$template_file = $template_file.'&time='.time();
+		}
+		$results['apTemplate'] = array(
+			'name' => $results['template'],
+			'template' => $template_file,
+		);
+	}
+
 	/*
      * FILTER: ap_ajax_responce
      * Can be used to alter ap_ajax_responce
@@ -1043,7 +1055,7 @@ function ap_sort_array_by_order($array) {
 	if ( ! empty( $array ) && is_array( $array ) ) {
 		$group = array();
 		foreach ( (array) $array as $k => $a ) {
-			if( !is_array( $a ) ){
+			if ( ! is_array( $a ) ) {
 				return;
 			}
 			$order = $a['order'];

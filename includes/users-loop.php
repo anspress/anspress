@@ -286,7 +286,8 @@ function ap_user_the_object($user_id = false) {
 	global $ap_the_user;
 
 	if ( ! isset( $ap_the_user ) && $user_id ) {
-		return get_user_by( 'id', $user_id ); }
+		return get_user_by( 'id', $user_id );
+	}
 
 	return $ap_the_user;
 }
@@ -306,23 +307,44 @@ function ap_user_get_the_ID() {
 	$user = ap_user_the_object();
 
 	if ( ! isset( $user ) ) {
-		return ap_get_displayed_user_id(); }
+		return ap_get_displayed_user_id();
+	}
 
 	return $user->data->ID;
 }
 
-	/**
-	 * Echo active user display name
-	 */
+/**
+ * Echo active user display name
+ */
 function ap_user_the_display_name() {
 	echo ap_user_get_the_display_name();
 }
-	/**
-	 * Return active user ID
-	 * @return string
-	 */
+
+/**
+ * Return active user ID
+ * @return string
+ */
 function ap_user_get_the_display_name() {
 	return ap_user_display_name( array( 'user_id' => ap_user_get_the_ID() ) );
+}
+
+/**
+ * Echo user login name
+ * @since 3.0.0
+ */
+function ap_user_the_user_login() {
+	echo ap_user_get_the_user_login();
+}
+
+/**
+ * Return active user ID
+ * @return string
+ */
+function ap_user_get_the_user_login() {
+	$user = ap_user_the_object();
+	if ( $user ) {
+		return $user->data->user_login;
+	}
 }
 
 	/**
@@ -558,4 +580,32 @@ function ap_user_votes_casted_percent() {
 	if ( $total_vote == 0 || $meta == 0 ) {
 		return 0; } else {
 		return ceil( ($meta / $total_vote) * 100 ); }
+}
+
+/**
+ * Get user signature. If no signature then return user role.
+ * @param  boolean $user_id User ID.
+ * @return string
+ * @since  3.0.0
+ */
+function ap_get_user_signature( $user_id = false ) {
+	if ( false === $user_id ) {
+		$user_id = ap_user_get_the_ID();
+	}
+
+	$signature = get_user_meta( $user_id, 'signature', true );
+
+	$user = get_user_by( 'id', $user_id );
+
+	if ( empty( $signature ) ) {
+		$signature = str_replace( 'ap_', '', $user->roles[0] );
+	}
+
+	/**
+	 * Filter user signature.
+	 * @param  string $signature User signature.
+	 * @return string
+	 * @since  3.0.0
+	 */
+	return apply_filters( 'ap_user_signature', $signature );
 }

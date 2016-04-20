@@ -817,16 +817,22 @@ function ap_assets( ) {
 			'peity-js' => array( 'src' => ap_get_theme_url( 'js/jquery.peity.min.js' ), 'dep' => array( 'jquery' ) ),
 			'ap-initial-js' => array( 'src' => ap_get_theme_url( 'js/initial.min.js' ), 'dep' => array( 'jquery' ) ),
 			'ap-scrollbar-js' => array( 'src' => ap_get_theme_url( 'js/jquery.scrollbar.min.js' ), 'dep' => array( 'jquery' ) ),
-
-			'anspress-js' => array( 'src' => ANSPRESS_URL.'assets/min/anspress.min.js', 'dep' => array( 'jquery', 'jquery-form' ) ),
-
-			'ap-theme-js' => array( 'src' => ap_get_theme_url( 'min/anspress-theme.min.js' ), 'dep' => array( 'jquery', 'anspress-js' ) ),
 		),
+
 		'css' => array(
 			'ap-theme-css' => array( 'src' => ap_get_theme_url( 'css/main.css' ) ),
 			'ap-fonts' => array( 'src' => ap_get_theme_url( 'fonts/style.css' ) ),
 		),
 	);
+
+	if( ap_env_dev() ){
+		$assets['js']['anspress-functions'] = array( 'src' => ANSPRESS_URL.'assets/js/ap-functions.js', 'dep' => array( 'jquery', 'jquery-form' ) );
+		$assets['js']['anspress-js'] = array( 'src' => ANSPRESS_URL.'assets/js/anspress_site.js', 'dep' => array( 'jquery', 'jquery-form' ) );
+		$assets['js']['ap-theme-js'] = array( 'src' => ap_get_theme_url( 'js/ap.js' ), 'dep' => array( 'jquery', 'anspress-js' ) );
+	}else{
+		$assets['js']['anspress-js'] = array( 'src' => ANSPRESS_URL.'assets/min/anspress.min.js', 'dep' => array( 'jquery', 'jquery-form' ) );
+		$assets['js']['ap-theme-js'] = array( 'src' => ap_get_theme_url( 'min/anspress-theme.min.js' ), 'dep' => array( 'jquery', 'anspress-js' ) );
+	}
 
 	if ( is_rtl() ) {
 		$assets['css']['ap-rtl'] = array( 'src' => ap_get_theme_url( 'css/RTL.css' ) );
