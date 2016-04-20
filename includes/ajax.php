@@ -44,6 +44,8 @@ class AnsPress_Ajax
 	    anspress()->add_action( 'ap_ajax_delete_activity', $this, 'delete_activity' );
 	    anspress()->add_action( 'ap_ajax_submit_comment', 'AnsPress_Comment_Hooks','submit_comment' );
 	    anspress()->add_action( 'ap_ajax_approve_comment', 'AnsPress_Comment_Hooks','approve_comment' );
+	    anspress()->add_action( 'ap_hover_card_user', __CLASS__, 'hover_card_user' );
+	    anspress()->add_action( 'ap_ajax_post_actions_dp', 'AnsPress_Theme', 'post_actions_dp' );
 	}
 
 	/**
@@ -450,60 +452,19 @@ class AnsPress_Ajax
 		}
 
 		$id = (int) $_POST['id'];
+		$type = isset( $_POST['type'] ) ? sanitize_text_field( $_POST['type'] ) : 'user';
 
 		if ( ! ap_verify_default_nonce() ) {
 			$this->something_wrong();
 		}
 
-		if ( isset( $_POST['type'] ) && 'cat' == $_POST['type'] ) {
-			SELF::hover_card_category( $id );
-		} else {
-			SELF::hover_card_user( $id );
-		}
+		/**
+		 * AP Hover card actions.
+		 * @param integer $id ID.
+		 */
+		do_action('ap_hover_card_'.$type, $id);
 
 		wp_die();
-	}
-
-	/**
-	 * Output hover card for term.
-	 * @param  integer $id User ID.
-	 * @since  3.0.0
-	 */
-	public static function hover_card_category( $id ) {
-		$cache = get_transient( 'ap_category_card_'.$id );
-
-		if ( false !== $cache ) {
-			ap_ajax_json( $cache );
-		}
-
-		$category = get_term( $id, 'question_category' );
-		$sub_cat_count = count(get_term_children( $category->term_id, 'question_category' ) );
-
-		$data = array(
-			'template' => 'category-hover',
-			'apData' => array(
-				'id' 			=> $category->term_id,
-				'name' 			=> $category->name,
-				'link' 			=> get_category_link( $category ),
-				'image' 		=> ap_get_category_image( $category->term_id, 90 ),
-				'icon' 			=> ap_get_category_icon( $category->term_id ),
-				'description' 	=> $category->description,
-				'question_count' 	=> sprintf( _n('1 Question', '%s Questions', $category->count, 'categories-for-anspress' ),  $category->count ),
-				'sub_category' 	=> array(
-					'have' => $sub_cat_count > 0,
-					'count' => sprintf(_n('%d Sub category', '%d Sub categories', $sub_cat_count, 'categories-for-anspress' ), $sub_cat_count ),
-				),
-			),
-		);
-		/**
-		 * Filter user hover card data.
-		 * @param  array $data Card data.
-		 * @return array
-		 * @since  3.0.0
-		 */
-		$data = apply_filters( 'ap_category_hover_data', $data );
-		set_transient( 'ap_category_card_'.$id, $data, HOUR_IN_SECONDS );
-		ap_ajax_json( $data );
 	}
 
 	/**
@@ -525,6 +486,7 @@ class AnsPress_Ajax
 			while ( ap_users() ) : ap_the_user();
 				$data = array(
 					'template' => 'user-hover',
+					'disableAutoLoad' => 'true',
 					'apData' => array(
 						'id' 			=> ap_user_get_the_ID(),
 						'name' 			=> ap_user_get_the_display_name(),

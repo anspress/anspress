@@ -441,13 +441,11 @@ function ap_page() {
 }
 
 /**
- * Post actions buttons.
- *
- * @param array $disable pass item to hide.
- * @return string
- * @since 	2.0
+ * Return post actions array.
+ * @return array|boolean
+ * @since  3.0.0
  */
-function ap_post_actions_buttons($disable = array()) {
+function ap_post_actions(){
 	global $post;
 
 	if ( ! $post->post_type == 'question' || ! $post->post_type == 'answer' ) {
@@ -456,26 +454,19 @@ function ap_post_actions_buttons($disable = array()) {
 
 	$actions = array();
 
-	/*
-     * Select answer button
-     * @var string
-	 */
+	// Select answer button.
 	if ( $post->post_type == 'answer' ) {
 	    $actions['select_answer'] = ap_select_answer_btn_html( $post->ID );
 	}
 
-	/*
-     * Comment button
-	 */
+	// Comment button.
 	if ( ap_user_can_comment( $post->ID ) ) {
 	    $actions['comment'] = ap_comment_btn_html();
 	}
 
 	$actions['status'] = ap_post_change_status_btn_html( $post->ID );
 
-	/*
-     * edit question link
-	 */
+	// Edit question link.
 	if ( ap_user_can_edit_question( $post->ID ) && $post->post_type == 'question' ) {
 	    $actions['dropdown']['edit_question'] = ap_edit_post_link_html();
 	}
@@ -506,27 +497,41 @@ function ap_post_actions_buttons($disable = array()) {
      * @var     string
      * @since   2.0
 	 */
-	$actions = apply_filters( 'ap_post_actions_buttons', $actions );
+	return apply_filters( 'ap_post_actions_buttons', $actions );
+}
+
+/**
+ * Post actions buttons.
+ *
+ * @param array $disable pass item to hide.
+ * @return string
+ * @since 	2.0
+ */
+function ap_post_actions_buttons($disable = array()) {
+	global $post;
+	$actions = ap_post_actions();
 
 	if ( ! empty( $actions ) && count( $actions ) > 0 ) {
 		echo '<ul id="ap_post_actions_'. $post->ID .'" class="ap-q-actions ap-ul-inline clearfix">';
-		foreach ( $actions as $k => $action ) {
+		foreach ( (array) $actions as $k => $action ) {
 			if ( ! empty( $action ) && 'dropdown' != $k && ! in_array( $k, $disable ) ) {
 				echo '<li class="ap-post-action ap-action-'.$k.'">'.$action.'</li>';
 			}
 		}
+		
 		if ( ! empty( $actions['dropdown'] ) ) {
 			echo '<li class="ap-post-action dropdown">';
 			echo '<div id="ap_post_action_'.$post->ID.'" class="ap-dropdown">';
-			echo '<a class="apicon-ellipsis more-actions ap-tip ap-dropdown-toggle" title="'.__( 'More action', 'anspress-question-answer' ).'" href="#"></a>';
-			echo '<ul class="ap-dropdown-menu">';
+			echo '<a class="apicon-ellipsis more-actions ap-tip ap-dropdown-toggle" title="'.__( 'More action', 'anspress-question-answer' ).'" href="#" data-query="post_actions_dp::'. wp_create_nonce( 'ap_ajax_nonce' ) .'::'. $post->ID .'" data-action="ajax_btn"></a>';
+			/*echo '<ul class="ap-dropdown-menu">';
 			foreach ( $actions['dropdown'] as $sk => $sub ) {
 				echo '<li class="ap-post-action ap-action-'.$sk.'">'.$sub.'</li>';
 			}
-			echo '</ul>';
+			echo '</ul>';*/
 			echo '</div>';
 			echo '</li>';
 		}
+
 		echo '</ul>';
 	}
 }

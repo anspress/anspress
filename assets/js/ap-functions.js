@@ -442,7 +442,7 @@ function apLoadTemplate(name, template, cb) {
 }
 
 function apParseRepeatTag(template, data, repeatObj){
-	var newTemplate = '';
+	var newTemplate = '';	
 	jQuery.each(data[repeatObj[1]], function(index, val) {
 		newdata = {};	
 		newdata[repeatObj[0]] = {};
@@ -453,22 +453,22 @@ function apParseRepeatTag(template, data, repeatObj){
 }
 
 function apParseLoopInTemplate(template, data){
-	if( jQuery(template).find('[ap-repeat]').length === 0 )
+	if( jQuery('<div>'+template+'</div>').find('[ap-repeat]').length === 0 )
 		return template;
 
-	jQuery(template).find('[ap-repeat]').each(function(index, el) {
+	jQuery('<div>'+template+'</div>').find('[ap-repeat]').each(function(index, el) {
 		var outerHtml = jQuery(el).prop('outerHTML');
 		var repeatAttr = jQuery(el).attr('ap-repeat');
-		var repeatObj = repeatAttr.split('in');
+		var repeatObj = repeatAttr.split(' in ');
 		// Apply trim to all individual items of array.
 		repeatObj = jQuery.map(repeatObj, jQuery.trim);
-
 		var html = jQuery(el).html();
 		var processedRepeat = apParseRepeatTag(html, data, repeatObj);
 		jQuery(el).html(processedRepeat);
 		jQuery(el).removeAttr('ap-repeat');
-		var newOuterHtml = jQuery(el).prop('outerHTML');		
-		template = template.replace(outerHtml, newOuterHtml);		
+		var newOuterHtml = jQuery(el).prop('outerHTML');	
+		template = jQuery(template).prop('outerHTML');
+		template = template.replace(outerHtml, newOuterHtml);
 	});
 	return template;
 }
@@ -513,8 +513,11 @@ function apParseTemplate(template, data, cb, templateStr) {
 	temp = apParseLoopInTemplate(temp, data);
 
 	temp = temp.replace(/\{([\w\.]*)\}/g, function(str, key) {
+		//console.log(str, key, data);
 		var keys = key.split("."), v = data[keys.shift()];
-		for (var i = 0, l = keys.length; i < l; i++) v = v[keys[i]];
+		for (var i = 0, l = keys.length; i < l; i++){
+			v = v[keys[i]];
+		}
 		return (typeof v !== "undefined" && v !== null) ? v : "";
 	});
 	temp = apParseHideInTemplate(temp, data);

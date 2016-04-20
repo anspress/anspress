@@ -280,6 +280,16 @@
         },
 
         /**
+         * Remove a class from an element.
+         * @param  {string} elm    Element selector.
+         * @param  {string} classToAdd  Class to add to selector.
+         */
+        addClass: function(elm, classToAdd) {
+            if ($(elm).length > 0)
+               $(elm).addClass(classToAdd);
+        },
+
+        /**
          * Append html before a selector.
          * @param  {string} elm Selector.
          */
@@ -308,7 +318,10 @@
             }, 500);
         },
         ajax_btn: function() {
-            $('[data-action="ajax_btn"]').click(function(e) {
+            $('body').delegate('[data-action="ajax_btn"]', 'click', function(e) {
+                if($(this).is('.ajax-disabled'))
+                    return;
+                
                 e.preventDefault();
                 var q = $(this).apAjaxQueryString();
 
@@ -750,7 +763,6 @@
                 
             })
         }
-
     }
 
 })(jQuery);
@@ -780,13 +792,12 @@
             data = JSON.parse(textJSON);
 
         // Store template in global object.
-        /*if( (data.apTemplate||false) && 'object' === typeof data.apTemplate )
-            apLoadTemplate(data.apTemplate.name, data.apTemplate.template);*/
-
-        /*if( (data.apData||false) && 'object' === typeof data.apData )
-            $.each(data.apData, function(name, data) {
-                $('apData').trigger(name, data);
-            });*/
+        if( (data.apTemplate||false) && 'object' === typeof data.apTemplate && !apAutloadTemplate(data) )
+            apLoadTemplate(data.apTemplate.name, data.apTemplate.template, function(template){
+                apParseTemplate(data.apTemplate.name, data.apData, function(temp){
+                    $(data.appendTo).append(temp);
+                });
+            });
         
         if (typeof data.message_type !== 'undefined') {            
             if( '' != data.message_type && '' != data.message){
@@ -845,5 +856,9 @@
 
     });   
 })(jQuery);
+
+function apAutloadTemplate(data){
+    return 'undefined' !== typeof data.disableAutoLoad && data.disableAutoLoad;
+}
 
 

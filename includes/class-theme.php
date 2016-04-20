@@ -79,10 +79,10 @@ class AnsPress_Theme
 			if ( ap_answer_is_best( $post->ID ) ) {
 				$classes[] = 'best-answer';
 			}
-			if ( !ap_user_can_read_answer( $post ) ) {
+			if ( ! ap_user_can_read_answer( $post ) ) {
 				$classes[] = 'no-permission';
 			}
-		}		
+		}
 
 		return $classes;
 	}
@@ -218,7 +218,7 @@ class AnsPress_Theme
 			if ( ! isset( $wp_query->queried_object ) ) {
 				$wp_query->queried_object = get_post( ap_opt( 'base_page' ) );
 			}
-			
+
 			$wp_query->queried_object->post_title = ap_page_title();
 			remove_action( 'wp_head', 'rsd_link' );
 			remove_action( 'wp_head', 'wlwmanifest_link' );
@@ -257,4 +257,38 @@ class AnsPress_Theme
 		}
 	}
 
+	/**
+	 * Ajax callback for post actions dropdown
+	 * @since 3.0.0
+	 */
+	public static function post_actions_dp() {
+		if ( ! ap_verify_nonce('ap_ajax_nonce' ) || ! isset( $_POST['args'] ) ) {
+			ap_ajax_json('something_wrong' );
+		}
+
+		$post_id = (int) $_POST['args'][0];
+
+		global $post;
+		$post = get_post( $post_id, OBJECT );
+		setup_postdata( $post );
+
+		$actions = ap_post_actions();
+
+		$dropdown = array();
+		foreach ( (array) $actions['dropdown'] as $sk => $sub ) {
+			$dropdown[] = [ 'action' => $sk, 'anchor' => $sub ];
+		}
+
+		$data = array(
+			'template' => 'dropdown-menu',
+			'appendTo' => '#ap_post_action_'.$post_id,
+			'do' => [ 'addClass' => [ '#ap_post_action_'.$post_id.' .ap-dropdown-toggle', 'ajax-disabled' ] ],
+			'apData' => array(
+				'id'	=> $post_id.'_dp',
+				'links'			=> $dropdown,
+			),
+		);
+
+		ap_ajax_json( $data );
+	}
 }

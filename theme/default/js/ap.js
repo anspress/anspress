@@ -6,16 +6,12 @@
                $('.ap-dropdown').removeClass('open');
             }
         });
-        
-        $('body').delegate('.ap-dropdown-menu a', 'click', function(e){
-            $(this).closest('.ap-dropdown').removeClass('open');
-        });
 
         // Dropdown toggle
-        $('body').delegate('.ap-dropdown-toggle', 'click', function(e){
+        $('body').delegate('.ap-dropdown-toggle, .ap-dropdown-menu a', 'click', function(e){
             e.preventDefault();
-            $('.ap-dropdown').removeClass('open');
-            $(this).closest('.ap-dropdown').addClass('open');
+            $('.ap-dropdown').not($(this).closest('.ap-dropdown')).removeClass('open');
+            $(this).closest('.ap-dropdown').toggleClass('open');
         });
 
         $('.ap-tip').aptip();
@@ -160,7 +156,6 @@
             $(el).removeClass('active');
         }
     }
-
 
 })(jQuery);
 
