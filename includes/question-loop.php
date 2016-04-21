@@ -482,11 +482,11 @@ function ap_question_get_the_subscriber_count() {
 	return ap_subscribers_count( ap_question_get_the_ID() );
 }
 
-	/**
-	 * Check if answer is selected for given question
-	 * @param  false|integer $question_id
-	 * @return boolean
-	 */
+/**
+ * Check if best answer is selected for question.
+ * @param  false|integer $question_id
+ * @return boolean
+ */
 function ap_question_best_answer_selected($question_id = false) {
 	$question_id = ap_parameter_empty( $question_id, @ap_question_get_the_ID() );
 

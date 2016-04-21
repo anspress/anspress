@@ -194,6 +194,11 @@ function ap_user_can_answer( $question_id, $user_id = false ) {
 		return false;
 	}
 
+	// Do not allow to answer if best answer is selected.
+	if ( ap_opt('close_selected') && ap_question_best_answer_selected( $question->ID ) ) {
+		return false;
+	}
+
 	// Bail out if question is closed.
 	if ( $question->post_status == 'closed' ) {
 		return false;
