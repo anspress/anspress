@@ -51,19 +51,19 @@ if ( ! class_exists( 'Question_Query' ) ) :
 				$args['post_status'][] = 'publish';
 				$args['post_status'][] = 'closed';
 
-				if ( $post_parent ) {
-					$this->args['post_parent'] = $post_parent;
-				}
+			if ( $post_parent ) {
+				$this->args['post_parent'] = $post_parent;
+			}
 
 				$this->args = wp_parse_args( $args, $defaults );
 
-				if ( get_query_var( 'ap_s' ) != '' ) {
-					$this->args['s'] = sanitize_text_field( get_query_var( 'ap_s' ) );
-				}
+			if ( get_query_var( 'ap_s' ) != '' ) {
+				$this->args['s'] = sanitize_text_field( get_query_var( 'ap_s' ) );
+			}
 
-				if ( isset( $this->args[ 'sortby' ] ) ) {
-					$this->orderby_questions();
-				}
+			if ( isset( $this->args[ 'sortby' ] ) ) {
+				$this->orderby_questions();
+			}
 
 				$this->args['post_type'] = 'question';
 
@@ -507,9 +507,14 @@ function ap_question_get_the_active_time($question_id = false) {
 	return ap_latest_post_activity_html( $question_id );
 }
 
+/**
+ * Output question created time.
+ * @param  boolean|integer $question_id Question ID.
+ * @param  string          $format      Format of time.
+ */
 function ap_question_the_time($question_id = false, $format = 'U') {
-	$question_id = ap_parameter_empty( $question_id, @ap_question_get_the_ID() );
-	printf( __( '%s %s', 'anspress-question-answer' ), '<a href="'. get_permalink( $question_id ) .'"><time itemprop="datePublished" datetime="'.ap_question_get_the_time( $question_id, 'c' ).'">'.ap_human_time( ap_question_get_the_time( $question_id, $format ) ), '</time></a>' );
+	$question_id = ap_parameter_empty( $question_id, ap_question_get_the_ID() );
+	printf( __( '%s %s', 'anspress-question-answer' ), '<time itemprop="datePublished" datetime="'.ap_question_get_the_time( $question_id, 'c' ).'">'.ap_human_time( ap_question_get_the_time( $question_id, $format ) ), '</time>' );
 }
 
 function ap_question_get_the_time($question_id = false, $format = '') {
