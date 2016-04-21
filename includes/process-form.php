@@ -26,7 +26,6 @@ class AnsPress_Process_Form
 	 * Initialize the class
 	 */
 	public function __construct() {
-		add_action( 'save_post', array( $this, 'action_on_new_post' ), 10, 3 );
 		add_action( 'wp_ajax_ap_ajax', array( $this, 'ap_ajax' ) );
 		add_action( 'wp_ajax_nopriv_ap_ajax', array( $this, 'ap_ajax' ) );
 	}
@@ -137,21 +136,15 @@ class AnsPress_Process_Form
 	 * @since 2.0.1
 	 */
 	public function process_ask_form() {
-		global $ap_errors, $validate;
-		if ( ap_show_captcha_to_user() && false === ap_check_recaptcha() ) {
-			$this->result = array(
-				'form' 			=> $_POST['ap_form_action'],
-				'message'		=> 'captcha_error',
-				'errors'		=> array( 'captcha' => __( 'Bot verification failed.', 'anspress-question-answer' ) ),
-			);
-			return;
-		}
-
-		// Do security check, if fails then return
+		// Do security check, if fails then return.
 		if ( ! ap_user_can_ask() || ! isset( $_POST['__nonce'] ) || ! wp_verify_nonce( $_POST['__nonce'], 'ask_form' ) ) {
-			return;
+			ap_ajax_json('no_permission');
 		}
 
+		// Bail if capatcha verification fails.
+		ap_captcha_verification_response();
+
+		global $ap_errors, $validate;
 		$editing_post_id = ap_isset_post_value( 'edit_post_id', false );
 
 		/**
@@ -162,18 +155,10 @@ class AnsPress_Process_Form
 		 */
 		$args = apply_filters( 'ap_ask_fields_validation', ap_get_ask_form_fields( $editing_post_id ) );
 
-		$validate = new AnsPress_Validation( $args );
-		$ap_errors = $validate->get_errors();
+		$validate = new AnsPress_Validation( $args );		
 
-		// If error in form then return.
-		if ( $validate->have_error() ) {
-			ap_ajax_json( array(
-				'form' 			=> $_POST['ap_form_action'],
-				'message_type' 	=> 'error',
-				'message'		=> __( 'Check missing fields and then re-submit.', 'anspress-question-answer' ),
-				'errors'		=> $ap_errors,
-			) );
-		}
+		// If error in form then bail.
+		ap_form_validation_error_response( $validate );
 
 		$fields = $validate->get_sanitized_fields();
 
@@ -285,82 +270,26 @@ class AnsPress_Process_Form
 	}
 
 	/**
-	 * add _o actions after inserting question and answer
-	 * @param  int    $post_id
-	 * @param  object $post
-	 * @return void
-	 * @since  2.0
-	 */
-	public function action_on_new_post( $post_id, $post, $update ) {
-		// return on autosave
-		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) { return; }
-
-		if ( wp_is_post_revision( $post_id ) || $post->post_status == 'trash'|| $post->post_status == 'auto-draft' ) {
-			return; }
-
-		$updated = get_post_meta( $post_id, ANSPRESS_UPDATED_META, true );
-
-		if ( $post->post_type == 'answer' ) {
-
-			if ( $updated == '' ) {
-
-				do_action( 'ap_processed_new_answer', $post_id, $post );
-			} else {
-				/**
-				 * ACTION: ap_after_update_answer
-				 * action triggered after updating an answer
-				 * @since 0.9
-				 */
-				do_action( 'ap_processed_update_answer', $post_id, $post );
-
-			}
-		}
-	}
-
-	/**
 	 * Process answer form
 	 */
 	public function process_answer_form() {
-		global $ap_errors, $validate;
-
-		if ( ap_show_captcha_to_user() && false === ap_check_recaptcha() ) {
-			$this->result = array(
-				'form' 			=> $_POST['ap_form_action'],
-				'message'		=> 'captcha_error',
-				'errors'		=> array( 'captcha' => __( 'Bot verification failed.', 'anspress-question-answer' ) ),
-			);
-			return;
+		// Do security check, if fails then return.
+		if ( ! ap_user_can_answer( $_POST['form_question_id'] ) || ! isset( $_POST['__nonce'] ) || ! ap_verify_nonce( 'nonce_answer_'.$_POST['form_question_id'] ) ) {
+			ap_ajax_json( 'no_permission' );
 		}
 
+		// Bail if capatcha verification fails.
+		ap_captcha_verification_response();
+
+		global $ap_errors, $validate;
 		$question = get_post( (int) $_POST['form_question_id'] );
 
 		// Check if user have permission to answer a question.
-		if ( !ap_user_can_answer( $question->ID ) ) {
-			$this->result = array(
-				'form' 			=> $_POST['ap_form_action'],
-				'message'		=> 'no_permission',
-			);
-			return;
+		if ( ! ap_user_can_answer( $question->ID ) ) {
+			ap_ajax_json('no_permission');
 		}
 
-		$args = array(
-			'description' => array(
-				'sanitize' => array( 'remove_more', 'encode_pre_code', 'wp_kses' ),
-				'validate' => array( 'required' => true, 'length_check' => ap_opt( 'minimum_ans_length' ) ),
-			),
-			'is_private' => array(
-				'sanitize' => array( 'only_boolean' ),
-			),
-			'name' => array(
-				'sanitize' => array( 'strip_tags', 'sanitize_text_field' ),
-			),
-			'form_question_id' => array(
-				'sanitize' => array( 'only_int' ),
-			),
-			'edit_post_id' => array(
-				'sanitize' => array( 'only_int' ),
-			),
-		);
+		$editing_post_id = ap_isset_post_value( 'edit_post_id', false );
 
 		/**
 		 * FILTER: ap_answer_fields_validation
@@ -368,22 +297,12 @@ class AnsPress_Process_Form
 		 * @var void
 		 * @since 2.0.1
 		 */
-		$args = apply_filters( 'ap_answer_fields_validation', $args );
+		$args = apply_filters( 'ap_answer_fields_validation', ap_get_answer_form_fields( $question->ID, $editing_post_id ) );
 
 		$validate = new AnsPress_Validation( $args );
 
-		$ap_errors = $validate->get_errors();
-
-		// if error in form then return
-		if ( $validate->have_error() ) {
-			$this->result = array(
-				'form' 			=> $_POST['ap_form_action'],
-				'message_type' 	=> 'error',
-				'message'		=> __( 'Check missing fields and then re-submit.', 'anspress-question-answer' ),
-				'errors'		=> $ap_errors,
-			);
-			return;
-		}
+		// Bail if there is error in validating form.
+		ap_form_validation_error_response( $validate );
 
 		$fields = $validate->get_sanitized_fields();
 		$this->fields = $fields;
@@ -401,104 +320,29 @@ class AnsPress_Process_Form
 			return;
 		}
 
-		// Do security check, if fails then return
-		if ( ! ap_user_can_answer( $question->ID ) || ! isset( $_POST['__nonce'] ) || ! wp_verify_nonce( $_POST['__nonce'], 'nonce_answer_'.$question->ID ) ) {
-			$this->result = ap_ajax_responce( 'no_permission' );
-			return;
-		}
-
 		$user_id = get_current_user_id();
 
-		$status = 'publish';
-
-		if ( ap_opt( 'new_answer_status' ) == 'moderate' || (ap_opt( 'new_answer_status' ) == 'point' && ap_get_points( $user_id ) < ap_opt( 'new_answer_status' )) ) {
-			$status = 'moderate'; }
-
-		if ( isset( $this->fields['is_private'] ) && $this->fields['is_private'] ) {
-			$status = 'private_post';
-		}
-
 		$answer_array = array(
-			'post_title'	=> $question->post_title,
-			'post_author'	=> $user_id,
-			'post_content' 	=> apply_filters( 'ap_form_contents_filter', $fields['description'] ),
-			'post_parent' 	=> $question->ID,
-			'post_type' 	=> 'answer',
-			'post_status' 	=> $status,
-			'comment_status' => 'open',
+			'post_author'		=> $user_id,
+			'post_content' 		=> $fields['description'],
+			'attach_uploads' 	=> true,
 		);
 
-		/**
-		 * FILTER: ap_pre_insert_answer
-		 * Can be used to modify args before inserting answer
-		 * @var array
-		 * @since 2.0.1
-		 */
-		$answer_array = apply_filters( 'ap_pre_insert_answer', $answer_array );
-
-		$post_id = wp_insert_post( $answer_array );
-
-		if ( $post_id ) {
-			// get existing answer count
-			$current_ans = ap_count_published_answers( $question->ID );
-
-			if ( ! is_user_logged_in() && ap_opt( 'allow_anonymous' ) && isset( $fields['name'] ) ) {
-				update_post_meta( $post_id, 'anonymous_name', $fields['name'] );
-			}
-
-			if ( $this->is_ajax ) {
-
-				if ( $current_ans == 1 ) {
-					global $post;
-					$post = $question;
-					setup_postdata( $post );
-				} else {
-					global $post;
-					$post = get_post( $post_id );
-					setup_postdata( $post );
-				}
-
-				ob_start();
-				global $answers;
-				global $withcomments;
-				$withcomments = true;
-
-				if ( $current_ans == 1 ) {
-					$answers = ap_get_answers( array( 'question_id' => $question->ID ) );
-					ap_get_template_part( 'answers' );
-				} else {
-					$answers = ap_get_answers( array( 'p' => $post_id ) );
-					while ( ap_have_answers() ) : ap_the_answer();
-						ap_get_template_part( 'answer' );
-					endwhile;
-				}
-
-				$html = ob_get_clean();
-
-				$count_label = sprintf( _n( '1 Answer', '%d Answers', $current_ans, 'anspress-question-answer' ), $current_ans );
-
-				$result = array(
-					'postid' 		=> $post_id,
-					'action' 		=> 'new_answer',
-					'div_id' 		=> '#answer_'.get_the_ID(),
-					'can_answer' 	=> ap_user_can_answer( $post->ID ),
-					'html' 			=> $html,
-					'message' 		=> 'answer_submitted',
-					'do' 			=> 'clearForm',
-					'view'			=> array( 'answer_count' => $current_ans, 'answer_count_label' => $count_label ),
-				);
-
-				$this->result = $result;
-
-			}
+		if ( ap_opt( 'new_question_status' ) == 'moderate' || (ap_opt( 'new_question_status' ) == 'reputation' && ap_get_points( $user_id ) < ap_opt( 'mod_question_point' )) ) {
+			$answer_array['post_status'] = 'moderate';
 		}
 
-		$this->process_image_uploads( $post_id, $user_id );
+		// Check if anonymous post and have name.
+		if ( ! is_user_logged_in() && ap_opt( 'allow_anonymous' ) && ! empty( $fields['anonymous_name'] ) ) {
+			$answer_array['anonymous_name'] = $fields['name'];
+		}
 
-		// Check for spam in question.
-		/*if ( ap_opt('akismet_validation' ) && ! current_user_can( 'ap_edit_others_answer' ) ) {
-			ap_check_spam( $post_id );
-		}*/
+		$answer_id = ap_save_answer( $question->ID, $answer_array );
+
+		if ( $answer_id ) {
+			ap_answer_post_ajax_response( $question->ID, $answer_id );
+		}
+		ap_clear_unused_attachments( $user_id );
 	}
 
 	/**
@@ -700,5 +544,36 @@ class AnsPress_Process_Form
 
 		// Remove all unused atthements by user.
 		ap_clear_unused_attachments( $user_id );
+	}
+}
+
+/**
+ * Send ajax response if there is error in validation class.
+ * @param  object $validate Validation class.
+ * @since  3.0.0
+ */
+function ap_form_validation_error_response( $validate ) {
+	// If error in form then return.
+	if ( $validate->have_error() ) {
+		ap_ajax_json( array(
+			'form' 			=> $_POST['ap_form_action'],
+			'message_type' 	=> 'error',
+			'message'		=> __( 'Check missing fields and then re-submit.', 'anspress-question-answer' ),
+			'errors'		=> $validate->get_errors(),
+		) );
+	}
+}
+
+/**
+ * Send ajax response if capatcha verification fails.
+ * @since 3.0.0
+ */
+function ap_captcha_verification_response(){
+	if ( ap_show_captcha_to_user() && false === ap_check_recaptcha() ) {
+		ap_ajax_json( array(
+			'form' 			=> $_POST['ap_form_action'],
+			'message'		=> 'captcha_error',
+			'errors'		=> array( 'captcha' => __( 'Bot verification failed.', 'anspress-question-answer' ) ),
+		) );
 	}
 }

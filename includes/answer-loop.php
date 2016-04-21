@@ -158,14 +158,13 @@ function ap_get_answers($args = array()) {
 		$args['sortby'] = (isset( $_GET['ap_sort'] )) ? sanitize_text_field( wp_unslash( $_GET['ap_sort'] ) ) : ap_opt( 'answers_sort' );
 	}
 
-	//if ( is_super_admin() || current_user_can( 'ap_view_private' ) ) {
+	// if ( is_super_admin() || current_user_can( 'ap_view_private' ) ) {
 		$args['post_status'][] = 'private_post';
-	//}
-
+	// }
 	if ( is_super_admin() || current_user_can( 'ap_view_moderate' ) ) {
 		$args['post_status'][] = 'moderate';
 	}
-	
+
 	if ( is_super_admin() ) {
 		$args['post_status'][] = 'trash';
 	}
@@ -513,4 +512,52 @@ function ap_answer_the_count() {
 function ap_answer_get_the_count() {
 	global $answers;
 	return $answers->found_posts;
+}
+
+/**
+ * Return numbers of published answers.
+ * @param  integer $question_id Question ID.
+ * @return integer
+ */
+function ap_count_published_answers($question_id) {
+	global $wpdb;
+	$query = $wpdb->prepare( "SELECT COUNT(*) FROM $wpdb->posts where post_parent = %d AND (post_status = %s OR post_status = %s) AND post_type = %s", $question_id, 'publish', 'closed', 'answer' );
+	$key = md5( $query );
+
+	$cache = wp_cache_get( $key, 'ap_count' );
+	if ( false !== $cache ) {
+		return $cache;
+	}
+
+	$count = $wpdb->get_var( $query );
+	wp_cache_set( $key, $count, 'ap_count' );
+	return $count;
+}
+
+function ap_count_answer_meta($post_id = false) {
+	if ( ! $post_id ) {
+		$post_id = get_the_ID();
+	}
+	$count = get_post_meta( $post_id, ANSPRESS_ANS_META, true );
+
+	return $count ? $count : 0;
+}
+
+/**
+ * Count all answers excluding best answer.
+ *
+ * @return int
+ */
+function ap_count_other_answer($question_id = false) {
+	if ( ! $question_id ) {
+		$question_id = get_question_id();
+	}
+
+	$count = ap_count_answer_meta( $question_id );
+
+	if ( ap_question_best_answer_selected( $question_id ) ) {
+		return (int) ($count - 1);
+	}
+
+	return (int) $count;
 }

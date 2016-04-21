@@ -8,9 +8,14 @@
  * @package AnsPress
  */
 
+// If this file is called directly, abort.
+if ( ! defined( 'WPINC' ) ) {
+	die;
+}
+
 /**
  * Get all ask form fields.
- * @param  int|bool $post_id Post ID.
+ * @param  integer|boolean $post_id Post ID.
  * @return array
  * @since  3.0.0
  */
@@ -288,19 +293,19 @@ function ap_save_question($args, $wp_error = false) {
 	if ( isset( $args['ID'] ) ) {
 		/**
 		 * Can be used to modify `$args` before updating question
-		 * @param array $question_array Question arguments.
+		 * @param array $args Question arguments.
 		 * @since 2.0.1
 		 */
-		$question_array = apply_filters( 'ap_pre_update_question', $args );
+		$args = apply_filters( 'ap_pre_update_question', $args );
 	} else {
 		/**
 		 * Can be used to modify args before inserting question
-		 * @param array $question_array Question arguments.
+		 * @param array $args Question arguments.
 		 * @since 2.0.1
 		 */
-		$question_array = apply_filters( 'ap_pre_insert_question', $args );
+		$args = apply_filters( 'ap_pre_insert_question', $args );
 	}
-
+	
 	$post_id = wp_insert_post( $args, true );
 
 	if ( true === $wp_error && is_wp_error( $post_id ) ) {

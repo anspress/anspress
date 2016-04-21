@@ -333,43 +333,6 @@ function ap_count_all_answers($id) {
 	return $count;
 }
 
-function ap_count_published_answers($id) {
-	global $wpdb;
-	$count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM $wpdb->posts where post_parent = %d AND (post_status = %s OR post_status = %s) AND post_type = %s", $id, 'publish', 'closed', 'answer' ) );
-
-	return $count;
-}
-
-function ap_count_answer_meta($post_id = false) {
-
-	if ( ! $post_id ) {
-		$post_id = get_the_ID();
-	}
-	$count = get_post_meta( $post_id, ANSPRESS_ANS_META, true );
-
-	return $count ? $count : 0;
-}
-
-/**
- * Count all answers excluding best answer.
- *
- * @return int
- */
-function ap_count_other_answer($question_id = false) {
-
-	if ( ! $question_id ) {
-		$question_id = get_question_id();
-	}
-
-	$count = ap_count_answer_meta( $question_id );
-
-	if ( ap_question_best_answer_selected( $question_id ) ) {
-		return (int) ($count - 1);
-	}
-
-	return (int) $count;
-}
-
 /**
  * Get last active time form post meta.
  * @param  boolean|integer $post_id Post ID.

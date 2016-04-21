@@ -790,6 +790,7 @@
  
         if( typeof textJSON !== 'undefined' && textJSON.length > 2 )
             data = JSON.parse(textJSON);
+        console.log(data);
 
         // Store template in global object.
         if( (data.apTemplate||false) && 'object' === typeof data.apTemplate && !apAutloadTemplate(data) )

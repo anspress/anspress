@@ -8,7 +8,7 @@
         });
 
         // Dropdown toggle
-        $('body').delegate('.ap-dropdown-toggle, .ap-dropdown-menu a', 'click', function(e){
+        $('body').delegate('.ap-dropdown-toggle, .ap-dropdown-menu > a', 'click', function(e){
             e.preventDefault();
             $('.ap-dropdown').not($(this).closest('.ap-dropdown')).removeClass('open');
             $(this).closest('.ap-dropdown').toggleClass('open');
