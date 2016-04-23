@@ -30,6 +30,18 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
+// Check if using required PHP version.
+if ( version_compare(PHP_VERSION, '5.5.0' ) < 0 ) {
+	function ap_admin_php_version__error() {
+		$class = 'notice notice-error';
+		$message = '<strong>'. __('AnsPress is not running!', 'anspress-question-answer' ) .'</strong><br />';
+		$message .= sprintf( __( 'Irks! At least PHP version 5.5 is required to run AnsPress. Current PHP version is %s. Please ask hosting provider to update your PHP version.', 'anspress-question-answer' ), PHP_VERSION );
+		printf( '<div class="%1$s"><p>%2$s</p></div>', $class, $message );
+	}
+	add_action( 'admin_notices', 'ap_admin_php_version__error' );
+	return;
+}
+
 if ( ! class_exists( 'AnsPress' ) ) {
 
 	/**
