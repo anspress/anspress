@@ -167,6 +167,15 @@
 		    background: transparent;
 		    border-color: #ddd;
 		}
+		.mce-toolbar .mce-ico {
+		    color: #878787;
+		    font-size: 16px;
+		    height: 20px;
+		    line-height: 20px;
+		    margin: 0;
+		    padding: 0;
+		    width: 15px;
+		}
 		.wp-editor-tools {
 		    background: #f8f8f8;
 		    padding: 5px;
@@ -370,6 +379,23 @@
 	}
 	.ap-field-description.ap-have-error .ap-form-error-message{
 		margin-bottom: 30px;
+	}
+	.ap-minimal-placeholder{
+		display: none;
+	}
+	.ap-minimal-editor{
+		.ap-form-c > *{
+			display: none;
+		}
+		.ap-form-c .ap-minimal-placeholder{
+		    border: 1px solid #e8e8e8;
+		    box-shadow: 0 0 5px #eee inset;
+		    color: #888;
+		    cursor: pointer;
+		    display: block;
+		    min-height: 70px;
+		    padding: 10px;
+		}
 	}
 }
 

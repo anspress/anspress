@@ -89,30 +89,6 @@
             $('.ap-dynamic-avatar').initial({fontSize:14, fontWeight:600});
         });
 
-        /*if($('.ap_collapse_menu').length > 0){
-            var menu = $('.ap_collapse_menu'),
-                menuwidth = menu.width(),
-                dropdown = menu.find('.ap-dropdown .ap-dropdown-menu');
-
-            var itemwidth = 0;
-            var start_moving = false;
-
-            menu.find('.ap-dropdown').hide();
-
-            menu.find('li').each(function(index, el) {
-                itemwidth = parseInt(itemwidth) + parseInt($(this).outerWidth());
-                if((itemwidth + parseInt($(this).next().outerWidth())) > menuwidth)
-                    start_moving = true;
-
-                if(start_moving && !$(this).is('.ap-user-menu-more')){
-                    dropdown.append($(this).clone());
-                    $(this).remove();
-                    menu.find('.ap-dropdown').show();
-                }
-
-            });
-        }*/
-
         $('.ap-notification-scroll').scrollbar();
 
         $('.ap-label-form-item').click(function(e) {
@@ -155,6 +131,17 @@
         } else {
             $(el).removeClass('active');
         }
+    }
+
+    /**
+     * Ajax callback for subscribe button.
+     * @param  {object} data Ajax success data.
+     */
+    apFunctions.apAppendEditor = function ( data, el ){
+        $('.ap-field-description').html(data);
+        $('#description').hide();
+        console.log($(el).closest('.ap-minimal-editor'));
+        $(el).closest('.ap-minimal-editor').removeClass('ap-minimal-editor');
     }
 
 })(jQuery);

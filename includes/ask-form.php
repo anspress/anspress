@@ -60,12 +60,7 @@ function ap_get_ask_form_fields( $post_id = false ) {
 			'type'  => 'editor',
 			'desc'  => __( 'Write description for the question.', 'anspress-question-answer' ),
 			'value' => ( $editing ? apply_filters( 'the_content', $editing_post->post_content ) : ap_isset_post_value( 'description', '' )  ),
-			'settings' => apply_filters( 'ap_ask_form_editor_settings', array(
-				'textarea_rows'     => 8,
-				'tinymce'           => ap_opt( 'question_text_editor' ) ? false : true,
-				'quicktags'         => ap_opt( 'question_text_editor' ) ? true : false,
-				'media_buttons'     => false,
-			)),
+			'settings' => ap_tinymce_editor_settings('answer'),
 			'sanitize' => array( 'remove_more', 'encode_pre_code', 'wp_kses' ),
 			'validate' => array( 'length_check' => ap_opt( 'minimum_question_length' ) ),
 		),
@@ -346,4 +341,27 @@ function ap_save_question($args, $wp_error = false) {
 	}
 
 	return $post_id;
+}
+
+/**
+ * TinyMCE editor setting
+ * @return array
+ * @since  3.0.0
+ */
+function ap_tinymce_editor_settings( $type = 'question' ){
+	$setting = array(
+		'textarea_rows' => 8,
+		'tinymce'   => ap_opt( $type.'_text_editor' ) ? false : true,
+		'quicktags' => ap_opt( $type.'_text_editor' ) ? true : false,
+		'media_buttons' => false,
+	);
+
+	if( ap_opt( $type.'_text_editor' )  ){
+		$settings['tinymce'] = array(
+			'content_css' => ap_get_theme_url( 'css/editor.css' ),
+			'wp_autoresize_on' => true,
+		);
+	}
+
+	return apply_filters( 'ap_tinymce_editor_settings', $setting, $type );
 }

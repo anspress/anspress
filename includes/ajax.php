@@ -46,6 +46,7 @@ class AnsPress_Ajax
 	    anspress()->add_action( 'ap_ajax_approve_comment', 'AnsPress_Comment_Hooks','approve_comment' );
 	    anspress()->add_action( 'ap_hover_card_user', __CLASS__, 'hover_card_user' );
 	    anspress()->add_action( 'ap_ajax_post_actions_dp', 'AnsPress_Theme', 'post_actions_dp' );
+	    anspress()->add_action( 'ap_ajax_load_tinymce_assets', __CLASS__, 'load_tinymce_assets' );
 	}
 
 	/**
@@ -462,7 +463,7 @@ class AnsPress_Ajax
 		 * AP Hover card actions.
 		 * @param integer $id ID.
 		 */
-		do_action('ap_hover_card_'.$type, $id);
+		do_action('ap_hover_card_'.$type, $id );
 
 		wp_die();
 	}
@@ -955,5 +956,21 @@ class AnsPress_Ajax
 				$this->send( array( 'action' => 'new_comment', 'status' => true, 'comment_ID' => $comment->comment_ID, 'comment_post_ID' => $comment->comment_post_ID, 'comment_content' => $comment->comment_content, 'html' => $html, 'message' => 'comment_success', 'view' => array( 'comments_count_'.$comment->comment_post_ID => '('.$count['approved'].')', 'comment_count_label_'.$comment->comment_post_ID => sprintf( _n( 'One comment', '%d comments', $count['approved'], 'anspress-question-answer' ), $count['approved'] ) ) ) );
 			}
 		}
+	}
+
+	/**
+	 * Load tinyMCE assets using ajax.
+	 * @since 3.0.0
+	 */
+	public static function load_tinymce_assets() {
+		$settings = ap_tinymce_editor_settings('answer');
+
+		echo '<div class="ap-editor">';
+	    wp_editor( '', 'description', $settings );
+	    echo '</div>';
+	    \_WP_Editors::enqueue_scripts();
+		print_footer_scripts();
+		\_WP_Editors::editor_js(); 
+	    wp_die();
 	}
 }

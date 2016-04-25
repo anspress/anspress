@@ -175,7 +175,7 @@ class AnsPress_Common_Pages
 	 * Output edit page template
 	 */
 	public function edit_page() {
-		$post_id = (int) sanitize_text_field( get_query_var( 'edit_post_id' ) );
+		$post_id = (int) get_query_var( 'edit_post_id' );
 		if ( ! ap_user_can_edit_question( $post_id ) ) {
 				echo '<p>'.esc_attr__( 'You don\'t have permission to access this page.', 'anspress-question-answer' ).'</p>';
 				return;

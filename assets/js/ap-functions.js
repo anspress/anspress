@@ -525,3 +525,16 @@ function apParseTemplate(template, data, cb, templateStr) {
 	if(cb) cb(temp);
 	return temp;
 }
+function apParseAjaxResponse(data){
+    data = jQuery(data);
+    if( typeof data.filter('#ap-response') === 'undefined' ){
+        console.log('Not a valid AnsPress ajax response.');
+        return {};
+    }
+    var textJSON = data.filter('#ap-response').html();
+    console.log(textJSON);
+    if( typeof textJSON !== 'undefined' && textJSON.length > 2 ){
+        return JSON.parse(textJSON);
+    }
+    return {};
+}

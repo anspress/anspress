@@ -37,15 +37,10 @@ function ap_get_answer_form_fields( $question_id = false, $answer_id = false ) {
 	$fields = array(
 		array(
 			'name'          => 'description',
-			'type'          => 'editor',
+			'type'          => is_question() ? 'textarea' : 'editor',
 			'value'         => ( $editing ? apply_filters( 'the_content', $editing_post->post_content ) : wp_kses_post( ap_isset_post_value('description', '' ) ) ),
-			'settings'      => apply_filters( 'ap_answer_form_editor_settings', array(
-				'textarea_rows' => 8,
-				'tinymce'   => ap_opt( 'answer_text_editor' ) ? false : true,
-				'quicktags' => ap_opt( 'answer_text_editor' ) ? true : false,
-				'media_buttons' => false,
-			)),
 			'placeholder'  => __( 'Your answer..', 'anspress-question-answer' ),
+			'settings' => ap_tinymce_editor_settings('answer'),
 			'sanitize' => array( 'remove_more', 'encode_pre_code', 'wp_kses' ),
 			'validate' => array( 'required' => true, 'length_check' => ap_opt( 'minimum_ans_length' ) ),
 		),

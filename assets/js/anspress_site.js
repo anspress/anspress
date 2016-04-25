@@ -28,7 +28,7 @@
             this.ajaxData;
             this.appendFormError();
             this.appendMessageBox();
-            this.ajax_btn();
+            this.ajaxBtn();
             this.ap_comment_form();
             this.afterPostingAnswer();
             this.ap_ajax_form();
@@ -58,13 +58,11 @@
         },
         doAjax: function(query, success, context, before, abort) {
             /** Shorthand method for calling ajax */
-            context = typeof context !== 'undefined' ? context : false;
-            success = typeof success !== 'undefined' ? success : false;
-            before = typeof before !== 'undefined' ? before : false;
-            abort = typeof abort !== 'undefined' ? abort : false;
-            
-            var action = apGetValueFromStr(query, 'ap_ajax_action');
-            
+            context = context || false;
+            success = success || false;
+            before = before || false;
+            abort = abort || false;            
+            var action = apGetValueFromStr(query, 'ap_ajax_action');            
             if (abort && (typeof ApSite.ajax_id[action] !== 'undefined')) {
                 ApSite.ajax_id[action].abort();
             }
@@ -82,11 +80,11 @@
                 },
                 success: function(data){
                     ApSite.hideLoading(context);
-                    var data = $(data);
-                    var data = JSON.parse(data.filter('#ap-response').html());
-                    
-                    if( typeof success === 'function' )
-                        success(data);
+                    var parsedData = apParseAjaxResponse(data);
+                    if( typeof success === 'function' ){
+                        data = $.isEmptyObject(parsedData) ? data : parsedData;
+                        success(data, context);
+                    }
                 },
                 context: context,
                 cache:false
@@ -114,27 +112,27 @@
         showLoading: function(elm) {
             /*hide any existing loading icon*/
             AnsPress.site.hideLoading(elm);
-
+            var customClass = $(elm).data('loadclass')||'';
             var uid = this.uniqueId();
-            var el = $('<div class="ap-loading-icon ap-uid" id="apuid-' + uid + '"><i class="apicon-sync"><i></div>');
+            var el = $('<div class="ap-loading-icon ap-uid '+customClass+'" id="apuid-' + uid + '"><i class="apicon-sync"><i></div>');
             $('body').append(el);
             var offset = $(elm).offset();
             var height = $(elm).outerHeight();
             var width = $(elm).outerWidth();
 
-            if($(elm).is('a, button, input[type="submit"], form')){
+            //if($(elm).is('a, button, input[type="submit"], form')){
                 el.css({
                     top: offset.top,
                     left: offset.left,
                     height: height,
                     width: width
                 });
-            }else{
+            /*}else{
                 el.css({
                     top: offset.top + 14,
                     left: offset.left + width - 20
                 });
-            }
+            }*/
 
             $(elm).data('loading', '#apuid-' + uid);
 
@@ -317,7 +315,7 @@
                 scrollTop: ($('#ap-commentform').offset().top) - 150
             }, 500);
         },
-        ajax_btn: function() {
+        ajaxBtn: function() {
             $('body').delegate('[data-action="ajax_btn"]', 'click', function(e) {
                 if($(this).is('.ajax-disabled'))
                     return;
@@ -325,11 +323,13 @@
                 e.preventDefault();
                 var q = $(this).apAjaxQueryString();
 
-                ApSite.doAjax(q, function(data) {                    
-                    if( typeof $(this).data('cb') !== 'undefined' ){
-                        var cb = $(this).data("cb");                       
+                ApSite.doAjax(q, function(data, context) {                             
+                    if( $(context).data('cb') || false ){
+                        var cb = $(context).data("cb");
+                        console.log(apFunctions[cb]);
+                                        
                         if( typeof apFunctions[cb] === 'function' ){
-                            apFunctions[cb](data, this);
+                            apFunctions[cb](data, context);
                         }
                     }
                 }, this);
@@ -782,14 +782,7 @@
     }
     $(document).ajaxComplete(function(event, response, settings) {
         // Get response html.
-        var dataText = $(response.responseText);
-        var data = {};
-
-        //Parse response text JSON
-        var textJSON = dataText.filter('#ap-response').html();
- 
-        if( typeof textJSON !== 'undefined' && textJSON.length > 2 )
-            data = JSON.parse(textJSON);
+        var data = apParseAjaxResponse(response.responseText);
         console.log(data);
 
         // Store template in global object.
@@ -855,11 +848,10 @@
             });
         }
 
-    });   
+    }); 
 })(jQuery);
 
 function apAutloadTemplate(data){
     return 'undefined' !== typeof data.disableAutoLoad && data.disableAutoLoad;
 }
-
 

@@ -269,7 +269,7 @@ class AnsPress_Comment_Hooks
 		return $args;
 	}
 
-	public static function approve_comment(){
+	public static function approve_comment() {
 		$args = $_POST['args'];
 		if ( ! ap_verify_nonce( 'approve_comment_'. (int) $args[0] ) || ! ap_user_can_approve_comment( ) ) {
 	    	ap_ajax_json( 'something_wrong' );
@@ -278,23 +278,23 @@ class AnsPress_Comment_Hooks
 	    $comment_id = (int) $args[0];
 
 		$success = wp_set_comment_status( $comment_id, 'approve' );
-		if( $success ){
+		if ( $success ) {
 			ap_ajax_json( array(
 				'action' 		=> 'approve_comment',
 				'comment_ID' 	=> $comment_id,
-				'message' 		=> __('Comment approved successfully', 'anspress-question-answer'),
-				'do'			=> array( 
+				'message' 		=> __('Comment approved successfully', 'anspress-question-answer' ),
+				'do'			=> array(
 					'removeClass' => [ '#comment-'.$comment_id, 'unapproved' ],
 					array(
-						['action' => 'remove_if_exists', 'args' => '#comment-'.$comment_id .' .comment-awaiting-moderation'],
-						['action' => 'remove_if_exists', 'args' => '#comment-'.$comment_id .' .ap-comment-approve'],
+						[ 'action' => 'remove_if_exists', 'args' => '#comment-'.$comment_id .' .comment-awaiting-moderation' ],
+						[ 'action' => 'remove_if_exists', 'args' => '#comment-'.$comment_id .' .ap-comment-approve' ],
 					)
 				),
 			) );
 		}
 
 		ap_ajax_json( 'something_wrong' );
-	} 
+	}
 }
 
 /**

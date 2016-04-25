@@ -91,7 +91,7 @@ class AnsPress_Process_Form
 		}
 
 		// If reached to this point then there is something wrong.
-		ap_send_json( ap_ajax_responce( 'something_wrong' ) );
+		ap_ajax_json( 'something_wrong' );
 	}
 
 
@@ -138,7 +138,7 @@ class AnsPress_Process_Form
 	public function process_ask_form() {
 		// Do security check, if fails then return.
 		if ( ! ap_user_can_ask() || ! isset( $_POST['__nonce'] ) || ! wp_verify_nonce( $_POST['__nonce'], 'ask_form' ) ) {
-			ap_ajax_json('no_permission');
+			ap_ajax_json('no_permission' );
 		}
 
 		// Bail if capatcha verification fails.
@@ -155,7 +155,7 @@ class AnsPress_Process_Form
 		 */
 		$args = apply_filters( 'ap_ask_fields_validation', ap_get_ask_form_fields( $editing_post_id ) );
 
-		$validate = new AnsPress_Validation( $args );		
+		$validate = new AnsPress_Validation( $args );
 
 		// If error in form then bail.
 		ap_form_validation_error_response( $validate );
@@ -188,6 +188,10 @@ class AnsPress_Process_Form
 
 		if ( ap_opt( 'new_question_status' ) == 'moderate' || (ap_opt( 'new_question_status' ) == 'reputation' && ap_get_points( $user_id ) < ap_opt( 'mod_question_point' )) ) {
 			$question_array['post_status'] = 'moderate';
+		}
+
+		if ( $this->fields['is_private'] ) {
+			$question_array['is_private'] = true;
 		}
 
 		// Check if anonymous post and have name.
@@ -248,6 +252,10 @@ class AnsPress_Process_Form
 			$question_array['post_status'] = 'moderate';
 		}
 
+		if ( $this->fields['is_private'] ) {
+			$question_array['is_private'] = true;
+		}
+
 		// Check if anonymous post and have name.
 		if ( ! is_user_logged_in() && ap_opt( 'allow_anonymous' ) && ! empty( $this->fields['anonymous_name'] ) ) {
 			$question_array['anonymous_name'] = $this->fields['name'];
@@ -286,7 +294,7 @@ class AnsPress_Process_Form
 
 		// Check if user have permission to answer a question.
 		if ( ! ap_user_can_answer( $question->ID ) ) {
-			ap_ajax_json('no_permission');
+			ap_ajax_json('no_permission' );
 		}
 
 		$editing_post_id = ap_isset_post_value( 'edit_post_id', false );
@@ -332,6 +340,10 @@ class AnsPress_Process_Form
 			$answer_array['post_status'] = 'moderate';
 		}
 
+		if ( $this->fields['is_private'] ) {
+			$answer_array['is_private'] = true;
+		}
+
 		// Check if anonymous post and have name.
 		if ( ! is_user_logged_in() && ap_opt( 'allow_anonymous' ) && ! empty( $fields['anonymous_name'] ) ) {
 			$answer_array['anonymous_name'] = $fields['name'];
@@ -350,18 +362,15 @@ class AnsPress_Process_Form
 	 * @param  object $question Parent question object.
 	 * @return mixed
 	 */
-	public function edit_answer( $question) {
-
+	public function edit_answer( $question ) {
 		global $ap_errors, $validate;
 
 		// Return if user do not have permission to edit this answer.
 		if ( ! ap_user_can_edit_answer( $this->fields['edit_post_id'] ) ) {
-			$this->result = ap_ajax_responce( 'no_permission' );
-			return;
+			ap_ajax_json('no_permission' );
 		}
 
 		$filter = apply_filters( 'ap_before_updating_answer', false, $this->fields['description'] );
-
 		if ( true === $filter || is_array( $filter ) ) {
 			if ( is_array( $filter ) ) {
 				$this->result = $filter;
@@ -370,45 +379,29 @@ class AnsPress_Process_Form
 		}
 
 		$answer = get_post( $this->fields['edit_post_id'] );
-
-		$status = 'publish';
-
-		if ( ap_opt( 'edit_answer_status' ) == 'moderate' || (ap_opt( 'edit_answer_status' ) == 'point' && ap_get_points( get_current_user_id() ) < ap_opt( 'new_answer_status' )) ) {
-			$status = 'moderate';
-		}
-
-		if ( isset( $this->fields['is_private'] ) && $this->fields['is_private'] ) {
-			$status = 'private_post';
-		}
-
 		$answer_array = array(
-			'ID'			=> $this->fields['edit_post_id'],
-			'post_author'	=> $answer->post_author,
-			'post_content' 	=> apply_filters( 'ap_form_contents_filter', $this->fields['description'] ),
-			'post_status' 	=> $status,
+			'ID'				=> $this->fields['edit_post_id'],
+			'post_author'		=> $answer->post_author,
+			'post_content' 		=> $this->fields['description'],
+			'attach_uploads' 	=> true,
 		);
 
-		$answer_array = apply_filters( 'ap_pre_update_answer', $answer_array );
-
-		$post_id = wp_update_post( $answer_array );
-
-		if ( $post_id ) {
-			if ( $this->is_ajax ) {
-				$this->result = array(
-					'action' 		=> 'answer_edited',
-					'message'		=> 'answer_updated',
-					'do'			=> array( 'redirect' => get_permalink( $answer->post_parent ) ),
-				);
-			}
-
-			$this->redirect = get_permalink( $post_id );
+		if ( ap_opt( 'new_question_status' ) == 'moderate' || (ap_opt( 'new_question_status' ) == 'reputation' && ap_get_points( $user_id ) < ap_opt( 'mod_question_point' )) ) {
+			$answer_array['post_status'] = 'moderate';
 		}
 
-		$this->process_image_uploads( $post_id, $answer->post_author );
+		if ( $this->fields['is_private'] ) {
+			$answer_array['is_private'] = true;
+		}
 
-		// Check for spam in question.
-		if ( ap_opt('akismet_validation' ) && ! current_user_can( 'ap_edit_others_answer' ) ) {
-			ap_check_spam( $post_id );
+		$answer_id = ap_save_answer( $question->ID, $answer_array );
+
+		if ( $answer_id ) {
+			ap_ajax_json( array(
+				'action' 		=> 'answer_edited',
+				'message'		=> 'answer_updated',
+				'do'			=> array( 'redirect' => get_permalink( $answer->post_parent ) ),
+			));
 		}
 	}
 
@@ -425,7 +418,7 @@ class AnsPress_Process_Form
 		}
 
 		if ( ! ap_verify_nonce( 'nonce_user_profile_'.$user_id.'_'.$group ) ) {
-			ap_send_json( ap_ajax_responce( 'something_wrong' ) );
+			ap_ajax_json( 'something_wrong' );
 		}
 
 		$user_fields = ap_get_user_fields( $group, $user_id );
@@ -448,13 +441,12 @@ class AnsPress_Process_Form
 
 		// If error in form then return.
 		if ( $validate->have_error() ) {
-			ap_send_json( ap_ajax_responce(array(
+			ap_ajax_json(array(
 				'form' 			=> $_POST['ap_form_action'],
 				'message_type' 	=> 'error',
 				'message'		=> __( 'Check missing fields and then re-submit.', 'anspress-question-answer' ),
 				'errors'		=> $ap_errors,
-			)));
-			return;
+			));
 		}
 
 		$fields = $validate->get_sanitized_fields();
@@ -515,21 +507,22 @@ class AnsPress_Process_Form
 		}
 
 		if ( ! isset( $_POST['__nonce'] ) || ! wp_verify_nonce( $_POST['__nonce'], 'upload_image_'.$user_id ) ) {
-			ap_send_json( ap_ajax_responce( 'something_wrong' ) ); }
+			ap_ajax_json( 'something_wrong' );
+		}
 
 		if ( ! empty( $file ) && is_array( $file ) && $file['error'] == 0 ) {
 
 			$attachment_id = ap_upload_user_file( $file );
 
 			if ( $attachment_id !== false ) {
-				ap_send_json( ap_ajax_responce( array( 'action' => 'upload_post_image', 'html' => wp_get_attachment_image( $attachment_id, 'full' ), 'message' => 'post_image_uploaded', 'attachment_id' => $attachment_id ) ) ); }
+				ap_ajax_json( array( 'action' => 'upload_post_image', 'html' => wp_get_attachment_image( $attachment_id, 'full' ), 'message' => 'post_image_uploaded', 'attachment_id' => $attachment_id ) );
+			}
 		}
 
-		ap_send_json( ap_ajax_responce( 'something_wrong' ) );
+		ap_ajax_json( 'something_wrong' );
 	}
 
 	public function process_image_uploads($post_id, $user_id) {
-
 		$attachment_ids = $_POST['attachment_ids'];
 
 		// If attchment ids present then user have uploaded images.
@@ -568,7 +561,7 @@ function ap_form_validation_error_response( $validate ) {
  * Send ajax response if capatcha verification fails.
  * @since 3.0.0
  */
-function ap_captcha_verification_response(){
+function ap_captcha_verification_response() {
 	if ( ap_show_captcha_to_user() && false === ap_check_recaptcha() ) {
 		ap_ajax_json( array(
 			'form' 			=> $_POST['ap_form_action'],

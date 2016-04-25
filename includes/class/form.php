@@ -428,21 +428,33 @@ class AnsPress_Form {
 	}
 
 	/**
-	 * textarea fields
-	 * @param       array $field
+	 * Textarea field output.
+	 * @param       array $field Field args.
 	 * @return      void
 	 * @since       2.0
 	 */
 	private function textarea_field($field = array()) {
+		$field = wp_parse_args( $field, array(
+			'name' => 'textarea',
+			'rows' => '6',
+			'value' => '',
+		) );
 
 		if ( isset( $field['label'] ) ) {
-			$this->label(); }
+			$this->label();
+		}
+		
 		$this->output .= '<div class="ap-form-fields-in">';
 		$placeholder = $this->placeholder();
-		$this->output .= '<textarea id="'. @$field['name'] .'" rows="'. @$field['rows'] .'" class="ap-form-control" name="'. @$field['name'] .'"'.$placeholder.' '. $this->attr( $field ) .'>'. @$field['value'] .'</textarea>';
+		
+		$this->output .= '<textarea id="'. $field['name'] .'" rows="'. $field['rows'] .'" class="ap-form-control" name="'. $field['name'] .'"'.$placeholder.' '. $this->attr( $field ) .'>'. $field['value'] .'</textarea>';
+		
 		$this->error_messages();
+		
 		if ( ! $this->field['show_desc_tip'] ) {
-			$this->desc(); }
+			$this->desc();
+		}
+
 		$this->output .= '</div>';
 	}
 
