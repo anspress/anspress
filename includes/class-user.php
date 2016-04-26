@@ -197,36 +197,25 @@ class AnsPress_User
 			$my = ap_is_my_profile();
 			$user_pages = anspress()->user_pages;
 
-			if ( 'activity' == $active ) {
-				$title = $my ?  __( 'My activity', 'anspress-question-answer' ) : sprintf( __( '%s\'s activity', 'anspress-question-answer' ), $name );
-			} elseif ('profile' == $active)
-				$title = $my ?  __( 'My profile', 'anspress-question-answer' ) : sprintf( __( '%s\'s profile', 'anspress-question-answer' ), $name );
+			$titles = array(
+				'activity' => $my ?  __( 'My activity', 'anspress-question-answer' ) : sprintf( __( '%s\'s activity', 'anspress-question-answer' ), $name ),
+				'profile' => $my ?  __( 'My profile', 'anspress-question-answer' ) : sprintf( __( '%s\'s profile', 'anspress-question-answer' ), $name ),
+				'questions' => $my ?  __( 'My questions', 'anspress-question-answer' ) : sprintf( __( '%s\'s questions', 'anspress-question-answer' ), $name ),
+				'answers' => $my ?  __( 'My answers', 'anspress-question-answer' ) : sprintf( __( '%s\'s answers', 'anspress-question-answer' ), $name ),
+				'about' => $my ?  __( 'About me', 'anspress-question-answer' ) : sprintf( __( '%s', 'anspress-question-answer' ), $name ),
+				'followers' => $my ?  __( 'My followers', 'anspress-question-answer' ) : sprintf( __( '%s\'s followers', 'anspress-question-answer' ), $name ),
+				'following' => __( 'Following', 'anspress-question-answer' ),
+				'subscription' => __( 'My subscriptions', 'anspress-question-answer' ),
+				'notification' => __( 'My notification', 'anspress-question-answer' ),
+			);
 
-			elseif ('questions' == $active)
-				$title = $my ?  __( 'My questions', 'anspress-question-answer' ) : sprintf( __( '%s\'s questions', 'anspress-question-answer' ), $name );
-
-			elseif ('answers' == $active)
-				$title = $my ?  __( 'My answers', 'anspress-question-answer' ) : sprintf( __( '%s\'s answers', 'anspress-question-answer' ), $name );
-
-			elseif ('reputation' == $active)
-				$title = $my ?  __( 'My reputation', 'anspress-question-answer' ) : sprintf( __( '%s\'s reputation', 'anspress-question-answer' ), $name );
-
-			elseif ('about' == $active)
-				$title = $my ?  __( 'About me', 'anspress-question-answer' ) : sprintf( __( '%s', 'anspress-question-answer' ), $name );
-
-			elseif ('followers' == $active)
-				$title = $my ?  __( 'My followers', 'anspress-question-answer' ) : sprintf( __( '%s\'s followers', 'anspress-question-answer' ), $name );
-
-			elseif ('following' == $active)
-				$title = __( 'Following', 'anspress-question-answer' );
-
-			elseif ('subscription' == $active)
-				$title = __( 'My subscriptions', 'anspress-question-answer' );
-
-			elseif ('notification' == $active)
-				$title = __( 'My notification', 'anspress-question-answer' );
-			else {
-				$title = $user_pages[$active]['title']; }
+			foreach ( (array) $titles as $page => $user_title ) {
+				if ( $page == $active ) {
+					$title = $user_title;
+				} else {
+					$title = $user_pages[$active]['title'];
+				}
+			}
 		}
 
 		return $title;
@@ -502,7 +491,6 @@ class AnsPress_User
 	 */
 	public static function get_avatar($avatar, $id_or_email, $size, $default, $alt) {
 		if ( ! empty( $id_or_email ) ) {
-
 			if ( is_object( $id_or_email ) ) {
 				$allowed_comment_types = apply_filters('get_avatar_comment_types', array(
 					'comment'
@@ -549,7 +537,6 @@ class AnsPress_User
 	 * @since 2.0.1
 	 */
 	public static function ap_user_menu_icons($menus) {
-
 		$icons = array(
 			'about'         => ap_icon( 'home' ),
 			'profile'       => ap_icon( 'board' ),
@@ -564,7 +551,7 @@ class AnsPress_User
 			'activity-feed'  		=> ap_icon( 'rss' ),
 		);
 
-		foreach ( $icons as $k => $i ) {
+		foreach ( (array) $icons as $k => $i ) {
 			if ( isset( $menus[ $k ] ) ) {
 				$menus[ $k ]['class'] = $i;
 			}

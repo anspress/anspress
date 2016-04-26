@@ -491,13 +491,11 @@ if ( ! class_exists( 'AnsPress_Init' ) ) {
 		}
 
 		/**
-		 * After activation redirect
+		 * Before activation redirect
 		 * @param  string $plugin Plugin base name.
 		 */
 		public static function activation_redirect($plugin) {
-			if ( $plugin == plugin_basename( __FILE__ ) ) {
-				exit( wp_redirect( admin_url( 'admin.php?page=anspress_about' ) ) );
-			}
+			add_option('anspress_do_installation_redirect', true );
 		}
 
 		/**
@@ -537,6 +535,17 @@ if ( ! class_exists( 'AnsPress_Init' ) ) {
 			$tables[]	= $wpdb->prefix . 'ap_subscribers';
 			return $tables;
 		}
+
+		/**
+		 * Redirect to about AnsPress page after activating AnsPress.
+		 * @since 3.0.0
+		 */
+		public static function redirect_to_about_page() {
+			if ( get_option( 'anspress_do_installation_redirect' ) ) {
+				delete_option( 'anspress_do_installation_redirect' );
+				exit( wp_redirect( admin_url( 'admin.php?page=anspress_about' ) ) );
+			}
+		}
 	}
 }
 
@@ -545,6 +554,7 @@ add_action( 'plugins_loaded', [ 'AnsPress_Init', 'load_anspress' ] );
 add_action( 'activated_plugin', [ 'AnsPress_Init', 'activation_redirect' ] );
 add_action( 'wpmu_new_blog', [ 'AnsPress_Init', 'create_blog' ], 10, 6 );
 add_filter( 'wpmu_drop_tables', [ 'AnsPress_Init', 'drop_blog_tables' ], 10, 2 );
+add_filter( 'admin_init', [ 'AnsPress_Init', 'redirect_to_about_page' ] );
 
 /*
  * Dashboard and Administrative Functionality
