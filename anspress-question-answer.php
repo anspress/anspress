@@ -495,7 +495,9 @@ if ( ! class_exists( 'AnsPress_Init' ) ) {
 		 * @param  string $plugin Plugin base name.
 		 */
 		public static function activation_redirect($plugin) {
-			add_option('anspress_do_installation_redirect', true );
+			if ( $plugin == plugin_basename( __FILE__ ) ) {
+				add_option('anspress_do_installation_redirect', true );
+			}
 		}
 
 		/**

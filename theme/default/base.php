@@ -13,7 +13,10 @@
 <?php dynamic_sidebar( 'ap-top' ); ?>
 <div class="row">
 	<div id="ap-lists" class="<?php echo is_active_sidebar( 'ap-sidebar' ) && is_anspress() ? 'col-md-9' : 'col-md-12' ?>">
-		<?php ap_get_template_part('list-head'); ?>
+		<?php if( !get_query_var( 'ap_hide_list_head' ) ): ?>
+			<?php ap_get_template_part('list-head'); ?>
+		<?php endif; ?>
+
 		<?php if ( ap_have_questions() ) : ?>
 			<div class="ap-questions">
 				<?php
