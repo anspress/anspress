@@ -16,12 +16,6 @@ if ( ! defined( 'WPINC' ) ) {
 
 class AnsPress_Post_Status
 {
-	/**
-	 * Initialize the class
-	 */
-	public function __construct() {
-		anspress()->add_action('init', $this, 'register_post_status' );
-	}
 
 	/**
 	 * Register post status for question and answer CPT

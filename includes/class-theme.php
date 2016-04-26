@@ -20,27 +20,9 @@ if ( ! defined( 'WPINC' ) ) {
 class AnsPress_Theme
 {
 	/**
-	 * Initialize the class
-	 * @since 2.4.8 Removed `$ap` args.
-	 */
-	public function __construct() {
-		anspress()->add_action( 'init', $this, 'init_actions' );
-		anspress()->add_filter( 'post_class', $this, 'question_answer_post_class' );
-		anspress()->add_filter( 'body_class', $this, 'body_class' );
-		anspress()->add_filter( 'comments_template', $this, 'comment_template' );
-		anspress()->add_action( 'after_setup_theme', $this, 'includes' );
-		anspress()->add_filter( 'wpseo_title', $this, 'wpseo_title' , 10, 2 );
-		anspress()->add_filter( 'wp_head', $this, 'feed_link', 9 );
-		anspress()->add_filter( 'wpseo_canonical', $this, 'wpseo_canonical' );
-		anspress()->add_action( 'ap_before', $this, 'ap_before_html_body' );
-		anspress()->add_action( 'wp', $this, 'remove_head_items', 10 );
-		anspress()->add_action( 'wp_head', $this, 'wp_head', 11 );
-	}
-
-	/**
 	 * Function get called on init
 	 */
-	public function init_actions() {
+	public static function init_actions() {
 		// Register anspress shortcode.
 		add_shortcode( 'anspress', array( AnsPress_BasePage_Shortcode::get_instance(), 'anspress_sc' ) );
 
@@ -52,7 +34,7 @@ class AnsPress_Theme
 	 * AnsPress theme function as like WordPress theme function
 	 * @return void
 	 */
-	public function includes() {
+	public static function includes_theme() {
 		require_once ap_get_theme_location( 'functions.php' );
 	}
 
@@ -62,7 +44,7 @@ class AnsPress_Theme
 	 * @return array
 	 * @since 2.0.1
 	 */
-	public function question_answer_post_class($classes) {
+	public static function question_answer_post_class($classes) {
 		global $post;
 
 		if ( 'question' == $post->post_type ) {
@@ -93,7 +75,7 @@ class AnsPress_Theme
 	 * @return array
 	 * @since 2.0.1
 	 */
-	public function body_class($classes) {
+	public static function body_class($classes) {
 		// Add anspress class to body.
 		if ( is_anspress() ) {
 			$classes[] = 'anspress';
@@ -108,7 +90,7 @@ class AnsPress_Theme
 	 * @param  string $comment_template path to comment template.
 	 * @return string
 	 */
-	public function comment_template($comment_template) {
+	public static function comment_template($comment_template) {
 		global $post;
 		if ( $post->post_type == 'question' || $post->post_type == 'answer' ) {
 			return ap_get_theme_location( 'comments.php' );
@@ -122,7 +104,7 @@ class AnsPress_Theme
 	 * @param string $title WP page title.
 	 * @return string
 	 */
-	public function ap_title($title) {
+	public static function ap_title($title) {
 		if ( is_anspress() ) {
 			remove_filter('wp_title', array(
 				$this,
@@ -150,7 +132,7 @@ class AnsPress_Theme
 	 * @param  string $title Page title.
 	 * @return string
 	 */
-	public function wpseo_title($title) {
+	public static function wpseo_title($title) {
 		if ( is_anspress() ) {
 			remove_filter('wpseo_title', array(
 				$this,
@@ -179,7 +161,7 @@ class AnsPress_Theme
 	 * @param  string $id    Post ID.
 	 * @return string
 	 */
-	public function the_title($title, $id = null) {
+	public static function the_title($title, $id = null) {
 
 		if ( ap_opt( 'base_page' ) == $id  ) {
 			remove_filter('the_title', array(
@@ -194,7 +176,7 @@ class AnsPress_Theme
 	/**
 	 * Add feed link in wp_head
 	 */
-	public function feed_link() {
+	public static function feed_link() {
 		if ( is_anspress() ) {
 			echo '<link href="' . esc_url( home_url( '/feed/question-feed' ) ) . '" title="' . esc_attr__( 'Question Feed', 'anspress-question-answer' ) . '" type="application/rss+xml" rel="alternate">';
 		}
@@ -203,14 +185,14 @@ class AnsPress_Theme
 	/**
 	 * Add default before body sidebar in AnsPress contents
 	 */
-	public function ap_before_html_body() {
+	public static function ap_before_html_body() {
 		dynamic_sidebar( 'ap-before' );
 	}
 
 	/**
 	 * Remove some unwanted things from wp_head
 	 */
-	public function remove_head_items() {
+	public static function remove_head_items() {
 		if ( is_anspress() ) {
 			global $wp_query;
 
@@ -233,7 +215,7 @@ class AnsPress_Theme
 	/**
 	 * Add feed and links in HEAD of the document
 	 */
-	public function wp_head() {
+	public static function wp_head() {
 		if ( is_anspress() ) {
 			$q_feed = get_post_type_archive_feed_link( 'question' );
 			$a_feed = get_post_type_archive_feed_link( 'answer' );
@@ -251,7 +233,7 @@ class AnsPress_Theme
 	 * Update concal link when wpseo plugin installed
 	 * @return string
 	 */
-	public function wpseo_canonical() {
+	public static function wpseo_canonical() {
 		if ( is_question() ) {
 			return get_permalink( get_question_id() );
 		}

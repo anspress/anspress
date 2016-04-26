@@ -1,5 +1,4 @@
 <?php
-
 /**
  * AnsPress options page
  *
@@ -45,7 +44,7 @@ new AnsPress_Options_Fields();
         <a href="https://www.facebook.com/wp.anspress" target="_blank">Facebook</a>
     </h2>
 
-	<?php if ( @$_POST['anspress_opt_updated'] === true ) : ?>
+	<?php if ( ap_isset_post_value('anspress_opt_updated') === true ) : ?>
 		<div class="updated fade"><p><strong><?php _e( 'AnsPress options updated', 'anspress-question-answer' ); ?></strong></p></div>
 	<?php endif; // If the form has just been submitted, this shows the notification ?>
 

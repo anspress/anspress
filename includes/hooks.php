@@ -3,9 +3,9 @@
  * All Hooks of AnsPress
  *
  * @package   AnsPress
- * @author    Rahul Aryan <admin@rahularyan.com>
+ * @author    Rahul Aryan <support@anspress.io>
  * @license   GPL-2.0+
- * @link      http://anspress.io
+ * @link      https://anspress.io
  * @copyright 2014 Rahul Aryan
  */
 
@@ -24,7 +24,7 @@ class AnsPress_Hooks
 	 * @since 2.0.1
 	 * @since 2.4.8 Removed `$ap` argument.
 	 */
-	public static function init() {
+	public static function init() {		
 	    anspress()->add_action( 'registered_taxonomy', __CLASS__, 'add_ap_tables' );
 	    anspress()->add_action( 'ap_processed_new_question', __CLASS__, 'after_new_question', 1, 2 );
 	    anspress()->add_action( 'ap_processed_new_answer', __CLASS__, 'after_new_answer', 1, 2 );
@@ -39,13 +39,7 @@ class AnsPress_Hooks
 	    anspress()->add_action( 'trashed_comment', __CLASS__, 'comment_trash' );
 	    anspress()->add_action( 'delete_comment ', __CLASS__, 'comment_trash' );
 	    anspress()->add_action( 'ap_publish_comment', __CLASS__, 'publish_comment' );
-	    anspress()->add_filter( 'wp_get_nav_menu_items', __CLASS__, 'update_menu_url' );
-	    anspress()->add_filter( 'nav_menu_css_class', __CLASS__, 'fix_nav_current_class', 10, 2 );
-	    anspress()->add_filter( 'walker_nav_menu_start_el', __CLASS__, 'walker_nav_menu_start_el', 10, 4 );
 	    anspress()->add_action( 'wp_loaded', __CLASS__, 'flush_rules' );
-	    anspress()->add_filter( 'mce_buttons', __CLASS__, 'editor_buttons', 10, 2 );
-		anspress()->add_filter( 'wp_insert_post_data', __CLASS__, 'wp_insert_post_data', 10, 2 );
-	    anspress()->add_filter( 'ap_form_contents_filter', __CLASS__, 'sanitize_description' );
 	    anspress()->add_action( 'safe_style_css', __CLASS__, 'safe_style_css', 11 );
 	    anspress()->add_action( 'save_post', __CLASS__, 'base_page_update', 10, 2 );
 	    anspress()->add_action( 'ap_added_follower', __CLASS__, 'ap_added_follower', 10, 2 );
@@ -53,8 +47,50 @@ class AnsPress_Hooks
 	    anspress()->add_action( 'ap_vote_casted', __CLASS__, 'update_user_vote_casted_count', 10, 4 );
 	    anspress()->add_action( 'ap_vote_removed', __CLASS__, 'update_user_vote_casted_count' , 10, 4 );
 	    anspress()->add_action( 'the_post', __CLASS__, 'ap_append_vote_count' );
+
+	    // Theme  hooks.
+	    anspress()->add_action( 'init', 'AnsPress_Theme', 'init_actions' );
+	    anspress()->add_filter( 'post_class', 'AnsPress_Theme', 'question_answer_post_class' );
+	    anspress()->add_filter( 'body_class', 'AnsPress_Theme', 'body_class' );
+	    anspress()->add_filter( 'comments_template', 'AnsPress_Theme', 'comment_template' );
+	    anspress()->add_action( 'after_setup_theme', 'AnsPress_Theme', 'includes_theme' );
+	    anspress()->add_filter( 'wpseo_title', 'AnsPress_Theme', 'wpseo_title' , 10, 2 );
+	    anspress()->add_filter( 'wp_head', 'AnsPress_Theme', 'feed_link', 9 );
+	    anspress()->add_filter( 'wpseo_canonical', 'AnsPress_Theme', 'wpseo_canonical' );
+	    anspress()->add_action( 'ap_before', 'AnsPress_Theme', 'ap_before_html_body' );
+	    anspress()->add_action( 'wp', 'AnsPress_Theme', 'remove_head_items', 10 );
+		anspress()->add_action( 'wp_head', 'AnsPress_Theme', 'wp_head', 11 );
+
+	    anspress()->add_filter( 'wp_get_nav_menu_items', __CLASS__, 'update_menu_url' );
+	    anspress()->add_filter( 'nav_menu_css_class', __CLASS__, 'fix_nav_current_class', 10, 2 );
+	    anspress()->add_filter( 'walker_nav_menu_start_el', __CLASS__, 'walker_nav_menu_start_el', 10, 4 );  
+	    anspress()->add_filter( 'mce_buttons', __CLASS__, 'editor_buttons', 10, 2 );
+		anspress()->add_filter( 'wp_insert_post_data', __CLASS__, 'wp_insert_post_data', 10, 2 );
+	    anspress()->add_filter( 'ap_form_contents_filter', __CLASS__, 'sanitize_description' );	    
 	    anspress()->add_filter( 'human_time_diff', __CLASS__, 'human_time_diff' );
 	    anspress()->add_filter( 'comments_template_query_args', 'AnsPress_Comment_Hooks', 'comments_template_query_args' );
+
+	    // User hooks.
+	    anspress()->add_action( 'init', 'AnsPress_User', 'init_actions' );	    
+		anspress()->add_filter( 'pre_user_query', 'AnsPress_User', 'follower_query' );
+		anspress()->add_filter( 'pre_user_query', 'AnsPress_User', 'following_query' );
+		anspress()->add_filter( 'pre_user_query', 'AnsPress_User', 'user_sort_by_reputation' );		
+		anspress()->add_filter( 'avatar_defaults' , 'AnsPress_User', 'default_avatar' );
+		anspress()->add_filter( 'get_avatar', 'AnsPress_User', 'get_avatar', 10, 5 );
+		anspress()->add_filter( 'ap_user_menu', 'AnsPress_User', 'ap_user_menu_icons' );
+
+		// Common pages hooks.
+		anspress()->add_action( 'init', 'AnsPress_Common_Pages', 'register_common_pages' );
+
+		// Register post ststus.
+		anspress()->add_action('init', 'AnsPress_Post_Status', 'register_post_status' );
+
+		// Rewrite rules hooks.
+		anspress()->add_filter( 'query_vars', 'AnsPress_Rewrite', 'query_var' );
+		anspress()->add_action( 'generate_rewrite_rules', 'AnsPress_Rewrite', 'rewrites', 1 );
+		anspress()->add_filter( 'paginate_links', 'AnsPress_Rewrite', 'bp_com_paged' );
+		// add_filter( 'paginate_links', array( 'AnsPress_Rewrite', 'paginate_links' ) );
+		anspress()->add_filter( 'parse_request', 'AnsPress_Rewrite', 'add_query_var' );
 	}
 
 	/**

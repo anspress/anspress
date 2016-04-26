@@ -143,13 +143,6 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		public $anspress_query_filter;
 
 		/**
-		 * Theme object.
-		 * @var object
-		 * @since 2.0.1
-		 */
-		public $anspress_theme;
-
-		/**
 		 * Post type object.
 		 * @var object
 		 * @since 2.0.1
@@ -165,10 +158,6 @@ if ( ! class_exists( 'AnsPress' ) ) {
 	    public $anspress_reputation;
 	    public $anspress_bp;
 	    public $third_party;
-	    public $common_pages;
-	    public $post_status;
-	    public $users_class;
-	    public $rewrite_class;
 	    public $history_class;
 	    public $subscriber_hooks;
 	    public $mention_hooks;
@@ -271,7 +260,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		    require_once ANSPRESS_DIR.'includes/options.php';
 		    require_once ANSPRESS_DIR.'includes/functions.php';
 		    require_once ANSPRESS_DIR.'includes/hooks.php';
-		    require_once ANSPRESS_DIR.'includes/ajax.php';
+		    require_once ANSPRESS_DIR.'includes/ajax-hooks.php';
 
 		    require_once ANSPRESS_DIR.'includes/question-loop.php';
 		    require_once ANSPRESS_DIR.'includes/answer-loop.php';
@@ -354,11 +343,6 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		 */
 		public function site_include() {
 		    self::$instance->anspress_hooks 	= AnsPress_Hooks::init();
-		    self::$instance->anspress_theme 	= new AnsPress_Theme( );
-		    self::$instance->common_pages 		= new AnsPress_Common_Pages();
-		    self::$instance->post_status 		= new AnsPress_Post_Status( );
-		    self::$instance->users_class 		= new AnsPress_User( );
-	    	self::$instance->rewrite_class 		= new AnsPress_Rewrite( );
 	    	self::$instance->history_class 		= new AnsPress_Activity_Hook( );
 	    	self::$instance->subscriber_hooks 	= new AnsPress_Subscriber_Hooks( );
 	    	self::$instance->mention_hooks 		= new AP_Mentions_Hooks( );

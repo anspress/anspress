@@ -1404,20 +1404,22 @@ function ap_post_upload_hidden_form() {
  * If no post parent is set then probably user canceled form submission hence we
  * don't need to keep this attachment and will removed while saving question or answer.
  *
- * @param array $file    $_FILE variable
+ * @param array 	$file    		$_FILE variable
+ * @param boolean 	$temp    		Is temproary image? If so it will be deleted if no post parent.
+ * @param boolean 	$parent_post 	Attachment parent post ID.
  *
- * @return int|bool
+ * @return integer|boolean
+ * @since  3.0.0 Added new argument `$post_parent`.
  */
-function ap_upload_user_file($file = array(), $temp = true ) {
-
+function ap_upload_user_file( $file = array(), $temp = true, $parent_post = false ) {
 	require_once ABSPATH.'wp-admin/includes/admin.php';
 
 	$file_return = wp_handle_upload($file, array(
 		'test_form' => false,
 		'mimes' => array(
-		'jpg|jpeg' => 'image/jpeg',
-		'gif' => 'image/gif',
-		'png' => 'image/png',
+			'jpg|jpeg' => 'image/jpeg',
+			'gif' => 'image/gif',
+			'png' => 'image/png',
 		),
 	));
 
@@ -1427,7 +1429,6 @@ function ap_upload_user_file($file = array(), $temp = true ) {
 		$filename = $file_return['file'];
 
 		$attachment = array(
-			// 'post_parent'         => $post_id,
 			'post_mime_type' => $file_return['type'],
 			'post_title' => preg_replace( '/\.[^.]+$/', '', basename( $filename ) ),
 			'post_content' => '',
@@ -1435,14 +1436,19 @@ function ap_upload_user_file($file = array(), $temp = true ) {
 			'guid' => $file_return['url'],
 		);
 
+		// Set post parent post if passed.
+		if( false !== $post_parent ){
+			$attachment['post_parent'] = $post_id;
+		}
+
 		$attachment_id = wp_insert_attachment( $attachment, $file_return['file'] );
 
-		if ( $temp ) {
+		// Set this post as temp if no post_parent is passed.
+		if ( $temp && false === $post_parent ) {
 			update_post_meta( $attachment_id, '_ap_temp_image', true );
 		}
 
 		require_once ABSPATH.'wp-admin/includes/image.php';
-
 		$attachment_data = wp_generate_attachment_metadata( $attachment_id, $filename );
 
 		wp_update_attachment_metadata( $attachment_id, $attachment_data );
@@ -1618,15 +1624,12 @@ function ap_printf_assoc($string = '', $replacement_vars = array(), $prefix_char
 
 /**
  * Return question id with solved prefix if answer is accepted.
- *
- * @param bool|int $question_id
- *
+ * @param boolean|integer $question_id Question ID.
  * @return string
  *
  * @since  	2.3 [@see ap_page_title]
  */
 function ap_question_title_with_solved_prefix($question_id = false) {
-
 	if ( $question_id === false ) {
 		$question_id = get_question_id();
 	}
@@ -1634,7 +1637,7 @@ function ap_question_title_with_solved_prefix($question_id = false) {
 	$solved = ap_question_best_answer_selected( $question_id );
 
 	if ( ap_opt( 'show_solved_prefix' ) ) {
-		return ($solved ? __( '[Solved] ', 'anspress-question-answer' ) : '').get_the_title( $question_id );
+		return get_the_title( $question_id ).' '.($solved ? __( '[Solved] ', 'anspress-question-answer' ) : '');
 	}
 
 	return get_the_title( $question_id );

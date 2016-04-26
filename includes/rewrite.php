@@ -21,23 +21,11 @@ if ( ! defined( 'WPINC' ) ) {
 class AnsPress_Rewrite
 {
 	/**
-	 * Initialize the class
-	 */
-	public function __construct() {
-		anspress()->add_filter( 'query_vars', $this, 'query_var' );
-		anspress()->add_action( 'generate_rewrite_rules', $this, 'rewrites', 1 );
-		anspress()->add_filter( 'paginate_links', $this, 'bp_com_paged' );
-		// add_filter( 'paginate_links', array( $this, 'paginate_links' ) );
-		anspress()->add_filter( 'parse_request', $this, 'add_query_var' );
-	}
-
-	/**
 	 * Register query vars
 	 * @param  array $query_vars Registered query variables.
 	 * @return array
 	 */
-	public function query_var( $query_vars ) {
-
+	public static function query_var( $query_vars ) {
 		$query_vars[] = 'edit_post_id';
 		$query_vars[] = 'ap_nonce';
 		$query_vars[] = 'question_id';
@@ -65,7 +53,7 @@ class AnsPress_Rewrite
 	 * Rewrite rules
 	 * @return array
 	 */
-	public function rewrites() {
+	public static function rewrites() {
 		global $wp_rewrite;
 		global $ap_rules;
 
@@ -135,8 +123,7 @@ class AnsPress_Rewrite
 		return $wp_rewrite->rules = $ap_rules + $wp_rewrite->rules;
 	}
 
-	public function bp_com_paged($args) {
-
+	public static function bp_com_paged($args) {
 		if ( function_exists( 'bp_current_component' ) ) {
 			$bp_com = bp_current_component();
 
@@ -148,15 +135,27 @@ class AnsPress_Rewrite
 		return $args;
 	}
 
-	public function paginate_links($link) {
-
+	/**
+	 * MOdify paginate links.
+	 * @param  string $link Pagination link.
+	 * @return string
+	 */
+	public static function paginate_links($link) {
 		if ( is_front_page() ) {
 			return preg_replace( '/page.([0-9]+)./', '?ap_paged=$1', $link ); }
 
 		return $link;
 	}
 
-	public function add_query_var($wp) {
+	/**
+	 * Push custom query args in `$wp`.
+	 *
+	 * If `question_name` is passed then `question_id` var will be added.
+	 * Same for `ap_user`.
+	 *
+	 * @param object $wp WP query object.
+	 */
+	public static function add_query_var($wp) {
 	    if ( ! empty( $wp->query_vars['question_name'] ) ) {
 	        $question = get_page_by_path( sanitize_title( $wp->query_vars['question_name'] ), 'OBJECT', 'question' );
 

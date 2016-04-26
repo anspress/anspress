@@ -14,30 +14,22 @@
  */
 class AnsPress_Common_Pages
 {
-
-	/**
-	 * Initialize the class
-	 */
-	public function __construct() {
-		anspress()->add_action( 'init', $this, 'register_common_pages' );
-	}
-
 	/**
 	 * Register all pages of AnsPress
 	 */
-	public function register_common_pages() {
-		ap_register_page( 'base', ap_opt( 'base_page_title' ), array( $this, 'base_page' ) );
-		ap_register_page( ap_opt( 'question_page_slug' ), __( 'Question', 'anspress-question-answer' ), array( $this, 'question_page' ), false );
-		ap_register_page( ap_opt( 'ask_page_slug' ), __( 'Ask', 'anspress-question-answer' ), array( $this, 'ask_page' ) );
-		ap_register_page( 'edit', __( 'Edit', 'anspress-question-answer' ), array( $this, 'edit_page' ), false );
-		ap_register_page( 'search', __( 'Search', 'anspress-question-answer' ), array( $this, 'search_page' ), false );
-		ap_register_page( 'activity', __( 'Activity feed', 'anspress-question-answer' ), array( $this, 'activity_page' ) );
+	public static function register_common_pages() {
+		ap_register_page( 'base', ap_opt( 'base_page_title' ), array( __CLASS__, 'base_page' ) );
+		ap_register_page( ap_opt( 'question_page_slug' ), __( 'Question', 'anspress-question-answer' ), array( __CLASS__, 'question_page' ), false );
+		ap_register_page( ap_opt( 'ask_page_slug' ), __( 'Ask', 'anspress-question-answer' ), array( __CLASS__, 'ask_page' ) );
+		ap_register_page( 'edit', __( 'Edit', 'anspress-question-answer' ), array( __CLASS__, 'edit_page' ), false );
+		ap_register_page( 'search', __( 'Search', 'anspress-question-answer' ), array( __CLASS__, 'search_page' ), false );
+		ap_register_page( 'activity', __( 'Activity feed', 'anspress-question-answer' ), array( __CLASS__, 'activity_page' ) );
 	}
 
 	/**
 	 * Layout of base page
 	 */
-	public function base_page() {
+	public static function base_page() {
 		global $questions, $wp;
 		$query = $wp->query_vars;
 
@@ -100,11 +92,11 @@ class AnsPress_Common_Pages
 	 * Output single question page
 	 * @return void
 	 */
-	public function question_page() {
+	public static function question_page() {
 
 		// Set Header as 404 if question id is not set.
 		if ( false === get_question_id() ) {
-			$this->set_404();
+			SELF::set_404();
 			return;
 		}
 
@@ -159,7 +151,7 @@ class AnsPress_Common_Pages
 			wp_reset_postdata();
 
 		} else {
-			$this->set_404();
+			SELF::set_404();
 		}
 
 	}
@@ -167,14 +159,14 @@ class AnsPress_Common_Pages
 	/**
 	 * Output ask page template
 	 */
-	public function ask_page() {
+	public static function ask_page() {
 		include ap_get_theme_location( 'ask.php' );
 	}
 
 	/**
 	 * Output edit page template
 	 */
-	public function edit_page() {
+	public static function edit_page() {
 		$post_id = (int) get_query_var( 'edit_post_id' );
 		if ( ! ap_user_can_edit_question( $post_id ) ) {
 				echo '<p>'.esc_attr__( 'You don\'t have permission to access this page.', 'anspress-question-answer' ).'</p>';
@@ -191,7 +183,7 @@ class AnsPress_Common_Pages
 	/**
 	 * Load search page template
 	 */
-	public function search_page() {
+	public static function search_page() {
 		global $questions;
 		$keywords   = sanitize_text_field( get_query_var( 'ap_s' ) );
 		$type       = sanitize_text_field( wp_unslash( @$_GET['type'] ) );
@@ -206,7 +198,10 @@ class AnsPress_Common_Pages
 		}
 	}
 
-	public function activity_page() {
+	/**
+	 * Activity page template loading.
+	 */
+	public static function activity_page() {
 		global $ap_activities;
 	    $ap_activities = ap_get_activities( array( 'per_page' => 20 ) );
 
@@ -216,7 +211,7 @@ class AnsPress_Common_Pages
 	/**
 	 * If page is not found then set header as 404
 	 */
-	public function set_404() {
+	public static function set_404() {
 		global $wp_query;
 		$wp_query->set_404();
 		status_header( 404 );
