@@ -270,7 +270,7 @@ function ap_pagination($current = false, $total = false, $format = '?paged=%#%')
 
 	if ( ! empty( $ap_max_num_pages ) ) {
 		$total = $ap_max_num_pages;
-	} elseif ( false === $total && isset( $questions->max_num_pages ) ) {		
+	} elseif ( false === $total && isset( $questions->max_num_pages ) ) {
 		$total = $questions->max_num_pages;
 	}
 
@@ -318,7 +318,7 @@ function ap_display_question_metas($question_id = false) {
 
 		$view_count = ap_get_qa_views();
 		$metas['views'] = sprintf( __( '<i>%d views</i>', 'anspress-question-answer' ), $view_count );
-		$metas['history'] = ap_latest_post_activity_html( $question_id, !is_question() );
+		$metas['history'] = ap_latest_post_activity_html( $question_id, ! is_question() );
 	}
 
 	/*
@@ -445,7 +445,7 @@ function ap_page() {
  * @return array|boolean
  * @since  3.0.0
  */
-function ap_post_actions(){
+function ap_post_actions() {
 	global $post;
 
 	if ( ! $post->post_type == 'question' || ! $post->post_type == 'answer' ) {
@@ -518,15 +518,16 @@ function ap_post_actions_buttons($disable = array()) {
 				echo '<li class="ap-post-action ap-action-'.$k.'">'.$action.'</li>';
 			}
 		}
-		
+
 		if ( ! empty( $actions['dropdown'] ) ) {
 			echo '<li class="ap-post-action dropdown">';
 			echo '<div id="ap_post_action_'.$post->ID.'" class="ap-dropdown">';
 			echo '<a class="apicon-ellipsis more-actions ap-tip ap-dropdown-toggle" title="'.__( 'More action', 'anspress-question-answer' ).'" href="#" data-query="post_actions_dp::'. wp_create_nonce( 'ap_ajax_nonce' ) .'::'. $post->ID .'" data-action="ajax_btn"></a>';
-			/*echo '<ul class="ap-dropdown-menu">';
-			foreach ( $actions['dropdown'] as $sk => $sub ) {
-				echo '<li class="ap-post-action ap-action-'.$sk.'">'.$sub.'</li>';
-			}
+			/*
+			echo '<ul class="ap-dropdown-menu">';
+            foreach ( $actions['dropdown'] as $sk => $sub ) {
+                echo '<li class="ap-post-action ap-action-'.$sk.'">'.$sub.'</li>';
+            }
 			echo '</ul>';*/
 			echo '</div>';
 			echo '</li>';
@@ -537,23 +538,18 @@ function ap_post_actions_buttons($disable = array()) {
 }
 
 /**
- * Output question list sorting dropdown.
- *
- * @param string $current_url current page url.
- *
- * @since 2.3
+ * Return all shorting types for questions.
+ * @param  string $current_url Current page URL.
+ * @return array
+ * @since  3.0.0 Moved from `ap_question_sorting()`.
  */
-function ap_question_sorting($current_url = '') {
-
+function ap_get_question_sorting( $current_url = '' ) {
 	if ( is_home() || is_front_page() ) {
 		$current_url = home_url( '/' );
 	}
 
 	$param = array();
-
-	$sort = isset( $_GET['ap_sort'] ) ? sanitize_text_field( wp_unslash( $_GET['ap_sort'] ) ) : 'active';
-
-	$search_q = sanitize_text_field( get_query_var( 'ap_s' ) );
+	$search_q = get_query_var( 'ap_s' );
 
 	if ( ! empty( $search_q ) ) {
 		$param['ap_s'] = $search_q;
@@ -575,12 +571,21 @@ function ap_question_sorting($current_url = '') {
 	$navs['unsolved'] = array( 'title' => __( 'Unsolved', 'anspress-question-answer' ) );
 
 	/*
-     * FILTER: ap_question_sorting
-     * Before prepering questions list tab.
-     * @var array
+     * Filter question sorting.
+     * @param array Question sortings.
      * @since 2.3
 	 */
-	$navs = apply_filters( 'ap_question_sorting', $navs );
+	return apply_filters( 'ap_question_sorting', $navs );
+}
+
+/**
+ * Output question list sorting dropdown.
+ * @param string $current_url current page url. *
+ * @since 2.3
+ */
+function ap_question_sorting($current_url = '') {
+	$sort = isset( $_GET['ap_sort'] ) ? sanitize_text_field( wp_unslash( $_GET['ap_sort'] ) ) : 'active';
+	$navs = ap_get_question_sorting( $current_url );
 	echo '<div class="ap-dropdown">';
 	echo '<a id="ap-sort-anchor" class="ap-dropdown-toggle'.('' != $sort ? ' active' : '').'" href="#">'.__( 'Sort by', 'anspress-question-answer' ).'</a>';
 	echo '<div class="ap-dropdown-menu">';
@@ -705,7 +710,7 @@ function ap_how_to_ask() {
 function ap_get_how_to_ask() {
 	if ( ap_opt( 'question_help_page' ) != '' ) {
 		$help = get_post( (int) ap_opt( 'question_help_page' ) );
-		if( $help ){
+		if ( $help ) {
 			return apply_filters( 'the_content', $help->post_content );
 		}
 	}
@@ -818,7 +823,7 @@ function ap_assets( ) {
 	$min = ap_env_dev() ? '' : '.min';
 
 	$assets = array(
-		'js' => array(						
+		'js' => array(
 			'peity-js' => array( 'src' => ap_get_theme_url( 'js/jquery.peity.min.js' ), 'dep' => array( 'jquery' ) ),
 			'ap-initial-js' => array( 'src' => ap_get_theme_url( 'js/initial.min.js' ), 'dep' => array( 'jquery' ) ),
 			'ap-scrollbar-js' => array( 'src' => ap_get_theme_url( 'js/jquery.scrollbar.min.js' ), 'dep' => array( 'jquery' ) ),
@@ -830,11 +835,11 @@ function ap_assets( ) {
 		),
 	);
 
-	if( ap_env_dev() ){
+	if ( ap_env_dev() ) {
 		$assets['js']['anspress-functions'] = array( 'src' => ANSPRESS_URL.'assets/js/ap-functions.js', 'dep' => array( 'jquery', 'jquery-form' ) );
 		$assets['js']['anspress-js'] = array( 'src' => ANSPRESS_URL.'assets/js/anspress_site.js', 'dep' => array( 'jquery', 'jquery-form' ) );
 		$assets['js']['ap-theme-js'] = array( 'src' => ap_get_theme_url( 'js/ap.js' ), 'dep' => array( 'jquery', 'anspress-js' ) );
-	}else{
+	} else {
 		$assets['js']['anspress-js'] = array( 'src' => ANSPRESS_URL.'assets/min/anspress.min.js', 'dep' => array( 'jquery', 'jquery-form' ) );
 		$assets['js']['ap-theme-js'] = array( 'src' => ap_get_theme_url( 'min/anspress-theme.min.js' ), 'dep' => array( 'jquery', 'anspress-js' ) );
 	}
@@ -868,5 +873,44 @@ function ap_enqueue_scripts() {
 			$dep = isset( $css['dep'] ) ? $css['dep'] : array();
 			wp_enqueue_style( $k, $css['src'], $dep, AP_VERSION );
 		}
+	}
+}
+
+function ap_get_list_filters( $current_url = '' ) {
+	if ( is_home() || is_front_page() ) {
+		$current_url = home_url( '/' );
+	}
+
+	$param = array();
+	$search_q = get_query_var( 'ap_s' );
+
+	if ( ! empty( $search_q ) ) {
+		$param['ap_s'] = $search_q;
+	}
+
+	$link = add_query_arg( $param, $current_url );
+
+	$filters = array(
+		'orderby' => array(
+			'title' => __( 'Order By', 'anspress-question-answer' ),
+			'filters' => ap_get_question_sorting(),
+		),
+	);
+
+	/*
+     * Filter question sorting.
+     * @param array Question sortings.
+     * @since 2.3
+	 */
+	return apply_filters( 'ap_list_filters', $filters );
+}
+
+function ap_list_filters( $current_url = '' ) {
+	$filters = ap_get_list_filters( $current_url );
+	$active = isset( $_GET['ap_sort'] ) ? sanitize_text_field( wp_unslash( $_GET['ap_sort'] ) ) : 'active';
+	foreach ( (array) $filters as $key => $filter ) {
+		echo '<div class="ap-dropdown filter-'.$key.'">';
+		echo '<a id="ap-sort-anchor" class="ap-dropdown-toggle'.($key == $active ? ' active' : '').'" href="#" data-query="list_filter::'. wp_create_nonce( 'ap_ajax_nonce' ) .'::'. $key .'" data-action="ajax_btn">'. $filter[ 'title' ] .'</a>';
+		echo '</div>';
 	}
 }

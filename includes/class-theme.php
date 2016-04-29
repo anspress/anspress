@@ -273,4 +273,32 @@ class AnsPress_Theme
 
 		ap_ajax_json( $data );
 	}
+
+	/**
+	 * Ajax callback for list filters
+	 * @since 3.0.0
+	 */
+	public static function list_filter() {
+		if ( ! ap_verify_nonce('ap_ajax_nonce' ) || ! isset( $_POST['args'] ) ) {
+			ap_ajax_json('something_wrong' );
+		}
+
+		$filter = sanitize_text_field( wp_unslash( $_POST['args'][0] ) );
+
+		$filters = ap_get_list_filters( );
+		if ( ! empty( $filters[ $filter ] ) ) {
+			$apData = $filters[ $filter ];
+			$apData['key'] = $filter;
+			$apData['placeholder'] = sprintf( __('Filter %s', 'anspress-question-answer' ), strtolower( $apData['title'] ) );
+			$elm = '#ap-filter .filter-'. esc_attr( $filter );
+			$data = array(
+				'template' => 'sorting',
+				'appendTo' => $elm,
+				'do' => [ 'addClass' => [ $elm.' .ap-dropdown-toggle', 'ajax-disabled' ] ],
+				'apData' => $apData,
+			);
+		}
+
+		ap_ajax_json( $data );
+	}
 }

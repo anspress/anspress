@@ -3,36 +3,38 @@
 // --------------------------------------------------
 
 #anspress{
-  .ap-dropdown{
-    position: relative;
-  }
-  .ap-dropdown-toggle {
+	.ap-dropdown{
+		position: relative;
+		&-menu {
+			background: none repeat scroll 0 0 #fff;
+	        border: 1px solid #ddd;
+	        border-radius: 3px;
+	        box-shadow: 0 1px 5px rgba(0, 0, 0, 0.07);
+	        display: none;
+	        position: absolute;
+	        right: 0;
+	        width: 160px;
+	        z-index: 99;
+	        ul > li{
+                margin: 0;
+                float: none;
 
-  }
-  .ap-dropdown-menu {
-    display:none;
-    position: absolute;
-    top: 100%;
-    margin-top: .5em;
-    background: #777;
-    min-width: 12em;
-    padding: 0;
-    border-radius: 0 0 .2em .2em;
-    li {
-        list-style-type: none;
-        a {
-            text-decoration: none;
-            padding: .5em 1em;
+                > a{
+                    border-bottom: 1px solid #f9f9f9;
+                    color: #333;
+                    display: block;
+                    padding: 10px 15px;
+                }
+                > a:hover{
+                    background: #fcfcfc;
+                }
+            }
+		}
+		&.open .ap-dropdown-menu{
             display: block;
         }
-        &.active a{
-          background: @main-color;
-          color: #fff;
-          &:hover{
-            background: @main-color;
-            color: #fff;
-          }
-        }
-    }
-  }
+        &-toggle {
+			outline: none;
+		} 
+  	}
 }

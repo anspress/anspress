@@ -18,9 +18,9 @@
 			ap_ask_btn();
 		}
 	?>
-	<form id="ap-question-sorting" class="ap-questions-sorting clearfix">
-		<?php ap_question_sorting(); ?>
-		<?php do_action('ap_list_head'); ?>
+	<form id="ap-filter" class="ap-filter clearfix">
+		<?php ap_list_filters(); ?>
+		<?php //do_action('ap_list_head'); ?>
 		<a id="ap-question-sorting-reset" href="#" title="<?php _e('Reset sorting and filter', 'anspress-question-answer'); ?>"><?php echo ap_icon('x', true); ?></a>
 	</form>
 </div>

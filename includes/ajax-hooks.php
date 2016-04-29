@@ -46,6 +46,7 @@ class AnsPress_Ajax
 	    anspress()->add_action( 'ap_ajax_approve_comment', 'AnsPress_Comment_Hooks','approve_comment' );
 	    anspress()->add_action( 'ap_hover_card_user', __CLASS__, 'hover_card_user' );
 	    anspress()->add_action( 'ap_ajax_post_actions_dp', 'AnsPress_Theme', 'post_actions_dp' );
+	    anspress()->add_action( 'ap_ajax_list_filter', 'AnsPress_Theme', 'list_filter' );
 	    anspress()->add_action( 'ap_ajax_load_tinymce_assets', __CLASS__, 'load_tinymce_assets' );
 	    anspress()->add_action( 'wp_ajax_ap_cover_upload', 'AnsPress_User', 'cover_upload' );
 		anspress()->add_action( 'wp_ajax_ap_avatar_upload', 'AnsPress_User', 'avatar_upload' );
