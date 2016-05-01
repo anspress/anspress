@@ -1,15 +1,15 @@
 @font-face {
     font-family: 'anspress';
-    src:    url('fonts/anspress.eot?vmoyp1');
-    src:    url('fonts/anspress.eot?vmoyp1#iefix') format('embedded-opentype'),
-        url('fonts/anspress.ttf?vmoyp1') format('truetype'),
-        url('fonts/anspress.woff?vmoyp1') format('woff'),
-        url('fonts/anspress.svg?vmoyp1#anspress') format('svg');
+    src:    url('fonts/anspress.eot?k7gz80');
+    src:    url('fonts/anspress.eot?k7gz80#iefix') format('embedded-opentype'),
+        url('fonts/anspress.ttf?k7gz80') format('truetype'),
+        url('fonts/anspress.woff?k7gz80') format('woff'),
+        url('fonts/anspress.svg?k7gz80#anspress') format('svg');
     font-weight: normal;
     font-style: normal;
 }
 
-[class^="apicon-"]:before, [class*=" apicon-"]:before {
+[class^="apicon-"]::before, [class*=" apicon-"]::before {
     /* use !important to prevent issues with browser extensions that change fonts */
     font-family: 'anspress' !important;
     speak: none;
@@ -24,6 +24,27 @@
     -moz-osx-font-smoothing: grayscale;
 }
 
+.apicon-check:before {
+    content: "\e903";
+}
+.apicon-chevron-down:before {
+    content: "\e93d";
+}
+.apicon-chevron-up:before {
+    content: "\e93e";
+}
+.apicon-chevron-right:before {
+    content: "\e93f";
+}
+.apicon-chevron-left:before {
+    content: "\e940";
+}
+.apicon-anspress:before {
+    content: "\e92d";
+}
+.apicon-anspress-icon:before {
+    content: "\e941";
+}
 .apicon-flag:before {
     content: "\e902";
 }
@@ -32,12 +53,6 @@
 }
 .apicon-question:before {
     content: "\e901";
-}
-.apicon-anspress:before {
-    content: "\e903";
-}
-.apicon-anspress-icon:before {
-    content: "\e904";
 }
 .apicon-home:before {
     content: "\e939";
@@ -89,9 +104,6 @@
 }
 .apicon-calendar:before {
     content: "\e911";
-}
-.apicon-check:before {
-    content: "\e912";
 }
 .apicon-clock:before {
     content: "\e913";
@@ -203,17 +215,5 @@
 }
 .apicon-board:before {
     content: "\e938";
-}
-.apicon-chevron-down:before {
-    content: "\e93d";
-}
-.apicon-chevron-up:before {
-    content: "\e93e";
-}
-.apicon-chevron-right:before {
-    content: "\e93f";
-}
-.apicon-chevron-left:before {
-    content: "\e940";
 }
 

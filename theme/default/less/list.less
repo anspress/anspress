@@ -152,7 +152,7 @@
 	    border: 1px solid #ddd;
 	    border-radius: 2px;
 	    float: right;
-		> *{
+		> .ap-dropdown, > a{
 		    display: block;
 		    margin: 0;
 		    width: auto;
@@ -170,6 +170,15 @@
 			    &:hover{
 			    	background: #F9F9F9;
 			    }
+			    &.active{
+			    	.apicon-check{
+			    		visibility: visible;
+			    	}
+			    	a{
+				    	font-weight: bold;
+				    	color: #333;
+				    }
+			    }
 			}
 		}
 		.ap-dropdown-menu{
@@ -186,7 +195,7 @@
 		    	background: @main-color;
 			    color: #fff;
 			    margin: -1px;
-			    padding: 7px 10px;
+			    padding: 7px 10px;			    
 		    }
 		}
 		> *:first-child .ap-dropdown-toggle{
@@ -202,7 +211,7 @@
 			    float: left;
 			    font-size: 13px;
 			    height: 20px;
-			    margin-left: -5px;
+			    margin-left: -8px;
 			    padding: 6px 0;
 			    visibility: hidden;
 			    width: 20px;
@@ -211,6 +220,7 @@
 			    border: medium none;
 			    font-size: 12px;
 			    padding: 6px 0;
+			    color: #777;
 			    &:hover{
 			    	background: none;
 			    }	    
@@ -240,7 +250,16 @@
 		    border-bottom: 1px solid #eee;
 		    font-size: 11px;
 		    font-weight: bold;
-		    padding: 6px 8px;
+		    padding: 6px 10px;
+		}
+		&-color {
+		    border-radius: 3px;
+		    display: block;
+		    float: left;
+		    height: 12px;
+		    margin-right: 8px;
+		    margin-top: 1px;
+		    width: 12px;
 		}
 	}
 }

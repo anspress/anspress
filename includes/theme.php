@@ -512,23 +512,17 @@ function ap_post_actions_buttons($disable = array()) {
 	$actions = ap_post_actions();
 
 	if ( ! empty( $actions ) && count( $actions ) > 0 ) {
-		echo '<ul id="ap_post_actions_'. $post->ID .'" class="ap-q-actions ap-ul-inline clearfix">';
+		echo '<ul id="ap_post_actions_'. esc_attr($post->ID ) .'" class="ap-q-actions ap-ul-inline clearfix">';
 		foreach ( (array) $actions as $k => $action ) {
 			if ( ! empty( $action ) && 'dropdown' != $k && ! in_array( $k, $disable ) ) {
-				echo '<li class="ap-post-action ap-action-'.$k.'">'.$action.'</li>';
+				echo '<li class="ap-post-action ap-action-'.esc_attr($k ).'">'.$action.'</li>';
 			}
 		}
 
 		if ( ! empty( $actions['dropdown'] ) ) {
 			echo '<li class="ap-post-action dropdown">';
-			echo '<div id="ap_post_action_'.$post->ID.'" class="ap-dropdown">';
-			echo '<a class="apicon-ellipsis more-actions ap-tip ap-dropdown-toggle" title="'.__( 'More action', 'anspress-question-answer' ).'" href="#" data-query="post_actions_dp::'. wp_create_nonce( 'ap_ajax_nonce' ) .'::'. $post->ID .'" data-action="ajax_btn"></a>';
-			/*
-			echo '<ul class="ap-dropdown-menu">';
-            foreach ( $actions['dropdown'] as $sk => $sub ) {
-                echo '<li class="ap-post-action ap-action-'.$sk.'">'.$sub.'</li>';
-            }
-			echo '</ul>';*/
+			echo '<div id="ap_post_action_'.esc_attr($post->ID ).'" class="ap-dropdown">';
+			echo '<a class="apicon-ellipsis more-actions ap-tip ap-dropdown-toggle" title="'.__( 'More action', 'anspress-question-answer' ).'" href="#" data-query="post_actions_dp::'. wp_create_nonce( 'ap_ajax_nonce' ) .'::'. esc_attr($post->ID ) .'" data-action="ajax_btn"></a>';
 			echo '</div>';
 			echo '</li>';
 		}
@@ -558,17 +552,29 @@ function ap_get_question_sorting( $current_url = '' ) {
 	$link = add_query_arg( $param, $current_url );
 
 	$navs = array(
-		'active' => array( 'title' => __( 'Active', 'anspress-question-answer' ) ),
-		'newest' => array( 'title' => __( 'Newest', 'anspress-question-answer' ) ),
+		[ 'key' => 'active','title' => __( 'Active', 'anspress-question-answer' ) ],
+		[ 'key' => 'newest', 'title' => __( 'Newest', 'anspress-question-answer' ) ],
 	);
 
 	if ( ! ap_opt( 'disable_voting_on_question' ) ) {
-		$navs['voted'] = array( 'title' => __( 'Voted', 'anspress-question-answer' ) );
+		$navs[] = [ 'key' => 'voted', 'title' => __( 'Voted', 'anspress-question-answer' ) ];
 	}
 
-	$navs['answers'] = array( 'title' => __( 'Answered', 'anspress-question-answer' ) );
-	$navs['unanswered'] = array( 'title' => __( 'Unanswered', 'anspress-question-answer' ) );
-	$navs['unsolved'] = array( 'title' => __( 'Unsolved', 'anspress-question-answer' ) );
+	$navs[] = [ 'key' => 'answers','title' => __( 'Answered', 'anspress-question-answer' ) ];
+	$navs[] = [ 'key' => 'unanswered', 'title' => __( 'Unanswered', 'anspress-question-answer' ) ];
+	$navs[] = [ 'key' => 'unsolved', 'title' => __( 'Unsolved', 'anspress-question-answer' ) ];
+
+	$active_sort = 'active';
+	if ( isset($_GET['ap_filter'], $_GET['ap_filter']['sort'] ) ) {
+		$active_sort = wp_unslash( $_GET['ap_filter']['sort'] );
+	}
+
+	// Add active.
+	foreach ( (array) $navs as $k => $nav ) {
+		if ( $nav['key'] == $active_sort ) {
+			$navs[ $k ]['active'] = true;
+		}
+	}
 
 	/*
      * Filter question sorting.
@@ -578,25 +584,6 @@ function ap_get_question_sorting( $current_url = '' ) {
 	return apply_filters( 'ap_question_sorting', $navs );
 }
 
-/**
- * Output question list sorting dropdown.
- * @param string $current_url current page url. *
- * @since 2.3
- */
-function ap_question_sorting($current_url = '') {
-	$sort = isset( $_GET['ap_sort'] ) ? sanitize_text_field( wp_unslash( $_GET['ap_sort'] ) ) : 'active';
-	$navs = ap_get_question_sorting( $current_url );
-	echo '<div class="ap-dropdown">';
-	echo '<a id="ap-sort-anchor" class="ap-dropdown-toggle'.('' != $sort ? ' active' : '').'" href="#">'.__( 'Sort by', 'anspress-question-answer' ).'</a>';
-	echo '<div class="ap-dropdown-menu">';
-	foreach ( (array) $navs as $k => $nav ) {
-		echo '<li '.( $k == $sort ? 'class="active" ' : '').'><a href="#" data-value="'.$k.'">'.$nav['title'].'</a></li>';
-	}
-
-	echo '<input name="ap_sort" type="hidden" value="'.esc_attr( $sort ).'" />';
-	echo '</div>';
-	echo '</div>';
-}
 
 /**
  * Output answers tab.
@@ -891,9 +878,9 @@ function ap_get_list_filters( $current_url = '' ) {
 	$link = add_query_arg( $param, $current_url );
 
 	$filters = array(
-		'orderby' => array(
-			'title' => __( 'Order By', 'anspress-question-answer' ),
-			'filters' => ap_get_question_sorting(),
+		'sort' => array(
+			'title' => __( 'Sort', 'anspress-question-answer' ),
+			'items' => ap_get_question_sorting(),
 		),
 	);
 
@@ -907,10 +894,14 @@ function ap_get_list_filters( $current_url = '' ) {
 
 function ap_list_filters( $current_url = '' ) {
 	$filters = ap_get_list_filters( $current_url );
-	$active = isset( $_GET['ap_sort'] ) ? sanitize_text_field( wp_unslash( $_GET['ap_sort'] ) ) : 'active';
+	$ap_filter = isset( $_GET['ap_filter'] ) ? wp_unslash( $_GET['ap_filter'] ) : '';
 	foreach ( (array) $filters as $key => $filter ) {
-		echo '<div class="ap-dropdown filter-'.$key.'">';
-		echo '<a id="ap-sort-anchor" class="ap-dropdown-toggle'.($key == $active ? ' active' : '').'" href="#" data-query="list_filter::'. wp_create_nonce( 'ap_ajax_nonce' ) .'::'. $key .'" data-action="ajax_btn">'. $filter[ 'title' ] .'</a>';
+		echo '<div class="ap-dropdown filter-'.esc_attr( $key ).'">';
+		echo '<a id="ap-sort-anchor" class="ap-dropdown-toggle" href="#" data-query="list_filter::'. wp_create_nonce( 'ap_ajax_nonce' ) .'::'. esc_attr( $key ) .'" data-action="load_filter">'. esc_attr( $filter[ 'title' ] ) .'</a>';
 		echo '</div>';
+	}
+	// Send current GET, so that it can be used by JS templates.
+	if ( isset( $_GET['ap_filter'] ) ) {
+		echo '<script type="text/html" id="current_filter">'. http_build_query( $ap_filter ) .'</script>';
 	}
 }

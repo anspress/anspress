@@ -5,6 +5,7 @@
  * @author Rahul Aryan
  * @license GPL 2+
  */
+var apData = {};
 (function($) {
     apFunctions = {}
 
@@ -55,6 +56,7 @@
             this.cancel_comment();
             this.questionSuggestion();
             this.checkboxUncheck();
+            this.listFilter();
         },
         doAjax: function(query, success, context, before, abort) {
             /** Shorthand method for calling ajax */
@@ -762,7 +764,103 @@
 
                 
             })
+        },
+
+        listFilter: function(){
+            $('body').delegate('[data-action="load_filter"]', 'click', function(e) {
+                if($(this).is('.ajax-disabled'))
+                    return;
+                
+                e.preventDefault();
+                var q = $(this).apAjaxQueryString();
+                q.current_filter = $('#current_filter').html();
+                ApSite.doAjax(q, function(data, context) {                             
+                    if( $(context).data('cb') || false ){
+                        var cb = $(context).data("cb");
+                        console.log(apFunctions[cb]);
+                                        
+                        if( typeof apFunctions[cb] === 'function' ){
+                            apFunctions[cb](data, context);
+                        }
+                    }
+                }, this);
+            });
+            $('body').delegate('#ap-filter .ap-dropdown-menu a', 'click', function(e) {
+                e.preventDefault();
+                var dropdown = $(this).closest('.ap-dropdown-menu');
+                var filter = dropdown.data('key');
+                var val = $(this).data('value')||false;
+                
+                // If no data-value is found then return.
+                if(!val) return;
+
+                var multiple = dropdown.data('multiple');
+                if(!multiple){
+                    dropdown.find('input[type="hidden"]').val(val);
+                }else{
+                    if( dropdown.find('input[name="ap_filter['+filter+'][]"][value="'+val+'"]').length > 0 )
+                        dropdown.find('input[name="ap_filter['+filter+'][]"][value="'+val+'"]').remove();
+                    else
+                        dropdown.append('<input value="'+val+'" type="hidden" name="ap_filter['+filter+'][]" />');
+                }
+                $(this).closest('form').submit();
+            });
+
+            $('body').delegate('#ap-question-sorting-reset', 'click', function(e) {
+                e.preventDefault();
+                $('#ap-question-sorting').find('input[type="hidden"]').val('');
+                $(this).closest('form').submit();
+            });
+            var filtertimer = 0;
+            $('body').delegate('.ap-filter-search', 'keyup', function(e) {
+                var val = $(this).val();
+                $(this).data('query', 'filter_search::'+ap_nonce+'::'+val);
+                var q = $(this).apAjaxQueryString();                
+                var filter = $(this).closest('.ap-dropdown-menu').data('key');
+                clearTimeout (filtertimer);
+                filtertimer = setTimeout(function(){
+                    $.ajax({
+                        url: ajaxurl,
+                        type: 'POST',
+                        data: {
+                            action: 'ap_ajax',
+                            ap_ajax_action: 'filter_search',
+                            __nonce: ap_nonce,
+                            val: val,
+                            filter: filter,
+                        },
+                        success: function(data){
+                            data = apParseAjaxResponse(data);
+                            if(data.apData || false){
+                                apMergeObj(apData[filter+'Filter'], data.apData);
+                            }
+                        }
+                    })
+                }, 500);            
+            });
+
+            $('body').delegate('#ap-question-sorting', 'submit', function(){
+                AnsPress.site.showLoading(this);
+                var form_data = $(this).serialize().replace(/[^&]+=&/g, '').replace(/&[^&]+=$/g, '');
+                $.ajax({
+                    type: 'GET',
+                    dataType: 'html',
+                    data: form_data,
+                    success: function(data){
+                        AnsPress.site.hideLoading('#ap-question-sorting');
+                        var html = $(data);
+                        window.history.replaceState('', '', '?' + form_data);
+
+                        $('#anspress').html(html.find('#anspress'));
+
+                        $(document).trigger('apAfterSorting');
+                    }
+                });
+
+                return false;
+            });
         }
+
     }
 
 })(jQuery);
@@ -784,13 +882,26 @@
         // Get response html.
         var data = apParseAjaxResponse(response.responseText);
         console.log(data);
-
+        
         // Store template in global object.
         if( (data.apTemplate||false) && 'object' === typeof data.apTemplate && !apAutloadTemplate(data) )
             apLoadTemplate(data.apTemplate.name, data.apTemplate.template, function(template){
-                apParseTemplate(data.apTemplate.name, data.apData, function(temp){
-                    $(data.appendTo).append(temp);
-                });
+                // Watch apData for 
+                if( data.apData && (data.key||false) ){
+                    var notExists = typeof apData[data.key] === 'undefined';                    
+                    apData[data.key] = data.apData;
+                    if(notExists){
+                        console.log('Watching object '+data.key+' for change.');                      
+                        watch(apData, data.key, function(){
+                            var html = $(Ta.render(template, apData[data.key]));
+                            $(apData[data.key]['elm']).replaceWith(html);
+                            apData[data.key]['elm'] = html;
+                        });
+                    }
+                }
+                var html = $(Ta.render(template, data.apData));
+                $(data.appendTo).append(html);
+                apData[data.key]['elm'] = html;
             });
         
         if (typeof data.message_type !== 'undefined') {            

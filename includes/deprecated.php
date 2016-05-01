@@ -319,3 +319,13 @@ function ap_user_can_delete( $post_id ){
 	_deprecated_function( __FUNCTION__, '2.4.7', 'ap_user_can_delete_post' );
 	return ap_user_can_delete_post( $post );
 }
+
+/**
+ * Output question list sorting dropdown.
+ * @param string $current_url current page url.
+ * @since 2.3
+ * @deprecated since 3.0.0
+ */
+function ap_question_sorting($current_url = '') {
+	_deprecated_function( __FUNCTION__, '3.0.0' );
+}

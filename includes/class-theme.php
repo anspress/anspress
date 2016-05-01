@@ -269,6 +269,7 @@ class AnsPress_Theme
 				'id'	=> $post_id.'_dp',
 				'links'			=> $dropdown,
 			),
+			'key' => $post_id.'Actions',
 		);
 
 		ap_ajax_json( $data );
@@ -284,6 +285,10 @@ class AnsPress_Theme
 		}
 
 		$filter = sanitize_text_field( wp_unslash( $_POST['args'][0] ) );
+		
+		if( isset( $_POST['current_filter'] ) ){
+			$_GET['ap_filter'] = wp_parse_args( wp_unslash( $_POST['current_filter'] ) );
+		}
 
 		$filters = ap_get_list_filters( );
 		if ( ! empty( $filters[ $filter ] ) ) {
@@ -296,6 +301,7 @@ class AnsPress_Theme
 				'appendTo' => $elm,
 				'do' => [ 'addClass' => [ $elm.' .ap-dropdown-toggle', 'ajax-disabled' ] ],
 				'apData' => $apData,
+				'key' => $filter.'Filter',
 			);
 		}
 

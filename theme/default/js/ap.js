@@ -36,40 +36,6 @@
             $(this).css(width, 'auto');
         });
 
-        $('body').delegate('#ap-question-sorting .ap-dropdown-menu a', 'click', function(e) {
-            e.preventDefault();
-            var val = $(this).data('value');
-            $(this).closest('.ap-dropdown-menu').find('input[type="hidden"]').val(val);
-            $(this).closest('form').submit();
-        });
-
-        $('body').delegate('#ap-question-sorting-reset', 'click', function(e) {
-            e.preventDefault();
-            $('#ap-question-sorting').find('input[type="hidden"]').val('');
-            $(this).closest('form').submit();
-        });
-
-        $('body').delegate('#ap-question-sorting', 'submit', function(){
-            AnsPress.site.showLoading(this);
-            var form_data = $(this).serialize().replace(/[^&]+=&/g, '').replace(/&[^&]+=$/g, '');
-            $.ajax({
-                type: 'GET',
-                dataType: 'html',
-                data: form_data,
-                success: function(data){
-                    AnsPress.site.hideLoading('#ap-question-sorting');
-                    var html = $(data);
-                    window.history.replaceState('', '', '?' + form_data);
-
-                    $('#anspress').html(html.find('#anspress'));
-
-                    $(document).trigger('apAfterSorting');
-                }
-            });
-
-            return false;
-        });
-
         $('body').delegate('.ap-notify-item', 'click', function(e) {
             e.preventDefault();
             $(this).hide();
@@ -140,7 +106,6 @@
     apFunctions.apAppendEditor = function ( data, el ){
         $('.ap-field-description').html(data);
         $('#description').hide();
-        console.log($(el).closest('.ap-minimal-editor'));
         $(el).closest('.ap-minimal-editor').removeClass('ap-minimal-editor');
     }
 

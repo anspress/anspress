@@ -50,6 +50,7 @@ class AnsPress_Ajax
 	    anspress()->add_action( 'ap_ajax_load_tinymce_assets', __CLASS__, 'load_tinymce_assets' );
 	    anspress()->add_action( 'wp_ajax_ap_cover_upload', 'AnsPress_User', 'cover_upload' );
 		anspress()->add_action( 'wp_ajax_ap_avatar_upload', 'AnsPress_User', 'avatar_upload' );
+		anspress()->add_action( 'ap_ajax_filter_search', __CLASS__, 'filter_search' );
 	}
 
 	/**
@@ -975,5 +976,11 @@ class AnsPress_Ajax
 		print_footer_scripts();
 		\_WP_Editors::editor_js(); 
 	    wp_die();
+	}
+
+	public static function filter_search(){
+		$filter = sanitize_text_field( wp_unslash( $_POST['filter'] ) );
+		$search_query = sanitize_text_field( wp_unslash( $_POST['val'] ) );
+		do_action('ap_list_filter_search_'.$filter, $search_query);		
 	}
 }
