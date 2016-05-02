@@ -23,12 +23,10 @@
 			</a>
 		</li>
 	{{fi}}
-	</ul>
-	{{if multiple}}
-		{{foreach item in items}}
-			{{if item.active}}
-				<input value="{{item.key}}" type="hidden" name="ap_filter[{{key}}][]" />
-			{{fi}}
-		{{end}}
-	{{fi}}
+	</ul>	
+	{{foreach item in items}}
+		{{if item.active}}
+			<input value="{{item.key}}" type="hidden" name="ap_filter[{{key}}]{{if multiple}}[]{{fi}}" />
+		{{fi}}
+	{{end}}
 </div>
