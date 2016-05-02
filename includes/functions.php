@@ -954,7 +954,7 @@ function ap_ajax_responce($results) {
 	// Send requested template.
 	if ( isset( $results['template'] ) ) {
 		$template_file = ap_get_theme_url( 'js-template/'.$results['template'].'.html' );
-		if( ap_env_dev() ){
+		if ( ap_env_dev() ) {
 			$template_file = $template_file.'&time='.time();
 		}
 		$results['apTemplate'] = array(
@@ -1404,9 +1404,9 @@ function ap_post_upload_hidden_form() {
  * If no post parent is set then probably user canceled form submission hence we
  * don't need to keep this attachment and will removed while saving question or answer.
  *
- * @param array 	$file    		$_FILE variable
- * @param boolean 	$temp    		Is temproary image? If so it will be deleted if no post parent.
- * @param boolean 	$parent_post 	Attachment parent post ID.
+ * @param array   $file           $_FILE variable
+ * @param boolean $temp           Is temproary image? If so it will be deleted if no post parent.
+ * @param boolean $parent_post    Attachment parent post ID.
  *
  * @return integer|boolean
  * @since  3.0.0 Added new argument `$post_parent`.
@@ -1437,7 +1437,7 @@ function ap_upload_user_file( $file = array(), $temp = true, $parent_post = fals
 		);
 
 		// Set post parent post if passed.
-		if( false !== $post_parent ){
+		if ( false !== $post_parent ) {
 			$attachment['post_parent'] = $post_id;
 		}
 
@@ -1624,6 +1624,7 @@ function ap_printf_assoc($string = '', $replacement_vars = array(), $prefix_char
 
 /**
  * Return question id with solved prefix if answer is accepted.
+ *
  * @param boolean|integer $question_id Question ID.
  * @return string
  *
@@ -1844,5 +1845,24 @@ function ap_isset_post_value( $var, $default = '' ) {
 	}
 
 	return $default;
+}
+
+/**
+ * Get active list filter by filter key.
+ * @param  string $filter Filter key.
+ * @return false|string|array
+ * @since  3.0.0
+ */
+function ap_list_filters_get_active( $filter ) {
+	if ( ! isset( $_GET['ap_filter'], $_GET['ap_filter'][ $filter ] ) ) {
+		return false;
+	}
+	$filters = $_GET['ap_filter'][ $filter ];
+
+	if ( empty( $filters ) ) {
+		return false;
+	}
+
+	return $filters;
 }
 

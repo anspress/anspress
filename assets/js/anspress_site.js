@@ -806,11 +806,13 @@ var apData = {};
                 $(this).closest('form').submit();
             });
 
+            // Reset filters.
             $('body').delegate('#ap-question-sorting-reset', 'click', function(e) {
                 e.preventDefault();
-                $('#ap-question-sorting').find('input[type="hidden"]').val('');
+                $('#ap-filters').find('input[type="hidden"]').val('');
                 $(this).closest('form').submit();
             });
+
             var filtertimer = 0;
             $('body').delegate('.ap-filter-search', 'keyup', function(e) {
                 var val = $(this).val();

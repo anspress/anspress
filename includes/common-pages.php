@@ -34,44 +34,8 @@ class AnsPress_Common_Pages
 		$query = $wp->query_vars;
 
 		$tax_relation = !empty( $wp->query_vars['ap_tax_relation'] ) ? $wp->query_vars['ap_tax_relation'] : 'OR';
-		$tags_operator = !empty( $wp->query_vars['ap_tags_operator'] ) ? $wp->query_vars['ap_tags_operator'] : 'IN';
-
-		$categories_operator = !empty( $wp->query_vars['ap_categories_operator'] ) ? $wp->query_vars['ap_categories_operator'] : 'IN';
-
 		$args = array();
 		$args['tax_query'] = array( 'relation' => $tax_relation );
-
-		if ( isset( $query['ap_tags'] ) && is_array( $query['ap_tags'] ) ) {
-			$args['tax_query'][] = array(
-				'taxonomy' => 'question_tag',
-				'field'    => 'slug',
-				'terms'    => $query['ap_tags'],
-				'operator' => $tags_operator,
-			);
-		} elseif ( isset( $_GET['ap_tag_sort'] ) && 0 != $_GET['ap_tag_sort'] ) {
-			$cat = (int) $_GET['ap_tag_sort'];
-			$args['tax_query'][] = array(
-				'taxonomy' => 'question_tag',
-				'field'    => 'term_id',
-				'terms'    => array( $cat ),
-			);
-		}
-
-		if ( isset( $query['ap_categories'] ) && is_array( $query['ap_categories'] ) ) {
-			$args['tax_query'][] = array(
-				'taxonomy' => 'question_category',
-				'field'    => 'slug',
-				'terms'    => $query['ap_categories'],
-				'operator' => $categories_operator,
-			);
-		} elseif ( isset( $_GET['ap_cat_sort'] ) && 0 != $_GET['ap_cat_sort'] ) {
-			$cat = (int) $_GET['ap_cat_sort'];
-			$args['tax_query'][] = array(
-				'taxonomy' => 'question_category',
-				'field'    => 'term_id',
-				'terms'    => array( $cat ),
-			);
-		}
 
 		/**
 		 * FILTER: ap_main_questions_args
