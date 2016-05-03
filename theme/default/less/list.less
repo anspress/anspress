@@ -129,29 +129,32 @@
 		}
 	}
 	.ap-list-head{
-	    border: 1px solid #eee;
+	    background: #F5F5F5;
 	    border-radius: 3px;
-	    margin-bottom: 25px;
-	    padding: 14px;
+	    margin-bottom: 20px;
+	    margin-top: 10px;
+	    padding: 10px;
 		.ap-btn-ask{
-			float: right;
-			background: @ap-color;
-			border-radius: 2px;
+		    background: #68bb67;
+		    border: 2px solid rgba(0, 0, 0, 0.2);
+		    border-radius: 2px;
 		    color: #fff;
+		    float: right;
+		    font-size: 13px;
+		    font-weight: bold;
+		    height: 36px;
 		    margin-left: 15px;
-		    padding: 5px 10px;
+		    padding: 6px 20px;
 		    &:visited{
 		    	color: #fff;
 		    }
 		}
-		.ap-search-form{
-			float: left;
-		}
 	}
 	.ap-filter{
+	    background: #fff;
 	    border: 1px solid #ddd;
-	    border-radius: 2px;
-	    float: right;
+	    border-radius: 3px;
+	    float: left;
 		> .ap-dropdown, > a{
 		    display: block;
 		    margin: 0;
@@ -185,11 +188,12 @@
 			width: 260px;
 		}
 		.ap-dropdown-toggle{
-		    display: block;
-		    font-size: 12px;
-		    font-weight: 600;
-		    padding: 6px 10px;
-		    border-right: solid 1px #eee;
+			border-right: 1px solid #eee;
+			display: block;
+			font-size: 12px;
+			font-weight: 600;
+			height: 36px;
+			padding: 9px 15px;
 
 		    &.active{
 		    	background: @main-color;
@@ -246,7 +250,7 @@
 		    padding: 8px;
 		}
 		&-head{
-			background: #f9f9f9 none repeat scroll 0 0;
+			background: #f9f9f9;
 		    border-bottom: 1px solid #eee;
 		    font-size: 11px;
 		    font-weight: bold;
