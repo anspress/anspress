@@ -55,8 +55,6 @@
             $('.ap-dynamic-avatar').initial({fontSize:14, fontWeight:600});
         });
 
-        $('.ap-notification-scroll').scrollbar();
-
         $('.ap-label-form-item').click(function(e) {
             e.preventDefault();
             $(this).toggleClass('active');
@@ -107,6 +105,16 @@
         $('.ap-field-description').html(data);
         $('#description').hide();
         $(el).closest('.ap-minimal-editor').removeClass('ap-minimal-editor');
+    }
+
+    /**
+     * Ajax callback for subscribe button.
+     * @param  {object} data Ajax success data.
+     */
+    apFunctions.initScrollbar = function ( data, el ){
+        setTimeout(function() {
+            $('.ap-notification-scroll').scrollbar();
+        }, 100);        
     }
 
 })(jQuery);

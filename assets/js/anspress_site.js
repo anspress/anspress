@@ -744,13 +744,13 @@ var apData = {};
         },
 
         notificationAsRead: function(){
-        	var ids = $('input[name="ap_loaded_notifications"]').val();
+        	/*var ids = $('input[name="ap_loaded_notifications"]').val();
         	
         	if( ids.length == 0 || $(this).parent().is('.open') ){
         		return;
         	}
 
-        	ApSite.doAjax(apAjaxData('ap_ajax_action=set_notifications_as_read&__nonce='+ap_nonce+'&ids='+ids ));
+        	ApSite.doAjax(apAjaxData('ap_ajax_action=set_notifications_as_read&__nonce='+ap_nonce+'&ids='+ids ));*/
         },
 
         checkboxUncheck: function(){
@@ -967,4 +967,5 @@ var apData = {};
 function apAutloadTemplate(data){
     return 'undefined' !== typeof data.disableAutoLoad && data.disableAutoLoad;
 }
+
 

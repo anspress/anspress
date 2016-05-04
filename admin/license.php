@@ -120,10 +120,10 @@ class AP_License{
 			foreach ( $fields as $slug => $prod ) {
 				if ( isset( $licenses[ $slug ] ) && ! empty($licenses[ $slug ]['key'] ) ) {
 					new EDD_SL_Plugin_Updater( 'https://anspress.io', __FILE__, array(
-							'version' 	=> $prod['version'],
+							'version' 	=> ! empty( $prod['version'] ) ? $prod['version'] : '',
 							'license' 	=> $licenses[ $slug ]['key'],
-							'item_name' => $prod['name'],
-							'author' 	=> $prod['author'],
+							'item_name' => ! empty( $prod['name'] ) ? $prod['name'] : '',
+							'author' 	=> ! empty($prod['author'] ) ? $prod['author'] : '',
 						)
 					);
 				}

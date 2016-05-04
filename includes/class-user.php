@@ -559,5 +559,102 @@ class AnsPress_User
 
 		return $menus;
 	}
+
+	/**
+	 * Ajax callback for user dropdown
+	 * @since 3.0.0
+	 */
+	public static function user_dp() {
+		if ( ! ap_verify_nonce('ap_ajax_nonce' ) || ! is_user_logged_in() ) {
+			ap_ajax_json('something_wrong' );
+		}
+
+		$type = sanitize_text_field( wp_unslash( $_POST['args'][0] ) );
+
+		$ap_data = false;
+
+		if ( 'noti' === $type ) {
+			$ap_data = SELF::user_notification_dropdown();
+		} elseif ( 'menu' === $type ) {
+			$ap_data = SELF::user_menu_dropdown();
+		}
+
+		if ( false === $ap_data ) {
+			ap_ajax_json( 'something_wrong' );
+		}
+
+		$data = array(
+			'template' => 'user-dropdown-'.$type,
+			'appendTo' => '.ap-userdp-'.$type,
+			'do' => [ 'addClass' => [ '#ap-userdp-'.$type, 'ajax-disabled' ] ],
+			'apData' => $ap_data,
+			'key' => get_current_user_id().$type.'Dp', // i.e. 1notiDp
+		);
+
+		ap_ajax_json( $data );
+	}
+
+	/**
+	 * Return data for user notification dropdown menu.
+	 * @return array
+	 * @since  3.0.0
+	 */
+	public static function user_notification_dropdown() {
+		global $ap_activities;
+
+		/**
+		 * Dropdown notification arguments.
+		 * Allow filtering of dropdown notification arguments.
+		 * @since 2.4.5
+		 * @var array
+		 */
+		$notification_args = apply_filters( 'ap_dropdown_notification_args', array(
+			'per_page' 		=> 20,
+			'notification' 	=> true,
+			'user_id' 		=> get_current_user_id(),
+		) );
+
+		$ap_activities = ap_get_activities( $notification_args );
+
+		$ap_data = array(
+			'title'	=> __('Notifications', 'anspress-question-answer' ),
+			'mark_all_read'	=> [ 'label' => __('Mark all as read', 'anspress-question-answer' ), 'nonce' => wp_create_nonce( 'ap_markread_notification_'.get_current_user_id() ) ],
+			'all_link' 		=> ap_user_link(get_current_user_id(), 'notification' ),
+			'view_all_text' => __('View all notifications', 'anspress-question-answer' ),
+			'no_item' => __('No notification', 'anspress-question-answer' ),
+			'notifications'	=> array(),
+			'have_notifications'	=> ap_has_activities(),
+		);
+
+		if ( ap_has_activities() ) :
+			while ( ap_activities() ) : ap_the_activity();
+				$ap_data['notifications'][] = array(
+					'id' 			=> ap_activity_id(),
+					'is_unread' 	=> ap_notification_is_unread(),
+					'avatar' 		=> get_avatar( ap_activity_user_id(), 35 ),
+					'user_link' 	=> ap_user_link( ap_activity_user_id() ),
+					'permalink' 	=> ap_activity_permalink(),
+					'content' 		=> ap_activity_content(),
+					'date' 			=> ap_human_time( get_gmt_from_date( ap_activity_date() ), false ),
+				);
+			endwhile;
+		endif;
+
+		return $ap_data;
+	}
+
+	/**
+	 * Return data for user profile dropdown menu.
+	 * @return array
+	 * @since  3.0.0
+	 */
+	public static function user_menu_dropdown() {
+		$ap_data = array(
+			'active_page' => get_query_var( 'user_page' ) ? esc_attr( get_query_var( 'user_page' ) ) : 'about',
+		);
+		$ap_data['links'] = ap_get_user_menu( get_current_user_id() );
+
+		return $ap_data;
+	}
 }
 

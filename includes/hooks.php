@@ -19,12 +19,13 @@ if ( ! defined( 'WPINC' ) ) {
  */
 class AnsPress_Hooks
 {
+	static $menu_class;
 	/**
 	 * Initialize the class
 	 * @since 2.0.1
 	 * @since 2.4.8 Removed `$ap` argument.
 	 */
-	public static function init() {		
+	public static function init() {
 	    anspress()->add_action( 'registered_taxonomy', __CLASS__, 'add_ap_tables' );
 	    anspress()->add_action( 'ap_processed_new_question', __CLASS__, 'after_new_question', 1, 2 );
 	    anspress()->add_action( 'ap_processed_new_answer', __CLASS__, 'after_new_answer', 1, 2 );
@@ -63,18 +64,18 @@ class AnsPress_Hooks
 
 	    anspress()->add_filter( 'wp_get_nav_menu_items', __CLASS__, 'update_menu_url' );
 	    anspress()->add_filter( 'nav_menu_css_class', __CLASS__, 'fix_nav_current_class', 10, 2 );
-	    anspress()->add_filter( 'walker_nav_menu_start_el', __CLASS__, 'walker_nav_menu_start_el', 10, 4 );  
+	    anspress()->add_filter( 'walker_nav_menu_start_el', __CLASS__, 'walker_nav_menu_start_el', 10, 4 );
 	    anspress()->add_filter( 'mce_buttons', __CLASS__, 'editor_buttons', 10, 2 );
 		anspress()->add_filter( 'wp_insert_post_data', __CLASS__, 'wp_insert_post_data', 10, 2 );
-	    anspress()->add_filter( 'ap_form_contents_filter', __CLASS__, 'sanitize_description' );	    
+	    anspress()->add_filter( 'ap_form_contents_filter', __CLASS__, 'sanitize_description' );
 	    anspress()->add_filter( 'human_time_diff', __CLASS__, 'human_time_diff' );
 	    anspress()->add_filter( 'comments_template_query_args', 'AnsPress_Comment_Hooks', 'comments_template_query_args' );
 
 	    // User hooks.
-	    anspress()->add_action( 'init', 'AnsPress_User', 'init_actions' );	    
+	    anspress()->add_action( 'init', 'AnsPress_User', 'init_actions' );
 		anspress()->add_filter( 'pre_user_query', 'AnsPress_User', 'follower_query' );
 		anspress()->add_filter( 'pre_user_query', 'AnsPress_User', 'following_query' );
-		anspress()->add_filter( 'pre_user_query', 'AnsPress_User', 'user_sort_by_reputation' );		
+		anspress()->add_filter( 'pre_user_query', 'AnsPress_User', 'user_sort_by_reputation' );
 		anspress()->add_filter( 'avatar_defaults' , 'AnsPress_User', 'default_avatar' );
 		anspress()->add_filter( 'get_avatar', 'AnsPress_User', 'get_avatar', 10, 5 );
 		anspress()->add_filter( 'ap_user_menu', 'AnsPress_User', 'ap_user_menu_icons' );
@@ -91,12 +92,14 @@ class AnsPress_Hooks
 		anspress()->add_filter( 'paginate_links', 'AnsPress_Rewrite', 'bp_com_paged' );
 		// add_filter( 'paginate_links', array( 'AnsPress_Rewrite', 'paginate_links' ) );
 		anspress()->add_filter( 'parse_request', 'AnsPress_Rewrite', 'add_query_var' );
+
+		anspress()->add_action( 'tiny_mce_before_init', __CLASS__, 'tiny_mce_before_init' );
 	}
 
 	/**
 	 * Add AnsPress tables in $wpdb.
 	 */
-	public static function add_ap_tables() {		
+	public static function add_ap_tables() {
 		ap_append_table_names();
 	}
 
@@ -414,32 +417,32 @@ class AnsPress_Hooks
 
 	    $page_url = SELF::page_urls( $pages );
 
-        foreach ( (array) $items as $key => $item ) {
-        	$slug = array_search( str_replace( array( 'http://', 'https://' ), '', $item->url ), $page_url );
-            
-            if ( false !== $slug ) {
-                if ( isset( $pages[ $slug ]['logged_in'] ) && $pages[ $slug ]['logged_in'] && ! is_user_logged_in() ) {
-                    unset( $items[ $key ] );
-                }
+		foreach ( (array) $items as $key => $item ) {
+			$slug = array_search( str_replace( array( 'http://', 'https://' ), '', $item->url ), $page_url );
 
-                if ( ! ap_is_profile_active() && ('profile' == $slug || 'notification' == $slug ) ) {
-                    unset( $items[ $key ] );
-                }
+			if ( false !== $slug ) {
+				if ( isset( $pages[ $slug ]['logged_in'] ) && $pages[ $slug ]['logged_in'] && ! is_user_logged_in() ) {
+					unset( $items[ $key ] );
+				}
 
-                if ( 'profile' == $slug ) {
-                    $item->url = is_user_logged_in() ? ap_user_link( get_current_user_id() ) : wp_login_url();
-                } else {
-                    $item->url = ap_get_link_to( $slug );
-                }
+				if ( ! ap_is_profile_active() && ('profile' == $slug || 'notification' == $slug ) ) {
+					unset( $items[ $key ] );
+				}
 
-                $item->classes[] = 'anspress-page-link';
-                $item->classes[] = 'anspress-page-'.$slug;
+				if ( 'profile' == $slug ) {
+					$item->url = is_user_logged_in() ? ap_user_link( get_current_user_id() ) : wp_login_url();
+				} else {
+					$item->url = ap_get_link_to( $slug );
+				}
 
-                if ( get_query_var( 'ap_page' ) == $slug ) {
-                    $item->classes[] = 'anspress-active-menu-link';
-                }
-            }
-        }
+				$item->classes[] = 'anspress-page-link';
+				$item->classes[] = 'anspress-page-'.$slug;
+
+				if ( get_query_var( 'ap_page' ) == $slug ) {
+					$item->classes[] = 'anspress-active-menu-link';
+				}
+			}
+		}
 
 	    return $items;
 	}
@@ -452,22 +455,52 @@ class AnsPress_Hooks
 	 * @since  2.1
 	 */
 	public static function fix_nav_current_class($class, $item) {
-
+		SELF::$menu_class = $class;
 	    $pages = anspress()->pages;
-	    if ( ! empty( $item ) && is_object( $item ) ) {
-	        foreach ( $pages as $slug => $args ) {
-	            if ( in_array( 'anspress-page-link', $class ) ) {
-	                if ( ap_get_link_to( get_query_var( 'ap_page' ) ) != $item->url ) {
-	                    $pos = array_search( 'current-menu-item', $class );
-	                    unset( $class[ $pos ] );
-	                }
-	                if ( ! in_array( 'ap-dropdown', $class ) && (in_array( 'anspress-page-notification', $class ) || in_array( 'anspress-page-profile', $class )) ) {
-	                    $class[] = 'ap-dropdown';
-	                }
-	            }
-	        }
+
+	    // Return if empty or `$item` is not object.
+	    if ( empty( $item ) || ! is_object( $item ) ) {
+	    	return SELF::$menu_class;
 	    }
-	    return $class;
+
+		foreach ( (array) $pages as $args ) {
+			SELF::add_proper_menu_classes( $item );
+		}
+
+	    return SELF::$menu_class;
+	}
+
+	/**
+	 * Add proper class for AnsPress menu items.
+	 * @since 3.0.0
+	 */
+	public static function add_proper_menu_classes ( $item ) {
+		// Return if not anspress menu.
+		if ( ! in_array( 'anspress-page-link', SELF::$menu_class ) ) {
+			return;
+		}
+
+		if ( ap_get_link_to( get_query_var( 'ap_page' ) ) != $item->url ) {
+			$pos = array_search( 'current-menu-item', SELF::$menu_class );
+			unset( SELF::$menu_class[ $pos ] );
+		}
+
+		// Return if already have ap-dropdown.
+		if ( in_array( 'ap-dropdown', SELF::$menu_class ) ) {
+			return;
+		}
+
+		// Add ap-dropdown and ap-userdp-noti class if notification dropdown.
+		if ( in_array( 'anspress-page-notification', SELF::$menu_class ) ) {
+			SELF::$menu_class[] = 'ap-dropdown';
+			SELF::$menu_class[] = 'ap-userdp-noti';
+		}
+
+		// Add ap-dropdown and ap-userdp-menu class if profile dropdown.
+		if ( in_array( 'anspress-page-profile', SELF::$menu_class ) ) {
+			SELF::$menu_class[] = 'ap-dropdown';
+			SELF::$menu_class[] = 'ap-userdp-menu';
+		}
 	}
 
 	/**
@@ -479,7 +512,6 @@ class AnsPress_Hooks
 	 * @return string
 	 */
 	public static function walker_nav_menu_start_el($o, $item, $depth, $args) {
-
 	    if ( ! is_user_logged_in() && ( ap_is_notification_menu( $item ) || ap_is_profile_menu( $item ) )  ) {
 	        $o = '';
 	    }
@@ -489,50 +521,16 @@ class AnsPress_Hooks
 	    }
 
 	    if ( in_array( 'anspress-page-profile', $item->classes ) && is_user_logged_in() ) {
-	        $menus = ap_get_user_menu( get_current_user_id() );
 
-	        $active_user_page   = get_query_var( 'user_page' ) ? esc_attr( get_query_var( 'user_page' ) ) : 'about';
-
-	        $o  = '<a id="ap-user-menu-anchor" class="ap-dropdown-toggle" href="#">';
+	        $o  = '<a id="ap-userdp-menu" class="ap-dropdown-toggle" href="#" data-query="user_dp::'. wp_create_nonce( 'ap_ajax_nonce' ) .'::menu" data-action="ajax_btn">';
 	        $o .= get_avatar( get_current_user_id(), 80 );
 	        $o .= '<span class="name">'. ap_user_display_name( get_current_user_id() ) .'</span>';
 	        $o .= ap_icon( 'chevron-down', true );
 	        $o .= '</a>';
 
-	        $o .= '<ul id="ap-user-menu-link" class="ap-dropdown-menu ap-user-dropdown-menu">';
-
-	        foreach ( $menus as $m ) {
-	            $class = ! empty( $m['class'] ) ? ' '.$m['class'] : '';
-
-	            $o .= '<li'.($active_user_page == $m['slug'] ? ' class="active"' : '').'>';
-	            $o .= '<a href="'.$m['link'].'" class="ap-user-link-'.$m['slug'].$class.'">';
-	            $o .= $m['title'].'</a>';
-	            $o .= '</li>';
-	        }
-
-	        $o .= '</ul>';
 	    } elseif ( in_array( 'anspress-page-notification', $item->classes ) && is_user_logged_in() ) {
-	        $o = '<a id="ap-user-notification-anchor" class="ap-dropdown-toggle ap-sidetoggle '.ap_icon( 'globe' ).'" href="#">'.ap_get_the_total_unread_notification( false, false ).'</a>';
+	        $o = '<a id="ap-userdp-noti" class="ap-dropdown-toggle '.ap_icon( 'globe' ).'" href="#" data-query="user_dp::'. wp_create_nonce( 'ap_ajax_nonce' ) .'::noti" data-action="ajax_btn" data-cb="initScrollbar">'.ap_get_the_total_unread_notification( false, false ).'</a>';
 
-	        global $ap_activities;
-
-	        /**
-	         * Dropdown notification arguments.
-	         * Allow filtering of dropdown notification arguments.
-	         * @since 2.4.5
-	         * @var array
-	         */
-	        $notification_args = apply_filters( 'ap_dropdown_notification_args', array(
-	        	'per_page' 		=> 20,
-	        	'notification' 	=> true,
-	        	'user_id' 		=> ap_get_displayed_user_id(),
-	        ) );
-
-	        $ap_activities = ap_get_activities( $notification_args );
-
-	        ob_start();
-	        ap_get_template_part( 'user/notification-dropdown' );
-	        $o .= ob_get_clean();
 	    }
 
 	    return $o;
@@ -691,5 +689,21 @@ class AnsPress_Hooks
 		);
 
 		return strtr( $since, $replace );
+	}
+
+	/**
+	 * For some reason advance TinyMCE editor won't shows up.
+	 * To fix that issue, adding after init callback to forcely show editor.
+	 * @param  array $initArray Editor callbacks.
+	 * @return array
+	 * @since  3.0.0
+	 */
+	public static function tiny_mce_before_init($initArray) {
+		$initArray['setup'] = 'function(ed) {
+			ed.on("init", function() {
+      			tinyMCE.activeEditor.show();
+    		});
+		}';
+		return $initArray;
 	}
 }

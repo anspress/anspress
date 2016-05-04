@@ -1,0 +1,28 @@
+<div id="ap-notification-dropdown" class="ap-dropdown-menu ap-user-dropdown-menu ap-notification-items">
+	<div class="ap-notification-head clearfix">
+		<b>{{title}}</b>
+		<a href="#" data-action="ap_markread_notification" data-query="ap_ajax_action=markread_notification&__nonce={{mark_all_read.nonce}}">{{mark_all_read.label}}</a>
+	</div>
+	{{if have_notifications}}
+		<div class="ap-notification-items clearfix">
+			<div class="ap-notification-scroll scrollbar-dynamic">
+				{{foreach noti in notifications}}
+					<div class="ap-notification-{{noti.id}} ap-notification-item clearfix{{if noti.is_unread}}' unread'{{fi}}">						
+						<div class="ap-avatar">
+							<a href="{{noti.user_link}}">{{noti.avatar|raw}}</a>
+						</div>
+						<div class="no-overflow">
+							<a href="{{noti.permalink}}" class="clearfix">
+								<span class="ap-notification-content">{{noti.content|raw}}</span>
+								<span class="ap-notification-time">{{noti.date}}</span>
+							</a>
+						</div>						
+					</div>
+				{{end}}
+				<div class="ap-notification-more clearfix"><a href="{{all_link}}">{{view_all_text}}</a></div>
+			</div>
+		</div>
+	{{else}}
+		<div class="ap-no-notification">{{no_item}}</div>
+	{{fi}}
+</div>
