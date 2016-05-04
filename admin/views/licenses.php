@@ -3,6 +3,11 @@
  * View licenses page for AnsPress
  */
 
+// Save license key if form is submitted.
+if ( current_user_can( 'manage_options' ) && isset($_POST['ap_licenses_nonce']) && wp_verify_nonce( $_POST['ap_licenses_nonce'], 'ap_licenses_nonce' ) ) {
+	AP_License::ap_product_license();
+}
+
 $fields = ap_product_license_fields();
 $licenses = get_option( 'anspress_license' );
 ?>
@@ -14,7 +19,7 @@ $licenses = get_option( 'anspress_license' );
 	<p class="lead"><?php _e('License keys for AnsPress products, i.e. extensions and themes.', 'anspress-question-answer' ); ?></p>
 
 	<?php if ( ! empty( $fields ) ) :   ?>
-        <form method="post" action="<?php echo admin_url('admin-post.php' ); ?>">
+        <form method="post" action="<?php echo admin_url( 'admin.php?page=anspress_licenses' ); ?>">
             <table class="form-table">
                 <tbody>
 					<?php foreach ( $fields as $slug => $prod ) :   ?>

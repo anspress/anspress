@@ -17,7 +17,6 @@ if ( ! class_exists( 'EDD_SL_Plugin_Updater' ) ) {
 class AP_License{
 	public function __construct() {
 		add_action( 'ap_admin_menu', array( $this, 'menu' ) );
-		add_action( 'admin_post_ap_product_license', array( $this, 'ap_product_license' ) );
 		add_action( 'admin_init', array( $this, 'ap_plugin_updater' ), 0 );
 	}
 
@@ -39,23 +38,21 @@ class AP_License{
 		include_once( 'views/licenses.php' );
 	}
 
-	public function ap_product_license() {
+	public static function ap_product_license() {
 
 		if ( ! current_user_can( 'manage_options' ) || ! wp_verify_nonce( $_POST['ap_licenses_nonce'], 'ap_licenses_nonce' ) ) {
-			wp_die();
+			return;
 		}
 
 		$licenses = get_option( 'anspress_license', array() );
 		$fields = ap_product_license_fields();
 
 		if ( empty($fields ) ) {
-			wp_redirect( admin_url( 'admin.php?page=anspress_licenses' ) );
-			wp_die();
+			return;
 		}
 
 		if ( isset( $_POST['save_licenses'] ) ) {
 			foreach ( $fields as $slug => $prod ) {
-
 				if ( isset( $_POST['ap_license_'.$slug] ) && $licenses[$slug]['key'] != sanitize_text_field( $_POST['ap_license_'.$slug] ) ) {
 
 					$licenses[$slug] = array(
@@ -110,9 +107,6 @@ class AP_License{
 				}
 			}
 		}
-
-		wp_redirect( admin_url( 'admin.php?page=anspress_licenses' ) );
-		wp_die( );
 	}
 
 	/**
