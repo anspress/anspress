@@ -38,7 +38,7 @@ class AnsPress_Ajax
 	    anspress()->add_action( 'ap_ajax_set_notifications_as_read', $this, 'set_notifications_as_read' );
 	    anspress()->add_action( 'ap_ajax_flag_post', $this, 'flag_post' );
 	    anspress()->add_action( 'ap_ajax_subscribe', 'AnsPress_Subscriber_Hooks', 'subscribe' );
-	    anspress()->add_action( 'ap_ajax_vote', $this, 'vote' );
+	    anspress()->add_action( 'ap_ajax_vote', 'AnsPress_Vote', 'vote' );
 	    anspress()->add_action( 'ap_ajax_flag_comment', $this, 'flag_comment' );
 	    anspress()->add_action( 'ap_ajax_delete_activity', $this, 'delete_activity' );
 	    anspress()->add_action( 'ap_ajax_submit_comment', 'AnsPress_Comment_Hooks','submit_comment' );
@@ -572,74 +572,6 @@ class AnsPress_Ajax
 	    }
 
 	    $this->something_wrong();
-	}
-
-	/**
-	 * Process voting button.
-	 * @since 2.0.1.1
-	 */
-	public function vote() {
-	    $post_id = (int) $_POST['post_id'];
-
-	    if ( ! ap_verify_nonce( 'vote_'.$post_id ) ) {
-	        ap_ajax_json('something_wrong' );
-	    }
-
-	    $type = sanitize_text_field( $_POST['type'] );
-	    $type = ($type == 'up' ? 'vote_up' : 'vote_down');
-
-	    $userid = get_current_user_id();
-
-	    $post = get_post( $post_id );
-
-	    $thing = ap_user_can_vote_on_post( $post_id, $type, $userid, true );
-
-	    // Check if WP_Error object and send error message code.
-	    if ( is_wp_error( $thing ) ) {
-	        ap_ajax_json( $thing->get_error_code() );
-	    }
-
-	    if ( 'question' == $post->post_type && ap_opt( 'disable_down_vote_on_question' ) && 'vote_down' == $type ) {
-	        ap_ajax_json( 'voting_down_disabled' );
-	    } elseif ( 'answer' === $post->post_type && ap_opt( 'disable_down_vote_on_answer' ) && 'vote_down' === $type ) {
-	        ap_ajax_json( 'voting_down_disabled' );
-	    }
-
-	    $is_voted = ap_is_user_voted( $post_id, 'vote', $userid );
-
-	    if ( is_object( $is_voted ) && $is_voted->count > 0 ) {
-	        // If user already voted and click that again then reverse.
-			if ( $is_voted->type == $type ) {
-			    $counts = ap_remove_post_vote( $type, $userid, $post_id, $post->post_author );
-
-				// Update post meta.
-				update_post_meta( $post_id, ANSPRESS_VOTE_META, $counts['net_vote'] );
-
-			    do_action( 'ap_undo_vote', $post_id, $counts );
-			    do_action( 'ap_undo_'.$type, $post_id, $counts );
-
-			   	ap_ajax_json( array(
-			   		'action' 	=> 'undo',
-			   		'type' 		=> $type,
-			   		'count' 	=> $counts['net_vote'],
-			   		'message' 	=> 'undo_vote',
-			   	) );
-			} else {
-			    ap_ajax_json( 'undo_vote_your_vote' );
-			}
-	    } else {
-	        $counts = ap_add_post_vote( $userid, $type, $post_id, $post->post_author );
-			// Update post meta.
-	        do_action( 'ap_'.$type, $post_id, $counts );
-	       	ap_ajax_json( array( 'action' => 'voted', 'type' => $type, 'count' => $counts['net_vote'], 'message' => 'voted' ) );
-	    }
-	}
-
-	/**
-	 * Handle ajax callback if non-logged in user try to subscribe
-	 */
-	public function ap_add_to_subscribe_nopriv() {
-		$this->send( array( 'action' => false, 'message' => __( 'Please login for adding question to your subscribe', 'anspress-question-answer' ) ) );
 	}
 
 	/**
