@@ -169,30 +169,35 @@ class AnsPress_Ajax
 	}
 
 	/**
-	 * Process ajax trash posts callback
+	 * Process ajax trash posts callback.
 	 */
 	public function delete_post() {
+		$post_id = (int) ap_sanitize_unslash( 'post_id', 'request' );
 
-		$post_id = (int) $_POST['post_id'];
-
-		$action = 'delete_post_'.$post_id;
-
-		if ( ! wp_verify_nonce( $_POST['__nonce'], $action ) || ! ap_user_can_delete_post( $post_id ) ) {
-			$this->something_wrong();
+		if ( ! ap_verify_nonce( 'delete_post_'.$post_id ) || ! ap_user_can_delete_post( $post_id ) ) {
+			ap_ajax_json( 'something_wrong' );
 		}
 
 		$post = get_post( $post_id );
 
+		// Delete lock feature.
+		// Do not allow to delete if defined time elapsed.
 		if ( (time() > (get_the_time( 'U', $post->ID ) + (int) ap_opt( 'disable_delete_after' ))) && ! is_super_admin() ) {
 
-			$this->send( array(
+			ap_ajax_json( array(
 				'message_type' => 'warning',
-				'message' => sprintf( __( 'This post was created %s, its locked hence you cannot delete it.','anspress-question-answer' ), ap_human_time( get_the_time( 'U', $post->ID ) ) ),
+				'message' => sprintf( __( 'This post was created %s, hence you cannot delete it.','anspress-question-answer' ), ap_human_time( get_the_time( 'U', $post->ID ) ) ),
 			) );
 		}
 
 		wp_trash_post( $post_id );
 
+		// Die if not question or answer post type.
+		if ( ! in_array( $post->post_type, [ 'question', 'answer' ] ) ) {
+			ap_ajax_json( 'something_wrong' );
+		}
+
+		// Delete question.
 		if ( $post->post_type == 'question' ) {
 			do_action( 'ap_wp_trash_question', $post_id );
 			$this->send( array(
@@ -200,21 +205,19 @@ class AnsPress_Ajax
 				'do' 			=> array( 'redirect' => ap_base_page_link() ),
 				'message' 		=> 'question_moved_to_trash',
 			) );
-		} else {
-			do_action( 'ap_wp_trash_answer', $post_id );
-			$current_ans = ap_count_published_answers( $post->post_parent );
-			$count_label = sprintf( _n( '1 Answer', '%d Answers', $current_ans, 'anspress-question-answer' ), $current_ans );
-			$remove = ( ! $current_ans ? true : false);
-			$this->send(array(
-				'action' 		=> 'delete_answer',
-				'div_id' 		=> '#answer_'.$post_id,
-				'count' 		=> $current_ans,
-				'count_label' 	=> $count_label,
-				'remove' 		=> $remove,
-				'message' 		=> 'answer_moved_to_trash',
-				'view' 			=> array( 'answer_count' => $current_ans, 'answer_count_label' => $count_label ),
-			));
 		}
+
+		do_action( 'ap_wp_trash_answer', $post_id );
+		
+		ap_ajax_json(array(
+			'action' 		=> 'delete_answer',
+			'div_id' 		=> '#answer_'.$post_id,
+			'count' 		=> ap_count_published_answers( $post->post_parent ),
+			'count_label' 	=> sprintf( _n( '1 Answer', '%d Answers', $current_ans, 'anspress-question-answer' ), $current_ans ),
+			'remove' 		=> ( ! $current_ans ? true : false ),
+			'message' 		=> 'answer_moved_to_trash',
+			'view' 			=> array( 'answer_count' => $current_ans, 'answer_count_label' => $count_label ),
+		));
 	}
 
 	/**
