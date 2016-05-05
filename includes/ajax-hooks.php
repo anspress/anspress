@@ -36,14 +36,14 @@ class AnsPress_Ajax
 	    anspress()->add_action( 'ap_ajax_delete_notification', $this, 'delete_notification' );
 	    anspress()->add_action( 'ap_ajax_markread_notification', $this, 'markread_notification' );
 	    anspress()->add_action( 'ap_ajax_set_notifications_as_read', $this, 'set_notifications_as_read' );
-	    
+
 	    anspress()->add_action( 'ap_ajax_subscribe', 'AnsPress_Subscriber_Hooks', 'subscribe' );
 	    anspress()->add_action( 'ap_ajax_vote', 'AnsPress_Vote', 'vote' );
 
 	    // Flag ajax callbacks.
 	    anspress()->add_action( 'ap_ajax_flag_post', 'AnsPress_Flag', 'flag_post' );
 	    anspress()->add_action( 'ap_ajax_flag_comment', 'AnsPress_Flag', 'flag_comment' );
-	    
+
 	    anspress()->add_action( 'ap_ajax_delete_activity', $this, 'delete_activity' );
 	    anspress()->add_action( 'ap_ajax_submit_comment', 'AnsPress_Comment_Hooks','submit_comment' );
 	    anspress()->add_action( 'ap_ajax_approve_comment', 'AnsPress_Comment_Hooks','approve_comment' );
@@ -58,12 +58,12 @@ class AnsPress_Ajax
 	}
 
 	/**
-	 * Show similar questions when asking a question.
-	 *
+	 * Show similar questions while asking a question.
 	 * @since 2.0.1
 	 */
 	public function suggest_similar_questions() {
-	    if ( empty( $_POST['value'] ) || ( ! ap_verify_default_nonce() && ! current_user_can( 'manage_options' ) ) ) {
+		$keyword = ap_sanitize_unslash( 'value', 'request' );
+	    if ( empty( $keyword ) || ( ! ap_verify_default_nonce() && ! current_user_can( 'manage_options' ) ) ) {
 	        wp_die( 'false' );
 	    }
 
@@ -77,7 +77,6 @@ class AnsPress_Ajax
 		));
 
 	    if ( $questions ) {
-
 	        $items = '<div class="ap-similar-questions-head">';
 	        $items .= '<h3>'.ap_icon( 'check', true ).sprintf( __( '%d similar questions found', 'anspress-question-answer' ), count( $questions ) ).'</h3>';
 	        $items .= '<p>'.__( 'We\'ve found similar questions that have already been asked, click to read them.', 'anspress-question-answer' ).'</p>';
@@ -107,68 +106,66 @@ class AnsPress_Ajax
 
 	/**
 	 * Ajax action for selecting a best answer.
-	 *
 	 * @since 2.0.0
 	 */
 	public function select_best_answer() {
+	    $answer_id = (int) ap_sanitize_unslash( 'answer_id', 'request' );
 
-	    $answer_id = (int) $_POST['answer_id'];
-
-	    if ( ! is_user_logged_in() ) {
-	        ap_send_json( ap_ajax_responce( 'no_permission' ) );
-
-	        return;
-	    }
-
-	    if ( ! wp_verify_nonce( $_POST['__nonce'], 'answer-'.$answer_id ) ) {
-	        $this->something_wrong();
+	    if ( ! is_user_logged_in() || ! ap_verify_nonce( 'answer-'.$answer_id ) ) {
+	        ap_ajax_json( 'something_wrong' );
 	    }
 
 	    $post = get_post( $answer_id );
 
+	    // Unselect best answer if already selected.
 	    if ( ap_question_best_answer_selected( $post->post_parent ) ) {
 	        do_action( 'ap_unselect_answer', $post->post_author, $post->post_parent, $post->ID );
 
 	        update_post_meta( $post->ID, ANSPRESS_BEST_META, 0 );
-
 	        update_post_meta( $post->post_parent, ANSPRESS_SELECTED_META, false );
-
 	        update_post_meta( $post->post_parent, ANSPRESS_UPDATED_META, current_time( 'mysql' ) );
 
-	        if ( ap_opt( 'close_after_selecting' ) ) {
+	        if ( ap_opt( 'close_selected' ) ) {
 	            wp_update_post( array( 'ID' => $post->post_parent, 'post_status' => 'publish' ) );
 	        }
 
 	        ap_update_user_best_answers_count_meta( $post->post_author );
 	        ap_update_user_solved_answers_count_meta( $post->post_author );
 
-	        $this->send( array(
+	        ap_ajax_json( array(
 	        	'message' 	=> 'unselected_the_answer',
 	        	'action' 	=> 'unselected_answer',
 	        	'do' 		=> 'reload',
 	        ) );
 
-	    } else {
-	        do_action( 'ap_select_answer', $post->post_author, $post->post_parent, $post->ID );
-	        update_post_meta( $post->ID, ANSPRESS_BEST_META, 1 );
-	        update_post_meta( $post->post_parent, ANSPRESS_SELECTED_META, $post->ID );
-	        update_post_meta( $post->post_parent, ANSPRESS_UPDATED_META, current_time( 'mysql' ) );
-
-	        if ( ap_opt( 'close_after_selecting' ) ) {
-	            wp_update_post( array( 'ID' => $post->post_parent, 'post_status' => 'closed' ) );
-	        }
-
-	        ap_update_user_best_answers_count_meta( $post->post_author );
-	        ap_update_user_solved_answers_count_meta( $post->post_author );
-
-	        $html = ap_select_answer_btn_html( $answer_id );
-	        $this->send( array(
-	        	'message' 	=> 'selected_the_answer',
-	        	'action' 	=> 'selected_answer',
-	        	'do' 		=> 'reload',
-	        	'html' 		=> $html,
-	        ) );
 	    }
+
+	    /**
+	     * Trigger right after selecting an answer.
+	     * @param integer $post_author Post author ID.
+	     * @param integer $question_id Question ID.
+	     * @param integer $answer_id   Answer ID.
+	     */
+		do_action( 'ap_select_answer', $post->post_author, $post->post_parent, $post->ID );
+
+		update_post_meta( $post->ID, ANSPRESS_BEST_META, 1 );
+		update_post_meta( $post->post_parent, ANSPRESS_SELECTED_META, $post->ID );
+		update_post_meta( $post->post_parent, ANSPRESS_UPDATED_META, current_time( 'mysql' ) );
+
+		if ( ap_opt( 'close_selected' ) ) {
+			wp_update_post( array( 'ID' => $post->post_parent, 'post_status' => 'closed' ) );
+		}
+
+		ap_update_user_best_answers_count_meta( $post->post_author );
+		ap_update_user_solved_answers_count_meta( $post->post_author );
+
+		$html = ap_select_answer_btn_html( $answer_id );
+		ap_ajax_json( array(
+			'message' 	=> 'selected_the_answer',
+			'action' 	=> 'selected_answer',
+			'do' 		=> 'reload',
+			'html' 		=> $html,
+		) );
 	}
 
 	/**
@@ -543,7 +540,7 @@ class AnsPress_Ajax
 
 		wp_die();
 	}
-	
+
 
 	/**
 	 * Terminate the ajax callback and send a JSON response
