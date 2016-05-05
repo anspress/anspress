@@ -1,5 +1,4 @@
 <?php
-
 /**
  * All functions and classes related to flagging
  *
@@ -10,6 +9,85 @@
  *
  * @package AnsPress
  **/
+
+/**
+ * All flag methods.
+ */
+class AnsPress_Flag
+{
+	/**
+	 * Ajax callback for processing comment flag button.
+	 * @since 2.4
+	 */
+	public static function flag_comment() {
+		$args = ap_sanitize_unslash( 'args', 'request' );
+
+		// If args is empty then die.
+		if ( empty( $args ) ) {
+			ap_ajax_json('something_wrong' );
+		}
+
+	    $comment_id = (int) $args[0];
+	    if ( ! ap_verify_nonce( 'flag_'. $comment_id ) || ! is_user_logged_in() ) {
+	        ap_ajax_json('something_wrong' );
+	    }
+
+	    $userid = get_current_user_id();
+	    $is_flagged = ap_is_user_flagged_comment( $comment_id );
+
+	    // Die if already flagged comment.
+	    if ( $is_flagged ) {
+	        ap_ajax_json( 'already_flagged_comment' );
+	    }
+
+		ap_insert_comment_flag( $userid, $comment_id );
+		$count = ap_comment_flag_count( $comment_id );
+		update_comment_meta( $comment_id, ANSPRESS_FLAG_META, $count );
+
+		ap_ajax_json( array(
+			'message' 	=> 'flagged_comment',
+			'action' 	=> 'flagged',
+			'view' 		=> array( $comment_id.'_comment_flag' => $count ),
+			'count' 	=> $count,
+		) );
+	}
+
+	/**
+	 * Ajax callback to process post flag button
+	 * @since 2.0.0
+	 */
+	public static function flag_post() {
+		$args = ap_sanitize_unslash( 'args', 'request' );
+	    $post_id = (int) $args[0];
+
+	    if ( ! ap_verify_nonce( 'flag_'.$post_id ) || ! is_user_logged_in() ) {
+	        ap_ajax_json('something_wrong' );
+	    }
+
+	    $userid = get_current_user_id();
+	    $is_flagged = ap_is_user_flagged( $post_id );
+
+	    // Die if already flagged.
+	    if ( $is_flagged ) {
+	        ap_ajax_json( 'already_flagged' );
+	    }
+
+        $count = ap_count_flag_vote( 'flag', $post_id );
+        ap_add_flag( $userid, $post_id );
+
+        $new_count = $count + 1;
+		
+		// Update post meta.
+		update_post_meta( $post_id, ANSPRESS_FLAG_META, $new_count );
+        ap_ajax_json( array(
+        	'message' => 'flagged',
+        	'action' => 'flagged',
+        	'view' => array( $post_id.'_flag_count' => $new_count ),
+        	'count' => $new_count,
+        ) );
+	}
+
+}
 
 /**
  * Add flag vote data to ap_meta table.

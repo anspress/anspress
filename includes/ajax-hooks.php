@@ -36,10 +36,14 @@ class AnsPress_Ajax
 	    anspress()->add_action( 'ap_ajax_delete_notification', $this, 'delete_notification' );
 	    anspress()->add_action( 'ap_ajax_markread_notification', $this, 'markread_notification' );
 	    anspress()->add_action( 'ap_ajax_set_notifications_as_read', $this, 'set_notifications_as_read' );
-	    anspress()->add_action( 'ap_ajax_flag_post', $this, 'flag_post' );
+	    
 	    anspress()->add_action( 'ap_ajax_subscribe', 'AnsPress_Subscriber_Hooks', 'subscribe' );
 	    anspress()->add_action( 'ap_ajax_vote', 'AnsPress_Vote', 'vote' );
-	    anspress()->add_action( 'ap_ajax_flag_comment', $this, 'flag_comment' );
+
+	    // Flag ajax callbacks.
+	    anspress()->add_action( 'ap_ajax_flag_post', 'AnsPress_Flag', 'flag_post' );
+	    anspress()->add_action( 'ap_ajax_flag_comment', 'AnsPress_Flag', 'flag_comment' );
+	    
 	    anspress()->add_action( 'ap_ajax_delete_activity', $this, 'delete_activity' );
 	    anspress()->add_action( 'ap_ajax_submit_comment', 'AnsPress_Comment_Hooks','submit_comment' );
 	    anspress()->add_action( 'ap_ajax_approve_comment', 'AnsPress_Comment_Hooks','approve_comment' );
@@ -262,9 +266,9 @@ class AnsPress_Ajax
 		}
 	}
 
-	
 
-	
+
+
 
 	/**
 	 * Handle set feature and unfeature ajax callback
@@ -539,74 +543,7 @@ class AnsPress_Ajax
 
 		wp_die();
 	}
-
-	/**
-	 * Ajax callback to process post flag button
-	 * @since 2.0.0
-	 */
-	public function flag_post() {
-	    $post_id = (int) $_POST['args'][0];
-
-	    if ( ! ap_verify_nonce( 'flag_'.$post_id ) || ! is_user_logged_in() ) {
-	        $this->something_wrong();
-	    }
-
-	    $userid = get_current_user_id();
-	    $is_flagged = ap_is_user_flagged( $post_id );
-
-	    if ( $is_flagged ) {
-	        $this->send( array( 'message' => 'already_flagged' ) );
-	    } else {
-	        $count = ap_count_flag_vote( 'flag', $post_id );
-	        ap_add_flag( $userid, $post_id );
-
-	        $new_count = $count + 1;
-			// Update post meta.
-			update_post_meta( $post_id, ANSPRESS_FLAG_META, $new_count );
-	        $this->send( array(
-	        	'message' => 'flagged',
-	        	'action' => 'flagged',
-	        	'view' => array( $post_id.'_flag_count' => $new_count ),
-	        	'count' => $new_count,
-	        ) );
-	    }
-
-	    $this->something_wrong();
-	}
-
-	/**
-	 * Ajax callback for processing comment flag button.
-	 * @since 2.4
-	 */
-	public function flag_comment() {
-		$args = $_POST['args'];
-
-	    $comment_id = (int) $args[0];
-	    if ( ! ap_verify_nonce( 'flag_'. $comment_id ) || ! is_user_logged_in() ) {
-	        $this->something_wrong();
-	    }
-
-	    $userid = get_current_user_id();
-	    $is_flagged = ap_is_user_flagged_comment( $comment_id );
-
-	    if ( $is_flagged ) {
-	        ap_send_json( ap_ajax_responce( array( 'message' => 'already_flagged_comment' ) ) );
-	    } else {
-	        ap_insert_comment_flag( $userid, $comment_id );
-
-	        $count = ap_comment_flag_count( $comment_id );
-
-	        update_comment_meta( $comment_id, ANSPRESS_FLAG_META, $count );
-
-	        $this->send( array(
-	        	'message' 	=> 'flagged_comment',
-	        	'action' 	=> 'flagged',
-	        	'view' 		=> array( $comment_id.'_comment_flag' => $count ),
-	        	'count' 	=> $count,
-	        ) );
-	    }
-	    $this->something_wrong();
-	}
+	
 
 	/**
 	 * Terminate the ajax callback and send a JSON response
@@ -756,9 +693,13 @@ class AnsPress_Ajax
 	    wp_die();
 	}
 
+	/**
+	 * Handles ajax callback for list filter search.
+	 * @since 3.0.0
+	 */
 	public static function filter_search() {
-		$filter = sanitize_text_field( wp_unslash( $_POST['filter'] ) );
-		$search_query = sanitize_text_field( wp_unslash( $_POST['val'] ) );
+		$filter = ap_sanitize_unslash( 'filter', 'request' );
+		$search_query = ap_sanitize_unslash( 'val', 'request' );
 		do_action('ap_list_filter_search_'.$filter, $search_query );
 	}
 }
