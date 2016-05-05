@@ -63,7 +63,7 @@ class ApajaxTest extends \Codeception\TestCase\WPAjaxTestCase
 		$nonce = wp_create_nonce( 'vote_'.$this->current_post );
 
 		$this->_set_post_data( 'ap_ajax_action=vote&type=up&post_id='.$this->current_post.'&__nonce='.$nonce.'' );
-		add_action( 'ap_ajax_vote', array( 'AnsPress_Ajax', 'vote' ) );
+		add_action( 'ap_ajax_vote', array( 'AnsPress_Vote', 'vote' ) );
 		$this->triggerAjaxCapture();
 
 		// Ensure we found the right match
@@ -75,7 +75,7 @@ class ApajaxTest extends \Codeception\TestCase\WPAjaxTestCase
 		$this->_setRole( 'subscriber' );
 		$nonce = wp_create_nonce( 'vote_'.$this->current_post );
 		$this->_set_post_data( 'ap_ajax_action=vote&type=up&post_id='.$this->current_post.'&__nonce='.$nonce.'' );
-		add_action( 'ap_ajax_vote', array( 'AnsPress_Ajax', 'vote' ) );
+		add_action( 'ap_ajax_vote', array( 'AnsPress_Vote', 'vote' ) );
 		$this->triggerAjaxCapture();
 		$this->assertTrue( 'Thank you for voting.' == $this->ap_ajax_success( 'message' ) );
 		$this->assertTrue( '1' == $this->ap_ajax_success( 'count' ) );
@@ -85,7 +85,7 @@ class ApajaxTest extends \Codeception\TestCase\WPAjaxTestCase
 		$this->_setRole( 'ap_participant' );
 		$nonce = wp_create_nonce( 'vote_'.$this->current_post );
 		$this->_set_post_data( 'ap_ajax_action=vote&type=down&post_id='.$this->current_post.'&__nonce='.$nonce.'' );
-		add_action( 'ap_ajax_vote', array( 'AnsPress_Ajax', 'vote' ) );
+		add_action( 'ap_ajax_vote', array( 'AnsPress_Vote', 'vote' ) );
 		$this->triggerAjaxCapture();
 		$this->assertTrue( 'Thank you for voting.' == $this->ap_ajax_success( 'message' ) );
 		$this->assertTrue( '-1' == $this->ap_ajax_success( 'count' ) );
@@ -97,7 +97,7 @@ class ApajaxTest extends \Codeception\TestCase\WPAjaxTestCase
         $counts = ap_add_post_vote( get_current_user_id(), 'vote_up', $this->current_post, $post->post_author );
         $nonce = wp_create_nonce( 'vote_'.$this->current_post );
         $this->_set_post_data( 'ap_ajax_action=vote&type=up&post_id='.$this->current_post.'&__nonce='.$nonce.'' );
-        add_action( 'ap_ajax_vote', array( 'AnsPress_Ajax', 'vote' ) );
+        add_action( 'ap_ajax_vote', array( 'AnsPress_Vote', 'vote' ) );
         $this->triggerAjaxCapture();
         $this->assertTrue( 'Your vote has been removed.' == $this->ap_ajax_success( 'message' ) );
         $this->assertTrue( '1' == $this->ap_ajax_success( 'count' ) );
@@ -109,7 +109,7 @@ class ApajaxTest extends \Codeception\TestCase\WPAjaxTestCase
 		$counts = ap_add_post_vote( get_current_user_id(), 'vote_up', $this->current_post, $post->post_author );
 		$nonce = wp_create_nonce( 'vote_'.$this->current_post );
 		$this->_set_post_data( 'ap_ajax_action=vote&type=down&post_id='.$this->current_post.'&__nonce='.$nonce.'' );
-		add_action( 'ap_ajax_vote', array( 'AnsPress_Ajax', 'vote' ) );
+		add_action( 'ap_ajax_vote', array( 'AnsPress_Vote', 'vote' ) );
 		$this->triggerAjaxCapture();
 		$this->assertTrue( 'Undo your vote first.' == $this->ap_ajax_success( 'message' ) );
 	}
