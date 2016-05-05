@@ -20,28 +20,12 @@ if ( ! defined( 'WPINC' ) ) {
 class AnsPress_Subscriber_Hooks
 {
 	/**
-	 * Initialize the plugin by setting localization and loading public scripts
-	 * and styles.
-	 * @since 2.4.8 Removed `$ap` args.
-	 */
-	public function __construct( ) {
-		anspress()->add_action( 'ap_new_subscriber', $this, 'subscriber_count', 1, 3 );
-		anspress()->add_action( 'ap_removed_subscriber', $this, 'subscriber_count', 1, 3 );
-		anspress()->add_action( 'ap_after_new_question', $this, 'after_new_question', 10, 2 );
-		anspress()->add_action( 'ap_after_new_answer', $this, 'after_new_answer', 10, 2 );
-		anspress()->add_action( 'ap_publish_comment', $this, 'after_new_comment' );
-		anspress()->add_action( 'ap_unpublish_comment', $this, 'unpublish_comment' );
-		anspress()->add_action( 'ap_before_delete_question', $this, 'delete_question' );
-		anspress()->add_action( 'ap_before_delete_answer', $this, 'delete_answer' );
-	}
-
-	/**
 	 * Update question subscribers count.
 	 * @param  integer $user_id User ID.
 	 * @param  integer $item_id Item id.
 	 * @param  string  $activity Activity name.
 	 */
-	function subscriber_count( $user_id, $item_id, $activity ) {
+	public static function subscriber_count( $user_id, $item_id, $activity ) {
 		$q_activity = array( 'q_all' );
 		$tax_activity = array( 'tax_new' );
 
@@ -57,7 +41,7 @@ class AnsPress_Subscriber_Hooks
 	 * @param  integer $question_id 	Question ID.
 	 * @param  object  $question     	Post object.
 	 */
-	public function after_new_question($question_id, $question) {
+	public static function after_new_question($question_id, $question) {
 		ap_subscribe_question( $question );
 	}
 
@@ -66,7 +50,7 @@ class AnsPress_Subscriber_Hooks
 	 * @param  integer $answer_id 	Answer ID.
 	 * @param  object  $answer    	Answer object.
 	 */
-	public function after_new_answer($answer_id, $answer) {
+	public static function after_new_answer($answer_id, $answer) {
 		if ( ! ap_is_user_subscribed( $answer->ID, 'a_all', $answer->post_author ) ) {
 			ap_new_subscriber( $answer->post_author, $answer->ID, 'a_all', $answer->post_parent );
 		}
@@ -76,7 +60,7 @@ class AnsPress_Subscriber_Hooks
 	 * Subscribe user for post comments
 	 * @param  object $comment Comment object.
 	 */
-	public function after_new_comment($comment) {
+	public static function after_new_comment($comment) {
 		$post = get_post( $comment->comment_post_ID );
 
 		$type = 'q_post';
@@ -96,7 +80,7 @@ class AnsPress_Subscriber_Hooks
 	 * Action triggred after unpublishing a comment.
 	 * @param  object|array $comment Comment obejct.
 	 */
-	public function unpublish_comment($comment) {
+	public static function unpublish_comment($comment) {
 		$comment = (object) $comment;
 		$post = get_post( $comment->comment_post_ID );
 
@@ -111,7 +95,7 @@ class AnsPress_Subscriber_Hooks
 	 * Remove question subscriptions before delete
 	 * @param  integer $question_id Question ID.
 	 */
-	public function delete_question( $question_id) {
+	public static function delete_question( $question_id) {
 		ap_remove_subscriber( $question_id, false, 'q_all' );
 	}
 
@@ -119,8 +103,79 @@ class AnsPress_Subscriber_Hooks
 	 * Remove answer subscriptions before delete
 	 * @param  integer $answer_id answer ID.
 	 */
-	public function delete_answer( $answer_id ) {
+	public static function delete_answer( $answer_id ) {
 		ap_remove_subscriber( $answer_id, false, 'a_all' );
+	}
+
+	/**
+	 * Process ajax subscribe request.
+	 */
+	public static function subscribe() {
+		$args = ap_sanitize_unslash( 'args', 'request', false );
+
+		// Check if args is empty, if so than die.
+		if( false === $args ){
+			ap_ajax_json('something_wrong');
+		}
+
+		// Die if user is not logged in.
+		if ( ! is_user_logged_in() ) {
+			ap_ajax_json( 'please_login' );
+		}
+
+		$action_id = (int) $args[0];
+		$type = $args[1];
+
+		if ( ! ap_verify_nonce( 'subscribe_'.$action_id.'_'.$type ) ) {
+			ap_ajax_json('something_wrong');
+		}
+
+		$question_id = 0;
+
+		if ( 'tax_new_q' === $type ) {
+			$subscribe_type = 'tax_new_q';
+		} else {
+			$subscribe_type = 'q_all';
+			$question_id = $action_id;
+		}
+
+		$user_id = get_current_user_id();
+
+		$is_subscribed = ap_is_user_subscribed( $action_id, $subscribe_type, $user_id );
+
+		$elm = '#subscribe_'.$action_id.' .ap-btn';
+
+		// If already subscribed then unsubscribe.
+		if ( $is_subscribed ) {
+			$row = ap_remove_subscriber( $action_id, $user_id, $subscribe_type );
+
+			if ( false !== $row ) {
+				$count = ap_subscribers_count( $action_id, $subscribe_type );
+				ap_ajax_json( array(
+					'message' 		=> 'unsubscribed',
+					'action' 		=> 'unsubscribed',
+					'do' 			=> array( 'updateHtml' => $elm.' .text', 'toggle_active_class' => $elm ),
+					'count' 		=> $count,
+					'html' 			=> __( 'Follow', 'anspress-question-answer' ),
+					'view' 			=> array( 'subscribe_'.$action_id => $count ),
+				) );
+			}
+		}
+
+		// New subscription.
+		$row = ap_new_subscriber( $user_id, $action_id, $subscribe_type, $question_id );
+
+		if ( false !== $row ) {
+			$count = ap_subscribers_count( $action_id, $subscribe_type );
+			ap_ajax_json( array(
+				'message' 		=> 'subscribed',
+				'action' 		=> 'subscribed',
+				'do' 			=> array( 'updateHtml' => '#subscribe_'.$action_id.' .text', 'toggle_active_class' => $elm ),
+				'count' 		=> $count,
+				'html' 			=> __( 'Unfollow', 'anspress-question-answer' ),
+				'view' 			=> array( 'subscribe_'.$action_id => $count ),
+			) );
+		}
 	}
 
 }
