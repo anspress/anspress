@@ -738,7 +738,7 @@ function ap_user_can_change_status( $post_id, $user_id = false ) {
 		$user_id = get_current_user_id();
 	}
 
-	if ( current_user_can( 'ap_change_status_other' ) || is_super_admin() ) {
+	if ( user_can( $user_id, 'ap_change_status_other' ) || is_super_admin( $user_id ) ) {
 		return true;
 	}
 

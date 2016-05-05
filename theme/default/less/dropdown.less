@@ -15,7 +15,7 @@
 	        right: 0;
 	        width: 160px;
 	        z-index: 99;
-	        ul > li{
+	        li{
                 margin: 0;
                 float: none;
 
@@ -28,6 +28,10 @@
                 > a:hover{
                     background: #fcfcfc;
                 }
+                &.active a{
+		        	background: #eeeeee;
+		        	display: block;
+		        }
             }
 		}
 		&.open .ap-dropdown-menu{
@@ -35,6 +39,6 @@
         }
         &-toggle {
 			outline: none;
-		} 
+		}
   	}
 }

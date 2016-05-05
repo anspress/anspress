@@ -29,7 +29,7 @@ class AnsPress_Ajax
 	    anspress()->add_action( 'ap_ajax_select_best_answer', $this, 'select_best_answer' );
 	    anspress()->add_action( 'ap_ajax_delete_post', $this, 'delete_post' );
 	    anspress()->add_action( 'ap_ajax_permanent_delete_post', $this, 'permanent_delete_post' );
-	    anspress()->add_action( 'ap_ajax_change_post_status', $this, 'change_post_status' );
+	    anspress()->add_action( 'ap_ajax_change_post_status', 'AnsPress_Post_Status', 'change_post_status' );
 	    anspress()->add_action( 'ap_ajax_load_user_field_form', $this, 'load_user_field_form' );
 	    anspress()->add_action( 'ap_ajax_set_featured', $this, 'set_featured' );
 	    anspress()->add_action( 'ap_ajax_follow', $this, 'follow' );
@@ -51,7 +51,7 @@ class AnsPress_Ajax
 	    anspress()->add_action( 'ap_ajax_load_tinymce_assets', __CLASS__, 'load_tinymce_assets' );
 	    anspress()->add_action( 'wp_ajax_ap_cover_upload', 'AnsPress_User', 'cover_upload' );
 		anspress()->add_action( 'wp_ajax_ap_avatar_upload', 'AnsPress_User', 'avatar_upload' );
-		anspress()->add_action( 'ap_ajax_filter_search', __CLASS__, 'filter_search' );		
+		anspress()->add_action( 'ap_ajax_filter_search', __CLASS__, 'filter_search' );
 	}
 
 	/**
@@ -64,8 +64,7 @@ class AnsPress_Ajax
 	        wp_die( 'false' );
 	    }
 
-	    $keyword = sanitize_text_field( wp_unslash( $_POST['value'] ) );
-
+	    $keyword = ap_sanitize_unslash( 'value', 'request' );
 	    $is_admin = (bool) ap_isset_post_value('is_admin', false );
 
 	    $questions = get_posts(array(
@@ -264,61 +263,7 @@ class AnsPress_Ajax
 		}
 	}
 
-	/**
-	 * Handle change post status request.
-	 * @since 2.1
-	 */
-	public function change_post_status() {
-	    $post_id = (int) $_POST['post_id'];
-	    $status = sanitize_text_field( wp_unslash( $_POST['status'] ) );
-
-	    if ( ! is_user_logged_in() || ! ap_verify_nonce( 'change_post_status_'.$post_id ) || ! ap_user_can_change_status( $post_id ) ) {
-	        $this->send( 'no_permission' );
-	    } else {
-
-	        $post = get_post( $post_id );
-	        if ( ($post->post_type == 'question' || $post->post_type == 'answer') && $post->post_status != $status ) {
-
-	           	$update_data = array();
-
-	            if ( 'publish' == $status ) {
-	                $update_data['post_status'] = 'publish';
-	            } elseif ( 'moderate' == $status ) {
-	                $update_data['post_status'] = 'moderate';
-	            } elseif ( 'private_post' == $status ) {
-	                $update_data['post_status'] = 'private_post';
-	            } elseif ( 'closed' == $status ) {
-	                $update_data['post_status'] = 'closed';
-	            }
-
-				// Unregister history action for edit.
-				remove_action( 'ap_after_new_answer', array( 'AP_History', 'new_answer' ) );
-	            remove_action( 'ap_after_new_question', array( 'AP_History', 'new_question' ) );
-
-	            $update_data['ID'] = $post->ID;
-	            wp_update_post( $update_data );
-
-	            // ap_add_history( get_current_user_id(), $post_id, '', 'status_updated' );
-	            add_action( 'ap_post_status_updated', $post->ID );
-
-	            ob_start();
-	            ap_post_status_description( $post->ID );
-	            $html = ob_get_clean();
-
-	            $this->send(array(
-					'action' 		=> 'status_updated',
-					'message' 		=> 'status_updated',
-					'do' 			=> array(
-						'remove_if_exists' => '#ap_post_status_desc_'.$post->ID,
-						'toggle_active_class' => array( '#ap_post_status_toggle_'.$post->ID, '.'.$status ),
-						'append_before' => '#ap_post_actions_'.$post->ID,
-					),
-					'html' 			=> $html,
-				));
-	        }
-	    }
-	    $this->something_wrong();
-	}
+	
 
 	/**
 	 * Load user profile field form
@@ -968,7 +913,7 @@ class AnsPress_Ajax
 	 * @since 3.0.0
 	 */
 	public static function load_tinymce_assets() {
-		$settings = ap_tinymce_editor_settings('answer');
+		$settings = ap_tinymce_editor_settings('answer' );
 
 		echo '<div class="ap-editor">';
 	    wp_editor( '', 'description', $settings );
@@ -979,9 +924,9 @@ class AnsPress_Ajax
 	    wp_die();
 	}
 
-	public static function filter_search(){
+	public static function filter_search() {
 		$filter = sanitize_text_field( wp_unslash( $_POST['filter'] ) );
 		$search_query = sanitize_text_field( wp_unslash( $_POST['val'] ) );
-		do_action('ap_list_filter_search_'.$filter, $search_query);		
+		do_action('ap_list_filter_search_'.$filter, $search_query );
 	}
 }

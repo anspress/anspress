@@ -905,3 +905,50 @@ function ap_list_filters( $current_url = '' ) {
 		echo '<script type="text/html" id="current_filter">'. http_build_query( $ap_filter ) .'</script>';
 	}
 }
+
+/**
+ * Output chnage post status button.
+ * @param 	boolean|integer $post_id Post ID.
+ * @return 	null|string
+ */
+function ap_post_change_status_btn_html( $post_id = false ) {
+	$post = get_post( $post_id );
+
+	if ( ap_user_can_change_status( $post_id ) ) {
+		$action = 'change_post_status_'.$post_id;
+		$nonce = wp_create_nonce( $action );
+
+		$status = apply_filters( 'ap_change_status_dropdown', array( 
+			'closed' 		=> __( 'Close', 'anspress-question-answer' ),
+			'publish' 		=> __( 'Open', 'anspress-question-answer' ),
+			'moderate' 		=> __( 'Moderate', 'anspress-question-answer' ),
+			'private_post' 	=> __( 'Private', 'anspress-question-answer' )
+		) );
+
+		$output = '<div class="ap-dropdown">
+			<a class="ap-tip ap-dropdown-toggle" title="'.__( 'Change status of post', 'anspress-question-answer' ).'" href="#">
+				'.__( 'Status', 'anspress-question-answer' ).' <i class="caret"></i>
+            </a>
+			<ul id="ap_post_status_toggle_'.$post_id.'" class="ap-dropdown-menu" role="menu">';
+
+		foreach ( $status as $k => $title ) {
+			$can = true;
+
+			if ( $k == 'closed' && ( ! ap_user_can_change_status_to_closed() || $post->post_type == 'answer') ) {
+				$can = false;
+			} elseif ( $k == 'moderate' && ! ap_user_can_change_status_to_moderate() ) {
+				$can = false;
+			}
+
+			if ( $can ) {
+				$output .= '<li class="'.$k.($k == $post->post_status ? ' active' : '').'">
+						<a href="#" data-action="ajax_btn" data-query="change_post_status::'.$nonce.'::'.$post_id.'::'.$k.'">'.esc_attr( $title ).'</a>
+					</li>';
+			}
+		}
+		$output .= '</ul>
+		</div>';
+
+		return $output;
+	}
+}

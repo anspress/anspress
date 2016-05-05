@@ -40,7 +40,7 @@ var apData = {};
             this.ap_delete_post();
             this.ap_upload_field();
             this.avatarUploadCallback();
-            this.change_status();
+            //this.change_status();
             this.load_profile_field();
             this.ap_post_upload_field();
             this.tinyMCEeditorToggle();

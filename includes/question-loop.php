@@ -3,9 +3,9 @@
  * Question class
  *
  * @package   AnsPress
- * @author    Rahul Aryan <admin@rahularyan.com>
+ * @author    Rahul Aryan <support@anspress.io>
  * @license   GPL-2.0+
- * @link      http://rahularyan.com
+ * @link      https://anspress.io/
  * @copyright 2014 Rahul Aryan
  */
 
@@ -228,11 +228,11 @@ function ap_question_the_ID() {
 	echo ap_question_get_the_ID();
 }
 
-	/**
-	 * Return question ID active in loop
-	 * @return integer|false
-	 * @since 2.1
-	 */
+/**
+ * Return question ID active in loop
+ * @return integer|false
+ * @since 2.1
+ */
 function ap_question_get_the_ID() {
 	return ap_question_the_object()->ID;
 

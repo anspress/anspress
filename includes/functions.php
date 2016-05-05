@@ -638,51 +638,6 @@ function ap_post_permanent_delete_btn_html($post_id = false, $echo = false) {
 	}
 }
 
-/**
- * Output chnage post status button.
- *
- * @param bool|int $post_id
- *
- * @return null|string
- */
-function ap_post_change_status_btn_html($post_id = false) {
-
-	$post = get_post( $post_id );
-
-	if ( ap_user_can_change_status( $post_id ) ) {
-		$action = 'change_post_status_'.$post_id;
-		$nonce = wp_create_nonce( $action );
-
-		$status = apply_filters( 'ap_change_status_dropdown', array( 'closed' => __( 'Close', 'anspress-question-answer' ), 'publish' => __( 'Open', 'anspress-question-answer' ), 'moderate' => __( 'Moderate', 'anspress-question-answer' ), 'private_post' => __( 'Private', 'anspress-question-answer' ) ) );
-
-		$output = '<div class="ap-dropdown">
-			<a class="ap-tip ap-dropdown-toggle" title="'.__( 'Change status of post', 'anspress-question-answer' ).'" href="#" >
-				'.__( 'Status', 'anspress-question-answer' ).' <i class="caret"></i>
-            </a>
-			<ul id="ap_post_status_toggle_'.$post_id.'" class="ap-dropdown-menu" role="menu">';
-
-		foreach ( $status as $k => $title ) {
-			$can = true;
-
-			if ( $k == 'closed' && ( ! ap_user_can_change_status_to_closed() || $post->post_type == 'answer') ) {
-				$can = false;
-			} elseif ( $k == 'moderate' && ! ap_user_can_change_status_to_moderate() ) {
-				$can = false;
-			}
-
-			if ( $can ) {
-				$output .= '<li class="'.$k.($k == $post->post_status ? ' active' : '').'">
-						<a href="#" data-action="ap_change_status" data-query="post_id='.$post_id.'&__nonce='.$nonce.'&ap_ajax_action=change_post_status&status='.$k.'">'.$title.'</a>
-					</li>';
-			}
-		}
-		$output .= '</ul>
-		</div>';
-
-		return $output;
-	}
-}
-
 function ap_get_child_answers_comm($post_id) {
 
 	global $wpdb;
@@ -1306,50 +1261,46 @@ function ap_parameter_empty($param = false, $return) {
 	return $param;
 }
 
+/**
+ * Return description of a post status.
+ * @param  boolean|integer $post_id Post ID.
+ * @return string
+ */
 function ap_post_status_description($post_id = false) {
-
-	$post_id = ap_parameter_empty( $post_id, @ap_question_get_the_ID() );
 	$post = get_post( $post_id );
 	$post_type = $post->post_type == 'question' ? __( 'Question', 'anspress-question-answer' ) : __( 'Answer', 'anspress-question-answer' );
 
 	if ( ap_have_parent_post( $post_id ) && $post->post_type != 'answer' ) : ?>
-        <div id="ap_post_status_desc_<?php echo $post_id;
-	?>" class="ap-notice blue clearfix">
+        <div id="ap_post_status_desc_<?php echo $post_id; ?>" class="ap-notice blue clearfix">
             <?php echo ap_icon( 'link', true ) ?>
-            <span><?php printf( __( 'Question is asked for %s.', 'anspress-question-answer' ), '<a href="'.get_permalink( ap_question_get_the_post_parent() ).'">'.get_the_title( ap_question_get_the_post_parent() ).'</a>' );
-	?></span>
+            <span><?php printf( __( 'Question is asked for %s.', 'anspress-question-answer' ), '<a href="'.get_permalink( ap_question_get_the_post_parent() ).'">'.get_the_title( ap_question_get_the_post_parent() ).'</a>' ); ?></span>
         </div>
     <?php endif;
 
 	if ( is_private_post( $post_id ) ) : ?>
-        <div id="ap_post_status_desc_<?php echo $post_id;
-	?>" class="ap-notice gray clearfix">
-            <i class="apicon-lock"></i><span><?php printf( __( '%s is marked as a private, only admin and post author can see.', 'anspress-question-answer' ), $post_type );
-	?></span>
+        <div id="ap_post_status_desc_<?php echo $post_id; ?>" class="ap-notice gray clearfix">
+            <i class="apicon-lock"></i>
+            <span><?php printf( __( '%s is marked as a private, only admin and post author can see.', 'anspress-question-answer' ), $post_type ); ?></span>
         </div>
     <?php endif;
 
 	if ( is_post_waiting_moderation( $post_id ) ) : ?>
-        <div id="ap_post_status_desc_<?php echo $post_id;
-	?>" class="ap-notice yellow clearfix">
-            <i class="apicon-info"></i><span><?php printf( __( '%s is waiting for approval by moderator.', 'anspress-question-answer' ), $post_type );
-	?></span>
+        <div id="ap_post_status_desc_<?php echo $post_id; ?>" class="ap-notice yellow clearfix">
+            <i class="apicon-info"></i><span><?php printf( __( '%s is waiting for approval by moderator.', 'anspress-question-answer' ), $post_type ); ?></span>
         </div>
     <?php endif;
 
 	if ( is_post_closed( $post_id ) && $post->post_type != 'answer' ) : ?>
-        <div id="ap_post_status_desc_<?php echo $post_id;
-	?>" class="ap-notice red clearfix">
-            <?php echo ap_icon( 'cross', true ) ?><span><?php printf( __( '%s is closed, new answer are not accepted.', 'anspress-question-answer' ), $post_type );
-	?></span>
+        <div id="ap_post_status_desc_<?php echo $post_id; ?>" class="ap-notice red clearfix">
+            <?php echo ap_icon( 'cross', true ) ?>
+            <span><?php printf( __( '%s is closed, new answer are not accepted.', 'anspress-question-answer' ), $post_type ); ?></span>
         </div>
     <?php endif;
 
 	if ( $post->post_status == 'trash' ) : ?>
-        <div id="ap_post_status_desc_<?php echo $post_id;
-	?>" class="ap-notice red clearfix">
-            <?php echo ap_icon( 'cross', true ) ?><span><?php printf( __( '%s has been trashed, you can delete it permanently from wp-admin.', 'anspress-question-answer' ), $post_type );
-	?></span>
+        <div id="ap_post_status_desc_<?php echo $post_id; ?>" class="ap-notice red clearfix">
+            <?php echo ap_icon( 'cross', true ) ?>
+            <span><?php printf( __( '%s has been trashed, you can delete it permanently from wp-admin.', 'anspress-question-answer' ), $post_type ); ?></span>
         </div>
     <?php endif;
 }
@@ -1866,3 +1817,32 @@ function ap_list_filters_get_active( $filter ) {
 	return $filters;
 }
 
+/**
+ * Sanitize and unslash string or array or post/get value at the same time.
+ * @param  string|array   $str    String or array to sanitize. Or post/get key name.
+ * @param  boolean|string $from   Get value from `$_REQUEST` or `query_var`. Valid values: request, query_var
+ * @return array|string
+ * @since  3.0.0
+ */
+function ap_sanitize_unslash( $str, $from = false ) {
+	// If not false then get from $_REQUEST or query_var.
+	if ( false !== $from ) {
+		if ( 'request' === $from ) {
+			$str = ap_isset_post_value( $str );
+		} elseif ( 'query_var' === $from ) {
+			$str = get_query_var( $str );
+		}
+	}
+
+	// Return if `$str` is empty.
+	if ( empty( $str ) ) {
+		return '';
+	}
+
+	if ( is_array( $str ) ) {
+		$str = wp_unslash( $str );
+		return array_map( 'sanitize_text_field', $str );
+	}
+
+	return sanitize_text_field( wp_unslash( $str ) );
+}

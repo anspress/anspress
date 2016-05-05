@@ -42,7 +42,7 @@ class AnsPress_Admin_Ajax
 	 */
 	public function ap_edit_reputation() {
 		if ( current_user_can( 'manage_options' ) ) {
-			$id = sanitize_text_field( $_POST['id'] );
+			$id = ap_sanitize_unslash( 'id', 'request' );
 			$reputation = ap_reputation_by_id( $id );
 
 			$html = '

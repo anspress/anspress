@@ -145,8 +145,8 @@ class AnsPress_Common_Pages
 	 */
 	public static function search_page() {
 		global $questions;
-		$keywords   = sanitize_text_field( get_query_var( 'ap_s' ) );
-		$type       = sanitize_text_field( wp_unslash( @$_GET['type'] ) );
+		$keywords   = ap_sanitize_unslash( 'ap_s', 'query_var' );
+		$type       = ap_sanitize_unslash( 'type', 'request' );
 
 		if ( '' == $type ) {
 			$questions = ap_get_questions( array( 's' => $keywords ) );
