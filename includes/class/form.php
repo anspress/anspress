@@ -567,8 +567,6 @@ class AnsPress_Form {
 
 					$this->output .= '<div id="'.@$field['name'].'_field_wrap" class="clearfix ap-form-fields-wrap'.$error_class.'">';
 						$this->output .= '<label class="ap-form-fields-wrap-label">'.@$field['label'].'</label>';
-					if ( @$field['edit_disabled'] !== true && $this->args['user_id'] == get_current_user_id() ) {
-						$this->output .= '<a class="ap-form-fields-edit" data-action="ap_load_user_field_form" data-query="ap_ajax_action=load_user_field_form&field='.$field['name'].'&__nonce='.$nonce.'" href="#">'.__( 'Edit', 'anspress-question-answer' ).'</a>'; }
 						$this->output .= '<div id="user_field_form_'.$field['name'].'" class="ap-form-fields-wrap-inner"><span>'.@$field['value'].'</apn></div>';
 					$this->output .= '</div>';
 				}

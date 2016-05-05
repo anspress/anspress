@@ -656,5 +656,6 @@ class AnsPress_User
 
 		return $ap_data;
 	}
+
 }
 

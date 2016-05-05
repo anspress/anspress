@@ -423,30 +423,18 @@ class AnsPress_Process_Form
 
 		$user_fields = ap_get_user_fields( $group, $user_id );
 
-		$validate_fields = array();
-
-		foreach ( $user_fields as $field ) {
-			if ( isset( $field['sanitize'] ) ) {
-				$validate_fields[$field['name']]['sanitize'] = $field['sanitize'];
-			}
-
-			if ( $field['validate'] ) {
-				$validate_fields[$field['name']]['validate'] = $field['validate'];
-			}
-		}
-
-		$validate = new AnsPress_Validation( $validate_fields );
+		$validate = new AnsPress_Validation( $user_fields );
 
 		$ap_errors = $validate->get_errors();
 
 		// If error in form then return.
 		if ( $validate->have_error() ) {
-			ap_ajax_json(array(
+			ap_ajax_json( array(
 				'form' 			=> $_POST['ap_form_action'],
 				'message_type' 	=> 'error',
 				'message'		=> __( 'Check missing fields and then re-submit.', 'anspress-question-answer' ),
 				'errors'		=> $ap_errors,
-			));
+			) );
 		}
 
 		$fields = $validate->get_sanitized_fields();

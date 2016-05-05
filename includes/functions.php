@@ -1261,50 +1261,6 @@ function ap_parameter_empty($param = false, $return) {
 	return $param;
 }
 
-/**
- * Return description of a post status.
- * @param  boolean|integer $post_id Post ID.
- * @return string
- */
-function ap_post_status_description($post_id = false) {
-	$post = get_post( $post_id );
-	$post_type = $post->post_type == 'question' ? __( 'Question', 'anspress-question-answer' ) : __( 'Answer', 'anspress-question-answer' );
-
-	if ( ap_have_parent_post( $post_id ) && $post->post_type != 'answer' ) : ?>
-        <div id="ap_post_status_desc_<?php echo $post_id; ?>" class="ap-notice blue clearfix">
-            <?php echo ap_icon( 'link', true ) ?>
-            <span><?php printf( __( 'Question is asked for %s.', 'anspress-question-answer' ), '<a href="'.get_permalink( ap_question_get_the_post_parent() ).'">'.get_the_title( ap_question_get_the_post_parent() ).'</a>' ); ?></span>
-        </div>
-    <?php endif;
-
-	if ( is_private_post( $post_id ) ) : ?>
-        <div id="ap_post_status_desc_<?php echo $post_id; ?>" class="ap-notice gray clearfix">
-            <i class="apicon-lock"></i>
-            <span><?php printf( __( '%s is marked as a private, only admin and post author can see.', 'anspress-question-answer' ), $post_type ); ?></span>
-        </div>
-    <?php endif;
-
-	if ( is_post_waiting_moderation( $post_id ) ) : ?>
-        <div id="ap_post_status_desc_<?php echo $post_id; ?>" class="ap-notice yellow clearfix">
-            <i class="apicon-info"></i><span><?php printf( __( '%s is waiting for approval by moderator.', 'anspress-question-answer' ), $post_type ); ?></span>
-        </div>
-    <?php endif;
-
-	if ( is_post_closed( $post_id ) && $post->post_type != 'answer' ) : ?>
-        <div id="ap_post_status_desc_<?php echo $post_id; ?>" class="ap-notice red clearfix">
-            <?php echo ap_icon( 'cross', true ) ?>
-            <span><?php printf( __( '%s is closed, new answer are not accepted.', 'anspress-question-answer' ), $post_type ); ?></span>
-        </div>
-    <?php endif;
-
-	if ( $post->post_status == 'trash' ) : ?>
-        <div id="ap_post_status_desc_<?php echo $post_id; ?>" class="ap-notice red clearfix">
-            <?php echo ap_icon( 'cross', true ) ?>
-            <span><?php printf( __( '%s has been trashed, you can delete it permanently from wp-admin.', 'anspress-question-answer' ), $post_type ); ?></span>
-        </div>
-    <?php endif;
-}
-
 function ap_post_upload_form($post_id = false) {
 
 	$html = '

@@ -30,7 +30,6 @@ class AnsPress_Ajax
 	    anspress()->add_action( 'ap_ajax_delete_post', $this, 'delete_post' );
 	    anspress()->add_action( 'ap_ajax_permanent_delete_post', $this, 'permanent_delete_post' );
 	    anspress()->add_action( 'ap_ajax_change_post_status', 'AnsPress_Post_Status', 'change_post_status' );
-	    anspress()->add_action( 'ap_ajax_load_user_field_form', $this, 'load_user_field_form' );
 	    anspress()->add_action( 'ap_ajax_set_featured', $this, 'set_featured' );
 	    anspress()->add_action( 'ap_ajax_follow', $this, 'follow' );
 	    anspress()->add_action( 'ap_ajax_hover_card', $this, 'hover_card' );
@@ -265,40 +264,7 @@ class AnsPress_Ajax
 
 	
 
-	/**
-	 * Load user profile field form
-	 */
-	public function load_user_field_form() {
-		$user_id = get_current_user_id();
-		$field_name = sanitize_text_field( wp_unslash( $_POST['field'] ) );
-
-		if ( ! is_user_logged_in() || ! ap_verify_nonce( 'user_field_form_'.$field_name.'_'.$user_id ) ) {
-			$this->send( 'no_permission' );
-		} else {
-			if ( ap_has_users( array( 'ID' => $user_id ) ) ) {
-				while ( ap_users() ) {
-					ap_the_user();
-					$form = ap_user_get_fields(array(
-						'show_only' => $field_name,
-						'form' 		=> array(
-							'field_hidden' 	=> false,
-							'hide_footer' 	=> false,
-							'show_cancel' 	=> true,
-							'is_ajaxified' 	=> true,
-							'submit_button' => __( 'Update', 'anspress-question-answer' ),
-						),
-					));
-
-					$this->send(array(
-						'action' 	=> 'user_field_form_loaded',
-						'do' 		=> array( 'updateHtml' => '#user_field_form_'.$field_name ),
-						'html' 		=> $form->get_form(),
-					));
-				}
-			}
-		}
-		$this->something_wrong();
-	}
+	
 
 	/**
 	 * Handle set feature and unfeature ajax callback
