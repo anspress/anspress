@@ -209,10 +209,11 @@ class AnsPress_Ajax
 
 		do_action( 'ap_wp_trash_answer', $post_id );
 		
+		$current_ans = ap_count_published_answers( $post->post_parent );
 		ap_ajax_json(array(
 			'action' 		=> 'delete_answer',
 			'div_id' 		=> '#answer_'.$post_id,
-			'count' 		=> ap_count_published_answers( $post->post_parent ),
+			'count' 		=> $current_ans,
 			'count_label' 	=> sprintf( _n( '1 Answer', '%d Answers', $current_ans, 'anspress-question-answer' ), $current_ans ),
 			'remove' 		=> ( ! $current_ans ? true : false ),
 			'message' 		=> 'answer_moved_to_trash',
@@ -224,51 +225,58 @@ class AnsPress_Ajax
 	 * Handle Ajax callback for permanent delete of post.
 	 */
 	public function permanent_delete_post() {
-		$post_id = (int) $_POST['post_id'];
+		$post_id = (int) ap_sanitize_unslash( 'post_id', 'request' );
 
-		$action = 'delete_post_'.$post_id;
-
-		if ( ! ap_verify_nonce( $action ) || ! ap_user_can_permanent_delete() ) {
-			$this->something_wrong();
+		if ( ! ap_verify_nonce( 'delete_post_'.$post_id ) || ! ap_user_can_permanent_delete() ) {
+			ap_ajax_json( 'something_wrong' );
 		}
 
 		$post = get_post( $post_id );
 
+		// Die if not question or answer post type.
+		if ( ! in_array( $post->post_type, [ 'question', 'answer' ] ) ) {
+			ap_ajax_json( 'something_wrong' );
+		}
+
 		wp_trash_post( $post_id );
 
 		if ( $post->post_type == 'question' ) {
+			/**
+			 * Triggered right before deleting question.
+			 * @param  integer $post_id question ID.
+			 */
 			do_action( 'ap_wp_trash_question', $post_id );
 		} else {
+			/**
+			 * Triggered right before deleting answer.
+			 * @param  integer $post_id answer ID.
+			 */
 			do_action( 'ap_wp_trash_answer', $post_id );
 		}
 
 		wp_delete_post( $post_id, true );
 
 		if ( $post->post_type == 'question' ) {
-			$this->send( array(
+			ap_ajax_json( array(
 				'action' 		=> 'delete_question',
 				'do' 			=> array( 'redirect' => ap_base_page_link() ),
 				'message' 		=> 'question_deleted_permanently',
 			) );
-		} else {
-			$current_ans = ap_count_published_answers( $post->post_parent );
-			$count_label = sprintf( _n( '1 Answer', '%d Answers', $current_ans, 'anspress-question-answer' ), $current_ans );
-			$remove = ( ! $current_ans ? true : false);
-			$this->send(array(
-				'action' 		=> 'delete_answer',
-				'div_id' 		=> '#answer_'.$post_id,
-				'count' 		=> $current_ans,
-				'count_label' 	=> $count_label,
-				'remove' 		=> $remove,
-				'message' 		=> 'answer_deleted_permanently',
-				'view' 			=> array( 'answer_count' => $current_ans, 'answer_count_label' => $count_label ),
-			));
 		}
+
+		$current_ans = ap_count_published_answers( $post->post_parent );
+		$count_label = sprintf( _n( '1 Answer', '%d Answers', $current_ans, 'anspress-question-answer' ), $current_ans );
+
+		ap_ajax_json(array(
+			'action' 		=> 'delete_answer',
+			'div_id' 		=> '#answer_'.$post_id,
+			'count' 		=> $current_ans,
+			'count_label' 	=> $count_label,
+			'remove' 		=> ( ! $current_ans ? true : false),
+			'message' 		=> 'answer_deleted_permanently',
+			'view' 			=> array( 'answer_count' => $current_ans, 'answer_count_label' => $count_label ),
+		));
 	}
-
-
-
-
 
 	/**
 	 * Handle set feature and unfeature ajax callback

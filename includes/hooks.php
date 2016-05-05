@@ -222,19 +222,17 @@ class AnsPress_Hooks
 
 		if ( $post->post_type == 'question' ) {
 			do_action( 'ap_before_delete_question', $post->ID );
-			$answers = ap_questions_answer_ids( $post->ID );
+			$answers = get_posts( [ 'post_parent' => $post->ID, 'post_type' => 'answer' ] );
 
-	        if ( $answers > 0 ) {
-	            foreach ( $answers as $a ) {
-	                do_action( 'ap_before_delete_answer', $a );
-	                $selcted_answer = ap_selected_answer();
-	                if ( $selcted_answer == $a->ID ) {
-	                	update_post_meta( $p->post_parent, ANSPRESS_SELECTED_META, false );
-	                }
-	                wp_delete_post( $a, true );
-	            }
-	        }
-	    } elseif ( $post->post_type == 'answer' ) {
+			foreach ( (array) $answers as $a ) {
+				do_action( 'ap_before_delete_answer', $a );
+				$selcted_answer = ap_selected_answer();
+				if ( $selcted_answer == $a->ID ) {
+					update_post_meta( $a->post_parent, ANSPRESS_SELECTED_META, false );
+				}
+				wp_delete_post( $a->ID, true );
+			}
+		} elseif ( $post->post_type == 'answer' ) {
 	    	do_action( 'ap_before_delete_answer', $post->ID );
 	    }
 	}
