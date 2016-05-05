@@ -37,7 +37,7 @@ class AnsPress_Ajax
 	    anspress()->add_action( 'ap_ajax_markread_notification', $this, 'markread_notification' );
 	    anspress()->add_action( 'ap_ajax_set_notifications_as_read', $this, 'set_notifications_as_read' );
 	    anspress()->add_action( 'ap_ajax_flag_post', $this, 'flag_post' );
-	    anspress()->add_action( 'ap_ajax_subscribe', $this, 'subscribe' );
+	    anspress()->add_action( 'ap_ajax_subscribe', 'AnsPress_Subscriber_Hooks', 'subscribe' );
 	    anspress()->add_action( 'ap_ajax_vote', $this, 'vote' );
 	    anspress()->add_action( 'ap_ajax_flag_comment', $this, 'flag_comment' );
 	    anspress()->add_action( 'ap_ajax_delete_activity', $this, 'delete_activity' );
@@ -369,7 +369,7 @@ class AnsPress_Ajax
 		}
 
 		$id = (int) $_POST['id'];
-		$type = isset( $_POST['type'] ) ? sanitize_text_field( $_POST['type'] ) : 'user';
+		$type = ap_sanitize_unslash( 'type', 'request', 'user' );
 
 		if ( ! ap_verify_default_nonce() ) {
 			$this->something_wrong();
@@ -514,8 +514,7 @@ class AnsPress_Ajax
 	 * Handle ajax callback for mark all notification as read
 	 */
 	public function set_notifications_as_read() {
-
-		$ids = sanitize_text_field( $_POST['ids'] );
+		$ids = ap_sanitize_unslash( 'ids', 'request' );
 		$ids = explode( ',', $ids );
 
 		if ( count( $ids ) == 0 ) {
@@ -526,7 +525,7 @@ class AnsPress_Ajax
 			wp_die();
 		}
 
-		foreach ( $ids as $id ) {
+		foreach ( (array) $ids as $id ) {
 			$id = (int) $id;
 			if ( 0 != $id ) {
 				ap_notification_mark_as_read( $id, get_current_user_id() );
@@ -573,71 +572,6 @@ class AnsPress_Ajax
 	    }
 
 	    $this->something_wrong();
-	}
-
-	/**
-	 * Process ajax subscribe request.
-	 */
-	public function subscribe() {
-		$action_id = (int) $_POST['args'][0];
-
-		$type = sanitize_text_field( $_POST['args'][1] );
-
-		if ( ! ap_verify_nonce( 'subscribe_'.$action_id.'_'.$type ) ) {
-			$this->something_wrong();
-		}
-
-		if ( ! is_user_logged_in() ) {
-			$this->send( 'please_login' );
-		}
-
-		$question_id = 0;
-
-		if ( 'tax_new_q' === $type ) {
-			$subscribe_type = 'tax_new_q';
-		} else {
-			$subscribe_type = 'q_all';
-			$question_id = $action_id;
-		}
-
-		$user_id = get_current_user_id();
-
-		$is_subscribed = ap_is_user_subscribed( $action_id, $subscribe_type, $user_id );
-
-		$elm = '#subscribe_'.$action_id.' .ap-btn';
-
-		if ( $is_subscribed ) {
-			$row = ap_remove_subscriber( $action_id, $user_id, $subscribe_type );
-
-			if ( false !== $row ) {
-				$count = ap_subscribers_count( $action_id, $subscribe_type );
-				$this->send( array(
-					'message' 		=> 'unsubscribed',
-					'action' 		=> 'unsubscribed',
-					'do' 			=> array( 'updateHtml' => $elm.' .text', 'toggle_active_class' => $elm ),
-					'count' 		=> $count,
-					'html' 			=> __( 'Follow', 'anspress-question-answer' ),
-					'view' 			=> array( 'subscribe_'.$action_id => $count ),
-				) );
-			}
-		} else {
-
-			$row = ap_new_subscriber( $user_id, $action_id, $subscribe_type, $question_id );
-
-			if ( false !== $row ) {
-				$count = ap_subscribers_count( $action_id, $subscribe_type );
-				$this->send( array(
-					'message' 		=> 'subscribed',
-					'action' 		=> 'subscribed',
-					'do' 			=> array( 'updateHtml' => '#subscribe_'.$action_id.' .text', 'toggle_active_class' => $elm ),
-					'count' 		=> $count,
-					'html' 			=> __( 'Unfollow', 'anspress-question-answer' ),
-					'view' 			=> array( 'subscribe_'.$action_id => $count ),
-				) );
-			}
-		}
-
-		$this->something_wrong();
 	}
 
 	/**

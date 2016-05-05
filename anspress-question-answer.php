@@ -159,7 +159,6 @@ if ( ! class_exists( 'AnsPress' ) ) {
 	    public $anspress_bp;
 	    public $third_party;
 	    public $history_class;
-	    public $subscriber_hooks;
 	    public $mention_hooks;
 	    public $views_class;
 	    public $bad_words_class;
@@ -344,7 +343,6 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		public function site_include() {
 		    self::$instance->anspress_hooks 	= AnsPress_Hooks::init();
 	    	self::$instance->history_class 		= new AnsPress_Activity_Hook( );
-	    	self::$instance->subscriber_hooks 	= new AnsPress_Subscriber_Hooks( );
 	    	self::$instance->mention_hooks 		= new AP_Mentions_Hooks( );
 	    	self::$instance->views_class 		= new AP_Views( );
 	    	self::$instance->bad_words_class 	= new AP_Bad_words( );

@@ -1777,14 +1777,15 @@ function ap_list_filters_get_active( $filter ) {
  * Sanitize and unslash string or array or post/get value at the same time.
  * @param  string|array   $str    String or array to sanitize. Or post/get key name.
  * @param  boolean|string $from   Get value from `$_REQUEST` or `query_var`. Valid values: request, query_var
+ * @param  mixed 			$from   Default value if variable not found.
  * @return array|string
  * @since  3.0.0
  */
-function ap_sanitize_unslash( $str, $from = false ) {
+function ap_sanitize_unslash( $str, $from = false, $default = '' ) {
 	// If not false then get from $_REQUEST or query_var.
 	if ( false !== $from ) {
 		if ( 'request' === $from ) {
-			$str = ap_isset_post_value( $str );
+			$str = ap_isset_post_value( $str, $default );
 		} elseif ( 'query_var' === $from ) {
 			$str = get_query_var( $str );
 		}
@@ -1792,7 +1793,7 @@ function ap_sanitize_unslash( $str, $from = false ) {
 
 	// Return if `$str` is empty.
 	if ( empty( $str ) ) {
-		return '';
+		return $default;
 	}
 
 	if ( is_array( $str ) ) {
