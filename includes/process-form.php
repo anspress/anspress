@@ -185,10 +185,8 @@ class AnsPress_Process_Form
 			'post_content' 		=> $fields['description'],
 			'attach_uploads' 	=> true,
 		);
-
-		if ( ap_opt( 'new_question_status' ) == 'moderate' || (ap_opt( 'new_question_status' ) == 'reputation' && ap_get_points( $user_id ) < ap_opt( 'mod_question_point' )) ) {
-			$question_array['post_status'] = 'moderate';
-		}
+		
+		$question_array['post_status'] = ap_new_edit_post_status( $user_id, 'question', false );
 
 		if ( $this->fields['is_private'] ) {
 			$question_array['is_private'] = true;
@@ -246,11 +244,10 @@ class AnsPress_Process_Form
 			'post_title'		=> $this->fields['title'],
 			'post_content' 		=> $this->fields['description'],
 			'attach_uploads' 	=> true,
+			'post_author' 		=> $post->post_author,
 		);
 
-		if ( ap_opt( 'edit_question_status' ) == 'moderate' || (ap_opt( 'edit_question_status' ) == 'point' && ap_get_points( $user_id ) < ap_opt( 'mod_answer_point' )) ) {
-			$question_array['post_status'] = 'moderate';
-		}
+		$question_array['post_status'] = ap_new_edit_post_status( $user_id, 'question', true );
 
 		if ( $this->fields['is_private'] ) {
 			$question_array['is_private'] = true;
@@ -335,10 +332,8 @@ class AnsPress_Process_Form
 			'post_content' 		=> $fields['description'],
 			'attach_uploads' 	=> true,
 		);
-
-		if ( ap_opt( 'new_question_status' ) == 'moderate' || (ap_opt( 'new_question_status' ) == 'reputation' && ap_get_points( $user_id ) < ap_opt( 'mod_question_point' )) ) {
-			$answer_array['post_status'] = 'moderate';
-		}
+		
+		$answer_array['post_status'] = ap_new_edit_post_status( $user_id, 'answer', false );
 
 		if ( $this->fields['is_private'] ) {
 			$answer_array['is_private'] = true;
@@ -386,9 +381,7 @@ class AnsPress_Process_Form
 			'attach_uploads' 	=> true,
 		);
 
-		if ( ap_opt( 'new_question_status' ) == 'moderate' || (ap_opt( 'new_question_status' ) == 'reputation' && ap_get_points( $user_id ) < ap_opt( 'mod_question_point' )) ) {
-			$answer_array['post_status'] = 'moderate';
-		}
+		$answer_array['post_status'] = ap_new_edit_post_status( $user_id, 'answer', true );
 
 		if ( $this->fields['is_private'] ) {
 			$answer_array['is_private'] = true;

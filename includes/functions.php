@@ -1777,7 +1777,7 @@ function ap_list_filters_get_active( $filter ) {
  * Sanitize and unslash string or array or post/get value at the same time.
  * @param  string|array   $str    String or array to sanitize. Or post/get key name.
  * @param  boolean|string $from   Get value from `$_REQUEST` or `query_var`. Valid values: request, query_var
- * @param  mixed 			$from   Default value if variable not found.
+ * @param  mixed          $from   Default value if variable not found.
  * @return array|string
  * @since  3.0.0
  */
@@ -1802,4 +1802,34 @@ function ap_sanitize_unslash( $str, $from = false, $default = '' ) {
 	}
 
 	return sanitize_text_field( wp_unslash( $str ) );
+}
+
+/**
+ * Return post status based on AnsPress options.
+ * @param  boolean|integer $user_id    ID of user creating question.
+ * @param  string          $post_type  Post type, question or answer.
+ * @param  boolean         $edit       Is editing post.
+ * @return string
+ * @since  3.0.0
+ */
+function ap_new_edit_post_status( $user_id = false, $post_type = 'question', $edit = false ) {
+	if ( false === $user_id ) {
+		$user_id = get_current_user_id();
+	}
+
+	$new_edit = $edit ? 'edit' : 'new';
+	$option_key = $new_edit . '_' . $post_type . '_status';
+
+	$status = 'publish';
+
+	if ( ap_opt( $option_key ) == 'moderate' && ! ( user_can( $user_id, 'ap_moderator' ) || is_super_admin( $user_id ) ) ) {
+		$status = 'moderate';
+	}
+
+	/*
+	if( ap_opt( 'new_question_status' ) == 'reputation' && ap_get_points( $user_id ) < ap_opt( 'mod_question_point' ) ){
+		$status = 'moderate';
+	}*/
+
+	return $status;
 }

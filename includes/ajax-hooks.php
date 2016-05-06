@@ -210,11 +210,12 @@ class AnsPress_Ajax
 		do_action( 'ap_wp_trash_answer', $post_id );
 		
 		$current_ans = ap_count_published_answers( $post->post_parent );
+		$count_label = sprintf( _n( '1 Answer', '%d Answers', $current_ans, 'anspress-question-answer' ), $current_ans );
 		ap_ajax_json(array(
 			'action' 		=> 'delete_answer',
 			'div_id' 		=> '#answer_'.$post_id,
 			'count' 		=> $current_ans,
-			'count_label' 	=> sprintf( _n( '1 Answer', '%d Answers', $current_ans, 'anspress-question-answer' ), $current_ans ),
+			'count_label' 	=> $count_label,
 			'remove' 		=> ( ! $current_ans ? true : false ),
 			'message' 		=> 'answer_moved_to_trash',
 			'view' 			=> array( 'answer_count' => $current_ans, 'answer_count_label' => $count_label ),
@@ -282,10 +283,10 @@ class AnsPress_Ajax
 	 * Handle set feature and unfeature ajax callback
 	 */
 	public function set_featured() {
-		$post_id = (int) $_POST['post_id'];
+		$post_id = (int) ap_sanitize_unslash( 'post_id', 'request' );
 
 		if ( ! is_super_admin() || ! ap_verify_nonce( 'set_featured_'.$post_id ) ) {
-			$this->send( 'no_permission' );
+			ap_ajax_json( 'no_permission' );
 		}
 
 		$post = get_post( $post_id );
@@ -293,12 +294,12 @@ class AnsPress_Ajax
 
 		// Do nothing if post type is not question.
 		if ( $post->post_type != 'question' ) {
-			$this->something_wrong();
+			ap_ajax_json( __('Only question can be set as featured', 'anspress-question-answer') );
 		}
 
+		// Check if current question ID is in featured question array.
 		if ( ! empty( $featured_questions ) && in_array( $post->ID, $featured_questions ) ) {
-
-			foreach ( $featured_questions as $key => $q ) {
+			foreach ( (array) $featured_questions as $key => $q ) {
 				if ( $q == $post->ID ) {
 					unset( $featured_questions[ $key ] );
 				}

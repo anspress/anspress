@@ -489,12 +489,16 @@ function ap_question_get_the_subscriber_count() {
  * @return boolean
  */
 function ap_question_best_answer_selected($question_id = false) {
-	$question_id = ap_parameter_empty( $question_id, @ap_question_get_the_ID() );
+	if( false === $question_id ){
+		$question_id = ap_question_get_the_ID();
+	}
 
+	// Get question post meta.
 	$meta = get_post_meta( $question_id, ANSPRESS_SELECTED_META, true );
 
 	if ( ! $meta ) {
-		return false; }
+		return false;
+	}
 
 	return true;
 }
