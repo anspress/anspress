@@ -457,6 +457,26 @@ if ( ! class_exists( 'AnsPress_Init' ) ) {
 		}
 
 		/**
+		 * Delete a cpt posts. Used by AnsPress uninstaller.
+		 * @param  string $type Accepted args question or answer.
+		 * @since  3.0.0
+		 */
+		public static function delete_cpt( $type = 'question' ) {
+			$count = $wpdb->get_var( $wpdb->prepare( "SELECT count(*) FROM $wpdb->posts WHERE post_type = '%s'", $type ) );
+
+			$deleted = 0;
+
+			while ( $deleted <= $count ) {
+				$question_IDS = $wpdb->get_col( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_type = '%s' LIMIT 50", $type ) );
+
+				foreach ( (array) $question_IDS as $ID ) {
+					wp_delete_post( $ID, true );
+					$deleted++;
+				}
+			}
+		}
+
+		/**
 		 * Plugin un-installation hook, called by WP while removing AnsPress
 		 */
 		public static function anspress_uninstall() {
@@ -472,13 +492,18 @@ if ( ! class_exists( 'AnsPress_Init' ) ) {
 
 			global $wpdb;
 
-			// remove question and answer cpt
-			$wpdb->query( "DELETE FROM $wpdb->posts WHERE post_type = 'question'" );
-			$wpdb->query( "DELETE FROM $wpdb->posts WHERE post_type = 'answer'" );
+			// Remove question CPT.
+			SELF::delete_cpt();
 
-			// remove meta table
-			$meta_table = $wpdb->prefix.'ap_meta';
-			$wpdb->query( "DROP TABLE IF EXISTS $meta_table" );
+			// Removes answer CPT.
+			SELF::delete_cpt( 'answer' );
+
+			// remove tables
+			$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}ap_meta" );
+			$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}ap_activity" );
+			$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}ap_activitymeta" );
+			$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}ap_notifications" );
+			$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}ap_subscribers" );
 
 			// remove option
 			delete_option( 'anspress_opt' );

@@ -381,7 +381,7 @@ class AnsPress_Process_Form
 			'attach_uploads' 	=> true,
 		);
 
-		$answer_array['post_status'] = ap_new_edit_post_status( $user_id, 'answer', true );
+		$answer_array['post_status'] = ap_new_edit_post_status( get_current_user_id(), 'answer', true );
 
 		if ( $this->fields['is_private'] ) {
 			$answer_array['is_private'] = true;
