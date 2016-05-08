@@ -140,7 +140,7 @@ function ap_current_user_id() {
 
 	require_once ABSPATH.WPINC.'/pluggable.php';
 	global $current_user;
-	get_currentuserinfo();
+	wp_get_current_user();
 
 	return $current_user->ID;
 }
