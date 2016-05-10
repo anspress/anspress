@@ -152,6 +152,9 @@ var apData = {};
             $('body').delegate('[data-action="ap_ajax_form"]', 'submit', function() {
                 AnsPress.site.showLoading(this);
 
+                // Clear errors.
+                ApSite.clearFormErrors($(this).attr('id'));
+
                 //Before submitting form callback
                 if($(this).is('[data-before]')){
                     var before_callback = $(this).data('before');
