@@ -216,7 +216,7 @@ var apData = {};
             var icon = aplang[type];
             $('<div class="ap-notify-item ' + type + '"><i class="' + icon + '"></i><div class="ap-notify-content">' + message + '</div></div>').appendTo('#ap-notify').animate({
                 'margin-left': 0
-            }, 500).delay(1000).fadeOut(200);
+            }, 500).delay(2000).fadeOut(200);
         },
         redirect: function(url) {
             if (typeof url !== 'undefined') window.location.replace(url);

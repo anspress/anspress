@@ -169,8 +169,17 @@ class AnsPress_Validation
 	 * @since 2.0.1
 	 */
 	private function wp_kses($field) {
-
 		$this->fields[$field] = wp_kses( $this->fields[$field], ap_form_allowed_tags() );
+	}
+
+	/**
+	 * Sanitize field using wp_kses
+	 * @param  string $field
+	 * @return void
+	 * @since 2.0.1
+	 */
+	private function sanitize_description($field) {
+		$this->fields[$field] = ap_sanitize_description_field( $this->fields[$field] );
 	}
 
 	/**
@@ -310,6 +319,10 @@ class AnsPress_Validation
 
 				case 'is_email':
 					$this->is_email( $field );
+					break;
+
+				case 'sanitize_description':
+					$this->sanitize_description( $field );
 					break;
 
 				default:

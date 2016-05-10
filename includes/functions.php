@@ -1827,9 +1827,31 @@ function ap_new_edit_post_status( $user_id = false, $post_type = 'question', $ed
 	}
 
 	/*
-	if( ap_opt( 'new_question_status' ) == 'reputation' && ap_get_points( $user_id ) < ap_opt( 'mod_question_point' ) ){
-		$status = 'moderate';
+    if( ap_opt( 'new_question_status' ) == 'reputation' && ap_get_points( $user_id ) < ap_opt( 'mod_question_point' ) ){
+        $status = 'moderate';
 	}*/
 
 	return $status;
+}
+
+/**
+ * Find duplicate post by content.
+ * @param  string $content   Post content.
+ * @param  string $post_type Post type.
+ * @return boolean|false
+ * @since  3.0.0
+ */
+function ap_find_duplicate_post( $content, $post_type = 'question', $question_id = false ) {
+	global $wpdb;
+	$content = ap_sanitize_description_field( $content );
+
+	$question_q = false !== $question_id ? $wpdb->prepare( " AND post_parent= %d", $question_id ) : "";
+	
+	$var = (int) $wpdb->get_var( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_content = %s AND post_type = %s $question_q LIMIT 1", $content, $post_type ) );
+
+	if ( $var > 0 ) {
+		return $var;
+	}
+
+	return false;
 }

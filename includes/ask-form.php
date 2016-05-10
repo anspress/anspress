@@ -23,7 +23,7 @@ function ap_get_ask_form_fields( $post_id = false ) {
 	global $editing_post;
 	$editing = false;
 
-	if( $post_id && ap_user_can_edit_question( (int) $post_id ) ){
+	if ( $post_id && ap_user_can_edit_question( (int) $post_id ) ) {
 		$editing = true;
 		$editing_post = get_post( (int) $post_id );
 	}
@@ -60,8 +60,8 @@ function ap_get_ask_form_fields( $post_id = false ) {
 			'type'  => 'editor',
 			'desc'  => __( 'Write description for the question.', 'anspress-question-answer' ),
 			'value' => ( $editing ? apply_filters( 'the_content', $editing_post->post_content ) : ap_isset_post_value( 'description', '' )  ),
-			'settings' => ap_tinymce_editor_settings('answer'),
-			'sanitize' => array( 'remove_more', 'encode_pre_code', 'wp_kses' ),
+			'settings' => ap_tinymce_editor_settings('answer' ),
+			'sanitize' => array( 'sanitize_description' ),
 			'validate' => array( 'length_check' => ap_opt( 'minimum_question_length' ) ),
 		),
 		array(
@@ -300,7 +300,7 @@ function ap_save_question($args, $wp_error = false) {
 		 */
 		$args = apply_filters( 'ap_pre_insert_question', $args );
 	}
-	
+
 	$post_id = wp_insert_post( $args, true );
 
 	if ( true === $wp_error && is_wp_error( $post_id ) ) {
@@ -348,7 +348,7 @@ function ap_save_question($args, $wp_error = false) {
  * @return array
  * @since  3.0.0
  */
-function ap_tinymce_editor_settings( $type = 'question' ){
+function ap_tinymce_editor_settings( $type = 'question' ) {
 	$setting = array(
 		'textarea_rows' => 8,
 		'tinymce'   => ap_opt( $type.'_text_editor' ) ? false : true,
@@ -356,7 +356,7 @@ function ap_tinymce_editor_settings( $type = 'question' ){
 		'media_buttons' => false,
 	);
 
-	if( ap_opt( $type.'_text_editor' )  ){
+	if ( ap_opt( $type.'_text_editor' )  ) {
 		$settings['tinymce'] = array(
 			'content_css' => ap_get_theme_url( 'css/editor.css' ),
 			'wp_autoresize_on' => true,
@@ -364,4 +364,27 @@ function ap_tinymce_editor_settings( $type = 'question' ){
 	}
 
 	return apply_filters( 'ap_tinymce_editor_settings', $setting, $type );
+}
+
+/**
+ * Sanitize AnsPress question and answer description field for database.
+ * @param  string $content Post content.
+ * @return string          Sanitised post content
+ * @since  3.0.0
+ */
+function ap_sanitize_description_field( $content ) {
+	$content = str_replace( '<!--more-->', '', $content );
+	$content = preg_replace_callback( '/<pre.*?>(.*?)<\/pre>/imsu', 'ap_sanitize_description_field_pre_content', $content );
+	$content = preg_replace_callback( '/<code.*?>(.*?)<\/code>/imsu', 'ap_sanitize_description_field_code_content', $content );
+	$content = wp_kses( $content, ap_form_allowed_tags() );
+	$content = wp_unslash( sanitize_post_field( 'post_content', $content, 0, 'db' ) );
+	return $content;
+}
+
+function ap_sanitize_description_field_pre_content( $matches ) {
+	return '<pre>'.esc_html( $matches[1] ).'</pre>';
+}
+
+function ap_sanitize_description_field_code_content( $matches ) {
+	return '<code>'.esc_html( $matches[1] ).'</code>';
 }

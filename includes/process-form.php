@@ -169,6 +169,15 @@ class AnsPress_Process_Form
 			return;
 		}
 
+		// Check if duplicate.
+		if( false !== ap_find_duplicate_post( $fields['description'], 'question' ) ){
+			ap_ajax_json( array(
+				'form' 			=> $_POST['ap_form_action'],
+				'message_type' 	=> 'error',
+				'message'		=> __( 'This seems to be a duplicate question. A question with same content already exists.', 'anspress-question-answer' ),
+			) );
+		}
+
 		$filter = apply_filters( 'ap_before_inserting_question', false, $fields['description'] );
 		if ( true === $filter || is_array( $filter ) ) {
 			if ( is_array( $filter ) ) {
@@ -315,6 +324,15 @@ class AnsPress_Process_Form
 		if ( ! empty( $fields['edit_post_id'] ) ) {
 			$this->edit_answer( $question );
 			return;
+		}
+
+		// Check if duplicate.
+		if( false !== ap_find_duplicate_post( $fields['description'], 'answer', $question->ID ) ){
+			ap_ajax_json( array(
+				'form' 			=> $_POST['ap_form_action'],
+				'message_type' 	=> 'error',
+				'message'		=> __( 'This seems to be a duplicate answer. An answer with same content already exists.', 'anspress-question-answer' ),
+			) );
 		}
 
 		$filter = apply_filters( 'ap_before_inserting_answer', false, $fields['description'] );

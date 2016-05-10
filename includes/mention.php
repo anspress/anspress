@@ -66,10 +66,9 @@ function ap_linkyfy_mentions($content) {
 	} else {
 		$base = ap_get_link_to( ap_get_user_page_slug() );
 	}
-var_dump($content);
+
 	// Find mentions and wrap with anchor.
 	$content = preg_replace( '/(?!<a[^>]*?>)@(\w+)(?![^<]*?<\/a>)/', '<a class="ap-mention-link" href="'.$base.'$1">@$1</a> ', $content );
-	var_dump($content);
 
 	return $content;
 }
@@ -138,9 +137,9 @@ function ap_search_mentions( $question_id = false, $search = false ) {
 
 	if ( false !== $search ) {
 		$search = sanitize_text_field( $search );
-		$query = $wpdb->prepare( "SELECT DISTINCT u.display_name as name, u.user_login as login FROM $wpdb->users u WHERE display_name LIKE '%%%s%%' OR user_login LIKE '%%%s%%' ", $search, $search );
+		$query = $wpdb->prepare( "SELECT DISTINCT u.display_name as name, u.user_login as login FROM $wpdb->users u WHERE display_name LIKE '%%%s%%' OR user_login LIKE '%%%s%%' LIMIT 20", $search, $search );
 	} else {
-		$query = $wpdb->prepare( "SELECT DISTINCT u.display_name as name, u.user_login as login FROM $wpdb->users u LEFT JOIN $wpdb->ap_activity a ON u.ID = a.user_id WHERE question_id = %d ", $question_id );
+		$query = $wpdb->prepare( "SELECT DISTINCT u.display_name as name, u.user_login as login FROM $wpdb->users u LEFT JOIN $wpdb->ap_activity a ON u.ID = a.user_id WHERE question_id = %d LIMIT 20", $question_id );
 	}
 
 	$key = md5( $query );

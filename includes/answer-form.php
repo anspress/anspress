@@ -41,7 +41,7 @@ function ap_get_answer_form_fields( $question_id = false, $answer_id = false ) {
 			'value'         => ( $editing ? apply_filters( 'the_content', $editing_post->post_content ) : wp_kses_post( ap_isset_post_value('description', '' ) ) ),
 			'placeholder'  => __( 'Your answer..', 'anspress-question-answer' ),
 			'settings' => ap_tinymce_editor_settings('answer'),
-			'sanitize' => array( 'remove_more', 'encode_pre_code', 'wp_kses' ),
+			'sanitize' => array( 'sanitize_description' ),
 			'validate' => array( 'required' => true, 'length_check' => ap_opt( 'minimum_ans_length' ) ),
 		),
 		array(
