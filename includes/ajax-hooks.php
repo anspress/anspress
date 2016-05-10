@@ -55,6 +55,7 @@ class AnsPress_Ajax
 	    anspress()->add_action( 'wp_ajax_ap_cover_upload', 'AnsPress_User', 'cover_upload' );
 		anspress()->add_action( 'wp_ajax_ap_avatar_upload', 'AnsPress_User', 'avatar_upload' );
 		anspress()->add_action( 'ap_ajax_filter_search', __CLASS__, 'filter_search' );
+		
 	}
 
 	/**
@@ -697,7 +698,10 @@ class AnsPress_Ajax
 	    wp_editor( '', 'description', $settings );
 	    echo '</div>';
 	    \_WP_Editors::enqueue_scripts();
+	    ob_start();
 		print_footer_scripts();
+		$scripts = ob_get_clean();
+		echo str_replace('jquery-core,jquery-migrate,', '', $scripts);
 		\_WP_Editors::editor_js();
 	    wp_die();
 	}

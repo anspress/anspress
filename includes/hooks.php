@@ -710,7 +710,15 @@ class AnsPress_Hooks
 		$initArray['setup'] = 'function(ed) {
 			ed.on("init", function() {
       			tinyMCE.activeEditor.show();
-    		});
+		        ed.on("keydown", function(e) {
+		          if(e.keyCode == 13 && jQuery(ed.contentDocument.activeElement).atwho("isSelecting"))
+		            return false
+		        });      
+	   		});
+		}';
+
+		$initArray['init_instance_callback'] = 'function(ed) {
+			jQuery(ed.contentDocument.activeElement).atwho(at_config);
 		}';
 		return $initArray;
 	}

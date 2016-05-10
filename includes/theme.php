@@ -805,6 +805,10 @@ function ap_current_page() {
 	return apply_filters( 'ap_current_page', esc_attr( $query_var ) );
 }
 
+/**
+ * AnsPress CSS and JS.
+ * @return array
+ */
 function ap_assets( ) {
 	$dir = ap_env_dev() ? 'js' : 'min';
 	$min = ap_env_dev() ? '' : '.min';
@@ -830,6 +834,12 @@ function ap_assets( ) {
 		$assets['js']['anspress-js'] = array( 'src' => ANSPRESS_URL.'assets/min/anspress.min.js', 'dep' => array( 'jquery', 'jquery-form' ) );
 		$assets['js']['ap-theme-js'] = array( 'src' => ap_get_theme_url( 'min/anspress-theme.min.js' ), 'dep' => array( 'jquery', 'anspress-js' ) );
 	}
+
+	// Load mention JS.
+	//if( is_question() ){
+		$assets['js']['ap-mention-js'] = array( 'src' => ap_get_theme_url( 'min/mention.js' ), 'dep' => array( 'jquery' ) );
+		$assets['css']['ap-mention-css'] = array( 'src' => ap_get_theme_url( 'css/mention.css' ) );
+	//}
 
 	if ( is_rtl() ) {
 		$assets['css']['ap-rtl'] = array( 'src' => ap_get_theme_url( 'css/RTL.css' ) );

@@ -548,8 +548,10 @@ function ap_reputation_get_the_reputation() {
 	$rep = ap_reputation_get_reputation();
 
 	if ( $rep > 0 ) {
-		printf( __( '+%d', 'anspress-question-answer' ), $rep ); } else {
-		echo $rep; }
+		printf( __( '+%d', 'anspress-question-answer' ), $rep );
+	} else {
+		echo $rep;
+	}
 }
 
 function ap_reputation_get_reputation() {
@@ -564,15 +566,18 @@ function ap_reputation_get_class() {
 	$rep = ap_reputation_get_reputation();
 
 	if ( $rep > 0 ) {
-		return 'positive'; } elseif ($rep < 0)
+		return 'positive';
+	} elseif ($rep < 0)
 		return 'negative';
 	else {
-		return 'neutral'; }
+		return 'neutral';
+	}
 }
 
 function ap_reputation_get_the_date() {
 	echo ap_human_time( ap_reputation_get_date(), false );
 }
+
 function ap_reputation_get_date() {
 	return ap_reputation_the_object()->rep_date;
 }

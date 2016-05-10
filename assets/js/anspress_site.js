@@ -883,6 +883,9 @@ var apData = {};
     $(document).ajaxComplete(function(event, response, settings) {
         // Get response html.
         var data = apParseAjaxResponse(response.responseText);
+
+        if( $.isEmptyObject(data) )
+            return;
         console.log(data);
         
         // Store template in global object.

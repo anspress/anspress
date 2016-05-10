@@ -24,7 +24,11 @@ class AP_Mentions_Hooks{
 	 * @since 2.4.8 Removed `$ap` args.
 	 */
 	public function __construct() {
-		anspress()->add_filter( 'ap_form_contents_filter', $this, 'linkyfy_mentions' );
+		anspress()->add_filter( 'ap_pre_insert_question', __CLASS__, 'linkyfy_mentions' );
+		anspress()->add_filter( 'ap_pre_insert_answer', __CLASS__, 'linkyfy_mentions' );
+		anspress()->add_filter( 'ap_pre_update_question', __CLASS__, 'linkyfy_mentions' );
+		anspress()->add_filter( 'ap_pre_update_answer', __CLASS__, 'linkyfy_mentions' );
+		anspress()->add_action( 'ap_ajax_search_mentions', __CLASS__, 'search_mentions' );
 	}
 
 	/**
@@ -32,8 +36,22 @@ class AP_Mentions_Hooks{
 	 * @param  string $content Post content.
 	 * @return string
 	 */
-	public function linkyfy_mentions($content) {
-		return ap_linkyfy_mentions( $content );
+	public static function linkyfy_mentions($post_arr) {
+		$post_arr['post_content'] = ap_linkyfy_mentions( $post_arr['post_content'] );
+		return $post_arr;
+	}
+
+	/**
+	 * Search metion user name and login.
+	 * @since 3.0.0
+	 */
+	public static function search_mentions( ) {
+		if ( ! ap_verify_default_nonce() ) {
+			wp_die();
+		}
+
+		$term = ap_sanitize_unslash( 'term', 'request' );
+		wp_send_json( ap_search_mentions( false, $term ) );
 	}
 }
 
@@ -43,15 +61,17 @@ class AP_Mentions_Hooks{
  * @return string
  */
 function ap_linkyfy_mentions($content) {
-
 	if ( ! ap_opt( 'base_before_user_perma' ) ) {
 		$base = home_url( '/'.ap_get_user_page_slug().'/' );
 	} else {
 		$base = ap_get_link_to( ap_get_user_page_slug() );
 	}
-
+var_dump($content);
 	// Find mentions and wrap with anchor.
-	return preg_replace( '/(?:[\s.]|^)@(\w+)/', '<a class="ap-mention-link" href="'.$base.'$1">@$1</a> ', $content );
+	$content = preg_replace( '/(?!<a[^>]*?>)@(\w+)(?![^<]*?<\/a>)/', '<a class="ap-mention-link" href="'.$base.'$1">@$1</a> ', $content );
+	var_dump($content);
+
+	return $content;
 }
 
 /**
@@ -99,4 +119,39 @@ function ap_find_mentioned_users( $content ) {
 	}
 
 	return false;
+}
+
+/**
+ * Return current question users with login and display name.
+ * If search is passed then it will search for user.
+ * @param  boolean|integer $question_id Question iD.
+ * @param  boolean|string  $search      Search string.
+ * @return array
+ * @since  3.0.0
+ */
+function ap_search_mentions( $question_id = false, $search = false ) {
+	global $wpdb;
+
+	if ( false === $question_id ) {
+		$question_id = get_question_id();
+	}
+
+	if ( false !== $search ) {
+		$search = sanitize_text_field( $search );
+		$query = $wpdb->prepare( "SELECT DISTINCT u.display_name as name, u.user_login as login FROM $wpdb->users u WHERE display_name LIKE '%%%s%%' OR user_login LIKE '%%%s%%' ", $search, $search );
+	} else {
+		$query = $wpdb->prepare( "SELECT DISTINCT u.display_name as name, u.user_login as login FROM $wpdb->users u LEFT JOIN $wpdb->ap_activity a ON u.ID = a.user_id WHERE question_id = %d ", $question_id );
+	}
+
+	$key = md5( $query );
+	$cache = wp_cache_get( $key, 'ap_participants' );
+
+	if ( false !== $cache ) {
+		return $cache;
+	}
+
+	$rows = $wpdb->get_results( $query );
+	wp_cache_set( $key, $rows, 'ap_participants' );
+
+	return $rows;
 }

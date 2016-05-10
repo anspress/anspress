@@ -1,11 +1,9 @@
 <?php
-
 /**
  * This file contains theme script, styles and other theme related functions.
- *
  * This file can be overridden by creating a anspress directory in active theme folder.
- *
- * @license    http://opensource.org/licenses/gpl-license.php  GNU Public License
+ * 
+ * @license   http://opensource.org/licenses/gpl-license.php  GNU Public License
  * @author    Rahul Aryan <support@anspress.io>
  */
 
@@ -38,7 +36,43 @@ function ap_scripts_front() {
 		echo 'var ajaxurl = "'.admin_url( 'admin-ajax.php' ).'",';
 		echo 'ap_nonce 	= "'.wp_create_nonce( 'ap_ajax_nonce' ).'",';
 	    echo 'ap_max_tags = "'.ap_opt( 'max_tags' ).'",';
-	    echo 'disable_hover_card = "'.(ap_opt( 'disable_hover_card' ) ? true : false).'"';
+	    echo 'disable_hover_card = "'.(ap_opt( 'disable_hover_card' ) ? true : false).'";';
+	    echo 'var apMentions = '.json_encode( ap_search_mentions() ).';
+	    	var cachequeryMentions = [], itemsMentions,
+	    	at_config = {
+		      at: "@",
+		      data: apMentions,
+		      headerTpl: \'<div class="atwho-header">Member List<small>↑&nbsp;↓&nbsp;</small></div>\',
+		      insertTpl: "@${login}",
+		      displayTpl: \'<li data-value="${login}">${name} <small>@${login}</small></li>\',
+		      limit: 50,
+		      callbacks: {
+			    remoteFilter: function (query, render_view) {
+                    var thisVal = query,
+                    self = jQuery(this);
+                    if( !self.data("active") && thisVal.length >= 2 ){
+                        self.data("active", true);                            
+                        itemsMentions = cachequeryMentions[thisVal]
+                        if(typeof itemsMentions == "object"){
+                            render_view(itemsMentions);
+                        }else
+                        {                            
+                            if (self.xhr) {
+                                self.xhr.abort();
+                            }
+                            self.xhr = jQuery.getJSON(ajaxurl+"?ap_ajax_action=search_mentions&action=ap_ajax&ap_ajax_nonce="+ap_nonce,{
+                                term: thisVal
+                            }, function(data) {
+                                cachequeryMentions[thisVal] = data
+                                render_view(data);
+                            });
+                        }                            
+                        self.data("active", false);                            
+                    }                    
+                }
+			  }
+		 };
+	    ';
 	echo '</script>';
 
 	wp_localize_script('anspress-js', 'aplang', array(

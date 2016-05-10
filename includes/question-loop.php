@@ -138,7 +138,7 @@ function ap_get_questions($args = array()) {
 		$args['post_parent'] = (get_query_var( 'parent' )) ? get_query_var( 'parent' ) : false;
 	}
 
-	if ( ! isset( $args['sortby'] ) && isset( $_GET['ap_filter'], $_GET['ap_filter']['sort'] ) ){
+	if ( ! isset( $args['sortby'] ) && isset( $_GET['ap_filter'], $_GET['ap_filter']['sort'] ) ) {
 		$args['sortby'] = sanitize_text_field( wp_unslash( $_GET['ap_filter']['sort'] ) );
 	}
 
@@ -489,7 +489,7 @@ function ap_question_get_the_subscriber_count() {
  * @return boolean
  */
 function ap_question_best_answer_selected($question_id = false) {
-	if( false === $question_id ){
+	if ( false === $question_id ) {
 		$question_id = ap_question_get_the_ID();
 	}
 

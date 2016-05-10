@@ -406,22 +406,6 @@ function apIsJsonString(str) {
     return true;
 }
 
-function apLoadCssJs(filename, filetype){
-    if (filetype=="js"){ //if filename is a external JavaScript file
-        var fileref=document.createElement('script')
-        fileref.setAttribute("type","text/javascript")
-        fileref.setAttribute("src", filename)
-    }
-    else if (filetype=="css"){ //if filename is an external CSS file
-        var fileref=document.createElement("link")
-        fileref.setAttribute("rel", "stylesheet")
-        fileref.setAttribute("type", "text/css")
-        fileref.setAttribute("href", filename)
-    }
-    if (typeof fileref!="undefined")
-        document.getElementsByTagName("head")[0].appendChild(fileref)
-}
-
 function apLoadTemplate(name, template, cb) {
 	cb = cb || false;	
 	if(jQuery('#template-'+name).length === 0){
@@ -437,11 +421,15 @@ function apLoadTemplate(name, template, cb) {
 }
 
 function apParseAjaxResponse(data){
-    data = jQuery(data);
+	if(apIsJsonString(data))
+		return {};
+	
+    data = jQuery(data);    
     if( typeof data.filter('#ap-response') === 'undefined' ){
         console.log('Not a valid AnsPress ajax response.');
         return {};
     }
+
     var textJSON = data.filter('#ap-response').html();
     if( typeof textJSON !== 'undefined' && textJSON.length > 2 ){
         return JSON.parse(textJSON);

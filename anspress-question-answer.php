@@ -462,6 +462,7 @@ if ( ! class_exists( 'AnsPress_Init' ) ) {
 		 * @since  3.0.0
 		 */
 		public static function delete_cpt( $type = 'question' ) {
+			global $wpdb;
 			$count = $wpdb->get_var( $wpdb->prepare( "SELECT count(*) FROM $wpdb->posts WHERE post_type = '%s'", $type ) );
 
 			$deleted = 0;
