@@ -37,6 +37,7 @@ class RoleTest extends \Codeception\TestCase\WPTestCase
 			'ap_view_private'           => true,
 			'ap_view_moderate'          => true,
 			'ap_change_status_other'    => true,
+			'ap_no_moderation'    		=> true,
 		);
 
 		$this->_normal_caps = array(

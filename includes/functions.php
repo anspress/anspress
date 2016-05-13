@@ -1822,6 +1822,11 @@ function ap_new_edit_post_status( $user_id = false, $post_type = 'question', $ed
 
 	$status = 'publish';
 
+	// If super admin or user have no_moderation cap.
+	if( is_super_admin( $user_id ) || user_can( $user_id, 'ap_no_moderation' ) ){
+		return $status;
+	}
+
 	if ( ap_opt( $option_key ) == 'moderate' && ! ( user_can( $user_id, 'ap_moderator' ) || is_super_admin( $user_id ) ) ) {
 		$status = 'moderate';
 	}

@@ -922,6 +922,7 @@ function ap_role_caps( $role ) {
 			'ap_view_moderate'			=> true,
 			'ap_change_status_other'	=> true,
 			'ap_approve_comment'		=> true,
+			'ap_no_moderation'			=> true,
 		),
 	);
 
