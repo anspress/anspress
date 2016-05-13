@@ -127,7 +127,7 @@ if ( ! class_exists( 'Question_Query' ) ) :
 endif;
 
 if( !function_exists('ap_get_questions') ) {
-function ap_get_questions($args = array()) {
+	function ap_get_questions($args = array()) {
 
 	if ( is_front_page() ) {
 		$paged = (isset( $_GET['ap_paged'] )) ? (int) $_GET['ap_paged'] : 1;
@@ -169,22 +169,21 @@ function ap_get_questions($args = array()) {
  * @return Question_Query
  * @since 2.1
  */
-function ap_get_question($question_id) {
-	$args = array( 'p' => $question_id, 'ap_query' => 'single_question' );
+if( !function_exists('ap_get_question') ) {
+	function ap_get_question($question_id) {
+		$args = array( 'p' => $question_id, 'ap_query' => 'single_question' );
 
-	if ( ap_user_can_view_future_post( $question_id ) ) {
-		$args['post_status'][] = 'future';
+		if ( ap_user_can_view_future_post( $question_id ) ) {
+			$args['post_status'][] = 'future';
+		}
+		if ( ap_user_can_view_private_post( $question_id ) ) {
+			$args['post_status'][] = 'private_post';
+		}
+		if ( ap_user_can_view_moderate_post( $question_id ) ) {
+			$args['post_status'][] = 'moderate';
+		}
+		return new Question_Query( $args );
 	}
-
-	if ( ap_user_can_view_private_post( $question_id ) ) {
-		$args['post_status'][] = 'private_post';
-	}
-
-	if ( ap_user_can_view_moderate_post( $question_id ) ) {
-		$args['post_status'][] = 'moderate';
-	}
-
-	return new Question_Query( $args );
 }
 
 /**

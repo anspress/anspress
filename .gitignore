@@ -1,3 +1,4 @@
+.gitignore
 /.svn
 /readme.txt
 /addons/realtime
@@ -22,3 +23,5 @@ tests/_output/*
 tests/_output/*
 tests/_output/*
 /.travis.yml
+anspress.sublime-project
+anspress.sublime-workspace
