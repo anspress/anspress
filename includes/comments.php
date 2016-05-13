@@ -225,13 +225,11 @@ class AnsPress_Comment_Hooks
 
 		// Check if deleting comment is locked.
 		if ( ap_comment_delete_locked( $comment->comment_ID ) && ! is_super_admin() ) {
-			$date = mysql2date('U', $comment->comment_date_gmt );
-
 			ap_ajax_json( array(
 				'message_type' => 'warning',
 				'message' => sprintf(
 					__( 'This post was created %s, its locked hence you cannot delete it.', 'anspress-question-answer' ),
-					ap_human_time( $date )
+					ap_human_time( $comment->comment_date_gmt, false )
 				),
 			) );
 		}
@@ -417,6 +415,8 @@ function ap_comment_form( $post_id = false, $comment_id = false ) {
  * @since  3.0.0
  */
 function ap_comment_delete_locked( $comment_ID ) {
-	return current_time( 'timestamp', true ) < ( get_comment_date( 'U', $comment_ID ) + (integer) ap_opt( 'disable_delete_after' ) );
+	$comment = get_comment( $comment_ID );
+	$commment_time = mysql2date( 'U', $comment->comment_date_gmt ) + (int) ap_opt( 'disable_delete_after' );
+	return current_time( 'timestamp', true ) > $commment_time;
 }
 

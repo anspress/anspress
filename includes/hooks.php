@@ -682,8 +682,11 @@ class AnsPress_Hooks
 	 * @since  2.4.8
 	 */
 	public static function human_time_diff ( $since ) {
+		if( '1 min' == $since ){
+			$since = __('few seconds', 'anspress-question-answer' );
+		}
+
 		$replace = array(
-	        '1 min'  	=> __('few seconds', 'anspress-question-answer' ),
 	        'min'  		=> __('minute', 'anspress-question-answer' ),
 	        'mins'  	=> __('minutes', 'anspress-question-answer' ),
 	        'hour'  	=> __('hour', 'anspress-question-answer' ),
