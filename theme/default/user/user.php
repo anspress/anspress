@@ -61,7 +61,7 @@
 					<span><?php printf(__('%d Questions', 'anspress-question-answer' ), ap_user_get_the_meta('__total_questions' ) ); ?></span>
 					<span><?php printf(__('%d Followers', 'anspress-question-answer' ), ap_user_get_the_meta('__total_followers' ) ); ?></span>
 					<span><?php printf(__('%d Following', 'anspress-question-answer' ), ap_user_get_the_meta('__total_following' ) ); ?></span>
-					<span><?php printf(__('%d Comments', 'anspress-question-answer' ), ap_user_comment_count(ap_displayed_user_id() ) ); ?></span>
+					<span><?php printf(__('%d Comments', 'anspress-question-answer' ), ap_user_comment_count(ap_get_displayed_user_id() ) ); ?></span>
                 </div>
 				<?php if ( ap_user_meta_exists('description' ) ) : ?>
                     <div class="ap-user-dscription">

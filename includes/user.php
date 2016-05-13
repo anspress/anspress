@@ -914,7 +914,11 @@ function ap_user_comment_count( $user_id = false ) {
 		$user_id = get_current_user_id();
 	}
 
-	$key = 'user_comment_count_'.$user_id;
+	if( empty( $user_id ) ){
+		return 0;
+	}
+
+	$key = 'comment_count_'.$user_id;
 
 	$cache = wp_cache_get( $key, 'ap_user_comment_count' );
 
@@ -923,6 +927,7 @@ function ap_user_comment_count( $user_id = false ) {
 	}
 
 	global $wpdb;
+
 	$count = (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->comments} WHERE user_id = %d and comment_approved = 1", $user_id ) );
 
 	wp_cache_set( $key, $count, 'ap_user_comment_count' );
