@@ -13,7 +13,7 @@
 	<?php ap_answers_the_pagination(); ?>
 	<?php
 		else : 
-			include(ap_get_theme_location('content-none.php'));
+			_e('No answer posted by this user yet.', 'anspress-question-answer');
 		endif; 
 	?>	
 </div>
