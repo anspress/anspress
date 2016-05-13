@@ -1826,10 +1826,10 @@ function ap_new_edit_post_status( $user_id = false, $post_type = 'question', $ed
 		$status = 'moderate';
 	}
 
-	/*
-    if( ap_opt( 'new_question_status' ) == 'reputation' && ap_get_points( $user_id ) < ap_opt( 'mod_question_point' ) ){
-        $status = 'moderate';
-	}*/
+	// If anonymous post status is set to moderate.
+	if ( empty( $user_id ) && ap_opt( 'anonymous_post_status' ) == 'moderate' ) {
+		$status = 'moderate';
+	}
 
 	return $status;
 }
@@ -1845,8 +1845,8 @@ function ap_find_duplicate_post( $content, $post_type = 'question', $question_id
 	global $wpdb;
 	$content = ap_sanitize_description_field( $content );
 
-	$question_q = false !== $question_id ? $wpdb->prepare( " AND post_parent= %d", $question_id ) : "";
-	
+	$question_q = false !== $question_id ? $wpdb->prepare( ' AND post_parent= %d', $question_id ) : '';
+
 	$var = (int) $wpdb->get_var( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_content = %s AND post_type = %s $question_q LIMIT 1", $content, $post_type ) );
 
 	if ( $var > 0 ) {

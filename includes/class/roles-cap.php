@@ -644,6 +644,11 @@ function ap_user_can_view_moderate_post( $post_id, $user_id = false ) {
 		$user_id = get_current_user_id();
 	}
 
+	// Return if user is anonymous.
+	if( empty( $user_id ) ){
+		return false;
+	}
+
 	if ( is_super_admin( $user_id ) || user_can( $user_id, 'ap_view_moderate' ) ) {
 		return true;
 	}
@@ -666,6 +671,11 @@ function ap_user_can_view_moderate_post( $post_id, $user_id = false ) {
 function ap_user_can_view_future_post( $post_id, $user_id = false ) {
 	if ( false === $user_id ) {
 		$user_id = get_current_user_id();
+	}
+
+	// Return if user is anonymous.
+	if( empty( $user_id ) ){
+		return false;
 	}
 
 	if ( is_super_admin( $user_id ) || user_can( $user_id, 'ap_view_future' ) ) {

@@ -160,6 +160,7 @@ function ap_default_options() {
 		'cover_width'				=> 950,
 		'cover_width_small'			=> 320,
 		'cover_height_small'		=> 95,
+		'anonymous_post_status'		=> 'moderate',
 	);
 
 	/**

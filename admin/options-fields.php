@@ -678,6 +678,18 @@ class AnsPress_Options_Fields
 				'show_desc_tip' => false,
 			) ,
 			array(
+				'name' => 'anspress_opt[anonymous_post_status]',
+				'label' => __( 'Status of anonymous post', 'anspress-question-answer' ),
+				'desc' => __( 'Set post status post submitted by anonymous user.', 'anspress-question-answer' ),
+				'type' => 'select',
+				'value' => $settings['anonymous_post_status'],
+				'options' => array(
+					'publish' => __( 'Publish', 'anspress-question-answer' ),
+					'moderate' => __( 'Moderate', 'profile', 'anspress-question-answer' ),
+				),
+				'show_desc_tip' => false,
+			) ,
+			array(
 				'name' => '__sep',
 				'type' => 'custom',
 				'html' => '<span class="ap-form-separator">' . __( 'Bad Words', 'anspress-question-answer' ) . '</span>',
