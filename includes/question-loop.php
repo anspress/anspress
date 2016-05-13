@@ -126,6 +126,7 @@ if ( ! class_exists( 'Question_Query' ) ) :
 
 endif;
 
+if( !function_exists('ap_get_questions') ) {
 function ap_get_questions($args = array()) {
 
 	if ( is_front_page() ) {
@@ -158,6 +159,7 @@ function ap_get_questions($args = array()) {
 	));
 
 	return new Question_Query( $args );
+}
 }
 
 
