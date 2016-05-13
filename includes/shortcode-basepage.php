@@ -30,24 +30,25 @@ class AnsPress_BasePage_Shortcode {
 	 * @param  array  $atts  {
 	 *     Attributes of the shortcode.
 	 *
-	 *     $categories 		slug of question_category
-	 *     $tags 			slug of question_tag
-	 *     $tax_relation 	taxonomy relation, see here http://codex.wordpress.org/Taxonomies
-	 *     $tags_operator 	operator for question_tag taxnomomy
+	 *     $categories 			slug of question_category
+	 *     $tags 				slug of question_tag
+	 *     $tax_relation 		taxonomy relation, see here http://codex.wordpress.org/Taxonomies
+	 *     $tags_operator 		operator for question_tag taxnomomy
 	 *     $categories_operator operator for question_category taxnomomy
-	 *     $hide_list_head 	Hide list head?
+	 *     $hide_list_head 		Hide list head?
+	 *     $sortby 				Sort by.
 	 *  }
 	 * @param  string $content
 	 * @return string
 	 * @since 2.0.0
-	 * @since  3.0.0 Added new attribute `hide_list_head`.
+	 * @since  3.0.0 Added new attribute `hide_list_head` and `attr_sortby`.
 	 */
-	public function anspress_sc( $atts, $content='' ) {
+	public function anspress_sc( $atts, $content = '' ) {
 		global $questions, $ap_shortcode_loaded;
 
 		// Check if AnsPress shortcode already loaded.
 		if ( true === $ap_shortcode_loaded ) {
-			return __('AnsPress shortcode cannot be used inside AnsPress content.', 'anspress-question-answer' );
+			return __('AnsPress shortcode cannot be nested.', 'anspress-question-answer' );
 		}
 
 		$ap_shortcode_loaded = true;
@@ -116,6 +117,12 @@ class AnsPress_BasePage_Shortcode {
 		if ( isset( $atts['hide_list_head'] ) ) {
 			set_query_var( 'ap_hide_list_head', (bool) $atts['hide_list_head'] );
 			$_GET['ap_hide_list_head'] = $atts['hide_list_head'];
+		}
+
+		// Sort by.
+		if ( isset( $atts['sortby'] ) ) {
+			set_query_var( 'ap_sortby',  ap_sanitize_unslash( $atts['sortby'] ) );
+			$_GET['ap_sortby'] = $atts['sortby'];
 		}
 	}
 
