@@ -244,6 +244,7 @@ class AnsPress_Comment_Hooks
 				'action' 		=> 'delete_comment',
 				'comment_ID' 	=> $comment->comment_ID,
 				'message' 		=> 'comment_delete_success',
+				'do' 			=> array( 'remove_if_exists' => '#comment-'.$comment->comment_ID ),
 				'view' 			=> array(
 						'comments_count_'.$comment->comment_post_ID => '('.$count['approved'].')',
 						'comment_count_label_'.$comment->comment_post_ID => sprintf( _n( 'One comment', '%d comments', $count['approved'], 'anspress-question-answer' ), $count['approved'] ),
