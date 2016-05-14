@@ -342,9 +342,15 @@ function ap_subscribe_btn_html($action_id = false, $type = false) {
 	<?php
 }
 
+/**
+ * Output question or terms subscribers.
+ * @param  boolean|integer $action_id   Action ID.
+ * @param  string          $type                Subscription type. q_all or tax_new_q.
+ * @param  integer         $avatar_size         Avatar size.
+ */
 function ap_question_subscribers($action_id = false, $type = '', $avatar_size = 30) {
 	if ( false === $action_id  ) {
-		if( is_question() ){
+		if ( is_question() ) {
 			$action_id = get_question_id();
 		}
 		$action_id = apply_filters( 'ap_question_subscribers_action_id', $action_id );

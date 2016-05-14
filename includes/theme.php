@@ -426,7 +426,7 @@ function ap_page() {
 
 	if ( is_question() ) {
 		$current_page = ap_opt( 'question_page_slug' );
-	} elseif ( '' == $current_page && ! is_question() && '' == get_query_var( 'question_name' ) ) {
+	} elseif ( '' == $current_page && ! is_question() ) {
 		$current_page = 'base';
 	}
 
@@ -796,9 +796,7 @@ function ap_get_breadcrumbs() {
 function ap_current_page() {
 	$query_var = get_query_var( 'ap_page' );
 
-	if ( is_question() ) {
-		$query_var = 'question';
-	} elseif ( '' == $query_var ) {
+	if ( '' == $query_var ) {
 		$query_var = 'base';
 	}
 
