@@ -63,6 +63,11 @@ class AnsPress_Ajax
 	 * @since 2.0.1
 	 */
 	public function suggest_similar_questions() {
+		// Die if question suggestion is disabled.
+		if( ap_disable_question_suggestion( ) ){
+			wp_die( 'false' );
+		}
+
 		$keyword = ap_sanitize_unslash( 'value', 'request' );
 	    if ( empty( $keyword ) || ( ! ap_verify_default_nonce() && ! current_user_can( 'manage_options' ) ) ) {
 	        wp_die( 'false' );
@@ -71,7 +76,7 @@ class AnsPress_Ajax
 	    $keyword = ap_sanitize_unslash( 'value', 'request' );
 	    $is_admin = (bool) ap_isset_post_value('is_admin', false );
 
-	    $questions = get_posts(array(
+	    $questions = get_posts( array(
 			'post_type' => 'question',
 			'showposts' => 10,
 			's' => $keyword,

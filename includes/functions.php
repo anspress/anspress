@@ -1858,3 +1858,17 @@ function ap_find_duplicate_post( $content, $post_type = 'question', $question_id
 
 	return false;
 }
+
+/**
+ * Check if question suggestion is disabled.
+ * @return boolean
+ * @since  3.0.0
+ */
+function ap_disable_question_suggestion( ){
+	/**
+	 * Modify ap_disable_question_suggestion.
+	 * @param boolean $enable Default is false.
+	 * @since  3.0.0
+	 */
+	return (bool) apply_filters( 'ap_disable_question_suggestion', false );
+}

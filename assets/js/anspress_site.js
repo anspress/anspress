@@ -728,7 +728,9 @@ var apData = {};
             });
         },
 
-        questionSuggestion: function(){            
+        questionSuggestion: function(){
+            if( disable_q_suggestion || false ) 
+                return;
             $('[data-action="suggest_similar_questions"]').on('blur', function(){
                 var title = $(this).val();
                 if(title.length == 0)

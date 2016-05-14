@@ -37,6 +37,7 @@ function ap_scripts_front() {
 		echo 'ap_nonce 	= "'.wp_create_nonce( 'ap_ajax_nonce' ).'",';
 	    echo 'ap_max_tags = "'.ap_opt( 'max_tags' ).'",';
 	    echo 'disable_hover_card = "'.(ap_opt( 'disable_hover_card' ) ? true : false).'";';
+	    echo 'disable_q_suggestion = "'. ap_disable_question_suggestion( ) .'";';
 	    echo 'var apMentions = '.json_encode( ap_search_mentions() ).';
 	    	var cachequeryMentions = [], itemsMentions,
 	    	at_config = {
