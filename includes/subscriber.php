@@ -343,16 +343,11 @@ function ap_subscribe_btn_html($action_id = false, $type = false) {
 }
 
 function ap_question_subscribers($action_id = false, $type = '', $avatar_size = 30) {
-	global $question_category, $question_tag;
-
-	if ( false === $action_id ) {
-		if ( is_question() ) {
+	if ( false === $action_id  ) {
+		if( is_question() ){
 			$action_id = get_question_id();
-		} elseif ( is_question_category() ) {
-			$action_id = $question_category->term_id;
-		} elseif ( is_question_tag() ) {
-			$action_id = $question_tag->term_id;
 		}
+		$action_id = apply_filters( 'ap_question_subscribers_action_id', $action_id );
 	}
 
 	if ( $type == '' ) {
