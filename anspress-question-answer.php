@@ -309,6 +309,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		    require_once ANSPRESS_DIR.'includes/mention.php';
 		    require_once ANSPRESS_DIR.'includes/akismet.php';
 		    require_once ANSPRESS_DIR.'includes/comments.php';
+		    //require_once ANSPRESS_DIR.'includes/api.php';
 		}
 
 		/**
@@ -581,6 +582,7 @@ add_action( 'activated_plugin', [ 'AnsPress_Init', 'activation_redirect' ] );
 add_action( 'wpmu_new_blog', [ 'AnsPress_Init', 'create_blog' ], 10, 6 );
 add_filter( 'wpmu_drop_tables', [ 'AnsPress_Init', 'drop_blog_tables' ], 10, 2 );
 add_filter( 'admin_init', [ 'AnsPress_Init', 'redirect_to_about_page' ] );
+//add_action( 'rest_api_init', ['AnsPress_API', 'register'] );
 
 /*
  * Dashboard and Administrative Functionality

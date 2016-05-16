@@ -1,0 +1,24 @@
+<form class="ap-comment-form" method="POST" id="ap-commentform"> 
+	<div class="ap-avatar ap-pull-left">
+		{{current_user_avatar|raw}}
+	</div>
+	<div class="ap-comment-inner no-overflow">
+		<textarea placeholder="Your comment.." class="ap-form-control autogrow" id="ap-comment-textarea" aria-required="true" rows="3" name="content"></textarea>
+
+	    <div class="ap-comment-footer clearfix">
+	        <label>
+	            <input type="checkbox" value="1" name="notify" />
+				Notify me of follow-up comments
+	        </label>
+			<button type="submit" class="ap-comment-submit ap-btn">Submit</button>
+			<a data-action="cancel-comment" class="ap-comment-cancel" href="#">Cancel</a>
+	    </div>
+	</div>
+	<input type="hidden" name="__nonce" value="{{form.nonce}}" />
+	<input type="hidden" name="post_id" value="{{form.post_id}}" />
+    <input type="hidden" name="action" value="ap_ajax" />
+    {{if form.comment_id}}
+    	<input type="hidden" name="comment_ID" value="{{comment_id}}" />
+    {{fi}}
+    <input type="hidden" name="ap_ajax_action" value="submit_comment" />
+</form>

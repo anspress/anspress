@@ -24,7 +24,7 @@ class AnsPress_Ajax
 	 */
 	public function __construct() {
 	    anspress()->add_action( 'ap_ajax_suggest_similar_questions', $this, 'suggest_similar_questions' );
-	    anspress()->add_action( 'ap_ajax_load_comment_form', 'AnsPress_Comment_Hooks', 'load_comment_form' );
+	    anspress()->add_action( 'ap_ajax_load_comments', 'AnsPress_Comment_Hooks', 'load_comments' );
 	    anspress()->add_action( 'ap_ajax_delete_comment', 'AnsPress_Comment_Hooks', 'delete_comment' );
 	    anspress()->add_action( 'ap_ajax_select_best_answer', $this, 'select_best_answer' );
 	    anspress()->add_action( 'ap_ajax_delete_post', $this, 'delete_post' );

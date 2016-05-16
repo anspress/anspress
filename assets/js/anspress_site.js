@@ -30,11 +30,11 @@ var apData = {};
             this.appendFormError();
             this.appendMessageBox();
             this.ajaxBtn();
-            this.ap_comment_form();
+            this.saveComment();
             this.afterPostingAnswer();
             this.ap_ajax_form();
-            this.load_comment_form();
-            this.delete_comment();
+            this.loadCommentForm();
+            this.deleteComment();
             this.vote();
             this.select_answer();
             this.ap_delete_post();
@@ -284,10 +284,12 @@ var apData = {};
 
         /**
          * Remove a class from an element.
-         * @param  {string} elm    Element selector.
+         * @param  {string} elm         Element selector.
          * @param  {string} classToAdd  Class to add to selector.
+         * @param  {obj}    context     Context.
          */
-        addClass: function(elm, classToAdd) {
+        addClass: function(elm, classToAdd, context) {
+            elm = elm === 'context' ? context : elm;
             if ($(elm).length > 0)
                $(elm).addClass(classToAdd);
         },
@@ -340,62 +342,51 @@ var apData = {};
                 }, this);
             });
         },
-        load_comment_form: function() {
-            $('body').delegate('[data-action="load_comment_form"]', 'click', function(e) {
+        loadCommentForm: function() {
+            $('body').delegate('[data-action="loadCommentForm"]', 'click', function(e) {
+                var $el = $(this);
                 e.preventDefault();
-
-                if($('#ap-commentform').length > 0){
-                    $('#ap-commentform').remove();
-                }
-                var q = $(this).attr('data-query');
-                ApSite.doAjax(apAjaxData(q), function(data) {
-                    var button = $(this);
-                    $(this).addClass('loaded');
-                    
-                        $(data.container).addClass('have-comments');
-                        $(data.container).removeClass('no-comments');
-                        $(data.container).append(data.html);
-                    
-
-                    ApSite.scrollToCommentForm();
-
-                    jQuery('textarea.autogrow, textarea#post_content').keyup();
-
-                    if (typeof button.attr('data-toggle') !== 'undefined') $(button.attr('data-toggle')).hide();
-                    $('#ap-comment-textarea').focus();
-                    $(button.attr('href')).addClass('have-comments').removeClass('no-comment');
-                }, this, false, true);
+                $dataKey = $el.data('key');
+                $data = apData[$dataKey];
+                console.log($data);
+                apLoadTemplate('comment-form', $data.form.template, function(template){                    
+                    var html = $(Ta.render(template, $data));
+                    $($el).hide();
+                    $($el).before(html);
+                    $data.form.elm = html;
+                });
                 
             });
         },
-        ap_comment_form: function() {
+        hideCommentForm : function(form){
+            $(form).fadeOut(200, function() {
+                $(this).next().show();
+                $(this).remove();
+            });
+        },
+        saveComment: function() {
             $('body').delegate('#ap-commentform', 'submit', function() {
                 if (typeof tinyMCE !== 'undefined') tinyMCE.triggerSave();
-                ApSite.doAjax(apAjaxData($(this).formSerialize()), function(data) {
+                var $el = $(this);
+                ApSite.doAjax(apAjaxData($el.formSerialize()), function(data) {
                     ApSite.hideLoading(this);
-                    if (data['action'] == 'new_comment' && data['message_type'] == 'success') {
-                        $('#post-c-' + data['comment_post_ID'] ).append($(data['html']).hide().slideDown(100));
-                    } else if (data['action'] == 'edit_comment' && data['message_type'] == 'success') {
-                        $('#comment-' + data.comment_ID+ ' .ap-comment-texts').html(data.html);
-                        $('#comment-' + data.comment_ID).slideDown(400);
-                        $('.ap-comment-form').remove();
-                    }
-                    $('.ap-comment-form').fadeOut(200, function() {
-                        $(this).remove()
-                    });
+                    
+                    apData[data.key] = data.apData;
+                    ApSite.hideCommentForm($el);
                     $('a[href="#comments-' + data.comment_post_ID+ '"]').removeClass('loaded');
                 }, this);
                 return false;
             })
         },
-        delete_comment: function() {
-            $('body').delegate('[data-action="delete_comment"]', 'click', function(e) {
+        deleteComment: function() {
+            $('body').delegate('[data-action="deleteComment"]', 'click', function(e) {
                 e.preventDefault();
-                var q = $(this).attr('data-query');
-                var elm = $(this);
+                var $el = $(this);
+                var q = $el.attr('data-query');
+                
                 ApSite.doAjax(apAjaxData(q), function(data) {
-                    if (typeof elm.attr('data-toggle') !== 'undefined' && data.message_type == 'success') 
-                        $(elm.attr('data-toggle')).hide();
+                    apData[data.key] = data.apData;
+                    ApSite.hideCommentForm($el);
                 }, this, false, true);
             });
         },
@@ -731,6 +722,7 @@ var apData = {};
         questionSuggestion: function(){
             if( disable_q_suggestion || false ) 
                 return;
+            
             $('[data-action="suggest_similar_questions"]').on('blur', function(){
                 var title = $(this).val();
                 if(title.length == 0)
@@ -873,15 +865,17 @@ var apData = {};
 })(jQuery);
 
 (function($) {
-    function apDoActions(action, args, data){
+    function apDoActions(action, args, data, context){
         data = data|| '';
-        if(typeof ApSite[action] === 'function'){                        
+        context = context|| '';
+
+        if(typeof ApSite[action] === 'function'){
             if( typeof args === 'object' ){
-                args.data = data;
+                args.push(context);
                 ApSite[action].apply(ApSite, args);
             }
             else{
-                ApSite[action](args, data);
+                ApSite[action](args, data, context);
             }
         }
     }
@@ -896,22 +890,26 @@ var apData = {};
         // Store template in global object.
         if( (data.apTemplate||false) && 'object' === typeof data.apTemplate && !apAutloadTemplate(data) )
             apLoadTemplate(data.apTemplate.name, data.apTemplate.template, function(template){
-                // Watch apData for 
+                // Watch apData for change.
                 if( data.apData && (data.key||false) ){
                     var notExists = typeof apData[data.key] === 'undefined';                    
                     apData[data.key] = data.apData;
-                    if(notExists){
-                        console.log('Watching object '+data.key+' for change.');                      
-                        watch(apData, data.key, function(){
+                    var watchCB = function(){                            
+                            console.log('changed');
                             var html = $(Ta.render(template, apData[data.key]));
-                            $(apData[data.key]['elm']).replaceWith(html);
-                            apData[data.key]['elm'] = html;
-                        });
-                    }
+                            $(apObjectWatching[data.key]).replaceWith(html);
+                            apObjectWatching[data.key] = html;
+                        };
+                        
+                        if(typeof apObjectWatching[data.key] === 'undefined' && notExists ){
+                            console.log('Watching object '+data.key+' for change.');
+                            watch(apData, data.key, watchCB);
+                            apObjectWatching[data.key] = true;  
+                        }
                 }
                 var html = $(Ta.render(template, data.apData));
                 $(data.appendTo).append(html);
-                apData[data.key]['elm'] = html;
+                apObjectWatching[data.key] = html;
             });
         
         if (typeof data.message_type !== 'undefined') {            
@@ -935,18 +933,18 @@ var apData = {};
             if( typeof action === 'object' ){
                 $.each(action, function(index, el) {
                     if(typeof ApSite[index] === 'function'){  
-                        apDoActions(index, el, data);
+                        apDoActions(index, el, data, settings.context);
                     }else if(typeof el === 'object'){
                         $.each(el, function(i, obj) {
                             if( typeof obj.action !== 'undefined' && typeof ApSite[obj.action] === 'function' )
-                                apDoActions(obj.action, obj.args, data);
+                                apDoActions(obj.action, obj.args, data, settings.context);
                         });
                     }
                     
                 });
             }else{
                 if(typeof ApSite[action] === 'function'){
-                    ApSite[action](data);
+                    ApSite[action](data, settings.context);
                 }
             }
         }

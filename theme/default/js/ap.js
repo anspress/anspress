@@ -49,10 +49,10 @@
 
         }
 
-        $('.ap-dynamic-avatar').initial({fontSize:14, fontWeight:600});
+        $("img[src*='ANSPRESS_AVATAR_SRC']").initial({fontSize:30, fontWeight:600});
 
         $( document ).ajaxComplete(function( event, data, settings ) {
-            $('.ap-dynamic-avatar').initial({fontSize:14, fontWeight:600});
+            $('.ap-dynamic-avatar').initial({fontSize:30, fontWeight:600});
         });
 
         $('.ap-label-form-item').click(function(e) {

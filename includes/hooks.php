@@ -77,7 +77,7 @@ class AnsPress_Hooks
 		anspress()->add_filter( 'pre_user_query', 'AnsPress_User', 'following_query' );
 		anspress()->add_filter( 'pre_user_query', 'AnsPress_User', 'user_sort_by_reputation' );
 		anspress()->add_filter( 'avatar_defaults' , 'AnsPress_User', 'default_avatar' );
-		anspress()->add_filter( 'get_avatar', 'AnsPress_User', 'get_avatar', 10, 5 );
+		anspress()->add_filter( 'pre_get_avatar_data', 'AnsPress_User', 'get_avatar', 10, 3 );
 		anspress()->add_filter( 'ap_user_menu', 'AnsPress_User', 'ap_user_menu_icons' );
 
 		// Common pages hooks.

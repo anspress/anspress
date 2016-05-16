@@ -489,7 +489,7 @@ class AnsPress_User
 	 * @param  string         $alt 			Avatar image alternate text.
 	 * @return string
 	 */
-	public static function get_avatar($avatar, $id_or_email, $size, $default, $alt) {
+	public static function get_avatar($args, $id_or_email) {
 		if ( ! empty( $id_or_email ) ) {
 			if ( is_object( $id_or_email ) ) {
 				$allowed_comment_types = apply_filters('get_avatar_comment_types', array(
@@ -514,20 +514,21 @@ class AnsPress_User
 				$id_or_email = $u->ID;
 			}
 
-			$ap_avatar     = ap_get_avatar_src( $id_or_email, ($size > 50 ? false:  true) );
+			$ap_avatar     = ap_get_avatar_src( $id_or_email, ($args['size'] > 50 ? false:  true) );
 
 			if ( $ap_avatar !== false ) {
-				return "<img data-view='user_avatar_{$id_or_email}' alt='{$alt}' src='{$ap_avatar}' class='avatar avatar-{$size} photo' height='{$size}' width='{$size}' />";
+				$args['url'] = $ap_avatar;
 			}
 		}
 
-		if ( strpos( $avatar, 'ANSPRESS_AVATAR_SRC' ) !== false ) {
-			$display_name = ap_user_display_name( array( 'user_id' => $id_or_email ) );
+		// Set default avatar url.
+		if ( empty( $args['url'] ) && 'ANSPRESS_AVATAR_SRC' == get_option( 'avatar_default' ) ) {
+			$display_name = substr( ap_user_display_name( array( 'user_id' => $id_or_email ) ), 0, 2 );
 
-			return '<img data-view="user_avatar_'.$id_or_email.'" alt="' . $alt . '" data-name="' . $display_name . '" data-height="' . $size . '" data-width="' . $size . '" class="avatar avatar-' . $size . ' photo ap-dynamic-avatar" />';
+			$args['url'] = 'http://ANSPRESS_AVATAR_SRC::'.$display_name;
 		}
 
-		return $avatar;
+		return $args;
 	}
 
 	/**
