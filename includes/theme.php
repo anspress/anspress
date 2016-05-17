@@ -460,9 +460,9 @@ function ap_post_actions() {
 	}
 
 	// Comment button.
-	if ( ap_user_can_comment( $post->ID ) ) {
+	//if ( ap_user_can_comment( $post->ID ) ) {
 	    $actions['comment'] = ap_comment_btn_html();
-	}
+	//}
 
 	$actions['status'] = ap_post_change_status_btn_html( $post->ID );
 

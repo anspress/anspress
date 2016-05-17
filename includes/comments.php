@@ -2,35 +2,45 @@
 
 class AnsPress_Comment_Hooks
 {
-	public static function comments_data( $post_id ){
+	public static function comments_data( $post_id, $editing = false ) {
 		$data = array(
 			'current_user_avatar' => get_avatar( get_current_user_id(), 30 ),
-			'load_form_button' => true,
-			'form' => array( 
-				'template' => ap_get_theme_url( 'js-template/comment-form.html' ),
+		);
+		
+		// Check if user can comment, if so then send form data.
+		if ( ap_user_can_comment( $post_id ) ){
+			$data['load_form'] = true;
+			$data['form'] = array(
 				'nonce' => wp_create_nonce( $post_id.'_comment' ),
 				'post_id' => $post_id,
 				'key' => $post_id.'Comments',
-			)
-		);
-		$comments = get_comments( [ 'post_id' => $post_id, 'order' => 'ASC' ] );
-		$DataComments = array();
-		foreach( (array) $comments as $c ){
-			$DataComments[] = array(
-				'id' => $c->comment_ID,
-				'avatar' => '<a href="'.ap_user_link( $c->user_id ).'" '. ap_hover_card_attributes( $c->user_id, false ) .'>'. get_avatar( $c->user_id, 30 ) .'</a>',
-				'user_link' => ap_user_link( $c->user_id ),
-				'user_name' => ap_user_display_name($c->user_id ),
-				'iso_date' => date( 'c', strtotime($c->comment_date) ),
-				'time' => ap_human_time( $c->comment_date_gmt, false ),
-				'content' => $c->comment_content,
-				'approved' => $c->comment_approved,
-				'class' => comment_class( 'ap-comment', $c->comment_ID, null, false ),
-				'actions' => array_values(ap_get_comment_actions($c, $post_id))
 			);
 		}
 
-		if( !empty( $DataComments ) ){
+		$comments = get_comments( [ 'post_id' => $post_id, 'order' => 'ASC' ] );
+		$DataComments = array();
+		foreach ( (array) $comments as $c ) {
+			if ( $editing != $c->comment_ID ) {
+				$DataComments[] = array(
+					'id' => $c->comment_ID,
+					'avatar' => '<a href="'.ap_user_link( $c->user_id ).'" '. ap_hover_card_attributes( $c->user_id, false ) .'>'. get_avatar( $c->user_id, 30 ) .'</a>',
+					'user_link' => ap_user_link( $c->user_id ),
+					'user_name' => ap_user_display_name($c->user_id ),
+					'iso_date' => date( 'c', strtotime($c->comment_date ) ),
+					'time' => ap_human_time( $c->comment_date_gmt, false ),
+					'content' => $c->comment_content,
+					'approved' => $c->comment_approved,
+					'class' => comment_class( 'ap-comment', $c->comment_ID, null, false ),
+					'actions' => array_values(ap_get_comment_actions($c, $post_id ) ),
+				);
+			} elseif ( ap_user_can_edit_comment( $c->comment_ID, get_current_user_id() ) ) {
+				$data['form']['comment_ID'] = $c->comment_ID;
+				$data['form']['content'] = $c->comment_content;
+				$data['form']['subscribed'] = ap_is_user_subscribed( $c->comment_ID, 'comment', $c->user_id );
+			}
+		}
+
+		if ( ! empty( $DataComments ) ) {
 			$data['comments'] = $DataComments;
 		}
 
@@ -42,11 +52,11 @@ class AnsPress_Comment_Hooks
 	 * @since 3.0.0 Moved from AnsPress_Ajax class.
 	 */
 	public static function load_comments() {
-		if ( ! is_user_logged_in() || ! ap_verify_nonce( 'comment_form_nonce' ) ) {
+		if ( ! ap_verify_nonce( 'comment_form_nonce' ) ) {
 			ap_ajax_json( 'something_wrong' );
 		}
 
-		$args = ap_sanitize_unslash('args', 'request');
+		$args = ap_sanitize_unslash('args', 'request' );
 
 	    $result = array(
 			'ap_responce' => true,
@@ -62,7 +72,6 @@ class AnsPress_Comment_Hooks
 				ap_ajax_json( 'no_permission' );
 			}
 
-			
 			$result['html'] = ap_get_comment_form( $comment->comment_post_ID, $comment->comment_ID );
 			$result['container'] = '#post-c-'.$comment->comment_post_ID;
 			$result['key'] = $comment->comment_post_ID.'Comments';
@@ -73,17 +82,42 @@ class AnsPress_Comment_Hooks
 		$post_id = (int) $args[0];
 
 		// Check if they have permission to comment.
-		if ( ! ap_user_can_comment( $post_id ) ) {
+		/*if ( ! ap_user_can_comment( $post_id ) ) {
 			ap_ajax_json( 'no_permission' );
-		}
+		}*/
 
-		$result['html'] = ap_get_comment_form( $post_id );
 		$result['appendTo'] = '#post-c-'.$post_id;
-		$result['do'] = ['addClass' => [ 'context', 'ajax-disabled' ]];
+		$result['do'] = [ 'addClass' => [ 'context', 'ajax-disabled' ] ];
 		$result['key'] = $post_id.'Comments';
 
 		$result['apData'] = SELF::comments_data( $post_id );
 
+		ap_ajax_json( $result );
+	}
+
+	public static function edit_comment_form() {
+		if ( ! is_user_logged_in() || ! ap_verify_nonce( 'comment_form_nonce' ) ) {
+			ap_ajax_json( 'something_wrong' );
+		}
+
+		$comment_ID = ap_sanitize_unslash('comment_ID', 'request' );
+
+		// Check if user can edit comment.
+		if ( ! ap_user_can_edit_comment( $comment_ID, get_current_user_id() ) ) {
+			ap_ajax_json( 'no_permission' );
+		}
+
+		$comment = get_comment( $comment_ID );
+
+	    $result = array(
+			'ap_responce' => true,
+			'action' => 'load_comment_form',
+			'template' => 'comments',
+		);
+
+		$result['key'] = $comment->comment_post_ID.'Comments';
+
+		$result['apData'] = SELF::comments_data( $comment->comment_post_ID, $comment_ID );
 		ap_ajax_json( $result );
 	}
 
@@ -92,13 +126,16 @@ class AnsPress_Comment_Hooks
 	 * @since 3.0.0
 	 */
 	public static function submit_comment() {
-		$post_id = (integer) $_POST['post_id'];
+		$post_id = (integer) ap_sanitize_unslash('post_id', 'request' );
+		$comment_ID = (integer) ap_sanitize_unslash('comment_ID', 'request' );
+		$content = ap_sanitize_unslash( 'content', 'request' );
+
 		if ( ! is_user_logged_in() || ! ap_verify_nonce( $post_id . '_comment' ) ) {
 			ap_ajax_json( 'something_wrong' );
 		}
 
 		// Check if comment content is not empty.
-		if ( empty( $_POST['content'] ) ) {
+		if ( empty( $content ) ) {
 			ap_ajax_json( 'comment_content_empty' );
 		}
 
@@ -108,7 +145,7 @@ class AnsPress_Comment_Hooks
 		}
 
 		// Check if user can edit comment.
-		if ( isset( $_POST['comment_ID'] ) && ! ap_user_can_edit_comment( (integer) $_POST['comment_ID'], get_current_user_id() ) ) {
+		if ( ! empty( $comment_ID ) && ! ap_user_can_edit_comment( $comment_ID, get_current_user_id() ) ) {
 			ap_ajax_json( 'no_permission' );
 		}
 
@@ -122,22 +159,22 @@ class AnsPress_Comment_Hooks
 			ap_ajax_json( 'draft_comment_not_allowed' );
 		}
 
-		$filter_type = isset( $_POST['comment_ID'] ) ? 'ap_before_updating_comment' : 'ap_before_inserting_comment';
+		$filter_type = ! empty( $comment_ID ) ? 'ap_before_updating_comment' : 'ap_before_inserting_comment';
 
 		/**
 		 * Filter comment content before inserting to DB.
 		 * @param bool 		$apply_filter 	Apply this filter.
 		 * @param string 	$content 		Un-filtered comment content.
 		 */
-		$filter = apply_filters( $filter_type, false, $_POST['content'] );
+		$filter = apply_filters( $filter_type, false, $content );
 
 		if ( true === $filter && is_array( $filter ) ) {
 			ap_ajax_json( $filter );
 		}
 
 		// If comment_ID exists then update comment.
-		if ( isset( $_POST['comment_ID'] ) ) {
-			SELF::update_comment();
+		if ( ! empty( $comment_ID ) ) {
+			SELF::update_comment( $post_id, $comment_ID, $content );
 		}
 
 		// Get current user object.
@@ -151,7 +188,7 @@ class AnsPress_Comment_Hooks
 			'comment_author' 		=> wp_slash( $user->display_name ),
 			'comment_author_email' 	=> wp_slash( $user->user_email ),
 			'comment_author_url' 	=> wp_slash( $user->user_url ),
-			'comment_content' 		=> trim( $_POST['content'] ),
+			'comment_content' 		=> trim( $content ),
 			'comment_type' 			=> 'anspress',
 			'comment_parent' 		=> 0,
 			'user_id' 				=> $user->ID,
@@ -171,14 +208,12 @@ class AnsPress_Comment_Hooks
 
 			$count = get_comment_count( $comment->comment_post_ID );
 
-
 			$result = array(
 				'action' 		=> 'new_comment',
 				'status' 		=> true,
 				'comment_ID' 	=> $comment->comment_ID,
 				'comment_post_ID' => $comment->comment_post_ID,
 				'comment_content' => $comment->comment_content,
-				'html' 			=> $html,
 				'message' 		=> 'comment_success',
 				'view' 			=> array(
 					'comments_count_'.$comment->comment_post_ID => '('.$count['approved'].')',
@@ -200,10 +235,8 @@ class AnsPress_Comment_Hooks
 	 * Updates comment.
 	 * @since 3.0.0
 	 */
-	public static function update_comment() {
-		$comment_id = (integer) $_POST['comment_ID'];
-		$comment = get_comment( $comment_id );
-		$comment_content = trim( $_POST['content'] );
+	public static function update_comment( $post_id, $comment_ID, $comment_content ) {
+		$comment = get_comment( $comment_ID );
 
 		$subscribed = ap_is_user_subscribed( $comment->comment_post_ID, 'comment', $comment->user_id );
 		$content_changed = $comment_content != $comment->comment_content;
@@ -211,9 +244,9 @@ class AnsPress_Comment_Hooks
 
 		// Toggle subscription.
 		if ( isset( $_POST['notify'] ) && ! $subscribed ) {
-			$subscription = ap_add_comment_subscriber( $comment_id, $comment->user_id );
+			$subscription = ap_add_comment_subscriber( $comment_ID, $comment->user_id );
 		} elseif ( ! isset( $_POST['notify'] ) && $subscribed ) {
-			$subscription = ap_remove_comment_subscriber( $comment_id, $comment->user_id );
+			$subscription = ap_remove_comment_subscriber( $comment_ID, $comment->user_id );
 		}
 
 		if ( ! $content_changed && $subscription ) {
@@ -231,25 +264,23 @@ class AnsPress_Comment_Hooks
 		}
 
 		$updated = wp_update_comment( array(
-			'comment_ID' => $comment_id,
+			'comment_ID' => $comment_ID,
 			'comment_content' => $comment_content,
 		) );
 
 		if ( $updated ) {
-			$comment = get_comment( $comment_id );
 
-			ob_start();
-			comment_text( $comment_id );
-			$html = ob_get_clean();
-
-			ap_ajax_json( array(
+			$result = array(
 				'action' 			=> 'edit_comment',
 				'comment_ID' 		=> $comment->comment_ID,
 				'comment_post_ID' 	=> $comment->comment_post_ID,
-				'comment_content' 	=> $comment->comment_content,
-				'html' 				=> $html,
 				'message' 			=> 'comment_edit_success',
-			) );
+			);
+
+			$result['key'] = $comment->comment_post_ID.'Comments';
+
+			$result['apData'] = SELF::comments_data( $comment->comment_post_ID );
+			ap_ajax_json( $result );
 		}
 	}
 
@@ -297,7 +328,7 @@ class AnsPress_Comment_Hooks
 
 			$result['key'] = $comment->comment_post_ID.'Comments';
 			$result['apData'] = SELF::comments_data( $comment->comment_post_ID );
-			ap_ajax_json($result);
+			ap_ajax_json($result );
 		}
 
 	    ap_ajax_json( 'something_wrong' );
@@ -352,7 +383,7 @@ class AnsPress_Comment_Hooks
  */
 function ap_comment_btn_html($echo = false) {
 	global $post;
-	if ( ap_user_can_comment( $post->ID ) ) {
+	//if ( ap_user_can_comment( $post->ID ) ) {
 
 		if ( $post->post_type == 'question' && ap_opt( 'disable_comments_on_question' ) ) {
 			return;
@@ -371,7 +402,7 @@ function ap_comment_btn_html($echo = false) {
 		} else {
 			return $output;
 		}
-	}
+	//}
 }
 
 function ap_get_comment_actions( $comment_id, $post_id ) {
@@ -386,7 +417,7 @@ function ap_get_comment_actions( $comment_id, $post_id ) {
 
 	if ( ap_user_can_edit_comment( $comment->comment_ID ) ) {
 		$nonce = wp_create_nonce( 'comment_form_nonce' );
-		$actions['edit'] = '<a class="comment-edit-btn" href="#" data-toggle="#li-comment-'.$comment->comment_ID.'" data-action="ajax_btn" data-query="load_comment_form::'.$nonce.'::'.$comment->comment_ID.'">'.__( 'Edit', 'anspress-question-answer' ).'</a>';
+		$actions['edit'] = '<a class="comment-edit-btn" href="#" data-toggle="#li-comment-'.$comment->comment_ID.'" data-action="editComment" data-query="ap_ajax_action=edit_comment_form&__nonce='.$nonce.'&comment_ID='.$comment->comment_ID.'">'.__( 'Edit', 'anspress-question-answer' ).'</a>';
 	}
 
 	if ( ap_user_can_delete_comment( $comment->comment_ID ) ) {
@@ -416,8 +447,8 @@ function ap_get_comment_actions( $comment_id, $post_id ) {
  */
 function ap_comment_actions_buttons() {
 	global $comment;
-	$post_o = get_post( $comment->comment_post_ID );	
-	$actions = ap_get_comment_actions($comment, $comment->comment_post_ID);
+	$post_o = get_post( $comment->comment_post_ID );
+	$actions = ap_get_comment_actions($comment, $comment->comment_post_ID );
 	foreach ( (array) $actions as $k => $action ) {
 		echo '<span class="ap-comment-action ap-action-'.esc_attr( $k ).'">'.$action.'</span>';
 	}

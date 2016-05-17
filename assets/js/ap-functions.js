@@ -342,6 +342,21 @@
 
 		return newQuery;
 	}
+
+	$.fn.apGetSelector = function(){
+	  var e = $(this);
+
+	  // the `id` attribute *should* be unique.
+	  if (e.attr('id')) { return '#'+e.attr('id') }
+
+	  if (e.attr('secondary_id')) {
+	    return '[secondary_id='+e.attr('secondary_id')+']'
+	  }
+
+	  $(e).attr('secondary_id', (new Date()).getTime());
+
+	  return '[secondary_id='+e.attr('secondary_id')+']'
+	};
 })(jQuery);
 
 /**
@@ -481,3 +496,7 @@ function apMergeObj(obj1,obj2){
 
   return obj1;
 }
+
+
+
+

@@ -33,8 +33,8 @@ var apData = {};
             this.saveComment();
             this.afterPostingAnswer();
             this.ap_ajax_form();
-            this.loadCommentForm();
             this.deleteComment();
+            this.editComment();
             this.vote();
             this.select_answer();
             this.ap_delete_post();
@@ -342,28 +342,6 @@ var apData = {};
                 }, this);
             });
         },
-        loadCommentForm: function() {
-            $('body').delegate('[data-action="loadCommentForm"]', 'click', function(e) {
-                var $el = $(this);
-                e.preventDefault();
-                $dataKey = $el.data('key');
-                $data = apData[$dataKey];
-                console.log($data);
-                apLoadTemplate('comment-form', $data.form.template, function(template){                    
-                    var html = $(Ta.render(template, $data));
-                    $($el).hide();
-                    $($el).before(html);
-                    $data.form.elm = html;
-                });
-                
-            });
-        },
-        hideCommentForm : function(form){
-            $(form).fadeOut(200, function() {
-                $(this).next().show();
-                $(this).remove();
-            });
-        },
         saveComment: function() {
             $('body').delegate('#ap-commentform', 'submit', function() {
                 if (typeof tinyMCE !== 'undefined') tinyMCE.triggerSave();
@@ -372,7 +350,6 @@ var apData = {};
                     ApSite.hideLoading(this);
                     
                     apData[data.key] = data.apData;
-                    ApSite.hideCommentForm($el);
                     $('a[href="#comments-' + data.comment_post_ID+ '"]').removeClass('loaded');
                 }, this);
                 return false;
@@ -386,7 +363,17 @@ var apData = {};
                 
                 ApSite.doAjax(apAjaxData(q), function(data) {
                     apData[data.key] = data.apData;
-                    ApSite.hideCommentForm($el);
+                }, this, false, true);
+            });
+        },
+        editComment: function() {
+            $('body').delegate('[data-action="editComment"]', 'click', function(e) {
+                e.preventDefault();
+                var $el = $(this);
+                var q = $el.attr('data-query');
+                
+                ApSite.doAjax(apAjaxData(q), function(data) {
+                    //apData[data.key] = data.apData;
                 }, this, false, true);
             });
         },
@@ -895,21 +882,23 @@ var apData = {};
                     var notExists = typeof apData[data.key] === 'undefined';                    
                     apData[data.key] = data.apData;
                     var watchCB = function(){                            
-                            console.log('changed');
+                            console.log(data.key + ' changed');                            
                             var html = $(Ta.render(template, apData[data.key]));
                             $(apObjectWatching[data.key]).replaceWith(html);
-                            apObjectWatching[data.key] = html;
+                            apObjectWatching[data.key] = html.apGetSelector();
                         };
                         
                         if(typeof apObjectWatching[data.key] === 'undefined' && notExists ){
                             console.log('Watching object '+data.key+' for change.');
                             watch(apData, data.key, watchCB);
-                            apObjectWatching[data.key] = true;  
+                            apObjectWatching[data.key] = true;
+                            var html = $(Ta.render(template, data.apData));
+                            $(data.appendTo).append(html);                
+                            apObjectWatching[data.key] = html.apGetSelector();
                         }
+
                 }
-                var html = $(Ta.render(template, data.apData));
-                $(data.appendTo).append(html);
-                apObjectWatching[data.key] = html;
+                
             });
         
         if (typeof data.message_type !== 'undefined') {            
