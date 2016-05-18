@@ -524,7 +524,6 @@ class AnsPress_User
 		// Set default avatar url.
 		if ( empty( $args['url'] ) && 'ANSPRESS_AVATAR_SRC' == get_option( 'avatar_default' ) ) {
 			$display_name = substr( ap_user_display_name( array( 'user_id' => $id_or_email ) ), 0, 2 );
-
 			$args['url'] = 'http://ANSPRESS_AVATAR_SRC::'.$display_name;
 		}
 

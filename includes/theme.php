@@ -815,7 +815,6 @@ function ap_assets( ) {
 		'js' => array(
 			'peity-js' => array( 'src' => ap_get_theme_url( 'js/jquery.peity.min.js' ), 'dep' => array( 'jquery' ) ),
 			'ap-initial-js' => array( 'src' => ap_get_theme_url( 'js/initial.min.js' ), 'dep' => array( 'jquery' ) ),
-			'ap-scrollbar-js' => array( 'src' => ap_get_theme_url( 'js/jquery.scrollbar.min.js' ), 'dep' => array( 'jquery' ) ),
 		),
 
 		'css' => array(

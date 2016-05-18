@@ -115,7 +115,8 @@ body ul #ap-notification-dropdown{
 		}
     }
     .ap-notification-scroll{
-    	height: 300px;
+	    height: 400px;
+	    overflow: auto;
     }
     .ap-no-notification{
     	padding: 10px;
@@ -169,7 +170,7 @@ body ul #ap-notifiside {
 		.ap-notification-btns{
 			margin-left: 10px;
 		}
-		.ap-notification-btns .ap-btn{
+		.ap-btn{
 		    display: inline-block;
 		    height: 25px;
 		    line-height: 20px;
@@ -177,6 +178,12 @@ body ul #ap-notifiside {
 		    padding: 3px 5px;
 		    text-align: center;
 		    width: 25px;
+		}
+		.ap-btn-markread{
+			display: none;
+		}
+		&.unread .ap-btn-markread{
+			display: inline-block;
 		}
 		.ap-user-link{
 			font-weight: bold;

@@ -489,16 +489,20 @@ class AnsPress_Ajax
 	 * Handle ajax callback for mark all notification as read
 	 */
 	public function markread_notification() {
+		$id = (int) ap_sanitize_unslash('id', 'request');
 
-		$id = (int) $_POST['id'];
-
-		if ( isset( $_POST['id'] ) && ! ap_verify_nonce( 'ap_markread_notification_'.$id ) && ! is_user_logged_in() ) {
-			$this->something_wrong();
-		} elseif ( ! ap_verify_nonce( 'ap_markread_notification_'.get_current_user_id() ) && ! is_user_logged_in() ) {
+		// Check for nonce if notification id is set.
+		if ( !empty( $id ) && ! ap_verify_nonce( 'ap_markread_notification_'.$id ) && ! is_user_logged_in() ) {
 			$this->something_wrong();
 		}
 
-		if ( isset( $_POST['id'] ) ) {
+		// Check for nonce if no notification id.
+		if ( empty($id) && ! ap_verify_nonce( 'ap_markread_notification_'.get_current_user_id() ) && ! is_user_logged_in() ) {
+			$this->something_wrong();
+		}
+
+		// If id found then only mark that notification as read.
+		if ( !empty( $id ) ) {
 			$notification = ap_get_notification_by_id( $id );
 
 			if ( $notification && ( get_current_user_id() == $notification->noti_user_id || is_super_admin()) ) {
@@ -506,19 +510,23 @@ class AnsPress_Ajax
 				$row = ap_update_notification( array( 'noti_id' => $id, 'noti_user_id' => get_current_user_id() ), array( 'noti_status' => 1 ) );
 
 				if ( false !== $row ) {
-					$this->send( array(
+					ap_ajax_json( array(
 						'message' 		=> 'mark_read_notification',
 						'action' 		=> 'mark_read_notification',
 						'container' 	=> '.ap-notification-'.$notification->noti_id,
 						'view' 			=> array( 'notification_count' => ap_get_total_unread_notification() ),
+						'do' => array( 'removeClass' => ['#ap-notification-'.$notification->noti_id, 'unread'] )
 					) );
 				}
 			}
-		} else {
+		} 
+
+		// If no id the mark all notifications as read.
+		else {
 			$row = ap_notification_mark_all_read( get_current_user_id() );
 
 			if ( false !== $row ) {
-				$this->send( array(
+				ap_ajax_json( array(
 					'message' 	=> 'mark_read_notification',
 					'action' 	=> 'mark_all_read',
 					'container' => '#ap-notification-dropdown',
@@ -526,8 +534,6 @@ class AnsPress_Ajax
 				) );
 			}
 		}
-
-		$this->something_wrong();
 	}
 
 	/**

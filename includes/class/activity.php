@@ -434,6 +434,10 @@ class AnsPress_Activity_Query
 		}
 	}
 
+	/**
+	 * Pagination
+	 * @param  boolean|string $base Base url.
+	 */
 	public function the_pagination( $base = false ) {
 		if ( false === $base ) {
 			$base = ap_get_link_to( 'activity' ) . '/%_%';
