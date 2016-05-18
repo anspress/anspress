@@ -41,7 +41,7 @@
 
 			<?php endwhile; ?>
 		</div>
-		<?php ap_notification_pagination(); ?>
+		<?php ap_activity_pagination(); ?>
 	<?php else: ?>
 		<?php _e('No notification', 'anspress-question-answer'); ?>
 	<?php endif; ?>

@@ -120,7 +120,7 @@ class AnsPress_Activity_Query
 		$this->per_page = isset($args['per_page'] ) ? (int) $args['per_page'] : 20;
 
 		// Grab the current page number and set to 1 if no page number is set.
-		$this->paged = isset( $args['paged'] ) ? (int) $args['paged'] : $this->paged;
+		$this->paged = isset( $args['paged'] ) ? (int) $args['paged'] : (int)get_query_var( 'paged' );
 
 		$this->offset = $this->per_page * max($this->paged -1, 0 );
 
