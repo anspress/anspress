@@ -333,11 +333,16 @@ function ap_get_total_unread_notification($user_id = false) {
 	return $count;
 }
 
-
+/**
+ * Delete notification.
+ * @param  boolean|integer $noti_id          Notifications.
+ * @param  boolean|integer $current_user_id  User iD.
+ * @param  boolean|string $affected_user_id Affected user ID.
+ * @param  boolean|string $type             Notification type.
+ * @return boolean|integer                  
+ */
 function ap_delete_notification($noti_id = false, $current_user_id = false, $affected_user_id = false, $type = false) {
-	global $wpdb;
-
-	
+	global $wpdb;	
 	$row = $wpdb->query(
 		$wpdb->prepare(
 			'DELETE FROM '.$wpdb->ap_notifications.' WHERE noti_id = %d',
@@ -346,6 +351,10 @@ function ap_delete_notification($noti_id = false, $current_user_id = false, $aff
 	);
 
 	if ( false !== $row ) {
+		/**
+		 * Action to do after deleting a notification.
+		 * @param integer $noti_id Notification ID.
+		 */
 		do_action( 'ap_delete_notification', $noti_id );
 	}
 
@@ -353,7 +362,8 @@ function ap_delete_notification($noti_id = false, $current_user_id = false, $aff
 }
 
 /**
- * @param integer $id
+ * Delete notification by notification ID.
+ * @param integer $id Notification ID.
  */
 function ap_get_notification_by_id( $id ) {
 
@@ -375,6 +385,7 @@ function ap_get_notification_by_id( $id ) {
 
 	return $result;
 }
+
 
 /**
  * Set all unread notifications as read
@@ -402,3 +413,36 @@ function ap_notification_mark_as_read($id, $user_id = false) {
 	return ap_update_notification( $where, array( 'noti_status' => 1 ) );
 }
 
+/**
+ * Delete notifications by activity id.
+ * @param  integer $activity_id Activity id.
+ * @return boolean
+ * @since  3.0.0
+ */
+function ap_delete_notification_by_activity_id( $activity_id ) {
+	global $wpdb;
+
+	// Get notification ids which will be deleted to be used by actions.
+	$cols = $wpdb->cols(
+		$wpdb->prepare(
+			"SELECT noti_id FROM $wpdb->ap_notifications WHERE noti_activity_id = %d",
+	        $activity_id
+        )
+	);
+
+	$row = $wpdb->query(
+		$wpdb->prepare(
+			"DELETE FROM $wpdb->ap_notifications WHERE noti_activity_id = %d",
+	        $activity_id
+        )
+	);
+
+	if ( false !== $row ) {
+		foreach( (array) $cols as $id ){
+			/** This action is documented in includes/notification.php:354 */
+			do_action( 'ap_delete_notification', $id );
+		}
+	}
+
+	return $row;
+}
