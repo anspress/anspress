@@ -304,6 +304,8 @@ class AnsPress_Activity_Query
 		if ( $this->args['notification'] ) {
 			$this->where_clauses .= $wpdb->prepare(' AND noti.noti_user_id=%d', $this->args['user_id'] );
 		}
+
+		$this->where_status_clauses();
 	}
 
 	/**
