@@ -568,9 +568,7 @@ function ap_selected_answer($post_id = false) {
 
 /**
  * Print select anser HTML button.
- *
  * @param int $post_id
- *
  * @return null|string
  */
 function ap_select_answer_btn_html($post_id) {
@@ -608,6 +606,25 @@ function ap_post_delete_btn_html($post_id = false, $echo = false) {
 		$nonce = wp_create_nonce( $action );
 
 		$output = '<a href="#" class="delete-btn" data-action="ap_delete_post" data-query="post_id='.$post_id.'&__nonce='.$nonce.'&ap_ajax_action=delete_post" title="'.__( 'Delete', 'anspress-question-answer' ).'">'.__( 'Delete', 'anspress-question-answer' ).'</a>';
+
+		if ( $echo ) {
+			echo $output;
+		} else {
+			return $output;
+		}
+	}
+}
+
+function ap_post_restore_btn_html($post_id = false, $echo = false) {
+	if ( $post_id === false ) {
+		$post_id = get_the_ID();
+	}
+
+	if ( ap_user_can_restore() ) {
+		$action = 'restore_'.$post_id;
+		$nonce = wp_create_nonce( $action );
+
+		$output = '<a href="#" class="delete-btn" data-action="ajax_btn" data-query="restore_post::'.$nonce.'::'.$post_id.'" title="'.__( 'Restore post', 'anspress-question-answer' ).'">'.__( 'Restore', 'anspress-question-answer' ).'</a>';
 
 		if ( $echo ) {
 			echo $output;

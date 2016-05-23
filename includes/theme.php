@@ -471,22 +471,31 @@ function ap_post_actions() {
 	    $actions['dropdown']['edit_question'] = ap_edit_post_link_html();
 	}
 
+	// Edit answer link.
 	if ( ap_user_can_edit_answer( $post->ID ) && $post->post_type == 'answer' ) {
 		$actions['dropdown']['edit_answer'] = ap_edit_post_link_html();
 	}
 
+	// Flag link.
 	if ( is_user_logged_in() ) {
 		$actions['dropdown']['flag'] = ap_flag_btn_html();
 	}
 
+	// Featured link.
 	if ( is_super_admin() && $post->post_type == 'question' ) {
 		$actions['dropdown']['featured'] = ap_featured_post_btn();
 	}
 
+	// Delete link.
 	if ( ap_user_can_delete_post( $post->ID ) && $post->post_status != 'trash' ) {
 		$actions['dropdown']['delete'] = ap_post_delete_btn_html();
 	}
 
+	if ( ap_user_can_delete_post( $post->ID ) && $post->post_status == 'trash' ) {
+		$actions['dropdown']['restore'] = ap_post_restore_btn_html();
+	}
+
+	// Permanent delete link.
 	if ( ap_user_can_delete_post( $post->ID ) ) {
 		$actions['dropdown']['permanent_delete'] = ap_post_permanent_delete_btn_html();
 	}

@@ -30,6 +30,7 @@ class AnsPress_Ajax
 	    anspress()->add_action( 'ap_ajax_select_best_answer', $this, 'select_best_answer' );
 	    anspress()->add_action( 'ap_ajax_delete_post', $this, 'delete_post' );
 	    anspress()->add_action( 'ap_ajax_permanent_delete_post', $this, 'permanent_delete_post' );
+	    anspress()->add_action( 'ap_ajax_restore_post', $this, 'restore_post' );
 	    anspress()->add_action( 'ap_ajax_change_post_status', 'AnsPress_Post_Status', 'change_post_status' );
 	    anspress()->add_action( 'ap_ajax_set_featured', $this, 'set_featured' );
 	    anspress()->add_action( 'ap_ajax_follow', $this, 'follow' );
@@ -246,7 +247,7 @@ class AnsPress_Ajax
 			ap_ajax_json( 'something_wrong' );
 		}
 
-		wp_trash_post( $post_id );
+		//wp_trash_post( $post_id );
 
 		if ( $post->post_type == 'question' ) {
 			/**
@@ -283,6 +284,34 @@ class AnsPress_Ajax
 			'remove' 		=> ( ! $current_ans ? true : false),
 			'message' 		=> 'answer_deleted_permanently',
 			'view' 			=> array( 'answer_count' => $current_ans, 'answer_count_label' => $count_label ),
+		));
+	}
+
+	/**
+	 * Handle Ajax callback for restoring post.
+	 */
+	public function restore_post() {
+		$args = ap_sanitize_unslash( 'args', 'request' );
+
+		if ( ! ap_verify_nonce( 'restore_'. $args[0] ) || ! ap_user_can_restore() ) {
+			ap_ajax_json( 'something_wrong' );
+		}
+
+		$post = get_post( $args[0] );
+
+		// Die if not question or answer post type.
+		if ( ! in_array( $post->post_type, [ 'question', 'answer' ] ) ) {
+			ap_ajax_json( 'something_wrong' );
+		}
+
+		// Do the thing.
+		wp_untrash_post( $post->ID );
+
+		ap_ajax_json(array(
+			'action' 		=> 'restore_post',
+			'do' 			=> [ 'removeClass' => [ '.post-'.$post->ID, 'status-trash' ], 'remove_if_exists' => '.post-'.$post->ID.' .ap-notice' ],
+			'message' 		=> __( 'Post restored successfully', 'anspress-question-answer' ),
+			'message_type' => 'success'
 		));
 	}
 

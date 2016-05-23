@@ -599,6 +599,28 @@ function ap_user_can_permanent_delete() {
 }
 
 /**
+ * Check if user can restore question or answer.
+ * @return boolean
+ * @since  3.0.0
+ */
+function ap_user_can_restore( $user_id = false ) {
+	if ( false === $user_id ) {
+		$user_id = get_current_user_id();
+	}
+
+	// Bail if super.
+	if ( is_super_admin( $user_id ) ) {
+		return true;
+	}
+
+	if ( user_can( $user_id, 'ap_restore_posts' ) ) {
+		return true;
+	}
+
+	return false;
+}
+
+/**
  * Check if user have permission to view post
  * @param  int $post_id post ID.
  * @param  int $user_id user ID.
@@ -923,6 +945,7 @@ function ap_role_caps( $role ) {
 			'ap_change_status_other'	=> true,
 			'ap_approve_comment'		=> true,
 			'ap_no_moderation'			=> true,
+			'ap_restore_posts'			=> true,
 		),
 	);
 

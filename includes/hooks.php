@@ -263,7 +263,13 @@ class AnsPress_Hooks
 
 	        if ( $ans > 0 ) {
 	            foreach ( $ans as $p ) {
-	                do_action( 'ap_trash_answer', $p->ID, $p );
+	            	/**
+	            	 * Triggered before trashing an answer.
+	            	 * @param integer $post_id Answer ID.
+	            	 * @param object $post Post object.
+	            	 */
+	                //do_action( 'ap_trash_answer', $p->ID, $p );
+
 	                $selcted_answer = ap_selected_answer();
 
 	                if ( $selcted_answer == $p->ID ) {
@@ -279,7 +285,15 @@ class AnsPress_Hooks
 	    if ( $post->post_type == 'answer' ) {
 	        $ans = ap_count_published_answers( $post->post_parent );
 	        $ans = $ans > 0 ? $ans - 1 : 0;
+	        
+	        /**
+        	 * Triggered before trashing an answer.
+        	 * @param integer $post_id Answer ID.
+        	 * @param object $post Post object.
+        	 */
 	        do_action( 'ap_trash_answer', $post->ID, $post );
+
+	        // Delete flag meta.
 	        ap_delete_meta( array( 'apmeta_type' => 'flag', 'apmeta_actionid' => $post->ID ) );
 
 			// Update answer count.

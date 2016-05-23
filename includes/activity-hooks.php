@@ -29,7 +29,7 @@ class AnsPress_Activity_Hook
 		anspress()->add_action( 'ap_untrash_answer', $this, 'untrash_post' );
 		anspress()->add_action( 'ap_before_delete_answer', $this, 'delete_post' );
 		anspress()->add_action( 'ap_trash_question', $this, 'trash_post' );
-		anspress()->add_action( 'ap_trash_question', $this, 'untrash_post' );
+		anspress()->add_action( 'ap_untrash_question', $this, 'untrash_post' );
 		anspress()->add_action( 'ap_before_delete_question', $this, 'delete_post' );
 		anspress()->add_action( 'trashed_comment', $this, 'trash_comment' );
 		anspress()->add_action( 'comment_trash_to_approved', $this, 'comment_approved' );
@@ -39,6 +39,7 @@ class AnsPress_Activity_Hook
 		// anspress()->add_action( 'ap_vote_casted', $this, 'notify_upvote', 10, 4 );
 		// anspress()->add_action( 'ap_added_reputation', $this, 'ap_added_reputation', 10, 4 );
 		anspress()->add_action( 'transition_post_status',  $this, 'change_activity_status', 10, 3 );
+		anspress()->add_action( 'ap_after_deleting_activity', __CLASS__, 'after_deleting_activity', 10, 2 );
 	}
 
 
@@ -126,7 +127,7 @@ class AnsPress_Activity_Hook
 		// Remove current user from subscribers.
 		$subscribers = ap_unset_current_user_from_subscribers( $subscribers );
 
-		if( $activity_id ){
+		if ( $activity_id ) {
 			ap_new_notification( $activity_id, $subscribers );
 		}
 
@@ -160,7 +161,7 @@ class AnsPress_Activity_Hook
 		$subscribers = ap_subscriber_ids( false, array( 'q_all', 'a_all' ), $post_id );
 
 		// Remove current user from subscribers.
-		if( $activity_id ){
+		if ( $activity_id ) {
 			$subscribers = ap_unset_current_user_from_subscribers( $subscribers );
 		}
 
@@ -194,7 +195,7 @@ class AnsPress_Activity_Hook
 		// Notify users.
 		$subscribers = ap_subscriber_ids( $post_id, 'a_all' );
 
-		if( $activity_id ){
+		if ( $activity_id ) {
 			// Remove current user from subscribers.
 			$subscribers = ap_unset_current_user_from_subscribers( $subscribers );
 
@@ -249,7 +250,7 @@ class AnsPress_Activity_Hook
 		// Remove current user from subscribers.
 		$subscribers = ap_unset_current_user_from_subscribers( $subscribers );
 
-		if( $activity_id ){
+		if ( $activity_id ) {
 			ap_new_notification( $activity_id, $subscribers );
 		}
 	}
@@ -291,7 +292,7 @@ class AnsPress_Activity_Hook
 			$user_ids[] = $question->post_author;
 		}
 
-		if( $activity_id ){
+		if ( $activity_id ) {
 			ap_new_notification( $activity_id, $user_ids );
 		}
 	}
@@ -328,7 +329,15 @@ class AnsPress_Activity_Hook
 	 * @param  integer $post_id Post ID.
 	 */
 	public function trash_post( $post_id ) {
+		$post = get_post( $post_id );
 		ap_change_post_activities_status( $post_id, 'trash' );
+
+		if( 'answer' == $post->post_type ){
+			$latest_activity = ap_get_latest_post_activity( 'question_id', $post->post_parent );
+			if( $latest_activity ){
+				ap_update_post_activity_meta( $latest_activity->question_id, $latest_activity->type, $latest_activity->user_id, false, $latest_activity->created );
+			}
+		}
 	}
 
 	/**
@@ -336,7 +345,15 @@ class AnsPress_Activity_Hook
 	 * @param  integer $answer_id Answer id.
 	 */
 	public function untrash_post( $answer_id ) {
+		$post = get_post( $answer_id );
 		ap_change_post_activities_status( $answer_id, 'publish' );
+
+		if( 'answer' == $post->post_type ){
+			$latest_activity = ap_get_latest_post_activity( 'question_id', $post->post_parent );
+			if( $latest_activity ){
+				ap_update_post_activity_meta( $latest_activity->question_id, $latest_activity->type, $latest_activity->user_id, false, $latest_activity->created );
+			}
+		}
 	}
 
 	/**
@@ -345,7 +362,6 @@ class AnsPress_Activity_Hook
 	 */
 	public function delete_post( $answer_id ) {
 		$activity_ids = ap_post_activities_id( $answer_id );
-
 		if ( $activity_ids ) {
 			foreach ( $activity_ids as $ids ) {
 				ap_delete_activity( $ids );
@@ -396,7 +412,6 @@ class AnsPress_Activity_Hook
 		}
 
 		$activity_ids = ap_activity_ids_by_item_id( $comment->comment_ID, 'comment' );
-
 		if ( $activity_ids ) {
 			foreach ( $activity_ids as $ids ) {
 				ap_delete_activity( $ids );
@@ -422,7 +437,7 @@ class AnsPress_Activity_Hook
 		);
 
 		$activity_id = ap_new_activity( $activity_arr );
-		if( $activity_id ){
+		if ( $activity_id ) {
 			ap_new_notification( $activity_id, $user_to_follow );
 		}
 	}
@@ -516,7 +531,7 @@ class AnsPress_Activity_Hook
 			$subscribers = ap_subscriber_ids( $comment->comment_post_ID, 'a_all' );
 		}
 
-		if( $activity_id ){
+		if ( $activity_id ) {
 			// Remove current user from subscribers.
 			$subscribers = ap_unset_current_user_from_subscribers( $subscribers );
 
@@ -545,7 +560,7 @@ class AnsPress_Activity_Hook
 					);
 
 					$activity_id = ap_new_activity( $activity_arr );
-					if( $activity_id ){
+					if ( $activity_id ) {
 						ap_new_notification( $activity_id, $user->id );
 					}
 				}
@@ -564,6 +579,27 @@ class AnsPress_Activity_Hook
 			ap_update_activities( array( 'question_id' => $post->ID, 'parent_type' => 'post' ) , array( 'status' => $new_status ) );
 		} elseif ( 'answer' == $post->post_type ) {
 			ap_update_activities( array( 'answer_id' => $post->ID, 'parent_type' => 'post' ) , array( 'status' => $new_status ) );
+		}
+	}
+
+	/**
+	 * Restore previous activity after deleting an activity.
+	 * @param  id     $id       Activity id.
+	 * @param  object $activity  Activity object.
+	 */
+	public static function after_deleting_activity( $id, $activity ) {
+		// If answer's activity then set answer_id as post_id.
+		if ( in_array( $activity->type, [ 'new_comment_answer', 'edit_comment_answer' ] ) ) {
+			$latest_activity = ap_get_latest_post_activity( 'answer_id', $activity->answer_id );
+
+			if ( $latest_activity ) {
+				ap_update_post_activity_meta( $latest_activity->answer_id, $latest_activity->type, $latest_activity->user_id, true, $latest_activity->created );
+			}
+		} else {
+			$latest_activity = ap_get_latest_post_activity( 'question_id', $activity->question_id );
+			if ( $latest_activity ) {
+				ap_update_post_activity_meta( $latest_activity->question_id, $latest_activity->type, $latest_activity->user_id, false, $latest_activity->created );
+			}
 		}
 	}
 

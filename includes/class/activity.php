@@ -152,7 +152,6 @@ class AnsPress_Activity_Query
 		$this->total_activity_count = $wpdb->get_var( apply_filters( 'ap_found_activity_query', 'SELECT FOUND_ROWS()', $this ) );
 
 		$this->total_pages = (int) ceil( $this->total_activity_count / $this->per_page );
-
 	}
 
 	/**
@@ -664,7 +663,7 @@ function ap_new_activity( $args = array() ) {
 function ap_get_activity($id) {
 	global $wpdb;
 
-	if ( ! is_integer( $id ) ) {
+	if ( ! is_numeric( $id ) ) {
 		return false;
 	}
 
@@ -834,9 +833,9 @@ function ap_post_activities_id($post_id) {
 	$where = 'WHERE ';
 
 	if ( 'question' == $post_arr->post_type ) {
-		$where .= 'question_id = '. $post_arr->ID;
+		$where .= 'question_id = '. (int) $post_arr->ID;
 	} elseif ( 'answer' == $post_arr->post_type ) {
-		$where .= 'answer_id = '. $post_arr->ID;
+		$where .= 'answer_id = '. (int) $post_arr->ID;
 	}
 
 	return $wpdb->get_col( "SELECT id FROM $wpdb->ap_activity $where" );
@@ -893,6 +892,11 @@ function ap_update_activities( $where, $columns ) {
 		$where_f[] = '%d';
 	}
 
+	if ( isset( $where['answer_id'] ) ) {
+		$where_s['answer_id'] = (int) $where['answer_id'];
+		$where_f[] = '%d';
+	}
+
 	if ( count( $where ) == 0 ) {
 		return false;
 	}
@@ -944,11 +948,12 @@ function ap_change_post_activities_status( $post_id, $status ) {
 		$columns['status'] = $status;
 	} elseif ( 'answer' == $postarr->post_type ) {
 		$where['answer_id'] = $post_id;
-		$where['question_id'] = $postarr->post_parent;
 		$columns['status'] = $status;
 	}
 
-	return ap_update_activities( $where, $columns );
+	$row = ap_update_activities( $where, $columns );
+
+	return $row;
 }
 
 /**
@@ -958,11 +963,24 @@ function ap_change_post_activities_status( $post_id, $status ) {
  */
 function ap_delete_activity($id) {
 	global $wpdb;
-	do_action( 'ap_before_deleting_activity', $id );
+
+	$activity = ap_get_activity( $id );
+	/**
+	 * Action triggred right before delting an activity.
+	 * @param  integer $id Activity ID.
+	 * @param object  $activity Deleted activity object.
+	 */
+	do_action( 'ap_before_deleting_activity', $activity );
+	
 	$row = $wpdb->delete( $wpdb->ap_activity, array( 'id' => $id ), array( '%d' ) );
 
 	if ( false !== $row ) {
-		do_action( 'ap_after_deleting_activity', $id );
+		/**
+		 * Action triggred right after deleting an activity.
+		 * @param integer $id 		Activity id.
+		 * @param object  $activity Deleted activity object.
+		 */
+		do_action( 'ap_after_deleting_activity', $id, $activity );
 		return $row;
 	}
 
@@ -1158,13 +1176,20 @@ function ap_activity_pagination( $base = false) {
 	$ap_activities->the_pagination( $base );
 }
 
+/**
+ * Return activity delete button.
+ * @return string
+ */
 function ap_activity_delete_btn() {
-
 	if ( is_super_admin( ) ) {
 		return '<a href="#" class="ap-activity-delete" data-action="ajax_btn" data-query="delete_activity::'. wp_create_nonce( 'ap_delete_activity' ).'::'.ap_activity_id().'">'.__('Delete', 'anspress-question-answer' ).'</a>';
 	}
 }
 
+/**
+ * Output activity delete button.
+ * @uses  ap_activity_delete_btn
+ */
 function ap_activity_the_delete_btn() {
 	echo ap_activity_delete_btn();
 }
@@ -1210,6 +1235,25 @@ function ap_update_post_activity_timestamp( $post ) {
 		update_post_meta( $post->ID, ANSPRESS_UPDATED_META, current_time( 'mysql' ) );
 	} else {
 		update_post_meta( $post->ID, ANSPRESS_UPDATED_META, current_time( 'mysql' ) );
+	}
+}
+
+/**
+ * Get latest post activity by post ID.
+ * @param  integer $post_id Post ID.
+ * @return object|null
+ * @since  3.0.0
+ */
+function ap_get_latest_post_activity( $field = 'question_id',  $value ) {
+	// Check if valid field type. Also make sure field name is sanitised.
+	if ( !in_array( $field, [ 'question_id', 'answer_id', 'item_id' ] ) ){
+		return false;
+	}
+
+	$query = ap_get_activities( [ $field => (int) $value, 'number' => 1 ] );
+	
+	if ( $query->has_activities() ) {
+		return $query->activities[0];
 	}
 }
 
