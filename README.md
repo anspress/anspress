@@ -1,12 +1,12 @@
 # AnsPress - Question and answer #
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/anspress/anspress/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/anspress/anspress/?branch=master) [![Build Status](https://travis-ci.org/anspress/anspress.svg?branch=master)](https://travis-ci.org/anspress/anspress) [![Download count](https://img.shields.io/badge/download-1.2k%2Fmonth-brightgreen.svg)](https://downloads.wordpress.org/plugin/anspress-question-answer.zip) [![Version](https://img.shields.io/badge/version-2.4.5-blue.svg)]()
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/anspress/anspress/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/anspress/anspress/?branch=master) [![Build Status](https://travis-ci.org/anspress/anspress.svg?branch=master)](https://travis-ci.org/anspress/anspress) [![Download count](https://img.shields.io/badge/download-1.2k%2Fmonth-brightgreen.svg)](https://downloads.wordpress.org/plugin/anspress-question-answer.zip) [![Version](https://img.shields.io/badge/version-3.0.0.alpha2-blue.svg)]()
 
 **Contributors:** nerdaryan  
 **Donate link:** https://www.paypal.com/cgi-bin/webscr?business=rah12@live.com&cmd=_xclick&item_name=Donation%20to%20AnsPress%20development  
 **Tags:** question, answer, q&a, forum, profile, stackoverflow, quora, buddypress  
 **Requires at least:** 4.2  
 **Tested up to:** 4.4  
-**Stable tag:** 2.4.4  
+**Stable tag:** 2.4.8  
 **License:** GPLv2 or later  
 **License URI:** http://www.gnu.org/licenses/gpl-2.0.html  
 
@@ -101,6 +101,103 @@ Read full FAQ here http://anspress.io/documents/doc_page=faq
 
 
 ## Changelog ##
+
+### 3.0.0-alpha1 ###
+
+  * Fix user widget issue with page pagination
+  * Added restore post action link.
+  * Improved post history when answer or comments get deleted.
+  * Fix: Activity not deleted after deleting parent post
+  * Improved search form
+  * Fix: Mark notification as read not working
+  * Fixed: notification pagination
+  * Fixed comment edit
+  * Load comments using JS templates
+  * Added filter to disable question suggestion while asking.
+  * FIX: Comment is not removed from DOM after delete
+  * Deleted question does not return 404
+  * Fix: Subscribe Widget fatal error
+  * Made ap_get_questions overridable.
+  * Search page show wrong message if no results
+  * Fix: wrong message when there is no question or answer in user profile
+  * Delete lock for comment is not working
+  * Add sortby args in AnsPress shortcode
+  * Fix: Wrong comment count in user profile
+  * Added ap_no_moderation cap
+  * Add anonymous post for moderation
+  * Clear existing form error before submitting form
+  * Check for duplicate posts
+  * get_currentuserinfo is deprecated since version 4.5!
+  * Added mention suggestion
+  * Improved uninstaller
+  * Do not hold for moderation if moderator
+  * Improved permanent_delete_post ajax callback
+  * Improved delete_post ajax callback
+  * Fixed: question is getting closed after selecting answer if option is enabled.
+  * Improved select_best_answer ajax callback.
+  * Fix ajaxTest.php
+  * Improved flag ajax callbacks
+  * Improved vote ajax callback
+  * Improved subscribe button
+  * Converted methods to static and moved to hooks.php
+  * Removed load_user_field_form ajax callback
+  * Improved post status update
+  * Load notification and profile menu dropdown using ajax
+  * Fixed license saving issue
+  * Added search-form.php and improved list-head.php
+  * Load AnsPress assets in menu editor
+  * Improved filters
+  * Improved sort filter
+  * Improved list filter
+  * Improved base page shortcode
+  * Fixed: Activation redirect warning
+  * Moved all add_action and add_filter to hooks.php
+  * Improved question and answer form.
+  * Load TinyMCE using ajax.
+  * Check if required PHP version is installed.
+  * Fix: Remove hyperlink from post time
+  * Fix: User can answer even after selecting best answer
+  * Improved answer form processing
+  * Load question actions using JS template and improved dropdown
+  * Improved JS template and hover card
+  * Added simple JS template (like angular.js) parser
+  * Improved tip and hover card
+  * Improved admin assets loading
+  * Fixed wrong method name comment_unapproved in add_action
+  * Added test for ap_user_can_approve_comment
+  * Added comment approve button
+  * Improved comment form for answer
+
+### 2.4.8 ### 
+
+* Fixed AnsPress menu not appearing in menu editor.
+
+### 2.4.7 ###
+
+  * Do not allow using [anspress] shortcode inside [anspress]
+  * Do not pass $this to class AnsPress_Common_Pages
+  * Added filter ap_future_post_notice
+  * Merged question and answer options.
+  * Added option to show default date format.
+  * Add translation support in ap_human_time()
+  * Added future post
+  * Added comment count in user profile
+  * Fixed activation error
+  * Added image uploader in test
+  * Load AnsPress in plugin_loaded hook
+  * Added before_loading_anspress action
+  * Add "have-comments" class when load comment form
+  * Fixed: overrides.css loading order
+  * Updated test
+  * Fix: GMT offset in activity time
+  * Improved: activities hook and activity time stamp
+  * Added option to keep stop words in slug
+  * Added filter:  ap_active_user_page
+  * Improved: status change permission
+  * Improved: User can delete capability check
+  * Improved: ap_user_can_edit_question function
+  * Fixed: bugs reported by CI
+  * Moved classes to class folder
 
 ### 2.4.6 ###
 
