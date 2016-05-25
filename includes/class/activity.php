@@ -975,12 +975,17 @@ function ap_delete_activity($id) {
 	$row = $wpdb->delete( $wpdb->ap_activity, array( 'id' => $id ), array( '%d' ) );
 
 	if ( false !== $row ) {
+
 		/**
 		 * Action triggred right after deleting an activity.
 		 * @param integer $id 		Activity id.
 		 * @param object  $activity Deleted activity object.
 		 */
 		do_action( 'ap_after_deleting_activity', $id, $activity );
+
+		// Delete notifiactions.
+		ap_delete_notification_by_activity_id( $id );
+		
 		return $row;
 	}
 

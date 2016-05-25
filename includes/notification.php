@@ -423,26 +423,18 @@ function ap_delete_notification_by_activity_id( $activity_id ) {
 	global $wpdb;
 
 	// Get notification ids which will be deleted to be used by actions.
-	$cols = $wpdb->cols(
+	$cols = $wpdb->get_col(
 		$wpdb->prepare(
 			"SELECT noti_id FROM $wpdb->ap_notifications WHERE noti_activity_id = %d",
 	        $activity_id
         )
 	);
 
-	$row = $wpdb->query(
-		$wpdb->prepare(
-			"DELETE FROM $wpdb->ap_notifications WHERE noti_activity_id = %d",
-	        $activity_id
-        )
-	);
-
 	if ( false !== $row ) {
 		foreach( (array) $cols as $id ){
-			/** This action is documented in includes/notification.php:354 */
-			do_action( 'ap_delete_notification', $id );
+			ap_delete_notification( $id );
 		}
 	}
 
-	return $row;
+	return $cols;
 }
