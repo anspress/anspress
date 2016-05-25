@@ -2,10 +2,10 @@
 # This file is distributed under the GPL-3.0+.
 msgid ""
 msgstr ""
-"Project-Id-Version: AnsPress 2.4.8\n"
+"Project-Id-Version: AnsPress 3.0.0-alpha.1\n"
 "Report-Msgid-Bugs-To: "
 "https://wordpress.org/support/plugin/anspress-question-answer\n"
-"POT-Creation-Date: 2016-04-02 03:11:19+00:00\n"
+"POT-Creation-Date: 2016-05-25 11:23:11+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -25,129 +25,130 @@ msgstr ""
 "X-Poedit-Bookmarks: \n"
 "X-Textdomain-Support: yes\n"
 
-#: admin/ajax.php:233
+#: admin/ajax.php:231
 msgid "0"
 msgstr ""
 
-#: admin/ajax.php:55 admin/ajax.php:140 admin/reputation.php:51
-#: includes/ask-form.php:35 includes/post_types.php:226
+#: admin/ajax.php:53 admin/ajax.php:138 admin/reputation.php:51
+#: includes/ask-form.php:40 includes/post_types.php:226
 msgid "Title"
 msgstr ""
 
-#: admin/ajax.php:61 admin/ajax.php:146 includes/ask-form.php:52
+#: admin/ajax.php:59 admin/ajax.php:144 includes/ask-form.php:59
 #: includes/user-fields.php:109
 msgid "Description"
 msgstr ""
 
-#: admin/ajax.php:67 admin/ajax.php:152 admin/reputation.php:52
+#: admin/ajax.php:65 admin/ajax.php:150 admin/reputation.php:52
 #: theme/default/content-user.php:17
 msgid "Points"
 msgstr ""
 
-#: admin/ajax.php:73 admin/ajax.php:158 admin/reputation.php:53
+#: admin/ajax.php:71 admin/ajax.php:156 admin/reputation.php:53
 msgid "Event"
 msgstr ""
 
-#: admin/ajax.php:79 admin/ajax.php:164
+#: admin/ajax.php:77 admin/ajax.php:162
 msgid "Save Point"
 msgstr ""
 
-#: admin/anspress-admin.php:186 includes/post_types.php:51
+#: admin/anspress-admin.php:184 includes/post_types.php:51
 msgid "All Questions"
 msgstr ""
 
-#: admin/anspress-admin.php:188 includes/post_types.php:54
+#: admin/anspress-admin.php:186 includes/post_types.php:54
 msgid "New Question"
 msgstr ""
 
-#: admin/anspress-admin.php:190 includes/post_types.php:121
+#: admin/anspress-admin.php:188 includes/post_types.php:121
 msgid "All Answers"
 msgstr ""
 
-#: admin/anspress-admin.php:192 includes/bp.php:50 includes/bp.php:82
+#: admin/anspress-admin.php:190 includes/bp.php:50 includes/bp.php:82
 #: includes/reputation.php:25 includes/reputation.php:290 includes/user.php:440
-#: theme/default/user/about.php:65 theme/default/user/user-card.php:32
+#: theme/default/user/about.php:65
 msgid "Reputation"
 msgstr ""
 
-#: admin/anspress-admin.php:194
+#: admin/anspress-admin.php:192
 msgid "Select question"
 msgstr ""
 
-#: admin/anspress-admin.php:202 admin/views/admin.php:26
+#: admin/anspress-admin.php:200 admin/views/admin.php:40
 msgid "AnsPress Options"
 msgstr ""
 
-#: admin/anspress-admin.php:202
+#: admin/anspress-admin.php:200
 msgid "Options"
 msgstr ""
 
-#: admin/anspress-admin.php:206 admin/views/about.php:117
+#: admin/anspress-admin.php:204 admin/views/about.php:117
 #: admin/views/sidebar.php:4
 msgid "About AnsPress"
 msgstr ""
 
-#: admin/anspress-admin.php:300
+#: admin/anspress-admin.php:298
 msgid "Settings"
 msgstr ""
 
-#: admin/anspress-admin.php:383
+#: admin/anspress-admin.php:381
 msgid "This question is orphan, no question is selected for this answer"
 msgstr ""
 
-#: admin/anspress-admin.php:388 includes/ajax.php:85 includes/ajax.php:87
-#: includes/ajax.php:332 includes/ajax.php:378 includes/process-form.php:605
+#: admin/anspress-admin.php:386 includes/ajax-hooks.php:99
+#: includes/ajax-hooks.php:101 includes/ajax-hooks.php:221
+#: includes/ajax-hooks.php:277 includes/answer-form.php:305
 msgid "1 Answer"
 msgid_plural "%d Answer"
 msgstr[0] ""
 msgstr[1] ""
 
-#: admin/anspress-admin.php:388
+#: admin/anspress-admin.php:386
 msgid "Edit question"
 msgstr ""
 
-#: admin/anspress-admin.php:462
+#: admin/anspress-admin.php:460
 msgid "AnsPress Pages"
 msgstr ""
 
-#: admin/anspress-admin.php:481 admin/options-page.php:469
+#: admin/anspress-admin.php:479 admin/options-fields.php:460
 msgid "User profile"
 msgstr ""
 
-#: admin/anspress-admin.php:482
+#: admin/anspress-admin.php:480
 msgid "User notification"
 msgstr ""
 
-#: admin/anspress-admin.php:495
+#: admin/anspress-admin.php:493
 msgid "Add to Menu"
 msgstr ""
 
-#: admin/anspress-admin.php:509
+#: admin/anspress-admin.php:507
 msgid "AnsPress update is not complete yet! click %shere%s to continue."
 msgstr ""
 
-#: admin/anspress-admin.php:522
+#: admin/anspress-admin.php:520
 msgid "Is your existing question tags are not appearing ? click here to fix it %s"
 msgstr ""
 
-#: admin/anspress-admin.php:522
+#: admin/anspress-admin.php:520
 msgid "Fix question tags"
 msgstr ""
 
-#: admin/anspress-admin.php:523
+#: admin/anspress-admin.php:521
 msgid "Hide message %s"
 msgstr ""
 
-#: admin/anspress-admin.php:523
+#: admin/anspress-admin.php:521
 msgid "dismiss"
 msgstr ""
 
-#: admin/anspress-admin.php:572 admin/meta_box.php:108 includes/flag.php:169
+#: admin/anspress-admin.php:570 admin/meta_box.php:108 includes/flag.php:244
 #: includes/post_types.php:238 includes/post_types.php:359
 msgid "Flag"
 msgstr ""
 
-#: admin/anspress-admin.php:600 admin/class-list-table-hooks.php:29
+#: admin/anspress-admin.php:598 admin/class-list-table-hooks.php:29
 #: admin/views/dashboard.php:52
 msgid "Flagged"
 msgstr ""
@@ -156,7 +157,7 @@ msgstr ""
 msgid "Restore this item from the Trash"
 msgstr ""
 
-#: admin/class-list-table-hooks.php:78
+#: admin/class-list-table-hooks.php:78 includes/functions.php:627
 msgid "Restore"
 msgstr ""
 
@@ -182,9 +183,9 @@ msgid "Edit &#8220;%s&#8221;"
 msgstr ""
 
 #: admin/class-list-table-hooks.php:90 admin/meta_box.php:60
-#: admin/reputation.php:152 includes/class/form.php:550
-#: includes/common-pages.php:32 includes/functions.php:478
-#: includes/functions.php:480 includes/functions.php:499 includes/theme.php:672
+#: admin/reputation.php:152 includes/comments.php:420
+#: includes/common-pages.php:24 includes/functions.php:413
+#: includes/functions.php:415 includes/functions.php:434
 #: theme/default/part/question.php:46
 msgid "Edit"
 msgstr ""
@@ -210,45 +211,26 @@ msgstr ""
 msgid "Clear flag"
 msgstr ""
 
-#: admin/extensions.php:69
-msgid "Download"
-msgstr ""
-
-#: admin/extensions.php:74
-msgid "By %s"
-msgstr ""
-
-#: admin/extensions.php:79
-msgid "Last Updated:"
-msgstr ""
-
-#: admin/extensions.php:83
-msgid "Untested with your version of WordPress"
-msgstr ""
-
-#: admin/extensions.php:85
-msgid "<strong>Compatible</strong> with your version of WordPress"
-msgstr ""
-
 #: admin/functions.php:94
 msgid "Save options"
 msgstr ""
 
-#: admin/license.php:31 admin/views/licenses.php:12
+#: admin/license.php:30 admin/views/licenses.php:17
 msgid "Licenses"
 msgstr ""
 
 #: admin/meta_box.php:25 admin/views/dashboard.php:40
-#: admin/views/dashboard.php:66 includes/bp.php:122 includes/class-user.php:51
-#: includes/post_types.php:119 includes/user.php:515
-#: theme/default/user/list-question.php:19 widgets/question_stats.php:50
+#: admin/views/dashboard.php:66 includes/ajax-hooks.php:465 includes/bp.php:122
+#: includes/class-user.php:33 includes/post_types.php:119 includes/user.php:515
+#: theme/default/user/list-question.php:19 widgets/question_stats.php:51
 #: widgets/questions.php:85
 msgid "Answers"
 msgstr ""
 
-#: admin/meta_box.php:28 admin/options-page.php:336 includes/bp.php:145
-#: includes/bp.php:146 includes/common-pages.php:30 includes/functions.php:1362
-#: includes/post_types.php:71 includes/reputation.php:834
+#: admin/meta_box.php:28 admin/options-fields.php:327
+#: includes/ajax-hooks.php:467 includes/bp.php:145 includes/bp.php:146
+#: includes/common-pages.php:22 includes/post_status.php:166
+#: includes/post_types.php:71 includes/reputation.php:839
 msgid "Question"
 msgstr ""
 
@@ -284,693 +266,687 @@ msgstr ""
 msgid "+"
 msgstr ""
 
-#: admin/options-page.php:14
+#: admin/options-fields.php:13
 msgid "General"
 msgstr ""
 
-#: admin/options-page.php:17
+#: admin/options-fields.php:16
 msgid "Base page"
 msgstr ""
 
-#: admin/options-page.php:18
+#: admin/options-fields.php:17
 msgid "Select page for displaying anspress."
 msgstr ""
 
-#: admin/options-page.php:25
+#: admin/options-fields.php:24
 msgid "Question Help page"
 msgstr ""
 
-#: admin/options-page.php:26
+#: admin/options-fields.php:25
 msgid "Direction for asking a question."
 msgstr ""
 
-#: admin/options-page.php:33
+#: admin/options-fields.php:32
 msgid "Answer Help page"
 msgstr ""
 
-#: admin/options-page.php:34
+#: admin/options-fields.php:33
 msgid "Direction for answring a question."
 msgstr ""
 
-#: admin/options-page.php:41
+#: admin/options-fields.php:40
 msgid "Hide author credits"
 msgstr ""
 
-#: admin/options-page.php:42
+#: admin/options-fields.php:41
 msgid "Hide link to AnsPress project site."
 msgstr ""
 
-#: admin/options-page.php:50
+#: admin/options-fields.php:49
 msgid "Allow private posts"
 msgstr ""
 
-#: admin/options-page.php:51
+#: admin/options-fields.php:50
 msgid "Allow users to create private question and answer."
 msgstr ""
 
-#: admin/options-page.php:59
+#: admin/options-fields.php:58
 msgid "Clean DB"
 msgstr ""
 
-#: admin/options-page.php:60
+#: admin/options-fields.php:59
 msgid ""
 "check this to remove all anspress data including posts on deactivating "
 "plugin."
 msgstr ""
 
-#: admin/options-page.php:67
+#: admin/options-fields.php:66
 msgid "Base page slug before question permalink"
 msgstr ""
 
-#: admin/options-page.php:75
+#: admin/options-fields.php:74
 msgid "Base page slug before user page permalink"
 msgstr ""
 
-#: admin/options-page.php:83
+#: admin/options-fields.php:82
 msgid "Disable hover card"
 msgstr ""
 
-#: admin/options-page.php:84
+#: admin/options-fields.php:83
 msgid "Dont show user hover card on mouseover."
 msgstr ""
 
-#: admin/options-page.php:93
+#: admin/options-fields.php:92
 msgid "Layout"
 msgstr ""
 
-#: admin/options-page.php:97
+#: admin/options-fields.php:96
 msgid "Avatar"
 msgstr ""
 
-#: admin/options-page.php:101
+#: admin/options-fields.php:100
 msgid "Load assets in AnsPress page only?"
 msgstr ""
 
-#: admin/options-page.php:102
+#: admin/options-fields.php:101
 msgid ""
 "Check this to load AnsPress JS and CSS on the AnsPress page only. Be "
 "careful, this might break layout."
 msgstr ""
 
-#: admin/options-page.php:109
+#: admin/options-fields.php:108
 msgid "List avatar size"
 msgstr ""
 
-#: admin/options-page.php:110
+#: admin/options-fields.php:109
 msgid "User avatar size for questions list."
 msgstr ""
 
-#: admin/options-page.php:117
+#: admin/options-fields.php:116
 msgid "Question avatar size"
 msgstr ""
 
-#: admin/options-page.php:118
+#: admin/options-fields.php:117
 msgid "User avatar size for question."
 msgstr ""
 
-#: admin/options-page.php:125 admin/options-page.php:133
+#: admin/options-fields.php:124 admin/options-fields.php:132
 msgid "Answer avatar size"
 msgstr ""
 
-#: admin/options-page.php:126 admin/options-page.php:134
+#: admin/options-fields.php:125 admin/options-fields.php:133
 msgid "User avatar size for answer."
 msgstr ""
 
-#: admin/options-page.php:141
+#: admin/options-fields.php:140
 msgid "Comment avatar size"
 msgstr ""
 
-#: admin/options-page.php:142
+#: admin/options-fields.php:141
 msgid "User avatar size for comments."
 msgstr ""
 
-#: admin/options-page.php:150
+#: admin/options-fields.php:149
 msgid "Items to show per page"
 msgstr ""
 
-#: admin/options-page.php:154
+#: admin/options-fields.php:153
 msgid "Questions per page"
 msgstr ""
 
-#: admin/options-page.php:155
+#: admin/options-fields.php:154
 msgid "Questions to show per page."
 msgstr ""
 
-#: admin/options-page.php:162
+#: admin/options-fields.php:161
 msgid "Answers per page"
 msgstr ""
 
-#: admin/options-page.php:163
+#: admin/options-fields.php:162
 msgid "Answers to show per page."
 msgstr ""
 
-#: admin/options-page.php:170
+#: admin/options-fields.php:169
 msgid "Users per page"
 msgstr ""
 
-#: admin/options-page.php:171
+#: admin/options-fields.php:170
 msgid "Users to show per page."
 msgstr ""
 
-#: admin/options-page.php:178
+#: admin/options-fields.php:177
 msgid "Sorting"
 msgstr ""
 
-#: admin/options-page.php:182
+#: admin/options-fields.php:181
 msgid "Default answer sort"
 msgstr ""
 
-#: admin/options-page.php:183
+#: admin/options-fields.php:182
 msgid "Sort answers by default."
 msgstr ""
 
-#: admin/options-page.php:186 includes/functions.php:594 includes/theme.php:566
-#: includes/theme.php:609 widgets/questions.php:84
+#: admin/options-fields.php:185 includes/functions.php:529
+#: includes/theme.php:569 includes/theme.php:614 widgets/questions.php:84
 msgid "Voted"
 msgstr ""
 
-#: admin/options-page.php:187 includes/theme.php:561 includes/theme.php:605
-#: includes/user.php:442 widgets/question_stats.php:48 widgets/questions.php:82
+#: admin/options-fields.php:186 includes/theme.php:564 includes/theme.php:610
+#: includes/user.php:442 widgets/question_stats.php:49 widgets/questions.php:82
 msgid "Active"
 msgstr ""
 
-#: admin/options-page.php:188 includes/functions.php:586 includes/theme.php:562
-#: includes/theme.php:612 includes/user.php:445 widgets/questions.php:83
+#: admin/options-fields.php:187 includes/functions.php:521
+#: includes/theme.php:565 includes/theme.php:617 includes/user.php:445
+#: widgets/questions.php:83
 msgid "Newest"
 msgstr ""
 
-#: admin/options-page.php:189 includes/functions.php:590 includes/theme.php:613
+#: admin/options-fields.php:188 includes/functions.php:525
+#: includes/theme.php:618
 msgid "Oldest"
 msgstr ""
 
-#: admin/options-page.php:197
+#: admin/options-fields.php:196
 msgid "Toggle"
 msgstr ""
 
-#: admin/options-page.php:201
-msgid "Show comments"
-msgstr ""
-
-#: admin/options-page.php:202
-msgid "Show comments by default."
-msgstr ""
-
-#: admin/options-page.php:209
+#: admin/options-fields.php:200
 msgid "Show question sidebar"
 msgstr ""
 
-#: admin/options-page.php:210
+#: admin/options-fields.php:201
 msgid "Subscribe and Stats widgets will be shown on question page."
 msgstr ""
 
-#: admin/options-page.php:217
+#: admin/options-fields.php:208
 msgid "Show notification sidebar"
 msgstr ""
 
-#: admin/options-page.php:218
+#: admin/options-fields.php:209
 msgid "Show dropdown notification as sidebar"
 msgstr ""
 
-#: admin/options-page.php:226
+#: admin/options-fields.php:217
 msgid "Pages"
 msgstr ""
 
-#: admin/options-page.php:231
+#: admin/options-fields.php:222
 msgid "Page slug"
 msgstr ""
 
-#: admin/options-page.php:235
+#: admin/options-fields.php:226
 msgid "Ask page slug"
 msgstr ""
 
-#: admin/options-page.php:236
+#: admin/options-fields.php:227
 msgid "Enter slug for ask page."
 msgstr ""
 
-#: admin/options-page.php:244
+#: admin/options-fields.php:235
 msgid "Question page slug"
 msgstr ""
 
-#: admin/options-page.php:245
+#: admin/options-fields.php:236
 msgid "Enter slug for question page."
 msgstr ""
 
-#: admin/options-page.php:253
+#: admin/options-fields.php:244
 msgid "Users page slug"
 msgstr ""
 
-#: admin/options-page.php:254
+#: admin/options-fields.php:245
 msgid "Enter slug for users page."
 msgstr ""
 
-#: admin/options-page.php:262
+#: admin/options-fields.php:253
 msgid "User page slug"
 msgstr ""
 
-#: admin/options-page.php:263
+#: admin/options-fields.php:254
 msgid "Enter slug for user page, make sure no page or post exists with same slug."
 msgstr ""
 
-#: admin/options-page.php:272
+#: admin/options-fields.php:263
 msgid "Page titles"
 msgstr ""
 
-#: admin/options-page.php:276
+#: admin/options-fields.php:267
 msgid "Show question title"
 msgstr ""
 
-#: admin/options-page.php:277
+#: admin/options-fields.php:268
 msgid "Show question title in single question page."
 msgstr ""
 
-#: admin/options-page.php:284
+#: admin/options-fields.php:275
 msgid "Show solved prefix"
 msgstr ""
 
-#: admin/options-page.php:285
+#: admin/options-fields.php:276
 msgid ""
 "If an answer is selected for question then [solved] prefix will be added in "
 "title."
 msgstr ""
 
-#: admin/options-page.php:292
+#: admin/options-fields.php:283
 msgid "Base page title"
 msgstr ""
 
-#: admin/options-page.php:293
+#: admin/options-fields.php:284
 msgid "Main questions list page title"
 msgstr ""
 
-#: admin/options-page.php:300
+#: admin/options-fields.php:291
 msgid "Ask page title"
 msgstr ""
 
-#: admin/options-page.php:301
+#: admin/options-fields.php:292
 msgid "Title of the ask page"
 msgstr ""
 
-#: admin/options-page.php:308
+#: admin/options-fields.php:299
 msgid "Users page title"
 msgstr ""
 
-#: admin/options-page.php:309
+#: admin/options-fields.php:300
 msgid "Title of the users page"
 msgstr ""
 
-#: admin/options-page.php:315
+#: admin/options-fields.php:306
 msgid "Search page title"
 msgstr ""
 
-#: admin/options-page.php:316
+#: admin/options-fields.php:307
 msgid "Title of the search page"
 msgstr ""
 
-#: admin/options-page.php:324
+#: admin/options-fields.php:315
 msgid "Question & Answer"
 msgstr ""
 
-#: admin/options-page.php:327
+#: admin/options-fields.php:318
 msgid "Show default date format"
 msgstr ""
 
-#: admin/options-page.php:328
+#: admin/options-fields.php:319
 msgid "Instead of showing time passed i.e. 1 Hour ago, show default format date."
 msgstr ""
 
-#: admin/options-page.php:340
+#: admin/options-fields.php:331
 msgid "Keep stop words in question slug"
 msgstr ""
 
-#: admin/options-page.php:341
+#: admin/options-fields.php:332
 msgid "AnsPress will not strip stop words in question slug."
 msgstr ""
 
-#: admin/options-page.php:348
+#: admin/options-fields.php:339
 msgid "Minimum title length"
 msgstr ""
 
-#: admin/options-page.php:349
+#: admin/options-fields.php:340
 msgid "Set minimum letters for a question title."
 msgstr ""
 
-#: admin/options-page.php:356 admin/options-page.php:417
+#: admin/options-fields.php:347 admin/options-fields.php:408
 msgid "Minimum question content"
 msgstr ""
 
-#: admin/options-page.php:357
+#: admin/options-fields.php:348
 msgid "Set minimum letters for a question contents."
 msgstr ""
 
-#: admin/options-page.php:364 admin/options-page.php:425
+#: admin/options-fields.php:355 admin/options-fields.php:416
 msgid "Use text editor ?"
 msgstr ""
 
-#: admin/options-page.php:365 admin/options-page.php:426
+#: admin/options-fields.php:356 admin/options-fields.php:417
 msgid "Text editor as default."
 msgstr ""
 
-#: admin/options-page.php:372 admin/options-page.php:433
+#: admin/options-fields.php:363 admin/options-fields.php:424
 msgid "Disable comments"
 msgstr ""
 
-#: admin/options-page.php:373
+#: admin/options-fields.php:364
 msgid "Disable comments on questions."
 msgstr ""
 
-#: admin/options-page.php:380 admin/options-page.php:441
+#: admin/options-fields.php:371 admin/options-fields.php:432
 msgid "Disable voting"
 msgstr ""
 
-#: admin/options-page.php:381
+#: admin/options-fields.php:372
 msgid "Disable voting on questions."
 msgstr ""
 
-#: admin/options-page.php:388 admin/options-page.php:449
+#: admin/options-fields.php:379 admin/options-fields.php:440
 msgid "Disable down voting"
 msgstr ""
 
-#: admin/options-page.php:389
+#: admin/options-fields.php:380
 msgid "Disable down voting on questions."
 msgstr ""
 
-#: admin/options-page.php:396
+#: admin/options-fields.php:387
 msgid "Close question after selecting answer"
 msgstr ""
 
-#: admin/options-page.php:397
+#: admin/options-fields.php:388
 msgid "If enabled this will prevent user to submit answer on solved question."
 msgstr ""
 
-#: admin/options-page.php:405 includes/bp.php:155 includes/bp.php:156
-#: includes/bp.php:165 includes/functions.php:1362 includes/post_types.php:141
-#: includes/reputation.php:841 includes/user.php:444
+#: admin/options-fields.php:396 includes/bp.php:155 includes/bp.php:156
+#: includes/bp.php:165 includes/post_status.php:166 includes/post_types.php:141
+#: includes/reputation.php:846 includes/user.php:444
 msgid "Answer"
 msgstr ""
 
-#: admin/options-page.php:409
+#: admin/options-fields.php:400
 msgid "Multiple Answers"
 msgstr ""
 
-#: admin/options-page.php:410
+#: admin/options-fields.php:401
 msgid "Allow an user to submit multiple answers on a single question."
 msgstr ""
 
-#: admin/options-page.php:418
+#: admin/options-fields.php:409
 msgid "Set minimum letters for a answer contents."
 msgstr ""
 
-#: admin/options-page.php:434
+#: admin/options-fields.php:425
 msgid "Disable comments on answer."
 msgstr ""
 
-#: admin/options-page.php:442
+#: admin/options-fields.php:433
 msgid "Disable voting on answers."
 msgstr ""
 
-#: admin/options-page.php:450
+#: admin/options-fields.php:441
 msgid "Disable down voting on answers."
 msgstr ""
 
-#: admin/options-page.php:457
+#: admin/options-fields.php:448
 msgid "Disable navigation"
 msgstr ""
 
-#: admin/options-page.php:458
+#: admin/options-fields.php:449
 msgid "Disable answer navigation."
 msgstr ""
 
-#: admin/options-page.php:466 includes/class-user.php:43
-#: includes/options.php:143 widgets/users.php:48
+#: admin/options-fields.php:457 includes/class-user.php:26
+#: includes/options.php:143 widgets/users.php:55
 msgid "Users"
 msgstr ""
 
-#: admin/options-page.php:470
+#: admin/options-fields.php:461
 msgid "Select which user profile you'd like to use."
 msgstr ""
 
-#: admin/options-page.php:478
+#: admin/options-fields.php:469
 msgid "Show users directory"
 msgstr ""
 
-#: admin/options-page.php:479
+#: admin/options-fields.php:470
 msgid "When enabled public can see directory of users."
 msgstr ""
 
-#: admin/options-page.php:487
+#: admin/options-fields.php:478
 msgid "Features"
 msgstr ""
 
-#: admin/options-page.php:491
+#: admin/options-fields.php:482
 msgid "Disable reputation"
 msgstr ""
 
-#: admin/options-page.php:492
+#: admin/options-fields.php:483
 msgid "Disable reputation for user"
 msgstr ""
 
-#: admin/options-page.php:500
+#: admin/options-fields.php:491
 msgid "Users page avatar size"
 msgstr ""
 
-#: admin/options-page.php:501
+#: admin/options-fields.php:492
 msgid "Set user avatar size for users page item."
 msgstr ""
 
-#: admin/options-page.php:509
+#: admin/options-fields.php:500
 msgid "Cover width"
 msgstr ""
 
-#: admin/options-page.php:510
+#: admin/options-fields.php:501
 msgid "Set width of user cover photo."
 msgstr ""
 
-#: admin/options-page.php:517
+#: admin/options-fields.php:508
 msgid "Cover height"
 msgstr ""
 
-#: admin/options-page.php:518
+#: admin/options-fields.php:509
 msgid "Set height of user cover photo."
 msgstr ""
 
-#: admin/options-page.php:525
+#: admin/options-fields.php:516
 msgid "Cover thumb width"
 msgstr ""
 
-#: admin/options-page.php:526
+#: admin/options-fields.php:517
 msgid "Set width of user cover photo thumbnail."
 msgstr ""
 
-#: admin/options-page.php:533
+#: admin/options-fields.php:524
 msgid "Small cover height"
 msgstr ""
 
-#: admin/options-page.php:534
+#: admin/options-fields.php:525
 msgid "Set height of user cover photo thumbnail."
 msgstr ""
 
-#: admin/options-page.php:542
+#: admin/options-fields.php:533
 msgid "Permission"
 msgstr ""
 
-#: admin/options-page.php:545
+#: admin/options-fields.php:536
 msgid "Only logged in can see questions, answer and comments?"
 msgstr ""
 
-#: admin/options-page.php:546
+#: admin/options-fields.php:537
 msgid "Require user to login to see AnsPress contents?."
 msgstr ""
 
-#: admin/options-page.php:553
+#: admin/options-fields.php:544
 msgid "Multiple answers"
 msgstr ""
 
-#: admin/options-page.php:554
+#: admin/options-fields.php:545
 msgid "Allow user to submit multiple answer per question."
 msgstr ""
 
-#: admin/options-page.php:561
+#: admin/options-fields.php:552
 msgid "Asker can answer"
 msgstr ""
 
-#: admin/options-page.php:562
+#: admin/options-fields.php:553
 msgid "Allow asker to answer his own question."
 msgstr ""
 
-#: admin/options-page.php:569
+#: admin/options-fields.php:560
 msgid "Allow anonymous"
 msgstr ""
 
-#: admin/options-page.php:570
+#: admin/options-fields.php:561
 msgid "Non-loggedin user can post questions and answers."
 msgstr ""
 
-#: admin/options-page.php:577
+#: admin/options-fields.php:568
 msgid "Only admin can answer"
 msgstr ""
 
-#: admin/options-page.php:578
+#: admin/options-fields.php:569
 msgid "Only allow admin to answer question."
 msgstr ""
 
-#: admin/options-page.php:585
+#: admin/options-fields.php:576
 msgid "Only logged in can see answers"
 msgstr ""
 
-#: admin/options-page.php:586
+#: admin/options-fields.php:577
 msgid "non-loggedin user cannot see answers."
 msgstr ""
 
-#: admin/options-page.php:594
+#: admin/options-fields.php:585
 msgid "Only logged in can see comment"
 msgstr ""
 
-#: admin/options-page.php:595
+#: admin/options-fields.php:586
 msgid "non-loggedin user cannot see comments."
 msgstr ""
 
-#: admin/options-page.php:602
+#: admin/options-fields.php:593
 msgid "Lock delete action"
 msgstr ""
 
-#: admin/options-page.php:603
+#: admin/options-fields.php:594
 msgid ""
 "Lock comment or post after a period so that user cannot delete it. Set the "
 "time in epoch i.e. 86400 = 1 day."
 msgstr ""
 
-#: admin/options-page.php:611
+#: admin/options-fields.php:602
 msgid "Upload"
 msgstr ""
 
-#: admin/options-page.php:615
+#: admin/options-fields.php:606
 msgid "Allow image upload"
 msgstr ""
 
-#: admin/options-page.php:616
+#: admin/options-fields.php:607
 msgid "Allow logged-in users to upload image."
 msgstr ""
 
-#: admin/options-page.php:623
+#: admin/options-fields.php:614
 msgid "Max images per post"
 msgstr ""
 
-#: admin/options-page.php:624
+#: admin/options-fields.php:615
 msgid "Set how many images user can upload for each post."
 msgstr ""
 
-#: admin/options-page.php:631
+#: admin/options-fields.php:622
 msgid "Max upload size"
 msgstr ""
 
-#: admin/options-page.php:632
+#: admin/options-fields.php:623
 msgid "Set maximum upload size."
 msgstr ""
 
-#: admin/options-page.php:640 admin/options-page.php:649
-#: admin/options-page.php:661 admin/options-page.php:673
-#: admin/options-page.php:685 admin/views/dashboard.php:46
-#: includes/functions.php:719 includes/post_status.php:30
-#: includes/post_types.php:266 includes/query_filter.php:87
-#: includes/query_filter.php:100 includes/question-loop.php:391
+#: admin/options-fields.php:631 admin/options-fields.php:640
+#: admin/options-fields.php:652 admin/options-fields.php:664
+#: admin/options-fields.php:676 admin/options-fields.php:688
+#: admin/views/dashboard.php:46 includes/post_status.php:34
+#: includes/post_status.php:127 includes/post_types.php:266
+#: includes/query_filter.php:87 includes/query_filter.php:100
+#: includes/question-loop.php:394
 msgid "Moderate"
 msgstr ""
 
-#: admin/options-page.php:643
+#: admin/options-fields.php:634
 msgid "Status of new question"
 msgstr ""
 
-#: admin/options-page.php:644
+#: admin/options-fields.php:635
 msgid "Set post status of new question."
 msgstr ""
 
-#: admin/options-page.php:648 admin/options-page.php:660
-#: admin/options-page.php:672 admin/options-page.php:684
+#: admin/options-fields.php:639 admin/options-fields.php:651
+#: admin/options-fields.php:663 admin/options-fields.php:675
+#: admin/options-fields.php:687
 msgid "Publish"
 msgstr ""
 
-#: admin/options-page.php:655
+#: admin/options-fields.php:646
 msgid "Status of edited question"
 msgstr ""
 
-#: admin/options-page.php:656
+#: admin/options-fields.php:647
 msgid "Set post status of edited question."
 msgstr ""
 
-#: admin/options-page.php:667
+#: admin/options-fields.php:658
 msgid "Status of new answer"
 msgstr ""
 
-#: admin/options-page.php:668
+#: admin/options-fields.php:659
 msgid "Set post status of new answer."
 msgstr ""
 
-#: admin/options-page.php:679
+#: admin/options-fields.php:670
 msgid "Status of edited answer"
 msgstr ""
 
-#: admin/options-page.php:680
+#: admin/options-fields.php:671
 msgid "Set post status of edited answer."
 msgstr ""
 
-#: admin/options-page.php:692
+#: admin/options-fields.php:682
+msgid "Status of anonymous post"
+msgstr ""
+
+#: admin/options-fields.php:683
+msgid "Set post status post submitted by anonymous user."
+msgstr ""
+
+#: admin/options-fields.php:695
 msgid "Bad Words"
 msgstr ""
 
-#: admin/options-page.php:696
+#: admin/options-fields.php:699
 msgid "Check bad words"
 msgstr ""
 
-#: admin/options-page.php:697
+#: admin/options-fields.php:700
 msgid ""
 "Enable this to check for bad words in posts and comments. You can find bad "
 "words here "
 msgstr ""
 
-#: admin/options-page.php:705
+#: admin/options-fields.php:708
 msgid "Akismet check"
 msgstr ""
 
-#: admin/options-page.php:709
-msgid "Use akismet API"
-msgstr ""
-
-#: admin/options-page.php:710
-msgid ""
-"Enable this to check for spam using Akismet API. You must have installed "
-"and activated Akismet plugin."
-msgstr ""
-
-#: admin/options-page.php:718
+#: admin/options-fields.php:713
 msgid "reCaptacha"
 msgstr ""
 
-#: admin/options-page.php:722
+#: admin/options-fields.php:717
 msgid "Enable reCaptcha"
 msgstr ""
 
-#: admin/options-page.php:723
+#: admin/options-fields.php:718
 msgid "Use this for preventing spam posts."
 msgstr ""
 
-#: admin/options-page.php:730
+#: admin/options-fields.php:725
 msgid "Recaptcha site key"
 msgstr ""
 
-#: admin/options-page.php:731
+#: admin/options-fields.php:726
 msgid ""
 "Enter your site key, if you dont have it get it from here "
 "https://www.google.com/recaptcha/admin"
 msgstr ""
 
-#: admin/options-page.php:738
+#: admin/options-fields.php:733
 msgid "Recaptcha secret key"
 msgstr ""
 
-#: admin/options-page.php:739
+#: admin/options-fields.php:734
 msgid "Enter your secret key"
 msgstr ""
 
-#: admin/options-page.php:746
+#: admin/options-fields.php:741
 msgid "User roles"
 msgstr ""
 
@@ -978,30 +954,30 @@ msgstr ""
 msgid "Delete this reputation"
 msgstr ""
 
-#: admin/reputation.php:153 includes/class/activity.php:1152
-#: includes/class/form.php:277 includes/class/form.php:284
-#: includes/functions.php:675 includes/theme.php:677
+#: admin/reputation.php:153 includes/class/activity.php:1185
+#: includes/class/form.php:280 includes/class/form.php:287
+#: includes/comments.php:425 includes/functions.php:608
 msgid "Delete"
 msgstr ""
 
-#: admin/updater.php:186
+#: admin/updater.php:184
 msgid ""
 "There is a new version of %1$s available. <a target=\"_blank\" "
 "class=\"thickbox\" href=\"%2$s\">View version %3$s details</a>."
 msgstr ""
 
-#: admin/updater.php:193
+#: admin/updater.php:191
 msgid ""
 "There is a new version of %1$s available. <a target=\"_blank\" "
 "class=\"thickbox\" href=\"%2$s\">View version %3$s details</a> or <a "
 "href=\"%4$s\">update now</a>."
 msgstr ""
 
-#: admin/updater.php:334
+#: admin/updater.php:331
 msgid "You do not have permission to install plugin updates"
 msgstr ""
 
-#: admin/updater.php:334
+#: admin/updater.php:331
 msgid "Error"
 msgstr ""
 
@@ -1021,7 +997,7 @@ msgstr ""
 msgid "AnsPress Extensions"
 msgstr ""
 
-#: admin/views/admin.php:34
+#: admin/views/admin.php:48
 msgid "AnsPress options updated"
 msgstr ""
 
@@ -1029,8 +1005,8 @@ msgstr ""
 msgid "AnsPress Dashboard"
 msgstr ""
 
-#: admin/views/dashboard.php:34 includes/bp.php:102 includes/class-user.php:50
-#: includes/functions.php:1617 includes/post_types.php:49 includes/user.php:516
+#: admin/views/dashboard.php:34 includes/bp.php:102 includes/class-user.php:32
+#: includes/functions.php:1495 includes/post_types.php:49 includes/user.php:516
 #: includes/user.php:543 widgets/questions.php:53
 msgid "Questions"
 msgstr ""
@@ -1039,7 +1015,7 @@ msgstr ""
 msgid "Latest Questions"
 msgstr ""
 
-#: admin/views/dashboard.php:68 includes/functions.php:421
+#: admin/views/dashboard.php:68 includes/comments.php:398
 #: includes/post_types.php:236 includes/post_types.php:357
 msgid "Comments"
 msgstr ""
@@ -1052,31 +1028,31 @@ msgstr ""
 msgid "Flagged question & answer"
 msgstr ""
 
-#: admin/views/licenses.php:14
+#: admin/views/licenses.php:19
 msgid "License keys for AnsPress products, i.e. extensions and themes."
 msgstr ""
 
-#: admin/views/licenses.php:24
+#: admin/views/licenses.php:29
 msgid "Enter license key for %s"
 msgstr ""
 
-#: admin/views/licenses.php:28
+#: admin/views/licenses.php:33
 msgid "active"
 msgstr ""
 
-#: admin/views/licenses.php:29
+#: admin/views/licenses.php:34
 msgid "Deactivate License"
 msgstr ""
 
-#: admin/views/licenses.php:31
+#: admin/views/licenses.php:36
 msgid "Activate License"
 msgstr ""
 
-#: admin/views/licenses.php:40
+#: admin/views/licenses.php:45
 msgid "Save"
 msgstr ""
 
-#: admin/views/licenses.php:44
+#: admin/views/licenses.php:49
 msgid "No license yet."
 msgstr ""
 
@@ -1204,166 +1180,209 @@ msgstr ""
 msgid "Start"
 msgstr ""
 
+#: anspress-question-answer.php:37
+msgid "AnsPress is not running!"
+msgstr ""
+
+#: anspress-question-answer.php:38
+msgid ""
+"Irks! At least PHP version 5.5 is required to run AnsPress. Current PHP "
+"version is %s. Please ask hosting provider to update your PHP version."
+msgstr ""
+
 #: includes/activity-hooks.php:82
 msgid "%s asked question %s"
 msgstr ""
 
 #: includes/activity-hooks.php:91 includes/bp.php:239
-#: includes/class/activity.php:604 includes/post_types.php:70
+#: includes/class/activity.php:613 includes/post_types.php:70
 msgid "question"
 msgstr ""
 
-#: includes/activity-hooks.php:115
+#: includes/activity-hooks.php:115 tests/wpunit/ActivityTest.php:55
 msgid "%s answered on %s"
 msgstr ""
 
-#: includes/activity-hooks.php:132 includes/bp.php:239
-#: includes/class/activity.php:604 includes/post_types.php:140
-#: theme/default/answers.php:18
+#: includes/activity-hooks.php:134 includes/bp.php:239
+#: includes/class/activity.php:613 includes/post_types.php:140
 msgid "answer"
 msgstr ""
 
-#: includes/activity-hooks.php:150
+#: includes/activity-hooks.php:152
 msgid "%s edited question %s"
 msgstr ""
 
-#: includes/activity-hooks.php:183
+#: includes/activity-hooks.php:187
 msgid "%s edited answer %s"
 msgstr ""
 
-#: includes/activity-hooks.php:226 includes/activity-hooks.php:494
+#: includes/activity-hooks.php:232 includes/activity-hooks.php:514
 msgid "%s commented on question %s %s"
 msgstr ""
 
-#: includes/activity-hooks.php:231 includes/activity-hooks.php:499
+#: includes/activity-hooks.php:237 includes/activity-hooks.php:519
 msgid "%s commented on answer %s %s"
 msgstr ""
 
-#: includes/activity-hooks.php:270
+#: includes/activity-hooks.php:278
 msgid "%s selected best answer for %s"
 msgstr ""
 
-#: includes/activity-hooks.php:307
+#: includes/activity-hooks.php:317
 msgid "%s unselected best answer for question %s"
 msgstr ""
 
-#: includes/activity-hooks.php:412
+#: includes/activity-hooks.php:436
 msgid "%s started following %s"
 msgstr ""
 
-#: includes/activity-hooks.php:537
+#: includes/activity-hooks.php:559
 msgid "%s mentioned you in %s %s"
 msgstr ""
 
-#: includes/ajax.php:75
+#: includes/ajax-hooks.php:89
 msgid "%d similar questions found"
 msgstr ""
 
-#: includes/ajax.php:76
+#: includes/ajax-hooks.php:90
 msgid ""
 "We've found similar questions that have already been asked, click to read "
 "them."
 msgstr ""
 
-#: includes/ajax.php:85 includes/functions.php:652
+#: includes/ajax-hooks.php:99 includes/functions.php:585
 msgid "Select"
 msgstr ""
 
-#: includes/ajax.php:95
+#: includes/ajax-hooks.php:109
 msgid "No related questions found"
 msgstr ""
 
-#: includes/ajax.php:123 includes/ajax.php:145
-msgid "Update comment"
+#: includes/ajax-hooks.php:197
+msgid "This post was created %s, hence you cannot delete it."
 msgstr ""
 
-#: includes/ajax.php:182 includes/ajax.php:222 includes/process-form.php:802
+#: includes/ajax-hooks.php:313
+msgid "Post restored successfully"
+msgstr ""
+
+#: includes/ajax-hooks.php:333
+msgid "Only question can be set as featured"
+msgstr ""
+
+#: includes/ajax-hooks.php:350 includes/functions.php:1397
+msgid "Set as featured"
+msgstr ""
+
+#: includes/ajax-hooks.php:366 includes/functions.php:1397
+msgid "Unset as featured"
+msgstr ""
+
+#: includes/ajax-hooks.php:399 includes/follow.php:36
+#: includes/subscriber-hooks.php:159 includes/subscriber.php:333
+msgid "Follow"
+msgstr ""
+
+#: includes/ajax-hooks.php:407 includes/follow.php:36
+#: includes/subscriber-hooks.php:175 includes/subscriber.php:333
+msgid "Unfollow"
+msgstr ""
+
+#: includes/ajax-hooks.php:466
+msgid "Best"
+msgstr ""
+
+#: includes/ajax-hooks.php:468
+msgid "comments"
+msgstr ""
+
+#: includes/ajax-hooks.php:469 includes/class-user.php:34
+#: theme/default/content-user.php:15 widgets/followers.php:60
+#: widgets/question_stats.php:52
+msgid "Followers"
+msgstr ""
+
+#: includes/ajax-hooks.php:470 includes/class-user.php:35
+#: includes/class-user.php:207 theme/default/content-user.php:16
+msgid "Following"
+msgstr ""
+
+#: includes/ajax-hooks.php:472 theme/default/user/about.php:49
+msgid "Last seen %s"
+msgstr ""
+
+#: includes/ajax-hooks.php:726 includes/comments.php:220
+#: includes/comments.php:325
 msgid "One comment"
 msgid_plural "%d comments"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/ajax.php:203 includes/ajax.php:316
-msgid "This post was created %s, its locked hence you cannot delete it."
-msgstr ""
-
-#: includes/ajax.php:469
-msgid "Update"
-msgstr ""
-
-#: includes/ajax.php:511 includes/functions.php:1518
-msgid "Set as featured"
-msgstr ""
-
-#: includes/ajax.php:526 includes/functions.php:1518
-msgid "Unset as featured"
-msgstr ""
-
-#: includes/ajax.php:561 includes/ajax.php:781 includes/follow.php:36
-#: includes/subscriber.php:285
-msgid "Follow"
-msgstr ""
-
-#: includes/ajax.php:569 includes/ajax.php:796 includes/follow.php:36
-#: includes/subscriber.php:285
-msgid "Unfollow"
-msgstr ""
-
-#: includes/ajax.php:871
-msgid "Please login for adding question to your subscribe"
-msgstr ""
-
-#: includes/answer-form.php:40 includes/post_types.php:126
-msgid "Update answer"
-msgstr ""
-
-#: includes/answer-form.php:40
-msgid "Post answer"
-msgstr ""
-
-#: includes/answer-form.php:53
+#: includes/answer-form.php:42
 msgid "Your answer.."
 msgstr ""
 
-#: includes/answer-form.php:67 includes/ask-form.php:82
+#: includes/answer-form.php:59 includes/ask-form.php:86
 msgid "Name"
 msgstr ""
 
-#: includes/answer-form.php:69 includes/ask-form.php:84
+#: includes/answer-form.php:61 includes/ask-form.php:88
 msgid "Enter your name to display"
 msgstr ""
 
-#: includes/answer-form.php:80 includes/ask-form.php:95
+#: includes/answer-form.php:73 includes/ask-form.php:100
 msgid "Only visible to admin and moderator."
 msgstr ""
 
-#: includes/answer-form.php:90 includes/ask-form.php:105
+#: includes/answer-form.php:84 includes/ask-form.php:111
 msgid "reCaptach keys missing, please add keys"
 msgstr ""
 
-#: includes/answer-loop.php:419 includes/question-loop.php:333
+#: includes/answer-form.php:161 includes/post_types.php:126
+msgid "Update answer"
+msgstr ""
+
+#: includes/answer-form.php:161
+msgid "Post answer"
+msgstr ""
+
+#: includes/answer-loop.php:420 includes/question-loop.php:336
 #: theme/default/answer-list.php:35
 msgid "votes"
 msgstr ""
 
-#: includes/ask-form.php:31
-msgid "Update question"
+#: includes/api.php:15
+msgid "Wrong data supplied"
 msgstr ""
 
-#: includes/ask-form.php:31
-msgid "Post question"
-msgstr ""
-
-#: includes/ask-form.php:37
+#: includes/ask-form.php:42
 msgid "Question in one sentence"
 msgstr ""
 
-#: includes/ask-form.php:38
+#: includes/ask-form.php:43
 msgid "Write a meaningful title for the question."
 msgstr ""
 
-#: includes/ask-form.php:54
+#: includes/ask-form.php:61
 msgid "Write description for the question."
+msgstr ""
+
+#: includes/ask-form.php:168
+msgid "Update question"
+msgstr ""
+
+#: includes/ask-form.php:168
+msgid "Post question"
+msgstr ""
+
+#: includes/ask-form.php:272
+msgid "Question title cannot be blank"
+msgstr ""
+
+#: includes/bad-words.php:60
+msgid ""
+"Don’t use foul or abusive language. Let everything you say be good and "
+"helpful."
 msgstr ""
 
 #: includes/bp.php:58
@@ -1414,117 +1433,111 @@ msgstr ""
 msgid "%1$s commented on your %3$s - %2$s"
 msgstr ""
 
-#: includes/class/activity.php:589
+#: includes/class/activity.php:598
 msgid "%s edited comment on %s %s"
 msgstr ""
 
-#: includes/class/activity.php:594
+#: includes/class/activity.php:603
 msgid "%s updated status of question %s"
 msgstr ""
 
-#: includes/class/activity.php:599
+#: includes/class/activity.php:608
 msgid "%s updated status of answer %s"
 msgstr ""
 
-#: includes/class/activity.php:606
+#: includes/class/activity.php:615
 msgid "%s voted up on %s %s"
 msgstr ""
 
-#: includes/class/activity.php:612
+#: includes/class/activity.php:621
 msgid "%s received %d reputation on %s"
 msgstr ""
 
-#: includes/class/activity.php:700
+#: includes/class/activity.php:709
 msgid "asked"
 msgstr ""
 
-#: includes/class/activity.php:701
+#: includes/class/activity.php:710
 msgid "answered"
 msgstr ""
 
-#: includes/class/activity.php:702
+#: includes/class/activity.php:711
 msgid "commented"
 msgstr ""
 
-#: includes/class/activity.php:703
+#: includes/class/activity.php:712
 msgid "commented on answer"
 msgstr ""
 
-#: includes/class/activity.php:704
+#: includes/class/activity.php:713
 msgid "edited question"
 msgstr ""
 
-#: includes/class/activity.php:705
+#: includes/class/activity.php:714
 msgid "edited answer"
 msgstr ""
 
-#: includes/class/activity.php:706
+#: includes/class/activity.php:715
 msgid "edited comment"
 msgstr ""
 
-#: includes/class/activity.php:707
+#: includes/class/activity.php:716
 msgid "edited comment on answer"
 msgstr ""
 
-#: includes/class/activity.php:708
+#: includes/class/activity.php:717
 msgid "selected answer"
 msgstr ""
 
-#: includes/class/activity.php:709
+#: includes/class/activity.php:718
 msgid "unselected answer"
 msgstr ""
 
-#: includes/class/activity.php:710
+#: includes/class/activity.php:719
 msgid "updated status"
 msgstr ""
 
-#: includes/class/activity.php:711
+#: includes/class/activity.php:720
 msgid "selected as best answer"
 msgstr ""
 
-#: includes/class/activity.php:712
+#: includes/class/activity.php:721
 msgid "unselected as best answer"
 msgstr ""
 
-#: includes/class/activity.php:751
+#: includes/class/activity.php:760
 msgid "%s %s %s"
 msgstr ""
 
-#: includes/class/activity.php:753
+#: includes/class/activity.php:762
 msgid "Active %s"
 msgstr ""
 
-#: includes/class/activity.php:785
+#: includes/class/activity.php:794
 msgid " %s %s %s"
 msgstr ""
 
-#: includes/class/bad-words.php:52
-msgid ""
-"Don’t use foul or abusive language. Let everything you say be good and "
-"helpful."
-msgstr ""
-
-#: includes/class/form.php:59
+#: includes/class/form.php:59 theme/default/comment-form-deprecated.php:25
 msgid "Submit"
 msgstr ""
 
-#: includes/class/form.php:186 theme/default/comment-form.php:11
+#: includes/class/form.php:187 theme/default/comment-form-deprecated.php:26
 msgid "Cancel"
 msgstr ""
 
-#: includes/class/form.php:271
+#: includes/class/form.php:273
 msgid "Repeat your password"
 msgstr ""
 
-#: includes/class/form.php:286
+#: includes/class/form.php:289
 msgid "Add more"
 msgstr ""
 
-#: includes/class/form.php:419
+#: includes/class/form.php:423
 msgid "Select a page"
 msgstr ""
 
-#: includes/class/form.php:640
+#: includes/class/form.php:659
 msgid "No fields found"
 msgstr ""
 
@@ -1540,221 +1553,253 @@ msgstr ""
 msgid "AnsPress Banned"
 msgstr ""
 
-#: includes/class/roles-cap.php:1023
+#: includes/class/roles-cap.php:1104
 msgid "Voting on own's post is not allowed."
 msgstr ""
 
-#: includes/class/roles-cap.php:1031
+#: includes/class/roles-cap.php:1112
 msgid "Voting on restricted posts are not allowed."
 msgstr ""
 
-#: includes/class/roles-cap.php:1041
+#: includes/class/roles-cap.php:1122
 msgid "Its look like you do not have permission to vote."
 msgstr ""
 
-#: includes/class/validation.php:56
+#: includes/class/validation.php:70
 msgid "This field is required"
 msgstr ""
 
-#: includes/class/validation.php:87
+#: includes/class/validation.php:100
 msgid "Its too short, it must be minimum %d characters"
 msgstr ""
 
-#: includes/class/validation.php:106 includes/class/validation.php:109
+#: includes/class/validation.php:120 includes/class/validation.php:123
 msgid "It must be minimum %d characters"
 msgstr ""
 
-#: includes/class/validation.php:121
+#: includes/class/validation.php:135
 msgid "Not a valid email address"
 msgstr ""
 
-#: includes/class-theme.php:208
+#: includes/class-theme.php:181
 msgid "Question Feed"
 msgstr ""
 
-#: includes/class-theme.php:250
+#: includes/class-theme.php:222
 msgid "Question feed"
 msgstr ""
 
-#: includes/class-theme.php:251
+#: includes/class-theme.php:223
 msgid "Answers feed"
 msgstr ""
 
-#: includes/class-user.php:45 includes/theme.php:827
+#: includes/class-theme.php:297
+msgid "Filter %s"
+msgstr ""
+
+#: includes/class-user.php:27 includes/theme.php:789
 msgid "User"
 msgstr ""
 
-#: includes/class-user.php:46
+#: includes/class-user.php:28
 msgid "About"
 msgstr ""
 
-#: includes/class-user.php:47
+#: includes/class-user.php:29
 msgid "Activity Feed"
 msgstr ""
 
-#: includes/class-user.php:48
+#: includes/class-user.php:30
 msgid "Notification"
 msgstr ""
 
-#: includes/class-user.php:49
+#: includes/class-user.php:31
 msgid "Profile"
 msgstr ""
 
-#: includes/class-user.php:52 theme/default/content-user.php:15
-#: widgets/followers.php:60 widgets/question_stats.php:51
-msgid "Followers"
-msgstr ""
-
-#: includes/class-user.php:53 includes/class-user.php:243
-#: theme/default/content-user.php:16
-msgid "Following"
-msgstr ""
-
-#: includes/class-user.php:68
+#: includes/class-user.php:49
 msgid "User directory is disabled."
 msgstr ""
 
-#: includes/class-user.php:93
+#: includes/class-user.php:74
 msgid "No user found"
 msgstr ""
 
-#: includes/class-user.php:189
+#: includes/class-user.php:169
 msgid "No followers found"
 msgstr ""
 
-#: includes/class-user.php:203
+#: includes/class-user.php:183
 msgid "You are not following anyone."
 msgstr ""
 
-#: includes/class-user.php:223
+#: includes/class-user.php:201
 msgid "My activity"
 msgstr ""
 
-#: includes/class-user.php:223
+#: includes/class-user.php:201
 msgid "%s's activity"
 msgstr ""
 
-#: includes/class-user.php:225 includes/hooks.php:376 widgets/user.php:48
+#: includes/class-user.php:202 includes/hooks.php:425 widgets/user.php:53
 msgid "My profile"
 msgstr ""
 
-#: includes/class-user.php:225
+#: includes/class-user.php:202
 msgid "%s's profile"
 msgstr ""
 
-#: includes/class-user.php:228
+#: includes/class-user.php:203
 msgid "My questions"
 msgstr ""
 
-#: includes/class-user.php:228
+#: includes/class-user.php:203
 msgid "%s's questions"
 msgstr ""
 
-#: includes/class-user.php:231
+#: includes/class-user.php:204
 msgid "My answers"
 msgstr ""
 
-#: includes/class-user.php:231
+#: includes/class-user.php:204
 msgid "%s's answers"
 msgstr ""
 
-#: includes/class-user.php:234
-msgid "My reputation"
-msgstr ""
-
-#: includes/class-user.php:234
-msgid "%s's reputation"
-msgstr ""
-
-#: includes/class-user.php:237
+#: includes/class-user.php:205
 msgid "About me"
 msgstr ""
 
-#: includes/class-user.php:237
+#: includes/class-user.php:205
 msgid "%s"
 msgstr ""
 
-#: includes/class-user.php:240
+#: includes/class-user.php:206
 msgid "My followers"
 msgstr ""
 
-#: includes/class-user.php:240
+#: includes/class-user.php:206
 msgid "%s's followers"
 msgstr ""
 
-#: includes/class-user.php:246 includes/user.php:539
+#: includes/class-user.php:208 includes/user.php:539
 msgid "My subscriptions"
 msgstr ""
 
-#: includes/class-user.php:249 includes/hooks.php:377
+#: includes/class-user.php:209 includes/hooks.php:426
 msgid "My notification"
 msgstr ""
 
-#: includes/class-user.php:346 includes/process-form.php:921
+#: includes/class-user.php:310 includes/process-form.php:494
 msgid "File cannot be uploaded, size is bigger then %d Byte"
 msgstr ""
 
-#: includes/class-user.php:369 includes/class-user.php:505
+#: includes/class-user.php:332 includes/class-user.php:465
 msgid "There was an error while uploading avatar, please check your image"
 msgstr ""
 
-#: includes/class-user.php:431
+#: includes/class-user.php:393
 msgid "Cover photo uploaded successfully."
 msgstr ""
 
-#: includes/class-user.php:438
+#: includes/class-user.php:400
 msgid ""
 "There was an error while uploading cover photo, please check your image and "
 "try again."
 msgstr ""
 
-#: includes/class-user.php:499
+#: includes/class-user.php:459
 msgid "Avatar uploaded successfully."
 msgstr ""
 
-#: includes/common-pages.php:31
+#: includes/class-user.php:620 theme/default/user/notification-dropdown.php:20
+#: theme/default/widgets/notifications.php:14
+msgid "Notifications"
+msgstr ""
+
+#: includes/class-user.php:621 theme/default/user/notification-dropdown.php:21
+#: theme/default/widgets/notifications.php:15
+msgid "Mark all as read"
+msgstr ""
+
+#: includes/class-user.php:623 theme/default/user/notification-dropdown.php:43
+#: theme/default/widgets/notifications.php:37
+msgid "View all notifications"
+msgstr ""
+
+#: includes/class-user.php:624 theme/default/user/notification-dropdown.php:47
+#: theme/default/user/notification.php:46
+#: theme/default/widgets/notifications.php:41
+msgid "No notification"
+msgstr ""
+
+#: includes/comments.php:254
+msgid "Your comment subscription updated successfully"
+msgstr ""
+
+#: includes/comments.php:261
+msgid "Nothing changed!"
+msgstr ""
+
+#: includes/comments.php:306
+msgid "This post was created %s, its locked hence you cannot delete it."
+msgstr ""
+
+#: includes/comments.php:363
+msgid "Comment approved successfully"
+msgstr ""
+
+#: includes/comments.php:398 includes/reputation.php:853
+msgid "Comment"
+msgstr ""
+
+#: includes/comments.php:434
+msgid "Approve"
+msgstr ""
+
+#: includes/common-pages.php:23
 msgid "Ask"
 msgstr ""
 
-#: includes/common-pages.php:33 widgets/search.php:42
+#: includes/common-pages.php:25 theme/default/search-form.php:12
+#: widgets/search.php:42
 msgid "Search"
 msgstr ""
 
-#: includes/common-pages.php:34
+#: includes/common-pages.php:26
 msgid "Activity feed"
 msgstr ""
 
-#: includes/common-pages.php:115
+#: includes/common-pages.php:71
 msgid "Sorry! you are not allowed to read this question."
 msgstr ""
 
-#: includes/common-pages.php:149
+#: includes/common-pages.php:105
 msgid "Question will be publish in %s"
 msgstr ""
 
-#: includes/common-pages.php:150
+#: includes/common-pages.php:106
 msgid ""
 "This question is in waiting queue and is not accessible by anyone until it "
 "get published."
 msgstr ""
 
-#: includes/common-pages.php:180
+#: includes/common-pages.php:136
 msgid "You don't have permission to access this page."
 msgstr ""
 
-#: includes/flag.php:116
+#: includes/flag.php:191
 msgid "Flag this post"
 msgstr ""
 
-#: includes/flag.php:116
+#: includes/flag.php:191
 msgid "You have flagged this post"
 msgstr ""
 
-#: includes/flag.php:118
+#: includes/flag.php:193
 msgid "Flag "
 msgstr ""
 
-#: includes/flag.php:182
+#: includes/flag.php:257
 msgid "Report this comment to moderaor"
 msgstr ""
 
@@ -1822,334 +1867,291 @@ msgstr ""
 msgid "Create tag"
 msgstr ""
 
-#: includes/functions.php:421 includes/reputation.php:848
-#: theme/default/comment-form.php:10
-msgid "Comment"
-msgstr ""
-
-#: includes/functions.php:478
+#: includes/functions.php:413
 msgid "Edit this question"
 msgstr ""
 
-#: includes/functions.php:480
+#: includes/functions.php:415
 msgid "Edit this answer"
 msgstr ""
 
-#: includes/functions.php:499
+#: includes/functions.php:434
 msgid "Edit Answer"
 msgstr ""
 
-#: includes/functions.php:512
+#: includes/functions.php:447
 msgid "Edited on"
 msgstr ""
 
-#: includes/functions.php:652
+#: includes/functions.php:585
 msgid "Select this answer as best"
 msgstr ""
 
-#: includes/functions.php:654
+#: includes/functions.php:587
 msgid "Unselect this answer"
 msgstr ""
 
-#: includes/functions.php:654
+#: includes/functions.php:587
 msgid "Unselect"
 msgstr ""
 
-#: includes/functions.php:694
+#: includes/functions.php:627
+msgid "Restore post"
+msgstr ""
+
+#: includes/functions.php:646
 msgid "Delete permanently"
 msgstr ""
 
-#: includes/functions.php:719
-msgid "Close"
-msgstr ""
-
-#: includes/functions.php:719 includes/post_types.php:281
-msgid "Open"
-msgstr ""
-
-#: includes/functions.php:719 includes/post_types.php:262
-#: includes/post_types.php:269 includes/question-loop.php:390
-msgid "Private"
-msgstr ""
-
-#: includes/functions.php:722
-msgid "Change status of post"
-msgstr ""
-
-#: includes/functions.php:723 includes/post_types.php:234
-#: includes/post_types.php:356
-msgid "Status"
-msgstr ""
-
-#: includes/functions.php:934
+#: includes/functions.php:840
 msgid "Success"
 msgstr ""
 
-#: includes/functions.php:935
+#: includes/functions.php:841
 msgid "You need to login before doing this action."
 msgstr ""
 
-#: includes/functions.php:936
+#: includes/functions.php:842
 msgid "Something went wrong, last action failed."
 msgstr ""
 
-#: includes/functions.php:937
+#: includes/functions.php:843
 msgid "You do not have permission to do this action."
 msgstr ""
 
-#: includes/functions.php:938
+#: includes/functions.php:844
 msgid "You are commenting on a draft post."
 msgstr ""
 
-#: includes/functions.php:939
+#: includes/functions.php:845
 msgid "Comment successfully posted."
 msgstr ""
 
-#: includes/functions.php:940
+#: includes/functions.php:846
 msgid "Comment updated successfully."
 msgstr ""
 
-#: includes/functions.php:941
+#: includes/functions.php:847
 msgid "Comment deleted successfully."
 msgstr ""
 
-#: includes/functions.php:942
+#: includes/functions.php:848
 msgid "You are following this question."
 msgstr ""
 
-#: includes/functions.php:943 includes/functions.php:969
+#: includes/functions.php:849 includes/functions.php:875
 msgid "Successfully unfollowed."
 msgstr ""
 
-#: includes/functions.php:944
+#: includes/functions.php:850
 msgid "Question submitted successfully"
 msgstr ""
 
-#: includes/functions.php:945
+#: includes/functions.php:851
 msgid "Question updated successfully"
 msgstr ""
 
-#: includes/functions.php:946
+#: includes/functions.php:852
 msgid "Answer submitted successfully"
 msgstr ""
 
-#: includes/functions.php:947
+#: includes/functions.php:853
 msgid "Answer updated successfully"
 msgstr ""
 
-#: includes/functions.php:948
+#: includes/functions.php:854
 msgid "Thank you for voting."
 msgstr ""
 
-#: includes/functions.php:949
+#: includes/functions.php:855
 msgid "Your vote has been removed."
 msgstr ""
 
-#: includes/functions.php:950
+#: includes/functions.php:856
 msgid "Undo your vote first."
 msgstr ""
 
-#: includes/functions.php:951
+#: includes/functions.php:857
 msgid "You cannot vote on your own question or answer."
 msgstr ""
 
-#: includes/functions.php:952
+#: includes/functions.php:858
 msgid "Best answer is unselected for your question."
 msgstr ""
 
-#: includes/functions.php:953
+#: includes/functions.php:859
 msgid "Best answer is selected for your question."
 msgstr ""
 
-#: includes/functions.php:954
+#: includes/functions.php:860
 msgid "Question moved to trash."
 msgstr ""
 
-#: includes/functions.php:955
+#: includes/functions.php:861
 msgid "Answer moved to trash."
 msgstr ""
 
-#: includes/functions.php:956
+#: includes/functions.php:862
 msgid "You dont have permission to view private posts."
 msgstr ""
 
-#: includes/functions.php:957
+#: includes/functions.php:863
 msgid "Thank you for reporting this post."
 msgstr ""
 
-#: includes/functions.php:958
+#: includes/functions.php:864
 msgid "You have already reported this post."
 msgstr ""
 
-#: includes/functions.php:959
+#: includes/functions.php:865
 msgid "Please check captcha field and resubmit it again."
 msgstr ""
 
-#: includes/functions.php:960
+#: includes/functions.php:866
 msgid "Comment content is empty."
 msgstr ""
 
-#: includes/functions.php:961
+#: includes/functions.php:867
 msgid "Post status updated successfully"
 msgstr ""
 
-#: includes/functions.php:962
+#: includes/functions.php:868
 msgid "Image uploaded successfully"
 msgstr ""
 
-#: includes/functions.php:963
+#: includes/functions.php:869
 msgid "Question has been deleted permanently"
 msgstr ""
 
-#: includes/functions.php:964
+#: includes/functions.php:870
 msgid "Answer has been deleted permanently"
 msgstr ""
 
-#: includes/functions.php:965
+#: includes/functions.php:871
 msgid "Question is marked as featured."
 msgstr ""
 
-#: includes/functions.php:966
+#: includes/functions.php:872
 msgid "Question is unmarked as featured."
 msgstr ""
 
-#: includes/functions.php:967
+#: includes/functions.php:873
 msgid "You have already attached maximum numbers of allowed uploads."
 msgstr ""
 
-#: includes/functions.php:968
+#: includes/functions.php:874
 msgid "Your profile has been updated successfully."
 msgstr ""
 
-#: includes/functions.php:970
+#: includes/functions.php:876
 msgid "Successfully followed."
 msgstr ""
 
-#: includes/functions.php:971
+#: includes/functions.php:877
 msgid "You cannot follow yourself."
 msgstr ""
 
-#: includes/functions.php:972
+#: includes/functions.php:878
 msgid "Notification deleted successfully."
 msgstr ""
 
-#: includes/functions.php:973
+#: includes/functions.php:879
 msgid "Notification is marked as read."
 msgstr ""
 
-#: includes/functions.php:974
+#: includes/functions.php:880
 msgid "Voting down is disabled."
 msgstr ""
 
-#: includes/functions.php:975
+#: includes/functions.php:881
 msgid "This comment has been reported to site moderator"
 msgstr ""
 
-#: includes/functions.php:976
+#: includes/functions.php:882
 msgid "You have already reported this comment"
 msgstr ""
 
-#: includes/functions.php:977
+#: includes/functions.php:883
 msgid "You cannot vote on restricted posts"
 msgstr ""
 
-#: includes/functions.php:1368
-msgid "Question is asked for %s."
-msgstr ""
-
-#: includes/functions.php:1376
-msgid "%s is marked as a private, only admin and post author can see."
-msgstr ""
-
-#: includes/functions.php:1384
-msgid "%s is waiting for approval by moderator."
-msgstr ""
-
-#: includes/functions.php:1392
-msgid "%s is closed, new answer are not accepted."
-msgstr ""
-
-#: includes/functions.php:1400
-msgid "%s has been trashed, you can delete it permanently from wp-admin."
-msgstr ""
-
-#: includes/functions.php:1411
+#: includes/functions.php:1284
 msgid "Add image to editor"
 msgstr ""
 
-#: includes/functions.php:1415
+#: includes/functions.php:1288
 msgid "upload"
 msgstr ""
 
-#: includes/functions.php:1417
+#: includes/functions.php:1290
 msgid "or"
 msgstr ""
 
-#: includes/functions.php:1421
+#: includes/functions.php:1294
 msgid "add image from link"
 msgstr ""
 
-#: includes/functions.php:1424
+#: includes/functions.php:1297
 msgid "Enter images link"
 msgstr ""
 
-#: includes/functions.php:1518
+#: includes/functions.php:1397
 msgid "Make this question featured"
 msgstr ""
 
-#: includes/functions.php:1687
+#: includes/functions.php:1563
 msgid "[Solved] "
 msgstr ""
 
-#: includes/hooks.php:660
+#: includes/hooks.php:700
 msgid "few seconds"
 msgstr ""
 
-#: includes/hooks.php:661
+#: includes/hooks.php:704
 msgid "minute"
 msgstr ""
 
-#: includes/hooks.php:662
+#: includes/hooks.php:705
 msgid "minutes"
 msgstr ""
 
-#: includes/hooks.php:663
+#: includes/hooks.php:706
 msgid "hour"
 msgstr ""
 
-#: includes/hooks.php:664
+#: includes/hooks.php:707
 msgid "hours"
 msgstr ""
 
-#: includes/hooks.php:665
+#: includes/hooks.php:708
 msgid "day"
 msgstr ""
 
-#: includes/hooks.php:666
+#: includes/hooks.php:709
 msgid "days"
 msgstr ""
 
-#: includes/hooks.php:667
+#: includes/hooks.php:710
 msgid "week"
 msgstr ""
 
-#: includes/hooks.php:668
+#: includes/hooks.php:711
 msgid "weeks"
 msgstr ""
 
-#: includes/hooks.php:669
+#: includes/hooks.php:712
 msgid "year"
 msgstr ""
 
-#: includes/hooks.php:670
+#: includes/hooks.php:713
 msgid "years"
 msgstr ""
 
-#: includes/notification.php:201
+#: includes/notification.php:200
 msgid "$activity_id is not a valid integer."
 msgstr ""
 
-#: includes/notification.php:300
+#: includes/notification.php:299
 msgid "9+"
 msgstr ""
 
@@ -2159,34 +2161,76 @@ msgid_plural "<span>%d</span> Participants"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/post_status.php:22 includes/post_types.php:263
+#: includes/post_status.php:26 includes/post_types.php:263
 #: includes/query_filter.php:93 includes/query_filter.php:102
-#: includes/question-loop.php:393
+#: includes/question-loop.php:396
 msgid "Closed"
 msgstr ""
 
-#: includes/post_status.php:26
+#: includes/post_status.php:30
 msgid "Closed <span class=\"count\">(%s)</span>"
 msgid_plural "Moderate <span class=\"count\">(%s)</span>"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/post_status.php:34
+#: includes/post_status.php:38
 msgid "Moderate <span class=\"count\">(%s)</span>"
 msgid_plural "Moderate <span class=\"count\">(%s)</span>"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/post_status.php:38 includes/query_filter.php:90
+#: includes/post_status.php:42 includes/query_filter.php:90
 #: includes/query_filter.php:101
 msgid "Private Post"
 msgstr ""
 
-#: includes/post_status.php:42
+#: includes/post_status.php:46
 msgid "Private Post <span class=\"count\">(%s)</span>"
 msgid_plural "Private Post <span class=\"count\">(%s)</span>"
 msgstr[0] ""
 msgstr[1] ""
+
+#: includes/post_status.php:125
+msgid "Close"
+msgstr ""
+
+#: includes/post_status.php:126 includes/post_types.php:281
+msgid "Open"
+msgstr ""
+
+#: includes/post_status.php:128 includes/post_types.php:262
+#: includes/post_types.php:269 includes/question-loop.php:393
+msgid "Private"
+msgstr ""
+
+#: includes/post_status.php:132
+msgid "Change status of post"
+msgstr ""
+
+#: includes/post_status.php:133 includes/post_types.php:234
+#: includes/post_types.php:356
+msgid "Status"
+msgstr ""
+
+#: includes/post_status.php:172
+msgid "Question is asked for %s."
+msgstr ""
+
+#: includes/post_status.php:179
+msgid "%s is marked as a private, only admin and post author can see."
+msgstr ""
+
+#: includes/post_status.php:185
+msgid "%s is waiting for approval by moderator."
+msgstr ""
+
+#: includes/post_status.php:192
+msgid "%s is closed, new answer are not accepted."
+msgstr ""
+
+#: includes/post_status.php:199
+msgid "%s has been trashed, you can delete it permanently from wp-admin."
+msgstr ""
 
 #: includes/post_types.php:50
 msgid "Parent Question:"
@@ -2296,44 +2340,55 @@ msgstr ""
 msgid "Content"
 msgstr ""
 
-#: includes/process-form.php:196 includes/process-form.php:457
-msgid "Bot verification failed."
+#: includes/process-form.php:177
+msgid ""
+"This seems to be a duplicate question. A question with same content already "
+"exists."
 msgstr ""
 
-#: includes/process-form.php:246 includes/process-form.php:509
-#: includes/process-form.php:872
+#: includes/process-form.php:334
+msgid ""
+"This seems to be a duplicate answer. An answer with same content already "
+"exists."
+msgstr ""
+
+#: includes/process-form.php:446 includes/process-form.php:553
 msgid "Check missing fields and then re-submit."
+msgstr ""
+
+#: includes/process-form.php:568
+msgid "Bot verification failed."
 msgstr ""
 
 #: includes/query_filter.php:48
 msgid "Please fill parent question field, Answer was not saved!"
 msgstr ""
 
-#: includes/query_filter.php:225
+#: includes/query_filter.php:224
 msgid "Answer is private, only moderator and participants can read."
 msgstr ""
 
-#: includes/query_filter.php:226
+#: includes/query_filter.php:225
 msgid "Answer is pending approval by moderator. "
 msgstr ""
 
-#: includes/query_filter.php:227
+#: includes/query_filter.php:226
 msgid "You do not have permission to read this answer. "
 msgstr ""
 
-#: includes/question-loop.php:311
+#: includes/question-loop.php:314
 msgid "%s ans"
 msgid_plural "%s ans"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/question-loop.php:509
+#: includes/question-loop.php:524
 msgid "%s %s"
 msgstr ""
 
 #: includes/reputation.php:290 theme/default/user/user.php:27
 #: theme/default/user/user.php:59 theme/default/users/loop-item.php:29
-#: theme/default/widgets/user.php:13
+#: theme/default/widgets/user.php:13 theme/default/widgets/users.php:12
 msgid "%s Rep."
 msgstr ""
 
@@ -2341,176 +2396,176 @@ msgstr ""
 msgid "+%d"
 msgstr ""
 
-#: includes/reputation.php:594
+#: includes/reputation.php:599
 msgid "%sAsked %s"
 msgstr ""
 
-#: includes/reputation.php:598
+#: includes/reputation.php:603
 msgid "%sAnswered %s"
 msgstr ""
 
-#: includes/reputation.php:602
+#: includes/reputation.php:607
 msgid "%sCommented %s"
 msgstr ""
 
-#: includes/reputation.php:606
+#: includes/reputation.php:611
 msgid "%sSelected answer %s"
 msgstr ""
 
-#: includes/reputation.php:610
+#: includes/reputation.php:615
 msgid "%sUp vote %s %s"
 msgstr ""
 
-#: includes/reputation.php:614
+#: includes/reputation.php:619
 msgid "%sDown vote %s %s"
 msgstr ""
 
-#: includes/reputation.php:618
+#: includes/reputation.php:623
 msgid "%sDown voted %s"
 msgstr ""
 
-#: includes/reputation.php:622
+#: includes/reputation.php:627
 msgid "%sBest answer %s"
 msgstr ""
 
-#: includes/reputation.php:813
+#: includes/reputation.php:818
 msgid "New Registration"
 msgstr ""
 
-#: includes/reputation.php:814
+#: includes/reputation.php:819
 msgid "Points given to newly registered user."
 msgstr ""
 
-#: includes/reputation.php:820
+#: includes/reputation.php:825
 msgid "Uploading avatar"
 msgstr ""
 
-#: includes/reputation.php:821
+#: includes/reputation.php:826
 msgid "Awarded for uploading an profile picture."
 msgstr ""
 
-#: includes/reputation.php:827
+#: includes/reputation.php:832
 msgid "Completing profile"
 msgstr ""
 
-#: includes/reputation.php:828
+#: includes/reputation.php:833
 msgid "Awarded for completing profile fields."
 msgstr ""
 
-#: includes/reputation.php:835
+#: includes/reputation.php:840
 msgid "For asking a question."
 msgstr ""
 
-#: includes/reputation.php:842
+#: includes/reputation.php:847
 msgid "For answering a question."
 msgstr ""
 
-#: includes/reputation.php:849
+#: includes/reputation.php:854
 msgid "For new comment."
 msgstr ""
 
-#: includes/reputation.php:855
+#: includes/reputation.php:860
 msgid "Receive upvote on question"
 msgstr ""
 
-#: includes/reputation.php:856
+#: includes/reputation.php:861
 msgid "When user receive an upvote on question"
 msgstr ""
 
-#: includes/reputation.php:862
+#: includes/reputation.php:867
 msgid "Receive upvote on answer"
 msgstr ""
 
-#: includes/reputation.php:863
+#: includes/reputation.php:868
 msgid "When user receive an upvote on answer"
 msgstr ""
 
-#: includes/reputation.php:869
+#: includes/reputation.php:874
 msgid "Receive down vote on question"
 msgstr ""
 
-#: includes/reputation.php:870
+#: includes/reputation.php:875
 msgid "When user receive an down vote on question"
 msgstr ""
 
-#: includes/reputation.php:876
+#: includes/reputation.php:881
 msgid "Receive down vote on answer"
 msgstr ""
 
-#: includes/reputation.php:877
+#: includes/reputation.php:882
 msgid "When user receive an down vote on answer"
 msgstr ""
 
-#: includes/reputation.php:883
+#: includes/reputation.php:888
 msgid "Up voted questions"
 msgstr ""
 
-#: includes/reputation.php:884
+#: includes/reputation.php:889
 msgid "When user upvote others question"
 msgstr ""
 
-#: includes/reputation.php:890
+#: includes/reputation.php:895
 msgid "Up voted answers"
 msgstr ""
 
-#: includes/reputation.php:891
+#: includes/reputation.php:896
 msgid "When user upvote others answer"
 msgstr ""
 
-#: includes/reputation.php:897
+#: includes/reputation.php:902
 msgid "Down voted questions"
 msgstr ""
 
-#: includes/reputation.php:898
+#: includes/reputation.php:903
 msgid "When user down vote others question"
 msgstr ""
 
-#: includes/reputation.php:904
+#: includes/reputation.php:909
 msgid "Down voted answers"
 msgstr ""
 
-#: includes/reputation.php:905
+#: includes/reputation.php:910
 msgid "When user down vote others answers"
 msgstr ""
 
-#: includes/reputation.php:912 includes/theme.php:635 includes/user.php:443
-#: theme/default/best_answer.php:17
+#: includes/reputation.php:917 includes/theme.php:640 includes/user.php:443
+#: theme/default/best_answer.php:14
 msgid "Best answer"
 msgstr ""
 
-#: includes/reputation.php:913
+#: includes/reputation.php:918
 msgid "When user's answer get selected as best"
 msgstr ""
 
-#: includes/reputation.php:919
+#: includes/reputation.php:924
 msgid "Selecting answer"
 msgstr ""
 
-#: includes/reputation.php:920
+#: includes/reputation.php:925
 msgid "When user user select an answer."
 msgstr ""
 
-#: includes/shortcode-basepage.php:48
-msgid "AnsPress shortcode cannot be used inside AnsPress content."
+#: includes/shortcode-basepage.php:51
+msgid "AnsPress shortcode cannot be nested."
 msgstr ""
 
-#: includes/shortcode-basepage.php:97
+#: includes/shortcode-basepage.php:71
 msgid "Question and answer is powered by"
 msgstr ""
 
-#: includes/subscriber.php:189
+#: includes/subscriber.php:237
 msgid "Only you are subscribed to this question."
 msgstr ""
 
-#: includes/subscriber.php:190
+#: includes/subscriber.php:238
 msgid "You and <strong>%s people</strong> subscribed to this question."
 msgstr ""
 
-#: includes/subscriber.php:192
+#: includes/subscriber.php:240
 msgid "No one is subscribed to this question."
 msgstr ""
 
-#: includes/subscriber.php:194
+#: includes/subscriber.php:242
 msgid "<strong>%d people</strong> subscribed to this question."
 msgstr ""
 
@@ -2527,44 +2582,44 @@ msgstr ""
 msgid "Error 404"
 msgstr ""
 
-#: includes/theme.php:317
+#: includes/theme.php:316
 msgid "answer accepted"
 msgstr ""
 
-#: includes/theme.php:317
+#: includes/theme.php:316
 msgid "Solved"
 msgstr ""
 
-#: includes/theme.php:321
+#: includes/theme.php:320
 msgid "<i>%d views</i>"
 msgstr ""
 
-#: includes/theme.php:522
+#: includes/theme.php:534
 msgid "More action"
 msgstr ""
 
-#: includes/theme.php:569
+#: includes/theme.php:572
 msgid "Answered"
 msgstr ""
 
-#: includes/theme.php:570 widgets/questions.php:86
+#: includes/theme.php:573 widgets/questions.php:86
 msgid "Unanswered"
 msgstr ""
 
-#: includes/theme.php:571
+#: includes/theme.php:574
 msgid "Unsolved"
 msgstr ""
 
-#: includes/theme.php:581 widgets/users.php:80
-msgid "Sort by"
-msgstr ""
-
-#: includes/theme.php:713
+#: includes/theme.php:676
 msgid "Ask question"
 msgstr ""
 
-#: includes/theme.php:824 includes/theme.php:828 includes/theme.php:830
+#: includes/theme.php:786 includes/theme.php:790 includes/theme.php:792
 msgid ".."
+msgstr ""
+
+#: includes/theme.php:898
+msgid "Sort"
 msgstr ""
 
 #: includes/user-fields.php:58
@@ -2695,47 +2750,47 @@ msgstr ""
 msgid "Upload cover"
 msgstr ""
 
-#: includes/users-loop.php:516
+#: includes/users-loop.php:538
 msgid "%d years, "
 msgstr ""
 
-#: includes/users-loop.php:519
+#: includes/users-loop.php:541
 msgid "%d months, "
 msgstr ""
 
-#: includes/users-loop.php:522
+#: includes/users-loop.php:544
 msgid "%d days"
 msgstr ""
 
-#: includes/vote.php:292
+#: includes/vote.php:363
 msgid "Up vote this post"
 msgstr ""
 
-#: includes/vote.php:298
+#: includes/vote.php:369
 msgid "Down vote this post"
 msgstr ""
 
-#: includes/vote.php:350
+#: includes/vote.php:421
 msgid "Vote for closing"
 msgstr ""
 
-#: includes/vote.php:350
+#: includes/vote.php:421
 msgid "Undo your vote"
 msgstr ""
 
-#: includes/vote.php:357
+#: includes/vote.php:428
 msgid "Close "
 msgstr ""
 
-#: theme/default/answer-form.php:10 theme/default/ask.php:22
-msgid "Toggle fullscreen"
+#: theme/default/answer-form.php:10
+msgid "Write your answer.."
 msgstr ""
 
-#: theme/default/answer-form.php:12 theme/default/ask.php:24
+#: theme/default/answer-form.php:14 theme/default/ask.php:24
 msgid "Write"
 msgstr ""
 
-#: theme/default/answer-form.php:14
+#: theme/default/answer-form.php:16
 msgid "How to answer"
 msgstr ""
 
@@ -2743,8 +2798,18 @@ msgstr ""
 msgid "Private Answer"
 msgstr ""
 
-#: theme/default/answers.php:37
+#: theme/default/answers.php:20
+msgid "%s%d%s answer"
+msgid_plural "%s%d%s answers"
+msgstr[0] ""
+msgstr[1] ""
+
+#: theme/default/answers.php:44
 msgid "Please %s or %s to view answers and comments"
+msgstr ""
+
+#: theme/default/ask.php:22
+msgid "Toggle fullscreen"
 msgstr ""
 
 #: theme/default/ask.php:26
@@ -2755,23 +2820,23 @@ msgstr ""
 msgid "You don't have permission to ask question."
 msgstr ""
 
-#: theme/default/comment-form.php:14
-msgid "Respond to the post."
+#: theme/default/comment-deprecated.php:42
+msgid "This comment is awaiting moderation."
 msgstr ""
 
-#: theme/default/comment.php:47
-msgid "Your comment is awaiting moderation."
+#: theme/default/comment-form-deprecated.php:18
+msgid "Your comment.."
 msgstr ""
 
-#: theme/default/comments.php:22
-msgid "Comment navigation"
+#: theme/default/comment-form-deprecated.php:23
+msgid "Notify me of follow-up comments"
 msgstr ""
 
-#: theme/default/comments.php:23
+#: theme/default/comments.php:18
 msgid "&larr; Older Comments"
 msgstr ""
 
-#: theme/default/comments.php:24
+#: theme/default/comments.php:19
 msgid "Newer Comments &rarr;"
 msgstr ""
 
@@ -2793,207 +2858,203 @@ msgstr ""
 msgid "No question asked yet!, be the first to ask a question."
 msgstr ""
 
-#: theme/default/functions.php:45
+#: theme/default/functions.php:80
 msgid "Password not matching"
 msgstr ""
 
-#: theme/default/functions.php:46
+#: theme/default/functions.php:81
 msgid "Password length must be 6 or higher"
 msgstr ""
 
-#: theme/default/functions.php:47
+#: theme/default/functions.php:82
 msgid "Not a valid email"
 msgstr ""
 
-#: theme/default/functions.php:48
+#: theme/default/functions.php:83
 msgid "Username length must be 4 or higher"
 msgstr ""
 
-#: theme/default/functions.php:49
+#: theme/default/functions.php:84
 msgid "Username not available"
 msgstr ""
 
-#: theme/default/functions.php:50
+#: theme/default/functions.php:85
 msgid "Email already in use. %sDo you want to reset your password?%s"
 msgstr ""
 
-#: theme/default/functions.php:51
+#: theme/default/functions.php:86
 msgid "Loading"
 msgstr ""
 
-#: theme/default/functions.php:52
+#: theme/default/functions.php:87
 msgid "Sending request"
 msgstr ""
 
-#: theme/default/functions.php:53
+#: theme/default/functions.php:88
 msgid "Adding question to your favorites"
 msgstr ""
 
-#: theme/default/functions.php:54
+#: theme/default/functions.php:89
 msgid "Sending your vote"
 msgstr ""
 
-#: theme/default/functions.php:55
+#: theme/default/functions.php:90
 msgid "Requesting for closing this question"
 msgstr ""
 
-#: theme/default/functions.php:56
+#: theme/default/functions.php:91
 msgid "Submitting request"
 msgstr ""
 
-#: theme/default/functions.php:57
+#: theme/default/functions.php:92
 msgid "Loading comment form"
 msgstr ""
 
-#: theme/default/functions.php:58
+#: theme/default/functions.php:93
 msgid "Sending your question"
 msgstr ""
 
-#: theme/default/functions.php:59
+#: theme/default/functions.php:94
 msgid "Sending your answer"
 msgstr ""
 
-#: theme/default/functions.php:60
+#: theme/default/functions.php:95
 msgid "Sending your comment"
 msgstr ""
 
-#: theme/default/functions.php:61
+#: theme/default/functions.php:96
 msgid "Deleting comment"
 msgstr ""
 
-#: theme/default/functions.php:62
+#: theme/default/functions.php:97
 msgid "Updating comment"
 msgstr ""
 
-#: theme/default/functions.php:63
+#: theme/default/functions.php:98
 msgid "Loading form"
 msgstr ""
 
-#: theme/default/functions.php:64
+#: theme/default/functions.php:99
 msgid "Saving labels"
 msgstr ""
 
-#: theme/default/functions.php:65
+#: theme/default/functions.php:100
 msgid "Loading suggestions"
 msgstr ""
 
-#: theme/default/functions.php:66
+#: theme/default/functions.php:101
 msgid "Uploading cover"
 msgstr ""
 
-#: theme/default/functions.php:67
+#: theme/default/functions.php:102
 msgid "Saving profile"
 msgstr ""
 
-#: theme/default/functions.php:68
+#: theme/default/functions.php:103
 msgid "Sending message"
 msgstr ""
 
-#: theme/default/functions.php:69
+#: theme/default/functions.php:104
 msgid "Loading conversation"
 msgstr ""
 
-#: theme/default/functions.php:70
+#: theme/default/functions.php:105
 msgid "Loading new message form"
 msgstr ""
 
-#: theme/default/functions.php:71
+#: theme/default/functions.php:106
 msgid "Loading more conversations"
 msgstr ""
 
-#: theme/default/functions.php:72
+#: theme/default/functions.php:107
 msgid "Searching conversations"
 msgstr ""
 
-#: theme/default/functions.php:73
+#: theme/default/functions.php:108
 msgid "Loading message form"
 msgstr ""
 
-#: theme/default/functions.php:74
+#: theme/default/functions.php:109
 msgid "Updating message"
 msgstr ""
 
-#: theme/default/functions.php:75
+#: theme/default/functions.php:110
 msgid "Deleting message"
 msgstr ""
 
-#: theme/default/functions.php:76
+#: theme/default/functions.php:111
 msgid "Uploading"
 msgstr ""
 
-#: theme/default/functions.php:80
+#: theme/default/functions.php:115
 msgid "Something went wrong in server side, not a valid response."
 msgstr ""
 
-#: theme/default/functions.php:102
+#: theme/default/functions.php:134
 msgid "AP Before"
 msgstr ""
 
-#: theme/default/functions.php:106
+#: theme/default/functions.php:138
 msgid "Widgets in this area will be shown before anspress body."
 msgstr ""
 
-#: theme/default/functions.php:112
+#: theme/default/functions.php:144
 msgid "AP Lists Top"
 msgstr ""
 
-#: theme/default/functions.php:116
+#: theme/default/functions.php:148
 msgid "Widgets in this area will be shown before questions list."
 msgstr ""
 
-#: theme/default/functions.php:122
+#: theme/default/functions.php:154
 msgid "AP Sidebar"
 msgstr ""
 
-#: theme/default/functions.php:126
+#: theme/default/functions.php:158
 msgid "Widgets in this area will be shown in AnsPress sidebar."
 msgstr ""
 
-#: theme/default/functions.php:132
+#: theme/default/functions.php:164
 msgid "AP Question Sidebar"
 msgstr ""
 
-#: theme/default/functions.php:136
+#: theme/default/functions.php:168
 msgid "Widgets in this area will be shown in question page sidebar."
 msgstr ""
 
-#: theme/default/functions.php:142
+#: theme/default/functions.php:174
 msgid "AP Category Page"
 msgstr ""
 
-#: theme/default/functions.php:146
+#: theme/default/functions.php:178
 msgid "Widgets in this area will be shown in category listing page."
 msgstr ""
 
-#: theme/default/functions.php:152
+#: theme/default/functions.php:184
 msgid "AP Tag page"
 msgstr ""
 
-#: theme/default/functions.php:156
+#: theme/default/functions.php:188
 msgid "Widgets in this area will be shown in tag listing page."
 msgstr ""
 
-#: theme/default/functions.php:162
+#: theme/default/functions.php:194
 msgid "AP User"
 msgstr ""
 
-#: theme/default/functions.php:166
+#: theme/default/functions.php:198
 msgid "Widgets in this area will be shown in user page."
 msgstr ""
 
-#: theme/default/functions.php:171
+#: theme/default/functions.php:203
 msgid "AP Activity"
 msgstr ""
 
-#: theme/default/functions.php:175
+#: theme/default/functions.php:207
 msgid "Widgets in this area will be shown AnsPress activity page."
 msgstr ""
 
-#: theme/default/list-head.php:13
-msgid "Search questions..."
-msgstr ""
-
-#: theme/default/list-head.php:24
+#: theme/default/list-head.php:19
 msgid "Reset sorting and filter"
 msgstr ""
 
@@ -3061,8 +3122,16 @@ msgstr ""
 msgid "View all posts by %s <span class=\"meta-nav\">&rarr;</span>"
 msgstr ""
 
-#: theme/default/question.php:97 widgets/question_stats.php:66
+#: theme/default/question.php:97 widgets/question_stats.php:67
 msgid "Question stats"
+msgstr ""
+
+#: theme/default/search-form.php:14
+msgid "Search questions..."
+msgstr ""
+
+#: theme/default/search.php:32
+msgid "No questions found matching your term."
 msgstr ""
 
 #: theme/default/shortcode/question.php:68
@@ -3087,10 +3156,6 @@ msgstr ""
 
 #: theme/default/user/about.php:40
 msgid "%d profile views"
-msgstr ""
-
-#: theme/default/user/about.php:49
-msgid "Last seen %s"
 msgstr ""
 
 #: theme/default/user/about.php:51
@@ -3149,27 +3214,6 @@ msgstr ""
 msgid "%d answers"
 msgstr ""
 
-#: theme/default/user/notification-dropdown.php:20
-#: theme/default/widgets/notifications.php:14
-msgid "Notifications"
-msgstr ""
-
-#: theme/default/user/notification-dropdown.php:21
-#: theme/default/widgets/notifications.php:15
-msgid "Mark all as read"
-msgstr ""
-
-#: theme/default/user/notification-dropdown.php:43
-#: theme/default/widgets/notifications.php:37
-msgid "View all notifications"
-msgstr ""
-
-#: theme/default/user/notification-dropdown.php:47
-#: theme/default/user/notification.php:46
-#: theme/default/widgets/notifications.php:41
-msgid "No notification"
-msgstr ""
-
 #: theme/default/user/notification.php:27
 msgid "Mark as read"
 msgstr ""
@@ -3186,27 +3230,21 @@ msgstr ""
 msgid "Not following any question yet!"
 msgstr ""
 
-#: theme/default/user/user-card.php:28
-msgid "Total Reputation"
+#: theme/default/user/user-answers.php:16
+msgid "No answer posted by this user yet."
 msgstr ""
 
-#: theme/default/user/user-card.php:40
-msgid "%s answers, %s selected"
-msgstr ""
-
-#: theme/default/user/user-card.php:49
-msgid "%s questions, %s solved"
-msgstr ""
-
-#: theme/default/user/user-card.php:58
-msgid "%s Followers, %s following"
+#: theme/default/user/user-questions.php:18
+msgid "No question asked by this user yet."
 msgstr ""
 
 #: theme/default/user/user.php:60 theme/default/users/loop-item.php:31
+#: theme/default/widgets/users.php:14
 msgid "%d Answers"
 msgstr ""
 
 #: theme/default/user/user.php:61 theme/default/users/loop-item.php:32
+#: theme/default/widgets/users.php:15
 msgid "%d Questions"
 msgstr ""
 
@@ -3222,7 +3260,7 @@ msgstr ""
 msgid "%d Comments"
 msgstr ""
 
-#: theme/default/users/loop-item.php:30
+#: theme/default/users/loop-item.php:30 theme/default/widgets/users.php:13
 msgid "%d Best"
 msgstr ""
 
@@ -3230,7 +3268,7 @@ msgstr ""
 msgid "Search users..."
 msgstr ""
 
-#: theme/default/users-widget.php:21 theme/default/widgets/users-widget.php:21
+#: theme/default/users-widget.php:21
 msgid "No users found."
 msgstr ""
 
@@ -3268,15 +3306,14 @@ msgstr ""
 msgid "Shows ask form."
 msgstr ""
 
-#: widgets/ask-form.php:34 widgets/quick-ask.php:29
+#: widgets/ask-form.php:34
 msgid "Ask questions"
 msgstr ""
 
 #: widgets/ask-form.php:38 widgets/followers.php:73 widgets/participants.php:48
-#: widgets/question_stats.php:70 widgets/questions.php:76
-#: widgets/quick-ask.php:33 widgets/related_questions.php:78
-#: widgets/search.php:58 widgets/subscribe.php:58 widgets/user.php:52
-#: widgets/users.php:68
+#: widgets/question_stats.php:71 widgets/questions.php:76
+#: widgets/related_questions.php:78 widgets/search.php:58
+#: widgets/subscribe.php:59 widgets/user.php:57 widgets/users.php:76
 msgid "Title:"
 msgstr ""
 
@@ -3332,29 +3369,29 @@ msgstr ""
 msgid "Shows question stats in single question page."
 msgstr ""
 
-#: widgets/question_stats.php:49
+#: widgets/question_stats.php:50
 msgid "Views"
 msgstr ""
 
-#: widgets/question_stats.php:49
+#: widgets/question_stats.php:50
 msgid "One time"
 msgid_plural "%d times"
 msgstr[0] ""
 msgstr[1] ""
 
-#: widgets/question_stats.php:50
+#: widgets/question_stats.php:51
 msgid "%2$s1%3$s answer"
 msgid_plural "%2$s%1$d%3$s answers"
 msgstr[0] ""
 msgstr[1] ""
 
-#: widgets/question_stats.php:51
+#: widgets/question_stats.php:52
 msgid "1 follower"
 msgid_plural "%d followers"
 msgstr[0] ""
 msgstr[1] ""
 
-#: widgets/question_stats.php:54
+#: widgets/question_stats.php:55
 msgid "This widget can only be used in single question page"
 msgstr ""
 
@@ -3418,19 +3455,19 @@ msgstr ""
 msgid "Subscribe button for single question and terms page."
 msgstr ""
 
-#: widgets/subscribe.php:54
+#: widgets/subscribe.php:55
 msgid "Subscribe"
 msgstr ""
 
-#: widgets/user.php:10
+#: widgets/user.php:15
 msgid "(AnsPress) User menu and profile"
 msgstr ""
 
-#: widgets/user.php:11
+#: widgets/user.php:16
 msgid "Display current logged in users detail and menu."
 msgstr ""
 
-#: widgets/user.php:36
+#: widgets/user.php:41
 msgid "Login to see your profile links"
 msgstr ""
 
@@ -3442,20 +3479,24 @@ msgstr ""
 msgid "Show logged in user notifications"
 msgstr ""
 
-#: widgets/users.php:10
+#: widgets/users.php:16
 msgid "(AnsPress) Users"
 msgstr ""
 
-#: widgets/users.php:11
+#: widgets/users.php:17
 msgid "Shows users based on selected order."
 msgstr ""
 
-#: widgets/users.php:72
+#: widgets/users.php:80
 msgid "Avatar:"
 msgstr ""
 
-#: widgets/users.php:76
+#: widgets/users.php:84
 msgid "Show"
+msgstr ""
+
+#: widgets/users.php:88
+msgid "Sort by"
 msgstr ""
 
 #. Plugin Name of the plugin/theme
@@ -3474,12 +3515,12 @@ msgstr ""
 msgid "Rahul Aryan"
 msgstr ""
 
-#: includes/common-pages.php:148
+#: includes/common-pages.php:104
 msgctxt "%s = human-readable time difference"
 msgid "%s"
 msgstr ""
 
-#: includes/functions.php:295
+#: includes/functions.php:296
 msgctxt "%s = human-readable time difference"
 msgid "%s ago"
 msgstr ""
