@@ -1,4 +1,9 @@
 <?php
+/**
+ * AnsPress user widget.
+ *
+ * Display logged in users profile menu and profile details. 
+ */
 class AP_User_Widget extends WP_Widget {
 
 	/**
