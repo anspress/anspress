@@ -290,7 +290,8 @@ function ap_get_notification_icon($type) {
 	$icons = apply_filters( 'ap_get_notification_icon', $icons );
 
 	if ( isset( $icons[$type] ) ) {
-		return $icons[$type]; }
+		return $icons[$type];
+	}
 }
 
 function ap_get_the_total_unread_notification($user_id = false, $echo = false) {
@@ -305,12 +306,13 @@ function ap_get_the_total_unread_notification($user_id = false, $echo = false) {
 
 	return $count;
 }
-	/**
-	 * Count total numbers of unread notification
-	 * @param  boolean|integer $user_id
-	 * @return integer
-	 * @since  2.3
-	 */
+
+/**
+ * Count total numbers of unread notification
+ * @param  boolean|integer $user_id
+ * @return integer
+ * @since  2.3
+ */
 function ap_get_total_unread_notification($user_id = false) {
 	global $wpdb;
 
@@ -326,7 +328,11 @@ function ap_get_total_unread_notification($user_id = false) {
 		return $cache;
 	}
 
-	$count = $wpdb->get_var( $wpdb->prepare( " SELECT count(*) FROM $wpdb->ap_notifications WHERE noti_status = 0 AND noti_user_id = %d", $user_id ) );
+	// count total numbers of unread also left join with 
+	// activity table and exclude notification for trashed items.
+	$query = $wpdb->prepare( " SELECT count(*) FROM $wpdb->ap_notifications n LEFT JOIN $wpdb->ap_activity a ON noti_activity_id = a.id WHERE n.noti_status = 0 AND n.noti_user_id = %d AND a.status != 'trash'", $user_id );
+
+	$count = $wpdb->get_var( $query );
 
 	wp_cache_set( $key, $count, 'ap_notifications' );
 
