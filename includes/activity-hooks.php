@@ -269,22 +269,22 @@ class AnsPress_Activity_Hook
 		$question_title = '<a class="ap-q-link" href="'. wp_get_shortlink( $question_id ) .'">'. $question->post_title .'</a>';
 
 		$activity_arr = array(
-			'user_id' 			=> $user_id,
+			'user_id' 			=> get_current_user_id(),
 			'type' 				=> 'answer_selected',
 			'status'			=> $answer->post_status,
 			'question_id'		=> $question_id,
 			'answer_id' 		=> $answer_id,
 			'permalink' 		=> wp_get_shortlink( $answer_id ),
-			'content' 			=> sprintf( __( '%s selected best answer for %s', 'anspress-question-answer' ), ap_activity_user_name( $user_id ), $question_title ),
+			'content' 			=> sprintf( __( '%s selected best answer for %s', 'anspress-question-answer' ), ap_activity_user_name( get_current_user_id() ), $question_title ),
 		);
 
 		$activity_id = ap_new_activity( $activity_arr );
 
 		// Add question activity meta.
-		ap_update_post_activity_meta( $question_id, 'answer_selected', $user_id );
+		ap_update_post_activity_meta( $question_id, 'answer_selected', get_current_user_id() );
 
 		// Add answer activity meta.
-		ap_update_post_activity_meta( $answer_id, 'best_answer', $user_id );
+		ap_update_post_activity_meta( $answer_id, 'best_answer', get_current_user_id() );
 
 		$user_ids = array( $answer->post_author );
 
@@ -308,20 +308,20 @@ class AnsPress_Activity_Hook
 		$question_title = '<a class="ap-q-link" href="'. wp_get_shortlink( $question_id ) .'">'. get_the_title( $question_id ) .'</a>';
 
 		$activity_arr = array(
-			'user_id' 			=> $user_id,
+			'user_id' 			=> get_current_user_id(),
 			'type' 				=> 'answer_unselected',
 			'status'			=> $answer->post_status,
 			'question_id'		=> $question_id,
 			'answer_id' 		=> $answer_id,
 			'permalink' 		=> wp_get_shortlink( $answer_id ),
-			'content' 			=> sprintf( __( '%s unselected best answer for question %s', 'anspress-question-answer' ), ap_activity_user_name( $user_id ), $question_title ),
+			'content' 			=> sprintf( __( '%s unselected best answer for question %s', 'anspress-question-answer' ), ap_activity_user_name( get_current_user_id() ), $question_title ),
 		);
 
 		ap_new_activity( $activity_arr );
 
 		// Add question activity meta.
-		ap_update_post_activity_meta( $question_id, 'answer_unselected', $user_id );
-		ap_update_post_activity_meta( $answer_id, 'unselected_best_answer', $user_id );
+		ap_update_post_activity_meta( $question_id, 'answer_unselected', get_current_user_id() );
+		ap_update_post_activity_meta( $answer_id, 'unselected_best_answer', get_current_user_id() );
 	}
 
 	/**
