@@ -500,6 +500,12 @@ function ap_post_actions() {
 		$actions['dropdown']['permanent_delete'] = ap_post_permanent_delete_btn_html();
 	}
 
+	// Convert question to a post.
+	if ( is_super_admin( ) && 'question' === $post->post_type ) {
+		$nonce = wp_create_nonce( 'ap_ajax_nonce' );
+		$actions['dropdown']['convert_to_post'] = '<a href="#" data-action="ajax_btn" data-query="convert_to_post::'.$nonce.'::'. $post->ID .'">'.__('Convert to post', 'anspress-question-answer').'</a>';
+	}
+
 	/*
      * FILTER: ap_post_actions_buttons
      * For filtering post actions buttons

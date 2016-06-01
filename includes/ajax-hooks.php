@@ -57,7 +57,8 @@ class AnsPress_Ajax
 	    anspress()->add_action( 'wp_ajax_ap_cover_upload', 'AnsPress_User', 'cover_upload' );
 		anspress()->add_action( 'wp_ajax_ap_avatar_upload', 'AnsPress_User', 'avatar_upload' );
 		anspress()->add_action( 'ap_ajax_filter_search', __CLASS__, 'filter_search' );
-		
+		anspress()->add_action( 'ap_ajax_convert_to_post', __CLASS__, 'convert_to_post' );
+
 	}
 
 	/**
@@ -66,7 +67,7 @@ class AnsPress_Ajax
 	 */
 	public function suggest_similar_questions() {
 		// Die if question suggestion is disabled.
-		if( ap_disable_question_suggestion( ) ){
+		if ( ap_disable_question_suggestion( ) ) {
 			wp_die( 'false' );
 		}
 
@@ -216,7 +217,7 @@ class AnsPress_Ajax
 		}
 
 		do_action( 'ap_wp_trash_answer', $post_id );
-		
+
 		$current_ans = ap_count_published_answers( $post->post_parent );
 		$count_label = sprintf( _n( '1 Answer', '%d Answers', $current_ans, 'anspress-question-answer' ), $current_ans );
 		ap_ajax_json(array(
@@ -247,8 +248,7 @@ class AnsPress_Ajax
 			ap_ajax_json( 'something_wrong' );
 		}
 
-		//wp_trash_post( $post_id );
-
+		// wp_trash_post( $post_id );
 		if ( $post->post_type == 'question' ) {
 			/**
 			 * Triggered right before deleting question.
@@ -311,7 +311,7 @@ class AnsPress_Ajax
 			'action' 		=> 'restore_post',
 			'do' 			=> [ 'removeClass' => [ '.post-'.$post->ID, 'status-trash' ], 'remove_if_exists' => '.post-'.$post->ID.' .ap-notice' ],
 			'message' 		=> __( 'Post restored successfully', 'anspress-question-answer' ),
-			'message_type' => 'success'
+			'message_type' => 'success',
 		));
 	}
 
@@ -330,7 +330,7 @@ class AnsPress_Ajax
 
 		// Do nothing if post type is not question.
 		if ( $post->post_type != 'question' ) {
-			ap_ajax_json( __('Only question can be set as featured', 'anspress-question-answer') );
+			ap_ajax_json( __('Only question can be set as featured', 'anspress-question-answer' ) );
 		}
 
 		// Check if current question ID is in featured question array.
@@ -518,20 +518,20 @@ class AnsPress_Ajax
 	 * Handle ajax callback for mark all notification as read
 	 */
 	public function markread_notification() {
-		$id = (int) ap_sanitize_unslash('id', 'request');
+		$id = (int) ap_sanitize_unslash('id', 'request' );
 
 		// Check for nonce if notification id is set.
-		if ( !empty( $id ) && ! ap_verify_nonce( 'ap_markread_notification_'.$id ) && ! is_user_logged_in() ) {
+		if ( ! empty( $id ) && ! ap_verify_nonce( 'ap_markread_notification_'.$id ) && ! is_user_logged_in() ) {
 			$this->something_wrong();
 		}
 
 		// Check for nonce if no notification id.
-		if ( empty($id) && ! ap_verify_nonce( 'ap_markread_notification_'.get_current_user_id() ) && ! is_user_logged_in() ) {
+		if ( empty($id ) && ! ap_verify_nonce( 'ap_markread_notification_'.get_current_user_id() ) && ! is_user_logged_in() ) {
 			$this->something_wrong();
 		}
 
 		// If id found then only mark that notification as read.
-		if ( !empty( $id ) ) {
+		if ( ! empty( $id ) ) {
 			$notification = ap_get_notification_by_id( $id );
 
 			if ( $notification && ( get_current_user_id() == $notification->noti_user_id || is_super_admin()) ) {
@@ -544,13 +544,11 @@ class AnsPress_Ajax
 						'action' 		=> 'mark_read_notification',
 						'container' 	=> '.ap-notification-'.$notification->noti_id,
 						'view' 			=> array( 'notification_count' => ap_get_total_unread_notification() ),
-						'do' => array( 'removeClass' => ['#ap-notification-'.$notification->noti_id, 'unread'] )
+						'do' => array( 'removeClass' => [ '#ap-notification-'.$notification->noti_id, 'unread' ] ),
 					) );
 				}
 			}
-		} 
-
-		// If no id the mark all notifications as read.
+		} // If no id the mark all notifications as read.
 		else {
 			$row = ap_notification_mark_all_read( get_current_user_id() );
 
@@ -742,7 +740,7 @@ class AnsPress_Ajax
 	    ob_start();
 		print_footer_scripts();
 		$scripts = ob_get_clean();
-		echo str_replace('jquery-core,jquery-migrate,', '', $scripts);
+		echo str_replace('jquery-core,jquery-migrate,', '', $scripts );
 		\_WP_Editors::editor_js();
 	    wp_die();
 	}
@@ -755,5 +753,33 @@ class AnsPress_Ajax
 		$filter = ap_sanitize_unslash( 'filter', 'request' );
 		$search_query = ap_sanitize_unslash( 'val', 'request' );
 		do_action('ap_list_filter_search_'.$filter, $search_query );
+	}
+
+	/**
+	 * Ajax callback for converting a question into a post.
+	 * @since 3.0.0
+	 */
+	public static function convert_to_post() {
+		if ( ! ap_verify_default_nonce() || ! is_super_admin( ) ) {
+			ap_ajax_json( 'something_wrong' );
+		}
+
+		$args = ap_sanitize_unslash( $_POST['args'] );
+
+		$row = set_post_type( $args[0], 'post' );
+
+		// After success trash all answers.
+		if ( $row ) {
+			global $wpdb;
+
+			// Get IDs of all answer.
+			$answer_ids = $wpdb->get_col( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_parent = %d and post_type = 'answer' ", (int) $args[0] ) );
+
+			foreach ( (array) $answer_ids as $id ) {
+				wp_delete_post( $id );
+			}
+
+			ap_ajax_json( [ 'do' => [ 'redirect' => get_permalink( $args[0] ) ] ] );
+		}
 	}
 }

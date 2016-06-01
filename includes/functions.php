@@ -1585,11 +1585,12 @@ function ap_verify_nonce($action) {
  * @return boolean
  */
 function ap_verify_default_nonce() {
-	if ( ! isset( $_REQUEST['ap_ajax_nonce'] ) ) {
+	$nonce_name = isset( $_REQUEST['ap_ajax_nonce'] ) ? 'ap_ajax_nonce' : '__nonce';
+	if ( !isset( $_REQUEST[ $nonce_name ] ) ) {
 		return false;
 	}
 
-	return wp_verify_nonce( $_REQUEST['ap_ajax_nonce'], 'ap_ajax_nonce' );
+	return wp_verify_nonce( $_REQUEST[$nonce_name], 'ap_ajax_nonce' );
 }
 
 /**
