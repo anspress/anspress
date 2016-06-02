@@ -26,11 +26,13 @@ class AP_Questions_Widget extends WP_Widget {
 
 		echo $args['before_widget'];
 		if ( ! empty( $title ) ) {
-			echo $args['before_title'] . $title . $args['after_title']; }
+			echo $args['before_title'] . $title . $args['after_title'];
+		}
 
 		$question_args = array(
 			'showposts' 	=> $limit,
 			'sortby' 		=> $sort,
+			'paged'			=> 1,
 		);
 
 		if ( is_array( $category_ids ) && count( $category_ids ) > 0 ) {
