@@ -58,6 +58,7 @@ class AnsPress_Ajax
 		anspress()->add_action( 'wp_ajax_ap_avatar_upload', 'AnsPress_User', 'avatar_upload' );
 		anspress()->add_action( 'ap_ajax_filter_search', __CLASS__, 'filter_search' );
 		anspress()->add_action( 'ap_ajax_convert_to_post', __CLASS__, 'convert_to_post' );
+		anspress()->add_action( 'ap_ajax_delete_attachment', __CLASS__, 'delete_attachment' );
 
 	}
 
@@ -780,6 +781,31 @@ class AnsPress_Ajax
 			}
 
 			ap_ajax_json( [ 'do' => [ 'redirect' => get_permalink( $args[0] ) ] ] );
+		}
+	}
+
+	public static function delete_attachment() {
+		if ( ! ap_verify_default_nonce() || ! ap_user_can_upload_image() ) {
+			ap_ajax_json('no_permission' );
+		}
+
+		$args = ap_sanitize_unslash( 'args', 'request' );
+
+		// If user cannot delete then die.
+		if ( ! ap_user_can_delete_attachment( $args[0] ) ) {
+			ap_ajax_json('no_permission' );
+		}
+
+		$row = wp_delete_attachment( $args[0], true );
+
+		if ( false !== $row ) {
+			ap_ajax_json( array(
+				'action' => 'delete_attachment',
+				'attachment_id' => $args[0],
+				'do' => array( 'remove_if_exists' => '#'.$args[0] ),
+				'message' => __('Attachment deleted permanently','anspress-question-answer' ),
+				'message_type' => 'success',
+			) );
 		}
 	}
 }

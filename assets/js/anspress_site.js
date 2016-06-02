@@ -307,7 +307,9 @@ var apData = {};
          * Remove an element if exists
          * @param  {string} elm elment selector.
          */
-        remove_if_exists: function(elm) {
+        remove_if_exists: function(elm, data, context) {
+            console.log(context);
+            elm = elm === 'context' ? context : elm;
             if (typeof elm !== 'undefined' && $(elm).length > 0)
                 $(elm).remove();
         },
@@ -530,7 +532,7 @@ var apData = {};
                                 ApSite.addImageInEditor(html);
                             }
 
-                            var html = '<span><i class="apicon-cloud-upload"></i><a href="'+data.url+'">'+data.name+'</a><i class="close" data-id="'+data.attachment_id+'">&times;</i></span>';
+                            var html = '<span id="'+data.attachment_id+'"><i class="apicon-cloud-upload"></i><a href="'+data.url+'">'+data.name+'</a><i class="close" data-action="ajax_btn" data-query="delete_attachment::'+ap_nonce+'::'+data.attachment_id+'">&times;</i></span>';
                             $(html).appendTo('#ap-upload-list');
                             
                             $('.ap-post-upload-form').append('<input type="hidden" name="attachment_ids[]" value="'+data['attachment_id']+'" />');

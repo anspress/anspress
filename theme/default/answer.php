@@ -25,9 +25,25 @@ $have_permission = ap_user_can_read_answer( $post );
 				<?php ap_answer_the_time(); ?>
             </div>
             <div class="ap-q-inner">
+                <?php
+					/**
+					 * ACTION: ap_before_answer_content
+					 * @since   3.0.0
+					 */
+					do_action('ap_before_answer_content' );
+
+				?>
                 <div class="ap-answer-content ap-q-content" itemprop="text">
 					<?php the_content(); ?>
                 </div>
+                <?php
+					/**
+					 * ACTION: ap_after_answer_content
+					 * @since   3.0.0
+					 */
+					do_action('ap_after_answer_content' );
+
+				?>
 				<?php if ( $have_permission ) :   ?>
 					<?php ap_answer_the_active_time(); ?>
 					<?php ap_post_status_description(ap_answer_get_the_answer_id() ) ?>

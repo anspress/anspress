@@ -1302,6 +1302,13 @@ function ap_post_upload_form($post_id = false) {
         </div>';
 
 	$html .= '</div>';
+	$media = get_attached_media( '', $post_id );
+	$html .= '<div id="ap-upload-list">';
+	$__nonce = wp_create_nonce( 'ap_ajax_nonce' );
+	foreach( (array) $media as $m ){
+		$html .= '<span id="'.$m->ID.'"><i class="apicon-cloud-upload"></i><a href="'. esc_url( wp_get_attachment_url( $m->ID ) ) .'">'.basename( get_attached_file( $m->ID ) ).'</a><i class="close" data-action="ajax_btn" data-query="delete_attachment::'.$__nonce.'::'.$m->ID.'">&times;</i></span>';
+	}
+	$html .= '</div>';
 
 	return $html;
 }

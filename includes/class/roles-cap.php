@@ -185,7 +185,7 @@ function ap_user_can_answer( $question_id, $user_id = false ) {
 	}
 
 	// Return if user cannot read question.
-	if ( !ap_allow_anonymous() && !ap_user_can_read_question($question_id, $user_id) ) {
+	if ( ! ap_allow_anonymous() && ! ap_user_can_read_question($question_id, $user_id ) ) {
 		return false;
 	}
 
@@ -195,7 +195,7 @@ function ap_user_can_answer( $question_id, $user_id = false ) {
 	}
 
 	// Do not allow to answer if best answer is selected.
-	if ( ap_opt('close_selected') && ap_question_best_answer_selected( $question->ID ) ) {
+	if ( ap_opt('close_selected' ) && ap_question_best_answer_selected( $question->ID ) ) {
 		return false;
 	}
 
@@ -305,7 +305,7 @@ function ap_user_can_edit_answer( $post_id, $user_id = false ) {
 	}
 
 	// Do not allow to edit if moderate.
-	if ( 'moderate' === $answer->post_status) {
+	if ( 'moderate' === $answer->post_status ) {
 		return false;
 	}
 
@@ -360,7 +360,7 @@ function ap_user_can_edit_question( $post_id = false, $user_id = false ) {
 	}
 
 	// Do not allow to edit if moderate.
-	if ( 'moderate' === $question->post_status) {
+	if ( 'moderate' === $question->post_status ) {
 		return false;
 	}
 
@@ -426,7 +426,7 @@ function ap_user_can_comment( $post_id = false, $user_id = false ) {
 	$post_o = get_post( $post_id );
 
 	// Do not allow to comment if post is moderate.
-	if( 'moderate' === $post_o->post_status ){
+	if ( 'moderate' === $post_o->post_status ) {
 		return false;
 	}
 
@@ -476,7 +476,7 @@ function ap_user_can_edit_comment( $comment_id,  $user_id = false ) {
 	}
 
 	// Do not allow to edit if not approved.
-	if( '0' == $comment->comment_approved ){
+	if ( '0' == $comment->comment_approved ) {
 		return false;
 	}
 
@@ -498,11 +498,11 @@ function ap_user_can_edit_comment( $comment_id,  $user_id = false ) {
  * @return boolean
  */
 function ap_user_can_delete_comment($comment_id, $user_id = false) {
-	if( false === $user_id ){
+	if ( false === $user_id ) {
 		$user_id = get_current_user_id();
 	}
 
-	if ( is_super_admin($user_id) || user_can( $user_id, 'ap_delete_others_comment' ) ) {
+	if ( is_super_admin($user_id ) || user_can( $user_id, 'ap_delete_others_comment' ) ) {
 		return true;
 	}
 
@@ -667,7 +667,7 @@ function ap_user_can_view_moderate_post( $post_id, $user_id = false ) {
 	}
 
 	// Return if user is anonymous.
-	if( empty( $user_id ) ){
+	if ( empty( $user_id ) ) {
 		return false;
 	}
 
@@ -696,7 +696,7 @@ function ap_user_can_view_future_post( $post_id, $user_id = false ) {
 	}
 
 	// Return if user is anonymous.
-	if( empty( $user_id ) ){
+	if ( empty( $user_id ) ) {
 		return false;
 	}
 
@@ -835,7 +835,38 @@ function ap_user_can_upload_image() {
 		return true;
 	}
 
-	if( ap_opt( 'allow_upload_image' ) ){
+	if ( ap_opt( 'allow_upload_image' ) ) {
+		return true;
+	}
+
+	return false;
+}
+
+
+/**
+ * Check if user can delete an attachment.
+ * @param  integer         $attacment_id Attachment ID.
+ * @param  boolean|integer $user_id      User ID.
+ * @return boolean
+ * @since  3.0.0
+ */
+function ap_user_can_delete_attachment( $attacment_id, $user_id = false ) {
+	if ( false === $user_id ) {
+		$user_id = get_current_user_id();
+	}
+
+	if ( is_super_admin( $user_id ) ) {
+		return true;
+	}
+
+	$attachment = get_post( $attacment_id );
+
+	if ( ! $attachment ) {
+		return false;
+	}
+
+	// Check if attachment post author matches `$user_id`.
+	if ( $user_id == $attachment->post_author ) {
 		return true;
 	}
 
@@ -1015,18 +1046,18 @@ function ap_user_can_read_post( $post_id, $user_id = false, $post_type = false )
 	if ( 'answer' == $post_type ) {
 		$answer = get_post( $post_o->post_parent );
 		if ( 'private_post' == $answer->post_status && ! ap_user_can_view_private_post( $answer->ID, $user_id ) ) {
-		return false;
+			return false;
 		} elseif ( 'moderate' == $answer->post_status && ! ap_user_can_view_moderate_post( $answer->ID, $user_id ) ) {
 			return false;
 		}
 	}
-	
+
 	if ( 'private_post' == $post_o->post_status && ! ap_user_can_view_private_post( $post_id, $user_id ) ) {
 		return false;
 	} elseif ( 'moderate' == $post_o->post_status && ! ap_user_can_view_moderate_post( $post_id, $user_id ) ) {
 		return false;
-	}	
-		
+	}
+
 	if ( ! ap_opt('only_logged_in' ) && 'question' == $post_type ) {
 		return true;
 	}
@@ -1135,7 +1166,7 @@ function ap_user_can_vote_on_post( $post_id, $type, $user_id = false, $wp_error 
  * @return boolean
  */
 function ap_user_can_approve_comment( $user_id = false ) {
-	if( false === $user_id ){
+	if ( false === $user_id ) {
 		$user_id = get_current_user_id();
 	}
 
@@ -1153,8 +1184,7 @@ function ap_user_can_approve_comment( $user_id = false ) {
 		return false;
 	}
 
-
-	if ( is_super_admin($user_id) || user_can( $user_id, 'ap_approve_comment' ) ) {
+	if ( is_super_admin($user_id ) || user_can( $user_id, 'ap_approve_comment' ) ) {
 		return true;
 	}
 
