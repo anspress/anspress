@@ -318,7 +318,12 @@ function ap_display_question_metas($question_id = false) {
 
 		$view_count = ap_get_qa_views();
 		$metas['views'] = sprintf( __( '<i>%d views</i>', 'anspress-question-answer' ), $view_count );
-		$metas['history'] = ap_latest_post_activity_html( $question_id, ! is_question() );
+		$metas['history'] = ap_latest_post_activity_html( $question_id, ! is_question() );		
+	}
+
+	// If featured question.
+	if( ap_is_featured_question( $question_id ) ){
+		$metas['featured'] = __( 'Featured', 'anspress-question-answer' );
 	}
 
 	/*
@@ -483,7 +488,7 @@ function ap_post_actions() {
 
 	// Featured link.
 	if ( is_super_admin() && $post->post_type == 'question' ) {
-		$actions['dropdown']['featured'] = ap_featured_post_btn();
+		$actions['dropdown']['featured'] = ap_featured_post_btn( $post->ID );
 	}
 
 	// Delete link.

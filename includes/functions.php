@@ -1408,13 +1408,17 @@ function ap_upload_user_file( $file = array(), $temp = true, $parent_post = fals
 	return false;
 }
 
+/**
+ * Return set featured question action button.
+ * @param  boolean|integer $post_id Post ID.
+ * @return string
+ */
 function ap_featured_post_btn($post_id = false) {
-
 	if ( ! is_user_logged_in() ) {
 		return;
 	}
 
-	if ( $post_id == false ) {
+	if ( false === $post_id ) {
 		$post_id = get_question_id();
 	}
 

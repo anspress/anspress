@@ -321,7 +321,7 @@ class AnsPress_Ajax
 	 */
 	public function set_featured() {
 		$post_id = (int) ap_sanitize_unslash( 'post_id', 'request' );
-
+		var_dump($_POST);
 		if ( ! is_super_admin() || ! ap_verify_nonce( 'set_featured_'.$post_id ) ) {
 			ap_ajax_json( 'no_permission' );
 		}
