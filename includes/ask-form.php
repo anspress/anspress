@@ -67,7 +67,7 @@ function ap_get_ask_form_fields( $post_id = false ) {
 		array(
 			'name'  => 'ap_upload',
 			'type'  => 'custom',
-			'html' => ap_post_upload_form(),
+			'html' => ap_post_upload_form() .'<div id="ap-upload-list"></div>',
 			'order' => 10,
 		),
 		array(

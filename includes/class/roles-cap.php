@@ -831,7 +831,11 @@ function ap_user_can_upload_image() {
 		return false;
 	}
 
-	if ( is_super_admin() || ap_opt( 'allow_upload_image' ) ) {
+	if ( is_super_admin() ) {
+		return true;
+	}
+
+	if( ap_opt( 'allow_upload_image' ) ){
 		return true;
 	}
 

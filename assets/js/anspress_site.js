@@ -524,8 +524,15 @@ var apData = {};
                         data = JSON.parse(data.filter('#ap-response').html());
                         $('body').trigger('postUploadForm', data);
 
-                        if(typeof data.html !== 'undefined' ){
-                            ApSite.addImageInEditor(data.html);
+                        if(typeof data.url !== 'undefined' ){
+                            if(data.mime.indexOf('image') > -1){
+                                var html = '<img src="'+data.url+'" />';
+                                ApSite.addImageInEditor(html);
+                            }
+
+                            var html = '<span><i class="apicon-cloud-upload"></i><a href="'+data.url+'">'+data.name+'</a><i class="close" data-id="'+data.attachment_id+'">&times;</i></span>';
+                            $(html).appendTo('#ap-upload-list');
+                            
                             $('.ap-post-upload-form').append('<input type="hidden" name="attachment_ids[]" value="'+data['attachment_id']+'" />');
                         }
 

@@ -1320,6 +1320,28 @@ function ap_post_upload_hidden_form() {
 }
 
 /**
+ * Return allowed mime types.
+ * @return array
+ * @since  3.0.0
+ */
+function ap_allowed_mimes(){
+	$mimes = array(
+		'jpg|jpeg' => 'image/jpeg',
+		'gif' => 'image/gif',
+		'png' => 'image/png',
+		'doc|docx' => 'application/msword',
+		'xls' => 'application/vnd.ms-excel',
+	);
+
+	/**
+	 * Filter allowed mimes types.
+	 * @param  array $mimes Default mimes types.
+	 * @since  3.0.0
+	 */
+	return apply_filters( 'ap_allowed_mimes', $mimes );
+}
+
+/**
  * Upload and create an attachment. Set attachment meta _ap_temp_image,
  * later it will be removed when post parent is set.
  *
@@ -1338,11 +1360,7 @@ function ap_upload_user_file( $file = array(), $temp = true, $parent_post = fals
 
 	$file_return = wp_handle_upload($file, array(
 		'test_form' => false,
-		'mimes' => array(
-			'jpg|jpeg' => 'image/jpeg',
-			'gif' => 'image/gif',
-			'png' => 'image/png',
-		),
+		'mimes' => ap_allowed_mimes(),
 	));
 
 	if ( isset( $file_return['error'] ) || isset( $file_return['upload_error_handler'] ) ) {

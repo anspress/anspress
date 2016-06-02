@@ -63,6 +63,7 @@
 							 * @since 	2.0.0-alpha2
 							 */
 							do_action('ap_after_question_content' );
+							
 						?>
 
 						<?php ap_question_the_active_time(); ?>

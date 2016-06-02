@@ -482,8 +482,7 @@ class AnsPress_Process_Form
 	public function upload_post_image() {
 
 		if ( ! ap_user_can_upload_image() ) {
-			$this->result  = array( 'message' => 'no_permission' );
-			return;
+			ap_ajax_json( 'no_permission' );
 		}
 
 		$user_id = get_current_user_id();
@@ -491,18 +490,18 @@ class AnsPress_Process_Form
 		$file = $_FILES['post_upload_image'];
 
 		if ( $file['size'] > ap_opt( 'max_upload_size' ) ) {
-			$this->result  = array( 'message_type' => 'error', 'message' => sprintf( __( 'File cannot be uploaded, size is bigger then %d Byte', 'anspress-question-answer' ), ap_opt( 'max_upload_size' ) ) );
-			return;
+			ap_ajax_json( array( 
+				'message_type' => 'error', 
+				'message' => sprintf( __( 'File cannot be uploaded, size is bigger then %d Byte', 'anspress-question-answer' ), ap_opt( 'max_upload_size' ) ) 
+			) );
 		}
 
 		if ( ap_user_upload_limit_crossed( $user_id ) ) {
-			$this->result  = array( 'message' => 'upload_limit_crossed' );
-			return;
+			ap_ajax_json( array( 'message' => 'upload_limit_crossed' ) );
 		}
 
 		if ( ! is_user_logged_in() ) {
-			$this->result  = array( 'message' => 'no_permission' );
-			return;
+			ap_ajax_json( 'no_permission' );
 		}
 
 		if ( ! isset( $_POST['__nonce'] ) || ! wp_verify_nonce( $_POST['__nonce'], 'upload_image_'.$user_id ) ) {
@@ -514,7 +513,14 @@ class AnsPress_Process_Form
 			$attachment_id = ap_upload_user_file( $file );
 
 			if ( $attachment_id !== false ) {
-				ap_ajax_json( array( 'action' => 'upload_post_image', 'html' => wp_get_attachment_image( $attachment_id, 'full' ), 'message' => 'post_image_uploaded', 'attachment_id' => $attachment_id ) );
+				ap_ajax_json( array( 
+					'action' 	=> 'upload_post_image', 
+					'name' 		=> basename ( get_attached_file( $attachment_id ) ),
+					'url' 		=> wp_get_attachment_url( $attachment_id ),
+					'mime' 		=> get_post_mime_type( $attachment_id ),
+					'message' 	=> 'post_image_uploaded',
+					'attachment_id' => $attachment_id
+				) );
 			}
 		}
 

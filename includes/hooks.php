@@ -61,6 +61,8 @@ class AnsPress_Hooks
 	    anspress()->add_action( 'ap_before', 'AnsPress_Theme', 'ap_before_html_body' );
 	    anspress()->add_action( 'wp', 'AnsPress_Theme', 'remove_head_items', 10 );
 		anspress()->add_action( 'wp_head', 'AnsPress_Theme', 'wp_head', 11 );
+		anspress()->add_action( 'ap_after_question_content', 'AnsPress_Theme', 'question_attachments', 11 );
+		anspress()->add_action( 'ap_after_answer_content', 'AnsPress_Theme', 'question_attachments', 11 );
 
 	    anspress()->add_filter( 'wp_get_nav_menu_items', __CLASS__, 'update_menu_url' );
 	    anspress()->add_filter( 'nav_menu_css_class', __CLASS__, 'fix_nav_current_class', 10, 2 );

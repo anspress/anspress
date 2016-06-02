@@ -307,4 +307,13 @@ class AnsPress_Theme
 
 		ap_ajax_json( $data );
 	}
+
+	/**
+	 * Shows lists of attachments of a question
+	 */
+	public static function question_attachments(){
+		$media = get_attached_media( '', get_the_ID() );
+
+		include ap_get_theme_location('attachments.php');
+	}
 }
