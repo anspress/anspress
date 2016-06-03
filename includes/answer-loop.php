@@ -366,7 +366,7 @@ function ap_answer_the_vote_button() {
 function ap_answer_the_comments() {
 	if ( ! ap_opt( 'disable_comments_on_answer' ) ) {
 		echo '<div id="post-c-'.get_the_ID().'" class="ap-comments comment-container '. ( get_comments_number() > 0 ? 'have' : 'no' ) .'-comments">';
-		//comments_template();
+		// comments_template();
 		echo '</div>';
 	}
 }
@@ -560,4 +560,25 @@ function ap_count_other_answer($question_id = false) {
 	}
 
 	return (int) $count;
+}
+
+/**
+ * Unselect an answer as best.
+ * @param  integer $post_id Post ID.
+ */
+function ap_unselect_answer( $post_id ) {
+	$post = get_post( $post_id );
+
+	do_action( 'ap_unselect_answer', $post->post_author, $post->post_parent, $post->ID );
+
+	update_post_meta( $post->ID, ANSPRESS_BEST_META, 0 );
+	update_post_meta( $post->post_parent, ANSPRESS_SELECTED_META, false );
+	update_post_meta( $post->post_parent, ANSPRESS_UPDATED_META, current_time( 'mysql' ) );
+
+	if ( ap_opt( 'close_selected' ) ) {
+		wp_update_post( array( 'ID' => $post->post_parent, 'post_status' => 'publish' ) );
+	}
+
+	ap_update_user_best_answers_count_meta( $post->post_author );
+	ap_update_user_solved_answers_count_meta( $post->post_author );
 }

@@ -89,6 +89,11 @@ class AnsPress_Post_Status
 		$update_data['ID'] = $post->ID;
 		wp_update_post( $update_data );
 
+		// Unselect as best answer.
+		if ( 'answer' == $post->post_type && 'moderate' == $status && ap_question_best_answer_selected( $post->post_parent ) ) {
+			ap_unselect_answer( $post->ID );
+		}
+
 		// ap_add_history( get_current_user_id(), $post_id, '', 'status_updated' );
 		add_action( 'ap_post_status_updated', $post->ID );
 
@@ -121,11 +126,11 @@ function ap_post_change_status_btn_html( $post_id = false ) {
 		$action = 'change_post_status_'.$post_id;
 		$nonce = wp_create_nonce( $action );
 
-		$status = apply_filters( 'ap_change_status_dropdown', array( 
+		$status = apply_filters( 'ap_change_status_dropdown', array(
 			'closed' 		=> __( 'Close', 'anspress-question-answer' ),
 			'publish' 		=> __( 'Open', 'anspress-question-answer' ),
 			'moderate' 		=> __( 'Moderate', 'anspress-question-answer' ),
-			'private_post' 	=> __( 'Private', 'anspress-question-answer' )
+			'private_post' 	=> __( 'Private', 'anspress-question-answer' ),
 		) );
 
 		$output = '<div class="ap-dropdown">
@@ -164,7 +169,6 @@ function ap_post_change_status_btn_html( $post_id = false ) {
 function ap_post_status_description($post_id = false) {
 	$post = get_post( $post_id );
 	$post_type = $post->post_type == 'question' ? __( 'Question', 'anspress-question-answer' ) : __( 'Answer', 'anspress-question-answer' );
-
 
 	if ( ap_have_parent_post( $post_id ) && $post->post_type != 'answer' ) : ?>
         <div id="ap_post_status_desc_<?php echo $post_id; ?>" class="ap-notice blue clearfix">

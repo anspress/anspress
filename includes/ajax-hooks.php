@@ -129,18 +129,7 @@ class AnsPress_Ajax
 
 	    // Unselect best answer if already selected.
 	    if ( ap_question_best_answer_selected( $post->post_parent ) ) {
-	        do_action( 'ap_unselect_answer', $post->post_author, $post->post_parent, $post->ID );
-
-	        update_post_meta( $post->ID, ANSPRESS_BEST_META, 0 );
-	        update_post_meta( $post->post_parent, ANSPRESS_SELECTED_META, false );
-	        update_post_meta( $post->post_parent, ANSPRESS_UPDATED_META, current_time( 'mysql' ) );
-
-	        if ( ap_opt( 'close_selected' ) ) {
-	            wp_update_post( array( 'ID' => $post->post_parent, 'post_status' => 'publish' ) );
-	        }
-
-	        ap_update_user_best_answers_count_meta( $post->post_author );
-	        ap_update_user_solved_answers_count_meta( $post->post_author );
+	        ap_unselect_answer( $answer_id );
 
 	        ap_ajax_json( array(
 	        	'message' 	=> 'unselected_the_answer',
@@ -148,6 +137,11 @@ class AnsPress_Ajax
 	        	'do' 		=> 'reload',
 	        ) );
 
+	    }
+
+	    // Do not allow answer to be selected as best if status is moderate.
+	    if( 'moderate' == $post->post_status ) {
+	    	ap_ajax_json( [ 'message_type' => 'warning', 'message' => __( 'Answer with moderate status cannot be selected as best.', 'anspress-question-answer' ) ] );
 	    }
 
 	    /**
@@ -321,7 +315,6 @@ class AnsPress_Ajax
 	 */
 	public function set_featured() {
 		$post_id = (int) ap_sanitize_unslash( 'post_id', 'request' );
-		var_dump($_POST);
 		if ( ! is_super_admin() || ! ap_verify_nonce( 'set_featured_'.$post_id ) ) {
 			ap_ajax_json( 'no_permission' );
 		}

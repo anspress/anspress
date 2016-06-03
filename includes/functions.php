@@ -1919,3 +1919,5 @@ function ap_disable_question_suggestion( ){
 	 */
 	return (bool) apply_filters( 'ap_disable_question_suggestion', false );
 }
+
+
