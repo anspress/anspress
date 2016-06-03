@@ -23,111 +23,121 @@ class AP_Reputation {
 		}
 
 		ap_register_user_page( 'reputation', __( 'Reputation', 'anspress-question-answer' ), array( $this, 'reputation_page' ) );
-		add_filter( 'ap_user_menu', array( $this, 'sort_reputation_page' ) );
 
-		add_action( 'ap_after_new_question', array( $this, 'new_question' ) );
-		add_action( 'ap_untrash_question', array( $this, 'new_question' ) );
-		add_action( 'ap_trash_question', array( $this, 'trash_question' ), 10, 2 );
+		anspress()->add_filter( 'ap_user_menu', __CLASS__, 'sort_reputation_page' );
 
-		add_action( 'ap_after_new_answer', array( $this, 'new_answer' ) );
-		add_action( 'ap_untrash_answer', array( $this, 'new_answer' ) );
-		add_action( 'ap_trash_answer', array( $this, 'delete_answer' ), 10, 2 );
+		anspress()->add_action( 'ap_after_new_question', __CLASS__, 'new_question' );
+		anspress()->add_action( 'ap_untrash_question', __CLASS__, 'new_question' );
+		anspress()->add_action( 'ap_trash_question', __CLASS__, 'trash_question', 10, 2 );
 
-		add_action( 'ap_select_answer', array( $this, 'select_answer' ), 10, 3 );
-		add_action( 'ap_unselect_answer', array( $this, 'unselect_answer' ), 10, 3 );
+		anspress()->add_action( 'ap_after_new_answer', __CLASS__, 'new_answer' );
+		anspress()->add_action( 'ap_untrash_answer', __CLASS__, 'new_answer' );
+		anspress()->add_action( 'ap_trash_answer', __CLASS__, 'delete_answer', 10, 2 );
 
-		add_action( 'ap_vote_up', array( $this, 'vote_up' ), 10, 2 );
-		add_action( 'ap_vote_down', array( $this, 'vote_down' ), 10, 2 );
-		add_action( 'ap_undo_vote_up', array( $this, 'undo_vote_up' ), 10, 2 );
-		add_action( 'ap_undo_vote_down', array( $this, 'undo_vote_down' ), 10, 2 );
+		anspress()->add_action( 'ap_select_answer', __CLASS__, 'select_answer', 10, 3 );
+		anspress()->add_action( 'ap_unselect_answer', __CLASS__, 'unselect_answer', 10, 3 );
 
-		add_action( 'ap_publish_comment', array( $this, 'new_comment' ) );
-		add_action( 'ap_unpublish_comment', array( $this, 'delete_comment' ) );
+		anspress()->add_action( 'ap_vote_up', __CLASS__, 'vote_up', 10, 2 );
+		anspress()->add_action( 'ap_vote_down', __CLASS__, 'vote_down', 10, 2 );
+		anspress()->add_action( 'ap_undo_vote_up', __CLASS__, 'undo_vote_up', 10, 2 );
+		anspress()->add_action( 'ap_undo_vote_down', __CLASS__, 'undo_vote_down', 10, 2 );
 
-		add_filter( 'ap_user_display_meta_array', array( $this, 'display_meta' ), 10, 2 );
-		add_filter( 'user_register', array( $this, 'user_register' ) );
+		anspress()->add_action( 'ap_publish_comment', __CLASS__, 'new_comment' );
+		anspress()->add_action( 'ap_unpublish_comment', __CLASS__, 'delete_comment' );
+
+		anspress()->add_filter( 'ap_user_display_meta_array', __CLASS__, 'display_meta', 10, 2 );
+		anspress()->add_filter( 'user_register', __CLASS__, 'user_register' );
 	}
 
-	public function reputation_page() {
+	/**
+	 * Register user reputation page.
+	 */
+	public static function reputation_page() {
 		ap_get_template_part( 'user/reputation' );
 	}
 
-	public function sort_reputation_page($menu) {
-
+	/**
+	 * Order user reputation page.
+	 * @param  array $menu User menu.
+	 * @return array
+	 */
+	public static function sort_reputation_page( $menu ) {
 		if ( isset( $menu['reputation'] ) ) {
-			$menu['reputation']['order'] = 10; }
+			$menu['reputation']['order'] = 10;
+		}
 
 		return $menu;
 	}
 
 	/**
-	 * Update reputation of user created question
-	 * @param  integer $postid
+	 * Update reputation of user created question.
+	 * @param  integer $postid Post ID.
 	 * @return boolean|null
 	 */
-	public function new_question($postid) {
+	public static function new_question($postid) {
 		$reputation = ap_reputation_by_event( 'new_question', true );
 		return ap_reputation( 'question', get_current_user_id(), $reputation, $postid );
 	}
 
 	/**
-	 * Update point of trashing question
-	 * @param  integer $post_id
+	 * Update point of trashing question.
+	 * @param  integer $post_id Post ID.
 	 * @return boolean
 	 */
-	public function trash_question($post_id, $post) {
+	public static function trash_question($post_id, $post) {
 		$reputation = ap_reputation_by_event( 'new_question', true );
 		return ap_reputation_log_delete( 'question', get_current_user_id(), $reputation, $post->ID );
 	}
 
 	/**
 	 * Update reputation of user created an answer
-	 * @param  integer $postid
+	 * @param  integer $postid Post ID.
 	 * @return boolean|null
 	 */
-	public function new_answer($postid) {
+	public static function new_answer($postid) {
 		$post = get_post( $postid );
 		$reputation = ap_reputation_by_event( 'new_answer', true );
 		return ap_reputation( 'answer', get_current_user_id(), $reputation, $postid, $post->post_author );
 	}
 
 	/**
-	 * Update reputation on trasing answer
-	 * @param  integer $post_id
+	 * Update reputation on trasing answer.
+	 * @param  integer $post_id Post ID.
 	 * @return boolean
 	 */
-	public function delete_answer($post_id, $post) {
+	public static function delete_answer($post_id, $post) {
 		$reputation = ap_reputation_by_event( 'new_answer', true );
 		return ap_reputation_log_delete( 'answer', get_current_user_id(), $reputation, $post_id );
 	}
 
 	/**
 	 * Update reputation of user selecting and author of answer on selecting an answer
-	 * @param  integer $userid
-	 * @param  integer $question_id
-	 * @param  integer $answer_id
+	 * @param  integer $userid User ID.
+	 * @param  integer $question_id Question ID.
+	 * @param  integer $answer_id Answer ID.
 	 * @return void
 	 */
-	public function select_answer($userid, $question_id, $answer_id) {
+	public static function select_answer($userid, $question_id, $answer_id) {
 		$reputation = ap_reputation_by_event( 'select_answer', true );
 		$selector_reputation = ap_reputation_by_event( 'selecting_answer', true );
 		$answer = get_post( $answer_id );
 
 		if ( $answer->post_author != $userid ) {
-			ap_reputation( 'best_answer', $answer->post_author, $reputation, $answer_id, $answer->post_author ); }
+			ap_reputation( 'best_answer', $answer->post_author, $reputation, $answer_id, $answer->post_author );
+		}
 
 		ap_reputation( 'selecting_answer', $userid, $selector_reputation, $answer_id, $answer->post_author );
 		return;
 	}
 
 	/**
-	 * Update reputation of user selecting and author of answer on unselecting answer
-	 * @param  integer $userid
-	 * @param  integer $question_id
-	 * @param  integer $answer_id
+	 * Update reputation of user selecting and author of answer on unselecting answer.
+	 * @param  integer $userid User ID.
+	 * @param  integer $question_id Question ID.
+	 * @param  integer $answer_id Answer ID.
 	 * @return void
 	 */
-	public function unselect_answer($userid, $question_id, $answer_id) {
+	public static function unselect_answer($userid, $question_id, $answer_id) {
 		$reputation = ap_reputation_by_event( 'select_answer', true );
 		$selector_reputation = ap_reputation_by_event( 'selecting_answer', true );
 		$answer = get_post( $answer_id );
@@ -140,62 +150,73 @@ class AP_Reputation {
 	}
 
 	/**
-	 * Update reputation of post author when received an up vote
-	 * @param  integer $postid
-	 * @param  array   $counts
+	 * Update reputation of post author when received an up vote.
+	 * @param  integer $postid Post ID.
+	 * @param  array   $counts Counts.
 	 * @return null|false
 	 */
-	public function vote_up($postid, $counts) {
+	public static function vote_up($postid, $counts) {
 		$post = get_post( $postid );
 
-		// give reputation to post author
+		// Give reputation to post author.
 		if ( $post->post_type == 'question' ) {
-			$reputation = ap_reputation_by_event( 'question_upvote', true ); } elseif ($post->post_type == 'answer')
+			$reputation = ap_reputation_by_event( 'question_upvote', true );
+		} elseif ($post->post_type == 'answer'){
 			$reputation = ap_reputation_by_event( 'answer_upvote', true );
+		}
 
 		$uid = $post->post_author;
 
 		if ( ! empty( $reputation ) ) {
-			ap_reputation( 'vote_up', $uid, $reputation, $postid ); }
+			ap_reputation( 'vote_up', $uid, $reputation, $postid );
+		}
 
 		if ( $post->post_type == 'question' ) {
-			$reputation = ap_reputation_by_event( 'question_upvoted', true ); } elseif ($post->post_type == 'answer')
+			$reputation = ap_reputation_by_event( 'question_upvoted', true ); 
+		} elseif ($post->post_type == 'answer'){
 			$reputation = ap_reputation_by_event( 'answer_upvoted', true );
+		}
 
 		$userid = get_current_user_id();
 
 		if ( ! empty( $reputation ) ) {
-			return ap_reputation( 'vote_up', $userid, $reputation, $postid ); }
+			return ap_reputation( 'vote_up', $userid, $reputation, $postid );
+		}
 
 		return false;
 	}
 
 	/**
-	 * Update reputation of post author when received a down vote
-	 * @param  integer $postid
-	 * @param  array   $counts
+	 * Update reputation of post author when received a down vote.
+	 * @param  integer $postid Post ID.
+	 * @param  array   $counts Counts.
 	 * @return boolean
 	 */
-	public function vote_down($postid, $counts) {
+	public static function vote_down($postid, $counts) {
 		$post = get_post( $postid );
 
 		// give reputation to post author
 		if ( $post->post_type == 'question' ) {
-			$reputation = ap_reputation_by_event( 'question_downvote', true ); } elseif ($post->post_type == 'answer')
+			$reputation = ap_reputation_by_event( 'question_downvote', true );
+		} elseif ($post->post_type == 'answer'){
 			$reputation = ap_reputation_by_event( 'answer_downvote', true );
+		}
 
 		$uid = $post->post_author;
 
 		if ( empty( $reputation ) ) {
-			return false; }
+			return false;
+		}
 
 		ap_reputation( 'vote_down', $uid, $reputation, $postid );
 
-		// give reputation to user casting vote
+		// Give reputation to user casting vote.
 		$userid = get_current_user_id();
 		if ( $post->post_type == 'question' ) {
-			$reputation = ap_reputation_by_event( 'question_downvoted', true ); } elseif ($post->post_type == 'answer')
+			$reputation = ap_reputation_by_event( 'question_downvoted', true );
+		} elseif ($post->post_type == 'answer'){
 			$reputation = ap_reputation_by_event( 'answer_downvoted', true );
+		}
 
 		ap_reputation( 'voted_down', $userid, $reputation, $postid );
 
@@ -208,7 +229,7 @@ class AP_Reputation {
 	 * @param  array   $counts
 	 * @return boolean
 	 */
-	public function undo_vote_up($postid, $counts) {
+	public static function undo_vote_up($postid, $counts) {
 		$post = get_post( $postid );
 
 		// give reputation to post author
@@ -240,7 +261,7 @@ class AP_Reputation {
 	 * @param  array   $counts
 	 * @return false|null
 	 */
-	public function undo_vote_down($postid, $counts) {
+	public static function undo_vote_down($postid, $counts) {
 		$post = get_post( $postid );
 
 		// give reputation to post author
@@ -269,7 +290,7 @@ class AP_Reputation {
 	 * @param  object $comment WordPress comment object
 	 * @return void
 	 */
-	public function new_comment($comment) {
+	public static function new_comment($comment) {
 		$reputation = ap_reputation_by_event( 'new_comment', true );
 		ap_reputation( 'comment', $comment->user_id, $reputation, $comment->comment_ID );
 	}
@@ -279,20 +300,20 @@ class AP_Reputation {
 	 * @param  object $comment
 	 * @return void
 	 */
-	public function delete_comment($comment) {
+	public static function delete_comment($comment) {
 		$reputation = ap_reputation_by_event( 'new_comment', true );
 		ap_reputation_log_delete( 'comment', $comment->user_id, $reputation, $comment->comment_ID );
 	}
 
 
-	public function display_meta($metas, $user_id) {
+	public static function display_meta($metas, $user_id) {
 		if ( $user_id > 0 ) {
 			$metas['reputation'] = '<span class="ap-user-meta ap-user-meta-reputation" title="'.__( 'Reputation', 'anspress-question-answer' ).'">'. sprintf( __( '%s Rep.', 'anspress-question-answer' ), ap_get_reputation( $user_id, true ) ) .'</span>'; }
 
 		return $metas;
 	}
 
-	public function user_register( $user_id ){
+	public static function user_register( $user_id ){
 		$reputation = ap_reputation_by_event( 'registration', true );
 		ap_reputation( 'registration', $user_id, $reputation, $user_id );
 	}

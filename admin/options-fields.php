@@ -98,6 +98,14 @@ class AnsPress_Options_Fields
 				'value' => @$settings['disable_mentions'],
 				'show_desc_tip' => false,
 			),
+			array(
+				'name' => 'anspress_opt[disable_reputation]',
+				'label' => __( 'Disable reputation', 'anspress-question-answer' ),
+				'desc' => __( 'Disable reputation', 'anspress-question-answer' ),
+				'type' => 'checkbox',
+				'value' => @$settings['disable_reputation'],
+				'show_desc_tip' => false,
+			),
 
 		));
 
@@ -489,14 +497,6 @@ class AnsPress_Options_Fields
 				'name' => '__sep',
 				'type' => 'custom',
 				'html' => '<span class="ap-form-separator">' . __( 'Features', 'anspress-question-answer' ) . '</span>',
-			) ,
-			array(
-				'name' => 'anspress_opt[disable_reputation]',
-				'label' => __( 'Disable reputation', 'anspress-question-answer' ),
-				'desc' => __( 'Disable reputation for user', 'anspress-question-answer' ),
-				'type' => 'checkbox',
-				'value' => $settings['disable_reputation'],
-				'show_desc_tip' => false,
 			) ,
 
 			array(
