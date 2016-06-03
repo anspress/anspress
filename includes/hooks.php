@@ -538,7 +538,7 @@ class AnsPress_Hooks
 	    if ( ! is_user_logged_in() && ( ap_is_notification_menu( $item ) || ap_is_profile_menu( $item ) )  ) {
 	        $o = '';
 	    }
-
+	    
 	    if ( ! ap_is_profile_active() && ( ap_is_notification_menu( $item ) || ap_is_profile_menu( $item ) ) ) {
 	        return '';
 	    }

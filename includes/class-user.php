@@ -22,6 +22,11 @@ class AnsPress_User
 	 * Actions to do in init
 	 */
 	public static function init_actions() {
+		// If profile is disabled then return.
+		if( !ap_is_profile_active() ){
+			return;
+		}
+
 		// Register AnsPress pages.
 		ap_register_page( ap_opt( 'users_page_slug' ), __( 'Users', 'anspress-question-answer' ), array( __CLASS__, 'users_page' ) );
 		ap_register_page( ap_opt( 'user_page_slug' ), __( 'User', 'anspress-question-answer' ), array( __CLASS__, 'user_page' ), false );

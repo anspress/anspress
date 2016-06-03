@@ -105,7 +105,7 @@ class AnsPress_Options_Fields
 				'type' => 'checkbox',
 				'value' => @$settings['disable_reputation'],
 				'show_desc_tip' => false,
-			),
+			)
 
 		));
 
@@ -483,7 +483,7 @@ class AnsPress_Options_Fields
 				'type' => 'select',
 				'value' => $settings['user_profile'],
 				'show_desc_tip' => false,
-				'options' => array( 'anspress' => 'AnsPress', 'buddypress' => 'BuddyPress', 'userpro' => 'User Pro' ),
+				'options' => array( 'none' => 'None','anspress' => 'AnsPress', 'buddypress' => 'BuddyPress', 'userpro' => 'User Pro' ),
 			) ,
 			array(
 				'name' => 'anspress_opt[enable_users_directory]',

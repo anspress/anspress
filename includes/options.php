@@ -162,6 +162,7 @@ function ap_default_options() {
 		'cover_height_small'		=> 95,
 		'anonymous_post_status'		=> 'moderate',
 		'disable_mentions'			=> false,
+		'disable_profile'			=> false,
 	);
 
 	/**
