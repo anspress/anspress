@@ -72,6 +72,7 @@ class AnsPress_Hooks
 	    anspress()->add_filter( 'ap_form_contents_filter', __CLASS__, 'sanitize_description' );
 	    anspress()->add_filter( 'human_time_diff', __CLASS__, 'human_time_diff' );
 	    anspress()->add_filter( 'comments_template_query_args', 'AnsPress_Comment_Hooks', 'comments_template_query_args' );
+	    anspress()->add_filter( 'template_include', 'AnsPress_Theme', 'anspress_basepage_template' );
 
 	    // User hooks.
 	    anspress()->add_action( 'init', 'AnsPress_User', 'init_actions' );

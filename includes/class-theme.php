@@ -285,8 +285,8 @@ class AnsPress_Theme
 		}
 
 		$filter = sanitize_text_field( wp_unslash( $_POST['args'][0] ) );
-		
-		if( isset( $_POST['current_filter'] ) ){
+
+		if ( isset( $_POST['current_filter'] ) ) {
 			$_GET['ap_filter'] = wp_parse_args( wp_unslash( $_POST['current_filter'] ) );
 		}
 
@@ -311,9 +311,27 @@ class AnsPress_Theme
 	/**
 	 * Shows lists of attachments of a question
 	 */
-	public static function question_attachments(){
+	public static function question_attachments() {
 		$media = get_attached_media( '', get_the_ID() );
 
-		include ap_get_theme_location('attachments.php');
+		include ap_get_theme_location('attachments.php' );
+	}
+
+	/**
+	 * Check if anspress.php file exists in theme. If exists
+	 * then load this template for AnsPress.
+	 * @param  string $template Template.
+	 * @return string
+	 * @since  3.0.0
+	 */
+	public static function anspress_basepage_template( $template ) {
+		if ( is_page( ap_base_page_slug() ) ) {
+			$new_template = locate_template( array( 'anspress.php' ) );
+			if ( '' != $new_template ) {
+				return $new_template ;
+			}
+		}
+
+		return $template;
 	}
 }
