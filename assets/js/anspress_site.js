@@ -40,7 +40,6 @@ var apData = {};
             this.ap_delete_post();
             this.ap_upload_field();
             this.avatarUploadCallback();
-            //this.change_status();
             this.load_profile_field();
             this.ap_post_upload_field();
             this.tinyMCEeditorToggle();
@@ -464,34 +463,25 @@ var apData = {};
                 $(this).closest('form').submit();
             });
             $('[data-action="ap_upload_form"]').submit(function() {
+                var form = this;
                 $(this).ajaxSubmit({
                     success: function(data) {
                         data = $(data);
                         data = JSON.parse(data.filter('#ap-response').html());
-                        $('body').trigger('uploadForm', data);
+                        $('body').trigger('uploadForm', [data, this]);
                     },
-                    url: ajaxurl
+                    url: ajaxurl,
+                    context: form
                 });
                 return false
             });
         },
         avatarUploadCallback: function(){
-            $(document).on('uploadForm', function(e, data) {
-                
+            $(document).on('uploadForm', function(e, data, form) {
                 if (typeof data.action !== 'undefined' && data.action === 'avatar_uploaded') {
                     var src = $(data.html).attr('src');
-                    $('[data-view="user_avatar_'+ data.user_id +'"]').attr('src', src);
+                    $(form).prev().attr('src', src);
                 }
-            });
-        },
-        change_status: function() {
-            $('body').delegate('[data-action="ap_change_status"]', 'click', function(e) {
-                e.preventDefault();
-                var c = $(this).closest('ul').prev();
-                var q = $(this).attr('data-query');
-                ApSite.doAjax(apAjaxData(q), function(data) {
-                    AnsPress.site.hideLoading(c);
-                }, this, false, true);
             });
         },
         load_profile_field: function() {
