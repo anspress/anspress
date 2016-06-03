@@ -24,11 +24,17 @@ class AP_Mentions_Hooks{
 	 * @since 2.4.8 Removed `$ap` args.
 	 */
 	public function __construct() {
+		// Return if mention is disabled.
+		if( ap_opt('disable_mentions') ){
+			return;
+		}
+
 		anspress()->add_filter( 'ap_pre_insert_question', __CLASS__, 'linkyfy_mentions' );
 		anspress()->add_filter( 'ap_pre_insert_answer', __CLASS__, 'linkyfy_mentions' );
 		anspress()->add_filter( 'ap_pre_update_question', __CLASS__, 'linkyfy_mentions' );
 		anspress()->add_filter( 'ap_pre_update_answer', __CLASS__, 'linkyfy_mentions' );
 		anspress()->add_action( 'ap_ajax_search_mentions', __CLASS__, 'search_mentions' );
+		anspress()->add_action( 'tiny_mce_before_init', __CLASS__, 'tiny_mce_before_init' );
 	}
 
 	/**
@@ -52,6 +58,30 @@ class AP_Mentions_Hooks{
 
 		$term = ap_sanitize_unslash( 'term', 'request' );
 		wp_send_json( ap_search_mentions( false, $term ) );
+	}
+
+	/**
+	 * For some reason advance TinyMCE editor won't shows up.
+	 * To fix that issue, adding after init callback to forcely show editor.
+	 * @param  array $initArray Editor callbacks.
+	 * @return array
+	 * @since  3.0.0
+	 */
+	public static function tiny_mce_before_init($initArray) {
+		$initArray['setup'] = 'function(ed) {
+			ed.on("init", function() {
+      			tinyMCE.activeEditor.show();
+		        ed.on("keydown", function(e) {
+		          if(e.keyCode == 13 && jQuery(ed.contentDocument.activeElement).atwho("isSelecting"))
+		            return false
+		        });      
+	   		});
+		}';
+
+		$initArray['init_instance_callback'] = 'function(ed) {
+			jQuery(ed.contentDocument.activeElement).atwho(at_config);
+		}';
+		return $initArray;
 	}
 }
 

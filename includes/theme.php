@@ -853,10 +853,10 @@ function ap_assets( ) {
 	}
 
 	// Load mention JS.
-	//if( is_question() ){
+	if( !ap_opt('disable_mentions') ){
 		$assets['js']['ap-mention-js'] = array( 'src' => ap_get_theme_url( 'min/mention.js' ), 'dep' => array( 'jquery' ) );
 		$assets['css']['ap-mention-css'] = array( 'src' => ap_get_theme_url( 'css/mention.css' ) );
-	//}
+	}
 
 	if ( is_rtl() ) {
 		$assets['css']['ap-rtl'] = array( 'src' => ap_get_theme_url( 'css/RTL.css' ) );

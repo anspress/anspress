@@ -96,8 +96,6 @@ class AnsPress_Hooks
 		// add_filter( 'paginate_links', array( 'AnsPress_Rewrite', 'paginate_links' ) );
 		anspress()->add_filter( 'parse_request', 'AnsPress_Rewrite', 'add_query_var' );
 
-		anspress()->add_action( 'tiny_mce_before_init', __CLASS__, 'tiny_mce_before_init' );
-
 		// Subscription hooks.
 		anspress()->add_action( 'ap_new_subscriber', 'AnsPress_Subscriber_Hooks', 'subscriber_count', 1, 3 );
 		anspress()->add_action( 'ap_removed_subscriber', 'AnsPress_Subscriber_Hooks', 'subscriber_count', 1, 3 );
@@ -719,27 +717,5 @@ class AnsPress_Hooks
 		return strtr( $since, $replace );
 	}
 
-	/**
-	 * For some reason advance TinyMCE editor won't shows up.
-	 * To fix that issue, adding after init callback to forcely show editor.
-	 * @param  array $initArray Editor callbacks.
-	 * @return array
-	 * @since  3.0.0
-	 */
-	public static function tiny_mce_before_init($initArray) {
-		$initArray['setup'] = 'function(ed) {
-			ed.on("init", function() {
-      			tinyMCE.activeEditor.show();
-		        ed.on("keydown", function(e) {
-		          if(e.keyCode == 13 && jQuery(ed.contentDocument.activeElement).atwho("isSelecting"))
-		            return false
-		        });      
-	   		});
-		}';
-
-		$initArray['init_instance_callback'] = 'function(ed) {
-			jQuery(ed.contentDocument.activeElement).atwho(at_config);
-		}';
-		return $initArray;
-	}
+	
 }

@@ -56,7 +56,7 @@ class AnsPress_Options_Fields
 			array(
 				'name' => 'anspress_opt[db_cleanup]',
 				'label' => __( 'Clean DB', 'anspress-question-answer' ),
-				'desc' => __( 'check this to remove all anspress data including posts on deactivating plugin.', 'anspress-question-answer' ),
+				'desc' => __( 'Check this to remove all anspress data including posts on deactivating plugin.', 'anspress-question-answer' ),
 				'type' => 'checkbox',
 				'value' => @$settings['db_cleanup'],
 				'show_desc_tip' => false,
@@ -78,11 +78,24 @@ class AnsPress_Options_Fields
 				'show_desc_tip' => false,
 			),
 			array(
+				'name' => '__sep',
+				'type' => 'custom',
+				'html' => '<span class="ap-form-separator">' . __( 'Toggle Features', 'anspress-question-answer' ) . '</span>',
+			) ,
+			array(
 				'name' => 'anspress_opt[disable_hover_card]',
 				'label' => __( 'Disable hover card', 'anspress-question-answer' ),
 				'desc' => __( 'Dont show user hover card on mouseover.', 'anspress-question-answer' ),
 				'type' => 'checkbox',
 				'value' => @$settings['disable_hover_card'],
+				'show_desc_tip' => false,
+			),
+			array(
+				'name' => 'anspress_opt[disable_mentions]',
+				'label' => __( 'Disable mentions', 'anspress-question-answer' ),
+				'desc' => __( 'Disable mentions and suggestions', 'anspress-question-answer' ),
+				'type' => 'checkbox',
+				'value' => @$settings['disable_mentions'],
 				'show_desc_tip' => false,
 			),
 

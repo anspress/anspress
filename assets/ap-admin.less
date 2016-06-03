@@ -324,7 +324,7 @@ th.column-category {
     overflow: hidden;
 }
 .ap-form-fields {
-    border-bottom: 1px solid #fbfbfb;
+    border-bottom: 1px solid #eee;
     margin: 0;
     padding: 12px 10px;
     &:last-child{
@@ -985,4 +985,9 @@ ul.ap-meta-list{
 .ap-q-suggestion-item {
     border-bottom: 1px solid #eee;
     padding: 10px 0;
+}
+.ap-form-fields::before, .ap-form-fields::after {
+    clear: both;
+    content: " ";
+    display: table;
 }
