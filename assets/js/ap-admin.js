@@ -420,10 +420,14 @@ jQuery(document).ready(function (jQuery){
 				is_admin: true
 			},
 			success: function(data){
+				var textJSON = jQuery(data).filter('#ap-response').html();
+			    if( typeof textJSON !== 'undefined' && textJSON.length > 2 ){
+			        data = JSON.parse(textJSON);
+			    }
+				console.log(data);
 				if(typeof data['html'] !== 'undefined')
 					jQuery('#similar_suggestions').html(data['html']);
 			},
-			dataType: 'json',
 			context: this,
 		});
 	});
