@@ -36,11 +36,12 @@ before_script:
   - sudo curl -LsS http://codeception.com/codecept.phar -o /usr/local/bin/codecept
   - sudo chmod a+x /usr/local/bin/codecept
   - codecept
-  - composer require lucatume/wp-browser
+  - composer require lucatume/wp-browser ~1.13
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
   - java -jar selenium-server-standalone-2.42.2.jar -port 4444 -Djava.security.egd=file:///dev/urandom switch > /dev/null &
   - sleep 10
+  - ./vendor/bin/wpcept build
   - bash tests/bin/install.sh wptest root '' localhost $WP_VERSION
 
 script:

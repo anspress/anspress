@@ -114,7 +114,7 @@ if ( ! class_exists( 'Question_Query' ) ) :
 					$this->args['meta_key'] = ANSPRESS_UPDATED_META;
 					$this->args['meta_query']  = array(
 						'relation' => 'OR',
-						['key' => ANSPRESS_UPDATED_META],
+						[ 'key' => ANSPRESS_UPDATED_META ],
 					);
 				break;
 
@@ -128,7 +128,7 @@ if ( ! class_exists( 'Question_Query' ) ) :
 
 endif;
 
-if( !function_exists('ap_get_questions') ) {
+if ( ! function_exists('ap_get_questions' ) ) {
 	function ap_get_questions($args = array()) {
 
 		if ( is_front_page() ) {
@@ -406,7 +406,7 @@ function ap_question_the_status() {
 function ap_question_the_comments() {
 	if ( ! ap_opt( 'disable_comments_on_question' ) ) {
 		echo '<div id="post-c-'.get_the_ID().'" class="ap-comments comment-container '. ( get_comments_number() > 0 ? 'have' : 'no' ) .'-comments">';
-		//comments_template();
+		// comments_template();
 		echo '</div>';
 	}
 }
