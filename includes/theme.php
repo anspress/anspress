@@ -684,7 +684,15 @@ function ap_ask_btn() {
  * @since 2.1
  */
 function ap_get_ask_btn() {
-	return '<a class="ap-btn-ask" href="'.ap_get_link_to( 'ask' ).'">'.__( 'Ask question', 'anspress-question-answer' ).'</a>';
+	$link = ap_get_link_to( 'ask' );
+
+	/**
+	 * Filter ask button link.
+	 * @param string $link 
+	 */
+	$link = apply_filters( 'ap_ask_btn_link', $link );
+	
+	return '<a class="ap-btn-ask" href="'.$link.'">'.__( 'Ask question', 'anspress-question-answer' ).'</a>';
 }
 
 /**

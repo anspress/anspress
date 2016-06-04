@@ -20,6 +20,7 @@ if (! defined('WPINC')) {
 		<span><?php echo AP_VERSION; ?></span>		
 	</h2>
 	<div class="ap-about-social">
+		<a href="https://anspress.io" target="_blank">anspress.io</a>
 		<a href="http://github.com/anspress/anspress" target="_blank">GitHub</a>
         <a href="https://wordpress.org/plugins/anspress-question-answer/" target="_blank">WordPress.org</a>
         <a href="https://twitter.com/anspress_io" target="_blank">@anspress_io</a>
