@@ -1281,7 +1281,7 @@ function ap_post_upload_form($post_id = false) {
 	$html = '
     <div class="ap-post-upload-form">
         <div class="ap-btn ap-upload-o '.ap_icon( 'image' ).'">
-        	<span>'.__( 'Add image to editor', 'anspress-question-answer' ).'</span>';
+        	<span>'.__( 'Attach file', 'anspress-question-answer' ).'</span>';
 	if ( ap_user_can_upload_image() ) {
 		$html .= '
                 <a class="ap-upload-link" href="#" data-action="ap_post_upload_field">
@@ -1291,10 +1291,10 @@ function ap_post_upload_form($post_id = false) {
 	}
 
 	$html .= '<span class="ap-upload-remote-link">
-            	'.__( 'add image from link', 'anspress-question-answer' ).'
+            	'.__( 'add from link', 'anspress-question-answer' ).'
             </span>
             <div class="ap-upload-link-rc">
-        		<input type="text" name="post_remote_image" class="ap-form-control" placeholder="'.__( 'Enter images link', 'anspress-question-answer' ).'" data-action="post_remote_image">
+        		<input type="text" name="post_remote_image" class="ap-form-control" placeholder="'.__( 'Enter link', 'anspress-question-answer' ).'" data-action="post_remote_image">
                 <a data-action="post_image_ok" class="apicon-check ap-btn" href="#"></a>
                 <a data-action="post_image_close" class="apicon-x ap-btn" href="#"></a>
             </div>

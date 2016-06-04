@@ -67,7 +67,7 @@ function ap_get_ask_form_fields( $post_id = false ) {
 		array(
 			'name'  => 'ap_upload',
 			'type'  => 'custom',
-			'html' => ap_post_upload_form( $editing_post->ID ) ,
+			'html' => ap_post_upload_form( $editing? $editing_post->ID : false ) ,
 			'order' => 10,
 		),
 		array(

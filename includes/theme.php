@@ -583,6 +583,7 @@ function ap_get_question_sorting( $current_url = '' ) {
 	$navs[] = [ 'key' => 'answers','title' => __( 'Answered', 'anspress-question-answer' ) ];
 	$navs[] = [ 'key' => 'unanswered', 'title' => __( 'Unanswered', 'anspress-question-answer' ) ];
 	$navs[] = [ 'key' => 'unsolved', 'title' => __( 'Unsolved', 'anspress-question-answer' ) ];
+	$navs[] = [ 'key' => 'views', 'title' => __( 'Views', 'anspress-question-answer' ) ];
 
 	$active_sort = 'active';
 	if ( isset($_GET['ap_filter'], $_GET['ap_filter']['sort'] ) ) {

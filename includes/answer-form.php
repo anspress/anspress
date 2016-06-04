@@ -117,7 +117,7 @@ function ap_get_answer_form_fields( $question_id = false, $answer_id = false ) {
 	$fields[] = array(
 		'name'  => 'ap_upload',
 		'type'  => 'custom',
-		'html' => ap_post_upload_form( $editing_post->ID ),
+		'html' => ap_post_upload_form( $editing? $editing_post->ID : false ),
 		'order' => 11,
 	);
 

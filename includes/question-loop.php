@@ -85,6 +85,10 @@ if ( ! class_exists( 'Question_Query' ) ) :
 					$this->args[ 'orderby' ] = 'meta_value_num';
 					$this->args[ 'meta_key' ] = ANSPRESS_ANS_META;
 				break;
+				case 'views' :
+					$this->args[ 'orderby' ] = 'meta_value_num';
+					$this->args[ 'meta_key' ] = ANSPRESS_VIEW_META;
+				break;
 				case 'unanswered' :
 					$this->args[ 'orderby' ] = 'meta_value_num date';
 					$this->args[ 'meta_key' ] = ANSPRESS_ANS_META ;
@@ -109,10 +113,8 @@ if ( ! class_exists( 'Question_Query' ) ) :
 					$this->args['orderby'] = 'meta_value';
 					$this->args['meta_key'] = ANSPRESS_UPDATED_META;
 					$this->args['meta_query']  = array(
-					'relation' => 'OR',
-					array(
-						'key' => ANSPRESS_UPDATED_META,
-					),
+						'relation' => 'OR',
+						['key' => ANSPRESS_UPDATED_META],
 					);
 				break;
 
@@ -127,39 +129,39 @@ if ( ! class_exists( 'Question_Query' ) ) :
 endif;
 
 if( !function_exists('ap_get_questions') ) {
-function ap_get_questions($args = array()) {
+	function ap_get_questions($args = array()) {
 
-	if ( is_front_page() ) {
-		$paged = (isset( $_GET['ap_paged'] )) ? (int) $_GET['ap_paged'] : 1;
-	} else {
-		$paged = (get_query_var( 'paged' )) ? get_query_var( 'paged' ) : 1;
+		if ( is_front_page() ) {
+			$paged = (isset( $_GET['ap_paged'] )) ? (int) $_GET['ap_paged'] : 1;
+		} else {
+			$paged = (get_query_var( 'paged' )) ? get_query_var( 'paged' ) : 1;
+		}
+
+		if ( ! isset( $args['post_parent'] ) ) {
+			$args['post_parent'] = (get_query_var( 'parent' )) ? get_query_var( 'parent' ) : false;
+		}
+
+		if ( ! isset( $args['sortby'] ) && isset( $_GET['ap_filter'], $_GET['ap_filter']['sort'] ) ) {
+			$args['sortby'] = sanitize_text_field( wp_unslash( $_GET['ap_filter']['sort'] ) );
+		}
+
+		if ( is_super_admin() || current_user_can( 'ap_view_private' ) ) {
+			$args['post_status'][] = 'private_post';
+		}
+
+		if ( is_super_admin() || current_user_can( 'ap_view_moderate' ) ) {
+			$args['post_status'][] = 'moderate';
+		}
+
+		$args = wp_parse_args( $args, array(
+			'showposts'     => ap_opt( 'question_per_page' ),
+			'paged'         => $paged,
+			'ap_query'      => 'featured_post',
+			'sortby'      	=> 'active',
+		));
+
+		return new Question_Query( $args );
 	}
-
-	if ( ! isset( $args['post_parent'] ) ) {
-		$args['post_parent'] = (get_query_var( 'parent' )) ? get_query_var( 'parent' ) : false;
-	}
-
-	if ( ! isset( $args['sortby'] ) && isset( $_GET['ap_filter'], $_GET['ap_filter']['sort'] ) ) {
-		$args['sortby'] = sanitize_text_field( wp_unslash( $_GET['ap_filter']['sort'] ) );
-	}
-
-	if ( is_super_admin() || current_user_can( 'ap_view_private' ) ) {
-		$args['post_status'][] = 'private_post';
-	}
-
-	if ( is_super_admin() || current_user_can( 'ap_view_moderate' ) ) {
-		$args['post_status'][] = 'moderate';
-	}
-
-	$args = wp_parse_args( $args, array(
-		'showposts'     => ap_opt( 'question_per_page' ),
-		'paged'         => $paged,
-		'ap_query'      => 'featured_post',
-		'sortby'      	=> 'active',
-	));
-
-	return new Question_Query( $args );
-}
 }
 
 
