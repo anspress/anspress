@@ -359,3 +359,10 @@
  	elm.css("left", (parent.width()-elm.width())/2);
  	elm.css("top", (parent.height()-elm.height())/2);
  }
+
+function apLaodAvatar(){
+    jQuery("img[src*='ANSPRESS_AVATAR_SRC']").each(function(index, el) {
+        var name = jQuery(el).attr('src').replace('http://ANSPRESS_AVATAR_SRC::', '');
+        jQuery(el).initial({fontSize:30, fontWeight:600, name: name });
+    });
+}

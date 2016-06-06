@@ -48,15 +48,8 @@
             });
 
         }
-
-        function apLaodAvatar(){
-            $("img[src*='ANSPRESS_AVATAR_SRC']").each(function(index, el) {
-                var name = $(el).attr('src').replace('http://ANSPRESS_AVATAR_SRC::', '');
-                $(el).initial({fontSize:30, fontWeight:600, name: name });
-            });
-        }
-        apLaodAvatar();
-            
+        
+        apLaodAvatar();            
 
         $( document ).ajaxComplete(function( event, data, settings ) {
             apLaodAvatar();

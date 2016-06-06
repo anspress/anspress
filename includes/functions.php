@@ -1179,10 +1179,12 @@ function ap_total_posts_count($post_type = 'question', $ap_type = false) {
 	return (object) $counts;
 }
 
+/**
+ * Return total numbers of published questions.
+ * @return integer
+ */
 function ap_total_published_questions() {
-
 	$posts = ap_total_posts_count();
-
 	return $posts->publish;
 }
 
