@@ -221,11 +221,27 @@ class AnsPress_Theme
 			$a_feed = get_post_type_archive_feed_link( 'answer' );
 			echo '<link rel="alternate" type="application/rss+xml" title="'.esc_attr__( 'Question feed', 'anspress-question-answer' ).'" href="'.esc_url( $q_feed ).'" />';
 			echo '<link rel="alternate" type="application/rss+xml" title="'.esc_attr__( 'Answers feed', 'anspress-question-answer' ).'" href="'.esc_url( $a_feed ).'" />';
-		}
 
-		if ( is_question() && get_query_var( 'ap_page' ) != 'base' ) {
-			echo '<link rel="canonical" href="'.esc_url( get_permalink( get_question_id() ) ).'">';
-			echo '<link rel="shortlink" href="'.esc_url( wp_get_shortlink( get_question_id() ) ).'" />';
+			$canonical_url = ap_get_link_to( get_query_var( 'ap_page' ) );
+
+			if ( is_question() ) {
+				$canonical_url = get_permalink( get_question_id() );
+			} elseif ( is_ap_user() ) {
+				$canonical_url = ap_user_link( ap_get_displayed_user_id(), ap_active_user_page() );
+			}
+
+			/**
+			 * Filter AnsPress canonical URL.
+			 * @param string $canonical_url Current URL.
+			 * @return string
+			 * @since  3.0.0
+			 */
+			$canonical_url = apply_filters( 'ap_canonical_url', $canonical_url );
+			echo '<link rel="canonical" href="'.esc_url( $canonical_url ).'">';
+
+			if ( is_question() ) {
+				echo '<link rel="shortlink" href="'.esc_url( wp_get_shortlink( get_question_id() ) ).'" />';
+			}
 		}
 	}
 

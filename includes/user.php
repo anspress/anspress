@@ -361,7 +361,7 @@ function ap_user_page() {
 }
 
 /**
- * Get active user page.
+ * Return current page in user profile.
  * @since 2.0.1
  * @return string
  * @since 2.4.7 Added new filter `ap_active_user_page`.

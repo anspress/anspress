@@ -31,7 +31,7 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 // Check if using required PHP version.
-if ( version_compare(PHP_VERSION, '5.5.0' ) < 0 ) {
+if ( version_compare(PHP_VERSION, '5.5' ) < 0 ) {
 	function ap_admin_php_version__error() {
 		$class = 'notice notice-error';
 		$message = '<strong>'. __('AnsPress is not running!', 'anspress-question-answer' ) .'</strong><br />';
