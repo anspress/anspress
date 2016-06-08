@@ -140,7 +140,7 @@ class AnsPress_Ajax
 	    }
 
 	    // Do not allow answer to be selected as best if status is moderate.
-	    if( 'moderate' == $post->post_status ) {
+	    if ( 'moderate' == $post->post_status ) {
 	    	ap_ajax_json( [ 'message_type' => 'warning', 'message' => __( 'Answer with moderate status cannot be selected as best.', 'anspress-question-answer' ) ] );
 	    }
 
@@ -726,6 +726,12 @@ class AnsPress_Ajax
 	 */
 	public static function load_tinymce_assets() {
 		$settings = ap_tinymce_editor_settings('answer' );
+
+		// Include mentions assets.
+		if ( ! ap_opt('disable_mentions' ) ) {
+			wp_enqueue_script( 'ap-mention-js', ap_get_theme_url( 'min/mention.js' ) , array( 'jquery' ), AP_VERSION, true );
+			wp_enqueue_style( 'ap-mention-css', ap_get_theme_url( 'css/mention.css' ) , array(), AP_VERSION, true );
+		}
 
 		echo '<div class="ap-editor">';
 	    wp_editor( '', 'description', $settings );

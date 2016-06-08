@@ -129,17 +129,6 @@ module.exports = function(grunt) {
 	    	},
 	    },
 
-	    compress: {
-	    	main: {
-	    		options: {
-	    			archive: 'build/anspress-question-answer.zip'
-	    		},
-		        //cwd: 'build/',
-		        expand: true,
-		        src: ['**','!**/tests/**','!**/node_modules/**','!**/.git/**','!**/.svn/**','!**/.gitignore','!**/.scrutinizer.yml','!**/.scrutinizer.yml','!**/.travis.yml','!**/npm-debug.log','!**/phpdoc.dist.xml','!**/phpunit.xml','!**/plugin.json','!**/tasks.TODO','!**/build']
-		    }
-		},
-
 		phplint : {
 			options : {
 				spawn : false

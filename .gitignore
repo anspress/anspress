@@ -24,3 +24,4 @@ tests/_output/*
 /.travis.yml
 /anspress.sublime-project
 /anspress.sublime-workspace
+/build/*.zip
