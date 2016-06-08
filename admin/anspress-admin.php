@@ -130,7 +130,7 @@ class AnsPress_Admin
 
 		wp_enqueue_script( 'jquery-form', array( 'jquery' ), false, true );
 		wp_enqueue_script( 'ap-initial.js', ap_get_theme_url( 'js/initial.min.js' ), 'jquery', AP_VERSION );
-		wp_enqueue_script( 'ap-functions-js', ANSPRESS_URL.'assets/ap-functions.js', 'jquery', AP_VERSION );
+		wp_enqueue_script( 'ap-functions-js', ANSPRESS_URL.'assets/'.$dir.'/ap-functions'.$min.'.js', 'jquery', AP_VERSION );
 		wp_enqueue_script( 'ap-chart-js', '//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.4/Chart.min.js' );
 		wp_enqueue_script( 'ap-admin-js', ANSPRESS_URL.'assets/'.$dir.'/ap-admin'.$min.'.js' , array( 'wp-color-picker' ) );
 		wp_enqueue_script( 'postbox' );
