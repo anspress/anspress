@@ -25,7 +25,7 @@ function ap_get_ask_form_fields( $post_id = false ) {
 
 	if ( $post_id && ap_user_can_edit_question( (int) $post_id ) ) {
 		$editing = true;
-		$editing_post = get_post( (int) $post_id );
+		$editing_post = get_post( (int) $post_id, 'OBJECT', 'edit' );
 	}
 
 	$is_private = false;
@@ -59,7 +59,7 @@ function ap_get_ask_form_fields( $post_id = false ) {
 			'label' => __( 'Description', 'anspress-question-answer' ),
 			'type'  => 'editor',
 			'desc'  => __( 'Write description for the question.', 'anspress-question-answer' ),
-			'value' => ( $editing ? apply_filters( 'the_content', $editing_post->post_content ) : ap_isset_post_value( 'description', '' )  ),
+			'value' => ( $editing ? $editing_post->post_content : ap_isset_post_value( 'description', '' )  ),
 			'settings' => ap_tinymce_editor_settings('answer' ),
 			'sanitize' => array( 'sanitize_description' ),
 			'validate' => array( 'length_check' => ap_opt( 'minimum_question_length' ) ),

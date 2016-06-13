@@ -25,7 +25,7 @@ function ap_get_answer_form_fields( $question_id = false, $answer_id = false ) {
 
 	if ( $answer_id && ap_user_can_edit_answer( (int) $answer_id ) ) {
 		$editing = true;
-		$editing_post = get_post( (int) $answer_id );
+		$editing_post = get_post( (int) $answer_id, 'OBJECT', 'edit' );
 	}
 
 	$is_private = false;
@@ -38,7 +38,7 @@ function ap_get_answer_form_fields( $question_id = false, $answer_id = false ) {
 		array(
 			'name'          => 'description',
 			'type'          => is_question() ? 'textarea' : 'editor',
-			'value'         => ( $editing ? apply_filters( 'the_content', $editing_post->post_content ) : wp_kses_post( ap_isset_post_value('description', '' ) ) ),
+			'value'         => ( $editing ? $editing_post->post_content : wp_kses_post( ap_isset_post_value('description', '' ) ) ),
 			'placeholder'  => __( 'Your answer..', 'anspress-question-answer' ),
 			'settings' => ap_tinymce_editor_settings('answer'),
 			'sanitize' => array( 'sanitize_description' ),
