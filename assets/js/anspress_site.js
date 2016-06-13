@@ -708,21 +708,31 @@ var apData = {};
         questionSuggestion: function(){
             if( disable_q_suggestion || false ) 
                 return;
+
+            var suggestTimeout = null; 
             
-            $('[data-action="suggest_similar_questions"]').on('blur', function(){
+            $('[data-action="suggest_similar_questions"]').on('keyup', function(){
                 var title = $(this).val();
+                var inputField = this;
+
                 if(title.length == 0)
                     return;
-
-                ApSite.doAjax(
-                    apAjaxData('action=ap_ajax&ap_ajax_action=suggest_similar_questions&ap_ajax_nonce='+ap_nonce+'&value='+title),
-                    function(data) {                        
-                        $("#similar_suggestions").html(data.html);      
-                    },
-                    this, 
-                    false,
-                    true
-                );
+                
+                if(suggestTimeout != null) clearTimeout(suggestTimeout);  
+                
+                suggestTimeout =setTimeout(function(){
+                    suggestTimeout = null;
+                    ApSite.doAjax(
+                        apAjaxData('action=ap_ajax&ap_ajax_action=suggest_similar_questions&ap_ajax_nonce='+ap_nonce+'&value='+title),
+                        function(data) {                        
+                            $("#similar_suggestions").html(data.html);      
+                        },
+                        inputField, 
+                        false,
+                        true
+                    );
+                },500);
+                
             });
         },
 

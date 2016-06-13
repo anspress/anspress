@@ -407,6 +407,10 @@ class AnsPress_Activity_Hook
 		$comment = get_comment( $comment_id );
 		$post = get_post( $comment->comment_post_ID );
 
+		if( !$post ){
+			return;
+		}
+
 		if ( ! ('question' == $post->post_type || 'answer' == $post->post_type) ) {
 			return;
 		}

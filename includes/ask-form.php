@@ -43,7 +43,7 @@ function ap_get_ask_form_fields( $post_id = false ) {
 			'desc'  => __( 'Write a meaningful title for the question.', 'anspress-question-answer' ),
 			'value' => ( $editing ? $editing_post->post_title : ap_isset_post_value( 'title', '' ) ),
 			'order' => 5,
-			'attr' => 'data-action="suggest_similar_questions"',
+			'attr' => 'data-action="suggest_similar_questions" data-loadclass="q-title"',
 			'autocomplete' => false,
 			'sanitize' => array( 'sanitize_text_field' ),
 			'validate' => array( 'required' => true, 'length_check' => ap_opt( 'minimum_qtitle_length' ) ),
