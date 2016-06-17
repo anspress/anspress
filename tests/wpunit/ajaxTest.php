@@ -127,18 +127,36 @@ class ApajaxTest extends \Codeception\TestCase\WPAjaxTestCase
 		$this->assertContains( 'Very unique question', strip_tags($json->html ) );
 	}
 
-	/*public function test_load_comment( ) {
-		// Become an administrator
+	public function test_load_comment( ) {
 		$this->_setRole( 'ap_participant' );
-
+		$this->factory->comment->create_post_comments($this->current_post, 10);
 		$nonce = wp_create_nonce( 'comment_form_nonce' );
 		$this->_set_post_data( 'ap_ajax_action=load_comments&args[]='.$this->current_post.'&__nonce='.$nonce.'' );
 		add_action( 'ap_ajax_load_comments', array( 'AnsPress_Comment_Hooks', 'load_comments' ) );
 		$this->triggerAjaxCapture();
-		$comments = $this->ap_ajax_success( 'comments' );
-		$this->assertTrue( $comments[0]->id > 0 );
-		$this->assertArrayHasKey( '0', $comments );
-		$this->assertArrayHasKey( 'id', $comments[0] );
-		$this->assertArrayHasKey( 'id', $comments[0]['content'] );
-	}*/
+		$response = $this->ap_ajax_success( false, true );
+		codecept_debug($response);
+		
+		/*$this->assertTrue( 'load_comment_form' == $response->action );
+		$this->assertObjectHasAttribute( 'apData', $response );
+		$this->assertObjectHasAttribute( 'template', $response );
+		
+		$this->assertObjectHasAttribute( 'current_user_avatar', $response->apData );
+		$this->assertObjectHasAttribute( 'load_form', $response->apData );
+		$this->assertObjectHasAttribute( 'load_form', $response->apData );
+
+		$this->assertObjectHasAttribute( 'form', $response->apData );
+		$this->assertObjectHasAttribute( 'key', $response->apData->form );
+		$this->assertObjectHasAttribute( 'nonce', $response->apData->form );
+		$this->assertObjectHasAttribute( 'post_id', $response->apData->form );
+
+		$this->assertObjectHasAttribute( 'comments', $response->apData );
+
+		$this->assertArrayHasKey( '0', $response->apData->comments );
+		
+		$atts = [ 'actions', 'approved', 'avatar', 'class', 'content', 'id', 'iso_date', 'time', 'user_link', 'user_name' ];
+		foreach( $response->apData->comments[0] as $k => $val ){
+			$this->assertTrue( in_array($k, $atts) );
+		}*/
+	}
 }

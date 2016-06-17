@@ -724,7 +724,8 @@ var apData = {};
                     suggestTimeout = null;
                     ApSite.doAjax(
                         apAjaxData('action=ap_ajax&ap_ajax_action=suggest_similar_questions&ap_ajax_nonce='+ap_nonce+'&value='+title),
-                        function(data) {                        
+                        function(data) {
+                            console.log(data);                    
                             $("#similar_suggestions").html(data.html);      
                         },
                         inputField, 
