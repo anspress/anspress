@@ -53,8 +53,8 @@ class ApajaxTest extends \Codeception\TestCase\WPAjaxTestCase
 			$this->_handleAjax( 'ap_ajax' );
 		} catch ( WPAjaxDieStopException $e ) {
 			$this->_last_response = $e->getMessage();
+			codecept_debug( $e->getMessage() );
 		}
-		codecept_debug($this->_last_response );
 	}
 
 	public function test_vote_as_administrator() {
@@ -92,18 +92,18 @@ class ApajaxTest extends \Codeception\TestCase\WPAjaxTestCase
 	}
 
 	public function test_undo_vote_as_subscriber( ) {
-        $this->_setRole( 'ap_participant' );
-        $post = get_post( $this->current_post );
-        $counts = ap_add_post_vote( get_current_user_id(), 'vote_up', $this->current_post, $post->post_author );
-        $nonce = wp_create_nonce( 'vote_'.$this->current_post );
-        $this->_set_post_data( 'ap_ajax_action=vote&type=up&post_id='.$this->current_post.'&__nonce='.$nonce.'' );
-        add_action( 'ap_ajax_vote', array( 'AnsPress_Vote', 'vote' ) );
-        $this->triggerAjaxCapture();
-        $this->assertTrue( 'Your vote has been removed.' == $this->ap_ajax_success( 'message' ) );
-        $this->assertTrue( '1' == $this->ap_ajax_success( 'count' ) );
-    }
+		$this->_setRole( 'ap_participant' );
+		$post = get_post( $this->current_post );
+		$counts = ap_add_post_vote( get_current_user_id(), 'vote_up', $this->current_post, $post->post_author );
+		$nonce = wp_create_nonce( 'vote_'.$this->current_post );
+		$this->_set_post_data( 'ap_ajax_action=vote&type=up&post_id='.$this->current_post.'&__nonce='.$nonce.'' );
+		add_action( 'ap_ajax_vote', array( 'AnsPress_Vote', 'vote' ) );
+		$this->triggerAjaxCapture();
+		$this->assertTrue( 'Your vote has been removed.' == $this->ap_ajax_success( 'message' ) );
+		$this->assertTrue( '1' == $this->ap_ajax_success( 'count' ) );
+	}
 
-    public function test_subscriber_vote_without_undo( ) {
+	public function test_subscriber_vote_without_undo( ) {
 		$this->_setRole( 'ap_participant' );
 		$post = get_post($this->current_post );
 		$counts = ap_add_post_vote( get_current_user_id(), 'vote_up', $this->current_post, $post->post_author );
@@ -129,18 +129,17 @@ class ApajaxTest extends \Codeception\TestCase\WPAjaxTestCase
 
 	public function test_load_comment( ) {
 		$this->_setRole( 'ap_participant' );
-		$this->factory->comment->create_post_comments($this->current_post, 10);
+		$this->factory->comment->create_post_comments($this->current_post, 10 );
 		$nonce = wp_create_nonce( 'comment_form_nonce' );
 		$this->_set_post_data( 'ap_ajax_action=load_comments&args[]='.$this->current_post.'&__nonce='.$nonce.'' );
 		add_action( 'ap_ajax_load_comments', array( 'AnsPress_Comment_Hooks', 'load_comments' ) );
 		$this->triggerAjaxCapture();
 		$response = $this->ap_ajax_success( false, true );
-		codecept_debug($response);
-		
-		/*$this->assertTrue( 'load_comment_form' == $response->action );
+		// codecept_debug($response );
+		$this->assertTrue( 'load_comment_form' == $response->action );
 		$this->assertObjectHasAttribute( 'apData', $response );
 		$this->assertObjectHasAttribute( 'template', $response );
-		
+
 		$this->assertObjectHasAttribute( 'current_user_avatar', $response->apData );
 		$this->assertObjectHasAttribute( 'load_form', $response->apData );
 		$this->assertObjectHasAttribute( 'load_form', $response->apData );
@@ -153,10 +152,118 @@ class ApajaxTest extends \Codeception\TestCase\WPAjaxTestCase
 		$this->assertObjectHasAttribute( 'comments', $response->apData );
 
 		$this->assertArrayHasKey( '0', $response->apData->comments );
-		
+
 		$atts = [ 'actions', 'approved', 'avatar', 'class', 'content', 'id', 'iso_date', 'time', 'user_link', 'user_name' ];
-		foreach( $response->apData->comments[0] as $k => $val ){
-			$this->assertTrue( in_array($k, $atts) );
-		}*/
+		foreach ( $response->apData->comments[0] as $k => $val ) {
+			$this->assertTrue( in_array($k, $atts ) );
+		}
+	}
+
+	function test_delete_comment() {
+		$this->_setRole( 'ap_participant' );
+		$comment_ID = $this->factory->comment->create(array(
+		    'comment_post_ID' => $this->current_post,
+		    'comment_content' => 'Aliquam at lectus felis, vel lacinia arcu',
+		    'comment_type' => 'anspress',
+		    'comment_parent' => 0,
+		    'user_id' => get_current_user_id(),
+		    'comment_author_IP' => '127.0.0.1',
+		    'comment_agent' => 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.0.10) Gecko/2009042316 Firefox/3.0.10 (.NET CLR 3.5.30729)',
+		    'comment_approved' => 1,
+		));
+		$nonce = wp_create_nonce( 'delete_comment' );
+		$this->_set_post_data( 'ap_ajax_action=delete_comment&__nonce='.$nonce.'&comment_ID='.$comment_ID );
+		add_action( 'ap_ajax_delete_comment', array( 'AnsPress_Comment_Hooks', 'delete_comment' ) );
+		$this->triggerAjaxCapture();
+		$response = $this->ap_ajax_success( false, true );
+		// codecept_debug($response);
+		$this->assertObjectHasAttribute('action', $response );
+		$this->assertObjectHasAttribute('comment_ID', $response );
+		$this->assertObjectHasAttribute('message', $response );
+		$this->assertObjectHasAttribute('do', $response );
+		$this->assertObjectHasAttribute('key', $response );
+		$this->assertObjectHasAttribute('remove_if_exists', $response->do );
+		$this->assertObjectHasAttribute('apData', $response );
+		$this->assertObjectHasAttribute('current_user_avatar', $response->apData );
+		$this->assertObjectHasAttribute('load_form', $response->apData );
+		$this->assertObjectHasAttribute('form', $response->apData );
+		$this->assertObjectHasAttribute( 'key', $response->apData->form );
+		$this->assertObjectHasAttribute( 'nonce', $response->apData->form );
+		$this->assertObjectHasAttribute( 'post_id', $response->apData->form );
+	}
+
+	function test_edit_comment_form() {
+		$this->_setRole( 'ap_participant' );
+		$comment_ID = $this->factory->comment->create(array(
+		    'comment_post_ID' => $this->current_post,
+		    'comment_content' => 'Aliquam at lectus felis, vel lacinia arcu',
+		    'comment_type' => 'anspress',
+		    'comment_parent' => 0,
+		    'user_id' => get_current_user_id(),
+		    'comment_author_IP' => '127.0.0.1',
+		    'comment_agent' => 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.0.10) Gecko/2009042316 Firefox/3.0.10 (.NET CLR 3.5.30729)',
+		    'comment_approved' => 1,
+		));
+
+		$nonce = wp_create_nonce( 'comment_form_nonce' );
+		$this->_set_post_data( 'ap_ajax_action=edit_comment_form&__nonce='.$nonce.'&comment_ID='.$comment_ID );
+		add_action( 'ap_ajax_edit_comment_form', array( 'AnsPress_Comment_Hooks', 'edit_comment_form' ) );
+		$this->triggerAjaxCapture();
+		$response = $this->ap_ajax_success( false, true );
+		// codecept_debug($response);
+		$this->assertObjectHasAttribute('action', $response );
+		$this->assertObjectHasAttribute('template', $response );
+		$this->assertObjectHasAttribute('key', $response );
+		$this->assertObjectHasAttribute('apTemplate', $response );
+		$this->assertObjectHasAttribute('apData', $response );
+		$this->assertObjectHasAttribute('current_user_avatar', $response->apData );
+		$this->assertObjectHasAttribute('load_form', $response->apData );
+		$this->assertObjectHasAttribute('form', $response->apData );
+		$this->assertObjectHasAttribute('nonce', $response->apData->form );
+		$this->assertObjectHasAttribute('post_id', $response->apData->form );
+		$this->assertObjectHasAttribute('key', $response->apData->form );
+		$this->assertObjectHasAttribute('comment_ID', $response->apData->form );
+		$this->assertObjectHasAttribute('content', $response->apData->form );
+	}
+
+	function test_submit_comment() {
+		$this->_setRole( 'ap_participant' );
+
+		$nonce = wp_create_nonce( $this->current_post . '_comment' );
+		$content = 'Praesent%20lacus%20nisi%2C%20hendrerit%20ac%20dignissim%20a%2C%20accumsan%20at%20purus.';
+		$this->_set_post_data( 'ap_ajax_action=submit_comment&__nonce='.$nonce.'&content='.$content.'&post_id='.$this->current_post );
+		add_action( 'ap_ajax_submit_comment', array( 'AnsPress_Comment_Hooks', 'submit_comment' ) );
+		$this->triggerAjaxCapture();
+		$response = $this->ap_ajax_success( false, true );
+		//codecept_debug($response );
+
+		$props = array(
+			'action',
+			'comment_ID',
+			'comment_post_ID',
+			'comment_content',
+			'message',
+			'view',
+			'key',
+			'apData' => array(
+				'current_user_avatar', 'load_form', 'form' => [ 'nonce', 'post_id', 'key' ], 'comments'
+			),
+		);
+
+		foreach ( $props as $key => $val ) {
+			if ( is_array( $val ) ) {
+				foreach ( $val as $sub_key => $sub_val ) {
+					if ( is_array( $val ) ) {
+						foreach ( $sub_val as $ssub_key => $ssub_val ) {
+							$this->assertObjectHasAttribute( $ssub_val, $response->$val->$sub_val );
+						}
+					}else{
+						$this->assertObjectHasAttribute( $sub_val, $response->$val );
+					}
+				}
+			} else {
+				$this->assertObjectHasAttribute($val, $response );
+			}
+		}
 	}
 }

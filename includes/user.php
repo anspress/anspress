@@ -140,7 +140,7 @@ function ap_user_display_name($args = array()) {
 		} else {
 			$return = '<span class="who"><a href="'.ap_user_link( $user_id ).'">'.$user->display_name.'</a></span>';
 		}
-	} elseif ( $post && $post->post_type == 'question' || $post->post_type == 'answer' ) {
+	} elseif ( $post && ($post->post_type == 'question' || $post->post_type == 'answer') ) {
 		$name = get_post_meta( $post->ID, 'anonymous_name', true );
 
 		if ( ! $html ) {
