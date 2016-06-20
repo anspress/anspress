@@ -237,33 +237,42 @@ class ApajaxTest extends \Codeception\TestCase\WPAjaxTestCase
 		$response = $this->ap_ajax_success( false, true );
 		//codecept_debug($response );
 
-		$props = array(
-			'action',
-			'comment_ID',
-			'comment_post_ID',
-			'comment_content',
-			'message',
-			'view',
-			'key',
-			'apData' => array(
-				'current_user_avatar', 'load_form', 'form' => [ 'nonce', 'post_id', 'key' ], 'comments'
-			),
-		);
+		$this->assertObjectHasAttribute('action', $response);
+		$this->assertObjectHasAttribute('comment_ID', $response);
+		$this->assertObjectHasAttribute('comment_post_ID', $response);
+		$this->assertObjectHasAttribute('comment_content', $response);
+		$this->assertObjectHasAttribute('message', $response);
+		$this->assertObjectHasAttribute('view', $response);
+		$this->assertObjectHasAttribute('key', $response);
+		$this->assertObjectHasAttribute('apData', $response);
+		$this->assertObjectHasAttribute('current_user_avatar', $response->apData);
+		$this->assertObjectHasAttribute('load_form', $response->apData);
+		$this->assertObjectHasAttribute('form', $response->apData);
+		$this->assertObjectHasAttribute('comments', $response->apData);
+		$this->assertObjectHasAttribute('nonce', $response->apData->form);
+		$this->assertObjectHasAttribute('post_id', $response->apData->form);
+		$this->assertObjectHasAttribute('key', $response->apData->form);
+	}
 
-		foreach ( $props as $key => $val ) {
-			if ( is_array( $val ) ) {
-				foreach ( $val as $sub_key => $sub_val ) {
-					if ( is_array( $val ) ) {
-						foreach ( $sub_val as $ssub_key => $ssub_val ) {
-							$this->assertObjectHasAttribute( $ssub_val, $response->$val->$sub_val );
-						}
-					}else{
-						$this->assertObjectHasAttribute( $sub_val, $response->$val );
-					}
-				}
-			} else {
-				$this->assertObjectHasAttribute($val, $response );
-			}
-		}
+	function test_approve_comment() {
+		$this->_setRole( 'administrator' );
+
+		$nonce = wp_create_nonce( 'approve_comment_' . $this->current_post );
+		$comment_ID = $this->factory->comment->create(array(
+		    'comment_post_ID' => $this->current_post,
+		    'comment_content' => 'Aliquam auctor diam ut urna lacinia faucibus. Vivamus et urna magna.',
+		    'comment_type' => 'anspress',
+		    'comment_parent' => 0,
+		    'user_id' => get_current_user_id(),
+		    'comment_author_IP' => '127.0.0.1',
+		    'comment_agent' => 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.0.10) Gecko/2009042316 Firefox/3.0.10 (.NET CLR 3.5.30729)',
+		    'comment_approved' => 0,
+		));
+
+		$this->_set_post_data( 'ap_ajax_action=approve_comment&__nonce='.$nonce.'&args[]='.$comment_ID );
+		add_action( 'ap_ajax_approve_comment', array( 'AnsPress_Comment_Hooks', 'approve_comment' ) );
+		$this->triggerAjaxCapture();
+		$response = $this->ap_ajax_success( false, true );
+		codecept_debug($response );
 	}
 }
