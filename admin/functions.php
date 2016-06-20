@@ -34,7 +34,7 @@ function ap_flagged_posts_count() {
 function ap_register_option_group($group_slug, $group_title, $fields, $form = true) {
 	global $ap_option_tabs;
 	$fields = apply_filters( 'ap_option_group_'.$group_slug, $fields );
-	
+
 	ap_append_to_global_var( 'ap_option_tabs', $group_slug , array( 'title' => $group_title, 'fields' => $fields, 'form' => $form ) );
 }
 
@@ -79,15 +79,20 @@ function ap_options_nav() {
 function ap_option_group_fields() {
 	$groups = ap_get_option_groups();
 
-	$active = (isset( $_REQUEST['option_page'] )) ? sanitize_text_field( $_REQUEST['option_page'] ) : 'general' ;
+	$active = ap_sanitize_unslash( 'option_page', 'request', 'general' );
 
 	if ( empty( $groups ) && is_array( $groups ) ) {
 		return;
 	}
 
 	$fields = $groups[ $active ]['fields'];
+	$fields[] = array(
+		'name' => 'fields_group',
+		'type' => 'hidden',
+		'value' => $active,
+	);
 
-	if ( isset( $groups[ $active ]['form'] ) && false !== $groups[ $active ]['form']) {
+	if ( isset( $groups[ $active ]['form'] ) && false !== $groups[ $active ]['form'] ) {
 		$args = array(
 			'name'              => 'options_form',
 			'is_ajaxified'      => false,
@@ -103,8 +108,8 @@ function ap_option_group_fields() {
 		echo '</div>';
 		echo $form->get_form();
 
-	} else {
-		call_user_func($fields );
+	} elseif ( isset( $fields['callback'] ) ) {
+		call_user_func( $fields['callback'] );
 	}
 }
 
@@ -152,10 +157,10 @@ function ap_get_option_groups() {
  * @return boolean
  * @since  3.0.0
  */
-function ap_load_admin_assets(){
+function ap_load_admin_assets() {
 	$page = get_current_screen();
-	$load = 'question' === $page->post_type || 'answer' === $page->post_type || strpos($page->base, 'anspress') !== false || $page->base === 'nav-menus'|| $page->base === 'admin_page_ap_select_question';
-	
+	$load = 'question' === $page->post_type || 'answer' === $page->post_type || strpos($page->base, 'anspress' ) !== false || $page->base === 'nav-menus'|| $page->base === 'admin_page_ap_select_question';
+
 	/**
 	 * Filter ap_load_admin_assets to load admin assets in custom page.
 	 * @param boolean $load Pass a boolean value if need to load assets.

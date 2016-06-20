@@ -6,9 +6,9 @@ class AnsPress_Comment_Hooks
 		$data = array(
 			'current_user_avatar' => get_avatar( get_current_user_id(), 30 ),
 		);
-		
+
 		// Check if user can comment, if so then send form data.
-		if ( ap_user_can_comment( $post_id ) ){
+		if ( ap_user_can_comment( $post_id ) ) {
 			$data['load_form'] = true;
 			$data['form'] = array(
 				'nonce' => wp_create_nonce( $post_id.'_comment' ),
@@ -82,7 +82,8 @@ class AnsPress_Comment_Hooks
 		$post_id = (int) $args[0];
 
 		// Check if they have permission to comment.
-		/*if ( ! ap_user_can_comment( $post_id ) ) {
+		/*
+		if ( ! ap_user_can_comment( $post_id ) ) {
 			ap_ajax_json( 'no_permission' );
 		}*/
 
@@ -347,8 +348,11 @@ class AnsPress_Comment_Hooks
 		return $args;
 	}
 
+	/**
+	 * Ajax callback to approve comment.
+	 */
 	public static function approve_comment() {
-		$args = $_POST['args'];
+		$args = ap_sanitize_unslash('args', 'request' );
 		if ( ! ap_verify_nonce( 'approve_comment_'. (int) $args[0] ) || ! ap_user_can_approve_comment( ) ) {
 	    	ap_ajax_json( 'something_wrong' );
 	    }
@@ -383,26 +387,25 @@ class AnsPress_Comment_Hooks
  */
 function ap_comment_btn_html($echo = false) {
 	global $post;
-	//if ( ap_user_can_comment( $post->ID ) ) {
+	// if ( ap_user_can_comment( $post->ID ) ) {
+	if ( $post->post_type == 'question' && ap_opt( 'disable_comments_on_question' ) ) {
+		return;
+	}
 
-		if ( $post->post_type == 'question' && ap_opt( 'disable_comments_on_question' ) ) {
-			return;
-		}
-
-		if ( $post->post_type == 'answer' && ap_opt( 'disable_comments_on_answer' ) ) {
-			return;
-		}
+	if ( $post->post_type == 'answer' && ap_opt( 'disable_comments_on_answer' ) ) {
+		return;
+	}
 
 		$nonce = wp_create_nonce( 'comment_form_nonce' );
 		$comment_count = get_comments_number( get_the_ID() );
 		$output = '<a href="#comments-'.get_the_ID().'" class="comment-btn ap-tip" data-action="ajax_btn" data-query="load_comments::'.$nonce.'::'.get_the_ID().'" title="'.__( 'Comments', 'anspress-question-answer' ).'">'.__( 'Comment', 'anspress-question-answer' ).'<span class="ap-data-view ap-view-count-'.$comment_count.'" data-view="comments_count_'.get_the_ID().'">('.$comment_count.')</span></a>';
 
-		if ( $echo ) {
-			echo $output;
-		} else {
-			return $output;
-		}
-	//}
+	if ( $echo ) {
+		echo $output;
+	} else {
+		return $output;
+	}
+	// }
 }
 
 function ap_get_comment_actions( $comment_id, $post_id ) {

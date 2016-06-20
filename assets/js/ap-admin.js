@@ -1,49 +1,3 @@
-(function ($) {
-	/*
-	* for getting unchecked fields
-	* source: http://tdanemar.wordpress.com/2010/08/24/jquery-serialize-method-and-checkboxes/
-	*/
-     $.fn.serialize = function (options) {
-         return $.param(this.serializeArray(options));
-     };
-
-     $.fn.serializeArray = function (options) {
-         var o = $.extend({
-         checkboxesAsBools: false
-     }, options || {});
-
-     var rselectTextarea = /select|textarea/i;
-     var rinput = /text|hidden|password|search/i;
-
-     return this.map(function () {
-         return this.elements ? $.makeArray(this.elements) : this;
-     })
-     .filter(function () {
-         return this.name && !this.disabled &&
-             (this.checked
-             || (o.checkboxesAsBools && this.type === 'checkbox')
-             || rselectTextarea.test(this.nodeName)
-             || rinput.test(this.type));
-         })
-         .map(function (i, elem) {
-             var val = $(this).val();
-             return val == null ?
-             null :
-             $.isArray(val) ?
-             $.map(val, function (val, i) {
-                 return { name: elem.name, value: val };
-             }) :
-             {
-                 name: elem.name,
-                 value: (o.checkboxesAsBools && this.type === 'checkbox') ? //moar ternaries!
-                        (this.checked ? '1' : '0') :
-                        val
-             };
-         }).get();
-     };
-
-})(jQuery);
-
 /* on start */
 jQuery(function() {
 
@@ -63,7 +17,6 @@ APjs.admin = function() {};
 
 		/* automatically called */
 		initialize: function() {
-			this.saveOptions();
 			this.renameTaxo();
 			this.editPoints();
 			this.savePoints();
@@ -74,23 +27,10 @@ APjs.admin = function() {};
 			this.ajaxBtn();
 		},
 
-		saveOptions: function(){
-			jQuery('#options_form').submit(function(){
-				jQuery.each(jQuery(this).find('input:checkbox:not(:checked)'), function(index, val) {
-					var name = jQuery(this).attr('name');
-					console.log(name);
-					var hidden = '_hidden_'+name;
-					jQuery(this).attr('name', '');
-					jQuery('input[name="'+ hidden + '"]').attr('name', name);
-				});
 
-				return true;
-			});
-		},
 		renameTaxo: function(){
 			jQuery('.ap-rename-taxo').click(function(e){
 				e.preventDefault();
-
 				jQuery.ajax({
 					url: ajaxurl,
 					data: {action: 'ap_taxo_rename'},

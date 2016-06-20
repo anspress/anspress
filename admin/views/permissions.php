@@ -93,8 +93,9 @@ if ( ! empty( $message ) ) {
 	                	<div class="ap-tools-roles">
 							<label for="ap-tools-selectroles"><?php _e('Select user role', 'anspress-question-answer' ); ?></label>
 							<select id="ap-tools-selectroles">
+							<?php $selected = ap_sanitize_unslash( 'role_name', 'request', 'administrator' ); ?>
 								<?php foreach ( $wp_roles->roles as $key => $role ) { ?>
-									<option value="role_<?php echo $key; ?>" <?php selected( sanitize_text_field( @$_POST['role_name'] ), $key ); ?>><?php echo $role['name']; ?></option>
+									<option value="role_<?php echo $key; ?>" <?php selected( $selected, $key ); ?>><?php echo $role['name']; ?></option>
 								<?php } ?>
 							</select>
 

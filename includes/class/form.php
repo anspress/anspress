@@ -85,13 +85,20 @@ class AnsPress_Form {
 			if ( ! is_array( $field ) ) {
 				return;
 			}
-			
+
 			if ( ! isset( $field['order'] ) ) {
 				$this->args['fields'][ $k ]['order'] = 10;
 			}
 
 			if ( ! isset( $field['show_desc_tip'] ) ) {
 				$this->args['fields'][ $k ]['show_desc_tip'] = true;
+			}
+
+			// Get value from opttions if options_form.
+			if ( 'options_form' == $this->name && isset( $this->args['fields'][ $k ]['name'] ) && ! isset( $this->args['fields'][ $k ]['value'] ) ) {
+				$this->args['fields'][ $k ]['value'] = ap_opt( $this->args['fields'][ $k ]['name'] );
+			}else{
+				$this->args['fields'][ $k ]['value'] = '';
 			}
 		}
 	}
@@ -443,14 +450,14 @@ class AnsPress_Form {
 		if ( isset( $field['label'] ) ) {
 			$this->label();
 		}
-		
+
 		$this->output .= '<div class="ap-form-fields-in">';
 		$placeholder = $this->placeholder();
-		
+
 		$this->output .= '<textarea id="'. $field['name'] .'" rows="'. $field['rows'] .'" class="ap-form-control" name="'. $field['name'] .'"'.$placeholder.' '. $this->attr( $field ) .'>'. $field['value'] .'</textarea>';
-		
+
 		$this->error_messages();
-		
+
 		if ( ! $this->field['show_desc_tip'] ) {
 			$this->desc();
 		}
@@ -546,7 +553,6 @@ class AnsPress_Form {
 	 * @since  2.0
 	 */
 	private function form_fields() {
-
 		/**
 		 * FILTER: ap_pre_form_fields
 		 * Provide filter to add or override form fields before output.

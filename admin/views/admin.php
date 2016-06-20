@@ -11,23 +11,43 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
+new AnsPress_Options_Fields();
+
 if ( isset( $_POST['__nonce'] ) && wp_verify_nonce( $_POST['__nonce'], 'nonce_option_form' ) && current_user_can( 'manage_options' ) ) {
 	flush_rewrite_rules();
-	$options = $_POST['anspress_opt'];
 
 	$settings = get_option( 'anspress_opt', array() );
+	$groups = ap_get_option_groups();
 
-	foreach ( (array) $options as $k => $opt ) {
-		$value = implode( "\n", array_map( 'sanitize_text_field', explode( "\n", $opt ) ) );
-		$settings[ $k ] = wp_unslash( $value );
+	$active = ap_isset_post_value( 'fields_group', '' );
+
+	// If active is set.
+	if ( '' != $active ) {
+		$fields = $groups[ $active ]['fields'];
+
+		//Get only field name.
+		$field_names = array_column( $fields, 'name' );
+
+		// Unset __sep name.
+		if( ( $key = array_search('__sep', $field_names) ) !== false ) {
+		    unset( $field_names[ $key ] );
+		}
+
+		foreach ( (array) $field_names as $name ) {
+			$value = ap_sanitize_unslash( $name, 'request' );
+			if ( !empty( $value ) ) {
+				$settings[ $name ] = $value;
+			} else {
+				unset( $settings[ $name ] );
+			}
+		}
+
+		update_option( 'anspress_opt', $settings );
+		$_POST['anspress_opt_updated'] = true;
 	}
-
-	update_option( 'anspress_opt', $settings );
-	wp_cache_delete( 'ap_opt', 'options' );
-	$_POST['anspress_opt_updated'] = true;
 }
 
-new AnsPress_Options_Fields();
+//var_dump(wp_cache_get('anspress_opt', 'options' ));
 
 /**
  * Anspress option navigation
@@ -44,7 +64,7 @@ new AnsPress_Options_Fields();
         <a href="https://www.facebook.com/wp.anspress" target="_blank">Facebook</a>
     </h2>
 
-	<?php if ( ap_isset_post_value('anspress_opt_updated') === true ) : ?>
+	<?php if ( ap_isset_post_value('anspress_opt_updated' ) === true ) : ?>
 		<div class="updated fade"><p><strong><?php _e( 'AnsPress options updated', 'anspress-question-answer' ); ?></strong></p></div>
 	<?php endif; // If the form has just been submitted, this shows the notification ?>
 
