@@ -24,7 +24,7 @@ if ( ! defined( 'WPINC' ) ) {
  * @since 0.1
  */
 function ap_opt($key = false, $value = null) {
-	$settings = wp_cache_get('anspress_opt', 'options' );
+	$settings = wp_cache_get('anspress_opt', 'ap' );
 	
 	if ( false === $settings ) {
 		$settings = get_option( 'anspress_opt' );
@@ -33,7 +33,7 @@ function ap_opt($key = false, $value = null) {
 			$settings = array();
 		}
 
-		wp_cache_set('anspress_opt', $settings, 'options' );
+		wp_cache_set('anspress_opt', $settings, 'ap' );
 	}
 
 	$settings = $settings + ap_default_options();
@@ -44,7 +44,7 @@ function ap_opt($key = false, $value = null) {
 		update_option( 'anspress_opt', $settings );
 
 		// Clear cache if option updated.
-		wp_cache_delete( 'anspress_opt', 'options' );
+		wp_cache_delete( 'anspress_opt', 'ap' );
 
 		return;
 	}

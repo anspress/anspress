@@ -298,7 +298,7 @@ class AnsPress_Options_Fields
 		));
 
 		// Register question settings
-		ap_register_option_group('question', __( 'Question & Answer', 'anspress-question-answer' ) , array(
+		ap_register_option_group('question', __( 'Q&A', 'anspress-question-answer' ) , array(
 			array(
 				'name' => 'default_date_format',
 				'label' => __( 'Show default date format', 'anspress-question-answer' ),

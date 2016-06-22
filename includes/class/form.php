@@ -95,10 +95,8 @@ class AnsPress_Form {
 			}
 
 			// Get value from opttions if options_form.
-			if ( 'options_form' == $this->name && isset( $this->args['fields'][ $k ]['name'] ) && ! isset( $this->args['fields'][ $k ]['value'] ) ) {
-				$this->args['fields'][ $k ]['value'] = ap_opt( $this->args['fields'][ $k ]['name'] );
-			}else{
-				$this->args['fields'][ $k ]['value'] = '';
+			if ( 'options_form' == $this->name && isset( $field['name'] ) && ! isset( $field['value'] ) ) {
+				$this->args['fields'][ $k ]['value'] = ap_opt( $field['name'] );
 			}
 		}
 	}

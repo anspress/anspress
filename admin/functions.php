@@ -49,9 +49,24 @@ function ap_options_nav() {
 
 	$menus = array();
 
+	$icons = array(
+		'general' => 'apicon-home',
+		'layout' => 'apicon-eye',
+		'pages' => 'apicon-pin',
+		'question' => 'apicon-question',
+		'users' => 'apicon-users',
+		'permission' => 'apicon-lock',
+		'moderate' => 'apicon-flag',
+		'roles' => 'apicon-user',
+		'categories' => 'apicon-category',
+		'tags' => 'apicon-tag',
+		'labels' => 'apicon-tag',
+	);
+
 	foreach ( (array) $groups as $k => $args ) {
 		$link 		= admin_url( "admin.php?page=anspress_options&option_page={$k}" );
-		$menus[$k] 	= array( 'title' => $args['title'], 'link' => $link );
+		$icon 		= isset( $icons[ $k ] ) ? esc_attr( $icons[ $k ] ) : 'apicon-gear';
+		$menus[ $k ] 	= array( 'title' => $args['title'], 'link' => $link, 'icon' => $icon );
 	}
 
 	/**
@@ -64,7 +79,7 @@ function ap_options_nav() {
 	$o = '<ul id="ap_opt_nav" class="nav nav-tabs">';
 	foreach ( (array) $menus as $k => $m ) {
 		$class = ! empty( $m['class'] ) ? ' '. $m['class'] : '';
-			$o .= '<li'.( $active == $k ? ' class="active"' : '' ).'><a href="'. $m['link'] .'" class="ap-user-menu-'.$k.$class.'">'.$m['title'].'</a></li>';
+			$o .= '<li'.( $active == $k ? ' class="active"' : '' ).'><a href="'. esc_url( $m['link'] ) .'" class="ap-user-menu-'.esc_attr( $k.$class ).'"><i class="'. $m['icon'] .'"></i>'. esc_attr( $m['title'] ) .'</a></li>';
 	}
 	$o .= '</ul>';
 

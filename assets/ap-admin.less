@@ -62,7 +62,7 @@
     width: 50px;
 }
 .ap-comment-col-flag {
-    background: #ff5555 none repeat scroll 0 0;
+    background: #ff5555;
     border-radius: 2px;
     color: #fff;
     font-weight: bold;
@@ -130,42 +130,58 @@ td.column-vote_note strong, td.column-post_title &>a {
     margin-top: 30px;
 }
 .option-nav-tab {
-    background: #fff none repeat scroll 0 0;
-    border: 2px solid #e1e1e1;
-    border-radius: 3px;
+    background: #f22844;
+    border-radius: 0;
+    height: 100%;
+    min-height: 100%;
+    padding: 0;
     float: left;
-    margin-right: -1px;
     width: 200px;
-    @media (max-width: 767px){
-        width: auto;
-        float: none;
-    }
 }
 #ap_opt_nav {
     margin: 0;
     li {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.14);
         margin-bottom: 0;
-        padding: 5px;
-        a {
-            font-size: 14px;
-            font-weight: 600;
+        padding: 0;
+        i{
+            border-right: 1px solid rgba(255, 255, 255, 0.14);
+            color: #fff;
             display: block;
-            padding: 8px 15px;
+            float: left;
+            font-size: 18px;
+            height: 46px;
+            margin-right: 10px;
+            margin-top: -14px;
+            padding: 13px 3px;
+            text-align: center;
+            width: 50px;
+        }
+        a {
+            color: rgba(255, 255, 255, 0.8);
+            display: block;
+            font-size: 14px;
+            padding: 14px 0;
             text-decoration: none;
-            color: #555;
             &:hover{
-                background: #eee;
+                background: none;
+                color: #fff;
             }
         }
     }
     li.active {
         a {
-            background: #6db55a none repeat scroll 0 0;
-            border-radius: 2px;
-            color: #fcfcfc;
-            margin:0;
+            color: #fff;
+            font-weight: 600;
+            i{
+                color: #fff;
+            }
         }
     }
+}
+.ap-optionpage-wrap{
+    max-width: 1000px;
+    margin: 0 auto;
 }
 .tab-content {
     overflow: hidden;
@@ -297,23 +313,16 @@ th.column-category {
 }
 .ap-group-options {
     background: #fff none repeat scroll 0 0;
-    border: 1px solid #e6e6e6;
-    border-radius: 4px;
-    margin-left: 215px;
+    border: 2px solid #ddd;
+    margin-left: 210px;
     overflow: hidden;
     padding: 20px;
-    @media (max-width: 767px){
-        width: auto;
-        float: none;
-        margin-left: 0;
-    }
 }
 .ap-form-label {
-    font-size: 13px;
     display: block;
     float: left;
     width: 250px;
-    font-size: 14px !important;
+    font-size: 13px !important;
     font-weight: 600;
     @media (max-width: 767px){
         width: auto;
@@ -335,7 +344,7 @@ th.column-category {
     margin-bottom: 0;
 }
 button.ap-submit-btn {
-    background: none repeat scroll 0 0 #43caff;
+    background: #43caff;
     border-color: transparent transparent rgba(0, 0, 0, 0.2);
     border-image: none;
     border-radius: 2px;
@@ -347,14 +356,7 @@ button.ap-submit-btn {
     margin-top: 20px;
     padding: 8px 20px;
 }
-.ap-form-separator {
-    border-bottom: 1px solid #eee;
-    display: block;
-    font-size: 20px;
-    font-weight: 600;
-    margin-bottom: 10px;
-    padding: 10px;
-}
+
 .ap-reapt-field-copy {
     display: none;
 }
@@ -460,7 +462,7 @@ button.ap-submit-btn {
 }
 
 .ap-dash-tile-in {
-    background: none repeat scroll 0 0 #fff;
+    background: #fff;
     border: 1px solid rgba(0, 0, 0, 0.1);
     margin: 0 0 15px;
     padding: 10px;
@@ -495,7 +497,7 @@ button.ap-submit-btn {
     }
 }
 .ap-need-att {
-    background: none repeat scroll 0 0 #f96574;
+    background: #f96574;
     border-radius: 50%;
     color: #fff;
     display: inline-block;
@@ -585,7 +587,7 @@ h3.ap-dash-title {
 
 
 .ap-ext-notice{
-    background: none repeat scroll 0 0 #a0e1fb;
+    background: #a0e1fb;
     border: 2px solid #5ac6f1;
     border-radius: 4px;
     padding: 10px;
@@ -595,7 +597,7 @@ h3.ap-dash-title {
         font-size: 14px;
     }
     a{
-        background: none repeat scroll 0 0 #4a8a9f;
+        background: #4a8a9f;
         border-radius: 2px;
         color: #fff;
         display: block;
@@ -610,10 +612,10 @@ h3.ap-dash-title {
         height: auto;
     }
     &.red{
-        background: none repeat scroll 0 0 #ffe3dc;
+        background: #ffe3dc;
         border: 2px solid #fea893;
         a{
-            background: none repeat scroll 0 0 #FE8163;
+            background: #FE8163;
         }
     }
 }
@@ -627,7 +629,7 @@ h3.ap-dash-title {
         margin-top: 25px;
         padding: 0;
         a{
-            background: #fc8e4e none repeat scroll 0 0;
+            background: #fc8e4e;
             border-radius: 3px;
             color: #fff;
             font-size: 14px;
@@ -636,7 +638,7 @@ h3.ap-dash-title {
         }
     }
     .anspress-links{
-        background: none repeat scroll 0 0 #fff;
+        background: #fff;
         border: 2px solid #dce0dd;
         border-radius: 4px;
         display: block;
@@ -673,12 +675,6 @@ h3.ap-dash-title {
                 position: static;
             }
         }
-        &-left{
-            margin-right: 270px;
-            @media (max-width: 989px){
-                margin-right: 0;
-            }
-        }
     }
 }
 
@@ -693,7 +689,7 @@ h3.ap-dash-title {
             font-size: 22px;
         }
         span{
-            background: #ff6d6d none repeat scroll 0 0;
+            background: #ff6d6d;
             border-radius: 10px;
             color: #fff;
             font-size: 12px;
@@ -705,7 +701,7 @@ h3.ap-dash-title {
     &-social{
         text-align: center;
         a{
-            background: #fff none repeat scroll 0 0;
+            background: #fff;
             border-radius: 2px;
             color: #656565;
             display: inline-block;
@@ -718,7 +714,7 @@ h3.ap-dash-title {
     }
     
     &-block{
-        background: #fff none repeat scroll 0 0;
+        background: #fff;
         margin: 40px auto 0;
         max-width: 980px;
         padding: 20px;
@@ -763,7 +759,7 @@ h3.ap-dash-title {
     }
 }
 .ap-donation-block{
-    background: none repeat scroll 0 0 #ffe0ab;
+    background: #ffe0ab;
     border: 2px solid #f5a216;
     border-radius: 3px;
     margin-bottom: 20px;
@@ -773,13 +769,13 @@ h3.ap-dash-title {
     }
 }
 .ap-changelog{
-    background: none repeat scroll 0 0 #fff;
+    background: #fff;
     border: 1px solid #ddd;
     border-radius: 3px;
     padding: 15px;
 }
 .ap-dynamic-avatar {
-    background: none repeat scroll 0 0 #a3a3a3;
+    background: #a3a3a3;
     border-radius: 2px;
     color: #fff;
     display: block;
@@ -870,13 +866,15 @@ h3.ap-dash-title {
     }
 }
 .ap-optionform-title {
-    background: #fbfbfb none repeat scroll 0 0;
+    background: #f7f7f7 none repeat scroll 0 0;
+    border-bottom: 1px solid #eee;
     border-radius: 2px 2px 0 0;
+    font-size: 20px;
     margin: -20px -20px 10px;
     padding: 15px;
 }
 .ap-btn-submit{
-    background: #00a0d2 none repeat scroll 0 0;
+    background: #00a0d2;
     border-color: #0073aa;
     border-radius: 3px;
     border-style: solid;
@@ -901,7 +899,7 @@ h3.ap-dash-title {
         margin-top: 5px;
         padding: 10px;
         strong{
-            background: #fff none repeat scroll 0 0;
+            background: #fff;
             border: 1px solid #ddd;
             display: table;
             margin-bottom: 5px;
@@ -961,7 +959,7 @@ h3.ap-dash-title {
 .ap-license{
     &-check{
         i{
-            background: #44d669 none repeat scroll 0 0;
+            background: #44d669;
             border-radius: 50%;
             color: #fff;
             display: inline-block;
@@ -994,7 +992,7 @@ ul.ap-meta-list{
     }
 }
 .white-bg {
-    background: #fff none repeat scroll 0 0;
+    background: #fff;
     padding: 15px;
 }
 #ap_category_media_preview {
@@ -1035,7 +1033,7 @@ ul.ap-meta-list{
         display: inline-block;
         margin-right: 10px;
         a{
-            background: #4d97fe none repeat scroll 0 0;
+            background: #4d97fe;
             border-radius: 2px;
             color: #fff;
             font-size: 12px;
@@ -1147,4 +1145,13 @@ ul.ap-meta-list{
 }
 .no-overflow{
     overflow: hidden;
+}
+.ap-form-separator {
+    border-bottom: 3px solid #eee;
+    display: block;
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    margin-top: 25px;
+    padding: 10px;
 }
