@@ -56,21 +56,31 @@ if ( isset( $_POST['__nonce'] ) && wp_verify_nonce( $_POST['__nonce'], 'nonce_op
 <div id="anspress" class="wrap">	
     <div class="ap-optionpage-wrap">
 	    <h2 class="admin-title">
-			<?php _e( 'AnsPress Options', 'anspress-question-answer' ); ?>
-	        <a href="http://github.com/anspress/anspress" target="_blank">GitHub</a>
+			<?php _e( 'AnsPress Options', 'anspress-question-answer' ); ?>	        
+	    </h2>
+
+	    <div class="social-links clearfix">
+	    	<a href="http://github.com/anspress/anspress" target="_blank">GitHub</a>
 	        <a href="https://wordpress.org/plugins/anspress-question-answer/" target="_blank">WordPress.org</a>
 	        <a href="https://twitter.com/anspress_io" target="_blank">@anspress_io</a>
 	        <a href="https://www.facebook.com/wp.anspress" target="_blank">Facebook</a>
-	    </h2>
+	    </div>
 
 	    <div class="ap-wrap">
 	        <div class="anspress-options ap-wrap-left clearfix">
 	            <div class="option-nav-tab clearfix">
 					<?php ap_options_nav(); ?>
 			    </div>
-	            <div class="ap-group-options">
-					<?php ap_option_group_fields(); ?>
-	            </div>
+	            <div class="ap-options-side">
+		            <div class="ap-group-options get-ext">
+		            	<a href="https://anspress.io/themes/">Browse Themes</a>
+		            	<a href="https://anspress.io/extensions/">Browse Extensions</a>
+		            	<h3>Check our AnsPress extensions and themes</h3>
+		            </div>
+		            <div class="ap-group-options">
+						<?php ap_option_group_fields(); ?>
+		            </div>
+		        </div>
 	        </div>
 	    </div>
 	</div>

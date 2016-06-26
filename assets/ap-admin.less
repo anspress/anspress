@@ -311,12 +311,30 @@ th.column-category {
 .badge-type.badge-bronze {
     background: #c26f27;
 }
+.ap-options-side{
+    margin-left: 210px;
+    overflow: hidden;
+}
 .ap-group-options {
     background: #fff none repeat scroll 0 0;
     border: 2px solid #ddd;
-    margin-left: 210px;
-    overflow: hidden;
+    margin-bottom: 10px;
     padding: 20px;
+    &.get-ext{
+        border-color: #a4d4d9;
+        h3{
+            margin: 0;
+        }
+        a{
+            background: #49cd85 none repeat scroll 0 0;
+            border-radius: 3px;
+            color: #fff;
+            float: right;
+            margin-left: 10px;
+            margin-top: -5px;
+            padding: 6px 10px;
+        }
+    }
 }
 .ap-form-label {
     display: block;
@@ -624,17 +642,25 @@ h3.ap-dash-title {
         text-decoration: none;
     }
     .admin-title {
-        font-size: 23px;
+        font-size: 25px;
         font-weight: 600;
         margin-top: 25px;
-        padding: 0;
+        padding: 0;        
+    }
+    .social-links{
+        margin-top: 5px;
+        margin-bottom: 10px;
         a{
-            background: #fc8e4e;
+            background: #fff none repeat scroll 0 0;
+            border: 2px solid #ddd;
             border-radius: 3px;
-            color: #fff;
-            font-size: 14px;
-            padding: 4px 12px;
-            vertical-align: text-bottom;
+            color: #333;
+            display: block;
+            float: left;
+            font-size: 13px;
+            font-weight: bold;
+            margin-right: 5px;
+            padding: 4px 10px;
         }
     }
     .anspress-links{
