@@ -49,6 +49,14 @@ class AnsPress_Hooks
 	    anspress()->add_action( 'ap_vote_removed', __CLASS__, 'update_user_vote_casted_count' , 10, 4 );
 	    anspress()->add_action( 'the_post', __CLASS__, 'ap_append_vote_count' );
 
+	    // Query filters.
+	    anspress()->add_action( 'posts_clauses', 'AnsPress_Query_Filter', 'answer_sort', 10, 2 );
+		anspress()->add_action( 'posts_clauses', 'AnsPress_Query_Filter', 'user_favorites', 10, 2 );
+		anspress()->add_action( 'posts_clauses', 'AnsPress_Query_Filter', 'main_question_query', 10, 2 );
+		anspress()->add_action( 'posts_clauses', 'AnsPress_Query_Filter', 'ap_answers_query', 10, 2 );
+		anspress()->add_action( 'posts_clauses', 'AnsPress_Query_Filter', 'ap_question_subscription_query', 10, 2 );
+		anspress()->add_filter( 'the_posts', 'AnsPress_Query_Filter', 'restricted_answer_contents', 10, 2 );
+
 	    // Theme  hooks.
 	    anspress()->add_action( 'init', 'AnsPress_Theme', 'init_actions' );
 	    anspress()->add_filter( 'post_class', 'AnsPress_Theme', 'question_answer_post_class' );
