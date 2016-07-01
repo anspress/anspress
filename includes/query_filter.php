@@ -152,9 +152,10 @@ class AnsPress_Query_Filter
 
 			}
 
-			$featured = array_unique( get_option('featured_questions' ) );
+			$featured = get_option('featured_questions' );
 
 			if ( ! empty( $featured ) ) {
+				$featured = array_unique( $featured );
 				$post_ids = '';
 				$last_id = end($featured );
 
