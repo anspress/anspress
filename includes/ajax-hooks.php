@@ -444,6 +444,7 @@ class AnsPress_Ajax
 
 		if ( $ap_user_query->has_users() ) {
 			while ( ap_users() ) : ap_the_user();
+				$last_seen = !empty(ap_user_get_the_meta( '__last_active' )) ? ap_human_time( ap_user_get_the_meta( '__last_active' ), false ) : __('Never','anspress-question-answer');
 				$data = array(
 					'template' => 'user-hover',
 					'disableAutoLoad' => 'true',
@@ -463,7 +464,7 @@ class AnsPress_Ajax
 							[ 'label' => __('Followers', 'anspress-question-answer' ), 'count' => ap_user_get_the_meta('__total_followers' ) ],
 							[ 'label' => __('Following', 'anspress-question-answer' ), 'count' => ap_user_get_the_meta('__total_following' ) ],
 						),
-						'active' 		=> sprintf( __( 'Last seen %s', 'anspress-question-answer' ), ap_human_time( ap_user_get_the_meta( '__last_active' ), false ) ),
+						'active' 		=> sprintf( __( 'Last seen %s', 'anspress-question-answer' ), $last_seen ),
 					),
 				);
 				/**

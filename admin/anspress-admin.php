@@ -77,6 +77,9 @@ class AnsPress_Admin
 		add_action( 'get_pages', array( $this, 'get_pages' ), 10, 2 );
 		add_action( 'wp_insert_post_data', array( $this, 'modify_answer_title' ), 10, 2 );
 		add_action( 'admin_action_ap_update_helper', array( $this, 'update_helper' ) );
+
+		// Query filters.
+		anspress()->add_action('admin_footer-post.php', 'AnsPress_Query_Filter', 'append_post_status_list' );
 	}
 
 	/**

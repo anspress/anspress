@@ -318,11 +318,11 @@ function ap_display_question_metas($question_id = false) {
 
 		$view_count = ap_get_qa_views();
 		$metas['views'] = sprintf( __( '<i>%d views</i>', 'anspress-question-answer' ), $view_count );
-		$metas['history'] = ap_latest_post_activity_html( $question_id, ! is_question() );		
+		$metas['history'] = ap_latest_post_activity_html( $question_id, ! is_question() );
 	}
 
 	// If featured question.
-	if( ap_is_featured_question( $question_id ) ){
+	if ( ap_is_featured_question( $question_id ) ) {
 		$metas['featured'] = __( 'Featured', 'anspress-question-answer' );
 	}
 
@@ -465,10 +465,9 @@ function ap_post_actions() {
 	}
 
 	// Comment button.
-	//if ( ap_user_can_comment( $post->ID ) ) {
+	// if ( ap_user_can_comment( $post->ID ) ) {
 	    $actions['comment'] = ap_comment_btn_html();
-	//}
-
+	// }
 	$actions['status'] = ap_post_change_status_btn_html( $post->ID );
 
 	// Edit question link.
@@ -508,7 +507,7 @@ function ap_post_actions() {
 	// Convert question to a post.
 	if ( is_super_admin( ) && 'question' === $post->post_type ) {
 		$nonce = wp_create_nonce( 'ap_ajax_nonce' );
-		$actions['dropdown']['convert_to_post'] = '<a href="#" data-action="ajax_btn" data-query="convert_to_post::'.$nonce.'::'. $post->ID .'">'.__('Convert to post', 'anspress-question-answer').'</a>';
+		$actions['dropdown']['convert_to_post'] = '<a href="#" data-action="ajax_btn" data-query="convert_to_post::'.$nonce.'::'. $post->ID .'">'.__('Convert to post', 'anspress-question-answer' ).'</a>';
 	}
 
 	/*
@@ -619,18 +618,18 @@ function ap_answers_tab($base = false) {
 	}
 
 	$navs = array(
-		'active' => array( 'link' => add_query_arg( array( 'ap_sort' => 'active' ), $base ), 'title' => __( 'Active', 'anspress-question-answer' ) ),
+		'active' => array( 'link' => add_query_arg( [ 'ap_sort' => 'active' ], $base ), 'title' => __( 'Active', 'anspress-question-answer' ) ),
 	);
 
 	if ( ! ap_opt( 'disable_voting_on_answer' ) ) {
-		$navs['voted'] = array( 'link' => add_query_arg( array( 'ap_sort' => 'voted' ), $base ), 'title' => __( 'Voted', 'anspress-question-answer' ) );
+		$navs['voted'] = array( 'link' => add_query_arg( [ 'ap_sort' => 'voted' ], $base ), 'title' => __( 'Voted', 'anspress-question-answer' ) );
 	}
 
-	$navs['newest'] = array( 'link' => add_query_arg( array( 'ap_sort' => 'newest' ), $base ), 'title' => __( 'Newest', 'anspress-question-answer' ) );
-	$navs['oldest'] = array( 'link' => add_query_arg( array( 'ap_sort' => 'oldest' ), $base ), 'title' => __( 'Oldest', 'anspress-question-answer' ) );
+	$navs['newest'] = array( 'link' => add_query_arg( [ 'ap_sort' => 'newest' ], $base ), 'title' => __( 'Newest', 'anspress-question-answer' ) );
+	$navs['oldest'] = array( 'link' => add_query_arg( [ 'ap_sort' => 'oldest' ], $base ), 'title' => __( 'Oldest', 'anspress-question-answer' ) );
 
 	echo '<ul class="ap-answers-tab ap-ul-inline clearfix">';
-	foreach ( $navs as $k => $nav ) {
+	foreach ( (array) $navs as $k => $nav ) {
 		echo '<li'.($sort == $k ? ' class="active"' : '').'><a href="'.esc_attr( $nav['link'] ).'">'.esc_attr( $nav['title'] ).'</a></li>';
 	}
 	echo '</ul>';
@@ -689,10 +688,10 @@ function ap_get_ask_btn() {
 
 	/**
 	 * Filter ask button link.
-	 * @param string $link 
+	 * @param string $link
 	 */
 	$link = apply_filters( 'ap_ask_btn_link', $link );
-	
+
 	return '<a class="ap-btn-ask" href="'.$link.'">'.__( 'Ask question', 'anspress-question-answer' ).'</a>';
 }
 
@@ -862,7 +861,7 @@ function ap_assets( ) {
 	}
 
 	// Load mention JS.
-	if( !ap_opt('disable_mentions') ){
+	if ( ! ap_opt('disable_mentions' ) ) {
 		$assets['js']['ap-mention-js'] = array( 'src' => ap_get_theme_url( 'min/mention.js' ), 'dep' => array( 'jquery' ) );
 		$assets['css']['ap-mention-css'] = array( 'src' => ap_get_theme_url( 'css/mention.css' ) );
 	}
