@@ -80,10 +80,6 @@ class AnsPress_Rewrite
 		$new_rules = array(
 			$slug. 'parent/([^/]+)/?' => 'index.php?page_id='.$base_page_id.'&parent='.$wp_rewrite->preg_index( 1 ),
 
-			$slug. 'tag/([^/]+)/page/?([0-9]{1,})/?$' => 'index.php?page_id='.$base_page_id.'&ap_page=tag&q_tag='.$wp_rewrite->preg_index( 1 ).'&paged='.$wp_rewrite->preg_index( 2 ),
-
-			$slug. 'tag/([^/]+)/?' => 'index.php?page_id='.$base_page_id.'&ap_page=tag&q_tag='.$wp_rewrite->preg_index( 1 ),
-
 			$slug. 'page/?([0-9]{1,})/?$' => 'index.php?page_id='.$base_page_id.'&paged='.$wp_rewrite->preg_index( 1 ),
 
 			$slug. '([^/]+)/page/?([0-9]{1,})/?$' => 'index.php?page_id='.$base_page_id.'&ap_page='.$wp_rewrite->preg_index( 1 ).'&paged='.$wp_rewrite->preg_index( 2 ),

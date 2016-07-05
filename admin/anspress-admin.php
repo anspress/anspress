@@ -128,13 +128,19 @@ class AnsPress_Admin
 			return;
 		}
 
+		$page = get_current_screen();
+
 		$dir = ap_env_dev() ? 'js' : 'min';
 		$min = ap_env_dev() ? '' : '.min';
 
 		wp_enqueue_script( 'jquery-form', array( 'jquery' ), false, true );
 		wp_enqueue_script( 'ap-initial.js', ap_get_theme_url( 'js/initial.min.js' ), 'jquery', AP_VERSION );
 		wp_enqueue_script( 'ap-functions-js', ANSPRESS_URL.'assets/'.$dir.'/ap-functions'.$min.'.js', 'jquery', AP_VERSION );
-		wp_enqueue_script( 'ap-chart-js', '//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.4/Chart.min.js' );
+
+		if( 'toplevel_page_anspress' == $page->base ){
+			wp_enqueue_script( 'ap-chart-js', '//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.4/Chart.min.js' );
+		}
+		
 		wp_enqueue_script( 'ap-admin-js', ANSPRESS_URL.'assets/'.$dir.'/ap-admin'.$min.'.js' , array( 'wp-color-picker' ) );
 		wp_enqueue_script( 'postbox' );
 	}

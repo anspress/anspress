@@ -895,6 +895,7 @@ var apData = {};
                             console.log(data.key + ' changed');                            
                             var html = $(Ta.render(template, apData[data.key]));
                             $(apObjectWatching[data.key]).replaceWith(html);
+                            apLaodAvatar();
                             apObjectWatching[data.key] = html.apGetSelector();
                         };
                         
@@ -903,7 +904,8 @@ var apData = {};
                             watch(apData, data.key, watchCB);
                             apObjectWatching[data.key] = true;
                             var html = $(Ta.render(template, data.apData));
-                            $(data.appendTo).append(html);                
+                            $(data.appendTo).append(html);
+                            apLaodAvatar();              
                             apObjectWatching[data.key] = html.apGetSelector();
                         }
 

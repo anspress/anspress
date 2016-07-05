@@ -31,7 +31,6 @@ if ( isset( $_POST['__nonce'] ) && wp_verify_nonce( $_POST['__nonce'], 'nonce_op
 		// Check $_POST value against fields.
 		foreach ( (array) $field_names as $name ) {
 			$value = ap_sanitize_unslash( $name, 'request' );
-
 			if ( ! empty( $value ) ) {
 				$settings[ $name ] = $value;
 			} else {

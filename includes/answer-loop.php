@@ -482,7 +482,9 @@ function ap_answer_get_the_active_time($answer_id = false) {
  */
 function ap_answer_the_time($answer_id = false, $format = 'U') {
 	$answer_id = ap_parameter_empty( $answer_id, ap_answer_get_the_answer_id() );
-	echo '<time itemprop="datePublished" datetime="'. ap_answer_get_the_time( $answer_id, 'c' ) .'">'. ap_human_time( ap_answer_get_the_time( $answer_id, $format ) ) .'</time>';
+	echo '<time itemprop="datePublished" datetime="'. ap_answer_get_the_time( $answer_id, 'c' ) .'">';
+	printf( 'Posted %s', ap_human_time( ap_answer_get_the_time( $answer_id, $format ) ) );
+	echo '</time>';
 }
 
 /**
