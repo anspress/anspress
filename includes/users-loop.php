@@ -543,6 +543,13 @@ function ap_user_get_member_for() {
 	if ( $diff->d > 0 ) {
 		$time .= sprintf( __( '%d days', 'anspress-question-answer' ), $diff->d ); }
 
+	if ($time == '') {
+		if ($diff->h > 0) {
+			$time .= sprintf( __( '%d hours', 'anspress-question-answer' ), $diff->h ); }
+		else {
+			$time .= sprintf( __( '%d minutes', 'anspress-question-answer' ), $diff->i ); }
+	}
+
 	return $time;
 }
 
