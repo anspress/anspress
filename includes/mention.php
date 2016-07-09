@@ -24,6 +24,8 @@ class AP_Mentions_Hooks{
 	 * @since 2.4.8 Removed `$ap` args.
 	 */
 	public function __construct() {
+		anspress()->add_action( 'tiny_mce_before_init', __CLASS__, 'tiny_mce_before_init' );
+		
 		// Return if mention is disabled.
 		if( ap_opt('disable_mentions') ){
 			return;
@@ -34,7 +36,7 @@ class AP_Mentions_Hooks{
 		anspress()->add_filter( 'ap_pre_update_question', __CLASS__, 'linkyfy_mentions' );
 		anspress()->add_filter( 'ap_pre_update_answer', __CLASS__, 'linkyfy_mentions' );
 		anspress()->add_action( 'ap_ajax_search_mentions', __CLASS__, 'search_mentions' );
-		anspress()->add_action( 'tiny_mce_before_init', __CLASS__, 'tiny_mce_before_init' );
+		
 	}
 
 	/**
@@ -70,17 +72,24 @@ class AP_Mentions_Hooks{
 	public static function tiny_mce_before_init($initArray) {
 		$initArray['setup'] = 'function(ed) {
 			ed.on("init", function() {
-      			tinyMCE.activeEditor.show();
-		        ed.on("keydown", function(e) {
-		          if(e.keyCode == 13 && jQuery(ed.contentDocument.activeElement).atwho("isSelecting"))
-		            return false
-		        });      
+				tinyMCE.activeEditor.show();
+				if( typeof atwho !== "undefined"){	      			
+			        ed.on("keydown", function(e) {
+			          if(e.keyCode == 13 && jQuery(ed.contentDocument.activeElement).atwho("isSelecting"))
+			            return false
+			        });
+			    }
 	   		});
 		}';
 
 		$initArray['init_instance_callback'] = 'function(ed) {
-			jQuery(ed.contentDocument.activeElement).atwho(at_config);
+			if( typeof atwho !== "undefined"){
+				jQuery(ed.contentDocument.activeElement).atwho(at_config);
+			}
 		}';
+
+		$initArray['autoresize_min_height'] = 300;
+        $initArray['autoresize_max_height'] = 10000;
 		return $initArray;
 	}
 }

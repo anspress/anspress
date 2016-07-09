@@ -585,7 +585,7 @@ class AnsPress_Hooks
 	 * @return array
 	 */
 	public static function editor_buttons($buttons, $editor_id) {
-		if ( is_anspress() ) {
+		if ( is_anspress() || ap_is_ajax() ) {
 			return array( 'bold', 'italic', 'underline', 'strikethrough', 'bullist', 'numlist', 'link', 'unlink', 'blockquote', 'pre' );
 		}
 

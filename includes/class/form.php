@@ -499,7 +499,8 @@ class AnsPress_Form {
 		$this->output .= ob_get_clean();
 		$this->error_messages();
 		if ( ! $this->field['show_desc_tip'] ) {
-			$this->desc(); }
+			$this->desc();
+		}
 		$this->output .= '</div>';
 	}
 	/**

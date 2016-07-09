@@ -726,7 +726,14 @@ class AnsPress_Ajax
 	 * @since 3.0.0
 	 */
 	public static function load_tinymce_assets() {
-		$settings = ap_tinymce_editor_settings('answer' );
+		$settings = ap_tinymce_editor_settings( 'answer' );
+
+		if ( $settings['tinymce'] !== false ) {
+			$settings['tinymce'] = array(
+				'content_css' => ap_get_theme_url( 'css/editor.css' ),
+				'wp_autoresize_on' => true,
+			);
+		}
 
 		// Include mentions assets.
 		if ( ! ap_opt('disable_mentions' ) ) {

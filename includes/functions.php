@@ -177,6 +177,7 @@ function is_anspress() {
 	return false;
 }
 
+
 /**
  * Check if current page is question page
  * @return boolean
@@ -724,14 +725,13 @@ function sanitize_comma_delimited($str) {
 
 /**
  * Check if doing ajax request.
- *
  * @return bool
- *
  * @since 2.0.1
+ * @since  3.0.0 Check if `ap_ajax_action` is set.
  */
 function ap_is_ajax() {
 
-	if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
+	if ( defined( 'DOING_AJAX' ) && DOING_AJAX && isset( $_REQUEST['ap_ajax_action'] ) ) {
 		return true;
 	}
 
