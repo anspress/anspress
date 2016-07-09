@@ -187,6 +187,10 @@ class AnsPress_Form {
 		$this->output .= ob_get_clean();
 
 		$this->output .= '<button type="submit" class="ap-btn ap-btn-submit">'.$this->args['submit_button'].'</button>';
+		
+		if ( isset( $this->args['show_reset'] ) && true === $this->args['show_reset'] ) {
+			$this->output .= '<input type="submit" name="reset" class="button ap-btn ap-btn-reset" value="'. __('Reset', 'anspress-question-answer') .'" />';
+		}
 
 		if ( isset( $this->args['show_cancel'] ) && true === $this->args['show_cancel'] ) {
 			$this->output .= '<button type="button" class="ap-btn ap-btn-cancel">'.__( 'Cancel', 'anspress-question-answer' ).'</button>';
@@ -472,7 +476,8 @@ class AnsPress_Form {
 	private function editor_field($field = array()) {
 
 		if ( isset( $field['label'] ) ) {
-			$this->label(); }
+			$this->label();
+		}
 
 		if ( $field['settings']['tinymce'] !== false ) {
 			$field['settings']['tinymce'] = array(
