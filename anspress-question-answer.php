@@ -176,8 +176,6 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		        self::$instance->actions = array();
 		        self::$instance->filters = array();
 
-		        add_action( 'plugins_loaded', array( self::$instance, 'load_textdomain' ) );
-
 		        add_action( 'bp_loaded', array( self::$instance, 'bp_include' ) );
 
 		        global $ap_classes;
@@ -312,20 +310,6 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		    //require_once ANSPRESS_DIR.'includes/api.php';
 		}
 
-		/**
-		 * Load translations.
-		 * @since 2.0.1
-		 */
-		public function load_textdomain() {
-		    $locale = apply_filters( 'plugin_locale', get_locale(), 'anspress-question-answer' );
-		    $loaded = load_textdomain( 'anspress-question-answer', trailingslashit( WP_LANG_DIR ).'anspress-question-answer'.'/'.'anspress-question-answer'.'-'.$locale.'.mo' );
-
-		    if ( $loaded ) {
-		        return $loaded;
-		    } else {
-		        load_plugin_textdomain( 'anspress-question-answer', false, basename( dirname( __FILE__ ) ).'/languages/' );
-		    }
-		}
 
 		/**
 		 * Register ajax hooks
@@ -454,7 +438,23 @@ if ( ! class_exists( 'AnsPress_Init' ) ) {
              * @since 2.4.7
 			 */
 			do_action( 'before_loading_anspress' );
+			
 			anspress();
+		}
+
+		/**
+		 * Load translations.
+		 * @since 2.0.1
+		 */
+		public static function load_textdomain() {
+		    $locale = apply_filters( 'plugin_locale', get_locale(), 'anspress-question-answer' );
+		    $loaded = load_textdomain( 'anspress-question-answer', trailingslashit( WP_LANG_DIR ).'anspress-question-answer'.'/'.'anspress-question-answer'.'-'.$locale.'.mo' );
+
+		    if ( $loaded ) {
+		        return $loaded;
+		    } else {
+		        load_plugin_textdomain( 'anspress-question-answer', false, basename( dirname( __FILE__ ) ).'/languages/' );
+		    }
 		}
 
 		/**
@@ -578,6 +578,7 @@ if ( ! class_exists( 'AnsPress_Init' ) ) {
 
 
 add_action( 'plugins_loaded', [ 'AnsPress_Init', 'load_anspress' ] );
+add_action( 'plugins_loaded', [ 'AnsPress_Init', 'load_textdomain' ] );
 add_action( 'activated_plugin', [ 'AnsPress_Init', 'activation_redirect' ] );
 add_action( 'wpmu_new_blog', [ 'AnsPress_Init', 'create_blog' ], 10, 6 );
 add_filter( 'wpmu_drop_tables', [ 'AnsPress_Init', 'drop_blog_tables' ], 10, 2 );
