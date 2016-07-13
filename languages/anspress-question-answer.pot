@@ -2,10 +2,10 @@
 # This file is distributed under the GPL-3.0+.
 msgid ""
 msgstr ""
-"Project-Id-Version: AnsPress 3.0.0-beta.1\n"
+"Project-Id-Version: AnsPress 3.0.0\n"
 "Report-Msgid-Bugs-To: "
 "https://wordpress.org/support/plugin/anspress-question-answer\n"
-"POT-Creation-Date: 2016-06-26 14:59:01+00:00\n"
+"POT-Creation-Date: 2016-07-13 08:37:21+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -52,50 +52,50 @@ msgstr ""
 msgid "Save Point"
 msgstr ""
 
-#: admin/anspress-admin.php:186 includes/post_types.php:51
+#: admin/anspress-admin.php:195 includes/post_types.php:51
 msgid "All Questions"
 msgstr ""
 
-#: admin/anspress-admin.php:188 includes/post_types.php:54
+#: admin/anspress-admin.php:197 includes/post_types.php:54
 msgid "New Question"
 msgstr ""
 
-#: admin/anspress-admin.php:190 includes/post_types.php:121
+#: admin/anspress-admin.php:199 includes/post_types.php:121
 msgid "All Answers"
 msgstr ""
 
-#: admin/anspress-admin.php:192 includes/bp.php:50 includes/bp.php:82
+#: admin/anspress-admin.php:201 includes/bp.php:50 includes/bp.php:82
 #: includes/reputation.php:25 includes/reputation.php:311 includes/user.php:440
 #: theme/default/user/about.php:65
 msgid "Reputation"
 msgstr ""
 
-#: admin/anspress-admin.php:194
+#: admin/anspress-admin.php:203
 msgid "Select question"
 msgstr ""
 
-#: admin/anspress-admin.php:202 admin/views/admin.php:59
+#: admin/anspress-admin.php:211 admin/views/admin.php:68
 #: admin/views/dashboard.php:374
 msgid "AnsPress Options"
 msgstr ""
 
-#: admin/anspress-admin.php:202
+#: admin/anspress-admin.php:211
 msgid "Options"
 msgstr ""
 
-#: admin/anspress-admin.php:206 admin/views/sidebar.php:4
+#: admin/anspress-admin.php:215 admin/views/sidebar.php:4
 msgid "About AnsPress"
 msgstr ""
 
-#: admin/anspress-admin.php:300
+#: admin/anspress-admin.php:309
 msgid "Settings"
 msgstr ""
 
-#: admin/anspress-admin.php:383
+#: admin/anspress-admin.php:392
 msgid "This question is orphan, no question is selected for this answer"
 msgstr ""
 
-#: admin/anspress-admin.php:388 includes/ajax-hooks.php:101
+#: admin/anspress-admin.php:397 includes/ajax-hooks.php:101
 #: includes/ajax-hooks.php:103 includes/ajax-hooks.php:217
 #: includes/ajax-hooks.php:272 includes/answer-form.php:305
 msgid "1 Answer"
@@ -103,52 +103,52 @@ msgid_plural "%d Answer"
 msgstr[0] ""
 msgstr[1] ""
 
-#: admin/anspress-admin.php:388
+#: admin/anspress-admin.php:397
 msgid "Edit question"
 msgstr ""
 
-#: admin/anspress-admin.php:462
+#: admin/anspress-admin.php:471
 msgid "AnsPress Pages"
 msgstr ""
 
-#: admin/anspress-admin.php:481 admin/options-fields.php:429
+#: admin/anspress-admin.php:490 admin/options-fields.php:429
 msgid "User profile"
 msgstr ""
 
-#: admin/anspress-admin.php:482
+#: admin/anspress-admin.php:491
 msgid "User notification"
 msgstr ""
 
-#: admin/anspress-admin.php:495
+#: admin/anspress-admin.php:504
 msgid "Add to Menu"
 msgstr ""
 
-#: admin/anspress-admin.php:509
+#: admin/anspress-admin.php:518
 msgid "AnsPress update is not complete yet! click %shere%s to continue."
 msgstr ""
 
-#: admin/anspress-admin.php:522
+#: admin/anspress-admin.php:531
 msgid "Is your existing question tags are not appearing ? click here to fix it %s"
 msgstr ""
 
-#: admin/anspress-admin.php:522
+#: admin/anspress-admin.php:531
 msgid "Fix question tags"
 msgstr ""
 
-#: admin/anspress-admin.php:523
+#: admin/anspress-admin.php:532
 msgid "Hide message %s"
 msgstr ""
 
-#: admin/anspress-admin.php:523
+#: admin/anspress-admin.php:532
 msgid "dismiss"
 msgstr ""
 
-#: admin/anspress-admin.php:572 admin/meta_box.php:108 includes/flag.php:244
+#: admin/anspress-admin.php:581 admin/meta_box.php:108 includes/flag.php:244
 #: includes/post_types.php:238 includes/post_types.php:359
 msgid "Flag"
 msgstr ""
 
-#: admin/anspress-admin.php:600 admin/class-list-table-hooks.php:29
+#: admin/anspress-admin.php:609 admin/class-list-table-hooks.php:29
 msgid "Flagged"
 msgstr ""
 
@@ -156,7 +156,7 @@ msgstr ""
 msgid "Restore this item from the Trash"
 msgstr ""
 
-#: admin/class-list-table-hooks.php:78 includes/functions.php:627
+#: admin/class-list-table-hooks.php:78 includes/functions.php:628
 msgid "Restore"
 msgstr ""
 
@@ -183,8 +183,8 @@ msgstr ""
 
 #: admin/class-list-table-hooks.php:90 admin/meta_box.php:60
 #: admin/reputation.php:152 includes/comments.php:423
-#: includes/common-pages.php:24 includes/functions.php:413
-#: includes/functions.php:415 includes/functions.php:434
+#: includes/common-pages.php:24 includes/functions.php:414
+#: includes/functions.php:416 includes/functions.php:435
 #: theme/default/part/question.php:46
 msgid "Edit"
 msgstr ""
@@ -219,7 +219,7 @@ msgid "Licenses"
 msgstr ""
 
 #: admin/meta_box.php:25 admin/views/dashboard.php:229
-#: includes/ajax-hooks.php:459 includes/bp.php:122 includes/class-user.php:38
+#: includes/ajax-hooks.php:460 includes/bp.php:122 includes/class-user.php:38
 #: includes/post_types.php:119 includes/user.php:515
 #: theme/default/user/list-question.php:19 widgets/question_stats.php:51
 #: widgets/questions.php:87
@@ -227,7 +227,7 @@ msgid "Answers"
 msgstr ""
 
 #: admin/meta_box.php:28 admin/options-fields.php:312
-#: includes/ajax-hooks.php:461 includes/bp.php:145 includes/bp.php:146
+#: includes/ajax-hooks.php:462 includes/bp.php:145 includes/bp.php:146
 #: includes/common-pages.php:22 includes/post_status.php:171
 #: includes/post_types.php:71 includes/reputation.php:860
 msgid "Question"
@@ -441,24 +441,24 @@ msgstr ""
 msgid "Sort answers by default."
 msgstr ""
 
-#: admin/options-fields.php:185 includes/functions.php:529
-#: includes/theme.php:580 includes/theme.php:626 widgets/questions.php:86
+#: admin/options-fields.php:185 includes/functions.php:530
+#: includes/theme.php:579 includes/theme.php:625 widgets/questions.php:86
 msgid "Voted"
 msgstr ""
 
-#: admin/options-fields.php:186 includes/theme.php:575 includes/theme.php:622
+#: admin/options-fields.php:186 includes/theme.php:574 includes/theme.php:621
 #: includes/user.php:442 widgets/question_stats.php:49 widgets/questions.php:84
 msgid "Active"
 msgstr ""
 
-#: admin/options-fields.php:187 includes/functions.php:521
-#: includes/theme.php:576 includes/theme.php:629 includes/user.php:445
+#: admin/options-fields.php:187 includes/functions.php:522
+#: includes/theme.php:575 includes/theme.php:628 includes/user.php:445
 #: widgets/questions.php:85
 msgid "Newest"
 msgstr ""
 
-#: admin/options-fields.php:188 includes/functions.php:525
-#: includes/theme.php:630
+#: admin/options-fields.php:188 includes/functions.php:526
+#: includes/theme.php:629
 msgid "Oldest"
 msgstr ""
 
@@ -854,8 +854,8 @@ msgstr ""
 #: admin/options-fields.php:591 admin/options-fields.php:602
 #: admin/options-fields.php:613 admin/options-fields.php:624
 #: includes/post_status.php:34 includes/post_status.php:132
-#: includes/post_types.php:266 includes/query_filter.php:87
-#: includes/query_filter.php:100 includes/question-loop.php:396
+#: includes/post_types.php:266 includes/query_filter.php:83
+#: includes/query_filter.php:96 includes/question-loop.php:396
 msgid "Moderate"
 msgstr ""
 
@@ -962,8 +962,8 @@ msgid "Delete this reputation"
 msgstr ""
 
 #: admin/reputation.php:153 includes/class/activity.php:1190
-#: includes/class/form.php:285 includes/class/form.php:292
-#: includes/comments.php:428 includes/functions.php:608
+#: includes/class/form.php:289 includes/class/form.php:296
+#: includes/comments.php:428 includes/functions.php:609
 msgid "Delete"
 msgstr ""
 
@@ -992,7 +992,7 @@ msgstr ""
 msgid "AnsPress Extensions"
 msgstr ""
 
-#: admin/views/admin.php:52
+#: admin/views/admin.php:61
 msgid "AnsPress option updated!"
 msgstr ""
 
@@ -1363,7 +1363,7 @@ msgid ""
 "them."
 msgstr ""
 
-#: includes/ajax-hooks.php:101 includes/functions.php:585
+#: includes/ajax-hooks.php:101 includes/functions.php:586
 msgid "Select"
 msgstr ""
 
@@ -1405,37 +1405,41 @@ msgstr ""
 msgid "Unfollow"
 msgstr ""
 
-#: includes/ajax-hooks.php:460
+#: includes/ajax-hooks.php:447
+msgid "Never"
+msgstr ""
+
+#: includes/ajax-hooks.php:461
 msgid "Best"
 msgstr ""
 
-#: includes/ajax-hooks.php:462
+#: includes/ajax-hooks.php:463
 msgid "comments"
 msgstr ""
 
-#: includes/ajax-hooks.php:463 includes/class-user.php:39
+#: includes/ajax-hooks.php:464 includes/class-user.php:39
 #: theme/default/content-user.php:15 widgets/followers.php:60
 #: widgets/question_stats.php:52
 msgid "Followers"
 msgstr ""
 
-#: includes/ajax-hooks.php:464 includes/class-user.php:40
+#: includes/ajax-hooks.php:465 includes/class-user.php:40
 #: includes/class-user.php:212 theme/default/content-user.php:16
 msgid "Following"
 msgstr ""
 
-#: includes/ajax-hooks.php:466 theme/default/user/about.php:49
+#: includes/ajax-hooks.php:467 theme/default/user/about.php:49
 msgid "Last seen %s"
 msgstr ""
 
-#: includes/ajax-hooks.php:718 includes/comments.php:221
+#: includes/ajax-hooks.php:719 includes/comments.php:221
 #: includes/comments.php:326
 msgid "One comment"
 msgid_plural "%d comments"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/ajax-hooks.php:805
+#: includes/ajax-hooks.php:813
 msgid "Attachment deleted permanently"
 msgstr ""
 
@@ -1642,23 +1646,27 @@ msgstr ""
 msgid "Submit"
 msgstr ""
 
-#: includes/class/form.php:192 theme/default/comment-form-deprecated.php:26
+#: includes/class/form.php:192
+msgid "Reset"
+msgstr ""
+
+#: includes/class/form.php:196 theme/default/comment-form-deprecated.php:26
 msgid "Cancel"
 msgstr ""
 
-#: includes/class/form.php:278
+#: includes/class/form.php:282
 msgid "Repeat your password"
 msgstr ""
 
-#: includes/class/form.php:294
+#: includes/class/form.php:298
 msgid "Add more"
 msgstr ""
 
-#: includes/class/form.php:428
+#: includes/class/form.php:432
 msgid "Select a page"
 msgstr ""
 
-#: includes/class/form.php:663
+#: includes/class/form.php:669
 msgid "No fields found"
 msgstr ""
 
@@ -1718,7 +1726,7 @@ msgstr ""
 msgid "Filter %s"
 msgstr ""
 
-#: includes/class-user.php:32 includes/theme.php:809
+#: includes/class-user.php:32 includes/theme.php:808
 msgid "User"
 msgstr ""
 
@@ -1762,7 +1770,7 @@ msgstr ""
 msgid "%s's activity"
 msgstr ""
 
-#: includes/class-user.php:207 includes/hooks.php:426 widgets/user.php:53
+#: includes/class-user.php:207 includes/hooks.php:434 widgets/user.php:53
 msgid "My profile"
 msgstr ""
 
@@ -1806,7 +1814,7 @@ msgstr ""
 msgid "My subscriptions"
 msgstr ""
 
-#: includes/class-user.php:214 includes/hooks.php:427
+#: includes/class-user.php:214 includes/hooks.php:435
 msgid "My notification"
 msgstr ""
 
@@ -1993,39 +2001,39 @@ msgstr ""
 msgid "Create tag"
 msgstr ""
 
-#: includes/functions.php:413
+#: includes/functions.php:414
 msgid "Edit this question"
 msgstr ""
 
-#: includes/functions.php:415
+#: includes/functions.php:416
 msgid "Edit this answer"
 msgstr ""
 
-#: includes/functions.php:434
+#: includes/functions.php:435
 msgid "Edit Answer"
 msgstr ""
 
-#: includes/functions.php:447
+#: includes/functions.php:448
 msgid "Edited on"
 msgstr ""
 
-#: includes/functions.php:585
+#: includes/functions.php:586
 msgid "Select this answer as best"
 msgstr ""
 
-#: includes/functions.php:587
+#: includes/functions.php:588
 msgid "Unselect this answer"
 msgstr ""
 
-#: includes/functions.php:587
+#: includes/functions.php:588
 msgid "Unselect"
 msgstr ""
 
-#: includes/functions.php:627
+#: includes/functions.php:628
 msgid "Restore post"
 msgstr ""
 
-#: includes/functions.php:646
+#: includes/functions.php:647
 msgid "Delete permanently"
 msgstr ""
 
@@ -2229,47 +2237,47 @@ msgstr ""
 msgid "[Solved] "
 msgstr ""
 
-#: includes/hooks.php:701
+#: includes/hooks.php:709
 msgid "few seconds"
 msgstr ""
 
-#: includes/hooks.php:705
+#: includes/hooks.php:713
 msgid "minute"
 msgstr ""
 
-#: includes/hooks.php:706
+#: includes/hooks.php:714
 msgid "minutes"
 msgstr ""
 
-#: includes/hooks.php:707
+#: includes/hooks.php:715
 msgid "hour"
 msgstr ""
 
-#: includes/hooks.php:708
+#: includes/hooks.php:716
 msgid "hours"
 msgstr ""
 
-#: includes/hooks.php:709
+#: includes/hooks.php:717
 msgid "day"
 msgstr ""
 
-#: includes/hooks.php:710
+#: includes/hooks.php:718
 msgid "days"
 msgstr ""
 
-#: includes/hooks.php:711
+#: includes/hooks.php:719
 msgid "week"
 msgstr ""
 
-#: includes/hooks.php:712
+#: includes/hooks.php:720
 msgid "weeks"
 msgstr ""
 
-#: includes/hooks.php:713
+#: includes/hooks.php:721
 msgid "year"
 msgstr ""
 
-#: includes/hooks.php:714
+#: includes/hooks.php:722
 msgid "years"
 msgstr ""
 
@@ -2288,7 +2296,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: includes/post_status.php:26 includes/post_types.php:263
-#: includes/query_filter.php:93 includes/query_filter.php:102
+#: includes/query_filter.php:89 includes/query_filter.php:98
 #: includes/question-loop.php:398
 msgid "Closed"
 msgstr ""
@@ -2305,8 +2313,8 @@ msgid_plural "Moderate <span class=\"count\">(%s)</span>"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/post_status.php:42 includes/query_filter.php:90
-#: includes/query_filter.php:101
+#: includes/post_status.php:42 includes/query_filter.php:86
+#: includes/query_filter.php:97
 msgid "Private Post"
 msgstr ""
 
@@ -2486,19 +2494,19 @@ msgstr ""
 msgid "Bot verification failed."
 msgstr ""
 
-#: includes/query_filter.php:48
+#: includes/query_filter.php:27
 msgid "Please fill parent question field, Answer was not saved!"
 msgstr ""
 
-#: includes/query_filter.php:224
+#: includes/query_filter.php:237
 msgid "Answer is private, only moderator and participants can read."
 msgstr ""
 
-#: includes/query_filter.php:225
+#: includes/query_filter.php:238
 msgid "Answer is pending approval by moderator. "
 msgstr ""
 
-#: includes/query_filter.php:226
+#: includes/query_filter.php:239
 msgid "You do not have permission to read this answer. "
 msgstr ""
 
@@ -2509,7 +2517,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: includes/question-loop.php:526
-msgid "%s %s"
+msgid "<time itemprop=\"datePublished\" datetime=\"%s\">Posted %s</time>"
 msgstr ""
 
 #: includes/reputation.php:572
@@ -2648,7 +2656,7 @@ msgstr ""
 msgid "When user down vote others answers"
 msgstr ""
 
-#: includes/reputation.php:938 includes/theme.php:652 includes/user.php:443
+#: includes/reputation.php:938 includes/theme.php:651 includes/user.php:443
 #: theme/default/best_answer.php:14
 msgid "Best answer"
 msgstr ""
@@ -2718,39 +2726,39 @@ msgstr ""
 msgid "Featured"
 msgstr ""
 
-#: includes/theme.php:511
+#: includes/theme.php:510
 msgid "Convert to post"
 msgstr ""
 
-#: includes/theme.php:545
+#: includes/theme.php:544
 msgid "More action"
 msgstr ""
 
-#: includes/theme.php:583
+#: includes/theme.php:582
 msgid "Answered"
 msgstr ""
 
-#: includes/theme.php:584 widgets/questions.php:88
+#: includes/theme.php:583 widgets/questions.php:88
 msgid "Unanswered"
 msgstr ""
 
-#: includes/theme.php:585
+#: includes/theme.php:584
 msgid "Unsolved"
 msgstr ""
 
-#: includes/theme.php:586 widgets/question_stats.php:50
+#: includes/theme.php:585 widgets/question_stats.php:50
 msgid "Views"
 msgstr ""
 
-#: includes/theme.php:696
+#: includes/theme.php:695
 msgid "Ask question"
 msgstr ""
 
-#: includes/theme.php:806 includes/theme.php:810 includes/theme.php:812
+#: includes/theme.php:805 includes/theme.php:809 includes/theme.php:811
 msgid ".."
 msgstr ""
 
-#: includes/theme.php:918
+#: includes/theme.php:917
 msgid "Sort"
 msgstr ""
 
@@ -2892,6 +2900,14 @@ msgstr ""
 
 #: includes/users-loop.php:544
 msgid "%d days"
+msgstr ""
+
+#: includes/users-loop.php:548
+msgid "%d hours"
+msgstr ""
+
+#: includes/users-loop.php:550
+msgid "%d minutes"
 msgstr ""
 
 #: includes/vote.php:363
@@ -3638,7 +3654,7 @@ msgctxt "%s = human-readable time difference"
 msgid "%s"
 msgstr ""
 
-#: includes/functions.php:296
+#: includes/functions.php:297
 msgctxt "%s = human-readable time difference"
 msgid "%s ago"
 msgstr ""

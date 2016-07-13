@@ -89,6 +89,10 @@ Read full FAQ here https://anspress.io/docs/?topic=faq
 
 == Changelog ==
 
+= 3.0.1 =
+
+* Fixed translation loading
+
 = 3.0.0 =
 
 * Added reset button in option form
