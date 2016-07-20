@@ -12,25 +12,21 @@
 class AP_Reputation {
 
 	public function __construct() {
-		add_action( 'init', array( $this, 'init' ) );
-	}
-
-	public function init() {
 
 		// return if reputation is disabled
 		if ( ap_opt( 'disable_reputation' ) ) {
 			return;
 		}
 
-		ap_register_user_page( 'reputation', __( 'Reputation', 'anspress-question-answer' ), array( $this, 'reputation_page' ) );
+		ap_register_user_page( 'reputation', __( 'Reputation', 'anspress-question-answer' ), array( __CLASS__, 'reputation_page' ) );
 
 		anspress()->add_filter( 'ap_user_menu', __CLASS__, 'sort_reputation_page' );
 
-		anspress()->add_action( 'ap_after_new_question', __CLASS__, 'new_question' );
+		anspress()->add_action( 'ap_processed_new_question', __CLASS__, 'new_question' );
 		anspress()->add_action( 'ap_untrash_question', __CLASS__, 'new_question' );
 		anspress()->add_action( 'ap_trash_question', __CLASS__, 'trash_question', 10, 2 );
 
-		anspress()->add_action( 'ap_after_new_answer', __CLASS__, 'new_answer' );
+		anspress()->add_action( 'ap_processed_new_answer', __CLASS__, 'new_answer' );
 		anspress()->add_action( 'ap_untrash_answer', __CLASS__, 'new_answer' );
 		anspress()->add_action( 'ap_trash_answer', __CLASS__, 'delete_answer', 10, 2 );
 
@@ -94,7 +90,7 @@ class AP_Reputation {
 	 * @param  integer $postid Post ID.
 	 * @return boolean|null
 	 */
-	public static function new_answer($postid) {
+	public static function new_answer($postid) {		
 		$post = get_post( $postid );
 		$reputation = ap_reputation_by_event( 'new_answer', true );
 		return ap_reputation( 'answer', get_current_user_id(), $reputation, $postid, $post->post_author );
