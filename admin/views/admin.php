@@ -25,25 +25,27 @@ if ( isset( $_POST['__nonce'] ) && wp_verify_nonce( $_POST['__nonce'], 'nonce_op
 	if ( '' != $active ) {
 		$fields = $groups[ $active ]['fields'];
 
-		// Get only field name.
-		$field_names = array_column( $fields, 'name' );
-
 		$default_opt = ap_default_options();
 
 		// Check $_POST value against fields.
-		foreach ( (array) $field_names as $name ) {
-			
-			$value = ap_sanitize_unslash( $name, 'request' );
+		foreach ( (array) $fields as $f ) {
+
+			$value = ap_sanitize_unslash( $f['name'], 'request' );
 
 			// If reset then get value from default option.
-			if( isset( $_POST['reset'] ) ) {
-				$value = $default_opt[ $name ];
+			if ( isset( $_POST['reset'] ) ) {
+				$value = $default_opt[ $f['name'] ];
 			}
-			
-			if ( ! empty( $value ) ) {
-				$settings[ $name ] = $value;
+
+			// Set checkbox field value as 0 when empty.
+			if ( 'checkbox' == $f['type'] && empty( $value ) ) {
+				$value = '0';
+			}
+
+			if ( isset( $value ) ) {
+				$settings[ $f['name'] ] = $value;
 			} else {
-				unset( $settings[ $name ] );
+				unset( $settings[ $f['name'] ] );
 			}
 		}
 
