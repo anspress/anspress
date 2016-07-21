@@ -2,10 +2,10 @@
 # This file is distributed under the GPL-3.0+.
 msgid ""
 msgstr ""
-"Project-Id-Version: AnsPress 3.0.0\n"
+"Project-Id-Version: AnsPress 3.0.1\n"
 "Report-Msgid-Bugs-To: "
 "https://wordpress.org/support/plugin/anspress-question-answer\n"
-"POT-Creation-Date: 2016-07-13 08:37:21+00:00\n"
+"POT-Creation-Date: 2016-07-21 15:43:45+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -65,7 +65,7 @@ msgid "All Answers"
 msgstr ""
 
 #: admin/anspress-admin.php:201 includes/bp.php:50 includes/bp.php:82
-#: includes/reputation.php:25 includes/reputation.php:311 includes/user.php:440
+#: includes/reputation.php:21 includes/reputation.php:307 includes/user.php:440
 #: theme/default/user/about.php:65
 msgid "Reputation"
 msgstr ""
@@ -229,7 +229,7 @@ msgstr ""
 #: admin/meta_box.php:28 admin/options-fields.php:312
 #: includes/ajax-hooks.php:462 includes/bp.php:145 includes/bp.php:146
 #: includes/common-pages.php:22 includes/post_status.php:171
-#: includes/post_types.php:71 includes/reputation.php:860
+#: includes/post_types.php:71 includes/reputation.php:856
 msgid "Question"
 msgstr ""
 
@@ -655,7 +655,7 @@ msgstr ""
 #: admin/options-fields.php:372 admin/views/dashboard.php:30
 #: includes/bp.php:155 includes/bp.php:156 includes/bp.php:165
 #: includes/post_status.php:171 includes/post_types.php:141
-#: includes/reputation.php:867 includes/user.php:444
+#: includes/reputation.php:863 includes/user.php:444
 msgid "Answer"
 msgstr ""
 
@@ -1059,7 +1059,7 @@ msgstr ""
 msgid "Apparently, there are no updates to show!"
 msgstr ""
 
-#: admin/views/dashboard.php:337 includes/reputation.php:311
+#: admin/views/dashboard.php:337 includes/reputation.php:307
 #: theme/default/user/user.php:27 theme/default/user/user.php:59
 #: theme/default/users/loop-item.php:29 theme/default/widgets/user.php:13
 #: theme/default/widgets/users.php:12
@@ -1882,7 +1882,7 @@ msgstr ""
 msgid "Comments"
 msgstr ""
 
-#: includes/comments.php:401 includes/reputation.php:874
+#: includes/comments.php:401 includes/reputation.php:870
 msgid "Comment"
 msgstr ""
 
@@ -2520,156 +2520,156 @@ msgstr[1] ""
 msgid "<time itemprop=\"datePublished\" datetime=\"%s\">Posted %s</time>"
 msgstr ""
 
-#: includes/reputation.php:572
+#: includes/reputation.php:568
 msgid "+%d"
 msgstr ""
 
-#: includes/reputation.php:620
+#: includes/reputation.php:616
 msgid "%sAsked %s"
 msgstr ""
 
-#: includes/reputation.php:624
+#: includes/reputation.php:620
 msgid "%sAnswered %s"
 msgstr ""
 
-#: includes/reputation.php:628
+#: includes/reputation.php:624
 msgid "%sCommented %s"
 msgstr ""
 
-#: includes/reputation.php:632
+#: includes/reputation.php:628
 msgid "%sSelected answer %s"
 msgstr ""
 
-#: includes/reputation.php:636
+#: includes/reputation.php:632
 msgid "%sUp vote %s %s"
 msgstr ""
 
-#: includes/reputation.php:640
+#: includes/reputation.php:636
 msgid "%sDown vote %s %s"
 msgstr ""
 
-#: includes/reputation.php:644
+#: includes/reputation.php:640
 msgid "%sDown voted %s"
 msgstr ""
 
-#: includes/reputation.php:648
+#: includes/reputation.php:644
 msgid "%sBest answer %s"
 msgstr ""
 
-#: includes/reputation.php:839
+#: includes/reputation.php:835
 msgid "New Registration"
 msgstr ""
 
-#: includes/reputation.php:840
+#: includes/reputation.php:836
 msgid "Points given to newly registered user."
 msgstr ""
 
-#: includes/reputation.php:846
+#: includes/reputation.php:842
 msgid "Uploading avatar"
 msgstr ""
 
-#: includes/reputation.php:847
+#: includes/reputation.php:843
 msgid "Awarded for uploading an profile picture."
 msgstr ""
 
-#: includes/reputation.php:853
+#: includes/reputation.php:849
 msgid "Completing profile"
 msgstr ""
 
-#: includes/reputation.php:854
+#: includes/reputation.php:850
 msgid "Awarded for completing profile fields."
 msgstr ""
 
-#: includes/reputation.php:861
+#: includes/reputation.php:857
 msgid "For asking a question."
 msgstr ""
 
-#: includes/reputation.php:868
+#: includes/reputation.php:864
 msgid "For answering a question."
 msgstr ""
 
-#: includes/reputation.php:875
+#: includes/reputation.php:871
 msgid "For new comment."
 msgstr ""
 
-#: includes/reputation.php:881
+#: includes/reputation.php:877
 msgid "Receive upvote on question"
 msgstr ""
 
-#: includes/reputation.php:882
+#: includes/reputation.php:878
 msgid "When user receive an upvote on question"
 msgstr ""
 
-#: includes/reputation.php:888
+#: includes/reputation.php:884
 msgid "Receive upvote on answer"
 msgstr ""
 
-#: includes/reputation.php:889
+#: includes/reputation.php:885
 msgid "When user receive an upvote on answer"
 msgstr ""
 
-#: includes/reputation.php:895
+#: includes/reputation.php:891
 msgid "Receive down vote on question"
 msgstr ""
 
-#: includes/reputation.php:896
+#: includes/reputation.php:892
 msgid "When user receive an down vote on question"
 msgstr ""
 
-#: includes/reputation.php:902
+#: includes/reputation.php:898
 msgid "Receive down vote on answer"
 msgstr ""
 
-#: includes/reputation.php:903
+#: includes/reputation.php:899
 msgid "When user receive an down vote on answer"
 msgstr ""
 
-#: includes/reputation.php:909
+#: includes/reputation.php:905
 msgid "Up voted questions"
 msgstr ""
 
-#: includes/reputation.php:910
+#: includes/reputation.php:906
 msgid "When user upvote others question"
 msgstr ""
 
-#: includes/reputation.php:916
+#: includes/reputation.php:912
 msgid "Up voted answers"
 msgstr ""
 
-#: includes/reputation.php:917
+#: includes/reputation.php:913
 msgid "When user upvote others answer"
 msgstr ""
 
-#: includes/reputation.php:923
+#: includes/reputation.php:919
 msgid "Down voted questions"
 msgstr ""
 
-#: includes/reputation.php:924
+#: includes/reputation.php:920
 msgid "When user down vote others question"
 msgstr ""
 
-#: includes/reputation.php:930
+#: includes/reputation.php:926
 msgid "Down voted answers"
 msgstr ""
 
-#: includes/reputation.php:931
+#: includes/reputation.php:927
 msgid "When user down vote others answers"
 msgstr ""
 
-#: includes/reputation.php:938 includes/theme.php:651 includes/user.php:443
+#: includes/reputation.php:934 includes/theme.php:651 includes/user.php:443
 #: theme/default/best_answer.php:14
 msgid "Best answer"
 msgstr ""
 
-#: includes/reputation.php:939
+#: includes/reputation.php:935
 msgid "When user's answer get selected as best"
 msgstr ""
 
-#: includes/reputation.php:945
+#: includes/reputation.php:941
 msgid "Selecting answer"
 msgstr ""
 
-#: includes/reputation.php:946
+#: includes/reputation.php:942
 msgid "When user user select an answer."
 msgstr ""
 
