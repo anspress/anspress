@@ -82,14 +82,15 @@ class AP_Mentions_Hooks{
 	   		});
 		}';
 
-		$initArray['init_instance_callback'] = 'function(ed) {
-			if( typeof atwho !== "undefined"){
+		if( !ap_opt('disable_mentions') ){
+			$initArray['init_instance_callback'] = 'function(ed) {
 				jQuery(ed.contentDocument.activeElement).atwho(at_config);
-			}
-		}';
+			}';
+		}
 
 		$initArray['autoresize_min_height'] = 300;
         $initArray['autoresize_max_height'] = 10000;
+
 		return $initArray;
 	}
 }
