@@ -43,6 +43,9 @@ class AnsPress_Hooks
 	    anspress()->add_action( 'wp_loaded', __CLASS__, 'flush_rules' );
 	    anspress()->add_action( 'safe_style_css', __CLASS__, 'safe_style_css', 11 );
 	    anspress()->add_action( 'save_post', __CLASS__, 'base_page_update', 10, 2 );
+	    anspress()->add_action( 'save_post', __CLASS__, 'question_answer_hooks', 1, 3 );
+	    anspress()->add_filter( 'wp_insert_post_data', __CLASS__, 'question_pre_answer_hooks', 1, 2 );
+
 	    anspress()->add_action( 'ap_added_follower', __CLASS__, 'ap_added_follower', 10, 2 );
 	    anspress()->add_action( 'ap_removed_follower', __CLASS__, 'ap_added_follower', 10, 2 );
 	    anspress()->add_action( 'ap_vote_casted', __CLASS__, 'update_user_vote_casted_count', 10, 4 );
@@ -648,6 +651,42 @@ class AnsPress_Hooks
 
 		if ( ap_opt( 'base_page' ) == $post_id ) {
 			ap_opt( 'ap_flush', 'true' );
+		}
+	}
+
+	/**
+	 * Trigger AnsPress posts hooks right after inserting question/answer
+	 * @param  integer $post_id Post ID.
+	 * @param  object $post    Post Object
+	 * @param  boolean $updated Is updating post
+	 * @since 3.0.3
+	 */
+	public static function question_answer_hooks( $post_id, $post, $updated ){
+		if( wp_is_post_autosave( $post ) || wp_is_post_revision( $post ) ){
+			return;
+		}
+
+		// check if post type is question or answer.
+		if( !in_array( $post->post_type, ['question', 'answer'] ) ) {
+			return;
+		}
+
+		if ( $updated ) {
+			/**
+			 * Action triggered right after updating question/answer.
+			 * @param integer $post_id Inserted post ID.
+			 * @param object  $post    Inserted post object.
+			 * @since 0.9
+			 */
+			do_action( 'ap_processed_update_'. $post->post_type, $post_id, $post );
+		} else {
+			/**
+			 * Action triggered right after inserting new question/answer.
+			 * @param integer $post_id Inserted post ID.
+			 * @param object  $post    Inserted post object.
+			 * @since 0.9
+			 */
+			do_action( 'ap_processed_new_' .$post->post_type, $post_id, $post );
 		}
 	}
 

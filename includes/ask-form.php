@@ -318,26 +318,6 @@ function ap_save_question($args, $wp_error = false) {
 		if ( ! empty( $args['anonymous_name'] ) ) {
 			update_post_meta( $post_id, 'anonymous_name', $args['anonymous_name'] );
 		}
-
-		$post = get_post( $post_id );
-
-		if ( isset( $args['ID'] ) ) {
-			/**
-			 * Action triggered right after updating question.
-			 * @param integer $post_id Inserted post ID.
-			 * @param object  $post    Inserted post object.
-			 * @since 0.9
-			 */
-			do_action( 'ap_processed_update_question', $post_id, $post );
-		} else {
-			/**
-			 * Action triggered right after inserting new question.
-			 * @param integer $post_id Inserted post ID.
-			 * @param object  $post    Inserted post object.
-			 * @since 0.9
-			 */
-			do_action( 'ap_processed_new_question', $post_id, $post );
-		}
 	}
 
 	return $post_id;
