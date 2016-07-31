@@ -60,7 +60,7 @@ function ap_get_ask_form_fields( $post_id = false ) {
 			'type'  => 'editor',
 			'desc'  => __( 'Write description for the question.', 'anspress-question-answer' ),
 			'value' => ( $editing ? $editing_post->post_content : ap_isset_post_value( 'description', '' )  ),
-			'settings' => ap_tinymce_editor_settings('answer' ),
+			'settings' => ap_tinymce_editor_settings( 'question' ),
 			'sanitize' => array( 'sanitize_description' ),
 			'validate' => array( 'length_check' => ap_opt( 'minimum_question_length' ) ),
 		),
