@@ -44,7 +44,6 @@ class AnsPress_Hooks
 	    anspress()->add_action( 'safe_style_css', __CLASS__, 'safe_style_css', 11 );
 	    anspress()->add_action( 'save_post', __CLASS__, 'base_page_update', 10, 2 );
 	    anspress()->add_action( 'save_post', __CLASS__, 'question_answer_hooks', 1, 3 );
-	    anspress()->add_filter( 'wp_insert_post_data', __CLASS__, 'question_pre_answer_hooks', 1, 2 );
 
 	    anspress()->add_action( 'ap_added_follower', __CLASS__, 'ap_added_follower', 10, 2 );
 	    anspress()->add_action( 'ap_removed_follower', __CLASS__, 'ap_added_follower', 10, 2 );
