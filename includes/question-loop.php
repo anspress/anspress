@@ -523,7 +523,14 @@ function ap_question_get_the_active_time($question_id = false) {
  */
 function ap_question_the_time($question_id = false, $format = 'U') {
 	$question_id = ap_parameter_empty( $question_id, ap_question_get_the_ID() );
-	printf( __( '<time itemprop="datePublished" datetime="%s">Posted %s</time>', 'anspress-question-answer' ), ap_question_get_the_time( $question_id, 'c' ), ap_human_time( ap_question_get_the_time( $question_id, $format ) ) );
+	printf(
+		'<time itemprop="datePublished" datetime="%1$s">%2$s</time>',
+		ap_question_get_the_time( $question_id, 'c' ),
+		sprintf(
+			__( 'Posted %s', 'anspress-question-answer' ),
+			ap_human_time( ap_question_get_the_time( $question_id, $format ) )
+		)
+	);
 }
 
 function ap_question_get_the_time($question_id = false, $format = '') {
