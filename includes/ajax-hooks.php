@@ -742,6 +742,7 @@ class AnsPress_Ajax
 		}
 
 		echo '<div class="ap-editor">';
+		echo '<textarea id="description" name="description"></textarea>';
 	    wp_editor( '', 'description', $settings );
 	    echo '</div>';
 	    \_WP_Editors::enqueue_scripts();
