@@ -207,7 +207,11 @@ class AnsPress_Form_Helper
 			$content .= '<input type="hidden" name="action" value="ap_ajax_login" />';
 			$content .= wp_nonce_field( 'ap_login_nonce', '_wpnonce', true, false );
 		}
-		$content .= '<p>' . sprintf(__("Don't have a user account? %sRegister now%s.", 'anspress-question-answer' ), '<a class="ap-open-modal" href="#ap_signup_modal">', '</a>' ) . '</p>';
+		$content .= sprintf(
+			'<p>%1$s <a class="ap-open-modal" href="#ap_signup_modal">%2$s</a></p>',
+			__( "Don't have a user account?.", 'anspress-question-answer' ),
+			__( 'Register now', 'anspress-question-answer' )
+		);
 
 		return $content;
 	}
