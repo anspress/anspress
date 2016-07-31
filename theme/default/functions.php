@@ -85,7 +85,12 @@ function ap_scripts_front() {
 		'not_valid_email' => __( 'Not a valid email', 'anspress-question-answer' ),
 		'username_less' => __( 'Username length must be 4 or higher', 'anspress-question-answer' ),
 		'username_not_avilable' => __( 'Username not available', 'anspress-question-answer' ),
-		'email_already_in_use' => sprintf( __( 'Email already in use. %sDo you want to reset your password?%s', 'anspress-question-answer' ), '<a href="'.wp_lostpassword_url().'">', '</a>' ),
+		'email_already_in_use' => sprintf(
+			'%1$s <a href="%2$s">%3$s</a>',
+			__( 'Email already in use.', 'anspress-question-answer' ),
+			wp_lostpassword_url(),
+			__( 'Do you want to reset your password?', 'anspress-question-answer' )
+		),
 		'loading' => __( 'Loading', 'anspress-question-answer' ),
 		'sending' => __( 'Sending request', 'anspress-question-answer' ),
 		'adding_to_fav' => __( 'Adding question to your favorites', 'anspress-question-answer' ),

@@ -613,35 +613,75 @@ function ap_reputation_get_info($event, $action_id) {
 
 	switch ( $event ) {
 		case 'question':
-			$info = sprintf( __( '%sAsked %s', 'anspress-question-answer' ), '<span class="ap-reputation-event">', '</span><a href="'.get_permalink( $action_id ).'">'.get_the_title( $action_id ).'</a>' );
+			$info = sprintf(
+				'<span class="ap-reputation-event">%1$s</span> <a href="%2$s">%3$s</a>',
+				__( 'Asked', 'anspress-question-answer' ),
+				get_permalink( $action_id ),
+				get_the_title( $action_id )
+			);
 			break;
 
 		case 'answer':
-			$info = sprintf( __( '%sAnswered %s', 'anspress-question-answer' ), '<span class="ap-reputation-event">','</span><a href="'.get_permalink( $action_id ).'">'. get_the_title( $action_id ).'</a>' );
+			$info = sprintf(
+				'<span class="ap-reputation-event">%1$s</span> <a href="%2$s">%3$s</a>',
+				__( 'Answered', 'anspress-question-answer' ),
+				get_permalink( $action_id ),
+				get_the_title( $action_id )
+			);
 			break;
 
 		case 'comment':
-			$info = sprintf( __( '%sCommented %s', 'anspress-question-answer' ), '<span class="ap-reputation-event">', '</span><a href="'.get_comment_link( $action_id ).'">'. get_comment_text( $action_id ).'</a>' );
+			$info = sprintf(
+				'<span class="ap-reputation-event">%1$s</span> <a href="%2$s">%3$s</a>',
+				__( 'Commented', 'anspress-question-answer' ),
+				get_comment_link( $action_id ),
+				get_comment_text( $action_id )
+			);
 			break;
 
 		case 'selecting_answer':
-			$info = sprintf( __( '%sSelected answer %s','anspress-question-answer' ), '<span class="ap-reputation-event">', '</span><a href="'.get_permalink( $action_id ).'">'. get_the_title( $action_id ).'</a>' );
+			$info = sprintf(
+				'<span class="ap-reputation-event">%1$s</span> <a href="%2$s">%3$s</a>',
+				__( 'Selected answer', 'anspress-question-answer' ),
+				get_permalink( $action_id ),
+				get_the_title( $action_id )
+			);
 			break;
 
 		case 'vote_up':
-			$info = sprintf( __( '%sUp vote %s %s','anspress-question-answer' ), '<span class="ap-reputation-event">', '</span>'.__( get_post_type( $action_id ) ,'anspress-question-answer' ), '<a href="'.get_permalink( $action_id ).'">'.get_the_title( $action_id ).'</a>' );
+			$info = sprintf(
+				'<span class="ap-reputation-event">%1$s</span> %2$s <a href="%3$s">%4$s</a>',
+				__( 'Up vote', 'anspress-question-answer' ),
+				get_post_type( $action_id ),
+				get_permalink( $action_id ),
+				get_the_title( $action_id )
+			);
 			break;
 
 		case 'vote_down':
-			$info = sprintf( __( '%sDown vote %s %s','anspress-question-answer' ), '<span class="ap-reputation-event">', '</span>'.get_post_type( $action_id ), '<a href="'.get_permalink( $action_id ).'">'.get_the_title( $action_id ).'</a>' );
+			$info = sprintf(
+				'<span class="ap-reputation-event">%1$s</span> %2$s <a href="%3$s">%4$s</a>',
+				__( 'Down vote', 'anspress-question-answer' ),
+				get_post_type( $action_id ),
+				get_permalink( $action_id ),
+				get_the_title( $action_id )
+			);
 			break;
 
 		case 'voted_down':
-			$info = sprintf( __( '%sDown voted %s','anspress-question-answer' ), '<span class="ap-reputation-event">', '</span>'.get_post_type( $action_id ) );
+			$info = sprintf(
+				'<span class="ap-reputation-event">%1$s</span> %2$s',
+				__( 'Down voted', 'anspress-question-answer' ),
+				get_post_type( $action_id )
+			);
 			break;
 
 		case 'best_answer':
-			$info = sprintf( __( '%sBest answer %s','anspress-question-answer' ), '<span class="ap-reputation-event">', '</span>'.get_post_type( $action_id ) );
+			$info = sprintf(
+				'<span class="ap-reputation-event">%1$s</span> %2$s',
+				__( 'Best answer', 'anspress-question-answer' ),
+				get_post_type( $action_id )
+			);
 			break;
 
 		default:

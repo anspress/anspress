@@ -386,7 +386,21 @@ if ( $columns ) {
 					<ul>
 						<li>
 							<div class="welcome-icon welcome-widgets-menus">
-								<?php printf(__('Get %sThemes%s or %sExtensions%s', 'anspress-question-answer' ), '<a href="https://anspress.io/themes/" target="_blank">', '</a>', '<a href="https://anspress.io/extensions/" target="_blank">', '</a>' ); ?>
+								<?php
+								printf(
+									__( 'Get %1$s or %2$s', 'anspress-question-answer' ),
+									sprintf(
+										'<a href="%1$s" target="_blank">%2$s</a>',
+										esc_url( 'https://anspress.io/themes/' ),
+										__( 'Themes', 'anspress-question-answer' )
+									),
+									sprintf(
+										'<a href="%1$s" target="_blank">%2$s</a>',
+										esc_url( 'https://anspress.io/extensions/' ),
+										__( 'Extensions', 'anspress-question-answer' )
+									)
+								);
+								?>
 							</div>
 						</li>
 						<li><a class="welcome-icon welcome-comments" href="http://anspress.io/questions/" target="_blank"><?php _e('Help and Support!', 'anspress-question-answer' ); ?></a></li>
