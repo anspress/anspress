@@ -740,9 +740,8 @@ class AnsPress_Ajax
 			wp_enqueue_script( 'ap-mention-js', ap_get_theme_url( 'min/mention.js' ) , array( 'jquery' ), AP_VERSION, true );
 			wp_enqueue_style( 'ap-mention-css', ap_get_theme_url( 'css/mention.css' ) , array(), AP_VERSION, true );
 		}
-
+		
 		echo '<div class="ap-editor">';
-		echo '<textarea id="description" name="description"></textarea>';
 	    wp_editor( '', 'description', $settings );
 	    echo '</div>';
 	    \_WP_Editors::enqueue_scripts();

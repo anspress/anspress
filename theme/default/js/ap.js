@@ -103,7 +103,7 @@
      */
     apFunctions.apAppendEditor = function ( data, el ){
         $('.ap-field-description').html(data);
-        $('#description').hide();
+        //$('#description').hide();
         $(el).closest('.ap-minimal-editor').removeClass('ap-minimal-editor');
     }
 

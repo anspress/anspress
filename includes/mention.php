@@ -83,7 +83,7 @@ class AP_Mentions_Hooks{
 		}';
 
 		if( !ap_opt('disable_mentions') ){
-			$initArray['init_instance_callback'] = 'function(ed) {
+			$initArray['init_instance_callback'] = 'function(ed) {				
 				jQuery(ed.contentDocument.activeElement).atwho(at_config);
 			}';
 		}
