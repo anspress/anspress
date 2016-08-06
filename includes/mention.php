@@ -88,7 +88,7 @@ class AP_Mentions_Hooks{
 			}';
 		}
 
-		$initArray['autoresize_min_height'] = 300;
+		$initArray['autoresize_min_height'] = 400;
         $initArray['autoresize_max_height'] = 10000;
 
 		return $initArray;
