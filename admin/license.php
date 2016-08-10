@@ -64,7 +64,7 @@ class AP_License{
 			}
 		}
 
-		foreach ( $fields as $slug => $prod ) {
+		foreach ( (array) $fields as $slug => $prod ) {
 
 			// Data to send in our API request.
 			$api_params = array(
@@ -119,7 +119,7 @@ class AP_License{
 		if ( ! empty($fields ) ) {
 			foreach ( $fields as $slug => $prod ) {
 				if ( isset( $licenses[ $slug ] ) && ! empty($licenses[ $slug ]['key'] ) ) {
-					new EDD_SL_Plugin_Updater( 'https://anspress.io', __FILE__, array(
+					new EDD_SL_Plugin_Updater( 'https://anspress.io', $prod['file'], array(
 							'version' 	=> ! empty( $prod['version'] ) ? $prod['version'] : '',
 							'license' 	=> $licenses[ $slug ]['key'],
 							'item_name' => ! empty( $prod['name'] ) ? $prod['name'] : '',
