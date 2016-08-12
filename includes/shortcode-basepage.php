@@ -35,6 +35,7 @@ class AnsPress_BasePage_Shortcode {
 	 *     $tax_relation 		taxonomy relation, see here http://codex.wordpress.org/Taxonomies
 	 *     $tags_operator 		operator for question_tag taxnomomy
 	 *     $categories_operator operator for question_category taxnomomy
+	 *     $page 				Select a page to display.
 	 *     $hide_list_head 		Hide list head?
 	 *     $sortby 				Sort by.
 	 *  }
