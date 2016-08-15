@@ -89,6 +89,11 @@ Read full FAQ here https://anspress.io/docs/?topic=faq
 
 == Changelog ==
 
+= 3.0.4 =
+
+* Fixed: undefined var in tinyMce init
+
+
 = 3.0.3 =
 
 * Fixed: product update fails
