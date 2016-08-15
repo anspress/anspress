@@ -2,7 +2,7 @@
 Contributors: nerdaryan
 Donate link: https://www.paypal.me/nerdaryan
 Tags: question, answer, q&a, forum, profile, stackoverflow, quora, buddypress
-Requires at least: 4.5
+Requires at least: 4.3
 Tested up to: 4.5
 Stable tag: 3.0.3
 License: GPLv2 or later
