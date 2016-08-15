@@ -1903,6 +1903,11 @@ function ap_find_duplicate_post( $content, $post_type = 'question', $question_id
 	global $wpdb;
 	$content = ap_sanitize_description_field( $content );
 
+	// Return if content is empty. But blank content will be checked.
+	if( empty( $content ) ){
+		return false;
+	}
+
 	$question_q = false !== $question_id ? $wpdb->prepare( ' AND post_parent= %d', $question_id ) : '';
 
 	$var = (int) $wpdb->get_var( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_content = %s AND post_type = %s $question_q LIMIT 1", $content, $post_type ) );
