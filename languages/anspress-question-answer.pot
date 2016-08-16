@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: AnsPress 3.0.3\n"
 "Report-Msgid-Bugs-To: "
 "https://wordpress.org/support/plugin/anspress-question-answer\n"
-"POT-Creation-Date: 2016-08-15 09:58:56+00:00\n"
+"POT-Creation-Date: 2016-08-16 10:40:17+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1694,15 +1694,15 @@ msgstr ""
 msgid "AnsPress Banned"
 msgstr ""
 
-#: includes/class/roles-cap.php:1139
+#: includes/class/roles-cap.php:1147
 msgid "Voting on own's post is not allowed."
 msgstr ""
 
-#: includes/class/roles-cap.php:1147
+#: includes/class/roles-cap.php:1155
 msgid "Voting on restricted posts are not allowed."
 msgstr ""
 
-#: includes/class/roles-cap.php:1157
+#: includes/class/roles-cap.php:1165
 msgid "Its look like you do not have permission to vote."
 msgstr ""
 
