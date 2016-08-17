@@ -5,6 +5,7 @@
  * @author Rahul Aryan
  * @license GPL 2+
  */
+var apObjectWatching = {};
 var apData = {};
 (function($) {
     apFunctions = {}
@@ -898,7 +899,6 @@ var apData = {};
                             apLaodAvatar();
                             apObjectWatching[data.key] = html.apGetSelector();
                         };
-                        
                         if(typeof apObjectWatching[data.key] === 'undefined' && notExists ){
                             console.log('Watching object '+data.key+' for change.');
                             watch(apData, data.key, watchCB);

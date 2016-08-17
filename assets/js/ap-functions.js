@@ -462,9 +462,6 @@ Ta.register('objLength', function(obj) {
     return Object.keys(obj).length;
 });
 
-
-var apObjectWatching = {};
-
 function apCamelize(str) {
   return str.replace(/(?:^\w|[A-Z]|\b\w)/g, function(letter, index) {
     return index == 0 ? letter.toLowerCase() : letter.toUpperCase();
