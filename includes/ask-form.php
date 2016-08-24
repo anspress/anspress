@@ -82,7 +82,7 @@ function ap_get_ask_form_fields( $post_id = false ) {
 	// Add name fields if anonymous is allowed.
 	if ( ! is_user_logged_in() && ap_opt( 'allow_anonymous' ) ) {
 		$fields[] = array(
-			'name'      => 'name',
+			'name'      => 'anonymous_name',
 			'label'     => __( 'Name', 'anspress-question-answer' ),
 			'type'      => 'text',
 			'placeholder'  => __( 'Enter your name to display', 'anspress-question-answer' ),
@@ -313,7 +313,7 @@ function ap_save_question($args, $wp_error = false) {
 			$attachment_ids = $_POST['attachment_ids'];
 			ap_attach_post_uploads( $post_id, $attachment_ids, $args['post_author'] );
 		}
-
+		var_dump($args);
 		// Update Custom Meta.
 		if ( ! empty( $args['anonymous_name'] ) ) {
 			update_post_meta( $post_id, 'anonymous_name', $args['anonymous_name'] );

@@ -55,7 +55,7 @@ function ap_get_answer_form_fields( $question_id = false, $answer_id = false ) {
 	// Add name fields if anonymous is allowed.
 	if ( ! is_user_logged_in() && ap_opt( 'allow_anonymous' ) ) {
 		$fields[] = array(
-			'name'      => 'name',
+			'name'      => 'anonymous_name',
 			'label'     => __( 'Name', 'anspress-question-answer' ),
 			'type'      => 'text',
 			'placeholder'  => __( 'Enter your name to display', 'anspress-question-answer' ),

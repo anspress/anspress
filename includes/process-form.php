@@ -203,7 +203,7 @@ class AnsPress_Process_Form
 
 		// Check if anonymous post and have name.
 		if ( ! is_user_logged_in() && ap_opt( 'allow_anonymous' ) && ! empty( $fields['anonymous_name'] ) ) {
-			$question_array['anonymous_name'] = $fields['name'];
+			$question_array['anonymous_name'] = $fields['anonymous_name'];
 		}
 
 		if ( isset( $fields['parent_id'] ) ) {
@@ -264,7 +264,7 @@ class AnsPress_Process_Form
 
 		// Check if anonymous post and have name.
 		if ( ! is_user_logged_in() && ap_opt( 'allow_anonymous' ) && ! empty( $this->fields['anonymous_name'] ) ) {
-			$question_array['anonymous_name'] = $this->fields['name'];
+			$question_array['anonymous_name'] = $this->fields['anonymous_name'];
 		}
 
 		$post_id = ap_save_question( $question_array );
@@ -359,7 +359,7 @@ class AnsPress_Process_Form
 
 		// Check if anonymous post and have name.
 		if ( ! is_user_logged_in() && ap_opt( 'allow_anonymous' ) && ! empty( $fields['anonymous_name'] ) ) {
-			$answer_array['anonymous_name'] = $fields['name'];
+			$answer_array['anonymous_name'] = $fields['anonymous_name'];
 		}
 
 		$answer_id = ap_save_answer( $question->ID, $answer_array );
