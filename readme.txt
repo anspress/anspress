@@ -1,10 +1,10 @@
 === AnsPress - Question and answer ===
 Contributors: nerdaryan
-Donate link: https://www.paypal.com/cgi-bin/webscr?business=rah12@live.com&cmd=_xclick&item_name=Donation%20to%20AnsPress%20development
+Donate link: https://www.paypal.me/nerdaryan
 Tags: question, answer, q&a, forum, profile, stackoverflow, quora, buddypress
-Requires at least: 4.2
+Requires at least: 4.3
 Tested up to: 4.5
-Stable tag: 3.0.2
+Stable tag: 3.0.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -88,6 +88,33 @@ Read full FAQ here https://anspress.io/docs/?topic=faq
 
 
 == Changelog ==
+
+= 3.0.5 =
+
+* Fixed: Watch.js not enqueued
+
+= 3.0.4 =
+
+* Fixed: undefined var in tinyMce init
+
+
+= 3.0.3 =
+
+* Fixed: product update fails
+* Improved tip style
+* Fixed: warning in ap_get_link_to() if array is passed with ap_page
+* i18n: it not a tranlation strings. remove the _x() function
+* i18n: breake down the translation string into two strings - a message and an action link
+* i18n: avoide using HTML tags in translation strings
+* i18n:rewrite the translation string for easier translation in RTL languages
+* i18n: simpler translation strings, without unneeded placeholders.
+* Fixed: Ajax editor loading
+* Fixed: toggling text editor not working in ask form
+* Fixed: missing hook
+* Editor not expanding for answer form
+* Fix: question and answer added from wp-admin are not showing
+* Fixed: mention toggling
+* Fixed checkbox option not saving properly
 
 = 3.0.2 =
 

@@ -1082,9 +1082,11 @@ function ap_get_link_to($sub) {
 	$default_pages = apply_filters( 'ap_default_page_slugs', $default_pages );
 
 	if ( is_array( $sub ) && isset( $sub['ap_page'] ) && @isset( $default_pages[ $sub['ap_page'] ] ) ) {
-		$sub['ap_page'] = $default_pages[$sub['ap_page']];
-	} elseif ( ! empty( $sub ) && @isset( $default_pages[$sub] ) ) {
-		$sub = $default_pages[$sub];
+		$sub['ap_page'] = $default_pages[ $sub['ap_page'] ];
+	}
+
+	elseif ( !is_array( $sub ) && ! empty( $sub ) && @isset( $default_pages[ $sub ] ) ) {
+		$sub = $default_pages[ $sub ];
 	}
 
 	$base = rtrim( ap_base_page_link(), '/' );
@@ -1900,6 +1902,11 @@ function ap_new_edit_post_status( $user_id = false, $post_type = 'question', $ed
 function ap_find_duplicate_post( $content, $post_type = 'question', $question_id = false ) {
 	global $wpdb;
 	$content = ap_sanitize_description_field( $content );
+
+	// Return if content is empty. But blank content will be checked.
+	if( empty( $content ) ){
+		return false;
+	}
 
 	$question_q = false !== $question_id ? $wpdb->prepare( ' AND post_parent= %d', $question_id ) : '';
 

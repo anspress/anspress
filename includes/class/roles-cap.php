@@ -1066,6 +1066,14 @@ function ap_user_can_read_post( $post_id, $user_id = false, $post_type = false )
 		return true;
 	}
 
+	if ( ap_opt('only_logged_in' ) && is_user_logged_in() && 'question' == $post_type ) {
+		return true;
+	}
+
+	if ( ap_opt('logged_in_can_see_ans' ) && is_user_logged_in() && 'answer' == $post_type ) {
+		return true;
+	}
+
 	// Finally return false. And break the heart :p.
 	return false;
 }
