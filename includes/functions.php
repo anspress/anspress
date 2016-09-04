@@ -863,7 +863,7 @@ function ap_responce_message($id, $only_message = false) {
 		'selected_the_answer' => array( 'type' => 'success', 'message' => __( 'Best answer is selected for your question.', 'anspress-question-answer' ) ),
 		'question_moved_to_trash' => array( 'type' => 'success', 'message' => __( 'Question moved to trash.', 'anspress-question-answer' ) ),
 		'answer_moved_to_trash' => array( 'type' => 'success', 'message' => __( 'Answer moved to trash.', 'anspress-question-answer' ) ),
-		'no_permission_to_view_private' => array( 'type' => 'warning', 'message' => __( 'You dont have permission to view private posts.', 'anspress-question-answer' ) ),
+		'no_permission_to_view_private' => array( 'type' => 'warning', 'message' => __( 'You do not have permission to view private posts.', 'anspress-question-answer' ) ),
 		'flagged' => array( 'type' => 'success', 'message' => __( 'Thank you for reporting this post.', 'anspress-question-answer' ) ),
 		'already_flagged' => array( 'type' => 'warning', 'message' => __( 'You have already reported this post.', 'anspress-question-answer' ) ),
 		'captcha_error' => array( 'type' => 'error', 'message' => __( 'Please check captcha field and resubmit it again.', 'anspress-question-answer' ) ),

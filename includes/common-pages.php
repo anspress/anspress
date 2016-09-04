@@ -133,7 +133,7 @@ class AnsPress_Common_Pages
 	public static function edit_page() {
 		$post_id = (int) get_query_var( 'edit_post_id' );
 		if ( ! ap_user_can_edit_question( $post_id ) ) {
-				echo '<p>'.esc_attr__( 'You don\'t have permission to access this page.', 'anspress-question-answer' ).'</p>';
+				echo '<p>'.esc_attr__( 'You do not have permission to access this page.', 'anspress-question-answer' ).'</p>';
 				return;
 		} else {
 			global $editing_post;
