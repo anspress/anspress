@@ -76,7 +76,7 @@ class AnsPress_User
 		if ( $ap_user_query->has_users() ) {
 			include ap_get_theme_location( 'user/user.php' );
 		} else {
-			_e( 'No user found', 'anspress-question-answer' );
+			_e( 'No user found.', 'anspress-question-answer' );
 		}
 	}
 

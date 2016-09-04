@@ -648,7 +648,7 @@ function ap_post_permanent_delete_btn_html($post_id = false, $echo = false) {
 		$action = 'delete_post_'.$post_id;
 		$nonce = wp_create_nonce( $action );
 
-		$output = '<a href="#" class="delete-btn" data-action="ap_delete_post" data-query="post_id='.$post_id.'&__nonce='.$nonce.'&ap_ajax_action=permanent_delete_post" title="'.__( 'Delete permanently', 'anspress-question-answer' ).'">'.__( 'Delete permanently', 'anspress-question-answer' ).'</a>';
+		$output = '<a href="#" class="delete-btn" data-action="ap_delete_post" data-query="post_id='.$post_id.'&__nonce='.$nonce.'&ap_ajax_action=permanent_delete_post" title="'.__( 'Delete Permanently', 'anspress-question-answer' ).'">'.__( 'Delete Permanently', 'anspress-question-answer' ).'</a>';
 
 		if ( $echo ) {
 			echo $output;

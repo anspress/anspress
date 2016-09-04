@@ -23,7 +23,7 @@ class AnsPress_Common_Pages
 		ap_register_page( ap_opt( 'ask_page_slug' ), __( 'Ask', 'anspress-question-answer' ), array( __CLASS__, 'ask_page' ) );
 		ap_register_page( 'edit', __( 'Edit', 'anspress-question-answer' ), array( __CLASS__, 'edit_page' ), false );
 		ap_register_page( 'search', __( 'Search', 'anspress-question-answer' ), array( __CLASS__, 'search_page' ), false );
-		ap_register_page( 'activity', __( 'Activity feed', 'anspress-question-answer' ), array( __CLASS__, 'activity_page' ) );
+		ap_register_page( 'activity', __( 'Activity Feed', 'anspress-question-answer' ), array( __CLASS__, 'activity_page' ) );
 	}
 
 	/**

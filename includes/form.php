@@ -73,7 +73,7 @@ class AnsPress_Form_Helper
 					ap_do_event('delete_comment', $comment, 'question' ); } elseif ($post_type == 'answer')
 					ap_do_event('delete_comment', $comment, 'answer' );
 			}
-			$result = array( 'status' => true, 'message' => __('Comment deleted successfully', 'anspress-question-answer' ) );
+			$result = array( 'status' => true, 'message' => __('Comment deleted successfully.', 'anspress-question-answer' ) );
 			wp_die(json_encode($result ) );
 		}
 		wp_die();

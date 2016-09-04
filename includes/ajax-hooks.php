@@ -108,7 +108,7 @@ class AnsPress_Ajax
 
 	        $result = array( 'status' => true, 'html' => $items );
 	    } else {
-	        $result = array( 'status' => false, 'message' => __( 'No related questions found', 'anspress-question-answer' ) );
+	        $result = array( 'status' => false, 'message' => __( 'No related questions found.', 'anspress-question-answer' ) );
 	    }
 
 	    ap_ajax_json( $result );
