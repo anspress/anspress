@@ -788,15 +788,12 @@ function ap_latest_post_activity_html($post_id = false, $answer_activities = fal
 	$html = '';
 
 	if ( $activity ) {
-		$title = ap_activity_short_title( $activity['type'] );
-
-		$html .= '<span class="ap-post-history">';
-		$html .= sprintf( __( ' %s %s %s', 'anspress-question-answer' ),
+		$html .= sprintf(
+			'<span class="ap-post-history">%s %s %s</span>',
 			ap_user_link_anchor($activity['user_id'], false ),
-			$title,
+			ap_activity_short_title( $activity['type'] ),
 			'<a href="'. get_permalink( $post ) .'"><time datetime="'. mysql2date( 'c', $activity['date'] ) .'">'. ap_human_time( $activity['date'], false ) .'</time></a>'
 		);
-		$html .= '</span>';
 	}
 
 	if ( $html ) {
