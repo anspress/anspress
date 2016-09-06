@@ -54,7 +54,7 @@ class AnsPress_PostTypes
 			'add_new'           => __( 'New Question', 'anspress-question-answer' ),
 			'edit_item'         => __( 'Edit Question', 'anspress-question-answer' ),
 			'update_item'       => __( 'Update Question', 'anspress-question-answer' ),
-			'search_items'      => __( 'Search question', 'anspress-question-answer' ),
+			'search_items'      => __( 'Search Questions', 'anspress-question-answer' ),
 			'not_found'         => __( 'No question found', 'anspress-question-answer' ),
 			'not_found_in_trash' => __( 'No questions found in Trash', 'anspress-question-answer' ),
 		);
@@ -121,10 +121,10 @@ class AnsPress_PostTypes
 			'all_items' => __( 'All Answers', 'anspress-question-answer' ),
 			'view_item' => __( 'View Answer', 'anspress-question-answer' ),
 			'add_new_item' => __( 'Add New Answer', 'anspress-question-answer' ),
-			'add_new' => __( 'New answer', 'anspress-question-answer' ),
-			'edit_item' => __( 'Edit answer', 'anspress-question-answer' ),
-			'update_item' => __( 'Update answer', 'anspress-question-answer' ),
-			'search_items' => __( 'Search answer', 'anspress-question-answer' ),
+			'add_new' => __( 'New Answer', 'anspress-question-answer' ),
+			'edit_item' => __( 'Edit Answer', 'anspress-question-answer' ),
+			'update_item' => __( 'Update Answer', 'anspress-question-answer' ),
+			'search_items' => __( 'Search Answers', 'anspress-question-answer' ),
 			'not_found' => __( 'No answer found', 'anspress-question-answer' ),
 			'not_found_in_trash' => __( 'No answer found in Trash', 'anspress-question-answer' ),
 		);

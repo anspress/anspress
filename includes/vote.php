@@ -425,8 +425,8 @@ function ap_close_vote_html() {
 	?>" data-args="<?php echo $post->ID.'-'.$nonce;
 	?>" href="#" title="<?php echo $title;
 	?>">
-			<?php _e( 'Close ', 'anspress-question-answer' );
-			echo($post->closed > 0 ? '<span>('.$post->closed.')</span>' : '');
+			<?php _e( 'Close', 'anspress-question-answer' );
+			echo($post->closed > 0 ? ' <span>('.$post->closed.')</span>' : '');
 	?>
         </a>
 	<?php

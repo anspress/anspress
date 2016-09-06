@@ -76,7 +76,7 @@ class AnsPress_User
 		if ( $ap_user_query->has_users() ) {
 			include ap_get_theme_location( 'user/user.php' );
 		} else {
-			_e( 'No user found', 'anspress-question-answer' );
+			_e( 'No user found.', 'anspress-question-answer' );
 		}
 	}
 
@@ -207,7 +207,7 @@ class AnsPress_User
 				'profile' => $my ?  __( 'My profile', 'anspress-question-answer' ) : sprintf( __( '%s\'s profile', 'anspress-question-answer' ), $name ),
 				'questions' => $my ?  __( 'My questions', 'anspress-question-answer' ) : sprintf( __( '%s\'s questions', 'anspress-question-answer' ), $name ),
 				'answers' => $my ?  __( 'My answers', 'anspress-question-answer' ) : sprintf( __( '%s\'s answers', 'anspress-question-answer' ), $name ),
-				'about' => $my ?  __( 'About me', 'anspress-question-answer' ) : sprintf( __( '%s', 'anspress-question-answer' ), $name ),
+				'about' => $my ?  __( 'About me', 'anspress-question-answer' ) : $name,
 				'followers' => $my ?  __( 'My followers', 'anspress-question-answer' ) : sprintf( __( '%s\'s followers', 'anspress-question-answer' ), $name ),
 				'following' => __( 'Following', 'anspress-question-answer' ),
 				'subscription' => __( 'My subscriptions', 'anspress-question-answer' ),

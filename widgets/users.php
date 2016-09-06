@@ -81,11 +81,11 @@ class AP_Users_Widget extends WP_Widget {
 			<input class="widefat" id="<?php echo $this->get_field_id( 'avatar_size' ); ?>" name="<?php echo $this->get_field_name( 'avatar_size' ); ?>" type="text" value="<?php echo esc_attr( $avatar_size ); ?>">
         </p>
         <p>
-			<label for="<?php echo $this->get_field_id( 'number' ); ?>"><?php _e( 'Show', 'anspress-question-answer' ); ?></label>
+			<label for="<?php echo $this->get_field_id( 'number' ); ?>"><?php _e( 'Show:', 'anspress-question-answer' ); ?></label>
 			<input class="widefat" id="<?php echo $this->get_field_id( 'number' ); ?>" name="<?php echo $this->get_field_name( 'number' ); ?>" type="text" value="<?php echo esc_attr( $number ); ?>">
         </p>
         <p>
-			<label for="<?php echo $this->get_field_id( 'sortby' ); ?>"><?php _e( 'Sort by', 'anspress-question-answer' ); ?></label>
+			<label for="<?php echo $this->get_field_id( 'sortby' ); ?>"><?php _e( 'Sort by:', 'anspress-question-answer' ); ?></label>
 			<input class="widefat" id="<?php echo $this->get_field_id( 'sortby' ); ?>" name="<?php echo $this->get_field_name( 'sortby' ); ?>" type="text" value="<?php echo esc_attr( $sortby ); ?>">
         </p>
 		<?php

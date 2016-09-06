@@ -41,7 +41,7 @@
 		</div>
 	<?php elseif (is_user_logged_in()): ?>
 		<div class="ap-no-permission">
-			<?php _e('You don\'t have permission to ask question.', 'anspress-question-answer'); ?>
+			<?php _e('You do not have permission to ask question.', 'anspress-question-answer'); ?>
 		</div>
 	<?php endif; ?>
 	<?php ap_get_template_part('login-signup'); ?>

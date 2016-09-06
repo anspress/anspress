@@ -1162,7 +1162,7 @@ function ap_user_can_vote_on_post( $post_id, $type, $user_id = false, $wp_error 
 	}
 
 	if ( $wp_error ) {
-		return new WP_Error('no_permission', __('Its look like you do not have permission to vote.', 'anspress-question-answer' ) );
+		return new WP_Error('no_permission', __('You do not have permission to vote.', 'anspress-question-answer' ) );
 	}
 
 	return false;
