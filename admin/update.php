@@ -1,7 +1,7 @@
 <?php
 /**
  * Update related funtion.
- * @link 	http://anspress.io/
+ * @link 	https://anspress.io/
  * @since   2.4
  * @author  Rahul Aryan <support@anspress.io>
  * @package AnsPress

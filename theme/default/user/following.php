@@ -1,7 +1,7 @@
 <?php
 /**
  * Display user's following page
- * @link http://anspress.io
+ * @link https://anspress.io
  * @since 2.3
  * @package AnsPress
  */

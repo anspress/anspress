@@ -2,7 +2,7 @@
 /**
  * This template is used for displaying comment form.
  *
- * @link http://anspress.io
+ * @link https://anspress.io
  * @since 2.4
  */
 $subscribed = false;

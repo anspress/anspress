@@ -2,7 +2,7 @@
 /**
  * Question list item template
  *
- * @link http://anspress.io
+ * @link https://anspress.io
  * @since 0.1
  * @license GPL 2+
  * @package AnsPress

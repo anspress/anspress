@@ -3,7 +3,7 @@
  * Answer content
  *
  * @author Rahul Aryan <support@anspress.io>
- * @link http://anspress.io/anspress
+ * @link https://anspress.io/anspress
  * @since 0.1
  *
  * @package AnsPress

@@ -2,7 +2,7 @@
 /**
  * Ask question page
  *
- * @link http://anspress.io
+ * @link https://anspress.io
  * @since 0.1
  *
  * @package AnsPress

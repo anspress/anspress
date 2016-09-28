@@ -2,7 +2,7 @@
 /**
  * Control the output of AnsPress dashboard
  *
- * @link http://anspress.io
+ * @link https://anspress.io
  * @since 2.0.0-alpha2
  * @author Rahul Aryan <support@anspress.io>
  * @package AnsPress
@@ -403,8 +403,8 @@ if ( $columns ) {
 								?>
 							</div>
 						</li>
-						<li><a class="welcome-icon welcome-comments" href="http://anspress.io/questions/" target="_blank"><?php _e('Help and Support!', 'anspress-question-answer' ); ?></a></li>
-						<li><a class="welcome-icon welcome-learn-more" href="http://anspress.io/docs/"><?php _e('Documents and FAQ', 'anspress-question-answer' ); ?></a></li>
+						<li><a class="welcome-icon welcome-comments" href="https://anspress.io/questions/" target="_blank"><?php _e('Help and Support!', 'anspress-question-answer' ); ?></a></li>
+						<li><a class="welcome-icon welcome-learn-more" href="https://anspress.io/docs/"><?php _e('Documents and FAQ', 'anspress-question-answer' ); ?></a></li>
 					</ul>
 				</div>
 			</div>

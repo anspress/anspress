@@ -7,17 +7,17 @@
  * @author    Rahul Aryan <support@rahularyan.com>
  * @copyright 2014 WP3.in & Rahul Aryan
  * @license   GPL-2.0+ http://www.gnu.org/licenses/gpl-2.0.txt *
- * @link      http://anspress.io
+ * @link      https://anspress.io
  * @package   AnsPress
  *
  * @wordpress-plugin
  * Plugin Name:       AnsPress
- * Plugin URI:        http://anspress.io
+ * Plugin URI:        https://anspress.io
  * Description:       The most advance community question and answer system for WordPress
  * Donate link: 	  https://goo.gl/ffainr
  * Version:           3.0.5
  * Author:            Rahul Aryan
- * Author URI:        http://anspress.io
+ * Author URI:        https://anspress.io
  * Text Domain:       anspress-question-answer
  * License:           GPL-3.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt

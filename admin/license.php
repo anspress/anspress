@@ -3,7 +3,7 @@
  * AnsPress product license *
  * Handle licences of AnsPress products.
  *
- * @link http://anspress.io
+ * @link https://anspress.io
  * @since 2.4.5
  *
  * @package AnsPress/AP_License

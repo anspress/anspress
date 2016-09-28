@@ -3,7 +3,7 @@
  * Best answer template *
  *
  * @author Rahul Aryan <support@anspress.io>
- * @link http://anspress.io/
+ * @link https://anspress.io/
  * @since 0.1
  *
  * @package AnsPress

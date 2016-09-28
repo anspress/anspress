@@ -2,7 +2,7 @@
 /**
  * Control the output of AnsPress about page
  *
- * @link http://anspress.io
+ * @link https://anspress.io
  * @since 2.2
  * @author Rahul Aryan <support@anspress.io>
  * @package AnsPress

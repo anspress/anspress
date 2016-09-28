@@ -2,7 +2,7 @@
 /**
  * Handle all function related to voting system.
  *
- * @link http://anspress.io
+ * @link https://anspress.io
  */
 
 /**
