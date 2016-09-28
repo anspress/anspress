@@ -18,9 +18,9 @@
  * Version:           3.0.5
  * Author:            Rahul Aryan
  * Author URI:        https://anspress.io
- * Text Domain:       anspress-question-answer
  * License:           GPL-3.0+
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.txt
+ * Text Domain:       anspress-question-answer
  * Domain Path:       /languages
  * GitHub Plugin URI: anspress/anspress
  */
@@ -51,120 +51,213 @@ if ( ! class_exists( 'AnsPress' ) ) {
 	{
 		/**
 		 * AnsPress version
+		 *
+		 * @access private
 		 * @var string
 		 */
 	    private $_plugin_version = '3.0.5';
 
 	    /**
 	     * Class instance
+		 *
+		 * @access public
+		 * @static
 	     * @var object
 	     */
 	    public static $instance = null;
 
 	    /**
 	     * AnsPress hooks
+		 *
+		 * @access public
 	     * @var object Register all AnsPress hooks
 	     */
 	    public $anspress_hooks;
 
 	    /**
 	     * AnsPress ajax
+		 *
+		 * @access public
 	     * @var object Register all AnsPress ajax hooks
 	     */
 	    public $anspress_ajax;
+
+	    /**
+	     * Admin ajax
+		 *
+		 * @access public
+	     * @var object Register all admin ajax hooks
+	     */
 	    public $admin_ajax;
 
 	    /**
 	     * AnsPress pages
+		 *
+		 * @access public
 	     * @var array All AnsPress pages
 	     */
 	    public $pages;
 
 	    /**
 	     * AnsPress users pages
+		 *
+		 * @access public
 	     * @var array AnsPress user pages
 	     */
 	    public $user_pages;
 
 	    /**
-	     * AnsPress user
+	     * AnsPress users
+		 *
+		 * @access public
 	     * @var object AnsPress users loop
 	     */
 	    public $users;
 
 	    /**
 	     * AnsPress menu
+		 *
+		 * @access public
 	     * @var array AnsPress menu
 	     */
 	    public $menu;
 
 	    /**
 	     * AnsPress question loop
+		 *
+		 * @access public
 	     * @var object AnsPress question query loop
 	     */
 	    public $questions;
 
 	    /**
 	     * AnsPress answers loop
+		 *
+		 * @access public
 	     * @var object Answer query loop
 	     */
 	    public $answers;
 
 	    /**
 	     * AnsPress form
+		 *
+		 * @access public
 	     * @var object AnsPress form
 	     */
 	    public $form;
 
 	    /**
 	     * AnsPress reputation
+		 *
+		 * @access public
 	     * @var object
 	     */
 	    public $reputations;
 
 		/**
 		 * The array of actions registered with WordPress.
-		 * @since    1.0.0
+		 *
+		 * @since  1.0.0
+		 * @access protected
 		 * @var array The actions registered with WordPress to fire when the plugin loads.
 		 */
 		protected $actions;
 
 		/**
 		 * The array of filters registered with WordPress.
-		 * @since    1.0.0
+		 *
+		 * @since  1.0.0
+		 * @access protected
 		 * @var array The filters registered with WordPress to fire when the plugin loads.
 		 */
 		protected $filters;
 
 		/**
 		 * Filter object.
+		 *
+		 * @access public
 		 * @var object
 		 */
 		public $anspress_query_filter;
 
 		/**
 		 * Post type object.
+		 *
+		 * @since  2.0.1
+		 * @access public
 		 * @var object
-		 * @since 2.0.1
 		 */
 		public $anspress_cpt;
 
 		/**
 		 * AnsPress form object
+		 *
+		 * @access public
 		 * @var object
 		 */
 	    public $anspress_forms;
 
+		/**
+		 * AnsPress reputation object
+		 *
+		 * @access public
+		 * @var object
+		 */
 	    public $anspress_reputation;
+
+		/**
+		 * AnsPress bp object
+		 *
+		 * @access public
+		 * @var object
+		 */
 	    public $anspress_bp;
+
+		/**
+		 * AnsPress third party object
+		 *
+		 * @access public
+		 * @var object
+		 */
 	    public $third_party;
+
+		/**
+		 * AnsPress activity hook object
+		 *
+		 * @access public
+		 * @var object
+		 */
 	    public $history_class;
+
+		/**
+		 * AnsPress mention hooks object
+		 *
+		 * @access public
+		 * @var object
+		 */
 	    public $mention_hooks;
+
+		/**
+		 * AnsPress views object
+		 *
+		 * @access public
+		 * @var object
+		 */
 	    public $views_class;
+
+		/**
+		 * AnsPress bad words object
+		 *
+		 * @access public
+		 * @var object
+		 */
 	    public $bad_words_class;
 
 		/**
 		 * Initializes the plugin by setting localization, hooks, filters, and administrative functions.
+		 *
+		 * @access public
+		 * @static
 		 *
 		 * @return instance
 		 */
@@ -205,7 +298,9 @@ if ( ! class_exists( 'AnsPress' ) ) {
 
 		/**
 		 * Setup plugin constants.
+		 *
 		 * @since  2.0.1
+		 * @access private
 		 */
 		private function setup_constants() {
 
@@ -239,7 +334,9 @@ if ( ! class_exists( 'AnsPress' ) ) {
 
 		/**
 		 * Include required files.
-		 * @since 2.0.1
+		 *
+		 * @since  2.0.1
+		 * @access private
 		 */
 		private function includes() {
 		    global $ap_options;
@@ -310,9 +407,10 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		    //require_once ANSPRESS_DIR.'includes/api.php';
 		}
 
-
 		/**
 		 * Register ajax hooks
+		 *
+		 * @access public
 		 */
 		public function ajax_hooks() {
 			// Load ajax hooks only if DOING_AJAX defined.
@@ -324,6 +422,8 @@ if ( ! class_exists( 'AnsPress' ) ) {
 
 		/**
 		 * Include all public classes
+		 *
+		 * @access public
 		 */
 		public function site_include() {
 		    self::$instance->anspress_hooks 	= AnsPress_Hooks::init();
@@ -335,6 +435,8 @@ if ( ! class_exists( 'AnsPress' ) ) {
 
 		/**
 		 * Include BuddyPress hooks and files
+		 *
+		 * @access public
 		 */
 	    public function bp_include() {
 	        if ( ! class_exists( 'BuddyPress' ) ) {
@@ -348,7 +450,8 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		/**
 		 * Add a new action to the collection to be registered with WordPress.
 		 *
-		 * @since    2.4
+		 * @since  2.4
+		 * @access public
 		 *
 		 * @param string            $hook          The name of the WordPress action that is being registered.
 		 * @param object            $component     A reference to the instance of the object on which the action is defined.
@@ -363,7 +466,8 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		/**
 		 * Add a new filter to the collection to be registered with WordPress.
 		 *
-		 * @since    2.4
+		 * @since  2.4
+		 * @access public
 		 *
 		 * @param string            $hook          The name of the WordPress filter that is being registered.
 		 * @param object            $component     A reference to the instance of the object on which the filter is defined.
@@ -379,7 +483,8 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		 * A utility function that is used to register the actions and hooks into a single
 		 * collection.
 		 *
-		 * @since    2.4
+		 * @since  2.4
+		 * @access private
 		 *
 		 * @param array             $hooks         The collection of hooks that is being registered (that is, actions or filters).
 		 * @param string            $hook          The name of the WordPress filter that is being registered.
@@ -392,7 +497,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		 *
 		 * @return type The collection of actions and filters registered with WordPress.
 		 */
-		private function add($hooks, $hook, $component, $callback, $priority, $accepted_args) {
+		private function add( $hooks, $hook, $component, $callback, $priority, $accepted_args ) {
 		    $hooks[] = array(
 				'hook' => $hook,
 				'component' => $component,
@@ -406,6 +511,8 @@ if ( ! class_exists( 'AnsPress' ) ) {
 
 		/**
 		 * Register the filters and actions with WordPress.
+		 *
+		 * @access private
 		 */
 		private function setup_hooks() {
 		    foreach ( $this->filters as $hook ) {
@@ -431,6 +538,13 @@ if ( ! function_exists('anspress' ) ) {
 
 if ( ! class_exists( 'AnsPress_Init' ) ) {
 	class AnsPress_Init{
+
+		/**
+		 * Load anspress.
+		 *
+		 * @access public
+		 * @static
+		 */
 		public static function load_anspress() {
 			/*
              * ACTION: before_loading_anspress
@@ -444,7 +558,10 @@ if ( ! class_exists( 'AnsPress_Init' ) ) {
 
 		/**
 		 * Load translations.
-		 * @since 2.0.1
+		 *
+		 * @since  2.0.1
+		 * @access public
+		 * @static
 		 */
 		public static function load_textdomain() {
 		    $locale = apply_filters( 'plugin_locale', get_locale(), 'anspress-question-answer' );
@@ -459,8 +576,12 @@ if ( ! class_exists( 'AnsPress_Init' ) ) {
 
 		/**
 		 * Delete a cpt posts. Used by AnsPress uninstaller.
-		 * @param  string $type Accepted args question or answer.
+		 *
 		 * @since  3.0.0
+		 * @access public
+		 * @static
+		 *
+		 * @param  string $type Accepted args question or answer.
 		 */
 		public static function delete_cpt( $type = 'question' ) {
 			global $wpdb;
@@ -480,6 +601,9 @@ if ( ! class_exists( 'AnsPress_Init' ) ) {
 
 		/**
 		 * Plugin un-installation hook, called by WP while removing AnsPress
+		 *
+		 * @access public
+		 * @static
 		 */
 		public static function anspress_uninstall() {
 			if ( ! current_user_can( 'activate_plugins' ) ) {
@@ -517,9 +641,13 @@ if ( ! class_exists( 'AnsPress_Init' ) ) {
 
 		/**
 		 * Before activation redirect
+		 *
+		 * @access public
+		 * @static
+		 *
 		 * @param  string $plugin Plugin base name.
 		 */
-		public static function activation_redirect($plugin) {
+		public static function activation_redirect( $plugin ) {
 			if ( $plugin == plugin_basename( __FILE__ ) ) {
 				add_option('anspress_do_installation_redirect', true );
 			}
@@ -527,6 +655,10 @@ if ( ! class_exists( 'AnsPress_Init' ) ) {
 
 		/**
 		 * Creating table whenever a new blog is created
+		 *
+		 * @access public
+		 * @static
+		 *
 		 * @param  integer $blog_id Blog id.
 		 * @param  integer $user_id User id.
 		 * @param  string  $domain  Domain.
@@ -544,7 +676,13 @@ if ( ! class_exists( 'AnsPress_Init' ) ) {
 
 		/**
 		 * Deleting the table whenever a blog is deleted
-		 * @param  array $tables Table names.
+		 *
+		 * @access public
+		 * @static
+		 *
+		 * @param  array $tables  Table names.
+		 * @param  int   $blog_id Blog ID.
+		 *
 		 * @return array
 		 */
 		public static function drop_blog_tables( $tables, $blog_id ) {
@@ -565,7 +703,10 @@ if ( ! class_exists( 'AnsPress_Init' ) ) {
 
 		/**
 		 * Redirect to about AnsPress page after activating AnsPress.
-		 * @since 3.0.0
+		 *
+		 * @since  3.0.0
+		 * @access public
+		 * @static
 		 */
 		public static function redirect_to_about_page() {
 			if ( get_option( 'anspress_do_installation_redirect' ) ) {
@@ -573,6 +714,7 @@ if ( ! class_exists( 'AnsPress_Init' ) ) {
 				exit( wp_redirect( admin_url( 'admin.php?page=anspress_about' ) ) );
 			}
 		}
+
 	}
 }
 
