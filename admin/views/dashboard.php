@@ -52,7 +52,7 @@ class AnsPress_Dashboard{
 	public static function anspress_aboutauthor() {
 		?>
 			<div class="main about-author clearfix">
-				<img src="http://www.gravatar.com/avatar/0c8cfd3bc56d97fe6bebc035fe9b8c80.jpg?s=50&r=g" />
+				<img src="https://www.gravatar.com/avatar/0c8cfd3bc56d97fe6bebc035fe9b8c80.jpg?s=50&r=g" />
 				<div class="no-overflow">
 					<a class="name" href="https://anspress.io/hire/">Rahul Aryan</a>
 					<p>Passionate WordPress developer. With over 7+ years’ experience, able to develop interactive plugins and themes. Also possess great familiarity of WP-Cli, APIs and JSON.</p>

@@ -3,7 +3,7 @@
  * Form class
  *
  * @package  	AnsPress
- * @license  	http://www.opensource.org/licenses/gpl-license.php GPL v2.0 (or later)
+ * @license  	https://www.gnu.org/licenses/gpl-2.0.txt GPL v2.0 (or later)
  * @link     	https://anspress.io
  * @since 		2.0
  */

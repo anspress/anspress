@@ -71,7 +71,7 @@ if ( isset( $_POST['__nonce'] ) && wp_verify_nonce( $_POST['__nonce'], 'nonce_op
 	    </h2>
 
 	    <div class="social-links clearfix">
-	    	<a href="http://github.com/anspress/anspress" target="_blank">GitHub</a>
+	    	<a href="https://github.com/anspress/anspress" target="_blank">GitHub</a>
 	        <a href="https://wordpress.org/plugins/anspress-question-answer/" target="_blank">WordPress.org</a>
 	        <a href="https://twitter.com/anspress_io" target="_blank">@anspress_io</a>
 	        <a href="https://www.facebook.com/wp.anspress" target="_blank">Facebook</a>

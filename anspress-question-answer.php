@@ -6,7 +6,7 @@
  *
  * @author    Rahul Aryan <support@rahularyan.com>
  * @copyright 2014 WP3.in & Rahul Aryan
- * @license   GPL-2.0+ http://www.gnu.org/licenses/gpl-2.0.txt *
+ * @license   GPL-2.0+ https://www.gnu.org/licenses/gpl-2.0.txt
  * @link      https://anspress.io
  * @package   AnsPress
  *
@@ -20,7 +20,7 @@
  * Author URI:        https://anspress.io
  * Text Domain:       anspress-question-answer
  * License:           GPL-3.0+
- * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
+ * License URI:       https://www.gnu.org/licenses/gpl-2.0.txt
  * Domain Path:       /languages
  * GitHub Plugin URI: anspress/anspress
  */

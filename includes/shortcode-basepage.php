@@ -32,7 +32,7 @@ class AnsPress_BasePage_Shortcode {
 	 *
 	 *     $categories 			slug of question_category
 	 *     $tags 				slug of question_tag
-	 *     $tax_relation 		taxonomy relation, see here http://codex.wordpress.org/Taxonomies
+	 *     $tax_relation 		taxonomy relation, see here https://codex.wordpress.org/Taxonomies
 	 *     $tags_operator 		operator for question_tag taxnomomy
 	 *     $categories_operator operator for question_category taxnomomy
 	 *     $page 				Select a page to display.

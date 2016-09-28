@@ -4,11 +4,11 @@
  * This file can be overridden by creating a anspress directory in active theme folder.
  *
  * @package    AnsPress
- * @license    http://opensource.org/licenses/gpl-license.php  GNU Public License
+ * @license    https://www.gnu.org/licenses/gpl-2.0.txt GNU Public License
  * @author    Rahul Aryan <support@anspress.io>
  */
 ?>
-<div id="ap-single" class="ap-q clearfix" itemtype="http://schema.org/Question" itemscope="">
+<div id="ap-single" class="ap-q clearfix" itemtype="https://schema.org/Question" itemscope="">
 
 	<h1 class="entry-title"><a href="<?php echo get_the_permalink() ?>"><?php the_title(); ?></a></h1>
 	<div class="ap-question-lr">
