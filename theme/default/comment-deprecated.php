@@ -2,7 +2,7 @@
 /**
  * This template is used for displaying single comment item.
  *
- * @link http://anspress.io
+ * @link https://anspress.io
  * @since 2.4
  */
 $class = '0' == $comment->comment_approved ? ' unapproved' : '';

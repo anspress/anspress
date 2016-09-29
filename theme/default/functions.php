@@ -3,7 +3,7 @@
  * This file contains theme script, styles and other theme related functions.
  * This file can be overridden by creating a anspress directory in active theme folder.
  * 
- * @license   http://opensource.org/licenses/gpl-license.php  GNU Public License
+ * @license   https://www.gnu.org/licenses/gpl-2.0.txt GNU Public License
  * @author    Rahul Aryan <support@anspress.io>
  */
 

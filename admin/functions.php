@@ -2,7 +2,7 @@
 /**
  * Common AnsPress admin functions
  *
- * @link http://anspress.io
+ * @link https://anspress.io
  * @since unknown
  *
  * @package AnsPress

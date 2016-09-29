@@ -5,7 +5,7 @@
  * @package   AnsPress
  * @author    Rahul Aryan <support@anspress.io>
  * @license   GPL-2.0+
- * @link      http://rahularyan.com
+ * @link      https://anspress.io
  * @copyright 2014 Rahul Aryan
  * @since 2.0.1
  */

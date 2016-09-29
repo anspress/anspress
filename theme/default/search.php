@@ -4,7 +4,7 @@
  *
  * This template is used in displaying search results.
  *
- * @link http://anspress.io
+ * @link https://anspress.io
  * @since unknown
  *
  * @package AnsPress

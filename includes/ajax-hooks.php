@@ -4,7 +4,7 @@
  *
  * @author    Rahul Aryan <support@anspress.io>
  * @license   GPL-2.0+
- * @link      http://anspress.io
+ * @link      https://anspress.io
  * @copyright 2014 Rahul Aryan
  * @package   AnsPress/ajax
  */

@@ -2,7 +2,7 @@
 /**
  * Control the output of AnsPress dashboard
  *
- * @link http://anspress.io
+ * @link https://anspress.io
  * @since 2.0.0-alpha2
  * @author Rahul Aryan <support@anspress.io>
  * @package AnsPress
@@ -52,7 +52,7 @@ class AnsPress_Dashboard{
 	public static function anspress_aboutauthor() {
 		?>
 			<div class="main about-author clearfix">
-				<img src="http://www.gravatar.com/avatar/0c8cfd3bc56d97fe6bebc035fe9b8c80.jpg?s=50&r=g" />
+				<img src="https://www.gravatar.com/avatar/0c8cfd3bc56d97fe6bebc035fe9b8c80.jpg?s=50&r=g" />
 				<div class="no-overflow">
 					<a class="name" href="https://anspress.io/hire/">Rahul Aryan</a>
 					<p>Passionate WordPress developer. With over 7+ years’ experience, able to develop interactive plugins and themes. Also possess great familiarity of WP-Cli, APIs and JSON.</p>
@@ -403,8 +403,8 @@ if ( $columns ) {
 								?>
 							</div>
 						</li>
-						<li><a class="welcome-icon welcome-comments" href="http://anspress.io/questions/" target="_blank"><?php _e('Help and Support!', 'anspress-question-answer' ); ?></a></li>
-						<li><a class="welcome-icon welcome-learn-more" href="http://anspress.io/docs/"><?php _e('Documents and FAQ', 'anspress-question-answer' ); ?></a></li>
+						<li><a class="welcome-icon welcome-comments" href="https://anspress.io/questions/" target="_blank"><?php _e('Help and Support!', 'anspress-question-answer' ); ?></a></li>
+						<li><a class="welcome-icon welcome-learn-more" href="https://anspress.io/docs/"><?php _e('Documents and FAQ', 'anspress-question-answer' ); ?></a></li>
 					</ul>
 				</div>
 			</div>

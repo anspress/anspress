@@ -3,7 +3,7 @@
  * Answer content
  *
  * @author Rahul Aryan <support@anspress.io>
- * @link http://anspress.io/anspress
+ * @link https://anspress.io/anspress
  * @since 0.1
  *
  * @package AnsPress
@@ -12,7 +12,7 @@ global $post;
 $have_permission = ap_user_can_read_answer( $post );
 ?>
 <div id="answer_<?php the_ID(); ?>" <?php post_class() ?> data-id="<?php the_ID(); ?>">
-    <div class="ap-content" itemprop="suggestedAnswer<?php echo ap_answer_is_best() ? ' acceptedAnswer' : ''; ?>" itemscope itemtype="http://schema.org/Answer">
+    <div class="ap-content" itemprop="suggestedAnswer<?php echo ap_answer_is_best() ? ' acceptedAnswer' : ''; ?>" itemscope itemtype="https://schema.org/Answer">
 		<div class="ap-single-vote"><?php ap_answer_the_vote_button(); ?></div>
         <div class="ap-avatar">
 			<a href="<?php ap_answer_the_author_link(); ?>"<?php ap_hover_card_attributes(ap_answer_get_author_id() ); ?>>

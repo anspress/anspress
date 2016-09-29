@@ -4,7 +4,7 @@
  *
  * @author    Rahul Aryan <support@anspress.io>
  * @license   GPL-3.0+
- * @link      http://anspress.io
+ * @link      https://anspress.io
  * @copyright 2014 Rahul Aryan
  */
 
@@ -1551,7 +1551,7 @@ function ap_create_base_page() {
 /**
  * vsprintf, sprintf, and printf do not allow for associative arrays to perform replacements `sprintf_assoc`
  * resolves this by using the key of the array in the lookup for string replacement.
- * http://php.net/manual/en/function.vsprintf.php.
+ * https://secure.php.net/manual/en/function.vsprintf.php
  *
  * @param string $string           hey stack
  * @param array  $replacement_vars needles

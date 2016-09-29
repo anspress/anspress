@@ -3,7 +3,7 @@
  * AnsPress image upload modal
  * Handle image uploading and importing from url
  *
- * @link http://anspress.io
+ * @link https://anspress.io
  * @since 2.4
  * @author Rahul Aryan <support@anspress.io>
  * @package AnsPress

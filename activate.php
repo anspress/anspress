@@ -4,7 +4,7 @@
  *
  * @package     AnsPress
  * @copyright   Copyright (c) 2013, Rahul Aryan
- * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @license     https://www.gnu.org/licenses/gpl-2.0.txt GNU Public License
  * @since       0.1
  */
 

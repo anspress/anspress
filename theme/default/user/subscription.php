@@ -2,7 +2,7 @@
 /**
  * Template for displaying user subscription page
  *
- * @link http://anspress.io
+ * @link https://anspress.io
  * @since unknown
  *
  * @package AnsPress
