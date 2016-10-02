@@ -5,7 +5,7 @@
  * @package   AnsPress
  * @author    Rahul Aryan <admin@rahularyan.com>
  * @license   GPL-2.0+
- * @link      http://anspress.io
+ * @link      https://anspress.io
  * @copyright 2014 Rahul Aryan
  */
 define( 'BP_AP_NOTIFIER_SLUG', 'ap_notification' );

@@ -364,7 +364,7 @@ class AnsPress_Comment_Hooks
 			ap_ajax_json( array(
 				'action' 		=> 'approve_comment',
 				'comment_ID' 	=> $comment_id,
-				'message' 		=> __('Comment approved successfully', 'anspress-question-answer' ),
+				'message' 		=> __('Comment approved successfully.', 'anspress-question-answer' ),
 				'do'			=> array(
 					'removeClass' => [ '#comment-'.$comment_id, 'unapproved' ],
 					array(

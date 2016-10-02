@@ -1,7 +1,7 @@
 <?php
 /**
  * AnsPress process form
- * @link http://anspress.io
+ * @link https://anspress.io
  * @since 2.0.1
  * @license GPL 2+
  * @package AnsPress

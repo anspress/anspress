@@ -4,7 +4,7 @@
  * This file can be overridden by creating a anspress directory in active theme folder.
  *
  * @package    AnsPress
- * @license    http://opensource.org/licenses/gpl-license.php  GNU Public License
+ * @license    https://www.gnu.org/licenses/gpl-2.0.txt GNU Public License
  * @author    Rahul Aryan <support@anspress.io>
  */
 
@@ -19,7 +19,7 @@
 	<h1 class="entry-title"><a href="<?php get_permalink() ?>"><?php the_title(); ?></a></h1>
 	<?php endif; ?>
 
-    <div class="ap-question-lr row" itemtype="http://schema.org/Question" itemscope="">
+    <div class="ap-question-lr row" itemtype="https://schema.org/Question" itemscope="">
 		<div class="ap-q-left <?php echo (is_active_sidebar( 'ap-qsidebar' ) || ap_opt('show_question_sidebar' )) ? 'col-md-8' : 'col-md-12'; ?>">
             <div class="ap-question-meta clearfix">
 				<?php echo ap_display_question_metas() ?>

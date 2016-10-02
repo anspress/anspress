@@ -1,7 +1,7 @@
 <?php
 /**
  * Control the output of flagged page
- * @link 	http://anspress.io
+ * @link 	https://anspress.io
  * @since 	2.0.0-alpha2
  * @author 	Rahul Aryan <support@anspress.io>
  * @package AnsPress

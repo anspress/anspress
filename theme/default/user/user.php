@@ -2,7 +2,7 @@
 /**
  * Display AnsPress user page
  *
- * @link http://anspress.io
+ * @link https://anspress.io
  * @package AnsPress
  * @since 2.0.1
  * @since 2.4.7 Added comment count

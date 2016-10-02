@@ -4,7 +4,7 @@
  *
  * @author    Rahul Aryan <support@anspress.io>
  * @license   GPL-2.0+
- * @link      http://anspress.io
+ * @link      https://anspress.io
  * @copyright 2014 Rahul Aryan
  * @package   AnsPress/ajax
  */
@@ -108,7 +108,7 @@ class AnsPress_Ajax
 
 	        $result = array( 'status' => true, 'html' => $items );
 	    } else {
-	        $result = array( 'status' => false, 'message' => __( 'No related questions found', 'anspress-question-answer' ) );
+	        $result = array( 'status' => false, 'message' => __( 'No related questions found.', 'anspress-question-answer' ) );
 	    }
 
 	    ap_ajax_json( $result );

@@ -4,7 +4,7 @@
  *
  * @author    Rahul Aryan <support@anspress.io>
  * @license   GPL-3.0+
- * @link      http://anspress.io
+ * @link      https://anspress.io
  * @copyright 2014 Rahul Aryan
  */
 
@@ -648,7 +648,7 @@ function ap_post_permanent_delete_btn_html($post_id = false, $echo = false) {
 		$action = 'delete_post_'.$post_id;
 		$nonce = wp_create_nonce( $action );
 
-		$output = '<a href="#" class="delete-btn" data-action="ap_delete_post" data-query="post_id='.$post_id.'&__nonce='.$nonce.'&ap_ajax_action=permanent_delete_post" title="'.__( 'Delete permanently', 'anspress-question-answer' ).'">'.__( 'Delete permanently', 'anspress-question-answer' ).'</a>';
+		$output = '<a href="#" class="delete-btn" data-action="ap_delete_post" data-query="post_id='.$post_id.'&__nonce='.$nonce.'&ap_ajax_action=permanent_delete_post" title="'.__( 'Delete Permanently', 'anspress-question-answer' ).'">'.__( 'Delete Permanently', 'anspress-question-answer' ).'</a>';
 
 		if ( $echo ) {
 			echo $output;
@@ -863,7 +863,7 @@ function ap_responce_message($id, $only_message = false) {
 		'selected_the_answer' => array( 'type' => 'success', 'message' => __( 'Best answer is selected for your question.', 'anspress-question-answer' ) ),
 		'question_moved_to_trash' => array( 'type' => 'success', 'message' => __( 'Question moved to trash.', 'anspress-question-answer' ) ),
 		'answer_moved_to_trash' => array( 'type' => 'success', 'message' => __( 'Answer moved to trash.', 'anspress-question-answer' ) ),
-		'no_permission_to_view_private' => array( 'type' => 'warning', 'message' => __( 'You dont have permission to view private posts.', 'anspress-question-answer' ) ),
+		'no_permission_to_view_private' => array( 'type' => 'warning', 'message' => __( 'You do not have permission to view private posts.', 'anspress-question-answer' ) ),
 		'flagged' => array( 'type' => 'success', 'message' => __( 'Thank you for reporting this post.', 'anspress-question-answer' ) ),
 		'already_flagged' => array( 'type' => 'warning', 'message' => __( 'You have already reported this post.', 'anspress-question-answer' ) ),
 		'captcha_error' => array( 'type' => 'error', 'message' => __( 'Please check captcha field and resubmit it again.', 'anspress-question-answer' ) ),
@@ -1551,7 +1551,7 @@ function ap_create_base_page() {
 /**
  * vsprintf, sprintf, and printf do not allow for associative arrays to perform replacements `sprintf_assoc`
  * resolves this by using the key of the array in the lookup for string replacement.
- * http://php.net/manual/en/function.vsprintf.php.
+ * https://secure.php.net/manual/en/function.vsprintf.php
  *
  * @param string $string           hey stack
  * @param array  $replacement_vars needles

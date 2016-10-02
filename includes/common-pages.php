@@ -5,7 +5,7 @@
  * @package   AnsPress
  * @author    Rahul Aryan <support@anspress.io>
  * @license   GPL-3.0+
- * @link      http://anspress.io
+ * @link      https://anspress.io
  * @copyright 2014 Rahul Aryan
  */
 
@@ -23,7 +23,7 @@ class AnsPress_Common_Pages
 		ap_register_page( ap_opt( 'ask_page_slug' ), __( 'Ask', 'anspress-question-answer' ), array( __CLASS__, 'ask_page' ) );
 		ap_register_page( 'edit', __( 'Edit', 'anspress-question-answer' ), array( __CLASS__, 'edit_page' ), false );
 		ap_register_page( 'search', __( 'Search', 'anspress-question-answer' ), array( __CLASS__, 'search_page' ), false );
-		ap_register_page( 'activity', __( 'Activity feed', 'anspress-question-answer' ), array( __CLASS__, 'activity_page' ) );
+		ap_register_page( 'activity', __( 'Activity Feed', 'anspress-question-answer' ), array( __CLASS__, 'activity_page' ) );
 	}
 
 	/**
@@ -133,7 +133,7 @@ class AnsPress_Common_Pages
 	public static function edit_page() {
 		$post_id = (int) get_query_var( 'edit_post_id' );
 		if ( ! ap_user_can_edit_question( $post_id ) ) {
-				echo '<p>'.esc_attr__( 'You don\'t have permission to access this page.', 'anspress-question-answer' ).'</p>';
+				echo '<p>'.esc_attr__( 'You do not have permission to access this page.', 'anspress-question-answer' ).'</p>';
 				return;
 		} else {
 			global $editing_post;

@@ -2,7 +2,7 @@
 /**
  * This template is used for displaying comment list.
  *
- * @link http://anspress.io
+ * @link https://anspress.io
  * @since unknown
  */
 if ( post_password_required() || (ap_opt('logged_in_can_see_comment' ) && ! is_user_logged_in()) ) {

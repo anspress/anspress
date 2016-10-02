@@ -2,7 +2,7 @@
 /**
  * Form and controls of ask form
  *
- * @link http://anspress.io
+ * @link https://anspress.io
  * @since 2.0.1
  * @license GPL2+
  * @package AnsPress

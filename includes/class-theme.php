@@ -5,7 +5,7 @@
  * @package   AnsPress
  * @author    Rahul Aryan <support@anspress.io>
  * @license   GPL-2.0+
- * @link      http://anspress.io
+ * @link      https://anspress.io
  * @copyright 2014 Rahul Aryan
  */
 
@@ -219,8 +219,8 @@ class AnsPress_Theme
 		if ( is_anspress() ) {
 			$q_feed = get_post_type_archive_feed_link( 'question' );
 			$a_feed = get_post_type_archive_feed_link( 'answer' );
-			echo '<link rel="alternate" type="application/rss+xml" title="'.esc_attr__( 'Question feed', 'anspress-question-answer' ).'" href="'.esc_url( $q_feed ).'" />';
-			echo '<link rel="alternate" type="application/rss+xml" title="'.esc_attr__( 'Answers feed', 'anspress-question-answer' ).'" href="'.esc_url( $a_feed ).'" />';
+			echo '<link rel="alternate" type="application/rss+xml" title="'.esc_attr__( 'Question Feed', 'anspress-question-answer' ).'" href="'.esc_url( $q_feed ).'" />';
+			echo '<link rel="alternate" type="application/rss+xml" title="'.esc_attr__( 'Answers Feed', 'anspress-question-answer' ).'" href="'.esc_url( $a_feed ).'" />';
 
 			echo '<link rel="canonical" href="'. ap_canonical_url() .'">';
 

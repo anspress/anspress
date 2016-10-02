@@ -2,7 +2,7 @@
 /**
  * Tools page
  *
- * @link http://anspress.io
+ * @link https://anspress.io
  * @since 2.0.0-alpha2
  * @author Rahul Aryan <support@anspress.io>
  * @package AnsPress
@@ -68,12 +68,12 @@ if ( ! empty( $message ) ) {
 							<br />
 							<label>
 								<input type="radio" name="role_caps" value="participant_caps">
-								<?php _e('Basic capabilities', 'anspress-question-answer' ); ?>
+								<?php _e('Basic Capabilities', 'anspress-question-answer' ); ?>
 							</label>
 
 							<label>
 								<input type="radio" name="role_caps" value="moderator_caps">
-								<?php _e('Moderator capabilities', 'anspress-question-answer' ); ?>
+								<?php _e('Moderator Capabilities', 'anspress-question-answer' ); ?>
 							</label>
 							<br />
 							<br />

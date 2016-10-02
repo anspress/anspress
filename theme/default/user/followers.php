@@ -1,7 +1,7 @@
 <?php
 /**
  * Display user's followers page
- * @link http://anspress.io
+ * @link https://anspress.io
  * @since 2.3
  * @package AnsPress
  */

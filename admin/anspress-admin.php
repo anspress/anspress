@@ -5,7 +5,7 @@
  * @package   AnsPress
  * @author    Rahul Aryan <support@anspress.io>
  * @license   GPL-2.0+
- * @link      http://anspress.io
+ * @link      https://anspress.io
  * @copyright 2014 Rahul Aryan
  */
 
@@ -210,7 +210,7 @@ class AnsPress_Admin
 
 		add_submenu_page( 'anspress', __( 'AnsPress Options', 'anspress-question-answer' ), __( 'Options', 'anspress-question-answer' ), 'manage_options', 'anspress_options', array( $this, 'display_plugin_admin_page' ) );
 
-		$submenu['anspress'][500] = array( 'Theme & Extensions', 'manage_options' , 'http://anspress.io/themes/' );
+		$submenu['anspress'][500] = array( 'Theme & Extensions', 'manage_options' , 'https://anspress.io/themes/' );
 
 		add_submenu_page( 'anspress', __( 'About AnsPress', 'anspress-question-answer' ), __( 'About AnsPress', 'anspress-question-answer' ), 'manage_options', 'anspress_about', array( $this, 'display_plugin_about_page' ) );
 
@@ -394,7 +394,7 @@ class AnsPress_Admin
 				$q = get_post( $post_parent );
 				$answer = get_post_meta( $q->ID, ANSPRESS_ANS_META, true );
 				echo '<a class="ap-q-title" href="'. get_permalink( $q->post_id ) .'">'. $q->post_title .'</a>';
-				echo '<div class="ap-q-meta"><span class="ap-a-count">'.sprintf( _n( '1 Answer', '%d Answer', $answer, 'anspress-question-answer' ), $answer ).'</span><span class="ap-edit-link">| <a href="'.get_edit_post_link( $q->ID ).'">'. __( 'Edit question', 'anspress-question-answer' ).'</a></span></div>';
+				echo '<div class="ap-q-meta"><span class="ap-a-count">'.sprintf( _n( '1 Answer', '%d Answers', $answer, 'anspress-question-answer' ), $answer ).'</span><span class="ap-edit-link">| <a href="'.get_edit_post_link( $q->ID ).'">'. __( 'Edit question', 'anspress-question-answer' ).'</a></span></div>';
 				echo '<div class="ap-q-content">'. $q->post_content .'</div><input type="hidden" name="post_parent" value="'.$post_parent.'" />';
 			}
 			echo '</div>';

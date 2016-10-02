@@ -4,7 +4,7 @@
  *
  * This template is used to display site feed to user.
  *
- * @link http://anspress.io
+ * @link https://anspress.io
  * @since 2.4
  *
  * @package AnsPress
