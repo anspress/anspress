@@ -15,7 +15,7 @@
  * Plugin URI:        http://anspress.io
  * Description:       The most advance community question and answer system for WordPress
  * Donate link: 	  https://goo.gl/ffainr
- * Version:           3.0.5
+ * Version:           3.0.6
  * Author:            Rahul Aryan
  * Author URI:        http://anspress.io
  * Text Domain:       anspress-question-answer
@@ -53,7 +53,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		 * AnsPress version
 		 * @var string
 		 */
-	    private $_plugin_version = '3.0.5';
+	    private $_plugin_version = '3.0.6';
 
 	    /**
 	     * Class instance
@@ -468,14 +468,16 @@ if ( ! class_exists( 'AnsPress_Init' ) ) {
 
 			$deleted = 0;
 
-			while ( $deleted <= $count ) {
-				$question_IDS = $wpdb->get_col( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_type = '%s' LIMIT 50", $type ) );
+			if($count > 0)
+				while ( $deleted <= $count ) {
+					var_dump($count, $deleted);
+					$question_IDS = $wpdb->get_col( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_type = '%s' LIMIT 50", $type ) );
 
-				foreach ( (array) $question_IDS as $ID ) {
-					wp_delete_post( $ID, true );
-					$deleted++;
+					foreach ( (array) $question_IDS as $ID ) {
+						wp_delete_post( $ID, true );
+						$deleted++;
+					}
 				}
-			}
 		}
 
 		/**
@@ -488,7 +490,9 @@ if ( ! class_exists( 'AnsPress_Init' ) ) {
 
 			check_admin_referer( 'bulk-plugins' );
 
-			if ( ! ap_opt( 'db_cleanup' ) ) {
+			$option = get_option( 'anspress_opt' );
+
+			if ( !isset($option['db_cleanup']) || (isset($option['db_cleanup']) && $option['db_cleanup']) ) {
 				return;
 			}
 
@@ -511,6 +515,7 @@ if ( ! class_exists( 'AnsPress_Init' ) ) {
 			delete_option( 'anspress_opt' );
 			delete_option( 'ap_reputation' );
 
+			require_once ANSPRESS_DIR.'includes/class/roles-cap.php';
 			// Remove user roles
 			AP_Roles::remove_roles();
 		}
