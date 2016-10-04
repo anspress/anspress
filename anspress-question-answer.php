@@ -591,7 +591,6 @@ if ( ! class_exists( 'AnsPress_Init' ) ) {
 
 			if($count > 0)
 				while ( $deleted <= $count ) {
-					var_dump($count, $deleted);
 					$question_IDS = $wpdb->get_col( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_type = '%s' LIMIT 50", $type ) );
 
 					foreach ( (array) $question_IDS as $ID ) {

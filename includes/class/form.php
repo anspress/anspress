@@ -474,7 +474,6 @@ class AnsPress_Form {
 	 * @since 2.0.1
 	 */
 	private function editor_field($field = array()) {
-
 		if ( isset( $field['label'] ) ) {
 			$this->label();
 		}
