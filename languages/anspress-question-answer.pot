@@ -2,10 +2,10 @@
 # This file is distributed under the GPL-3.0+.
 msgid ""
 msgstr ""
-"Project-Id-Version: AnsPress 3.0.5\n"
+"Project-Id-Version: AnsPress 3.0.6\n"
 "Report-Msgid-Bugs-To: "
 "https://wordpress.org/support/plugin/anspress-question-answer\n"
-"POT-Creation-Date: 2016-10-02 13:09:03+00:00\n"
+"POT-Creation-Date: 2016-10-05 09:27:42+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -98,8 +98,10 @@ msgstr ""
 #: admin/anspress-admin.php:397 includes/ajax-hooks.php:101
 #: includes/ajax-hooks.php:103 includes/ajax-hooks.php:217
 #: includes/ajax-hooks.php:272 includes/answer-form.php:285
+#: theme/default/widget-questions.php:11
+#: theme/default/widget-related_questions.php:11
 msgid "1 Answer"
-msgid_plural "%d Answer"
+msgid_plural "%d Answers"
 msgstr[0] ""
 msgstr[1] ""
 
@@ -143,8 +145,9 @@ msgstr ""
 msgid "dismiss"
 msgstr ""
 
-#: admin/anspress-admin.php:581 admin/meta_box.php:108 includes/flag.php:244
-#: includes/post_types.php:238 includes/post_types.php:359
+#: admin/anspress-admin.php:581 admin/meta_box.php:108 includes/flag.php:193
+#: includes/flag.php:244 includes/post_types.php:238
+#: includes/post_types.php:359
 msgid "Flag"
 msgstr ""
 
@@ -173,7 +176,7 @@ msgstr ""
 msgid "Delete this item permanently"
 msgstr ""
 
-#: admin/class-list-table-hooks.php:85
+#: admin/class-list-table-hooks.php:85 includes/functions.php:651
 msgid "Delete Permanently"
 msgstr ""
 
@@ -961,7 +964,7 @@ msgstr ""
 msgid "Delete this reputation"
 msgstr ""
 
-#: admin/reputation.php:153 includes/class/activity.php:1190
+#: admin/reputation.php:153 includes/class/activity.php:1187
 #: includes/class/form.php:289 includes/class/form.php:296
 #: includes/comments.php:428 includes/functions.php:613
 msgid "Delete"
@@ -1197,12 +1200,12 @@ msgstr ""
 msgid "Role slug, without any space"
 msgstr ""
 
-#: admin/views/permissions.php:71
-msgid "Basic capabilities"
+#: admin/views/permissions.php:71 admin/views/permissions.php:108
+msgid "Basic Capabilities"
 msgstr ""
 
-#: admin/views/permissions.php:76
-msgid "Moderator capabilities"
+#: admin/views/permissions.php:76 admin/views/permissions.php:117
+msgid "Moderator Capabilities"
 msgstr ""
 
 #: admin/views/permissions.php:81
@@ -1219,14 +1222,6 @@ msgstr ""
 
 #: admin/views/permissions.php:94
 msgid "Select user role"
-msgstr ""
-
-#: admin/views/permissions.php:108
-msgid "Basic Capabilities"
-msgstr ""
-
-#: admin/views/permissions.php:117
-msgid "Moderator Capabilities"
 msgstr ""
 
 #: admin/views/post_flag.php:35
@@ -1379,8 +1374,8 @@ msgstr ""
 msgid "Select"
 msgstr ""
 
-#: includes/ajax-hooks.php:111
-msgid "No related questions found"
+#: includes/ajax-hooks.php:111 theme/default/widget-related_questions.php:18
+msgid "No related questions found."
 msgstr ""
 
 #: includes/ajax-hooks.php:144
@@ -1475,7 +1470,7 @@ msgstr ""
 msgid "reCaptach keys missing, please add keys"
 msgstr ""
 
-#: includes/answer-form.php:161 includes/post_types.php:126
+#: includes/answer-form.php:161
 msgid "Update answer"
 msgstr ""
 
@@ -1650,10 +1645,6 @@ msgstr ""
 msgid "Active %s"
 msgstr ""
 
-#: includes/class/activity.php:794
-msgid " %s %s %s"
-msgstr ""
-
 #: includes/class/form.php:59 theme/default/comment-form-deprecated.php:25
 msgid "Submit"
 msgstr ""
@@ -1678,7 +1669,7 @@ msgstr ""
 msgid "Select a page"
 msgstr ""
 
-#: includes/class/form.php:669
+#: includes/class/form.php:668
 msgid "No fields found"
 msgstr ""
 
@@ -1703,7 +1694,7 @@ msgid "Voting on restricted posts are not allowed."
 msgstr ""
 
 #: includes/class/roles-cap.php:1165
-msgid "Its look like you do not have permission to vote."
+msgid "You do not have permission to vote."
 msgstr ""
 
 #: includes/class/validation.php:70
@@ -1722,16 +1713,12 @@ msgstr ""
 msgid "Not a valid email address"
 msgstr ""
 
-#: includes/class-theme.php:181
+#: includes/class-theme.php:181 includes/class-theme.php:222
 msgid "Question Feed"
 msgstr ""
 
-#: includes/class-theme.php:222
-msgid "Question feed"
-msgstr ""
-
 #: includes/class-theme.php:223
-msgid "Answers feed"
+msgid "Answers Feed"
 msgstr ""
 
 #: includes/class-theme.php:298
@@ -1746,7 +1733,7 @@ msgstr ""
 msgid "About"
 msgstr ""
 
-#: includes/class-user.php:34
+#: includes/class-user.php:34 includes/common-pages.php:26
 msgid "Activity Feed"
 msgstr ""
 
@@ -1763,7 +1750,7 @@ msgid "User directory is disabled."
 msgstr ""
 
 #: includes/class-user.php:79
-msgid "No user found"
+msgid "No user found."
 msgstr ""
 
 #: includes/class-user.php:174
@@ -1808,10 +1795,6 @@ msgstr ""
 
 #: includes/class-user.php:210
 msgid "About me"
-msgstr ""
-
-#: includes/class-user.php:210
-msgid "%s"
 msgstr ""
 
 #: includes/class-user.php:211
@@ -1886,7 +1869,7 @@ msgid "This post was created %s, its locked hence you cannot delete it."
 msgstr ""
 
 #: includes/comments.php:367
-msgid "Comment approved successfully"
+msgid "Comment approved successfully."
 msgstr ""
 
 #: includes/comments.php:401 includes/post_types.php:236
@@ -1911,10 +1894,6 @@ msgstr ""
 msgid "Search"
 msgstr ""
 
-#: includes/common-pages.php:26
-msgid "Activity feed"
-msgstr ""
-
 #: includes/common-pages.php:71
 msgid "Sorry! you are not allowed to read this question."
 msgstr ""
@@ -1930,7 +1909,7 @@ msgid ""
 msgstr ""
 
 #: includes/common-pages.php:136
-msgid "You don't have permission to access this page."
+msgid "You do not have permission to access this page."
 msgstr ""
 
 #: includes/flag.php:191
@@ -1941,10 +1920,6 @@ msgstr ""
 msgid "You have flagged this post"
 msgstr ""
 
-#: includes/flag.php:193
-msgid "Flag "
-msgstr ""
-
 #: includes/flag.php:257
 msgid "Report this comment to moderaor"
 msgstr ""
@@ -1953,8 +1928,8 @@ msgstr ""
 msgid "You do not have permission to delete this comment"
 msgstr ""
 
-#: includes/form.php:76
-msgid "Comment deleted successfully"
+#: includes/form.php:76 includes/functions.php:851
+msgid "Comment deleted successfully."
 msgstr ""
 
 #: includes/form.php:123 includes/form.php:146
@@ -1997,7 +1972,7 @@ msgstr ""
 msgid "Successfully loaded form."
 msgstr ""
 
-#: includes/form.php:256
+#: includes/form.php:256 includes/post_types.php:126
 msgid "Update Answer"
 msgstr ""
 
@@ -2030,7 +2005,7 @@ msgstr ""
 msgid "Edit this answer"
 msgstr ""
 
-#: includes/functions.php:439
+#: includes/functions.php:439 includes/post_types.php:125
 msgid "Edit Answer"
 msgstr ""
 
@@ -2052,10 +2027,6 @@ msgstr ""
 
 #: includes/functions.php:632
 msgid "Restore post"
-msgstr ""
-
-#: includes/functions.php:651
-msgid "Delete permanently"
 msgstr ""
 
 #: includes/functions.php:844
@@ -2084,10 +2055,6 @@ msgstr ""
 
 #: includes/functions.php:850
 msgid "Comment updated successfully."
-msgstr ""
-
-#: includes/functions.php:851
-msgid "Comment deleted successfully."
 msgstr ""
 
 #: includes/functions.php:852
@@ -2147,7 +2114,7 @@ msgid "Answer moved to trash."
 msgstr ""
 
 #: includes/functions.php:866
-msgid "You dont have permission to view private posts."
+msgid "You do not have permission to view private posts."
 msgstr ""
 
 #: includes/functions.php:867
@@ -2345,7 +2312,7 @@ msgid_plural "Private Post <span class=\"count\">(%s)</span>"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/post_status.php:130
+#: includes/post_status.php:130 includes/vote.php:428
 msgid "Close"
 msgstr ""
 
@@ -2408,7 +2375,7 @@ msgid "Update Question"
 msgstr ""
 
 #: includes/post_types.php:57
-msgid "Search question"
+msgid "Search Questions"
 msgstr ""
 
 #: includes/post_types.php:58
@@ -2432,15 +2399,11 @@ msgid "Add New Answer"
 msgstr ""
 
 #: includes/post_types.php:124
-msgid "New answer"
-msgstr ""
-
-#: includes/post_types.php:125
-msgid "Edit answer"
+msgid "New Answer"
 msgstr ""
 
 #: includes/post_types.php:127
-msgid "Search answer"
+msgid "Search Answers"
 msgstr ""
 
 #: includes/post_types.php:128
@@ -2737,7 +2700,7 @@ msgid "Solved"
 msgstr ""
 
 #: includes/theme.php:320
-msgid "<i>%d views</i>"
+msgid "%d views"
 msgstr ""
 
 #: includes/theme.php:326
@@ -2940,10 +2903,6 @@ msgstr ""
 msgid "Undo your vote"
 msgstr ""
 
-#: includes/vote.php:428
-msgid "Close "
-msgstr ""
-
 #: theme/default/answer-form.php:10
 msgid "Write your answer.."
 msgstr ""
@@ -2979,7 +2938,7 @@ msgid "How to ask"
 msgstr ""
 
 #: theme/default/ask.php:44
-msgid "You don't have permission to ask question."
+msgid "You do not have permission to ask question."
 msgstr ""
 
 #: theme/default/attachments.php:14
@@ -3428,26 +3387,15 @@ msgstr ""
 msgid "No users found."
 msgstr ""
 
-#: theme/default/widget-questions.php:11
-#: theme/default/widget-related_questions.php:11
-msgid "1 answer"
-msgid_plural "%d answers"
+#: theme/default/widget-questions.php:13
+#: theme/default/widget-related_questions.php:13
+msgid "1 Vote"
+msgid_plural "%d Votes"
 msgstr[0] ""
 msgstr[1] ""
 
-#: theme/default/widget-questions.php:12
-#: theme/default/widget-related_questions.php:12
-msgid "1 vote"
-msgid_plural "%d votes"
-msgstr[0] ""
-msgstr[1] ""
-
-#: theme/default/widget-questions.php:17
+#: theme/default/widget-questions.php:18
 msgid "No questions found."
-msgstr ""
-
-#: theme/default/widget-related_questions.php:17
-msgid "No related questions found."
 msgstr ""
 
 #: theme/default/widgets/followers.php:11
@@ -3555,7 +3503,7 @@ msgstr ""
 msgid "Shows list of question shorted by option."
 msgstr ""
 
-#: widgets/questions.php:82
+#: widgets/questions.php:82 widgets/users.php:88
 msgid "Sort by:"
 msgstr ""
 
@@ -3644,11 +3592,7 @@ msgid "Avatar:"
 msgstr ""
 
 #: widgets/users.php:84
-msgid "Show"
-msgstr ""
-
-#: widgets/users.php:88
-msgid "Sort by"
+msgid "Show:"
 msgstr ""
 
 #. Plugin Name of the plugin/theme
@@ -3656,7 +3600,7 @@ msgid "AnsPress"
 msgstr ""
 
 #. Author URI of the plugin/theme
-msgid "http://anspress.io"
+msgid "https://anspress.io"
 msgstr ""
 
 #. Description of the plugin/theme

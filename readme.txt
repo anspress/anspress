@@ -4,7 +4,7 @@ Donate link: https://www.paypal.me/nerdaryan
 Tags: question, answer, q&a, forum, profile, stackoverflow, quora, buddypress
 Requires at least: 4.0
 Tested up to: 4.6
-Stable tag: 3.0.6
+Stable tag: 3.0.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -88,6 +88,10 @@ Read full FAQ here https://anspress.io/docs/?topic=faq
 
 
 == Changelog ==
+
+= 3.0.7 =
+
+* Fixed: Inline link in tinyMCE.
 
 = 3.0.6 =
 
