@@ -189,9 +189,6 @@ function ap_get_question($question_id) {
 	return new Question_Query( $args );
 }
 
-
-
-
 /**
  * Check if active post is private post
  * @return boolean

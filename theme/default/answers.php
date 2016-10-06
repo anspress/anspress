@@ -24,7 +24,7 @@
 					);
 				?>				
 			</h3>
-			<?php ap_answers_tab(ap_question_get_the_permalink()); ?>
+			<?php ap_answers_tab( get_the_permalink() ); ?>
 		</div>
 
 		<?php if(ap_user_can_see_answers()): ?>

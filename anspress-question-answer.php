@@ -130,6 +130,8 @@ if ( ! class_exists( 'AnsPress' ) ) {
 	     */
 	    public $questions;
 
+	    public $current_question;
+
 	    /**
 	     * AnsPress answers loop
 		 *
@@ -137,6 +139,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 	     * @var object Answer query loop
 	     */
 	    public $answers;
+	    public $current_answers;
 
 	    /**
 	     * AnsPress form
@@ -358,6 +361,10 @@ if ( ! class_exists( 'AnsPress' ) ) {
 
 		    require_once ANSPRESS_DIR.'includes/question-loop.php';
 		    require_once ANSPRESS_DIR.'includes/answer-loop.php';
+
+		    require_once ANSPRESS_DIR.'includes/qameta.php';
+		    require_once ANSPRESS_DIR.'includes/qaquery.php';
+		    require_once ANSPRESS_DIR.'includes/qaquery-hooks.php';
 
 		    require_once ANSPRESS_DIR.'includes/post_types.php';
 		    require_once ANSPRESS_DIR.'includes/query_filter.php';

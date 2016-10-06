@@ -16,7 +16,7 @@
 			<div class="ap-question-meta clearfix">
 				<?php echo ap_display_question_metas(); ?>
 			</div>
-			<div id="question" role="main" class="ap-content question" data-id="<?php ap_question_the_ID(); ?>">
+			<div id="question" role="main" class="ap-content question" data-id="<?php the_ID(); ?>">
 				<div class="ap-single-vote"><?php ap_question_the_vote_button(); ?></div>
 				<?php
 					/**
@@ -26,14 +26,25 @@
 					do_action('ap_before_question_content');
 				?>
 				<div class="ap-avatar">
-					<a href="<?php ap_question_the_author_link(); ?>"<?php ap_hover_card_attributes(ap_question_get_author_id()); ?>>
-						<?php ap_question_the_author_avatar( ap_opt('avatar_size_qquestion') ); ?>
+					<a href="<?php ap_profile_link(); ?>"<?php ap_hover_card_attr(); ?>>
+						<?php ap_author_avatar( ap_opt('avatar_size_qquestion') ); ?>
 					</a>
 				</div>
 				<div class="ap-q-cells clearfix">
 					<div class="ap-q-metas">
 						<?php ap_user_display_meta(true, false, true); ?>
-						<span><?php ap_question_the_time(); ?></span>
+						<span>
+							<?php
+								printf(
+									'<time itemprop="datePublished" datetime="%1$s">%2$s</time>',
+									ap_get_time( get_the_ID(), 'c' ),
+									sprintf(
+										__( 'Posted %s', 'anspress-question-answer' ),
+										ap_human_time( ap_get_time( $question_id, 'U' ) )
+									)
+								);
+						 	?>						 	
+						</span>
 					</div>
 
 					<!-- Start ap-content-inner -->
@@ -50,8 +61,8 @@
 							do_action('ap_after_question_content');
 						?>
 
-						<?php ap_question_the_active_time(); ?>
-						<?php ap_post_status_description(ap_question_get_the_ID());	?>
+						<?php ap_recent_post_activity(); ?>
+						<?php ap_post_status_description( get_the_ID() );	?>
 
 						<?php
 							/**

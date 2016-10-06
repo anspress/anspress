@@ -55,6 +55,32 @@ class AP_Activate
 		}
 	}
 
+	public function qameta_table(){
+		global $wpdb;
+		if ( $wpdb->get_var( "show tables like '{$wpdb->ap_qameta}'" ) != $wpdb->ap_qameta ) {
+			$this->tables[] = 'CREATE TABLE IF NOT EXISTS `'.$wpdb->ap_qameta.'` (
+                `post_id` bigint(20) DEFAULT NULL,
+                `selected_id` bigint(20) DEFAULT NULL,
+                `comments` bigint(20) DEFAULT 0,
+                `answers` bigint(20) DEFAULT 0,
+                `post_type` varchar(256) DEFAULT NULL,
+                `featured` tinyint(1) DEFAULT 0,
+                `selected` tinyint(1) DEFAULT 0,
+                `votes_up` bigint(20) DEFAULT 0,
+                `votes_down` bigint(20) DEFAULT 0,
+                `subscribers` bigint(20) DEFAULT 0,
+                `views` tinyint(4) DEFAULT 0,
+                `closed` tinyint(1) DEFAULT 0,
+                `flags` tinyint(2) DEFAULT 0,
+                `terms` LONGTEXT DEFAULT NULL,
+                `activities` LONGTEXT DEFAULT NULL,
+                `roles` varchar(256) DEFAULT NULL,
+                `last_updated` timestamp NULL DEFAULT NULL,
+                UNIQUE KEY `post_id` (`post_id`)
+	            )'.$this->charset_collate.';';
+		}
+	}
+
 	public function meta_table() {
 		global $wpdb;
 
@@ -185,6 +211,7 @@ class AP_Activate
 		global $wpdb;
 		$this->charset_collate = ! empty( $wpdb->charset ) ? 'DEFAULT CHARACTER SET '.$wpdb->charset : '';
 
+		$this->qameta_table();
 		$this->meta_table();
 		$this->activity_table();
 		$this->activity_meta_table();
