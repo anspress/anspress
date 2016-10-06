@@ -1771,6 +1771,7 @@ function ap_env_dev() {
 function ap_append_table_names() {
 	global $wpdb;
 
+	$wpdb->ap_qameta 		= $wpdb->prefix . 'ap_qameta';
 	$wpdb->ap_meta 			= $wpdb->prefix . 'ap_meta';
 	$wpdb->ap_activity 		= $wpdb->prefix . 'ap_activity';
 	$wpdb->ap_activitymeta 	= $wpdb->prefix . 'ap_activitymeta';
