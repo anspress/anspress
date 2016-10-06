@@ -48,7 +48,7 @@ class AnsPress_Common_Pages
 		 */
 		$args = apply_filters( 'ap_main_questions_args', $args );
 
-		$questions = ap_get_questions( $args );
+		anspress()->questions = $questions = new AP_Query( $args );
 		ap_get_template_part( 'base' );
 	}
 
@@ -76,7 +76,7 @@ class AnsPress_Common_Pages
 
 		global $questions;
 
-		$questions = ap_get_question( get_question_id() );
+		anspress()->questions = $questions = new AP_Query( [ 'p' => get_question_id() ] );
 
 		if ( ap_have_questions() ) {
 			/**
@@ -84,7 +84,7 @@ class AnsPress_Common_Pages
 			 * @since 2.3.3
 			 */
 
-			while ( ap_questions() ) : ap_the_question();
+			while ( ap_have_questions() ) : ap_the_question();
 				global $post;
 				setup_postdata( $post );
 			endwhile;

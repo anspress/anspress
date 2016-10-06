@@ -73,7 +73,7 @@ function ap_insert_views($data_id, $type) {
 			ap_add_meta($userid, 'post_view', $data_id, $ip );
 		}
 
-		$view = ap_get_qa_views($data_id );
+		$view = ap_get_qa_views( $data_id );
 
 		$view = $view + 1;
 

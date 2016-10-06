@@ -195,7 +195,7 @@ function ap_user_can_answer( $question_id, $user_id = false ) {
 	}
 
 	// Do not allow to answer if best answer is selected.
-	if ( ap_opt('close_selected' ) && ap_question_best_answer_selected( $question->ID ) ) {
+	if ( ap_opt('close_selected' ) && ap_have_answer_selected( $question->ID ) ) {
 		return false;
 	}
 

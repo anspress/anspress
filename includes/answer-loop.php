@@ -557,7 +557,7 @@ function ap_count_other_answer($question_id = false) {
 
 	$count = ap_count_answer_meta( $question_id );
 
-	if ( ap_question_best_answer_selected( $question_id ) ) {
+	if ( ap_have_answer_selected( $question_id ) ) {
 		return (int) ($count - 1);
 	}
 

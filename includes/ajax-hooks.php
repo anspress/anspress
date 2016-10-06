@@ -128,7 +128,7 @@ class AnsPress_Ajax
 	    $post = get_post( $answer_id );
 
 	    // Unselect best answer if already selected.
-	    if ( ap_question_best_answer_selected( $post->post_parent ) ) {
+	    if ( ap_have_answer_selected( $post->post_parent ) ) {
 	        ap_unselect_answer( $answer_id );
 
 	        ap_ajax_json( array(

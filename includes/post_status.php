@@ -90,7 +90,7 @@ class AnsPress_Post_Status
 		wp_update_post( $update_data );
 
 		// Unselect as best answer.
-		if ( 'answer' == $post->post_type && 'moderate' == $status && ap_question_best_answer_selected( $post->post_parent ) ) {
+		if ( 'answer' == $post->post_type && 'moderate' == $status && ap_have_answer_selected( $post->post_parent ) ) {
 			ap_unselect_answer( $post->ID );
 		}
 
@@ -173,7 +173,7 @@ function ap_post_status_description($post_id = false) {
 	if ( ap_have_parent_post( $post_id ) && $post->post_type != 'answer' ) : ?>
         <div id="ap_post_status_desc_<?php echo $post_id; ?>" class="ap-notice blue clearfix">
             <?php echo ap_icon( 'link', true ) ?>
-            <span><?php printf( __( 'Question is asked for %s.', 'anspress-question-answer' ), '<a href="'.get_permalink( ap_question_get_the_post_parent() ).'">'.get_the_title( ap_question_get_the_post_parent() ).'</a>' ); ?></span>
+            <span><?php printf( __( 'Question is asked for %s.', 'anspress-question-answer' ), '<a href="'.get_permalink( ap_get_post_field('post_parent') ).'">'.get_the_title( ap_get_post_field('post_parent') ).'</a>' ); ?></span>
         </div>
     <?php endif;
 

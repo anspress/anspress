@@ -52,12 +52,15 @@ class AnsPress_Hooks
 	    anspress()->add_action( 'the_post', __CLASS__, 'ap_append_vote_count' );
 
 	    // Query filters.
-	    anspress()->add_action( 'posts_clauses', 'AnsPress_Query_Filter', 'answer_sort', 10, 2 );
-		anspress()->add_action( 'posts_clauses', 'AnsPress_Query_Filter', 'user_favorites', 10, 2 );
-		anspress()->add_action( 'posts_clauses', 'AnsPress_Query_Filter', 'main_question_query', 10, 2 );
-		anspress()->add_action( 'posts_clauses', 'AnsPress_Query_Filter', 'ap_answers_query', 10, 2 );
-		anspress()->add_action( 'posts_clauses', 'AnsPress_Query_Filter', 'ap_question_subscription_query', 10, 2 );
-		anspress()->add_filter( 'the_posts', 'AnsPress_Query_Filter', 'restricted_answer_contents', 10, 2 );
+	 //    anspress()->add_action( 'posts_clauses', 'AnsPress_Query_Filter', 'answer_sort', 10, 2 );
+		// anspress()->add_action( 'posts_clauses', 'AnsPress_Query_Filter', 'user_favorites', 10, 2 );
+		// anspress()->add_action( 'posts_clauses', 'AnsPress_Query_Filter', 'main_question_query', 10, 2 );
+		// anspress()->add_action( 'posts_clauses', 'AnsPress_Query_Filter', 'ap_answers_query', 10, 2 );
+		// anspress()->add_action( 'posts_clauses', 'AnsPress_Query_Filter', 'ap_question_subscription_query', 10, 2 );
+		// anspress()->add_filter( 'the_posts', 'AnsPress_Query_Filter', 'restricted_answer_contents', 10, 2 );
+
+		anspress()->add_filter( 'posts_clauses', 'AP_QA_Query_Hooks', 'sql_filter', 10, 2 );
+		anspress()->add_filter( 'posts_results', 'AP_QA_Query_Hooks', 'posts_results', 10, 2 );
 
 	    // Theme  hooks.
 	    anspress()->add_action( 'init', 'AnsPress_Theme', 'init_actions' );

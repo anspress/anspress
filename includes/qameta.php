@@ -19,9 +19,11 @@ function ap_insert_qameta( $args, $wp_error = false ) {
 
 	$valid_fields = array(
 		'post_id' => 'int',
-		'selected' => 'int',
+		'selected_id' => 'int',
+		'selected' => 'bool',
+		'comments' => 'int',
 		'answeres' => 'int',
-		'post_type' => 'str',
+		'ptype' => 'str',
 		'featured' => 'bool',
 		'closed' => 'bool',
 		'views' => 'int',
@@ -75,7 +77,7 @@ function ap_insert_qameta( $args, $wp_error = false ) {
 		return $wpdb->insert_id;
 	}
 
-	return $wp_error ? new WP_Error('Unable to insert AnsPress post meta' ) : false;
+	return $wp_error ? new WP_Error('Unable to insert AnsPress qameta' ) : false;
 }
 
 /**

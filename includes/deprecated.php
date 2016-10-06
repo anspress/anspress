@@ -4,70 +4,13 @@
  *
  * @package   AnsPress
  * @author    Rahul Aryan <support@anspress.io>
- * @license   GPL-2.0+
+ * @license   GPL-3.0+
  * @link      https://anspress.io
  * @copyright 2014 Rahul Aryan
  */
 
 if ( ! function_exists( '_deprecated_function' ) ) {
-	require_once ABSPATH . WPINC . '/functions.php'; }
-
-/**
- * Check if given anser/post is selected as a best answer
- * You should use ap_answer_is_best instead
- *
- * @param  false|integer $post_id
- * @return boolean
- * @since unknown
- * @deprecated 2.1
- */
-function ap_is_best_answer($post_id = false) {
-	_deprecated_function( 'ap_is_best_answer', '2.1', 'ap_answer_is_best' );
-	if ( $post_id === false ) {
-		$post_id = get_the_ID(); }
-
-	$meta = get_post_meta( $post_id, ANSPRESS_BEST_META, true );
-	if ( $meta ) { return true; }
-
-	return false;
-}
-
-/**
- * Check if answer is selected for given question
- * @param  false|integer $question_id
- * @return boolean
- */
-function ap_is_answer_selected($question_id = false) {
-	_deprecated_function( 'ap_is_answer_selected', '2.1', 'ap_question_best_answer_selected' );
-	if ( $question_id === false ) {
-		$question_id = get_the_ID(); }
-
-	$meta = get_post_meta( $question_id, ANSPRESS_SELECTED_META, true );
-
-	if ( ! $meta ) {
-		return false; }
-
-	return true;
-}
-
-function ap_have_ans($id) {
-	_deprecated_function( 'ap_have_ans', '2.1', 'ap_have_answers' );
-	if ( ap_count_all_answers( $id ) > 0 ) {
-		return true; }
-
-	return false;
-}
-
-function ap_post_subscribers_count($post_id) {
-	_deprecated_function( 'ap_post_subscribers_count', '2.2.0.1', 'ap_subscribers_count' );
-	$post_id = $post_id ? $post_id : get_question_id();
-	return ap_meta_total_count( 'subscriber', $post_id );
-}
-
-function ap_questions_tab($current_url = '') {
-	_deprecated_function( 'ap_questions_tab', '2.3', 'ap_question_sorting' );
-
-	ap_question_sorting( $current_url );
+	require_once ABSPATH . WPINC . '/functions.php';
 }
 
 /**
@@ -294,7 +237,7 @@ function ap_remove_new_answer_history($answer_id) {
 	_deprecated_function( 'ap_remove_new_answer_history', '2.4' );
 }
 
-function ap_qa_on_post(){
+function ap_qa_on_post() {
 	_deprecated_function( 'ap_qa_on_post', '2.4' );
 }
 
@@ -315,7 +258,7 @@ function ap_user_can_edit_ans( $post_id ) {
  * @return boolean
  * @deprecated since 2.4.7
  */
-function ap_user_can_delete( $post_id ){
+function ap_user_can_delete( $post_id ) {
 	_deprecated_function( __FUNCTION__, '2.4.7', 'ap_user_can_delete_post' );
 	return ap_user_can_delete_post( $post );
 }
@@ -328,4 +271,325 @@ function ap_user_can_delete( $post_id ){
  */
 function ap_question_sorting($current_url = '') {
 	_deprecated_function( __FUNCTION__, '3.0.0' );
+}
+
+
+/**
+ * Question meta to display.
+ *
+ * @param false|integer $question_id question id.
+ * @return string
+ * @since 2.0.1
+ * @deprecated 4.0.0 Replaced by `ap_question_metas`.
+ */
+function ap_display_question_metas( $question_id = false ) {
+	_deprecated_function( __FUNCTION__, '4.0.0',  'ap_question_metas' );
+	return ap_question_metas( $question_id );
+}
+
+/**
+ * Echo active question ID
+ * @since 2.1
+ * @deprecated 4.0.0 Replaced by `the_ID`.
+ */
+function ap_question_the_ID() {
+	_deprecated_function( __FUNCTION__, '4.0.0',  'the_ID' );
+	echo ap_question_get_the_ID();
+}
+
+/**
+ * Return question ID active in loop
+ * @return integer|false
+ * @since 2.1
+ * @deprecated 4.0.0 Replaced by `get_the_ID`.
+ */
+function ap_question_get_the_ID() {
+	_deprecated_function( __FUNCTION__, '4.0.0',  'get_the_ID' );
+	return ap_question_the_object()->ID;
+
+	return false;
+}
+
+/**
+ * Output active question vote button
+ * @return 2.1
+ * @deprecated 4.0.0
+ */
+function ap_question_the_vote_button() {
+	_deprecated_function( __FUNCTION__, '4.0.0',  'Use ap_vote_btn' );
+	ap_vote_btn( ap_question_the_object() );
+}
+
+function ap_question_the_active_time($question_id = false) {
+	_deprecated_function( __FUNCTION__, '4.0.0',  'ap_recent_post_activity' );
+	echo ap_question_get_the_active_time();
+}
+
+function ap_question_get_the_active_time($question_id = false) {
+	_deprecated_function( __FUNCTION__, '4.0.0',  'ap_get_recent_post_activity' );
+	$question_id = ap_parameter_empty( $question_id, @get_the_ID() );
+	return ap_latest_post_activity_html( $question_id );
+}
+
+/**
+ * Get active question post status
+ * @return void
+ * @since 2.1
+ */
+function ap_question_the_status() {
+	_deprecated_function( __FUNCTION__, '4.0.0',  'ap_status' );
+
+	if ( ap_question_the_object()->post_status == 'private_post' ) {
+		echo '<span class="ap-post-type private ap-notice gray">'.__( 'Private', 'anspress-question-answer' ).'</span>';
+	} elseif ( ap_question_the_object()->post_status == 'moderate' ) {
+		echo '<span class="ap-post-type moderate ap-notice yellow">'.__( 'Moderate', 'anspress-question-answer' ).'</span>';
+	} elseif ( ap_question_the_object()->post_status == 'closed' ) {
+		echo '<span class="ap-post-type closed ap-notice red">'.__( 'Closed', 'anspress-question-answer' ).'</span>';
+	}
+}
+
+/**
+ * Echo active question permalink
+ * @return void
+ * @since 2.1
+ */
+function ap_question_the_permalink() {
+	_deprecated_function( __FUNCTION__, '4.0.0',  'Use WP inbuilt function the_permalink()' );
+	echo ap_question_get_the_permalink();
+}
+
+/**
+ * Return active question permalink
+ * @return string
+ * @since 2.1
+ */
+function ap_question_get_the_permalink() {
+	_deprecated_function( __FUNCTION__, '4.0.0',  'Use WP inbuilt function get_the_permalink()' );
+	return get_the_permalink( get_the_ID() );
+}
+
+/**
+ * Return active question answer count
+ * @return integer
+ * @since 2.1
+ */
+function ap_question_get_the_answer_count() {
+	_deprecated_function( __FUNCTION__, '4.0.0',  'ap_get_answer_count' );
+	return ap_count_answer_meta( get_the_ID() );
+}
+
+function ap_question_the_answer_count() {
+	_deprecated_function( __FUNCTION__, '4.0.0',  'ap_answer_count' );
+	$count = ap_question_get_the_answer_count();
+	echo '<a class="ap-questions-count ap-questions-acount" href="'.ap_answers_link().'">'. sprintf( _n( '%s ans', '%s ans', $count, 'anspress-question-answer' ), '<span>'.$count.'</span>' ).'</a>';
+}
+
+/**
+ * Return question author avatar
+ * @param  integer $size
+ * @return string
+ * @since 2.1
+ */
+function ap_question_get_the_author_avatar($size = 45) {
+	_deprecated_function( __FUNCTION__, '4.0.0',  'ap_get_author_avatar' );
+	return get_avatar( ap_question_get_author_id(), $size );
+}
+
+function ap_question_the_author_avatar($size = 45) {
+	_deprecated_function( __FUNCTION__, '4.0.0',  'ap_author_avatar' );
+	echo ap_question_get_the_author_avatar( $size );
+}
+
+/**
+ * Return the author profile link
+ * @return string
+ * @since 2.1
+ */
+function ap_question_get_the_author_link() {
+	_deprecated_function( __FUNCTION__, '4.0.0',  'ap_profile_link' );
+	return ap_user_link( ap_question_get_author_id() );
+}
+
+/**
+ * Echo active question total vote
+ * @return void
+ * @since 2.1
+ */
+function ap_question_the_net_vote() {
+	_deprecated_function( __FUNCTION__, '4.0.0',  'ap_votes_net' );
+	if ( ! ap_opt( 'disable_voting_on_question' ) ) {
+		?>
+            <span class="ap-questions-count ap-questions-vcount">
+                <span><?php echo ap_question_get_the_net_vote(); ?></span>
+                <?php  _e( 'votes', 'anspress-question-answer' ); ?>
+            </span>
+        <?php
+	}
+}
+
+/**
+ * Return count of net vote of a question
+ * @return integer
+ * @since 2.1
+ */
+function ap_question_get_the_net_vote() {
+	_deprecated_function( __FUNCTION__, '4.0.0',  'ap_get_votes_net' );
+	return ap_net_vote( ap_question_the_object() );
+}
+
+/**
+ * echo user profile link
+ * @return 2.1
+ */
+function ap_question_the_author_link() {
+	_deprecated_function( __FUNCTION__, '4.0.0',  'ap_profile_link' );
+	echo ap_user_link();
+}
+
+function ap_question_get_the_author_id() {
+	_deprecated_function( __FUNCTION__, '4.0.0' );
+	echo ap_question_get_author_id();
+}
+
+function ap_question_get_author_id() {
+	_deprecated_function( __FUNCTION__, '4.0.0' );
+	$question = ap_question_the_object();
+	return $question->post_author;
+}
+
+/**
+ * echo current question post_parent
+ * @since 2.1
+ */
+function ap_question_the_post_parent() {
+	_deprecated_function( __FUNCTION__, '4.0.0' );
+	echo ap_question_get_the_post_parent();
+}
+
+/**
+ * Returns the question post parent ID
+ * @return integer
+ * @since 2.1
+ */
+function ap_question_get_the_post_parent() {
+	_deprecated_function( __FUNCTION__, '4.0.0' );
+	$question = ap_question_the_object();
+
+	return $question->post_parent;
+}
+
+/**
+ * Echo time current question was active
+ * @return void
+ * @since 2.1
+ */
+function ap_question_the_active_ago() {
+	_deprecated_function( __FUNCTION__, '4.0.0', 'ap_last_active' );
+	echo ap_human_time( ap_question_get_the_active_ago(), false );
+}
+
+/**
+ * Return the question active ago time
+ * @return string
+ * @since 2.1
+ */
+function ap_question_get_the_active_ago() {
+	_deprecated_function( __FUNCTION__, '4.0.0', 'ap_get_last_active' );
+	return ap_last_active( get_the_ID() );
+}
+
+/**
+ * Echo view count for current question
+ * @since 2.1
+ */
+function ap_question_the_view_count() {
+	_deprecated_function( __FUNCTION__, '4.0.0' );
+	echo ap_question_get_the_view_count();
+}
+
+/**
+ * Return total view count
+ * @return integer
+ * @since 2.1
+ */
+function ap_question_get_the_view_count() {
+	_deprecated_function( __FUNCTION__, '4.0.0' );
+	return ap_get_qa_views( get_the_ID() );
+}
+
+/**
+ * Echo questions subscriber count
+ * @since 2.1
+ */
+function ap_question_the_subscriber_count() {
+	_deprecated_function( __FUNCTION__, '4.0.0' );
+	echo ap_question_get_the_subscriber_count();
+}
+
+/**
+ * Return the subscriber count for active question
+ * @return integer
+ * @since 2.1
+ */
+function ap_question_get_the_subscriber_count() {
+	_deprecated_function( __FUNCTION__, '4.0.0' );
+	return ap_subscribers_count( get_the_ID() );
+}
+
+/**
+ * Check if best answer is selected for question.
+ * @param  false|integer $question_id
+ * @return boolean
+ */
+function ap_question_best_answer_selected($question_id = false) {
+	_deprecated_function( __FUNCTION__, '4.0.0', 'ap_have_answer_selected' );
+	if ( false === $question_id ) {
+		$question_id = get_the_ID();
+	}
+
+	// Get question post meta.
+	$meta = get_post_meta( $question_id, ANSPRESS_SELECTED_META, true );
+
+	if ( ! $meta ) {
+		return false;
+	}
+
+	return true;
+}
+
+/**
+ * Output question created time.
+ * @param  boolean|integer $question_id Question ID.
+ * @param  string          $format      Format of time.
+ */
+function ap_question_the_time($question_id = false, $format = 'U') {
+	_deprecated_function( __FUNCTION__, '4.0.0' );
+}
+
+function ap_question_get_the_time($question_id = false, $format = '') {
+	_deprecated_function( __FUNCTION__, '4.0.0', 'ap_get_time' );
+	$question_id = ap_parameter_empty( $question_id, @get_the_ID() );
+	return get_post_time( $format, true, $question_id, true );
+}
+
+function ap_question_the_object() {
+	_deprecated_function( __FUNCTION__, '4.0.0' );
+	global $questions, $post;
+
+	if ( $questions ) {
+		return $questions->post;
+	}
+
+	return $post;
+}
+
+function ap_question_the_time_relative($question_id = false) {
+	_deprecated_function( __FUNCTION__, '4.0.0' );
+	echo ap_question_get_the_time_relative( $question_id );
+}
+
+function ap_question_get_the_time_relative($question_id = false) {
+	_deprecated_function( __FUNCTION__, '4.0.0' );
+	$question_id = ap_parameter_empty( $question_id, @get_the_ID() );
+	return ap_question_get_the_time( $question_id, 'U' );
 }

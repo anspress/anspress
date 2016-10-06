@@ -337,24 +337,6 @@ function ap_count_all_answers($id) {
 }
 
 /**
- * Get last active time form post meta.
- * @param  boolean|integer $post_id Post ID.
- * @return string
- * @since  2.4.8 Convert mysql date to GMT.
- */
-function ap_last_active($post_id = false) {
-	if ( ! $post_id ) {
-		$post_id = get_the_ID();
-	}
-
-	$date = get_post_meta( $post_id, ANSPRESS_UPDATED_META, true );
-
-	if ( ! empty( $date ) ) {
-		return get_gmt_from_date( $date );
-	}
-}
-
-/**
  * Return link to asnwers.
  * @param  boolean|integer $question_id Question ID.
  * @return string
@@ -586,9 +568,9 @@ function ap_select_answer_btn_html($post_id) {
 	$action = 'answer-'.$post_id;
 	$nonce = wp_create_nonce( $action );
 
-	if ( ! ap_question_best_answer_selected( $ans->post_parent ) ) {
+	if ( ! ap_have_answer_selected( $ans->post_parent ) ) {
 		return '<a href="#" class="ap-btn-select ap-sicon '.ap_icon( 'check' ).' ap-tip" data-action="select_answer" data-query="answer_id='.$post_id.'&__nonce='.$nonce.'&ap_ajax_action=select_best_answer" title="'.__( 'Select this answer as best', 'anspress-question-answer' ).'">'.__( 'Select', 'anspress-question-answer' ).'</a>';
-	} elseif ( ap_question_best_answer_selected( $ans->post_parent ) && ap_answer_is_best( $ans->ID ) ) {
+	} elseif ( ap_have_answer_selected( $ans->post_parent ) && ap_answer_is_best( $ans->ID ) ) {
 		return '<a href="#" class="ap-btn-select ap-sicon '.ap_icon( 'cross' ).' active ap-tip" data-action="select_answer" data-query="answer_id='.$post_id.'&__nonce='.$nonce.'&ap_ajax_action=select_best_answer" title="'.__( 'Unselect this answer', 'anspress-question-answer' ).'">'.__( 'Unselect', 'anspress-question-answer' ).'</a>';
 	}
 }
@@ -1594,7 +1576,7 @@ function ap_question_title_with_solved_prefix($question_id = false) {
 		$question_id = get_question_id();
 	}
 
-	$solved = ap_question_best_answer_selected( $question_id );
+	$solved = ap_have_answer_selected( $question_id );
 
 	if ( ap_opt( 'show_solved_prefix' ) ) {
 		return get_the_title( $question_id ).' '.($solved ? __( '[Solved] ', 'anspress-question-answer' ) : '');

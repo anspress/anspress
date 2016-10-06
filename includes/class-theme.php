@@ -48,7 +48,7 @@ class AnsPress_Theme
 		global $post;
 
 		if ( 'question' == $post->post_type ) {
-			if ( ap_question_best_answer_selected( $post->ID ) ) {
+			if ( ap_have_answer_selected( $post->ID ) ) {
 				$classes[] = 'answer-selected';
 			}
 

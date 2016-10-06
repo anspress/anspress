@@ -299,50 +299,6 @@ function ap_pagination($current = false, $total = false, $format = '?paged=%#%')
 }
 
 /**
- * Question meta to display.
- *
- * @param false|integer $question_id question id.
- * @return string
- * @since 2.0.1
- */
-function ap_display_question_metas($question_id = false) {
-	if ( false === $question_id ) {
-		$question_id = get_the_ID();
-	}
-
-	$metas = array();
-	if ( ! is_question() ) {
-		if ( ap_question_best_answer_selected() ) {
-			$metas['solved'] = '<span class="ap-best-answer-label ap-tip" title="'.__( 'answer accepted', 'anspress-question-answer' ).'">'.__( 'Solved', 'anspress-question-answer' ).'</span>';
-		}
-
-		$view_count = ap_get_qa_views();
-		$metas['views'] = '<i>' . sprintf( __( '%d views', 'anspress-question-answer' ), $view_count ) . '</i>';
-		$metas['history'] = ap_latest_post_activity_html( $question_id, ! is_question() );
-	}
-
-	// If featured question.
-	if ( ap_is_featured_question( $question_id ) ) {
-		$metas['featured'] = __( 'Featured', 'anspress-question-answer' );
-	}
-
-	/*
-     * FILTER: ap_display_question_meta
-     * Used to filter question display meta
-	 */
-	$metas = apply_filters( 'ap_display_question_metas', $metas, $question_id );
-
-	$output = '';
-	if ( ! empty( $metas ) && is_array( $metas ) ) {
-		foreach ( $metas as $meta => $display ) {
-			$output .= "<span class='ap-display-meta-item {$meta}'>{$display}</span>";
-		}
-	}
-
-	return $output;
-}
-
-/**
  * Return font icons class of AnsPress.
  * All font icons should be called using this function so that it can be overridden.
  * @param string $name Name or class of font icon.
