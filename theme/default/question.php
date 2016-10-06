@@ -48,7 +48,7 @@
 									ap_get_time( get_the_ID(), 'c' ),
 									sprintf(
 										__( 'Posted %s', 'anspress-question-answer' ),
-										ap_human_time( ap_get_time( $question_id, 'U' ) )
+										ap_human_time( ap_get_time( get_the_ID(), 'U' ) )
 									)
 								);
 						 	?>						 	

@@ -1,4 +1,4 @@
-f<?php
+<?php
 /**
  * AnsPress question stats widget
  * Widget for showing question stats
@@ -37,7 +37,7 @@ class AnsPress_Stats_Widget extends WP_Widget {
 		}
 
 		$ans_count 		= ap_get_answers_count();
-		$last_active 	= ap_question_get_the_active_ago();
+		$last_active 	= ap_get_last_active();
 		$total_subs 	= ap_get_post_field( 'subscribers' );
 		$view_count 	= ap_get_post_field( 'views' );
 		$last_active_time = ap_human_time( mysql2date( 'G', $last_active ) );

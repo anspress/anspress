@@ -277,9 +277,9 @@ function ap_question_metas( $question_id = false ) {
  * Get recent activity of a post.
  * @return string
  */
-function ap_get_recent_post_activity( $p = null ) {
-	$p = get_post( $p );
-	return ap_latest_post_activity_html( $post->ID );
+function ap_get_recent_post_activity( $post = null ) {
+	$p = get_post( $post );
+	return ap_latest_post_activity_html( $p->ID );
 }
 
 /**
@@ -297,9 +297,9 @@ function ap_recent_post_activity() {
  */
 function ap_get_post_field( $field, $post = null ) {
 	$post = get_post( $post );
-
-	if ( isset( $post[ $field ] ) ) {
-		return $post[ $field ];
+	
+	if ( isset( $post->$field ) ) {
+		return $post->$field;
 	}
 
 	return '';
@@ -367,6 +367,6 @@ function ap_get_time( $post = null, $format = '' ) {
  * @since 2.2.0.1
  */
 function ap_is_featured_question( $post = null ) {
-	$p = get_post( $p );
+	$p = get_post( $post );
 	return (bool) $p->featured;
 }

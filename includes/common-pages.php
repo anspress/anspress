@@ -17,7 +17,7 @@ class AnsPress_Common_Pages
 	/**
 	 * Register all pages of AnsPress
 	 */
-	public static function register_common_pages() {
+	public static function register_common_pages() {		
 		ap_register_page( 'base', ap_opt( 'base_page_title' ), array( __CLASS__, 'base_page' ) );
 		ap_register_page( ap_opt( 'question_page_slug' ), __( 'Question', 'anspress-question-answer' ), array( __CLASS__, 'question_page' ), false );
 		ap_register_page( ap_opt( 'ask_page_slug' ), __( 'Ask', 'anspress-question-answer' ), array( __CLASS__, 'ask_page' ) );
