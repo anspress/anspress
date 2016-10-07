@@ -386,6 +386,17 @@ function ap_have_answer_selected( $question = null ) {
 }
 
 /**
+ * Return the ID of selected answer from a question.
+ *
+ * @param object|null|integer $post_id Post object, ID or null.
+ * @return integer
+ */
+function ap_selected_answer( $post = null ) {
+	$_post = ap_get_post( $post );
+	return $_post->selected_id;
+}
+
+/**
  * Return post time.
  * @param  mixed  $post   Post ID, Object or null.
  * @param  string $format Date format.

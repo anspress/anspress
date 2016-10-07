@@ -537,21 +537,7 @@ function ap_user_can($id) {
 	get_user_meta( $id, 'ap_role', true );
 }
 
-/**
- * Return the ID of selected answer of a question.
- *
- * @param false|int $post_id
- *
- * @return int
- */
-function ap_selected_answer($post_id = false) {
 
-	if ( false === $post_id ) {
-		$post_id = get_the_ID();
-	}
-
-	return get_post_meta( $post_id, ANSPRESS_SELECTED_META, true );
-}
 
 /**
  * Print select anser HTML button.

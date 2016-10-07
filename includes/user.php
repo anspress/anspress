@@ -88,9 +88,8 @@ function ap_user_best_answer_count($user_id) {
 }
 
 function ap_user_solved_answer_count($user_id) {
-
 	global $wpdb;
-	$query = $wpdb->prepare( "SELECT count(DISTINCT pm.post_id) FROM $wpdb->postmeta pm JOIN $wpdb->posts p ON (p.ID = pm.post_id) WHERE pm.meta_key = '".ANSPRESS_SELECTED_META."' AND pm.meta_value is not null AND pm.meta_value != 0 AND p.post_type = 'question' AND p.post_author = %d", $user_id );
+	$query = $wpdb->prepare( "SELECT count(DISTINCT pm.post_id) FROM $wpdb->ap_qameta qameta JOIN $wpdb->posts p ON (p.ID = qameta.post_id) WHERE (qameta.selected_id IS NOT NULL AND qameta.selected_id != '' AND qameta.selected_id != 0) AND p.post_type = 'question' AND p.post_author = %d", $user_id );
 
 	$key = md5( $query );
 	$cache = wp_cache_get( $key, 'count' );

@@ -177,7 +177,7 @@ class AnsPress_Hooks
 	public static function ap_after_update_question($post_id, $post) {
 
 		// Set updated meta for sorting purpose.
-		update_post_meta( $post_id, ANSPRESS_UPDATED_META, current_time( 'mysql' ) );
+		ap_update_last_active( $post_id );
 
 		/**
 		 * ACTION: ap_after_new_answer
@@ -193,12 +193,10 @@ class AnsPress_Hooks
 	 * @param  object  $post     Answer post object.
 	 */
 	public static function ap_after_update_answer($post_id, $post) {
-		update_post_meta( $post_id, ANSPRESS_UPDATED_META, current_time( 'mysql' ) );
-		update_post_meta( $post->post_parent, ANSPRESS_UPDATED_META, current_time( 'mysql' ) );
+		ap_update_last_active( $post_id );
 
 		// Update answer count.
-		$current_ans = ap_count_published_answers( $post->post_parent );
-		update_post_meta( $post->post_parent, ANSPRESS_ANS_META, $current_ans );
+		ap_update_answers_count( $post->post_parent );
 
 		/**
 		 * ACTION: ap_processed_update_answer
@@ -223,8 +221,10 @@ class AnsPress_Hooks
 				do_action( 'ap_before_delete_answer', $a );
 				$selcted_answer = ap_selected_answer();
 				if ( $selcted_answer == $a->ID ) {
-					update_post_meta( $a->post_parent, ANSPRESS_SELECTED_META, false );
+
+					ap_unset_selected_answer( $a->post_parent );
 				}
+
 				wp_delete_post( $a->ID, true );
 			}
 		} elseif ( $post->post_type == 'answer' ) {
@@ -268,7 +268,7 @@ class AnsPress_Hooks
 	                $selcted_answer = ap_selected_answer();
 
 	                if ( $selcted_answer == $p->ID ) {
-	                	update_post_meta( $p->post_parent, ANSPRESS_SELECTED_META, false );
+	                	ap_unset_selected_answer( $p->post_parent );
 	                }
 
 	                ap_delete_meta( array( 'apmeta_type' => 'flag', 'apmeta_actionid' => $p->ID ) );
@@ -291,8 +291,7 @@ class AnsPress_Hooks
 	        // Delete flag meta.
 	        ap_delete_meta( array( 'apmeta_type' => 'flag', 'apmeta_actionid' => $post->ID ) );
 
-			// Update answer count.
-			update_post_meta( $post->post_parent, ANSPRESS_ANS_META, $ans );
+			ap_update_answers_count( $post->post_parent );
 	    }
 	}
 
@@ -327,7 +326,7 @@ class AnsPress_Hooks
 	        do_action( 'ap_untrash_answer', $post->ID, $ans );
 
 			// Update answer count.
-			update_post_meta( $post->post_parent, ANSPRESS_ANS_META, $ans + 1 );
+			ap_update_answers_count( $post->post_parent, $ans + 1 );
 	    }
 	}
 
@@ -378,11 +377,9 @@ class AnsPress_Hooks
 	    $post = ap_get_post( $comment->comment_post_ID );
 
 	    if ( $post->post_type == 'question' ) {
-	        // Set updated meta for sorting purpose.
-			update_post_meta( $post->ID, ANSPRESS_UPDATED_META, current_time( 'mysql' ) );
+	        ap_update_last_active( $post->ID );
 	    } elseif ( $post->post_type == 'answer' ) {
-			// Set updated meta for sorting purpose.
-			update_post_meta( $post->post_parent, ANSPRESS_UPDATED_META, current_time( 'mysql' ) );
+			ap_update_last_active( $post->post_parent );
 	    }
 	}
 

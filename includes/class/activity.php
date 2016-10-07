@@ -1233,11 +1233,10 @@ function ap_update_post_activity_timestamp( $post ) {
 	$post = ap_get_post( $post );
 
 	if ( 'answer' == $post->post_type ) {
-		update_post_meta( $post->post_parent, ANSPRESS_UPDATED_META, current_time( 'mysql' ) );
-		update_post_meta( $post->ID, ANSPRESS_UPDATED_META, current_time( 'mysql' ) );
-	} else {
-		update_post_meta( $post->ID, ANSPRESS_UPDATED_META, current_time( 'mysql' ) );
+		ap_update_last_active( $post->post_parent );
 	}
+
+	ap_update_last_active( $post->ID );
 }
 
 /**

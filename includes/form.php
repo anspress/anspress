@@ -96,19 +96,16 @@ class AnsPress_Form_Helper
 
 			if ( $post->post_type == 'question' ) {
 				ap_do_event('new_comment', $comment_object, 'question', '' );
-				// set updated meta for sorting purpose
-				update_post_meta($comment_object->comment_post_ID, ANSPRESS_UPDATED_META, current_time( 'mysql' ) );
 
-				// add participant
-				// ap_add_parti($comment_object->comment_post_ID, $comment_object->user_id, 'comment', $comment_id);
+				// Set updated meta for sorting purpose.
+				ap_update_last_active( $comment_object->comment_post_ID );
+
 			} elseif ( $post->post_type == 'answer' ) {
 				ap_do_event('new_comment', $comment_object, 'answer', $post->post_parent );
 				$post_id = wp_get_post_parent_id($comment_object->comment_post_ID );
-				// set updated meta for sorting purpose
-				update_post_meta($post_id, ANSPRESS_UPDATED_META, current_time( 'mysql' ) );
 
-				// add participant only
-				// ap_add_parti($post_id, $comment_object->user_id, 'comment', $comment_id);
+				// Set updated meta for sorting purpose.
+				ap_update_last_active( $post_id );
 			}
 		}
 	}

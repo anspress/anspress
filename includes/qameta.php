@@ -155,9 +155,11 @@ function ap_append_qameta( $post ) {
  * @return boolean|false
  * @since  3.1.0
  */
-function ap_update_answers_count( $question_id ) {
-	$current_ans = ap_count_published_answers( $question_id );
-	return ap_insert_qameta( $question_id, [ 'answers' => $current_ans, 'last_updated' => current_time( 'mysql' ) ] );
+function ap_update_answers_count( $question_id, $counts = false ) {
+	if( false !== $counts ){
+		$counts = ap_count_published_answers( $question_id );
+	}
+	return ap_insert_qameta( $question_id, [ 'answers' => $counts, 'last_updated' => current_time( 'mysql' ) ] );
 }
 
 /**
