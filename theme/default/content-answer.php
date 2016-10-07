@@ -15,7 +15,10 @@
 
 				
 <div class="ap-answer-post clearfix">
-	<a class="ap-vote-count ap-tip" href="#" title="<?php _e('Total votes', 'anspress-question-answer') ?>"><span><?php echo ap_net_vote() ?></span><?php _e('Votes', 'anspress-question-answer') ?></a>	
+	<a class="ap-vote-count ap-tip" href="#" title="<?php _e('Total votes', 'anspress-question-answer') ?>">
+		<span><?php ap_votes_net(); ?></span>
+		<?php _e('Votes', 'anspress-question-answer') ?>
+	</a>	
 	<div class="ap-ans-content no-overflow">
 
 		<a class="ap-answer-link" href="<?php echo get_permalink() ?>"><?php echo ap_truncate_chars(strip_tags(get_the_content()), 150) ?></a>

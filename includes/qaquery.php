@@ -8,10 +8,10 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @since 3.1.0
  */
-class AP_Query extends WP_Query {
+class Question_Query extends WP_Query {
 	private $post_type;
 
-	public function __construct( $query = '' ) {
+	public function __construct( $args = '' ) {
 		if ( is_front_page() ) {
 			$paged = (isset( $_GET['ap_paged'] )) ? (int) $_GET['ap_paged'] : 1;
 		} else {
@@ -28,23 +28,20 @@ class AP_Query extends WP_Query {
 			'showposts'     => ap_opt( 'question_per_page' ),
 			'paged'         => $paged,
 			'ap_query'      => true,
+			'ap_sortby'     => 'active',
 		);
 
 		$args['post_status'][] = 'all';
-		// $args['post_status'][] = 'closed';
+		$this->args = wp_parse_args( $args, $defaults );
+
 		if ( $post_parent ) {
 			$this->args['post_parent'] = $post_parent;
 		}
-
-		$this->args = wp_parse_args( $args, $defaults );
 
 		if ( get_query_var( 'ap_s' ) != '' ) {
 			$this->args['s'] = sanitize_text_field( get_query_var( 'ap_s' ) );
 		}
 
-		if ( isset( $this->args[ 'sortby' ] ) ) {
-			// $this->orderby_questions();
-		}
 		$this->args['post_type'] = 'question';
 
 		parent::__construct( $this->args );
@@ -194,32 +191,32 @@ function ap_hover_card_attr() {
  * Return total published answer count.
  * @return integer
  */
-function ap_get_answers_count() {
-	global $post;
-	return $post->answers;
+function ap_get_answers_count( $post = null ) {
+	$p = get_post( $post );
+	return $p->answers;
 }
 
 /**
  * Echo total votes count of a post.
  */
-function ap_answers_count() {
-	echo ap_get_answers_count();
+function ap_answers_count( $post = null ) {
+	echo ap_get_answers_count( $post );
 }
 
 /**
  * Return count of net vote of a question.
  * @return integer
  */
-function ap_get_votes_net() {
-	global $post;
-	return $post->votes_net;
+function ap_get_votes_net( $post = null ) {
+	$p = get_post( $post );
+	return $p->votes_net;
 }
 
 /**
  * Echo count of net vote of a question.
  */
-function ap_votes_net() {
-	echo ap_get_votes_net();
+function ap_votes_net( $post = null ) {
+	echo ap_get_votes_net( $post );
 }
 
 
@@ -297,7 +294,7 @@ function ap_recent_post_activity() {
  */
 function ap_get_post_field( $field, $post = null ) {
 	$post = get_post( $post );
-	
+
 	if ( isset( $post->$field ) ) {
 		return $post->$field;
 	}
@@ -370,3 +367,18 @@ function ap_is_featured_question( $post = null ) {
 	$p = get_post( $post );
 	return (bool) $p->featured;
 }
+
+/**
+ * Output answers of current question.
+ */
+// function ap_get_answers() {
+// 	global $answers;
+
+// 	//$answers = ap_get_best_answer();
+// 	//include( ap_get_theme_location( 'best_answer.php' ) );
+
+// 	$answers = ap_get_answers();
+
+// 	include( ap_get_theme_location( 'answers.php' ) );
+// 	wp_reset_postdata();
+// }

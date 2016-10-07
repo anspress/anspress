@@ -31,7 +31,7 @@ $clearfix_class = array('ap-questions-item clearfix');
 		<div class="ap-list-counts">
 			<?php if(!ap_opt('disable_voting_on_question')){ ?>
 				<span class="ap-questions-count ap-questions-vcount">
-					<span><?php echo ap_net_vote() ?></span>
+					<span><?php ap_votes_net(); ?></span>
 					<?php  _e('votes', 'anspress-question-answer'); ?>
 				</span>
 			<?php } ?>

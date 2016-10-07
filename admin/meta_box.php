@@ -79,8 +79,8 @@ class AP_Question_Meta_Box {
 	}
 
 	public function question_meta_box_content($post) {
-		$ans_count = ap_count_answer_meta( $post->ID );
-		$vote_count = get_post_meta( $post->ID, ANSPRESS_VOTE_META, true );
+		$ans_count = ap_get_answers_count( $post->ID );
+		$vote_count = ap_get_votes_net( $post );
 		?>
             <ul class="ap-meta-list">
             	<?php if ( 'answer' != $post->post_type ) :   ?>

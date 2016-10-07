@@ -242,11 +242,11 @@ class AnsPress_PostTypes
 	}
 
 	public function custom_columns_value($column) {
-
 		global $post;
 
 		if ( ! ($post->post_type != 'question' || $post->post_type != 'answer') ) {
-			return $column; }
+			return $column;
+		}
 
 		if ( 'ap_author' == $column ) {
 			echo '<a class="ap-author-col" href="'.ap_user_link( $post->post_author ).'" class="">';
@@ -315,30 +315,21 @@ class AnsPress_PostTypes
 				_e( '--', 'anspress-question-answer' );
 			}
 		} elseif ( 'answers' == $column ) {
-			$a_count = ap_count_answer_meta();
 
-			/* If terms were found. */
-			if ( ! empty( $a_count ) ) {
+			echo '<a class="ans-count" title="' . $post->answers . __( 'answers', 'anspress-question-answer' ) . '" href="' . esc_url(add_query_arg(array(
+				'post_type' => 'answer',
+				'post_parent' => $post->ID,
+			), 'edit.php')) . '">' . $post->answers . '</a>';
 
-				echo '<a class="ans-count" title="' . $a_count . __( 'answers', 'anspress-question-answer' ) . '" href="' . esc_url(add_query_arg(array(
-					'post_type' => 'answer',
-					'post_parent' => $post->ID,
-				), 'edit.php')) . '">' . $a_count . '</a>';
-			} /* If no terms were found, output a default message. */
-			else {
-				echo '<a class="ans-count" title="0' . __( 'answers', 'anspress-question-answer' ) . '">0</a>';
-			}
 		} elseif ( 'parent_question' == $column ) {
 			echo '<a class="parent_question" href="' . esc_url(add_query_arg(array(
 				'post' => $post->post_parent,
 				'action' => 'edit',
 			), 'post.php')) . '"><strong>' . get_the_title( $post->post_parent ) . '</strong></a>';
 		} elseif ( 'vote' == $column ) {
-			$vote = get_post_meta( $post->ID, ANSPRESS_VOTE_META, true );
-			echo '<span class="vote-count' . ($vote ? ' zero' : '') . '">' .$vote . '</span>';
+			echo '<span class="vote-count">' . $post->votes_net . '</span>';
 		} elseif ( 'flag' == $column ) {
-			$total_flag = ap_post_flag_count();
-			echo '<span class="flag-count' . ($total_flag ? ' flagged' : '') . '">'. $total_flag . '</span>';
+			echo '<span class="flag-count' . ($post->flags ? ' flagged' : '') . '">'. $post->flags . '</span>';
 		}
 	}
 	/**

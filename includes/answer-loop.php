@@ -42,6 +42,7 @@ if ( ! class_exists( 'Answers_Query' ) ) :
 
 			$defaults = array(
 				'question_id'           => get_question_id(),
+				'ap_query'      		=> true,
 				'ap_answers_query'      => true,
 				'showposts'             => ap_opt( 'answers_per_page' ),
 				'paged'                 => $paged,
@@ -62,12 +63,8 @@ if ( ! class_exists( 'Answers_Query' ) ) :
 				$this->args['post_parent'] = $question_id;
 			}
 
-			if ( isset( $this->args['sortby'] ) ) {
-				$this->orderby_answers();
-			}
-
 			// Check if requesting only for best Answer
-			if ( isset( $this->args['only_best_answer'] ) && $this->args['only_best_answer'] ) {
+			/*if ( isset( $this->args['only_best_answer'] ) && $this->args['only_best_answer'] ) {
 				$this->args['meta_query'] = array(
 					array(
 						'key'           => ANSPRESS_BEST_META,
@@ -76,7 +73,7 @@ if ( ! class_exists( 'Answers_Query' ) ) :
 						'value'         => '1',
 					),
 				);
-			}
+			}*/
 
 			$this->args['post_type'] = 'answer';
 
@@ -88,56 +85,6 @@ if ( ! class_exists( 'Answers_Query' ) ) :
 			parent::__construct( $args );
 		}
 
-		/**
-		 * Modify orderby args
-		 * @return void
-		 */
-		public function orderby_answers() {
-			$this->args['meta_query'] = array();
-
-			switch ( $this->args['sortby'] ) {
-
-				case 'voted':
-					$this->args['orderby'] = 'meta_value_num' ;
-					$this->args['meta_query']  = array(
-						'relation' => 'AND',
-						array(
-							'key'       => ANSPRESS_VOTE_META,
-						)
-					);
-				break;
-
-				case 'oldest':
-					$this->args['orderby'] = 'meta_value date';
-					$this->args['order'] = 'ASC';
-				break;
-
-				case 'newest':
-					$this->args['orderby'] = 'meta_value date';
-					$this->args['order'] = 'DESC';
-				break;
-
-				default:
-					$this->args['orderby'] = 'meta_value';
-					$this->args['meta_key'] = ANSPRESS_UPDATED_META;
-					$this->args['meta_query']  = array(
-						'relation' => 'AND',
-						array(
-							'key' => ANSPRESS_UPDATED_META,
-						)
-					);
-				break;
-			}
-
-			if ( ! $this->args['include_best_answer'] ) {
-				$this->args['meta_query'][] = array(
-				'key'           => ANSPRESS_BEST_META,
-				'type'          => 'BOOLEAN',
-				'compare'       => '!=',
-				'value'         => '1',
-				); }
-
-		}
 	}
 
 endif;
@@ -155,7 +102,7 @@ function ap_get_answers($args = array()) {
 	}
 
 	if ( ! isset( $args['sortby'] ) ) {
-		$args['sortby'] = (isset( $_GET['ap_sort'] )) ? sanitize_text_field( wp_unslash( $_GET['ap_sort'] ) ) : ap_opt( 'answers_sort' );
+		$args['ap_sortby'] = (isset( $_GET['ap_sort'] )) ? sanitize_text_field( wp_unslash( $_GET['ap_sort'] ) ) : ap_opt( 'answers_sort' );
 	}
 
 	// if ( is_super_admin() || current_user_can( 'ap_view_private' ) ) {
@@ -169,10 +116,10 @@ function ap_get_answers($args = array()) {
 		$args['post_status'][] = 'trash';
 	}
 
-	if ( isset( $_GET['show_answer'] ) ) {
-		$args['ap_query'] = 'order_answer_to_top';
-		$args['order_answer_id'] = (int) $_GET['show_answer'];
-	}
+	// if ( isset( $_GET['show_answer'] ) ) {
+	// 	$args['ap_query'] = 'order_answer_to_top';
+	// 	$args['order_answer_id'] = (int) $_GET['show_answer'];
+	// }
 
 	return new Answers_Query( $args );
 }
@@ -429,7 +376,7 @@ function ap_answer_the_net_vote() {
  * @since 2.1
  */
 function ap_answer_get_the_net_vote() {
-	return ap_net_vote( ap_answer_the_object() );
+	return ap_get_votes_net();
 }
 
 function ap_answer_the_vote_class() {

@@ -316,7 +316,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 				'ANSPRESS_WIDGET_DIR' 		=> plugin_dir_path( __FILE__ ).'widgets'.DIRECTORY_SEPARATOR,
 				'ANSPRESS_THEME_DIR' 		=> plugin_dir_path( __FILE__ ).'theme',
 				'ANSPRESS_THEME_URL' 		=> plugin_dir_url( __FILE__ ).'theme',
-				'ANSPRESS_VOTE_META' 		=> '_ap_vote',
+				'ANSPRESS_VOTE_META' 		=> '_ap_vote', // deprecated since 4.0.
 				'ANSPRESS_SUBSCRIBER_META' 	=> '_ap_subscriber',
 				'ANSPRESS_CLOSE_META' 		=> '_ap_close',
 				'ANSPRESS_FLAG_META' 		=> '_ap_flag',

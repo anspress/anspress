@@ -134,16 +134,7 @@ class AnsPress_Hooks
 	 * @since  1.0
 	 */
 	public static function after_new_question($post_id, $post) {
-	    update_post_meta( $post_id, ANSPRESS_VOTE_META, '0' );
-	    update_post_meta( $post_id, ANSPRESS_SUBSCRIBER_META, '0' );
-	    update_post_meta( $post_id, ANSPRESS_CLOSE_META, '0' );
-	    update_post_meta( $post_id, ANSPRESS_FLAG_META, '0' );
-	    update_post_meta( $post_id, ANSPRESS_VIEW_META, '0' );
-	    update_post_meta( $post_id, ANSPRESS_UPDATED_META, current_time( 'mysql' ) );
-	    update_post_meta( $post_id, ANSPRESS_SELECTED_META, false );
-
-		// Update answer count.
-		update_post_meta( $post_id, ANSPRESS_ANS_META, '0' );
+	    ap_update_last_active( $post_id );
 
 		// Update user question count meta.
 	    ap_update_user_questions_count_meta( $post_id );
@@ -163,22 +154,12 @@ class AnsPress_Hooks
 	 * @since 2.0.1
 	 */
 	public static function after_new_answer($post_id, $post) {
-	    $question = get_post( $post->post_parent );
-
-		// Set default value for meta.
-		update_post_meta( $post_id, ANSPRESS_VOTE_META, '0' );
-
-		// Set updated meta for sorting purpose.
-		update_post_meta( $question->ID, ANSPRESS_UPDATED_META, current_time( 'mysql' ) );
-	    update_post_meta( $post_id, ANSPRESS_UPDATED_META, current_time( 'mysql' ) );
-
-		// Get existing answer count.
-		$current_ans = ap_count_published_answers( $question->ID );
+		ap_update_last_active( $post_id );
 
 		// Update answer count.
-		update_post_meta( $question->ID, ANSPRESS_ANS_META, $current_ans );
-	    update_post_meta( $post_id, ANSPRESS_BEST_META, 0 );
-	    ap_update_user_answers_count_meta( $post_id );
+		ap_update_answers_count( $question->ID );
+
+	    ap_update_user_answers_count_meta( $post->post_parent );
 
 		/**
 		 * ACTION: ap_after_new_answer
@@ -727,13 +708,6 @@ class AnsPress_Hooks
 	 * @param Object $post Post object.
 	 */
 	public static function ap_append_vote_count($post) {
-
-	    if ( $post->post_type == 'question' || $post->post_type == 'answer' ) {
-	        if ( is_object( $post ) ) {
-	            $post->net_vote = ap_net_vote_meta( $post->ID );
-	        }
-	    }
-
 	    if ( ap_opt( 'base_page' ) == $post->ID && ! is_admin() ) {
 	    	$post->post_title = ap_page_title();
 	    }

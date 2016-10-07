@@ -37,8 +37,8 @@ class AnsPress_Common_Pages
 		$args = array();
 		$args['tax_query'] = array( 'relation' => $tax_relation );
 
-		if( !empty( get_query_var( 'ap_sortby' ) ) ){
-			$args['sortby'] = get_query_var( 'ap_sortby' );
+		if ( isset( $_GET['ap_filter'], $_GET['ap_filter']['sort'] ) ) {
+			$args['ap_sortby'] = sanitize_text_field( wp_unslash( $_GET['ap_filter']['sort'] ) );
 		}
 
 		/**
@@ -48,7 +48,7 @@ class AnsPress_Common_Pages
 		 */
 		$args = apply_filters( 'ap_main_questions_args', $args );
 
-		anspress()->questions = $questions = new AP_Query( $args );
+		anspress()->questions = $questions = new Question_Query( $args );
 		ap_get_template_part( 'base' );
 	}
 
@@ -76,7 +76,7 @@ class AnsPress_Common_Pages
 
 		global $questions;
 
-		anspress()->questions = $questions = new AP_Query( [ 'p' => get_question_id() ] );
+		anspress()->questions = $questions = new Question_Query( [ 'p' => get_question_id() ] );
 
 		if ( ap_have_questions() ) {
 			/**

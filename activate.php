@@ -63,7 +63,7 @@ class AP_Activate
                 `selected_id` bigint(20) DEFAULT NULL,
                 `comments` bigint(20) DEFAULT 0,
                 `answers` bigint(20) DEFAULT 0,
-                `post_type` varchar(256) DEFAULT NULL,
+                `ptype` varchar(256) DEFAULT NULL,
                 `featured` tinyint(1) DEFAULT 0,
                 `selected` tinyint(1) DEFAULT 0,
                 `votes_up` bigint(20) DEFAULT 0,

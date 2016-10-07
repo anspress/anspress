@@ -46,10 +46,10 @@ class AnsPress_Vote
 	    if ( is_object( $is_voted ) && $is_voted->count > 0 ) {
 	        // If user already voted and click that again then reverse.
 			if ( $is_voted->type == $type ) {
-			    $counts = ap_remove_post_vote( $type, $userid, $post_id, $post->post_author );
+			    $row = ap_remove_vote($type, $userid, $post_id, $post->post_author );
 
 				// Update post meta.
-				update_post_meta( $post_id, ANSPRESS_VOTE_META, $counts['net_vote'] );
+				$counts = ap_update_votes_count( $post_id );
 
 			    do_action( 'ap_undo_vote', $post_id, $counts );
 			    do_action( 'ap_undo_'.$type, $post_id, $counts );
@@ -57,7 +57,7 @@ class AnsPress_Vote
 			   	ap_ajax_json( array(
 			   		'action' 	=> 'undo',
 			   		'type' 		=> $type,
-			   		'count' 	=> $counts['net_vote'],
+			   		'count' 	=> $counts['votes_net'],
 			   		'message' 	=> 'undo_vote',
 			   	) );
 			}
@@ -71,7 +71,12 @@ class AnsPress_Vote
 		// Update post meta.
 		do_action( 'ap_'.$type, $post_id, $counts );
 
-	   	ap_ajax_json( array( 'action' => 'voted', 'type' => $type, 'count' => $counts['net_vote'], 'message' => 'voted' ) );
+	   	ap_ajax_json( array( 
+	   		'action' => 'voted', 
+	   		'type' => $type, 
+	   		'count' => $counts['votes_net'], 
+	   		'message' => 'voted' 
+	   	) );
 	}
 }
 
@@ -128,10 +133,7 @@ function ap_add_post_vote( $current_userid, $type, $actionid, $receiving_userid,
 	$row = ap_add_vote( $current_userid, $type, $actionid, $receiving_userid, $count );
 
 	if ( false !== $row ) {
-		$counts = ap_post_votes( $actionid );
-		update_post_meta( $actionid, ANSPRESS_VOTE_META, $counts['net_vote'] );
-
-		return $counts;
+		return ap_update_votes_count( $actionid );
 	}
 
 	return false;
@@ -156,29 +158,6 @@ function ap_remove_vote( $type, $current_userid, $actionid, $receiving_userid ) 
 
 	return $row;
 }
-
-/**
- * Remove vote for post and also update post meta.
- * @param  integer $current_userid    User ID of user casting the vote.
- * @param  string  $type              Type of vote, "vote_up" or "vote_down".
- * @param  integer $actionid          Post ID.
- * @param  integer $receiving_userid  User ID of user receiving the vote.
- * @return array|false
- * @since  2.5
- */
-function ap_remove_post_vote( $type, $current_userid, $actionid, $receiving_userid ) {
-	$row = ap_remove_vote($type, $current_userid, $actionid, $receiving_userid );
-
-	if ( false !== $row ) {
-		$counts = ap_post_votes( $actionid );
-		update_post_meta( $actionid, ANSPRESS_VOTE_META, $counts['net_vote'] );
-
-		return $counts;
-	}
-
-	return false;
-}
-
 
 /**
  * Retrieve vote count
@@ -206,84 +185,32 @@ function ap_count_vote($userid = false, $type, $actionid = false, $receiving_use
 	return 0;
 }
 
-// get $post up votes
-function ap_up_vote($echo = false) {
 
-	global $post;
-
-	if ( $echo ) {
-		echo $post->voted_up;
-	} else {
-		return $post->voted_up;
-	}
-}
-
-// get $post down votes
-function ap_down_vote($echo = false) {
-
-	global $post;
-
-	if ( $echo ) {
-		echo $post->voted_down;
-	} else {
-		return $post->voted_down;
-	}
-}
-
-/**
- * Get net vote count of a post.
- * @param  int|object $post Post object or ID.
- * @return int
- */
-function ap_net_vote($post = false) {
-	if ( ! $post ) {
-		global $post;
-	}
-
-	$net = $post->net_vote;
-	return $net ? $net : 0;
-}
-
-/**
- * Count total vote count of a post.
- * @param  boolean $post_id Post id.
- * @return integer
- */
-function ap_net_vote_meta($post_id = false) {
-
-	if ( ! $post_id ) {
-		$post_id = get_the_ID();
-	}
-
-	$net = get_post_meta( $post_id, ANSPRESS_VOTE_META, true );
-
-	return $net ? $net : 0;
-}
 
 /**
  * Count post vote count meta.
  * @param  integer $post_id Post id.
  * @return integer
  */
-function ap_post_votes($post_id) {
+function ap_meta_post_votes($post_id) {
 	$counts = ap_meta_total_count( array( 'vote_up', 'vote_down' ), $post_id, false, 'apmeta_type' );
 
 	$counts_type = array( 'vote_up' => 0, 'vote_down' => 0 );
 	if ( $counts ) {
 		foreach ( $counts as $c ) {
-			$counts_type[$c->type] = (int) $c->count;
+			$counts_type[ $c->type ] = (int) $c->count;
 		}
 	}
 
 	$vote = array();
 	// Voted up count.
-	$vote['voted_up'] = $counts_type['vote_up'];
+	$vote['votes_up'] = $counts_type['vote_up'];
 
 	// Voted down count.
-	$vote['voted_down'] = $counts_type['vote_down'];
+	$vote['votes_down'] = $counts_type['vote_down'];
 
 	// Net vote.
-	$vote['net_vote'] = $counts_type['vote_up'] - $counts_type['vote_down'];
+	$vote['votes_net'] = $counts_type['vote_up'] - $counts_type['vote_down'];
 
 	return $vote;
 }
@@ -337,11 +264,8 @@ function ap_is_user_voted($actionid, $type, $userid = false) {
  * @return 	null|string
  * @since 0.1
  */
-function ap_vote_btn($post = false, $echo = true) {
-
-	if ( false === $post ) {
-		global $post;
-	}
+function ap_vote_btn( $post = null, $echo = true ) {
+	$post = get_post( $post );
 
 	if ( 'answer' == $post->post_type && ap_opt( 'disable_voting_on_answer' ) ) {
 		return;
@@ -362,7 +286,7 @@ function ap_vote_btn($post = false, $echo = true) {
 	$html .= '<div data-id="'.$post->ID.'" class="ap-vote net-vote" data-action="vote">';
 	$html .= '<a class="'.ap_icon( 'vote_up' ).' ap-tip vote-up'.($voted ? ' voted' : '').($type == 'vote_down' ? ' disable' : '').'" data-query="ap_ajax_action=vote&type=up&post_id='.$post->ID.'&__nonce='.$nonce.'" href="#" title="'.__( 'Up vote this post', 'anspress-question-answer' ).'"></a>';
 
-	$html .= '<span class="net-vote-count" data-view="ap-net-vote" itemprop="upvoteCount">'.ap_net_vote().'</span>';
+	$html .= '<span class="net-vote-count" data-view="ap-net-vote" itemprop="upvoteCount">'. ap_get_votes_net() .'</span>';
 
 	if ( ('question' == $post->post_type && ! ap_opt( 'disable_down_vote_on_question' )) ||
 		('answer' == $post->post_type && ! ap_opt( 'disable_down_vote_on_answer' )) ) {

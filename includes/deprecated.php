@@ -593,3 +593,72 @@ function ap_question_get_the_time_relative($question_id = false) {
 	$question_id = ap_parameter_empty( $question_id, @get_the_ID() );
 	return ap_question_get_the_time( $question_id, 'U' );
 }
+
+/**
+ * Count total vote count of a post.
+ * @param  boolean $post_id Post id.
+ * @return integer
+ */
+function ap_net_vote_meta( $post_id = false ) {
+	_deprecated_function( __FUNCTION__, '4.0.0', 'ap_get_votes_net' );
+}
+
+// get $post up votes
+function ap_up_vote($echo = false) {
+	_deprecated_function( __FUNCTION__, '4.0.0' );
+
+	global $post;
+
+	if ( $echo ) {
+		echo $post->voted_up;
+	} else {
+		return $post->voted_up;
+	}
+}
+
+// get $post down votes
+function ap_down_vote($echo = false) {
+	_deprecated_function( __FUNCTION__, '4.0.0' );
+	
+	global $post;
+
+	if ( $echo ) {
+		echo $post->voted_down;
+	} else {
+		return $post->voted_down;
+	}
+}
+
+/**
+ * Get net vote count of a post.
+ * @param  int|object $post Post object or ID.
+ * @return int
+ */
+function ap_net_vote( $post = false ) {
+	_deprecated_function( __FUNCTION__, '4.0.0' );
+}
+
+function ap_post_votes($post_id) {
+	_deprecated_function( __FUNCTION__, '4.0.0', 'ap_meta_post_votes' );
+	return ap_meta_post_votes($post_id);
+}
+
+/**
+ * Remove vote for post and also update post meta.
+ * @param  integer $current_userid    User ID of user casting the vote.
+ * @param  string  $type              Type of vote, "vote_up" or "vote_down".
+ * @param  integer $actionid          Post ID.
+ * @param  integer $receiving_userid  User ID of user receiving the vote.
+ * @return array|false
+ * @since  2.5
+ */
+function ap_remove_post_vote( $type, $current_userid, $actionid, $receiving_userid ) {
+	_deprecated_function( __FUNCTION__, '4.0.0' );
+	$row = ap_remove_vote($type, $current_userid, $actionid, $receiving_userid );
+
+	if ( false !== $row ) {
+		return ap_update_votes_count( $actionid );
+	}
+
+	return false;
+}

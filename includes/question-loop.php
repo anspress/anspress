@@ -14,119 +14,6 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-if ( ! class_exists( 'Question_Query' ) ) :
-
-	/**
-	 * Question
-	 *
-	 * This class is for retriving questions based on $args
-	 */
-	class Question_Query extends WP_Query {
-
-		public $args = array();
-
-		/**
-		 * Initialize class
-		 * @param array $args
-		 * @access public
-		 * @since  2.0
-		 */
-		public function __construct( $args = array() ) {
-
-			if ( is_front_page() ) {
-				$paged = (isset( $_GET['ap_paged'] )) ? (int) $_GET['ap_paged'] : 1; } else {
-				$paged = (get_query_var( 'paged' )) ? get_query_var( 'paged' ) : 1; }
-
-				if ( isset( $args['post_parent'] ) ) {
-					$post_parent = $args['post_parent'];
-				} else {
-					$post_parent = (get_query_var( 'parent' )) ? get_query_var( 'parent' ) : false;
-				}
-
-				$defaults = array(
-					'showposts'     => ap_opt( 'question_per_page' ),
-					'paged'         => $paged,
-				);
-
-				$args['post_status'][] = 'publish';
-				$args['post_status'][] = 'closed';
-
-			if ( $post_parent ) {
-				$this->args['post_parent'] = $post_parent;
-			}
-
-				$this->args = wp_parse_args( $args, $defaults );
-
-			if ( get_query_var( 'ap_s' ) != '' ) {
-				$this->args['s'] = sanitize_text_field( get_query_var( 'ap_s' ) );
-			}
-
-			if ( isset( $this->args[ 'sortby' ] ) ) {
-				$this->orderby_questions();
-			}
-
-				$this->args['post_type'] = 'question';
-
-				$args = $this->args;
-
-			/**
-			 * Initialize parent class
-			 */
-			parent::__construct( $args );
-		}
-
-		/**
-		 * Modify orderby args
-		 * @return void
-		 */
-		public function orderby_questions() {
-			switch ( $this->args[ 'sortby' ] ) {
-				case 'answers' :
-					$this->args[ 'orderby' ] = 'meta_value_num';
-					$this->args[ 'meta_key' ] = ANSPRESS_ANS_META;
-				break;
-				case 'views' :
-					$this->args[ 'orderby' ] = 'meta_value_num';
-					$this->args[ 'meta_key' ] = ANSPRESS_VIEW_META;
-				break;
-				case 'unanswered' :
-					$this->args[ 'orderby' ] = 'meta_value_num date';
-					$this->args[ 'meta_key' ] = ANSPRESS_ANS_META ;
-					$this->args[ 'meta_value' ] = 0 ;
-				break;
-				case 'voted' :
-					$this->args['orderby'] = 'meta_value_num';
-					$this->args['meta_key'] = ANSPRESS_VOTE_META;
-				break;
-				case 'unsolved' :
-					$this->args['orderby'] = 'meta_value_num date';
-					$this->args['meta_key'] = ANSPRESS_SELECTED_META;
-					$this->args['meta_compare'] = '=';
-					$this->args['meta_value'] = false;
-
-				break;
-				case 'oldest' :
-					$this->args['orderby'] = 'date';
-					$this->args['order'] = 'ASC';
-				break;
-				case 'active' :
-					$this->args['orderby'] = 'meta_value';
-					$this->args['meta_key'] = ANSPRESS_UPDATED_META;
-					$this->args['meta_query']  = array(
-						'relation' => 'OR',
-						[ 'key' => ANSPRESS_UPDATED_META ],
-					);
-				break;
-
-				// TOOD: Add more orderby like most viewed, and user order like 'answered by user_id', 'asked_by_user_id'
-			}
-
-		}
-
-	}
-
-
-endif;
 
 if ( ! function_exists('ap_get_questions' ) ) {
 	function ap_get_questions($args = array()) {
@@ -188,6 +75,9 @@ function ap_get_question($question_id) {
 
 	return new Question_Query( $args );
 }
+
+
+
 
 /**
  * Check if active post is private post
