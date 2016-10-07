@@ -96,6 +96,7 @@ function ap_default_options() {
 		'question_per_page' 		=> '20',
 		'answers_per_page' 			=> '5',
 		'answers_sort' 				=> 'active',
+		'questions_sort'			=> 'active',
 		'close_selected' 			=> true,
 		'moderate_new_question'		=> 'no_mod',
 		'mod_question_point'		=> 10,
