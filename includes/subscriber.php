@@ -201,45 +201,27 @@ function ap_subscribers_count($item_id = false, $activity = 'q_all') {
 	return $count;
 }
 
-/**
- * Get question subscribers count from post meta.
- * @param  intgere|object $question Question object.
- * @return integer
- */
-function ap_question_subscriber_count( $question ) {
-	if ( ! is_object( $question ) || ! isset( $question->post_type ) ) {
-		$question = get_post( $question );
-	}
 
-	// Return if not question.
-	if ( 'question' != $question->post_type ) {
-		return 0;
-	}
-
-	return (int) get_post_meta( $question->ID, ANSPRESS_SUBSCRIBER_META, true );
-}
 
 /**
  * Return subscriber count in human readable format
  * @return string
  * @since 2.0.0-alpha2
  */
-function ap_subscriber_count_html($post = false) {
-
-	if ( ! $post ) {
-		global $post;
-	}
+function ap_subscriber_count_html( $post = false ) {
+	$post = get_post( $post );
 
 	$subscribed = ap_is_user_subscribed( $post->ID, 'q_all' );
-	$total_subscribers = ap_subscribers_count( $post->ID );
 
-	if ( $total_subscribers == '1' && $subscribed ) {
-		return __( 'Only you are subscribed to this question.', 'anspress-question-answer' ); } elseif ($subscribed)
-		return sprintf( __( 'You and <strong>%s people</strong> subscribed to this question.', 'anspress-question-answer' ), ($total_subscribers -1) );
-	elseif ($total_subscribers == 0)
+	if ( $post->subscribers == '1' && $subscribed ) {
+		return __( 'Only you are subscribed to this question.', 'anspress-question-answer' );
+	} elseif ( $subscribed ) {
+		return sprintf( __( 'You and <strong>%s people</strong> subscribed to this question.', 'anspress-question-answer' ), ($post->subscribers -1) );
+	} elseif ( $post->subscribers == 0 ) {
 		return __( 'No one is subscribed to this question.', 'anspress-question-answer' );
-	else {
-		return sprintf( __( '<strong>%d people</strong> subscribed to this question.', 'anspress-question-answer' ), $total_subscribers ); }
+	} else {
+		return sprintf( __( '<strong>%d people</strong> subscribed to this question.', 'anspress-question-answer' ), $total_subscribers );
+	}
 }
 
 /**

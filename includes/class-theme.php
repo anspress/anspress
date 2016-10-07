@@ -56,9 +56,9 @@ class AnsPress_Theme
 				$classes[] = 'featured-question';
 			}
 
-			$classes[] = 'answer-count-' . ap_count_answer_meta();
+			$classes[] = 'answer-count-' . ap_get_answers_count();
 		} elseif ( 'answer' == $post->post_type ) {
-			if ( ap_answer_is_best( $post->ID ) ) {
+			if ( ap_is_selected( $post->ID ) ) {
 				$classes[] = 'best-answer';
 			}
 			if ( ! ap_user_can_read_answer( $post ) ) {

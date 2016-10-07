@@ -41,16 +41,16 @@ class AP_Question_Meta_Box {
 			?>
             <div id="answer_<?php the_ID(); ?>" data-id="<?php the_ID(); ?>" class="ap-ansm clearfix">
                 <div class="author">
-					<a class="ap-ansm-avatar" href="<?php ap_answer_the_author_link(); ?>"<?php ap_hover_card_attributes( ap_answer_get_author_id() ); ?>>
-						<?php ap_answer_the_author_avatar(); ?>
+					<a class="ap-ansm-avatar" href="<?php ap_profile_link(); ?>"<?php ap_hover_card_attr(); ?>>
+						<?php ap_author_avatar(); ?>
 					</a>
-					<strong class="ap-ansm-name"><?php echo ap_user_display_name( ap_answer_get_author_id() ); ?></strong>
+					<strong class="ap-ansm-name"><?php echo ap_user_display_name( ap_get_post_field( 'post_author' ) ); ?></strong>
                 </div>
 
                 <div class="ap-ansm-inner">
                     
                     <div class="ap-ansm-meta">
-						<?php ap_answer_the_active_time(); ?>
+						<?php ap_recent_post_activity(); ?>
 					</div>
 					
 					<div class="ap-ansm-content"><?php the_content(); ?></div>

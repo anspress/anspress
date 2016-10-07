@@ -72,7 +72,7 @@ function ap_user_answer_count($userid) {
 function ap_user_best_answer_count($user_id) {
 
 	global $wpdb;
-	$query = $wpdb->prepare( "SELECT count(DISTINCT pm.post_id) FROM $wpdb->postmeta pm JOIN $wpdb->posts p ON (p.ID = pm.post_id) WHERE pm.meta_key = '".ANSPRESS_BEST_META."' AND pm.meta_value = 1 AND p.post_type = 'answer' AND p.post_author = %d", $user_id );
+	$query = $wpdb->prepare( "SELECT count(DISTINCT pm.post_id) FROM $wpdb->ap_qameta qameta JOIN $wpdb->posts p ON (p.ID = qameta.post_id) WHERE qameta.selected = 1 AND p.post_type = 'answer' AND p.post_author = %d", $user_id );
 
 	$key = md5( $query );
 	$cache = wp_cache_get( $key, 'count' );

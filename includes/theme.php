@@ -603,7 +603,7 @@ function ap_display_answer_metas($answer_id = false) {
 	}
 
 	$metas = array();
-	if ( ap_answer_is_best( $answer_id ) ) {
+	if ( ap_is_selected( $answer_id ) ) {
 		$metas['best_answer'] = '<span class="ap-best-answer-label">'.__( 'Best answer', 'anspress-question-answer' ).'</span>';
 	}
 

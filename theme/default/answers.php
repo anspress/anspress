@@ -17,9 +17,9 @@
 			<h3 class="ap-answers-label ap-pull-left">
 				<?php 
 					printf(
-						_n('%s%d%s answer', '%s%d%s answers', ap_answer_get_the_count(), 'anspress-question-answer'),
+						_n('%s%d%s answer', '%s%d%s answers', ap_total_posts_found(), 'anspress-question-answer'),
 						'<span data-view="answer_count">',
-						ap_answer_get_the_count(),
+						ap_total_posts_found(),
 						'</span>'
 					);
 				?>				

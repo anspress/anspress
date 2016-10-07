@@ -264,7 +264,7 @@ function get_question_id() {
 	} elseif ( get_query_var( 'edit_q' ) ) {
 		return get_query_var( 'edit_q' );
 	} elseif ( ap_answer_the_object() ) {
-		return ap_answer_get_the_question_id();
+		return ap_get_post_field( 'post_parent' );
 	}
 
 	return false;
@@ -558,20 +558,20 @@ function ap_selected_answer($post_id = false) {
  * @param int $post_id
  * @return null|string
  */
-function ap_select_answer_btn_html($post_id) {
+function ap_select_answer_btn_html( $post ) {
+	$ans = get_post( $post );
 
-	if ( ! ap_user_can_select_answer( $post_id ) ) {
+	if ( ! ap_user_can_select_answer( $ans->ID ) ) {
 		return;
 	}
 
-	$ans = get_post( $post_id );
-	$action = 'answer-'.$post_id;
+	$action = 'answer-'. $ans->ID;
 	$nonce = wp_create_nonce( $action );
 
 	if ( ! ap_have_answer_selected( $ans->post_parent ) ) {
-		return '<a href="#" class="ap-btn-select ap-sicon '.ap_icon( 'check' ).' ap-tip" data-action="select_answer" data-query="answer_id='.$post_id.'&__nonce='.$nonce.'&ap_ajax_action=select_best_answer" title="'.__( 'Select this answer as best', 'anspress-question-answer' ).'">'.__( 'Select', 'anspress-question-answer' ).'</a>';
-	} elseif ( ap_have_answer_selected( $ans->post_parent ) && ap_answer_is_best( $ans->ID ) ) {
-		return '<a href="#" class="ap-btn-select ap-sicon '.ap_icon( 'cross' ).' active ap-tip" data-action="select_answer" data-query="answer_id='.$post_id.'&__nonce='.$nonce.'&ap_ajax_action=select_best_answer" title="'.__( 'Unselect this answer', 'anspress-question-answer' ).'">'.__( 'Unselect', 'anspress-question-answer' ).'</a>';
+		return '<a href="#" class="ap-btn-select ap-sicon '.ap_icon( 'check' ).' ap-tip" data-action="select_answer" data-query="answer_id='.$ans->ID.'&__nonce='.$nonce.'&ap_ajax_action=select_best_answer" title="'.__( 'Select this answer as best', 'anspress-question-answer' ).'">'.__( 'Select', 'anspress-question-answer' ).'</a>';
+	} elseif ( ap_have_answer_selected( $ans->post_parent ) && ap_is_selected( $ans->ID ) ) {
+		return '<a href="#" class="ap-btn-select ap-sicon '.ap_icon( 'cross' ).' active ap-tip" data-action="select_answer" data-query="answer_id='.$ans->ID.'&__nonce='.$nonce.'&ap_ajax_action=select_best_answer" title="'.__( 'Unselect this answer', 'anspress-question-answer' ).'">'.__( 'Unselect', 'anspress-question-answer' ).'</a>';
 	}
 }
 

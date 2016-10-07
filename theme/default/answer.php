@@ -12,17 +12,19 @@ global $post;
 $have_permission = ap_user_can_read_answer( $post );
 ?>
 <div id="answer_<?php the_ID(); ?>" <?php post_class() ?> data-id="<?php the_ID(); ?>">
-    <div class="ap-content" itemprop="suggestedAnswer<?php echo ap_answer_is_best() ? ' acceptedAnswer' : ''; ?>" itemscope itemtype="https://schema.org/Answer">
-		<div class="ap-single-vote"><?php ap_answer_the_vote_button(); ?></div>
+    <div class="ap-content" itemprop="suggestedAnswer<?php echo ap_is_selected() ? ' acceptedAnswer' : ''; ?>" itemscope itemtype="https://schema.org/Answer">
+		<div class="ap-single-vote"><?php ap_vote_btn(); ?></div>
         <div class="ap-avatar">
-			<a href="<?php ap_answer_the_author_link(); ?>"<?php ap_hover_card_attributes(ap_answer_get_author_id() ); ?>>
-				<?php ap_answer_the_author_avatar(); ?>
+			<a href="<?php ap_profile_link(); ?>"<?php ap_hover_card_attr(); ?>>
+				<?php ap_author_avatar(); ?>
             </a>
         </div>
         <div class="ap-a-cells clearfix">
             <div class="ap-q-metas">
 				<?php ap_user_display_meta(true, false, true ); ?>
-				<?php ap_answer_the_time(); ?>
+				<time itemprop="datePublished" datetime="<?php echo ap_get_time( $answer_id, 'c' ); ?>">
+					<?php printf( 'Posted %s', ap_human_time( ap_get_time( get_the_ID(), 'U' ) ) ); ?>
+				</time>
             </div>
             <div class="ap-q-inner">
                 <?php
@@ -45,8 +47,8 @@ $have_permission = ap_user_can_read_answer( $post );
 
 				?>
 				<?php if ( $have_permission ) :   ?>
-					<?php ap_answer_the_active_time(); ?>
-					<?php ap_post_status_description(ap_answer_get_the_answer_id() ) ?>
+					<?php ap_recent_post_activity(); ?>
+					<?php ap_post_status_description( get_the_ID() ) ?>
 					<?php ap_post_actions_buttons() ?>
 				<?php endif; ?>
             </div>

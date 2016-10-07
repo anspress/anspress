@@ -94,7 +94,7 @@ class AnsPress_Ajax
 
 		    $items .= '<div class="ap-similar-questions">';
 	        foreach ( (array) $questions as $p ) {
-	            $count = ap_count_answer_meta( $p->ID );
+	            $count = ap_get_answers_count( $p->ID );
 	            $p->post_title = ap_highlight_words( $p->post_title, $keyword );
 
 	            if ( $is_admin ) {
@@ -151,11 +151,11 @@ class AnsPress_Ajax
 	     * @param integer $answer_id   Answer ID.
 	     */
 		do_action( 'ap_select_answer', $post->post_author, $post->post_parent, $post->ID );
+		
+		// Update question qameta.
+		ap_set_selected_answer( $post->post_parent, $post->ID );
 
-		update_post_meta( $post->ID, ANSPRESS_BEST_META, 1 );
-		update_post_meta( $post->post_parent, ANSPRESS_SELECTED_META, $post->ID );
-		update_post_meta( $post->post_parent, ANSPRESS_UPDATED_META, current_time( 'mysql' ) );
-
+		// Close question if enabled in option.
 		if ( ap_opt( 'close_selected' ) ) {
 			wp_update_post( array( 'ID' => $post->post_parent, 'post_status' => 'closed' ) );
 		}

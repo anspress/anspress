@@ -61,11 +61,11 @@ function ap_insert_qameta( $post_id, $args, $wp_error = false ) {
 
 	$exists = ap_get_qameta( $post_id );
 
-	if( $exists->is_new ) {
+	if ( $exists->is_new ) {
 		$sanitized_values[ 'post_id' ] = (int) $post_id;
 		$inserted = $wpdb->insert( $wpdb->ap_qameta, $sanitized_values, $formats );
 	} else {
-		$inserted = $wpdb->update( $wpdb->ap_qameta, $sanitized_values, [ 'post_id'=> $post_id ], $formats );
+		$inserted = $wpdb->update( $wpdb->ap_qameta, $sanitized_values, [ 'post_id' => $post_id ], $formats );
 	}
 
 	if ( false !== $inserted ) {
@@ -127,6 +127,29 @@ function ap_get_qameta( $post_id ) {
 }
 
 /**
+ * Append post object with apmeta feilds.
+ * @param  object $post Post Object.
+ * @return object
+ */
+function ap_append_qameta( $post ) {
+	if ( ! in_array( $post->post_type, [ 'question', 'answer' ] ) || isset( $post->ap_qameta_wrapped ) ) {
+		return $post; }
+
+	$defaults = ap_get_qameta( $post->ID );
+
+	if ( ! empty( $defaults ) ) {
+		foreach ( $defaults as $pkey => $value ) {
+			if ( ! isset($post->$pkey ) || empty( $post->$pkey ) ) {
+				$post->$pkey = $value;
+			}
+		}
+	}
+
+	$post->votes_net = $post->votes_up - $post->votes_down;
+	return $post;
+}
+
+/**
  * Update count of answers in post meta.
  * @param  integer $question_id Question ID.
  * @return boolean|false
@@ -163,7 +186,8 @@ function ap_update_votes_count( $post_id ) {
  * @since  3.1.0
  */
 function ap_set_selected_answer( $question_id, $answer_id ) {
-	ap_insert_qameta( $question_id, [ 'selected_id' => $answer_id ] );
+	ap_insert_qameta( $answer_id, [ 'selected' => '0', 'last_updated' => current_time( 'mysql' ) ] );
+	ap_insert_qameta( $question_id, [ 'selected_id' => $answer_id, 'last_updated' => current_time( 'mysql' ) ] );
 	return ap_update_answer_selected( $answer_id );
 }
 
@@ -173,18 +197,13 @@ function ap_set_selected_answer( $question_id, $answer_id ) {
  * @return integer|false
  * @since  3.1.0
  */
-function ap_unset_selected_answer( $question_id, $timestamp = true ) {
+function ap_unset_selected_answer( $question_id ) {
 	$qameta = ap_get_qameta( $question_id );
 
-	ap_update_answer_selected( $qameta->selected_id, false );
+	// Clear selected column from answer qameta.
+	ap_insert_qameta( $qameta->selected_id, [ 'selected' => 0, 'last_updated' => current_time( 'mysql' ) ] );
 
-	$q_args = [ 'selected_id' => 0 ];
-
-	if ( true === $timestamp ) {
-		$q_args['last_updated'] = current_time( 'mysql' );
-	}
-
-	return ap_insert_qameta( $question_id, $q_args );
+	return ap_insert_qameta( $question_id, [ 'selected_id' => '', 'last_updated' => current_time( 'mysql' ) ] );
 }
 
 /**

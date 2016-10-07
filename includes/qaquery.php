@@ -118,6 +118,32 @@ class Question_Query extends WP_Query {
 }
 
 /**
+ * Get posts with apmeta fields.
+ * @param  object|integer|null $post Post object.
+ * @return object
+ */
+function ap_get_post( $post = null ) {
+	if ( empty( $post ) && isset( $GLOBALS['post'] ) ) {
+		$post = $GLOBALS['post']; }
+
+	if ( $post instanceof WP_Post || is_object( $post ) ) {
+		$_post = $post;
+	} elseif ( false !== $_post = wp_cache_get( $post, 'posts' ) ) {
+		$_post = $_post;
+	} else {
+		$_post = WP_Post::get_instance( $post );
+	}
+
+	if ( ! isset( $_post->ap_qameta_wrapped ) ) {
+		wp_cache_delete( $_post->ID, 'posts' );
+		$_post = ap_append_qameta( $_post );
+		wp_cache_add( $_post->ID, $_post, 'posts' );
+	}
+
+	return $_post;
+}
+
+/**
  * Check if there is post in loop
  * @return boolean
  */
@@ -142,6 +168,11 @@ function ap_the_question() {
 	return $questions->the_post();
 }
 
+function ap_total_posts_found() {
+	global $questions;
+	return $questions->found_posts;
+}
+
 /**
  * Return link of user profile page
  * @return string
@@ -163,8 +194,8 @@ function ap_profile_link() {
  * @param  integer $size Avatar size.
  * @return string
  */
-function ap_get_author_avatar( $size = 45 ) {
-	global $post;
+function ap_get_author_avatar( $size = 45, $post = null ) {
+	$post = get_post( $post );
 	return get_avatar( $post->post_author, $size );
 }
 
@@ -173,18 +204,26 @@ function ap_get_author_avatar( $size = 45 ) {
  * @param  integer $size Avatar size.
  * @return string
  */
-function ap_author_avatar( $size = 45 ) {
-	global $post;
-	echo ap_get_author_avatar( $size );
+function ap_author_avatar( $size = 45, $post = null ) {
+	echo ap_get_author_avatar( $size, $post );
 }
 
-function ap_get_hover_card_attr() {
-	global $post;
-	return ap_hover_card_attributes( $post->post_author );
+/**
+ * Return hover card attributes.
+ * @param  object|integer|null $post Post ID, Object or null.
+ * @return string
+ */
+function ap_get_hover_card_attr( $post = null ) {
+	$p = get_post( $post );
+	return ap_hover_card_attributes( $p->post_author );
 }
 
-function ap_hover_card_attr() {
-	echo ap_get_hover_card_attr();
+/**
+ * Echo hover card attributes.
+ * @param  object|integer|null $post Post ID, Object or null.
+ */
+function ap_hover_card_attr( $post = null ) {
+	echo ap_get_hover_card_attr( $post );
 }
 
 /**
@@ -342,7 +381,7 @@ function ap_last_active( $post_id = null ) {
  * @return boolean
  */
 function ap_have_answer_selected( $question = null ) {
-	$p = get_post( $question );
+	$p = ap_get_post( $question );
 	return ! empty( $p->selected_id );
 }
 
@@ -372,13 +411,10 @@ function ap_is_featured_question( $post = null ) {
  * Output answers of current question.
  */
 // function ap_get_answers() {
-// 	global $answers;
-
-// 	//$answers = ap_get_best_answer();
-// 	//include( ap_get_theme_location( 'best_answer.php' ) );
-
-// 	$answers = ap_get_answers();
-
-// 	include( ap_get_theme_location( 'answers.php' ) );
-// 	wp_reset_postdata();
+// global $answers;
+// $answers = ap_get_best_answer();
+// include( ap_get_theme_location( 'best_answer.php' ) );
+// $answers = ap_get_answers();
+// include( ap_get_theme_location( 'answers.php' ) );
+// wp_reset_postdata();
 // }

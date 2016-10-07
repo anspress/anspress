@@ -35,26 +35,6 @@ class AnsPress_Query_Filter
 	}
 
 	/**
-	 * Filter WP_Query query for answers loop.
-	 * @param  array  $sql   Sql Query.
-	 * @param  object $args  WP_Query args.
-	 * @return array
-	 */
-	public static function answer_sort($sql, $args) {
-		global $wpdb;
-
-		if ( isset($args->query['ap_query'] ) && $args->query['ap_query'] == 'answer_sort_newest' ) {
-			$sql['orderby'] = 'IF('.$wpdb->prefix.'postmeta.meta_key = "'.ANSPRESS_BEST_META.'" AND '.$wpdb->prefix.'postmeta.meta_value = 1, 0, 1), '.$sql['orderby'];
-		} elseif ( isset($args->query['ap_query'] ) && $args->query['ap_query'] == 'answer_sort_voted' ) {
-			$sql['orderby'] = 'IF(mt1.meta_value = 1, 0, 1), '.$sql['orderby'];
-		} elseif ( isset($args->query['ap_query'] ) && $args->query['ap_query'] == 'order_answer_to_top' ) {
-			$sql['orderby'] = $wpdb->prepare($wpdb->posts.'.ID=%d desc', $args->query['order_answer_id'] ).', '.$sql['orderby'];
-		}
-
-		return $sql;
-	}
-
-	/**
 	 * Filter WP_Query query to include all users subscribed items.
 	 * @param  array  $sql   Sql Query.
 	 * @param  object $args  WP_Query args.

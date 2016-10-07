@@ -375,7 +375,7 @@ function ap_question_get_the_permalink() {
  */
 function ap_question_get_the_answer_count() {
 	_deprecated_function( __FUNCTION__, '4.0.0',  'ap_get_answer_count' );
-	return ap_count_answer_meta( get_the_ID() );
+	return ap_get_answers_count( get_the_ID() );
 }
 
 function ap_question_the_answer_count() {
@@ -661,4 +661,228 @@ function ap_remove_post_vote( $type, $current_userid, $actionid, $receiving_user
 	}
 
 	return false;
+}
+
+/**
+ * Get question subscribers count from post meta.
+ * @param  intgere|object $question Question object.
+ * @return integer
+ */
+function ap_question_subscriber_count( $question ) {
+	_deprecated_function( __FUNCTION__, '4.0.0' );
+}
+
+/**
+ * Echo active answer id
+ * @return void
+ * @since 2.1
+ */
+function ap_answer_the_answer_id() {
+	_deprecated_function( __FUNCTION__, '4.0.0' );
+}
+
+/**
+ * Get the active answer id
+ * @return integer
+ * @since 2.1
+ */
+function ap_answer_get_the_answer_id() {
+	_deprecated_function( __FUNCTION__, '4.0.0' );
+
+}
+
+/**
+ * Echo active answer question id
+ * @return void
+ * @since 2.1
+ */
+function ap_answer_the_question_id() {
+	_deprecated_function( __FUNCTION__, '4.0.0' );
+}
+
+/**
+ * Get the active answer question id
+ * @return integer
+ * @since 2.1
+ */
+function ap_answer_get_the_question_id() {
+	_deprecated_function( __FUNCTION__, '4.0.0' );
+}
+
+/**
+ * Check if current answer is selected as a best
+ * @param integer|boolean $answer_id Answer ID.
+ * @return boolean
+ * @since 2.1
+ */
+function ap_answer_is_best($answer_id = false) {
+	_deprecated_function( __FUNCTION__, '4.0.0', 'ap_is_selected' );
+}
+/**
+ * Return the author profile link
+ * @return string
+ * @since 2.1
+ */
+function ap_answer_get_the_author_link() {
+	_deprecated_function( __FUNCTION__, '4.0.0' );
+}
+/**
+ * Return answer author avatar
+ * @param  integer $size Avatar size.
+ * @return string
+ * @since 2.1
+ */
+function ap_answer_get_the_author_avatar($size = 45) {
+	_deprecated_function( __FUNCTION__, '4.0.0' );
+}
+
+/**
+ * Output current answer author avatar
+ * @param  boolean|integer $size Size of avatar.
+ */
+function ap_answer_the_author_avatar($size = false) {
+	_deprecated_function( __FUNCTION__, '4.0.0' );
+}
+
+/**
+ * Echo user profile link
+ * @since 2.1
+ */
+function ap_answer_the_author_link() {
+	_deprecated_function( __FUNCTION__, '4.0.0' );
+}
+
+function ap_answer_get_author_id() {
+	_deprecated_function( __FUNCTION__, '4.0.0' );
+}
+
+/**
+ * Output active answer vote button
+ * @since 2.1
+ */
+function ap_answer_the_vote_button() {
+	_deprecated_function( __FUNCTION__, '4.0.0' );
+}
+
+/**
+ * Echo time current answer was active
+ * @return void
+ * @since 2.1
+ */
+function ap_answer_the_active_ago() {
+	_deprecated_function( __FUNCTION__, '4.0.0', 'ap_last_active' );
+}
+
+/**
+ * Return the answer active ago time
+ * @return string
+ * @since 2.1
+ */
+function ap_answer_get_the_active_ago() {
+	_deprecated_function( __FUNCTION__, '4.0.0' );
+}
+
+/**
+ * Echo active answer permalink
+ * @return void
+ * @since 2.1
+ */
+function ap_answer_the_permalink() {
+	_deprecated_function( __FUNCTION__, '4.0.0' );
+}
+
+/**
+ * Return active answer permalink
+ * @return string
+ * @since 2.1
+ */
+function ap_answer_get_the_permalink() {
+	_deprecated_function( __FUNCTION__, '4.0.0' );
+}
+
+/**
+ * Echo active answer total vote
+ * @return void
+ * @since 2.1
+ */
+function ap_answer_the_net_vote() {
+	_deprecated_function( __FUNCTION__, '4.0.0' );
+}
+
+/**
+ * Return count of net vote of a answer
+ * @return integer
+ * @since 2.1
+ */
+function ap_answer_get_the_net_vote() {
+	_deprecated_function( __FUNCTION__, '4.0.0' );
+}
+
+function ap_answer_the_vote_class() {
+	_deprecated_function( __FUNCTION__, '4.0.0' );
+}
+
+/**
+ * Get vote class of active answer
+ * @return string
+ */
+function ap_answer_get_the_vote_class() {
+	_deprecated_function( __FUNCTION__, '4.0.0' );
+}
+/**
+ * Output answer active time
+ * @param  boolean|integer $answer_id Answer ID.
+ */
+function ap_answer_the_active_time($answer_id = false) {
+	_deprecated_function( __FUNCTION__, '4.0.0' );
+}
+
+/**
+ * Return last active time of answer
+ * @param  boolean|integer $answer_id Answer ID.
+ * @return string
+ */
+function ap_answer_get_the_active_time($answer_id = false) {
+	_deprecated_function( __FUNCTION__, '4.0.0' );
+}
+
+/**
+ * Output answer time in human readable format
+ * @param  boolean|integer $answer_id      If outside of loop, post ID can be passed.
+ * @param  integer         $format         WP time format.
+ * @return void
+ */
+function ap_answer_the_time($answer_id = false, $format = 'U') {
+	_deprecated_function( __FUNCTION__, '4.0.0' );
+}
+
+/**
+ * Return answer time
+ * @param  boolean|integer $answer_id      If outside of loop, post ID can be passed.
+ * @param  integer         $format         WP time format.
+ * @return string
+ */
+function ap_answer_get_the_time($answer_id = false, $format = '') {
+	_deprecated_function( __FUNCTION__, '4.0.0' );
+}
+
+/**
+ * Output count of total numbers of Answers
+ * @since 2.1
+ */
+function ap_answer_the_count() {
+	_deprecated_function( __FUNCTION__, '4.0.0' );
+}
+
+/**
+ * Return the count of total numbers of Answers
+ * @return integer
+ * @since 2.1
+ */
+function ap_answer_get_the_count() {
+	_deprecated_function( __FUNCTION__, '4.0.0', 'ap_total_posts_found' );
+}
+
+function ap_count_answer_meta($post_id = false) {
+	_deprecated_function( __FUNCTION__, '4.0.0' );
 }

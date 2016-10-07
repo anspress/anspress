@@ -129,8 +129,8 @@ function ap_question_the_answer_form() {
 function ap_question_the_answers() {
 	global $answers;
 
-	$answers = ap_get_best_answer();
-	include( ap_get_theme_location( 'best_answer.php' ) );
+	// $answers = ap_get_best_answer();
+	// include( ap_get_theme_location( 'best_answer.php' ) );
 
 	$answers = ap_get_answers();
 
