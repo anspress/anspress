@@ -137,7 +137,7 @@ class AnsPress_Common_Pages
 				return;
 		} else {
 			global $editing_post;
-			$editing_post = get_post( $post_id );
+			$editing_post = ap_get_post( $post_id );
 
 			// Include theme file.
 			include ap_get_theme_location( 'edit.php' );

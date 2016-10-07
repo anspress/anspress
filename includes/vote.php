@@ -26,7 +26,7 @@ class AnsPress_Vote
 
 	    $userid = get_current_user_id();
 
-	    $post = get_post( $post_id );
+	    $post = ap_get_post( $post_id );
 
 	    $thing = ap_user_can_vote_on_post( $post_id, $type, $userid, true );
 
@@ -265,7 +265,7 @@ function ap_is_user_voted($actionid, $type, $userid = false) {
  * @since 0.1
  */
 function ap_vote_btn( $post = null, $echo = true ) {
-	$post = get_post( $post );
+	$post = ap_get_post( $post );
 
 	if ( 'answer' == $post->post_type && ap_opt( 'disable_voting_on_answer' ) ) {
 		return;

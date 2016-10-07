@@ -195,7 +195,7 @@ function ap_profile_link() {
  * @return string
  */
 function ap_get_author_avatar( $size = 45, $post = null ) {
-	$post = get_post( $post );
+	$post = ap_get_post( $post );
 	return get_avatar( $post->post_author, $size );
 }
 
@@ -214,7 +214,7 @@ function ap_author_avatar( $size = 45, $post = null ) {
  * @return string
  */
 function ap_get_hover_card_attr( $post = null ) {
-	$p = get_post( $post );
+	$p = ap_get_post( $post );
 	return ap_hover_card_attributes( $p->post_author );
 }
 
@@ -231,7 +231,7 @@ function ap_hover_card_attr( $post = null ) {
  * @return integer
  */
 function ap_get_answers_count( $post = null ) {
-	$p = get_post( $post );
+	$p = ap_get_post( $post );
 	return $p->answers;
 }
 
@@ -247,7 +247,7 @@ function ap_answers_count( $post = null ) {
  * @return integer
  */
 function ap_get_votes_net( $post = null ) {
-	$p = get_post( $post );
+	$p = ap_get_post( $post );
 	return $p->votes_net;
 }
 
@@ -314,7 +314,7 @@ function ap_question_metas( $question_id = false ) {
  * @return string
  */
 function ap_get_recent_post_activity( $post = null ) {
-	$p = get_post( $post );
+	$p = ap_get_post( $post );
 	return ap_latest_post_activity_html( $p->ID );
 }
 
@@ -332,7 +332,7 @@ function ap_recent_post_activity() {
  * @return mixed
  */
 function ap_get_post_field( $field, $post = null ) {
-	$post = get_post( $post );
+	$post = ap_get_post( $post );
 
 	if ( isset( $post->$field ) ) {
 		return $post->$field;
@@ -358,7 +358,7 @@ function ap_post_field( $field = null ) {
  * @since  2.4.8 Convert mysql date to GMT.
  */
 function ap_get_last_active( $post_id = null ) {
-	$p = get_post( $post_id );
+	$p = ap_get_post( $post_id );
 
 	$date = ! empty( $p->last_updated ) ? $p->last_updated : $p->post_modified_gmt;
 	return ap_human_time( get_gmt_from_date( $date ), false );
@@ -392,7 +392,7 @@ function ap_have_answer_selected( $question = null ) {
  * @return String
  */
 function ap_get_time( $post = null, $format = '' ) {
-	$p = get_post( $post );
+	$p = ap_get_post( $post );
 	return get_post_time( $format, true, $p->ID, true );
 }
 
@@ -403,7 +403,7 @@ function ap_get_time( $post = null, $format = '' ) {
  * @since 2.2.0.1
  */
 function ap_is_featured_question( $post = null ) {
-	$p = get_post( $post );
+	$p = ap_get_post( $post );
 	return (bool) $p->featured;
 }
 

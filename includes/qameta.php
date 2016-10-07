@@ -186,7 +186,7 @@ function ap_update_votes_count( $post_id ) {
  * @since  3.1.0
  */
 function ap_set_selected_answer( $question_id, $answer_id ) {
-	ap_insert_qameta( $answer_id, [ 'selected' => '0', 'last_updated' => current_time( 'mysql' ) ] );
+	ap_insert_qameta( $answer_id, [ 'selected' => 1, 'last_updated' => current_time( 'mysql' ) ] );
 	ap_insert_qameta( $question_id, [ 'selected_id' => $answer_id, 'last_updated' => current_time( 'mysql' ) ] );
 	return ap_update_answer_selected( $answer_id );
 }
@@ -202,20 +202,24 @@ function ap_unset_selected_answer( $question_id ) {
 
 	// Clear selected column from answer qameta.
 	ap_insert_qameta( $qameta->selected_id, [ 'selected' => 0, 'last_updated' => current_time( 'mysql' ) ] );
-
 	return ap_insert_qameta( $question_id, [ 'selected_id' => '', 'last_updated' => current_time( 'mysql' ) ] );
 }
 
 /**
- * Increment view count
+ * Update views count of qameta.
  * @param  integer $question_id Question ID.
- * @param  integer $answer_id   Answer ID.
- * @return integer|false
+ * @param  integer|false $views   Passing view will replace existing value else increment existing.
+ * @return integer
  * @since  3.1.0
  */
-function ap_incriment_views_count( $post_id ) {
-	$qameta = ap_get_qameta( $post_id );
-	return ap_insert_qameta( $post_id, [ 'views' => (int) $qameta->views + 1 ] );
+function ap_update_views_count( $post_id, $views = false ) {
+	if( false === $views ) {
+		$qameta = ap_get_qameta( $post_id );
+		$views = (int) $qameta->views + 1;
+	}
+
+	ap_insert_qameta( $post_id, [ 'views' => $views ] );
+	return $views;
 }
 
 /**

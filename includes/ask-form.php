@@ -25,7 +25,7 @@ function ap_get_ask_form_fields( $post_id = false ) {
 
 	if ( $post_id && ap_user_can_edit_question( (int) $post_id ) ) {
 		$editing = true;
-		$editing_post = get_post( (int) $post_id, 'OBJECT', 'edit' );
+		$editing_post = ap_get_post( (int) $post_id, 'OBJECT', 'edit' );
 	}
 
 	$is_private = false;
@@ -238,7 +238,7 @@ function ap_remove_stop_words_post_name( $str ) {
  */
 function ap_attach_post_uploads($post_id, $attachment_ids, $user_id) {
 	foreach ( (array) $attachment_ids as $id ) {
-		$attach = get_post( $id );
+		$attach = ap_get_post( $id );
 
 		if ( $attach && 'attachment' == $attach->post_type && $user_id == $attach->post_author ) {
 			ap_set_attachment_post_parent( $attach->ID, $post_id );

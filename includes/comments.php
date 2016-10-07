@@ -150,7 +150,7 @@ class AnsPress_Comment_Hooks
 			ap_ajax_json( 'no_permission' );
 		}
 
-		$post = get_post( $post_id );
+		$post = ap_get_post( $post_id );
 
 		if ( ! $post || empty( $post->post_status ) ) {
 			ap_ajax_json( 'something_wrong' );
@@ -410,7 +410,7 @@ function ap_comment_btn_html($echo = false) {
 
 function ap_get_comment_actions( $comment_id, $post_id ) {
 	$comment = get_comment( $comment_id );
-	$post_o = get_post( $post_id );
+	$post_o = ap_get_post( $post_id );
 
 	if ( ! $post_o->post_type == 'question' || ! $post_o->post_type == 'answer' ) {
 		return;
@@ -450,7 +450,7 @@ function ap_get_comment_actions( $comment_id, $post_id ) {
  */
 function ap_comment_actions_buttons() {
 	global $comment;
-	$post_o = get_post( $comment->comment_post_ID );
+	$post_o = ap_get_post( $comment->comment_post_ID );
 	$actions = ap_get_comment_actions($comment, $comment->comment_post_ID );
 	foreach ( (array) $actions as $k => $action ) {
 		echo '<span class="ap-comment-action ap-action-'.esc_attr( $k ).'">'.$action.'</span>';

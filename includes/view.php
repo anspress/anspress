@@ -48,7 +48,7 @@ class AP_Views {
 }
 
 /**
- * Insert view data in ap_meta table and update post meta ANSPRESS_VIEW_META
+ * Insert view data in ap_meta table and update qameta.
  * @param  integer $data_id
  * @param  string  $type
  * @return boolean
@@ -73,14 +73,10 @@ function ap_insert_views($data_id, $type) {
 			ap_add_meta($userid, 'post_view', $data_id, $ip );
 		}
 
-		$view = ap_get_qa_views( $data_id );
+		$views = ap_get_qa_views( $data_id ) + 1;
+		ap_update_views_count( $data_id, $views );
 
-		$view = $view + 1;
-
-		update_post_meta( $data_id, ANSPRESS_VIEW_META, apply_filters('ap_insert_views', $view ) );
-
-		do_action('after_insert_views', $data_id, $view );
-
+		do_action('after_insert_views', $data_id, $views );
 		return true;
 
 	} elseif ( $type == 'profile' ) {
@@ -109,22 +105,15 @@ function ap_insert_views($data_id, $type) {
  * @param  boolean|integer $id Post ID.
  * @return integer
  */
-function ap_get_qa_views( $id = false ) {
-	if ( false === $id ) {
-		$id = get_the_ID();
-	}
-
-	$views = (int) get_post_meta( $id, ANSPRESS_VIEW_META, true );
-	$views = empty($views ) ? 1 : $views;
+function ap_get_qa_views( $question = null ) {
+	$_post = ap_get_post( $question );
 
 	/**
 	 * Filter post view count.
 	 * @param integer $views Original view count.
 	 * @since unknown
 	 */
-	$views = apply_filters('ap_post_views', $views );
-
-	return (int) $views;
+	return apply_filters('ap_post_views', $_post->views );
 }
 
 /**

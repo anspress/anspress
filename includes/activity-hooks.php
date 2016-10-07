@@ -48,7 +48,7 @@ class AnsPress_Activity_Hook
 	 * @param  integer $question_id Post ID.
 	 */
 	public function new_question($question_id) {
-		$question = get_post( $question_id );
+		$question = ap_get_post( $question_id );
 
 		$question_title = '<a class="ap-q-link" href="'. wp_get_shortlink( $question_id ) .'">'. get_the_title( $question_id ) .'</a>';
 
@@ -99,8 +99,8 @@ class AnsPress_Activity_Hook
 	 * @param  integer $answer_id Post ID.
 	 */
 	public function new_answer($answer_id) {
-		$answer = get_post( $answer_id );
-		$question = get_post( $answer->post_parent );
+		$answer = ap_get_post( $answer_id );
+		$question = ap_get_post( $answer->post_parent );
 
 		$answer_title = '<a class="ap-q-link" href="'. wp_get_shortlink( $answer_id ) .'">'. get_the_title( $answer_id ) .'</a>';
 
@@ -139,7 +139,7 @@ class AnsPress_Activity_Hook
 	 * @param  integer $post_id Post ID.
 	 */
 	public function edit_question($post_id) {
-		$question = get_post( $post_id );
+		$question = ap_get_post( $post_id );
 
 		$question_title = '<a class="ap-q-link" href="'. wp_get_shortlink( $post_id ) .'">'. get_the_title( $post_id ) .'</a>';
 
@@ -173,7 +173,7 @@ class AnsPress_Activity_Hook
 	 * @param  integer $post_id Post ID.
 	 */
 	public function edit_answer($post_id) {
-		$answer = get_post( $post_id );
+		$answer = ap_get_post( $post_id );
 
 		$answer_title = '<a class="ap-q-link" href="'. wp_get_shortlink( $post_id ) .'">'. get_the_title( $post_id ) .'</a>';
 
@@ -208,7 +208,7 @@ class AnsPress_Activity_Hook
 	 * @param  object $comment Comment object.
 	 */
 	public function new_comment($comment) {
-		$post = get_post( $comment->comment_post_ID );
+		$post = ap_get_post( $comment->comment_post_ID );
 
 		if ( ! ('question' == $post->post_type || 'answer' == $post->post_type) ) {
 			return;
@@ -263,8 +263,8 @@ class AnsPress_Activity_Hook
 	 */
 	public function select_answer($user_id, $question_id, $answer_id) {
 
-		$question = get_post( $question_id );
-		$answer = get_post( $answer_id );
+		$question = ap_get_post( $question_id );
+		$answer = ap_get_post( $answer_id );
 
 		$question_title = '<a class="ap-q-link" href="'. wp_get_shortlink( $question_id ) .'">'. $question->post_title .'</a>';
 
@@ -304,7 +304,7 @@ class AnsPress_Activity_Hook
 	 * @param  integer $answer_id   Answer ID.
 	 */
 	public function unselect_answer($user_id, $question_id, $answer_id) {
-		$answer = get_post( $answer_id );
+		$answer = ap_get_post( $answer_id );
 		$question_title = '<a class="ap-q-link" href="'. wp_get_shortlink( $question_id ) .'">'. get_the_title( $question_id ) .'</a>';
 
 		$activity_arr = array(
@@ -329,7 +329,7 @@ class AnsPress_Activity_Hook
 	 * @param  integer $post_id Post ID.
 	 */
 	public function trash_post( $post_id ) {
-		$post = get_post( $post_id );
+		$post = ap_get_post( $post_id );
 		ap_change_post_activities_status( $post_id, 'trash' );
 
 		if( 'answer' == $post->post_type ){
@@ -345,7 +345,7 @@ class AnsPress_Activity_Hook
 	 * @param  integer $answer_id Answer id.
 	 */
 	public function untrash_post( $answer_id ) {
-		$post = get_post( $answer_id );
+		$post = ap_get_post( $answer_id );
 		ap_change_post_activities_status( $answer_id, 'publish' );
 
 		if( 'answer' == $post->post_type ){
@@ -375,7 +375,7 @@ class AnsPress_Activity_Hook
 	 */
 	public function trash_comment($comment_id) {
 		$comment = get_comment( $comment_id );
-		$post = get_post( $comment->comment_post_ID );
+		$post = ap_get_post( $comment->comment_post_ID );
 
 		if ( ! ('question' == $post->post_type || 'answer' == $post->post_type) ) {
 			return;
@@ -389,7 +389,7 @@ class AnsPress_Activity_Hook
 	 * @param  object $comment Comment object.
 	 */
 	public function comment_approved($comment) {
-		$post = get_post( $comment->comment_post_ID );
+		$post = ap_get_post( $comment->comment_post_ID );
 
 		if ( ! ('question' == $post->post_type || 'answer' == $post->post_type) ) {
 			return;
@@ -405,7 +405,7 @@ class AnsPress_Activity_Hook
 	public function delete_comment( $comment_id ) {
 
 		$comment = get_comment( $comment_id );
-		$post = get_post( $comment->comment_post_ID );
+		$post = ap_get_post( $comment->comment_post_ID );
 
 		if( !$post ){
 			return;
@@ -456,7 +456,7 @@ class AnsPress_Activity_Hook
 	public function notify_upvote($userid, $type, $actionid, $receiving_userid) {
 
 		if ( 'vote_up' == $type ) {
-			$post = get_post( $actionid );
+			$post = ap_get_post( $actionid );
 			$activity_arr = array(
 				'user_id' 			=> $userid,
 				'type' 				=> 'vote_up',
@@ -494,7 +494,7 @@ class AnsPress_Activity_Hook
 
 	public function edit_comment($comment_id) {
 		$comment = get_comment( $comment_id );
-		$post = get_post( $comment->comment_post_ID );
+		$post = ap_get_post( $comment->comment_post_ID );
 
 		if ( ! ('question' == $post->post_type || 'answer' == $post->post_type) ) {
 			return;

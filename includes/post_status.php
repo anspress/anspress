@@ -71,7 +71,7 @@ class AnsPress_Post_Status
 	        ap_ajax_json('no_permission' );
 	    }
 
-		$post = get_post( $post_id );
+		$post = ap_get_post( $post_id );
 
 	   	// Check if post is question or answer and new post status is not same as old.
 	   	if ( ! in_array( $post->post_type, [ 'question', 'answer' ] ) || $post->post_status == $status ) {
@@ -120,7 +120,7 @@ class AnsPress_Post_Status
  * @return 	null|string
  */
 function ap_post_change_status_btn_html( $post_id = false ) {
-	$post = get_post( $post_id );
+	$post = ap_get_post( $post_id );
 
 	if ( ap_user_can_change_status( $post_id ) ) {
 		$action = 'change_post_status_'.$post_id;
@@ -167,7 +167,7 @@ function ap_post_change_status_btn_html( $post_id = false ) {
  * @return string
  */
 function ap_post_status_description($post_id = false) {
-	$post = get_post( $post_id );
+	$post = ap_get_post( $post_id );
 	$post_type = $post->post_type == 'question' ? __( 'Question', 'anspress-question-answer' ) : __( 'Answer', 'anspress-question-answer' );
 
 	if ( ap_have_parent_post( $post_id ) && $post->post_type != 'answer' ) : ?>

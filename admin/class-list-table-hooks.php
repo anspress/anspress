@@ -54,7 +54,7 @@ class AP_List_Table_Hooks{
 			return;
 		}
 
-		$question = get_post( $post->post_parent );
+		$question = ap_get_post( $post->post_parent );
 		echo '<a href="'.get_permalink( $post->post_parent ).'" class="row-title">'.$question->post_title.'</a>';
 
 		$content = get_the_excerpt();

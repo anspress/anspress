@@ -609,14 +609,14 @@ function ap_get_activity_action_title($args) {
 			break;
 
 		case 'vote_up':
-			$post = get_post( $args['item_id'] );
+			$post = ap_get_post( $args['item_id'] );
 			$cpt_type = $post->post_type == 'question' ? __( 'question', 'anspress-question-answer' ) : __( 'answer', 'anspress-question-answer' );
 			$title = '<a class="ap-q-link" href="'. $args['permalink'] .'">'. $post->post_title .'</a>';
 			$content .= sprintf( __( '%s voted up on %s %s', 'anspress-question-answer' ), $user, $cpt_type, $title );
 			break;
 
 		case 'reputation_gain':
-			$post = get_post( $args['item_id'] );
+			$post = ap_get_post( $args['item_id'] );
 			$title = '<a class="ap-q-link" href="'. $args['permalink'] .'">'. $post->post_title .'</a>';
 			$content .= sprintf( __( '%s received %d reputation on %s', 'anspress-question-answer' ), $user, $args['reputation'], $title );
 			break;
@@ -742,7 +742,7 @@ function ap_post_active_time($post_id = false, $html = true, $answer_activities 
 		$post_id = get_the_ID();
 	}
 
-	$post = get_post( $post_id );
+	$post = ap_get_post( $post_id );
 
 	$activity = ap_post_activity_meta( $post_id, $answer_activities );
 
@@ -772,7 +772,7 @@ function ap_latest_post_activity_html($post_id = false, $answer_activities = fal
 		$post_id = get_the_ID();
 	}
 
-	$post = get_post( $post_id );
+	$post = ap_get_post( $post_id );
 	$activity = ap_post_activity_meta( $post_id, $answer_activities );
 
 	if ( $activity ) {
@@ -821,7 +821,7 @@ function ap_get_activities( $args = '' ) {
 function ap_post_activities_id($post_id) {
 	global $wpdb;
 
-	$post_arr = get_post( $post_id );
+	$post_arr = ap_get_post( $post_id );
 
 	if ( ! $post_arr ) {
 		return;
@@ -929,7 +929,7 @@ function ap_update_activities( $where, $columns ) {
  * @return boolean|integer
  */
 function ap_change_post_activities_status( $post_id, $status ) {
-	$postarr = get_post( $post_id );
+	$postarr = ap_get_post( $post_id );
 
 	if ( ! $postarr ) {
 		return;
@@ -1211,7 +1211,7 @@ function ap_update_post_activity_meta( $post, $type, $user_id, $append_to_questi
 		$date = current_time( 'mysql' );
 	}
 
-	$post_o = get_post( $post );
+	$post_o = ap_get_post( $post );
 	$meta_val = compact('type', 'user_id', 'date' );
 
 	// Append to question activity meta. So that it can shown in question list.
@@ -1230,7 +1230,7 @@ function ap_update_post_activity_meta( $post, $type, $user_id, $append_to_questi
  * @since 2.4.7
  */
 function ap_update_post_activity_timestamp( $post ) {
-	$post = get_post( $post );
+	$post = ap_get_post( $post );
 
 	if ( 'answer' == $post->post_type ) {
 		update_post_meta( $post->post_parent, ANSPRESS_UPDATED_META, current_time( 'mysql' ) );

@@ -1,6 +1,10 @@
 <?php
 
 class AP_QA_Query_Hooks{
+	public static function wp(){
+		global $post;
+		var_dump($post);
+	}
 
 	public static function sql_filter($sql, $args) {
 		global $wpdb;

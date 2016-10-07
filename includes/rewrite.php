@@ -63,7 +63,7 @@ class AnsPress_Rewrite
 		$base_page_id 		= ap_opt( 'base_page' );
 
 		// Try to create base page if doesn't exists.
-		if ( ! get_post( $base_page_id ) ) {
+		if ( ! ap_get_post( $base_page_id ) ) {
 			ap_create_base_page();
 		}
 

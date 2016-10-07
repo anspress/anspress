@@ -168,7 +168,7 @@ function ap_user_can_answer( $question_id, $user_id = false ) {
 		return true;
 	}
 
-	$question = get_post( $question_id );
+	$question = ap_get_post( $question_id );
 
 	/**
 	 * Allow overriding of ap_user_can_answer.
@@ -256,14 +256,14 @@ function ap_user_can_select_answer($post_id, $user_id = false) {
 		return true;
 	}
 
-	$answer 	= get_post( $post_id );
+	$answer 	= ap_get_post( $post_id );
 
 	// If not answer then return false.
 	if ( 'answer' != $answer->post_type ) {
 		return false;
 	}
 
-	$question 	= get_post( $answer->post_parent );
+	$question 	= ap_get_post( $answer->post_parent );
 
 	if ( $user_id == $question->post_author ) {
 		return true;
@@ -288,7 +288,7 @@ function ap_user_can_edit_answer( $post_id, $user_id = false ) {
 		return true;
 	}
 
-	$answer = get_post( $post_id );
+	$answer = ap_get_post( $post_id );
 
 	/**
 	 * Filter to hijack ap_user_can_edit_answer. This filter will be applied if filter
@@ -339,7 +339,7 @@ function ap_user_can_edit_question( $post_id = false, $user_id = false ) {
 	}
 
 	if ( false !== $post_id ) {
-		$question = get_post( $post_id );
+		$question = ap_get_post( $post_id );
 	} else {
 		global $post;
 		$question = $post;
@@ -423,7 +423,7 @@ function ap_user_can_comment( $post_id = false, $user_id = false ) {
 		return false;
 	}
 
-	$post_o = get_post( $post_id );
+	$post_o = ap_get_post( $post_id );
 
 	// Do not allow to comment if post is moderate.
 	if ( 'moderate' === $post_o->post_status ) {
@@ -530,7 +530,7 @@ function ap_user_can_delete_post( $post_id, $user_id = false ) {
 		return true;
 	}
 
-	$post_o = get_post( $post_id );
+	$post_o = ap_get_post( $post_id );
 	$type = $post_o->post_type;
 
 	/**
@@ -637,7 +637,7 @@ function ap_user_can_view_private_post( $post_id, $user_id = false ) {
 		return true;
 	}
 
-	$post_o = get_post( $post_id );
+	$post_o = ap_get_post( $post_id );
 
 	if ( $post_o->post_author == $user_id ) {
 		return true;
@@ -645,7 +645,7 @@ function ap_user_can_view_private_post( $post_id, $user_id = false ) {
 
 	// Also allow question author to see all private answers.
 	if ( 'answer' == $post_o->post_type ) {
-		$question = get_post( $post_o->post_parent );
+		$question = ap_get_post( $post_o->post_parent );
 
 		if ( $question->post_author == $user_id ) {
 			return true;
@@ -675,7 +675,7 @@ function ap_user_can_view_moderate_post( $post_id, $user_id = false ) {
 		return true;
 	}
 
-	$post_o = get_post( $post_id );
+	$post_o = ap_get_post( $post_id );
 
 	if ( $post_o->post_author == $user_id ) {
 		return true;
@@ -704,7 +704,7 @@ function ap_user_can_view_future_post( $post_id, $user_id = false ) {
 		return true;
 	}
 
-	$post_o = get_post( $post_id );
+	$post_o = ap_get_post( $post_id );
 
 	if ( $post_o->post_author == $user_id ) {
 		return true;
@@ -727,7 +727,7 @@ function ap_user_can_view_post($post_id = false, $user_id = false) {
 		return true;
 	}
 
-	$post_o = get_post( $post_id );
+	$post_o = ap_get_post( $post_id );
 
 	if ( 'private_post' == $post_o->post_status && ap_user_can_view_private_post( $post_o->ID, $user_id ) ) {
 		return true;
@@ -774,7 +774,7 @@ function ap_user_can_change_status( $post_id, $user_id = false ) {
 		return true;
 	}
 
-	$post_o = get_post( $post_id );
+	$post_o = ap_get_post( $post_id );
 
 	/**
 	 * Filter to hijack ap_user_can_change_status.
@@ -859,7 +859,7 @@ function ap_user_can_delete_attachment( $attacment_id, $user_id = false ) {
 		return true;
 	}
 
-	$attachment = get_post( $attacment_id );
+	$attachment = ap_get_post( $attacment_id );
 
 	if ( ! $attachment ) {
 		return false;
@@ -1005,7 +1005,7 @@ function ap_user_can_read_post( $post_id, $user_id = false, $post_type = false )
 		$user_id = get_current_user_id();
 	}
 
-	$post_o = get_post( $post_id );
+	$post_o = ap_get_post( $post_id );
 
 	if ( false === $post_type ) {
 		$post_type = $post_o->post_type;
@@ -1044,7 +1044,7 @@ function ap_user_can_read_post( $post_id, $user_id = false, $post_type = false )
 
 	// If Answer, check if user can read parent question.
 	if ( 'answer' == $post_type ) {
-		$answer = get_post( $post_o->post_parent );
+		$answer = ap_get_post( $post_o->post_parent );
 		if ( 'private_post' == $answer->post_status && ! ap_user_can_view_private_post( $answer->ID, $user_id ) ) {
 			return false;
 		} elseif ( 'moderate' == $answer->post_status && ! ap_user_can_view_moderate_post( $answer->ID, $user_id ) ) {
@@ -1123,7 +1123,7 @@ function ap_user_can_vote_on_post( $post_id, $type, $user_id = false, $wp_error 
 
 	$type = $type == 'vote_up' ? 'vote_up' : 'vote_down';
 
-	$post_o = get_post( $post_id );
+	$post_o = ap_get_post( $post_id );
 
 	/**
 	 * Filter to hijack ap_user_can_vote_on_post.

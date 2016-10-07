@@ -243,7 +243,7 @@ class AnsPress_Admin_Ajax
 		$args = $_POST['args'];
 
 		if ( current_user_can( 'manage_options' ) && wp_verify_nonce( $_POST['__nonce'], 'admin_vote' ) ) {
-			$post = get_post( $args[0] );
+			$post = ap_get_post( $args[0] );
 
 			if ( $post ) {
 				$count = ( $args[1] == 'up' ? (1)  : ( -1 ) );

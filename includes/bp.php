@@ -216,7 +216,7 @@ class AnsPress_BP
 	   	$amount = 'single';
 
 	   	if ( strrpos( $action, 'new_answer' ) !== false ) {
-	   		$answer = get_post( $activity_id );
+	   		$answer = ap_get_post( $activity_id );
 
 	   		if ( $answer ) {
 				$notification_link  = get_permalink( $answer->ID );
@@ -233,7 +233,7 @@ class AnsPress_BP
 			}
 		} elseif ( strrpos( $action, 'new_comment' ) !== false ) {
 			$comment = get_comment( $activity_id );
-			$post  = get_post( $comment->comment_post_ID );
+			$post  = ap_get_post( $comment->comment_post_ID );
 			$notification_link  = get_permalink( $comment->comment_post_ID );
 
 			$type = $post->post_type == 'question' ? __( 'question', 'anspress-question-answer' ) : __( 'answer', 'anspress-question-answer' );
@@ -269,7 +269,7 @@ class AnsPress_BP
 	public function add_new_answer_notification( $post_id ) {
 	    if ( bp_is_active( 'notifications' ) ) {
 	    	global $bp;
-	    	$answer = get_post( $post_id );
+	    	$answer = ap_get_post( $post_id );
 
 	    	$participants = ap_get_parti( $answer->post_parent );
 
@@ -297,7 +297,7 @@ class AnsPress_BP
 		$comment = (object) $comment;
 	    if ( bp_is_active( 'notifications' ) ) {
 	    	global $bp;
-	    	$post = get_post( $comment->comment_post_ID );
+	    	$post = ap_get_post( $comment->comment_post_ID );
 
 	    	if ( $post->post_type == 'answer' ) {
 	    		$participants = ap_get_parti( false, false, $comment->comment_post_ID ); }

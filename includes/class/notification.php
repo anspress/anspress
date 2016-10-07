@@ -65,7 +65,7 @@ class AP_Notification
 	 */
 	public function after_new_answer($post_id, $post) {
 		if ( ap_is_profile_active() ) {
-			$question = get_post( $post->post_parent );
+			$question = ap_get_post( $post->post_parent );
 			ap_insert_notification( $post->post_author, $question->post_author, 'new_answer', array( 'post_id' => $post_id ) );
 		}
 	}
@@ -100,7 +100,7 @@ class AP_Notification
 		if ( ap_is_profile_active() ) {
 		    $comment = (object) $comment;
 
-		    $post = get_post( $comment->comment_post_ID );
+		    $post = ap_get_post( $comment->comment_post_ID );
 		    if ( $post->post_type == 'question' ) {
 		    	ap_insert_notification( $comment->user_id, $post->post_author, 'comment_on_question', array( 'post_id' => $post->ID, 'comment_id' => $comment->comment_ID ) );
 		    } elseif ( $post->post_type == 'answer' ) {

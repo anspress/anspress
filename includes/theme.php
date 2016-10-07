@@ -233,7 +233,7 @@ function ap_have_parent_post($post_id = false) {
 	}
 
 	// Get post.
-	$post_o = get_post( $post_id );
+	$post_o = ap_get_post( $post_id );
 
 	if ( $post_o->post_parent > 0 && 'question' == $post_o->post_type ) {
 		return true;
@@ -680,7 +680,7 @@ function ap_how_to_ask() {
  */
 function ap_get_how_to_ask() {
 	if ( ap_opt( 'question_help_page' ) != '' ) {
-		$help = get_post( (int) ap_opt( 'question_help_page' ) );
+		$help = ap_get_post( (int) ap_opt( 'question_help_page' ) );
 		if ( $help ) {
 			return apply_filters( 'the_content', $help->post_content );
 		}
@@ -708,7 +708,7 @@ function ap_how_to_answer() {
 function ap_get_how_to_answer() {
 
 	if ( ap_opt( 'answer_help_page' ) != '' ) {
-		$help = get_post( (int) ap_opt( 'answer_help_page' ) );
+		$help = ap_get_post( (int) ap_opt( 'answer_help_page' ) );
 
 		return $help->post_content;
 	}

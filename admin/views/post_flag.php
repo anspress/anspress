@@ -17,7 +17,7 @@ $post_id = (int) $_GET['post_id'];
 global $post;
 
 // Assign your post details to $post (& not any other variable name!!!!)
-$post = get_post( $post_id );
+$post = ap_get_post( $post_id );
 
 setup_postdata( $post );
 

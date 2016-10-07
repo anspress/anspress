@@ -391,7 +391,7 @@ class AnsPress_Admin
 			if ( ! isset( $post_parent ) ) {
 				echo '<p class="no-q-selected">'.__( 'This question is orphan, no question is selected for this answer', 'anspress-question-answer' ).'</p>';
 			} else {
-				$q = get_post( $post_parent );
+				$q = ap_get_post( $post_parent );
 				$answer = get_post_meta( $q->ID, ANSPRESS_ANS_META, true );
 				echo '<a class="ap-q-title" href="'. get_permalink( $q->post_id ) .'">'. $q->post_title .'</a>';
 				echo '<div class="ap-q-meta"><span class="ap-a-count">'.sprintf( _n( '1 Answer', '%d Answers', $answer, 'anspress-question-answer' ), $answer ).'</span><span class="ap-edit-link">| <a href="'.get_edit_post_link( $q->ID ).'">'. __( 'Edit question', 'anspress-question-answer' ).'</a></span></div>';

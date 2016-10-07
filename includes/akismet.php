@@ -9,7 +9,7 @@ function ap_check_spam( $post_id ) {
 		return;
 	}
 
-	$post = get_post($post_id );
+	$post = ap_get_post($post_id );
 
 	// Set default arguments to pass.
 	$defaults = array(

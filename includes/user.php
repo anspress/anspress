@@ -686,7 +686,7 @@ function ap_is_user_page_public($page) {
 	 * @since 2.3
 	 */
 function ap_update_user_questions_count_meta($question_id) {
-	$post = get_post( $question_id );
+	$post = ap_get_post( $question_id );
 
 	if ( $post->post_type == 'question' ) {
 		update_user_meta( $post->post_author, '__total_questions', ap_user_question_count( $post->post_author ) ); }
@@ -699,7 +699,7 @@ function ap_update_user_questions_count_meta($question_id) {
 	 * @since 2.3
 	 */
 function ap_update_user_answers_count_meta($answer_id) {
-	$post = get_post( $answer_id );
+	$post = ap_get_post( $answer_id );
 
 	if ( $post->post_type == 'answer' ) {
 		update_user_meta( $post->post_author, '__total_answers', ap_user_answer_count( $post->post_author ) ); }

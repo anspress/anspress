@@ -91,7 +91,7 @@ class AP_Reputation {
 	 * @return boolean|null
 	 */
 	public static function new_answer($postid) {		
-		$post = get_post( $postid );
+		$post = ap_get_post( $postid );
 		$reputation = ap_reputation_by_event( 'new_answer', true );
 		return ap_reputation( 'answer', get_current_user_id(), $reputation, $postid, $post->post_author );
 	}
@@ -116,7 +116,7 @@ class AP_Reputation {
 	public static function select_answer($userid, $question_id, $answer_id) {
 		$reputation = ap_reputation_by_event( 'select_answer', true );
 		$selector_reputation = ap_reputation_by_event( 'selecting_answer', true );
-		$answer = get_post( $answer_id );
+		$answer = ap_get_post( $answer_id );
 
 		if ( $answer->post_author != $userid ) {
 			ap_reputation( 'best_answer', $answer->post_author, $reputation, $answer_id, $answer->post_author );
@@ -136,7 +136,7 @@ class AP_Reputation {
 	public static function unselect_answer($userid, $question_id, $answer_id) {
 		$reputation = ap_reputation_by_event( 'select_answer', true );
 		$selector_reputation = ap_reputation_by_event( 'selecting_answer', true );
-		$answer = get_post( $answer_id );
+		$answer = ap_get_post( $answer_id );
 
 		if ( $answer->post_author != $userid ) {
 			ap_reputation_log_delete( 'best_answer', $answer->post_author, $reputation, $answer_id );
@@ -152,7 +152,7 @@ class AP_Reputation {
 	 * @return null|false
 	 */
 	public static function vote_up($postid, $counts) {
-		$post = get_post( $postid );
+		$post = ap_get_post( $postid );
 
 		// Give reputation to post author.
 		if ( $post->post_type == 'question' ) {
@@ -189,7 +189,7 @@ class AP_Reputation {
 	 * @return boolean
 	 */
 	public static function vote_down($postid, $counts) {
-		$post = get_post( $postid );
+		$post = ap_get_post( $postid );
 
 		// give reputation to post author
 		if ( $post->post_type == 'question' ) {
@@ -226,7 +226,7 @@ class AP_Reputation {
 	 * @return boolean
 	 */
 	public static function undo_vote_up($postid, $counts) {
-		$post = get_post( $postid );
+		$post = ap_get_post( $postid );
 
 		// give reputation to post author
 		if ( $post->post_type == 'question' ) {
@@ -258,7 +258,7 @@ class AP_Reputation {
 	 * @return false|null
 	 */
 	public static function undo_vote_down($postid, $counts) {
-		$post = get_post( $postid );
+		$post = ap_get_post( $postid );
 
 		// give reputation to post author
 		if ( $post->post_type == 'question' ) {

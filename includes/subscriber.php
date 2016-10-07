@@ -209,7 +209,7 @@ function ap_subscribers_count($item_id = false, $activity = 'q_all') {
  * @since 2.0.0-alpha2
  */
 function ap_subscriber_count_html( $post = false ) {
-	$post = get_post( $post );
+	$post = ap_get_post( $post );
 
 	$subscribed = ap_is_user_subscribed( $post->ID, 'q_all' );
 
@@ -362,7 +362,7 @@ function ap_question_subscribers($action_id = false, $type = '', $avatar_size = 
  */
 function ap_subscribe_question( $posta, $user_id = false ) {
 	if ( ! is_object( $posta ) || ! isset( $posta->post_type ) ) {
-		$posta = get_post( $posta );
+		$posta = ap_get_post( $posta );
 	}
 
 	// Return if not question.
@@ -465,7 +465,7 @@ function ap_add_comment_subscriber( $comment, $user_id = false ) {
 	}
 
 	$comment = get_comment( $comment );
-	$post = get_post( $comment->comment_post_ID );
+	$post = ap_get_post( $comment->comment_post_ID );
 	$question_id = $post->post_type == 'question' ? $post->ID : $post->post_parent;
 	$answer_id = $post->post_type == 'answer' ? $post->ID : 0;
 	return ap_new_subscriber( $user_id, $post->ID, 'comment', $question_id, $answer_id );
@@ -484,7 +484,7 @@ function ap_remove_comment_subscriber( $comment, $user_id = false ) {
 	}
 
 	$comment = get_comment( $comment );
-	$post = get_post( $comment->comment_post_ID );
+	$post = ap_get_post( $comment->comment_post_ID );
 	$question_id = $post->post_type == 'question' ? $post->ID : $post->post_parent;
 	$answer_id = $post->post_type == 'answer' ? $post->ID : 0;
 	return ap_remove_subscriber( $post->ID, $user_id, 'comment', false, $question_id, $answer_id );

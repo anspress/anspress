@@ -125,7 +125,7 @@ class AnsPress_Ajax
 	        ap_ajax_json( 'something_wrong' );
 	    }
 
-	    $post = get_post( $answer_id );
+	    $post = ap_get_post( $answer_id );
 
 	    // Unselect best answer if already selected.
 	    if ( ap_have_answer_selected( $post->post_parent ) ) {
@@ -182,7 +182,7 @@ class AnsPress_Ajax
 			ap_ajax_json( 'something_wrong' );
 		}
 
-		$post = get_post( $post_id );
+		$post = ap_get_post( $post_id );
 
 		// Delete lock feature.
 		// Do not allow to delete if defined time elapsed.
@@ -236,7 +236,7 @@ class AnsPress_Ajax
 			ap_ajax_json( 'something_wrong' );
 		}
 
-		$post = get_post( $post_id );
+		$post = ap_get_post( $post_id );
 
 		// Die if not question or answer post type.
 		if ( ! in_array( $post->post_type, [ 'question', 'answer' ] ) ) {
@@ -292,7 +292,7 @@ class AnsPress_Ajax
 			ap_ajax_json( 'something_wrong' );
 		}
 
-		$post = get_post( $args[0] );
+		$post = ap_get_post( $args[0] );
 
 		// Die if not question or answer post type.
 		if ( ! in_array( $post->post_type, [ 'question', 'answer' ] ) ) {
@@ -319,7 +319,7 @@ class AnsPress_Ajax
 			ap_ajax_json( 'no_permission' );
 		}
 
-		$post = get_post( $post_id );
+		$post = ap_get_post( $post_id );
 		$featured_questions = (array) get_option( 'featured_questions' );
 
 		// Do nothing if post type is not question.
@@ -644,7 +644,7 @@ class AnsPress_Ajax
 			}
 		}
 
-		$post = get_post( $comment_post_ID );
+		$post = ap_get_post( $comment_post_ID );
 
 		if ( ! $post || empty( $post->post_status ) ) {
 			$this->something_wrong();

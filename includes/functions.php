@@ -15,7 +15,7 @@
  * @since  3.0.0 Return `questions` if base page is not selected.
  */
 function ap_base_page_slug() {
-	$base_page = get_post( ap_opt( 'base_page' ) );
+	$base_page = ap_get_post( ap_opt( 'base_page' ) );
 
 	if ( ! $base_page ) {
 		return 'questions';
@@ -24,7 +24,7 @@ function ap_base_page_slug() {
 	$slug = $base_page->post_name;
 
 	if ( $base_page->post_parent > 0 ) {
-		$parent_page = get_post( $base_page->post_parent );
+		$parent_page = ap_get_post( $base_page->post_parent );
 		$slug = $parent_page->post_name.'/'.$slug;
 	}
 
@@ -362,7 +362,7 @@ function ap_answers_link( $question_id = false ) {
 function ap_post_edit_link($post_id_or_object) {
 
 	if ( ! is_object( $post_id_or_object ) ) {
-		$post_id_or_object = get_post( $post_id_or_object );
+		$post_id_or_object = ap_get_post( $post_id_or_object );
 	}
 
 	$post = $post_id_or_object;
@@ -387,7 +387,7 @@ function ap_post_edit_link($post_id_or_object) {
 function ap_edit_post_link_html($echo = false, $post_id_or_object = false) {
 
 	if ( ! is_object( $post_id_or_object ) ) {
-		$post_id_or_object = get_post( $post_id_or_object );
+		$post_id_or_object = ap_get_post( $post_id_or_object );
 	}
 
 	$post = $post_id_or_object;
@@ -559,7 +559,7 @@ function ap_selected_answer($post_id = false) {
  * @return null|string
  */
 function ap_select_answer_btn_html( $post ) {
-	$ans = get_post( $post );
+	$ans = ap_get_post( $post );
 
 	if ( ! ap_user_can_select_answer( $ans->ID ) ) {
 		return;
@@ -567,7 +567,7 @@ function ap_select_answer_btn_html( $post ) {
 
 	$action = 'answer-'. $ans->ID;
 	$nonce = wp_create_nonce( $action );
-
+	var_dump(ap_is_selected( $ans->ID ));
 	if ( ! ap_have_answer_selected( $ans->post_parent ) ) {
 		return '<a href="#" class="ap-btn-select ap-sicon '.ap_icon( 'check' ).' ap-tip" data-action="select_answer" data-query="answer_id='.$ans->ID.'&__nonce='.$nonce.'&ap_ajax_action=select_best_answer" title="'.__( 'Select this answer as best', 'anspress-question-answer' ).'">'.__( 'Select', 'anspress-question-answer' ).'</a>';
 	} elseif ( ap_have_answer_selected( $ans->post_parent ) && ap_is_selected( $ans->ID ) ) {
@@ -1457,7 +1457,7 @@ function ap_clear_unused_attachments() {
 
 function ap_set_attachment_post_parent($attachment_id, $post_parent) {
 
-	$attach = get_post( $attachment_id );
+	$attach = ap_get_post( $attachment_id );
 
 	if ( $attach && $attach->post_type == 'attachment' ) {
 		$postarr = array(
@@ -1504,7 +1504,7 @@ function ap_create_base_page() {
 	// Check if page already exists.
 	$page_id = ap_opt( 'base_page' );
 
-	$post = get_post( $page_id );
+	$post = ap_get_post( $page_id );
 
 	if ( ! $post ) {
 		$args = array();
@@ -1519,7 +1519,7 @@ function ap_create_base_page() {
 		$new_page_id = wp_insert_post( $args );
 
 		if ( $new_page_id ) {
-			$page = get_post( $new_page_id );
+			$page = ap_get_post( $new_page_id );
 			ap_opt( 'base_page', $page->ID );
 			ap_opt( 'base_page_id', $page->post_name );
 		}

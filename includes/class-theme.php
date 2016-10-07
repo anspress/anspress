@@ -198,7 +198,7 @@ class AnsPress_Theme
 
 			// Check if quesied object is set, if not then set base page object.
 			if ( ! isset( $wp_query->queried_object ) ) {
-				$wp_query->queried_object = get_post( ap_opt( 'base_page' ) );
+				$wp_query->queried_object = ap_get_post( ap_opt( 'base_page' ) );
 			}
 
 			$wp_query->queried_object->post_title = ap_page_title();
@@ -252,7 +252,7 @@ class AnsPress_Theme
 		$post_id = (int) $_POST['args'][0];
 
 		global $post;
-		$post = get_post( $post_id, OBJECT );
+		$post = ap_get_post( $post_id, OBJECT );
 		setup_postdata( $post );
 
 		$actions = ap_post_actions();

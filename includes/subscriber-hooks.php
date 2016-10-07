@@ -61,7 +61,7 @@ class AnsPress_Subscriber_Hooks
 	 * @param  object $comment Comment object.
 	 */
 	public static function after_new_comment($comment) {
-		$post = get_post( $comment->comment_post_ID );
+		$post = ap_get_post( $comment->comment_post_ID );
 
 		$type = 'q_post';
 		$question_id = $post->ID;
@@ -82,7 +82,7 @@ class AnsPress_Subscriber_Hooks
 	 */
 	public static function unpublish_comment($comment) {
 		$comment = (object) $comment;
-		$post = get_post( $comment->comment_post_ID );
+		$post = ap_get_post( $comment->comment_post_ID );
 
 		if ( $post->post_type == 'question' ) {
 			ap_remove_subscriber( $post->ID, $comment->user_id, 'q_post' );

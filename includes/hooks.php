@@ -59,6 +59,7 @@ class AnsPress_Hooks
 		anspress()->add_action( 'posts_clauses', 'AnsPress_Query_Filter', 'ap_question_subscription_query', 10, 2 );
 		anspress()->add_filter( 'the_posts', 'AnsPress_Query_Filter', 'restricted_answer_contents', 10, 2 );*/
 
+		anspress()->add_action( 'wp', 'AP_QA_Query_Hooks', 'wp');
 		anspress()->add_filter( 'posts_clauses', 'AP_QA_Query_Hooks', 'sql_filter', 10, 2 );
 		anspress()->add_filter( 'posts_results', 'AP_QA_Query_Hooks', 'posts_results', 10, 2 );
 
@@ -213,7 +214,7 @@ class AnsPress_Hooks
 	 * @param  integer $post_id Question or answer ID.
 	 */
 	public static function before_delete($post_id) {
-		$post = get_post( $post_id );
+		$post = ap_get_post( $post_id );
 
 		if ( $post->post_type == 'question' ) {
 			do_action( 'ap_before_delete_question', $post->ID );
@@ -238,7 +239,7 @@ class AnsPress_Hooks
 	 * @since 2.0.0
 	 */
 	public static function trash_post_action($post_id) {
-	    $post = get_post( $post_id );
+	    $post = ap_get_post( $post_id );
 
 	    if ( $post->post_type == 'question' ) {
 	        do_action( 'ap_trash_question', $post->ID, $post );
@@ -302,7 +303,7 @@ class AnsPress_Hooks
 	 * @since 2.0.0
 	 */
 	public static function untrash_ans_on_question_untrash($post_id) {
-	    $post = get_post( $post_id );
+	    $post = ap_get_post( $post_id );
 
 	    if ( $post->post_type == 'question' ) {
 	        do_action( 'ap_untrash_question', $post->ID );
@@ -375,7 +376,7 @@ class AnsPress_Hooks
 	public static function publish_comment($comment) {
 	    $comment = (object) $comment;
 
-	    $post = get_post( $comment->comment_post_ID );
+	    $post = ap_get_post( $comment->comment_post_ID );
 
 	    if ( $post->post_type == 'question' ) {
 	        // Set updated meta for sorting purpose.

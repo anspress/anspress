@@ -245,7 +245,7 @@ class AnsPress_Process_Form
 			return;
 		}
 
-		$post = get_post( $this->fields['edit_post_id'] );
+		$post = ap_get_post( $this->fields['edit_post_id'] );
 		$user_id = get_current_user_id();
 
 		$question_array = array(
@@ -296,7 +296,7 @@ class AnsPress_Process_Form
 		ap_captcha_verification_response();
 
 		global $ap_errors, $validate;
-		$question = get_post( (int) $_POST['form_question_id'] );
+		$question = ap_get_post( (int) $_POST['form_question_id'] );
 
 		// Check if user have permission to answer a question.
 		if ( ! ap_user_can_answer( $question->ID ) ) {
@@ -391,7 +391,7 @@ class AnsPress_Process_Form
 			return;
 		}
 
-		$answer = get_post( $this->fields['edit_post_id'] );
+		$answer = ap_get_post( $this->fields['edit_post_id'] );
 		$answer_array = array(
 			'ID'				=> $this->fields['edit_post_id'],
 			'post_author'		=> $answer->post_author,
@@ -533,7 +533,7 @@ class AnsPress_Process_Form
 		// If attchment ids present then user have uploaded images.
 		if ( is_array( $attachment_ids ) && count( $attachment_ids ) > 0 ) {
 			foreach ( $attachment_ids as $id ) {
-				$attach = get_post( $id );
+				$attach = ap_get_post( $id );
 
 				if ( $attach && 'attachment' == $attach->post_type && $user_id == $attach->post_author ) {
 					ap_set_attachment_post_parent( $attach->ID, $post_id ); }

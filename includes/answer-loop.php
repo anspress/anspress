@@ -267,12 +267,9 @@ function ap_answer_user_can_view() {
  * @since 2.1
  */
 function ap_is_selected( $answer ) {
-	$post = get_post( $answer );
-	return $post->is_selected;
+	$post = ap_get_post( $answer );
+	return $post->selected;
 }
-
-
-
 
 /**
  * Output comment template if enabled.
@@ -342,7 +339,7 @@ function ap_count_other_answer($question_id = false) {
  * @param  integer $post_id Post ID.
  */
 function ap_unselect_answer( $post_id ) {
-	$post = get_post( $post_id );
+	$post = ap_get_post( $post_id );
 
 	do_action( 'ap_unselect_answer', $post->post_author, $post->post_parent, $post->ID );
 	ap_unset_selected_answer( $post->post_parent );

@@ -25,7 +25,7 @@ function ap_get_answer_form_fields( $question_id = false, $answer_id = false ) {
 
 	if ( $answer_id && ap_user_can_edit_answer( (int) $answer_id ) ) {
 		$editing = true;
-		$editing_post = get_post( (int) $answer_id, 'OBJECT', 'edit' );
+		$editing_post = ap_get_post( (int) $answer_id, 'OBJECT', 'edit' );
 	}
 
 	$is_private = false;
@@ -188,7 +188,7 @@ function ap_edit_answer_form($question_id) {
  * @return bool|object|int
  */
 function ap_save_answer($question_id, $args, $wp_error = false) {
-	$question = get_post( $question_id );
+	$question = ap_get_post( $question_id );
 	$status = 'publish';
 	if ( isset( $args['is_private'] ) && $args['is_private'] ) {
 		$status = 'private_post';
@@ -251,7 +251,7 @@ function ap_save_answer($question_id, $args, $wp_error = false) {
 }
 
 function ap_answer_post_ajax_response( $question_id, $answer_id ){
-	$question = get_post( $question_id );
+	$question = ap_get_post( $question_id );
 	// Get existing answer count.
 	$current_ans = ap_count_published_answers( $question_id );
 
@@ -261,7 +261,7 @@ function ap_answer_post_ajax_response( $question_id, $answer_id ){
 		setup_postdata( $post );
 	} else {
 		global $post;
-		$post = get_post( $answer_id );
+		$post = ap_get_post( $answer_id );
 		setup_postdata( $post );
 	}
 

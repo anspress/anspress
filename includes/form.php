@@ -92,7 +92,7 @@ class AnsPress_Form_Helper
 
 	public function comment_inserted($comment_id, $comment_object) {
 		if ( $comment_object->comment_approved == '1' ) {
-			$post = get_post( $comment_object->comment_post_ID );
+			$post = ap_get_post( $comment_object->comment_post_ID );
 
 			if ( $post->post_type == 'question' ) {
 				ap_do_event('new_comment', $comment_object, 'question', '' );
@@ -157,7 +157,7 @@ class AnsPress_Form_Helper
 		$type 			= sanitize_text_field($_POST['type'] );
 
 		if ( wp_verify_nonce( $nonce, $type.'-'.$post_id ) ) {
-			$post = get_post($post_id );
+			$post = ap_get_post($post_id );
 
 			if ( ap_user_can_edit_question($post_id ) && $post->post_type == 'question' ) {
 				ob_start();
