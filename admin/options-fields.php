@@ -190,6 +190,22 @@ class AnsPress_Options_Fields
 				'show_desc_tip' => false,
 			) ,
 			array(
+				'name' => 'questions_sort',
+				'label' => __( 'Default question sort', 'anspress-question-answer' ),
+				'desc' => __( 'Sort questions by default.', 'anspress-question-answer' ),
+				'type' => 'select',
+				'options' => array(
+					'active' => __( 'Active', 'anspress-question-answer' ),
+					'newest' => __( 'Newest', 'anspress-question-answer' ),
+					'voted' => __( 'Voted', 'anspress-question-answer' ),
+					'answers' => __( 'Answered', 'anspress-question-answer' ),
+					'unanswered' => __( 'Unanswered', 'anspress-question-answer' ),
+					'unsolved' => __( 'Unsolved', 'anspress-question-answer' ),
+					'views' => __( 'Views', 'anspress-question-answer' ),
+				),
+				'show_desc_tip' => false,
+			) ,
+			array(
 				'name' => '__sep',
 				'type' => 'custom',
 				'html' => '<span class="ap-form-separator">' . __( 'Toggle', 'anspress-question-answer' ) . '</span>',

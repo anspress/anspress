@@ -186,7 +186,7 @@ function ap_post_status_description($post_id = false) {
 
 	if ( is_post_waiting_moderation( $post_id ) ) : ?>
         <div id="ap_post_status_desc_<?php echo $post_id; ?>" class="ap-notice yellow clearfix">
-            <i class="apicon-info"></i><span><?php printf( __( '%s is waiting for approval by moderator.', 'anspress-question-answer' ), $post_type ); ?></span>
+            <i class="apicon-stop"></i><span><?php printf( __( '%s is waiting for approval by moderator.', 'anspress-question-answer' ), $post_type ); ?></span>
         </div>
     <?php endif;
 

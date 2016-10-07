@@ -928,6 +928,11 @@ function ap_show_captcha_to_user( $user_id = false ) {
 		$user_id = get_current_user_id();
 	}
 
+	// Return false if super admin or ap_moderator.
+	if ( is_super_admin( $user_id ) || user_can( $user_id, 'ap_moderator' )) {
+		return false;
+	}
+
 	if ( apply_filters( 'ap_show_captcha', false, $user_id ) ) {
 		return false;
 	}
