@@ -593,7 +593,7 @@ class AnsPress_Options_Fields
 				'type' => 'select',
 				'options' => array(
 					'publish' => __( 'Publish', 'anspress-question-answer' ),
-					'moderate' => __( 'Moderate', 'profile', 'anspress-question-answer' ),
+					'moderate' => __( 'Moderate', 'anspress-question-answer' ),
 				),
 				'show_desc_tip' => false,
 			) ,
@@ -604,7 +604,7 @@ class AnsPress_Options_Fields
 				'type' => 'select',
 				'options' => array(
 					'publish' => __( 'Publish', 'anspress-question-answer' ),
-					'moderate' => __( 'Moderate', 'profile', 'anspress-question-answer' ),
+					'moderate' => __( 'Moderate', 'anspress-question-answer' ),
 				),
 				'show_desc_tip' => false,
 			) ,
@@ -615,7 +615,7 @@ class AnsPress_Options_Fields
 				'type' => 'select',
 				'options' => array(
 					'publish' => __( 'Publish', 'anspress-question-answer' ),
-					'moderate' => __( 'Moderate', 'profile', 'anspress-question-answer' ),
+					'moderate' => __( 'Moderate', 'anspress-question-answer' ),
 				),
 				'show_desc_tip' => false,
 			) ,
@@ -626,7 +626,7 @@ class AnsPress_Options_Fields
 				'type' => 'select',
 				'options' => array(
 					'publish' => __( 'Publish', 'anspress-question-answer' ),
-					'moderate' => __( 'Moderate', 'profile', 'anspress-question-answer' ),
+					'moderate' => __( 'Moderate', 'anspress-question-answer' ),
 				),
 				'show_desc_tip' => false,
 			) ,
@@ -637,7 +637,7 @@ class AnsPress_Options_Fields
 				'type' => 'select',
 				'options' => array(
 					'publish' => __( 'Publish', 'anspress-question-answer' ),
-					'moderate' => __( 'Moderate', 'profile', 'anspress-question-answer' ),
+					'moderate' => __( 'Moderate', 'anspress-question-answer' ),
 				),
 				'show_desc_tip' => false,
 			) ,

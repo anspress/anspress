@@ -126,7 +126,7 @@ if ( ! empty( $message ) ) {
 									<input type="hidden" name="ap_admin_form" value="role_update" />
 									<input type="hidden" name="role_name" value="<?php echo $key; ?>" />
 									<?php wp_nonce_field('ap_role_'.$key.'_update', '__nonce' ); ?>
-									<input id="save-options" class="button button-primary" type="submit" value="Save Role" name="save">
+									<input id="save-options" class="button button-primary" type="submit" value="<?php _e('Save Role', 'anspress-question-answer' ); ?>" name="save">
 								</form>
 							<?php } ?>
 						</div>
