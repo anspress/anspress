@@ -38,7 +38,7 @@ $flags = ap_get_all_meta(
         <div class="ap-flag-post-content">
 			<h1><?php the_title() ?></h1>
             <div class="ap-admin-sub">
-				<span><?php printf( __( 'Total <b>%d flag</b>', 'anspress-question-answer' ), ap_post_flag_count() ) ?></span>
+				<span><?php printf( __( 'Total <b>%d flag</b>', 'anspress-question-answer' ), ap_get_post_field( 'views', $post ) ) ?></span>
 				<span> | <a href="<?php echo get_edit_post_link( get_the_ID() ) ?>"><?php _e( 'Edit post', 'anspress-question-answer' ) ?></a></span>
 				<span> | <a href="<?php echo get_delete_post_link( get_the_ID() ) ?>"><?php _e( 'Trash post', 'anspress-question-answer' ) ?></a></span>
             </div>

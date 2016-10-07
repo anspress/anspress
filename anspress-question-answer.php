@@ -319,8 +319,8 @@ if ( ! class_exists( 'AnsPress' ) ) {
 				//'ANSPRESS_VOTE_META' 		=> '_ap_vote', // deprecated since 4.0.
 				//'ANSPRESS_SUBSCRIBER_META' 	=> '_ap_subscriber',
 				'ANSPRESS_CLOSE_META' 		=> '_ap_close',
-				'ANSPRESS_FLAG_META' 		=> '_ap_flag',
-				'ANSPRESS_VIEW_META' 		=> '_views',
+				//'ANSPRESS_FLAG_META' 		=> '_ap_flag',
+				//'ANSPRESS_VIEW_META' 		=> '_views',
 				'ANSPRESS_UPDATED_META' 	=> '_ap_updated',
 				'ANSPRESS_ANS_META' 		=> '_ap_answers',
 				'ANSPRESS_SELECTED_META' 	=> '_ap_selected',

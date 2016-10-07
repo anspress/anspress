@@ -99,7 +99,7 @@ class AP_List_Table_Hooks{
 			$actions['view'] = '<a href="' . get_permalink( $post->ID ) . '" title="' . esc_attr( __( 'View &#8220;%s&#8221; question', 'anspress-question-answer' ) ) . '" rel="permalink">' . __( 'View', 'anspress-question-answer' ) . '</a>';
 		}
 
-		if ( ap_flagged_post_meta( $post->ID ) ) {
+		if ( ap_get_post_field( 'flags', $post ) ) {
 			$actions['flag'] = '<a href="#" data-query="ap_clear_flag::'. wp_create_nonce( 'clear_flag_'.$post->ID ) .'::'.$post->ID.'" class="ap-ajax-btn flag-clear" data-cb="afterFlagClear">'.__('Clear flag', 'anspress-question-answer' ).'</a>';
 		}
 
@@ -115,7 +115,7 @@ class AP_List_Table_Hooks{
 	 */
 	public function add_question_flag_link($actions, $post) {
 
-		if ( ap_flagged_post_meta( $post->ID ) ) {
+		if ( ap_get_post_field( 'flags', $post ) ) {
 			$actions['flag'] = '<a href="#" data-query="ap_clear_flag::'. wp_create_nonce( 'clear_flag_'.$post->ID ) .'::'.$post->ID.'" class="ap-ajax-btn flag-clear" data-cb="afterFlagClear">'.__('Clear flag', 'anspress-question-answer' ).'</a>';
 		}
 

@@ -886,3 +886,21 @@ function ap_answer_get_the_count() {
 function ap_count_answer_meta($post_id = false) {
 	_deprecated_function( __FUNCTION__, '4.0.0' );
 }
+
+/**
+ * Return flag count of question and answer from meta.
+ * @param  integer $post_id Question/Answer Id.
+ * @return integer
+ */
+function ap_flagged_post_meta( $post_id ) {
+	_deprecated_function( __FUNCTION__, '4.0.0' );
+}
+
+/**
+ * Count post flag votes.
+ * @param integer $postid
+ * @return int
+ */
+function ap_post_flag_count($postid = false) {
+	_deprecated_function( __FUNCTION__, '4.0.0' );
+}

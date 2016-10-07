@@ -227,7 +227,7 @@ class AnsPress_Admin_Ajax
 		$args = $_POST['args'];
 		if ( current_user_can( 'manage_options' ) && wp_verify_nonce( $_POST['__nonce'], 'clear_flag_'. $args[0] ) ) {
 			ap_delete_all_post_flags( $args[0] );
-			delete_post_meta( $args[0], ANSPRESS_FLAG_META );
+			ap_set_flag_count( $args[0], 0 );
 			die( _e('0' ) );
 		}
 		die();

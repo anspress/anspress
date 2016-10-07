@@ -248,11 +248,11 @@ function ap_set_flag_count( $post_id, $count = 1 ) {
  * @return integer|false
  * @since  3.1.0
  */
-function ap_incriment_flags_count( $post_id ) {
-	$qameta = ap_get_qameta( $post_id );
-	ap_insert_qameta( $post_id, [ 'flags' => (int) $qameta->flags + 1 ] );
+function ap_update_flags_count( $post_id ) {
+	$count = ap_count_flag_vote( 'flag', $post_id );
+	ap_insert_qameta( $post_id, [ 'flags' => $count ] );
 
-	return $qameta->flags + 1;
+	return $count;
 }
 
 /**

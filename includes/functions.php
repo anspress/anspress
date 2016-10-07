@@ -567,7 +567,7 @@ function ap_select_answer_btn_html( $post ) {
 
 	$action = 'answer-'. $ans->ID;
 	$nonce = wp_create_nonce( $action );
-	var_dump(ap_is_selected( $ans->ID ));
+	
 	if ( ! ap_have_answer_selected( $ans->post_parent ) ) {
 		return '<a href="#" class="ap-btn-select ap-sicon '.ap_icon( 'check' ).' ap-tip" data-action="select_answer" data-query="answer_id='.$ans->ID.'&__nonce='.$nonce.'&ap_ajax_action=select_best_answer" title="'.__( 'Select this answer as best', 'anspress-question-answer' ).'">'.__( 'Select', 'anspress-question-answer' ).'</a>';
 	} elseif ( ap_have_answer_selected( $ans->post_parent ) && ap_is_selected( $ans->ID ) ) {

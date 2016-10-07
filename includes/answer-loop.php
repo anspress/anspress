@@ -266,7 +266,7 @@ function ap_answer_user_can_view() {
  * @return boolean
  * @since 2.1
  */
-function ap_is_selected( $answer ) {
+function ap_is_selected( $answer = null ) {
 	$post = ap_get_post( $answer );
 	return $post->selected;
 }

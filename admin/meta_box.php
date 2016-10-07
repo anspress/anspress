@@ -105,7 +105,7 @@ class AP_Question_Meta_Box {
 	public function flag_meta_box($post) {
 		?>
 			<i class="apicon-flag"></i>
-			<strong><?php echo ap_flagged_post_meta( $post->ID ); ?></strong> <?php _e('Flag', 'anspress-question-answer' ); ?>
+			<strong><?php ap_post_field( 'flags', $post); ?></strong> <?php _e('Flag', 'anspress-question-answer' ); ?>
 			<a id="ap-clear-flag" href="#" data-query="ap_clear_flag::<?php echo wp_create_nonce( 'clear_flag_'.$post->ID ) .'::'.$post->ID; ?>" class="ap-ajax-btn flag-clear" data-cb="afterFlagClear"><?php _e('Clear flag', 'anspress-question-answer' ); ?></a>
 		<?php
 	}

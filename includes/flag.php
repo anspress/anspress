@@ -71,20 +71,15 @@ class AnsPress_Flag
 	    if ( $is_flagged ) {
 	        ap_ajax_json( 'already_flagged' );
 	    }
+		ap_add_flag( $userid, $post_id );
 
-        $count = ap_count_flag_vote( 'flag', $post_id );
-        ap_add_flag( $userid, $post_id );
-
-        $new_count = $count + 1;
-		
-		// Update post meta.
-		update_post_meta( $post_id, ANSPRESS_FLAG_META, $new_count );
-        ap_ajax_json( array(
-        	'message' => 'flagged',
-        	'action' => 'flagged',
-        	'view' => array( $post_id.'_flag_count' => $new_count ),
-        	'count' => $new_count,
-        ) );
+		$counts = ap_update_flags_count( $post_id );
+		ap_ajax_json( array(
+			'message' => 'flagged',
+			'action' => 'flagged',
+			'view' => array( $post_id.'_flag_count' => $counts ),
+			'count' => $counts,
+		) );
 	}
 
 }
@@ -130,31 +125,6 @@ function ap_count_flag_vote($type = 'flag', $actionid = false, $userid = false, 
 }
 
 /**
- * Count post flag votes.
- *
- * @param integer $postid
- *
- * @return int
- */
-function ap_post_flag_count($postid = false) {
-
-	global $post;
-
-	$postid = $postid ? $postid : $post->ID;
-
-	return ap_flagged_post_meta( $postid );
-}
-
-/**
- * Return flag count of question and answer from meta.
- * @param  integer $post_id Question/Answer Id.
- * @return integer
- */
-function ap_flagged_post_meta( $post_id ) {
-	return (int) get_post_meta( $post_id, ANSPRESS_FLAG_META, true );
-}
-
-/**
  * Check if user already flagged a post.
  * @param bool|integer $postid Post ID.
  * @return bool
@@ -174,29 +144,28 @@ function ap_is_user_flagged($postid = false) {
 
 /**
  * Flag button html.
- *
  * @return string
  *
  * @since 0.9
  */
-function ap_flag_btn_html($echo = false) {
+function ap_flag_btn_html( $post = null ) {
 	if ( ! is_user_logged_in() ) {
 		return;
 	}
 
-	global $post;
+	$_post = ap_get_post( $post );
+
 	$flagged = ap_is_user_flagged();
-	$total_flag = ap_flagged_post_meta( $post->ID );
-	$nonce = wp_create_nonce('flag_'.$post->ID );
+	$nonce = wp_create_nonce('flag_'.$_post->ID );
 	$title = ( ! $flagged) ? (__('Flag this post', 'anspress-question-answer' )) : (__('You have flagged this post', 'anspress-question-answer' ));
 
-	$output = '<a id="flag_'.$post->ID.'" data-action="ajax_btn" data-query="flag_post::'.$nonce.'::'.$post->ID.'" class="flag-btn'.( ! $flagged ? ' can-flagged' : '').'" href="#" title="'.$title.'">'.__('Flag', 'anspress-question-answer' ).' <span class="ap-data-view ap-view-count-'.$total_flag.'" data-view="'.$post->ID.'_flag_count">'.$total_flag.'</span></a>';
+	$output = '<a id="flag_'.$_post->ID.'" data-action="ajax_btn" data-query="flag_post::'.$nonce.'::'.$_post->ID.'" class="flag-btn'.( ! $flagged ? ' can-flagged' : '').'" href="#" title="'.$title.'">'.__('Flag', 'anspress-question-answer' ).' <span class="ap-data-view ap-view-count-'. $_post->flags .'" data-view="'.$_post->ID.'_flag_count">'. $_post->flags .'</span></a>';
 
-	if ( $echo ) {
-		echo $output;
-	} else {
+	if ( ! $echo ) {
 		return $output;
 	}
+
+	echo $output;
 }
 
 /**
