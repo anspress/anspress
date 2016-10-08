@@ -27,7 +27,7 @@ class AP_QA_Query_Hooks{
 			} elseif ( 'newest' == $ap_sortby ) {
 				$sql['orderby'] = "{$wpdb->posts}.post_date DESC";
 			} else {
-				$sql['orderby'] = "COALESCE(qameta.last_updated, {$wpdb->posts}.post_modified) ASC, " . $sql['orderby'];
+				$sql['orderby'] = "COALESCE(qameta.last_updated, {$wpdb->posts}.post_modified) DESC, " . $sql['orderby'];
 			}
 
 			// Keep featured posts on top.

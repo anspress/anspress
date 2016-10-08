@@ -16,7 +16,7 @@ function ap_insert_qameta( $post_id, $args, $wp_error = false ) {
 		'selected_id' => 'int',
 		'selected' => 'bool',
 		'comments' => 'int',
-		'answeres' => 'int',
+		'answers' => 'int',
 		'ptype' => 'str',
 		'featured' => 'bool',
 		'closed' => 'bool',
@@ -126,6 +126,29 @@ function ap_get_qameta( $post_id ) {
 	return $qameta;
 }
 
+function ap_qameta_fields() {
+	return array(
+		'post_id' 		=> '',
+		'selected' 		=> false,
+		'selected_id' 	=> 0,
+		'comments' 		=> 0,
+		'answers' 		=> 0,
+		'ptype' 		=> 'question',
+		'featured' 		=> 0,
+		'closed' 		=> 0,
+		'views' 		=> 0,
+		'votes_up' 		=> 0,
+		'votes_down' 	=> 0,
+		'subscribers' 	=> 0,
+		'flags' 		=> 0,
+		'terms' 		=> '',
+		'activities' 	=> '',
+		'roles' 		=> '',
+		'updated' 		=> '',
+		'is_new' 		=> false,
+	);
+}
+
 /**
  * Append post object with apmeta feilds.
  * @param  object $post Post Object.
@@ -133,19 +156,30 @@ function ap_get_qameta( $post_id ) {
  */
 function ap_append_qameta( $post ) {
 	if ( ! in_array( $post->post_type, [ 'question', 'answer' ] ) || isset( $post->ap_qameta_wrapped ) ) {
-		return $post; }
+		return $post;
+	}
 
-	$defaults = ap_get_qameta( $post->ID );
-
-	if ( ! empty( $defaults ) ) {
-		foreach ( $defaults as $pkey => $value ) {
-			if ( ! isset($post->$pkey ) || empty( $post->$pkey ) ) {
-				$post->$pkey = $value;
-			}
+	$exist = true;
+	foreach( ap_qameta_fields() as $fields_name => $val ) {
+		if( !isset( $post->$fields_name ) ){
+			$exist = false;
 		}
 	}
 
-	$post->votes_net = $post->votes_up - $post->votes_down;
+	if( !$exist ) {
+		$defaults = ap_get_qameta( $post->ID );
+
+		if ( ! empty( $defaults ) ) {
+			foreach ( $defaults as $pkey => $value ) {
+				if ( ! isset($post->$pkey ) || empty( $post->$pkey ) ) {
+					$post->$pkey = $value;
+				}
+			}
+		}
+
+		$post->votes_net = $post->votes_up - $post->votes_down;
+	}
+
 	return $post;
 }
 
@@ -156,9 +190,10 @@ function ap_append_qameta( $post ) {
  * @since  3.1.0
  */
 function ap_update_answers_count( $question_id, $counts = false ) {
-	if( false !== $counts ){
+	if( false === $counts ){
 		$counts = ap_count_published_answers( $question_id );
 	}
+
 	return ap_insert_qameta( $question_id, [ 'answers' => $counts, 'last_updated' => current_time( 'mysql' ) ] );
 }
 

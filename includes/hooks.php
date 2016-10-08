@@ -157,8 +157,7 @@ class AnsPress_Hooks
 		ap_update_last_active( $post_id );
 
 		// Update answer count.
-		ap_update_answers_count( $question->ID );
-
+		ap_update_answers_count( $post->post_parent );
 	    ap_update_user_answers_count_meta( $post->post_parent );
 
 		/**

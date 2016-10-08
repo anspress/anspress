@@ -33,26 +33,20 @@ class AnsPress_Form_Helper
 	 * and styles.
 	 */
 	public function __construct() {
-
 		/*TODO: remove this, only anspress comment from ajax*/
-		add_action('comment_post', array( $this, 'save_comment' ), 20, 2 );
+		add_action( 'comment_post', array( $this, 'save_comment' ), 20, 2 );
 
-		// add_action( 'ap_after_delete_comment', array($this, 'after_deleting_comment'), 10, 2 );
 		add_action( 'wp_ajax_ap_submit_question', array( $this, 'ajax_question_submit' ) );
 		add_action( 'wp_ajax_nopriv_ap_submit_question', array( $this, 'ajax_question_submit' ) );
 
 		add_action( 'wp_ajax_ap_submit_answer', array( $this, 'ajax_answer_submit' ) );
 		add_action( 'wp_ajax_nopriv_ap_submit_answer', array( $this, 'ajax_answer_submit' ) );
 
-		add_action('wp_insert_comment', array( $this, 'comment_inserted' ), 99, 2 );
+		add_action( 'wp_insert_comment', array( $this, 'comment_inserted' ), 99, 2 );
 
 		add_action( 'wp_ajax_ap_new_tag', array( $this, 'ap_new_tag' ) );
 		add_action( 'wp_ajax_ap_load_new_tag_form', array( $this, 'ap_load_new_tag_form' ) );
 	}
-
-
-
-
 
 	public function delete_comment() {
 		$args = $args = explode('-', sanitize_text_field($_REQUEST['args'] ) );
@@ -78,17 +72,6 @@ class AnsPress_Form_Helper
 		}
 		wp_die();
 	}
-
-	/** TODO: Add this again */
-	public function after_deleting_comment($comment, $post_type) {
-		if ( $post_type == 'question' ) {
-			ap_remove_parti($comment->comment_post_ID, $comment->user_id, 'comment', $comment->comment_ID );
-		} elseif ( $post_type == 'answer' ) {
-			$post_id = wp_get_post_parent_id($comment->comment_post_ID );
-			ap_remove_parti($post_id, $comment->user_id, 'comment', $comment->comment_ID );
-		}
-	}
-
 
 	public function comment_inserted($comment_id, $comment_object) {
 		if ( $comment_object->comment_approved == '1' ) {

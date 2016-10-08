@@ -148,7 +148,7 @@ function ap_is_user_flagged($postid = false) {
  *
  * @since 0.9
  */
-function ap_flag_btn_html( $post = null ) {
+function ap_flag_btn_html( $post = null, $echo = false ) {
 	if ( ! is_user_logged_in() ) {
 		return;
 	}

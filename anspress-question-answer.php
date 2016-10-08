@@ -310,7 +310,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		    $constants = array(
 				'DS' 						=> DIRECTORY_SEPARATOR,
 				'AP_VERSION' 				=> $this->_plugin_version,
-				'AP_DB_VERSION' 			=> 19,
+				'AP_DB_VERSION' 			=> 20,
 				'ANSPRESS_DIR' 				=> plugin_dir_path( __FILE__ ),
 				'ANSPRESS_URL' 				=> plugin_dir_url( __FILE__ ),
 				'ANSPRESS_WIDGET_DIR' 		=> plugin_dir_path( __FILE__ ).'widgets'.DIRECTORY_SEPARATOR,
@@ -323,9 +323,9 @@ if ( ! class_exists( 'AnsPress' ) ) {
 				//'ANSPRESS_VIEW_META' 		=> '_views',
 				//'ANSPRESS_UPDATED_META' 	=> '_ap_updated',
 				//'ANSPRESS_ANS_META' 		=> '_ap_answers',
-				'ANSPRESS_SELECTED_META' 	=> '_ap_selected',
+				//'ANSPRESS_SELECTED_META' 	=> '_ap_selected',
 				//'ANSPRESS_BEST_META' 		=> '_ap_best_answer',
-				'ANSPRESS_PARTI_META' 		=> '_ap_participants',
+				//'ANSPRESS_PARTI_META' 		=> '_ap_participants',
 			);
 
 		    foreach ( $constants as $k => $val ) {

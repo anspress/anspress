@@ -10,22 +10,6 @@
  */
 
 
-/* Insert participant  */
-/**
- * @param string $action
- */
-function ap_add_parti($post_id, $user_id, $action, $param = false){
-	if(is_user_logged_in()){
-		$rows = ap_add_meta($user_id, 'parti', $post_id, $action, $param);
-		
-		/* Update the meta only if successfully created */
-		if($rows !== false){
-			$current_parti = ap_get_parti($post_id, true);
-			update_post_meta($post_id, ANSPRESS_PARTI_META, $current_parti);
-		}
-	}
-}
-
 /* Remove particpants from db when user delete its post or comment */
 function ap_remove_parti($post_id, $user_id = false, $value = false){
 	$where = array('apmeta_type' => 'parti', 'apmeta_actionid' => $post_id, 'apmeta_userid' => $user_id);

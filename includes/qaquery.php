@@ -134,7 +134,7 @@ function ap_get_post( $post = null ) {
 		$_post = WP_Post::get_instance( $post );
 	}
 
-	if ( ! isset( $_post->ap_qameta_wrapped ) ) {
+	if ( $_post && ! isset( $_post->ap_qameta_wrapped ) ) {
 		wp_cache_delete( $_post->ID, 'posts' );
 		$_post = ap_append_qameta( $_post );
 		wp_cache_add( $_post->ID, $_post, 'posts' );
@@ -168,7 +168,7 @@ function ap_the_question() {
 	return $questions->the_post();
 }
 
-function ap_total_posts_found() {
+function ap_total_questions_found() {
 	global $questions;
 	return $questions->found_posts;
 }

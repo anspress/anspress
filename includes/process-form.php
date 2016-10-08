@@ -363,11 +363,12 @@ class AnsPress_Process_Form
 		}
 
 		$answer_id = ap_save_answer( $question->ID, $answer_array );
+		ap_clear_unused_attachments( $user_id );
 
 		if ( $answer_id ) {
 			ap_answer_post_ajax_response( $question->ID, $answer_id );
 		}
-		ap_clear_unused_attachments( $user_id );
+		
 	}
 
 	/**

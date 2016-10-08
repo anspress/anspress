@@ -22,7 +22,7 @@ $have_permission = ap_user_can_read_answer( $post );
         <div class="ap-a-cells clearfix">
             <div class="ap-q-metas">
 				<?php ap_user_display_meta(true, false, true ); ?>
-				<time itemprop="datePublished" datetime="<?php echo ap_get_time( $answer_id, 'c' ); ?>">
+				<time itemprop="datePublished" datetime="<?php echo ap_get_time( get_the_ID(), 'c' ); ?>">
 					<?php printf( 'Posted %s', ap_human_time( ap_get_time( get_the_ID(), 'U' ) ) ); ?>
 				</time>
             </div>

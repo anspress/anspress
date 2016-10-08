@@ -230,6 +230,11 @@ function ap_the_answer() {
 	}
 }
 
+function ap_total_answers_found() {
+	global $answers;
+	return $answers->found_posts;
+}
+
 /**
  * Ge the post object of currently irritrated post
  * @return object
