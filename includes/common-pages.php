@@ -64,12 +64,16 @@ class AnsPress_Common_Pages
 			return;
 		}
 
+		$post = get_post( get_question_id() );
+
 		// Check if user is allowed to read this question.
 		if ( ! ap_user_can_read_question( get_question_id() ) ) {
-			printf(
-				'<div class="ap-no-permission">%s</div>',
-				__('Sorry! you are not allowed to read this question.', 'anspress-question-answer' )
-			);
+			if( 'moderate' == $post->post_status ) {
+				$msg = __('This question is waiting for a moderator and cannot be viewed. Please check back later to see if it has been approved.', 'anspress-question-answer' );
+			} else {
+				$msg = __('Sorry! you are not allowed to read this question.', 'anspress-question-answer' );
+			}
+			echo '<div class="ap-no-permission">' . $msg . '</div>';
 
 			return;
 		}
