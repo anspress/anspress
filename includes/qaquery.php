@@ -124,7 +124,10 @@ class Question_Query extends WP_Query {
  */
 function ap_get_post( $post = null ) {
 	if ( empty( $post ) && isset( $GLOBALS['post'] ) ) {
-		$post = $GLOBALS['post']; }
+		$post = $GLOBALS['post'];
+	}
+
+
 
 	if ( $post instanceof WP_Post || is_object( $post ) ) {
 		$_post = $post;
@@ -414,8 +417,22 @@ function ap_get_time( $post = null, $format = '' ) {
  * @since 2.2.0.1
  */
 function ap_is_featured_question( $post = null ) {
-	$p = ap_get_post( $post );
-	return (bool) $p->featured;
+	$_post = ap_get_post( $post );
+	return (bool) $_post->featured;
+}
+
+function ap_get_terms( $taxonomy = false, $post = null ) {
+	$_post = ap_get_post( $post );
+
+	if ( ! empty( $_post->terms ) ) {
+		if ( false !== $taxonomy && isset( $_post->terms[ $taxonomy ] ) ) {
+			return $_post->terms[ $taxonomy ];
+		}
+
+		return $_post->terms;
+	}
+
+	return false;
 }
 
 /**
@@ -429,3 +446,10 @@ function ap_is_featured_question( $post = null ) {
 // include( ap_get_theme_location( 'answers.php' ) );
 // wp_reset_postdata();
 // }
+function ap_get_qameta_term_link( $term, $taxonomy ) {
+	if ( get_option( 'permalink_structure' ) != '' ) {
+		 return ap_get_link_to( array( 'ap_page' => $taxonomy, 'q_cat' => $term[2] ) );
+	} else {
+		return add_query_arg( array( 'ap_page' => $taxonomy, 'q_cat' => $term[0] ), ap_base_page_link() );
+	}
+}

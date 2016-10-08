@@ -145,6 +145,9 @@ class AnsPress_Hooks
 		 * @since 0.9
 		 */
 		do_action( 'ap_after_new_question', $post_id, $post );
+
+		// Update qameta terms.
+		$terms = ap_update_qameta_terms( $post_id );
 	}
 
 	/**
@@ -184,6 +187,9 @@ class AnsPress_Hooks
 		 * @since 0.9
 		 */
 		do_action( 'ap_after_update_question', $post_id, $post );
+
+		// Update qameta terms.
+		ap_update_qameta_terms( $post_id );
 	}
 
 	/**

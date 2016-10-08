@@ -44,11 +44,27 @@ class AP_QA_Query_Hooks{
 		return $sql;
 	}
 
-	public static function posts_results( $posts, $query ) {
+	public static function posts_results( $posts, $instance ) {
 		foreach ( (array) $posts as $k => $p ) {
-			$posts[ $k ] = ap_append_qameta( $p );
-		}
+			// Convert object as array to prevent using __isset of WP_Post.
+			$p_arr = (array) $p;
 
+			if ( in_array( $p_arr['post_type'], [ 'question', 'answer' ] ) ) {
+				foreach ( ap_qameta_fields() as $fields_name => $val ) {
+					if ( ! isset( $p_arr[ $fields_name ] ) || empty( $p_arr[ $fields_name ] ) ) {
+						$p->$fields_name = $val;
+					}
+
+					// Serialize terms and activities.
+					$p->terms = maybe_unserialize( $p->terms );
+					$p->activities = maybe_unserialize( $p->activities );
+
+					$p->ap_qameta_wrapped = true;
+					$p->votes_net = $p->votes_up - $p->votes_down;
+					$posts[ $k ] = $p;
+				}
+			}
+		}
 		return $posts;
 	}
 }

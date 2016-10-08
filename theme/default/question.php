@@ -7,9 +7,6 @@
  * @license    https://www.gnu.org/licenses/gpl-2.0.txt GNU Public License
  * @author    Rahul Aryan <support@anspress.io>
  */
-$taxonomies = get_taxonomies('','names');
-$terms = wp_get_object_terms( get_the_ID(), $taxonomies );
-var_dump($terms);
 ?>
 <div id="ap-single" class="ap-q clearfix">
 	<?php

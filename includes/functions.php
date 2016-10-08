@@ -15,7 +15,7 @@
  * @since  3.0.0 Return `questions` if base page is not selected.
  */
 function ap_base_page_slug() {
-	$base_page = ap_get_post( ap_opt( 'base_page' ) );
+	$base_page = get_post( ap_opt( 'base_page' ) );
 
 	if ( ! $base_page ) {
 		return 'questions';
@@ -24,7 +24,7 @@ function ap_base_page_slug() {
 	$slug = $base_page->post_name;
 
 	if ( $base_page->post_parent > 0 ) {
-		$parent_page = ap_get_post( $base_page->post_parent );
+		$parent_page = get_post( $base_page->post_parent );
 		$slug = $parent_page->post_name.'/'.$slug;
 	}
 
@@ -1901,5 +1901,7 @@ function ap_disable_question_suggestion( ){
 	 */
 	return (bool) apply_filters( 'ap_disable_question_suggestion', false );
 }
+
+
 
 

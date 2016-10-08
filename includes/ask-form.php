@@ -313,7 +313,7 @@ function ap_save_question($args, $wp_error = false) {
 			$attachment_ids = $_POST['attachment_ids'];
 			ap_attach_post_uploads( $post_id, $attachment_ids, $args['post_author'] );
 		}
-		var_dump($args);
+		
 		// Update Custom Meta.
 		if ( ! empty( $args['anonymous_name'] ) ) {
 			update_post_meta( $post_id, 'anonymous_name', $args['anonymous_name'] );

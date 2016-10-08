@@ -69,6 +69,7 @@ function ap_insert_qameta( $post_id, $args, $wp_error = false ) {
 	}
 
 	if ( false !== $inserted ) {
+		wp_cache_delete( $post_id, 'ap_qameta' );
 		return $post_id;
 	}
 
@@ -155,27 +156,31 @@ function ap_qameta_fields() {
  * @return object
  */
 function ap_append_qameta( $post ) {
-	if ( ! in_array( $post->post_type, [ 'question', 'answer' ] ) || isset( $post->ap_qameta_wrapped ) ) {
+	// Convert object as array to prevent using __isset of WP_Post.
+	$post_arr = (array) $post;
+	if ( ! in_array( $post_arr['post_type'], [ 'question', 'answer' ] ) || isset( $post_arr['ap_qameta_wrapped'] ) ) {
 		return $post;
 	}
 
 	$exist = true;
-	foreach( ap_qameta_fields() as $fields_name => $val ) {
-		if( !isset( $post->$fields_name ) ){
+	foreach ( ap_qameta_fields() as $fields_name => $val ) {
+		if ( ! isset( $post_arr[ $fields_name ] ) ) {
 			$exist = false;
 		}
 	}
 
-	if( !$exist ) {
+	if ( ! $exist ) {
 		$defaults = ap_get_qameta( $post->ID );
-
 		if ( ! empty( $defaults ) ) {
 			foreach ( $defaults as $pkey => $value ) {
-				if ( ! isset($post->$pkey ) || empty( $post->$pkey ) ) {
+				if ( ! isset($post_arr[ $pkey ] ) || empty( $post_arr[ $pkey ] ) ) {
 					$post->$pkey = $value;
 				}
 			}
 		}
+
+		$post->terms = maybe_unserialize( $post->terms );
+		$post->activities = maybe_unserialize( $post->activities );
 
 		$post->votes_net = $post->votes_up - $post->votes_down;
 	}
@@ -190,7 +195,7 @@ function ap_append_qameta( $post ) {
  * @since  3.1.0
  */
 function ap_update_answers_count( $question_id, $counts = false ) {
-	if( false === $counts ){
+	if ( false === $counts ) {
 		$counts = ap_count_published_answers( $question_id );
 	}
 
@@ -244,13 +249,13 @@ function ap_unset_selected_answer( $question_id ) {
 
 /**
  * Update views count of qameta.
- * @param  integer $question_id Question ID.
+ * @param  integer       $question_id Question ID.
  * @param  integer|false $views   Passing view will replace existing value else increment existing.
  * @return integer
  * @since  3.1.0
  */
 function ap_update_views_count( $post_id, $views = false ) {
-	if( false === $views ) {
+	if ( false === $views ) {
 		$qameta = ap_get_qameta( $post_id );
 		$views = (int) $qameta->views + 1;
 	}
@@ -311,4 +316,32 @@ function ap_update_answer_selected( $answer_id, $selected = true ) {
  */
 function ap_set_subscribers_count( $post_id, $count = 1 ) {
 	return ap_insert_qameta( $post_id, [ 'subscribers' => $count ] );
+}
+
+
+/**
+ * Updates terms of qameta.
+ * @param  integer $question_id Question ID.
+ * @return integer|false
+ * @since  3.1.0
+ */
+function ap_update_qameta_terms( $question_id ) {
+	$taxonomies = get_taxonomies( '', 'names' );
+	$terms = wp_get_object_terms( $question_id, $taxonomies );
+
+	$formatted_terms = [];
+
+	foreach ( (array) $terms as $term ) {
+		if ( ! isset( $formatted_terms[ $term->taxonomy ] ) || ! is_array( $formatted_terms[ $term->taxonomy ] ) ) {
+			$formatted_terms[ $term->taxonomy ] = [];
+		}
+
+		$formatted_terms[ $term->taxonomy ][] = [ $term->term_id, $term->name, $term->slug ];
+	}
+
+	if ( ! empty( $formatted_terms ) ) {
+		ap_insert_qameta( $question_id, [ 'terms' => $formatted_terms ] );
+	}
+
+	return $formatted_terms;
 }
