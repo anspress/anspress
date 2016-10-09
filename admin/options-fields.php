@@ -652,10 +652,10 @@ class AnsPress_Options_Fields
 				'type' => 'checkbox',
 				'show_desc_tip' => false,
 			),
-			array(
-				'type' => 'custom',
-				'html' => '<span class="ap-form-separator">' . __( 'Akismet check', 'anspress-question-answer' ) . '</span>',
-			) ,
+//			array(
+//				'type' => 'custom',
+//				'html' => '<span class="ap-form-separator">' . __( 'Akismet check', 'anspress-question-answer' ) . '</span>',
+//			) ,
 			array(
 				'type' => 'custom',
 				'html' => '<span class="ap-form-separator">' . __( 'reCaptacha', 'anspress-question-answer' ) . '</span>',
