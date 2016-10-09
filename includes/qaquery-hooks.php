@@ -6,7 +6,7 @@ class AP_QA_Query_Hooks{
 		global $wpdb;
 
 		if ( isset( $args->query['ap_query'] ) ) {
-			$sql['join'] = $sql['join'] ." LEFT JOIN {$wpdb->ap_qameta} qameta ON qameta.post_id = $wpdb->posts.ID";
+			$sql['join'] = $sql['join'] ." LEFT JOIN {$wpdb->ap_qameta} qameta ON qameta.post_id = $wpdb->posts.ID ";
 			$sql['fields'] = $sql['fields'] . ', qameta.*, qameta.votes_up - qameta.votes_down AS votes_net';
 
 			$ap_sortby = isset( $args->query['ap_sortby'] ) ? $args->query['ap_sortby'] : 'active';
@@ -45,11 +45,12 @@ class AP_QA_Query_Hooks{
 	}
 
 	public static function posts_results( $posts, $instance ) {
-		foreach ( (array) $posts as $k => $p ) {
-			// Convert object as array to prevent using __isset of WP_Post.
-			$p_arr = (array) $p;
 
-			if ( in_array( $p_arr['post_type'], [ 'question', 'answer' ] ) ) {
+		foreach ( (array) $posts as $k => $p ) {
+			if ( in_array( $p->post_type, [ 'question', 'answer' ] ) ) {
+				// Convert object as array to prevent using __isset of WP_Post.
+				$p_arr = (array) $p;
+
 				foreach ( ap_qameta_fields() as $fields_name => $val ) {
 					if ( ! isset( $p_arr[ $fields_name ] ) || empty( $p_arr[ $fields_name ] ) ) {
 						$p->$fields_name = $val;
@@ -65,6 +66,7 @@ class AP_QA_Query_Hooks{
 				}
 			}
 		}
+
 		return $posts;
 	}
 }

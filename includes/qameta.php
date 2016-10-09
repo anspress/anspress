@@ -12,35 +12,19 @@ function ap_insert_qameta( $post_id, $args, $wp_error = false ) {
 		'ptype' => get_post_type( $post_id ),
 	]));
 
-	$valid_fields = array(
-		'selected_id' => 'int',
-		'selected' => 'bool',
-		'comments' => 'int',
-		'answers' => 'int',
-		'ptype' => 'str',
-		'featured' => 'bool',
-		'closed' => 'bool',
-		'views' => 'int',
-		'votes_up' => 'int',
-		'votes_down' => 'int',
-		'flags' => 'int',
-		'subscribers' => 'int',
-		'terms' => 'str',
-		'activities' => 'str',
-		'roles' => 'str',
-		'last_updated' => 'str',
-	);
-
 	$sanitized_values = [];
 	$formats = [];
 
 	// Include and sanitize valid fields.
-	foreach ( (array) $valid_fields as $field => $type ) {
+	foreach ( (array) ap_qameta_fields() as $field => $type ) {
 		if ( isset( $args[ $field ] ) ) {
 			$value = $args[ $field ];
 
-			if ( in_array($field, [ 'terms', 'activities' ] ) ) {
+			if ( $field == 'activities' ) {
 				$value = maybe_serialize( $value );
+				$formats[] = '%s';
+			} elseif ( $field == 'terms' ) {
+				$value = is_array( $value ) ? sanitize_comma_delimited( $value ) : (int) $value;
 				$formats[] = '%s';
 			} elseif ( 'bool' == $type ) {
 				$value = (bool) $value;
@@ -56,7 +40,7 @@ function ap_insert_qameta( $post_id, $args, $wp_error = false ) {
 			$sanitized_values[ $field ] = $value;
 		}
 	}
-
+	
 	global $wpdb;
 
 	$exists = ap_get_qameta( $post_id );
@@ -95,26 +79,7 @@ function ap_get_qameta( $post_id ) {
 			$qameta = [ 'is_new' => true ];
 		}
 
-		$qameta = wp_parse_args( $qameta, [
-			'post_id' => $post_id,
-			'selected' => false,
-			'selected_id' => 0,
-			'comments' => 0,
-			'answers' => 0,
-			'ptype' => 'question',
-			'featured' => 0,
-			'closed' => 0,
-			'views' => 0,
-			'votes_up' => 0,
-			'votes_down' => 0,
-			'subscribers' => 0,
-			'flags' => 0,
-			'terms' => '',
-			'activities' => '',
-			'roles' => '',
-			'updated' => '',
-			'is_new' => false,
-		]);
+		$qameta = wp_parse_args( $qameta, ap_qameta_fields() );
 
 		$qameta[ 'votes_net' ] = $qameta[ 'votes_up' ] + $qameta[ 'votes_down' ];
 		$qameta[ 'terms' ] = maybe_unserialize( $qameta[ 'terms' ] );
@@ -329,19 +294,15 @@ function ap_update_qameta_terms( $question_id ) {
 	$taxonomies = get_taxonomies( '', 'names' );
 	$terms = wp_get_object_terms( $question_id, $taxonomies );
 
-	$formatted_terms = [];
+	$term_ids = [];
 
 	foreach ( (array) $terms as $term ) {
-		if ( ! isset( $formatted_terms[ $term->taxonomy ] ) || ! is_array( $formatted_terms[ $term->taxonomy ] ) ) {
-			$formatted_terms[ $term->taxonomy ] = [];
-		}
-
-		$formatted_terms[ $term->taxonomy ][] = [ $term->term_id, $term->name, $term->slug ];
+		$term_ids[] = $term->term_id;
 	}
 
-	if ( ! empty( $formatted_terms ) ) {
-		ap_insert_qameta( $question_id, [ 'terms' => $formatted_terms ] );
+	if ( ! empty( $term_ids ) ) {
+		ap_insert_qameta( $question_id, [ 'terms' => $term_ids ] );
 	}
 
-	return $formatted_terms;
+	return $term_ids;
 }

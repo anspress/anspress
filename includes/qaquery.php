@@ -77,7 +77,7 @@ class Question_Query extends WP_Query {
 		anspress()->current_question = $post;
 	}
 
-	public function have_questions() {
+	public function have_questions() {		
 		return parent::have_posts();
 	}
 
@@ -101,7 +101,7 @@ class Question_Query extends WP_Query {
 	/**
 	 * Utility method to get all the ids in this request
 	 *
-	 * @return array of mdia ids
+	 * @return array of question ids
 	 */
 	public function get_ids() {
 
@@ -452,4 +452,24 @@ function ap_get_qameta_term_link( $term, $taxonomy ) {
 	} else {
 		return add_query_arg( array( 'ap_page' => $taxonomy, 'q_cat' => $term[0] ), ap_base_page_link() );
 	}
+}
+
+
+/**
+ * Check if post have terms of a taxonomy.
+ * @param  boolean|integer $post_id  Post ID.
+ * @param  string  $taxonomy Taxonomy name.
+ * @return boolean
+ */
+function ap_post_have_terms($post_id = false, $taxonomy = 'question_category') {
+	if ( ! $post_id ) {
+		$post_id = get_the_ID(); 
+	}
+
+	$terms = get_the_terms( $post_id, 'question_category' );
+	if ( ! empty( $terms ) ) {
+		return true;
+	}
+
+	return false;
 }

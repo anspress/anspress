@@ -689,7 +689,8 @@ function ap_short_num($num, $precision = 2) {
  * @return string
  */
 function sanitize_comma_delimited($str) {
-	if ( ! empty($str ) && ! is_array( $str ) ) {
+	$str = is_array( $str ) ? implode( ',', $str ) : $str;
+	if ( ! empty($str ) ) {
 		$str = wp_unslash( $str );
 		return implode( ',', array_map( 'intval', explode( ',', $str ) ) );
 	}
