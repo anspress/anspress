@@ -5,6 +5,7 @@ class AnsPress_Comment_Hooks
 	public static function comments_data( $post_id, $editing = false ) {
 		$data = array(
 			'current_user_avatar' => get_avatar( get_current_user_id(), 30 ),
+			'nocomments' => __("There aren't any comments yet.", 'anspress-question-answer' ),
 		);
 
 		// Check if user can comment, if so then send form data.
@@ -14,6 +15,11 @@ class AnsPress_Comment_Hooks
 				'nonce' => wp_create_nonce( $post_id.'_comment' ),
 				'post_id' => $post_id,
 				'key' => $post_id.'Comments',
+			);
+			$data['lang'] = array(
+				'placeholder' => __('Your comment..', 'anspress-question-answer' ),
+				'submit' => __('Submit', 'anspress-question-answer' ),
+				'cancel' => __('Cancel', 'anspress-question-answer' ),
 			);
 		}
 

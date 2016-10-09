@@ -1,6 +1,6 @@
 <div class="ap-comments">
 	{{if comments === null }}
-		<div class="ap-comment-noitems">There aren't any comment yet.</div>
+		<div class="ap-comment-noitems">{{nocomments}}</div>
 	{{fi}}
 
 	{{foreach comment in comments}}		
@@ -33,15 +33,15 @@
 				{{current_user_avatar|raw}}
 			</div>
 			<div class="ap-comment-inner no-overflow">
-				<textarea placeholder="Your comment.." class="ap-form-control autogrow" id="ap-comment-textarea" aria-required="true" rows="3" name="content">{{form.content}}</textarea>
+				<textarea placeholder="{{lang.placeholder}}" class="ap-form-control autogrow" id="ap-comment-textarea" aria-required="true" rows="3" name="content">{{form.content}}</textarea>
 
 			    <div class="ap-comment-footer clearfix">
 			        <!-- <label>
 			            <input type="checkbox" value="1" name="notify"{{if form.subscribed}} checked="checked"{{fi}}  />
 						Notify me of follow-up comments
 			        </label> -->
-					<button type="submit" class="ap-comment-submit ap-btn">Submit</button>
-					<a data-action="cancel-comment" class="ap-comment-cancel" href="#">Cancel</a>
+					<button type="submit" class="ap-comment-submit ap-btn">{{lang.submit}}</button>
+					<a data-action="cancel-comment" class="ap-comment-cancel" href="#">{{lang.cancel}}</a>
 			    </div>
 			</div>
 			<input type="hidden" name="__nonce" value="{{form.nonce}}" />
