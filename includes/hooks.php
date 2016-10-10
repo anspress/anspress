@@ -760,6 +760,14 @@ class AnsPress_Hooks
 	        'years'  	=> __('years', 'anspress-question-answer' ),
 		);
 
+		// fix for minute and minutes messing with Polish translation (prehaps it messes not only Polish?)
+		if (get_locale() == 'pl_PL') {
+			$replace = array(
+				'min' => 'min',
+				'mins' => 'mins',
+			);
+		}
+
 		return strtr( $since, $replace );
 	}
 
