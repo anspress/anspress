@@ -29,9 +29,11 @@
 
 	{{if load_form}}
 		<form class="ap-comment-form" method="POST" id="ap-commentform"> 
+		{{if current_user_avatar}}
 			<div class="ap-avatar ap-pull-left">
 				{{current_user_avatar|raw}}
 			</div>
+		{{fi}}
 			<div class="ap-comment-inner no-overflow">
 				<textarea placeholder="{{lang.placeholder}}" class="ap-form-control autogrow" id="ap-comment-textarea" aria-required="true" rows="3" name="content">{{form.content}}</textarea>
 
