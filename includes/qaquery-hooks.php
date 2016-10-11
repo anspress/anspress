@@ -65,6 +65,10 @@ class AP_QA_Query_Hooks {
 			}
 		}
 
+		if( isset( $instance->query['ap_question_query'] ) || isset( $instance->query['ap_answers_query'] ) ) {
+			$instance->pre_fetch_votes();
+		}
+
 		return $posts;
 	}
 }

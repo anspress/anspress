@@ -1,4 +1,5 @@
 <?php
+
 // Exit if the file is accessed directly over web
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -25,10 +26,11 @@ class Question_Query extends WP_Query {
 		}
 
 		$defaults = array(
-			'showposts'     => ap_opt( 'question_per_page' ),
-			'paged'         => $paged,
-			'ap_query'      => true,
-			'ap_sortby'     => 'active',
+			'showposts'     	=> ap_opt( 'question_per_page' ),
+			'paged'         	=> $paged,
+			'ap_query'      	=> true,
+			'ap_sortby'     	=> 'active',
+			'ap_question_query' => true,
 		);
 
 		$args['post_status'][] = 'all';
@@ -104,16 +106,25 @@ class Question_Query extends WP_Query {
 	 * @return array of question ids
 	 */
 	public function get_ids() {
+		if ( $this->ap_ids ) {
+			return $this->ap_ids;
+		}
 
 		$ids = array();
-
 		if ( empty( $this->request ) ) {
 			return $ids;
 		}
 
 		global $wpdb;
-		$ids = $wpdb->get_col( $this->request );
-		return $ids;
+		$this->ap_ids = $wpdb->get_col( $this->request );
+	}
+
+	/**
+	 * Pre fetch current users vote on all answers
+	 */
+	public function pre_fetch_votes() {
+		$this->get_ids();
+		ap_user_votes_pre_fetch( $this->ap_ids );
 	}
 }
 
@@ -127,8 +138,6 @@ function ap_get_post( $post = null ) {
 		$post = $GLOBALS['post'];
 	}
 
-
-
 	if ( $post instanceof WP_Post || is_object( $post ) ) {
 		$_post = $post;
 	} elseif ( false !== $_post = wp_cache_get( $post, 'posts' ) ) {
@@ -138,9 +147,8 @@ function ap_get_post( $post = null ) {
 	}
 
 	if ( $_post && ! isset( $_post->ap_qameta_wrapped ) ) {
-		wp_cache_delete( $_post->ID, 'posts' );
 		$_post = ap_append_qameta( $_post );
-		wp_cache_add( $_post->ID, $_post, 'posts' );
+		wp_cache_set( $_post->ID, $_post, 'posts' );
 	}
 
 	return $_post;

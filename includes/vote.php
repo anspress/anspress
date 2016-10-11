@@ -156,8 +156,8 @@ function ap_get_votes( $args = array() ) {
 		wp_cache_set( $key, $results, 'ap_votes_queries' );
 		// Also cache each vote individually.
 		foreach ( (array) $results as $vote ) {
-			$key = $vote->vote_post_id . '_' . $vote->vote_user_id . '_' . $vote->vote_type;
-			wp_cache_set( $key, $vote, 'ap_votes' );
+			$vote_key = $vote->vote_post_id . '_' . $vote->vote_user_id . '_' . $vote->vote_type;
+			wp_cache_set( $vote_key, $vote, 'ap_votes' );
 		}
 	}
 	return $results;
@@ -177,7 +177,12 @@ function ap_get_votes( $args = array() ) {
  */
 function ap_count_votes( $args ) {
 	global $wpdb;
-	$where = "SELECT count(*) as count, vote_value as type FROM {$wpdb->ap_votes} WHERE 1=1 ";
+	$args = wp_parse_args( $args, [ 'group' => false ] );
+	$where = 'SELECT count(*) as count';
+	if ( $args['group'] ) {
+		$where .= ', ' . esc_sql( sanitize_text_field( $args['group'] ) );
+	}
+	$where .= " FROM {$wpdb->ap_votes} WHERE 1=1 ";
 	if ( isset( $args['vote_post_id'] ) ) {
 		$where .= 'AND vote_post_id = ' . (int) $args['vote_post_id'];
 	}
@@ -205,7 +210,9 @@ function ap_count_votes( $args ) {
 			$where .= " AND vote_value = '" . sanitize_text_field( $args['vote_value'] ) . "'";
 		}
 	}
-	$where .= ' GROUP BY type';
+	if ( $args['group'] ) {
+		$where .= ' GROUP BY ' . esc_sql( sanitize_text_field( $args['group'] ) );
+	}
 	$cache_key = md5( $where );
 	$cache = wp_cache_get( $cache_key, 'ap_vote_counts' );
 	if ( false !== $cache ) {
@@ -233,7 +240,7 @@ function ap_count_post_votes_by( $by, $value ) {
 		return false;
 	}
 	$new_counts = [ 'votes_net' => 0, 'votes_down' => 0, 'votes_up' => 0 ];
-	$args = [ 'vote_type' => 'vote' ];
+	$args = [ 'vote_type' => 'vote', 'group' => 'vote_value' ];
 	if ( 'post_id' == $by ) {
 		$args['vote_post_id'] = $value;
 	} elseif ( 'user_id' == $by ) {
@@ -242,7 +249,7 @@ function ap_count_post_votes_by( $by, $value ) {
 	$rows = ap_count_votes( $args );
 	if ( false !== $rows ) {
 		foreach ( (array) $rows as $row ) {
-			$type = $row->type == '-1' ? 'votes_down' : 'votes_up';
+			$type = $row->vote_value == '-1' ? 'votes_down' : 'votes_up';
 			$new_counts[ $type ] = (int) $row->count;
 		}
 		$new_counts['votes_net'] = $new_counts['votes_up'] - $new_counts['votes_down'];
@@ -263,10 +270,10 @@ function ap_count_post_votes_by( $by, $value ) {
 function ap_get_vote( $post_id, $user_id, $type, $value = '' ) {
 	$cache_key = $post_id . '_' . $user_id . '_' . $type;
 	$cache = wp_cache_get( $cache_key, 'ap_votes' );
+
 	if ( false !== $cache ) {
 		return $cache;
 	}
-
 	global $wpdb;
 	$where = "SELECT * FROM {$wpdb->ap_votes} WHERE 1=1 ";
 	if ( ! empty( $type ) ) {
@@ -411,6 +418,32 @@ function ap_vote_btn( $post = null, $echo = true ) {
 		echo $html;
 	} else {
 		return $html;
+	}
+}
+
+/**
+ * Pre fetch and cache all votes by given post ID.
+ *
+ * @param  array $ids Post IDs.
+ * @since  4.0.0
+ */
+function ap_user_votes_pre_fetch( $ids ) {
+	if ( $ids && is_user_logged_in() ) {
+		$votes = ap_get_votes( [ 'vote_post_id' => (array) $ids, 'vote_user_id' => get_current_user_id(), 'vote_type' => [ 'flag', 'vote' ] ] );
+
+		$cache_keys = [];
+		foreach ( (array) $ids as $post_id ) {
+			$cache_keys[ $post_id . '_' . get_current_user_id() . '_flag' ] = true;
+			$cache_keys[ $post_id . '_' . get_current_user_id() . '_vote' ] = true;
+		}
+
+		foreach ( (array) $votes as $vote ) {
+			unset( $cache_keys[ $vote->vote_post_id . '_' . $vote->vote_user_id . '_' . $vote->vote_type ] );
+		}
+
+		foreach ( (array) $cache_keys as $key => $val ) {
+			wp_cache_set( $key, '', 'ap_votes' );
+		}
 	}
 }
 

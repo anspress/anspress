@@ -1006,7 +1006,6 @@ function ap_user_can_read_post( $post_id, $user_id = false, $post_type = false )
 	}
 
 	$post_o = ap_get_post( $post_id );
-
 	if ( false === $post_type ) {
 		$post_type = $post_o->post_type;
 	}

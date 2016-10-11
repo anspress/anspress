@@ -94,10 +94,8 @@ function ap_insert_qameta( $post_id, $args, $wp_error = false ) {
  */
 function ap_get_qameta( $post_id ) {
 	global $wpdb;
-
 	$qameta = wp_cache_get( $post_id, 'ap_qameta' );
-
-	if ( false === $qameta ) {
+	if ( false === $qameta ) {		
 		$qameta = $wpdb->get_row( $wpdb->prepare( "Select * FROM $wpdb->ap_qameta WHERE post_id = %d", $post_id ), ARRAY_A );
 
 		// If null then append is_new.
@@ -108,11 +106,9 @@ function ap_get_qameta( $post_id ) {
 		$qameta = wp_parse_args( $qameta, ap_qameta_fields() );
 
 		$qameta['votes_net'] = $qameta['votes_up'] + $qameta['votes_down'];
-		$qameta['terms'] = maybe_unserialize( $qameta['terms'] );
 		$qameta['activities'] = maybe_unserialize( $qameta['activities'] );
 		$qameta = (object) $qameta;
-
-		wp_cache_add( $post_id, $qameta, 'ap_qameta' );
+		wp_cache_set( $post_id, $qameta, 'ap_qameta' );
 	}
 
 	return $qameta;
@@ -242,7 +238,6 @@ function ap_update_views_count( $post_id, $views = false ) {
  * @since  3.1.0
  */
 function ap_update_last_active( $post_id ) {
-	var_dump( [ 'last_updated' => current_time( 'mysql' ) ] );
 	return ap_insert_qameta( $post_id, [ 'last_updated' => current_time( 'mysql' ) ] );
 }
 
@@ -265,7 +260,7 @@ function ap_set_flag_count( $post_id, $count = 1 ) {
  * @since  3.1.0
  */
 function ap_update_flags_count( $post_id ) {
-	$count = ap_count_flag_vote( 'flag', $post_id );
+	$count = ap_count_post_flags( $post_id );
 	ap_insert_qameta( $post_id, [ 'flags' => $count ] );
 
 	return $count;

@@ -24,12 +24,14 @@ class Answers_Query extends WP_Query {
 
 	/**
 	 * Answer query arguments
+	 *
 	 * @var array
 	 */
 	public $args = array();
 
 	/**
 	 * Initialize class
+	 *
 	 * @param array $args Query arguments.
 	 * @access public
 	 * @since  2.0
@@ -38,7 +40,6 @@ class Answers_Query extends WP_Query {
 		global $answers;
 
 		$paged = (get_query_var( 'paged' )) ? get_query_var( 'paged' ) : 1;
-
 		$defaults = array(
 			'question_id'           => get_question_id(),
 			'ap_query'      		=> true,
@@ -62,7 +63,6 @@ class Answers_Query extends WP_Query {
 			$this->args['post_parent'] = $question_id;
 		}
 
-
 		$this->args['post_type'] = 'answer';
 
 		$args = $this->args;
@@ -74,6 +74,7 @@ class Answers_Query extends WP_Query {
 	}
 
 	public function get_answers() {
+		var_dump( 'hhhhhhh' );
 		return parent::get_posts();
 	}
 
@@ -84,7 +85,7 @@ class Answers_Query extends WP_Query {
 	public function reset_next() {
 
 		$this->current_post--;
-		$this->post = $this->posts[$this->current_post];
+		$this->post = $this->posts[ $this->current_post ];
 
 		return $this->post;
 	}
@@ -130,27 +131,54 @@ class Answers_Query extends WP_Query {
 	 * @return array of mdia ids
 	 */
 	public function get_ids() {
-		$ids = array();
+		if ( $this->ap_ids ) {
+			return $this->ap_ids;
+		}
 
+		$ids = array();
 		if ( empty( $this->request ) ) {
 			return $ids;
 		}
 
 		global $wpdb;
-		$ids = $wpdb->get_col( $this->request );
-		return $ids;
+		$this->ap_ids = $wpdb->get_col( $this->request );
 	}
 
+	/**
+	 * Pre fetch current users vote on all answers
+	 */
+	public function pre_fetch_votes() {
+		$this->get_ids();
+
+		if ( $this->ap_ids && is_user_logged_in() ) {
+			$votes = ap_get_votes( [ 'vote_post_id' => (array) $this->ap_ids, 'vote_user_id' => get_current_user_id(), 'vote_type' => [ 'flag', 'vote' ] ] );
+
+			$cache_keys = [];
+			foreach ( (array) $this->ap_ids as $post_id ) {
+				$cache_keys[ $post_id . '_' . get_current_user_id() . '_flag' ] = true;
+				$cache_keys[ $post_id . '_' . get_current_user_id() . '_vote' ] = true;
+			}
+
+			foreach ( (array) $votes as $vote ) {
+				unset( $cache_keys[ $vote->vote_post_id . '_' . $vote->vote_user_id . '_' . $vote->vote_type ] );
+			}
+
+			foreach ( (array) $cache_keys as $key => $val ) {
+				wp_cache_set( $key, '', 'ap_votes' );
+			}
+		}
+	}
 }
 
 
 /**
  * Display answers of a question
+ *
  * @param  array $args Answers query arguments.
  * @return Answers_Query
  * @since  2.0
  */
-function ap_get_answers($args = array()) {
+function ap_get_answers( $args = array() ) {
 
 	if ( empty( $args['question_id'] ) ) {
 		$args['question_id'] = get_question_id();
@@ -172,29 +200,30 @@ function ap_get_answers($args = array()) {
 	}
 
 	// if ( isset( $_GET['show_answer'] ) ) {
-	// 	$args['ap_query'] = 'order_answer_to_top';
-	// 	$args['order_answer_id'] = (int) $_GET['show_answer'];
+	// $args['ap_query'] = 'order_answer_to_top';
+	// $args['order_answer_id'] = (int) $_GET['show_answer'];
 	// }
-
 	return new Answers_Query( $args );
 }
 
 /**
  * Get an answer by ID
+ *
  * @param  integer $answer_id Answers ID.
  * @return Answers_Query
  * @since 2.1
  */
-function ap_get_answer($answer_id) {
+function ap_get_answer( $answer_id ) {
 	return new Answers_Query( array( 'p' => $answer_id ) );
 }
 
 /**
  * Get selected answer object
+ *
  * @param  integer $question_id Question ID.
  * @since  2.0
  */
-function ap_get_best_answer($question_id = false) {
+function ap_get_best_answer( $question_id = false ) {
 	if ( false === $question_id ) {
 		$question_id = get_question_id();
 	}
@@ -205,6 +234,7 @@ function ap_get_best_answer($question_id = false) {
 
 /**
  * Check if there are posts in the loop
+ *
  * @return boolean
  */
 function ap_have_answers() {
@@ -236,6 +266,7 @@ function ap_total_answers_found() {
 
 /**
  * Ge the post object of currently irritrated post
+ *
  * @return object
  */
 function ap_answer_the_object() {
@@ -257,6 +288,7 @@ function ap_answer_the_object() {
 
 /**
  * Check if user can view current answer
+ *
  * @return boolean
  * @since 2.1
  */
@@ -266,6 +298,7 @@ function ap_answer_user_can_view() {
 
 /**
  * Check if current answer is selected as a best
+ *
  * @param integer|boolean $answer_id Answer ID or Object.
  * @return boolean
  * @since 2.1
@@ -277,12 +310,13 @@ function ap_is_selected( $answer = null ) {
 
 /**
  * Output comment template if enabled.
+ *
  * @return void
  * @since 2.1
  */
 function ap_answer_the_comments() {
 	if ( ! ap_opt( 'disable_comments_on_answer' ) ) {
-		echo '<div id="post-c-'.get_the_ID().'" class="ap-comments comment-container '. ( get_comments_number() > 0 ? 'have' : 'no' ) .'-comments">';
+		echo '<div id="post-c-' . get_the_ID() . '" class="ap-comments comment-container ' . ( get_comments_number() > 0 ? 'have' : 'no' ) . '-comments">';
 		// comments_template();
 		echo '</div>';
 	}
@@ -299,10 +333,11 @@ function ap_answers_the_pagination() {
 
 /**
  * Return numbers of published answers.
+ *
  * @param  integer $question_id Question ID.
  * @return integer
  */
-function ap_count_published_answers($question_id) {
+function ap_count_published_answers( $question_id ) {
 	global $wpdb;
 	$query = $wpdb->prepare( "SELECT COUNT(*) FROM $wpdb->posts where post_parent = %d AND (post_status = %s OR post_status = %s) AND post_type = %s", $question_id, 'publish', 'closed', 'answer' );
 	$key = md5( $query );
@@ -324,7 +359,7 @@ function ap_count_published_answers($question_id) {
  *
  * @return int
  */
-function ap_count_other_answer($question_id = false) {
+function ap_count_other_answer( $question_id = false ) {
 	if ( ! $question_id ) {
 		$question_id = get_question_id();
 	}
@@ -340,6 +375,7 @@ function ap_count_other_answer($question_id = false) {
 
 /**
  * Unselect an answer as best.
+ *
  * @param  integer $post_id Post ID.
  */
 function ap_unselect_answer( $post_id ) {

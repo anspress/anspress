@@ -318,14 +318,11 @@ class AnsPress_Ajax
 		if ( ! is_super_admin() || ! ap_verify_nonce( 'set_featured_'.$post_id ) ) {
 			ap_ajax_json( 'no_permission' );
 		}
-
 		$post = ap_get_post( $post_id );
-
 		// Do nothing if post type is not question.
 		if ( $post->post_type != 'question' ) {
 			ap_ajax_json( __('Only question can be set as featured', 'anspress-question-answer' ) );
 		}
-		var_dump(ap_is_featured_question( $post ));
 		// Check if current question ID is in featured question array.
 		if ( ap_is_featured_question( $post ) ) {
 			ap_unset_featured_question( $post->ID );

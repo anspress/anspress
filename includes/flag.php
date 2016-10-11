@@ -13,10 +13,11 @@
 /**
  * All flag methods.
  */
-class AnsPress_Flag
-{
+class AnsPress_Flag {
+
 	/**
 	 * Ajax callback for processing comment flag button.
+	 *
 	 * @since 2.4
 	 */
 	public static function flag_comment() {
@@ -24,12 +25,12 @@ class AnsPress_Flag
 
 		// If args is empty then die.
 		if ( empty( $args ) ) {
-			ap_ajax_json('something_wrong' );
+			ap_ajax_json( 'something_wrong' );
 		}
 
 	    $comment_id = (int) $args[0];
-	    if ( ! ap_verify_nonce( 'flag_'. $comment_id ) || ! is_user_logged_in() ) {
-	        ap_ajax_json('something_wrong' );
+	    if ( ! ap_verify_nonce( 'flag_' . $comment_id ) || ! is_user_logged_in() ) {
+	        ap_ajax_json( 'something_wrong' );
 	    }
 
 	    $userid = get_current_user_id();
@@ -47,21 +48,21 @@ class AnsPress_Flag
 		ap_ajax_json( array(
 			'message' 	=> 'flagged_comment',
 			'action' 	=> 'flagged',
-			'view' 		=> array( $comment_id.'_comment_flag' => $count ),
+			'view' 		=> array( $comment_id . '_comment_flag' => $count ),
 			'count' 	=> $count,
 		) );
 	}
 
 	/**
 	 * Ajax callback to process post flag button
+	 *
 	 * @since 2.0.0
 	 */
 	public static function flag_post() {
 		$args = ap_sanitize_unslash( 'args', 'request' );
 	    $post_id = (int) $args[0];
-
-	    if ( ! ap_verify_nonce( 'flag_'.$post_id ) || ! is_user_logged_in() ) {
-	        ap_ajax_json('something_wrong' );
+	    if ( ! ap_verify_nonce( 'flag_' . $post_id ) || ! is_user_logged_in() ) {
+	        ap_ajax_json( 'something_wrong' );
 	    }
 
 	    $userid = get_current_user_id();
@@ -71,13 +72,12 @@ class AnsPress_Flag
 	    if ( $is_flagged ) {
 	        ap_ajax_json( 'already_flagged' );
 	    }
-		ap_add_flag( $userid, $post_id );
-
+		ap_add_flag( $post_id );
 		$counts = ap_update_flags_count( $post_id );
 		ap_ajax_json( array(
 			'message' => 'flagged',
 			'action' => 'flagged',
-			'view' => array( $post_id.'_flag_count' => $counts ),
+			'view' => array( $post_id . '_flag_count' => $counts ),
 			'count' => $counts,
 		) );
 	}
@@ -85,17 +85,17 @@ class AnsPress_Flag
 }
 
 /**
- * Add flag vote data to ap_meta table.
+ * Add flag vote data to ap_votes table.
  *
- * @param int        $userid
- * @param int        $actionid
- * @param null|mixed $value
- * @param null|mixed $param
- *
- * @return integer
+ * @param integer $post_id     Post ID.
+ * @param integer $user_id     User ID.
+ * @return integer|boolean
  */
-function ap_add_flag($userid, $actionid, $value = null, $param = null) {
-	return ap_add_meta($userid, 'flag', $actionid, $value, $param );
+function ap_add_flag( $post_id, $user_id = false ) {
+	if ( false === $user_id ) {
+		$user_id = get_current_user_id();
+	}
+	return ap_vote_insert( $post_id, $user_id, 'flag' );
 }
 
 /**
@@ -111,7 +111,7 @@ function ap_add_flag($userid, $actionid, $value = null, $param = null) {
  *
  * @return integer
  */
-function ap_count_flag_vote($type = 'flag', $actionid = false, $userid = false, $receiving_userid = false) {
+function ap_count_flag_vote( $type = 'flag', $actionid = false, $userid = false, $receiving_userid = false ) {
 
 	if ( $actionid !== false ) {
 		$count = ap_meta_total_count( $type, $actionid );
@@ -125,18 +125,30 @@ function ap_count_flag_vote($type = 'flag', $actionid = false, $userid = false, 
 }
 
 /**
+ * Count flag votes.
+ *
+ * @param integer $post_id Post ID.
+ * @return  integer
+ * @since  4.0.0
+ */
+function ap_count_post_flags( $post_id ) {
+	$rows = ap_count_votes( [ 'vote_post_id' => $post_id, 'vote_type' => 'flag' ] );
+	if( false !== $rows ) {
+		return (int) $rows[0]->count;
+	}
+	return 0;
+}
+
+/**
  * Check if user already flagged a post.
+ *
  * @param bool|integer $postid Post ID.
  * @return bool
  */
-function ap_is_user_flagged($postid = false) {
+function ap_is_user_flagged( $post = null ) {
+	$_post = ap_get_post( $post );
 	if ( is_user_logged_in() ) {
-		global $post;
-		$postid = $postid ? $postid : $post->ID;
-		$userid = get_current_user_id();
-		$done = ap_meta_user_done('flag', $userid, $postid );
-
-		return $done > 0 ? true : false;
+		return ap_is_user_voted( $_post->ID, 'flag' );
 	}
 
 	return false;
@@ -144,6 +156,7 @@ function ap_is_user_flagged($postid = false) {
 
 /**
  * Flag button html.
+ *
  * @return string
  *
  * @since 0.9
@@ -152,19 +165,16 @@ function ap_flag_btn_html( $post = null, $echo = false ) {
 	if ( ! is_user_logged_in() ) {
 		return;
 	}
-
 	$_post = ap_get_post( $post );
-
 	$flagged = ap_is_user_flagged();
-	$nonce = wp_create_nonce('flag_'.$_post->ID );
-	$title = ( ! $flagged) ? (__('Flag this post', 'anspress-question-answer' )) : (__('You have flagged this post', 'anspress-question-answer' ));
+	$nonce = wp_create_nonce( 'flag_' . $_post->ID );
+	$title = ( ! $flagged) ? (__( 'Flag this post', 'anspress-question-answer' )) : (__( 'You have flagged this post', 'anspress-question-answer' ));
 
-	$output = '<a id="flag_'.$_post->ID.'" data-action="ajax_btn" data-query="flag_post::'.$nonce.'::'.$_post->ID.'" class="flag-btn'.( ! $flagged ? ' can-flagged' : '').'" href="#" title="'.$title.'">'.__('Flag', 'anspress-question-answer' ).' <span class="ap-data-view ap-view-count-'. $_post->flags .'" data-view="'.$_post->ID.'_flag_count">'. $_post->flags .'</span></a>';
+	$output = '<a id="flag_' . $_post->ID . '" data-action="ajax_btn" data-query="flag_post::' . $nonce . '::' . $_post->ID . '" class="flag-btn' . ( ! $flagged ? ' can-flagged' : '') . '" href="#" title="' . $title . '">' . __( 'Flag', 'anspress-question-answer' ) . ' <span class="ap-data-view ap-view-count-' . $_post->flags . '" data-view="' . $_post->ID . '_flag_count">' . $_post->flags . '</span></a>';
 
 	if ( ! $echo ) {
 		return $output;
 	}
-
 	echo $output;
 }
 
@@ -178,8 +188,8 @@ function ap_flag_btn_html( $post = null, $echo = false ) {
  *
  * @return integer
  */
-function ap_insert_comment_flag($user_id, $action_id, $value = null, $param = null) {
-	return ap_add_meta($user_id, 'comment_flag', $action_id, $value, $param );
+function ap_insert_comment_flag( $user_id, $action_id, $value = null, $param = null ) {
+	return ap_add_meta( $user_id, 'comment_flag', $action_id, $value, $param );
 }
 
 /**
@@ -191,8 +201,8 @@ function ap_insert_comment_flag($user_id, $action_id, $value = null, $param = nu
  *
  * @return string
  */
-function ap_comment_flag_btn($comment_id = false, $label = false) {
-	echo ap_get_comment_flag_btn($comment_id, $label );
+function ap_comment_flag_btn( $comment_id = false, $label = false ) {
+	echo ap_get_comment_flag_btn( $comment_id, $label );
 }
 
 /**
@@ -204,27 +214,27 @@ function ap_comment_flag_btn($comment_id = false, $label = false) {
  *
  * @return string
  */
-function ap_get_comment_flag_btn($comment_id = false, $label = false) {
+function ap_get_comment_flag_btn( $comment_id = false, $label = false ) {
 	if ( ! is_user_logged_in() ) {
 		return;
 	}
 
 	if ( false === $label ) {
-		$label = __('Flag', 'anspress-question-answer' );
+		$label = __( 'Flag', 'anspress-question-answer' );
 	}
 
 	if ( false === $comment_id ) {
 		$comment_id = get_comment_ID();
 	}
 
-	$flagged = ap_is_user_flagged_comment($comment_id );
-	$total_flag = ap_comment_flag_count($comment_id );
+	$flagged = ap_is_user_flagged_comment( $comment_id );
+	$total_flag = ap_comment_flag_count( $comment_id );
 
-	$nonce = wp_create_nonce('flag_'.$comment_id );
+	$nonce = wp_create_nonce( 'flag_' . $comment_id );
 
-	$output = '<a id="flag_'.$comment_id.'" data-query="flag_comment::'.$nonce.'::'.$comment_id.'"
-    	data-action="ajax_btn" class="flag-btn'.( ! $flagged ? ' can-flag' : '').'" href="#" title="'.__('Report this comment to moderaor', 'anspress-question-answer' ).'">
-    	'.$label.'<span class="ap-data-view ap-view-count-'.$total_flag.'" data-view="'.$comment_id.'_comment_flag">'.$total_flag.'</span>
+	$output = '<a id="flag_' . $comment_id . '" data-query="flag_comment::' . $nonce . '::' . $comment_id . '"
+    	data-action="ajax_btn" class="flag-btn' . ( ! $flagged ? ' can-flag' : '') . '" href="#" title="' . __( 'Report this comment to moderaor', 'anspress-question-answer' ) . '">
+    	' . $label . '<span class="ap-data-view ap-view-count-' . $total_flag . '" data-view="' . $comment_id . '_comment_flag">' . $total_flag . '</span>
     </a>';
 
 	return $output;
@@ -232,6 +242,7 @@ function ap_get_comment_flag_btn($comment_id = false, $label = false) {
 
 /**
  * Return total flag count for comment.
+ *
  * @param boolean|integer $comment_id Comment ID.
  * @return integer
  */
@@ -240,7 +251,7 @@ function ap_comment_flag_count( $comment_id = false ) {
 		$comment_id = get_comment_ID();
 	}
 
-	$count = ap_meta_total_count('comment_flag', $comment_id );
+	$count = ap_meta_total_count( 'comment_flag', $comment_id );
 	return apply_filters( 'ap_comment_flag_count', $count );
 }
 
@@ -254,7 +265,7 @@ function ap_comment_flag_count( $comment_id = false ) {
  *
  * @return bool
  */
-function ap_is_user_flagged_comment($comment_id = false, $user_id = false) {
+function ap_is_user_flagged_comment( $comment_id = false, $user_id = false ) {
 
 	if ( ! is_user_logged_in() ) {
 		return false;
@@ -268,13 +279,14 @@ function ap_is_user_flagged_comment($comment_id = false, $user_id = false) {
 		$user_id = get_current_user_id();
 	}
 
-	$done = ap_meta_user_done('comment_flag', $user_id, $comment_id );
+	$done = ap_meta_user_done( 'comment_flag', $user_id, $comment_id );
 
 	return $done > 0 ? true : false;
 }
 
 /**
  * Delete all flags vote of a post.
+ *
  * @param  integer $post_id Post id.
  * @return boolean
  */
