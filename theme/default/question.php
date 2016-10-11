@@ -7,9 +7,6 @@
  * @license    https://www.gnu.org/licenses/gpl-2.0.txt GNU Public License
  * @author    Rahul Aryan <support@anspress.io>
  */
-var_dump(ap_get_votes(get_the_ID()));
-var_dump(ap_get_vote( get_the_ID(), 1, 'vote_up' ));
-var_dump(ap_count_votes( [ 'vote_post_id' => get_the_ID() ]  ));
 ?>
 <div id="ap-single" class="ap-q clearfix">
 	<?php

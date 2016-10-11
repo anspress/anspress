@@ -1,5 +1,28 @@
 <?php
 
+function ap_qameta_fields() {
+	return array(
+		'post_id' 		=> '',
+		'selected' 		=> false,
+		'selected_id' 	=> 0,
+		'comments' 		=> 0,
+		'answers' 		=> 0,
+		'ptype' 		=> 'question',
+		'featured' 		=> 0,
+		'closed' 		=> 0,
+		'views' 		=> 0,
+		'votes_up' 		=> 0,
+		'votes_down' 	=> 0,
+		'subscribers' 	=> 0,
+		'flags' 		=> 0,
+		'terms' 		=> '',
+		'activities' 	=> '',
+		'roles' 		=> '',
+		'last_updated' 	=> '',
+		'is_new' 		=> false,
+	);
+}
+
 /**
  * Insert post meta
  *
@@ -28,10 +51,10 @@ function ap_insert_qameta( $post_id, $args, $wp_error = false ) {
 			} elseif ( $field == 'terms' ) {
 				$value = is_array( $value ) ? sanitize_comma_delimited( $value ) : (int) $value;
 				$formats[] = '%s';
-			} elseif ( 'bool' == $type ) {
+			} elseif ( in_array( $field, ['selected', 'featured', 'closed'] ) ) {
 				$value = (bool) $value;
 				$formats[] = '%d';
-			} elseif ( 'int' == $type ) {
+			} elseif ( in_array($field, ['selected_id', 'comments', 'answers', 'views', 'votes_up', 'votes_down', 'subscribers', 'flags']) ) {
 				$value = (int) $value;
 				$formats[] = '%d';
 			} else {
@@ -46,7 +69,7 @@ function ap_insert_qameta( $post_id, $args, $wp_error = false ) {
 	global $wpdb;
 
 	$exists = ap_get_qameta( $post_id );
-
+	
 	if ( $exists->is_new ) {
 		$sanitized_values['post_id'] = (int) $post_id;
 		$inserted = $wpdb->insert( $wpdb->ap_qameta, $sanitized_values, $formats );
@@ -95,28 +118,7 @@ function ap_get_qameta( $post_id ) {
 	return $qameta;
 }
 
-function ap_qameta_fields() {
-	return array(
-		'post_id' 		=> '',
-		'selected' 		=> false,
-		'selected_id' 	=> 0,
-		'comments' 		=> 0,
-		'answers' 		=> 0,
-		'ptype' 		=> 'question',
-		'featured' 		=> 0,
-		'closed' 		=> 0,
-		'views' 		=> 0,
-		'votes_up' 		=> 0,
-		'votes_down' 	=> 0,
-		'subscribers' 	=> 0,
-		'flags' 		=> 0,
-		'terms' 		=> '',
-		'activities' 	=> '',
-		'roles' 		=> '',
-		'last_updated' 	=> '',
-		'is_new' 		=> false,
-	);
-}
+
 
 /**
  * Append post object with apmeta feilds.
@@ -315,4 +317,22 @@ function ap_update_qameta_terms( $question_id ) {
 	}
 
 	return $term_ids;
+}
+
+/**
+ * Set a question as a featured.
+ * @param  integer $post_id Question ID.
+ * @return boolean
+ */
+function ap_set_featured_question( $post_id ) {
+	return ap_insert_qameta( $post_id, [ 'featured' => 1 ] );
+}
+
+/**
+ * Unset a question as a featured.
+ * @param  integer $post_id Question ID.
+ * @return boolean
+ */
+function ap_unset_featured_question( $post_id ) {
+	return ap_insert_qameta( $post_id, [ 'featured' => 0 ] );
 }

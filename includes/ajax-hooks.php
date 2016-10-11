@@ -320,22 +320,15 @@ class AnsPress_Ajax
 		}
 
 		$post = ap_get_post( $post_id );
-		$featured_questions = (array) get_option( 'featured_questions' );
 
 		// Do nothing if post type is not question.
 		if ( $post->post_type != 'question' ) {
 			ap_ajax_json( __('Only question can be set as featured', 'anspress-question-answer' ) );
 		}
-
+		var_dump(ap_is_featured_question( $post ));
 		// Check if current question ID is in featured question array.
-		if ( ! empty( $featured_questions ) && in_array( $post->ID, $featured_questions ) ) {
-			foreach ( (array) $featured_questions as $key => $q ) {
-				if ( $q == $post->ID ) {
-					unset( $featured_questions[ $key ] );
-				}
-			}
-
-			update_option( 'featured_questions', $featured_questions );
+		if ( ap_is_featured_question( $post ) ) {
+			ap_unset_featured_question( $post->ID );
 
 			$this->send(array(
 				'action' 		=> 'unset_featured_question',
@@ -345,14 +338,7 @@ class AnsPress_Ajax
 			));
 		}
 
-		if ( empty( $featured_questions ) ) {
-			$featured_questions = array( $post->ID );
-		} else {
-			$featured_questions[] = $post->ID;
-		}
-
-		update_option( 'featured_questions', $featured_questions );
-
+		ap_set_featured_question( $post->ID );
 		$this->send(array(
 			'action' 		=> 'set_featured_question',
 			'message' 		=> 'set_featured_question',
