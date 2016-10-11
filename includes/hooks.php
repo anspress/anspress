@@ -63,33 +63,33 @@ class AnsPress_Hooks {
 		anspress()->add_filter( 'posts_clauses', 'AP_QA_Query_Hooks', 'sql_filter', 10, 2 );
 		anspress()->add_filter( 'posts_results', 'AP_QA_Query_Hooks', 'posts_results', 10, 2 );
 
-	    // Theme  hooks.
-	    anspress()->add_action( 'init', 'AnsPress_Theme', 'init_actions' );
-	    anspress()->add_filter( 'post_class', 'AnsPress_Theme', 'question_answer_post_class' );
-	    anspress()->add_filter( 'body_class', 'AnsPress_Theme', 'body_class' );
-	    anspress()->add_filter( 'comments_template', 'AnsPress_Theme', 'comment_template' );
-	    anspress()->add_action( 'after_setup_theme', 'AnsPress_Theme', 'includes_theme' );
-	    anspress()->add_filter( 'wpseo_title', 'AnsPress_Theme', 'wpseo_title' , 10, 2 );
-	    anspress()->add_filter( 'wp_head', 'AnsPress_Theme', 'feed_link', 9 );
-	    anspress()->add_filter( 'wpseo_canonical', 'AnsPress_Theme', 'wpseo_canonical' );
-	    anspress()->add_action( 'ap_before', 'AnsPress_Theme', 'ap_before_html_body' );
-	    anspress()->add_action( 'wp', 'AnsPress_Theme', 'remove_head_items', 10 );
+		// Theme  hooks.
+		anspress()->add_action( 'init', 'AnsPress_Theme', 'init_actions' );
+		anspress()->add_filter( 'post_class', 'AnsPress_Theme', 'question_answer_post_class' );
+		anspress()->add_filter( 'body_class', 'AnsPress_Theme', 'body_class' );
+		anspress()->add_filter( 'comments_template', 'AnsPress_Theme', 'comment_template' );
+		anspress()->add_action( 'after_setup_theme', 'AnsPress_Theme', 'includes_theme' );
+		anspress()->add_filter( 'wpseo_title', 'AnsPress_Theme', 'wpseo_title' , 10, 2 );
+		anspress()->add_filter( 'wp_head', 'AnsPress_Theme', 'feed_link', 9 );
+		anspress()->add_filter( 'wpseo_canonical', 'AnsPress_Theme', 'wpseo_canonical' );
+		anspress()->add_action( 'ap_before', 'AnsPress_Theme', 'ap_before_html_body' );
+		anspress()->add_action( 'wp', 'AnsPress_Theme', 'remove_head_items', 10 );
 		anspress()->add_action( 'wp_head', 'AnsPress_Theme', 'wp_head', 11 );
 		anspress()->add_action( 'ap_after_question_content', 'AnsPress_Theme', 'question_attachments', 11 );
 		anspress()->add_action( 'ap_after_answer_content', 'AnsPress_Theme', 'question_attachments', 11 );
 
-	    anspress()->add_filter( 'wp_get_nav_menu_items', __CLASS__, 'update_menu_url' );
-	    anspress()->add_filter( 'nav_menu_css_class', __CLASS__, 'fix_nav_current_class', 10, 2 );
-	    anspress()->add_filter( 'walker_nav_menu_start_el', __CLASS__, 'walker_nav_menu_start_el', 10, 4 );
-	    anspress()->add_filter( 'mce_buttons', __CLASS__, 'editor_buttons', 10, 2 );
+		anspress()->add_filter( 'wp_get_nav_menu_items', __CLASS__, 'update_menu_url' );
+		anspress()->add_filter( 'nav_menu_css_class', __CLASS__, 'fix_nav_current_class', 10, 2 );
+		anspress()->add_filter( 'walker_nav_menu_start_el', __CLASS__, 'walker_nav_menu_start_el', 10, 4 );
+		anspress()->add_filter( 'mce_buttons', __CLASS__, 'editor_buttons', 10, 2 );
 		anspress()->add_filter( 'wp_insert_post_data', __CLASS__, 'wp_insert_post_data', 10, 2 );
-	    anspress()->add_filter( 'ap_form_contents_filter', __CLASS__, 'sanitize_description' );
-	    anspress()->add_filter( 'human_time_diff', __CLASS__, 'human_time_diff' );
-	    anspress()->add_filter( 'comments_template_query_args', 'AnsPress_Comment_Hooks', 'comments_template_query_args' );
-	    anspress()->add_filter( 'template_include', 'AnsPress_Theme', 'anspress_basepage_template' );
+		anspress()->add_filter( 'ap_form_contents_filter', __CLASS__, 'sanitize_description' );
+		anspress()->add_filter( 'human_time_diff', __CLASS__, 'human_time_diff' );
+		anspress()->add_filter( 'comments_template_query_args', 'AnsPress_Comment_Hooks', 'comments_template_query_args' );
+		anspress()->add_filter( 'template_include', 'AnsPress_Theme', 'anspress_basepage_template' );
 
-	    // User hooks.
-	    anspress()->add_action( 'init', 'AnsPress_User', 'init_actions' );
+		// User hooks.
+		anspress()->add_action( 'init', 'AnsPress_User', 'init_actions' );
 		anspress()->add_filter( 'pre_user_query', 'AnsPress_User', 'follower_query' );
 		anspress()->add_filter( 'pre_user_query', 'AnsPress_User', 'following_query' );
 		anspress()->add_filter( 'pre_user_query', 'AnsPress_User', 'user_sort_by_reputation' );
@@ -732,13 +732,14 @@ class AnsPress_Hooks {
 	 * @param  integer $receiving_userid User who is receiving vote.
 	 */
 	public static function update_user_vote_casted_count( $userid, $type, $actionid, $receiving_userid ) {
+		$voted = ap_count_post_votes_by( 'user_id', $userid );
 		// Update total casted vote of user.
-		update_user_meta( $userid, '__up_vote_casted', ap_count_vote( $userid, 'vote_up' ) );
-		update_user_meta( $userid, '__down_vote_casted', ap_count_vote( $userid, 'vote_down' ) );
+		update_user_meta( $userid, '__up_vote_casted', $voted->votes_up );
+		update_user_meta( $userid, '__down_vote_casted', $voted->votes_down );
 
 		// Update total received vote of user.
-		update_user_meta( $receiving_userid, '__up_vote_received', ap_count_vote( false, 'vote_up', false, $receiving_userid ) );
-		update_user_meta( $receiving_userid, '__down_vote_received', ap_count_vote( false, 'vote_down', false, $receiving_userid ) );
+		//update_user_meta( $receiving_userid, '__up_vote_received', ap_count_vote( false, 'vote_up', false, $receiving_userid ) );
+		//update_user_meta( $receiving_userid, '__down_vote_received', ap_count_vote( false, 'vote_down', false, $receiving_userid ) );
 	}
 
 	/**

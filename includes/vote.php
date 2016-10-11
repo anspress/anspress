@@ -8,17 +8,18 @@
 /**
  * AnsPress vote related class.
  */
-class AnsPress_Vote
-{
+class AnsPress_Vote {
+
 	/**
 	 * Process voting button.
+	 *
 	 * @since 2.0.1.1
 	 */
 	public static function vote() {
 	    $post_id = (int) ap_sanitize_unslash( 'post_id', 'request' );
 
-	    if ( ! ap_verify_nonce( 'vote_'.$post_id ) ) {
-	        ap_ajax_json('something_wrong' );
+	    if ( ! ap_verify_nonce( 'vote_' . $post_id ) ) {
+	        ap_ajax_json( 'something_wrong' );
 	    }
 
 	    $type = ap_sanitize_unslash( 'type', 'request' );
@@ -47,7 +48,7 @@ class AnsPress_Vote
 			if ( $is_voted->vote_value == $value ) {
 				$counts = ap_delete_post_vote( $post_id, $userid, 'vote' );
 			    do_action( 'ap_undo_vote', $post_id, $counts );
-			    do_action( 'ap_undo_'.$type, $post_id, $counts );
+			    do_action( 'ap_undo_' . $type, $post_id, $counts );
 
 			   	ap_ajax_json( array(
 			   		'action' 	=> 'undo',
@@ -63,7 +64,7 @@ class AnsPress_Vote
 
 		$counts = ap_add_post_vote( $post_id, $userid, 'vote', $value );
 		// Update post meta.
-		do_action( 'ap_'.$type, $post_id, $counts );
+		do_action( 'ap_' . $type, $post_id, $counts );
 	   	ap_ajax_json( array(
 	   		'action' => 'voted',
 	   		'type' => $type,
@@ -75,6 +76,7 @@ class AnsPress_Vote
 
 /**
  * Insert vote in ap_votes table.
+ *
  * @param  integer $post_id Post ID.
  * @param  array   $args    Arguments.
  * @return boolean
@@ -96,6 +98,7 @@ function ap_vote_insert( $post_id, $user_id, $type = 'vote', $value = '', $date 
 	if ( false !== $inserted ) {
 		/**
 		 * Action triggred after inserting a vote.
+		 *
 		 * @param array $args Vote arguments.
 		 * @since  4.0.0
 		 */
@@ -107,6 +110,7 @@ function ap_vote_insert( $post_id, $user_id, $type = 'vote', $value = '', $date 
 
 /**
  * Return votes.
+ *
  * @param  array|integer $args Arguments or vote_post_id.
  * @return array|boolean
  * @since  4.0.0
@@ -120,7 +124,7 @@ function ap_get_votes( $args = array() ) {
 	// Single or multiple posts.
 	if ( isset( $args['vote_post_id'] ) && ! empty( $args['vote_post_id'] ) ) {
 		if ( is_array( $args['vote_post_id'] ) ) {
-			$where .= ' AND vote_post_id IN ('. sanitize_comma_delimited( $args['vote_post_id'], 'str' ). ')';
+			$where .= ' AND vote_post_id IN (' . sanitize_comma_delimited( $args['vote_post_id'], 'str' ) . ')';
 		} else {
 			$where .= ' AND vote_post_id = ' . (int) $args['vote_post_id'];
 		}
@@ -128,7 +132,7 @@ function ap_get_votes( $args = array() ) {
 	// Single or multiple users.
 	if ( isset( $args['vote_user_id'] ) && ! empty( $args['vote_user_id'] ) ) {
 		if ( is_array( $args['vote_user_id'] ) ) {
-			$where .= ' AND vote_user_id IN ('. sanitize_comma_delimited( $args['vote_user_id'] ). ')';
+			$where .= ' AND vote_user_id IN (' . sanitize_comma_delimited( $args['vote_user_id'] ) . ')';
 		} else {
 			$where .= ' AND vote_user_id = ' . (int) $args['vote_user_id'];
 		}
@@ -136,7 +140,7 @@ function ap_get_votes( $args = array() ) {
 	// Single or multiple vote types.
 	if ( isset( $args['vote_type'] ) && ! empty( $args['vote_type'] ) ) {
 		if ( is_array( $args['vote_type'] ) ) {
-			$where .= ' AND vote_type IN ('. sanitize_comma_delimited( $args['vote_type'], 'str' ). ')';
+			$where .= ' AND vote_type IN (' . sanitize_comma_delimited( $args['vote_type'], 'str' ) . ')';
 		} else {
 			$where .= ' AND vote_type = ' . sanitize_text_field( $args['vote_type'] );
 		}
@@ -152,7 +156,7 @@ function ap_get_votes( $args = array() ) {
 		wp_cache_set( $key, $results, 'ap_votes_queries' );
 		// Also cache each vote individually.
 		foreach ( (array) $results as $vote ) {
-			$key = $vote->vote_post_id .'_'.$vote->vote_user_id.'_'.$vote->vote_type;
+			$key = $vote->vote_post_id . '_' . $vote->vote_user_id . '_' . $vote->vote_type;
 			wp_cache_set( $key, $vote, 'ap_votes' );
 		}
 	}
@@ -161,6 +165,7 @@ function ap_get_votes( $args = array() ) {
 
 /**
  * Get votes count.
+ *
  * @param  array $args Arguments
  *                     {
  *                     	'vote_post_id' => 1,
@@ -174,30 +179,30 @@ function ap_count_votes( $args ) {
 	global $wpdb;
 	$where = "SELECT count(*) as count, vote_value as type FROM {$wpdb->ap_votes} WHERE 1=1 ";
 	if ( isset( $args['vote_post_id'] ) ) {
-		$where .= 'AND vote_post_id = '. (int) $args['vote_post_id'];
+		$where .= 'AND vote_post_id = ' . (int) $args['vote_post_id'];
 	}
 
 	if ( isset( $args['vote_type'] ) ) {
 		if ( is_array( $args['vote_type'] ) ) {
-			$where .= ' AND vote_type IN ('. sanitize_comma_delimited( $args['vote_type'], 'str' ). ')';
+			$where .= ' AND vote_type IN (' . sanitize_comma_delimited( $args['vote_type'], 'str' ) . ')';
 		} else {
-			$where .= " AND vote_type = '". sanitize_text_field( $args['vote_type'] ) ."'";
+			$where .= " AND vote_type = '" . sanitize_text_field( $args['vote_type'] ) . "'";
 		}
 	}
 
 	if ( isset( $args['vote_user_id'] ) ) {
 		if ( is_array( $args['vote_user_id'] ) ) {
-			$where .= ' AND vote_user_id IN ('. sanitize_comma_delimited( $args['vote_user_id'] ). ')';
+			$where .= ' AND vote_user_id IN (' . sanitize_comma_delimited( $args['vote_user_id'] ) . ')';
 		} else {
-			$where .= " AND vote_user_id = '". (int) $args['vote_user_id'] ."'";
+			$where .= " AND vote_user_id = '" . (int) $args['vote_user_id'] . "'";
 		}
 	}
 
 	if ( isset( $args['vote_value'] ) ) {
 		if ( is_array( $args['vote_value'] ) ) {
-			$where .= ' AND vote_value IN ('. sanitize_comma_delimited( $args['vote_value'], 'str' ). ')';
+			$where .= ' AND vote_value IN (' . sanitize_comma_delimited( $args['vote_value'], 'str' ) . ')';
 		} else {
-			$where .= " AND vote_value = '". sanitize_text_field( $args['vote_value'] ) ."'";
+			$where .= " AND vote_value = '" . sanitize_text_field( $args['vote_value'] ) . "'";
 		}
 	}
 	$where .= ' GROUP BY type';
@@ -206,23 +211,41 @@ function ap_count_votes( $args ) {
 	if ( false !== $cache ) {
 		return $cache;
 	}
-	$rows = $wpdb->get_results( $where );	
+	$rows = $wpdb->get_results( $where );
 	wp_cache_set( $cache_key, $rows, 'ap_vote_counts' );
-	if ( false !== $rows ) {		
+	if ( false !== $rows ) {
 		return $rows;
 	}
 	return false;
 }
 
-function ap_post_count_votes( $post_id ) {
+/**
+ * Count votes of a post and propery format.
+ *
+ * @param  integer $post_id Post ID.
+ * @return array
+ * @since  4.0.0
+ * @uses   ap_count_votes
+ */
+function ap_count_post_votes_by( $by, $value ) {
+	$bys = [ 'post_id', 'user_id' ];
+	if ( ! in_array( $by, $bys ) ) {
+		return false;
+	}
 	$new_counts = [ 'votes_net' => 0, 'votes_down' => 0, 'votes_up' => 0 ];
-	$rows = ap_count_votes( [ 'vote_post_id' => $post_id, 'vote_type' => 'vote' ] );
+	$args = [ 'vote_type' => 'vote' ];
+	if ( 'post_id' == $by ) {
+		$args['vote_post_id'] = $value;
+	} elseif ( 'user_id' == $by ) {
+		$args['vote_user_id'] = $value;
+	}
+	$rows = ap_count_votes( $args );
 	if ( false !== $rows ) {
 		foreach ( (array) $rows as $row ) {
 			$type = $row->type == '-1' ? 'votes_down' : 'votes_up';
 			$new_counts[ $type ] = (int) $row->count;
 		}
-		$new_counts[ 'votes_net' ] = $new_counts[ 'votes_up' ] - $new_counts[ 'votes_down' ];
+		$new_counts['votes_net'] = $new_counts['votes_up'] - $new_counts['votes_down'];
 	}
 	return $new_counts;
 }
@@ -230,6 +253,7 @@ function ap_post_count_votes( $post_id ) {
 
 /**
  * Get a single vote from database.
+ *
  * @param  integer      $post_id Post ID.
  * @param  integer      $user_id User ID.
  * @param  string|array $type    Vote type.
@@ -237,7 +261,7 @@ function ap_post_count_votes( $post_id ) {
  * @since  4.0.0
  */
 function ap_get_vote( $post_id, $user_id, $type, $value = '' ) {
-	$cache_key = $post_id.'_'.$user_id.'_'.$type;
+	$cache_key = $post_id . '_' . $user_id . '_' . $type;
 	$cache = wp_cache_get( $cache_key, 'ap_votes' );
 	if ( false !== $cache ) {
 		return $cache;
@@ -247,16 +271,16 @@ function ap_get_vote( $post_id, $user_id, $type, $value = '' ) {
 	$where = "SELECT * FROM {$wpdb->ap_votes} WHERE 1=1 ";
 	if ( ! empty( $type ) ) {
 		if ( is_array( $type ) ) {
-			$where .= ' AND vote_type IN ('. sanitize_comma_delimited( $type, 'str' ). ')';
+			$where .= ' AND vote_type IN (' . sanitize_comma_delimited( $type, 'str' ) . ')';
 		} else {
-			$where .= " AND vote_type = '". sanitize_text_field( $type ) ."'";
+			$where .= " AND vote_type = '" . sanitize_text_field( $type ) . "'";
 		}
 	}
 	if ( ! empty( $value ) ) {
 		if ( is_array( $value ) ) {
-			$where .= ' AND vote_value IN ('. sanitize_comma_delimited( $value, 'str' ). ')';
+			$where .= ' AND vote_value IN (' . sanitize_comma_delimited( $value, 'str' ) . ')';
 		} else {
-			$where .= " AND vote_value = '". sanitize_text_field( $value ) ."'";
+			$where .= " AND vote_value = '" . sanitize_text_field( $value ) . "'";
 		}
 	}
 	$vote = $wpdb->get_row( $where . $wpdb->prepare( ' AND vote_post_id = %d AND  vote_user_id = %d LIMIT 1', $post_id, $user_id ) );
@@ -270,6 +294,7 @@ function ap_get_vote( $post_id, $user_id, $type, $value = '' ) {
 
 /**
  * Check if user vote on a post.
+ *
  * @param  integer      $post_id Post ID.
  * @param  integer      $user_id User ID.
  * @param  string|array $type    Vote type.
@@ -290,13 +315,14 @@ function ap_is_user_voted( $post_id, $type = 'vote', $user_id = false ) {
 
 /**
  * Delete vote from database.
+ *
  * @param  integer      $post_id Post ID.
  * @param  integer      $user_id User ID.
  * @param  string|array $type    Vote type.
  * @return boolean
  * @since  4.0.0
  */
-function ap_delete_vote( $post_id, $user_id = false, $type = 'vote', $value = false) {
+function ap_delete_vote( $post_id, $user_id = false, $type = 'vote', $value = false ) {
 	global $wpdb;
 	if ( false === $user_id ) {
 		$user_id = get_current_user_id();
@@ -311,6 +337,7 @@ function ap_delete_vote( $post_id, $user_id = false, $type = 'vote', $value = fa
 
 /**
  * Add post vote.
+ *
  * @param  integer         $post_id Post ID.
  * @param  boolean|integer $user_id ID of user casting vote.
  * @param  string          $type    Vote type.
@@ -328,58 +355,21 @@ function ap_add_post_vote( $post_id, $user_id = false, $type = 'vote', $value = 
 	return false;
 }
 
+/**
+ * Delete post vote and update qameta votes count.
+ *
+ * @param  integer         $post_id    Post ID.
+ * @param  boolean|integer $user_id    User ID.
+ * @param  string          $type       Vote type.
+ * @param  boolean|string  $value      Vote value.
+ * @return boolean|integer
+ */
 function ap_delete_post_vote( $post_id, $user_id = false, $type = 'vote', $value = false ) {
 	$rows = ap_delete_vote( $post_id, $user_id, $type, $value );
 	if ( false !== $rows ) {
 		return ap_update_votes_count( $post_id );
 	}
 	return false;
-}
-
-/**
- * Remove vote meta from DB.
- */
-function ap_remove_vote( $type, $current_userid, $actionid, $receiving_userid ) {
-	// Snaitize varaiables.
-	$current_userid = (int) $current_userid;
-	$type = sanitize_title_for_query( $type );
-	$actionid = (int) $actionid;
-	$receiving_userid = (int) $receiving_userid;
-
-	$row = ap_delete_meta( array( 'apmeta_type' => $type, 'apmeta_userid' => $current_userid, 'apmeta_actionid' => $actionid ) );
-
-	if ( $row !== false ) {
-		ap_clear_vote_count_cache( $type, $actionid, $current_userid, 'type', $receiving_userid );
-		do_action( 'ap_vote_removed', $current_userid, $type, $actionid, $receiving_userid );
-	}
-
-	return $row;
-}
-
-/**
- * Retrieve vote count
- * If $actionid is passed then it count numbers of vote for a post
- * If $userid is passed then it count votes casted by a user.
- * If $receiving_userid is passed then it count numbers of votes received.
- *
- * @param bool|int $userid           User ID of user casting the vote
- * @param string   $type             Type of vote, "vote_up" or "vote_down"
- * @param boolean  $actionid         Post ID
- * @param integer  $receiving_userid User ID of user who received the vote
- *
- * @return int
- */
-function ap_count_vote($userid = false, $type, $actionid = false, $receiving_userid = false) {
-
-	if ( $actionid !== false ) {
-		return ap_meta_total_count( $type, $actionid );
-	} elseif ( $userid !== false ) {
-		return ap_meta_total_count( $type, false, $userid );
-	} elseif ( $receiving_userid !== false ) {
-		return ap_meta_total_count( $type, false, false, false, $receiving_userid );
-	}
-
-	return 0;
 }
 
 /**
@@ -392,7 +382,6 @@ function ap_count_vote($userid = false, $type, $actionid = false, $receiving_use
  */
 function ap_vote_btn( $post = null, $echo = true ) {
 	$post = ap_get_post( $post );
-
 	if ( 'answer' == $post->post_type && ap_opt( 'disable_voting_on_answer' ) ) {
 		return;
 	}
@@ -400,20 +389,20 @@ function ap_vote_btn( $post = null, $echo = true ) {
 	if ( 'question' == $post->post_type && ap_opt( 'disable_voting_on_question' ) ) {
 		return;
 	}
-	$nonce = wp_create_nonce( 'vote_'.$post->ID );
+	$nonce = wp_create_nonce( 'vote_' . $post->ID );
 	$vote = ap_get_vote( $post->ID, get_current_user_id(), 'vote' );
 	$voted = $vote ? true : false;
 	$type = $vote && $vote->vote_value == '1' ? 'vote_up' : 'vote_down';
 
 	$html = '';
-	$html .= '<div data-id="'.$post->ID.'" class="ap-vote net-vote" data-action="vote">';
-	$html .= '<a class="'.ap_icon( 'vote_up' ).' ap-tip vote-up'.($voted ? ' voted' : '').($vote && $type == 'vote_down' ? ' disable' : '').'" data-query="ap_ajax_action=vote&type=up&post_id='.$post->ID.'&__nonce='.$nonce.'" href="#" title="'.__( 'Up vote this post', 'anspress-question-answer' ).'"></a>';
+	$html .= '<div data-id="' . $post->ID . '" class="ap-vote net-vote" data-action="vote">';
+	$html .= '<a class="' . ap_icon( 'vote_up' ) . ' ap-tip vote-up' . ($voted ? ' voted' : '') . ($vote && $type == 'vote_down' ? ' disable' : '') . '" data-query="ap_ajax_action=vote&type=up&post_id=' . $post->ID . '&__nonce=' . $nonce . '" href="#" title="' . __( 'Up vote this post', 'anspress-question-answer' ) . '"></a>';
 
-	$html .= '<span class="net-vote-count" data-view="ap-net-vote" itemprop="upvoteCount">'. ap_get_votes_net() .'</span>';
+	$html .= '<span class="net-vote-count" data-view="ap-net-vote" itemprop="upvoteCount">' . ap_get_votes_net() . '</span>';
 
 	if ( ('question' == $post->post_type && ! ap_opt( 'disable_down_vote_on_question' )) ||
 		('answer' == $post->post_type && ! ap_opt( 'disable_down_vote_on_answer' )) ) {
-		$html .= '<a data-tipposition="bottom center" class="'.ap_icon( 'vote_down' ).' ap-tip vote-down'.($voted ? ' voted' : '').($vote && $type == 'vote_up' ? ' disable' : '').'" data-query="ap_ajax_action=vote&type=down&post_id='.$post->ID.'&__nonce='.$nonce.'" href="#" title="'.__( 'Down vote this post', 'anspress-question-answer' ).'"></a>';
+		$html .= '<a data-tipposition="bottom center" class="' . ap_icon( 'vote_down' ) . ' ap-tip vote-down' . ($voted ? ' voted' : '') . ($vote && $type == 'vote_up' ? ' disable' : '') . '" data-query="ap_ajax_action=vote&type=down&post_id=' . $post->ID . '&__nonce=' . $nonce . '" href="#" title="' . __( 'Down vote this post', 'anspress-question-answer' ) . '"></a>';
 	}
 
 	$html .= '</div>';
@@ -425,84 +414,4 @@ function ap_vote_btn( $post = null, $echo = true ) {
 	}
 }
 
-/**
- * post close vote count.
- *
- * @param bool|int $postid
- *
- * @return int
- */
-function ap_post_close_vote($postid = false) {
 
-	global $post;
-
-	$postid = $postid ? $postid : $post->ID;
-
-	return ap_meta_total_count( 'close', $postid );
-}
-
-// check if user voted for close
-function ap_is_user_voted_closed($postid = false) {
-
-	if ( is_user_logged_in() ) {
-		global $post;
-		$postid = $postid ? $postid : $post->ID;
-		$userid = get_current_user_id();
-		$done = ap_meta_user_done( 'close', $userid, $postid );
-
-		return $done > 0 ? true : false;
-	}
-
-	return false;
-}
-
-// TODO: re-add closing system as an extension
-function ap_close_vote_html() {
-
-	if ( ! is_user_logged_in() ) {
-		return;
-	}
-
-	global $post;
-	$nonce = wp_create_nonce( 'close_'.$post->ID );
-	$title = ( ! $post->voted_closed) ? (__( 'Vote for closing', 'anspress-question-answer' )) : (__( 'Undo your vote', 'anspress-question-answer' ));
-	?>
-		<a id="<?php echo 'close_'.$post->ID;
-	?>" data-action="close-question" class="close-btn<?php echo ($post->voted_closed) ? ' closed' : '';
-	?>" data-args="<?php echo $post->ID.'-'.$nonce;
-	?>" href="#" title="<?php echo $title;
-	?>">
-			<?php _e( 'Close', 'anspress-question-answer' );
-			echo($post->closed > 0 ? ' <span>('.$post->closed.')</span>' : '');
-	?>
-        </a>
-	<?php
-
-}
-
-/**
- * Clear vote count cache.
- * @param  string|integer $actionid         Action id.
- * @param  string|integer $current_userid   Current user id.
- * @param  string|integer $receiving_userid Receiving user id.
- * @return string
- */
-function ap_clear_vote_count_cache( $actionid = '', $current_userid = '', $receiving_userid = '' ) {
-
-	$cache_key = 'vote_up_vote_down';
-
-	if ( '' != $actionid ) {
-		$cache_key .= '_'.$actionid;
-	}
-
-	if ( '' != $current_userid ) {
-		$cache_key .= '_'. (int) $current_userid;
-	}
-
-	if ( '' != $receiving_userid ) {
-		$cache_key .= '_'. (int) $receiving_userid;
-	}
-
-	$cache_key .= '_apmeta_type';
-	wp_cache_delete( $cache_key , 'ap_meta_count' );
-}

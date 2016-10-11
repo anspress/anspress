@@ -180,7 +180,7 @@ function ap_update_answers_count( $question_id, $counts = false ) {
  * @since  3.1.0
  */
 function ap_update_votes_count( $post_id ) {
-	$count = ap_post_count_votes( $post_id );
+	$count = ap_count_post_votes_by( 'post_id', $post_id );
 	ap_insert_qameta( $post_id, $count );
 	return $count;
 }

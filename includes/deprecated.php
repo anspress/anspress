@@ -927,3 +927,39 @@ function ap_add_vote( $current_userid, $type, $actionid, $receiving_userid, $cou
 function ap_meta_post_votes($post_id) {
 	_deprecated_function( __FUNCTION__, '4.0.0', 'ap_count_votes' );
 }
+
+/**
+ * Retrieve vote count
+ * If $actionid is passed then it count numbers of vote for a post
+ * If $userid is passed then it count votes casted by a user.
+ * If $receiving_userid is passed then it count numbers of votes received.
+ *
+ * @param bool|int $userid           User ID of user casting the vote
+ * @param string   $type             Type of vote, "vote_up" or "vote_down"
+ * @param boolean  $actionid         Post ID
+ * @param integer  $receiving_userid User ID of user who received the vote
+ *
+ * @return int
+ */
+function ap_count_vote( $userid = false, $type, $actionid = false, $receiving_userid = false ) {
+	_deprecated_function( __FUNCTION__, '4.0.0', 'ap_count_votes' );
+}
+
+/**
+ * Remove vote meta from DB.
+ */
+function ap_remove_vote( $type, $current_userid, $actionid, $receiving_userid ) {
+	_deprecated_function( __FUNCTION__, '4.0.0', 'ap_delete_vote' );
+}
+
+/**
+ * Clear vote count cache.
+ *
+ * @param  string|integer $actionid         Action id.
+ * @param  string|integer $current_userid   Current user id.
+ * @param  string|integer $receiving_userid Receiving user id.
+ * @return string
+ */
+function ap_clear_vote_count_cache( $actionid = '', $current_userid = '', $receiving_userid = '' ) {
+	_deprecated_function( __FUNCTION__, '4.0.0' );
+}
