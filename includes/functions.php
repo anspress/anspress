@@ -553,7 +553,7 @@ function ap_select_answer_btn_html( $post ) {
 
 	$action = 'answer-'. $ans->ID;
 	$nonce = wp_create_nonce( $action );
-	
+
 	if ( ! ap_have_answer_selected( $ans->post_parent ) ) {
 		return '<a href="#" class="ap-btn-select ap-sicon '.ap_icon( 'check' ).' ap-tip" data-action="select_answer" data-query="answer_id='.$ans->ID.'&__nonce='.$nonce.'&ap_ajax_action=select_best_answer" title="'.__( 'Select this answer as best', 'anspress-question-answer' ).'">'.__( 'Select', 'anspress-question-answer' ).'</a>';
 	} elseif ( ap_have_answer_selected( $ans->post_parent ) && ap_is_selected( $ans->ID ) ) {
@@ -685,14 +685,21 @@ function ap_short_num($num, $precision = 2) {
 
 /**
  * Sanitize comma delimited strings
- * @param  string $str Comma delimited string.
+ * @param  string|array $str Comma delimited string.
  * @return string
  */
-function sanitize_comma_delimited($str) {
+function sanitize_comma_delimited($str, $pieces_type = 'int') {
 	$str = is_array( $str ) ? implode( ',', $str ) : $str;
-	if ( ! empty($str ) ) {
+	if ( ! empty( $str ) ) {
 		$str = wp_unslash( $str );
-		return implode( ',', array_map( 'intval', explode( ',', $str ) ) );
+		$sanitize = $pieces_type == 'int' ? 'intval' : 'sanitize_text_field';
+		$glue = $pieces_type != 'int' ? '","' : ',';
+		$new_str = implode( $glue, array_map( $sanitize, explode( ',', $str ) ) );
+		if ( $pieces_type != 'int' ) {
+			return '"' . $new_str . '"';
+		}
+
+		return $new_str;
 	}
 }
 
@@ -1052,9 +1059,7 @@ function ap_get_link_to($sub) {
 
 	if ( is_array( $sub ) && isset( $sub['ap_page'] ) && @isset( $default_pages[ $sub['ap_page'] ] ) ) {
 		$sub['ap_page'] = $default_pages[ $sub['ap_page'] ];
-	}
-
-	elseif ( !is_array( $sub ) && ! empty( $sub ) && @isset( $default_pages[ $sub ] ) ) {
+	} elseif ( ! is_array( $sub ) && ! empty( $sub ) && @isset( $default_pages[ $sub ] ) ) {
 		$sub = $default_pages[ $sub ];
 	}
 
@@ -1254,7 +1259,6 @@ function ap_parameter_empty($param = false, $return) {
 }
 
 function ap_post_upload_form($post_id = false) {
-
 	$html = '
     <div class="ap-post-upload-form">
         <div class="ap-btn ap-upload-o '.ap_icon( 'image' ).'">
@@ -1282,7 +1286,7 @@ function ap_post_upload_form($post_id = false) {
 	$media = get_attached_media( '', $post_id );
 	$html .= '<div id="ap-upload-list">';
 	$__nonce = wp_create_nonce( 'ap_ajax_nonce' );
-	foreach( (array) $media as $m ){
+	foreach ( (array) $media as $m ) {
 		$html .= '<span id="'.$m->ID.'"><i class="apicon-cloud-upload"></i><a href="'. esc_url( wp_get_attachment_url( $m->ID ) ) .'">'.basename( get_attached_file( $m->ID ) ).'</a><i class="close" data-action="ajax_btn" data-query="delete_attachment::'.$__nonce.'::'.$m->ID.'">&times;</i></span>';
 	}
 	$html .= '</div>';
@@ -1308,7 +1312,7 @@ function ap_post_upload_hidden_form() {
  * @return array
  * @since  3.0.0
  */
-function ap_allowed_mimes(){
+function ap_allowed_mimes() {
 	$mimes = array(
 		'jpg|jpeg' => 'image/jpeg',
 		'gif' => 'image/gif',
@@ -1592,7 +1596,7 @@ function ap_verify_nonce($action) {
  */
 function ap_verify_default_nonce() {
 	$nonce_name = isset( $_REQUEST['ap_ajax_nonce'] ) ? 'ap_ajax_nonce' : '__nonce';
-	if ( !isset( $_REQUEST[ $nonce_name ] ) ) {
+	if ( ! isset( $_REQUEST[ $nonce_name ] ) ) {
 		return false;
 	}
 
@@ -1741,6 +1745,7 @@ function ap_append_table_names() {
 	global $wpdb;
 
 	$wpdb->ap_qameta 		= $wpdb->prefix . 'ap_qameta';
+	$wpdb->ap_votes 		= $wpdb->prefix . 'ap_votes';
 	$wpdb->ap_meta 			= $wpdb->prefix . 'ap_meta';
 	$wpdb->ap_activity 		= $wpdb->prefix . 'ap_activity';
 	$wpdb->ap_activitymeta 	= $wpdb->prefix . 'ap_activitymeta';
@@ -1846,7 +1851,7 @@ function ap_new_edit_post_status( $user_id = false, $post_type = 'question', $ed
 	$status = 'publish';
 
 	// If super admin or user have no_moderation cap.
-	if( is_super_admin( $user_id ) || user_can( $user_id, 'ap_no_moderation' ) ){
+	if ( is_super_admin( $user_id ) || user_can( $user_id, 'ap_no_moderation' ) ) {
 		return $status;
 	}
 
@@ -1874,7 +1879,7 @@ function ap_find_duplicate_post( $content, $post_type = 'question', $question_id
 	$content = ap_sanitize_description_field( $content );
 
 	// Return if content is empty. But blank content will be checked.
-	if( empty( $content ) ){
+	if ( empty( $content ) ) {
 		return false;
 	}
 
@@ -1894,7 +1899,7 @@ function ap_find_duplicate_post( $content, $post_type = 'question', $question_id
  * @return boolean
  * @since  3.0.0
  */
-function ap_disable_question_suggestion( ){
+function ap_disable_question_suggestion( ) {
 	/**
 	 * Modify ap_disable_question_suggestion.
 	 * @param boolean $enable Default is false.

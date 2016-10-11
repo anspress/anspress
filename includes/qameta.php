@@ -2,11 +2,13 @@
 
 /**
  * Insert post meta
+ *
  * @param array   $args Args.
  * @param boolean $wp_error Return WP_Error object if error.
  * @return boolean|integer qameta id on success else false.
  * @since  3.1.0
  */
+
 function ap_insert_qameta( $post_id, $args, $wp_error = false ) {
 	$args = wp_unslash( wp_parse_args( $args, [
 		'ptype' => get_post_type( $post_id ),
@@ -40,13 +42,13 @@ function ap_insert_qameta( $post_id, $args, $wp_error = false ) {
 			$sanitized_values[ $field ] = $value;
 		}
 	}
-	
+
 	global $wpdb;
 
 	$exists = ap_get_qameta( $post_id );
 
 	if ( $exists->is_new ) {
-		$sanitized_values[ 'post_id' ] = (int) $post_id;
+		$sanitized_values['post_id'] = (int) $post_id;
 		$inserted = $wpdb->insert( $wpdb->ap_qameta, $sanitized_values, $formats );
 	} else {
 		$inserted = $wpdb->update( $wpdb->ap_qameta, $sanitized_values, [ 'post_id' => $post_id ], $formats );
@@ -57,11 +59,12 @@ function ap_insert_qameta( $post_id, $args, $wp_error = false ) {
 		return $post_id;
 	}
 
-	return $wp_error ? new WP_Error('Unable to insert AnsPress qameta' ) : false;
+	return $wp_error ? new WP_Error( 'Unable to insert AnsPress qameta' ) : false;
 }
 
 /**
  * Get a qameta by post_id
+ *
  * @param  integer $post_id Post ID.
  * @return object|false
  * @since  3.1.0
@@ -81,9 +84,9 @@ function ap_get_qameta( $post_id ) {
 
 		$qameta = wp_parse_args( $qameta, ap_qameta_fields() );
 
-		$qameta[ 'votes_net' ] = $qameta[ 'votes_up' ] + $qameta[ 'votes_down' ];
-		$qameta[ 'terms' ] = maybe_unserialize( $qameta[ 'terms' ] );
-		$qameta[ 'activities' ] = maybe_unserialize( $qameta[ 'activities' ] );
+		$qameta['votes_net'] = $qameta['votes_up'] + $qameta['votes_down'];
+		$qameta['terms'] = maybe_unserialize( $qameta['terms'] );
+		$qameta['activities'] = maybe_unserialize( $qameta['activities'] );
 		$qameta = (object) $qameta;
 
 		wp_cache_add( $post_id, $qameta, 'ap_qameta' );
@@ -110,13 +113,14 @@ function ap_qameta_fields() {
 		'terms' 		=> '',
 		'activities' 	=> '',
 		'roles' 		=> '',
-		'updated' 		=> '',
+		'last_updated' 	=> '',
 		'is_new' 		=> false,
 	);
 }
 
 /**
  * Append post object with apmeta feilds.
+ *
  * @param  object $post Post Object.
  * @return object
  */
@@ -138,7 +142,7 @@ function ap_append_qameta( $post ) {
 		$defaults = ap_get_qameta( $post->ID );
 		if ( ! empty( $defaults ) ) {
 			foreach ( $defaults as $pkey => $value ) {
-				if ( ! isset($post_arr[ $pkey ] ) || empty( $post_arr[ $pkey ] ) ) {
+				if ( ! isset( $post_arr[ $pkey ] ) || empty( $post_arr[ $pkey ] ) ) {
 					$post->$pkey = $value;
 				}
 			}
@@ -155,6 +159,7 @@ function ap_append_qameta( $post ) {
 
 /**
  * Update count of answers in post meta.
+ *
  * @param  integer $question_id Question ID.
  * @return boolean|false
  * @since  3.1.0
@@ -169,24 +174,20 @@ function ap_update_answers_count( $question_id, $counts = false ) {
 
 /**
  * Update qameta votes count
+ *
  * @param  integer $post_id Post ID.
  * @return boolean|integer
  * @since  3.1.0
  */
 function ap_update_votes_count( $post_id ) {
-	$count = ap_meta_post_votes( $post_id );
-	$args = array(
-		'votes_up' => $count['votes_up'],
-		'votes_down' => $count['votes_down'],
-		'votes_net' => $count['votes_net'],
-	);
-
-	ap_insert_qameta( $post_id, $args );
-	return $args;
+	$count = ap_post_count_votes( $post_id );
+	ap_insert_qameta( $post_id, $count );
+	return $count;
 }
 
 /**
  * Set selected answer for a question
+ *
  * @param  integer $question_id Question ID.
  * @param  integer $answer_id   Answer ID.
  * @return integer|false
@@ -200,6 +201,7 @@ function ap_set_selected_answer( $question_id, $answer_id ) {
 
 /**
  * Clear selected answer from a question.
+ *
  * @param  integere $question_id Question ID.
  * @return integer|false
  * @since  3.1.0
@@ -214,6 +216,7 @@ function ap_unset_selected_answer( $question_id ) {
 
 /**
  * Update views count of qameta.
+ *
  * @param  integer       $question_id Question ID.
  * @param  integer|false $views   Passing view will replace existing value else increment existing.
  * @return integer
@@ -231,16 +234,19 @@ function ap_update_views_count( $post_id, $views = false ) {
 
 /**
  * Updates last_active field of qameta
+ *
  * @param  integer $post_id Post ID.
  * @return integer|false
  * @since  3.1.0
  */
 function ap_update_last_active( $post_id ) {
+	var_dump( [ 'last_updated' => current_time( 'mysql' ) ] );
 	return ap_insert_qameta( $post_id, [ 'last_updated' => current_time( 'mysql' ) ] );
 }
 
 /**
  * Set flags count for a qameta
+ *
  * @param  integer $post_id Post ID.
  * @return integer|false
  * @since  3.1.0
@@ -251,6 +257,7 @@ function ap_set_flag_count( $post_id, $count = 1 ) {
 
 /**
  * Increment flags count.
+ *
  * @param  integer $post_id Post ID.
  * @return integer|false
  * @since  3.1.0
@@ -264,6 +271,7 @@ function ap_update_flags_count( $post_id ) {
 
 /**
  * Updates selected field of qameta
+ *
  * @param  integer $answer_id Answer ID.
  * @return integer|false
  * @since  3.1.0
@@ -275,6 +283,7 @@ function ap_update_answer_selected( $answer_id, $selected = true ) {
 
 /**
  * Set subscribers count for a qameta.
+ *
  * @param  integer $post_id Post ID.
  * @return integer|false
  * @since  3.1.0
@@ -286,6 +295,7 @@ function ap_set_subscribers_count( $post_id, $count = 1 ) {
 
 /**
  * Updates terms of qameta.
+ *
  * @param  integer $question_id Question ID.
  * @return integer|false
  * @since  3.1.0

@@ -904,3 +904,26 @@ function ap_flagged_post_meta( $post_id ) {
 function ap_post_flag_count($postid = false) {
 	_deprecated_function( __FUNCTION__, '4.0.0' );
 }
+
+/**
+ * Add vote meta.
+ *
+ * @param int    $current_userid    User ID of user casting the vote
+ * @param string $type              Type of vote, "vote_up" or "vote_down"
+ * @param int    $actionid          Post ID
+ * @param int    $receiving_userid User ID of user receiving the vote. @since 2.3
+ *
+ * @return integer
+ */
+function ap_add_vote( $current_userid, $type, $actionid, $receiving_userid, $count = 1 ) {
+	_deprecated_function( __FUNCTION__, '4.0.0' );
+}
+
+/**
+ * Count post vote count meta.
+ * @param  integer $post_id Post id.
+ * @return integer
+ */
+function ap_meta_post_votes($post_id) {
+	_deprecated_function( __FUNCTION__, '4.0.0', 'ap_count_votes' );
+}

@@ -1,12 +1,12 @@
 <?php
 
-class AP_QA_Query_Hooks{
+class AP_QA_Query_Hooks {
 
-	public static function sql_filter($sql, $args) {
+	public static function sql_filter( $sql, $args ) {
 		global $wpdb;
 
 		if ( isset( $args->query['ap_query'] ) ) {
-			$sql['join'] = $sql['join'] ." LEFT JOIN {$wpdb->ap_qameta} qameta ON qameta.post_id = $wpdb->posts.ID ";
+			$sql['join'] = $sql['join'] . " LEFT JOIN {$wpdb->ap_qameta} qameta ON qameta.post_id = $wpdb->posts.ID ";
 			$sql['fields'] = $sql['fields'] . ', qameta.*, qameta.votes_up - qameta.votes_down AS votes_net';
 
 			$ap_sortby = isset( $args->query['ap_sortby'] ) ? $args->query['ap_sortby'] : 'active';
@@ -27,20 +27,18 @@ class AP_QA_Query_Hooks{
 			} elseif ( 'newest' == $ap_sortby ) {
 				$sql['orderby'] = "{$wpdb->posts}.post_date DESC";
 			} else {
-				$sql['orderby'] = "COALESCE(qameta.last_updated, {$wpdb->posts}.post_modified) DESC, " . $sql['orderby'];
+				$sql['orderby'] = 'qameta.last_updated DESC ';
 			}
-
 			// Keep featured posts on top.
 			if ( ! $answer_query ) {
-				$sql['orderby'] = 'IFNULL(qameta.featured, 0) DESC, ' . $sql['orderby'];
+				$sql['orderby'] = 'CASE WHEN IFNULL(qameta.featured, 0) =1 THEN 1 ELSE 2 END ASC, ' . $sql['orderby'];
 			}
-
 			// Keep best answer to top.
 			if ( $answer_query ) {
 				$sql['orderby'] = 'qameta.selected <> 1 , ' . $sql['orderby'];
 			}
 		}
-
+		
 		return $sql;
 	}
 

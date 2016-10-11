@@ -130,7 +130,6 @@ class Answers_Query extends WP_Query {
 	 * @return array of mdia ids
 	 */
 	public function get_ids() {
-
 		$ids = array();
 
 		if ( empty( $this->request ) ) {
