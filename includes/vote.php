@@ -397,7 +397,8 @@ function ap_vote_btn( $post = null, $echo = true ) {
 		return;
 	}
 	$nonce = wp_create_nonce( 'vote_' . $post->ID );
-	$vote = ap_get_vote( $post->ID, get_current_user_id(), 'vote' );
+	
+	$vote = is_user_logged_in() ? ap_get_vote( $post->ID, get_current_user_id(), 'vote' ) : false;
 	$voted = $vote ? true : false;
 	$type = $vote && $vote->vote_value == '1' ? 'vote_up' : 'vote_down';
 
