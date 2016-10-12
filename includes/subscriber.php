@@ -180,6 +180,10 @@ function ap_is_user_subscribed($item_id, $activity, $user_id = false) {
 function ap_subscribers_count($item_id = false, $activity = 'q_all') {
 	global $wpdb;
 
+	if ( $item_id->post_type == 'answer' ){
+		return;
+	}
+
 	$item_id = $item_id ? $item_id : get_question_id();
 
 	$key = $item_id.'_'.$activity;

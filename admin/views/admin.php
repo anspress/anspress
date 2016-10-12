@@ -84,9 +84,9 @@ if ( isset( $_POST['__nonce'] ) && wp_verify_nonce( $_POST['__nonce'], 'nonce_op
 			    </div>
 	            <div class="ap-options-side">
 		            <div class="ap-group-options get-ext">
-		            	<a href="https://anspress.io/themes/">Browse Themes</a>
-		            	<a href="https://anspress.io/extensions/">Browse Extensions</a>
-		            	<h3>Check our AnsPress extensions and themes</h3>
+		            	<a href="https://anspress.io/themes/"><?php _e( 'Browse Themes', 'anspress-question-answer' ); ?></a>
+		            	<a href="https://anspress.io/extensions/"><?php _e( 'Browse Extensions', 'anspress-question-answer' ); ?></a>
+		            	<h3><?php _e( 'Check our AnsPress extensions and themes', 'anspress-question-answer' ); ?></h3>
 		            </div>
 		            <div class="ap-group-options">
 						<?php ap_option_group_fields(); ?>
