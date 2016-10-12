@@ -245,11 +245,11 @@ function ap_new_notification( $activity_id, $user_id = false, $status = '0', $da
 		$i = 1;
 		foreach ( $user_ids as $id ) {
 			$query .= $wpdb->prepare( '(%d, %d, %s, %s)', $activity_id, $id, $status, $date );
-
 			if ( count( $user_ids ) != $i ) {
 				$query .= ', ';
 			}
-
+			// Delete notification count transient.
+			delete_transient( 'ap_noti_count_'.$id );
 			$i++;
 
 		}
@@ -277,7 +277,6 @@ function ap_update_notification( $id, $args = array() ) {
 
 
 function ap_get_notification_icon($type) {
-
 	$icons = array(
 		'new_question' 				=> ap_icon( 'question', true ),
 		'new_answer' 				=> ap_icon( 'answer', true ),
@@ -317,29 +316,24 @@ function ap_get_the_total_unread_notification($user_id = false, $echo = false) {
  * @return integer
  * @since  2.3
  */
-function ap_get_total_unread_notification($user_id = false) {
-	global $wpdb;
-
+function ap_get_total_unread_notification($user_id = false) {	
 	if ( $user_id === false ) {
 		$user_id = get_current_user_id();
 	}
-
 	$key = 'noti_count::'.$user_id;
-
-	$cache = wp_cache_get( $key, 'ap_notifications' );
-
-	if ( false !== $cache ) {
-		return $cache;
+	//$cache = wp_cache_get( $key, 'ap_notifications' );
+	$trans = get_transient( 'ap_noti_count_'.$user_id );
+	if ( false !== $trans ) {
+		return $trans;
 	}
-
+	global $wpdb;
 	// count total numbers of unread also left join with 
 	// activity table and exclude notification for trashed items.
 	$query = $wpdb->prepare( " SELECT count(*) FROM $wpdb->ap_notifications n LEFT JOIN $wpdb->ap_activity a ON noti_activity_id = a.id WHERE n.noti_status = 0 AND n.noti_user_id = %d AND a.status != 'trash'", $user_id );
 
 	$count = $wpdb->get_var( $query );
-
-	wp_cache_set( $key, $count, 'ap_notifications' );
-
+	set_transient( 'ap_noti_count_'.$user_id, $count, HOUR_IN_SECONDS );
+	//wp_cache_set( $key, $count, 'ap_notifications' );
 	return $count;
 }
 

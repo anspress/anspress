@@ -132,41 +132,25 @@ class Answers_Query extends WP_Query {
 	 */
 	public function get_ids() {
 		if ( $this->ap_ids ) {
-			return $this->ap_ids;
+			return;
 		}
 
-		$ids = array();
-		if ( empty( $this->request ) ) {
-			return $ids;
+		$this->ap_ids = [ 'post_ids' => array(), 'attach_ids' => array() ];
+		foreach ( (array) $this->posts as $_post ) {
+			$this->ap_ids['post_ids'][] = $_post->ID;
+			$this->ap_ids['attach_ids'] = array_filter( array_merge( explode( ',', $_post->attach ), $this->ap_ids['attach_ids'] ) );
 		}
-
-		global $wpdb;
-		$this->ap_ids = $wpdb->get_col( $this->request );
 	}
+
+
 
 	/**
 	 * Pre fetch current users vote on all answers
 	 */
-	public function pre_fetch_votes() {
+	public function pre_fetch() {
 		$this->get_ids();
-
-		if ( $this->ap_ids && is_user_logged_in() ) {
-			$votes = ap_get_votes( [ 'vote_post_id' => (array) $this->ap_ids, 'vote_user_id' => get_current_user_id(), 'vote_type' => [ 'flag', 'vote' ] ] );
-
-			$cache_keys = [];
-			foreach ( (array) $this->ap_ids as $post_id ) {
-				$cache_keys[ $post_id . '_' . get_current_user_id() . '_flag' ] = true;
-				$cache_keys[ $post_id . '_' . get_current_user_id() . '_vote' ] = true;
-			}
-
-			foreach ( (array) $votes as $vote ) {
-				unset( $cache_keys[ $vote->vote_post_id . '_' . $vote->vote_user_id . '_' . $vote->vote_type ] );
-			}
-
-			foreach ( (array) $cache_keys as $key => $val ) {
-				wp_cache_set( $key, '', 'ap_votes' );
-			}
-		}
+		ap_user_votes_pre_fetch( $this->ap_ids['post_ids'] );
+		ap_post_attach_pre_fetch( $this->ap_ids['attach_ids'] );
 	}
 }
 

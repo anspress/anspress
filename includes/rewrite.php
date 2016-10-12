@@ -1,13 +1,13 @@
 <?php
-/**
- * Plugin rewrite rules and query variables
- *
- * @package   AnsPress
- * @author    Rahul Aryan <support@anspress.io>
- * @license   GPL-2.0+
- * @link      https://anspress.io
- * @copyright 2014 Rahul Aryan
- */
+	/**
+	 * Plugin rewrite rules and query variables
+	 *
+	 * @package   AnsPress
+	 * @author    Rahul Aryan <support@anspress.io>
+	 * @license   GPL-2.0+
+	 * @link      https://anspress.io
+	 * @copyright 2014 Rahul Aryan
+	 */
 
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
@@ -50,7 +50,8 @@ class AnsPress_Rewrite
 	}
 
 	/**
-	 * Rewrite rules
+	 * Rewrite rules.
+	 *
 	 * @return array
 	 */
 	public static function rewrites() {

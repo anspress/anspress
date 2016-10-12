@@ -16,6 +16,7 @@ function ap_qameta_fields() {
 		'subscribers' 	=> 0,
 		'flags' 		=> 0,
 		'terms' 		=> '',
+		'attach' 		=> '',
 		'activities' 	=> '',
 		'roles' 		=> '',
 		'last_updated' 	=> '',
@@ -48,13 +49,13 @@ function ap_insert_qameta( $post_id, $args, $wp_error = false ) {
 			if ( $field == 'activities' ) {
 				$value = maybe_serialize( $value );
 				$formats[] = '%s';
-			} elseif ( $field == 'terms' ) {
+			} elseif ( $field == 'terms' || $field == 'attach' ) {
 				$value = is_array( $value ) ? sanitize_comma_delimited( $value ) : (int) $value;
 				$formats[] = '%s';
-			} elseif ( in_array( $field, ['selected', 'featured', 'closed'] ) ) {
+			} elseif ( in_array( $field, [ 'selected', 'featured', 'closed' ] ) ) {
 				$value = (bool) $value;
 				$formats[] = '%d';
-			} elseif ( in_array($field, ['selected_id', 'comments', 'answers', 'views', 'votes_up', 'votes_down', 'subscribers', 'flags']) ) {
+			} elseif ( in_array( $field, [ 'selected_id', 'comments', 'answers', 'views', 'votes_up', 'votes_down', 'subscribers', 'flags' ] ) ) {
 				$value = (int) $value;
 				$formats[] = '%d';
 			} else {
@@ -69,7 +70,7 @@ function ap_insert_qameta( $post_id, $args, $wp_error = false ) {
 	global $wpdb;
 
 	$exists = ap_get_qameta( $post_id );
-	
+
 	if ( $exists->is_new ) {
 		$sanitized_values['post_id'] = (int) $post_id;
 		$inserted = $wpdb->insert( $wpdb->ap_qameta, $sanitized_values, $formats );
@@ -95,8 +96,8 @@ function ap_insert_qameta( $post_id, $args, $wp_error = false ) {
 function ap_get_qameta( $post_id ) {
 	global $wpdb;
 	$qameta = wp_cache_get( $post_id, 'ap_qameta' );
-	if ( false === $qameta ) {		
-		$qameta = $wpdb->get_row( $wpdb->prepare( "Select * FROM $wpdb->ap_qameta WHERE post_id = %d", $post_id ), ARRAY_A );
+	if ( false === $qameta ) {
+		$qameta = $wpdb->get_row( $wpdb->prepare( "Select * FROM {$wpdb->ap_qameta} WHERE post_id = %d", $post_id ), ARRAY_A );
 
 		// If null then append is_new.
 		if ( empty( $qameta ) ) {
@@ -316,6 +317,7 @@ function ap_update_qameta_terms( $question_id ) {
 
 /**
  * Set a question as a featured.
+ *
  * @param  integer $post_id Question ID.
  * @return boolean
  */
@@ -325,9 +327,24 @@ function ap_set_featured_question( $post_id ) {
 
 /**
  * Unset a question as a featured.
+ *
  * @param  integer $post_id Question ID.
  * @return boolean
  */
 function ap_unset_featured_question( $post_id ) {
 	return ap_insert_qameta( $post_id, [ 'featured' => 0 ] );
+}
+
+function ap_update_post_attach_ids( $post_id ) {
+	$args = array(
+	    'post_type' => 'attachment',
+	    'post_parent' => $post_id
+	);
+	$attachments = get_posts($args);
+	$ids = [];
+	foreach( (array) $attachments as $attach ) {
+		$ids[] = $attach->ID;
+	}
+	$insert = ap_insert_qameta( $post_id, [ 'attach' => $ids ] );
+	return $ids;
 }

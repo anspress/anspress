@@ -480,16 +480,16 @@ class AnsPress_Process_Form
 		);
 	}
 
+	/**
+	 * Process uploads.
+	 */
 	public function upload_post_image() {
-
 		if ( ! ap_user_can_upload_image() ) {
 			ap_ajax_json( 'no_permission' );
 		}
 
 		$user_id = get_current_user_id();
-
 		$file = $_FILES['post_upload_image'];
-
 		if ( $file['size'] > ap_opt( 'max_upload_size' ) ) {
 			ap_ajax_json( array( 
 				'message_type' => 'error', 
@@ -510,9 +510,7 @@ class AnsPress_Process_Form
 		}
 
 		if ( ! empty( $file ) && is_array( $file ) && $file['error'] == 0 ) {
-
 			$attachment_id = ap_upload_user_file( $file );
-
 			if ( $attachment_id !== false ) {
 				ap_ajax_json( array( 
 					'action' 	=> 'upload_post_image', 
@@ -537,8 +535,11 @@ class AnsPress_Process_Form
 				$attach = ap_get_post( $id );
 
 				if ( $attach && 'attachment' == $attach->post_type && $user_id == $attach->post_author ) {
-					ap_set_attachment_post_parent( $attach->ID, $post_id ); }
+					ap_set_attachment_post_parent( $attach->ID, $post_id );					
+				}
 			}
+			// Update attachment ids in qameta.
+			ap_update_post_attach_ids( $post_id );
 		}
 
 		// Remove all unused atthements by user.

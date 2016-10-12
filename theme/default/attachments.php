@@ -9,15 +9,15 @@ $icons = array(
 	'application/pdf' => 'file-pdf-o',
 );
 ?>
-<?php if( $media ): ?>
-	<div class="ap-attachments">
-		<h3><?php _e('Attachments', 'anspress-question-answer'); ?></h3>
-		<?php foreach ( (array) $media as $m ) :   ?>
-			<a class="ap-attachment" href="<?php echo esc_url( wp_get_attachment_url( $m->ID ) ); ?>" target="_blank" title="<?php _e('Download file', 'anspress-question-answer' ); ?>">
-				<?php $icon = isset( $icons[ $m->post_mime_type ] ) ? $icons[ $m->post_mime_type ] : 'file-archive-o';  ?>
-				<i class="apicon-<?php echo esc_attr( $icon ); ?>"></i>
-				<span><?php echo basename( get_attached_file( $m->ID ) ); ?></span>
-	        </a>
-		<?php endforeach; ?>
-	</div>
-<?php endif; ?>
+
+<div class="ap-attachments">
+	<h3><?php _e('Attachments', 'anspress-question-answer'); ?></h3>
+	<?php foreach ( ap_get_attach() as $attach_id ) :   ?>
+		<?php $media = get_post( $attach_id ); ?>
+		<a class="ap-attachment" href="<?php echo esc_url( wp_get_attachment_url( $media->ID ) ); ?>" target="_blank" title="<?php _e('Download file', 'anspress-question-answer' ); ?>">
+			<?php $icon = isset( $icons[ $media->post_mime_type ] ) ? $icons[ $media->post_mime_type ] : 'file-archive-o';  ?>
+			<i class="apicon-<?php echo esc_attr( $icon ); ?>"></i>
+			<span><?php echo basename( get_attached_file( $media->ID ) ); ?></span>
+        </a>
+	<?php endforeach; ?>
+</div>

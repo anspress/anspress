@@ -1381,7 +1381,7 @@ function ap_upload_user_file( $file = array(), $temp = true, $parent_post = fals
 
 		wp_update_attachment_metadata( $attachment_id, $attachment_data );
 
-		if ( 0 < intval( $attachment_id ) ) {
+		if ( 0 < intval( $attachment_id ) ) {			
 			return $attachment_id;
 		}
 	}
@@ -1908,6 +1908,21 @@ function ap_disable_question_suggestion( ) {
 	return (bool) apply_filters( 'ap_disable_question_suggestion', false );
 }
 
+/**
+ * Pre fetch and cache all question and answer attachments.
+ *
+ * @param  array $ids Post IDs.
+ * @since  4.0.0
+ */
+function ap_post_attach_pre_fetch( $ids ) {
+	if ( $ids && is_user_logged_in() ) {
+		$args = array(
+		    'post_type' => 'attachment',
+		    'include' => $ids
+		);
+		get_posts($args);
+	}
+}
 
 
 
