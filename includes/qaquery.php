@@ -126,6 +126,13 @@ class Question_Query extends WP_Query {
 		foreach ( (array) $this->posts as $_post ) {
 			$this->ap_ids['post_ids'][] = $_post->ID;
 			$this->ap_ids['attach_ids'] = array_merge( explode( ',', $_post->attach ), $this->ap_ids['attach_ids'] );
+			if ( ! empty( $_post->post_author ) ) {
+				$this->ap_ids['user_ids'][] = $_post->post_author;
+			}
+		}
+		// Unique ids only.
+		foreach ( (array) $this->ap_ids as $k => $ids ) {
+			$this->ap_ids[ $k ] = array_unique( $ids );
 		}
 	}
 
@@ -135,9 +142,10 @@ class Question_Query extends WP_Query {
 	 * Pre fetch current users vote on all answers
 	 */
 	public function pre_fetch() {
-		$this->get_ids();		
+		$this->get_ids();
 		ap_user_votes_pre_fetch( $this->ap_ids['post_ids'] );
 		ap_post_attach_pre_fetch( $this->ap_ids['attach_ids'] );
+		ap_post_author_pre_fetch( $this->ap_ids['user_ids'] );
 	}
 }
 

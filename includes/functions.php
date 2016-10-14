@@ -1381,7 +1381,7 @@ function ap_upload_user_file( $file = array(), $temp = true, $parent_post = fals
 
 		wp_update_attachment_metadata( $attachment_id, $attachment_data );
 
-		if ( 0 < intval( $attachment_id ) ) {			
+		if ( 0 < intval( $attachment_id ) ) {
 			return $attachment_id;
 		}
 	}
@@ -1918,11 +1918,22 @@ function ap_post_attach_pre_fetch( $ids ) {
 	if ( $ids && is_user_logged_in() ) {
 		$args = array(
 		    'post_type' => 'attachment',
-		    'include' => $ids
+		    'include'   => $ids
 		);
 		get_posts($args);
 	}
 }
 
-
-
+/**
+ * Pre fetch users and update cache.
+ *
+ * @param  array $ids User ids.
+ * @since 4.0.0
+ */
+function ap_post_author_pre_fetch( $ids ) {
+	$users = get_users( [ 'include' => $ids, 'fields' => array( 'ID', 'user_login', 'user_nicename', 'user_email', 'display_name' ) ] );
+	foreach ( (array) $users as $user ) {
+		update_user_caches( $user );
+	}
+	update_meta_cache( 'user', $ids );
+}

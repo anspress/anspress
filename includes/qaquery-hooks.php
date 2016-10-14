@@ -6,8 +6,8 @@ class AP_QA_Query_Hooks {
 		global $wpdb;
 
 		if ( isset( $args->query['ap_query'] ) ) {
-			$sql['join'] = $sql['join'] . " LEFT JOIN {$wpdb->ap_qameta} qameta ON qameta.post_id = $wpdb->posts.ID ";
-			$sql['fields'] = $sql['fields'] . ', qameta.*, qameta.votes_up - qameta.votes_down AS votes_net';
+			$sql['join'] = $sql['join'] . " LEFT JOIN {$wpdb->ap_qameta} qameta ON qameta.post_id = $wpdb->posts.ID LEFT JOIN {$wpdb->users} user ON $wpdb->posts.post_author = user.ID ";
+			$sql['fields'] = $sql['fields'] . ', qameta.*, qameta.votes_up - qameta.votes_down AS votes_net, user.user_email, user.user_login, user.display_name, user.user_nicename';
 
 			$ap_sortby = isset( $args->query['ap_sortby'] ) ? $args->query['ap_sortby'] : 'active';
 			$answer_query = isset( $args->query['ap_answers_query'] );
@@ -38,7 +38,7 @@ class AP_QA_Query_Hooks {
 				$sql['orderby'] = 'qameta.selected <> 1 , ' . $sql['orderby'];
 			}
 		}
-		
+
 		return $sql;
 	}
 
@@ -48,7 +48,6 @@ class AP_QA_Query_Hooks {
 			if ( in_array( $p->post_type, [ 'question', 'answer' ] ) ) {
 				// Convert object as array to prevent using __isset of WP_Post.
 				$p_arr = (array) $p;
-
 				foreach ( ap_qameta_fields() as $fields_name => $val ) {
 					if ( ! isset( $p_arr[ $fields_name ] ) || empty( $p_arr[ $fields_name ] ) ) {
 						$p->$fields_name = $val;
