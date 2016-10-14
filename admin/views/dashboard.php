@@ -134,7 +134,7 @@ class AnsPress_Dashboard{
 		<?php if ( $results ) :   ?>
 		<script>
 			var latestquestionChartData = {
-				labels: [ <?php echo "'".implode("','", $days )."'"; ?> ],				
+				labels: [ <?php echo "'".implode("','", $days )."'"; ?> ],
 				datasets: [{
 					backgroundColor: 'rgba(53, 209, 252, 0.3)',
 					borderColor: 'rgba(53, 209, 252, 0.7)',
@@ -148,9 +148,9 @@ class AnsPress_Dashboard{
 		<?php $questions = ap_get_questions(array( 'sortby' => 'newest', 'showposts' => 5 ) ); ?>
 			<?php if ( ap_have_questions() ) :   ?>
 				<ul class="post-list">
-					<?php while ( ap_questions() ) : ap_the_question(); ?>
+					<?php while ( ap_have_questions() ) : ap_the_question(); ?>
 						<li>
-							<a target="_blank" href="<?php the_permalink(); ?>"><?php the_title( ); ?></a> - 
+							<a target="_blank" href="<?php the_permalink(); ?>"><?php the_title( ); ?></a> -
 							<span class="posted"><?php the_date( ); ?></span>
 						</li>
 					<?php endwhile; ?>
@@ -177,7 +177,7 @@ class AnsPress_Dashboard{
 		<?php if ( $results ) :   ?>
 		<script>
 			var latestanswerChartData = {
-				labels: [ <?php echo "'".implode("','", $days )."'"; ?> ],				
+				labels: [ <?php echo "'".implode("','", $days )."'"; ?> ],
 				datasets: [{
 					backgroundColor: 'rgba(78, 207, 158, 0.3)',
 					borderColor: 'rgba(78, 207, 158, 0.7)',
@@ -193,7 +193,7 @@ class AnsPress_Dashboard{
 				<ul class="post-list">
 					<?php while ( ap_answers() ) : ap_the_answer(); ?>
 						<li>
-							<a target="_blank" href="<?php the_permalink(); ?>"><?php the_title( ); ?></a> - 
+							<a target="_blank" href="<?php the_permalink(); ?>"><?php the_title( ); ?></a> -
 							<span class="posted"><?php the_date( ); ?></span>
 						</li>
 					<?php endwhile; ?>
@@ -224,7 +224,7 @@ class AnsPress_Dashboard{
 			<?php else : ?>
 				<?php _e('All looks fine', 'anspress-question-answer' ); ?>
 			<?php endif; ?>
-			
+
 			<?php if ( $a_flagged_count->total || $answer_count->moderate ) :   ?>
 			<strong><?php _e('Answers', 'anspress-question-answer' ); ?></strong>
 			<ul>
@@ -301,7 +301,7 @@ class AnsPress_Dashboard{
 				<ul class="post-list">
 					<?php foreach ( $rss->get_items(0, 5 ) as $item ) : ?>
 						<li>
-							<a target="_blank" href="<?php echo esc_url( strip_tags( $item->get_link() ) ); ?>"><?php echo esc_html( $item->get_title() ); ?></a> - 
+							<a target="_blank" href="<?php echo esc_url( strip_tags( $item->get_link() ) ); ?>"><?php echo esc_html( $item->get_title() ); ?></a> -
 							<span class="posted"><?php echo $item->get_date('j F Y | g:i a' ); ?></span>
 						</li>
 					<?php endforeach; ?>
@@ -432,4 +432,3 @@ if ( $columns ) {
 
 wp_nonce_field( 'closedpostboxes', 'closedpostboxesnonce', false );
 wp_nonce_field( 'meta-box-order', 'meta-box-order-nonce', false );
-

@@ -20,7 +20,7 @@
 		<?php if(ap_have_questions()): ?>
 
 			<div class="ap-questions">
-				<?php while ( ap_questions() ) : ap_the_question(); ?>
+				<?php while ( ap_have_questions() ) : ap_the_question(); ?>
 					<?php ap_get_template_part('user/list-question'); ?>
 				<?php endwhile; ?>
 			</div><!-- close .ap-questions -->

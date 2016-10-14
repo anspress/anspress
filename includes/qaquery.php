@@ -1,6 +1,13 @@
 <?php
+/**
+ * Question query
+ *
+ * @package AnsPress
+ */
 
-// Exit if the file is accessed directly over web.
+/**
+ * Exit if the file is accessed directly over web.
+ */
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -11,15 +18,21 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @since 3.1.0
  */
 class Question_Query extends WP_Query {
+	/**
+	 * Store post type.
+	 *
+	 * @var string
+	 */
 	private $post_type;
 
 	/**
 	 * Initialize class.
+	 *
 	 * @param array|string $args Query args.
 	 */
 	public function __construct( $args = '' ) {
 		if ( is_front_page() ) {
-			$paged = (isset( $_GET['ap_paged'] )) ? (int) $_GET['ap_paged'] : 1;
+			$paged = (isset( $_GET['ap_paged'] )) ? (int) $_GET['ap_paged'] : 1; // input var ok.
 		} else {
 			$paged = (get_query_var( 'paged' )) ? get_query_var( 'paged' ) : 1;
 		}
@@ -45,7 +58,7 @@ class Question_Query extends WP_Query {
 			$this->args['post_parent'] = $post_parent;
 		}
 
-		if ( get_query_var( 'ap_s' ) != '' ) {
+		if ( '' !== get_query_var( 'ap_s' ) ) {
 			$this->args['s'] = sanitize_text_field( get_query_var( 'ap_s' ) );
 		}
 
@@ -77,33 +90,51 @@ class Question_Query extends WP_Query {
 		return $this->post;
 	}
 
+	/**
+	 * Set current question in loop.
+	 */
 	public function the_question() {
 		global $post;
 		$this->in_the_loop = true;
 
-		if ( $this->current_post == -1 ) {
+		if ( -1 === $this->current_post ) {
 			   do_action_ref_array( 'ap_query_loop_start', array( &$this ) );
 		}
 
-		$post = $this->next_question();
+		$post = $this->next_question(); // override ok.
 
 		setup_postdata( $post );
 		anspress()->current_question = $post;
 	}
 
+	/**
+	 * Check if loop have questions.
+	 *
+	 * @return boolean
+	 */
 	public function have_questions() {
 		return parent::have_posts();
 	}
 
+	/**
+	 * Rewind questions in loop.
+	 */
 	public function rewind_questions() {
 		parent::rewind_posts();
 	}
 
+	/**
+	 * Check if main question query.
+	 *
+	 * @return boolean
+	 */
 	public function is_main_query() {
-		return $this == anspress()->questions;
+		return anspress()->questions === $this;
 	}
 
-
+	/**
+	 * Reset current question in loop.
+	 */
 	public function reset_questions_data() {
 		parent::reset_postdata();
 
@@ -136,8 +167,6 @@ class Question_Query extends WP_Query {
 		}
 	}
 
-
-
 	/**
 	 * Pre fetch current users vote on all answers
 	 */
@@ -152,28 +181,28 @@ class Question_Query extends WP_Query {
 /**
  * Get posts with qameta fields.
  *
- * @param  object|integer|null $post Post object.
+ * @param  object|integer|null $_post Post object.
  * @return object
  */
-function ap_get_post( $post = null ) {
-	if ( empty( $post ) && isset( $GLOBALS['post'] ) ) {
-		$post = $GLOBALS['post'];
+function ap_get_post( $_post = null ) {
+	if ( empty( $_post ) && isset( $GLOBALS['post'] ) ) {
+		$_post = $GLOBALS['post'];
 	}
 
-	if ( $post instanceof WP_Post || is_object( $post ) ) {
-		$_post = $post;
-	} elseif ( false !== $_post = wp_cache_get( $post, 'posts' ) ) {
-		$_post = $_post;
+	if ( $_post instanceof WP_Post || is_object( $_post ) ) {
+		$_newpost = $_post;
+	} elseif ( false !== $_post = wp_cache_get( $_post, 'posts' ) ) {
+		$_newpost = $_post;
 	} else {
-		$_post = WP_Post::get_instance( $post );
+		$_newpost = WP_Post::get_instance( $_post );
 	}
 
-	if ( $_post && ! isset( $_post->ap_qameta_wrapped ) ) {
-		$_post = ap_append_qameta( $_post );
-		wp_cache_set( $_post->ID, $_post, 'posts' );
+	if ( $_newpost && ! isset( $_newpost->ap_qameta_wrapped ) ) {
+		$_newpost = ap_append_qameta( $_newpost );
+		wp_cache_set( $_newpost->ID, $_newpost, 'posts' );
 	}
 
-	return $_post;
+	return $_newpost;
 }
 
 /**
@@ -189,19 +218,21 @@ function ap_have_questions() {
 	}
 }
 
-function ap_questions() {
-	global $questions;
-
-	if ( $questions ) {
-		return $questions->have_posts();
-	}
-}
-
+/**
+ * Set current question in loop.
+ *
+ * @return Object
+ */
 function ap_the_question() {
 	global $questions;
-	return $questions->the_post();
+	return $questions->the_question();
 }
 
+/**
+ * Return total numbers of questions found.
+ *
+ * @return integer
+ */
 function ap_total_questions_found() {
 	global $questions;
 	return $questions->found_posts;
@@ -221,92 +252,101 @@ function ap_get_profile_link() {
  * Echo user profile link
  */
 function ap_profile_link() {
-	echo ap_get_profile_link();
+	echo ap_get_profile_link(); // xss ok.
 }
 
 /**
  * Return question author avatar.
  *
  * @param  integer $size Avatar size.
+ * @param  mixed   $_post Post.
  * @return string
  */
-function ap_get_author_avatar( $size = 45, $post = null ) {
-	$post = ap_get_post( $post );
-	return get_avatar( $post->post_author, $size );
+function ap_get_author_avatar( $size = 45, $_post = null ) {
+	$_post = ap_get_post( $_post );
+	return get_avatar( $_post->post_author, $size );
 }
 
 /**
  * Echo question author avatar.
  *
  * @param  integer $size Avatar size.
- * @return string
+ * @param  mixed   $_post Post.
  */
-function ap_author_avatar( $size = 45, $post = null ) {
-	echo ap_get_author_avatar( $size, $post );
+function ap_author_avatar( $size = 45, $_post = null ) {
+	echo ap_get_author_avatar( $size, $_post ); // xss ok.
 }
 
 /**
  * Return hover card attributes.
  *
- * @param  object|integer|null $post Post ID, Object or null.
+ * @param  object|integer|null $_post Post ID, Object or null.
  * @return string
  */
-function ap_get_hover_card_attr( $post = null ) {
-	$p = ap_get_post( $post );
-	return ap_hover_card_attributes( $p->post_author );
+function ap_get_hover_card_attr( $_post = null ) {
+	$_post = ap_get_post( $_post );
+	return ap_hover_card_attributes( $_post->post_author );
 }
 
 /**
  * Echo hover card attributes.
  *
- * @param  object|integer|null $post Post ID, Object or null.
+ * @param  object|integer|null $_post Post ID, Object or null.
  */
-function ap_hover_card_attr( $post = null ) {
-	echo ap_get_hover_card_attr( $post );
+function ap_hover_card_attr( $_post = null ) {
+	echo ap_get_hover_card_attr( $_post ); // xss ok.
 }
 
 /**
  * Return total published answer count.
  *
+ * @param  object|integer|null $_post Post ID, Object or null.
  * @return integer
  */
-function ap_get_answers_count( $post = null ) {
-	$p = ap_get_post( $post );
-	return $p->answers;
+function ap_get_answers_count( $_post = null ) {
+	$_post = ap_get_post( $_post );
+	return $_post->answers;
 }
 
 /**
  * Echo total votes count of a post.
+ *
+ * @param  object|integer|null $_post Post ID, Object or null.
  */
-function ap_answers_count( $post = null ) {
-	echo ap_get_answers_count( $post );
+function ap_answers_count( $_post = null ) {
+	echo ap_get_answers_count( $_post ); // xss ok.
 }
 
 /**
  * Return count of net vote of a question.
  *
+ * @param  object|integer|null $_post Post ID, Object or null.
  * @return integer
  */
-function ap_get_votes_net( $post = null ) {
-	$p = ap_get_post( $post );
-	return $p->votes_net;
+function ap_get_votes_net( $_post = null ) {
+	$_post = ap_get_post( $_post );
+	return $_post->votes_net;
 }
 
 /**
  * Echo count of net vote of a question.
+ *
+ * @param  object|integer|null $_post Post ID, Object or null.
  */
-function ap_votes_net( $post = null ) {
-	echo ap_get_votes_net( $post );
+function ap_votes_net( $_post = null ) {
+	echo ap_get_votes_net( $_post ); // xss ok.
 }
 
 
 /**
  * Echo post status of a question.
+ *
+ * @param  object|integer|null $_post Post ID, Object or null.
  */
-function ap_status() {
-	global $post;
-	$status_obj = get_post_status_object( $post->post_status );
-	echo '<span class="ap-post-status ' . esc_attr( $post->post_status ) . '">' . esc_attr( $status_obj->label ) . '</span>';
+function ap_status( $_post = null ) {
+	$_post = ap_get_post( $_post );
+	$status_obj = get_post_status_object( $_post->post_status );
+	echo '<span class="ap-post-status ' . esc_attr( $_post->post_status ) . '">' . esc_attr( $status_obj->label ) . '</span>';
 }
 
 /**
@@ -348,51 +388,50 @@ function ap_question_metas( $question_id = false ) {
 		}
 	}
 
-	echo $output;
+	echo $output; // xss ok.
 }
 
 /**
  * Get recent activity of a post.
  *
+ * @param  object|integer|null $_post Post ID, Object or null.
  * @return string
  */
-function ap_get_recent_post_activity( $post = null ) {
-	$p = ap_get_post( $post );
-	return ap_latest_post_activity_html( $p->ID );
+function ap_get_recent_post_activity( $_post = null ) {
+	$_post = ap_get_post( $_post );
+	return ap_latest_post_activity_html( $_post->ID );
 }
 
 /**
  * Echo recent activity of a post.
  */
 function ap_recent_post_activity() {
-	echo ap_get_recent_post_activity();
+	echo ap_get_recent_post_activity(); // xss ok.
 }
 
 /**
  * Get a specific post field.
  *
- * @param  string $field Post field name.
- * @param  mixed  $post Post.
+ * @param  string              $field Post field name.
+ * @param  object|integer|null $_post Post ID, Object or null.
  * @return mixed
  */
-function ap_get_post_field( $field, $post = null ) {
-	$post = ap_get_post( $post );
-
-	if ( isset( $post->$field ) ) {
-		return $post->$field;
+function ap_get_post_field( $field, $_post = null ) {
+	$_post = ap_get_post( $_post );
+	if ( isset( $_post->$field ) ) {
+		return $_post->$field;
 	}
-
 	return '';
 }
 
 /**
  * Echo specific post field.
  *
- * @param  string $field Post field name.
- * @param  mixed  $post Post.
+ * @param  string              $field Post field name.
+ * @param  object|integer|null $_post Post ID, Object or null.
  */
-function ap_post_field( $field = null ) {
-	echo ap_get_post_field( $field );
+function ap_post_field( $field = null, $_post = null ) {
+	echo ap_get_post_field( $field, $_post ); // xss ok.
 }
 
 
@@ -414,77 +453,72 @@ function ap_get_last_active( $post_id = null ) {
  * Echo last active time in human readable format.
  *
  * @param  mixed $post_id Post ID/Object.
- * @return string
  * @since  2.4.8 Convert mysql date to GMT.
  */
 function ap_last_active( $post_id = null ) {
-	echo ap_get_last_active( $post_id );
+	echo ap_get_last_active( $post_id ); // xss ok.
 }
 
 
 /**
  * Check if question have answer selected.
  *
- * @param  mixed $question_id Post object or ID
+ * @param  mixed $question Post object or ID.
  * @return boolean
  */
 function ap_have_answer_selected( $question = null ) {
-	$p = ap_get_post( $question );
-	return ! empty( $p->selected_id );
+	$question = ap_get_post( $question );
+	return ! empty( $question->selected_id );
 }
 
 /**
  * Return the ID of selected answer from a question.
  *
- * @param object|null|integer $post_id Post object, ID or null.
+ * @param object|null|integer $_post Post object, ID or null.
  * @return integer
  */
-function ap_selected_answer( $post = null ) {
-	$_post = ap_get_post( $post );
+function ap_selected_answer( $_post = null ) {
+	$_post = ap_get_post( $_post );
 	return $_post->selected_id;
 }
 
 /**
  * Return post time.
  *
- * @param  mixed  $post   Post ID, Object or null.
+ * @param  mixed  $_post   Post ID, Object or null.
  * @param  string $format Date format.
  * @return String
  */
-function ap_get_time( $post = null, $format = '' ) {
-	$p = ap_get_post( $post );
-	return get_post_time( $format, true, $p->ID, true );
+function ap_get_time( $_post = null, $format = '' ) {
+	$_post = ap_get_post( $_post );
+	return get_post_time( $format, true, $_post->ID, true );
 }
 
 /**
  * Check if current post is marked as featured
  *
- * @param  boolean|integer $question_id    Question ID to check.
+ * @param  boolean|integer $question    Question ID to check.
  * @return boolean
  * @since 2.2.0.1
  */
-function ap_is_featured_question( $post = null ) {
-	$_post = ap_get_post( $post );
-	return (bool) $_post->featured;
+function ap_is_featured_question( $question = null ) {
+	$question = ap_get_post( $question );
+	return (bool) $question->featured;
 }
 
-function ap_get_terms( $taxonomy = false, $post = null ) {
-	$_post = ap_get_post( $post );
-
+/**
+ * Get terms of a question.
+ *
+ * @param  boolean|string $taxonomy Taxonomy slug.
+ * @param  mixed          $_post     Post object, ID or null.
+ * @return string
+ */
+function ap_get_terms( $taxonomy = false, $_post = null ) {
+	$_post = ap_get_post( $_post );
 	if ( ! empty( $_post->terms ) ) {
 		return $_post->terms;
 	}
-
 	return false;
-}
-
-
-function ap_get_qameta_term_link( $term, $taxonomy ) {
-	if ( get_option( 'permalink_structure' ) != '' ) {
-		 return ap_get_link_to( array( 'ap_page' => $taxonomy, 'q_cat' => $term[2] ) );
-	} else {
-		return add_query_arg( array( 'ap_page' => $taxonomy, 'q_cat' => $term[0] ), ap_base_page_link() );
-	}
 }
 
 
@@ -508,16 +542,28 @@ function ap_post_have_terms( $post_id = false, $taxonomy = 'question_category' )
 	return false;
 }
 
-function ap_have_attach( $post = null ) {
-	$_post = ap_get_post( $post );
+/**
+ * Check if question or answer have attachemnts.
+ *
+ * @param  mixed $_post Post.
+ * @return boolean
+ */
+function ap_have_attach( $_post = null ) {
+	$_post = ap_get_post( $_post );
 	if ( ! empty( $_post->attach ) ) {
 		return true;
 	}
 	return false;
 }
 
-function ap_get_attach( $post = null ) {
-	$_post = ap_get_post( $post );
+/**
+ * Get attachment ids of a question or answer.
+ *
+ * @param  mixed $_post Post.
+ * @return string|boolean
+ */
+function ap_get_attach( $_post = null ) {
+	$_post = ap_get_post( $_post );
 	if ( ! empty( $_post->attach ) ) {
 		return explode( ',', $_post->attach );
 	}

@@ -1,30 +1,46 @@
 <?php
+/**
+ * Question and answer query filters.
+ *
+ * @package AnsPress
+ * @since 4.0.0
+ */
 
+/**
+ * Query hooks
+ */
 class AP_QA_Query_Hooks {
 
+	/**
+	 * Alter WP_Query mysql query for question and answers.
+	 *
+	 * @param  array  $sql  Sql query.
+	 * @param  Object $args Instance.
+	 * @return array
+	 */
 	public static function sql_filter( $sql, $args ) {
 		global $wpdb;
 
 		if ( isset( $args->query['ap_query'] ) ) {
-			$sql['join'] = $sql['join'] . " LEFT JOIN {$wpdb->ap_qameta} qameta ON qameta.post_id = $wpdb->posts.ID LEFT JOIN {$wpdb->users} user ON $wpdb->posts.post_author = user.ID ";
-			$sql['fields'] = $sql['fields'] . ', qameta.*, qameta.votes_up - qameta.votes_down AS votes_net, user.user_email, user.user_login, user.display_name, user.user_nicename';
+			$sql['join'] = $sql['join'] . " LEFT JOIN {$wpdb->ap_qameta} qameta ON qameta.post_id = $wpdb->posts.ID";
+			$sql['fields'] = $sql['fields'] . ', qameta.*, qameta.votes_up - qameta.votes_down AS votes_net';
 
 			$ap_sortby = isset( $args->query['ap_sortby'] ) ? $args->query['ap_sortby'] : 'active';
 			$answer_query = isset( $args->query['ap_answers_query'] );
 
-			if ( 'answers' == $ap_sortby && ! $answer_query ) {
+			if ( 'answers' === $ap_sortby && ! $answer_query ) {
 				$sql['orderby'] = 'IFNULL(qameta.answers, 0) DESC, ' . $sql['orderby'];
-			} elseif ( 'views' == $ap_sortby && ! $answer_query ) {
+			} elseif ( 'views' === $ap_sortby && ! $answer_query ) {
 				$sql['orderby'] = 'IFNULL(qameta.views, 0) DESC, ' . $sql['orderby'];
-			} elseif ( 'unanswered' == $ap_sortby && ! $answer_query ) {
+			} elseif ( 'unanswered' === $ap_sortby && ! $answer_query ) {
 				$sql['orderby'] = 'IFNULL(qameta.answers, 0) ASC,' . $sql['orderby'];
-			} elseif ( 'voted' == $ap_sortby ) {
+			} elseif ( 'voted' === $ap_sortby ) {
 				$sql['orderby'] = 'CASE WHEN IFNULL(votes_net, 0) >= 0 THEN 1 ELSE 2 END ASC, ABS(votes_net) DESC, ' . $sql['orderby'];
-			} elseif ( 'unsolved' == $ap_sortby && ! $answer_query ) {
+			} elseif ( 'unsolved' === $ap_sortby && ! $answer_query ) {
 				$sql['orderby'] = "if( qameta.selected_id = '' or qameta.selected_id is null, 1, 0 ) ASC," . $sql['orderby'];
-			} elseif ( 'oldest' == $ap_sortby ) {
+			} elseif ( 'oldest' === $ap_sortby ) {
 				$sql['orderby'] = "{$wpdb->posts}.post_date ASC";
-			} elseif ( 'newest' == $ap_sortby ) {
+			} elseif ( 'newest' === $ap_sortby ) {
 				$sql['orderby'] = "{$wpdb->posts}.post_date DESC";
 			} else {
 				$sql['orderby'] = 'qameta.last_updated DESC ';
@@ -42,10 +58,17 @@ class AP_QA_Query_Hooks {
 		return $sql;
 	}
 
+	/**
+	 * Add qameta fields to post and prefetch metas and users.
+	 *
+	 * @param  array  $posts Post array.
+	 * @param  object $instance QP_Query instance.
+	 * @return array
+	 */
 	public static function posts_results( $posts, $instance ) {
 
 		foreach ( (array) $posts as $k => $p ) {
-			if ( in_array( $p->post_type, [ 'question', 'answer' ] ) ) {
+			if ( in_array( $p->post_type, [ 'question', 'answer' ], true ) ) {
 				// Convert object as array to prevent using __isset of WP_Post.
 				$p_arr = (array) $p;
 				foreach ( ap_qameta_fields() as $fields_name => $val ) {
@@ -64,7 +87,7 @@ class AP_QA_Query_Hooks {
 			}
 		}
 
-		if( isset( $instance->query['ap_question_query'] ) || isset( $instance->query['ap_answers_query'] ) ) {
+		if ( isset( $instance->query['ap_question_query'] ) || isset( $instance->query['ap_answers_query'] ) ) {
 			$instance->pre_fetch();
 		}
 

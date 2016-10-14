@@ -2,7 +2,7 @@
 	<?php
 		if ( ap_have_questions() ) {
 			/* Start the Loop */
-			while ( ap_questions() ) : ap_the_question();
+			while ( ap_have_questions() ) : ap_the_question();
 				?>
 				<div class="ap-rq-post">
 					<a href="<?php the_permalink() ?>"><?php the_title() ?></a>
