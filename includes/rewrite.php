@@ -133,18 +133,6 @@ class AnsPress_Rewrite
 	}
 
 	/**
-	 * MOdify paginate links.
-	 * @param  string $link Pagination link.
-	 * @return string
-	 */
-	public static function paginate_links($link) {
-		if ( is_front_page() ) {
-			return preg_replace( '/page.([0-9]+)./', '?ap_paged=$1', $link ); }
-
-		return $link;
-	}
-
-	/**
 	 * Push custom query args in `$wp`.
 	 *
 	 * If `question_name` is passed then `question_id` var will be added.

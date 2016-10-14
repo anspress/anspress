@@ -19,6 +19,11 @@ if ( ! defined( 'WPINC' ) ) {
  */
 class AnsPress_Hooks {
 
+	/**
+	 * Menu class.
+	 *
+	 * @var string
+	 */
 	static $menu_class = '';
 	/**
 	 * Initialize the class
@@ -53,13 +58,10 @@ class AnsPress_Hooks {
 			anspress()->add_action( 'the_post', __CLASS__, 'ap_append_vote_count' );
 
 			// Query filters.
-			/*
-			anspress()->add_action( 'posts_clauses', 'AnsPress_Query_Filter', 'answer_sort', 10, 2 );
-			anspress()->add_action( 'posts_clauses', 'AnsPress_Query_Filter', 'user_favorites', 10, 2 );
-			anspress()->add_action( 'posts_clauses', 'AnsPress_Query_Filter', 'main_question_query', 10, 2 );
-			anspress()->add_action( 'posts_clauses', 'AnsPress_Query_Filter', 'ap_answers_query', 10, 2 );
-			anspress()->add_action( 'posts_clauses', 'AnsPress_Query_Filter', 'ap_question_subscription_query', 10, 2 );
-			anspress()->add_filter( 'the_posts', 'AnsPress_Query_Filter', 'restricted_answer_contents', 10, 2 );*/
+			// @TODO Update this quries to match new qameta table.
+			// anspress()->add_action( 'posts_clauses', 'AnsPress_Query_Filter', 'user_favorites', 10, 2 );
+			// anspress()->add_action( 'posts_clauses', 'AnsPress_Query_Filter', 'ap_question_subscription_query', 10, 2 );
+			// anspress()->add_filter( 'the_posts', 'AnsPress_Query_Filter', 'restricted_answer_contents', 10, 2 );
 
 			anspress()->add_filter( 'posts_clauses', 'AP_QA_Query_Hooks', 'sql_filter', 10, 2 );
 			anspress()->add_filter( 'posts_results', 'AP_QA_Query_Hooks', 'posts_results', 10, 2 );
@@ -108,7 +110,6 @@ class AnsPress_Hooks {
 			anspress()->add_filter( 'query_vars', 'AnsPress_Rewrite', 'query_var' );
 			anspress()->add_action( 'generate_rewrite_rules', 'AnsPress_Rewrite', 'rewrites', 1 );
 			anspress()->add_filter( 'paginate_links', 'AnsPress_Rewrite', 'bp_com_paged' );
-			// add_filter( 'paginate_links', array( 'AnsPress_Rewrite', 'paginate_links' ) );
 			anspress()->add_filter( 'parse_request', 'AnsPress_Rewrite', 'add_query_var' );
 
 			// Subscription hooks.
@@ -138,7 +139,6 @@ class AnsPress_Hooks {
 	 */
 	public static function after_new_question( $post_id, $post ) {
 			ap_update_last_active( $post_id );
-
 		// Update user question count meta.
 			ap_update_user_questions_count_meta( $post_id );
 
@@ -166,7 +166,7 @@ class AnsPress_Hooks {
 
 		// Update answer count.
 		ap_update_answers_count( $post->post_parent );
-ap_update_user_answers_count_meta( $post->post_parent );
+		ap_update_user_answers_count_meta( $post->post_parent );
 
 		/**
 		 * ACTION: ap_after_new_answer
@@ -227,24 +227,30 @@ ap_update_user_answers_count_meta( $post->post_parent );
 	 */
 	public static function before_delete( $post_id ) {
 		$post = ap_get_post( $post_id );
-
-		if ( $post->post_type == 'question' ) {
+		if ( 'question' === $post->post_type ) {
 			do_action( 'ap_before_delete_question', $post->ID );
+			//@codingStandardsIgnoreStart
 			$answers = get_posts( [ 'post_parent' => $post->ID, 'post_type' => 'answer' ] );
-
+			//@codingStandardsIgnoreEnd
 			foreach ( (array) $answers as $a ) {
 				do_action( 'ap_before_delete_answer', $a );
 				$selcted_answer = ap_selected_answer();
-				if ( $selcted_answer == $a->ID ) {
-
+				if ( $a->ID === $selcted_answer ) {
 					ap_unset_selected_answer( $a->post_parent );
 				}
 
 				wp_delete_post( $a->ID, true );
+				// Delete qameta.
+				ap_delete_qameta( $a->ID );
 			}
-		} elseif ( $post->post_type == 'answer' ) {
+
+			// Delete qameta.
+			ap_delete_qameta( $post->ID );
+		} elseif ( 'answer' === $post->post_type ) {
 				do_action( 'ap_before_delete_answer', $post->ID );
-			}
+				// Delete qameta.
+				ap_delete_qameta( $post->ID );
+		}
 	}
 
 	/**
@@ -254,62 +260,53 @@ ap_update_user_answers_count_meta( $post->post_parent );
 	 * @since 2.0.0
 	 */
 	public static function trash_post_action( $post_id ) {
-			$post = ap_get_post( $post_id );
+		$post = ap_get_post( $post_id );
 
-			if ( $post->post_type == 'question' ) {
-					do_action( 'ap_trash_question', $post->ID, $post );
+		if ( 'question' === $post->post_type ) {
+			do_action( 'ap_trash_question', $post->ID, $post );
 
-					// Delete post ap_meta.
-					ap_delete_meta( array(
-						'apmeta_type' => 'flag',
-						'apmeta_actionid' => $post->ID,
-					) );
+			// Delete post ap_meta.
+			ap_delete_meta( array(
+				'apmeta_type'     => 'flag',
+				'apmeta_actionid' => $post->ID,
+			) );
 
-					$ans = get_posts( array(
-				'post_type' => 'answer',
+			//@codingStandardsIgnoreStart
+			$ans = get_posts( array(
+				'post_type'   => 'answer',
 				'post_status' => 'publish',
 				'post_parent' => $post_id,
-				'showposts' => -1,
+				'showposts'   => -1,
 			));
+			//@codingStandardsIgnoreEnd
 
-					if ( $ans > 0 ) {
-							foreach ( $ans as $p ) {
-								/**
-								 * Triggered before trashing an answer.
-					 *
-								 * @param integer $post_id Answer ID.
-								 * @param object $post Post object.
-								 */
-									// do_action( 'ap_trash_answer', $p->ID, $p );
-									$selcted_answer = ap_selected_answer();
+			foreach ( (array) $ans as $p ) {
+				$selcted_answer = ap_selected_answer();
+				if ( $selcted_answer === $p->ID ) {
+					ap_unset_selected_answer( $p->post_parent );
+				}
 
-									if ( $selcted_answer == $p->ID ) {
-										ap_unset_selected_answer( $p->post_parent );
-									}
-
-									ap_delete_meta( array( 'apmeta_type' => 'flag', 'apmeta_actionid' => $p->ID ) );
-									wp_trash_post( $p->ID );
-							}
-					}
+				ap_delete_meta( array( 'apmeta_type' => 'flag', 'apmeta_actionid' => $p->ID ) );
+				wp_trash_post( $p->ID );
 			}
+		}
 
-			if ( $post->post_type == 'answer' ) {
-					$ans = ap_count_published_answers( $post->post_parent );
-					$ans = $ans > 0 ? $ans - 1 : 0;
+		if ( 'answer' === $post->post_type ) {
+				$ans = ap_count_published_answers( $post->post_parent );
+				$ans = $ans > 0 ? $ans - 1 : 0;
 
-					/**
+				/**
 			 * Triggered before trashing an answer.
 			 *
 			 * @param integer $post_id Answer ID.
 			 * @param object $post Post object.
 			 */
-					do_action( 'ap_trash_answer', $post->ID, $post );
+				do_action( 'ap_trash_answer', $post->ID, $post );
 
-					// Delete flag meta.
-					ap_delete_meta( array( 'apmeta_type' => 'flag', 'apmeta_actionid' => $post->ID ) );
-
-			ap_update_answers_count( $post->post_parent );
-			}
+				// Delete flag meta.
+				ap_delete_meta( array( 'apmeta_type' => 'flag', 'apmeta_actionid' => $post->ID ) );
+				ap_update_answers_count( $post->post_parent );
+		}
 	}
 
 	/**
@@ -319,33 +316,31 @@ ap_update_user_answers_count_meta( $post->post_parent );
 	 * @since 2.0.0
 	 */
 	public static function untrash_ans_on_question_untrash( $post_id ) {
-			$post = ap_get_post( $post_id );
+		$post = ap_get_post( $post_id );
 
-			if ( $post->post_type == 'question' ) {
-					do_action( 'ap_untrash_question', $post->ID );
-
-					$ans = get_posts( array(
-				'post_type' => 'answer',
+		if ( 'question' === $post->post_type ) {
+			do_action( 'ap_untrash_question', $post->ID );
+			//@codingStandardsIgnoreStart
+			$ans = get_posts( array(
+				'post_type'   => 'answer',
 				'post_status' => 'trash',
 				'post_parent' => $post_id,
-				'showposts' => -1,
+				'showposts'   => -1,
 			));
+			//@codingStandardsIgnoreStart
 
-					if ( $ans > 0 ) {
-							foreach ( $ans as $p ) {
-									do_action( 'ap_untrash_answer', $p->ID, $p );
-									wp_untrash_post( $p->ID );
-							}
-					}
+			foreach ( (array) $ans as $p ) {
+				do_action( 'ap_untrash_answer', $p->ID, $p );
+				wp_untrash_post( $p->ID );
 			}
+		}
 
-			if ( $post->post_type == 'answer' ) {
-					$ans = ap_count_published_answers( $post->post_parent );
-					do_action( 'ap_untrash_answer', $post->ID, $ans );
-
+		if ( 'answer' === $post->post_type ) {
+			$ans = ap_count_published_answers( $post->post_parent );
+			do_action( 'ap_untrash_answer', $post->ID, $ans );
 			// Update answer count.
 			ap_update_answers_count( $post->post_parent, $ans + 1 );
-			}
+		}
 	}
 
 	/**

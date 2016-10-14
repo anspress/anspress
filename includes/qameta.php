@@ -1,38 +1,49 @@
 <?php
+/**
+ * Holds ap_qameta table helpers.
+ *
+ * @since 4.0.0
+ * @package AnsPress
+ */
 
+/**
+ * Default qameta table fields with values.
+ *
+ * @return array
+ */
 function ap_qameta_fields() {
 	return array(
-		'post_id' 		=> '',
-		'selected' 		=> false,
-		'selected_id' 	=> 0,
-		'comments' 		=> 0,
-		'answers' 		=> 0,
-		'ptype' 		=> 'question',
-		'featured' 		=> 0,
-		'closed' 		=> 0,
-		'views' 		=> 0,
-		'votes_up' 		=> 0,
-		'votes_down' 	=> 0,
-		'subscribers' 	=> 0,
-		'flags' 		=> 0,
-		'terms' 		=> '',
-		'attach' 		=> '',
-		'activities' 	=> '',
-		'roles' 		=> '',
-		'last_updated' 	=> '',
-		'is_new' 		=> false,
+		'post_id'        => '',
+		'selected' 		   => false,
+		'selected_id' 	 => 0,
+		'comments' 		   => 0,
+		'answers' 		   => 0,
+		'ptype' 		     => 'question',
+		'featured' 		   => 0,
+		'closed' 		     => 0,
+		'views' 		     => 0,
+		'votes_up' 		   => 0,
+		'votes_down' 	   => 0,
+		'subscribers' 	 => 0,
+		'flags' 		     => 0,
+		'terms' 		     => '',
+		'attach' 		     => '',
+		'activities' 	 	 => '',
+		'roles' 		     => '',
+		'last_updated' 	 => '',
+		'is_new' 		     => false,
 	);
 }
 
 /**
  * Insert post meta
  *
- * @param array   $args Args.
- * @param boolean $wp_error Return WP_Error object if error.
+ * @param array   $post_id Post ID.
+ * @param boolean $args Arguments.
+ * @param boolean $wp_error Return wp_error on fail.
  * @return boolean|integer qameta id on success else false.
- * @since  3.1.0
+ * @since  	4.0.0
  */
-
 function ap_insert_qameta( $post_id, $args, $wp_error = false ) {
 	$args = wp_unslash( wp_parse_args( $args, [
 		'ptype' => get_post_type( $post_id ),
@@ -46,16 +57,16 @@ function ap_insert_qameta( $post_id, $args, $wp_error = false ) {
 		if ( isset( $args[ $field ] ) ) {
 			$value = $args[ $field ];
 
-			if ( $field == 'activities' ) {
+			if ( 'activities' === $field ) {
 				$value = maybe_serialize( $value );
 				$formats[] = '%s';
-			} elseif ( $field == 'terms' || $field == 'attach' ) {
+			} elseif ( 'terms' === $field || 'attach' === $field ) {
 				$value = is_array( $value ) ? sanitize_comma_delimited( $value ) : (int) $value;
 				$formats[] = '%s';
-			} elseif ( in_array( $field, [ 'selected', 'featured', 'closed' ] ) ) {
+			} elseif ( in_array( $field, [ 'selected', 'featured', 'closed' ], true ) ) {
 				$value = (bool) $value;
 				$formats[] = '%d';
-			} elseif ( in_array( $field, [ 'selected_id', 'comments', 'answers', 'views', 'votes_up', 'votes_down', 'subscribers', 'flags' ] ) ) {
+			} elseif ( in_array( $field, [ 'selected_id', 'comments', 'answers', 'views', 'votes_up', 'votes_down', 'subscribers', 'flags' ], true ) ) {
 				$value = (int) $value;
 				$formats[] = '%d';
 			} else {
@@ -73,9 +84,9 @@ function ap_insert_qameta( $post_id, $args, $wp_error = false ) {
 
 	if ( $exists->is_new ) {
 		$sanitized_values['post_id'] = (int) $post_id;
-		$inserted = $wpdb->insert( $wpdb->ap_qameta, $sanitized_values, $formats );
+		$inserted = $wpdb->insert( $wpdb->ap_qameta, $sanitized_values, $formats ); // db call ok.
 	} else {
-		$inserted = $wpdb->update( $wpdb->ap_qameta, $sanitized_values, [ 'post_id' => $post_id ], $formats );
+		$inserted = $wpdb->update( $wpdb->ap_qameta, $sanitized_values, [ 'post_id' => $post_id ], $formats ); // db call ok.
 	}
 
 	if ( false !== $inserted ) {
@@ -84,6 +95,17 @@ function ap_insert_qameta( $post_id, $args, $wp_error = false ) {
 	}
 
 	return $wp_error ? new WP_Error( 'Unable to insert AnsPress qameta' ) : false;
+}
+
+/**
+ * Delete qameta row.
+ *
+ * @param  integer $post_id Post ID.
+ * @return integer|false
+ */
+function ap_delete_qameta( $post_id ) {
+	global $wpdb;
+	return $wpdb->delete( $wpdb->ap_qameta, [ 'post_id' => $post_id ], [ '%d' ] ); // db call ok, db cache ok.
 }
 
 /**
@@ -97,7 +119,7 @@ function ap_get_qameta( $post_id ) {
 	global $wpdb;
 	$qameta = wp_cache_get( $post_id, 'ap_qameta' );
 	if ( false === $qameta ) {
-		$qameta = $wpdb->get_row( $wpdb->prepare( "Select * FROM {$wpdb->ap_qameta} WHERE post_id = %d", $post_id ), ARRAY_A );
+		$qameta = $wpdb->get_row( $wpdb->prepare( "Select * FROM {$wpdb->ap_qameta} WHERE post_id = %d", $post_id ), ARRAY_A ); // db call ok.
 
 		// If null then append is_new.
 		if ( empty( $qameta ) ) {
@@ -126,7 +148,7 @@ function ap_get_qameta( $post_id ) {
 function ap_append_qameta( $post ) {
 	// Convert object as array to prevent using __isset of WP_Post.
 	$post_arr = (array) $post;
-	if ( ! in_array( $post_arr['post_type'], [ 'question', 'answer' ] ) || isset( $post_arr['ap_qameta_wrapped'] ) ) {
+	if ( ! in_array( $post_arr['post_type'], [ 'question', 'answer' ], true ) || isset( $post_arr['ap_qameta_wrapped'] ) ) {
 		return $post;
 	}
 
@@ -160,6 +182,7 @@ function ap_append_qameta( $post ) {
  * Update count of answers in post meta.
  *
  * @param  integer $question_id Question ID.
+ * @param  integer $counts Custom count value to update.
  * @return boolean|false
  * @since  3.1.0
  */
@@ -216,7 +239,7 @@ function ap_unset_selected_answer( $question_id ) {
 /**
  * Update views count of qameta.
  *
- * @param  integer       $question_id Question ID.
+ * @param  integer       $post_id Question ID.
  * @param  integer|false $views   Passing view will replace existing value else increment existing.
  * @return integer
  * @since  3.1.0
@@ -232,7 +255,7 @@ function ap_update_views_count( $post_id, $views = false ) {
 }
 
 /**
- * Updates last_active field of qameta
+ * Updates last_active field of qameta.
  *
  * @param  integer $post_id Post ID.
  * @return integer|false
@@ -246,6 +269,7 @@ function ap_update_last_active( $post_id ) {
  * Set flags count for a qameta
  *
  * @param  integer $post_id Post ID.
+ * @param  integer $count   Custom count.
  * @return integer|false
  * @since  3.1.0
  */
@@ -268,9 +292,10 @@ function ap_update_flags_count( $post_id ) {
 }
 
 /**
- * Updates selected field of qameta
+ * Updates selected field of qameta.
  *
  * @param  integer $answer_id Answer ID.
+ * @param  boolean $selected Is selected.
  * @return integer|false
  * @since  3.1.0
  */
@@ -278,16 +303,20 @@ function ap_update_answer_selected( $answer_id, $selected = true ) {
 	return ap_insert_qameta( $answer_id, [ 'selected' => (bool) $selected ] );
 }
 
-
 /**
  * Set subscribers count for a qameta.
  *
  * @param  integer $post_id Post ID.
+ * @param  integer $count Custom count to update.
  * @return integer|false
  * @since  3.1.0
  */
-function ap_set_subscribers_count( $post_id, $count = 1 ) {
-	return ap_insert_qameta( $post_id, [ 'subscribers' => $count ] );
+function ap_update_subscribers_count( $post_id, $count = false ) {
+	if ( false === $count ) {
+		$count = ap_subscribers_count( $post_id, 'q_all' );
+	}
+	ap_insert_qameta( $post_id, [ 'subscribers' => $count ] );
+	return $count;
 }
 
 
@@ -300,7 +329,7 @@ function ap_set_subscribers_count( $post_id, $count = 1 ) {
  */
 function ap_update_qameta_terms( $question_id ) {
 	$taxonomies = get_taxonomies( '', 'names' );
-	$terms = wp_get_object_terms( $question_id, $taxonomies );
+	$terms = get_the_terms( $question_id, $taxonomies );
 
 	$term_ids = [];
 
@@ -335,14 +364,23 @@ function ap_unset_featured_question( $post_id ) {
 	return ap_insert_qameta( $post_id, [ 'featured' => 0 ] );
 }
 
+/**
+ * Update post attachment IDs.
+ *
+ * @param  integer $post_id Post ID.
+ * @return array
+ */
 function ap_update_post_attach_ids( $post_id ) {
 	$args = array(
 	    'post_type' => 'attachment',
-	    'post_parent' => $post_id
+	    'post_parent' => $post_id,
+			'supress_filters' => false,
 	);
-	$attachments = get_posts($args);
+	// @codingStandardsIgnoreStart
+	$attachments = get_posts( $args );
+	// @codingStandardsIgnoreEnd
 	$ids = [];
-	foreach( (array) $attachments as $attach ) {
+	foreach ( (array) $attachments as $attach ) {
 		$ids[] = $attach->ID;
 	}
 	$insert = ap_insert_qameta( $post_id, [ 'attach' => $ids ] );

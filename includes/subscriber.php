@@ -179,25 +179,18 @@ function ap_is_user_subscribed($item_id, $activity, $user_id = false) {
  */
 function ap_subscribers_count($item_id = false, $activity = 'q_all') {
 	global $wpdb;
-
 	$item_id = $item_id ? $item_id : get_question_id();
-
 	$key = $item_id.'_'.$activity;
-
 	$cache = wp_cache_get( $key, 'ap_subscriber_count' );
-
 	if ( false !== $cache ) {
 		return $cache;
 	}
 
-	$count = $wpdb->get_var( $wpdb->prepare( 'SELECT count(*) FROM '. $wpdb->ap_subscribers .' WHERE subs_item_id=%d AND subs_activity="%s"', $item_id, $activity ) );
-
+	$count = $wpdb->get_var( $wpdb->prepare( 'SELECT count(*) FROM ' . $wpdb->ap_subscribers . ' WHERE subs_item_id=%d AND subs_activity="%s"', $item_id, $activity ) );
 	wp_cache_set( $key, $count, 'ap_subscriber_count' );
-
 	if ( ! $count ) {
 		return 0;
 	}
-
 	return $count;
 }
 
@@ -316,7 +309,7 @@ function ap_subscribe_btn_html($action_id = false, $type = false) {
 	?>
 	<div class="ap-subscribe-btn" id="<?php echo 'subscribe_'.$action_id; ?>">
 		<a href="#" class="ap-btn<?php echo ($subscribed) ? ' active' :''; ?>" data-query="<?php echo 'subscribe::'. $nonce .'::'. $action_id .'::'. $subscribe_type; ?>" data-action="ajax_btn" data-cb="apSubscribeBtnCB">
-            <?php echo ap_icon( 'rss', true ); ?> <span class="text"><?php echo $title ?></span>      
+            <?php echo ap_icon( 'rss', true ); ?> <span class="text"><?php echo $title ?></span>
         </a>
         <b class="ap-btn-counter" data-view="<?php echo 'subscribe_'.$action_id; ?>"><?php echo ap_subscribers_count( $action_id, $subscribe_type ) ?></b>
     </div>
@@ -376,6 +369,9 @@ function ap_subscribe_question( $posta, $user_id = false ) {
 
 	if ( ! ap_is_user_subscribed( $posta->ID, 'q_all', $user_id ) ) {
 		ap_new_subscriber( $user_id, $posta->ID, 'q_all', $posta->ID );
+
+		// Update qameta table.
+		ap_update_subscribers_count( $posta->ID );
 	}
 }
 

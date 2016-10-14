@@ -17,10 +17,10 @@ if ( ! defined( 'WPINC' ) ) {
 /**
  * Register subscriber hooks
  */
-class AnsPress_Subscriber_Hooks
-{
+class AnsPress_Subscriber_Hooks {
 	/**
 	 * Update question subscribers count.
+	 *
 	 * @param  integer $user_id User ID.
 	 * @param  integer $item_id Item id.
 	 * @param  string  $activity Activity name.
@@ -28,45 +28,43 @@ class AnsPress_Subscriber_Hooks
 	public static function subscriber_count( $user_id, $item_id, $activity ) {
 		$q_activity = array( 'q_all' );
 		$tax_activity = array( 'tax_new' );
-
 		$counts = ap_subscribers_count( $item_id, $activity );
-
-		if ( in_array( $activity, $q_activity ) ) {
-			update_post_meta( $item_id, ANSPRESS_SUBSCRIBER_META, $counts );
-		}
+		// Update qameta table.
+		ap_update_subscribers_count( $item_id );
 	}
 
 	/**
 	 * Subscribe post author for all activities on question.
-	 * @param  integer $question_id 	Question ID.
-	 * @param  object  $question     	Post object.
+	 *
+	 * @param integer $question_id 	Question ID.
+	 * @param object  $question     	Post object.
 	 */
-	public static function after_new_question($question_id, $question) {
+	public static function after_new_question( $question_id, $question ) {
 		ap_subscribe_question( $question );
 	}
 
 	/**
 	 * Subscribe post author for all activities on answer.
+	 *
 	 * @param  integer $answer_id 	Answer ID.
 	 * @param  object  $answer    	Answer object.
 	 */
-	public static function after_new_answer($answer_id, $answer) {
+	public static function after_new_answer( $answer_id, $answer ) {
 		if ( ! ap_is_user_subscribed( $answer->ID, 'a_all', $answer->post_author ) ) {
 			ap_new_subscriber( $answer->post_author, $answer->ID, 'a_all', $answer->post_parent );
 		}
 	}
 
 	/**
-	 * Subscribe user for post comments
+	 * Subscribe user for post comments.
+	 *
 	 * @param  object $comment Comment object.
 	 */
-	public static function after_new_comment($comment) {
+	public static function after_new_comment( $comment ) {
 		$post = ap_get_post( $comment->comment_post_ID );
-
 		$type = 'q_post';
 		$question_id = $post->ID;
-		
-		if ( 'answer' == $post->post_type ) {
+		if ( 'answer' === $post->post_type ) {
 			$type = 'a_all';
 			$question_id = $post->post_parent;
 		}
@@ -78,15 +76,16 @@ class AnsPress_Subscriber_Hooks
 
 	/**
 	 * Action triggred after unpublishing a comment.
+	 *
 	 * @param  object|array $comment Comment obejct.
 	 */
-	public static function unpublish_comment($comment) {
+	public static function unpublish_comment( $comment ) {
 		$comment = (object) $comment;
 		$post = ap_get_post( $comment->comment_post_ID );
 
-		if ( $post->post_type == 'question' ) {
+		if ( 'question' === $post->post_type ) {
 			ap_remove_subscriber( $post->ID, $comment->user_id, 'q_post' );
-		} elseif ( $post->post_type == 'answer' ) {
+		} elseif ( 'answer' === $post->post_type ) {
 			ap_remove_subscriber( $post->ID, $comment->user_id, 'a_all' );
 		}
 	}
@@ -126,12 +125,11 @@ class AnsPress_Subscriber_Hooks
 		$action_id = (int) $args[0];
 		$type = $args[1];
 
-		if ( ! ap_verify_nonce( 'subscribe_'.$action_id.'_'.$type ) ) {
-			ap_ajax_json('something_wrong');
+		if ( ! ap_verify_nonce( 'subscribe_' . $action_id . '_' . $type ) ) {
+			ap_ajax_json( 'something_wrong' );
 		}
 
 		$question_id = 0;
-
 		if ( 'tax_new_q' === $type ) {
 			$subscribe_type = 'tax_new_q';
 		} else {
@@ -143,7 +141,7 @@ class AnsPress_Subscriber_Hooks
 
 		$is_subscribed = ap_is_user_subscribed( $action_id, $subscribe_type, $user_id );
 
-		$elm = '#subscribe_'.$action_id.' .ap-btn';
+		$elm = '#subscribe_' . $action_id . ' .ap-btn';
 
 		// If already subscribed then unsubscribe.
 		if ( $is_subscribed ) {
@@ -152,12 +150,15 @@ class AnsPress_Subscriber_Hooks
 			if ( false !== $row ) {
 				$count = ap_subscribers_count( $action_id, $subscribe_type );
 				ap_ajax_json( array(
-					'message' 		=> 'unsubscribed',
-					'action' 		=> 'unsubscribed',
-					'do' 			=> array( 'updateHtml' => $elm.' .text', 'toggle_active_class' => $elm ),
-					'count' 		=> $count,
-					'html' 			=> __( 'Follow', 'anspress-question-answer' ),
-					'view' 			=> array( 'subscribe_'.$action_id => $count ),
+					'message' 		 => 'unsubscribed',
+					'action' 		 	 => 'unsubscribed',
+					'do' 			     => array(
+						'updateHtml'          => $elm . ' .text',
+						'toggle_active_class' => $elm,
+					),
+					'count' 		   => $count,
+					'html' 			   => __( 'Follow', 'anspress-question-answer' ),
+					'view' 			   => array( 'subscribe_'.$action_id => $count ),
 				) );
 			}
 		}
