@@ -44,10 +44,10 @@ class Question_Query extends WP_Query {
 		}
 
 		$defaults = array(
-			'showposts'     	=> ap_opt( 'question_per_page' ),
-			'paged'         	=> $paged,
-			'ap_query'      	=> true,
-			'ap_sortby'     	=> 'active',
+			'showposts' 	      => ap_opt( 'question_per_page' ),
+			'paged' 	          => $paged,
+			'ap_query' 	        => true,
+			'ap_sortby' 	      => 'active',
 			'ap_question_query' => true,
 		);
 
@@ -181,28 +181,28 @@ class Question_Query extends WP_Query {
 /**
  * Get posts with qameta fields.
  *
- * @param  object|integer|null $_post Post object.
+ * @param  object|integer|null $post Post object.
  * @return object
  */
-function ap_get_post( $_post = null ) {
-	if ( empty( $_post ) && isset( $GLOBALS['post'] ) ) {
-		$_post = $GLOBALS['post'];
+function ap_get_post( $post = null ) {
+	if ( empty( $post ) && isset( $GLOBALS['post'] ) ) {
+		$post = $GLOBALS['post'];
 	}
 
-	if ( $_post instanceof WP_Post || is_object( $_post ) ) {
-		$_newpost = $_post;
-	} elseif ( false !== $_post = wp_cache_get( $_post, 'posts' ) ) {
-		$_newpost = $_post;
+	if ( $post instanceof WP_Post || is_object( $post ) ) {
+		$_post = $post;
+	} elseif ( false !== $_post = wp_cache_get( $post, 'posts' ) ) {
+		$_post = $_post;
 	} else {
-		$_newpost = WP_Post::get_instance( $_post );
+		$_post = WP_Post::get_instance( $post );
 	}
 
-	if ( $_newpost && ! isset( $_newpost->ap_qameta_wrapped ) ) {
-		$_newpost = ap_append_qameta( $_newpost );
-		wp_cache_set( $_newpost->ID, $_newpost, 'posts' );
+	if ( $_post && ! isset( $_post->ap_qameta_wrapped ) ) {
+		$_post = ap_append_qameta( $_post );
+		wp_cache_set( $_post->ID, $_post, 'posts' );
 	}
 
-	return $_newpost;
+	return $_post;
 }
 
 /**

@@ -502,7 +502,9 @@ function ap_user_total_votes_casted() {
 	 * @since 2.1
 	 */
 function ap_user_get_display_name_option($user_id = false) {
-	$user_id = ap_parameter_empty( @$user_id, @ap_user_get_the_ID() );
+	if( false === $user_id ) {
+		$user_id = ap_user_get_the_ID();
+	}
 	$user = ap_user_get_the_meta( false, $user_id );
 
 	$public_display = array();

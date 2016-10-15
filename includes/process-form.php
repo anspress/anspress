@@ -194,7 +194,7 @@ class AnsPress_Process_Form
 			'post_content' 		=> $fields['description'],
 			'attach_uploads' 	=> true,
 		);
-		
+
 		$question_array['post_status'] = ap_new_edit_post_status( $user_id, 'question', false );
 
 		if ( $this->fields['is_private'] ) {
@@ -275,7 +275,7 @@ class AnsPress_Process_Form
 			ap_ajax_json( array(
 				'action' 		=> 'edited_question',
 				'message'		=> 'question_updated',
-				'do'			=> array( 'redirect' => $this->redirect ),
+				'do'				=> array( 'redirect' => $this->redirect ),
 			) );
 		}
 
@@ -297,10 +297,10 @@ class AnsPress_Process_Form
 
 		global $ap_errors, $validate;
 		$question = ap_get_post( (int) $_POST['form_question_id'] );
-
+		var_dump($question);
 		// Check if user have permission to answer a question.
 		if ( ! ap_user_can_answer( $question->ID ) ) {
-			ap_ajax_json('no_permission' );
+			ap_ajax_json( 'no_permission' );
 		}
 
 		$editing_post_id = ap_isset_post_value( 'edit_post_id', false );
@@ -350,7 +350,7 @@ class AnsPress_Process_Form
 			'post_content' 		=> $fields['description'],
 			'attach_uploads' 	=> true,
 		);
-		
+
 		$answer_array['post_status'] = ap_new_edit_post_status( $user_id, 'answer', false );
 
 		if ( $this->fields['is_private'] ) {
@@ -368,7 +368,7 @@ class AnsPress_Process_Form
 		if ( $answer_id ) {
 			ap_answer_post_ajax_response( $question->ID, $answer_id );
 		}
-		
+
 	}
 
 	/**
@@ -491,9 +491,9 @@ class AnsPress_Process_Form
 		$user_id = get_current_user_id();
 		$file = $_FILES['post_upload_image'];
 		if ( $file['size'] > ap_opt( 'max_upload_size' ) ) {
-			ap_ajax_json( array( 
-				'message_type' => 'error', 
-				'message' => sprintf( __( 'File cannot be uploaded, size is bigger then %d Byte', 'anspress-question-answer' ), ap_opt( 'max_upload_size' ) ) 
+			ap_ajax_json( array(
+				'message_type' => 'error',
+				'message' => sprintf( __( 'File cannot be uploaded, size is bigger then %d Byte', 'anspress-question-answer' ), ap_opt( 'max_upload_size' ) )
 			) );
 		}
 
@@ -512,8 +512,8 @@ class AnsPress_Process_Form
 		if ( ! empty( $file ) && is_array( $file ) && $file['error'] == 0 ) {
 			$attachment_id = ap_upload_user_file( $file );
 			if ( $attachment_id !== false ) {
-				ap_ajax_json( array( 
-					'action' 	=> 'upload_post_image', 
+				ap_ajax_json( array(
+					'action' 	=> 'upload_post_image',
 					'name' 		=> basename ( get_attached_file( $attachment_id ) ),
 					'url' 		=> wp_get_attachment_url( $attachment_id ),
 					'mime' 		=> get_post_mime_type( $attachment_id ),
@@ -535,7 +535,7 @@ class AnsPress_Process_Form
 				$attach = ap_get_post( $id );
 
 				if ( $attach && 'attachment' == $attach->post_type && $user_id == $attach->post_author ) {
-					ap_set_attachment_post_parent( $attach->ID, $post_id );					
+					ap_set_attachment_post_parent( $attach->ID, $post_id );
 				}
 			}
 			// Update attachment ids in qameta.

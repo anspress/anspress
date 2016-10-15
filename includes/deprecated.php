@@ -619,7 +619,7 @@ function ap_up_vote($echo = false) {
 // get $post down votes
 function ap_down_vote($echo = false) {
 	_deprecated_function( __FUNCTION__, '4.0.0' );
-	
+
 	global $post;
 
 	if ( $echo ) {
@@ -961,5 +961,18 @@ function ap_remove_vote( $type, $current_userid, $actionid, $receiving_userid ) 
  * @return string
  */
 function ap_clear_vote_count_cache( $actionid = '', $current_userid = '', $receiving_userid = '' ) {
+	_deprecated_function( __FUNCTION__, '4.0.0' );
+}
+/**
+ * Check if first parameter is false, if yes then return other parameter.
+ *
+ * @param mixed $param
+ * @param mixed $return
+ *
+ * @return mixed
+ *
+ * @since 2.1
+ */
+function ap_parameter_empty($param = false, $return) {
 	_deprecated_function( __FUNCTION__, '4.0.0' );
 }

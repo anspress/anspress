@@ -34,8 +34,7 @@ function ap_flagged_posts_count() {
 function ap_register_option_group($group_slug, $group_title, $fields, $form = true) {
 	global $ap_option_tabs;
 	$fields = apply_filters( 'ap_option_group_'.$group_slug, $fields );
-
-	ap_append_to_global_var( 'ap_option_tabs', $group_slug , array( 'title' => $group_title, 'fields' => $fields, 'form' => $form ) );
+	$ap_option_tabs[ $group_slug ] = array( 'title' => $group_title, 'fields' => $fields, 'form' => $form );
 }
 
 /**
