@@ -444,7 +444,6 @@ function ap_post_field( $field = null, $_post = null ) {
  */
 function ap_get_last_active( $post_id = null ) {
 	$p = ap_get_post( $post_id );
-
 	$date = ! empty( $p->last_updated ) ? $p->last_updated : $p->post_modified_gmt;
 	return ap_human_time( get_gmt_from_date( $date ), false );
 }
@@ -456,7 +455,7 @@ function ap_get_last_active( $post_id = null ) {
  * @since  2.4.8 Convert mysql date to GMT.
  */
 function ap_last_active( $post_id = null ) {
-	echo ap_get_last_active( $post_id ); // xss ok.
+	echo esc_attr( ap_get_last_active( $post_id ) );
 }
 
 

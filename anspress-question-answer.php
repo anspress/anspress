@@ -15,7 +15,7 @@
  * Plugin URI:        https://anspress.io
  * Description:       The most advance community question and answer system for WordPress
  * Donate link: 	  https://goo.gl/ffainr
- * Version:           3.0.7
+ * Version:           4.0.0-alpha.1
  * Author:            Rahul Aryan
  * Author URI:        https://anspress.io
  * License:           GPL-3.0+
@@ -55,7 +55,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		 * @access private
 		 * @var string
 		 */
-	    private $_plugin_version = '3.0.7';
+	    private $_plugin_version = '4.0.0-alpha.1';
 
 	    /**
 	     * Class instance
