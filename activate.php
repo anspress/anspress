@@ -59,7 +59,7 @@ class AP_Activate
 		global $wpdb;
 		if ( $wpdb->get_var( "show tables like '{$wpdb->ap_qameta}'" ) != $wpdb->ap_qameta ) {
 			$this->tables[] = 'CREATE TABLE IF NOT EXISTS `'.$wpdb->ap_qameta.'` (
-                `post_id` bigint(20) DEFAULT NOT NULL,
+                `post_id` bigint(20) NOT NULL,
                 `selected_id` bigint(20) DEFAULT NULL,
                 `comments` bigint(20) DEFAULT 0,
                 `answers` bigint(20) DEFAULT 0,
