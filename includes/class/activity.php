@@ -764,25 +764,30 @@ function ap_post_active_time($post_id = false, $html = true, $answer_activities 
 
 /**
  * Get latest activity of question or answer.
+ *
  * @param  integer $post_id Question or answer ID.
  * @return string
  */
-function ap_latest_post_activity_html($post_id = false, $answer_activities = false) {
+function ap_latest_post_activity_html( $post_id = false, $answer_activities = false ) {
 	if ( false === $post_id ) {
 		$post_id = get_the_ID();
 	}
 
 	$post = ap_get_post( $post_id );
-	$activity = ap_post_activity_meta( $post_id, $answer_activities );
+	$activity = $post->activities;
 
-	if ( $activity ) {
-		$activity['date'] = get_gmt_from_date($activity['date'] );
+	if ( $answer_activities && ! empty( $post->activities['child'] ) ) {
+		$activity = $post->activities['child'];
 	}
 
-	if ( ! $activity ) {
-		$activity['date'] 	= get_post_time( 'U', true, $post_id );
+	if ( ! empty( $activity ) ) {
+		$activity['date'] = get_gmt_from_date( $activity['date'] );
+	}
+
+	if ( empty( $activity ) ) {
+		$activity['date'] 	 = get_post_time( 'U', true, $post_id );
 		$activity['user_id'] = $post->post_author;
-		$activity['type'] 	= 'new_'.$post->post_type;
+		$activity['type'] 	 = 'new_' . $post->post_type;
 	}
 
 	$html = '';
@@ -790,9 +795,9 @@ function ap_latest_post_activity_html($post_id = false, $answer_activities = fal
 	if ( $activity ) {
 		$html .= sprintf(
 			'<span class="ap-post-history">%s %s %s</span>',
-			ap_user_link_anchor($activity['user_id'], false ),
+			ap_user_link_anchor( $activity['user_id'], false ),
 			ap_activity_short_title( $activity['type'] ),
-			'<a href="'. get_permalink( $post ) .'"><time datetime="'. mysql2date( 'c', $activity['date'] ) .'">'. ap_human_time( $activity['date'], false ) .'</time></a>'
+			'<a href="' . get_permalink( $post ) . '"><time datetime="' . mysql2date( 'c', $activity['date'] ) . '">' . ap_human_time( $activity['date'], false ) . '</time></a>'
 		);
 	}
 
@@ -968,7 +973,7 @@ function ap_delete_activity($id) {
 	 * @param object  $activity Deleted activity object.
 	 */
 	do_action( 'ap_before_deleting_activity', $activity );
-	
+
 	$row = $wpdb->delete( $wpdb->ap_activity, array( 'id' => $id ), array( '%d' ) );
 
 	if ( false !== $row ) {
@@ -982,7 +987,7 @@ function ap_delete_activity($id) {
 
 		// Delete notifiactions.
 		ap_delete_notification_by_activity_id( $id );
-		
+
 		return $row;
 	}
 
@@ -1212,27 +1217,29 @@ function ap_update_post_activity_meta( $post, $type, $user_id, $append_to_questi
 	}
 
 	$post_o = ap_get_post( $post );
-	$meta_val = compact('type', 'user_id', 'date' );
+	$meta_val = compact( 'type', 'user_id', 'date' );
 
 	// Append to question activity meta. So that it can shown in question list.
 	if ( $append_to_question ) {
-		$meta = (array) get_post_meta( $post_o->post_parent, '__ap_activity', true );
+		$_post = ap_get_post( $post_o->post_parent );
+		$meta = $_post->activities;
 		$meta['child'] = $meta_val;
-		update_post_meta( $post_o->post_parent, '__ap_activity', $meta );
+		ap_update_post_activities( $post_o->post_parent, $meta );
 	}
 
-	return update_post_meta( $post_o->ID, '__ap_activity', $meta_val );
+	return ap_update_post_activities( $post_o->ID, $meta_val );
 }
 
 /**
  * Update post activity timestamp.
+ *
  * @param object|integer $post Post or post ID.
  * @since 2.4.7
  */
 function ap_update_post_activity_timestamp( $post ) {
 	$post = ap_get_post( $post );
 
-	if ( 'answer' == $post->post_type ) {
+	if ( 'answer' === $post->post_type ) {
 		ap_update_last_active( $post->post_parent );
 	}
 
@@ -1241,20 +1248,20 @@ function ap_update_post_activity_timestamp( $post ) {
 
 /**
  * Get latest post activity by post ID.
+ *
  * @param  integer $post_id Post ID.
  * @return object|null
  * @since  3.0.0
  */
-function ap_get_latest_post_activity( $field = 'question_id',  $value ) {
+function ap_get_latest_post_activity( $field = 'question_id', $value ) {
 	// Check if valid field type. Also make sure field name is sanitised.
 	if ( !in_array( $field, [ 'question_id', 'answer_id', 'item_id' ] ) ){
 		return false;
 	}
 
 	$query = ap_get_activities( [ $field => (int) $value, 'number' => 1 ] );
-	
+
 	if ( $query->has_activities() ) {
 		return $query->activities[0];
 	}
 }
-

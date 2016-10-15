@@ -45,13 +45,12 @@ class AnsPress_Activity_Hook
 
 	/**
 	 * Add activity after inserting new question.
+	 *
 	 * @param  integer $question_id Post ID.
 	 */
-	public function new_question($question_id) {
+	public function new_question( $question_id ) {
 		$question = ap_get_post( $question_id );
-
-		$question_title = '<a class="ap-q-link" href="'. wp_get_shortlink( $question_id ) .'">'. get_the_title( $question_id ) .'</a>';
-
+		$question_title = '<a class="ap-q-link" href="' . wp_get_shortlink( $question_id ) . '">' . get_the_title( $question_id ) . '</a>';
 		$txo_type = '';
 
 		if ( taxonomy_exists( 'question_category' ) ) {
@@ -70,7 +69,7 @@ class AnsPress_Activity_Hook
 				foreach ( $terms as $t ) {
 					$term_ids[] = $t->term_id;
 				}
-				$term_ids = implode(',', $term_ids );
+				$term_ids = implode( ',', $term_ids );
 			}
 		}
 
@@ -87,11 +86,7 @@ class AnsPress_Activity_Hook
 
 		// Add question activity meta.
 		ap_update_post_activity_meta( $question_id, 'new_question', $question->post_author );
-
 		$this->check_mentions( $question_id, $question->post_content, $question_title, $question->post_author, __( 'question', 'anspress-question-answer' ) );
-
-		// Notify users.
-		// ap_new_notification($activity_id, $question->post_author);
 	}
 
 	/**
@@ -608,4 +603,3 @@ class AnsPress_Activity_Hook
 	}
 
 }
-

@@ -386,3 +386,14 @@ function ap_update_post_attach_ids( $post_id ) {
 	$insert = ap_insert_qameta( $post_id, [ 'attach' => $ids ] );
 	return $ids;
 }
+
+/**
+ * Update activities of a qameta.
+ *
+ * @param  integer $post_id    Post ID.
+ * @param  array   $activities Activities.
+ * @return boolean|integer
+ */
+function ap_update_post_activities( $post_id, $activities = array() ) {
+	return ap_insert_qameta( $post_id, [ 'activities' => $activities ] );
+}
