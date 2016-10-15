@@ -73,6 +73,7 @@ class AP_Activate
                 `closed` tinyint(1) DEFAULT 0,
                 `flags` tinyint(2) DEFAULT 0,
                 `terms` LONGTEXT DEFAULT NULL,
+                `attach` LONGTEXT DEFAULT NULL,
                 `activities` LONGTEXT DEFAULT NULL,
                 `roles` varchar(256) DEFAULT NULL,
                 `last_updated` timestamp NULL DEFAULT NULL,
@@ -166,7 +167,7 @@ class AP_Activate
                 `noti_id` bigint(20) NOT NULL AUTO_INCREMENT,
                 `noti_activity_id` bigint(20) NOT NULL,
                 `noti_user_id` bigint(20) NOT NULL,
-                `noti_status` varchar(225) NOT NULL,                
+                `noti_status` varchar(225) NOT NULL,
                 `noti_date` timestamp NOT NULL,
                 PRIMARY KEY (`noti_id`)
 	        )'.$this->charset_collate.';';
@@ -181,7 +182,7 @@ class AP_Activate
 
 		if ( $wpdb->get_var( "show tables like '{$wpdb->ap_subscribers}'" ) != $wpdb->ap_subscribers ) {
 			$this->tables[] = 'CREATE TABLE IF NOT EXISTS `'.$wpdb->ap_subscribers.'` (
-                `subs_id` bigint(20) NOT NULL AUTO_INCREMENT,               
+                `subs_id` bigint(20) NOT NULL AUTO_INCREMENT,
                 `subs_user_id` bigint(20) NOT NULL,
                 `subs_question_id` bigint(20) NOT NULL,
                 `subs_item_id` bigint(20) NOT NULL,
