@@ -91,15 +91,17 @@ class AnsPress_Subscriber_Hooks {
 	}
 
 	/**
-	 * Remove question subscriptions before delete
+	 * Remove question subscriptions before delete.
+	 *
 	 * @param  integer $question_id Question ID.
 	 */
-	public static function delete_question( $question_id) {
+	public static function delete_question( $question_id ) {
 		ap_remove_subscriber( $question_id, false, 'q_all' );
 	}
 
 	/**
-	 * Remove answer subscriptions before delete
+	 * Remove answer subscriptions before delete.
+	 *
 	 * @param  integer $answer_id answer ID.
 	 */
 	public static function delete_answer( $answer_id ) {
@@ -113,8 +115,8 @@ class AnsPress_Subscriber_Hooks {
 		$args = ap_sanitize_unslash( 'args', 'request', false );
 
 		// Check if args is empty, if so than die.
-		if( false === $args ){
-			ap_ajax_json('something_wrong');
+		if ( false === $args ) {
+			ap_ajax_json( 'something_wrong' );
 		}
 
 		// Die if user is not logged in.
@@ -158,7 +160,7 @@ class AnsPress_Subscriber_Hooks {
 					),
 					'count' 		   => $count,
 					'html' 			   => __( 'Follow', 'anspress-question-answer' ),
-					'view' 			   => array( 'subscribe_'.$action_id => $count ),
+					'view' 			   => array( 'subscribe_' . $action_id => $count ),
 				) );
 			}
 		}
@@ -171,10 +173,10 @@ class AnsPress_Subscriber_Hooks {
 			ap_ajax_json( array(
 				'message' 		=> 'subscribed',
 				'action' 		=> 'subscribed',
-				'do' 			=> array( 'updateHtml' => '#subscribe_'.$action_id.' .text', 'toggle_active_class' => $elm ),
+				'do' 			=> array( 'updateHtml' => '#subscribe_' . $action_id . ' .text', 'toggle_active_class' => $elm ),
 				'count' 		=> $count,
 				'html' 			=> __( 'Unfollow', 'anspress-question-answer' ),
-				'view' 			=> array( 'subscribe_'.$action_id => $count ),
+				'view' 			=> array( 'subscribe_' . $action_id => $count ),
 			) );
 		}
 	}

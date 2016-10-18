@@ -309,7 +309,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		    $constants = array(
 				'DS' 										=> DIRECTORY_SEPARATOR,
 				'AP_VERSION' 						=> $this->_plugin_version,
-				'AP_DB_VERSION' 				=> 20,
+				'AP_DB_VERSION' 				=> 22,
 				'ANSPRESS_DIR' 					=> plugin_dir_path( __FILE__ ),
 				'ANSPRESS_URL' 					=> plugin_dir_url( __FILE__ ),
 				'ANSPRESS_WIDGET_DIR' 	=> plugin_dir_path( __FILE__ ) . 'widgets' . DIRECTORY_SEPARATOR,
@@ -402,7 +402,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		    require_once ANSPRESS_DIR . 'includes/mention.php';
 		    require_once ANSPRESS_DIR . 'includes/akismet.php';
 		    require_once ANSPRESS_DIR . 'includes/comments.php';
-		    //require_once ANSPRESS_DIR . 'includes/cache.php';
+		    require_once ANSPRESS_DIR . 'includes/class/avatar.php';
 		    // require_once ANSPRESS_DIR.'includes/api.php';
 		}
 

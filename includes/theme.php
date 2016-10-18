@@ -798,7 +798,6 @@ function ap_assets( ) {
 	$assets = array(
 		'js' => array(
 			'peity-js' => array( 'src' => ap_get_theme_url( 'js/jquery.peity.min.js' ), 'dep' => array( 'jquery' ) ),
-			'ap-initial-js' => array( 'src' => ap_get_theme_url( 'js/initial.min.js' ), 'dep' => array( 'jquery' ) ),
 			'ap-watch-js' => array( 'src' => ap_get_theme_url( 'js/watch.min.js' ), 'dep' => array( 'jquery' ) ),
 		),
 

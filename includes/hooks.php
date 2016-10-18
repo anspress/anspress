@@ -138,7 +138,6 @@ class AnsPress_Hooks {
 	 * @since	1.0
 	 */
 	public static function after_new_question( $post_id, $post ) {
-			ap_update_last_active( $post_id );
 		// Update user question count meta.
 			ap_update_user_questions_count_meta( $post_id );
 

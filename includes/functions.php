@@ -1700,7 +1700,8 @@ function ap_post_attach_pre_fetch( $ids ) {
 		    'post_type' => 'attachment',
 		    'include'   => $ids,
 		);
-		get_posts($args);
+
+		get_posts( $args );// @codingStandardsIgnoreLine
 	}
 }
 

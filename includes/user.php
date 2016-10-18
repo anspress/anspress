@@ -106,13 +106,13 @@ function ap_user_solved_answer_count($user_id) {
 
 /**
  * For user display name
- * It can be filtered for adding cutom HTML
- * @param  mixed $args
+ * It can be filtered for adding cutom HTML.
+ *
+ * @param  mixed $args Arguments.
  * @return string
  * @since 0.1
  */
-function ap_user_display_name($args = array()) {
-
+function ap_user_display_name( $args = array() ) {
 	global $post;
 
 	$defaults = array(
@@ -140,19 +140,18 @@ function ap_user_display_name($args = array()) {
 			$return = '<span class="who"><a href="'.ap_user_link( $user_id ).'">'.$user->display_name.'</a></span>';
 		}
 	} elseif ( $post && ($post->post_type == 'question' || $post->post_type == 'answer') ) {
-		$name = get_post_meta( $post->ID, 'anonymous_name', true );
-
+		$post_fields = ap_get_post_field( 'fields' );
 		if ( ! $html ) {
-			if ( $name != '' ) {
-				$return = $name;
+			if ( is_array( $post_fields ) && ! empty( $post_fields['anonymous_name'] ) ) {
+				$return = $post_fields['anonymous_name'];
 			} else {
 				$return = $anonymous_label;
 			}
 		} else {
-			if ( $name != '' ) {
-				$return = '<span class="who">'.$name.__( ' (anonymous)', 'anspress-question-answer' ).'</span>';
+			if ( $post_fields['anonymous_name'] != '' ) {
+				$return = '<span class="who">' . $post_fields['anonymous_name'] . __( ' (anonymous)', 'anspress-question-answer' ).'</span>';
 			} else {
-				$return = '<span class="who">'.$anonymous_label.'</span>';
+				$return = '<span class="who">' . $anonymous_label . '</span>';
 			}
 		}
 	} else {

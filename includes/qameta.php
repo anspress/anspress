@@ -29,6 +29,7 @@ function ap_qameta_fields() {
 		'terms' 		     => '',
 		'attach' 		     => '',
 		'activities' 	 	 => '',
+		'fields' 	 	 		 => '',
 		'roles' 		     => '',
 		'last_updated' 	 => '',
 		'is_new' 		     => false,
@@ -57,7 +58,7 @@ function ap_insert_qameta( $post_id, $args, $wp_error = false ) {
 		if ( isset( $args[ $field ] ) ) {
 			$value = $args[ $field ];
 
-			if ( 'activities' === $field ) {
+			if ( 'activities' === $field || 'fields' === $field ) {
 				$value = maybe_serialize( $value );
 				$formats[] = '%s';
 			} elseif ( 'terms' === $field || 'attach' === $field ) {
@@ -128,8 +129,9 @@ function ap_get_qameta( $post_id ) {
 
 		$qameta = wp_parse_args( $qameta, ap_qameta_fields() );
 
-		$qameta['votes_net'] = $qameta['votes_up'] + $qameta['votes_down'];
+		$qameta['votes_net']  = $qameta['votes_up'] + $qameta['votes_down'];
 		$qameta['activities'] = maybe_unserialize( $qameta['activities'] );
+		$qameta['fields'] 	  = maybe_unserialize( $qameta['fields'] );
 		$qameta = (object) $qameta;
 		wp_cache_set( $post_id, $qameta, 'ap_qameta' );
 	}

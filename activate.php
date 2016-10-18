@@ -75,6 +75,7 @@ class AP_Activate
                 `terms` LONGTEXT DEFAULT NULL,
                 `attach` LONGTEXT DEFAULT NULL,
                 `activities` LONGTEXT DEFAULT NULL,
+                `custom_field` LONGTEXT DEFAULT NULL,
                 `roles` varchar(256) DEFAULT NULL,
                 `last_updated` timestamp NULL DEFAULT NULL,
                 UNIQUE KEY `post_id` (`post_id`)

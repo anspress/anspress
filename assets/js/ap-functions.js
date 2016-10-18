@@ -488,12 +488,7 @@ function apMergeObj(obj1,obj2){
 
   return obj1;
 }
-function apLaodAvatar(){	
-    jQuery("img[src*='ANSPRESS_AVATAR_SRC']").each(function(index, el) {
-        var name = jQuery(el).attr('src').replace('http://ANSPRESS_AVATAR_SRC::', '');
-        jQuery(el).initial({fontSize:30, fontWeight:600, name: name });
-    });
-}
+
 
 
 

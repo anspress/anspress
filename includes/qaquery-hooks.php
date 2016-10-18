@@ -76,9 +76,9 @@ class AP_QA_Query_Hooks {
 						$p->$fields_name = $val;
 					}
 
-					// Serialize terms and activities.
-					$p->terms = maybe_unserialize( $p->terms );
+					// Serialize fields and activities.
 					$p->activities = maybe_unserialize( $p->activities );
+					$p->fields = maybe_unserialize( $p->fields );
 
 					$p->ap_qameta_wrapped = true;
 					$p->votes_net = $p->votes_up - $p->votes_down;

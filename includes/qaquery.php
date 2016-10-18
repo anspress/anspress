@@ -51,7 +51,7 @@ class Question_Query extends WP_Query {
 			'ap_question_query' => true,
 		);
 
-		$args['post_status'][] = 'all';
+		$args['post_status'] = [ 'publish', 'closed', 'private_post', 'moderate' ];
 		$this->args = wp_parse_args( $args, $defaults );
 
 		if ( $post_parent ) {
@@ -174,7 +174,10 @@ class Question_Query extends WP_Query {
 		$this->get_ids();
 		ap_user_votes_pre_fetch( $this->ap_ids['post_ids'] );
 		ap_post_attach_pre_fetch( $this->ap_ids['attach_ids'] );
-		ap_post_author_pre_fetch( $this->ap_ids['user_ids'] );
+
+		if( ! empty( $this->ap_ids['user_ids'] ) ) {
+			ap_post_author_pre_fetch( $this->ap_ids['user_ids'] );
+		}
 	}
 }
 
@@ -184,9 +187,9 @@ class Question_Query extends WP_Query {
  * @param  object|integer|null $post Post object.
  * @return object
  */
-function ap_get_post( $post = null ) {
+function ap_get_post( $post = null ) { // @codingStandardsIgnoreLine
 	if ( empty( $post ) && isset( $GLOBALS['post'] ) ) {
-		$post = $GLOBALS['post'];
+		$post = $GLOBALS['post']; // override ok.
 	}
 
 	if ( $post instanceof WP_Post || is_object( $post ) ) {
@@ -264,7 +267,14 @@ function ap_profile_link() {
  */
 function ap_get_author_avatar( $size = 45, $_post = null ) {
 	$_post = ap_get_post( $_post );
-	return get_avatar( $_post->post_author, $size );
+	$author = $_post->post_author;
+	$author = $_post->post_author == 0 ? 'Anonymous' : $_post->post_author;
+
+	if ( 'Anonymous' === $author && is_array( $_post->fields ) && ! empty( $_post->fields['anonymous_name'] ) ) {
+		$author = $_post->fields['anonymous_name'];
+	}
+
+	return get_avatar( $author, $size );
 }
 
 /**

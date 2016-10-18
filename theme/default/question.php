@@ -50,7 +50,7 @@
 										ap_human_time( ap_get_time( get_the_ID(), 'U' ) )
 									)
 								);
-						 	?>						 	
+						 	?>
 						 </span>
                     </div>
 
@@ -73,7 +73,7 @@
 							 * @since 	2.0.0-alpha2
 							 */
 							do_action('ap_after_question_content' );
-							
+
 						?>
 
 						<?php ap_recent_post_activity(); ?>

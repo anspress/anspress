@@ -26,7 +26,7 @@
             e.preventDefault();
             $(this).parent().next().slideToggle(200);
         });
-        
+
 
         $('.ap-radio-btn').click(function() {
             $(this).toggleClass('active');
@@ -48,12 +48,6 @@
             });
 
         }
-        
-        apLaodAvatar();            
-
-        $( document ).ajaxComplete(function( event, data, settings ) {
-            apLaodAvatar();
-        });
 
         $('.ap-label-form-item').click(function(e) {
             e.preventDefault();
@@ -64,7 +58,7 @@
 
         apLoadingDot();
 
-        $('.ap-sidetoggle').click(function(){            
+        $('.ap-sidetoggle').click(function(){
             $('#ap-notifiside').toggle();
             apNotiScrollHeight();
             ApSite.notificationAsRead();
@@ -112,7 +106,7 @@
      * @param  {object} data Ajax success data.
      */
     apFunctions.initScrollbar = function ( data, el ){
-           
+
     }
 
 })(jQuery);

@@ -896,7 +896,6 @@ var apData = {};
                             console.log(data.key + ' changed');                            
                             var html = $(Ta.render(template, apData[data.key]));
                             $(apObjectWatching[data.key]).replaceWith(html);
-                            apLaodAvatar();
                             apObjectWatching[data.key] = html.apGetSelector();
                         };
                         if(typeof apObjectWatching[data.key] === 'undefined' && notExists ){
@@ -904,8 +903,7 @@ var apData = {};
                             watch(apData, data.key, watchCB);
                             apObjectWatching[data.key] = true;
                             var html = $(Ta.render(template, data.apData));
-                            $(data.appendTo).append(html);
-                            apLaodAvatar();              
+                            $(data.appendTo).append(html);       
                             apObjectWatching[data.key] = html.apGetSelector();
                         }
 

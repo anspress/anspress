@@ -486,20 +486,16 @@ class AnsPress_User
 	}
 
 	/**
-	 * Override get_avatar
-	 * @param  string         $avatar 		Avatar image.
+	 * Override get_avatar.
+	 *
+	 * @param  string         $args 		Avatar image.
 	 * @param  integar|string $id_or_email 	User id or email.
-	 * @param  string         $size 		Avatar size.
-	 * @param  string         $default 		Default avatar.
-	 * @param  string         $alt 			Avatar image alternate text.
 	 * @return string
 	 */
-	public static function get_avatar($args, $id_or_email) {
+	public static function get_avatar( $args, $id_or_email ) {
 		if ( ! empty( $id_or_email ) ) {
 			if ( is_object( $id_or_email ) ) {
-				$allowed_comment_types = apply_filters('get_avatar_comment_types', array(
-					'comment'
-					));
+				$allowed_comment_types = apply_filters( 'get_avatar_comment_types', [ 'comment' ] );
 
 				if ( ! empty( $id_or_email->comment_type ) && ! in_array( $id_or_email->comment_type, (array) $allowed_comment_types ) ) {
 					return $args;
@@ -519,29 +515,29 @@ class AnsPress_User
 				$id_or_email = $u->ID;
 			}
 
-			$ap_avatar     = ap_get_avatar_src( $id_or_email, ($args['size'] > 50 ? false:  true) );
+			$ap_avatar = ap_get_avatar_src( $id_or_email, ($args['size'] > 50 ? false:  true) );
 
-			if ( $ap_avatar !== false ) {
+			if ( false !== $ap_avatar ) {
 				$args['url'] = $ap_avatar;
 			}
 		}
 
 		// Set default avatar url.
 		if ( empty( $args['url'] ) && 'ANSPRESS_AVATAR_SRC' == get_option( 'avatar_default' ) ) {
-			$display_name = substr( ap_user_display_name( array( 'user_id' => $id_or_email ) ), 0, 2 );
-			$args['url'] = 'http://ANSPRESS_AVATAR_SRC::'.$display_name;
+			$args['url'] = ap_generate_avatar( $id_or_email );
 		}
 
 		return $args;
 	}
 
 	/**
-	 * Set icon class for user menus
+	 * Set icon class for user menus.
+	 *
 	 * @param  array $menus AnsPress user menu.
 	 * @return array
 	 * @since 2.0.1
 	 */
-	public static function ap_user_menu_icons($menus) {
+	public static function ap_user_menu_icons( $menus ) {
 		$icons = array(
 			'about'         => ap_icon( 'home' ),
 			'profile'       => ap_icon( 'board' ),
@@ -566,16 +562,16 @@ class AnsPress_User
 	}
 
 	/**
-	 * Ajax callback for user dropdown
+	 * Ajax callback for user dropdown.
+	 *
 	 * @since 3.0.0
 	 */
 	public static function user_dp() {
-		if ( ! ap_verify_nonce('ap_ajax_nonce' ) || ! is_user_logged_in() ) {
-			ap_ajax_json('something_wrong' );
+		if ( ! ap_verify_nonce( 'ap_ajax_nonce' ) || ! is_user_logged_in() ) {
+			ap_ajax_json( 'something_wrong' );
 		}
 
 		$type = sanitize_text_field( wp_unslash( $_POST['args'][0] ) );
-
 		$ap_data = false;
 
 		if ( 'noti' === $type ) {
