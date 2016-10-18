@@ -143,7 +143,7 @@ class AnsPress_Avatar {
 
 		$uc_name = strtoupper( substr( $this->name , 0, 2 ) );
 
-		if ( $this->name === $this->user_id ) {
+		if ( false === strpos( strtolower( $this->name ), 'anonymous' ) ) {
 			$svg_text = '<text text-anchor="middle" y="50%" x="50%" dy="0.35em" pointer-events="auto" fill="' . $this->text_color . '" font-family="' . $this->font_family . '" style="font-weight:' . $this->font_weight . ';font-size:12px;">' . $uc_name . '</text>';
 		} else {
 			$svg_text = '<g><path fill="#FFFFFF" d="M14.719,20.104c1.224,0,2.218-1.5,2.218-3.343c0-1.842-0.995-3.342-2.218-3.342
