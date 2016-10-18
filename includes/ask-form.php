@@ -329,10 +329,13 @@ function ap_save_question( $args, $wp_error = false ) {
 			ap_attach_post_uploads( $post_id, $attachment_ids, $args['post_author'] );
 		}
 
-		ap_insert_qameta( $post_id, array(
-			'last_updated' => current_time( 'mysql' ),
-			'fields' => [ 'anonymous_name' => $args['anonymous_name'] ],
-		) );
+		$qameta_args = [ 'last_updated' => current_time( 'mysql' ) ];
+
+		if ( $args['anonymous_name'] ) {
+			$qameta_args['fields'] = [ 'anonymous_name' => $args['anonymous_name'] ];
+		}
+
+		ap_insert_qameta( $post_id, $qameta_args );
 	}
 
 	return $post_id;

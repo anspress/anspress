@@ -148,7 +148,7 @@ function ap_user_display_name( $args = array() ) {
 				$return = $anonymous_label;
 			}
 		} else {
-			if ( $post_fields['anonymous_name'] != '' ) {
+			if ( is_array( $post_fields ) && ! empty( $post_fields['anonymous_name'] ) ) {
 				$return = '<span class="who">' . $post_fields['anonymous_name'] . __( ' (anonymous)', 'anspress-question-answer' ).'</span>';
 			} else {
 				$return = '<span class="who">' . $anonymous_label . '</span>';

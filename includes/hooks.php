@@ -161,8 +161,6 @@ class AnsPress_Hooks {
 	 * @since 2.0.1
 	 */
 	public static function after_new_answer( $post_id, $post ) {
-		ap_update_last_active( $post_id );
-
 		// Update answer count.
 		ap_update_answers_count( $post->post_parent );
 		ap_update_user_answers_count_meta( $post->post_parent );

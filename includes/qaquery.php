@@ -267,10 +267,10 @@ function ap_profile_link() {
  */
 function ap_get_author_avatar( $size = 45, $_post = null ) {
 	$_post = ap_get_post( $_post );
-	$author = $_post->post_author;
-	$author = $_post->post_author == 0 ? 'Anonymous' : $_post->post_author;
+	$author = 0 == $_post->post_author ? 'Anonymous' : $_post->post_author; // @codingStandardsIgnoreLine
 
-	if ( 'Anonymous' === $author && is_array( $_post->fields ) && ! empty( $_post->fields['anonymous_name'] ) ) {
+	// @codingStandardsIgnoreLine
+	if ( 'Anonymous' == $author && is_array( $_post->fields ) && ! empty( $_post->fields['anonymous_name'] ) ) {
 		$author = $_post->fields['anonymous_name'];
 	}
 

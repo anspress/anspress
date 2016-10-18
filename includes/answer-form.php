@@ -242,10 +242,13 @@ function ap_save_answer($question_id, $args, $wp_error = false) {
 			ap_attach_post_uploads( $post_id, $attachment_ids, $args['post_author'] );
 		}
 
-		// Update Custom Meta.
-		if ( ! empty( $args['anonymous_name'] ) ) {
-			update_post_meta( $post_id, 'anonymous_name', $args['anonymous_name'] );
+		$qameta_args = [ 'last_updated' => current_time( 'mysql' ) ];
+
+		if ( $args['anonymous_name'] ) {
+			$qameta_args['fields'] = [ 'anonymous_name' => $args['anonymous_name'] ];
 		}
+
+		ap_insert_qameta( $post_id, $qameta_args );
 	}
 	return $post_id;
 }

@@ -142,10 +142,22 @@ class AnsPress_Avatar {
 		}
 
 		$uc_name = strtoupper( substr( $this->name , 0, 2 ) );
-		$svg_text = '<text text-anchor="middle" y="50%" x="50%" dy="0.35em" pointer-events="auto" fill="' . $this->text_color . '" font-family="' . $this->font_family . '" style="font-weight:' . $this->font_weight . ';font-size:13px;">' . $uc_name . '</text>';
+
+		if ( $this->name === $this->user_id ) {
+			$svg_text = '<text text-anchor="middle" y="50%" x="50%" dy="0.35em" pointer-events="auto" fill="' . $this->text_color . '" font-family="' . $this->font_family . '" style="font-weight:' . $this->font_weight . ';font-size:12px;">' . $uc_name . '</text>';
+		} else {
+			$svg_text = '<g><path fill="#FFFFFF" d="M14.719,20.104c1.224,0,2.218-1.5,2.218-3.343c0-1.842-0.995-3.342-2.218-3.342
+			c-1.224,0-2.22,1.5-2.22,3.342C12.499,18.604,13.495,20.104,14.719,20.104z"/><path fill="#FFFFFF" d="M25.279,20.104c1.225,0,2.219-1.5,2.219-3.343c0-1.842-0.994-3.342-2.219-3.342s-2.219,1.5-2.219,3.342
+			C23.061,18.604,24.055,20.104,25.279,20.104z"/><path fill="#FFFFFF" d="M30.753,21.714c-0.137-0.138-0.344-0.175-0.517-0.091c-2.785,1.328-6.42,2.06-10.237,2.06
+			c-3.815,0-7.451-0.731-10.236-2.06c-0.174-0.083-0.381-0.046-0.516,0.091c-0.135,0.136-0.168,0.344-0.083,0.517
+			c1.266,2.562,5.722,4.351,10.835,4.351c5.118,0,9.574-1.789,10.838-4.352C30.922,22.058,30.888,21.85,30.753,21.714z"/></g>';
+		}
+
 		$color_key = array_rand( $this->colors );
 		$color = $this->colors[ $color_key ];
-		$this->svg = '<svg xmlns="http://www.w3.org/2000/svg" pointer-events="none" width="' . $this->width . '" height="' . $this->height . '" style="background-color:' . $color . ';width:' . $this->width . 'px;height:' . $this->height . 'px;" viewBox="0 0 40 45">' . $svg_text . '</svg>';
+		$this->svg = '<svg version="1.1" id="Layer_1" pointer-events="none"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="40px" height="40px"
+	 viewBox="0 0 40 40" xml:space="preserve" style="background:' . $color . '">' . $svg_text . '</svg>';
 
 		$handle = fopen( $this->filepath(), 'w+' );
 		fwrite( $handle, $this->svg ); // @codingStandardsIgnoreLine
