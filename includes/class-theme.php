@@ -17,8 +17,7 @@ if ( ! defined( 'WPINC' ) ) {
 /**
  * Holds all hooks related to frontend layout/theme
  */
-class AnsPress_Theme
-{
+class AnsPress_Theme {
 	/**
 	 * Function get called on init
 	 */
@@ -31,7 +30,8 @@ class AnsPress_Theme
 	}
 
 	/**
-	 * AnsPress theme function as like WordPress theme function
+	 * AnsPress theme function as like WordPress theme function.
+	 *
 	 * @return void
 	 */
 	public static function includes_theme() {
@@ -39,15 +39,16 @@ class AnsPress_Theme
 	}
 
 	/**
-	 * Add answer-seleted class in post_class
+	 * Add answer-seleted class in post_class.
+	 *
 	 * @param  array $classes Post class attribute.
 	 * @return array
 	 * @since 2.0.1
 	 */
-	public static function question_answer_post_class($classes) {
+	public static function question_answer_post_class( $classes ) {
 		global $post;
 
-		if ( 'question' == $post->post_type ) {
+		if ( 'question' === $post->post_type ) {
 			if ( ap_have_answer_selected( $post->ID ) ) {
 				$classes[] = 'answer-selected';
 			}
@@ -57,10 +58,13 @@ class AnsPress_Theme
 			}
 
 			$classes[] = 'answer-count-' . ap_get_answers_count();
-		} elseif ( 'answer' == $post->post_type ) {
+
+		} elseif ( 'answer' === $post->post_type ) {
+
 			if ( ap_is_selected( $post->ID ) ) {
 				$classes[] = 'best-answer';
 			}
+
 			if ( ! ap_user_can_read_answer( $post ) ) {
 				$classes[] = 'no-permission';
 			}
@@ -70,12 +74,13 @@ class AnsPress_Theme
 	}
 
 	/**
-	 * Add anspress classess to body
+	 * Add anspress classess to body.
+	 *
 	 * @param  array $classes Body class attribute.
 	 * @return array
 	 * @since 2.0.1
 	 */
-	public static function body_class($classes) {
+	public static function body_class( $classes ) {
 		// Add anspress class to body.
 		if ( is_anspress() ) {
 			$classes[] = 'anspress';
@@ -86,13 +91,15 @@ class AnsPress_Theme
 	}
 
 	/**
-	 * Register AnsPress comment template
+	 * Register AnsPress comment template.
+	 *
 	 * @param  string $comment_template path to comment template.
 	 * @return string
 	 */
-	public static function comment_template($comment_template) {
+	public static function comment_template( $comment_template ) {
 		global $post;
-		if ( $post->post_type == 'question' || $post->post_type == 'answer' ) {
+
+		if ( in_array( $post->post_type, [ 'question', 'answer' ], true ) ) {
 			return ap_get_theme_location( 'comments.php' );
 		} else {
 			return $comment_template;
@@ -100,23 +107,21 @@ class AnsPress_Theme
 	}
 
 	/**
-	 * Filter wp_title
+	 * Filter wp_title.
+	 *
 	 * @param string $title WP page title.
 	 * @return string
 	 */
-	public static function ap_title($title) {
+	public static function ap_title( $title ) {
 		if ( is_anspress() ) {
-			remove_filter('wp_title', array(
-				$this,
-				'ap_title',
-			));
+			remove_filter( 'wp_title', [ $this, 'ap_title' ] );
 
 			$new_title = ap_page_title();
 
 			if ( strpos( $title, 'ANSPRESS_TITLE' ) !== false ) {
 				$new_title = str_replace( 'ANSPRESS_TITLE', $new_title, $title );
 			} else {
-				$new_title = $new_title.' | ';
+				$new_title = $new_title . ' | ';
 			}
 
 			$new_title = apply_filters( 'ap_title', $new_title );
@@ -128,11 +133,12 @@ class AnsPress_Theme
 	}
 
 	/**
-	 * Filter wpseo plugin title
+	 * Filter wpseo plugin title.
+	 *
 	 * @param  string $title Page title.
 	 * @return string
 	 */
-	public static function wpseo_title($title) {
+	public static function wpseo_title( $title ) {
 		if ( is_anspress() ) {
 			remove_filter('wpseo_title', array(
 				$this,
@@ -156,20 +162,19 @@ class AnsPress_Theme
 	}
 
 	/**
-	 * Filter the_title()
+	 * Filter the_title().
+	 *
 	 * @param  string $title Current page/post title.
 	 * @param  string $id    Post ID.
 	 * @return string
 	 */
-	public static function the_title($title, $id = null) {
+	public static function the_title( $title, $id = null ) {
 
 		if ( ap_opt( 'base_page' ) == $id  ) {
-			remove_filter('the_title', array(
-				$this,
-				'the_title',
-			));
+			remove_filter( 'the_title', [ $this, 'the_title' ] );
 			return ap_page_title();
 		}
+
 		return $title;
 	}
 
@@ -219,19 +224,20 @@ class AnsPress_Theme
 		if ( is_anspress() ) {
 			$q_feed = get_post_type_archive_feed_link( 'question' );
 			$a_feed = get_post_type_archive_feed_link( 'answer' );
-			echo '<link rel="alternate" type="application/rss+xml" title="'.esc_attr__( 'Question Feed', 'anspress-question-answer' ).'" href="'.esc_url( $q_feed ).'" />';
-			echo '<link rel="alternate" type="application/rss+xml" title="'.esc_attr__( 'Answers Feed', 'anspress-question-answer' ).'" href="'.esc_url( $a_feed ).'" />';
+			echo '<link rel="alternate" type="application/rss+xml" title="' . esc_attr__( 'Question Feed', 'anspress-question-answer' ) . '" href="' . esc_url( $q_feed ) . '" />';
+			echo '<link rel="alternate" type="application/rss+xml" title="' . esc_attr__( 'Answers Feed', 'anspress-question-answer' ) . '" href="' . esc_url( $a_feed ) . '" />';
 
-			echo '<link rel="canonical" href="'. ap_canonical_url() .'">';
+			echo '<link rel="canonical" href="' . ap_canonical_url() . '">'; // xss okay.
 
 			if ( is_question() ) {
-				echo '<link rel="shortlink" href="'.esc_url( wp_get_shortlink( get_question_id() ) ).'" />';
+				echo '<link rel="shortlink" href="' . esc_url( wp_get_shortlink( get_question_id() ) ) . '" />';
 			}
 		}
 	}
 
 	/**
-	 * Update concal link when wpseo plugin installed
+	 * Update concal link when wpseo plugin installed.
+	 *
 	 * @return string
 	 */
 	public static function wpseo_canonical() {
@@ -241,51 +247,50 @@ class AnsPress_Theme
 	}
 
 	/**
-	 * Ajax callback for post actions dropdown
+	 * Ajax callback for post actions dropdown.
+	 *
 	 * @since 3.0.0
 	 */
 	public static function post_actions_dp() {
-		if ( ! ap_verify_nonce('ap_ajax_nonce' ) || ! isset( $_POST['args'] ) ) {
-			ap_ajax_json('something_wrong' );
+		if ( ! ap_verify_nonce( 'ap_ajax_nonce' ) || ! isset( $_POST['args'] ) ) { // input var okay.
+			ap_ajax_json( 'something_wrong' );
 		}
 
-		$post_id = (int) $_POST['args'][0];
+		$post_id = (int) $_POST['args'][0]; // input var okay.
 
 		global $post;
-		$post = ap_get_post( $post_id, OBJECT );
+		$post = ap_get_post( $post_id, OBJECT ); // override okay.
 		setup_postdata( $post );
-
 		$actions = ap_post_actions();
-
 		$dropdown = array();
+
 		foreach ( (array) $actions['dropdown'] as $sk => $sub ) {
 			$dropdown[] = [ 'action' => $sk, 'anchor' => $sub ];
 		}
 
 		$data = array(
-			'template' => 'dropdown-menu',
-			'appendTo' => '#ap_post_action_'.$post_id,
-			'do' => [ 'addClass' => [ '#ap_post_action_'.$post_id.' .ap-dropdown-toggle', 'ajax-disabled' ] ],
-			'apData' => array(
-				'id'	=> $post_id.'_dp',
-				'links'			=> $dropdown,
-			),
-			'key' => $post_id.'Actions',
+			'template'  => 'dropdown-menu',
+			'appendTo'  => '#ap_post_action_' . $post_id,
+			'do'        => [ 'addClass' => [ '#ap_post_action_' . $post_id . ' .ap-dropdown-toggle', 'ajax-disabled' ] ],
+			'apData'    => [ 'id' => $post_id . '_dp', 'links' => $dropdown ],
+			'key'       => $post_id . 'Actions',
 		);
 
 		ap_ajax_json( $data );
 	}
 
 	/**
-	 * Ajax callback for list filters
+	 * Ajax callback for list filters.
+	 *
 	 * @since 3.0.0
 	 */
 	public static function list_filter() {
-		if ( ! ap_verify_nonce('ap_ajax_nonce' ) || ! isset( $_POST['args'] ) ) {
-			ap_ajax_json('something_wrong' );
+		// @codingStandardsIgnoreLine
+		if ( ! ap_verify_nonce( 'ap_ajax_nonce' ) || ! isset( $_POST['args'] ) ) {
+			ap_ajax_json( 'something_wrong' );
 		}
 
-		$filter = sanitize_text_field( wp_unslash( $_POST['args'][0] ) );
+		$filter = sanitize_text_field( wp_unslash( $_POST['args'][0] ) ); // input var okay, xss okay.
 
 		if ( isset( $_POST['current_filter'] ) ) {
 			$_GET['ap_filter'] = wp_parse_args( wp_unslash( $_POST['current_filter'] ) );

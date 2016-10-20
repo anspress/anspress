@@ -31,7 +31,6 @@ class AnsPress_User
 		ap_register_page( ap_opt( 'users_page_slug' ), __( 'Users', 'anspress-question-answer' ), array( __CLASS__, 'users_page' ) );
 		ap_register_page( ap_opt( 'user_page_slug' ), __( 'User', 'anspress-question-answer' ), array( __CLASS__, 'user_page' ), false );
 		ap_register_user_page( 'about', __( 'About', 'anspress-question-answer' ), array( __CLASS__, 'about_page' ) );
-		ap_register_user_page( 'activity-feed', __( 'Activity Feed', 'anspress-question-answer' ), array( __CLASS__, 'feed_page' ), true );
 		ap_register_user_page( 'notification', __( 'Notification', 'anspress-question-answer' ), array( __CLASS__, 'notification_page' ), true, false );
 		ap_register_user_page( 'profile', __( 'Profile', 'anspress-question-answer' ), array( __CLASS__, 'profile_page' ), true, false );
 		ap_register_user_page( 'questions', __( 'Questions', 'anspress-question-answer' ), array( __CLASS__, 'questions_page' ) );
@@ -89,18 +88,8 @@ class AnsPress_User
 	}
 
 	/**
-	 * Output user feed page.
-	 * @since 2.4
-	 */
-	public static function feed_page() {
-		global $ap_activities;
-		$paged = get_query_var( 'paged', 1 );
-	    $ap_activities = ap_get_activities( array( 'per_page' => 20, 'subscriber' => true, 'user_id' => ap_get_displayed_user_id(), 'orderby' => 'created', 'order' => 'DESC', 'paged' => $paged ) );
-		ap_get_template_part( 'user/activity-feed' );
-	}
-
-	/**
-	 * Output notification page
+	 * Output notification page.
+	 *
 	 * @since 2.3
 	 */
 	public static function notification_page() {
@@ -112,12 +101,12 @@ class AnsPress_User
 		global $ap_activities;
 
 		$ap_activities = ap_get_activities( array( 'notification' => true, 'user_id' => ap_get_displayed_user_id() ) );
-
 		ap_get_template_part( 'user/notification' );
 	}
 
 	/**
-	 * Output for activity page
+	 * Output for activity page.
+	 *
 	 * @since 2.1
 	 */
 	public static function activity_page() {

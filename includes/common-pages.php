@@ -17,13 +17,12 @@ class AnsPress_Common_Pages
 	/**
 	 * Register all pages of AnsPress
 	 */
-	public static function register_common_pages() {		
+	public static function register_common_pages() {
 		ap_register_page( 'base', ap_opt( 'base_page_title' ), array( __CLASS__, 'base_page' ) );
 		ap_register_page( ap_opt( 'question_page_slug' ), __( 'Question', 'anspress-question-answer' ), array( __CLASS__, 'question_page' ), false );
 		ap_register_page( ap_opt( 'ask_page_slug' ), __( 'Ask', 'anspress-question-answer' ), array( __CLASS__, 'ask_page' ) );
 		ap_register_page( 'edit', __( 'Edit', 'anspress-question-answer' ), array( __CLASS__, 'edit_page' ), false );
 		ap_register_page( 'search', __( 'Search', 'anspress-question-answer' ), array( __CLASS__, 'search_page' ), false );
-		ap_register_page( 'activity', __( 'Activity Feed', 'anspress-question-answer' ), array( __CLASS__, 'activity_page' ) );
 	}
 
 	/**
@@ -94,6 +93,7 @@ class AnsPress_Common_Pages
 				/**
 				 * Filter to modify future post notice. If filter does not return false
 				 * then retunrd string will be shown.
+				 *
 				 * @param  boolean $notice 		False by default.
 				 * @param  object  $question   	Post object.
 				 * @return boolean|string
@@ -102,10 +102,10 @@ class AnsPress_Common_Pages
 				$notice = apply_filters( 'ap_future_post_notice', false, $post );
 				if ( false === $notice ) {
 					$time_to_publish = human_time_diff( strtotime( $post->post_date ), current_time( 'timestamp', true ) );
-					echo '<strong>' .sprintf(__('Question will be publish in %s', 'anspress-question-answer' ), $time_to_publish ).'</strong>';
-					echo '<p>' .__('This question is in waiting queue and is not accessible by anyone until it get published.', 'anspress-question-answer' ).'</p>';
+					echo '<strong>' . sprintf( __('Question will be publish in %s', 'anspress-question-answer' ), $time_to_publish ) . '</strong>';
+					echo '<p>' . __( 'This question is in waiting queue and is not accessible by anyone until it get published.', 'anspress-question-answer' ) . '</p>';
 				} else {
-					echo $notice;
+					echo $notice; // xss okay.
 				}
 
 				echo '</div>';
@@ -152,24 +152,15 @@ class AnsPress_Common_Pages
 		$keywords   = ap_sanitize_unslash( 'ap_s', 'query_var' );
 		$type       = ap_sanitize_unslash( 'type', 'request' );
 
-		if ( '' == $type ) {
+		if ( '' === $type ) {
 			$questions = ap_get_questions( array( 's' => $keywords ) );
 			include( ap_get_theme_location( 'search.php' ) );
-		} elseif ( 'user' == $type && ap_opt( 'enable_users_directory' ) ) {
+		} elseif ( 'user' === $type && ap_opt( 'enable_users_directory' ) ) {
 			global $ap_user_query;
+
 			$ap_user_query = ap_has_users( array( 'search' => $keywords, 'search_columns' => array( 'user_login', 'user_email', 'user_nicename' ) ) );
 			include( ap_get_theme_location( 'users/users.php' ) );
 		}
-	}
-
-	/**
-	 * Activity page template loading.
-	 */
-	public static function activity_page() {
-		global $ap_activities;
-	    $ap_activities = ap_get_activities( array( 'per_page' => 20 ) );
-
-		include( ap_get_theme_location( 'activity/index.php' ) );
 	}
 
 	/**
