@@ -338,7 +338,6 @@ if ( ! class_exists( 'AnsPress' ) ) {
 			require_once ANSPRESS_DIR . 'includes/class/form.php';
 			require_once ANSPRESS_DIR . 'includes/class/validation.php';
 			require_once ANSPRESS_DIR . 'includes/class/roles-cap.php';
-			//require_once ANSPRESS_DIR . 'includes/class/activity.php';
 
 			require_once ANSPRESS_DIR . 'includes/common-pages.php';
 			require_once ANSPRESS_DIR . 'includes/class-user.php';
@@ -366,7 +365,6 @@ if ( ! class_exists( 'AnsPress' ) ) {
 			require_once ANSPRESS_DIR . 'includes/theme.php';
 			require_once ANSPRESS_DIR . 'includes/form.php';
 			require_once ANSPRESS_DIR . 'includes/participants.php';
-			//require_once ANSPRESS_DIR . 'includes/activity-hooks.php';
 			require_once ANSPRESS_DIR . 'includes/shortcode-basepage.php';
 
 			require_once ANSPRESS_DIR . 'includes/process-form.php';
