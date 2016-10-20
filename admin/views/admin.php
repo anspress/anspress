@@ -29,6 +29,9 @@ if ( isset( $_POST['__nonce'] ) && wp_verify_nonce( $_POST['__nonce'], 'nonce_op
 
 		// Check $_POST value against fields.
 		foreach ( (array) $fields as $f ) {
+			if( ! isset( $f['name'] ) ) {
+				continue;
+			}
 
 			$value = ap_sanitize_unslash( $f['name'], 'request' );
 
@@ -60,39 +63,39 @@ if ( isset( $_POST['__nonce'] ) && wp_verify_nonce( $_POST['__nonce'], 'nonce_op
 
 <?php if ( isset( $_POST['anspress_opt_updated'] ) ) :   ?>
 	<div class="notice notice-success is-dismissible">
-	    <p><?php _e( 'AnsPress option updated!', 'anspress-question-answer' ); ?></p>
+		<p><?php _e( 'AnsPress option updated!', 'anspress-question-answer' ); ?></p>
 	</div>
 <?php endif; ?>
 
-<div id="anspress" class="wrap">	
-    <div class="ap-optionpage-wrap">
-	    <h2 class="admin-title">
-			<?php _e( 'AnsPress Options', 'anspress-question-answer' ); ?>	        
-	    </h2>
+<div id="anspress" class="wrap">
+	<div class="ap-optionpage-wrap">
+		<h2 class="admin-title">
+			<?php _e( 'AnsPress Options', 'anspress-question-answer' ); ?>
+		</h2>
 
-	    <div class="social-links clearfix">
-	    	<a href="https://github.com/anspress/anspress" target="_blank">GitHub</a>
-	        <a href="https://wordpress.org/plugins/anspress-question-answer/" target="_blank">WordPress.org</a>
-	        <a href="https://twitter.com/anspress_io" target="_blank">@anspress_io</a>
-	        <a href="https://www.facebook.com/wp.anspress" target="_blank">Facebook</a>
-	    </div>
+		<div class="social-links clearfix">
+			<a href="https://github.com/anspress/anspress" target="_blank">GitHub</a>
+			<a href="https://wordpress.org/plugins/anspress-question-answer/" target="_blank">WordPress.org</a>
+			<a href="https://twitter.com/anspress_io" target="_blank">@anspress_io</a>
+			<a href="https://www.facebook.com/wp.anspress" target="_blank">Facebook</a>
+		</div>
 
-	    <div class="ap-wrap">
-	        <div class="anspress-options ap-wrap-left clearfix">
-	            <div class="option-nav-tab clearfix">
+		<div class="ap-wrap">
+			<div class="anspress-options ap-wrap-left clearfix">
+				<div class="option-nav-tab clearfix">
 					<?php ap_options_nav(); ?>
-			    </div>
-	            <div class="ap-options-side">
-		            <div class="ap-group-options get-ext">
-		            	<a href="https://anspress.io/themes/">Browse Themes</a>
-		            	<a href="https://anspress.io/extensions/">Browse Extensions</a>
-		            	<h3>Check our AnsPress extensions and themes</h3>
-		            </div>
-		            <div class="ap-group-options">
+				</div>
+				<div class="ap-options-side">
+					<div class="ap-group-options get-ext">
+						<a href="https://anspress.io/themes/">Browse Themes</a>
+						<a href="https://anspress.io/extensions/">Browse Extensions</a>
+						<h3>Check our AnsPress extensions and themes</h3>
+					</div>
+					<div class="ap-group-options">
 						<?php ap_option_group_fields(); ?>
-		            </div>
-		        </div>
-	        </div>
-	    </div>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 </div>

@@ -27,7 +27,6 @@ APjs.admin = function() {};
 			this.ajaxBtn();
 		},
 
-
 		renameTaxo: function(){
 			jQuery('.ap-rename-taxo').click(function(e){
 				e.preventDefault();
@@ -242,14 +241,14 @@ APjs.admin = function() {};
 	            	type: 'POST',
 	            	success: function(data){
 						if( typeof $(this).data('cb') !== 'undefined' ){
-		                    var cb = $(this).data("cb");                       
+		                    var cb = $(this).data("cb");
 		                    if( typeof APjs.admin[cb] === 'function' ){
 		                        APjs.admin[cb](data, this);
 		                    }
 		                }
 	            	}
 	            });
-	            
+
 	        });
 		},
 		afterFlagClear : function(data, elm){
@@ -346,8 +345,6 @@ function ap_add_item_to_menu(menuItem, callback) {
 	});
 }
 jQuery(document).ready(function (jQuery){
-	apLaodAvatar();
-
 	jQuery('#select-question-for-answer').on('keyup', function(){
 		if(jQuery.trim(jQuery(this).val()) == '')
 			return;
@@ -376,11 +373,6 @@ jQuery(document).ready(function (jQuery){
 	ap_option_flag_note();
 	ap_submit_menu();
 
-	jQuery('.ap-dynamic-avatar').initial({fontSize:14, fontWeight:600});
-    jQuery( document ).ajaxComplete(function( event, data, settings ) {
-        jQuery('.ap-dynamic-avatar').initial({fontSize:14, fontWeight:600});
-    });
-
     jQuery('[data-action="ap_media_uplaod"]').click(function(e) {
     	e.preventDefault();
     	$btn = jQuery(this);
@@ -396,7 +388,7 @@ jQuery(document).ready(function (jQuery){
 			var image_url = uploaded_image.toJSON().url;
 			var image_id = uploaded_image.toJSON().id;
 
-			// Let's assign the url value to the input field			
+			// Let's assign the url value to the input field
 			jQuery($btn.data('urlc')).val(image_url);
 			jQuery($btn.data('idc')).val(image_id);
 
@@ -449,7 +441,7 @@ window.onload = function() {
             display: false,
         },
         scales: {
-	    	xAxes: [{	    			
+	    	xAxes: [{
                 gridLines: {
                     color: "rgba(0, 0, 0, 0.05)",
                 }
@@ -458,11 +450,11 @@ window.onload = function() {
 	    		display: false,
                 gridLines: {
                     color: "rgba(0, 0, 0, 0.05)",
-                }   
+                }
             }]
 	    }
     };
-    
+
     if(typeof questionChartData !== 'undefined' ){
 	    var ctx = document.getElementById("question-chart").getContext("2d");
 
@@ -479,7 +471,7 @@ window.onload = function() {
 		    			ticks: {display: false}
 		            }],
 			    	yAxes: [{
-		    			ticks: {display: false}  
+		    			ticks: {display: false}
 		            }]
 			    }
 			}
@@ -502,7 +494,7 @@ window.onload = function() {
 		    			ticks: {display: false}
 		            }],
 			    	yAxes: [{
-		    			ticks: {display: false}  
+		    			ticks: {display: false}
 		            }]
 			    }
 			}
@@ -515,7 +507,7 @@ window.onload = function() {
 	    window.latestanswer = new Chart(latestanswerCtx, {
 	        type: 'line',
 	        data: latestanswerChartData,
-	        options: {        	
+	        options: {
 	        	legend: {
 		        	display: false
 		        },
@@ -537,7 +529,7 @@ window.onload = function() {
 	    window.latestquestion = new Chart(latestquestionCtx, {
 	        type: 'line',
 	        data: latestquestionChartData,
-	        options: {        	
+	        options: {
 	        	legend: {
 		        	display: false
 		        },

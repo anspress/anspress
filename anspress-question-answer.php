@@ -691,9 +691,7 @@ if ( ! class_exists( 'AnsPress_Init' ) ) {
 			global $wpdb;
 
 			$tables[] 	= $wpdb->prefix . 'ap_meta';
-			$tables[] 	= $wpdb->prefix . 'ap_meta';
-			$tables[] 	= $wpdb->prefix . 'ap_activity';
-			$tables[] 	= $wpdb->prefix . 'ap_activitymeta';
+			$tables[] 	= $wpdb->prefix . 'ap_qameta';
 			$tables[] 	= $wpdb->prefix . 'ap_notifications';
 			$tables[]		= $wpdb->prefix . 'ap_subscribers';
 			return $tables;

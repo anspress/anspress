@@ -137,7 +137,6 @@ class AnsPress_Admin {
 		$min = ap_env_dev() ? '' : '.min';
 
 		wp_enqueue_script( 'jquery-form', array( 'jquery' ), false, true );
-		wp_enqueue_script( 'ap-initial.js', ap_get_theme_url( 'js/initial.min.js' ), 'jquery', AP_VERSION );
 		wp_enqueue_script( 'ap-functions-js', ANSPRESS_URL . 'assets/' . $dir . '/ap-functions' . $min . '.js', 'jquery', AP_VERSION );
 
 		if ( 'toplevel_page_anspress' === $page->base ) {

@@ -96,8 +96,8 @@ class AnsPress_Avatar {
 			$this->name = esc_attr( $user->display_name );
 			$this->user_id = $user->ID;
 		} else {
-			$this->name = empty( $user ) ? 'ap' : esc_attr( $user );
-			$this->user_id = empty( $user ) ? 'ap' : $this->name;
+			$this->name = empty( $user ) ? 'anonymous' : esc_attr( $user );
+			$this->user_id = empty( $user ) ? 'anonymous' : $this->name;
 		}
 
 		$this->colors();
