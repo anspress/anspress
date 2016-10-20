@@ -578,3 +578,88 @@ function ap_get_attach( $_post = null ) {
 	}
 	return false;
 }
+
+
+/**
+ * Get latest activity of question or answer.
+ *
+ * @param  integer $post_id Question or answer ID.
+ * @return string
+ */
+function ap_latest_post_activity_html( $post_id = false, $answer_activities = false ) {
+	if ( false === $post_id ) {
+		$post_id = get_the_ID();
+	}
+
+	$post = ap_get_post( $post_id );
+	$activity = $post->activities;
+
+	if ( $answer_activities && ! empty( $post->activities['child'] ) ) {
+		$activity = $post->activities['child'];
+	}
+
+	if ( ! empty( $activity ) ) {
+		$activity['date'] = get_gmt_from_date( $activity['date'] );
+	}
+
+	if ( empty( $activity ) ) {
+		$activity['date'] 	 = get_post_time( 'U', true, $post_id );
+		$activity['user_id'] = $post->post_author;
+		$activity['type'] 	 = 'new_' . $post->post_type;
+	}
+
+	$html = '';
+
+	if ( $activity ) {
+		$html .= sprintf(
+			'<span class="ap-post-history">%s %s %s</span>',
+			ap_user_link_anchor( $activity['user_id'], false ),
+			ap_activity_short_title( $activity['type'] ),
+			'<a href="' . get_permalink( $post ) . '"><time datetime="' . mysql2date( 'c', $activity['date'] ) . '">' . ap_human_time( $activity['date'], false ) . '</time></a>'
+		);
+	}
+
+	if ( $html ) {
+		return apply_filters( 'ap_latest_post_activity_html', $html );
+	}
+
+	return false;
+}
+
+
+/**
+ * Activity type to human readable title.
+ *
+ * @param  string $type Activity type.
+ * @return string
+ */
+function ap_activity_short_title( $type ) {
+	$title = array(
+		'new_question' 		           => __( 'asked', 'anspress-question-answer' ),
+		'approved_question' 		     => __( 'approved', 'anspress-question-answer' ),
+		'approved_answer' 		       => __( 'approved', 'anspress-question-answer' ),
+		'new_answer' 		             => __( 'answered', 'anspress-question-answer' ),
+		'delete_answer' 		         => __( 'deleted answer', 'anspress-question-answer' ),
+		'restore_answer' 		         => __( 'restored answer', 'anspress-question-answer' ),
+		'new_comment' 		           => __( 'commented', 'anspress-question-answer' ),
+		'delete_comment' 		         => __( 'deleted comment', 'anspress-question-answer' ),
+		'new_comment_answer'       	 => __( 'commented on answer', 'anspress-question-answer' ),
+		'edit_question' 	           => __( 'edited question', 'anspress-question-answer' ),
+		'edit_answer' 		           => __( 'edited answer', 'anspress-question-answer' ),
+		'edit_comment' 		           => __( 'edited comment', 'anspress-question-answer' ),
+		'edit_comment_answer'        => __( 'edited comment on answer', 'anspress-question-answer' ),
+		'answer_selected' 	         => __( 'selected answer', 'anspress-question-answer' ),
+		'answer_unselected'          => __( 'unselected answer', 'anspress-question-answer' ),
+		'status_updated' 	           => __( 'updated status', 'anspress-question-answer' ),
+		'best_answer' 		           => __( 'selected as best answer', 'anspress-question-answer' ),
+		'unselected_best_answer' 	   => __( 'unselected as best answer', 'anspress-question-answer' ),
+	);
+
+	$title = apply_filters( 'ap_activity_short_title', $title );
+
+	if ( isset( $title[ $type ] ) ) {
+		return $title[ $type ];
+	}
+
+	return $type;
+}

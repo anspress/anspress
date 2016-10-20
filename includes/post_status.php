@@ -14,8 +14,7 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-class AnsPress_Post_Status
-{
+class AnsPress_Post_Status {
 
 	/**
 	 * Register post status for question and answer CPT
@@ -79,23 +78,19 @@ class AnsPress_Post_Status
 		}
 
 	   	$update_data = array();
-
 	   	$update_data['post_status'] = $status;
-
-		// Unregister history action for edit.
-		remove_action( 'ap_after_new_answer', array( 'AP_History', 'new_answer' ) );
-		remove_action( 'ap_after_new_question', array( 'AP_History', 'new_question' ) );
-
 		$update_data['ID'] = $post->ID;
 		wp_update_post( $update_data );
 
-		// Unselect as best answer.
+		// Unselect as best answer if moderate.
 		if ( 'answer' == $post->post_type && 'moderate' == $status && ap_have_answer_selected( $post->post_parent ) ) {
 			ap_unselect_answer( $post->ID );
 		}
 
-		// ap_add_history( get_current_user_id(), $post_id, '', 'status_updated' );
-		add_action( 'ap_post_status_updated', $post->ID );
+		do_action( 'ap_post_status_updated', $post->ID );
+
+		$activity_type = 'moderate' === $post->post_status ? 'approved_' . $post->post_type : 'changed_status';
+		ap_update_post_activity_meta( $post_id, $activity_type, get_current_user_id() );
 
 		ob_start();
 		ap_post_status_description( $post->ID );

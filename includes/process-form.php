@@ -297,7 +297,7 @@ class AnsPress_Process_Form
 
 		global $ap_errors, $validate;
 		$question = ap_get_post( (int) $_POST['form_question_id'] );
-		var_dump($question);
+
 		// Check if user have permission to answer a question.
 		if ( ! ap_user_can_answer( $question->ID ) ) {
 			ap_ajax_json( 'no_permission' );

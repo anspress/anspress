@@ -249,6 +249,11 @@ function ap_save_answer($question_id, $args, $wp_error = false) {
 		}
 
 		ap_insert_qameta( $post_id, $qameta_args );
+		$activity_type = isset( $args['ID'] ) ? 'edit_answer' : 'new_answer';
+
+		// Add answer activity meta.
+		ap_update_post_activity_meta( $post_id, $activity_type, get_current_user_id() );
+		ap_update_post_activity_meta( $question->ID, $activity_type, get_current_user_id() );
 	}
 	return $post_id;
 }

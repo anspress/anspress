@@ -4,7 +4,7 @@
  *
  * @package   AnsPress
  * @author    Rahul Aryan <support@anspress.io>
- * @license   GPL-2.0+
+ * @license   GPL-3.0+
  * @link      https://anspress.io
  * @copyright 2014 Rahul Aryan
  */
@@ -21,23 +21,25 @@ if ( ! defined( 'WPINC' ) ) {
  * @package AnsPress
  * @author  Rahul Aryan <support@anspress.io>
  */
-class AnsPress_Admin
-{
+class AnsPress_Admin {
 
 	/**
 	 * Instance of this class.
+	 *
 	 * @var      object
 	 */
 	protected static $instance = null;
 
 	/**
 	 * Slug of the plugin screen.
+	 *
 	 * @var      string
 	 */
 	protected $plugin_screen_hook_suffix = null;
 
 	/**
-	 * AnsPress option key
+	 * AnsPress option key.
+	 *
 	 * @var string
 	 */
 	protected $option_name = 'anspress_opt';
@@ -79,17 +81,18 @@ class AnsPress_Admin
 		add_action( 'admin_action_ap_update_helper', array( $this, 'update_helper' ) );
 
 		// Query filters.
-		anspress()->add_action('admin_footer-post.php', 'AnsPress_Query_Filter', 'append_post_status_list' );
+		anspress()->add_action( 'admin_footer-post.php', 'AnsPress_Query_Filter', 'append_post_status_list' );
 	}
 
 	/**
 	 * Return an instance of this class.
+	 *
 	 * @return    object    A single instance of this class.
 	 */
 	public static function get_instance() {
 
 		// If the single instance hasn't been set, set it now.
-		if ( null == self::$instance ) {
+		if ( null === self::$instance ) {
 			self::$instance = new self;
 		}
 
@@ -112,10 +115,10 @@ class AnsPress_Admin
 	 * Register and enqueue admin-specific style sheet.
 	 */
 	public function enqueue_admin_styles() {
-		if( !ap_load_admin_assets() ){
+		if ( ! ap_load_admin_assets() ) {
 			return;
 		}
-		wp_enqueue_style( 'ap-admin-css', ANSPRESS_URL.'assets/ap-admin.css' );
+		wp_enqueue_style( 'ap-admin-css', ANSPRESS_URL . 'assets/ap-admin.css' );
 		wp_enqueue_style( 'wp-color-picker' );
 		wp_enqueue_style( 'ap-fonts', ap_get_theme_url( 'fonts/style.css' ), array(), AP_VERSION );
 	}
@@ -124,7 +127,7 @@ class AnsPress_Admin
 	 * Register and enqueue admin-specific JavaScript.
 	 */
 	public function enqueue_admin_scripts() {
-		if( !ap_load_admin_assets() ){
+		if ( ! ap_load_admin_assets() ) {
 			return;
 		}
 
@@ -135,18 +138,19 @@ class AnsPress_Admin
 
 		wp_enqueue_script( 'jquery-form', array( 'jquery' ), false, true );
 		wp_enqueue_script( 'ap-initial.js', ap_get_theme_url( 'js/initial.min.js' ), 'jquery', AP_VERSION );
-		wp_enqueue_script( 'ap-functions-js', ANSPRESS_URL.'assets/'.$dir.'/ap-functions'.$min.'.js', 'jquery', AP_VERSION );
+		wp_enqueue_script( 'ap-functions-js', ANSPRESS_URL . 'assets/' . $dir . '/ap-functions' . $min . '.js', 'jquery', AP_VERSION );
 
-		if( 'toplevel_page_anspress' == $page->base ){
+		if ( 'toplevel_page_anspress' === $page->base ) {
 			wp_enqueue_script( 'ap-chart-js', '//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.4/Chart.min.js' );
 		}
-		
-		wp_enqueue_script( 'ap-admin-js', ANSPRESS_URL.'assets/'.$dir.'/ap-admin'.$min.'.js' , array( 'wp-color-picker' ) );
+
+		wp_enqueue_script( 'ap-admin-js', ANSPRESS_URL . 'assets/' . $dir . '/ap-admin' . $min . '.js' , array( 'wp-color-picker' ) );
 		wp_enqueue_script( 'postbox' );
 	}
 
 	/**
 	 * Menu counter
+	 *
 	 * @return array
 	 * @since 2.4.6
 	 */
@@ -155,19 +159,17 @@ class AnsPress_Admin
 		$a_flagged_count = ap_total_posts_count( 'answer', 'flag' );
 		$question_count = wp_count_posts( 'question', 'readable' );
 		$answer_count = wp_count_posts( 'answer', 'readable' );
-
 		$types = array(
 			'question' 	=> ( ! empty( $question_count->moderate ) ? $question_count->moderate : 0 ) + $q_flagged_count->total,
 			'answer' 	=> ( ! empty( $answer_count->moderate ) ? $answer_count->moderate : 0 ) + $a_flagged_count->total,
 			'flagged' 	=> $q_flagged_count->total + $a_flagged_count->total,
 		);
-
 		$types['total'] = array_sum( $types );
-
 		$types_html = array();
-		foreach ( $types as $k => $count ) {
+
+		foreach ( (array) $types as $k => $count ) {
 			if ( $count > 0 ) {
-				$types_html[ $k ] = ' <span class="update-plugins count"><span class="plugin-count">'.number_format_i18n( $count ).'</span></span>';
+				$types_html[ $k ] = ' <span class="update-plugins count"><span class="plugin-count">' . number_format_i18n( $count ) . '</span></span>';
 			} else {
 				$types_html[ $k ] = '';
 			}
@@ -187,16 +189,15 @@ class AnsPress_Admin
 		global $submenu;
 
 		$counts = $this->menu_counts();
-
 		$pos = $this->get_free_menu_position( 42.9 );
 
-		add_menu_page( 'AnsPress', 'AnsPress'.$counts['total'], 'delete_pages', 'anspress', array( $this, 'dashboard_page' ), ANSPRESS_URL . '/assets/answer.png', $pos );
+		add_menu_page( 'AnsPress', 'AnsPress' . $counts['total'], 'delete_pages', 'anspress', array( $this, 'dashboard_page' ), ANSPRESS_URL . '/assets/answer.png', $pos );
 
-		add_submenu_page( 'anspress', __( 'All Questions', 'anspress-question-answer' ), __( 'All Questions', 'anspress-question-answer' ).$counts['question'], 'delete_pages', 'edit.php?post_type=question', '' );
+		add_submenu_page( 'anspress', __( 'All Questions', 'anspress-question-answer' ), __( 'All Questions', 'anspress-question-answer' ) . $counts['question'], 'delete_pages', 'edit.php?post_type=question', '' );
 
 		add_submenu_page( 'anspress', __( 'New Question', 'anspress-question-answer' ), __( 'New Question', 'anspress-question-answer' ), 'delete_pages', 'post-new.php?post_type=question', '' );
 
-		add_submenu_page( 'anspress', __( 'All Answers', 'anspress-question-answer' ), __( 'All Answers', 'anspress-question-answer' ).$counts['answer'], 'delete_pages', 'edit.php?post_type=answer', '' );
+		add_submenu_page( 'anspress', __( 'All Answers', 'anspress-question-answer' ), __( 'All Answers', 'anspress-question-answer' ) . $counts['answer'], 'delete_pages', 'edit.php?post_type=answer', '' );
 
 		add_submenu_page( 'anspress', __( 'Reputation', 'anspress-question-answer' ), __( 'Reputation', 'anspress-question-answer' ), 'manage_options', 'anspress_reputation', array( $this, 'display_reputation_page' ) );
 
@@ -204,6 +205,7 @@ class AnsPress_Admin
 
 		/**
 		 * ACTION: ap_admin_menu
+		 *
 		 * @since unknown
 		 */
 		do_action( 'ap_admin_menu' );
@@ -219,10 +221,11 @@ class AnsPress_Admin
 	/**
 	 * Get free unused menu position. This function helps prevent other plugin
 	 * menu conflict when assigned to same position.
+	 *
 	 * @param integer $start          position.
 	 * @param double  $increment     position.
 	 */
-	public function get_free_menu_position($start, $increment = 0.99) {
+	public function get_free_menu_position( $start, $increment = 0.99 ) {
 		$menus_positions = array_keys( $GLOBALS['menu'] );
 
 		if ( ! in_array( $start, $menus_positions ) ) {
@@ -237,15 +240,16 @@ class AnsPress_Admin
 	}
 
 	/**
-	 * Highlight the proper top level menu
+	 * Highlight the proper top level menu.
+	 *
 	 * @param  	string $parent_file	parent menu item.
 	 * @return 	string
 	 */
-	public function tax_menu_correction($parent_file) {
+	public function tax_menu_correction( $parent_file ) {
 		global $current_screen;
 		$taxonomy = $current_screen->taxonomy;
 
-		if ( 'question_category' == $taxonomy || 'question_tags' == $taxonomy || 'question_label' == $taxonomy || 'rank' == $taxonomy || 'badge' == $taxonomy ) {
+		if ( 'question_category' === $taxonomy || 'question_tags' === $taxonomy || 'question_label' === $taxonomy || 'rank' === $taxonomy || 'badge' === $taxonomy ) {
 			$parent_file = 'anspress';
 		}
 		return $parent_file;
@@ -277,13 +281,14 @@ class AnsPress_Admin
 	 */
 	public static function display_reputation_page() {
 		include_once( 'reputation.php' );
-		$reputation_table = @new AnsPress_Reputation_Table();
+		$reputation_table = new AnsPress_Reputation_Table();
 		$reputation_table->prepare_items();
 		include( 'views/reputation.php' );
 	}
 
 	/**
-	 * Load dashboard page layout
+	 * Load dashboard page layout.
+	 *
 	 * @since 2.4
 	 */
 	public function dashboard_page() {
@@ -291,7 +296,8 @@ class AnsPress_Admin
 	}
 
 	/**
-	 * Control the ouput of question selection
+	 * Control the ouput of question selection.
+	 *
 	 * @return void
 	 * @since 2.0.0-alpha2
 	 */
@@ -300,32 +306,33 @@ class AnsPress_Admin
 	}
 
 	/**
-	 * Add settings action link to the plugins page
+	 * Add settings action link to the plugins page.
+	 *
 	 * @param string $links Pugin action links.
 	 */
-	public function add_action_links($links) {
+	public function add_action_links( $links ) {
 		return array_merge(
 			array(
 				'settings' => '<a href="' . admin_url( 'admin.php?page=anspress_options' ) . '">' . __( 'Settings', 'anspress-question-answer' ) . '</a>',
 			),
 			$links
 		);
-
 	}
 
 	/**
-	 * register reputation settings
+	 * Register reputation settings
 	 */
 	public function register_setting() {
 		register_setting( 'ap_reputation', 'ap_reputation', array( $this, 'validate_options' ) );
 	}
 
 	/**
-	 * Validate reuptation setting
+	 * Validate reuptation setting.
+	 *
 	 * @param  string $input Reputation.
 	 * @return string
 	 */
-	public function validate_options($input) {
+	public function validate_options( $input ) {
 		return $input;
 	}
 
@@ -336,7 +343,7 @@ class AnsPress_Admin
 		$GLOBALS['wp']->add_query_var( 'post_parent' );
 
 		// Flush_rules if option updated.
-		if ( isset( $_GET['page'] ) && ('anspress_options' == $_GET['page']) && isset( $_GET['settings-updated'] ) && $_GET['settings-updated'] ) {
+		if ( isset( $_GET['page'] ) && ('anspress_options' === $_GET['page']) && isset( $_GET['settings-updated'] ) && $_GET['settings-updated'] ) { // @codingStandardsIgnoreLine.
 			$options = ap_opt();
 			$page = get_page( ap_opt( 'base_page' ) );
 			$options['base_page_slug'] = $page->post_name;
@@ -348,12 +355,15 @@ class AnsPress_Admin
 		global $typenow;
 		global $pagenow;
 
-		if ( in_array( $pagenow, array( 'post-new.php' ) ) && $typenow == 'answer' && ! isset( $_GET['post_parent'] ) ) {
-			wp_redirect( admin_url( 'admin.php?page=ap_select_question' ) );
+		if ( in_array( $pagenow, array( 'post-new.php' ), true ) &&
+				'answer' === $typenow &&
+				! isset( $_GET['post_parent'] ) // @codingStandardsIgnoreLine.
+			) {
+			wp_safe_redirect( admin_url( 'admin.php?page=ap_select_question' ) );
+			exit;
 		}
 
 		add_filter( 'pre_get_posts', array( $this, 'serach_qa_by_userid' ) );
-
 	}
 
 	public function question_meta_box_class() {
@@ -361,27 +371,23 @@ class AnsPress_Admin
 		new AP_Question_Meta_Box();
 	}
 
-	public function save_user_roles_fields($user_id) {
-
+	public function save_user_roles_fields( $user_id ) {
 		update_usermeta( $user_id, 'ap_role', sanitize_text_field( $_POST['ap_role'] ) );
 	}
 
-
-
 	public function change_post_menu_label() {
-
 		global $menu;
 		global $submenu;
 		$submenu['anspress'][0][0] = 'AnsPress';
 	}
 
 	/**
-	 * Show question detail above new answer
+	 * Show question detail above new answer.
+	 *
 	 * @return void
 	 * @since 2.0
 	 */
 	public function edit_form_after_title() {
-
 		global $typenow, $pagenow, $post;
 
 		if ( in_array( $pagenow, array( 'post-new.php', 'post.php' ) ) && $post->post_type == 'answer' && ( (isset( $_GET['action'] ) && $_GET['action'] == 'edit') ) ) {

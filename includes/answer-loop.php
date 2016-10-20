@@ -74,7 +74,6 @@ class Answers_Query extends WP_Query {
 	}
 
 	public function get_answers() {
-		var_dump( 'hhhhhhh' );
 		return parent::get_posts();
 	}
 
@@ -365,8 +364,13 @@ function ap_count_other_answer( $question_id = false ) {
 function ap_unselect_answer( $post_id ) {
 	$post = ap_get_post( $post_id );
 
-	do_action( 'ap_unselect_answer', $post->post_author, $post->post_parent, $post->ID );
 	ap_unset_selected_answer( $post->post_parent );
+
+	// Add question activity meta.
+	ap_update_post_activity_meta( $post->post_parent, 'answer_unselected', get_current_user_id() );
+	ap_update_post_activity_meta( $post->ID, 'unselected_best_answer', get_current_user_id() );
+
+	do_action( 'ap_unselect_answer', $post->post_author, $post->post_parent, $post->ID );
 
 	if ( ap_opt( 'close_selected' ) ) {
 		wp_update_post( array( 'ID' => $post->post_parent, 'post_status' => 'publish' ) );

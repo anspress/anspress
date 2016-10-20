@@ -397,5 +397,36 @@ function ap_update_post_attach_ids( $post_id ) {
  * @return boolean|integer
  */
 function ap_update_post_activities( $post_id, $activities = array() ) {
-	return ap_insert_qameta( $post_id, [ 'activities' => $activities ] );
+	return ap_insert_qameta( $post_id, [ 'activities' => $activities, 'last_updated' => current_time( 'mysql' ) ] );
+}
+
+
+/**
+ * Update post activity meta.
+ *
+ * @param  object|integer $post    				Question or answer.
+ * @param  string         $type    				Activity type.
+ * @param  integer        $user_id 				ID of user doing activity.
+ * @param  boolean        $append_to_question   Append activity to question.
+ * @param  boolean|string $date    				Activity date in mysql timestamp format.
+ * @return boolean
+ * @since  2.4.7
+ */
+function ap_update_post_activity_meta( $post, $type, $user_id, $append_to_question = false, $date = false ) {
+	if ( false === $date ) {
+		$date = current_time( 'mysql' );
+	}
+
+	$post_o = ap_get_post( $post );
+	$meta_val = compact( 'type', 'user_id', 'date' );
+
+	// Append to question activity meta. So that it can shown in question list.
+	if ( 'answer' === $post_o->post_type && $append_to_question ) {
+		$_post = ap_get_post( $post_o->post_parent );
+		$meta = $_post->activities;
+		$meta['child'] = $meta_val;
+		ap_update_post_activities( $post_o->post_parent, $meta );
+	}
+
+	return ap_update_post_activities( $post_o->ID, $meta_val );
 }

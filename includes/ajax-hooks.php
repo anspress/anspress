@@ -140,12 +140,19 @@ class AnsPress_Ajax {
 	    	ap_ajax_json( [ 'message_type' => 'warning', 'message' => __( 'Answer with moderate status cannot be selected as best.', 'anspress-question-answer' ) ] );
 	    }
 
+			// Add question activity meta.
+			ap_update_post_activity_meta( $post->post_parent, 'answer_selected', get_current_user_id() );
+
+			// Add answer activity meta.
+			ap_update_post_activity_meta( $post->ID, 'best_answer', get_current_user_id() );
+
 	    /**
 	     * Trigger right after selecting an answer.
 			 *
 	     * @param integer $post_author Post author ID.
 	     * @param integer $question_id Question ID.
 	     * @param integer $answer_id   Answer ID.
+			 * @todo Move this hook from here.
 	     */
 		do_action( 'ap_select_answer', $post->post_author, $post->post_parent, $post->ID );
 

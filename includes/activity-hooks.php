@@ -50,71 +50,21 @@ class AnsPress_Activity_Hook
 	 */
 	public function new_question( $question_id ) {
 		$question = ap_get_post( $question_id );
-		$question_title = '<a class="ap-q-link" href="' . wp_get_shortlink( $question_id ) . '">' . get_the_title( $question_id ) . '</a>';
-		$txo_type = '';
 
-		if ( taxonomy_exists( 'question_category' ) ) {
-			$txo_type = 'question_category';
-		}
 
-		if ( taxonomy_exists( 'question_tag' ) ) {
-			$txo_type = 'question_tag';
-		}
-
-		$term_ids = array();
-		if ( ! empty( $txo_type ) ) {
-			$terms = get_the_terms( $question_id, $txo_type );
-
-			if ( $terms ) {
-				foreach ( $terms as $t ) {
-					$term_ids[] = $t->term_id;
-				}
-				$term_ids = implode( ',', $term_ids );
-			}
-		}
-
-		$activity_arr = array(
-			'user_id' 			=> $question->post_author,
-			'type' 				=> 'new_question',
-			'question_id' 		=> $question_id,
-			'permalink' 		=> wp_get_shortlink( $question_id ),
-			'content'			=> sprintf( __( '%s asked question %s', 'anspress-question-answer' ), ap_activity_user_name( $question->post_author ), $question_title ),
-			'term_ids'			=> $term_ids,
-		);
-
-		ap_new_activity( $activity_arr );
-
-		// Add question activity meta.
-		ap_update_post_activity_meta( $question_id, 'new_question', $question->post_author );
 		$this->check_mentions( $question_id, $question->post_content, $question_title, $question->post_author, __( 'question', 'anspress-question-answer' ) );
 	}
 
 	/**
-	 * History updated after adding new answer
+	 * History updated after adding new answer.
+	 *
 	 * @param  integer $answer_id Post ID.
 	 */
-	public function new_answer($answer_id) {
+	public function new_answer( $answer_id ) {
 		$answer = ap_get_post( $answer_id );
 		$question = ap_get_post( $answer->post_parent );
 
-		$answer_title = '<a class="ap-q-link" href="'. wp_get_shortlink( $answer_id ) .'">'. get_the_title( $answer_id ) .'</a>';
 
-		$activity_arr = array(
-			'user_id' 			=> $answer->post_author,
-			'secondary_user' 	=> $question->post_author,
-			'type' 				=> 'new_answer',
-			'status'			=> $answer->post_status,
-			'question_id' 		=> $answer->post_parent,
-			'answer_id' 		=> $answer_id,
-			'permalink' 		=> wp_get_shortlink( $answer_id ),
-			'content'			=> sprintf( __( '%s answered on %s', 'anspress-question-answer' ), ap_activity_user_name( $answer->post_author ), $answer_title ),
-		);
-
-		$activity_id = ap_new_activity( $activity_arr );
-
-		// Add question activity meta.
-		ap_update_post_activity_meta( $answer_id, 'new_answer', $answer->post_author );
-		ap_update_post_activity_meta( $answer->post_parent, 'new_answer', $answer->post_author );
 
 		// Notify users.
 		$subscribers = ap_subscriber_ids( $answer->post_parent, 'q_all' );
@@ -130,27 +80,14 @@ class AnsPress_Activity_Hook
 	}
 
 	/**
-	 * History updated after editing a question
+	 * History updated after editing a question.
+	 *
 	 * @param  integer $post_id Post ID.
 	 */
-	public function edit_question($post_id) {
+	public function edit_question( $post_id ) {
 		$question = ap_get_post( $post_id );
 
-		$question_title = '<a class="ap-q-link" href="'. wp_get_shortlink( $post_id ) .'">'. get_the_title( $post_id ) .'</a>';
 
-		$activity_arr = array(
-			'user_id' 			=> get_current_user_id(),
-			'type' 				=> 'edit_question',
-			'question_id'		=> $post_id,
-			'status'			=> $question->post_status,
-			'permalink' 		=> wp_get_shortlink( $post_id ),
-			'content' 			=> sprintf( __( '%s edited question %s', 'anspress-question-answer' ), ap_activity_user_name( get_current_user_id() ), $question_title ),
-		);
-
-		$activity_id = ap_new_activity( $activity_arr );
-
-		// Add question activity meta.
-		ap_update_post_activity_meta( $post_id, 'edit_question', get_current_user_id() );
 
 		// Notify users.
 		$subscribers = ap_subscriber_ids( false, array( 'q_all', 'a_all' ), $post_id );
@@ -184,8 +121,7 @@ class AnsPress_Activity_Hook
 
 		$activity_id = ap_new_activity( $activity_arr );
 
-		// Add answer activity meta.
-		ap_update_post_activity_meta( $post_id, 'edit_answer', get_current_user_id(), true );
+
 
 		// Notify users.
 		$subscribers = ap_subscriber_ids( $post_id, 'a_all' );
@@ -234,13 +170,7 @@ class AnsPress_Activity_Hook
 
 		$activity_id = ap_new_activity( $activity_arr );
 
-		if ( $post->post_type == 'question' ) {
-			ap_update_post_activity_meta( $comment->comment_post_ID, 'new_comment', $comment->user_id );
-			$subscribers = ap_subscriber_ids( $comment->comment_post_ID, array( 'q_post', 'q_all' ) );
-		} else {
-			ap_update_post_activity_meta( $comment->comment_post_ID, 'new_comment_answer', $comment->user_id, true );
-			$subscribers = ap_subscriber_ids( $comment->comment_post_ID, 'a_all' );
-		}
+
 
 		// Remove current user from subscribers.
 		$subscribers = ap_unset_current_user_from_subscribers( $subscribers );
@@ -275,11 +205,7 @@ class AnsPress_Activity_Hook
 
 		$activity_id = ap_new_activity( $activity_arr );
 
-		// Add question activity meta.
-		ap_update_post_activity_meta( $question_id, 'answer_selected', get_current_user_id() );
 
-		// Add answer activity meta.
-		ap_update_post_activity_meta( $answer_id, 'best_answer', get_current_user_id() );
 
 		$user_ids = array( $answer->post_author );
 
@@ -314,9 +240,7 @@ class AnsPress_Activity_Hook
 
 		ap_new_activity( $activity_arr );
 
-		// Add question activity meta.
-		ap_update_post_activity_meta( $question_id, 'answer_unselected', get_current_user_id() );
-		ap_update_post_activity_meta( $answer_id, 'unselected_best_answer', get_current_user_id() );
+
 	}
 
 	/**
