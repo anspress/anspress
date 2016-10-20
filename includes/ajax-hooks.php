@@ -35,9 +35,6 @@ class AnsPress_Ajax {
 		anspress()->add_action( 'ap_ajax_set_featured', $this, 'set_featured' );
 		anspress()->add_action( 'ap_ajax_follow', $this, 'follow' );
 		anspress()->add_action( 'ap_ajax_hover_card', $this, 'hover_card' );
-		anspress()->add_action( 'ap_ajax_delete_notification', $this, 'delete_notification' );
-		anspress()->add_action( 'ap_ajax_markread_notification', $this, 'markread_notification' );
-		anspress()->add_action( 'ap_ajax_set_notifications_as_read', $this, 'set_notifications_as_read' );
 
 		anspress()->add_action( 'ap_ajax_subscribe', 'AnsPress_Subscriber_Hooks', 'subscribe' );
 		anspress()->add_action( 'ap_ajax_vote', 'AnsPress_Vote', 'vote' );
@@ -45,8 +42,6 @@ class AnsPress_Ajax {
 		// Flag ajax callbacks.
 		anspress()->add_action( 'ap_ajax_flag_post', 'AnsPress_Flag', 'flag_post' );
 		anspress()->add_action( 'ap_ajax_flag_comment', 'AnsPress_Flag', 'flag_comment' );
-
-		anspress()->add_action( 'ap_ajax_delete_activity', $this, 'delete_activity' );
 		anspress()->add_action( 'ap_ajax_submit_comment', 'AnsPress_Comment_Hooks','submit_comment' );
 		anspress()->add_action( 'ap_ajax_approve_comment', 'AnsPress_Comment_Hooks','approve_comment' );
 		anspress()->add_action( 'ap_hover_card_user', __CLASS__, 'hover_card_user' );
@@ -471,109 +466,6 @@ class AnsPress_Ajax {
 	}
 
 	/**
-	 * Handle ajax callback for delete notification
-	 */
-	public function delete_notification() {
-		if ( ! ap_verify_nonce( 'delete_notification' ) && ! is_user_logged_in() ) {
-			$this->something_wrong();
-		}
-
-		$notification = ap_get_notification_by_id( (int) $_POST['id'] ); // @codingStandardsIgnoreLine
-
-		if ( $notification && ( get_current_user_id() === $notification->noti_user_id || is_super_admin() ) ) {
-			$row = ap_delete_notification( $notification->noti_id );
-
-			if ( false !== $row ) {
-				$this->send( array(
-					'message' 	=> 'delete_notification',
-					'action' 	  => 'delete_notification',
-					'container' => '#ap-notification-' . $notification->noti_id,
-				) );
-			}
-		}
-
-		$this->something_wrong();
-	}
-
-	/**
-	 * Handle ajax callback for mark all notification as read
-	 */
-	public function markread_notification() {
-		$id = (int) ap_sanitize_unslash( 'id', 'request' );
-
-		// Check for nonce if notification id is set.
-		if ( ! empty( $id ) && ! ap_verify_nonce( 'ap_markread_notification_' . $id ) && ! is_user_logged_in() ) {
-			$this->something_wrong();
-		}
-
-		// Check for nonce if no notification id.
-		if ( empty( $id ) && ! ap_verify_nonce( 'ap_markread_notification_' . get_current_user_id() ) && ! is_user_logged_in() ) {
-			$this->something_wrong();
-		}
-
-		// If id found then only mark that notification as read.
-		if ( ! empty( $id ) ) {
-			$notification = ap_get_notification_by_id( $id );
-
-			if ( $notification && ( get_current_user_id() === $notification->noti_user_id || is_super_admin()) ) {
-				$row = ap_update_notification( array( 'noti_id' => $id, 'noti_user_id' => get_current_user_id() ), array( 'noti_status' => 1 ) );
-
-				if ( false !== $row ) {
-					ap_ajax_json( array(
-						'message' 		  => 'mark_read_notification',
-						'action' 		    => 'mark_read_notification',
-						'container' 	  => '.ap-notification-' . $notification->noti_id,
-						'view' 			    => array( 'notification_count' => ap_get_total_unread_notification() ),
-						'do'            => array( 'removeClass' => [ '#ap-notification-' . $notification->noti_id, 'unread' ] ),
-					) );
-				}
-			}
-		} else {
-			$row = ap_notification_mark_all_read( get_current_user_id() );
-
-			if ( false !== $row ) {
-				ap_ajax_json( array(
-					'message' 	 => 'mark_read_notification',
-					'action' 	   => 'mark_all_read',
-					'container'  => '#ap-notification-dropdown',
-					'view' 		   => [ 'notification_count' => '0' ],
-				) );
-			}
-		}
-	}
-
-	/**
-	 * Handle ajax callback for mark all notification as read
-	 */
-	public function set_notifications_as_read() {
-		$ids = ap_sanitize_unslash( 'ids', 'request' );
-		$ids = explode( ',', $ids );
-
-		if ( count( $ids ) === 0 ) {
-			wp_die();
-		}
-
-		if ( ! ap_verify_default_nonce() && ! is_user_logged_in() ) {
-			wp_die();
-		}
-
-		foreach ( (array) $ids as $id ) {
-			$id = (int) $id;
-			if ( 0 !== $id ) {
-				ap_notification_mark_as_read( $id, get_current_user_id() );
-			}
-		}
-
-		$this->send( array(
-			'container' => '#ap-notification-dropdown',
-			'view'      => array( 'notification_count' => ap_get_total_unread_notification() ),
-		) );
-
-		wp_die();
-	}
-
-
-	/**
 	 * Terminate the ajax callback and send a JSON response
 	 * In browser user will see a message "something went wrong".
 	 *
@@ -590,29 +482,6 @@ class AnsPress_Ajax {
 	 */
 	public function send( $result ) {
 		ap_send_json( ap_ajax_responce( $result ) );
-	}
-
-	/**
-	 * Delete activity item.
-	 */
-	public function delete_activity() {
-		// @codingStandardsIgnoreLine
-		if ( ! ap_verify_nonce( 'ap_delete_activity' ) || ! is_super_admin() || ! isset( $_POST['args'][0] ) ) {
-				$this->something_wrong();
-		}
-
-		$activity_id = (int) $_POST['args'][0]; // input var ok.
-		$row = ap_delete_activity( $activity_id );
-
-		if ( false !== $row ) {
-				$this->send( array(
-					'message' 	 => 'delete_activity',
-					'action' 	   => 'delete_activity',
-					'do' 		     => array( 'remove_if_exists' => '#activity-' . $activity_id ),
-				) );
-		}
-
-		$this->something_wrong();
 	}
 
 	/**

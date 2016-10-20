@@ -266,9 +266,9 @@ function ap_get_user_menu($user_id = false, $private = false) {
 	foreach ( $user_pages as $k => $args ) {
 		$link        = ap_user_link( $user_id, $k );
 
-		$title = $k == 'notification' ? $args['title'].ap_get_the_total_unread_notification( $user_id, false ): $args['title'];
+		$title = $args['title'];
 
-		$menus[$k]    = array( 'slug' => $k, 'title' => $title, 'link' => $link, 'order' => 5 + $i, 'show_in_menu' => $args['show_in_menu'], 'public' => $args['public'] );
+		$menus[$k] = array( 'slug' => $k, 'title' => $title, 'link' => $link, 'order' => 5 + $i, 'show_in_menu' => $args['show_in_menu'], 'public' => $args['public'] );
 
 		$i++;
 	}
@@ -371,7 +371,7 @@ function ap_active_user_page() {
 		return $user_page;
 	}
 
-	$page = ap_is_my_profile() ? 'activity-feed' : 'about';
+	$page = 'about';
 
 	return apply_filters( 'ap_active_user_page', $page );
 }

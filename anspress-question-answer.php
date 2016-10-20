@@ -225,14 +225,6 @@ if ( ! class_exists( 'AnsPress' ) ) {
 	    public $third_party;
 
 		/**
-		 * AnsPress activity hook object
-		 *
-		 * @access public
-		 * @var object
-		 */
-	    public $history_class;
-
-		/**
 		 * AnsPress mention hooks object
 		 *
 		 * @access public
@@ -377,7 +369,6 @@ if ( ! class_exists( 'AnsPress' ) ) {
 			require_once ANSPRESS_DIR . 'widgets/questions.php';
 			require_once ANSPRESS_DIR . 'widgets/breadcrumbs.php';
 			require_once ANSPRESS_DIR . 'widgets/followers.php';
-			require_once ANSPRESS_DIR . 'widgets/user_notification.php';
 			require_once ANSPRESS_DIR . 'widgets/users.php';
 			require_once ANSPRESS_DIR . 'includes/rewrite.php';
 			require_once ANSPRESS_DIR . 'includes/reputation.php';
@@ -389,7 +380,6 @@ if ( ! class_exists( 'AnsPress' ) ) {
 			require_once ANSPRESS_DIR . 'includes/user-fields.php';
 			require_once ANSPRESS_DIR . 'includes/subscriber.php';
 			require_once ANSPRESS_DIR . 'includes/follow.php';
-			require_once ANSPRESS_DIR . 'includes/notification.php';
 			require_once ANSPRESS_DIR . 'widgets/user.php';
 			require_once ANSPRESS_DIR . 'widgets/ask-form.php';
 			require_once ANSPRESS_DIR . 'includes/flag.php';
@@ -400,7 +390,6 @@ if ( ! class_exists( 'AnsPress' ) ) {
 			require_once ANSPRESS_DIR . 'includes/akismet.php';
 			require_once ANSPRESS_DIR . 'includes/comments.php';
 			require_once ANSPRESS_DIR . 'includes/class/avatar.php';
-			// require_once ANSPRESS_DIR.'includes/api.php';
 		}
 
 		/**
@@ -423,7 +412,6 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		 */
 		public function site_include() {
 			self::$instance->anspress_hooks 	= AnsPress_Hooks::init();
-			//self::$instance->history_class 		= new AnsPress_Activity_Hook( );
 			self::$instance->mention_hooks 		= new AP_Mentions_Hooks( );
 			self::$instance->views_class 		= new AP_Views( );
 			self::$instance->bad_words_class 	= new AP_Bad_words( );
@@ -623,9 +611,6 @@ if ( ! class_exists( 'AnsPress_Init' ) ) {
 
 			// remove tables
 			$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}ap_meta" ); // db call ok, cache ok.
-			$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}ap_activity" ); // db call ok, cache ok.
-			$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}ap_activitymeta" ); // db call ok, cache ok.
-			$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}ap_notifications" ); // db call ok, cache ok.
 			$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}ap_subscribers" ); // db call ok, cache ok.
 
 			// Remove options.
@@ -692,7 +677,6 @@ if ( ! class_exists( 'AnsPress_Init' ) ) {
 
 			$tables[] 	= $wpdb->prefix . 'ap_meta';
 			$tables[] 	= $wpdb->prefix . 'ap_qameta';
-			$tables[] 	= $wpdb->prefix . 'ap_notifications';
 			$tables[]		= $wpdb->prefix . 'ap_subscribers';
 			return $tables;
 		}
@@ -721,7 +705,7 @@ add_action( 'activated_plugin', [ 'AnsPress_Init', 'activation_redirect' ] );
 add_action( 'wpmu_new_blog', [ 'AnsPress_Init', 'create_blog' ], 10, 6 );
 add_filter( 'wpmu_drop_tables', [ 'AnsPress_Init', 'drop_blog_tables' ], 10, 2 );
 add_filter( 'admin_init', [ 'AnsPress_Init', 'redirect_to_about_page' ] );
-// add_action( 'rest_api_init', ['AnsPress_API', 'register'] );
+
 /*
  * Dashboard and Administrative Functionality
  */

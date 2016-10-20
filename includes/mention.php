@@ -25,7 +25,7 @@ class AP_Mentions_Hooks{
 	 */
 	public function __construct() {
 		anspress()->add_action( 'tiny_mce_before_init', __CLASS__, 'tiny_mce_before_init' );
-		
+
 		// Return if mention is disabled.
 		if( ap_opt('disable_mentions') ){
 			return;
@@ -36,7 +36,7 @@ class AP_Mentions_Hooks{
 		anspress()->add_filter( 'ap_pre_update_question', __CLASS__, 'linkyfy_mentions' );
 		anspress()->add_filter( 'ap_pre_update_answer', __CLASS__, 'linkyfy_mentions' );
 		anspress()->add_action( 'ap_ajax_search_mentions', __CLASS__, 'search_mentions' );
-		
+
 	}
 
 	/**
@@ -73,7 +73,7 @@ class AP_Mentions_Hooks{
 		$initArray['setup'] = 'function(ed) {
 			ed.on("init", function() {
 				tinyMCE.activeEditor.show();
-				if( typeof atwho !== "undefined" && typeof at_config !== "undefined"){	      			
+				if( typeof atwho !== "undefined" && typeof at_config !== "undefined"){
 			        ed.on("keydown", function(e) {
 			          if(e.keyCode == 13 && jQuery(ed.contentDocument.activeElement).atwho("isSelecting"))
 			            return false
@@ -84,7 +84,7 @@ class AP_Mentions_Hooks{
 
 		if( !ap_opt('disable_mentions') ){
 			$initArray['init_instance_callback'] = 'function(ed) {
-				if( typeof atwho !== "undefined" && typeof at_config !== "undefined")			
+				if( typeof atwho !== "undefined" && typeof at_config !== "undefined")
 					jQuery(ed.contentDocument.activeElement).atwho(at_config);
 			}';
 		}
@@ -180,7 +180,7 @@ function ap_search_mentions( $question_id = false, $search = false ) {
 		$search = sanitize_text_field( $search );
 		$query = $wpdb->prepare( "SELECT DISTINCT u.display_name as name, u.user_login as login FROM $wpdb->users u WHERE display_name LIKE '%%%s%%' OR user_login LIKE '%%%s%%' LIMIT 20", $search, $search );
 	} else {
-		$query = $wpdb->prepare( "SELECT DISTINCT u.display_name as name, u.user_login as login FROM $wpdb->users u LEFT JOIN $wpdb->ap_activity a ON u.ID = a.user_id WHERE question_id = %d LIMIT 20", $question_id );
+		$query = $wpdb->prepare( "SELECT DISTINCT u.display_name as name, u.user_login as login FROM $wpdb->users u LEFT JOIN $wpdb->posts p ON u.ID = p.post_author WHERE p.post_parent = %d LIMIT 20", $question_id );
 	}
 
 	$key = md5( $query );

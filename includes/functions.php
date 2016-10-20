@@ -678,8 +678,6 @@ function ap_responce_message( $id, $only_message = false ) {
 		'unfollow'                      => array( 'type' => 'success', 'message' => __( 'Successfully unfollowed.', 'anspress-question-answer' ) ),
 		'follow'                        => array( 'type' => 'success', 'message' => __( 'Successfully followed.', 'anspress-question-answer' ) ),
 		'cannot_follow_yourself'        => array( 'type' => 'warning', 'message' => __( 'You cannot follow yourself.', 'anspress-question-answer' ) ),
-		'delete_notification'           => array( 'type' => 'success', 'message' => __( 'Notification deleted successfully.', 'anspress-question-answer' ) ),
-		'mark_read_notification'        => array( 'type' => 'success', 'message' => __( 'Notification is marked as read.', 'anspress-question-answer' ) ),
 		'voting_down_disabled'          => array( 'type' => 'warning', 'message' => __( 'Voting down is disabled.', 'anspress-question-answer' ) ),
 		'flagged_comment'               => array( 'type' => 'success', 'message' => __( 'This comment has been reported to site moderator', 'anspress-question-answer' ) ),
 		'already_flagged_comment'       => array( 'type' => 'warning', 'message' => __( 'You have already reported this comment', 'anspress-question-answer' ) ),
@@ -1436,16 +1434,6 @@ function ap_ajax_json( $response ) {
 }
 
 /**
- * Check if object is notification menu item.
- *
- * @param  object $menu Menu Object.
- * @return boolean
- */
-function ap_is_notification_menu( $menu ) {
-	return in_array( 'anspress-page-notification', $menu->classes, true );
-}
-
-/**
  * Check if object is profile menu item.
  *
  * @param  object $menu Menu Object.
@@ -1521,9 +1509,6 @@ function ap_append_table_names() {
 	$wpdb->ap_qameta 		     = $wpdb->prefix . 'ap_qameta';
 	$wpdb->ap_votes 		     = $wpdb->prefix . 'ap_votes';
 	$wpdb->ap_meta 			     = $wpdb->prefix . 'ap_meta';
-	$wpdb->ap_activity 		   = $wpdb->prefix . 'ap_activity';
-	$wpdb->ap_activitymeta 	 = $wpdb->prefix . 'ap_activitymeta';
-	$wpdb->ap_notifications  = $wpdb->prefix . 'ap_notifications';
 	$wpdb->ap_subscribers	   = $wpdb->prefix . 'ap_subscribers';
 
 }
@@ -1719,4 +1704,42 @@ function ap_post_author_pre_fetch( $ids ) {
 	}
 
 	update_meta_cache( 'user', $ids );
+}
+
+
+/**
+ * Activity type to human readable title.
+ *
+ * @param  string $type Activity type.
+ * @return string
+ */
+function ap_activity_short_title( $type ) {
+	$title = array(
+		'new_question' 		           => __( 'asked', 'anspress-question-answer' ),
+		'approved_question' 		     => __( 'approved', 'anspress-question-answer' ),
+		'approved_answer' 		       => __( 'approved', 'anspress-question-answer' ),
+		'new_answer' 		             => __( 'answered', 'anspress-question-answer' ),
+		'delete_answer' 		         => __( 'deleted answer', 'anspress-question-answer' ),
+		'restore_answer' 		         => __( 'restored answer', 'anspress-question-answer' ),
+		'new_comment' 		           => __( 'commented', 'anspress-question-answer' ),
+		'delete_comment' 		         => __( 'deleted comment', 'anspress-question-answer' ),
+		'new_comment_answer'       	 => __( 'commented on answer', 'anspress-question-answer' ),
+		'edit_question' 	           => __( 'edited question', 'anspress-question-answer' ),
+		'edit_answer' 		           => __( 'edited answer', 'anspress-question-answer' ),
+		'edit_comment' 		           => __( 'edited comment', 'anspress-question-answer' ),
+		'edit_comment_answer'        => __( 'edited comment on answer', 'anspress-question-answer' ),
+		'answer_selected' 	         => __( 'selected answer', 'anspress-question-answer' ),
+		'answer_unselected'          => __( 'unselected answer', 'anspress-question-answer' ),
+		'status_updated' 	           => __( 'updated status', 'anspress-question-answer' ),
+		'best_answer' 		           => __( 'selected as best answer', 'anspress-question-answer' ),
+		'unselected_best_answer' 	   => __( 'unselected as best answer', 'anspress-question-answer' ),
+	);
+
+	$title = apply_filters( 'ap_activity_short_title', $title );
+
+	if ( isset( $title[ $type ] ) ) {
+		return $title[ $type ];
+	}
+
+	return $type;
 }

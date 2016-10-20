@@ -201,13 +201,6 @@ class AnsPress_Options_Fields
 				'type' => 'checkbox',
 				'show_desc_tip' => false,
 			),
-			array(
-				'name' => 'notification_sidebar',
-				'label' => __( 'Show notification sidebar', 'anspress-question-answer' ),
-				'desc' => __( 'Show dropdown notification as sidebar', 'anspress-question-answer' ),
-				'type' => 'checkbox',
-				'show_desc_tip' => false,
-			),
 		));
 
 		// Register pages settings
@@ -526,7 +519,7 @@ class AnsPress_Options_Fields
 				'type' => 'checkbox',
 				'show_desc_tip' => false,
 			),
-			
+
 			array(
 				'name' => 'logged_in_can_see_comment',
 				'label' => __( 'Only logged in can see comment', 'anspress-question-answer' ),

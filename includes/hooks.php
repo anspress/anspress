@@ -501,12 +501,11 @@ class AnsPress_Hooks {
 			 */
 
 			$default_pages	= array(
-				'profile' 	=> array( 'title' => __( 'My profile', 'anspress-question-answer' ), 'show_in_menu' => true, 'logged_in' => true ),
-				'notification' => array( 'title' => __( 'My notification', 'anspress-question-answer' ), 'show_in_menu' => true, 'logged_in' => true ),
-				'ask' 		=> array(),
-				'question' 	=> array(),
-				'users' 	=> array(),
-				'user' 		=> array(),
+				'profile' 	   => array( 'title' => __( 'My profile', 'anspress-question-answer' ), 'show_in_menu' => true, 'logged_in'    => true ),
+				'ask' 		     => array(),
+				'question' 	   => array(),
+				'users' 	     => array(),
+				'user' 		     => array(),
 			);
 
 			/**
@@ -527,7 +526,7 @@ class AnsPress_Hooks {
 					unset( $items[ $key ] );
 				}
 
-				if ( ! ap_is_profile_active() && ('profile' == $slug || 'notification' == $slug ) ) {
+				if ( ! ap_is_profile_active() && ('profile' == $slug  ) ) {
 					unset( $items[ $key ] );
 				}
 
@@ -594,12 +593,6 @@ class AnsPress_Hooks {
 			return;
 		}
 
-		// Add ap-dropdown and ap-userdp-noti class if notification dropdown.
-		if ( in_array( 'anspress-page-notification', SELF::$menu_class ) ) {
-			SELF::$menu_class[] = 'ap-dropdown';
-			SELF::$menu_class[] = 'ap-userdp-noti';
-		}
-
 		// Add ap-dropdown and ap-userdp-menu class if profile dropdown.
 		if ( in_array( 'anspress-page-profile', SELF::$menu_class ) ) {
 			SELF::$menu_class[] = 'ap-dropdown';
@@ -608,7 +601,7 @@ class AnsPress_Hooks {
 	}
 
 	/**
-	 * Add user dropdown and notification menu
+	 * Add user dropdown menu
 	 *
 	 * @param	string	$o							 Menu html.
 	 * @param	object	$item							 Menu item object.
@@ -617,24 +610,21 @@ class AnsPress_Hooks {
 	 * @return string
 	 */
 	public static function walker_nav_menu_start_el( $o, $item, $depth, $args ) {
-			if ( ! is_user_logged_in() && ( ap_is_notification_menu( $item ) || ap_is_profile_menu( $item ) )	) {
-					$o = '';
+			if ( ! is_user_logged_in() && ( ap_is_profile_menu( $item ) )	) {
+				$o = '';
 			}
 
-			if ( ! ap_is_profile_active() && ( ap_is_notification_menu( $item ) || ap_is_profile_menu( $item ) ) ) {
-					return '';
+			if ( ! ap_is_profile_active() && ( ap_is_profile_menu( $item ) ) ) {
+				return '';
 			}
 
 			if ( in_array( 'anspress-page-profile', $item->classes ) && is_user_logged_in() ) {
 
-					$o	= '<a id="ap-userdp-menu" class="ap-dropdown-toggle" href="#" data-query="user_dp::' . wp_create_nonce( 'ap_ajax_nonce' ) . '::menu" data-action="ajax_btn">';
-					$o .= get_avatar( get_current_user_id(), 80 );
-					$o .= '<span class="name">' . ap_user_display_name( get_current_user_id() ) . '</span>';
-					$o .= ap_icon( 'chevron-down', true );
-					$o .= '</a>';
-
-			} elseif ( in_array( 'anspress-page-notification', $item->classes ) && is_user_logged_in() ) {
-					$o = '<a id="ap-userdp-noti" class="ap-dropdown-toggle ' . ap_icon( 'globe' ) . '" href="#" data-query="user_dp::' . wp_create_nonce( 'ap_ajax_nonce' ) . '::noti" data-action="ajax_btn" data-cb="initScrollbar">' . ap_get_the_total_unread_notification( false, false ) . '</a>';
+				$o	= '<a id="ap-userdp-menu" class="ap-dropdown-toggle" href="#" data-query="user_dp::' . wp_create_nonce( 'ap_ajax_nonce' ) . '::menu" data-action="ajax_btn">';
+				$o .= get_avatar( get_current_user_id(), 80 );
+				$o .= '<span class="name">' . ap_user_display_name( get_current_user_id() ) . '</span>';
+				$o .= ap_icon( 'chevron-down', true );
+				$o .= '</a>';
 
 			}
 

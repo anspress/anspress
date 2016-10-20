@@ -31,7 +31,6 @@ class AnsPress_User
 		ap_register_page( ap_opt( 'users_page_slug' ), __( 'Users', 'anspress-question-answer' ), array( __CLASS__, 'users_page' ) );
 		ap_register_page( ap_opt( 'user_page_slug' ), __( 'User', 'anspress-question-answer' ), array( __CLASS__, 'user_page' ), false );
 		ap_register_user_page( 'about', __( 'About', 'anspress-question-answer' ), array( __CLASS__, 'about_page' ) );
-		ap_register_user_page( 'notification', __( 'Notification', 'anspress-question-answer' ), array( __CLASS__, 'notification_page' ), true, false );
 		ap_register_user_page( 'profile', __( 'Profile', 'anspress-question-answer' ), array( __CLASS__, 'profile_page' ), true, false );
 		ap_register_user_page( 'questions', __( 'Questions', 'anspress-question-answer' ), array( __CLASS__, 'questions_page' ) );
 		ap_register_user_page( 'answers', __( 'Answers', 'anspress-question-answer' ), array( __CLASS__, 'answers_page' ) );
@@ -88,33 +87,8 @@ class AnsPress_User
 	}
 
 	/**
-	 * Output notification page.
+	 * Output for profile page.
 	 *
-	 * @since 2.3
-	 */
-	public static function notification_page() {
-		if ( ! ap_is_user_page_public( 'profile' ) && ! ap_is_my_profile() ) {
-			ap_get_template_part( 'not-found' );
-			return;
-		}
-
-		global $ap_activities;
-
-		$ap_activities = ap_get_activities( array( 'notification' => true, 'user_id' => ap_get_displayed_user_id() ) );
-		ap_get_template_part( 'user/notification' );
-	}
-
-	/**
-	 * Output for activity page.
-	 *
-	 * @since 2.1
-	 */
-	public static function activity_page() {
-		include ap_get_theme_location( 'user/activity.php' );
-	}
-
-	/**
-	 * Output for profile page
 	 * @since 2.1
 	 */
 	public static function profile_page() {
@@ -192,7 +166,6 @@ class AnsPress_User
 			$user_pages = anspress()->user_pages;
 
 			$titles = array(
-				'activity' => $my ?  __( 'My activity', 'anspress-question-answer' ) : sprintf( __( '%s\'s activity', 'anspress-question-answer' ), $name ),
 				'profile' => $my ?  __( 'My profile', 'anspress-question-answer' ) : sprintf( __( '%s\'s profile', 'anspress-question-answer' ), $name ),
 				'questions' => $my ?  __( 'My questions', 'anspress-question-answer' ) : sprintf( __( '%s\'s questions', 'anspress-question-answer' ), $name ),
 				'answers' => $my ?  __( 'My answers', 'anspress-question-answer' ) : sprintf( __( '%s\'s answers', 'anspress-question-answer' ), $name ),
@@ -200,7 +173,6 @@ class AnsPress_User
 				'followers' => $my ?  __( 'My followers', 'anspress-question-answer' ) : sprintf( __( '%s\'s followers', 'anspress-question-answer' ), $name ),
 				'following' => __( 'Following', 'anspress-question-answer' ),
 				'subscription' => __( 'My subscriptions', 'anspress-question-answer' ),
-				'notification' => __( 'My notification', 'anspress-question-answer' ),
 			);
 
 			foreach ( (array) $titles as $page => $user_title ) {
@@ -532,13 +504,10 @@ class AnsPress_User
 			'profile'       => ap_icon( 'board' ),
 			'questions'     => ap_icon( 'question' ),
 			'answers'       => ap_icon( 'answer' ),
-			'activity'      => ap_icon( 'pulse' ),
 			'reputation'    => ap_icon( 'reputation' ),
 			'followers'     => ap_icon( 'users' ),
 			'following'     => ap_icon( 'users' ),
 			'subscription'  => ap_icon( 'mail' ),
-			'notification'  => ap_icon( 'globe' ),
-			'activity-feed'  		=> ap_icon( 'rss' ),
 		);
 
 		foreach ( (array) $icons as $k => $i ) {
@@ -563,9 +532,7 @@ class AnsPress_User
 		$type = sanitize_text_field( wp_unslash( $_POST['args'][0] ) );
 		$ap_data = false;
 
-		if ( 'noti' === $type ) {
-			$ap_data = SELF::user_notification_dropdown();
-		} elseif ( 'menu' === $type ) {
+		if ( 'menu' === $type ) {
 			$ap_data = SELF::user_menu_dropdown();
 		}
 
@@ -584,54 +551,6 @@ class AnsPress_User
 		ap_ajax_json( $data );
 	}
 
-	/**
-	 * Return data for user notification dropdown menu.
-	 * @return array
-	 * @since  3.0.0
-	 */
-	public static function user_notification_dropdown() {
-		global $ap_activities;
-
-		/**
-		 * Dropdown notification arguments.
-		 * Allow filtering of dropdown notification arguments.
-		 * @since 2.4.5
-		 * @var array
-		 */
-		$notification_args = apply_filters( 'ap_dropdown_notification_args', array(
-			'per_page' 		=> 20,
-			'notification' 	=> true,
-			'user_id' 		=> get_current_user_id(),
-		) );
-
-		$ap_activities = ap_get_activities( $notification_args );
-
-		$ap_data = array(
-			'title'	=> __('Notifications', 'anspress-question-answer' ),
-			'mark_all_read'	=> [ 'label' => __('Mark all as read', 'anspress-question-answer' ), 'nonce' => wp_create_nonce( 'ap_markread_notification_'.get_current_user_id() ) ],
-			'all_link' 		=> ap_user_link(get_current_user_id(), 'notification' ),
-			'view_all_text' => __('View all notifications', 'anspress-question-answer' ),
-			'no_item' => __('No notification', 'anspress-question-answer' ),
-			'notifications'	=> array(),
-			'have_notifications'	=> ap_has_activities(),
-		);
-
-		if ( ap_has_activities() ) :
-			while ( ap_activities() ) : ap_the_activity();
-				$ap_data['notifications'][] = array(
-					'id' 			=> ap_activity_id(),
-					'is_unread' 	=> ap_notification_is_unread(),
-					'avatar' 		=> get_avatar( ap_activity_user_id(), 35 ),
-					'user_link' 	=> ap_user_link( ap_activity_user_id() ),
-					'permalink' 	=> ap_activity_permalink(),
-					'content' 		=> ap_activity_content(),
-					'date' 			=> ap_human_time( get_gmt_from_date( ap_activity_date() ), false ),
-				);
-			endwhile;
-		endif;
-
-		return $ap_data;
-	}
 
 	/**
 	 * Return data for user profile dropdown menu.

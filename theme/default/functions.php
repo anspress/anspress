@@ -2,7 +2,7 @@
 /**
  * This file contains theme script, styles and other theme related functions.
  * This file can be overridden by creating a anspress directory in active theme folder.
- * 
+ *
  * @license   https://www.gnu.org/licenses/gpl-2.0.txt GNU Public License
  * @author    Rahul Aryan <support@anspress.io>
  */
@@ -38,7 +38,7 @@ function ap_scripts_front() {
 	    echo 'ap_max_tags = "'.ap_opt( 'max_tags' ).'",';
 	    echo 'disable_hover_card = "'.(ap_opt( 'disable_hover_card' ) ? true : false).'";';
 	    echo 'disable_q_suggestion = "'. ap_disable_question_suggestion( ) .'";';
-	    
+
 	    if( !ap_opt('disable_mentions') ){
 		    echo 'var apMentions = '.json_encode( ap_search_mentions() ).';
 		    	var cachequeryMentions = [], itemsMentions,
@@ -54,12 +54,12 @@ function ap_scripts_front() {
 	                    var thisVal = query,
 	                    self = jQuery(this);
 	                    if( !self.data("active") && thisVal.length >= 2 ){
-	                        self.data("active", true);                            
+	                        self.data("active", true);
 	                        itemsMentions = cachequeryMentions[thisVal]
 	                        if(typeof itemsMentions == "object"){
 	                            render_view(itemsMentions);
 	                        }else
-	                        {                            
+	                        {
 	                            if (self.xhr) {
 	                                self.xhr.abort();
 	                            }
@@ -69,9 +69,9 @@ function ap_scripts_front() {
 	                                cachequeryMentions[thisVal] = data
 	                                render_view(data);
 	                            });
-	                        }                            
-	                        self.data("active", false);                            
-	                    }                    
+	                        }
+	                        self.data("active", false);
+	                    }
 	                }
 				  }
 			 };
@@ -204,15 +204,6 @@ function ap_widgets_positions() {
 		'before_widget' => '<div id="%1$s" class="ap-widget-pos %2$s">',
 		'after_widget' => '</div>',
 		'description' => __( 'Widgets in this area will be shown in user page.', 'anspress-question-answer' ),
-		'before_title' => '<h3 class="ap-widget-title">',
-		'after_title' => '</h3>',
-	));
-	register_sidebar(array(
-		'name' => __( 'AP Activity', 'anspress-question-answer' ),
-		'id' => 'ap-activity',
-		'before_widget' => '<div id="%1$s" class="ap-widget-pos %2$s">',
-		'after_widget' => '</div>',
-		'description' => __( 'Widgets in this area will be shown AnsPress activity page.', 'anspress-question-answer' ),
 		'before_title' => '<h3 class="ap-widget-title">',
 		'after_title' => '</h3>',
 	));

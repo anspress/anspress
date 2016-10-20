@@ -493,7 +493,6 @@ class AnsPress_Admin {
 		$ap_pages = anspress()->pages;
 
 		$ap_pages['profile']       = array( 'title' => __( 'User profile', 'anspress-question-answer' ), 'show_in_menu' => true );
-		$ap_pages['notification']  = array( 'title' => __( 'User notification', 'anspress-question-answer' ), 'show_in_menu' => true );
 
 		foreach ( $ap_pages as $k => $args ) {
 			if ( $args['show_in_menu'] ) {

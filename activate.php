@@ -13,10 +13,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class AP_Activate
-{
+class AP_Activate {
 	/**
 	 * Instance of this class.
+	 *
 	 * @var      object
 	 */
 	protected static $instance = null;
@@ -26,6 +26,7 @@ class AP_Activate
 
 	/**
 	 * Return an instance of this class.
+	 *
 	 * @return    object    A single instance of this class.
 	 */
 	public static function get_instance( $network_wide = '' ) {
@@ -116,65 +117,6 @@ class AP_Activate
 		}
 	}
 
-	public function activity_table() {
-		global $wpdb;
-
-		if ( $wpdb->get_var( "show tables like '{$wpdb->ap_activity}'" ) != $wpdb->ap_activity ) {
-			$this->tables[] = 'CREATE TABLE IF NOT EXISTS `'.$wpdb->ap_activity.'` (
-                `id` bigint(20) NOT NULL AUTO_INCREMENT,
-                `user_id` bigint(20) DEFAULT NULL,
-                `secondary_user` bigint(20) DEFAULT NULL,
-                `type` varchar(256) DEFAULT NULL,
-                `parent_type` varchar(256) DEFAULT NULL,
-                `status` varchar(256) DEFAULT NULL,
-                `content` LONGTEXT DEFAULT NULL,
-                `permalink` text DEFAULT NULL,
-                `question_id` bigint(20) DEFAULT NULL,
-                `answer_id` bigint(20) DEFAULT NULL,
-                `item_id` bigint(20) DEFAULT NULL,
-                `term_ids` LONGTEXT DEFAULT NULL,
-                `created` timestamp NULL DEFAULT NULL,
-                `updated` timestamp NULL DEFAULT NULL,
-                PRIMARY KEY (`id`)
-			    )'.$this->charset_collate.';';
-		}
-	}
-
-	/**
-	 * AnsPress activity meta table.
-	 */
-	public function activity_meta_table() {
-		global $wpdb;
-
-		if ( $wpdb->get_var( "show tables like '{$wpdb->ap_activitymeta}'" ) != $wpdb->ap_activitymeta ) {
-			$this->tables[] = 'CREATE TABLE IF NOT EXISTS `'.$wpdb->ap_activitymeta."` (
-                  `meta_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-                  `ap_activity_id` bigint(20) unsigned NOT NULL DEFAULT '0',
-                  `meta_key` varchar(255) DEFAULT NULL,
-                  `meta_value` longtext,
-                  PRIMARY KEY (`meta_id`)
-				)".$this->charset_collate.';';
-		}
-	}
-
-	/**
-	 * AnsPress notification table.
-	 */
-	public function notification_table() {
-		global $wpdb;
-
-		if ( $wpdb->get_var( "show tables like '{$wpdb->ap_notifications}'" ) != $wpdb->ap_notifications ) {
-			$this->tables[] = 'CREATE TABLE IF NOT EXISTS `'.$wpdb->ap_notifications.'` (
-                `noti_id` bigint(20) NOT NULL AUTO_INCREMENT,
-                `noti_activity_id` bigint(20) NOT NULL,
-                `noti_user_id` bigint(20) NOT NULL,
-                `noti_status` varchar(225) NOT NULL,
-                `noti_date` timestamp NOT NULL,
-                PRIMARY KEY (`noti_id`)
-	        )'.$this->charset_collate.';';
-		}
-	}
-
 	/**
 	 * AnsPress subscriber table.
 	 */
@@ -232,9 +174,6 @@ class AP_Activate
 		$this->qameta_table();
 		$this->votes_table();
 		$this->meta_table();
-		$this->activity_table();
-		$this->activity_meta_table();
-		$this->notification_table();
 		$this->subscribers_table();
 
 		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
