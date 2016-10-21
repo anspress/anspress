@@ -999,7 +999,7 @@ function ap_total_solved_questions( $type = 'int' ) {
 	$counts = (object) $counts;
 
 	if ( 'int' === $type ) {
-		return $counts->publish + $counts->closed + $counts->private_post;
+		return $counts->publish + $counts->private_post;
 	}
 
 	return $counts;
@@ -1576,7 +1576,7 @@ function ap_list_filters_get_active( $filter ) {
 function ap_sanitize_unslash( $str, $from = false, $default = '' ) {
 	// If not false then get from $_REQUEST or query_var.
 	if ( false !== $from ) {
-		if ( 'request' === $from ) {
+		if ( in_array( strtolower( $from ), [ 'request', 'post', 'get', 'p', 'g', 'r' ], true ) ) {
 			$str = ap_isset_post_value( $str, $default );
 		} elseif ( 'query_var' === $from ) {
 			$str = get_query_var( $str );

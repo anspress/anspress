@@ -51,7 +51,7 @@ class Question_Query extends WP_Query {
 			'ap_question_query' => true,
 		);
 
-		$args['post_status'] = [ 'publish', 'closed', 'private_post', 'moderate' ];
+		$args['post_status'] = [ 'publish', 'private_post', 'moderate' ];
 		$this->args = wp_parse_args( $args, $defaults );
 
 		if ( $post_parent ) {
@@ -175,7 +175,7 @@ class Question_Query extends WP_Query {
 		ap_user_votes_pre_fetch( $this->ap_ids['post_ids'] );
 		ap_post_attach_pre_fetch( $this->ap_ids['attach_ids'] );
 
-		if( ! empty( $this->ap_ids['user_ids'] ) ) {
+		if ( ! empty( $this->ap_ids['user_ids'] ) ) {
 			ap_post_author_pre_fetch( $this->ap_ids['user_ids'] );
 		}
 	}
@@ -370,13 +370,15 @@ function ap_question_metas( $question_id = false ) {
 	}
 
 	$metas = array();
-	if ( ! is_question() ) {
-		if ( ap_have_answer_selected() ) {
-			$metas['solved'] = '<span class="ap-best-answer-label ap-tip" title="' . __( 'answer accepted', 'anspress-question-answer' ) . '">' . __( 'Solved', 'anspress-question-answer' ) . '</span>';
-		}
 
-		$view_count = ap_get_qa_views();
-		$metas['views'] = '<i>' . sprintf( __( '%d views', 'anspress-question-answer' ), $view_count ) . '</i>';
+	if ( ap_have_answer_selected() ) {
+		$metas['solved'] = '<span class="ap-best-answer-label ap-tip" title="' . __( 'answer accepted', 'anspress-question-answer' ) . '">' . __( 'Solved', 'anspress-question-answer' ) . '</span>';
+	}
+
+	$view_count = ap_get_qa_views();
+	$metas['views'] = '<i>' . sprintf( __( '%d views', 'anspress-question-answer' ), $view_count ) . '</i>';
+
+	if ( ! is_question() ) {
 		$metas['history'] = ap_latest_post_activity_html( $question_id, ! is_question() );
 	}
 
@@ -591,11 +593,11 @@ function ap_latest_post_activity_html( $post_id = false, $answer_activities = fa
 		$post_id = get_the_ID();
 	}
 
-	$post = ap_get_post( $post_id );
-	$activity = $post->activities;
+	$_post = ap_get_post( $post_id );
+	$activity = $_post->activities;
 
-	if ( $answer_activities && ! empty( $post->activities['child'] ) ) {
-		$activity = $post->activities['child'];
+	if ( $answer_activities && ! empty( $_post->activities['child'] ) ) {
+		$activity = $_post->activities['child'];
 	}
 
 	if ( ! empty( $activity ) ) {
@@ -604,8 +606,8 @@ function ap_latest_post_activity_html( $post_id = false, $answer_activities = fa
 
 	if ( empty( $activity ) ) {
 		$activity['date'] 	 = get_post_time( 'U', true, $post_id );
-		$activity['user_id'] = $post->post_author;
-		$activity['type'] 	 = 'new_' . $post->post_type;
+		$activity['user_id'] = $_post->post_author;
+		$activity['type'] 	 = 'new_' . $_post->post_type;
 	}
 
 	$html = '';
@@ -615,7 +617,7 @@ function ap_latest_post_activity_html( $post_id = false, $answer_activities = fa
 			'<span class="ap-post-history">%s %s %s</span>',
 			ap_user_link_anchor( $activity['user_id'], false ),
 			ap_activity_short_title( $activity['type'] ),
-			'<a href="' . get_permalink( $post ) . '"><time datetime="' . mysql2date( 'c', $activity['date'] ) . '">' . ap_human_time( $activity['date'], false ) . '</time></a>'
+			'<a href="' . get_permalink( $_post ) . '"><time datetime="' . mysql2date( 'c', $activity['date'] ) . '">' . ap_human_time( $activity['date'], false ) . '</time></a>'
 		);
 	}
 

@@ -365,15 +365,26 @@ class AnsPress_Admin {
 		add_filter( 'pre_get_posts', array( $this, 'serach_qa_by_userid' ) );
 	}
 
+	/**
+	 * Question meta box.
+	 */
 	public function question_meta_box_class() {
 		require_once( 'meta_box.php' );
 		new AP_Question_Meta_Box();
 	}
 
+	/**
+	 * Save anspress user roles.
+	 *
+	 * @param integer $user_id User ID.
+	 */
 	public function save_user_roles_fields( $user_id ) {
-		update_usermeta( $user_id, 'ap_role', sanitize_text_field( $_POST['ap_role'] ) );
+		update_usermeta( $user_id, 'ap_role', ap_sanitize_unslash( 'ap_role', 'p' ) );
 	}
 
+	/**
+	 * Change post menu label.
+	 */
 	public function change_post_menu_label() {
 		global $menu;
 		global $submenu;
@@ -389,32 +400,45 @@ class AnsPress_Admin {
 	public function edit_form_after_title() {
 		global $typenow, $pagenow, $post;
 
-		if ( in_array( $pagenow, array( 'post-new.php', 'post.php' ) ) && $post->post_type == 'answer' && ( (isset( $_GET['action'] ) && $_GET['action'] == 'edit') ) ) {
-			$post_parent = isset( $_GET['action'] ) ? $post->post_parent : (int) $_GET['post_parent'];
-
+		if ( in_array( $pagenow, array( 'post-new.php', 'post.php' ) ) && 'answer' === $post->post_type && ap_sanitize_unslash( 'action', 'g' ) === 'edit' ) {
+			$post_parent = ap_sanitize_unslash( 'action', 'g', false ) ? $post->post_parent : ap_sanitize_unslash( 'post_parent', 'g' );
 			echo '<div class="ap-selected-question">';
+
 			if ( ! isset( $post_parent ) ) {
-				echo '<p class="no-q-selected">'.__( 'This question is orphan, no question is selected for this answer', 'anspress-question-answer' ).'</p>';
+				echo '<p class="no-q-selected">' . esc_attr__( 'This question is orphan, no question is selected for this answer', 'anspress-question-answer' ) . '</p>';
 			} else {
 				$q = ap_get_post( $post_parent );
 				$answers = ap_get_post_field( 'answers', $q );
-				echo '<a class="ap-q-title" href="'. get_permalink( $q->post_id ) .'">'. $q->post_title .'</a>';
-				echo '<div class="ap-q-meta"><span class="ap-a-count">'.sprintf( _n( '1 Answer', '%d Answers', $answers, 'anspress-question-answer' ),  $answers).'</span><span class="ap-edit-link">| <a href="'.get_edit_post_link( $q->ID ).'">'. __( 'Edit question', 'anspress-question-answer' ).'</a></span></div>';
-				echo '<div class="ap-q-content">'. $q->post_content .'</div><input type="hidden" name="post_parent" value="'.$post_parent.'" />';
+				?>
+
+				<a class="ap-q-title" href="<?php echo esc_url( get_permalink( $q->post_id ) ); ?>"><?php echo esc_attr( $q->post_title ); ?></a>';
+				<div class="ap-q-meta">
+					<span class="ap-a-count">
+						<?php echo sprintf( _n( '%d Answer', '%d Answers', $answers, 'anspress-question-answer' ),  $answers ); // xss ok. ?>
+					</span>
+					<span class="ap-edit-link">|
+						<a href="<?php echo esc_url( get_edit_post_link( $q->ID ) ); ?>">
+							<?php esc_attr_e( 'Edit question', 'anspress-question-answer' ); ?>
+						</a>
+					</span>
+				</div>';
+				<div class="ap-q-content"><?php echo $q->post_content; // xss ok. ?></div>
+				<input type="hidden" name="post_parent" value="<?php echo esc_attr( $post_parent ); ?>" />
+
+				<?php
 			}
 			echo '</div>';
 		}
 	}
 
 	/**
-	 * Set answer CPT post parent when saving
-	 * @param  integer $post_id
-	 * @param  object  $post
-	 * @return void
-	 * @since 2.0.0-alpha2
+	 * Set answer CPT post parent when saving.
+	 *
+	 * @param  integer $post_id Post ID.
+	 * @param  object  $post Post Object.
+	 * @since 2.0.0
 	 */
-	public function ans_parent_post($post_id, $post) {
-
+	public function ans_parent_post( $post_id, $post ) {
 		global $pagenow;
 
 		if ( ! in_array( $pagenow, array( 'post.php', 'post-new.php' ) ) ) {
@@ -425,27 +449,33 @@ class AnsPress_Admin {
 			return $post->ID;
 		}
 
-		if ( $post->post_type == 'answer' ) {
-			$parent_q = (int) $_GET['post_parent'];
-			if ( ! isset( $parent_q ) || $parent_q == '0' || $parent_q == '' ) {
+		if ( 'answer' === $post->post_type ) {
+			$parent_q = (int) ap_sanitize_unslash( 'post_parent', 'p' );
+			if ( empty( $parent_q ) ) {
 				return $post->ID;
 			} else {
 				global $wpdb;
-				$wpdb->update( $wpdb->posts, array( 'post_parent' => $parent_q ), array( 'ID' => $post->ID ) );
+				$wpdb->update( $wpdb->posts, array( 'post_parent' => $parent_q ), array( 'ID' => $post->ID ) ); // db call ok, cache ok.
 			}
 		}
 	}
 
-	public function post_data_check($data) {
-
+	/**
+	 * [Not documented]
+	 *
+	 * @param array $data Post data array.
+	 * @return array
+	 */
+	public function post_data_check( $data ) {
 		global $pagenow;
-		if ( $pagenow == 'post.php' && $data['post_type'] == 'answer' ) {
-			$parent_q = isset( $_REQUEST['ap_q'] ) ? $_REQUEST['ap_q'] : $data['post_parent'];
-			if ( ! isset( $parent_q ) || $parent_q == '0' || $parent_q == '' ) {
-				add_filter('redirect_post_location', array(
-					$this,
-					'custom_post_location',
-				), 99);
+
+		if ( 'post.php' === $pagenow && 'answer' === $data['post_type'] ) {
+			$parent_q = ap_sanitize_unslash( 'ap_q', 'p' );
+
+			$parent_q = ! empty( parent_q ) ? $parent_q : $data['post_parent'];
+
+			if ( ! empty( $parent_q ) ) {
+				add_filter( 'redirect_post_location', [ $this, 'custom_post_location' ], 99 );
 				return;
 			}
 		}
@@ -453,22 +483,24 @@ class AnsPress_Admin {
 		return $data;
 	}
 
-	public function post_custom_message($messages) {
-
+	/**
+	 * Custom post update message.
+	 *
+	 * @param array $messages Messages.
+	 * @return array
+	 */
+	public function post_custom_message( $messages ) {
 		global $post;
-
-		if ( $post->post_type == 'answer' && isset( $_REQUEST['message'] ) && $_REQUEST['message'] == 99 ) {
-			add_action('admin_notices', array(
-				$this,
-				'ans_notice',
-			));
+		if ( 'answer' === $post->post_type && (int) ap_sanitize_unslash( 'message', 'g' ) === 99 ) {
+			add_action( 'admin_notices', [ $this, 'ans_notice' ] );
 		}
 
 		return $messages;
 	}
 
 	/**
-	 * Hook menu meta box
+	 * Hook menu meta box.
+	 *
 	 * @return void
 	 * @since unknown
 	 */
@@ -477,35 +509,35 @@ class AnsPress_Admin {
 	}
 
 	/**
-	 * Shows AnsPress menu meta box in WP menu editor
+	 * Shows AnsPress menu meta box in WP menu editor.
+	 *
 	 * @return void
 	 * @since unknown
 	 */
 	public function wp_nav_menu_item_anspress_meta_box() {
 		global $_nav_menu_placeholder, $nav_menu_selected_id;
 
-		$_nav_menu_placeholder = 0 > $_nav_menu_placeholder ? $_nav_menu_placeholder - 1 : -1;
+		$_nav_menu_placeholder = 0 > $_nav_menu_placeholder ? $_nav_menu_placeholder - 1 : -1; // override ok.
 
 		echo '<div class="aplinks" id="aplinks">';
-		echo '<input type="hidden" value="custom" name="menu-item['.$_nav_menu_placeholder.'][menu-item-type]" />';
+		echo '<input type="hidden" value="custom" name="menu-item[' . esc_attr( $_nav_menu_placeholder ) . '][menu-item-type]" />';
 		echo '<ul>';
 
 		$ap_pages = anspress()->pages;
-
-		$ap_pages['profile']       = array( 'title' => __( 'User profile', 'anspress-question-answer' ), 'show_in_menu' => true );
+		$ap_pages['profile'] = array( 'title' => __( 'User profile', 'anspress-question-answer' ), 'show_in_menu' => true );
 
 		foreach ( $ap_pages as $k => $args ) {
 			if ( $args['show_in_menu'] ) {
 				echo '<li>';
 				echo '<label class="menu-item-title">';
-				echo '<input type="radio" value="" name="menu-item['.$_nav_menu_placeholder.'][menu-item-url]" class="menu-item-checkbox" data-url="'. strtoupper( 'ANSPRESS_PAGE_URL_'.$k ) .'" data-title="'.$args['title'].'"> '.$args['title'].'</label>';
+				echo '<input type="radio" value="" name="menu-item[' . esc_attr( $_nav_menu_placeholder ) . '][menu-item-url]" class="menu-item-checkbox" data-url="' . esc_attr( strtoupper( 'ANSPRESS_PAGE_URL_'.$k ) ) . '" data-title="' . esc_attr( $args['title'] ) . '"> ' . esc_attr( $args['title'] ) . '</label>';
 				echo '</li>';
 			}
 		}
 
 		echo '</ul><p class="button-controls">
                     <span class="add-to-menu">
-						<input type="submit"'.wp_nav_menu_disabled_check( $nav_menu_selected_id ).' class="button-secondary submit-add-to-menu right" value="'.__( 'Add to Menu', 'anspress-question-answer' ).'" name="add-custom-menu-item" id="submit-aplinks" />
+						<input type="submit"' . wp_nav_menu_disabled_check( $nav_menu_selected_id ) . ' class="button-secondary submit-add-to-menu right" value="' . esc_attr__( 'Add to Menu', 'anspress-question-answer' ) . '" name="add-custom-menu-item" id="submit-aplinks" />
                         <span class="spinner"></span>
                     </span>
 				</p>';
@@ -690,14 +722,14 @@ class AnsPress_Admin {
 	}
 
 	public function update_helper() {
-		require_once(ANSPRESS_DIR.'admin/update.php' );
+		/*require_once(ANSPRESS_DIR.'admin/update.php' );
 
 		$ap_update_helper = new AP_Update_Helper;
 
 		// Move subscribers.
 		if ( get_option( 'ap_subscribers_moved', false ) ) {
 			$ap_update_helper->move_subscribers();
-		}
+		}*/
 		delete_option( 'ap_update_helper' );
 		wp_redirect( 'admin.php?page=anspress' );
 		wp_die();

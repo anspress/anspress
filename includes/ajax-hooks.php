@@ -156,7 +156,7 @@ class AnsPress_Ajax {
 
 		// Close question if enabled in option.
 		if ( ap_opt( 'close_selected' ) ) {
-			wp_update_post( array( 'ID' => $post->post_parent, 'post_status' => 'closed' ) );
+			ap_insert_qameta( $post->post_parent, [ 'closed' => 1 ] );
 		}
 
 		ap_update_user_best_answers_count_meta( $post->post_author );

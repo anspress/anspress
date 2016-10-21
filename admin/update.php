@@ -13,7 +13,7 @@ class AP_Update_Helper
 	 * Move subscribers from ap_meta table to ap_subscribers table.
 	 * @since 2.4
 	 */
-	public function move_subscribers() {
+	/*public function move_subscribers() {
 
 		if ( ! current_user_can( 'manage_options' ) ) {
 			return;
@@ -52,7 +52,7 @@ class AP_Update_Helper
 		$count = $wpdb->get_var( "SELECT count(*) FROM {$wpdb->prefix}ap_meta WHERE apmeta_type = 'subscriber' " );
 
 		if ( $count < 1 ) {
-			update_option( 'ap_subscribers_moved', true );			
+			update_option( 'ap_subscribers_moved', true );
 		}
-	}
+	}*/
 }

@@ -200,7 +200,7 @@ function ap_user_can_answer( $question_id, $user_id = false ) {
 	}
 
 	// Bail out if question is closed.
-	if ( $question->post_status == 'closed' ) {
+	if ( is_post_closed( $question ) ) {
 		return false;
 	}
 
@@ -741,7 +741,7 @@ function ap_user_can_view_post($post_id = false, $user_id = false) {
 		return true;
 	}
 
-	if ( 'publish' == $post_o->post_status || 'closed' == $post_o->post_status ) {
+	if ( 'publish' == $post_o->post_status || is_post_closed( $post_o ) ) {
 		return true;
 	}
 

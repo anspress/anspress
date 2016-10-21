@@ -51,7 +51,6 @@ class Answers_Query extends WP_Query {
 		);
 
 		$args['post_status'][] = 'publish';
-		$args['post_status'][] = 'closed';
 
 		$this->args = wp_parse_args( $args, $defaults );
 
@@ -322,7 +321,7 @@ function ap_answers_the_pagination() {
  */
 function ap_count_published_answers( $question_id ) {
 	global $wpdb;
-	$query = $wpdb->prepare( "SELECT COUNT(*) FROM $wpdb->posts where post_parent = %d AND (post_status = %s OR post_status = %s) AND post_type = %s", $question_id, 'publish', 'closed', 'answer' );
+	$query = $wpdb->prepare( "SELECT COUNT(*) FROM $wpdb->posts where post_parent = %d AND post_status = %s AND post_type = %s", $question_id, 'publish', 'answer' );
 	$key = md5( $query );
 
 	$cache = wp_cache_get( $key, 'ap_count' );

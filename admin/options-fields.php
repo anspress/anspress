@@ -194,13 +194,6 @@ class AnsPress_Options_Fields
 				'type' => 'custom',
 				'html' => '<span class="ap-form-separator">' . __( 'Toggle', 'anspress-question-answer' ) . '</span>',
 			) ,
-			array(
-				'name' => 'show_question_sidebar',
-				'label' => __( 'Show question sidebar', 'anspress-question-answer' ),
-				'desc' => __( 'Subscribe and Stats widgets will be shown on question page.', 'anspress-question-answer' ),
-				'type' => 'checkbox',
-				'show_desc_tip' => false,
-			),
 		));
 
 		// Register pages settings

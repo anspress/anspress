@@ -81,13 +81,12 @@ class AnsPress_Dashboard{
 		?>
 		<script>
 			var questionChartData = {
-			    labels: ["Published","Private","Closed","Moderate"],
+			    labels: ["Published","Private","Moderate"],
 			    datasets: [{
-		            data: [<?php echo $question_count->publish.','.$question_count->private_post.','.$question_count->closed.','.$question_count->moderate; ?>],
+		            data: [<?php echo $question_count->publish.','.$question_count->private_post.','.$question_count->moderate; ?>],
 		            backgroundColor: [
 		                "#4d97fe",
 		                "#929292",
-		                "#ff6262",
 		                "#f9a341"
 		            ],
 		            hoverBackgroundColor: [
@@ -108,9 +107,6 @@ class AnsPress_Dashboard{
 					<a href="<?php echo admin_url('edit.php?post_type=question&post_status=private_post' ); ?>" class="private"><?php printf( __('%d Private', 'anspress-question-answer' ), $question_count->private_post ); ?></a>
 				</li>
 				<li class="post-count">
-					<a href="<?php echo admin_url('edit.php?post_type=question&post_status=closed' ); ?>" class="closed"><?php printf( __('%d Closed', 'anspress-question-answer' ), $question_count->closed ); ?></a>
-				</li>
-				<li class="post-count">
 					<a href="<?php echo admin_url('edit.php?post_type=question&post_status=moderate' ); ?>" class="moderate"><?php printf( __('%d Moderate', 'anspress-question-answer' ), $question_count->moderate ); ?></a>
 				</li>
 			</ul>
@@ -121,7 +117,7 @@ class AnsPress_Dashboard{
 	public static function anspress_latestq() {
 		global $questions, $wpdb;
 
-		$results = $wpdb->get_results("SELECT date_format(post_date, '%d %a') as post_day, post_date, count(ID) as post_count from {$wpdb->posts} WHERE post_status IN('publish', 'closed', 'private_post', 'moderate') AND post_type = 'question' AND post_date > (NOW() - INTERVAL 1 MONTH) GROUP BY post_day ORDER BY post_date ASC" );
+		$results = $wpdb->get_results("SELECT date_format(post_date, '%d %a') as post_day, post_date, count(ID) as post_count from {$wpdb->posts} WHERE post_status IN('publish', 'private_post', 'moderate') AND post_type = 'question' AND post_date > (NOW() - INTERVAL 1 MONTH) GROUP BY post_day ORDER BY post_date ASC" );
 
 		$days = array();
 		$counts = array();
@@ -164,7 +160,7 @@ class AnsPress_Dashboard{
 	public static function anspress_latesta() {
 		global $answers, $wpdb;
 
-		$results = $wpdb->get_results("SELECT date_format(post_date, '%d %a') as post_day, post_date, count(ID) as post_count from {$wpdb->posts} WHERE post_status IN('publish', 'closed', 'private_post', 'moderate') AND post_type = 'answer' AND post_date > (NOW() - INTERVAL 1 MONTH) GROUP BY post_day ORDER BY post_date ASC" );
+		$results = $wpdb->get_results("SELECT date_format(post_date, '%d %a') as post_day, post_date, count(ID) as post_count from {$wpdb->posts} WHERE post_status IN('publish', 'private_post', 'moderate') AND post_type = 'answer' AND post_date > (NOW() - INTERVAL 1 MONTH) GROUP BY post_day ORDER BY post_date ASC" );
 
 		$days = array();
 		$counts = array();
@@ -246,13 +242,12 @@ class AnsPress_Dashboard{
 		?>
 		<script>
 			var answerChartData = {
-			    labels: ["Published","Private","Closed","Moderate"],
+			    labels: ["Published","Private","Moderate"],
 			    datasets: [{
-		            data: [<?php echo $answer_count->publish.','.$answer_count->private_post.','.$answer_count->closed.','.$answer_count->moderate; ?>],
+		            data: [<?php echo $answer_count->publish.','.$answer_count->private_post.','.$answer_count->moderate; ?>],
 		            backgroundColor: [
 		                "#4d97fe",
 		                "#929292",
-		                "#ff6262",
 		                "#f9a341"
 		            ],
 		            hoverBackgroundColor: [
@@ -271,9 +266,6 @@ class AnsPress_Dashboard{
 				</li>
 				<li class="post-count">
 					<a href="<?php echo admin_url('edit.php?post_type=answer&post_status=private_post' ); ?>" class="private"><?php printf( __('%d Private', 'anspress-question-answer' ), $answer_count->private_post ); ?></a>
-				</li>
-				<li class="post-count">
-					<a href="<?php echo admin_url('edit.php?post_type=answer&post_status=closed' ); ?>" class="closed"><?php printf( __('%d Closed', 'anspress-question-answer' ), $answer_count->closed ); ?></a>
 				</li>
 				<li class="post-count">
 					<a href="<?php echo admin_url('edit.php?post_type=answer&post_status=moderate' ); ?>" class="moderate"><?php printf( __('%d Moderate', 'anspress-question-answer' ), $answer_count->moderate ); ?></a>
@@ -324,6 +316,7 @@ class AnsPress_Dashboard{
 
 		// The Query.
 		$ap_user_query = ap_has_users( $user_a );
+
 		?>
 		<div class="main">
 			<?php while ( ap_users() ) : ap_the_user(); ?>
@@ -335,7 +328,9 @@ class AnsPress_Dashboard{
 					<a class="ap-uw-name" href="<?php ap_user_the_link(); ?>"><?php ap_user_the_display_name(); ?></a>
 					<div class="ap-uw-status">
 						<span><?php printf(__('%s Rep.', 'anspress-question-answer' ), ap_user_get_the_reputation() ); ?></span>
-						<span><?php printf(__('%d Best', 'anspress-question-answer' ), ap_user_get_the_meta('__best_answers' ) ); ?></span>
+						<span>
+							<?php printf( __('%d Best', 'anspress-question-answer' ), ap_user_get_the_meta('__best_answers' ) ); ?>
+						</span>
 						<span><?php printf(__('%d Answers', 'anspress-question-answer' ), ap_user_get_the_meta('__total_answers' ) ); ?></span>
 						<span><?php printf(__('%d Questions', 'anspress-question-answer' ), ap_user_get_the_meta('__total_questions' ) ); ?></span>
 			        </div>

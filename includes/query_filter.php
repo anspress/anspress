@@ -64,9 +64,6 @@ class AnsPress_Query_Filter
 			} elseif ( $post->post_status == 'private_post' ) {
 				 $complete = ' selected=\'selected\'';
 				 $label = '<span id=\'post-status-display\'>'.__('Private Post', 'anspress-question-answer' ).'</span>';
-			} elseif ( $post->post_status == 'closed' ) {
-				 $complete = ' selected=\'selected\'';
-				 $label = '<span id=\'post-status-display\'>'.__('Closed', 'anspress-question-answer' ).'</span>';
 			}
 				?>
 
@@ -75,7 +72,6 @@ class AnsPress_Query_Filter
                       jQuery(document).ready(function(){
 						   jQuery("select#post_status").append("<option value=\'moderate\' '.$complete.'>'.__('Moderate', 'anspress-question-answer' ).'</option>");
 						   jQuery("select#post_status").append("<option value=\'private_post\' '.$complete.'>'.__('Private Post', 'anspress-question-answer' ).'</option>");
-						   jQuery("select#post_status").append("<option value=\'closed\' '.$complete.'>'.__('Closed', 'anspress-question-answer' ).'</option>");
 						   jQuery(".misc-pub-section label").append("'.$label.'");
                       });
 			  </script>';

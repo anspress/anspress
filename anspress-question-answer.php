@@ -363,7 +363,6 @@ if ( ! class_exists( 'AnsPress' ) ) {
 			require_once ANSPRESS_DIR . 'includes/ask-form.php';
 			require_once ANSPRESS_DIR . 'includes/answer-form.php';
 			require_once ANSPRESS_DIR . 'widgets/search.php';
-			require_once ANSPRESS_DIR . 'widgets/subscribe.php';
 			require_once ANSPRESS_DIR . 'widgets/question_stats.php';
 			require_once ANSPRESS_DIR . 'widgets/related_questions.php';
 			require_once ANSPRESS_DIR . 'widgets/questions.php';
@@ -378,13 +377,10 @@ if ( ! class_exists( 'AnsPress' ) ) {
 			require_once ANSPRESS_DIR . 'includes/users-loop.php';
 			require_once ANSPRESS_DIR . 'includes/deprecated.php';
 			require_once ANSPRESS_DIR . 'includes/user-fields.php';
-			require_once ANSPRESS_DIR . 'includes/subscriber.php';
 			require_once ANSPRESS_DIR . 'includes/follow.php';
 			require_once ANSPRESS_DIR . 'widgets/user.php';
 			require_once ANSPRESS_DIR . 'widgets/ask-form.php';
 			require_once ANSPRESS_DIR . 'includes/flag.php';
-
-			require_once ANSPRESS_DIR . 'includes/subscriber-hooks.php';
 			require_once ANSPRESS_DIR . 'includes/shortcode-question.php';
 			require_once ANSPRESS_DIR . 'includes/mention.php';
 			require_once ANSPRESS_DIR . 'includes/akismet.php';
@@ -611,7 +607,6 @@ if ( ! class_exists( 'AnsPress_Init' ) ) {
 
 			// remove tables
 			$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}ap_meta" ); // db call ok, cache ok.
-			$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}ap_subscribers" ); // db call ok, cache ok.
 
 			// Remove options.
 			delete_option( 'anspress_opt' );
@@ -677,7 +672,6 @@ if ( ! class_exists( 'AnsPress_Init' ) ) {
 
 			$tables[] 	= $wpdb->prefix . 'ap_meta';
 			$tables[] 	= $wpdb->prefix . 'ap_qameta';
-			$tables[]		= $wpdb->prefix . 'ap_subscribers';
 			return $tables;
 		}
 

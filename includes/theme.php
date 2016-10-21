@@ -209,12 +209,13 @@ function is_post_waiting_moderation($post_id = false) {
 
 /**
  * Check if question is closed.
+ *
  * @param boolean|integer $post_id question or answer ID.
  * @return boolean
  * @since 2.0.0-alpha2
  */
-function is_post_closed($post_id = false) {
-	if ( get_post_status( $post_id ) == 'closed' ) {
+function is_post_closed( $post_id = null ) {
+	if ( ap_get_post_field( 'closed', $post_id ) ) {
 		return true;
 	}
 
