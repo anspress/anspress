@@ -371,20 +371,23 @@ function ap_question_metas( $question_id = false ) {
 
 	$metas = array();
 
-	if ( ap_have_answer_selected() ) {
-		$metas['solved'] = '<span class="ap-best-answer-label ap-tip" title="' . __( 'answer accepted', 'anspress-question-answer' ) . '">' . __( 'Solved', 'anspress-question-answer' ) . '</span>';
-	}
-
-	$view_count = ap_get_qa_views();
-	$metas['views'] = '<i>' . sprintf( __( '%d views', 'anspress-question-answer' ), $view_count ) . '</i>';
-
-	if ( ! is_question() ) {
-		$metas['history'] = ap_latest_post_activity_html( $question_id, ! is_question() );
-	}
-
 	// If featured question.
 	if ( ap_is_featured_question( $question_id ) ) {
 		$metas['featured'] = __( 'Featured', 'anspress-question-answer' );
+	}
+
+	if ( ap_have_answer_selected() ) {
+		$metas['solved'] = '<i class="apicon-check"></i>' . __( 'Solved', 'anspress-question-answer' );
+	}
+
+	$view_count = ap_get_qa_views();
+	$metas['views'] = '<i class="apicon-eye"></i><i>' . sprintf( __( '%d views', 'anspress-question-answer' ), $view_count ) . '</i>';
+
+	$last_active 	= ap_get_last_active( get_question_id() );
+	$metas['active'] = '<i class="apicon-pulse"></i><i><time class="published updated" itemprop="dateModified" datetime="' . mysql2date( 'c', $last_active ) . '">' . $last_active . '</time></i>';
+
+	if ( ! is_question() ) {
+		$metas['history'] = ap_latest_post_activity_html( $question_id, ! is_question() );
 	}
 
 	/*
