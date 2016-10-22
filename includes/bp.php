@@ -43,6 +43,8 @@ class AnsPress_BP
 
 		add_action('before_delete_post', array($this, 'remove_answer_notify'));
 		add_action('before_delete_post', array($this, 'remove_comment_notify'));
+
+		add_action('the_post', array($this, 'mark_bp_notify_as_read'));
 	}
 
 	public function bp_init() {
@@ -363,4 +365,30 @@ class AnsPress_BP
 			}
 		}
 	}
+
+	/**
+	 * Mark notification as read when corresponding question is loaded
+	 * @param object $post_id
+	 * @return void
+	 * @since 3.0.7
+     */
+	public function mark_bp_notify_as_read($post_id) {
+
+		if (bp_is_active('notifications') && is_question()) {
+
+			$user_id = get_current_user_id();
+
+			if ($post_id->post_type == 'answer') {
+				bp_notifications_mark_notifications_by_item_id($user_id, $post_id->ID, buddypress()->ap_notifier->id, 'new_answer_' . $post_id->post_parent);
+			}
+
+			if ($post_id->comment_count >= 1) {
+				$comments = get_comments(array('post_id' => $post_id->ID));
+				foreach ($comments as $comment) {
+					bp_notifications_mark_notifications_by_item_id($user_id, $comment->comment_ID, buddypress()->ap_notifier->id, 'new_comment_' . $post_id->ID);
+				}
+			}
+		}
+	}
+
 }
