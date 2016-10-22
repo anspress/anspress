@@ -178,11 +178,11 @@ function ap_is_user_subscribed($item_id, $activity, $user_id = false) {
  * @return integer
  */
 function ap_subscribers_count($item_id = false, $activity = 'q_all') {
-	global $wpdb;
-
-	if ( $item_id->post_type == 'answer' ){
+	if ( (int) $item_id != $item_id ) {
 		return;
 	}
+
+	global $wpdb;
 
 	$item_id = $item_id ? $item_id : get_question_id();
 

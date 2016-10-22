@@ -32,8 +32,19 @@ class AnsPress_BP
 
 		add_action( 'ap_after_new_answer', array( $this, 'add_new_answer_notification' ) );
 		add_action( 'ap_publish_comment', array( $this, 'add_new_comment_notification' ) );
-		//add_action( 'ap_trash_answer', array( $this, 'remove_answer_notify' ) );
+
+		add_action( 'ap_trash_question', array( $this, 'remove_answer_notify' ) );
+		add_action( 'ap_trash_question', array( $this, 'remove_comment_notify' ) );
+
+		add_action( 'ap_trash_answer', array( $this, 'remove_answer_notify' ) );
+		add_action( 'ap_trash_answer', array( $this, 'remove_comment_notify' ) );
+
 		add_action( 'ap_unpublish_comment', array( $this, 'remove_comment_notify' ) );
+
+		add_action('before_delete_post', array($this, 'remove_answer_notify'));
+		add_action('before_delete_post', array($this, 'remove_comment_notify'));
+
+		add_action('the_post', array($this, 'mark_bp_notify_as_read'));
 	}
 
 	public function bp_init() {
@@ -208,7 +219,7 @@ class AnsPress_BP
 	    /* Register this in the active components array */
 	    $bp->active_components[$bp->ap_notifier->id] = $bp->ap_notifier->id;
 
-	    do_action( 'ap_notifier_setup_globals' );
+	    do_action( 'notifier_setup_globals' );
 	}
 
 	public function ap_notifier_format_notifications( $action, $activity_id, $secondary_item_id, $total_items, $format = 'string' ) {
@@ -271,7 +282,7 @@ class AnsPress_BP
 	    	global $bp;
 	    	$answer = get_post( $post_id );
 
-	    	$participants = ap_get_parti( $answer->post_parent );
+			$subscribers = ap_subscriber_ids($answer->post_parent, 'q_all');
 
 	    	$notification_args = array(
 	            'item_id'           => $answer->ID,
@@ -282,11 +293,11 @@ class AnsPress_BP
 	            'is_new'            => 1,
 	    	);
 
-	    	if ( ! empty( $participants ) && is_array( $participants ) ) {
-				foreach ( $participants as $p ) {
-					if ( $p->apmeta_userid != $answer->post_author ) {
-						$notification_args['user_id'] = $p->apmeta_userid;
-						bp_notifications_add_notification( $notification_args );
+			if (!empty($subscribers) && is_array($subscribers)) {
+				foreach ($subscribers as $s) {
+					if ($s != $answer->post_author) {
+						$notification_args['user_id'] = $s;
+						bp_notifications_add_notification($notification_args);
 					}
 				}
 			}
@@ -299,11 +310,11 @@ class AnsPress_BP
 	    	global $bp;
 	    	$post = get_post( $comment->comment_post_ID );
 
-	    	if ( $post->post_type == 'answer' ) {
-	    		$participants = ap_get_parti( false, false, $comment->comment_post_ID ); }
-
-	    	if ( $post->post_type == 'question' ) {
-	    		$participants = ap_get_parti( $comment->comment_post_ID ); }
+			if ($post->post_type == 'question') {
+				$subscribers = ap_subscriber_ids($comment->comment_post_ID, array('q_post', 'q_all'));
+			} else {
+				$subscribers = ap_subscriber_ids($comment->comment_post_ID, 'a_all');
+			}
 
 	    	$notification_args = array(
 	            'item_id'           => $comment->comment_ID,
@@ -314,11 +325,11 @@ class AnsPress_BP
 	            'is_new'            => 1,
 	    	);
 
-	    	if ( ! empty( $participants ) && is_array( $participants ) ) {
-				foreach ( $participants as $p ) {
-					if ( $p->apmeta_userid != $comment->user_id ) {
-						$notification_args['user_id'] = $p->apmeta_userid;
-						bp_notifications_add_notification( $notification_args );
+			if (!empty($subscribers) && is_array($subscribers)) {
+				foreach ($subscribers as $s) {
+					if ($s != $comment->user_id) {
+						$notification_args['user_id'] = $s;
+						bp_notifications_add_notification($notification_args);
 					}
 				}
 			}
@@ -330,11 +341,11 @@ class AnsPress_BP
 	 * @param  integer $post_id
 	 * @return void
 	 */
-	public function remove_question_notify($post_id) {
-
-		if ( bp_is_active( 'notifications' ) ) {
-			bp_notifications_delete_all_notifications_by_type( $post_id, buddypress()->ap_notifier->id, 'new_answer_'.$post_id ); }
-
+	public function remove_answer_notify($post_id) {
+		if (bp_is_active('notifications')) {
+			$post = get_post($post_id);
+			bp_notifications_delete_all_notifications_by_type($post->ID, buddypress()->ap_notifier->id, 'new_answer_' . $post->post_parent);
+		}
 	}
 
 	/**
@@ -343,10 +354,41 @@ class AnsPress_BP
 	 * @return void
 	 */
 	public function remove_comment_notify($comment) {
+		if (bp_is_active('notifications')) {
+			if ($comment->comment_ID) {
+				bp_notifications_delete_all_notifications_by_type($comment->comment_ID, buddypress()->ap_notifier->id, 'new_comment_' . $comment->comment_post_ID);
+			} else {
+				$comments = get_comments(array('post_id' => $comment));
+				foreach ($comments as $comment) {
+					bp_notifications_delete_all_notifications_by_type($comment->comment_ID, buddypress()->ap_notifier->id, 'new_comment_' . $comment->comment_post_ID);
+				}
+			}
+		}
+	}
 
-		if ( bp_is_active( 'notifications' ) ) {
-			bp_notifications_delete_all_notifications_by_type( $comment->comment_post_ID, buddypress()->ap_notifier->id, 'new_comment_'.$comment->comment_post_ID ); }
+	/**
+	 * Mark notification as read when corresponding question is loaded
+	 * @param object $post_id
+	 * @return void
+	 * @since 3.0.7
+     */
+	public function mark_bp_notify_as_read($post_id) {
 
+		if (bp_is_active('notifications') && is_question()) {
+
+			$user_id = get_current_user_id();
+
+			if ($post_id->post_type == 'answer') {
+				bp_notifications_mark_notifications_by_item_id($user_id, $post_id->ID, buddypress()->ap_notifier->id, 'new_answer_' . $post_id->post_parent);
+			}
+
+			if ($post_id->comment_count >= 1) {
+				$comments = get_comments(array('post_id' => $post_id->ID));
+				foreach ($comments as $comment) {
+					bp_notifications_mark_notifications_by_item_id($user_id, $comment->comment_ID, buddypress()->ap_notifier->id, 'new_comment_' . $post_id->ID);
+				}
+			}
+		}
 	}
 
 }
