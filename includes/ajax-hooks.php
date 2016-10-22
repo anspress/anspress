@@ -410,11 +410,19 @@ class AnsPress_Ajax {
 		wp_die();
 	}
 
+	/**
+	 * Close question callback.
+	 */
 	public function close_question() {
 		$args = ap_sanitize_unslash( 'args', 'p' );
 
 		if ( ! ap_verify_nonce( 'close_' . $args[0] ) ) {
 			$this->something_wrong();
+		}
+
+		// Check if user can close question.
+		if ( ! ap_user_can_close_question() ) {
+			ap_ajax_json( 'no_permission' );
 		}
 
 		$_post = ap_get_post( $args[0] );

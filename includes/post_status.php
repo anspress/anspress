@@ -49,18 +49,18 @@ class AnsPress_Post_Status {
 			ap_ajax_json('something_wrong' );
 		}
 
-	    $post_id = (int) $args[0];
-	    $status = $args[1];
+		$post_id = (int) $args[0];
+		$status = $args[1];
 
-	    // Die if not a defined post status.
+		// Die if not a defined post status.
 	   	if ( ! in_array( $status, [ 'publish', 'moderate', 'private_post'], true ) ) {
 	   		ap_ajax_json( 'something_wrong' );
 	   	}
 
-	    // Check if user has permission else die.
-	    if ( ! is_user_logged_in() || ! ap_verify_nonce( 'change_post_status_'.$post_id ) || ! ap_user_can_change_status( $post_id ) ) {
-	        ap_ajax_json('no_permission' );
-	    }
+		// Check if user has permission else die.
+		if ( ! is_user_logged_in() || ! ap_verify_nonce( 'change_post_status_'.$post_id ) || ! ap_user_can_change_status( $post_id ) ) {
+			ap_ajax_json('no_permission' );
+		}
 
 		$post = ap_get_post( $post_id );
 
@@ -123,7 +123,7 @@ function ap_post_change_status_btn_html( $post_id = false ) {
 		$output = '<div class="ap-dropdown">
 			<a class="ap-tip ap-dropdown-toggle" title="' . __( 'Change status of post', 'anspress-question-answer' ) . '" href="#">
 				' . __( 'Status', 'anspress-question-answer' ) . ' <i class="caret"></i>
-            </a>
+			</a>
 			<ul id="ap_post_status_toggle_' . $post_id . '" class="ap-dropdown-menu" role="menu">';
 
 		foreach ( (array) $status as $k => $title ) {
@@ -163,29 +163,29 @@ function ap_post_status_description( $post_id = false ) {
 	<?php endif;
 
 	if ( is_private_post( $post_id ) ) : ?>
-        <div id="ap_post_status_desc_<?php echo $post_id; ?>" class="ap-notice gray clearfix">
-            <i class="apicon-lock"></i>
-            <span><?php printf( __( '%s is marked as a private, only admin and post author can see.', 'anspress-question-answer' ), $post_type ); ?></span>
-        </div>
-    <?php endif;
+		<div id="ap_post_status_desc_<?php echo $post_id; ?>" class="ap-notice gray clearfix">
+			<i class="apicon-lock"></i>
+			<span><?php printf( __( '%s is marked as a private, only admin and post author can see.', 'anspress-question-answer' ), $post_type ); ?></span>
+		</div>
+	<?php endif;
 
 	if ( is_post_waiting_moderation( $post_id ) ) : ?>
-        <div id="ap_post_status_desc_<?php echo $post_id; ?>" class="ap-notice yellow clearfix">
-            <i class="apicon-info"></i><span><?php printf( __( '%s is waiting for approval by moderator.', 'anspress-question-answer' ), $post_type ); ?></span>
-        </div>
-    <?php endif;
+		<div id="ap_post_status_desc_<?php echo $post_id; ?>" class="ap-notice yellow clearfix">
+			<i class="apicon-info"></i><span><?php printf( __( '%s is waiting for approval by moderator.', 'anspress-question-answer' ), $post_type ); ?></span>
+		</div>
+	<?php endif;
 
 	if ( is_post_closed( $post_id ) && $post->post_type != 'answer' ) : ?>
-        <div id="ap_post_status_desc_<?php echo $post_id; ?>" class="ap-notice red clearfix">
-            <?php echo ap_icon( 'cross', true ) ?>
-            <span><?php printf( __( '%s is closed for new answers', 'anspress-question-answer' ), $post_type ); ?></span>
-        </div>
-    <?php endif;
+		<div id="ap_post_status_desc_<?php echo $post_id; ?>" class="ap-notice red clearfix">
+			<?php echo ap_icon( 'cross', true ) ?>
+			<span><?php printf( __( '%s is closed for new answers', 'anspress-question-answer' ), $post_type ); ?></span>
+		</div>
+	<?php endif;
 
 	if ( $post->post_status == 'trash' ) : ?>
-        <div id="ap_post_status_desc_<?php echo $post_id; ?>" class="ap-notice red clearfix">
-            <?php echo ap_icon( 'cross', true ) ?>
-            <span><?php printf( __( '%s has been trashed, you can delete it permanently from wp-admin.', 'anspress-question-answer' ), $post_type ); ?></span>
-        </div>
-    <?php endif;
+		<div id="ap_post_status_desc_<?php echo $post_id; ?>" class="ap-notice red clearfix">
+			<?php echo ap_icon( 'cross', true ) ?>
+			<span><?php printf( __( '%s has been trashed, you can delete it permanently from wp-admin.', 'anspress-question-answer' ), $post_type ); ?></span>
+		</div>
+	<?php endif;
 }
