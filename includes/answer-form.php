@@ -244,7 +244,7 @@ function ap_save_answer($question_id, $args, $wp_error = false) {
 
 		$qameta_args = [ 'last_updated' => current_time( 'mysql' ) ];
 
-		if ( $args['anonymous_name'] ) {
+		if ( isset( $args['anonymous_name'] ) ) {
 			$qameta_args['fields'] = [ 'anonymous_name' => $args['anonymous_name'] ];
 		}
 

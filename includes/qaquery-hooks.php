@@ -22,8 +22,40 @@ class AP_QA_Query_Hooks {
 		global $wpdb;
 
 		if ( isset( $args->query['ap_query'] ) ) {
-			$sql['join'] = $sql['join'] . " LEFT JOIN {$wpdb->ap_qameta} qameta ON qameta.post_id = $wpdb->posts.ID";
+			$sql['join'] = $sql['join'] . " LEFT JOIN {$wpdb->ap_qameta} qameta ON qameta.post_id = {$wpdb->posts}.ID";
 			$sql['fields'] = $sql['fields'] . ', qameta.*, qameta.votes_up - qameta.votes_down AS votes_net';
+			$post_status = '';
+			$query_status = $args->query['post_status'];
+
+			// Build the post_status mysql query.
+			if ( ! empty( $query_status ) ) {
+				if ( is_array( $query_status ) ) {
+					$i = 1;
+
+					foreach ( get_post_stati() as $status ) {
+
+						if ( in_array( $status, $args->query['post_status'], true ) ) {
+							$post_status .= $wpdb->posts.".post_status = '" . $status . "'";
+
+							if ( count( $query_status ) != $i ) {
+								$post_status .= ' OR ';
+							} else {
+								$post_status .= ')';
+							}
+							$i++;
+						}
+					}
+				} else {
+					$post_status .= $wpdb->posts.".post_status = '".$query_status."' ";
+				}
+			}
+
+			// Replace post_status query.
+			if ( false !== ( $pos = strpos( $sql['where'], $post_status ) ) ) {
+				$pos = $pos + strlen( $post_status );
+				$author_query = $wpdb->prepare( " OR ( {$wpdb->posts}.post_author = %d AND {$wpdb->posts}.post_status NOT IN ('draft','trash','auto-draft','inherit') ) ", get_current_user_id() );
+				$sql['where'] = substr_replace( $sql['where'], $author_query, $pos, 0 );
+			}
 
 			$ap_sortby = isset( $args->query['ap_sortby'] ) ? $args->query['ap_sortby'] : 'active';
 			$answer_query = isset( $args->query['ap_answers_query'] );

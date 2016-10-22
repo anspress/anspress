@@ -46,8 +46,10 @@ function ap_qameta_fields() {
  * @since  	4.0.0
  */
 function ap_insert_qameta( $post_id, $args, $wp_error = false ) {
+	$_post = get_post( $post_id );
+
 	$args = wp_unslash( wp_parse_args( $args, [
-		'ptype' => get_post_type( $post_id ),
+		'ptype' => $_post->post_type,
 	]));
 
 	$sanitized_values = [];
@@ -85,6 +87,11 @@ function ap_insert_qameta( $post_id, $args, $wp_error = false ) {
 
 	if ( $exists->is_new ) {
 		$sanitized_values['post_id'] = (int) $post_id;
+
+		if( ! empty( $_post->post_author ) ) {
+			$sanitized_values['roles'] = $_post->post_author;
+		}
+
 		$inserted = $wpdb->insert( $wpdb->ap_qameta, $sanitized_values, $formats ); // db call ok.
 	} else {
 		$inserted = $wpdb->update( $wpdb->ap_qameta, $sanitized_values, [ 'post_id' => $post_id ], $formats ); // db call ok.

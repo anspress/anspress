@@ -802,25 +802,19 @@ class AnsPress_Hooks {
 	 * @since	2.4.8
 	 */
 	public static function human_time_diff( $since ) {
-		if ( '1 min' == $since ) {
-			$since = __( 'few seconds', 'anspress-question-answer' );
-		}
-
 		$replace = array(
-					'min'			=> __( 'minute', 'anspress-question-answer' ),
-					'mins'		=> __( 'minutes', 'anspress-question-answer' ),
-					'hour'		=> __( 'hour', 'anspress-question-answer' ),
-					'hours' 	=> __( 'hours', 'anspress-question-answer' ),
-					'day'	 	=> __( 'day', 'anspress-question-answer' ),
-					'days'		=> __( 'days', 'anspress-question-answer' ),
-					'week'		=> __( 'week', 'anspress-question-answer' ),
-					'weeks'		=> __( 'weeks', 'anspress-question-answer' ),
-					'year'		=> __( 'year', 'anspress-question-answer' ),
-					'years'		=> __( 'years', 'anspress-question-answer' ),
+			'min'			  => __( 'minute', 'anspress-question-answer' ),
+			'mins'		  => __( 'minutes', 'anspress-question-answer' ),
+			'hour'		  => __( 'hour', 'anspress-question-answer' ),
+			'hours' 	  => __( 'hours', 'anspress-question-answer' ),
+			'day'	 	    => __( 'day', 'anspress-question-answer' ),
+			'days'		  => __( 'days', 'anspress-question-answer' ),
+			'week'		  => __( 'week', 'anspress-question-answer' ),
+			'weeks'		  => __( 'weeks', 'anspress-question-answer' ),
+			'year'		  => __( 'year', 'anspress-question-answer' ),
+			'years'		  => __( 'years', 'anspress-question-answer' ),
 		);
 
 		return strtr( $since, $replace );
 	}
-
-
 }
