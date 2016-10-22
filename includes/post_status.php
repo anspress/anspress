@@ -29,7 +29,7 @@ class AnsPress_Post_Status {
 		 ) );
 
 		 register_post_status( 'private_post', array(
-			  'label'                     => __( 'Private Post', 'anspress-question-answer' ),
+			  'label'                     => __( 'Private', 'anspress-question-answer' ),
 			  'public'                    => true,
 			  'show_in_admin_all_list'    => false,
 			  'show_in_admin_status_list' => true,
@@ -178,7 +178,7 @@ function ap_post_status_description( $post_id = false ) {
 	if ( is_post_closed( $post_id ) && $post->post_type != 'answer' ) : ?>
         <div id="ap_post_status_desc_<?php echo $post_id; ?>" class="ap-notice red clearfix">
             <?php echo ap_icon( 'cross', true ) ?>
-            <span><?php printf( __( '%s is closed, new answer are not accepted.', 'anspress-question-answer' ), $post_type ); ?></span>
+            <span><?php printf( __( '%s is closed for new answers', 'anspress-question-answer' ), $post_type ); ?></span>
         </div>
     <?php endif;
 

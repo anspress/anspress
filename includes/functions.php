@@ -1657,7 +1657,6 @@ function ap_find_duplicate_post( $content, $post_type = 'question', $question_id
 
 	return false;
 }
-
 /**
  * Check if question suggestion is disabled.
  *
@@ -1733,6 +1732,7 @@ function ap_activity_short_title( $type ) {
 		'status_updated' 	           => __( 'updated status', 'anspress-question-answer' ),
 		'best_answer' 		           => __( 'selected as best answer', 'anspress-question-answer' ),
 		'unselected_best_answer' 	   => __( 'unselected as best answer', 'anspress-question-answer' ),
+		'changed_status' 	   				 => __( 'changed status', 'anspress-question-answer' ),
 	);
 
 	$title = apply_filters( 'ap_activity_short_title', $title );

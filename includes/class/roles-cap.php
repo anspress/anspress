@@ -627,7 +627,7 @@ function ap_user_can_restore( $user_id = false ) {
  * @return boolean
  * @since  2.0.1
  */
-function ap_user_can_view_private_post( $post_id, $user_id = false ) {
+function ap_user_can_view_private_post( $post_id = null, $user_id = false ) {
 
 	if ( false === $user_id ) {
 		$user_id = get_current_user_id();
@@ -661,7 +661,7 @@ function ap_user_can_view_private_post( $post_id, $user_id = false ) {
  * @param  integer $user_id User ID.
  * @return boolean
  */
-function ap_user_can_view_moderate_post( $post_id, $user_id = false ) {
+function ap_user_can_view_moderate_post( $post_id = null, $user_id = false ) {
 	if ( false === $user_id ) {
 		$user_id = get_current_user_id();
 	}

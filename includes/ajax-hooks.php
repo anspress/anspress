@@ -35,7 +35,7 @@ class AnsPress_Ajax {
 		anspress()->add_action( 'ap_ajax_set_featured', $this, 'set_featured' );
 		anspress()->add_action( 'ap_ajax_follow', $this, 'follow' );
 		anspress()->add_action( 'ap_ajax_hover_card', $this, 'hover_card' );
-
+		anspress()->add_action( 'ap_ajax_close_question', $this, 'close_question' );
 		anspress()->add_action( 'ap_ajax_subscribe', 'AnsPress_Subscriber_Hooks', 'subscribe' );
 		anspress()->add_action( 'ap_ajax_vote', 'AnsPress_Vote', 'vote' );
 
@@ -394,7 +394,7 @@ class AnsPress_Ajax {
 			$this->something_wrong();
 		}
 
-		$id = (int) $_POST['id']; // @codingStandardsIgnoreLine
+		$id = (int) ap_sanitize_unslash( 'id', 'p' );
 		$type = ap_sanitize_unslash( 'type', 'request', 'user' );
 
 		if ( ! ap_verify_default_nonce() ) {
@@ -408,6 +408,42 @@ class AnsPress_Ajax {
 		 */
 		do_action( 'ap_hover_card_' . $type, $id );
 		wp_die();
+	}
+
+	public function close_question() {
+		$args = ap_sanitize_unslash( 'args', 'p' );
+
+		if ( ! ap_verify_nonce( 'close_' . $args[0] ) ) {
+			$this->something_wrong();
+		}
+
+		$_post = ap_get_post( $args[0] );
+
+		$toggle = ap_toggle_close_question( $args[0] );
+		$close_label = $_post->closed ? __( 'Close', 'anspress-question-answer' ) :  __( 'Open', 'anspress-question-answer' );
+		$close_title = $_post->closed ? __( 'Close this question for new answer.', 'anspress-question-answer' ) : __( 'Open this question for new answers', 'anspress-question-answer' );
+
+		ob_start();
+		ap_post_status_description( $_post->ID );
+		$html = ob_get_clean();
+
+		$results = array(
+			'message' 		      => 1 === $toggle ? 'Question closed': 'Question is opened',
+			'message_type' 		  => 'success',
+			'action' 		        => 'question_closed',
+			'do' 			    		  => array(
+				'remove_if_exists'    => '#ap_post_status_desc_' . $_post->ID,
+				'updateText'          => [ '#close-btn-' . $_post->ID, $close_label ],
+			),
+			'html'              => $html,
+		);
+
+		if ( $toggle ) {
+			$results['do']['append_before'] = '#ap_post_actions_' . $_post->ID;
+			$results['html'] = $html;
+		}
+
+		$this->send( $results );
 	}
 
 	/**

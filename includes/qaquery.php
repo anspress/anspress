@@ -49,10 +49,25 @@ class Question_Query extends WP_Query {
 			'ap_query' 	        => true,
 			'ap_sortby' 	      => 'active',
 			'ap_question_query' => true,
+			'post_status' 		  => [ 'publish' ],
 		);
 
-		$args['post_status'] = [ 'publish', 'private_post', 'moderate' ];
 		$this->args = wp_parse_args( $args, $defaults );
+
+		// Check if user can read private post.
+		if ( ap_user_can_view_private_post( ) ) {
+			$this->args['post_status'][] = 'private_post';
+		}
+
+		// Check if user can read moderate posts.
+		if ( ap_user_can_view_moderate_post( ) ) {
+			$this->args['post_status'][] = 'moderate';
+		}
+
+		// Show trash posts to super admin.
+		if ( is_super_admin( ) ) {
+			$this->args['post_status'][] = 'trash';
+		}
 
 		if ( $post_parent ) {
 			$this->args['post_parent'] = $post_parent;
@@ -353,8 +368,13 @@ function ap_votes_net( $_post = null ) {
  *
  * @param  object|integer|null $_post Post ID, Object or null.
  */
-function ap_status( $_post = null ) {
+function ap_question_status( $_post = null ) {
 	$_post = ap_get_post( $_post );
+
+	if ( 'publish' === $_post->post_status ) {
+		return;
+	}
+
 	$status_obj = get_post_status_object( $_post->post_status );
 	echo '<span class="ap-post-status ' . esc_attr( $_post->post_status ) . '">' . esc_attr( $status_obj->label ) . '</span>';
 }
@@ -383,11 +403,13 @@ function ap_question_metas( $question_id = false ) {
 	$view_count = ap_get_qa_views();
 	$metas['views'] = '<i class="apicon-eye"></i><i>' . sprintf( __( '%d views', 'anspress-question-answer' ), $view_count ) . '</i>';
 
-	$last_active 	= ap_get_last_active( get_question_id() );
-	$metas['active'] = '<i class="apicon-pulse"></i><i><time class="published updated" itemprop="dateModified" datetime="' . mysql2date( 'c', $last_active ) . '">' . $last_active . '</time></i>';
+	if ( is_question() ) {
+		$last_active 	= ap_get_last_active( get_question_id() );
+		$metas['active'] = '<i class="apicon-pulse"></i><i><time class="published updated" itemprop="dateModified" datetime="' . mysql2date( 'c', $last_active ) . '">' . $last_active . '</time></i>';
+	}
 
 	if ( ! is_question() ) {
-		$metas['history'] = ap_latest_post_activity_html( $question_id, ! is_question() );
+		$metas['history'] = '<i class="apicon-pulse"></i>' . ap_latest_post_activity_html( $question_id, ! is_question() );
 	}
 
 	/*

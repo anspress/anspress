@@ -430,3 +430,17 @@ function ap_update_post_activity_meta( $post, $type, $user_id, $append_to_questi
 
 	return ap_update_post_activities( $post_o->ID, $meta_val );
 }
+
+/**
+ * Toggle closed
+ *
+ * @param  integer $post_id Question ID.
+ * @return boolean
+ */
+function ap_toggle_close_question( $post_id ) {
+	$qameta = ap_get_qameta( $post_id );
+	$toggle = $qameta->closed ? 0 : 1;
+	ap_insert_qameta( $post_id, [ 'closed' => $toggle ] );
+
+	return $toggle;
+}

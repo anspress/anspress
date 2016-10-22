@@ -410,11 +410,19 @@ function ap_page() {
 function ap_post_actions() {
 	global $post;
 
-	if ( ! $post->post_type == 'question' || ! $post->post_type == 'answer' ) {
+	if ( ! in_array( $post->post_type, [ 'question', 'answer' ], true ) ) {
 		return;
 	}
 
 	$actions = array();
+
+	$nonce = wp_create_nonce( 'close_' . $post->ID );
+	$close_label = $post->closed ?  __( 'Open', 'anspress-question-answer' ) : __( 'Close', 'anspress-question-answer' );
+	$close_title = $post->closed ?  __( 'Open this question for new answers', 'anspress-question-answer' ) : __( 'Close this question for new answer.', 'anspress-question-answer' );
+
+	if ( 'question' === $post->post_type ) {
+	    $actions['close'] = "<a href='#' id='close-btn-{$post->ID}' class='ap-btn-close ap-sicon ap-tip' data-action='ajax_btn' data-query='close_question::{$nonce}::{$post->ID}' title='{$close_title}'>{$close_label}</a>";
+	}
 
 	// Select answer button.
 	if ( $post->post_type == 'answer' ) {
