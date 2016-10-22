@@ -89,8 +89,8 @@ class AnsPress_Query_Filter
 		if ( isset($query->query['ap_query'] ) && $query->query['ap_query'] == 'ap_subscription_query' ) {
 			global $wpdb;
 
-			$sql['join'] = 'JOIN '.$wpdb->prefix."ap_meta apmeta ON $wpdb->posts.ID = apmeta.apmeta_actionid";
-			$sql['where'] = $sql['where']." AND apmeta.apmeta_type='subscriber' AND apmeta.apmeta_userid='".$query->query['user_id']."'";
+			/*$sql['join'] = 'JOIN '.$wpdb->prefix."ap_meta apmeta ON $wpdb->posts.ID = apmeta.apmeta_actionid";
+			$sql['where'] = $sql['where']." AND apmeta.apmeta_type='subscriber' AND apmeta.apmeta_userid='".$query->query['user_id']."'";*/
 		}
 
 		return $sql;

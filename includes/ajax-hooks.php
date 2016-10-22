@@ -36,7 +36,6 @@ class AnsPress_Ajax {
 		anspress()->add_action( 'ap_ajax_follow', $this, 'follow' );
 		anspress()->add_action( 'ap_ajax_hover_card', $this, 'hover_card' );
 		anspress()->add_action( 'ap_ajax_close_question', $this, 'close_question' );
-		anspress()->add_action( 'ap_ajax_subscribe', 'AnsPress_Subscriber_Hooks', 'subscribe' );
 		anspress()->add_action( 'ap_ajax_vote', 'AnsPress_Vote', 'vote' );
 
 		// Flag ajax callbacks.

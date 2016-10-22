@@ -50,8 +50,6 @@ function ap_follow_button($user_to_follow , $text = false){
  */
 function ap_add_follower($current_user_id, $user_to_follow){
 
-	$row = ap_new_subscriber( $current_user_id, $user_to_follow, 'u_all' );
-
 	if($row !== false)
 		do_action('ap_added_follower', $user_to_follow, $current_user_id);
 
@@ -65,7 +63,6 @@ function ap_add_follower($current_user_id, $user_to_follow){
  * @return boolean
  */
 function ap_remove_follower($current_user_id, $user_to_follow){
-	$row = ap_remove_subscriber($user_to_follow, $current_user_id, 'u_all');
 
 	if($row !== false)
 		do_action('ap_removed_follower', $current_user_id, $user_to_follow);
@@ -84,10 +81,6 @@ function ap_is_user_following($user_to_follow, $current_user_id = false){
 		$user_id = get_current_user_id();
 	}
 
-	if($current_user_id > 0){
-		return ap_is_user_subscribed($user_to_follow, 'u_all', $current_user_id);
-	}
-
 	return false;
 }
 
@@ -97,7 +90,6 @@ function ap_is_user_following($user_to_follow, $current_user_id = false){
  * @return integer
  */
 function ap_followers_count($user_id){
-	return ap_subscribers_count($user_id, 'u_all');
 }
 
 /**

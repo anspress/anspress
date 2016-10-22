@@ -113,16 +113,6 @@ class AnsPress_Hooks {
 			anspress()->add_action( 'generate_rewrite_rules', 'AnsPress_Rewrite', 'rewrites', 1 );
 			anspress()->add_filter( 'paginate_links', 'AnsPress_Rewrite', 'bp_com_paged' );
 			anspress()->add_filter( 'parse_request', 'AnsPress_Rewrite', 'add_query_var' );
-
-			// Subscription hooks.
-			anspress()->add_action( 'ap_new_subscriber', 'AnsPress_Subscriber_Hooks', 'subscriber_count', 1, 3 );
-			anspress()->add_action( 'ap_removed_subscriber', 'AnsPress_Subscriber_Hooks', 'subscriber_count', 1, 3 );
-			anspress()->add_action( 'ap_after_new_question', 'AnsPress_Subscriber_Hooks', 'after_new_question', 10, 2 );
-			anspress()->add_action( 'ap_after_new_answer', 'AnsPress_Subscriber_Hooks', 'after_new_answer', 10, 2 );
-			anspress()->add_action( 'ap_publish_comment', 'AnsPress_Subscriber_Hooks', 'after_new_comment' );
-			anspress()->add_action( 'ap_unpublish_comment', 'AnsPress_Subscriber_Hooks', 'unpublish_comment' );
-			anspress()->add_action( 'ap_before_delete_question', 'AnsPress_Subscriber_Hooks', 'delete_question' );
-			anspress()->add_action( 'ap_before_delete_answer', 'AnsPress_Subscriber_Hooks', 'delete_answer' );
 	}
 
 	/**

@@ -36,7 +36,6 @@ class AnsPress_Comment_Hooks
 			} elseif ( ap_user_can_edit_comment( $c->comment_ID, get_current_user_id() ) ) {
 				$data['form']['comment_ID'] = $c->comment_ID;
 				$data['form']['content'] = $c->comment_content;
-				$data['form']['subscribed'] = ap_is_user_subscribed( $c->comment_ID, 'comment', $c->user_id );
 			}
 		}
 
@@ -199,11 +198,6 @@ class AnsPress_Comment_Hooks
 		$comment_id = wp_new_comment( $commentdata );
 
 		if ( false !== $comment_id ) {
-			// Add comment subscriber if checked about new notification.
-			if ( isset( $_POST['notify'] ) ) {
-				ap_add_comment_subscriber( $comment_id, $user->ID );
-			}
-
 			$comment = get_comment( $comment_id );
 			do_action( 'ap_after_new_comment', $comment );
 
@@ -238,34 +232,17 @@ class AnsPress_Comment_Hooks
 	 */
 	public static function update_comment( $post_id, $comment_ID, $comment_content ) {
 		$comment = get_comment( $comment_ID );
-
-		$subscribed = ap_is_user_subscribed( $comment->comment_post_ID, 'comment', $comment->user_id );
 		$content_changed = $comment_content != $comment->comment_content;
-		$subscription = false;
-
-		// Toggle subscription.
-		if ( isset( $_POST['notify'] ) && ! $subscribed ) {
-			$subscription = ap_add_comment_subscriber( $comment_ID, $comment->user_id );
-		} elseif ( ! isset( $_POST['notify'] ) && $subscribed ) {
-			$subscription = ap_remove_comment_subscriber( $comment_ID, $comment->user_id );
-		}
-
-		if ( ! $content_changed && $subscription ) {
-			ap_ajax_json( [
-				'message' => __('Your comment subscription updated successfully', 'anspress-question-answer' ),
-				'message_type' => 'success',
-			] );
-		}
 
 		if ( ! $content_changed ) {
 			ap_ajax_json( [
-				'message' => __('Nothing changed!', 'anspress-question-answer' ),
+				'message'      => __( 'Nothing changed!', 'anspress-question-answer' ),
 				'message_type' => 'warning',
 			] );
 		}
 
 		$updated = wp_update_comment( array(
-			'comment_ID' => $comment_ID,
+			'comment_ID'      => $comment_ID,
 			'comment_content' => $comment_content,
 		) );
 
@@ -472,7 +449,7 @@ function ap_get_comment_form( $post_id = false, $comment_id = false ) {
 
 	ob_start();
 	?>
-        <form class="ap-comment-form" method="POST" id="ap-commentform">        
+        <form class="ap-comment-form" method="POST" id="ap-commentform">
 			<?php include ap_get_theme_location( 'comment-form.php' ); ?>
 			<input type="hidden" name="__nonce" value="<?php echo wp_create_nonce( $post_id.'_comment' ); ?>" />
 			<input type="hidden" name="post_id" value="<?php echo $post_id; ?>" />

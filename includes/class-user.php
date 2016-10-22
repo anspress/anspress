@@ -193,18 +193,18 @@ class AnsPress_User
 	 * @return array
 	 */
 	public static function follower_query( $query ) {
-		if ( isset( $query->query_vars['ap_query'] ) &&
-			$query->query_vars['ap_query'] == 'user_sort_by_followers' &&
-			isset( $query->query_vars['user_id'] ) ) {
+		// if ( isset( $query->query_vars['ap_query'] ) &&
+		// 	$query->query_vars['ap_query'] == 'user_sort_by_followers' &&
+		// 	isset( $query->query_vars['user_id'] ) ) {
 
-			global $wpdb;
+		// 	global $wpdb;
 
-			$query->query_from = $query->query_from.' LEFT JOIN '.$wpdb->ap_subscribers.' ON ID = subs_user_id';
+		// 	//$query->query_from = $query->query_from.' LEFT JOIN '.$wpdb->ap_subscribers.' ON ID = subs_user_id';
 
-			$userid = $query->query_vars['user_id'];
+		// 	$userid = $query->query_vars['user_id'];
 
-			$query->query_where = $query->query_where." AND subs_activity = 'u_all' AND subs_item_id = $userid";
-		}
+		// 	$query->query_where = $query->query_where." AND subs_activity = 'u_all' AND subs_item_id = $userid";
+		// }
 
 		return $query;
 	}
@@ -215,7 +215,7 @@ class AnsPress_User
 	 * @return array
 	 */
 	public static function following_query($query) {
-		if ( isset( $query->query_vars['ap_query'] ) &&
+		/*if ( isset( $query->query_vars['ap_query'] ) &&
 			$query->query_vars['ap_query'] == 'user_sort_by_following' &&
 			isset( $query->query_vars['user_id'] ) ) {
 
@@ -224,7 +224,7 @@ class AnsPress_User
 			$query->query_from = $query->query_from.' LEFT JOIN '.$wpdb->ap_subscribers.' ON ID = subs_item_id';
 			$userid = $query->query_vars['user_id'];
 			$query->query_where = $query->query_where." AND subs_activity = 'u_all' AND subs_user_id = $userid";
-		}
+		}*/
 
 		return $query;
 	}

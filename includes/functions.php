@@ -648,8 +648,6 @@ function ap_responce_message( $id, $only_message = false ) {
 		'comment_success'  => array( 'type' => 'success', 'message' => __( 'Comment successfully posted.', 'anspress-question-answer' ) ),
 		'comment_edit_success'  => array( 'type' => 'success', 'message' => __( 'Comment updated successfully.', 'anspress-question-answer' ) ),
 		'comment_delete_success' => array( 'type' => 'success', 'message' => __( 'Comment deleted successfully.', 'anspress-question-answer' ) ),
-		'subscribed' => array( 'type' => 'success', 'message' => __( 'You are following this question.', 'anspress-question-answer' ) ),
-		'unsubscribed'                  => array( 'type' => 'success', 'message' => __( 'Successfully unfollowed.', 'anspress-question-answer' ) ),
 		'question_submitted'            => array( 'type' => 'success', 'message' => __( 'Question submitted successfully', 'anspress-question-answer' ) ),
 		'question_updated'              => array( 'type' => 'success', 'message' => __( 'Question updated successfully', 'anspress-question-answer' ) ),
 		'answer_submitted'              => array( 'type' => 'success', 'message' => __( 'Answer submitted successfully', 'anspress-question-answer' ) ),
@@ -1509,7 +1507,6 @@ function ap_append_table_names() {
 	$wpdb->ap_qameta 		     = $wpdb->prefix . 'ap_qameta';
 	$wpdb->ap_votes 		     = $wpdb->prefix . 'ap_votes';
 	$wpdb->ap_meta 			     = $wpdb->prefix . 'ap_meta';
-	$wpdb->ap_subscribers	   = $wpdb->prefix . 'ap_subscribers';
 
 }
 ap_append_table_names();
