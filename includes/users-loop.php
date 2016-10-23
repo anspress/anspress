@@ -85,7 +85,7 @@ class AP_user_query
 		$args = wp_parse_args( $args, array(
 			'number' => $this->per_page,
 			'offset' => $this->offset,
-			'sortby' => 'reputation',
+			'sortby' => 'active',
 		));
 
 		if ( isset( $args['ID'] ) ) {
@@ -102,18 +102,6 @@ class AP_user_query
 					case 'newest':
 						$args['orderby']    = 'registered';
 						$args['order']      = 'DESC';
-						break;
-
-					case 'active':
-						$args['ap_query']    = 'user_sort_by_active';
-						$args['orderby']    = 'meta_value date';
-						$args['order']      = 'ASC';
-						$args['meta_query'] = array(
-							array(
-								'key' => '__last_active',
-							),
-						);
-
 						break;
 
 					case 'best_answer':
@@ -139,27 +127,14 @@ class AP_user_query
 						);
 						break;
 
-					case 'followers':
-						$args['ap_query']    = 'user_sort_by_followers';
-						break;
-
-					case 'following':
-						$args['ap_query']    = 'user_sort_by_following';
-						break;
-
 					default:
-						$args['ap_query']    = 'user_sort_by_reputation';
-						$args['orderby']    = 'meta_value';
-						$args['order']      = 'DESC';
+						$args['ap_query']    = 'user_sort_by_active';
+						$args['orderby']    = 'meta_value date';
+						$args['order']      = 'ASC';
 						$args['meta_query'] = array(
-							'relation' => 'OR',
 							array(
-								'key' => 'ap_reputation',
+								'key' => '__last_active',
 							),
-							array(
-								'key' => 'ap_reputation',
-								'compare' => 'NOT EXISTS',
-							)
 						);
 
 						break;
@@ -265,7 +240,7 @@ class AP_user_query
  * @return AP_user_query
  */
 function ap_has_users($args = '') {
-	$sortby = ap_get_sort() != '' ? ap_get_sort() : 'reputation';
+	$sortby = ap_get_sort() != '' ? ap_get_sort() : 'active';
 
 	$args = wp_parse_args( $args, array( 'sortby' => $sortby ) );
 
@@ -380,22 +355,6 @@ function ap_user_get_the_avatar($size = 40) {
 	return get_avatar( ap_user_get_the_ID(), $size );
 }
 
-	/**
-	 * Echo active user reputation
-	 * @param  boolean $short      Shorten count like 2.8k
-	 */
-function ap_user_the_reputation($short = true) {
-	echo ap_user_get_the_reputation( $short );
-}
-
-	/**
-	 * Get active user reputation
-	 * @param  boolean $short Shorten count like 2.8k
-	 * @return string
-	 */
-function ap_user_get_the_reputation($short = true) {
-	return ap_get_reputation( ap_user_get_the_ID(), $short );
-}
 
 	/**
 	 * output users page pagination
@@ -418,17 +377,18 @@ function ap_user_the_meta($key, $user_id = false) {
 		echo $meta; }
 }
 
-	/**
-	 * Get the user meta by key
-	 * if key is false then all metas of user will be returned.
-	 *
-	 * @param  boolean|string  $key        meta key
-	 * @param  boolean|integer $user_id    user id
-	 * @return array|string
-	 */
-function ap_user_get_the_meta($key = false, $user_id = false) {
+/**
+ * Get the user meta by key
+ * if key is false then all metas of user will be returned.
+ *
+ * @param  boolean|string  $key        meta key
+ * @param  boolean|integer $user_id    user id
+ * @return array|string
+ */
+function ap_user_get_the_meta( $key = false, $user_id = false ) {
 	if ( ! $user_id ) {
-		$user_id = ap_user_get_the_ID(); }
+		$user_id = ap_user_get_the_ID();
+	}
 
 	$meta = get_user_meta( $user_id );
 
@@ -448,8 +408,6 @@ function ap_user_get_the_meta($key = false, $user_id = false) {
 		'__total_answers',
 		'__profile_views',
 		'__last_active',
-		'__total_followers',
-		'__total_following',
 		'__up_vote_casted',
 		'__down_vote_casted',
 		'__up_vote_received',

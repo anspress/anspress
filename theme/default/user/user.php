@@ -12,7 +12,7 @@
 <?php while ( ap_users() ) : ap_the_user(); ?>
 
 	<div id="ap-user" class="ap-user" data-id="<?php ap_displayed_user_id(); ?>">
-        
+
 		<?php if ( ap_active_user_page() != 'about' ) : ?>
             <div class="ap-user-info ">
                 <div class="ap-user-avatar">
@@ -21,16 +21,8 @@
                 </div>
                 <div class="ap-user-data">
 					<a class="ap-user-name" href="<?php ap_user_the_link(); ?>"><?php ap_user_the_display_name(); ?></a>
-					<?php
-					if ( ! ap_opt('disable_reputation' ) ) {
-						echo '<span class="ap-user-reputation">';
-						printf(__('%s Rep.', 'anspress-question-answer' ), ap_user_get_the_reputation() );
-						echo '</span>';
-					}
-					?>
                 </div>
                 <div class="ap-user-info-btns">
-					<?php ap_follow_button(ap_get_displayed_user_id() ); ?>
                 </div>
             </div>
 		<?php endif; ?>
@@ -56,11 +48,8 @@
                 </div>
 				<a class="ap-user-name" href="<?php ap_user_the_link(); ?>"><?php ap_user_the_display_name(); ?></a>
                 <div class="ap-user-mini-status">
-					<span><?php printf(__('%s Rep.', 'anspress-question-answer' ), ap_user_get_the_reputation() ); ?></span>
 					<span><?php printf(__('%d Answers', 'anspress-question-answer' ), ap_user_get_the_meta('__total_answers' ) ); ?></span>
 					<span><?php printf(__('%d Questions', 'anspress-question-answer' ), ap_user_get_the_meta('__total_questions' ) ); ?></span>
-					<span><?php printf(__('%d Followers', 'anspress-question-answer' ), ap_user_get_the_meta('__total_followers' ) ); ?></span>
-					<span><?php printf(__('%d Following', 'anspress-question-answer' ), ap_user_get_the_meta('__total_following' ) ); ?></span>
 					<span><?php printf(__('%d Comments', 'anspress-question-answer' ), ap_user_comment_count(ap_get_displayed_user_id() ) ); ?></span>
                 </div>
 				<?php if ( ap_user_meta_exists('description' ) ) : ?>
@@ -74,11 +63,10 @@
                     </div>
 				<?php endif; ?>
                 <div class="ap-user-buttons clearfix">
-					<?php ap_follow_button(ap_get_displayed_user_id() ); ?>
                 </div>
             </div>
 		<?php endif; ?>
-        
+
         <div class="ap-user-navigation clearfix">
 			<?php ap_user_menu(); ?>
         </div>

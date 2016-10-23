@@ -187,7 +187,7 @@ class AnsPress_Dashboard{
 			<?php $answers = ap_get_answers(array( 'sortby' => 'newest', 'showposts' => 5 ) ); ?>
 			<?php if ( ap_have_answers() ) :   ?>
 				<ul class="post-list">
-					<?php while ( ap_answers() ) : ap_the_answer(); ?>
+					<?php while ( ap_have_answers() ) : ap_the_answer(); ?>
 						<li>
 							<a target="_blank" href="<?php the_permalink(); ?>"><?php the_title( ); ?></a> -
 							<span class="posted"><?php the_date( ); ?></span>
@@ -310,7 +310,7 @@ class AnsPress_Dashboard{
 		global $ap_user_query;
 		$user_a = array(
 			'number'    	=> 10,
-			'sortby' 		=> 'reputation',
+			'sortby' 		=> 'active',
 			'paged' 		=> 1,
 		);
 
@@ -327,7 +327,6 @@ class AnsPress_Dashboard{
 				<div class="no-overflow clearfix">
 					<a class="ap-uw-name" href="<?php ap_user_the_link(); ?>"><?php ap_user_the_display_name(); ?></a>
 					<div class="ap-uw-status">
-						<span><?php printf(__('%s Rep.', 'anspress-question-answer' ), ap_user_get_the_reputation() ); ?></span>
 						<span>
 							<?php printf( __('%d Best', 'anspress-question-answer' ), ap_user_get_the_meta('__best_answers' ) ); ?>
 						</span>

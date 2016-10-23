@@ -57,7 +57,7 @@ class AP_Users_Widget extends WP_Widget {
 
 		$avatar_size 		= 30;
 		$number 		= 5;
-		$sortby 		= 'reputation';
+		$sortby 		= 'active';
 
 		if ( isset( $instance[ 'avatar_size' ] ) ) {
 			$avatar_size = $instance[ 'avatar_size' ];

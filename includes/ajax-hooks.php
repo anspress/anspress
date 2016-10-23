@@ -22,20 +22,25 @@ class AnsPress_Ajax {
 	 * Initialize the plugin by setting localization and loading public scripts
 	 * and styles.
 	 */
-	public function __construct() {
-		anspress()->add_action( 'ap_ajax_suggest_similar_questions', $this, 'suggest_similar_questions' );
+	public function init() {
+		anspress()->add_action( 'ap_ajax_suggest_similar_questions', __CLASS__, 'suggest_similar_questions' );
+		anspress()->add_action( 'ap_ajax_set_featured', __CLASS__, 'set_featured' );
+		anspress()->add_action( 'ap_ajax_hover_card', __CLASS__, 'hover_card' );
+		anspress()->add_action( 'ap_ajax_close_question', __CLASS__, 'close_question' );
+		anspress()->add_action( 'ap_ajax_select_best_answer', __CLASS__, 'select_best_answer' );
+		anspress()->add_action( 'ap_ajax_delete_post', __CLASS__, 'delete_post' );
+		anspress()->add_action( 'ap_ajax_permanent_delete_post', __CLASS__, 'permanent_delete_post' );
+		anspress()->add_action( 'ap_ajax_restore_post', __CLASS__, 'restore_post' );
+		anspress()->add_action( 'ap_hover_card_user', __CLASS__, 'hover_card_user' );
+		anspress()->add_action( 'ap_ajax_load_tinymce_assets', __CLASS__, 'load_tinymce_assets' );
+		anspress()->add_action( 'ap_ajax_filter_search', __CLASS__, 'filter_search' );
+		anspress()->add_action( 'ap_ajax_convert_to_post', __CLASS__, 'convert_to_post' );
+		anspress()->add_action( 'ap_ajax_delete_attachment', __CLASS__, 'delete_attachment' );
+
 		anspress()->add_action( 'ap_ajax_load_comments', 'AnsPress_Comment_Hooks', 'load_comments' );
 		anspress()->add_action( 'ap_ajax_edit_comment_form', 'AnsPress_Comment_Hooks', 'edit_comment_form' );
 		anspress()->add_action( 'ap_ajax_delete_comment', 'AnsPress_Comment_Hooks', 'delete_comment' );
-		anspress()->add_action( 'ap_ajax_select_best_answer', $this, 'select_best_answer' );
-		anspress()->add_action( 'ap_ajax_delete_post', $this, 'delete_post' );
-		anspress()->add_action( 'ap_ajax_permanent_delete_post', $this, 'permanent_delete_post' );
-		anspress()->add_action( 'ap_ajax_restore_post', $this, 'restore_post' );
 		anspress()->add_action( 'ap_ajax_change_post_status', 'AnsPress_Post_Status', 'change_post_status' );
-		anspress()->add_action( 'ap_ajax_set_featured', $this, 'set_featured' );
-		anspress()->add_action( 'ap_ajax_follow', $this, 'follow' );
-		anspress()->add_action( 'ap_ajax_hover_card', $this, 'hover_card' );
-		anspress()->add_action( 'ap_ajax_close_question', $this, 'close_question' );
 		anspress()->add_action( 'ap_ajax_vote', 'AnsPress_Vote', 'vote' );
 
 		// Flag ajax callbacks.
@@ -43,16 +48,12 @@ class AnsPress_Ajax {
 		anspress()->add_action( 'ap_ajax_flag_comment', 'AnsPress_Flag', 'flag_comment' );
 		anspress()->add_action( 'ap_ajax_submit_comment', 'AnsPress_Comment_Hooks','submit_comment' );
 		anspress()->add_action( 'ap_ajax_approve_comment', 'AnsPress_Comment_Hooks','approve_comment' );
-		anspress()->add_action( 'ap_hover_card_user', __CLASS__, 'hover_card_user' );
 		anspress()->add_action( 'ap_ajax_post_actions_dp', 'AnsPress_Theme', 'post_actions_dp' );
 		anspress()->add_action( 'ap_ajax_user_dp', 'AnsPress_User', 'user_dp' );
 		anspress()->add_action( 'ap_ajax_list_filter', 'AnsPress_Theme', 'list_filter' );
-		anspress()->add_action( 'ap_ajax_load_tinymce_assets', __CLASS__, 'load_tinymce_assets' );
 		anspress()->add_action( 'wp_ajax_ap_cover_upload', 'AnsPress_User', 'cover_upload' );
 		anspress()->add_action( 'wp_ajax_ap_avatar_upload', 'AnsPress_User', 'avatar_upload' );
-		anspress()->add_action( 'ap_ajax_filter_search', __CLASS__, 'filter_search' );
-		anspress()->add_action( 'ap_ajax_convert_to_post', __CLASS__, 'convert_to_post' );
-		anspress()->add_action( 'ap_ajax_delete_attachment', __CLASS__, 'delete_attachment' );
+
 	}
 
 	/**
@@ -60,7 +61,7 @@ class AnsPress_Ajax {
 	 *
 	 * @since 2.0.1
 	 */
-	public function suggest_similar_questions() {
+	public static function suggest_similar_questions() {
 		// Die if question suggestion is disabled.
 		if ( ap_disable_question_suggestion( ) ) {
 			wp_die( 'false' );
@@ -86,6 +87,7 @@ class AnsPress_Ajax {
 				$items .= '</div>';
 
 			$items .= '<div class="ap-similar-questions">';
+
 			foreach ( (array) $questions as $p ) {
 				$count = ap_get_answers_count( $p->ID );
 				$p->post_title = ap_highlight_words( $p->post_title, $keyword );
@@ -100,8 +102,9 @@ class AnsPress_Ajax {
 			$items .= '</div>';
 			$result = array( 'status' => true, 'html' => $items );
 		} else {
-				$result = array( 'status' => false, 'message' => __( 'No related questions found.', 'anspress-question-answer' ) );
+			$result = array( 'status' => false, 'message' => __( 'No related questions found.', 'anspress-question-answer' ) );
 		}
+
 		ap_ajax_json( $result );
 	}
 
@@ -110,7 +113,7 @@ class AnsPress_Ajax {
 	 *
 	 * @since 2.0.0
 	 */
-	public function select_best_answer() {
+	public static function select_best_answer() {
 	    $answer_id = (int) ap_sanitize_unslash( 'answer_id', 'request' );
 
 	    if ( ! is_user_logged_in() || ! ap_verify_nonce( 'answer-' . $answer_id ) ) {
@@ -161,6 +164,7 @@ class AnsPress_Ajax {
 		ap_update_user_best_answers_count_meta( $post->post_author );
 		ap_update_user_solved_answers_count_meta( $post->post_author );
 		$html = ap_select_answer_btn_html( $answer_id );
+
 		ap_ajax_json( array(
 			'message' 	 => 'selected_the_answer',
 			'action' 	   => 'selected_answer',
@@ -172,7 +176,7 @@ class AnsPress_Ajax {
 	/**
 	 * Process ajax trash posts callback.
 	 */
-	public function delete_post() {
+	public static function delete_post() {
 		$post_id = (int) ap_sanitize_unslash( 'post_id', 'request' );
 
 		if ( ! ap_verify_nonce( 'delete_post_' . $post_id ) || ! ap_user_can_delete_post( $post_id ) ) {
@@ -201,7 +205,7 @@ class AnsPress_Ajax {
 		// Delete question.
 		if ( 'question' === $post->post_type ) {
 			do_action( 'ap_wp_trash_question', $post_id );
-			$this->send( array(
+			ap_ajax_json( array(
 				'action' 		  => 'delete_question',
 				'do' 			    => array( 'redirect' => ap_base_page_link() ),
 				'message' 		=> 'question_moved_to_trash',
@@ -212,7 +216,7 @@ class AnsPress_Ajax {
 
 		$current_ans = ap_count_published_answers( $post->post_parent );
 		$count_label = sprintf( _n( '%d Answer', '%d Answers', $current_ans, 'anspress-question-answer' ), $current_ans );
-		ap_ajax_json(array(
+		ap_ajax_json( array(
 			'action' 		     => 'delete_answer',
 			'div_id' 		     => '#answer_' . $post_id,
 			'count' 		     => $current_ans,
@@ -226,7 +230,7 @@ class AnsPress_Ajax {
 	/**
 	 * Handle Ajax callback for permanent delete of post.
 	 */
-	public function permanent_delete_post() {
+	public static function permanent_delete_post() {
 		$post_id = (int) ap_sanitize_unslash( 'post_id', 'request' );
 
 		if ( ! ap_verify_nonce( 'delete_post_' . $post_id ) || ! ap_user_can_permanent_delete() ) {
@@ -282,7 +286,7 @@ class AnsPress_Ajax {
 	/**
 	 * Handle Ajax callback for restoring post.
 	 */
-	public function restore_post() {
+	public static function restore_post() {
 		$args = ap_sanitize_unslash( 'args', 'request' );
 
 		if ( ! ap_verify_nonce( 'restore_' . $args[0] ) || ! ap_user_can_restore() ) {
@@ -310,7 +314,7 @@ class AnsPress_Ajax {
 	/**
 	 * Handle set feature and unfeature ajax callback
 	 */
-	public function set_featured() {
+	public static function set_featured() {
 		$post_id = (int) ap_sanitize_unslash( 'post_id', 'request' );
 
 		if ( ! is_super_admin() || ! ap_verify_nonce( 'set_featured_' . $post_id ) ) {
@@ -327,7 +331,7 @@ class AnsPress_Ajax {
 		// Check if current question ID is in featured question array.
 		if ( ap_is_featured_question( $post ) ) {
 			ap_unset_featured_question( $post->ID );
-			$this->send(array(
+			ap_ajax_json( array(
 				'action' 		   => 'unset_featured_question',
 				'message' 		 => 'unset_featured_question',
 				'do' 			     => array( 'updateHtml' => '#set_featured_' . $post->ID ),
@@ -336,68 +340,29 @@ class AnsPress_Ajax {
 		}
 
 		ap_set_featured_question( $post->ID );
-		$this->send(array(
+		ap_ajax_json( array(
 			'action' 		   => 'set_featured_question',
 			'message' 		 => 'set_featured_question',
 			'do' 			     => array( 'updateHtml' => '#set_featured_' . $post->ID ),
 			'html' 			   => __( 'Unset as featured', 'anspress-question-answer' ),
 		));
 
-		$this->something_wrong();
-	}
-
-	/**
-	 * Process follow ajax callback
-	 */
-	public function follow() {
-		$user_to_follow = (int) $_POST['user_id']; // @codingStandardsIgnoreLine
-		$current_user_id = get_current_user_id();
-
-		if ( ! ap_verify_nonce( 'follow_' . $user_to_follow . '_' . $current_user_id ) ) {
-			$this->something_wrong();
-		}
-
-		if ( ! is_user_logged_in() ) {
-			$this->send( 'please_login' );
-		}
-
-		if ( $user_to_follow === $current_user_id ) {
-			$this->send( 'cannot_follow_yourself' );
-		}
-
-		$is_following = ap_is_user_following( $user_to_follow, $current_user_id );
-		$elm = '#follow_' . $user_to_follow;
-
-		if ( $is_following ) {
-			ap_remove_follower( $current_user_id, $user_to_follow );
-			$this->send( array(
-				'message' 		=> 'unfollow',
-				'action' 		  => 'unfollow',
-				'do' 			    => array( 'updateText' => array( $elm, __( 'Follow', 'anspress-question-answer' ) ), 'toggle_active_class' => $elm ),
-			) );
-		} else {
-			ap_add_follower( $current_user_id, $user_to_follow );
-			$this->send( array(
-				'message' 		=> 'follow',
-				'action' 		  => 'follow',
-				'do' 			    => array( 'updateText' => array( '#follow_' . $user_to_follow, __( 'Unfollow', 'anspress-question-answer' ) ), 'toggle_active_class' => $elm ),
-			) );
-		}
+		ap_ajax_json( 'something_wrong' );
 	}
 
 	/**
 	 * Handle Ajax callback for user hover card
 	 */
-	public function hover_card() {
+	public static function hover_card() {
 		if ( ap_opt( 'disable_hover_card' ) ) {
-			$this->something_wrong();
+			ap_ajax_json( 'something_wrong' );
 		}
 
 		$id = (int) ap_sanitize_unslash( 'id', 'p' );
 		$type = ap_sanitize_unslash( 'type', 'request', 'user' );
 
 		if ( ! ap_verify_default_nonce() ) {
-			$this->something_wrong();
+			ap_ajax_json( 'something_wrong' );
 		}
 
 		/**
@@ -412,11 +377,11 @@ class AnsPress_Ajax {
 	/**
 	 * Close question callback.
 	 */
-	public function close_question() {
+	public static function close_question() {
 		$args = ap_sanitize_unslash( 'args', 'p' );
 
 		if ( ! ap_verify_nonce( 'close_' . $args[0] ) ) {
-			$this->something_wrong();
+			ap_ajax_json( 'something_wrong' );
 		}
 
 		// Check if user can close question.
@@ -450,7 +415,7 @@ class AnsPress_Ajax {
 			$results['html'] = $html;
 		}
 
-		$this->send( $results );
+		ap_ajax_json( $results );
 	}
 
 	/**
@@ -482,14 +447,11 @@ class AnsPress_Ajax {
 						'profile_link' 	=> ap_user_get_the_link(),
 						'avatar' 		    => ap_user_get_the_avatar( 80 ),
 						'signature' 	  => ap_get_user_signature(),
-						'reputation' 	  => ap_user_get_the_reputation(),
 						'stats'			    => array(
 							[ 'label' => __( 'Answers', 'anspress-question-answer' ), 'count' => ap_user_get_the_meta( '__total_answers' ) ],
 							[ 'label' => __( 'Best', 'anspress-question-answer' ), 'count' => ap_user_get_the_meta( '__best_answers' ) ],
 							[ 'label' => __( 'Question', 'anspress-question-answer' ), 'count' => ap_user_get_the_meta( '__total_questions' ) ],
 							[ 'label' => __( 'comments', 'anspress-question-answer' ), 'count' => ap_user_comment_count() ],
-							[ 'label' => __( 'Followers', 'anspress-question-answer' ), 'count' => ap_user_get_the_meta( '__total_followers' ) ],
-							[ 'label' => __( 'Following', 'anspress-question-answer' ), 'count' => ap_user_get_the_meta( '__total_following' ) ],
 						),
 						'active' => sprintf( __( 'Last seen %s', 'anspress-question-answer' ), $last_seen ),
 					),
@@ -509,61 +471,51 @@ class AnsPress_Ajax {
 	}
 
 	/**
-	 * Terminate the ajax callback and send a JSON response
-	 * In browser user will see a message "something went wrong".
-	 *
-	 * @since 2.4
-	 */
-	public function something_wrong() {
-		$this->send( 'something_wrong' );
-	}
-
-	/**
 	 * Send JSON response and terminate.
 	 *
 	 * @param array|string $result Ajax response.
 	 */
-	public function send( $result ) {
+	public static function send( $result ) {
 		ap_send_json( ap_ajax_responce( $result ) );
 	}
 
 	/**
 	 * Output comment form.
 	 */
-	public function comment_form() {
-		if ( empty( $_POST['comment'] ) ) { // @codingStandardsIgnoreLine
-			$this->send( 'comment_content_empty' );
+	public static function comment_form() {
+		if ( empty( ap_sanitize_unslash( 'comment', 'p' ) ) ) {
+			ap_ajax_json( 'comment_content_empty' );
 		}
 
-		$comment_post_ID = (int) $_POST['comment_post_ID']; // @codingStandardsIgnoreLine
+		$comment_post_ID = (int) ap_sanitize_unslash( 'comment_post_ID', 'p' );
 
 		// @codingStandardsIgnoreStart.
 		if ( ! isset( $_REQUEST['comment_ID'] ) ) { // @codingStandardsIgnoreLine
 			// Do security check.
 			if ( ! ap_user_can_comment( $comment_post_ID ) || ! isset( $_POST['__nonce'] ) || ! wp_verify_nonce( $_POST['__nonce'], 'comment_' . (int) $_POST['comment_post_ID'] ) ) {
-				$this->send( 'no_permission' );
+				ap_ajax_json( 'no_permission' );
 			}
 		} else {
 			if ( ! ap_user_can_edit_comment( (int) $_REQUEST['comment_ID'] ) || ! wp_verify_nonce( $_REQUEST['__nonce'], 'comment_'.(int) $_REQUEST['comment_ID'] ) ) {
-				$this->send( 'no_permission' );
+				ap_ajax_json( 'no_permission' );
 			}
 		}
 
 		$post = ap_get_post( $comment_post_ID );
 
 		if ( ! $post || empty( $post->post_status ) ) {
-			$this->something_wrong();
+			ap_ajax_json( 'something_wrong' );
 		}
 
 		if ( in_array( $post->post_status, array( 'draft', 'pending', 'trash' ) ) ) {
-			$this->send( 'draft_comment_not_allowed' );
+			ap_ajax_json( 'draft_comment_not_allowed' );
 		}
 
 		$filter_type = isset( $_POST['comment_ID'] ) ? 'ap_before_updating_comment' : 'ap_before_inserting_comment';
 		$filter = apply_filters( $filter_type, false, $_POST['comment'] );
 
 		if ( true === $filter && is_array( $filter ) ) {
-			$this->send( $filter );
+			ap_ajax_json( $filter );
 		}
 
 		if ( isset( $_POST['comment_ID'] ) ) {
@@ -577,19 +529,26 @@ class AnsPress_Ajax {
 				comment_text( $comment_id );
 				$html = ob_get_clean();
 
-				$this->send( array( 'action' => 'edit_comment', 'comment_ID' => $comment->comment_ID, 'comment_post_ID' => $comment->comment_post_ID, 'comment_content' => $comment->comment_content, 'html' => $html, 'message' => 'comment_edit_success' ) );
+				ap_ajax_json( array(
+					'action'          => 'edit_comment',
+					'comment_ID'      => $comment->comment_ID,
+					'comment_post_ID' => $comment->comment_post_ID,
+					'comment_content' => $comment->comment_content,
+					'html'            => $html,
+					'message'         => 'comment_edit_success'
+				) );
 			}
 		} else {
 			$user = wp_get_current_user();
 			if ( $user->exists() ) {
-				$user_ID = $user->ID;
-				$comment_author = wp_slash( $user->display_name );
+				$user_ID              = $user->ID;
+				$comment_author       = wp_slash( $user->display_name );
 				$comment_author_email = wp_slash( $user->user_email );
-				$comment_author_url = wp_slash( $user->user_url );
-				$comment_content = trim( $_POST['comment'] );
-				$comment_type = 'anspress';
+				$comment_author_url   = wp_slash( $user->user_url );
+				$comment_content      = trim( $_POST['comment'] );
+				$comment_type         = 'anspress';
 			} else {
-				$this->send( 'no_permission' );
+				ap_ajax_json( 'no_permission' );
 			}
 
 			$comment_parent = 0;
@@ -618,7 +577,7 @@ class AnsPress_Ajax {
 				ap_comment( $comment );
 				$html = ob_get_clean();
 				$count = get_comment_count( $comment->comment_post_ID );
-				$this->send( array(
+				ap_ajax_json( array(
 					'action'          => 'new_comment',
 					'status'          => true,
 					'comment_ID'      => $comment->comment_ID,

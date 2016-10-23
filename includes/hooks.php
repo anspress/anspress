@@ -52,9 +52,6 @@ class AnsPress_Hooks {
 			anspress()->add_action( 'safe_style_css', __CLASS__, 'safe_style_css', 11 );
 			anspress()->add_action( 'save_post', __CLASS__, 'base_page_update', 10, 2 );
 			anspress()->add_action( 'save_post', __CLASS__, 'question_answer_hooks', 1, 3 );
-
-			anspress()->add_action( 'ap_added_follower', __CLASS__, 'ap_added_follower', 10, 2 );
-			anspress()->add_action( 'ap_removed_follower', __CLASS__, 'ap_added_follower', 10, 2 );
 			anspress()->add_action( 'ap_vote_casted', __CLASS__, 'update_user_vote_casted_count', 10, 4 );
 			anspress()->add_action( 'ap_vote_removed', __CLASS__, 'update_user_vote_casted_count' , 10, 4 );
 			anspress()->add_action( 'the_post', __CLASS__, 'ap_append_vote_count' );
@@ -95,9 +92,6 @@ class AnsPress_Hooks {
 
 			// User hooks.
 			anspress()->add_action( 'init', 'AnsPress_User', 'init_actions' );
-			anspress()->add_filter( 'pre_user_query', 'AnsPress_User', 'follower_query' );
-			anspress()->add_filter( 'pre_user_query', 'AnsPress_User', 'following_query' );
-			anspress()->add_filter( 'pre_user_query', 'AnsPress_User', 'user_sort_by_reputation' );
 			anspress()->add_filter( 'avatar_defaults' , 'AnsPress_User', 'default_avatar' );
 			anspress()->add_filter( 'pre_get_avatar_data', 'AnsPress_User', 'get_avatar', 10, 3 );
 			anspress()->add_filter( 'ap_user_menu', 'AnsPress_User', 'ap_user_menu_icons' );
@@ -748,20 +742,6 @@ class AnsPress_Hooks {
 			 */
 			do_action( 'ap_processed_new_' . $post->post_type, $post_id, $post );
 		}
-	}
-
-	/**
-	 * Update total followers and following count meta
-	 *
-	 * @param	integer $user_to_follow	User ID whom to follow.
-	 * @param	integer $current_user_id User iD who is following.
-	 */
-	public static function ap_added_follower( $user_to_follow, $current_user_id ) {
-			// Update total followers count meta.
-		update_user_meta( $user_to_follow, '__total_followers', ap_followers_count( $user_to_follow ) );
-
-		// Update total following count meta.
-		update_user_meta( $current_user_id, '__total_following', ap_following_count( $current_user_id ) );
 	}
 
 	/**

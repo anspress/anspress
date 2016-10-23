@@ -94,12 +94,12 @@
 			</div>
 
 			<?php
-				/**
-				 * Output list of answers
-				 */
-				ap_question_the_answers();
+				// Get answers.
+				ap_answers();
+
+				// Get answer form.
+				ap_get_template_part( 'answer-form' );
 			?>
-			<?php ap_question_the_answer_form(); ?>
 		</div>
 
 		<?php if ( is_active_sidebar( 'ap-qsidebar' ) ) { ?>

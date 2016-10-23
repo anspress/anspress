@@ -198,8 +198,6 @@ class AnsPress_Admin {
 
 		add_submenu_page( 'anspress', __( 'All Answers', 'anspress-question-answer' ), __( 'All Answers', 'anspress-question-answer' ) . $counts['answer'], 'delete_pages', 'edit.php?post_type=answer', '' );
 
-		add_submenu_page( 'anspress', __( 'Reputation', 'anspress-question-answer' ), __( 'Reputation', 'anspress-question-answer' ), 'manage_options', 'anspress_reputation', array( $this, 'display_reputation_page' ) );
-
 		add_submenu_page( 'ap_select_question', __( 'Select question', 'anspress-question-answer' ), __( 'Select question', 'anspress-question-answer' ), 'delete_pages', 'ap_select_question', array( $this, 'display_select_question' ) );
 
 		/**
@@ -276,16 +274,6 @@ class AnsPress_Admin {
 	}
 
 	/**
-	 * Load reputation page layout
-	 */
-	public static function display_reputation_page() {
-		include_once( 'reputation.php' );
-		$reputation_table = new AnsPress_Reputation_Table();
-		$reputation_table->prepare_items();
-		include( 'views/reputation.php' );
-	}
-
-	/**
 	 * Load dashboard page layout.
 	 *
 	 * @since 2.4
@@ -316,23 +304,6 @@ class AnsPress_Admin {
 			),
 			$links
 		);
-	}
-
-	/**
-	 * Register reputation settings
-	 */
-	public function register_setting() {
-		register_setting( 'ap_reputation', 'ap_reputation', array( $this, 'validate_options' ) );
-	}
-
-	/**
-	 * Validate reuptation setting.
-	 *
-	 * @param  string $input Reputation.
-	 * @return string
-	 */
-	public function validate_options( $input ) {
-		return $input;
 	}
 
 	/**

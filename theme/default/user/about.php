@@ -61,36 +61,6 @@ global $questions;
 
     <?php do_action( 'ap_user_about_block_after_status'); ?>
 
-    <div class="ap-about-block">
-		<h3><?php echo ap_icon( 'reputation', true ); ?> <?php _e( 'Reputation', 'anspress-question-answer' ); ?></h3>
-
-        <div class="ap-about-block-c">
-
-            <div class="ap-about-rep clearfix">
-
-                <div class="ap-pull-left">
-					<span class="ap-about-rep-label"><?php _e( 'Total', 'anspress-question-answer' ); ?></span>
-					<span class="ap-about-rep-count"><?php ap_user_the_reputation(); ?></span>
-                </div>
-
-                <div class="ap-about-rep-chart">
-					<span data-action="ap_chart" data-type="bar" data-peity='{"fill" : ["#8fc77e"], "height": 45, "width": "100%"}'><?php echo ap_user_get_28_days_reputation(); ?></span>
-                </div><!-- close .ap-about-rep-chart -->
-
-                <div class="ap-user-rep">
-					<?php
-					if ( ap_has_reputations( array( 'number' => 5 ) ) ) {
-						while ( ap_reputations() ) : ap_the_reputation();
-							ap_get_template_part( 'user/reputation-content' );
-							endwhile;
-					}
-					?>
-                </div><!-- close .ap-user-rep -->
-
-            </div><!-- close .ap-about-rep -->
-
-        </div><!-- close .ap-about-block-c -->
-    </div><!-- close .ap-about-block -->
 
     <div class="ap-about-block">
 		<h3><?php echo ap_icon( 'thumbs-up-down', true ); ?> <?php _e( 'Votes', 'anspress-question-answer' ); ?></h3>

@@ -142,12 +142,13 @@ function ap_get_answer_form_fields( $question_id = false, $answer_id = false ) {
 }
 
 /**
- * Generate answer form
+ * Generate answer form.
+ *
  * @param  integer $question_id  Question iD.
  * @param  boolean $editing      true if post is being edited.
  * @return void
  */
-function ap_answer_form($question_id, $editing = false) {
+function ap_answer_form( $question_id, $editing = false ) {
 	if ( ! ap_user_can_answer( $question_id ) && ! $editing ) {
 		return;
 	}

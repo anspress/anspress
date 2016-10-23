@@ -382,16 +382,11 @@ function ap_active_user_page() {
  * @return  string
  * @since 	unknown
  */
-function ap_get_current_user_meta($meta) {
-
+function ap_get_current_user_meta( $meta ) {
 	global $ap_current_user_meta;
 
-	if ( $meta == 'followers' ) {
-		return @$ap_current_user_meta[AP_FOLLOWERS_META] ? $ap_current_user_meta[AP_FOLLOWERS_META] : 0;
-	} elseif ( $meta == 'following' ) {
-		return @$ap_current_user_meta[AP_FOLLOWING_META] ? $ap_current_user_meta[AP_FOLLOWING_META] : 0;
-	} elseif ( isset( $ap_current_user_meta[$meta] ) ) {
-		return $ap_current_user_meta[$meta];
+	if ( isset( $ap_current_user_meta[ $meta ] ) ) {
+		return $ap_current_user_meta[ $meta ];
 	}
 
 	return false;
@@ -428,15 +423,12 @@ function ap_check_if_photogenic($user_id) {
  * @return void
  */
 function ap_users_tab() {
-	$active = isset( $_GET['ap_sort'] ) ? $_GET['ap_sort'] : 'reputation';
+	$active = isset( $_GET['ap_sort'] ) ? $_GET['ap_sort'] : 'active';
 
 	$link = ap_get_link_to( 'users' ).'?ap_sort=';
 
 	?>
     <ul class="ap-questions-tab ap-ul-inline clearfix" role="tablist">
-        <?php if ( ! ap_opt( 'disable_reputation' ) ) : ?>
-            <li class="<?php echo $active == 'reputation' ? ' active' : ''; ?>"><a href="<?php echo $link.'reputation'; ?>"><?php _e( 'Reputation', 'anspress-question-answer' ); ?></a></li>
-        <?php endif; ?>
         <li class="<?php echo $active == 'active' ? ' active' : ''; ?>"><a href="<?php echo $link.'active'; ?>"><?php _e( 'Active', 'anspress-question-answer' ); ?></a></li>
         <li class="<?php echo $active == 'best_answer' ? ' active' : ''; ?>"><a href="<?php echo $link.'best_answer'; ?>"><?php _e( 'Best answer', 'anspress-question-answer' ); ?></a></li>
         <li class="<?php echo $active == 'answer' ? ' active' : ''; ?>"><a href="<?php echo $link.'answer'; ?>"><?php _e( 'Answer', 'anspress-question-answer' ); ?></a></li>
@@ -721,54 +713,6 @@ function ap_update_user_solved_answers_count_meta($user_id = false) {
 		$user_id = get_current_user_id(); }
 
 	update_user_meta( $user_id, '__solved_answers', ap_user_solved_answer_count( $user_id ) );
-}
-
-/**
- * Get last 28 days reputation earned by user group by day.
- * This data is used in bard chart
- *
- * @param  boolean|integer $user_id    WordPress user ID if false @see ap_get_displayed_user_id() will be used
- * @param  boolean         $object     Return object or string
- * @return string|object
- */
-function ap_user_get_28_days_reputation($user_id = false, $object = false) {
-
-	if ( $user_id === false ) {
-		$user_id = ap_get_displayed_user_id(); }
-
-	global $wpdb;
-
-	$current_time = current_time( 'mysql' );
-
-	$query = $wpdb->prepare( "SELECT sum(v.apmeta_value) as points, date_format(v.apmeta_date, '%%m.%%d') as day FROM ".$wpdb->prefix."ap_meta v WHERE v.apmeta_type='reputation' AND v.apmeta_userid = %d AND v.apmeta_date BETWEEN %s - INTERVAL 28 DAY AND %s group by date_format(v.apmeta_date,'%%m.%%d')", $user_id, $current_time, $current_time );
-
-	$key = md5( $query );
-
-	$result = wp_cache_get( $key, 'ap' );
-
-	if ( $result === false ) {
-		$result = $wpdb->get_results( $query );
-		wp_cache_set( $key, $result, 'ap' );
-	}
-
-	$days = array();
-
-	for ( $i = 0; $i < 28; $i++ ) {
-		$days[date( 'm.d', strtotime( $i.' days ago' ) )] = 0;
-	}
-
-	if ( $result ) {
-		foreach ( $result as $reputation ) {
-			$days[$reputation->day]  = $reputation->points;
-		}
-	}
-
-	$days = array_reverse( $days );
-
-	if ( $object === false ) {
-		return implode( ',', $days ); }
-
-	return (object) $days;
 }
 
 /**

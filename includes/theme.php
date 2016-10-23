@@ -104,18 +104,6 @@ function is_ap_search() {
 }
 
 /**
- * Check if current user page is followers page
- * @return boolean
- */
-function is_ap_followers() {
-	if ( is_ap_user() && get_query_var( 'user_page' ) == 'followers' ) {
-		return true;
-	}
-
-	return false;
-}
-
-/**
  * Return current AnsPress page
  * @return string|false
  */
@@ -309,8 +297,6 @@ function ap_pagination($current = false, $total = false, $format = '?paged=%#%')
  */
 function ap_icon($name, $html = false) {
 	$icons = array(
-		'follow' 			=> 'apicon-plus',
-		'unfollow' 			=> 'apicon-minus',
 		'upload' 			=> 'apicon-upload',
 		'unchecked' 		=> 'apicon-checkbox-unchecked',
 		'checked' 			=> 'apicon-checkbox-checked',

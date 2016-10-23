@@ -25,7 +25,6 @@ class AnsPress_BP
 		add_action( 'bp_init', array( $this, 'question_answer_tracking' ) );
 		add_action( 'bp_activity_entry_meta', array( $this, 'activity_buttons' ) );
 		add_filter( 'bp_activity_custom_post_type_post_action', array( $this, 'activity_action' ), 10, 2 );
-		add_filter( 'bp_before_member_header_meta', array( $this, 'bp_profile_header_meta' ) );
 		add_filter( 'ap_the_question_content', array( $this, 'ap_the_question_content' ) );
 
 		add_action( 'bp_setup_globals', array( $this, 'notifier_setup_globals' ) );
@@ -44,16 +43,6 @@ class AnsPress_BP
 	public function content_setup_nav() {
 
 		global $bp;
-
-		if ( ! ap_opt( 'disable_reputation' ) ) {
-			bp_core_new_nav_item( array(
-			    'name'                  => __( 'Reputation', 'anspress-question-answer' ),
-			    'slug'                  => 'reputation',
-			    'screen_function'       => array( $this, 'reputation_screen_link' ),
-			    'position'              => 30,// weight on menu, change it to whatever you want
-			    'default_subnav_slug' => 'my-posts-subnav',
-
-			) ); }
 		bp_core_new_nav_item( array(
 		    'name'                  => sprintf( __( 'Questions %s', 'anspress-question-answer' ), '<span class="count">'.count_user_posts( bp_displayed_user_id() , 'question' ).'</span>' ),
 		    'slug'                  => 'questions',
@@ -70,26 +59,6 @@ class AnsPress_BP
 		    'default_subnav_slug' => 'my-posts-subnav',
 
 		) );
-	}
-
-	public function reputation_screen_link() {
-	    add_action( 'bp_template_title', array( $this, 'reputation_screen_title' ) );
-	    add_action( 'bp_template_content', array( $this, 'reputation_screen_content' ) );
-	    bp_core_load_template( apply_filters( 'bp_core_template_plugin', 'members/single/plugins' ) );
-	}
-
-	public function reputation_screen_title() {
-	    _e( 'Reputation', 'anspress-question-answer' );
-	}
-
-	public function reputation_screen_content() {
-		global $wpdb;
-		$user_id = bp_displayed_user_id();
-
-		$reputation = ap_get_all_reputation( $user_id );
-		echo '<div id="anspress">';
-	    ap_get_template_part( 'user/reputation' );
-	    echo '</div>';
 	}
 
 	public function questions_screen_link() {
@@ -171,13 +140,6 @@ class AnsPress_BP
 			return str_replace( 'AP_CPT_LINK', get_permalink( $activity->secondary_item_id ), $action ); }
 
 		return $action;
-	}
-
-	public function bp_profile_header_meta() {
-		if ( ap_opt( 'disable_reputation' ) ) {
-			return; }
-
-		echo '<span class="ap-user-meta ap-user-meta-reputation">'. sprintf( __( '%s Reputation', 'anspress-question-answer' ), ap_get_reputation( bp_displayed_user_id(), true ) ) .'</span>';
 	}
 
 	/**

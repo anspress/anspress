@@ -32,12 +32,17 @@ if ( ! defined( 'WPINC' ) ) {
 
 // Check if using required PHP version.
 if ( version_compare( PHP_VERSION, '5.5' ) < 0 ) {
+
+	/**
+	 * Checks PHP version before initiating AnsPress.
+	 */
 	function ap_admin_php_version__error() {
 		$class = 'notice notice-error';
 		$message = '<strong>' . __( 'AnsPress is not running!', 'anspress-question-answer' ) . '</strong><br />';
 		$message .= sprintf( __( 'Irks! At least PHP version 5.5 is required to run AnsPress. Current PHP version is %s. Please ask hosting provider to update your PHP version.', 'anspress-question-answer' ), PHP_VERSION );
-		printf( '<div class="%1$s"><p>%2$s</p></div>', $class, $message );
+		printf( '<div class="%1$s"><p>%2$s</p></div>', esc_attr( $class ), esc_html( $message ) );
 	}
+
 	add_action( 'admin_notices', 'ap_admin_php_version__error' );
 	return;
 }
@@ -55,107 +60,109 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		 * @access private
 		 * @var string
 		 */
-	    private $_plugin_version = '4.0.0-alpha.1';
+		private $_plugin_version = '4.0.0-alpha.1';
 
-	    /**
-	     * Class instance
+		/**
+		 * Class instance
 		 *
 		 * @access public
 		 * @static
-	     * @var object
-	     */
-	    public static $instance = null;
+		 * @var object
+		 */
+		public static $instance = null;
 
-	    /**
-	     * AnsPress hooks
+		/**
+		 * AnsPress hooks
 		 *
 		 * @access public
-	     * @var object Register all AnsPress hooks
-	     */
-	    public $anspress_hooks;
+		 * @var object Register all AnsPress hooks
+		 */
+		public $anspress_hooks;
 
-	    /**
-	     * AnsPress ajax
+		/**
+		 * AnsPress ajax
 		 *
 		 * @access public
-	     * @var object Register all AnsPress ajax hooks
-	     */
-	    public $anspress_ajax;
+		 * @var object Register all AnsPress ajax hooks
+		 */
+		public $anspress_ajax;
 
-	    /**
-	     * Admin ajax
+		/**
+		 * Admin ajax
 		 *
 		 * @access public
-	     * @var object Register all admin ajax hooks
-	     */
-	    public $admin_ajax;
+		 * @var object Register all admin ajax hooks
+		 */
+		public $admin_ajax;
 
-	    /**
-	     * AnsPress pages
+		/**
+		 * AnsPress pages
 		 *
 		 * @access public
-	     * @var array All AnsPress pages
-	     */
-	    public $pages;
+		 * @var array All AnsPress pages
+		 */
+		public $pages;
 
-	    /**
-	     * AnsPress users pages
+		/**
+		 * AnsPress users pages
 		 *
 		 * @access public
-	     * @var array AnsPress user pages
-	     */
-	    public $user_pages;
+		 * @var array AnsPress user pages
+		 */
+		public $user_pages;
 
-	    /**
-	     * AnsPress users
+		/**
+		 * AnsPress users
 		 *
 		 * @access public
-	     * @var object AnsPress users loop
-	     */
-	    public $users;
+		 * @var object AnsPress users loop
+		 */
+		public $users;
 
-	    /**
-	     * AnsPress menu
+		/**
+		 * AnsPress menu
 		 *
 		 * @access public
-	     * @var array AnsPress menu
-	     */
-	    public $menu;
+		 * @var array AnsPress menu
+		 */
+		public $menu;
 
-	    /**
-	     * AnsPress question loop
+		/**
+		 * AnsPress question loop
 		 *
 		 * @access public
-	     * @var object AnsPress question query loop
-	     */
-	    public $questions;
+		 * @var object AnsPress question query loop
+		 */
+		public $questions;
 
-	    public $current_question;
+		/**
+		 * Current question.
+		 *
+		 * @var object
+		 */
+		public $current_question;
 
-	    /**
-	     * AnsPress answers loop
+		/**
+		 * AnsPress answers loop.
+		 *
+		 * @var object Answer query loop
+		 */
+		public $answers;
+
+		/**
+		 * Current answer.
+		 *
+		 * @var object
+		 */
+		public $current_answer;
+
+		/**
+		 * AnsPress form
 		 *
 		 * @access public
-	     * @var object Answer query loop
-	     */
-	    public $answers;
-	    public $current_answer;
-
-	    /**
-	     * AnsPress form
-		 *
-		 * @access public
-	     * @var object AnsPress form
-	     */
-	    public $form;
-
-	    /**
-	     * AnsPress reputation
-		 *
-		 * @access public
-	     * @var object
-	     */
-	    public $reputations;
+		 * @var object AnsPress form
+		 */
+		public $form;
 
 		/**
 		 * The array of actions registered with WordPress.
@@ -198,15 +205,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		 * @access public
 		 * @var object
 		 */
-	    public $anspress_forms;
-
-		/**
-		 * AnsPress reputation object
-		 *
-		 * @access public
-		 * @var object
-		 */
-	    public $anspress_reputation;
+		public $anspress_forms;
 
 		/**
 		 * AnsPress bp object
@@ -214,7 +213,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		 * @access public
 		 * @var object
 		 */
-	    public $anspress_bp;
+		public $anspress_bp;
 
 		/**
 		 * AnsPress third party object
@@ -222,7 +221,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		 * @access public
 		 * @var object
 		 */
-	    public $third_party;
+		public $third_party;
 
 		/**
 		 * AnsPress mention hooks object
@@ -230,7 +229,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		 * @access public
 		 * @var object
 		 */
-	    public $mention_hooks;
+		public $mention_hooks;
 
 		/**
 		 * AnsPress views object
@@ -238,7 +237,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		 * @access public
 		 * @var object
 		 */
-	    public $views_class;
+		public $views_class;
 
 		/**
 		 * AnsPress bad words object
@@ -246,7 +245,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		 * @access public
 		 * @var object
 		 */
-	    public $bad_words_class;
+		public $bad_words_class;
 
 		/**
 		 * Initializes the plugin by setting localization, hooks, filters, and administrative functions.
@@ -257,38 +256,37 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		 * @return instance
 		 */
 		public static function instance() {
-		    if ( ! isset( self::$instance ) && ! (self::$instance instanceof self) ) {
+			if ( ! isset( self::$instance ) && ! (self::$instance instanceof self) ) {
 
-		        self::$instance = new self();
-		        self::$instance->setup_constants();
-		        self::$instance->actions = array();
-		        self::$instance->filters = array();
+				self::$instance = new self();
+				self::$instance->setup_constants();
+				self::$instance->actions = array();
+				self::$instance->filters = array();
 
-		        add_action( 'bp_loaded', array( self::$instance, 'bp_include' ) );
+				add_action( 'bp_loaded', array( self::$instance, 'bp_include' ) );
 
-		        global $ap_classes;
-		        $ap_classes = array();
+				global $ap_classes;
+				$ap_classes = array();
 
-		        self::$instance->includes();
+				self::$instance->includes();
 
-		        self::$instance->ajax_hooks();
-		        self::$instance->site_include();
+				self::$instance->ajax_hooks();
+				self::$instance->site_include();
 
-		        self::$instance->anspress_forms 		= new AnsPress_Process_Form();
-		        self::$instance->anspress_query_filter 	= new AnsPress_Query_Filter();
-		        self::$instance->anspress_cpt 			= new AnsPress_PostTypes();
-		        self::$instance->anspress_reputation 	= new AP_Reputation();
+				self::$instance->anspress_forms 		= new AnsPress_Process_Form();
+				self::$instance->anspress_query_filter 	= new AnsPress_Query_Filter();
+				self::$instance->anspress_cpt 			= new AnsPress_PostTypes();
 
 				/*
-                 * ACTION: anspress_loaded
-                 * Hooks for extension to load their codes after AnsPress is leaded
+				 * ACTION: anspress_loaded
+				 * Hooks for extension to load their codes after AnsPress is leaded
 				 */
 				do_action( 'anspress_loaded' );
 
-		        self::$instance->setup_hooks();
-		    }
+				self::$instance->setup_hooks();
+			}
 
-		    return self::$instance;
+			return self::$instance;
 		}
 
 		/**
@@ -298,7 +296,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		 * @access private
 		 */
 		private function setup_constants() {
-		    $constants = array(
+				$constants = array(
 				'DS' 										=> DIRECTORY_SEPARATOR,
 				'AP_VERSION' 						=> $this->_plugin_version,
 				'AP_DB_VERSION' 				=> 22,
@@ -311,11 +309,11 @@ if ( ! class_exists( 'AnsPress' ) ) {
 				'ANSPRESS_CACHE_TIME' 	=> HOUR_IN_SECONDS,
 			);
 
-	    foreach ( $constants as $k => $val ) {
-	        if ( ! defined( $k ) ) {
-	            define( $k, $val );
-	        }
-	    }
+			foreach ( $constants as $k => $val ) {
+				if ( ! defined( $k ) ) {
+						define( $k, $val );
+				}
+			}
 		}
 
 		/**
@@ -367,17 +365,14 @@ if ( ! class_exists( 'AnsPress' ) ) {
 			require_once ANSPRESS_DIR . 'widgets/related_questions.php';
 			require_once ANSPRESS_DIR . 'widgets/questions.php';
 			require_once ANSPRESS_DIR . 'widgets/breadcrumbs.php';
-			require_once ANSPRESS_DIR . 'widgets/followers.php';
 			require_once ANSPRESS_DIR . 'widgets/users.php';
 			require_once ANSPRESS_DIR . 'includes/rewrite.php';
-			require_once ANSPRESS_DIR . 'includes/reputation.php';
 			require_once ANSPRESS_DIR . 'includes/bad-words.php';
 
 			require_once ANSPRESS_DIR . 'includes/user.php';
 			require_once ANSPRESS_DIR . 'includes/users-loop.php';
 			require_once ANSPRESS_DIR . 'includes/deprecated.php';
 			require_once ANSPRESS_DIR . 'includes/user-fields.php';
-			require_once ANSPRESS_DIR . 'includes/follow.php';
 			require_once ANSPRESS_DIR . 'widgets/user.php';
 			require_once ANSPRESS_DIR . 'widgets/ask-form.php';
 			require_once ANSPRESS_DIR . 'includes/flag.php';
@@ -396,8 +391,8 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		public function ajax_hooks() {
 			// Load ajax hooks only if DOING_AJAX defined.
 			if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
-		    	self::$instance->anspress_ajax = new AnsPress_Ajax( );
-		    	self::$instance->admin_ajax = new AnsPress_Admin_Ajax( );
+				AnsPress_Ajax::init();
+				self::$instance->admin_ajax = new AnsPress_Admin_Ajax( );
 			}
 		}
 
@@ -409,7 +404,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		public function site_include() {
 			self::$instance->anspress_hooks 	= AnsPress_Hooks::init();
 			self::$instance->mention_hooks 		= new AP_Mentions_Hooks( );
-			self::$instance->views_class 		= new AP_Views( );
+			self::$instance->views_class 		  = new AP_Views( );
 			self::$instance->bad_words_class 	= new AP_Bad_words( );
 		}
 
@@ -418,14 +413,14 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		 *
 		 * @access public
 		 */
-	    public function bp_include() {
-				if ( ! class_exists( 'BuddyPress' ) ) {
-						return;
-				}
+		public function bp_include() {
+			if ( ! class_exists( 'BuddyPress' ) ) {
+				return;
+			}
 
-				require_once ANSPRESS_DIR . 'includes/bp.php';
-				self::$instance->anspress_bp = new AnsPress_BP();
-	    }
+			require_once ANSPRESS_DIR . 'includes/bp.php';
+			self::$instance->anspress_bp = new AnsPress_BP();
+		}
 
 		/**
 		 * Add a new action to the collection to be registered with WordPress.
@@ -440,7 +435,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		 * @param int      Optional $accepted_args The number of arguments that should be passed to the $callback.
 		 */
 		public function add_action( $hook, $component, $callback, $priority = 10, $accepted_args = 1 ) {
-		  $this->actions = $this->add( $this->actions, $hook, $component, $callback, $priority, $accepted_args );
+			$this->actions = $this->add( $this->actions, $hook, $component, $callback, $priority, $accepted_args );
 		}
 
 		/**
@@ -456,7 +451,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		 * @param int      Optional $accepted_args The number of arguments that should be passed to the $callback.
 		 */
 		public function add_filter( $hook, $component, $callback, $priority = 10, $accepted_args = 1 ) {
-		  $this->filters = $this->add( $this->filters, $hook, $component, $callback, $priority, $accepted_args );
+			$this->filters = $this->add( $this->filters, $hook, $component, $callback, $priority, $accepted_args );
 		}
 
 		/**
@@ -472,13 +467,13 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		 * @param string            $callback      The name of the function definition on the $component.
 		 * @param int      Optional $priority      The priority at which the function should be fired.
 		 * @param int      Optional $accepted_args The number of arguments that should be passed to the $callback.
-		 * @param integer           $priority
-		 * @param integer           $accepted_args
+		 * @param integer           $priority      Priority.
+		 * @param integer           $accepted_args Accepted aruments.
 		 *
 		 * @return type The collection of actions and filters registered with WordPress.
 		 */
 		private function add( $hooks, $hook, $component, $callback, $priority, $accepted_args ) {
-		  $hooks[] = array(
+			$hooks[] = array(
 				'hook'      => $hook,
 				'component' => $component,
 				'callback'  => $callback,
@@ -486,7 +481,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 				'accepted_args' => $accepted_args,
 			);
 
-		  return $hooks;
+			return $hooks;
 		}
 
 		/**
@@ -512,12 +507,19 @@ if ( ! class_exists( 'AnsPress' ) ) {
  * @return object
  */
 if ( ! function_exists( 'anspress' ) ) {
+	/**
+	 * Initialize AnsPress.
+	 */
 	function anspress() {
 		return AnsPress::instance();
 	}
 }
 
 if ( ! class_exists( 'AnsPress_Init' ) ) {
+
+	/**
+	 * AnsPress initialization class.
+	 */
 	class AnsPress_Init {
 
 		/**
@@ -545,7 +547,7 @@ if ( ! class_exists( 'AnsPress_Init' ) ) {
 		 */
 		public static function load_textdomain() {
 			$locale = apply_filters( 'plugin_locale', get_locale(), 'anspress-question-answer' );
-			$loaded = load_textdomain( 'anspress-question-answer', trailingslashit( WP_LANG_DIR ) . 'anspress-question-answer' . '/' . 'anspress-question-answer' . '-' . $locale . '.mo' );
+			$loaded = load_textdomain( 'anspress-question-answer', trailingslashit( WP_LANG_DIR ) . "anspress-question-answer/anspress-question-answer-{$locale}.mo" );
 
 			if ( $loaded ) {
 				return $loaded;
@@ -570,10 +572,10 @@ if ( ! class_exists( 'AnsPress_Init' ) ) {
 
 			if ( $count > 0 ) {
 				while ( $deleted <= $count ) {
-					$question_IDS = $wpdb->get_col( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_type = '%s' LIMIT 50", $type ) );
+					$question_ids = $wpdb->get_col( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_type = '%s' LIMIT 50", $type ) ); // db call okay, cache okay.
 
-					foreach ( (array) $question_IDS as $ID ) {
-						wp_delete_post( $ID, true );
+					foreach ( (array) $question_ids as $id ) {
+						wp_delete_post( $id, true );
 						$deleted++;
 					}
 				}
@@ -605,14 +607,14 @@ if ( ! class_exists( 'AnsPress_Init' ) ) {
 			// Removes answer CPT.
 			SELF::delete_cpt( 'answer' );
 
-			// remove tables
-			$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}ap_meta" ); // db call ok, cache ok.
+			// Remove tables
+			$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}ap_meta" ); // @codingStandardsIgnoreLine
 
 			// Remove options.
 			delete_option( 'anspress_opt' );
-			delete_option( 'ap_reputation' );
 
 			require_once ANSPRESS_DIR . 'includes/class/roles-cap.php';
+
 			// Remove user roles.
 			AP_Roles::remove_roles();
 		}
@@ -626,7 +628,7 @@ if ( ! class_exists( 'AnsPress_Init' ) ) {
 		 * @param  string $plugin Plugin base name.
 		 */
 		public static function activation_redirect( $plugin ) {
-			if ( $plugin == plugin_basename( __FILE__ ) ) {
+			if ( plugin_basename( __FILE__ ) === $plugin ) {
 				add_option( 'anspress_do_installation_redirect', true );
 			}
 		}
@@ -646,7 +648,7 @@ if ( ! class_exists( 'AnsPress_Init' ) ) {
 		 */
 		public static function create_blog( $blog_id, $user_id, $domain, $path, $site_id, $meta ) {
 			if ( is_plugin_active_for_network( plugin_basename( __FILE__ ) ) ) {
-				switch_to_blog( $blog_id );
+				switch_to_blog( $blog_id ); // @codingStandardsIgnoreLine
 				AP_Activate::get_instance( true );
 				restore_current_blog();
 			}
@@ -664,7 +666,7 @@ if ( ! class_exists( 'AnsPress_Init' ) ) {
 		 * @return array
 		 */
 		public static function drop_blog_tables( $tables, $blog_id ) {
-			if ( empty( $blog_id ) || 1 == $blog_id || $blog_id != $GLOBALS['blog_id'] ) {
+			if ( empty( $blog_id ) || 1 === (int) $blog_id || $blog_id !== $GLOBALS['blog_id'] ) {
 				return $tables;
 			}
 
@@ -685,13 +687,13 @@ if ( ! class_exists( 'AnsPress_Init' ) ) {
 		public static function redirect_to_about_page() {
 			if ( get_option( 'anspress_do_installation_redirect' ) ) {
 				delete_option( 'anspress_do_installation_redirect' );
-				exit( wp_redirect( admin_url( 'admin.php?page=anspress_about' ) ) );
+				wp_safe_redirect( admin_url( 'admin.php?page=anspress_about' ) );
+				wp_die();
 			}
 		}
 
 	}
 }
-
 
 add_action( 'plugins_loaded', [ 'AnsPress_Init', 'load_anspress' ] );
 add_action( 'plugins_loaded', [ 'AnsPress_Init', 'load_textdomain' ] );
@@ -706,7 +708,6 @@ add_filter( 'admin_init', [ 'AnsPress_Init', 'redirect_to_about_page' ] );
 if ( is_admin() ) {
 	add_action( 'plugins_loaded', [ 'AnsPress_Admin', 'get_instance' ] );
 }
-
 
 /*
  * Register hooks that are fired when the plugin is activated or deactivated.

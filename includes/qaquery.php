@@ -69,12 +69,14 @@ class Question_Query extends WP_Query {
 			$this->args['post_status'][] = 'trash';
 		}
 
+		$this->args['post_status'] = array_unique( $this->args['post_status'] );
+
 		if ( $post_parent ) {
 			$this->args['post_parent'] = $post_parent;
 		}
 
 		if ( '' !== get_query_var( 'ap_s' ) ) {
-			$this->args['s'] = sanitize_text_field( get_query_var( 'ap_s' ) );
+			$this->args['s'] = ap_sanitize_unslash( 'ap_s', 'query_var' );
 		}
 
 		$this->args['post_type'] = 'question';
@@ -254,6 +256,14 @@ function ap_the_question() {
 function ap_total_questions_found() {
 	global $questions;
 	return $questions->found_posts;
+}
+
+/**
+ * Reset original question query.
+ */
+function ap_reset_question_query() {
+	global $questions;
+	return $questions->reset_questions_data();
 }
 
 /**
@@ -651,4 +661,17 @@ function ap_latest_post_activity_html( $post_id = false, $answer_activities = fa
 	}
 
 	return false;
+}
+
+
+/**
+ * Output answers of current question.
+ * @since 2.1
+ */
+function ap_answers() {
+	global $answers;
+	$answers = ap_get_answers();
+
+	ap_get_template_part( 'answers' );
+	ap_reset_question_query();
 }

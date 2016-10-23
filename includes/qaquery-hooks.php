@@ -53,7 +53,7 @@ class AP_QA_Query_Hooks {
 			// Replace post_status query.
 			if ( false !== ( $pos = strpos( $sql['where'], $post_status ) ) ) {
 				$pos = $pos + strlen( $post_status );
-				$author_query = $wpdb->prepare( " OR ( {$wpdb->posts}.post_author = %d AND {$wpdb->posts}.post_status NOT IN ('draft','trash','auto-draft','inherit') ) ", get_current_user_id() );
+				$author_query = $wpdb->prepare( " OR ( {$wpdb->posts}.post_author = %d AND {$wpdb->posts}.post_status IN ('publish', 'private_post', 'trash', 'moderate') ) ", get_current_user_id() );
 				$sql['where'] = substr_replace( $sql['where'], $author_query, $pos, 0 );
 			}
 
@@ -77,10 +77,12 @@ class AP_QA_Query_Hooks {
 			} else {
 				$sql['orderby'] = 'qameta.last_updated DESC ';
 			}
+
 			// Keep featured posts on top.
 			if ( ! $answer_query ) {
 				$sql['orderby'] = 'CASE WHEN IFNULL(qameta.featured, 0) =1 THEN 1 ELSE 2 END ASC, ' . $sql['orderby'];
 			}
+
 			// Keep best answer to top.
 			if ( $answer_query ) {
 				$sql['orderby'] = 'qameta.selected <> 1 , ' . $sql['orderby'];

@@ -233,13 +233,6 @@ function ap_have_answers() {
 	}
 }
 
-function ap_answers() {
-	global $answers;
-	if ( $answers ) {
-		return $answers->have_posts();
-	}
-}
-
 function ap_the_answer() {
 	global $answers;
 	if ( $answers ) {

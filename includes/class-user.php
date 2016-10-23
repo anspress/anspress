@@ -34,8 +34,6 @@ class AnsPress_User
 		ap_register_user_page( 'profile', __( 'Profile', 'anspress-question-answer' ), array( __CLASS__, 'profile_page' ), true, false );
 		ap_register_user_page( 'questions', __( 'Questions', 'anspress-question-answer' ), array( __CLASS__, 'questions_page' ) );
 		ap_register_user_page( 'answers', __( 'Answers', 'anspress-question-answer' ), array( __CLASS__, 'answers_page' ) );
-		ap_register_user_page( 'followers', __( 'Followers', 'anspress-question-answer' ), array( __CLASS__, 'followers_page' ) );
-		ap_register_user_page( 'following', __( 'Following', 'anspress-question-answer' ), array( __CLASS__, 'following_page' ) );
 		add_filter( 'ap_page_title', array( __CLASS__, 'ap_page_title' ) );
 	}
 
@@ -123,37 +121,6 @@ class AnsPress_User
 	}
 
 	/**
-	 * Register user foloowers page.
-	 */
-	public static function followers_page() {
-		$followers = ap_has_users( array(
-			'user_id' 	=> ap_get_displayed_user_id(),
-			'sortby' 	=> 'followers',
-		) );
-
-		if ( $followers->has_users() ) {
-			include ap_get_theme_location( 'user/followers.php' );
-		} else {
-			esc_attr_e( 'No followers found', 'anspress-question-answer' );
-		}
-
-	}
-
-	/**
-	 * Register followers page in AnsPress
-	 */
-	public static function following_page() {
-		$following = ap_has_users( array( 'user_id' => ap_get_displayed_user_id(), 'sortby' => 'following' ) );
-
-		if ( $following->has_users() ) {
-			include ap_get_theme_location( 'user/following.php' );
-		} else {
-			esc_attr_e( 'You are not following anyone.', 'anspress-question-answer' );
-		}
-	}
-
-
-	/**
 	 * Filter AnsPress page title for user sub pages
 	 * @param  string $title Title.
 	 * @return string
@@ -170,9 +137,6 @@ class AnsPress_User
 				'questions' => $my ?  __( 'My questions', 'anspress-question-answer' ) : sprintf( __( '%s\'s questions', 'anspress-question-answer' ), $name ),
 				'answers' => $my ?  __( 'My answers', 'anspress-question-answer' ) : sprintf( __( '%s\'s answers', 'anspress-question-answer' ), $name ),
 				'about' => $my ?  __( 'About me', 'anspress-question-answer' ) : $name,
-				'followers' => $my ?  __( 'My followers', 'anspress-question-answer' ) : sprintf( __( '%s\'s followers', 'anspress-question-answer' ), $name ),
-				'following' => __( 'Following', 'anspress-question-answer' ),
-				'subscription' => __( 'My subscriptions', 'anspress-question-answer' ),
 			);
 
 			foreach ( (array) $titles as $page => $user_title ) {
@@ -225,28 +189,6 @@ class AnsPress_User
 			$userid = $query->query_vars['user_id'];
 			$query->query_where = $query->query_where." AND subs_activity = 'u_all' AND subs_user_id = $userid";
 		}*/
-
-		return $query;
-	}
-
-	/**
-	 * Filter user query so that it can be sorted by user reputation
-	 * @param  array $query Mysql claueses.
-	 * @return array
-	 */
-	public static function user_sort_by_reputation($query) {
-		global $wpdb;
-
-		if ( isset( $query->query_vars['ap_query'] ) ) {
-
-			$query->query_where = $query->query_where.' AND (apm1.user_id IS NULL OR (  apm1.meta_value != 1) )';
-
-			$query->query_from = $query->query_from. " LEFT JOIN {$wpdb->usermeta} AS apm1 ON ( {$wpdb->users}.ID = apm1.user_id AND apm1.meta_key = 'hide_profile' )";
-
-			if ( $query->query_vars['ap_query'] == 'user_sort_by_reputation' ) {
-				$query->query_orderby = 'ORDER BY cast(mt1.meta_value AS DECIMAL) DESC';
-			}
-		}
 
 		return $query;
 	}
@@ -504,10 +446,6 @@ class AnsPress_User
 			'profile'       => ap_icon( 'board' ),
 			'questions'     => ap_icon( 'question' ),
 			'answers'       => ap_icon( 'answer' ),
-			'reputation'    => ap_icon( 'reputation' ),
-			'followers'     => ap_icon( 'users' ),
-			'following'     => ap_icon( 'users' ),
-			'subscription'  => ap_icon( 'mail' ),
 		);
 
 		foreach ( (array) $icons as $k => $i ) {

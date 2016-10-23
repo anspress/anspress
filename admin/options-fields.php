@@ -87,15 +87,7 @@ class AnsPress_Options_Fields
 				'desc' => __( 'Disable mentions and suggestions', 'anspress-question-answer' ),
 				'type' => 'checkbox',
 				'show_desc_tip' => false,
-			),
-			array(
-				'name' => 'disable_reputation',
-				'label' => __( 'Disable reputation', 'anspress-question-answer' ),
-				'desc' => __( 'Disable reputation', 'anspress-question-answer' ),
-				'type' => 'checkbox',
-				'show_desc_tip' => false,
 			)
-
 		));
 
 		// Register layout settings
