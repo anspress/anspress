@@ -69,18 +69,6 @@ class AnsPress_Options_Fields
 				'type' => 'checkbox',
 				'show_desc_tip' => false,
 			),
-			array(
-				'name' => '__sep',
-				'type' => 'custom',
-				'html' => '<span class="ap-form-separator">' . __( 'Toggle Features', 'anspress-question-answer' ) . '</span>',
-			) ,
-			array(
-				'name' => 'disable_hover_card',
-				'label' => __( 'Disable hover card', 'anspress-question-answer' ),
-				'desc' => __( 'Dont show user hover card on mouseover.', 'anspress-question-answer' ),
-				'type' => 'checkbox',
-				'show_desc_tip' => false,
-			),
 		));
 
 		// Register layout settings
@@ -152,12 +140,6 @@ class AnsPress_Options_Fields
 				'show_desc_tip' => false,
 			) ,
 			array(
-				'name' => 'users_per_page',
-				'label' => __( 'Users per page', 'anspress-question-answer' ),
-				'desc' => __( 'Users to show per page.', 'anspress-question-answer' ),
-				'type' => 'number',
-			) ,
-			array(
 				'type' => 'custom',
 				'html' => '<span class="ap-form-separator">' . __( 'Sorting', 'anspress-question-answer' ) . '</span>',
 			) ,
@@ -173,11 +155,6 @@ class AnsPress_Options_Fields
 					'oldest' => __( 'Oldest', 'anspress-question-answer' ),
 				),
 				'show_desc_tip' => false,
-			) ,
-			array(
-				'name' => '__sep',
-				'type' => 'custom',
-				'html' => '<span class="ap-form-separator">' . __( 'Toggle', 'anspress-question-answer' ) . '</span>',
 			) ,
 		));
 
@@ -201,22 +178,6 @@ class AnsPress_Options_Fields
 				'name' => 'question_page_slug',
 				'label' => __( 'Question page slug', 'anspress-question-answer' ),
 				'desc' => __( 'Enter slug for question page.', 'anspress-question-answer' ),
-				'type' => 'text',
-				'show_desc_tip' => false,
-				'order' => 5,
-			),
-			array(
-				'name' => 'users_page_slug',
-				'label' => __( 'Users page slug', 'anspress-question-answer' ),
-				'desc' => __( 'Enter slug for users page.', 'anspress-question-answer' ),
-				'type' => 'text',
-				'show_desc_tip' => false,
-				'order' => 5,
-			),
-			array(
-				'name' => 'user_page_slug',
-				'label' => __( 'User page slug', 'anspress-question-answer' ),
-				'desc' => __( 'Enter slug for user page, make sure no page or post exists with same slug.', 'anspress-question-answer' ),
 				'type' => 'text',
 				'show_desc_tip' => false,
 				'order' => 5,
@@ -253,13 +214,8 @@ class AnsPress_Options_Fields
 				'type' => 'text',
 				'show_desc_tip' => false,
 			) ,
+
 			array(
-				'name' => 'users_page_title',
-				'label' => __( 'Users page title', 'anspress-question-answer' ),
-				'desc' => __( 'Title of the users page', 'anspress-question-answer' ),
-				'type' => 'text',
-				'show_desc_tip' => false,
-			),array(
 				'name' => 'search_page_title',
 				'label' => __( 'Search page title', 'anspress-question-answer' ),
 				'desc' => __( 'Title of the search page', 'anspress-question-answer' ),
@@ -409,48 +365,7 @@ class AnsPress_Options_Fields
 				'desc' => __( 'When enabled public can see directory of users.', 'anspress-question-answer' ),
 				'type' => 'checkbox',
 				'show_desc_tip' => false,
-			) ,
-			array(
-				'type' => 'custom',
-				'html' => '<span class="ap-form-separator">' . __( 'Features', 'anspress-question-answer' ) . '</span>',
-			) ,
-
-			array(
-				'name' => 'users_page_avatar_size',
-				'label' => __( 'Users page avatar size', 'anspress-question-answer' ),
-				'desc' => __( 'Set user avatar size for users page item.', 'anspress-question-answer' ),
-				'type' => 'number',
-				'show_desc_tip' => false,
-			) ,
-
-			array(
-				'name' => 'cover_width',
-				'label' => __( 'Cover width', 'anspress-question-answer' ),
-				'desc' => __( 'Set width of user cover photo.', 'anspress-question-answer' ),
-				'type' => 'number',
-				'show_desc_tip' => false,
-			) ,
-			array(
-				'name' => 'cover_height',
-				'label' => __( 'Cover height', 'anspress-question-answer' ),
-				'desc' => __( 'Set height of user cover photo.', 'anspress-question-answer' ),
-				'type' => 'number',
-				'show_desc_tip' => false,
-			) ,
-			array(
-				'name' => 'cover_width_small',
-				'label' => __( 'Cover thumb width', 'anspress-question-answer' ),
-				'desc' => __( 'Set width of user cover photo thumbnail.', 'anspress-question-answer' ),
-				'type' => 'number',
-				'show_desc_tip' => false,
-			) ,
-			array(
-				'name' => 'cover_height_small',
-				'label' => __( 'Small cover height', 'anspress-question-answer' ),
-				'desc' => __( 'Set height of user cover photo thumbnail.', 'anspress-question-answer' ),
-				'type' => 'number',
-				'show_desc_tip' => false,
-			) ,
+			)
 		));
 
 		// register permission settings
