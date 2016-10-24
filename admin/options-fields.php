@@ -81,13 +81,6 @@ class AnsPress_Options_Fields
 				'type' => 'checkbox',
 				'show_desc_tip' => false,
 			),
-			array(
-				'name' => 'disable_mentions',
-				'label' => __( 'Disable mentions', 'anspress-question-answer' ),
-				'desc' => __( 'Disable mentions and suggestions', 'anspress-question-answer' ),
-				'type' => 'checkbox',
-				'show_desc_tip' => false,
-			)
 		));
 
 		// Register layout settings

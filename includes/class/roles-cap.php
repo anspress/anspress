@@ -12,8 +12,7 @@
 /**
  * AnsPress user role helper
  */
-class AP_Roles
-{
+class AP_Roles {
 	/**
 	 * Base user capabilities
 	 * @var array
@@ -880,56 +879,6 @@ function ap_user_can_delete_attachment( $attacment_id, $user_id = false ) {
 	return false;
 }
 
-/**
- * Check if user can upload an avatar
- * @since 2.4
- */
-function ap_user_can_upload_avatar() {
-	// Return false if profile is not active.
-	if ( ! ap_is_profile_active() ) {
-		return false;
-	}
-
-	if ( is_super_admin() || current_user_can( 'ap_upload_avatar' ) ) {
-		return true;
-	}
-
-	return false;
-}
-
-/**
- * Check if user can upload a cover image
- * @since 2.4
- */
-function ap_user_can_upload_cover() {
-	// Return false if profile is not active.
-	if ( ! ap_is_profile_active() ) {
-		return false;
-	}
-
-	if ( is_super_admin() || current_user_can( 'ap_upload_cover' ) ) {
-		return true;
-	}
-
-	return false;
-}
-
-/**
- * Check if user can edit their profile
- */
-function ap_user_can_edit_profile() {
-	// Return false if profile is not active.
-	if ( ! ap_is_profile_active() ) {
-		return false;
-	}
-
-	if ( is_super_admin() || current_user_can( 'ap_edit_profile' ) ) {
-		return true;
-	}
-
-	return false;
-}
-
 function ap_show_captcha_to_user( $user_id = false ) {
 	if ( false === $user_id ) {
 		$user_id = get_current_user_id();
@@ -972,22 +921,20 @@ function ap_role_caps( $role ) {
 			'ap_vote_close'				=> true,
 			'ap_upload_cover'			=> true,
 			'ap_change_status'			=> true,
-			'ap_upload_avatar'			=> true,
-			'ap_edit_profile'			=> true,
 		),
 		'moderator' => array(
-			'ap_edit_others_question'	=> true,
-			'ap_edit_others_answer'		=> true,
-			'ap_edit_others_comment'	=> true,
-			'ap_delete_others_question'	=> true,
-			'ap_delete_others_answer'	=> true,
-			'ap_delete_others_comment'	=> true,
-			'ap_view_private'			=> true,
-			'ap_view_moderate'			=> true,
-			'ap_change_status_other'	=> true,
-			'ap_approve_comment'		=> true,
-			'ap_no_moderation'			=> true,
-			'ap_restore_posts'			=> true,
+			'ap_edit_others_question'	   => true,
+			'ap_edit_others_answer'		    => true,
+			'ap_edit_others_comment'	    => true,
+			'ap_delete_others_question'	 => true,
+			'ap_delete_others_answer'	   => true,
+			'ap_delete_others_comment'	  => true,
+			'ap_view_private'			         => true,
+			'ap_view_moderate'			        => true,
+			'ap_change_status_other'	    => true,
+			'ap_approve_comment'		       => true,
+			'ap_no_moderation'			        => true,
+			'ap_restore_posts'			        => true,
 		),
 	);
 

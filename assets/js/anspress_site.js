@@ -653,14 +653,13 @@ var apData = {};
             });
         },
         hoverCard:function(){
-            if(!disable_hover_card)
-                $('[data-userid], [data-catid]').aptip({
-                    theme: 'ap-hover-card',
-                    interactive:true,
-                    delay:500,
-                    position: 'bottom right',
-                    title: '<div class="hovercard-loading-bg"></div>'
-                });
+            $('[data-hover], [data-catid]').aptip({
+                theme: 'ap-hover-card',
+                interactive:true,
+                delay:500,
+                position: 'bottom right',
+                title: '<div class="hovercard-loading-bg"></div>'
+            });
         },
         delete_notification: function() {
             $('body').delegate('[data-action="ap_delete_notification"]', 'click', function(e) {
@@ -708,7 +707,8 @@ var apData = {};
         },
 
         questionSuggestion: function(){
-            if( disable_q_suggestion || false )
+            var disable_q_suggestion = disable_q_suggestion||false;
+            if( disable_q_suggestion  )
                 return;
 
             var suggestTimeout = null;

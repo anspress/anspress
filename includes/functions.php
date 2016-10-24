@@ -203,43 +203,6 @@ function ap_get_ask_page_slug() {
 }
 
 /**
- * Checks if current AnsPress page is users page.
- *
- * @return boolean
- */
-function is_ap_users() {
-	if ( is_anspress() && ap_current_page() === ap_get_users_page_slug() ) {
-		return true;
-	}
-	return false;
-}
-
-/**
- * Get users page slug.
- *
- * @return string
- */
-function ap_get_users_page_slug() {
-	$opt = ap_opt( 'users_page_slug' );
-	if ( $opt ) {
-		return esc_attr( $opt );
-	}
-	return 'users';
-}
-
-/**
- * Check if current page is user page.
- *
- * @return boolean
- */
-function is_ap_user() {
-	if ( is_anspress() && ap_current_page() === ap_get_user_page_slug() ) {
-		return true;
-	}
-	return false;
-}
-
-/**
  * Get current question ID in single question page.
  *
  * @return integer|false
@@ -1736,4 +1699,279 @@ function ap_activity_short_title( $type ) {
 	}
 
 	return $type;
+}
+
+/**
+ * Return canonical URL of current page.
+ * @return string
+ * @since  3.0.0
+ */
+function ap_canonical_url() {
+	$canonical_url = ap_get_link_to( get_query_var( 'ap_page' ) );
+
+	if ( is_question() ) {
+		$canonical_url = get_permalink( get_question_id() );
+	}
+
+	/**
+	 * Filter AnsPress canonical URL.
+	 * @param string $canonical_url Current URL.
+	 * @return string
+	 * @since  3.0.0
+	 */
+	$canonical_url = apply_filters( 'ap_canonical_url', $canonical_url );
+
+	return esc_url( $canonical_url );
+}
+
+/**
+ * For user display name
+ * It can be filtered for adding cutom HTML.
+ *
+ * @param  mixed $args Arguments.
+ * @return string
+ * @since 0.1
+ */
+function ap_user_display_name( $args = array() ) {
+	global $post;
+
+	$defaults = array(
+		'user_id'            => get_the_author_meta( 'ID' ),
+		'html'                => false,
+		'echo'                => false,
+		'anonymous_label'    => __( 'Anonymous', 'anspress-question-answer' ),
+	);
+
+	if ( ! is_array( $args ) ) {
+		$defaults['user_id'] = $args;
+		$args = $defaults;
+	} else {
+		$args = wp_parse_args( $args, $defaults );
+	}
+
+	extract( $args );
+
+	$user = get_userdata( $user_id );
+
+	if ( $user ) {
+		if ( ! $html ) {
+			$return = $user->display_name;
+		} else {
+			$return = '<span class="who"><a href="'.ap_user_link( $user_id ).'">'.$user->display_name.'</a></span>';
+		}
+	} elseif ( $post && ($post->post_type == 'question' || $post->post_type == 'answer') ) {
+		$post_fields = ap_get_post_field( 'fields' );
+		if ( ! $html ) {
+			if ( is_array( $post_fields ) && ! empty( $post_fields['anonymous_name'] ) ) {
+				$return = $post_fields['anonymous_name'];
+			} else {
+				$return = $anonymous_label;
+			}
+		} else {
+			if ( is_array( $post_fields ) && ! empty( $post_fields['anonymous_name'] ) ) {
+				$return = '<span class="who">' . $post_fields['anonymous_name'] . __( ' (anonymous)', 'anspress-question-answer' ).'</span>';
+			} else {
+				$return = '<span class="who">' . $anonymous_label . '</span>';
+			}
+		}
+	} else {
+		if ( ! $html ) {
+			$return = $anonymous_label;
+		} else {
+			$return = '<span class="who">'.$anonymous_label.'</span>';
+		}
+	}
+
+	/**
+	 * FILTER: ap_user_display_name
+	 * Filter can be used to alter display name
+	 * @var string
+	 * @since 2.0.1
+	 */
+	$return = apply_filters( 'ap_user_display_name', $return, $args );
+
+	if ( $echo !== false ) {
+		echo $return;
+		return;
+	}
+
+	return $return;
+}
+
+/**
+ * Return Link to user pages
+ * @param  boolean|integer $user_id    user id
+ * @param  string          $sub        page slug
+ * @return string
+ * @since  unknown
+ */
+function ap_user_link($user_id = false, $sub = false) {
+
+	if ( false === $user_id ) {
+		$user_id = get_the_author_meta( 'ID' );
+	}
+
+	if ( $user_id < 1 ) {
+		return '#AnonymousUser';
+	}
+
+	if ( ap_opt( 'user_profile' ) == '' ) {
+		return apply_filters( 'ap_user_custom_profile_link', $user_id, $sub );
+	} elseif ( function_exists( 'bp_core_get_userlink' ) && ap_opt( 'user_profile' ) == 'buddypress' ) {
+		return bp_core_get_userlink( $user_id, false, true );
+	} elseif ( ap_opt( 'user_profile' ) == 'userpro' ) {
+		global $userpro;
+		return $userpro->permalink( $user_id );
+	}
+
+	if ( 0 == $user_id ) {
+		return false;
+	}
+
+	$user = get_user_by( 'id', $user_id );
+
+	// If permalink is enabled.
+	if ( get_option( 'permalink_structure' ) != '' ) {
+		$link =  get_author_posts_url( $user_id, $user->user_nicename );
+	} else {
+		if ( false === $sub ) {
+			$sub = array( 'ap_page' => 'user', 'ap_user' => $user->user_login );
+		} elseif ( is_array( $sub ) ) {
+			$sub['ap_page']  = 'user';
+			$sub['ap_user']     = $user->user_login;
+		} elseif ( ! is_array( $sub ) ) {
+			$sub = array( 'ap_page' => 'user', 'ap_user' => $user->user_login, 'user_page' => $sub );
+		}
+
+		$link = ap_get_link_to( $sub );
+	}
+
+	return apply_filters( 'ap_user_link', $link, $user_id );
+}
+
+/**
+ * Return current page in user profile.
+ * @since 2.0.1
+ * @return string
+ * @since 2.4.7 Added new filter `ap_active_user_page`.
+ */
+function ap_active_user_page() {
+	$user_page        = sanitize_text_field( get_query_var( 'user_page' ) );
+
+	if ( ! empty($user_page ) ) {
+		return $user_page;
+	}
+
+	$page = 'about';
+
+	return apply_filters( 'ap_active_user_page', $page );
+}
+
+/**
+ * echo ID of currently displaying user
+ * @return integer WordPress user ID
+ * @since 2.1
+ */
+function ap_displayed_user_id() {
+	echo ap_get_displayed_user_id();
+}
+
+/**
+ * Return ID of currently displaying user
+ * @return integer WordPress user ID
+ * @since 2.1
+ */
+function ap_get_displayed_user_id() {
+	$user_id = (int) get_query_var( 'ap_user_id' );
+
+	if ( $user_id > 0 ) {
+		return $user_id; }
+
+	return get_current_user_id();
+}
+
+
+	/**
+	 * Display user meta
+	 * @param   boolean       $html  for html output
+	 * @param   false|integer $user_id  User id, if empty then post author witll be user
+	 * @param   boolen        $echo
+	 * @return  string
+	 */
+function ap_user_display_meta($html = false, $user_id = false, $echo = false) {
+
+	if ( false === $user_id ) {
+		$user_id = get_the_author_meta( 'ID' );
+	}
+
+	$metas = array();
+
+	$metas['display_name'] = '<span class="ap-user-meta ap-user-meta-display_name">'. ap_user_display_name( array( 'html' => true ) ) .'</span>';
+
+	/**
+	 * FILTER: ap_user_display_meta_array
+	 * Can be used to alter user display meta
+	 * @var array
+	 */
+	$metas = apply_filters( 'ap_user_display_meta_array', $metas, $user_id );
+
+	$output = '';
+
+	if ( ! empty( $metas ) && is_array( $metas ) && count( $metas ) > 0 ) {
+		$output .= '<span class="ap-user-meta">';
+		foreach ( $metas as $meta ) {
+			$output .= $meta.' ';
+		}
+		$output .= '</span>';
+	}
+
+	if ( $echo ) {
+		echo $output;
+	} else {
+		return $output;
+	}
+}
+
+/**
+ * Return or echo hovercard data attribute.
+ * @param  integer $user_id User id.
+ * @param  boolean $echo    Echo or return? default is true.
+ * @return string
+ */
+function ap_hover_card_attributes($user_id, $echo = true) {
+	if ( $user_id > 0 ) {
+		$attr = ' data-userid="'.$user_id.'"';
+
+		if ( true !== $echo ) {
+			return $attr;
+		}
+
+		echo $attr;
+	}
+}
+
+/**
+ * @param string $user_id
+ */
+function ap_user_link_anchor($user_id, $echo = true) {
+
+	$name = ap_user_display_name( $user_id );
+
+	if ( $user_id < 1 ) {
+		if ( $echo ) {
+			echo $name;
+		} else {
+			return $name;
+		}
+	}
+
+	$html = '<a href="'.ap_user_link( $user_id ).'"' . ap_hover_card_attributes( $user_id, false ). '>';
+	$html .= $name;
+	$html .= '</a>';
+
+	if ( $echo ) {
+		echo $html;
+	}
+
+	return $html;
 }

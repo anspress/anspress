@@ -97,10 +97,6 @@ class AnsPress_Process_Form
 				$this->process_answer_form();
 				break;
 
-			case 'ap_user_profile_form':
-				$this->ap_user_profile_form();
-				break;
-
 			case 'upload_post_image':
 				$this->upload_post_image();
 				break;
@@ -401,69 +397,6 @@ class AnsPress_Process_Form
 				'do'			=> array( 'redirect' => get_permalink( $answer->post_parent ) ),
 			));
 		}
-	}
-
-	/**
-	 * Process user profile and account fields
-	 */
-	public function ap_user_profile_form() {
-		$user_id = get_current_user_id();
-		$group = sanitize_text_field( $_POST['group'] );
-
-		if ( ! ap_user_can_edit_profile() ) {
-			$this->result  = array( 'message' => 'no_permission' );
-			return;
-		}
-
-		if ( ! ap_verify_nonce( 'nonce_user_profile_'.$user_id.'_'.$group ) ) {
-			ap_ajax_json( 'something_wrong' );
-		}
-
-		$user_fields = ap_get_user_fields( $group, $user_id );
-
-		$validate = new AnsPress_Validation( $user_fields );
-
-		$ap_errors = $validate->get_errors();
-
-		// If error in form then return.
-		if ( $validate->have_error() ) {
-			ap_ajax_json( array(
-				'form' 			=> $_POST['ap_form_action'],
-				'message_type' 	=> 'error',
-				'message'		=> __( 'Check missing fields and then re-submit.', 'anspress-question-answer' ),
-				'errors'		=> $ap_errors,
-			) );
-		}
-
-		$fields = $validate->get_sanitized_fields();
-
-		$default_fields = array( 'name', 'first_name', 'last_name', 'nickname', 'display_name', 'user_email', 'description' );
-
-		if ( is_array( $user_fields ) && ! empty( $user_fields ) ) {
-			foreach ( $user_fields as $field ) {
-
-				if ( isset( $fields[$field['name']] ) && ( in_array( $field['name'], $default_fields ) ) ) {
-
-					wp_update_user( array( 'ID' => $user_id, $field['name'] => $fields[$field['name']] ) );
-
-					// If email is updated then send verification email.
-					if ( $field['name'] == 'user_email' ) {
-						wp_new_user_notification( $user_id, null, 'both' );
-					}
-				} elseif ( $field['name'] == 'password' && $_POST['password'] == $_POST['password-1'] ) {
-					wp_set_password( $_POST['password'], $user_id );
-				} elseif ( isset( $fields[$field['name']] ) ) {
-					update_user_meta( $user_id, $field['name'], $fields[$field['name']] );
-				}
-			}
-		}
-
-		$this->result  = array(
-			'message' 		=> 'profile_updated_successfully',
-			'action' 		=> 'updated_user_field',
-			'do'			=> array( 'updateHtml' => '#ap_user_profile_form' ),
-			'html'			=> ap_user_get_fields( '', $group ),
-		);
 	}
 
 	/**

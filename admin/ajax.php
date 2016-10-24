@@ -21,27 +21,25 @@ if ( ! defined( 'WPINC' ) ) {
  * @package AnsPress
  * @author  Rahul Aryan <support@anspress.io>
  */
-class AnsPress_Admin_Ajax
-{
+class AnsPress_Admin_Ajax {
 	/**
 	 * Initialize admin ajax
 	 */
-	public function __construct() {
-		anspress()->add_action( 'wp_ajax_ap_taxo_rename', $this, 'ap_taxo_rename' );
-		anspress()->add_action( 'wp_ajax_ap_delete_flag', $this, 'ap_delete_flag' );
-		anspress()->add_action( 'ap_ajax_ap_clear_flag', $this, 'clear_flag' );
-		anspress()->add_action( 'ap_ajax_ap_admin_vote', $this, 'ap_admin_vote' );
+	public static function init() {
+		anspress()->add_action( 'wp_ajax_ap_taxo_rename', __CLASS__, 'ap_taxo_rename' );
+		anspress()->add_action( 'wp_ajax_ap_delete_flag', __CLASS__, 'ap_delete_flag' );
+		anspress()->add_action( 'ap_ajax_ap_clear_flag', __CLASS__, 'clear_flag' );
+		anspress()->add_action( 'ap_ajax_ap_admin_vote', __CLASS__, 'ap_admin_vote' );
 	}
 
 	/**
 	 * Ajax cllback for updating old taxonomy question_tags to question_tag
 	 */
-	public function ap_taxo_rename() {
+	public static function ap_taxo_rename() {
 
 		if ( current_user_can( 'manage_options' ) ) {
 			global $wpdb;
-
-			$wpdb->query( 'UPDATE '.$wpdb->prefix."term_taxonomy SET taxonomy = 'question_tag' WHERE  taxonomy = 'question_tags'" );
+			$wpdb->query( "UPDATE {$wpdb->prefix}term_taxonomy SET taxonomy = 'question_tag' WHERE  taxonomy = 'question_tags'" ); // db call okay, cache ok.
 
 			ap_opt( 'tags_taxo_renamed', 'true' );
 		}
@@ -52,49 +50,50 @@ class AnsPress_Admin_Ajax
 	/**
 	 * Delete post flag
 	 */
-	public function ap_delete_flag() {
+	public static function ap_delete_flag() {
+		$id = (int) ap_sanitize_unslash( 'id', 'p' );
 
-		$id = (int) sanitize_text_field( $_POST['id'] );
-		if ( wp_verify_nonce( $_POST['__nonce'], 'flag_delete'.$id ) && current_user_can( 'manage_options' ) ) {
+		if ( ap_verify_nonce( 'flag_delete' . $id ) && current_user_can( 'manage_options' ) ) {
 			return ap_delete_meta( false, $id );
 		}
-		die();
+
+		wp_die();
 	}
 
 	/**
 	 * Clear post flags.
+	 *
 	 * @since 2.4.6
 	 */
-	public function clear_flag() {
-		$args = $_POST['args'];
-		if ( current_user_can( 'manage_options' ) && wp_verify_nonce( $_POST['__nonce'], 'clear_flag_'. $args[0] ) ) {
+	public static function clear_flag() {
+		$args = ap_sanitize_unslash( 'args', 'p' );
+
+		if ( current_user_can( 'manage_options' ) && ap_verify_nonce( 'clear_flag_' . $args[0] ) ) {
 			ap_delete_all_post_flags( $args[0] );
 			ap_set_flag_count( $args[0], 0 );
-			die( _e('0' ) );
+			wp_die( _e('0' ) );
 		}
-		die();
+
+		wp_die();
 	}
 
 	/**
 	 * Handle ajax vote in wp-admin post edit screen.
 	 * Cast vote as anonymous use with ID 0, so that when this vote never get
 	 * rest if user vote.
+	 *
 	 * @since 2.5
 	 */
-	public function ap_admin_vote() {
-		$args = $_POST['args'];
+	public static function ap_admin_vote() {
+		$args = ap_sanitize_unslash( 'args', 'p' );
 
-		if ( current_user_can( 'manage_options' ) && wp_verify_nonce( $_POST['__nonce'], 'admin_vote' ) ) {
+		if ( current_user_can( 'manage_options' ) && ap_verify_nonce( 'admin_vote' ) ) {
 			$post = ap_get_post( $args[0] );
 
 			if ( $post ) {
-				$type = $args[1] == 'up' ? 'vote_up'  : 'vote_down';
+				$type = 'up' === $args[1] ? 'vote_up'  : 'vote_down';
 				$inserted = ap_vote_insert( $post->ID, 0, $type );
-
-				if( false !== $inserted ) {
-
-				}
-				echo $count['net_vote'];
+				echo esc_attr( $count['net_vote'] );
 			}
 		}
 		die();

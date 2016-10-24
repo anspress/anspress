@@ -373,7 +373,4 @@ function ap_unselect_answer( $post_id ) {
 	if ( ap_opt( 'close_selected' ) ) {
 		wp_update_post( array( 'ID' => $post->post_parent, 'post_status' => 'publish' ) );
 	}
-
-	ap_update_user_best_answers_count_meta( $post->post_author );
-	ap_update_user_solved_answers_count_meta( $post->post_author );
 }

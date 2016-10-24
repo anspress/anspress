@@ -341,29 +341,33 @@ class AnsPress_Theme {
 
 		return $template;
 	}
-}
 
-/**
- * Return canonical URL of current page.
- * @return string
- * @since  3.0.0
- */
-function ap_canonical_url() {
-	$canonical_url = ap_get_link_to( get_query_var( 'ap_page' ) );
+	/**
+	 * Add AnsPress avtar in Wp discussion setting
+	 * @param  array $avatar_defaults Avatar types.
+	 * @return array
+	 */
+	public static function default_avatar($avatar_defaults) {
+		$new_avatar = 'ANSPRESS_AVATAR_SRC';
+		$avatar_defaults[$new_avatar] = 'AnsPress';
 
-	if ( is_question() ) {
-		$canonical_url = get_permalink( get_question_id() );
-	} elseif ( is_ap_user() ) {
-		$canonical_url = ap_user_link( ap_get_displayed_user_id(), ap_active_user_page() );
+		return $avatar_defaults;
 	}
 
 	/**
-	 * Filter AnsPress canonical URL.
-	 * @param string $canonical_url Current URL.
+	 * Override get_avatar.
+	 *
+	 * @param  string         $args 		Avatar image.
+	 * @param  integar|string $id_or_email 	User id or email.
 	 * @return string
-	 * @since  3.0.0
 	 */
-	$canonical_url = apply_filters( 'ap_canonical_url', $canonical_url );
+	public static function get_avatar( $args, $id_or_email ) {
+		// Set default avatar url.
+		if ( empty( $args['url'] ) && 'ANSPRESS_AVATAR_SRC' == get_option( 'avatar_default' ) ) {
+			$args['url'] = ap_generate_avatar( $id_or_email );
+		}
 
-	return esc_url( $canonical_url );
+		return $args;
+	}
 }
+

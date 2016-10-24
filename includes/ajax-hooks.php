@@ -22,7 +22,7 @@ class AnsPress_Ajax {
 	 * Initialize the plugin by setting localization and loading public scripts
 	 * and styles.
 	 */
-	public function init() {
+	public static function init() {
 		anspress()->add_action( 'ap_ajax_suggest_similar_questions', __CLASS__, 'suggest_similar_questions' );
 		anspress()->add_action( 'ap_ajax_set_featured', __CLASS__, 'set_featured' );
 		anspress()->add_action( 'ap_ajax_hover_card', __CLASS__, 'hover_card' );
@@ -31,7 +31,6 @@ class AnsPress_Ajax {
 		anspress()->add_action( 'ap_ajax_delete_post', __CLASS__, 'delete_post' );
 		anspress()->add_action( 'ap_ajax_permanent_delete_post', __CLASS__, 'permanent_delete_post' );
 		anspress()->add_action( 'ap_ajax_restore_post', __CLASS__, 'restore_post' );
-		anspress()->add_action( 'ap_hover_card_user', __CLASS__, 'hover_card_user' );
 		anspress()->add_action( 'ap_ajax_load_tinymce_assets', __CLASS__, 'load_tinymce_assets' );
 		anspress()->add_action( 'ap_ajax_filter_search', __CLASS__, 'filter_search' );
 		anspress()->add_action( 'ap_ajax_convert_to_post', __CLASS__, 'convert_to_post' );
@@ -161,10 +160,7 @@ class AnsPress_Ajax {
 			ap_insert_qameta( $post->post_parent, [ 'closed' => 1 ] );
 		}
 
-		ap_update_user_best_answers_count_meta( $post->post_author );
-		ap_update_user_solved_answers_count_meta( $post->post_author );
 		$html = ap_select_answer_btn_html( $answer_id );
-
 		ap_ajax_json( array(
 			'message' 	 => 'selected_the_answer',
 			'action' 	   => 'selected_answer',
@@ -419,58 +415,6 @@ class AnsPress_Ajax {
 	}
 
 	/**
-	 * Output hover card for user.
-	 *
-	 * @param  integer $id User ID.
-	 * @since  3.0.0
-	 */
-	public static function hover_card_user( $id ) {
-		$cache = get_transient( 'ap_user_card_' . $id );
-
-		if ( false !== $cache ) {
-			ap_ajax_json( $cache );
-		}
-
-		global $ap_user_query;
-		$ap_user_query = ap_has_users( array( 'ID' => $id ) );
-
-		if ( $ap_user_query->has_users() ) {
-			while ( ap_users() ) : ap_the_user();
-				$last_seen = ! empty( ap_user_get_the_meta( '__last_active' ) ) ? ap_human_time( ap_user_get_the_meta( '__last_active' ), false ) : __( 'Never','anspress-question-answer' );
-				$data = array(
-					'template'        => 'user-hover',
-					'disableAutoLoad' => 'true',
-					'apData'          => array(
-						'id' 			      => ap_user_get_the_ID(),
-						'name' 			    => ap_user_get_the_display_name(),
-						'mention' 		  => '@' . ap_user_get_the_user_login(),
-						'profile_link' 	=> ap_user_get_the_link(),
-						'avatar' 		    => ap_user_get_the_avatar( 80 ),
-						'signature' 	  => ap_get_user_signature(),
-						'stats'			    => array(
-							[ 'label' => __( 'Answers', 'anspress-question-answer' ), 'count' => ap_user_get_the_meta( '__total_answers' ) ],
-							[ 'label' => __( 'Best', 'anspress-question-answer' ), 'count' => ap_user_get_the_meta( '__best_answers' ) ],
-							[ 'label' => __( 'Question', 'anspress-question-answer' ), 'count' => ap_user_get_the_meta( '__total_questions' ) ],
-							[ 'label' => __( 'comments', 'anspress-question-answer' ), 'count' => ap_user_comment_count() ],
-						),
-						'active' => sprintf( __( 'Last seen %s', 'anspress-question-answer' ), $last_seen ),
-					),
-				);
-				/**
-				 * Filter user hover card data.
-				 *
-				 * @param  array $data Card data.
-				 * @return array
-				 * @since  3.0.0
-				 */
-				$data = apply_filters( 'ap_user_hover_data', $data );
-				set_transient( 'ap_user_card_' . $id, $data, MINUTE_IN_SECONDS );
-				ap_ajax_json( $data );
-			endwhile;
-		}
-	}
-
-	/**
 	 * Send JSON response and terminate.
 	 *
 	 * @param array|string $result Ajax response.
@@ -607,12 +551,6 @@ class AnsPress_Ajax {
 				'content_css'      => ap_get_theme_url( 'css/editor.css' ),
 				'wp_autoresize_on' => true,
 			);
-		}
-
-		// Include mentions assets.
-		if ( ! ap_opt( 'disable_mentions' ) ) {
-			wp_enqueue_script( 'ap-mention-js', ap_get_theme_url( 'min/mention.js' ) , array( 'jquery' ), AP_VERSION, true );
-			wp_enqueue_style( 'ap-mention-css', ap_get_theme_url( 'css/mention.css' ) , array(), AP_VERSION, true );
 		}
 
 		echo '<div class="ap-editor">';

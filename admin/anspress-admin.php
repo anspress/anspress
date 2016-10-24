@@ -60,7 +60,6 @@ class AnsPress_Admin {
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_scripts' ) );
 
 		add_action( 'admin_menu', array( $this, 'add_plugin_admin_menu' ) );
-		add_action( 'admin_init', array( $this, 'register_setting' ) );
 		add_action( 'admin_init', array( $this, 'init_actions' ) );
 		add_action( 'parent_file', array( $this, 'tax_menu_correction' ) );
 		add_action( 'load-post.php', array( $this, 'question_meta_box_class' ) );
@@ -495,7 +494,6 @@ class AnsPress_Admin {
 		echo '<ul>';
 
 		$ap_pages = anspress()->pages;
-		$ap_pages['profile'] = array( 'title' => __( 'User profile', 'anspress-question-answer' ), 'show_in_menu' => true );
 
 		foreach ( $ap_pages as $k => $args ) {
 			if ( $args['show_in_menu'] ) {

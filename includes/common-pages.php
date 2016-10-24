@@ -155,11 +155,6 @@ class AnsPress_Common_Pages
 		if ( '' === $type ) {
 			$questions = ap_get_questions( array( 's' => $keywords ) );
 			include( ap_get_theme_location( 'search.php' ) );
-		} elseif ( 'user' === $type && ap_opt( 'enable_users_directory' ) ) {
-			global $ap_user_query;
-
-			$ap_user_query = ap_has_users( array( 'search' => $keywords, 'search_columns' => array( 'user_login', 'user_email', 'user_nicename' ) ) );
-			include( ap_get_theme_location( 'users/users.php' ) );
 		}
 	}
 

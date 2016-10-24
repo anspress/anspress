@@ -44,7 +44,7 @@ class AP_Views {
 			ap_insert_views( get_question_id(), 'question' );
 		}
 
-		if ( is_ap_user() && ap_get_displayed_user_id() != get_current_user_id() && ap_get_displayed_user_id() ) {
+		if ( ap_get_displayed_user_id() != get_current_user_id() && ap_get_displayed_user_id() ) {
 			ap_insert_views( ap_get_displayed_user_id(), 'profile' );
 		}
 	}

@@ -6,7 +6,7 @@
  *
  * @author    Rahul Aryan <support@rahularyan.com>
  * @copyright 2014 WP3.in & Rahul Aryan
- * @license   GPL-2.0+ https://www.gnu.org/licenses/gpl-2.0.txt
+ * @license   GPL-3.0+ https://www.gnu.org/licenses/gpl-3.0.txt
  * @link      https://anspress.io
  * @package   AnsPress
  *
@@ -14,12 +14,12 @@
  * Plugin Name:       AnsPress
  * Plugin URI:        https://anspress.io
  * Description:       The most advance community question and answer system for WordPress
- * Donate link: 	  https://goo.gl/ffainr
+ * Donate link: 	    https://goo.gl/ffainr
  * Version:           4.0.0-alpha.1
  * Author:            Rahul Aryan
  * Author URI:        https://anspress.io
  * License:           GPL-3.0+
- * License URI:       https://www.gnu.org/licenses/gpl-2.0.txt
+ * License URI:       https://www.gnu.org/licenses/gpl-3.0.txt
  * Text Domain:       anspress-question-answer
  * Domain Path:       /languages
  * GitHub Plugin URI: anspress/anspress
@@ -102,22 +102,6 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		 * @var array All AnsPress pages
 		 */
 		public $pages;
-
-		/**
-		 * AnsPress users pages
-		 *
-		 * @access public
-		 * @var array AnsPress user pages
-		 */
-		public $user_pages;
-
-		/**
-		 * AnsPress users
-		 *
-		 * @access public
-		 * @var object AnsPress users loop
-		 */
-		public $users;
 
 		/**
 		 * AnsPress menu
@@ -224,14 +208,6 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		public $third_party;
 
 		/**
-		 * AnsPress mention hooks object
-		 *
-		 * @access public
-		 * @var object
-		 */
-		public $mention_hooks;
-
-		/**
 		 * AnsPress views object
 		 *
 		 * @access public
@@ -328,24 +304,17 @@ if ( ! class_exists( 'AnsPress' ) ) {
 			require_once ANSPRESS_DIR . 'includes/class/form.php';
 			require_once ANSPRESS_DIR . 'includes/class/validation.php';
 			require_once ANSPRESS_DIR . 'includes/class/roles-cap.php';
-
 			require_once ANSPRESS_DIR . 'includes/common-pages.php';
-			require_once ANSPRESS_DIR . 'includes/class-user.php';
 			require_once ANSPRESS_DIR . 'includes/class-theme.php';
 			require_once ANSPRESS_DIR . 'admin/anspress-admin.php';
-			require_once ANSPRESS_DIR . 'admin/ajax.php';
 			require_once ANSPRESS_DIR . 'includes/options.php';
 			require_once ANSPRESS_DIR . 'includes/functions.php';
 			require_once ANSPRESS_DIR . 'includes/hooks.php';
-			require_once ANSPRESS_DIR . 'includes/ajax-hooks.php';
-
 			require_once ANSPRESS_DIR . 'includes/question-loop.php';
 			require_once ANSPRESS_DIR . 'includes/answer-loop.php';
-
 			require_once ANSPRESS_DIR . 'includes/qameta.php';
 			require_once ANSPRESS_DIR . 'includes/qaquery.php';
 			require_once ANSPRESS_DIR . 'includes/qaquery-hooks.php';
-
 			require_once ANSPRESS_DIR . 'includes/post_types.php';
 			require_once ANSPRESS_DIR . 'includes/query_filter.php';
 			require_once ANSPRESS_DIR . 'includes/post_status.php';
@@ -354,30 +323,23 @@ if ( ! class_exists( 'AnsPress' ) ) {
 			require_once ANSPRESS_DIR . 'includes/view.php';
 			require_once ANSPRESS_DIR . 'includes/theme.php';
 			require_once ANSPRESS_DIR . 'includes/form.php';
-			require_once ANSPRESS_DIR . 'includes/participants.php';
 			require_once ANSPRESS_DIR . 'includes/shortcode-basepage.php';
-
 			require_once ANSPRESS_DIR . 'includes/process-form.php';
 			require_once ANSPRESS_DIR . 'includes/ask-form.php';
 			require_once ANSPRESS_DIR . 'includes/answer-form.php';
+
 			require_once ANSPRESS_DIR . 'widgets/search.php';
 			require_once ANSPRESS_DIR . 'widgets/question_stats.php';
 			require_once ANSPRESS_DIR . 'widgets/related_questions.php';
 			require_once ANSPRESS_DIR . 'widgets/questions.php';
 			require_once ANSPRESS_DIR . 'widgets/breadcrumbs.php';
-			require_once ANSPRESS_DIR . 'widgets/users.php';
+			require_once ANSPRESS_DIR . 'widgets/ask-form.php';
+
 			require_once ANSPRESS_DIR . 'includes/rewrite.php';
 			require_once ANSPRESS_DIR . 'includes/bad-words.php';
-
-			require_once ANSPRESS_DIR . 'includes/user.php';
-			require_once ANSPRESS_DIR . 'includes/users-loop.php';
 			require_once ANSPRESS_DIR . 'includes/deprecated.php';
-			require_once ANSPRESS_DIR . 'includes/user-fields.php';
-			require_once ANSPRESS_DIR . 'widgets/user.php';
-			require_once ANSPRESS_DIR . 'widgets/ask-form.php';
 			require_once ANSPRESS_DIR . 'includes/flag.php';
 			require_once ANSPRESS_DIR . 'includes/shortcode-question.php';
-			require_once ANSPRESS_DIR . 'includes/mention.php';
 			require_once ANSPRESS_DIR . 'includes/akismet.php';
 			require_once ANSPRESS_DIR . 'includes/comments.php';
 			require_once ANSPRESS_DIR . 'includes/class/avatar.php';
@@ -391,8 +353,11 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		public function ajax_hooks() {
 			// Load ajax hooks only if DOING_AJAX defined.
 			if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
+				require_once ANSPRESS_DIR . 'admin/ajax.php';
+				require_once ANSPRESS_DIR . 'includes/ajax-hooks.php';
+
 				AnsPress_Ajax::init();
-				self::$instance->admin_ajax = new AnsPress_Admin_Ajax( );
+				AnsPress_Admin_Ajax::init( );
 			}
 		}
 
@@ -403,7 +368,6 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		 */
 		public function site_include() {
 			self::$instance->anspress_hooks 	= AnsPress_Hooks::init();
-			self::$instance->mention_hooks 		= new AP_Mentions_Hooks( );
 			self::$instance->views_class 		  = new AP_Views( );
 			self::$instance->bad_words_class 	= new AP_Bad_words( );
 		}

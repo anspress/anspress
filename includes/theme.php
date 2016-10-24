@@ -38,8 +38,6 @@ function ap_page_title() {
 		$new_title = sprintf( ap_opt( 'search_page_title' ), sanitize_text_field( get_query_var( 'ap_s' ) ) );
 	} elseif ( is_ask() ) {
 		$new_title = ap_opt( 'ask_page_title' );
-	} elseif ( is_ap_users() ) {
-		$new_title = ap_opt( 'users_page_title' );
 	} elseif ( '' == $current_page && ! is_question() && '' == get_query_var( 'question_name' ) ) {
 		$new_title = ap_opt( 'base_page_title' );
 	} elseif ( get_query_var( 'parent' ) != '' ) {
@@ -121,10 +119,6 @@ function ap_current_page_is() {
 			$template = 'edit-question';
 		} elseif ( is_answer_edit() ) {
 			$template = 'edit-answer';
-		} elseif ( is_ap_users() ) {
-			$template = 'users';
-		} elseif ( is_ap_user() ) {
-			$template = 'user';
 		} elseif ( is_ap_search() ) {
 			$template = 'search';
 		} elseif ( is_ap_revision() ) {
@@ -809,12 +803,6 @@ function ap_assets( ) {
 	} else {
 		$assets['js']['anspress-js'] = array( 'src' => ANSPRESS_URL.'assets/min/anspress.min.js', 'dep' => array( 'jquery', 'jquery-form' ) );
 		$assets['js']['ap-theme-js'] = array( 'src' => ap_get_theme_url( 'min/anspress-theme.min.js' ), 'dep' => array( 'jquery', 'anspress-js' ) );
-	}
-
-	// Load mention JS.
-	if ( ! ap_opt('disable_mentions' ) ) {
-		$assets['js']['ap-mention-js'] = array( 'src' => ap_get_theme_url( 'min/mention.js' ), 'dep' => array( 'jquery' ) );
-		$assets['css']['ap-mention-css'] = array( 'src' => ap_get_theme_url( 'css/mention.css' ) );
 	}
 
 	if ( is_rtl() ) {

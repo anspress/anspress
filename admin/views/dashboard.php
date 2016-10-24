@@ -30,8 +30,6 @@ class AnsPress_Dashboard{
 		add_meta_box('ap-mb-astats', '<i class="apicon-answer"></i>'.__('Answer', 'anspress-question-answer' ), array( __CLASS__, 'anspress_astats' ), 'anspress', 'column3', 'core' );
 
 		add_meta_box('ap-mb-latesta', __('Latest Answers', 'anspress-question-answer' ), array( __CLASS__, 'anspress_latesta' ), 'anspress', 'column3', 'core' );
-
-		add_meta_box('ap-mb-topusers', 'Top Users', array( __CLASS__, 'topusers' ), 'anspress', 'column4', 'core' );
 	}
 
 	public static function admin_footer() {
@@ -306,39 +304,6 @@ class AnsPress_Dashboard{
 		<?php
 	}
 
-	public static function topusers() {
-		global $ap_user_query;
-		$user_a = array(
-			'number'    	=> 10,
-			'sortby' 		=> 'active',
-			'paged' 		=> 1,
-		);
-
-		// The Query.
-		$ap_user_query = ap_has_users( $user_a );
-
-		?>
-		<div class="main">
-			<?php while ( ap_users() ) : ap_the_user(); ?>
-			<div class="ap-uw-summary clearfix" data-id="<?php ap_user_the_ID(); ?>">
-				<a class="ap-users-avatar" href="<?php ap_user_the_link(); ?>">
-					<?php ap_user_the_avatar( 40 )  ?>
-				</a>
-				<div class="no-overflow clearfix">
-					<a class="ap-uw-name" href="<?php ap_user_the_link(); ?>"><?php ap_user_the_display_name(); ?></a>
-					<div class="ap-uw-status">
-						<span>
-							<?php printf( __('%d Best', 'anspress-question-answer' ), ap_user_get_the_meta('__best_answers' ) ); ?>
-						</span>
-						<span><?php printf(__('%d Answers', 'anspress-question-answer' ), ap_user_get_the_meta('__total_answers' ) ); ?></span>
-						<span><?php printf(__('%d Questions', 'anspress-question-answer' ), ap_user_get_the_meta('__total_questions' ) ); ?></span>
-			        </div>
-				</div>
-			</div>
-			<?php endwhile; ?>
-		</div>
-		<?php
-	}
 }
 
 new AnsPress_Dashboard();

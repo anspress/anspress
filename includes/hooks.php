@@ -56,12 +56,6 @@ class AnsPress_Hooks {
 			anspress()->add_action( 'ap_vote_removed', __CLASS__, 'update_user_vote_casted_count' , 10, 4 );
 			anspress()->add_action( 'the_post', __CLASS__, 'ap_append_vote_count' );
 
-			// Query filters.
-			// @TODO Update this quries to match new qameta table.
-			// anspress()->add_action( 'posts_clauses', 'AnsPress_Query_Filter', 'user_favorites', 10, 2 );
-			// anspress()->add_action( 'posts_clauses', 'AnsPress_Query_Filter', 'ap_question_subscription_query', 10, 2 );
-			// anspress()->add_filter( 'the_posts', 'AnsPress_Query_Filter', 'restricted_answer_contents', 10, 2 );
-
 			anspress()->add_filter( 'posts_clauses', 'AP_QA_Query_Hooks', 'sql_filter', 10, 2 );
 			anspress()->add_filter( 'posts_results', 'AP_QA_Query_Hooks', 'posts_results', 10, 2 );
 
@@ -82,19 +76,14 @@ class AnsPress_Hooks {
 
 			anspress()->add_filter( 'wp_get_nav_menu_items', __CLASS__, 'update_menu_url' );
 			anspress()->add_filter( 'nav_menu_css_class', __CLASS__, 'fix_nav_current_class', 10, 2 );
-			anspress()->add_filter( 'walker_nav_menu_start_el', __CLASS__, 'walker_nav_menu_start_el', 10, 4 );
 			anspress()->add_filter( 'mce_buttons', __CLASS__, 'editor_buttons', 10, 2 );
 			anspress()->add_filter( 'wp_insert_post_data', __CLASS__, 'wp_insert_post_data', 10, 2 );
 			anspress()->add_filter( 'ap_form_contents_filter', __CLASS__, 'sanitize_description' );
 			anspress()->add_filter( 'human_time_diff', __CLASS__, 'human_time_diff' );
 			anspress()->add_filter( 'comments_template_query_args', 'AnsPress_Comment_Hooks', 'comments_template_query_args' );
 			anspress()->add_filter( 'template_include', 'AnsPress_Theme', 'anspress_basepage_template' );
-
-			// User hooks.
-			anspress()->add_action( 'init', 'AnsPress_User', 'init_actions' );
-			anspress()->add_filter( 'avatar_defaults' , 'AnsPress_User', 'default_avatar' );
-			anspress()->add_filter( 'pre_get_avatar_data', 'AnsPress_User', 'get_avatar', 10, 3 );
-			anspress()->add_filter( 'ap_user_menu', 'AnsPress_User', 'ap_user_menu_icons' );
+			anspress()->add_filter( 'avatar_defaults' , 'AnsPress_Theme', 'default_avatar' );
+			anspress()->add_filter( 'pre_get_avatar_data', 'AnsPress_Theme', 'get_avatar', 10, 3 );
 
 			// Common pages hooks.
 			anspress()->add_action( 'init', 'AnsPress_Common_Pages', 'register_common_pages' );
@@ -124,8 +113,6 @@ class AnsPress_Hooks {
 	 * @since	1.0
 	 */
 	public static function after_new_question( $post_id, $post ) {
-		// Update user question count meta.
-		ap_update_user_questions_count_meta( $post_id );
 
 		// Add question activity meta.
 		ap_update_post_activity_meta( $post_id, 'new_question', $post->post_author );
@@ -152,7 +139,6 @@ class AnsPress_Hooks {
 	public static function after_new_answer( $post_id, $post ) {
 		// Update answer count.
 		ap_update_answers_count( $post->post_parent );
-		ap_update_user_answers_count_meta( $post->post_parent );
 
 		// Update activities in qameta.
 		ap_update_post_activity_meta( $post_id, 'new_answer', $post->post_author );
@@ -485,11 +471,8 @@ class AnsPress_Hooks {
 			 */
 
 			$default_pages	= array(
-				'profile' 	   => array( 'title' => __( 'My profile', 'anspress-question-answer' ), 'show_in_menu' => true, 'logged_in'    => true ),
 				'ask' 		     => array(),
-				'question' 	   => array(),
-				'users' 	     => array(),
-				'user' 		     => array(),
+				'question' 	   => array()
 			);
 
 			/**
@@ -510,16 +493,7 @@ class AnsPress_Hooks {
 					unset( $items[ $key ] );
 				}
 
-				if ( ! ap_is_profile_active() && ('profile' == $slug  ) ) {
-					unset( $items[ $key ] );
-				}
-
-				if ( 'profile' == $slug ) {
-					$item->url = is_user_logged_in() ? ap_user_link( get_current_user_id() ) : wp_login_url();
-				} else {
-					$item->url = ap_get_link_to( $slug );
-				}
-
+				$item->url = ap_get_link_to( $slug );
 				$item->classes[] = 'anspress-page-link';
 				$item->classes[] = 'anspress-page-' . $slug;
 
@@ -582,37 +556,6 @@ class AnsPress_Hooks {
 			SELF::$menu_class[] = 'ap-dropdown';
 			SELF::$menu_class[] = 'ap-userdp-menu';
 		}
-	}
-
-	/**
-	 * Add user dropdown menu
-	 *
-	 * @param	string	$o							 Menu html.
-	 * @param	object	$item							 Menu item object.
-	 * @param	integer $depth							Menu depth.
-	 * @param	object	$args 				 Menu args.
-	 * @return string
-	 */
-	public static function walker_nav_menu_start_el( $o, $item, $depth, $args ) {
-			if ( ! is_user_logged_in() && ( ap_is_profile_menu( $item ) )	) {
-				$o = '';
-			}
-
-			if ( ! ap_is_profile_active() && ( ap_is_profile_menu( $item ) ) ) {
-				return '';
-			}
-
-			if ( in_array( 'anspress-page-profile', $item->classes ) && is_user_logged_in() ) {
-
-				$o	= '<a id="ap-userdp-menu" class="ap-dropdown-toggle" href="#" data-query="user_dp::' . wp_create_nonce( 'ap_ajax_nonce' ) . '::menu" data-action="ajax_btn">';
-				$o .= get_avatar( get_current_user_id(), 80 );
-				$o .= '<span class="name">' . ap_user_display_name( get_current_user_id() ) . '</span>';
-				$o .= ap_icon( 'chevron-down', true );
-				$o .= '</a>';
-
-			}
-
-			return $o;
 	}
 
 	/**
