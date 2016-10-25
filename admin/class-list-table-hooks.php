@@ -1,51 +1,91 @@
 <?php
+/**
+ * Post table hooks.
+ *
+ * @package   AnsPress
+ * @author    Rahul Aryan <support@anspress.io>
+ * @license   GPL-3.0+
+ * @link      https://anspress.io
+ * @copyright 2014 Rahul Aryan
+ */
+
 // Die if access directly.
-if ( ! defined('ABSPATH' ) ) {
+if ( ! defined( 'ABSPATH' ) ) {
 	die();
 }
 
-class AP_List_Table_Hooks{
+/**
+ * Post table hooks.
+ */
+class AnsPress_Post_Table_Hooks {
 
 	/**
 	 * Initialize the class
 	 */
-	public function __construct() {
-		add_filter( 'views_edit-question', array( $this, 'flag_view' ) );
-		add_filter( 'views_edit-answer', array( $this, 'flag_view' ) );
-		add_action( 'posts_clauses', array( $this, 'filter_query_by_flagged' ), 10, 2 );
-		add_action( 'manage_answer_posts_custom_column', array( $this, 'answer_row_actions' ), 10, 2 );
-		add_filter( 'post_row_actions', array( $this, 'add_question_flag_link' ), 10, 2 );
+	public static function init() {
+		anspress()->add_filter( 'views_edit-question', __CLASS__, 'flag_view' );
+		anspress()->add_filter( 'views_edit-answer', __CLASS__, 'flag_view' );
+		anspress()->add_action( 'posts_clauses', __CLASS__, 'posts_clauses', 10, 2 );
+		anspress()->add_action( 'manage_answer_posts_custom_column', __CLASS__, 'answer_row_actions', 10, 2 );
+		anspress()->add_filter( 'post_row_actions', __CLASS__, 'add_question_flag_link', 10, 2 );
+		anspress()->add_filter( 'manage_edit-question_columns', __CLASS__, 'cpt_question_columns' );
+		anspress()->add_action( 'manage_posts_custom_column', __CLASS__, 'custom_columns_value' );
+		anspress()->add_filter( 'manage_edit-answer_columns', __CLASS__, 'cpt_answer_columns' );
+		anspress()->add_filter( 'manage_edit-question_sortable_columns', __CLASS__, 'admin_column_sort_flag' );
+		anspress()->add_filter( 'manage_edit-answer_sortable_columns', __CLASS__, 'admin_column_sort_flag' );
 	}
 
 	/**
-	 * Add flagged post view
+	 * Add flagged post view.
+	 *
 	 * @param  array $views Views array.
 	 * @return array
 	 */
-	public function flag_view( $views ) {
+	public static function flag_view( $views ) {
 		global $post_type_object;
-		$flagged_count = ap_total_posts_count($post_type_object->name, 'flag' );
-		$class = isset( $_GET['flagged'] ) ? 'class="current" ' : '';
-	    $views['flagged'] = '<a '.$class.'href="edit.php?flagged=true&#038;post_type='.$post_type_object->name.'">'.__('Flagged', 'anspress-question-answer' ).' <span class="count">('.$flagged_count->total.')</span></a>';
+		$flagged_count = ap_total_posts_count( $post_type_object->name, 'flag' );
+		$class = ap_sanitize_unslash( 'flagged', 'p' ) ? 'class="current" ' : '';
+	    $views['flagged'] = '<a ' . $class . 'href="edit.php?flagged=true&#038;post_type=' . $post_type_object->name . '">' . __( 'Flagged', 'anspress-question-answer' ) . ' <span class="count">(' . $flagged_count->total . ')</span></a>';
 
 	    return $views;
 	}
 
 	/**
-	 * Modify SQL to show only flagged posts.
+	 * Modify SQL query.
 	 *
 	 * @param array  $sql Sql claues.
 	 * @param object $instance WP_Query instance.
 	 * @return array
 	 */
-	public function filter_query_by_flagged( $sql, $instance ) {
+	public static function posts_clauses( $sql, $instance ) {
 		global $pagenow, $wpdb;
 		$vars = $instance->query_vars;
 
-		if ( 'edit.php' === $pagenow && isset( $vars['post_type'] ) && in_array( $vars['post_type'], [ 'question', 'answer' ], true )  && ap_sanitize_unslash( 'flagged', 'p' ) ) {
-			$sql['join'] = $sql['join'] . " LEFT JOIN {$wpdb->ap_qameta} qameta ON qameta.post_id = {$wpdb->posts}.ID";
-			$sql['where'] = $sql['where'] . " AND qameta.flags > 0";
-			$sql['orderby'] = " qameta.flags DESC, " . $sql['orderby'];
+		if ( ! in_array( $vars['post_type'], [ 'question', 'answer' ], true ) ) {
+			return $sql;
+		}
+
+		$sql['join'] = $sql['join'] . " LEFT JOIN {$wpdb->ap_qameta} qameta ON qameta.post_id = {$wpdb->posts}.ID";
+		$sql['fields'] = $sql['fields'] . ', qameta.*, qameta.votes_up - qameta.votes_down AS votes_net';
+
+		// Show only flagged posts.
+		if ( 'edit.php' === $pagenow && ap_sanitize_unslash( 'flagged', 'p' ) ) {
+			$sql['where'] = $sql['where'] . ' AND qameta.flags > 0';
+			$sql['orderby'] = ' qameta.flags DESC, ' . $sql['orderby'];
+		}
+
+		$orderby = ap_sanitize_unslash( 'orderby', 'p' );
+		$order = ap_sanitize_unslash( 'order', 'p' ) === 'asc' ? 'asc' : 'desc';
+
+		if ( 'flags' === $orderby ) {
+			// Sort by flags.
+			$sql['orderby'] = " qameta.flags {$order}";
+		} elseif ( 'answers' === $orderby ) {
+			// Sort by answers.
+			$sql['orderby'] = " qameta.answers {$order}";
+		} elseif ( 'votes' === $orderby ) {
+			// Sort by answers.
+			$sql['orderby'] = " votes_net {$order}";
 		}
 
 		return $sql;
@@ -53,31 +93,27 @@ class AP_List_Table_Hooks{
 
 	/**
 	 * Add action links below question/answer content in wp post list.
+	 *
 	 * @param  string  $column  Current column name.
 	 * @param  integer $post_id Current post id.
 	 */
-	public function answer_row_actions($column, $post_id) {
-
+	public static function answer_row_actions( $column, $post_id ) {
 		global $post, $mode;
 
-		if ( 'answer_content' != $column ) {
+		if ( 'answer_content' !== $column ) {
 			return;
 		}
 
 		$question = ap_get_post( $post->post_parent );
-		echo '<a href="'.get_permalink( $post->post_parent ).'" class="row-title">'.$question->post_title.'</a>';
 
-		$content = get_the_excerpt();
+		$content = ap_truncate_chars( esc_html( get_the_excerpt() ), 90 );
 
-		// Get the first 80 words from the content and added to the $abstract variable.
-		preg_match( '/^([^.!?\s]*[\.!?\s]+){0,40}/', strip_tags( $content ), $abstract );
+		// Pregmatch will return an array and the first 80 chars will be in the first element.
+		echo '<a href="' . esc_url( get_permalink( $post->post_parent ) ) . '" class="row-title">' . $content . '</a>'; // xss okay.
 
-		// Pregmatch will return an array and the first 80 chars will be in the first element
-		echo $abstract[0] . '...';
-
-		// First set up some variables
+		// First set up some variables.
 		$actions          = array();
-		$post_type_object = get_post_type_object( $post->post_type );
+		$post_type_object = get_post_type_object( $post->post_type ); // override ok.
 		$can_edit_post    = current_user_can( $post_type_object->cap->edit_post, $post->ID );
 
 		// Actions to delete/trash.
@@ -101,34 +137,179 @@ class AP_List_Table_Hooks{
 		}
 
 		// Actions to view/preview.
-		if ( in_array($post->post_status, array( 'pending', 'draft', 'future' ) ) && $can_edit_post ) {
+		if ( in_array( $post->post_status, [ 'pending', 'draft', 'future' ], true ) && $can_edit_post ) {
 
 			$actions['view'] = '<a href="' . esc_url( add_query_arg( 'preview', 'true', get_permalink( $post->ID ) ) ) . '" title="' . esc_attr( sprintf( __( 'Preview &#8220;%s&#8221;', 'anspress-question-answer' ),$post->title ) ) . '" rel="permalink">' . __( 'Preview', 'anspress-question-answer' ) . '</a>';
 
-		} elseif ( 'trash' != $post->post_status ) {
+		} elseif ( 'trash' !== $post->post_status ) {
 			$actions['view'] = '<a href="' . get_permalink( $post->ID ) . '" title="' . esc_attr( __( 'View &#8220;%s&#8221; question', 'anspress-question-answer' ) ) . '" rel="permalink">' . __( 'View', 'anspress-question-answer' ) . '</a>';
 		}
 
 		if ( ap_get_post_field( 'flags', $post ) ) {
-			$actions['flag'] = '<a href="#" data-query="ap_clear_flag::'. wp_create_nonce( 'clear_flag_'.$post->ID ) .'::'.$post->ID.'" class="ap-ajax-btn flag-clear" data-cb="afterFlagClear">'.__('Clear flag', 'anspress-question-answer' ).'</a>';
+			$actions['flag'] = '<a href="#" data-query="ap_clear_flag::' . wp_create_nonce( 'clear_flag_' . $post->ID ) . '::' . $post->ID . '" class="ap-ajax-btn flag-clear" data-cb="afterFlagClear">' . __( 'Clear flag', 'anspress-question-answer' ) . '</a>';
 		}
 
 		// Echo the 'actions' HTML, let WP_List_Table do the hard work.
-		$WP_List_Table = new WP_List_Table();
+		$WP_List_Table = new WP_List_Table(); // @codingStandardsIgnoreLine
 		echo $WP_List_Table->row_actions( $actions );
 	}
 
 	/**
 	 * Add clear flag action button in question list.
+	 *
 	 * @param array  $actions Actions array.
 	 * @param object $post    Post object.
 	 */
-	public function add_question_flag_link($actions, $post) {
+	public function add_question_flag_link( $actions, $post ) {
 
 		if ( ap_get_post_field( 'flags', $post ) ) {
-			$actions['flag'] = '<a href="#" data-query="ap_clear_flag::'. wp_create_nonce( 'clear_flag_'.$post->ID ) .'::'.$post->ID.'" class="ap-ajax-btn flag-clear" data-cb="afterFlagClear">'.__('Clear flag', 'anspress-question-answer' ).'</a>';
+			$actions['flag'] = '<a href="#" data-query="ap_clear_flag::' . wp_create_nonce( 'clear_flag_' . $post->ID ) . '::' . $post->ID . '" class="ap-ajax-btn flag-clear" data-cb="afterFlagClear">' . __( 'Clear flag', 'anspress-question-answer' ) . '</a>';
 		}
 
 		return $actions;
 	}
+
+	/**
+	 * Alter columns in question cpt.
+	 *
+	 * @param  array $columns Table column.
+	 * @return array
+	 * @since  2.0.0
+	 */
+	public static function cpt_question_columns( $columns ) {
+		$columns = array();
+		$columns['cb']        = '<input type="checkbox" />';
+		$columns['ap_author'] = __( 'Author', 'anspress-question-answer' );
+		$columns['title']     = __( 'Title', 'anspress-question-answer' );
+
+		if ( taxonomy_exists( 'question_category' ) ) {
+			$columns['question_category'] = __( 'Category', 'anspress-question-answer' );
+		}
+
+		if ( taxonomy_exists( 'question_tag' ) ) {
+			$columns['question_tag'] = __( 'Tag', 'anspress-question-answer' );
+		}
+
+		$columns['status']      = __( 'Status', 'anspress-question-answer' );
+		$columns['answers']     = __( 'Ans', 'anspress-question-answer' );
+		$columns['comments']    = __( 'Comments', 'anspress-question-answer' );
+		$columns['votes']       = __( 'Votes', 'anspress-question-answer' );
+		$columns['flags']       = __( 'Flags', 'anspress-question-answer' );
+		$columns['date']        = __( 'Date', 'anspress-question-answer' );
+
+		return $columns;
+	}
+
+	/**
+	 * Custom post table column values.
+	 *
+	 * @param string $column Columns name.
+	 */
+	public static function custom_columns_value( $column ) {
+		global $post;
+
+		if ( ! in_array( $post->post_type, [ 'question', 'answer' ], true ) ) {
+			return $column;
+		}
+
+		if ( 'ap_author' === $column ) {
+
+			echo '<a class="ap-author-col" href="' . esc_url( ap_user_link( $post->post_author ) ) . '">';
+			ap_author_avatar( 28 );
+			echo '<span>' . esc_attr( ap_user_display_name( ) ) . '</span>';
+			echo '</a>';
+
+		} elseif ( 'status' === $column ) {
+
+			global $wp_post_statuses;
+			echo '<span class="post-status">';
+
+			if ( isset( $wp_post_statuses[ $post->post_status ] ) ) {
+				echo esc_attr( $wp_post_statuses[ $post->post_status ]->label );
+			}
+
+			echo '</span>';
+
+		} elseif ( 'question_category' === $column && taxonomy_exists( 'question_category' ) ) {
+
+			$category = get_the_terms( $post->ID, 'question_category' );
+
+			if ( ! empty( $category ) ) {
+				$out = array();
+
+				foreach ( (array) $category as $cat ) {
+					$out[] = edit_term_link( $cat->name, '', '', $cat, false );
+				}
+				echo join( ', ', $out ); // xss okay.
+			} else {
+				esc_html_e( '--', 'anspress-question-answer' );
+			}
+		} elseif ( 'question_tag' === $column && taxonomy_exists( 'question_tag' ) ) {
+
+			$terms = get_the_terms( $post->ID, 'question_tag' );
+
+			if ( ! empty( $terms ) ) {
+				$out = array();
+
+				foreach ( (array) $terms as $term ) {
+					$url = esc_url( add_query_arg( [ 'post_type' => $post->post_type, 'question_tag' => $term->slug ], 'edit.php' ) );
+					$out[] = sprintf( '<a href="%s">%s</a>', $url, esc_html( sanitize_term_field( 'name', $term->name, $term->term_id, 'question_tag', 'display' ) ) );
+				}
+
+				echo join( ', ', $out ); // xss ok.
+			} else {
+				esc_attr_e( '--', 'anspress-question-answer' );
+			}
+		} elseif ( 'answers' === $column ) {
+
+			$url = add_query_arg( array( 'post_type' => 'answer', 'post_parent' => $post->ID ), 'edit.php' );
+			echo '<a class="ans-count" title="' . esc_html( sprintf( _n( '%d Answer', '%d Answers', $post->answers, 'anspress-question-answer' ), (int) $post->answers ) ) . '" href="' . esc_url( $url ) . '">' . esc_attr( $post->answers ) . '</a>';
+
+		} elseif ( 'parent_question' === $column ) {
+			$url = add_query_arg( [ 'post' => $post->post_parent, 'action' => 'edit' ], 'post.php' );
+			echo '<a class="parent_question" href="' . esc_url( $url ) . '"><strong>' . get_the_title( $post->post_parent ) . '</strong></a>';
+		} elseif ( 'votes' === $column ) {
+			echo '<span class="vote-count">' . esc_attr( $post->votes_net ) . '</span>';
+		} elseif ( 'flags' === $column ) {
+			echo '<span class="flag-count' . ( $post->flags ? ' flagged' : '' ) . '">' . esc_attr( $post->flags ) . '</span>';
+		}
+
+	}
+
+	/**
+	 * Answer CPT columns.
+	 *
+	 * @param  array $columns Columns.
+	 * @return array
+	 * @since 2.0.0
+	 */
+	public static function cpt_answer_columns( $columns ) {
+		$columns = array(
+			'cb'                => '<input type="checkbox" />',
+			'ap_author'         => __( 'Author', 'anspress-question-answer' ),
+			'answer_content'    => __( 'Content', 'anspress-question-answer' ),
+			'status'            => __( 'Status', 'anspress-question-answer' ),
+			'comments'          => __( 'Comments', 'anspress-question-answer' ),
+			'votes'             => __( 'Votes', 'anspress-question-answer' ),
+			'flags'             => __( 'Flags', 'anspress-question-answer' ),
+			'date'              => __( 'Date', 'anspress-question-answer' ),
+		);
+
+		return $columns;
+	}
+
+	/**
+	 * Flag sorting.
+	 *
+	 * @param array $columns Sorting columns.
+	 * @return array
+	 */
+	public function admin_column_sort_flag( $columns ) {
+		$columns['flags']   = 'flags';
+		$columns['answers'] = 'answers';
+		$columns['votes']   = 'votes';
+
+		return $columns;
+	}
+
 }

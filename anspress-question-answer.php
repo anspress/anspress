@@ -167,23 +167,6 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		protected $filters;
 
 		/**
-		 * Filter object.
-		 *
-		 * @access public
-		 * @var object
-		 */
-		public $anspress_query_filter;
-
-		/**
-		 * Post type object.
-		 *
-		 * @since  2.0.1
-		 * @access public
-		 * @var object
-		 */
-		public $anspress_cpt;
-
-		/**
 		 * AnsPress form object
 		 *
 		 * @access public
@@ -248,17 +231,20 @@ if ( ! class_exists( 'AnsPress' ) ) {
 				self::$instance->ajax_hooks();
 				self::$instance->site_include();
 
+				AnsPress_PostTypes::init();
+
 				/*
 				* Dashboard and Administrative Functionality
 				*/
 				if ( is_admin() ) {
 					require_once ANSPRESS_DIR . 'admin/anspress-admin.php';
+					require_once ANSPRESS_DIR . 'admin/class-list-table-hooks.php';
+
 					AnsPress_Admin::init();
+					AnsPress_Post_Table_Hooks::init();
 				}
 
 				self::$instance->anspress_forms 		       = new AnsPress_Process_Form();
-				self::$instance->anspress_query_filter 	   = new AnsPress_Query_Filter();
-				self::$instance->anspress_cpt 			       = new AnsPress_PostTypes();
 
 				/*
 				 * ACTION: anspress_loaded
@@ -321,9 +307,8 @@ if ( ! class_exists( 'AnsPress' ) ) {
 			require_once ANSPRESS_DIR . 'includes/qameta.php';
 			require_once ANSPRESS_DIR . 'includes/qaquery.php';
 			require_once ANSPRESS_DIR . 'includes/qaquery-hooks.php';
-			require_once ANSPRESS_DIR . 'includes/post_types.php';
-			require_once ANSPRESS_DIR . 'includes/query_filter.php';
-			require_once ANSPRESS_DIR . 'includes/post_status.php';
+			require_once ANSPRESS_DIR . 'includes/post-types.php';
+			require_once ANSPRESS_DIR . 'includes/post-status.php';
 			require_once ANSPRESS_DIR . 'includes/meta.php';
 			require_once ANSPRESS_DIR . 'includes/vote.php';
 			require_once ANSPRESS_DIR . 'includes/view.php';

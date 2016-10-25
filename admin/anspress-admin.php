@@ -14,6 +14,8 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
+require_once( 'license.php' );
+
 /**
  * This class should ideally be used to work with the
  * administrative side of the WordPress site.
@@ -84,10 +86,9 @@ class AnsPress_Admin {
 	public static function includes() {
 		require_once( 'functions.php' );
 		require_once( 'options-fields.php' );
-		require_once( 'license.php' );
-		require_once( 'class-list-table-hooks.php' );
+
 		new AP_license();
-		new AP_List_Table_Hooks();
+
 	}
 
 	/**
@@ -362,17 +363,19 @@ class AnsPress_Admin {
 				$answers = ap_get_post_field( 'answers', $q );
 				?>
 
-				<a class="ap-q-title" href="<?php echo esc_url( get_permalink( $q->post_id ) ); ?>"><?php echo esc_attr( $q->post_title ); ?></a>';
+				<a class="ap-q-title" href="<?php echo esc_url( get_permalink( $q->post_id ) ); ?>">
+					<?php echo esc_attr( $q->post_title ); ?>
+				</a>
 				<div class="ap-q-meta">
 					<span class="ap-a-count">
-						<?php echo sprintf( _n( '%d Answer', '%d Answers', $answers, 'anspress-question-answer' ),  $answers ); // xss ok. ?>
+						<?php echo esc_html( sprintf( _n( '%d Answer', '%d Answers', $answers, 'anspress-question-answer' ),  $answers ) ); ?>
 					</span>
 					<span class="ap-edit-link">|
 						<a href="<?php echo esc_url( get_edit_post_link( $q->ID ) ); ?>">
 							<?php esc_attr_e( 'Edit question', 'anspress-question-answer' ); ?>
 						</a>
 					</span>
-				</div>';
+				</div>
 				<div class="ap-q-content"><?php echo $q->post_content; // xss ok. ?></div>
 				<input type="hidden" name="post_parent" value="<?php echo esc_attr( $post_parent ); ?>" />
 

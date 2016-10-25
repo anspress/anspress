@@ -880,9 +880,9 @@ function ap_total_posts_count( $post_type = 'question', $ap_type = false ) {
 	$meta = '';
 	$join = '';
 
-	if ( $ap_type ) {
-		$meta = "AND m.apmeta_type='$ap_type'";
-		$join = 'INNER JOIN ' . $wpdb->prefix . 'ap_meta m ON p.ID = m.apmeta_actionid';
+	if ( 'flag' === $ap_type ) {
+		$meta = "AND qameta.flags > 0";
+		$join = "INNER JOIN {$wpdb->ap_qameta} qameta ON p.ID = qameta.post_id";
 	}
 
 	$where = "WHERE p.post_status NOT IN ('trash', 'draft') AND $type $meta";
@@ -895,9 +895,10 @@ function ap_total_posts_count( $post_type = 'question', $ap_type = false ) {
 		return $count;
 	}
 
-	$count = $wpdb->get_results( $query, ARRAY_A ); // db call ok.
+	$count = $wpdb->get_results( $query, ARRAY_A ); // @codingStandardsIgnoreLine
 	$counts = array();
-	foreach ( get_post_stati() as $state ) {
+
+	foreach ( (array) get_post_stati() as $state ) {
 		$counts[ $state ] = 0;
 	}
 

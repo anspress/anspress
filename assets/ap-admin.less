@@ -12,10 +12,27 @@
 }
 
 th#answers {
-	width: 30px;
-}
-.column-vote {
 	width: 60px;
+}
+.ans-count, .vote-count, .flag-count {
+	background: #c8e6c9 none repeat scroll 0 0;
+	border-radius: 2px;
+	color: #333;
+	display: table;
+	font-weight: 600;
+	padding: 4px 10px;
+}
+.vote-count{
+	background: #e3f2fd;
+}
+.flag-count{
+	background: #eee;
+	&.flagged{
+		background: #ffcc80;
+	}
+}
+.column-votes {
+	width: 70px;
 }
 .column-status {
 	width: 60px;
@@ -23,15 +40,11 @@ th#answers {
 .column-parent_question {
 	width: 30%;
 }
-.column-flag {
-	width: 40px;
+.column-flags {
+	width: 70px;
 }
-.type-question {
-	.ans-count {
-		display: block;
-		padding: 2px 0;
-		text-align: center;
-	}
+.fixed .column-comments {
+    width: 84px;
 }
 .vote-count {
 	text-align: center;
@@ -125,19 +138,7 @@ td.column-vote_note strong, td.column-post_title &>a {
 				padding-bottom: 20px;
 		}
 }
-.wp-list-table .flag-count, .wp-list-table .flag-count {
-		display: block;
-		width: 21px;
-		margin-top: 6px;
-		padding: 2px 0;
-		text-align: center;
-		color: #fff;
-		border-radius: 3px;
-		background: #ddd;
-}
-.wp-list-table .flag-count.flagged, .wp-list-table .flag-count.flagged {
-		background: #ec5858;
-}
+
 .anspress-options {
 		margin-top: 30px;
 }
@@ -1121,3 +1122,4 @@ ul.ap-meta-list{
 		margin-top: 25px;
 		padding: 10px;
 }
+
