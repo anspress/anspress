@@ -18,20 +18,20 @@ $ap_roles = new AP_Roles;
 
 $class = 'is-dismissible';
 
-if ( isset($_POST['role_name'] ) && wp_verify_nonce( $_POST['__nonce'], 'ap_role_'.$_POST['role_name'].'_update' ) && is_super_admin( ) ) {
+if ( ap_sanitize_unslash( 'role_name', 'p' ) && ap_verify_nonce( 'ap_role_' . ap_sanitize_unslash( 'role_name', 'p' ) . '_update' ) && is_super_admin( ) ) {
 
-	$caps = isset($_POST['c'] ) ? $_POST['c'] : array();
+	$caps = ap_sanitize_unslash( 'c', 'p' ) ? ap_sanitize_unslash( 'c', 'p' ) : array();
 	$caps = array_map( 'sanitize_text_field', $caps );
 
-	ap_update_caps_for_role( $_POST['role_name'], $caps );
+	ap_update_caps_for_role( ap_sanitize_unslash( 'role_name', 'p' ), $caps );
 
-} elseif ( isset( $_POST['new_role'] ) && wp_verify_nonce( $_POST['__nonce'], 'ap_new_role' ) ) {
-	$role_name = sanitize_text_field( $_POST['role_name'] );
-	$role_slug = sanitize_title_with_dashes( $_POST['role_slug'] );
+} elseif ( ap_sanitize_unslash( 'new_role', 'p' ) && ap_verify_nonce( 'ap_new_role' ) ) {
+	$role_name = ap_sanitize_unslash( 'role_name', 'p' );
+	$role_slug = sanitize_title_with_dashes( ap_sanitize_unslash( 'role_slug', 'p' ) );
 
 	if ( ! isset( $wp_roles->roles[ $role_slug ] ) ) {
-		$role_caps = wp_unslash( $_POST['role_caps'] );
-		$caps = ($role_caps == 'moderator_caps' ? ap_role_caps('moderator' ) : 	ap_role_caps('participant' ));
+		$role_caps = ap_sanitize_unslash( 'role_caps', 'p' );
+		$caps = ( 'moderator_caps' === $role_caps ? ap_role_caps( 'moderator' ) : 	ap_role_caps( 'participant' ));
 		add_role( $role_slug, $role_name, $caps );
 
 		$message = sprintf( __( 'New role %s added successfully .', 'anspress-question-answer' ), $role_name );
@@ -49,14 +49,14 @@ if ( ! empty( $message ) ) {
 ?>
 
 <div class="wrap">
-	<?php do_action('ap_before_admin_page_title' ) ?>
-	<h2><?php _e('Permission and role', 'anspress-question-answer' ) ?></h2>
+	<?php do_action( 'ap_before_admin_page_title' ) ?>
+	<h2><?php _e( 'Permission and role', 'anspress-question-answer' ) ?></h2>
 	<div class="white-bg">
 	    <table class="form-table">
 	        <tbody>
 	       		<tr>
 					<th scope="row" valign="top">
-						<label><?php _e('Add new role', 'anspress-question-answer' ); ?>:</label>					
+						<label><?php _e('Add new role', 'anspress-question-answer' ); ?>:</label>
 					</th>
 					<td>
 						<p class="description"><?php _e('Add a new user role.', 'anspress-question-answer' );?></p>
@@ -80,7 +80,7 @@ if ( ! empty( $message ) ) {
 							<?php wp_nonce_field( 'ap_new_role', '__nonce' ); ?>
 							<input name="new_role" type="submit" class="button button-primary" value="<?php _e('Add role', 'anspress-question-answer' ); ?>" />
 						</form>
-						
+
 					</td>
 				</tr>
 	            <tr>
@@ -88,7 +88,7 @@ if ( ! empty( $message ) ) {
 						<label><?php _e('AnsPress capabilities', 'anspress-question-answer' );?>:</label>
 						<p class="description"><?php _e('Add AnsPress capabilities to 3rd party roles.', 'anspress-question-answer' );?></p>
 					</th>
-						
+
 	                <td>
 	                	<div class="ap-tools-roles">
 							<label for="ap-tools-selectroles"><?php _e('Select user role', 'anspress-question-answer' ); ?></label>

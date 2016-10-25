@@ -3,35 +3,44 @@
  * Control the output of AnsPress dashboard
  *
  * @link https://anspress.io
- * @since 2.0.0-alpha2
+ * @since 2.0.0
  * @author Rahul Aryan <support@anspress.io>
  * @package AnsPress
  */
 
 // If this file is called directly, abort.
-if ( ! defined('WPINC' ) ) {
+if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-class AnsPress_Dashboard{
-	function __construct() {
-		add_action('admin_footer', array( __CLASS__, 'admin_footer' ) );
+/**
+ * Dashboard class.
+ */
+class AnsPress_Dashboard {
+	/**
+	 * Init class.
+	 */
+	public static function init() {
+		add_action( 'admin_footer', array( __CLASS__, 'admin_footer' ) );
 
-		add_meta_box('ap-mb-aboutauthor', '<i class="apicon-user"></i>'.__('About Author', 'anspress-question-answer' ), array( __CLASS__, 'anspress_aboutauthor' ), 'anspress', 'column1', 'core' );
+		add_meta_box( 'ap-mb-aboutauthor', '<i class="apicon-user"></i>' . __( 'About Author', 'anspress-question-answer' ), array( __CLASS__, 'anspress_aboutauthor' ), 'anspress', 'column1', 'core' );
 
-		add_meta_box('ap-mb-attn', '<i class="apicon-alert"></i>'.__('Require Attention', 'anspress-question-answer' ), array( __CLASS__, 'anspress_attn' ), 'anspress', 'column1', 'core' );
+		add_meta_box( 'ap-mb-attn', '<i class="apicon-alert"></i>' . __( 'Require Attention', 'anspress-question-answer' ), array( __CLASS__, 'anspress_attn' ), 'anspress', 'column1', 'core' );
 
-		add_meta_box('anspress_feed', 'AnsPress Feed', array( __CLASS__, 'anspress_feed' ), 'anspress', 'column1', 'core' );
+		add_meta_box( 'anspress_feed', 'AnsPress Feed', array( __CLASS__, 'anspress_feed' ), 'anspress', 'column1', 'core' );
 
-		add_meta_box('ap-mb-qstats', '<i class="apicon-question"></i>'.__('Questions', 'anspress-question-answer' ), array( __CLASS__, 'anspress_stats' ), 'anspress', 'column2', 'core' );
+		add_meta_box( 'ap-mb-qstats', '<i class="apicon-question"></i>' . __( 'Questions', 'anspress-question-answer' ), array( __CLASS__, 'anspress_stats' ), 'anspress', 'column2', 'core' );
 
-		add_meta_box('ap-mb-latestq',__('Latest Questions', 'anspress-question-answer' ), array( __CLASS__, 'anspress_latestq' ), 'anspress', 'column2', 'core' );
+		add_meta_box( 'ap-mb-latestq', __( 'Latest Questions', 'anspress-question-answer' ), array( __CLASS__, 'anspress_latestq' ), 'anspress', 'column2', 'core' );
 
-		add_meta_box('ap-mb-astats', '<i class="apicon-answer"></i>'.__('Answer', 'anspress-question-answer' ), array( __CLASS__, 'anspress_astats' ), 'anspress', 'column3', 'core' );
+		add_meta_box( 'ap-mb-astats', '<i class="apicon-answer"></i>' . __( 'Answer', 'anspress-question-answer' ), array( __CLASS__, 'anspress_astats' ), 'anspress', 'column3', 'core' );
 
-		add_meta_box('ap-mb-latesta', __('Latest Answers', 'anspress-question-answer' ), array( __CLASS__, 'anspress_latesta' ), 'anspress', 'column3', 'core' );
+		add_meta_box( 'ap-mb-latesta', __( 'Latest Answers', 'anspress-question-answer' ), array( __CLASS__, 'anspress_latesta' ), 'anspress', 'column3', 'core' );
 	}
 
+	/**
+	 * Add javascript in dashboard footer.
+	 */
 	public static function admin_footer() {
 		?>
 	    <script type="text/javascript">
@@ -47,6 +56,9 @@ class AnsPress_Dashboard{
 		<?php
 	}
 
+	/**
+	 * About me ("Rahul Aryan").
+	 */
 	public static function anspress_aboutauthor() {
 		?>
 			<div class="main about-author clearfix">
@@ -74,48 +86,58 @@ class AnsPress_Dashboard{
 		<?php
 	}
 
+	/**
+	 * Full AnsPress stats.
+	 */
 	public static function anspress_stats() {
-		$question_count = ap_total_posts_count('question' );
+		$question_count = ap_total_posts_count( 'question' );
 		?>
 		<script>
 			var questionChartData = {
 			    labels: ["Published","Private","Moderate"],
 			    datasets: [{
-		            data: [<?php echo $question_count->publish.','.$question_count->private_post.','.$question_count->moderate; ?>],
-		            backgroundColor: [
-		                "#4d97fe",
-		                "#929292",
-		                "#f9a341"
-		            ],
-		            hoverBackgroundColor: [
-		                "#ddd",
-		                "#ddd",
-		                "#ddd"
-		            ]
-		        }]
+						data: [<?php echo esc_attr( $question_count->publish ) . ',' . esc_attr( $question_count->private_post ) . ',' . esc_attr( $question_count->moderate ); ?>],
+						backgroundColor: [
+							"#4d97fe",
+							"#929292",
+							"#f9a341"
+						],
+						hoverBackgroundColor: [
+							"#ddd",
+							"#ddd",
+							"#ddd"
+						]
+					}]
 			};
 		</script>
 		<div class="main">
 			<canvas id="question-chart"></canvas>
 			<ul>
 				<li class="post-count">
-					<a href="<?php echo admin_url('edit.php?post_type=question' ); ?>" class="publish"><?php printf( __('%d Published', 'anspress-question-answer' ), $question_count->publish ); ?></a>
+					<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=question' ) ); ?>" class="publish">
+						<?php printf( esc_attr__( '%d Published', 'anspress-question-answer' ), esc_attr( $question_count->publish ) ); ?>
+					</a>
 				</li>
 				<li class="post-count">
-					<a href="<?php echo admin_url('edit.php?post_type=question&post_status=private_post' ); ?>" class="private"><?php printf( __('%d Private', 'anspress-question-answer' ), $question_count->private_post ); ?></a>
+					<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=question&post_status=private_post' ) ); ?>" class="private">
+						<?php printf( esc_attr__( '%d Private', 'anspress-question-answer' ), esc_attr( $question_count->private_post ) ); ?>
+					</a>
 				</li>
 				<li class="post-count">
-					<a href="<?php echo admin_url('edit.php?post_type=question&post_status=moderate' ); ?>" class="moderate"><?php printf( __('%d Moderate', 'anspress-question-answer' ), $question_count->moderate ); ?></a>
+					<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=question&post_status=moderate' ) ); ?>" class="moderate"><?php printf( esc_attr__( '%d Moderate', 'anspress-question-answer' ), esc_attr( $question_count->moderate ) ); ?></a>
 				</li>
 			</ul>
 		</div>
 		<?php
 	}
 
+	/**
+	 * Show latest questions.
+	 */
 	public static function anspress_latestq() {
 		global $questions, $wpdb;
 
-		$results = $wpdb->get_results("SELECT date_format(post_date, '%d %a') as post_day, post_date, count(ID) as post_count from {$wpdb->posts} WHERE post_status IN('publish', 'private_post', 'moderate') AND post_type = 'question' AND post_date > (NOW() - INTERVAL 1 MONTH) GROUP BY post_day ORDER BY post_date ASC" );
+		$results = $wpdb->get_results( "SELECT date_format(post_date, '%d %a') as post_day, post_date, count(ID) as post_count from {$wpdb->posts} WHERE post_status IN('publish', 'private_post', 'moderate') AND post_type = 'question' AND post_date > (NOW() - INTERVAL 1 MONTH) GROUP BY post_day ORDER BY post_date ASC" ); // db call okay, cache okay.
 
 		$days = array();
 		$counts = array();
@@ -128,18 +150,22 @@ class AnsPress_Dashboard{
 		<?php if ( $results ) :   ?>
 		<script>
 			var latestquestionChartData = {
-				labels: [ <?php echo "'".implode("','", $days )."'"; ?> ],
+				labels: [ <?php
+					echo "'" . implode( "','", $days ) . "'"; // xss okay.
+					?> ],
 				datasets: [{
 					backgroundColor: 'rgba(53, 209, 252, 0.3)',
 					borderColor: 'rgba(53, 209, 252, 0.7)',
-					data: [ <?php echo implode(',', $counts ); ?> ]
+					data: [ <?php echo esc_html( implode( ',', $counts ) ); ?> ]
 				}]
 			};
 		</script>
 		<?php endif; ?>
 		<div class="main">
-		<canvas id="latestquestion-chart" height="80"></canvas>
-		<?php $questions = ap_get_questions(array( 'sortby' => 'newest', 'showposts' => 5 ) ); ?>
+			<canvas id="latestquestion-chart" height="80"></canvas>
+
+			<?php $questions = ap_get_questions( array( 'sortby' => 'newest', 'showposts' => 5 ) ); ?>
+
 			<?php if ( ap_have_questions() ) :   ?>
 				<ul class="post-list">
 					<?php while ( ap_have_questions() ) : ap_the_question(); ?>
@@ -150,15 +176,19 @@ class AnsPress_Dashboard{
 					<?php endwhile; ?>
 				</ul>
 			<?php endif;?>
+
 			<?php wp_reset_postdata();?>
 		</div>
 		<?php
 	}
 
+	/**
+	 * Show latest answers.
+	 */
 	public static function anspress_latesta() {
 		global $answers, $wpdb;
 
-		$results = $wpdb->get_results("SELECT date_format(post_date, '%d %a') as post_day, post_date, count(ID) as post_count from {$wpdb->posts} WHERE post_status IN('publish', 'private_post', 'moderate') AND post_type = 'answer' AND post_date > (NOW() - INTERVAL 1 MONTH) GROUP BY post_day ORDER BY post_date ASC" );
+		$results = $wpdb->get_results( "SELECT date_format(post_date, '%d %a') as post_day, post_date, count(ID) as post_count from {$wpdb->posts} WHERE post_status IN('publish', 'private_post', 'moderate') AND post_type = 'answer' AND post_date > (NOW() - INTERVAL 1 MONTH) GROUP BY post_day ORDER BY post_date ASC" ); // db call okay, cache ok.
 
 		$days = array();
 		$counts = array();
@@ -171,18 +201,19 @@ class AnsPress_Dashboard{
 		<?php if ( $results ) :   ?>
 		<script>
 			var latestanswerChartData = {
-				labels: [ <?php echo "'".implode("','", $days )."'"; ?> ],
+				labels: [ <?php echo esc_html( "'" . implode( "','", $days ) . "'" ); ?> ],
 				datasets: [{
 					backgroundColor: 'rgba(78, 207, 158, 0.3)',
 					borderColor: 'rgba(78, 207, 158, 0.7)',
-					data: [ <?php echo implode(',', $counts ); ?> ]
+					data: [ <?php echo esc_html( implode( ',', $counts ) ); ?> ]
 				}]
 			};
 		</script>
 		<?php endif; ?>
 		<div class="main">
 			<canvas id="latestanswer-chart" height="80"></canvas>
-			<?php $answers = ap_get_answers(array( 'sortby' => 'newest', 'showposts' => 5 ) ); ?>
+			<?php $answers = ap_get_answers( array( 'sortby' => 'newest', 'showposts' => 5 ) ); ?>
+
 			<?php if ( ap_have_answers() ) :   ?>
 				<ul class="post-list">
 					<?php while ( ap_have_answers() ) : ap_the_answer(); ?>
@@ -193,11 +224,15 @@ class AnsPress_Dashboard{
 					<?php endwhile; ?>
 				</ul>
 			<?php endif;?>
+
 			<?php wp_reset_postdata();?>
 		</div>
 		<?php
 	}
 
+	/**
+	 * Show items which need attention.
+	 */
 	public static function anspress_attn() {
 		$q_flagged_count = ap_total_posts_count( 'question', 'flag' );
 		$a_flagged_count = ap_total_posts_count( 'answer', 'flag' );
@@ -206,37 +241,46 @@ class AnsPress_Dashboard{
 		?>
 		<div class="main attn">
 			<?php if ( $q_flagged_count->total || $question_count->moderate ) :   ?>
-			<strong><?php _e('Questions', 'anspress-question-answer' ); ?></strong>
-			<ul>
-				<?php if ( $q_flagged_count->total ) :   ?>
-				<li><a href=""><i class="apicon-flag"></i><?php printf(__('%d Flagged questions', 'anspress-question-answer' ), $q_flagged_count->total ); ?></a></li>
-				<?php endif; ?>
-				<?php if ( $question_count->moderate ) :   ?>
-				<li><a href=""><i class="apicon-stop"></i><?php printf(__('%d questions awaiting moderation', 'anspress-question-answer' ), $question_count->moderate ); ?></a></li>
-				<?php endif; ?>
-			</ul>
+				<strong><?php esc_attr_e( 'Questions', 'anspress-question-answer' ); ?></strong>
+				<ul>
+					<?php if ( $q_flagged_count->total ) :   ?>
+					<li><a href=""><i class="apicon-flag"></i><?php printf( __( '%d Flagged questions', 'anspress-question-answer' ), $q_flagged_count->total ); ?></a></li>
+					<?php endif; ?>
+					<?php if ( $question_count->moderate ) :   ?>
+					<li><a href=""><i class="apicon-stop"></i><?php printf( __( '%d questions awaiting moderation', 'anspress-question-answer' ), $question_count->moderate ); ?></a></li>
+					<?php endif; ?>
+				</ul>
 			<?php else : ?>
-				<?php _e('All looks fine', 'anspress-question-answer' ); ?>
+				<?php esc_attr_e( 'All looks fine', 'anspress-question-answer' ); ?>
 			<?php endif; ?>
 
 			<?php if ( $a_flagged_count->total || $answer_count->moderate ) :   ?>
-			<strong><?php _e('Answers', 'anspress-question-answer' ); ?></strong>
-			<ul>
-				<?php if ( $a_flagged_count->total ) :   ?>
-				<li><a href=""><i class="apicon-flag"></i><?php printf(__('%d Flagged answers', 'anspress-question-answer' ), $a_flagged_count->total ); ?></a></li>
-				<?php endif; ?>
-				<?php if ( $answer_count->moderate ) :   ?>
-				<li><a href=""><i class="apicon-stop"></i><?php printf(__('%d answers awaiting moderation', 'anspress-question-answer' ), $answer_count->moderate ); ?></a></li>
-				<?php endif; ?>
-			</ul>
+				<strong><?php _e( 'Answers', 'anspress-question-answer' ); ?></strong>
+				<ul>
+					<?php if ( $a_flagged_count->total ) :   ?>
+						<li>
+							<a href=""><i class="apicon-flag"></i>
+							<?php printf(__('%d Flagged answers', 'anspress-question-answer' ), $a_flagged_count->total ); ?>
+							</a>
+						</li>
+					<?php endif; ?>
+
+					<?php if ( $answer_count->moderate ) :   ?>
+						<li><a href=""><i class="apicon-stop"></i><?php printf(__('%d answers awaiting moderation', 'anspress-question-answer' ), $answer_count->moderate ); ?></a></li>
+					<?php endif; ?>
+
+				</ul>
 			<?php endif; ?>
 		</div>
 		<?php
 	}
 
+	/**
+	 * Total Answer stats.
+	 */
 	public static function anspress_astats() {
 		global $answers;
-		$answer_count = ap_total_posts_count('answer' );
+		$answer_count = ap_total_posts_count( 'answer' );
 		?>
 		<script>
 			var answerChartData = {
@@ -273,7 +317,9 @@ class AnsPress_Dashboard{
 		<?php
 	}
 
-
+	/**
+	 * AnsPress feed.
+	 */
 	public static function anspress_feed() {
 		$rss = fetch_feed( 'https://anspress.io/feed/' );
 		set_transient( 'anspress_feed', $rss );
@@ -282,7 +328,7 @@ class AnsPress_Dashboard{
 			<div class="anspress_feed">
 				<?php
 				if ( ! $rss->get_item_quantity() ) {
-					echo '<p>'.__('Apparently, there are no updates to show!','anspress-question-answer' ).'</p>';
+					echo '<p>'.__( 'Apparently, there are no updates to show!','anspress-question-answer' ).'</p>';
 					$rss->__destruct();
 					unset($rss );
 					return;
@@ -306,9 +352,9 @@ class AnsPress_Dashboard{
 
 }
 
-new AnsPress_Dashboard();
+AnsPress_Dashboard::init();
 
-// we need the global screen column value to beable to have a sidebar in WordPress 2.8
+// We need the global screen column value to beable to have a sidebar in WordPress 2.8.
 global $screen_layout_columns;
 
 $screen = get_current_screen();
@@ -318,19 +364,26 @@ $columns_css = '';
 if ( $columns ) {
 	$columns_css = " columns-$columns";
 }
+
 ?>
 
 <div id="anspress-metaboxes" class="wrap">
 	<?php screen_icon('options-general' ); ?>
+
 	<h1>AnsPress</h1>
 	<div class="welcome-panel" id="welcome-panel">
 		<div class="welcome-panel-content">
-			<h2><?php _e('Welcome to AnsPress!', 'anspress-question-answer' ); ?></h2>
-			<p class="about-description"><?php _e('We’ve assembled some links to get you started:', 'anspress-question-answer' ); ?></p>
+			<h2><?php _e( 'Welcome to AnsPress!', 'anspress-question-answer' ); ?></h2>
+			<p class="about-description">
+				<?php _e('We’ve assembled some links to get you started:', 'anspress-question-answer' ); ?>
+			</p>
 			<div class="welcome-panel-column-container">
 				<div class="welcome-panel-column">
-					<h3><?php _e('Get Started', 'anspress-question-answer' ); ?></h3>
-					<a href="<?php echo admin_url( 'admin.php?page=anspress_options' ); ?>" class="button button-primary button-hero"><?php _e('AnsPress Options', 'anspress-question-answer' ); ?></a>
+					<h3><?php _e( 'Get Started', 'anspress-question-answer' ); ?></h3>
+					<a href="<?php echo admin_url( 'admin.php?page=anspress_options' ); ?>" class="button button-primary button-hero">
+						<?php _e( 'AnsPress Options', 'anspress-question-answer' ); ?>
+					</a>
+
 				</div>
 				<div class="welcome-panel-column">
 					<h3><?php _e('Next Steps', 'anspress-question-answer' ); ?></h3>

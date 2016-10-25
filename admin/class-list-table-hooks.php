@@ -12,7 +12,7 @@ class AP_List_Table_Hooks{
 	public function __construct() {
 		add_filter( 'views_edit-question', array( $this, 'flag_view' ) );
 		add_filter( 'views_edit-answer', array( $this, 'flag_view' ) );
-		add_action( 'parse_query', array( $this, 'filter_query_by_flagged' ) );
+		add_action( 'posts_clauses', array( $this, 'filter_query_by_flagged' ), 10, 2 );
 		add_action( 'manage_answer_posts_custom_column', array( $this, 'answer_row_actions' ), 10, 2 );
 		add_filter( 'post_row_actions', array( $this, 'add_question_flag_link' ), 10, 2 );
 	}
@@ -31,14 +31,24 @@ class AP_List_Table_Hooks{
 	    return $views;
 	}
 
-	public function filter_query_by_flagged($query) {
-		global $pagenow;
-		$vars = $query->query_vars;
+	/**
+	 * Modify SQL to show only flagged posts.
+	 *
+	 * @param array  $sql Sql claues.
+	 * @param object $instance WP_Query instance.
+	 * @return array
+	 */
+	public function filter_query_by_flagged( $sql, $instance ) {
+		global $pagenow, $wpdb;
+		$vars = $instance->query_vars;
 
-		if ( $pagenow == 'edit.php' && isset( $vars['post_type'] ) && ($vars['post_type'] == 'question' || $vars['post_type'] == 'answer') && isset( $_GET['flagged'] ) ) {
-			$query->set( 'meta_query', array( array( 'key' => ANSPRESS_FLAG_META, 'compare' => '>', 'value' => 0 ) ) );
-			$query->set( 'orderby', 'meta_value' );
+		if ( 'edit.php' === $pagenow && isset( $vars['post_type'] ) && in_array( $vars['post_type'], [ 'question', 'answer' ], true )  && ap_sanitize_unslash( 'flagged', 'p' ) ) {
+			$sql['join'] = $sql['join'] . " LEFT JOIN {$wpdb->ap_qameta} qameta ON qameta.post_id = {$wpdb->posts}.ID";
+			$sql['where'] = $sql['where'] . " AND qameta.flags > 0";
+			$sql['orderby'] = " qameta.flags DESC, " . $sql['orderby'];
 		}
+
+		return $sql;
 	}
 
 	/**

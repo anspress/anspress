@@ -260,10 +260,10 @@ class AnsPress_PostTypes {
 		}
 
 		if ( 'ap_author' === $column ) {
-			echo '<a class="ap-author-col" href="' . ap_user_link( $post->post_author ) . '">'; // xss ok.
+
+			echo '<a class="ap-author-col" href="' . esc_url( ap_user_link( $post->post_author ) ) . '">';
 			ap_author_avatar( 28 );
-			echo esc_attr( get_the_author_meta( 'display_name' ) );
-			echo '<span class="user-login">' . esc_attr( get_the_author_meta( 'user_login' ) ) . '</span>';
+			echo '<span>' . esc_attr( ap_user_display_name( ) ) . '</span>';
 			echo '</a>';
 
 		} elseif ( 'status' === $column ) {

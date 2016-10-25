@@ -245,13 +245,20 @@ if ( ! class_exists( 'AnsPress' ) ) {
 				$ap_classes = array();
 
 				self::$instance->includes();
-
 				self::$instance->ajax_hooks();
 				self::$instance->site_include();
 
-				self::$instance->anspress_forms 		= new AnsPress_Process_Form();
-				self::$instance->anspress_query_filter 	= new AnsPress_Query_Filter();
-				self::$instance->anspress_cpt 			= new AnsPress_PostTypes();
+				/*
+				* Dashboard and Administrative Functionality
+				*/
+				if ( is_admin() ) {
+					require_once ANSPRESS_DIR . 'admin/anspress-admin.php';
+					AnsPress_Admin::init();
+				}
+
+				self::$instance->anspress_forms 		       = new AnsPress_Process_Form();
+				self::$instance->anspress_query_filter 	   = new AnsPress_Query_Filter();
+				self::$instance->anspress_cpt 			       = new AnsPress_PostTypes();
 
 				/*
 				 * ACTION: anspress_loaded
@@ -306,7 +313,6 @@ if ( ! class_exists( 'AnsPress' ) ) {
 			require_once ANSPRESS_DIR . 'includes/class/roles-cap.php';
 			require_once ANSPRESS_DIR . 'includes/common-pages.php';
 			require_once ANSPRESS_DIR . 'includes/class-theme.php';
-			require_once ANSPRESS_DIR . 'admin/anspress-admin.php';
 			require_once ANSPRESS_DIR . 'includes/options.php';
 			require_once ANSPRESS_DIR . 'includes/functions.php';
 			require_once ANSPRESS_DIR . 'includes/hooks.php';
@@ -667,16 +673,10 @@ add_filter( 'wpmu_drop_tables', [ 'AnsPress_Init', 'drop_blog_tables' ], 10, 2 )
 add_filter( 'admin_init', [ 'AnsPress_Init', 'redirect_to_about_page' ] );
 
 /*
- * Dashboard and Administrative Functionality
- */
-if ( is_admin() ) {
-	add_action( 'plugins_loaded', [ 'AnsPress_Admin', 'get_instance' ] );
-}
-
-/*
  * Register hooks that are fired when the plugin is activated or deactivated.
  * When the plugin is deleted, the uninstall.php file is loaded.
  */
 require_once dirname( __FILE__ ) . '/activate.php';
+
 register_activation_hook( __FILE__, [ 'AP_Activate', 'get_instance' ] );
 register_uninstall_hook( __FILE__, [ 'AnsPress_Init', 'anspress_uninstall' ] );

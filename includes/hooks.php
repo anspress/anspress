@@ -56,8 +56,8 @@ class AnsPress_Hooks {
 			anspress()->add_action( 'ap_vote_removed', __CLASS__, 'update_user_vote_casted_count' , 10, 4 );
 			anspress()->add_action( 'the_post', __CLASS__, 'ap_append_vote_count' );
 
-			anspress()->add_filter( 'posts_clauses', 'AP_QA_Query_Hooks', 'sql_filter', 10, 2 );
-			anspress()->add_filter( 'posts_results', 'AP_QA_Query_Hooks', 'posts_results', 10, 2 );
+			anspress()->add_filter( 'posts_clauses', 'AP_QA_Query_Hooks', 'sql_filter', 1, 2 );
+			anspress()->add_filter( 'posts_results', 'AP_QA_Query_Hooks', 'posts_results', 1, 2 );
 
 			// Theme	hooks.
 			anspress()->add_action( 'init', 'AnsPress_Theme', 'init_actions' );

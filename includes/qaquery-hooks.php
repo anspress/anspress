@@ -105,7 +105,15 @@ class AP_QA_Query_Hooks {
 			if ( in_array( $p->post_type, [ 'question', 'answer' ], true ) ) {
 				// Convert object as array to prevent using __isset of WP_Post.
 				$p_arr = (array) $p;
-				foreach ( ap_qameta_fields() as $fields_name => $val ) {
+
+				// Check if ptype exists which is a qameta feild.
+				if ( ! empty( $p_arr['ptype'] ) ) {
+					$qameta = ap_qameta_fields();
+				} else {
+					$qameta = ap_get_qameta( $p->ID );
+				}
+
+				foreach ( (array) $qameta as $fields_name => $val ) {
 					if ( ! isset( $p_arr[ $fields_name ] ) || empty( $p_arr[ $fields_name ] ) ) {
 						$p->$fields_name = $val;
 					}

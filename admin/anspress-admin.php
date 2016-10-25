@@ -49,59 +49,39 @@ class AnsPress_Admin {
 	 * Initialize the plugin by loading admin scripts & styles and adding a
 	 * settings page and menu.
 	 */
-	private function __construct() {
-		$this->includes();
+	public static function init() {
+		self::includes();
 
 		$plugin_basename = plugin_basename( plugin_dir_path( __DIR__ ) . 'anspress-question-answer.php' );
-		add_filter( 'plugin_action_links_' . $plugin_basename, array( $this, 'add_action_links' ) );
-		add_action( 'save_post', array( $this, 'ans_parent_post' ), 10, 2 );
-		// Load admin style sheet and JavaScript.
-		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_styles' ) );
-		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_scripts' ) );
-
-		add_action( 'admin_menu', array( $this, 'add_plugin_admin_menu' ) );
-		add_action( 'admin_init', array( $this, 'init_actions' ) );
-		add_action( 'parent_file', array( $this, 'tax_menu_correction' ) );
-		add_action( 'load-post.php', array( $this, 'question_meta_box_class' ) );
-		add_action( 'load-post-new.php', array( $this, 'question_meta_box_class' ) );
-		add_action( 'admin_menu', array( $this, 'change_post_menu_label' ) );
-		add_action( 'edit_form_after_title', array( $this, 'edit_form_after_title' ) );
-		add_filter( 'wp_insert_post_data', array( $this, 'post_data_check' ), 99 );
-		add_filter( 'post_updated_messages', array( $this, 'post_custom_message' ) );
-		add_action( 'admin_head-nav-menus.php', array( $this, 'ap_menu_metaboxes' ) );
-		add_action( 'admin_notices', array( $this, 'taxonomy_rename' ) );
-		add_filter( 'posts_clauses', array( $this, 'join_by_author_name' ), 10, 2 );
-		add_filter( 'manage_edit-comments_columns', array( $this, 'comment_flag_column' ) );
-		add_filter( 'manage_comments_custom_column', array( $this, 'comment_flag_column_data' ), 10, 2 );
-		add_filter( 'comment_status_links', array( $this, 'comment_flag_view' ) );
-		add_action( 'current_screen', array( $this, 'comments_flag_query' ), 10, 2 );
-		add_action( 'get_pages', array( $this, 'get_pages' ), 10, 2 );
-		add_action( 'wp_insert_post_data', array( $this, 'modify_answer_title' ), 10, 2 );
-		add_action( 'admin_action_ap_update_helper', array( $this, 'update_helper' ) );
-
-		// Query filters.
-		anspress()->add_action( 'admin_footer-post.php', 'AnsPress_Query_Filter', 'append_post_status_list' );
-	}
-
-	/**
-	 * Return an instance of this class.
-	 *
-	 * @return    object    A single instance of this class.
-	 */
-	public static function get_instance() {
-
-		// If the single instance hasn't been set, set it now.
-		if ( null === self::$instance ) {
-			self::$instance = new self;
-		}
-
-		return self::$instance;
+		anspress()->add_filter( 'plugin_action_links_' . $plugin_basename, __CLASS__, 'add_action_links' );
+		anspress()->add_action( 'save_post', __CLASS__, 'ans_parent_post', 10, 2 );
+		anspress()->add_action( 'admin_enqueue_scripts', __CLASS__, 'enqueue_admin_styles' );
+		anspress()->add_action( 'admin_enqueue_scripts', __CLASS__, 'enqueue_admin_scripts' );
+		anspress()->add_action( 'admin_menu', __CLASS__, 'add_plugin_admin_menu' );
+		anspress()->add_action( 'admin_init', __CLASS__, 'init_actions' );
+		anspress()->add_action( 'parent_file', __CLASS__, 'tax_menu_correction' );
+		anspress()->add_action( 'load-post.php', __CLASS__, 'question_meta_box_class' );
+		anspress()->add_action( 'load-post-new.php', __CLASS__, 'question_meta_box_class' );
+		anspress()->add_action( 'admin_menu', __CLASS__, 'change_post_menu_label' );
+		anspress()->add_action( 'edit_form_after_title', __CLASS__, 'edit_form_after_title' );
+		anspress()->add_filter( 'wp_insert_post_data', __CLASS__, 'post_data_check', 99 );
+		anspress()->add_filter( 'post_updated_messages', __CLASS__, 'post_custom_message' );
+		anspress()->add_action( 'admin_head-nav-menus.php', __CLASS__, 'ap_menu_metaboxes' );
+		anspress()->add_filter( 'posts_clauses', __CLASS__, 'join_by_author_name', 10, 2 );
+		anspress()->add_filter( 'manage_edit-comments_columns', __CLASS__, 'comment_flag_column' );
+		anspress()->add_filter( 'manage_comments_custom_column', __CLASS__, 'comment_flag_column_data', 10, 2 );
+		anspress()->add_filter( 'comment_status_links', __CLASS__, 'comment_flag_view' );
+		anspress()->add_action( 'current_screen', __CLASS__, 'comments_flag_query', 10, 2 );
+		anspress()->add_action( 'get_pages', __CLASS__, 'get_pages', 10, 2 );
+		anspress()->add_action( 'wp_insert_post_data', __CLASS__, 'modify_answer_title', 10, 2 );
+		anspress()->add_action( 'admin_action_ap_update_helper', __CLASS__, 'update_helper' );
+		anspress()->add_action( 'admin_footer-post.php', __CLASS__, 'append_post_status_list' );
 	}
 
 	/**
 	 * Include files required in wp-admin
 	 */
-	public function includes() {
+	public static function includes() {
 		require_once( 'functions.php' );
 		require_once( 'options-fields.php' );
 		require_once( 'license.php' );
@@ -113,10 +93,11 @@ class AnsPress_Admin {
 	/**
 	 * Register and enqueue admin-specific style sheet.
 	 */
-	public function enqueue_admin_styles() {
+	public static function enqueue_admin_styles() {
 		if ( ! ap_load_admin_assets() ) {
 			return;
 		}
+
 		wp_enqueue_style( 'ap-admin-css', ANSPRESS_URL . 'assets/ap-admin.css' );
 		wp_enqueue_style( 'wp-color-picker' );
 		wp_enqueue_style( 'ap-fonts', ap_get_theme_url( 'fonts/style.css' ), array(), AP_VERSION );
@@ -125,7 +106,7 @@ class AnsPress_Admin {
 	/**
 	 * Register and enqueue admin-specific JavaScript.
 	 */
-	public function enqueue_admin_scripts() {
+	public static function enqueue_admin_scripts() {
 		if ( ! ap_load_admin_assets() ) {
 			return;
 		}
@@ -152,7 +133,7 @@ class AnsPress_Admin {
 	 * @return array
 	 * @since 2.4.6
 	 */
-	public function menu_counts() {
+	public static function menu_counts() {
 		$q_flagged_count = ap_total_posts_count( 'question', 'flag' );
 		$a_flagged_count = ap_total_posts_count( 'answer', 'flag' );
 		$question_count = wp_count_posts( 'question', 'readable' );
@@ -179,17 +160,17 @@ class AnsPress_Admin {
 	/**
 	 * Register the administration menu for this plugin into the WordPress Dashboard menu.
 	 */
-	public function add_plugin_admin_menu() {
+	public static function add_plugin_admin_menu() {
 		if ( ! current_user_can( 'delete_pages' ) ) {
 			return;
 		}
 
 		global $submenu;
 
-		$counts = $this->menu_counts();
-		$pos = $this->get_free_menu_position( 42.9 );
+		$counts = self::menu_counts();
+		$pos = self::get_free_menu_position( 42.9 );
 
-		add_menu_page( 'AnsPress', 'AnsPress' . $counts['total'], 'delete_pages', 'anspress', array( $this, 'dashboard_page' ), ANSPRESS_URL . '/assets/answer.png', $pos );
+		add_menu_page( 'AnsPress', 'AnsPress' . $counts['total'], 'delete_pages', 'anspress', array( __CLASS__, 'dashboard_page' ), ANSPRESS_URL . '/assets/answer.png', $pos );
 
 		add_submenu_page( 'anspress', __( 'All Questions', 'anspress-question-answer' ), __( 'All Questions', 'anspress-question-answer' ) . $counts['question'], 'delete_pages', 'edit.php?post_type=question', '' );
 
@@ -197,7 +178,7 @@ class AnsPress_Admin {
 
 		add_submenu_page( 'anspress', __( 'All Answers', 'anspress-question-answer' ), __( 'All Answers', 'anspress-question-answer' ) . $counts['answer'], 'delete_pages', 'edit.php?post_type=answer', '' );
 
-		add_submenu_page( 'ap_select_question', __( 'Select question', 'anspress-question-answer' ), __( 'Select question', 'anspress-question-answer' ), 'delete_pages', 'ap_select_question', array( $this, 'display_select_question' ) );
+		add_submenu_page( 'ap_select_question', __( 'Select question', 'anspress-question-answer' ), __( 'Select question', 'anspress-question-answer' ), 'delete_pages', 'ap_select_question', array( __CLASS__, 'display_select_question' ) );
 
 		/**
 		 * ACTION: ap_admin_menu
@@ -206,11 +187,11 @@ class AnsPress_Admin {
 		 */
 		do_action( 'ap_admin_menu' );
 
-		add_submenu_page( 'anspress', __( 'AnsPress Options', 'anspress-question-answer' ), __( 'Options', 'anspress-question-answer' ), 'manage_options', 'anspress_options', array( $this, 'display_plugin_admin_page' ) );
+		add_submenu_page( 'anspress', __( 'AnsPress Options', 'anspress-question-answer' ), __( 'Options', 'anspress-question-answer' ), 'manage_options', 'anspress_options', array( __CLASS__, 'display_plugin_admin_page' ) );
 
 		$submenu['anspress'][500] = array( 'Theme & Extensions', 'manage_options' , 'https://anspress.io/themes/' );
 
-		add_submenu_page( 'anspress', __( 'About AnsPress', 'anspress-question-answer' ), __( 'About AnsPress', 'anspress-question-answer' ), 'manage_options', 'anspress_about', array( $this, 'display_plugin_about_page' ) );
+		add_submenu_page( 'anspress', __( 'About AnsPress', 'anspress-question-answer' ), __( 'About AnsPress', 'anspress-question-answer' ), 'manage_options', 'anspress_about', array( __CLASS__, 'display_plugin_about_page' ) );
 
 	}
 
@@ -221,10 +202,10 @@ class AnsPress_Admin {
 	 * @param integer $start          position.
 	 * @param double  $increment     position.
 	 */
-	public function get_free_menu_position( $start, $increment = 0.99 ) {
+	public static function get_free_menu_position( $start, $increment = 0.99 ) {
 		$menus_positions = array_keys( $GLOBALS['menu'] );
 
-		if ( ! in_array( $start, $menus_positions ) ) {
+		if ( ! in_array( $start, $menus_positions, true ) ) {
 			return $start;
 		}
 
@@ -241,7 +222,7 @@ class AnsPress_Admin {
 	 * @param  	string $parent_file	parent menu item.
 	 * @return 	string
 	 */
-	public function tax_menu_correction( $parent_file ) {
+	public static function tax_menu_correction( $parent_file ) {
 		global $current_screen;
 		$taxonomy = $current_screen->taxonomy;
 
@@ -254,21 +235,21 @@ class AnsPress_Admin {
 	/**
 	 * Render the settings page for this plugin.
 	 */
-	public function display_plugin_admin_page() {
+	public static function display_plugin_admin_page() {
 		include_once( 'views/admin.php' );
 	}
 
 	/**
 	 * Load extensions page layout
 	 */
-	public function display_plugin_addons_page() {
+	public static function display_plugin_addons_page() {
 		include_once( 'views/addons.php' );
 	}
 
 	/**
 	 * Load about page layout
 	 */
-	public function display_plugin_about_page() {
+	public static function display_plugin_about_page() {
 		include_once( 'views/about.php' );
 	}
 
@@ -277,7 +258,7 @@ class AnsPress_Admin {
 	 *
 	 * @since 2.4
 	 */
-	public function dashboard_page() {
+	public static function dashboard_page() {
 		include_once( 'views/dashboard.php' );
 	}
 
@@ -287,7 +268,7 @@ class AnsPress_Admin {
 	 * @return void
 	 * @since 2.0.0-alpha2
 	 */
-	public function display_select_question() {
+	public static function display_select_question() {
 		include_once( 'views/select_question.php' );
 	}
 
@@ -296,7 +277,7 @@ class AnsPress_Admin {
 	 *
 	 * @param string $links Pugin action links.
 	 */
-	public function add_action_links( $links ) {
+	public static function add_action_links( $links ) {
 		return array_merge(
 			array(
 				'settings' => '<a href="' . admin_url( 'admin.php?page=anspress_options' ) . '">' . __( 'Settings', 'anspress-question-answer' ) . '</a>',
@@ -308,7 +289,7 @@ class AnsPress_Admin {
 	/**
 	 * Hook to run on init
 	 */
-	public function init_actions() {
+	public static function init_actions() {
 		$GLOBALS['wp']->add_query_var( 'post_parent' );
 
 		// Flush_rules if option updated.
@@ -332,13 +313,13 @@ class AnsPress_Admin {
 			exit;
 		}
 
-		add_filter( 'pre_get_posts', array( $this, 'serach_qa_by_userid' ) );
+		add_filter( 'pre_get_posts', array( __CLASS__, 'serach_qa_by_userid' ) );
 	}
 
 	/**
 	 * Question meta box.
 	 */
-	public function question_meta_box_class() {
+	public static function question_meta_box_class() {
 		require_once( 'meta_box.php' );
 		new AP_Question_Meta_Box();
 	}
@@ -348,14 +329,14 @@ class AnsPress_Admin {
 	 *
 	 * @param integer $user_id User ID.
 	 */
-	public function save_user_roles_fields( $user_id ) {
+	public static function save_user_roles_fields( $user_id ) {
 		update_usermeta( $user_id, 'ap_role', ap_sanitize_unslash( 'ap_role', 'p' ) );
 	}
 
 	/**
 	 * Change post menu label.
 	 */
-	public function change_post_menu_label() {
+	public static function change_post_menu_label() {
 		global $menu;
 		global $submenu;
 		$submenu['anspress'][0][0] = 'AnsPress';
@@ -367,7 +348,7 @@ class AnsPress_Admin {
 	 * @return void
 	 * @since 2.0
 	 */
-	public function edit_form_after_title() {
+	public static function edit_form_after_title() {
 		global $typenow, $pagenow, $post;
 
 		if ( in_array( $pagenow, array( 'post-new.php', 'post.php' ) ) && 'answer' === $post->post_type && ap_sanitize_unslash( 'action', 'g' ) === 'edit' ) {
@@ -408,7 +389,7 @@ class AnsPress_Admin {
 	 * @param  object  $post Post Object.
 	 * @since 2.0.0
 	 */
-	public function ans_parent_post( $post_id, $post ) {
+	public static function ans_parent_post( $post_id, $post ) {
 		global $pagenow;
 
 		if ( ! in_array( $pagenow, array( 'post.php', 'post-new.php' ) ) ) {
@@ -436,7 +417,7 @@ class AnsPress_Admin {
 	 * @param array $data Post data array.
 	 * @return array
 	 */
-	public function post_data_check( $data ) {
+	public static function post_data_check( $data ) {
 		global $pagenow;
 
 		if ( 'post.php' === $pagenow && 'answer' === $data['post_type'] ) {
@@ -445,7 +426,7 @@ class AnsPress_Admin {
 			$parent_q = ! empty( parent_q ) ? $parent_q : $data['post_parent'];
 
 			if ( ! empty( $parent_q ) ) {
-				add_filter( 'redirect_post_location', [ $this, 'custom_post_location' ], 99 );
+				add_filter( 'redirect_post_location', [ __CLASS__, 'custom_post_location' ], 99 );
 				return;
 			}
 		}
@@ -454,18 +435,40 @@ class AnsPress_Admin {
 	}
 
 	/**
+	 * Redirect to cusotm post location for error message.
+	 *
+	 * @param String $location redirect url.
+	 * @return string
+	 */
+	public static function custom_post_location( $location ) {
+		remove_filter( 'redirect_post_location', __FUNCTION__, 99 );
+		$location = add_query_arg( 'message', 99, $location );
+
+		return $location;
+	}
+
+	/**
 	 * Custom post update message.
 	 *
 	 * @param array $messages Messages.
 	 * @return array
 	 */
-	public function post_custom_message( $messages ) {
+	public static function post_custom_message( $messages ) {
 		global $post;
 		if ( 'answer' === $post->post_type && (int) ap_sanitize_unslash( 'message', 'g' ) === 99 ) {
-			add_action( 'admin_notices', [ $this, 'ans_notice' ] );
+			add_action( 'admin_notices', [ __CLASS__, 'ans_notice' ] );
 		}
 
 		return $messages;
+	}
+
+	/**
+	 * Answer error when there is not any question set.
+	 */
+	public static function ans_notice() {
+		echo '<div class="error">
+					<p>' . __( 'Please fill parent question field, Answer was not saved!', 'anspress-question-answer' ) . '</p>
+			</div>';
 	}
 
 	/**
@@ -474,8 +477,8 @@ class AnsPress_Admin {
 	 * @return void
 	 * @since unknown
 	 */
-	public function ap_menu_metaboxes() {
-		add_meta_box( 'add-anspress', __( 'AnsPress Pages', 'anspress-question-answer' ), array( $this, 'wp_nav_menu_item_anspress_meta_box' ), 'nav-menus', 'side', 'high' );
+	public static function ap_menu_metaboxes() {
+		add_meta_box( 'add-anspress', __( 'AnsPress Pages', 'anspress-question-answer' ), array( __CLASS__, 'wp_nav_menu_item_anspress_meta_box' ), 'nav-menus', 'side', 'high' );
 	}
 
 	/**
@@ -484,7 +487,7 @@ class AnsPress_Admin {
 	 * @return void
 	 * @since unknown
 	 */
-	public function wp_nav_menu_item_anspress_meta_box() {
+	public static function wp_nav_menu_item_anspress_meta_box() {
 		global $_nav_menu_placeholder, $nav_menu_selected_id;
 
 		$_nav_menu_placeholder = 0 > $_nav_menu_placeholder ? $_nav_menu_placeholder - 1 : -1; // override ok.
@@ -499,7 +502,7 @@ class AnsPress_Admin {
 			if ( $args['show_in_menu'] ) {
 				echo '<li>';
 				echo '<label class="menu-item-title">';
-				echo '<input type="radio" value="" name="menu-item[' . esc_attr( $_nav_menu_placeholder ) . '][menu-item-url]" class="menu-item-checkbox" data-url="' . esc_attr( strtoupper( 'ANSPRESS_PAGE_URL_'.$k ) ) . '" data-title="' . esc_attr( $args['title'] ) . '"> ' . esc_attr( $args['title'] ) . '</label>';
+				echo '<input type="radio" value="" name="menu-item[' . esc_attr( $_nav_menu_placeholder ) . '][menu-item-url]" class="menu-item-checkbox" data-url="' . esc_attr( strtoupper( 'ANSPRESS_PAGE_URL_' . $k ) ) . '" data-title="' . esc_attr( $args['title'] ) . '"> ' . esc_attr( $args['title'] ) . '</label>';
 				echo '</li>';
 			}
 		}
@@ -511,39 +514,13 @@ class AnsPress_Admin {
                     </span>
 				</p>';
 		echo '</div>';
-
-	}
-
-	public function taxonomy_rename() {
-		global $pagenow;
-
-		if ( get_option( 'ap_update_helper' ) ) {
-			?>
-                <div class="update-nag">
-			        <h3><?php printf(__('AnsPress update is not complete yet! click %shere%s to continue.','anspress-question-answer' ), '<a href="'.admin_url( 'admin.php?action=ap_update_helper&__nonce'.wp_create_nonce( 'ap_update_help' ) ).'">', '</a>' ); ?></h3>
-                </div>
-		    <?php
-		}
-		if ( ap_opt( 'tags_taxo_renamed' ) == 'true' || ! taxonomy_exists( 'question_tag' ) ) {
-			return;
-		}
-
-		if ( 'edit-tags.php' != $pagenow ) {
-			return;
-		}
-		?>
-        <div class="error">
-	        <p><strong><?php printf( __( 'Is your existing question tags are not appearing ? click here to fix it %s', 'anspress-question-answer' ), '<a class="ap-rename-taxo" href="#">'.__( 'Fix question tags', 'anspress-question-answer' ).'</a>' ); ?></strong></p>
-	        <p><?php printf( __( 'Hide message %s', 'anspress-question-answer' ), '<a class="ap-rename-taxo" href="#">'.__( 'dismiss', 'anspress-question-answer' ).'</a>' ); ?></p>
-        </div>
-	    <?php
 	}
 
 	/**
 	 * Add author args in query
 	 * @param  object $query WP_Query object.
 	 */
-	public function serach_qa_by_userid($query) {
+	public static function serach_qa_by_userid($query) {
 		$screen = get_current_screen();
 
 		if ( isset( $query->query_vars['s'], $screen->id, $screen->post_type ) && ($screen->id == 'edit-question' && $screen->post_type == 'question' || $screen->id == 'edit-answer' && $screen->post_type == 'answer' ) && $query->is_main_query() ) {
@@ -556,7 +533,8 @@ class AnsPress_Admin {
 				$user_ids = '';
 
 				foreach ( $search_q['author_id'] as $id ) {
-					$user_ids .= (int) $id.','; }
+					$user_ids .= (int) $id.',';
+				}
 
 				set_query_var( 'author', rtrim( $user_ids, ',' ) );
 
@@ -578,23 +556,25 @@ class AnsPress_Admin {
 	}
 
 	/**
-	 * Adds flags column in comment table
+	 * Adds flags column in comment table.
+	 *
 	 * @param array $columns Comments table columns.
 	 * @since 2.4
 	 */
-	public function comment_flag_column($columns) {
+	public static function comment_flag_column( $columns ) {
 		$columns['comment_flag'] = __( 'Flag', 'anspress-question-answer' );
 		return $columns;
 	}
 
 	/**
-	 * Show comment_flag data in comment table
+	 * Show comment_flag data in comment table.
+	 *
 	 * @param  string  $column         name of the comment table column.
 	 * @param  integer $comment_ID     Current comment ID.
 	 * @return void
 	 */
-	public function comment_flag_column_data($column, $comment_ID) {
-		if ( 'comment_flag' == $column ) {
+	public static function comment_flag_column_data( $column, $comment_ID ) {
+		if ( 'comment_flag' === $column ) {
 			$count = get_comment_meta( $comment_ID, ANSPRESS_FLAG_META, true );
 
 			if ( $count ) {
@@ -607,10 +587,11 @@ class AnsPress_Admin {
 
 	/**
 	 * Add flag view link in comment table
+	 *
 	 * @param  array $views view items array.
 	 * @return array
 	 */
-	public function comment_flag_view( $views ) {
+	public static function comment_flag_view( $views ) {
 		$views['flagged'] = '<a href="edit-comments.php?show_flagged=true"'.(isset( $_GET['show_flagged'] ) ? ' class="current"' : '').'>'.__( 'Flagged','anspress-question-answer' ).'</a>';
 		return $views;
 	}
@@ -619,24 +600,25 @@ class AnsPress_Admin {
 	 * Delay hooking our clauses filter to ensure it's only applied when needed.
 	 * @param string $screen Current screen.
 	 */
-	public function comments_flag_query( $screen ) {
-	    if ( $screen->id != 'edit-comments' ) {
+	public static function comments_flag_query( $screen ) {
+	    if ( $screen->id !== 'edit-comments' ) {
 	        return;
 	    }
 
 	    // Check if our Query Var is defined.
 	    if ( isset( $_GET['show_flagged'] ) ) {
-	        add_action( 'comments_clauses', array( $this, 'filter_comments_query' ) );
+	        add_action( 'comments_clauses', array( __CLASS__, 'filter_comments_query' ) );
 	    }
 	}
 
 	/**
 	 * Filter comment clauses, join meta where key is _ap_flag
 	 * As pre_get_comments custom meta query not working so we are adding JOIN statement
+	 *
 	 * @param  array $clauses WordPress comment clauses.
 	 * @return array
 	 */
-	public function filter_comments_query( $clauses ) {
+	public static function filter_comments_query( $clauses ) {
 		global $wpdb;
 		$clauses['join'] = "JOIN $wpdb->commentmeta ON $wpdb->comments.comment_ID = $wpdb->commentmeta.comment_id AND meta_key = '_ap_flag'";
 
@@ -644,26 +626,27 @@ class AnsPress_Admin {
 	}
 
 	/**
-	 * Join users table in post table for searching posts by on user_login
+	 * Join users table in post table for searching posts by on user_login.
+	 *
 	 * @param  array  $pieces Wp_Query mysql clauses.
 	 * @param  object $query  Parent class.
 	 * @return array
 	 * @since 2.4
 	 */
-	public function join_by_author_name($pieces, $query) {
+	public static function join_by_author_name( $pieces, $query ) {
 		if ( isset( $query->query_vars['ap_author_name'] ) && is_array( $query->query_vars['ap_author_name'] ) && count( $query->query_vars['ap_author_name'] ) > 0 ) {
 
 			global $wpdb;
 			$authors = $query->query_vars['ap_author_name'];
 			$authors = implode( "','", array_map( 'sanitize_title_for_query', array_unique( (array) $authors ) ) );
-			$authors = "'". rtrim( $authors, ",'" )."'";
+			$authors = "'" . rtrim( $authors, ",'" ) . "'";
 			$pieces['join'] = " JOIN $wpdb->users users ON users.ID = $wpdb->posts.post_author AND users.user_login IN ($authors)";
 		}
 
 		return $pieces;
 	}
 
-	public function get_pages($pages, $r) {
+	public static function get_pages($pages, $r) {
 		if ( isset( $r['name'] ) && 'page_on_front' == $r['name'] ) {
 			if ( $pages ) {
 				foreach ( $pages as $k => $page ) {
@@ -683,14 +666,14 @@ class AnsPress_Admin {
 	 * @param  array $postarr Post array.
 	 * @return array
 	 */
-	public function modify_answer_title($data) {
+	public static function modify_answer_title($data) {
 		if ( $data['post_type'] == 'answer' ) {
 			$data['post_title'] = get_the_title( $data['post_parent'] );
 		}
 		return $data;
 	}
 
-	public function update_helper() {
+	public static function update_helper() {
 		/*require_once(ANSPRESS_DIR.'admin/update.php' );
 
 		$ap_update_helper = new AP_Update_Helper;
@@ -702,5 +685,34 @@ class AnsPress_Admin {
 		delete_option( 'ap_update_helper' );
 		wp_redirect( 'admin.php?page=anspress' );
 		wp_die();
+	}
+
+	/**
+	 * Add AnsPress post status to post edit select box.
+	 */
+	public static function append_post_status_list() {
+		 global $post;
+		 $complete = '';
+		 $label = '';
+
+		if ( $post->post_type == 'question' || $post->post_type == 'answer' ) {
+			if ( $post->post_status == 'moderate' ) {
+				 $complete = ' selected=\'selected\'';
+				 $label = '<span id=\'post-status-display\'>'.__('Moderate', 'anspress-question-answer' ).'</span>';
+			} elseif ( $post->post_status == 'private_post' ) {
+				 $complete = ' selected=\'selected\'';
+				 $label = '<span id=\'post-status-display\'>'.__('Private Post', 'anspress-question-answer' ).'</span>';
+			}
+				?>
+
+				<?php
+				echo '<script>
+                      jQuery(document).ready(function(){
+						   jQuery("select#post_status").append("<option value=\'moderate\' '.$complete.'>'.__('Moderate', 'anspress-question-answer' ).'</option>");
+						   jQuery("select#post_status").append("<option value=\'private_post\' '.$complete.'>'.__('Private Post', 'anspress-question-answer' ).'</option>");
+						   jQuery(".misc-pub-section label").append("'.$label.'");
+                      });
+			  </script>';
+		}
 	}
 }
