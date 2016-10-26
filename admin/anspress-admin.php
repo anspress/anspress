@@ -125,6 +125,8 @@ class AnsPress_Admin {
 		}
 
 		wp_enqueue_script( 'ap-admin-js', ANSPRESS_URL . 'assets/' . $dir . '/ap-admin' . $min . '.js' , array( 'wp-color-picker' ) );
+		wp_enqueue_script( 'vue-js', ANSPRESS_URL . 'assets/' . $dir . '/vue' . $min . '.js' );
+		wp_enqueue_script( 'anspress-admin-js', ANSPRESS_URL . 'assets/' . $dir . '/admin-app' . $min . '.js' );
 		wp_enqueue_script( 'postbox' );
 	}
 
@@ -352,7 +354,8 @@ class AnsPress_Admin {
 	public static function edit_form_after_title() {
 		global $typenow, $pagenow, $post;
 
-		if ( in_array( $pagenow, array( 'post-new.php', 'post.php' ) ) && 'answer' === $post->post_type && ap_sanitize_unslash( 'action', 'g' ) === 'edit' ) {
+		if ( in_array( $pagenow, array( 'post-new.php', 'post.php' ) ) && 'answer' === $post->post_type ) {
+
 			$post_parent = ap_sanitize_unslash( 'action', 'g', false ) ? $post->post_parent : ap_sanitize_unslash( 'post_parent', 'g' );
 			echo '<div class="ap-selected-question">';
 

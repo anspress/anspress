@@ -24,7 +24,6 @@ if ( ap_isset_post_value( '__nonce' ) && ap_verify_nonce( 'nonce_option_form' ) 
 	// If active is set.
 	if ( '' !== $active ) {
 		$fields = $groups[ $active ]['fields'];
-
 		$default_opt = ap_default_options();
 
 		// Check $_POST value against fields.

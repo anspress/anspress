@@ -33,49 +33,29 @@ class AP_Question_Meta_Box {
 	 * Render Meta Box content.
 	 */
 	public function answers_meta_box_content( ) {
-		global $answers;
-		$answers = ap_get_answers( array( 'question_id' => get_the_ID() ) );
-
-		if ( ap_have_answers() ) {
-			while ( ap_have_answers() ) : ap_the_answer();
-			?>
-            <div id="answer_<?php the_ID(); ?>" data-id="<?php the_ID(); ?>" class="ap-ansm clearfix">
-                <div class="author">
-					<a class="ap-ansm-avatar" href="<?php ap_profile_link(); ?>"<?php ap_hover_card_attr(); ?>>
-						<?php ap_author_avatar(); ?>
-					</a>
-					<strong class="ap-ansm-name"><?php echo ap_user_display_name( ap_get_post_field( 'post_author' ) ); ?></strong>
-                </div>
-
-                <div class="ap-ansm-inner">
-                    
-                    <div class="ap-ansm-meta">
-						<?php ap_recent_post_activity(); ?>
+		?>
+		<div id="answers-list" data-questionid="<?php the_ID(); ?>">
+			<div class="ap-ansm clearfix" v-for="post in items" v-cloak :class="{[statusCase(post.status)]: true, selected: post.selected}">
+        <div class="author">
+					<a href="#" class="ap-ansm-avatar" v-html="post.avatar"></a>
+					<strong class="ap-ansm-name">{{post.author}}</strong>
+        </div>
+				<div class="ap-ansm-inner">
+					<div class="ap-ansm-meta">
+						<span class="post-status" :class="statusCase(post.status)" v-if="post.status != 'Published'">{{post.status}}</span>
+						<span v-html="post.activity"></span>
 					</div>
-					
-					<div class="ap-ansm-content"><?php the_content(); ?></div>
-					
+					<div class="ap-ansm-content" v-html="post.content"></div>
 					<div class="answer-actions">
-
-						<span><a href="<?php echo get_edit_post_link( get_the_ID() ); ?>"><?php _e( 'Edit', 'anspress-question-answer' ); ?></a></span>
-						<span class="delete vim-d vim-destructive"> | <a href="<?php echo get_delete_post_link( get_the_ID() ); ?>"><?php _e( 'Trash', 'anspress-question-answer' ); ?></a></span>
+						<span><a :href="post.edit_link"><?php esc_attr_e( 'Edit', 'anspress-question-answer' ); ?></a></span>
+						<span class="delete vim-d vim-destructive"> | <a :href="post.trash_link"><?php esc_attr_e( 'Trash', 'anspress-question-answer' ); ?></a></span>
 					</div>
-
 				</div>
 			</div>
-			<?php
-			endwhile ;
-
-		} else {
-			?>
-            <div class="inside">
-				<a href="#addanswerbtn" class="button"><?php _e( 'Add answer', 'anspress-question-answer' ); ?></a>
-				<?php _e( 'No answers yet', 'anspress-question-answer' ); ?>
-            </div>
-            
-			<?php
-		}
-		wp_reset_postdata();
+			<br />
+			<a href="<?php echo admin_url( 'post-new.php?post_type=answer&post_parent=' . get_the_ID() ) ?>" class="button add-answer"><?php _e('Add an answer', 'anspress-question-answer' ); ?></a>
+		</div>
+		<?php
 	}
 
 	public function question_meta_box_content($post) {
@@ -87,13 +67,13 @@ class AP_Question_Meta_Box {
 					<li>
 						<i class="apicon-answer"></i>
 						<?php printf( _n( '<strong>1</strong> Answer', '<strong>%d</strong> Answers', $ans_count, 'anspress-question-answer' ), $ans_count ); ?>
-						<a href="#" data-query="ap_admin_answer_from::<?php echo wp_create_nonce( 'admin_answer_'.$post->ID ) .'::'.$post->ID; ?>" class="ap-ajax-btn add-answer" data-cb="loadAdminAnswerForm"><?php _e('Add an answer', 'anspress-question-answer' ); ?></a>
+						<a href="<?php echo admin_url( 'post-new.php?post_type=answer&post_parent=' . get_the_ID() ) ?>" class="add-answer"><?php _e('Add an answer', 'anspress-question-answer' ); ?></a>
 					</li>
-				<?php endif; ?>				
+				<?php endif; ?>
 				<li>
 					<?php $nonce = wp_create_nonce( 'admin_vote' ); ?>
 					<i class="apicon-thumb-up"></i>
-					<?php printf( _n( '<strong>1</strong> Vote', '<strong>%d</strong> Votes', $vote_count, 'anspress-question-answer' ), $vote_count ); ?>					
+					<?php printf( _n( '<strong>1</strong> Vote', '<strong>%d</strong> Votes', $vote_count, 'anspress-question-answer' ), $vote_count ); ?>
 					<a id="ap-vote-down" href="#" class="vote button button-small ap-ajax-btn" data-query="ap_admin_vote::<?php echo $nonce; ?>::<?php echo $post->ID; ?>::down" data-cb="replaceText"><?php _e('-', 'anspress-question-answer' ); ?></a>
 					<a id="ap-vote-up" href="#" class="vote button button-small ap-ajax-btn" data-query="ap_admin_vote::<?php echo $nonce; ?>::<?php echo $post->ID; ?>::up" data-cb="replaceText"><?php _e('+', 'anspress-question-answer' ); ?></a>
 				</li>

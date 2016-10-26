@@ -21,6 +21,11 @@ class AP_QA_Query_Hooks {
 	public static function sql_filter( $sql, $args ) {
 		global $wpdb;
 
+		// Do not filter if wp-admin.
+		if ( is_admin() ) {
+			return $sql;
+		}
+
 		if ( isset( $args->query['ap_query'] ) ) {
 			$sql['join'] = $sql['join'] . " LEFT JOIN {$wpdb->ap_qameta} qameta ON qameta.post_id = {$wpdb->posts}.ID";
 			$sql['fields'] = $sql['fields'] . ', qameta.*, qameta.votes_up - qameta.votes_down AS votes_net';

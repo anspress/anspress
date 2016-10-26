@@ -35,6 +35,7 @@ class AnsPress_Ajax {
 		anspress()->add_action( 'ap_ajax_filter_search', __CLASS__, 'filter_search' );
 		anspress()->add_action( 'ap_ajax_convert_to_post', __CLASS__, 'convert_to_post' );
 		anspress()->add_action( 'ap_ajax_delete_attachment', __CLASS__, 'delete_attachment' );
+		anspress()->add_action( 'ap_ajax_get_all_answers', __CLASS__, 'get_all_answers' );
 
 		anspress()->add_action( 'ap_ajax_load_comments', 'AnsPress_Comment_Hooks', 'load_comments' );
 		anspress()->add_action( 'ap_ajax_edit_comment_form', 'AnsPress_Comment_Hooks', 'edit_comment_form' );
@@ -48,11 +49,7 @@ class AnsPress_Ajax {
 		anspress()->add_action( 'ap_ajax_submit_comment', 'AnsPress_Comment_Hooks','submit_comment' );
 		anspress()->add_action( 'ap_ajax_approve_comment', 'AnsPress_Comment_Hooks','approve_comment' );
 		anspress()->add_action( 'ap_ajax_post_actions_dp', 'AnsPress_Theme', 'post_actions_dp' );
-		anspress()->add_action( 'ap_ajax_user_dp', 'AnsPress_User', 'user_dp' );
 		anspress()->add_action( 'ap_ajax_list_filter', 'AnsPress_Theme', 'list_filter' );
-		anspress()->add_action( 'wp_ajax_ap_cover_upload', 'AnsPress_User', 'cover_upload' );
-		anspress()->add_action( 'wp_ajax_ap_avatar_upload', 'AnsPress_User', 'avatar_upload' );
-
 	}
 
 	/**
@@ -630,5 +627,32 @@ class AnsPress_Ajax {
 				'message_type'  => 'success',
 			) );
 		}
+	}
+
+	public static function get_all_answers() {
+		global $answers;
+
+		$question_id = ap_sanitize_unslash( 'question_id', 'p' );
+		$answers_arr = [];
+		$answers = ap_get_answers( [ 'question_id' => $question_id ] );
+
+		if ( ap_user_can_see_answers() ) :
+			while ( ap_have_answers() ) : ap_the_answer();
+				global $post, $wp_post_statuses;
+				$answers_arr[] = array(
+					'ID' => get_the_ID(),
+					'content' => get_the_content(),
+					'avatar' => ap_get_author_avatar( 30 ),
+					'author' => ap_user_display_name( $post->post_author ),
+					'activity' => ap_get_recent_post_activity(),
+					'edit_link' => esc_url_raw( get_edit_post_link() ),
+					'trash_link' => esc_url_raw( get_delete_post_link() ),
+					'status' => esc_attr( $wp_post_statuses[ $post->post_status ]->label ),
+					'selected' => ap_get_post_field( 'selected' ),
+				);
+			endwhile;
+		endif;
+
+		ap_ajax_json( [ 'data' => $answers_arr ] );
 	}
 }

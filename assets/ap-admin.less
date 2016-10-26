@@ -1,7 +1,9 @@
 @import "../theme/default/less/variables.less";
 @import "../theme/default/less/user-posts.less";
 @import "../theme/default/less/grid.less";
-
+[v-cloak] {
+  display: none;
+}
 .clearfix:before, .clearfix:after {
 	display: table;
 	clear: both;
@@ -898,8 +900,8 @@ h3.ap-dash-title {
 }
 
 .ap-ansm{
-		border-bottom: 1px solid #eee;
-		padding: 10px;
+    border-bottom: 1px solid rgba(113, 113, 113, 0.1);
+    padding: 15px 10px;
 		&-inner{
 				overflow: hidden;
 				p{
@@ -922,6 +924,20 @@ h3.ap-dash-title {
 		&-content p{
 				font-size: 14px;
 		}
+		&.trash{
+			background: #ffebee;
+		}
+		&.selected{
+			background: #f1f8e9;
+		}
+		.ap-post-history {
+				font-weight: 600;
+		}
+}
+#ap_answers_meta_box .hndle {
+	background: #f5f5f5 none repeat scroll 0 0;
+	font-size: 20px;
+	padding: 10px 15px;
 }
 .ap-license{
 		&-check{
@@ -1122,4 +1138,14 @@ ul.ap-meta-list{
 		margin-top: 25px;
 		padding: 10px;
 }
-
+#answers-list{
+	.post-status {
+		background: #e6e6e6 none repeat scroll 0 0;
+		font-size: 12px;
+		padding: 1px 5px;
+		&.trash{
+			background: #ef5350;
+			color: #fff;
+		}
+	}
+}

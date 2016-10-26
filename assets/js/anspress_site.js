@@ -40,19 +40,13 @@ var apData = {};
             this.select_answer();
             this.ap_delete_post();
             this.ap_upload_field();
-            this.avatarUploadCallback();
-            this.load_profile_field();
             this.ap_post_upload_field();
             this.tinyMCEeditorToggle();
             this.tab();
             this.set_featured();
             this.modal();
             this.expand();
-            this.follow();
-            this.updateCover();
             this.hoverCard();
-            this.delete_notification();
-            this.mark_as_read();
             this.cancel_comment();
             this.questionSuggestion();
             this.checkboxUncheck();
@@ -478,23 +472,6 @@ var apData = {};
                 return false
             });
         },
-        avatarUploadCallback: function(){
-            $(document).on('uploadForm', function(e, data, form) {
-                if (typeof data.action !== 'undefined' && data.action === 'avatar_uploaded') {
-                    var src = $(data.html).attr('src');
-                    $(form).prev().attr('src', src);
-                }
-            });
-        },
-        load_profile_field: function() {
-            $('body').delegate('[data-action="ap_load_user_field_form"]', 'click', function(e) {
-                e.preventDefault();
-                var q = $(this).attr('data-query');
-                ApSite.doAjax(apAjaxData(q), function(data) {
-                    AnsPress.site.hideLoading(this);
-                }, this, false);
-            });
-        },
         ap_post_upload_field: function() {
             $('body').on('click', '[data-action="ap_post_upload_field"]', function(e) {
                 e.preventDefault();
@@ -629,29 +606,6 @@ var apData = {};
 
             });
         },
-        follow: function() {
-            $('body').delegate('[data-action="ap_follow"]', 'click', function(e) {
-                e.preventDefault();
-                var q = $(this).attr('data-query');
-                ApSite.doAjax(apAjaxData(q), function(data) {
-                    AnsPress.site.hideLoading(this);
-                    if (data.action == 'follow') {
-                        $(this).addClass('active');
-                    } else {
-                        $(this).removeClass('active');
-                    }
-                }, this, function() {
-                    $(this).toggleClass('active');
-                });
-            });
-        },
-        updateCover: function(){
-            $(document).on('uploadForm', function(e, data) {
-                if (typeof data.action !== 'undefined' && data.action === 'cover_uploaded') {
-                    $('[data-view="user_cover_'+ data.user_id +'"]').css({'background-image': 'url('+data.image+')'});
-                }
-            });
-        },
         hoverCard:function(){
             $('[data-hover], [data-catid]').aptip({
                 theme: 'ap-hover-card',
@@ -661,42 +615,6 @@ var apData = {};
                 title: '<div class="hovercard-loading-bg"></div>'
             });
         },
-        delete_notification: function() {
-            $('body').delegate('[data-action="ap_delete_notification"]', 'click', function(e) {
-                e.preventDefault();
-                var q = $(this).attr('data-query');
-                ApSite.doAjax(apAjaxData(q), function(data) {
-                    AnsPress.site.hideLoading(this);
-                    if(typeof data.container !== 'undefined')
-                        $(data.container).slideUp('400', function() {
-                            $(data.container).remove();
-                        });
-                }, this);
-            });
-        },
-        mark_as_read: function() {
-            $('body').delegate('[data-action="ap_markread_notification"]', 'click', function(e) {
-                e.preventDefault();
-                var q = $(this).attr('data-query');
-                ApSite.doAjax(apAjaxData(q), function(data) {
-                    AnsPress.site.hideLoading(this);
-
-                }, this);
-            });
-
-            $(document).on('ap_after_ajax', function(e, data) {
-                if (typeof data.action !== 'undefined') {
-                    if(data.action === 'mark_read_notification'){
-                        $(data.container).removeClass('unread');
-                        $(data.container).find('.ap-btn-markread').remove();
-                    }else if(data.action === 'mark_all_read' ){
-                        $('.ap-notification-item').removeClass('unread');
-                        $('.ap-notification-item').find('.ap-btn-markread').remove();
-                    }
-                }
-            });
-        },
-
         cancel_comment: function(){
             $('body').delegate('[data-action="cancel-comment"]', 'click', function(e) {
                 e.preventDefault();
