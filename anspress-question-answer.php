@@ -175,22 +175,6 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		public $anspress_forms;
 
 		/**
-		 * AnsPress bp object
-		 *
-		 * @access public
-		 * @var object
-		 */
-		public $anspress_bp;
-
-		/**
-		 * AnsPress third party object
-		 *
-		 * @access public
-		 * @var object
-		 */
-		public $third_party;
-
-		/**
 		 * AnsPress views object
 		 *
 		 * @access public
@@ -221,8 +205,6 @@ if ( ! class_exists( 'AnsPress' ) ) {
 				self::$instance->setup_constants();
 				self::$instance->actions = array();
 				self::$instance->filters = array();
-
-				add_action( 'bp_loaded', array( self::$instance, 'bp_include' ) );
 
 				global $ap_classes;
 				$ap_classes = array();
@@ -318,14 +300,12 @@ if ( ! class_exists( 'AnsPress' ) ) {
 			require_once ANSPRESS_DIR . 'includes/process-form.php';
 			require_once ANSPRESS_DIR . 'includes/ask-form.php';
 			require_once ANSPRESS_DIR . 'includes/answer-form.php';
-
 			require_once ANSPRESS_DIR . 'widgets/search.php';
 			require_once ANSPRESS_DIR . 'widgets/question_stats.php';
 			require_once ANSPRESS_DIR . 'widgets/related_questions.php';
 			require_once ANSPRESS_DIR . 'widgets/questions.php';
 			require_once ANSPRESS_DIR . 'widgets/breadcrumbs.php';
 			require_once ANSPRESS_DIR . 'widgets/ask-form.php';
-
 			require_once ANSPRESS_DIR . 'includes/rewrite.php';
 			require_once ANSPRESS_DIR . 'includes/bad-words.php';
 			require_once ANSPRESS_DIR . 'includes/deprecated.php';
@@ -361,20 +341,6 @@ if ( ! class_exists( 'AnsPress' ) ) {
 			self::$instance->anspress_hooks 	= AnsPress_Hooks::init();
 			self::$instance->views_class 		  = new AP_Views( );
 			self::$instance->bad_words_class 	= new AP_Bad_words( );
-		}
-
-		/**
-		 * Include BuddyPress hooks and files
-		 *
-		 * @access public
-		 */
-		public function bp_include() {
-			if ( ! class_exists( 'BuddyPress' ) ) {
-				return;
-			}
-
-			require_once ANSPRESS_DIR . 'includes/bp.php';
-			self::$instance->anspress_bp = new AnsPress_BP();
 		}
 
 		/**
