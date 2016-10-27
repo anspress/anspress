@@ -930,8 +930,23 @@ h3.ap-dash-title {
 		&.selected{
 			background: #f1f8e9;
 		}
+		&.moderate{
+			background: #fff8e1;
+		}
 		.ap-post-history {
-				font-weight: 600;
+			font-weight: 600;
+		}
+		.post-status {
+			background: #e6e6e6 none repeat scroll 0 0;
+			font-size: 12px;
+			padding: 1px 5px;
+			&.trash{
+				background: #ef5350;
+				color: #fff;
+			}
+			&.moderate{
+				background: #ffd54f;
+			}
 		}
 }
 #ap_answers_meta_box .hndle {
@@ -1137,15 +1152,4 @@ ul.ap-meta-list{
 		margin-bottom: 10px;
 		margin-top: 25px;
 		padding: 10px;
-}
-#answers-list{
-	.post-status {
-		background: #e6e6e6 none repeat scroll 0 0;
-		font-size: 12px;
-		padding: 1px 5px;
-		&.trash{
-			background: #ef5350;
-			color: #fff;
-		}
-	}
 }

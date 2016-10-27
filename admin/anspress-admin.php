@@ -108,14 +108,17 @@ class AnsPress_Admin {
 	 * Register and enqueue admin-specific JavaScript.
 	 */
 	public static function enqueue_admin_scripts() {
-		if ( ! ap_load_admin_assets() ) {
-			return;
-		}
-
 		$page = get_current_screen();
 
 		$dir = ap_env_dev() ? 'js' : 'min';
 		$min = ap_env_dev() ? '' : '.min';
+
+		wp_register_script( 'vue-js', ANSPRESS_URL . 'assets/' . $dir . '/vue' . $min . '.js' );
+		//wp_register_script( 'ap-component-apbtn', ANSPRESS_URL . 'assets/' . $dir . '/app/components/apbtn' . $min . '.js', [ 'vue-js' ], AP_VERSION, true );
+
+		if ( ! ap_load_admin_assets() ) {
+			return;
+		}
 
 		wp_enqueue_script( 'jquery-form', array( 'jquery' ), false, true );
 		wp_enqueue_script( 'ap-functions-js', ANSPRESS_URL . 'assets/' . $dir . '/ap-functions' . $min . '.js', 'jquery', AP_VERSION );
@@ -125,8 +128,7 @@ class AnsPress_Admin {
 		}
 
 		wp_enqueue_script( 'ap-admin-js', ANSPRESS_URL . 'assets/' . $dir . '/ap-admin' . $min . '.js' , array( 'wp-color-picker' ) );
-		wp_enqueue_script( 'vue-js', ANSPRESS_URL . 'assets/' . $dir . '/vue' . $min . '.js' );
-		wp_enqueue_script( 'anspress-admin-js', ANSPRESS_URL . 'assets/' . $dir . '/admin-app' . $min . '.js' );
+		wp_enqueue_script( 'anspress-admin-js', ANSPRESS_URL . 'assets/' . $dir . '/admin-app' . $min . '.js', [ 'vue-js' ], true );
 		wp_enqueue_script( 'postbox' );
 	}
 

@@ -91,9 +91,9 @@ class AnsPress_Admin_Ajax {
 			$post = ap_get_post( $args[0] );
 
 			if ( $post ) {
-				$type = 'up' === $args[1] ? 'vote_up'  : 'vote_down';
-				$inserted = ap_vote_insert( $post->ID, 0, $type );
-				echo esc_attr( $count['net_vote'] );
+				$value = 'up' === $args[1] ? '1'  : '-1';
+				$counts = ap_add_post_vote( $post->ID, 0, 'vote', $value );
+				echo esc_attr( $counts['votes_net'] );
 			}
 		}
 		die();

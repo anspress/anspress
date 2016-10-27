@@ -34,7 +34,7 @@ module.exports = function(grunt) {
 	            }
 	        }
 	    },
-	    
+
 	    addtextdomain: {
 	    	options: {
 	            textdomain: 'anspress-question-answer',    // Project text domain.
@@ -114,6 +114,7 @@ module.exports = function(grunt) {
 	    uglify: {
 	    	my_target: {
 	    		files: {
+	    			'assets/min/admin-app.min.js': ['assets/js/admin-app.js'],
 	    			'assets/min/anspress_site.min.js': ['assets/js/anspress_site.js'],
 	    			'assets/min/ap-functions.min.js': ['assets/js/ap-functions.js'],
 	    			'assets/min/ap-admin.min.js': ['assets/js/ap-admin.js'],
@@ -148,7 +149,7 @@ module.exports = function(grunt) {
 				dest: 'theme/default/min/anspress-theme.min.js',
 			},
 		},
-		
+
 		watch: {
 			less: {
 				files: ['**/*.less'],

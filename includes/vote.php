@@ -44,22 +44,22 @@ class AnsPress_Vote {
 	    $is_voted = ap_get_vote( $post_id, get_current_user_id(), 'vote' );
 
 	    if ( false !== $is_voted ) {
-	        // If user already voted and click that again then reverse.
-			if ( $is_voted->vote_value == $value ) {
-				$counts = ap_delete_post_vote( $post_id, $userid, 'vote' );
-			    do_action( 'ap_undo_vote', $post_id, $counts );
-			    do_action( 'ap_undo_' . $type, $post_id, $counts );
+	      // If user already voted and click that again then reverse.
+				if ( $is_voted->vote_value == $value ) {
+					$counts = ap_delete_post_vote( $post_id, $userid, 'vote' );
+						do_action( 'ap_undo_vote', $post_id, $counts );
+						do_action( 'ap_undo_' . $type, $post_id, $counts );
 
-			   	ap_ajax_json( array(
-			   		'action' 	=> 'undo',
-			   		'type' 		=> $type,
-			   		'count' 	=> $counts['votes_net'],
-			   		'message' 	=> 'undo_vote',
-			   	) );
-			}
+						ap_ajax_json( array(
+							'action' 	=> 'undo',
+							'type' 		=> $type,
+							'count' 	=> $counts['votes_net'],
+							'message' 	=> 'undo_vote',
+						) );
+				}
 
-			// Else ask user to undor their vote first.
-			ap_ajax_json( 'undo_vote_your_vote' );
+				// Else ask user to undor their vote first.
+				ap_ajax_json( 'undo_vote_your_vote' );
 	    }
 
 		$counts = ap_add_post_vote( $post_id, $userid, 'vote', $value );
@@ -397,7 +397,7 @@ function ap_vote_btn( $post = null, $echo = true ) {
 		return;
 	}
 	$nonce = wp_create_nonce( 'vote_' . $post->ID );
-	
+
 	$vote = is_user_logged_in() ? ap_get_vote( $post->ID, get_current_user_id(), 'vote' ) : false;
 	$voted = $vote ? true : false;
 	$type = $vote && $vote->vote_value == '1' ? 'vote_up' : 'vote_down';
