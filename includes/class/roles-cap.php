@@ -1074,8 +1074,7 @@ function ap_user_can_vote_on_post( $post_id, $type, $user_id = false, $wp_error 
 		return true;
 	}
 
-	$type = $type == 'vote_up' ? 'vote_up' : 'vote_down';
-
+	$type = 'vote_up' ===  $type ? 'vote_up' : 'vote_down';
 	$post_o = ap_get_post( $post_id );
 
 	/**
@@ -1088,6 +1087,7 @@ function ap_user_can_vote_on_post( $post_id, $type, $user_id = false, $wp_error 
 	 * @since  2.4.6
 	 */
 	$filter = apply_filters( 'ap_user_can_vote_on_post', '', $post_o->ID, $type, $user_id );
+
 	if ( true === $filter ) {
 		return true;
 	} elseif ( false === $filter ) {
