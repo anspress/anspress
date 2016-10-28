@@ -181,15 +181,13 @@ function ap_flag_btn_html( $post = null, $echo = false ) {
 /**
  * Insert flag vote for comment.
  *
- * @param int   $user_id
- * @param int   $action_id
- * @param mixed $value
- * @param mixed $param
+ * @param integer   $user_id User ID.
+ * @param integer   $comment_id Comment ID.
  *
  * @return integer
  */
-function ap_insert_comment_flag( $user_id, $action_id, $value = null, $param = null ) {
-	return ap_add_meta( $user_id, 'comment_flag', $action_id, $value, $param );
+function ap_insert_comment_flag( $user_id, $comment_id ) {
+	return add_comment_meta( $action_id, '__ap_flag',  $comment_id );
 }
 
 /**
@@ -251,8 +249,18 @@ function ap_comment_flag_count( $comment_id = false ) {
 		$comment_id = get_comment_ID();
 	}
 
-	$count = ap_meta_total_count( 'comment_flag', $comment_id );
-	return apply_filters( 'ap_comment_flag_count', $count );
+	$cache = wp_cache_get( $comment_id, 'ap_comment_flags' );
+
+	if ( false !== $cache ) {
+		return $cache;
+	}
+
+	global $wpdb;
+	$counts = $wpdb->get_var( $wpdb->prepare( "SELECT count(*) as count, c.comment_ID FROM $wpdb->comments c INNER JOIN {$wpdb->commentmeta} m ON c.comment_ID = m.comment_id WHERE m.meta_key = '%s' AND m.meta_value NOT NULL", '__ap_flag' ) ); // db call okay.
+
+	wp_cache_set( $comment_id, $counts, 'ap_comment_flags' );
+
+	return apply_filters( 'ap_comment_flag_count', $counts );
 }
 
 /**

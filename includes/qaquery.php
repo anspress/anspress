@@ -410,7 +410,7 @@ function ap_question_metas( $question_id = false ) {
 		$metas['solved'] = '<i class="apicon-check"></i>' . __( 'Solved', 'anspress-question-answer' );
 	}
 
-	$view_count = ap_get_qa_views();
+	$view_count = ap_get_post_field( 'views' );
 	$metas['views'] = '<i class="apicon-eye"></i><i>' . sprintf( __( '%d views', 'anspress-question-answer' ), $view_count ) . '</i>';
 
 	if ( is_question() ) {

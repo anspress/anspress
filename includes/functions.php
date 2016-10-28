@@ -1468,6 +1468,7 @@ function ap_append_table_names() {
 	$wpdb->ap_qameta 		     = $wpdb->prefix . 'ap_qameta';
 	$wpdb->ap_votes 		     = $wpdb->prefix . 'ap_votes';
 	$wpdb->ap_meta 			     = $wpdb->prefix . 'ap_meta';
+	$wpdb->ap_views 			   = $wpdb->prefix . 'ap_views';
 
 }
 ap_append_table_names();

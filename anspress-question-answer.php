@@ -175,14 +175,6 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		public $anspress_forms;
 
 		/**
-		 * AnsPress views object
-		 *
-		 * @access public
-		 * @var object
-		 */
-		public $views_class;
-
-		/**
 		 * AnsPress bad words object
 		 *
 		 * @access public
@@ -292,8 +284,8 @@ if ( ! class_exists( 'AnsPress' ) ) {
 			require_once ANSPRESS_DIR . 'includes/post-types.php';
 			require_once ANSPRESS_DIR . 'includes/post-status.php';
 			require_once ANSPRESS_DIR . 'includes/meta.php';
-			require_once ANSPRESS_DIR . 'includes/vote.php';
-			require_once ANSPRESS_DIR . 'includes/view.php';
+			require_once ANSPRESS_DIR . 'includes/votes.php';
+			require_once ANSPRESS_DIR . 'includes/views.php';
 			require_once ANSPRESS_DIR . 'includes/theme.php';
 			require_once ANSPRESS_DIR . 'includes/form.php';
 			require_once ANSPRESS_DIR . 'includes/shortcode-basepage.php';
@@ -339,7 +331,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		 */
 		public function site_include() {
 			self::$instance->anspress_hooks 	= AnsPress_Hooks::init();
-			self::$instance->views_class 		  = new AP_Views( );
+			AnsPress_Views::init();
 			self::$instance->bad_words_class 	= new AP_Bad_words( );
 		}
 
