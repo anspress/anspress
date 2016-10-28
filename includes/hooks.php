@@ -247,12 +247,6 @@ class AnsPress_Hooks {
 		if ( 'question' === $post->post_type ) {
 			do_action( 'ap_trash_question', $post->ID, $post );
 
-			// Delete post ap_meta.
-			ap_delete_meta( array(
-				'apmeta_type'     => 'flag',
-				'apmeta_actionid' => $post->ID,
-			) );
-
 			//@codingStandardsIgnoreStart
 			$ans = get_posts( array(
 				'post_type'   => 'answer',
@@ -268,7 +262,6 @@ class AnsPress_Hooks {
 					ap_unset_selected_answer( $p->post_parent );
 				}
 
-				ap_delete_meta( array( 'apmeta_type' => 'flag', 'apmeta_actionid' => $p->ID ) );
 				ap_update_post_activity_meta( $p->ID, 'delete_answer', get_current_user_id(), true );
 				wp_trash_post( $p->ID );
 			}
@@ -285,8 +278,6 @@ class AnsPress_Hooks {
 			 */
 				do_action( 'ap_trash_answer', $post->ID, $post );
 
-				// Delete flag meta.
-				ap_delete_meta( array( 'apmeta_type' => 'flag', 'apmeta_actionid' => $post->ID ) );
 				ap_update_answers_count( $post->post_parent );
 		}
 	}

@@ -283,7 +283,6 @@ if ( ! class_exists( 'AnsPress' ) ) {
 			require_once ANSPRESS_DIR . 'includes/qaquery-hooks.php';
 			require_once ANSPRESS_DIR . 'includes/post-types.php';
 			require_once ANSPRESS_DIR . 'includes/post-status.php';
-			require_once ANSPRESS_DIR . 'includes/meta.php';
 			require_once ANSPRESS_DIR . 'includes/votes.php';
 			require_once ANSPRESS_DIR . 'includes/views.php';
 			require_once ANSPRESS_DIR . 'includes/theme.php';
@@ -520,9 +519,6 @@ if ( ! class_exists( 'AnsPress_Init' ) ) {
 			// Removes answer CPT.
 			SELF::delete_cpt( 'answer' );
 
-			// Remove tables
-			$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}ap_meta" ); // @codingStandardsIgnoreLine
-
 			// Remove options.
 			delete_option( 'anspress_opt' );
 
@@ -585,7 +581,7 @@ if ( ! class_exists( 'AnsPress_Init' ) ) {
 
 			global $wpdb;
 
-			$tables[] 	= $wpdb->prefix . 'ap_meta';
+			$tables[] 	= $wpdb->prefix . 'ap_views';
 			$tables[] 	= $wpdb->prefix . 'ap_qameta';
 			return $tables;
 		}

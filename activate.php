@@ -138,28 +138,6 @@ class AP_Activate {
 	}
 
 	/**
-	 * AnsPress meta table.
-	 */
-	public function meta_table() {
-		global $wpdb;
-
-		// @codingStandardsIgnoreLine
-		if ( $wpdb->get_var( "show tables like '{$wpdb->ap_meta}'" ) != $wpdb->ap_meta ) {
-			// @codingStandardsIgnoreLine
-			$this->tables[] = 'CREATE TABLE IF NOT EXISTS `' . $wpdb->ap_meta . '` (
-					`apmeta_id` bigint(20) NOT NULL AUTO_INCREMENT,
-					`apmeta_userid` bigint(20) DEFAULT NULL,
-					`apmeta_type` varchar(256) DEFAULT NULL,
-					`apmeta_actionid` bigint(20) DEFAULT NULL,
-					`apmeta_value` text,
-					`apmeta_param` LONGTEXT DEFAULT NULL,
-					`apmeta_date` timestamp NULL DEFAULT NULL,
-					PRIMARY KEY (`apmeta_id`)
-				)' . $this->charset_collate . ';';
-		}
-	}
-
-	/**
 	 * AnsPress views table.
 	 */
 	public function views_table() {
@@ -189,7 +167,6 @@ class AP_Activate {
 
 		$this->qameta_table();
 		$this->votes_table();
-		$this->meta_table();
 		$this->views_table();
 
 		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );

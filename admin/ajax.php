@@ -51,10 +51,10 @@ class AnsPress_Admin_Ajax {
 	 * Delete post flag
 	 */
 	public static function ap_delete_flag() {
-		$id = (int) ap_sanitize_unslash( 'id', 'p' );
+		$post_id = (int) ap_sanitize_unslash( 'id', 'p' );
 
-		if ( ap_verify_nonce( 'flag_delete' . $id ) && current_user_can( 'manage_options' ) ) {
-			return ap_delete_meta( false, $id );
+		if ( ap_verify_nonce( 'flag_delete' . $post_id ) && current_user_can( 'manage_options' ) ) {
+			ap_set_flag_count( $post_id, 0 );
 		}
 
 		wp_die();
@@ -69,7 +69,6 @@ class AnsPress_Admin_Ajax {
 		$args = ap_sanitize_unslash( 'args', 'p' );
 
 		if ( current_user_can( 'manage_options' ) && ap_verify_nonce( 'clear_flag_' . $args[0] ) ) {
-			ap_delete_all_post_flags( $args[0] );
 			ap_set_flag_count( $args[0], 0 );
 			wp_die( _e('0' ) );
 		}

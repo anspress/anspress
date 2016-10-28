@@ -60,18 +60,19 @@ class AnsPress_Flag {
 	 */
 	public static function flag_post() {
 		$args = ap_sanitize_unslash( 'args', 'request' );
-	    $post_id = (int) $args[0];
-	    if ( ! ap_verify_nonce( 'flag_' . $post_id ) || ! is_user_logged_in() ) {
-	        ap_ajax_json( 'something_wrong' );
-	    }
+		$post_id = (int) $args[0];
+		if ( ! ap_verify_nonce( 'flag_' . $post_id ) || ! is_user_logged_in() ) {
+				ap_ajax_json( 'something_wrong' );
+		}
 
-	    $userid = get_current_user_id();
-	    $is_flagged = ap_is_user_flagged( $post_id );
+		$userid = get_current_user_id();
+		$is_flagged = ap_is_user_flagged( $post_id );
 
-	    // Die if already flagged.
-	    if ( $is_flagged ) {
-	        ap_ajax_json( 'already_flagged' );
-	    }
+		// Die if already flagged.
+		if ( $is_flagged ) {
+				ap_ajax_json( 'already_flagged' );
+		}
+
 		ap_add_flag( $post_id );
 		$counts = ap_update_flags_count( $post_id );
 		ap_ajax_json( array(
@@ -96,32 +97,6 @@ function ap_add_flag( $post_id, $user_id = false ) {
 		$user_id = get_current_user_id();
 	}
 	return ap_vote_insert( $post_id, $user_id, 'flag' );
-}
-
-/**
- * Retrieve flag vote count
- * If $actionid is passed then it count numbers of vote for a post
- * If $userid is passed then it count votes casted by a user.
- * If $receiving_userid is passed then it count numbers of votes received.
- *
- * @param string   $type             Type of vote, "flag" or "comment_flag".
- * @param bool|int $actionid         Post ID.
- * @param bool|int $userid           User ID of user casting the vote.
- * @param int      $receiving_userid User ID of user who received the vote
- *
- * @return integer
- */
-function ap_count_flag_vote( $type = 'flag', $actionid = false, $userid = false, $receiving_userid = false ) {
-
-	if ( $actionid !== false ) {
-		$count = ap_meta_total_count( $type, $actionid );
-	} elseif ( $userid !== false ) {
-		$count = ap_meta_total_count( $type, false, $userid );
-	} elseif ( $receiving_userid !== false ) {
-		$count = ap_meta_total_count( $type, false, false, false, $receiving_userid );
-	}
-
-	return $count > 0 ? $count : 0 ;
 }
 
 /**
@@ -274,32 +249,30 @@ function ap_comment_flag_count( $comment_id = false ) {
  * @return bool
  */
 function ap_is_user_flagged_comment( $comment_id = false, $user_id = false ) {
-
-	if ( ! is_user_logged_in() ) {
-		return false;
+	if ( false === $user_id ) {
+		$user_id = get_current_user_id();
 	}
 
 	if ( false === $comment_id ) {
 		$comment_id = get_comment_ID();
 	}
 
-	if ( false === $user_id ) {
-		$user_id = get_current_user_id();
+	// If user_id or comment id is empty then return false.
+	if ( empty( $user_id ) || empty( $comment_id ) ) {
+		return false;
 	}
 
-	$done = ap_meta_user_done( 'comment_flag', $user_id, $comment_id );
+	$cache = wp_cache_get( $user_id, 'ap_user_flagged_comment' );
 
-	return $done > 0 ? true : false;
+	if ( false !==  $cache ) {
+		return $cache;
+	}
+
+	$counts = $wpdb->get_var( $wpdb->prepare( "SELECT count(*) FROM $wpdb->comments c INNER JOIN {$wpdb->commentmeta} m ON c.comment_ID = m.comment_id WHERE m.meta_key = '%s' AND m.meta_value = %d", '__ap_flag', $user_id ) ); // db call okay.
+
+	$ret = $counts > 0 ? true : false;
+	wp_cache_set( $user_id, $ret, 'ap_user_flagged_comment' );
+
+	return $ret;
 }
-
-/**
- * Delete all flags vote of a post.
- *
- * @param  integer $post_id Post id.
- * @return boolean
- */
-function ap_delete_all_post_flags( $post_id ) {
-	return ap_delete_meta( array( 'apmeta_actionid' => (int) $post_id, 'apmeta_type' => 'flag' ) );
-}
-
 

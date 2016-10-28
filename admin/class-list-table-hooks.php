@@ -160,7 +160,7 @@ class AnsPress_Post_Table_Hooks {
 	 * @param array  $actions Actions array.
 	 * @param object $post    Post object.
 	 */
-	public function add_question_flag_link( $actions, $post ) {
+	public static function add_question_flag_link( $actions, $post ) {
 
 		if ( ap_get_post_field( 'flags', $post ) ) {
 			$actions['flag'] = '<a href="#" data-query="ap_clear_flag::' . wp_create_nonce( 'clear_flag_' . $post->ID ) . '::' . $post->ID . '" class="ap-ajax-btn flag-clear" data-cb="afterFlagClear">' . __( 'Clear flag', 'anspress-question-answer' ) . '</a>';
@@ -304,7 +304,7 @@ class AnsPress_Post_Table_Hooks {
 	 * @param array $columns Sorting columns.
 	 * @return array
 	 */
-	public function admin_column_sort_flag( $columns ) {
+	public static function admin_column_sort_flag( $columns ) {
 		$columns['flags']   = 'flags';
 		$columns['answers'] = 'answers';
 		$columns['votes']   = 'votes';
