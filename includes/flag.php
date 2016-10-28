@@ -61,6 +61,7 @@ class AnsPress_Flag {
 	public static function flag_post() {
 		$args = ap_sanitize_unslash( 'args', 'request' );
 		$post_id = (int) $args[0];
+
 		if ( ! ap_verify_nonce( 'flag_' . $post_id ) || ! is_user_logged_in() ) {
 				ap_ajax_json( 'something_wrong' );
 		}
@@ -93,9 +94,11 @@ class AnsPress_Flag {
  * @return integer|boolean
  */
 function ap_add_flag( $post_id, $user_id = false ) {
+
 	if ( false === $user_id ) {
 		$user_id = get_current_user_id();
 	}
+
 	return ap_vote_insert( $post_id, $user_id, 'flag' );
 }
 
@@ -108,20 +111,23 @@ function ap_add_flag( $post_id, $user_id = false ) {
  */
 function ap_count_post_flags( $post_id ) {
 	$rows = ap_count_votes( [ 'vote_post_id' => $post_id, 'vote_type' => 'flag' ] );
-	if( false !== $rows ) {
+
+	if ( false !== $rows ) {
 		return (int) $rows[0]->count;
 	}
+
 	return 0;
 }
 
 /**
  * Check if user already flagged a post.
  *
- * @param bool|integer $postid Post ID.
+ * @param bool|integer $post Post.
  * @return bool
  */
 function ap_is_user_flagged( $post = null ) {
 	$_post = ap_get_post( $post );
+
 	if ( is_user_logged_in() ) {
 		return ap_is_user_voted( $_post->ID, 'flag' );
 	}
@@ -132,14 +138,17 @@ function ap_is_user_flagged( $post = null ) {
 /**
  * Flag button html.
  *
+ * @param mixed   $post Post.
+ * @param boolean $echo Echo or return.
  * @return string
- *
  * @since 0.9
  */
 function ap_flag_btn_html( $post = null, $echo = false ) {
+
 	if ( ! is_user_logged_in() ) {
 		return;
 	}
+
 	$_post = ap_get_post( $post );
 	$flagged = ap_is_user_flagged();
 	$nonce = wp_create_nonce( 'flag_' . $_post->ID );
@@ -150,15 +159,15 @@ function ap_flag_btn_html( $post = null, $echo = false ) {
 	if ( ! $echo ) {
 		return $output;
 	}
-	echo $output;
+
+	echo $output; // xss okay.
 }
 
 /**
  * Insert flag vote for comment.
  *
- * @param integer   $user_id User ID.
- * @param integer   $comment_id Comment ID.
- *
+ * @param integer $user_id User ID.
+ * @param integer $comment_id Comment ID.
  * @return integer
  */
 function ap_insert_comment_flag( $user_id, $comment_id ) {
@@ -168,23 +177,20 @@ function ap_insert_comment_flag( $user_id, $comment_id ) {
 /**
  * Output flag button for the comment.
  *
- * @param bool|int $comment_id
- *
+ * @param bool|integer $comment_id Comment ID.
+ * @param bool|string  $label Label.
  * @since  2.4
- *
- * @return string
  */
 function ap_comment_flag_btn( $comment_id = false, $label = false ) {
-	echo ap_get_comment_flag_btn( $comment_id, $label );
+	echo ap_get_comment_flag_btn( $comment_id, $label ); // xss okay.
 }
 
 /**
  * Return flag button for the comment.
  *
- * @param bool|int $comment_id
- *
+ * @param bool|integer $comment_id Comment ID.
+ * @param bool|integer $label Label.
  * @since  2.4
- *
  * @return string
  */
 function ap_get_comment_flag_btn( $comment_id = false, $label = false ) {
@@ -241,11 +247,9 @@ function ap_comment_flag_count( $comment_id = false ) {
 /**
  * Check if user flagged comment.
  *
- * @param bool|int $comment_id
- * @param bool|int $user_id
- *
+ * @param bool|int $comment_id Comment ID.
+ * @param bool|int $user_id User ID.
  * @since  2.4
- *
  * @return bool
  */
 function ap_is_user_flagged_comment( $comment_id = false, $user_id = false ) {
@@ -264,7 +268,7 @@ function ap_is_user_flagged_comment( $comment_id = false, $user_id = false ) {
 
 	$cache = wp_cache_get( $user_id, 'ap_user_flagged_comment' );
 
-	if ( false !==  $cache ) {
+	if ( false !== $cache ) {
 		return $cache;
 	}
 
