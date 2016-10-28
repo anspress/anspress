@@ -600,8 +600,8 @@ if ( ! class_exists( 'AnsPress_Init' ) ) {
 		public static function redirect_to_about_page() {
 			if ( get_option( 'anspress_do_installation_redirect' ) ) {
 				delete_option( 'anspress_do_installation_redirect' );
-				wp_safe_redirect( admin_url( 'admin.php?page=anspress_about' ) );
-				wp_die();
+				wp_redirect( admin_url( 'admin.php?page=anspress_about' ) );
+				exit;
 			}
 		}
 

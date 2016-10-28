@@ -35,8 +35,13 @@ class AnsPress_Views {
 	 * @param  string $template Template name.
 	 */
 	public static function insert_views( $template ) {
+
 		if ( is_question() ) {
-			ap_insert_views( get_question_id(), 'question' );
+
+			// By default do not store views in ap_views table.
+			if ( apply_filters( 'ap_insert_view_to_db', false ) ) {
+				ap_insert_views( get_question_id(), 'question' );
+			}
 
 			// Update qameta.
 			ap_update_views_count( get_question_id() );
@@ -60,18 +65,16 @@ function ap_insert_views( $ref_id, $type = 'question', $user_id = false ) {
 	}
 
 	// Insert to DB only if not viewed before and not anonymous.
-	if ( ! ap_is_viewed( $ref_id, $user_id ) && ! empty( $user_id ) ) {
-
-		$ip = $log_ip ? $_SERVER['REMOTE_ADDR'] : ''; // @codingStandardsIgnoreLine
+	if ( ! empty( $user_id ) && ! ap_is_viewed( $ref_id, $user_id ) ) {
 		$values = array(
 			'view_user_id' => $user_id,
 			'view_type'    => 'question',
 			'view_ref_id'  => $ref_id,
-			'view_ip'      => $ip,
+			'view_ip'      => $_SERVER['REMOTE_ADDR'], // @codingStandardsIgnoreLine
 			'view_date'    => current_time( 'mysql' ),
 		);
 
-		$insert = $wpdb->insert( $values, [ '%d', '%s', '%d', '%s', '%s' ] ); // db call okay.
+		$insert = $wpdb->insert( $wpdb->ap_views, $values, [ '%d', '%s', '%d', '%s', '%s' ] ); // db call okay.
 
 		if ( false !== $insert ) {
 
@@ -104,15 +107,15 @@ function ap_is_viewed( $ref_id, $user_id, $type = 'question', $ip = false ) {
 	$ip_clue = '';
 
 	if ( false !== $ip ) {
-		$ip_clue = $wpdb->prepare( " AND vote_ip = '%s'", $ip );
+		$ip_clue = $wpdb->prepare( " AND view_ip = '%s'", $ip );
 	}
 
-	$query = $wpdb->prepare( "SELECT count(*) FROM {$wpdb->ap_views} WHERE vote_user_id = %d AND vote_ref_id = %d AND vote_type = '%s' {$ip_clue}", $user_id, $ref_id, $type ); // @codingStandardsIgnoreLine
+	$query = $wpdb->prepare( "SELECT count(*) FROM {$wpdb->ap_views} WHERE view_user_id = %d AND view_ref_id = %d AND view_type = '%s' {$ip_clue}", $user_id, $ref_id, $type ); // @codingStandardsIgnoreLine
 
 	$cache_key = md5( $query );
 	$cache = wp_cache_get( $cache_key, 'ap_is_viewed' );
 
-	if ( false === $cache ) {
+	if ( false !== $cache ) {
 		return $cache;
 	}
 
