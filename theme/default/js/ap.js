@@ -79,36 +79,6 @@
         }
     }
 
-    /**
-     * Ajax callback for subscribe button.
-     * @param  {object} data Ajax success data.
-     */
-    apFunctions.apSubscribeBtnCB = function ( data, el ){
-        if (data.action == 'subscribed') {
-            $(el).addClass('active');
-        } else {
-            $(el).removeClass('active');
-        }
-    }
-
-    /**
-     * Ajax callback for subscribe button.
-     * @param  {object} data Ajax success data.
-     */
-    apFunctions.apAppendEditor = function ( data, el ){
-        $('.ap-field-description').html(data);
-        //$('#description').hide();
-        $(el).closest('.ap-minimal-editor').removeClass('ap-minimal-editor');
-    }
-
-    /**
-     * Ajax callback for subscribe button.
-     * @param  {object} data Ajax success data.
-     */
-    apFunctions.initScrollbar = function ( data, el ){
-
-    }
-
 })(jQuery);
 
 

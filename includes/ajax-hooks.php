@@ -36,6 +36,8 @@ class AnsPress_Ajax {
 		anspress()->add_action( 'ap_ajax_convert_to_post', __CLASS__, 'convert_to_post' );
 		anspress()->add_action( 'ap_ajax_delete_attachment', __CLASS__, 'delete_attachment' );
 		anspress()->add_action( 'ap_ajax_get_all_answers', __CLASS__, 'get_all_answers' );
+		anspress()->add_action( 'wp_ajax_nopriv_fetch_answers', __CLASS__, 'fetch_answers' );
+		anspress()->add_action( 'wp_ajax_fetch_answers', __CLASS__, 'fetch_answers' );
 
 		anspress()->add_action( 'ap_ajax_load_comments', 'AnsPress_Comment_Hooks', 'load_comments' );
 		anspress()->add_action( 'ap_ajax_edit_comment_form', 'AnsPress_Comment_Hooks', 'edit_comment_form' );
@@ -113,31 +115,34 @@ class AnsPress_Ajax {
 	    $answer_id = (int) ap_sanitize_unslash( 'answer_id', 'request' );
 
 	    if ( ! is_user_logged_in() || ! ap_verify_nonce( 'answer-' . $answer_id ) ) {
-	        ap_ajax_json( 'something_wrong' );
+	      ap_ajax_json( 'something_wrong' );
 	    }
 
-	    $post = ap_get_post( $answer_id );
+	    $_post = ap_get_post( $answer_id );
 
 	    // Unselect best answer if already selected.
-	    if ( ap_have_answer_selected( $post->post_parent ) ) {
+	    if ( ap_have_answer_selected( $_post->post_parent ) ) {
 	        ap_unselect_answer( $answer_id );
 	        ap_ajax_json( array(
 	        	'message' 	=> 'unselected_the_answer',
 	        	'action' 	=> 'unselected_answer',
-	        	'do' 		=> 'reload',
+	        	'do' 		=> array(
+							'removeClass' => [ '#answer_' . $answer_id, 'best-answer' ],
+							'updateText'  => [ '#ap_post_actions_' . $_post->ID . ' .ap-btn-select', 'Select' ],
+						),
 	        ) );
 	    }
 
 	    // Do not allow answer to be selected as best if status is moderate.
-	    if ( 'moderate' === $post->post_status ) {
+	    if ( 'moderate' === $_post->post_status ) {
 	    	ap_ajax_json( [ 'message_type' => 'warning', 'message' => __( 'Answer with moderate status cannot be selected as best.', 'anspress-question-answer' ) ] );
 	    }
 
 			// Add question activity meta.
-			ap_update_post_activity_meta( $post->post_parent, 'answer_selected', get_current_user_id() );
+			ap_update_post_activity_meta( $_post->post_parent, 'answer_selected', get_current_user_id() );
 
 			// Add answer activity meta.
-			ap_update_post_activity_meta( $post->ID, 'best_answer', get_current_user_id() );
+			ap_update_post_activity_meta( $_post->ID, 'best_answer', get_current_user_id() );
 
 	    /**
 	     * Trigger right after selecting an answer.
@@ -147,21 +152,24 @@ class AnsPress_Ajax {
 	     * @param integer $answer_id   Answer ID.
 			 * @todo Move this hook from here.
 	     */
-		do_action( 'ap_select_answer', $post->post_author, $post->post_parent, $post->ID );
+		do_action( 'ap_select_answer', $_post->post_author, $_post->post_parent, $post->ID );
 
 		// Update question qameta.
-		ap_set_selected_answer( $post->post_parent, $post->ID );
+		ap_set_selected_answer( $_post->post_parent, $_post->ID );
 
 		// Close question if enabled in option.
 		if ( ap_opt( 'close_selected' ) ) {
-			ap_insert_qameta( $post->post_parent, [ 'closed' => 1 ] );
+			ap_insert_qameta( $_post->post_parent, [ 'closed' => 1 ] );
 		}
 
 		$html = ap_select_answer_btn_html( $answer_id );
 		ap_ajax_json( array(
 			'message' 	 => 'selected_the_answer',
 			'action' 	   => 'selected_answer',
-			'do' 		     => 'reload',
+			'do' 		=> array(
+				'addKlass' => [ '#answer_' . $answer_id, 'best-answer' ],
+				'updateText'  => [ '#ap_post_actions_' . $_post->ID . ' .ap-btn-select', 'Unselect' ],
+			),
 			'html' 		   => $html,
 		) );
 	}
@@ -629,6 +637,12 @@ class AnsPress_Ajax {
 		}
 	}
 
+	/**
+	 * Ajax callback to get all answers. Used in wp-admin post edit screen to show
+	 * all answers of a question.
+	 *
+	 * @since 4.0
+	 */
 	public static function get_all_answers() {
 		global $answers;
 
@@ -640,19 +654,67 @@ class AnsPress_Ajax {
 			while ( ap_have_answers() ) : ap_the_answer();
 				global $post, $wp_post_statuses;
 				$answers_arr[] = array(
-					'ID' => get_the_ID(),
-					'content' => get_the_content(),
-					'avatar' => ap_get_author_avatar( 30 ),
-					'author' => ap_user_display_name( $post->post_author ),
-					'activity' => ap_get_recent_post_activity(),
-					'edit_link' => esc_url_raw( get_edit_post_link() ),
+					'ID'         => get_the_ID(),
+					'content'    => get_the_content(),
+					'avatar'     => ap_get_author_avatar( 30 ),
+					'author'     => ap_user_display_name( $post->post_author ),
+					'activity'   => ap_get_recent_post_activity(),
+					'edit_link'  => esc_url_raw( get_edit_post_link() ),
 					'trash_link' => esc_url_raw( get_delete_post_link() ),
-					'status' => esc_attr( $wp_post_statuses[ $post->post_status ]->label ),
-					'selected' => ap_get_post_field( 'selected' ),
+					'status'     => esc_attr( $wp_post_statuses[ $post->post_status ]->label ),
+					'selected'   => ap_get_post_field( 'selected' ),
 				);
 			endwhile;
 		endif;
 
 		ap_ajax_json( [ 'data' => $answers_arr ] );
 	}
+
+	public static function fetch_answers(){
+		global $answers;
+
+		$question_id = ap_sanitize_unslash( 'question_id', 'p' );
+		$answers_arr = [];
+		$answers = ap_get_answers( [ 'question_id' => $question_id ] );
+
+		if ( ap_user_can_see_answers() ) {
+			while ( ap_have_answers() ) : ap_the_answer();
+				global $post, $wp_post_statuses;
+
+				$vote = is_user_logged_in() ? ap_get_vote( $post->ID, get_current_user_id(), 'vote' ) : false;
+				$voted = $vote ? true : false;
+				$vote_type = '';
+
+				if ( $voted ) {
+					$vote_type = $vote && '1' === $vote->vote_value ? 'vote_up' : 'vote_down';
+				}
+
+				$answers_arr[] = array(
+					'ID'         => get_the_ID(),
+					'content'    => apply_filters( 'the_content', get_the_content() ),
+					'postedOn' => sprintf( __( 'Posted on %s', 'anspress-question-answer' ), ap_human_time( ap_get_time( get_the_ID(), 'U' ) ) ),
+					'dateTime' => ap_get_time( get_the_ID(), 'c' ),
+					'activity'   => ap_get_recent_post_activity(),
+					'edit_link'  => esc_url_raw( get_edit_post_link() ),
+					'trash_link' => esc_url_raw( get_delete_post_link() ),
+					'status'     => esc_attr( $wp_post_statuses[ $post->post_status ]->label ),
+					'selected'   => ap_get_post_field( 'selected' ),
+					'class'      => implode( ' ', get_post_class() ),
+					'vote' => [
+						'net' => ap_get_votes_net(),
+						'active' => $vote_type,
+						'nonce' => wp_create_nonce( 'vote' ),
+					],
+					'user'       => [
+						'ID' => $post->post_author,
+						'avatar' => ap_get_author_avatar( 50 ),
+						'name' => ap_user_display_name( [ 'html' => true ] ),
+					],
+				);
+			endwhile;
+		}
+
+		wp_send_json(  $answers_arr );
+	}
+
 }

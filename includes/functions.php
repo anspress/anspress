@@ -121,7 +121,7 @@ function ap_get_theme_location( $file, $plugin = false ) {
  * @return string
  * @since  2.0
  */
-function ap_get_theme_url( $file, $plugin = false ) {
+function ap_get_theme_url( $file, $plugin = false, $ver = true ) {
 	$child_path = get_stylesheet_directory() . '/anspress/' . $file;
 	$parent_path = get_template_directory() . '/anspress/' . $file;
 
@@ -137,7 +137,7 @@ function ap_get_theme_url( $file, $plugin = false ) {
 	    $template_url = ANSPRESS_THEME_URL . '/' . ap_get_theme() . '/' . $file;
 	}
 
-	return apply_filters( 'ap_theme_url', $template_url . '?v=' . AP_VERSION );
+	return apply_filters( 'ap_theme_url', $template_url . ( true === $ver ? '?v=' . AP_VERSION : '' ) );
 }
 
 
@@ -211,19 +211,24 @@ function get_question_id() {
 	if ( is_question() && get_query_var( 'question_id' ) ) {
 		return (int) get_query_var( 'question_id' );
 	}
+
 	if ( is_question() && get_query_var( 'question' ) ) {
 		return get_query_var( 'question' );
 	}
+
 	if ( is_question() && get_query_var( 'question_name' ) ) {
-		$post = get_page_by_path( get_query_var( 'question_name' ), OBJECT, 'question' );
-		return $post->ID;
+		$_post = get_page_by_path( get_query_var( 'question_name' ), OBJECT, 'question' ); // @codingStandardsIgnoreLine
+		return $_post->ID;
 	}
+
 	if ( get_query_var( 'edit_q' ) ) {
 		return get_query_var( 'edit_q' );
 	}
+
 	if ( ap_answer_the_object() ) {
 		return ap_get_post_field( 'post_parent' );
 	}
+
 	return false;
 }
 
@@ -258,9 +263,9 @@ function ap_human_time( $time, $unix = true, $show_full_date = 604800, $format =
 				__( '%s ago', 'anspress-question-answer' ),
 				human_time_diff( $time, current_time( 'timestamp', true ) )
 			);
-		} else {
-			return date_i18n( $format, $time );
 		}
+
+		return date_i18n( $format, $time );
 	}
 }
 
@@ -273,28 +278,16 @@ function ap_human_time( $time, $unix = true, $show_full_date = 604800, $format =
  */
 function ap_is_user_answered( $question_id, $user_id ) {
 	global $wpdb;
+	$cache  = wp_cache_get( $user_id, 'ap_is_user_answered' );
 
-	// @TODO Cache answer count query.
-	$count = $wpdb->get_var( "SELECT COUNT(*) FROM $wpdb->posts where post_parent = $question_id AND ( post_author = $user_id AND post_type = 'answer')" );
-
-	if ( $count ) {
-		return true;
+	if ( false !== $cache ) {
+		return $cache > 0 ? true : false;
 	}
-	return false;
-}
 
-/**
- * Count all answers of a question includes all post status.
- *
- * @param int $id question id.
- * @return int
- * @since 2.0.1.1
- */
-function ap_count_all_answers( $id ) {
-	global $wpdb;
-	// @TODO cache db query of ap_count_all_answers.
-	$count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM $wpdb->posts where post_parent = %d AND post_type = %s", $id, 'answer' ) );
-	return $count;
+	$count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM $wpdb->posts where post_parent = %d AND ( post_author = %d AND post_type = 'answer')", $question_id, $user_id ) ); // db call ok.
+	wp_cache_set( $user_id, $count, 'ap_is_user_answered' );
+
+	return $count > 0 ? true : false;
 }
 
 /**
@@ -376,16 +369,24 @@ function ap_truncate_chars( $text, $limit, $ellipsis = '...' ) {
  */
 function ap_select_answer_btn_html( $_post = null ) {
 	$ans = ap_get_post( $_post );
+
 	if ( ! ap_user_can_select_answer( $ans->ID ) ) {
 		return;
 	}
+
 	$action = 'answer-' . $ans->ID;
 	$nonce = wp_create_nonce( $action );
+	$label = __( 'Select', 'anspress-question-answer' );
+	$title = __( 'Select this answer as best', 'anspress-question-answer' );
+	$selected = ap_have_answer_selected( $ans->post_parent );
 
-	if ( ! ap_have_answer_selected( $ans->post_parent ) ) {
-		return '<a href="#" class="ap-btn-select ap-sicon ' . ap_icon( 'check' ) . ' ap-tip" data-action="select_answer" data-query="answer_id=' . $ans->ID . '&__nonce=' . $nonce . '&ap_ajax_action=select_best_answer" title="' . __( 'Select this answer as best', 'anspress-question-answer' ) . '">' . __( 'Select', 'anspress-question-answer' ) . '</a>';
-	} elseif ( ap_have_answer_selected( $ans->post_parent ) && ap_is_selected( $ans->ID ) ) {
-		return '<a href="#" class="ap-btn-select ap-sicon ' . ap_icon( 'cross' ) . ' active ap-tip" data-action="select_answer" data-query="answer_id=' . $ans->ID . '&__nonce=' . $nonce . '&ap_ajax_action=select_best_answer" title="' . __( 'Unselect this answer', 'anspress-question-answer' ) . '">' . __( 'Unselect', 'anspress-question-answer' ) . '</a>';
+	if ( $selected ) {
+		$label = __( 'Unselect', 'anspress-question-answer' );
+		$title = __( 'Unselect this answer', 'anspress-question-answer' );
+	}
+
+	if ( ! $selected || ap_is_selected( $ans ) ) {
+		return '<a href="#" class="ap-btn-select ap-tip" data-action="select_answer" data-query="answer_id=' . $ans->ID . '&__nonce=' . $nonce . '&ap_ajax_action=select_best_answer" title="' . $title . '">' . $label . '</a>';
 	}
 }
 
@@ -881,7 +882,7 @@ function ap_total_posts_count( $post_type = 'question', $ap_type = false ) {
 	$join = '';
 
 	if ( 'flag' === $ap_type ) {
-		$meta = "AND qameta.flags > 0";
+		$meta = 'AND qameta.flags > 0';
 		$join = "INNER JOIN {$wpdb->ap_qameta} qameta ON p.ID = qameta.post_id";
 	}
 
@@ -940,14 +941,12 @@ function ap_total_solved_questions( $type = 'int' ) {
 		return $count;
 	}
 
-	$count = $wpdb->get_results( $query, ARRAY_A ); // db call ok.
-	$counts = array();
+	$count = $wpdb->get_results( $query, ARRAY_A ); // unprepared SQL ok, db call ok.
+	$counts = array( 'total' => 0 );
 
 	foreach ( get_post_stati() as $state ) {
 		$counts[ $state ] = 0;
 	}
-
-	$counts['total'] = 0;
 
 	foreach ( (array) $count as $row ) {
 		$counts[ $row['post_status'] ] = $row['count'];
@@ -971,9 +970,7 @@ function ap_total_solved_questions( $type = 'int' ) {
  * @since 2.1
  */
 function ap_get_sort() {
-	if ( isset( $_GET['ap_sort'] ) ) { // input var ok.
-		return ap_sanitize_unslash( $_GET['ap_sort'] ); // input var ok, xss ok.
-	}
+	return ap_sanitize_unslash( 'ap_sort', 'p', null );
 }
 
 /**
@@ -1010,7 +1007,7 @@ function ap_post_upload_form( $post_id = false ) {
             	' . __( 'add from link', 'anspress-question-answer' ) . '
             </span>
             <div class="ap-upload-link-rc">
-        		<input type="text" name="post_remote_image" class="ap-form-control" placeholder="'.__( 'Enter link', 'anspress-question-answer' ) . '" data-action="post_remote_image">
+        		<input type="text" name="post_remote_image" class="ap-form-control" placeholder="' . __( 'Enter link', 'anspress-question-answer' ) . '" data-action="post_remote_image">
                 <a data-action="post_image_ok" class="apicon-check ap-btn" href="#"></a>
                 <a data-action="post_image_close" class="apicon-x ap-btn" href="#"></a>
             </div>
@@ -1175,17 +1172,15 @@ function ap_replace_square_bracket( $contents ) {
  * Clear unused attachments of a user.
  */
 function ap_clear_unused_attachments() {
-	$attach = get_posts( array(
+	$attach = get_posts( array( // @codingStandardsIgnoreLine
 		'post_type' => 'attachment',
 		'orderby'   => 'meta_value',
-		'meta_key'  => '_ap_temp_image'
+		'meta_key'  => '_ap_temp_image', // @codingStandardsIgnoreLine
 	) );
 
-	if ( $attach ) {
-		foreach ( $attach as $a ) {
-			// Delete unused attachments permanently.
-			wp_delete_attachment( $a->ID, true );
-		}
+	foreach ( (array) $attach as $a ) {
+		// Delete unused attachments permanently.
+		wp_delete_attachment( $a->ID, true );
 	}
 }
 
@@ -1219,10 +1214,10 @@ function ap_set_attachment_post_parent( $attachment_id, $post_parent ) {
  * @return integer
  */
 function ap_count_users_temproary_attachments( $user_id ) {
-	$attachments = get_posts( array(
+	$attachments = get_posts( array( // @codingStandardsIgnoreLine
 		'post_type' => 'attachment',
 		'orderby'   => 'meta_value',
-		'meta_key'  => '_ap_temp_image',
+		'meta_key'  => '_ap_temp_image', // @codingStandardsIgnoreLine
 		'author'    => $user_id,
 	) );
 
@@ -1255,9 +1250,9 @@ function ap_user_upload_limit_crossed( $user_id ) {
 function ap_create_base_page() {
 	// Check if page already exists.
 	$page_id = ap_opt( 'base_page' );
-	$post = ap_get_post( $page_id );
+	$_post = ap_get_post( $page_id );
 
-	if ( ! $post ) {
+	if ( ! $_post ) {
 		$args                   = array();
 		$args['post_type']      = 'page';
 		$args['post_content']   = '[anspress]';
@@ -1275,7 +1270,7 @@ function ap_create_base_page() {
 			ap_opt( 'base_page_id', $page->post_name );
 		}
 	} else {
-		if ( 'ANSPRESS_TITLE' === $post->post_title ) {
+		if ( 'ANSPRESS_TITLE' === $_post->post_title ) {
 			wp_update_post( array( 'ID' => $page->ID, 'post_title' => ap_opt( 'base_page_title' ) ) );
 		}
 	}
@@ -1311,7 +1306,7 @@ function ap_question_title_with_solved_prefix( $question_id = false ) {
  * @since  2.4
  */
 function ap_verify_nonce( $action ) {
-	return wp_verify_nonce( ap_sanitize_unslash( $_REQUEST['__nonce'] ), $action ); // input var ok, xss ok.
+	return wp_verify_nonce( ap_sanitize_unslash( '__nonce', 'p' ), $action );
 }
 
 /**
@@ -1326,7 +1321,7 @@ function ap_verify_default_nonce() {
 		return false;
 	}
 
-	return wp_verify_nonce( $_REQUEST[ $nonce_name ], 'ap_ajax_nonce' ); // xss ok, input var okay.
+	return wp_verify_nonce( ap_sanitize_unslash( $nonce_name, 'p' ), 'ap_ajax_nonce' );
 }
 
 /**
@@ -1411,7 +1406,16 @@ function ap_is_profile_menu( $menu ) {
  */
 function ap_questions_answer_ids( $question_id ) {
 	global $wpdb;
-	return $wpdb->get_col( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_type = 'answer' AND post_parent=%d", $question_id ) ); // db call ok.
+	$cache = wp_cache_get( $question_id, 'ap_questions_answer_ids' );
+
+	if ( false !== $cache ) {
+		return $cache;
+	}
+
+	$ids = $wpdb->get_col( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_type = 'answer' AND post_parent=%d", $question_id ) ); // db call ok.
+	wp_cache_set( $question_id, $ids, 'ap_questions_answer_ids' );
+
+	return $ids;
 }
 
 /**
@@ -1439,7 +1443,7 @@ function ap_read_env() {
 
 	if ( file_exists( $file ) ) {
 		// Get the contents of env file.
-		$content = file_get_contents( $file );
+		$content = file_get_contents( $file ); // @codingStandardsIgnoreLine.
 		wp_cache_set( 'ap_env', $content, 'ap' );
 		return $content;
 	}
@@ -1472,18 +1476,6 @@ function ap_append_table_names() {
 }
 ap_append_table_names();
 
-/**
- * Remove stop words from a string.
- *
- * @param  string $str String from need to be filtered.
- * @return string
- */
-function ap_remove_stop_words( $str ) {
-	// EEEEEEK Stop words.
-	$commonWords = array( 'a','able','about','above','abroad','according','accordingly','across','actually','adj','after','afterwards','again','against','ago','ahead','ain\'t','all','allow','allows','almost','alone','along','alongside','already','also','although','always','am','amid','amidst','among','amongst','an','and','another','any','anybody','anyhow','anyone','anything','anyway','anyways','anywhere','apart','appear','appreciate','appropriate','are','aren\'t','around','as','a\'s','aside','ask','asking','associated','at','available','away','awfully','b','back','backward','backwards','be','became','because','become','becomes','becoming','been','before','beforehand','begin','behind','being','believe','below','beside','besides','best','better','between','beyond','both','brief','but','by','c','came','can','cannot','cant','can\'t','caption','cause','causes','certain','certainly','changes','clearly','c\'mon','co','co.','com','come','comes','concerning','consequently','consider','considering','contain','containing','contains','corresponding','could','couldn\'t','course','c\'s','currently','d','dare','daren\'t','definitely','described','despite','did','didn\'t','different','directly','do','does','doesn\'t','doing','done','don\'t','down','downwards','during','e','each','edu','eg','eight','eighty','either','else','elsewhere','end','ending','enough','entirely','especially','et','etc','even','ever','evermore','every','everybody','everyone','everything','everywhere','ex','exactly','example','except','f','fairly','far','farther','few','fewer','fifth','first','five','followed','following','follows','for','forever','former','formerly','forth','forward','found','four','from','further','furthermore','g','get','gets','getting','given','gives','go','goes','going','gone','got','gotten','greetings','h','had','hadn\'t','half','happens','hardly','has','hasn\'t','have','haven\'t','having','he','he\'d','he\'ll','hello','help','hence','her','here','hereafter','hereby','herein','here\'s','hereupon','hers','herself','he\'s','hi','him','himself','his','hither','hopefully','how','howbeit','however','hundred','i','i\'d','ie','if','ignored','i\'ll','i\'m','immediate','in','inasmuch','inc','inc.','indeed','indicate','indicated','indicates','inner','inside','insofar','instead','into','inward','is','isn\'t','it','it\'d','it\'ll','its','it\'s','itself','i\'ve','j','just','k','keep','keeps','kept','know','known','knows','l','last','lately','later','latter','latterly','least','less','lest','let','let\'s','like','liked','likely','likewise','little','look','looking','looks','low','lower','ltd','m','made','mainly','make','makes','many','may','maybe','mayn\'t','me','mean','meantime','meanwhile','merely','might','mightn\'t','mine','minus','miss','more','moreover','most','mostly','mr','mrs','much','must','mustn\'t','my','myself','n','name','namely','nd','near','nearly','necessary','need','needn\'t','needs','neither','never','neverf','neverless','nevertheless','new','next','nine','ninety','no','nobody','non','none','nonetheless','noone','no-one','nor','normally','not','nothing','notwithstanding','novel','now','nowhere','o','obviously','of','off','often','oh','ok','okay','old','on','once','one','ones','one\'s','only','onto','opposite','or','other','others','otherwise','ought','oughtn\'t','our','ours','ourselves','out','outside','over','overall','own','p','particular','particularly','past','per','perhaps','placed','please','plus','possible','presumably','probably','provided','provides','q','que','quite','qv','r','rather','rd','re','really','reasonably','recent','recently','regarding','regardless','regards','relatively','respectively','right','round','s','said','same','saw','say','saying','says','second','secondly','see','seeing','seem','seemed','seeming','seems','seen','self','selves','sensible','sent','serious','seriously','seven','several','shall','shan\'t','she','she\'d','she\'ll','she\'s','should','shouldn\'t','since','six','so','some','somebody','someday','somehow','someone','something','sometime','sometimes','somewhat','somewhere','soon','sorry','specified','specify','specifying','still','sub','such','sup','sure','t','take','taken','taking','tell','tends','th','than','thank','thanks','thanx','that','that\'ll','thats','that\'s','that\'ve','the','their','theirs','them','themselves','then','thence','there','thereafter','thereby','there\'d','therefore','therein','there\'ll','there\'re','theres','there\'s','thereupon','there\'ve','these','they','they\'d','they\'ll','they\'re','they\'ve','thing','things','think','third','thirty','this','thorough','thoroughly','those','though','three','through','throughout','thru','thus','till','to','together','too','took','toward','towards','tried','tries','truly','try','trying','t\'s','twice','two','u','un','under','underneath','undoing','unfortunately','unless','unlike','unlikely','until','unto','up','upon','upwards','us','use','used','useful','uses','using','usually','v','value','various','versus','very','via','viz','vs','w','want','wants','was','wasn\'t','way','we','we\'d','welcome','well','we\'ll','went','were','we\'re','weren\'t','we\'ve','what','whatever','what\'ll','what\'s','what\'ve','when','whence','whenever','where','whereafter','whereas','whereby','wherein','where\'s','whereupon','wherever','whether','which','whichever','while','whilst','whither','who','who\'d','whoever','whole','who\'ll','whom','whomever','who\'s','whose','why','will','willing','wish','with','within','without','wonder','won\'t','would','wouldn\'t','x','y','yes','yet','you','you\'d','you\'ll','your','you\'re','yours','yourself','yourselves','you\'ve','z','zero' );
-
-	return preg_replace( '/\b(' . implode( '|', $commonWords ) . ')\b/', '', $str );
-}
 
 /**
  * Check if $_REQUEST var exists and get value. If not return default.
@@ -1495,7 +1487,7 @@ function ap_remove_stop_words( $str ) {
  */
 function ap_isset_post_value( $var, $default = '' ) {
 	if ( isset( $_REQUEST[ $var ] ) ) { // input var okay.
-		return $_REQUEST[ $var ]; // input var okay, xss ok.
+		return wp_unslash( $_REQUEST[ $var ] ); // input var okay, xss ok, sanitization ok.
 	}
 
 	return $default;
@@ -1513,13 +1505,13 @@ function ap_list_filters_get_active( $filter ) {
 		return false;
 	}
 
-	$filters = $_GET['ap_filter'][ $filter ]; // input var okay.
+	$filters = ap_sanitize_unslash( 'ap_filter', 'p' );
 
-	if ( empty( $filters ) ) {
+	if ( empty( $filters[ $filter ] ) ) {
 		return false;
 	}
 
-	return $filters;
+	return $filters[ $filter ];
 }
 
 /**
@@ -1591,8 +1583,9 @@ function ap_new_edit_post_status( $user_id = false, $post_type = 'question', $ed
 /**
  * Find duplicate post by content.
  *
- * @param  string $content   Post content.
- * @param  string $post_type Post type.
+ * @param  string        $content   Post content.
+ * @param  string        $post_type Post type.
+ * @param  integer|false $question_id Question ID.
  * @return boolean|false
  * @since  3.0.0
  */
@@ -1607,7 +1600,7 @@ function ap_find_duplicate_post( $content, $post_type = 'question', $question_id
 
 	$question_q = false !== $question_id ? $wpdb->prepare( ' AND post_parent= %d', $question_id ) : '';
 
-	$var = (int) $wpdb->get_var( $wpdb->prepare( "SELECT ID FROM {$wpdb->posts} WHERE post_content = %s AND post_type = %s {$question_q} LIMIT 1", $content, $post_type ) );
+	$var = (int) $wpdb->get_var( $wpdb->prepare( "SELECT ID FROM {$wpdb->posts} WHERE post_content = %s AND post_type = %s {$question_q} LIMIT 1", $content, $post_type ) ); // @codingStandardsIgnoreLine
 
 	if ( $var > 0 ) {
 		return $var;
@@ -1624,6 +1617,7 @@ function ap_find_duplicate_post( $content, $post_type = 'question', $question_id
 function ap_disable_question_suggestion() {
 	/**
 	 * Modify ap_disable_question_suggestion.
+	 *
 	 * @param boolean $enable Default is false.
 	 * @since  3.0.0
 	 */
@@ -1639,8 +1633,8 @@ function ap_disable_question_suggestion() {
 function ap_post_attach_pre_fetch( $ids ) {
 	if ( $ids && is_user_logged_in() ) {
 		$args = array(
-		    'post_type' => 'attachment',
-		    'include'   => $ids,
+			'post_type' => 'attachment',
+			'include'   => $ids,
 		);
 
 		get_posts( $args );// @codingStandardsIgnoreLine
@@ -1704,6 +1698,7 @@ function ap_activity_short_title( $type ) {
 
 /**
  * Return canonical URL of current page.
+ *
  * @return string
  * @since  3.0.0
  */
@@ -1716,6 +1711,7 @@ function ap_canonical_url() {
 
 	/**
 	 * Filter AnsPress canonical URL.
+	 *
 	 * @param string $canonical_url Current URL.
 	 * @return string
 	 * @since  3.0.0
@@ -1750,18 +1746,15 @@ function ap_user_display_name( $args = array() ) {
 		$args = wp_parse_args( $args, $defaults );
 	}
 
-	extract( $args );
+	extract( $args ); // @codingStandardsIgnoreLine
 
 	$user = get_userdata( $user_id );
 
 	if ( $user ) {
-		if ( ! $html ) {
-			$return = $user->display_name;
-		} else {
-			$return = '<span class="who"><a href="'.ap_user_link( $user_id ).'">'.$user->display_name.'</a></span>';
-		}
-	} elseif ( $post && ($post->post_type == 'question' || $post->post_type == 'answer') ) {
+		$return = ! $html ? $user->display_name : '<a href="' . ap_user_link( $user_id ) . '">' . $user->display_name . '</a>';
+	} elseif ( $post && in_array( $post->post_type, [ 'question', 'answer' ], true ) ) {
 		$post_fields = ap_get_post_field( 'fields' );
+
 		if ( ! $html ) {
 			if ( is_array( $post_fields ) && ! empty( $post_fields['anonymous_name'] ) ) {
 				$return = $post_fields['anonymous_name'];
@@ -1770,43 +1763,44 @@ function ap_user_display_name( $args = array() ) {
 			}
 		} else {
 			if ( is_array( $post_fields ) && ! empty( $post_fields['anonymous_name'] ) ) {
-				$return = '<span class="who">' . $post_fields['anonymous_name'] . __( ' (anonymous)', 'anspress-question-answer' ).'</span>';
+				$return = $post_fields['anonymous_name'] . __( ' (anonymous)', 'anspress-question-answer' );
 			} else {
-				$return = '<span class="who">' . $anonymous_label . '</span>';
+				$return = $anonymous_label;
 			}
 		}
 	} else {
 		if ( ! $html ) {
 			$return = $anonymous_label;
 		} else {
-			$return = '<span class="who">'.$anonymous_label.'</span>';
+			$return = $anonymous_label;
 		}
 	}
 
 	/**
 	 * FILTER: ap_user_display_name
 	 * Filter can be used to alter display name
+	 *
 	 * @var string
 	 * @since 2.0.1
 	 */
 	$return = apply_filters( 'ap_user_display_name', $return, $args );
 
-	if ( $echo !== false ) {
-		echo $return;
-		return;
+	if ( ! $echo ) {
+		return $return;
 	}
 
-	return $return;
+	echo $return; // xss okay.
 }
 
 /**
- * Return Link to user pages
- * @param  boolean|integer $user_id    user id
- * @param  string          $sub        page slug
+ * Return Link to user pages.
+ *
+ * @param  boolean|integer $user_id    user id.
+ * @param  string          $sub        page slug.
  * @return string
  * @since  unknown
  */
-function ap_user_link($user_id = false, $sub = false) {
+function ap_user_link( $user_id = false, $sub = false ) {
 
 	if ( false === $user_id ) {
 		$user_id = get_the_author_meta( 'ID' );
@@ -1816,24 +1810,24 @@ function ap_user_link($user_id = false, $sub = false) {
 		return '#AnonymousUser';
 	}
 
-	if ( ap_opt( 'user_profile' ) == '' ) {
+	if ( ap_opt( 'user_profile' ) === '' ) {
 		return apply_filters( 'ap_user_custom_profile_link', $user_id, $sub );
-	} elseif ( function_exists( 'bp_core_get_userlink' ) && ap_opt( 'user_profile' ) == 'buddypress' ) {
+	} elseif ( function_exists( 'bp_core_get_userlink' ) && ap_opt( 'user_profile' ) === 'buddypress' ) {
 		return bp_core_get_userlink( $user_id, false, true );
-	} elseif ( ap_opt( 'user_profile' ) == 'userpro' ) {
+	} elseif ( ap_opt( 'user_profile' ) === 'userpro' ) {
 		global $userpro;
 		return $userpro->permalink( $user_id );
 	}
 
-	if ( 0 == $user_id ) {
+	if ( empty( $user_id ) ) {
 		return false;
 	}
 
 	$user = get_user_by( 'id', $user_id );
 
 	// If permalink is enabled.
-	if ( get_option( 'permalink_structure' ) != '' ) {
-		$link =  get_author_posts_url( $user_id, $user->user_nicename );
+	if ( get_option( 'permalink_structure' ) !== '' ) {
+		$link = get_author_posts_url( $user_id, $user->user_nicename );
 	} else {
 		if ( false === $sub ) {
 			$sub = array( 'ap_page' => 'user', 'ap_user' => $user->user_login );
@@ -1852,14 +1846,15 @@ function ap_user_link($user_id = false, $sub = false) {
 
 /**
  * Return current page in user profile.
+ *
  * @since 2.0.1
  * @return string
  * @since 2.4.7 Added new filter `ap_active_user_page`.
  */
 function ap_active_user_page() {
-	$user_page        = sanitize_text_field( get_query_var( 'user_page' ) );
+	$user_page = sanitize_text_field( get_query_var( 'user_page' ) );
 
-	if ( ! empty($user_page ) ) {
+	if ( ! empty( $user_page ) ) {
 		return $user_page;
 	}
 
@@ -1868,111 +1863,65 @@ function ap_active_user_page() {
 	return apply_filters( 'ap_active_user_page', $page );
 }
 
-/**
- * echo ID of currently displaying user
- * @return integer WordPress user ID
- * @since 2.1
- */
-function ap_displayed_user_id() {
-	echo ap_get_displayed_user_id();
-}
-
-/**
- * Return ID of currently displaying user
- * @return integer WordPress user ID
- * @since 2.1
- */
-function ap_get_displayed_user_id() {
-	$user_id = (int) get_query_var( 'ap_user_id' );
-
-	if ( $user_id > 0 ) {
-		return $user_id; }
-
-	return get_current_user_id();
-}
-
-
-	/**
-	 * Display user meta
-	 * @param   boolean       $html  for html output
-	 * @param   false|integer $user_id  User id, if empty then post author witll be user
-	 * @param   boolen        $echo
-	 * @return  string
-	 */
-function ap_user_display_meta($html = false, $user_id = false, $echo = false) {
-
-	if ( false === $user_id ) {
-		$user_id = get_the_author_meta( 'ID' );
-	}
-
-	$metas = array();
-
-	$metas['display_name'] = '<span class="ap-user-meta ap-user-meta-display_name">'. ap_user_display_name( array( 'html' => true ) ) .'</span>';
-
-	/**
-	 * FILTER: ap_user_display_meta_array
-	 * Can be used to alter user display meta
-	 * @var array
-	 */
-	$metas = apply_filters( 'ap_user_display_meta_array', $metas, $user_id );
-
-	$output = '';
-
-	if ( ! empty( $metas ) && is_array( $metas ) && count( $metas ) > 0 ) {
-		$output .= '<span class="ap-user-meta">';
-		foreach ( $metas as $meta ) {
-			$output .= $meta.' ';
-		}
-		$output .= '</span>';
-	}
-
-	if ( $echo ) {
-		echo $output;
-	} else {
-		return $output;
-	}
-}
 
 /**
  * Return or echo hovercard data attribute.
+ *
  * @param  integer $user_id User id.
  * @param  boolean $echo    Echo or return? default is true.
  * @return string
  */
-function ap_hover_card_attributes($user_id, $echo = true) {
+function ap_hover_card_attributes( $user_id, $echo = true ) {
 	if ( $user_id > 0 ) {
-		$attr = ' data-userid="'.$user_id.'"';
+		$attr = ' data-userid="' . $user_id . '"';
 
 		if ( true !== $echo ) {
 			return $attr;
 		}
 
-		echo $attr;
+		echo $attr; // xss okay.
 	}
 }
 
 /**
- * @param string $user_id
+ * User name and link with anchor tag.
+ *
+ * @param string  $user_id User ID.
+ * @param boolean $echo Echo or return.
  */
-function ap_user_link_anchor($user_id, $echo = true) {
+function ap_user_link_anchor( $user_id, $echo = true ) {
 
 	$name = ap_user_display_name( $user_id );
 
 	if ( $user_id < 1 ) {
 		if ( $echo ) {
-			echo $name;
+			echo $name; // xss okay.
 		} else {
 			return $name;
 		}
 	}
 
-	$html = '<a href="'.ap_user_link( $user_id ).'"' . ap_hover_card_attributes( $user_id, false ). '>';
+	$html = '<a href="' . ap_user_link( $user_id ) . '"' . ap_hover_card_attributes( $user_id, false ) . '>';
 	$html .= $name;
 	$html .= '</a>';
 
 	if ( $echo ) {
-		echo $html;
+		echo $html; // xss okay.
 	}
 
 	return $html;
 }
+
+/**
+ * Remove stop words from a string.
+ *
+ * @param  string $str String from need to be filtered.
+ * @return string
+ */
+function ap_remove_stop_words( $str ) {
+	// EEEEEEK Stop words.
+	$common_words = array( 'a','able','about','above','abroad','according','accordingly','across','actually','adj','after','afterwards','again','against','ago','ahead','ain\'t','all','allow','allows','almost','alone','along','alongside','already','also','although','always','am','amid','amidst','among','amongst','an','and','another','any','anybody','anyhow','anyone','anything','anyway','anyways','anywhere','apart','appear','appreciate','appropriate','are','aren\'t','around','as','a\'s','aside','ask','asking','associated','at','available','away','awfully','b','back','backward','backwards','be','became','because','become','becomes','becoming','been','before','beforehand','begin','behind','being','believe','below','beside','besides','best','better','between','beyond','both','brief','but','by','c','came','can','cannot','cant','can\'t','caption','cause','causes','certain','certainly','changes','clearly','c\'mon','co','co.','com','come','comes','concerning','consequently','consider','considering','contain','containing','contains','corresponding','could','couldn\'t','course','c\'s','currently','d','dare','daren\'t','definitely','described','despite','did','didn\'t','different','directly','do','does','doesn\'t','doing','done','don\'t','down','downwards','during','e','each','edu','eg','eight','eighty','either','else','elsewhere','end','ending','enough','entirely','especially','et','etc','even','ever','evermore','every','everybody','everyone','everything','everywhere','ex','exactly','example','except','f','fairly','far','farther','few','fewer','fifth','first','five','followed','following','follows','for','forever','former','formerly','forth','forward','found','four','from','further','furthermore','g','get','gets','getting','given','gives','go','goes','going','gone','got','gotten','greetings','h','had','hadn\'t','half','happens','hardly','has','hasn\'t','have','haven\'t','having','he','he\'d','he\'ll','hello','help','hence','her','here','hereafter','hereby','herein','here\'s','hereupon','hers','herself','he\'s','hi','him','himself','his','hither','hopefully','how','howbeit','however','hundred','i','i\'d','ie','if','ignored','i\'ll','i\'m','immediate','in','inasmuch','inc','inc.','indeed','indicate','indicated','indicates','inner','inside','insofar','instead','into','inward','is','isn\'t','it','it\'d','it\'ll','its','it\'s','itself','i\'ve','j','just','k','keep','keeps','kept','know','known','knows','l','last','lately','later','latter','latterly','least','less','lest','let','let\'s','like','liked','likely','likewise','little','look','looking','looks','low','lower','ltd','m','made','mainly','make','makes','many','may','maybe','mayn\'t','me','mean','meantime','meanwhile','merely','might','mightn\'t','mine','minus','miss','more','moreover','most','mostly','mr','mrs','much','must','mustn\'t','my','myself','n','name','namely','nd','near','nearly','necessary','need','needn\'t','needs','neither','never','neverf','neverless','nevertheless','new','next','nine','ninety','no','nobody','non','none','nonetheless','noone','no-one','nor','normally','not','nothing','notwithstanding','novel','now','nowhere','o','obviously','of','off','often','oh','ok','okay','old','on','once','one','ones','one\'s','only','onto','opposite','or','other','others','otherwise','ought','oughtn\'t','our','ours','ourselves','out','outside','over','overall','own','p','particular','particularly','past','per','perhaps','placed','please','plus','possible','presumably','probably','provided','provides','q','que','quite','qv','r','rather','rd','re','really','reasonably','recent','recently','regarding','regardless','regards','relatively','respectively','right','round','s','said','same','saw','say','saying','says','second','secondly','see','seeing','seem','seemed','seeming','seems','seen','self','selves','sensible','sent','serious','seriously','seven','several','shall','shan\'t','she','she\'d','she\'ll','she\'s','should','shouldn\'t','since','six','so','some','somebody','someday','somehow','someone','something','sometime','sometimes','somewhat','somewhere','soon','sorry','specified','specify','specifying','still','sub','such','sup','sure','t','take','taken','taking','tell','tends','th','than','thank','thanks','thanx','that','that\'ll','thats','that\'s','that\'ve','the','their','theirs','them','themselves','then','thence','there','thereafter','thereby','there\'d','therefore','therein','there\'ll','there\'re','theres','there\'s','thereupon','there\'ve','these','they','they\'d','they\'ll','they\'re','they\'ve','thing','things','think','third','thirty','this','thorough','thoroughly','those','though','three','through','throughout','thru','thus','till','to','together','too','took','toward','towards','tried','tries','truly','try','trying','t\'s','twice','two','u','un','under','underneath','undoing','unfortunately','unless','unlike','unlikely','until','unto','up','upon','upwards','us','use','used','useful','uses','using','usually','v','value','various','versus','very','via','viz','vs','w','want','wants','was','wasn\'t','way','we','we\'d','welcome','well','we\'ll','went','were','we\'re','weren\'t','we\'ve','what','whatever','what\'ll','what\'s','what\'ve','when','whence','whenever','where','whereafter','whereas','whereby','wherein','where\'s','whereupon','wherever','whether','which','whichever','while','whilst','whither','who','who\'d','whoever','whole','who\'ll','whom','whomever','who\'s','whose','why','will','willing','wish','with','within','without','wonder','won\'t','would','wouldn\'t','x','y','yes','yet','you','you\'d','you\'ll','your','you\'re','yours','yourself','yourselves','you\'ve','z','zero' );
+
+	return preg_replace( '/\b(' . implode( '|', $common_words ) . ')\b/', '', $str );
+}
+

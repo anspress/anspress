@@ -13,8 +13,6 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-new AnsPress_Options_Fields();
-
 if ( ap_isset_post_value( '__nonce' ) && ap_verify_nonce( 'nonce_option_form' ) && current_user_can( 'manage_options' ) ) {
 
 	$settings = get_option( 'anspress_opt', array() );

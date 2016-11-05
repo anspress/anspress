@@ -1,0 +1,27 @@
+<div class="ap-content">
+  <div class="ap-single-vote">
+    <div id="vote_1141" data-id="1141" class="ap-vote net-vote">
+      <a class="apicon-thumb-up ap-tip vote-up {{voteUpClass}}" href="#" title="Up vote this post" ap-btnvote="__nonce={{vote.nonce}}&post_id={{ID}}&type=up" data-type="vote_up"></a>
+      <span class="net-vote-count">{{vote.net}}</span>
+      <a data-tipposition="bottom center" class="apicon-thumb-down ap-tip vote-down voted {{voteDownClass}}" href="#" title="Down vote this post" ap-btnvote="__nonce={{vote.nonce}}&post_id={{ID}}&type=down" data-type="vote_down"></a>
+    </div>
+  </div>
+
+  <div class="ap-avatar">
+    <a href="{{user.profileLink}}" data-userid="{{{user.ID}}}">
+      {{{user.avatar}}}
+    </a>
+  </div>
+  <div class="ap-a-cells clearfix">
+    <div class="ap-q-metas">
+      {{{user.name}}}
+      <time datetime="{{dateTime}}">{{postedOn}}</time>
+    </div>
+    <div class="ap-q-inner">
+      <div class="ap-answer-content ap-q-content">{{{content}}}</div>
+      {{{activity}}}
+      {{{actions}}}
+    </div>
+    {{{comments}}}
+  </div>
+</div>

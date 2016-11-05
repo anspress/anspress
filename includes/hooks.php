@@ -83,7 +83,7 @@ class AnsPress_Hooks {
 			anspress()->add_filter( 'comments_template_query_args', 'AnsPress_Comment_Hooks', 'comments_template_query_args' );
 			anspress()->add_filter( 'template_include', 'AnsPress_Theme', 'anspress_basepage_template' );
 			anspress()->add_filter( 'avatar_defaults' , 'AnsPress_Theme', 'default_avatar' );
-			anspress()->add_filter( 'pre_get_avatar_data', 'AnsPress_Theme', 'get_avatar', 10, 3 );
+			anspress()->add_filter( 'pre_get_avatar_data', 'AnsPress_Theme', 'get_avatar', 1000, 3 );
 
 			// Common pages hooks.
 			anspress()->add_action( 'init', 'AnsPress_Common_Pages', 'register_common_pages' );

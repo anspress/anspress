@@ -36,6 +36,8 @@ function ap_scripts_front() {
 		echo 'var ajaxurl = "'.admin_url( 'admin-ajax.php' ).'",';
 		echo 'ap_nonce 	= "'.wp_create_nonce( 'ap_ajax_nonce' ).'",';
 	  echo 'ap_max_tags = "'.ap_opt( 'max_tags' ).'";';
+	  echo 'apTemplateUrl = "'.  ap_get_theme_url( 'js-template', false, false ).'";';
+	  echo 'apQuestionID = "'. get_question_id() .'";';
 	echo '</script>';
 
 	wp_localize_script('anspress-js', 'aplang', array(

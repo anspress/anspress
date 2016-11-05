@@ -70,7 +70,7 @@ class AnsPress_Admin_Ajax {
 
 		if ( current_user_can( 'manage_options' ) && ap_verify_nonce( 'clear_flag_' . $args[0] ) ) {
 			ap_set_flag_count( $args[0], 0 );
-			wp_die( _e('0' ) );
+			echo 0;
 		}
 
 		wp_die();

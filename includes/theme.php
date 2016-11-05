@@ -747,14 +747,9 @@ function ap_get_breadcrumbs() {
 	$a['base'] = array( 'title' => ap_opt( 'base_page_title' ), 'link' => ap_base_page_link(), 'order' => 0 );
 
 	if ( is_question() ) {
-		$a['page'] = array( 'title' => substr( $title, 0, 30 ).(strlen( $title ) > 30 ? __( '..', 'anspress-question-answer' ) : ''), 'link' => get_permalink( get_question_id() ), 'order' => 10 );
+		$a['page'] = array( 'title' => substr( $title, 0, 30 ) . ( strlen( $title ) > 30 ? __( '..', 'anspress-question-answer' ) : ''), 'link' => get_permalink( get_question_id() ), 'order' => 10 );
 	} elseif ( 'base' != $current_page && '' != $current_page ) {
-		if ( 'user' == $current_page ) {
-			$a['page'] = array( 'title' => __( 'User', 'anspress-question-answer' ), 'link' => ap_user_link( ap_get_displayed_user_id() ), 'order' => 10 );
-			$a['user_page'] = array( 'title' => substr( $title, 0, 30 ).(strlen( $title ) > 30 ? __( '..', 'anspress-question-answer' ) : ''), 'link' => ap_user_link( ap_get_displayed_user_id(), get_query_var( 'user_page' ) ), 'order' => 10 );
-		} else {
-			$a['page'] = array( 'title' => substr( $title, 0, 30 ).(strlen( $title ) > 30 ? __( '..', 'anspress-question-answer' ) : ''), 'link' => ap_get_link_to( $current_page ), 'order' => 10 );
-		}
+		$a['page'] = array( 'title' => substr( $title, 0, 30 ) . ( strlen( $title ) > 30 ? __( '..', 'anspress-question-answer' ) : ''), 'link' => ap_get_link_to( $current_page ), 'order' => 10 );
 	}
 
 	$a = apply_filters( 'ap_breadcrumbs', $a );
@@ -778,6 +773,7 @@ function ap_current_page() {
 
 /**
  * AnsPress CSS and JS.
+ *
  * @return array
  */
 function ap_assets( ) {
@@ -798,11 +794,11 @@ function ap_assets( ) {
 
 	if ( ap_env_dev() ) {
 		$assets['js']['anspress-functions'] = array( 'src' => ANSPRESS_URL.'assets/js/ap-functions.js', 'dep' => array( 'jquery', 'jquery-form' ) );
-		$assets['js']['anspress-js'] = array( 'src' => ANSPRESS_URL.'assets/js/anspress_site.js', 'dep' => array( 'jquery', 'jquery-form' ) );
-		$assets['js']['ap-theme-js'] = array( 'src' => ap_get_theme_url( 'js/ap.js' ), 'dep' => array( 'jquery', 'anspress-js' ) );
+		$assets['js']['anspress-js'] = array( 'src' => ANSPRESS_URL.'assets/js/anspress_site.js', 'dep' => array( 'jquery', 'jquery-form', 'underscore', 'backbone' ), 'footer' => true );
+		$assets['js']['ap-theme-js'] = array( 'src' => ap_get_theme_url( 'js/ap.js' ), 'dep' => array( 'jquery', 'anspress-js' ), 'footer' => true );
 	} else {
-		$assets['js']['anspress-js'] = array( 'src' => ANSPRESS_URL.'assets/min/anspress.min.js', 'dep' => array( 'jquery', 'jquery-form' ) );
-		$assets['js']['ap-theme-js'] = array( 'src' => ap_get_theme_url( 'min/anspress-theme.min.js' ), 'dep' => array( 'jquery', 'anspress-js' ) );
+		$assets['js']['anspress-js'] = array( 'src' => ANSPRESS_URL.'assets/min/anspress.min.js', 'dep' => array( 'jquery', 'jquery-form' ), 'footer' => true );
+		$assets['js']['ap-theme-js'] = array( 'src' => ap_get_theme_url( 'min/anspress-theme.min.js' ), 'dep' => array( 'jquery', 'anspress-js' ), 'footer' => true );
 	}
 
 	if ( is_rtl() ) {
@@ -825,7 +821,8 @@ function ap_enqueue_scripts() {
 	if ( isset( $assets['js'] ) ) {
 		foreach ( $assets['js'] as $k => $js ) {
 			$dep = isset( $js['dep'] ) ? $js['dep'] : array();
-			wp_enqueue_script( $k, $js['src'], $dep, AP_VERSION );
+			$footer = isset( $js['footer'] ) ? $js['footer'] : false;
+			wp_enqueue_script( $k, $js['src'], $dep, AP_VERSION, $footer );
 		}
 	}
 

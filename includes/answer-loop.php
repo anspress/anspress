@@ -187,10 +187,6 @@ function ap_get_answers( $args = array() ) {
 		$args['ap_sortby'] = (isset( $_GET['ap_sort'] )) ? sanitize_text_field( wp_unslash( $_GET['ap_sort'] ) ) : ap_opt( 'answers_sort' );
 	}
 
-	// if ( isset( $_GET['show_answer'] ) ) {
-	// $args['ap_query'] = 'order_answer_to_top';
-	// $args['order_answer_id'] = (int) $_GET['show_answer'];
-	// }
 	return new Answers_Query( $args );
 }
 
@@ -275,18 +271,6 @@ function ap_answer_the_object() {
  */
 function ap_answer_user_can_view() {
 	return ap_user_can_view_post( get_the_ID() );
-}
-
-/**
- * Check if current answer is selected as a best
- *
- * @param integer|boolean $answer_id Answer ID or Object.
- * @return boolean
- * @since 2.1
- */
-function ap_is_selected( $answer = null ) {
-	$post = ap_get_post( $answer );
-	return $post->selected;
 }
 
 /**

@@ -33,6 +33,12 @@ class AnsPress_Post_Table_Hooks {
 		anspress()->add_filter( 'manage_edit-answer_columns', __CLASS__, 'cpt_answer_columns' );
 		anspress()->add_filter( 'manage_edit-question_sortable_columns', __CLASS__, 'admin_column_sort_flag' );
 		anspress()->add_filter( 'manage_edit-answer_sortable_columns', __CLASS__, 'admin_column_sort_flag' );
+		anspress()->add_action( 'edit_form_after_title', __CLASS__, 'edit_form_after_title' );
+		anspress()->add_filter( 'manage_edit-comments_columns', __CLASS__, 'comment_flag_column' );
+		anspress()->add_filter( 'manage_comments_custom_column', __CLASS__, 'comment_flag_column_data', 10, 2 );
+		anspress()->add_filter( 'comment_status_links', __CLASS__, 'comment_flag_view' );
+		anspress()->add_action( 'current_screen', __CLASS__, 'comments_flag_query', 10, 2 );
+		anspress()->add_filter( 'post_updated_messages', __CLASS__, 'post_custom_message' );
 	}
 
 	/**
@@ -118,7 +124,7 @@ class AnsPress_Post_Table_Hooks {
 
 		// Actions to delete/trash.
 		if ( current_user_can( $post_type_object->cap->delete_post, $post->ID ) ) {
-			if ( 'trash' == $post->post_status ) {
+			if ( 'trash' === $post->post_status ) {
 				$_wpnonce           = wp_create_nonce( 'untrash-post_' . $post_id );
 				$url                = admin_url( 'post.php?post=' . $post_id . '&action=untrash&_wpnonce=' . $_wpnonce );
 				$actions['untrash'] = "<a title='" . esc_attr( __( 'Restore this item from the Trash', 'anspress-question-answer' ) ) . "' href='" . $url . "'>" . __( 'Restore', 'anspress-question-answer' ) . '</a>';
@@ -127,7 +133,7 @@ class AnsPress_Post_Table_Hooks {
 				$actions['trash'] = "<a class='submitdelete' title='" . esc_attr( __( 'Move this item to the Trash', 'anspress-question-answer' ) ) . "' href='" . get_delete_post_link( $post->ID ) . "'>" . __( 'Trash', 'anspress-question-answer' ) . '</a>';
 			}
 
-			if ( 'trash' == $post->post_status || ! EMPTY_TRASH_DAYS ) {
+			if ( 'trash' === $post->post_status || ! EMPTY_TRASH_DAYS ) {
 				$actions['delete'] = "<a class='submitdelete' title='" . esc_attr( __( 'Delete this item permanently', 'anspress-question-answer' ) ) . "' href='" . get_delete_post_link( $post->ID, '', true ) . "'>" . __( 'Delete Permanently', 'anspress-question-answer' ) . '</a>';
 			}
 		}
@@ -310,6 +316,130 @@ class AnsPress_Post_Table_Hooks {
 		$columns['votes']   = 'votes';
 
 		return $columns;
+	}
+
+	/**
+	 * Show question detail above new answer.
+	 *
+	 * @return void
+	 * @since 2.0
+	 */
+	public static function edit_form_after_title() {
+		global $typenow, $pagenow, $post;
+
+		if ( in_array( $pagenow, [ 'post-new.php', 'post.php' ], true ) && 'answer' === $post->post_type ) {
+			$post_parent = ap_sanitize_unslash( 'action', 'g', false ) ? $post->post_parent : ap_sanitize_unslash( 'post_parent', 'g' );
+			echo '<div class="ap-selected-question">';
+
+			if ( ! isset( $post_parent ) ) {
+				echo '<p class="no-q-selected">' . esc_attr__( 'This question is orphan, no question is selected for this answer', 'anspress-question-answer' ) . '</p>';
+			} else {
+				$q = ap_get_post( $post_parent );
+				$answers = ap_get_post_field( 'answers', $q );
+				?>
+
+				<a class="ap-q-title" href="<?php echo esc_url( get_permalink( $q->post_id ) ); ?>">
+					<?php echo esc_attr( $q->post_title ); ?>
+				</a>
+				<div class="ap-q-meta">
+					<span class="ap-a-count">
+						<?php echo esc_html( sprintf( _n( '%d Answer', '%d Answers', $answers, 'anspress-question-answer' ),  $answers ) ); ?>
+					</span>
+					<span class="ap-edit-link">|
+						<a href="<?php echo esc_url( get_edit_post_link( $q->ID ) ); ?>">
+							<?php esc_attr_e( 'Edit question', 'anspress-question-answer' ); ?>
+						</a>
+					</span>
+				</div>
+				<div class="ap-q-content"><?php echo $q->post_content; // xss ok. ?></div>
+				<input type="hidden" name="post_parent" value="<?php echo esc_attr( $post_parent ); ?>" />
+
+				<?php
+			}
+			echo '</div>';
+		}
+	}
+
+	/**
+	 * Adds flags column in comment table.
+	 *
+	 * @param array $columns Comments table columns.
+	 * @since 2.4
+	 */
+	public static function comment_flag_column( $columns ) {
+		$columns['comment_flag'] = __( 'Flag', 'anspress-question-answer' );
+		return $columns;
+	}
+
+	/**
+	 * Show comment_flag data in comment table.
+	 *
+	 * @param  string  $column         name of the comment table column.
+	 * @param  integer $comment_id     Current comment ID.
+	 * @return void
+	 */
+	public static function comment_flag_column_data( $column, $comment_id ) {
+		if ( 'comment_flag' === $column ) {
+			$count = get_comment_meta( $comment_id, ANSPRESS_FLAG_META, true );
+
+			if ( $count ) {
+				echo '<span class="ap-comment-col-flag">';
+				echo esc_html( $count );
+				echo '</span>';
+			}
+		}
+	}
+
+	/**
+	 * Add flag view link in comment table
+	 *
+	 * @param  array $views view items array.
+	 * @return array
+	 */
+	public static function comment_flag_view( $views ) {
+		$views['flagged'] = '<a href="edit-comments.php?show_flagged=true"' . ( ap_sanitize_unslash( 'show_flagged', 'g' ) ? ' class="current"' : '' ) . '>' . esc_attr__( 'Flagged','anspress-question-answer' ) . '</a>';
+		return $views;
+	}
+
+	/**
+	 * Delay hooking our clauses filter to ensure it's only applied when needed.
+	 *
+	 * @param string $screen Current screen.
+	 */
+	public static function comments_flag_query( $screen ) {
+
+		if ( 'edit-comments' !== $screen->id ) {
+				return;
+		}
+
+		// Check if our Query Var is defined.
+		if ( ap_sanitize_unslash( 'show_flagged', 'p' ) ) {
+			add_action( 'comments_clauses', [ __CLASS__, 'filter_comments_query' ] );
+		}
+	}
+
+	/**
+	 * Custom post update message.
+	 *
+	 * @param array $messages Messages.
+	 * @return array
+	 */
+	public static function post_custom_message( $messages ) {
+		global $post;
+		if ( 'answer' === $post->post_type && (int) ap_sanitize_unslash( 'message', 'g' ) === 99 ) {
+			add_action( 'admin_notices', [ __CLASS__, 'ans_notice' ] );
+		}
+
+		return $messages;
+	}
+
+	/**
+	 * Answer error when there is not any question set.
+	 */
+	public static function ans_notice() {
+		echo '<div class="error">
+				<p>' . esc_html__( 'Please fill parent question field, Answer was not saved!', 'anspress-question-answer' ) . '</p>
+			</div>';
 	}
 
 }

@@ -273,6 +273,11 @@ function ap_reset_question_query() {
  */
 function ap_get_profile_link() {
 	global $post;
+
+	if ( ! $post ) {
+		return false;
+	}
+
 	return ap_user_link( $post->post_author );
 }
 
@@ -292,6 +297,11 @@ function ap_profile_link() {
  */
 function ap_get_author_avatar( $size = 45, $_post = null ) {
 	$_post = ap_get_post( $_post );
+
+	if ( ! $_post ) {
+		return;
+	}
+
 	$author = 0 == $_post->post_author ? 'anonymous_' . $_post->ID : $_post->post_author; // @codingStandardsIgnoreLine
 
 	// @codingStandardsIgnoreLine
@@ -320,6 +330,11 @@ function ap_author_avatar( $size = 45, $_post = null ) {
  */
 function ap_get_hover_card_attr( $_post = null ) {
 	$_post = ap_get_post( $_post );
+
+	if ( ! $_post ) {
+		return;
+	}
+
 	return ap_hover_card_attributes( $_post->post_author );
 }
 
@@ -525,7 +540,29 @@ function ap_have_answer_selected( $question = null ) {
  */
 function ap_selected_answer( $_post = null ) {
 	$_post = ap_get_post( $_post );
+
+	if ( ! $_post ) {
+		return false;
+	}
+
 	return $_post->selected_id;
+}
+
+/**
+ * Check if current answer is selected as a best
+ *
+ * @param mixed $_post Post.
+ * @return boolean
+ * @since 2.1
+ */
+function ap_is_selected( $_post = null ) {
+	$_post = ap_get_post( $_post );
+
+	if ( ! $_post ) {
+		return false;
+	}
+
+	return (bool) $_post->selected;
 }
 
 /**
@@ -537,6 +574,11 @@ function ap_selected_answer( $_post = null ) {
  */
 function ap_get_time( $_post = null, $format = '' ) {
 	$_post = ap_get_post( $_post );
+
+	if ( ! $_post ) {
+		return;
+	}
+
 	return get_post_time( $format, true, $_post->ID, true );
 }
 
@@ -621,6 +663,7 @@ function ap_get_attach( $_post = null ) {
  * Get latest activity of question or answer.
  *
  * @param  integer $post_id Question or answer ID.
+ * @param  integer $answer_activities Show answers activities as well.
  * @return string
  */
 function ap_latest_post_activity_html( $post_id = false, $answer_activities = false ) {
@@ -666,6 +709,7 @@ function ap_latest_post_activity_html( $post_id = false, $answer_activities = fa
 
 /**
  * Output answers of current question.
+ *
  * @since 2.1
  */
 function ap_answers() {

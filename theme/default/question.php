@@ -36,7 +36,7 @@
 				</div>
 				<div class="ap-q-cells clearfix">
 					<div class="ap-q-metas">
-						<?php ap_user_display_meta( true, false, true ); ?>
+						<?php echo ap_user_display_name( [ 'html' => true ] ); ?>
 						<span>
 							<?php
 								printf(
