@@ -497,21 +497,21 @@ function ap_vote_btn( $post = null, $echo = true ) {
 	if ( 'question' === $post->post_type && ap_opt( 'disable_voting_on_question' ) ) {
 		return;
 	}
-	$nonce = wp_create_nonce( 'vote_' . $post->ID );
+	$nonce = wp_create_nonce( 'vote' );
 
 	$vote = is_user_logged_in() ? ap_get_vote( $post->ID, get_current_user_id(), 'vote' ) : false;
 	$voted = $vote ? true : false;
 	$type = $vote && '1' === $vote->vote_value ? 'vote_up' : 'vote_down';
 
 	$html = '';
-	$html .= '<div id="vote_' . $post->ID . '" data-id="' . $post->ID . '" class="ap-vote net-vote">';
-	$html .= '<a class="' . ap_icon( 'vote_up' ) . ' ap-tip vote-up' . ($voted ? ' voted' : '') . ($vote && 'vote_down' === $type ? ' disable' : '') . '" data-query="type=up&post_id=' . $post->ID . '&__nonce=' . $nonce . '" href="#" title="' . __( 'Up vote this post', 'anspress-question-answer' ) . '" ap-btnvote></a>';
+	$html .= '<div id="vote_' . $post->ID . '" data-id="' . $post->ID . '" class="ap-vote net-vote" ap-vote>';
+	$html .= '<a class="' . ap_icon( 'vote_up' ) . ' ap-tip vote-up' . ($voted ? ' voted' : '') . ($vote && 'vote_down' === $type ? ' disable' : '') . '" data-query="type=up&post_id=' . $post->ID . '&__nonce=' . $nonce . '" href="#" title="' . __( 'Up vote this post', 'anspress-question-answer' ) . '" ap-query="__nonce=' . $nonce . '&post_id=' . $post->ID . '&type=up"></a>';
 
 	$html .= '<span class="net-vote-count" data-view="ap-net-vote" itemprop="upvoteCount" ap="votes_net">' . ap_get_votes_net() . '</span>';
 
 	if ( ('question' === $post->post_type && ! ap_opt( 'disable_down_vote_on_question' )) ||
 		('answer' === $post->post_type && ! ap_opt( 'disable_down_vote_on_answer' )) ) {
-		$html .= '<a data-tipposition="bottom center" class="' . ap_icon( 'vote_down' ) . ' ap-tip vote-down' . ($voted ? ' voted' : '') . ($vote && 'vote_up' === $type ? ' disable' : '') . '" data-query="type=down&post_id=' . $post->ID . '&__nonce=' . $nonce . '" href="#" title="' . __( 'Down vote this post', 'anspress-question-answer' ) . '" ap-btnvote></a>';
+		$html .= '<a data-tipposition="bottom center" class="' . ap_icon( 'vote_down' ) . ' ap-tip vote-down' . ($voted ? ' voted' : '') . ($vote && 'vote_up' === $type ? ' disable' : '') . '" href="#" title="' . __( 'Down vote this post', 'anspress-question-answer' ) . '" ap-query="__nonce=' . $nonce . '&post_id=' . $post->ID . '&type=down"></a>';
 	}
 
 	$html .= '</div>';

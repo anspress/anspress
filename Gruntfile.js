@@ -101,7 +101,8 @@ module.exports = function(grunt) {
 	    	main: {
 	    		options: {
 	    			paths: ["less"],
-	    			compress: true
+	    			compress: true,
+						sourceMap: true
 	    		},
 	    		files: {
 	    			"theme/default/css/main.css": "theme/default/less/main.less",

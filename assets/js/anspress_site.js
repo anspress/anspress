@@ -126,18 +126,10 @@ _.templateSettings = {
 			return 'post-' + this.model.get('ID');
 		},
 		initialize: function(options){
-			this.model.on('change', this.render, this);
-			AnsPress.on('templateLoaded-'+this.templateId, this.templateLoaded, this);
-
-			// Fetch template from url.
-			AnsPress.loadTemplate(this.templateId);
-		},
-		templateLoaded: function(html){
-			this.template = html;
-			this.render();
+			this.model.on('change:vote', this.voteUpdate, this);
 		},
 		events: {
-			'click [ap-btnvote]': 'voteClicked'
+			'click [ap-vote] > a': 'voteClicked'
 		},
 		voteClicked: function(e){
 			e.preventDefault();
@@ -145,7 +137,7 @@ _.templateSettings = {
 				return;
 
 			self = this;
-			var type = $(e.target).data('type');
+			var type = $(e.target).is('.vote-up') ? 'vote_up' : 'vote_down';
 			var vote = _.clone(self.model.get('vote'));
 
 			if(type === 'vote_up')
@@ -154,16 +146,22 @@ _.templateSettings = {
 				vote.net = ( vote.active === 'vote_down' ? vote.net + 1 : vote.net - 1);
 
 			self.model.set('vote', vote);
-			var q = $(e.target).attr('ap-btnvote');
+			var q = $(e.target).attr('ap-query');
 			AnsPress.ajax({
-				url: ajaxurl,
-				method: 'POST',
 				data: 'ap_ajax_action=vote&' + q,
 				success: function(data) {
 					if (_.isObject(data.voteData))
 						self.model.set('vote', data.voteData);
 				}
 			})
+		},
+		voteUpdate: function(post){
+			var self = this;
+			this.$el.find('[ap="votes_net"]').text(this.model.get('vote').net);
+			_.each(['up', 'down'], function(e){
+				self.$el.find('.vote-'+e).removeClass('voted disable').addClass(self.voteClass('vote_'+e));
+			})
+
 		},
 		voteClass: function(type){
 			type = type||'vote_up';
@@ -176,21 +174,9 @@ _.templateSettings = {
 				klass = 'active';
 
 			if(type !== curr && curr !== '')
-				klass += 'disable';
+				klass += ' disable';
 
-			return klass;
-		},
-		render: function(){
-			if(this.template){
-				var t = _.template(this.template);
-				this.$el.attr('class', this.model.get('class'));
-				var obj = _.extend(this.model.toJSON(), {
-					voteUpClass: this.voteClass('vote_up'),
-					voteDownClass: this.voteClass('vote_down')
-				});
-				this.$el.html(t(obj));
-			}
-			return this;
+			return klass + ' prist';
 		}
 	});
 
@@ -199,13 +185,15 @@ _.templateSettings = {
 		url: ajaxurl + '?action=fetch_answers&question_id='+apQuestionID,
 	});
 
-	AnsPress.views.Posts = Backbone.View.extend({
+	AnsPress.views.SingleQuestion = Backbone.View.extend({
 		initialize: function(){
 			this.model.on('add', this.renderItem, this);
 		},
+		events: {
+			'click [ap="loadEditor"]': 'loadEditor'
+		},
 		renderItem: function(post){
-			var view = new AnsPress.views.Post({ model: post });
-			this.$el.append(view.render().$el);
+			var view = new AnsPress.views.Post({ model: post, el: '#post-'+post.get('ID') });
 		},
 
 		render: function(){
@@ -215,6 +203,17 @@ _.templateSettings = {
 			});
 
 			return self;
+		},
+		loadEditor: function(e){
+			var self = this;
+			AnsPress.ajax({
+				data: $(e.target).attr('ap-query'),
+				success: function(data){
+					$('.ap-field-description').html(data);
+					$(e.target).closest('.ap-minimal-editor').removeClass('ap-minimal-editor');
+				}
+			});
+
 		}
 	});
 
@@ -261,13 +260,14 @@ _.templateSettings = {
 			return this;
 		}
 	});
+
 })(jQuery);
 
 var apposts = new AnsPress.collections.Posts();
 apposts.fetch();
 
-var appostview = new AnsPress.views.Posts({ model: apposts });
-jQuery('#answers').html(appostview.render().$el);
+var singleQuestionView = new AnsPress.views.SingleQuestion({ model: apposts, el: '#ap-single' });
+singleQuestionView.render();
 
 var apSnackbarView = new AnsPress.views.Snackbar();
 jQuery('body').append(apSnackbarView.render().$el);

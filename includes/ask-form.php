@@ -361,8 +361,9 @@ function ap_tinymce_editor_settings( $type = 'question' ) {
 
 	if ( ap_opt( $type . '_text_editor' )  ) {
 		$settings['tinymce'] = array(
-			'content_css' => ap_get_theme_url( 'css/editor.css' ),
+			'content_css'      => ap_get_theme_url( 'css/editor.css' ),
 			'wp_autoresize_on' => true,
+			'statusbar'        => false
 		);
 	}
 

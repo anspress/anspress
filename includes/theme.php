@@ -650,62 +650,6 @@ function ap_get_template_part($file) {
 }
 
 /**
- * Output the contents of help page.
- * @since 2.2
- */
-function ap_how_to_ask() {
-
-	$content = ap_get_how_to_ask();
-
-	if ( false !== $content ) {
-		echo $content;
-	}
-}
-
-/**
- * Get the contents of help page.
- * @return string|false
- * @since 2.2
- */
-function ap_get_how_to_ask() {
-	if ( ap_opt( 'question_help_page' ) != '' ) {
-		$help = ap_get_post( (int) ap_opt( 'question_help_page' ) );
-		if ( $help ) {
-			return apply_filters( 'the_content', $help->post_content );
-		}
-	}
-	return false;
-}
-
-/**
- * Output the contents of answer help page.
- * @since 2.2
- */
-function ap_how_to_answer() {
-	$content = ap_get_how_to_answer();
-
-	if ( false !== $content ) {
-		echo $content;
-	}
-}
-
-/**
- * Get the contents of help page.
- * @return string|false
- * @since 2.2
- */
-function ap_get_how_to_answer() {
-
-	if ( ap_opt( 'answer_help_page' ) != '' ) {
-		$help = ap_get_post( (int) ap_opt( 'answer_help_page' ) );
-
-		return $help->post_content;
-	}
-
-	return false;
-}
-
-/**
  * Output AnsPress breadcrumbs
  */
 function ap_breadcrumbs() {

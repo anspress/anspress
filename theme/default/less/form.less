@@ -142,13 +142,31 @@
 		    }
 		}
 	}
-
 	#answer_form{
 		.ap-editor-answer-label{
 		    color: #888;
 		    display: block !important;
 		    padding: 5px 10px;
 		}
+		.ap-field-description{
+			margin: -10px;
+			margin-bottom: 0;
+		}
+		.mce-toolbar-grp{
+			background: none;
+			padding: 4px;
+		}
+		.mce-edit-area{
+			padding: 0 10px;
+			box-shadow: 0 2px 5px rgba(0,0,0,0.08) inset;
+			background: #fcfcfc;
+		}
+		.mce-path{
+			display: none;
+		}
+	}
+	.mce-edit-area iframe{
+		margin-bottom: 0;
 	}
 
 	.ap-avatar-upload-form{
@@ -180,18 +198,15 @@
 		}
 	}
 	.ap-post-upload-form{
-	    background: #fcfcfc;
-	    border-color: #ddd;
-	    border-image: none;
-	    border-radius: 0 0 4px 4px;
-	    border-right: 1px solid #ddd;
-	    border-style: dashed solid solid;
-	    border-width: 1px;
-	    font-size: 13px;
-	    margin-bottom: 15px;
-	    margin-top: -22px;
-	    padding: 0;
-	    position: relative;
+		background: #f9f9f9;
+		border-color: #ddd;
+		border-image: none;
+		border-right: 1px solid #ddd;
+		border-style: dashed solid solid;
+		border-width: 1px;
+		margin: -1px -11px 10px;
+		padding: 6px;
+		position: relative;
 	    .ap-upload-o{
 		   	background: none;
 		    border: medium none;

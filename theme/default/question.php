@@ -19,77 +19,80 @@
 			<div class="ap-question-meta clearfix">
 				<?php echo ap_question_metas(); // xss ok. ?>
 			</div>
-			<div id="question" role="main" class="ap-content question" data-id="<?php the_ID(); ?>">
-				<div class="ap-single-vote"><?php ap_vote_btn(); ?></div>
-				<?php
-					/**
-					 * ACTION: ap_before_question_title.
-					 *
-					 * @since 	2.0
-					 */
-					do_action( 'ap_before_question_title' );
-				?>
-				<div class="ap-avatar">
-					<a href="<?php ap_profile_link(); ?>"<?php ap_hover_card_attr(); ?>>
-						<?php ap_author_avatar( ap_opt( 'avatar_size_qquestion' ) ); ?>
-					</a>
-				</div>
-				<div class="ap-q-cells clearfix">
-					<div class="ap-q-metas">
-						<?php echo ap_user_display_name( [ 'html' => true ] ); ?>
-						<span>
-							<?php
-								printf(
-									'<time itemprop="datePublished" datetime="%1$s">%2$s</time>',
-									ap_get_time( get_the_ID(), 'c' ),
-									sprintf(
-										__( 'Posted %s', 'anspress-question-answer' ),
-										ap_human_time( ap_get_time( get_the_ID(), 'U' ) )
-									)
-								);
-						 	?>
-						 </span>
-					</div>
 
-					<!-- Start ap-content-inner -->
-					<div class="ap-q-inner">
-						<?php
-							/**
-							 * ACTION: ap_before_question_content.
-							 *
-							 * @since 	2.0.0
-							 */
-							do_action( 'ap_before_question_content' );
-						?>
-						<div class="question-content ap-q-content" itemprop="text">
-							<?php the_content(); ?>
+			<div id="post-<?php the_ID(); ?>">
+				<div id="question" role="main" class="ap-content question" data-id="<?php the_ID(); ?>">
+					<div class="ap-single-vote"><?php ap_vote_btn(); ?></div>
+					<?php
+						/**
+						* ACTION: ap_before_question_title.
+						*
+						* @since 	2.0
+						*/
+						do_action( 'ap_before_question_title' );
+					?>
+					<div class="ap-avatar">
+						<a href="<?php ap_profile_link(); ?>"<?php ap_hover_card_attr(); ?>>
+							<?php ap_author_avatar( ap_opt( 'avatar_size_qquestion' ) ); ?>
+						</a>
+					</div>
+					<div class="ap-q-cells clearfix">
+						<div class="ap-q-metas">
+							<?php echo ap_user_display_name( [ 'html' => true ] ); ?>
+							<span>
+								<?php
+									printf(
+										'<time itemprop="datePublished" datetime="%1$s">%2$s</time>',
+										ap_get_time( get_the_ID(), 'c' ),
+										sprintf(
+											__( 'Posted %s', 'anspress-question-answer' ),
+											ap_human_time( ap_get_time( get_the_ID(), 'U' ) )
+										)
+									);
+								?>
+							</span>
 						</div>
 
-						<?php
-							/**
-							 * ACTION: ap_after_question_content.
-							 *
-							 * @since 	2.0.0
-							 */
-							do_action( 'ap_after_question_content' );
+						<!-- Start ap-content-inner -->
+						<div class="ap-q-inner">
+							<?php
+								/**
+								* ACTION: ap_before_question_content.
+								*
+								* @since 	2.0.0
+								*/
+								do_action( 'ap_before_question_content' );
+							?>
+							<div class="question-content ap-q-content" itemprop="text">
+								<?php the_content(); ?>
+							</div>
 
-						?>
+							<?php
+								/**
+								* ACTION: ap_after_question_content.
+								*
+								* @since 	2.0.0
+								*/
+								do_action( 'ap_after_question_content' );
 
-						<?php ap_recent_post_activity(); ?>
-						<?php ap_post_status_description( get_the_ID() );	?>
-						<?php ap_post_actions_buttons() ?>
+							?>
 
-						<?php
-							/**
-							 * ACTION: ap_after_question_actions.
-							 *
-							 * @since 	2.0
-							 */
-							do_action( 'ap_after_question_actions' );
-						?>
+							<?php ap_recent_post_activity(); ?>
+							<?php ap_post_status_description( get_the_ID() );	?>
+							<?php ap_post_actions_buttons() ?>
+
+							<?php
+								/**
+								* ACTION: ap_after_question_actions.
+								*
+								* @since 	2.0
+								*/
+								do_action( 'ap_after_question_actions' );
+							?>
+						</div>
+						<!-- End ap-content-inner -->
+						<?php ap_question_the_comments(); ?>
 					</div>
-					<!-- End ap-content-inner -->
-					<?php ap_question_the_comments(); ?>
 				</div>
 			</div>
 

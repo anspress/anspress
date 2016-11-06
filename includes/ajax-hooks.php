@@ -31,7 +31,7 @@ class AnsPress_Ajax {
 		anspress()->add_action( 'ap_ajax_delete_post', __CLASS__, 'delete_post' );
 		anspress()->add_action( 'ap_ajax_permanent_delete_post', __CLASS__, 'permanent_delete_post' );
 		anspress()->add_action( 'ap_ajax_restore_post', __CLASS__, 'restore_post' );
-		anspress()->add_action( 'ap_ajax_load_tinymce_assets', __CLASS__, 'load_tinymce_assets' );
+		anspress()->add_action( 'ap_ajax_load_tinymce', __CLASS__, 'load_tinymce' );
 		anspress()->add_action( 'ap_ajax_filter_search', __CLASS__, 'filter_search' );
 		anspress()->add_action( 'ap_ajax_convert_to_post', __CLASS__, 'convert_to_post' );
 		anspress()->add_action( 'ap_ajax_delete_attachment', __CLASS__, 'delete_attachment' );
@@ -548,7 +548,7 @@ class AnsPress_Ajax {
 	 *
 	 * @since 3.0.0
 	 */
-	public static function load_tinymce_assets() {
+	public static function load_tinymce() {
 		$settings = ap_tinymce_editor_settings( 'answer' );
 
 		if ( false !== $settings['tinymce'] ) {
