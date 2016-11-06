@@ -52,9 +52,12 @@ class AnsPress_Vote {
 			if ( $is_voted->vote_value == $value ) { // loose comparison okay.
 				$counts = ap_delete_post_vote( $post_id, $userid );
 				ap_ajax_json( array(
+					'success' => true,
 					'action'  => 'undo',
-					'type'    => $type,
-					'message' => 'undo_vote',
+					'vote_type'    => $type,
+					'snackbar' => [
+						'message' => __( 'Your vote has been removed.', 'anspress-question-answer' ),
+					],
 					'voteData' => [
 						'net' => $counts['votes_net'],
 						'active' => '',
@@ -64,15 +67,23 @@ class AnsPress_Vote {
 			}
 
 			// Else ask user to undor their vote first.
-			ap_ajax_json( 'undo_vote_your_vote' );
+			ap_ajax_json( [
+				'success' => false,
+				'snackbar' => [
+					'message' => __( 'Undo your vote first.', 'anspress-question-answer' ),
+				]
+			] );
 		}
 
 		$counts = ap_add_post_vote( $post_id, $userid, 'vote_up' === $type );
 
 		ap_ajax_json( array(
+			'success' => true,
 			'action'  => 'voted',
-			'type'    => $type,
-			'message' => 'voted',
+			'vote_type'    => $type,
+			'snackbar' => [
+				'message' => __( 'Thank you for voting.', 'anspress-question-answer' ),
+			],
 			'voteData' => [
 					'net' => $counts['votes_net'],
 					'active' => $type,

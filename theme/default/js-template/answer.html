@@ -20,8 +20,35 @@
     <div class="ap-q-inner">
       <div class="ap-answer-content ap-q-content">{{{content}}}</div>
       {{{activity}}}
-      {{{actions}}}
+      <# if(actions){ #>
+        <ul id="post_actions_{{ID}}" class="ap-q-actions ap-ul-inline clearfix">
+          <# _.each(actions, function(action){ #>
+            <li class="ap-post-action ap-action-{{action.id}}">
+              <# if(action.sub){ #>
+                <div class="ap-dropdown">
+                  <a class="ap-tip ap-dropdown-toggle" href="#">
+                    {{action.label}} <i class="caret"></i>
+                  </a>
+                  <ul id="ap_post_status_toggle_1118" class="ap-dropdown-menu" role="menu">
+                      <li>
+                        <# _.each(actions, function(sub){ #>
+                          <a href="#" >{{sub.label}}</a>
+                        <# }) #>
+                      </li>
+                  </ul>
+                </div>
+              <# } else { #>
+                <a href="#" class="ap-sicon ap-tip" title="Open this question for new answers">{{action.label}}</a>
+              <# } #>
+            </li>
+          <# }) #>
+        </ul>
+      <# } #>
     </div>
-    {{{comments}}}
+
   </div>
 </div>
+
+
+
+

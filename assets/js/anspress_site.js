@@ -22,6 +22,54 @@ window.AnsPress = _.extend({
 				if(cb) cb(html);
 			});
 		}
+	},
+	isJSONString: function(str) {
+		try {
+			return JSON.parse(str);
+		} catch (e) {
+			return false;
+		}
+	},
+	ajaxResponse: function(data){
+		data = jQuery(data);
+		if( typeof data.filter('#ap-response') === 'undefined' ){
+			console.log('Not a valid AnsPress ajax response.');
+			return {};
+		}
+		var parsedJSON = this.isJSONString(data.filter('#ap-response').html());
+		if(!parsedJSON || parsedJSON === 'undefined' || !_.isObject(parsedJSON))
+			return {};
+
+		return parsedJSON;
+	},
+	ajax: function(options){
+		var self = this;
+		options = _.defaults(options, {
+			url: ajaxurl,
+			method: 'POST',
+		});
+
+		// COnvert data to query string if object.
+		if(_.isObject(options.data))
+			options.data = jQuery.param(options.data);
+
+		options.data = 'action=ap_ajax&' + options.data;
+
+		var success = options.success;
+		delete options.success;
+		options.success = function(data){
+			var parsedData = self.ajaxResponse(data);
+			if(parsedData.snackbar){
+				AnsPress.trigger('snackbar', parsedData)
+			}
+			if(typeof success === 'function'){
+				data = jQuery.isEmptyObject(parsedData) ? data : parsedData;
+				var context = options.context||null;
+				success(data, context);
+			}
+		};
+
+		return jQuery.ajax(options);
 	}
 }, Backbone.Events);
 
@@ -42,7 +90,21 @@ _.templateSettings = {
 				profileLink: false
 			},
 			activity: '',
-			actions: '',
+			actions: [
+				{ id: 'comment', label: 'Comment' },
+				{ id: 'select', label: 'Select' },
+				{ id: 'edit', label: 'Edit' },
+				{
+					id: 'status',
+					label: 'Status',
+					sub:[
+						{ id: 'publish', label: 'Publish' },
+						{ id: 'trash', label: 'Trash' },
+						{ id: 'private', label: 'Private' },
+						{ id: 'moderate', label: 'Moderate' }
+					]
+				}
+			],
 			comments: {},
 			dateTime: '',
 			postedOn: '',
@@ -91,13 +153,12 @@ _.templateSettings = {
 
 			self.model.set('vote', vote);
 			var q = $(e.target).attr('ap-btnvote');
-			$.ajax({
+			AnsPress.ajax({
 				url: ajaxurl,
 				method: 'POST',
-				data: 'action=ap_ajax&ap_ajax_action=vote&' + q,
+				data: 'ap_ajax_action=vote&' + q,
 				success: function(data) {
-					data = apParseAjaxResponse(data);
-					if (data['message_type'] == 'success') {
+					if (data['success']) {
 						self.model.set('vote', data.voteData);
 					}
 				}
@@ -155,6 +216,50 @@ _.templateSettings = {
 			return self;
 		}
 	});
+
+	AnsPress.views.Snackbar = Backbone.View.extend({
+		id: 'ap-snackbar',
+		template: '<div class="ap-snackbar<# if(success){ #> success<# } #>">{{message}}</div>',
+		hover: false,
+		initialize: function(){
+			AnsPress.on('snackbar', this.show, this);
+		},
+		events: {
+			'mouseover': 'toggleHover',
+			'mouseout': 'toggleHover',
+		},
+		show: function(data){
+			var self = this;
+			this.data = data.snackbar;
+			this.data.success = data.success;
+			this.$el.removeClass('snackbar-show');
+			this.render();
+			setTimeout(function(){
+				self.$el.addClass('snackbar-show');
+			}, 0);
+			this.hide();
+		},
+		toggleHover:function(){
+			clearTimeout(this.hoveTimeOut);
+			this.hover = !this.hover;
+			if(!this.hover)
+				this.hide();
+		},
+		hide: function(){
+			var self = this;
+			if(!self.hover)
+				this.hoveTimeOut = setTimeout(function(){
+					self.$el.removeClass('snackbar-show');
+				}, 2000);
+		},
+		render: function(){
+			if(this.data){
+				var t = _.template(this.template);
+				this.$el.html(t(this.data));
+			}
+			return this;
+		}
+	});
 })(jQuery);
 
 var apposts = new AnsPress.collections.Posts();
@@ -162,3 +267,6 @@ apposts.fetch();
 
 var appostview = new AnsPress.views.Posts({ model: apposts });
 jQuery('#answers').html(appostview.render().$el);
+
+var apSnackbarView = new AnsPress.views.Snackbar();
+jQuery('body').append(apSnackbarView.render().$el);
