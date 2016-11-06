@@ -10,7 +10,7 @@
  */
 
 ?>
-<div id="answer_<?php the_ID(); ?>" <?php post_class() ?> data-id="<?php the_ID(); ?>" ap-id>
+<div id="post-<?php the_ID(); ?>" <?php post_class() ?> data-id="<?php the_ID(); ?>" ap-id>
 	<div class="ap-content" itemprop="suggestedAnswer<?php echo ap_is_selected() ? ' acceptedAnswer' : ''; ?>" itemscope itemtype="https://schema.org/Answer">
 		<div class="ap-single-vote"><?php ap_vote_btn(); ?></div>
 		<div class="ap-avatar">

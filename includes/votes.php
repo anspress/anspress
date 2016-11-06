@@ -71,7 +71,12 @@ class AnsPress_Vote {
 				'success' => false,
 				'snackbar' => [
 					'message' => __( 'Undo your vote first.', 'anspress-question-answer' ),
-				]
+				],
+				'voteData' => [
+					'net' => $counts['votes_net'],
+					'active' => $type,
+					'nonce' => wp_create_nonce( 'vote' ),
+				],
 			] );
 		}
 

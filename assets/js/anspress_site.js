@@ -21,6 +21,8 @@ window.AnsPress = _.extend({
 				self.trigger('templateLoaded-'+id, html);
 				if(cb) cb(html);
 			});
+		}else{
+			self.trigger('templateLoaded-'+id, jQuery('#apTemplate-'+id).html());
 		}
 	},
 	isJSONString: function(str) {
@@ -121,7 +123,7 @@ _.templateSettings = {
 		templateId: 'answer',
 		tagName: 'div',
 		id: function(){
-			return 'answer_' + this.model.get('ID');
+			return 'post-' + this.model.get('ID');
 		},
 		initialize: function(options){
 			this.model.on('change', this.render, this);
@@ -158,9 +160,8 @@ _.templateSettings = {
 				method: 'POST',
 				data: 'ap_ajax_action=vote&' + q,
 				success: function(data) {
-					if (data['success']) {
+					if (_.isObject(data.voteData))
 						self.model.set('vote', data.voteData);
-					}
 				}
 			})
 		},
@@ -200,11 +201,11 @@ _.templateSettings = {
 
 	AnsPress.views.Posts = Backbone.View.extend({
 		initialize: function(){
-				this.model.on('add', this.renderItem, this);
+			this.model.on('add', this.renderItem, this);
 		},
 		renderItem: function(post){
 			var view = new AnsPress.views.Post({ model: post });
-			this.el.append(view.render().el);
+			this.$el.append(view.render().$el);
 		},
 
 		render: function(){
