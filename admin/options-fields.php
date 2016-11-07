@@ -20,18 +20,6 @@ ap_register_option_group('general', __( 'General', 'anspress-question-answer' ) 
 		'type'  => 'page_select',
 	),
 	array(
-		'name'  => 'question_help_page',
-		'label' => __( 'Question Help page', 'anspress-question-answer' ),
-		'desc'  => __( 'Direction for asking a question.', 'anspress-question-answer' ),
-		'type'  => 'page_select',
-	),
-	array(
-		'name'  => 'answer_help_page',
-		'label' => __( 'Answer Help page', 'anspress-question-answer' ),
-		'desc'  => __( 'Direction for answring a question.', 'anspress-question-answer' ),
-		'type'  => 'page_select',
-	),
-	array(
 		'name'  => 'author_credits',
 		'label' => __( 'Hide author credits', 'anspress-question-answer' ),
 		'desc'  => __( 'Hide link to AnsPress project site.', 'anspress-question-answer' ),

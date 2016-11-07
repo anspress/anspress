@@ -102,7 +102,8 @@ module.exports = function(grunt) {
 	    		options: {
 	    			paths: ["less"],
 	    			compress: true,
-						sourceMap: true
+						sourceMap: true,
+						sourceMapRootpath: 'http://localhost/anspress/wp-content/plugins/anspress-question-answer/'
 	    		},
 	    		files: {
 	    			"theme/default/css/main.css": "theme/default/less/main.less",
