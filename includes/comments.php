@@ -6,6 +6,7 @@ class AnsPress_Comment_Hooks
 		$data = array(
 			'current_user_avatar' => get_avatar( get_current_user_id(), 30 ),
 			'nocomments' => __("There aren't any comments yet.", 'anspress-question-answer' ),
+			'mod_msg' => __("Comment awaiting approval", 'anspress-question-answer' ),
 		);
 
 		// Check if user can comment, if so then send form data.
@@ -23,7 +24,9 @@ class AnsPress_Comment_Hooks
 			);
 		}
 
-		$comments = get_comments( [ 'post_id' => $post_id, 'order' => 'ASC' ] );
+		$status = ( ! ap_user_can_approve_comment() ) ? 'approve' : 'all';
+
+		$comments = get_comments( [ 'post_id' => $post_id, 'order' => 'ASC', 'status' => $status ] );
 		$DataComments = array();
 		foreach ( (array) $comments as $c ) {
 			if ( $editing != $c->comment_ID ) {
