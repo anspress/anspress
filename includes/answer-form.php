@@ -104,21 +104,25 @@ function ap_get_answer_form_fields( $question_id = false, $answer_id = false ) {
 		);
 	}
 
-	if ( $editing ) {
-		$fields[] = array(
-			'name'  => 'edit_post_id',
-			'type'  => 'hidden',
-			'value' => $editing_post->ID,
-			'order' => 20,
-			'sanitize' => array( 'only_int' ),
-		);
-	}
-
 	$fields[] = array(
 		'name'  => 'ap_upload',
 		'type'  => 'custom',
 		'html' => ap_post_upload_form( $editing? $editing_post->ID : false ),
 		'order' => 11,
+	);
+
+	$fields[] = array(
+		'name'  => 'action',
+		'type'  => 'hidden',
+		'value' => 'ap_ajax',
+		'order' => 20,
+	);
+
+	$fields[] = array(
+		'name'  => 'ap_ajax_action',
+		'type'  => 'hidden',
+		'value' => 'answer_form',
+		'order' => 20,
 	);
 
 	if ( $editing ) {
@@ -160,13 +164,14 @@ function ap_answer_form( $question_id, $editing = false ) {
 		'name'              => 'answer_form',
 		'is_ajaxified'      => true,
 		'submit_button'     => ($editing ? __( 'Update answer', 'anspress-question-answer' ) : __( 'Post answer', 'anspress-question-answer' )),
-		'nonce_name'        => 'nonce_answer_'.$question_id,
+		'nonce_name'        => 'nonce_answer_' . $question_id,
 		'fields'            => ap_get_answer_form_fields( $question_id, $answer_id ),
+		'attr'							=> ' ap="answerForm"',
 	);
 
 	anspress()->form = new AnsPress_Form( $args );
 
-	echo anspress()->form->get_form();
+	echo anspress()->form->get_form(); // xss okay.
 
 	// Post image upload form.
 	echo ap_post_upload_hidden_form();
@@ -239,7 +244,7 @@ function ap_save_answer($question_id, $args, $wp_error = false) {
 	if ( $post_id ) {
 		// Check if attachment ids exists.
 		if ( true === $args['attach_uploads'] ) {
-			$attachment_ids = $_POST['attachment_ids'];
+			$attachment_ids = ap_sanitize_unslash( 'attachment_ids', 'p' );
 			ap_attach_post_uploads( $post_id, $attachment_ids, $args['post_author'] );
 		}
 
@@ -294,14 +299,15 @@ function ap_answer_post_ajax_response( $question_id, $answer_id ){
 	$count_label = sprintf( _n( '1 Answer', '%d Answers', $current_ans, 'anspress-question-answer' ), $current_ans );
 
 	$result = array(
-		'postid' 		=> $answer_id,
-		'action' 		=> 'new_answer',
-		'div_id' 		=> '#answer_'.get_the_ID(),
-		'can_answer' 	=> ap_user_can_answer( $post->ID ),
-		'html' 			=> $html,
-		'message' 		=> 'answer_submitted',
-		'do' 			=> 'clearForm',
-		'view'			=> array( 'answer_count' => $current_ans, 'answer_count_label' => $count_label ),
+		'success' 		   => true,
+		'postid' 		    => $answer_id,
+		'action' 		    => 'new_answer',
+		'div_id' 		    => '#post-'.get_the_ID(),
+		'can_answer' 	 => ap_user_can_answer( $post->ID ),
+		'html' 			     => $html,
+		'message' 		   => 'answer_submitted',
+		'do' 			       => 'clearForm',
+		'view'			      => array( 'answer_count' => $current_ans, 'answer_count_label' => $count_label ),
 	);
 
 	ap_ajax_json( $result );

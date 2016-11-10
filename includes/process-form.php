@@ -311,6 +311,7 @@ class AnsPress_Process_Form
 		// Check if duplicate.
 		if( false !== ap_find_duplicate_post( $fields['description'], 'answer', $question->ID ) ){
 			ap_ajax_json( array(
+				'success' => false,
 				'form' 			=> $_POST['ap_form_action'],
 				'message_type' 	=> 'error',
 				'message'		=> __( 'This seems to be a duplicate answer. An answer with same content already exists.', 'anspress-question-answer' ),
@@ -475,9 +476,11 @@ function ap_form_validation_error_response( $validate ) {
 	// If error in form then return.
 	if ( $validate->have_error() ) {
 		ap_ajax_json( array(
+			'success' => false,
 			'form' 			=> $_POST['ap_form_action'],
-			'message_type' 	=> 'error',
-			'message'		=> __( 'Check missing fields and then re-submit.', 'anspress-question-answer' ),
+			'snackbar' => [
+				'message' => __( 'Check missing fields and then re-submit.', 'anspress-question-answer' )
+			],
 			'errors'		=> $validate->get_errors(),
 		) );
 	}

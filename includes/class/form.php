@@ -654,7 +654,9 @@ class AnsPress_Form {
 						break;
 
 					case 'custom':
+						$this->output .= '<div class="ap-field-'.@$field['name'].' ap-form-fields'.$error_class.'">';
 						$this->custom_field( $field );
+						$this->output .= '</div>';
 						break;
 
 					default:

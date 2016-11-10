@@ -60,19 +60,51 @@ window.AnsPress = _.extend({
 		var success = options.success;
 		delete options.success;
 		options.success = function(data){
+			var context = options.context||null;
 			var parsedData = self.ajaxResponse(data);
 			if(parsedData.snackbar){
 				AnsPress.trigger('snackbar', parsedData)
 			}
+
 			if(typeof success === 'function'){
 				data = jQuery.isEmptyObject(parsedData) ? data : parsedData;
-				var context = options.context||null;
 				success(data, context);
 			}
 		};
 
 		return jQuery.ajax(options);
-	}
+	},
+	uniqueId: function() {
+		return jQuery('.ap-uid').length;
+	},
+	showLoading: function(elm) {
+		/*hide any existing loading icon*/
+		AnsPress.hideLoading(elm);
+		var customClass = jQuery(elm).data('loadclass')||'';
+		var uid = this.uniqueId();
+		var el = jQuery('<div class="ap-loading-icon ap-uid '+customClass+'" id="apuid-' + uid + '"></div>');
+		jQuery('body').append(el);
+		var offset = jQuery(elm).offset();
+		var height = jQuery(elm).outerHeight();
+		var width = jQuery(elm).outerWidth();
+
+		el.css({
+			top: offset.top,
+			left: offset.left,
+			height: height,
+			width: width
+		});
+
+		jQuery(elm).data('loading', '#apuid-' + uid);
+		return '#apuid-' + uid;
+	},
+
+	hideLoading: function(elm) {
+		if( 'all' == elm )
+				jQuery('.ap-loading-icon').hide();
+		else
+				jQuery(jQuery(elm).data('loading')).hide();
+	},
 }, Backbone.Events);
 
 _.templateSettings = {
@@ -177,7 +209,8 @@ _.templateSettings = {
 				klass += ' disable';
 
 			return klass + ' prist';
-		}
+		},
+
 	});
 
 	AnsPress.collections.Posts = Backbone.Collection.extend({
@@ -190,7 +223,8 @@ _.templateSettings = {
 			this.model.on('add', this.renderItem, this);
 		},
 		events: {
-			'click [ap="loadEditor"]': 'loadEditor'
+			'click [ap="loadEditor"]': 'loadEditor',
+			'submit [ap="answerForm"]': 'answerForm'
 		},
 		renderItem: function(post){
 			var view = new AnsPress.views.Post({ model: post, el: '#post-'+post.get('ID') });
@@ -206,14 +240,48 @@ _.templateSettings = {
 		},
 		loadEditor: function(e){
 			var self = this;
+			AnsPress.showLoading(e.target);
 			AnsPress.ajax({
 				data: $(e.target).attr('ap-query'),
 				success: function(data){
+					AnsPress.hideLoading(e.target);
 					$('.ap-field-description').html(data);
 					$(e.target).closest('.ap-minimal-editor').removeClass('ap-minimal-editor');
 				}
 			});
+		},
 
+		answerForm: function(e){
+			var self = this;
+			AnsPress.showLoading($(e.target).find('.ap-btn-submit'));
+			$(e.target).find('.have-error').removeClass('have-error');
+			$(e.target).find('.error').remove();
+
+			AnsPress.ajax({
+				data: $(e.target).serialize(),
+				success: function(data){
+					AnsPress.hideLoading($(e.target).find('.ap-btn-submit'));
+					if(data.success){
+						$('#description').val('');
+						if (typeof tinyMCE !== 'undefined' && data.success)
+							tinyMCE.activeEditor.setContent('');
+
+						$('#answers').append($(data['html']).hide());
+						$(data.div_id).slideDown(500);
+					}
+
+					if(data.errors){
+						_.each(data.errors, function(err, i){
+							$('.ap-field-'+i).addClass('have-error')
+							if(i==='description' && $('.ap-field-ap_upload').length > 0)
+								i = 'ap_upload';
+
+							$('.ap-field-'+i).append('<span class="error">'+err+'</span>');
+						});
+					}
+				}
+			});
+			return false;
 		}
 	});
 
@@ -261,6 +329,7 @@ _.templateSettings = {
 		}
 	});
 
+
 })(jQuery);
 
 var apposts = new AnsPress.collections.Posts();
@@ -271,3 +340,5 @@ singleQuestionView.render();
 
 var apSnackbarView = new AnsPress.views.Snackbar();
 jQuery('body').append(apSnackbarView.render().$el);
+
+

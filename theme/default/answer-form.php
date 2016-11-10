@@ -6,8 +6,10 @@
 			</a>
 		</div>
 		<div class="ap-a-cells ap-form-c clearfix">
-			<div class="ap-minimal-placeholder" ap="loadEditor" ap-query="ap_ajax_action=load_tinymce&post_type=answer" data-loadclass="ripple-loading">
-				<?php _e('Write your answer..', 'anspress-question-answer' ); ?>
+			<div class="ap-minimal-placeholder">
+				<div class="ap-dummy-editor"></div>
+				<div class="ap-dummy-placeholder"><?php _e( 'Write your answer..', 'anspress-question-answer' ); ?></div>
+				<div class="ap-editor-fade" ap="loadEditor" ap-query="ap_ajax_action=load_tinymce&post_type=answer" data-loadclass="ripple-loading"></div>
 			</div>
 			<div id="ap-form-main">
 				<?php ap_answer_form( get_question_id() ); ?>

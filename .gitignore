@@ -25,3 +25,4 @@ tests/_output/*
 /anspress.sublime-workspace
 /build/*.zip
 /dist
+/.sass-cache
