@@ -2026,11 +2026,14 @@ body ul ul#ap-user-menu-link li > a .count {
   font-size: 13px;
   margin-bottom: 0;
 }
+#anspress .ap-field-description.have-error + .ap-field-ap_upload .ap-post-upload-form {
+  border-color: #F44336 !important;
+}
 #anspress .ap-form-fields {
   position: relative;
 }
 #anspress .ap-form-fields.ap-have-error .ap-form-control, #anspress .ap-form-fields.ap-have-error .ap-editor, #anspress .ap-form-fields.ap-have-error .bootstrap-tagsinput {
-  border: solid 1px #eb5837;
+  border: solid 1px #F44336;
   background: #fef3f0;
 }
 #anspress .ap-form-fields.ap-have-error .ap-editor {
@@ -2047,9 +2050,10 @@ body ul ul#ap-user-menu-link li > a .count {
   border-color: #F44336 !important;
 }
 #anspress .ap-form-fields .error {
-  color: #D50000;
+  background: #FFEBEE;
   margin-bottom: 20px;
   display: block;
+  padding: 10px;
 }
 #anspress .ap-form-fields-wrap {
   border-bottom: 1px solid #f7f7f7;

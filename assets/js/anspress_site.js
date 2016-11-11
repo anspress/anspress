@@ -117,13 +117,6 @@ _.templateSettings = {
 	AnsPress.models.Post = Backbone.Model.extend({
 		idAttribute: 'ID',
 		defaults:{
-			user: {
-				ID: '',
-				avatar: '',
-				displayMeta: '',
-				profileLink: false
-			},
-			activity: '',
 			actions: [
 				{ id: 'comment', label: 'Comment' },
 				{ id: 'select', label: 'Select' },
@@ -138,16 +131,8 @@ _.templateSettings = {
 						{ id: 'moderate', label: 'Moderate' }
 					]
 				}
-			],
-			comments: {},
-			dateTime: '',
-			postedOn: '',
-			voteButton: ''
+			]
 		}
-	});
-
-	AnsPress.views.Vote = Backbone.View.extend({
-		idAttribute: 'ID',
 	});
 
 	AnsPress.views.Post = Backbone.View.extend({
@@ -178,9 +163,12 @@ _.templateSettings = {
 				vote.net = ( vote.active === 'vote_down' ? vote.net + 1 : vote.net - 1);
 
 			self.model.set('vote', vote);
-			var q = $(e.target).attr('ap-query');
+			var q = $.parseJSON($(e.target).parent().attr('ap-vote'));
+			q.ap_ajax_action = 'vote';
+			q.type = type;
+
 			AnsPress.ajax({
-				data: 'ap_ajax_action=vote&' + q,
+				data: q,
 				success: function(data) {
 					if (_.isObject(data.voteData))
 						self.model.set('vote', data.voteData);
@@ -210,12 +198,23 @@ _.templateSettings = {
 
 			return klass + ' prist';
 		},
-
+		render: function(){
+			var attr = this.$el.find('[ap-vote]').attr('ap-vote');
+			this.model.set('vote', $.parseJSON(attr), {silent: true});
+			return this;
+		}
 	});
 
 	AnsPress.collections.Posts = Backbone.Collection.extend({
 		model: AnsPress.models.Post,
-		url: ajaxurl + '?action=fetch_answers&question_id='+apQuestionID,
+		//url: ajaxurl + '?action=fetch_answers&question_id='+apQuestionID,
+		initialize: function(){
+			var loadedPosts = [];
+			$('[ap="question"],[ap="answer"]').each(function(e){
+				loadedPosts.push({ 'ID' : $(this).attr('ap-id')});
+			});
+			this.add(loadedPosts);
+		}
 	});
 
 	AnsPress.views.SingleQuestion = Backbone.View.extend({
@@ -228,6 +227,7 @@ _.templateSettings = {
 		},
 		renderItem: function(post){
 			var view = new AnsPress.views.Post({ model: post, el: '#post-'+post.get('ID') });
+			view.render();
 		},
 
 		render: function(){
@@ -268,6 +268,7 @@ _.templateSettings = {
 
 						$('#answers').append($(data['html']).hide());
 						$(data.div_id).slideDown(500);
+						self.model.add({'ID': data.ID});
 					}
 
 					if(data.errors){
@@ -333,7 +334,6 @@ _.templateSettings = {
 })(jQuery);
 
 var apposts = new AnsPress.collections.Posts();
-apposts.fetch();
 
 var singleQuestionView = new AnsPress.views.SingleQuestion({ model: apposts, el: '#ap-single' });
 singleQuestionView.render();

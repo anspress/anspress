@@ -20,8 +20,8 @@
 				<?php echo ap_question_metas(); // xss ok. ?>
 			</div>
 
-			<div id="post-<?php the_ID(); ?>">
-				<div id="question" role="main" class="ap-content question" data-id="<?php the_ID(); ?>">
+			<div id="post-<?php the_ID(); ?>" ap="question" ap-id="<?php the_ID(); ?>">
+				<div id="question" role="main" class="ap-content question">
 					<div class="ap-single-vote"><?php ap_vote_btn(); ?></div>
 					<?php
 						/**

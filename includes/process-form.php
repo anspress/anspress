@@ -479,7 +479,7 @@ function ap_form_validation_error_response( $validate ) {
 			'success' => false,
 			'form' 			=> $_POST['ap_form_action'],
 			'snackbar' => [
-				'message' => __( 'Check missing fields and then re-submit.', 'anspress-question-answer' )
+				'message' => __( 'Check missing fields and then re-submit.', 'anspress-question-answer' ),
 			],
 			'errors'		=> $validate->get_errors(),
 		) );

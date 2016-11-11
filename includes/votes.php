@@ -22,11 +22,11 @@ class AnsPress_Vote {
 	public static function vote() {
 		$post_id = (int) ap_sanitize_unslash( 'post_id', 'request' );
 
-		if ( ! ap_verify_nonce( 'vote' ) ) {
+		if ( ! ap_verify_nonce( 'vote_' . $post_id ) ) {
 				ap_ajax_json( 'something_wrong' );
 		}
 
-		$type = 'up' === ap_sanitize_unslash( 'type', 'request' ) ? 'vote_up' : 'vote_down';
+		$type = 'vote_up' === ap_sanitize_unslash( 'type', 'request' ) ? 'vote_up' : 'vote_down';
 		$value = 'vote_up' === $type ? '1' : '-1';
 		$userid = get_current_user_id();
 		$post = ap_get_post( $post_id );
@@ -490,28 +490,36 @@ function ap_delete_post_vote( $post_id, $user_id = false, $up_vote = null ) {
  */
 function ap_vote_btn( $post = null, $echo = true ) {
 	$post = ap_get_post( $post );
-	if ( !$post || 'answer' === $post->post_type && ap_opt( 'disable_voting_on_answer' ) ) {
+	if ( ! $post || 'answer' === $post->post_type && ap_opt( 'disable_voting_on_answer' ) ) {
 		return;
 	}
 
 	if ( 'question' === $post->post_type && ap_opt( 'disable_voting_on_question' ) ) {
 		return;
 	}
-	$nonce = wp_create_nonce( 'vote' );
 
 	$vote = is_user_logged_in() ? ap_get_vote( $post->ID, get_current_user_id(), 'vote' ) : false;
 	$voted = $vote ? true : false;
-	$type = $vote && '1' === $vote->vote_value ? 'vote_up' : 'vote_down';
+
+	if ( $vote && '1' === $vote->vote_value ) {
+		$type = 'vote_up';
+	} elseif ( $vote && '-1' === $vote->vote_value ) {
+		$type = 'vote_down';
+	} else {
+		$type = '';
+	}
+
+	$data = [ 'post_id' => $post->ID, 'active' => $type, 'net' => ap_get_votes_net(), '__nonce' => wp_create_nonce( 'vote_' . $post->ID ) ];
 
 	$html = '';
-	$html .= '<div id="vote_' . $post->ID . '" data-id="' . $post->ID . '" class="ap-vote net-vote" ap-vote>';
-	$html .= '<a class="' . ap_icon( 'vote_up' ) . ' ap-tip vote-up' . ($voted ? ' voted' : '') . ($vote && 'vote_down' === $type ? ' disable' : '') . '" data-query="type=up&post_id=' . $post->ID . '&__nonce=' . $nonce . '" href="#" title="' . __( 'Up vote this post', 'anspress-question-answer' ) . '" ap-query="__nonce=' . $nonce . '&post_id=' . $post->ID . '&type=up"></a>';
+	$html .= '<div id="vote_' . $post->ID . '" class="ap-vote net-vote" ap-vote=\'' . wp_json_encode( $data ) . '\'>';
+	$html .= '<a class="' . ap_icon( 'vote_up' ) . ' ap-tip vote-up' . ($voted ? ' voted' : '') . ($vote && 'vote_down' === $type ? ' disable' : '') . '" href="#" title="' . __( 'Up vote this post', 'anspress-question-answer' ) . '" ap="vote_up"></a>';
 
 	$html .= '<span class="net-vote-count" data-view="ap-net-vote" itemprop="upvoteCount" ap="votes_net">' . ap_get_votes_net() . '</span>';
 
 	if ( ('question' === $post->post_type && ! ap_opt( 'disable_down_vote_on_question' )) ||
 		('answer' === $post->post_type && ! ap_opt( 'disable_down_vote_on_answer' )) ) {
-		$html .= '<a data-tipposition="bottom center" class="' . ap_icon( 'vote_down' ) . ' ap-tip vote-down' . ($voted ? ' voted' : '') . ($vote && 'vote_up' === $type ? ' disable' : '') . '" href="#" title="' . __( 'Down vote this post', 'anspress-question-answer' ) . '" ap-query="__nonce=' . $nonce . '&post_id=' . $post->ID . '&type=down"></a>';
+		$html .= '<a data-tipposition="bottom center" class="' . ap_icon( 'vote_down' ) . ' ap-tip vote-down' . ($voted ? ' voted' : '') . ($vote && 'vote_up' === $type ? ' disable' : '') . '" href="#" title="' . __( 'Down vote this post', 'anspress-question-answer' ) . '" ap="vote_down"></a>';
 	}
 
 	$html .= '</div>';

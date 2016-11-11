@@ -47,12 +47,14 @@
 			margin-bottom: 0;
 		}
 	}
-
+	.ap-field-description.have-error + .ap-field-ap_upload .ap-post-upload-form{
+		border-color: #F44336 !important;
+	}
 	.ap-form-fields{
 		position: relative;
 		&.ap-have-error{
 			.ap-form-control, .ap-editor, .bootstrap-tagsinput{
-				border: solid 1px $error-color;
+				border: solid 1px #F44336;
 				background: lighten($error-color, 40%);
 			}
 			.ap-editor{
@@ -72,9 +74,10 @@
 			border-color: #F44336 !important;
 		}
 		.error {
-			color: #D50000;
+			background: #FFEBEE;
 			margin-bottom: 20px;
 			display: block;
+			padding: 10px;
 		}
 
 		&-wrap{

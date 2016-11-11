@@ -36,8 +36,6 @@ class AnsPress_Ajax {
 		anspress()->add_action( 'ap_ajax_convert_to_post', __CLASS__, 'convert_to_post' );
 		anspress()->add_action( 'ap_ajax_delete_attachment', __CLASS__, 'delete_attachment' );
 		anspress()->add_action( 'ap_ajax_get_all_answers', __CLASS__, 'get_all_answers' );
-		anspress()->add_action( 'wp_ajax_nopriv_fetch_answers', __CLASS__, 'fetch_answers' );
-		anspress()->add_action( 'wp_ajax_fetch_answers', __CLASS__, 'fetch_answers' );
 
 		anspress()->add_action( 'ap_ajax_load_comments', 'AnsPress_Comment_Hooks', 'load_comments' );
 		anspress()->add_action( 'ap_ajax_edit_comment_form', 'AnsPress_Comment_Hooks', 'edit_comment_form' );
@@ -668,53 +666,6 @@ class AnsPress_Ajax {
 		endif;
 
 		ap_ajax_json( [ 'data' => $answers_arr ] );
-	}
-
-	public static function fetch_answers(){
-		global $answers;
-
-		$question_id = ap_sanitize_unslash( 'question_id', 'p' );
-		$answers_arr = [];
-		$answers = ap_get_answers( [ 'question_id' => $question_id ] );
-
-		if ( ap_user_can_see_answers() ) {
-			while ( ap_have_answers() ) : ap_the_answer();
-				global $post, $wp_post_statuses;
-
-				$vote = is_user_logged_in() ? ap_get_vote( $post->ID, get_current_user_id(), 'vote' ) : false;
-				$voted = $vote ? true : false;
-				$vote_type = '';
-
-				if ( $voted ) {
-					$vote_type = $vote && '1' === $vote->vote_value ? 'vote_up' : 'vote_down';
-				}
-
-				$answers_arr[] = array(
-					'ID'         => get_the_ID(),
-					'content'    => apply_filters( 'the_content', get_the_content() ),
-					'postedOn' => sprintf( __( 'Posted on %s', 'anspress-question-answer' ), ap_human_time( ap_get_time( get_the_ID(), 'U' ) ) ),
-					'dateTime' => ap_get_time( get_the_ID(), 'c' ),
-					'activity'   => ap_get_recent_post_activity(),
-					'edit_link'  => esc_url_raw( get_edit_post_link() ),
-					'trash_link' => esc_url_raw( get_delete_post_link() ),
-					'status'     => esc_attr( $wp_post_statuses[ $post->post_status ]->label ),
-					'selected'   => ap_get_post_field( 'selected' ),
-					'class'      => implode( ' ', get_post_class() ),
-					'vote' => [
-						'net' => ap_get_votes_net(),
-						'active' => $vote_type,
-						'nonce' => wp_create_nonce( 'vote' ),
-					],
-					'user'       => [
-						'ID' => $post->post_author,
-						'avatar' => ap_get_author_avatar( 50 ),
-						'name' => ap_user_display_name( [ 'html' => true ] ),
-					],
-				);
-			endwhile;
-		}
-
-		wp_send_json(  $answers_arr );
 	}
 
 }
