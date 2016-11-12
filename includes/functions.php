@@ -1854,6 +1854,11 @@ function ap_sanitize_unslash( $str, $from = false, $default = '' ) {
 		return array_map( 'sanitize_text_field', $str );
 	}
 
+	// preserving line breaks for the email notification message
+	if (class_exists('AnsPress_Ext_AnsPress_Email') && (isset($_POST["fields_group"]) && $_POST['fields_group'] == 'email')){
+		return wp_unslash(implode( "\r\n", array_map( 'sanitize_text_field', explode( "\r\n", $str ) ) ));
+	}
+
 	return sanitize_text_field( wp_unslash( $str ) );
 }
 
