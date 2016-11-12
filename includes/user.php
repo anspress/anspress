@@ -911,7 +911,7 @@ function ap_user_link_anchor($user_id, $echo = true) {
  */
 function ap_user_comment_count( $user_id = false ) {
 	if ( false === $user_id ) {
-		$user_id = get_current_user_id();
+		$user_id = ap_user_get_the_ID();
 	}
 
 	if( empty( $user_id ) ){
