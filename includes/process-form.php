@@ -349,15 +349,6 @@ class AnsPress_Process_Form
 
 		$answer_id = ap_save_answer( $question->ID, $answer_array );
 
-		if( ap_isset_post_value( 'have_attachments' ) ) {
-			ap_send_json(array(
-				'success' => true,
-				'post_id' => $answer_id,
-				'_wpnonce' => wp_create_nonce( 'upload-image-' . $answer_id ),
-				'allow_upload' => true,
-			));
-		}
-
 		if ( $answer_id ) {
 			ap_answer_post_ajax_response( $question->ID, $answer_id );
 		}

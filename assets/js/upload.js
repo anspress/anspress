@@ -53,6 +53,11 @@ if(!AnsPress) AnsPress = {};
         else
           jQuery('.wp-editor-area').val(jQuery('.wp-editor-area').val() + html);
       }
+    },
+    FilesRemoved: function(up, file){
+      plupload.each(file, function(f) {
+        $('#ap-upload #'+f.id).remove();
+      });
     }
   };
 
