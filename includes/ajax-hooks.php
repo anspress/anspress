@@ -36,6 +36,7 @@ class AnsPress_Ajax {
 		anspress()->add_action( 'ap_ajax_convert_to_post', __CLASS__, 'convert_to_post' );
 		anspress()->add_action( 'ap_ajax_delete_attachment', __CLASS__, 'delete_attachment' );
 		anspress()->add_action( 'ap_ajax_get_all_answers', __CLASS__, 'get_all_answers' );
+		anspress()->add_action('wp_ajax_ap_image_submission', __CLASS__, 'image_submission');
 
 		anspress()->add_action( 'ap_ajax_load_comments', 'AnsPress_Comment_Hooks', 'load_comments' );
 		anspress()->add_action( 'ap_ajax_edit_comment_form', 'AnsPress_Comment_Hooks', 'edit_comment_form' );
@@ -556,6 +557,36 @@ class AnsPress_Ajax {
 			);
 		}
 
+		if ( ap_user_can_upload( ) ) {
+			$plupload_init = array(
+				'runtimes'            => 'html5,flash,silverlight,html4',
+				'browse_button'       => 'plupload-browse-button',
+				'container'           => 'plupload-upload-ui',
+				'drop_element'        => 'drag-drop-area',
+				'file_data_name'      => 'async-upload',
+				'url'                 => admin_url( 'admin-ajax.php' ),
+				'flash_swf_url'       => includes_url( 'js/plupload/plupload.flash.swf' ),
+				'silverlight_xap_url' => includes_url( 'js/plupload/plupload.silverlight.xap' ),
+				'filters' => array(
+					'mime_types' => [
+						[ 'title' => 'Image files', 'extensions' => 'jpg,gif,png' ],
+						[ 'title' => 'Zip files', 'extensions' => 'zip' ],
+					],
+					'max_file_size'   => wp_max_upload_size() . 'b',
+					'prevent_duplicates' => true,
+				),
+				'multipart_params' => [
+					'_wpnonce' => wp_create_nonce( 'media-upload' ),
+					'action' => 'ap_image_submission',
+					'post_id' => '1058',
+				],
+			);
+
+			wp_enqueue_script( 'ap-upload', ANSPRESS_URL . 'assets/js/upload.js', [ 'plupload' ] );
+			echo '<script type="text/javascript"> wpUploaderInit =' . wp_json_encode( $plupload_init ) . ';</script>';
+		}
+
+
 		echo '<div class="ap-editor">';
 	    wp_editor( '', 'description', $settings );
 	    echo '</div>';
@@ -611,28 +642,27 @@ class AnsPress_Ajax {
 	 * Delete question or answer attachment.
 	 */
 	public static function delete_attachment() {
-		if ( ! ap_verify_default_nonce() || ! ap_user_can_upload_image() ) {
+		$attachment_id = ap_sanitize_unslash( 'attachment_id', 'r' );
+
+		if ( ! ap_verify_nonce( 'delete-attachment-' . $attachment_id ) ) {
 			ap_ajax_json( 'no_permission' );
 		}
-
-		$args = ap_sanitize_unslash( 'args', 'request' );
 
 		// If user cannot delete then die.
-		if ( ! ap_user_can_delete_attachment( $args[0] ) ) {
+		if ( ! ap_user_can_delete_attachment( $attachment_id ) ) {
 			ap_ajax_json( 'no_permission' );
 		}
 
-		$row = wp_delete_attachment( $args[0], true );
+		$row = wp_delete_attachment( $attachment_id, true );
 
-		if ( false !== $row ) {
-			ap_ajax_json( array(
-				'action'        => 'delete_attachment',
-				'attachment_id' => $args[0],
-				'do'            => array( 'remove_if_exists' => '#' . $args[0] ),
-				'message'       => __( 'Attachment deleted permanently','anspress-question-answer' ),
-				'message_type'  => 'success',
-			) );
+		if ( ! empty( $row ) ) {
+			ap_ajax_json( [ 'success' => true ] );
 		}
+
+		ap_ajax_json( [
+			'success'  => false,
+			'snackbar' => [ 'message' => __( 'Unable to delete attachment', 'anspress-question-answer' ) ],
+		] );
 	}
 
 	/**
@@ -666,6 +696,48 @@ class AnsPress_Ajax {
 		endif;
 
 		ap_ajax_json( [ 'data' => $answers_arr ] );
+	}
+
+	/**
+	 * Upload an attachment to server.
+	 **/
+	public static function image_submission() {
+		check_ajax_referer( 'media-upload' );
+		$post_id = ap_sanitize_unslash( 'post_id', 'r' );
+
+		if ( ! ap_user_can_upload( ) ) {
+			ap_ajax_json( [
+				'success' => false,
+				'snackbar' => [
+					'message' => __( 'You are not allowed to upload attachments.', 'anspress-question-answer' ),
+				],
+			] );
+		}
+
+		if ( ! empty( $post_id ) && ! ap_user_can_edit_post( $post_id ) ) {
+			ap_ajax_json( [ 'success' => false ] );
+		} else {
+			$post_id = null;
+		}
+
+		$attachment_id = media_handle_upload( 'async-upload', $post_id );
+		add_post_meta( $attachment_id, 'ap_temproary_attachment', '1' );
+
+		if ( is_wp_error( $attachment_id ) ) {
+			ap_ajax_json( [
+				'success' => false,
+				'snackbar' => [
+					'message' => __( 'Failed to upload file.', 'anspress-question-answer' ),
+				],
+			] );
+		}
+
+		ap_ajax_json( array(
+			'success'        => true,
+			'attachment_url' => wp_get_attachment_url( $attachment_id ),
+			'attachment_id'  => $attachment_id,
+			'delete_nonce'   => wp_create_nonce( 'delete-attachment-' . $attachment_id ),
+		) );
 	}
 
 }

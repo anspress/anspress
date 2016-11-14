@@ -104,7 +104,7 @@ window.AnsPress = _.extend({
 				jQuery('.ap-loading-icon').hide();
 		else
 				jQuery(jQuery(elm).data('loading')).hide();
-	},
+	}
 }, Backbone.Events);
 
 _.templateSettings = {
@@ -238,6 +238,7 @@ _.templateSettings = {
 
 			return self;
 		},
+
 		loadEditor: function(e){
 			var self = this;
 			AnsPress.showLoading(e.target);
@@ -262,6 +263,10 @@ _.templateSettings = {
 				success: function(data){
 					AnsPress.hideLoading($(e.target).find('.ap-btn-submit'));
 					if(data.success){
+						if(typeof data.allow_upload !== 'undefined'){
+
+						}
+
 						$('#description').val('');
 						if (typeof tinyMCE !== 'undefined' && data.success)
 							tinyMCE.activeEditor.setContent('');
@@ -284,6 +289,7 @@ _.templateSettings = {
 			});
 			return false;
 		}
+
 	});
 
 	AnsPress.views.Snackbar = Backbone.View.extend({
@@ -329,8 +335,6 @@ _.templateSettings = {
 			return this;
 		}
 	});
-
-
 })(jQuery);
 
 var apposts = new AnsPress.collections.Posts();
@@ -340,5 +344,9 @@ singleQuestionView.render();
 
 var apSnackbarView = new AnsPress.views.Snackbar();
 jQuery('body').append(apSnackbarView.render().$el);
+
+
+
+
 
 

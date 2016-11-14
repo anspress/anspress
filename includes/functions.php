@@ -988,30 +988,12 @@ function ap_register_menu( $slug, $title, $link ) {
  * @return string
  */
 function ap_post_upload_form( $post_id = false ) {
-	$html = '
-    <div class="ap-post-upload-form">
-        <div class="ap-btn ap-upload-o ' . ap_icon( 'image' ) . '">
-        	<span>' . __( 'Attach file', 'anspress-question-answer' ) . '</span>';
-	if ( ap_user_can_upload_image() ) {
-		$html .= '
-                <a class="ap-upload-link" href="#" data-action="ap_post_upload_field">
-	            	' . __( 'upload', 'anspress-question-answer' ) . '
-
-	            </a> ' . __( 'or', 'anspress-question-answer' );
+	if ( ! ap_user_can_upload( ) ) {
+		return;
 	}
 
-	$html .= '<span class="ap-upload-remote-link">
-            	' . __( 'add from link', 'anspress-question-answer' ) . '
-            </span>
-            <div class="ap-upload-link-rc">
-        		<input type="text" name="post_remote_image" class="ap-form-control" placeholder="' . __( 'Enter link', 'anspress-question-answer' ) . '" data-action="post_remote_image">
-                <a data-action="post_image_ok" class="apicon-check ap-btn" href="#"></a>
-                <a data-action="post_image_close" class="apicon-x ap-btn" href="#"></a>
-            </div>
-            <input type="hidden" name="attachment_ids[]" value="" />
-        </div>';
-
-	$html .= '</div>';
+	$label = sprintf( __( 'Attach files by dragging & dropping, %1$sselecting them%2$s, or pasting from the clipboard', 'anspress-question-answer' ), '<a id="pickfiles" href="javascript:;">', '</a>' );
+	$html = '<div id="ap-upload" class="ap-upload"><div class="ap-upload-anchor">' . $label . '</div></div>';
 	$media = get_attached_media( '', $post_id );
 	$html .= '<div id="ap-upload-list">';
 	$__nonce = wp_create_nonce( 'ap_ajax_nonce' );

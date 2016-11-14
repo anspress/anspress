@@ -97,9 +97,9 @@ class AnsPress_Process_Form
 				$this->process_answer_form();
 				break;
 
-			case 'upload_post_image':
+			/*case 'upload_post_image':
 				$this->upload_post_image();
-				break;
+				break;*/
 
 			default:
 				/**
@@ -269,8 +269,10 @@ class AnsPress_Process_Form
 	 * Process answer form
 	 */
 	public function process_answer_form() {
+		$question_id = (int) ap_sanitize_unslash( 'form_question_id', 'r' );
+
 		// Do security check, if fails then return.
-		if ( ! ap_user_can_answer( $_POST['form_question_id'] ) || ! isset( $_POST['__nonce'] ) || ! ap_verify_nonce( 'nonce_answer_'.$_POST['form_question_id'] ) ) {
+		if ( ! ap_user_can_answer( $question_id ) || ! ap_verify_nonce( 'nonce_answer_' . $question_id ) ) {
 			ap_ajax_json( 'no_permission' );
 		}
 
@@ -278,7 +280,7 @@ class AnsPress_Process_Form
 		ap_captcha_verification_response();
 
 		global $ap_errors, $validate;
-		$question = ap_get_post( (int) $_POST['form_question_id'] );
+		$question = ap_get_post( $question_id );
 
 		// Check if user have permission to answer a question.
 		if ( ! ap_user_can_answer( $question->ID ) ) {
@@ -346,7 +348,15 @@ class AnsPress_Process_Form
 		}
 
 		$answer_id = ap_save_answer( $question->ID, $answer_array );
-		ap_clear_unused_attachments( $user_id );
+
+		if( ap_isset_post_value( 'have_attachments' ) ) {
+			ap_send_json(array(
+				'success' => true,
+				'post_id' => $answer_id,
+				'_wpnonce' => wp_create_nonce( 'upload-image-' . $answer_id ),
+				'allow_upload' => true,
+			));
+		}
 
 		if ( $answer_id ) {
 			ap_answer_post_ajax_response( $question->ID, $answer_id );
@@ -398,52 +408,6 @@ class AnsPress_Process_Form
 				'do'			=> array( 'redirect' => get_permalink( $answer->post_parent ) ),
 			));
 		}
-	}
-
-	/**
-	 * Process uploads.
-	 */
-	public function upload_post_image() {
-		if ( ! ap_user_can_upload_image() ) {
-			ap_ajax_json( 'no_permission' );
-		}
-
-		$user_id = get_current_user_id();
-		$file = $_FILES['post_upload_image'];
-		if ( $file['size'] > ap_opt( 'max_upload_size' ) ) {
-			ap_ajax_json( array(
-				'message_type' => 'error',
-				'message' => sprintf( __( 'File cannot be uploaded, size is bigger then %d Byte', 'anspress-question-answer' ), ap_opt( 'max_upload_size' ) )
-			) );
-		}
-
-		if ( ap_user_upload_limit_crossed( $user_id ) ) {
-			ap_ajax_json( array( 'message' => 'upload_limit_crossed' ) );
-		}
-
-		if ( ! is_user_logged_in() ) {
-			ap_ajax_json( 'no_permission' );
-		}
-
-		if ( ! isset( $_POST['__nonce'] ) || ! wp_verify_nonce( $_POST['__nonce'], 'upload_image_'.$user_id ) ) {
-			ap_ajax_json( 'something_wrong' );
-		}
-
-		if ( ! empty( $file ) && is_array( $file ) && $file['error'] == 0 ) {
-			$attachment_id = ap_upload_user_file( $file );
-			if ( $attachment_id !== false ) {
-				ap_ajax_json( array(
-					'action' 	=> 'upload_post_image',
-					'name' 		=> basename ( get_attached_file( $attachment_id ) ),
-					'url' 		=> wp_get_attachment_url( $attachment_id ),
-					'mime' 		=> get_post_mime_type( $attachment_id ),
-					'message' 	=> 'post_image_uploaded',
-					'attachment_id' => $attachment_id
-				) );
-			}
-		}
-
-		ap_ajax_json( 'something_wrong' );
 	}
 
 	public function process_image_uploads($post_id, $user_id) {

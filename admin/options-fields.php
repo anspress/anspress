@@ -374,7 +374,7 @@ ap_register_option_group('permission', __( 'Permission', 'anspress-question-answ
 		'html' => '<span class="ap-form-separator">' . __( 'Upload', 'anspress-question-answer' ) . '</span>',
 	),
 	array(
-		'name'  => 'allow_upload_image',
+		'name'  => 'allow_upload',
 		'label' => __( 'Allow image upload', 'anspress-question-answer' ),
 		'desc'  => __( 'Allow logged-in users to upload image.', 'anspress-question-answer' ),
 		'type'  => 'checkbox',

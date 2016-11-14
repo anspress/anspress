@@ -25,7 +25,7 @@ if ( ! defined( 'WPINC' ) ) {
  */
 function ap_opt($key = false, $value = null) {
 	$settings = wp_cache_get('anspress_opt', 'ap' );
-	
+
 	if ( false === $settings ) {
 		$settings = get_option( 'anspress_opt' );
 
@@ -50,13 +50,13 @@ function ap_opt($key = false, $value = null) {
 	}
 
 	if ( false === $key ) {
-		return $settings; 
+		return $settings;
 	}
 
 	if ( isset($settings[$key] ) ) {
-		return $settings[$key]; 
+		return $settings[$key];
 	} else {
-		return null; 
+		return null;
 	}
 
 	return false;
@@ -130,7 +130,7 @@ function ap_default_options() {
 		'enable_users_directory'	=> true,
 		'question_permalink_follow' => true,
 		'show_question_sidebar' 	=> true,
-		'allow_upload_image' 		=> true,
+		'allow_upload' 		=> true,
 		'question_help_page' 		=> '',
 		'answer_help_page' 			=> '',
 		'disable_answer_nav' 		=> false,

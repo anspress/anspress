@@ -175,6 +175,7 @@ function ap_answer_form( $question_id, $editing = false ) {
 
 	// Post image upload form.
 	echo ap_post_upload_hidden_form();
+	echo '<div id="ap-upload-container" class="ap-upload"></div>';
 }
 
 /**

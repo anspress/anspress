@@ -285,6 +285,61 @@ function ap_user_can_select_answer( $post_id, $user_id = false ) {
 /**
  * Check if a user can edit answer on a question.
  *
+ * @param  mixed           $post    Post.
+ * @param  boolean|integer $user_id User id.
+ * @return boolean
+ * @since  4.0.0
+ */
+function ap_user_can_edit_post( $post = null, $user_id = false ) {
+	if ( false === $user_id ) {
+		$user_id = get_current_user_id();
+	}
+
+	$_post = ap_get_post( $post );
+
+	if( ! in_array( $_post->post_type, [ 'question', 'answer' ], true ) ) {
+		return false;
+	}
+
+	if ( user_can( $user_id, 'ap_edit_others_' + $_post->post_type ) || is_super_admin( $user_id ) ) {
+		return true;
+	}
+
+	/**
+	 * Filter to hijack ap_user_can_edit_post. This filter will be applied if filter
+	 * returns a boolean value. To baypass return an empty string.
+	 *
+	 * @param string|boolean 	$filter 		Apply this filter.
+	 * @param integer 			$question_id 	Question ID.
+	 * @param integer 			$user_id 		User ID.
+	 */
+	$filter = apply_filters( 'ap_user_can_edit_post', '', $_post->ID, $user_id );
+
+	if ( true === $filter ) {
+		return true;
+	} elseif ( false === $filter ) {
+		return false;
+	}
+
+	// Do not allow to edit if moderate.
+	if ( 'moderate' === $_post->post_status ) {
+		return false;
+	}
+
+	if ( ! ap_user_can_read_post( $_post, $user_id ) ) {
+		return false;
+	}
+
+	if ( $user_id == $_post->post_author && user_can( $user_id, 'ap_edit_' . $_post->post_type ) ) { // loose comparison ok.
+		return true;
+	}
+
+	return false;
+}
+
+/**
+ * Check if a user can edit answer on a question.
+ *
  * @param  integer         $post_id Answer id.
  * @param  boolean|integer $user_id User id.
  * @return boolean
@@ -883,7 +938,7 @@ function ap_user_can_change_status_to_moderate() {
  *
  * @return boolean
  */
-function ap_user_can_upload_image() {
+function ap_user_can_upload() {
 	if ( ! is_user_logged_in() ) {
 		return false;
 	}
@@ -892,7 +947,7 @@ function ap_user_can_upload_image() {
 		return true;
 	}
 
-	if ( ap_opt( 'allow_upload_image' ) ) {
+	if ( ap_opt( 'allow_upload' ) ) {
 		return true;
 	}
 
