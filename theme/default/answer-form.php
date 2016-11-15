@@ -17,7 +17,7 @@
 				<?php echo get_avatar(get_current_user_id(), ap_opt('avatar_size_qquestion' ) ); ?>
 			</a>
 		</div>
-		<div class="ap-a-cells ap-form-c clearfix">
+		<div id="ap-drop-area" class="ap-a-cells ap-form-c clearfix">
 			<div class="ap-minimal-placeholder">
 				<div class="ap-dummy-editor"></div>
 				<div class="ap-dummy-placeholder"><?php _e( 'Write your answer..', 'anspress-question-answer' ); ?></div>

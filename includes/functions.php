@@ -992,7 +992,7 @@ function ap_post_upload_form( $post_id = false ) {
 		return;
 	}
 
-	$label = sprintf( __( 'Attach files by dragging & dropping, %1$sselecting them%2$s, or pasting from the clipboard', 'anspress-question-answer' ), '<a id="pickfiles" href="javascript:;">', '</a>' );
+	$label = sprintf( __( 'Insert images and attach media by %1$sselecting them%2$s', 'anspress-question-answer' ), '<a id="pickfiles" href="javascript:;">', '</a>' );
 	$html = '<div id="ap-upload" class="ap-upload"><div class="ap-upload-anchor">' . $label . '</div></div>';
 	$media = get_attached_media( '', $post_id );
 	$html .= '<div id="ap-upload-list">';
@@ -1043,48 +1043,43 @@ function ap_allowed_mimes() {
  * @return integer|boolean
  * @since  3.0.0 Added new argument `$post_parent`.
  */
-function ap_upload_user_file( $file = array(), $temp = true, $parent_post = false ) {
+function ap_upload_user_file( $file = array(), $temp = true, $parent_post = '' ) {
 	require_once ABSPATH . 'wp-admin/includes/admin.php';
 
-	$file_return = wp_handle_upload($file, array(
+	// Check if file is greater then allowed size.
+	if ( $file['size'] > (int) ap_opt( 'max_upload_size' ) ) {
+		return new WP_Error( 'file_size_error', sprintf( __( 'File cannot be uploaded, size is bigger then %s MB', 'anspress-question-answer' ), round( ap_opt( 'max_upload_size' ) / ( 1024 * 1024 ), 2 ) ) );
+	}
+
+	$file_return = wp_handle_upload( $file, array(
 		'test_form' => false,
 		'mimes'     => ap_allowed_mimes(),
 	));
 
+	var_dump(ap_allowed_mimes());
+
 	if ( isset( $file_return['error'] ) || isset( $file_return['upload_error_handler'] ) ) {
-		return false;
-	} else {
-		$filename = $file_return['file'];
-		$attachment = array(
-			'post_mime_type' => $file_return['type'],
-			'post_title'     => preg_replace( '/\.[^.]+$/', '', basename( $filename ) ),
-			'post_content'   => '',
-			'post_status'    => 'inherit',
-			'guid'           => $file_return['url'],
-		);
-
-		// Set post parent post if passed.
-		if ( false !== $post_parent ) {
-			$attachment['post_parent'] = $post_id;
-		}
-
-		$attachment_id = wp_insert_attachment( $attachment, $file_return['file'] );
-
-		// Set this post as temp if no post_parent is passed.
-		if ( $temp && false === $post_parent ) {
-			update_post_meta( $attachment_id, '_ap_temp_image', true );
-		}
-
-		require_once ABSPATH . 'wp-admin/includes/image.php';
-		$attachment_data = wp_generate_attachment_metadata( $attachment_id, $filename );
-		wp_update_attachment_metadata( $attachment_id, $attachment_data );
-
-		if ( 0 < intval( $attachment_id ) ) {
-			return $attachment_id;
-		}
+		return new WP_Error( 'upload_error', $file_return['error'], $file_return );
 	}
 
-	return false;
+	$filename = $file_return['file'];
+	$attachment = array(
+		'post_parent'    => $parent_post,
+		'post_mime_type' => $file_return['type'],
+		'post_title'     => preg_replace( '/\.[^.]+$/', '', basename( $filename ) ),
+		'post_content'   => '',
+		'guid'           => $file_return['url'],
+	);
+
+	// Add special post status if is temproary attachment.
+	if ( false !== $temp ) {
+		$attachment['post_status'] = '_ap_temp_image';
+	}
+
+	require_once ABSPATH . 'wp-admin/includes/image.php';
+	$attachment_id = wp_insert_attachment( $attachment, $file_return['file'] );
+
+	return $attachment_id;
 }
 
 /**

@@ -389,10 +389,22 @@
 }
 .ap-upload {
 	&-item {
-		background: #f1f1f1;
-		margin-bottom: 8px;
-		padding: 6px 10px;
-		position: relative;
+		background: #ffffff;
+    margin-bottom: 10px;
+    padding: 10px 10px;
+    position: relative;
+    font-size: 12px;
+    border: solid 1px #ddd;
+		&.failed .ap-progress {
+			background-color: #E57373;
+		}
+		a {
+			float: right;
+			color: #fff;
+		}
+		&.done .ap-progress{
+			display: none;
+		}
 	}
 	&-name, a{
 		z-index: 1;
@@ -409,15 +421,27 @@
 		border-top-style: dashed;
 		margin-bottom: 15px;
 	}
+
 	.ap-progress {
 		width: 0%;
-		height: 100%;
-		background: #D1C4E9;
-		border-radius: 2px;
-		position: absolute;
-		left: 0;
-		top: 0;
-		z-index: 0;
-		transition: 0.5s 0.1s all;
+    height: 3px;
+    background: #81C784;
+    border-radius: 2px;
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    z-index: 0;
+    transition: 0.5s 0.1s all;
 	}
+}
+
+.ap-field-description.dragging:before {
+	content: "";
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(236, 236, 236, 0.85);
+	z-index: 9;
 }

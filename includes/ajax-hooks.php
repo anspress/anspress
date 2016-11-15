@@ -36,7 +36,7 @@ class AnsPress_Ajax {
 		anspress()->add_action( 'ap_ajax_convert_to_post', __CLASS__, 'convert_to_post' );
 		anspress()->add_action( 'ap_ajax_delete_attachment', __CLASS__, 'delete_attachment' );
 		anspress()->add_action( 'ap_ajax_get_all_answers', __CLASS__, 'get_all_answers' );
-		anspress()->add_action('wp_ajax_ap_image_submission', __CLASS__, 'image_submission');
+		anspress()->add_action( 'wp_ajax_ap_image_submission', __CLASS__, 'image_submission' );
 
 		anspress()->add_action( 'ap_ajax_load_comments', 'AnsPress_Comment_Hooks', 'load_comments' );
 		anspress()->add_action( 'ap_ajax_edit_comment_form', 'AnsPress_Comment_Hooks', 'edit_comment_form' );
@@ -678,10 +678,9 @@ class AnsPress_Ajax {
 	 * Upload an attachment to server.
 	 **/
 	public static function image_submission() {
-		check_ajax_referer( 'media-upload' );
 		$post_id = ap_sanitize_unslash( 'post_id', 'r' );
 
-		if ( ! ap_user_can_upload( ) ) {
+		if ( ! check_ajax_referer( 'media-upload', false, false ) || ! ap_user_can_upload( ) || empty( $_FILES['async-upload'] ) ) {
 			ap_ajax_json( [
 				'success' => false,
 				'snackbar' => [
@@ -696,14 +695,13 @@ class AnsPress_Ajax {
 			$post_id = null;
 		}
 
-		$attachment_id = media_handle_upload( 'async-upload', $post_id );
-		add_post_meta( $attachment_id, 'ap_temproary_attachment', '1' );
+		$attachment_id = ap_upload_user_file( $_FILES['async-upload'], true, $post_id );
 
 		if ( is_wp_error( $attachment_id ) ) {
 			ap_ajax_json( [
 				'success' => false,
 				'snackbar' => [
-					'message' => __( 'Failed to upload file.', 'anspress-question-answer' ),
+					'message' => $attachment_id->get_error_message(),
 				],
 			] );
 		}
@@ -712,6 +710,7 @@ class AnsPress_Ajax {
 			'success'        => true,
 			'attachment_url' => wp_get_attachment_url( $attachment_id ),
 			'attachment_id'  => $attachment_id,
+			'is_image'       => wp_attachment_is_image( $attachment_id ),
 			'delete_nonce'   => wp_create_nonce( 'delete-attachment-' . $attachment_id ),
 		) );
 	}

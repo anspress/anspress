@@ -32,17 +32,7 @@ function ap_scripts_front() {
 	do_action( 'ap_enqueue' );
 	wp_enqueue_style( 'ap-overrides', ap_get_theme_url( 'css/overrides.css' ), array( 'ap-theme-css' ), AP_VERSION );
 
-	echo '<script type="text/javascript">';
-		echo 'var ajaxurl = "'.admin_url( 'admin-ajax.php' ).'",';
-		echo 'ap_nonce 	= "'.wp_create_nonce( 'ap_ajax_nonce' ).'",';
-	  echo 'ap_max_tags = "'.ap_opt( 'max_tags' ).'";';
-	  echo 'apTemplateUrl = "'.  ap_get_theme_url( 'js-template', false, false ).'";';
-	  echo 'apQuestionID = "'. get_question_id() .'";';
-	echo '</script>';
-
-	ap_upload_js_init();
-
-	wp_localize_script('anspress-js', 'aplang', array(
+	$aplang = array(
 		'password_field_not_macthing' => __( 'Password not matching', 'anspress-question-answer' ),
 		'password_length_less' => __( 'Password length must be 6 or higher', 'anspress-question-answer' ),
 		'not_valid_email' => __( 'Not a valid email', 'anspress-question-answer' ),
@@ -84,7 +74,20 @@ function ap_scripts_front() {
 		'warning' => ap_icon( 'warning' ),
 		'success' => ap_icon( 'success' ),
 		'not_valid_response' => __( 'Something went wrong in server side, not a valid response.', 'anspress-question-answer' ),
-	));
+		'file_size_error' => sprintf( __( 'File size is bigger then %s MB', 'anspress-question-answer' ), round( ap_opt( 'max_upload_size' ) / ( 1024 * 1024 ), 2 ) ),
+		'attached_max' => __( 'You have already attached maximum numbers of allowed attachments', 'anspress-question-answer' )
+	);
+
+	echo '<script type="text/javascript">';
+		echo 'var ajaxurl = "'.admin_url( 'admin-ajax.php' ).'",';
+		echo 'ap_nonce 	= "'.wp_create_nonce( 'ap_ajax_nonce' ).'",';
+	  echo 'ap_max_tags = "'.ap_opt( 'max_tags' ).'";';
+	  echo 'apTemplateUrl = "'.  ap_get_theme_url( 'js-template', false, false ).'";';
+	  echo 'apQuestionID = "'. get_question_id() .'";';
+	  echo 'aplang = '. wp_json_encode( $aplang ) .';';
+	echo '</script>';
+
+	ap_upload_js_init();
 
 	wp_localize_script('ap-site-js', 'apoptions', array(
 			'ajaxlogin' => ap_opt( 'ajax_login' ),

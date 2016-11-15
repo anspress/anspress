@@ -5,10 +5,20 @@ if(!AnsPress) AnsPress = {};
   wpUploaderInit.container = 'ap-upload';
   wpUploaderInit.init = {
     FilesAdded: function(up, files) {
-      var self = this;
+      var self = this,
+        warningShown = false;
       $('form[name="answer_form"]').append('<input type="hidden" name="have_attachments" value="true">');
+
       plupload.each(files, function(file) {
-        $('#ap-upload').append( '<div id="' + file.id + '" class="ap-upload-item"><span class="ap-upload-name">' + file.name + ' (' + plupload.formatSize(file.size) + ')</span><a href="#">Remove</a><div class="ap-progress"></div></div>');
+        if (up.files.length > up.settings.maxfiles) {
+          if(!warningShown)
+            alert(aplang.attached_max);
+          up.removeFile(file);
+          warningShown = true;
+          return;
+        }
+
+        $('#ap-upload').append( '<div id="' + file.id + '" class="ap-upload-item"><span class="ap-upload-name">' + file.name + ' (' + plupload.formatSize(file.size) + ')</span><a href="#" class="apicon-trashcan"></a><div class="ap-progress"></div></div>');
 
         AnsPress.uploader.start();
 
@@ -46,21 +56,44 @@ if(!AnsPress) AnsPress = {};
           .attr('ap-query', JSON.stringify({ 'attachment_id' : data.attachment_id, '__nonce': data.delete_nonce }))
           .attr('data-id', data.attachment_id);
 
-        var html = '<img src="'+data.attachment_url+'" id="' + data.attachment_id + '" />';
+        $('#' + file.id).addClass('done');
 
-        if(typeof tinyMCE !== 'undefined')
-          tinyMCE.activeEditor.execCommand('mceInsertContent',false, html);
-        else
-          jQuery('.wp-editor-area').val(jQuery('.wp-editor-area').val() + html);
+        if(data.is_image){
+          var html = '<img src="'+data.attachment_url+'" id="' + data.attachment_id + '" />';
+          if(typeof tinyMCE !== 'undefined')
+            tinyMCE.activeEditor.execCommand('mceInsertContent',false, html);
+          else
+            jQuery('.wp-editor-area').val(jQuery('.wp-editor-area').val() + html);
+        }
+      }
+
+      if(!data.success){
+        AnsPress.trigger('snackbar', data);
+        $('#' + file.id).addClass('failed');
       }
     },
     FilesRemoved: function(up, file){
       plupload.each(file, function(f) {
         $('#ap-upload #'+f.id).remove();
       });
+    },
+    Error: function(up, args) {
+      if(args.code === -600){
+        AnsPress.trigger('snackbar', { success: false, snackbar : { message: aplang.file_size_error }});
+      }
     }
   };
 
   AnsPress.uploader = new plupload.Uploader(wpUploaderInit);
   AnsPress.uploader.init();
+
+  $('.ap-field-description').on('drag dragstart dragenter dragover', function(e) {
+    console.log('drag')
+    $(this).addClass('dragging');
+  });
+
+  $('.ap-field-description').on('dragend  dragleave drop', function(e) {
+    console.log('drag remove')
+    $(this).removeClass('dragging');
+  })
 })(jQuery);
