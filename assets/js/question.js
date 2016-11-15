@@ -6,113 +6,6 @@
  * @license GPL 2+
  */
 
-// For preventing global namespace pollution, keep everything in AnsPress object.
-window.AnsPress = _.extend({
-	models: {},
-	views: {},
-	collections: {},
-	loadTemplate: function(id, cb){
-		var self = this;
-
-		if(jQuery('#apTemplate-'+id).length === 0){
-			jQuery('<script id="apTemplate-'+id+'" type="text/html"></script>').appendTo('body');
-			jQuery.get(apTemplateUrl + '/' + id + ".html", function(html){
-				jQuery('#apTemplate-'+id).html(html);
-				self.trigger('templateLoaded-'+id, html);
-				if(cb) cb(html);
-			});
-		}else{
-			self.trigger('templateLoaded-'+id, jQuery('#apTemplate-'+id).html());
-		}
-	},
-	isJSONString: function(str) {
-		try {
-			return JSON.parse(str);
-		} catch (e) {
-			return false;
-		}
-	},
-	ajaxResponse: function(data){
-		data = jQuery(data);
-		if( typeof data.filter('#ap-response') === 'undefined' ){
-			console.log('Not a valid AnsPress ajax response.');
-			return {};
-		}
-		var parsedJSON = this.isJSONString(data.filter('#ap-response').html());
-		if(!parsedJSON || parsedJSON === 'undefined' || !_.isObject(parsedJSON))
-			return {};
-
-		return parsedJSON;
-	},
-	ajax: function(options){
-		var self = this;
-		options = _.defaults(options, {
-			url: ajaxurl,
-			method: 'POST',
-		});
-
-		// COnvert data to query string if object.
-		if(_.isObject(options.data))
-			options.data = jQuery.param(options.data);
-
-		options.data = 'action=ap_ajax&' + options.data;
-
-		var success = options.success;
-		delete options.success;
-		options.success = function(data){
-			var context = options.context||null;
-			var parsedData = self.ajaxResponse(data);
-			if(parsedData.snackbar){
-				AnsPress.trigger('snackbar', parsedData)
-			}
-
-			if(typeof success === 'function'){
-				data = jQuery.isEmptyObject(parsedData) ? data : parsedData;
-				success(data, context);
-			}
-		};
-
-		return jQuery.ajax(options);
-	},
-	uniqueId: function() {
-		return jQuery('.ap-uid').length;
-	},
-	showLoading: function(elm) {
-		/*hide any existing loading icon*/
-		AnsPress.hideLoading(elm);
-		var customClass = jQuery(elm).data('loadclass')||'';
-		var uid = this.uniqueId();
-		var el = jQuery('<div class="ap-loading-icon ap-uid '+customClass+'" id="apuid-' + uid + '"></div>');
-		jQuery('body').append(el);
-		var offset = jQuery(elm).offset();
-		var height = jQuery(elm).outerHeight();
-		var width = jQuery(elm).outerWidth();
-
-		el.css({
-			top: offset.top,
-			left: offset.left,
-			height: height,
-			width: width
-		});
-
-		jQuery(elm).data('loading', '#apuid-' + uid);
-		return '#apuid-' + uid;
-	},
-
-	hideLoading: function(elm) {
-		if( 'all' == elm )
-				jQuery('.ap-loading-icon').hide();
-		else
-				jQuery(jQuery(elm).data('loading')).hide();
-	}
-}, Backbone.Events);
-
-_.templateSettings = {
-	evaluate:    /<#([\s\S]+?)#>/g,
-	interpolate: /\{\{\{([\s\S]+?)\}\}\}/g,
-	escape:      /\{\{([^\}]+?)\}\}(?!\})/g,
-};
-
 (function($) {
 	AnsPress.models.Post = Backbone.Model.extend({
 		idAttribute: 'ID',
@@ -251,31 +144,38 @@ _.templateSettings = {
 				}
 			});
 		},
-
+		/**
+		 * Handles answer form submission.
+		 */
 		answerForm: function(e){
 			var self = this;
 			AnsPress.showLoading($(e.target).find('.ap-btn-submit'));
+
+			// Clear previous errors
 			$(e.target).find('.have-error').removeClass('have-error');
 			$(e.target).find('.error').remove();
 
+			// Ajax request
 			AnsPress.ajax({
 				data: $(e.target).serialize(),
 				success: function(data){
 					AnsPress.hideLoading($(e.target).find('.ap-btn-submit'));
+					// Clear upload files
+					if(AnsPress.uploader) AnsPress.uploader.splice();
+
 					if(data.success){
-						if(typeof data.allow_upload !== 'undefined'){
-
-						}
-
+						// Clear editor contents
 						$('#description').val('');
 						if (typeof tinyMCE !== 'undefined' && data.success)
 							tinyMCE.activeEditor.setContent('');
 
+						// Append anwer to the list.
 						$('#answers').append($(data['html']).hide());
 						$(data.div_id).slideDown(500);
 						self.model.add({'ID': data.ID});
 					}
 
+					// If form have errors then show it
 					if(data.errors){
 						_.each(data.errors, function(err, i){
 							$('.ap-field-'+i).addClass('have-error')
@@ -289,7 +189,6 @@ _.templateSettings = {
 			});
 			return false;
 		}
-
 	});
 
 	AnsPress.views.Snackbar = Backbone.View.extend({

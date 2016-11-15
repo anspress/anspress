@@ -170,11 +170,11 @@ function ap_ask_form( $editing = false ) {
 		'multipart'         => true,
 		'submit_button'     => ($editing ? __( 'Update question', 'anspress-question-answer' ) : __( 'Post question', 'anspress-question-answer' )),
 		'fields'            => ap_get_ask_form_fields( $post_id ),
+		'attr'							=> ' ap="questionForm"',
 	);
 
 	$form = new AnsPress_Form( $args );
-	echo $form->get_form();
-	echo ap_post_upload_hidden_form();
+	echo $form->get_form(); // xss okay.
 }
 
 /**
@@ -233,28 +233,6 @@ function ap_remove_stop_words_post_name( $str ) {
 
 	// If empty then return original without stripping stop words.
 	return sanitize_title( $str );
-}
-
-/**
- * Attach uploads to post and remove orphan attachments
- * done by user.
- *
- * @param  integer $post_id        Post ID.
- * @param  array   $attachment_ids Attachment IDs.
- * @param  integer $user_id        User ID.
- */
-function ap_attach_post_uploads( $post_id, $attachment_ids, $user_id ) {
-	if ( ! empty( $attachment_ids ) ) {
-		foreach ( (array) $attachment_ids as $id ) {
-			$attach = ap_get_post( $id );
-
-			if ( $attach && 'attachment' == $attach->post_type && $user_id == $attach->post_author ) {
-				ap_set_attachment_post_parent( $attach->ID, $post_id );
-			}
-		}
-		// Update attachment ids in qameta.
-		ap_update_post_attach_ids( $post_id );
-	}
 }
 
 /**
@@ -323,12 +301,6 @@ function ap_save_question( $args, $wp_error = false ) {
 	}
 
 	if ( $post_id ) {
-		// Check if attachment ids exists.
-		if ( true === $args['attach_uploads'] ) {
-			$attachment_ids = $_POST['attachment_ids'];
-			ap_attach_post_uploads( $post_id, $attachment_ids, $args['post_author'] );
-		}
-
 		$qameta_args = [ 'last_updated' => current_time( 'mysql' ) ];
 
 		if ( $args['anonymous_name'] ) {

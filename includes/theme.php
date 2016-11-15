@@ -724,29 +724,29 @@ function ap_assets( ) {
 	$dir = ap_env_dev() ? 'js' : 'min';
 	$min = ap_env_dev() ? '' : '.min';
 
+
 	$assets = array(
 		'js' => array(
-			'peity-js' => array( 'src' => ap_get_theme_url( 'js/jquery.peity.min.js' ), 'dep' => array( 'jquery' ) ),
-			'ap-watch-js' => array( 'src' => ap_get_theme_url( 'js/watch.min.js' ), 'dep' => array( 'jquery' ) ),
+			'common' => [ 'dep' => [ 'jquery', 'jquery-form', 'underscore', 'backbone' ], 'footer' => true ],
+			'theme' => [ 'dep' => [ 'jquery', 'anspress-common' ], 'footer' => true, 'theme' => true ],
 		),
-
 		'css' => array(
-			'ap-theme-css' => array( 'src' => ap_get_theme_url( 'css/main.css' ) ),
-			'ap-fonts' => array( 'src' => ap_get_theme_url( 'fonts/style.css' ) ),
+			'main' => array( 'theme' => true ),
+			'fonts' => array( 'theme' => true ),
 		),
 	);
 
-	if ( ap_env_dev() ) {
-		$assets['js']['anspress-functions'] = array( 'src' => ANSPRESS_URL.'assets/js/ap-functions.js', 'dep' => array( 'jquery', 'jquery-form' ) );
-		$assets['js']['anspress-js'] = array( 'src' => ANSPRESS_URL.'assets/js/anspress_site.js', 'dep' => array( 'jquery', 'jquery-form', 'underscore', 'backbone' ), 'footer' => true );
-		$assets['js']['ap-theme-js'] = array( 'src' => ap_get_theme_url( 'js/ap.js' ), 'dep' => array( 'jquery', 'anspress-js' ), 'footer' => true );
-	} else {
-		$assets['js']['anspress-js'] = array( 'src' => ANSPRESS_URL.'assets/min/anspress.min.js', 'dep' => array( 'jquery', 'jquery-form' ), 'footer' => true );
-		$assets['js']['ap-theme-js'] = array( 'src' => ap_get_theme_url( 'min/anspress-theme.min.js' ), 'dep' => array( 'jquery', 'anspress-js' ), 'footer' => true );
+	if ( is_ask() ) {
+		$assets['js']['ask'] = [ 'dep' => [ 'anspress-common' ] , 'footer' => true ];
+		$assets['js']['upload'] = [ 'dep' => [ 'plupload', 'anspress-common' ] , 'footer' => true ];
+	}
+
+	if ( is_question() ) {
+		$assets['js']['question'] = [ 'dep' => [ 'anspress-common' ], 'footer' => true ];
 	}
 
 	if ( is_rtl() ) {
-		$assets['css']['ap-rtl'] = array( 'src' => ap_get_theme_url( 'css/RTL.css' ) );
+		$assets['css']['rtl'] = array( 'theme' => true );
 	}
 
 	$assets['js'] = apply_filters( 'ap_assets_js', $assets['js'] );
@@ -762,19 +762,63 @@ function ap_assets( ) {
 function ap_enqueue_scripts() {
 	$assets = ap_assets();
 
-	if ( isset( $assets['js'] ) ) {
-		foreach ( $assets['js'] as $k => $js ) {
-			$dep = isset( $js['dep'] ) ? $js['dep'] : array();
-			$footer = isset( $js['footer'] ) ? $js['footer'] : false;
-			wp_enqueue_script( $k, $js['src'], $dep, AP_VERSION, $footer );
+	foreach ( (array) $assets['js'] as $k => $js ) {
+		$path = ! empty( $js['theme'] ) ? ap_get_theme_url( 'js', false, false ) : ANSPRESS_URL . 'assets/js';
+
+		if ( ap_env_dev() ) {
+			$src = $path . '/' . $k . '.js';
+		} else {
+			$src = $path . '/min/' . $k . '.min.js';
 		}
+
+		$dep = isset( $js['dep'] ) ? $js['dep'] : array();
+		$footer = isset( $js['footer'] ) ? $js['footer'] : false;
+		wp_enqueue_script( 'anspress-' . $k, $src, $dep, AP_VERSION, $footer );
 	}
 
-	if ( isset( $assets['css'] ) ) {
-		foreach ( $assets['css'] as $k => $css ) {
-			$dep = isset( $css['dep'] ) ? $css['dep'] : array();
-			wp_enqueue_style( $k, $css['src'], $dep, AP_VERSION );
+	foreach ( (array) $assets['css'] as $k => $css ) {
+		$path = ! empty( $css['theme'] ) ? ap_get_theme_url( 'css', false, false ) : ANSPRESS_URL . 'assets/css';
+
+		if ( ap_env_dev() ) {
+			$src = $path . '/' . $k . '.css';
+		} else {
+			$src = $path . '/min/' . $k . '.min.css';
 		}
+
+		$dep = isset( $css['dep'] ) ? $css['dep'] : array();
+		wp_enqueue_style( 'anspress-' . $k, $src, $dep, AP_VERSION );
+	}
+}
+
+/**
+ * Initialize AnsPress uploader settings.
+ **/
+function ap_upload_js_init() {
+	if ( ap_user_can_upload( ) ) {
+		$plupload_init = array(
+			'runtimes'            => 'html5,flash,silverlight,html4',
+			'browse_button'       => 'plupload-browse-button',
+			'container'           => 'plupload-upload-ui',
+			'drop_element'        => 'drag-drop-area',
+			'file_data_name'      => 'async-upload',
+			'url'                 => admin_url( 'admin-ajax.php' ),
+			'flash_swf_url'       => includes_url( 'js/plupload/plupload.flash.swf' ),
+			'silverlight_xap_url' => includes_url( 'js/plupload/plupload.silverlight.xap' ),
+			'filters' => array(
+				'mime_types' => [
+					[ 'title' => 'Image files', 'extensions' => 'jpg,gif,png' ],
+					[ 'title' => 'Zip files', 'extensions' => 'zip' ],
+				],
+				'max_file_size'   => wp_max_upload_size() . 'b',
+				'prevent_duplicates' => true,
+			),
+			'multipart_params' => [
+				'_wpnonce' => wp_create_nonce( 'media-upload' ),
+				'action' => 'ap_image_submission',
+				'post_id' => '1058',
+			],
+		);
+		echo '<script type="text/javascript"> wpUploaderInit =' . wp_json_encode( $plupload_init ) . ';</script>';
 	}
 }
 

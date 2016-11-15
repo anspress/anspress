@@ -6,18 +6,13 @@
 			makepot: {
 				target: {
 					options: {
-						//cwd: '',                          // Directory of files to internationalize.
 						domainPath: '/languages',                   // Where to save the POT file.
 						exclude: ['.git/.*', '.svn/.*', '.node_modules/.*', '.vendor/.*'],
-						//include: [],                      // List of files or directories to include.
-						mainFile: 'anspress-question-answer.php',                     // Main project file.
-						//potComments: '',                  // The copyright at the beginning of the POT file.
-						//potFilename: '',                  // Name of the POT file.
+						mainFile: 'anspress-question-answer.php',
 						potHeaders: {
 								poedit: true,                 // Includes common Poedit headers.
 								'x-poedit-keywordslist': true // Include a list of all possible gettext functions.
 						},                                // Headers to add to the generated POT file.
-						//processPot: null,                 // A callback function for manipulating the POT file.
 						type: 'wp-plugin',                // Type of project (wp-plugin or wp-theme).
 						updateTimestamp: true             // Whether the POT-Creation-Date should be updated without other changes.
 					}
@@ -41,7 +36,6 @@
 							}
 					}
 			},
-
 			phpdocumentor: {
 				dist: {
 					options: {
@@ -101,11 +95,13 @@
 			uglify: {
 				my_target: {
 					files: {
-						'assets/min/admin-app.min.js': ['assets/js/admin-app.js'],
-						'assets/min/anspress_site.min.js': ['assets/js/anspress_site.js'],
-						'assets/min/ap-functions.min.js': ['assets/js/ap-functions.js'],
-						'assets/min/ap-admin.min.js': ['assets/js/ap-admin.js'],
-						'theme/default/min/ap.min.js': ['theme/default/js/ap.js']
+						'assets/js/min/admin-app.min.js': ['assets/js/admin-app.js'],
+						'assets/js/min/question.min.js': ['assets/js/question.js'],
+						'assets/js/min/common.min.js': ['assets/js/common.js'],
+						'assets/js/min/upload.min.js': ['assets/js/upload.js'],
+						'assets/js/min/ap-admin.min.js': ['assets/js/ap-admin.js'],
+						'assets/js/min/ask.min.js': ['assets/js/ask.js'],
+						'theme/default/js/min/theme.min.js': ['theme/default/js/theme.js']
 					}
 				}
 			},
@@ -123,7 +119,7 @@
 			},
 			all: ['**/*.php']
 		},
-		concat: {
+		/*concat: {
 			options: {
 				separator: ';',
 			},
@@ -135,20 +131,35 @@
 				src: ['theme/default/js/initial.min.js', 'theme/default/js/jquery.peity.min.js', 'theme/default/js/jquery.scrollbar.min.js', 'theme/default/min/ap.min.js'],
 				dest: 'theme/default/min/anspress-theme.min.js',
 			},
+		},*/
+
+		cssmin: {
+			options: {
+				shorthandCompacting: false,
+				roundingPrecision: -1,
+				rebase: true
+			},
+			target: {
+				files: {
+					'theme/default/css/min/main.min.css': 'theme/default/css/main.css',
+					'theme/default/css/min/RTL.min.css': 'theme/default/css/RTL.css',
+					'theme/default/css/min/fonts.min.css': 'theme/default/css/fonts.css'
+				}
+			}
 		},
 
 		watch: {
 			sass: {
 				files: ['**/*.scss'],
-				tasks: ['sass'],
+				tasks: ['sass', 'cssmin'],
 			},
 			uglify: {
 				files: ['theme/default/js/*.js','assets/js/*.js'],
-				tasks: ['uglify', 'concat'],
+				tasks: ['uglify'],
 			}
 		},
 	});
 
-	grunt.registerTask( 'build', [ 'phplint', 'makepot', 'version', 'sass', 'uglify', 'concat', 'compress' ]);
+	grunt.registerTask( 'build', [ 'phplint', 'makepot', 'version', 'sass', 'uglify', 'compress' ]);
 
 }

@@ -14,10 +14,6 @@
             $(this).closest('.ap-dropdown').toggleClass('open');
         });
 
-        $('.ap-tip').aptip();
-
-        $('#ap-conversation-scroll').scrollTop(0);
-
         $('textarea.autogrow, textarea#post_content').autogrow({
             onInitialize: true
         });
@@ -36,19 +32,6 @@
             $(this).css(width, 'auto');
         });
 
-        $('body').delegate('.ap-notify-item', 'click', function(e) {
-            e.preventDefault();
-            $(this).hide();
-        });
-
-        if($('[data-action="ap_chart"]').length > 0){
-            $('[data-action="ap_chart"]').each(function(index, el) {
-                var type = $(this).data('type');
-                $(this).peity(type);
-            });
-
-        }
-
         $('.ap-label-form-item').click(function(e) {
             e.preventDefault();
             $(this).toggleClass('active');
@@ -56,28 +39,7 @@
             hidden.val(hidden.val() == '' ? $(this).data('label') : '');
         });
 
-        apLoadingDot();
-
-        $('.ap-sidetoggle').click(function(){
-            $('#ap-notifiside').toggle();
-            apNotiScrollHeight();
-            ApSite.notificationAsRead();
-        });
-
     });
-
-    function apNotiScrollHeight(){
-        $('#ap-notifiside .ap-notification-scroll.scroll-wrapper').css({ 'height':  $('.ap-notification-items').outerHeight() - $('.ap-notification-head').outerHeight() })
-    }
-
-    function ap_chk_activity_scroll(e) {
-        if (($('#ap-conversation-scroll .ap-no-more-message').length == 0)) {
-            var elem = $(e.currentTarget);
-            if (elem[0].scrollHeight - elem.scrollTop() == elem.outerHeight()) {
-                APjs.site.loadMoreConversations(elem);
-            }
-        }
-    }
 
 })(jQuery);
 

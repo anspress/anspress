@@ -196,9 +196,9 @@ class AnsPress_Process_Form
 
 		if ( $post_id ) {
 			ap_ajax_json( array(
-				'action' 		=> 'new_question',
-				'message'		=> 'question_submitted',
-				'do'			=> array( 'redirect' => get_permalink( $post_id ) ),
+				'action'   => 'new_question',
+				'message'  => 'question_submitted',
+				'redirect' => get_permalink( $post_id ),
 			) );
 		}
 
@@ -260,9 +260,6 @@ class AnsPress_Process_Form
 				'do'				=> array( 'redirect' => $this->redirect ),
 			) );
 		}
-
-		// Remove all unused atthements by user.
-		ap_clear_unused_attachments( $user_id );
 	}
 
 	/**

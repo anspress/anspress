@@ -13,8 +13,8 @@
 	<?php if (ap_user_can_ask()): ?>
 		<div id="answer-form-c">
 			<div class="ap-avatar ap-pull-left">
-				<a href="<?php echo ap_user_link(get_current_user_id()); ?>"<?php ap_hover_card_attributes(get_current_user_id()); ?>>
-					<?php echo get_avatar(get_current_user_id(), ap_opt('avatar_size_qquestion')); ?>
+				<a href="<?php echo ap_user_link(get_current_user_id()); ?>"<?php ap_hover_card_attributes( get_current_user_id() ); ?>>
+					<?php echo get_avatar( get_current_user_id(), ap_opt('avatar_size_qquestion') ); ?>
 				</a>
 			</div>
 			<div class="ap-a-cells clearfix">

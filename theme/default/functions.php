@@ -40,6 +40,8 @@ function ap_scripts_front() {
 	  echo 'apQuestionID = "'. get_question_id() .'";';
 	echo '</script>';
 
+	ap_upload_js_init();
+
 	wp_localize_script('anspress-js', 'aplang', array(
 		'password_field_not_macthing' => __( 'Password not matching', 'anspress-question-answer' ),
 		'password_length_less' => __( 'Password length must be 6 or higher', 'anspress-question-answer' ),

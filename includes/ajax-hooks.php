@@ -558,32 +558,8 @@ class AnsPress_Ajax {
 		}
 
 		if ( ap_user_can_upload( ) ) {
-			$plupload_init = array(
-				'runtimes'            => 'html5,flash,silverlight,html4',
-				'browse_button'       => 'plupload-browse-button',
-				'container'           => 'plupload-upload-ui',
-				'drop_element'        => 'drag-drop-area',
-				'file_data_name'      => 'async-upload',
-				'url'                 => admin_url( 'admin-ajax.php' ),
-				'flash_swf_url'       => includes_url( 'js/plupload/plupload.flash.swf' ),
-				'silverlight_xap_url' => includes_url( 'js/plupload/plupload.silverlight.xap' ),
-				'filters' => array(
-					'mime_types' => [
-						[ 'title' => 'Image files', 'extensions' => 'jpg,gif,png' ],
-						[ 'title' => 'Zip files', 'extensions' => 'zip' ],
-					],
-					'max_file_size'   => wp_max_upload_size() . 'b',
-					'prevent_duplicates' => true,
-				),
-				'multipart_params' => [
-					'_wpnonce' => wp_create_nonce( 'media-upload' ),
-					'action' => 'ap_image_submission',
-					'post_id' => '1058',
-				],
-			);
-
+			ap_upload_js_init();
 			wp_enqueue_script( 'ap-upload', ANSPRESS_URL . 'assets/js/upload.js', [ 'plupload' ] );
-			echo '<script type="text/javascript"> wpUploaderInit =' . wp_json_encode( $plupload_init ) . ';</script>';
 		}
 
 

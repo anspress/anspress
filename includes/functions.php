@@ -1007,23 +1007,6 @@ function ap_post_upload_form( $post_id = false ) {
 }
 
 /**
- * Upload form hidden form.
- *
- * @return string
- */
-function ap_post_upload_hidden_form() {
-	if ( ap_opt( 'allow_upload_image' ) ) {
-		return '<form id="hidden-post-upload" enctype="multipart/form-data" method="POST" style="display:none">
-            <input type="file" name="post_upload_image" class="ap-upload-input">
-            <input type="hidden" name="ap_ajax_action" value="upload_post_image" />
-            <input type="hidden" name="ap_form_action" value="upload_post_image" />
-			<input type="hidden" name="__nonce" value="' . wp_create_nonce( 'upload_image_' . get_current_user_id() ) . '" />
-            <input type="hidden" name="action" value="ap_ajax" />
-		</form>';
-	}
-}
-
-/**
  * Return allowed mime types.
  *
  * @return array

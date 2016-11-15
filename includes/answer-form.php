@@ -172,10 +172,6 @@ function ap_answer_form( $question_id, $editing = false ) {
 	anspress()->form = new AnsPress_Form( $args );
 
 	echo anspress()->form->get_form(); // xss okay.
-
-	// Post image upload form.
-	echo ap_post_upload_hidden_form();
-	echo '<div id="ap-upload-container" class="ap-upload"></div>';
 }
 
 /**
@@ -184,17 +180,19 @@ function ap_answer_form( $question_id, $editing = false ) {
  * @return void
  * @since 2.0.1
  */
-function ap_edit_answer_form($question_id) {
+function ap_edit_answer_form( $question_id ) {
 	ap_answer_form( $question_id, true );
 }
 
 /**
  * Insert and update answer.
+ *
+ * @param  array $question_id Question ID.
  * @param  array $args     Answer arguments.
  * @param  bool  $wp_error Return wp error.
  * @return bool|object|int
  */
-function ap_save_answer($question_id, $args, $wp_error = false) {
+function ap_save_answer( $question_id, $args, $wp_error = false) {
 	$question = ap_get_post( $question_id );
 	$status = 'publish';
 	if ( isset( $args['is_private'] ) && $args['is_private'] ) {
@@ -202,13 +200,12 @@ function ap_save_answer($question_id, $args, $wp_error = false) {
 	}
 
 	$args = wp_parse_args( $args, array(
-				'post_title' 		=> $question->post_title,
-				'post_author' 		=> get_current_user_id(),
-				'post_status' 		=> $status,
-				'post_name' 		=> '',
-				'comment_status' 	=> 'open',
-				'attach_uploads' 	=> false,
-			) );
+		'post_title' 		=> $question->post_title,
+		'post_author' 		=> get_current_user_id(),
+		'post_status' 		=> $status,
+		'post_name' 		=> '',
+		'comment_status' 	=> 'open',
+	) );
 
 	/**
 	 * Filter question description before saving.
@@ -243,12 +240,6 @@ function ap_save_answer($question_id, $args, $wp_error = false) {
 	}
 
 	if ( $post_id ) {
-		// Check if attachment ids exists.
-		if ( true === $args['attach_uploads'] ) {
-			$attachment_ids = ap_sanitize_unslash( 'attachment_ids', 'p' );
-			ap_attach_post_uploads( $post_id, $attachment_ids, $args['post_author'] );
-		}
-
 		$qameta_args = [ 'last_updated' => current_time( 'mysql' ) ];
 
 		if ( isset( $args['anonymous_name'] ) ) {
