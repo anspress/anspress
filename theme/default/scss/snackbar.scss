@@ -7,7 +7,6 @@
           transition-timing-function: ease;
   font-size: 14px;
   min-height: 14px;
-  background-color: #323232;
   position: fixed;
   display: -webkit-box;
   display: -webkit-flex;
@@ -21,13 +20,15 @@
   -webkit-align-items: center;
       -ms-flex-align: center;
           align-items: center;
-  color: #d32F2f;
+  background-color: #d32F2f;
+  color: #fff;
   line-height: 22px;
   padding: 18px 24px;
   bottom: 0px;
   opacity: 0;
   &.success{
     color: #fff;
+    background-color: #323232;
   }
 }
 .snackbar-show .ap-snackbar{

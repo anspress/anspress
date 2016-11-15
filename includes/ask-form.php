@@ -41,7 +41,6 @@ function ap_get_ask_form_fields( $post_id = false ) {
 			'label' => __( 'Title', 'anspress-question-answer' ),
 			'type'  => 'text',
 			'placeholder'  => __( 'Question in one sentence', 'anspress-question-answer' ),
-			'desc'  => __( 'Write a meaningful title for the question.', 'anspress-question-answer' ),
 			'value' => ( $editing ? $editing_post->post_title : ap_isset_post_value( 'title', '' ) ),
 			'order' => 5,
 			'attr' => 'data-action="suggest_similar_questions" data-loadclass="q-title"',
@@ -59,7 +58,6 @@ function ap_get_ask_form_fields( $post_id = false ) {
 			'name' => 'description',
 			'label' => __( 'Description', 'anspress-question-answer' ),
 			'type'  => 'editor',
-			'desc'  => __( 'Write description for the question.', 'anspress-question-answer' ),
 			'value' => ( $editing ? $editing_post->post_content : ap_isset_post_value( 'description', '' )  ),
 			'settings' => ap_tinymce_editor_settings( 'question' ),
 			'sanitize' => array( 'sanitize_description' ),
@@ -141,6 +139,13 @@ function ap_get_ask_form_fields( $post_id = false ) {
 			'sanitize' => array( 'only_int' ),
 		);
 	}
+
+	$fields[] = array(
+		'name'  => 'ap_ajax_action',
+		'type'  => 'hidden',
+		'value' => 'ask_form',
+		'order' => 20,
+	);
 
 	/**
 	 * FILTER: ap_ask_form_fields

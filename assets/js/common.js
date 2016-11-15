@@ -215,4 +215,52 @@ _.templateSettings = {
 		return that;
 	};
 
+	AnsPress.views.Snackbar = Backbone.View.extend({
+		id: 'ap-snackbar',
+		template: '<div class="ap-snackbar<# if(success){ #> success<# } #>">{{message}}</div>',
+		hover: false,
+		initialize: function(){
+			AnsPress.on('snackbar', this.show, this);
+		},
+		events: {
+			'mouseover': 'toggleHover',
+			'mouseout': 'toggleHover',
+		},
+		show: function(data){
+			var self = this;
+			this.data = data.snackbar;
+			this.data.success = data.success;
+			this.$el.removeClass('snackbar-show');
+			this.render();
+			setTimeout(function(){
+				self.$el.addClass('snackbar-show');
+			}, 0);
+			this.hide();
+		},
+		toggleHover:function(){
+			clearTimeout(this.hoveTimeOut);
+			this.hover = !this.hover;
+			if(!this.hover)
+				this.hide();
+		},
+		hide: function(){
+			var self = this;
+			if(!self.hover)
+				this.hoveTimeOut = setTimeout(function(){
+					self.$el.removeClass('snackbar-show');
+				}, 2000);
+		},
+		render: function(){
+			if(this.data){
+				var t = _.template(this.template);
+				this.$el.html(t(this.data));
+			}
+			return this;
+		}
+	});
+
+	var apSnackbarView = new AnsPress.views.Snackbar();
+	$('body').append(apSnackbarView.render().$el);
+
+
 })(jQuery);

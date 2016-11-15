@@ -2026,35 +2026,30 @@ body ul ul#ap-user-menu-link li > a .count {
   font-size: 13px;
   margin-bottom: 0;
 }
-#anspress .ap-field-description.have-error + .ap-field-ap_upload .ap-post-upload-form {
+#anspress .ap-field-description.have-error + .ap-field-ap_upload .ap-upload-anchor {
   border-color: #F44336 !important;
 }
 #anspress .ap-form-fields {
   position: relative;
   margin-bottom: 15px;
 }
-#anspress .ap-form-fields.ap-have-error .ap-form-control, #anspress .ap-form-fields.ap-have-error .ap-editor, #anspress .ap-form-fields.ap-have-error .bootstrap-tagsinput {
-  border: solid 1px #F44336;
-  background: #fef3f0;
-}
-#anspress .ap-form-fields.ap-have-error .ap-editor {
-  padding: 10px;
-}
-#anspress .ap-form-fields.ap-have-error.being-edited .ap-form-control {
-  border-color: #F4AC20;
-  background: #fff;
-}
-#anspress .ap-form-fields.ap-have-error.being-edited .ap-form-error-message {
-  background: #F4AC20;
-}
 #anspress .ap-form-fields.have-error {
   border-color: #F44336 !important;
 }
+#anspress .ap-form-fields.have-error .ap-form-control {
+  border-color: #F44336 !important;
+}
+#anspress .ap-form-fields.have-error.ap-field-description .ap-form-fields-in {
+  border-color: #F44336 !important;
+}
 #anspress .ap-form-fields .error {
-  background: #FFEBEE;
+  background: #F44336;
   margin-bottom: 20px;
-  display: block;
-  padding: 10px;
+  display: table;
+  padding: 2px 6px;
+  font-size: 12px;
+  color: #fff;
+  margin-top: -10px;
 }
 #anspress .ap-form-fields-wrap {
   border-bottom: 1px solid #f7f7f7;
@@ -2115,7 +2110,7 @@ body ul ul#ap-user-menu-link li > a .count {
   background: #11a7db;
   cursor: pointer;
 }
-#anspress #answer_form .ap-editor-answer-label {
+#anspress .ap-editor-answer-label {
   color: #888;
   display: block !important;
   padding: 5px 10px;
@@ -2123,11 +2118,14 @@ body ul ul#ap-user-menu-link li > a .count {
 #anspress #answer_form .ap-field-description {
   border: solid 1px #ddd;
 }
-#anspress #answer_form .mce-toolbar-grp {
+#anspress #ask_form .ap-field-description .ap-form-fields-in {
+  border: solid 1px #ddd;
+}
+#anspress .mce-toolbar-grp {
   background: none;
   padding: 4px;
 }
-#anspress #answer_form .mce-edit-area {
+#anspress .mce-edit-area {
   padding: 0 10px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08) inset;
   background: #fcfcfc;
@@ -3732,7 +3730,6 @@ body ul ul#ap-user-menu-link li > a .count {
   transition-timing-function: ease;
   font-size: 14px;
   min-height: 14px;
-  background-color: #323232;
   position: fixed;
   display: -webkit-box;
   display: -webkit-flex;
@@ -3746,7 +3743,8 @@ body ul ul#ap-user-menu-link li > a .count {
   -webkit-align-items: center;
   -ms-flex-align: center;
   align-items: center;
-  color: #d32F2f;
+  background-color: #d32F2f;
+  color: #fff;
   line-height: 22px;
   padding: 18px 24px;
   bottom: 0px;
@@ -3754,6 +3752,7 @@ body ul ul#ap-user-menu-link li > a .count {
 }
 .ap-snackbar.success {
   color: #fff;
+  background-color: #323232;
 }
 
 .snackbar-show .ap-snackbar {

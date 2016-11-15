@@ -612,7 +612,7 @@ function ap_responce_message( $id, $only_message = false ) {
 		'comment_success'  => array( 'type' => 'success', 'message' => __( 'Comment successfully posted.', 'anspress-question-answer' ) ),
 		'comment_edit_success'  => array( 'type' => 'success', 'message' => __( 'Comment updated successfully.', 'anspress-question-answer' ) ),
 		'comment_delete_success' => array( 'type' => 'success', 'message' => __( 'Comment deleted successfully.', 'anspress-question-answer' ) ),
-		'question_submitted'            => array( 'type' => 'success', 'message' => __( 'Question submitted successfully', 'anspress-question-answer' ) ),
+
 		'question_updated'              => array( 'type' => 'success', 'message' => __( 'Question updated successfully', 'anspress-question-answer' ) ),
 		'answer_submitted'              => array( 'type' => 'success', 'message' => __( 'Answer submitted successfully', 'anspress-question-answer' ) ),
 		'answer_updated'                => array( 'type' => 'success', 'message' => __( 'Answer updated successfully', 'anspress-question-answer' ) ),

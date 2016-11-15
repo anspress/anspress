@@ -48,7 +48,8 @@
 
 			self = this;
 			var type = $(e.target).is('.vote-up') ? 'vote_up' : 'vote_down';
-			var vote = _.clone(self.model.get('vote'));
+			var originalValue = _.clone(self.model.get('vote'));
+			var vote = _.clone(originalValue);
 
 			if(type === 'vote_up')
 				vote.net = ( vote.active === 'vote_up' ? vote.net - 1 : vote.net + 1);
@@ -63,8 +64,10 @@
 			AnsPress.ajax({
 				data: q,
 				success: function(data) {
-					if (_.isObject(data.voteData))
+					if (data.success && _.isObject(data.voteData))
 						self.model.set('vote', data.voteData);
+					else
+						self.model.set('vote', originalValue); // Restore original value on fail
 				}
 			})
 		},
@@ -73,8 +76,7 @@
 			this.$el.find('[ap="votes_net"]').text(this.model.get('vote').net);
 			_.each(['up', 'down'], function(e){
 				self.$el.find('.vote-'+e).removeClass('voted disable').addClass(self.voteClass('vote_'+e));
-			})
-
+			});
 		},
 		voteClass: function(type){
 			type = type||'vote_up';
@@ -191,49 +193,7 @@
 		}
 	});
 
-	AnsPress.views.Snackbar = Backbone.View.extend({
-		id: 'ap-snackbar',
-		template: '<div class="ap-snackbar<# if(success){ #> success<# } #>">{{message}}</div>',
-		hover: false,
-		initialize: function(){
-			AnsPress.on('snackbar', this.show, this);
-		},
-		events: {
-			'mouseover': 'toggleHover',
-			'mouseout': 'toggleHover',
-		},
-		show: function(data){
-			var self = this;
-			this.data = data.snackbar;
-			this.data.success = data.success;
-			this.$el.removeClass('snackbar-show');
-			this.render();
-			setTimeout(function(){
-				self.$el.addClass('snackbar-show');
-			}, 0);
-			this.hide();
-		},
-		toggleHover:function(){
-			clearTimeout(this.hoveTimeOut);
-			this.hover = !this.hover;
-			if(!this.hover)
-				this.hide();
-		},
-		hide: function(){
-			var self = this;
-			if(!self.hover)
-				this.hoveTimeOut = setTimeout(function(){
-					self.$el.removeClass('snackbar-show');
-				}, 2000);
-		},
-		render: function(){
-			if(this.data){
-				var t = _.template(this.template);
-				this.$el.html(t(this.data));
-			}
-			return this;
-		}
-	});
+
 })(jQuery);
 
 var apposts = new AnsPress.collections.Posts();
@@ -241,8 +201,6 @@ var apposts = new AnsPress.collections.Posts();
 var singleQuestionView = new AnsPress.views.SingleQuestion({ model: apposts, el: '#ap-single' });
 singleQuestionView.render();
 
-var apSnackbarView = new AnsPress.views.Snackbar();
-jQuery('body').append(apSnackbarView.render().$el);
 
 
 

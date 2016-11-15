@@ -12,11 +12,10 @@
 		 */
 		questionForm: function(e){
 			var self = this;
-			AnsPress.showLoading($(e.target).find('.ap-btn-submit'));
-
 			// Clear previous errors
 			$(e.target).find('.have-error').removeClass('have-error');
 			$(e.target).find('.error').remove();
+      AnsPress.showLoading($(e.target).find('.ap-btn-submit'));
 
 			// Ajax request
 			AnsPress.ajax({

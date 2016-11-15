@@ -55,8 +55,8 @@ class AnsPress_Process_Form
 	 * @since 2.0.1
 	 */
 	public function ap_ajax() {
-		if ( ! isset( $_REQUEST['ap_ajax_action'] ) ) {
-			return;
+		if ( ! isset( $_REQUEST[ 'ap_ajax_action'] ) ) {
+			wp_die();
 		}
 
 		$this->request = $_REQUEST;
@@ -73,7 +73,7 @@ class AnsPress_Process_Form
 	    	 * Action for processing Ajax requests
 	    	 * @since 2.0.1
 	    	 */
-	    	do_action( 'ap_ajax_'.$action );
+	    	do_action( 'ap_ajax_' . $action );
 		}
 
 		// If reached to this point then there is something wrong.
@@ -97,30 +97,26 @@ class AnsPress_Process_Form
 				$this->process_answer_form();
 				break;
 
-			/*case 'upload_post_image':
-				$this->upload_post_image();
-				break;*/
-
 			default:
 				/**
 				 * ACTION: ap_process_form_[action]
 				 * process form
 				 * @since 2.0.1
 				 */
-				do_action( 'ap_process_form_'.$action );
+				do_action( 'ap_process_form_' . $action );
 				break;
 		}
 	}
 
 	/**
-	 * Process ask form
-	 * @return void
+	 * Process ask form.
+	 *
 	 * @since 2.0.1
 	 */
 	public function process_ask_form() {
 		// Do security check, if fails then return.
-		if ( ! ap_user_can_ask() || ! isset( $_POST['__nonce'] ) || ! wp_verify_nonce( $_POST['__nonce'], 'ask_form' ) ) {
-			ap_ajax_json('no_permission' );
+		if ( check_ajax_referer( 'ask_form', false, false ) || ! ap_user_can_ask() ) {
+			ap_ajax_json( 'no_permission' );
 		}
 
 		// Bail if capatcha verification fails.
@@ -152,7 +148,7 @@ class AnsPress_Process_Form
 		}
 
 		// Check if duplicate.
-		if( false !== ap_find_duplicate_post( $fields['description'], 'question' ) ){
+		if ( false !== ap_find_duplicate_post( $fields['description'], 'question' ) ) {
 			ap_ajax_json( array(
 				'form' 			=> $_POST['ap_form_action'],
 				'message_type' 	=> 'error',
@@ -196,14 +192,14 @@ class AnsPress_Process_Form
 
 		if ( $post_id ) {
 			ap_ajax_json( array(
+				'success'  => true,
 				'action'   => 'new_question',
-				'message'  => 'question_submitted',
 				'redirect' => get_permalink( $post_id ),
+				'snackbar' => [
+					'message' => __( 'Question posted successfully. Redirecting to question', 'anspress-question-answer' ),
+				],
 			) );
 		}
-
-		// Remove all unused atthements by user.
-		ap_clear_unused_attachments( $user_id );
 	}
 
 	/**
@@ -396,26 +392,6 @@ class AnsPress_Process_Form
 				'do'			=> array( 'redirect' => get_permalink( $answer->post_parent ) ),
 			));
 		}
-	}
-
-	public function process_image_uploads($post_id, $user_id) {
-		$attachment_ids = $_POST['attachment_ids'];
-
-		// If attchment ids present then user have uploaded images.
-		if ( is_array( $attachment_ids ) && count( $attachment_ids ) > 0 ) {
-			foreach ( $attachment_ids as $id ) {
-				$attach = ap_get_post( $id );
-
-				if ( $attach && 'attachment' == $attach->post_type && $user_id == $attach->post_author ) {
-					ap_set_attachment_post_parent( $attach->ID, $post_id );
-				}
-			}
-			// Update attachment ids in qameta.
-			ap_update_post_attach_ids( $post_id );
-		}
-
-		// Remove all unused atthements by user.
-		ap_clear_unused_attachments( $user_id );
 	}
 }
 

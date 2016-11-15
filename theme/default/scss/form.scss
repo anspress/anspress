@@ -47,38 +47,29 @@
 			margin-bottom: 0;
 		}
 	}
-	.ap-field-description.have-error + .ap-field-ap_upload .ap-post-upload-form{
+	.ap-field-description.have-error + .ap-field-ap_upload .ap-upload-anchor{
 		border-color: #F44336 !important;
 	}
 	.ap-form-fields{
 		position: relative;
 		margin-bottom: 15px;
-		&.ap-have-error{
-			.ap-form-control, .ap-editor, .bootstrap-tagsinput{
-				border: solid 1px #F44336;
-				background: lighten($error-color, 40%);
-			}
-			.ap-editor{
-				padding: 10px;
-			}
-			&.being-edited{
-				.ap-form-control{
-					border-color: $yellow-color;
-					background: $white;
-				}
-				.ap-form-error-message{
-					background: $yellow-color;
-				}
-			}
-		}
 		&.have-error{
 			border-color: #F44336 !important;
+			.ap-form-control{
+				border-color: #F44336 !important;
+			}
+			&.ap-field-description .ap-form-fields-in{
+				border-color: #F44336 !important;
+			}
 		}
 		.error {
-			background: #FFEBEE;
+			background: #F44336;
 			margin-bottom: 20px;
-			display: block;
-			padding: 10px;
+			display: table;
+			padding: 2px 6px;
+			font-size: 12px;
+			color: #fff;
+			margin-top: -10px;
 		}
 
 		&-wrap{
@@ -144,26 +135,29 @@
 			}
 		}
 	}
-	#answer_form{
-		.ap-editor-answer-label{
-			color: #888;
-			display: block !important;
-			padding: 5px 10px;
-		}
-		.ap-field-description{
-			border: solid 1px #ddd;
-		}
-		.mce-toolbar-grp{
-			background: none;
-			padding: 4px;
-		}
-		.mce-edit-area{
-			padding: 0 10px;
-			box-shadow: 0 2px 5px rgba(0,0,0,0.08) inset;
-			background: #fcfcfc;
-		}
 
+	.ap-editor-answer-label{
+		color: #888;
+		display: block !important;
+		padding: 5px 10px;
 	}
+	#answer_form .ap-field-description{
+		border: solid 1px #ddd;
+	}
+	#ask_form .ap-field-description .ap-form-fields-in{
+		border: solid 1px #ddd;
+	}
+	.mce-toolbar-grp{
+		background: none;
+		padding: 4px;
+	}
+	.mce-edit-area{
+		padding: 0 10px;
+		box-shadow: 0 2px 5px rgba(0,0,0,0.08) inset;
+		background: #fcfcfc;
+	}
+
+
 	.mce-path{
 		display: none;
 	}

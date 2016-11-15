@@ -1221,9 +1221,9 @@ function ap_user_can_vote_on_post( $post_id, $type, $user_id = false, $wp_error 
 	}
 
 	// Do not allow post author to vote on self posts.
-	if ( $post_o->post_author === $user_id ) {
+	if ( $post_o->post_author == $user_id ) { // loose comparison okay.
 		if ( $wp_error ) {
-			return new WP_Error( 'cannot_vote_own_post', __( 'Voting on own\'s post is not allowed.', 'anspress-question-answer' ) );
+			return new WP_Error( 'cannot_vote_own_post', __( 'Voting on own post is not allowed', 'anspress-question-answer' ) );
 		}
 		return false;
 	}

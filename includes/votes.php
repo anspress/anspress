@@ -34,7 +34,12 @@ class AnsPress_Vote {
 
 		// Check if WP_Error object and send error message code.
 		if ( is_wp_error( $thing ) ) {
-				ap_ajax_json( $thing->get_error_code() );
+			ap_ajax_json( [
+				'success' => false,
+				'snackbar' => [
+					'message' => $thing->get_error_message(),
+				],
+			]);
 		}
 
 		// Check if down vote disabled.
