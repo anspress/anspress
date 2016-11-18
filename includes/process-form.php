@@ -191,6 +191,8 @@ class AnsPress_Process_Form
 		$post_id = ap_save_question( $question_array, true );
 
 		if ( $post_id ) {
+			ap_clear_unattached_media();
+
 			ap_ajax_json( array(
 				'success'  => true,
 				'action'   => 'new_question',
@@ -203,7 +205,8 @@ class AnsPress_Process_Form
 	}
 
 	/**
-	 * Process edit question form
+	 * Process edit question form.
+	 *
 	 * @return void
 	 * @since 2.0.1
 	 */
@@ -248,6 +251,7 @@ class AnsPress_Process_Form
 		$post_id = ap_save_question( $question_array );
 
 		if ( $post_id ) {
+			ap_clear_unattached_media();
 			$this->redirect = get_permalink( $post_id );
 
 			ap_ajax_json( array(
@@ -343,6 +347,7 @@ class AnsPress_Process_Form
 		$answer_id = ap_save_answer( $question->ID, $answer_array );
 
 		if ( $answer_id ) {
+			ap_clear_unattached_media();
 			ap_answer_post_ajax_response( $question->ID, $answer_id );
 		}
 
@@ -386,6 +391,7 @@ class AnsPress_Process_Form
 		$answer_id = ap_save_answer( $question->ID, $answer_array );
 
 		if ( $answer_id ) {
+			ap_clear_unattached_media();
 			ap_ajax_json( array(
 				'action' 		=> 'answer_edited',
 				'message'		=> 'answer_updated',

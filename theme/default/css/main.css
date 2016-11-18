@@ -2313,37 +2313,12 @@ body ul ul#ap-user-menu-link li > a .count {
   top: 245px;
 }
 
-#ap-upload-list .apicon-cloud-upload {
-  border-right: 1px solid #ddd;
-  margin-right: 8px;
-  padding-right: 8px;
-}
-#ap-upload-list > span {
-  background: #f7f7f7 none repeat scroll 0 0;
-  border: 1px solid #eee;
-  border-radius: 2px;
-  display: block;
-  margin-bottom: 10px;
-  padding: 7px 10px;
-}
-#ap-upload-list > span a {
-  color: #777;
-}
-#ap-upload-list .close {
-  cursor: pointer;
-  float: right;
-}
-
 .ap-loading-icon.q-title {
   background: transparent;
 }
 .ap-loading-icon.q-title .apicon-sync {
   left: auto;
   right: 8px;
-}
-
-#ap-upload-list {
-  margin-bottom: 20px;
 }
 
 .ap-upload-item {
@@ -2357,16 +2332,37 @@ body ul ul#ap-user-menu-link li > a .count {
 .ap-upload-item.failed .ap-progress {
   background-color: #E57373;
 }
-.ap-upload-item a {
+.ap-upload-item .apicon-trashcan {
   float: right;
   color: #fff;
+}
+.ap-upload-item .insert-to-post {
+  display: none;
+  border: solid 1px #ddd;
+  color: #666;
+  padding: 2px 5px;
+  border-radius: 2px;
+  margin-left: 8px;
+}
+.ap-upload-item .apicon-check, .ap-upload-item .apicon-stop {
+  margin-right: 8px;
+  color: #81C784;
+  display: none;
 }
 .ap-upload-item.done .ap-progress {
   display: none;
 }
-.ap-upload-name, .ap-upload a {
-  z-index: 1;
-  position: relative;
+.ap-upload-item.done .apicon-check {
+  display: inline;
+}
+.ap-upload-item.done.is-image .insert-to-post {
+  display: inline;
+}
+.ap-upload-item.failed .apicon-stop {
+  display: inline;
+}
+.ap-upload-item .apicon-stop {
+  color: #F44336;
 }
 .ap-upload-anchor {
   border: solid 1px #ddd;

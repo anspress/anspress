@@ -317,6 +317,11 @@ function ap_save_question( $args, $wp_error = false ) {
 
 		// Add question activity meta.
 		ap_update_post_activity_meta( $post_id, $activity_type, get_current_user_id() );
+
+		if ( ap_isset_post_value( 'ap-medias' ) ) {
+			$ids = ap_sanitize_unslash( 'ap-medias', 'r' );
+			ap_set_media_post_parent( $ids, $post_id );
+		}
 	}
 
 	return $post_id;

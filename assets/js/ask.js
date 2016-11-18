@@ -26,7 +26,7 @@
 					if(AnsPress.uploader) AnsPress.uploader.splice();
 
 					if(data.success){
-						//window.location = data.redirect;
+						window.location = data.redirect;
 					}
 
 					// If form have errors then show it

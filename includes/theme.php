@@ -790,41 +790,6 @@ function ap_enqueue_scripts() {
 	}
 }
 
-/**
- * Initialize AnsPress uploader settings.
- **/
-function ap_upload_js_init() {
-	if ( ap_user_can_upload( ) ) {
-		$mimes = [];
-
-		foreach ( ap_allowed_mimes() as $ext => $mime ) {
-			$mimes[] = [ 'title' => $mime, 'extensions' => str_replace( '|', ',', $ext ) ];
-		}
-
-		$plupload_init = array(
-			'runtimes'            => 'html5,flash,silverlight,html4',
-			'browse_button'       => 'plupload-browse-button',
-			'container'           => 'plupload-upload-ui',
-			'drop_element'        => 'ap-drop-area',
-			'file_data_name'      => 'async-upload',
-			'url'                 => admin_url( 'admin-ajax.php' ),
-			'flash_swf_url'       => includes_url( 'js/plupload/plupload.flash.swf' ),
-			'silverlight_xap_url' => includes_url( 'js/plupload/plupload.silverlight.xap' ),
-			'filters' => array(
-				'mime_types' => $mimes,
-				'max_file_size'   => (int) ap_opt( 'max_upload_size' ) . 'b',
-				'prevent_duplicates' => true,
-			),
-			'maxfiles' => 5,
-			'multipart_params' => [
-				'_wpnonce' => wp_create_nonce( 'media-upload' ),
-				'action' => 'ap_image_submission'
-			],
-		);
-		echo '<script type="text/javascript"> wpUploaderInit =' . wp_json_encode( $plupload_init ) . ';</script>';
-	}
-}
-
 function ap_get_list_filters( $current_url = '' ) {
 	if ( is_home() || is_front_page() ) {
 		$current_url = home_url( '/' );

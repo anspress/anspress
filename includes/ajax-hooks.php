@@ -34,9 +34,7 @@ class AnsPress_Ajax {
 		anspress()->add_action( 'ap_ajax_load_tinymce', __CLASS__, 'load_tinymce' );
 		anspress()->add_action( 'ap_ajax_filter_search', __CLASS__, 'filter_search' );
 		anspress()->add_action( 'ap_ajax_convert_to_post', __CLASS__, 'convert_to_post' );
-		anspress()->add_action( 'ap_ajax_delete_attachment', __CLASS__, 'delete_attachment' );
 		anspress()->add_action( 'ap_ajax_get_all_answers', __CLASS__, 'get_all_answers' );
-		anspress()->add_action( 'wp_ajax_ap_image_submission', __CLASS__, 'image_submission' );
 
 		anspress()->add_action( 'ap_ajax_load_comments', 'AnsPress_Comment_Hooks', 'load_comments' );
 		anspress()->add_action( 'ap_ajax_edit_comment_form', 'AnsPress_Comment_Hooks', 'edit_comment_form' );
@@ -51,6 +49,10 @@ class AnsPress_Ajax {
 		anspress()->add_action( 'ap_ajax_approve_comment', 'AnsPress_Comment_Hooks','approve_comment' );
 		anspress()->add_action( 'ap_ajax_post_actions_dp', 'AnsPress_Theme', 'post_actions_dp' );
 		anspress()->add_action( 'ap_ajax_list_filter', 'AnsPress_Theme', 'list_filter' );
+
+		// Uploader hooks.
+		anspress()->add_action( 'wp_ajax_ap_image_submission', 'AnsPress_Uploader', 'image_submission' );
+		anspress()->add_action( 'ap_ajax_delete_attachment', 'AnsPress_Uploader', 'delete_attachment' );
 	}
 
 	/**
@@ -614,32 +616,7 @@ class AnsPress_Ajax {
 		}
 	}
 
-	/**
-	 * Delete question or answer attachment.
-	 */
-	public static function delete_attachment() {
-		$attachment_id = ap_sanitize_unslash( 'attachment_id', 'r' );
 
-		if ( ! ap_verify_nonce( 'delete-attachment-' . $attachment_id ) ) {
-			ap_ajax_json( 'no_permission' );
-		}
-
-		// If user cannot delete then die.
-		if ( ! ap_user_can_delete_attachment( $attachment_id ) ) {
-			ap_ajax_json( 'no_permission' );
-		}
-
-		$row = wp_delete_attachment( $attachment_id, true );
-
-		if ( ! empty( $row ) ) {
-			ap_ajax_json( [ 'success' => true ] );
-		}
-
-		ap_ajax_json( [
-			'success'  => false,
-			'snackbar' => [ 'message' => __( 'Unable to delete attachment', 'anspress-question-answer' ) ],
-		] );
-	}
 
 	/**
 	 * Ajax callback to get all answers. Used in wp-admin post edit screen to show
@@ -674,45 +651,6 @@ class AnsPress_Ajax {
 		ap_ajax_json( [ 'data' => $answers_arr ] );
 	}
 
-	/**
-	 * Upload an attachment to server.
-	 **/
-	public static function image_submission() {
-		$post_id = ap_sanitize_unslash( 'post_id', 'r' );
 
-		if ( ! check_ajax_referer( 'media-upload', false, false ) || ! ap_user_can_upload( ) || empty( $_FILES['async-upload'] ) ) {
-			ap_ajax_json( [
-				'success' => false,
-				'snackbar' => [
-					'message' => __( 'You are not allowed to upload attachments.', 'anspress-question-answer' ),
-				],
-			] );
-		}
-
-		if ( ! empty( $post_id ) && ! ap_user_can_edit_post( $post_id ) ) {
-			ap_ajax_json( [ 'success' => false ] );
-		} else {
-			$post_id = null;
-		}
-
-		$attachment_id = ap_upload_user_file( $_FILES['async-upload'], true, $post_id );
-
-		if ( is_wp_error( $attachment_id ) ) {
-			ap_ajax_json( [
-				'success' => false,
-				'snackbar' => [
-					'message' => $attachment_id->get_error_message(),
-				],
-			] );
-		}
-
-		ap_ajax_json( array(
-			'success'        => true,
-			'attachment_url' => wp_get_attachment_url( $attachment_id ),
-			'attachment_id'  => $attachment_id,
-			'is_image'       => wp_attachment_is_image( $attachment_id ),
-			'delete_nonce'   => wp_create_nonce( 'delete-attachment-' . $attachment_id ),
-		) );
-	}
 
 }

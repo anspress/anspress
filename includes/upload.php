@@ -1,0 +1,391 @@
+<?php
+/**
+ * AnsPress upload handler.
+ *
+ * @package   AnsPress
+ * @author    Rahul Aryan <support@anspress.io>
+ * @license   GPL-3.0+
+ * @link      https://anspress.io
+ * @copyright 2014 Rahul Aryan
+ * @since     4.0.0
+ */
+
+/*add_action('init','cliv_create_single_schedule');
+add_action('cliv_single_cron_job','cliv_single_cron_function');
+
+function cliv_single_cron_function(){
+   //send email
+   wp_mail('hello@clivern.com', 'Clivern', 'Well Done!');
+}
+
+function cliv_create_single_schedule(){
+   //check if event scheduled before
+  if(!wp_next_scheduled('cliv_single_cron_job'))
+   //shedule event to run after 1 hour
+   wp_schedule_single_event (time()+3600, 'cliv_single_cron_job');
+}*/
+
+/**
+ * AnsPress upload hooks.
+ */
+class AnsPress_Uploader {
+
+	/**
+	 * Upload an attachment to server.
+	 */
+	public static function image_submission() {
+		$post_id = ap_sanitize_unslash( 'post_id', 'r' );
+
+		if ( ! check_ajax_referer( 'media-upload', false, false ) || ! ap_user_can_upload( ) || empty( $_FILES['async-upload'] ) ) {
+			ap_ajax_json( [
+				'success' => false,
+				'snackbar' => [
+					'message' => __( 'You are not allowed to upload attachments.', 'anspress-question-answer' ),
+				],
+			] );
+		}
+
+		if ( ! empty( $post_id ) && ! ap_user_can_edit_post( $post_id ) ) {
+			ap_ajax_json( [ 'success' => false ] );
+		} else {
+			$post_id = null;
+		}
+
+		$attachment_id = ap_upload_user_file( $_FILES['async-upload'], true, $post_id );
+
+		if ( is_wp_error( $attachment_id ) ) {
+			ap_ajax_json( [
+				'success' => false,
+				'snackbar' => [
+					'message' => $attachment_id->get_error_message(),
+				],
+			] );
+		}
+
+		ap_ajax_json( array(
+			'success'        => true,
+			'attachment_url' => wp_get_attachment_url( $attachment_id ),
+			'attachment_id'  => $attachment_id,
+			'is_image'       => wp_attachment_is_image( $attachment_id ),
+			'delete_nonce'   => wp_create_nonce( 'delete-attachment-' . $attachment_id ),
+		) );
+	}
+
+	/**
+	 * Delete question or answer attachment.
+	 */
+	public static function delete_attachment() {
+		$attachment_id = ap_sanitize_unslash( 'attachment_id', 'r' );
+
+		if ( ! ap_verify_nonce( 'delete-attachment-' . $attachment_id ) ) {
+			ap_ajax_json( 'no_permission' );
+		}
+
+		// If user cannot delete then die.
+		if ( ! ap_user_can_delete_attachment( $attachment_id ) ) {
+			ap_ajax_json( 'no_permission' );
+		}
+
+		$row = wp_delete_attachment( $attachment_id, true );
+
+		if ( false !== $row ) {
+			ap_ajax_json( [ 'success' => true ] );
+		}
+
+		ap_ajax_json( [
+			'success'  => false,
+			'snackbar' => [ 'message' => __( 'Unable to delete attachment', 'anspress-question-answer' ) ],
+		] );
+	}
+
+	/**
+	 * Update users temproary attachment count after a attachment deleted.
+	 *
+	 * @param integer $post_id Post ID.
+	 */
+	public static function after_delete_attachment( $post_id ) {
+		$_post = get_post( $post_id );
+
+		if ( 'attachment' === $_post->post_type ) {
+			ap_update_user_temp_media_count();
+		}
+	}
+}
+
+
+/**
+ * Upload and create an attachment. Set post_status as _ap_temp_media,
+ * later it will be removed using cron if no post parent is set.
+ *
+ * This function will prevent users to upload if they have more then defined
+ * numbers of un-attached medias.
+ *
+ * @param array   $file           $_FILE variable.
+ * @param boolean $temp           Is temproary image? If so it will be deleted if no post parent.
+ * @param boolean $parent_post    Attachment parent post ID.
+ * @return integer|boolean
+ * @since  3.0.0 Added new argument `$post_parent`.
+ */
+function ap_upload_user_file( $file = array(), $temp = true, $parent_post = '' ) {
+	// Checks if user already have un-attached media.
+	if ( ! ap_user_can_upload_temp_media()  ) {
+		return new WP_Error( 'max_temp_attachments', __( 'You have already uploaded maximum numbers of allowed attachments', 'anspress-question-answer' ) );
+	}
+
+	require_once ABSPATH . 'wp-admin/includes/admin.php';
+
+	// Check if file is greater then allowed size.
+	if ( $file['size'] > ap_opt( 'max_upload_size' )  ) {
+		return new WP_Error( 'file_size_error', sprintf( __( 'File cannot be uploaded, size is bigger then %s MB', 'anspress-question-answer' ), round( ap_opt( 'max_upload_size' ) / ( 1024 * 1024 ), 2 ) ) );
+	}
+
+	$file_return = wp_handle_upload( $file, array(
+		'test_form' => false,
+		'mimes'     => ap_allowed_mimes(),
+	));
+
+	if ( isset( $file_return['error'] ) || isset( $file_return['upload_error_handler'] ) ) {
+		return new WP_Error( 'upload_error', $file_return['error'], $file_return );
+	}
+
+	$filename = $file_return['file'];
+	$attachment = array(
+		'post_parent'    => $parent_post,
+		'post_mime_type' => $file_return['type'],
+		'post_content'   => '',
+		'guid'           => $file_return['url'],
+	);
+
+	// Add special post status if is temproary attachment.
+	if ( false !== $temp ) {
+		$attachment['post_title'] = '_ap_temp_media';
+	}
+
+	require_once ABSPATH . 'wp-admin/includes/image.php';
+	$attachment_id = wp_insert_attachment( $attachment, $file_return['file'] );
+
+	if ( ! empty( $attachment_id ) ) {
+		ap_update_user_temp_media_count();
+	}
+
+	return $attachment_id;
+}
+
+/**
+ * Initialize AnsPress uploader settings.
+ **/
+function ap_upload_js_init() {
+	if ( ap_user_can_upload( ) ) {
+		$mimes = [];
+
+		foreach ( ap_allowed_mimes() as $ext => $mime ) {
+			$mimes[] = [ 'title' => $mime, 'extensions' => str_replace( '|', ',', $ext ) ];
+		}
+
+		$plupload_init = array(
+			'runtimes'            => 'html5,flash,silverlight,html4',
+			'browse_button'       => 'plupload-browse-button',
+			'container'           => 'plupload-upload-ui',
+			'drop_element'        => 'ap-drop-area',
+			'file_data_name'      => 'async-upload',
+			'url'                 => admin_url( 'admin-ajax.php' ),
+			'flash_swf_url'       => includes_url( 'js/plupload/plupload.flash.swf' ),
+			'silverlight_xap_url' => includes_url( 'js/plupload/plupload.silverlight.xap' ),
+			'filters'             => array(
+				'mime_types'         => $mimes,
+				'max_file_size'      => (int) ap_opt( 'max_upload_size' ) . 'b',
+				'prevent_duplicates' => true,
+			),
+			//'maxfiles'            => ap_opt( 'uploads_per_post' ),
+			'multipart_params'    => [
+				'_wpnonce' => wp_create_nonce( 'media-upload' ),
+				'action'   => 'ap_image_submission',
+			],
+		);
+
+		echo '<script type="text/javascript"> wpUploaderInit =' . wp_json_encode( $plupload_init ) . ';</script>';
+		echo '<script type="text/html" id="ap-upload-template">
+				<span class="apicon-check"> ' . esc_attr__( 'Uploaded', 'anspress-question-answer' ) . '</span>
+				<span class="apicon-stop"> ' . esc_attr__( 'Failed', 'anspress-question-answer' ) . '</span>
+				<span class="ap-upload-name"></span>
+				<a href="#" class="insert-to-post">' . esc_attr__( 'Insert to post', 'anspress-question-answer' ) . '</a>
+				<a href="#" class="apicon-trashcan"></a>
+				<div class="ap-progress"></div>
+		</script>';
+	}
+}
+
+/**
+ * Return allowed mime types.
+ *
+ * @return array
+ * @since  3.0.0
+ */
+function ap_allowed_mimes() {
+	$mimes = array(
+		'jpg|jpeg' => 'image/jpeg',
+		'gif'      => 'image/gif',
+		'png'      => 'image/png',
+		'doc|docx' => 'application/msword',
+		'xls'      => 'application/vnd.ms-excel',
+	);
+
+	/**
+	 * Filter allowed mimes types.
+	 *
+	 * @param array $mimes Default mimes types.
+	 * @since 3.0.0
+	 */
+	return apply_filters( 'ap_allowed_mimes', $mimes );
+}
+
+/**
+ * Upload form.
+ *
+ * @param  boolean|integer $post_id Post ID.
+ * @return string
+ */
+function ap_post_upload_form( $post_id = false ) {
+	if ( ! ap_user_can_upload( ) ) {
+		return;
+	}
+
+	if ( false === $post_id ) {
+		$media = get_posts( [
+			'post_type'   => 'attachment',
+			'title' => '_ap_temp_media',
+			'post_author' => get_current_user_id(),
+		]);
+	} else {
+		$media = get_attached_media( '', $post_id );
+	}
+
+
+	$label = sprintf( __( 'Insert images and attach media by %1$sselecting them%2$s', 'anspress-question-answer' ), '<a id="pickfiles" href="javascript:;">', '</a>' );
+	$html = '<div id="ap-upload" class="ap-upload"><div class="ap-upload-anchor">' . $label . '</div>';
+
+	$__nonce = wp_create_nonce( 'ap_ajax_nonce' );
+
+	$uploads = [];
+	foreach ( (array) $media as $m ) {
+		$uploads[] = [
+			'id'       => $m->ID,
+			'fileName' => basename( $m->guid ),
+			'fileSize' => size_format( filesize( get_attached_file( $m->ID ) ), 2 ),
+			'isImage'  => wp_attachment_is_image( $m->ID ),
+			'nonce'    => wp_create_nonce( 'delete-attachment-' . $m->ID ),
+			'url'      => $m->guid,
+		];
+	}
+
+	$html .= '<script type="application/json" id="ap-uploads-data">' . wp_json_encode( $uploads ) . '</script>';
+	$html .= '</div>';
+	return $html;
+}
+
+
+/**
+ * Delete all un-attached media of user.
+ *
+ * @param integer $user_id User ID.
+ */
+function ap_clear_unattached_media( $user_id = false ) {
+
+	if ( false === $user_id ) {
+		$user_id = get_current_user_id();
+	}
+
+	global $wpdb;
+	$post_ids = $wpdb->get_col( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_type = 'attachment' AND post_title='_ap_temp_media' AND post_author = %d", $user_id ) ); // db call okay, db cache okay.
+
+	foreach ( (array) $post_ids as $id ) {
+		wp_delete_attachment( $id, true );
+	}
+}
+
+/**
+ * Set parent post for an attachment.
+ *
+ * @param integer|array $media_id Attachment ID.
+ * @param integer       $post_parent   Attachment ID.
+ */
+function ap_set_media_post_parent( $media_id, $post_parent, $user_id = false) {
+	if ( ! is_array( $media_id ) ) {
+		$media_id = [ $media_id ];
+	}
+
+	if ( false === $user_id ) {
+		$user_id = get_current_user_id();
+	}
+
+	foreach ( (array) $media_id as $id ) {
+		$attach = get_post( $id );
+
+		if ( $attach && 'attachment' === $attach->post_type && $user_id == $attach->post_author ) { // loose comparison okay.
+			$postarr = array(
+				'ID'          => $attach->ID,
+				'post_parent' => $post_parent,
+				'post_title' => preg_replace( '/\.[^.]+$/', '', basename( $attach->guid ) ),
+			);
+
+			wp_update_post( $postarr );
+		}
+	}
+}
+
+/**
+ * Count temproary attachments of a user.
+ *
+ * @param  integer $user_id User ID.
+ * @return integer
+ */
+function ap_count_users_temp_media( $user_id ) {
+	global $wpdb;
+	$cache = wp_cache_get( $user_id, 'ap_user_temp_media' );
+
+	if ( false !== $cache ) {
+		return $cache;
+	}
+
+	$count = $wpdb->get_var( $wpdb->prepare( "SELECT count(*) FROM $wpdb->posts WHERE post_title = '_ap_temp_media' AND post_author=%d AND post_type='attachment'", $user_id ) ); // db call okay.
+	wp_cache_set( $user_id, $count, 'ap_user_temp_media' );
+
+	return (int) $count;
+}
+
+/**
+ * Update users temproary media uploads count.
+ *
+ * @param integer $user_id User ID.
+ */
+function ap_update_user_temp_media_count( $user_id = false ) {
+
+	if ( false === $user_id ) {
+		$user_id = get_current_user_id();
+	}
+
+	// @codingStandardsIgnoreLine
+	update_user_meta( $user_id, '_ap_temp_media', ap_count_users_temp_media( $user_id ) );
+}
+
+/**
+ * Check if user have uploaded maximum numbers of allowed attachments.
+ *
+ * @param  integer $user_id User ID.
+ * @return boolean
+ */
+function ap_user_can_upload_temp_media( $user_id = false ) {
+
+	if ( false === $user_id ) {
+		$user_id = get_current_user_id();
+	}
+
+	// @codingStandardsIgnoreLine
+	$temp_images = (int) get_user_meta( $user_id, '_ap_temp_media', true );
+
+	if ( $temp_images < ap_opt( 'uploads_per_post' ) ) {
+		return true;
+	}
+
+	return false;
+}

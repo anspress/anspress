@@ -102,7 +102,6 @@
 
 	AnsPress.collections.Posts = Backbone.Collection.extend({
 		model: AnsPress.models.Post,
-		//url: ajaxurl + '?action=fetch_answers&question_id='+apQuestionID,
 		initialize: function(){
 			var loadedPosts = [];
 			$('[ap="question"],[ap="answer"]').each(function(e){

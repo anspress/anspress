@@ -28,9 +28,9 @@ function ap_scripts_front() {
             margin-'.(is_rtl()? 'right' : 'left').': '.(ap_opt( 'avatar_size_qcomment' ) + 15).'px;
         }';
 
-	wp_add_inline_style( 'ap-theme-css', $custom_css );
+	wp_add_inline_style( 'anspress-main', $custom_css );
 	do_action( 'ap_enqueue' );
-	wp_enqueue_style( 'ap-overrides', ap_get_theme_url( 'css/overrides.css' ), array( 'ap-theme-css' ), AP_VERSION );
+	wp_enqueue_style( 'ap-overrides', ap_get_theme_url( 'css/overrides.css' ), array( 'anspress-main' ), AP_VERSION );
 
 	$aplang = array(
 		'password_field_not_macthing' => __( 'Password not matching', 'anspress-question-answer' ),

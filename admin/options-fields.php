@@ -380,9 +380,9 @@ ap_register_option_group('permission', __( 'Permission', 'anspress-question-answ
 		'type'  => 'checkbox',
 	),
 	array(
-		'name'  => 'image_per_post',
-		'label' => __( 'Max images per post', 'anspress-question-answer' ),
-		'desc'  => __( 'Set how many images user can upload for each post.', 'anspress-question-answer' ),
+		'name'  => 'uploads_per_post',
+		'label' => __( 'Max uploads per post', 'anspress-question-answer' ),
+		'desc'  => __( 'Set numbers of media user can upload for each post.', 'anspress-question-answer' ),
 		'type'  => 'number',
 	),
 	array(

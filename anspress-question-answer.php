@@ -305,6 +305,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 			require_once ANSPRESS_DIR . 'includes/akismet.php';
 			require_once ANSPRESS_DIR . 'includes/comments.php';
 			require_once ANSPRESS_DIR . 'includes/class/avatar.php';
+			require_once ANSPRESS_DIR . 'includes/upload.php';
 		}
 
 		/**
