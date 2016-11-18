@@ -99,6 +99,8 @@ class AnsPress_Hooks {
 
 			// Upload hooks.
 			anspress()->add_action( 'deleted_post', 'AnsPress_Uploader', 'after_delete_attachment' );
+			anspress()->add_action( 'init', 'AnsPress_Uploader', 'create_single_schedule' );
+			anspress()->add_action( 'ap_delete_temp_attachments', 'AnsPress_Uploader', 'cron_delete_temp_attachments' );
 	}
 
 	/**

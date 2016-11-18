@@ -10,21 +10,6 @@
  * @since     4.0.0
  */
 
-/*add_action('init','cliv_create_single_schedule');
-add_action('cliv_single_cron_job','cliv_single_cron_function');
-
-function cliv_single_cron_function(){
-   //send email
-   wp_mail('hello@clivern.com', 'Clivern', 'Well Done!');
-}
-
-function cliv_create_single_schedule(){
-   //check if event scheduled before
-  if(!wp_next_scheduled('cliv_single_cron_job'))
-   //shedule event to run after 1 hour
-   wp_schedule_single_event (time()+3600, 'cliv_single_cron_job');
-}*/
-
 /**
  * AnsPress upload hooks.
  */
@@ -110,8 +95,38 @@ class AnsPress_Uploader {
 			ap_update_user_temp_media_count();
 		}
 	}
-}
 
+	/**
+	 * Schedule event twice daily.
+	 */
+	public static function create_single_schedule() {
+		// Check if event scheduled before.
+		if ( ! wp_next_scheduled( 'ap_delete_temp_attachments' ) ) {
+			// Shedule event to run every day.
+			wp_schedule_event( time(), 'twicedaily', 'ap_delete_temp_attachments' );
+		}
+	}
+
+	/**
+	 * Delete temproary media which are older then today.
+	 */
+	public static function cron_delete_temp_attachments() {
+		global $wpdb;
+		$posts = $wpdb->get_results( "SELECT ID, post_author FROM $wpdb->posts WHERE post_type = 'attachment' AND post_title='_ap_temp_media' AND post_date >= CURDATE()" ); // db call okay, db cache okay.
+
+		$authors = [];
+
+		foreach ( (array) $posts as $_post ) {
+			wp_delete_attachment( $_post->ID, true );
+			$authors[] = $_post->post_author;
+		}
+
+		// Update temproary attachment counts of a user.
+		foreach ( (array) array_unique( $authors ) as $author ) {
+			ap_update_user_temp_media_count( $author );
+		}
+	}
+}
 
 /**
  * Upload and create an attachment. Set post_status as _ap_temp_media,
