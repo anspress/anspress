@@ -34,7 +34,7 @@ class AP_Question_Meta_Box {
 	public function add_meta_box( $post_type ) {
 
 		if ( 'question' === $post_type ) {
-			add_meta_box( 'ap_answers_meta_box' ,__( 'Answers', 'anspress-question-answer' ), array( $this, 'answers_meta_box_content' ), $post_type, 'normal', 'high' );
+			add_meta_box( 'ap_answers_meta_box' , sprintf( __( ' %d Answers', 'anspress-question-answer' ), ap_get_answers_count() ), array( $this, 'answers_meta_box_content' ), $post_type, 'normal', 'high' );
 		}
 
 		if ( 'question' === $post_type || 'answer' === $post_type ) {
@@ -48,26 +48,29 @@ class AP_Question_Meta_Box {
 	public function answers_meta_box_content() {
 		?>
 		<div id="answers-list" data-questionid="<?php the_ID(); ?>">
-			<div class="ap-ansm clearfix" v-for="post in items" v-cloak :class="{[statusCase(post.status)]: true, selected: post.selected}">
-				<div class="author">
-					<a href="#" class="ap-ansm-avatar" v-html="post.avatar"></a>
-					<strong class="ap-ansm-name">{{post.author}}</strong>
+
+
+		</div>
+		<br />
+		<a href="<?php echo esc_url( admin_url( 'post-new.php?post_type=answer&post_parent=' . get_the_ID() ) ); ?>" class="button add-answer"><?php esc_html_e( 'Add an answer', 'anspress-question-answer' ); ?></a>
+
+		<script type="text/html" id="ap-answer-template">
+			<div class="author">
+				<a href="#" class="ap-ansm-avatar">{{{avatar}}}</a>
+				<strong class="ap-ansm-name">{{author}}</strong>
+			</div>
+			<div class="ap-ansm-inner">
+				<div class="ap-ansm-meta">
+					<span class="post-status">{{status}}</span>
+					{{{activity}}}
 				</div>
-				<div class="ap-ansm-inner">
-					<div class="ap-ansm-meta">
-						<span class="post-status" :class="statusCase(post.status)" v-if="post.status != 'Published'">{{post.status}}</span>
-						<span v-html="post.activity"></span>
-					</div>
-					<div class="ap-ansm-content" v-html="post.content"></div>
-					<div class="answer-actions">
-						<span><a :href="post.edit_link"><?php esc_attr_e( 'Edit', 'anspress-question-answer' ); ?></a></span>
-						<span class="delete vim-d vim-destructive"> | <a :href="post.trash_link"><?php esc_attr_e( 'Trash', 'anspress-question-answer' ); ?></a></span>
-					</div>
+				<div class="ap-ansm-content">{{{content}}}</div>
+				<div class="answer-actions">
+					<span><a href="{{{editLink}}}"><?php esc_attr_e( 'Edit', 'anspress-question-answer' ); ?></a></span>
+					<span class="delete vim-d vim-destructive"> | <a href="{{{trashLink}}}"><?php esc_attr_e( 'Trash', 'anspress-question-answer' ); ?></a></span>
 				</div>
 			</div>
-			<br />
-			<a href="<?php echo esc_url( admin_url( 'post-new.php?post_type=answer&post_parent=' . get_the_ID() ) ); ?>" class="button add-answer"><?php esc_html_e( 'Add an answer', 'anspress-question-answer' ); ?></a>
-		</div>
+		</script>
 		<?php
 	}
 

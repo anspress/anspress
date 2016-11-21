@@ -353,7 +353,7 @@ body ul ul#ap-user-menu-link{
 }
 
 .ap-loading-icon {
-	background: no-repeat url(../images/loading.gif) rgba(234, 233, 233, 0.62) center;
+	background: no-repeat url(../images/loading.gif) rgba(255, 255, 255, 0.89) center / 51%;
 	width: 40px;
 	height: 40px;
 	display: block;
@@ -361,4 +361,7 @@ body ul ul#ap-user-menu-link{
 	top: 50%;
 	left: 50%;
 	border-radius: 2px;
+}
+.hide{
+	display: none !important;
 }

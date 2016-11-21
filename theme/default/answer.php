@@ -25,6 +25,8 @@
 				<time itemprop="datePublished" datetime="<?php echo ap_get_time( get_the_ID(), 'c' ); ?>">
 					<?php printf( 'Posted %s', ap_human_time( ap_get_time( get_the_ID(), 'U' ) ) ); ?>
 				</time>
+				<?php ap_post_actions_buttons() ?>
+				<?php echo ap_select_answer_btn_html( ); ?>
 			</div>
 
 			<div class="ap-q-inner">
@@ -47,13 +49,11 @@
 					do_action( 'ap_after_answer_content' );
 
 				?>
-				<?php if ( ap_user_can_read_answer( ) ) :   ?>
+				<?php if ( ap_user_can_read_answer( ) ) : ?>
 					<?php ap_recent_post_activity(); ?>
 					<?php ap_post_status_description( get_the_ID() ) ?>
-					<?php ap_post_actions_buttons() ?>
 				<?php endif; ?>
 			</div>
-
 			<?php ap_answer_the_comments(); ?>
 		</div>
 	</div>

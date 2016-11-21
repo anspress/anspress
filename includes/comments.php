@@ -358,31 +358,30 @@ class AnsPress_Comment_Hooks
 
 /**
  * Load comment form button.
- * @param 	bool $echo Echo html.
+ *
+ * @param 	mixed $_post Post.
  * @return 	string
- * @since 	0.1
+ * @since 	4.0.0
  */
-function ap_comment_btn_html($echo = false) {
-	global $post;
+function ap_comment_btn_args( $_post = null ) {
+	$_post = ap_get_post( $_post );
+
 	// if ( ap_user_can_comment( $post->ID ) ) {
-	if ( $post->post_type == 'question' && ap_opt( 'disable_comments_on_question' ) ) {
+	if ( 'question' === $_post->post_type && ap_opt( 'disable_comments_on_question' ) ) {
 		return;
 	}
 
-	if ( $post->post_type == 'answer' && ap_opt( 'disable_comments_on_answer' ) ) {
+	if ( 'answer' === $_post->post_type && ap_opt( 'disable_comments_on_answer' ) ) {
 		return;
 	}
 
-		$nonce = wp_create_nonce( 'comment_form_nonce' );
-		$comment_count = get_comments_number( get_the_ID() );
-		$output = '<a href="#comments-'.get_the_ID().'" class="comment-btn ap-tip" data-action="ajax_btn" data-query="load_comments::'.$nonce.'::'.get_the_ID().'" title="'.__( 'Comments', 'anspress-question-answer' ).'">'.__( 'Comment', 'anspress-question-answer' ).'<span class="ap-data-view ap-view-count-'.$comment_count.'" data-view="comments_count_'.get_the_ID().'">('.$comment_count.')</span></a>';
-
-	if ( $echo ) {
-		echo $output;
-	} else {
-		return $output;
-	}
-	// }
+	return array(
+		'icon'  => 'apicon-check',
+		'query' => [ 'nonce' => wp_create_nonce( 'comment-form-' + $_post->ID ), 'post_id' => $_post->ID, 'ap_ajax_action' => 'load_comments' ],
+		'label' => __( 'Comment', 'anspress-question-answer' ),
+		'title' => __( 'Comments', 'anspress-question-answer' ),
+		'count' => get_comments_number( $_post->ID ),
+	);
 }
 
 function ap_get_comment_actions( $comment_id, $post_id ) {

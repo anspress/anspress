@@ -1,0 +1,14 @@
+<# _.each(actions, function(action){ #>
+	<li>
+		<a href="#" title="<# if(action.title){ #>{{action.title}}<# } #>">{{action.label}}</a>
+		<# if(action.sub){ #>
+			<ul class="ap-dropdown-menu">
+				<# _.each(actions.sub, function(s){ #>
+					<li>
+						<a href="#" title="<# if(s.title){ #>{{s.title}}<# } #>">{{s.label}}</a>
+					</li>
+				<# }); #>
+			</ul>
+		<# } #>
+	</li>
+<# }); #>

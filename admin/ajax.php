@@ -30,6 +30,7 @@ class AnsPress_Admin_Ajax {
 		anspress()->add_action( 'wp_ajax_ap_delete_flag', __CLASS__, 'ap_delete_flag' );
 		anspress()->add_action( 'ap_ajax_ap_clear_flag', __CLASS__, 'clear_flag' );
 		anspress()->add_action( 'ap_ajax_ap_admin_vote', __CLASS__, 'ap_admin_vote' );
+		anspress()->add_action( 'ap_ajax_get_all_answers', __CLASS__, 'get_all_answers' );
 	}
 
 	/**
@@ -96,6 +97,41 @@ class AnsPress_Admin_Ajax {
 			}
 		}
 		die();
+	}
+
+	/**
+	 * Ajax callback to get all answers. Used in wp-admin post edit screen to show
+	 * all answers of a question.
+	 *
+	 * @since 4.0
+	 */
+	public static function get_all_answers() {
+		global $answers;
+
+		$question_id = ap_sanitize_unslash( 'question_id', 'p' );
+		$answers_arr = [];
+		$answers = ap_get_answers( [ 'question_id' => $question_id ] );
+
+		if ( ap_user_can_see_answers() ) :
+			while ( ap_have_answers() ) : ap_the_answer();
+				global $post, $wp_post_statuses;
+				$answers_arr[] = array(
+					'ID'        => get_the_ID(),
+					'content'   => get_the_content(),
+					'avatar'    => ap_get_author_avatar( 30 ),
+					'author'    => ap_user_display_name( $post->post_author ),
+					'activity'  => ap_get_recent_post_activity(),
+					'editLink'  => esc_url_raw( get_edit_post_link() ),
+					'trashLink' => esc_url_raw( get_delete_post_link() ),
+					'status'    => esc_attr( $wp_post_statuses[ $post->post_status ]->label ),
+					'selected'  => ap_get_post_field( 'selected' ),
+				);
+			endwhile;
+		endif;
+
+		wp_send_json( $answers_arr );
+
+		wp_die();
 	}
 
 }

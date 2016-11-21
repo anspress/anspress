@@ -362,35 +362,6 @@ function ap_truncate_chars( $text, $limit, $ellipsis = '...' ) {
 }
 
 /**
- * Print select anser HTML button.
- *
- * @param mixed $_post Post.
- * @return null|string
- */
-function ap_select_answer_btn_html( $_post = null ) {
-	$ans = ap_get_post( $_post );
-
-	if ( ! ap_user_can_select_answer( $ans->ID ) ) {
-		return;
-	}
-
-	$action = 'answer-' . $ans->ID;
-	$nonce = wp_create_nonce( $action );
-	$label = __( 'Select', 'anspress-question-answer' );
-	$title = __( 'Select this answer as best', 'anspress-question-answer' );
-	$selected = ap_have_answer_selected( $ans->post_parent );
-
-	if ( $selected ) {
-		$label = __( 'Unselect', 'anspress-question-answer' );
-		$title = __( 'Unselect this answer', 'anspress-question-answer' );
-	}
-
-	if ( ! $selected || ap_is_selected( $ans ) ) {
-		return '<a href="#" class="ap-btn-select ap-tip" data-action="select_answer" data-query="answer_id=' . $ans->ID . '&__nonce=' . $nonce . '&ap_ajax_action=select_best_answer" title="' . $title . '">' . $label . '</a>';
-	}
-}
-
-/**
  * Output frontend post delete button.
  *
  * @param integer $_post Post.
@@ -617,8 +588,6 @@ function ap_responce_message( $id, $only_message = false ) {
 		'answer_submitted'              => array( 'type' => 'success', 'message' => __( 'Answer submitted successfully', 'anspress-question-answer' ) ),
 		'answer_updated'                => array( 'type' => 'success', 'message' => __( 'Answer updated successfully', 'anspress-question-answer' ) ),
 		'cannot_vote_own_post'          => array( 'type' => 'warning', 'message' => __( 'You cannot vote on your own question or answer.', 'anspress-question-answer' ) ),
-		'unselected_the_answer'         => array( 'type' => 'success', 'message' => __( 'Best answer is unselected for your question.', 'anspress-question-answer' ) ),
-		'selected_the_answer'           => array( 'type' => 'success', 'message' => __( 'Best answer is selected for your question.', 'anspress-question-answer' ) ),
 		'question_moved_to_trash'       => array( 'type' => 'success', 'message' => __( 'Question moved to trash.', 'anspress-question-answer' ) ),
 		'answer_moved_to_trash'         => array( 'type' => 'success', 'message' => __( 'Answer moved to trash.', 'anspress-question-answer' ) ),
 		'no_permission_to_view_private' => array( 'type' => 'warning', 'message' => __( 'You do not have permission to view private posts.', 'anspress-question-answer' ) ),

@@ -51,6 +51,7 @@
 									);
 								?>
 							</span>
+							<?php ap_post_actions_buttons() ?>
 						</div>
 
 						<!-- Start ap-content-inner -->
@@ -79,7 +80,6 @@
 
 							<?php ap_recent_post_activity(); ?>
 							<?php ap_post_status_description( get_the_ID() );	?>
-							<?php ap_post_actions_buttons() ?>
 
 							<?php
 								/**

@@ -384,44 +384,48 @@ function ap_page() {
 
 /**
  * Return post actions array.
- * @return array|boolean
+ *
+ * @param mixed $_post Post.
+ * @return array
  * @since  3.0.0
  */
-function ap_post_actions() {
-	global $post;
+function ap_post_actions( $_post = null ) {
+	$_post = ap_get_post( $_post );
 
-	if ( ! in_array( $post->post_type, [ 'question', 'answer' ], true ) ) {
-		return;
+	$actions = [];
+
+	if ( ! in_array( $_post->post_type, [ 'question', 'answer' ], true ) ) {
+		return $actions;
 	}
-
-	$actions = array();
-	$nonce = wp_create_nonce( 'close_' . $post->ID );
-	$close_label = $post->closed ?  __( 'Open', 'anspress-question-answer' ) : __( 'Close', 'anspress-question-answer' );
-	$close_title = $post->closed ?  __( 'Open this question for new answers', 'anspress-question-answer' ) : __( 'Close this question for new answer.', 'anspress-question-answer' );
 
 	// Question close action.
-	if ( ap_user_can_close_question() && 'question' === $post->post_type ) {
-	    $actions['close'] = "<a href='#' id='close-btn-{$post->ID}' class='ap-btn-close ap-sicon ap-tip' data-action='ajax_btn' data-query='close_question::{$nonce}::{$post->ID}' title='{$close_title}'>{$close_label}</a>";
-	}
+	if ( ap_user_can_close_question() && 'question' === $_post->post_type ) {
+		$nonce = wp_create_nonce( 'close_' . $_post->ID );
+		$close_label = $_post->closed ?  __( 'Open', 'anspress-question-answer' ) : __( 'Close', 'anspress-question-answer' );
+		$close_title = $_post->closed ?  __( 'Open this question for new answers', 'anspress-question-answer' ) : __( 'Close this question for new answer.', 'anspress-question-answer' );
 
-	// Select answer button.
-	if ( $post->post_type == 'answer' ) {
-	    $actions['select_answer'] = ap_select_answer_btn_html( $post->ID );
+		$actions['close'] = array(
+			'icon'  => 'apicon-check',
+			'query' => [ 'nonce' => $nonce, 'post_id' => $_post->ID, 'ap_ajax_action' => 'close_question' ],
+			'label' => $close_label,
+			'title' => $close_title,
+		);
 	}
 
 	// Comment button.
-	// if ( ap_user_can_comment( $post->ID ) ) {
-	    $actions['comment'] = ap_comment_btn_html();
+	// if ( ap_user_can_comment( $_post->ID ) ) {
+	    $actions['comment'] = ap_comment_btn_args( $_post );
 	// }
-	$actions['status'] = ap_post_change_status_btn_html( $post->ID );
+
+	$actions['status'] = ap_post_status_btn_args( $_post );
 
 	// Edit question link.
-	if ( ap_user_can_edit_question( $post->ID ) && $post->post_type == 'question' ) {
-	    $actions['dropdown']['edit_question'] = ap_edit_post_link_html();
+	/*if ( ap_user_can_edit_question( $_post->ID ) && 'question' === $_post->post_type ) {
+	  $actions['dropdown']['edit_question'] = ap_edit_post_link_html();
 	}
 
 	// Edit answer link.
-	if ( ap_user_can_edit_answer( $post->ID ) && $post->post_type == 'answer' ) {
+	if ( ap_user_can_edit_answer( $_post->ID ) && $_post->post_type == 'answer' ) {
 		$actions['dropdown']['edit_answer'] = ap_edit_post_link_html();
 	}
 
@@ -431,37 +435,37 @@ function ap_post_actions() {
 	}
 
 	// Featured link.
-	if ( is_super_admin() && $post->post_type == 'question' ) {
-		$actions['dropdown']['featured'] = ap_featured_post_btn( $post->ID );
+	if ( is_super_admin() && $_post->post_type == 'question' ) {
+		$actions['dropdown']['featured'] = ap_featured_post_btn( $_post->ID );
 	}
 
 	// Delete link.
-	if ( ap_user_can_delete_post( $post->ID ) && $post->post_status != 'trash' ) {
+	if ( ap_user_can_delete_post( $_post->ID ) && $_post->post_status != 'trash' ) {
 		$actions['dropdown']['delete'] = ap_post_delete_btn_html();
 	}
 
-	if ( ap_user_can_delete_post( $post->ID ) && $post->post_status == 'trash' ) {
+	if ( ap_user_can_delete_post( $_post->ID ) && $_post->post_status == 'trash' ) {
 		$actions['dropdown']['restore'] = ap_post_restore_btn_html();
 	}
 
 	// Permanent delete link.
-	if ( ap_user_can_delete_post( $post->ID ) ) {
+	if ( ap_user_can_delete_post( $_post->ID ) ) {
 		$actions['dropdown']['permanent_delete'] = ap_post_permanent_delete_btn_html();
 	}
 
 	// Convert question to a post.
-	if ( is_super_admin( ) && 'question' === $post->post_type ) {
+	if ( is_super_admin( ) && 'question' === $_post->post_type ) {
 		$nonce = wp_create_nonce( 'ap_ajax_nonce' );
-		$actions['dropdown']['convert_to_post'] = '<a href="#" data-action="ajax_btn" data-query="convert_to_post::'.$nonce.'::'. $post->ID .'">'.__('Convert to post', 'anspress-question-answer' ).'</a>';
-	}
+		$actions['dropdown']['convert_to_post'] = '<a href="#" data-action="ajax_btn" data-query="convert_to_post::'.$nonce.'::'. $_post->ID .'">'.__('Convert to post', 'anspress-question-answer' ).'</a>';
+	}*/
 
-	/*
-     * FILTER: ap_post_actions_buttons
-     * For filtering post actions buttons
-     * @var     string
-     * @since   2.0
+	/**
+	 * FILTER: ap_post_actions_buttons
+	 * For filtering post actions buttons
+	 * @var     string
+	 * @since   2.0
 	 */
-	return apply_filters( 'ap_post_actions_buttons', $actions );
+	return apply_filters( 'ap_post_actions', array_filter( $actions ) );
 }
 
 /**
@@ -471,28 +475,14 @@ function ap_post_actions() {
  * @return string
  * @since 	2.0
  */
-function ap_post_actions_buttons($disable = array()) {
-	global $post;
-	$actions = ap_post_actions();
+function ap_post_actions_buttons() {
+	$args = wp_json_encode( [
+		'post_id' => get_the_ID(),
+		'nonce'   => wp_create_nonce( 'post-actions-' . get_the_ID() ),
+	]);
+	echo '<post-actions class="ap-dropdown">';
 
-	if ( ! empty( $actions ) && count( $actions ) > 0 ) {
-		echo '<ul id="ap_post_actions_'. esc_attr($post->ID ) .'" class="ap-q-actions ap-ul-inline clearfix">';
-		foreach ( (array) $actions as $k => $action ) {
-			if ( ! empty( $action ) && 'dropdown' != $k && ! in_array( $k, $disable ) ) {
-				echo '<li class="ap-post-action ap-action-'.esc_attr($k ).'">'.$action.'</li>';
-			}
-		}
-
-		if ( ! empty( $actions['dropdown'] ) ) {
-			echo '<li class="ap-post-action dropdown">';
-			echo '<div id="ap_post_action_'.esc_attr($post->ID ).'" class="ap-dropdown">';
-			echo '<a class="apicon-ellipsis more-actions ap-tip ap-dropdown-toggle" title="'.__( 'More action', 'anspress-question-answer' ).'" href="#" data-query="post_actions_dp::'. wp_create_nonce( 'ap_ajax_nonce' ) .'::'. esc_attr($post->ID ) .'" data-action="ajax_btn"></a>';
-			echo '</div>';
-			echo '</li>';
-		}
-
-		echo '</ul>';
-	}
+	echo '<button class="apicon-dots ap-actions-handle"></button><label><input type="checkbox" ap="postaction" ap-query="' . esc_js( $args ) . '"><ul class="ap-actions"></ul></label></post-actions>';
 }
 
 /**
@@ -830,5 +820,89 @@ function ap_list_filters( $current_url = '' ) {
 	// Send current GET, so that it can be used by JS templates.
 	if ( isset( $_GET['ap_filter'] ) ) {
 		echo '<script type="text/html" id="current_filter">'. http_build_query( $ap_filter ) .'</script>';
+	}
+}
+/**
+ * Print select anser HTML button.
+ *
+ * @param mixed $_post Post.
+ * @return string
+ */
+function ap_select_answer_btn_html( $_post = null ) {
+
+	if ( ! ap_user_can_select_answer( $_post ) ) {
+		return;
+	}
+
+	$_post = ap_get_post( $_post );
+	$nonce = wp_create_nonce( 'select-answer-' . $_post->ID );
+
+	$q = esc_js( wp_json_encode( [ 'answer_id' => $_post->ID, 'nonce' => $nonce ] ) );
+	$active = false;
+
+	$title = __( 'Select this answer as best', 'anspress-question-answer' );
+	$label = __( 'Select', 'anspress-question-answer' );
+
+	$have_best = ap_have_answer_selected( $_post->post_parent );
+	$selected = ap_is_selected( $_post );
+	$hide = false;
+
+	if ( $have_best && $selected ) {
+		$title = __( 'Unselect this answer', 'anspress-question-answer' );
+		$label = __( 'Unselect', 'anspress-question-answer' );
+		$active = true;
+	}
+
+	if ( $have_best && ! $selected ) {
+		$hide = true;
+	}
+
+	return '<a href="#" class="ap-btn-select ap-btn ap-btn-small' . ( $active ? ' active' : '' ) . ( $hide ? ' hide' : '' ) . '" ap="select_answer" ap-query="' . $q . '" title="' . $title . '">' . $label . '</a>';
+}
+
+/**
+ * Output chnage post status button.
+ *
+ * @param 	mixed $_post Post.
+ * @return 	null|string
+ * @since 	4.0.0
+ */
+function ap_post_status_btn_args( $_post = null ) {
+	$_post = ap_get_post( $_post );
+
+	if ( ap_user_can_change_status( $_post->ID ) ) {
+		global $wp_post_statuses;
+		$allowed_status = [ 'publish', 'trash', 'private_post', 'moderate' ];
+		$status_labels = [];
+
+		foreach( (array) $allowed_status as $s ) {
+			if ( isset( $wp_post_statuses[ $s ] ) ) {
+				$status_labels[ $s ] = esc_attr( $wp_post_statuses[ $s ]->label );
+			}
+		}
+
+		$args = array(
+			'query' => [ 'nonce' => $nonce, 'post_id' => $_post->ID, 'ap_ajax_action' => 'select_best_answer' ],
+			'label' => __( 'Status', 'anspress-question-answer' ),
+			'title' => __( 'Change status of post', 'anspress-question-answer' ),
+		);
+
+		foreach ( (array) $status_labels as $slug => $label ) {
+			$can = true;
+
+			if ( 'moderate' === $k  && ! ap_user_can_change_status_to_moderate() ) {
+				$can = false;
+			}
+
+			if ( $can ) {
+				$args[ 'sub' ] = array(
+					'active' => ( $slug === $_post->post_status ),
+					'query' => [ 'ap_ajax_action' => 'change_post_status', 'nonce' => wp_create_nonce( 'change-status-' . $slug . '-' . $_post->ID ), 'post_id' => $_post->ID ],
+					'label' => esc_attr( $label ),
+				);
+			}
+		}
+
+		return $args;
 	}
 }

@@ -95,7 +95,6 @@
 			uglify: {
 				my_target: {
 					files: {
-						'assets/js/min/admin-app.min.js': ['assets/js/admin-app.js'],
 						'assets/js/min/question.min.js': ['assets/js/question.js'],
 						'assets/js/min/common.min.js': ['assets/js/common.js'],
 						'assets/js/min/upload.min.js': ['assets/js/upload.js'],

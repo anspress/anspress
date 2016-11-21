@@ -6,6 +6,9 @@
   position: relative;
 }
 #anspress{
+  .best-answer .ap-q-metas{
+    background: #e9f5e9;
+  }
   .ap-q{
     .ap-avatar{
       margin-right: 0x;
@@ -25,7 +28,12 @@
     }
     &-metas{
       font-size: 12px;
-    margin-bottom: 10px;
+      margin-bottom: 10px;
+      background: #fafafa;
+      padding: 12px;
+      margin: -10px;
+      margin-bottom: 10px;
+      border-bottom: solid 1px rgba(0, 0, 0, 0.1);
       >span{
         margin-right: 10px;
       }
@@ -33,7 +41,6 @@
         margin-right: 10px;
         margin-top: 0px;
       }
-
     }
 
     &-content{
@@ -48,68 +55,6 @@
           margin-bottom: 0;
         }
       }
-    }
-    &-actions {
-      margin-top: 10px;
-      >li{
-        margin-right: 15px;
-      }
-      .ap-action-vote{
-        float: left;
-        margin-left: 0;
-        margin-top: 0;
-        line-height: 1.2;
-      }
-      .ap-action-favorite .favorite-btn {
-        margin-top: -2px;
-        padding: 1px 5px;
-        &.active{
-          color: #fff;
-        }
-      }
-      > li.ap-post-action >a, .ap-dropdown-toggle{
-        background: none;
-        border: medium none;
-        color: $link-color;
-        display: block;
-        font-size: 12px;
-        line-height: 25px;
-        padding: 0;
-        text-decoration: none;
-
-        &:visited{
-          color: $link-color;
-        }
-
-        &:hover{
-          color: $default-color;
-          background: none;
-        }
-
-        i{
-          display: inline-block;
-          font-size: 11px;
-          margin-right: 1px;
-          margin-top: 0;
-        }
-        span {
-          margin-left: 3px;
-        }
-        &.more-actions{
-          font-size: 25px;
-        }
-        &.ap-btn-select{
-
-          &:before{
-            margin-right: 4px;
-          }
-        }
-
-      }
-      .ap-action-select_answer a{
-        color: #fff;
-      }
-
     }
   }
 
@@ -191,6 +136,35 @@
     font-size: 20px;
     margin-bottom: 14px;
   }
+  post-actions {
+    float: right;
+    margin-top: -5px;
+  }
+  button.ap-actions-handle {
+    font-size: 16px;
+    padding: 2px 6px !important;
+    line-height: 24px;
+    height: 26px;
+    &:active, &:focus{
+      box-shadow: inset 0 0 5px rgba(0,0,0,0.1);
+    }
+  }
+  a.ap-btn-select {
+    margin-top: -5px;
+    margin-right: 5px;
+    float: right;
+  }
+  ul.ap-actions {
+    padding: 0;
+    list-style: none;
+    li{
+      padding: 0;
+      margin: 0;
+      a{
+        font-size: 12px;
+      }
+    }
+  }
 }
 
 .ap-content{
@@ -257,7 +231,7 @@
     top: 0;
   }
   .type-answer{
-    margin-top: 20px;
+    margin-top: 30px;
     &.active .ap-a-cells{
       border-color: #6AB17F;
     }
@@ -271,7 +245,6 @@
       margin-top: 0;
     }
     .ap-a-cells {
-      background: none repeat scroll 0 0 #f9fff8;
       border-color: #cce4c8;
     }
   }
@@ -338,3 +311,5 @@
     top: 0;
   }
 }
+
+

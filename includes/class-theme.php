@@ -251,32 +251,14 @@ class AnsPress_Theme {
 	 *
 	 * @since 3.0.0
 	 */
-	public static function post_actions_dp() {
-		if ( ! ap_verify_nonce( 'ap_ajax_nonce' ) || ! isset( $_POST['args'] ) ) { // input var okay.
+	public static function post_actions() {
+		$post_id = (int) ap_sanitize_unslash( 'post_id', 'r' );
+
+		if ( ! check_ajax_referer( 'post-actions-' . $post_id, 'nonce', false ) || ! is_user_logged_in() ) {
 			ap_ajax_json( 'something_wrong' );
 		}
 
-		$post_id = (int) $_POST['args'][0]; // input var okay.
-
-		global $post;
-		$post = ap_get_post( $post_id, OBJECT ); // override okay.
-		setup_postdata( $post );
-		$actions = ap_post_actions();
-		$dropdown = array();
-
-		foreach ( (array) $actions['dropdown'] as $sk => $sub ) {
-			$dropdown[] = [ 'action' => $sk, 'anchor' => $sub ];
-		}
-
-		$data = array(
-			'template'  => 'dropdown-menu',
-			'appendTo'  => '#ap_post_action_' . $post_id,
-			'do'        => [ 'addClass' => [ '#ap_post_action_' . $post_id . ' .ap-dropdown-toggle', 'ajax-disabled' ] ],
-			'apData'    => [ 'id' => $post_id . '_dp', 'links' => $dropdown ],
-			'key'       => $post_id . 'Actions',
-		);
-
-		ap_ajax_json( $data );
+		ap_ajax_json( [ 'success' => true, 'actions' => ap_post_actions( $post_id ) ] );
 	}
 
 	/**
@@ -368,6 +350,15 @@ class AnsPress_Theme {
 		}
 
 		return $args;
+	}
+
+	/**
+	 * Append post actions JS template.
+	 */
+	public static function post_action_template() {
+		echo '<script id="ap-template-actions" type="text/html">';
+		include_once ap_get_theme_location( 'js-template/actions.html' );
+		echo '</script>';
 	}
 }
 

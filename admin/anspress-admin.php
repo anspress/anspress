@@ -92,9 +92,12 @@ class AnsPress_Admin {
 			return;
 		}
 
+		$dir = ap_env_dev() ? 'css' : 'css/min';
+		$min = ap_env_dev() ? '' : '.min';
+
 		wp_enqueue_style( 'ap-admin-css', ANSPRESS_URL . 'assets/ap-admin.css' );
 		wp_enqueue_style( 'wp-color-picker' );
-		wp_enqueue_style( 'ap-fonts', ap_get_theme_url( 'fonts/style.css' ), array(), AP_VERSION );
+		wp_enqueue_style( 'anspress-fonts', ap_get_theme_url( $dir . '/fonts.css' ), array(), AP_VERSION );
 	}
 
 	/**
@@ -103,23 +106,20 @@ class AnsPress_Admin {
 	public static function enqueue_admin_scripts() {
 		$page = get_current_screen();
 
-		$dir = ap_env_dev() ? 'js' : 'min';
+		$dir = ap_env_dev() ? 'js' : 'js/min';
 		$min = ap_env_dev() ? '' : '.min';
-		wp_register_script( 'vue-js', ANSPRESS_URL . 'assets/' . $dir . '/vue' . $min . '.js' );
 
 		if ( ! ap_load_admin_assets() ) {
 			return;
 		}
 
-		wp_enqueue_script( 'jquery-form', array( 'jquery' ), false, true );
-		wp_enqueue_script( 'ap-functions-js', ANSPRESS_URL . 'assets/' . $dir . '/ap-functions' . $min . '.js', 'jquery', AP_VERSION );
+		wp_enqueue_script( 'anspress-common', ANSPRESS_URL . 'assets/' . $dir . '/common' . $min . '.js', [ 'jquery', 'jquery-form', 'backbone', 'underscore' ], AP_VERSION );
 
 		if ( 'toplevel_page_anspress' === $page->base ) {
 			wp_enqueue_script( 'ap-chart-js', '//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.4/Chart.min.js' );
 		}
 
-		wp_enqueue_script( 'ap-admin-js', ANSPRESS_URL . 'assets/' . $dir . '/ap-admin' . $min . '.js' , array( 'wp-color-picker' ) );
-		wp_enqueue_script( 'anspress-admin-js', ANSPRESS_URL . 'assets/' . $dir . '/admin-app' . $min . '.js', [ 'vue-js' ], true );
+		wp_enqueue_script( 'anspress-admin-js', ANSPRESS_URL . 'assets/' . $dir . '/ap-admin' . $min . '.js' , [], AP_VERSION, true );
 		wp_enqueue_script( 'postbox' );
 	}
 

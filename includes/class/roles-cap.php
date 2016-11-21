@@ -252,11 +252,11 @@ function ap_user_can_see_answers() {
 /**
  * Check if user can select an answer.
  *
- * @param  integer       $post_id    Answer id.
+ * @param  mixed         $_post    Post.
  * @param  integer|false $user_id    user id.
  * @return boolean
  */
-function ap_user_can_select_answer( $post_id, $user_id = false ) {
+function ap_user_can_select_answer( $_post = null, $user_id = false ) {
 
 	if ( false === $user_id ) {
 		$user_id = get_current_user_id();
@@ -266,7 +266,7 @@ function ap_user_can_select_answer( $post_id, $user_id = false ) {
 		return true;
 	}
 
-	$answer 	= ap_get_post( $post_id );
+	$answer 	= ap_get_post( $_post );
 
 	// If not answer then return false.
 	if ( 'answer' !== $answer->post_type ) {

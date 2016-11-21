@@ -112,6 +112,8 @@ class AnsPress_Common_Pages
 			}
 
 			include( ap_get_theme_location( 'question.php' ) );
+
+			do_action( 'ap_after_question' );
 			wp_reset_postdata();
 
 		} else {

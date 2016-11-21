@@ -529,6 +529,7 @@ function ap_last_active( $post_id = null ) {
  */
 function ap_have_answer_selected( $question = null ) {
 	$question = ap_get_post( $question );
+
 	return ! empty( $question->selected_id );
 }
 

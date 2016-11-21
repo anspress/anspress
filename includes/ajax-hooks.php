@@ -27,14 +27,13 @@ class AnsPress_Ajax {
 		anspress()->add_action( 'ap_ajax_set_featured', __CLASS__, 'set_featured' );
 		anspress()->add_action( 'ap_ajax_hover_card', __CLASS__, 'hover_card' );
 		anspress()->add_action( 'ap_ajax_close_question', __CLASS__, 'close_question' );
-		anspress()->add_action( 'ap_ajax_select_best_answer', __CLASS__, 'select_best_answer' );
+		anspress()->add_action( 'ap_ajax_toggle_best_answer', __CLASS__, 'toggle_best_answer' );
 		anspress()->add_action( 'ap_ajax_delete_post', __CLASS__, 'delete_post' );
 		anspress()->add_action( 'ap_ajax_permanent_delete_post', __CLASS__, 'permanent_delete_post' );
 		anspress()->add_action( 'ap_ajax_restore_post', __CLASS__, 'restore_post' );
 		anspress()->add_action( 'ap_ajax_load_tinymce', __CLASS__, 'load_tinymce' );
 		anspress()->add_action( 'ap_ajax_filter_search', __CLASS__, 'filter_search' );
 		anspress()->add_action( 'ap_ajax_convert_to_post', __CLASS__, 'convert_to_post' );
-		anspress()->add_action( 'ap_ajax_get_all_answers', __CLASS__, 'get_all_answers' );
 
 		anspress()->add_action( 'ap_ajax_load_comments', 'AnsPress_Comment_Hooks', 'load_comments' );
 		anspress()->add_action( 'ap_ajax_edit_comment_form', 'AnsPress_Comment_Hooks', 'edit_comment_form' );
@@ -47,7 +46,7 @@ class AnsPress_Ajax {
 		anspress()->add_action( 'ap_ajax_flag_comment', 'AnsPress_Flag', 'flag_comment' );
 		anspress()->add_action( 'ap_ajax_submit_comment', 'AnsPress_Comment_Hooks','submit_comment' );
 		anspress()->add_action( 'ap_ajax_approve_comment', 'AnsPress_Comment_Hooks','approve_comment' );
-		anspress()->add_action( 'ap_ajax_post_actions_dp', 'AnsPress_Theme', 'post_actions_dp' );
+		anspress()->add_action( 'ap_ajax_post_actions', 'AnsPress_Theme', 'post_actions' );
 		anspress()->add_action( 'ap_ajax_list_filter', 'AnsPress_Theme', 'list_filter' );
 
 		// Uploader hooks.
@@ -112,47 +111,48 @@ class AnsPress_Ajax {
 	 *
 	 * @since 2.0.0
 	 */
-	public static function select_best_answer() {
-	    $answer_id = (int) ap_sanitize_unslash( 'answer_id', 'request' );
+	public static function toggle_best_answer() {
+		$answer_id = (int) ap_sanitize_unslash( 'answer_id', 'r' );
 
-	    if ( ! is_user_logged_in() || ! ap_verify_nonce( 'answer-' . $answer_id ) ) {
-	      ap_ajax_json( 'something_wrong' );
-	    }
+		if ( ! is_user_logged_in() || ! check_ajax_referer( 'select-answer-' . $answer_id, 'nonce', false ) ) {
+			ap_ajax_json( 'something_wrong' );
+		}
 
-	    $_post = ap_get_post( $answer_id );
+		$_post = ap_get_post( $answer_id );
 
-	    // Unselect best answer if already selected.
-	    if ( ap_have_answer_selected( $_post->post_parent ) ) {
-	        ap_unselect_answer( $answer_id );
-	        ap_ajax_json( array(
-	        	'message' 	=> 'unselected_the_answer',
-	        	'action' 	=> 'unselected_answer',
-	        	'do' 		=> array(
-							'removeClass' => [ '#answer_' . $answer_id, 'best-answer' ],
-							'updateText'  => [ '#ap_post_actions_' . $_post->ID . ' .ap-btn-select', 'Select' ],
-						),
-	        ) );
-	    }
+		// Unselect best answer if already selected.
+		if ( ap_have_answer_selected( $_post->post_parent ) ) {
+			ap_unselect_answer( $answer_id );
+			ap_ajax_json( array(
+				'success'    => true,
+				'action'     => 'unselected',
+				'snackbar' 	 => [ 'message' => __( 'Best answer is unselected for your question.', 'anspress-question-answer' ) ],
+				'label'      => __( 'Select', 'anspress-question-answer' ),
+			) );
+		}
 
-	    // Do not allow answer to be selected as best if status is moderate.
-	    if ( 'moderate' === $_post->post_status ) {
-	    	ap_ajax_json( [ 'message_type' => 'warning', 'message' => __( 'Answer with moderate status cannot be selected as best.', 'anspress-question-answer' ) ] );
-	    }
+		// Do not allow answer to be selected as best if status is moderate.
+		if ( 'moderate' === $_post->post_status ) {
+			ap_ajax_json( [
+				'success'  => false,
+				'snackbar' => [ 'message' => __( 'Answer with moderate status cannot be selected as best.', 'anspress-question-answer' ) ],
+			] );
+		}
 
-			// Add question activity meta.
-			ap_update_post_activity_meta( $_post->post_parent, 'answer_selected', get_current_user_id() );
+		// Add question activity meta.
+		ap_update_post_activity_meta( $_post->post_parent, 'answer_selected', get_current_user_id() );
 
-			// Add answer activity meta.
-			ap_update_post_activity_meta( $_post->ID, 'best_answer', get_current_user_id() );
+		// Add answer activity meta.
+		ap_update_post_activity_meta( $_post->ID, 'best_answer', get_current_user_id() );
 
-	    /**
-	     * Trigger right after selecting an answer.
-			 *
-	     * @param integer $post_author Post author ID.
-	     * @param integer $question_id Question ID.
-	     * @param integer $answer_id   Answer ID.
-			 * @todo Move this hook from here.
-	     */
+		/**
+		 * Trigger right after selecting an answer.
+		 *
+		 * @param integer $post_author Post author ID.
+		 * @param integer $question_id Question ID.
+		 * @param integer $answer_id   Answer ID.
+		 * @todo Move this hook from here.
+		 */
 		do_action( 'ap_select_answer', $_post->post_author, $_post->post_parent, $post->ID );
 
 		// Update question qameta.
@@ -165,13 +165,10 @@ class AnsPress_Ajax {
 
 		$html = ap_select_answer_btn_html( $answer_id );
 		ap_ajax_json( array(
-			'message' 	 => 'selected_the_answer',
-			'action' 	   => 'selected_answer',
-			'do' 		=> array(
-				'addKlass' => [ '#answer_' . $answer_id, 'best-answer' ],
-				'updateText'  => [ '#ap_post_actions_' . $_post->ID . ' .ap-btn-select', 'Unselect' ],
-			),
-			'html' 		   => $html,
+			'success'  => true,
+			'action'   => 'selected',
+			'snackbar' => [ 'message' => __( 'Best answer is selected for your question.', 'anspress-question-answer' ) ],
+			'label'    => __( 'Unselect', 'anspress-question-answer' ),
 		) );
 	}
 
@@ -615,42 +612,4 @@ class AnsPress_Ajax {
 			ap_ajax_json( [ 'do' => [ 'redirect' => get_permalink( $args[0] ) ] ] );
 		}
 	}
-
-
-
-	/**
-	 * Ajax callback to get all answers. Used in wp-admin post edit screen to show
-	 * all answers of a question.
-	 *
-	 * @since 4.0
-	 */
-	public static function get_all_answers() {
-		global $answers;
-
-		$question_id = ap_sanitize_unslash( 'question_id', 'p' );
-		$answers_arr = [];
-		$answers = ap_get_answers( [ 'question_id' => $question_id ] );
-
-		if ( ap_user_can_see_answers() ) :
-			while ( ap_have_answers() ) : ap_the_answer();
-				global $post, $wp_post_statuses;
-				$answers_arr[] = array(
-					'ID'         => get_the_ID(),
-					'content'    => get_the_content(),
-					'avatar'     => ap_get_author_avatar( 30 ),
-					'author'     => ap_user_display_name( $post->post_author ),
-					'activity'   => ap_get_recent_post_activity(),
-					'edit_link'  => esc_url_raw( get_edit_post_link() ),
-					'trash_link' => esc_url_raw( get_delete_post_link() ),
-					'status'     => esc_attr( $wp_post_statuses[ $post->post_status ]->label ),
-					'selected'   => ap_get_post_field( 'selected' ),
-				);
-			endwhile;
-		endif;
-
-		ap_ajax_json( [ 'data' => $answers_arr ] );
-	}
-
-
-
 }

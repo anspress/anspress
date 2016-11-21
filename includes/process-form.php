@@ -66,14 +66,14 @@ class AnsPress_Process_Form
 	    	$this->process_form();
 			ap_ajax_json( $this->result );
 		} else {
-			$action = sanitize_text_field( $this->request['ap_ajax_action'] );
+			$action = ap_sanitize_unslash( 'ap_ajax_action', 'r' );
 
-	    	/**
-	    	 * ACTION: ap_ajax_[$action]
-	    	 * Action for processing Ajax requests
-	    	 * @since 2.0.1
-	    	 */
-	    	do_action( 'ap_ajax_' . $action );
+			/**
+				* ACTION: ap_ajax_[$action]
+				* Action for processing Ajax requests
+				* @since 2.0.1
+				*/
+			do_action( 'ap_ajax_' . $action );
 		}
 
 		// If reached to this point then there is something wrong.

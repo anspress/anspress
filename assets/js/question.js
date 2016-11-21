@@ -10,21 +10,9 @@
 	AnsPress.models.Post = Backbone.Model.extend({
 		idAttribute: 'ID',
 		defaults:{
-			actions: [
-				{ id: 'comment', label: 'Comment' },
-				{ id: 'select', label: 'Select' },
-				{ id: 'edit', label: 'Edit' },
-				{
-					id: 'status',
-					label: 'Status',
-					sub:[
-						{ id: 'publish', label: 'Publish' },
-						{ id: 'trash', label: 'Trash' },
-						{ id: 'private', label: 'Private' },
-						{ id: 'moderate', label: 'Moderate' }
-					]
-				}
-			]
+			actionsLoaded: false,
+			actions: [],
+			hideSelect: ''
 		}
 	});
 
@@ -37,9 +25,12 @@
 		},
 		initialize: function(options){
 			this.model.on('change:vote', this.voteUpdate, this);
+			this.model.on('change:hideSelect', this.selectToggle, this);
 		},
 		events: {
-			'click [ap-vote] > a': 'voteClicked'
+			'click [ap-vote] > a': 'voteClicked',
+			'click [ap="postaction"]': 'postActions',
+			'click [ap="select_answer"]': 'selectAnswer'
 		},
 		voteClicked: function(e){
 			e.preventDefault();
@@ -97,6 +88,55 @@
 			var attr = this.$el.find('[ap-vote]').attr('ap-vote');
 			this.model.set('vote', $.parseJSON(attr), {silent: true});
 			return this;
+		},
+		postActions: function(e){
+			var self = this;
+			var q = $.parseJSON($(e.target).attr('ap-query'));
+			q.ap_ajax_action = 'post_actions';
+
+			if(!this.model.get('actionsLoaded'))
+				AnsPress.ajax({
+					data: q,
+					success: function(data){
+						AnsPress.hideLoading(e.target);
+						$(e.target).addClass('loaded');
+						self.model.set({'actions': data.actions, 'actionsLoaded': true });
+						self.renderPostActions(e);
+					}
+				});
+		},
+		renderPostActions: function(e){
+			var t = _.template($('#ap-template-actions').html());
+			this.$el.find('post-actions .ap-actions').html(t(this.model.toJSON()));
+			this.$el.find('post-actions li').hide().slideDown(200);
+		},
+		selectAnswer: function(e){
+			e.preventDefault();
+			var self = this;
+			var q = $.parseJSON($(e.target).attr('ap-query'));
+			q.ap_ajax_action = 'toggle_best_answer';
+
+			AnsPress.ajax({
+				data: q,
+				success: function(data){
+					AnsPress.hideLoading(e.target);
+					if(data.success){
+						if(data.action === 'selected'){
+							$(e.target).addClass('active').text(data.label);
+							AnsPress.trigger('answerToggle', [self.model, true]);
+						}else{
+							$(e.target).removeClass('active').text(data.label);
+							AnsPress.trigger('answerToggle', [self.model, false]);
+						}
+					}
+				}
+			});
+		},
+		selectToggle: function(){
+			if(this.model.get('hideSelect'))
+				this.$el.find('[ap="select_answer"]').addClass('hide');
+			else
+				this.$el.find('[ap="select_answer"]').removeClass('hide');
 		}
 	});
 
@@ -114,6 +154,7 @@
 	AnsPress.views.SingleQuestion = Backbone.View.extend({
 		initialize: function(){
 			this.model.on('add', this.renderItem, this);
+			AnsPress.on('answerToggle', this.answerToggle, this);
 		},
 		events: {
 			'click [ap="loadEditor"]': 'loadEditor',
@@ -189,6 +230,12 @@
 				}
 			});
 			return false;
+		},
+		answerToggle: function(args){
+			this.model.forEach(function(m, i) {
+				if(args[0] !== m)
+					m.set('hideSelect', args[1]);
+			});
 		}
 	});
 
