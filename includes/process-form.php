@@ -255,9 +255,12 @@ class AnsPress_Process_Form
 			$this->redirect = get_permalink( $post_id );
 
 			ap_ajax_json( array(
+				'success' => true,
 				'action' 		=> 'edited_question',
-				'message'		=> 'question_updated',
-				'do'				=> array( 'redirect' => $this->redirect ),
+				'redirect' => get_permalink( $post_id ),
+				'snackbar' => [
+					'message' => __( 'Question updated successfully', 'anspress-question-answer' ),
+				],
 			) );
 		}
 	}
@@ -308,12 +311,11 @@ class AnsPress_Process_Form
 		}
 
 		// Check if duplicate.
-		if( false !== ap_find_duplicate_post( $fields['description'], 'answer', $question->ID ) ){
+		if ( false !== ap_find_duplicate_post( $fields['description'], 'answer', $question->ID ) ) {
 			ap_ajax_json( array(
-				'success' => false,
-				'form' 			=> $_POST['ap_form_action'],
-				'message_type' 	=> 'error',
-				'message'		=> __( 'This seems to be a duplicate answer. An answer with same content already exists.', 'anspress-question-answer' ),
+				'success'  => false,
+				'form'     => ap_sanitize_unslash( 'ap_form_action' ),
+				'snackbar' => [ 'message' => __( 'This seems to be a duplicate answer. An answer with same content already exists.', 'anspress-question-answer' ) ],
 			) );
 		}
 
@@ -393,9 +395,10 @@ class AnsPress_Process_Form
 		if ( $answer_id ) {
 			ap_clear_unattached_media();
 			ap_ajax_json( array(
-				'action' 		=> 'answer_edited',
-				'message'		=> 'answer_updated',
-				'do'			=> array( 'redirect' => get_permalink( $answer->post_parent ) ),
+				'success'  => true,
+				'action'   => 'answer_edited',
+				'snackbar' => [ 'message' => __( 'Answer updated successfully', 'anspress-question-answer' ) ],
+				'redirect' => get_permalink( $answer->post_parent ),
 			));
 		}
 	}

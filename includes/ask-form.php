@@ -161,13 +161,29 @@ function ap_get_ask_form_fields( $post_id = false ) {
 }
 
 /**
- * Generate ask form
+ * Output new/edit question form.
+ * Pass post_id to edit existing question.
  *
- * @param  boolean $editing True if post is being edited.
  * @return void
  */
-function ap_ask_form( $editing = false ) {
-	$post_id = $editing ? (int) $_REQUEST['edit_post_id'] : false;
+function ap_ask_form( $post_id = false ) {
+
+	if ( ! ap_user_can_edit_question( $post_id ) ) {
+		echo '<p>' . esc_attr__( 'You cannot edit this question.', 'anspress-question-answer' ) . '</p>';
+		return;
+	}
+
+	$editing = true;
+
+	if ( false === $post_id ) {
+		$post_id = ap_sanitize_unslash( 'id', 'r', false );
+	}
+
+	// If post_id is empty then its not editing.
+	if ( empty( $post_id ) ) {
+		$editing = false;
+	}
+
 	// Ask form arguments.
 	$args = array(
 		'name'              => 'ask_form',

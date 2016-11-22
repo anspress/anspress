@@ -412,11 +412,6 @@ function ap_post_actions( $_post = null ) {
 		);
 	}
 
-	// Comment button.
-	// if ( ap_user_can_comment( $_post->ID ) ) {
-	    $actions['comment'] = ap_comment_btn_args( $_post );
-	// }
-
 	$actions['status'] = ap_post_status_btn_args( $_post );
 
 	// Edit link.
@@ -733,7 +728,7 @@ function ap_assets( ) {
 		),
 	);
 
-	if ( is_ask() ) {
+	if ( is_ask() || is_ap_edit() ) {
 		$assets['js']['ask'] = [ 'dep' => [ 'anspress-common' ] , 'footer' => true ];
 		$assets['js']['upload'] = [ 'dep' => [ 'plupload', 'anspress-common' ] , 'footer' => true ];
 	}

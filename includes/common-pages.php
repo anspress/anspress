@@ -21,7 +21,6 @@ class AnsPress_Common_Pages
 		ap_register_page( 'base', ap_opt( 'base_page_title' ), array( __CLASS__, 'base_page' ) );
 		ap_register_page( ap_opt( 'question_page_slug' ), __( 'Question', 'anspress-question-answer' ), array( __CLASS__, 'question_page' ), false );
 		ap_register_page( ap_opt( 'ask_page_slug' ), __( 'Ask', 'anspress-question-answer' ), array( __CLASS__, 'ask_page' ) );
-		ap_register_page( 'edit', __( 'Edit', 'anspress-question-answer' ), array( __CLASS__, 'edit_page' ), false );
 		ap_register_page( 'search', __( 'Search', 'anspress-question-answer' ), array( __CLASS__, 'search_page' ), false );
 	}
 
@@ -126,24 +125,14 @@ class AnsPress_Common_Pages
 	 * Output ask page template
 	 */
 	public static function ask_page() {
-		include ap_get_theme_location( 'ask.php' );
-	}
+		$post_id = ap_sanitize_unslash( 'id', 'r', false );
 
-	/**
-	 * Output edit page template
-	 */
-	public static function edit_page() {
-		$post_id = (int) get_query_var( 'edit_post_id' );
-		if ( ! ap_user_can_edit_question( $post_id ) ) {
-				echo '<p>'.esc_attr__( 'You do not have permission to access this page.', 'anspress-question-answer' ).'</p>';
-				return;
-		} else {
-			global $editing_post;
-			$editing_post = ap_get_post( $post_id );
-
-			// Include theme file.
-			include ap_get_theme_location( 'edit.php' );
+		if ( $post_id && ! ap_verify_nonce( 'edit-post-' . $post_id ) ) {
+			esc_attr_e( 'Something went wrong, please try again', 'anspress-question-answer' );
+			return;
 		}
+
+		include ap_get_theme_location( 'ask.php' );
 	}
 
 	/**

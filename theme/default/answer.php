@@ -55,6 +55,7 @@
 				<div class="ap-post-footer clearfix">
 					<?php ap_recent_post_activity(); ?>
 					<?php echo ap_post_status_message( ); // xss okay.	?>
+					<?php echo ap_comment_btn_html(); ?>
 				</div>
 			<?php endif; ?>
 			<?php ap_answer_the_comments(); ?>

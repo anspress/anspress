@@ -313,8 +313,8 @@ function ap_answers_link( $question_id = false ) {
  */
 function ap_post_edit_link( $_post ) {
 	$_post = ap_get_post( $_post );
-	$nonce = wp_create_nonce( 'nonce_edit_post_' . $_post->ID );
-	$edit_link = add_query_arg( array( 'ap_page' => 'edit', 'edit_post_id' => $_post->ID, '__nonce' => $nonce ), ap_base_page_link() );
+	$nonce = wp_create_nonce( 'edit-post-' . $_post->ID );
+	$edit_link = add_query_arg( array( 'id' => $_post->ID, '__nonce' => $nonce ), ap_get_link_to( 'ask' ) );
 	return apply_filters( 'ap_post_edit_link', $edit_link );
 }
 
@@ -558,10 +558,7 @@ function ap_responce_message( $id, $only_message = false ) {
 		'comment_success'  => array( 'type' => 'success', 'message' => __( 'Comment successfully posted.', 'anspress-question-answer' ) ),
 		'comment_edit_success'  => array( 'type' => 'success', 'message' => __( 'Comment updated successfully.', 'anspress-question-answer' ) ),
 		'comment_delete_success' => array( 'type' => 'success', 'message' => __( 'Comment deleted successfully.', 'anspress-question-answer' ) ),
-
-		'question_updated'              => array( 'type' => 'success', 'message' => __( 'Question updated successfully', 'anspress-question-answer' ) ),
 		'answer_submitted'              => array( 'type' => 'success', 'message' => __( 'Answer submitted successfully', 'anspress-question-answer' ) ),
-		'answer_updated'                => array( 'type' => 'success', 'message' => __( 'Answer updated successfully', 'anspress-question-answer' ) ),
 		'cannot_vote_own_post'          => array( 'type' => 'warning', 'message' => __( 'You cannot vote on your own question or answer.', 'anspress-question-answer' ) ),
 		'question_moved_to_trash'       => array( 'type' => 'success', 'message' => __( 'Question moved to trash.', 'anspress-question-answer' ) ),
 		'answer_moved_to_trash'         => array( 'type' => 'success', 'message' => __( 'Answer moved to trash.', 'anspress-question-answer' ) ),
