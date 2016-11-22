@@ -262,11 +262,4 @@ _.templateSettings = {
 	var apSnackbarView = new AnsPress.views.Snackbar();
 	$('body').append(apSnackbarView.render().$el);
 
-	$('[ap="postaction"]').click(function(){
-		if(!$(this).is('.checked') && !$(this).is('.loaded'))
-			AnsPress.showLoading(this);
-		$(this).toggleClass('checked');
-	});
-
-
 })(jQuery);

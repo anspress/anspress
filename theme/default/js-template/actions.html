@@ -1,11 +1,11 @@
-<# _.each(actions, function(action){ #>
+<# _.each(actions, function(action, key){ #>
 	<li>
-		<a href="#" title="<# if(action.title){ #>{{action.title}}<# } #>">{{action.label}}</a>
+		<a href="<# if(action.href){ #>{{{action.href}}}<# } #>" title="<# if(action.title){ #>{{action.title}}<# } #>" <# if(action.query){ #>ap-query="{{JSON.stringify(action.query)}}" ap-action="{{key}}"<# } #>>{{action.label}}</a>
 		<# if(action.sub){ #>
 			<ul class="ap-dropdown-menu">
 				<# _.each(actions.sub, function(s){ #>
 					<li>
-						<a href="#" title="<# if(s.title){ #>{{s.title}}<# } #>">{{s.label}}</a>
+						<a href="#" title="<# if(s.title){ #>{{s.title}}<# } #>" ap-action="{{key}}">{{s.label}}</a>
 					</li>
 				<# }); #>
 			</ul>

@@ -910,9 +910,9 @@
   border: none;
   box-shadow: none;
 }
-#anspress a {
-  text-decoration: none;
-  color: #2488B7;
+
+.entry-content a:visited, .comment-content a:visited {
+  color: inherit;
 }
 
 #anspress .ap-pull-right {
@@ -976,9 +976,6 @@
 #anspress .ap-pagination span {
   background: #eee;
 }
-#anspress .ap-notice {
-  display: block;
-}
 #anspress .border-top {
   border-top: solid 1px #eee;
 }
@@ -1039,29 +1036,6 @@
 }
 #anspress .ap-questions-tab > li:last-child a, #anspress .ap-answers-tab > li:last-child a {
   border-radius: 0 2px 2px 0;
-}
-#anspress .ap-notice {
-  background: none repeat scroll 0 0 #eee;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  border-radius: 2px;
-  display: block;
-  margin-top: 10px;
-  padding: 4px 15px;
-}
-#anspress .ap-notice.gray {
-  background: #F5F4F4;
-}
-#anspress .ap-notice.yellow {
-  background: #FFEAB1;
-}
-#anspress .ap-notice.red {
-  background: #FFB5B5;
-}
-#anspress .ap-notice.blue {
-  background: #E1F8FF;
-}
-#anspress .ap-notice i {
-  margin-right: 15px;
 }
 #anspress .ap-pending-notice {
   background: #F4AC20;
@@ -1208,7 +1182,7 @@ body ul ul#ap-user-menu-link li > a .count {
 }
 
 .ap-loading-icon {
-  background: no-repeat url(../images/loading.gif) rgba(255, 255, 255, 0.89) center/51%;
+  background: no-repeat url(../images/loading.gif) rgba(255, 255, 255, 0.89) center;
   width: 40px;
   height: 40px;
   display: block;
@@ -1538,16 +1512,11 @@ body ul ul#ap-user-menu-link li > a .count {
   border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: 3px;
   margin-left: 70px;
-  padding: 10px;
   font-size: 14px;
 }
 #anspress .ap-q-metas {
-  font-size: 12px;
-  margin-bottom: 10px;
   background: #fafafa;
   padding: 12px;
-  margin: -10px;
-  margin-bottom: 10px;
   border-bottom: solid 1px rgba(0, 0, 0, 0.1);
 }
 #anspress .ap-q-metas > span {
@@ -1567,11 +1536,13 @@ body ul ul#ap-user-menu-link li > a .count {
 #anspress .ap-q-content p:last-child {
   margin-bottom: 0;
 }
+#anspress .ap-q-inner {
+  padding: 15px;
+}
 #anspress .ap-a-cells {
   border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: 3px;
   margin-left: 70px;
-  padding: 10px;
   font-size: 14px;
 }
 #anspress .ap-question-meta {
@@ -1654,6 +1625,7 @@ body ul ul#ap-user-menu-link li > a .count {
   margin-top: -5px;
   margin-right: 5px;
   float: right;
+  font-size: 12px;
 }
 #anspress ul.ap-actions {
   padding: 0;
@@ -1674,17 +1646,23 @@ body ul ul#ap-user-menu-link li > a .count {
   margin-bottom: -20px;
   text-transform: uppercase;
 }
-.ap-content .ap-post-history {
-  color: #888;
-  display: block;
+
+.ap-post-footer {
   font-size: 13px;
-  margin-top: 10px;
+  color: #999;
+  padding: 10px;
+  border-top: solid 1px #eee;
 }
-.ap-content .ap-post-history > i {
-  font-size: 12px;
+.ap-post-footer > * {
+  float: left;
 }
-.ap-content :last-child {
-  margin-bottom: 0;
+.ap-post-footer a {
+  text-decoration: none;
+  color: #777;
+}
+.ap-post-footer .ap-pmsg {
+  border-left: solid 1px #ddd;
+  padding-left: 10px;
 }
 
 .ap-post-tags li a {
@@ -1798,6 +1776,10 @@ body ul ul#ap-user-menu-link li > a .count {
   left: 0;
   position: absolute;
   top: 0;
+}
+
+.ap-pmsg {
+  margin-left: 10px;
 }
 
 #anspress .ap-btn {

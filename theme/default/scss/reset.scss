@@ -36,10 +36,10 @@
 		border: none;
 		box-shadow: none;
 	}
-	a{
-		text-decoration: none;
-		color: $link-color;
-	}
+
+}
+.entry-content a:visited, .comment-content a:visited {
+	color: inherit;
 }
 #anspress{
 	.ap-pull-right{
@@ -110,10 +110,6 @@
 		}
 	}
 
-	.ap-notice{
-		display: block;
-	}
-
 	.border-top{
 		border-top: solid 1px $default-border-color;
 	}
@@ -177,31 +173,6 @@
 					border-radius: 0 2px 2px 0;
 				}
 			}
-		}
-	}
-
-	.ap-notice {
-	    background: none repeat scroll 0 0 #eee;
-	    border: 1px solid rgba(0, 0, 0, 0.1);
-	    border-radius: 2px;
-	    display: block;
-	    margin-top: 10px;
-	    padding: 4px 15px;
-
-		&.gray{
-			background: #F5F4F4;
-		}
-		&.yellow{
-			background: #FFEAB1;
-		}
-		&.red{
-			background: #FFB5B5;
-		}
-		&.blue{
-			background: #E1F8FF;
-		}
-		i{
-			margin-right: 15px;
 		}
 	}
 	.ap-pending-notice {
@@ -353,7 +324,7 @@ body ul ul#ap-user-menu-link{
 }
 
 .ap-loading-icon {
-	background: no-repeat url(../images/loading.gif) rgba(255, 255, 255, 0.89) center / 51%;
+	background: no-repeat url(../images/loading.gif) rgba(255, 255, 255, 0.89) center;
 	width: 40px;
 	height: 40px;
 	display: block;

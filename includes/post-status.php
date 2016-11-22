@@ -102,45 +102,45 @@ class AnsPress_Post_Status {
 }
 
 /**
+ * Post status message.
+ *
+ * @param mixed $post_id Post.
+ * @return string
+ * @since 4.0.0
+ */
+function ap_get_post_status_message( $post_id = false ) {
+	$post = ap_get_post( $post_id );
+	$post_type = 'question' === $post->post_type ? __( 'Question', 'anspress-question-answer' ) : __( 'Answer', 'anspress-question-answer' );
+
+	$ret = '';
+
+	if ( is_private_post( $post_id ) ) {
+		$ret = sprintf( __( '%s is marked as a private, only admin and post author can see.', 'anspress-question-answer' ), $post->post_type );
+	} elseif ( is_post_waiting_moderation( $post_id ) ) {
+		$ret = sprintf( __( '%s is awaiting for approval by moderator.', 'anspress-question-answer' ), $post->post_type );
+	} elseif ( is_post_closed( $post_id ) ) {
+		$ret = __( 'Question is closed for new answers', 'anspress-question-answer' );
+	} elseif ( 'trash' === $post->post_status ) {
+		$ret = sprintf( __( '%s has been trashed, you can delete it permanently from wp-admin.', 'anspress-question-answer' ), $post->post_type );
+	}
+
+	return apply_filters( 'ap_get_post_status_message',  $ret, $post_id );
+}
+
+/**
  * Return description of a post status.
  *
  * @param  boolean|integer $post_id Post ID.
  */
-function ap_post_status_description( $post_id = false ) {
-	$post = ap_get_post( $post_id );
-	$post_type = 'question' === $post->post_type ? __( 'Question', 'anspress-question-answer' ) : __( 'Answer', 'anspress-question-answer' );
+function ap_post_status_message( $post_id = false ) {
+	$ret = '<post-message>';
+	$msg = ap_get_post_status_message( $post_id );
 
-	if ( ap_have_parent_post( $post_id ) && 'answer' !== $post->post_type  ) : ?>
-		<div id="ap_post_status_desc_<?php echo esc_attr( $post_id ); ?>" class="ap-notice blue clearfix">
-			<?php echo ap_icon( 'link', true ) ?>
-			<span><?php printf( __( 'Question is asked for %s.', 'anspress-question-answer' ), '<a href="' . get_permalink( ap_get_post_field('post_parent') ) . '">' . get_the_title( ap_get_post_field('post_parent') ) . '</a>' ); ?></span>
-		</div>
-	<?php endif;
+	if ( ! empty( $msg ) ) {
+		$ret .= '<div class="ap-pmsg">' . $msg . '</div>';
+	}
 
-	if ( is_private_post( $post_id ) ) : ?>
-		<div id="ap_post_status_desc_<?php echo $post_id; ?>" class="ap-notice gray clearfix">
-			<i class="apicon-lock"></i>
-			<span><?php printf( __( '%s is marked as a private, only admin and post author can see.', 'anspress-question-answer' ), $post_type ); ?></span>
-		</div>
-	<?php endif;
+	$ret .= '</post-message>';
 
-	if ( is_post_waiting_moderation( $post_id ) ) : ?>
-		<div id="ap_post_status_desc_<?php echo $post_id; ?>" class="ap-notice yellow clearfix">
-			<i class="apicon-info"></i><span><?php printf( __( '%s is waiting for approval by moderator.', 'anspress-question-answer' ), $post_type ); ?></span>
-		</div>
-	<?php endif;
-
-	if ( is_post_closed( $post_id ) && $post->post_type != 'answer' ) : ?>
-		<div id="ap_post_status_desc_<?php echo $post_id; ?>" class="ap-notice red clearfix">
-			<?php echo ap_icon( 'cross', true ) ?>
-			<span><?php printf( __( '%s is closed for new answers', 'anspress-question-answer' ), $post_type ); ?></span>
-		</div>
-	<?php endif;
-
-	if ( $post->post_status == 'trash' ) : ?>
-		<div id="ap_post_status_desc_<?php echo $post_id; ?>" class="ap-notice red clearfix">
-			<?php echo ap_icon( 'cross', true ) ?>
-			<span><?php printf( __( '%s has been trashed, you can delete it permanently from wp-admin.', 'anspress-question-answer' ), $post_type ); ?></span>
-		</div>
-	<?php endif;
+	return $ret;
 }

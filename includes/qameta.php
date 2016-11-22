@@ -98,6 +98,7 @@ function ap_insert_qameta( $post_id, $args, $wp_error = false ) {
 	}
 
 	if ( false !== $inserted ) {
+		clean_post_cache( $post_id );
 		wp_cache_delete( $post_id, 'ap_qameta' );
 		return $post_id;
 	}

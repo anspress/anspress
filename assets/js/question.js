@@ -12,7 +12,8 @@
 		defaults:{
 			actionsLoaded: false,
 			actions: [],
-			hideSelect: ''
+			hideSelect: '',
+			postMessage: ''
 		}
 	});
 
@@ -26,10 +27,13 @@
 		initialize: function(options){
 			this.model.on('change:vote', this.voteUpdate, this);
 			this.model.on('change:hideSelect', this.selectToggle, this);
+			this.model.on('change:actions', this.renderPostActions, this);
+			this.model.on('change:postMessage', this.renderPostMessage, this);
 		},
 		events: {
 			'click [ap-vote] > a': 'voteClicked',
-			'click [ap="postaction"]': 'postActions',
+			'click [ap="actiontoggle"]': 'postActions',
+			'click [ap-action]': 'postAction',
 			'click [ap="select_answer"]': 'selectAnswer'
 		},
 		voteClicked: function(e){
@@ -93,7 +97,6 @@
 			var self = this;
 			var q = $.parseJSON($(e.target).attr('ap-query'));
 			q.ap_ajax_action = 'post_actions';
-
 			if(!this.model.get('actionsLoaded'))
 				AnsPress.ajax({
 					data: q,
@@ -108,7 +111,28 @@
 		renderPostActions: function(e){
 			var t = _.template($('#ap-template-actions').html());
 			this.$el.find('post-actions .ap-actions').html(t(this.model.toJSON()));
-			this.$el.find('post-actions li').hide().slideDown(200);
+		},
+		postAction: function(e){
+			e.preventDefault();
+			var self = this;
+			AnsPress.showLoading(e.target);
+
+			var action = $(e.target).attr('ap-action');
+			var q = $.parseJSON($(e.target).attr('ap-query'));
+			q.ap_ajax_action = 'action_'+action;
+
+			AnsPress.ajax({
+				data: q,
+				success: function(data){
+					AnsPress.hideLoading(e.target);
+					var actions = _.clone(self.model.get('actions'));
+					actions[action] = _.defaults(data.action, actions[action]);
+					self.model.set('actions', actions);
+
+					if(data.postMessage)
+						self.model.set('postMessage', data.postMessage);
+				}
+			});
 		},
 		selectAnswer: function(e){
 			e.preventDefault();
@@ -122,9 +146,11 @@
 					AnsPress.hideLoading(e.target);
 					if(data.success){
 						if(data.action === 'selected'){
+							self.$el.addClass('best-answer');
 							$(e.target).addClass('active').text(data.label);
 							AnsPress.trigger('answerToggle', [self.model, true]);
 						}else{
+							self.$el.removeClass('best-answer');
 							$(e.target).removeClass('active').text(data.label);
 							AnsPress.trigger('answerToggle', [self.model, false]);
 						}
@@ -137,6 +163,14 @@
 				this.$el.find('[ap="select_answer"]').addClass('hide');
 			else
 				this.$el.find('[ap="select_answer"]').removeClass('hide');
+		},
+		renderPostMessage: function(post){
+			var msg = post.get('postMessage');
+			if(!msg.class) msg.class = 'ap-pmsg';
+			if(!_.isEmpty(msg.text))
+				this.$el.find('post-message').html('<div class="'+msg.class+'">'+msg.text+'</div>');
+			else
+				this.$el.find('post-message').html('');
 		}
 	});
 
@@ -237,6 +271,12 @@
 					m.set('hideSelect', args[1]);
 			});
 		}
+	});
+
+	$('[ap="actiontoggle"]').click(function(){
+		if(!$(this).is('.checked') && !$(this).is('.loaded'))
+			AnsPress.showLoading(this);
+		$(this).toggleClass('checked');
 	});
 
 

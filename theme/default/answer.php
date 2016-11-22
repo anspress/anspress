@@ -49,11 +49,14 @@
 					do_action( 'ap_after_answer_content' );
 
 				?>
-				<?php if ( ap_user_can_read_answer( ) ) : ?>
-					<?php ap_recent_post_activity(); ?>
-					<?php ap_post_status_description( get_the_ID() ) ?>
-				<?php endif; ?>
+
 			</div>
+			<?php if ( ap_user_can_read_answer( ) ) : ?>
+				<div class="ap-post-footer clearfix">
+					<?php ap_recent_post_activity(); ?>
+					<?php echo ap_post_status_message( ); // xss okay.	?>
+				</div>
+			<?php endif; ?>
 			<?php ap_answer_the_comments(); ?>
 		</div>
 	</div>

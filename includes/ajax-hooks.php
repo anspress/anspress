@@ -26,7 +26,7 @@ class AnsPress_Ajax {
 		anspress()->add_action( 'ap_ajax_suggest_similar_questions', __CLASS__, 'suggest_similar_questions' );
 		anspress()->add_action( 'ap_ajax_set_featured', __CLASS__, 'set_featured' );
 		anspress()->add_action( 'ap_ajax_hover_card', __CLASS__, 'hover_card' );
-		anspress()->add_action( 'ap_ajax_close_question', __CLASS__, 'close_question' );
+		anspress()->add_action( 'ap_ajax_action_close', __CLASS__, 'close_question' );
 		anspress()->add_action( 'ap_ajax_toggle_best_answer', __CLASS__, 'toggle_best_answer' );
 		anspress()->add_action( 'ap_ajax_delete_post', __CLASS__, 'delete_post' );
 		anspress()->add_action( 'ap_ajax_permanent_delete_post', __CLASS__, 'permanent_delete_post' );
@@ -377,42 +377,29 @@ class AnsPress_Ajax {
 	 * Close question callback.
 	 */
 	public static function close_question() {
-		$args = ap_sanitize_unslash( 'args', 'p' );
+		$post_id = ap_sanitize_unslash( 'post_id', 'p' );
 
-		if ( ! ap_verify_nonce( 'close_' . $args[0] ) ) {
-			ap_ajax_json( 'something_wrong' );
+		// Check permission and nonce.
+		if ( ! is_user_logged_in() || ! check_ajax_referer( 'close_' . $post_id, 'nonce', false ) || ! ap_user_can_close_question() ) {
+			ap_ajax_json( array(
+				'success' => false,
+				'snackbar' => [ 'message' => __( 'You cannot close a question', 'anspress-question-answer' ) ],
+			));
 		}
 
-		// Check if user can close question.
-		if ( ! ap_user_can_close_question() ) {
-			ap_ajax_json( 'no_permission' );
-		}
-
-		$_post = ap_get_post( $args[0] );
-
-		$toggle = ap_toggle_close_question( $args[0] );
+		$_post = ap_get_post( $post_id );
+		$toggle = ap_toggle_close_question( $post_id );
 		$close_label = $_post->closed ? __( 'Close', 'anspress-question-answer' ) :  __( 'Open', 'anspress-question-answer' );
 		$close_title = $_post->closed ? __( 'Close this question for new answer.', 'anspress-question-answer' ) : __( 'Open this question for new answers', 'anspress-question-answer' );
 
-		ob_start();
-		ap_post_status_description( $_post->ID );
-		$html = ob_get_clean();
+		$message = 1 === $toggle ? __( 'Question closed', 'anspress-question-answer' ) : __( 'Question is opened', 'anspress-question-answer' );
 
 		$results = array(
-			'message' 		      => 1 === $toggle ? 'Question closed': 'Question is opened',
-			'message_type' 		  => 'success',
-			'action' 		        => 'question_closed',
-			'do' 			    		  => array(
-				'remove_if_exists'    => '#ap_post_status_desc_' . $_post->ID,
-				'updateText'          => [ '#close-btn-' . $_post->ID, $close_label ],
-			),
-			'html'              => $html,
+			'success'  => true,
+			'action'   => [ 'label' => $close_label, 'title' => $close_title ],
+			'snackbar' => [ 'message' => $message ],
+			'postMessage' => [ 'text' => ap_get_post_status_message( $post_id ) ]
 		);
-
-		if ( $toggle ) {
-			$results['do']['append_before'] = '#ap_post_actions_' . $_post->ID;
-			$results['html'] = $html;
-		}
 
 		ap_ajax_json( $results );
 	}

@@ -77,19 +77,13 @@
 								do_action( 'ap_after_question_content' );
 
 							?>
-
-							<?php ap_recent_post_activity(); ?>
-							<?php ap_post_status_description( get_the_ID() );	?>
-
-							<?php
-								/**
-								* ACTION: ap_after_question_actions.
-								*
-								* @since 	2.0
-								*/
-								do_action( 'ap_after_question_actions' );
-							?>
 						</div>
+
+						<div class="ap-post-footer clearfix">
+							<?php ap_recent_post_activity(); ?>
+							<?php echo ap_post_status_message( ); // xss okay.	?>
+						</div>
+
 						<!-- End ap-content-inner -->
 						<?php ap_question_the_comments(); ?>
 					</div>

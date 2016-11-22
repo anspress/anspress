@@ -319,31 +319,6 @@ function ap_post_edit_link( $_post ) {
 }
 
 /**
- * Returns edit post button html.
- *
- * @param boolean        $echo Echo or return.
- * @param integer|object $_post Post.
- * @return null|string
- * @since 2.0.1
- */
-function ap_edit_post_link_html( $echo = false, $_post = false ) {
-	$_post = ap_get_post( $_post );
-	$edit_link = ap_post_edit_link( $_post );
-	$output = '';
-
-	if ( 'question' === $_post->post_type && ap_user_can_edit_question( $_post->ID ) ) {
-		$output = "<a href='$edit_link' data-button='ap-edit-post' title='" . __( 'Edit this question', 'anspress-question-answer' ) . "' class='apEditBtn'>" . __( 'Edit', 'anspress-question-answer' ) . '</a>';
-	} elseif ( 'answer' === $_post->post_type && ap_user_can_edit_answer( $_post->ID ) ) {
-		$output = "<a href='$edit_link' data-button='ap-edit-post' title='" . __( 'Edit this answer', 'anspress-question-answer' ) . "' class='apEditBtn'>" . __( 'Edit', 'anspress-question-answer' ) . '</a>';
-	}
-
-	if ( ! $echo ) {
-		return $output;
-	}
-	echo $output; // xss ok.
-}
-
-/**
  * Trim strings.
  *
  * @param string $text String.

@@ -406,7 +406,7 @@ function ap_post_actions( $_post = null ) {
 
 		$actions['close'] = array(
 			'icon'  => 'apicon-check',
-			'query' => [ 'nonce' => $nonce, 'post_id' => $_post->ID, 'ap_ajax_action' => 'close_question' ],
+			'query' => [ 'nonce' => $nonce, 'post_id' => $_post->ID ],
 			'label' => $close_label,
 			'title' => $close_title,
 		);
@@ -419,10 +419,17 @@ function ap_post_actions( $_post = null ) {
 
 	$actions['status'] = ap_post_status_btn_args( $_post );
 
+	// Edit link.
+	$actions['status'] = array(
+		'label' => __( 'Edit', 'anspress-question-answer' ),
+		'href'  => ap_post_edit_link( $_post ),
+	);
+
 	// Edit question link.
 	/*if ( ap_user_can_edit_question( $_post->ID ) && 'question' === $_post->post_type ) {
 	  $actions['dropdown']['edit_question'] = ap_edit_post_link_html();
-	}
+	}*/
+	/*
 
 	// Edit answer link.
 	if ( ap_user_can_edit_answer( $_post->ID ) && $_post->post_type == 'answer' ) {
@@ -482,7 +489,7 @@ function ap_post_actions_buttons() {
 	]);
 	echo '<post-actions class="ap-dropdown">';
 
-	echo '<button class="apicon-dots ap-actions-handle"></button><label><input type="checkbox" ap="postaction" ap-query="' . esc_js( $args ) . '"><ul class="ap-actions"></ul></label></post-actions>';
+	echo '<button class="apicon-dots ap-actions-handle"></button><label><input type="checkbox" ap="actiontoggle" ap-query="' . esc_js( $args ) . '"><ul class="ap-actions"></ul></label></post-actions>';
 }
 
 /**
@@ -875,7 +882,7 @@ function ap_post_status_btn_args( $_post = null ) {
 		$allowed_status = [ 'publish', 'trash', 'private_post', 'moderate' ];
 		$status_labels = [];
 
-		foreach( (array) $allowed_status as $s ) {
+		foreach ( (array) $allowed_status as $s ) {
 			if ( isset( $wp_post_statuses[ $s ] ) ) {
 				$status_labels[ $s ] = esc_attr( $wp_post_statuses[ $s ]->label );
 			}
