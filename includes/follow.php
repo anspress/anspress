@@ -68,7 +68,7 @@ function ap_remove_follower($current_user_id, $user_to_follow){
 	$row = ap_remove_subscriber($user_to_follow, $current_user_id, 'u_all');
 
 	if($row !== false)
-		do_action('ap_removed_follower', $current_user_id, $user_to_follow);
+		do_action('ap_removed_follower', $user_to_follow, $current_user_id);
 
 	return $row;
 }
