@@ -235,20 +235,29 @@
 			AnsPress.ajax({
 				data: $(e.target).serialize(),
 				success: function(data){
+					// Redirect if have redirect property.
+					if(data.redirect){
+						window.location = data.redirect;
+						return;
+					}
+
 					AnsPress.hideLoading($(e.target).find('.ap-btn-submit'));
 					// Clear upload files
 					if(AnsPress.uploader) AnsPress.uploader.splice();
 
 					if(data.success){
+						$('ap-answers-w').show();
 						// Clear editor contents
 						$('#description').val('');
 						if (typeof tinyMCE !== 'undefined' && data.success)
 							tinyMCE.activeEditor.setContent('');
 
 						// Append anwer to the list.
-						$('#answers').append($(data['html']).hide());
+						$('ap-answers').append($(data['html']).hide());
 						$(data.div_id).slideDown(500);
 						self.model.add({'ID': data.ID});
+
+						$('[ap-answecount-text]').text(data.answers_count.text);
 					}
 
 					// If form have errors then show it
@@ -284,7 +293,7 @@
 
 var apposts = new AnsPress.collections.Posts();
 
-var singleQuestionView = new AnsPress.views.SingleQuestion({ model: apposts, el: '#ap-single' });
+var singleQuestionView = new AnsPress.views.SingleQuestion({ model: apposts, el: '#anspress' });
 singleQuestionView.render();
 
 

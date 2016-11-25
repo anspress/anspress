@@ -1498,7 +1498,7 @@ body ul ul#ap-user-menu-link li > a .count {
 }
 
 #anspress .best-answer .ap-q-metas {
-  background: #e9f5e9;
+  background: #DCEDC8;
 }
 #anspress .ap-q .ap-avatar {
   margin-right: 0x;
@@ -1518,9 +1518,17 @@ body ul ul#ap-user-menu-link li > a .count {
   background: #fafafa;
   padding: 12px;
   border-bottom: solid 1px rgba(0, 0, 0, 0.1);
+  font-size: 13px;
 }
-#anspress .ap-q-metas > span {
-  margin-right: 10px;
+#anspress .ap-q-metas a {
+  color: inherit;
+  text-decoration: none;
+  font-weight: 600;
+}
+#anspress .ap-q-metas > .ap-post-history {
+  margin-left: 10px;
+  border-left: solid 1px #ccc;
+  padding-left: 15px;
 }
 #anspress .ap-q-metas .ap-avatar {
   margin-right: 10px;
@@ -1608,25 +1616,6 @@ body ul ul#ap-user-menu-link li > a .count {
   font-size: 20px;
   margin-bottom: 14px;
 }
-#anspress post-actions {
-  float: right;
-  margin-top: -5px;
-}
-#anspress button.ap-actions-handle {
-  font-size: 16px;
-  padding: 2px 6px !important;
-  line-height: 24px;
-  height: 26px;
-}
-#anspress button.ap-actions-handle:active, #anspress button.ap-actions-handle:focus {
-  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1);
-}
-#anspress a.ap-btn-select {
-  margin-top: -5px;
-  margin-right: 5px;
-  float: right;
-  font-size: 12px;
-}
 #anspress ul.ap-actions {
   padding: 0;
   list-style: none;
@@ -1650,8 +1639,7 @@ body ul ul#ap-user-menu-link li > a .count {
 .ap-post-footer {
   font-size: 13px;
   color: #999;
-  padding: 10px;
-  border-top: solid 1px #eee;
+  border-top: solid 1px rgba(0, 0, 0, 0.1);
 }
 .ap-post-footer > * {
   float: left;
@@ -1664,15 +1652,31 @@ body ul ul#ap-user-menu-link li > a .count {
   border-left: solid 1px #ddd;
   padding-left: 10px;
 }
-
-a.ap-btn-comments {
+.ap-post-footer .ap-btn {
+  padding: 6px 10px;
+  border: none;
+  height: 30px;
+  border-radius: 0;
+  border-right: solid 1px #ddd;
+  font-size: 12px;
+}
+.ap-post-footer .ap-btn.active {
+  background: none;
+}
+.ap-post-footer .ap-btn:hover {
+  border-color: #ddd;
+}
+.ap-post-footer .ap-btn-select.active {
+  background: #8BC34A;
+  color: #fff;
+  border-right: none;
+  box-shadow: none;
+}
+.ap-post-footer .ap-btn-comments {
   float: right;
-  font-weight: bold;
-  font-size: 11px;
-  padding: 3px 7px;
-  border-radius: 2px;
-  margin: -3px 0;
-  border: solid 1px #ddd;
+  margin-right: 0;
+  border-right: none;
+  border-left: solid 1px #ddd;
 }
 
 .ap-post-tags li a {
@@ -1776,6 +1780,10 @@ a.ap-btn-comments {
   padding: 0;
 }
 
+#answer_form {
+  padding: 10px;
+}
+
 #answer-form-c {
   margin-right: 40px;
   margin-top: 20px;
@@ -1789,10 +1797,15 @@ a.ap-btn-comments {
 }
 
 .ap-pmsg {
-  margin-left: 10px;
+  display: table;
+  margin-top: 12px;
+  padding: 3px 5px;
+  font-size: 13px;
+  border-radius: 2px;
+  background: #FFECB3;
 }
 
-#anspress .ap-btn {
+.ap-btn {
   background-image: linear-gradient(#ffffff, #fcfcfc);
   border: 1px solid rgba(0, 0, 0, 0.2);
   border-radius: 2px;
@@ -1803,31 +1816,32 @@ a.ap-btn-comments {
   text-decoration: none;
   vertical-align: middle;
 }
-#anspress .ap-btn-small {
+.ap-btn-small {
   padding: 2px 8px;
 }
-#anspress .ap-btn.ap-btn-view-all {
+.ap-btn.ap-btn-view-all {
   display: block;
   margin-top: 30px;
   text-align: center;
   text-transform: uppercase;
 }
-#anspress .ap-btn:hover {
+.ap-btn:hover {
   background: none repeat scroll 0 0 #f5f5f5;
   border-color: rgba(0, 0, 0, 0.2);
 }
-#anspress .ap-btn.active {
+.ap-btn.active {
   background: #eee;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.2) inset;
 }
-#anspress .ap-vote {
+
+.ap-vote {
   background-clip: padding-box;
   color: #428bca;
   font-size: 14px;
   font-weight: 600;
   position: relative;
 }
-#anspress .ap-vote a {
+.ap-vote a {
   background-image: linear-gradient(#ffffff, #fcfcfc);
   border: 1px solid #ddd;
   border-radius: 3px;
@@ -1841,14 +1855,14 @@ a.ap-btn-comments {
   text-decoration: none;
   width: 27px;
 }
-#anspress .ap-vote a:focus {
+.ap-vote a:focus {
   outline: none;
 }
-#anspress .ap-vote a.disable {
+.ap-vote a.disable {
   cursor: default;
   opacity: 0.3;
 }
-#anspress .ap-vote .net-vote-count {
+.ap-vote .net-vote-count {
   color: #333;
   display: block;
   font-size: 13px;
@@ -1858,71 +1872,18 @@ a.ap-btn-comments {
   padding: 0 1px;
   text-align: center;
 }
-#anspress .ap-vote .ap-vote-fade {
+.ap-vote .ap-vote-fade {
   bottom: 0;
   position: absolute;
   top: 0;
   width: 100%;
 }
-#anspress .ap-radio-btn {
-  background: none repeat scroll 0 0 #ddd;
-  border: 2px solid #ddd;
-  border-radius: 8px;
-  display: block;
-  width: 30px;
-  height: 16px;
-  position: relative;
-  cursor: pointer;
-}
-#anspress .ap-radio-btn:before {
-  background: none repeat scroll 0 0 #fff;
-  border-radius: 50%;
-  content: "";
-  display: block;
-  height: 12px;
-  width: 12px;
-  position: absolute;
-  left: 0;
-}
-#anspress .ap-radio-btn:focus {
-  outline: none;
-}
-#anspress .ap-radio-btn.active {
-  background: #56C8F5;
-  border-color: #56C8F5;
-}
-#anspress .ap-radio-btn.active:before {
-  right: 0;
-  left: auto;
-}
-#anspress .ap-btn-toggle {
-  display: inline-block;
-}
-#anspress .ap-btn-toggle span {
-  font-size: 25px;
-  color: #888;
-  line-height: 1.6;
-}
-#anspress .ap-btn-toggle .apicon-toggle-on {
-  display: none;
-}
-#anspress .ap-btn-toggle .apicon-toggle-off {
-  display: inline;
-}
-#anspress .ap-btn-toggle.active .apicon-toggle-on {
-  display: inline;
-  color: #56C8F5;
-}
-#anspress .ap-btn-toggle.active .apicon-toggle-off {
-  display: none;
-}
-#anspress .ap-btn-toggle:focus {
-  outline: none;
-}
-#anspress .ap-subscribe-btn {
+
+.ap-subscribe-btn {
   margin-bottom: 5px;
 }
-#anspress .ap-btn-counter {
+
+.ap-btn-counter {
   background: #fff none repeat scroll 0 0;
   border: 1px solid #ddd;
   border-radius: 2px;
@@ -1932,7 +1893,7 @@ a.ap-btn-comments {
   position: relative;
   vertical-align: middle;
 }
-#anspress .ap-btn-counter:before {
+.ap-btn-counter:before {
   border-color: transparent #ddd transparent transparent;
   border-image: none;
   border-style: solid;
@@ -1943,7 +1904,7 @@ a.ap-btn-comments {
   position: absolute;
   top: 6px;
 }
-#anspress .ap-btn-counter:after {
+.ap-btn-counter:after {
   border-color: transparent #fff transparent transparent;
   border-image: none;
   border-style: solid;
@@ -1954,7 +1915,8 @@ a.ap-btn-comments {
   position: absolute;
   top: 6px;
 }
-#anspress .flag-btn > span {
+
+.flag-btn > span {
   background: #f1f1f1 none repeat scroll 0 0;
   color: #777;
   font-size: 12px;
@@ -2242,6 +2204,7 @@ a.ap-btn-comments {
   cursor: pointer;
   display: block;
   min-height: 120px;
+  margin: 10px;
 }
 #anspress .ap-attachment {
   border: 2px solid #e3e1e1;
@@ -3187,15 +3150,6 @@ a.ap-btn-comments {
   display: inline-block;
   font-size: 14px;
 }
-#anspress .ap-dropdown > a, #anspress .ap-dropdown > button {
-  background-color: white;
-  border: 1px solid #ccc;
-  padding: 6px 20px 6px 10px;
-  border-radius: 2px;
-  display: inline-block;
-  color: black;
-  text-decoration: none;
-}
 #anspress .ap-dropdown input[type=checkbox] {
   position: absolute;
   display: block;
@@ -3227,6 +3181,7 @@ a.ap-btn-comments {
   background-color: white;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.175);
   margin-top: 4px;
+  z-index: 999;
 }
 #anspress .ap-dropdown input[type=checkbox]:checked + ul {
   display: block;

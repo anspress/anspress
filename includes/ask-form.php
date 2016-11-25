@@ -107,26 +107,26 @@ function ap_get_ask_form_fields( $post_id = false ) {
 	if ( ap_show_captcha_to_user() ) {
 		// Show recpatcha if key exists and enabled.
 		if ( ap_opt( 'recaptcha_site_key' ) == '' ) {
-			$reCaptcha_html = '<div class="ap-notice red">' . __( 'reCaptach keys missing, please add keys', 'anspress-question-answer' ) . '</div>';
+			$html = '<div class="ap-notice red">' . __( 'reCaptach keys missing, please add keys', 'anspress-question-answer' ) . '</div>';
 		} else {
 
-			$reCaptcha_html = '<div class="g-recaptcha" id="recaptcha" data-sitekey="' . ap_opt( 'recaptcha_site_key' ) . '"></div>';
+			$html = '<div class="g-recaptcha" id="recaptcha" data-sitekey="' . ap_opt( 'recaptcha_site_key' ) . '"></div>';
 
-			$reCaptcha_html .= '<script type="text/javascript" src="https://www.google.com/recaptcha/api.js?hl=' . get_locale() . '&onload=onloadCallback&render=explicit" async defer></script>';
+			$html .= '<script type="text/javascript" src="https://www.google.com/recaptcha/api.js?hl=' . get_locale() . '&onload=onloadCallback&render=explicit" async defer></script>';
 
-			$reCaptcha_html .= '<script type="text/javascript">';
-			$reCaptcha_html .= 'var onloadCallback = function() {';
-			$reCaptcha_html .= 'widgetId1 = grecaptcha.render("recaptcha", {';
-			$reCaptcha_html .= '"sitekey" : "' . ap_opt( 'recaptcha_site_key' ) . '"';
-			$reCaptcha_html .= '});';
-			$reCaptcha_html .= '};</script>';
+			$html .= '<script type="text/javascript">';
+			$html .= 'var onloadCallback = function() {';
+			$html .= 'widgetId1 = grecaptcha.render("recaptcha", {';
+			$html .= '"sitekey" : "' . ap_opt( 'recaptcha_site_key' ) . '"';
+			$html .= '});';
+			$html .= '};</script>';
 		}
 
 		$fields[] = array(
 			'name'  => 'captcha',
 			'type'  => 'custom',
 			'order' => 100,
-			'html' 	=> $reCaptcha_html,
+			'html' 	=> $html,
 		);
 	}
 
@@ -182,6 +182,14 @@ function ap_ask_form( $post_id = false ) {
 	// If post_id is empty then its not editing.
 	if ( empty( $post_id ) ) {
 		$editing = false;
+	}
+
+	$_post = ap_get_post( $post_id );
+
+	// Check if valid post type.
+	if ( $editing && 'question' !== $_post->post_type ) {
+		echo '<p>' . esc_attr__( 'Post you are trying to edit is not a question.', 'anspress-question-answer' ) . '</p>';
+		return;
 	}
 
 	// Ask form arguments.

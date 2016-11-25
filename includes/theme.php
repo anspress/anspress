@@ -32,15 +32,13 @@ function ap_page_title() {
 		} else {
 			$new_title = ap_question_title_with_solved_prefix();
 		}
-	} elseif ( is_ap_edit() ) {
-		$new_title = __( 'Edit post', 'anspress-question-answer' );
 	} elseif ( is_ap_search() ) {
 		$new_title = sprintf( ap_opt( 'search_page_title' ), sanitize_text_field( get_query_var( 'ap_s' ) ) );
 	} elseif ( is_ask() ) {
 		$new_title = ap_opt( 'ask_page_title' );
-	} elseif ( '' == $current_page && ! is_question() && '' == get_query_var( 'question_name' ) ) {
+	} elseif ( '' === $current_page && ! is_question() && '' == get_query_var( 'question_name' ) ) {
 		$new_title = ap_opt( 'base_page_title' );
-	} elseif ( get_query_var( 'parent' ) != '' ) {
+	} elseif ( get_query_var( 'parent' ) !== '' ) {
 		$new_title = sprintf( __( 'Discussion on "%s"', 'anspress-question-answer' ), get_the_title( get_query_var( 'parent' ) ) );
 	} elseif ( isset( $pages[ $current_page ]['title'] ) ) {
 		$new_title = $pages[ $current_page ]['title'];
@@ -51,42 +49,6 @@ function ap_page_title() {
 	$new_title = apply_filters( 'ap_page_title', $new_title );
 
 	return $new_title;
-}
-
-/**
- * Get current answer or question id is being edited
- * @return integer|false
- */
-function ap_edit_post_id() {
-	if ( is_anspress() && get_query_var( 'edit_post_id' ) ) {
-		return get_query_var( 'edit_post_id' );
-	}
-
-	return false;
-}
-
-/**
- * Check if current page is edit page
- * @return boolean
- */
-function is_ap_edit() {
-	if ( is_anspress() && get_query_var( 'edit_post_id' ) ) {
-		return true;
-	}
-
-	return false;
-}
-
-/**
- * Check if current page is revision page
- * @return boolean
- */
-function is_ap_revision() {
-	if ( is_anspress() && get_query_var( 'ap_page' ) == 'revision' ) {
-		return true;
-	}
-
-	return false;
 }
 
 /**
@@ -482,9 +444,8 @@ function ap_post_actions_buttons() {
 		'post_id' => get_the_ID(),
 		'nonce'   => wp_create_nonce( 'post-actions-' . get_the_ID() ),
 	]);
-	echo '<post-actions class="ap-dropdown">';
 
-	echo '<button class="apicon-dots ap-actions-handle"></button><label><input type="checkbox" ap="actiontoggle" ap-query="' . esc_js( $args ) . '"><ul class="ap-actions"></ul></label></post-actions>';
+	echo '<post-actions class="ap-dropdown"><button class="ap-btn apicon-dots ap-actions-handle"></button><label><input type="checkbox" ap="actiontoggle" ap-query="' . esc_js( $args ) . '"><ul class="ap-actions"></ul></label></post-actions>';
 }
 
 /**
@@ -728,12 +689,12 @@ function ap_assets( ) {
 		),
 	);
 
-	if ( is_ask() || is_ap_edit() ) {
+	if ( is_ask() || ap_current_page() === 'edit' ) {
 		$assets['js']['ask'] = [ 'dep' => [ 'anspress-common' ] , 'footer' => true ];
 		$assets['js']['upload'] = [ 'dep' => [ 'plupload', 'anspress-common' ] , 'footer' => true ];
 	}
 
-	if ( is_question() ) {
+	if ( is_question() || ap_current_page() === 'edit' ) {
 		$assets['js']['question'] = [ 'dep' => [ 'anspress-common' ], 'footer' => true ];
 	}
 
@@ -859,7 +820,7 @@ function ap_select_answer_btn_html( $_post = null ) {
 		$hide = true;
 	}
 
-	return '<a href="#" class="ap-btn-select ap-btn ap-btn-small' . ( $active ? ' active' : '' ) . ( $hide ? ' hide' : '' ) . '" ap="select_answer" ap-query="' . $q . '" title="' . $title . '">' . $label . '</a>';
+	return '<a href="#" class="ap-btn-select ap-btn ' . ( $active ? ' active' : '' ) . ( $hide ? ' hide' : '' ) . '" ap="select_answer" ap-query="' . $q . '" title="' . $title . '">' . $label . '</a>';
 }
 
 /**

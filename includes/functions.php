@@ -307,14 +307,15 @@ function ap_answers_link( $question_id = false ) {
 /**
  * Return edit link for question and answer.
  *
- * @param integer|object $_post Post.
+ * @param mixed $_post Post.
  * @return string
  * @since 2.0.1
  */
 function ap_post_edit_link( $_post ) {
 	$_post = ap_get_post( $_post );
 	$nonce = wp_create_nonce( 'edit-post-' . $_post->ID );
-	$edit_link = add_query_arg( array( 'id' => $_post->ID, '__nonce' => $nonce ), ap_get_link_to( 'ask' ) );
+	$base_page = 'question' === $_post->post_type ? ap_get_link_to( 'ask' ) : ap_get_link_to( 'edit' );
+	$edit_link = add_query_arg( array( 'id' => $_post->ID, '__nonce' => $nonce ), $base_page );
 	return apply_filters( 'ap_post_edit_link', $edit_link );
 }
 
@@ -517,7 +518,7 @@ function ap_send_json( $result = array() ) {
 	header( 'Content-Type: text/html; charset=' . get_option( 'blog_charset' ) );
 	$result['is_ap_ajax'] = true;
 	$message_type = isset( $result['message_type'] ) ? $result['message_type'] : 'success';
-	$json = '<div id="ap-response">' . wp_json_encode( $result, JSON_HEX_QUOT | JSON_HEX_TAG ) . '</div>';
+	$json = '<div id="ap-response">' . wp_json_encode( $result, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP ) . '</div>';
 	wp_die( $json ); // xss ok.
 }
 
@@ -558,7 +559,6 @@ function ap_responce_message( $id, $only_message = false ) {
 		'comment_success'  => array( 'type' => 'success', 'message' => __( 'Comment successfully posted.', 'anspress-question-answer' ) ),
 		'comment_edit_success'  => array( 'type' => 'success', 'message' => __( 'Comment updated successfully.', 'anspress-question-answer' ) ),
 		'comment_delete_success' => array( 'type' => 'success', 'message' => __( 'Comment deleted successfully.', 'anspress-question-answer' ) ),
-		'answer_submitted'              => array( 'type' => 'success', 'message' => __( 'Answer submitted successfully', 'anspress-question-answer' ) ),
 		'cannot_vote_own_post'          => array( 'type' => 'warning', 'message' => __( 'You cannot vote on your own question or answer.', 'anspress-question-answer' ) ),
 		'question_moved_to_trash'       => array( 'type' => 'success', 'message' => __( 'Question moved to trash.', 'anspress-question-answer' ) ),
 		'answer_moved_to_trash'         => array( 'type' => 'success', 'message' => __( 'Answer moved to trash.', 'anspress-question-answer' ) ),

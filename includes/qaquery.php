@@ -683,10 +683,8 @@ function ap_latest_post_activity_html( $post_id = false, $answer_activities = fa
 		$activity['date'] = get_gmt_from_date( $activity['date'] );
 	}
 
-	if ( empty( $activity ) ) {
-		$activity['date'] 	 = get_post_time( 'U', true, $post_id );
-		$activity['user_id'] = $_post->post_author;
-		$activity['type'] 	 = 'new_' . $_post->post_type;
+	if ( false === $answer_activities && in_array( $activity['type'], [ 'new_answer', 'new_question' ], true ) ) {
+		return;
 	}
 
 	$html = '';

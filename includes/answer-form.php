@@ -158,7 +158,7 @@ function ap_answer_form( $question_id, $editing = false ) {
 	}
 
 	global $editing_post;
-	$answer_id = $editing ? (int) $_REQUEST['edit_post_id'] : false;
+	$answer_id = $editing ? (int) ap_sanitize_unslash( 'id', 'r' ) : false;
 
 	$args = array(
 		'name'              => 'answer_form',
@@ -261,7 +261,7 @@ function ap_save_answer( $question_id, $args, $wp_error = false) {
 	return $post_id;
 }
 
-function ap_answer_post_ajax_response( $question_id, $answer_id ){
+function ap_answer_post_ajax_response( $question_id, $answer_id ) {
 	$question = ap_get_post( $question_id );
 	// Get existing answer count.
 	$current_ans = ap_count_published_answers( $question_id );
@@ -281,30 +281,23 @@ function ap_answer_post_ajax_response( $question_id, $answer_id ){
 	global $withcomments;
 	$withcomments = true;
 
-	if ( $current_ans == 1 ) {
-		$answers = ap_get_answers( array( 'question_id' => $question_id ) );
-		ap_get_template_part( 'answers' );
-	} else {
-		$answers = ap_get_answers( array( 'p' => $answer_id ) );
-		while ( ap_have_answers() ) : ap_the_answer();
-			ap_get_template_part( 'answer' );
-		endwhile;
-	}
+	$answers = ap_get_answers( array( 'p' => $answer_id ) );
+	while ( ap_have_answers() ) : ap_the_answer();
+		ap_get_template_part( 'answer' );
+	endwhile;
 
 	$html = ob_get_clean();
-
-	$count_label = sprintf( _n( '1 Answer', '%d Answers', $current_ans, 'anspress-question-answer' ), $current_ans );
+	$count_label = sprintf( _n( '%d Answer', '%d Answers', $current_ans, 'anspress-question-answer' ), $current_ans );
 
 	$result = array(
-		'success' 		   => true,
-		'ID' 		    => $answer_id,
-		'action' 		    => 'new_answer',
-		'div_id' 		    => '#post-'.get_the_ID(),
-		'can_answer' 	 => ap_user_can_answer( $post->ID ),
-		'html' 			     => $html,
-		'message' 		   => 'answer_submitted',
-		'do' 			       => 'clearForm',
-		'view'			      => array( 'answer_count' => $current_ans, 'answer_count_label' => $count_label ),
+		'success'       => true,
+		'ID'            => $answer_id,
+		'action'        => 'new_answer',
+		'div_id'        => '#post-' . get_the_ID(),
+		'can_answer'    => ap_user_can_answer( $post->ID ),
+		'html'          => $html,
+		'snackbar'      => [ 'message' => __( 'Answer submitted successfully', 'anspress-question-answer' ) ],
+		'answers_count' => [ 'text' => $count_label, 'number' => $current_ans ],
 	);
 
 	ap_ajax_json( $result );

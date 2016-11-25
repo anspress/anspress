@@ -378,7 +378,7 @@ function ap_comment_btn_html( $_post = null ) {
 	$nonce = wp_create_nonce( 'comment_form_nonce' );
 	$comment_count = get_comments_number( $_post->ID );
 
-	$output = '<a href="#comments-' . $_post->ID . '" class="ap-btn-comments" data-action="ajax_btn" data-query="load_comments::' . $nonce . '::' . $_post->ID . '">' . sprintf( _n( '%d Comment', '%d Comments', $comment_count, 'anspress-question-answer' ), $comment_count ) . '</a>';
+	$output = '<a href="#comments-' . $_post->ID . '" class="ap-btn ap-btn-comments" data-action="ajax_btn" data-query="load_comments::' . $nonce . '::' . $_post->ID . '">' . sprintf( _n( '%d Comment', '%d Comments', $comment_count, 'anspress-question-answer' ), $comment_count ) . '</a>';
 
 	return $output;
 	// }

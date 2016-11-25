@@ -51,7 +51,7 @@
 									);
 								?>
 							</span>
-							<?php ap_post_actions_buttons() ?>
+							<?php ap_recent_post_activity(); ?>
 						</div>
 
 						<!-- Start ap-content-inner -->
@@ -68,6 +68,8 @@
 								<?php the_content(); ?>
 							</div>
 
+							<?php echo ap_post_status_message( ); // xss okay.	?>
+
 							<?php
 								/**
 								* ACTION: ap_after_question_content.
@@ -77,11 +79,11 @@
 								do_action( 'ap_after_question_content' );
 
 							?>
+
 						</div>
 
 						<div class="ap-post-footer clearfix">
-							<?php ap_recent_post_activity(); ?>
-							<?php echo ap_post_status_message( ); // xss okay.	?>
+							<?php ap_post_actions_buttons() ?>
 							<?php echo ap_comment_btn_html( ); ?>
 						</div>
 

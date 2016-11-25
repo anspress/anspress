@@ -7,17 +7,7 @@
 		position: relative;
 		display: inline-block;
 		font-size: 14px;
-		> {
-			a, button {
-				background-color: white;
-				border: 1px solid #ccc;
-				padding: 6px 20px 6px 10px;
-				border-radius: 2px;
-				display: inline-block;
-				color: black;
-				text-decoration: none;
-			}
-		}
+
 		input[type=checkbox] {
 			position: absolute;
 			display: block;
@@ -49,6 +39,7 @@
 			background-color: white;
 			box-shadow: 0 3px 6px rgba(0, 0, 0, 0.175);
 			margin-top: 4px;
+			z-index: 999;
 		}
 		input[type=checkbox]:checked + ul {
 			display: block;

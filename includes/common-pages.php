@@ -22,6 +22,7 @@ class AnsPress_Common_Pages
 		ap_register_page( ap_opt( 'question_page_slug' ), __( 'Question', 'anspress-question-answer' ), array( __CLASS__, 'question_page' ), false );
 		ap_register_page( ap_opt( 'ask_page_slug' ), __( 'Ask', 'anspress-question-answer' ), array( __CLASS__, 'ask_page' ) );
 		ap_register_page( 'search', __( 'Search', 'anspress-question-answer' ), array( __CLASS__, 'search_page' ), false );
+		ap_register_page( 'edit', __( 'Edit Answer', 'anspress-question-answer' ), array( __CLASS__, 'edit_page' ), false );
 	}
 
 	/**
@@ -147,6 +148,22 @@ class AnsPress_Common_Pages
 			$questions = ap_get_questions( array( 's' => $keywords ) );
 			include( ap_get_theme_location( 'search.php' ) );
 		}
+	}
+
+	/**
+	 * Output edit page template
+	 */
+	public static function edit_page() {
+		$post_id = (int) ap_sanitize_unslash( 'id', 'r' );
+		if ( empty( $post_id ) || ! ap_user_can_edit_answer( $post_id ) ) {
+				echo '<p>' . esc_attr__( 'Sorry, you cannot edit this answer.', 'anspress-question-answer' ) . '</p>';
+				return;
+		}
+
+		global $editing_post;
+		$editing_post = ap_get_post( $post_id );
+
+		ap_answer_form( $editing_post->post_parent, true );
 	}
 
 	/**

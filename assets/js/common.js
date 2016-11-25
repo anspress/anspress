@@ -25,7 +25,7 @@ window.AnsPress = _.extend({
 	},
 	isJSONString: function(str) {
 		try {
-			return JSON.parse(str);
+			return jQuery.parseJSON(str);
 		} catch (e) {
 			return false;
 		}
