@@ -39,7 +39,9 @@ class Answers_Query extends WP_Query {
 	public function __construct( $args = array() ) {
 		global $answers;
 
-		$paged = (get_query_var( 'paged' )) ? get_query_var( 'paged' ) : 1;
+		$paged = get_query_var( 'answer_id' ) ? ap_get_answer_position_paged( ) : get_query_var( 'ap_paged', 1 );
+		set_query_var( 'ap_paged', $paged );
+
 		$defaults = array(
 			'question_id'           => get_question_id(),
 			'ap_query'      				=> true,
@@ -255,14 +257,6 @@ function ap_answer_the_object() {
 	return $answers->post;
 }
 
-
-
-
-
-
-
-
-
 /**
  * Check if user can view current answer
  *
@@ -292,7 +286,8 @@ function ap_answer_the_comments() {
  */
 function ap_answers_the_pagination() {
 	global $answers;
-	ap_pagination( false, $answers->max_num_pages );
+	$paged = (get_query_var( 'ap_paged' )) ? get_query_var( 'ap_paged' ) : 1;
+	ap_pagination( $paged, $answers->max_num_pages, '?ap_paged=%#%', get_permalink( get_question_id() ) .'?ap_paged=%#%' );
 }
 
 
@@ -357,4 +352,70 @@ function ap_unselect_answer( $post_id ) {
 	if ( ap_opt( 'close_selected' ) ) {
 		wp_update_post( array( 'ID' => $post->post_parent, 'post_status' => 'publish' ) );
 	}
+}
+
+/**
+ * Return paged position of answer.
+ *
+ * @param boolean|integer $question_id Question ID.
+ * @param boolean|integer $answer_id Answer ID.
+ * @return integer
+ * @since 4.0.0
+ */
+function ap_get_answer_position_paged( $question_id = false, $answer_id = false ) {
+	global $wpdb;
+
+	if ( false === $question_id ) {
+		$question_id = get_question_id();
+	}
+
+	if ( false === $answer_id ) {
+		$answer_id = get_query_var( 'answer_id' );
+	}
+
+	$user_id = get_current_user_id();
+	$ap_sortby = 'voted';
+	$cache_key = $question_id . '-' . $answer_id . '-' . $user_id;
+	$cache = wp_cache_get( $cache_key, 'ap_answer_position' );
+
+	if ( false !== $cache ) {
+		return $cache;
+	}
+
+	if ( 'voted' === $ap_sortby ) {
+		$orderby = 'CASE WHEN IFNULL(qameta.votes_up - qameta.votes_down, 0) >= 0 THEN 1 ELSE 2 END ASC, ABS(qameta.votes_up - qameta.votes_down) DESC';
+	} if ( 'oldest' === $ap_sortby ) {
+		$orderby = "{$wpdb->posts}.post_date ASC";
+	} elseif ( 'newest' === $ap_sortby ) {
+		$orderby = "{$wpdb->posts}.post_date DESC";
+	} else {
+		$orderby = 'qameta.last_updated DESC ';
+	}
+
+	$post_status = [ 'publish' ];
+
+	// Check if user can read private post.
+	if ( ap_user_can_view_private_post( ) ) {
+		$post_status[] = 'private_post';
+	}
+
+	// Check if user can read moderate posts.
+	if ( ap_user_can_view_moderate_post( ) ) {
+		$post_status[] = 'moderate';
+	}
+
+	// Show trash posts to super admin.
+	if ( is_super_admin( ) ) {
+		$post_status[] = 'trash';
+	}
+
+	$status = "p.post_status IN ('" . implode( "','",  $post_status ) . "')";
+
+	$ids = $wpdb->get_col( $wpdb->prepare( "SELECT p.ID FROM $wpdb->posts p JOIN $wpdb->ap_qameta qameta ON qameta.post_id = p.ID  WHERE p.post_type = 'answer' AND p.post_parent = %d AND ( $status OR ( p.post_author = %d AND p.post_status IN ('publish', 'private_post', 'trash', 'moderate') ) ) ORDER BY $orderby", $question_id, $user_id ) ); // db call okay, unprepared sql okay.
+
+	$pos = (int) array_search( $answer_id , $ids ) + 1; // lose comparison ok.
+	$paged = ceil( $pos / ap_opt( 'answers_per_page' ) );
+	wp_cache_set( $cache_key, $paged, 'ap_answer_position' );
+
+	return $paged;
 }

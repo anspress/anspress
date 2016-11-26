@@ -1653,3 +1653,4 @@ function ap_remove_stop_words( $str ) {
 	return preg_replace( '/\b(' . implode( '|', $common_words ) . ')\b/', '', $str );
 }
 
+

@@ -24,6 +24,8 @@
 			<?php ap_answers_tab( get_the_permalink() ); ?>
 		</div>
 
+		<?php ap_answers_the_pagination(); ?>
+
 		<div id="answers">
 			<?php if ( ap_user_can_see_answers() ) : ?>
 				<ap-answers>

@@ -62,3 +62,4 @@
 		</div>
 	</div>
 </div>
+<?php var_dump(get_permalink()); ?>

@@ -29,6 +29,7 @@ class AnsPress_Rewrite
 		$query_vars[] = 'edit_post_id';
 		$query_vars[] = 'ap_nonce';
 		$query_vars[] = 'question_id';
+		$query_vars[] = 'answer_id';
 		$query_vars[] = 'question';
 		$query_vars[] = 'question_name';
 		$query_vars[] = 'answer_id';
@@ -45,6 +46,7 @@ class AnsPress_Rewrite
 		$query_vars[] = 'parent';
 		$query_vars[] = 'ap_user';
 		$query_vars[] = 'user_page';
+		$query_vars[] = 'ap_paged';
 
 		return $query_vars;
 	}
@@ -86,18 +88,18 @@ class AnsPress_Rewrite
 
 		if ( ! ap_opt( 'question_permalink_follow' ) ) {
 
-			$new_rules[$question_slug.'/([^/]+)/page/?([0-9]{1,})/?$'] = 'index.php?page_id='.$base_page_id.'&question_name='.$wp_rewrite->preg_index( 1 ).'&paged='.$wp_rewrite->preg_index( 2 );
+			$new_rules[$question_slug.'/([^/]+)/([^/]+)/?$'] = 'index.php?page_id='.$base_page_id.'&question_name='.$wp_rewrite->preg_index( 1 ).'&answer_id='.$wp_rewrite->preg_index( 2 );
 
 			$new_rules[$question_slug.'/([^/]+)/?$']  = 'index.php?page_id='.$base_page_id.'&question_name='.$wp_rewrite->preg_index( 1 );
 
 		} else {
 
-			$new_rules[$slug.$question_slug.'/([^/]+)/page/?([0-9]{1,})/?$'] = 'index.php?page_id='.$base_page_id.'&question_name='.$wp_rewrite->preg_index( 1 ).'&paged='.$wp_rewrite->preg_index( 2 );
+			$new_rules[$slug.$question_slug.'/([^/]+)/([^/]+)/?$'] = 'index.php?page_id='.$base_page_id.'&question_name='.$wp_rewrite->preg_index( 1 ).'&answer_id='.$wp_rewrite->preg_index( 2 );
 
 			$new_rules[$slug.$question_slug.'/([^/]+)/?$'] = 'index.php?page_id='.$base_page_id.'&question_name='.$wp_rewrite->preg_index( 1 );
 		}
 
-		$new_rules[$slug.$question_slug.'/([^/]+)/([^/]+)/?$']  = 'index.php?page_id='.$base_page_id.'&question_id='.$wp_rewrite->preg_index( 1 ).'&question_name='.$wp_rewrite->preg_index( 2 );
+		//$new_rules[$slug.$question_slug.'/([^/]+)/([^/]+)/?$']  = 'index.php?page_id='.$base_page_id.'&question_id='.$wp_rewrite->preg_index( 1 ).'&question_name='.$wp_rewrite->preg_index( 2 );
 
 		$new_rules[$slug. 'search/([^/]+)/?'] = 'index.php?page_id='.$base_page_id.'&ap_page=search&ap_s='. $wp_rewrite->preg_index( 1 );
 

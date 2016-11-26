@@ -197,7 +197,7 @@ function ap_have_parent_post($post_id = false) {
  *
  * @return string
  */
-function ap_pagination($current = false, $total = false, $format = '?paged=%#%') {
+function ap_pagination( $current = false, $total = false, $format = '?paged=%#%', $page_num_link = false ) {
 	global $ap_max_num_pages, $ap_current, $questions;
 
 	if ( is_front_page() ) {
@@ -219,7 +219,9 @@ function ap_pagination($current = false, $total = false, $format = '?paged=%#%')
 		$total = $questions->max_num_pages;
 	}
 
-	$page_num_link = str_replace( array( '&amp;', '&#038;' ), '&', get_pagenum_link( $big ) );
+	if ( false === $page_num_link ) {
+		$page_num_link = str_replace( array( '&amp;', '&#038;' ), '&', get_pagenum_link( $big ) );
+	}
 
 	if ( is_front_page() ) {
 		$base = add_query_arg( array( 'ap_paged' => '%#%' ), home_url( '/' ) );
@@ -232,14 +234,14 @@ function ap_pagination($current = false, $total = false, $format = '?paged=%#%')
 	}
 
 	echo '<div class="ap-pagination clearfix">';
-	echo paginate_links(array(
-		'base' => $base,
-		'format' => $format,
-		'current' => $current,
-		'total' => $total,
+	echo paginate_links( array(
+		'base'     => $base,
+		'format'   => $format,
+		'current'  => $current,
+		'total'    => $total,
 		'end_size' => 3,
 		'mid_size' => 3,
-	));
+	) );
 	echo '</div>';
 }
 

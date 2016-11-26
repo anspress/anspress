@@ -41,198 +41,154 @@
 .entry-content a:visited, .comment-content a:visited {
 	color: inherit;
 }
-#anspress{
-	.ap-pull-right{
-		float: right !important;
-	}
 
-	.ap-pull-left{
-		float: left !important;
-	}
+.ap-pull-right{
+	float: right !important;
+}
 
-	.no-overflow{
-		overflow: hidden;
-	}
+.ap-pull-left{
+	float: left !important;
+}
 
-	.ap-ul-inline{
-		list-style: none;
+.no-overflow{
+	overflow: hidden;
+}
+
+.ap-ul-inline{
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	display: block;
+
+	> li{
+		float: left;
+		list-style: none outside none;
+		margin: 0 5px 0 0;
 		padding: 0;
-		margin: 0;
-		display: block;
-
-		> li{
-			float: left;
-			list-style: none outside none;
-			margin: 0 5px 0 0;
+		&:last-child{
+			margin-right:0;
+		}
+		ul{
+			list-style: none;
 			padding: 0;
-			&:last-child{
-				margin-right:0;
-			}
-			ul{
-				list-style: none;
-				padding: 0;
-				margin: 0;
-			}
-		}
-	}
-	.ap-avatar{
-		margin-right:10px;
-		img{
-			border-radius: $avatar-border-radius;
-			box-shadow: none;
-		}
-		>a{
-			display: inline-block;
-		}
-	}
-
-	.ap-initially-hidden{
-		display: none;
-	}
-	.block{
-		display: block;
-	}
-
-	.ap-pagination{
-		display: block;
-		margin: 20px 0;
-		span, a{
-			border: 1px solid $default-border-color;
-			display: block;
-			float: left;
-			margin-right: 5px;
-			padding: 5px 14px;
-			text-decoration: none;
-			border-radius: $default-border-radius;
-		}
-		span{
-			background: $default-border-color;
-		}
-	}
-
-	.border-top{
-		border-top: solid 1px $default-border-color;
-	}
-	.margin-top-20{
-		margin-top: 20px;
-	}
-
-	.ap-no-permission-to-view {
-		background: lighten($blue-color, 52%);
-		display: block;
-		margin-top: 20px;
-		padding: 15px;
-		text-align: center;
-	}
-	.ap-please-login {
-	    border: 2px solid #eee;
-	    border-radius: 3px;
-	    display: table;
-	    margin: 20px auto 0;
-	    padding: 6px 10px;
-	    text-align: center;
-	}
-	.ap-questions-tab, .ap-answers-tab{
-		background: #fff;
-	    border: 1px solid #ddd;
-	    border-radius: 2px;
-	    display: table;
-	    float: right;
-		> li {
-		    border-right: 1px solid #e4e4e4;
-		    margin: 0;
-
-			&.active a{
-			    background: $main-color;
-			    color: #fff;
-			    margin: -1px;
-			    padding: 6px 10px;
-			    &:hover{
-			    	background: lighten($main-color, 10%);
-			    }
-			}
-
-			a{
-			    border-radius: 0;
-			    color: #333;
-			    display: block;
-			    font-size: 13px;
-			    font-weight: 600;
-			    padding: 5px 15px;
-			    &:hover{
-			    	background: #f5f5f5;
-			    }
-			}
-			&:first-child a{
-				border-radius: 2px 0 0 2px;
-			}
-			&:last-child{
-				border-right: none;
-
-				a{
-					border-radius: 0 2px 2px 0;
-				}
-			}
-		}
-	}
-	.ap-pending-notice {
-		background: $yellow-color;
-		border-radius: 2px;
-		margin: 0 15px 10px;
-		padding: 20px;
-		text-align: center;
-	}
-	.ap-text-label{
-		display: block;
-		font-weight: bold;
-		margin-bottom: 10px;
-		text-transform: uppercase;
-		font-size: 12px;
-	}
-	.ap-view-count-0{
-		display: none;
-	}
-	.ap-cradit {
-	    color: #aaa;
-	    font-size: 12px;
-	    margin-top: 20px;
-	}
-
-	.dropdown-menu{
-	    border: 1px solid #ddd;
-	    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
-		>li{
-			margin:0;
-			padding: 0;
-		}
-	}
-	.ap-tab-nav{
-		li> a{
-		    background: none repeat scroll 0 0 #eee;
-		    border-color: #ddd #ddd transparent;
-		    border-image: none;
-		    border-radius: 2px 2px 0 0;
-		    border-style: solid solid none;
-		    border-width: 1px 1px medium;
-		    display: block;
-		    margin-bottom: -9px;
-		    padding: 5px 12px;
-		    &:focus{
-		    	outline: none;
-		    }
-	    }
-	    li.active > a{
-	    	background: none repeat scroll 0 0 #fff;
-	    }
-	}
-	.ap-tab-container > *{
-		display: none;
-		&.active{
-			display: block;
+			margin: 0;
 		}
 	}
 }
+.ap-avatar{
+	margin-right:10px;
+	img{
+		border-radius: $avatar-border-radius;
+		box-shadow: none;
+	}
+	>a{
+		display: inline-block;
+	}
+}
 
+.ap-initially-hidden{
+	display: none;
+}
+.block{
+	display: block;
+}
+
+.ap-pagination{
+	display: block;
+	margin: 20px 0;
+	span, a{
+		border: 1px solid $default-border-color;
+		display: block;
+		float: left;
+		margin-right: 5px;
+		padding: 5px 14px;
+		text-decoration: none;
+		border-radius: $default-border-radius;
+	}
+	span{
+		background: $default-border-color;
+	}
+}
+
+.border-top{
+	border-top: solid 1px $default-border-color;
+}
+.margin-top-20{
+	margin-top: 20px;
+}
+
+.ap-no-permission-to-view {
+	background: lighten($blue-color, 52%);
+	display: block;
+	margin-top: 20px;
+	padding: 15px;
+	text-align: center;
+}
+.ap-please-login {
+		border: 2px solid #eee;
+		border-radius: 3px;
+		display: table;
+		margin: 20px auto 0;
+		padding: 6px 10px;
+		text-align: center;
+}
+
+.ap-pending-notice {
+	background: $yellow-color;
+	border-radius: 2px;
+	margin: 0 15px 10px;
+	padding: 20px;
+	text-align: center;
+}
+.ap-text-label{
+	display: block;
+	font-weight: bold;
+	margin-bottom: 10px;
+	text-transform: uppercase;
+	font-size: 12px;
+}
+.ap-view-count-0{
+	display: none;
+}
+.ap-cradit {
+		color: #aaa;
+		font-size: 12px;
+		margin-top: 20px;
+}
+
+.dropdown-menu{
+		border: 1px solid #ddd;
+		box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+	>li{
+		margin:0;
+		padding: 0;
+	}
+}
+.ap-tab-nav{
+	li> a{
+			background: none repeat scroll 0 0 #eee;
+			border-color: #ddd #ddd transparent;
+			border-image: none;
+			border-radius: 2px 2px 0 0;
+			border-style: solid solid none;
+			border-width: 1px 1px medium;
+			display: block;
+			margin-bottom: -9px;
+			padding: 5px 12px;
+			&:focus{
+				outline: none;
+			}
+		}
+		li.active > a{
+			background: none repeat scroll 0 0 #fff;
+		}
+}
+.ap-tab-container > *{
+	display: none;
+	&.active{
+		display: block;
+	}
+}
 .g-recaptcha {
     margin-bottom: 15px;
 }
