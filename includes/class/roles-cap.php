@@ -1052,6 +1052,7 @@ function ap_role_caps( $role ) {
 			'ap_approve_comment'        => true,
 			'ap_no_moderation'          => true,
 			'ap_restore_posts'          => true,
+			'ap_toggle_featured'        => true,
 		),
 	);
 
@@ -1279,6 +1280,40 @@ function ap_user_can_approve_comment( $user_id = false ) {
 	}
 
 	if ( is_super_admin( $user_id ) || user_can( $user_id, 'ap_approve_comment' ) ) {
+		return true;
+	}
+
+	return false;
+}
+
+/**
+ * Check if user can toggle featured question.
+ *
+ * @param  integer|boolean $user_id User ID.
+ * @return boolean
+ */
+function ap_user_can_toggle_featured( $user_id = false ) {
+	if ( false === $user_id ) {
+		$user_id = get_current_user_id();
+	}
+
+	/**
+	 * Filter to hijack ap_user_can_toggle_featured.
+	 *
+	 * @param  boolean|string 	$apply_filter 	Apply current filter, empty string by default.
+	 * @param  integer 			$user_id 		User ID.
+	 * @return boolean
+	 * @since  3.0.0
+	 */
+	$filter = apply_filters( 'ap_user_can_toggle_featured', '', $user_id );
+
+	if ( true === $filter ) {
+		return true;
+	} elseif ( false === $filter ) {
+		return false;
+	}
+
+	if ( is_super_admin( $user_id ) || user_can( $user_id, 'ap_toggle_featured' ) ) {
 		return true;
 	}
 

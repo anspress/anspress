@@ -24,7 +24,7 @@ class AnsPress_Ajax {
 	 */
 	public static function init() {
 		anspress()->add_action( 'ap_ajax_suggest_similar_questions', __CLASS__, 'suggest_similar_questions' );
-		anspress()->add_action( 'ap_ajax_set_featured', __CLASS__, 'set_featured' );
+		anspress()->add_action( 'ap_ajax_action_toggle_featured', __CLASS__, 'toggle_featured' );
 		anspress()->add_action( 'ap_ajax_hover_card', __CLASS__, 'hover_card' );
 		anspress()->add_action( 'ap_ajax_action_close', __CLASS__, 'close_question' );
 		anspress()->add_action( 'ap_ajax_toggle_best_answer', __CLASS__, 'toggle_best_answer' );
@@ -311,42 +311,44 @@ class AnsPress_Ajax {
 	}
 
 	/**
-	 * Handle set feature and unfeature ajax callback
+	 * Handle toggle featured question ajax callback
 	 */
-	public static function set_featured() {
+	public static function toggle_featured() {
 		$post_id = (int) ap_sanitize_unslash( 'post_id', 'request' );
 
-		if ( ! is_super_admin() || ! ap_verify_nonce( 'set_featured_' . $post_id ) ) {
-			ap_ajax_json( 'no_permission' );
+		if ( ! ap_user_can_toggle_featured() || ! ap_verify_nonce( 'set_featured_' . $post_id ) ) {
+			ap_ajax_json( array(
+				'success' => false,
+				'snackbar' => [ 'message' => __( 'Sorry, you cannot toggle a featured question', 'anspress-question-answer' ) ]
+			) );
 		}
 
 		$post = ap_get_post( $post_id );
 
 		// Do nothing if post type is not question.
 		if ( 'question' !== $post->post_type ) {
-			ap_ajax_json( __( 'Only question can be set as featured', 'anspress-question-answer' ) );
+			ap_ajax_json( array(
+				'success' => false,
+				'snackbar' => [ 'message' => __( 'Only question can be set as featured', 'anspress-question-answer' ) ]
+			) );
 		}
 
 		// Check if current question ID is in featured question array.
 		if ( ap_is_featured_question( $post ) ) {
 			ap_unset_featured_question( $post->ID );
 			ap_ajax_json( array(
-				'action' 		   => 'unset_featured_question',
-				'message' 		 => 'unset_featured_question',
-				'do' 			     => array( 'updateHtml' => '#set_featured_' . $post->ID ),
-				'html' 			   => __( 'Set as featured', 'anspress-question-answer' ),
+				'success'   => true,
+				'action' 		=> [ 'active' => false, 'title' => __( 'Mark this question as featured', 'anspress-question-answer' ), 'label' => __( 'Feature', 'anspress-question-answer' ) ],
+				'snackbar'  => [ 'message' => __( 'Question is unmarked as featured.', 'anspress-question-answer' ) ],
 			));
 		}
 
 		ap_set_featured_question( $post->ID );
 		ap_ajax_json( array(
-			'action' 		   => 'set_featured_question',
-			'message' 		 => 'set_featured_question',
-			'do' 			     => array( 'updateHtml' => '#set_featured_' . $post->ID ),
-			'html' 			   => __( 'Unset as featured', 'anspress-question-answer' ),
+			'success'  => true,
+			'action'   => [ 'active'  => true, 'title' => __( 'Unmark this question as featured', 'anspress-question-answer' ), 'label' => __( 'Unfeature', 'anspress-question-answer' ) ],
+			'snackbar' => [ 'message' => __( 'Question is marked as featured.', 'anspress-question-answer' ) ],
 		));
-
-		ap_ajax_json( 'something_wrong' );
 	}
 
 	/**

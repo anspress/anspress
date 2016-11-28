@@ -568,8 +568,6 @@ function ap_responce_message( $id, $only_message = false ) {
 		'post_image_uploaded'           => array( 'type' => 'success', 'message' => __( 'Image uploaded successfully', 'anspress-question-answer' ) ),
 		'question_deleted_permanently'  => array( 'type' => 'success', 'message' => __( 'Question has been deleted permanently', 'anspress-question-answer' ) ),
 		'answer_deleted_permanently'    => array( 'type' => 'success', 'message' => __( 'Answer has been deleted permanently', 'anspress-question-answer' ) ),
-		'set_featured_question'         => array( 'type' => 'success', 'message' => __( 'Question is marked as featured.', 'anspress-question-answer' ) ),
-		'unset_featured_question'       => array( 'type' => 'success', 'message' => __( 'Question is unmarked as featured.', 'anspress-question-answer' ) ),
 		'upload_limit_crossed'          => array( 'type' => 'warning', 'message' => __( 'You have already attached maximum numbers of allowed uploads.', 'anspress-question-answer' ) ),
 		'profile_updated_successfully'  => array( 'type' => 'success', 'message' => __( 'Your profile has been updated successfully.', 'anspress-question-answer' ) ),
 		'voting_down_disabled'          => array( 'type' => 'warning', 'message' => __( 'Voting down is disabled.', 'anspress-question-answer' ) ),
@@ -919,28 +917,6 @@ function ap_register_menu( $slug, $title, $link ) {
 	anspress()->menu[ $slug ] = array( 'title' => $title, 'link' => $link );
 }
 
-
-/**
- * Return set featured question action button.
- *
- * @param  boolean|integer $post_id Post ID.
- * @return string
- */
-function ap_featured_post_btn( $post_id = false ) {
-	if ( ! is_user_logged_in() ) {
-		return;
-	}
-
-	if ( false === $post_id ) {
-		$post_id = get_question_id();
-	}
-
-	if ( is_super_admin() ) {
-		$output = '<a href="#" class="ap-btn-set-featured" id="set_featured_' . $post_id . '" data-action="set_featured" data-query="ap_ajax_action=set_featured&post_id=' . $post_id . '&__nonce=' . wp_create_nonce( 'set_featured_' . $post_id ) . '" title="' . __( 'Make this question featured', 'anspress-question-answer' ) . '">' . (ap_is_featured_question( $post_id ) ? __( 'Unset as featured', 'anspress-question-answer' ) : __( 'Set as featured', 'anspress-question-answer' )) . '</a>';
-	}
-
-	return $output;
-}
 
 /**
  * Remove white space from string.

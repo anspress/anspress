@@ -398,14 +398,16 @@ function ap_post_actions( $_post = null ) {
 		);
 
 		$actions = array_merge( $actions, $status_args );
+		$actions[] = array( 'header' => true );
+	}
+
+	// Featured link.
+	if ( 'question' === $_post->post_type ) {
+		$actions[] = ap_featured_post_args( $_post->ID );
 	}
 
 	/*
 
-	// Featured link.
-	if ( is_super_admin() && $_post->post_type == 'question' ) {
-		$actions['dropdown']['featured'] = ap_featured_post_btn( $_post->ID );
-	}
 
 	// Delete link.
 	if ( ap_user_can_delete_post( $_post->ID ) && $_post->post_status != 'trash' ) {
@@ -866,4 +868,39 @@ function ap_post_status_btn_args( $_post = null ) {
 
 		return $args;
 	}
+}
+
+
+/**
+ * Return set featured question action args.
+ *
+ * @param  boolean|integer $post_id Post ID.
+ * @return string
+ */
+function ap_featured_post_args( $post_id = false ) {
+	if ( ! is_user_logged_in() || ! ap_user_can_toggle_featured() ) {
+		return [];
+	}
+
+	if ( false === $post_id ) {
+		$post_id = get_question_id();
+	}
+
+	$is_featured = ap_is_featured_question( $post_id );
+
+	if ( $is_featured ) {
+		$title = __( 'Unmark this question as featured', 'anspress-question-answer' );
+		$label = __( 'Unfeature', 'anspress-question-answer' );
+	} else {
+		$title = __( 'Mark this question as featured', 'anspress-question-answer' );
+		$label = __( 'Feature', 'anspress-question-answer' );
+	}
+
+	return array(
+		'cb'     => 'toggle_featured',
+		'active' => $is_featured,
+		'query'  => [ 'status' => $slug, '__nonce' => wp_create_nonce( 'set_featured_' . $post_id ), 'post_id' => $post_id ],
+		'title'  => esc_attr( $title ),
+		'label'  => esc_attr( $label ),
+	);
 }

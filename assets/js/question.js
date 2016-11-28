@@ -140,7 +140,7 @@
 		},
 		events: {
 			'click [ap-vote] > a': 'voteClicked',
-			'click [ap="actiontoggle"]': 'postActions',
+			'click [ap="actiontoggle"]:not(.loaded)': 'postActions',
 			'click [ap="select_answer"]': 'selectAnswer'
 		},
 		voteClicked: function(e){
@@ -204,17 +204,16 @@
 			var self = this;
 			var q = $.parseJSON($(e.target).attr('ap-query'));
 			q.ap_ajax_action = 'post_actions';
-			if(!this.model.get('actionsLoaded'))
-				AnsPress.ajax({
-					data: q,
-					success: function(data){
-						AnsPress.hideLoading(e.target);
-						$(e.target).addClass('loaded');
-						var model = new AnsPress.collections.Actions(data.actions);
-						var view = new AnsPress.views.Actions({ model: model, postID: self.model.get('ID') });
-						self.$el.find('post-actions .ap-actions').html(view.render().$el);
-					}
-				});
+			AnsPress.ajax({
+				data: q,
+				success: function(data){
+					AnsPress.hideLoading(e.target);
+					$(e.target).addClass('loaded');
+					var model = new AnsPress.collections.Actions(data.actions);
+					var view = new AnsPress.views.Actions({ model: model, postID: self.model.get('ID') });
+					self.$el.find('post-actions .ap-actions').html(view.render().$el);
+				}
+			});
 		},
 
 		selectAnswer: function(e){
