@@ -338,27 +338,6 @@ function ap_truncate_chars( $text, $limit, $ellipsis = '...' ) {
 }
 
 /**
- * Output frontend post delete button.
- *
- * @param integer $_post Post.
- * @param boolean $echo Return or echo.
- * @return void|string
- */
-function ap_post_delete_btn_html( $_post = false, $echo = false ) {
-	$post_id = get_the_ID();
-
-	if ( ap_user_can_delete_post( $post_id ) ) {
-		$action = 'delete_post_' . $post_id;
-		$nonce = wp_create_nonce( $action );
-		$output = '<a href="#" class="delete-btn" data-action="ap_delete_post" data-query="post_id=' . $post_id . '&__nonce=' . $nonce . '&ap_ajax_action=delete_post" title="' . __( 'Delete', 'anspress-question-answer' ) . '">' . __( 'Delete', 'anspress-question-answer' ) . '</a>';
-		if ( ! $echo ) {
-			return $output;
-		}
-		echo $output; // xss ok.
-	}
-}
-
-/**
  * Post restore button.
  *
  * @param  mixed   $_post Post.
@@ -560,8 +539,6 @@ function ap_responce_message( $id, $only_message = false ) {
 		'comment_edit_success'  => array( 'type' => 'success', 'message' => __( 'Comment updated successfully.', 'anspress-question-answer' ) ),
 		'comment_delete_success' => array( 'type' => 'success', 'message' => __( 'Comment deleted successfully.', 'anspress-question-answer' ) ),
 		'cannot_vote_own_post'          => array( 'type' => 'warning', 'message' => __( 'You cannot vote on your own question or answer.', 'anspress-question-answer' ) ),
-		'question_moved_to_trash'       => array( 'type' => 'success', 'message' => __( 'Question moved to trash.', 'anspress-question-answer' ) ),
-		'answer_moved_to_trash'         => array( 'type' => 'success', 'message' => __( 'Answer moved to trash.', 'anspress-question-answer' ) ),
 		'no_permission_to_view_private' => array( 'type' => 'warning', 'message' => __( 'You do not have permission to view private posts.', 'anspress-question-answer' ) ),
 		'captcha_error'                 => array( 'type' => 'error', 'message' => __( 'Please check captcha field and resubmit it again.', 'anspress-question-answer' ) ),
 		'comment_content_empty'         => array( 'type' => 'error', 'message' => __( 'Comment content is empty.', 'anspress-question-answer' ) ),

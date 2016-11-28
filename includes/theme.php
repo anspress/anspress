@@ -362,6 +362,11 @@ function ap_post_actions( $_post = null ) {
 		return $actions;
 	}
 
+	// Featured link.
+	if ( 'question' === $_post->post_type ) {
+		$actions[] = ap_featured_post_args( $_post->ID );
+	}
+
 	// Question close action.
 	if ( ap_user_can_close_question() && 'question' === $_post->post_type ) {
 		$nonce = wp_create_nonce( 'close_' . $_post->ID );
@@ -401,18 +406,29 @@ function ap_post_actions( $_post = null ) {
 		$actions[] = array( 'header' => true );
 	}
 
-	// Featured link.
-	if ( 'question' === $_post->post_type ) {
-		$actions[] = ap_featured_post_args( $_post->ID );
+	if ( ap_user_can_delete_post( $_post->ID ) ) {
+
+		if ( 'trash' === $_post->post_status ) {
+			$label = __( 'Undelete', 'anspress-question-answer' );
+			$title = __( 'Restore this post', 'anspress-question-answer' );
+		} else {
+			$label = __( 'Delete', 'anspress-question-answer' );
+			$title = __( 'Delete this post (can be restored again)', 'anspress-question-answer' );
+		}
+
+		$actions[] = array(
+			'cb'    => 'toggle_delete_post',
+			'query' => [ 'post_id' => $_post->ID, '__nonce' => wp_create_nonce( 'delete_post_' . $_post->ID ) ],
+			'label' => $label,
+			'title' => $title,
+		);
 	}
 
 	/*
 
 
 	// Delete link.
-	if ( ap_user_can_delete_post( $_post->ID ) && $_post->post_status != 'trash' ) {
-		$actions['dropdown']['delete'] = ap_post_delete_btn_html();
-	}
+
 
 	if ( ap_user_can_delete_post( $_post->ID ) && $_post->post_status == 'trash' ) {
 		$actions['dropdown']['restore'] = ap_post_restore_btn_html();
@@ -449,7 +465,7 @@ function ap_post_actions_buttons() {
 		'nonce'   => wp_create_nonce( 'post-actions-' . get_the_ID() ),
 	]);
 
-	echo '<post-actions class="ap-dropdown"><button class="ap-btn apicon-dots ap-actions-handle"></button><label><input type="checkbox" ap="actiontoggle" ap-query="' . esc_js( $args ) . '"><ul class="ap-actions"></ul></label></post-actions>';
+	echo '<post-actions class="ap-dropdown"><button class="ap-btn apicon-dots ap-actions-handle ap-dropdown-toggle" ap="actiontoggle" ap-query="' . esc_js( $args ) . '"></button><ul class="ap-actions ap-dropdown-menu"></ul></post-actions>';
 }
 
 /**
@@ -840,7 +856,7 @@ function ap_post_status_btn_args( $_post = null ) {
 
 	if ( ap_user_can_change_status( $_post->ID ) ) {
 		global $wp_post_statuses;
-		$allowed_status = [ 'publish', 'trash', 'private_post', 'moderate' ];
+		$allowed_status = [ 'publish', 'private_post', 'moderate' ];
 		$status_labels = [];
 
 		foreach ( (array) $allowed_status as $s ) {
@@ -875,7 +891,7 @@ function ap_post_status_btn_args( $_post = null ) {
  * Return set featured question action args.
  *
  * @param  boolean|integer $post_id Post ID.
- * @return string
+ * @return array
  */
 function ap_featured_post_args( $post_id = false ) {
 	if ( ! is_user_logged_in() || ! ap_user_can_toggle_featured() ) {

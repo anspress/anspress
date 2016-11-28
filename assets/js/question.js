@@ -63,8 +63,8 @@
 				data: q,
 				success: function(data){
 					AnsPress.hideLoading(e.target);
-					if(data.success && cb=='status')
-						AnsPress.trigger('changedPostStatus', {data:data, action:self.model});
+					if(data.success && ( cb=='status' || cb=='toggle_delete_post'))
+						AnsPress.trigger('changedPostStatus', {postID: self.postID, data:data, action:self.model});
 
 					if(data.action){
 						self.model.set(data.action);
@@ -105,6 +105,8 @@
 			return this;
 		},
 		postStatusChanged: function(args){
+			if(args.postID !== this.postID) return;
+
 			// Remove post status class
 			$("#post-"+this.postID).removeClass( function() {
 				return this.className.split(' ').filter(function(className) {return className.match(/status-/)}).join(' ');
@@ -122,8 +124,7 @@
 		idAttribute: 'ID',
 		defaults:{
 			actionsLoaded: false,
-			hideSelect: '',
-			status: ''
+			hideSelect: ''
 		}
 	});
 
@@ -131,6 +132,7 @@
 		idAttribute: 'ID',
 		templateId: 'answer',
 		tagName: 'div',
+		actions: {view: {}, model: {}},
 		id: function(){
 			return 'post-' + this.model.get('ID');
 		},
@@ -209,9 +211,10 @@
 				success: function(data){
 					AnsPress.hideLoading(e.target);
 					$(e.target).addClass('loaded');
-					var model = new AnsPress.collections.Actions(data.actions);
-					var view = new AnsPress.views.Actions({ model: model, postID: self.model.get('ID') });
-					self.$el.find('post-actions .ap-actions').html(view.render().$el);
+					console.log(self.actions);
+					self.actions.model = new AnsPress.collections.Actions(data.actions);
+					self.actions.view = new AnsPress.views.Actions({ model: self.actions.model, postID: self.model.get('ID') });
+					self.$el.find('post-actions .ap-actions').html(self.actions.view.render().$el);
 				}
 			});
 		},
@@ -356,11 +359,11 @@
 		}
 	});
 
-	$('[ap="actiontoggle"]').click(function(){
+	/*$('[ap="actiontoggle"]').click(function(){
 		if(!$(this).is('.checked') && !$(this).is('.loaded'))
 			AnsPress.showLoading(this);
 		$(this).toggleClass('checked');
-	});
+	});*/
 
 	var apposts = new AnsPress.collections.Posts();
 

@@ -28,9 +28,8 @@ class AnsPress_Ajax {
 		anspress()->add_action( 'ap_ajax_hover_card', __CLASS__, 'hover_card' );
 		anspress()->add_action( 'ap_ajax_action_close', __CLASS__, 'close_question' );
 		anspress()->add_action( 'ap_ajax_toggle_best_answer', __CLASS__, 'toggle_best_answer' );
-		anspress()->add_action( 'ap_ajax_delete_post', __CLASS__, 'delete_post' );
+		anspress()->add_action( 'ap_ajax_action_toggle_delete_post', __CLASS__, 'toggle_delete_post' );
 		anspress()->add_action( 'ap_ajax_permanent_delete_post', __CLASS__, 'permanent_delete_post' );
-		anspress()->add_action( 'ap_ajax_restore_post', __CLASS__, 'restore_post' );
 		anspress()->add_action( 'ap_ajax_load_tinymce', __CLASS__, 'load_tinymce' );
 		anspress()->add_action( 'ap_ajax_filter_search', __CLASS__, 'filter_search' );
 		anspress()->add_action( 'ap_ajax_convert_to_post', __CLASS__, 'convert_to_post' );
@@ -175,55 +174,66 @@ class AnsPress_Ajax {
 	/**
 	 * Process ajax trash posts callback.
 	 */
-	public static function delete_post() {
+	public static function toggle_delete_post() {
 		$post_id = (int) ap_sanitize_unslash( 'post_id', 'request' );
 
-		if ( ! ap_verify_nonce( 'delete_post_' . $post_id ) || ! ap_user_can_delete_post( $post_id ) ) {
-			ap_ajax_json( 'something_wrong' );
+		$failed_response = array(
+			'success'  => false,
+			'snackbar' => [ 'message' => __( 'Unable to trash this post', 'anspress-question-answer' ) ],
+		);
+
+		if ( ! ap_verify_nonce( 'delete_post_' . $post_id ) ) {
+			ap_ajax_json( $failed_response );
 		}
 
 		$post = ap_get_post( $post_id );
 
-		// Delete lock feature.
-		// Do not allow to delete if defined time elapsed.
-		if ( (time() > (get_the_time( 'U', $post->ID ) + (int) ap_opt( 'disable_delete_after' ))) && ! is_super_admin() ) {
+		$post_type = 'question' === $post->post_type ? __( 'Question', 'anspress-question-answer' ) : __( 'Answer', 'anspress-question-answer' );
+
+		if ( 'trash' === $post->post_status ) {
+
+			if ( ! ap_user_can_restore( $post ) ) {
+				ap_ajax_json( $failed_response );
+			}
+
+			$last_status = get_post_meta( $post->ID, '_ap_last_post_status', true );
+			$last_status = empty( $last_status ) ? 'publish' : sanitize_text_field( $last_status );
+			wp_update_post( [ 'ID' => $post->ID, 'post_status' => $last_status ] );
 
 			ap_ajax_json( array(
-				'message_type' => 'warning',
-				'message' => sprintf( __( 'This post was created %s, hence you cannot delete it.','anspress-question-answer' ), ap_human_time( get_the_time( 'U', $post->ID ) ) ),
+				'success'      => true,
+				'action' 		   => [ 'active' => false, 'label' => __( 'Delete', 'anspress-question-answer' ), 'title' => __( 'Delete this post (can be restored again)', 'anspress-question-answer' ) ],
+				'snackbar' 		 => [ 'message' => sprintf( __( '%s is restored', 'anspress-question-answer' ), $post_type ) ],
+				'newStatus'    => $last_status,
+				'postMessage' => ap_get_post_status_message( $post_id ),
+			) );
+		}
+
+		if ( ! ap_user_can_delete_post( $post_id ) ) {
+			ap_ajax_json( $failed_response );
+		}
+
+		// Delete lock feature.
+		// Do not allow post to be trashed if defined time elapsed.
+		if ( (time() > (get_the_time( 'U', $post->ID ) + (int) ap_opt( 'disable_delete_after' ))) && ! is_super_admin() ) {
+			ap_ajax_json( array(
+				'success'  => false,
+				'snackbar' => [ 'message' => sprintf( __( 'This post was created %s, hence you cannot trash it','anspress-question-answer' ), ap_human_time( get_the_time( 'U', $post->ID ) ) ) ],
 			) );
 		}
 
 		wp_trash_post( $post_id );
 
-		// Die if not question or answer post type.
-		if ( ! in_array( $post->post_type, [ 'question', 'answer' ], true ) ) {
-			ap_ajax_json( 'something_wrong' );
-		}
-
-		// Delete question.
-		if ( 'question' === $post->post_type ) {
-			do_action( 'ap_wp_trash_question', $post_id );
-			ap_ajax_json( array(
-				'action' 		  => 'delete_question',
-				'do' 			    => array( 'redirect' => ap_base_page_link() ),
-				'message' 		=> 'question_moved_to_trash',
-			) );
-		}
-
-		do_action( 'ap_wp_trash_answer', $post_id );
+		ap_ajax_json( array(
+			'success'      => true,
+			'action' 		   => [ 'active' => true, 'label' => __( 'Undelete', 'anspress-question-answer' ), 'title' => __( 'Restore this post', 'anspress-question-answer' ) ],
+			'snackbar' 		 => [ 'message' => sprintf( __( '%s is trashed', 'anspress-question-answer' ), $post_type ) ],
+			'newStatus'    => 'trash',
+			'postMessage' => ap_get_post_status_message( $post_id ),
+		) );
 
 		$current_ans = ap_count_published_answers( $post->post_parent );
 		$count_label = sprintf( _n( '%d Answer', '%d Answers', $current_ans, 'anspress-question-answer' ), $current_ans );
-		ap_ajax_json( array(
-			'action' 		     => 'delete_answer',
-			'div_id' 		     => '#answer_' . $post_id,
-			'count' 		     => $current_ans,
-			'count_label' 	 => $count_label,
-			'remove' 		     => ( ! $current_ans ? true: false ),
-			'message' 		   => 'answer_moved_to_trash',
-			'view' 			     => array( 'answer_count' => $current_ans, 'answer_count_label' => $count_label ),
-		));
 	}
 
 	/**
@@ -279,34 +289,6 @@ class AnsPress_Ajax {
 			'remove' 		      => ( ! $current_ans ? true: false),
 			'message' 		    => 'answer_deleted_permanently',
 			'view' 			      => array( 'answer_count' => $current_ans, 'answer_count_label' => $count_label ),
-		));
-	}
-
-	/**
-	 * Handle Ajax callback for restoring post.
-	 */
-	public static function restore_post() {
-		$args = ap_sanitize_unslash( 'args', 'request' );
-
-		if ( ! ap_verify_nonce( 'restore_' . $args[0] ) || ! ap_user_can_restore() ) {
-			ap_ajax_json( 'something_wrong' );
-		}
-
-		$post = ap_get_post( $args[0] );
-
-		// Die if not question or answer post type.
-		if ( ! in_array( $post->post_type, [ 'question', 'answer' ], true ) ) {
-			ap_ajax_json( 'something_wrong' );
-		}
-
-		// Do the thing.
-		wp_untrash_post( $post->ID );
-
-		ap_ajax_json(array(
-			'action' 		     => 'restore_post',
-			'do' 			       => [ 'removeClass' => [ '.post-' . $post->ID, 'status-trash' ], 'remove_if_exists' => '.post-' . $post->ID . ' .ap-notice' ],
-			'message' 		   => __( 'Post restored successfully', 'anspress-question-answer' ),
-			'message_type'   => 'success',
 		));
 	}
 

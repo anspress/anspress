@@ -615,6 +615,11 @@ function ap_user_can_delete_post( $post_id, $user_id = false ) {
 	$post_o = ap_get_post( $post_id );
 	$type = $post_o->post_type;
 
+	// Return if not question or answer post type.
+	if ( ! in_array( $post_o->post_type, [ 'question', 'answer' ], true ) ) {
+		return false;
+	}
+
 	/**
 	 * Filter to hijack ap_user_can_delete_post.
 	 *
@@ -692,7 +697,7 @@ function ap_user_can_permanent_delete() {
  * @return boolean
  * @since  3.0.0
  */
-function ap_user_can_restore( $user_id = false ) {
+function ap_user_can_restore( $post = null, $user_id = false ) {
 	if ( false === $user_id ) {
 		$user_id = get_current_user_id();
 	}
@@ -702,7 +707,9 @@ function ap_user_can_restore( $user_id = false ) {
 		return true;
 	}
 
-	if ( user_can( $user_id, 'ap_restore_posts' ) ) {
+	$_post = ap_get_post( $post );
+
+	if ( user_can( $user_id, 'ap_restore_posts' ) || (int) $_post->post_author === $user_id ) {
 		return true;
 	}
 

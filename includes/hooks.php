@@ -253,6 +253,9 @@ class AnsPress_Hooks {
 		if ( 'question' === $post->post_type ) {
 			do_action( 'ap_trash_question', $post->ID, $post );
 
+			// Save current post status so that it can be restored.
+			update_post_meta( $post->ID, '_ap_last_post_status', $post->post_status );
+
 			//@codingStandardsIgnoreStart
 			$ans = get_posts( array(
 				'post_type'   => 'answer',
@@ -282,9 +285,12 @@ class AnsPress_Hooks {
 			 * @param integer $post_id Answer ID.
 			 * @param object $post Post object.
 			 */
-				do_action( 'ap_trash_answer', $post->ID, $post );
+			do_action( 'ap_trash_answer', $post->ID, $post );
 
-				ap_update_answers_count( $post->post_parent );
+			// Save current post status so that it can be restored.
+			update_post_meta( $post->ID, '_ap_last_post_status', $post->post_status );
+
+			ap_update_answers_count( $post->post_parent );
 		}
 	}
 
