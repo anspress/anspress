@@ -39,7 +39,7 @@
 					<div class="ap-q-cells clearfix">
 						<div class="ap-q-metas">
 							<?php echo ap_user_display_name( [ 'html' => true ] ); ?>
-							<span>
+							<a href="<?php the_permalink(); ?>" class="ap-posted">
 								<?php
 									printf(
 										'<time itemprop="datePublished" datetime="%1$s">%2$s</time>',
@@ -50,8 +50,9 @@
 										)
 									);
 								?>
-							</span>
+							</a>
 							<?php ap_recent_post_activity(); ?>
+							<?php echo ap_post_status_badge( ); // xss okay.	?>
 						</div>
 
 						<!-- Start ap-content-inner -->
@@ -67,8 +68,6 @@
 							<div class="question-content ap-q-content" itemprop="text">
 								<?php the_content(); ?>
 							</div>
-
-							<?php echo ap_post_status_message( ); // xss okay.	?>
 
 							<?php
 								/**

@@ -1,14 +1,14 @@
 <# _.each(actions, function(action, key){ #>
-	<li>
-		<a href="<# if(action.href){ #>{{{action.href}}}<# } #>" title="<# if(action.title){ #>{{action.title}}<# } #>" <# if(action.query){ #>ap-query="{{JSON.stringify(action.query)}}" ap-action="{{key}}"<# } #>>{{action.label}}</a>
-		<# if(action.sub){ #>
-			<ul class="ap-dropdown-menu">
-				<# _.each(actions.sub, function(s){ #>
-					<li>
-						<a href="#" title="<# if(s.title){ #>{{s.title}}<# } #>" ap-action="{{key}}">{{s.label}}</a>
-					</li>
-				<# }); #>
-			</ul>
+	<# var href = typeof action.href !== 'undefined' ? action.href : '#'; #>
+	<# var count = typeof action.count !== 'undefined' ? '<b>'+action.count+'</b>' : ''; #>
+	<# var activeClass = typeof action.active !== 'undefined' && action.active ? 'active' : ''; #>
+	<# var isHeader = typeof action.header !== 'undefined' && action.header ? true: false; #>
+	<# var actionName = typeof action.action !== 'undefined' ? 'ap-action="'+action.action+'"': ''; #>
+	<li <# if(isHeader){ #> class="ap-dropdown-header"<# } #>>
+		<# if(!isHeader){ #>
+			<a href="<# {{{href}}} #>" title="<# if(action.title){ #>{{action.title}}<# } #>" <# if(action.query){ #>ap-query="{{JSON.stringify(action.query)}}" {{actionName}} <# } #> class="{{activeClass}}">{{action.label}}{{{count}}}</a>
+		<# } else { #>
+			{{action.label}}
 		<# } #>
 	</li>
 <# }); #>

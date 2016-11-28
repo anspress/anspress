@@ -368,7 +368,8 @@ function ap_post_actions( $_post = null ) {
 		$close_label = $_post->closed ?  __( 'Open', 'anspress-question-answer' ) : __( 'Close', 'anspress-question-answer' );
 		$close_title = $_post->closed ?  __( 'Open this question for new answers', 'anspress-question-answer' ) : __( 'Close this question for new answer.', 'anspress-question-answer' );
 
-		$actions['close'] = array(
+		$actions[] = array(
+			'cb' => 'close',
 			'icon'  => 'apicon-check',
 			'query' => [ 'nonce' => $nonce, 'post_id' => $_post->ID ],
 			'label' => $close_label,
@@ -376,29 +377,30 @@ function ap_post_actions( $_post = null ) {
 		);
 	}
 
-	$actions['status'] = ap_post_status_btn_args( $_post );
-
 	// Edit link.
-	$actions['status'] = array(
-		'label' => __( 'Edit', 'anspress-question-answer' ),
-		'href'  => ap_post_edit_link( $_post ),
-	);
-
-	// Edit question link.
-	/*if ( ap_user_can_edit_question( $_post->ID ) && 'question' === $_post->post_type ) {
-	  $actions['dropdown']['edit_question'] = ap_edit_post_link_html();
-	}*/
-	/*
-
-	// Edit answer link.
-	if ( ap_user_can_edit_answer( $_post->ID ) && $_post->post_type == 'answer' ) {
-		$actions['dropdown']['edit_answer'] = ap_edit_post_link_html();
+	if ( ap_user_can_edit_post( $_post->ID ) ) {
+		$actions[] = array(
+			'cb' => 'edit',
+			'label' => __( 'Edit', 'anspress-question-answer' ),
+			'href'  => ap_post_edit_link( $_post ),
+		);
 	}
 
 	// Flag link.
-	if ( is_user_logged_in() ) {
-		$actions['dropdown']['flag'] = ap_flag_btn_html();
+	$actions[] = ap_flag_btn_args( $_post );
+
+	$status_args = ap_post_status_btn_args( $_post );
+
+	if ( ! empty( $status_args ) ) {
+		$actions[] = array(
+			'label'  => __( 'Status', 'anspress-question-answer' ),
+			'header' => true,
+		);
+
+		$actions = array_merge( $actions, $status_args );
 	}
+
+	/*
 
 	// Featured link.
 	if ( is_super_admin() && $_post->post_type == 'question' ) {
@@ -437,8 +439,6 @@ function ap_post_actions( $_post = null ) {
 /**
  * Post actions buttons.
  *
- * @param array $disable pass item to hide.
- * @return string
  * @since 	2.0
  */
 function ap_post_actions_buttons() {
@@ -452,6 +452,7 @@ function ap_post_actions_buttons() {
 
 /**
  * Return all shorting types for questions.
+ *
  * @param  string $current_url Current page URL.
  * @return array
  * @since  3.0.0 Moved from `ap_question_sorting()`.
@@ -846,12 +847,6 @@ function ap_post_status_btn_args( $_post = null ) {
 			}
 		}
 
-		$args = array(
-			'query' => [ 'nonce' => $nonce, 'post_id' => $_post->ID, 'ap_ajax_action' => 'select_best_answer' ],
-			'label' => __( 'Status', 'anspress-question-answer' ),
-			'title' => __( 'Change status of post', 'anspress-question-answer' ),
-		);
-
 		foreach ( (array) $status_labels as $slug => $label ) {
 			$can = true;
 
@@ -860,10 +855,11 @@ function ap_post_status_btn_args( $_post = null ) {
 			}
 
 			if ( $can ) {
-				$args[ 'sub' ] = array(
-					'active' => ( $slug === $_post->post_status ),
-					'query' => [ 'ap_ajax_action' => 'change_post_status', 'nonce' => wp_create_nonce( 'change-status-' . $slug . '-' . $_post->ID ), 'post_id' => $_post->ID ],
-					'label' => esc_attr( $label ),
+				$args[] = array(
+					'cb'  => 'status',
+					'active'  => ( $slug === $_post->post_status ),
+					'query'   => [ 'status' => $slug, '__nonce' => wp_create_nonce( 'change-status-' . $slug . '-' . $_post->ID ), 'post_id' => $_post->ID ],
+					'label'   => esc_attr( $label ),
 				);
 			}
 		}

@@ -36,7 +36,10 @@
 		border: none;
 		box-shadow: none;
 	}
-
+  [id^=post-]:target .ap-a-cells {
+		border-color: #FFC107;
+		transition: border-color 1s linear;
+	}
 }
 .entry-content a:visited, .comment-content a:visited {
 	color: inherit;
@@ -97,13 +100,14 @@
 	display: block;
 	margin: 20px 0;
 	span, a{
-		border: 1px solid $default-border-color;
-		display: block;
-		float: left;
-		margin-right: 5px;
-		padding: 5px 14px;
-		text-decoration: none;
-		border-radius: $default-border-radius;
+		border: 1px solid #ddd;
+    display: block;
+    float: left;
+    margin-right: 5px;
+    padding: 4px 10px;
+    text-decoration: none;
+    font-size: 12px;
+    border-radius: 2px;
 	}
 	span{
 		background: $default-border-color;

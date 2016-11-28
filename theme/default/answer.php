@@ -22,11 +22,13 @@
 
 			<div class="ap-q-metas">
 				<?php echo ap_user_display_name( [ 'html' => true ] ); ?>
-				<time itemprop="datePublished" datetime="<?php echo ap_get_time( get_the_ID(), 'c' ); ?>">
-					<?php printf( 'Posted %s', ap_human_time( ap_get_time( get_the_ID(), 'U' ) ) ); ?>
-				</time>
+				<a href="<?php the_permalink(); ?>" class="ap-posted">
+					<time itemprop="datePublished" datetime="<?php echo ap_get_time( get_the_ID(), 'c' ); ?>">
+						<?php printf( 'Posted %s', ap_human_time( ap_get_time( get_the_ID(), 'U' ) ) ); ?>
+					</time>
+				</a>
 				<?php ap_recent_post_activity(); ?>
-
+				<?php echo ap_post_status_badge( ); // xss okay.	?>
 			</div>
 
 			<div class="ap-q-inner">
@@ -46,7 +48,6 @@
 					 * @since   3.0.0
 					 */
 					do_action( 'ap_after_answer_content' );
-
 				?>
 
 			</div>
@@ -54,7 +55,6 @@
 				<div class="ap-post-footer clearfix">
 					<?php echo ap_select_answer_btn_html( ); // xss okay ?>
 					<?php ap_post_actions_buttons() ?>
-					<?php echo ap_post_status_message( ); // xss okay.	?>
 					<?php echo ap_comment_btn_html(); // xss okay. ?>
 				</div>
 			<?php endif; ?>
@@ -62,4 +62,3 @@
 		</div>
 	</div>
 </div>
-<?php var_dump(get_permalink()); ?>

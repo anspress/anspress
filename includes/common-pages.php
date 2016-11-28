@@ -155,7 +155,8 @@ class AnsPress_Common_Pages
 	 */
 	public static function edit_page() {
 		$post_id = (int) ap_sanitize_unslash( 'id', 'r' );
-		if ( empty( $post_id ) || ! ap_user_can_edit_answer( $post_id ) ) {
+
+		if ( ! ap_verify_nonce( 'edit-post-' . $post_id ) || empty( $post_id ) || ! ap_user_can_edit_answer( $post_id ) ) {
 				echo '<p>' . esc_attr__( 'Sorry, you cannot edit this answer.', 'anspress-question-answer' ) . '</p>';
 				return;
 		}

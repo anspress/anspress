@@ -1,19 +1,129 @@
 /**
  * Javascript code for AnsPress fontend
- * @since 2.0
+ * @since 4.0.0
  * @package AnsPress
  * @author Rahul Aryan
- * @license GPL 2+
+ * @license GPL 3+
  */
 
 (function($) {
+	AnsPress.models.Action = Backbone.Model.extend({
+		defaults: {
+			cb: '',
+			post_id: '',
+			title: '',
+			label: '',
+			query: '',
+			active: false,
+			header: false,
+			href: '#',
+			count: ''
+		}
+	});
+
+	AnsPress.collections.Actions = Backbone.Collection.extend({
+		model: AnsPress.models.Action
+	});
+
+	AnsPress.views.Action = Backbone.View.extend({
+		id: function(){
+			return this.postID;
+		},
+		className: function(){
+			var klass = '';
+			if(this.model.get('header')) klass += ' ap-dropdown-header';
+			if(this.model.get('active')) klass += ' active';
+			return klass;
+		},
+		tagName: 'li',
+		template: '<# if(!header){ #><a href="{{href}}" title="{{title}}">{{label}}<# if(count){ #><b>{{count}}</b><# } #></a><# } else { #>{{label}}<# } #>',
+		initialize: function(options){
+			this.model = options.model;
+			this.postID = options.postID;
+			this.model.on('change', this.render, this);
+		},
+		events: {
+			'click a': 'triggerAction'
+		},
+		render: function(){
+			var t = _.template(this.template);
+			this.$el.html(t(this.model.toJSON()));
+			this.$el.attr('class', this.className());
+			return this;
+		},
+		triggerAction: function(e){
+			e.preventDefault();
+			var self = this;
+			AnsPress.showLoading(e.target);
+			var cb = this.model.get('cb');
+			var q = self.model.get('query');
+			q.ap_ajax_action = 'action_'+cb;
+
+			AnsPress.ajax({
+				data: q,
+				success: function(data){
+					AnsPress.hideLoading(e.target);
+					if(data.success && cb=='status')
+						AnsPress.trigger('changedPostStatus', {data:data, action:self.model});
+
+					if(data.action){
+						self.model.set(data.action);
+					}
+
+					if(data.postMessage) self.renderPostMessage(data.postMessage);
+				}
+			});
+		},
+		renderPostMessage: function(message){
+			if(!_.isEmpty(message))
+				$('#post-'+this.postID).find('post-message').html(message);
+			else
+				$('#post-'+this.postID).find('post-message').html('');
+		}
+	});
+
+	AnsPress.views.Actions = Backbone.View.extend({
+		id: function(){
+			return this.postID;
+		},
+		tagName: 'ul',
+		className: 'ap-actions',
+		initialize: function(options){
+			this.model = options.model;
+			this.postID = options.postID;
+			AnsPress.on('changedPostStatus', this.postStatusChanged, this);
+		},
+		renderItem: function(action){
+			var view = new AnsPress.views.Action({ model: action, postID: this.postID });
+			this.$el.append(view.render().$el);
+		},
+		render: function(){
+			var self = this;
+			this.model.each(function(action){
+				self.renderItem(action);
+			});
+			return this;
+		},
+		postStatusChanged: function(args){
+			// Remove post status class
+			$("#post-"+this.postID).removeClass( function() {
+				return this.className.split(' ').filter(function(className) {return className.match(/status-/)}).join(' ');
+			});
+
+			$("#post-"+this.postID).addClass('status-'+args.data.newStatus);
+			var activeStatus = this.model.where({cb: 'status', active: true });
+			activeStatus.forEach(function(status){
+				status.set({active: false});
+			});
+		}
+	});
+
 	AnsPress.models.Post = Backbone.Model.extend({
 		idAttribute: 'ID',
 		defaults:{
 			actionsLoaded: false,
-			actions: [],
 			hideSelect: '',
-			postMessage: ''
+			status: ''
 		}
 	});
 
@@ -27,13 +137,10 @@
 		initialize: function(options){
 			this.model.on('change:vote', this.voteUpdate, this);
 			this.model.on('change:hideSelect', this.selectToggle, this);
-			this.model.on('change:actions', this.renderPostActions, this);
-			this.model.on('change:postMessage', this.renderPostMessage, this);
 		},
 		events: {
 			'click [ap-vote] > a': 'voteClicked',
 			'click [ap="actiontoggle"]': 'postActions',
-			'click [ap-action]': 'postAction',
 			'click [ap="select_answer"]': 'selectAnswer'
 		},
 		voteClicked: function(e){
@@ -103,37 +210,13 @@
 					success: function(data){
 						AnsPress.hideLoading(e.target);
 						$(e.target).addClass('loaded');
-						self.model.set({'actions': data.actions, 'actionsLoaded': true });
-						self.renderPostActions(e);
+						var model = new AnsPress.collections.Actions(data.actions);
+						var view = new AnsPress.views.Actions({ model: model, postID: self.model.get('ID') });
+						self.$el.find('post-actions .ap-actions').html(view.render().$el);
 					}
 				});
 		},
-		renderPostActions: function(e){
-			var t = _.template($('#ap-template-actions').html());
-			this.$el.find('post-actions .ap-actions').html(t(this.model.toJSON()));
-		},
-		postAction: function(e){
-			e.preventDefault();
-			var self = this;
-			AnsPress.showLoading(e.target);
 
-			var action = $(e.target).attr('ap-action');
-			var q = $.parseJSON($(e.target).attr('ap-query'));
-			q.ap_ajax_action = 'action_'+action;
-
-			AnsPress.ajax({
-				data: q,
-				success: function(data){
-					AnsPress.hideLoading(e.target);
-					var actions = _.clone(self.model.get('actions'));
-					actions[action] = _.defaults(data.action, actions[action]);
-					self.model.set('actions', actions);
-
-					if(data.postMessage)
-						self.model.set('postMessage', data.postMessage);
-				}
-			});
-		},
 		selectAnswer: function(e){
 			e.preventDefault();
 			var self = this;
@@ -163,14 +246,6 @@
 				this.$el.find('[ap="select_answer"]').addClass('hide');
 			else
 				this.$el.find('[ap="select_answer"]').removeClass('hide');
-		},
-		renderPostMessage: function(post){
-			var msg = post.get('postMessage');
-			if(!msg.class) msg.class = 'ap-pmsg';
-			if(!_.isEmpty(msg.text))
-				this.$el.find('post-message').html('<div class="'+msg.class+'">'+msg.text+'</div>');
-			else
-				this.$el.find('post-message').html('');
 		}
 	});
 
@@ -288,13 +363,15 @@
 		$(this).toggleClass('checked');
 	});
 
+	var apposts = new AnsPress.collections.Posts();
+
+	var singleQuestionView = new AnsPress.views.SingleQuestion({ model: apposts, el: '#anspress' });
+	singleQuestionView.render();
+
 
 })(jQuery);
 
-var apposts = new AnsPress.collections.Posts();
 
-var singleQuestionView = new AnsPress.views.SingleQuestion({ model: apposts, el: '#anspress' });
-singleQuestionView.render();
 
 
 

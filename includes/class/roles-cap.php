@@ -876,6 +876,10 @@ function ap_user_can_change_status( $post_id, $user_id = false ) {
 
 	$post_o = ap_get_post( $post_id );
 
+	if ( ! in_array( $post_o->post_type, [ 'question', 'answer' ], true ) ) {
+		return false;
+	}
+
 	/**
 	 * Filter to hijack ap_user_can_change_status.
 	 *

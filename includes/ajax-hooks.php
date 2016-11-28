@@ -38,11 +38,11 @@ class AnsPress_Ajax {
 		anspress()->add_action( 'ap_ajax_load_comments', 'AnsPress_Comment_Hooks', 'load_comments' );
 		anspress()->add_action( 'ap_ajax_edit_comment_form', 'AnsPress_Comment_Hooks', 'edit_comment_form' );
 		anspress()->add_action( 'ap_ajax_delete_comment', 'AnsPress_Comment_Hooks', 'delete_comment' );
-		anspress()->add_action( 'ap_ajax_change_post_status', 'AnsPress_Post_Status', 'change_post_status' );
+		anspress()->add_action( 'ap_ajax_action_status', 'AnsPress_Post_Status', 'change_post_status' );
 		anspress()->add_action( 'ap_ajax_vote', 'AnsPress_Vote', 'vote' );
 
 		// Flag ajax callbacks.
-		anspress()->add_action( 'ap_ajax_flag_post', 'AnsPress_Flag', 'flag_post' );
+		anspress()->add_action( 'ap_ajax_action_flag', 'AnsPress_Flag', 'action_flag' );
 		anspress()->add_action( 'ap_ajax_flag_comment', 'AnsPress_Flag', 'flag_comment' );
 		anspress()->add_action( 'ap_ajax_submit_comment', 'AnsPress_Comment_Hooks','submit_comment' );
 		anspress()->add_action( 'ap_ajax_approve_comment', 'AnsPress_Comment_Hooks','approve_comment' );
@@ -132,10 +132,10 @@ class AnsPress_Ajax {
 		}
 
 		// Do not allow answer to be selected as best if status is moderate.
-		if ( 'moderate' === $_post->post_status ) {
+		if ( 'moderate' === $_post->post_status || 'trash' === $_post->post_status || 'private' === $_post->post_status ) {
 			ap_ajax_json( [
 				'success'  => false,
-				'snackbar' => [ 'message' => __( 'Answer with moderate status cannot be selected as best.', 'anspress-question-answer' ) ],
+				'snackbar' => [ 'message' => __( 'This answer cannot be selected as best, update status to select as best answer.', 'anspress-question-answer' ) ],
 			] );
 		}
 
@@ -395,10 +395,10 @@ class AnsPress_Ajax {
 		$message = 1 === $toggle ? __( 'Question closed', 'anspress-question-answer' ) : __( 'Question is opened', 'anspress-question-answer' );
 
 		$results = array(
-			'success'  => true,
-			'action'   => [ 'label' => $close_label, 'title' => $close_title ],
-			'snackbar' => [ 'message' => $message ],
-			'postMessage' => [ 'text' => ap_get_post_status_message( $post_id ) ]
+			'success'     => true,
+			'action'      => [ 'label' => $close_label, 'title' => $close_title ],
+			'snackbar'    => [ 'message' => $message ],
+			'postMessage' => ap_get_post_status_message( $post_id ),
 		);
 
 		ap_ajax_json( $results );

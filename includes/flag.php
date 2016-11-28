@@ -58,12 +58,11 @@ class AnsPress_Flag {
 	 *
 	 * @since 2.0.0
 	 */
-	public static function flag_post() {
-		$args = ap_sanitize_unslash( 'args', 'request' );
-		$post_id = (int) $args[0];
+	public static function action_flag() {
+		$post_id = (int) ap_sanitize_unslash( 'post_id', 'r' );
 
 		if ( ! ap_verify_nonce( 'flag_' . $post_id ) || ! is_user_logged_in() ) {
-				ap_ajax_json( 'something_wrong' );
+			ap_ajax_json( 'something_wrong' );
 		}
 
 		$userid = get_current_user_id();
@@ -71,16 +70,19 @@ class AnsPress_Flag {
 
 		// Die if already flagged.
 		if ( $is_flagged ) {
-				ap_ajax_json( 'already_flagged' );
+			ap_ajax_json( array(
+				'success'  => false,
+				'snackbar' => [ 'message' => __( 'You have already reported this post.', 'anspress-question-answer' ) ],
+			) );
 		}
 
 		ap_add_flag( $post_id );
-		$counts = ap_update_flags_count( $post_id );
+		$count = ap_update_flags_count( $post_id );
+
 		ap_ajax_json( array(
-			'message' => 'flagged',
-			'action' => 'flagged',
-			'view' => array( $post_id . '_flag_count' => $counts ),
-			'count' => $counts,
+			'success'  => true,
+			'action'   => [ 'count' => $count, 'active' => true ],
+			'snackbar' => [ 'message' => __( 'Thank you for reporting this post.', 'anspress-question-answer' ) ],
 		) );
 	}
 
@@ -139,28 +141,29 @@ function ap_is_user_flagged( $post = null ) {
  * Flag button html.
  *
  * @param mixed   $post Post.
- * @param boolean $echo Echo or return.
  * @return string
  * @since 0.9
  */
-function ap_flag_btn_html( $post = null, $echo = false ) {
+function ap_flag_btn_args( $post = null ) {
 
 	if ( ! is_user_logged_in() ) {
 		return;
 	}
 
 	$_post = ap_get_post( $post );
-	$flagged = ap_is_user_flagged();
-	$nonce = wp_create_nonce( 'flag_' . $_post->ID );
+	$flagged = ap_is_user_flagged( $_post );
+
 	$title = ( ! $flagged) ? (__( 'Flag this post', 'anspress-question-answer' )) : (__( 'You have flagged this post', 'anspress-question-answer' ));
 
-	$output = '<a id="flag_' . $_post->ID . '" data-action="ajax_btn" data-query="flag_post::' . $nonce . '::' . $_post->ID . '" class="flag-btn' . ( ! $flagged ? ' can-flagged' : '') . '" href="#" title="' . $title . '">' . __( 'Flag', 'anspress-question-answer' ) . ' <span class="ap-data-view ap-view-count-' . $_post->flags . '" data-view="' . $_post->ID . '_flag_count">' . $_post->flags . '</span></a>';
-
-	if ( ! $echo ) {
-		return $output;
-	}
-
-	echo $output; // xss okay.
+	return $actions['close'] = array(
+		'cb'   => 'flag',
+		'icon'   => 'apicon-check',
+		'query'  => [ '__nonce' => wp_create_nonce( 'flag_' . $_post->ID ), 'post_id' => $_post->ID ],
+		'label'  => __( 'Flag', 'anspress-question-answer' ),
+		'title'  => $title,
+		'count'  => $_post->flags,
+		'active' => $flagged,
+	);
 }
 
 /**

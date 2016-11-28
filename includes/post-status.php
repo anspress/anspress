@@ -43,39 +43,26 @@ class AnsPress_Post_Status {
 	 * @since 2.1
 	 */
 	public static function change_post_status() {
-		$args = ap_sanitize_unslash( 'args', 'request' );
-
-		if ( empty( $args ) ) {
-			ap_ajax_json('something_wrong' );
-		}
-
-		$post_id = (int) $args[0];
-		$status = $args[1];
-
-		// Die if not a defined post status.
-	   	if ( ! in_array( $status, [ 'publish', 'moderate', 'private_post'], true ) ) {
-	   		ap_ajax_json( 'something_wrong' );
-	   	}
+		$post_id = (int) ap_sanitize_unslash( 'post_id', 'request' );
+		$status = ap_sanitize_unslash( 'status', 'request' );
 
 		// Check if user has permission else die.
-		if ( ! is_user_logged_in() || ! ap_verify_nonce( 'change_post_status_'.$post_id ) || ! ap_user_can_change_status( $post_id ) ) {
-			ap_ajax_json('no_permission' );
+		if ( ! is_user_logged_in() || ! in_array( $status, [ 'publish', 'moderate', 'private_post', 'trash' ], true ) || ! ap_verify_nonce( 'change-status-' . $status . '-' . $post_id ) || ! ap_user_can_change_status( $post_id ) ) {
+			ap_ajax_json( array(
+				'success' => false,
+				'snackbar' => [ 'message' => __( 'You are not allowed to change post status', 'anspress-question-answer' ) ],
+			));
 		}
 
 		$post = ap_get_post( $post_id );
-
-	   	// Check if post is question or answer and new post status is not same as old.
-	   	if ( ! in_array( $post->post_type, [ 'question', 'answer' ] ) || $post->post_status == $status ) {
-			ap_ajax_json('something_wrong' );
-		}
-
-	   	$update_data = array();
-	   	$update_data['post_status'] = $status;
+		$update_data = array();
+		$update_data['post_status'] = $status;
 		$update_data['ID'] = $post->ID;
+
 		wp_update_post( $update_data );
 
 		// Unselect as best answer if moderate.
-		if ( 'answer' == $post->post_type && 'moderate' == $status && ap_have_answer_selected( $post->post_parent ) ) {
+		if ( 'answer' === $post->post_type && 'moderate' === $status && ap_have_answer_selected( $post->post_parent ) ) {
 			ap_unselect_answer( $post->ID );
 		}
 
@@ -84,19 +71,12 @@ class AnsPress_Post_Status {
 		$activity_type = 'moderate' === $post->post_status ? 'approved_' . $post->post_type : 'changed_status';
 		ap_update_post_activity_meta( $post_id, $activity_type, get_current_user_id() );
 
-		ob_start();
-		ap_post_status_description( $post->ID );
-		$html = ob_get_clean();
-
 		ap_ajax_json( array(
-			'action' 		=> 'status_updated',
-			'message' 		=> 'status_updated',
-			'do' 			=> array(
-				'remove_if_exists' => '#ap_post_status_desc_'.$post->ID,
-				'toggle_active_class' => array( '#ap_post_status_toggle_'.$post->ID, '.'.$status ),
-				'append_before' => '#ap_post_actions_'.$post->ID,
-			),
-			'html' 			=> $html,
+			'success'     => true,
+			'snackbar'    => [ 'message' => __( 'Post status updated successfully', 'anspress-question-answer' ) ],
+			'action'      => [ 'active' => true ],
+			'postMessage' => ap_get_post_status_message( $post->ID ),
+			'newStatus'   => $status,
 		));
 	}
 }
@@ -115,16 +95,18 @@ function ap_get_post_status_message( $post_id = false ) {
 	$ret = '';
 
 	if ( is_private_post( $post_id ) ) {
-		$ret = sprintf( __( '%s is marked as a private, only admin and post author can see.', 'anspress-question-answer' ), $post->post_type );
+		$ret = '<i class="apicon-lock">' . __( 'Private', 'anspress-question-answer' ) . '</i><span>' . sprintf( __( 'This %s is marked as a private, only admin and post author can see.', 'anspress-question-answer' ), $post->post_type ) . '</span>';
 	} elseif ( is_post_waiting_moderation( $post_id ) ) {
-		$ret = sprintf( __( '%s is awaiting for approval by moderator.', 'anspress-question-answer' ), $post->post_type );
+		$ret = '<i class="apicon-alert">' . __( 'Awaiting approval', 'anspress-question-answer' ) . '</i><span>' . sprintf( __( 'This %s is awaiting for approval by moderator.', 'anspress-question-answer' ), $post->post_type ) . '</span>';
 	} elseif ( is_post_closed( $post_id ) ) {
-		$ret = __( 'Question is closed for new answers', 'anspress-question-answer' );
+		$ret = '<i class="apicon-x">' . __( 'Closed', 'anspress-question-answer' ) . '</i><span>' . __( 'Question is closed for new answers', 'anspress-question-answer' ) . '</span>';
 	} elseif ( 'trash' === $post->post_status ) {
-		$ret = sprintf( __( '%s has been trashed, you can delete it permanently from wp-admin.', 'anspress-question-answer' ), $post->post_type );
+		$ret = '<i class="apicon-trashcan">' . __( 'Trashed', 'anspress-question-answer' ) . '</i><span>' . sprintf( __( 'This %s has been trashed, you can delete it permanently from wp-admin.', 'anspress-question-answer' ), $post->post_type ) . '</span>';
 	}
 
-	return apply_filters( 'ap_get_post_status_message',  $ret, $post_id );
+	$msg = '<div class="ap-pmsg status-' . $post->post_status . '">' . $ret . '</div>';
+
+	return apply_filters( 'ap_get_post_status_message',  $msg, $post_id );
 }
 
 /**
@@ -132,12 +114,12 @@ function ap_get_post_status_message( $post_id = false ) {
  *
  * @param  boolean|integer $post_id Post ID.
  */
-function ap_post_status_message( $post_id = false ) {
+function ap_post_status_badge( $post_id = false ) {
 	$ret = '<post-message>';
 	$msg = ap_get_post_status_message( $post_id );
 
 	if ( ! empty( $msg ) ) {
-		$ret .= '<div class="ap-pmsg">' . $msg . '</div>';
+		$ret .= $msg;
 	}
 
 	$ret .= '</post-message>';
