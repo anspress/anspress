@@ -1256,23 +1256,6 @@ function ap_disable_question_suggestion() {
 }
 
 /**
- * Pre fetch and cache all question and answer attachments.
- *
- * @param  array $ids Post IDs.
- * @since  4.0.0
- */
-function ap_post_attach_pre_fetch( $ids ) {
-	if ( $ids && is_user_logged_in() ) {
-		$args = array(
-			'post_type' => 'attachment',
-			'include'   => $ids,
-		);
-
-		get_posts( $args );// @codingStandardsIgnoreLine
-	}
-}
-
-/**
  * Pre fetch users and update cache.
  *
  * @param  array $ids User ids.

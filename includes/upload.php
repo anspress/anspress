@@ -324,7 +324,7 @@ function ap_clear_unattached_media( $user_id = false ) {
  * @param integer|array $media_id Attachment ID.
  * @param integer       $post_parent   Attachment ID.
  */
-function ap_set_media_post_parent( $media_id, $post_parent, $user_id = false) {
+function ap_set_media_post_parent( $media_id, $post_parent, $user_id = false ) {
 	if ( ! is_array( $media_id ) ) {
 		$media_id = [ $media_id ];
 	}
@@ -346,6 +346,9 @@ function ap_set_media_post_parent( $media_id, $post_parent, $user_id = false) {
 			wp_update_post( $postarr );
 		}
 	}
+
+	ap_update_post_attach_ids( $post_parent );
+	ap_update_user_temp_media_count( $user_id );
 }
 
 /**
@@ -403,4 +406,23 @@ function ap_user_can_upload_temp_media( $user_id = false ) {
 	}
 
 	return false;
+}
+
+/**
+ * Pre fetch and cache all question and answer attachments.
+ *
+ * @param  array $ids Post IDs.
+ * @since  4.0.0
+ */
+function ap_post_attach_pre_fetch( $ids ) {
+
+	if ( $ids && is_user_logged_in() ) {
+		$args = array(
+			'post_type' => 'attachment',
+			'include'   => $ids,
+		);
+
+		$posts = get_posts( $args );// @codingStandardsIgnoreLine
+		update_post_cache( $posts );
+	}
 }

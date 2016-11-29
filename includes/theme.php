@@ -434,15 +434,16 @@ function ap_post_actions( $_post = null ) {
 		);
 	}
 
-	/*
-
-
-
 	// Convert question to a post.
-	if ( is_super_admin( ) && 'question' === $_post->post_type ) {
-		$nonce = wp_create_nonce( 'ap_ajax_nonce' );
-		$actions['dropdown']['convert_to_post'] = '<a href="#" data-action="ajax_btn" data-query="convert_to_post::'.$nonce.'::'. $_post->ID .'">'.__('Convert to post', 'anspress-question-answer' ).'</a>';
-	}*/
+	if ( ( is_super_admin( ) || current_user_can( 'manage_options' ) ) && 'question' === $_post->post_type ) {
+
+		$actions[] = array(
+			'cb'    => 'convert_to_post',
+			'query' => [ 'post_id' => $_post->ID, '__nonce' => wp_create_nonce( 'convert-post-' . $_post->ID ) ],
+			'label' => __('Convert to post', 'anspress-question-answer' ),
+			'title' => __( 'Convert this question to blog post', 'anspress-question-answer' ),
+		);
+	}
 
 	/**
 	 * FILTER: ap_post_actions_buttons

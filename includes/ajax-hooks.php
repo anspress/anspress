@@ -29,26 +29,26 @@ class AnsPress_Ajax {
 
 		anspress()->add_action( 'ap_ajax_load_tinymce', __CLASS__, 'load_tinymce' );
 		anspress()->add_action( 'ap_ajax_filter_search', __CLASS__, 'filter_search' );
-		anspress()->add_action( 'ap_ajax_convert_to_post', __CLASS__, 'convert_to_post' );
 
 		anspress()->add_action( 'ap_ajax_load_comments', 'AnsPress_Comment_Hooks', 'load_comments' );
 		anspress()->add_action( 'ap_ajax_edit_comment_form', 'AnsPress_Comment_Hooks', 'edit_comment_form' );
 		anspress()->add_action( 'ap_ajax_delete_comment', 'AnsPress_Comment_Hooks', 'delete_comment' );
-
 		anspress()->add_action( 'ap_ajax_vote', 'AnsPress_Vote', 'vote' );
 
+		// Post actions.
+		anspress()->add_action( 'ap_ajax_post_actions', 'AnsPress_Theme', 'post_actions' );
 		anspress()->add_action( 'ap_ajax_action_toggle_featured', __CLASS__, 'toggle_featured' );
 		anspress()->add_action( 'ap_ajax_action_close', __CLASS__, 'close_question' );
 		anspress()->add_action( 'ap_ajax_action_toggle_delete_post', __CLASS__, 'toggle_delete_post' );
 		anspress()->add_action( 'ap_ajax_action_delete_permanently', __CLASS__, 'permanent_delete_post' );
 		anspress()->add_action( 'ap_ajax_action_status', 'AnsPress_Post_Status', 'change_post_status' );
+		anspress()->add_action( 'ap_ajax_action_convert_to_post', __CLASS__, 'convert_to_post' );
 
 		// Flag ajax callbacks.
 		anspress()->add_action( 'ap_ajax_action_flag', 'AnsPress_Flag', 'action_flag' );
 		anspress()->add_action( 'ap_ajax_flag_comment', 'AnsPress_Flag', 'flag_comment' );
 		anspress()->add_action( 'ap_ajax_submit_comment', 'AnsPress_Comment_Hooks','submit_comment' );
 		anspress()->add_action( 'ap_ajax_approve_comment', 'AnsPress_Comment_Hooks','approve_comment' );
-		anspress()->add_action( 'ap_ajax_post_actions', 'AnsPress_Theme', 'post_actions' );
 		anspress()->add_action( 'ap_ajax_list_filter', 'AnsPress_Theme', 'list_filter' );
 
 		// Uploader hooks.
@@ -561,12 +561,16 @@ class AnsPress_Ajax {
 	 * @since 3.0.0
 	 */
 	public static function convert_to_post() {
-		if ( ! ap_verify_default_nonce() || ! is_super_admin( ) ) {
-			ap_ajax_json( 'something_wrong' );
+		$post_id = ap_sanitize_unslash( 'post_id', 'r' );
+
+		if ( ! ap_verify_nonce( 'convert-post-' . $post_id ) || !( is_super_admin( ) || current_user_can( 'manage_options' ) ) ) {
+			ap_ajax_json( array(
+				'success' => false,
+				'snackbar' => [ 'message' => __( 'Sorry, you are not allowed to convert this question to post', 'anspress-question-answer' ) ],
+			) );
 		}
 
-		$args = ap_sanitize_unslash( $_POST['args'] ); // @codingStandardsIgnoreLine
-		$row = set_post_type( $args[0], 'post' );
+		$row = set_post_type( $post_id, 'post' );
 
 		// After success trash all answers.
 		if ( $row ) {
@@ -579,7 +583,11 @@ class AnsPress_Ajax {
 				wp_delete_post( $id );
 			}
 
-			ap_ajax_json( [ 'do' => [ 'redirect' => get_permalink( $args[0] ) ] ] );
+			ap_ajax_json( array(
+				'success' => true,
+				'snackbar' => [ 'message' => sprintf( __( ' Question "%s" is converted to post and its answers are trashed', 'anspress-question-answer' ), get_the_title( $post_id ) ) ],
+				'redirect' => get_the_permalink( $post_id ),
+			) );
 		}
 	}
 }
