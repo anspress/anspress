@@ -418,26 +418,25 @@ function ap_post_actions( $_post = null ) {
 
 		$actions[] = array(
 			'cb'    => 'toggle_delete_post',
-			'query' => [ 'post_id' => $_post->ID, '__nonce' => wp_create_nonce( 'delete_post_' . $_post->ID ) ],
+			'query' => [ 'post_id' => $_post->ID, '__nonce' => wp_create_nonce( 'trash_post_' . $_post->ID ) ],
 			'label' => $label,
 			'title' => $title,
+		);
+	}
+
+	// Permanent delete link.
+	if ( ap_user_can_permanent_delete( $_post->ID ) ) {
+		$actions[] = array(
+			'cb'    => 'delete_permanently',
+			'query' => [ 'post_id' => $_post->ID, '__nonce' => wp_create_nonce( 'delete_post_' . $_post->ID ) ],
+			'label' => __( 'Delete Permanently', 'anspress-question-answer' ),
+			'title' => __( 'Delete post permanently (cannot be restored again)', 'anspress-question-answer' ),
 		);
 	}
 
 	/*
 
 
-	// Delete link.
-
-
-	if ( ap_user_can_delete_post( $_post->ID ) && $_post->post_status == 'trash' ) {
-		$actions['dropdown']['restore'] = ap_post_restore_btn_html();
-	}
-
-	// Permanent delete link.
-	if ( ap_user_can_delete_post( $_post->ID ) ) {
-		$actions['dropdown']['permanent_delete'] = ap_post_permanent_delete_btn_html();
-	}
 
 	// Convert question to a post.
 	if ( is_super_admin( ) && 'question' === $_post->post_type ) {

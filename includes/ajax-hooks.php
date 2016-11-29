@@ -24,12 +24,9 @@ class AnsPress_Ajax {
 	 */
 	public static function init() {
 		anspress()->add_action( 'ap_ajax_suggest_similar_questions', __CLASS__, 'suggest_similar_questions' );
-		anspress()->add_action( 'ap_ajax_action_toggle_featured', __CLASS__, 'toggle_featured' );
 		anspress()->add_action( 'ap_ajax_hover_card', __CLASS__, 'hover_card' );
-		anspress()->add_action( 'ap_ajax_action_close', __CLASS__, 'close_question' );
 		anspress()->add_action( 'ap_ajax_toggle_best_answer', __CLASS__, 'toggle_best_answer' );
-		anspress()->add_action( 'ap_ajax_action_toggle_delete_post', __CLASS__, 'toggle_delete_post' );
-		anspress()->add_action( 'ap_ajax_permanent_delete_post', __CLASS__, 'permanent_delete_post' );
+
 		anspress()->add_action( 'ap_ajax_load_tinymce', __CLASS__, 'load_tinymce' );
 		anspress()->add_action( 'ap_ajax_filter_search', __CLASS__, 'filter_search' );
 		anspress()->add_action( 'ap_ajax_convert_to_post', __CLASS__, 'convert_to_post' );
@@ -37,8 +34,14 @@ class AnsPress_Ajax {
 		anspress()->add_action( 'ap_ajax_load_comments', 'AnsPress_Comment_Hooks', 'load_comments' );
 		anspress()->add_action( 'ap_ajax_edit_comment_form', 'AnsPress_Comment_Hooks', 'edit_comment_form' );
 		anspress()->add_action( 'ap_ajax_delete_comment', 'AnsPress_Comment_Hooks', 'delete_comment' );
-		anspress()->add_action( 'ap_ajax_action_status', 'AnsPress_Post_Status', 'change_post_status' );
+
 		anspress()->add_action( 'ap_ajax_vote', 'AnsPress_Vote', 'vote' );
+
+		anspress()->add_action( 'ap_ajax_action_toggle_featured', __CLASS__, 'toggle_featured' );
+		anspress()->add_action( 'ap_ajax_action_close', __CLASS__, 'close_question' );
+		anspress()->add_action( 'ap_ajax_action_toggle_delete_post', __CLASS__, 'toggle_delete_post' );
+		anspress()->add_action( 'ap_ajax_action_delete_permanently', __CLASS__, 'permanent_delete_post' );
+		anspress()->add_action( 'ap_ajax_action_status', 'AnsPress_Post_Status', 'change_post_status' );
 
 		// Flag ajax callbacks.
 		anspress()->add_action( 'ap_ajax_action_flag', 'AnsPress_Flag', 'action_flag' );
@@ -182,7 +185,7 @@ class AnsPress_Ajax {
 			'snackbar' => [ 'message' => __( 'Unable to trash this post', 'anspress-question-answer' ) ],
 		);
 
-		if ( ! ap_verify_nonce( 'delete_post_' . $post_id ) ) {
+		if ( ! ap_verify_nonce( 'trash_post_' . $post_id ) ) {
 			ap_ajax_json( $failed_response );
 		}
 
@@ -242,16 +245,14 @@ class AnsPress_Ajax {
 	public static function permanent_delete_post() {
 		$post_id = (int) ap_sanitize_unslash( 'post_id', 'request' );
 
-		if ( ! ap_verify_nonce( 'delete_post_' . $post_id ) || ! ap_user_can_permanent_delete() ) {
-			ap_ajax_json( 'something_wrong' );
+		if ( ! ap_verify_nonce( 'delete_post_' . $post_id ) || ! ap_user_can_permanent_delete( $post_id ) ) {
+			ap_ajax_json( array(
+				'success' => false,
+				'snackbar' => [ 'message' => __( 'Sorry, unable to delete post', 'anspress-question-answer' ) ]
+			) );
 		}
 
 		$post = ap_get_post( $post_id );
-
-		// Die if not question or answer post type.
-		if ( ! in_array( $post->post_type, [ 'question', 'answer' ], true ) ) {
-			ap_ajax_json( 'something_wrong' );
-		}
 
 		if ( 'question' === $post->post_type ) {
 			/**
@@ -273,23 +274,21 @@ class AnsPress_Ajax {
 
 		if ( 'question' === $post->post_type ) {
 			ap_ajax_json( array(
-				'action' 		=> 'delete_question',
-				'do' 			=> array( 'redirect' => ap_base_page_link() ),
-				'message' 		=> 'question_deleted_permanently',
+				'success'  => true,
+				'redirect' => ap_base_page_link(),
+				'snackbar' => [ 'message' => __( 'Question is deleted permanently', 'anspress-question-answer' ) ],
 			) );
 		}
 
 		$current_ans = ap_count_published_answers( $post->post_parent );
 		$count_label = sprintf( _n( '%d Answer', '%d Answers', $current_ans, 'anspress-question-answer' ), $current_ans );
-		ap_ajax_json(array(
-			'action' 		      => 'delete_answer',
-			'div_id' 		      => '#answer_' . $post_id,
-			'count' 		      => $current_ans,
-			'count_label' 	  => $count_label,
-			'remove' 		      => ( ! $current_ans ? true: false),
-			'message' 		    => 'answer_deleted_permanently',
-			'view' 			      => array( 'answer_count' => $current_ans, 'answer_count_label' => $count_label ),
-		));
+
+		ap_ajax_json( array(
+			'success'      => true,
+			'snackbar'     => [ 'message' => __( 'Answer is deleted permanently', 'anspress-question-answer' ) ],
+			'deletePost'   => $post_id,
+			'answersCount' => [ 'text' => $count_label, 'number' => $current_ans ],
+		) );
 	}
 
 	/**

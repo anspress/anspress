@@ -52,17 +52,22 @@
 			return this;
 		},
 		triggerAction: function(e){
+			var q = this.model.get('query');
+			if(_.isEmpty(q))
+				return;
+
 			e.preventDefault();
 			var self = this;
 			AnsPress.showLoading(e.target);
 			var cb = this.model.get('cb');
-			var q = self.model.get('query');
 			q.ap_ajax_action = 'action_'+cb;
 
 			AnsPress.ajax({
 				data: q,
 				success: function(data){
 					AnsPress.hideLoading(e.target);
+					if(data.redirect) window.location = data.redirect;
+
 					if(data.success && ( cb=='status' || cb=='toggle_delete_post'))
 						AnsPress.trigger('changedPostStatus', {postID: self.postID, data:data, action:self.model});
 
@@ -71,6 +76,8 @@
 					}
 
 					if(data.postMessage) self.renderPostMessage(data.postMessage);
+					if(data.deletePost) AnsPress.trigger('deletePost', data.deletePost);
+					if(data.answersCount) AnsPress.trigger('answerCountUpdated', data.answersCount);
 				}
 			});
 		},
@@ -211,7 +218,6 @@
 				success: function(data){
 					AnsPress.hideLoading(e.target);
 					$(e.target).addClass('loaded');
-					console.log(self.actions);
 					self.actions.model = new AnsPress.collections.Actions(data.actions);
 					self.actions.view = new AnsPress.views.Actions({ model: self.actions.model, postID: self.model.get('ID') });
 					self.$el.find('post-actions .ap-actions').html(self.actions.view.render().$el);
@@ -266,6 +272,8 @@
 		initialize: function(){
 			this.model.on('add', this.renderItem, this);
 			AnsPress.on('answerToggle', this.answerToggle, this);
+			AnsPress.on('deletePost', this.deletePost, this);
+			AnsPress.on('answerCountUpdated', this.answerCountUpdated, this);
 		},
 		events: {
 			'click [ap="loadEditor"]': 'loadEditor',
@@ -331,10 +339,9 @@
 
 						// Append anwer to the list.
 						$('ap-answers').append($(data['html']).hide());
-						$(data.div_id).slideDown(500);
+						$(data.div_id).slideDown(800);
 						self.model.add({'ID': data.ID});
-
-						$('[ap-answecount-text]').text(data.answers_count.text);
+						AnsPress.trigger('answerCountUpdated', data.answersCount);
 					}
 
 					// If form have errors then show it
@@ -356,14 +363,22 @@
 				if(args[0] !== m)
 					m.set('hideSelect', args[1]);
 			});
+		},
+		deletePost: function(postID){
+			this.model.remove(postID);
+			$('#post-'+postID).slideUp(400, function(){
+				$(this).remove();
+			});
+		},
+		answerCountUpdated: function(counts){
+			$('[ap-answecount-text]').text(counts.text);
 		}
 	});
 
-	/*$('[ap="actiontoggle"]').click(function(){
-		if(!$(this).is('.checked') && !$(this).is('.loaded'))
+	$('[ap="actiontoggle"]').click(function(){
+		if(!$(this).is('.loaded'))
 			AnsPress.showLoading(this);
-		$(this).toggleClass('checked');
-	});*/
+	});
 
 	var apposts = new AnsPress.collections.Posts();
 

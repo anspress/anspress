@@ -297,7 +297,7 @@ function ap_answer_post_ajax_response( $question_id, $answer_id ) {
 		'can_answer'    => ap_user_can_answer( $post->ID ),
 		'html'          => $html,
 		'snackbar'      => [ 'message' => __( 'Answer submitted successfully', 'anspress-question-answer' ) ],
-		'answers_count' => [ 'text' => $count_label, 'number' => $current_ans ],
+		'answersCount'  => [ 'text' => $count_label, 'number' => $current_ans ],
 	);
 
 	ap_ajax_json( $result );

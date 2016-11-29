@@ -682,8 +682,20 @@ function ap_user_can_delete_answer( $answer, $user_id = false ) {
  *
  * @return boolean
  */
-function ap_user_can_permanent_delete() {
-	if ( is_super_admin() ) {
+function ap_user_can_permanent_delete( $post = null, $user_id = false ) {
+
+	if ( false === $user_id ) {
+		$user_id = get_current_user_id();
+	}
+
+	$_post = ap_get_post( $post );
+
+	// Return false if not question or answer.
+	if( ! in_array( $_post->post_type, [ 'question', 'answer' ], true) ) {
+		return false;
+	}
+
+	if ( is_super_admin( $user_id ) || user_can( $user_id, 'ap_delete_post_permanent' ) ) {
 		return true;
 	}
 
@@ -1053,6 +1065,7 @@ function ap_role_caps( $role ) {
 			'ap_delete_others_question' => true,
 			'ap_delete_others_answer'   => true,
 			'ap_delete_others_comment'  => true,
+			'ap_delete_post_permanent'  => true,
 			'ap_view_private'           => true,
 			'ap_view_moderate'          => true,
 			'ap_change_status_other'    => true,

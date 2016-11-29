@@ -338,52 +338,6 @@ function ap_truncate_chars( $text, $limit, $ellipsis = '...' ) {
 }
 
 /**
- * Post restore button.
- *
- * @param  mixed   $_post Post.
- * @param  boolean $echo  Echo or return.
- * @return null|string
- */
-function ap_post_restore_btn_html( $_post = null, $echo = false ) {
-	$_post = ap_get_post( $_post );
-
-	if ( ap_user_can_restore() ) {
-		$action = 'restore_' . $_post->ID;
-		$nonce = wp_create_nonce( $action );
-		$output = '<a href="#" class="delete-btn" data-action="ajax_btn" data-query="restore_post::' . $nonce . '::' . $_post->ID . '" title="' . __( 'Restore post', 'anspress-question-answer' ) . '">' . __( 'Restore', 'anspress-question-answer' ) . '</a>';
-
-		if ( ! $echo ) {
-			return $output;
-		}
-		echo $output; // xss ok.
-	}
-}
-
-/**
- * Permanent delete button.
- *
- * @param  mixed   $post_id Post.
- * @param  boolean $echo    Echo or return.
- * @return null|string
- */
-function ap_post_permanent_delete_btn_html( $post_id = false, $echo = false ) {
-	if ( false === $post_id ) {
-		$post_id = get_the_ID();
-	}
-	if ( ap_user_can_permanent_delete() ) {
-		$action = 'delete_post_' . $post_id;
-		$nonce = wp_create_nonce( $action );
-
-		$output = '<a href="#" class="delete-btn" data-action="ap_delete_post" data-query="post_id=' . $post_id . '&__nonce=' . $nonce . '&ap_ajax_action=permanent_delete_post" title="' . __( 'Delete Permanently', 'anspress-question-answer' ) . '">' . __( 'Delete Permanently', 'anspress-question-answer' ) . '</a>';
-
-		if ( ! $echo ) {
-			return $output;
-		}
-		echo $output; // xss ok.
-	}
-}
-
-/**
  * Convert number to 1K, 1M etc.
  *
  * @param  integer $num       Number to convert.
@@ -543,7 +497,6 @@ function ap_responce_message( $id, $only_message = false ) {
 		'captcha_error'                 => array( 'type' => 'error', 'message' => __( 'Please check captcha field and resubmit it again.', 'anspress-question-answer' ) ),
 		'comment_content_empty'         => array( 'type' => 'error', 'message' => __( 'Comment content is empty.', 'anspress-question-answer' ) ),
 		'post_image_uploaded'           => array( 'type' => 'success', 'message' => __( 'Image uploaded successfully', 'anspress-question-answer' ) ),
-		'question_deleted_permanently'  => array( 'type' => 'success', 'message' => __( 'Question has been deleted permanently', 'anspress-question-answer' ) ),
 		'answer_deleted_permanently'    => array( 'type' => 'success', 'message' => __( 'Answer has been deleted permanently', 'anspress-question-answer' ) ),
 		'upload_limit_crossed'          => array( 'type' => 'warning', 'message' => __( 'You have already attached maximum numbers of allowed uploads.', 'anspress-question-answer' ) ),
 		'profile_updated_successfully'  => array( 'type' => 'success', 'message' => __( 'Your profile has been updated successfully.', 'anspress-question-answer' ) ),
