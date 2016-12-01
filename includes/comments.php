@@ -69,26 +69,10 @@ class AnsPress_Comment_Hooks {
 		}
 
 		$result = array(
-			'success' => true,
-			'action'  => 'load_comment_form',
+			'success'  => true,
+			'action'   => 'load_comment_form',
+			'comments' => SELF::comments_data( $post_id ),
 		);
-
-		/*if ( isset( $args[1] ) ) {
-			$comment_id = (integer) $args[1];
-
-			// Check if user can edit comment.
-			if ( ! ap_user_can_edit_comment( $comment_id, get_current_user_id() ) ) {
-				ap_ajax_json( 'no_permission' );
-			}
-
-			$result['container'] = '#post-c-'.$comment->comment_post_ID;
-			$result['key'] = $comment->comment_post_ID.'Comments';
-			$result['apData'] = array();
-			ap_ajax_json( $result );
-		}*/
-
-		$result['comments'] = SELF::comments_data( $post_id );
-
 		ap_ajax_json( $result );
 	}
 
@@ -123,104 +107,93 @@ class AnsPress_Comment_Hooks {
 	 * @since 3.0.0
 	 */
 	public static function submit_comment() {
-		$post_id = (integer) ap_sanitize_unslash('post_id', 'request' );
-		$comment_ID = (integer) ap_sanitize_unslash('comment_ID', 'request' );
-		$content = ap_sanitize_unslash( 'content', 'request' );
+		$post_id = (int) ap_sanitize_unslash( 'post_id', 'r' );
+		$content = ap_sanitize_unslash( 'content', 'r' );
 
-		if ( ! is_user_logged_in() || ! ap_verify_nonce( $post_id . '_comment' ) ) {
-			ap_ajax_json( 'something_wrong' );
+		if ( ! is_user_logged_in() || ! ap_verify_nonce( 'new-comment' ) || ! ap_user_can_comment( $post_id ) ) {
+			ap_ajax_json( array(
+				'success'  => false,
+				'snackbar' => [ 'message' => __( 'Unable to post comment', 'anspress-question-answer' ) ],
+			) );
 		}
 
 		// Check if comment content is not empty.
 		if ( empty( $content ) ) {
-			ap_ajax_json( 'comment_content_empty' );
+			ap_ajax_json( array(
+				'success'  => false,
+				'snackbar' => [ 'message' => __( 'Sorry, you cannot post a blank comment', 'anspress-question-answer' ) ],
+			) );
 		}
 
-		// Check if they have permission to comment.
-		if ( ! ap_user_can_comment( $post_id ) ) {
-			ap_ajax_json( 'no_permission' );
-		}
+		$_post = ap_get_post( $post_id );
 
-		// Check if user can edit comment.
-		if ( ! empty( $comment_ID ) && ! ap_user_can_edit_comment( $comment_ID, get_current_user_id() ) ) {
-			ap_ajax_json( 'no_permission' );
-		}
+		$type = 'question' === $_post->post_type ? __( 'question', 'anspress-question-answer' ) : __( 'answer', 'anspress-question-answer' );
 
-		$post = ap_get_post( $post_id );
-
-		if ( ! $post || empty( $post->post_status ) ) {
-			ap_ajax_json( 'something_wrong' );
-		}
-
-		if ( in_array( $post->post_status, array( 'draft', 'pending', 'trash' ) ) ) {
-			ap_ajax_json( 'draft_comment_not_allowed' );
-		}
-
-		$filter_type = ! empty( $comment_ID ) ? 'ap_before_updating_comment' : 'ap_before_inserting_comment';
-
-		/**
-		 * Filter comment content before inserting to DB.
-		 * @param bool 		$apply_filter 	Apply this filter.
-		 * @param string 	$content 		Un-filtered comment content.
-		 */
-		$filter = apply_filters( $filter_type, false, $content );
-
-		if ( true === $filter && is_array( $filter ) ) {
-			ap_ajax_json( $filter );
-		}
-
-		// If comment_ID exists then update comment.
-		if ( ! empty( $comment_ID ) ) {
-			SELF::update_comment( $post_id, $comment_ID, $content );
+		if ( in_array( $_post->post_status, [ 'draft', 'pending', 'trash' ], true ) ) {
+			ap_ajax_json( array(
+				'success'  => false,
+				'snackbar' => [ 'message' => sprintf( __( 'Commenting is not allowed on draft, pending or deleted %s', 'anspress-question-answer' ), $type ) ],
+			) );
 		}
 
 		// Get current user object.
 		$user = wp_get_current_user();
 		if ( ! $user->exists() ) {
-			ap_ajax_json( 'no_permission' );
+			ap_ajax_json( array(
+				'success'  => false,
+				'snackbar' => [ 'message' => __( 'Sorry, you cannot post a comment', 'anspress-question-answer' ) ],
+			) );
 		}
 
 		$commentdata = array(
-			'comment_post_ID' 		=> $post->ID,
-			'comment_author' 		=> wp_slash( $user->display_name ),
-			'comment_author_email' 	=> wp_slash( $user->user_email ),
-			'comment_author_url' 	=> wp_slash( $user->user_url ),
-			'comment_content' 		=> trim( $content ),
-			'comment_type' 			=> 'anspress',
-			'comment_parent' 		=> 0,
-			'user_id' 				=> $user->ID,
+			'comment_post_ID' 		   => $_post->ID,
+			'comment_author' 		     => wp_slash( $user->display_name ),
+			'comment_author_email' 	 => wp_slash( $user->user_email ),
+			'comment_author_url' 	   => wp_slash( $user->user_url ),
+			'comment_content' 		   => trim( $content ),
+			'comment_type' 			     => 'anspress',
+			'comment_parent' 		     => 0,
+			'user_id' 				       => $user->ID,
 		);
 
-		// Insert new comment and get the comment ID
+		/**
+		 * Filter comment content before inserting to DB.
+		 *
+		 * @param bool 		$apply_filter 	Apply this filter.
+		 * @param string 	$content 		Un-filtered comment content.
+		 */
+		$commentdata = apply_filters( 'ap_pre_insert_comment', $commentdata );
+
+		// Insert new comment and get the comment ID.
 		$comment_id = wp_new_comment( $commentdata );
 
 		if ( false !== $comment_id ) {
-			$comment = get_comment( $comment_id );
-			do_action( 'ap_after_new_comment', $comment );
+			$c = get_comment( $comment_id );
+			do_action( 'ap_after_new_comment', $c );
 
-			$count = get_comment_count( $comment->comment_post_ID );
+			$count = get_comment_count( $c->comment_post_ID );
 
 			$result = array(
-				'action' 		=> 'new_comment',
-				'status' 		=> true,
-				'comment_ID' 	=> $comment->comment_ID,
-				'comment_post_ID' => $comment->comment_post_ID,
-				'comment_content' => $comment->comment_content,
-				'message' 		=> 'comment_success',
-				'view' 			=> array(
-					'comments_count_'.$comment->comment_post_ID => '('.$count['approved'].')',
-					'comment_count_label_'.$comment->comment_post_ID => sprintf( _n( 'One comment', '%d comments',$count['approved'], 'anspress-question-answer' ), $count['approved'] ),
-					),
-				);
+				'success'    => true,
+				'comment'      => array(
+					'ID'        => $c->comment_ID,
+					'avatar'    => get_avatar( $c->user_id, 30 ),
+					'user_link' => ap_user_link( $c->user_id ),
+					'user_name' => ap_user_display_name( $c->user_id ),
+					'iso_date'  => date( 'c', strtotime( $c->comment_date ) ),
+					'time'      => ap_human_time( $c->comment_date_gmt, false ),
+					'content'   => $c->comment_content,
+					'approved'  => $c->comment_approved,
+					'class'     => implode( ' ', get_comment_class( 'ap-comment', $c->comment_ID, null, false ) ),
+					'actions' 	=> ap_comment_actions( $c ),
+				),
+				'action' 		  => 'new-comment',
+				'commentsCount' => [ 'text' => sprintf( _n( '%d Comment', '%d Comments', $count['all'], 'anspress-question-answer' ), $count['all'] ), 'number' => $count['all'] ],
+				'snackbar'   => [ 'message' => __( 'Comment successfully posted', 'anspress-question-answer' ) ],
+			);
 
-			$result['key'] = $comment->comment_post_ID.'Comments';
-
-			$result['apData'] = SELF::comments_data( $comment->comment_post_ID );
 			ap_ajax_json( $result );
 		}
-
-		// If execution reached to this point then there must be something wrong.
-		ap_ajax_json( 'something_wrong' );
 	}
 
 	/**
@@ -366,7 +339,12 @@ function ap_comment_btn_html( $_post = null ) {
 	$comment_count = get_comments_number( $_post->ID );
 	$args = wp_json_encode( [ 'post_id' => $_post->ID, '__nonce' => wp_create_nonce( 'comment_form_nonce' ) ] );
 
-	$output = '<a href="#comments-' . $_post->ID . '" class="ap-btn ap-btn-comments" ap="comment_btn" ap-query="' . esc_js( $args ) . '" ap-commentscount-text>' . sprintf( _n( '%d Comment', '%d Comments', $comment_count, 'anspress-question-answer' ), $comment_count ) . '</a>';
+	$q = wp_json_encode( array(
+		'post_id' => get_the_ID(),
+		'__nonce' => wp_create_nonce( 'new-comment' ),
+	) );
+
+	$output = '<a href="#comments-' . $_post->ID . '" class="ap-btn ap-btn-comments" ap="comment_btn" ap-query="' . esc_js( $args ) . '" ap-commentscount-text>' . sprintf( _n( '%d Comment', '%d Comments', $comment_count, 'anspress-question-answer' ), $comment_count ) . '</a><a href="#" class="ap-btn-newcomment ap-btn ap-btn-small" ap="new-comment" ap-query="' . esc_js( $q ) . '">' . esc_attr__( 'Add a Comment', 'anspress-question-answer' ) . '</a>';
 
 	return $output;
 }

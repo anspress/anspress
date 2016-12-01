@@ -55,6 +55,8 @@ function ap_scripts_front() {
 		'attached_max' => __( 'You have already attached maximum numbers of allowed attachments', 'anspress-question-answer' ),
 		'commented' => __( 'commented', 'anspress-question-answer' ),
 		'comment' => __( 'Comment', 'anspress-question-answer' ),
+		'cancel' => __( 'Cancel', 'anspress-question-answer' ),
+		'your_comment' => __( 'Write your comment...', 'anspress-question-answer' ),
 	);
 
 	echo '<script type="text/javascript">';

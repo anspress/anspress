@@ -1,0 +1,45 @@
+<!-- comment start -->
+  <div class="ap-avatar">{{{avatar}}}</div>
+  <div class="comment-inner">
+    <div class="comment-header"><a href="{{user_link}}" class="ap-comment-author">{{user_name}}</a> {{aplang.commented}}
+      <a href="#" class="ap-comment-time">
+        <time datetime="{{iso_date}}">{{time}}</time>
+      </a>
+      <div class="ap-comment-actions">
+        <# if(actions) { _.each(actions, function(action){ #>
+          <a href="#" ap="comment_action" <# if(action.title){ #> title="{{action.title}}"<# } #><# if(action.query){ #> ap-query="{{JSON.stringify(action.query)}}"<# } #><# if(action.active){ #> class="active"<# } #>>
+            {{action.label}}
+            <# if(action.count){ #>
+              <b>{{action.count}}</b>
+            <# } #>
+          </a>
+        <# }); } #>
+      </div>
+    </div>
+    <div class="comment-content">{{content}}</div>
+  </div>
+<!-- comment end -->
+
+<!-- comment-form start -->
+<form class="ap-comment-form clearfix" method="POST" id="ap-commentform" comment-form>
+  <div class="ap-comment-inner">
+    <textarea placeholder="{{aplang.your_comment}}" class="ap-form-control autogrow" id="ap-comment-textarea" aria-required="true" rows="4" name="content"></textarea>
+    <div class="ap-comment-footer clearfix">
+      <button type="submit" class="ap-comment-submit ap-btn ap-btn-medium">{{aplang.comment}}</button>
+      <button class="ap-btn ap-comment-cancel ap-btn-medium" type="button" ap="cancel-comment">{{aplang.cancel}}</button>
+    </div>
+  </div>
+  <input type="hidden" name="__nonce" value="{{__nonce}}" />
+  <input type="hidden" name="post_id" value="{{post_id}}" />
+  <input type="hidden" name="action" value="ap_ajax" />
+  <input type="hidden" name="ap_ajax_action" value="{{ap_ajax_action}}" />
+</form>
+<!-- comment-form end -->
+
+<!-- action start -->
+  <# if(!header){ #>
+    <a href="{{href}}" title="{{title}}">{{label}}<# if(count){ #><b>{{count}}</b><# } #></a>
+  <# } else { #>
+    {{label}}
+  <# } #>
+<!-- action end -->

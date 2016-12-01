@@ -86,7 +86,7 @@
 								<?php ap_post_actions_buttons() ?>
 								<?php echo ap_comment_btn_html( ); ?>
 							</div>
-						<div class="ap-cell-inner">
+						</div>
 
 						<!-- End ap-content-inner -->
 						<?php ap_question_the_comments(); ?>

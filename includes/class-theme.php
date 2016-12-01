@@ -362,14 +362,5 @@ class AnsPress_Theme {
 
 		return $args;
 	}
-
-	/**
-	 * Append post actions JS template.
-	 */
-	public static function post_comments_template() {
-		echo '<script id="ap-template-comments" type="text/html">';
-		include_once ap_get_theme_location( 'js-template/comments.html' );
-		echo '</script>';
-	}
 }
 

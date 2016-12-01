@@ -204,7 +204,8 @@
 			this.model = options.model;
 			this.postID = options.postID;
 			AnsPress.on('removeComment', this.removeComment, this);
-			this.model.on('remove', this.commentRemoved, this);
+			this.listenTo(this.model, 'remove', this.commentRemoved);
+			this.listenTo(this.model, 'add', this.renderItem);
 		},
 		renderItem: function(comment){
 			var view = new AnsPress.views.Comment({ model: comment, postID: this.postID });
@@ -236,19 +237,21 @@
 		idAttribute: 'ID',
 		templateId: 'answer',
 		tagName: 'div',
-		actions: {view: {}, model: {}},
 		id: function(){
 			return 'post-' + this.model.get('ID');
 		},
 		initialize: function(options){
-			this.model.on('change:vote', this.voteUpdate, this);
-			this.model.on('change:hideSelect', this.selectToggle, this);
+			this.listenTo(this.model, 'change:vote', this.voteUpdate);
+			this.listenTo(this.model, 'change:hideSelect', this.selectToggle);
 		},
 		events: {
 			'click [ap-vote] > a': 'voteClicked',
 			'click [ap="actiontoggle"]:not(.loaded)': 'postActions',
 			'click [ap="select_answer"]': 'selectAnswer',
-			'click [ap="comment_btn"]': 'loadComments'
+			'click [ap="comment_btn"]': 'loadComments',
+			'click [ap="new-comment"]': 'loadCommentForm',
+			'submit [comment-form]': 'submitComment',
+			'click [ap="cancel-comment"]': 'hideCommentForm'
 		},
 		voteClicked: function(e){
 			e.preventDefault();
@@ -356,12 +359,10 @@
 		loadComments: function(e){
 			e.preventDefault();
 			var self = this;
-
 			if($(e.target).is('.loaded')){
 				$('#comments-'+self.model.id).slideToggle(400);
 				return;
 			}
-
 			var q = $.parseJSON($(e.target).attr('ap-query'));
 			q.ap_ajax_action = 'load_comments';
 			AnsPress.showLoading(e.target);
@@ -370,11 +371,47 @@
 				success: function(data){
 					AnsPress.hideLoading(e.target);
 					$(e.target).addClass('loaded');
-					var model = new AnsPress.collections.Comments(data.comments);
-					var view = new AnsPress.views.Comments({ model: model, postID: self.model.id, el: '#comments-'+self.model.id });
+					self.comments = new AnsPress.collections.Comments(data.comments);
+					var view = new AnsPress.views.Comments({ model: self.comments, postID: self.model.id, el: '#comments-'+self.model.id });
 					view.render();
 				}
 			});
+		},
+		loadCommentForm: function(e){
+			e.preventDefault();
+			if(this.$el.find('[comment-form]').length === 0){
+				var q = $.parseJSON($(e.target).attr('ap-query'));
+				q.ap_ajax_action = 'submit_comment';
+				var t = _.template(AnsPress.getTemplate('comment-form')());
+				this.$el.find('ap-comments').append(t(q));
+			}else{
+				this.$el.find('[comment-form]').remove();
+			}
+		},
+		submitComment: function(e){
+			var self = this;
+			AnsPress.showLoading(e.target);
+			AnsPress.ajax({
+				data: $(e.target).serialize(),
+				success: function(data){
+					AnsPress.hideLoading(e.target);
+					if(data.success){
+						if(self.comments){
+							self.comments.add(data.comment);
+							$('#comment-'+data.comment.ID)[0].scrollIntoView();
+						}
+						if(data.commentsCount){
+							$('[ap-commentscount-text]').text(data.commentsCount.text);
+						}
+						$(e.target).find('textarea').val('');
+					}
+				}
+			});
+			return false;
+		},
+		hideCommentForm: function(e){
+			e.preventDefault();
+			$(e.target).closest('[comment-form]').remove();
 		}
 	});
 
@@ -391,7 +428,7 @@
 
 	AnsPress.views.SingleQuestion = Backbone.View.extend({
 		initialize: function(){
-			this.model.on('add', this.renderItem, this);
+			this.listenTo(this.model, 'add', this.renderItem);
 			AnsPress.on('answerToggle', this.answerToggle, this);
 			AnsPress.on('deletePost', this.deletePost, this);
 			AnsPress.on('answerCountUpdated', this.answerCountUpdated, this);
@@ -502,10 +539,8 @@
 	});
 
 	var apposts = new AnsPress.collections.Posts();
-
 	var singleQuestionView = new AnsPress.views.SingleQuestion({ model: apposts, el: '#anspress' });
 	singleQuestionView.render();
-
 
 })(jQuery);
 

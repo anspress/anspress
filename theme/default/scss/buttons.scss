@@ -14,8 +14,13 @@
 	text-decoration: none;
 	vertical-align: middle;
 
+	&-medium{
+		padding: 3px 12px;
+	}
+
 	&-small{
 		padding: 2px 8px;
+		font-size: 11px;
 	}
 
 	&.ap-btn-view-all {

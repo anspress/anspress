@@ -275,7 +275,7 @@ function ap_answer_user_can_view() {
  */
 function ap_answer_the_comments() {
 	if ( ! ap_opt( 'disable_comments_on_answer' ) ) {
-		echo '<ap-comments id="comments-' . get_the_ID() . '"><div class="ap-comments"></div></ap-comments>';
+		echo '<ap-comments id="comments-' . esc_attr( get_the_ID() ) . '"><div class="ap-comments"></div></ap-comments>';
 	}
 }
 
