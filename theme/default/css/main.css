@@ -1483,19 +1483,21 @@ body ul ul#ap-user-menu-link li > a .count {
 #anspress .best-answer .ap-q-metas {
   background: #dcedc8;
 }
-#anspress .ap-q .ap-avatar {
+#anspress .ap-cell {
+  font-size: 14px;
+  margin-left: 70px;
+}
+#anspress .ap-cell-inner {
+  border: 2px solid rgba(0, 0, 0, 0.1);
+  border-radius: 3px;
+}
+#anspress .ap-content > .ap-avatar {
   position: absolute;
   float: left;
   margin-right: 0x;
 }
 #anspress .ap-q-head {
   margin-bottom: 20px;
-}
-#anspress .ap-q-cells {
-  font-size: 14px;
-  margin-left: 70px;
-  border: 2px solid rgba(0, 0, 0, 0.1);
-  border-radius: 3px;
 }
 #anspress .ap-q-metas {
   font-size: 13px;
@@ -1532,12 +1534,6 @@ body ul ul#ap-user-menu-link li > a .count {
 }
 #anspress .ap-q-inner {
   padding: 15px;
-}
-#anspress .ap-a-cells {
-  font-size: 14px;
-  margin-left: 70px;
-  border: 2px solid rgba(0, 0, 0, 0.1);
-  border-radius: 3px;
 }
 #anspress .ap-question-meta {
   margin-bottom: 25px;
@@ -2310,7 +2306,7 @@ post-message {
   top: 0;
   left: 0;
 }
-#anspress .ap-minimal-editor .ap-form-c > * {
+#anspress .ap-minimal-editor #ap-form-main {
   display: none;
 }
 #anspress .ap-minimal-editor .ap-form-c .ap-minimal-placeholder {
@@ -2457,106 +2453,73 @@ post-message {
   z-index: 9;
 }
 
-#anspress .ap-comment-form {
-  background: #f8f8f8 none repeat scroll 0 0;
-  border-top: 1px solid #e4e4e4;
-  margin: 0 -10px -10px;
-  padding: 10px;
-}
-#anspress .ap-comment-form form#ap-commentform {
-  margin: 0;
-}
-#anspress .ap-comment-form .ap-avatar {
-  position: static;
-}
-#anspress .ap-comment-form .form-submit {
-  display: none;
-}
-#anspress .ap-comment-form .ap-comment-submit {
-  float: right;
-  margin-left: 10px;
-  padding: 3px 8px;
-}
-#anspress .ap-comment-form .ap-comment-textarea {
-  overflow: hidden;
-}
-#anspress .ap-comment-form .comment-reply-title {
-  display: none;
-}
-#anspress .ap-comment-cancel {
-  float: right;
-}
-#anspress .ap-comment-footer {
-  line-height: 32px;
-}
-#anspress .ap-comment-footer label input {
-  float: none;
-}
-#anspress .ap-comment {
-  border-top: 1px solid #eee;
-  font-size: 13px;
-  margin: 0 -10px;
-  padding: 8px 10px;
-}
-#anspress .ap-comments {
+ap-comments.have-comments {
+  display: block;
   position: relative;
 }
-#anspress .ap-comment:first-child {
-  margin-top: 5px;
-}
-#anspress .ap-comment:last-child {
-  margin-bottom: -10px;
-}
-#anspress .ap-comment-header {
-  font-size: 12px;
-}
-#anspress .ap-comment-action {
-  margin-left: 7px;
-}
-#anspress .ap-comment-time {
-  color: #777;
-  margin-right: 5px;
-}
-#anspress .ap-comment-author {
-  font-weight: 600;
-  color: #777;
-}
-#anspress .ap-comment-texts p {
-  line-height: 1.4;
-}
-#anspress .ap-comment.unapproved {
-  background: #fff6e6;
-}
-#anspress .ap-comment-formload {
-  background: #f4f4f4 none repeat scroll 0 0;
+ap-comments.have-comments:before, ap-comments.have-comments:after {
+  content: '';
+  border-color: transparent transparent rgba(0, 0, 0, 0.1) transparent;
+  border-style: solid;
+  border-width: 10px;
   display: block;
-  font-size: 12px;
-  font-weight: bold;
-  padding: 8px;
-  text-align: center;
+  position: absolute;
+  right: 35px;
+  top: -20px;
 }
-#anspress .ap-comment-noitems {
-  border-top: 1px solid #eee;
-  color: #888;
+ap-comments.have-comments:after {
+  border-color: transparent transparent #fff transparent;
+  top: -19px;
+}
+ap-comments.have-comments .ap-comments {
+  border: 1px solid rgba(0, 0, 0, 0.1);
   display: block;
-  font-size: 12px;
-  margin: 0 -10px;
+  margin-top: 15px;
+  position: relative;
+  max-height: 280px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+ap-comment {
+  display: block;
   padding: 10px;
-  text-align: center;
+  font-size: 90%;
+  color: #666;
+  border-bottom: solid 1px rgba(0, 0, 0, 0.1);
 }
-#anspress #ap-comment-textarea {
-  font-size: 13px;
-  margin-bottom: 4px;
+ap-comment.unapproved {
+  background: #FFF9C4 !important;
 }
-#anspress .comment-awaiting-moderation {
-  background: #ffde9c none repeat scroll 0 0;
-  border: 1px solid #ffd788;
-  border-radius: 2px;
-  display: block;
+ap-comment:last-child {
+  border-bottom: none;
+}
+ap-comment:nth-child(2n) {
+  background: #f7f7f7;
+}
+ap-comment .ap-avatar {
+  float: left;
+}
+ap-comment .comment-inner {
+  overflow: hidden;
+}
+ap-comment .comment-header {
+  font-weight: bold;
+  margin-bottom: 5px;
   font-size: 12px;
-  margin-top: 4px;
-  padding: 3px 4px;
-  text-align: center;
+  color: #666;
+}
+ap-comment .comment-header > a {
+  color: #666;
+  text-decoration: none;
+}
+ap-comment .ap-comment-actions {
+  float: right;
+}
+ap-comment .ap-comment-actions > a {
+  margin-left: 10px;
+  text-decoration: none;
+  font-weight: normal;
 }
 
 #anspress .ap-user-avatar {

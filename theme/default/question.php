@@ -36,55 +36,57 @@
 							<?php ap_author_avatar( ap_opt( 'avatar_size_qquestion' ) ); ?>
 						</a>
 					</div>
-					<div class="ap-q-cells clearfix">
-						<div class="ap-q-metas">
-							<?php echo ap_user_display_name( [ 'html' => true ] ); ?>
-							<a href="<?php the_permalink(); ?>" class="ap-posted">
-								<?php
-									printf(
-										'<time itemprop="datePublished" datetime="%1$s">%2$s</time>',
-										ap_get_time( get_the_ID(), 'c' ),
-										sprintf(
-											__( 'Posted %s', 'anspress-question-answer' ),
-											ap_human_time( ap_get_time( get_the_ID(), 'U' ) )
-										)
-									);
-								?>
-							</a>
-							<?php ap_recent_post_activity(); ?>
-							<?php echo ap_post_status_badge( ); // xss okay.	?>
-						</div>
-
-						<!-- Start ap-content-inner -->
-						<div class="ap-q-inner">
-							<?php
-								/**
-								* ACTION: ap_before_question_content.
-								*
-								* @since 	2.0.0
-								*/
-								do_action( 'ap_before_question_content' );
-							?>
-							<div class="question-content ap-q-content" itemprop="text">
-								<?php the_content(); ?>
+					<div class="ap-cell clearfix">
+						<div class="ap-cell-inner">
+							<div class="ap-q-metas">
+								<?php echo ap_user_display_name( [ 'html' => true ] ); ?>
+								<a href="<?php the_permalink(); ?>" class="ap-posted">
+									<?php
+										printf(
+											'<time itemprop="datePublished" datetime="%1$s">%2$s</time>',
+											ap_get_time( get_the_ID(), 'c' ),
+											sprintf(
+												__( 'Posted %s', 'anspress-question-answer' ),
+												ap_human_time( ap_get_time( get_the_ID(), 'U' ) )
+											)
+										);
+									?>
+								</a>
+								<?php ap_recent_post_activity(); ?>
+								<?php echo ap_post_status_badge( ); // xss okay.	?>
 							</div>
 
-							<?php
-								/**
-								* ACTION: ap_after_question_content.
-								*
-								* @since 	2.0.0
-								*/
-								do_action( 'ap_after_question_content' );
+							<!-- Start ap-content-inner -->
+							<div class="ap-q-inner">
+								<?php
+									/**
+									* ACTION: ap_before_question_content.
+									*
+									* @since 	2.0.0
+									*/
+									do_action( 'ap_before_question_content' );
+								?>
+								<div class="question-content ap-q-content" itemprop="text">
+									<?php the_content(); ?>
+								</div>
 
-							?>
+								<?php
+									/**
+									* ACTION: ap_after_question_content.
+									*
+									* @since 	2.0.0
+									*/
+									do_action( 'ap_after_question_content' );
 
-						</div>
+								?>
 
-						<div class="ap-post-footer clearfix">
-							<?php ap_post_actions_buttons() ?>
-							<?php echo ap_comment_btn_html( ); ?>
-						</div>
+							</div>
+
+							<div class="ap-post-footer clearfix">
+								<?php ap_post_actions_buttons() ?>
+								<?php echo ap_comment_btn_html( ); ?>
+							</div>
+						<div class="ap-cell-inner">
 
 						<!-- End ap-content-inner -->
 						<?php ap_question_the_comments(); ?>

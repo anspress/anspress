@@ -191,6 +191,18 @@ class AnsPress_Theme {
 	 * Add default before body sidebar in AnsPress contents
 	 */
 	public static function ap_before_html_body() {
+		$current_user = wp_get_current_user();
+		$data = wp_json_encode( array(
+			'user_login'   => $current_user->data->user_login,
+			'display_name' => $current_user->data->display_name,
+			'user_email'   => $current_user->data->user_email,
+			'avatar'       => get_avatar( $current_user->ID ),
+		));
+		?>
+			<script type="text/javascript">
+				apCurrentUser = <?php echo $data; // xss okay. ?>;
+			</script>
+		<?php
 		dynamic_sidebar( 'ap-before' );
 	}
 
@@ -354,9 +366,9 @@ class AnsPress_Theme {
 	/**
 	 * Append post actions JS template.
 	 */
-	public static function post_action_template() {
-		echo '<script id="ap-template-actions" type="text/html">';
-		include_once ap_get_theme_location( 'js-template/actions.html' );
+	public static function post_comments_template() {
+		echo '<script id="ap-template-comments" type="text/html">';
+		include_once ap_get_theme_location( 'js-template/comments.html' );
 		echo '</script>';
 	}
 }

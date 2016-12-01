@@ -88,11 +88,15 @@ class AnsPress_Avatar {
 	 * @param integer|string $user User ID or name if anonymous.
 	 */
 	public function __construct( $user ) {
-		if ( is_numeric( $user ) && ! empty( $user ) ) {
-			$user = get_user_by( 'id', $user );
+		if ( is_object( $user ) && ! empty( $user->user_id ) ) {
+			$this->user_id = (int) $user->user_id;
+			$user = get_userdata( $id );
+			$this->name = esc_attr( $user->display_name );
+		} elseif ( is_object( $user ) && $user instanceof WP_user ) {
 			$this->name = esc_attr( $user->display_name );
 			$this->user_id = $user->ID;
-		} elseif ( $user instanceof WP_user ) {
+		} elseif ( is_numeric( $user ) && ! empty( $user ) ) {
+			$user = get_user_by( 'id', $user );
 			$this->name = esc_attr( $user->display_name );
 			$this->user_id = $user->ID;
 		} else {

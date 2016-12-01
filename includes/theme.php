@@ -3,7 +3,7 @@
  * AnsPress theme and template handling.
  *
  * @author    Rahul Aryan <support@anspress.io>
- * @license   GPL-2.0+
+ * @license   GPL-3.0+
  *
  * @link      https://anspress.io
  *
@@ -440,7 +440,7 @@ function ap_post_actions( $_post = null ) {
 		$actions[] = array(
 			'cb'    => 'convert_to_post',
 			'query' => [ 'post_id' => $_post->ID, '__nonce' => wp_create_nonce( 'convert-post-' . $_post->ID ) ],
-			'label' => __('Convert to post', 'anspress-question-answer' ),
+			'label' => __( 'Convert to post', 'anspress-question-answer' ),
 			'title' => __( 'Convert this question to blog post', 'anspress-question-answer' ),
 		);
 	}
@@ -598,7 +598,8 @@ function ap_ask_btn() {
 }
 
 /**
- * Return the ask button. *
+ * Return the ask button.
+ *
  * @return string Ask button HTML
  * @since 2.1
  */
@@ -611,7 +612,7 @@ function ap_get_ask_btn() {
 	 */
 	$link = apply_filters( 'ap_ask_btn_link', $link );
 
-	return '<a class="ap-btn-ask" href="'.$link.'">'.__( 'Ask question', 'anspress-question-answer' ).'</a>';
+	return '<a class="ap-btn-ask" href="' . $link . '">' . __( 'Ask question', 'anspress-question-answer' ) . '</a>';
 }
 
 /**

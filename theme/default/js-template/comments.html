@@ -1,56 +1,29 @@
-<div class="ap-comments">
-	{{if comments === null }}
+<ap-comments class="ap-comments">
+	<# if(comments === null){ #>
 		<div class="ap-comment-noitems">There aren't any comment yet.</div>
-	{{fi}}
+	<# } #>
 
-	{{foreach comment in comments}}		
+	<# _.each(comments, function(comment){ #>
 		<div id="comment-{{comment.id}}" {{comment.class|raw}}>
 			<div class="ap-avatar ap-pull-left">
-				{{comment.avatar|raw}}
+				{{comment.avatar}}
 			</div><!-- close .ap-avatar -->
 			<div class="ap-comment-content no-overflow">
 				<div class="ap-comment-header">
 					<a href="{{comment.user_link}}" class="ap-comment-author">{{comment.user_name}}</a>
 					<a href="#li-comment-{{comment.id}}" class="ap-comment-time"><time datetime="{{comment.iso_date}}">{{comment.time}}</time></a>
-					{{foreach act in comment.actions}}
+					<# _.each(comment.actions, function(act){ #>
 						<span class="ap-comment-action">{{act|raw}}</span>
-					{{end}}
+					<# }); #>
 				</div><!-- close .ap-comment-header -->
 				<div class="ap-comment-texts">
 					{{comment.content}}
 				</div>
-				
-				{{if comment.approved === 0}}
+
+				<# if (comment.approved === 0) { #>
 					<p class="comment-awaiting-moderation">{{comment.comment_mod_msg}}</p>
-				{{fi}}
+				<# } #>
 			</div><!-- close .ap-comment-content -->
 		</div><!-- close #comment-* -->
-	{{end}}
-
-	{{if load_form}}
-		<form class="ap-comment-form" method="POST" id="ap-commentform"> 
-			<div class="ap-avatar ap-pull-left">
-				{{current_user_avatar|raw}}
-			</div>
-			<div class="ap-comment-inner no-overflow">
-				<textarea placeholder="Your comment.." class="ap-form-control autogrow" id="ap-comment-textarea" aria-required="true" rows="3" name="content">{{form.content}}</textarea>
-
-			    <div class="ap-comment-footer clearfix">
-			        <!-- <label>
-			            <input type="checkbox" value="1" name="notify"{{if form.subscribed}} checked="checked"{{fi}}  />
-						Notify me of follow-up comments
-			        </label> -->
-					<button type="submit" class="ap-comment-submit ap-btn">Submit</button>
-					<a data-action="cancel-comment" class="ap-comment-cancel" href="#">Cancel</a>
-			    </div>
-			</div>
-			<input type="hidden" name="__nonce" value="{{form.nonce}}" />
-			<input type="hidden" name="post_id" value="{{form.post_id}}" />
-		    <input type="hidden" name="action" value="ap_ajax" />
-		    {{if form.comment_ID}}
-		    	<input type="hidden" name="comment_ID" value="{{form.comment_ID}}" />
-		    {{fi}}
-		    <input type="hidden" name="ap_ajax_action" value="submit_comment" />
-		</form>
-	{{fi}}
-</div>
+	<# }); #>
+</ap-comments>

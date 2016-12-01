@@ -1,47 +1,77 @@
-Vue.filter('replaceAmp', function (value) {
-  return value.replace(/&amp;/g, '&');
-});
+'use strict';
 
-(function($){
-  $(document).ready(function(){
-    if($('#answers-list').length>0){
-      new Vue({
-        el: '#answers-list',
-        data: {
-          items: []
-        },
-        mounted: function () {
-          var self = this;
-          $.ajax({
-            url: ajaxurl,
-            method: 'GET',
-            data: {
-              action: 'ap_ajax',
-              ap_ajax_action: 'get_all_answers',
-              question_id: $(self.$el).data('questionid')
-            },
-            success: function (data) {
-              data = apParseAjaxResponse( data );
-              self.items = data.data;
-            },
-            error: function (error) {
-              alert(JSON.stringify(error));
-            }
-          });
-        },
-        methods: {
-          statusCase: function(val){
-            return val.toLowerCase();
-          }
-        },
-        beforeUpdate: function() {
-          var self = this;
-          self.items.forEach(function(val, k){
-            self.items[k].edit_link = self.$options.filters.replaceAmp(val.edit_link);
-            self.items[k].trash_link = self.$options.filters.replaceAmp(val.trash_link);
-          });
-        }
-      });
+(function($) {
+  AnsPress.views.Answer = Backbone.Model.extend({
+    defaults: {
+      ID: '',
+      content: '',
+      deleteNonce: '',
+      comments: '',
+      activity : '',
+      author: '',
+      editLink: '',
+      trashLink: '',
+      status: '',
+      selected: '',
+      avatar: ''
     }
   });
+
+  AnsPress.collections.Answers = Backbone.Collection.extend({
+    url: ajaxurl+'?action=ap_ajax&ap_ajax_action=get_all_answers&question_id='+currentQuestionID,
+    model: AnsPress.views.Answer
+  });
+
+  AnsPress.views.Answer = Backbone.View.extend({
+    className: 'ap-ansm clearfix',
+    id: function(){
+      return this.model.get('ID');
+    },
+    initialize: function(options){
+      if(options.model)
+        this.model = options.model;
+    },
+    template: function(){
+      return $('#ap-answer-template').html()
+    },
+    render: function(){
+      if(this.model){
+        var t = _.template(this.template());
+        this.$el.html(t(this.model.toJSON()));
+      }
+      return this;
+    }
+  });
+
+  AnsPress.views.Answers = Backbone.View.extend({
+    initialize: function(options){
+      this.model = options.model;
+      this.model.on('add', this.answerFetched, this);
+    },
+    renderItem: function(ans){
+      var view = new AnsPress.views.Answer({model: ans});
+      this.$el.append(view.render().$el);
+    },
+    render: function(){
+      var self = this;
+      if(this.model){
+        this.model.each(function(ans){
+          self.renderItem(ans);
+        });
+      }
+
+      return this;
+    },
+    answerFetched: function(answer){
+      this.renderItem(answer);
+    }
+  });
+
+  if( currentQuestionID ) {
+    var answers = new AnsPress.collections.Answers();
+    var answersView = new AnsPress.views.Answers({model: answers, el: '#answers-list'});
+    answersView.render();
+    answers.fetch();
+  }
+
 })(jQuery);

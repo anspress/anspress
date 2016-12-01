@@ -9,18 +9,23 @@ window.AnsPress = _.extend({
 	models: {},
 	views: {},
 	collections: {},
-	loadTemplate: function(id, cb){
-		var self = this;
+	loadTemplate: function(id){
+		if(jQuery('#apTemplate').length==0)
+			jQuery('<script id="apTemplate" type="text/html"></script>').appendTo('body');
 
-		if(jQuery('#apTemplate-'+id).length === 0){
-			jQuery('<script id="apTemplate-'+id+'" type="text/html"></script>').appendTo('body');
-			jQuery.get(apTemplateUrl + '/' + id + ".html", function(html){
-				jQuery('#apTemplate-'+id).html(html);
-				self.trigger('templateLoaded-'+id, html);
-				if(cb) cb(html);
-			});
-		}else{
-			self.trigger('templateLoaded-'+id, jQuery('#apTemplate-'+id).html());
+		jQuery.get(apTemplateUrl + '/' + id + ".html", function(html){
+			jQuery('#apTemplate').text(html);
+		});
+	},
+	getTemplate: function(templateId){
+		return function(){
+			if(jQuery('#apTemplate').length==0)
+				return '';
+
+			var regex = new RegExp("<!-- "+templateId+" start -->([\\S\\s]*?)<!-- "+templateId+" end -->", "g");
+			var match = regex.exec(jQuery('#apTemplate').text());
+
+			if(match[1]) return match[1];
 		}
 	},
 	isJSONString: function(str) {

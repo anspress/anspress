@@ -17,8 +17,10 @@
 					<?php echo get_avatar( get_current_user_id(), ap_opt('avatar_size_qquestion') ); ?>
 				</a>
 			</div>
-			<div class="ap-a-cells clearfix">
+			<div class="ap-cell clearfix">
+				<div class="ap-cell-inner">
 					<?php ap_ask_form(); ?>
+				</div>
 			</div>
 		</div>
 	<?php elseif (is_user_logged_in()): ?>

@@ -13,7 +13,7 @@
 <ap-answers-w style="<?php echo ! ap_have_answers() ? 'display:none' : ''; ?>">
 	<div id="ap-answers-c">
 		<div class="ap-sorting-tab clearfix">
-			<h3 class="ap-answers-label ap-pull-left" ap-answecount-text>
+			<h3 class="ap-answers-label ap-pull-left" ap-answerscount-text>
 				<?php
 					printf(
 						_n( '%d Answer', '%d Answers', ap_total_answers_found(), 'anspress-question-answer' ),

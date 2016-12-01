@@ -6,7 +6,11 @@
  * @license GPL 3+
  */
 
+
+
 (function($) {
+	AnsPress.loadTemplate('question');
+
 	AnsPress.models.Action = Backbone.Model.extend({
 		defaults: {
 			cb: '',
@@ -36,7 +40,7 @@
 			return klass;
 		},
 		tagName: 'li',
-		template: '<# if(!header){ #><a href="{{href}}" title="{{title}}">{{label}}<# if(count){ #><b>{{count}}</b><# } #></a><# } else { #>{{label}}<# } #>',
+		template: AnsPress.getTemplate('action'),
 		initialize: function(options){
 			this.model = options.model;
 			this.postID = options.postID;
@@ -46,7 +50,7 @@
 			'click a': 'triggerAction'
 		},
 		render: function(){
-			var t = _.template(this.template);
+			var t = _.template(this.template());
 			this.$el.html(t(this.model.toJSON()));
 			this.$el.attr('class', this.className());
 			return this;
@@ -135,6 +139,99 @@
 		}
 	});
 
+	AnsPress.collections.Comments = Backbone.Collection.extend({
+		model: Backbone.Model.extend({
+			idAttribute: 'ID',
+			defaults:{
+				ID: '',
+				userID: '',
+				avatar: '',
+				content: '',
+				actions: ''
+			}
+		})
+	});
+
+	AnsPress.views.Comment = Backbone.View.extend({
+		tagName: 'ap-comment',
+		id: function(){
+			return 'comment-' + this.model.id;
+		},
+		className: function(){
+			var klass = this.model.get('class');
+			if(this.model.get('approved')==='0')
+				klass += ' unapproved';
+			return klass
+		},
+		template: AnsPress.getTemplate('comment'),
+		initialize: function(options){
+			this.model = options.model;
+			this.model.on('change', this.render, this);
+		},
+		events: {
+			'click [ap="comment_action"]': 'actions'
+		},
+		render: function(){
+			var t = _.template(this.template());
+			this.$el.html(t(this.model.toJSON()));
+			this.$el.attr('class', this.className());
+			return this;
+		},
+		actions: function(e){
+			e.preventDefault();
+			var self = this;
+			var q = $.parseJSON($(e.target).attr('ap-query'));
+			AnsPress.showLoading(e.target);
+			AnsPress.ajax({
+				data: q,
+				success: function(data){
+					AnsPress.hideLoading(e.target);
+					if(data.success){
+						if(data.model)self.model.set(data.model);
+						if(data.commentsCount){
+							$('[ap-commentscount-text]').text(data.commentsCount.text);
+						}
+						if(data.action === 'delete_comment')
+							AnsPress.trigger('removeComment', self.model);
+					}
+				}
+			});
+		}
+	});
+
+	AnsPress.views.Comments = Backbone.View.extend({
+		initialize: function(options){
+			this.model = options.model;
+			this.postID = options.postID;
+			AnsPress.on('removeComment', this.removeComment, this);
+			this.model.on('remove', this.commentRemoved, this);
+		},
+		renderItem: function(comment){
+			var view = new AnsPress.views.Comment({ model: comment, postID: this.postID });
+			this.$el.find('.ap-comments').append(view.render().$el);
+		},
+		render: function(){
+			var self = this;
+			if(this.model){
+				this.$el.addClass('have-comments');
+				this.model.each(function(comment){
+					self.renderItem(comment);
+				});
+			}
+
+			return this;
+		},
+		removeComment: function(comment){
+			this.model.remove(comment);
+		},
+		commentRemoved: function(comment){
+			if(this.model.size() === 0)
+				this.$el.removeClass('have-comments');
+			$('#comment-'+comment.id).remove();
+		}
+	});
+
+
 	AnsPress.views.Post = Backbone.View.extend({
 		idAttribute: 'ID',
 		templateId: 'answer',
@@ -150,7 +247,8 @@
 		events: {
 			'click [ap-vote] > a': 'voteClicked',
 			'click [ap="actiontoggle"]:not(.loaded)': 'postActions',
-			'click [ap="select_answer"]': 'selectAnswer'
+			'click [ap="select_answer"]': 'selectAnswer',
+			'click [ap="comment_btn"]': 'loadComments'
 		},
 		voteClicked: function(e){
 			e.preventDefault();
@@ -254,6 +352,29 @@
 				this.$el.find('[ap="select_answer"]').addClass('hide');
 			else
 				this.$el.find('[ap="select_answer"]').removeClass('hide');
+		},
+		loadComments: function(e){
+			e.preventDefault();
+			var self = this;
+
+			if($(e.target).is('.loaded')){
+				$('#comments-'+self.model.id).slideToggle(400);
+				return;
+			}
+
+			var q = $.parseJSON($(e.target).attr('ap-query'));
+			q.ap_ajax_action = 'load_comments';
+			AnsPress.showLoading(e.target);
+			AnsPress.ajax({
+				data: q,
+				success: function(data){
+					AnsPress.hideLoading(e.target);
+					$(e.target).addClass('loaded');
+					var model = new AnsPress.collections.Comments(data.comments);
+					var view = new AnsPress.views.Comments({ model: model, postID: self.model.id, el: '#comments-'+self.model.id });
+					view.render();
+				}
+			});
 		}
 	});
 
@@ -371,7 +492,7 @@
 			});
 		},
 		answerCountUpdated: function(counts){
-			$('[ap-answecount-text]').text(counts.text);
+			$('[ap-answerscount-text]').text(counts.text);
 		}
 	});
 
