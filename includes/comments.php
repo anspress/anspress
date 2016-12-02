@@ -103,10 +103,11 @@ class AnsPress_Comment_Hooks {
 	}
 
 	/**
-	 * Process comment submission.
+	 * Process new comment submission.
+	 *
 	 * @since 3.0.0
 	 */
-	public static function submit_comment() {
+	public static function new_comment() {
 		$post_id = (int) ap_sanitize_unslash( 'post_id', 'r' );
 		$content = ap_sanitize_unslash( 'content', 'r' );
 
@@ -129,6 +130,7 @@ class AnsPress_Comment_Hooks {
 
 		$type = 'question' === $_post->post_type ? __( 'question', 'anspress-question-answer' ) : __( 'answer', 'anspress-question-answer' );
 
+		// Check if not restricted post type.
 		if ( in_array( $_post->post_status, [ 'draft', 'pending', 'trash' ], true ) ) {
 			ap_ajax_json( array(
 				'success'  => false,
@@ -340,11 +342,17 @@ function ap_comment_btn_html( $_post = null ) {
 	$args = wp_json_encode( [ 'post_id' => $_post->ID, '__nonce' => wp_create_nonce( 'comment_form_nonce' ) ] );
 
 	$q = wp_json_encode( array(
-		'post_id' => get_the_ID(),
-		'__nonce' => wp_create_nonce( 'new-comment' ),
+		'post_id'        => get_the_ID(),
+		'__nonce'        => wp_create_nonce( 'new-comment' ),
+		'ap_ajax_action' => 'new_comment',
 	) );
 
-	$output = '<a href="#comments-' . $_post->ID . '" class="ap-btn ap-btn-comments" ap="comment_btn" ap-query="' . esc_js( $args ) . '" ap-commentscount-text>' . sprintf( _n( '%d Comment', '%d Comments', $comment_count, 'anspress-question-answer' ), $comment_count ) . '</a><a href="#" class="ap-btn-newcomment ap-btn ap-btn-small" ap="new-comment" ap-query="' . esc_js( $q ) . '">' . esc_attr__( 'Add a Comment', 'anspress-question-answer' ) . '</a>';
+	$unapproved = '';
+	if( !empty( $_post->fields['unapproved_comments'] ) ) {
+		$unapproved = '<b class="unapproved">' . $_post->fields['unapproved_comments'] . '</b>';
+	}
+
+	$output = '<a href="#comments-' . $_post->ID . '" class="ap-btn ap-btn-comments" ap="comment_btn" ap-query="' . esc_js( $args ) . '" ap-commentscount-text>' . sprintf( _n( '%d Comment', '%d Comments', $comment_count, 'anspress-question-answer' ), $comment_count ) . $unapproved . '</a><a href="#" class="ap-btn-newcomment ap-btn ap-btn-small" ap="new-comment" ap-query="' . esc_js( $q ) . '">' . esc_attr__( 'Add a Comment', 'anspress-question-answer' ) . '</a>';
 
 	return $output;
 }

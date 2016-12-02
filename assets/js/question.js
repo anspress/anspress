@@ -205,11 +205,12 @@
 			this.postID = options.postID;
 			AnsPress.on('removeComment', this.removeComment, this);
 			this.listenTo(this.model, 'remove', this.commentRemoved);
-			this.listenTo(this.model, 'add', this.renderItem);
+			this.listenTo(this.model, 'add', this.newComment);
 		},
 		renderItem: function(comment){
 			var view = new AnsPress.views.Comment({ model: comment, postID: this.postID });
 			this.$el.find('.ap-comments').append(view.render().$el);
+			return view;
 		},
 		render: function(){
 			var self = this;
@@ -228,7 +229,14 @@
 		commentRemoved: function(comment){
 			if(this.model.size() === 0)
 				this.$el.removeClass('have-comments');
-			$('#comment-'+comment.id).remove();
+			$('#comment-'+comment.id).slideUp(400, function(){
+				$(this).remove();
+			});
+		},
+		newComment: function(comment){
+			var view = this.renderItem(comment);
+			view.$el.hide().slideDown(400);
+			this.$el.find('.ap-comments').apScrollTo('#comment-'+comment.id);
 		}
 	});
 
@@ -237,6 +245,7 @@
 		idAttribute: 'ID',
 		templateId: 'answer',
 		tagName: 'div',
+		actions: { view: {}, model: {} },
 		id: function(){
 			return 'post-' + this.model.get('ID');
 		},
@@ -359,21 +368,27 @@
 		loadComments: function(e){
 			e.preventDefault();
 			var self = this;
-			if($(e.target).is('.loaded')){
-				$('#comments-'+self.model.id).slideToggle(400);
+			if($(e.currentTarget).is('.loaded')){
+				if(this.$el.find('ap-comments').is('.have-comments'))
+					this.$el.find('ap-comments').find('.ap-comments').slideUp(400, function(){
+						$(this).parent('ap-comments').removeClass('have-comments');
+					});
+				else
+					this.$el.find('ap-comments').addClass('have-comments').find('.ap-comments').slideDown(400);
 				return;
 			}
-			var q = $.parseJSON($(e.target).attr('ap-query'));
+			var q = $.parseJSON($(e.currentTarget).attr('ap-query'));
 			q.ap_ajax_action = 'load_comments';
-			AnsPress.showLoading(e.target);
+			AnsPress.showLoading(e.currentTarget);
 			AnsPress.ajax({
 				data: q,
 				success: function(data){
-					AnsPress.hideLoading(e.target);
-					$(e.target).addClass('loaded');
+					AnsPress.hideLoading(e.currentTarget);
+					$(e.currentTarget).addClass('loaded');
 					self.comments = new AnsPress.collections.Comments(data.comments);
 					var view = new AnsPress.views.Comments({ model: self.comments, postID: self.model.id, el: '#comments-'+self.model.id });
 					view.render();
+					view.$el.hide().slideDown(400);
 				}
 			});
 		},
@@ -381,11 +396,15 @@
 			e.preventDefault();
 			if(this.$el.find('[comment-form]').length === 0){
 				var q = $.parseJSON($(e.target).attr('ap-query'));
-				q.ap_ajax_action = 'submit_comment';
 				var t = _.template(AnsPress.getTemplate('comment-form')());
 				this.$el.find('ap-comments').append(t(q));
+				this.$el.find('[comment-form]').hide().slideDown(400, function(){
+					$(this).find('textarea').focus();
+				})
 			}else{
-				this.$el.find('[comment-form]').remove();
+				this.$el.find('[comment-form]').slideUp(400, function(){
+					$(this).remove();
+				});
 			}
 		},
 		submitComment: function(e){
@@ -398,10 +417,9 @@
 					if(data.success){
 						if(self.comments){
 							self.comments.add(data.comment);
-							$('#comment-'+data.comment.ID)[0].scrollIntoView();
 						}
 						if(data.commentsCount){
-							$('[ap-commentscount-text]').text(data.commentsCount.text);
+							self.$el.find('[ap-commentscount-text]').text(data.commentsCount.text);
 						}
 						$(e.target).find('textarea').val('');
 					}

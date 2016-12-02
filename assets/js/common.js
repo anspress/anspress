@@ -220,6 +220,20 @@ _.templateSettings = {
 		return that;
 	};
 
+	jQuery.fn.apScrollTo = function(elem, speed) {
+		var parentPos = $(this).scrollTop() - $(this).offset().top;
+		$('html, body').animate({
+			scrollTop: $(this).offset().top
+		}, speed == undefined ? 1000 : speed);
+
+		if(elem != undefined)
+			$(this).animate({
+				scrollTop: parentPos + $(elem).offset().top
+			}, speed == undefined ? 1000 : speed);
+
+		return this;
+	};
+
 	AnsPress.views.Snackbar = Backbone.View.extend({
 		id: 'ap-snackbar',
 		template: '<div class="ap-snackbar<# if(success){ #> success<# } #>">{{message}}</div>',

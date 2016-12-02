@@ -419,6 +419,9 @@ class AnsPress_Hooks {
 	public static function unpublish_comment( $comment ) {
 		$comment = (object) $comment;
 		ap_update_post_activity_meta( $comment->comment_post_ID, 'delete_comment', $comment->user_id, true );
+
+		$count = get_comment_count( $comment->comment_post_ID );
+		ap_insert_qameta( $comment->comment_post_ID, [ 'fields' => [ 'unapproved_comments' => $count['awaiting_moderation'] ] ] );
 	}
 
 	/**

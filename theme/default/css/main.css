@@ -1667,7 +1667,13 @@ body ul ul#ap-user-menu-link li > a .count {
   float: right;
   margin-right: 0;
   border-right: none;
-  border-left: solid 1px #ddd;
+}
+.ap-post-footer .ap-btn-comments .unapproved {
+  margin-left: 5px;
+  background: #FFCA28;
+  padding: 3px 7px;
+  border-radius: 2px;
+  color: #333;
 }
 
 .ap-post-tags li a {
@@ -1722,20 +1728,20 @@ body ul ul#ap-user-menu-link li > a .count {
 #ap-best-answer .best-answer .type-answer {
   margin-top: 0;
 }
-#answers .best-answer .ap-a-cells,
-#ap-best-answer .best-answer .ap-a-cells {
+#answers .best-answer .ap-cell-inner,
+#ap-best-answer .best-answer .ap-cell-inner {
   border-color: #cce4c8;
 }
-#answers .status-trash .ap-a-cells,
-#ap-best-answer .status-trash .ap-a-cells {
+#answers .status-trash .ap-cell-inner,
+#ap-best-answer .status-trash .ap-cell-inner {
   border-color: #EF9A9A;
 }
-#answers .status-private_post .ap-a-cells,
-#ap-best-answer .status-private_post .ap-a-cells {
+#answers .status-private_post .ap-cell-inner,
+#ap-best-answer .status-private_post .ap-cell-inner {
   border-color: #9E9E9E;
 }
-#answers .status-moderate .ap-a-cells,
-#ap-best-answer .status-moderate .ap-a-cells {
+#answers .status-moderate .ap-cell-inner,
+#ap-best-answer .status-moderate .ap-cell-inner {
   border-color: #FFCC80;
 }
 
