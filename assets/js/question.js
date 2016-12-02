@@ -166,10 +166,12 @@
 		template: AnsPress.getTemplate('comment'),
 		initialize: function(options){
 			this.model = options.model;
+			this.postID = options.postID;
 			this.model.on('change', this.render, this);
 		},
 		events: {
-			'click [ap="comment_action"]': 'actions'
+			'click [ap="comment_action"]': 'actions',
+			'click [ap="edit_comment"]': 'editCommentForm'
 		},
 		render: function(){
 			var t = _.template(this.template());
@@ -188,14 +190,18 @@
 					AnsPress.hideLoading(e.target);
 					if(data.success){
 						if(data.model)self.model.set(data.model);
-						if(data.commentsCount){
-							$('[ap-commentscount-text]').text(data.commentsCount.text);
-						}
+						if(data.commentsCount)
+							AnsPress.trigger('commentCount', {count: data.commentsCount, postID: self.postID });
+
 						if(data.action === 'delete_comment')
 							AnsPress.trigger('removeComment', self.model);
 					}
 				}
 			});
+		},
+		editCommentForm: function(e){
+			e.preventDefault();
+			AnsPress.trigger('loadCommentEdit', {postID: this.postID, e: e, comment: this.model});
 		}
 	});
 
@@ -208,14 +214,15 @@
 			this.listenTo(this.model, 'add', this.newComment);
 		},
 		renderItem: function(comment){
+			this.$el.addClass('have-comments');
 			var view = new AnsPress.views.Comment({ model: comment, postID: this.postID });
 			this.$el.find('.ap-comments').append(view.render().$el);
 			return view;
 		},
 		render: function(){
 			var self = this;
-			if(this.model){
-				this.$el.addClass('have-comments');
+
+			if(this.model.length > 0){
 				this.model.each(function(comment){
 					self.renderItem(comment);
 				});
@@ -252,6 +259,8 @@
 		initialize: function(options){
 			this.listenTo(this.model, 'change:vote', this.voteUpdate);
 			this.listenTo(this.model, 'change:hideSelect', this.selectToggle);
+			this.listenTo(AnsPress, 'commentCount', this.commentCount);
+			this.listenTo(AnsPress, 'loadCommentEdit', this.loadCommentEdit);
 		},
 		events: {
 			'click [ap-vote] > a': 'voteClicked',
@@ -392,7 +401,7 @@
 				}
 			});
 		},
-		loadCommentForm: function(e){
+		loadCommentForm: function(e, comment){
 			e.preventDefault();
 			if(this.$el.find('[comment-form]').length === 0){
 				var q = $.parseJSON($(e.target).attr('ap-query'));
@@ -400,12 +409,26 @@
 				this.$el.find('ap-comments').append(t(q));
 				this.$el.find('[comment-form]').hide().slideDown(400, function(){
 					$(this).find('textarea').focus();
-				})
+				});
 			}else{
 				this.$el.find('[comment-form]').slideUp(400, function(){
 					$(this).remove();
 				});
 			}
+		},
+		loadCommentEdit: function(args){
+			if(this.model.id !== args.postID)
+				return;
+
+			if(this.$el.find('[comment-form]').length > 0)
+				this.$el.find('[comment-form]').remove();
+
+			var q = $.parseJSON($(args.e.target).attr('ap-query'));
+			var t = _.template(AnsPress.getTemplate('comment-form')());
+			this.$el.find('ap-comments').append(t(q));
+			this.$el.find('[comment-form]').hide().slideDown(400, function(){
+				$(this).find('textarea').val(args.comment.get('content')).focus();
+			});
 		},
 		submitComment: function(e){
 			var self = this;
@@ -415,13 +438,16 @@
 				success: function(data){
 					AnsPress.hideLoading(e.target);
 					if(data.success){
-						if(self.comments){
+						if(self.comments && data.action === 'new-comment')
 							self.comments.add(data.comment);
-						}
-						if(data.commentsCount){
-							self.$el.find('[ap-commentscount-text]').text(data.commentsCount.text);
-						}
-						$(e.target).find('textarea').val('');
+
+						if(self.comments && data.action === 'edit-comment')
+							self.comments.get(data.comment.ID).set(data.comment);
+
+						if(data.commentsCount)
+							AnsPress.trigger('commentCount', {count: data.commentsCount, postID: self.model.id });
+
+						self.$el.find('[comment-form]').remove();
 					}
 				}
 			});
@@ -430,6 +456,19 @@
 		hideCommentForm: function(e){
 			e.preventDefault();
 			$(e.target).closest('[comment-form]').remove();
+		},
+		commentCount: function(args){
+			if(this.model.id !== args.postID)
+				return;
+
+			this.$el.find('[ap-commentscount-text]').text(args.count.text);
+
+			if(args.count.unapproved > 0 )
+				this.$el.find('[ap-un-commentscount]').addClass('have');
+			else
+				this.$el.find('[ap-un-commentscount]').removeClass('have');
+
+			this.$el.find('[ap-un-commentscount]').text(args.count.unapproved);
 		}
 	});
 

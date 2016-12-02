@@ -1674,6 +1674,10 @@ body ul ul#ap-user-menu-link li > a .count {
   padding: 3px 7px;
   border-radius: 2px;
   color: #333;
+  display: none;
+}
+.ap-post-footer .ap-btn-comments .unapproved.have {
+  display: inline;
 }
 
 .ap-post-tags li a {
@@ -2463,6 +2467,9 @@ post-message {
   z-index: 9;
 }
 
+#anspress ap-comments {
+  display: block;
+}
 #anspress ap-comments.have-comments {
   display: block;
   position: relative;

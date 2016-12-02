@@ -7,7 +7,7 @@
       </a>
       <div class="ap-comment-actions">
         <# if(actions) { _.each(actions, function(action){ #>
-          <a href="#" ap="comment_action" <# if(action.title){ #> title="{{action.title}}"<# } #><# if(action.query){ #> ap-query="{{JSON.stringify(action.query)}}"<# } #><# if(action.active){ #> class="active"<# } #>>
+          <a href="#" <# if(action.cb){ #>ap="{{action.cb}}"<# } else { #>ap="comment_action"<# } #> <# if(action.title){ #> title="{{action.title}}"<# } #><# if(action.query){ #> ap-query="{{JSON.stringify(action.query)}}"<# } #><# if(action.active){ #> class="active"<# } #>>
             {{action.label}}
             <# if(action.count){ #>
               <b>{{action.count}}</b>
@@ -25,12 +25,15 @@
   <div class="ap-comment-inner">
     <textarea placeholder="{{aplang.your_comment}}" class="ap-form-control autogrow" id="ap-comment-textarea" aria-required="true" rows="4" name="content"></textarea>
     <div class="ap-comment-footer clearfix">
-      <button type="submit" class="ap-comment-submit ap-btn ap-btn-medium">{{aplang.comment}}</button>
+      <button type="submit" class="ap-comment-submit ap-btn ap-btn-medium"><# if(typeof comment_ID != 'undefined'){ #>{{aplang.update}}<# } else { #>{{aplang.comment}}<# } #></button>
       <button class="ap-btn ap-comment-cancel ap-btn-medium" type="button" ap="cancel-comment">{{aplang.cancel}}</button>
     </div>
   </div>
   <input type="hidden" name="__nonce" value="{{__nonce}}" />
   <input type="hidden" name="post_id" value="{{post_id}}" />
+  <# if(typeof comment_ID != 'undefined'){ #>
+    <input type="hidden" name="comment_ID" value="{{comment_ID}}" />
+  <# } #>
   <input type="hidden" name="action" value="ap_ajax" />
   <input type="hidden" name="ap_ajax_action" value="{{ap_ajax_action}}" />
 </form>

@@ -2,6 +2,9 @@
 // Comments
 // --------------------------------------------------
 #anspress{
+	ap-comments{
+		display: block;
+	}
 	ap-comments.have-comments{
 		display: block;
 		position: relative;

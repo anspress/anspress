@@ -404,11 +404,18 @@ class AnsPress_Hooks {
 
 		$post = ap_get_post( $comment->comment_post_ID );
 
+		if ( ! in_array( $post->post_type, [ 'question', 'answer' ], true ) ) {
+			return false;
+		}
+
 		if ( $post->post_type == 'question' ) {
 			ap_update_post_activity_meta( $comment->comment_post_ID, 'new_comment', $comment->user_id );
 		} elseif ( $post->post_type == 'answer' ) {
 			ap_update_post_activity_meta( $comment->comment_post_ID, 'new_comment_answer', $comment->user_id, true );
 		}
+
+		$count = get_comment_count( $comment->comment_post_ID );
+		ap_insert_qameta( $comment->comment_post_ID, [ 'fields' => [ 'unapproved_comments' => $count['awaiting_moderation'] ] ] );
 	}
 
 	/**

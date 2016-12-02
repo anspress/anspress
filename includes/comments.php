@@ -30,7 +30,6 @@ class AnsPress_Comment_Hooks {
 
 		$comments = get_comments( [ 'post_id' => $post_id, 'order' => 'ASC' ] );
 		$comments_arr = array();
-
 		foreach ( (array) $comments as $c ) {
 			$comments_arr[] = array(
 				'ID'        => $c->comment_ID,
@@ -73,32 +72,6 @@ class AnsPress_Comment_Hooks {
 			'action'   => 'load_comment_form',
 			'comments' => SELF::comments_data( $post_id ),
 		);
-		ap_ajax_json( $result );
-	}
-
-	public static function edit_comment_form() {
-		if ( ! is_user_logged_in() || ! ap_verify_nonce( 'comment_form_nonce' ) ) {
-			ap_ajax_json( 'something_wrong' );
-		}
-
-		$comment_ID = ap_sanitize_unslash('comment_ID', 'request' );
-
-		// Check if user can edit comment.
-		if ( ! ap_user_can_edit_comment( $comment_ID, get_current_user_id() ) ) {
-			ap_ajax_json( 'no_permission' );
-		}
-
-		$comment = get_comment( $comment_ID );
-
-	    $result = array(
-			'ap_responce' => true,
-			'action' => 'load_comment_form',
-			'template' => 'comments',
-		);
-
-		$result['key'] = $comment->comment_post_ID.'Comments';
-
-		$result['apData'] = SELF::comments_data( $comment->comment_post_ID, $comment_ID );
 		ap_ajax_json( $result );
 	}
 
@@ -190,7 +163,7 @@ class AnsPress_Comment_Hooks {
 					'actions' 	=> ap_comment_actions( $c ),
 				),
 				'action' 		  => 'new-comment',
-				'commentsCount' => [ 'text' => sprintf( _n( '%d Comment', '%d Comments', $count['all'], 'anspress-question-answer' ), $count['all'] ), 'number' => $count['all'] ],
+				'commentsCount' => [ 'text' => sprintf( _n( '%d Comment', '%d Comments', $count['all'], 'anspress-question-answer' ), $count['all'] ), 'number' => $count['all'], 'unapproved' => $count['awaiting_moderation'] ],
 				'snackbar'   => [ 'message' => __( 'Comment successfully posted', 'anspress-question-answer' ) ],
 			);
 
@@ -200,38 +173,65 @@ class AnsPress_Comment_Hooks {
 
 	/**
 	 * Updates comment.
+	 *
 	 * @since 3.0.0
 	 */
-	public static function update_comment( $post_id, $comment_ID, $comment_content ) {
-		$comment = get_comment( $comment_ID );
-		$content_changed = $comment_content != $comment->comment_content;
+	public static function edit_comment() {
+		$comment_id = ap_sanitize_unslash( 'comment_ID', 'r' );
+		$post_id = ap_sanitize_unslash( 'post_id', 'r' );
+		$content = ap_sanitize_unslash( 'content', 'r' );
 
-		if ( ! $content_changed ) {
+		if ( ! is_user_logged_in() || ! ap_verify_nonce( 'edit-comment-' . $comment_id ) || ! ap_user_can_edit_comment( $comment_id ) ) {
+			ap_ajax_json( array(
+				'success'  => false,
+				'snackbar' => [ 'message' => __( 'Sorry, you cannot edit this comment', 'anspress-question-answer' ) ],
+			) );
+		}
+
+		$comment = get_comment( $comment_id );
+
+		// Check if content is changed.
+		if ( $content === $comment->comment_content || empty( $content ) ) {
 			ap_ajax_json( [
-				'message'      => __( 'Nothing changed!', 'anspress-question-answer' ),
-				'message_type' => 'warning',
+				'success' => false,
+				'snackbar' => [ 'message' => __( 'No change detected, edit comment and then try', 'anspress-question-answer' ) ],
 			] );
 		}
 
 		$updated = wp_update_comment( array(
-			'comment_ID'      => $comment_ID,
-			'comment_content' => $comment_content,
+			'comment_ID'      => $comment_id,
+			'comment_content' => $content,
 		) );
 
 		if ( $updated ) {
-
+			$c = get_comment( $comment_id );
+			$count = get_comment_count( $c->comment_post_ID );
 			$result = array(
-				'action' 			=> 'edit_comment',
-				'comment_ID' 		=> $comment->comment_ID,
-				'comment_post_ID' 	=> $comment->comment_post_ID,
-				'message' 			=> 'comment_edit_success',
+				'success'       => true,
+				'comment'       => array(
+					'ID'        => $c->comment_ID,
+					'avatar'    => get_avatar( $c->user_id, 30 ),
+					'user_link' => ap_user_link( $c->user_id ),
+					'user_name' => ap_user_display_name( $c->user_id ),
+					'iso_date'  => date( 'c', strtotime( $c->comment_date ) ),
+					'time'      => ap_human_time( $c->comment_date_gmt, false ),
+					'content'   => $c->comment_content,
+					'approved'  => $c->comment_approved,
+					'class'     => implode( ' ', get_comment_class( 'ap-comment', $c->comment_ID, null, false ) ),
+					'actions' 	 => ap_comment_actions( $c ),
+				),
+				'action' 		     => 'edit-comment',
+				'commentsCount' => [ 'text' => sprintf( _n( '%d Comment', '%d Comments', $count['all'], 'anspress-question-answer' ), $count['all'] ), 'number' => $count['all'], 'unapproved' => $count['awaiting_moderation'] ],
+				'snackbar'      => [ 'message' => __( 'Comment updated successfully', 'anspress-question-answer' ) ],
 			);
-
-			$result['key'] = $comment->comment_post_ID.'Comments';
-
-			$result['apData'] = SELF::comments_data( $comment->comment_post_ID );
 			ap_ajax_json( $result );
 		}
+
+		ap_ajax_json( array(
+			'success'  => false,
+			'snackbar' => [ 'message' => __( 'Unable to update comment', 'anspress-question-answer' ) ],
+
+		) );
 	}
 
 	/**
@@ -266,19 +266,20 @@ class AnsPress_Comment_Hooks {
 			do_action( 'ap_unpublish_comment', $_comment );
 			do_action( 'ap_after_deleting_comment', $_comment );
 
-			$count = get_comments_number( $_comment->comment_post_ID );
+			$count = get_comment_count( $_comment->comment_post_ID );
 
 			ap_ajax_json( array(
 				'success'       => true,
 				'snackbar'      => [ 'message' => __( 'Comment successfully deleted', 'anspress-question-answer' ) ],
 				'action'        => 'delete_comment',
-				'commentsCount' => [ 'text' => sprintf( _n( '%d Comment', '%d Comments', $count, 'anspress-question-answer' ), $count ), 'number' => $count ],
+				'commentsCount' => [ 'text' => sprintf( _n( '%d Comment', '%d Comments', $count['all'], 'anspress-question-answer' ), $count['all'] ), 'number' => $count['all'], 'unapproved' => $count['awaiting_moderation'] ],
 			) );
 		}
 	}
 
 	/**
 	 * Modify comment query args for showing pending comments to moderator.
+	 *
 	 * @param  array $args Comment args.
 	 * @return array
 	 * @since  3.0.0
@@ -305,7 +306,7 @@ class AnsPress_Comment_Hooks {
 
 		$success = wp_set_comment_status( $comment_id, 'approve' );
 		$_comment = get_comment( $comment_id );
-		$count = get_comments_number( $_comment->comment_post_ID );
+		$count = get_comment_count( $_comment->comment_post_ID );
 
 		if ( $success ) {
 			ap_ajax_json( array(
@@ -313,7 +314,7 @@ class AnsPress_Comment_Hooks {
 				'action' 		   => 'comment_approved',
 				'model'      	 => [ 'approved' => '1', 'actions' => ap_comment_actions( $c ) ],
 				'comment_ID' 	 => $comment_id,
-				'commentsCount' => [ 'text' => sprintf( _n( '%d Comment', '%d Comments', $count, 'anspress-question-answer' ), $count ), 'number' => $count ],
+				'commentsCount' => [ 'text' => sprintf( _n( '%d Comment', '%d Comments', $count['all'], 'anspress-question-answer' ), $count['all'] ), 'number' => $count['all'], 'unapproved' => $count['awaiting_moderation'] ],
 				'snackbar'     => [ 'message' => __( 'Comment approved successfully.', 'anspress-question-answer' ) ],
 			) );
 		}
@@ -323,7 +324,7 @@ class AnsPress_Comment_Hooks {
 /**
  * Load comment form button.
  *
- * @param 	bool $echo Echo html.
+ * @param 	mixed $_post Echo html.
  * @return 	string
  * @since 	0.1
  */
@@ -348,11 +349,13 @@ function ap_comment_btn_html( $_post = null ) {
 	) );
 
 	$unapproved = '';
-	if( !empty( $_post->fields['unapproved_comments'] ) ) {
-		$unapproved = '<b class="unapproved">' . $_post->fields['unapproved_comments'] . '</b>';
+
+	if ( ap_user_can_approve_comment() ) {
+		$unapproved_count = ! empty( $_post->fields['unapproved_comments'] ) ? (int) $_post->fields['unapproved_comments'] : 0;
+		$unapproved = '<b class="unapproved' . ( $unapproved_count > 0 ? ' have' : '' ) . '" ap-un-commentscount title="' . esc_attr__( 'Comments awaiting moderation', 'anspress-question-answer' ) . '">' . $unapproved_count . '</b>';
 	}
 
-	$output = '<a href="#comments-' . $_post->ID . '" class="ap-btn ap-btn-comments" ap="comment_btn" ap-query="' . esc_js( $args ) . '" ap-commentscount-text>' . sprintf( _n( '%d Comment', '%d Comments', $comment_count, 'anspress-question-answer' ), $comment_count ) . $unapproved . '</a><a href="#" class="ap-btn-newcomment ap-btn ap-btn-small" ap="new-comment" ap-query="' . esc_js( $q ) . '">' . esc_attr__( 'Add a Comment', 'anspress-question-answer' ) . '</a>';
+	$output = '<a href="#comments-' . $_post->ID . '" class="ap-btn ap-btn-comments" ap="comment_btn" ap-query="' . esc_js( $args ) . '"><span ap-commentscount-text>' . sprintf( _n( '%d Comment', '%d Comments', $comment_count, 'anspress-question-answer' ), $comment_count ) . '</span>' . $unapproved . '</a><a href="#" class="ap-btn-newcomment ap-btn ap-btn-small" ap="new-comment" ap-query="' . esc_js( $q ) . '">' . esc_attr__( 'Add a Comment', 'anspress-question-answer' ) . '</a>';
 
 	return $output;
 }
@@ -369,7 +372,7 @@ function ap_comment_actions( $comment ) {
 	$actions = [];
 
 	if ( ap_user_can_edit_comment( $comment->comment_ID ) ) {
-		$actions[] = [ 'label' => __( 'Edit', 'anspress-question-answer' ), 'query' => [ '__nonce' => wp_create_nonce( 'comment_form_nonce' ), 'comment_ID' => $comment->comment_ID, 'ap_ajax_action' => 'edit_comment_form' ] ];
+		$actions[] = [ 'label' => __( 'Edit', 'anspress-question-answer' ), 'cb' => 'edit_comment', 'query' => [ '__nonce' => wp_create_nonce( 'edit-comment-' . $comment->comment_ID ), 'comment_ID' => $comment->comment_ID, 'post_id' => $comment->comment_post_ID, 'ap_ajax_action' => 'edit_comment' ] ];
 	}
 
 	if ( ap_user_can_delete_comment( $comment->comment_ID ) ) {

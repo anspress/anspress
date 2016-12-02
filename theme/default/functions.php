@@ -56,6 +56,7 @@ function ap_scripts_front() {
 		'commented' => __( 'commented', 'anspress-question-answer' ),
 		'comment' => __( 'Comment', 'anspress-question-answer' ),
 		'cancel' => __( 'Cancel', 'anspress-question-answer' ),
+		'update' => __( 'Update', 'anspress-question-answer' ),
 		'your_comment' => __( 'Write your comment...', 'anspress-question-answer' ),
 	);
 
