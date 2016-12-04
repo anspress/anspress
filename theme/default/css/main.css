@@ -3396,13 +3396,14 @@ post-message {
   background: none repeat scroll 0 0 #fff;
   border-radius: 4px;
   box-shadow: 0 4px 35px rgba(0, 0, 0, 0.3);
-  left: 50%;
   padding: 20px;
-  position: absolute;
-  top: 50%;
+  position: relative;
+  margin: 50px auto 0 auto;
   z-index: 9999;
   width: 400px;
-  margin-left: -200px;
+}
+.ap-modal-body.ap-modal-medium {
+  width: 600px;
 }
 .ap-modal-inner {
   margin-left: -50%;
@@ -3438,6 +3439,9 @@ post-message {
 .ap-modal a.ap-modal-btn {
   text-transform: uppercase;
   text-decoration: none;
+}
+.ap-modal ap-comments:before, .ap-modal ap-comments:after {
+  display: none !important;
 }
 
 .ap-hover-card {

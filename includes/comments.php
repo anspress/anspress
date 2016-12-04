@@ -318,7 +318,7 @@ class AnsPress_Comment_Hooks {
 
 		ap_ajax_json( array(
 			'success' => true,
-			'comment' => ap_comment_ajax_data( $c ),
+			'comment' => ap_comment_ajax_data( $c, false ),
 		) );
 	}
 }
@@ -426,7 +426,7 @@ function ap_the_comments() {
  * @return array
  * @since 4.0.0
  */
-function ap_comment_ajax_data( $c ) {
+function ap_comment_ajax_data( $c, $actions = true ) {
 	return array(
 		'ID'        => $c->comment_ID,
 		'link'      => get_comment_link( $c ),
@@ -438,7 +438,7 @@ function ap_comment_ajax_data( $c ) {
 		'content'   => $c->comment_content,
 		'approved'  => $c->comment_approved,
 		'class'     => implode( ' ', get_comment_class( 'ap-comment', $c->comment_ID, null, false ) ),
-		'actions' 	 => ap_comment_actions( $c ),
+		'actions' 	 => $actions ? ap_comment_actions( $c ) : [],
 	);
 }
 

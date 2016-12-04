@@ -208,9 +208,6 @@
 	});
 
 	AnsPress.views.Comments = Backbone.View.extend({
-		events: {
-			'click [ap="comment_btn"]': 'loadComments',
-		},
 		initialize: function(options){
 			this.model = options.model;
 			this.postID = options.postID;
@@ -231,6 +228,7 @@
 					self.renderItem(comment);
 				});
 			}
+
 			return this;
 		},
 		removeComment: function(comment){
@@ -247,33 +245,6 @@
 			var view = this.renderItem(comment);
 			view.$el.hide().slideDown(400);
 			this.$el.apScrollTo('#comment-'+comment.id);
-		},
-		loadComments: function(e){
-			e.preventDefault();
-			var self = this;
-			var commentDiv = '#comments-'+self.model.id;
-			if($(e.currentTarget).is('.loaded')){
-				if($(commentDiv).is('.have-comments'))
-					$(commentDiv).find('.ap-comments').slideUp(400, function(){
-						$(commentDiv).removeClass('have-comments');
-					});
-				else if( self.comments.length > 0 )
-					$(commentDiv).addClass('have-comments').find('.ap-comments').slideDown(400);
-				return;
-			}
-			var q = $.parseJSON($(e.currentTarget).attr('ap-query'));
-			q.ap_ajax_action = 'load_comments';
-			AnsPress.showLoading(e.currentTarget);
-			AnsPress.ajax({
-				data: q,
-				success: function(data){
-					AnsPress.hideLoading(e.currentTarget);
-					$(e.currentTarget).addClass('loaded');
-
-					view.render();
-					view.$el.hide().slideDown(400);
-				}
-			});
 		}
 	});
 
@@ -291,9 +262,6 @@
 			this.listenTo(this.model, 'change:hideSelect', this.selectToggle);
 			this.listenTo(AnsPress, 'commentCount', this.commentCount);
 			this.listenTo(AnsPress, 'loadCommentEdit', this.loadCommentEdit);
-
-			this.comments = new AnsPress.collections.Comments();
-			this.commentsView = new AnsPress.views.Comments({ model: this.comments, postID: this.model.id, el: '#comments-'+self.model.id+' .ap-comments' });
 		},
 		events: {
 			'click [ap-vote] > a': 'voteClicked',
@@ -409,7 +377,31 @@
 		},
 		loadComments: function(e){
 			e.preventDefault();
-			this.model.trigger('loadComments');
+			var self = this;
+			var commentDiv = '#comments-'+self.model.id;
+			if($(e.currentTarget).is('.loaded')){
+				if($(commentDiv).is('.have-comments'))
+					$(commentDiv).find('.ap-comments').slideUp(400, function(){
+						$(commentDiv).removeClass('have-comments');
+					});
+				else if( self.comments.length > 0 )
+					$(commentDiv).addClass('have-comments').find('.ap-comments').slideDown(400);
+				return;
+			}
+			var q = $.parseJSON($(e.currentTarget).attr('ap-query'));
+			q.ap_ajax_action = 'load_comments';
+			AnsPress.showLoading(e.currentTarget);
+			AnsPress.ajax({
+				data: q,
+				success: function(data){
+					AnsPress.hideLoading(e.currentTarget);
+					$(e.currentTarget).addClass('loaded');
+					self.comments = new AnsPress.collections.Comments(data.comments);
+					var view = new AnsPress.views.Comments({ model: self.comments, postID: self.model.id, el: commentDiv+' .ap-comments' });
+					view.render();
+					view.$el.hide().slideDown(400);
+				}
+			});
 		},
 		loadCommentForm: function(e, comment){
 			e.preventDefault();
@@ -613,7 +605,6 @@
 		render: function(){
 			var t = _.template(this.template());
 			this.$el.html(t(this.data));
-
 			return this;
 		},
 		hide: function(e){
@@ -622,39 +613,27 @@
 		}
 	});
 
-	AnsPress.views.CommentRoute = Backbone.View.extend({
-		initialize: function () {
-			this.render();
+  var AnsPressRouter = Backbone.Router.extend({
+		routes: {
+			'comment/:commentID': 'commentRoute'
 		},
-		events: {
-			'click [ap="edit_comment"]': 'triggerEdit'
-		},
-		render: function() {
+		commentRoute: function (query, page) {
 			AnsPress.ajax({
 				data: ajaxurl + '?action=ap_ajax&ap_ajax_action=get_comment&comment_id='+query,
 				success: function(data){
 					if(data.success){
 						var commentsModel = new AnsPress.collections.Comments(data.comment);
 						var modalView = new AnsPress.views.Modal({
-							title: 'Comment',
-							content: '<ap-comments class="have-comments"><div class="ap-comments"></div></ap-comments>'
+							content: '<ap-comments class="have-comments"><div class="ap-comments"></div></ap-comments>',
+							size: 'medium'
 						});
-
 						$('body').append(modalView.render().$el);
-						var commentsView = new AnsPress.views.Comments({model: commentsModel, el: modalView.$el.find('ap-comments')});
+						var commentsView = new AnsPress.views.Comments({model: commentsModel, el: modalView.$el.find('.ap-comments')});
+
 						modalView.$el.find('.ap-modal-content').html(commentsView.render().$el);
 					}
 				}
 			});
-		}
-  });
-
-  var AnsPressRouter = Backbone.Router.extend({
-		routes: {
-			'comment/:commentID': 'commentRoute'
-		},
-		commentRoute: function (query, page) {
-
 		}
   });
 

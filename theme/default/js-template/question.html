@@ -48,7 +48,7 @@
 <!-- action end -->
 
 <!-- modal start -->
-<div class="ap-modal-body">
+<div class="ap-modal-body<# if(typeof size !== 'undefined'){ #> ap-modal-{{size}}<# } #>">
   <# if(typeof title !== 'undefined' ){ #>
     <div class="ap-modal-header">
       <h3>{{title}}</h3>
