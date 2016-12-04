@@ -182,11 +182,7 @@ class AnsPress_PostTypes {
 				$question_slug = 'question'; }
 
 			if ( get_option( 'permalink_structure' ) ) {
-				if ( ap_opt( 'question_permalink_follow' ) ) {
-					$link = rtrim( ap_base_page_link(), '/' ) . '/' . $question_slug . '/' . $post->post_name . '/';
-				} else {
-					$link = home_url( '/' . $question_slug . '/' . $post->post_name . '/' );
-				}
+				$link = home_url( '/' . $question_slug . '/' . $post->post_name . '/' );
 			} else {
 				$link = add_query_arg( array( 'apq' => false, 'question_id' => $post->ID ), ap_base_page_link() );
 			}
@@ -197,7 +193,7 @@ class AnsPress_PostTypes {
 			return apply_filters( 'ap_question_post_type_link', $link, $post );
 
 		} elseif ( 'answer' === $post->post_type && 0 !== (int) $post->post_parent ) {
-			$link = get_permalink( $post->post_parent ) . "{$post->ID}/#post-{$post->ID}";
+			$link = get_permalink( $post->post_parent ) . "{$post->ID}/#/answer/{$post->ID}/";
 
 			/**
 			* FILTER: ap_answer_post_type_link

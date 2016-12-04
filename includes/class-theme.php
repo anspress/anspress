@@ -91,22 +91,6 @@ class AnsPress_Theme {
 	}
 
 	/**
-	 * Register AnsPress comment template.
-	 *
-	 * @param  string $comment_template path to comment template.
-	 * @return string
-	 */
-	public static function comment_template( $comment_template ) {
-		global $post;
-
-		if ( in_array( $post->post_type, [ 'question', 'answer' ], true ) ) {
-			return ap_get_theme_location( 'comments.php' );
-		} else {
-			return $comment_template;
-		}
-	}
-
-	/**
 	 * Filter wp_title.
 	 *
 	 * @param string $title WP page title.

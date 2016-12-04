@@ -460,6 +460,11 @@ function ap_post_actions( $_post = null ) {
  * @since 	2.0
  */
 function ap_post_actions_buttons() {
+
+	if ( ! is_user_logged_in() ) {
+		return;
+	}
+
 	$args = wp_json_encode( [
 		'post_id' => get_the_ID(),
 		'nonce'   => wp_create_nonce( 'post-actions-' . get_the_ID() ),

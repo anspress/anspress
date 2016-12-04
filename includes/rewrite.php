@@ -70,7 +70,7 @@ class AnsPress_Rewrite
 			ap_create_base_page();
 		}
 
-		$slug = ap_base_page_slug().'/';
+		$slug = ap_base_page_slug() . '/';
 
 		$question_slug = ap_opt( 'question_page_slug' );
 
@@ -79,33 +79,23 @@ class AnsPress_Rewrite
 		}
 
 		$new_rules = array(
-			$slug. 'parent/([^/]+)/?' => 'index.php?page_id='.$base_page_id.'&parent='.$wp_rewrite->preg_index( 1 ),
+			$slug . 'parent/([^/]+)/?' => 'index.php?page_id=' . $base_page_id . '&parent=' . $wp_rewrite->preg_index( 1 ),
 
-			$slug. 'page/?([0-9]{1,})/?$' => 'index.php?page_id='.$base_page_id.'&paged='.$wp_rewrite->preg_index( 1 ),
+			$slug . 'page/?([0-9]{1,})/?$' => 'index.php?page_id=' . $base_page_id . '&paged=' . $wp_rewrite->preg_index( 1 ),
 
-			$slug. '([^/]+)/page/?([0-9]{1,})/?$' => 'index.php?page_id='.$base_page_id.'&ap_page='.$wp_rewrite->preg_index( 1 ).'&paged='.$wp_rewrite->preg_index( 2 ),
+			$slug . '([^/]+)/page/?([0-9]{1,})/?$' => 'index.php?page_id=' . $base_page_id . '&ap_page=' . $wp_rewrite->preg_index( 1 ) . '&paged=' . $wp_rewrite->preg_index( 2 ),
 		);
 
-		if ( ! ap_opt( 'question_permalink_follow' ) ) {
 
-			$new_rules[$question_slug.'/([^/]+)/([^/]+)/?$'] = 'index.php?page_id='.$base_page_id.'&question_name='.$wp_rewrite->preg_index( 1 ).'&answer_id='.$wp_rewrite->preg_index( 2 );
+		$new_rules[ $question_slug . '/([^/]+)/([^/]+)/?$' ] = 'index.php?page_id=' . $base_page_id . '&question_name=' . $wp_rewrite->preg_index( 1 ) . '&answer_id=' . $wp_rewrite->preg_index( 2 );
 
-			$new_rules[$question_slug.'/([^/]+)/?$']  = 'index.php?page_id='.$base_page_id.'&question_name='.$wp_rewrite->preg_index( 1 );
+		$new_rules[ $question_slug . '/([^/]+)/?$' ]  = 'index.php?page_id=' . $base_page_id . '&question_name=' . $wp_rewrite->preg_index( 1 );
 
-		} else {
+		$new_rules[ $slug . 'search/([^/]+)/?' ] = 'index.php?page_id=' . $base_page_id . '&ap_page=search&ap_s=' . $wp_rewrite->preg_index( 1 );
 
-			$new_rules[$slug.$question_slug.'/([^/]+)/([^/]+)/?$'] = 'index.php?page_id='.$base_page_id.'&question_name='.$wp_rewrite->preg_index( 1 ).'&answer_id='.$wp_rewrite->preg_index( 2 );
+		$new_rules[ $slug . 'ask/([^/]+)/?' ] = 'index.php?page_id=' . $base_page_id . '&ap_page=ask&parent=' . $wp_rewrite->preg_index( 1 );
 
-			$new_rules[$slug.$question_slug.'/([^/]+)/?$'] = 'index.php?page_id='.$base_page_id.'&question_name='.$wp_rewrite->preg_index( 1 );
-		}
-
-		//$new_rules[$slug.$question_slug.'/([^/]+)/([^/]+)/?$']  = 'index.php?page_id='.$base_page_id.'&question_id='.$wp_rewrite->preg_index( 1 ).'&question_name='.$wp_rewrite->preg_index( 2 );
-
-		$new_rules[$slug. 'search/([^/]+)/?'] = 'index.php?page_id='.$base_page_id.'&ap_page=search&ap_s='. $wp_rewrite->preg_index( 1 );
-
-		$new_rules[$slug. 'ask/([^/]+)/?'] = 'index.php?page_id='.$base_page_id.'&ap_page=ask&parent='.$wp_rewrite->preg_index( 1 );
-
-		$new_rules[$slug. '([^/]+)/?'] = 'index.php?page_id='.$base_page_id.'&ap_page='.$wp_rewrite->preg_index( 1 );
+		$new_rules[ $slug . '([^/]+)/?' ] = 'index.php?page_id=' . $base_page_id . '&ap_page=' . $wp_rewrite->preg_index( 1 );
 
 		$ap_rules = apply_filters( 'ap_rewrite_rules', $new_rules, $slug, $base_page_id );
 

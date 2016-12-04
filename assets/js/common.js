@@ -15,6 +15,7 @@ window.AnsPress = _.extend({
 
 		jQuery.get(apTemplateUrl + '/' + id + ".html", function(html){
 			jQuery('#apTemplate').text(html);
+			AnsPress.trigger('templateLoaded');
 		});
 	},
 	getTemplate: function(templateId){
@@ -24,6 +25,9 @@ window.AnsPress = _.extend({
 
 			var regex = new RegExp("<!-- "+templateId+" start -->([\\S\\s]*?)<!-- "+templateId+" end -->", "g");
 			var match = regex.exec(jQuery('#apTemplate').text());
+
+			if(match == null)
+				return '';
 
 			if(match[1]) return match[1];
 		}

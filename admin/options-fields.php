@@ -38,18 +38,6 @@ ap_register_option_group('general', __( 'General', 'anspress-question-answer' ) 
 		'desc'  => __( 'Check this to remove all anspress data including posts on deactivating plugin.', 'anspress-question-answer' ),
 		'type'  => 'checkbox',
 	),
-	array(
-		'name'  => 'question_permalink_follow',
-		'label' => __( 'Base page slug before question permalink', 'anspress-question-answer' ),
-		'desc'  => __( 'i.e. ', 'anspress-question-answer' ) . home_url( '/BASE_PAGE/question/QUESTION_TITLE' ),
-		'type'  => 'checkbox',
-	),
-	array(
-		'name'  => 'base_before_user_perma',
-		'label' => __( 'Base page slug before user page permalink', 'anspress-question-answer' ),
-		'desc'  => __( 'i.e. ', 'anspress-question-answer' ) . home_url( '/BASE_PAGE/user/USER_NAME' ),
-		'type'  => 'checkbox',
-	),
 ));
 
 /**
@@ -296,25 +284,6 @@ ap_register_option_group('question', __( 'Q&A', 'anspress-question-answer' ) , a
 		'desc'  => __( 'Disable answer navigation.', 'anspress-question-answer' ),
 		'type'  => 'checkbox',
 	) ,
-));
-
-/**
- * Register user settings.
- */
-ap_register_option_group( 'users', __( 'Users', 'anspress-question-answer' ) , array(
-	array(
-		'name'    => 'user_profile',
-		'label'   => __( 'User profile', 'anspress-question-answer' ),
-		'desc'    => __( 'Select which user profile you\'d like to use.', 'anspress-question-answer' ),
-		'type'    => 'select',
-		'options' => array( 'none' => 'None','anspress' => 'AnsPress', 'buddypress' => 'BuddyPress', 'userpro' => 'User Pro' ),
-	) ,
-	array(
-		'name'  => 'enable_users_directory',
-		'label' => __( 'Show users directory', 'anspress-question-answer' ),
-		'desc'  => __( 'When enabled public can see directory of users.', 'anspress-question-answer' ),
-		'type'  => 'checkbox',
-	),
 ));
 
 /**

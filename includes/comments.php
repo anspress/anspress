@@ -31,18 +31,7 @@ class AnsPress_Comment_Hooks {
 		$comments = get_comments( [ 'post_id' => $post_id, 'order' => 'ASC' ] );
 		$comments_arr = array();
 		foreach ( (array) $comments as $c ) {
-			$comments_arr[] = array(
-				'ID'        => $c->comment_ID,
-				'avatar'    => get_avatar( $c->user_id, 30 ),
-				'user_link' => ap_user_link( $c->user_id ),
-				'user_name' => ap_user_display_name( $c->user_id ),
-				'iso_date'  => date( 'c', strtotime( $c->comment_date ) ),
-				'time'      => ap_human_time( $c->comment_date_gmt, false ),
-				'content'   => $c->comment_content,
-				'approved'  => $c->comment_approved,
-				'class'     => implode( ' ', get_comment_class( 'ap-comment', $c->comment_ID, null, false ) ),
-				'actions' 	=> ap_comment_actions( $c ),
-			);
+			$comments_arr[] = ap_comment_ajax_data( $c );
 		}
 
 		if ( ! empty( $comments_arr ) ) {
@@ -150,18 +139,7 @@ class AnsPress_Comment_Hooks {
 
 			$result = array(
 				'success'    => true,
-				'comment'      => array(
-					'ID'        => $c->comment_ID,
-					'avatar'    => get_avatar( $c->user_id, 30 ),
-					'user_link' => ap_user_link( $c->user_id ),
-					'user_name' => ap_user_display_name( $c->user_id ),
-					'iso_date'  => date( 'c', strtotime( $c->comment_date ) ),
-					'time'      => ap_human_time( $c->comment_date_gmt, false ),
-					'content'   => $c->comment_content,
-					'approved'  => $c->comment_approved,
-					'class'     => implode( ' ', get_comment_class( 'ap-comment', $c->comment_ID, null, false ) ),
-					'actions' 	=> ap_comment_actions( $c ),
-				),
+				'comment'      => ap_comment_ajax_data( $c ),
 				'action' 		  => 'new-comment',
 				'commentsCount' => [ 'text' => sprintf( _n( '%d Comment', '%d Comments', $count['all'], 'anspress-question-answer' ), $count['all'] ), 'number' => $count['all'], 'unapproved' => $count['awaiting_moderation'] ],
 				'snackbar'   => [ 'message' => __( 'Comment successfully posted', 'anspress-question-answer' ) ],
@@ -208,18 +186,7 @@ class AnsPress_Comment_Hooks {
 			$count = get_comment_count( $c->comment_post_ID );
 			$result = array(
 				'success'       => true,
-				'comment'       => array(
-					'ID'        => $c->comment_ID,
-					'avatar'    => get_avatar( $c->user_id, 30 ),
-					'user_link' => ap_user_link( $c->user_id ),
-					'user_name' => ap_user_display_name( $c->user_id ),
-					'iso_date'  => date( 'c', strtotime( $c->comment_date ) ),
-					'time'      => ap_human_time( $c->comment_date_gmt, false ),
-					'content'   => $c->comment_content,
-					'approved'  => $c->comment_approved,
-					'class'     => implode( ' ', get_comment_class( 'ap-comment', $c->comment_ID, null, false ) ),
-					'actions' 	 => ap_comment_actions( $c ),
-				),
+				'comment'       => ap_comment_ajax_data( $c ),
 				'action' 		     => 'edit-comment',
 				'commentsCount' => [ 'text' => sprintf( _n( '%d Comment', '%d Comments', $count['all'], 'anspress-question-answer' ), $count['all'] ), 'number' => $count['all'], 'unapproved' => $count['awaiting_moderation'] ],
 				'snackbar'      => [ 'message' => __( 'Comment updated successfully', 'anspress-question-answer' ) ],
@@ -319,6 +286,41 @@ class AnsPress_Comment_Hooks {
 			) );
 		}
 	}
+
+	/**
+	 * Manipulate question and answer comments link.
+	 *
+	 * @param string     $link    The comment permalink with '#comment-$id' appended.
+	 * @param WP_Comment $comment The current comment object.
+	 * @param array      $args    An array of arguments to override the defaults.
+	 */
+	public static function comment_link( $link, $comment, $args ) {
+		$_post = ap_get_post( $comment->comment_post_ID );
+
+		if ( ! in_array( $_post->post_type, [ 'question', 'answer' ], true ) ) {
+			return $link;
+		}
+
+		$permalink = get_permalink( $_post );
+
+		if ( 'answer' === $_post->post_type ) {
+			return $permalink . 'comment/' . $comment->comment_ID;
+		}
+		return $permalink . '#/comment/' . $comment->comment_ID;
+	}
+
+	/**
+	 * Ajax callback to get a single comment.
+	 */
+	public static function get_comment() {
+		$comment_id = ap_sanitize_unslash( 'comment_id', 'r' );
+		$c = get_comment( $comment_id );
+
+		ap_ajax_json( array(
+			'success' => true,
+			'comment' => ap_comment_ajax_data( $c ),
+		) );
+	}
 }
 
 /**
@@ -402,5 +404,41 @@ function ap_comment_delete_locked( $comment_ID ) {
 	$comment = get_comment( $comment_ID );
 	$commment_time = mysql2date( 'U', $comment->comment_date_gmt ) + (int) ap_opt( 'disable_delete_after' );
 	return current_time( 'timestamp', true ) > $commment_time;
+}
+
+/**
+ * Output comment wrapper.
+ *
+ * @return void
+ * @since 2.1
+ */
+function ap_the_comments() {
+	global $post;
+	if ( ( 'answer' === $post->post_type && ! ap_opt( 'disable_comments_on_answer' ) ) || 'question' === $post->post_type ) {
+		echo '<ap-comments id="comments-' . esc_attr( get_the_ID() ) . '"><div class="ap-comments"></div></ap-comments>';
+	}
+}
+
+/**
+ * Return ajax comment data.
+ *
+ * @param object $c Comment object.
+ * @return array
+ * @since 4.0.0
+ */
+function ap_comment_ajax_data( $c ) {
+	return array(
+		'ID'        => $c->comment_ID,
+		'link'      => get_comment_link( $c ),
+		'avatar'    => get_avatar( $c->user_id, 30 ),
+		'user_link' => ap_user_link( $c->user_id ),
+		'user_name' => ap_user_display_name( $c->user_id ),
+		'iso_date'  => date( 'c', strtotime( $c->comment_date ) ),
+		'time'      => ap_human_time( $c->comment_date_gmt, false ),
+		'content'   => $c->comment_content,
+		'approved'  => $c->comment_approved,
+		'class'     => implode( ' ', get_comment_class( 'ap-comment', $c->comment_ID, null, false ) ),
+		'actions' 	 => ap_comment_actions( $c ),
+	);
 }
 

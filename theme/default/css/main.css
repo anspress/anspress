@@ -2467,14 +2467,14 @@ post-message {
   z-index: 9;
 }
 
-#anspress ap-comments {
+.anspress ap-comments {
   display: block;
 }
-#anspress ap-comments.have-comments {
+.anspress ap-comments.have-comments {
   display: block;
   position: relative;
 }
-#anspress ap-comments.have-comments:before, #anspress ap-comments.have-comments:after {
+.anspress ap-comments.have-comments:before, .anspress ap-comments.have-comments:after {
   content: '';
   border-color: transparent transparent rgba(0, 0, 0, 0.1) transparent;
   border-style: solid;
@@ -2484,11 +2484,11 @@ post-message {
   right: 35px;
   top: -20px;
 }
-#anspress ap-comments.have-comments:after {
+.anspress ap-comments.have-comments:after {
   border-color: transparent transparent #fff transparent;
   top: -19px;
 }
-#anspress ap-comments.have-comments .ap-comments {
+.anspress ap-comments.have-comments .ap-comments {
   border: 1px solid rgba(0, 0, 0, 0.1);
   display: block;
   margin-top: 15px;
@@ -2497,64 +2497,64 @@ post-message {
   overflow-y: auto;
   overflow-x: hidden;
 }
-#anspress ap-comment {
+.anspress ap-comment {
   display: block;
   padding: 10px;
   font-size: 90%;
   color: #666;
   border-bottom: solid 1px rgba(0, 0, 0, 0.1);
 }
-#anspress ap-comment.unapproved {
+.anspress ap-comment.unapproved {
   background: #FFF9C4 !important;
 }
-#anspress ap-comment:last-child {
+.anspress ap-comment:last-child {
   border-bottom: none;
 }
-#anspress ap-comment:nth-child(2n) {
+.anspress ap-comment:nth-child(2n) {
   background: #f7f7f7;
 }
-#anspress ap-comment .ap-avatar {
+.anspress ap-comment .ap-avatar {
   float: left;
 }
-#anspress ap-comment .comment-inner {
+.anspress ap-comment .comment-inner {
   overflow: hidden;
 }
-#anspress ap-comment .comment-header {
+.anspress ap-comment .comment-header {
   font-weight: bold;
   margin-bottom: 5px;
   font-size: 12px;
   color: #666;
 }
-#anspress ap-comment .comment-header > a {
+.anspress ap-comment .comment-header > a {
   color: #666;
   text-decoration: none;
 }
-#anspress ap-comment .ap-comment-actions {
+.anspress ap-comment .ap-comment-actions {
   float: right;
 }
-#anspress ap-comment .ap-comment-actions > a {
+.anspress ap-comment .ap-comment-actions > a {
   margin-left: 10px;
   text-decoration: none;
   font-weight: normal;
 }
-#anspress .ap-btn-newcomment {
+.anspress .ap-btn-newcomment {
   float: right;
   border-left: solid 1px #ddd;
 }
-#anspress #ap-commentform {
+.anspress #ap-commentform {
   margin-top: 10px;
 }
-#anspress #ap-commentform .ap-avatar img {
+.anspress #ap-commentform .ap-avatar img {
   max-width: 40px;
   height: auto;
 }
-#anspress #ap-commentform .ap-comment-footer {
+.anspress #ap-commentform .ap-comment-footer {
   border: solid rgba(0, 0, 0, 0.1);
   border-width: 0 2px 2px 2px;
   padding: 10px;
   background: #fdfdfd;
 }
-#anspress #ap-commentform textarea {
+.anspress #ap-commentform textarea {
   line-height: 1.6;
   margin-bottom: 0;
   border-radius: 3px 3px 0 0;
@@ -3375,7 +3375,6 @@ post-message {
 
 .ap-modal {
   bottom: 0;
-  display: none;
   left: 0;
   overflow-x: auto;
   position: fixed;
@@ -3393,20 +3392,31 @@ post-message {
   top: 0;
   width: 100%;
 }
-.ap-modal-inner {
+.ap-modal-body {
   background: none repeat scroll 0 0 #fff;
-  border: 1px solid #ddd;
   border-radius: 4px;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 35px rgba(0, 0, 0, 0.3);
   left: 50%;
-  padding: 10px;
+  padding: 20px;
   position: absolute;
   top: 50%;
+  z-index: 9999;
+  width: 400px;
+  margin-left: -200px;
+}
+.ap-modal-inner {
+  margin-left: -50%;
+}
+.ap-modal-content {
+  line-height: 1.4;
 }
 .ap-modal-title {
   font-weight: 600;
   font-size: 15px;
   display: inline;
+}
+.ap-modal-footer {
+  margin-top: 15px;
 }
 .ap-modal-close {
   color: #aaa;
@@ -3419,12 +3429,15 @@ post-message {
   color: #777;
 }
 .ap-modal-header {
-  border-bottom: 1px solid #eee;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
   padding-bottom: 5px;
 }
 .ap-modal .login-submit {
   margin-bottom: 0;
+}
+.ap-modal a.ap-modal-btn {
+  text-transform: uppercase;
+  text-decoration: none;
 }
 
 .ap-hover-card {

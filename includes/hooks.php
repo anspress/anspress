@@ -63,7 +63,6 @@ class AnsPress_Hooks {
 			anspress()->add_action( 'init', 'AnsPress_Theme', 'init_actions' );
 			anspress()->add_filter( 'post_class', 'AnsPress_Theme', 'question_answer_post_class' );
 			anspress()->add_filter( 'body_class', 'AnsPress_Theme', 'body_class' );
-			anspress()->add_filter( 'comments_template', 'AnsPress_Theme', 'comment_template' );
 			anspress()->add_action( 'after_setup_theme', 'AnsPress_Theme', 'includes_theme' );
 			anspress()->add_filter( 'wpseo_title', 'AnsPress_Theme', 'wpseo_title' , 10, 2 );
 			anspress()->add_filter( 'wp_head', 'AnsPress_Theme', 'feed_link', 9 );
@@ -81,6 +80,7 @@ class AnsPress_Hooks {
 			anspress()->add_filter( 'ap_form_contents_filter', __CLASS__, 'sanitize_description' );
 			anspress()->add_filter( 'human_time_diff', __CLASS__, 'human_time_diff' );
 			anspress()->add_filter( 'comments_template_query_args', 'AnsPress_Comment_Hooks', 'comments_template_query_args' );
+			anspress()->add_filter( 'get_comment_link', 'AnsPress_Comment_Hooks', 'comment_link', 10, 3 );
 			anspress()->add_filter( 'template_include', 'AnsPress_Theme', 'anspress_basepage_template' );
 			anspress()->add_filter( 'avatar_defaults' , 'AnsPress_Theme', 'default_avatar' );
 			anspress()->add_filter( 'pre_get_avatar_data', 'AnsPress_Theme', 'get_avatar', 1000, 3 );

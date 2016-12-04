@@ -268,18 +268,6 @@ function ap_answer_user_can_view() {
 }
 
 /**
- * Output comment template if enabled.
- *
- * @return void
- * @since 2.1
- */
-function ap_answer_the_comments() {
-	if ( ! ap_opt( 'disable_comments_on_answer' ) ) {
-		echo '<ap-comments id="comments-' . esc_attr( get_the_ID() ) . '"><div class="ap-comments"></div></ap-comments>';
-	}
-}
-
-/**
  * output answers pagination
  */
 function ap_answers_the_pagination() {

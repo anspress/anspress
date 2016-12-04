@@ -49,15 +49,15 @@ class AnsPress_BasePage_Shortcode {
 
 		// Check if AnsPress shortcode already loaded.
 		if ( true === $ap_shortcode_loaded ) {
-			return __('AnsPress shortcode cannot be nested.', 'anspress-question-answer' );
+			return __( 'AnsPress shortcode cannot be nested.', 'anspress-question-answer' );
 		}
 
 		$ap_shortcode_loaded = true;
 
-		$this->attributes($atts, $content );
+		$this->attributes( $atts, $content );
 
 		ob_start();
-		echo '<div id="anspress">';
+		echo '<div id="anspress" class="anspress">';
 
 			/**
 			 * Action is fired before loading AnsPress body.

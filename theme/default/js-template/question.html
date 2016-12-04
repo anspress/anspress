@@ -2,7 +2,7 @@
   <div class="ap-avatar">{{{avatar}}}</div>
   <div class="comment-inner">
     <div class="comment-header"><a href="{{user_link}}" class="ap-comment-author">{{user_name}}</a> {{aplang.commented}}
-      <a href="#" class="ap-comment-time">
+      <a href="{{link}}" class="ap-comment-time">
         <time datetime="{{iso_date}}">{{time}}</time>
       </a>
       <div class="ap-comment-actions">
@@ -46,3 +46,27 @@
     {{label}}
   <# } #>
 <!-- action end -->
+
+<!-- modal start -->
+<div class="ap-modal-body">
+  <# if(typeof title !== 'undefined' ){ #>
+    <div class="ap-modal-header">
+      <h3>{{title}}</h3>
+    </div>
+  <# } #>
+  <div class="ap-modal-content">
+    <# if(typeof content !== 'undefined'){ #>
+      {{{content}}}
+    <# } #>
+  </div>
+  <div class="ap-modal-footer">
+    <a href="#" close-modal>Close</a>
+    <# if(typeof buttons !== 'undefined'){ #>
+      <# _.each(buttons, function(btn){ #>
+        <a class="ap-modal-btn <# if(typeof btn.class !== 'undefined') { #>{{btn.class}}<# } #>" href="#" <# if(typeof btn.cb !== 'undefined') { #>ap="{{btn.cb}}" ap-query="{{btn.query}}"<# } #>>{{btn.label}}</a>
+      <# }); #>
+    <# } #>
+  </div>
+</div>
+<div class="ap-modal-backdrop"></div>
+<!-- modal end -->

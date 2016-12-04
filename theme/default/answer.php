@@ -59,7 +59,7 @@
 					</div>
 				<?php endif; ?>
 			</div>
-			<?php ap_answer_the_comments(); ?>
+			<?php ap_the_comments(); ?>
 		</div>
 	</div>
 </div>
