@@ -297,7 +297,7 @@ function ap_user_can_edit_post( $post = null, $user_id = false ) {
 
 	$_post = ap_get_post( $post );
 
-	if( ! in_array( $_post->post_type, [ 'question', 'answer' ], true ) ) {
+	if ( ! in_array( $_post->post_type, [ 'question', 'answer' ], true ) ) {
 		return false;
 	}
 

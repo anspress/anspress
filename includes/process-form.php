@@ -116,7 +116,10 @@ class AnsPress_Process_Form
 	public function process_ask_form() {
 		// Do security check, if fails then return.
 		if ( check_ajax_referer( 'ask_form', false, false ) || ! ap_user_can_ask() ) {
-			ap_ajax_json( 'no_permission' );
+			ap_ajax_json( array(
+				'success' => false,
+				'snackbar' => [ 'message' => __( 'Sorry, unable to post new question', 'anspress-question-answer' ) ],
+			) );
 		}
 
 		// Bail if capatcha verification fails.

@@ -485,9 +485,9 @@ function ap_highlight_words( $text, $words ) {
 function ap_responce_message( $id, $only_message = false ) {
 	$msg = array(
 		'success'  => array( 'type' => 'success', 'message' => __( 'Success', 'anspress-question-answer' ) ),
-		'please_login' => array( 'type' => 'warning', 'message' => __( 'You need to login before doing this action.', 'anspress-question-answer' ) ),
+
 		'something_wrong' => array( 'type' => 'error', 'message' => __( 'Something went wrong, last action failed.', 'anspress-question-answer' ) ),
-		'no_permission' => array( 'type' => 'warning', 'message' => __( 'You do not have permission to do this action.', 'anspress-question-answer' ) ),
+
 		'comment_edit_success'  => array( 'type' => 'success', 'message' => __( 'Comment updated successfully.', 'anspress-question-answer' ) ),
 		'cannot_vote_own_post'          => array( 'type' => 'warning', 'message' => __( 'You cannot vote on your own question or answer.', 'anspress-question-answer' ) ),
 		'no_permission_to_view_private' => array( 'type' => 'warning', 'message' => __( 'You do not have permission to view private posts.', 'anspress-question-answer' ) ),

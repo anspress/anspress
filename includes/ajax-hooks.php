@@ -152,12 +152,9 @@ class AnsPress_Ajax {
 		/**
 		 * Trigger right after selecting an answer.
 		 *
-		 * @param integer $post_author Post author ID.
-		 * @param integer $question_id Question ID.
-		 * @param integer $answer_id   Answer ID.
-		 * @todo Move this hook from here.
+		 * @param object $_post Post.
 		 */
-		do_action( 'ap_select_answer', $_post->post_author, $_post->post_parent, $post->ID );
+		do_action( 'ap_select_answer', $_post );
 
 		// Update question qameta.
 		ap_set_selected_answer( $_post->post_parent, $_post->ID );
@@ -339,14 +336,14 @@ class AnsPress_Ajax {
 	 */
 	public static function hover_card() {
 		if ( ap_opt( 'disable_hover_card' ) ) {
-			ap_ajax_json( 'something_wrong' );
+			wp_die();
 		}
 
 		$id = (int) ap_sanitize_unslash( 'id', 'p' );
 		$type = ap_sanitize_unslash( 'type', 'request', 'user' );
 
 		if ( ! ap_verify_default_nonce() ) {
-			ap_ajax_json( 'something_wrong' );
+			wp_die();
 		}
 
 		/**
@@ -396,121 +393,6 @@ class AnsPress_Ajax {
 	 */
 	public static function send( $result ) {
 		ap_send_json( ap_ajax_responce( $result ) );
-	}
-
-	/**
-	 * Output comment form.
-	 */
-	public static function comment_form() {
-		if ( empty( ap_sanitize_unslash( 'comment', 'p' ) ) ) {
-			ap_ajax_json( 'comment_content_empty' );
-		}
-
-		$comment_post_ID = (int) ap_sanitize_unslash( 'comment_post_ID', 'p' );
-
-		// @codingStandardsIgnoreStart.
-		if ( ! isset( $_REQUEST['comment_ID'] ) ) { // @codingStandardsIgnoreLine
-			// Do security check.
-			if ( ! ap_user_can_comment( $comment_post_ID ) || ! isset( $_POST['__nonce'] ) || ! wp_verify_nonce( $_POST['__nonce'], 'comment_' . (int) $_POST['comment_post_ID'] ) ) {
-				ap_ajax_json( 'no_permission' );
-			}
-		} else {
-			if ( ! ap_user_can_edit_comment( (int) $_REQUEST['comment_ID'] ) || ! wp_verify_nonce( $_REQUEST['__nonce'], 'comment_'.(int) $_REQUEST['comment_ID'] ) ) {
-				ap_ajax_json( 'no_permission' );
-			}
-		}
-
-		$post = ap_get_post( $comment_post_ID );
-
-		if ( ! $post || empty( $post->post_status ) ) {
-			ap_ajax_json( 'something_wrong' );
-		}
-
-		if ( in_array( $post->post_status, array( 'draft', 'pending', 'trash' ) ) ) {
-			ap_ajax_json( 'draft_comment_not_allowed' );
-		}
-
-		$filter_type = isset( $_POST['comment_ID'] ) ? 'ap_before_updating_comment' : 'ap_before_inserting_comment';
-		$filter = apply_filters( $filter_type, false, $_POST['comment'] );
-
-		if ( true === $filter && is_array( $filter ) ) {
-			ap_ajax_json( $filter );
-		}
-
-		if ( isset( $_POST['comment_ID'] ) ) {
-			$comment_id = (int) $_POST['comment_ID'];
-			$updated = wp_update_comment( array( 'comment_ID' => $comment_id, 'comment_content' => trim( $_POST['comment'] ) ) );
-
-			if ( $updated ) {
-				$comment = get_comment( $comment_id );
-
-				ob_start();
-				comment_text( $comment_id );
-				$html = ob_get_clean();
-
-				ap_ajax_json( array(
-					'action'          => 'edit_comment',
-					'comment_ID'      => $comment->comment_ID,
-					'comment_post_ID' => $comment->comment_post_ID,
-					'comment_content' => $comment->comment_content,
-					'html'            => $html,
-					'message'         => 'comment_edit_success'
-				) );
-			}
-		} else {
-			$user = wp_get_current_user();
-			if ( $user->exists() ) {
-				$user_ID              = $user->ID;
-				$comment_author       = wp_slash( $user->display_name );
-				$comment_author_email = wp_slash( $user->user_email );
-				$comment_author_url   = wp_slash( $user->user_url );
-				$comment_content      = trim( $_POST['comment'] );
-				$comment_type         = 'anspress';
-			} else {
-				ap_ajax_json( 'no_permission' );
-			}
-
-			$comment_parent = 0;
-
-			if ( isset( $_POST['comment_ID'] ) ) {
-				$comment_parent = absint( $_POST['comment_ID'] );
-			}
-
-			$commentdata = compact( 'comment_post_ID', 'comment_author', 'comment_author_email', 'comment_author_url', 'comment_content', 'comment_type', 'comment_parent', 'user_ID' );
-
-			// Automatically approve parent comment.
-			if ( ! empty( $_POST['approve_parent'] ) ) { // Input var okay.
-				$parent = get_comment( $comment_parent );
-				if ( $parent && $parent->comment_approved === '0' && $comment_post_ID === $parent->comment_post_ID ) {
-					if ( wp_set_comment_status( $parent->comment_ID, 'approve' ) ) {
-						$comment_auto_approved = true; }
-				}
-			}
-
-			$comment_id = wp_new_comment( $commentdata );
-
-			if ( $comment_id > 0 ) {
-				$comment = get_comment( $comment_id );
-				do_action( 'ap_after_new_comment', $comment );
-				ob_start();
-				ap_comment( $comment );
-				$html = ob_get_clean();
-				$count = get_comment_count( $comment->comment_post_ID );
-				ap_ajax_json( array(
-					'action'          => 'new_comment',
-					'status'          => true,
-					'comment_ID'      => $comment->comment_ID,
-					'comment_post_ID' => $comment->comment_post_ID,
-					'comment_content' => $comment->comment_content,
-					'html'            => $html,
-					'message'         => 'comment_success',
-					'view'            => array(
-						'comments_count_' . $comment->comment_post_ID => '(' . $count['approved'].')', 'comment_count_label_' .$comment->comment_post_ID => sprintf( _n( 'One comment', '%d comments', $count['approved'], 'anspress-question-answer' ), $count['approved'] ),
-						),
-				) );
-			}
-		}
-		// @codingStandardsIgnoreEnd.
 	}
 
 	/**

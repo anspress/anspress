@@ -316,6 +316,15 @@ class AnsPress_Comment_Hooks {
 		$comment_id = ap_sanitize_unslash( 'comment_id', 'r' );
 		$c = get_comment( $comment_id );
 
+		// Check if user can read post.
+		if ( ! ap_user_can_read_post( $c->comment_post_ID ) ) {
+			wp_die();
+		}
+
+		if ( '1' !== $c->comment_approved && ! ( ap_user_can_delete_comment( $c->comment_ID ) || ap_user_can_approve_comment( $c->comment_ID ) ) ) {
+			wp_die();
+		}
+
 		ap_ajax_json( array(
 			'success' => true,
 			'comment' => ap_comment_ajax_data( $c, false ),

@@ -874,7 +874,7 @@ function ap_post_status_btn_args( $_post = null ) {
 		foreach ( (array) $status_labels as $slug => $label ) {
 			$can = true;
 
-			if ( 'moderate' === $k  && ! ap_user_can_change_status_to_moderate() ) {
+			if ( 'moderate' === $slug  && ! ap_user_can_change_status_to_moderate() ) {
 				$can = false;
 			}
 
@@ -921,7 +921,7 @@ function ap_featured_post_args( $post_id = false ) {
 	return array(
 		'cb'     => 'toggle_featured',
 		'active' => $is_featured,
-		'query'  => [ 'status' => $slug, '__nonce' => wp_create_nonce( 'set_featured_' . $post_id ), 'post_id' => $post_id ],
+		'query'  => [ '__nonce' => wp_create_nonce( 'set_featured_' . $post_id ), 'post_id' => $post_id ],
 		'title'  => esc_attr( $title ),
 		'label'  => esc_attr( $label ),
 	);

@@ -142,7 +142,8 @@
 		padding: 5px 10px;
 	}
 	#answer_form .ap-field-description{
-		border: solid 1px #ddd;
+    border: solid 2px #eee;
+    border-radius: 4px 4px 0 0;
 	}
 	#ask_form .ap-field-description .ap-form-fields-in{
 		border: solid 1px #ddd;
@@ -153,16 +154,41 @@
 	}
 	.mce-edit-area{
 		padding: 0 10px;
-		box-shadow: 0 2px 5px rgba(0,0,0,0.08) inset;
 		background: #fcfcfc;
 	}
-
-
+	div.mce-panel{
+		background: none;
+	}
 	.mce-path{
 		display: none;
 	}
 	.mce-edit-area iframe{
 		margin-bottom: 0;
+	}
+	.mce-toolbar .mce-ico {
+		color: #868383;
+	}
+	.mce-toolbar .mce-btn button {
+		padding: 0px 3px;
+		line-height: normal;
+		border-right: solid 1px #ececec;
+		border-radius: 0;
+		padding-right: 10px;
+		&:hover{
+			background: none;
+		}
+	}
+	.mce-toolbar .mce-btn-group .mce-btn:hover{
+		border-color: transparent;
+		background: none;
+		box-shadow: none;
+		.mce-ico{
+			color: #333;
+		}
+	}
+
+	div.mce-toolbar-grp {
+    border-bottom: 2px solid #eee;
 	}
 
 	.ap-avatar-upload-form{
@@ -291,13 +317,11 @@
 			display: none;
 		}
 		.ap-form-c .ap-minimal-placeholder{
-			border: 1px solid #ddd;
 			box-shadow: 0 0 5px #eee inset;
 			color: #888;
 			cursor: pointer;
 			display: block;
 			min-height: 120px;
-			margin: 10px;
 		}
 	}
 	.ap-attachment{
@@ -411,14 +435,16 @@
 		}
 	}
 	&-anchor {
-		border: solid 1px #ddd;
-		margin-top: -17px;
-		background: #fff;
-		padding: 8px;
-		font-size: 13px;
-		color: #888;
-		border-top-style: dashed;
-		margin-bottom: 15px;
+    border: solid 2px #eee;
+		border-top-width: 1px;
+    margin-top: -18px;
+    background: #fff;
+    padding: 8px;
+    font-size: 13px;
+    color: #a0a0a0;
+    border-top-style: dashed;
+    margin-bottom: 15px;
+    border-radius: 0 0 4px 4px;
 	}
 
 	.ap-progress {
