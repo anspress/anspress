@@ -132,6 +132,7 @@ function ap_delete_qameta( $post_id ) {
 function ap_get_qameta( $post_id ) {
 	global $wpdb;
 	$qameta = wp_cache_get( $post_id, 'ap_qameta' );
+
 	if ( false === $qameta ) {
 		$qameta = $wpdb->get_row( $wpdb->prepare( "Select * FROM {$wpdb->ap_qameta} WHERE post_id = %d", $post_id ), ARRAY_A ); // db call ok.
 
@@ -343,8 +344,31 @@ function ap_update_subscribers_count( $post_id, $count = false ) {
  * @since  3.1.0
  */
 function ap_update_qameta_terms( $question_id ) {
-	$taxonomies = get_taxonomies( '', 'names' );
-	$terms = get_the_terms( $question_id, $taxonomies );
+	$terms = [];
+
+	if ( taxonomy_exists( 'question_category' ) ) {
+		$categories = $terms + get_the_terms( $question_id, 'question_category' );
+
+		if ( $categories ) {
+			$terms = $terms + $categories;
+		}
+	}
+
+	if ( taxonomy_exists( 'question_tag' ) ) {
+		$tags = get_the_terms( $question_id, 'question_tag' );
+
+		if ( $tags ) {
+			$terms = $terms + $tags;
+		}
+	}
+
+	if ( taxonomy_exists( 'question_label' ) ) {
+		$labels = get_the_terms( $question_id, 'question_label' );
+
+		if ( $labels ) {
+			$terms = $terms + $labels;
+		}
+	}
 
 	$term_ids = [];
 

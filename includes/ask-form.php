@@ -196,7 +196,6 @@ function ap_ask_form( $post_id = false ) {
 	$args = array(
 		'name'              => 'ask_form',
 		'is_ajaxified'      => true,
-		'multipart'         => true,
 		'submit_button'     => ($editing ? __( 'Update question', 'anspress-question-answer' ) : __( 'Post question', 'anspress-question-answer' )),
 		'fields'            => ap_get_ask_form_fields( $post_id ),
 		'attr'							=> ' ap="questionForm"',
@@ -332,7 +331,7 @@ function ap_save_question( $args, $wp_error = false ) {
 	if ( $post_id ) {
 		$qameta_args = [ 'last_updated' => current_time( 'mysql' ) ];
 
-		if ( $args['anonymous_name'] ) {
+		if ( isset( $args['anonymous_name'] ) ) {
 			$qameta_args['fields'] = [ 'anonymous_name' => $args['anonymous_name'] ];
 		}
 

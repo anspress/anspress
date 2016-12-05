@@ -146,7 +146,7 @@
     border-radius: 4px 4px 0 0;
 	}
 	#ask_form .ap-field-description .ap-form-fields-in{
-		border: solid 1px #ddd;
+		border: solid 2px #eee;
 	}
 	.mce-toolbar-grp{
 		background: none;
@@ -291,7 +291,6 @@
 	}
 	.ap-minimal-placeholder{
 		display: none;
-		box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08) inset;
 		background: #fcfcfc;
 		position: relative;
 	}
@@ -300,7 +299,7 @@
 		display: block;
 		height: 45px;
 		margin-bottom: 10px;
-		border-bottom: solid 1px #ddd;
+		border-bottom: solid 2px #eee;
 	}
 	.ap-dummy-placeholder{
 		padding: 10px;
@@ -317,7 +316,6 @@
 			display: none;
 		}
 		.ap-form-c .ap-minimal-placeholder{
-			box-shadow: 0 0 5px #eee inset;
 			color: #888;
 			cursor: pointer;
 			display: block;

@@ -2189,7 +2189,7 @@ post-message {
   border-radius: 4px 4px 0 0;
 }
 #anspress #ask_form .ap-field-description .ap-form-fields-in {
-  border: solid 1px #ddd;
+  border: solid 2px #eee;
 }
 #anspress .mce-toolbar-grp {
   background: none;
@@ -2326,7 +2326,6 @@ post-message {
 }
 #anspress .ap-minimal-placeholder {
   display: none;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08) inset;
   background: #fcfcfc;
   position: relative;
 }
@@ -2335,7 +2334,7 @@ post-message {
   display: block;
   height: 45px;
   margin-bottom: 10px;
-  border-bottom: solid 1px #ddd;
+  border-bottom: solid 2px #eee;
 }
 #anspress .ap-dummy-placeholder {
   padding: 10px;
@@ -2351,7 +2350,6 @@ post-message {
   display: none;
 }
 #anspress .ap-minimal-editor .ap-form-c .ap-minimal-placeholder {
-  box-shadow: 0 0 5px #eee inset;
   color: #888;
   cursor: pointer;
   display: block;
