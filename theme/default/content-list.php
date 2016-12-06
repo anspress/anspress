@@ -25,14 +25,15 @@ $clearfix_class = array( 'ap-questions-item clearfix' );
 		<div class="ap-list-counts">
 			<!-- Answer Count -->
 			<a class="ap-questions-count ap-questions-acount" href="<?php ap_answers_link(); ?>">
-				<?php printf( _n( '%s ans', '%s ans', ap_get_answers_count(), 'anspress-question-answer' ), '<span>'. ap_get_answers_count() .'</span>' ); ?>
+				<span><?php ap_answers_count(); ?></span>
+				<?php _e( 'Answers', 'anspress-question-answer' ); ?>
 			</a>
 
 			<!-- Votes count -->
 			<?php if ( ! ap_opt( 'disable_voting_on_question' ) ) : ?>
 				<span class="ap-questions-count ap-questions-vcount">
 					<span><?php ap_votes_net(); ?></span>
-					<?php  _e( 'votes', 'anspress-question-answer' ); ?>
+					<?php _e( 'Votes', 'anspress-question-answer' ); ?>
 				</span>
 			<?php endif; ?>
 		</div>

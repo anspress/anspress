@@ -1180,11 +1180,11 @@ body ul ul#ap-user-menu-link li > a .count {
 }
 
 #anspress .ap-questions-item {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
   box-shadow: none;
   display: table;
   margin: 0;
-  padding: 15px 15px;
+  padding: 20px 5px;
   width: 100%;
   position: relative;
 }
@@ -1194,15 +1194,12 @@ body ul ul#ap-user-menu-link li > a .count {
 #anspress .ap-questions-item.status-moderate {
   background: #fff8e1;
 }
-#anspress .ap-questions-item.answer-selected {
-  background: #f1f8e9;
-}
 #anspress .ap-questions-item.hentry {
   margin: 0;
   border-top: none;
 }
 #anspress .ap-questions-item.status-trash {
-  background: #ffebee;
+  background: #fff6f7;
 }
 #anspress .ap-questions-history {
   margin-top: 5px;
@@ -1215,7 +1212,7 @@ body ul ul#ap-user-menu-link li > a .count {
 }
 #anspress .ap-questions-title {
   display: block;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 600;
   margin-bottom: 5px;
   margin-top: 0;
@@ -1225,34 +1222,27 @@ body ul ul#ap-user-menu-link li > a .count {
   text-decoration: none;
 }
 #anspress .ap-questions-count {
-  background: #fff;
-  border: 2px solid #ddd;
-  border-radius: 2px;
-  color: #333;
   display: block;
   float: left;
-  font-size: 13px;
-  height: 50px;
-  line-height: 18px;
-  margin-left: 12px;
-  padding: 2px;
+  text-transform: uppercase;
+  font-size: 10px;
+  margin-left: 10px;
+  color: #999;
+  border: solid 2px #eee;
+  width: 70px;
   text-align: center;
-  width: 55px;
+  text-decoration: none;
+  background: #fff;
+  height: 45px;
+  padding: 4px 0;
+  border-radius: 2px;
 }
 #anspress .ap-questions-count span {
-  color: #777;
+  font-size: 13px;
   display: block;
-  font-size: 14px;
+  text-align: center;
+  margin-bottom: 2px;
   font-weight: 600;
-  margin-top: 4px;
-}
-#anspress .ap-questions-acount {
-  background: #fff;
-  border-color: #c5e1a5;
-  color: #333;
-}
-#anspress .ap-questions-acount span {
-  color: #333;
 }
 #anspress .ap-questions-summery {
   padding-right: 10px;
@@ -1291,7 +1281,7 @@ body ul ul#ap-user-menu-link li > a .count {
   color: #fff;
 }
 #anspress .ap-questions .featured-question {
-  background: #e1f5fe;
+  background: #f5fdff;
 }
 #anspress .ap-list-counts {
   float: right;

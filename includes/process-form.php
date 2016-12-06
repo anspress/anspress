@@ -276,7 +276,10 @@ class AnsPress_Process_Form
 
 		// Do security check, if fails then return.
 		if ( ! ap_user_can_answer( $question_id ) || ! ap_verify_nonce( 'nonce_answer_' . $question_id ) ) {
-			ap_ajax_json( 'no_permission' );
+			ap_ajax_json( array(
+				'success'  => false,
+				'snackbar' => [ 'message' => __( 'Sorry, you cannot asnwer on this question', 'anspress-question-answer' ) ],
+			) );
 		}
 
 		// Bail if capatcha verification fails.
@@ -285,16 +288,12 @@ class AnsPress_Process_Form
 		global $ap_errors, $validate;
 		$question = ap_get_post( $question_id );
 
-		// Check if user have permission to answer a question.
-		if ( ! ap_user_can_answer( $question->ID ) ) {
-			ap_ajax_json( 'no_permission' );
-		}
-
 		$editing_post_id = ap_isset_post_value( 'edit_post_id', false );
 
 		/**
 		 * FILTER: ap_answer_fields_validation
 		 * Filter can be used to modify answer form fields.
+		 *
 		 * @var void
 		 * @since 2.0.1
 		 */
@@ -368,7 +367,10 @@ class AnsPress_Process_Form
 
 		// Return if user do not have permission to edit this answer.
 		if ( ! ap_user_can_edit_answer( $this->fields['edit_post_id'] ) ) {
-			ap_ajax_json('no_permission' );
+			ap_ajax_json( array(
+				'success'  => false,
+				'snackbar' => [ 'message' => __( 'Sorry, you cannot edit this answer', 'anspress-question-answer' ) ],
+			) );
 		}
 
 		$filter = apply_filters( 'ap_before_updating_answer', false, $this->fields['description'] );
@@ -381,10 +383,10 @@ class AnsPress_Process_Form
 
 		$answer = ap_get_post( $this->fields['edit_post_id'] );
 		$answer_array = array(
-			'ID'				=> $this->fields['edit_post_id'],
-			'post_author'		=> $answer->post_author,
-			'post_content' 		=> $this->fields['description'],
-			'attach_uploads' 	=> true,
+			'ID'				        => $this->fields['edit_post_id'],
+			'post_author'		    => $answer->post_author,
+			'post_content' 		  => $this->fields['description'],
+			'attach_uploads' 	  => true,
 		);
 
 		$answer_array['post_status'] = ap_new_edit_post_status( get_current_user_id(), 'answer', true );
