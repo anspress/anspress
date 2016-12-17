@@ -9,17 +9,7 @@
 ?>
 
 <div class="ap-list-head clearfix">
-	<div class="row">
-		<div class="col-md-6 col-sm-12">
-			<?php ap_get_template_part('search-form'); ?>
-		</div>
-		<div class="col-md-6 col-sm-12">
-
-				<?php ap_list_filters(); ?>
-				<a id="ap-question-sorting-reset" href="#" title="<?php _e('Reset sorting and filter', 'anspress-question-answer'); ?>"><?php echo ap_icon('x', true); ?></a>
-			<?php
-				ap_ask_btn();
-			?>
-		</div>
-	</div>
+		<?php ap_get_template_part( 'search-form'); ?>
+		<?php ap_list_filters(); ?>
+		<?php ap_ask_btn(); ?>
 </div>

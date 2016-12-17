@@ -817,24 +817,39 @@ function ap_get_list_filters( $current_url = '' ) {
 function ap_list_filters( $current_url = '' ) {
 	$filters = ap_get_list_filters( $current_url );
 
-	echo '<form id="ap-filters" class="ap-filters clearfix">';
+	echo '<form id="ap-filters" class="ap-filters clearfix" method="POST">';
 
 	foreach ( (array) $filters as $key => $filter ) {
 		$active = '';
 
-		if ( ap_sanitize_unslash( $key, 'g', false ) ) {
-			$active_arr = ap_search_array( $filter, 'value', ap_sanitize_unslash( $key, 'g' ) );
+		$current_filters = ap_get_current_list_filters( $key );
 
+		if ( ! empty( $current_filters ) ) {
+			$active_arr = ap_search_array( $filter, 'value', $current_filters );
 			if ( ! empty( $active_arr ) ) {
 				$active = ': <span class="ap-filter-active">' . $active_arr[0]['label'] . '</span>';
 			}
 		}
 
+		$active = apply_filters( 'ap_list_filter_active_' . $key, $active, $filter );
+
 		$args = wp_json_encode( [ '__nonce' => wp_create_nonce( 'filter_' . $key ), 'filter' => $key ] );
-		echo '<div class="ap-dropdown filter-' . esc_attr( $key ) . '">';
+		echo '<div class="ap-dropdown ap-filter filter-' . esc_attr( $key ) . '">';
 		echo '<a class="ap-dropdown-toggle ap-filter-toggle" href="#" ap-filter ap-query="' . esc_js( $args ) . '">' . esc_attr( $filter['title'] ) . $active . '</a>'; // xss okay.
 		echo '</div>';
 	}
+
+	foreach ( (array) ap_get_current_list_filters() as $key => $filter ) {
+		if ( is_array( $filter ) ) {
+			foreach ( (array) $filter as $f ) {
+				echo '<input type="hidden" name="filters[' . esc_attr( $key ) . '][]" value="' . esc_attr( $f ) . '" />';
+			}
+		} else {
+			echo '<input type="hidden" name="filters[' . esc_attr( $key ) . ']" value="' . esc_attr( $filter ) . '" />';
+		}
+	}
+
+	echo '<button id="ap-filter-reset" type="submit" name="reset-filter" title="' . __( 'Reset sorting and filter', 'anspress-question-answer' ) . '">'. ap_icon( 'x', true ) . __( 'Clear Filter', 'anspress-question-answer' ) .'</button>';
 
 	echo '</form>';
 

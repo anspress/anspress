@@ -14,8 +14,8 @@
 		<h1 class="entry-title"><a href="<?php get_permalink() ?>"><?php the_title(); ?></a></h1>
 	<?php endif; ?>
 
-	<div class="ap-question-lr row" itemtype="https://schema.org/Question" itemscope="">
-		<div class="ap-q-left <?php echo (is_active_sidebar( 'ap-qsidebar' ) ) ? 'col-md-8' : 'col-md-12'; ?>">
+	<div class="ap-question-lr ap-row" itemtype="https://schema.org/Question" itemscope="">
+		<div class="ap-q-left <?php echo (is_active_sidebar( 'ap-qsidebar' ) ) ? 'ap-col-8' : 'ap-col-12'; ?>">
 			<div class="ap-question-meta clearfix">
 				<?php echo ap_question_metas(); // xss ok. ?>
 			</div>
@@ -104,7 +104,7 @@
 		</div>
 
 		<?php if ( is_active_sidebar( 'ap-qsidebar' ) ) { ?>
-			<div class="ap-question-right col-md-4">
+			<div class="ap-question-right ap-col-4">
 				<div class="ap-question-info">
 					<?php dynamic_sidebar( 'ap-qsidebar' ); ?>
 				</div>

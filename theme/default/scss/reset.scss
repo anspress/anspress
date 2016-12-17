@@ -15,11 +15,53 @@
 .clearfix:after,
 .container:after,
 .container-fluid:after,
-.row:after {
+.ap-row:after {
 	clear: both;
 }
+.ap-row{
+	margin-right: -15px;
+  margin-left: -15px;
+}
+
+.ap-col{
+	&-12{
+		@include col(12, 12);
+	}
+	&-11{
+		@include col(11, 12);
+	}
+	&-10{
+		@include col(10, 12);
+	}
+	&-9{
+		@include col(9, 12);
+	}
+	&-8{
+		@include col(8, 12);
+	}
+	&-7{
+		@include col(7, 12);
+	}
+	&-6{
+		@include col(6, 12);
+	}
+	&-5{
+		@include col(5, 12);
+	}
+	&-4{
+		@include col(4, 12);
+	}
+	&-3{
+		@include col(3, 12);
+	}
+	&-2{
+		@include col(2, 12);
+	}
+	&-1{
+		@include col(1, 12);
+	}
+}
 #anspress{
-    font-family: "Helvetica Neue",Helvetica,"Segoe UI",Arial,freesans,sans-serif;
     font-size: 14px;
     line-height: 1.4;
     word-wrap: break-word;
@@ -39,6 +81,15 @@
   [id^=post-]:target .ap-a-cells {
 		border-color: #FFC107;
 		transition: border-color 1s linear;
+	}
+
+	// The magic ingredient
+	*,
+	*:before,
+	*:after {
+		-webkit-box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		box-sizing: border-box;
 	}
 }
 .entry-content a:visited, .comment-content a:visited {

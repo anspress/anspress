@@ -22,20 +22,26 @@
       return 'filters['+this.model.get('key')+']';
     },
     isActive: function(){
+      if(this.active)
+        return this.active;
 
       if(!_.isEmpty(AnsPress.activeListFilters)){
         var key = this.model.get('key');
-        var value = this.model.get('value').toString();
+        var value = this.model.get('value');
         if(AnsPress.activeListFilters[key] && ((!this.multiple && AnsPress.activeListFilters[key] == value) || (this.multiple && _.contains(AnsPress.activeListFilters[key], value)))){
+          this.active = true;
           return true;
         }
+
       }
+
+      this.active = false;
       return false;
     },
     className: function(){
       return this.isActive() ? 'active' : '';
     },
-    template: '<label><input type="checkbox" name="{{name}}" value="{{value}}"<# if(active){ #> checked="checked"<# } #>/>{{label}}</label>',
+    template: '<label><input type="checkbox" name="{{name}}" value="{{value}}"<# if(active){ #> checked="checked"<# } #>/><i class="apicon-check"></i>{{label}}</label>',
     initialize: function(options){
       this.model = options.model;
       this.multiple = options.multiple;
@@ -53,6 +59,12 @@
     },
     clickFilter: function(e){
       e.preventDefault();
+
+      if(this.multiple)
+        $('input[name="'+$(e.target).attr('name')+'"][value="'+$(e.target).attr('value')+'"]').not(e.target).remove();
+      else
+        $('input[name="'+$(e.target).attr('name')+'"]').not(e.target).remove();
+
       $(e.target).closest('form').submit();
     }
   });
@@ -83,7 +95,8 @@
 
     },
     events: {
-      'click [ap-filter]:not(.loaded)': 'loadFilter'
+      'click [ap-filter]:not(.loaded)': 'loadFilter',
+      'click #ap-filter-reset': 'resetFilter'
     },
     loadFilter: function(e){
       e.preventDefault();
@@ -102,6 +115,10 @@
           $(e.currentTarget).after(view.render().$el);
 				}
 			});
+    },
+    resetFilter: function(e){
+      $('#ap-filters input[type="hidden"]').remove();
+      $('#ap-filters input[type="checkbox"]').prop('checked', false);
     }
   });
 

@@ -1129,6 +1129,18 @@ function ap_isset_post_value( $var, $default = '' ) {
 function ap_get_current_list_filters( $filter = null, $default = [] ) {
 	$filters = wp_unslash( ap_isset_post_value( 'filters', $default ) );
 
+	if ( empty( $filters ) || ! is_array( $filters ) ) {
+		return $default;
+	}
+
+	$filters = array_unique( array_filter( $filters ), SORT_REGULAR );
+
+	foreach ( (array) $filters as $k => $f ) {
+		if ( is_array( $f ) ) {
+			$filters[ $k ] = array_unique( array_filter( $f ), SORT_REGULAR );
+		}
+	}
+
 	if ( null === $filter ) {
 		return $filters;
 	}
