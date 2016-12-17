@@ -36,10 +36,6 @@ class AnsPress_Common_Pages
 		$args = array();
 		$args['tax_query'] = array( 'relation' => $tax_relation );
 
-		if ( isset( $_GET['ap_filter'], $_GET['ap_filter']['sort'] ) ) {
-			$args['ap_sortby'] = sanitize_text_field( wp_unslash( $_GET['ap_filter']['sort'] ) );
-		}
-
 		/**
 		 * FILTER: ap_main_questions_args
 		 * Filter main question list args

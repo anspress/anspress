@@ -26,10 +26,7 @@ class AnsPress_Ajax {
 		anspress()->add_action( 'ap_ajax_suggest_similar_questions', __CLASS__, 'suggest_similar_questions' );
 		anspress()->add_action( 'ap_ajax_hover_card', __CLASS__, 'hover_card' );
 		anspress()->add_action( 'ap_ajax_toggle_best_answer', __CLASS__, 'toggle_best_answer' );
-
 		anspress()->add_action( 'ap_ajax_load_tinymce', __CLASS__, 'load_tinymce' );
-		anspress()->add_action( 'ap_ajax_filter_search', __CLASS__, 'filter_search' );
-
 		anspress()->add_action( 'ap_ajax_load_comments', 'AnsPress_Comment_Hooks', 'load_comments' );
 		anspress()->add_action( 'ap_ajax_edit_comment_form', 'AnsPress_Comment_Hooks', 'edit_comment_form' );
 		anspress()->add_action( 'ap_ajax_new_comment', 'AnsPress_Comment_Hooks','new_comment' );
@@ -50,12 +47,15 @@ class AnsPress_Ajax {
 
 		// Flag ajax callbacks.
 		anspress()->add_action( 'ap_ajax_action_flag', 'AnsPress_Flag', 'action_flag' );
-
 		anspress()->add_action( 'ap_ajax_list_filter', 'AnsPress_Theme', 'list_filter' );
 
 		// Uploader hooks.
 		anspress()->add_action( 'wp_ajax_ap_image_submission', 'AnsPress_Uploader', 'image_submission' );
 		anspress()->add_action( 'ap_ajax_delete_attachment', 'AnsPress_Uploader', 'delete_attachment' );
+
+		// List filtering
+		anspress()->add_action( 'ap_ajax_load_filter_order_by', __CLASS__, 'load_filter_order_by' );
+
 	}
 
 	/**
@@ -447,7 +447,7 @@ class AnsPress_Ajax {
 	public static function convert_to_post() {
 		$post_id = ap_sanitize_unslash( 'post_id', 'r' );
 
-		if ( ! ap_verify_nonce( 'convert-post-' . $post_id ) || !( is_super_admin( ) || current_user_can( 'manage_options' ) ) ) {
+		if ( ! ap_verify_nonce( 'convert-post-' . $post_id ) || ! ( is_super_admin( ) || current_user_can( 'manage_options' ) ) ) {
 			ap_ajax_json( array(
 				'success' => false,
 				'snackbar' => [ 'message' => __( 'Sorry, you are not allowed to convert this question to post', 'anspress-question-answer' ) ],
@@ -473,5 +473,20 @@ class AnsPress_Ajax {
 				'redirect' => get_the_permalink( $post_id ),
 			) );
 		}
+	}
+
+	/**
+	 * Ajax callback for loading order by filter.
+	 *
+	 * @since 4.0.0
+	 */
+	public static function load_filter_order_by() {
+		$filter = ap_sanitize_unslash( 'filter', 'r' );
+		check_ajax_referer( 'filter_' . $filter, '__nonce' );
+
+		ap_ajax_json( array(
+			'success' => true,
+			'items' => ap_get_questions_orderby(),
+		));
 	}
 }

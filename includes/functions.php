@@ -1121,22 +1121,23 @@ function ap_isset_post_value( $var, $default = '' ) {
 /**
  * Get active list filter by filter key.
  *
- * @param  string $filter Filter key.
+ * @param  string|null $filter  Filter key.
+ * @param  mixed       $default Default value to return.
  * @return false|string|array
- * @since  3.0.0
+ * @since  4.0.0
  */
-function ap_list_filters_get_active( $filter ) {
-	if ( ! isset( $_GET['ap_filter'], $_GET['ap_filter'][ $filter ] ) ) { // input var okay.
-		return false;
+function ap_get_current_list_filters( $filter = null, $default = [] ) {
+	$filters = wp_unslash( ap_isset_post_value( 'filters', $default ) );
+
+	if ( null === $filter ) {
+		return $filters;
 	}
 
-	$filters = ap_sanitize_unslash( 'ap_filter', 'p' );
-
-	if ( empty( $filters[ $filter ] ) ) {
-		return false;
+	if ( ! empty( $filters[ $filter ] ) ) {
+		return $filters[ $filter ];
 	}
 
-	return $filters[ $filter ];
+	return $default;
 }
 
 /**
@@ -1533,4 +1534,27 @@ function ap_remove_stop_words( $str ) {
 	return preg_replace( '/\b(' . implode( '|', $common_words ) . ')\b/', '', $str );
 }
 
+/**
+ * Search array by key and value.
+ *
+ * @param array  $array Array to search.
+ * @param string $key Array key to search.
+ * @param mixed  $value Value of key supplied.
+ * @return array
+ * @since 4.0.0
+ */
+function ap_search_array( $array, $key, $value ) {
+	$results = array();
 
+	if ( is_array( $array ) ) {
+		if ( isset( $array[ $key ] ) && $array[ $key ] == $value ) {
+			$results[] = $array;
+		}
+
+		foreach ( $array as $subarray ) {
+			$results = array_merge( $results, ap_search_array( $subarray, $key, $value ) );
+		}
+	}
+
+	return $results;
+}

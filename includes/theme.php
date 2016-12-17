@@ -474,13 +474,13 @@ function ap_post_actions_buttons() {
 }
 
 /**
- * Return all shorting types for questions.
+ * Return all order by options for questions list.
  *
  * @param  string $current_url Current page URL.
  * @return array
  * @since  3.0.0 Moved from `ap_question_sorting()`.
  */
-function ap_get_question_sorting( $current_url = '' ) {
+function ap_get_questions_orderby( $current_url = '' ) {
 	if ( is_home() || is_front_page() ) {
 		$current_url = home_url( '/' );
 	}
@@ -495,18 +495,18 @@ function ap_get_question_sorting( $current_url = '' ) {
 	$link = add_query_arg( $param, $current_url );
 
 	$navs = array(
-		[ 'key' => 'active','title' => __( 'Active', 'anspress-question-answer' ) ],
-		[ 'key' => 'newest', 'title' => __( 'Newest', 'anspress-question-answer' ) ],
+		[ 'key' => 'order_by', 'value' => 'active', 'label' => __( 'Active', 'anspress-question-answer' ) ],
+		[ 'key' => 'order_by', 'value' => 'newest', 'label' => __( 'Newest', 'anspress-question-answer' ) ],
 	);
 
 	if ( ! ap_opt( 'disable_voting_on_question' ) ) {
-		$navs[] = [ 'key' => 'voted', 'title' => __( 'Voted', 'anspress-question-answer' ) ];
+		$navs[] = [ 'key' => 'order_by', 'value' => 'voted', 'label' => __( 'Voted', 'anspress-question-answer' ) ];
 	}
 
-	$navs[] = [ 'key' => 'answers','title' => __( 'Answered', 'anspress-question-answer' ) ];
-	$navs[] = [ 'key' => 'unanswered', 'title' => __( 'Unanswered', 'anspress-question-answer' ) ];
-	$navs[] = [ 'key' => 'unsolved', 'title' => __( 'Unsolved', 'anspress-question-answer' ) ];
-	$navs[] = [ 'key' => 'views', 'title' => __( 'Views', 'anspress-question-answer' ) ];
+	$navs[] = [ 'key' => 'order_by', 'value' => 'answers','label' => __( 'Answered', 'anspress-question-answer' ) ];
+	$navs[] = [ 'key' => 'order_by', 'value' => 'unanswered', 'label' => __( 'Unanswered', 'anspress-question-answer' ) ];
+	$navs[] = [ 'key' => 'order_by', 'value' => 'unsolved', 'label' => __( 'Unsolved', 'anspress-question-answer' ) ];
+	$navs[] = [ 'key' => 'order_by', 'value' => 'views', 'label' => __( 'Views', 'anspress-question-answer' ) ];
 
 	$active_sort = 'active';
 	if ( isset($_GET['ap_filter'], $_GET['ap_filter']['sort'] ) ) {
@@ -725,6 +725,10 @@ function ap_assets( ) {
 		$assets['js']['question'] = [ 'dep' => [ 'anspress-common' ], 'footer' => true ];
 	}
 
+	if ( ap_current_page() === 'base' ) {
+		$assets['js']['list'] = [ 'dep' => [ 'anspress-common' ], 'footer' => true ];
+	}
+
 	if ( is_rtl() ) {
 		$assets['css']['rtl'] = array( 'theme' => true );
 	}
@@ -770,6 +774,11 @@ function ap_enqueue_scripts() {
 	}
 }
 
+/**
+ * Get all list filters.
+ *
+ * @param string $current_url Current URL.
+ */
 function ap_get_list_filters( $current_url = '' ) {
 	if ( is_home() || is_front_page() ) {
 		$current_url = home_url( '/' );
@@ -785,9 +794,10 @@ function ap_get_list_filters( $current_url = '' ) {
 	$link = add_query_arg( $param, $current_url );
 
 	$filters = array(
-		'sort' => array(
-			'title' => __( 'Sort', 'anspress-question-answer' ),
-			'items' => ap_get_question_sorting(),
+		'order_by' => array(
+			'title'    => __( 'Order By', 'anspress-question-answer' ),
+			'items'    => ap_get_questions_orderby(),
+			'multiple' => false,
 		),
 	);
 
@@ -799,17 +809,38 @@ function ap_get_list_filters( $current_url = '' ) {
 	return apply_filters( 'ap_list_filters', $filters );
 }
 
+/**
+ * Output list filters form.
+ *
+ * @param string $current_url Current Url.
+ */
 function ap_list_filters( $current_url = '' ) {
 	$filters = ap_get_list_filters( $current_url );
-	$ap_filter = isset( $_GET['ap_filter'] ) ? wp_unslash( $_GET['ap_filter'] ) : '';
+
+	echo '<form id="ap-filters" class="ap-filters clearfix">';
+
 	foreach ( (array) $filters as $key => $filter ) {
-		echo '<div class="ap-dropdown filter-'.esc_attr( $key ).'">';
-		echo '<a id="ap-sort-anchor" class="ap-dropdown-toggle" href="#" data-query="list_filter::'. wp_create_nonce( 'ap_ajax_nonce' ) .'::'. esc_attr( $key ) .'" data-action="load_filter">'. esc_attr( $filter[ 'title' ] ) .'</a>';
+		$active = '';
+
+		if ( ap_sanitize_unslash( $key, 'g', false ) ) {
+			$active_arr = ap_search_array( $filter, 'value', ap_sanitize_unslash( $key, 'g' ) );
+
+			if ( ! empty( $active_arr ) ) {
+				$active = ': <span class="ap-filter-active">' . $active_arr[0]['label'] . '</span>';
+			}
+		}
+
+		$args = wp_json_encode( [ '__nonce' => wp_create_nonce( 'filter_' . $key ), 'filter' => $key ] );
+		echo '<div class="ap-dropdown filter-' . esc_attr( $key ) . '">';
+		echo '<a class="ap-dropdown-toggle ap-filter-toggle" href="#" ap-filter ap-query="' . esc_js( $args ) . '">' . esc_attr( $filter['title'] ) . $active . '</a>'; // xss okay.
 		echo '</div>';
 	}
+
+	echo '</form>';
+
 	// Send current GET, so that it can be used by JS templates.
-	if ( isset( $_GET['ap_filter'] ) ) {
-		echo '<script type="text/html" id="current_filter">'. http_build_query( $ap_filter ) .'</script>';
+	if ( ap_get_current_list_filters() ) {
+		echo '<script type="application/json" id="ap_current_filters">' . wp_json_encode( ap_get_current_list_filters() ) . '</script>'; // xss okay.
 	}
 }
 /**

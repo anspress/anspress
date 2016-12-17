@@ -6,8 +6,6 @@
  * @license GPL 3+
  */
 
-
-
 (function($) {
 	AnsPress.loadTemplate('question');
 

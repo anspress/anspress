@@ -62,22 +62,22 @@ class AP_QA_Query_Hooks {
 				$sql['where'] = substr_replace( $sql['where'], $author_query, $pos, 0 );
 			}
 
-			$ap_sortby = isset( $args->query['ap_sortby'] ) ? $args->query['ap_sortby'] : 'active';
+			$ap_order_by = isset( $args->query['ap_order_by'] ) ? $args->query['ap_order_by'] : 'active';
 			$answer_query = isset( $args->query['ap_answers_query'] );
 
-			if ( 'answers' === $ap_sortby && ! $answer_query ) {
+			if ( 'answers' === $ap_order_by && ! $answer_query ) {
 				$sql['orderby'] = 'IFNULL(qameta.answers, 0) DESC, ' . $sql['orderby'];
-			} elseif ( 'views' === $ap_sortby && ! $answer_query ) {
+			} elseif ( 'views' === $ap_order_by && ! $answer_query ) {
 				$sql['orderby'] = 'IFNULL(qameta.views, 0) DESC, ' . $sql['orderby'];
-			} elseif ( 'unanswered' === $ap_sortby && ! $answer_query ) {
+			} elseif ( 'unanswered' === $ap_order_by && ! $answer_query ) {
 				$sql['orderby'] = 'IFNULL(qameta.answers, 0) ASC,' . $sql['orderby'];
-			} elseif ( 'voted' === $ap_sortby ) {
+			} elseif ( 'voted' === $ap_order_by ) {
 				$sql['orderby'] = 'CASE WHEN IFNULL(votes_net, 0) >= 0 THEN 1 ELSE 2 END ASC, ABS(votes_net) DESC, ' . $sql['orderby'];
-			} elseif ( 'unsolved' === $ap_sortby && ! $answer_query ) {
+			} elseif ( 'unsolved' === $ap_order_by && ! $answer_query ) {
 				$sql['orderby'] = "if( qameta.selected_id = '' or qameta.selected_id is null, 1, 0 ) ASC," . $sql['orderby'];
-			} elseif ( 'oldest' === $ap_sortby ) {
+			} elseif ( 'oldest' === $ap_order_by ) {
 				$sql['orderby'] = "{$wpdb->posts}.post_date ASC";
-			} elseif ( 'newest' === $ap_sortby ) {
+			} elseif ( 'newest' === $ap_order_by ) {
 				$sql['orderby'] = "{$wpdb->posts}.post_date DESC";
 			} else {
 				$sql['orderby'] = 'qameta.last_updated DESC ';

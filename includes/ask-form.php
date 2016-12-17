@@ -167,12 +167,6 @@ function ap_get_ask_form_fields( $post_id = false ) {
  * @return void
  */
 function ap_ask_form( $post_id = false ) {
-
-	if ( ! ap_user_can_edit_question( $post_id ) ) {
-		echo '<p>' . esc_attr__( 'You cannot edit this question.', 'anspress-question-answer' ) . '</p>';
-		return;
-	}
-
 	$editing = true;
 
 	if ( false === $post_id ) {
@@ -182,6 +176,11 @@ function ap_ask_form( $post_id = false ) {
 	// If post_id is empty then its not editing.
 	if ( empty( $post_id ) ) {
 		$editing = false;
+	}
+
+	if ( $editing && ! ap_user_can_edit_question( $post_id ) ) {
+		echo '<p>' . esc_attr__( 'You cannot edit this question.', 'anspress-question-answer' ) . '</p>';
+		return;
 	}
 
 	$_post = ap_get_post( $post_id );

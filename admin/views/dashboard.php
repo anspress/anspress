@@ -164,7 +164,7 @@ class AnsPress_Dashboard {
 		<div class="main">
 			<canvas id="latestquestion-chart" height="80"></canvas>
 
-			<?php $questions = ap_get_questions( array( 'sortby' => 'newest', 'showposts' => 5 ) ); ?>
+			<?php $questions = ap_get_questions( array( 'ap_order_by' => 'newest', 'showposts' => 5 ) ); ?>
 
 			<?php if ( ap_have_questions() ) :   ?>
 				<ul class="post-list">
@@ -212,7 +212,7 @@ class AnsPress_Dashboard {
 		<?php endif; ?>
 		<div class="main">
 			<canvas id="latestanswer-chart" height="80"></canvas>
-			<?php $answers = ap_get_answers( array( 'sortby' => 'newest', 'showposts' => 5 ) ); ?>
+			<?php $answers = ap_get_answers( array( 'ap_order_by' => 'newest', 'showposts' => 5 ) ); ?>
 
 			<?php if ( ap_have_answers() ) :   ?>
 				<ul class="post-list">

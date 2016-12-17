@@ -185,8 +185,8 @@ function ap_get_answers( $args = array() ) {
 		$args['question_id'] = get_question_id();
 	}
 
-	if ( ! isset( $args['sortby'] ) ) {
-		$args['ap_sortby'] = (isset( $_GET['ap_sort'] )) ? sanitize_text_field( wp_unslash( $_GET['ap_sort'] ) ) : ap_opt( 'answers_sort' );
+	if ( ! isset( $args['ap_order_by'] ) ) {
+		$args['ap_order_by'] = isset( $_GET['order_by'] ) ? ap_sanitize_unslash( 'order_by', 'g' ) : ap_opt( 'answers_sort' );
 	}
 
 	return new Answers_Query( $args );
@@ -360,7 +360,7 @@ function ap_get_answer_position_paged( $question_id = false, $answer_id = false 
 	}
 
 	$user_id = get_current_user_id();
-	$ap_sortby = 'voted';
+	$ap_order_by = ap_get_current_list_filters( 'order_by', 'active' );
 	$cache_key = $question_id . '-' . $answer_id . '-' . $user_id;
 	$cache = wp_cache_get( $cache_key, 'ap_answer_position' );
 
@@ -368,11 +368,11 @@ function ap_get_answer_position_paged( $question_id = false, $answer_id = false 
 		return $cache;
 	}
 
-	if ( 'voted' === $ap_sortby ) {
+	if ( 'voted' === $ap_order_by ) {
 		$orderby = 'CASE WHEN IFNULL(qameta.votes_up - qameta.votes_down, 0) >= 0 THEN 1 ELSE 2 END ASC, ABS(qameta.votes_up - qameta.votes_down) DESC';
-	} if ( 'oldest' === $ap_sortby ) {
+	} if ( 'oldest' === $ap_order_by ) {
 		$orderby = "{$wpdb->posts}.post_date ASC";
-	} elseif ( 'newest' === $ap_sortby ) {
+	} elseif ( 'newest' === $ap_order_by ) {
 		$orderby = "{$wpdb->posts}.post_date DESC";
 	} else {
 		$orderby = 'qameta.last_updated DESC ';

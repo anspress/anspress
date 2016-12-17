@@ -347,7 +347,7 @@ function ap_update_qameta_terms( $question_id ) {
 	$terms = [];
 
 	if ( taxonomy_exists( 'question_category' ) ) {
-		$categories = $terms + get_the_terms( $question_id, 'question_category' );
+		$categories = get_the_terms( $question_id, 'question_category' );
 
 		if ( $categories ) {
 			$terms = $terms + $categories;

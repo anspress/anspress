@@ -37,12 +37,12 @@ class AnsPress_BasePage_Shortcode {
 	 *     $categories_operator operator for question_category taxnomomy
 	 *     $page 				Select a page to display.
 	 *     $hide_list_head 		Hide list head?
-	 *     $sortby 				Sort by.
+	 *     $order_by 				Sort by.
 	 *  }
 	 * @param  string $content
 	 * @return string
 	 * @since 2.0.0
-	 * @since  3.0.0 Added new attribute `hide_list_head` and `attr_sortby`.
+	 * @since  3.0.0 Added new attribute `hide_list_head` and `attr_order_by`.
 	 */
 	public function anspress_sc( $atts, $content = '' ) {
 		global $questions, $ap_shortcode_loaded;
@@ -121,9 +121,8 @@ class AnsPress_BasePage_Shortcode {
 		}
 
 		// Sort by.
-		if ( isset( $atts['sortby'] ) ) {
-			set_query_var( 'ap_sortby',  ap_sanitize_unslash( $atts['sortby'] ) );
-			$_GET['ap_sortby'] = $atts['sortby'];
+		if ( isset( $atts['order_by'] ) ) {
+			$_GET['filters'] = [ 'order_by' => $atts['order_by'] ];
 		}
 	}
 

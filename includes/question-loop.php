@@ -28,15 +28,10 @@ if ( ! function_exists('ap_get_questions' ) ) {
 			$args['post_parent'] = (get_query_var( 'parent' )) ? get_query_var( 'parent' ) : false;
 		}
 
-		if ( ! isset( $args['sortby'] ) && isset( $_GET['ap_filter'], $_GET['ap_filter']['sort'] ) ) {
-			$args['sortby'] = sanitize_text_field( wp_unslash( $_GET['ap_filter']['sort'] ) );
-		}
-
 		$args = wp_parse_args( $args, array(
 			'showposts'     => ap_opt( 'question_per_page' ),
 			'paged'         => $paged,
 			'ap_query'      => 'featured_post',
-			'sortby'      	=> 'active',
 		));
 
 		return new Question_Query( $args );

@@ -43,11 +43,15 @@ class Question_Query extends WP_Query {
 			$post_parent = (get_query_var( 'parent' )) ? get_query_var( 'parent' ) : false;
 		}
 
+		if ( ! isset( $args['ap_order_by'] ) ) {
+			$args['ap_order_by'] = ap_get_current_list_filters( 'order_by', 'active' );
+		}
+
 		$defaults = array(
 			'showposts' 	      => ap_opt( 'question_per_page' ),
 			'paged' 	          => $paged,
 			'ap_query' 	        => true,
-			'ap_sortby' 	      => 'active',
+			'ap_order_by' 	    => 'active',
 			'ap_question_query' => true,
 			'post_status' 		  => [ 'publish' ],
 		);
