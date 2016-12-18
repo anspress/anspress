@@ -429,17 +429,6 @@ class AnsPress_Ajax {
 	}
 
 	/**
-	 * Handles ajax callback for list filter search.
-	 *
-	 * @since 3.0.0
-	 */
-	public static function filter_search() {
-		$filter = ap_sanitize_unslash( 'filter', 'request' );
-		$search_query = ap_sanitize_unslash( 'val', 'request' );
-		do_action( 'ap_list_filter_search_' . $filter, $search_query );
-	}
-
-	/**
 	 * Ajax callback for converting a question into a post.
 	 *
 	 * @since 3.0.0
