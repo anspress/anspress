@@ -59,13 +59,12 @@
 			text-decoration: none;
 			background: #fff;
 			height: 45px;
-			padding: 4px 0;
+			padding: 2px 0;
 			border-radius: 2px;
 			span{
 				font-size: 13px;
 				display: block;
 				text-align: center;
-				margin-bottom: 2px;
 				font-weight: 600;
 			}
 		}
@@ -128,14 +127,11 @@
 		}
 	}
 	.ap-list-head{
-		background: #F5F5F5;
-		border-radius: 3px;
-		margin-bottom: 20px;
-		margin-top: 10px;
-		padding: 10px;
+		padding: 0;
+    margin: 10px 0;
+    border-bottom: solid 2px #eee;
 		.ap-btn-ask{
-			background: #68bb67;
-			border: 2px solid rgba(0, 0, 0, 0.2);
+			background: $main-color;
 			border-radius: 2px;
 			color: #fff;
 			float: right;
@@ -144,6 +140,7 @@
 			height: 36px;
 			margin-left: 15px;
 			padding: 6px 20px;
+			text-decoration: none;
 			&:visited{
 				color: #fff;
 			}
@@ -202,22 +199,34 @@
 				visibility: visible;
 			}
 		}
+		&-search{
+			padding: 7px 10px;
+			border-bottom: solid 1px #ddd;
+			border-radius: 2px 2px 0 0;
+			margin-bottom: 5px;
+			margin-top: -4px;
+			background: #f7f7f7;
+		}
 	}
 	#ap-filter-reset {
 		background: none;
     border: none;
-    padding: 10px 0;
+    padding: 13px 0;
 		color: $light-color;
+
 		&:focus, &:active{
 			outline: none;
 		}
 		i{
 			background: #ccc;
 			color: #fff;
-			padding: 1px 4px;
-			display: inline-block;
+			padding: 0px 3px;
+			display: block;
 			border-radius: 2px;
-			height: 16px;
+			float: left;
+			font-size: 12px;
+			margin-right: 4px;
 		}
 	}
+
 }

@@ -62,16 +62,13 @@
 	}
 }
 #anspress{
-    font-size: 14px;
-    line-height: 1.4;
-    word-wrap: break-word;
-    background: #fff;
-    ul{
-    	line-height: 1.4;
-    }
-    h3{
-    	line-height: 1.8;
-    }
+	background: #fff;
+	ul{
+		line-height: 1.4;
+	}
+	h3{
+		line-height: 1.8;
+	}
 	.hentry {
 		padding-top: 0;
 		margin: 0;
@@ -335,7 +332,7 @@ body ul ul#ap-user-menu-link{
 }
 
 .ap-loading-icon {
-	background: no-repeat url(../images/loading.gif) rgba(255, 255, 255, 0.89) center;
+	background: rgba(255, 255, 255, 0.89);
 	width: 40px;
 	height: 40px;
 	display: block;
@@ -343,6 +340,24 @@ body ul ul#ap-user-menu-link{
 	top: 50%;
 	left: 50%;
 	border-radius: 2px;
+	z-index: 99999;
+	i{
+		background-image: url(../images/loading.gif);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    display: block;
+    height: 100%;
+    width: 100%;
+    max-width: 24px;
+    position: absolute;
+    margin-left: -12px;
+    top: 0;
+    left: 50%;
+	}
+	&.is-text {
+		background-color: transparent;
+	}
 }
 .hide{
 	display: none !important;

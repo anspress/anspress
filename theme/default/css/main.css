@@ -27,7 +27,7 @@
   display: inline-block;
   box-sizing: border-box;
   float: left;
-  padding: 0 10px;
+  padding: 0 15px;
 }
 @media only screen and (min-width: 768px) {
   .ap-col-12 {
@@ -40,7 +40,7 @@
   display: inline-block;
   box-sizing: border-box;
   float: left;
-  padding: 0 10px;
+  padding: 0 15px;
 }
 @media only screen and (min-width: 768px) {
   .ap-col-11 {
@@ -53,7 +53,7 @@
   display: inline-block;
   box-sizing: border-box;
   float: left;
-  padding: 0 10px;
+  padding: 0 15px;
 }
 @media only screen and (min-width: 768px) {
   .ap-col-10 {
@@ -66,7 +66,7 @@
   display: inline-block;
   box-sizing: border-box;
   float: left;
-  padding: 0 10px;
+  padding: 0 15px;
 }
 @media only screen and (min-width: 768px) {
   .ap-col-9 {
@@ -79,7 +79,7 @@
   display: inline-block;
   box-sizing: border-box;
   float: left;
-  padding: 0 10px;
+  padding: 0 15px;
 }
 @media only screen and (min-width: 768px) {
   .ap-col-8 {
@@ -92,7 +92,7 @@
   display: inline-block;
   box-sizing: border-box;
   float: left;
-  padding: 0 10px;
+  padding: 0 15px;
 }
 @media only screen and (min-width: 768px) {
   .ap-col-7 {
@@ -105,7 +105,7 @@
   display: inline-block;
   box-sizing: border-box;
   float: left;
-  padding: 0 10px;
+  padding: 0 15px;
 }
 @media only screen and (min-width: 768px) {
   .ap-col-6 {
@@ -118,7 +118,7 @@
   display: inline-block;
   box-sizing: border-box;
   float: left;
-  padding: 0 10px;
+  padding: 0 15px;
 }
 @media only screen and (min-width: 768px) {
   .ap-col-5 {
@@ -131,7 +131,7 @@
   display: inline-block;
   box-sizing: border-box;
   float: left;
-  padding: 0 10px;
+  padding: 0 15px;
 }
 @media only screen and (min-width: 768px) {
   .ap-col-4 {
@@ -144,7 +144,7 @@
   display: inline-block;
   box-sizing: border-box;
   float: left;
-  padding: 0 10px;
+  padding: 0 15px;
 }
 @media only screen and (min-width: 768px) {
   .ap-col-3 {
@@ -157,7 +157,7 @@
   display: inline-block;
   box-sizing: border-box;
   float: left;
-  padding: 0 10px;
+  padding: 0 15px;
 }
 @media only screen and (min-width: 768px) {
   .ap-col-2 {
@@ -170,7 +170,7 @@
   display: inline-block;
   box-sizing: border-box;
   float: left;
-  padding: 0 10px;
+  padding: 0 15px;
 }
 @media only screen and (min-width: 768px) {
   .ap-col-1 {
@@ -180,9 +180,6 @@
 }
 
 #anspress {
-  font-size: 14px;
-  line-height: 1.4;
-  word-wrap: break-word;
   background: #fff;
 }
 #anspress ul {
@@ -459,7 +456,7 @@ body ul ul#ap-user-menu-link li > a .count {
 }
 
 .ap-loading-icon {
-  background: no-repeat url(../images/loading.gif) rgba(255, 255, 255, 0.89) center;
+  background: rgba(255, 255, 255, 0.89);
   width: 40px;
   height: 40px;
   display: block;
@@ -467,6 +464,24 @@ body ul ul#ap-user-menu-link li > a .count {
   top: 50%;
   left: 50%;
   border-radius: 2px;
+  z-index: 99999;
+}
+.ap-loading-icon i {
+  background-image: url(../images/loading.gif);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  display: block;
+  height: 100%;
+  width: 100%;
+  max-width: 24px;
+  position: absolute;
+  margin-left: -12px;
+  top: 0;
+  left: 50%;
+}
+.ap-loading-icon.is-text {
+  background-color: transparent;
 }
 
 .hide {
@@ -528,14 +543,13 @@ body ul ul#ap-user-menu-link li > a .count {
   text-decoration: none;
   background: #fff;
   height: 45px;
-  padding: 4px 0;
+  padding: 2px 0;
   border-radius: 2px;
 }
 #anspress .ap-questions-count span {
   font-size: 13px;
   display: block;
   text-align: center;
-  margin-bottom: 2px;
   font-weight: 600;
 }
 #anspress .ap-questions-summery {
@@ -587,15 +601,12 @@ body ul ul#ap-user-menu-link li > a .count {
   margin-right: 5px;
 }
 #anspress .ap-list-head {
-  background: #F5F5F5;
-  border-radius: 3px;
-  margin-bottom: 20px;
-  margin-top: 10px;
-  padding: 10px;
+  padding: 0;
+  margin: 10px 0;
+  border-bottom: solid 2px #eee;
 }
 #anspress .ap-list-head .ap-btn-ask {
-  background: #68bb67;
-  border: 2px solid rgba(0, 0, 0, 0.2);
+  background: #8bc34a;
   border-radius: 2px;
   color: #fff;
   float: right;
@@ -604,6 +615,7 @@ body ul ul#ap-user-menu-link li > a .count {
   height: 36px;
   margin-left: 15px;
   padding: 6px 20px;
+  text-decoration: none;
 }
 #anspress .ap-list-head .ap-btn-ask:visited {
   color: #fff;
@@ -659,10 +671,18 @@ body ul ul#ap-user-menu-link li > a .count {
 #anspress .ap-filter input[type="checkbox"]:checked + .apicon-check[class^="apicon-"]:before, #anspress .ap-filter input[type="checkbox"]:checked + .apicon-check [class*=" apicon-"]:before {
   visibility: visible;
 }
+#anspress .ap-filter-search {
+  padding: 7px 10px;
+  border-bottom: solid 1px #ddd;
+  border-radius: 2px 2px 0 0;
+  margin-bottom: 5px;
+  margin-top: -4px;
+  background: #f7f7f7;
+}
 #anspress #ap-filter-reset {
   background: none;
   border: none;
-  padding: 10px 0;
+  padding: 13px 0;
   color: #888;
 }
 #anspress #ap-filter-reset:focus, #anspress #ap-filter-reset:active {
@@ -671,10 +691,12 @@ body ul ul#ap-user-menu-link li > a .count {
 #anspress #ap-filter-reset i {
   background: #ccc;
   color: #fff;
-  padding: 1px 4px;
-  display: inline-block;
+  padding: 0px 3px;
+  display: block;
   border-radius: 2px;
-  height: 16px;
+  float: left;
+  font-size: 12px;
+  margin-right: 4px;
 }
 
 .ap-tooltip {

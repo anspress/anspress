@@ -102,22 +102,6 @@ ap_register_option_group('layout', __( 'Layout', 'anspress-question-answer' ) , 
 		'desc'  => __( 'Answers to show per page.', 'anspress-question-answer' ),
 		'type'  => 'number',
 	) ,
-	array(
-		'type' => 'custom',
-		'html' => '<span class="ap-form-separator">' . __( 'Sorting', 'anspress-question-answer' ) . '</span>',
-	) ,
-	array(
-		'name'    => 'answers_sort',
-		'label'   => __( 'Default answer sort', 'anspress-question-answer' ),
-		'desc'    => __( 'Sort answers by default.', 'anspress-question-answer' ),
-		'type'    => 'select',
-		'options' => array(
-			'voted'  => __( 'Voted', 'anspress-question-answer' ),
-			'active' => __( 'Active', 'anspress-question-answer' ),
-			'newest' => __( 'Newest', 'anspress-question-answer' ),
-			'oldest' => __( 'Oldest', 'anspress-question-answer' ),
-		),
-	) ,
 ));
 
 /**
@@ -191,6 +175,18 @@ ap_register_option_group('question', __( 'Q&A', 'anspress-question-answer' ) , a
 		'html' => '<span class="ap-form-separator">' . __( 'Question', 'anspress-question-answer' ) . '</span>',
 	) ,
 	array(
+		'name'    => 'question_order_by',
+		'label'   => __( 'Default question order', 'anspress-question-answer' ),
+		'desc'    => __( 'Order question list by default using selected', 'anspress-question-answer' ),
+		'type'    => 'select',
+		'options' => array(
+			'voted'  => __( 'Voted', 'anspress-question-answer' ),
+			'active' => __( 'Active', 'anspress-question-answer' ),
+			'newest' => __( 'Newest', 'anspress-question-answer' ),
+			'oldest' => __( 'Oldest', 'anspress-question-answer' ),
+		),
+	),
+	array(
 		'name'  => 'keep_stop_words',
 		'label' => __( 'Keep stop words in question slug', 'anspress-question-answer' ),
 		'desc'  => __( 'AnsPress will not strip stop words in question slug.', 'anspress-question-answer' ),
@@ -242,6 +238,18 @@ ap_register_option_group('question', __( 'Q&A', 'anspress-question-answer' ) , a
 		'type' => 'custom',
 		'html' => '<br /><span class="ap-form-separator">' . __( 'Answer', 'anspress-question-answer' ) . '</span>',
 	) ,
+	array(
+		'name'    => 'answers_sort',
+		'label'   => __( 'Default answers order', 'anspress-question-answer' ),
+		'desc'    => __( 'Order answers by by default using selected', 'anspress-question-answer' ),
+		'type'    => 'select',
+		'options' => array(
+			'voted'  => __( 'Voted', 'anspress-question-answer' ),
+			'active' => __( 'Active', 'anspress-question-answer' ),
+			'newest' => __( 'Newest', 'anspress-question-answer' ),
+			'oldest' => __( 'Oldest', 'anspress-question-answer' ),
+		),
+	),
 	array(
 		'name'  => 'multiple_answers',
 		'label' => __( 'Multiple Answers', 'anspress-question-answer' ),

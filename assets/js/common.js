@@ -88,16 +88,16 @@ window.AnsPress = _.extend({
 		/*hide any existing loading icon*/
 		AnsPress.hideLoading(elm);
 		var customClass = jQuery(elm).data('loadclass')||'';
+		var isText = jQuery(elm).is('input[type="text"]');
 		var uid = this.uniqueId();
-		var el = jQuery('<div class="ap-loading-icon ap-uid '+customClass+'" id="apuid-' + uid + '"></div>');
+		var el = jQuery('<div class="ap-loading-icon ap-uid '+customClass+ (isText ? ' is-text' : '') +'" id="apuid-' + uid + '"><i></i></div>');
 		jQuery('body').append(el);
 		var offset = jQuery(elm).offset();
 		var height = jQuery(elm).outerHeight();
-		var width = jQuery(elm).outerWidth();
-
+		var width = isText ? 40 : jQuery(elm).outerWidth();
 		el.css({
 			top: offset.top,
-			left: offset.left,
+			left: isText ? offset.left + jQuery(elm).outerWidth() - 40 : offset.left,
 			height: height,
 			width: width
 		});

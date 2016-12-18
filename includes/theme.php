@@ -796,7 +796,7 @@ function ap_get_list_filters( $current_url = '' ) {
 	$filters = array(
 		'order_by' => array(
 			'title'    => __( 'Order By', 'anspress-question-answer' ),
-			'items'    => ap_get_questions_orderby(),
+			'items'    => [],
 			'multiple' => false,
 		),
 	);
@@ -822,10 +822,11 @@ function ap_list_filters( $current_url = '' ) {
 	foreach ( (array) $filters as $key => $filter ) {
 		$active = '';
 
-		$current_filters = ap_get_current_list_filters( $key );
+		$current_order_by = ap_get_current_list_filters( 'order_by' );
 
-		if ( ! empty( $current_filters ) ) {
-			$active_arr = ap_search_array( $filter, 'value', $current_filters );
+		if ( ! empty( $current_order_by ) ) {
+			$active_arr = ap_search_array( ap_get_questions_orderby(), 'value', $current_order_by );
+
 			if ( ! empty( $active_arr ) ) {
 				$active = ': <span class="ap-filter-active">' . $active_arr[0]['label'] . '</span>';
 			}
@@ -849,7 +850,7 @@ function ap_list_filters( $current_url = '' ) {
 		}
 	}
 
-	echo '<button id="ap-filter-reset" type="submit" name="reset-filter" title="' . __( 'Reset sorting and filter', 'anspress-question-answer' ) . '">'. ap_icon( 'x', true ) . __( 'Clear Filter', 'anspress-question-answer' ) .'</button>';
+	echo '<button id="ap-filter-reset" type="submit" name="reset-filter" title="' . esc_attr__( 'Reset sorting and filter', 'anspress-question-answer' ) . '">'. ap_icon( 'x', true ) . esc_attr__( 'Clear Filter', 'anspress-question-answer' ) . '</button>';
 
 	echo '</form>';
 

@@ -1122,16 +1122,19 @@ function ap_isset_post_value( $var, $default = '' ) {
  * Get active list filter by filter key.
  *
  * @param  string|null $filter  Filter key.
- * @param  mixed       $default Default value to return.
  * @return false|string|array
  * @since  4.0.0
  */
-function ap_get_current_list_filters( $filter = null, $default = [] ) {
-	$filters = wp_unslash( ap_isset_post_value( 'filters', $default ) );
+function ap_get_current_list_filters( $filter = null ) {
+	$default = [ 'order_by' => ap_opt( 'question_order_by' ) ];
+
+	$filters = wp_unslash( ap_isset_post_value( 'filters' ) );
 
 	if ( empty( $filters ) || ! is_array( $filters ) ) {
-		return $default;
+		$filters = [];
 	}
+
+	$filters = $default + $filters;
 
 	$filters = array_unique( array_filter( $filters ), SORT_REGULAR );
 
@@ -1149,7 +1152,7 @@ function ap_get_current_list_filters( $filter = null, $default = [] ) {
 		return $filters[ $filter ];
 	}
 
-	return $default;
+	return [];
 }
 
 /**

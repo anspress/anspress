@@ -94,6 +94,7 @@ function ap_default_options() {
 		'avatar_size_list' 			=> 45,
 		'question_per_page' 		=> '20',
 		'answers_per_page' 			=> '5',
+		'question_order_by' 				=> 'active',
 		'answers_sort' 				=> 'active',
 		'close_selected' 			=> true,
 		'moderate_new_question'		=> 'no_mod',
