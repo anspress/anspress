@@ -130,28 +130,29 @@
 				white-space: nowrap;
 		}
 		ul.ap-actions {
-				padding: 0;
-				list-style: none;
-				li {
-						margin: 0;
-						padding: 0;
-						&.active a {
-								background: #ddd;
-						}
-						a {
-								padding: 5px 10px;
-								color: #333;
-								b {
-										font-size: 11px;
-										font-weight: normal;
-										float: right;
-										padding: 1px 5px;
-										color: #fff;
-										border-radius: 2px;
-										background: #039be5;
-								}
-						}
-				}
+			padding: 0;
+			list-style: none;
+			margin: 0;
+			li {
+					margin: 0;
+					padding: 0;
+					&.active a {
+							background: #ddd;
+					}
+					a {
+							padding: 5px 10px;
+							color: #333;
+							b {
+									font-size: 11px;
+									font-weight: normal;
+									float: right;
+									padding: 1px 5px;
+									color: #fff;
+									border-radius: 2px;
+									background: #039be5;
+							}
+					}
+			}
 		}
 }
 

@@ -246,8 +246,8 @@ if ( ! class_exists( 'AnsPress' ) ) {
 				'ANSPRESS_DIR' 					=> plugin_dir_path( __FILE__ ),
 				'ANSPRESS_URL' 					=> plugin_dir_url( __FILE__ ),
 				'ANSPRESS_WIDGET_DIR' 	=> plugin_dir_path( __FILE__ ) . 'widgets' . DIRECTORY_SEPARATOR,
-				'ANSPRESS_THEME_DIR' 		=> plugin_dir_path( __FILE__ ) . 'theme',
-				'ANSPRESS_THEME_URL' 		=> plugin_dir_url( __FILE__ ) . 'theme',
+				'ANSPRESS_THEME_DIR' 		=> plugin_dir_path( __FILE__ ) . 'templates',
+				'ANSPRESS_THEME_URL' 		=> plugin_dir_url( __FILE__ ) . 'templates',
 				'ANSPRESS_CACHE_DIR' 		=> WP_CONTENT_DIR . '/cache/anspress',
 				'ANSPRESS_CACHE_TIME' 	=> HOUR_IN_SECONDS,
 			);

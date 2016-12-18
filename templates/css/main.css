@@ -856,6 +856,7 @@ body ul ul#ap-user-menu-link li > a .count {
 #anspress ul.ap-actions {
   padding: 0;
   list-style: none;
+  margin: 0;
 }
 #anspress ul.ap-actions li {
   margin: 0;

@@ -86,8 +86,8 @@
 						style: 'expanded'
 					},
 					files: {
-						"theme/default/css/main.css": "theme/default/scss/main.scss",
-						"theme/default/css/RTL.css": "theme/default/scss/RTL.scss",
+						"templates/css/main.css": "templates/scss/main.scss",
+						"templates/css/RTL.css": "templates/scss/RTL.scss",
 						//"assets/ap-admin.css": "assets/ap-admin.scss"
 					}
 				}
@@ -100,7 +100,7 @@
 						'assets/js/min/upload.min.js': ['assets/js/upload.js'],
 						'assets/js/min/ap-admin.min.js': ['assets/js/ap-admin.js'],
 						'assets/js/min/ask.min.js': ['assets/js/ask.js'],
-						'theme/default/js/min/theme.min.js': ['theme/default/js/theme.js']
+						'templates/js/min/theme.min.js': ['templates/js/theme.js']
 					}
 				}
 			},
@@ -127,8 +127,8 @@
 				dest: 'assets/min/anspress.min.js',
 			},
 			theme: {
-				src: ['theme/default/js/initial.min.js', 'theme/default/js/jquery.peity.min.js', 'theme/default/js/jquery.scrollbar.min.js', 'theme/default/min/ap.min.js'],
-				dest: 'theme/default/min/anspress-theme.min.js',
+				src: ['templates/js/initial.min.js', 'templates/js/jquery.peity.min.js', 'templates/js/jquery.scrollbar.min.js', 'templates/min/ap.min.js'],
+				dest: 'templates/min/anspress-theme.min.js',
 			},
 		},*/
 
@@ -140,9 +140,9 @@
 			},
 			target: {
 				files: {
-					'theme/default/css/min/main.min.css': 'theme/default/css/main.css',
-					'theme/default/css/min/RTL.min.css': 'theme/default/css/RTL.css',
-					'theme/default/css/min/fonts.min.css': 'theme/default/css/fonts.css'
+					'templates/css/min/main.min.css': 'templates/css/main.css',
+					'templates/css/min/RTL.min.css': 'templates/css/RTL.css',
+					'templates/css/min/fonts.min.css': 'templates/css/fonts.css'
 				}
 			}
 		},
@@ -153,7 +153,7 @@
 				tasks: ['sass', 'cssmin'],
 			},
 			uglify: {
-				files: ['theme/default/js/*.js','assets/js/*.js'],
+				files: ['templates/js/*.js','assets/js/*.js'],
 				tasks: ['uglify'],
 			}
 		},

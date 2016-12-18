@@ -748,13 +748,13 @@ function ap_enqueue_scripts() {
 	$assets = ap_assets();
 
 	foreach ( (array) $assets['js'] as $k => $js ) {
-		$path = ! empty( $js['theme'] ) ? ap_get_theme_url( 'js', false, false ) : ANSPRESS_URL . 'assets/js';
-
 		if ( ap_env_dev() ) {
-			$src = $path . '/' . $k . '.js';
+			$src = '/' . $k . '.js';
 		} else {
-			$src = $path . '/min/' . $k . '.min.js';
+			$src = '/min/' . $k . '.min.js';
 		}
+
+		$src = ! empty( $js['theme'] ) ? ap_get_theme_url( 'js' . $src, false, false ) : ANSPRESS_URL . 'assets/js' . $src;
 
 		$dep = isset( $js['dep'] ) ? $js['dep'] : array();
 		$footer = isset( $js['footer'] ) ? $js['footer'] : false;
@@ -762,13 +762,14 @@ function ap_enqueue_scripts() {
 	}
 
 	foreach ( (array) $assets['css'] as $k => $css ) {
-		$path = ! empty( $css['theme'] ) ? ap_get_theme_url( 'css', false, false ) : ANSPRESS_URL . 'assets/css';
 
 		if ( ap_env_dev() ) {
-			$src = $path . '/' . $k . '.css';
+			$src = '/' . $k . '.css';
 		} else {
-			$src = $path . '/min/' . $k . '.min.css';
+			$src = '/min/' . $k . '.min.css';
 		}
+
+		$src = ! empty( $css['theme'] ) ? ap_get_theme_url( 'css' . $src, false, false ) : ANSPRESS_URL . 'assets/css' . $src;
 
 		$dep = isset( $css['dep'] ) ? $css['dep'] : array();
 		wp_enqueue_style( 'anspress-' . $k, $src, $dep, AP_VERSION );

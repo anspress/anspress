@@ -63,20 +63,6 @@ function ap_theme_list() {
 }
 
 /**
- * Get currently active theme of AnsPress. If no theme is
- * selected then return `default`.
- *
- * @return string
- */
-function ap_get_theme() {
-	$option = ap_opt( 'theme' );
-	if ( ! $option ) {
-		return 'default';
-	}
-	return ap_opt( 'theme' );
-}
-
-/**
  * Get location to a file. First file is being searched in child theme and then active theme
  * and last fall back to AnsPress theme directory.
  *
@@ -98,9 +84,9 @@ function ap_get_theme_location( $file, $plugin = false ) {
 	} elseif ( file_exists( $parent_path ) ) {
 	    $template_path = $parent_path;
 	} elseif ( false !== $plugin ) {
-	    $template_path = $plugin . '/theme/' . $file;
+	    $template_path = $plugin . '/templates/' . $file;
 	} else {
-	    $template_path = ANSPRESS_THEME_DIR . '/' . ap_get_theme() . '/' . $file;
+	    $template_path = ANSPRESS_THEME_DIR . '/' . $file;
 	}
 
 	/**
@@ -132,9 +118,9 @@ function ap_get_theme_url( $file, $plugin = false, $ver = true ) {
 	} elseif ( file_exists( $parent_path ) ) {
 	    $template_url = get_template_directory_uri() . '/anspress/' . $file;
 	} elseif ( false !== $plugin ) {
-	    $template_url = $plugin . 'theme/' . $file;
+	    $template_url = $plugin . 'templates/' . $file;
 	} else {
-	    $template_url = ANSPRESS_THEME_URL . '/' . ap_get_theme() . '/' . $file;
+	    $template_url = ANSPRESS_THEME_URL . '/' . $file;
 	}
 
 	return apply_filters( 'ap_theme_url', $template_url . ( true === $ver ? '?v=' . AP_VERSION : '' ) );
