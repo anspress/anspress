@@ -52,11 +52,12 @@ function ap_page_title() {
 }
 
 /**
- * Check if current page is AnsPress search page
+ * Check if current page is search page
+ *
  * @return boolean
  */
 function is_ap_search() {
-	if ( is_anspress() && get_query_var( 'ap_page' ) == 'search' ) {
+	if ( is_anspress() && get_query_var( 'ap_s' ) ) {
 		return true;
 	}
 
@@ -725,7 +726,7 @@ function ap_assets( ) {
 		$assets['js']['question'] = [ 'dep' => [ 'anspress-common' ], 'footer' => true ];
 	}
 
-	if ( ap_current_page() === 'base' ) {
+	if ( ap_current_page() === 'base' || ap_current_page() === 'search' ) {
 		$assets['js']['list'] = [ 'dep' => [ 'anspress-common' ], 'footer' => true ];
 	}
 

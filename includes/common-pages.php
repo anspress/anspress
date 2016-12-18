@@ -32,9 +32,17 @@ class AnsPress_Common_Pages
 		global $questions, $wp;
 		$query = $wp->query_vars;
 
-		$tax_relation = !empty( $wp->query_vars['ap_tax_relation'] ) ? $wp->query_vars['ap_tax_relation'] : 'OR';
+		$keywords   = ap_sanitize_unslash( 'ap_s', 'query_var', false );
+		$type       = ap_sanitize_unslash( 'type', 'request' );
+
+		$tax_relation = ! empty( $wp->query_vars['ap_tax_relation'] ) ? $wp->query_vars['ap_tax_relation'] : 'OR';
 		$args = array();
 		$args['tax_query'] = array( 'relation' => $tax_relation );
+		$args['tax_query'] = array( 'relation' => $tax_relation );
+
+		if ( false !== $keywords ) {
+			$args['s'] = array( 'relation' => $tax_relation );
+		}
 
 		/**
 		 * FILTER: ap_main_questions_args
@@ -136,14 +144,8 @@ class AnsPress_Common_Pages
 	 * Load search page template
 	 */
 	public static function search_page() {
-		global $questions;
-		$keywords   = ap_sanitize_unslash( 'ap_s', 'query_var' );
-		$type       = ap_sanitize_unslash( 'type', 'request' );
-
-		if ( '' === $type ) {
-			$questions = ap_get_questions( array( 's' => $keywords ) );
-			include( ap_get_theme_location( 'search.php' ) );
-		}
+		$keywords   = ap_sanitize_unslash( 'ap_s', 'query_var', false );
+		wp_safe_redirect( add_query_arg( [ 'ap_s' => $keywords ], ap_get_link_to( '/' ) ) );
 	}
 
 	/**
