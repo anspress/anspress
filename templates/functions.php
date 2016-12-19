@@ -140,6 +140,16 @@ function ap_widgets_positions() {
 		'before_title' => '<h3 class="ap-widget-title">',
 		'after_title' => '</h3>',
 	));
+
+	register_sidebar(array(
+		'name' => __( '(AnsPress) Author page', 'anspress-question-answer' ),
+		'id' => 'ap-author',
+		'before_widget' => '<div id="%1$s" class="ap-widget-pos %2$s">',
+		'after_widget' => '</div>',
+		'description' => __( 'Widgets in this area will be shown in authors page.', 'anspress-question-answer' ),
+		'before_title' => '<h3 class="ap-widget-title">',
+		'after_title' => '</h3>',
+	));
 }
 add_action( 'widgets_init', 'ap_widgets_positions' );
 

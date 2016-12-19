@@ -36,6 +36,8 @@ function ap_page_title() {
 		$new_title = sprintf( ap_opt( 'search_page_title' ), sanitize_text_field( get_query_var( 'ap_s' ) ) );
 	} elseif ( is_ask() ) {
 		$new_title = ap_opt( 'ask_page_title' );
+	} elseif ( 'author' === $current_page ) {
+		$new_title = sprintf( ap_opt( 'author_page_title' ), ap_user_display_name( get_query_var( 'ap_user_id' ) ) );
 	} elseif ( '' === $current_page && ! is_question() && '' == get_query_var( 'question_name' ) ) {
 		$new_title = ap_opt( 'base_page_title' );
 	} elseif ( get_query_var( 'parent' ) !== '' ) {

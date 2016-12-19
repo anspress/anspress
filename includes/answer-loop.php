@@ -43,14 +43,15 @@ class Answers_Query extends WP_Query {
 		set_query_var( 'ap_paged', $paged );
 
 		$defaults = array(
-			'question_id'           => get_question_id(),
-			'ap_query'      				=> true,
-			'ap_answers_query'      => true,
-			'showposts'             => ap_opt( 'answers_per_page' ),
-			'paged'                 => $paged,
-			'only_best_answer'      => false,
-			'include_best_answer'   => false,
-			'post_status'   				=> [ 'publish' ],
+			'question_id'                    => get_question_id(),
+			'ap_query'      				         => true,
+			'ap_current_user_ignore'      	 => false,
+			'ap_answers_query'               => true,
+			'showposts'                      => ap_opt( 'answers_per_page' ),
+			'paged'                          => $paged,
+			'only_best_answer'               => false,
+			'include_best_answer'            => false,
+			'post_status'   				         => [ 'publish' ],
 		);
 
 		$this->args = wp_parse_args( $args, $defaults );

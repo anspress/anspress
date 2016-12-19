@@ -54,6 +54,7 @@ class Question_Query extends WP_Query {
 			'ap_order_by' 	    => 'active',
 			'ap_question_query' => true,
 			'post_status' 		  => [ 'publish' ],
+			'ap_current_user_ignore' => false,
 		);
 
 		$this->args = wp_parse_args( $args, $defaults );

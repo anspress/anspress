@@ -157,6 +157,11 @@ ap_register_option_group('pages', __( 'Pages', 'anspress-question-answer' ) , ar
 		'label' => __( 'Search page title', 'anspress-question-answer' ),
 		'desc'  => __( 'Title of the search page', 'anspress-question-answer' ),
 	),
+	array(
+		'name'  => 'author_page_title',
+		'label' => __( 'Author page title', 'anspress-question-answer' ),
+		'desc'  => __( 'Title of the author page', 'anspress-question-answer' ),
+	),
 ));
 
 /**

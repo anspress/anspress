@@ -4,9 +4,8 @@
 
 ?>
 
-<article id="post-0" <?php post_class($clearfix_class); ?>>
+<article id="post-0" <?php post_class( $clearfix_class ); ?>>
 	<div class="no-questions">
-		<?php _e('No question asked yet!, be the first to ask a question.', 'anspress-question-answer'); ?>		
-		<?php ap_ask_btn() ?>
+		<?php _e( 'Sorry! No question found.', 'anspress-question-answer' ); ?>
 	</div>
 </article><!-- list item -->

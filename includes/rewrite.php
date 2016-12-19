@@ -93,6 +93,8 @@ class AnsPress_Rewrite
 
 		$new_rules[ $slug . 'search/([^/]+)/?' ] = 'index.php?page_id=' . $base_page_id . '&ap_page=search&ap_s=' . $wp_rewrite->preg_index( 1 );
 
+		$new_rules[ $slug . 'author/([^/]+)/?' ] = 'index.php?page_id=' . $base_page_id . '&ap_page=author&ap_user=' . $wp_rewrite->preg_index( 1 );
+
 		$new_rules[ $slug . 'ask/([^/]+)/?' ] = 'index.php?page_id=' . $base_page_id . '&ap_page=ask&parent=' . $wp_rewrite->preg_index( 1 );
 
 		$new_rules[ $slug . '([^/]+)/?' ] = 'index.php?page_id=' . $base_page_id . '&ap_page=' . $wp_rewrite->preg_index( 1 );
@@ -122,29 +124,35 @@ class AnsPress_Rewrite
 	 *
 	 * @param object $wp WP query object.
 	 */
-	public static function add_query_var($wp) {
-	    if ( ! empty( $wp->query_vars['question_name'] ) ) {
-	    	$wp->set_query_var( 'ap_page', 'question' );
-	        $question = get_page_by_path( sanitize_title( $wp->query_vars['question_name'] ), 'OBJECT', 'question' );
+	public static function add_query_var( $wp ) {
+		if ( ! empty( $wp->query_vars['question_name'] ) ) {
+			$wp->set_query_var( 'ap_page', 'question' );
+			$question = get_page_by_path( sanitize_title( $wp->query_vars['question_name'] ), 'OBJECT', 'question' );
 
-	        if ( $question ) {
-	        	$wp->set_query_var( 'question_id', $question->ID );
-	        }
-	        // Rediret to 404 page if question does not exists.
-	        else {
-	        	global $wp_query;
+			if ( $question ) {
+				$wp->set_query_var( 'question_id', $question->ID );
+			} else {
+				// Rediret to 404 page if question does not exists.
+				global $wp_query;
 				$wp_query->set_404();
 				status_header( 404 );
 				get_template_part( 404 );
 				exit();
-	        }
-	    }
-	    if ( ! empty( $wp->query_vars['ap_user'] ) ) {
-	       	$user = get_user_by( 'login', sanitize_text_field( urldecode( $wp->query_vars['ap_user'] ) ) );
-
-	       	if ( $user ) {
-				$wp->set_query_var( 'ap_user_id', $user->ID );
 			}
-	    }
+		}
+
+		if ( ! empty( $wp->query_vars['ap_user'] ) ) {
+			$user = get_user_by( 'login', sanitize_text_field( urldecode( $wp->query_vars['ap_user'] ) ) );
+
+			if ( $user ) {
+				$wp->set_query_var( 'ap_user_id', (int) $user->ID );
+			} else {
+				global $wp_query;
+				$wp_query->set_404();
+				status_header( 404 );
+				get_template_part( 404 );
+				exit();
+			}
+		}
 	}
 }

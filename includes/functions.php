@@ -1417,38 +1417,37 @@ function ap_user_link( $user_id = false, $sub = false ) {
 	}
 
 	if ( $user_id < 1 ) {
-		return '#AnonymousUser';
-	}
+		$link = ap_get_link_to( array( 'ap_page' => 'author', 'ap_user' => 0 ) );
+	} else{
 
-	if ( ap_opt( 'user_profile' ) === '' ) {
-		return apply_filters( 'ap_user_custom_profile_link', $user_id, $sub );
-	} elseif ( function_exists( 'bp_core_get_userlink' ) && ap_opt( 'user_profile' ) === 'buddypress' ) {
-		return bp_core_get_userlink( $user_id, false, true );
-	} elseif ( ap_opt( 'user_profile' ) === 'userpro' ) {
-		global $userpro;
-		return $userpro->permalink( $user_id );
-	}
-
-	if ( empty( $user_id ) ) {
-		return false;
-	}
-
-	$user = get_user_by( 'id', $user_id );
-
-	// If permalink is enabled.
-	if ( get_option( 'permalink_structure' ) !== '' ) {
-		$link = get_author_posts_url( $user_id, $user->user_nicename );
-	} else {
-		if ( false === $sub ) {
-			$sub = array( 'ap_page' => 'user', 'ap_user' => $user->user_login );
-		} elseif ( is_array( $sub ) ) {
-			$sub['ap_page']  = 'user';
-			$sub['ap_user']     = $user->user_login;
-		} elseif ( ! is_array( $sub ) ) {
-			$sub = array( 'ap_page' => 'user', 'ap_user' => $user->user_login, 'user_page' => $sub );
+		if ( ap_opt( 'user_profile' ) === '' ) {
+			return apply_filters( 'ap_user_custom_profile_link', $user_id, $sub );
+		} elseif ( function_exists( 'bp_core_get_userlink' ) && ap_opt( 'user_profile' ) === 'buddypress' ) {
+			return bp_core_get_userlink( $user_id, false, true );
+		} elseif ( ap_opt( 'user_profile' ) === 'userpro' ) {
+			global $userpro;
+			return $userpro->permalink( $user_id );
 		}
 
-		$link = ap_get_link_to( $sub );
+		if ( empty( $user_id ) ) {
+			return false;
+		}
+
+		$user = get_user_by( 'id', $user_id );
+
+		// If permalink is enabled.
+		if ( get_option( 'permalink_structure' ) !== '' ) {
+			if ( false === $sub ) {
+				$sub = array( 'ap_page' => 'author', 'ap_user' => $user->user_login );
+			} elseif ( is_array( $sub ) ) {
+				$sub['ap_page']  = 'author';
+				$sub['ap_user']     = $user->user_login;
+			} elseif ( ! is_array( $sub ) ) {
+				$sub = array( 'ap_page' => 'author', 'ap_user' => $user->user_login, 'user_page' => $sub );
+			}
+
+			$link = ap_get_link_to( $sub );
+		}
 	}
 
 	return apply_filters( 'ap_user_link', $link, $user_id );

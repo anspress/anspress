@@ -31,35 +31,42 @@ class AP_QA_Query_Hooks {
 			$sql['fields'] = $sql['fields'] . ', qameta.*, qameta.votes_up - qameta.votes_down AS votes_net';
 			$post_status = '';
 			$query_status = $args->query['post_status'];
+			
+			if ( isset( $args->query['ap_current_user_ignore'] ) && false === $args->query['ap_current_user_ignore'] ) {
+				// Build the post_status mysql query.
+				if ( ! empty( $query_status ) ) {
+					if ( is_array( $query_status ) ) {
+						$i = 1;
 
-			// Build the post_status mysql query.
-			if ( ! empty( $query_status ) ) {
-				if ( is_array( $query_status ) ) {
-					$i = 1;
+						foreach ( get_post_stati() as $status ) {
 
-					foreach ( get_post_stati() as $status ) {
+							if ( in_array( $status, $args->query['post_status'], true ) ) {
+								$post_status .= $wpdb->posts.".post_status = '" . $status . "'";
 
-						if ( in_array( $status, $args->query['post_status'], true ) ) {
-							$post_status .= $wpdb->posts.".post_status = '" . $status . "'";
-
-							if ( count( $query_status ) != $i ) {
-								$post_status .= ' OR ';
-							} else {
-								$post_status .= ')';
+								if ( count( $query_status ) != $i ) {
+									$post_status .= ' OR ';
+								} else {
+									$post_status .= ')';
+								}
+								$i++;
 							}
-							$i++;
 						}
+					} else {
+						$post_status .= $wpdb->posts.".post_status = '".$query_status."' ";
 					}
-				} else {
-					$post_status .= $wpdb->posts.".post_status = '".$query_status."' ";
+				}
+
+				// Replace post_status query.
+				if ( false !== ( $pos = strpos( $sql['where'], $post_status ) ) ) {
+					$pos = $pos + strlen( $post_status );
+					$author_query = $wpdb->prepare( " OR ( {$wpdb->posts}.post_author = %d AND {$wpdb->posts}.post_status IN ('publish', 'private_post', 'trash', 'moderate') ) ", get_current_user_id() );
+					$sql['where'] = substr_replace( $sql['where'], $author_query, $pos, 0 );
 				}
 			}
-
-			// Replace post_status query.
-			if ( false !== ( $pos = strpos( $sql['where'], $post_status ) ) ) {
-				$pos = $pos + strlen( $post_status );
-				$author_query = $wpdb->prepare( " OR ( {$wpdb->posts}.post_author = %d AND {$wpdb->posts}.post_status IN ('publish', 'private_post', 'trash', 'moderate') ) ", get_current_user_id() );
-				$sql['where'] = substr_replace( $sql['where'], $author_query, $pos, 0 );
+			
+			// Hack to fix WP_Query for fetching anonymous author posts.
+			if ( isset( $args->query['author'] ) && 0 === $args->query['author'] ) {
+				$sql['where'] = $sql['where'] . $wpdb->prepare( " AND {$wpdb->posts}.post_author = %d", $args->query['author'] );
 			}
 
 			$ap_order_by = isset( $args->query['ap_order_by'] ) ? $args->query['ap_order_by'] : 'active';

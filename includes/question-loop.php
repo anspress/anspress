@@ -29,9 +29,9 @@ if ( ! function_exists('ap_get_questions' ) ) {
 		}
 
 		$args = wp_parse_args( $args, array(
-			'showposts'     => ap_opt( 'question_per_page' ),
-			'paged'         => $paged,
-			'ap_query'      => 'featured_post',
+			'showposts' => ap_opt( 'question_per_page' ),
+			'paged' => $paged,
+			'ap_query' => 'featured_post',
 		));
 
 		return new Question_Query( $args );
