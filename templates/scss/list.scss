@@ -1,0 +1,232 @@
+//
+// Question lists style
+// --------------------------------------------------
+#anspress{
+	.ap-questions{
+		&-item{
+			border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+			box-shadow: none;
+			display: table;
+			margin: 0;
+			padding: 20px 5px;
+			width: 100%;
+			position: relative;
+			&.status-private_post {
+				background: #f4f6f8;
+			}
+
+			&.status-moderate {
+				background: #fff8e1;
+			}
+			&.hentry{
+				margin: 0;
+				border-top:none;
+			}
+			&.status-trash{
+				background: #fff6f7;
+			}
+		}
+		&-history {
+			margin-top: 5px;
+		}
+		.ap-avatar{
+			margin-right: 20px;
+			a{
+				display: block;
+			}
+		}
+		&-title{
+			display: block;
+			font-size: 14px;
+			font-weight: 600;
+			margin-bottom: 5px;
+			margin-top: 0;
+			a{
+				color: $link-color;
+				text-decoration: none;
+			}
+		}
+		&-count{
+			display: block;
+			float: left;
+			text-transform: uppercase;
+			font-size: 10px;
+			margin-left: 10px;
+			color: #999;
+			border: solid 2px #eee;
+			width: 70px;
+			text-align: center;
+			text-decoration: none;
+			background: #fff;
+			height: 45px;
+			padding: 2px 0;
+			border-radius: 2px;
+			span{
+				font-size: 13px;
+				display: block;
+				text-align: center;
+				font-weight: 600;
+			}
+		}
+
+		&-acount{
+			span{
+			}
+		}
+
+		&-summery{
+			padding-right: 10px;
+		}
+		.ap-display-meta-item {
+			font-size: 13px;
+			color: $meta-color;
+			margin-right: 15px;
+			a{
+				color: $meta-color;
+			}
+			i:before{
+				color: #aaa;
+				font-size: 12px;
+			}
+		}
+		.ap-post-type{
+			display: inline;
+			font-size: 11px;
+			margin: 0;
+			padding: 0 6px;
+		}
+
+		.ap-post-status {
+			background: #ffd54f;
+			font-size: 11px;
+			font-weight: 400;
+			margin-right: 5px;
+			padding: 2px 5px;
+			&.private_post{
+				background: #78909c;
+				color: #fff;
+			}
+			&.trash{
+				background: #ef5350;
+				color: #fff;
+			}
+		}
+		.featured-question {
+			background: #f5fdff;
+		}
+	}
+	.ap-list-counts{
+		float: right;
+	}
+	.ap-display-meta-item{
+		i{
+			font-style: normal;
+		}
+		[class^="apicon-"]::before, [class*=" apicon-"]::before{
+			margin-right: 5px;
+		}
+	}
+	.ap-list-head{
+		padding: 0;
+    margin: 10px 0;
+    border-bottom: solid 2px #eee;
+		.ap-btn-ask{
+			background: $main-color;
+			border-radius: 2px;
+			color: #fff;
+			float: right;
+			font-size: 13px;
+			font-weight: bold;
+			height: 36px;
+			margin-left: 15px;
+			padding: 6px 20px;
+			text-decoration: none;
+			&:visited{
+				color: #fff;
+			}
+		}
+	}
+	.ap-filter{
+		&s .ap-dropdown{
+			margin-right: 15px;
+			float: left;
+			display: block;
+			&-menu{
+				min-width: 140px;
+			}
+		}
+		&-toggle{
+			color: $main-color;
+			text-decoration: none;
+			font-weight: bold;
+			font-size: 13px;
+			padding: 10px 0;
+			display: block;
+		}
+		&-active{
+			font-weight: normal;
+			color: $light-color;
+		}
+		input[type="checkbox"]{
+			display: none;
+		}
+
+		label{
+			display: block;
+			padding: 4px;
+    	font-size: 12px;
+			i{
+				color: #fff;
+				border-radius: 2px;
+				margin-right: 10px;
+				background: #eee;
+				height: 14px;
+				display: block;
+				float: left;
+				padding: 1px 2px;
+				font-size: 11px;
+				&[class^="apicon-"]:before, [class*=" apicon-"]:before{
+					visibility: hidden;
+				}
+			}
+		}
+		li{
+			padding: 0 5px;
+		}
+		input[type="checkbox"]:checked + .apicon-check{
+			background: $main-color;
+			&[class^="apicon-"]:before, [class*=" apicon-"]:before{
+				visibility: visible;
+			}
+		}
+		&-search{
+			padding: 7px 10px;
+			border-bottom: solid 1px #ddd;
+			border-radius: 2px 2px 0 0;
+			margin-bottom: 5px;
+			margin-top: -4px;
+			background: #f7f7f7;
+		}
+	}
+	#ap-filter-reset {
+		background: none;
+    border: none;
+    padding: 13px 0;
+		color: $light-color;
+
+		&:focus, &:active{
+			outline: none;
+		}
+		i{
+			background: #ccc;
+			color: #fff;
+			padding: 0px 3px;
+			display: block;
+			border-radius: 2px;
+			float: left;
+			font-size: 12px;
+			margin-right: 4px;
+		}
+	}
+
+}

@@ -1,0 +1,63 @@
+//
+// Buttons style
+// --------------------------------------------------
+
+#anspress{
+	.ap-dropdown {
+		position: relative;
+		display: inline-block;
+		font-size: 14px;
+		&.open .ap-dropdown-menu{
+			display: block;
+		}
+		&-menu {
+			position: absolute;
+			top: initial;
+			border: 1px solid #ccc;
+			border-radius: 3px;
+			left: 0px;
+			list-style: none;
+			padding: 4px 0px;
+			display: none;
+			background-color: white;
+			box-shadow: 0 3px 6px rgba(0, 0, 0, 0.175);
+			margin-top: 4px;
+			z-index: 999;
+
+			li {
+				display: block;
+				white-space: nowrap;
+				min-width: 100px;
+				margin: 0;
+				&:hover {
+					background-color: #F5F5F5;
+					cursor: pointer;
+				}
+				a {
+					text-decoration: none;
+					display: block;
+					padding: 4px 10px;
+				}
+			}
+			li.ap-dropdown-header {
+				font-size: 12px;
+				padding: 5px 10px !important;
+				&:before {
+					content: '';
+					display: block;
+					border-bottom: solid 1px #eee;
+					margin-bottom: 5px;
+				}
+			}
+			li.sub{
+				padding-left: 5px;
+				font-size: 90%;
+				a.active{
+					background: none;
+					font-weight: bold;
+				}
+			}
+		}
+
+	}
+}

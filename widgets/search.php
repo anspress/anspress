@@ -2,19 +2,22 @@
 /**
  * AnsPress search widget
  * An ajax based search widget for searching questions and answers
- * @package AnsPress
+ *
  * @author Rahul Aryan <support@anspress.io>
- * @license GPL 2+ GNU GPL licence above 2+
+ * @license GPL 3+ GNU GPL licence above 3+
  * @link https://anspress.io
- * @since 2.0.0-alpha2
- *  
+ * @since 2.0.0
+ * @package WordPress/AnsPress
  */
 
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
-    die;
+	die;
 }
 
+/**
+ * (AnsPress) Search Widget class.
+ */
 class AP_Search_Widget extends WP_Widget {
 
 	/**
@@ -28,37 +31,44 @@ class AP_Search_Widget extends WP_Widget {
 		);
 	}
 
+	/**
+	 * Output widget
+	 *
+	 * @param array $args Widget arguments.
+	 * @param array $instance Widget instance.
+	 */
 	public function widget( $args, $instance ) {
 		$title = apply_filters( 'widget_title', $instance['title'] );
 
-		echo $args['before_widget'];
+		echo $args['before_widget']; // xss okay.
+
 		if ( ! empty( $title ) ) {
-			echo $args['before_title'] . $title . $args['after_title'];
+			echo $args['before_title'] . $title . $args['after_title']; // xss okay.
 		}
-		?>
-			<form id="ap-search-form" class="ap-search-form" action="<?php echo ap_get_link_to('search'); ?>" method="GET">
-				<div class="ap-qaf-inner">
-					<input class="form-control" type="text" name="ap_s" id="ap-quick-ask-input" placeholder="<?php _e('Search questions & answers', 'anspress-question-answer'); ?>" value="<?php echo sanitize_text_field(get_query_var('ap_s')); ?>" autocomplete="off" />
-					<button type="submit" ><?php _e('Search', 'anspress-question-answer'); ?></button>
-				</div>
-			</form>
-		<?php
-		echo $args['after_widget'];
+
+		ap_get_template_part( 'search-form' );
+
+		echo $args['after_widget']; // xss okay.
 	}
 
+	/**
+	 * Widget form
+	 *
+	 * @param array $instance Widget instance.
+	 */
 	public function form( $instance ) {
-		if ( isset( $instance[ 'title' ] ) ) {
-			$title = $instance[ 'title' ];
+		$title = __( 'Search questions', 'anspress-question-answer' );
+
+		if ( isset( $instance['title'] ) ) {
+			$title = $instance['title'];
 		}
-		else {
-			$title = __( 'Search questions', 'anspress-question-answer' );
-		}
+
 		?>
 		<p>
-			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:', 'anspress-question-answer' ); ?></label> 
-			<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>">
+			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php esc_attr_e( 'Title:', 'anspress-question-answer' ); ?></label>
+			<input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>">
 		</p>
-		<?php 
+		<?php
 	}
 
 	/**
@@ -79,8 +89,10 @@ class AP_Search_Widget extends WP_Widget {
 	}
 }
 
+/**
+ * Register (AnsPress) Search widget.
+ */
 function ap_search_register_widgets() {
 	register_widget( 'AP_Search_Widget' );
 }
-
 add_action( 'widgets_init', 'ap_search_register_widgets' );

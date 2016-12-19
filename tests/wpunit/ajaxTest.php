@@ -93,8 +93,8 @@ class ApajaxTest extends \Codeception\TestCase\WPAjaxTestCase
 
 	public function test_undo_vote_as_subscriber( ) {
 		$this->_setRole( 'ap_participant' );
-		$post = get_post( $this->current_post );
-		$counts = ap_add_post_vote( get_current_user_id(), 'vote_up', $this->current_post, $post->post_author );
+		$post = ap_get_post( $this->current_post );
+		$counts = ap_add_post_vote( $this->current_post, $post->post_author , 'vote_up' );
 		$nonce = wp_create_nonce( 'vote_'.$this->current_post );
 		$this->_set_post_data( 'ap_ajax_action=vote&type=up&post_id='.$this->current_post.'&__nonce='.$nonce.'' );
 		add_action( 'ap_ajax_vote', array( 'AnsPress_Vote', 'vote' ) );
@@ -105,8 +105,8 @@ class ApajaxTest extends \Codeception\TestCase\WPAjaxTestCase
 
 	public function test_subscriber_vote_without_undo( ) {
 		$this->_setRole( 'ap_participant' );
-		$post = get_post($this->current_post );
-		$counts = ap_add_post_vote( get_current_user_id(), 'vote_up', $this->current_post, $post->post_author );
+		$post = ap_get_post($this->current_post );
+		$counts = ap_add_post_vote( $this->current_post, $post->post_author, 'vote_up' );
 		$nonce = wp_create_nonce( 'vote_'.$this->current_post );
 		$this->_set_post_data( 'ap_ajax_action=vote&type=down&post_id='.$this->current_post.'&__nonce='.$nonce.'' );
 		add_action( 'ap_ajax_vote', array( 'AnsPress_Vote', 'vote' ) );

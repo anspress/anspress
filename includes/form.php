@@ -33,26 +33,20 @@ class AnsPress_Form_Helper
 	 * and styles.
 	 */
 	public function __construct() {
-
 		/*TODO: remove this, only anspress comment from ajax*/
-		add_action('comment_post', array( $this, 'save_comment' ), 20, 2 );
+		add_action( 'comment_post', array( $this, 'save_comment' ), 20, 2 );
 
-		// add_action( 'ap_after_delete_comment', array($this, 'after_deleting_comment'), 10, 2 );
 		add_action( 'wp_ajax_ap_submit_question', array( $this, 'ajax_question_submit' ) );
 		add_action( 'wp_ajax_nopriv_ap_submit_question', array( $this, 'ajax_question_submit' ) );
 
 		add_action( 'wp_ajax_ap_submit_answer', array( $this, 'ajax_answer_submit' ) );
 		add_action( 'wp_ajax_nopriv_ap_submit_answer', array( $this, 'ajax_answer_submit' ) );
 
-		add_action('wp_insert_comment', array( $this, 'comment_inserted' ), 99, 2 );
+		add_action( 'wp_insert_comment', array( $this, 'comment_inserted' ), 99, 2 );
 
 		add_action( 'wp_ajax_ap_new_tag', array( $this, 'ap_new_tag' ) );
 		add_action( 'wp_ajax_ap_load_new_tag_form', array( $this, 'ap_load_new_tag_form' ) );
 	}
-
-
-
-
 
 	public function delete_comment() {
 		$args = $args = explode('-', sanitize_text_field($_REQUEST['args'] ) );
@@ -70,8 +64,10 @@ class AnsPress_Form_Helper
 				do_action('ap_after_delete_comment', $comment, $post_type );
 
 				if ( $post_type == 'question' ) {
-					ap_do_event('delete_comment', $comment, 'question' ); } elseif ($post_type == 'answer')
-					ap_do_event('delete_comment', $comment, 'answer' );
+					do_action('delete_comment', $comment, 'question' ); 
+				} elseif ($post_type == 'answer') {
+					do_action('delete_comment', $comment, 'answer' );
+				}
 			}
 			$result = array( 'status' => true, 'message' => __('Comment deleted successfully.', 'anspress-question-answer' ) );
 			wp_die(json_encode($result ) );
@@ -79,36 +75,22 @@ class AnsPress_Form_Helper
 		wp_die();
 	}
 
-	/** TODO: Add this again */
-	public function after_deleting_comment($comment, $post_type) {
-		if ( $post_type == 'question' ) {
-			ap_remove_parti($comment->comment_post_ID, $comment->user_id, 'comment', $comment->comment_ID );
-		} elseif ( $post_type == 'answer' ) {
-			$post_id = wp_get_post_parent_id($comment->comment_post_ID );
-			ap_remove_parti($post_id, $comment->user_id, 'comment', $comment->comment_ID );
-		}
-	}
-
-
 	public function comment_inserted($comment_id, $comment_object) {
 		if ( $comment_object->comment_approved == '1' ) {
-			$post = get_post( $comment_object->comment_post_ID );
+			$post = ap_get_post( $comment_object->comment_post_ID );
 
 			if ( $post->post_type == 'question' ) {
-				ap_do_event('new_comment', $comment_object, 'question', '' );
-				// set updated meta for sorting purpose
-				update_post_meta($comment_object->comment_post_ID, ANSPRESS_UPDATED_META, current_time( 'mysql' ) );
+				do_action('new_comment', $comment_object, 'question', '' );
 
-				// add participant
-				// ap_add_parti($comment_object->comment_post_ID, $comment_object->user_id, 'comment', $comment_id);
+				// Set updated meta for sorting purpose.
+				ap_update_last_active( $comment_object->comment_post_ID );
+
 			} elseif ( $post->post_type == 'answer' ) {
-				ap_do_event('new_comment', $comment_object, 'answer', $post->post_parent );
+				do_action('new_comment', $comment_object, 'answer', $post->post_parent );
 				$post_id = wp_get_post_parent_id($comment_object->comment_post_ID );
-				// set updated meta for sorting purpose
-				update_post_meta($post_id, ANSPRESS_UPDATED_META, current_time( 'mysql' ) );
 
-				// add participant only
-				// ap_add_parti($post_id, $comment_object->user_id, 'comment', $comment_id);
+				// Set updated meta for sorting purpose.
+				ap_update_last_active( $post_id );
 			}
 		}
 	}
@@ -157,7 +139,7 @@ class AnsPress_Form_Helper
 		$type 			= sanitize_text_field($_POST['type'] );
 
 		if ( wp_verify_nonce( $nonce, $type.'-'.$post_id ) ) {
-			$post = get_post($post_id );
+			$post = ap_get_post($post_id );
 
 			if ( ap_user_can_edit_question($post_id ) && $post->post_type == 'question' ) {
 				ob_start();

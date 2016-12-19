@@ -1,0 +1,470 @@
+//
+// Form and editor styles
+// --------------------------------------------------
+#anspress{
+	.ap-form-control {
+		border: 1px solid #ddd;
+		border-radius: 1px;
+		box-shadow: 0 0 2px rgba(0, 0, 0, 0.02) inset;
+		display: block;
+		height: 33px;
+		margin-bottom: 15px;
+		padding: 5px 10px;
+		width: 100%;
+		&.autogrow{
+			overflow: hidden;
+		}
+		&[type="checkbox"]{
+			display: inline;
+			margin: 0;
+			padding: 0;
+			width: auto;
+			height: auto;
+		}
+	}
+	textarea.ap-form-control{
+		height: auto;
+	}
+	label > input[type="checkbox"] {
+		float: left;
+		margin-right: 10px !important;
+		margin-top: 3px !important;
+	}
+	label.inline-cb{
+		margin-bottom: 15px;
+	}
+	.ap-checkbox-withdesc{
+		margin-bottom: 15px;
+		[type="checkbox"]{
+			float: left;
+			height: 20px;
+			line-height: 100%;
+			margin-right: 10px;
+		}
+		p{
+			color: $light-color;
+			font-size: 13px;
+			margin-bottom: 0;
+		}
+	}
+	.ap-field-description.have-error + .ap-field-ap_upload .ap-upload-anchor{
+		border-color: #F44336 !important;
+	}
+	.ap-form-fields{
+		position: relative;
+		margin-bottom: 15px;
+		&.have-error{
+			border-color: #F44336 !important;
+			.ap-form-control{
+				border-color: #F44336 !important;
+			}
+			&.ap-field-description .ap-form-fields-in{
+				border-color: #F44336 !important;
+			}
+		}
+		.error {
+			background: #F44336;
+			margin-bottom: 20px;
+			display: table;
+			padding: 2px 6px;
+			font-size: 12px;
+			color: #fff;
+			margin-top: -10px;
+		}
+
+		&-wrap{
+			border-bottom: 1px solid #f7f7f7;
+			padding: 10px 0;
+			.ap-btn-submit, .ap-btn-cancel{
+				color: #777;
+				font-size: 12px;
+				line-height: 15px;
+				margin-right: 7px;
+				padding: 2px 5px;
+			}
+			.ap-btn-cancel{
+				background: none;
+				box-shadow: none;
+				border: none;
+			}
+			.ap-form-control{
+				margin-bottom: 5px;
+			}
+		}
+		&-wrap-label{
+			float: left;
+			font-weight: 600;
+			width: 150px;
+		}
+		&-wrap-inner{
+			overflow: hidden;
+			> a{
+				float: right;
+				font-style: normal;
+			}
+		}
+		&-edit{
+			float: right;
+		}
+
+	}
+
+	.btn-submit-ans{
+		padding: 10px 20px;
+	}
+	.ap-form-label{
+		display: block;
+		font-weight: bold;
+		margin-bottom: 10px;
+		font-size: 14px;
+		.ap-field-desc {
+			background: #bbb;
+			border-radius: 50%;
+			color: $white;
+			display: inline-block;
+			font-size: 11px;
+			height: 15px;
+			line-height: 16px;
+			margin-left: 7px;
+			text-align: center;
+			width: 15px;
+
+			&:hover{
+				background: $blue-color;
+				cursor: pointer;
+			}
+		}
+	}
+
+	.ap-editor-answer-label{
+		color: #888;
+		display: block !important;
+		padding: 5px 10px;
+	}
+	#answer_form .ap-field-description{
+    border: solid 2px #eee;
+    border-radius: 4px 4px 0 0;
+	}
+	#ask_form .ap-field-description .ap-form-fields-in{
+		border: solid 2px #eee;
+	}
+	.mce-toolbar-grp{
+		background: none;
+		padding: 4px;
+	}
+	.mce-edit-area{
+		padding: 0 10px;
+		background: #fcfcfc;
+	}
+	div.mce-panel{
+		background: none;
+	}
+	.mce-path{
+		display: none;
+	}
+	.mce-edit-area iframe{
+		margin-bottom: 0;
+	}
+	.mce-toolbar .mce-ico {
+		color: #868383;
+	}
+	.mce-toolbar .mce-btn button {
+		padding: 0px 3px;
+		line-height: normal;
+		border-right: solid 1px #ececec;
+		border-radius: 0;
+		padding-right: 10px;
+		&:hover{
+			background: none;
+		}
+	}
+	.mce-toolbar .mce-btn-group .mce-btn:hover{
+		border-color: transparent;
+		background: none;
+		box-shadow: none;
+		.mce-ico{
+			color: #333;
+		}
+	}
+
+	div.mce-toolbar-grp {
+    border-bottom: 2px solid #eee;
+	}
+
+	.ap-avatar-upload-form{
+		.ap-upload-o{
+			background: none repeat scroll 0 0 rgba(0, 0, 0, 0.89);
+			border: 2px solid #fff;
+			border-radius: 50%;
+			color: #fff;
+			font-size: 17px;
+			height: 30px;
+			line-height: 26px;
+			padding: 1px;
+			position: relative;
+			text-align: center;
+			width: 30px;
+			> span{
+				display: none;
+			}
+		}
+		.ap-upload-input{
+			cursor: pointer;
+			height: 100%;
+			left: 0;
+			opacity: 0;
+			position: absolute;
+			top: 0;
+			width: 100%;
+			opacity: 0;
+		}
+	}
+	.ap-post-upload-form{
+		background: #fff;
+		border-color: #ddd;
+		border-image: none;
+		border-right: 1px solid #ddd;
+		border-style: dashed solid solid;
+		border-width: 1px;
+		margin-top: -2px;
+		margin-bottom: 15px;
+		padding: 6px;
+		position: relative;
+		.ap-upload-o{
+		   	background: none;
+			border: medium none;
+			box-shadow: none;
+			color: #888;
+			font-weight: 400;
+		}
+		.ap-upload-link{
+			color: $link-color;
+			position: relative;
+		}
+		.ap-upload-remote-link{
+			color: $link-color;
+			cursor: pointer;
+		}
+		.ap-upload-input{
+			cursor: pointer;
+			height: 100%;
+			left: 0;
+			opacity: 0;
+			position: absolute;
+			right: 0;
+			top: 0;
+			width: 100%;
+		}
+		.ap-upload-link-rc {
+			background: none repeat scroll 0 0 #fcfcfc;
+			border-radius: 2px;
+			display: none;
+			left: 0;
+			padding: 3px;
+			position: absolute;
+			right: 0;
+			top: 0;
+			z-index: 9;
+
+			.ap-form-control{
+				margin: 0;
+				width: auto;
+			}
+
+			> *{
+				display: inline-block;
+			}
+
+			> a{
+				border-radius: 2px;
+				height: 28px;
+				padding: 2px;
+				text-align: center;
+				vertical-align: top;
+				width: 28px;
+			}
+		}
+	}
+
+	.ap-field-description.ap-have-error .ap-form-error-message{
+		margin-bottom: 30px;
+	}
+	.ap-minimal-placeholder{
+		display: none;
+		background: #fcfcfc;
+		position: relative;
+	}
+	.ap-dummy-editor{
+		background: #fff no-repeat url(../images/editor-buttons.png);
+		display: block;
+		height: 45px;
+		margin-bottom: 10px;
+		border-bottom: solid 2px #eee;
+	}
+	.ap-dummy-placeholder{
+		padding: 10px;
+	}
+	.ap-editor-fade {
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		top: 0;
+		left: 0;
+	}
+	.ap-minimal-editor{
+		#ap-form-main{
+			display: none;
+		}
+		.ap-form-c .ap-minimal-placeholder{
+			color: #888;
+			cursor: pointer;
+			display: block;
+			min-height: 120px;
+		}
+	}
+	.ap-attachment{
+		border: 2px solid #e3e1e1;
+		border-radius: 4px;
+		color: #777 !important;
+		display: inline-block;
+		font-size: 12px;
+		margin-bottom: 7px;
+		padding: 5px 10px;
+		&s h3{
+			margin-bottom: 5px;
+		}
+	}
+}
+
+#ap-search-form {
+	margin-bottom: 0;
+	.ap-search-inner{
+
+	}
+	.ap-form-control{
+		vertical-align: top;
+		margin: 0;
+	}
+	.ap-search-btn {
+		float: right;
+		height: 36px;
+		margin-left: 10px;
+	}
+	.ap-search-input {
+		border-radius: 3px;
+		font-size: 15px;
+		height: 36px;
+		padding: 10px;
+		width: 100%;
+	}
+}
+.screen-reader-text{
+	display: none;
+}
+
+#wp-link-wrap{
+	form{
+		margin: 0;
+	}
+	input {
+		height: 34px;
+		margin: 0;
+	}
+	input[type="checkbox"] {
+		height: auto;
+	}
+	.query-results {
+		top: 245px;
+	}
+}
+
+.ap-loading-icon.q-title {
+	background: rgba(0, 0, 0, 0);
+	.apicon-sync {
+		left: auto;
+		right: 8px;
+	}
+}
+
+.ap-upload {
+	&-item {
+		background: #ffffff;
+    margin-bottom: 10px;
+    padding: 10px 10px;
+    position: relative;
+    font-size: 12px;
+    border: solid 1px #ddd;
+		&.failed .ap-progress {
+			background-color: #E57373;
+		}
+		.apicon-trashcan {
+			float: right;
+			color: #fff;
+		}
+		.insert-to-post {
+			display: none;
+			border: solid 1px #ddd;
+			color: #666;
+			padding: 2px 5px;
+			border-radius: 2px;
+			margin-left: 8px;
+		}
+		.apicon-check, .apicon-stop {
+			margin-right: 8px;
+			color: #81C784;
+			display: none;
+		}
+		&.done{
+			.ap-progress{
+				display: none;
+			}
+			.apicon-check{
+				display: inline;
+			}
+			&.is-image .insert-to-post{
+				display: inline;
+			}
+		}
+		&.failed .apicon-stop{
+			display: inline;
+		}
+		.apicon-stop{
+			color: #F44336;
+		}
+	}
+	&-anchor {
+    border: solid 2px #eee;
+		border-top-width: 1px;
+    margin-top: -18px;
+    background: #fff;
+    padding: 8px;
+    font-size: 13px;
+    color: #a0a0a0;
+    border-top-style: dashed;
+    margin-bottom: 15px;
+    border-radius: 0 0 4px 4px;
+	}
+
+	.ap-progress {
+		width: 0%;
+    height: 3px;
+    background: #81C784;
+    border-radius: 2px;
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    z-index: 0;
+    transition: 0.5s 0.1s all;
+	}
+}
+
+.ap-field-description.dragging:before {
+	content: "";
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(236, 236, 236, 0.85);
+	z-index: 9;
+}

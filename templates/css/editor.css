@@ -1,0 +1,24 @@
+body{
+	background: transparent;
+	font-size: 15px;
+	line-height: 1.8;
+}
+blockquote {
+	border-left: 4px solid #ddd;
+	font-family: georgia,arial,helvetica;
+	font-size: 16px;
+	padding-left: 10px;
+}
+
+img {
+	height: auto;
+	max-width: 100%;
+}
+.alignleft {
+	float: left;
+	margin-right: 15px;
+}
+.alignright {
+	float: right;
+	margin-left: 15px;
+}

@@ -12,16 +12,17 @@
 /**
  * AnsPress user role helper
  */
-class AP_Roles
-{
+class AP_Roles {
 	/**
-	 * Base user capabilities
+	 * Base user capabilities.
+	 *
 	 * @var array
 	 */
 	public $base_caps = array();
 
 	/**
-	 * Moderator level permissions
+	 * Moderator level permissions.
+	 *
 	 * @var array
 	 */
 	public $mod_caps = array();
@@ -32,16 +33,18 @@ class AP_Roles
 	public function __construct() {
 
 		/**
-		 * Base user caps
+		 * Base user caps.
+		 *
 		 * @var array
 		 */
-		$this->base_caps = ap_role_caps('participant' );
+		$this->base_caps = ap_role_caps( 'participant' );
 
 		/**
-		 * Admin level caps
+		 * Admin level caps.
+		 *
 		 * @var array
 		 */
-		$this->mod_caps = ap_role_caps('moderator' );
+		$this->mod_caps = ap_role_caps( 'moderator' );
 
 	}
 
@@ -51,13 +54,14 @@ class AP_Roles
 	 * @since 2.0.1
 	 */
 	public function add_roles() {
-
+		// @codingStandardsIgnoreStart
 		add_role( 'ap_moderator', __( 'AnsPress Moderator', 'anspress-question-answer' ), array(
 			'read' => true,
 		) );
 
 		add_role( 'ap_participant', __( 'AnsPress Participants', 'anspress-question-answer' ), array( 'read' => true ) );
 		add_role( 'ap_banned', __( 'AnsPress Banned', 'anspress-question-answer' ), array( 'read' => true ) );
+		// @codingStandardsIgnoreEnd
 	}
 
 	/**
@@ -71,14 +75,12 @@ class AP_Roles
 	public function add_capabilities() {
 		global $wp_roles;
 
-		if ( class_exists( 'WP_Roles' ) ) {
-			if ( ! isset( $wp_roles ) ) {
-				$wp_roles = new WP_Roles();
-			}
+		if ( class_exists( 'WP_Roles' ) && ! isset( $wp_roles ) ) {
+			$wp_roles = new WP_Roles(); // Override okay.
 		}
-		if ( is_object( $wp_roles ) ) {
 
-			$roles = array( 'editor', 'administrator', 'contributor', 'author', 'ap_participant', 'ap_moderator', 'subscriber' );
+		if ( is_object( $wp_roles ) ) {
+			$roles = [ 'editor', 'administrator', 'contributor', 'author', 'ap_participant', 'ap_moderator', 'subscriber' ];
 
 			foreach ( $roles as $role_name ) {
 
@@ -87,7 +89,7 @@ class AP_Roles
 					$wp_roles->add_cap( $role_name, $k );
 				}
 
-				if ( 'editor' == $role_name || 'administrator' == $role_name || 'ap_moderator' == $role_name ) {
+				if ( in_array( $role_name, [ 'editor', 'administrator', 'ap_moderator' ], true ) ) {
 					foreach ( $this->mod_caps as $k => $grant ) {
 						$wp_roles->add_cap( $role_name, $k );
 					}
@@ -103,21 +105,20 @@ class AP_Roles
 	public function remove_roles() {
 		global $wp_roles;
 
-		if ( class_exists( 'WP_Roles' ) ) {
-			if ( ! isset( $wp_roles ) ) {
-				$wp_roles = new WP_Roles();
-			}
+		if ( class_exists( 'WP_Roles' ) && ! isset( $wp_roles ) ) {
+			$wp_roles = new WP_Roles(); // override okay.
 		}
+
 		$wp_roles->remove_role( 'ap_participant' );
 		$wp_roles->remove_role( 'ap_moderator' );
 		$wp_roles->remove_role( 'ap_banned' );
-
 	}
 }
 
 
 /**
  * Check if a user can ask a question.
+ *
  * @param  integer|boolean $user_id User_id.
  * @return boolean
  * @since  2.4.6 Added new argument `$user_id`.
@@ -133,12 +134,14 @@ function ap_user_can_ask( $user_id = false ) {
 
 	/**
 	 * Filter to hijack ap_user_can_ask function.
+	 *
 	 * @param  boolean|string 	$filter 	Apply this filter, empty string by default.
 	 * @param  integer 			$user_id 	User ID.
 	 * @return boolean
 	 * @since  2.4.6
 	 */
 	$filter = apply_filters( 'ap_user_can_ask', '', $user_id );
+
 	if ( true === $filter ) {
 		return true;
 	} elseif ( false === $filter ) {
@@ -153,7 +156,8 @@ function ap_user_can_ask( $user_id = false ) {
 }
 
 /**
- * Check if a user can answer on a question
+ * Check if a user can answer on a question.
+ *
  * @param  integer|object  $question_id    Question id or object.
  * @param  boolean|integer $user_id        User ID.
  * @return boolean
@@ -168,16 +172,18 @@ function ap_user_can_answer( $question_id, $user_id = false ) {
 		return true;
 	}
 
-	$question = get_post( $question_id );
+	$question = ap_get_post( $question_id );
 
 	/**
 	 * Allow overriding of ap_user_can_answer.
+	 *
 	 * @param boolean|string $filter 		Apply this filter, default is empty string.
 	 * @param integer 		 $question_id 	Question ID.
 	 * @param integer 		 $user_id 		User ID.
 	 * @since 2.4.6 Added 2 new arguments `$question_id` and `$user_id`.
 	 */
 	$filter = apply_filters( 'ap_user_can_answer', '', $question->ID, $user_id );
+
 	if ( true === $filter ) {
 		return true;
 	} elseif ( false === $filter ) {
@@ -185,7 +191,7 @@ function ap_user_can_answer( $question_id, $user_id = false ) {
 	}
 
 	// Return if user cannot read question.
-	if ( ! ap_allow_anonymous() && ! ap_user_can_read_question($question_id, $user_id ) ) {
+	if ( ! ap_allow_anonymous() && ! ap_user_can_read_question( $question_id, $user_id ) ) {
 		return false;
 	}
 
@@ -195,17 +201,17 @@ function ap_user_can_answer( $question_id, $user_id = false ) {
 	}
 
 	// Do not allow to answer if best answer is selected.
-	if ( ap_opt('close_selected' ) && ap_question_best_answer_selected( $question->ID ) ) {
+	if ( ap_opt( 'close_selected' ) && ap_have_answer_selected( $question->ID ) ) {
 		return false;
 	}
 
 	// Bail out if question is closed.
-	if ( $question->post_status == 'closed' ) {
+	if ( is_post_closed( $question ) ) {
 		return false;
 	}
 
 	// Check if user is original poster and dont allow them to answer their own question.
-	if ( ! ap_opt( 'disallow_op_to_answer' ) && $question->post_author == $user_id ) {
+	if ( ! ap_opt( 'disallow_op_to_answer' ) && $question->post_author == $user_id ) { // loose comparison ok.
 		return false;
 	}
 
@@ -227,12 +233,14 @@ function ap_user_can_answer( $question_id, $user_id = false ) {
 }
 
 /**
- * Check if a user can answer on a question
+ * Check if a user can answer on a question.
+ *
  * @return boolean
  */
 function ap_user_can_see_answers() {
 	if ( is_super_admin() ) {
-		return true; }
+		return true;
+	}
 
 	if ( ap_opt( 'logged_in_can_see_ans' ) && ! is_user_logged_in() ) {
 		return false;
@@ -242,12 +250,14 @@ function ap_user_can_see_answers() {
 }
 
 /**
- * Check if user can select an answer
- * @param  integer       $post_id    Answer id.
+ * Check if user can select an answer.
+ *
+ * @param  mixed         $_post    Post.
  * @param  integer|false $user_id    user id.
  * @return boolean
  */
-function ap_user_can_select_answer($post_id, $user_id = false) {
+function ap_user_can_select_answer( $_post = null, $user_id = false ) {
+
 	if ( false === $user_id ) {
 		$user_id = get_current_user_id();
 	}
@@ -256,16 +266,16 @@ function ap_user_can_select_answer($post_id, $user_id = false) {
 		return true;
 	}
 
-	$answer 	= get_post( $post_id );
+	$answer 	= ap_get_post( $_post );
 
 	// If not answer then return false.
-	if ( 'answer' != $answer->post_type ) {
+	if ( 'answer' !== $answer->post_type ) {
 		return false;
 	}
 
-	$question 	= get_post( $answer->post_parent );
+	$question 	= ap_get_post( $answer->post_parent );
 
-	if ( $user_id == $question->post_author ) {
+	if ( $user_id === $question->post_author ) {
 		return true;
 	}
 
@@ -273,7 +283,63 @@ function ap_user_can_select_answer($post_id, $user_id = false) {
 }
 
 /**
- * Check if a user can edit answer on a question
+ * Check if a user can edit answer on a question.
+ *
+ * @param  mixed           $post    Post.
+ * @param  boolean|integer $user_id User id.
+ * @return boolean
+ * @since  4.0.0
+ */
+function ap_user_can_edit_post( $post = null, $user_id = false ) {
+	if ( false === $user_id ) {
+		$user_id = get_current_user_id();
+	}
+
+	$_post = ap_get_post( $post );
+
+	if ( ! in_array( $_post->post_type, [ 'question', 'answer' ], true ) ) {
+		return false;
+	}
+
+	if ( user_can( $user_id, 'ap_edit_others_' + $_post->post_type ) || is_super_admin( $user_id ) ) {
+		return true;
+	}
+
+	/**
+	 * Filter to hijack ap_user_can_edit_post. This filter will be applied if filter
+	 * returns a boolean value. To baypass return an empty string.
+	 *
+	 * @param string|boolean 	$filter 		Apply this filter.
+	 * @param integer 			$question_id 	Question ID.
+	 * @param integer 			$user_id 		User ID.
+	 */
+	$filter = apply_filters( 'ap_user_can_edit_post', '', $_post->ID, $user_id );
+
+	if ( true === $filter ) {
+		return true;
+	} elseif ( false === $filter ) {
+		return false;
+	}
+
+	// Do not allow to edit if moderate.
+	if ( 'moderate' === $_post->post_status ) {
+		return false;
+	}
+
+	if ( ! ap_user_can_read_post( $_post, $user_id ) ) {
+		return false;
+	}
+
+	if ( $user_id == $_post->post_author && user_can( $user_id, 'ap_edit_' . $_post->post_type ) ) { // loose comparison ok.
+		return true;
+	}
+
+	return false;
+}
+
+/**
+ * Check if a user can edit answer on a question.
+ *
  * @param  integer         $post_id Answer id.
  * @param  boolean|integer $user_id User id.
  * @return boolean
@@ -288,16 +354,18 @@ function ap_user_can_edit_answer( $post_id, $user_id = false ) {
 		return true;
 	}
 
-	$answer = get_post( $post_id );
+	$answer = ap_get_post( $post_id );
 
 	/**
 	 * Filter to hijack ap_user_can_edit_answer. This filter will be applied if filter
 	 * returns a boolean value. To baypass return an empty string.
+	 *
 	 * @param string|boolean 	$filter 		Apply this filter.
 	 * @param integer 			$question_id 	Question ID.
 	 * @param integer 			$user_id 		User ID.
 	 */
 	$filter = apply_filters( 'ap_user_can_edit_answer', '', $answer->ID, $user_id );
+
 	if ( true === $filter ) {
 		return true;
 	} elseif ( false === $filter ) {
@@ -314,7 +382,7 @@ function ap_user_can_edit_answer( $post_id, $user_id = false ) {
 		return false;
 	}
 
-	if ( $user_id == $answer->post_author && user_can( $user_id, 'ap_edit_answer' ) ) {
+	if ( $user_id == $answer->post_author && user_can( $user_id, 'ap_edit_answer' ) ) { // loose comparison ok.
 		return true;
 	}
 
@@ -323,6 +391,7 @@ function ap_user_can_edit_answer( $post_id, $user_id = false ) {
 
 /**
  * Check if user can edit a question.
+ *
  * @param  boolean|integer $post_id Question ID.
  * @param  boolean|integer $user_id User ID.
  * @return boolean
@@ -339,7 +408,7 @@ function ap_user_can_edit_question( $post_id = false, $user_id = false ) {
 	}
 
 	if ( false !== $post_id ) {
-		$question = get_post( $post_id );
+		$question = ap_get_post( $post_id );
 	} else {
 		global $post;
 		$question = $post;
@@ -348,11 +417,13 @@ function ap_user_can_edit_question( $post_id = false, $user_id = false ) {
 	/**
 	 * Filter to hijack ap_user_can_edit_question. This filter will be applied if filter
 	 * returns a boolean value. To baypass return an empty string.
+	 *
 	 * @param string|boolean 	$filter 		Apply this filter.
 	 * @param integer 			$question_id 	Question ID.
 	 * @param integer 			$user_id 		User ID.
 	 */
 	$filter = apply_filters( 'ap_user_can_edit_question', '', $question->ID, $user_id );
+
 	if ( true === $filter ) {
 		return true;
 	} elseif ( false === $filter ) {
@@ -368,7 +439,7 @@ function ap_user_can_edit_question( $post_id = false, $user_id = false ) {
 		return false;
 	}
 
-	if ( $user_id == $question->post_author && user_can( $user_id, 'ap_edit_question' ) ) {
+	if ( $user_id == $question->post_author && user_can( $user_id, 'ap_edit_question' ) ) { // loose comparison ok.
 		return true;
 	}
 
@@ -377,6 +448,7 @@ function ap_user_can_edit_question( $post_id = false, $user_id = false ) {
 
 /**
  * Check if user can change post label.
+ *
  * @return boolean
  */
 function ap_user_can_change_label() {
@@ -388,7 +460,8 @@ function ap_user_can_change_label() {
 }
 
 /**
- * Check if user can comment on AnsPress posts
+ * Check if user can comment on AnsPress posts.
+ *
  * @param boolean|integer $post_id Post ID.
  * @param boolean|integer $user_id User ID.
  * @return boolean
@@ -410,6 +483,7 @@ function ap_user_can_comment( $post_id = false, $user_id = false ) {
 
 	/**
 	 * Filter to hijack ap_user_can_comment.
+	 *
 	 * @param  boolean|string 	$apply_filter 	Apply current filter, empty string by default.
 	 * @param  integer|object 	$post_id 		Post ID or object.
 	 * @param  integer 			$user_id 		User ID.
@@ -417,13 +491,14 @@ function ap_user_can_comment( $post_id = false, $user_id = false ) {
 	 * @since  2.4.6
 	 */
 	$filter = apply_filters( 'ap_user_can_comment', '', $post_id, $user_id );
+
 	if ( true === $filter ) {
 		return true;
 	} elseif ( false === $filter ) {
 		return false;
 	}
 
-	$post_o = get_post( $post_id );
+	$post_o = ap_get_post( $post_id );
 
 	// Do not allow to comment if post is moderate.
 	if ( 'moderate' === $post_o->post_status ) {
@@ -443,13 +518,15 @@ function ap_user_can_comment( $post_id = false, $user_id = false ) {
 }
 
 /**
- * Check if user can edit comment
- * @param  integer $comment_id     Comment ID.
+ * Check if user can edit comment.
+ *
+ * @param  integer       $comment_id Comment ID.
+ * @param  integer|false $user_id User ID.
  * @return boolean
  * @since 2.4.6 Added an `$user_id`. Also check if user can read post.
  * @since 2.4.6 Added filter ap_user_can_edit_comment.
  */
-function ap_user_can_edit_comment( $comment_id,  $user_id = false ) {
+function ap_user_can_edit_comment( $comment_id, $user_id = false ) {
 	if ( false === $user_id ) {
 		$user_id = get_current_user_id();
 	}
@@ -462,6 +539,7 @@ function ap_user_can_edit_comment( $comment_id,  $user_id = false ) {
 
 	/**
 	 * Filter to hijack ap_user_can_edit_comment.
+	 *
 	 * @param  boolean|string 	$apply_filter 	Apply current filter, empty string by default.
 	 * @param  integer|object 	$post_id 		Post ID or object.
 	 * @param  integer 			$user_id 		User ID.
@@ -469,6 +547,7 @@ function ap_user_can_edit_comment( $comment_id,  $user_id = false ) {
 	 * @since  2.4.6
 	 */
 	$filter = apply_filters( 'ap_user_can_edit_comment', '', $comment_id, $user_id );
+
 	if ( true === $filter ) {
 		return true;
 	} elseif ( false === $filter ) {
@@ -476,7 +555,7 @@ function ap_user_can_edit_comment( $comment_id,  $user_id = false ) {
 	}
 
 	// Do not allow to edit if not approved.
-	if ( '0' == $comment->comment_approved ) {
+	if ( '0' == $comment->comment_approved ) { // loose comparison ok.
 		return false;
 	}
 
@@ -485,7 +564,7 @@ function ap_user_can_edit_comment( $comment_id,  $user_id = false ) {
 		return false;
 	}
 
-	if ( user_can( $user_id, 'ap_edit_comment' ) && $user_id == $comment->user_id ) {
+	if ( user_can( $user_id, 'ap_edit_comment' ) && $user_id == $comment->user_id ) { // loose comparison ok.
 		return true;
 	}
 
@@ -493,20 +572,22 @@ function ap_user_can_edit_comment( $comment_id,  $user_id = false ) {
 }
 
 /**
- * Check if user can delete comment
- * @param  integer $comment_id Comment_ID.
+ * Check if user can delete comment.
+ *
+ * @param  integer       $comment_id Comment_ID.
+ * @param  integer|false $user_id User ID.
  * @return boolean
  */
-function ap_user_can_delete_comment($comment_id, $user_id = false) {
+function ap_user_can_delete_comment( $comment_id, $user_id = false ) {
 	if ( false === $user_id ) {
 		$user_id = get_current_user_id();
 	}
 
-	if ( is_super_admin($user_id ) || user_can( $user_id, 'ap_delete_others_comment' ) ) {
+	if ( is_super_admin( $user_id ) || user_can( $user_id, 'ap_delete_others_comment' ) ) {
 		return true;
 	}
 
-	if ( user_can( $user_id, 'ap_delete_comment' ) && $user_id == get_comment( $comment_id )->user_id ) {
+	if ( user_can( $user_id, 'ap_delete_comment' ) && get_comment( $comment_id )->user_id == $user_id ) { // loose comparison ok.
 		return true;
 	}
 
@@ -515,8 +596,9 @@ function ap_user_can_delete_comment($comment_id, $user_id = false) {
 
 /**
  * Check if user can delete AnsPress posts.
- * @param  integer         $post_id    Question or answer ID.
- * @param  integer|boolean $post_id    User ID.
+ *
+ * @param  integer       $post_id    Question or answer ID.
+ * @param  integer|false $user_id    User ID.
  * @return boolean
  * @since  2.4.7 Renamed function name from `ap_user_can_delete`.
  * @since  2.4.7 Added filter `ap_user_can_delete_post`.
@@ -530,11 +612,17 @@ function ap_user_can_delete_post( $post_id, $user_id = false ) {
 		return true;
 	}
 
-	$post_o = get_post( $post_id );
+	$post_o = ap_get_post( $post_id );
 	$type = $post_o->post_type;
+
+	// Return if not question or answer post type.
+	if ( ! in_array( $post_o->post_type, [ 'question', 'answer' ], true ) ) {
+		return false;
+	}
 
 	/**
 	 * Filter to hijack ap_user_can_delete_post.
+	 *
 	 * @param  boolean|string 	$apply_filter 	Apply current filter, empty string by default.
 	 * @param  integer|object 	$post_id 		Post ID or object.
 	 * @param  integer 			$user_id 		User ID.
@@ -542,6 +630,7 @@ function ap_user_can_delete_post( $post_id, $user_id = false ) {
 	 * @since  2.4.6
 	 */
 	$filter = apply_filters( 'ap_user_can_delete_post', '', $post_o->ID, $user_id );
+
 	if ( true === $filter ) {
 		return true;
 	} elseif ( false === $filter ) {
@@ -553,9 +642,9 @@ function ap_user_can_delete_post( $post_id, $user_id = false ) {
 		return false;
 	}
 
-	if ( $user_id == $post_o->post_author && user_can( $user_id, 'ap_delete_'.$type ) ) {
+	if ( $user_id == $post_o->post_author && user_can( $user_id, 'ap_delete_' . $type ) ) { // loose comparison ok.
 		return true;
-	} elseif ( user_can( $user_id, 'ap_delete_others_'.$type ) ) {
+	} elseif ( user_can( $user_id, 'ap_delete_others_' . $type ) ) {
 		return true;
 	}
 
@@ -564,6 +653,7 @@ function ap_user_can_delete_post( $post_id, $user_id = false ) {
 
 /**
  * Check if user can delete a question.
+ *
  * @param  object|integer $question   Question ID or object.
  * @param  boolean        $user_id    User ID.
  * @return boolean
@@ -576,6 +666,7 @@ function ap_user_can_delete_question( $question, $user_id = false ) {
 
 /**
  * Check if user can delete a answer.
+ *
  * @param  object|integer $answer   Answer ID or object.
  * @param  boolean        $user_id  User ID.
  * @return boolean
@@ -588,10 +679,23 @@ function ap_user_can_delete_answer( $answer, $user_id = false ) {
 
 /**
  * Check if user can permanently delete a AnsPress posts
+ *
  * @return boolean
  */
-function ap_user_can_permanent_delete() {
-	if ( is_super_admin() ) {
+function ap_user_can_permanent_delete( $post = null, $user_id = false ) {
+
+	if ( false === $user_id ) {
+		$user_id = get_current_user_id();
+	}
+
+	$_post = ap_get_post( $post );
+
+	// Return false if not question or answer.
+	if( ! in_array( $_post->post_type, [ 'question', 'answer' ], true) ) {
+		return false;
+	}
+
+	if ( is_super_admin( $user_id ) || user_can( $user_id, 'ap_delete_post_permanent' ) ) {
 		return true;
 	}
 
@@ -600,10 +704,12 @@ function ap_user_can_permanent_delete() {
 
 /**
  * Check if user can restore question or answer.
+ *
+ * @param  boolean|integer $user_id  User ID.
  * @return boolean
  * @since  3.0.0
  */
-function ap_user_can_restore( $user_id = false ) {
+function ap_user_can_restore( $post = null, $user_id = false ) {
 	if ( false === $user_id ) {
 		$user_id = get_current_user_id();
 	}
@@ -613,7 +719,9 @@ function ap_user_can_restore( $user_id = false ) {
 		return true;
 	}
 
-	if ( user_can( $user_id, 'ap_restore_posts' ) ) {
+	$_post = ap_get_post( $post );
+
+	if ( user_can( $user_id, 'ap_restore_posts' ) || (int) $_post->post_author === $user_id ) {
 		return true;
 	}
 
@@ -621,13 +729,14 @@ function ap_user_can_restore( $user_id = false ) {
 }
 
 /**
- * Check if user have permission to view post
- * @param  int $post_id post ID.
- * @param  int $user_id user ID.
+ * Check if user have permission to view post.
+ *
+ * @param  mixed         $_post Post.
+ * @param  integer|false $user_id user ID.
  * @return boolean
  * @since  2.0.1
  */
-function ap_user_can_view_private_post( $post_id, $user_id = false ) {
+function ap_user_can_view_private_post( $_post = null, $user_id = false ) {
 
 	if ( false === $user_id ) {
 		$user_id = get_current_user_id();
@@ -637,17 +746,21 @@ function ap_user_can_view_private_post( $post_id, $user_id = false ) {
 		return true;
 	}
 
-	$post_o = get_post( $post_id );
+	$post_o = ap_get_post( $_post );
 
-	if ( $post_o->post_author == $user_id ) {
+	if( ! $post_o ) {
+		return false;
+	}
+
+	if ( $post_o->post_author == $user_id ) { // loose comparison ok.
 		return true;
 	}
 
 	// Also allow question author to see all private answers.
-	if ( 'answer' == $post_o->post_type ) {
-		$question = get_post( $post_o->post_parent );
+	if ( 'answer' === $post_o->post_type ) {
+		$question = ap_get_post( $post_o->post_parent );
 
-		if ( $question->post_author == $user_id ) {
+		if ( $question->post_author == $user_id ) { // loose comparison ok.
 			return true;
 		}
 	}
@@ -656,12 +769,13 @@ function ap_user_can_view_private_post( $post_id, $user_id = false ) {
 }
 
 /**
- * Check if user can view a moderate post
+ * Check if user can view a moderate post.
+ *
  * @param  integer $post_id Question ID.
  * @param  integer $user_id User ID.
  * @return boolean
  */
-function ap_user_can_view_moderate_post( $post_id, $user_id = false ) {
+function ap_user_can_view_moderate_post( $post_id = null, $user_id = false ) {
 	if ( false === $user_id ) {
 		$user_id = get_current_user_id();
 	}
@@ -675,9 +789,9 @@ function ap_user_can_view_moderate_post( $post_id, $user_id = false ) {
 		return true;
 	}
 
-	$post_o = get_post( $post_id );
+	$post_o = ap_get_post( $post_id );
 
-	if ( $post_o->post_author == $user_id ) {
+	if ( $post_o->post_author == $user_id ) { // loose comparison ok.
 		return true;
 	}
 
@@ -686,6 +800,7 @@ function ap_user_can_view_moderate_post( $post_id, $user_id = false ) {
 
 /**
  * Check if user can view a future post.
+ *
  * @param  integer $post_id Post ID.
  * @param  integer $user_id User ID.
  * @return boolean
@@ -704,9 +819,9 @@ function ap_user_can_view_future_post( $post_id, $user_id = false ) {
 		return true;
 	}
 
-	$post_o = get_post( $post_id );
+	$post_o = ap_get_post( $post_id );
 
-	if ( $post_o->post_author == $user_id ) {
+	if ( $post_o->post_author == $user_id ) { // loose comparison ok.
 		return true;
 	}
 
@@ -715,10 +830,12 @@ function ap_user_can_view_future_post( $post_id, $user_id = false ) {
 
 /**
  * Check if user can view post
- * @param  integer $post_id Question or answer ID.
+ *
+ * @param  integer|false $post_id Question or answer ID.
+ * @param  integer|false $user_id User ID.
  * @return boolean
  */
-function ap_user_can_view_post($post_id = false, $user_id = false) {
+function ap_user_can_view_post( $post_id = false, $user_id = false ) {
 	if ( false === $user_id ) {
 		$user_id = get_current_user_id();
 	}
@@ -727,21 +844,21 @@ function ap_user_can_view_post($post_id = false, $user_id = false) {
 		return true;
 	}
 
-	$post_o = get_post( $post_id );
+	$post_o = ap_get_post( $post_id );
 
-	if ( 'private_post' == $post_o->post_status && ap_user_can_view_private_post( $post_o->ID, $user_id ) ) {
+	if ( 'private_post' === $post_o->post_status && ap_user_can_view_private_post( $post_o->ID, $user_id ) ) {
 		return true;
 	}
 
-	if ( 'moderate' == $post_o->post_status && ap_user_can_view_moderate_post( $post_o->ID, $user_id ) ) {
+	if ( 'moderate' === $post_o->post_status && ap_user_can_view_moderate_post( $post_o->ID, $user_id ) ) {
 		return true;
 	}
 
-	if ( 'future' == $post_o->post_status && ap_user_can_view_future_post( $post_o->ID, $user_id ) ) {
+	if ( 'future' === $post_o->post_status && ap_user_can_view_future_post( $post_o->ID, $user_id ) ) {
 		return true;
 	}
 
-	if ( 'publish' == $post_o->post_status || 'closed' == $post_o->post_status ) {
+	if ( 'publish' === $post_o->post_status || is_post_closed( $post_o ) ) {
 		return true;
 	}
 
@@ -749,7 +866,8 @@ function ap_user_can_view_post($post_id = false, $user_id = false) {
 }
 
 /**
- * Check if anonymous posting is allowed
+ * Check if anonymous posting is allowed.
+ *
  * @return boolean
  */
 function ap_allow_anonymous() {
@@ -757,7 +875,8 @@ function ap_allow_anonymous() {
 }
 
 /**
- * Check if current user can change post status i.e. private_post, moderate, closed
+ * Check if current user can change post status i.e. private_post, moderate, closed.
+ *
  * @param  integer|object  $post_id    Question or Answer id.
  * @param  integer|boolean $user_id    User id.
  * @return boolean
@@ -774,10 +893,15 @@ function ap_user_can_change_status( $post_id, $user_id = false ) {
 		return true;
 	}
 
-	$post_o = get_post( $post_id );
+	$post_o = ap_get_post( $post_id );
+
+	if ( ! in_array( $post_o->post_type, [ 'question', 'answer' ], true ) ) {
+		return false;
+	}
 
 	/**
 	 * Filter to hijack ap_user_can_change_status.
+	 *
 	 * @param  boolean|string 	$apply_filter 	Apply current filter, empty string by default.
 	 * @param  integer 			$post_id 		Post ID.
 	 * @param  integer 			$user_id 		User ID.
@@ -785,13 +909,15 @@ function ap_user_can_change_status( $post_id, $user_id = false ) {
 	 * @since  2.4.6
 	 */
 	$filter = apply_filters( 'ap_user_can_change_status', '', $post_o->ID, $user_id );
+
 	if ( true === $filter ) {
 		return true;
 	} elseif ( false === $filter ) {
 		return false;
 	}
 
-	if ( user_can( $user_id, 'ap_change_status' ) && ($post_o->post_author > 0 && $post_o->post_author == $user_id ) ) {
+	if ( user_can( $user_id, 'ap_change_status' ) &&
+	 ( $post_o->post_author > 0 && $post_o->post_author == $user_id ) ) { // loose comparison ok.
 		return true;
 	}
 
@@ -799,11 +925,18 @@ function ap_user_can_change_status( $post_id, $user_id = false ) {
 }
 
 /**
- * Check if user can change post status to closed
+ * Check if user can change post status to closed.
+ *
+ * @param integer $user_id User ID.
  * @return boolean
  */
-function ap_user_can_change_status_to_closed() {
-	if ( is_super_admin() || current_user_can( 'ap_change_status_other' ) ) {
+function ap_user_can_close_question( $user_id = false ) {
+
+	if ( false === $user_id ) {
+		$user_id = get_current_user_id();
+	}
+
+	if ( is_super_admin( $user_id ) || user_can( $user_id, 'ap_close_question' ) ) {
 		return true;
 	}
 
@@ -811,7 +944,8 @@ function ap_user_can_change_status_to_closed() {
 }
 
 /**
- * Check if user can change post status to moderate
+ * Check if user can change post status to moderate.
+ *
  * @return boolean
  */
 function ap_user_can_change_status_to_moderate() {
@@ -823,10 +957,11 @@ function ap_user_can_change_status_to_moderate() {
 }
 
 /**
- * Check if user can upload an image
+ * Check if user can upload an image.
+ *
  * @return boolean
  */
-function ap_user_can_upload_image() {
+function ap_user_can_upload() {
 	if ( ! is_user_logged_in() ) {
 		return false;
 	}
@@ -835,7 +970,7 @@ function ap_user_can_upload_image() {
 		return true;
 	}
 
-	if ( ap_opt( 'allow_upload_image' ) ) {
+	if ( ap_opt( 'allow_upload' ) ) {
 		return true;
 	}
 
@@ -845,6 +980,7 @@ function ap_user_can_upload_image() {
 
 /**
  * Check if user can delete an attachment.
+ *
  * @param  integer         $attacment_id Attachment ID.
  * @param  boolean|integer $user_id      User ID.
  * @return boolean
@@ -859,14 +995,14 @@ function ap_user_can_delete_attachment( $attacment_id, $user_id = false ) {
 		return true;
 	}
 
-	$attachment = get_post( $attacment_id );
+	$attachment = ap_get_post( $attacment_id );
 
 	if ( ! $attachment ) {
 		return false;
 	}
 
 	// Check if attachment post author matches `$user_id`.
-	if ( $user_id == $attachment->post_author ) {
+	if ( $user_id == $attachment->post_author ) { // loose comparison ok.
 		return true;
 	}
 
@@ -874,55 +1010,10 @@ function ap_user_can_delete_attachment( $attacment_id, $user_id = false ) {
 }
 
 /**
- * Check if user can upload an avatar
- * @since 2.4
+ * Check if user can by pass a captcha.
+ *
+ * @param integer|false $user_id User ID.
  */
-function ap_user_can_upload_avatar() {
-	// Return false if profile is not active.
-	if ( ! ap_is_profile_active() ) {
-		return false;
-	}
-
-	if ( is_super_admin() || current_user_can( 'ap_upload_avatar' ) ) {
-		return true;
-	}
-
-	return false;
-}
-
-/**
- * Check if user can upload a cover image
- * @since 2.4
- */
-function ap_user_can_upload_cover() {
-	// Return false if profile is not active.
-	if ( ! ap_is_profile_active() ) {
-		return false;
-	}
-
-	if ( is_super_admin() || current_user_can( 'ap_upload_cover' ) ) {
-		return true;
-	}
-
-	return false;
-}
-
-/**
- * Check if user can edit their profile
- */
-function ap_user_can_edit_profile() {
-	// Return false if profile is not active.
-	if ( ! ap_is_profile_active() ) {
-		return false;
-	}
-
-	if ( is_super_admin() || current_user_can( 'ap_edit_profile' ) ) {
-		return true;
-	}
-
-	return false;
-}
-
 function ap_show_captcha_to_user( $user_id = false ) {
 	if ( false === $user_id ) {
 		$user_id = get_current_user_id();
@@ -937,7 +1028,7 @@ function ap_show_captcha_to_user( $user_id = false ) {
 		return false;
 	}
 
-	if ( ap_opt( 'recaptcha_site_key' ) != '' && ap_opt( 'enable_recaptcha' ) ) {
+	if ( ap_opt( 'recaptcha_site_key' ) !== '' && ap_opt( 'enable_recaptcha' ) ) {
 		return true;
 	}
 
@@ -946,6 +1037,7 @@ function ap_show_captcha_to_user( $user_id = false ) {
 
 /**
  * Get AnsPress role capabilities by role key.
+ *
  * @param  string $role Role key.
  * @return array|false
  * @since 2.4.6
@@ -953,39 +1045,39 @@ function ap_show_captcha_to_user( $user_id = false ) {
 function ap_role_caps( $role ) {
 	$roles = array(
 		'participant' => array(
-			'ap_read_question'         	=> true,
-			'ap_read_answer'			=> true,
-			'ap_new_question'			=> true,
-			'ap_new_answer'				=> true,
-			'ap_new_comment'			=> true,
-			'ap_edit_question'			=> true,
-			'ap_edit_answer'			=> true,
-			'ap_edit_comment'			=> true,
-			'ap_delete_question'		=> true,
-			'ap_delete_answer'			=> true,
-			'ap_delete_comment'			=> true,
-			'ap_vote_up'				=> true,
-			'ap_vote_down'				=> true,
-			'ap_vote_flag'				=> true,
-			'ap_vote_close'				=> true,
-			'ap_upload_cover'			=> true,
-			'ap_change_status'			=> true,
-			'ap_upload_avatar'			=> true,
-			'ap_edit_profile'			=> true,
+			'ap_read_question'   => true,
+			'ap_read_answer'     => true,
+			'ap_new_question'    => true,
+			'ap_new_answer'      => true,
+			'ap_new_comment'     => true,
+			'ap_edit_question'   => true,
+			'ap_edit_answer'     => true,
+			'ap_edit_comment'    => true,
+			'ap_delete_question' => true,
+			'ap_delete_answer'   => true,
+			'ap_delete_comment'  => true,
+			'ap_vote_up'         => true,
+			'ap_vote_down'       => true,
+			'ap_vote_flag'       => true,
+			'ap_vote_close'      => true,
+			'ap_upload_cover'    => true,
+			'ap_change_status'   => true,
 		),
 		'moderator' => array(
-			'ap_edit_others_question'	=> true,
-			'ap_edit_others_answer'		=> true,
-			'ap_edit_others_comment'	=> true,
-			'ap_delete_others_question'	=> true,
-			'ap_delete_others_answer'	=> true,
-			'ap_delete_others_comment'	=> true,
-			'ap_view_private'			=> true,
-			'ap_view_moderate'			=> true,
-			'ap_change_status_other'	=> true,
-			'ap_approve_comment'		=> true,
-			'ap_no_moderation'			=> true,
-			'ap_restore_posts'			=> true,
+			'ap_edit_others_question'   => true,
+			'ap_edit_others_answer'     => true,
+			'ap_edit_others_comment'    => true,
+			'ap_delete_others_question' => true,
+			'ap_delete_others_answer'   => true,
+			'ap_delete_others_comment'  => true,
+			'ap_delete_post_permanent'  => true,
+			'ap_view_private'           => true,
+			'ap_view_moderate'          => true,
+			'ap_change_status_other'    => true,
+			'ap_approve_comment'        => true,
+			'ap_no_moderation'          => true,
+			'ap_restore_posts'          => true,
+			'ap_toggle_featured'        => true,
 		),
 	);
 
@@ -999,30 +1091,37 @@ function ap_role_caps( $role ) {
 }
 
 /**
- * Check if a user can read post
- * @param  integer|object  $post_id 	Post ID.
- * @param  boolean|integer $user_id     User ID.
+ * Check if a user can read post.
+ *
+ * @param  integer|object $post 	Post ID.
+ * @param  false|integer  $user_id   User ID.
+ * @param  string|integer $post_type Post type.
  * @return boolean
  * @since  2.4.6
  */
-function ap_user_can_read_post( $post_id, $user_id = false, $post_type = false ) {
+function ap_user_can_read_post( $post = null, $user_id = false, $post_type = false ) {
 	if ( false === $user_id ) {
 		$user_id = get_current_user_id();
 	}
 
-	$post_o = get_post( $post_id );
+	$post_o = ap_get_post( $post );
+
+	if ( ! $post_o ){
+		return false;
+	}
 
 	if ( false === $post_type ) {
 		$post_type = $post_o->post_type;
 	}
 
 	// If not question or answer then return true.
-	if ( ! in_array($post_type, array( 'question', 'answer' ) ) ) {
+	if ( ! in_array( $post_type, array( 'question', 'answer' ), true ) ) {
 		return true;
 	}
 
 	/**
 	 * Allow overriding of ap_user_can_read_post.
+	 *
 	 * @param  boolean|string  	$apply_filter Default is empty string.
 	 * @param  integer  		$post_id  	  Question ID.
 	 * @param  integer  		$user_id  	  User ID.
@@ -1031,6 +1130,7 @@ function ap_user_can_read_post( $post_id, $user_id = false, $post_type = false )
 	 * @since  2.4.6
 	 */
 	$filter = apply_filters( 'ap_user_can_read_post', '', $post_o->ID, $user_id, $post_type );
+
 	if ( true === $filter ) {
 		return true;
 	} elseif ( false === $filter ) {
@@ -1038,7 +1138,7 @@ function ap_user_can_read_post( $post_id, $user_id = false, $post_type = false )
 	}
 
 	// Also return true if user have capability to edit others question.
-	if ( user_can( $user_id, 'ap_edit_others_'.$post_type ) ) {
+	if ( user_can( $user_id, 'ap_edit_others_' . $post_type ) ) {
 		return true;
 	}
 
@@ -1048,34 +1148,34 @@ function ap_user_can_read_post( $post_id, $user_id = false, $post_type = false )
 	}
 
 	// If Answer, check if user can read parent question.
-	if ( 'answer' == $post_type ) {
-		$answer = get_post( $post_o->post_parent );
-		if ( 'private_post' == $answer->post_status && ! ap_user_can_view_private_post( $answer->ID, $user_id ) ) {
+	if ( 'answer' === $post_type ) {
+		$answer = ap_get_post( $post_o->post_parent );
+		if ( 'private_post' === $answer->post_status && ! ap_user_can_view_private_post( $answer->ID, $user_id ) ) {
 			return false;
-		} elseif ( 'moderate' == $answer->post_status && ! ap_user_can_view_moderate_post( $answer->ID, $user_id ) ) {
+		} elseif ( 'moderate' === $answer->post_status && ! ap_user_can_view_moderate_post( $answer->ID, $user_id ) ) {
 			return false;
 		}
 	}
 
-	if ( 'private_post' == $post_o->post_status && ! ap_user_can_view_private_post( $post_id, $user_id ) ) {
+	if ( 'private_post' === $post_o->post_status && ! ap_user_can_view_private_post( $post_id, $user_id ) ) {
 		return false;
-	} elseif ( 'moderate' == $post_o->post_status && ! ap_user_can_view_moderate_post( $post_id, $user_id ) ) {
+	} elseif ( 'moderate' === $post_o->post_status && ! ap_user_can_view_moderate_post( $post_id, $user_id ) ) {
 		return false;
 	}
 
-	if ( ! ap_opt('only_logged_in' ) && 'question' == $post_type ) {
+	if ( ! ap_opt( 'only_logged_in' ) && 'question' === $post_type ) {
 		return true;
 	}
 
-	if ( ! ap_opt('logged_in_can_see_ans' ) && 'answer' == $post_type ) {
+	if ( ! ap_opt( 'logged_in_can_see_ans' ) && 'answer' === $post_type ) {
 		return true;
 	}
 
-	if ( ap_opt('only_logged_in' ) && is_user_logged_in() && 'question' == $post_type ) {
+	if ( ap_opt( 'only_logged_in' ) && is_user_logged_in() && 'question' === $post_type ) {
 		return true;
 	}
 
-	if ( ap_opt('logged_in_can_see_ans' ) && is_user_logged_in() && 'answer' == $post_type ) {
+	if ( ap_opt( 'logged_in_can_see_ans' ) && is_user_logged_in() && 'answer' === $post_type ) {
 		return true;
 	}
 
@@ -1084,7 +1184,8 @@ function ap_user_can_read_post( $post_id, $user_id = false, $post_type = false )
 }
 
 /**
- * Check if a user can read question
+ * Check if a user can read question.
+ *
  * @param  integer|object  $question_id   Question ID.
  * @param  boolean|integer $user_id     User ID.
  * @return boolean
@@ -1096,19 +1197,21 @@ function ap_user_can_read_question( $question_id, $user_id = false ) {
 }
 
 /**
- * Check if a user can read answer
+ * Check if a user can read answer.
+ *
  * @param  integer|object  $answer_id   Answer ID.
  * @param  boolean|integer $user_id     User ID.
  * @return boolean
  * @uses   ap_user_can_read_post
  * @since  2.4.6
  */
-function ap_user_can_read_answer( $answer_id, $user_id = false ) {
-	return ap_user_can_read_post( $answer_id, $user_id, 'answer' );
+function ap_user_can_read_answer( $post = null, $user_id = false ) {
+	return ap_user_can_read_post( $post, $user_id, 'answer' );
 }
 
 /**
  * Check if user is allowed to cast a vote on post.
+ *
  * @param  integer|object  $post_id 	Post ID or Object.
  * @param  string          $type    	Vote type. vote_up or vote_down.
  * @param  boolean|integer $user_id 	User ID.
@@ -1126,12 +1229,12 @@ function ap_user_can_vote_on_post( $post_id, $type, $user_id = false, $wp_error 
 		return true;
 	}
 
-	$type = $type == 'vote_up' ? 'vote_up' : 'vote_down';
-
-	$post_o = get_post( $post_id );
+	$type = 'vote_up' === $type ? 'vote_up' : 'vote_down';
+	$post_o = ap_get_post( $post_id );
 
 	/**
 	 * Filter to hijack ap_user_can_vote_on_post.
+	 *
 	 * @param  boolean|string 	$apply_filter 	Apply current filter, empty string by default.
 	 * @param  integer|object 	$post_id 		Post ID or object.
 	 * @param  string 		 	$type 			Vote type, vote_up or vote_down.
@@ -1140,6 +1243,7 @@ function ap_user_can_vote_on_post( $post_id, $type, $user_id = false, $wp_error 
 	 * @since  2.4.6
 	 */
 	$filter = apply_filters( 'ap_user_can_vote_on_post', '', $post_o->ID, $type, $user_id );
+
 	if ( true === $filter ) {
 		return true;
 	} elseif ( false === $filter ) {
@@ -1147,9 +1251,9 @@ function ap_user_can_vote_on_post( $post_id, $type, $user_id = false, $wp_error 
 	}
 
 	// Do not allow post author to vote on self posts.
-	if ( $post_o->post_author == $user_id ) {
+	if ( $post_o->post_author == $user_id ) { // loose comparison okay.
 		if ( $wp_error ) {
-			return new WP_Error('cannot_vote_own_post', __('Voting on own\'s post is not allowed.', 'anspress-question-answer' ) );
+			return new WP_Error( 'cannot_vote_own_post', __( 'Voting on own post is not allowed', 'anspress-question-answer' ) );
 		}
 		return false;
 	}
@@ -1157,24 +1261,25 @@ function ap_user_can_vote_on_post( $post_id, $type, $user_id = false, $wp_error 
 	// Check if user can read question/answer, if not then they are not allowed to vote.
 	if ( ! ap_user_can_read_post( $post_id, $user_id ) ) {
 		if ( $wp_error ) {
-			return new WP_Error('you_cannot_vote_on_restricted', __( 'Voting on restricted posts are not allowed.', 'anspress-question-answer' ) );
+			return new WP_Error( 'you_cannot_vote_on_restricted', __( 'Voting on restricted posts are not allowed.', 'anspress-question-answer' ) );
 		}
 		return false;
 	}
 
-	if ( user_can( $user_id, 'ap_'.$type ) ) {
+	if ( user_can( $user_id, 'ap_' . $type ) ) {
 		return true;
 	}
 
 	if ( $wp_error ) {
-		return new WP_Error('no_permission', __('You do not have permission to vote.', 'anspress-question-answer' ) );
+		return new WP_Error( 'no_permission', __( 'You do not have permission to vote.', 'anspress-question-answer' ) );
 	}
 
 	return false;
 }
 
 /**
- * Check if user can delete comment
+ * Check if user can delete comment.
+ *
  * @param  integer|boolean $user_id User ID.
  * @return boolean
  */
@@ -1185,19 +1290,55 @@ function ap_user_can_approve_comment( $user_id = false ) {
 
 	/**
 	 * Filter to hijack ap_user_can_approve_comment.
+	 *
 	 * @param  boolean|string 	$apply_filter 	Apply current filter, empty string by default.
 	 * @param  integer 			$user_id 		User ID.
 	 * @return boolean
 	 * @since  3.0.0
 	 */
 	$filter = apply_filters( 'ap_user_can_approve_comment', '', $user_id );
+
 	if ( true === $filter ) {
 		return true;
 	} elseif ( false === $filter ) {
 		return false;
 	}
 
-	if ( is_super_admin($user_id ) || user_can( $user_id, 'ap_approve_comment' ) ) {
+	if ( is_super_admin( $user_id ) || user_can( $user_id, 'ap_approve_comment' ) ) {
+		return true;
+	}
+
+	return false;
+}
+
+/**
+ * Check if user can toggle featured question.
+ *
+ * @param  integer|boolean $user_id User ID.
+ * @return boolean
+ */
+function ap_user_can_toggle_featured( $user_id = false ) {
+	if ( false === $user_id ) {
+		$user_id = get_current_user_id();
+	}
+
+	/**
+	 * Filter to hijack ap_user_can_toggle_featured.
+	 *
+	 * @param  boolean|string 	$apply_filter 	Apply current filter, empty string by default.
+	 * @param  integer 			$user_id 		User ID.
+	 * @return boolean
+	 * @since  3.0.0
+	 */
+	$filter = apply_filters( 'ap_user_can_toggle_featured', '', $user_id );
+
+	if ( true === $filter ) {
+		return true;
+	} elseif ( false === $filter ) {
+		return false;
+	}
+
+	if ( is_super_admin( $user_id ) || user_can( $user_id, 'ap_toggle_featured' ) ) {
 		return true;
 	}
 

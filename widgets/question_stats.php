@@ -36,20 +36,17 @@ class AnsPress_Stats_Widget extends WP_Widget {
 			echo $args['before_title'] . $title . $args['after_title'];
 		}
 
-		$ans_count 		= ap_question_get_the_answer_count();
-		$last_active 	= ap_question_get_the_active_ago();
-		$total_subs 	= ap_question_get_the_subscriber_count();
-		$view_count 	= ap_question_get_the_view_count();
-		$last_active_time = ap_human_time( mysql2date( 'G', $last_active ) );
+		$ans_count 		= ap_get_answers_count( get_question_id() );
+		$last_active 	= ap_get_last_active( get_question_id() );
+		$view_count 	= ap_get_post_field( 'views', get_question_id() );
 
 		echo '<div class="ap-widget-inner">';
 
 		if ( is_question() ) {
 			echo '<ul class="ap-stats-widget">';
-			echo '<li><span class="stat-label apicon-pulse">'.__( 'Active', 'anspress-question-answer' ). '</span><span class="stat-value"><time class="published updated" itemprop="dateModified" datetime="'.mysql2date( 'c', $last_active ).'">'. $last_active_time .'</time></span></li>' ;
+			echo '<li><span class="stat-label apicon-pulse">'.__( 'Active', 'anspress-question-answer' ). '</span><span class="stat-value"><time class="published updated" itemprop="dateModified" datetime="'.mysql2date( 'c', $last_active ).'">'. $last_active .'</time></span></li>' ;
 			echo '<li><span class="stat-label apicon-eye">'.__( 'Views', 'anspress-question-answer' ). '</span><span class="stat-value">'.sprintf( _n( 'One time', '%d times', $view_count, 'anspress-question-answer' ), $view_count ).'</span></li>' ;
 			echo '<li><span class="stat-label apicon-answer">'.__( 'Answers', 'anspress-question-answer' ). '</span><span class="stat-value">'.sprintf( _n( '%2$s1%3$s answer', '%2$s%1$d%3$s answers', $ans_count, 'anspress-question-answer' ), $ans_count, '<span data-view="answer_count">', '</span>' ).'</span></li>' ;
-			echo '<li><span class="stat-label apicon-mail">'.__( 'Followers', 'anspress-question-answer' ). '</span><span class="stat-value">'.sprintf( _n( '1 follower', '%d followers', $total_subs, 'anspress-question-answer' ), $total_subs ).'</span></li>' ;
 			echo '</ul>';
 		} else {
 			_e( 'This widget can only be used in single question page', 'anspress-question-answer' );

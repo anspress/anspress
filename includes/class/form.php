@@ -2,10 +2,11 @@
 /**
  * Form class
  *
- * @package  	AnsPress
- * @license  	https://www.gnu.org/licenses/gpl-2.0.txt GPL v2.0 (or later)
- * @link     	https://anspress.io
- * @since 		2.0
+ * @package AnsPress
+ * @author    Rahul Aryan <support@anspress.io>
+ * @license   GPL-3.0+
+ * @link      https://anspress.io
+ * @copyright 2014 Rahul Aryan
  */
 
 /**
@@ -14,40 +15,46 @@
 class AnsPress_Form {
 
 	/**
-	 * Name of the form
+	 * Name of the form.
+	 *
 	 * @var string
 	 */
 	private $name;
 
 	/**
-	 * Form arguments
+	 * Form arguments.
+	 *
 	 * @var array
 	 */
 	private $args = array();
 
 	/**
-	 * HTML output
+	 * HTML output.
+	 *
 	 * @var string
 	 */
 	private $output = '';
 
 	/**
-	 * Current field
+	 * Current field.
+	 *
 	 * @var array
 	 */
 	private $field;
 
 	/**
-	 * Form error
+	 * Form error.
+	 *
 	 * @var array
 	 */
 	private $errors;
 
 	/**
-	 * Initiate the class
-	 * @param array $args Form arguments
+	 * Initiate the class.
+	 *
+	 * @param array $args Form arguments.
 	 */
-	public function __construct($args = array()) {
+	public function __construct( $args = array() ) {
 
 		// Default form arguments.
 		$defaults = array(
@@ -86,13 +93,11 @@ class AnsPress_Form {
 				return;
 			}
 
-			if ( ! isset( $field['order'] ) ) {
-				$this->args['fields'][ $k ]['order'] = 10;
-			}
-
-			if ( ! isset( $field['show_desc_tip'] ) ) {
-				$this->args['fields'][ $k ]['show_desc_tip'] = true;
-			}
+			$this->args['fields'][ $k ] = wp_parse_args( $field, array(
+				'order'         => 10,
+				'show_desc_tip' => false,
+				'type'          => 'text',
+			) );
 
 			// Get value from opttions if options_form.
 			if ( 'options_form' == $this->name && isset( $field['name'] ) && ! isset( $field['value'] ) ) {
@@ -102,8 +107,8 @@ class AnsPress_Form {
 	}
 
 	/**
-	 * Order fields
-	 * @return void
+	 * Order fields.
+	 *
 	 * @since 2.0.1
 	 */
 	private function order_fields() {
@@ -115,8 +120,8 @@ class AnsPress_Form {
 	}
 
 	/**
-	 * Build the form
-	 * @return void
+	 * Build the form.
+	 *
 	 * @since 2.0.1
 	 */
 	public function build() {
@@ -124,15 +129,15 @@ class AnsPress_Form {
 		$this->form_head();
 		$this->form_fields();
 
-		if ( ! isset( $this->args['hide_footer'] ) || $this->args['hide_footer'] !== false ) {
+		if ( ! isset( $this->args['hide_footer'] ) || false !== $this->args['hide_footer'] ) {
 			$this->hidden_fields();
 			$this->form_footer();
 		}
 	}
 
 	/**
-	 * FORM element
-	 * @return void
+	 * FORM element.
+	 *
 	 * @since 2.0.1
 	 */
 	private function form_head() {
@@ -148,30 +153,31 @@ class AnsPress_Form {
 		}
 
 		if ( ! empty( $this->args['class'] ) ) {
-			$attr .= ' class="'.$this->args['class'].'"';
+			$attr .= ' class="' . $this->args['class'] . '"';
 		}
 
 		ob_start();
 
 		/**
 		 * ACTION: ap_form_before_[form_name]
-		 * action for hooking before form
+		 * action for hooking before form.
+		 *
 		 * @since 2.0.1
 		 */
-		do_action( 'ap_form_before_'. $this->name );
+		do_action( 'ap_form_before_' . $this->name );
 
 		$this->output .= ob_get_clean();
 
 		// Add enctype if form is multipart.
 		$multipart = $this->args['multipart'] ? ' enctype="multipart/form-data"' : '';
-		if ( ! isset( $this->args['hide_footer'] ) || $this->args['hide_footer'] !== false ) {
-			$this->output .= '<form name="'.$this->args['name'].'" id="'.$this->args['name'].'" method="'.$this->args['method'].'" action="'.$this->args['action'].'"'.$attr.$multipart.'>';
+		if ( ! isset( $this->args['hide_footer'] ) || false !== $this->args['hide_footer'] ) {
+			$this->output .= '<form name="' . $this->args['name'] . '" id="' . $this->args['name'] . '" method="' . $this->args['method'] . '" action="' . $this->args['action'] . '"' . $attr . $multipart . '>';
 		}
 	}
 
 	/**
-	 * FORM footer
-	 * @return void
+	 * FORM footer.
+	 *
 	 * @since 2.0.1
 	 */
 	private function form_footer() {
@@ -181,19 +187,20 @@ class AnsPress_Form {
 		/**
 		 * ACTION: ap_form_bottom_[form_name]
 		 * action for hooking captcha and extar fields
+		 *
 		 * @since 2.0.1
 		 */
-		do_action( 'ap_form_bottom_'. $this->name );
+		do_action( 'ap_form_bottom_' . $this->name );
 		$this->output .= ob_get_clean();
 
-		$this->output .= '<button type="submit" class="ap-btn ap-btn-submit">'.$this->args['submit_button'].'</button>';
-		
+		$this->output .= '<button type="submit" class="ap-btn ap-btn-submit">' . $this->args['submit_button'] . '</button>';
+
 		if ( isset( $this->args['show_reset'] ) && true === $this->args['show_reset'] ) {
-			$this->output .= '<input type="submit" name="reset" class="button ap-btn ap-btn-reset" value="'. __('Reset', 'anspress-question-answer') .'" />';
+			$this->output .= '<input type="submit" name="reset" class="button ap-btn ap-btn-reset" value="' . __( 'Reset', 'anspress-question-answer' ) . '" />';
 		}
 
 		if ( isset( $this->args['show_cancel'] ) && true === $this->args['show_cancel'] ) {
-			$this->output .= '<button type="button" class="ap-btn ap-btn-cancel">'.__( 'Cancel', 'anspress-question-answer' ).'</button>';
+			$this->output .= '<button type="button" class="ap-btn ap-btn-cancel">' . __( 'Cancel', 'anspress-question-answer' ) . '</button>';
 		}
 
 		$this->output .= '</form>';
@@ -208,19 +215,18 @@ class AnsPress_Form {
 	}
 
 	/**
-	 * Form hidden fields
-	 * @return void
+	 * Form hidden fields.
+	 *
 	 * @since 2.0.1
 	 */
 	private function hidden_fields() {
-		$this->output .= '<input type="hidden" name="ap_form_action" value="'.$this->name.'">';
-
+		$this->output .= '<input type="hidden" name="ap_form_action" value="' . $this->name . '">';
 		$this->nonce();
 	}
 
 	/**
-	 * form field label
-	 * @return void
+	 * Form field label.
+	 *
 	 * @since 2.0.1
 	 */
 	private function label() {
@@ -235,35 +241,37 @@ class AnsPress_Form {
 	}
 
 	/**
-	 * Output placeholder attribute of current field
+	 * Output placeholder attribute of current field.
+	 *
 	 * @return string
 	 * @since 2.0.1
 	 */
 	private function placeholder() {
-		return ! empty( $this->field['placeholder'] ) ? ' placeholder="'.$this->field['placeholder'].'"' : '';
+		return ! empty( $this->field['placeholder'] ) ? ' placeholder="' . $this->field['placeholder'] . '"' : '';
 	}
 
 	/**
-	 * Output description of a form fields
-	 * @return void
+	 * Output description of a form fields.
+	 *
 	 * @since 2.0.1
 	 */
 	private function desc() {
 		if ( ! $this->field['show_desc_tip'] ) {
-			$this->output .= ( ! empty( $this->field['desc'] ) ? '<p class="ap-field-desc">'.$this->field['desc'].'</p>' : '');
+			$this->output .= ( ! empty( $this->field['desc'] ) ? '<p class="ap-field-desc">' . $this->field['desc'] . '</p>' : '');
 		} else {
 
-			$this->output .= ( ! empty( $this->field['desc'] ) ? '<span class="ap-tip ap-field-desc" data-tipposition="right" title="'.esc_html( $this->field['desc'] ).'">?</span>' : '');
+			$this->output .= ( ! empty( $this->field['desc'] ) ? '<span class="ap-tip ap-field-desc" data-tipposition="right" title="' . esc_html( $this->field['desc'] ) . '">?</span>' : '');
 		}
 	}
 
 	/**
-	 * Output text fields
-	 * @param       array $field
-	 * @return      void
-	 * @since       2.0
+	 * Output text fields.
+	 *
+	 * @param array  $field Field.
+	 * @param string $type Type of field.
+	 * @since 2.0
 	 */
-	private function text_field($field = array(), $type = 'text') {
+	private function text_field( $field = array(), $type = 'text' ) {
 
 		if ( isset( $field['label'] ) ) {
 			$this->label();
@@ -276,26 +284,28 @@ class AnsPress_Form {
 
 		if ( ! isset( $field['repeatable'] ) || ! $field['repeatable'] ) {
 
-			$this->output .= '<input id="'. @$field['name'] .'" type="'.$type.'" class="ap-form-control" value="'. @$field['value'] .'" name="'. @$field['name'] .'"'.$placeholder.' '. $this->attr( $field ) .$autocomplete.' />';
+			$this->output .= '<input id="' . $field['name'] . '" type="' . $type . '" class="ap-form-control" value="' . $field['value'] . '" name="' . $field['name'] . '"' . $placeholder . ' ' . $this->attr( $field ) . $autocomplete . ' />';
 
-			if ( $type == 'password' ) {
-				$this->output .= '<input id="'. @$field['name'] .'-1" type="'.$type.'" class="ap-form-control" value="'. @$field['value'] .'" name="'. @$field['name'] .'-1" placeholder="'.__( 'Repeat your password', 'anspress-question-answer' ).'" '. $this->attr( $field ) .$autocomplete.' />';
+			if ( 'password' === $type ) {
+				$this->output .= '<input id="' . $field['name'] . '-1" type="' . $type . '" class="ap-form-control" value="' . $field['value'] . '" name="' . $field['name'] . '-1" placeholder="' . __( 'Repeat your password', 'anspress-question-answer' ).'" ' . $this->attr( $field ) . $autocomplete . ' />';
 			}
 		} else {
 			if ( ! empty( $field['value'] ) && is_array( $field['value'] ) ) {
-				$this->output .= '<div id="ap-repeat-c-'. @$field['name'] .'" class="ap-repeatbable-field">';
+				$this->output .= '<div id="ap-repeat-c-' . $field['name'] . '" class="ap-repeatbable-field">';
+
 				foreach ( $field['value'] as $k => $rep_f ) {
-					$this->output .= '<div id="ap_text_rep_'. @$field['name'] .'_'.$k.'" class="ap-repeatbable-field"><input id="'. @$field['name'] .'_'.$k.'" type="text" class="ap-form-control ap-repeatable-text" value="'. @$rep_f .'" name="'. @$field['name'] .'['.$k.']"'.$placeholder.' '. $this->attr( $field ) .$autocomplete.' />';
-					$this->output .= '<button data-action="ap_delete_field" type="button" data-toggle="'. @$field['name'] .'_'.$k.'">'.__( 'Delete', 'anspress-question-answer' ).'</button>';
+					$this->output .= '<div id="ap_text_rep_' . $field['name'] . '_' . $k . '" class="ap-repeatbable-field"><input id="' . $field['name'] . '_' . $k . '" type="text" class="ap-form-control ap-repeatable-text" value="' . $rep_f . '" name="' . $field['name'] . '[' . $k . ']"' . $placeholder . ' ' . $this->attr( $field ) . $autocomplete . ' />';
+					$this->output .= '<button data-action="ap_delete_field" type="button" data-toggle="'. $field['name'] . '_' . $k . '">' . __( 'Delete', 'anspress-question-answer' ) . '</button>';
 					$this->output .= '</div>';
 				}
+
 				$this->output .= '</div>';
 
-				$this->output .= '<div id="ap-repeatbable-field-'. @$field['name'] .'" class="ap-reapt-field-copy">';
-				$this->output .= '<div id="ap_text_rep_'. @$field['name'] .'_#" class="ap-repeatbable-field"><input id="'. @$field['name'] .'_#" type="text" class="ap-form-control ap-repeatable-text" value="" name="'. @$field['name'] .'[#]"'.$placeholder.' '. $this->attr( $field ) .$autocomplete.' />';
-				$this->output .= '<button data-action="ap_delete_field" type="button" data-toggle="'. @$field['name'] .'_#">'.__( 'Delete', 'anspress-question-answer' ).'</button>';
+				$this->output .= '<div id="ap-repeatbable-field-' . $field['name'] . '" class="ap-reapt-field-copy">';
+				$this->output .= '<div id="ap_text_rep_' . $field['name'] . '_#" class="ap-repeatbable-field"><input id="' . $field['name'] . '_#" type="text" class="ap-form-control ap-repeatable-text" value="" name="' . $field['name'] . '[#]"' . $placeholder . ' ' . $this->attr( $field ) . $autocomplete . ' />';
+				$this->output .= '<button data-action="ap_delete_field" type="button" data-toggle="' . $field['name'] . '_#">' . __( 'Delete', 'anspress-question-answer' ) . '</button>';
 				$this->output .= '</div></div>';
-				$this->output .= '<button data-action="ap_add_field" type="button" data-field="ap-repeat-c-'. @$field['name'] .'" data-copy="ap-repeatbable-field-'. @$field['name'] .'">'.__( 'Add more', 'anspress-question-answer' ).'</button>';
+				$this->output .= '<button data-action="ap_add_field" type="button" data-field="ap-repeat-c-' . $field['name'] . '" data-copy="ap-repeatbable-field-' . $field['name'] . '">' . __( 'Add more', 'anspress-question-answer' ) . '</button>';
 			}
 		}
 
@@ -309,12 +319,13 @@ class AnsPress_Form {
 	}
 
 	/**
-	 * Output text type="number"
+	 * Output text type="number".
+	 *
 	 * @param       array $field
 	 * @return      void
 	 * @since       2.0.0-alpha2
 	 */
-	private function number_field($field = array()) {
+	private function number_field( $field = array() ) {
 
 		if ( isset( $field['label'] ) ) {
 			$this->label();
@@ -334,12 +345,12 @@ class AnsPress_Form {
 	}
 
 	/**
-	 * Checkbox field
-	 * @param  array $field
-	 * @return void
+	 * Checkbox field.
+	 *
+	 * @param  array $field Field.
 	 * @since 2.0.1
 	 */
-	private function checkbox_field($field = array()) {
+	private function checkbox_field( $field = array() ) {
 		if ( isset( $field['label'] ) ) {
 			$this->label();
 		}
@@ -347,16 +358,16 @@ class AnsPress_Form {
 		$this->output .= '<div class="ap-form-fields-in">';
 
 		if ( ! empty( $field['desc'] ) ) {
-			$this->output .= '<label for="'. @$field['name'] .'">';
+			$this->output .= '<label for="' . $field['name'] . '">';
 		}
 
-		$this->output .= '<input id="'. @$field['name'] .'" type="checkbox" class="ap-form-control" value="1" name="'. @$field['name'] .'" '.checked( (bool) $field['value'], true, false ).' '. $this->attr( $field ) .' />';
+		$this->output .= '<input id="' . $field['name'] . '" type="checkbox" class="ap-form-control" value="1" name="' . $field['name'] . '" ' . checked( (bool) $field['value'], true, false ) . ' ' . $this->attr( $field ) . ' />';
 
 		// Hack for getting value of unchecked checkbox.
-		$this->output .= '<input type="hidden" value="0" name="_hidden_'. @$field['name'] .'" />';
+		$this->output .= '<input type="hidden" value="0" name="_hidden_' . $field['name'] . '" />';
 
 		if ( ! empty( $field['desc'] ) ) {
-			$this->output .= @$field['desc'].'</label>';
+			$this->output .= $field['desc'] . '</label>';
 		}
 
 		$this->error_messages();
@@ -365,12 +376,13 @@ class AnsPress_Form {
 	}
 
 	/**
-	 * Output select field options
-	 * @param  array $field
+	 * Output select field options.
+	 *
+	 * @param  array $field Field.
 	 * @return void
 	 * @since 2.0.1
 	 */
-	private function select_options($field = array()) {
+	private function select_options( $field = array() ) {
 
 		foreach ( $field['options'] as $k => $opt ) {
 			$this->output .= '<option value="'.$k.'" '.selected( $k, $field['value'], false ).'>'.$opt.'</option>'; }
@@ -642,7 +654,9 @@ class AnsPress_Form {
 						break;
 
 					case 'custom':
+						$this->output .= '<div class="ap-field-'.@$field['name'].' ap-form-fields'.$error_class.'">';
 						$this->custom_field( $field );
+						$this->output .= '</div>';
 						break;
 
 					default:

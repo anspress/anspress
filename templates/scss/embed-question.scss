@@ -1,0 +1,26 @@
+#anspress.ap-eq{
+	border: 1px solid #e3e3e3;
+	border-radius: 3px;
+	box-shadow: 0 0 4px rgba(0, 0, 0, 0.06);
+	padding: 10px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+
+	.entry-title{
+		margin: 0;
+	}
+	.ap-q-cells{
+		padding: 0;
+		border: none;
+	}
+	.ap-eq-view-ans {
+		background: #fcfcfc none repeat scroll 0 0;
+		border: 1px solid #eeeeee;
+		border-radius: 3px;
+		display: block;
+		font-weight: bold;
+		margin-top: 15px;
+		padding: 10px;
+		text-align: center;
+	}
+}

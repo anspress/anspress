@@ -1,0 +1,12 @@
+@mixin col($col, $sum, $gap: 1em, $align: top) {
+  width: 100%;
+  display: inline-block;
+  box-sizing: border-box;
+  float: left;
+  padding: 0 15px;
+
+  @media only screen and (min-width: 768px) {
+    width: percentage($col/$sum);
+    vertical-align: $align;
+  }
+}

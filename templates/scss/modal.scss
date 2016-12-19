@@ -1,0 +1,75 @@
+.ap-modal{
+	bottom: 0;
+	//display: none;
+	left: 0;
+	overflow-x: auto;
+	position: fixed;
+	top: 0;
+	width: 100%;
+	z-index: 9999;
+
+	&.open{
+		display: block;
+	}
+
+	&-backdrop{
+		bottom: 0;
+		left: 0;
+		position: fixed;
+		top: 0;
+		width: 100%;
+	}
+	&-body{
+		background: none repeat scroll 0 0 #fff;
+		border-radius: 4px;
+		box-shadow: 0 4px 35px rgba(0, 0, 0, 0.3);
+		padding: 20px;
+		position: relative;
+		margin: 50px auto 0 auto;
+		z-index: 9999;
+		width: 400px;
+		&.ap-modal-medium{
+			width: 600px;
+		}
+	}
+	&-inner{
+		margin-left: -50%;
+	}
+	&-content{
+		line-height: 1.4;
+	}
+	&-title{
+		font-weight: 600;
+		font-size: 15px;
+		display: inline;
+	}
+	&-footer {
+		margin-top: 15px;
+	}
+	&-close{
+		color: #aaa;
+		cursor: pointer;
+		float: right;
+		font-size: 16px;
+		text-align: center;
+		&:hover{
+			color: #777;
+		}
+	}
+	&-header {
+    margin-bottom: 10px;
+    padding-bottom: 5px;
+	}
+	.login-submit{
+		margin-bottom: 0;
+	}
+	a.ap-modal-btn {
+		text-transform: uppercase;
+		text-decoration: none;
+	}
+	ap-comments{
+		&:before, &:after{
+			display: none !important;
+		}
+	}
+}

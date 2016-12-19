@@ -15,6 +15,7 @@ if ( ! defined( 'WPINC' ) ) {
 
 /**
  * Get all ask form fields.
+ *
  * @param  integer|boolean $post_id Post ID.
  * @return array
  * @since  3.0.0
@@ -25,7 +26,7 @@ function ap_get_ask_form_fields( $post_id = false ) {
 
 	if ( $post_id && ap_user_can_edit_question( (int) $post_id ) ) {
 		$editing = true;
-		$editing_post = get_post( (int) $post_id, 'OBJECT', 'edit' );
+		$editing_post = ap_get_post( (int) $post_id, 'OBJECT', 'edit' );
 	}
 
 	$is_private = false;
@@ -40,7 +41,6 @@ function ap_get_ask_form_fields( $post_id = false ) {
 			'label' => __( 'Title', 'anspress-question-answer' ),
 			'type'  => 'text',
 			'placeholder'  => __( 'Question in one sentence', 'anspress-question-answer' ),
-			'desc'  => __( 'Write a meaningful title for the question.', 'anspress-question-answer' ),
 			'value' => ( $editing ? $editing_post->post_title : ap_isset_post_value( 'title', '' ) ),
 			'order' => 5,
 			'attr' => 'data-action="suggest_similar_questions" data-loadclass="q-title"',
@@ -58,7 +58,6 @@ function ap_get_ask_form_fields( $post_id = false ) {
 			'name' => 'description',
 			'label' => __( 'Description', 'anspress-question-answer' ),
 			'type'  => 'editor',
-			'desc'  => __( 'Write description for the question.', 'anspress-question-answer' ),
 			'value' => ( $editing ? $editing_post->post_content : ap_isset_post_value( 'description', '' )  ),
 			'settings' => ap_tinymce_editor_settings( 'question' ),
 			'sanitize' => array( 'sanitize_description' ),
@@ -67,7 +66,7 @@ function ap_get_ask_form_fields( $post_id = false ) {
 		array(
 			'name'  => 'ap_upload',
 			'type'  => 'custom',
-			'html' => ap_post_upload_form( $editing? $editing_post->ID : false ) ,
+			'html' => ap_post_upload_form( $editing? $editing_post->ID : false ),
 			'order' => 10,
 		),
 		array(
@@ -108,26 +107,26 @@ function ap_get_ask_form_fields( $post_id = false ) {
 	if ( ap_show_captcha_to_user() ) {
 		// Show recpatcha if key exists and enabled.
 		if ( ap_opt( 'recaptcha_site_key' ) == '' ) {
-			$reCaptcha_html = '<div class="ap-notice red">'.__( 'reCaptach keys missing, please add keys', 'anspress-question-answer' ).'</div>';
+			$html = '<div class="ap-notice red">' . __( 'reCaptach keys missing, please add keys', 'anspress-question-answer' ) . '</div>';
 		} else {
 
-			$reCaptcha_html = '<div class="g-recaptcha" id="recaptcha" data-sitekey="'.ap_opt( 'recaptcha_site_key' ).'"></div>';
+			$html = '<div class="g-recaptcha" id="recaptcha" data-sitekey="' . ap_opt( 'recaptcha_site_key' ) . '"></div>';
 
-			$reCaptcha_html .= '<script type="text/javascript" src="https://www.google.com/recaptcha/api.js?hl='.get_locale().'&onload=onloadCallback&render=explicit" async defer></script>';
+			$html .= '<script type="text/javascript" src="https://www.google.com/recaptcha/api.js?hl=' . get_locale() . '&onload=onloadCallback&render=explicit" async defer></script>';
 
-			$reCaptcha_html .= '<script type="text/javascript">';
-			$reCaptcha_html .= 'var onloadCallback = function() {';
-			$reCaptcha_html .= 'widgetId1 = grecaptcha.render("recaptcha", {';
-			$reCaptcha_html .= '"sitekey" : "'.ap_opt( 'recaptcha_site_key' ).'"';
-			$reCaptcha_html .= '});';
-			$reCaptcha_html .= '};</script>';
+			$html .= '<script type="text/javascript">';
+			$html .= 'var onloadCallback = function() {';
+			$html .= 'widgetId1 = grecaptcha.render("recaptcha", {';
+			$html .= '"sitekey" : "' . ap_opt( 'recaptcha_site_key' ) . '"';
+			$html .= '});';
+			$html .= '};</script>';
 		}
 
 		$fields[] = array(
 			'name'  => 'captcha',
 			'type'  => 'custom',
 			'order' => 100,
-			'html' 	=> $reCaptcha_html,
+			'html' 	=> $html,
 		);
 	}
 
@@ -141,9 +140,17 @@ function ap_get_ask_form_fields( $post_id = false ) {
 		);
 	}
 
+	$fields[] = array(
+		'name'  => 'ap_ajax_action',
+		'type'  => 'hidden',
+		'value' => 'ask_form',
+		'order' => 20,
+	);
+
 	/**
 	 * FILTER: ap_ask_form_fields
 	 * Filter for modifying $args
+	 *
 	 * @param 	array 	$fields 	Ask form fields.
 	 * @param 	bool 	$editing 	Currently editing form.
 	 * @since  	2.0
@@ -154,28 +161,52 @@ function ap_get_ask_form_fields( $post_id = false ) {
 }
 
 /**
- * Generate ask form
- * @param  boolean $editing True if post is being edited.
+ * Output new/edit question form.
+ * Pass post_id to edit existing question.
+ *
  * @return void
  */
-function ap_ask_form( $editing = false ) {
-	$post_id = $editing ? (int) $_REQUEST['edit_post_id'] : false;
+function ap_ask_form( $post_id = false ) {
+	$editing = true;
+
+	if ( false === $post_id ) {
+		$post_id = ap_sanitize_unslash( 'id', 'r', false );
+	}
+
+	// If post_id is empty then its not editing.
+	if ( empty( $post_id ) ) {
+		$editing = false;
+	}
+
+	if ( $editing && ! ap_user_can_edit_question( $post_id ) ) {
+		echo '<p>' . esc_attr__( 'You cannot edit this question.', 'anspress-question-answer' ) . '</p>';
+		return;
+	}
+
+	$_post = ap_get_post( $post_id );
+
+	// Check if valid post type.
+	if ( $editing && 'question' !== $_post->post_type ) {
+		echo '<p>' . esc_attr__( 'Post you are trying to edit is not a question.', 'anspress-question-answer' ) . '</p>';
+		return;
+	}
+
 	// Ask form arguments.
 	$args = array(
 		'name'              => 'ask_form',
 		'is_ajaxified'      => true,
-		'multipart'         => true,
 		'submit_button'     => ($editing ? __( 'Update question', 'anspress-question-answer' ) : __( 'Post question', 'anspress-question-answer' )),
 		'fields'            => ap_get_ask_form_fields( $post_id ),
+		'attr'							=> ' ap="questionForm"',
 	);
 
 	$form = new AnsPress_Form( $args );
-	echo $form->get_form();
-	echo ap_post_upload_hidden_form();
+	echo $form->get_form(); // xss okay.
 }
 
 /**
  * Generate edit question form, this is a wrapper of ap_ask_form()
+ *
  * @return void
  * @since 2.0.1
  */
@@ -185,11 +216,12 @@ function ap_edit_question_form() {
 
 /**
  * Check reCaptach verification.
+ *
  * @return boolean
  * @since  3.0.0
  */
 function ap_check_recaptcha() {
-	require_once( ANSPRESS_DIR. 'includes/recaptcha.php' );
+	require_once( ANSPRESS_DIR . 'includes/recaptcha.php' );
 	$reCaptcha = new gglcptch_ReCaptcha( ap_opt( 'recaptcha_secret_key' ) );
 
 	$gglcptch_remote_addr = filter_var( $_SERVER['REMOTE_ADDR'], FILTER_VALIDATE_IP );
@@ -207,6 +239,7 @@ function ap_check_recaptcha() {
 
 /**
  * Remove stop words from post name if option is enabled.
+ *
  * @param  string $str Post name to filter.
  * @return string
  * @since  3.0.0
@@ -221,7 +254,7 @@ function ap_remove_stop_words_post_name( $str ) {
 	$post_name = ap_remove_stop_words( $str );
 
 	// Check if post name is not empty.
-	if ( ! empty($post_name ) ) {
+	if ( ! empty( $post_name ) ) {
 		return $post_name;
 	}
 
@@ -230,29 +263,13 @@ function ap_remove_stop_words_post_name( $str ) {
 }
 
 /**
- * Attach uploads to post and remove orphan attachments
- * done by user.
- * @param  integer $post_id        Post ID.
- * @param  array   $attachment_ids Attachment IDs.
- * @param  integer $user_id        User ID.
- */
-function ap_attach_post_uploads($post_id, $attachment_ids, $user_id) {
-	foreach ( (array) $attachment_ids as $id ) {
-		$attach = get_post( $id );
-
-		if ( $attach && 'attachment' == $attach->post_type && $user_id == $attach->post_author ) {
-			ap_set_attachment_post_parent( $attach->ID, $post_id );
-		}
-	}
-}
-
-/**
  * Insert and update question.
+ *
  * @param  array $args     Question arguments.
  * @param  bool  $wp_error Return wp error.
  * @return bool|object|int
  */
-function ap_save_question($args, $wp_error = false) {
+function ap_save_question( $args, $wp_error = false ) {
 	$status = 'publish';
 	if ( isset( $args['is_private'] ) && $args['is_private'] ) {
 		$status = 'private_post';
@@ -264,18 +281,19 @@ function ap_save_question($args, $wp_error = false) {
 				'post_name' 		=> '',
 				'comment_status' 	=> 'open',
 				'attach_uploads' 	=> false,
-			) );
+	) );
 
 	// Check if question title is empty.
 	if ( empty( $args['post_title'] ) ) {
 		if ( true === $wp_error ) {
-			return new WP_Error('question_title_empty', __('Question title cannot be blank', 'anspress-question-answer' ) );
+			return new WP_Error( 'question_title_empty', __( 'Question title cannot be blank', 'anspress-question-answer' ) );
 		}
 		return false;
 	}
 
 	/**
 	 * Filter question description before saving.
+	 *
 	 * @param string $content Post content.
 	 * @since unknown
 	 * @since @3.0.0 Moved from process-form.php
@@ -288,6 +306,7 @@ function ap_save_question($args, $wp_error = false) {
 	if ( isset( $args['ID'] ) ) {
 		/**
 		 * Can be used to modify `$args` before updating question
+		 *
 		 * @param array $args Question arguments.
 		 * @since 2.0.1
 		 */
@@ -295,6 +314,7 @@ function ap_save_question($args, $wp_error = false) {
 	} else {
 		/**
 		 * Can be used to modify args before inserting question
+		 *
 		 * @param array $args Question arguments.
 		 * @since 2.0.1
 		 */
@@ -308,15 +328,21 @@ function ap_save_question($args, $wp_error = false) {
 	}
 
 	if ( $post_id ) {
-		// Check if attachment ids exists.
-		if ( true === $args['attach_uploads'] ) {
-			$attachment_ids = $_POST['attachment_ids'];
-			ap_attach_post_uploads( $post_id, $attachment_ids, $args['post_author'] );
+		$qameta_args = [ 'last_updated' => current_time( 'mysql' ) ];
+
+		if ( isset( $args['anonymous_name'] ) ) {
+			$qameta_args['fields'] = [ 'anonymous_name' => $args['anonymous_name'] ];
 		}
-		var_dump($args);
-		// Update Custom Meta.
-		if ( ! empty( $args['anonymous_name'] ) ) {
-			update_post_meta( $post_id, 'anonymous_name', $args['anonymous_name'] );
+
+		ap_insert_qameta( $post_id, $qameta_args );
+		$activity_type = isset( $args['ID'] ) ? 'edit_question' : 'new_question';
+
+		// Add question activity meta.
+		ap_update_post_activity_meta( $post_id, $activity_type, get_current_user_id() );
+
+		if ( ap_isset_post_value( 'ap-medias' ) ) {
+			$ids = ap_sanitize_unslash( 'ap-medias', 'r' );
+			ap_set_media_post_parent( $ids, $post_id );
 		}
 	}
 
@@ -325,21 +351,23 @@ function ap_save_question($args, $wp_error = false) {
 
 /**
  * TinyMCE editor setting
+ *
  * @return array
  * @since  3.0.0
  */
 function ap_tinymce_editor_settings( $type = 'question' ) {
 	$setting = array(
 		'textarea_rows' => 8,
-		'tinymce'   => ap_opt( $type.'_text_editor' ) ? false : true,
-		'quicktags' => ap_opt( $type.'_text_editor' ) ? true : false,
+		'tinymce'   => ap_opt( $type . '_text_editor' ) ? false : true,
+		'quicktags' => ap_opt( $type . '_text_editor' ) ? true : false,
 		'media_buttons' => false,
 	);
 
-	if ( ap_opt( $type.'_text_editor' )  ) {
+	if ( ap_opt( $type . '_text_editor' )  ) {
 		$settings['tinymce'] = array(
-			'content_css' => ap_get_theme_url( 'css/editor.css' ),
+			'content_css'      => ap_get_theme_url( 'css/editor.css' ),
 			'wp_autoresize_on' => true,
+			'statusbar'        => false
 		);
 	}
 
@@ -348,6 +376,7 @@ function ap_tinymce_editor_settings( $type = 'question' ) {
 
 /**
  * Sanitize AnsPress question and answer description field for database.
+ *
  * @param  string $content Post content.
  * @return string          Sanitised post content
  * @since  3.0.0
@@ -362,9 +391,9 @@ function ap_sanitize_description_field( $content ) {
 }
 
 function ap_sanitize_description_field_pre_content( $matches ) {
-	return '<pre>'.esc_html( $matches[1] ).'</pre>';
+	return '<pre>' . esc_html( $matches[1] ) . '</pre>';
 }
 
 function ap_sanitize_description_field_code_content( $matches ) {
-	return '<code>'.esc_html( $matches[1] ).'</code>';
+	return '<code>' . esc_html( $matches[1] ) . '</code>';
 }

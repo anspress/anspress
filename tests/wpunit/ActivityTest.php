@@ -43,7 +43,7 @@ class ActivityTest extends \Codeception\TestCase\WPTestCase
 		$this->_setRole('administrator' );
 		$question_id = $this->factory->post->create( array( 'post_title' => 'Test question another', 'post_type' => 'question', 'post_status' => 'publish' ) );
 
-		$question = get_post( $question_id );
+		$question = ap_get_post( $question_id );
 
 		$activity_arr = array(
 			'user_id'           => get_current_user_id(),

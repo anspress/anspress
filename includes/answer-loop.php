@@ -14,164 +14,180 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-if ( ! class_exists( 'Answers_Query' ) ) :
+
+/**
+ * Question
+ *
+ * This class is for retriving answers based on $args
+ */
+class Answers_Query extends WP_Query {
 
 	/**
-	 * Question
+	 * Answer query arguments
 	 *
-	 * This class is for retriving answers based on $args
+	 * @var array
 	 */
-	class Answers_Query extends WP_Query {
+	public $args = array();
 
-		/**
-		 * Answer query arguments
-		 * @var array
-		 */
-		public $args = array();
+	/**
+	 * Initialize class
+	 *
+	 * @param array $args Query arguments.
+	 * @access public
+	 * @since  2.0
+	 */
+	public function __construct( $args = array() ) {
+		global $answers;
 
-		/**
-		 * Initialize class
-		 * @param array $args Query arguments.
-		 * @access public
-		 * @since  2.0
-		 */
-		public function __construct( $args = array() ) {
-			global $answers;
+		$paged = get_query_var( 'answer_id' ) ? ap_get_answer_position_paged( ) : get_query_var( 'ap_paged', 1 );
+		set_query_var( 'ap_paged', $paged );
 
-			$paged = (get_query_var( 'paged' )) ? get_query_var( 'paged' ) : 1;
+		$defaults = array(
+			'question_id'                    => get_question_id(),
+			'ap_query'      				         => true,
+			'ap_current_user_ignore'      	 => false,
+			'ap_answers_query'               => true,
+			'showposts'                      => ap_opt( 'answers_per_page' ),
+			'paged'                          => $paged,
+			'only_best_answer'               => false,
+			'include_best_answer'            => false,
+			'post_status'   				         => [ 'publish' ],
+		);
 
-			$defaults = array(
-				'question_id'           => get_question_id(),
-				'ap_answers_query'      => true,
-				'showposts'             => ap_opt( 'answers_per_page' ),
-				'paged'                 => $paged,
-				'only_best_answer'      => false,
-				'include_best_answer'   => false,
-			);
+		$this->args = wp_parse_args( $args, $defaults );
 
-			$args['post_status'][] = 'publish';
-			$args['post_status'][] = 'closed';
-
-			$this->args = wp_parse_args( $args, $defaults );
-
-			if ( isset( $this->args['question_id'] ) ) {
-				$question_id = $this->args['question_id'];
-			}
-
-			if ( ! empty( $question_id ) ) {
-				$this->args['post_parent'] = $question_id;
-			}
-
-			if ( isset( $this->args['sortby'] ) ) {
-				$this->orderby_answers();
-			}
-
-			// Check if requesting only for best Answer
-			if ( isset( $this->args['only_best_answer'] ) && $this->args['only_best_answer'] ) {
-				$this->args['meta_query'] = array(
-					array(
-						'key'           => ANSPRESS_BEST_META,
-						'type'          => 'BOOLEAN',
-						'compare'       => '=',
-						'value'         => '1',
-					),
-				);
-			}
-
-			$this->args['post_type'] = 'answer';
-
-			$args = $this->args;
-
-			/**
-			 * Initialize parent class
-			 */
-			parent::__construct( $args );
+		// Check if user can read private post.
+		if ( ap_user_can_view_private_post( ) ) {
+			$this->args['post_status'][] = 'private_post';
 		}
 
+		// Check if user can read moderate posts.
+		if ( ap_user_can_view_moderate_post( ) ) {
+			$this->args['post_status'][] = 'moderate';
+		}
+
+		// Show trash posts to super admin.
+		if ( is_super_admin( ) ) {
+			$this->args['post_status'][] = 'trash';
+		}
+
+		if ( isset( $this->args['question_id'] ) ) {
+			$question_id = $this->args['question_id'];
+		}
+
+		if ( ! empty( $question_id ) ) {
+			$this->args['post_parent'] = $question_id;
+		}
+
+		$this->args['post_type'] = 'answer';
+
+		$args = $this->args;
+
 		/**
-		 * Modify orderby args
-		 * @return void
+		 * Initialize parent class
 		 */
-		public function orderby_answers() {
-			$this->args['meta_query'] = array();
+		parent::__construct( $args );
+	}
 
-			switch ( $this->args['sortby'] ) {
+	public function get_answers() {
+		return parent::get_posts();
+	}
 
-				case 'voted':
-					$this->args['orderby'] = 'meta_value_num' ;
-					$this->args['meta_query']  = array(
-						'relation' => 'AND',
-						array(
-							'key'       => ANSPRESS_VOTE_META,
-						)
-					);
-				break;
+	public function next_answer() {
+		return parent::next_post();
+	}
 
-				case 'oldest':
-					$this->args['orderby'] = 'meta_value date';
-					$this->args['order'] = 'ASC';
-				break;
+	/**
+	 * Undo the pointer to next
+	 */
+	public function reset_next() {
 
-				case 'newest':
-					$this->args['orderby'] = 'meta_value date';
-					$this->args['order'] = 'DESC';
-				break;
+		$this->current_post--;
+		$this->post = $this->posts[ $this->current_post ];
 
-				default:
-					$this->args['orderby'] = 'meta_value';
-					$this->args['meta_key'] = ANSPRESS_UPDATED_META;
-					$this->args['meta_query']  = array(
-						'relation' => 'AND',
-						array(
-							'key' => ANSPRESS_UPDATED_META,
-						)
-					);
-				break;
-			}
+		return $this->post;
+	}
 
-			if ( ! $this->args['include_best_answer'] ) {
-				$this->args['meta_query'][] = array(
-				'key'           => ANSPRESS_BEST_META,
-				'type'          => 'BOOLEAN',
-				'compare'       => '!=',
-				'value'         => '1',
-				); }
+	public function the_answer() {
+		global $post;
+		$this->in_the_loop = true;
 
+		if ( $this->current_post == -1 ) {
+			   do_action_ref_array( 'ap_query_loop_start', array( &$this ) );
+		}
+
+		$post = $this->next_answer();
+
+		setup_postdata( $post );
+		anspress()->current_answer = $post;
+	}
+
+	public function have_answers() {
+		return parent::have_posts();
+	}
+
+	public function rewind_answers() {
+		parent::rewind_posts();
+	}
+
+	public function is_main_query() {
+		return $this == anspress()->answers;
+	}
+
+
+	public function reset_answers_data() {
+		parent::reset_postdata();
+
+		if ( ! empty( $this->post ) ) {
+			anspress()->current_answer = $this->post;
 		}
 	}
 
-endif;
+	/**
+	 * Utility method to get all the ids in this request
+	 *
+	 * @return array of mdia ids
+	 */
+	public function get_ids() {
+		if ( $this->ap_ids ) {
+			return;
+		}
+
+		$this->ap_ids = [ 'post_ids' => array(), 'attach_ids' => array() ];
+		foreach ( (array) $this->posts as $_post ) {
+			$this->ap_ids['post_ids'][] = $_post->ID;
+			$this->ap_ids['attach_ids'] = array_filter( array_merge( explode( ',', $_post->attach ), $this->ap_ids['attach_ids'] ) );
+		}
+	}
+
+
+
+	/**
+	 * Pre fetch current users vote on all answers
+	 */
+	public function pre_fetch() {
+		$this->get_ids();
+		ap_user_votes_pre_fetch( $this->ap_ids['post_ids'] );
+		ap_post_attach_pre_fetch( $this->ap_ids['attach_ids'] );
+	}
+}
+
 
 /**
  * Display answers of a question
+ *
  * @param  array $args Answers query arguments.
  * @return Answers_Query
  * @since  2.0
  */
-function ap_get_answers($args = array()) {
+function ap_get_answers( $args = array() ) {
 
 	if ( empty( $args['question_id'] ) ) {
 		$args['question_id'] = get_question_id();
 	}
 
-	if ( ! isset( $args['sortby'] ) ) {
-		$args['sortby'] = (isset( $_GET['ap_sort'] )) ? sanitize_text_field( wp_unslash( $_GET['ap_sort'] ) ) : ap_opt( 'answers_sort' );
-	}
-
-	// if ( is_super_admin() || current_user_can( 'ap_view_private' ) ) {
-		$args['post_status'][] = 'private_post';
-	// }
-	if ( is_super_admin() || current_user_can( 'ap_view_moderate' ) ) {
-		$args['post_status'][] = 'moderate';
-	}
-
-	if ( is_super_admin() ) {
-		$args['post_status'][] = 'trash';
-	}
-
-	if ( isset( $_GET['show_answer'] ) ) {
-		$args['ap_query'] = 'order_answer_to_top';
-		$args['order_answer_id'] = (int) $_GET['show_answer'];
+	if ( ! isset( $args['ap_order_by'] ) ) {
+		$args['ap_order_by'] = isset( $_GET['order_by'] ) ? ap_sanitize_unslash( 'order_by', 'g' ) : ap_opt( 'answers_sort' );
 	}
 
 	return new Answers_Query( $args );
@@ -179,20 +195,22 @@ function ap_get_answers($args = array()) {
 
 /**
  * Get an answer by ID
+ *
  * @param  integer $answer_id Answers ID.
  * @return Answers_Query
  * @since 2.1
  */
-function ap_get_answer($answer_id) {
+function ap_get_answer( $answer_id ) {
 	return new Answers_Query( array( 'p' => $answer_id ) );
 }
 
 /**
  * Get selected answer object
+ *
  * @param  integer $question_id Question ID.
  * @since  2.0
  */
-function ap_get_best_answer($question_id = false) {
+function ap_get_best_answer( $question_id = false ) {
 	if ( false === $question_id ) {
 		$question_id = get_question_id();
 	}
@@ -203,18 +221,12 @@ function ap_get_best_answer($question_id = false) {
 
 /**
  * Check if there are posts in the loop
+ *
  * @return boolean
  */
 function ap_have_answers() {
 	global $answers;
 
-	if ( $answers ) {
-		return $answers->have_posts();
-	}
-}
-
-function ap_answers() {
-	global $answers;
 	if ( $answers ) {
 		return $answers->have_posts();
 	}
@@ -227,8 +239,14 @@ function ap_the_answer() {
 	}
 }
 
+function ap_total_answers_found() {
+	global $answers;
+	return $answers->found_posts;
+}
+
 /**
  * Ge the post object of currently irritrated post
+ *
  * @return object
  */
 function ap_answer_the_object() {
@@ -241,211 +259,13 @@ function ap_answer_the_object() {
 }
 
 /**
- * Echo active answer id
- * @return void
- * @since 2.1
- */
-function ap_answer_the_answer_id() {
-	echo ap_answer_get_the_answer_id();
-}
-
-/**
- * Get the active answer id
- * @return integer
- * @since 2.1
- */
-function ap_answer_get_the_answer_id() {
-	if ( ! is_object( ap_answer_the_object() ) ) {
-		return false;
-	}
-
-	return ap_answer_the_object()->ID;
-}
-
-/**
- * Echo active answer question id
- * @return void
- * @since 2.1
- */
-function ap_answer_the_question_id() {
-	echo ap_answer_get_the_question_id();
-}
-
-/**
- * Get the active answer question id
- * @return integer
- * @since 2.1
- */
-function ap_answer_get_the_question_id() {
-	return ap_answer_the_object()->post_parent;
-}
-
-/**
  * Check if user can view current answer
+ *
  * @return boolean
  * @since 2.1
  */
 function ap_answer_user_can_view() {
-	return ap_user_can_view_post( ap_answer_get_the_answer_id() );
-}
-
-/**
- * Check if current answer is selected as a best
- * @param integer|boolean $answer_id Answer ID.
- * @return boolean
- * @since 2.1
- */
-function ap_answer_is_best($answer_id = false) {
-	$answer_id = ap_parameter_empty( $answer_id, @ap_answer_get_the_answer_id() );
-
-	$meta = get_post_meta( $answer_id, ANSPRESS_BEST_META, true );
-
-	if ( $meta ) { return true; }
-
-	return false;
-}
-
-/**
- * Get current answer author id
- * @return integer
- * @since 2.1
- */
-function ap_answer_get_author_id() {
-	return ap_answer_the_object()->post_author;
-}
-
-/**
- * Echo user profile link
- * @since 2.1
- */
-function ap_answer_the_author_link() {
-	echo ap_answer_get_the_author_link();
-}
-
-/**
- * Return the author profile link
- * @return string
- * @since 2.1
- */
-function ap_answer_get_the_author_link() {
-	return ap_user_link( ap_answer_get_author_id() );
-}
-
-/**
- * Output current answer author avatar
- * @param  boolean|integer $size Size of avatar.
- */
-function ap_answer_the_author_avatar($size = false) {
-	$size = ap_parameter_empty( ap_opt( 'avatar_size_qanswer' ), $size );
-	echo ap_answer_get_the_author_avatar( $size );
-}
-
-/**
- * Return answer author avatar
- * @param  integer $size Avatar size.
- * @return string
- * @since 2.1
- */
-function ap_answer_get_the_author_avatar($size = 45) {
-	return get_avatar( ap_answer_get_author_id(), $size );
-}
-
-/**
- * Output active answer vote button
- * @since 2.1
- */
-function ap_answer_the_vote_button() {
-	ap_vote_btn( ap_answer_the_object() );
-}
-
-/**
- * Output comment template if enabled.
- * @return void
- * @since 2.1
- */
-function ap_answer_the_comments() {
-	if ( ! ap_opt( 'disable_comments_on_answer' ) ) {
-		echo '<div id="post-c-'.get_the_ID().'" class="ap-comments comment-container '. ( get_comments_number() > 0 ? 'have' : 'no' ) .'-comments">';
-		// comments_template();
-		echo '</div>';
-	}
-}
-
-/**
- * Echo time current answer was active
- * @return void
- * @since 2.1
- */
-function ap_answer_the_active_ago() {
-	echo ap_human_time( ap_answer_get_the_active_ago(), false );
-}
-
-/**
- * Return the answer active ago time
- * @return string
- * @since 2.1
- */
-function ap_answer_get_the_active_ago() {
-	return ap_last_active( ap_answer_get_the_answer_id() );
-}
-
-/**
- * Echo active answer permalink
- * @return void
- * @since 2.1
- */
-function ap_answer_the_permalink() {
-	echo ap_answer_get_the_permalink();
-}
-
-/**
- * Return active answer permalink
- * @return string
- * @since 2.1
- */
-function ap_answer_get_the_permalink() {
-	return esc_url( get_the_permalink( ap_answer_get_the_answer_id() ) );
-}
-
-/**
- * Echo active answer total vote
- * @return void
- * @since 2.1
- */
-function ap_answer_the_net_vote() {
-	if ( ! ap_opt( 'disable_voting_on_answer' ) ) {
-		?>
-            <span class="ap-questions-count ap-questions-vcount">
-				<span><?php echo ap_answer_get_the_net_vote(); ?></span>
-				<?php  esc_attr_e( 'votes', 'anspress-question-answer' ); ?>
-            </span>
-		<?php
-	}
-}
-
-/**
- * Return count of net vote of a answer
- * @return integer
- * @since 2.1
- */
-function ap_answer_get_the_net_vote() {
-	return ap_net_vote( ap_answer_the_object() );
-}
-
-function ap_answer_the_vote_class() {
-	echo ap_answer_get_the_vote_class();
-}
-
-/**
- * Get vote class of active answer
- * @return string
- */
-function ap_answer_get_the_vote_class() {
-	$vote = ap_answer_get_the_net_vote();
-
-	if ( $vote > 0 ) {
-		return 'positive'; } elseif ($vote < 0)
-	return 'negative';
+	return ap_user_can_view_post( get_the_ID() );
 }
 
 /**
@@ -453,79 +273,20 @@ function ap_answer_get_the_vote_class() {
  */
 function ap_answers_the_pagination() {
 	global $answers;
-	ap_pagination( false, $answers->max_num_pages );
+	$paged = (get_query_var( 'ap_paged' )) ? get_query_var( 'ap_paged' ) : 1;
+	ap_pagination( $paged, $answers->max_num_pages, '?ap_paged=%#%', get_permalink( get_question_id() ) .'?ap_paged=%#%' );
 }
 
-/**
- * Output answer active time
- * @param  boolean|integer $answer_id Answer ID.
- */
-function ap_answer_the_active_time($answer_id = false) {
-	echo ap_answer_get_the_active_time( $answer_id );
-}
-
-/**
- * Return last active time of answer
- * @param  boolean|integer $answer_id Answer ID.
- * @return string
- */
-function ap_answer_get_the_active_time($answer_id = false) {
-	$answer_id = ap_parameter_empty( $answer_id, @ap_answer_get_the_answer_id() );
-	return ap_latest_post_activity_html( $answer_id );
-}
-
-/**
- * Output answer time in human readable format
- * @param  boolean|integer $answer_id      If outside of loop, post ID can be passed.
- * @param  integer         $format         WP time format.
- * @return void
- */
-function ap_answer_the_time($answer_id = false, $format = 'U') {
-	$answer_id = ap_parameter_empty( $answer_id, ap_answer_get_the_answer_id() );
-	echo '<time itemprop="datePublished" datetime="'. ap_answer_get_the_time( $answer_id, 'c' ) .'">';
-	printf( 
-		__( 'Posted %s', 'anspress-question-answer' ),
-	 	ap_human_time( ap_answer_get_the_time( $answer_id, $format ) ) );
-	echo '</time>';
-}
-
-/**
- * Return answer time
- * @param  boolean|integer $answer_id      If outside of loop, post ID can be passed.
- * @param  integer         $format         WP time format.
- * @return string
- */
-function ap_answer_get_the_time($answer_id = false, $format = '') {
-	$answer_id = ap_parameter_empty( $answer_id, @ap_answer_get_the_answer_id() );
-	return get_post_time( $format, true, $answer_id, true );
-}
-
-/**
- * Output count of total numbers of Answers
- * @since 2.1
- */
-function ap_answer_the_count() {
-	echo ap_answer_get_the_count();
-}
-
-/**
- * Return the count of total numbers of Answers
- * @return integer
- * @since 2.1
- */
-function ap_answer_get_the_count() {
-	global $answers;
-	return $answers->found_posts;
-}
 
 /**
  * Return numbers of published answers.
+ *
  * @param  integer $question_id Question ID.
  * @return integer
  */
-function ap_count_published_answers($question_id) {
+function ap_count_published_answers( $question_id ) {
 	global $wpdb;
-	$query = $wpdb->prepare( "SELECT COUNT(*) FROM $wpdb->posts where post_parent = %d AND (post_status = %s OR post_status = %s) AND post_type = %s", $question_id, 'publish', 'closed', 'answer' );
+	$query = $wpdb->prepare( "SELECT COUNT(*) FROM $wpdb->posts where post_parent = %d AND post_status = %s AND post_type = %s", $question_id, 'publish', 'answer' );
 	$key = md5( $query );
 
 	$cache = wp_cache_get( $key, 'ap_count' );
@@ -538,28 +299,21 @@ function ap_count_published_answers($question_id) {
 	return $count;
 }
 
-function ap_count_answer_meta($post_id = false) {
-	if ( ! $post_id ) {
-		$post_id = get_the_ID();
-	}
-	$count = get_post_meta( $post_id, ANSPRESS_ANS_META, true );
 
-	return $count ? $count : 0;
-}
 
 /**
  * Count all answers excluding best answer.
  *
  * @return int
  */
-function ap_count_other_answer($question_id = false) {
+function ap_count_other_answer( $question_id = false ) {
 	if ( ! $question_id ) {
 		$question_id = get_question_id();
 	}
 
-	$count = ap_count_answer_meta( $question_id );
+	$count = ap_get_answers_count( $question_id );
 
-	if ( ap_question_best_answer_selected( $question_id ) ) {
+	if ( ap_have_answer_selected( $question_id ) ) {
 		return (int) ($count - 1);
 	}
 
@@ -568,21 +322,87 @@ function ap_count_other_answer($question_id = false) {
 
 /**
  * Unselect an answer as best.
+ *
  * @param  integer $post_id Post ID.
  */
 function ap_unselect_answer( $post_id ) {
-	$post = get_post( $post_id );
+	$post = ap_get_post( $post_id );
+
+	ap_unset_selected_answer( $post->post_parent );
+
+	// Add question activity meta.
+	ap_update_post_activity_meta( $post->post_parent, 'answer_unselected', get_current_user_id() );
+	ap_update_post_activity_meta( $post->ID, 'unselected_best_answer', get_current_user_id() );
 
 	do_action( 'ap_unselect_answer', $post->post_author, $post->post_parent, $post->ID );
-
-	update_post_meta( $post->ID, ANSPRESS_BEST_META, 0 );
-	update_post_meta( $post->post_parent, ANSPRESS_SELECTED_META, false );
-	update_post_meta( $post->post_parent, ANSPRESS_UPDATED_META, current_time( 'mysql' ) );
 
 	if ( ap_opt( 'close_selected' ) ) {
 		wp_update_post( array( 'ID' => $post->post_parent, 'post_status' => 'publish' ) );
 	}
+}
 
-	ap_update_user_best_answers_count_meta( $post->post_author );
-	ap_update_user_solved_answers_count_meta( $post->post_author );
+/**
+ * Return paged position of answer.
+ *
+ * @param boolean|integer $question_id Question ID.
+ * @param boolean|integer $answer_id Answer ID.
+ * @return integer
+ * @since 4.0.0
+ */
+function ap_get_answer_position_paged( $question_id = false, $answer_id = false ) {
+	global $wpdb;
+
+	if ( false === $question_id ) {
+		$question_id = get_question_id();
+	}
+
+	if ( false === $answer_id ) {
+		$answer_id = get_query_var( 'answer_id' );
+	}
+
+	$user_id = get_current_user_id();
+	$ap_order_by = ap_get_current_list_filters( 'order_by', 'active' );
+	$cache_key = $question_id . '-' . $answer_id . '-' . $user_id;
+	$cache = wp_cache_get( $cache_key, 'ap_answer_position' );
+
+	if ( false !== $cache ) {
+		return $cache;
+	}
+
+	if ( 'voted' === $ap_order_by ) {
+		$orderby = 'CASE WHEN IFNULL(qameta.votes_up - qameta.votes_down, 0) >= 0 THEN 1 ELSE 2 END ASC, ABS(qameta.votes_up - qameta.votes_down) DESC';
+	} if ( 'oldest' === $ap_order_by ) {
+		$orderby = "{$wpdb->posts}.post_date ASC";
+	} elseif ( 'newest' === $ap_order_by ) {
+		$orderby = "{$wpdb->posts}.post_date DESC";
+	} else {
+		$orderby = 'qameta.last_updated DESC ';
+	}
+
+	$post_status = [ 'publish' ];
+
+	// Check if user can read private post.
+	if ( ap_user_can_view_private_post( ) ) {
+		$post_status[] = 'private_post';
+	}
+
+	// Check if user can read moderate posts.
+	if ( ap_user_can_view_moderate_post( ) ) {
+		$post_status[] = 'moderate';
+	}
+
+	// Show trash posts to super admin.
+	if ( is_super_admin( ) ) {
+		$post_status[] = 'trash';
+	}
+
+	$status = "p.post_status IN ('" . implode( "','",  $post_status ) . "')";
+
+	$ids = $wpdb->get_col( $wpdb->prepare( "SELECT p.ID FROM $wpdb->posts p JOIN $wpdb->ap_qameta qameta ON qameta.post_id = p.ID  WHERE p.post_type = 'answer' AND p.post_parent = %d AND ( $status OR ( p.post_author = %d AND p.post_status IN ('publish', 'private_post', 'trash', 'moderate') ) ) ORDER BY $orderby", $question_id, $user_id ) ); // db call okay, unprepared sql okay.
+
+	$pos = (int) array_search( $answer_id , $ids ) + 1; // lose comparison ok.
+	$paged = ceil( $pos / ap_opt( 'answers_per_page' ) );
+	wp_cache_set( $cache_key, $paged, 'ap_answer_position' );
+
+	return $paged;
 }

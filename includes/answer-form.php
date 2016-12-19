@@ -25,7 +25,7 @@ function ap_get_answer_form_fields( $question_id = false, $answer_id = false ) {
 
 	if ( $answer_id && ap_user_can_edit_answer( (int) $answer_id ) ) {
 		$editing = true;
-		$editing_post = get_post( (int) $answer_id, 'OBJECT', 'edit' );
+		$editing_post = ap_get_post( (int) $answer_id, 'OBJECT', 'edit' );
 	}
 
 	$is_private = false;
@@ -104,21 +104,25 @@ function ap_get_answer_form_fields( $question_id = false, $answer_id = false ) {
 		);
 	}
 
-	if ( $editing ) {
-		$fields[] = array(
-			'name'  => 'edit_post_id',
-			'type'  => 'hidden',
-			'value' => $editing_post->ID,
-			'order' => 20,
-			'sanitize' => array( 'only_int' ),
-		);
-	}
-
 	$fields[] = array(
 		'name'  => 'ap_upload',
 		'type'  => 'custom',
 		'html' => ap_post_upload_form( $editing? $editing_post->ID : false ),
 		'order' => 11,
+	);
+
+	$fields[] = array(
+		'name'  => 'action',
+		'type'  => 'hidden',
+		'value' => 'ap_ajax',
+		'order' => 20,
+	);
+
+	$fields[] = array(
+		'name'  => 'ap_ajax_action',
+		'type'  => 'hidden',
+		'value' => 'answer_form',
+		'order' => 20,
 	);
 
 	if ( $editing ) {
@@ -142,33 +146,32 @@ function ap_get_answer_form_fields( $question_id = false, $answer_id = false ) {
 }
 
 /**
- * Generate answer form
+ * Generate answer form.
+ *
  * @param  integer $question_id  Question iD.
  * @param  boolean $editing      true if post is being edited.
  * @return void
  */
-function ap_answer_form($question_id, $editing = false) {
+function ap_answer_form( $question_id, $editing = false ) {
 	if ( ! ap_user_can_answer( $question_id ) && ! $editing ) {
 		return;
 	}
 
 	global $editing_post;
-	$answer_id = $editing ? (int) $_REQUEST['edit_post_id'] : false;
+	$answer_id = $editing ? (int) ap_sanitize_unslash( 'id', 'r' ) : false;
 
 	$args = array(
 		'name'              => 'answer_form',
 		'is_ajaxified'      => true,
 		'submit_button'     => ($editing ? __( 'Update answer', 'anspress-question-answer' ) : __( 'Post answer', 'anspress-question-answer' )),
-		'nonce_name'        => 'nonce_answer_'.$question_id,
+		'nonce_name'        => 'nonce_answer_' . $question_id,
 		'fields'            => ap_get_answer_form_fields( $question_id, $answer_id ),
+		'attr'							=> ' ap="answerForm"',
 	);
 
 	anspress()->form = new AnsPress_Form( $args );
 
-	echo anspress()->form->get_form();
-
-	// Post image upload form.
-	echo ap_post_upload_hidden_form();
+	echo anspress()->form->get_form(); // xss okay.
 }
 
 /**
@@ -177,31 +180,32 @@ function ap_answer_form($question_id, $editing = false) {
  * @return void
  * @since 2.0.1
  */
-function ap_edit_answer_form($question_id) {
+function ap_edit_answer_form( $question_id ) {
 	ap_answer_form( $question_id, true );
 }
 
 /**
  * Insert and update answer.
+ *
+ * @param  array $question_id Question ID.
  * @param  array $args     Answer arguments.
  * @param  bool  $wp_error Return wp error.
  * @return bool|object|int
  */
-function ap_save_answer($question_id, $args, $wp_error = false) {
-	$question = get_post( $question_id );
+function ap_save_answer( $question_id, $args, $wp_error = false) {
+	$question = ap_get_post( $question_id );
 	$status = 'publish';
 	if ( isset( $args['is_private'] ) && $args['is_private'] ) {
 		$status = 'private_post';
 	}
 
 	$args = wp_parse_args( $args, array(
-				'post_title' 		=> $question->post_title,
-				'post_author' 		=> get_current_user_id(),
-				'post_status' 		=> $status,
-				'post_name' 		=> '',
-				'comment_status' 	=> 'open',
-				'attach_uploads' 	=> false,
-			) );
+		'post_title' 		=> $question->post_title,
+		'post_author' 		=> get_current_user_id(),
+		'post_status' 		=> $status,
+		'post_name' 		=> '',
+		'comment_status' 	=> 'open',
+	) );
 
 	/**
 	 * Filter question description before saving.
@@ -236,22 +240,29 @@ function ap_save_answer($question_id, $args, $wp_error = false) {
 	}
 
 	if ( $post_id ) {
-		// Check if attachment ids exists.
-		if ( true === $args['attach_uploads'] ) {
-			$attachment_ids = $_POST['attachment_ids'];
-			ap_attach_post_uploads( $post_id, $attachment_ids, $args['post_author'] );
+		$qameta_args = [ 'last_updated' => current_time( 'mysql' ) ];
+
+		if ( isset( $args['anonymous_name'] ) ) {
+			$qameta_args['fields'] = [ 'anonymous_name' => $args['anonymous_name'] ];
 		}
 
-		// Update Custom Meta.
-		if ( ! empty( $args['anonymous_name'] ) ) {
-			update_post_meta( $post_id, 'anonymous_name', $args['anonymous_name'] );
+		ap_insert_qameta( $post_id, $qameta_args );
+		$activity_type = isset( $args['ID'] ) ? 'edit_answer' : 'new_answer';
+
+		// Add answer activity meta.
+		ap_update_post_activity_meta( $post_id, $activity_type, get_current_user_id() );
+		ap_update_post_activity_meta( $question->ID, $activity_type, get_current_user_id() );
+
+		if ( ap_isset_post_value( 'ap-medias' ) ) {
+			$ids = ap_sanitize_unslash( 'ap-medias', 'r' );
+			ap_set_media_post_parent( $ids, $post_id );
 		}
 	}
 	return $post_id;
 }
 
-function ap_answer_post_ajax_response( $question_id, $answer_id ){
-	$question = get_post( $question_id );
+function ap_answer_post_ajax_response( $question_id, $answer_id ) {
+	$question = ap_get_post( $question_id );
 	// Get existing answer count.
 	$current_ans = ap_count_published_answers( $question_id );
 
@@ -261,7 +272,7 @@ function ap_answer_post_ajax_response( $question_id, $answer_id ){
 		setup_postdata( $post );
 	} else {
 		global $post;
-		$post = get_post( $answer_id );
+		$post = ap_get_post( $answer_id );
 		setup_postdata( $post );
 	}
 
@@ -270,29 +281,23 @@ function ap_answer_post_ajax_response( $question_id, $answer_id ){
 	global $withcomments;
 	$withcomments = true;
 
-	if ( $current_ans == 1 ) {
-		$answers = ap_get_answers( array( 'question_id' => $question_id ) );
-		ap_get_template_part( 'answers' );
-	} else {
-		$answers = ap_get_answers( array( 'p' => $answer_id ) );
-		while ( ap_have_answers() ) : ap_the_answer();
-			ap_get_template_part( 'answer' );
-		endwhile;
-	}
+	$answers = ap_get_answers( array( 'p' => $answer_id ) );
+	while ( ap_have_answers() ) : ap_the_answer();
+		ap_get_template_part( 'answer' );
+	endwhile;
 
 	$html = ob_get_clean();
-
-	$count_label = sprintf( _n( '1 Answer', '%d Answers', $current_ans, 'anspress-question-answer' ), $current_ans );
+	$count_label = sprintf( _n( '%d Answer', '%d Answers', $current_ans, 'anspress-question-answer' ), $current_ans );
 
 	$result = array(
-		'postid' 		=> $answer_id,
-		'action' 		=> 'new_answer',
-		'div_id' 		=> '#answer_'.get_the_ID(),
-		'can_answer' 	=> ap_user_can_answer( $post->ID ),
-		'html' 			=> $html,
-		'message' 		=> 'answer_submitted',
-		'do' 			=> 'clearForm',
-		'view'			=> array( 'answer_count' => $current_ans, 'answer_count_label' => $count_label ),
+		'success'       => true,
+		'ID'            => $answer_id,
+		'action'        => 'new_answer',
+		'div_id'        => '#post-' . get_the_ID(),
+		'can_answer'    => ap_user_can_answer( $post->ID ),
+		'html'          => $html,
+		'snackbar'      => [ 'message' => __( 'Answer submitted successfully', 'anspress-question-answer' ) ],
+		'answersCount'  => [ 'text' => $count_label, 'number' => $current_ans ],
 	);
 
 	ap_ajax_json( $result );

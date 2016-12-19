@@ -90,14 +90,14 @@ class AnsPress_Validation
 	 * @return void
 	 * @since  2.0
 	 */
-	private function length_check($field, $param) {
+	private function length_check( $field, $param ) {
 		// Dont check if Administrator.
 		if ( current_user_can( 'manage_options' ) ) {
 			return;
 		}
 
 		if ( $param != 0 && ( ! isset( $this->fields[$field] ) || mb_strlen( strip_tags( $this->fields[$field] ) ) <= $param ) ) {
-			$this->errors[$field] = sprintf( __( 'Its too short, it must be minimum %d characters', 'anspress-question-answer' ), $param );
+			$this->errors[$field] = sprintf( __( 'Field value should be at least %d characters', 'anspress-question-answer' ), $param );
 		}
 	}
 
