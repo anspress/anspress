@@ -13,6 +13,8 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
+$updated = false;
+
 if ( ap_isset_post_value( '__nonce' ) && ap_verify_nonce( 'nonce_option_form' ) && current_user_can( 'manage_options' ) ) {
 
 	$settings = get_option( 'anspress_opt', array() );
@@ -59,7 +61,7 @@ if ( ap_isset_post_value( '__nonce' ) && ap_verify_nonce( 'nonce_option_form' ) 
 
 		update_option( 'anspress_opt', $settings );
 		wp_cache_delete( 'anspress_opt', 'ap' );
-		$_POST['anspress_opt_updated'] = true;
+		$updated = true;
 
 	}
 
@@ -67,7 +69,7 @@ if ( ap_isset_post_value( '__nonce' ) && ap_verify_nonce( 'nonce_option_form' ) 
 }
 ?>
 
-<?php if ( ap_sanitize_unslash( 'anspress_opt_updated', 'p' ) ) :   ?>
+<?php if ( true === $updated ) :   ?>
 	<div class="notice notice-success is-dismissible">
 		<p><?php esc_html_e( 'AnsPress option updated!', 'anspress-question-answer' ); ?></p>
 	</div>
