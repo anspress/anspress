@@ -67,11 +67,12 @@ class AnsPress_BasePage_Shortcode {
 			// Include theme file.
 			ap_page();
 
-			// Linkback to author.
-			if ( ! ap_opt( 'author_credits' ) ) {
-				echo '<div class="ap-cradit">' . __( 'Question and answer is powered by', 'anspress-question-answer' ). ' <a href="https://anspress.io" traget="_blank">AnsPress.io</a>' . '</div>';
-			}
 		echo '</div>';
+		// Linkback to author.
+		if ( ! ap_opt( 'author_credits' ) ) {
+			echo '<div class="ap-cradit">' . __( 'Question and answer is powered by', 'anspress-question-answer' ). ' <a href="https://anspress.io" traget="_blank">AnsPress.io</a>' . '</div>';
+		}
+
 		wp_reset_postdata();
 		$ap_shortcode_loaded = false;
 		return ob_get_clean();

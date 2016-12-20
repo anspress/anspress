@@ -88,7 +88,7 @@
 					files: {
 						"templates/css/main.css": "templates/scss/main.scss",
 						"templates/css/RTL.css": "templates/scss/RTL.scss",
-						//"assets/ap-admin.css": "assets/ap-admin.scss"
+						"assets/ap-admin.css": "assets/ap-admin.scss"
 					}
 				}
 			},
@@ -118,20 +118,6 @@
 			},
 			all: ['**/*.php']
 		},
-		/*concat: {
-			options: {
-				separator: ';',
-			},
-			anspress: {
-				src: ['assets/min/ap-functions.min.js', 'assets/min/anspress_site.min.js'],
-				dest: 'assets/min/anspress.min.js',
-			},
-			theme: {
-				src: ['templates/js/initial.min.js', 'templates/js/jquery.peity.min.js', 'templates/js/jquery.scrollbar.min.js', 'templates/min/ap.min.js'],
-				dest: 'templates/min/anspress-theme.min.js',
-			},
-		},*/
-
 		cssmin: {
 			options: {
 				shorthandCompacting: false,

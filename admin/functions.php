@@ -78,14 +78,14 @@ function ap_options_nav() {
 	 */
 	$menus = apply_filters( 'ap_option_tab_nav', $menus );
 
-	$o = '<ul id="ap_opt_nav" class="nav nav-tabs">';
+	$o = '<h2 class="nav-tab-wrapper">';
 
 	foreach ( (array) $menus as $k => $m ) {
 		$class = ! empty( $m['class'] ) ? ' ' . $m['class'] : '';
-		$o .= '<li' . ( $active === $k ? ' class="active"' : '' ) . '><a href="' . esc_url( $m['link'] ) . '" class="ap-user-menu-' . esc_attr( $k . $class ) . '"><i class="' . $m['icon'] . '"></i>' . esc_attr( $m['title'] ) . '</a></li>';
+		$o .= '<a href="' . esc_url( $m['link'] ) . '" class="nav-tab ap-user-menu-' . esc_attr( $k . $class ) . ( $active === $k ? '  nav-tab-active' : '' ) . '"><i class="' . $m['icon'] . '"></i>' . esc_attr( $m['title'] ) . '</a>';
 	}
 
-	$o .= '</ul>';
+	$o .= '</h2>';
 
 	echo $o; // xss okay.
 }
@@ -103,32 +103,46 @@ function ap_option_group_fields() {
 		return;
 	}
 
-	$fields = $groups[ $active ]['fields'];
-	$fields[] = array(
-		'name' => 'fields_group',
-		'type' => 'hidden',
-		'value' => $active,
-	);
+	$setions = $groups[ $active ]['fields'];
 
-	if ( isset( $groups[ $active ]['form'] ) && false !== $groups[ $active ]['form'] ) {
-		$args = array(
-			'name'              => 'options_form',
-			'is_ajaxified'      => false,
-			'submit_button'     => __( 'Save options', 'anspress-question-answer' ),
-			'nonce_name'        => 'nonce_option_form',
-			'fields'            => $fields,
-			'show_reset' 		=> true,
-		);
+	$i = 0;
 
-		$form = new AnsPress_Form( $args );
+	foreach ( (array) $setions as $section_title => $fields ) {
+		if ( is_array ( $fields ) ) {
+			$fields[] = array(
+				'name' => 'fields_group',
+				'type' => 'hidden',
+				'value' => $active,
+			);
 
-		echo '<div class="ap-optionform-title">';
-		echo '<strong>' . esc_html( $groups[ $active ]['title'] ) . '</strong>';
-		echo '</div>';
-		echo $form->get_form(); // xss okay.
+			$fields[] = array(
+				'name' => 'ap_active_section',
+				'type' => 'hidden',
+				'value' => $i,
+			);
 
-	} elseif ( isset( $fields['callback'] ) ) {
-		call_user_func( $fields['callback'] );
+			$args = array(
+				'name'              => 'options_form',
+				'is_ajaxified'      => false,
+				'submit_button'     => __( 'Save options', 'anspress-question-answer' ),
+				'nonce_name'        => 'nonce_option_form',
+				'fields'            => $fields,
+			);
+
+			$form = new AnsPress_Form( $args );
+			$ap_active_section = ap_isset_post_value( 'ap_active_section', '' );
+
+			echo '<div class="postbox' . ( $ap_active_section == (string) $i ? '' : ' closed' ) . '">';
+			echo '<h3 data-index="' . esc_attr( $i ) . '"><span>' . esc_html( $section_title ) . '</span></h3>';
+			echo '<div class="inside">';
+			echo $form->get_form(); // xss okay.
+			echo '</div>';
+			echo '</div>';
+
+		} elseif ( function_exists( $fields ) ) {
+			call_user_func( $fields );
+		}
+		$i++;
 	}
 }
 

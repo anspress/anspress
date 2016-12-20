@@ -23,8 +23,8 @@ if ( ! defined( 'WPINC' ) ) {
  * @return string
  * @since 0.1
  */
-function ap_opt($key = false, $value = null) {
-	$settings = wp_cache_get('anspress_opt', 'ap' );
+function ap_opt( $key = false, $value = null ) {
+	$settings = wp_cache_get( 'anspress_opt', 'ap' );
 
 	if ( false === $settings ) {
 		$settings = get_option( 'anspress_opt' );
@@ -33,7 +33,7 @@ function ap_opt($key = false, $value = null) {
 			$settings = array();
 		}
 
-		wp_cache_set('anspress_opt', $settings, 'ap' );
+		wp_cache_set( 'anspress_opt', $settings, 'ap' );
 	}
 
 	$settings = $settings + ap_default_options();
@@ -78,7 +78,6 @@ function ap_default_options() {
 		'show_login_signup' 						=> true,
 		'show_login' 										=> true,
 		'show_signup' 									=> true,
-		'show_title_in_question'				=> false,
 		'theme' 												=> 'default',
 		'author_credits' 								=> false,
 		'clear_database' 								=> false,

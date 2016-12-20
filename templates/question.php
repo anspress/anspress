@@ -10,9 +10,6 @@
 
 ?>
 <div id="ap-single" class="ap-q clearfix">
-	<?php if ( ap_opt( 'show_title_in_question' ) ) : ?>
-		<h1 class="entry-title"><a href="<?php get_permalink() ?>"><?php the_title(); ?></a></h1>
-	<?php endif; ?>
 
 	<div class="ap-question-lr ap-row" itemtype="https://schema.org/Question" itemscope="">
 		<div class="ap-q-left <?php echo (is_active_sidebar( 'ap-qsidebar' ) ) ? 'ap-col-8' : 'ap-col-12'; ?>">
