@@ -470,66 +470,6 @@ if ( ! class_exists( 'AnsPress_Init' ) ) {
 		}
 
 		/**
-		 * Delete a cpt posts. Used by AnsPress uninstaller.
-		 *
-		 * @since  3.0.0
-		 * @access public
-		 * @static
-		 * @param  string $type Accepted args question or answer.
-		 */
-		public static function delete_cpt( $type = 'question' ) {
-			global $wpdb;
-			$count = $wpdb->get_var( $wpdb->prepare( "SELECT count(*) FROM $wpdb->posts WHERE post_type = '%s'", $type ) ); // db call ok, cache ok.
-
-			$deleted = 0;
-
-			if ( $count > 0 ) {
-				while ( $deleted <= $count ) {
-					$question_ids = $wpdb->get_col( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_type = '%s' LIMIT 50", $type ) ); // db call okay, cache okay.
-
-					foreach ( (array) $question_ids as $id ) {
-						wp_delete_post( $id, true );
-						$deleted++;
-					}
-				}
-			}
-		}
-
-		/**
-		 * Plugin un-installation hook, called by WP while removing AnsPress
-		 *
-		 * @access public
-		 * @static
-		 */
-		public static function anspress_uninstall() {
-			if ( ! current_user_can( 'activate_plugins' ) ) {
-				return;
-			}
-
-			check_admin_referer( 'bulk-plugins' );
-			$option = get_option( 'anspress_opt' );
-			if ( ! isset( $option['db_cleanup'] ) || (isset( $option['db_cleanup'] ) && $option['db_cleanup']) ) {
-				return;
-			}
-
-			global $wpdb;
-
-			// Remove question CPT.
-			SELF::delete_cpt();
-
-			// Removes answer CPT.
-			SELF::delete_cpt( 'answer' );
-
-			// Remove options.
-			delete_option( 'anspress_opt' );
-
-			require_once ANSPRESS_DIR . 'includes/class/roles-cap.php';
-
-			// Remove user roles.
-			AP_Roles::remove_roles();
-		}
-
-		/**
 		 * Before activation redirect
 		 *
 		 * @access public
@@ -619,4 +559,3 @@ add_filter( 'admin_init', [ 'AnsPress_Init', 'redirect_to_about_page' ] );
 require_once dirname( __FILE__ ) . '/activate.php';
 
 register_activation_hook( __FILE__, [ 'AP_Activate', 'get_instance' ] );
-register_uninstall_hook( __FILE__, [ 'AnsPress_Init', 'anspress_uninstall' ] );

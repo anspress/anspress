@@ -106,9 +106,11 @@ function ap_option_group_fields() {
 	$setions = $groups[ $active ]['fields'];
 
 	$i = 0;
+	$ap_active_section = ap_isset_post_value( 'ap_active_section', '' );
 
 	foreach ( (array) $setions as $section_title => $fields ) {
-		if ( is_array ( $fields ) ) {
+		if ( is_array( $fields ) ) {
+
 			$fields[] = array(
 				'name' => 'fields_group',
 				'type' => 'hidden',
@@ -130,8 +132,6 @@ function ap_option_group_fields() {
 			);
 
 			$form = new AnsPress_Form( $args );
-			$ap_active_section = ap_isset_post_value( 'ap_active_section', '' );
-
 			echo '<div class="postbox' . ( $ap_active_section == (string) $i ? '' : ' closed' ) . '">';
 			echo '<h3 data-index="' . esc_attr( $i ) . '"><span>' . esc_html( $section_title ) . '</span></h3>';
 			echo '<div class="inside">';
@@ -140,7 +140,12 @@ function ap_option_group_fields() {
 			echo '</div>';
 
 		} elseif ( function_exists( $fields ) ) {
+			echo '<div class="postbox' . ( $ap_active_section == (string) $i ? '' : ' closed' ) . '">';
+			echo '<h3 data-index="' . esc_attr( $i ) . '"><span>' . esc_html( $section_title ) . '</span></h3>';
+			echo '<div class="inside">';
 			call_user_func( $fields );
+			echo '</div>';
+			echo '</div>';
 		}
 		$i++;
 	}

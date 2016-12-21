@@ -87,13 +87,18 @@ function ap_insert_qameta( $post_id, $args, $wp_error = false ) {
 	}
 
 	global $wpdb;
-
 	$exists = ap_get_qameta( $post_id );
+
+	// Dont insert or update if not AnsPress CPT.
+	// This check will also prevent inserting qameta for deleetd post.
+	if ( ! isset( $exists->ptype ) || ! in_array( $exists->ptype, [ 'question', 'answer' ], true ) ) {
+		return $wp_error ? new WP_Error( 'Not question or answer CPT' ) : false;
+	}
 
 	if ( $exists->is_new ) {
 		$sanitized_values['post_id'] = (int) $post_id;
 
-		if( ! empty( $_post->post_author ) ) {
+		if ( ! empty( $_post->post_author ) ) {
 			$sanitized_values['roles'] = $_post->post_author;
 		}
 
@@ -134,10 +139,10 @@ function ap_get_qameta( $post_id ) {
 	$qameta = wp_cache_get( $post_id, 'ap_qameta' );
 
 	if ( false === $qameta ) {
-		$qameta = $wpdb->get_row( $wpdb->prepare( "Select * FROM {$wpdb->ap_qameta} WHERE post_id = %d", $post_id ), ARRAY_A ); // db call ok.
+		$qameta = $wpdb->get_row( $wpdb->prepare( "SELECT qm.*, p.post_type as ptype FROM {$wpdb->posts} p LEFT JOIN {$wpdb->ap_qameta} qm ON qm.post_id = p.ID WHERE p.ID = %d", $post_id ), ARRAY_A ); // db call ok.
 
 		// If null then append is_new.
-		if ( empty( $qameta ) ) {
+		if ( empty( $qameta['post_id'] ) ) {
 			$qameta = [ 'is_new' => true ];
 		}
 
@@ -145,6 +150,11 @@ function ap_get_qameta( $post_id ) {
 
 		$qameta['votes_net']  = $qameta['votes_up'] + $qameta['votes_down'];
 		$qameta['activities'] = maybe_unserialize( $qameta['activities'] );
+
+		if ( empty( $qameta['activities'] ) ) {
+			$qameta['activities'] = [];
+		}
+
 		$qameta['fields'] 	  = maybe_unserialize( $qameta['fields'] );
 		$qameta = (object) $qameta;
 		wp_cache_set( $post_id, $qameta, 'ap_qameta' );
@@ -447,6 +457,7 @@ function ap_update_post_activity_meta( $post, $type, $user_id, $append_to_questi
 	}
 
 	$post_o = ap_get_post( $post );
+
 	$meta_val = compact( 'type', 'user_id', 'date' );
 
 	// Append to question activity meta. So that it can shown in question list.

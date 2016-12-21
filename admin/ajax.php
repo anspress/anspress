@@ -31,6 +31,7 @@ class AnsPress_Admin_Ajax {
 		anspress()->add_action( 'ap_ajax_ap_clear_flag', __CLASS__, 'clear_flag' );
 		anspress()->add_action( 'ap_ajax_ap_admin_vote', __CLASS__, 'ap_admin_vote' );
 		anspress()->add_action( 'ap_ajax_get_all_answers', __CLASS__, 'get_all_answers' );
+		anspress()->add_action( 'wp_ajax_ap_uninstall_data', __CLASS__, 'ap_uninstall_data' );
 	}
 
 	/**
@@ -132,6 +133,83 @@ class AnsPress_Admin_Ajax {
 		wp_send_json( $answers_arr );
 
 		wp_die();
+	}
+
+	public static function ap_uninstall_data() {
+		$data_type = ap_sanitize_unslash( 'data_type', 'r' );
+		$valid_data = [ 'qa', 'answers', 'options', 'userdata', 'terms' ];
+
+		global $wpdb;
+
+		// Only allow super admin to delete data.
+		if ( is_super_admin( ) && in_array( $data_type, $valid_data, true ) ) {
+			$done = 0;
+
+			if ( 'qa' === $data_type ) {
+
+				$count = $wpdb->get_var( "SELECT count(*) FROM $wpdb->posts WHERE post_type='question' OR post_type='answer'" );
+				$ids = $wpdb->get_col( "SELECT ID FROM $wpdb->posts WHERE post_type='question' OR post_type='answer' LIMIT 30" );
+
+				foreach ( (array) $ids as $id ) {
+					if ( false !== wp_delete_post( $id, true ) ) {
+						$done++;
+					}
+				}
+
+				wp_send_json( [ 'done' => (int) $done, 'total' => (int) $count ] );
+			} elseif ( 'answer' === $data_type ) {
+
+				$count = $wpdb->get_var( "SELECT count(*) FROM $wpdb->posts WHERE post_type='answer'" );
+				$ids = $wpdb->get_col( "SELECT ID FROM $wpdb->posts WHERE post_type='answer' LIMIT 30" );
+
+				foreach ( (array) $ids as $id ) {
+					if ( false !== wp_delete_post( $id, true ) ) {
+						$done++;
+					}
+				}
+
+				wp_send_json( [ 'done' => (int) $done, 'total' => (int) $count ] );
+			} elseif ( 'userdata' === $data_type ) {
+
+				$upload_dir = wp_upload_dir();
+
+				// Delete avatar folder.
+				wp_delete_file( $upload_dir['baseurl'] . '/ap_avatars' );
+
+				// Remove user roles.
+				AP_Roles::remove_roles();
+
+				wp_send_json( [ 'done' => 1, 'total' => 1 ] );
+			} elseif ( 'options' === $data_type ) {
+
+				delete_option( 'anspress_opt' );
+
+				wp_send_json( [ 'done' => 1, 'total' => 1 ] );
+			} elseif ( 'terms' === $data_type ) {
+
+				$question_taxo = (array) get_object_taxonomies( 'question', 'names' );
+				$answer_taxo = (array) get_object_taxonomies( 'answer', 'names' );
+
+				$taxos = $question_taxo + $answer_taxo;
+
+				foreach ( (array) $taxos as $tax ) {
+					$terms = get_terms( array(
+						'taxonomy' 		=> $tax,
+						'hide_empty' 	=> false,
+						'fields' 			=> 'ids',
+					) );
+
+					foreach ( (array) $terms as $t ) {
+						wp_delete_term( $t, $tax );
+					}
+				}
+
+				wp_send_json( [ 'done' => 1, 'total' => 1 ] );
+			}
+		}
+
+		// Send empty JSON if nothing done.
+		wp_send_json( [ ] );
 	}
 
 }

@@ -280,7 +280,7 @@ ap_register_option_group( 'general', __( 'General', 'anspress-question-answer' )
 /**
  * Register permission settings.
  */
-ap_register_option_group('permission', __( 'Permissions', 'anspress-question-answer' ) , array(
+ap_register_option_group('access', __( 'Access', 'anspress-question-answer' ) , array(
 	__( 'Permissions', 'anspress-question-answer' ) => [
 		array(
 			'name'  => 'only_logged_in',
@@ -439,12 +439,22 @@ ap_register_option_group('permission', __( 'Permissions', 'anspress-question-ans
 	]
 ));
 
-ap_register_option_group( 'roles', __( 'User roles', 'anspress-question-answer' ) , array( __( 'User roles', 'anspress-question-answer' ) => 'ap_admin_roles_page' ), false );
+ap_register_option_group( 'tools', __( 'Tools', 'anspress-question-answer' ) , array(
+	__( 'User roles', 'anspress-question-answer' ) => 'ap_admin_roles_page',
+	__( 'Uninstall - clear all AnsPress data', 'anspress-question-answer' ) => 'ap_admin_uninstall_page',
+), false );
 
 /**
  * Load roles option.
  */
 function ap_admin_roles_page() {
 	include 'views/roles.php';
+}
+
+/**
+ * Loads uninstall page.
+ */
+function ap_admin_uninstall_page(){
+	include 'views/uninstall.php';
 }
 

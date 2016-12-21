@@ -1057,4 +1057,31 @@ ul.ap-meta-list > li > a#ap-vote-up {
   padding-top: 10px;
 }
 
+.ap-uninstall-warning {
+  border: solid 2px #F44336;
+  color: #F44336;
+  padding: 10px;
+  border-radius: 2px;
+  font-size: 15px;
+}
+
+.ap-progress {
+  position: relative;
+  max-width: 270px;
+  display: block;
+  height: 10px;
+  background: #eee;
+  margin-top: 10px;
+  border-radius: 2px;
+  overflow: hidden;
+}
+.ap-progress span {
+  position: absolute;
+  height: 100%;
+  width: 0%;
+  left: 0;
+  right: 0;
+  background: #8BC34A;
+}
+
 /*# sourceMappingURL=ap-admin.css.map */

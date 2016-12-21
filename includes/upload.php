@@ -84,11 +84,11 @@ class AnsPress_Uploader {
 	}
 
 	/**
-	 * Update users temproary attachment count after a attachment deleted.
+	 * Update users temproary attachment count before a attachment deleted.
 	 *
 	 * @param integer $post_id Post ID.
 	 */
-	public static function after_delete_attachment( $post_id ) {
+	public static function before_delete_attachment( $post_id ) {
 		$_post = get_post( $post_id );
 
 		if ( 'attachment' === $_post->post_type ) {

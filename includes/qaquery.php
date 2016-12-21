@@ -688,7 +688,7 @@ function ap_latest_post_activity_html( $post_id = false, $answer_activities = fa
 		$activity['date'] = get_gmt_from_date( $activity['date'] );
 	}
 
-	if ( false === $answer_activities && in_array( $activity['type'], [ 'new_answer', 'new_question' ], true ) ) {
+	if ( false === $answer_activities && ( ! isset( $activity['type'] ) || in_array( $activity['type'], [ 'new_answer', 'new_question' ], true ) ) ) {
 		return;
 	}
 
