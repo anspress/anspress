@@ -269,6 +269,10 @@ ap_register_option_group( 'general', __( 'General', 'anspress-question-answer' )
 	]
 ]);
 
+ap_register_option_group( 'addons', __( 'Add-ons', 'anspress-question-answer' ) , [
+	__( 'Toggle Add-ons', 'anspress-question-answer' ) => 'ap_admin_addons_page',
+] );
+
 
 /**
  * Register permission settings.
@@ -419,16 +423,6 @@ ap_register_option_group('access', __( 'Access', 'anspress-question-answer' ) , 
 			'label' => __( 'Recaptcha secret key', 'anspress-question-answer' ),
 			'desc'  => __( 'Enter your secret key', 'anspress-question-answer' ),
 		) ,
-		array(
-			'type' => 'custom',
-			'html' => '<span class="ap-form-separator">' . __( 'Bad Words', 'anspress-question-answer' ) . '</span>',
-		),
-		array(
-			'name'  => 'check_bad_words',
-			'label' => __( 'Check bad words', 'anspress-question-answer' ),
-			'desc'  => __( 'Enable this to check for bad words in posts and comments. You can find bad words here ', 'anspress-question-answer' ) . '<a href="https://raw.githubusercontent.com/anspress/anspress/master/theme/default/badwords.txt">badwords.txt</a>',
-			'type'  => 'checkbox',
-		),
 	]
 ));
 
@@ -447,7 +441,13 @@ function ap_admin_roles_page() {
 /**
  * Loads uninstall page.
  */
-function ap_admin_uninstall_page(){
+function ap_admin_uninstall_page() {
 	include 'views/uninstall.php';
 }
 
+/**
+ * Loads uninstall page.
+ */
+function ap_admin_addons_page() {
+	include 'views/addons.php';
+}

@@ -83,7 +83,7 @@ global $wpdb;
 		done = done||0;
 		var action = jQuery(el).attr('data-id');
 		var total = jQuery(el).attr('data-total');
-		console.log(total, done);
+		var __nonce = '<?php echo wp_create_nonce( "ap_uninstall_data" ); ?>';
 
 		jQuery.ajax({
 			url: ajaxurl,

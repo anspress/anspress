@@ -32,6 +32,7 @@ class AnsPress_Admin_Ajax {
 		anspress()->add_action( 'ap_ajax_ap_admin_vote', __CLASS__, 'ap_admin_vote' );
 		anspress()->add_action( 'ap_ajax_get_all_answers', __CLASS__, 'get_all_answers' );
 		anspress()->add_action( 'wp_ajax_ap_uninstall_data', __CLASS__, 'ap_uninstall_data' );
+		anspress()->add_action( 'wp_ajax_ap_toggle_addons', __CLASS__, 'ap_toggle_addons' );
 	}
 
 	/**
@@ -135,7 +136,14 @@ class AnsPress_Admin_Ajax {
 		wp_die();
 	}
 
+	/**
+	 * Uninstall actions.
+	 *
+	 * @since 4.0.0
+	 */
 	public static function ap_uninstall_data() {
+		check_ajax_referer( 'ap_uninstall_data', '__nonce' );
+
 		$data_type = ap_sanitize_unslash( 'data_type', 'r' );
 		$valid_data = [ 'qa', 'answers', 'options', 'userdata', 'terms' ];
 
@@ -209,7 +217,44 @@ class AnsPress_Admin_Ajax {
 		}
 
 		// Send empty JSON if nothing done.
-		wp_send_json( [ ] );
+		wp_send_json( [] );
+	}
+
+	/**
+	 * Toggle addons.
+	 */
+	public static function ap_toggle_addons() {
+		check_ajax_referer( 'ap-toggle-addons', '__nonce' );
+
+		if ( ! is_super_admin( ) ) {
+			wp_die( 'false' );
+		}
+
+		$previous_addons = get_option( 'anspress_addons', [] );
+		$new_addons = array_flip( ap_isset_post_value( 'addon', [] ) );
+
+		if ( empty( $new_addons ) ) {
+			update_option( 'anspress_addons', [] );
+		}
+
+		$addons = $previous_addons + $new_addons;
+
+		foreach ( (array) $addons as $file => $status ) {
+			if ( ! isset( $new_addons[ $file ] ) || ! file_exists( ANSPRESS_PRO_DIR . DS . $file ) ) {
+				unset( $addons[ $file ] );
+			} else {
+				$addons[ $file ] = true;
+			}
+		}
+
+		update_option( 'anspress_addons', $addons );
+		$new_addons = array_diff( $new_addons, $previous_addons );
+
+		if ( ! empty( $new_addons ) ) {
+			//var_dump( $new_addons );
+		}
+
+		wp_die( );
 	}
 
 }

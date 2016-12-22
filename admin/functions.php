@@ -36,6 +36,7 @@ function ap_flagged_posts_count() {
  */
 function ap_register_option_group( $group_slug, $group_title, $fields, $form = true ) {
 	global $ap_option_tabs;
+
 	$fields = apply_filters( 'ap_option_group_' . $group_slug, $fields );
 	$ap_option_tabs[ $group_slug ] = array( 'title' => $group_title, 'fields' => $fields, 'form' => $form );
 }
@@ -132,7 +133,7 @@ function ap_option_group_fields() {
 			);
 
 			$form = new AnsPress_Form( $args );
-			echo '<div class="postbox' . ( $ap_active_section == (string) $i ? '' : ' closed' ) . '">';
+			echo '<div class="postbox">';
 			echo '<h3 data-index="' . esc_attr( $i ) . '"><span>' . esc_html( $section_title ) . '</span></h3>';
 			echo '<div class="inside">';
 			echo $form->get_form(); // xss okay.
@@ -140,7 +141,7 @@ function ap_option_group_fields() {
 			echo '</div>';
 
 		} elseif ( function_exists( $fields ) ) {
-			echo '<div class="postbox' . ( $ap_active_section == (string) $i ? '' : ' closed' ) . '">';
+			echo '<div class="postbox">';
 			echo '<h3 data-index="' . esc_attr( $i ) . '"><span>' . esc_html( $section_title ) . '</span></h3>';
 			echo '<div class="inside">';
 			call_user_func( $fields );
@@ -211,3 +212,4 @@ function ap_load_admin_assets() {
 	 */
 	return apply_filters( 'ap_load_admin_assets', $load );
 }
+

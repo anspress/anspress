@@ -5,7 +5,7 @@
  * The most advance community question and answer system for WordPress
  *
  * @author    Rahul Aryan <support@rahularyan.com>
- * @copyright 2014 WP3.in & Rahul Aryan
+ * @copyright 2014 AnsPress.io & Rahul Aryan
  * @license   GPL-3.0+ https://www.gnu.org/licenses/gpl-3.0.txt
  * @link      https://anspress.io
  * @package   AnsPress
@@ -175,14 +175,6 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		public $anspress_forms;
 
 		/**
-		 * AnsPress bad words object
-		 *
-		 * @access public
-		 * @var object
-		 */
-		public $bad_words_class;
-
-		/**
 		 * Initializes the plugin by setting localization, hooks, filters, and administrative functions.
 		 *
 		 * @access public
@@ -218,7 +210,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 					AnsPress_Post_Table_Hooks::init();
 				}
 
-				self::$instance->anspress_forms 		       = new AnsPress_Process_Form();
+				self::$instance->anspress_forms = new AnsPress_Process_Form();
 
 				/*
 				 * ACTION: anspress_loaded
@@ -239,7 +231,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		 * @access private
 		 */
 		private function setup_constants() {
-				$constants = array(
+			$constants = array(
 				'DS' 										=> DIRECTORY_SEPARATOR,
 				'AP_VERSION' 						=> $this->_plugin_version,
 				'AP_DB_VERSION' 				=> 22,
@@ -250,6 +242,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 				'ANSPRESS_THEME_URL' 		=> plugin_dir_url( __FILE__ ) . 'templates',
 				'ANSPRESS_CACHE_DIR' 		=> WP_CONTENT_DIR . '/cache/anspress',
 				'ANSPRESS_CACHE_TIME' 	=> HOUR_IN_SECONDS,
+				'ANSPRESS_PRO_DIR' 			=> plugin_dir_path( __FILE__ ) . 'pro-addons' ,
 			);
 
 			foreach ( $constants as $k => $val ) {
@@ -298,7 +291,6 @@ if ( ! class_exists( 'AnsPress' ) ) {
 			require_once ANSPRESS_DIR . 'widgets/breadcrumbs.php';
 			require_once ANSPRESS_DIR . 'widgets/ask-form.php';
 			require_once ANSPRESS_DIR . 'includes/rewrite.php';
-			require_once ANSPRESS_DIR . 'includes/bad-words.php';
 			require_once ANSPRESS_DIR . 'includes/deprecated.php';
 			require_once ANSPRESS_DIR . 'includes/flag.php';
 			require_once ANSPRESS_DIR . 'includes/shortcode-question.php';
@@ -332,7 +324,14 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		public function site_include() {
 			self::$instance->anspress_hooks 	= AnsPress_Hooks::init();
 			AnsPress_Views::init();
-			self::$instance->bad_words_class 	= new AP_Bad_words( );
+
+			foreach ( (array) ap_get_addons() as $file => $data ) {
+				$file_path = ANSPRESS_PRO_DIR . DS . $file;
+
+				if ( ap_is_addon_active( $file ) && file_exists( $file_path ) ) {
+					require_once( $file_path );
+				}
+			}
 		}
 
 		/**

@@ -1558,3 +1558,76 @@ function ap_search_array( $array, $key, $value ) {
 
 	return $results;
 }
+
+/**
+ * Get all AnsPress add-ons data.
+ *
+ * @since 4.0.0
+ * @return array
+ */
+function ap_get_addons() {
+	$cache = wp_cache_get( 'addons', 'anspress' );
+
+	if ( false !== $cache ) {
+		return $cache;
+	}
+
+	$files = scandir( ANSPRESS_PRO_DIR );
+	$addons = [];
+
+	foreach ( (array) $files as $file ) {
+		$ext = pathinfo( $file, PATHINFO_EXTENSION );
+
+		if ( 'php' === $ext ) {
+			$addons[ $file ] = get_file_data( ANSPRESS_PRO_DIR . DS . $file, array(
+				'name'        => 'Addon Name',
+				'addonuri'    => 'Addon URI',
+				'description' => 'Description',
+				'author'      => 'Author',
+				'authoruri'   => 'Author URI',
+			) );
+		}
+	}
+
+	wp_cache_set( 'addons', $addons, 'anspress' );
+
+	return $addons;
+}
+
+
+/**
+ * Return all active addons.
+ *
+ * @return array
+ * @since 4.0.0
+ */
+function ap_get_active_addons() {
+	$addons = get_option( 'anspress_addons', [] );
+
+	if ( empty( $addons ) ) {
+		return $addons;
+	}
+
+	foreach ( (array) $addons as $file => $state ) {
+		$addons[ $file ] = ANSPRESS_PRO_DIR . DS . $file;
+	}
+
+	return $addons;
+}
+
+/**
+ * Check if addon is active.
+ *
+ * @param string $addon Addon file name without path.
+ * @return boolean
+ * @since 4.0.0
+ */
+function ap_is_addon_active( $addon ) {
+	$addons = ap_get_active_addons();
+
+	if ( isset( $addons[ $addon ] ) ) {
+		return true;
+	}
+
+	return false;
+}
