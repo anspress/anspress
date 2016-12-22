@@ -27,13 +27,6 @@ ap_register_option_group( 'general', __( 'General', 'anspress-question-answer' )
 			'type'  => 'checkbox',
 			'order' => '1',
 		),
-
-		array(
-			'name'  => 'db_cleanup',
-			'label' => __( 'Clean DB', 'anspress-question-answer' ),
-			'desc'  => __( 'Check this to remove all anspress data including posts on deactivating plugin.', 'anspress-question-answer' ),
-			'type'  => 'checkbox',
-		),
 		array(
 			'type' => 'custom',
 			'html' => '<span class="ap-form-separator">' . __( 'Page Titles', 'anspress-question-answer' ) . '</span>',

@@ -18,7 +18,7 @@ global $wpdb;
 <div class="wrap">
 	<?php do_action( 'ap_before_admin_page_title' ) ?>
 	<div class="ap-uninstall-warning">
-		<?php esc_attr_e( 'If you are unsure about this section please do not click any button in this section.', 'anspress-question-answer' ); ?>
+		<?php esc_attr_e( 'If you are unsure about this section please do use any of these options below.', 'anspress-question-answer' ); ?>
 	</div>
 
 	<table class="form-table">

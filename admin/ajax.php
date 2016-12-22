@@ -157,7 +157,7 @@ class AnsPress_Admin_Ajax {
 				}
 
 				wp_send_json( [ 'done' => (int) $done, 'total' => (int) $count ] );
-			} elseif ( 'answer' === $data_type ) {
+			} elseif ( 'answers' === $data_type ) {
 
 				$count = $wpdb->get_var( "SELECT count(*) FROM $wpdb->posts WHERE post_type='answer'" );
 				$ids = $wpdb->get_col( "SELECT ID FROM $wpdb->posts WHERE post_type='answer' LIMIT 30" );
@@ -179,12 +179,12 @@ class AnsPress_Admin_Ajax {
 				// Remove user roles.
 				AP_Roles::remove_roles();
 
-				wp_send_json( [ 'done' => 1, 'total' => 1 ] );
+				wp_send_json( [ 'done' => 1, 'total' => 0 ] );
 			} elseif ( 'options' === $data_type ) {
 
 				delete_option( 'anspress_opt' );
 
-				wp_send_json( [ 'done' => 1, 'total' => 1 ] );
+				wp_send_json( [ 'done' => 1, 'total' => 0 ] );
 			} elseif ( 'terms' === $data_type ) {
 
 				$question_taxo = (array) get_object_taxonomies( 'question', 'names' );
@@ -204,7 +204,7 @@ class AnsPress_Admin_Ajax {
 					}
 				}
 
-				wp_send_json( [ 'done' => 1, 'total' => 1 ] );
+				wp_send_json( [ 'done' => 1, 'total' => 0 ] );
 			}
 		}
 
