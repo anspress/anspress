@@ -29,9 +29,9 @@ if ( ap_isset_post_value( '__nonce' ) && ap_verify_nonce( 'nonce_option_form' ) 
 
 		$i = 0;
 		// Check $_POST value against fields.
-		foreach ( (array) $groups[ $active ]['fields'] as $section ) {
-			if ( ( string ) $i === $ap_active_section ) {
-				foreach ( (array) $section as $k => $f ) {
+		foreach ( (array) $groups[ $active ]['sections'] as $section_slug => $section ) {
+			if ( $section_slug === $ap_active_section ) {
+				foreach ( (array) $section['fields'] as $k => $f ) {
 
 					if ( ! isset( $f['name'] ) ) {
 						continue;

@@ -29,23 +29,32 @@ function ap_flagged_posts_count() {
  *
  * @param  string  $group_slug     slug for links.
  * @param  string  $group_title    Page title.
- * @param  array   $fields         fields array.
- * @param  boolean $form           Show form.
  * @return void
  * @since 2.0.0
  */
-function ap_register_option_group( $group_slug, $group_title, $fields, $form = true ) {
+function ap_register_option_group( $group_slug, $group_title ) {
 	global $ap_option_tabs;
+	$ap_option_tabs[ $group_slug ] = array( 'title' => $group_title, 'sections' => [] );
+}
 
-	$fields = apply_filters( 'ap_option_group_' . $group_slug, $fields );
-	$ap_option_tabs[ $group_slug ] = array( 'title' => $group_title, 'fields' => $fields, 'form' => $form );
+/**
+ * Register anspress option tab and fields.
+ *
+ * @param  string  $group_slug     slug for links.
+ * @param  string  $group_title    Page title.
+ * @return void
+ * @since 2.0.0
+ */
+function ap_register_option_section( $group, $slug, $title, $fields ) {
+	global $ap_option_tabs;
+	$ap_option_tabs[ $group ]['sections'][ $slug ] = array( 'title' => $title, 'fields' => $fields );
 }
 
 /**
  * Output option tab nav.
  *
  * @return void
- * @since 2.0.0-alpha2
+ * @since 2.0.0
  */
 function ap_options_nav() {
 	$groups = ap_get_option_groups();
@@ -104,14 +113,13 @@ function ap_option_group_fields() {
 		return;
 	}
 
-	$setions = $groups[ $active ]['fields'];
-
-	$i = 0;
+	$group = $groups[ $active ];
 	$ap_active_section = ap_isset_post_value( 'ap_active_section', '' );
 
-	foreach ( (array) $setions as $section_title => $fields ) {
-		if ( is_array( $fields ) ) {
+	foreach ( (array) $group['sections'] as $section_slug => $section ) {
+		$fields = $section['fields'];
 
+		if ( is_array( $fields ) ) {
 			$fields[] = array(
 				'name' => 'fields_group',
 				'type' => 'hidden',
@@ -121,7 +129,7 @@ function ap_option_group_fields() {
 			$fields[] = array(
 				'name' => 'ap_active_section',
 				'type' => 'hidden',
-				'value' => $i,
+				'value' => $section_slug,
 			);
 
 			$args = array(
@@ -133,22 +141,21 @@ function ap_option_group_fields() {
 			);
 
 			$form = new AnsPress_Form( $args );
-			echo '<div class="postbox">';
-			echo '<h3 data-index="' . esc_attr( $i ) . '"><span>' . esc_html( $section_title ) . '</span></h3>';
+			echo '<div class="postbox ' . esc_attr( $section_slug ) . '">';
+			echo '<h3 data-index="' . esc_attr( $section_slug ) . '"><span>' . esc_html( $section['title'] ) . '</span></h3>';
 			echo '<div class="inside">';
 			echo $form->get_form(); // xss okay.
 			echo '</div>';
 			echo '</div>';
 
 		} elseif ( function_exists( $fields ) ) {
-			echo '<div class="postbox">';
-			echo '<h3 data-index="' . esc_attr( $i ) . '"><span>' . esc_html( $section_title ) . '</span></h3>';
+			echo '<div class="postbox ' . esc_attr( $section_slug ) . '">';
+			echo '<h3 data-index="' . esc_attr( $section_slug ) . '"><span>' . esc_html( $section['title'] ) . '</span></h3>';
 			echo '<div class="inside">';
 			call_user_func( $fields );
 			echo '</div>';
 			echo '</div>';
 		}
-		$i++;
 	}
 }
 

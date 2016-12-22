@@ -227,8 +227,10 @@ class AnsPress_Admin_Ajax {
 		check_ajax_referer( 'ap-toggle-addons', '__nonce' );
 
 		if ( ! is_super_admin( ) ) {
-			wp_die( 'false' );
+			wp_die( '' );
 		}
+
+		$_REQUEST['option_page'] = 'addons';
 
 		$previous_addons = get_option( 'anspress_addons', [] );
 		$new_addons = array_flip( ap_isset_post_value( 'addon', [] ) );
@@ -248,12 +250,6 @@ class AnsPress_Admin_Ajax {
 		}
 
 		update_option( 'anspress_addons', $addons );
-		$new_addons = array_diff( $new_addons, $previous_addons );
-
-		if ( ! empty( $new_addons ) ) {
-			//var_dump( $new_addons );
-		}
-
 		wp_die( );
 	}
 

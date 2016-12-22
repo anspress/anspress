@@ -50,7 +50,7 @@ class AnsPress_Bad_words {
 		anspress()->add_action( 'ap_before_updating_answer', __CLASS__, 'before_inserting_question', 10, 2 );
 		anspress()->add_action( 'ap_before_inserting_comment', __CLASS__, 'before_inserting_question', 10, 2 );
 		anspress()->add_action( 'ap_before_updating_comment', __CLASS__, 'before_inserting_question', 10, 2 );
-		anspress()->add_filter( 'ap_get_option_groups', __CLASS__, 'options' );
+		anspress()->add_action( 'ap_option_groups', __CLASS__, 'options' );
 
 
 	}
@@ -82,8 +82,8 @@ class AnsPress_Bad_words {
 	/**
 	 * Register Categories options
 	 */
-	public static function options( $options ) {
-		$options['addons']['fields'][ __( 'Bad Words', 'anspress-question-answer' ) ] = [
+	public static function options() {
+		ap_register_option_section( 'addons', basename( __FILE__ ) , __( 'Bad Words', 'anspress-question-answer' ), [
 			array(
 				'name'  => 'check_question',
 				'label' => __( 'Check bad words in question', 'anspress-question-answer' ),
@@ -118,9 +118,7 @@ class AnsPress_Bad_words {
 				'label' => __( 'Add comma separted bad words', 'anspress-question-answer' ),
 				'type'  => 'textarea',
 			),
-		];
-
-		return $options;
+		]);
 	}
 
 }

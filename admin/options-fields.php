@@ -11,9 +11,13 @@
 
 $settings = ap_opt();
 
-// Register general settings.
-ap_register_option_group( 'general', __( 'General', 'anspress-question-answer' ) , [
-	__( 'General', 'anspress-question-answer' ) => [
+ap_register_option_group( 'general', __( 'General', 'anspress-question-answer' ) );
+ap_register_option_group( 'addons', __( 'Add-ons', 'anspress-question-answer' ) );
+ap_register_option_group( 'access', __( 'Access', 'anspress-question-answer' ) );
+ap_register_option_group( 'tools', __( 'Tools', 'anspress-question-answer' ) );
+
+// Register general section of general group.
+ap_register_option_section( 'general', 'general', __( 'General', 'anspress-question-answer' ), [
 		array(
 			'name'  => 'base_page',
 			'label' => __( 'Base page', 'anspress-question-answer' ),
@@ -57,10 +61,10 @@ ap_register_option_group( 'general', __( 'General', 'anspress-question-answer' )
 			'desc'  => __( 'If an answer is selected for question then [solved] prefix will be added in title.', 'anspress-question-answer' ),
 			'type'  => 'checkbox',
 		) ,
-	],
+	] );
 
-	// ----------- Layout fields ---------------- //
-	__( 'Layout', 'anspress-question-answer' ) => [
+// Register layout section.
+ap_register_option_section( 'general', 'layout', __( 'Layout', 'anspress-question-answer' ), [
 		array(
 			'name'  => 'load_assets_in_anspress_only',
 			'label' => __( 'Load assets in AnsPress page only?', 'anspress-question-answer' ),
@@ -119,24 +123,27 @@ ap_register_option_group( 'general', __( 'General', 'anspress-question-answer' )
 			'label' => __( 'Answers per page', 'anspress-question-answer' ),
 			'desc'  => __( 'Answers to show per page.', 'anspress-question-answer' ),
 			'type'  => 'number',
-		) ,
-	],
-	__( 'Permalinks', 'anspress-question-answer' ) => [
-		array(
-			'name'  => 'ask_page_slug',
-			'label' => __( 'Ask page slug', 'anspress-question-answer' ),
-			'desc'  => __( 'Enter slug for ask page.', 'anspress-question-answer' ),
-			'order' => 5,
-		),
-		array(
-			'name'  => 'question_page_slug',
-			'label' => __( 'Question page slug', 'anspress-question-answer' ),
-			'desc'  => __( 'Enter slug for question page.', 'anspress-question-answer' ),
-			'order' => 5,
-		),
-	],
+		)
+	] );
 
-	__( 'Question & Answer', 'anspress-question-answer' ) => [
+// Permalinks section.
+ap_register_option_section( 'general', 'permalinks', __( 'Permalinks', 'anspress-question-answer' ), [
+	array(
+		'name'  => 'ask_page_slug',
+		'label' => __( 'Ask page slug', 'anspress-question-answer' ),
+		'desc'  => __( 'Enter slug for ask page.', 'anspress-question-answer' ),
+		'order' => 5,
+	),
+	array(
+		'name'  => 'question_page_slug',
+		'label' => __( 'Question page slug', 'anspress-question-answer' ),
+		'desc'  => __( 'Enter slug for question page.', 'anspress-question-answer' ),
+		'order' => 5,
+	),
+]);
+
+// Register question and answers section.
+ap_register_option_section( 'general', 'qa', __( 'Question & Answer', 'anspress-question-answer' ), [
 		array(
 			'name'  => 'allow_private_posts',
 			'label' => __( 'Allow private posts', 'anspress-question-answer' ),
@@ -266,170 +273,161 @@ ap_register_option_group( 'general', __( 'General', 'anspress-question-answer' )
 			'desc'  => __( 'Disable down voting on answers.', 'anspress-question-answer' ),
 			'type'  => 'checkbox',
 		) ,
-	]
+	]);
+
+// Register addons toggle seaction
+ap_register_option_section( 'addons', 'toggle_addons', __( 'Add-ons', 'anspress-question-answer' ), 'ap_admin_addons_page' );
+
+// Register permission section.
+ap_register_option_section( 'access', 'permissions',  __( 'Permissions', 'anspress-question-answer' ), [
+	array(
+		'name'  => 'only_logged_in',
+		'label' => __( 'Only logged in can see questions, answer and comments?', 'anspress-question-answer' ),
+		'desc'  => __( 'Require user to login to see AnsPress contents?.', 'anspress-question-answer' ),
+		'type'  => 'checkbox',
+	),
+	array(
+		'name'  => 'multiple_answers',
+		'label' => __( 'Multiple answers', 'anspress-question-answer' ),
+		'desc'  => __( 'Allow user to submit multiple answer per question.', 'anspress-question-answer' ),
+		'type'  => 'checkbox',
+	),
+	array(
+		'name'  => 'disallow_op_to_answer',
+		'label' => __( 'Asker can answer', 'anspress-question-answer' ),
+		'desc'  => __( 'Allow asker to answer his own question.', 'anspress-question-answer' ),
+		'type'  => 'checkbox',
+	),
+	array(
+		'name'  => 'allow_anonymous',
+		'label' => __( 'Allow anonymous', 'anspress-question-answer' ),
+		'desc'  => __( 'Non-loggedin user can post questions and answers.', 'anspress-question-answer' ),
+		'type'  => 'checkbox',
+	),
+	array(
+		'name'  => 'only_admin_can_answer',
+		'label' => __( 'Only admin can answer', 'anspress-question-answer' ),
+		'desc'  => __( 'Only allow admin to answer question.', 'anspress-question-answer' ),
+		'type'  => 'checkbox',
+	),
+	array(
+		'name'  => 'logged_in_can_see_ans',
+		'label' => __( 'Only logged in can see answers', 'anspress-question-answer' ),
+		'desc'  => __( 'non-loggedin user cannot see answers.', 'anspress-question-answer' ),
+		'type'  => 'checkbox',
+	),
+	array(
+		'name'  => 'logged_in_can_see_comment',
+		'label' => __( 'Only logged in can see comment', 'anspress-question-answer' ),
+		'desc'  => __( 'non-loggedin user cannot see comments.', 'anspress-question-answer' ),
+		'type'  => 'checkbox',
+	),
+	array(
+		'name'  => 'disable_delete_after',
+		'label' => __( 'Lock delete action', 'anspress-question-answer' ),
+		'desc'  => __( 'Lock comment or post after a period so that user cannot delete it. Set the time in epoch i.e. 86400 = 1 day.', 'anspress-question-answer' ),
+		'type'  => 'number',
+	),
+	array(
+		'type' => 'custom',
+		'html' => '<span class="ap-form-separator">' . __( 'Upload', 'anspress-question-answer' ) . '</span>',
+	),
+	array(
+		'name'  => 'allow_upload',
+		'label' => __( 'Allow image upload', 'anspress-question-answer' ),
+		'desc'  => __( 'Allow logged-in users to upload image.', 'anspress-question-answer' ),
+		'type'  => 'checkbox',
+	),
+	array(
+		'name'  => 'uploads_per_post',
+		'label' => __( 'Max uploads per post', 'anspress-question-answer' ),
+		'desc'  => __( 'Set numbers of media user can upload for each post.', 'anspress-question-answer' ),
+		'type'  => 'number',
+	),
+	array(
+		'name'  => 'max_upload_size',
+		'label' => __( 'Max upload size', 'anspress-question-answer' ),
+		'desc'  => __( 'Set maximum upload size.', 'anspress-question-answer' ),
+	),
 ]);
 
-ap_register_option_group( 'addons', __( 'Add-ons', 'anspress-question-answer' ) , [
-	__( 'Toggle Add-ons', 'anspress-question-answer' ) => 'ap_admin_addons_page',
-] );
+// Register moderate section.
+ap_register_option_section( 'access', 'moderate',  __( 'Moderate', 'anspress-question-answer' ), [
+	array(
+		'name'    => 'new_question_status',
+		'label'   => __( 'Status of new question', 'anspress-question-answer' ),
+		'desc'    => __( 'Set post status of new question.', 'anspress-question-answer' ),
+		'type'    => 'select',
+		'options' => array(
+			'publish'  => __( 'Publish', 'anspress-question-answer' ),
+			'moderate' => __( 'Moderate', 'anspress-question-answer' ),
+		),
+	) ,
+	array(
+		'name'    => 'edit_question_status',
+		'label'   => __( 'Status of edited question', 'anspress-question-answer' ),
+		'desc'    => __( 'Set post status of edited question.', 'anspress-question-answer' ),
+		'type'    => 'select',
+		'options' => array(
+			'publish'  => __( 'Publish', 'anspress-question-answer' ),
+			'moderate' => __( 'Moderate', 'anspress-question-answer' ),
+		),
+	) ,
+	array(
+		'name'    => 'new_answer_status',
+		'label'   => __( 'Status of new answer', 'anspress-question-answer' ),
+		'desc'    => __( 'Set post status of new answer.', 'anspress-question-answer' ),
+		'type'    => 'select',
+		'options' => array(
+			'publish'  => __( 'Publish', 'anspress-question-answer' ),
+			'moderate' => __( 'Moderate', 'anspress-question-answer' ),
+		),
+	) ,
+	array(
+		'name'    => 'edit_answer_status',
+		'label'   => __( 'Status of edited answer', 'anspress-question-answer' ),
+		'desc'    => __( 'Set post status of edited answer.', 'anspress-question-answer' ),
+		'type'    => 'select',
+		'options' => array(
+			'publish'  => __( 'Publish', 'anspress-question-answer' ),
+			'moderate' => __( 'Moderate', 'anspress-question-answer' ),
+		),
+	) ,
+	array(
+		'name'    => 'anonymous_post_status',
+		'label'   => __( 'Status of anonymous post', 'anspress-question-answer' ),
+		'desc'    => __( 'Set post status post submitted by anonymous user.', 'anspress-question-answer' ),
+		'type'    => 'select',
+		'options' => array(
+			'publish'  => __( 'Publish', 'anspress-question-answer' ),
+			'moderate' => __( 'Moderate', 'anspress-question-answer' ),
+		),
+	) ,
+]);
+
+// Register recpatcha options.
+ap_register_option_section( 'access', 'recpatcha',  __( 'Recaptcha', 'anspress-question-answer' ), [
+	array(
+		'name'  => 'enable_recaptcha',
+		'label' => __( 'Enable reCaptcha', 'anspress-question-answer' ),
+		'desc'  => __( 'Use this for preventing spam posts.', 'anspress-question-answer' ),
+		'type'  => 'checkbox',
+	) ,
+	array(
+		'name'  => 'recaptcha_site_key',
+		'label' => __( 'Recaptcha site key', 'anspress-question-answer' ),
+		'desc'  => __( 'Enter your site key, if you dont have it get it from here https://www.google.com/recaptcha/admin', 'anspress-question-answer' ),
+	) ,
+	array(
+		'name'  => 'recaptcha_secret_key',
+		'label' => __( 'Recaptcha secret key', 'anspress-question-answer' ),
+		'desc'  => __( 'Enter your secret key', 'anspress-question-answer' ),
+	) ,
+]);
 
 
-/**
- * Register permission settings.
- */
-ap_register_option_group('access', __( 'Access', 'anspress-question-answer' ) , array(
-	__( 'Permissions', 'anspress-question-answer' ) => [
-		array(
-			'name'  => 'only_logged_in',
-			'label' => __( 'Only logged in can see questions, answer and comments?', 'anspress-question-answer' ),
-			'desc'  => __( 'Require user to login to see AnsPress contents?.', 'anspress-question-answer' ),
-			'type'  => 'checkbox',
-		),
-		array(
-			'name'  => 'multiple_answers',
-			'label' => __( 'Multiple answers', 'anspress-question-answer' ),
-			'desc'  => __( 'Allow user to submit multiple answer per question.', 'anspress-question-answer' ),
-			'type'  => 'checkbox',
-		),
-		array(
-			'name'  => 'disallow_op_to_answer',
-			'label' => __( 'Asker can answer', 'anspress-question-answer' ),
-			'desc'  => __( 'Allow asker to answer his own question.', 'anspress-question-answer' ),
-			'type'  => 'checkbox',
-		),
-		array(
-			'name'  => 'allow_anonymous',
-			'label' => __( 'Allow anonymous', 'anspress-question-answer' ),
-			'desc'  => __( 'Non-loggedin user can post questions and answers.', 'anspress-question-answer' ),
-			'type'  => 'checkbox',
-		),
-		array(
-			'name'  => 'only_admin_can_answer',
-			'label' => __( 'Only admin can answer', 'anspress-question-answer' ),
-			'desc'  => __( 'Only allow admin to answer question.', 'anspress-question-answer' ),
-			'type'  => 'checkbox',
-		),
-		array(
-			'name'  => 'logged_in_can_see_ans',
-			'label' => __( 'Only logged in can see answers', 'anspress-question-answer' ),
-			'desc'  => __( 'non-loggedin user cannot see answers.', 'anspress-question-answer' ),
-			'type'  => 'checkbox',
-		),
-		array(
-			'name'  => 'logged_in_can_see_comment',
-			'label' => __( 'Only logged in can see comment', 'anspress-question-answer' ),
-			'desc'  => __( 'non-loggedin user cannot see comments.', 'anspress-question-answer' ),
-			'type'  => 'checkbox',
-		),
-		array(
-			'name'  => 'disable_delete_after',
-			'label' => __( 'Lock delete action', 'anspress-question-answer' ),
-			'desc'  => __( 'Lock comment or post after a period so that user cannot delete it. Set the time in epoch i.e. 86400 = 1 day.', 'anspress-question-answer' ),
-			'type'  => 'number',
-		),
-		array(
-			'type' => 'custom',
-			'html' => '<span class="ap-form-separator">' . __( 'Upload', 'anspress-question-answer' ) . '</span>',
-		),
-		array(
-			'name'  => 'allow_upload',
-			'label' => __( 'Allow image upload', 'anspress-question-answer' ),
-			'desc'  => __( 'Allow logged-in users to upload image.', 'anspress-question-answer' ),
-			'type'  => 'checkbox',
-		),
-		array(
-			'name'  => 'uploads_per_post',
-			'label' => __( 'Max uploads per post', 'anspress-question-answer' ),
-			'desc'  => __( 'Set numbers of media user can upload for each post.', 'anspress-question-answer' ),
-			'type'  => 'number',
-		),
-		array(
-			'name'  => 'max_upload_size',
-			'label' => __( 'Max upload size', 'anspress-question-answer' ),
-			'desc'  => __( 'Set maximum upload size.', 'anspress-question-answer' ),
-		),
-	],
-	__( 'Moderate', 'anspress-question-answer' ) => [
-		array(
-			'name'    => 'new_question_status',
-			'label'   => __( 'Status of new question', 'anspress-question-answer' ),
-			'desc'    => __( 'Set post status of new question.', 'anspress-question-answer' ),
-			'type'    => 'select',
-			'options' => array(
-				'publish'  => __( 'Publish', 'anspress-question-answer' ),
-				'moderate' => __( 'Moderate', 'anspress-question-answer' ),
-			),
-		) ,
-		array(
-			'name'    => 'edit_question_status',
-			'label'   => __( 'Status of edited question', 'anspress-question-answer' ),
-			'desc'    => __( 'Set post status of edited question.', 'anspress-question-answer' ),
-			'type'    => 'select',
-			'options' => array(
-				'publish'  => __( 'Publish', 'anspress-question-answer' ),
-				'moderate' => __( 'Moderate', 'anspress-question-answer' ),
-			),
-		) ,
-		array(
-			'name'    => 'new_answer_status',
-			'label'   => __( 'Status of new answer', 'anspress-question-answer' ),
-			'desc'    => __( 'Set post status of new answer.', 'anspress-question-answer' ),
-			'type'    => 'select',
-			'options' => array(
-				'publish'  => __( 'Publish', 'anspress-question-answer' ),
-				'moderate' => __( 'Moderate', 'anspress-question-answer' ),
-			),
-		) ,
-		array(
-			'name'    => 'edit_answer_status',
-			'label'   => __( 'Status of edited answer', 'anspress-question-answer' ),
-			'desc'    => __( 'Set post status of edited answer.', 'anspress-question-answer' ),
-			'type'    => 'select',
-			'options' => array(
-				'publish'  => __( 'Publish', 'anspress-question-answer' ),
-				'moderate' => __( 'Moderate', 'anspress-question-answer' ),
-			),
-		) ,
-		array(
-			'name'    => 'anonymous_post_status',
-			'label'   => __( 'Status of anonymous post', 'anspress-question-answer' ),
-			'desc'    => __( 'Set post status post submitted by anonymous user.', 'anspress-question-answer' ),
-			'type'    => 'select',
-			'options' => array(
-				'publish'  => __( 'Publish', 'anspress-question-answer' ),
-				'moderate' => __( 'Moderate', 'anspress-question-answer' ),
-			),
-		) ,
-
-	],
-	__( 'Spam', 'anspress-question-answer' ) => [
-		array(
-			'type' => 'custom',
-			'html' => '<span class="ap-form-separator">' . __( 'reCaptacha', 'anspress-question-answer' ) . '</span>',
-		) ,
-		array(
-			'name'  => 'enable_recaptcha',
-			'label' => __( 'Enable reCaptcha', 'anspress-question-answer' ),
-			'desc'  => __( 'Use this for preventing spam posts.', 'anspress-question-answer' ),
-			'type'  => 'checkbox',
-		) ,
-		array(
-			'name'  => 'recaptcha_site_key',
-			'label' => __( 'Recaptcha site key', 'anspress-question-answer' ),
-			'desc'  => __( 'Enter your site key, if you dont have it get it from here https://www.google.com/recaptcha/admin', 'anspress-question-answer' ),
-		) ,
-		array(
-			'name'  => 'recaptcha_secret_key',
-			'label' => __( 'Recaptcha secret key', 'anspress-question-answer' ),
-			'desc'  => __( 'Enter your secret key', 'anspress-question-answer' ),
-		) ,
-	]
-));
-
-ap_register_option_group( 'tools', __( 'Tools', 'anspress-question-answer' ) , array(
-	__( 'User roles', 'anspress-question-answer' ) => 'ap_admin_roles_page',
-	__( 'Uninstall - clear all AnsPress data', 'anspress-question-answer' ) => 'ap_admin_uninstall_page',
-), false );
+ap_register_option_section( 'tools', 'user_roles', __( 'User roles', 'anspress-question-answer' ) , 'ap_admin_roles_page' );
+ap_register_option_section( 'tools', 'uninstall', __( 'Uninstall - clear all AnsPress data', 'anspress-question-answer' ) , 'ap_admin_uninstall_page' );
 
 /**
  * Load roles option.

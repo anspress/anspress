@@ -327,7 +327,6 @@ if ( ! class_exists( 'AnsPress' ) ) {
 
 			foreach ( (array) ap_get_addons() as $file => $data ) {
 				$file_path = ANSPRESS_PRO_DIR . DS . $file;
-
 				if ( ap_is_addon_active( $file ) && file_exists( $file_path ) ) {
 					require_once( $file_path );
 				}

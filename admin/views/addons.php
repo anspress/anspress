@@ -44,7 +44,7 @@ global $wpdb;
 			url: ajaxurl,
 			data: data,
 			success: function(data){
-				console.log(data);
+				window.location.reload();
 			}
 		});
 	}
