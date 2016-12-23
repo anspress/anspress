@@ -242,7 +242,7 @@ class AnsPress_Admin_Ajax {
 		$addons = $previous_addons + $new_addons;
 
 		foreach ( (array) $addons as $file => $status ) {
-			if ( ! isset( $new_addons[ $file ] ) || ! file_exists( ANSPRESS_PRO_DIR . DS . $file ) ) {
+			if ( ! isset( $new_addons[ $file ] ) || ! file_exists( ANSPRESS_ADDONS_DIR . DS . $file ) ) {
 				unset( $addons[ $file ] );
 			} else {
 				$addons[ $file ] = true;

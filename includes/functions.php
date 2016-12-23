@@ -1572,21 +1572,29 @@ function ap_get_addons() {
 		return $cache;
 	}
 
-	$files = scandir( ANSPRESS_PRO_DIR );
-	$addons = [];
+	$all_files = [];
+	foreach ( [ 'pro', 'free' ] as $folder ) {
+		$files = scandir( ANSPRESS_ADDONS_DIR . DS . $folder );
 
-	foreach ( (array) $files as $file ) {
-		$ext = pathinfo( $file, PATHINFO_EXTENSION );
+		foreach ( $files as $file ) {
+			$ext = pathinfo( $file, PATHINFO_EXTENSION );
 
-		if ( 'php' === $ext ) {
-			$addons[ $file ] = get_file_data( ANSPRESS_PRO_DIR . DS . $file, array(
-				'name'        => 'Addon Name',
-				'addonuri'    => 'Addon URI',
-				'description' => 'Description',
-				'author'      => 'Author',
-				'authoruri'   => 'Author URI',
-			) );
+			if ( 'php' === $ext ) {
+				$all_files[ ] = $folder . DS . $file;
+			}
 		}
+	}
+
+
+	$addons = [];
+	foreach ( (array) $all_files as $file ) {
+		$addons[ $file ] = get_file_data( ANSPRESS_ADDONS_DIR . DS . $file, array(
+			'name'        => 'Addon Name',
+			'addonuri'    => 'Addon URI',
+			'description' => 'Description',
+			'author'      => 'Author',
+			'authoruri'   => 'Author URI',
+		) );
 	}
 
 	wp_cache_set( 'addons', $addons, 'anspress' );
@@ -1609,7 +1617,7 @@ function ap_get_active_addons() {
 	}
 
 	foreach ( (array) $addons as $file => $state ) {
-		$addons[ $file ] = ANSPRESS_PRO_DIR . DS . $file;
+		$addons[ $file ] = ANSPRESS_ADDONS_DIR . DS . $file;
 	}
 
 	return $addons;

@@ -405,27 +405,6 @@ ap_register_option_section( 'access', 'moderate',  __( 'Moderate', 'anspress-que
 	) ,
 ]);
 
-// Register recpatcha options.
-ap_register_option_section( 'access', 'recpatcha',  __( 'Recaptcha', 'anspress-question-answer' ), [
-	array(
-		'name'  => 'enable_recaptcha',
-		'label' => __( 'Enable reCaptcha', 'anspress-question-answer' ),
-		'desc'  => __( 'Use this for preventing spam posts.', 'anspress-question-answer' ),
-		'type'  => 'checkbox',
-	) ,
-	array(
-		'name'  => 'recaptcha_site_key',
-		'label' => __( 'Recaptcha site key', 'anspress-question-answer' ),
-		'desc'  => __( 'Enter your site key, if you dont have it get it from here https://www.google.com/recaptcha/admin', 'anspress-question-answer' ),
-	) ,
-	array(
-		'name'  => 'recaptcha_secret_key',
-		'label' => __( 'Recaptcha secret key', 'anspress-question-answer' ),
-		'desc'  => __( 'Enter your secret key', 'anspress-question-answer' ),
-	) ,
-]);
-
-
 ap_register_option_section( 'tools', 'user_roles', __( 'User roles', 'anspress-question-answer' ) , 'ap_admin_roles_page' );
 ap_register_option_section( 'tools', 'uninstall', __( 'Uninstall - clear all AnsPress data', 'anspress-question-answer' ) , 'ap_admin_uninstall_page' );
 

@@ -242,7 +242,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 				'ANSPRESS_THEME_URL' 		=> plugin_dir_url( __FILE__ ) . 'templates',
 				'ANSPRESS_CACHE_DIR' 		=> WP_CONTENT_DIR . '/cache/anspress',
 				'ANSPRESS_CACHE_TIME' 	=> HOUR_IN_SECONDS,
-				'ANSPRESS_PRO_DIR' 			=> plugin_dir_path( __FILE__ ) . 'pro-addons' ,
+				'ANSPRESS_ADDONS_DIR' 	=> plugin_dir_path( __FILE__ ) . 'addons' ,
 			);
 
 			foreach ( $constants as $k => $val ) {
@@ -326,7 +326,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 			AnsPress_Views::init();
 
 			foreach ( (array) ap_get_addons() as $file => $data ) {
-				$file_path = ANSPRESS_PRO_DIR . DS . $file;
+				$file_path = ANSPRESS_ADDONS_DIR . DS . $file;
 				if ( ap_is_addon_active( $file ) && file_exists( $file_path ) ) {
 					require_once( $file_path );
 				}
