@@ -27,6 +27,7 @@ class AnsPress_Views {
 	 */
 	public static function init() {
 		anspress()->add_action( 'shutdown', __CLASS__, 'insert_views' );
+		anspress()->add_action( 'ap_before_delete_question', __CLASS__, 'delete_votes' );
 	}
 
 	/**
@@ -45,6 +46,20 @@ class AnsPress_Views {
 
 			// Update qameta.
 			ap_update_views_count( get_question_id() );
+		}
+	}
+
+	/**
+	 * Delete views count when post is deleted.
+	 *
+	 * @param integer $post_id Post ID.
+	 * @since 4.0.0
+	 */
+	public static function delete_views( $post_id ) {
+		global $wpdb;
+
+		if ( apply_filters( 'ap_insert_view_to_db', false ) ) {
+			$wpdb->delete( $wpdb->ap_views, [ 'view_ref_id' => $post_id ], [ '%d' ] );
 		}
 	}
 }

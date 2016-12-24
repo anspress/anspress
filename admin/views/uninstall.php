@@ -74,6 +74,15 @@ global $wpdb;
 					<p class="description"><?php esc_attr_e( 'Clicking this button will delete all AnsPress terms data', 'anspress-question-answer' ); ?></p>
 				</td>
 			</tr>
+			<tr>
+				<th scope="row" valign="top">
+					<label><?php esc_attr_e( 'Permanently delete all AnsPress tables?', 'anspress-question-answer' ); ?></label>
+				</th>
+				<td>
+					<a href="#" class="button ap-uninstall-btn" data-id="tables" data-total="1"><?php esc_attr_e( 'Delete all database tables', 'anspress-question-answer' ); ?></a>
+					<p class="description"><?php esc_attr_e( 'Clicking this button will remove all AnsPress DB tables', 'anspress-question-answer' ); ?></p>
+				</td>
+			</tr>
 		</tbody>
 	</table>
 </div>
@@ -88,7 +97,7 @@ global $wpdb;
 		jQuery.ajax({
 			url: ajaxurl,
 			method: 'POST',
-			data: { __nonce: '', action: 'ap_uninstall_data', data_type: action },
+			data: { __nonce: __nonce, action: 'ap_uninstall_data', data_type: action },
 			success: function(data){
 				if(data.done > 0){
 					done = done + data.done;

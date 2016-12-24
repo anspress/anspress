@@ -622,63 +622,12 @@ function ap_get_ask_btn() {
 
 /**
  * Include template php files.
+ *
  * @param string $file File name without extension.
  * @since 2.1
  */
-function ap_get_template_part($file) {
+function ap_get_template_part( $file ) {
 	include ap_get_theme_location( $file.'.php' );
-}
-
-/**
- * Output AnsPress breadcrumbs
- */
-function ap_breadcrumbs() {
-
-	$navs = ap_get_breadcrumbs();
-
-	echo '<ul class="ap-breadcrumbs clearfix">';
-	echo '<li class="ap-breadcrumbs-home"><a href="'.esc_url( home_url( '/' ) ).'" class="apicon-home"></a></li>';
-	echo '<li><i class="apicon-chevron-right"></i></li>';
-
-	$i = 1;
-	$total_nav = count( $navs );
-
-	foreach ( $navs as $k => $nav ) {
-		if ( ! empty( $nav ) ) {
-			echo '<li>';
-			echo '<a href="'.esc_url( $nav['link'] ).'">'. esc_attr( $nav['title'] ).'</a>';
-			echo '</li>';
-
-			if ( $total_nav != $i ) {
-				echo '<li><i class="apicon-chevron-right"></i></li>';
-			}
-		}
-		++$i;
-	}
-
-	echo '</ul>';
-}
-
-/**
- * Get breadcrumbs array
- * @return array
- */
-function ap_get_breadcrumbs() {
-	$current_page = ap_current_page();
-	$title = ap_page_title();
-	$a = array();
-
-	$a['base'] = array( 'title' => ap_opt( 'base_page_title' ), 'link' => ap_base_page_link(), 'order' => 0 );
-
-	if ( is_question() ) {
-		$a['page'] = array( 'title' => substr( $title, 0, 30 ) . ( strlen( $title ) > 30 ? __( '..', 'anspress-question-answer' ) : ''), 'link' => get_permalink( get_question_id() ), 'order' => 10 );
-	} elseif ( 'base' != $current_page && '' != $current_page ) {
-		$a['page'] = array( 'title' => substr( $title, 0, 30 ) . ( strlen( $title ) > 30 ? __( '..', 'anspress-question-answer' ) : ''), 'link' => ap_get_link_to( $current_page ), 'order' => 10 );
-	}
-
-	$a = apply_filters( 'ap_breadcrumbs', $a );
-
-	return ap_sort_array_by_order( $a );
 }
 
 /**

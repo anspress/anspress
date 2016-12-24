@@ -1,4 +1,19 @@
 <?php
+/**
+ * AnsPress ask widget form.
+ *
+ * @package WordPress/AnsPress
+ * @author  Rahul Aryan <support@anspress.io>
+ * @license GPL 3+ GNU GPL licence above 3+
+ * @link    https://anspress.io
+ * @since   2.0.0
+ */
+
+// If this file is called directly, abort.
+if ( ! defined( 'WPINC' ) ) {
+	die;
+}
+
 class AP_Askform_Widget extends WP_Widget {
 
 	/**
@@ -8,7 +23,7 @@ class AP_Askform_Widget extends WP_Widget {
 		parent::__construct(
 			'ap_askform_widget',
 			__( '(AnsPress) Ask form', 'anspress-question-answer' ),
-			array( 'description' => __( 'Shows ask form.', 'anspress-question-answer' ) )
+			array( 'description' => __( 'AnsPress ask form widget', 'anspress-question-answer' ) )
 		);
 	}
 
@@ -20,9 +35,9 @@ class AP_Askform_Widget extends WP_Widget {
 			echo $args['before_title'] . $title . $args['after_title'];
 		}
 		?>
-            <div class="ap-widget-inner">
+    	<div class="ap-widget-inner">
 				<?php ap_ask_form(); ?>
-            </div>
+      </div>
 		<?php
 		echo $args['after_widget'];
 	}
@@ -34,10 +49,10 @@ class AP_Askform_Widget extends WP_Widget {
 			$title = __( 'Ask questions', 'anspress-question-answer' );
 		}
 		?>
-        <p>
+    <p>
 			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:', 'anspress-question-answer' ); ?></label>
 			<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>">
-        </p>
+    </p>
 		<?php
 	}
 

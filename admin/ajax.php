@@ -145,7 +145,7 @@ class AnsPress_Admin_Ajax {
 		check_ajax_referer( 'ap_uninstall_data', '__nonce' );
 
 		$data_type = ap_sanitize_unslash( 'data_type', 'r' );
-		$valid_data = [ 'qa', 'answers', 'options', 'userdata', 'terms' ];
+		$valid_data = [ 'qa', 'answers', 'options', 'userdata', 'terms', 'tables' ];
 
 		global $wpdb;
 
@@ -188,8 +188,8 @@ class AnsPress_Admin_Ajax {
 				AP_Roles::remove_roles();
 
 				// Delete vote meta.
-				$wpdb->delete( $wpdb->users, [ 'meta_key' => '__up_vote_casted' ], array( '%s' ) );
-				$wpdb->delete( $wpdb->users, [ 'meta_key' => '__down_vote_casted' ], array( '%s' ) );
+				$wpdb->delete( $wpdb->usermeta, [ 'meta_key' => '__up_vote_casted' ], array( '%s' ) ); // @codingStandardsIgnoreLine
+				$wpdb->delete( $wpdb->usermeta, [ 'meta_key' => '__down_vote_casted' ], array( '%s' ) ); // @codingStandardsIgnoreLine
 				
 				wp_send_json( [ 'done' => 1, 'total' => 0 ] );
 			} elseif ( 'options' === $data_type ) {
@@ -214,6 +214,15 @@ class AnsPress_Admin_Ajax {
 					foreach ( (array) $terms as $t ) {
 						wp_delete_term( $t, $tax );
 					}
+				}
+
+				wp_send_json( [ 'done' => 1, 'total' => 0 ] );
+			} elseif ( 'tables' === $data_type ) {
+
+				$tables = [ $wpdb->ap_qameta, $wpdb->ap_votes, $wpdb->ap_views ];
+				
+				foreach ( $tables as $table ) {
+					$wpdb->query( "DROP TABLE IF EXISTS {$table}" );
 				}
 
 				wp_send_json( [ 'done' => 1, 'total' => 0 ] );
