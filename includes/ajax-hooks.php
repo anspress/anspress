@@ -47,13 +47,12 @@ class AnsPress_Ajax {
 
 		// Flag ajax callbacks.
 		anspress()->add_action( 'ap_ajax_action_flag', 'AnsPress_Flag', 'action_flag' );
-		anspress()->add_action( 'ap_ajax_list_filter', 'AnsPress_Theme', 'list_filter' );
 
 		// Uploader hooks.
 		anspress()->add_action( 'wp_ajax_ap_image_submission', 'AnsPress_Uploader', 'image_submission' );
 		anspress()->add_action( 'ap_ajax_delete_attachment', 'AnsPress_Uploader', 'delete_attachment' );
 
-		// List filtering
+		// List filtering.
 		anspress()->add_action( 'ap_ajax_load_filter_order_by', __CLASS__, 'load_filter_order_by' );
 
 	}

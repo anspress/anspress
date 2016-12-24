@@ -1120,7 +1120,7 @@ function ap_get_current_list_filters( $filter = null ) {
 		$filters = [];
 	}
 
-	$filters = $default + $filters;
+	$filters = $filters + $default;
 
 	$filters = array_unique( array_filter( $filters ), SORT_REGULAR );
 

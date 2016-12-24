@@ -95,18 +95,17 @@
 				}
 				.featured,
 				.solved {
-						font-size: 12px;
-						font-weight: bold;
-						height: 19px;
-						margin-right: 7px;
-						padding: 2px 8px;
-						color: #fff;
-						border-radius: 1px;
-						background: #4fc3f7;
+					font-size: 12px;
+					height: 19px;
+					margin-right: 7px;
+					padding: 1px 6px;
+					color: #fff;
+					border-radius: 2px;
+					background: #FF5722;
 				}
 				.solved {
 						margin-right: 20px;
-						background: #9ccc65;
+						background: $main-color;
 						i {
 								margin-right: 0;
 								color: #fff;

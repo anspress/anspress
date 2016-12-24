@@ -132,9 +132,9 @@ class AnsPress_Theme {
 			$new_title = ap_page_title();
 
 			if ( strpos( $title, 'ANSPRESS_TITLE' ) !== false ) {
-				$new_title = str_replace( 'ANSPRESS_TITLE', $new_title, $title ). ' | ' . get_bloginfo( 'name' );
+				$new_title = str_replace( 'ANSPRESS_TITLE', $new_title, $title ) . ' | ' . get_bloginfo( 'name' );
 			} else {
-				$new_title = $new_title.' | '. get_bloginfo( 'name' );
+				$new_title = $new_title . ' | ' . get_bloginfo( 'name' );
 			}
 
 			$new_title = apply_filters( 'ap_wpseo_title', $new_title );
@@ -257,41 +257,6 @@ class AnsPress_Theme {
 		}
 
 		ap_ajax_json( [ 'success' => true, 'actions' => ap_post_actions( $post_id ) ] );
-	}
-
-	/**
-	 * Ajax callback for list filters.
-	 *
-	 * @since 3.0.0
-	 */
-	public static function list_filter() {
-		// @codingStandardsIgnoreLine
-		if ( ! ap_verify_nonce( 'ap_ajax_nonce' ) || ! isset( $_POST['args'] ) ) {
-			ap_ajax_json( 'something_wrong' );
-		}
-
-		$filter = sanitize_text_field( wp_unslash( $_POST['args'][0] ) ); // input var okay, xss okay.
-
-		if ( isset( $_POST['current_filter'] ) ) {
-			$_GET['ap_filter'] = wp_parse_args( wp_unslash( $_POST['current_filter'] ) );
-		}
-
-		$filters = ap_get_list_filters( );
-		if ( ! empty( $filters[ $filter ] ) ) {
-			$apData = $filters[ $filter ];
-			$apData['key'] = $filter;
-			$apData['placeholder'] = sprintf( __('Filter %s', 'anspress-question-answer' ), strtolower( $apData['title'] ) );
-			$elm = '#ap-filter .filter-'. esc_attr( $filter );
-			$data = array(
-				'template' => 'sorting',
-				'appendTo' => $elm,
-				'do' => [ 'addClass' => [ $elm.' .ap-dropdown-toggle', 'ajax-disabled' ] ],
-				'apData' => $apData,
-				'key' => $filter.'Filter',
-			);
-		}
-
-		ap_ajax_json( $data );
 	}
 
 	/**
