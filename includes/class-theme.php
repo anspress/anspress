@@ -321,32 +321,6 @@ class AnsPress_Theme {
 		return $template;
 	}
 
-	/**
-	 * Add AnsPress avtar in Wp discussion setting
-	 * @param  array $avatar_defaults Avatar types.
-	 * @return array
-	 */
-	public static function default_avatar($avatar_defaults) {
-		$new_avatar = 'ANSPRESS_AVATAR_SRC';
-		$avatar_defaults[$new_avatar] = 'AnsPress';
 
-		return $avatar_defaults;
-	}
-
-	/**
-	 * Override get_avatar.
-	 *
-	 * @param  string         $args 		Avatar image.
-	 * @param  integar|string $id_or_email 	User id or email.
-	 * @return string
-	 */
-	public static function get_avatar( $args, $id_or_email ) {
-		// Set default avatar url.
-		if ( empty( $args['url'] ) && 'ANSPRESS_AVATAR_SRC' == get_option( 'avatar_default' ) ) {
-			$args['url'] = ap_generate_avatar( $id_or_email );
-		}
-
-		return $args;
-	}
 }
 
