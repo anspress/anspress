@@ -171,15 +171,6 @@
 	padding: 15px;
 	text-align: center;
 }
-.ap-please-login {
-		border: 2px solid #eee;
-		border-radius: 3px;
-		display: table;
-		margin: 20px auto 0;
-		padding: 6px 10px;
-		text-align: center;
-}
-
 .ap-pending-notice {
 	background: $yellow-color;
 	border-radius: 2px;
@@ -356,4 +347,33 @@ body ul ul#ap-user-menu-link{
 }
 .hide{
 	display: none !important;
+}
+.ap-login{
+	.ap-cell-inner{
+		padding: 15px;
+	}
+	&-label{
+		display: block;
+    border-bottom: solid 1px rgba(0, 0, 0, 0.1);
+    margin: -15px -15px 20px;
+    padding: 10px;
+    background: #fafafa;
+	}
+	&-buttons{
+		margin: 0 auto;
+    display: table;
+	}
+	&-sep{
+		padding: 6px 3px;
+    background: #eee;
+    border-radius: 50%;
+    margin: 0 15px;
+    height: 30px;
+    display: inline-block;
+    width: 30px;
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 11px;
+    color: #888;
+	}
 }

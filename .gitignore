@@ -2,7 +2,6 @@
 /addons/realtime
 /.buildpath
 /.project
-/addons
 /node_modules
 /docs
 /theme/default/fonts/selection.json
@@ -11,7 +10,6 @@
 /phpdoc.dist.xml
 /tasks.TODO
 /*.TODO
-/demo
 /theme/default/images/cover.psd
 /npm-debug.log
 /env
