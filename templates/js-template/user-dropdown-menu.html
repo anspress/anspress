@@ -1,7 +1,0 @@
-<ul id="ap-user-menu-link" class="ap-dropdown-menu ap-user-dropdown-menu">
-	{{foreach l in links}}
-	    <li{{if active_page === l.slug}} class="active"{{fi}}>
-	   		<a href="{{l.link}}" class="ap-user-link-{{l.slug}}{{if l.class !== null}} {{l.class}}{{fi}}">{{l.title|raw}}</a>
-	    </li>
-	{{end}}
-</ul>

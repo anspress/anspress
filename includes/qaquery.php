@@ -427,7 +427,7 @@ function ap_question_metas( $question_id = false ) {
 	}
 
 	if ( ap_have_answer_selected() ) {
-		$metas['solved'] = '<i class="apicon-check"></i>' . __( 'Solved', 'anspress-question-answer' );
+		$metas['solved'] = __( 'Solved', 'anspress-question-answer' );
 	}
 
 	$view_count = ap_get_post_field( 'views' );

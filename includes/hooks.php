@@ -54,7 +54,7 @@ class AnsPress_Hooks {
 			anspress()->add_action( 'save_post', __CLASS__, 'question_answer_hooks', 1, 3 );
 			anspress()->add_action( 'ap_vote_casted', __CLASS__, 'update_user_vote_casted_count', 10, 4 );
 			anspress()->add_action( 'ap_vote_removed', __CLASS__, 'update_user_vote_casted_count' , 10, 4 );
-			anspress()->add_action( 'the_post', __CLASS__, 'ap_append_vote_count' );
+			anspress()->add_action( 'the_post', __CLASS__, 'filter_page_title' );
 
 			anspress()->add_filter( 'posts_clauses', 'AP_QA_Query_Hooks', 'sql_filter', 1, 2 );
 			anspress()->add_filter( 'posts_results', 'AP_QA_Query_Hooks', 'posts_results', 1, 2 );
@@ -99,6 +99,10 @@ class AnsPress_Hooks {
 			anspress()->add_action( 'before_delete_post', 'AnsPress_Uploader', 'before_delete_attachment' );
 			anspress()->add_action( 'init', 'AnsPress_Uploader', 'create_single_schedule' );
 			anspress()->add_action( 'ap_delete_temp_attachments', 'AnsPress_Uploader', 'cron_delete_temp_attachments' );
+
+			// Vote hooks.
+			anspress()->add_action( 'ap_before_delete_question', 'AnsPress_Vote', 'delete_votes' );
+			anspress()->add_action( 'ap_before_delete_answer', 'AnsPress_Vote', 'delete_votes' );
 	}
 
 	/**
@@ -202,9 +206,7 @@ class AnsPress_Hooks {
 		$post = ap_get_post( $post_id );
 		if ( 'question' === $post->post_type ) {
 			do_action( 'ap_before_delete_question', $post->ID );
-			//@codingStandardsIgnoreStart
-			$answers = get_posts( [ 'post_parent' => $post->ID, 'post_type' => 'answer' ] );
-			//@codingStandardsIgnoreEnd
+			$answers = get_posts( [ 'post_parent' => $post->ID, 'post_type' => 'answer' ] ); // @codingStandardsIgnoreLine
 
 			foreach ( (array) $answers as $a ) {
 				SELF::delete_answer( $a->ID, $a );
@@ -721,7 +723,7 @@ class AnsPress_Hooks {
 	 *
 	 * @param Object $post Post object.
 	 */
-	public static function ap_append_vote_count( $post ) {
+	public static function filter_page_title( $post ) {
 			if ( ap_opt( 'base_page' ) == $post->ID && ! is_admin() ) {
 				$post->post_title = ap_page_title();
 			}

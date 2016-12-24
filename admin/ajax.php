@@ -187,6 +187,10 @@ class AnsPress_Admin_Ajax {
 				// Remove user roles.
 				AP_Roles::remove_roles();
 
+				// Delete vote meta.
+				$wpdb->delete( $wpdb->users, [ 'meta_key' => '__up_vote_casted' ], array( '%s' ) );
+				$wpdb->delete( $wpdb->users, [ 'meta_key' => '__down_vote_casted' ], array( '%s' ) );
+				
 				wp_send_json( [ 'done' => 1, 'total' => 0 ] );
 			} elseif ( 'options' === $data_type ) {
 

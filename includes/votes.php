@@ -101,6 +101,20 @@ class AnsPress_Vote {
 				],
 		) );
 	}
+
+	/**
+	 * Delete post votes.
+	 *
+	 * @param integer $post_id Post ID.
+	 * @since 4.0.0
+	 */
+	public static function delete_votes( $post_id ) {
+		$votes = ap_get_votes( [ 'vote_post_id' => $post_id ] );
+
+		foreach ( (array) $votes as $vote ) {
+			ap_delete_post_vote( $vote->vote_post_id, $vote->vote_user_id );
+		}
+	}
 }
 
 /**
