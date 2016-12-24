@@ -6,7 +6,7 @@
  * @author Rahul Aryan <support@anspress.io>
  * @license GPL 2+ GNU GPL licence above 2+
  * @link https://anspress.io
- * @since 2.0.0-alpha2
+ * @since 2.0.0
  */
 
 // If this file is called directly, abort.

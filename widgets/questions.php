@@ -16,7 +16,7 @@ class AP_Questions_Widget extends WP_Widget {
 		global $questions;
 
 		$title 			= apply_filters( 'widget_title', $instance['title'] );
-		$order_by 			= $instance[ 'order_by' ];
+		$order_by 	= $instance[ 'order_by' ];
 		$limit			= $instance[ 'limit' ];
 		$category_ids	= $instance[ 'category_ids' ];
 
