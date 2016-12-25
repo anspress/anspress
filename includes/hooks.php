@@ -231,8 +231,7 @@ class AnsPress_Hooks {
 		do_action( 'ap_before_delete_answer', $post->ID );
 		ap_update_post_activity_meta( $post->post_parent, 'delete_answer', $post->post_author );
 
-		$selcted_answer = ap_selected_answer( $post );
-		if ( $post->ID === $selcted_answer ) {
+		if ( ap_is_selected( $post ) ) {
 			ap_unset_selected_answer( $post->post_parent );
 		}
 
