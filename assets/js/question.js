@@ -541,6 +541,7 @@
 						return;
 					}
 
+					AnsPress.trigger('answerFormPosted', data);
 					AnsPress.hideLoading($(e.target).find('.ap-btn-submit'));
 					// Clear upload files
 					if(AnsPress.uploader) AnsPress.uploader.splice();

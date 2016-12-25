@@ -104,32 +104,6 @@ function ap_get_ask_form_fields( $post_id = false ) {
 		);
 	}
 
-	if ( ap_show_captcha_to_user() ) {
-		// Show recpatcha if key exists and enabled.
-		if ( ap_opt( 'recaptcha_site_key' ) == '' ) {
-			$html = '<div class="ap-notice red">' . __( 'reCaptach keys missing, please add keys', 'anspress-question-answer' ) . '</div>';
-		} else {
-
-			$html = '<div class="g-recaptcha" id="recaptcha" data-sitekey="' . ap_opt( 'recaptcha_site_key' ) . '"></div>';
-
-			$html .= '<script type="text/javascript" src="https://www.google.com/recaptcha/api.js?hl=' . get_locale() . '&onload=onloadCallback&render=explicit" async defer></script>';
-
-			$html .= '<script type="text/javascript">';
-			$html .= 'var onloadCallback = function() {';
-			$html .= 'widgetId1 = grecaptcha.render("recaptcha", {';
-			$html .= '"sitekey" : "' . ap_opt( 'recaptcha_site_key' ) . '"';
-			$html .= '});';
-			$html .= '};</script>';
-		}
-
-		$fields[] = array(
-			'name'  => 'captcha',
-			'type'  => 'custom',
-			'order' => 100,
-			'html' 	=> $html,
-		);
-	}
-
 	if ( $editing ) {
 		$fields[] = array(
 			'name'  => 'edit_post_id',
@@ -212,29 +186,6 @@ function ap_ask_form( $post_id = false ) {
  */
 function ap_edit_question_form() {
 	ap_ask_form( true );
-}
-
-/**
- * Check reCaptach verification.
- *
- * @return boolean
- * @since  3.0.0
- */
-function ap_check_recaptcha() {
-	require_once( ANSPRESS_DIR . 'includes/recaptcha.php' );
-	$reCaptcha = new gglcptch_ReCaptcha( ap_opt( 'recaptcha_secret_key' ) );
-
-	$gglcptch_remote_addr = filter_var( $_SERVER['REMOTE_ADDR'], FILTER_VALIDATE_IP );
-	$gglcptch_g_recaptcha_response = stripslashes( esc_html( $_REQUEST['g-recaptcha-response'] ) );
-
-	$resp = $reCaptcha->verifyResponse( $gglcptch_remote_addr, $gglcptch_g_recaptcha_response );
-
-	if ( $resp->success ) {
-		do_action( 'ap_form_captcha_verified' );
-		return true;
-	}
-
-	return false;
 }
 
 /**

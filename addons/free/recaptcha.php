@@ -30,11 +30,15 @@ class AnsPress_reCcaptcha {
 	/**
 	 * Initialize the plugin by setting localization and loading public scripts
 	 * and styles.
+	 *
 	 * @since 2.4.8 Removed `$ap` args.
 	 */
-	public static function init( ) {
+	public static function init() {
 		anspress()->add_action( 'ap_option_groups', __CLASS__, 'options' );
-
+		anspress()->add_action( 'ap_process_ask_form', __CLASS__, 'verification_response' );
+		anspress()->add_action( 'ap_process_answer_form', __CLASS__, 'verification_response' );
+		anspress()->add_action( 'ap_ask_form_fields', __CLASS__, 'ap_ask_form_fields', 10, 2 );
+		anspress()->add_action( 'ap_answer_form_fields', __CLASS__, 'ap_ask_form_fields', 10, 2 );
 	}
 
 	/**
@@ -43,12 +47,6 @@ class AnsPress_reCcaptcha {
 	public static function options() {
 		// Register recpatcha options.
 		ap_register_option_section( 'addons', 'recpatcha',  __( 'reCaptcha', 'anspress-question-answer' ), [
-			array(
-				'name'  => 'enable_recaptcha',
-				'label' => __( 'Enable reCaptcha', 'anspress-question-answer' ),
-				'desc'  => __( 'Use this for preventing spam posts.', 'anspress-question-answer' ),
-				'type'  => 'checkbox',
-			) ,
 			array(
 				'name'  => 'recaptcha_site_key',
 				'label' => __( 'Recaptcha site key', 'anspress-question-answer' ),
@@ -62,6 +60,90 @@ class AnsPress_reCcaptcha {
 		]);
 	}
 
+	/**
+	 * Send ajax response if capatcha verification fails.
+	 * @since 3.0.0
+	 */
+	public static function verification_response() {
+		if ( ap_show_captcha_to_user() && false === SELF::verify_recaptcha() ) {
+			ap_ajax_json( array(
+				'form' 			=> $_POST['ap_form_action'],
+				'message'		=> 'captcha_error',
+				'errors'		=> array( 'captcha' => __( 'Bot verification failed.', 'anspress-question-answer' ) ),
+			) );
+		}
+	}
+
+	/**
+	 * Check reCaptach verification.
+	 *
+	 * @return boolean
+	 * @since  3.0.0
+	 */
+	public static function verify_recaptcha() {
+		require_once( ANSPRESS_ADDONS_DIR . '/free/recaptcha/autoload.php' );
+		$recaptcha = new \ReCaptcha\ReCaptcha( trim( ap_opt( 'recaptcha_secret_key' ) ) );
+		$ip = filter_var( $_SERVER['REMOTE_ADDR'], FILTER_VALIDATE_IP ); //@codingStandardsIgnoreLine.
+		$captcha_response = ap_sanitize_unslash( 'g-recaptcha-response', 'r' );
+		$resp = $recaptcha->verify( $captcha_response, $ip );
+
+		if ( $resp->isSuccess() ) {
+			do_action( 'ap_form_captcha_verified' );
+			return true;
+		}
+
+		return false;
+	}
+
+	public static function ap_ask_form_fields( $args, $editing ) {
+		global $editing_post;
+
+		if ( ap_show_captcha_to_user() ) {
+			// Show recpatcha if key exists and enabled.
+			if ( ap_opt( 'recaptcha_site_key' ) == '' ) {
+				$html = '<div class="ap-notice red">' . __( 'reCaptach keys missing, please add keys', 'anspress-question-answer' ) . '</div>';
+			} else {
+
+				$html = '<div class="g-recaptcha" id="recaptcha" data-sitekey="' . ap_opt( 'recaptcha_site_key' ) . '"></div>';
+
+				$html .= '<script type="text/javascript" src="https://www.google.com/recaptcha/api.js?hl=' . get_locale() . '&onload=onloadCallback&render=explicit" async defer></script>';
+
+				ob_start();
+				?>
+					<script type="text/javascript">
+						var onloadCallback = function() {
+						widgetId1 = grecaptcha.render("recaptcha", {
+							"sitekey" : "<?php echo ap_opt( 'recaptcha_site_key' ); ?>"
+							});
+						};
+
+						jQuery(document).ready(function(){
+							// Rest widget after answer form get submitted
+							if(typeof AnsPress !== 'undefined'){
+								AnsPress.on('answerFormPosted', function(){
+									if(typeof grecaptcha !== 'undefined')
+										grecaptcha.reset(widgetId1);
+								});
+							}
+						});
+
+					</script>
+				<?php
+				$html .= ob_get_clean();
+			}
+
+			$args['fields'][] = array(
+				'name'  => 'captcha',
+				'type'  => 'custom',
+				'order' => 100,
+				'html' 	=> $html,
+			);
+		}
+
+		return $args;
+	}
 }
+
+
 
 AnsPress_reCcaptcha::init();

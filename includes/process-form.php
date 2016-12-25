@@ -122,9 +122,6 @@ class AnsPress_Process_Form
 			) );
 		}
 
-		// Bail if capatcha verification fails.
-		ap_captcha_verification_response();
-
 		global $ap_errors, $validate;
 		$editing_post_id = ap_isset_post_value( 'edit_post_id', false );
 
@@ -138,11 +135,17 @@ class AnsPress_Process_Form
 
 		$validate = new AnsPress_Validation( $args );
 
+		/**
+		 * ACTION
+		 * ap_process_ask_form
+		 *
+		 * @since 4.0.0
+		 */
+		do_action( 'ap_process_ask_form', $validate );
+
 		// If error in form then bail.
 		ap_form_validation_error_response( $validate );
-
 		$fields = $validate->get_sanitized_fields();
-
 		$this->fields = $fields;
 
 		if ( ! empty( $fields['edit_post_id'] ) ) {
@@ -282,9 +285,6 @@ class AnsPress_Process_Form
 			) );
 		}
 
-		// Bail if capatcha verification fails.
-		ap_captcha_verification_response();
-
 		global $ap_errors, $validate;
 		$question = ap_get_post( $question_id );
 
@@ -300,6 +300,14 @@ class AnsPress_Process_Form
 		$args = apply_filters( 'ap_answer_fields_validation', ap_get_answer_form_fields( $question->ID, $editing_post_id ) );
 
 		$validate = new AnsPress_Validation( $args );
+
+		/**
+		 * ACTION
+		 * ap_process_ask_form
+		 *
+		 * @since 4.0.0
+		 */
+		do_action( 'ap_process_answer_form', $validate );
 
 		// Bail if there is error in validating form.
 		ap_form_validation_error_response( $validate );
@@ -428,16 +436,3 @@ function ap_form_validation_error_response( $validate ) {
 	}
 }
 
-/**
- * Send ajax response if capatcha verification fails.
- * @since 3.0.0
- */
-function ap_captcha_verification_response() {
-	if ( ap_show_captcha_to_user() && false === ap_check_recaptcha() ) {
-		ap_ajax_json( array(
-			'form' 			=> $_POST['ap_form_action'],
-			'message'		=> 'captcha_error',
-			'errors'		=> array( 'captcha' => __( 'Bot verification failed.', 'anspress-question-answer' ) ),
-		) );
-	}
-}
