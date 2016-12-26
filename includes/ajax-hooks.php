@@ -83,7 +83,7 @@ class AnsPress_Ajax {
 
 		if ( $questions ) {
 				$items = '<div class="ap-similar-questions-head">';
-				$items .= '<h3>' . ap_icon( 'check', true ) . sprintf( __( '%d similar questions found', 'anspress-question-answer' ), count( $questions ) ) . '</h3>';
+				$items .= '<h3><i class="apicon-check"></i>' . sprintf( __( '%d similar questions found', 'anspress-question-answer' ), count( $questions ) ) . '</h3>';
 				$items .= '<p>' . __( 'We\'ve found similar questions that have already been asked, click to read them.', 'anspress-question-answer' ) . '</p>';
 				$items .= '</div>';
 
@@ -246,7 +246,7 @@ class AnsPress_Ajax {
 		if ( ! ap_verify_nonce( 'delete_post_' . $post_id ) || ! ap_user_can_permanent_delete( $post_id ) ) {
 			ap_ajax_json( array(
 				'success' => false,
-				'snackbar' => [ 'message' => __( 'Sorry, unable to delete post', 'anspress-question-answer' ) ]
+				'snackbar' => [ 'message' => __( 'Sorry, unable to delete post', 'anspress-question-answer' ) ],
 			) );
 		}
 
@@ -298,7 +298,7 @@ class AnsPress_Ajax {
 		if ( ! ap_user_can_toggle_featured() || ! ap_verify_nonce( 'set_featured_' . $post_id ) ) {
 			ap_ajax_json( array(
 				'success' => false,
-				'snackbar' => [ 'message' => __( 'Sorry, you cannot toggle a featured question', 'anspress-question-answer' ) ]
+				'snackbar' => [ 'message' => __( 'Sorry, you cannot toggle a featured question', 'anspress-question-answer' ) ],
 			) );
 		}
 
@@ -308,7 +308,7 @@ class AnsPress_Ajax {
 		if ( 'question' !== $post->post_type ) {
 			ap_ajax_json( array(
 				'success' => false,
-				'snackbar' => [ 'message' => __( 'Only question can be set as featured', 'anspress-question-answer' ) ]
+				'snackbar' => [ 'message' => __( 'Only question can be set as featured', 'anspress-question-answer' ) ],
 			) );
 		}
 
@@ -325,7 +325,7 @@ class AnsPress_Ajax {
 		ap_set_featured_question( $post->ID );
 		ap_ajax_json( array(
 			'success'  => true,
-			'action'   => [ 'active'  => true, 'title' => __( 'Unmark this question as featured', 'anspress-question-answer' ), 'label' => __( 'Unfeature', 'anspress-question-answer' ) ],
+			'action'   => [ 'active' => true, 'title' => __( 'Unmark this question as featured', 'anspress-question-answer' ), 'label' => __( 'Unfeature', 'anspress-question-answer' ) ],
 			'snackbar' => [ 'message' => __( 'Question is marked as featured.', 'anspress-question-answer' ) ],
 		));
 	}
@@ -413,7 +413,6 @@ class AnsPress_Ajax {
 			ap_upload_js_init();
 			wp_enqueue_script( 'ap-upload', ANSPRESS_URL . 'assets/js/upload.js', [ 'plupload' ] );
 		}
-
 
 		echo '<div class="ap-editor">';
 	    wp_editor( '', 'description', $settings );

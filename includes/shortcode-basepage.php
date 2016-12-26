@@ -13,15 +13,21 @@
  * Class for AnsPress base page shortcode
  */
 class AnsPress_BasePage_Shortcode {
-
+	/**
+	 * Instance.
+	 *
+	 * @var Instance
+	 */
 	protected static $instance = null;
 
+	/**
+	 * Get current instance.
+	 */
 	public static function get_instance() {
 
-		// create an object
+		// Create an object.
 		null === self::$instance && self::$instance = new self;
-
-		return self::$instance; // return the object
+		return self::$instance; // Return the object.
 	}
 
 	/**
@@ -70,7 +76,7 @@ class AnsPress_BasePage_Shortcode {
 		echo '</div>';
 		// Linkback to author.
 		if ( ! ap_opt( 'author_credits' ) ) {
-			echo '<div class="ap-cradit">' . __( 'Question and answer is powered by', 'anspress-question-answer' ). ' <a href="https://anspress.io" traget="_blank">AnsPress.io</a>' . '</div>';
+			echo '<div class="ap-cradit">' . esc_attr__( 'Question and answer is powered by', 'anspress-question-answer' ). ' <a href="https://anspress.io" traget="_blank">AnsPress.io</a></div>';
 		}
 
 		wp_reset_postdata();
@@ -80,6 +86,7 @@ class AnsPress_BasePage_Shortcode {
 
 	/**
 	 * Get attributes from shortcode and set it as query var.
+	 *
 	 * @since 3.0.0
 	 */
 	public function attributes( $atts, $content ) {

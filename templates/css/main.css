@@ -2771,4 +2771,202 @@ post-message {
   min-width: min-content;
 }
 
+.anspress .ap-term-category-box {
+  list-style: outside none none;
+  margin: -10px;
+  padding: 0;
+}
+.anspress .ap-term-category-box > li {
+  float: left;
+  margin: 0;
+  padding: 10px;
+  width: 33.33%;
+}
+.anspress .ap-category-item {
+  border: 2px solid #eee;
+  border-radius: 3px;
+  padding: 7px;
+}
+.anspress .ap-category-icon {
+  background: #343434 none repeat scroll 0 0;
+  border-radius: 3px;
+  color: #fff;
+  font-size: 27px;
+  height: 50px;
+  margin-bottom: 12px;
+  padding: 5px;
+  text-align: center;
+  width: 50px;
+}
+.anspress .ap-cat-img-c {
+  position: relative;
+}
+.anspress .ap-cat-img-c .ap-category-icon {
+  left: 50%;
+  margin-left: -20px;
+  margin-top: -20px;
+  position: absolute;
+  top: 50%;
+}
+.anspress .ap-term-count {
+  background: #333 none repeat scroll 0 0;
+  border-radius: 3px;
+  bottom: 0;
+  color: #fff;
+  display: block;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 1px 7px;
+  position: absolute;
+  right: 0;
+}
+.anspress .ap-sub-category {
+  color: #888;
+  float: right;
+  font-size: 13px;
+  text-align: right;
+}
+.anspress .ap-term-title {
+  color: #8bc34a;
+  font-size: 17px;
+  font-weight: bold;
+  margin-top: 10px;
+  text-decoration: none;
+}
+.anspress .ap-taxo-description {
+  font-size: 13px;
+  line-height: 1.4;
+  margin-top: 5px;
+}
+.anspress .ap-category-image {
+  box-shadow: none;
+  max-height: 114px;
+}
+.anspress .sub-taxo-label {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  margin-top: 10px;
+}
+.anspress .ap-category-subitems {
+  margin-bottom: 30px;
+}
+.anspress .ap-category-subitems li a {
+  background: #fff none repeat scroll 0 0;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  display: block;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 5px 15px;
+  text-decoration: none;
+}
+.anspress .ap-category-subitems li a span {
+  margin-left: 3px;
+}
+.anspress .ap-category-subitems li a:hover {
+  border-color: #eee;
+}
+.anspress .ap-taxo-detail {
+  background: none repeat scroll 0 0 #f8f8f8;
+  border-radius: 5px;
+  margin-bottom: 25px;
+  padding: 15px 20px;
+}
+.anspress .ap-taxo-detail .entry-title {
+  font-size: 25px;
+  font-weight: bold;
+}
+.anspress .ap-taxo-detail .ap-tax-count {
+  background: #333 none repeat scroll 0 0;
+  border-radius: 3px;
+  color: #fff;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 4px 7px;
+  vertical-align: super;
+}
+.anspress .ap-taxo-detail .ap-taxo-description {
+  font-size: 18px;
+  line-height: inherit;
+  margin-bottom: 0;
+}
+.anspress .ap-taxo-detail .ap-term-sub {
+  margin-top: 20px;
+}
+.anspress .ap-taxo-detail .ap-sub-taxo {
+  margin: 0;
+}
+.anspress .ap-taxo-detail .ap-category-icon {
+  display: block;
+  margin-right: 20px;
+  margin-top: 5px;
+}
+.anspress .ap-taxo-detail .ap-subscribe-btn {
+  margin-top: 4px;
+  float: right;
+}
+.anspress .ap-categories-feat {
+  display: block;
+  overflow: hidden;
+}
+.anspress .ap-categories-feat img {
+  border-radius: 2px;
+  box-shadow: none;
+  display: block;
+  height: auto;
+  width: 100%;
+}
+.anspress .ap-category-feat {
+  border-radius: 5px;
+  margin-bottom: 25px;
+  overflow: hidden;
+}
+.anspress .ap-category-feat img {
+  width: 100%;
+}
+
+#ap-categories-widget.ap-cat-wid {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+#ap-categories-widget.ap-cat-wid > li {
+  border-bottom: 1px solid #f1f1f1;
+  margin: 0;
+  padding: 7px 0;
+}
+#ap-categories-widget.ap-cat-wid > li:last-child {
+  border-bottom: none;
+}
+#ap-categories-widget.ap-cat-wid > li a {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 2px;
+  padding: 0;
+}
+#ap-categories-widget.ap-cat-wid > li .ap-cat-count {
+  color: #888;
+  font-size: 12px;
+}
+#ap-categories-widget.ap-cat-wid > li .ap-cat-count span:first-child {
+  margin-right: 5px;
+}
+#ap-categories-widget.ap-cat-wid > li .ap-cat-image {
+  float: right;
+}
+#ap-categories-widget.ap-cat-wid > li .ap-cat-image .ap-category-icon {
+  border-radius: 2px;
+  color: rgba(255, 255, 255, 0.97);
+  display: block;
+  font-size: 16px;
+  height: 30px;
+  line-height: 33px;
+  margin-top: 3px;
+  text-align: center;
+  width: 30px;
+  padding: 6px;
+}
+
 /*# sourceMappingURL=main.css.map */

@@ -4,11 +4,9 @@
  *
  * @author    Rahul Aryan <support@anspress.io>
  * @license   GPL-3.0+
- *
  * @link      https://anspress.io
- *
  * @copyright 2014 Rahul Aryan
- * @package AnsPress/theme
+ * @package   WordPress/AnsPress
  */
 
 // If this file is called directly, abort.
@@ -18,6 +16,7 @@ if ( ! defined( 'WPINC' ) ) {
 
 /**
  * Return current page title.
+ *
  * @return string current title
  */
 function ap_page_title() {
@@ -28,7 +27,7 @@ function ap_page_title() {
 
 	if ( is_question() ) {
 		if ( ! ap_user_can_read_question( get_question_id() ) ) {
-			$new_title = __('No permission', 'anspress-question-answer' );
+			$new_title = __( 'No permission', 'anspress-question-answer' );
 		} else {
 			$new_title = ap_question_title_with_solved_prefix();
 		}
@@ -38,7 +37,7 @@ function ap_page_title() {
 		$new_title = ap_opt( 'ask_page_title' );
 	} elseif ( 'author' === $current_page ) {
 		$new_title = sprintf( ap_opt( 'author_page_title' ), ap_user_display_name( get_query_var( 'ap_user_id' ) ) );
-	} elseif ( '' === $current_page && ! is_question() && '' == get_query_var( 'question_name' ) ) {
+	} elseif ( '' === $current_page && ! is_question() && '' === get_query_var( 'question_name' ) ) {
 		$new_title = ap_opt( 'base_page_title' );
 	} elseif ( get_query_var( 'parent' ) !== '' ) {
 		$new_title = sprintf( __( 'Discussion on "%s"', 'anspress-question-answer' ), get_the_title( get_query_var( 'parent' ) ) );
@@ -68,6 +67,7 @@ function is_ap_search() {
 
 /**
  * Return current AnsPress page
+ *
  * @return string|false
  */
 function ap_current_page_is() {
@@ -102,13 +102,14 @@ function ap_current_page_is() {
 
 /**
  * Get current user page template file
+ *
  * @return string template file name.
  */
 function ap_get_current_page_template() {
 	if ( is_anspress() ) {
 		$template = ap_current_page_is();
 
-		return apply_filters( 'ap_current_page_template', $template.'.php' );
+		return apply_filters( 'ap_current_page_template', $template . '.php' );
 	}
 
 	return 'content-none.php';
@@ -116,11 +117,12 @@ function ap_get_current_page_template() {
 
 /**
  * Get post status.
+ *
  * @param boolean|integer $post_id question or answer ID.
  * @return string
  * @since 2.0.0-alpha2
  */
-function ap_post_status($post_id = false) {
+function ap_post_status( $post_id = false ) {
 	if ( false === $post_id ) {
 		$post_id = get_the_ID();
 	}
@@ -130,11 +132,12 @@ function ap_post_status($post_id = false) {
 
 /**
  * Check if current post is private.
+ *
  * @param boolean|integer $post_id question or answer ID.
  * @return boolean
  */
-function is_private_post($post_id = false) {
-	if ( ap_post_status( $post_id ) == 'private_post' ) {
+function is_private_post( $post_id = false ) {
+	if ( ap_post_status( $post_id ) === 'private_post' ) {
 		return true;
 	}
 
@@ -143,11 +146,12 @@ function is_private_post($post_id = false) {
 
 /**
  * Check if post is waiting moderation.
+ *
  * @param boolean|integer $post_id question or answer ID.
  * @return bool
  */
-function is_post_waiting_moderation($post_id = false) {
-	if ( get_post_status( $post_id ) == 'moderate' ) {
+function is_post_waiting_moderation( $post_id = false ) {
+	if ( get_post_status( $post_id ) === 'moderate' ) {
 		return true;
 	}
 
@@ -171,11 +175,12 @@ function is_post_closed( $post_id = null ) {
 
 /**
  * Check if question have a parent post.
+ *
  * @param boolean|integer $post_id question or answer ID.
  * @return boolean
  * @since   2.0.0-alpha2
  */
-function ap_have_parent_post($post_id = false) {
+function ap_have_parent_post( $post_id = false ) {
 	if ( ! $post_id ) {
 		$post_id = get_the_ID();
 	}
@@ -183,7 +188,7 @@ function ap_have_parent_post($post_id = false) {
 	// Get post.
 	$post_o = ap_get_post( $post_id );
 
-	if ( $post_o->post_parent > 0 && 'question' == $post_o->post_type ) {
+	if ( $post_o->post_parent > 0 && 'question' === $post_o->post_type ) {
 		return true;
 	}
 
@@ -197,7 +202,7 @@ function ap_have_parent_post($post_id = false) {
  * @param float  $current Current paged, if not set then get_query_var('paged') is used.
  * @param int    $total   Total number of pages, if not set then global $questions is used.
  * @param string $format  pagination format.
- *
+ * @param string $page_num_link  Base link.
  * @return string
  */
 function ap_pagination( $current = false, $total = false, $format = '?paged=%#%', $page_num_link = false ) {
@@ -210,7 +215,7 @@ function ap_pagination( $current = false, $total = false, $format = '?paged=%#%'
 	$big = 999999999; // Need an unlikely integer.
 
 	if ( false === $current ) {
-	    $paged = isset( $_GET['ap_paged'] ) ? (int) $_GET['ap_paged'] : 1;
+	    $paged = ap_sanitize_unslash( 'ap_paged', 'r', 1 );
 	    $current = is_front_page() ? max( 1, $paged ) : max( 1, get_query_var( 'paged' ) );
 	} elseif ( ! empty( $ap_current ) ) {
 	    $current = $ap_current;
@@ -232,12 +237,12 @@ function ap_pagination( $current = false, $total = false, $format = '?paged=%#%'
 		$base = str_replace( $big, '%#%', $page_num_link );
 	}
 
-	if ( '1' == $total ) {
+	if ( '1' == $total ) { // WPCS: loose comparison ok.
 		return;
 	}
 
 	echo '<div class="ap-pagination clearfix">';
-	echo paginate_links( array(
+	echo paginate_links( array( // WPCS: xss okay.
 		'base'     => $base,
 		'format'   => $format,
 		'current'  => $current,
@@ -246,65 +251,6 @@ function ap_pagination( $current = false, $total = false, $format = '?paged=%#%'
 		'mid_size' => 3,
 	) );
 	echo '</div>';
-}
-
-/**
- * Return font icons class of AnsPress.
- * All font icons should be called using this function so that it can be overridden.
- * @param string $name Name or class of font icon.
- * @param bool   $html return icon class wrapped by i tag.
- * @return string
- * @since 2.0.1
- */
-function ap_icon($name, $html = false) {
-	$icons = array(
-		'upload' 			=> 'apicon-upload',
-		'unchecked' 		=> 'apicon-checkbox-unchecked',
-		'checked' 			=> 'apicon-checkbox-checked',
-		'check' 			=> 'apicon-check',
-		'select' 			=> 'apicon-check',
-		'new_question' 		=> 'apicon-question',
-		'new_answer' 		=> 'apicon-answer',
-		'new_comment' 		=> 'apicon-talk-chat',
-		'new_comment_answer' => 'apicon-mail-reply',
-		'edit_question' 	=> 'apicon-pencil',
-		'edit_answer' 		=> 'apicon-pencil',
-		'edit_comment' 		=> 'apicon-pencil',
-		'vote_up' 			=> 'apicon-thumb-up',
-		'vote_down' 		=> 'apicon-thumb-down',
-		'favorite' 			=> 'apicon-heart',
-		'delete' 			=> 'apicon-trashcan',
-		'edit' 				=> 'apicon-pencil',
-		'comment' 			=> 'apicon-comments',
-		'view' 				=> 'apicon-eye',
-		'vote' 				=> 'apicon-triangle-up',
-		'cross' 			=> 'apicon-x',
-		'more' 				=> 'apicon-ellipsis',
-		'upload' 			=> 'apicon-cloud-upload',
-		'link' 				=> 'apicon-link',
-		'help' 				=> 'apicon-question',
-		'error' 			=> 'apicon-x',
-		'warning' 			=> 'apicon-alert',
-		'success' 			=> 'apicon-check',
-		'image' 			=> 'apicon-image',
-	);
-
-	$icons = apply_filters( 'ap_icon', $icons );
-	$icon = '';
-
-	if ( isset( $icons[ $name ] ) ) {
-		$icon = $icons[ $name ];
-	} else {
-		$icon = 'apicon-'.$name;
-	}
-
-	$icon = esc_attr( $icon ); // Escape attribute.
-
-	if ( $html ) {
-		return '<i class="'.$icon.'"></i> ';
-	}
-
-	return $icon;
 }
 
 /**
@@ -317,7 +263,7 @@ function ap_icon($name, $html = false) {
  *
  * @since 2.0.1
  */
-function ap_register_page($page_slug, $page_title, $func, $show_in_menu = true) {
+function ap_register_page( $page_slug, $page_title, $func, $show_in_menu = true ) {
 	anspress()->pages[ $page_slug ] = array(
 		'title' 		=> $page_title,
 		'func' 			=> $func,
@@ -327,7 +273,8 @@ function ap_register_page($page_slug, $page_title, $func, $show_in_menu = true) 
 
 /**
  * Output current AnsPress page.
- * @since 2.0.0-beta
+ *
+ * @since 2.0.0
  */
 function ap_page() {
 	$pages = anspress()->pages;
@@ -335,7 +282,7 @@ function ap_page() {
 
 	if ( is_question() ) {
 		$current_page = ap_opt( 'question_page_slug' );
-	} elseif ( '' == $current_page && ! is_question() ) {
+	} elseif ( '' === $current_page && ! is_question() ) {
 		$current_page = 'base';
 	}
 
@@ -451,6 +398,7 @@ function ap_post_actions( $_post = null ) {
 	/**
 	 * FILTER: ap_post_actions_buttons
 	 * For filtering post actions buttons
+	 *
 	 * @var     string
 	 * @since   2.0
 	 */
@@ -511,19 +459,11 @@ function ap_get_questions_orderby( $current_url = '' ) {
 	$navs[] = [ 'key' => 'order_by', 'value' => 'unsolved', 'label' => __( 'Unsolved', 'anspress-question-answer' ) ];
 	$navs[] = [ 'key' => 'order_by', 'value' => 'views', 'label' => __( 'Views', 'anspress-question-answer' ) ];
 
-	$active_sort = ( isset($_GET['ap_filter'], $_GET['ap_filter']['sort'] ) ) ? sanitize_text_field( wp_unslash( $_GET['ap_filter']['sort'] ) ) : ap_opt( 'questions_sort' );
-
-	// Add active.
-	foreach ( (array) $navs as $k => $nav ) {
-		if ( $nav['key'] == $active_sort ) {
-			$navs[ $k ]['active'] = true;
-		}
-	}
-
-	/*
-     * Filter question sorting.
-     * @param array Question sortings.
-     * @since 2.3
+	/**
+	 * Filter question sorting.
+	 *
+	 * @param array Question sortings.
+	 * @since 2.3
 	 */
 	return apply_filters( 'ap_question_sorting', $navs );
 }
@@ -531,11 +471,12 @@ function ap_get_questions_orderby( $current_url = '' ) {
 
 /**
  * Output answers tab.
+ *
  * @param string|boolean $base Current page url.
  * @since 2.0.1
  */
-function ap_answers_tab($base = false) {
-	$sort = isset( $_GET['ap_sort'] ) ? sanitize_text_field( wp_unslash( $_GET['ap_sort'] ) ) : ap_opt( 'answers_sort' );
+function ap_answers_tab( $base = false ) {
+	$sort = ap_sanitize_unslash( 'ap_sort', 'r',  ap_opt( 'answers_sort' ) );
 
 	if ( ! $base ) {
 		$base = get_permalink();
@@ -554,25 +495,27 @@ function ap_answers_tab($base = false) {
 
 	echo '<ul class="ap-answers-tab ap-ul-inline clearfix">';
 	foreach ( (array) $navs as $k => $nav ) {
-		echo '<li'.($sort == $k ? ' class="active"' : '').'><a href="'.esc_attr( $nav['link'] ).'">'.esc_attr( $nav['title'] ).'</a></li>';
+		echo '<li' . ( $sort === $k ? ' class="active"' : '') . '><a href="' . esc_attr( $nav['link'] ) . '">' . esc_attr( $nav['title'] ) . '</a></li>';
 	}
 	echo '</ul>';
 }
 
 /**
  * Answer meta to display.
+ *
  * @param false|integer $answer_id Answer id.
  * @return string
  * @since 2.0.1
  */
-function ap_display_answer_metas($answer_id = false) {
+function ap_display_answer_metas( $answer_id = false ) {
+
 	if ( false === $answer_id ) {
 		$answer_id = get_the_ID();
 	}
 
 	$metas = array();
 	if ( ap_is_selected( $answer_id ) ) {
-		$metas['best_answer'] = '<span class="ap-best-answer-label">'.__( 'Best answer', 'anspress-question-answer' ).'</span>';
+		$metas['best_answer'] = '<span class="ap-best-answer-label">' . __( 'Best answer', 'anspress-question-answer' ) . '</span>';
 	}
 
 	$metas['history'] = ap_last_active_time( $answer_id );
@@ -596,10 +539,11 @@ function ap_display_answer_metas($answer_id = false) {
 
 /**
  * Echo ask button.
+ *
  * @since 2.1
  */
 function ap_ask_btn() {
-	echo ap_get_ask_btn();
+	echo ap_get_ask_btn(); // WPCS: xss okay.
 }
 
 /**
@@ -613,6 +557,7 @@ function ap_get_ask_btn() {
 
 	/**
 	 * Filter ask button link.
+	 *
 	 * @param string $link
 	 */
 	$link = apply_filters( 'ap_ask_btn_link', $link );
@@ -627,17 +572,18 @@ function ap_get_ask_btn() {
  * @since 2.1
  */
 function ap_get_template_part( $file ) {
-	include ap_get_theme_location( $file.'.php' );
+	include ap_get_theme_location( $file . '.php' );
 }
 
 /**
  * Return current AnsPress page
+ *
  * @return string
  */
 function ap_current_page() {
 	$query_var = get_query_var( 'ap_page' );
 
-	if ( '' == $query_var ) {
+	if ( '' === $query_var ) {
 		$query_var = 'base';
 	}
 
@@ -649,10 +595,9 @@ function ap_current_page() {
  *
  * @return array
  */
-function ap_assets( ) {
+function ap_assets() {
 	$dir = ap_env_dev() ? 'js' : 'min';
 	$min = ap_env_dev() ? '' : '.min';
-
 
 	$assets = array(
 		'js' => array(
@@ -690,6 +635,7 @@ function ap_assets( ) {
 
 /**
  * Enqueue AnsPress assets.
+ *
  * @since 2.4.6
  */
 function ap_enqueue_scripts() {
@@ -800,7 +746,7 @@ function ap_list_filters( $current_url = '' ) {
 		}
 	}
 
-	echo '<button id="ap-filter-reset" type="submit" name="reset-filter" title="' . esc_attr__( 'Reset sorting and filter', 'anspress-question-answer' ) . '">'. ap_icon( 'x', true ) . esc_attr__( 'Clear Filter', 'anspress-question-answer' ) . '</button>';
+	echo '<button id="ap-filter-reset" type="submit" name="reset-filter" title="' . esc_attr__( 'Reset sorting and filter', 'anspress-question-answer' ) . '"><i class="apicon-x"></i>' . esc_attr__( 'Clear Filter', 'anspress-question-answer' ) . '</button>';
 
 	echo '</form>';
 

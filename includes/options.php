@@ -53,8 +53,8 @@ function ap_opt( $key = false, $value = null ) {
 		return $settings;
 	}
 
-	if ( isset($settings[$key] ) ) {
-		return $settings[$key];
+	if ( isset( $settings[ $key ] ) ) {
+		return $settings[ $key ];
 	} else {
 		return null;
 	}
@@ -133,15 +133,12 @@ function ap_default_options() {
 		'disable_down_vote_on_question' => false,
 		'disable_down_vote_on_answer' 	=> false,
 		'show_solved_prefix'						=> true,
-		'notification_sidebar'					=> false,
-		'check_bad_words'								=> false,
-		'bad_word_post_action'					=> 'moderate',
-		'bad_word_comment_action'				=> 'moderate',
 		'load_assets_in_anspress_only'	=> false,
 		'only_logged_in'								=> false,
 		'keep_stop_words'								=> true,
 		'default_date_format'						=> false,
 		'anonymous_post_status'					=> 'moderate',
+		'bad_words'											=> '',
 	);
 
 	/**

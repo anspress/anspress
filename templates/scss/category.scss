@@ -1,0 +1,211 @@
+//--------------------------
+// Categories styles
+//-------------------------
+.anspress{
+	.ap-term-category-box{
+	    list-style: outside none none;
+	    margin: -10px;
+	    padding: 0;
+		>li{
+		    float: left;
+		    margin: 0;
+		    padding: 10px;
+		    width: 33.33%;
+		}
+	}
+	.ap-category-item{
+	    border: 2px solid #eee;
+	    border-radius: 3px;
+	    padding: 7px;
+    }
+    .ap-category-icon{
+	    background: #343434 none repeat scroll 0 0;
+	    border-radius: 3px;
+	    color: #fff;
+	    font-size: 27px;
+	    height: 50px;
+	    margin-bottom: 12px;
+	    padding: 5px;
+	    text-align: center;
+	    width: 50px;
+    }
+    .ap-cat-img-c{
+    	position: relative;
+    	.ap-category-icon{
+		    left: 50%;
+		    margin-left: -20px;
+		    margin-top: -20px;
+		    position: absolute;
+		    top: 50%;
+    	}
+    }
+    .ap-term-count{
+	    background: #333 none repeat scroll 0 0;
+	    border-radius: 3px;
+	    bottom: 0;
+	    color: #fff;
+	    display: block;
+	    font-size: 12px;
+	    font-weight: bold;
+	    padding: 1px 7px;
+	    position: absolute;
+	    right: 0;
+    }
+    .ap-sub-category{
+	    color: #888;
+	    float: right;
+	    font-size: 13px;
+	    text-align: right;
+    }
+
+	.ap-term-title{
+	    color: $main-color;
+	    font-size: 17px;
+	    font-weight: bold;
+	    margin-top: 10px;
+	    text-decoration: none;
+	}
+	.ap-taxo-description {
+	    font-size: 13px;
+	    line-height: 1.4;
+	    margin-top: 5px;
+	}
+	.ap-category-image{
+	    box-shadow: none;
+	    max-height: 114px;
+	}
+
+	.sub-taxo-label{
+	    font-size: 16px;
+	    font-weight: bold;
+	    margin-bottom: 15px;
+	    margin-top: 10px;
+	}
+	.ap-category-subitems{
+	    margin-bottom: 30px;
+		li{
+
+		    a{
+			    background: #fff none repeat scroll 0 0;
+			    border: 1px solid #ddd;
+			    border-radius: 3px;
+			    display: block;
+			    font-size: 12px;
+			    font-weight: bold;
+			    padding: 5px 15px;
+			    text-decoration: none;
+
+			    span{
+			    	margin-left: 3px;
+			    }
+
+			    &:hover{
+			    	border-color: $default-border-color;
+			    }
+		    }
+		}
+	}
+	.ap-taxo-detail {
+	    background: none repeat scroll 0 0 #f8f8f8;
+	    border-radius: 5px;
+	    margin-bottom: 25px;
+	    padding: 15px 20px;
+	    .entry-title{
+		    font-size: 25px;
+		    font-weight: bold;
+	    }
+	    .ap-tax-count {
+		    background: #333 none repeat scroll 0 0;
+		    border-radius: 3px;
+		    color: #fff;
+		    font-size: 12px;
+		    font-weight: bold;
+		    padding: 4px 7px;
+		    vertical-align: super;
+		}
+		.ap-taxo-description {
+		    font-size: 18px;
+		    line-height: inherit;
+		    margin-bottom: 0;
+		}
+		.ap-term-sub {
+		    margin-top: 20px;
+		}
+		.ap-sub-taxo{
+			margin:0;
+		}
+		.ap-category-icon{
+		    display: block;
+		    margin-right: 20px;
+		    margin-top: 5px;
+		}
+		.ap-subscribe-btn {
+			margin-top: 4px;
+		    float: right;
+		}
+	}
+	.ap-categories-feat {
+	    display: block;
+	    overflow: hidden;
+	    img{
+		    border-radius: 2px;
+		    box-shadow: none;
+		    display: block;
+		    height: auto;
+		    width: 100%;
+	    }
+	}
+	.ap-category-feat{
+		border-radius: 5px;
+	    margin-bottom: 25px;
+	    overflow: hidden;
+		img{
+    		width: 100%;
+    	}
+    }
+}
+//--------------------------
+// Categories widget
+//-------------------------
+#ap-categories-widget.ap-cat-wid{
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	> li{
+	    border-bottom: 1px solid #f1f1f1;
+	    margin: 0;
+	    padding: 7px 0;
+	    &:last-child{
+	    	border-bottom:none;
+	    }
+	    a{
+		    display: block;
+		    font-size: 13px;
+		    font-weight: 600;
+		    margin-bottom: 2px;
+		    padding: 0;
+	    }
+	    .ap-cat-count{
+		    color: #888;
+		    font-size: 12px;
+		    span:first-child{
+		    	margin-right: 5px;
+		    }
+	    }
+	    .ap-cat-image{
+	    	float: right;
+	    	.ap-category-icon{
+			    border-radius: 2px;
+			    color: rgba(255, 255, 255, 0.97);
+			    display: block;
+			    font-size: 16px;
+			    height: 30px;
+			    line-height: 33px;
+			    margin-top: 3px;
+			    text-align: center;
+			    width: 30px;
+			    padding: 6px;
+	    	}
+	    }
+	}
+}
