@@ -1,0 +1,219 @@
+.anspress {
+  .ap-term-tag-box {
+    list-style: none;
+    padding: 0;
+    margin: 0 -15px;
+    > li {
+      border-bottom: 1px dashed #e4e4e4;
+      float: left;
+      margin: 0 0 20px;
+      padding: 0 0 10px;
+      width: 25%;
+      .ap-tags-item {
+        padding: 0 15px;
+      }
+      .ap-tagq-count {
+        color: #888888;
+        font-size: 12px;
+        font-style: italic;
+        line-height: 28px;
+        text-align: right;
+      }
+      .term-title {
+        background: none repeat scroll 0 0 padding-box #f4f4f4;
+        border: 1px solid #ddd;
+        border-radius: 2px;
+        color: #333;
+        margin-right: 10px;
+        padding: 3px 12px;
+        text-decoration: none;
+        text-transform: lowercase;
+      }
+      .ap-taxo-description {
+        color: #888888;
+        font-size: 12px;
+        height: 65px;
+        line-height: 21px;
+        margin-top: 15px;
+        overflow: hidden;
+      }
+    }
+  }
+  .sub-taxo-label {
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    margin-top: 10px;
+  }
+  .ap-sub-taxo {
+    margin-bottom: 30px;
+    li {
+      margin: 0 10px 15px 0;
+      min-width: 145px;
+      a {
+        background: #ffffff;
+        border: 1px solid #eeeeee;
+        -webkit-border-radius: 2px;
+        -webkit-background-clip: padding-box;
+        -moz-border-radius: 2px;
+        -moz-background-clip: padding;
+        border-radius: 2px;
+        background-clip: padding-box;
+        color: #888888;
+        display: block;
+        font-size: 15px;
+        padding: 7px 12px;
+        text-decoration: none;
+        span {
+          float: right;
+        }
+        &:hover {
+          border-color: #11a7db;
+        }
+      }
+    }
+  }
+  .ap-taxo-detail {
+    background: none repeat scroll 0 0 #f8f8f8;
+    -webkit-border-radius: 5px;
+    -webkit-background-clip: padding-box;
+    -moz-border-radius: 5px;
+    -moz-background-clip: padding;
+    border-radius: 5px;
+    background-clip: padding-box;
+    margin-bottom: 25px;
+    padding: 15px 20px;
+    .ap-tax-item-count {
+      background: #11a7db;
+      color: #ffffff;
+      float: right;
+      font-size: 17px;
+      padding: 5px 10px;
+      -webkit-border-radius: 2px;
+      -webkit-background-clip: padding-box;
+      -moz-border-radius: 2px;
+      -moz-background-clip: padding;
+      border-radius: 2px;
+      background-clip: padding-box;
+    }
+    .ap-taxo-description {
+      line-height: 28px;
+    }
+    .ap-term-sub {
+      margin-top: 20px;
+    }
+    .ap-sub-taxo {
+      margin: 0;
+    }
+  }
+  .ap-tags-input {
+    margin-bottom: 10px;
+  }
+  
+  #ap-tags-suggestion .ap-tagssugg-item {
+    display: none;
+    button {
+      background: #fcfcfc none repeat scroll 0 0;
+      border-color: #ddd;
+      border-image: none;
+      border-radius: 2px;
+      border-style: solid;
+      border-width: 1px 1px 1px 2px;
+      font-size: 14px;
+      margin-bottom: 0;
+      margin-right: 5px;
+      padding: 8px 10px;
+      text-align: left;
+      width: 100%;
+      margin: 0;
+      border: none;
+      &.ap-tag-add {
+        &:hover, &:active, &:focus, &.focus {
+          border-color: #11a7db;
+          background-color: #d6f2fc;
+        }
+      }
+      &.ap-tag-remove {
+        border-color: #11a7db;
+        &:hover, &:active, &:focus {
+          border-color: #eb5837;
+          background-color: #fbdfd9;
+        }
+      }
+      i {
+        float: right;
+        margin-left: 5px;
+        font-size: 115%;
+      }
+    }
+    &:first-child button {
+      border-top: none;
+    }
+  }
+  .ap-tags-field {
+    display: inline-block;
+    margin-bottom: 0px;
+    padding: 8px 10px;
+    height: auto;
+    width: auto;
+    width: 200px;
+    max-width: 100%;
+  }
+  #ap-tags-holder, #ap-tags-suggestion {
+    list-style: none;
+    margin-top: 0;
+    padding: 0;
+  }
+  #ap-tags-holder {
+    margin-top: 10px;
+    margin-bottom: 0px;
+    li {
+      display: inline-block;
+      margin: 0 8px 0 0;
+      padding: 0;
+      button {
+        background: #f8f8f8 none repeat scroll 0 0;
+        border: 2px solid #ddd;
+        color: #333333;
+        > span {
+          margin-right: 5px;
+        }
+        .apicon-x {
+          color: #aaa;
+          font-size: 11px;
+        }
+      }
+    }
+  }
+  #ap-tags-suggestion {
+    display: none;
+    max-width: 100%;
+    position: absolute;
+    width: 200px;
+    z-index: 999;
+    border-bottom: solid 1px #ddd;
+    li {
+      display: block;
+      margin: 0;
+      padding: 0;
+      border-bottom: solid 1px #eee;
+      button {
+        border-radius: 0px;
+        margin-bottom: 0px;
+        border-width: 0 1px 0 2px;
+        color: #333333;
+      }
+    }
+  }
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
