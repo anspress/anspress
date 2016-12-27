@@ -35,37 +35,124 @@ function ap_prevent_loading_email_ext( $ret, $ext ) {
 }
 add_filter( 'anspress_load_ext', 'ap_prevent_loading_email_ext', 10, 2 );
 
+/**
+ * Email handler class.
+ */
+class AnsPress_Email {
+	public $emails = [];
+	public $args = [];
+	public $subject = '';
+	public $message = '';
+	public $header = '';
+
+	/**
+	 * Init class.
+	 *
+	 * @param array $args Arguments.
+	 */
+	public function __construct( $args = [] ) {
+		$this->header();
+		$this->args = $args;
+	}
+
+	/**
+	 * Set email header.
+	 */
+	public function header() {
+
+		if ( ! $charset = get_bloginfo( 'charset' ) ) {
+			$charset = 'utf-8';
+		}
+
+		$header = 'Content-type: text/plain; charset=' . $charset . "\r\n";
+		$this->header = apply_filters( 'ap_email_header', $header );
+	}
+
+	/**
+	 * Add email(s) to notify.
+	 *
+	 * @param array|string $email Pass one or multiple emails to notify.
+	 */
+	public function add_email( $email ) {
+		if ( is_array( ) ) {
+			foreach ( $email as $e ) {
+				if ( is_email( $e ) && ! in_array( $e, $this->emails, true ) ) {
+					$this->emails[] = sanitize_email( $e );
+				}
+			}
+		} else {
+			if ( is_email( $email ) && ! in_array( $email, $this->emails, true ) ) {
+				$this->emails[] = sanitize_email( $email );
+			}
+		}
+	}
+
+	/**
+	 * Set subject.
+	 *
+	 * @param string $template Subject template.
+	 */
+	public function set_subject( $template ) {
+		$this->subject = $this->parse_template( $content );
+	}
+
+	/**
+	 * Replace tags in template.
+	 *
+	 * @param string $content Template.
+	 * @param array  $args Args.
+	 */
+	public function parse_template( $content, $args ) {
+		return strtr( $content, $this->args );
+	}
+
+	/**
+	 * Send mail.
+	 */
+	public function send() {
+
+		// Do not send if subject and message are empty.
+		if ( empty( $this->subject ) || empty( $this->message ) ) {
+			return;
+		}
+
+		foreach ( (array) $this->emails as $email ) {
+			if ( is_email( $email ) ) {
+				wp_mail( $email, $this->subject, $this->message, $this->header );
+			}
+		}
+	}
+
+}
 
 /**
  * Email addon for AnsPress
  */
-class AnsPress_Email {
+class AnsPress_Email_Hooks {
 
 	/**
 	 * All emails to send notification.
 	 *
 	 * @var array
 	 */
-	private static $emails = array();
+	public static $emails = array();
 
 	/**
 	 * Subject of email to send.
 	 *
 	 * @var string
 	 */
-	private static $subject;
+	public static $subject;
 
 	/**
 	 * Email body.
 	 *
 	 * @var string
 	 */
-	private static $message;
+	public static $message;
 
 	/**
 	 * Initialize the class.
-	 *
-	 * @since 1.0
 	 */
 	public static function init() {
 		SELF::ap_default_options();
@@ -663,4 +750,4 @@ class AnsPress_Email {
 }
 
 // Init addon.
-AnsPress_Email::init();
+AnsPress_Email_Hooks::init();
