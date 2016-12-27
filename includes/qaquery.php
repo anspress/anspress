@@ -175,7 +175,7 @@ class Question_Query extends WP_Query {
 			return;
 		}
 
-		$this->ap_ids = [ 'post_ids' => array(), 'attach_ids' => array() ];
+		$this->ap_ids = [ 'post_ids' => [], 'attach_ids' => [], 'user_ids' => [] ];
 		foreach ( (array) $this->posts as $_post ) {
 			$this->ap_ids['post_ids'][] = $_post->ID;
 			$this->ap_ids['attach_ids'] = array_merge( explode( ',', $_post->attach ), $this->ap_ids['attach_ids'] );
@@ -197,6 +197,7 @@ class Question_Query extends WP_Query {
 		ap_user_votes_pre_fetch( $this->ap_ids['post_ids'] );
 		ap_post_attach_pre_fetch( $this->ap_ids['attach_ids'] );
 
+		// Pre fetch users.
 		if ( ! empty( $this->ap_ids['user_ids'] ) ) {
 			ap_post_author_pre_fetch( $this->ap_ids['user_ids'] );
 		}

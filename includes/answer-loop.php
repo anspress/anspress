@@ -153,10 +153,19 @@ class Answers_Query extends WP_Query {
 			return;
 		}
 
-		$this->ap_ids = [ 'post_ids' => array(), 'attach_ids' => array() ];
+		$this->ap_ids = [ 'post_ids' => [], 'attach_ids' => [], 'user_ids' => [] ];
+
 		foreach ( (array) $this->posts as $_post ) {
 			$this->ap_ids['post_ids'][] = $_post->ID;
 			$this->ap_ids['attach_ids'] = array_filter( array_merge( explode( ',', $_post->attach ), $this->ap_ids['attach_ids'] ) );
+			if ( ! empty( $_post->post_author ) ) {
+				$this->ap_ids['user_ids'][] = $_post->post_author;
+			}
+		}
+
+		// Unique ids only.
+		foreach ( (array) $this->ap_ids as $k => $ids ) {
+			$this->ap_ids[ $k ] = array_unique( $ids );
 		}
 	}
 
@@ -169,6 +178,10 @@ class Answers_Query extends WP_Query {
 		$this->get_ids();
 		ap_user_votes_pre_fetch( $this->ap_ids['post_ids'] );
 		ap_post_attach_pre_fetch( $this->ap_ids['attach_ids'] );
+
+		if ( ! empty( $this->ap_ids['user_ids'] ) ) {
+			ap_post_author_pre_fetch( $this->ap_ids['user_ids'] );
+		}
 	}
 }
 

@@ -230,8 +230,9 @@ class AnsPress_Email_Hooks {
 	 * Register options
 	 */
 	public static function register_option() {
-		// Register general settings.
-		ap_register_option_section( 'addons', 'email', __( 'Email', 'anspress-question-answer' ) , array(
+		ap_register_option_group( 'email', __( 'Email', 'anspress-question-answer' ) );
+
+		ap_register_option_section( 'email', 'admin_notify', __( 'Notify admin(s)', 'anspress-question-answer' ) , array(
 			array(
 				'name' => 'notify_admin_email',
 				'label' => __( 'Admin email', 'anspress-question-answer' ),
@@ -239,12 +240,6 @@ class AnsPress_Email_Hooks {
 				'type' => 'text',
 				'show_desc_tip' => false,
 			),
-
-			array(
-				'name' => '__sep',
-				'type' => 'custom',
-				'html' => '<span class="ap-form-separator">' . __( 'Notify admin', 'anspress-question-answer' ) . '</span>',
-			) ,
 			array(
 				'name' => 'notify_admin_new_question',
 				'label' => __( 'New question', 'anspress-question-answer' ),
@@ -294,6 +289,9 @@ class AnsPress_Email_Hooks {
 				'type' => 'checkbox',
 				'show_desc_tip' => false,
 			),
+		));
+
+		ap_register_option_section( 'email', 'email_templates', __( 'Templates', 'anspress-question-answer' ) , array(
 			array(
 				'name' => '__sep',
 				'type' => 'custom',
