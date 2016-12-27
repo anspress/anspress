@@ -37,7 +37,11 @@ if ( ap_isset_post_value( '__nonce' ) && ap_verify_nonce( 'nonce_option_form' ) 
 						continue;
 					}
 
-					$value = ap_sanitize_unslash( $f['name'], 'request' );
+					if ( 'textarea' === $f['type'] ) {
+						$value = esc_textarea( wp_unslash( ap_isset_post_value( $f['name'], '' ) ) );
+					} else {
+						$value = ap_sanitize_unslash( $f['name'], 'request' );
+					}
 
 					// If reset then get value from default option.
 					if ( ap_sanitize_unslash( 'reset', 'p' ) ) {

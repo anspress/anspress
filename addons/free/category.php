@@ -175,6 +175,16 @@ class AnsPress_Category {
 	 * @since 2.0
 	 */
 	public static function register_question_categories() {
+		ap_add_default_options([
+			'form_category_orderby'   => 'count',
+			'categories_page_order'   => 'DESC',
+			'categories_page_orderby' => 'count',
+			'categories_page_slug'    => 'categories',
+			'category_page_slug'      => 'category',
+			'categories_per_page'     => 20,
+			'categories_image_height' => 150,
+		]);
+
 		ap_register_menu( 'ANSPRESS_CATEGORIES_PAGE_URL', __( 'Categories', 'anspress-question-answer' ), ap_get_link_to( 'categories' ) );
 
 		/**
@@ -336,25 +346,6 @@ class AnsPress_Category {
 		}
 
 		return $return;
-	}
-
-	/**
-	 * Append default options
-	 *
-	 * @param   array $defaults Default AnsPress option.
-	 * @return  array
-	 * @since   1.0
-	 */
-	public static function ap_default_options( $defaults ) {
-		$defaults['form_category_orderby']  	 = 'count';
-		$defaults['categories_page_order']  	 = 'DESC';
-		$defaults['categories_page_orderby']   = 'count';
-		$defaults['categories_page_slug']  		 = 'categories';
-		$defaults['category_page_slug']  		   = 'category';
-		$defaults['categories_per_page']  		 = 20;
-		$defaults['categories_image_height']   = 150;
-
-		return $defaults;
 	}
 
 	/**

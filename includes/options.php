@@ -153,3 +153,20 @@ function ap_default_options() {
 
 	return $defaults;
 }
+
+/**
+ * Add default AnsPress options.
+ *
+ * @param array $defaults Default options to append.
+ * @since 4.0.0
+ */
+function ap_add_default_options( $defaults ) {
+	$old_default = ap_default_options();
+
+	// Delete existing cache.
+	wp_cache_delete( 'ap_default_options', 'ap' );
+	wp_cache_delete( 'anspress_opt', 'ap' );
+
+	$new_default = $old_default + (array) $defaults;
+	wp_cache_set( 'ap_default_options', $new_default, 'ap' );
+}

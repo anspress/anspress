@@ -189,6 +189,15 @@ class AnsPress_Tag {
 	 * @since 2.0
 	 */
 	public static function register_question_tag() {
+		ap_add_default_options([
+			'max_tags'        => 5,
+			'min_tags'        => 1,
+			'tags_page_title' => __( 'Tags', 'anspress-question-answer' ),
+			'tags_per_page'   => 20,
+			'tags_page_slug'  => 'tags',
+			'tag_page_slug'   => 'tag',
+		]);
+
 		$tag_labels = array(
 			'name' 				        => __( 'Question Tags', 'anspress-question-answer' ),
 			'singular_name' 	    => _x( 'Tag', 'anspress-question-answer' ),
@@ -224,22 +233,6 @@ class AnsPress_Tag {
 		 * Now let WordPress know about our taxonomy
 		 */
 		register_taxonomy( 'question_tag', array( 'question' ), $tag_args );
-	}
-
-	/**
-	 * Apppend default options.
-	 *
-	 * @param   array $defaults Default option values.
-	 */
-	public static function ap_default_options( $defaults ) {
-		$defaults['max_tags']       	= 5;
-		$defaults['min_tags']       	= 1;
-		$defaults['tags_page_title']  = __( 'Tags', 'anspress-question-answer' );
-		$defaults['tags_per_page']   	= 20;
-		$defaults['tags_page_slug']   = 'tags';
-		$defaults['tag_page_slug']   	= 'tag';
-
-		return $defaults;
 	}
 
 	/**
@@ -949,3 +942,4 @@ function ap_get_tags_slug() {
 
 // Init addons.
 AnsPress_Tag::init();
+

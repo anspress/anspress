@@ -181,7 +181,7 @@ class AnsPress_Process_Form
 
 		$question_array['post_status'] = ap_new_edit_post_status( $user_id, 'question', false );
 
-		if ( $this->fields['is_private'] ) {
+		if ( isset( $this->fields['is_private'] ) && $this->fields['is_private'] ) {
 			$question_array['is_private'] = true;
 		}
 
@@ -245,7 +245,7 @@ class AnsPress_Process_Form
 
 		$question_array['post_status'] = ap_new_edit_post_status( $user_id, 'question', true );
 
-		if ( $this->fields['is_private'] ) {
+		if ( isset( $this->fields['is_private'] ) && $this->fields['is_private'] ) {
 			$question_array['is_private'] = true;
 		}
 
@@ -259,6 +259,9 @@ class AnsPress_Process_Form
 		if ( $post_id ) {
 			ap_clear_unattached_media();
 			$this->redirect = get_permalink( $post_id );
+
+			// Trigger update hook.
+			ap_trigger_qa_update_hook( $post_id, 'edited' );
 
 			ap_ajax_json( array(
 				'success' => true,
@@ -347,7 +350,7 @@ class AnsPress_Process_Form
 
 		$answer_array['post_status'] = ap_new_edit_post_status( $user_id, 'answer', false );
 
-		if ( $this->fields['is_private'] ) {
+		if ( isset( $this->fields['is_private'] ) && $this->fields['is_private'] ) {
 			$answer_array['is_private'] = true;
 		}
 
@@ -399,7 +402,7 @@ class AnsPress_Process_Form
 
 		$answer_array['post_status'] = ap_new_edit_post_status( get_current_user_id(), 'answer', true );
 
-		if ( $this->fields['is_private'] ) {
+		if ( isset( $this->fields['is_private'] ) && $this->fields['is_private'] ) {
 			$answer_array['is_private'] = true;
 		}
 
@@ -407,6 +410,10 @@ class AnsPress_Process_Form
 
 		if ( $answer_id ) {
 			ap_clear_unattached_media();
+
+			// Trigger update hook.
+			ap_trigger_qa_update_hook( $answer_id, 'edited' );
+
 			ap_ajax_json( array(
 				'success'  => true,
 				'action'   => 'answer_edited',

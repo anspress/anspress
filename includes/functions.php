@@ -1639,3 +1639,44 @@ function ap_is_addon_active( $addon ) {
 
 	return false;
 }
+
+/**
+ * Trigger question and answer update hooks.
+ *
+ * @param object $_post Post object.
+ * @param string $event Event name.
+ * @since 4.0.0
+ */
+function ap_trigger_qa_update_hook( $_post, $event ) {
+	$_post = ap_get_post( $_post );
+
+	// Check if post type is question or answer.
+	if ( ! in_array( $_post->post_type, [ 'question', 'answer' ], true ) ) {
+		return;
+	}
+
+	/**
+		* Triggered right after updating question/answer.
+		*
+		* @param object	$_post		Inserted post object.
+		* @since 0.9
+		*/
+	do_action( 'ap_after_update_' . $_post->post_type, $_post, $event );
+}
+
+/**
+ * Find item in in child array.
+ *
+ * @param mixed $needle Needle to find.
+ * @param mixed $haystack Haystack.
+ * @param boolean $strict Strict match.
+ * @return boolean
+ */
+function ap_in_array_r( $needle, $haystack, $strict = false ) {
+	foreach ( $haystack as $item ) {
+		if ( ($strict ? $item === $needle : $item == $needle) || (is_array( $item ) && in_array_r( $needle, $item, $strict )) ) {
+			return true;
+		}
+	}
+	return false;
+}

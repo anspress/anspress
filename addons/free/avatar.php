@@ -142,7 +142,7 @@ class AnsPress_Avatar {
 	public function __construct( $user ) {
 		if ( is_object( $user ) && ! empty( $user->user_id ) ) {
 			$this->user_id = (int) $user->user_id;
-			$user = get_userdata( $id );
+			$user = get_userdata( $this->user_id );
 			$this->name = esc_attr( $user->display_name );
 		} elseif ( is_object( $user ) && $user instanceof WP_user ) {
 			$this->name = esc_attr( $user->display_name );

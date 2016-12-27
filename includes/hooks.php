@@ -35,8 +35,6 @@ class AnsPress_Hooks {
 			anspress()->add_action( 'registered_taxonomy', __CLASS__, 'add_ap_tables' );
 			anspress()->add_action( 'ap_processed_new_question', __CLASS__, 'after_new_question', 1, 2 );
 			anspress()->add_action( 'ap_processed_new_answer', __CLASS__, 'after_new_answer', 1, 2 );
-			anspress()->add_action( 'ap_processed_update_question', __CLASS__, 'ap_after_update_question', 1, 2 );
-			anspress()->add_action( 'ap_processed_update_answer', __CLASS__, 'ap_after_update_answer', 1, 2 );
 			anspress()->add_action( 'before_delete_post', __CLASS__, 'before_delete' );
 			anspress()->add_action( 'wp_trash_post', __CLASS__, 'trash_post_action' );
 			anspress()->add_action( 'untrash_post', __CLASS__, 'untrash_ans_on_question_untrash' );
@@ -158,43 +156,6 @@ class AnsPress_Hooks {
 		 * @since 0.9
 		 */
 		do_action( 'ap_after_new_answer', $post_id, $post );
-	}
-
-	/**
-	 * Things to do after updating question
-	 *
-	 * @param	integer $post_id Question ID.
-	 * @param	object	$post		Question post object.
-	 */
-	public static function ap_after_update_question( $post_id, $post ) {
-		/**
-		 * ACTION: ap_after_new_answer
-		 * action triggered after inserting an answer
-		 *
-		 * @since 0.9
-		 */
-		do_action( 'ap_after_update_question', $post_id, $post );
-		// Update qameta terms.
-		ap_update_qameta_terms( $post_id );
-	}
-
-	/**
-	 * Things to do after updating an answer
-	 *
-	 * @param	integer $post_id	Answer ID.
-	 * @param	object	$post		 Answer post object.
-	 */
-	public static function ap_after_update_answer( $post_id, $post ) {
-		// Update answer count.
-		ap_update_answers_count( $post->post_parent );
-
-		/**
-		 * ACTION: ap_processed_update_answer
-		 * action triggered after inserting an answer
-		 *
-		 * @since 0.9
-		 */
-		do_action( 'ap_after_update_answer', $post_id, $post );
 	}
 
 	/**
@@ -678,6 +639,11 @@ class AnsPress_Hooks {
 		}
 
 		if ( $updated ) {
+			if ( 'answer' === $post->post_type ) {
+				// Update answer count.
+				ap_update_answers_count( $post->post_parent );
+			}
+
 			/**
 			 * Action triggered right after updating question/answer.
 			 *
@@ -686,6 +652,12 @@ class AnsPress_Hooks {
 			 * @since 0.9
 			 */
 			do_action( 'ap_processed_update_' . $post->post_type, $post_id, $post );
+
+			if ( 'question' === $post->post_type ) {
+				// Update qameta terms.
+				ap_update_qameta_terms( $post_id );
+			}
+
 		} else {
 			/**
 			 * Action triggered right after inserting new question/answer.

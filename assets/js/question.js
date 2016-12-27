@@ -336,6 +336,7 @@
 				success: function(data){
 					AnsPress.hideLoading(e.target);
 					$(e.target).addClass('loaded');
+					console.log(data.actions);
 					self.actions.model = new AnsPress.collections.Actions(data.actions);
 					self.actions.view = new AnsPress.views.Actions({ model: self.actions.model, postID: self.model.get('ID') });
 					self.$el.find('post-actions .ap-actions').html(self.actions.view.render().$el);

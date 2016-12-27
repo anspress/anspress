@@ -402,7 +402,8 @@ function ap_post_actions( $_post = null ) {
 	 * @var     string
 	 * @since   2.0
 	 */
-	return apply_filters( 'ap_post_actions', array_filter( $actions ) );
+	$actions = apply_filters( 'ap_post_actions', array_filter( $actions ) );
+	return array_values( $actions );
 }
 
 /**
