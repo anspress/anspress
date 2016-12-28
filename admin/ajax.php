@@ -190,11 +190,13 @@ class AnsPress_Admin_Ajax {
 				// Delete vote meta.
 				$wpdb->delete( $wpdb->usermeta, [ 'meta_key' => '__up_vote_casted' ], array( '%s' ) ); // @codingStandardsIgnoreLine
 				$wpdb->delete( $wpdb->usermeta, [ 'meta_key' => '__down_vote_casted' ], array( '%s' ) ); // @codingStandardsIgnoreLine
-				
+
 				wp_send_json( [ 'done' => 1, 'total' => 0 ] );
 			} elseif ( 'options' === $data_type ) {
 
 				delete_option( 'anspress_opt' );
+				delete_option( 'anspress_reputation_events' );
+				delete_option( 'anspress_addons' );
 
 				wp_send_json( [ 'done' => 1, 'total' => 0 ] );
 			} elseif ( 'terms' === $data_type ) {
@@ -219,8 +221,8 @@ class AnsPress_Admin_Ajax {
 				wp_send_json( [ 'done' => 1, 'total' => 0 ] );
 			} elseif ( 'tables' === $data_type ) {
 
-				$tables = [ $wpdb->ap_qameta, $wpdb->ap_votes, $wpdb->ap_views ];
-				
+				$tables = [ $wpdb->ap_qameta, $wpdb->ap_votes, $wpdb->ap_views, $wpdb->ap_reputations ];
+
 				foreach ( $tables as $table ) {
 					$wpdb->query( "DROP TABLE IF EXISTS {$table}" );
 				}

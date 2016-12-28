@@ -263,7 +263,7 @@ class AnsPress_Hooks {
 		$post = ap_get_post( $post_id );
 
 		if ( 'question' === $post->post_type ) {
-			do_action( 'ap_untrash_question', $post->ID );
+			do_action( 'ap_untrash_question', $post->ID, $post );
 			//@codingStandardsIgnoreStart
 			$ans = get_posts( array(
 				'post_type'   => 'answer',

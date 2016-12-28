@@ -1156,4 +1156,36 @@ ul.ap-meta-list > li > a#ap-vote-up {
   margin-left: 2px;
 }
 
+.ap-events {
+  width: 100%;
+  border: none;
+  border-spacing: 0;
+  margin-bottom: 15px;
+}
+.ap-events td {
+  border-bottom: solid 1px #eee;
+  padding: 10px 0;
+}
+.ap-events .col-label {
+  font-weight: bold;
+}
+.ap-events .col-points {
+  max-width: 50px;
+}
+.ap-events .col-points input {
+  width: 100%;
+}
+.ap-events .col-id {
+  width: 50px;
+}
+.ap-events .col-id span {
+  background: rgba(139, 195, 74, 0.32);
+  width: 18px;
+  display: block;
+  height: 18px;
+  text-align: center;
+  border-radius: 50%;
+  padding: 5px;
+}
+
 /*# sourceMappingURL=ap-admin.css.map */

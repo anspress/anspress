@@ -1083,6 +1083,7 @@ function ap_append_table_names() {
 	$wpdb->ap_qameta 		     = $wpdb->prefix . 'ap_qameta';
 	$wpdb->ap_votes 		     = $wpdb->prefix . 'ap_votes';
 	$wpdb->ap_views 			   = $wpdb->prefix . 'ap_views';
+	$wpdb->ap_reputations	   = $wpdb->prefix . 'ap_reputations';
 
 }
 ap_append_table_names();
@@ -1592,13 +1593,17 @@ function ap_get_addons() {
 
 	$addons = [];
 	foreach ( (array) $all_files as $file ) {
-		$addons[ $file ] = get_file_data( ANSPRESS_ADDONS_DIR . DS . $file, array(
+		$data = get_file_data( ANSPRESS_ADDONS_DIR . DS . $file, array(
 			'name'        => 'Addon Name',
 			'addonuri'    => 'Addon URI',
 			'description' => 'Description',
 			'author'      => 'Author',
 			'authoruri'   => 'Author URI',
 		) );
+
+		if ( ! empty( $data['name'] ) ) {
+			$addons[ $file ] = $data;
+		}
 	}
 
 	wp_cache_set( 'addons', $addons, 'anspress' );

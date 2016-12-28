@@ -197,15 +197,13 @@ class AnsPress_Ajax {
 				ap_ajax_json( $failed_response );
 			}
 
-			$last_status = get_post_meta( $post->ID, '_ap_last_post_status', true );
-			$last_status = empty( $last_status ) ? 'publish' : sanitize_text_field( $last_status );
-			wp_update_post( [ 'ID' => $post->ID, 'post_status' => $last_status ] );
+			wp_untrash_post( $post->ID );
 
 			ap_ajax_json( array(
 				'success'      => true,
 				'action' 		   => [ 'active' => false, 'label' => __( 'Delete', 'anspress-question-answer' ), 'title' => __( 'Delete this post (can be restored again)', 'anspress-question-answer' ) ],
 				'snackbar' 		 => [ 'message' => sprintf( __( '%s is restored', 'anspress-question-answer' ), $post_type ) ],
-				'newStatus'    => $last_status,
+				'newStatus'    => 'publish',
 				'postMessage' => ap_get_post_status_message( $post_id ),
 			) );
 		}

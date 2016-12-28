@@ -159,6 +159,26 @@ class AP_Activate {
 	}
 
 	/**
+	 * AnsPress reputation table.
+	 */
+	public function reputation_table() {
+		global $wpdb;
+
+		// @codingStandardsIgnoreLine
+		if ( $wpdb->get_var( "show tables like '{$wpdb->ap_reputations}'" ) != $wpdb->ap_reputations ) {
+			// @codingStandardsIgnoreLine
+			$this->tables[] = 'CREATE TABLE IF NOT EXISTS `' . $wpdb->ap_reputations . '` (
+					`rep_id` bigint(20) NOT NULL AUTO_INCREMENT,
+					`rep_user_id` bigint(20) DEFAULT NULL,
+					`rep_event` varchar(256) DEFAULT NULL,
+					`rep_ref_id` bigint(20) DEFAULT NULL,
+					`rep_date` timestamp NULL DEFAULT NULL,
+					PRIMARY KEY (`rep_id`)
+				)' . $this->charset_collate . ';';
+		}
+	}
+
+	/**
 	 * Insert and update tables
 	 */
 	public function insert_tables() {
@@ -168,6 +188,7 @@ class AP_Activate {
 		$this->qameta_table();
 		$this->votes_table();
 		$this->views_table();
+		$this->reputation_table();
 
 		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 

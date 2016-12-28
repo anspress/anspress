@@ -55,7 +55,7 @@ class AnsPress_Vote {
 
 			// If user already voted and click that again then reverse.
 			if ( $is_voted->vote_value == $value ) { // loose comparison okay.
-				$counts = ap_delete_post_vote( $post_id, $userid );
+				$counts = ap_delete_post_vote( $post_id, $userid, 'vote_up' === $type );
 				ap_ajax_json( array(
 					'success' => true,
 					'action'  => 'undo',
@@ -490,6 +490,7 @@ function ap_delete_post_vote( $post_id, $user_id = false, $up_vote = null ) {
 	$rows = ap_delete_vote( $post_id, $user_id, 'vote', $value );
 
 	if ( false !== $rows ) {
+		var_dump('ap_undo_' . $type);
 		$counts = ap_update_votes_count( $post_id );
 		do_action( 'ap_undo_vote', $post_id, $counts );
 		do_action( 'ap_undo_' . $type, $post_id, $counts );

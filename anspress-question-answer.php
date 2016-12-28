@@ -175,6 +175,14 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		public $anspress_forms;
 
 		/**
+		 * AnsPress reputation events.
+		 *
+		 * @access public
+		 * @var object
+		 */
+		public $reputation_events;
+
+		/**
 		 * Initializes the plugin by setting localization, hooks, filters, and administrative functions.
 		 *
 		 * @access public
@@ -234,7 +242,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 			$constants = array(
 				'DS' 										=> DIRECTORY_SEPARATOR,
 				'AP_VERSION' 						=> $this->_plugin_version,
-				'AP_DB_VERSION' 				=> 22,
+				'AP_DB_VERSION' 				=> 25,
 				'ANSPRESS_DIR' 					=> plugin_dir_path( __FILE__ ),
 				'ANSPRESS_URL' 					=> plugin_dir_url( __FILE__ ),
 				'ANSPRESS_WIDGET_DIR' 	=> plugin_dir_path( __FILE__ ) . 'widgets' . DIRECTORY_SEPARATOR,
@@ -296,6 +304,8 @@ if ( ! class_exists( 'AnsPress' ) ) {
 			require_once ANSPRESS_DIR . 'includes/akismet.php';
 			require_once ANSPRESS_DIR . 'includes/comments.php';
 			require_once ANSPRESS_DIR . 'includes/upload.php';
+			require_once ANSPRESS_DIR . 'includes/taxo.php';
+			require_once ANSPRESS_DIR . 'includes/reputation.php';
 		}
 
 		/**

@@ -1187,3 +1187,37 @@ ul.ap-meta-list {
     }
   }
 }
+.ap-events{
+  width: 100%;
+  border: none;
+  border-spacing: 0;
+  margin-bottom: 15px;
+
+  td{
+    border-bottom: solid 1px #eee;
+    padding: 10px 0;
+  }
+  .col-{
+    &label{
+      font-weight: bold;
+    }
+    &points{
+      max-width: 50px;
+      input{
+        width: 100%;
+      }
+    }
+    &id{
+      width: 50px;
+      span{
+        background: rgba(139, 195, 74, 0.32);
+        width: 18px;
+        display: block;
+        height: 18px;
+        text-align: center;
+        border-radius: 50%;
+        padding: 5px;
+      }
+    }
+  }
+}
