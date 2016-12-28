@@ -44,6 +44,8 @@ class AnsPress_Reputation_Hooks {
 		anspress()->add_action( 'ap_vote_down', __CLASS__, 'vote_down' );
 		anspress()->add_action( 'ap_undo_vote_up', __CLASS__, 'undo_vote_up' );
 		anspress()->add_action( 'ap_undo_vote_down', __CLASS__, 'undo_vote_down' );
+		anspress()->add_action( 'ap_publish_comment', __CLASS__, 'new_comment' );
+		anspress()->add_action( 'ap_unpublish_comment', __CLASS__, 'delete_comment' );
 	}
 
 	/**
@@ -209,6 +211,26 @@ class AnsPress_Reputation_Hooks {
 		$_post = get_post( $post_id );
 		ap_delete_reputation( 'received_vote_down', $_post->ID, $_post->post_author );
 		ap_delete_reputation( 'given_vote_down', $_post->ID );
+	}
+
+	/**
+	 * Award reputation on new comment.
+	 *
+	 * @param  object $comment WordPress comment object
+	 * @return void
+	 */
+	public static function new_comment( $comment ) {
+		ap_insert_reputation( 'comment', $comment->comment_ID, $comment->user_id );
+	}
+
+	/**
+	 * Undo reputation on deleting comment.
+	 *
+	 * @param  object $comment
+	 * @return void
+	 */
+	public static function delete_comment( $comment ) {
+		ap_delete_reputation( 'comment', $comment->comment_ID, $comment->user_id );
 	}
 }
 
