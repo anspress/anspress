@@ -46,6 +46,8 @@ class AnsPress_Reputation_Hooks {
 		anspress()->add_action( 'ap_undo_vote_down', __CLASS__, 'undo_vote_down' );
 		anspress()->add_action( 'ap_publish_comment', __CLASS__, 'new_comment' );
 		anspress()->add_action( 'ap_unpublish_comment', __CLASS__, 'delete_comment' );
+		anspress()->add_filter( 'user_register', __CLASS__, 'user_register' );
+		anspress()->add_action( 'delete_user', __CLASS__, 'delete_user' );
 	}
 
 	/**
@@ -216,8 +218,7 @@ class AnsPress_Reputation_Hooks {
 	/**
 	 * Award reputation on new comment.
 	 *
-	 * @param  object $comment WordPress comment object
-	 * @return void
+	 * @param  object $comment WordPress comment object.
 	 */
 	public static function new_comment( $comment ) {
 		ap_insert_reputation( 'comment', $comment->comment_ID, $comment->user_id );
@@ -226,11 +227,33 @@ class AnsPress_Reputation_Hooks {
 	/**
 	 * Undo reputation on deleting comment.
 	 *
-	 * @param  object $comment
-	 * @return void
+	 * @param  object $comment Comment object.
 	 */
 	public static function delete_comment( $comment ) {
 		ap_delete_reputation( 'comment', $comment->comment_ID, $comment->user_id );
+	}
+
+	/**
+	 * Award reputation when user register.
+	 *
+	 * @param integer $user_id User Id.
+	 */
+	public static function user_register( $user_id ) {
+		ap_insert_reputation( 'register', $user_id, $user_id );
+	}
+
+	/**
+	 * Delete all reputation of user when user get deleted.
+	 *
+	 * @param integer $user_id User ID.
+	 */
+	public static function delete_user( $user_id ) {
+		global $wpdb;
+		$delete = $wpdb->delete( $wpdb->ap_reputations, [ 'repu_user_id' => $user_id ], [ '%d' ] ); // WPCS: db call okay, db cache okay.
+
+		if ( false !== $delete ) {
+			do_action( 'ap_bulk_delete_reputations_of_user', $user_id );
+		}
 	}
 }
 
