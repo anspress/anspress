@@ -163,3 +163,89 @@ function ap_get_reputation_event_points( $event ) {
 
 	return 0;
 }
+
+/**
+ * Count reputation points of a user.
+ *
+ * @param integer $user_id ID of user.
+ * @param boolean $group Return total count or group by event count.
+ * @since 4.0.0
+ */
+function ap_get_user_reputation( $user_id, $group = false ) {
+	global $wpdb;
+
+	$cache = wp_cache_get( 'ap_user_reputation_' . $user_id, 'ap' );
+
+	if ( false !== $cache ) {
+		return false === $group ? $cache : array_sum( $cache );
+	}
+
+	$events = $wpdb->get_results( $wpdb->prepare( "SELECT count(*) as count, rep_event  FROM {$wpdb->ap_reputations} WHERE rep_user_id = %d GROUP BY rep_event", $user_id ) ); // WPCS: db call okay.
+
+	$event_counts = [];
+	foreach ( (array) $events as $count ) {
+		$event_counts[ $count->rep_event ] = $count->count;
+	}
+
+	$count = [];
+	foreach ( ap_get_reputation_events() as $slug => $event ) {
+		$count[ $slug ] = isset( $event_counts[ $slug ] ) ? ( (int) $event_counts[ $slug ] * (int) $event['points'] ) : 0;
+	}
+
+	wp_cache_set( 'ap_user_reputation_' . $user_id, $count, 'ap' );
+
+	if ( false === $group ) {
+		return $count;
+	}
+
+	return array_sum( $count );
+}
+
+/**
+ * Get reputation of multiple users.
+ *
+ * @param  array $user_ids User ids.
+ * @return array
+ * @since  4.0.0
+ */
+function ap_get_users_reputation( $user_ids ) {
+	global $wpdb;
+	$user_counts = [];
+
+	foreach ( (array) $user_ids as $id ) {
+		$user_counts[ (int) $id ] = [];
+	}
+
+	$sanitized = implode( ',', array_keys( $user_counts ) );
+	$query = "SELECT count(*) as count, rep_event, rep_user_id FROM {$wpdb->ap_reputations} WHERE rep_user_id IN ({$sanitized}) GROUP BY rep_event, rep_user_id";
+	$key = md5( $query );
+	$cache = wp_cache_get( $key, 'ap_users_reputation' );
+
+	if ( false !== $cache ) {
+		return $cache;
+	}
+
+	$events = $wpdb->get_results( $query ); // @codingStandardsIgnoreLine.
+
+	foreach ( (array) $events as $count ) {
+		if ( empty( $event_counts[ $count->rep_user_id ] ) ) {
+			$event_counts[ $count->rep_user_id ] = [];
+		}
+
+		$user_counts[ $count->rep_user_id ][ $count->rep_event ] = $count->count;
+	}
+
+	$counts = [];
+	$all_events = ap_get_reputation_events();
+
+	foreach ( $user_counts as $user_id => $events ) {
+		$counts[ $user_id ] = [];
+		foreach ( $all_events as $slug => $event ) {
+			$counts[ $user_id ][ $slug ] = isset( $events[ $slug ] ) ? ( (int) $events[ $slug ] * (int) $event['points'] ) : 0;
+		}
+
+		wp_cache_set( 'ap_user_reputation_' . $user_id, $counts[ $user_id ], 'ap' );
+	}
+
+	return $counts;
+}

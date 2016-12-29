@@ -182,6 +182,8 @@ class Answers_Query extends WP_Query {
 		if ( ! empty( $this->ap_ids['user_ids'] ) ) {
 			ap_post_author_pre_fetch( $this->ap_ids['user_ids'] );
 		}
+
+		do_action( 'ap_pre_fetch_answer_data', $this->ap_ids );
 	}
 }
 

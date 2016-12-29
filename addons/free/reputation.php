@@ -48,6 +48,9 @@ class AnsPress_Reputation_Hooks {
 		anspress()->add_action( 'ap_unpublish_comment', __CLASS__, 'delete_comment' );
 		anspress()->add_filter( 'user_register', __CLASS__, 'user_register' );
 		anspress()->add_action( 'delete_user', __CLASS__, 'delete_user' );
+		anspress()->add_filter( 'ap_user_display_name', __CLASS__, 'display_name', 10, 2 );
+		anspress()->add_filter( 'ap_pre_fetch_question_data', __CLASS__, 'pre_fetch_post' );
+		anspress()->add_filter( 'ap_pre_fetch_answer_data', __CLASS__, 'pre_fetch_post' );
 	}
 
 	/**
@@ -253,6 +256,38 @@ class AnsPress_Reputation_Hooks {
 
 		if ( false !== $delete ) {
 			do_action( 'ap_bulk_delete_reputations_of_user', $user_id );
+		}
+	}
+
+	/**
+	 * Append user reputations in display name.
+	 *
+	 * @param string $name User display name.
+	 * @param array  $args Arguments.
+	 * @return string
+	 */
+	public static function display_name( $name, $args ) {
+		if ( $args['user_id'] > 0 ) {
+			$reputation = ap_get_user_reputation( $args['user_id'], true );
+
+			if ( $args['html'] ) {
+				return $name . '<span class="ap-user-reputation" title="' . __( 'Reputation', 'anspress-question-answer' ) . '">' . $reputation . '</span>';
+			} else {
+				return $name . sprintf( __( ' (%d)', 'anspress-question-answer' ), $reputation );
+			}
+		}
+
+		return $name;
+	}
+
+	/**
+	 * Pre fetch user reputations.
+	 *
+	 * @param array $ids Pre fetching ids.
+	 */
+	public static function pre_fetch_post( $ids ) {
+		if ( ! empty( $ids['user_ids'] ) ) {
+			ap_get_users_reputation( $ids['user_ids'] );
 		}
 	}
 }

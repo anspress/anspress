@@ -1345,8 +1345,8 @@ function ap_user_display_name( $args = array() ) {
 
 	$defaults = array(
 		'user_id'            => get_the_author_meta( 'ID' ),
-		'html'                => false,
-		'echo'                => false,
+		'html'               => false,
+		'echo'               => false,
 		'anonymous_label'    => __( 'Anonymous', 'anspress-question-answer' ),
 	);
 
