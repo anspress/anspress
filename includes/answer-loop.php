@@ -38,21 +38,25 @@ class Answers_Query extends WP_Query {
 	 */
 	public function __construct( $args = array() ) {
 		global $answers;
-
-		$paged = get_query_var( 'answer_id' ) ? ap_get_answer_position_paged( ) : get_query_var( 'ap_paged', 1 );
+		$paged = get_query_var( 'ap_paged', 1 );
 		set_query_var( 'ap_paged', $paged );
 
 		$defaults = array(
-			'question_id'                    => get_question_id(),
-			'ap_query'      				         => true,
-			'ap_current_user_ignore'      	 => false,
-			'ap_answers_query'               => true,
-			'showposts'                      => ap_opt( 'answers_per_page' ),
-			'paged'                          => $paged,
-			'only_best_answer'               => false,
-			'include_best_answer'            => false,
-			'post_status'   				         => [ 'publish' ],
+			'question_id'              => get_question_id(),
+			'ap_query'      				   => true,
+			'ap_current_user_ignore'   => false,
+			'ap_answers_query'         => true,
+			'showposts'                => ap_opt( 'answers_per_page' ),
+			'paged'                    => $paged,
+			'only_best_answer'         => false,
+			'include_best_answer'      => false,
+			'post_status'   				   => [ 'publish' ],
+			'ap_order_by' 	           => 'active',
 		);
+
+		if ( get_query_var( 'answer_id' ) ) {
+			$defaults['p'] = get_query_var( 'answer_id' );
+		}
 
 		$this->args = wp_parse_args( $args, $defaults );
 
@@ -183,6 +187,11 @@ class Answers_Query extends WP_Query {
 			ap_post_author_pre_fetch( $this->ap_ids['user_ids'] );
 		}
 
+		// Add activities user_id to array.
+		if ( ! empty( $_post->activities ) && ! empty( $_post->activities['user_id'] ) ) {
+			$this->ap_ids['user_ids'][] = $_post->activities['user_id'];
+		}
+
 		do_action( 'ap_pre_fetch_answer_data', $this->ap_ids );
 	}
 }
@@ -287,9 +296,14 @@ function ap_answer_user_can_view() {
  * output answers pagination
  */
 function ap_answers_the_pagination() {
-	global $answers;
-	$paged = (get_query_var( 'ap_paged' )) ? get_query_var( 'ap_paged' ) : 1;
-	ap_pagination( $paged, $answers->max_num_pages, '?ap_paged=%#%', get_permalink( get_question_id() ) .'?ap_paged=%#%' );
+
+	if ( get_query_var( 'answer_id' ) ) {
+		echo '<a class="ap-all-answers" href="' . get_permalink( get_question_id() ) . '">' . sprintf( __( 'You are viewing 1 out of %d answers, click here to view all answers.', 'anspress-question-answer' ), ap_get_answers_count( get_question_id() ) ) . '</a>';
+	} else {
+		global $answers;
+		$paged = (get_query_var( 'ap_paged' )) ? get_query_var( 'ap_paged' ) : 1;
+		ap_pagination( $paged, $answers->max_num_pages, '?ap_paged=%#%', get_permalink( get_question_id() ) .'?ap_paged=%#%' );
+	}
 }
 
 
@@ -413,11 +427,20 @@ function ap_get_answer_position_paged( $question_id = false, $answer_id = false 
 
 	$status = "p.post_status IN ('" . implode( "','",  $post_status ) . "')";
 
-	$ids = $wpdb->get_col( $wpdb->prepare( "SELECT p.ID FROM $wpdb->posts p JOIN $wpdb->ap_qameta qameta ON qameta.post_id = p.ID  WHERE p.post_type = 'answer' AND p.post_parent = %d AND ( $status OR ( p.post_author = %d AND p.post_status IN ('publish', 'private_post', 'trash', 'moderate') ) ) ORDER BY $orderby", $question_id, $user_id ) ); // db call okay, unprepared sql okay.
+	$ids = $wpdb->get_col( $wpdb->prepare( "SELECT p.ID FROM $wpdb->posts p LEFT JOIN $wpdb->ap_qameta qameta ON qameta.post_id = p.ID  WHERE p.post_type = 'answer' AND p.post_parent = %d AND ( $status OR ( p.post_author = %d AND p.post_status IN ('publish', 'private_post', 'trash', 'moderate') ) ) ORDER BY $orderby", $question_id, $user_id ) ); // db call okay, unprepared sql okay.
 
 	$pos = (int) array_search( $answer_id , $ids ) + 1; // lose comparison ok.
 	$paged = ceil( $pos / ap_opt( 'answers_per_page' ) );
 	wp_cache_set( $cache_key, $paged, 'ap_answer_position' );
 
 	return $paged;
+}
+
+/**
+ * Echo post status of a answer.
+ *
+ * @param  object|integer|null $_post Post ID, Object or null.
+ */
+function ap_answer_status( $_post = null ) {
+	ap_question_status( $_post );
 }

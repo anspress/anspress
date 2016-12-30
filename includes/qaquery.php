@@ -182,6 +182,11 @@ class Question_Query extends WP_Query {
 			if ( ! empty( $_post->post_author ) ) {
 				$this->ap_ids['user_ids'][] = $_post->post_author;
 			}
+
+			// Add activities user_id to array.
+			if ( ! empty( $_post->activities ) && ! empty( $_post->activities['user_id'] ) ) {
+				$this->ap_ids['user_ids'][] = $_post->activities['user_id'];
+			}
 		}
 		// Unique ids only.
 		foreach ( (array) $this->ap_ids as $k => $ids ) {

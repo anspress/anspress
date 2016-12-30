@@ -193,7 +193,7 @@ class AnsPress_PostTypes {
 			return apply_filters( 'ap_question_post_type_link', $link, $post );
 
 		} elseif ( 'answer' === $post->post_type && 0 !== (int) $post->post_parent ) {
-			$link = get_permalink( $post->post_parent ) . "{$post->ID}/#/answer/{$post->ID}/";
+			$link = get_permalink( $post->post_parent ) . "{$post->ID}/";
 
 			/**
 			* FILTER: ap_answer_post_type_link
