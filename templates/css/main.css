@@ -3206,45 +3206,58 @@ post-message {
   border: 0;
 }
 
-#anspress .ap-asingle {
+#anspress .best-answer .ap-bpsingle, #anspress .answer-selected .ap-bpsingle {
+  border-color: #cce4c8;
+}
+#anspress .ap-bpsingle {
   border-radius: 2px;
   margin-bottom: 30px;
   border: solid 1px #ddd;
 }
-#anspress .ap-asingle-title {
+#anspress .ap-bpsingle-title {
   padding: 5px 10px;
   font-size: 13px;
   border-bottom: solid 1px #eee;
   margin-bottom: 10px;
 }
-#anspress .ap-asingle-title > a {
+#anspress .ap-bpsingle-title > a {
   text-decoration: none;
   font-weight: bold;
   color: #333;
 }
-#anspress .ap-asingle-content {
+#anspress .ap-bpsingle-content {
   padding: 0 10px;
   position: relative;
 }
-#anspress .ap-asingle-content p:last-child {
+#anspress .ap-bpsingle-content p {
   margin-bottom: 0;
 }
-#anspress .ap-asingle-content .ap-avatar {
+#anspress .ap-bpsingle-content .ap-avatar {
   margin-top: 4px;
 }
-#anspress .ap-asingle-meta {
+#anspress .ap-bpsingle-meta {
   font-size: 13px;
   color: #888;
   border-top: solid 1px #eee;
   padding: 5px 10px;
   margin-top: 10px;
 }
-#anspress .ap-asingle-meta > * {
+#anspress .ap-bpsingle-meta > * {
   margin-right: 10px;
   font-size: 11px;
 }
-#anspress .ap-asingle-meta a {
+#anspress .ap-bpsingle-meta a {
   text-decoration: none;
+}
+#anspress .ap-bpsingle-meta .apicon-thumb-up:before {
+  margin-right: 2px;
+}
+#anspress .ap-bpsingle-selected, #anspress .ap-bpsingle .solved {
+  color: #8bc34a;
+}
+#anspress .ap-bpsingle-published {
+  text-decoration: none;
+  font-size: 13px;
 }
 #anspress .ap-view-question {
   background: #8bc34a;
@@ -3252,6 +3265,9 @@ post-message {
   color: #fff;
   padding: 2px 6px;
   border-radius: 1px;
+  text-decoration: none;
+  margin-top: 8px;
+  display: table;
 }
 #anspress .ap-bp-head {
   border-bottom: solid 1px #ddd;

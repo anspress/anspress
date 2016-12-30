@@ -1,8 +1,9 @@
 <?php
 /**
- * BuddyPress answer item.
+ * BuddyPress question item.
  *
- * Template used to render answer item in loop
+ * Template used to render question item in BuddyPress
+ * profile questions page.
  *
  * @link     https://anspress.io
  * @since    4.0.0
@@ -15,6 +16,7 @@ if ( ! ap_user_can_view_post( get_the_ID() ) ) {
 }
 
 ?>
+
 <div id="post-<?php the_ID(); ?>" <?php post_class( ); ?>>
 
 	<div class="ap-answer-single ap-bpsingle">
@@ -30,22 +32,19 @@ if ( ! ap_user_can_view_post( get_the_ID() ) ) {
 				</a>
 			</div>
 			<div class="ap-bpsingle-desc no-overflow">
-				<a href="<?php the_permalink(); ?>" class="ap-bpsingle-published">
-					<time itemprop="datePublished" datetime="<?php echo ap_get_time( get_the_ID(), 'c' ); ?>">
-						<?php printf( 'Posted %s', ap_human_time( ap_get_time( get_the_ID(), 'U' ) ) ); ?>
-					</time>
-				</a>
-				<p><?php echo ap_truncate_chars( get_the_content(), 200 ); ?></p>
-				<a href="<?php the_permalink(); ?>" class="ap-view-question"><?php esc_html_e( 'View Question', 'anspress-question-answer' ); ?></a>
+        <a href="<?php the_permalink(); ?>" class="ap-bpsingle-published">
+          <time itemprop="datePublished" datetime="<?php echo ap_get_time( get_the_ID(), 'c' ); ?>">
+            <?php printf( 'Posted %s', ap_human_time( ap_get_time( get_the_ID(), 'U' ) ) ); ?>
+          </time>
+        </a>
+				<p><?php echo wp_trim_words( get_the_content(), 30, '...' ); ?></p>
+        <a href="<?php the_permalink(); ?>" class="ap-view-question"><?php esc_html_e( 'View', 'anspress-question-answer' ); ?></a>
 			</div>
 		</div>
 
 		<div class="ap-bpsingle-meta">
 			<span class="apicon-thumb-up"><?php printf( _n( '%d Vote', '%d Votes', ap_get_votes_net(), 'anspress-question-answer' ), ap_get_votes_net() ); ?></span>
-			<?php if ( ap_is_selected( get_the_ID() ) ) : ?>
-				<span class="ap-bpsingle-selected apicon-check" title="<?php esc_attr_e( 'This answer is selected as best', 'anspress-question-answer' ); ?>"><?php esc_attr_e( 'Selected', 'anspress-question-answer' ) ?></span>
-			<?php endif; ?>
-			<?php ap_recent_post_activity(); ?>
+			<?php echo ap_question_metas() ?>
 		</div>
 
 	</div>

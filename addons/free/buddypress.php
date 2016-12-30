@@ -154,7 +154,7 @@ class AnsPress_BP_Hooks {
 		$args['ap_current_user_ignore'] = true;
 		$args['showposts'] = 10;
 		$args['author'] = bp_displayed_user_id();
-		$args['ap_order_by'] = ap_sanitize_unslash( 'ap_sort', 'r', 'newest' );
+		$args['ap_order_by'] = ap_sanitize_unslash( 'order_by', 'r', 'active' );
 
 		/**
 		 * FILTER: ap_authors_questions_args

@@ -1,5 +1,8 @@
 #anspress{
-  .ap-asingle{
+  .best-answer .ap-bpsingle, .answer-selected .ap-bpsingle{
+    border-color: #cce4c8;
+  }
+  .ap-bpsingle{
     border-radius: 2px;
     margin-bottom: 30px;
     border: solid 1px #ddd;
@@ -14,10 +17,11 @@
         color: #333;
       }
     }
+
     &-content{
       padding: 0 10px;
       position: relative;
-      p:last-child{
+      p{
         margin-bottom: 0;
       }
       .ap-avatar{
@@ -37,6 +41,16 @@
       a{
         text-decoration: none;
       }
+      .apicon-thumb-up:before{
+        margin-right: 2px;
+      }
+    }
+    &-selected, .solved{
+      color: $main-color;
+    }
+    &-published {
+      text-decoration: none;
+      font-size: 13px;
     }
   }
   .ap-view-question{
@@ -45,6 +59,9 @@
     color: #fff;
     padding: 2px 6px;
     border-radius: 1px;
+    text-decoration: none;
+    margin-top: 8px;
+    display: table;
   }
   .ap-bp-head{
     border-bottom: solid 1px #ddd;
@@ -73,4 +90,5 @@
       }
     }
   }
+
 }
