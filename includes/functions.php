@@ -313,7 +313,7 @@ function ap_post_edit_link( $_post ) {
  * @param string $ellipsis Ellipsis.
  * @return string
  */
-function ap_truncate_chars( $text, $limit, $ellipsis = '...' ) {
+function ap_truncate_chars( $text, $limit = 40, $ellipsis = '...' ) {
 	if ( strlen( $text ) > $limit ) {
 		$endpos = strpos( str_replace( array( "\r\n", "\r", "\n", "\t" ), ' ', $text ), ' ', (string) $limit );
 		if ( false !== $endpos ) {

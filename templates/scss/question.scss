@@ -466,3 +466,14 @@ post-message {
 				}
 		}
 }
+
+.ap-all-answers {
+    display: table;
+    text-align: center;
+    border: solid 1px $yellow-color;
+    text-decoration: none;
+    border-radius: 3px;
+    font-size: 13px;
+    padding: 5px 10px;
+    margin: 20px auto 0;
+}

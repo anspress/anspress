@@ -1197,6 +1197,17 @@ post-message {
   border-radius: 0 2px 2px 0;
 }
 
+.ap-all-answers {
+  display: table;
+  text-align: center;
+  border: solid 1px #F4AC20;
+  text-decoration: none;
+  border-radius: 3px;
+  font-size: 13px;
+  padding: 5px 10px;
+  margin: 20px auto 0;
+}
+
 .ap-btn {
   background-image: linear-gradient(#ffffff, #fcfcfc);
   border: 1px solid rgba(0, 0, 0, 0.2);
@@ -3193,6 +3204,79 @@ post-message {
   overflow: hidden;
   clip: rect(0, 0, 0, 0);
   border: 0;
+}
+
+#anspress .ap-asingle {
+  border-radius: 2px;
+  margin-bottom: 30px;
+  border: solid 1px #ddd;
+}
+#anspress .ap-asingle-title {
+  padding: 5px 10px;
+  font-size: 13px;
+  border-bottom: solid 1px #eee;
+  margin-bottom: 10px;
+}
+#anspress .ap-asingle-title > a {
+  text-decoration: none;
+  font-weight: bold;
+  color: #333;
+}
+#anspress .ap-asingle-content {
+  padding: 0 10px;
+  position: relative;
+}
+#anspress .ap-asingle-content p:last-child {
+  margin-bottom: 0;
+}
+#anspress .ap-asingle-content .ap-avatar {
+  margin-top: 4px;
+}
+#anspress .ap-asingle-meta {
+  font-size: 13px;
+  color: #888;
+  border-top: solid 1px #eee;
+  padding: 5px 10px;
+  margin-top: 10px;
+}
+#anspress .ap-asingle-meta > * {
+  margin-right: 10px;
+  font-size: 11px;
+}
+#anspress .ap-asingle-meta a {
+  text-decoration: none;
+}
+#anspress .ap-view-question {
+  background: #8bc34a;
+  font-size: 12px;
+  color: #fff;
+  padding: 2px 6px;
+  border-radius: 1px;
+}
+#anspress .ap-bp-head {
+  border-bottom: solid 1px #ddd;
+  margin-bottom: 25px;
+  padding-bottom: 10px;
+}
+#anspress .ap-bp-head h1 {
+  margin: 0;
+  float: left;
+}
+#anspress .ap-bp-head .ap-answers-tab {
+  float: right;
+  border-radius: 3px;
+}
+#anspress .ap-bp-head .ap-answers-tab li {
+  margin: 0;
+}
+#anspress .ap-bp-head .ap-answers-tab li a {
+  display: block;
+  padding: 5px 12px;
+  text-decoration: none;
+  font-size: 13px;
+}
+#anspress .ap-bp-head .ap-answers-tab li.active a {
+  background: #eee;
 }
 
 /*# sourceMappingURL=main.css.map */

@@ -15,16 +15,21 @@
 		<div class="ap-sorting-tab clearfix">
 			<h3 class="ap-answers-label ap-pull-left" ap-answerscount-text>
 				<?php
+					$count = ( '' !== get_query_var( 'answer_id' ) ? ap_get_answers_count() : ap_total_answers_found() );
 					printf(
-						_n( '%d Answer', '%d Answers', ap_total_answers_found(), 'anspress-question-answer' ),
-						ap_total_answers_found()
+						_n( '%d Answer', '%d Answers', $count, 'anspress-question-answer' ),
+						$count
 					);
 				?>
 			</h3>
 			<?php ap_answers_tab( get_the_permalink() ); ?>
 		</div>
 
-		<?php ap_answers_the_pagination(); ?>
+		<?php
+		if ( '' === get_query_var( 'answer_id' ) ) {
+			ap_answers_the_pagination();
+		}
+		?>
 
 		<div id="answers">
 			<?php if ( ap_user_can_see_answers() ) : ?>

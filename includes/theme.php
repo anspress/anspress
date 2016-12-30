@@ -477,22 +477,22 @@ function ap_get_questions_orderby( $current_url = '' ) {
  * @since 2.0.1
  */
 function ap_answers_tab( $base = false ) {
-	$sort = ap_sanitize_unslash( 'ap_sort', 'r',  ap_opt( 'answers_sort' ) );
+	$sort = ap_sanitize_unslash( 'order_by', 'r',  ap_opt( 'answers_sort' ) );
 
 	if ( ! $base ) {
 		$base = get_permalink();
 	}
 
 	$navs = array(
-		'active' => array( 'link' => add_query_arg( [ 'ap_sort' => 'active' ], $base ), 'title' => __( 'Active', 'anspress-question-answer' ) ),
+		'active' => array( 'link' => add_query_arg( [ 'order_by' => 'active' ], $base ), 'title' => __( 'Active', 'anspress-question-answer' ) ),
 	);
 
 	if ( ! ap_opt( 'disable_voting_on_answer' ) ) {
-		$navs['voted'] = array( 'link' => add_query_arg( [ 'ap_sort' => 'voted' ], $base ), 'title' => __( 'Voted', 'anspress-question-answer' ) );
+		$navs['voted'] = array( 'link' => add_query_arg( [ 'order_by' => 'voted' ], $base ), 'title' => __( 'Voted', 'anspress-question-answer' ) );
 	}
 
-	$navs['newest'] = array( 'link' => add_query_arg( [ 'ap_sort' => 'newest' ], $base ), 'title' => __( 'Newest', 'anspress-question-answer' ) );
-	$navs['oldest'] = array( 'link' => add_query_arg( [ 'ap_sort' => 'oldest' ], $base ), 'title' => __( 'Oldest', 'anspress-question-answer' ) );
+	$navs['newest'] = array( 'link' => add_query_arg( [ 'order_by' => 'newest' ], $base ), 'title' => __( 'Newest', 'anspress-question-answer' ) );
+	$navs['oldest'] = array( 'link' => add_query_arg( [ 'order_by' => 'oldest' ], $base ), 'title' => __( 'Oldest', 'anspress-question-answer' ) );
 
 	echo '<ul class="ap-answers-tab ap-ul-inline clearfix">';
 	foreach ( (array) $navs as $k => $nav ) {
