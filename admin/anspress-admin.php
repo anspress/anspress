@@ -284,10 +284,11 @@ class AnsPress_Admin {
 	 */
 	public static function add_action_links( $links ) {
 		return array_merge(
+			$links,
 			array(
 				'settings' => '<a href="' . admin_url( 'admin.php?page=anspress_options' ) . '">' . __( 'Settings', 'anspress-question-answer' ) . '</a>',
-			),
-			$links
+				'about' => '<a href="' . admin_url( 'admin.php?page=anspress_about' ) . '">' . __( 'About', 'anspress-question-answer' ) . '</a>',
+			)
 		);
 	}
 
