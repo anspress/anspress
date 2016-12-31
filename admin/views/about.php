@@ -43,7 +43,7 @@ $credits = ap_sanitize_unslash( 'credits', 'r', false );
 				<div class="no-overflow">
 					<img src="<?php echo ANSPRESS_URL; ?>/assets/images/plug.svg" />
 					<h4 class="feature-title">Mered all extensions</h4>
-					<p>Since 4.0 all AnsPress extensions are merged to core. This was done to improve performance and easy update. Addons can be toggled.</p>
+					<p>All AnsPress extensions are merged to core for improving performance and update.</p>
 				</div>
 			</div>
 
@@ -51,15 +51,15 @@ $credits = ap_sanitize_unslash( 'credits', 'r', false );
 				<div class="no-overflow">
 					<img src="<?php echo ANSPRESS_URL; ?>/assets/images/line-chart.svg" />
 					<h4 class="feature-title">Lightning Fast</h4>
-					<p>Since 4.0 all AnsPress extensions are merged to core. This was done to improve performance and easy update. Addons can be toggled.</p>
+					<p>We have done many improvents to redue MySql quries and to speed up page load.</p>
 				</div>
 			</div>
 
 			<div class="ap-feature">
 				<div class="no-overflow">
 					<img src="<?php echo ANSPRESS_URL; ?>/assets/images/coding.svg" />
-					<h4 class="feature-title">Improved UI/UX and codes</h4>
-					<p>Since 4.0 all AnsPress extensions are merged to core. This was done to improve performance and easy update. Addons can be toggled.</p>
+					<h4 class="feature-title">Improved UI/UX</h4>
+					<p>Improved AnsPress template structure. Redesigned UI/UX of question, answer and comments.</p>
 				</div>
 			</div>
 
@@ -67,7 +67,7 @@ $credits = ap_sanitize_unslash( 'credits', 'r', false );
 				<div class="no-overflow">
 					<img src="<?php echo ANSPRESS_URL; ?>/assets/images/backbone-js.svg" />
 					<h4 class="feature-title">Integarted backbone.js</h4>
-					<p>Since 4.0 all AnsPress extensions are merged to core. This was done to improve performance and easy update. Addons can be toggled.</p>
+					<p>Re-written whole JavaScript. Using backbone and underscore.js for dynamic layout generation.</p>
 				</div>
 			</div>
 
@@ -75,7 +75,7 @@ $credits = ap_sanitize_unslash( 'credits', 'r', false );
 				<div class="no-overflow">
 					<img src="<?php echo ANSPRESS_URL; ?>/assets/images/server.svg" />
 					<h4 class="feature-title">Improved MySql tables</h4>
-					<p>Since 4.0 all AnsPress extensions are merged to core. This was done to improve performance and easy update. Addons can be toggled.</p>
+					<p>Removed <b>apmeta</b> table and added <b>qameta</b> table. Created individual tables for storing data types.</p>
 				</div>
 			</div>
 
@@ -83,7 +83,7 @@ $credits = ap_sanitize_unslash( 'credits', 'r', false );
 				<div class="no-overflow">
 					<img src="<?php echo ANSPRESS_URL; ?>/assets/images/cancel.svg" />
 					<h4 class="feature-title">Improved uninstaller</h4>
-					<p>Since 4.0 all AnsPress extensions are merged to core. This was done to improve performance and easy update. Addons can be toggled.</p>
+					<p>Fixed uninstall bug. Added controls to remove all data of AnsPress from database.</p>
 				</div>
 			</div>
 
@@ -91,7 +91,7 @@ $credits = ap_sanitize_unslash( 'credits', 'r', false );
 				<div class="no-overflow">
 					<img src="<?php echo ANSPRESS_URL; ?>/assets/images/php.svg" />
 					<h4 class="feature-title">PHP7 Tested</h4>
-					<p>Since 4.0 all AnsPress extensions are merged to core. This was done to improve performance and easy update. Addons can be toggled.</p>
+					<p>AnsPress is well tested with PHP 7. It runs very fast comparing to previous versions of PHP.</p>
 				</div>
 			</div>
 
@@ -99,7 +99,7 @@ $credits = ap_sanitize_unslash( 'credits', 'r', false );
 				<div class="no-overflow">
 					<img src="<?php echo ANSPRESS_URL; ?>/assets/images/user.svg" />
 					<h4 class="feature-title">BuddyPress as default profile</h4>
-					<p>Since 4.0 all AnsPress extensions are merged to core. This was done to improve performance and easy update. Addons can be toggled.</p>
+					<p>Default AnsPress profile is set to BuddyPress. It is widely used, well tested and extensible.</p>
 				</div>
 			</div>
 
