@@ -96,7 +96,7 @@ class AP_QA_Query_Hooks {
 			}
 
 			// Keep best answer to top.
-			if ( $answer_query ) {
+			if ( $answer_query && ! $args->query['ignore_selected_answer'] ) {
 				$sql['orderby'] = 'qameta.selected <> 1 , ' . $sql['orderby'];
 			}
 		}

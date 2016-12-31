@@ -37,24 +37,27 @@ class AnsPress_BP_Hooks {
 		add_post_type_support( 'answer', 'buddypress-activity' );
 
 		anspress()->add_action( 'bp_init', __CLASS__, 'bp_init' );
+		anspress()->add_action( 'ap_assets_js', __CLASS__, 'ap_assets_js' );
 		// anspress()->add_action( 'ap_enqueue', 'bp_activity_mentions_script' );
 		anspress()->add_action( 'bp_setup_nav', __CLASS__, 'content_setup_nav' );
 		anspress()->add_action( 'bp_init', __CLASS__, 'question_answer_tracking' );
 		anspress()->add_action( 'bp_activity_entry_meta', __CLASS__, 'activity_buttons' );
 		anspress()->add_filter( 'bp_activity_custom_post_type_post_action', __CLASS__, 'activity_action', 10, 2 );
-		anspress()->add_filter( 'bp_before_member_header_meta', __CLASS__, 'bp_profile_header_meta' );
+
 		anspress()->add_filter( 'ap_the_question_content', __CLASS__, 'ap_the_question_content' );
 		anspress()->add_action( 'bp_setup_globals', __CLASS__, 'notifier_setup_globals' );
-		anspress()->add_action( 'ap_after_new_answer', __CLASS__, 'add_new_answer_notification' );
-		anspress()->add_action( 'ap_publish_comment', __CLASS__, 'add_new_comment_notification' );
+		anspress()->add_action( 'ap_after_new_answer', __CLASS__, 'new_answer_notification' );
+		anspress()->add_action( 'ap_publish_comment', __CLASS__, 'new_comment_notification' );
 		anspress()->add_action( 'ap_trash_question', __CLASS__, 'remove_answer_notify' );
-		anspress()->add_action( 'ap_trash_question', __CLASS__, 'remove_comment_notify' );
+		//anspress()->add_action( 'ap_trash_question', __CLASS__, 'remove_comment_notify' );
 		anspress()->add_action( 'ap_trash_answer', __CLASS__, 'remove_answer_notify' );
 		anspress()->add_action( 'ap_trash_answer', __CLASS__, 'remove_comment_notify' );
 		anspress()->add_action( 'ap_unpublish_comment', __CLASS__, 'remove_comment_notify' );
 		anspress()->add_action( 'before_delete_post', __CLASS__, 'remove_answer_notify' );
-		anspress()->add_action( 'before_delete_post', __CLASS__, 'remove_comment_notify' );
+		//anspress()->add_action( 'before_delete_post', __CLASS__, 'remove_comment_notify' );
 		anspress()->add_action( 'the_post', __CLASS__, 'mark_bp_notify_as_read' );
+
+		anspress()->add_action( 'ap_ajax_bp_loadmore', __CLASS__, 'bp_loadmore' );
 	}
 
 	/**
@@ -62,6 +65,25 @@ class AnsPress_BP_Hooks {
 	 */
 	public static function bp_init() {
 		anspress()->add_filter( 'the_content', __CLASS__, 'ap_the_answer_content' );
+	}
+
+	/**
+	 * Enqueue scripts.
+	 *
+	 * @param array $js Javacript array.
+	 * @return array
+	 */
+	public static function ap_assets_js( $js ) {
+
+		if ( ! function_exists( 'bp_current_action' ) && ! function_exists( 'bp_current_component' ) ) {
+			return $js;
+		}
+
+		if ( bp_current_component() === 'qa' && bp_current_action() === 'questions' ) {
+			$js['list'] = [ 'dep' => [ 'anspress-common' ], 'footer' => true ];
+		}
+
+		return $js;
 	}
 
 	/**
@@ -81,7 +103,7 @@ class AnsPress_BP_Hooks {
 		$subnav = array(
 			[ 'name' => __( 'Questions', 'anspress-question-answer' ), 'slug' => 'questions' ],
 			[ 'name' => __( 'Answers', 'anspress-question-answer' ), 'slug' => 'answers' ],
-			[ 'name' => __( 'Reputations', 'anspress-question-answer' ), 'slug' => 'reputations' ],
+			//[ 'name' => __( 'Reputations', 'anspress-question-answer' ), 'slug' => 'reputations' ],
 		);
 
 		foreach ( $subnav as $nav ) {
@@ -129,10 +151,20 @@ class AnsPress_BP_Hooks {
 	/**
 	 * Callback for rendering questions page.
 	 */
-	public static function page_questions() {
+	public static function page_questions( $user_id = false, $paged = false, $only_posts = false ) {
 		global $questions;
 		$args['ap_current_user_ignore'] = true;
-		$args['author'] = bp_displayed_user_id();
+		$args['showposts'] = 10;
+
+		if ( false === $user_id ) {
+			$user_id = bp_displayed_user_id();
+		}
+
+		$args['author'] = $user_id;
+
+		if ( false !== $paged ) {
+			$args['paged'] = $paged;
+		}
 
 		/**
 		 * FILTER: ap_authors_questions_args
@@ -143,18 +175,44 @@ class AnsPress_BP_Hooks {
 		$args = apply_filters( 'ap_bp_questions_args', $args );
 		anspress()->questions = $questions = new Question_Query( $args );
 
-		ap_get_template_part( 'buddypress/questions' );
+		if ( false === $only_posts ) {
+			echo '<div class="ap-bp-head clearfix">';
+			echo '<h1>' . esc_attr__( 'Questions', 'anspress-question-answer' ) . '</h1>';
+			ap_list_filters();
+			echo '</div>';
+			echo '<div id="ap-bp-questions">';
+		}
+
+		if ( ap_have_questions() ) {
+			/* Start the Loop */
+			while ( ap_have_questions() ) : ap_the_question();
+				ap_get_template_part( 'buddypress/question-item' );
+			endwhile;
+		}
+
+		if ( $questions->max_num_pages > 1 && false === $only_posts ) {
+			echo '</div>';
+			$args = wp_json_encode( [ '__nonce' => wp_create_nonce( 'loadmore-questions' ), 'type' => 'questions', 'current' => 1, 'user_id' => bp_displayed_user_id() ] );
+			echo '<a href="#" class="ap-bp-loadmore ap-btn" ap-loadmore="' . esc_js( $args ) . '">' . esc_attr__( 'Load more questions', 'anspress-question-answer' ) .'</a>';
+		}
 	}
 
 	/**
 	 * Callback for rendering questions page.
 	 */
-	public static function page_answers() {
+	public static function page_answers( $user_id = false, $paged = false, $order_by = false, $only_posts = false ) {
 		global $answers;
+
+		$order_by = false === $order_by ? 'active' : $order_by;
 		$args['ap_current_user_ignore'] = true;
+		$args['ignore_selected_answer'] = true;
 		$args['showposts'] = 10;
 		$args['author'] = bp_displayed_user_id();
-		$args['ap_order_by'] = ap_sanitize_unslash( 'order_by', 'r', 'active' );
+		$args['ap_order_by'] = ap_sanitize_unslash( 'order_by', 'r', $order_by );
+
+		if ( false !== $paged ) {
+			$args['paged'] = $paged;
+		}
 
 		/**
 		 * FILTER: ap_authors_questions_args
@@ -165,83 +223,145 @@ class AnsPress_BP_Hooks {
 		$args = apply_filters( 'ap_bp_answers_args', $args );
 		anspress()->answers = $answers = new Answers_Query( $args );
 
-		echo '<div class="ap-bp-head clearfix">';
-		echo '<h1>' . esc_attr__( 'Answers', 'anspress-question-answer' ) . '</h1>';
-		ap_answers_tab( get_the_permalink() );
-		echo '</div>';
-		ap_get_template_part( 'buddypress/answers' );
+		if ( false === $only_posts ) {
+			echo '<div class="ap-bp-head clearfix">';
+			echo '<h1>' . esc_attr__( 'Answers', 'anspress-question-answer' ) . '</h1>';
+			ap_answers_tab( get_the_permalink() );
+			echo '</div>';
+			echo '<div id="ap-bp-answers">';
+		}
+
+		if ( ap_have_answers() ) {
+			/* Start the Loop */
+			while ( ap_have_answers() ) : ap_the_answer();
+				ap_get_template_part( 'buddypress/answer-item' );
+			endwhile;
+		}
+
+		if ( $answers->max_num_pages > 1 && false === $only_posts ) {
+			echo '</div>';
+			$args = wp_json_encode( [ '__nonce' => wp_create_nonce( 'loadmore-answers' ), 'type' => 'answers', 'current' => 1, 'user_id' => bp_displayed_user_id(), 'order_by' => ap_sanitize_unslash( 'order_by', 'r' ) ] );
+
+			echo '<a href="#" class="ap-bp-loadmore ap-btn" ap-loadmore="' . esc_js( $args ) . '">' . esc_attr__( 'Load more answers', 'anspress-question-answer' ) . '</a>';
+		}
 	}
 
+	/**
+	 * Set tracking arguments for question and answer post type.
+	 */
 	public static function question_answer_tracking() {
 		// Check if the Activity component is active before using it.
-			if ( ! function_exists( 'bp_is_active' ) || ! bp_is_active( 'activity' ) ) {
-					return;
-			}
-			bp_activity_set_post_type_tracking_args( 'question', array(
-					'component_id'             => 'activity',
-					'action_id'                => 'new_question',
-					'contexts'                 => array( 'activity', 'member' ),
-					'bp_activity_admin_filter' => __( 'Question', 'anspress-question-answer' ),
+		if ( ! function_exists( 'bp_is_active' ) || ! bp_is_active( 'activity' ) ) {
+			return;
+		}
+
+		bp_activity_set_post_type_tracking_args( 'question', array(
+			'component_id'             => 'activity',
+			'action_id'                => 'new_question',
+			'contexts'                 => array( 'activity', 'member' ),
+			'bp_activity_admin_filter' => __( 'Question', 'anspress-question-answer' ),
 			'bp_activity_front_filter' => __( 'Question', 'anspress-question-answer' ),
 			'bp_activity_new_post'     => __( '%1$s asked a new <a href="AP_CPT_LINK">question</a>', 'anspress-question-answer' ),
 			'bp_activity_new_post_ms'  => __( '%1$s asked a new <a href="AP_CPT_LINK">question</a>, on the site %3$s', 'anspress-question-answer' ),
-			) );
-			bp_activity_set_post_type_tracking_args( 'answer', array(
-					'component_id'             => 'activity',
-					'action_id'                => 'new_answer',
-					'contexts'                 => array( 'activity', 'member' ),
-					'bp_activity_admin_filter' => __( 'Answer', 'anspress-question-answer' ),
+		) );
+
+		bp_activity_set_post_type_tracking_args( 'answer', array(
+			'component_id'             => 'activity',
+			'action_id'                => 'new_answer',
+			'contexts'                 => array( 'activity', 'member' ),
+			'bp_activity_admin_filter' => __( 'Answer', 'anspress-question-answer' ),
 			'bp_activity_front_filter' => __( 'Answer', 'anspress-question-answer' ),
 			'bp_activity_new_post'     => __( '%1$s <a href="AP_CPT_LINK">answered</a> a question', 'anspress-question-answer' ),
 			'bp_activity_new_post_ms'  => __( '%1$s <a href="AP_CPT_LINK">answered</a> a question, on the site %3$s', 'anspress-question-answer' ),
-			) );
+		) );
 	}
+
+	/**
+	 * Custom button for question and answer activities.
+	 */
 	public static function activity_buttons() {
-		if ( 'new_question' == bp_get_activity_type() ) {
-			echo '<a class="button answer bp-secondary-action" title="'.__( 'Answer this question', 'anspress-question-answer' ).'" href="'.ap_answers_link( bp_get_activity_secondary_item_id() ).'">'.__( 'Answer', 'anspress-question-answer' ).'</a>'; }
+		if ( 'new_question' === bp_get_activity_type() ) {
+			echo '<a class="button answer bp-secondary-action" title="' . esc_attr__( 'Answer this question', 'anspress-question-answer' ) . '" href="' . esc_url( ap_answers_link( bp_get_activity_secondary_item_id() ) ) . '">' . esc_attr__( 'Answer', 'anspress-question-answer' ) . '</a>';
+		}
 	}
-	public static function activity_action($action, $activity) {
-		if ( $activity->type == 'new_question' || $activity->type == 'new_answer' ) {
-			return str_replace( 'AP_CPT_LINK', get_permalink( $activity->secondary_item_id ), $action ); }
+
+	/**
+	 * Activity action.
+	 */
+	public static function activity_action( $action, $activity ) {
+		if ( in_array( $activity->type, [ 'new_question', 'new_answer' ], true ) ) {
+			return str_replace( 'AP_CPT_LINK', get_permalink( $activity->secondary_item_id ), $action );
+		}
+
 		return $action;
 	}
-	public static function bp_profile_header_meta() {
-		if ( ap_opt( 'disable_reputation' ) ) {
-			return; }
-		echo '<span class="ap-user-meta ap-user-meta-reputation">'. sprintf( __( '%s Reputation', 'anspress-question-answer' ), ap_get_reputation( bp_displayed_user_id(), true ) ) .'</span>';
-	}
+
 	/**
-	 * Filter question content and link metions
+	 * Filter question content and link metions.
+	 *
+	 * @param string $content Contents.
 	 * @return string
 	 */
-	public static function ap_the_question_content($content) {
+	public static function ap_the_question_content( $content ) {
 		return bp_activity_at_name_filter( $content );
 	}
-	public static function ap_the_answer_content($content) {
+
+	/**
+	 * Filter answer content and link metions.
+	 *
+	 * @param string $content Contents.
+	 * @return string
+	 */
+	public static function ap_the_answer_content( $content ) {
 		global $post;
+
 		if ( ! function_exists( 'bp_activity_at_name_filter' ) ) {
-			require_once WP_PLUGIN_DIR.'/buddypress/bp-activity/bp-activity-filters.php'; }
-		if ( $post->post_type == 'answer' ) {
-			return bp_activity_at_name_filter( $content ); }
+			require_once WP_PLUGIN_DIR . '/buddypress/bp-activity/bp-activity-filters.php';
+		}
+
+		if ( 'answer' === $post->post_type ) {
+			return bp_activity_at_name_filter( $content );
+		}
+
 		return $content;
 	}
+
+	/**
+	 * Setup AnsPress notification.
+	 */
 	public static function notifier_setup_globals() {
-			global $bp;
-			$bp->ap_notifier = new stdClass();
-			$bp->ap_notifier->id = 'ap_notifier';// I asume others are not going to use this is
-			$bp->ap_notifier->slug = BP_AP_NOTIFIER_SLUG;
-			$bp->ap_notifier->notification_callback = array( __CLASS__, 'ap_notifier_format_notifications' );// show the notification
-			/* Register this in the active components array */
-			$bp->active_components[$bp->ap_notifier->id] = $bp->ap_notifier->id;
-			do_action( 'notifier_setup_globals' );
+		global $bp;
+
+		$bp->ap_notifier = new stdClass();
+		$bp->ap_notifier->id = 'ap_notifier';
+		$bp->ap_notifier->slug = BP_AP_NOTIFIER_SLUG;
+		$bp->ap_notifier->notification_callback = array( __CLASS__, 'ap_notifier_format' );
+
+		// Register this in the active components array.
+		$bp->active_components[ $bp->ap_notifier->id ] = $bp->ap_notifier->id;
+
+		do_action( 'notifier_setup_globals' );
 	}
-	public static function ap_notifier_format_notifications( $action, $activity_id, $secondary_item_id, $total_items, $format = 'string' ) {
-		 	$amount = 'single';
-		 	if ( strrpos( $action, 'new_answer' ) !== false ) {
+
+	/**
+	 * Format notifications.
+	 *
+	 * @param string  $action Action name.
+	 * @param integer $activity_id Activity name.
+	 * @param integer $secondary_item_id Secondary item ID.
+	 * @param integer $total_items Total items.
+	 * @param string  $format Format.
+	 */
+	public static function ap_notifier_format( $action, $activity_id, $secondary_item_id, $total_items, $format = 'string' ) {
+		$amount = 'single';
+
+		if ( strrpos( $action, 'new_answer' ) !== false ) {
 		 		$answer = get_post( $activity_id );
-		 		if ( $answer ) {
+
+			if ( $answer ) {
 				$notification_link  = get_permalink( $answer->ID );
-				$title = substr( strip_tags( $answer->post_title ), 0, 35 ). (strlen( $answer->post_title ) > 35 ? '...' : '') ;
+				$title = substr( strip_tags( $answer->post_title ), 0, 35 ) . (strlen( $answer->post_title ) > 35 ? '...' : '') ;
+
 				if ( (int) $total_items > 1 ) {
 					$text = sprintf( __( '%1$d answers on - %2$s', 'anspress-question-answer' ), (int) $total_items, $title );
 					$amount = 'multiple';
@@ -252,11 +372,12 @@ class AnsPress_BP_Hooks {
 			}
 		} elseif ( strrpos( $action, 'new_comment' ) !== false ) {
 			$comment = get_comment( $activity_id );
-			$post  = get_post( $comment->comment_post_ID );
+			$post = get_post( $comment->comment_post_ID ); // WPCS: override okay.
 			$notification_link  = get_permalink( $comment->comment_post_ID );
-			$type = $post->post_type == 'question' ? __( 'question', 'anspress-question-answer' ) : __( 'answer', 'anspress-question-answer' );
+			$type = 'question' === $post->post_type ? __( 'question', 'anspress-question-answer' ) : __( 'answer', 'anspress-question-answer' );
 			$amount = 'single';
-			$title = substr( strip_tags( $post->post_title ), 0, 35 ). (strlen( $post->post_title ) > 35 ? '...' : '') ;
+			$title = substr( strip_tags( $post->post_title ), 0, 35 ) . ( strlen( $post->post_title ) > 35 ? '...' : '') ;
+
 			if ( (int) $total_items > 1 ) {
 				$text = sprintf( __( '%1$d comments on your %3$s - %2$s', 'anspress-question-answer' ), (int) $total_items, $title, $type );
 				$amount = 'multiple';
@@ -265,7 +386,8 @@ class AnsPress_BP_Hooks {
 				$text = sprintf( __( '%1$s commented on your %3$s - %2$s', 'anspress-question-answer' ), $user_fullname, $title, $type );
 			}
 		}
-		if ( 'string' == $format ) {
+
+		if ( 'string' === $format ) {
 			$return = apply_filters( 'ap_notifier_' . $amount . '_at_mentions_notification', '<a href="' . esc_url( $notification_link ) . '">' . esc_html( $text ) . '</a>', $notification_link, (int) $total_items, $activity_id, $secondary_item_id );
 		} else {
 			$return = apply_filters( 'ap_notifier_' . $amount . '_at_mentions_notification', array(
@@ -273,107 +395,174 @@ class AnsPress_BP_Hooks {
 				'link' => @$notification_link,
 			), @$notification_link, (int) $total_items, $activity_id, $secondary_item_id );
 		}
+
 		do_action( 'ap_notifier_format_notifications', $action, $activity_id, $secondary_item_id, $total_items );
+
 		return $return;
 	}
 
-	public static function add_new_answer_notification( $post_id ) {
-			if ( bp_is_active( 'notifications' ) ) {
-				global $bp;
-				$answer = get_post( $post_id );
-			//$subscribers = ap_subscriber_ids($answer->post_parent, 'q_all');
-				$notification_args = array(
-							'item_id'           => $answer->ID,
-							'secondary_item_id' => $answer->post_author,
-							'component_name'    => $bp->ap_notifier->id,
-							'component_action'  => 'new_answer_'.$answer->post_parent,
-							'date_notified'     => bp_core_current_time(),
-							'is_new'            => 1,
-				);
-			if (!empty($subscribers) && is_array($subscribers)) {
-				foreach ($subscribers as $s) {
-					if ($s != $answer->post_author) {
-						$notification_args['user_id'] = $s;
-						bp_notifications_add_notification($notification_args);
-					}
-				}
+	/**
+	 * New answer notifications.
+	 *
+	 * @param integer $post_id Post ID.
+	 */
+	public static function new_answer_notification( $post_id ) {
+		if ( ! bp_is_active( 'notifications' ) ) {
+			return;
+		}
+
+		global $bp;
+
+		$answer = get_post( $post_id );
+		$answer = get_post( $answer->post_parent );
+		$subscribers = [ $answer->post_author ];
+
+		$notification_args = array(
+			'item_id'           => $answer->ID,
+			'secondary_item_id' => $answer->post_author,
+			'component_name'    => $bp->ap_notifier->id,
+			'component_action'  => 'new_answer_'.$answer->post_parent,
+			'date_notified'     => bp_core_current_time(),
+			'is_new'            => 1,
+		);
+
+		foreach ( (array) $subscribers as $s ) {
+			if ( $s != $answer->post_author ) {
+				$notification_args['user_id'] = $s;
+				bp_notifications_add_notification( $notification_args );
 			}
-			}
+		}
 	}
-	public static function add_new_comment_notification( $comment ) {
+
+	/**
+	 * New comment notification.
+	 *
+	 * @param object $comment Comment object.
+	 */
+	public static function new_comment_notification( $comment ) {
+		if ( ! bp_is_active( 'notifications' ) ) {
+			return;
+		}
+
 		$comment = (object) $comment;
-			if ( bp_is_active( 'notifications' ) ) {
-				global $bp;
-				$post = get_post( $comment->comment_post_ID );
-			if ($post->post_type == 'question') {
-				//$subscribers = ap_subscriber_ids($comment->comment_post_ID, array('q_post', 'q_all'));
-			} else {
-				//$subscribers = ap_subscriber_ids($comment->comment_post_ID, 'a_all');
-			}
-				$notification_args = array(
-							'item_id'           => $comment->comment_ID,
-							'secondary_item_id' => $comment->user_id,
-							'component_name'    => $bp->ap_notifier->id,
-							'component_action'  => 'new_comment_'.$post->ID,
-							'date_notified'     => bp_core_current_time(),
-							'is_new'            => 1,
-				);
-			if (!empty($subscribers) && is_array($subscribers)) {
-				foreach ($subscribers as $s) {
-					if ($s != $comment->user_id) {
-						$notification_args['user_id'] = $s;
-						bp_notifications_add_notification($notification_args);
-					}
-				}
-			}
-			}
-	}
-	/**
-	 * Remove question notification when corresponding question get deleted
-	 * @param  integer $post_id
-	 * @return void
-	 */
-	public static function remove_answer_notify($post_id) {
-		if (bp_is_active('notifications')) {
-			$post = get_post($post_id);
-			bp_notifications_delete_all_notifications_by_type($post->ID, buddypress()->ap_notifier->id, 'new_answer_' . $post->post_parent);
-		}
-	}
-	/**
-	 * Remove answer notification when corresponding answer get deleted
-	 * @param  object $comment
-	 * @return void
-	 */
-	public static function remove_comment_notify($comment) {
-		if (bp_is_active('notifications')) {
-			if ($comment->comment_ID) {
-				bp_notifications_delete_all_notifications_by_type($comment->comment_ID, buddypress()->ap_notifier->id, 'new_comment_' . $comment->comment_post_ID);
-			} else {
-				$comments = get_comments(array('post_id' => $comment));
-				foreach ($comments as $comment) {
-					bp_notifications_delete_all_notifications_by_type($comment->comment_ID, buddypress()->ap_notifier->id, 'new_comment_' . $comment->comment_post_ID);
-				}
+		$post = get_post( $comment->comment_post_ID );
+		$subscribers = [ $post->post_author ];
+
+		$notification_args = array(
+			'item_id'           => $comment->comment_ID,
+			'secondary_item_id' => $comment->user_id,
+			'component_name'    => $bp->ap_notifier->id,
+			'component_action'  => 'new_comment_' . $post->ID,
+			'date_notified'     => bp_core_current_time(),
+			'is_new'            => 1,
+		);
+
+		foreach ( (array) $subscribers as $s ) {
+			if ( $s != $comment->user_id ) {
+				$notification_args['user_id'] = $s;
+				bp_notifications_add_notification( $notification_args );
 			}
 		}
 	}
+
+	/**
+	 * Remove question notification when corresponding question get deleted.
+	 *
+	 * @param  integer $post_id Post ID.
+	 */
+	public static function remove_answer_notify( $post_id ) {
+		if ( ! bp_is_active( 'notifications' ) ) {
+			return;
+		}
+
+		$post = get_post( $post_id );
+		bp_notifications_delete_all_notifications_by_type( $post->ID, buddypress()->ap_notifier->id, 'new_answer_' . $post->post_parent );
+	}
+
+	/**
+	 * Remove answer notification when corresponding answer get deleted.
+	 *
+	 * @param  object $comment Comment object.
+	 */
+	public static function remove_comment_notify( $comment ) {
+		if ( ! bp_is_active( 'notifications' ) ) {
+			return;
+		}
+
+		if ( $comment->comment_ID ) {
+			bp_notifications_delete_all_notifications_by_type( $comment->comment_ID, buddypress()->ap_notifier->id, 'new_comment_' . $comment->comment_post_ID );
+		} else {
+			$comments = get_comments( [ 'post_id' => $comment ] );
+			foreach ( (array) $comments as $comment ) {
+				bp_notifications_delete_all_notifications_by_type( $comment->comment_ID, buddypress()->ap_notifier->id, 'new_comment_' . $comment->comment_post_ID );
+			}
+		}
+	}
+
 	/**
 	 * Mark notification as read when corresponding question is loaded
-	 * @param object $post_id
-	 * @return void
-	 * @since 3.0.7
-		 */
-	public static function mark_bp_notify_as_read($post_id) {
-		if (bp_is_active('notifications') && is_question()) {
-			$user_id = get_current_user_id();
-			if ($post_id->post_type == 'answer') {
-				bp_notifications_mark_notifications_by_item_id($user_id, $post_id->ID, buddypress()->ap_notifier->id, 'new_answer_' . $post_id->post_parent);
+	 *
+	 * @param mixed $post_id Post ID or Object.
+	 */
+	public static function mark_bp_notify_as_read( $post_id ) {
+
+		if ( ! bp_is_active( 'notifications' ) || ! is_question( ) ) {
+			return;
+		}
+
+		$user_id = get_current_user_id();
+
+		if ( 'answer' === $post_id->post_type ) {
+			bp_notifications_mark_notifications_by_item_id( $user_id, $post_id->ID, buddypress()->ap_notifier->id, 'new_answer_' . $post_id->post_parent );
+		}
+
+		if ( $post_id->comment_count >= 1 ) {
+			$comments = get_comments( [ 'post_id' => $post_id->ID ] );
+
+			foreach ( (array) $comments as $comment ) {
+				bp_notifications_mark_notifications_by_item_id( $user_id, $comment->comment_ID, buddypress()->ap_notifier->id, 'new_comment_' . $post_id->ID );
 			}
-			if ($post_id->comment_count >= 1) {
-				$comments = get_comments(array('post_id' => $post_id->ID));
-				foreach ($comments as $comment) {
-					bp_notifications_mark_notifications_by_item_id($user_id, $comment->comment_ID, buddypress()->ap_notifier->id, 'new_comment_' . $post_id->ID);
-				}
-			}
+		}
+	}
+
+	/**
+	 * Ajax callback for loading more posts.
+	 */
+	public static function bp_loadmore() {
+		$type = ap_sanitize_unslash( 'type', 'r' );
+		$order_by = ap_sanitize_unslash( 'order_by', 'r' );
+		$user_id = (int) ap_sanitize_unslash( 'user_id', 'r' );
+		$paged = (int) ap_sanitize_unslash( 'current', 'r' ) + 1;
+		check_ajax_referer( 'loadmore-' . $type, '__nonce' );
+
+		if ( 'questions' === $type ) {
+			ob_start();
+			SELF::page_questions( $user_id, $paged, true );
+			$html = ob_get_clean();
+
+			global $questions;
+			$paged = $questions->max_num_pages > $paged ? $paged : false;
+
+			ap_ajax_json(array(
+				'success'  => true,
+				'element'  => '#ap-bp-questions',
+				'args'     => [ '__nonce' => wp_create_nonce( 'loadmore-questions' ), 'type' => 'questions', 'current' => $paged, 'user_id' => bp_displayed_user_id() ],
+				'html'   	 => $html,
+			));
+		} elseif ( 'answers' === $type ) {
+			ob_start();
+			SELF::page_answers( $user_id, $paged, $order_by, true );
+			$html = ob_get_clean();
+
+			global $answers;
+			$paged = $answers->max_num_pages > $paged ? $paged : false;
+
+			ap_ajax_json(array(
+				'success'  => true,
+				'element'  => '#ap-bp-answers',
+				'args'  => [ '__nonce' => wp_create_nonce( 'loadmore-answers' ), 'type' => 'answers', 'current' => $paged, 'user_id' => bp_displayed_user_id(), 'order_by' => $order_by ],
+				'html'   	 => $html,
+			));
 		}
 	}
 }

@@ -51,6 +51,7 @@ class AnsPress_Reputation_Hooks {
 		anspress()->add_filter( 'ap_user_display_name', __CLASS__, 'display_name', 10, 2 );
 		anspress()->add_filter( 'ap_pre_fetch_question_data', __CLASS__, 'pre_fetch_post' );
 		anspress()->add_filter( 'ap_pre_fetch_answer_data', __CLASS__, 'pre_fetch_post' );
+		anspress()->add_filter( 'bp_before_member_header_meta', __CLASS__, 'bp_profile_header_meta' );
 	}
 
 	/**
@@ -289,6 +290,13 @@ class AnsPress_Reputation_Hooks {
 		if ( ! empty( $ids['user_ids'] ) ) {
 			ap_get_users_reputation( $ids['user_ids'] );
 		}
+	}
+
+	/**
+	 * Show reputation points of user in BuddyPress profile meta.
+	 */
+	public static function bp_profile_header_meta() {
+		echo '<span class="ap-user-meta ap-user-meta-reputation">' . sprintf( __( '%s Reputation', 'anspress-question-answer' ), ap_get_user_reputation( bp_displayed_user_id(), true ) ) . '</span>';
 	}
 }
 

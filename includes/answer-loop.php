@@ -49,7 +49,7 @@ class Answers_Query extends WP_Query {
 			'showposts'                => ap_opt( 'answers_per_page' ),
 			'paged'                    => $paged,
 			'only_best_answer'         => false,
-			'include_best_answer'      => false,
+			'ignore_selected_answer'   => false,
 			'post_status'   				   => [ 'publish' ],
 			'ap_order_by' 	           => 'active',
 		);
@@ -59,6 +59,8 @@ class Answers_Query extends WP_Query {
 		}
 
 		$this->args = wp_parse_args( $args, $defaults );
+
+		$this->args['ap_order_by'] = sanitize_title( $this->args['ap_order_by'] );
 
 		// Check if user can read private post.
 		if ( ap_user_can_view_private_post( ) ) {

@@ -1421,11 +1421,9 @@ function ap_user_link( $user_id = false, $sub = false ) {
 		$link = ap_get_link_to( array( 'ap_page' => 'author', 'ap_user' => 0 ) );
 	} else{
 
-		if ( ap_opt( 'user_profile' ) === '' ) {
-			return apply_filters( 'ap_user_custom_profile_link', $user_id, $sub );
-		} elseif ( function_exists( 'bp_core_get_userlink' ) && ap_opt( 'user_profile' ) === 'buddypress' ) {
+		if ( function_exists( 'bp_core_get_userlink' ) ) {
 			return bp_core_get_userlink( $user_id, false, true );
-		} elseif ( ap_opt( 'user_profile' ) === 'userpro' ) {
+		} elseif ( function_exists( 'userpro' ) ) {
 			global $userpro;
 			return $userpro->permalink( $user_id );
 		}

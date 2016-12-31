@@ -32,18 +32,20 @@ if ( ! ap_user_can_view_post( get_the_ID() ) ) {
 				</a>
 			</div>
 			<div class="ap-bpsingle-desc no-overflow">
-        <a href="<?php the_permalink(); ?>" class="ap-bpsingle-published">
-          <time itemprop="datePublished" datetime="<?php echo ap_get_time( get_the_ID(), 'c' ); ?>">
-            <?php printf( 'Posted %s', ap_human_time( ap_get_time( get_the_ID(), 'U' ) ) ); ?>
-          </time>
-        </a>
+				<time itemprop="datePublished" datetime="<?php echo ap_get_time( get_the_ID(), 'c' ); ?>" class="ap-bpsingle-published">
+					<?php printf( 'Posted %s', ap_human_time( ap_get_time( get_the_ID(), 'U' ) ) ); ?>
+				</time>
+				<a href="<?php the_permalink(); ?>" class="apicon-answer ap-bpsingle-acount"><?php printf( _n( '%d Answer', '%d Answers', ap_get_answers_count(), 'anspress-question-answer' ), ap_get_answers_count() ); ?></a>
+
 				<p><?php echo wp_trim_words( get_the_content(), 30, '...' ); ?></p>
-        <a href="<?php the_permalink(); ?>" class="ap-view-question"><?php esc_html_e( 'View', 'anspress-question-answer' ); ?></a>
+				<a href="<?php the_permalink(); ?>" class="ap-view-question"><?php esc_html_e( 'View Question', 'anspress-question-answer' ); ?></a>
 			</div>
 		</div>
 
 		<div class="ap-bpsingle-meta">
+
 			<span class="apicon-thumb-up"><?php printf( _n( '%d Vote', '%d Votes', ap_get_votes_net(), 'anspress-question-answer' ), ap_get_votes_net() ); ?></span>
+
 			<?php echo ap_question_metas() ?>
 		</div>
 

@@ -138,7 +138,7 @@
   });
 
   AnsPress.views.List = Backbone.View.extend({
-    el: '#ap-lists',
+    el: '#ap-filters',
     initialize: function(){
 
     },

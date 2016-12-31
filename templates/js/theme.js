@@ -27,6 +27,29 @@
 
     });
 
+    $('[ap-loadmore]').click(function(e){
+        e.preventDefault();
+        var self = this;
+        var args = JSON.parse($(this).attr('ap-loadmore'));
+        args.action = 'ap_ajax';
+        args.ap_ajax_action = 'bp_loadmore';
+
+        AnsPress.showLoading(this);
+        AnsPress.ajax({
+            data: args,
+            success: function(data){
+                AnsPress.hideLoading(self);
+                if(data.success){
+                    $(data.element).append(data.html);
+                    $(self).attr('ap-loadmore', JSON.stringify(data.args));
+                    if(!data.args.current){
+                        $(self).hide();
+                    }
+                }
+            }
+        });
+    });
+
 })(jQuery);
 
 

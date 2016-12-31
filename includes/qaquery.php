@@ -58,6 +58,7 @@ class Question_Query extends WP_Query {
 		);
 
 		$this->args = wp_parse_args( $args, $defaults );
+		$this->args['ap_order_by'] = sanitize_title( $this->args['ap_order_by'] );
 
 		// Check if user can read private post.
 		if ( ap_user_can_view_private_post( ) ) {
