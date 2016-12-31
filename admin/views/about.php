@@ -13,140 +13,190 @@ if (! defined('WPINC')) {
 	die;
 }
 
+$credits = ap_sanitize_unslash( 'credits', 'r', false );
+
 ?>
-<div id="anspress" class="wrap ap-about">
-	<h2>
-		<i class="apicon-anspress"></i>
-		<span><?php echo AP_VERSION; ?></span>		
+<div class="wrap about-wrap">
+	<h1>Welcome to AnsPress <?php echo AP_VERSION; ?></h1>
+	<div class="about-text">
+		Thank you for updating! AnsPress <?php echo AP_VERSION; ?> has many new features that you will enjoy. </div>
+	<div class="ap-badge apicon-anspress-icon"></div>
+
+	<h2 class="nav-tab-wrapper">
+		<a class="nav-tab<?php echo !$credits ? ' nav-tab-active' : ''; ?>" href="<?php echo admin_url( 'admin.php?page=anspress_about' ); ?>">What’s New</a>
+		<a class="nav-tab <?php echo $credits ? ' nav-tab-active' : ''; ?>" href="<?php echo admin_url( 'admin.php?page=anspress_about&credits=true' ); ?>">Credits</a>
 	</h2>
-	<div class="ap-about-social">
-		<a href="https://anspress.io" target="_blank">anspress.io</a>
-		<a href="https://github.com/anspress/anspress" target="_blank">GitHub</a>
-        <a href="https://wordpress.org/plugins/anspress-question-answer/" target="_blank">WordPress.org</a>
-        <a href="https://twitter.com/anspress_io" target="_blank">@anspress_io</a>
-        <a href="https://www.facebook.com/wp.anspress" target="_blank">Facebook</a>
-	</div>
 
-	<div class="ap-about-block clearfix">
-		<div class="ap-about-img">
-		<img src="<?php echo ANSPRESS_URL.'assets/images/question.png'; ?>" />
+	<?php if ( ! $credits ) : ?>
+		<div class="ap-headline-feature">
+			<div class="ap-headline">
+				<img src="<?php echo ANSPRESS_URL; ?>/assets/images/laptop.svg" />
+				<div class="no-overflow">
+					<h3 class="headline-title">Performance and optimizations</h3>
+					<p class="introduction">Huge performance improvements on sites. Optimised MySql quries, caching and prefetching.</p>
+				</div>
+			</div>
 		</div>
-		<div class="ap-about-feats">
-			<h3>Question &amp; Answer</h3>
-			<strong>Voting</strong>
-			<p>Let users vote on questions to express their thought for its relevance.</p>
+		<div class="ap-features-section">
+			<h3 class="headline-title">For Developers &amp; Site Builders</h3>
+			<div class="ap-feature">
+				<div class="no-overflow">
+					<img src="<?php echo ANSPRESS_URL; ?>/assets/images/plug.svg" />
+					<h4 class="feature-title">Mered all extensions</h4>
+					<p>Since 4.0 all AnsPress extensions are merged to core. This was done to improve performance and easy update. Addons can be toggled.</p>
+				</div>
+			</div>
 
-			<strong>Featured Questions</strong>
-			<p>Make questions featured so they stick to the top of list.</p>
+			<div class="ap-feature">
+				<div class="no-overflow">
+					<img src="<?php echo ANSPRESS_URL; ?>/assets/images/line-chart.svg" />
+					<h4 class="feature-title">Lightning Fast</h4>
+					<p>Since 4.0 all AnsPress extensions are merged to core. This was done to improve performance and easy update. Addons can be toggled.</p>
+				</div>
+			</div>
 
-			<strong>Comments</strong>
-			<p>Let users discuss questions and answers by commenting on them. Users can comment on both questions and answers.</p>
+			<div class="ap-feature">
+				<div class="no-overflow">
+					<img src="<?php echo ANSPRESS_URL; ?>/assets/images/coding.svg" />
+					<h4 class="feature-title">Improved UI/UX and codes</h4>
+					<p>Since 4.0 all AnsPress extensions are merged to core. This was done to improve performance and easy update. Addons can be toggled.</p>
+				</div>
+			</div>
 
-			<strong>Moderate and Flag</strong>
-			<p>Allow the community to report inappropriate or spam posts.</p>
+			<div class="ap-feature">
+				<div class="no-overflow">
+					<img src="<?php echo ANSPRESS_URL; ?>/assets/images/backbone-js.svg" />
+					<h4 class="feature-title">Integarted backbone.js</h4>
+					<p>Since 4.0 all AnsPress extensions are merged to core. This was done to improve performance and easy update. Addons can be toggled.</p>
+				</div>
+			</div>
 
-			<strong>Private Question &amp; Answer</strong>
-			<p>Create private questions which will be hidden from public and only selected users can view its content.</p>
+			<div class="ap-feature">
+				<div class="no-overflow">
+					<img src="<?php echo ANSPRESS_URL; ?>/assets/images/server.svg" />
+					<h4 class="feature-title">Improved MySql tables</h4>
+					<p>Since 4.0 all AnsPress extensions are merged to core. This was done to improve performance and easy update. Addons can be toggled.</p>
+				</div>
+			</div>
 
-			<strong>Activity &amp; History</strong>
-			<p>Shows recent activity. All question and answer is shown to subscribers.</p>
+			<div class="ap-feature">
+				<div class="no-overflow">
+					<img src="<?php echo ANSPRESS_URL; ?>/assets/images/cancel.svg" />
+					<h4 class="feature-title">Improved uninstaller</h4>
+					<p>Since 4.0 all AnsPress extensions are merged to core. This was done to improve performance and easy update. Addons can be toggled.</p>
+				</div>
+			</div>
+
+			<div class="ap-feature">
+				<div class="no-overflow">
+					<img src="<?php echo ANSPRESS_URL; ?>/assets/images/php.svg" />
+					<h4 class="feature-title">PHP7 Tested</h4>
+					<p>Since 4.0 all AnsPress extensions are merged to core. This was done to improve performance and easy update. Addons can be toggled.</p>
+				</div>
+			</div>
+
+			<div class="ap-feature">
+				<div class="no-overflow">
+					<img src="<?php echo ANSPRESS_URL; ?>/assets/images/user.svg" />
+					<h4 class="feature-title">BuddyPress as default profile</h4>
+					<p>Since 4.0 all AnsPress extensions are merged to core. This was done to improve performance and easy update. Addons can be toggled.</p>
+				</div>
+			</div>
+
+			<div class="clear"></div>
 		</div>
-
-	</div>
-
-	<div class="ap-about-block clearfix">
-		<div class="ap-about-img">
-			<img src="<?php echo ANSPRESS_URL.'assets/images/filter.gif'; ?>" />
+		<div class="ap-changelog-section">
+			<h3 class="changelog-title">And so much more!</h3>
+			<p class="ap-changelog-url"><a href="https://anspress.io/releases/version-4.0.0-beta.1/">Changelog for AnsPress <?php echo AP_VERSION; ?>.</a></p>
 		</div>
-		<div class="ap-about-feats">
-			<h3>Sorting &amp; Filters</h3>
-			<strong>Advance sorting</strong>
-			<p>Sort question and answers by many advance filters.</p>
+		<div class="ap-assets">
+			<span class="flaticon-cp">All colored icons used in this page were taken from flaticon.com</span>
 		</div>
+	<?php else: ?>
+		<p class="about-description">AnsPress exists because of friendly folks like these.</p>
 
-	</div>
+		<h3 class="wp-people-group">AnsPress Team</h3>
+		<ul class="wp-people-group " id="wp-people-group-project-leaders">
+			<li class="wp-person" id="wp-person-nerdaryan">
+				<a class="web" href="https://profiles.wordpress.org/nerdaryan"><img alt="" class="gravatar" src="//www.gravatar.com/avatar/0c8cfd3bc56d97fe6bebc035fe9b8c80?s=60">Rahul Aryan</a>
+				<span class="title">Lead Developer</span>
+			</li>
+			<li class="wp-person" id="wp-person-campdoug">
+				<a class="web" href="https://campdoug.com/"><img alt="" class="gravatar" src="//anspress.io/wp-content/themes/site/images/contributors/barry.jpg?x84924">Barry Sevig</a>
+				<span class="title">Lead Supporter &amp; Developer</span>
+			</li>
+			<li class="wp-person" id="wp-person-ravi">
+				<a class="web" href="#"><img alt="" class="gravatar" src="//anspress.io/wp-content/themes/site/images/contributors/ravi_kumar.jpg">Ravi Kumar</a>
+				<span class="title">Core Developer</span>
+			</li>
+			<li class="wp-person" id="wp-person-geetikaaryan">
+				<a class="web" href="https://anspress.io/"><img alt="" class="gravatar" src="//www.gravatar.com/avatar/ef5b41129a9a4c2573ef5daf05f03eb7?s=60">Geetika Aryan</a>
+				<span class="title">Core Developer</span>
+			</li>
+		</ul>
 
-	<div class="ap-about-block clearfix">
-		<div class="ap-about-img">
-			<img src="<?php echo ANSPRESS_URL.'assets/images/user-profile.png'; ?>" />
-		</div>
-		<div class="ap-about-feats">
-			<h3>User Profile</h3>
-			
-			<strong>Creative and Informative</strong>
-			<p>Modern design with cover and user avatar. Shows all stats of users along with activities. Easily customizable.</p>
-
-			<strong>Edit profile</strong>
-			<p>Allow users to edit their own profile. Custom fields can be added using hooks.</p>
-
-			<strong>Followers</strong>
-			<p>Users can follow other users to get their activity updates.</p>
-
-			<strong>Notification Page</strong>
-			<p>Shows all notifications, mentions and other activities of user.</p>
-
-			<strong>Hide Profile</strong>
-			<p>AnsPress allows an option for user to hide themselves from the public.</p>
-
-			<strong>3rd Party Profile</strong>
-			<p>Its not required to user AnsPress profile system. Admin can use other 3rd Party profile plugins.</p>
-		</div>
-
-	</div>
-
-	<div class="ap-about-block clearfix">
-		<div class="ap-about-img">
-			<img src="<?php echo ANSPRESS_URL.'assets/images/notifications.png'; ?>" />
-		</div>
-		<div class="ap-about-feats">
-			<h3>Notification</h3>
-			<p>AnsPress notifications will notify users for various activity happening within AnsPress. Notification system is not just limited to AnsPress, it can be easily extended to show new types of activities.</p>
-			
-			<strong>Mention</strong>
-			<p>Users get notified when otheres mention them in posts or comments.</p>
-
-			<strong>Comment</strong>
-			<p>Users get notified when there is a comment on their posts.</p>
-
-			<strong>Reputation</strong>
-			<p>Users get notified when they gain a reputation.</p>
-
-			<strong>New Answer</strong>
-			<p>Notify users when their question get an answer.</p>
-
-			<strong>Best Answer</strong>
-			<p>Users get notified when their answer is selected as the best.</p>
-
-			<strong>Follower</strong>
-			<p>Notify users if anybody starts following them.</p>
-		</div>
-
-	</div>
-
-	<div class="ap-about-block clearfix">
-		<div class="ap-about-img">
-			<img src="<?php echo ANSPRESS_URL.'assets/images/mention.gif'; ?>" />
-		</div>
-		<div class="ap-about-feats">
-			<h3>Mention</h3>
-			<p>Mention user in question, answer and comments. Mentioned user will be get notified. Suggest user name while typing.</p>
-		</div>
-
-	</div>
-
-	<div class="ap-about-block clearfix">
-		<div class="ap-about-img">
-			<img src="<?php echo ANSPRESS_URL.'assets/images/roles.png'; ?>" />
-		</div>
-		<div class="ap-about-feats">
-			<h3>User Role</h3>
-			<p>AnsPress roles and capabilities gives you full control over user access.</p>
-
-			<strong>Customizable caps</strong>
-			<p>Customize capabilities of AnsPress for any roles.</p>
-		</div>
-
-	</div>
-
-
+		<h3 class="wp-people-group">Contributors</h3>
+		<ul class="wp-people-group " id="wp-people-group-project-leaders">
+			<li class="wp-person">
+				<a class="web" href="https://profiles.wordpress.org/priard"><img alt="" class="gravatar" src="//www.gravatar.com/avatar/703e4fed411643c389342ec39c385e7d?s=60">Lukasz Ladecki</a>
+				<span class="title">Translations &amp; Core</span>
+			</li>
+			<li class="wp-person">
+				<a class="web" href="#"><img alt="" class="gravatar" src="//www.gravatar.com/avatar/c56c012899e6de744ce6b5dc391ffe4e?s=60">Costas Zividis</a>
+				<span class="title">Support</span>
+			</li>
+			<li class="wp-person">
+				<a class="web" href="https://profiles.wordpress.org/fred-flq"><img alt="" class="gravatar" src="//www.gravatar.com/avatar/989cbf51eaf91893886a44bfb7769dd2?s=60">Fred - FLQ</a>
+				<span class="title">Support &amp; Translations</span>
+			</li>
+			<li class="wp-person">
+				<a class="web" href="#"><img alt="" class="gravatar" src="//anspress.io/wp-content/themes/site/images/contributors/chad.jpg">Chad Fullerton</a>
+				<span class="title">Support &amp; UI</span>
+			</li>
+			<li class="wp-person">
+				<a class="web" href="#"><img alt="" class="gravatar" src="//avatars.githubusercontent.com/u/576623?v=3">Rami Yushuvaev</a>
+				<span class="title">Support &amp; UI</span>
+			</li>
+			<li class="wp-person">
+				<a class="web" href="#"><img alt="" class="gravatar" src="//avatars.githubusercontent.com/u/5292321?v=3">Alex Alexandru</a>
+				<span class="title">Support &amp; Core</span>
+			</li>
+			<li class="wp-person">
+				<a class="web" href="#"><img alt="" class="gravatar" src="//avatars.githubusercontent.com/u/1368405?v=3">Florian Gareis</a>
+			</li>
+			<li class="wp-person">
+				<a class="web" href="#"><img alt="" class="gravatar" src="//avatars.githubusercontent.com/u/8053423?v=3">Shad Gagnon</a>
+			</li>
+			<li class="wp-person">
+				<a class="web" href="#"><img alt="" class="gravatar" src="//avatars.githubusercontent.com/u/147401?v=3">Milad Nekofar</a>
+			</li>
+			<li class="wp-person">
+				<a class="web" href="#"><img alt="" class="gravatar" src="//avatars.githubusercontent.com/u/1370909?v=3">Dima Stefantsov</a>
+			</li>
+			<li class="wp-person">
+				<a class="web" href="#"><img alt="" class="gravatar" src="//avatars.githubusercontent.com/u/5995181?v=3">Mert S. Kaplan</a>
+			</li>
+			<li class="wp-person">
+				<a class="web" href="#"><img alt="" class="gravatar" src="//avatars.githubusercontent.com/u/1868702?v=3">Peter</a>
+			</li>
+			<li class="wp-person">
+				<a class="web" href="#"><img alt="" class="gravatar" src="//avatars.githubusercontent.com/u/12552467?v=3">Yuji Nagaoka</a>
+			</li>
+			<li class="wp-person">
+				<a class="web" href="#"><img alt="" class="gravatar" src="//avatars.githubusercontent.com/u/388584?v=3">Zhandos Ulan</a>
+			</li>
+			<li class="wp-person">
+				<a class="web" href="#"><img alt="" class="gravatar" src="//avatars.githubusercontent.com/u/1431189?v=3">Benjamin</a>
+			</li>
+			<li class="wp-person">
+				<a class="web" href="#"><img alt="" class="gravatar" src="//avatars.githubusercontent.com/u/3998868?v=3">Davi Menezes</a>
+			</li>
+			<li class="wp-person">
+				<a class="web" href="#"><img alt="" class="gravatar" src="//avatars.githubusercontent.com/u/2650828?v=3">Kevin Fodness</a>
+			</li>
+			<li class="wp-person">
+				<a class="web" href="#"><img alt="" class="gravatar" src="//avatars.githubusercontent.com/u/717939?v=3">Miguel Sirvent</a>
+			</li>
+		</ul>
+	<?php endif; ?>
 </div>

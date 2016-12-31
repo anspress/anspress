@@ -1221,3 +1221,88 @@ ul.ap-meta-list {
     }
   }
 }
+.about-wrap{
+  .ap-badge{
+    font-size: 90px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: #F44336;
+    color: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    height: 90px;
+    width: 90px;
+    text-align: center;
+    display: block;
+    border: solid 3px #fff;
+  }
+  .ap-headline {
+    display: table;
+    margin: 50px 0 0;
+    max-width: 600px;
+    .headline-title{
+      font-weight: 300;
+      font-size: 30px;
+      margin-top: 0;
+    }
+    .introduction {
+      font-size: 20px;
+      margin-top: 5px;
+    }
+  }
+  img {
+    float: left;
+    display: block;
+    width: 120px;
+    margin-right: 25px;
+    border: none;
+  }
+  .ap-features-section{
+    .headline-title{
+      font-size: 24px;
+      margin-bottom: 30px;
+      font-weight: 300;
+    }
+  }
+  .ap-feature {
+    float: left;
+    width: 50%;
+    position: relative;
+    margin-bottom: 30px;
+    .no-overflow{
+      padding-left: 90px;
+      padding-right: 30px;
+    }
+    img {
+      width: 60px;
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+    .feature-title{
+      margin-top: 0;
+      margin-bottom: 0;
+      font-size: 18px;
+    }
+    p{
+      font-size: 15px;
+    }
+  }
+  .ap-changelog-url a{
+    display: table;
+    margin: 0 auto;
+    border: solid 2px #FFC107;
+    text-decoration: none;
+    padding: 10px;
+    border-radius: 3px;
+  }
+  h3.changelog-title {
+    text-align: center;
+    font-weight: 300;
+    font-size: 25px;
+  }
+  .ap-assets{
+    margin-top: 40px;
+  }
+}
