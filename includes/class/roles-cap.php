@@ -301,7 +301,7 @@ function ap_user_can_edit_post( $post = null, $user_id = false ) {
 		return false;
 	}
 
-	if ( user_can( $user_id, 'ap_edit_others_' + $_post->post_type ) || is_super_admin( $user_id ) ) {
+	if ( user_can( $user_id, 'ap_edit_others_' . $_post->post_type ) || is_super_admin( $user_id ) ) {
 		return true;
 	}
 
