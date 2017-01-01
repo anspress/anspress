@@ -661,11 +661,10 @@ class AnsPress_Hooks {
 			do_action( 'ap_processed_new_' . $post->post_type, $post_id, $post );
 		}
 
-		//if ( 'question' === $post->post_type ) {
+		if ( 'question' === $post->post_type ) {
 			// Update qameta terms.
 			ap_update_qameta_terms( $post_id );
-			PC::debug('done term update');
-		//}
+		}
 	}
 
 	/**

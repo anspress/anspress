@@ -89,6 +89,131 @@ Read full FAQ here https://anspress.io/docs/?topic=faq
 
 == Changelog ==
 
+= 4.0.0 =
+
+* Fixed terms
+* Added about action link
+* Improve about
+* Removed unused images
+* Added about page
+* BuddyPress notification fixes
+* Improved buddyPress question and answer page template
+* Improved buddypress answer page
+* Improved answer link
+* Optimized reputation pre fetch
+* Improved reputation
+* Award reputation for comments
+* Added reputation addon
+* Fixed addon dir search
+* Improved email addon
+* Added email addons
+* Added tags extension as addon
+* Added category extension as an addon
+* Added bad words
+* Improved recaptcha
+* Unselect best answer when its get deleted
+* Removed broken widgets
+* Improved breadcrumbs
+* Delete votes when corresponding votes get deleted
+* Improved login/signup template
+* Improved addons
+* Improved addons and options
+* Added addons
+* Improved uninstaller
+* Added uninstall data tool
+* Show notice when option gets updated
+* Improved option form
+* Added author page
+* Renamed theme folder to templates
+* Improved search form and widget
+* Improved filter search
+* Improved list filter
+* Improved list style
+* Fixed warning in ask question submission
+* Check if user can read comment before fetching via ajax
+* Improved comment link
+* Before improving comments
+* Improved comment edit
+* Improved comments
+* Improved comment form
+* Improved comments listing
+* Fixed attachment display
+* Fixed permanent delete action
+* Improved delete and restore actions
+* Improved toggle featured action button
+* Improved actions and post staus view
+* Improved answer permalink
+* Improved edit answer page
+* Improved question edit page
+* Improved close action and select button
+* Improved select answer button and post actions
+* Delete temporary media using wp_cron
+* Finalizing uploader
+* Improved uploader
+* Improved ask form and vote bug
+* Organized assets
+* Remove plupload files after uploading files
+* Improved uploader
+* Improved Backbone collection and view
+* Replaced LESS with SCSS
+* Improved answer form
+* Improved answer form
+* Added snackbar
+* Adding backbone.js
+* Fixed errors in flag.php
+* Fixed votes.php errors
+* Removed ap_meta table and functions
+* Do not store views to ap_views table by default
+* Added views table
+* Fixed vote and clear flag button in wp-admin
+* Removed buddypress hooks
+* Added vue.js and answer list in question edit.
+* Improved post table
+* Improved admin
+* Improved option page
+* Removed user profile and mentions
+* Removed reputation and follow
+* Improved query by status
+* Removed subscription feature
+* Permission check in close question
+* Added close button
+* Moved status above question
+* Closed is not post_status anymore
+* Removed activity and notification
+* Remove activities page
+* Fixed error in admin
+* Removed activities
+* Improved question activities
+* Improved avatar for anonymous user
+* Improved avatar generation
+* Dynamically generate user avatar
+* Added misisng attach table in qameta
+* Fixed db error while creating ap_qameta table
+* Fixed activity in list
+* Releasing 4.0.0-alpha.1
+* Fix wpcs reporting
+* Fixed errors in qaquery
+* Pre cache users
+* Delete qameta row when post get deleted
+* Improved caching
+* Improved attachment cache
+* Pre fetch votes
+* Improved set featured question
+* Improved vote counts
+* improved voting
+* Improved terms query
+* reduced more queries
+* Improving query
+* Removed more post metas
+* Removed flags post meta
+* Replaced get_post to ap_get_post
+* Improved select answer
+* Replaced vote post meta
+* Improved query filter
+* Replaced deprecated functions
+* Removed many unused functions
+* Added qameta table
+
 = 3.0.7 =
 
 * Fixed: Inline link in tinyMCE.
