@@ -123,7 +123,7 @@ $credits = ap_sanitize_unslash( 'credits', 'r', false );
 			</li>
 			<li class="wp-person" id="wp-person-campdoug">
 				<a class="web" href="https://campdoug.com/"><img alt="" class="gravatar" src="//anspress.io/wp-content/themes/site/images/contributors/barry.jpg?x84924">Barry Sevig</a>
-				<span class="title">Lead Supporter &amp; Developer</span>
+				<span class="title">Supporter &amp; Developer</span>
 			</li>
 			<li class="wp-person" id="wp-person-ravi">
 				<a class="web" href="#"><img alt="" class="gravatar" src="//anspress.io/wp-content/themes/site/images/contributors/ravi_kumar.jpg">Ravi Kumar</a>

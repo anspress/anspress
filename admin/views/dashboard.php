@@ -23,8 +23,6 @@ class AnsPress_Dashboard {
 	public static function init() {
 		add_action( 'admin_footer', array( __CLASS__, 'admin_footer' ) );
 
-		add_meta_box( 'ap-mb-aboutauthor', '<i class="apicon-user"></i>' . __( 'About Author', 'anspress-question-answer' ), array( __CLASS__, 'anspress_aboutauthor' ), 'anspress', 'column1', 'core' );
-
 		add_meta_box( 'ap-mb-attn', '<i class="apicon-alert"></i>' . __( 'Require Attention', 'anspress-question-answer' ), array( __CLASS__, 'anspress_attn' ), 'anspress', 'column1', 'core' );
 
 		add_meta_box( 'anspress_feed', 'AnsPress Feed', array( __CLASS__, 'anspress_feed' ), 'anspress', 'column1', 'core' );
@@ -53,36 +51,6 @@ class AnsPress_Dashboard {
 	        });
 	        //]]>
 	    </script>
-		<?php
-	}
-
-	/**
-	 * About me ("Rahul Aryan").
-	 */
-	public static function anspress_aboutauthor() {
-		?>
-			<div class="main about-author clearfix">
-				<img src="https://www.gravatar.com/avatar/0c8cfd3bc56d97fe6bebc035fe9b8c80.jpg?s=50&r=g" />
-				<div class="no-overflow">
-					<a class="name" href="https://anspress.io/hire/">Rahul Aryan</a>
-					<p>Passionate WordPress developer. With over 7+ years’ experience, able to develop interactive plugins and themes. Also possess great familiarity of WP-Cli, APIs and JSON.</p>
-					<strong>Skills and Experiences</strong>
-					<div class="skills">
-						<span>WordPress</span>
-						<span>Plugin Dev</span>
-						<span>Theme Dev</span>
-						<span>Node.js</span>
-						<span>jQuery</span>
-						<span>Angular.js</span>
-						<span>RESTful</span>
-						<span>WP-Cli</span>
-						<span>RESTful</span>
-						<span>LEMP Stack</span>
-						<span>AWS</span>
-					</div>
-					<a href="mailto:rah12@live.com" class="button button-primary">Hire Me (Full time or for a project)</a>
-				</div>
-			</div>
 		<?php
 	}
 
