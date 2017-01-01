@@ -637,7 +637,8 @@ function ap_post_have_terms( $post_id = false, $taxonomy = 'question_category' )
 		$post_id = get_the_ID();
 	}
 
-	$terms = get_the_terms( $post_id, 'question_category' );
+	$terms = get_the_terms( $post_id, $taxonomy );
+
 	if ( ! empty( $terms ) ) {
 		return true;
 	}

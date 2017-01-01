@@ -33,7 +33,7 @@ $credits = ap_sanitize_unslash( 'credits', 'r', false );
 				<img src="<?php echo ANSPRESS_URL; ?>/assets/images/laptop.svg" />
 				<div class="no-overflow">
 					<h3 class="headline-title">Performance and optimizations</h3>
-					<p class="introduction">Huge performance improvements on sites. Optimised MySql quries, caching and prefetching.</p>
+					<p class="introduction">Huge improvements to performance. Optimized MySql queries, caching and prefetching.</p>
 				</div>
 			</div>
 		</div>
@@ -42,7 +42,7 @@ $credits = ap_sanitize_unslash( 'credits', 'r', false );
 			<div class="ap-feature">
 				<div class="no-overflow">
 					<img src="<?php echo ANSPRESS_URL; ?>/assets/images/plug.svg" />
-					<h4 class="feature-title">Mered all extensions</h4>
+					<h4 class="feature-title">Merged all extensions</h4>
 					<p>All AnsPress extensions are merged to core for improving performance and update.</p>
 				</div>
 			</div>
@@ -51,7 +51,7 @@ $credits = ap_sanitize_unslash( 'credits', 'r', false );
 				<div class="no-overflow">
 					<img src="<?php echo ANSPRESS_URL; ?>/assets/images/line-chart.svg" />
 					<h4 class="feature-title">Lightning Fast</h4>
-					<p>We have done many improvents to redue MySql quries and to speed up page load.</p>
+					<p>We have made many improvements to reduce MySQL queries and to increase speed of page load.</p>
 				</div>
 			</div>
 
@@ -122,7 +122,7 @@ $credits = ap_sanitize_unslash( 'credits', 'r', false );
 				<span class="title">Lead Developer</span>
 			</li>
 			<li class="wp-person" id="wp-person-campdoug">
-				<a class="web" href="https://campdoug.com/"><img alt="" class="gravatar" src="//anspress.io/wp-content/themes/site/images/contributors/barry.jpg?x84924">Barry Sevig</a>
+				<a class="web" href="https://campdoug.com/"><img alt="" class="gravatar" src="//anspress.io/wp-content/themes/site/images/contributors/barry.jpg">Barry Sevig</a>
 				<span class="title">Supporter &amp; Developer</span>
 			</li>
 			<li class="wp-person" id="wp-person-ravi">

@@ -129,9 +129,6 @@ class AnsPress_Hooks {
 		 * @since 0.9
 		 */
 		do_action( 'ap_after_new_question', $post_id, $post );
-
-		// Update qameta terms.
-		ap_update_qameta_terms( $post_id );
 	}
 
 	/**
@@ -653,11 +650,6 @@ class AnsPress_Hooks {
 			 */
 			do_action( 'ap_processed_update_' . $post->post_type, $post_id, $post );
 
-			if ( 'question' === $post->post_type ) {
-				// Update qameta terms.
-				ap_update_qameta_terms( $post_id );
-			}
-
 		} else {
 			/**
 			 * Action triggered right after inserting new question/answer.
@@ -668,6 +660,12 @@ class AnsPress_Hooks {
 			 */
 			do_action( 'ap_processed_new_' . $post->post_type, $post_id, $post );
 		}
+
+		//if ( 'question' === $post->post_type ) {
+			// Update qameta terms.
+			ap_update_qameta_terms( $post_id );
+			PC::debug('done term update');
+		//}
 	}
 
 	/**

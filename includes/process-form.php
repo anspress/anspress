@@ -11,8 +11,7 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-class AnsPress_Process_Form
-{
+class AnsPress_Process_Form {
 	private $fields;
 
 	private $result;
@@ -50,7 +49,8 @@ class AnsPress_Process_Form
 	}
 
 	/**
-	 * Handle all anspress ajax requests
+	 * Handle all anspress ajax requests.
+	 *
 	 * @return void
 	 * @since 2.0.1
 	 */
