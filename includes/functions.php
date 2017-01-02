@@ -1674,14 +1674,14 @@ function ap_trigger_qa_update_hook( $_post, $event ) {
 /**
  * Find item in in child array.
  *
- * @param mixed $needle Needle to find.
- * @param mixed $haystack Haystack.
- * @param boolean $strict Strict match.
+ * @param  mixed   $needle Needle to find.
+ * @param  mixed   $haystack Haystack.
+ * @param  boolean $strict Strict match.
  * @return boolean
  */
 function ap_in_array_r( $needle, $haystack, $strict = false ) {
 	foreach ( $haystack as $item ) {
-		if ( ($strict ? $item === $needle : $item == $needle) || (is_array( $item ) && in_array_r( $needle, $item, $strict )) ) {
+		if ( ( $strict ? $item === $needle : $item == $needle ) || (is_array( $item ) && in_array_r( $needle, $item, $strict )) ) {
 			return true;
 		}
 	}

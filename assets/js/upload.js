@@ -7,7 +7,7 @@ var uploadsModel;
       fileName: '',
       type: '',
       fileSize: '',
-      uploaded: false,
+      uploaded: true,
       failed: false,
       url: '',
       nonce: ''
@@ -32,13 +32,15 @@ var uploadsModel;
       this.model.on('change:id', this.idChanged, this);
       this.model.on('change', this.render, this);
       this.model.on('remove', this.removedUpload, this);
+      this.listenTo( AnsPress, 'apUploadProgress', this.progress)
     },
     events:{
       'click .insert-to-post': 'insertImage'
     },
     render: function(){
       var t = $(this.template + '<input name="ap-medias[]" value="'+this.model.get('id')+'" type="hidden">');
-      this.$el.addClass('done');
+      if(this.model.get('uploaded'))
+        this.$el.addClass('done');
       if(this.model.get('isImage'))
         this.$el.addClass('is-image');
       t.filter('.ap-upload-name').text(this.model.get('fileName') + ' (' + this.model.get('fileSize') + ')');
@@ -80,6 +82,10 @@ var uploadsModel;
       if(this.model.get('isImage')){
         addImageToEditor(this.model.get('url'), this.model.get('id'));
       }
+    },
+    progress: function(data){
+      if(this.model.get('id') === data.id)
+        this.$el.find('.ap-progress').css('width', data.per+'%')
     }
   });
 
@@ -151,7 +157,8 @@ var uploadsModel;
           type: file.type,
           fileSize: plupload.formatSize(file.size),
           url: '',
-          nonce: ''
+          nonce: '',
+          uploaded: false
         });
 
         AnsPress.uploader.start();
@@ -159,13 +166,13 @@ var uploadsModel;
 
     },
     UploadProgress: function(up, file) {
-      $('#'+file.id+' .ap-progress').css('width', file.percent+'%');
+      AnsPress.trigger('apUploadProgress', {id: file.id, per: file.percent});
     },
     FileUploaded: function(up, file, info) {
       var prevId = file.id;
       var data = AnsPress.ajaxResponse(info.response);
       if(data.success){
-        uploadsModel.get(prevId).set({'id': data.attachment_id, 'nonce': data.delete_nonce, done: data.success, isImage: data.is_image, url: data.attachment_url });
+        uploadsModel.get(prevId).set({'id': data.attachment_id, 'nonce': data.delete_nonce, done: data.success, isImage: data.is_image, url: data.attachment_url, uploaded: true });
 
         if(data.is_image){
           addImageToEditor(data.attachment_url, data.attachment_id);
