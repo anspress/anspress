@@ -27,7 +27,7 @@ class AnsPress_Views {
 	 */
 	public static function init() {
 		anspress()->add_action( 'shutdown', __CLASS__, 'insert_views' );
-		anspress()->add_action( 'ap_before_delete_question', __CLASS__, 'delete_votes' );
+		anspress()->add_action( 'ap_before_delete_question', 'AnsPress_Vote', 'delete_votes' );
 	}
 
 	/**
