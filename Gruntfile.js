@@ -100,8 +100,9 @@
 						'assets/js/min/upload.min.js': ['assets/js/upload.js'],
 						'assets/js/min/ap-admin.min.js': ['assets/js/ap-admin.js'],
 						'assets/js/min/ask.min.js': ['assets/js/ask.js'],
+						'assets/js/min/list.min.js': ['assets/js/list.js'],
+						'assets/js/min/tags.min.js': ['assets/js/tags.js'],
 						'templates/js/min/theme.min.js': ['templates/js/theme.js'],
-						'templates/js/min/tags.min.js': ['templates/js/tags.js']
 					}
 				}
 			},
