@@ -12,7 +12,6 @@
 	<div class="ap-content ap-login">
 		<div class="ap-cell">
 			<div class="ap-cell-inner">
-				<strong class="ap-login-label"><?php esc_attr_e( 'Please login or register.', 'anspress-question-answer' ); ?></strong>
 				<?php do_action( 'wordpress_social_login' ); ?>
 				<div class="ap-login-buttons">
 					<a href="<?php echo esc_url( wp_registration_url() ); ?>" class="ap-btn"><?php esc_attr_e( 'Register', 'anspress-question-answer' ); ?></a>

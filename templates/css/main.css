@@ -475,15 +475,11 @@ body ul ul#ap-user-menu-link li > a .count {
   display: none !important;
 }
 
+.ap-login {
+  margin-top: 20px;
+}
 .ap-login .ap-cell-inner {
   padding: 15px;
-}
-.ap-login-label {
-  display: block;
-  border-bottom: solid 1px rgba(0, 0, 0, 0.1);
-  margin: -15px -15px 20px;
-  padding: 10px;
-  background: #fafafa;
 }
 .ap-login-buttons {
   margin: 0 auto;
