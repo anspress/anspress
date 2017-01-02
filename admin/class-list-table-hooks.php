@@ -35,7 +35,7 @@ class AnsPress_Post_Table_Hooks {
 		anspress()->add_filter( 'manage_edit-answer_sortable_columns', __CLASS__, 'admin_column_sort_flag' );
 		anspress()->add_action( 'edit_form_after_title', __CLASS__, 'edit_form_after_title' );
 		anspress()->add_filter( 'manage_edit-comments_columns', __CLASS__, 'comment_flag_column' );
-		anspress()->add_filter( 'manage_comments_custom_column', __CLASS__, 'comment_flag_column_data', 10, 2 );
+		//anspress()->add_filter( 'manage_comments_custom_column', __CLASS__, 'comment_flag_column_data', 10, 2 );
 		anspress()->add_filter( 'comment_status_links', __CLASS__, 'comment_flag_view' );
 		anspress()->add_action( 'current_screen', __CLASS__, 'comments_flag_query', 10, 2 );
 		anspress()->add_filter( 'post_updated_messages', __CLASS__, 'post_custom_message' );
