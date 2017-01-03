@@ -494,9 +494,9 @@ function ap_answers_tab( $base = false ) {
 	$navs['newest'] = array( 'link' => add_query_arg( [ 'order_by' => 'newest' ], $base ), 'title' => __( 'Newest', 'anspress-question-answer' ) );
 	$navs['oldest'] = array( 'link' => add_query_arg( [ 'order_by' => 'oldest' ], $base ), 'title' => __( 'Oldest', 'anspress-question-answer' ) );
 
-	echo '<ul class="ap-answers-tab ap-ul-inline clearfix">';
+	echo '<ul id="answers-order" class="ap-answers-tab ap-ul-inline clearfix">';
 	foreach ( (array) $navs as $k => $nav ) {
-		echo '<li' . ( $sort === $k ? ' class="active"' : '') . '><a href="' . esc_attr( $nav['link'] ) . '">' . esc_attr( $nav['title'] ) . '</a></li>';
+		echo '<li' . ( $sort === $k ? ' class="active"' : '') . '><a href="' . esc_url( $nav['link'] .'#answers-order' ) . '">' . esc_attr( $nav['title'] ) . '</a></li>';
 	}
 	echo '</ul>';
 }
