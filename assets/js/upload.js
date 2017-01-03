@@ -31,11 +31,12 @@ var uploadsModel;
       this.model.on('change:failed', this.uploadFailed, this);
       this.model.on('change:id', this.idChanged, this);
       this.model.on('change', this.render, this);
-      this.model.on('remove', this.removedUpload, this);
       this.listenTo( AnsPress, 'apUploadProgress', this.progress)
+      this.listenTo( this.model, 'remove', this.removeEl)
     },
     events:{
-      'click .insert-to-post': 'insertImage'
+      'click .insert-to-post': 'insertImage',
+      'click .apicon-trashcan': 'removedUpload',
     },
     render: function(){
       var t = $(this.template + '<input name="ap-medias[]" value="'+this.model.get('id')+'" type="hidden">');
@@ -54,23 +55,25 @@ var uploadsModel;
       this.$el.attr('id', this.model.get('id'));
       this.$el.find('input').val(this.model.get('id'));
     },
-    removedUpload: function(upload){
+    removedUpload: function(e){
+      e.preventDefault();
+      var self = this;
       AnsPress.ajax({
         data: {
           ap_ajax_action: 'delete_attachment',
-          attachment_id: upload.get('id'),
-          __nonce: upload.get('nonce'),
+          attachment_id: self.model.get('id'),
+          __nonce: self.model.get('nonce'),
         },
         success: function(data){
           if(data.success){
-            $('#'+upload.get('id')).remove();
+            $('#'+self.model.get('id')).remove();
 
             setTimeout(function(){
-              AnsPress.uploader.removeFile(upload.get('id'));
+              AnsPress.uploader.removeFile(self.model.get('id'));
             }, 400);
 
             if(typeof tinyMCE !== 'undefined'){
-              tinyMCE.activeEditor.dom.remove(''+upload.get('id'));
+              tinyMCE.activeEditor.dom.remove(''+self.model.get('id'));
               tinyMCE.activeEditor.execCommand('mceInsertContent',false,'');
             }
           }
@@ -86,6 +89,10 @@ var uploadsModel;
     progress: function(data){
       if(this.model.get('id') === data.id)
         this.$el.find('.ap-progress').css('width', data.per+'%')
+    },
+    removeEl: function(){
+      console.log('remove');
+      this.$el.remove();
     }
   });
 
@@ -94,10 +101,7 @@ var uploadsModel;
     initialize: function(options){
       this.model = options.model;
       this.model.on('add', this.adddedUplaod, this);
-      this.model.on('remove', this.removedUpload, this);
-    },
-    events: {
-      'click .apicon-trashcan': 'removeFile',
+      this.listenTo(AnsPress, 'uploadsRemoved', this.removeAll)
     },
     renderItem: function(upload){
       var view = new AnsPress.views.Upload({ model: upload });
@@ -115,10 +119,14 @@ var uploadsModel;
     adddedUplaod: function(upload){
       this.renderItem(upload);
     },
-    removeFile: function(e){
-      e.preventDefault();
-      this.model.remove($(e.target).parent().attr('id'));
-    },
+    removeAll: function(){
+      var self = this;
+      if(this.model){
+        this.model.each(function(upload, i){
+          self.model.remove(upload);
+        });
+      }
+    }
   });
 
   var addImageToEditor = function(url, id){
@@ -189,6 +197,9 @@ var uploadsModel;
       if(args.code === -600){
         AnsPress.trigger('snackbar', { success: false, snackbar : { message: aplang.file_size_error }});
       }
+    },
+    FilesRemoved: function(){
+      AnsPress.trigger('uploadsRemoved');
     }
   };
 

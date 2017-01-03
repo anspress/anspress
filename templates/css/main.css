@@ -1708,7 +1708,10 @@ post-message {
 }
 .ap-upload-item .apicon-trashcan {
   float: right;
-  color: #fff;
+  color: #333;
+  border: solid 1px #ffc3bf;
+  padding: 0px 8px;
+  border-radius: 2px;
 }
 .ap-upload-item .insert-to-post {
   display: none;

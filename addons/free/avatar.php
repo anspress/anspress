@@ -32,6 +32,7 @@ if ( ! defined( 'WPINC' ) ) {
 
 /**
  * AnsPress avatar hook class.
+ * @group addons
  */
 class AnsPress_Avatar_Hook {
 
