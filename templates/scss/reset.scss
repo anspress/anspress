@@ -276,43 +276,6 @@ ul{
 		position: relative;
 	}
 }
-body ul li:hover ul#ap-user-menu-link{
-	display: none;
-}
-body ul li.open ul#ap-user-menu-link{
-	display: block;
-}
-body ul ul#ap-user-menu-link{
-	list-style: none;
-	border: solid 1px #ddd;
-	padding: 0;
-	margin: 0;
-	li{
-		padding: 0;
-		margin: 0;
-		> a{
-		    background: none repeat scroll 0 0 #fff;
-		    display: block;
-		    min-width: 160px;
-		    padding: 11px 15px;
-			color:$default-color;
-			&:before{
-				margin-right: 10px;
-			}
-			&:hover{
-				background: #fcfcfc;
-			}
-			.count {
-			    background: none repeat scroll 0 0 #ff3737;
-			    border-radius: 2px;
-			    color: #fff;
-			    font-size: 10px;
-			    margin-left: 5px;
-			    padding: 1px 2px;
-			}
-		}
-	}
-}
 .ap-loading-dot {
   display: inline-block;
   font-size: 18px;

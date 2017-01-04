@@ -393,46 +393,6 @@ ul li.anspress-page-link {
   position: relative;
 }
 
-body ul li:hover ul#ap-user-menu-link {
-  display: none;
-}
-
-body ul li.open ul#ap-user-menu-link {
-  display: block;
-}
-
-body ul ul#ap-user-menu-link {
-  list-style: none;
-  border: solid 1px #ddd;
-  padding: 0;
-  margin: 0;
-}
-body ul ul#ap-user-menu-link li {
-  padding: 0;
-  margin: 0;
-}
-body ul ul#ap-user-menu-link li > a {
-  background: none repeat scroll 0 0 #fff;
-  display: block;
-  min-width: 160px;
-  padding: 11px 15px;
-  color: #333;
-}
-body ul ul#ap-user-menu-link li > a:before {
-  margin-right: 10px;
-}
-body ul ul#ap-user-menu-link li > a:hover {
-  background: #fcfcfc;
-}
-body ul ul#ap-user-menu-link li > a .count {
-  background: none repeat scroll 0 0 #ff3737;
-  border-radius: 2px;
-  color: #fff;
-  font-size: 10px;
-  margin-left: 5px;
-  padding: 1px 2px;
-}
-
 .ap-loading-dot {
   display: inline-block;
   font-size: 18px;
@@ -1869,6 +1829,49 @@ post-message {
   border-radius: 3px 3px 0 0;
   border-width: 2px;
   border-color: rgba(0, 0, 0, 0.1);
+}
+
+#anspress .ap-author-bio {
+  margin-bottom: 15px;
+  border-top: solid 1px #ddd;
+  padding: 20px 0;
+}
+#anspress .ap-author-avatar {
+  margin-right: 20px;
+}
+#anspress .ap-author-name {
+  font-size: 22px;
+  font-weight: 600;
+}
+#anspress .ap-author-name .ap-user-reputation {
+  font-size: 13px;
+  padding: 3px 7px;
+  margin-left: 10px;
+  vertical-align: middle;
+}
+#anspress .ap-author .ap-tab-nav {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-bottom: solid 1px #ddd;
+  padding-left: 10px;
+  margin-bottom: 20px;
+}
+#anspress .ap-author .ap-tab-nav > li {
+  float: left;
+  margin-right: 10px;
+}
+#anspress .ap-author .ap-tab-nav > li > a {
+  display: block;
+  background: none;
+  border: none;
+  margin-bottom: -1px;
+  padding: 7px 15px;
+}
+#anspress .ap-author .ap-tab-nav > li.active a {
+  border-style: solid;
+  border-width: 1px 1px 1px 1px;
+  border-color: #ddd #ddd #fff #ddd;
 }
 
 .ap-user-reputation {
