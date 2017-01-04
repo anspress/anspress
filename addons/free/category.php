@@ -650,8 +650,9 @@ class AnsPress_Category {
 		$image_url = ap_isset_post_value( 'ap_category_image_url', false );
 		$image_id = ap_isset_post_value( 'ap_category_image_id', false );
 		$icon = ap_isset_post_value( 'ap_icon', false );
+		$color = ap_isset_post_value( 'ap_color', false );
 
-		if ( ( $image_url && $image_id ) || $icon ) {
+		if ( ( $image_url && $image_id ) || $icon || $color ) {
 			// Get options from database - if not a array create a new one.
 			$term_meta = get_option( 'ap_cat_' . $term_id );
 
@@ -670,12 +671,12 @@ class AnsPress_Category {
 				$term_meta['ap_image']['id'] = $image_id ? (int) $image_id : '';
 			}
 
-			if ( $image_id ) {
-				$term_meta['ap_icon'] = sanitize_text_field( $image_id );
+			if ( $icon ) {
+				$term_meta['ap_icon'] = sanitize_text_field( $icon );
 			}
 
-			if ( $image_id ) {
-				$term_meta['ap_color'] = sanitize_text_field( $image_id );
+			if ( $color ) {
+				$term_meta['ap_color'] = sanitize_text_field( $color );
 			}
 
 			update_option( 'ap_cat_' . $term_id, $term_meta );
