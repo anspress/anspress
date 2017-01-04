@@ -37,7 +37,7 @@ if ( ap_isset_post_value( '__nonce' ) && ap_verify_nonce( 'nonce_option_form' ) 
 						continue;
 					}
 
-					if ( 'textarea' === $f['type'] ) {
+					if ( isset( $f['type'] ) && 'textarea' === $f['type'] ) {
 						$value = esc_textarea( wp_unslash( ap_isset_post_value( $f['name'], '' ) ) );
 					} else {
 						$value = ap_sanitize_unslash( $f['name'], 'request' );
@@ -70,6 +70,7 @@ if ( ap_isset_post_value( '__nonce' ) && ap_verify_nonce( 'nonce_option_form' ) 
 	}
 
 	flush_rewrite_rules();
+	wp_safe_redirect( admin_url( 'admin.php?page=anspress_options' ) );
 }
 ?>
 
@@ -118,6 +119,9 @@ if ( ap_isset_post_value( '__nonce' ) && ap_verify_nonce( 'nonce_option_form' ) 
 	jQuery(document).ready(function($){
 		$('.postbox > h3').click(function(){
 			$(this).closest('.postbox').toggleClass('closed');
+		});
+		$('#question_page_slug').on('keyup', function(){
+			$('.ap-base-slug').text($(this).val());
 		})
 	});
 </script>

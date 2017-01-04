@@ -72,10 +72,21 @@ class AnsPress_Rewrite
 
 		$slug = ap_base_page_slug() . '/';
 
+		$question_permalink = ap_opt( 'question_page_permalink' );
 		$question_slug = ap_opt( 'question_page_slug' );
 
-		if ( empty( $question_slug ) ) {
-			$question_slug = 'question';
+		if ( 'question_perma_2' === $question_permalink ) {
+			$question_placeholder = $question_slug . '/([^/]+)';
+			$question_perma = '&question_name=' . $wp_rewrite->preg_index( 1 );
+		} elseif ( 'question_perma_3' === $question_permalink ) {
+			$question_placeholder = $question_slug . '/([^/]+)';
+			$question_perma = '&question_id=' . $wp_rewrite->preg_index( 1 );
+		} elseif ( 'question_perma_4' === $question_permalink ) {
+			$question_placeholder = $question_slug . '/([^/]+)/([^/]+)';
+			$question_perma = '&question_id=' . $wp_rewrite->preg_index( 1 ) . '&question_name=' . $wp_rewrite->preg_index( 2 );
+		} else {
+			$question_placeholder = ap_base_page_slug() . '/' .$question_slug . '/([^/]+)';
+			$question_perma = '&question_name=' . $wp_rewrite->preg_index( 1 );
 		}
 
 		$new_rules = array(
@@ -87,9 +98,9 @@ class AnsPress_Rewrite
 		);
 
 
-		$new_rules[ $question_slug . '/([^/]+)/([^/]+)/?$' ] = 'index.php?page_id=' . $base_page_id . '&question_name=' . $wp_rewrite->preg_index( 1 ) . '&answer_id=' . $wp_rewrite->preg_index( 2 );
+		$new_rules[ $question_placeholder . '/([^/]+)/?$' ] = 'index.php?page_id=' . $base_page_id . '&ap_page=question' . $question_perma . '&answer_id=' . $wp_rewrite->preg_index( 2 );
 
-		$new_rules[ $question_slug . '/([^/]+)/?$' ]  = 'index.php?page_id=' . $base_page_id . '&question_name=' . $wp_rewrite->preg_index( 1 );
+		$new_rules[ $question_placeholder . '/?$' ]  = 'index.php?page_id=' . $base_page_id . '&ap_page=question' . $question_perma;
 
 		$new_rules[ $slug . 'search/([^/]+)/?' ] = 'index.php?page_id=' . $base_page_id . '&ap_page=search&ap_s=' . $wp_rewrite->preg_index( 1 );
 
@@ -99,7 +110,7 @@ class AnsPress_Rewrite
 
 		$new_rules[ $slug . '([^/]+)/?' ] = 'index.php?page_id=' . $base_page_id . '&ap_page=' . $wp_rewrite->preg_index( 1 );
 
-		$ap_rules = apply_filters( 'ap_rewrite_rules', $new_rules, $slug, $base_page_id );
+		$ap_rules = apply_filters( 'ap_rewrite_rulesx', $new_rules, $slug, $base_page_id );
 
 		return $wp_rewrite->rules = $ap_rules + $wp_rewrite->rules;
 	}

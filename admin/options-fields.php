@@ -17,12 +17,36 @@ ap_register_option_group( 'access', __( 'Access', 'anspress-question-answer' ) )
 ap_register_option_group( 'tools', __( 'Tools', 'anspress-question-answer' ) );
 
 // Register general section of general group.
-ap_register_option_section( 'general', 'general', __( 'General', 'anspress-question-answer' ), [
+ap_register_option_section( 'general', 'general', __( 'Pages and permalinks', 'anspress-question-answer' ), [
 		array(
 			'name'  => 'base_page',
-			'label' => __( 'Base page', 'anspress-question-answer' ),
+			'label' => __( 'Questions page', 'anspress-question-answer' ),
 			'desc'  => __( 'Select page for displaying anspress.', 'anspress-question-answer' ),
 			'type'  => 'page_select',
+		),
+		array(
+			'name'  => 'ask_page_slug',
+			'label' => __( 'Ask question page slug', 'anspress-question-answer' ),
+			'desc'  => __( 'Set a slug for ask question page.', 'anspress-question-answer' ),
+			'type' => 'text',
+		),
+		array(
+			'name'  => 'question_page_slug',
+			'label' => __( 'Question slug', 'anspress-question-answer' ),
+			'desc'  => __( 'Slug for single question page.', 'anspress-question-answer' ),
+			'type' => 'text',
+		),
+		array(
+			'name'  => 'question_page_permalink',
+			'label' => __( 'Question permalink', 'anspress-question-answer' ),
+			'desc'  => __( 'Select single question permalink structure.', 'anspress-question-answer' ),
+			'type'  => 'radio',
+			'options' => [
+				'question_perma_1' => home_url( '/' . ap_base_page_slug() ) . '/<b class="ap-base-slug">' . ap_opt( 'question_page_slug' ). '</b><b>/question-name/</b>',
+				'question_perma_2' => home_url( '/' ) . '<b class="ap-base-slug">' . ap_opt( 'question_page_slug' ). '</b><b>/question-name/</b>',
+				'question_perma_3' => home_url( '/' ) . '<b class="ap-base-slug">' . ap_opt( 'question_page_slug' ). '</b><b>/213/</b>',
+				'question_perma_4' => home_url( '/' ) . '<b class="ap-base-slug">' . ap_opt( 'question_page_slug' ). '</b><b>/213/question-name/</b>',
+			],
 		),
 		array(
 			'name'  => 'author_credits',
@@ -125,22 +149,6 @@ ap_register_option_section( 'general', 'layout', __( 'Layout', 'anspress-questio
 			'type'  => 'number',
 		)
 	] );
-
-// Permalinks section.
-ap_register_option_section( 'general', 'permalinks', __( 'Permalinks', 'anspress-question-answer' ), [
-	array(
-		'name'  => 'ask_page_slug',
-		'label' => __( 'Ask page slug', 'anspress-question-answer' ),
-		'desc'  => __( 'Enter slug for ask page.', 'anspress-question-answer' ),
-		'order' => 5,
-	),
-	array(
-		'name'  => 'question_page_slug',
-		'label' => __( 'Question page slug', 'anspress-question-answer' ),
-		'desc'  => __( 'Enter slug for question page.', 'anspress-question-answer' ),
-		'order' => 5,
-	),
-]);
 
 // Register question and answers section.
 ap_register_option_section( 'general', 'qa', __( 'Question & Answer', 'anspress-question-answer' ), [

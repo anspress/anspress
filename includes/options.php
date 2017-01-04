@@ -129,6 +129,7 @@ function ap_default_options() {
 		'uploads_per_post' 							=> 4,
 		'ask_page_slug' 								=> 'ask',
 		'question_page_slug' 						=> 'question',
+		'question_page_permalink' 			=> 'question_perma_1',
 		'max_upload_size' 							=> 500000,
 		'disable_down_vote_on_question' => false,
 		'disable_down_vote_on_answer' 	=> false,

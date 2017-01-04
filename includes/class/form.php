@@ -376,6 +376,36 @@ class AnsPress_Form {
 	}
 
 	/**
+	 * Radio field.
+	 *
+	 * @param  array $field Field.
+	 * @since 2.0.1
+	 */
+	private function radio_field( $field = [] ) {
+		if ( isset( $field['label'] ) ) {
+			$this->label();
+		}
+
+		$this->output .= '<div class="ap-form-fields-in">';
+
+		foreach ( (array) $field['options'] as $opt_value => $opt_label ) {
+
+			$this->output .= '<label>';
+			$this->output .= '<input id="' . $field['name'] . '" type="radio" class="ap-form-control" value="' . esc_attr( $opt_value ) . '" name="' . $field['name'] . '" ' . checked( $opt_value, $field['value'], false ) . ' ' . $this->attr( $field ) . ' />';
+
+			$this->output .= $opt_label;
+			$this->output .=  '</label>';
+		}
+
+		if ( ! $this->field['show_desc_tip'] ) {
+			$this->desc();
+		}
+
+		$this->error_messages();
+		$this->output .= '</div>';
+	}
+
+	/**
 	 * Output select field options.
 	 *
 	 * @param  array $field Field.
@@ -616,6 +646,12 @@ class AnsPress_Form {
 					case 'checkbox':
 						$this->output .= '<div class="ap-field-'.@$field['name'].' ap-form-fields'.$error_class.'">';
 						$this->checkbox_field( $field );
+						$this->output .= '</div>';
+						break;
+
+					case 'radio':
+						$this->output .= '<div class="ap-field-'.@$field['name'] .' ap-form-fields' . $error_class .'">';
+						$this->radio_field( $field );
 						$this->output .= '</div>';
 						break;
 

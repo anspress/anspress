@@ -176,13 +176,22 @@ class AnsPress_PostTypes {
 	 */
 	public static function post_type_link( $link, $post ) {
 		if ( 'question' === $post->post_type ) {
-			$question_slug = ap_opt( 'question_page_slug' );
+			$question_slug = ap_opt( 'question_page_permalink' );
 
 			if ( empty( $question_slug ) ) {
-				$question_slug = 'question'; }
+				$question_slug = 'question_perma_1';
+			}
 
 			if ( get_option( 'permalink_structure' ) ) {
-				$link = home_url( '/' . $question_slug . '/' . $post->post_name . '/' );
+				if ( 'question_perma_1' === $question_slug ) {
+					$link = home_url( ap_base_page_slug() .'/' . ap_opt( 'question_page_slug' ) . '/' . $post->post_name . '/' );
+				} elseif ( 'question_perma_2' === $question_slug ) {
+					$link = home_url( '/' . ap_opt( 'question_page_slug' ) . '/' . $post->post_name . '/' );
+				} elseif ( 'question_perma_3' === $question_slug ) {
+					$link = home_url( '/' . ap_opt( 'question_page_slug' ) . '/' . $post->ID . '/' );
+				} elseif ( 'question_perma_4' === $question_slug ) {
+					$link = home_url( '/' . ap_opt( 'question_page_slug' ) . '/' . $post->ID . '/' . $post->post_name . '/' );
+				}
 			} else {
 				$link = add_query_arg( array( 'apq' => false, 'question_id' => $post->ID ), ap_base_page_link() );
 			}
