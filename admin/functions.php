@@ -121,6 +121,12 @@ function ap_option_group_fields() {
 
 		if ( is_array( $fields ) ) {
 			$fields[] = array(
+				'name' => 'action',
+				'type' => 'hidden',
+				'value' => 'anspress_options',
+			);
+
+			$fields[] = array(
 				'name' => 'fields_group',
 				'type' => 'hidden',
 				'value' => $active,
@@ -138,6 +144,8 @@ function ap_option_group_fields() {
 				'submit_button'     => __( 'Save options', 'anspress-question-answer' ),
 				'nonce_name'        => 'nonce_option_form',
 				'fields'            => $fields,
+				'action'            => admin_url( 'admin-post.php' ),
+
 			);
 
 			$form = new AnsPress_Form( $args );
