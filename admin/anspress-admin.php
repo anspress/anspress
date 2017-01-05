@@ -73,6 +73,8 @@ class AnsPress_Admin {
 		anspress()->add_action( 'admin_action_ap_update_helper', __CLASS__, 'update_helper' );
 		anspress()->add_action( 'admin_footer-post.php', __CLASS__, 'append_post_status_list' );
 		anspress()->add_action( 'admin_post_anspress_options', __CLASS__, 'process_option_form' );
+		anspress()->add_action( 'admin_post_anspress_update_db', __CLASS__, 'update_db' );
+		anspress()->add_action( 'admin_notices', __CLASS__, 'anspress_notice' );
 	}
 
 	/**
@@ -680,5 +682,39 @@ class AnsPress_Admin {
 		}
 
 		wp_safe_redirect( admin_url( 'admin.php?page=anspress_options' . $updated ) );
+	}
+
+	/**
+	 * Show AnsPress notices.
+	 */
+	public static function anspress_notice() {
+		$messages = array(
+			'db' => [
+				'type'    => 'error',
+				'message' => __( 'AnsPress database is not updated.', 'anspress-question-answer' ),
+				'button'  => ' <a class="button" href="' . admin_url( 'admin-post.php?action=anspress_update_db' ) . '">' . __( 'Update now', 'anspress-question-answer' ) . '</a>',
+				'show'    => ( get_option( 'anspress_db_version' ) != AP_DB_VERSION )
+			],
+		);
+
+		foreach ( $messages as $msg ) {
+			if ( $msg['show'] ) {
+				$class = 'notice notice-' . $msg['type'];
+				printf( '<div class="%1$s"><p>%2$s%3$s</p></div>', esc_attr( $class ), esc_html( $msg['message'] ), $msg['button'] );
+			}
+		}
+	}
+
+	/**
+	 * Updates AnsPress DB tables.
+	 */
+	public static function update_db() {
+		if ( current_user_can( 'manage_options' ) ) {
+			$activate = AP_Activate::get_instance();
+			$activate->insert_tables();
+			update_option( 'anspress_db_version', AP_DB_VERSION );
+		}
+
+		wp_safe_redirect( admin_url( 'admin.php?page=anspress_options' ) );
 	}
 }

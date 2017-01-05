@@ -30,6 +30,9 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
+// Define databse version.
+define( 'AP_DB_VERSION', 26 );
+
 // Check if using required PHP version.
 if ( version_compare( PHP_VERSION, '5.5' ) < 0 ) {
 
@@ -242,7 +245,6 @@ if ( ! class_exists( 'AnsPress' ) ) {
 			$constants = array(
 				'DS' 										=> DIRECTORY_SEPARATOR,
 				'AP_VERSION' 						=> $this->_plugin_version,
-				'AP_DB_VERSION' 				=> 25,
 				'ANSPRESS_DIR' 					=> plugin_dir_path( __FILE__ ),
 				'ANSPRESS_URL' 					=> plugin_dir_url( __FILE__ ),
 				'ANSPRESS_WIDGET_DIR' 	=> plugin_dir_path( __FILE__ ) . 'widgets' . DIRECTORY_SEPARATOR,

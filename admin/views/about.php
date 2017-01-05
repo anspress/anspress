@@ -23,8 +23,9 @@ $credits = ap_sanitize_unslash( 'credits', 'r', false );
 	<div class="ap-badge apicon-anspress-icon"></div>
 
 	<h2 class="nav-tab-wrapper">
-		<a class="nav-tab<?php echo !$credits ? ' nav-tab-active' : ''; ?>" href="<?php echo admin_url( 'admin.php?page=anspress_about' ); ?>">What’s New</a>
+		<a class="nav-tab<?php echo ! $credits ? ' nav-tab-active' : ''; ?>" href="<?php echo admin_url( 'admin.php?page=anspress_about' ); ?>">What’s New</a>
 		<a class="nav-tab <?php echo $credits ? ' nav-tab-active' : ''; ?>" href="<?php echo admin_url( 'admin.php?page=anspress_about&credits=true' ); ?>">Credits</a>
+		<a class="nav-tab" href="https://anspress.io/questions/" target="_blank">Support</a>
 	</h2>
 
 	<?php if ( ! $credits ) : ?>

@@ -88,32 +88,28 @@ class AP_Activate {
 		global $wpdb;
 
 		// @codingStandardsIgnoreLine
-		if ( $wpdb->get_var( "show tables like '{$wpdb->ap_qameta}'" ) != $wpdb->ap_qameta ) {
-
-			// @codingStandardsIgnoreLine
-			$this->tables[] = 'CREATE TABLE IF NOT EXISTS `' . $wpdb->ap_qameta . '` (
-				`post_id` bigint(20) NOT NULL,
-				`selected_id` bigint(20) DEFAULT NULL,
-				`comments` bigint(20) DEFAULT 0,
-				`answers` bigint(20) DEFAULT 0,
-				`ptype` varchar(256) DEFAULT NULL,
-				`featured` tinyint(1) DEFAULT 0,
-				`selected` tinyint(1) DEFAULT 0,
-				`votes_up` bigint(20) DEFAULT 0,
-				`votes_down` bigint(20) DEFAULT 0,
-				`subscribers` bigint(20) DEFAULT 0,
-				`views` tinyint(4) DEFAULT 0,
-				`closed` tinyint(1) DEFAULT 0,
-				`flags` tinyint(2) DEFAULT 0,
-				`terms` LONGTEXT DEFAULT NULL,
-				`attach` LONGTEXT DEFAULT NULL,
-				`activities` LONGTEXT DEFAULT NULL,
-				`fields` LONGTEXT DEFAULT NULL,
-				`roles` varchar(256) DEFAULT NULL,
-				`last_updated` timestamp NULL DEFAULT NULL,
-				UNIQUE KEY `post_id` (`post_id`)
-			)' . $this->charset_collate . ';';
-		}
+		$this->tables[] = 'CREATE TABLE `' . $wpdb->ap_qameta . '` (
+			`post_id` bigint(20) NOT NULL,
+			`selected_id` bigint(20) DEFAULT NULL,
+			`comments` bigint(20) DEFAULT 0,
+			`answers` bigint(20) DEFAULT 0,
+			`ptype` varchar(256) DEFAULT NULL,
+			`featured` tinyint(1) DEFAULT 0,
+			`selected` tinyint(1) DEFAULT 0,
+			`votes_up` bigint(20) DEFAULT 0,
+			`votes_down` bigint(20) DEFAULT 0,
+			`subscribers` bigint(20) DEFAULT 0,
+			`views` tinyint(4) DEFAULT 0,
+			`closed` tinyint(1) DEFAULT 0,
+			`flags` tinyint(2) DEFAULT 0,
+			`terms` LONGTEXT DEFAULT NULL,
+			`attach` LONGTEXT DEFAULT NULL,
+			`activities` LONGTEXT DEFAULT NULL,
+			`fields` LONGTEXT DEFAULT NULL,
+			`roles` varchar(256) DEFAULT NULL,
+			`last_updated` timestamp NULL DEFAULT NULL,
+			UNIQUE KEY `post_id` (`post_id`)
+		)' . $this->charset_collate . ';';
 	}
 
 	/**
@@ -122,19 +118,15 @@ class AP_Activate {
 	public function votes_table() {
 		global $wpdb;
 
-		// @codingStandardsIgnoreLine
-		if ( $wpdb->get_var( "show tables like '{$wpdb->ap_votes}'" ) != $wpdb->ap_votes ) {
-			// @codingStandardsIgnoreLine
-			$this->tables[] = 'CREATE TABLE IF NOT EXISTS `' . $wpdb->ap_votes . '` (
-					`vote_id` bigint(20) NOT NULL AUTO_INCREMENT,
-					`vote_post_id` bigint(20) NOT NULL,
-					`vote_user_id` bigint(20) DEFAULT NULL,
-					`vote_type` varchar(256) DEFAULT NULL,
-					`vote_value` varchar(256) DEFAULT NULL,
-					`vote_date` timestamp NULL DEFAULT NULL,
-					PRIMARY KEY (`vote_id`)
-				)' . $this->charset_collate . ';';
-		}
+		$this->tables[] = 'CREATE TABLE `' . $wpdb->ap_votes . '` (
+				`vote_id` bigint(20) NOT NULL AUTO_INCREMENT,
+				`vote_post_id` bigint(20) NOT NULL,
+				`vote_user_id` bigint(20) DEFAULT NULL,
+				`vote_type` varchar(256) DEFAULT NULL,
+				`vote_value` varchar(256) DEFAULT NULL,
+				`vote_date` timestamp NULL DEFAULT NULL,
+				PRIMARY KEY (`vote_id`)
+			)' . $this->charset_collate . ';';
 	}
 
 	/**
@@ -143,19 +135,15 @@ class AP_Activate {
 	public function views_table() {
 		global $wpdb;
 
-		// @codingStandardsIgnoreLine
-		if ( $wpdb->get_var( "show tables like '{$wpdb->ap_views}'" ) != $wpdb->ap_views ) {
-			// @codingStandardsIgnoreLine
-			$this->tables[] = 'CREATE TABLE IF NOT EXISTS `' . $wpdb->ap_views . '` (
-					`view_id` bigint(20) NOT NULL AUTO_INCREMENT,
-					`view_user_id` bigint(20) DEFAULT NULL,
-					`view_type` varchar(256) DEFAULT NULL,
-					`view_ref_id` bigint(20) DEFAULT NULL,
-					`view_ip` varchar(39),
-					`view_date` timestamp NULL DEFAULT NULL,
-					PRIMARY KEY (`view_id`)
-				)' . $this->charset_collate . ';';
-		}
+		$this->tables[] = 'CREATE TABLE `' . $wpdb->ap_views . '` (
+				`view_id` bigint(20) NOT NULL AUTO_INCREMENT,
+				`view_user_id` bigint(20) DEFAULT NULL,
+				`view_type` varchar(256) DEFAULT NULL,
+				`view_ref_id` bigint(20) DEFAULT NULL,
+				`view_ip` varchar(39),
+				`view_date` timestamp NULL DEFAULT NULL,
+				PRIMARY KEY (`view_id`)
+			)' . $this->charset_collate . ';';
 	}
 
 	/**
@@ -164,18 +152,14 @@ class AP_Activate {
 	public function reputation_table() {
 		global $wpdb;
 
-		// @codingStandardsIgnoreLine
-		if ( $wpdb->get_var( "show tables like '{$wpdb->ap_reputations}'" ) != $wpdb->ap_reputations ) {
-			// @codingStandardsIgnoreLine
-			$this->tables[] = 'CREATE TABLE IF NOT EXISTS `' . $wpdb->ap_reputations . '` (
-					`rep_id` bigint(20) NOT NULL AUTO_INCREMENT,
-					`rep_user_id` bigint(20) DEFAULT NULL,
-					`rep_event` varchar(256) DEFAULT NULL,
-					`rep_ref_id` bigint(20) DEFAULT NULL,
-					`rep_date` timestamp NULL DEFAULT NULL,
-					PRIMARY KEY (`rep_id`)
-				)' . $this->charset_collate . ';';
-		}
+		$this->tables[] = 'CREATE TABLE `' . $wpdb->ap_reputations . '` (
+				`rep_id` bigint(20) NOT NULL AUTO_INCREMENT,
+				`rep_user_id` bigint(20) DEFAULT NULL,
+				`rep_event` varchar(256) DEFAULT NULL,
+				`rep_ref_id` bigint(20) DEFAULT NULL,
+				`rep_date` timestamp NULL DEFAULT NULL,
+				PRIMARY KEY (`rep_id`)
+			)' . $this->charset_collate . ';';
 	}
 
 	/**
@@ -197,6 +181,7 @@ class AP_Activate {
 				dbDelta( $table );
 			}
 		}
+		var_dump($wpdb);
 	}
 
 	/**
@@ -221,7 +206,7 @@ class AP_Activate {
 		}
 
 		$this->insert_tables();
-		ap_opt( 'db_version', AP_DB_VERSION );
+		update_option( 'anspress_db_version', AP_DB_VERSION );
 		update_option( 'anspress_opt', get_option( 'anspress_opt' ) + ap_default_options() );
 
 		ap_opt( 'ap_flush', 'true' );
