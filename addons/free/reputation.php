@@ -380,7 +380,7 @@ class AnsPress_Reputation_Hooks {
 
 		if ( 'reputations' === $current_tab ) {
 			$reputations = new AnsPress_Reputation_Query( [ 'user_id' => $user_id ] );
-			include ap_get_theme_location( 'reputations/reputations.php' );
+			include ap_get_theme_location( 'reputations/index.php' );
 		}
 	}
 
@@ -388,18 +388,25 @@ class AnsPress_Reputation_Hooks {
 	 * Ajax callback for loading more reputations.
 	 */
 	public static function load_more_reputation() {
-
 		check_admin_referer( 'load_more_reputation', '__nonce' );
+
+		$user_id = ap_sanitize_unslash( 'user_id', 'r' );
 		$paged = ap_sanitize_unslash( 'current', 'r', 1 ) + 1;
 
 		ob_start();
 		$reputations = new AnsPress_Reputation_Query( [ 'user_id' => $user_id, 'paged' => $paged ] );
-		include ap_get_theme_location( 'reputations/reputations.php' );
+		while ( $reputations->have() ) : $reputations->the_reputation();
+			include ap_get_theme_location( 'reputations/item.php' );
+		endwhile;
 		$html = ob_get_clean();
 
+		$paged = $reputations->total_pages > $paged ? $paged : 0;
+
 		ap_ajax_json( array(
-			'args' => [ 'ap_ajax_action' => 'load_more_reputation', '__nonce' => wp_create_nonce( 'load_more_reputation' ), 'current' => (int) $paged ],
-			'html' => $html,
+			'success' => true,
+			'args'    => [ 'ap_ajax_action' => 'load_more_reputation', '__nonce' => wp_create_nonce( 'load_more_reputation' ), 'current' => (int) $paged, 'user_id' => $user_id ],
+			'html'    => $html,
+			'element' => '.ap-reputations tbody',
 		) );
 	}
 }

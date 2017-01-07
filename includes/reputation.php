@@ -352,6 +352,7 @@ class AnsPress_Reputation_Query {
 	 */
 	var $per_page = 20;
 	var $total_pages = 1;
+	var $max_num_pages = 0;
 	var $paged;
 	var $offset;
 	var $with_zero_points = [];
@@ -402,7 +403,9 @@ class AnsPress_Reputation_Query {
 		$order = 'DESC' === $this->args['order'] ? 'DESC' : 'ASC';
 		$excluded = sanitize_comma_delimited( $this->with_zero_points, 'str' );
 
-		$query = $wpdb->prepare( "SELECT * FROM {$wpdb->ap_reputations} WHERE rep_user_id = %d AND rep_event NOT IN({$excluded}) ORDER BY rep_date {$order} LIMIT %d,%d", $this->args['user_id'], $this->offset, $this->per_page );
+		$query = $wpdb->prepare( "SELECT SQL_CALC_FOUND_ROWS * FROM {$wpdb->ap_reputations} WHERE rep_user_id = %d AND rep_event NOT IN({$excluded}) ORDER BY rep_date {$order} LIMIT %d,%d", $this->args['user_id'], $this->offset, $this->per_page );
+
+
 
 		$key = md5( $query );
 		$result = wp_cache_get( $key, 'ap' );

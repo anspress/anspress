@@ -572,7 +572,11 @@ function ap_get_ask_btn() {
  * @param string $file File name without extension.
  * @since 2.1
  */
-function ap_get_template_part( $file ) {
+function ap_get_template_part( $file, $args = false ) {
+	if ( false !== $args ) {
+		extract( $args );
+	}
+
 	include ap_get_theme_location( $file . '.php' );
 }
 
