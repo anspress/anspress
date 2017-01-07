@@ -83,7 +83,7 @@ class AnsPress_Theme {
 	public static function body_class( $classes ) {
 		// Add anspress class to body.
 		if ( is_anspress() ) {
-			$classes[] = 'anspress';
+			$classes[] = 'anspress-content';
 			$classes[] = 'ap-page-' . ap_current_page();
 		}
 

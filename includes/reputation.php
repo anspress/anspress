@@ -119,19 +119,20 @@ function ap_delete_reputation( $event, $ref_id, $user_id = false ) {
  * Register reputation event.
  *
  * @param string  $event_slug Event slug.
- * @param integer $points Points to award for this reputation.
- * @param string  $label Event label.
- * @param string  $description Event description.
+ * @param array   $args Points to award for this reputation.
  * @since 4.0.0
  */
-function ap_register_reputation_event( $event_slug, $points, $label, $description ) {
-	$event_slug = sanitize_text_field( $event_slug );
-	$label = esc_attr( $label );
-	$description = esc_attr( $description );
+function ap_register_reputation_event( $event_slug, $args ) {
+	$args = wp_parse_args( $args, [ 'icon' => 'apicon-reputation', 'parent' => 'post' ] );
+
+	$event_slug = sanitize_title( $event_slug );
+	$args['label'] = esc_attr( $args['label'] );
+	$args['description'] = esc_html( $args['description'] );
+	$args['icon'] = esc_attr( $args['icon'] );
 
 	$custom_points = get_option( 'anspress_reputation_events' );
-	$points = isset( $custom_points[ $event_slug ] ) ? (int) $custom_points[ $event_slug ] : (int) $points;
-	anspress()->reputation_events[ $event_slug ] = [ 'points' => $points, 'label' => $label, 'description' => $description ];
+	$args['points'] = isset( $custom_points[ $event_slug ] ) ? (int) $custom_points[ $event_slug ] : (int) $args['points'];
+	anspress()->reputation_events[ $event_slug ] = $args;
 }
 
 /**
@@ -162,6 +163,40 @@ function ap_get_reputation_event_points( $event ) {
 	}
 
 	return 0;
+}
+
+/**
+ * Get reputation event points.
+ *
+ * @param string $event event slug.
+ * @return integer
+ * @since 4.0.0
+ */
+function ap_get_reputation_event_icon( $event ) {
+	$events = ap_get_reputation_events();
+
+	if ( isset( $events[ $event ] ) && isset( $events[ $event ]['icon'] ) ) {
+		return $events[ $event ]['icon'];
+	}
+
+	return 'apicon-reputation';
+}
+
+/**
+ * Get reputation event activity.
+ *
+ * @param string $event event slug.
+ * @return string
+ * @since 4.0.0
+ */
+function ap_get_reputation_event_activity( $event ) {
+	$events = ap_get_reputation_events();
+
+	if ( isset( $events[ $event ] ) && isset( $events[ $event ]['activity'] ) ) {
+		return esc_html( $events[ $event ]['activity'] );
+	}
+
+	return esc_html( $event );
 }
 
 /**
@@ -248,4 +283,366 @@ function ap_get_users_reputation( $user_ids ) {
 	}
 
 	return $counts;
+}
+
+/**
+ * User reputations loop
+ * Query wrapper for fetching reputations of a specific user by ID
+ *
+ * @param array|string $args arguments passed to class.
+ *                           @param string $user_id WordPress user_id, default is current user_id
+ *                           @param integer $number Numbers of rows to fetch from database, default is 20
+ *                           @param integer $offset Rows to offset
+ * @since 4.0.0
+ */
+class AnsPress_Reputation_Query {
+	/**
+	 * The loop iterator.
+	 *
+	 * @access public
+	 * @var int
+	 */
+	var $current = -1;
+
+	/**
+	 * The number of rows returned by the paged query.
+	 *
+	 * @access public
+	 * @var int
+	 */
+	var $count;
+
+	/**
+	 * Array of users located by the query.
+	 *
+	 * @access public
+	 * @var array
+	 */
+	var $reputations;
+
+	/**
+	 * The reputation object currently being iterated on.
+	 *
+	 * @access public
+	 * @var object
+	 */
+	var $reputation;
+
+	/**
+	 * A flag for whether the loop is currently being iterated.
+	 *
+	 * @access public
+	 * @var bool
+	 */
+	var $in_the_loop;
+
+	/**
+	 * The total number of rows matching the query parameters.
+	 *
+	 * @access public
+	 * @var int
+	 */
+	var $total_count;
+
+	/**
+	 * Items to show per page
+	 *
+	 * @access public
+	 * @var int
+	 */
+	var $per_page = 20;
+	var $total_pages = 1;
+	var $paged;
+	var $offset;
+	var $with_zero_points = [];
+	var $events;
+	var $ids = [ 'post' => [], 'comment' => [], 'question' => [], 'answer' => [] ];
+	var $pos = [];
+
+	/**
+	 * Initialize the class.
+	 *
+	 * @param array $args Arguments.
+	 */
+	public function __construct( $args = [] ) {
+		$this->events = ap_get_reputation_events();
+		$this->get_events_with_zero_points();
+
+		$this->paged = isset( $args['paged'] ) ? (int) $args['paged'] : 1;
+		$this->offset = $this->per_page * ($this->paged - 1);
+
+		$this->args = wp_parse_args( $args, array(
+			'user_id' 	=> 0,
+			'number' 	=> $this->per_page,
+			'offset' 	=> $this->offset,
+			'order' 	=> 'DESC',
+		));
+
+		$this->per_page = $this->args['number'];
+		$this->query();
+	}
+
+	/**
+	 * Get events having zero points.
+	 */
+	public function get_events_with_zero_points() {
+		foreach ( (array) $this->events as $slug => $args ) {
+			if ( 0 === $args['points'] ) {
+				$this->with_zero_points[] = $slug;
+			}
+		}
+	}
+
+	/**
+	 * Prepare and fetch reputations from database.
+	 */
+	private function query() {
+		global $wpdb;
+
+		$order = 'DESC' === $this->args['order'] ? 'DESC' : 'ASC';
+		$excluded = sanitize_comma_delimited( $this->with_zero_points, 'str' );
+
+		$query = $wpdb->prepare( "SELECT * FROM {$wpdb->ap_reputations} WHERE rep_user_id = %d AND rep_event NOT IN({$excluded}) ORDER BY rep_date {$order} LIMIT %d,%d", $this->args['user_id'], $this->offset, $this->per_page );
+
+		$key = md5( $query );
+		$result = wp_cache_get( $key, 'ap' );
+		$this->total_count = wp_cache_get( $key . '_count', 'ap' );
+
+		if ( false === $result ) {
+			$result = $wpdb->get_results( $query ); // WPCS: DB call okay.
+			$this->total_count = $wpdb->get_var( apply_filters( 'ap_reputations_found_rows', 'SELECT FOUND_ROWS()', $this ) );
+			wp_cache_set( $key.'_count', $this->total_count, 'ap' );
+			wp_cache_set( $key, $result, 'ap' );
+		}
+
+		$this->reputations 	= $result;
+		$this->total_pages 	= ceil( $this->total_count / $this->per_page );
+		$this->count 		= count( $result );
+		$this->prefetch();
+	}
+
+	public function prefetch() {
+		foreach ( (array) $this->reputations as $key => $rep ) {
+			$event = $this->events[ $rep->rep_event ];
+
+			if ( ! isset( $this->ids[ $event['parent'] ] ) ) {
+				$this->ids[ $event['parent'] ] = [];
+			}
+
+			$this->ids[ $event['parent'] ][] = $rep->rep_ref_id;
+			$this->reputations[ $key ]->parent = $event['parent'];
+			$this->pos[ $rep->rep_ref_id ] = $key;
+		}
+
+		$this->prefetch_posts();
+		$this->prefetch_comments();
+	}
+
+	/**
+	 * Pre fetch post contents and append to object.
+	 */
+	public function prefetch_posts() {
+		global $wpdb;
+
+		$ids = $this->ids['post'] + $this->ids['answer'] + $this->ids['question'];
+
+		$ids = esc_sql( sanitize_comma_delimited( $ids ) );
+		$posts = $wpdb->get_results( "SELECT * FROM {$wpdb->posts} WHERE ID in ({$ids})" );
+
+		foreach ( (array) $posts as $_post ) {
+			$this->reputations[ $this->pos[ $_post->ID ] ]->ref = $_post;
+		}
+	}
+
+	/**
+	 * Pre fetch comments and append data to object.
+	 */
+	public function prefetch_comments() {
+		global $wpdb;
+
+		if ( empty( $this->ids['comment'] ) ) {
+			return;
+		}
+
+		$ids = esc_sql( sanitize_comma_delimited( $this->ids['comment'] ) );
+		$comments = $wpdb->get_results( "SELECT * FROM {$wpdb->comments} WHERE comment_ID in ({$ids})" );
+
+		foreach ( (array) $comments as $_comment ) {
+			$this->reputations[ $this->pos[ $_comment->comment_ID ] ]->ref = $_comment;
+		}
+	}
+
+	/**
+	 * Check if lopp has reputation.
+	 *
+	 * @return boolean
+	 */
+	public function have() {
+		if ( $this->current + 1 < $this->count ) {
+			return true;
+		} elseif ( $this->current + 1 == $this->count ) {
+			do_action( 'ap_reputations_loop_end' );
+			// Do some cleaning up after the loop.
+			$this->rewind_reputation();
+		}
+
+		$this->in_the_loop = false;
+		return false;
+	}
+
+	/**
+	 * Rewind the reputations and reset index.
+	 */
+	public function rewind_reputation() {
+		$this->current = -1;
+		if ( $this->count > 0 ) {
+			$this->reputation = $this->reputations[0];
+		}
+	}
+	/**
+	 * Check if there are reputations.
+	 *
+	 * @return bool
+	 */
+	public  function has() {
+		if ( $this->count ) {
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Set up the next reputation and iterate index.
+	 *
+	 * @return object The next reputation to iterate over.
+	 */
+	public function next_reputation() {
+		$this->current++;
+		$this->reputation = $this->reputations[ $this->current ];
+		return $this->reputation;
+	}
+
+	/**
+	 * Set up the current reputation inside the loop.
+	 */
+	public function the_reputation() {
+		$this->in_the_loop 		= true;
+		$this->reputation     = $this->next_reputation();
+
+		// Loop has just started.
+		if ( 0 == $this->current ) {
+			/**
+			 * Fires if the current reputation is the first in the loop.
+			 */
+			do_action( 'ap_reputation_loop_start' );
+		}
+	}
+
+	/**
+	 * Return current reputation event.
+	 *
+	 * @return string
+	 */
+	public function get_event() {
+		return $this->reputation->rep_event;
+	}
+
+	/**
+	 * Echo current reputation event.
+	 */
+	public function the_event() {
+		echo $this->get_event();
+	}
+
+	/**
+	 * Return current reputation points.
+	 *
+	 * @return integer
+	 */
+	public function get_points() {
+		return ap_get_reputation_event_points( $this->reputation->rep_event );
+	}
+
+	/**
+	 * Echo current reputation points.
+	 * Alice of `get_points`.
+	 */
+	public function the_points() {
+		echo esc_attr( $this->get_points() );
+	}
+
+	/**
+	 * Return current reputation date date.
+	 *
+	 * @return string
+	 */
+	public function get_date() {
+		return $this->reputation->rep_date;
+	}
+
+	/**
+	 * Echo current reputation date.
+	 */
+	public function the_date() {
+		echo esc_attr( ap_human_time( $this->get_date(), false ) );
+	}
+
+	/**
+	 * Return current reputation icon.
+	 *
+	 * @return string
+	 */
+	public function get_icon() {
+		return ap_get_reputation_event_icon( $this->reputation->rep_event );
+	}
+
+	/**
+	 * Echo current reputation icon.
+	 */
+	public function the_icon() {
+		echo esc_attr( $this->get_icon() );
+	}
+
+	/**
+	 * Return current reputation activity.
+	 *
+	 * @return string
+	 */
+	public function get_activity() {
+		return ap_get_reputation_event_activity( $this->reputation->rep_event );
+	}
+
+	/**
+	 * Echo current reputation activity.
+	 */
+	public function the_activity() {
+		echo $this->get_activity();
+	}
+
+	/**
+	 * Out put refernece content.
+	 */
+	public function the_ref_content() {
+		if ( in_array( $this->reputation->parent, [ 'post', 'question', 'answer' ], true ) ) {
+			echo '<a class="ap-reputation-ref" href="' . esc_url( ap_get_short_link( [ 'id' => $this->reputation->rep_ref_id, 'type' => 'post' ] ) ) . '">';
+
+			if ( ! empty( $this->reputation->ref->post_title ) ) {
+				echo '<strong>' . esc_html( $this->reputation->ref->post_title ) . '</strong>';
+			}
+
+			if ( ! empty( $this->reputation->ref->post_content ) ) {
+				echo '<p>' . esc_html( ap_truncate_chars( strip_tags( $this->reputation->ref->post_content ), 200 ) ) . '</p>';
+			}
+
+			echo '</a>';
+		} elseif ( 'comment' === $this->reputation->parent ) {
+			echo '<a class="ap-reputation-ref" href="' . esc_url( ap_get_short_link( [ 'id' => $this->reputation->rep_ref_id, 'type' => 'comment' ] ) ) . '">';
+			if ( ! empty( $this->reputation->ref->comment_content ) ) {
+				echo '<p>' . esc_html( ap_truncate_chars( strip_tags( $this->reputation->ref->comment_content ), 200 ) ) . '</p>';
+			}
+			echo '</a>';
+		}
+	}
+
 }

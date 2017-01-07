@@ -1687,3 +1687,12 @@ function ap_in_array_r( $needle, $haystack, $strict = false ) {
 	}
 	return false;
 }
+
+/**
+ * Return short link to a item.
+ */
+function ap_get_short_link( $args ) {
+	$base = ap_get_link_to( 'shortlink' );
+
+	return add_query_arg( $args, $base );
+}

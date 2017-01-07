@@ -1,17 +1,17 @@
 <?php
-	/**
-	 * Display question list
-	 *
-	 * This template is used in base page, category, tag , etc
-	 *
-	 * @link https://anspress.io
-	 * @since unknown
-	 *
-	 * @package AnsPress
-	 */
+/**
+	* Display question list
+	*
+	* This template is used in base page, category, tag , etc
+	*
+	* @link https://anspress.io
+	* @since unknown
+	*
+	* @package AnsPress
+	*/
 
-	 $user_id = get_query_var( 'ap_user_id' );
-	 $current_tab = ap_sanitize_unslash( 'tab', 'r', 'questions' );
+	$user_id = get_query_var( 'ap_user_id' );
+	$current_tab = ap_sanitize_unslash( 'tab', 'r', 'questions' );
 ?>
 <?php dynamic_sidebar( 'ap-top' ); ?>
 <div class="ap-row">
@@ -32,13 +32,8 @@
 
 		<ul class="ap-tab-nav clearfix">
 			<li<?php echo 'questions' === $current_tab ? ' class="active"' : ''; ?>><a href="<?php echo ap_user_link( $user_id ); ?>"><?php esc_attr_e( 'Questions', 'anspress-question-answer' ); ?></a></li>
-			<li<?php echo 'reputations' === $current_tab ? ' class="active"' : ''; ?>><a href="<?php echo ap_user_link( $user_id ) . '?tab=reputations'; ?>"><?php esc_attr_e( 'Reputation', 'anspress-question-answer' ); ?></a></li>
 			<?php do_action( 'ap_author_tab' ); ?>
 		</ul>
-
-		<?php if ( 'reputations' === $current_tab ) : ?>
-
-		<?php endif; ?>
 
 		<?php if ( 'questions' === $current_tab ) : ?>
 
@@ -61,6 +56,8 @@
 			?>
 
 		<?php endif; ?>
+
+		<?php do_action( 'ap_author_content' ); ?>
 
 	</div>
 	<?php if ( is_active_sidebar( 'ap-author' ) && is_anspress()){ ?>

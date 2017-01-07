@@ -170,6 +170,11 @@
   }
 }
 
+.anspress {
+  font-size: 13px;
+  line-height: 1.6;
+}
+
 #anspress {
   background: #fff;
 }
@@ -3325,6 +3330,82 @@ post-message {
   font-size: 12px;
   padding: 3px 10px;
   border-radius: 2px;
+}
+
+.ap-reputations {
+  border: none;
+  border-spacing: 0;
+}
+.ap-reputations td {
+  border-width: 0 0 1px 0;
+  border-color: #eee;
+  border-style: solid;
+  padding: 10px 5px;
+  vertical-align: top;
+}
+.ap-reputations td.col-icon {
+  width: 50px;
+  color: #b5b5b5;
+}
+.ap-reputations td.col-icon i {
+  font-size: 18px;
+  background: #9E9E9E;
+  width: 35px;
+  display: block;
+  height: 35px;
+  padding: 5px;
+  text-align: center;
+  border-radius: 50%;
+  color: #fff;
+}
+.ap-reputations td.col-icon i.answer {
+  background: #8bc34a;
+}
+.ap-reputations td.col-icon i.ask {
+  background: #F44336;
+}
+.ap-reputations td.col-icon i.comment {
+  background: #673AB7;
+}
+.ap-reputations td.col-icon i.select_answer {
+  background: #00C853;
+}
+.ap-reputations td.col-icon i.best_answer {
+  background: #00BCD4;
+}
+.ap-reputations td.col-icon i.received_vote_up {
+  background: #AB47BC;
+}
+.ap-reputations td.col-icon i.received_vote_down {
+  background: #FF9800;
+}
+.ap-reputations td.col-icon i.given_vote_down {
+  background: #8D6E63;
+}
+.ap-reputations td.col-icon i.given_vote_up {
+  background: #EC407A;
+}
+.ap-reputations td.col-points {
+  text-align: right;
+  width: 80px;
+}
+.ap-reputations td.col-points span {
+  background: #F4AC20;
+  color: #fff;
+  width: 40px;
+  display: block;
+  float: right;
+  text-align: center;
+  border-radius: 2px;
+  padding: 2px;
+}
+.ap-reputations td.col-date {
+  width: 100px;
+}
+.ap-reputation-ref {
+  margin-top: 5px;
+  font-size: 12px;
+  color: #777;
 }
 
 /*# sourceMappingURL=main.css.map */
