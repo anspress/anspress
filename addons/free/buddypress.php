@@ -103,14 +103,17 @@ class AnsPress_BP_Hooks {
 		$subnav = array(
 			[ 'name' => __( 'Questions', 'anspress-question-answer' ), 'slug' => 'questions' ],
 			[ 'name' => __( 'Answers', 'anspress-question-answer' ), 'slug' => 'answers' ],
-			//[ 'name' => __( 'Reputations', 'anspress-question-answer' ), 'slug' => 'reputations' ],
 		);
 
+		$subnav = apply_filters( 'ap_bp_nav', $subnav );
 		foreach ( $subnav as $nav ) {
 			SELF::setup_subnav( $nav['name'], $nav['slug'] );
 		}
 	}
 
+	/**
+	 * Setup sub nav.
+	 */
 	public static function setup_subnav( $name, $slug ) {
 		bp_core_new_subnav_item( array(
 			'name'            => $name,
@@ -139,8 +142,10 @@ class AnsPress_BP_Hooks {
 
 		echo '<div id="anspress" class="anspress ' . esc_attr( $template ) . '">';
 
-		if ( method_exists( __CLASS__, 'page_' . $template ) ) {
-			call_user_func( [ __CLASS__, 'page_' . $template ] );
+		$page_cb = apply_filters( 'ap_bp_page', [ __CLASS__, 'page_' . $template ], $template );
+
+		if ( method_exists( $page_cb[0], $page_cb[1] ) ) {
+			call_user_func( $page_cb );
 		} else {
 			esc_attr_e( 'No AnsPress template found for rendering this page.', 'anspress-question-answer' );
 		}

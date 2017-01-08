@@ -55,6 +55,8 @@ class AnsPress_Reputation_Hooks {
 		anspress()->add_filter( 'ap_author_tab', __CLASS__, 'ap_author_tab' );
 		anspress()->add_filter( 'ap_author_content', __CLASS__, 'ap_author_content' );
 		anspress()->add_filter( 'ap_ajax_load_more_reputation', __CLASS__, 'load_more_reputation' );
+		anspress()->add_filter( 'ap_bp_nav', __CLASS__, 'ap_bp_nav' );
+		anspress()->add_filter( 'ap_bp_page', __CLASS__, 'ap_bp_page', 10, 2 );
 	}
 
 	/**
@@ -408,6 +410,38 @@ class AnsPress_Reputation_Hooks {
 			'html'    => $html,
 			'element' => '.ap-reputations tbody',
 		) );
+	}
+
+	/**
+	 * Add reputations nav link in BuddyPress profile.
+	 *
+	 * @param array $nav Nav menu.
+	 * @return array
+	 */
+	public static function ap_bp_nav( $nav ) {
+		$nav[] = [ 'name' => __( 'Reputations', 'anspress-question-answer' ), 'slug' => 'reputations' ];
+		return $nav;
+	}
+
+	/**
+	 * Add BuddyPress reputation page callback.
+	 *
+	 * @param array $cb Callback function.
+	 * @param string $template Template.
+	 * @param array
+	 */
+	public static function ap_bp_page( $cb, $template ) {
+
+		if ( 'reputations' === $template ) {
+			return [ __CLASS__, 'bp_reputation_page' ];
+		}
+		return $cb;
+	}
+
+	public static function bp_reputation_page() {
+		$user_id = bp_displayed_user_id();
+		$reputations = new AnsPress_Reputation_Query( [ 'user_id' => $user_id ] );
+		include ap_get_theme_location( 'reputations/index.php' );
 	}
 }
 
