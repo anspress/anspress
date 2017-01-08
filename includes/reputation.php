@@ -447,7 +447,7 @@ class AnsPress_Reputation_Query {
 	public function prefetch_posts() {
 		global $wpdb;
 
-		$ids = $this->ids['post'] + $this->ids['answer'] + $this->ids['question'];
+		$ids = array_merge( $this->ids['post'], $this->ids['answer'], $this->ids['question'] );
 
 		$ids = esc_sql( sanitize_comma_delimited( $ids ) );
 		$posts = $wpdb->get_results( "SELECT * FROM {$wpdb->posts} WHERE ID in ({$ids})" );
