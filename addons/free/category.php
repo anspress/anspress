@@ -81,6 +81,8 @@ class AnsPress_Category {
 		anspress()->add_filter( 'ap_ask_btn_link', __CLASS__, 'ap_ask_btn_link' );
 		anspress()->add_filter( 'ap_canonical_url', __CLASS__, 'ap_canonical_url' );
 		anspress()->add_filter( 'wp_head', __CLASS__, 'category_feed' );
+		anspress()->add_filter( 'manage_edit-question_category_columns', __CLASS__, 'column_header' );
+		anspress()->add_filter( 'manage_question_category_custom_column', __CLASS__, 'column_content', 10, 3 );
 
 		// List filtering.
 		anspress()->add_action( 'ap_ajax_load_filter_category', __CLASS__, 'load_filter_category' );
@@ -328,6 +330,7 @@ class AnsPress_Category {
 		if ( ! ap_load_admin_assets() ) {
 			return;
 		}
+
 		wp_enqueue_media();
 		wp_enqueue_style( 'wp-color-picker' );
 		wp_enqueue_script( 'wp-color-picker' );
@@ -580,9 +583,14 @@ class AnsPress_Category {
 		</div>
 
 		<div class='form-field term-image-wrap'>
-			<label for='ap-category-color'><?php esc_attr_e( 'Category icon color', 'anspress-question-answer' ); ?></label>
+			<label for='ap-category-color'><?php esc_attr_e( 'Icon background color', 'anspress-question-answer' ); ?></label>
 			<input id="ap-category-color" type="text" name="ap_color" value="">
-			<p class="description"><?php esc_attr_e( 'Icon color', 'anspress-question-answer' ); ?></p>
+			<p class="description"><?php esc_attr_e( 'Set background color to be used with icon', 'anspress-question-answer' ); ?></p>
+			<script type="text/javascript">
+				jQuery(document).ready(function(){
+					jQuery('#ap-category-color').wpColorPicker();
+				});
+			</script>
 		</div>
 		<?php
 	}
@@ -593,12 +601,7 @@ class AnsPress_Category {
 	 * @param object $term Term.
 	 */
 	public static function image_field_edit( $term ) {
-		$option_name    = 'ap_cat_' . $term->term_id;
-		$term_meta       = get_option( $option_name );
-		$ap_image       = $term_meta['ap_image'];
-		$ap_icon        = $term_meta['ap_icon'];
-		$ap_color       = $term_meta['ap_color'];
-
+		$term_meta = get_term_meta( $term->term_id, 'ap_category', true );
 		?>
 			<tr class='form-field form-required term-name-wrap'>
 				<th scope='row'>
@@ -607,17 +610,16 @@ class AnsPress_Category {
 				<td>
 					<a href="#" id="ap-category-upload" class="button" data-action="ap_media_uplaod" data-title="<?php esc_attr_e( 'Upload image', 'anspress-question-answer' ); ?>" data-idc="#ap_category_media_id" data-urlc="#ap_category_media_url"><?php esc_attr_e( 'Upload image', 'anspress-question-answer' ); ?></a>
 
-					<?php if ( isset( $ap_image['url'] ) && '' !== $ap_image['url'] ) { ?>
-						<img id="ap_category_media_preview" data-action="ap_media_value" src="<?php echo esc_url( $ap_image['url'] ); ?>" />
+					<?php if ( ! empty( $term_meta['image'] ) && ! empty( $term_meta['image']['url'] ) ) { ?>
+						<img id="ap_category_media_preview" data-action="ap_media_value" src="<?php echo esc_url( $term_meta['image']['url'] ); ?>" />
 					<?php } ?>
 
-					<input id="ap_category_media_url" type="hidden" data-action="ap_media_value" name="ap_category_image_url" value="<?php echo esc_url( $ap_image['url'] ); ?>">
+					<input id="ap_category_media_url" type="hidden" data-action="ap_media_value" name="ap_category_image_url" value="<?php echo esc_url( $term_meta['image']['url'] ); ?>">
 
-					<input id="ap_category_media_id" type="hidden" data-action="ap_media_value" name="ap_category_image_id" value="<?php echo esc_attr( $ap_image['id'] ); ?>">
+					<input id="ap_category_media_id" type="hidden" data-action="ap_media_value" name="ap_category_image_id" value="<?php echo esc_attr( $term_meta['image']['id'] ); ?>">
+					<a href="#" id="ap-category-upload-remove" data-action="ap_media_remove"><?php esc_attr_e( 'Remove image', 'anspress-question-answer' ); ?></a>
 
 					<p class='description'><?php esc_attr_e( 'Featured image for category', 'anspress-question-answer' ); ?></p>
-
-					<a href="#" id="ap-category-upload-remove" data-action="ap_media_remove"><?php esc_attr_e( 'Remove image', 'anspress-question-answer' ); ?></a>
 				</td>
 			</tr>
 			<tr class='form-field form-required term-name-wrap'>
@@ -625,7 +627,7 @@ class AnsPress_Category {
 					<label for='custom-field'><?php esc_attr_e( 'Category icon class', 'anspress-question-answer' ); ?></label>
 				</th>
 				<td>
-					<input id="ap_icon" type="text" name="ap_icon" value="<?php echo esc_attr( $ap_icon ); ?>">
+					<input id="ap_icon" type="text" name="ap_icon" value="<?php echo esc_attr( $term_meta['icon'] ); ?>">
 					<p class="description"><?php esc_attr_e( 'Font icon class, if image not set', 'anspress-question-answer' ); ?></p>
 				</td>
 			</tr>
@@ -634,8 +636,13 @@ class AnsPress_Category {
 					<label for='ap-category-color'><?php esc_attr_e( 'Category icon color', 'anspress-question-answer' ); ?></label>
 				</th>
 				<td>
-					<input id="ap-category-color" type="text" name="ap_color" value="<?php echo esc_attr( $ap_color ); ?>">
+					<input id="ap-category-color" type="text" name="ap_color" value="<?php echo esc_attr( $term_meta['color'] ); ?>">
 					<p class="description"><?php esc_attr_e( 'Font icon class, if image not set', 'anspress-question-answer' ); ?></p>
+					<script type="text/javascript">
+						jQuery(document).ready(function(){
+							jQuery('#ap-category-color').wpColorPicker();
+						});
+					</script>
 				</td>
 			</tr>
 		<?php
@@ -647,6 +654,7 @@ class AnsPress_Category {
 	 * @param  integer $term_id Term id.
 	 */
 	public static function save_image_field( $term_id ) {
+
 		$image_url = ap_isset_post_value( 'ap_category_image_url', false );
 		$image_id = ap_isset_post_value( 'ap_category_image_id', false );
 		$icon = ap_isset_post_value( 'ap_icon', false );
@@ -654,7 +662,7 @@ class AnsPress_Category {
 
 		if ( ( $image_url && $image_id ) || $icon || $color ) {
 			// Get options from database - if not a array create a new one.
-			$term_meta = get_option( 'ap_cat_' . $term_id );
+			$term_meta = get_term_meta( $term_id, 'ap_category', true );
 
 			if ( ! is_array( $term_meta ) ) {
 				$term_meta = array();
@@ -662,24 +670,24 @@ class AnsPress_Category {
 
 			if ( $image_url && $image_id ) {
 
-				if ( ! is_array( $term_meta['ap_image'] ) ) {
-					$term_meta['ap_image'] = array();
+				if ( ! is_array( $term_meta['image'] ) ) {
+					$term_meta['image'] = array();
 				}
 
 				// Get value and save it into the database.
-				$term_meta['ap_image']['url'] = $image_url ? sanitize_text_field( $image_url ) : '';
-				$term_meta['ap_image']['id'] = $image_id ? (int) $image_id : '';
+				$term_meta['image']['url'] = $image_url ? esc_url( $image_url ) : '';
+				$term_meta['image']['id'] = $image_id ? (int) $image_id : '';
 			}
 
 			if ( $icon ) {
-				$term_meta['ap_icon'] = sanitize_text_field( $icon );
+				$term_meta['icon'] = sanitize_text_field( $icon );
 			}
 
 			if ( $color ) {
-				$term_meta['ap_color'] = sanitize_text_field( $color );
+				$term_meta['color'] = sanitize_text_field( $color );
 			}
 
-			update_option( 'ap_cat_' . $term_id, $term_meta );
+			update_term_meta( $term_id, 'ap_category', $term_meta );
 		}
 	}
 
@@ -924,6 +932,26 @@ class AnsPress_Category {
 
 				return ': <span class="ap-filter-active">' . implode( ', ', $active_terms ) . ( $count > 2 ? $more_label : ''  ) . '</span>';
 			}
+		}
+	}
+
+	/**
+	 * Column header.
+	 *
+	 * @param array $columns Category columns.
+	 * @return array
+	 */
+	public function column_header( $columns ) {
+		$columns['icon'] = 'Icon';
+		return $columns;
+	}
+
+	/**
+	 * Icon column content.
+	 */
+	public function column_content( $value, $column_name, $tax_id ) {
+		if ( 'icon' === $column_name ) {
+			ap_category_icon( $tax_id );
 		}
 	}
 }

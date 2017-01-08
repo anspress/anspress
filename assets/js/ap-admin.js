@@ -408,11 +408,6 @@
 			jQuery('img[data-action="ap_media_value"]').remove();
 		});
 
-
-		if(typeof wpColorPicker !== 'undefined')
-			jQuery('#ap-category-color').wpColorPicker();
-
-
 		jQuery('.checkall').click(function(){
 			var checkbox = jQuery(this).closest('.ap-tools-ck').find('input[type="checkbox"]:not(.checkall)');
 			checkbox.prop('checked', jQuery(this).prop("checked"));

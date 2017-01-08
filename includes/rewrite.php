@@ -110,7 +110,7 @@ class AnsPress_Rewrite
 
 		$new_rules[ $slug . '([^/]+)/?' ] = 'index.php?page_id=' . $base_page_id . '&ap_page=' . $wp_rewrite->preg_index( 1 );
 
-		$ap_rules = apply_filters( 'ap_rewrite_rulesx', $new_rules, $slug, $base_page_id );
+		$ap_rules = apply_filters( 'ap_rewrite_rules', $new_rules, $slug, $base_page_id );
 
 		return $wp_rewrite->rules = $ap_rules + $wp_rewrite->rules;
 	}

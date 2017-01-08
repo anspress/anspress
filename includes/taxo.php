@@ -136,15 +136,20 @@ if ( ! function_exists( 'is_question_categories' ) ) {
 	}
 }
 
-if ( ! function_exists( 'is_question_category' ) ) {
-	function is_question_category() {
-		if ( ap_get_category_slug() == get_query_var( 'ap_page' ) ) {
-			return true;
-		}
-
-		return false;
+/**
+ * Check if current page is question category.
+ *
+ * @return boolean
+ * @since 4.0.0
+ */
+function is_question_category() {
+	if ( ap_get_category_slug() == get_query_var( 'ap_page' ) ) {
+		return true;
 	}
+
+	return false;
 }
+
 
 /**
  * Return category for sorting dropdown.
@@ -195,11 +200,11 @@ function ap_category_sorting() {
 	$selected = isset( $_GET['ap_cat_sort'] ) ? (int) $_GET['ap_cat_sort'] : '';
 	if ( $filters ) {
 		echo '<div class="ap-dropdown">';
-			echo '<a id="ap-sort-anchor" class="ap-dropdown-toggle'.($selected != '' ? ' active' : '').'" href="#">'.__( 'Category', 'categories-for-anspress' ).'</a>';
+			echo '<a id="ap-sort-anchor" class="ap-dropdown-toggle' . ($selected != '' ? ' active' : '') . '" href="#">' . __( 'Category', 'categories-for-anspress' ) . '</a>';
 			echo '<div class="ap-dropdown-menu">';
 
 		foreach ( $filters as $category_id => $category_name ) {
-			echo '<li '.($selected == $category_id ? 'class="active" ' : '').'><a href="#" data-value="'.$category_id.'">'. $category_name .'</a></li>';
+			echo '<li ' . ($selected == $category_id ? 'class="active" ' : '') . '><a href="#" data-value="' . $category_id . '">'. $category_name . '</a></li>';
 		}
 			echo '<input name="ap_cat_sort" type="hidden" value="'.$selected.'" />';
 			echo '</div>';
@@ -208,62 +213,67 @@ function ap_category_sorting() {
 }
 
 /**
- * Return category image
+ * Return category image.
+ *
  * @param  integer $term_id Category ID.
  * @param  integer $height  image height, without PX.
  */
-function ap_get_category_image($term_id, $height = 32) {
-	$option = get_option( 'ap_cat_'.$term_id );
-	$color = ! empty( $option['ap_color'] ) ? ' background:'.$option['ap_color'].';' : 'background:#333;';
+function ap_get_category_image( $term_id, $height = 32 ) {
+	$option = get_term_meta( $term_id, 'ap_category', true );
+	$color = ! empty( $option['color'] ) ? ' background:' . $option['color'] . ';' : 'background:#333;';
 
-	$style = 'style="'.$color.'height:'.$height.'px;"';
+	$style = 'style="' . $color . 'height:' . $height . 'px;"';
 
 	if ( ! empty( $option['ap_image']['id'] ) ) {
 		$image = wp_get_attachment_image( $option['ap_image']['id'], array( 900, $height ) );
 		return $image;
 	}
 
-	return '<div class="ap-category-defimage" '.$style.'></div>';
+	return '<div class="ap-category-defimage" ' . $style . '></div>';
 }
 
 /**
- * Output category image
+ * Output category image.
+ *
  * @param  integer $term_id Category ID.
  * @param  integer $height  image height, without PX.
  */
-function ap_category_image($term_id, $height = 32) {
-	echo ap_get_category_image( $term_id, $height );
+function ap_category_image( $term_id, $height = 32 ) {
+	echo ap_get_category_image( $term_id, $height ); // WPCS: xss okay.
 }
 
 /**
  * Return category icon.
+ *
  * @param  integer $term_id 	Term ID.
  * @param  string  $attributes 	Custom attributes.
  */
 function ap_get_category_icon( $term_id, $attributes = '' ) {
-	$option = get_option( 'ap_cat_'.$term_id );
-	$color = ! empty( $option['ap_color'] ) ? ' background:'.$option['ap_color'].';' : 'background:#333;';
+	$option = get_term_meta( $term_id, 'ap_category', true );
+	$color = ! empty( $option['color'] ) ? ' background:' . $option['color'] . ';' : 'background:#333;';
 
-	$style = 'style="'.$color.$attributes.'"';
+	$style = 'style="' . $color . $attributes . '"';
 
-	if ( ! empty( $option['ap_icon'] ) ) {
-		return '<span class="ap-category-icon '.$option['ap_icon'].'"'.$style.'></span>';
+	if ( ! empty( $option['icon'] ) ) {
+		return '<span class="ap-category-icon ' . $option['icon'] . '"' . $style . '></span>';
 	} else {
-		return '<span class="ap-category-icon apicon-category"'.$style.'></span>';
+		return '<span class="ap-category-icon apicon-category"' . $style . '></span>';
 	}
 }
 
 /**
  * Output category icon.
+ *
  * @param  integer $term_id 	Term ID.
  * @param  string  $attributes 	Custom attributes.
  */
 function ap_category_icon( $term_id, $attributes = '' ) {
-	echo ap_get_category_icon( $term_id, $attributes );
+	echo ap_get_category_icon( $term_id, $attributes ); // xss okay.
 }
 
 /**
- * Slug for categories page
+ * Slug for categories page.
+ *
  * @return string
  */
 function ap_get_categories_slug() {
@@ -280,7 +290,8 @@ function ap_get_categories_slug() {
 }
 
 /**
- * Slug for category page
+ * Slug for category page.
+ *
  * @return string
  */
 function ap_get_category_slug() {
@@ -298,13 +309,14 @@ function ap_get_category_slug() {
 
 /**
  * Check if category have featured image.
+ *
  * @param  integer $term_id Term ID.
  * @return boolean
  * @since  2.0.2
  */
 function ap_category_have_image( $term_id ) {
-	$option = get_option( 'ap_cat_'.$term_id );
-	if ( ! empty( $option['ap_image']['id'] ) ) {
+	$option = get_term_meta( $term_id, 'ap_category', true );
+	if ( ! empty( $option['image']['id'] ) ) {
 		return true;
 	}
 
@@ -313,16 +325,17 @@ function ap_category_have_image( $term_id ) {
 
 
 /**
- * Output tags html
- * @param  array $args
+ * Output tags html.
+ *
+ * @param  array $args Arguments.
  * @return string
- * @since 1.0
+ * @since  1.0
  */
-function ap_question_tags_html($args = array()) {
+function ap_question_tags_html( $args = [] ) {
 
 	$defaults  = array(
 		'question_id'   => get_the_ID(),
-		'list'           => false,
+		'list'          => false,
 		'tag'           => 'span',
 		'class'         => 'question-tags',
 		'label'         => __( 'Tagged', 'tags-for-anspress' ),
@@ -342,33 +355,25 @@ function ap_question_tags_html($args = array()) {
 	if ( $tags && count( $tags ) > 0 ) {
 		$o = '';
 		if ( $args['list'] ) {
-			$o = '<ul class="'.$args['class'].'">';
+			$o = '<ul class="' . $args['class'] . '">';
 			foreach ( $tags as $t ) {
-				$o .= '<li><a href="'.esc_url( get_term_link( $t ) ).'" title="'.$t->description.'">'. $t->name .' &times; <i class="tax-count">'.$t->count.'</i></a></li>';
+				$o .= '<li><a href="' . esc_url( get_term_link( $t ) ) . '" title="' . $t->description . '">' . $t->name . ' &times; <i class="tax-count">' . $t->count . '</i></a></li>';
 			}
 			$o .= '</ul>';
 		} else {
 			$o = $args['label'];
-			$o .= '<'.$args['tag'].' class="'.$args['class'].'">';
+			$o .= '<' . $args['tag'] . ' class="' . $args['class'] . '">';
 			$i = 1;
 			foreach ( $tags as $t ) {
-				$o .= '<a href="'.esc_url( get_term_link( $t ) ).'" title="'.$t->description.'">'. $t->name .'</a> ';
-				/*
-                if($args['show'] > 0 && $i == $args['show']){
-                    $o_n = '';
-                    foreach($tags as $tag_n)
-                        $o_n .= '<a href="'.esc_url( get_term_link($tag_n)).'" title="'.$tag_n->description.'">'. $tag_n->name .'</a> ';
-
-                    $o .= '<a class="ap-tip" data-tipclass="tags-list" title="'.esc_html($o_n).'" href="#">'. sprintf(__('%d More', 'tags-for-anspress'), count($tags)) .'</a>';
-                    break;
-                }*/
+				$o .= '<a href="' . esc_url( get_term_link( $t ) ) . '" title="' . $t->description . '">' . $t->name . '</a> ';
 				$i++;
 			}
-			$o .= '</'.$args['tag'].'>';
+			$o .= '</' . $args['tag'] . '>';
 		}
 
 		if ( $args['echo'] ) {
-			echo $o; }
+			echo $o; // xss okay.
+		}
 
 		return $o;
 	}
