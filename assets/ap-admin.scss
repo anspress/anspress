@@ -1324,3 +1324,108 @@ span.ap-category-icon {
 .wp-list-table th.column-icon {
   width: 36px;
 }
+.anspress-upgrade{
+  &:before {
+    content: '';
+    background: #8BC34A;
+    height: 259px;
+    width: 100vw;
+    display: block;
+    position: absolute;
+    top: 0;
+    left: -197px;
+  }
+  &-in{
+    position: relative;
+  }
+  h2{
+    text-align: center;
+    margin-bottom: 18px;
+    font-size: 35px;
+    font-weight: 300;
+    color: #fff;
+    margin-top: 38px;
+  }
+  .start-process {
+    margin: 0 auto 40px;
+    padding: 20px 35px;
+    text-decoration: none;
+    font-weight: 300;
+    border-radius: 3px;
+    display: table;
+    font-size: 25px;
+  }
+  .ap-tasks {
+    background: #f5f5f5;
+    border-radius: 4px;
+    display: table;
+    margin: 0 auto;
+    width: 500px;
+    border: solid 1px #ddd;
+    margin-top: 20px;
+    overflow: hidden;
+  }
+  .ap-task{
+    border-bottom: solid 1px #e6e6e6;
+    padding: 22px 22px;
+    font-size: 17px;
+    font-weight: 300;
+    color: #8e8e8e;
+    &.working{
+      background: #fff;
+      .apicon-clock:before{
+        display: none;
+      }
+      span{
+        background: url(../templates/images/loading.gif) no-repeat center / cover;
+        height: 18px;
+        width: 18px;
+      }
+    }
+    &.done{
+      background: #ecf1e7;
+      span{
+        color: #8bc34a;
+      }
+    }
+    &:last-child{
+      border-bottom: none;
+    }
+    &:before, &:after{
+      display: table;
+      clear: both;
+      content: " ";
+    }
+    > * {
+      display: block;
+      float: left;
+    }
+    > i{
+      font-size: 18px;
+      color: #a5a5a5;
+      margin-right: 25px;
+    }
+    > span{
+      float: right;
+      color: #f7b14a;
+    }
+  }
+  p.upgrade-desc {
+    font-size: 19px;
+    max-width: 500px;
+    margin: 0 auto 40px;
+    text-align: center;
+  }
+  .support-link{
+    text-align: center;
+    margin-top: 40px;
+    a{
+      margin-top: 10px;
+    }
+  }
+  .copyright {
+    text-align: center;
+    margin-top: 60px;
+    color: #999;
+  }
+}

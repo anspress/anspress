@@ -7,52 +7,83 @@
  * @package AnsPress
  */
 
-class AP_Update_Helper
-{
-	/**
-	 * Move subscribers from ap_meta table to ap_subscribers table.
-	 * @since 2.4
-	 */
-	/*public function move_subscribers() {
+class AP_Update_Helper {
 
-		if ( ! current_user_can( 'manage_options' ) ) {
+	/**
+	 * Init class.
+	 */
+	public function __construct( $init = false) {
+		if ( $init ) {
+			$active = '';
+
+			foreach ( $this->get_tasks() as $slug => $status ) {
+				if ( ! $status ) {
+					$this->send( true, $slug, '' );
+				}
+			}
+		}
+		$this->migrate_votes();
+	}
+
+	/**
+	 * Get all completed and uncompleted tasks.
+	 *
+	 * @return array
+	 */
+	public function get_tasks() {
+		return wp_parse_args( get_option( 'anspress_updates', [] ), [
+			'votes'         => false,
+			'votes_count'   => false,
+			'answers_count' => false,
+			'views_count'   => false,
+			'reputations'   => false,
+		] );
+	}
+
+	/**
+	 * Send ajax response.
+	 *
+	 * @param boolean $success Is success.
+	 * @param string  $active  Active task slug.
+	 * @param string  $message Response message.
+	 */
+	public function send( $success, $active, $message ) {
+		ap_ajax_json( array(
+			'success' => $success ? true: false,
+			'active'  => $active,
+			'message' => $message,
+			'status'  => $this->get_tasks(),
+		) );
+	}
+
+	public function migrate_votes() {
+		$tasks = $this->get_tasks();
+
+		if ( $tasks['votes'] ) {
 			return;
 		}
 
 		global $wpdb;
-		$count = $wpdb->get_var( "SELECT count(*) FROM {$wpdb->prefix}ap_meta WHERE apmeta_type = 'subscriber' " );
+		$old_votes = $wpdb->get_results( "SELECT SQL_CALC_FOUND_ROWS * FROM {$wpdb->prefix}ap_meta WHERE apmeta_type IN ('vote_up', 'vote_down') LIMIT 50" );
 
-		$i = 1;
-		while ( $count >= $i ) {
-		 	$subscribe = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}ap_meta WHERE apmeta_type = 'subscriber' LIMIT 0,100" );
-		 	if ( $subscribe ) {
-		 		$ids_to_remove = array();
-		 		foreach ( $subscribe as $s ) {
-		 			$type = 'q_all';
-		 			$question_id = 0;
-		 			$ids_to_remove[] = $s->apmeta_id;
-		 			if ( $s->apmeta_param == '' ) {
-		 				$question_id = $s->apmeta_actionid;
-		 			}
+		$total_votes = $wpdb->get_var( "SELECT FOUND_ROWS()" );
+		$fetched = $wpdb->num_rows;
 
-		 			if ( $s->apmeta_param == 'tag' || $s->apmeta_param == 'category' ) {
-		 				$type = 'tax_new_q';
-		 			}
-		 			ap_new_subscriber( $s->apmeta_userid, $s->apmeta_actionid, $type, $question_id );
-		 		}
-
-		 		if ( ! empty( $ids_to_remove ) ) {
-		 			$ids_to_remove = implode( ',', $ids_to_remove );
-		 			$wpdb->query( "DELETE FROM {$wpdb->prefix}ap_meta WHERE find_in_set(apmeta_id, '$ids_to_remove') " );
-		 		}
-		 	}
-
-		 	$i = $i + 100;
+		if ( empty( $old_votes ) ) {
+			$options = get_option( 'anspress_updates', [] );
+			$options['votes'] = true;
+			update_option( 'anspress_updates', $options );
 		}
-		$count = $wpdb->get_var( "SELECT count(*) FROM {$wpdb->prefix}ap_meta WHERE apmeta_type = 'subscriber' " );
 
-		if ( $count < 1 ) {
-			update_option( 'ap_subscribers_moved', true );
+		$apmeta_to_delete = [];
+		foreach ( (array) $old_votes as $vote ) {
+			ap_add_post_vote( $vote->apmeta_actionid, $vote->apmeta_user_id, 'vote_up' === $vote->apmeta_type );
+			$apmeta_to_delete[] = $vote->apmeta_id;
 		}
-	}*/
+
+		$apmeta_to_delete = sanitize_comma_delimited( $apmeta_to_delete, 'int' );
+		$wpdb->query( "DELETE FROM {$wpdb->prefix}ap_meta WHERE apmeta_id IN ({$apmeta_to_delete})" );
+
+		$this->send( true, 'votes', sprintf( __( 'Migrating votes... %1$d out of %2$d', 'anspress-question-answer' ), $fetched, $total_votes ) );
+	}
 }

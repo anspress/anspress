@@ -33,6 +33,7 @@ class AnsPress_Admin_Ajax {
 		anspress()->add_action( 'ap_ajax_get_all_answers', __CLASS__, 'get_all_answers' );
 		anspress()->add_action( 'wp_ajax_ap_uninstall_data', __CLASS__, 'ap_uninstall_data' );
 		anspress()->add_action( 'wp_ajax_ap_toggle_addons', __CLASS__, 'ap_toggle_addons' );
+		anspress()->add_action( 'wp_ajax_ap_migrator_4x', __CLASS__, 'ap_migrator_4x' );
 	}
 
 	/**
@@ -266,6 +267,17 @@ class AnsPress_Admin_Ajax {
 
 		update_option( 'anspress_addons', $addons );
 		wp_die( );
+	}
+
+	public static function ap_migrator_4x() {
+		check_ajax_referer( 'ap_migration', '__nonce' );
+
+		if ( is_super_admin() ) {
+			require_once( ANSPRESS_DIR . 'admin/update.php' );
+			new AP_Update_Helper();
+		}
+
+		wp_die();
 	}
 
 }

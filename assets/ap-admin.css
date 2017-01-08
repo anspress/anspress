@@ -1289,4 +1289,108 @@ span.ap-category-icon {
   width: 36px;
 }
 
+.anspress-upgrade:before {
+  content: '';
+  background: #8BC34A;
+  height: 259px;
+  width: 100vw;
+  display: block;
+  position: absolute;
+  top: 0;
+  left: -197px;
+}
+.anspress-upgrade-in {
+  position: relative;
+}
+.anspress-upgrade h2 {
+  text-align: center;
+  margin-bottom: 18px;
+  font-size: 35px;
+  font-weight: 300;
+  color: #fff;
+  margin-top: 38px;
+}
+.anspress-upgrade .start-process {
+  margin: 0 auto 40px;
+  padding: 20px 35px;
+  text-decoration: none;
+  font-weight: 300;
+  border-radius: 3px;
+  display: table;
+  font-size: 25px;
+}
+.anspress-upgrade .ap-tasks {
+  background: #f5f5f5;
+  border-radius: 4px;
+  display: table;
+  margin: 0 auto;
+  width: 500px;
+  border: solid 1px #ddd;
+  margin-top: 20px;
+  overflow: hidden;
+}
+.anspress-upgrade .ap-task {
+  border-bottom: solid 1px #e6e6e6;
+  padding: 22px 22px;
+  font-size: 17px;
+  font-weight: 300;
+  color: #8e8e8e;
+}
+.anspress-upgrade .ap-task.working {
+  background: #fff;
+}
+.anspress-upgrade .ap-task.working .apicon-clock:before {
+  display: none;
+}
+.anspress-upgrade .ap-task.working span {
+  background: url(../templates/images/loading.gif) no-repeat center/cover;
+  height: 18px;
+  width: 18px;
+}
+.anspress-upgrade .ap-task.done {
+  background: #ecf1e7;
+}
+.anspress-upgrade .ap-task.done span {
+  color: #8bc34a;
+}
+.anspress-upgrade .ap-task:last-child {
+  border-bottom: none;
+}
+.anspress-upgrade .ap-task:before, .anspress-upgrade .ap-task:after {
+  display: table;
+  clear: both;
+  content: " ";
+}
+.anspress-upgrade .ap-task > * {
+  display: block;
+  float: left;
+}
+.anspress-upgrade .ap-task > i {
+  font-size: 18px;
+  color: #a5a5a5;
+  margin-right: 25px;
+}
+.anspress-upgrade .ap-task > span {
+  float: right;
+  color: #f7b14a;
+}
+.anspress-upgrade p.upgrade-desc {
+  font-size: 19px;
+  max-width: 500px;
+  margin: 0 auto 40px;
+  text-align: center;
+}
+.anspress-upgrade .support-link {
+  text-align: center;
+  margin-top: 40px;
+}
+.anspress-upgrade .support-link a {
+  margin-top: 10px;
+}
+.anspress-upgrade .copyright {
+  text-align: center;
+  margin-top: 60px;
+  color: #999;
+}
+
 /*# sourceMappingURL=ap-admin.css.map */

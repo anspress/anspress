@@ -70,7 +70,6 @@ class AnsPress_Admin {
 		anspress()->add_filter( 'posts_clauses', __CLASS__, 'join_by_author_name', 10, 2 );
 		anspress()->add_action( 'get_pages', __CLASS__, 'get_pages', 10, 2 );
 		anspress()->add_action( 'wp_insert_post_data', __CLASS__, 'modify_answer_title', 10, 2 );
-		anspress()->add_action( 'admin_action_ap_update_helper', __CLASS__, 'update_helper' );
 		anspress()->add_action( 'admin_footer-post.php', __CLASS__, 'append_post_status_list' );
 		anspress()->add_action( 'admin_post_anspress_options', __CLASS__, 'process_option_form' );
 		anspress()->add_action( 'admin_post_anspress_update_db', __CLASS__, 'update_db' );
@@ -201,6 +200,8 @@ class AnsPress_Admin {
 
 		add_submenu_page( 'anspress-hidden', __( 'About AnsPress', 'anspress-question-answer' ), __( 'About AnsPress', 'anspress-question-answer' ), 'manage_options', 'anspress_about', array( __CLASS__, 'display_plugin_about_page' ) );
 
+		add_submenu_page( 'anspress-hidden', __( 'Update AnsPress', 'anspress-question-answer' ), __( 'Update AnsPress', 'anspress-question-answer' ), 'manage_options', 'anspress_update', array( __CLASS__, 'update_page' ) );
+
 	}
 
 	/**
@@ -268,6 +269,15 @@ class AnsPress_Admin {
 	 */
 	public static function dashboard_page() {
 		include_once( 'views/dashboard.php' );
+	}
+
+	/**
+	 * Load dashboard page layout.
+	 *
+	 * @since 2.4
+	 */
+	public static function update_page() {
+		include_once( 'views/updates.php' );
 	}
 
 	/**
@@ -571,21 +581,6 @@ class AnsPress_Admin {
 
 		return $data;
 	}
-	// @codingStandardsIgnoreStart
-	public static function update_helper() {
-		/*require_once(ANSPRESS_DIR.'admin/update.php' );
-
-		$ap_update_helper = new AP_Update_Helper;
-
-		// Move subscribers.
-		if ( get_option( 'ap_subscribers_moved', false ) ) {
-			$ap_update_helper->move_subscribers();
-		}*/
-		delete_option( 'ap_update_helper' );
-		wp_redirect( 'admin.php?page=anspress' );
-		wp_die();
-	}
-	// @codingStandardsIgnoreEnd
 
 	/**
 	 * Add AnsPress post status to post edit select box.
