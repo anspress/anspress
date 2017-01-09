@@ -31,6 +31,7 @@ class AP_Update_Helper {
 		$this->migrate_views();
 		$this->migrate_reputations();
 		$this->best_answers();
+		$this->restore_last_updated();
 	}
 
 	/**
@@ -56,6 +57,7 @@ class AP_Update_Helper {
 			'views_count'   => false,
 			'reputations'   => false,
 			'best_answers'  => false,
+			'restore_date'  => false,
 		] );
 	}
 
@@ -306,5 +308,36 @@ class AP_Update_Helper {
 		}
 
 		$this->send( true, 'best_answers', sprintf( __( 'Updated best answers... %1$d out of %2$d', 'anspress-question-answer' ), $fetched, $total ), true );
+	}
+
+	/**
+	 * Restore last_updated date of question and answer.
+	 */
+	public function restore_last_updated() {
+		$tasks = $this->get_tasks();
+
+		if ( in_array( false, $tasks, true ) ) {
+			return;
+		}
+
+		global $wpdb;
+		$old = $wpdb->get_results( "SELECT SQL_CALC_FOUND_ROWS * FROM {$wpdb->prefix}postmeta WHERE meta_key = '_ap_updated' LIMIT 100" ); // DB call okay, Db cache okay.
+
+		$total = $wpdb->get_var( 'SELECT FOUND_ROWS()' ); // DB call okay, Db cache okay.
+		$fetched = $wpdb->num_rows;
+
+		if ( empty( $old ) ) {
+			$options = get_option( 'anspress_updates', [] );
+			$options['restore_date'] = true;
+			update_option( 'anspress_updates', $options );
+			$this->send( true, 'restore_date', __( 'Successfully restored dates', 'anspress-question-answer' ), true );
+		}
+
+		foreach ( (array) $old as $meta ) {
+			$wpdb->update( $wpdb->ap_qameta, [ 'last_updated' => $meta->meta_value ] ); // @codingStandardsIgnoreLine
+			delete_post_meta( $meta->post_id, '_ap_updated' );
+		}
+
+		$this->send( true, 'restore_date', sprintf( __( 'Restored dates... %1$d out of %2$d', 'anspress-question-answer' ), $fetched, $total ), true );
 	}
 }

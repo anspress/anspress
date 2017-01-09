@@ -9,7 +9,7 @@
  */
 
 // If this file is called directly, abort.
-if (! defined('WPINC')) {
+if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
@@ -21,6 +21,7 @@ $tasks = array(
 	'views_count'   => [ 'label' => __( 'Re-count post views', 'anspress-question-answer' ), 'icon' => 'apicon-eye' ],
 	'reputations'   => [ 'label' => __( 'Migrate reputation data', 'anspress-question-answer' ), 'icon' => 'apicon-reputation' ],
 	'best_answers'  => [ 'label' => __( 'Best answers', 'anspress-question-answer' ), 'icon' => 'apicon-answer' ],
+	'restore_date'  => [ 'label' => __( 'Restore last updated date', 'anspress-question-answer' ), 'icon' => 'apicon-calendar' ],
 );
 
 ?>
