@@ -30,6 +30,7 @@ class AP_Update_Helper {
 		$this->answers_count();
 		$this->migrate_views();
 		$this->migrate_reputations();
+		$this->best_answers();
 	}
 
 	/**
@@ -54,6 +55,7 @@ class AP_Update_Helper {
 			'answers_count' => false,
 			'views_count'   => false,
 			'reputations'   => false,
+			'best_answers'  => false,
 		] );
 	}
 
@@ -272,5 +274,37 @@ class AP_Update_Helper {
 		$wpdb->query( "DELETE FROM {$wpdb->prefix}ap_meta WHERE apmeta_id IN ({$apmeta_to_delete})" ); // DB call okay, Db cache okay.
 
 		$this->send( true, 'reputations', sprintf( __( 'Migrated reputation... %1$d out of %2$d', 'anspress-question-answer' ), $fetched, $total_reputations ), true );
+	}
+
+	/**
+	 * Update best answer meta.
+	 */
+	public function best_answers() {
+		$tasks = $this->get_tasks();
+
+		if ( $tasks['best_answers'] ) {
+			return;
+		}
+
+		global $wpdb;
+		$old = $wpdb->get_results( "SELECT SQL_CALC_FOUND_ROWS * FROM {$wpdb->prefix}postmeta WHERE meta_key = '_ap_best_answer' LIMIT 50" ); // DB call okay, Db cache okay.
+
+		$total = $wpdb->get_var( 'SELECT FOUND_ROWS()' ); // DB call okay, Db cache okay.
+		$fetched = $wpdb->num_rows;
+
+		if ( empty( $old ) ) {
+			$options = get_option( 'anspress_updates', [] );
+			$options['best_answers'] = true;
+			update_option( 'anspress_updates', $options );
+			$this->send( true, 'reputations', __( 'Successfully updated best answers', 'anspress-question-answer' ), true );
+		}
+
+		foreach ( (array) $old as $meta ) {
+			ap_set_selected_answer( $meta->post_id, $meta->meta_value );
+			delete_post_meta( $meta->post_id, '_ap_best_answer' );
+			delete_post_meta( $meta->meta_value, '_ap_selected' );
+		}
+
+		$this->send( true, 'best_answers', sprintf( __( 'Updated best answers... %1$d out of %2$d', 'anspress-question-answer' ), $fetched, $total ), true );
 	}
 }
