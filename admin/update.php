@@ -31,6 +31,7 @@ class AP_Update_Helper {
 		$this->migrate_views();
 		$this->migrate_reputations();
 		$this->best_answers();
+		$this->post_activities();
 		$this->restore_last_updated();
 	}
 
@@ -52,12 +53,13 @@ class AP_Update_Helper {
 	 */
 	public function get_tasks() {
 		return wp_parse_args( get_option( 'anspress_updates', [] ), [
-			'votes'         => false,
-			'answers_count' => false,
-			'views_count'   => false,
-			'reputations'   => false,
-			'best_answers'  => false,
-			'restore_date'  => false,
+			'votes'           => false,
+			'answers_count'   => false,
+			'views_count'     => false,
+			'reputations'     => false,
+			'best_answers'    => false,
+			'post_activities' => false,
+			'restore_date'    => false,
 		] );
 	}
 
@@ -311,10 +313,47 @@ class AP_Update_Helper {
 	}
 
 	/**
+	 * Update post activities meta.
+	 */
+	public function post_activities() {
+		$tasks = $this->get_tasks();
+
+		if ( $tasks['post_activities'] ) {
+			return;
+		}
+
+		global $wpdb;
+		$old = $wpdb->get_results( "SELECT SQL_CALC_FOUND_ROWS * FROM {$wpdb->prefix}postmeta WHERE meta_key = '__ap_activity' LIMIT 50" ); // DB call okay, Db cache okay.
+
+		$total = $wpdb->get_var( 'SELECT FOUND_ROWS()' ); // DB call okay, Db cache okay.
+		$fetched = $wpdb->num_rows;
+
+		if ( empty( $old ) ) {
+			$options = get_option( 'anspress_updates', [] );
+			$options['post_activities'] = true;
+			update_option( 'anspress_updates', $options );
+			$this->send( true, 'reputations', __( 'Successfully post activities', 'anspress-question-answer' ), true );
+		}
+
+		foreach ( (array) $old as $meta ) {
+			$wpdb->update( $wpdb->ap_qameta, [ 'activities' => $meta->meta_value ], [ '%s' ] ); // @codingStandardsIgnoreLine
+			delete_post_meta( $meta->post_id, '__ap_activity' );
+		}
+
+		$this->send( true, 'post_activities', sprintf( __( 'Updated post activities... %1$d out of %2$d', 'anspress-question-answer' ), $fetched, $total ), true );
+	}
+
+	/**
 	 * Restore last_updated date of question and answer.
 	 */
 	public function restore_last_updated() {
 		$tasks = $this->get_tasks();
+
+		if ( $tasks['restore_date'] ) {
+			return;
+		}
+
+		unset( $tasks['restore_date'] );
 
 		if ( in_array( false, $tasks, true ) ) {
 			return;
@@ -334,7 +373,7 @@ class AP_Update_Helper {
 		}
 
 		foreach ( (array) $old as $meta ) {
-			$wpdb->update( $wpdb->ap_qameta, [ 'last_updated' => $meta->meta_value ] ); // @codingStandardsIgnoreLine
+			$wpdb->update( $wpdb->ap_qameta, [ 'last_updated' => $meta->meta_value ], [ '%s' ] ); // @codingStandardsIgnoreLine
 			delete_post_meta( $meta->post_id, '_ap_updated' );
 		}
 

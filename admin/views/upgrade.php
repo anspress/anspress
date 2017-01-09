@@ -21,6 +21,7 @@ $tasks = array(
 	'views_count'   => [ 'label' => __( 'Re-count post views', 'anspress-question-answer' ), 'icon' => 'apicon-eye' ],
 	'reputations'   => [ 'label' => __( 'Migrate reputation data', 'anspress-question-answer' ), 'icon' => 'apicon-reputation' ],
 	'best_answers'  => [ 'label' => __( 'Best answers', 'anspress-question-answer' ), 'icon' => 'apicon-answer' ],
+	'post_activities'  => [ 'label' => __( 'Restore post activities', 'anspress-question-answer' ), 'icon' => 'apicon-pulse' ],
 	'restore_date'  => [ 'label' => __( 'Restore last updated date', 'anspress-question-answer' ), 'icon' => 'apicon-calendar' ],
 );
 
