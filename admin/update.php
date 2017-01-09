@@ -26,13 +26,8 @@ class AP_Update_Helper {
 			}
 		}
 		$this->check_tables();
-		$this->migrate_votes();
-		$this->answers_count();
-		$this->migrate_views();
+		$this->migrate_post_data();
 		$this->migrate_reputations();
-		$this->best_answers();
-		$this->post_activities();
-		$this->restore_last_updated();
 	}
 
 	/**
@@ -53,13 +48,8 @@ class AP_Update_Helper {
 	 */
 	public function get_tasks() {
 		return wp_parse_args( get_option( 'anspress_updates', [] ), [
-			'votes'           => false,
-			'answers_count'   => false,
-			'views_count'     => false,
-			'reputations'     => false,
-			'best_answers'    => false,
-			'post_activities' => false,
-			'restore_date'    => false,
+			'post_data'   => false,
+			'reputations' => false,
 		] );
 	}
 
@@ -80,122 +70,161 @@ class AP_Update_Helper {
 		) );
 	}
 
-	/**
-	 * Migrate votes data from `ap_meta` table to `ap_votes` table.
-	 *
-	 * @since 4.0.0
-	 */
-	public function migrate_votes() {
+	public function migrate_post_data() {
 		$tasks = $this->get_tasks();
 
-		if ( $tasks['votes'] ) {
-			return;
-		}
-
-		global $wpdb;
-		$old_votes = $wpdb->get_results( "SELECT SQL_CALC_FOUND_ROWS * FROM {$wpdb->prefix}ap_meta WHERE apmeta_type IN ('vote_up', 'vote_down') LIMIT 50" ); // DB call okay, Db cache okay.
-
-		$total_votes = $wpdb->get_var( 'SELECT FOUND_ROWS()' ); // DB call okay, Db cache okay.
-		$fetched = $wpdb->num_rows;
-
-		if ( empty( $old_votes ) ) {
-			$options = get_option( 'anspress_updates', [] );
-			$options['votes'] = true;
-			update_option( 'anspress_updates', $options );
-			$this->send( true, 'votes', __( 'Successfully migrated all votes', 'anspress-question-answer' ), true );
-		}
-
-		$apmeta_to_delete = [];
-		foreach ( (array) $old_votes as $vote ) {
-			ap_add_post_vote( $vote->apmeta_actionid, $vote->apmeta_userid, 'vote_up' === $vote->apmeta_type );
-			$apmeta_to_delete[] = $vote->apmeta_id;
-
-			// Delete post meta.
-			delete_post_meta( $vote->apmeta_actionid, '_ap_vote' );
-		}
-
-		// Delete all migrated data.
-		$apmeta_to_delete = sanitize_comma_delimited( $apmeta_to_delete, 'int' );
-		$wpdb->query( "DELETE FROM {$wpdb->prefix}ap_meta WHERE apmeta_id IN ({$apmeta_to_delete})" ); // DB call okay, Db cache okay.
-
-		$this->send( true, 'votes', sprintf( __( 'Migrating votes... %1$d out of %2$d', 'anspress-question-answer' ), $fetched, $total_votes ), true );
-	}
-
-	/**
-	 * Re-count answers.
-	 */
-	public function answers_count() {
-		$tasks = $this->get_tasks();
-
-		if ( $tasks['answers_count'] ) {
+		if ( $tasks['post_data'] ) {
 			return;
 		}
 
 		global $wpdb;
 		$done = (int) get_option( 'anspress_updated_q_offset', 0 );
-		$ids = $wpdb->get_col( "SELECT SQL_CALC_FOUND_ROWS ID FROM {$wpdb->posts} WHERE post_type='question' LIMIT {$done},50" );
+		$ids = $wpdb->get_results( "SELECT SQL_CALC_FOUND_ROWS ID, post_type, post_parent, post_status FROM {$wpdb->posts} WHERE post_type='question' OR post_type='answer' LIMIT {$done},50" );
 		$total_ids = $wpdb->get_var( 'SELECT FOUND_ROWS()' ); // DB call okay, Db cache okay.
 
 		if ( empty( $ids ) ) {
 			$options = get_option( 'anspress_updates', [] );
-			$options['answers_count'] = true;
+			$options['post_data'] = true;
 			update_option( 'anspress_updates', $options );
-			$this->send( true, 'answers_count', __( 'Answers count updated', 'anspress-question-answer' ), true );
+			$this->send( true, 'post_data', __( 'Post data updated successfully', 'anspress-question-answer' ), true );
 		}
 
 		// Update answers count.
-		foreach ( (array) $ids as $id ) {
-			ap_update_answers_count( $id );
+		foreach ( (array) $ids as $_post ) {
+			if ( 'question' === $_post->post_type ) {
+				$this->update_answers_count( $_post );
+				// Delete post meta.
+				delete_post_meta( $_post->ID, '_ap_answers' );
+				$this->migrate_views( $_post->ID );
+				$this->subscribers( $_post->ID );
+				$this->change_closed_status( $_post );
 
-			// Delete post meta.
-			delete_post_meta( $id, '_ap_answers' );
+				delete_post_meta( $_post->ID, '_ap_participants' );
+			}
+
+			if ( 'answer' === $_post->post_type ) {
+				$this->best_answers( $_post );
+			}
+
+			$this->flags( $_post->ID );
+			$this->migrate_votes( $_post->ID );
+			$this->post_activities( $_post );
+			$this->restore_last_updated( $_post );
 		}
 
 		$done = $done + count( $ids );
 		update_option( 'anspress_updated_q_offset', $done );
-		$this->send( true, 'answers_count', sprintf( __( 'Updated answers count... %1$d out of %2$d', 'anspress-question-answer' ), count( $done ), $total_ids ), true );
+		$this->send( true, 'post_data', sprintf( __( 'Updated %1$d posts out of %2$d', 'anspress-question-answer' ), count( $done ), $total_ids ), true );
+	}
+
+	/**
+	 * Change closed post status to publish.
+	 *
+	 * @param object $_post Post object.
+	 */
+	public function change_closed_status( $_post ) {
+		if ( 'closed' === $_post->post_status ) {
+			global $wpdb;
+
+			$wpdb->update( $wpdb->posts, [ 'post_status' => 'publish' ], [ 'ID' => $_post->ID ], [ '%s' ] );
+			ap_toggle_close_question( $_post->ID );
+		}
+	}
+
+	/**
+	 * Migrate votes data from `ap_meta` table to `ap_votes` table.
+	 *
+	 * @param integer $post_id Post ID.
+	 * @since 4.0.0
+	 */
+	public function migrate_votes( $post_id ) {
+		global $wpdb;
+
+		$post_id = (int) $post_id;
+
+		$old_votes = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}ap_meta WHERE apmeta_type IN ('vote_up', 'vote_down') AND apmeta_actionid = {$post_id}" ); // @codingStandardsIgnoreLine
+
+		$apmeta_to_delete = [];
+		foreach ( (array) $old_votes as $vote ) {
+			ap_add_post_vote( $post_id, $vote->apmeta_userid, 'vote_up' === $vote->apmeta_type );
+			$apmeta_to_delete[] = $vote->apmeta_id;
+
+			// Delete post meta.
+			delete_post_meta( $post_id, '_ap_vote' );
+		}
+
+		// Delete all migrated data.
+		$apmeta_to_delete = sanitize_comma_delimited( $apmeta_to_delete, 'int' );
+		$wpdb->query( "DELETE FROM {$wpdb->prefix}ap_meta WHERE apmeta_id IN ({$apmeta_to_delete})" ); // @codingStandardsIgnoreLine
+	}
+
+	/**
+	 * Re-count answers.
+	 */
+	public function update_answers_count( $_post ) {
+
+		// Update answers count.
+		ap_update_answers_count( $_post->ID );
+
+		// Delete post meta.
+		delete_post_meta( $_post->ID, '_ap_answers' );
 	}
 
 	/**
 	 * Migrate views data to new table.
 	 */
-	public function migrate_views() {
-		$tasks = $this->get_tasks();
-
-		if ( $tasks['views_count'] ) {
-			return;
-		}
-
+	public function migrate_views( $post_id ) {
 		global $wpdb;
-		$old_views = $wpdb->get_results( "SELECT SQL_CALC_FOUND_ROWS * FROM {$wpdb->prefix}ap_meta WHERE apmeta_type = 'post_view' LIMIT 50" ); // DB call okay, Db cache okay.
+		$post_id = (int) $post_id;
 
-		$total_views = $wpdb->get_var( 'SELECT FOUND_ROWS()' ); // DB call okay, Db cache okay.
-		$fetched = $wpdb->num_rows;
-
-		if ( empty( $old_votes ) ) {
-			$options = get_option( 'anspress_updates', [] );
-			$options['views_count'] = true;
-			update_option( 'anspress_updates', $options );
-			$this->send( true, 'views_count', __( 'Successfully migrated all views', 'anspress-question-answer' ), true );
-		}
+		$old_views = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}ap_meta WHERE apmeta_type = 'post_view' AND apmeta_actionid = {$post_id}" ); // DB call okay, Db cache okay.
 
 		$apmeta_to_delete = [];
 		foreach ( (array) $old_views as $view ) {
-			ap_insert_views( $view->apmeta_actionid, 'question', $view->apmeta_userid, $view->apmeta_value );
+			ap_insert_views( $post_id, 'question', $view->apmeta_userid, $view->apmeta_value );
 			$apmeta_to_delete[] = $vote->apmeta_id;
-
-			$views = (int) get_post_meta( $vote->apmeta_actionid, '_views', true );
-			ap_update_views_count( $vote->apmeta_actionid, $views );
-
-			// Delete post meta.
-			delete_post_meta( $vote->apmeta_actionid, '_views' );
 		}
 
 		// Delete all migrated data.
 		$apmeta_to_delete = sanitize_comma_delimited( $apmeta_to_delete, 'int' );
-		$wpdb->query( "DELETE FROM {$wpdb->prefix}ap_meta WHERE apmeta_id IN ({$apmeta_to_delete})" ); // DB call okay, Db cache okay.
+		$wpdb->query( "DELETE FROM {$wpdb->prefix}ap_meta WHERE apmeta_id IN ({$apmeta_to_delete})" ); // @codingStandardsIgnoreLine
 
-		$this->send( true, 'votes', sprintf( __( 'Migrated views... %1$d out of %2$d', 'anspress-question-answer' ), $fetched, $total_views ), true );
+		$views = (int) get_post_meta( $post_id, '_views', true );
+		ap_update_views_count( $post_id, $views );
+
+		// Delete post meta.
+		delete_post_meta( $post_id, '_views' );
+	}
+
+	/**
+	 * Update best answer meta.
+	 */
+	public function best_answers( $_post ) {
+		ap_set_selected_answer( $_post->post_parent, $_post->ID );
+		delete_post_meta( $_post->post_parent, '_ap_selected' );
+		delete_post_meta( $_post->ID, '_ap_best_answer' );
+	}
+
+	/**
+	 * Update subscribers count and delete post meta.
+	 *
+	 * @param integer $post_id Post ID.
+	 */
+	public function subscribers( $post_id ) {
+		$count = get_post_meta( $post_id, '_ap_subscriber', true );
+		ap_update_subscribers_count( $post_id, $count );
+		delete_post_meta( $post_id, '_ap_subscriber' );
+	}
+
+	/**
+	 * Update flags count and delete post meta.
+	 *
+	 * @param integer $post_id Post ID.
+	 */
+	public function flags( $post_id ) {
+		$count = get_post_meta( $post_id, '_ap_flag', true );
+		ap_set_flag_count( $post_id, $count );
+		delete_post_meta( $post_id, '_ap_flag' );
 	}
 
 	/**
@@ -281,102 +310,23 @@ class AP_Update_Helper {
 	}
 
 	/**
-	 * Update best answer meta.
-	 */
-	public function best_answers() {
-		$tasks = $this->get_tasks();
-
-		if ( $tasks['best_answers'] ) {
-			return;
-		}
-
-		global $wpdb;
-		$old = $wpdb->get_results( "SELECT SQL_CALC_FOUND_ROWS * FROM {$wpdb->prefix}postmeta WHERE meta_key = '_ap_best_answer' LIMIT 50" ); // DB call okay, Db cache okay.
-
-		$total = $wpdb->get_var( 'SELECT FOUND_ROWS()' ); // DB call okay, Db cache okay.
-		$fetched = $wpdb->num_rows;
-
-		if ( empty( $old ) ) {
-			$options = get_option( 'anspress_updates', [] );
-			$options['best_answers'] = true;
-			update_option( 'anspress_updates', $options );
-			$this->send( true, 'reputations', __( 'Successfully updated best answers', 'anspress-question-answer' ), true );
-		}
-
-		foreach ( (array) $old as $meta ) {
-			ap_set_selected_answer( $meta->post_id, $meta->meta_value );
-			delete_post_meta( $meta->post_id, '_ap_best_answer' );
-			delete_post_meta( $meta->meta_value, '_ap_selected' );
-		}
-
-		$this->send( true, 'best_answers', sprintf( __( 'Updated best answers... %1$d out of %2$d', 'anspress-question-answer' ), $fetched, $total ), true );
-	}
-
-	/**
 	 * Update post activities meta.
 	 */
-	public function post_activities() {
-		$tasks = $this->get_tasks();
-
-		if ( $tasks['post_activities'] ) {
-			return;
-		}
-
+	public function post_activities( $_post ) {
 		global $wpdb;
-		$old = $wpdb->get_results( "SELECT SQL_CALC_FOUND_ROWS * FROM {$wpdb->prefix}postmeta WHERE meta_key = '__ap_activity' LIMIT 50" ); // DB call okay, Db cache okay.
+		$activity = maybe_serialize( get_post_meta( $_post->ID, '__ap_activity', true ) );
+		delete_post_meta( $_post->ID, '__ap_activity' );
 
-		$total = $wpdb->get_var( 'SELECT FOUND_ROWS()' ); // DB call okay, Db cache okay.
-		$fetched = $wpdb->num_rows;
-
-		if ( empty( $old ) ) {
-			$options = get_option( 'anspress_updates', [] );
-			$options['post_activities'] = true;
-			update_option( 'anspress_updates', $options );
-			$this->send( true, 'reputations', __( 'Successfully post activities', 'anspress-question-answer' ), true );
-		}
-
-		foreach ( (array) $old as $meta ) {
-			$wpdb->update( $wpdb->ap_qameta, [ 'activities' => $meta->meta_value ], [ '%s' ] ); // @codingStandardsIgnoreLine
-			delete_post_meta( $meta->post_id, '__ap_activity' );
-		}
-
-		$this->send( true, 'post_activities', sprintf( __( 'Updated post activities... %1$d out of %2$d', 'anspress-question-answer' ), $fetched, $total ), true );
+		$wpdb->update( $wpdb->ap_qameta, [ 'activities' => $activity ], [ 'post_id' => $_post->ID ], [ '%s' ] );
 	}
 
 	/**
 	 * Restore last_updated date of question and answer.
 	 */
-	public function restore_last_updated() {
-		$tasks = $this->get_tasks();
-
-		if ( $tasks['restore_date'] ) {
-			return;
-		}
-
-		unset( $tasks['restore_date'] );
-
-		if ( in_array( false, $tasks, true ) ) {
-			return;
-		}
-
+	public function restore_last_updated( $_post ) {
 		global $wpdb;
-		$old = $wpdb->get_results( "SELECT SQL_CALC_FOUND_ROWS * FROM {$wpdb->prefix}postmeta WHERE meta_key = '_ap_updated' LIMIT 100" ); // DB call okay, Db cache okay.
-
-		$total = $wpdb->get_var( 'SELECT FOUND_ROWS()' ); // DB call okay, Db cache okay.
-		$fetched = $wpdb->num_rows;
-
-		if ( empty( $old ) ) {
-			$options = get_option( 'anspress_updates', [] );
-			$options['restore_date'] = true;
-			update_option( 'anspress_updates', $options );
-			$this->send( true, 'restore_date', __( 'Successfully restored dates', 'anspress-question-answer' ), true );
-		}
-
-		foreach ( (array) $old as $meta ) {
-			$wpdb->update( $wpdb->ap_qameta, [ 'last_updated' => $meta->meta_value ], [ '%s' ] ); // @codingStandardsIgnoreLine
-			delete_post_meta( $meta->post_id, '_ap_updated' );
-		}
-
-		$this->send( true, 'restore_date', sprintf( __( 'Restored dates... %1$d out of %2$d', 'anspress-question-answer' ), $fetched, $total ), true );
+		$last_updated = get_post_meta( $_post->ID, '_ap_updated', true );
+		$wpdb->update( $wpdb->ap_qameta, [ 'last_updated' => $last_updated ], [ 'post_id' => $_post->ID ], [ '%s' ] ); // @codingStandardsIgnoreLine
+		delete_post_meta( $_post->ID, '_ap_updated' );
 	}
 }

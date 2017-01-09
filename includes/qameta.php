@@ -53,6 +53,10 @@ function ap_insert_qameta( $post_id, $args, $wp_error = false ) {
 
 	$_post = get_post( $post_id );
 
+	if ( ! $_post ) {
+		return false;
+	}
+
 	$args = wp_unslash( wp_parse_args( $args, [
 		'ptype' => $_post->post_type,
 	]));

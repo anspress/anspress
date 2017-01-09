@@ -16,13 +16,8 @@ if ( ! defined( 'WPINC' ) ) {
 $done = get_option( 'anspress_updates', [] );
 
 $tasks = array(
-	'votes'         => [ 'label' => __( 'Migrate votes data', 'anspress-question-answer' ), 'icon' => 'apicon-thumb-up' ],
-	'answers_count' => [ 'label' => __( 'Re-count answers', 'anspress-question-answer' ), 'icon' => 'apicon-answer' ],
-	'views_count'   => [ 'label' => __( 'Re-count post views', 'anspress-question-answer' ), 'icon' => 'apicon-eye' ],
+	'post_data'     => [ 'label' => __( 'Questions and Answers', 'anspress-question-answer' ), 'icon' => 'apicon-question' ],
 	'reputations'   => [ 'label' => __( 'Migrate reputation data', 'anspress-question-answer' ), 'icon' => 'apicon-reputation' ],
-	'best_answers'  => [ 'label' => __( 'Best answers', 'anspress-question-answer' ), 'icon' => 'apicon-answer' ],
-	'post_activities'  => [ 'label' => __( 'Restore post activities', 'anspress-question-answer' ), 'icon' => 'apicon-pulse' ],
-	'restore_date'  => [ 'label' => __( 'Restore last updated date', 'anspress-question-answer' ), 'icon' => 'apicon-calendar' ],
 );
 
 ?>
