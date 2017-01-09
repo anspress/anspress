@@ -182,7 +182,7 @@ class AP_Update_Helper {
 		$apmeta_to_delete = [];
 		foreach ( (array) $old_views as $view ) {
 			ap_insert_views( $post_id, 'question', $view->apmeta_userid, $view->apmeta_value );
-			$apmeta_to_delete[] = $vote->apmeta_id;
+			$apmeta_to_delete[] = $view->apmeta_id;
 		}
 
 		// Delete all migrated data.

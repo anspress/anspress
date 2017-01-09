@@ -683,12 +683,22 @@ class AnsPress_Admin {
 	 * Show AnsPress notices.
 	 */
 	public static function anspress_notice() {
+		$page = get_current_screen();
+		$anspress_updates = get_option( 'anspress_updates', [] );
+		$have_updates = empty( $anspress_updates ) || in_array( false, $anspress_updates, true );
+
 		$messages = array(
 			'db' => [
 				'type'    => 'error',
 				'message' => __( 'AnsPress database is not updated.', 'anspress-question-answer' ),
 				'button'  => ' <a class="button" href="' . admin_url( 'admin-post.php?action=anspress_update_db' ) . '">' . __( 'Update now', 'anspress-question-answer' ) . '</a>',
 				'show'    => ( get_option( 'anspress_db_version' ) != AP_DB_VERSION )
+			],
+			'upgrade' => [
+				'type'    => 'error',
+				'message' => __( 'You must continue to upgrade AnsPress data.', 'anspress-question-answer' ),
+				'button'  => ' <a class="button" href="' . admin_url( 'admin.php?page=anspress_upgrade' ) . '">' . __( 'Upgrade now', 'anspress-question-answer' ) . '</a>',
+				'show'    => ( 'admin_page_anspress_upgrade' !== $page->base && $have_updates ),
 			],
 		);
 
