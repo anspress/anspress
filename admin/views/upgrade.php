@@ -29,7 +29,7 @@ $tasks = array(
 		<p class="upgrade-desc"><?php _e( 'This page will help you with automatically migrating AnsPress 3.x data to 4.x. Please make sure to create a backup of site before starting upgrade.', 'anspress-question-answer' ); ?></p>
 		<a href="#" id="do-tasks" class="button start-process"><?php _e( 'Start Upgrade', 'anspress-question-answer' ); ?></a>
 	</div>
-
+		<div class="error-happen"><?php _e( 'Aaiyaa! Something went wrong. Please click above button again or report issue to us.', 'anspress-question-answer' ); ?></div>
 		<div class="ap-tasks">
 			<?php foreach ( (array) $tasks as $slug => $task ) : ?>
 				<div class="ap-task<?php echo isset( $done[ $slug ] ) && $done[ $slug ] ? ' done' : ''; ?>" data-task="<?php echo $slug; ?>">
@@ -49,12 +49,17 @@ $tasks = array(
 
 <script type="text/javascript">
 	jQuery(document).ready(function($){
+		var running = false;
+		var count = 0;
 		var doTask = function(init){
 			init = init||false;
+			running = true;
+			count++;
 			AnsPress.ajax({
 				url: '<?php echo admin_url( "admin-ajax.php" ); ?>',
 				data: {action: 'ap_migrator_4x', '__nonce' : "<?php echo wp_create_nonce( 'ap_migration' ); ?>", init: init},
 				success: function(data){
+					running = false;
 					if(data.success){
 						if(data.active){
 							$('[data-task="'+data.active+'"]').addClass('working');
@@ -63,13 +68,18 @@ $tasks = array(
 						}
 
 						if(data.status){
-							$.each(data.status, function(st, k){
+							$.each(data.status, function(k, st){
+								if(st){
+									$('[data-task="'+k+'"]').addClass('done').removeClass('working');
+									$('[data-task="'+k+'"] span').attr('class', 'apicon-check');
+								}
 
-								$('[data-task="'+k+'"]').addClass('done').removeClass('working');
-								$('[data-task="'+k+'"] span').attr('class', 'apicon-check');
-
-								if(!st){
+								if(!st && !running && data.continue && count < 20){
 									doTask();
+								}
+
+								if(count === 20){
+									$('.error-happen').css('display', 'table');
 								}
 							});
 						}
@@ -83,6 +93,8 @@ $tasks = array(
 
 		$('#do-tasks').click(function(e){
 			e.preventDefault();
+			count = 0;
+			$('.error-happen').hide();
 			doTask(true);
 		})
 	});

@@ -1328,7 +1328,7 @@ span.ap-category-icon {
   &:before {
     content: '';
     background: #8BC34A;
-    height: 259px;
+    height: 235px;
     width: 100vw;
     display: block;
     position: absolute;
@@ -1354,6 +1354,15 @@ span.ap-category-icon {
     border-radius: 3px;
     display: table;
     font-size: 25px;
+  }
+  .error-happen {
+    display: none;
+    margin: 0 auto;
+    max-width: 500px;
+    border: solid 2px #ffa7a1;
+    padding: 8px 15px;
+    background: #fff;
+    border-radius: 3px;
   }
   .ap-tasks {
     background: #f5f5f5;
@@ -1429,3 +1438,4 @@ span.ap-category-icon {
     color: #999;
   }
 }
+

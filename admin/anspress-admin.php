@@ -200,7 +200,7 @@ class AnsPress_Admin {
 
 		add_submenu_page( 'anspress-hidden', __( 'About AnsPress', 'anspress-question-answer' ), __( 'About AnsPress', 'anspress-question-answer' ), 'manage_options', 'anspress_about', array( __CLASS__, 'display_plugin_about_page' ) );
 
-		add_submenu_page( 'anspress-hidden', __( 'Update AnsPress', 'anspress-question-answer' ), __( 'Update AnsPress', 'anspress-question-answer' ), 'manage_options', 'anspress_update', array( __CLASS__, 'update_page' ) );
+		add_submenu_page( 'anspress-hidden', __( 'Upgrade AnsPress', 'anspress-question-answer' ), __( 'Upgrade AnsPress', 'anspress-question-answer' ), 'manage_options', 'anspress_upgrade', array( __CLASS__, 'upgrade_page' ) );
 
 	}
 
@@ -276,8 +276,8 @@ class AnsPress_Admin {
 	 *
 	 * @since 2.4
 	 */
-	public static function update_page() {
-		include_once( 'views/updates.php' );
+	public static function upgrade_page() {
+		include_once( 'views/upgrade.php' );
 	}
 
 	/**
@@ -710,6 +710,6 @@ class AnsPress_Admin {
 			update_option( 'anspress_db_version', AP_DB_VERSION );
 		}
 
-		wp_safe_redirect( admin_url( 'admin.php?page=anspress_options' ) );
+		wp_redirect( admin_url( 'admin.php?page=anspress_options' ) );
 	}
 }

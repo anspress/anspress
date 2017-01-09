@@ -337,7 +337,7 @@ function ap_sanitize_description_field( $content ) {
 	$content = preg_replace_callback( '/<pre.*?>(.*?)<\/pre>/imsu', 'ap_sanitize_description_field_pre_content', $content );
 	$content = preg_replace_callback( '/<code.*?>(.*?)<\/code>/imsu', 'ap_sanitize_description_field_code_content', $content );
 	$content = wp_kses( $content, ap_form_allowed_tags() );
-	$content = wp_unslash( sanitize_post_field( 'post_content', $content, 0, 'db' ) );
+	$content = sanitize_post_field( 'post_content', $content, 0, 'db' );
 	return $content;
 }
 

@@ -181,7 +181,6 @@ class AP_Activate {
 				dbDelta( $table );
 			}
 		}
-		var_dump($wpdb);
 	}
 
 	/**
