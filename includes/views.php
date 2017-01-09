@@ -72,11 +72,15 @@ class AnsPress_Views {
  * @param  integer|false $user_id User ID.
  * @return boolean
  */
-function ap_insert_views( $ref_id, $type = 'question', $user_id = false ) {
+function ap_insert_views( $ref_id, $type = 'question', $user_id = false, $ip = false ) {
 	global $wpdb;
 
 	if ( false === $user_id ) {
 		$user_id = get_current_user_id();
+	}
+
+	if ( false === $ip || false === filter_var( $ip, FILTER_VALIDATE_IP ) ) {
+		$ip = $_SERVER['REMOTE_ADDR']; // @codingStandardsIgnoreLine
 	}
 
 	// Insert to DB only if not viewed before and not anonymous.
@@ -85,7 +89,7 @@ function ap_insert_views( $ref_id, $type = 'question', $user_id = false ) {
 			'view_user_id' => $user_id,
 			'view_type'    => 'question',
 			'view_ref_id'  => $ref_id,
-			'view_ip'      => $_SERVER['REMOTE_ADDR'], // @codingStandardsIgnoreLine
+			'view_ip'      => $ip,
 			'view_date'    => current_time( 'mysql' ),
 		);
 
