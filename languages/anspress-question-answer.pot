@@ -2,10 +2,10 @@
 # This file is distributed under the GPL-3.0+.
 msgid ""
 msgstr ""
-"Project-Id-Version: AnsPress 4.0.0-beta.1\n"
+"Project-Id-Version: AnsPress 4.0.0-beta.2\n"
 "Report-Msgid-Bugs-To: "
 "https://wordpress.org/support/plugin/anspress-question-answer\n"
-"POT-Creation-Date: 2017-01-09 15:19:09+00:00\n"
+"POT-Creation-Date: 2017-01-10 05:05:00+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -940,12 +940,20 @@ msgstr ""
 msgid "Private Post"
 msgstr ""
 
-#: admin/anspress-admin.php:689
+#: admin/anspress-admin.php:693
 msgid "AnsPress database is not updated."
 msgstr ""
 
-#: admin/anspress-admin.php:690
+#: admin/anspress-admin.php:694
 msgid "Update now"
+msgstr ""
+
+#: admin/anspress-admin.php:699
+msgid "You must continue to upgrade AnsPress data."
+msgstr ""
+
+#: admin/anspress-admin.php:700
+msgid "Upgrade now"
 msgstr ""
 
 #: admin/class-list-table-hooks.php:54 admin/class-list-table-hooks.php:400
