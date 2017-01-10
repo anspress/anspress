@@ -11,45 +11,59 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Free question and answer plugin for WordPress. Made with developers in mind, highly customizable.
 
 == Description ==
-Demo & support forum: http://anspress.io/
-GitHub repo: [Git AnsPress](https://github.com/anspress/anspress/)
+AnsPress is an open source and developer friendly question and answer plugin for WordPress. AnsPress adds full question and answer system to your existing WordPress site . It can be used to create a q&a network similar to stackoverflow and quora, or just as a page in existing site. The plugin supports multi-languages, shortcodes, reCAPTCHA, email and push notification and so on.
 
-Easily add question and answer section like stackoverflow.com or quora.com in your WordPress.
-AnsPress is a most complete question and answer system for WordPress. AnsPress is made with developers in mind, highly customizable. AnsPress provide an easy to use override system for theme.
+AnsPress is not just limited to question and answer. It is being used as a BugTracker, companies internal QA board, support tickets, FAQ etc. This plugin is trusted and used by popular sites and companies.
 
-Extensions:
+Performance and Optimizations:
 
-  * [AnsPress email notification](http://anspress.io/downloads/anspress-email/)
-  * [Categories for AnsPress](http://anspress.io/downloads/categories-for-anspress/)
-  * [Tags for AnsPress](http://anspress.io/downloads/tags-for-anspress/)
+We have taken performance very seriously and tested with many server environment. It runs smoothly on every types of server without much impact on load time. AnsPress (including all of its functinalities) is very fast comparing to other QA plugins. We have recently made many improvements to reduce MySQL queries and to increase speed of page load.
 
-Developers tool
+Developer Friendly:
 
-  * [AnsPress extension boilerplate builder](http://anspress.io/downloads/anspress-boilerplate-extension/)
+AnsPress is made with developers in mind. AnsPress can be extended easily without much effort. All parts of layout can be overridden easily. Our source code follows WP coding standards and its properly commented. We are working on documentation site which will be available very soon.
 
-List of features:
+Contributors:
 
-  * Notification
-  * Featured Question
-  * Sorting question and answer by many options.
-  * Ajax based form submission
-  * Theme system
-  * Flag and moderate posts
-  * Voting on question and answer
-  * Question tags and categories
-  * Question labels (i.e. Open, close, duplicate) new labels can be added easily.
-  * Select best answer
-  * Tags suggestions
-  * Comment on question and answer
-  * reCaptcha
-  * User level : Participant, Editor, Moderator
-  * Advance user access controls
-  * Email notification
-  * User can add questions to his favorite
-  * User can edit profile
-  * User can upload cover photo
-  * Friends and followers system
-  * User points system (reputation)
+This plugin wouldn't be possible without a huge amount of contribution. Check our contributors at https://anspress.io/contributors/
+
+Support and Demo:
+
+We provide fast support on our site: https://anspress.io/questions
+Our support section uses actual version of AnsPress, so you can check our site if you want to see full working site on AnsPress.
+
+Though we have a demo site if you want to test. https://d.anspress.io/
+
+Key features:
+
+Submit / Filter / Order / Edit / Delete Question
+Answer / Comment
+Vote and Select Best Answer
+Notification Email and web push system
+10+ languages supported
+Captcha supported
+Shortcodes available
+Private/ Public for Question and Answer
+Questions / Answers follow function
+Featured (Sticky) Question
+Close questions
+Flag/report questions and answers to moderator
+Basic user profile
+BuddyPress integration
+More to come
+
+Free Add-ons:
+
+- Reputations
+- Tags
+- Categories
+- Bad words filtering
+- Emails
+- reCaptcha
+- Dynamic text avatar
+
+
+AnsPress is frequently updated and more and more features added based on all the feedback from our users. This means you are welcome to give us feedback and suggestion on how you would want to have in the plugin. Visit our Github project https://github.com/anspress/anspress or visit our community  https://anspress.io/questions/ to get update of our next release.
 
 
 = Help & Support =
@@ -91,6 +105,33 @@ Read full FAQ here https://anspress.io/docs/?topic=faq
 
 = 4.0.0 =
 
+* Improved upgrader script
+* Added post activity migrator
+* Restore dates of question/answer after migration
+* Added best answers migrator
+* Added reputation migrator
+* Added answers count migrator
+* Added vote migration
+* Added migration helper
+* Fixed reputation prefetching
+* Added reputation page in BuddyPress
+* Fixed category addon
+* Added reputation load more button
+* Fixed: category icon and color setting not saving
+* Improved reputations
+* Improved DB table creation
+* Fixed: headers already sent error on saving options
+* Improved authors page
+* Added question permalink options
+* Fixed: clicking on answer order tab scroll to top
+* Fixed: uploaded media are not cleared after form submission
+* Removed repetitive words from login signup
+* Fixed upload progress bar
+* Fixed grunt tasks to add missing files
+* Fixed wrong class name in hook
+* Fixed comment warnings
+* Fixed typo in qameta column name
+* Fixed wrong user capability check
 * Fixed terms
 * Added about action link
 * Improve about
