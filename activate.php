@@ -204,6 +204,10 @@ class AP_Activate {
 			ap_opt( 'ap_version', AP_VERSION );
 		}
 
+		if ( get_option( 'anspress_db_version' ) === '' ) {
+			update_option( 'anspress_using_previous', 'true' );
+		}
+
 		$this->insert_tables();
 		update_option( 'anspress_db_version', AP_DB_VERSION );
 		update_option( 'anspress_opt', get_option( 'anspress_opt' ) + ap_default_options() );
