@@ -941,7 +941,7 @@ class AnsPress_Category {
 	 * @param array $columns Category columns.
 	 * @return array
 	 */
-	public function column_header( $columns ) {
+	public static function column_header( $columns ) {
 		$columns['icon'] = 'Icon';
 		return $columns;
 	}
@@ -949,7 +949,7 @@ class AnsPress_Category {
 	/**
 	 * Icon column content.
 	 */
-	public function column_content( $value, $column_name, $tax_id ) {
+	public static function column_content( $value, $column_name, $tax_id ) {
 		if ( 'icon' === $column_name ) {
 			ap_category_icon( $tax_id );
 		}
