@@ -8,6 +8,8 @@ settings:
     bootstrap: _bootstrap.php
     colors: true
     memory_limit: 1024M
+skip-groups:
+    addons
 modules:
     config:
         Db:
@@ -23,7 +25,7 @@ modules:
         WPDb:
             dsn: 'mysql:host=localhost;dbname=wptestloader'
             user: root
-            password: 
+            password:
             dump: tests/_data/dump.sql
             populate: true
             cleanup: true
@@ -34,7 +36,7 @@ modules:
             dbName: wptest
             dbHost: localhost
             dbUser: root
-            dbPassword: 
+            dbPassword:
             wpDebug: true
             dbCharset: utf8
             dbCollate: ''

@@ -98,12 +98,13 @@ class AP_Update_Helper {
 				$this->migrate_views( $_post->ID );
 				$this->subscribers( $_post->ID );
 				$this->change_closed_status( $_post );
+				$this->best_answers( $_post );
 
 				delete_post_meta( $_post->ID, '_ap_participants' );
 			}
 
 			if ( 'answer' === $_post->post_type ) {
-				$this->best_answers( $_post );
+				delete_post_meta( $_post->ID, '_ap_best_answer' );
 			}
 
 			$this->flags( $_post->ID );
@@ -200,9 +201,9 @@ class AP_Update_Helper {
 	 * Update best answer meta.
 	 */
 	public function best_answers( $_post ) {
-		ap_set_selected_answer( $_post->post_parent, $_post->ID );
-		delete_post_meta( $_post->post_parent, '_ap_selected' );
-		delete_post_meta( $_post->ID, '_ap_best_answer' );
+		$answer_id = get_post_meta( $_post->ID, '_ap_selected', true );
+		ap_set_selected_answer( $_post->ID, $answer_id );
+		delete_post_meta( $_post->ID, '_ap_selected' );
 	}
 
 	/**
