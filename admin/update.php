@@ -28,6 +28,7 @@ class AP_Update_Helper {
 		$this->check_tables();
 		$this->migrate_post_data();
 		$this->migrate_reputations();
+		$this->migrate_category_data();
 	}
 
 	/**
@@ -50,6 +51,7 @@ class AP_Update_Helper {
 		return wp_parse_args( get_option( 'anspress_updates', [] ), [
 			'post_data'   => false,
 			'reputations' => false,
+			'category'    => false,
 		] );
 	}
 
@@ -329,5 +331,49 @@ class AP_Update_Helper {
 		$last_updated = get_post_meta( $_post->ID, '_ap_updated', true );
 		$wpdb->update( $wpdb->ap_qameta, [ 'last_updated' => $last_updated ], [ 'post_id' => $_post->ID ], [ '%s' ] ); // @codingStandardsIgnoreLine
 		delete_post_meta( $_post->ID, '_ap_updated' );
+	}
+
+	/**
+	 * Migrate old category options from option table to term meta table.
+	 */
+	public function migrate_category_data() {
+		$tasks = $this->get_tasks();
+
+		if ( $tasks['category'] ) {
+			return;
+		}
+
+		global $wpdb;
+		$terms = $wpdb->get_results( "SELECT SQL_CALC_FOUND_ROWS t.*, tt.* FROM wp_terms AS t INNER JOIN wp_term_taxonomy AS tt ON t.term_id = tt.term_id WHERE tt.taxonomy IN ('question_category') ORDER BY t.name ASC" ); // @codingStandardsIgnoreLine.
+
+		$total_ids = $wpdb->get_var( 'SELECT FOUND_ROWS()' ); // DB call okay, Db cache okay.
+
+		foreach ( (array) $terms as $term ) {
+			$term_meta = get_option( 'ap_cat_' . $term->term_id );
+
+			if ( isset( $term_meta['ap_image'] ) ) {
+				$term_meta['image'] = $term_meta['ap_image'];
+				unset( $term_meta['ap_image'] );
+			}
+
+			if ( isset( $term_meta['ap_icon'] ) ) {
+				$term_meta['icon'] = $term_meta['ap_icon'];
+				unset( $term_meta['ap_icon'] );
+			}
+
+			if ( isset( $term_meta['ap_color'] ) ) {
+				$term_meta['color'] = $term_meta['ap_color'];
+				unset( $term_meta['ap_color'] );
+			}
+
+			update_term_meta( $term->term_id, 'ap_category', $term_meta );
+			delete_option( 'ap_cat_' . $term->term_id );
+		}
+
+		$options = get_option( 'anspress_updates', [] );
+		$options['category'] = true;
+		update_option( 'anspress_updates', $options );
+
+		$this->send( true, 'category', sprintf( __( 'Migrated categories data... %1$d out of %2$d', 'anspress-question-answer' ), count( $terms ), $total_ids ), true );
 	}
 }

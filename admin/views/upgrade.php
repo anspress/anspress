@@ -18,6 +18,7 @@ $done = get_option( 'anspress_updates', [] );
 $tasks = array(
 	'post_data'     => [ 'label' => __( 'Questions and Answers', 'anspress-question-answer' ), 'icon' => 'apicon-question' ],
 	'reputations'   => [ 'label' => __( 'Migrate reputation data', 'anspress-question-answer' ), 'icon' => 'apicon-reputation' ],
+	'category'   => [ 'label' => __( 'Migrate category data', 'anspress-question-answer' ), 'icon' => 'apicon-category' ],
 );
 
 ?>
