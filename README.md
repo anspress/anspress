@@ -35,31 +35,31 @@ You can also take the demo site for a test drive https://d.anspress.io/
 
 **AnsPress Key Features:**
 
-Submit / Filter / Order / Edit / Delete Question
-Answer / Comment
-Vote and Select Best Answer
-Notification Emails and Web Push Notifications
-10+ languages supported
-Captcha supported
-Shortcodes available
-Private/Public for Question and Answer
-Ability to Follow Questions / Answers
-Featured (Sticky) Question
-Closed questions
-Flag/report questions and answers to moderator
-Basic user profile
-BuddyPress integration
-More to come...
+* Submit / Filter / Order / Edit / Delete Question
+* Answer / Comment
+* Vote and Select Best Answer
+* Notification Emails and Web Push Notifications
+* 10+ languages supported
+* Captcha supported
+* Shortcodes available
+* Private/Public for Question and Answer
+* Ability to Follow Questions / Answers
+* Featured (Sticky) Question
+* Closed questions
+* Flag/report questions and answers to moderator
+* Basic user profile
+* BuddyPress integration
+* More to come...
 
 **Free Add-ons:**
 
-- Reputations
-- Tags
-- Categories
-- Bad words filter
-- Email notifications
-- reCaptcha
-- Dynamic text avatar
+* Reputations
+* Tags
+* Categories
+* Bad words filter
+* Email notifications
+* reCaptcha
+* Dynamic text avatar
 
 AnsPress is frequently updated and more features are added based on feedback from our users. This means you are welcome to give us feedback and suggestions as to what you would like to see or need in the plugin. Visit our Github project https://github.com/anspress/anspress  or visit our community https://anspress.io/questions/  to get the updates.
 
