@@ -15,25 +15,26 @@ AnsPress is an open source, developer friendly, question and answer plugin for W
 
 AnsPress is not just limited to question and answer. It can be used in many different ways such as BugTracker, Company Internal QA board, support tickets, FAQ etc. Anspress is trusted and used by many popular companies and sites at scale.
 
-Performance and Optimizations:
+**Performance and Optimizations:**
 
 In our latest release we've made big improvements to performance and have tested in many different server environments. It runs smoothly on every type of server with minimal impact on load times. AnsPress (including all of its functionalities) is very fast comparing to other QA plugins. In the latest release we have made major improvements to reduce MySQL queries and to increase the speed of page load for all page templates within plugin.
 
-Developer Friendly:
+**Developer Friendly:**
 
 AnsPress is built with developers in mind and can easily be extended to fit your needs. All parts of layout templates can be overridden. Our source code follows WP coding standards and is properly commented. We are working on documentation site which will be available soon.
 
-Contributors:
+**Contributors:**
 
 This plugin wouldn't be possible without a huge amount of contribution. Check our contributors at https://anspress.io/contributors/
 
-Support and Demo:
+**Support and Demo:**
 
 We provide support on our site: https://anspress.io/questions
 Our support section uses actual version of AnsPress, so you can check out the support site if you want to see full working version of AnsPress.
 You can also take the demo site for a test drive https://d.anspress.io/
 
-AnsPress Key Features:
+**AnsPress Key Features:**
+
 Submit / Filter / Order / Edit / Delete Question
 Answer / Comment
 Vote and Select Best Answer
@@ -50,7 +51,7 @@ Basic user profile
 BuddyPress integration
 More to come...
 
-Free Add-ons:
+**Free Add-ons:**
 
 - Reputations
 - Tags
