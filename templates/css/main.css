@@ -501,7 +501,7 @@ ul li.anspress-page-link {
 }
 #anspress .ap-questions-title {
   display: block;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
   margin-bottom: 5px;
   margin-top: 0;
@@ -543,7 +543,7 @@ ul li.anspress-page-link {
   margin-left: 65px;
 }
 #anspress .ap-questions .ap-display-meta-item {
-  font-size: 13px;
+  font-size: 12px;
   color: #777;
   margin-right: 15px;
 }
@@ -1854,6 +1854,7 @@ post-message {
   margin-bottom: 15px;
   border-top: solid 1px #ddd;
   padding: 20px 0;
+  min-height: 122px;
 }
 #anspress .ap-author-avatar {
   margin-right: 20px;
@@ -3401,7 +3402,7 @@ post-message {
 }
 .ap-reputations td.col-points {
   text-align: right;
-  width: 80px;
+  width: 55px;
 }
 .ap-reputations td.col-points span {
   background: #F4AC20;
@@ -3415,11 +3416,18 @@ post-message {
 }
 .ap-reputations td.col-date {
   width: 100px;
+  font-size: 12px;
 }
 .ap-reputation-ref {
   margin-top: 5px;
+  display: block;
+  margin-top: 5px;
   font-size: 12px;
   color: #777;
+}
+.ap-reputation-ref strong {
+  display: block;
+  color: #444;
 }
 .ap-reputation-activity {
   font-weight: bold;

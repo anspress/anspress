@@ -52,7 +52,7 @@
       }
       &.col-points{
         text-align: right;
-        width: 80px;
+        width: 55px;
         span{
           background: $yellow-color;
           color: #fff;
@@ -66,13 +66,20 @@
       }
       &.col-date{
         width: 100px;
+        font-size: 12px;
       }
     }
   }
   &-ref{
     margin-top: 5px;
+    display: block;
+    margin-top: 5px;
     font-size: 12px;
     color: #777;
+    strong{
+      display: block;
+      color: #444;
+    }
   }
   &-activity {
     font-weight: bold;

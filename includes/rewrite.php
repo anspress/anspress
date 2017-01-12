@@ -104,7 +104,7 @@ class AnsPress_Rewrite
 
 		$new_rules[ $slug . 'search/([^/]+)/?' ] = 'index.php?page_id=' . $base_page_id . '&ap_page=search&ap_s=' . $wp_rewrite->preg_index( 1 );
 
-		$new_rules[ $slug . 'author/([^/]+)/?' ] = 'index.php?page_id=' . $base_page_id . '&ap_page=author&ap_user=' . $wp_rewrite->preg_index( 1 );
+		$new_rules[ $slug . 'user/([^/]+)/?' ] = 'index.php?page_id=' . $base_page_id . '&ap_page=user&ap_user=' . $wp_rewrite->preg_index( 1 );
 
 		$new_rules[ $slug . 'ask/([^/]+)/?' ] = 'index.php?page_id=' . $base_page_id . '&ap_page=ask&parent=' . $wp_rewrite->preg_index( 1 );
 

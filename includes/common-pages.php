@@ -22,7 +22,7 @@ class AnsPress_Common_Pages {
 		ap_register_page( ap_opt( 'ask_page_slug' ), __( 'Ask', 'anspress-question-answer' ), array( __CLASS__, 'ask_page' ) );
 		ap_register_page( 'search', __( 'Search', 'anspress-question-answer' ), array( __CLASS__, 'search_page' ), false );
 		ap_register_page( 'edit', __( 'Edit Answer', 'anspress-question-answer' ), array( __CLASS__, 'edit_page' ), false );
-		ap_register_page( 'author', ap_opt( 'base_page_title' ), array( __CLASS__, 'author_page' ) );
+		ap_register_page( 'user', ap_opt( 'user_page_title' ), array( __CLASS__, 'user_page' ) );
 	}
 
 	/**
@@ -182,7 +182,7 @@ class AnsPress_Common_Pages {
 	/**
 	 * Layout of base page
 	 */
-	public static function author_page() {
+	public static function user_page() {
 		global $questions;
 		$args['ap_current_user_ignore'] = true;
 		$args['author'] = (int) get_query_var( 'ap_user_id' );
@@ -196,7 +196,7 @@ class AnsPress_Common_Pages {
 		$args = apply_filters( 'ap_authors_questions_args', $args );
 
 		anspress()->questions = $questions = new Question_Query( $args );
-		ap_get_template_part( 'author' );
+		ap_get_template_part( 'user/index' );
 	}
 }
 

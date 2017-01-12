@@ -38,7 +38,7 @@
 		}
 		&-title{
 			display: block;
-			font-size: 13px;
+			font-size: 14px;
 			font-weight: 600;
 			margin-bottom: 5px;
 			margin-top: 0;
@@ -75,17 +75,13 @@
 			}
 		}
 
-		&-acount{
-			span{
-			}
-		}
 		&-summery{
 			padding-right: 10px;
 			margin-right: 130px;
 			margin-left: 65px;
 		}
 		.ap-display-meta-item {
-			font-size: 13px;
+			font-size: 12px;
 			color: $meta-color;
 			margin-right: 15px;
 			a{

@@ -32,7 +32,7 @@ $clearfix_class = array( 'ap-questions-item clearfix' );
 			<?php endif; ?>
 
 			<!-- Answer Count -->
-			<a class="ap-questions-count ap-questions-acount" href="<?php ap_answers_link(); ?>">
+			<a class="ap-questions-count ap-questions-acount" href="<?php echo ap_answers_link(); ?>">
 				<span><?php ap_answers_count(); ?></span>
 				<?php _e( 'Ans', 'anspress-question-answer' ); ?>
 			</a>

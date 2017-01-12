@@ -1418,7 +1418,7 @@ function ap_user_link( $user_id = false, $sub = false ) {
 	}
 
 	if ( $user_id < 1 ) {
-		$link = ap_get_link_to( array( 'ap_page' => 'author', 'ap_user' => 0 ) );
+		$link = ap_get_link_to( array( 'ap_page' => 'user', 'ap_user' => 0 ) );
 	} else{
 
 		if ( function_exists( 'bp_core_get_userlink' ) ) {
@@ -1437,12 +1437,12 @@ function ap_user_link( $user_id = false, $sub = false ) {
 		// If permalink is enabled.
 		if ( get_option( 'permalink_structure' ) !== '' ) {
 			if ( false === $sub ) {
-				$sub = array( 'ap_page' => 'author', 'ap_user' => $user->user_login );
+				$sub = array( 'ap_page' => 'user', 'ap_user' => $user->user_login );
 			} elseif ( is_array( $sub ) ) {
-				$sub['ap_page']  = 'author';
+				$sub['ap_page']  = 'user';
 				$sub['ap_user']     = $user->user_login;
 			} elseif ( ! is_array( $sub ) ) {
-				$sub = array( 'ap_page' => 'author', 'ap_user' => $user->user_login, 'user_page' => $sub );
+				$sub = array( 'ap_page' => 'user', 'ap_user' => $user->user_login, 'user_page' => $sub );
 			}
 
 			$link = ap_get_link_to( $sub );
