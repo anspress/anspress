@@ -3,12 +3,13 @@
 // --------------------------------------------------
 #anspress{
 	.ap-questions{
+    border: solid 1px #eee;
 		&-item{
 			border-bottom: 1px solid rgba(0, 0, 0, 0.08);
 			box-shadow: none;
 			display: table;
 			margin: 0;
-			padding: 15px 5px;
+			padding: 15px 15px;
 			width: 100%;
 			position: relative;
 			&.status-private_post {
@@ -37,35 +38,40 @@
 		}
 		&-title{
 			display: block;
-			font-size: 14px;
+			font-size: 13px;
 			font-weight: 600;
 			margin-bottom: 5px;
 			margin-top: 0;
 			a{
-				color: $link-color;
 				text-decoration: none;
+				color: #333;
 			}
 		}
 		&-count{
+			background: #fff;
 			display: block;
 			float: left;
-			text-transform: uppercase;
-			font-size: 10px;
-			margin-left: 10px;
-			color: #999;
-			border: solid 2px #eee;
-			width: 70px;
+			text-transform: lowercase;
+			font-size: 11px;
+			margin-left: 15px;
+			color: #777;
 			text-align: center;
 			text-decoration: none;
-			background: #fff;
-			height: 45px;
-			padding: 2px 0;
+			border: solid 1px #ddd;
 			border-radius: 2px;
 			span{
+				border-bottom: solid 1px #ddd;
+				width: 50px;
 				font-size: 13px;
 				display: block;
 				text-align: center;
 				font-weight: 600;
+				padding: 6px 0;
+				height: 29px;
+				margin-bottom: 1px;
+			}
+			&.ap-questions-acount {
+				border-color: $main-color;
 			}
 		}
 
@@ -73,9 +79,10 @@
 			span{
 			}
 		}
-
 		&-summery{
 			padding-right: 10px;
+			margin-right: 130px;
+			margin-left: 65px;
 		}
 		.ap-display-meta-item {
 			font-size: 13px;
@@ -127,9 +134,9 @@
 		}
 	}
 	.ap-list-head{
-		padding: 0;
-    margin: 10px 0;
-    border-bottom: solid 2px #eee;
+    padding: 15px 15px;
+    border: solid 1px #ddd;
+    margin-bottom: 10px;
 		.ap-btn-ask{
 			background: $main-color;
 			border-radius: 2px;
@@ -144,6 +151,9 @@
 			&:visited{
 				color: #fff;
 			}
+		}
+		.ap-filters {
+			margin-top: 15px;
 		}
 	}
 	.ap-filter{
@@ -160,7 +170,7 @@
 			text-decoration: none;
 			font-weight: bold;
 			font-size: 13px;
-			padding: 10px 0;
+			padding: 0;
 			display: block;
 		}
 		&-active{
@@ -211,7 +221,7 @@
 	#ap-filter-reset {
 		background: none;
     border: none;
-    padding: 13px 0;
+    padding: 0;
 		color: $light-color;
 
 		&:focus, &:active{

@@ -465,12 +465,15 @@ ul li.anspress-page-link {
   color: #888;
 }
 
+#anspress .ap-questions {
+  border: solid 1px #eee;
+}
 #anspress .ap-questions-item {
   border-bottom: 1px solid rgba(0, 0, 0, 0.08);
   box-shadow: none;
   display: table;
   margin: 0;
-  padding: 15px 5px;
+  padding: 15px 15px;
   width: 100%;
   position: relative;
 }
@@ -498,39 +501,46 @@ ul li.anspress-page-link {
 }
 #anspress .ap-questions-title {
   display: block;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
   margin-bottom: 5px;
   margin-top: 0;
 }
 #anspress .ap-questions-title a {
-  color: #2488B7;
   text-decoration: none;
+  color: #333;
 }
 #anspress .ap-questions-count {
+  background: #fff;
   display: block;
   float: left;
-  text-transform: uppercase;
-  font-size: 10px;
-  margin-left: 10px;
-  color: #999;
-  border: solid 2px #eee;
-  width: 70px;
+  text-transform: lowercase;
+  font-size: 11px;
+  margin-left: 15px;
+  color: #777;
   text-align: center;
   text-decoration: none;
-  background: #fff;
-  height: 45px;
-  padding: 2px 0;
+  border: solid 1px #ddd;
   border-radius: 2px;
 }
 #anspress .ap-questions-count span {
+  border-bottom: solid 1px #ddd;
+  width: 50px;
   font-size: 13px;
   display: block;
   text-align: center;
   font-weight: 600;
+  padding: 6px 0;
+  height: 29px;
+  margin-bottom: 1px;
+}
+#anspress .ap-questions-count.ap-questions-acount {
+  border-color: #8bc34a;
 }
 #anspress .ap-questions-summery {
   padding-right: 10px;
+  margin-right: 130px;
+  margin-left: 65px;
 }
 #anspress .ap-questions .ap-display-meta-item {
   font-size: 13px;
@@ -578,9 +588,9 @@ ul li.anspress-page-link {
   margin-right: 5px;
 }
 #anspress .ap-list-head {
-  padding: 0;
-  margin: 10px 0;
-  border-bottom: solid 2px #eee;
+  padding: 15px 15px;
+  border: solid 1px #ddd;
+  margin-bottom: 10px;
 }
 #anspress .ap-list-head .ap-btn-ask {
   background: #8bc34a;
@@ -597,6 +607,9 @@ ul li.anspress-page-link {
 #anspress .ap-list-head .ap-btn-ask:visited {
   color: #fff;
 }
+#anspress .ap-list-head .ap-filters {
+  margin-top: 15px;
+}
 #anspress .ap-filters .ap-dropdown {
   margin-right: 15px;
   float: left;
@@ -610,7 +623,7 @@ ul li.anspress-page-link {
   text-decoration: none;
   font-weight: bold;
   font-size: 13px;
-  padding: 10px 0;
+  padding: 0;
   display: block;
 }
 #anspress .ap-filter-active {
@@ -659,7 +672,7 @@ ul li.anspress-page-link {
 #anspress #ap-filter-reset {
   background: none;
   border: none;
-  padding: 13px 0;
+  padding: 0;
   color: #888;
 }
 #anspress #ap-filter-reset:focus, #anspress #ap-filter-reset:active {
