@@ -4,7 +4,7 @@
 	<?php
 		/* Start the Loop */
 		while ( have_posts() ) : the_post();
-			include(ap_get_theme_location('content-list.php'));
+			include(ap_get_theme_location('question-list-item.php'));
 		endwhile;
 	?>
 		</div>

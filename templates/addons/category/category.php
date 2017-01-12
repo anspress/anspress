@@ -54,7 +54,7 @@
 					<?php
 						/* Start the Loop */
 						while ( ap_have_questions() ) : ap_the_question();
-							include(ap_get_theme_location('content-list.php'));
+							include(ap_get_theme_location('question-list-item.php'));
 						endwhile;
 					?>
 				</div><!-- close .ap-questions -->

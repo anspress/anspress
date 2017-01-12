@@ -12,8 +12,7 @@
 /**
  * Handle output of all default pages of AnsPress
  */
-class AnsPress_Common_Pages
-{
+class AnsPress_Common_Pages {
 	/**
 	 * Register all pages of AnsPress
 	 */
@@ -53,7 +52,7 @@ class AnsPress_Common_Pages
 		$args = apply_filters( 'ap_main_questions_args', $args );
 
 		anspress()->questions = $questions = new Question_Query( $args );
-		ap_get_template_part( 'base' );
+		ap_get_template_part( 'question-list' );
 	}
 
 	/**

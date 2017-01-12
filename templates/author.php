@@ -42,7 +42,7 @@
 					<?php
 						/* Start the Loop */
 						while ( ap_have_questions() ) : ap_the_question();
-							ap_get_template_part( 'content-list' );
+							ap_get_template_part( 'question-list-item' );
 						endwhile;
 					?>
 				</div>
