@@ -101,7 +101,7 @@ class AP_Update_Helper {
 				$this->subscribers( $_post->ID );
 				$this->change_closed_status( $_post );
 				$this->best_answers( $_post );
-
+				ap_update_qameta_terms( $_post->ID );
 				delete_post_meta( $_post->ID, '_ap_participants' );
 			}
 
