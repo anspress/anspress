@@ -114,10 +114,10 @@ class AnsPress_Admin_Ajax {
 		$question_id = ap_sanitize_unslash( 'question_id', 'p' );
 		$answers_arr = [];
 		$answers = ap_get_answers( [ 'question_id' => $question_id ] );
-
-		if ( ap_user_can_see_answers() ) :
-			while ( ap_have_answers() ) : ap_the_answer();
-				global $post, $wp_post_statuses;
+		
+		while ( ap_have_answers() ) : ap_the_answer();
+			global $post, $wp_post_statuses;
+			if ( ap_user_can_view_post() ) :
 				$answers_arr[] = array(
 					'ID'        => get_the_ID(),
 					'content'   => get_the_content(),
@@ -129,8 +129,8 @@ class AnsPress_Admin_Ajax {
 					'status'    => esc_attr( $wp_post_statuses[ $post->post_status ]->label ),
 					'selected'  => ap_get_post_field( 'selected' ),
 				);
-			endwhile;
-		endif;
+			endif;
+		endwhile;		
 
 		wp_send_json( $answers_arr );
 

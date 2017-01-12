@@ -57,7 +57,7 @@ class AP_QA_Query_Hooks {
 				}
 
 				// Replace post_status query.
-				if ( false !== ( $pos = strpos( $sql['where'], $post_status ) ) ) {
+				if ( is_user_logged_in() && false !== ( $pos = strpos( $sql['where'], $post_status ) ) ) {
 					$pos = $pos + strlen( $post_status );
 					$author_query = $wpdb->prepare( " OR ( {$wpdb->posts}.post_author = %d AND {$wpdb->posts}.post_status IN ('publish', 'private_post', 'trash', 'moderate') ) ", get_current_user_id() );
 					$sql['where'] = substr_replace( $sql['where'], $author_query, $pos, 0 );
@@ -136,6 +136,11 @@ class AP_QA_Query_Hooks {
 
 					$p->ap_qameta_wrapped = true;
 					$p->votes_net = $p->votes_up - $p->votes_down;
+
+					if ( ! ap_user_can_view_post( $p ) ) {
+						$p->post_content = __( 'Restricted content', 'anspress-question-answer' );
+					}
+
 					$posts[ $k ] = $p;
 				}
 			}

@@ -32,21 +32,12 @@
 		?>
 
 		<div id="answers">
-			<?php if ( ap_user_can_see_answers() ) : ?>
+
 				<ap-answers>
 					<?php while ( ap_have_answers() ) : ap_the_answer(); ?>
 						<?php include( ap_get_theme_location( 'answer.php' ) ); ?>
 					<?php endwhile ; ?>
 				</ap-answers>
-
-			<?php else: ?>
-				<div class="ap-login-to-see-ans">
-					<?php
-						printf( __('Please %s or %s to view answers and comments', 'anspress-question-answer'), '<a class="ap-open-modal ap-btn" title="Click here to login if you already have an account on this site." href="#ap_login_modal">Login</a>', '<a class="ap-open-modal ap-btn" title="Click here to signup if you do not have an account on this site." href="#ap_signup_modal">Sign Up</a>' );
-					?>
-				</div>
-				<?php do_action( 'ap_after_answer_form' ); ?>
-			<?php endif; ?>
 		</div>
 
 		<?php ap_answers_the_pagination(); ?>

@@ -233,23 +233,6 @@ function ap_user_can_answer( $question_id, $user_id = false ) {
 }
 
 /**
- * Check if a user can answer on a question.
- *
- * @return boolean
- */
-function ap_user_can_see_answers() {
-	if ( is_super_admin() ) {
-		return true;
-	}
-
-	if ( ap_opt( 'logged_in_can_see_ans' ) && ! is_user_logged_in() ) {
-		return false;
-	}
-
-	return true;
-}
-
-/**
  * Check if user can select an answer.
  *
  * @param  mixed         $_post    Post.
@@ -719,7 +702,7 @@ function ap_user_can_restore( $post = null, $user_id = false ) {
 		return true;
 	}
 
-	$_post = ap_get_post( $post );
+	$post_o = is_object( $post_id ) ? $post_id : ap_get_post( $post_id );
 
 	if ( user_can( $user_id, 'ap_restore_posts' ) || (int) $_post->post_author === $user_id ) {
 		return true;
@@ -746,7 +729,7 @@ function ap_user_can_view_private_post( $_post = null, $user_id = false ) {
 		return true;
 	}
 
-	$post_o = ap_get_post( $_post );
+	$post_o = is_object( $post_id ) ? $post_id : ap_get_post( $post_id );
 
 	if( ! $post_o ) {
 		return false;
@@ -776,6 +759,7 @@ function ap_user_can_view_private_post( $_post = null, $user_id = false ) {
  * @return boolean
  */
 function ap_user_can_view_moderate_post( $post_id = null, $user_id = false ) {
+
 	if ( false === $user_id ) {
 		$user_id = get_current_user_id();
 	}
@@ -789,9 +773,9 @@ function ap_user_can_view_moderate_post( $post_id = null, $user_id = false ) {
 		return true;
 	}
 
-	$post_o = ap_get_post( $post_id );
+	$post_o = is_object( $post_id ) ? $post_id : ap_get_post( $post_id );
 
-	if ( $post_o->post_author == $user_id ) { // loose comparison ok.
+	if ( is_user_logged_in() && $post_o->post_author == $user_id ) { // loose comparison ok.
 		return true;
 	}
 
@@ -819,7 +803,7 @@ function ap_user_can_view_future_post( $post_id, $user_id = false ) {
 		return true;
 	}
 
-	$post_o = ap_get_post( $post_id );
+	$post_o = is_object( $post_id ) ? $post_id : ap_get_post( $post_id );
 
 	if ( $post_o->post_author == $user_id ) { // loose comparison ok.
 		return true;
@@ -844,7 +828,7 @@ function ap_user_can_view_post( $post_id = false, $user_id = false ) {
 		return true;
 	}
 
-	$post_o = ap_get_post( $post_id );
+	$post_o = is_object( $post_id ) ? $post_id : ap_get_post( $post_id );
 
 	if ( 'private_post' === $post_o->post_status && ap_user_can_view_private_post( $post_o->ID, $user_id ) ) {
 		return true;
@@ -858,7 +842,7 @@ function ap_user_can_view_post( $post_id = false, $user_id = false ) {
 		return true;
 	}
 
-	if ( 'publish' === $post_o->post_status || is_post_closed( $post_o ) ) {
+	if ( 'publish' === $post_o->post_status ) {
 		return true;
 	}
 
