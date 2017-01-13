@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: AnsPress 4.0.0-beta.2\n"
 "Report-Msgid-Bugs-To: "
 "https://wordpress.org/support/plugin/anspress-question-answer\n"
-"POT-Creation-Date: 2017-01-10 05:05:00+00:00\n"
+"POT-Creation-Date: 2017-01-13 09:48:37+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -52,15 +52,15 @@ msgstr ""
 
 #: addons/free/buddypress.php:104 addons/free/buddypress.php:185
 #: admin/views/dashboard.php:30 admin/views/dashboard.php:212
-#: includes/functions.php:871 includes/post-types.php:43 includes/taxo.php:78
-#: includes/taxo.php:391 templates/author.php:34 widgets/questions.php:55
+#: includes/functions.php:871 includes/options.php:110
+#: includes/post-types.php:43 includes/taxo.php:78 includes/taxo.php:391
+#: templates/user/index.php:34 widgets/questions.php:55
 msgid "Questions"
 msgstr ""
 
 #: addons/free/buddypress.php:105 addons/free/buddypress.php:233
 #: admin/views/dashboard.php:226 includes/post-types.php:113
-#: templates/content-list.php:29 widgets/question_stats.php:49
-#: widgets/questions.php:87
+#: widgets/question_stats.php:49 widgets/questions.php:87
 msgid "Answers"
 msgstr ""
 
@@ -78,7 +78,7 @@ msgstr ""
 
 #: addons/free/buddypress.php:267 addons/free/buddypress.php:268
 #: admin/meta-box.php:41 admin/options-fields.php:170
-#: includes/ajax-hooks.php:192 includes/common-pages.php:22
+#: includes/ajax-hooks.php:192 includes/common-pages.php:21
 #: includes/post-status.php:93 includes/post-types.php:65
 msgid "Question"
 msgstr ""
@@ -1027,7 +1027,7 @@ msgstr ""
 msgid "Status"
 msgstr ""
 
-#: admin/class-list-table-hooks.php:200
+#: admin/class-list-table-hooks.php:200 templates/question-list-item.php:37
 msgid "Ans"
 msgstr ""
 
@@ -1036,7 +1036,7 @@ msgid "Comments"
 msgstr ""
 
 #: admin/class-list-table-hooks.php:202 admin/class-list-table-hooks.php:299
-#: templates/content-answer.php:20 templates/content-list.php:36
+#: templates/content-answer.php:20 templates/question-list-item.php:30
 msgid "Votes"
 msgstr ""
 
@@ -1588,20 +1588,24 @@ msgstr ""
 msgid "Uninstall - clear all AnsPress data"
 msgstr ""
 
-#: admin/update.php:89
+#: admin/update.php:91
 msgid "Post data updated successfully"
 msgstr ""
 
-#: admin/update.php:117
+#: admin/update.php:120
 msgid "Updated %1$d posts out of %2$d"
 msgstr ""
 
-#: admin/update.php:250
+#: admin/update.php:253
 msgid "Successfully migrated all reputations"
 msgstr ""
 
-#: admin/update.php:309
+#: admin/update.php:312
 msgid "Migrated reputation... %1$d out of %2$d"
+msgstr ""
+
+#: admin/update.php:377
+msgid "Migrated categories data... %1$d out of %2$d"
 msgstr ""
 
 #: admin/updater.php:184
@@ -1933,31 +1937,35 @@ msgstr ""
 msgid "Migrate reputation data"
 msgstr ""
 
-#: admin/views/upgrade.php:26
-msgid "Thank you for choosing AnsPress"
+#: admin/views/upgrade.php:21
+msgid "Migrate category data"
 msgstr ""
 
 #: admin/views/upgrade.php:27
+msgid "Thank you for choosing AnsPress"
+msgstr ""
+
+#: admin/views/upgrade.php:28
 msgid ""
 "This page will help you with automatically migrating AnsPress 3.x data to "
 "4.x. Please make sure to create a backup of site before starting upgrade."
 msgstr ""
 
-#: admin/views/upgrade.php:28
+#: admin/views/upgrade.php:29
 msgid "Start Upgrade"
 msgstr ""
 
-#: admin/views/upgrade.php:30
+#: admin/views/upgrade.php:31
 msgid ""
 "Aaiyaa! Something went wrong. Please click above button again or report "
 "issue to us."
 msgstr ""
 
-#: admin/views/upgrade.php:41
+#: admin/views/upgrade.php:42
 msgid "Having trouble upgrading? We are available 12x7"
 msgstr ""
 
-#: admin/views/upgrade.php:42
+#: admin/views/upgrade.php:43
 msgid "Get help now"
 msgstr ""
 
@@ -2221,15 +2229,15 @@ msgstr ""
 msgid "AnsPress Banned"
 msgstr ""
 
-#: includes/class/roles-cap.php:1256
+#: includes/class/roles-cap.php:1240
 msgid "Voting on own post is not allowed"
 msgstr ""
 
-#: includes/class/roles-cap.php:1264
+#: includes/class/roles-cap.php:1248
 msgid "Voting on restricted posts are not allowed."
 msgstr ""
 
-#: includes/class/roles-cap.php:1274
+#: includes/class/roles-cap.php:1258
 msgid "You do not have permission to vote."
 msgstr ""
 
@@ -2337,43 +2345,43 @@ msgstr ""
 msgid "Approve"
 msgstr ""
 
-#: includes/common-pages.php:23
+#: includes/common-pages.php:22
 msgid "Ask"
 msgstr ""
 
-#: includes/common-pages.php:24 templates/search-form.php:12
+#: includes/common-pages.php:23 templates/search-form.php:12
 msgid "Search"
 msgstr ""
 
-#: includes/common-pages.php:25 includes/post-types.php:119
+#: includes/common-pages.php:24 includes/post-types.php:119
 msgid "Edit Answer"
 msgstr ""
 
-#: includes/common-pages.php:76
+#: includes/common-pages.php:75
 msgid ""
 "This question is waiting for a moderator and cannot be viewed. Please check "
 "back later to see if it has been approved."
 msgstr ""
 
-#: includes/common-pages.php:78
+#: includes/common-pages.php:77
 msgid "Sorry! you are not allowed to read this question."
 msgstr ""
 
-#: includes/common-pages.php:114
+#: includes/common-pages.php:113
 msgid "Question will be publish in %s"
 msgstr ""
 
-#: includes/common-pages.php:115
+#: includes/common-pages.php:114
 msgid ""
 "This question is in waiting queue and is not accessible by anyone until it "
 "get published."
 msgstr ""
 
-#: includes/common-pages.php:141
+#: includes/common-pages.php:140
 msgid "Something went wrong, please try again"
 msgstr ""
 
-#: includes/common-pages.php:163
+#: includes/common-pages.php:162
 msgid "Sorry, you cannot edit this answer."
 msgstr ""
 
@@ -2634,6 +2642,18 @@ msgstr ""
 msgid "years"
 msgstr ""
 
+#: includes/options.php:111 includes/theme.php:566
+msgid "Ask question"
+msgstr ""
+
+#: includes/options.php:112
+msgid "Search \"%s\""
+msgstr ""
+
+#: includes/options.php:113
+msgid "%s"
+msgstr ""
+
 #: includes/post-status.php:28
 msgid "Moderate <span class=\"count\">(%s)</span>"
 msgid_plural "Moderate <span class=\"count\">(%s)</span>"
@@ -2783,6 +2803,10 @@ msgstr ""
 msgid "Check missing fields and then re-submit."
 msgstr ""
 
+#: includes/qaquery-hooks.php:141
+msgid "Restricted content"
+msgstr ""
+
 #: includes/qaquery.php:435
 msgid "Featured"
 msgstr ""
@@ -2857,10 +2881,6 @@ msgstr ""
 
 #: includes/theme.php:519
 msgid "Best answer"
-msgstr ""
-
-#: includes/theme.php:566
-msgid "Ask question"
 msgstr ""
 
 #: includes/theme.php:699
@@ -2972,10 +2992,6 @@ msgstr ""
 
 #: templates/answer-form.php:24
 msgid "Write your answer.."
-msgstr ""
-
-#: templates/answers.php:45
-msgid "Please %s or %s to view answers and comments"
 msgstr ""
 
 #: templates/ask.php:17

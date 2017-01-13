@@ -73,7 +73,7 @@ var uploadsModel;
             }, 400);
 
             if(typeof tinyMCE !== 'undefined'){
-              tinyMCE.activeEditor.dom.remove(''+self.model.get('id'));
+              tinyMCE.activeEditor.dom.remove(tinymce.activeEditor.dom.select('img[src="'+self.model.get('url')+'"]'));
               tinyMCE.activeEditor.execCommand('mceInsertContent',false,'');
             }
           }
