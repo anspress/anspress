@@ -31,7 +31,7 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 // Define databse version.
-define( 'AP_DB_VERSION', 26 );
+define( 'AP_DB_VERSION', 27 );
 
 // Check if using required PHP version.
 if ( version_compare( PHP_VERSION, '5.5' ) < 0 ) {
