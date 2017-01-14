@@ -71,9 +71,11 @@ class AnsPress_Uploader {
 			ap_ajax_json( 'no_permission' );
 		}
 
+		$attach = get_post( $attachment_id );
 		$row = wp_delete_attachment( $attachment_id, true );
 
 		if ( false !== $row ) {
+			ap_update_post_attach_ids( $attach->post_parent );
 			ap_ajax_json( [ 'success' => true ] );
 		}
 
@@ -118,6 +120,7 @@ class AnsPress_Uploader {
 
 		foreach ( (array) $posts as $_post ) {
 			wp_delete_attachment( $_post->ID, true );
+			ap_update_post_attach_ids( $_post->post_parent );
 			$authors[] = $_post->post_author;
 		}
 
