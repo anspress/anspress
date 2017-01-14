@@ -602,6 +602,12 @@ class AnsPress_Category {
 	 */
 	public static function image_field_edit( $term ) {
 		$term_meta = get_term_meta( $term->term_id, 'ap_category', true );
+		$term_meta = wp_parse_args( $term_meta, array(
+			'image' => [ 'id' => '', 'url' => '' ],
+			'icon'  => '',
+			'color' => '',
+		) );
+
 		?>
 			<tr class='form-field form-required term-name-wrap'>
 				<th scope='row'>
@@ -665,19 +671,16 @@ class AnsPress_Category {
 			$term_meta = get_term_meta( $term_id, 'ap_category', true );
 
 			if ( ! is_array( $term_meta ) ) {
-				$term_meta = array();
+				$term_meta = [];
 			}
 
-			if ( $image_url && $image_id ) {
-
-				if ( ! is_array( $term_meta['image'] ) ) {
-					$term_meta['image'] = array();
-				}
-
-				// Get value and save it into the database.
-				$term_meta['image']['url'] = $image_url ? esc_url( $image_url ) : '';
-				$term_meta['image']['id'] = $image_id ? (int) $image_id : '';
+			if ( ! is_array( $term_meta['image'] ) ) {
+				$term_meta['image'] = [];
 			}
+
+			// Get value and save it into the database.
+			$term_meta['image']['url'] = $image_url ? esc_url( $image_url ) : '';
+			$term_meta['image']['id'] = $image_id ? (int) $image_id : '';
 
 			if ( $icon ) {
 				$term_meta['icon'] = sanitize_text_field( $icon );
@@ -687,6 +690,11 @@ class AnsPress_Category {
 				$term_meta['color'] = sanitize_text_field( $color );
 			}
 
+			// Delete meta if empty.
+			if ( empty( $term_meta ) ) {
+				delete_term_meta( $term_id, 'ap_category' );
+			}
+			
 			update_term_meta( $term_id, 'ap_category', $term_meta );
 		}
 	}

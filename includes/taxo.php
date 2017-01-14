@@ -224,8 +224,8 @@ function ap_get_category_image( $term_id, $height = 32 ) {
 
 	$style = 'style="' . $color . 'height:' . $height . 'px;"';
 
-	if ( ! empty( $option['ap_image']['id'] ) ) {
-		$image = wp_get_attachment_image( $option['ap_image']['id'], array( 900, $height ) );
+	if ( ! empty( $option['image']['id'] ) ) {
+		$image = wp_get_attachment_image( $option['image']['id'], array( 900, $height ) );
 		return $image;
 	}
 
