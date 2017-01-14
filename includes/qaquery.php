@@ -694,7 +694,7 @@ function ap_latest_post_activity_html( $post_id = false, $answer_activities = fa
 		$activity = $_post->activities['child'];
 	}
 
-	if ( ! empty( $activity ) ) {
+	if ( ! empty( $activity ) && ! empty( $activity['date'] ) ) {
 		$activity['date'] = get_gmt_from_date( $activity['date'] );
 	}
 
@@ -705,12 +705,17 @@ function ap_latest_post_activity_html( $post_id = false, $answer_activities = fa
 	$html = '';
 
 	if ( $activity ) {
-		$html .= sprintf(
-			'<span class="ap-post-history">%s %s %s</span>',
-			ap_user_link_anchor( $activity['user_id'], false ),
-			ap_activity_short_title( $activity['type'] ),
-			'<a href="' . get_permalink( $_post ) . '"><time datetime="' . mysql2date( 'c', $activity['date'] ) . '">' . ap_human_time( $activity['date'], false ) . '</time></a>'
-		);
+		$html .= '<span class="ap-post-history">';
+		$html .= ap_user_link_anchor( $activity['user_id'], false );
+		$html .= ' ' . ap_activity_short_title( $activity['type'] );
+
+		if ( ! empty( $activity['date'] ) ) {
+			$html .= ' <a href="' . get_permalink( $_post ) . '">';
+			$html .= '<time datetime="' . mysql2date( 'c', $activity['date'] ) . '">' . ap_human_time( $activity['date'], false ) . '</time>';
+			$html .= '</a>';
+		}
+
+		$html .= '</span>';
 	}
 
 	if ( $html ) {
