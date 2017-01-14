@@ -440,6 +440,7 @@ class AnsPress_Reputation_Hooks {
 
 	public static function bp_reputation_page() {
 		$user_id = bp_displayed_user_id();
+
 		$reputations = new AnsPress_Reputation_Query( [ 'user_id' => $user_id ] );
 		include ap_get_theme_location( 'reputations/index.php' );
 	}

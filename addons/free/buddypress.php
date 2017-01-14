@@ -118,7 +118,7 @@ class AnsPress_BP_Hooks {
 		bp_core_new_subnav_item( array(
 			'name'            => $name,
 			'slug'            => $slug,
-			'parent_url'      => trailingslashit( bp_loggedin_user_domain() . 'qa' ),
+			'parent_url'      => trailingslashit( bp_displayed_user_domain() . 'qa' ),
 			'parent_slug'     => 'qa',
 			'screen_function' => [ __CLASS__, 'ap_qa_page' ],
 			'position'        => 10,
