@@ -163,7 +163,7 @@ class AP_Activate {
 	}
 
 	/**
-	 * AnsPress subscribers table.
+	 * AnsPress email subscription related table.
 	 */
 	public function subscribers_table() {
 		global $wpdb;
@@ -174,6 +174,19 @@ class AP_Activate {
 				`subs_ref_id` bigint(20) NOT NULL,
 				`subs_event` varchar(225) NOT NULL,
 				PRIMARY KEY (`subs_id`)
+			)' . $this->charset_collate . ';';
+
+		$this->tables[] = 'CREATE TABLE IF NOT EXISTS `' . $wpdb->ap_email_queues . '` (
+				`queue_id` bigint(20) NOT NULL AUTO_INCREMENT,
+				`queue_email` bigint(20) NOT NULL,
+				`queue_ec` bigint(20) NOT NULL,
+				PRIMARY KEY (`queue_id`)
+			)' . $this->charset_collate . ';';
+
+		$this->tables[] = 'CREATE TABLE IF NOT EXISTS `' . $wpdb->ap_email_content . '` (
+				`ec_id` bigint(20) NOT NULL AUTO_INCREMENT,
+				`ec_content` LONGTEXT DEFAULT NULL,
+				PRIMARY KEY (`ec_id`)
 			)' . $this->charset_collate . ';';
 	}
 
