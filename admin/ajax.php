@@ -114,7 +114,7 @@ class AnsPress_Admin_Ajax {
 		$question_id = ap_sanitize_unslash( 'question_id', 'p' );
 		$answers_arr = [];
 		$answers = ap_get_answers( [ 'question_id' => $question_id ] );
-		
+
 		while ( ap_have_answers() ) : ap_the_answer();
 			global $post, $wp_post_statuses;
 			if ( ap_user_can_view_post() ) :
@@ -130,7 +130,7 @@ class AnsPress_Admin_Ajax {
 					'selected'  => ap_get_post_field( 'selected' ),
 				);
 			endif;
-		endwhile;		
+		endwhile;
 
 		wp_send_json( $answers_arr );
 
@@ -222,7 +222,7 @@ class AnsPress_Admin_Ajax {
 				wp_send_json( [ 'done' => 1, 'total' => 0 ] );
 			} elseif ( 'tables' === $data_type ) {
 
-				$tables = [ $wpdb->ap_qameta, $wpdb->ap_votes, $wpdb->ap_views, $wpdb->ap_reputations ];
+				$tables = [ $wpdb->ap_qameta, $wpdb->ap_votes, $wpdb->ap_views, $wpdb->ap_reputations, $wpdb->ap_subscribers ];
 
 				foreach ( $tables as $table ) {
 					$wpdb->query( "DROP TABLE IF EXISTS {$table}" );

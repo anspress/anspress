@@ -1084,6 +1084,7 @@ function ap_append_table_names() {
 	$wpdb->ap_votes 		     = $wpdb->prefix . 'ap_votes';
 	$wpdb->ap_views 			   = $wpdb->prefix . 'ap_views';
 	$wpdb->ap_reputations	   = $wpdb->prefix . 'ap_reputations';
+	$wpdb->ap_subscribers	   = $wpdb->prefix . 'ap_subscribers';
 
 }
 ap_append_table_names();

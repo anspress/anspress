@@ -163,6 +163,21 @@ class AP_Activate {
 	}
 
 	/**
+	 * AnsPress subscribers table.
+	 */
+	public function subscribers_table() {
+		global $wpdb;
+
+		$this->tables[] = 'CREATE TABLE IF NOT EXISTS `' . $wpdb->ap_subscribers . '` (
+				`subs_id` bigint(20) NOT NULL AUTO_INCREMENT,
+				`subs_user_id` bigint(20) NOT NULL,
+				`subs_ref_id` bigint(20) NOT NULL,
+				`subs_event` varchar(225) NOT NULL,
+				PRIMARY KEY (`subs_id`)
+			)' . $this->charset_collate . ';';
+	}
+
+	/**
 	 * Insert and update tables
 	 */
 	public function insert_tables() {
@@ -173,6 +188,7 @@ class AP_Activate {
 		$this->votes_table();
 		$this->views_table();
 		$this->reputation_table();
+		$this->subscribers_table();
 
 		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 
