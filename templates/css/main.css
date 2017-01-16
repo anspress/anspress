@@ -740,6 +740,15 @@ ul li.anspress-page-link {
   border: 2px solid rgba(0, 0, 0, 0.1);
   border-radius: 3px;
 }
+#anspress .status-trash .ap-cell-inner {
+  border-color: #EF9A9A;
+}
+#anspress .status-private_post .ap-cell-inner {
+  border-color: #9E9E9E;
+}
+#anspress .status-moderate .ap-cell-inner {
+  border-color: #FFCC80;
+}
 #anspress .ap-content > .ap-avatar {
   position: absolute;
   float: left;
@@ -984,18 +993,6 @@ ul li.anspress-page-link {
 #answers .best-answer .ap-cell-inner,
 #ap-best-answer .best-answer .ap-cell-inner {
   border-color: #cce4c8;
-}
-#answers .status-trash .ap-cell-inner,
-#ap-best-answer .status-trash .ap-cell-inner {
-  border-color: #EF9A9A;
-}
-#answers .status-private_post .ap-cell-inner,
-#ap-best-answer .status-private_post .ap-cell-inner {
-  border-color: #9E9E9E;
-}
-#answers .status-moderate .ap-cell-inner,
-#ap-best-answer .status-moderate .ap-cell-inner {
-  border-color: #FFCC80;
 }
 
 #ap-answers-c {

@@ -8,15 +8,25 @@
 
 #anspress {
 		.best-answer .ap-q-metas {
-				background: #dcedc8;
+			background: #dcedc8;
 		}
+
 		.ap-cell {
-				font-size: 14px;
-				margin-left: 70px;
-				&-inner {
-						border: 2px solid rgba(0, 0, 0, .1);
-						border-radius: 3px;
-				}
+			font-size: 14px;
+			margin-left: 70px;
+			&-inner {
+					border: 2px solid rgba(0, 0, 0, .1);
+					border-radius: 3px;
+			}
+		}
+		.status-trash .ap-cell-inner {
+			border-color: #EF9A9A;
+		}
+		.status-private_post .ap-cell-inner {
+			border-color: #9E9E9E;
+		}
+		.status-moderate .ap-cell-inner {
+			border-color: #FFCC80;
 		}
 		.ap-content>.ap-avatar {
 				position: absolute;
@@ -274,15 +284,7 @@
 				border-color: #cce4c8;
 			}
 		}
-		.status-trash .ap-cell-inner {
-			border-color: #EF9A9A;
-		}
-		.status-private_post .ap-cell-inner {
-			border-color: #9E9E9E;
-		}
-		.status-moderate .ap-cell-inner {
-			border-color: #FFCC80;
-		}
+
 }
 
 #ap-answers-c {
