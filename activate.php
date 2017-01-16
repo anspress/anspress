@@ -93,7 +93,7 @@ class AP_Activate {
 			`selected_id` bigint(20) DEFAULT NULL,
 			`comments` bigint(20) DEFAULT 0,
 			`answers` bigint(20) DEFAULT 0,
-			`ptype` varchar(256) DEFAULT NULL,
+			`ptype` varchar(100) DEFAULT NULL,
 			`featured` tinyint(1) DEFAULT 0,
 			`selected` tinyint(1) DEFAULT 0,
 			`votes_up` bigint(20) DEFAULT 0,
@@ -106,7 +106,7 @@ class AP_Activate {
 			`attach` LONGTEXT DEFAULT NULL,
 			`activities` LONGTEXT DEFAULT NULL,
 			`fields` LONGTEXT DEFAULT NULL,
-			`roles` varchar(256) DEFAULT NULL,
+			`roles` varchar(100) DEFAULT NULL,
 			`last_updated` timestamp NULL DEFAULT NULL,
 			UNIQUE KEY `post_id` (`post_id`)
 		)' . $this->charset_collate . ';';
@@ -122,8 +122,8 @@ class AP_Activate {
 				`vote_id` bigint(20) NOT NULL AUTO_INCREMENT,
 				`vote_post_id` bigint(20) NOT NULL,
 				`vote_user_id` bigint(20) DEFAULT NULL,
-				`vote_type` varchar(256) DEFAULT NULL,
-				`vote_value` varchar(256) DEFAULT NULL,
+				`vote_type` varchar(100) DEFAULT NULL,
+				`vote_value` varchar(100) DEFAULT NULL,
 				`vote_date` timestamp NULL DEFAULT NULL,
 				PRIMARY KEY (`vote_id`)
 			)' . $this->charset_collate . ';';
@@ -138,7 +138,7 @@ class AP_Activate {
 		$this->tables[] = 'CREATE TABLE `' . $wpdb->ap_views . '` (
 				`view_id` bigint(20) NOT NULL AUTO_INCREMENT,
 				`view_user_id` bigint(20) DEFAULT NULL,
-				`view_type` varchar(256) DEFAULT NULL,
+				`view_type` varchar(100) DEFAULT NULL,
 				`view_ref_id` bigint(20) DEFAULT NULL,
 				`view_ip` varchar(39),
 				`view_date` timestamp NULL DEFAULT NULL,
@@ -155,7 +155,7 @@ class AP_Activate {
 		$this->tables[] = 'CREATE TABLE `' . $wpdb->ap_reputations . '` (
 				`rep_id` bigint(20) NOT NULL AUTO_INCREMENT,
 				`rep_user_id` bigint(20) DEFAULT NULL,
-				`rep_event` varchar(256) DEFAULT NULL,
+				`rep_event` varchar(100) DEFAULT NULL,
 				`rep_ref_id` bigint(20) DEFAULT NULL,
 				`rep_date` timestamp NULL DEFAULT NULL,
 				PRIMARY KEY (`rep_id`)
@@ -172,21 +172,8 @@ class AP_Activate {
 				`subs_id` bigint(20) NOT NULL AUTO_INCREMENT,
 				`subs_user_id` bigint(20) NOT NULL,
 				`subs_ref_id` bigint(20) NOT NULL,
-				`subs_event` varchar(225) NOT NULL,
+				`subs_event` varchar(100) NOT NULL,
 				PRIMARY KEY (`subs_id`)
-			)' . $this->charset_collate . ';';
-
-		$this->tables[] = 'CREATE TABLE IF NOT EXISTS `' . $wpdb->ap_email_queues . '` (
-				`queue_id` bigint(20) NOT NULL AUTO_INCREMENT,
-				`queue_email` bigint(20) NOT NULL,
-				`queue_ec` bigint(20) NOT NULL,
-				PRIMARY KEY (`queue_id`)
-			)' . $this->charset_collate . ';';
-
-		$this->tables[] = 'CREATE TABLE IF NOT EXISTS `' . $wpdb->ap_email_content . '` (
-				`ec_id` bigint(20) NOT NULL AUTO_INCREMENT,
-				`ec_content` LONGTEXT DEFAULT NULL,
-				PRIMARY KEY (`ec_id`)
 			)' . $this->charset_collate . ';';
 	}
 

@@ -302,10 +302,6 @@ class AnsPress_Comment_Hooks {
 		}
 
 		$permalink = get_permalink( $_post );
-
-		if ( 'answer' === $_post->post_type ) {
-			return $permalink . 'comment/' . $comment->comment_ID;
-		}
 		return $permalink . '#/comment/' . $comment->comment_ID;
 	}
 

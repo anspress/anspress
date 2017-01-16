@@ -75,7 +75,7 @@ function ap_get_subscriber( $user_id = false, $event = '', $ref_id = 0 ) {
 		return $cache;
 	}
 
-	$results = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $wpdb->ap_subscribers WHERE subs_user_id = %d AND subs_ref_id = %d AND subs_event = %s", $user_id, $ref_id, $event ) ); // WPCS: db call okay.
+	$results = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $wpdb->ap_subscribers WHERE subs_user_id = %d AND subs_ref_id = %d AND subs_event = %s LIMIT 1", $user_id, $ref_id, $event ) ); // WPCS: db call okay.
 
 	wp_cache_set( $key, $results, 'ap_subscriber' );
 
@@ -83,14 +83,45 @@ function ap_get_subscriber( $user_id = false, $event = '', $ref_id = 0 ) {
 }
 
 /**
- * Delete subscriptions by event, ref_id and user_id.
+ * Get subscribers.
+ *
+ * @param  string  $event   Event type.
+ * @param  integer $ref_id Reference identifier id.
+ * @return null|array
+ * @since  4.0.0
+ */
+function ap_get_subscribers( $event = '', $ref_id = 0 ) {
+	global $wpdb;
+
+	$key = $event . '_' . $ref_id;
+	$cache = wp_cache_get( $key, 'ap_subscribers' );
+
+	if ( false !== $cache ) {
+		return $cache;
+	}
+
+	$ref_query = '';
+
+	if ( 0 !== $ref_id ) {
+		$ref_query = $wpdb->prepare( " AND s.subs_ref_id = %d", $ref_id );
+	}
+
+	$results = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM $wpdb->ap_subscribers s LEFT JOIN {$wpdb->users} u ON u.ID = s.subs_user_id WHERE s.subs_event = %s {$ref_query}", $event ) ); // WPCS: db call okay.
+
+	wp_cache_set( $key, $results, 'ap_subscribers' );
+
+	return $results;
+}
+
+/**
+ * Delete subscribers by event, ref_id and user_id.
  *
  * @param string  $event Event type.
  * @param integer $ref_id Ref id.
  * @param integer $user_id User id.
  * @return bool|integer
  */
-function ap_delete_subscriptions( $event, $ref_id = false, $user_id = false ) {
+function ap_delete_subscribers( $event, $ref_id = false, $user_id = false ) {
 	global $wpdb;
 
 	$where = [ 'subs_event' => $event ];

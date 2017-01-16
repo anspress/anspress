@@ -258,7 +258,7 @@ function ap_user_can_select_answer( $_post = null, $user_id = false ) {
 
 	$question 	= ap_get_post( $answer->post_parent );
 
-	if ( $user_id === $question->post_author ) {
+	if ( (string) $user_id === $question->post_author ) {
 		return true;
 	}
 

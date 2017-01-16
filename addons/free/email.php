@@ -74,7 +74,7 @@ class AnsPress_Email {
 	 * @param array|string $email Pass one or multiple emails to notify.
 	 */
 	public function add_email( $email ) {
-		if ( is_array( ) ) {
+		if ( is_array( $email ) ) {
 			foreach ( $email as $e ) {
 				if ( is_email( $e ) && ! in_array( $e, $this->emails, true ) ) {
 					$this->emails[] = sanitize_email( $e );
@@ -156,6 +156,14 @@ class AnsPress_Email_Hooks {
 	 */
 	public static function init() {
 		SELF::ap_default_options();
+		anspress()->add_filter( 'comment_notification_recipients', __CLASS__, 'default_recipients', 10, 2 );
+
+		anspress()->add_action( 'ap_after_new_question', __CLASS__, 'question_subscription', 10, 2 );
+		anspress()->add_action( 'ap_after_new_answer', __CLASS__, 'answer_subscription', 10, 2 );
+		anspress()->add_action( 'ap_publish_comment', __CLASS__, 'comment_subscription' );
+		anspress()->add_action( 'before_delete_post', __CLASS__, 'delete_subscriptions' );
+		anspress()->add_action( 'deleted_comment', __CLASS__, 'delete_comment_subscriptions' );
+
 		anspress()->add_action( 'ap_option_groups', __CLASS__, 'register_option', 100 );
 		anspress()->add_action( 'ap_after_new_question', __CLASS__, 'ap_after_new_question' );
 		anspress()->add_action( 'ap_after_new_answer', __CLASS__, 'ap_after_new_answer' );
@@ -163,14 +171,27 @@ class AnsPress_Email_Hooks {
 		anspress()->add_action( 'ap_publish_comment', __CLASS__, 'new_comment' );
 		anspress()->add_action( 'ap_after_update_question', __CLASS__, 'ap_after_update_question', 10, 2 );
 		anspress()->add_action( 'ap_after_update_answer', __CLASS__, 'ap_after_update_answer', 10, 2 );
-		anspress()->add_action( 'ap_trash_question', __CLASS__, 'ap_trash_question' );
-		anspress()->add_action( 'ap_trash_answer', __CLASS__, 'ap_trash_answer' );
+		anspress()->add_action( 'ap_trash_question', __CLASS__, 'ap_trash_question', 10, 2 );
+		anspress()->add_action( 'ap_trash_answer', __CLASS__, 'ap_trash_answer', 10, 2 );
 
-		anspress()->add_action( 'ap_after_new_question', __CLASS__, 'question_subscription', 10, 2 );
-		anspress()->add_action( 'ap_after_new_answer', __CLASS__, 'question_subscription', 10, 2 );
-		anspress()->add_action( 'ap_publish_comment', __CLASS__, 'comment_subscription' );
-		anspress()->add_action( 'before_delete_post', __CLASS__, 'delete_subscriptions' );
-		anspress()->add_action( 'deleted_comment', __CLASS__, 'delete_comment_subscriptions' );
+
+	}
+
+	/**
+	 * Return empty reccipients for default comment notifications.
+	 *
+	 * @param array   $recipients Array of recipients.
+	 * @param intgere $comment_id Comment ID.
+	 * @return array
+	 */
+	public static function default_recipients( $recipients, $comment_id ) {
+		$_comment = get_comment( $comment_id );
+
+		if ( 'anspress' === $_comment->comment_type ) {
+			return [];
+		}
+
+		return $recipients;
 	}
 
 	/**
@@ -405,9 +426,11 @@ class AnsPress_Email_Hooks {
 
 	public static function header() {
 		$header = '';
+
 		if ( ! $charset = get_bloginfo( 'charset' ) ) {
 			$charset = 'utf-8';
 		}
+
 		$header .= 'Content-type: text/plain; charset=' . $charset . "\r\n";
 
 		return $header;
@@ -419,6 +442,31 @@ class AnsPress_Email_Hooks {
 
 	public static function send_mail($email, $subject, $message) {
 		wp_mail( $email, $subject, $message, SELF::header() );
+	}
+
+	/**
+	 * Add email to object.
+	 *
+	 * @param string|array $email Email of array of emails.
+	 */
+	public static function add_email( $email ) {
+
+		if ( is_array( $email ) ) {
+			foreach ( $email as $e ) {
+				if ( is_email( $email ) && ! in_array( $e, SELF::$emails, true ) ) {
+					SELF::$emails[] = $email;
+				}
+			}
+		} elseif ( is_email( $email ) && ! in_array( $e, SELF::$emails, true ) ) {
+			SELF::$emails[] = $email;
+		}
+	}
+
+	/**
+	 * Check if class has emails.
+	 */
+	public static function have_emails() {
+		return count( SELF::$emails ) > 0;
 	}
 
 	public static function initiate_send_email() {
@@ -433,19 +481,19 @@ class AnsPress_Email_Hooks {
 	}
 
 	/**
-	 * Send email to admin when new question is created
-	 * @param  integer $question_id
+	 * Send email to admin when new question is created.
+	 *
+	 * @param  integer $question_id Question ID.
 	 * @since 1.0
 	 */
-	public static function ap_after_new_question($question_id) {
+	public static function ap_after_new_question( $question_id ) {
 		if ( ap_opt( 'notify_admin_new_question' ) ) {
 
 			$current_user = wp_get_current_user();
+			$question = ap_get_post( $question_id );
 
-			$question = get_post( $question_id );
-
-			// don't bother if current user is admin
-			if ( ap_opt( 'notify_admin_email' ) == $current_user->user_email ) {
+			// Don't bother if current user is admin.
+			if ( ap_opt( 'notify_admin_email' ) == $current_user->user_email ) { // WPCS: loose comparison okay.
 				return;
 			}
 
@@ -460,63 +508,54 @@ class AnsPress_Email_Hooks {
 			$args = apply_filters( 'ap_new_question_email_tags', $args );
 
 			SELF::$subject = SELF::replace_tags( ap_opt( 'new_question_email_subject' ), $args );
-
 			SELF::$message = SELF::replace_tags( ap_opt( 'new_question_email_body' ), $args );
-
 			SELF::$emails[] = ap_opt( 'notify_admin_email' );
-
-			/*
-			if ( ($answer->post_status != 'private_post' || $answer->post_status != 'moderate') ) {
-                $users = ap_get_subscribers( $question_id, 'q_all', 100 );
-
-                if ( $users ) {
-                    foreach ( $users as $user ) {
-                        // Dont send email to poster
-                        if ( $user->user_email != $current_user->user_email ) {
-                            SELF::$emails[] = $user->user_email; }
-                    }
-                }
-			}*/
 			SELF::initiate_send_email();
 		}
 	}
 
+	/**
+	 * Send email after new answer.
+	 *
+	 * @param integer $answer_id Answer ID.
+	 */
 	public static function ap_after_new_answer( $answer_id ) {
-			$current_user = wp_get_current_user();
-			$answer = ap_get_post( $answer_id );
+		$current_user = wp_get_current_user();
+		$answer = ap_get_post( $answer_id );
 
-			$args = array(
-				'{answerer}'        => ap_user_display_name( $answer->post_author ),
-				'{question_title}'  => $answer->post_title,
-				'{answer_link}'     => get_permalink( $answer->ID ),
-				'{answer_content}'  => $answer->post_content,
-				'{answer_excerpt}'  => ap_truncate_chars( strip_tags( $answer->post_content ), 100 ),
-			);
+		if ( ap_opt( 'notify_admin_new_answer' ) && ap_opt( 'notify_admin_email' ) !== $current_user->user_email ) {
+			SELF::add_email( ap_opt( 'notify_admin_email' ) );
+		}
 
-			$args = apply_filters( 'ap_new_answer_email_tags', $args );
+		if ( 'private_post' !== $answer->post_status && 'moderate' !== $answer->post_status ) {
+			$subscribers = ap_get_subscribers( 'question', $answer->post_parent );
 
-			SELF::$subject = SELF::replace_tags( ap_opt( 'new_answer_email_subject' ), $args );
-
-			SELF::$message = SELF::replace_tags( ap_opt( 'new_answer_email_body' ), $args );
-
-			SELF::$emails = array();
-
-			if ( ap_opt( 'notify_admin_new_answer' ) && $current_user->user_email !== ap_opt( 'notify_admin_email' ) ) {
-				SELF::$emails[] = ap_opt( 'notify_admin_email' );
+			foreach ( (array) $subscribers as $s ) {
+				if ( $s->user_email !== $current_user->user_email ) {
+					SELF::add_email( $s->user_email );
+				}
 			}
+		}
 
-			if ( $answer->post_status !== 'private_post' && $answer->post_status !== 'moderate' ) {
-				/*$subscribers = ap_get_subscribers( $answer->post_parent, 'q_all', 100, true );
-				if ( $subscribers ) {
-					foreach ( $subscribers as $s ) {
-						if ( $s->user_email != $current_user->user_email ) {
-							SELF::$emails[] = $s->user_email;
-						}
-					}
-				}*/
-			}
+		// Check if have emails before proceeding.
+		if ( ! SELF::have_emails() ) {
+			return;
+		}
 
-			SELF::initiate_send_email();
+		$args = array(
+			'{answerer}'        => ap_user_display_name( $answer->post_author ),
+			'{question_title}'  => $answer->post_title,
+			'{answer_link}'     => get_permalink( $answer->ID ),
+			'{answer_content}'  => $answer->post_content,
+			'{answer_excerpt}'  => ap_truncate_chars( strip_tags( $answer->post_content ), 100 ),
+		);
+
+		$args = apply_filters( 'ap_new_answer_email_tags', $args );
+
+		SELF::$subject = SELF::replace_tags( ap_opt( 'new_answer_email_subject' ), $args );
+		SELF::$message = SELF::replace_tags( ap_opt( 'new_answer_email_body' ), $args );
+
+		SELF::initiate_send_email();
 	}
 
 	/**
@@ -547,16 +586,37 @@ class AnsPress_Email_Hooks {
 	}
 
 	/**
-	 * Notify admin on new comment and is not approved
-	 * @param  object $comment Comment id
+	 * Notify admin on new comment and is not approved.
+	 *
+	 * @param object $comment Comment object.
 	 */
-	public static function new_comment($comment) {
+	public static function new_comment( $comment ) {
 
 		$current_user = wp_get_current_user();
+		$post = ap_get_post( $comment->comment_post_ID );
 
-		$post = get_post( $comment->comment_post_ID );
+		$subscribers = ap_get_subscribers( 'comment_' . $comment->comment_post_ID );
+		$post_author  = get_user_by( 'id', $post->post_author );
 
-		$post_id = $post->ID;
+		if ( ap_opt( 'notify_admin_new_comment' ) && ap_opt( 'notify_admin_email' ) !== $current_user->user_email ) {
+			SELF::add_email( ap_opt( 'notify_admin_email' ) );
+		}
+
+		if ( $subscribers && ap_in_array_r( $post_author->data->user_email, $subscribers ) &&
+			$post_author->data->user_email !== $current_user->user_email ) {
+			SELF::add_email( $post_author->data->user_email );
+		}
+
+		foreach ( (array) $subscribers as $s ) {
+			if ( $s->user_email !== $current_user->user_email ) {
+				SELF::add_email( $s->user_email );
+			}
+		}
+
+		// Check if have emails before proceeding.
+		if ( ! SELF::have_emails() ) {
+			return;
+		}
 
 		$args = array(
 			'{commenter}'         => ap_user_display_name( $comment->user_id ),
@@ -566,66 +626,46 @@ class AnsPress_Email_Hooks {
 		);
 
 		$args = apply_filters( 'ap_new_comment_email_tags', $args );
-
 		SELF::$subject = SELF::replace_tags( ap_opt( 'new_comment_email_subject' ), $args );
-
 		SELF::$message = SELF::replace_tags( ap_opt( 'new_comment_email_body' ), $args );
-
-		SELF::$emails = array();
-
-		$subscribe_type = $post->post_type == 'answer' ? 'a_all' : 'q_post';
-
-		//$subscribers = ap_get_subscribers( $post_id, $subscribe_type, 100, true );
-		$subscribers = [];
-
-		$post_author  = get_user_by( 'id', $post->post_author );
-
-		if ( ! ap_in_array_r( $post_author->data->user_email, $subscribers ) ) {
-			$subscribers[] = (object) array( 'user_email' => $post_author->data->user_email, 'ID' => $post_author->ID, 'display_name' => $post_author->data->display_name );
-		}
-
-		if ( $subscribers ) {
-			foreach ( $subscribers as $s ) {
-				if ( $s->user_email != $current_user->user_email ) {
-					SELF::$emails[] = $s->user_email;
-				}
-			}
-		}
 
 		SELF::initiate_send_email();
 	}
 
+	/**
+	 * Notify after question get updated.
+	 *
+	 * @param object $question Question object.
+	 * @param string $event Type of update event.
+	 */
 	public static function ap_after_update_question( $question, $event ) {
 		if ( 'edited' !== $event ) {
 			return;
 		}
 
-		$question = ap_get_post( $question );
 		$current_user = wp_get_current_user();
-		SELF::$emails = array();
 
+		// Notify admin if current user is not admin itself.
 		if ( ap_opt( 'notify_admin_email' ) !== $current_user->user_email && ap_opt( 'notify_admin_edit_question' ) ) {
-			SELF::$emails[] = ap_opt( 'notify_admin_email' );
+			SELF::add_email( ap_opt( 'notify_admin_email' ) );
 		}
 
-		//$subscribers = ap_get_subscribers( $question_id, array( 'q_post', 'q_all' ), 100, true );
-		$subscribers = [];
-
+		$subscribers = ap_get_subscribers( 'question', $question_id );
 		$post_author  = get_user_by( 'id', $question->post_author );
 
-		if ( ! ap_in_array_r( $post_author->data->user_email, $subscribers ) ) {
-			$subscribers[] = (object) array( 'user_email' => $post_author->data->user_email, 'ID' => $post_author->ID, 'display_name' => $post_author->data->display_name );
+		if ( $subscribers && ! ap_in_array_r( $post_author->data->user_email, $subscribers ) &&
+			$post_author->data->user_email !== $current_user->user_email ) {
+			SELF::add_email( $post_author->data->user_email );
 		}
 
-		if ( $subscribers ) {
-			foreach ( $subscribers as $s ) {
-				if ( ! empty( $s->user_email ) && $s->user_email !== $current_user->user_email ) {
-					SELF::$emails[] = $s->user_email;
-				}
+		foreach ( (array) $subscribers as $s ) {
+			if ( ! empty( $s->user_email ) && $s->user_email !== $current_user->user_email ) {
+				SELF::add_email( $s->user_email );
 			}
 		}
 
-		if ( ! is_array( SELF::$emails ) || empty( SELF::$emails ) ) {
+		// Check if have emails before proceeding.
+		if ( ! SELF::have_emails() ) {
 			return;
 		}
 
@@ -644,41 +684,43 @@ class AnsPress_Email_Hooks {
 		SELF::initiate_send_email();
 	}
 
+	/**
+	 * Notify users after answer gets updated.
+	 *
+	 * @param object $answer Answer object.
+	 * @param string $event Event type.
+	 */
 	public static function ap_after_update_answer( $answer, $event ) {
 		if ( 'edited' !== $event ) {
 			return;
 		}
 
-		if ( ! ap_opt( 'notify_admin_edit_answer' ) ) {
-			return;
-		}
-
 		$answer = ap_get_post( $answer );
 		$current_user = wp_get_current_user();
-		SELF::$emails = array();
 
-		if ( ap_opt( 'notify_admin_email' ) !== $current_user->user_email && ap_opt( 'notify_admin_edit_answer' ) ) {
-			SELF::$emails[] = ap_opt( 'notify_admin_email' );
+		if ( ap_opt( 'notify_admin_email' ) !== $current_user->user_email &&
+			ap_opt( 'notify_admin_edit_answer' ) ) {
+			SELF::add_email( ap_opt( 'notify_admin_email' ) );
 		}
 
-		//$subscribers = ap_get_subscribers( $answer_id, 'a_all', 100, true );
-		$subscribers = [];
-
+		$a_subscribers = (array) ap_get_subscribers( 'answer_' . $answer->post_parent );
+		$q_subscribers = (array) ap_get_subscribers( 'question', $answer->post_parent );
+		$subscribers = array_merge( $a_subscribers, $q_subscribers );
 		$post_author  = get_user_by( 'id', $answer->post_author );
 
-		if ( ! ap_in_array_r( $post_author->data->user_email, $subscribers ) ) {
-			$subscribers[] = (object) array( 'user_email' => $post_author->data->user_email, 'ID' => $post_author->ID, 'display_name' => $post_author->data->display_name );
+		if ( ! ap_in_array_r( $post_author->data->user_email, $subscribers ) &&
+			$current_user->user_email !== $post_author->data->user_email ) {
+			SELF::add_email( $post_author->data->user_email );
 		}
 
-		if ( $subscribers ) {
-			foreach ( $subscribers as $s ) {
-				if ( ! empty($s->user_email ) && $s->user_email != $current_user->user_email ) {
-					SELF::$emails[] = $s->user_email;
-				}
+		foreach ( (array) $subscribers as $s ) {
+			if ( ! empty( $s->user_email ) && $s->user_email !== $current_user->user_email ) {
+				SELF::add_email( $s->user_email );
 			}
 		}
 
-		if ( ! is_array( SELF::$emails ) || empty( SELF::$emails ) ) {
+		// Check if have emails before proceeding.
+		if ( ! SELF::have_emails() ) {
 			return;
 		}
 
@@ -696,56 +738,64 @@ class AnsPress_Email_Hooks {
 		SELF::initiate_send_email();
 	}
 
-	public static function ap_trash_question($post) {
-
+	/**
+	 * Notify admin on trashing a question.
+	 *
+	 * @param integer $post_id Post ID.
+	 * @param object  $_post Post object.
+	 */
+	public static function ap_trash_question( $post_id, $_post ) {
 		if ( ! ap_opt( 'notify_admin_trash_question' ) ) {
 			return;
 		}
 
 		$current_user = wp_get_current_user();
 
-		// don't bother if current user is admin
-		if ( ap_opt( 'notify_admin_email' ) == $current_user->user_email ) {
-			return; }
-
-		$args = array(
-			'{user}'              => ap_user_display_name( get_current_user_id() ),
-			'{question_title}'    => $post->post_title,
-			'{question_link}'     => get_permalink( $post->ID ),
-		);
-
-		$args = apply_filters( 'ap_trash_question_email_tags', $args );
-
-		$subject = SELF::replace_tags( ap_opt( 'trash_question_email_subject' ), $args );
-
-		$message = SELF::replace_tags( ap_opt( 'trash_question_email_body' ), $args );
-
-		// sends email
-		SELF::send_mail( ap_opt( 'notify_admin_email' ), $subject, $message );
-	}
-
-	public static function ap_trash_answer($post) {
-
-		if ( ! ap_opt( 'notify_admin_trash_answer' ) ) {
-			return; }
-
-		$current_user = wp_get_current_user();
-
-		// don't bother if current user is admin
-		if ( ap_opt( 'notify_admin_email' ) == $current_user->user_email ) {
+		// Don't bother if current user is admin.
+		if ( ap_opt( 'notify_admin_email' ) === $current_user->user_email ) {
 			return;
 		}
 
 		$args = array(
 			'{user}'              => ap_user_display_name( get_current_user_id() ),
-			'{question_title}'    => $post->post_title,
-			'{question_link}'     => get_permalink( $post->post_parent ),
+			'{question_title}'    => $_post->post_title,
+			'{question_link}'     => get_permalink( $_post->ID ),
+		);
+
+		$args = apply_filters( 'ap_trash_question_email_tags', $args );
+		$subject = SELF::replace_tags( ap_opt( 'trash_question_email_subject' ), $args );
+		$message = SELF::replace_tags( ap_opt( 'trash_question_email_body' ), $args );
+
+		SELF::send_mail( ap_opt( 'notify_admin_email' ), $subject, $message );
+	}
+
+	/**
+	 * Notify admin on trashing a answer.
+	 *
+	 * @param integer $post_id Post ID.
+	 * @param object  $_post Post object.
+	 */
+	public static function ap_trash_answer( $post_id, $_post ) {
+
+		if ( ! ap_opt( 'notify_admin_trash_answer' ) ) {
+			return;
+		}
+
+		$current_user = wp_get_current_user();
+
+		// Don't bother if current user is admin.
+		if ( ap_opt( 'notify_admin_email' ) === $current_user->user_email ) {
+			return;
+		}
+
+		$args = array(
+			'{user}'              => ap_user_display_name( get_current_user_id() ),
+			'{question_title}'    => $_post->post_title,
+			'{question_link}'     => get_permalink( $_post->post_parent ),
 		);
 
 		$args = apply_filters( 'ap_trash_answer_email_tags', $args );
-
 		$subject = SELF::replace_tags( ap_opt( 'trash_answer_email_subject' ), $args );
-
 		$message = SELF::replace_tags( ap_opt( 'trash_answer_email_body' ), $args );
 
 		// Sends email.
@@ -760,7 +810,19 @@ class AnsPress_Email_Hooks {
 	 */
 	public static function question_subscription( $post_id, $_post ) {
 		if ( $_post->post_author > 0 ) {
-			ap_new_subscriber( $_post->post_author, $_post->post_type, $_post->ID );
+			ap_new_subscriber( $_post->post_author, 'question', $_post->ID );
+		}
+	}
+
+	/**
+	 * Subscribe to answer.
+	 *
+	 * @param integer $post_id Post ID.
+	 * @param object  $_post post objct.
+	 */
+	public static function answer_subscription( $post_id, $_post ) {
+		if ( $_post->post_author > 0 ) {
+			ap_new_subscriber( $_post->post_author, 'answer_' . $_post->post_parent, $_post->ID );
 		}
 	}
 
@@ -784,9 +846,14 @@ class AnsPress_Email_Hooks {
 	public static function delete_subscriptions( $postid ) {
 		$_post = get_post( $postid );
 
-		if ( in_array( $_post->post_type, [ 'question', 'answer' ], true ) ) {
+		if ( 'question' === $_post->post_type ) {
 			// Delete question subscriptions.
-			ap_delete_subscriptions( $_post->post_type, $postid );
+			ap_delete_subscriptions( 'question', $postid );
+		}
+
+		if ( 'answer' === $_post->post_type ) {
+			// Delete question subscriptions.
+			ap_delete_subscriptions( 'answer_' . $_post->post_parent );
 		}
 	}
 
