@@ -98,7 +98,34 @@ Read full FAQ here https://anspress.io/docs/?topic=faq
 ## Changelog ##
 
 ### 4.0.0 ###
-
+** Beta 3 **
+* Normalize addons path
+* Added subscribe button
+* Check if user can access post before sending email
+* Fixed: PHP Fatal error:  Uncaught Error: Call to undefined function ap_delete_subscriptions
+* Fixed: Question border not being highlighted
+* Removing codeception tests as PHPUnit test will be written from scratch
+* Improved email notification and subscribers
+* Added email queues and content table
+* Added subscription CRUD
+* Fix Categories can’t remove icon or add a new one
+* When using BuddyPress Add in the links to answers and reps don’t work.
+* Fixed MySql datatype of qameta views and flags to store large numbers
+* Fixed: illegal string offset date
+* Fixed attachment delete
+* Fixed delete uploads
+* Renamed author page to user page
+* Update term ids
+* Improved list layout
+* Include missing template files
+* Rename base.php and content-list.php to question-list.php and question-list-item.php
+* Fixed: non-logged in user seeing moderate answer
+* Removed dynamic avatar addon
+* Migrate category meta
+* Fixed static method warning
+* Fixed best answer migrate bug
+* Do not show upgrade message to new installs
+** Beta 2 **
 * Improved upgrader script
 * Added post activity migrator
 * Restore dates of question/answer after migration

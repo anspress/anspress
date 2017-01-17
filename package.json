@@ -1,6 +1,6 @@
 {
   "name": "AnsPress",
-  "version": "4.0.0-beta.2",
+  "version": "4.0.0-beta.3",
   "description": "Question And answer plugin for WordPress",
   "main": "Gruntfile.js",
   "private": true,
