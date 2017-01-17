@@ -1603,7 +1603,7 @@ function ap_get_addons() {
 		) );
 
 		if ( ! empty( $data['name'] ) ) {
-			$addons[ $file ] = $data;
+			$addons[ wp_normalize_path( $file ) ] = $data;
 		}
 	}
 
@@ -1627,7 +1627,7 @@ function ap_get_active_addons() {
 	}
 
 	foreach ( (array) $addons as $file => $state ) {
-		$addons[ $file ] = ANSPRESS_ADDONS_DIR . DS . $file;
+		$addons[ wp_normalize_path( $file ) ] = wp_normalize_path( ANSPRESS_ADDONS_DIR . DS . $file );
 	}
 
 	return $addons;
