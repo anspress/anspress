@@ -424,6 +424,9 @@ class AnsPress_Email_Hooks {
 		));
 	}
 
+	/**
+	 * Email header.
+	 */
 	public static function header() {
 		$header = '';
 
@@ -436,11 +439,25 @@ class AnsPress_Email_Hooks {
 		return $header;
 	}
 
-	public static function replace_tags($content, $args) {
+	/**
+	 * Replace tags in email template.
+	 *
+	 * @param string $content Template content.
+	 * @param array  $args Arguments.
+	 * @return string
+	 */
+	public static function replace_tags( $content, $args ) {
 		return strtr( $content, $args );
 	}
 
-	public static function send_mail($email, $subject, $message) {
+	/**
+	 * Send email to users.
+	 *
+	 * @param string $email Email id to send.
+	 * @param string $subject Email subject.
+	 * @param string $message Email body.
+	 */
+	public static function send_mail( $email, $subject, $message ) {
 		wp_mail( $email, $subject, $message, SELF::header() );
 	}
 
@@ -469,14 +486,14 @@ class AnsPress_Email_Hooks {
 		return count( SELF::$emails ) > 0;
 	}
 
+	/**
+	 * Sends email to array of email ids.
+	 */
 	public static function initiate_send_email() {
-
 		SELF::$emails = array_unique( SELF::$emails );
 
-		if ( ! empty( SELF::$emails ) && is_array( SELF::$emails ) ) {
-			foreach ( SELF::$emails as $email ) {
-				SELF::send_mail( $email, SELF::$subject, SELF::$message );
-			}
+		foreach ( (array) SELF::$emails as $email ) {
+			SELF::send_mail( $email, SELF::$subject, SELF::$message );
 		}
 	}
 
@@ -531,7 +548,7 @@ class AnsPress_Email_Hooks {
 			$subscribers = ap_get_subscribers( 'question', $answer->post_parent );
 
 			foreach ( (array) $subscribers as $s ) {
-				if ( $s->user_email !== $current_user->user_email ) {
+				if ( ap_user_can_view_post( $answer ) && $s->user_email !== $current_user->user_email ) {
 					SELF::add_email( $s->user_email );
 				}
 			}
@@ -564,7 +581,6 @@ class AnsPress_Email_Hooks {
 	 * @param  object $_post Selected answer object.
 	 */
 	public static function select_answer( $_post ) {
-
 		if ( get_current_user_id() === $_post->post_author ) {
 			return;
 		}
@@ -608,7 +624,7 @@ class AnsPress_Email_Hooks {
 		}
 
 		foreach ( (array) $subscribers as $s ) {
-			if ( $s->user_email !== $current_user->user_email ) {
+			if ( ap_user_can_view_post( $post ) && $s->user_email !== $current_user->user_email ) {
 				SELF::add_email( $s->user_email );
 			}
 		}
@@ -659,7 +675,8 @@ class AnsPress_Email_Hooks {
 		}
 
 		foreach ( (array) $subscribers as $s ) {
-			if ( ! empty( $s->user_email ) && $s->user_email !== $current_user->user_email ) {
+			if ( ap_user_can_view_post( $question ) && ! empty( $s->user_email ) &&
+				$s->user_email !== $current_user->user_email ) {
 				SELF::add_email( $s->user_email );
 			}
 		}
@@ -714,7 +731,8 @@ class AnsPress_Email_Hooks {
 		}
 
 		foreach ( (array) $subscribers as $s ) {
-			if ( ! empty( $s->user_email ) && $s->user_email !== $current_user->user_email ) {
+			if ( ap_user_can_view_post( $answer ) && ! empty( $s->user_email ) &&
+				$s->user_email !== $current_user->user_email ) {
 				SELF::add_email( $s->user_email );
 			}
 		}
