@@ -874,3 +874,28 @@ function ap_featured_post_args( $post_id = false ) {
 		'label'  => esc_attr( $label ),
 	);
 }
+
+/**
+ * Output question subscribe button.
+ *
+ * @param object|integer|false $_post Post object or ID.
+ * @param boolean              $echo Echo or return.
+ * @return string|null
+ * @since 4.0.0
+ */
+function ap_subscribe_btn( $_post = false, $echo = true ) {
+	$_post = ap_get_post( $_post );
+
+	$args = wp_json_encode( [ '__nonce' => wp_create_nonce( 'subscribe_' . $_post->ID ), 'id' => $_post->ID ] );
+	$subscribers = ap_get_post_field( 'subscribers', $_post );
+	$subscribed = ap_is_user_subscriber( 'question', $_post->ID );
+	$label = $subscribed ? __( 'Unsubscribe', 'anspress-question-answer' ) : __( 'Subscribe', 'anspress-question-answer' );
+
+	$html = '<a href="#" class="ap-btn ap-btn-subscribe ap-btn-small ' . ( $subscribed ? 'active' : '' ) .'" ap-subscribe ap-query="' . esc_js( $args ) . '">' . $label . '</a>' . '<span class="ap-btn ap-subscribers-count ap-btn-small">' . $subscribers . '</span>';
+
+	if ( ! $echo ) {
+		return $html;
+	}
+
+	echo $html; // WPCS: xss okay.
+}

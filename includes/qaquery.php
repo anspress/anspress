@@ -486,32 +486,6 @@ function ap_recent_post_activity() {
 }
 
 /**
- * Get a specific post field.
- *
- * @param  string              $field Post field name.
- * @param  object|integer|null $_post Post ID, Object or null.
- * @return mixed
- */
-function ap_get_post_field( $field, $_post = null ) {
-	$_post = ap_get_post( $_post );
-	if ( isset( $_post->$field ) ) {
-		return $_post->$field;
-	}
-	return '';
-}
-
-/**
- * Echo specific post field.
- *
- * @param  string              $field Post field name.
- * @param  object|integer|null $_post Post ID, Object or null.
- */
-function ap_post_field( $field = null, $_post = null ) {
-	echo ap_get_post_field( $field, $_post ); // xss ok.
-}
-
-
-/**
  * Get last active time in human readable format.
  *
  * @param  mixed $post_id Post ID/Object.

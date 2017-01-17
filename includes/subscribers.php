@@ -83,6 +83,38 @@ function ap_get_subscriber( $user_id = false, $event = '', $ref_id = 0 ) {
 }
 
 /**
+ * Get a subscribers count for specefic event.
+ *
+ * @param  integer|false $user_id User ID.
+ * @param  string        $event   Event type.
+ * @param  integer       $ref_id Reference identifier id.
+ * @return null|array
+ * @since  4.0.0
+ */
+function ap_subscribers_count( $event = '', $ref_id = 0 ) {
+	global $wpdb;
+
+	$key = $event . '_' . $ref_id;
+	$cache = wp_cache_get( $key, 'ap_subscribers_count' );
+
+	if ( false !== $cache ) {
+		return $cache;
+	}
+
+	$ref_query = '';
+
+	if ( 0 !== $ref_id ) {
+		$ref_query = $wpdb->prepare( " AND subs_ref_id = %d", $ref_id );
+	}
+
+	$results = $wpdb->get_var( $wpdb->prepare( "SELECT count(*) FROM {$wpdb->ap_subscribers} WHERE subs_event = %s {$ref_query}", $event ) ); // WPCS: db call okay, cache okay.
+
+	wp_cache_set( $key, $results, 'ap_subscribers_count' );
+
+	return $results;
+}
+
+/**
  * Get subscribers.
  *
  * @param  string  $event   Event type.
@@ -134,6 +166,35 @@ function ap_delete_subscribers( $event, $ref_id = false, $user_id = false ) {
 		$where['subs_user_id'] = $user_id;
 	}
 
-	return $wpdb->delete( $wpdb->ap_subscribers, $where ); // WPCS: db call okay, cache okay.
+	$rows = $wpdb->delete( $wpdb->ap_subscribers, $where ); // WPCS: db call okay, cache okay.
+
+	if ( false !== $rows ) {
+		do_action( 'ap_delete_subscribers', $rows, $event, $ref_id, $user_id );
+	}
+
+	return $rows;
 }
 
+/**
+ * Check if user is subscribed to a reference event.
+ *
+ * @param string  $event Event type.
+ * @param integer $ref_id Reference id.
+ * @param integer $user_id User ID.
+ * @return bool
+ * @since 4.0.0
+ */
+function ap_is_user_subscriber( $event, $ref_id, $user_id = false  ) {
+
+	if ( false === $user_id ) {
+		$user_id = get_current_user_id();
+	}
+
+	$exists = ap_get_subscriber( false, $event, $ref_id );
+
+	if ( $exists ) {
+		return true;
+	}
+
+	return false;
+}

@@ -55,6 +55,9 @@ class AnsPress_Ajax {
 		// List filtering.
 		anspress()->add_action( 'ap_ajax_load_filter_order_by', __CLASS__, 'load_filter_order_by' );
 
+		// Subscribe
+		anspress()->add_action( 'ap_ajax_subscribe', __CLASS__, 'subscribe_to_question' );
+
 	}
 
 	/**
@@ -473,5 +476,55 @@ class AnsPress_Ajax {
 			'success' => true,
 			'items' => ap_get_questions_orderby(),
 		));
+	}
+
+	public static function subscribe_to_question() {
+		$post_id = (int) ap_sanitize_unslash( 'id', 'r' );
+
+		if ( ! is_user_logged_in() ) {
+			ap_ajax_json( array(
+				'success' => false,
+				'snackbar' => [ 'message' => __( 'You must be logged in to subscribe to a question', 'anspress-question-answer' ) ],
+			) );
+		}
+
+		$_post = ap_get_post( $post_id );
+
+		if ( 'question' === $_post->post_type && ! ap_verify_nonce( 'subscribe_' . $post_id ) ) {
+			ap_ajax_json( array(
+				'success' => false,
+				'snackbar' => [ 'message' => __( 'Sorry, unable to subscribe', 'anspress-question-answer' ) ],
+			) );
+		}
+
+		// Check if already subscribed, toggle if subscribed.
+		$exists = ap_get_subscriber( false, 'question', $post_id );
+
+		if ( $exists ) {
+			ap_delete_subscribers( 'question', $post_id, get_current_user_id() );
+			ap_ajax_json( array(
+				'success'  => true,
+				'snackbar' => [ 'message' => __( 'Successfully unsubscribed from question', 'anspress-question-answer' ) ],
+				'count'    => ap_get_post_field( 'subscribers', $post_id ),
+				'label'    => __( 'Subscribe', 'anspress-question-answer' ),
+			) );
+		}
+
+		// Insert subscriber.
+		$insert = ap_new_subscriber( false, 'question', $post_id );
+
+		if ( false === $insert ) {
+			ap_ajax_json( array(
+				'success' => false,
+				'snackbar' => [ 'message' => __( 'Sorry, unable to subscribe', 'anspress-question-answer' ) ],
+			) );
+		}
+
+		ap_ajax_json( array(
+			'success'  => true,
+			'snackbar' => [ 'message' => __( 'Successfully subscribed to question', 'anspress-question-answer' ) ],
+			'count'    => ap_get_post_field( 'subscribers', $post_id ),
+			'label'    => __( 'Unsubscribe', 'anspress-question-answer' ),
+		) );
 	}
 }

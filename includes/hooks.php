@@ -53,6 +53,9 @@ class AnsPress_Hooks {
 			anspress()->add_action( 'ap_vote_casted', __CLASS__, 'update_user_vote_casted_count', 10, 4 );
 			anspress()->add_action( 'ap_vote_removed', __CLASS__, 'update_user_vote_casted_count' , 10, 4 );
 			anspress()->add_action( 'the_post', __CLASS__, 'filter_page_title' );
+			anspress()->add_action( 'ap_new_subscriber', __CLASS__, 'new_subscriber', 10, 4 );
+			anspress()->add_action( 'ap_delete_subscribers', __CLASS__, 'delete_subscriber', 10, 4 );
+			anspress()->add_action( 'ap_display_question_metas', __CLASS__, 'display_question_metas', 100, 2 );
 
 			anspress()->add_filter( 'posts_clauses', 'AP_QA_Query_Hooks', 'sql_filter', 1, 2 );
 			anspress()->add_filter( 'posts_results', 'AP_QA_Query_Hooks', 'posts_results', 1, 2 );
@@ -680,10 +683,6 @@ class AnsPress_Hooks {
 		// Update total casted vote of user.
 		update_user_meta( $userid, '__up_vote_casted', $voted->votes_up );
 		update_user_meta( $userid, '__down_vote_casted', $voted->votes_down );
-
-		// Update total received vote of user.
-		//update_user_meta( $receiving_userid, '__up_vote_received', ap_count_vote( false, 'vote_up', false, $receiving_userid ) );
-		//update_user_meta( $receiving_userid, '__down_vote_received', ap_count_vote( false, 'vote_down', false, $receiving_userid ) );
 	}
 
 	/**
@@ -692,9 +691,41 @@ class AnsPress_Hooks {
 	 * @param Object $post Post object.
 	 */
 	public static function filter_page_title( $post ) {
-			if ( ap_opt( 'base_page' ) == $post->ID && ! is_admin() ) {
-				$post->post_title = ap_page_title();
-			}
+		if ( ap_opt( 'base_page' ) == $post->ID && ! is_admin() ) {
+			$post->post_title = ap_page_title();
+		}
+	}
+
+	/**
+	 * Update qameta subscribers count on adding new subscriber.
+	 *
+	 * @param integer $subscriber_id id of new subscriber added.
+	 * @param integer $user_id id of user.
+	 * @param string  $event Subscribe event.
+	 * @param integer $ref_id Reference id.
+	 */
+	public static function new_subscriber( $subscribe_id, $user_id, $event, $ref_id ) {
+		ap_update_subscribers_count( $ref_id );
+	}
+
+	/**
+	 * Update qameta subscribers count on adding new subscriber.
+	 *
+	 * @param integer $rows Number of rows deleted.
+	 * @param string  $event Subscribe event.
+	 * @param integer $ref_id Reference id.
+	 * @param integer $user_id Id of user.
+	 */
+	public static function delete_subscriber( $rows, $event, $ref_id, $user_id ) {
+		ap_update_subscribers_count( $ref_id );
+	}
+
+	public static function display_question_metas( $metas, $question_id ) {
+		if ( is_user_logged_in() && is_question() && ap_is_addon_active( 'free/email.php' ) ) {
+			$metas['subscribe'] = ap_subscribe_btn( false, false );
+		}
+
+		return $metas;
 	}
 
 	/**

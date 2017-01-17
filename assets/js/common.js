@@ -301,4 +301,20 @@ jQuery(document).ready(function($){
 		$('.ap-dropdown').not($(this).closest('.ap-dropdown')).removeClass('open');
 		$(this).closest('.ap-dropdown').toggleClass('open');
 	});
+
+	// Subscribe button.
+	$('[ap-subscribe]').click(function(e){
+		e.preventDefault();
+		var self = $(this);
+		var query = JSON.parse(self.attr('ap-query'));
+		query.ap_ajax_action = 'subscribe';
+
+		AnsPress.ajax({
+			data: query,
+			success: function(data){
+				if(data.count) self.next().text(data.count);
+				if(data.label) self.text(data.label);
+			}
+		})
+	});
 })

@@ -342,10 +342,13 @@ function ap_update_answer_selected( $answer_id, $selected = true ) {
  * @since  3.1.0
  */
 function ap_update_subscribers_count( $post_id, $count = false ) {
+
 	if ( false === $count ) {
-		$count = ap_subscribers_count( $post_id, 'q_all' );
+		$count = ap_subscribers_count( 'question', $post_id );
 	}
+
 	ap_insert_qameta( $post_id, [ 'subscribers' => $count ] );
+
 	return $count;
 }
 
@@ -487,4 +490,29 @@ function ap_toggle_close_question( $post_id ) {
 	ap_insert_qameta( $post_id, [ 'closed' => $toggle ] );
 
 	return $toggle;
+}
+
+/**
+ * Get a specific post field.
+ *
+ * @param  string              $field Post field name.
+ * @param  object|integer|null $_post Post ID, Object or null.
+ * @return mixed
+ */
+function ap_get_post_field( $field, $_post = null ) {
+	$_post = ap_get_post( $_post );
+	if ( isset( $_post->$field ) ) {
+		return $_post->$field;
+	}
+	return '';
+}
+
+/**
+ * Echo specific post field.
+ *
+ * @param  string              $field Post field name.
+ * @param  object|integer|null $_post Post ID, Object or null.
+ */
+function ap_post_field( $field = null, $_post = null ) {
+	echo ap_get_post_field( $field, $_post ); // xss ok.
 }

@@ -1262,8 +1262,8 @@ post-message {
   width: 100%;
 }
 
-.ap-subscribe-btn {
-  margin-bottom: 5px;
+.ap-subscribers-count {
+  margin-left: 5px;
 }
 
 .ap-btn-counter {
