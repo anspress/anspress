@@ -234,8 +234,6 @@ function ap_save_question( $args, $wp_error = false ) {
 		'attach_uploads' 	 => false,
 	) );
 
-	PC::debug( isset( $args['is_private'] ) && $args['is_private'] );
-
 	// Check if question title is empty.
 	if ( empty( $args['post_title'] ) ) {
 		if ( true === $wp_error ) {
