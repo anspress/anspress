@@ -221,18 +221,20 @@ function ap_remove_stop_words_post_name( $str ) {
  * @return bool|object|int
  */
 function ap_save_question( $args, $wp_error = false ) {
-	$status = 'publish';
+
 	if ( isset( $args['is_private'] ) && $args['is_private'] ) {
-		$status = 'private_post';
+		$args['post_status'] = 'private_post';
 	}
 
 	$args = wp_parse_args( $args, array(
-				'post_author' 		=> get_current_user_id(),
-				'post_status' 		=> $status,
-				'post_name' 		=> '',
-				'comment_status' 	=> 'open',
-				'attach_uploads' 	=> false,
+		'post_author' 		 => get_current_user_id(),
+		'post_status' 		 => 'publish',
+		'post_name' 		   => '',
+		'comment_status' 	 => 'open',
+		'attach_uploads' 	 => false,
 	) );
+
+	PC::debug( isset( $args['is_private'] ) && $args['is_private'] );
 
 	// Check if question title is empty.
 	if ( empty( $args['post_title'] ) ) {

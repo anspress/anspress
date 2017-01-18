@@ -194,17 +194,16 @@ function ap_edit_answer_form( $question_id ) {
  */
 function ap_save_answer( $question_id, $args, $wp_error = false) {
 	$question = ap_get_post( $question_id );
-	$status = 'publish';
 	if ( isset( $args['is_private'] ) && $args['is_private'] ) {
-		$status = 'private_post';
+		$args['post_status'] = 'private_post';
 	}
 
 	$args = wp_parse_args( $args, array(
-		'post_title' 		=> $question->post_title,
-		'post_author' 		=> get_current_user_id(),
-		'post_status' 		=> $status,
-		'post_name' 		=> '',
-		'comment_status' 	=> 'open',
+		'post_title' 		  => $question->post_title,
+		'post_author' 	  => get_current_user_id(),
+		'post_status' 	  => 'publish',
+		'post_name' 		  => '',
+		'comment_status'  => 'open',
 	) );
 
 	/**
