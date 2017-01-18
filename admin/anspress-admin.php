@@ -618,6 +618,7 @@ class AnsPress_Admin {
 	 */
 	public static function process_option_form() {
 		$updated = '';
+		$redirect = admin_url( 'admin.php?page=anspress_options' );
 
 		if ( ap_isset_post_value( '__nonce' ) && ap_verify_nonce( 'nonce_option_form' ) && current_user_can( 'manage_options' ) ) {
 
@@ -669,14 +670,13 @@ class AnsPress_Admin {
 
 				update_option( 'anspress_opt', $settings );
 				wp_cache_delete( 'anspress_opt', 'ap' );
-				$updated = '&updated=true';
-
 			}
 
 			flush_rewrite_rules();
+			$redirect = admin_url( 'admin.php?page=anspress_options&updated=true&option_page='. $active );
 		}
 
-		wp_safe_redirect( admin_url( 'admin.php?page=anspress_options' . $updated ) );
+		wp_safe_redirect( $redirect );
 	}
 
 	/**

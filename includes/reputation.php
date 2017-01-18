@@ -232,7 +232,7 @@ function ap_get_user_reputation( $user_id, $group = false ) {
 	if ( false === $group ) {
 		return $count;
 	}
-
+	
 	return array_sum( $count );
 }
 
