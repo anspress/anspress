@@ -102,7 +102,7 @@ class AP_Roles {
 	/**
 	 * Remove an AnsPress role
 	 */
-	public function remove_roles() {
+	public static function remove_roles() {
 		global $wp_roles;
 
 		if ( class_exists( 'WP_Roles' ) && ! isset( $wp_roles ) ) {
