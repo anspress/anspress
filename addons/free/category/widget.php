@@ -35,8 +35,8 @@ class AnsPress_Category_Widget extends WP_Widget {
 		}
 
 		$cat_args = array(
-			'parent' 		    => $instance['parent'],
-			'number'		    => $instance['number'],
+			'parent' 		=> $instance['parent'],
+			'number'		=> $instance['number'],
 			'hide_empty'    => $instance['hide_empty'],
 			'orderby'       => $instance['orderby'],
 			'order'         => $instance['order'],
@@ -51,10 +51,14 @@ class AnsPress_Category_Widget extends WP_Widget {
         <ul id="ap-categories-widget" class="ap-cat-wid clearfix">
 			<?php
 			foreach ( (array) $categories as $key => $category ) :
+				$ap_category = get_term_meta( $category->term_id, 'ap_category', true );
+				$ap_category = wp_parse_args( $ap_category, [ 'color' => '#333', 'icon' => 'apicon-category' ] );
 				$sub_cat_count = count(get_term_children( $category->term_id, 'question_category' ) );
 			?>
                 <li class="clearfix">
-					<a class="ap-cat-image" href="<?php echo get_category_link( $category );?>"><?php echo ap_category_icon( $category->term_id, 'height:'.$icon_height.'px;width:'.$icon_width.'px;' ); ?></a>
+					<a class="ap-cat-image" style="height:<?php echo $icon_height; ?>px;width:<?php echo $icon_width; ?>px;background: <?php echo esc_attr( $ap_category['color'] ); ?>" href="<?php echo get_category_link( $category );?>">
+						<span class="ap-category-icon <?php echo esc_attr( $ap_category['icon'] ); ?>"></span>
+					</a>
 					<a class="ap-cat-wid-title" href="<?php echo get_category_link( $category );?>">
 						<?php echo $category->name; ?>
                     </a>

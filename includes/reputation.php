@@ -273,7 +273,7 @@ function ap_update_user_reputation_meta( $user_id = false ) {
 		$user_id = get_current_user_id();
 	}
 
-	update_user_meta( $user_id, 'ap_reputations', ap_get_user_reputation( $user_id ) );
+	update_user_meta( $user_id, 'ap_reputations', ap_get_user_reputation( $user_id ) ); // @codingStandardsIgnoreLine
 }
 
 /**

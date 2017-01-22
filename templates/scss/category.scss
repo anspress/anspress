@@ -193,18 +193,20 @@
 		    }
 	    }
 	    .ap-cat-image{
-	    	float: right;
+			float: right;
+			position: relative;
+			border-radius: 2px;
 	    	.ap-category-icon{
-			    border-radius: 2px;
-			    color: rgba(255, 255, 255, 0.97);
-			    display: block;
-			    font-size: 16px;
-			    height: 30px;
-			    line-height: 33px;
-			    margin-top: 3px;
-			    text-align: center;
-			    width: 30px;
-			    padding: 6px;
+				color: rgba(255, 255, 255, 0.97);
+				display: block;
+				font-size: 16px;
+				text-align: center;
+				position: absolute;
+				left: 50%;
+				top: 50%;
+				margin-left: -8px;
+				margin-top: -8px;
+				line-height: 100%;
 	    	}
 	    }
 	}
