@@ -48,6 +48,9 @@ function ap_insert_reputation( $event, $ref_id, $user_id = false ) {
 		return false;
 	}
 
+	// Update user meta.
+	ap_update_user_reputation_meta( $user_id );
+
 	/**
 	 * Trigger action after inserting a reputation.
 	 */
@@ -212,7 +215,7 @@ function ap_get_user_reputation( $user_id, $group = false ) {
 	$cache = wp_cache_get( 'ap_user_reputation_' . $user_id, 'ap' );
 
 	if ( false !== $cache ) {
-		return false === $group ? $cache : array_sum( $cache );
+		return false === $group ? array_sum( $cache ) : $cache;
 	}
 
 	$events = $wpdb->get_results( $wpdb->prepare( "SELECT count(*) as count, rep_event  FROM {$wpdb->ap_reputations} WHERE rep_user_id = %d GROUP BY rep_event", $user_id ) ); // WPCS: db call okay.
@@ -230,10 +233,47 @@ function ap_get_user_reputation( $user_id, $group = false ) {
 	wp_cache_set( 'ap_user_reputation_' . $user_id, $count, 'ap' );
 
 	if ( false === $group ) {
-		return $count;
+		return array_sum( $count );
 	}
-	
-	return array_sum( $count );
+
+	return $count;
+}
+
+/**
+ * Get user reputation from user meta.
+ *
+ * @param integer|bool $user_id User id.
+ * @param boolean      $short Shorten count number.
+ * @return string
+ * @since 4.0.0
+ */
+function ap_get_user_reputation_meta( $user_id = false, $short = true ) {
+
+	if ( false === $user_id ) {
+		$user_id = get_current_user_id();
+	}
+
+	$meta = get_user_meta( $user_id, 'ap_reputations', true ); // @codingStandardsIgnoreLine.
+
+	if ( false === $short ) {
+		return $meta;
+	}
+
+	return ap_short_num( $meta );
+}
+
+/**
+ * Update user reputation meta.
+ *
+ * @param integer|bool $user_id User id.
+ */
+function ap_update_user_reputation_meta( $user_id = false ) {
+
+	if ( false === $user_id ) {
+		$user_id = get_current_user_id();
+	}
+
+	update_user_meta( $user_id, 'ap_reputations', ap_get_user_reputation( $user_id ) );
 }
 
 /**

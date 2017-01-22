@@ -335,7 +335,7 @@ class AnsPress_Reputation_Hooks {
 		if ( $args['user_id'] > 0 ) {
 
 			if ( $args['html'] ) {
-				$reputation = ap_get_user_reputation( $args['user_id'], true );
+				$reputation = ap_get_user_reputation_meta( $args['user_id'] );
 				return $name . '<a href="' . ap_user_link( $args['user_id'] ) . '?tab=reputations" class="ap-user-reputation" title="' . __( 'Reputation', 'anspress-question-answer' ) . '">' . $reputation . '</a>';
 			}
 		}
@@ -358,7 +358,7 @@ class AnsPress_Reputation_Hooks {
 	 * Show reputation points of user in BuddyPress profile meta.
 	 */
 	public static function bp_profile_header_meta() {
-		echo '<span class="ap-user-meta ap-user-meta-reputation">' . sprintf( __( '%s Reputation', 'anspress-question-answer' ), ap_get_user_reputation( bp_displayed_user_id(), true ) ) . '</span>';
+		echo '<span class="ap-user-meta ap-user-meta-reputation">' . sprintf( __( '%s Reputation', 'anspress-question-answer' ), ap_get_user_reputation_meta( bp_displayed_user_id() ) ) . '</span>';
 	}
 
 	/**

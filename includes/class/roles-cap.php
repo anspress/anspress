@@ -729,7 +729,7 @@ function ap_user_can_view_private_post( $_post = null, $user_id = false ) {
 		return true;
 	}
 
-	$post_o = is_object( $post_id ) ? $post_id : ap_get_post( $post_id );
+	$post_o = is_object( $_post ) ? $_post : ap_get_post( $_post );
 
 	if( ! $post_o ) {
 		return false;

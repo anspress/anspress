@@ -474,7 +474,7 @@ class AnsPress_Email_Hooks {
 					SELF::$emails[] = $email;
 				}
 			}
-		} elseif ( is_email( $email ) && ! in_array( $e, SELF::$emails, true ) ) {
+		} elseif ( is_email( $email ) && ! in_array( $email, SELF::$emails, true ) ) {
 			SELF::$emails[] = $email;
 		}
 	}
