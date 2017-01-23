@@ -2764,6 +2764,7 @@ post-message {
   padding: 18px 24px;
   bottom: 0px;
   opacity: 0;
+  z-index: 9999;
 }
 .ap-snackbar.success {
   color: #fff;
@@ -2831,17 +2832,6 @@ post-message {
   border: 2px solid #eee;
   border-radius: 3px;
   padding: 7px;
-}
-.anspress .ap-category-icon {
-  background: #343434 none repeat scroll 0 0;
-  border-radius: 3px;
-  color: #fff;
-  font-size: 27px;
-  height: 50px;
-  margin-bottom: 12px;
-  padding: 5px;
-  text-align: center;
-  width: 50px;
 }
 .anspress .ap-cat-img-c {
   position: relative;
@@ -3014,6 +3004,8 @@ post-message {
   margin-left: -8px;
   margin-top: -8px;
   line-height: 100%;
+  text-align: center;
+  width: 16px;
 }
 
 .anspress .ap-term-tag-box {

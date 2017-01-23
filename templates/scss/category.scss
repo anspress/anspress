@@ -18,17 +18,7 @@
 	    border-radius: 3px;
 	    padding: 7px;
     }
-    .ap-category-icon{
-	    background: #343434 none repeat scroll 0 0;
-	    border-radius: 3px;
-	    color: #fff;
-	    font-size: 27px;
-	    height: 50px;
-	    margin-bottom: 12px;
-	    padding: 5px;
-	    text-align: center;
-	    width: 50px;
-    }
+
     .ap-cat-img-c{
     	position: relative;
     	.ap-category-icon{
@@ -197,16 +187,18 @@
 			position: relative;
 			border-radius: 2px;
 	    	.ap-category-icon{
-				color: rgba(255, 255, 255, 0.97);
-				display: block;
-				font-size: 16px;
-				text-align: center;
-				position: absolute;
-				left: 50%;
-				top: 50%;
-				margin-left: -8px;
-				margin-top: -8px;
-				line-height: 100%;
+			    color: rgba(255,255,255,.97);
+			    display: block;
+			    font-size: 16px;
+			    text-align: center;
+			    position: absolute;
+			    left: 50%;
+			    top: 50%;
+			    margin-left: -8px;
+			    margin-top: -8px;
+			    line-height: 100%;
+			    text-align: center;
+			    width: 16px;
 	    	}
 	    }
 	}

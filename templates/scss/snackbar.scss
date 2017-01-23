@@ -26,6 +26,7 @@
   padding: 18px 24px;
   bottom: 0px;
   opacity: 0;
+  z-index: 9999;
   &.success{
     color: #fff;
     background-color: #323232;
