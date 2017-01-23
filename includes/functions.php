@@ -314,8 +314,9 @@ function ap_post_edit_link( $_post ) {
  * @return string
  */
 function ap_truncate_chars( $text, $limit = 40, $ellipsis = '...' ) {
+	$text = str_replace( array( "\r\n", "\r", "\n", "\t" ), ' ', $text );
 	if ( strlen( $text ) > $limit ) {
-		$endpos = strpos( str_replace( array( "\r\n", "\r", "\n", "\t" ), ' ', $text ), ' ', (string) $limit );
+		$endpos = strpos( $text, ' ', (string) $limit );
 		if ( false !== $endpos ) {
 			$text = trim( substr( $text, 0, $endpos ) ) . $ellipsis;
 		}
