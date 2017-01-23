@@ -14,7 +14,7 @@
 <table class="ap-reputations">
 	<tbody>
 		<?php while ( $reputations->have() ) : $reputations->the_reputation(); ?>
-			<?php ap_get_template_part( 'reputations/item', [ 'reputations' => $reputations ] ); ?>
+			<?php ap_get_template_part( 'addons/reputation/item', [ 'reputations' => $reputations ] ); ?>
 		<?php endwhile; ?>
 	</tbody>
 </table>

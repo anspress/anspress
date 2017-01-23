@@ -382,7 +382,7 @@ class AnsPress_Reputation_Hooks {
 
 		if ( 'reputations' === $current_tab ) {
 			$reputations = new AnsPress_Reputation_Query( [ 'user_id' => $user_id ] );
-			include ap_get_theme_location( 'reputations/index.php' );
+			include ap_get_theme_location( 'addons/reputation/index.php' );
 		}
 	}
 
@@ -398,7 +398,7 @@ class AnsPress_Reputation_Hooks {
 		ob_start();
 		$reputations = new AnsPress_Reputation_Query( [ 'user_id' => $user_id, 'paged' => $paged ] );
 		while ( $reputations->have() ) : $reputations->the_reputation();
-			include ap_get_theme_location( 'reputations/item.php' );
+			include ap_get_theme_location( 'addons/reputation/item.php' );
 		endwhile;
 		$html = ob_get_clean();
 
@@ -442,7 +442,7 @@ class AnsPress_Reputation_Hooks {
 		$user_id = bp_displayed_user_id();
 
 		$reputations = new AnsPress_Reputation_Query( [ 'user_id' => $user_id ] );
-		include ap_get_theme_location( 'reputations/index.php' );
+		include ap_get_theme_location( 'addons/reputation/index.php' );
 	}
 }
 
