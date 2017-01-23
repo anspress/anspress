@@ -17,6 +17,13 @@
 	    border: 2px solid #eee;
 	    border-radius: 3px;
 	    padding: 7px;
+		.ap-cat-img-c .ap-category-icon{
+			color: #fff;
+			width: 50px;
+			font-size: 35px;
+			height: 50px;
+			text-align: center;
+		}
     }
 
     .ap-cat-img-c{
@@ -112,6 +119,14 @@
 		    font-weight: bold;
 		    padding: 4px 7px;
 		    vertical-align: super;
+		}
+		.ap-category-icon{
+			width: 50px;
+			height: 50px;
+			color: #fff;
+			font-size: 35px;
+			text-align: center;
+			border-radius: 2px;
 		}
 		.ap-taxo-description {
 		    font-size: 18px;

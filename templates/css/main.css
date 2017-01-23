@@ -2833,6 +2833,13 @@ post-message {
   border-radius: 3px;
   padding: 7px;
 }
+.anspress .ap-category-item .ap-cat-img-c .ap-category-icon {
+  color: #fff;
+  width: 50px;
+  font-size: 35px;
+  height: 50px;
+  text-align: center;
+}
 .anspress .ap-cat-img-c {
   position: relative;
 }
@@ -2920,6 +2927,14 @@ post-message {
   font-weight: bold;
   padding: 4px 7px;
   vertical-align: super;
+}
+.anspress .ap-taxo-detail .ap-category-icon {
+  width: 50px;
+  height: 50px;
+  color: #fff;
+  font-size: 35px;
+  text-align: center;
+  border-radius: 2px;
 }
 .anspress .ap-taxo-detail .ap-taxo-description {
   font-size: 18px;
