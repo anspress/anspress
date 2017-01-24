@@ -168,7 +168,7 @@ class AP_Activate {
 	public function subscribers_table() {
 		global $wpdb;
 
-		$this->tables[] = 'CREATE TABLE IF NOT EXISTS `' . $wpdb->ap_subscribers . '` (
+		$this->tables[] = 'CREATE TABLE `' . $wpdb->ap_subscribers . '` (
 				`subs_id` bigint(20) NOT NULL AUTO_INCREMENT,
 				`subs_user_id` bigint(20) NOT NULL,
 				`subs_ref_id` bigint(20) NOT NULL,
