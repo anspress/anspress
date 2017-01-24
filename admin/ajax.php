@@ -260,7 +260,7 @@ class AnsPress_Admin_Ajax {
 		$addons = $previous_addons + $new_addons;
 
 		foreach ( (array) $addons as $file => $status ) {
-			if ( ! isset( $new_addons[ $file ] ) || ! file_exists( ANSPRESS_ADDONS_DIR . DS . $file ) ) {
+			if ( ! isset( $new_addons[ $file ] ) ) {
 				unset( $addons[ $file ] );
 			} else {
 				$addons[ $file ] = true;
@@ -268,15 +268,18 @@ class AnsPress_Admin_Ajax {
 		}
 
 		update_option( 'anspress_addons', $addons );
-
 		$activated_addon = array_diff_key( $new_addons, $previous_addons );
 
 		foreach ( (array) $activated_addon as $addon_name => $active ) {
+			$all_addons = ap_get_addons();
 			$addon_name = wp_normalize_path( $addon_name );
-			require_once ANSPRESS_ADDONS_DIR . '/' . $addon_name;
 
-			if ( isset( $ap_addons_activation[ $addon_name ] ) ) {
-				call_user_func( $ap_addons_activation[ $addon_name ] );
+			if ( isset( $all_addons[ $addon_name ] ) ) {
+				require_once $all_addons[ $addon_name ]['path'];
+
+				if ( isset( $ap_addons_activation[ $addon_name ] ) ) {
+					call_user_func( $ap_addons_activation[ $addon_name ] );
+				}
 			}
 		}
 

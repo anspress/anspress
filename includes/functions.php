@@ -1570,6 +1570,7 @@ function ap_search_array( $array, $key, $value ) {
  */
 function ap_get_addons() {
 	$cache = wp_cache_get( 'addons', 'anspress' );
+	$option = get_option( 'anspress_addons', [] );
 
 	if ( false !== $cache ) {
 		return $cache;
@@ -1592,19 +1593,34 @@ function ap_get_addons() {
 		}
 	}
 
-
+	$all_files = apply_filters( 'ap_addon_files', $all_files );
 	$addons = [];
 	foreach ( (array) $all_files as $file ) {
-		$data = get_file_data( ANSPRESS_ADDONS_DIR . DS . $file, array(
+
+		if ( is_array( $file ) ) {
+			$id = $file['name'];
+			$path = $file['path'];
+		} else {
+			$id = wp_normalize_path( $file );
+			$path = ANSPRESS_ADDONS_DIR . DS . $file;
+		}
+
+		$data = get_file_data( $path, array(
 			'name'        => 'Addon Name',
 			'addonuri'    => 'Addon URI',
 			'description' => 'Description',
 			'author'      => 'Author',
 			'authoruri'   => 'Author URI',
+			'pro'   			=> 'Pro',
 		) );
 
+		$data['pro']    = 'yes' === strtolower( $data['pro'] ) ? true : false;
+		$data['path']   = $path;
+		$data['active'] = isset( $option[ $id ] ) ? true : false;
+		$data['id']     = $id;
+
 		if ( ! empty( $data['name'] ) ) {
-			$addons[ wp_normalize_path( $file ) ] = $data;
+			$addons[ $id ] = $data;
 		}
 	}
 
@@ -1621,17 +1637,15 @@ function ap_get_addons() {
  * @since 4.0.0
  */
 function ap_get_active_addons() {
-	$addons = get_option( 'anspress_addons', [] );
+	$active_addons = [];
 
-	if ( empty( $addons ) ) {
-		return $addons;
+	foreach ( ap_get_addons() as $addon ) {
+		if ( $addon['active'] ) {
+			$active_addons[ $addon['id'] ] = $addon;
+		}
 	}
 
-	foreach ( (array) $addons as $file => $state ) {
-		$addons[ wp_normalize_path( $file ) ] = wp_normalize_path( ANSPRESS_ADDONS_DIR . DS . $file );
-	}
-
-	return $addons;
+	return $active_addons;
 }
 
 /**

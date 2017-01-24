@@ -28,7 +28,7 @@ global $wpdb;
 				</div>
 				<div class="no-overflow">
 					<strong class="ap-addon-name"><?php echo esc_attr( $data['name'] ); ?>
-					<?php echo 'pro' === basename( dirname( $file ) ) ? '<i>pro</i>' : ''; ?></strong>
+					<?php echo $data['pro'] ? '<i>pro</i>' : ''; ?></strong>
 					<p class="description"><?php echo esc_attr( $data['description'] ); ?></p>
 				</div>
 			</div>
