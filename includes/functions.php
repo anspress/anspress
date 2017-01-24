@@ -1615,7 +1615,7 @@ function ap_get_addons() {
 		) );
 
 		$data['pro']    = 'yes' === strtolower( $data['pro'] ) ? true : false;
-		$data['path']   = $path;
+		$data['path']   = wp_normalize_path( $path );
 		$data['active'] = isset( $option[ $id ] ) ? true : false;
 		$data['id']     = $id;
 

@@ -336,10 +336,9 @@ if ( ! class_exists( 'AnsPress' ) ) {
 			self::$instance->anspress_hooks 	= AnsPress_Hooks::init();
 			AnsPress_Views::init();
 
-			foreach ( (array) ap_get_addons() as $file => $data ) {
-				$file_path = ANSPRESS_ADDONS_DIR . DS . $file;
-				if ( ap_is_addon_active( $file ) && file_exists( $file_path ) ) {
-					require_once( $file_path );
+			foreach ( (array) ap_get_addons() as $data ) {
+				if ( $data['active'] && file_exists( $data['path'] ) ) {
+					require_once( $data['path'] );
 				}
 			}
 		}
