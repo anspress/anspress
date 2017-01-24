@@ -246,6 +246,8 @@ class AnsPress_Admin_Ajax {
 			wp_die( '' );
 		}
 
+		global $ap_addons_activation;
+
 		$_REQUEST['option_page'] = 'addons';
 
 		$previous_addons = get_option( 'anspress_addons', [] );
@@ -266,8 +268,21 @@ class AnsPress_Admin_Ajax {
 		}
 
 		update_option( 'anspress_addons', $addons );
+
+		$activated_addon = array_diff_key( $new_addons, $previous_addons );
+
+		foreach ( (array) $activated_addon as $addon_name => $active ) {
+			$addon_name = wp_normalize_path( $addon_name );
+			require_once ANSPRESS_ADDONS_DIR . '/' . $addon_name;
+
+			if ( isset( $ap_addons_activation[ $addon_name ] ) ) {
+				call_user_func( $ap_addons_activation[ $addon_name ] );
+			}
+		}
+
 		wp_die( );
 	}
+
 
 	public static function ap_migrator_4x() {
 		check_ajax_referer( 'ap_migration', '__nonce' );

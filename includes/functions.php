@@ -1700,3 +1700,18 @@ function ap_get_short_link( $args ) {
 
 	return add_query_arg( $args, $base );
 }
+
+/**
+ * Register a callback function which triggred
+ * after activating an addon.
+ *
+ * @param string       $addon Name of addon.
+ * @param string|array $cb    Callback function name.
+ * @since 4.0.0
+ */
+function ap_addon_activation_hook( $addon, $cb ) {
+	global $ap_addons_activation;
+	$addon = wp_normalize_path( $addon );
+
+	$ap_addons_activation[ $addon ] = $cb;
+}
