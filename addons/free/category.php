@@ -694,7 +694,7 @@ class AnsPress_Category {
 			if ( empty( $term_meta ) ) {
 				delete_term_meta( $term_id, 'ap_category' );
 			}
-			
+
 			update_term_meta( $term_id, 'ap_category', $term_meta );
 		}
 	}
@@ -709,7 +709,6 @@ class AnsPress_Category {
 	 */
 	public static function rewrite_rules( $rules, $slug, $base_page_id ) {
 		global $wp_rewrite;
-
 		$base = 'index.php?page_id=' . $base_page_id . '&ap_page=' ;
 		$cat_rules = array(
 			$slug . ap_get_categories_slug() . '/page/?([0-9]{1,})/?$' => $base . ap_get_categories_slug() . '&paged=' . $wp_rewrite->preg_index( 1 ),

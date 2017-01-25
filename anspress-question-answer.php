@@ -309,6 +309,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 			require_once ANSPRESS_DIR . 'includes/taxo.php';
 			require_once ANSPRESS_DIR . 'includes/reputation.php';
 			require_once ANSPRESS_DIR . 'includes/subscribers.php';
+			require_once ANSPRESS_DIR . 'includes/class-query.php';
 		}
 
 		/**

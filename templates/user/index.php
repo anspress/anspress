@@ -32,7 +32,7 @@
 
 		<ul class="ap-tab-nav clearfix">
 			<li<?php echo 'questions' === $current_tab ? ' class="active"' : ''; ?>><a href="<?php echo ap_user_link( $user_id ); ?>"><?php esc_attr_e( 'Questions', 'anspress-question-answer' ); ?></a></li>
-			<?php do_action( 'ap_author_tab' ); ?>
+			<?php do_action( 'ap_user_tab' ); ?>
 		</ul>
 
 		<?php if ( 'questions' === $current_tab ) : ?>
@@ -57,7 +57,7 @@
 
 		<?php endif; ?>
 
-		<?php do_action( 'ap_author_content' ); ?>
+		<?php do_action( 'ap_user_content' ); ?>
 
 	</div>
 	<?php if ( is_active_sidebar( 'ap-author' ) && is_anspress()){ ?>

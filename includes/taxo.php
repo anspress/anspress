@@ -278,7 +278,8 @@ function ap_category_icon( $term_id, $attributes = '' ) {
  */
 function ap_get_categories_slug() {
 	$slug = ap_opt( 'categories_page_slug' );
-	$slug = sanitize_title( $slug );
+
+	$slug = sanitize_title_for_query( $slug );
 
 	if ( empty( $slug ) ) {
 		$slug = 'categories';

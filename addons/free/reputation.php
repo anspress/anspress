@@ -52,8 +52,8 @@ class AnsPress_Reputation_Hooks {
 		anspress()->add_filter( 'ap_pre_fetch_question_data', __CLASS__, 'pre_fetch_post' );
 		anspress()->add_filter( 'ap_pre_fetch_answer_data', __CLASS__, 'pre_fetch_post' );
 		anspress()->add_filter( 'bp_before_member_header_meta', __CLASS__, 'bp_profile_header_meta' );
-		anspress()->add_filter( 'ap_author_tab', __CLASS__, 'ap_author_tab' );
-		anspress()->add_filter( 'ap_author_content', __CLASS__, 'ap_author_content' );
+		anspress()->add_filter( 'ap_user_tab', __CLASS__, 'ap_author_tab' );
+		anspress()->add_filter( 'ap_user_content', __CLASS__, 'ap_author_content' );
 		anspress()->add_filter( 'ap_ajax_load_more_reputation', __CLASS__, 'load_more_reputation' );
 		anspress()->add_filter( 'ap_bp_nav', __CLASS__, 'ap_bp_nav' );
 		anspress()->add_filter( 'ap_bp_page', __CLASS__, 'ap_bp_page', 10, 2 );
