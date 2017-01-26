@@ -1,0 +1,63 @@
+#anspress{
+  .ap-noti{
+    border: solid 1px #eee;
+    border-radius: 2px;
+    &-item{
+      border-bottom: solid 1px #eee;
+      padding: 10px 15px;
+    }
+    &-icon {
+      float: left;
+      width: 40px;
+      height: 40px;
+      background: #eee;
+      padding: 8px;
+      text-align: center;
+      font-size: 18px;
+      border-radius: 2px;
+    }
+    &-avatar{
+      float: left;
+      .avatar{
+        border-radius: 2px;
+      }
+    }
+    &-rep{
+      background: $yellow-color;
+      float: left;
+      width: 40px;
+      height: 40px;
+      text-align: center;
+      padding: 8px;
+      font-weight: bold;
+      color: #fff;
+      border-radius: 2px;
+    }
+    &-inner{
+      margin-left: 50px;
+    }
+    &-date {
+      display: block;
+      font-size: 12px;
+      color: #777;
+    }
+    &-sub{
+      margin-bottom: 15px;
+      a{
+        margin-right: 10px;
+        border-right: solid 1px #ccc;
+        padding-right: 10px;
+        &:last-child{
+          border-right: none;
+          margin-right: 0;
+        }
+      }
+
+    }
+
+  }
+  .ap-btn-markall-read{
+    float: right;
+    margin-right: 0;
+  }
+}

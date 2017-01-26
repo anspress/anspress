@@ -132,9 +132,9 @@
 				}
 		}
 		.ap-answers-label {
+				display: block;
 				font-size: 17px;
 				line-height: 37px;
-				display: block;
 				margin: 0 15px 0 0;
 				white-space: nowrap;
 		}
@@ -215,12 +215,12 @@
 				margin-right: 0;
 				border-right: none;
 				.unapproved{
+					display:none;
 					margin-left: 5px;
 					background: #FFCA28;
 					padding: 3px 7px;
 					border-radius: 2px;
 					color: #333;
-					display:none;
 
 					&.have{
 						display: inline;
@@ -231,9 +231,9 @@
 
 .ap-post-tags {
 		li a {
+				display: table;
 				font-size: 12px;
 				font-weight: bold;
-				display: table;
 				margin-bottom: 10px;
 				padding: 2px 10px;
 				text-decoration: none;
@@ -297,8 +297,8 @@
 						margin-left: 4px;
 				}
 				>li a {
-						font-size: 12px;
 						display: block;
+						font-size: 12px;
 						margin-bottom: -1px;
 						padding: 10px 15px;
 						text-decoration: none;
@@ -339,8 +339,8 @@
 
 .ap-question-info {
 		.ap-widget-title {
-				font-size: 11px;
 				display: block;
+				font-size: 11px;
 				margin: 0 0 5px;
 				padding: 0 0 8px;
 				text-transform: uppercase;
@@ -377,10 +377,10 @@ post-message {
 .ap-pmsg {
 		position: relative;
 		i {
+				display: block;
 				font-size: 12px;
 				font-style: normal;
 				line-height: 15px;
-				display: block;
 				margin-top: -5px;
 				padding: 5px 6px;
 				color: #888;
@@ -397,9 +397,9 @@ post-message {
 				display: block;
 		}
 		span {
+				display: none;
 				position: absolute;
 				right: 0;
-				display: none;
 				margin-top: 5px;
 				padding: 7px;
 				border: solid 1px #ddd;
@@ -447,9 +447,9 @@ post-message {
 						}
 				}
 				a {
+						display: block;
 						font-size: 13px;
 						font-weight: 600;
-						display: block;
 						padding: 5px 15px;
 						color: #333;
 						border-radius: 0;

@@ -845,9 +845,9 @@ ul li.anspress-page-link {
   color: #888;
 }
 #anspress .ap-answers-label {
+  display: block;
   font-size: 17px;
   line-height: 37px;
-  display: block;
   margin: 0 15px 0 0;
   white-space: nowrap;
 }
@@ -927,21 +927,21 @@ ul li.anspress-page-link {
   border-right: none;
 }
 .ap-post-footer .ap-btn-comments .unapproved {
+  display: none;
   margin-left: 5px;
   background: #FFCA28;
   padding: 3px 7px;
   border-radius: 2px;
   color: #333;
-  display: none;
 }
 .ap-post-footer .ap-btn-comments .unapproved.have {
   display: inline;
 }
 
 .ap-post-tags li a {
+  display: table;
   font-size: 12px;
   font-weight: bold;
-  display: table;
   margin-bottom: 10px;
   padding: 2px 10px;
   text-decoration: none;
@@ -1007,8 +1007,8 @@ ul li.anspress-page-link {
   margin-left: 4px;
 }
 #ap-answers-c .ap-answers-tab > li a {
-  font-size: 12px;
   display: block;
+  font-size: 12px;
   margin-bottom: -1px;
   padding: 10px 15px;
   text-decoration: none;
@@ -1046,8 +1046,8 @@ ul li.anspress-page-link {
 }
 
 .ap-question-info .ap-widget-title {
-  font-size: 11px;
   display: block;
+  font-size: 11px;
   margin: 0 0 5px;
   padding: 0 0 8px;
   text-transform: uppercase;
@@ -1084,10 +1084,10 @@ post-message {
   position: relative;
 }
 .ap-pmsg i {
+  display: block;
   font-size: 12px;
   font-style: normal;
   line-height: 15px;
-  display: block;
   margin-top: -5px;
   padding: 5px 6px;
   color: #888;
@@ -1104,9 +1104,9 @@ post-message {
   display: block;
 }
 .ap-pmsg span {
+  display: none;
   position: absolute;
   right: 0;
-  display: none;
   margin-top: 5px;
   padding: 7px;
   border: solid 1px #ddd;
@@ -1153,9 +1153,9 @@ post-message {
   background: #a4d070;
 }
 .ap-questions-tab > li a {
+  display: block;
   font-size: 13px;
   font-weight: 600;
-  display: block;
   padding: 5px 15px;
   color: #333;
   border-radius: 0;
@@ -3437,6 +3437,152 @@ post-message {
 }
 .ap-reputation-activity {
   font-weight: bold;
+}
+
+.ap-reputations {
+  border: none;
+  border-spacing: 0;
+}
+.ap-reputations td {
+  border-width: 0 0 1px 0;
+  border-color: #eee;
+  border-style: solid;
+  padding: 10px 5px;
+  vertical-align: top;
+}
+.ap-reputations td.col-icon {
+  width: 50px;
+  color: #b5b5b5;
+}
+.ap-reputations td.col-icon i {
+  font-size: 18px;
+  background: #9E9E9E;
+  width: 35px;
+  display: block;
+  height: 35px;
+  padding: 5px;
+  text-align: center;
+  border-radius: 50%;
+  color: #fff;
+}
+.ap-reputations td.col-icon i.answer {
+  background: #8bc34a;
+}
+.ap-reputations td.col-icon i.ask {
+  background: #F44336;
+}
+.ap-reputations td.col-icon i.comment {
+  background: #673AB7;
+}
+.ap-reputations td.col-icon i.select_answer {
+  background: #00C853;
+}
+.ap-reputations td.col-icon i.best_answer {
+  background: #00BCD4;
+}
+.ap-reputations td.col-icon i.received_vote_up {
+  background: #AB47BC;
+}
+.ap-reputations td.col-icon i.received_vote_down {
+  background: #FF9800;
+}
+.ap-reputations td.col-icon i.given_vote_down {
+  background: #8D6E63;
+}
+.ap-reputations td.col-icon i.given_vote_up {
+  background: #EC407A;
+}
+.ap-reputations td.col-points {
+  text-align: right;
+  width: 55px;
+}
+.ap-reputations td.col-points span {
+  background: #F4AC20;
+  color: #fff;
+  width: 40px;
+  display: block;
+  float: right;
+  text-align: center;
+  border-radius: 2px;
+  padding: 2px;
+}
+.ap-reputations td.col-date {
+  width: 100px;
+  font-size: 12px;
+}
+.ap-reputation-ref {
+  margin-top: 5px;
+  display: block;
+  margin-top: 5px;
+  font-size: 12px;
+  color: #777;
+}
+.ap-reputation-ref strong {
+  display: block;
+  color: #444;
+}
+.ap-reputation-activity {
+  font-weight: bold;
+}
+
+#anspress .ap-noti {
+  border: solid 1px #eee;
+  border-radius: 2px;
+}
+#anspress .ap-noti-item {
+  border-bottom: solid 1px #eee;
+  padding: 10px 15px;
+}
+#anspress .ap-noti-icon {
+  float: left;
+  width: 40px;
+  height: 40px;
+  background: #eee;
+  padding: 8px;
+  text-align: center;
+  font-size: 18px;
+  border-radius: 2px;
+}
+#anspress .ap-noti-avatar {
+  float: left;
+}
+#anspress .ap-noti-avatar .avatar {
+  border-radius: 2px;
+}
+#anspress .ap-noti-rep {
+  background: #F4AC20;
+  float: left;
+  width: 40px;
+  height: 40px;
+  text-align: center;
+  padding: 8px;
+  font-weight: bold;
+  color: #fff;
+  border-radius: 2px;
+}
+#anspress .ap-noti-inner {
+  margin-left: 50px;
+}
+#anspress .ap-noti-date {
+  display: block;
+  font-size: 12px;
+  color: #777;
+}
+#anspress .ap-noti-sub {
+  margin-bottom: 15px;
+}
+#anspress .ap-noti-sub a {
+  margin-right: 10px;
+  border-right: solid 1px #ccc;
+  padding-right: 10px;
+}
+#anspress .ap-noti-sub a:last-child {
+  border-right: none;
+  margin-right: 0;
+}
+#anspress .ap-btn-markall-read {
+  float: right;
+  margin-right: 0;
 }
 
 /*# sourceMappingURL=main.css.map */
