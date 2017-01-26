@@ -34,6 +34,9 @@ class AnsPress_reCcaptcha {
 	 * @since 2.4.8 Removed `$ap` args.
 	 */
 	public static function init() {
+		ap_add_default_options([
+			'recaptcha_method'   => 'post',
+		]);
 		anspress()->add_action( 'ap_option_groups', __CLASS__, 'options' );
 		anspress()->add_action( 'ap_process_ask_form', __CLASS__, 'verification_response' );
 		anspress()->add_action( 'ap_process_answer_form', __CLASS__, 'verification_response' );
@@ -56,6 +59,13 @@ class AnsPress_reCcaptcha {
 				'name'  => 'recaptcha_secret_key',
 				'label' => __( 'Recaptcha secret key', 'anspress-question-answer' ),
 				'desc'  => __( 'Enter your secret key', 'anspress-question-answer' ),
+			) ,
+			array(
+				'name'    => 'recaptcha_method',
+				'label'   => __( 'Recaptcha Method', 'anspress-question-answer' ),
+				'desc'    => __( 'Select method to use when verification keeps failing', 'anspress-question-answer' ),
+				'type'    => 'select',
+				'options' => [ 'curl' => 'CURL', 'post' => 'POST' ],
 			) ,
 		]);
 	}
@@ -82,7 +92,8 @@ class AnsPress_reCcaptcha {
 	 */
 	public static function verify_recaptcha() {
 		require_once( ANSPRESS_ADDONS_DIR . '/free/recaptcha/autoload.php' );
-		$recaptcha = new \ReCaptcha\ReCaptcha( trim( ap_opt( 'recaptcha_secret_key' ) ) );
+		$method = ap_opt( 'recaptcha_method' ) === 'curl' ? new \ReCaptcha\RequestMethod\CurlPost() : new \ReCaptcha\RequestMethod\Post();
+		$recaptcha = new \ReCaptcha\ReCaptcha( trim( ap_opt( 'recaptcha_secret_key' ) ), $method );
 		$ip = filter_var( $_SERVER['REMOTE_ADDR'], FILTER_VALIDATE_IP ); //@codingStandardsIgnoreLine.
 		$captcha_response = ap_sanitize_unslash( 'g-recaptcha-response', 'r' );
 		$resp = $recaptcha->verify( $captcha_response, $ip );

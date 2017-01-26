@@ -1012,7 +1012,7 @@ function ap_show_captcha_to_user( $user_id = false ) {
 		return false;
 	}
 
-	if ( ap_opt( 'recaptcha_site_key' ) !== '' && ap_opt( 'enable_recaptcha' ) ) {
+	if ( ap_opt( 'recaptcha_site_key' ) !== '' ) {
 		return true;
 	}
 

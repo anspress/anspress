@@ -274,7 +274,7 @@ class AnsPress_Hooks {
 			//@codingStandardsIgnoreStart
 
 			foreach ( (array) $ans as $p ) {
-				do_action( 'ap_untrash_answer', $p->ID, $p );
+				//do_action( 'ap_untrash_answer', $p->ID, $p );
 				wp_untrash_post( $p->ID );
 			}
 			ap_update_post_activity_meta( $p->post_parent, 'restore_question', get_current_user_id() );
@@ -283,7 +283,7 @@ class AnsPress_Hooks {
 		if ( 'answer' === $post->post_type ) {
 			$ans = ap_count_published_answers( $post->post_parent );
 			ap_update_post_activity_meta( $post->post_parent, 'restore_answer', get_current_user_id(), true );
-			do_action( 'ap_untrash_answer', $post->ID, $ans );
+			do_action( 'ap_untrash_answer', $post->ID, $post );
 			// Update answer count.
 			ap_update_answers_count( $post->post_parent, $ans + 1 );
 		}
