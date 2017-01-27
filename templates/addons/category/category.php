@@ -6,7 +6,7 @@
 <div class="ap-category">
 	<?php dynamic_sidebar( 'ap-top' ); ?>
 	<div class="row">
-		<div id="ap-lists" class="<?php echo is_active_sidebar( 'ap-category' ) && is_anspress() ? 'col-md-9' : 'col-md-12' ?>">
+		<div id="ap-lists" class="<?php echo is_active_sidebar( 'ap-category' ) && is_anspress() ? 'ap-col-9' : 'ap-col-12' ?>">
 			
 			<?php if( ap_category_have_image( $question_category->term_id ) ): ?>
 				<div class="ap-category-feat" style="height: 300px;">
@@ -70,7 +70,7 @@
 		</div><!-- close #ap-lists -->
 
 		<?php if ( is_active_sidebar( 'ap-category' ) && is_anspress()){ ?>
-			<div class="ap-question-right col-md-3">
+			<div class="ap-question-right ap-col-3">
 				<?php dynamic_sidebar( 'ap-category' ); ?>
 			</div>
 		<?php } ?>
