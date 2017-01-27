@@ -15,7 +15,7 @@
 ?>
 <?php dynamic_sidebar( 'ap-top' ); ?>
 <div class="row">
-	<div id="ap-lists" class="<?php echo is_active_sidebar( 'ap-category' ) && is_anspress() ? 'col-md-9' : 'col-md-12' ?>">
+	<div id="ap-lists" class="<?php echo is_active_sidebar( 'ap-category' ) && is_anspress() ? 'ap-col-9' : 'ap-col-12' ?>">
         <div id="ap-categories" class="clearfix">
             <ul class="ap-term-category-box clearfix">
 				<?php foreach ( $question_categories as $key => $category ) : ?>
@@ -58,7 +58,7 @@
 		<?php ap_pagination( ); ?>
     </div>
 	<?php if ( is_active_sidebar( 'ap-category' ) && is_anspress() ) { ?>
-    <div class="ap-question-right col-md-3">
+    <div class="ap-question-right ap-col-3">
 		<?php dynamic_sidebar( 'ap-category' ); ?>
     </div>
 	<?php } ?>
