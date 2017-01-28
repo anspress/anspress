@@ -227,7 +227,7 @@ function ap_save_question( $args, $wp_error = false ) {
 	}
 
 	$args = wp_parse_args( $args, array(
-		'post_author' 		 => get_current_user_id(),
+		'post_author' 		 => -1,
 		'post_status' 		 => 'publish',
 		'post_name' 		   => '',
 		'comment_status' 	 => 'open',
@@ -281,7 +281,7 @@ function ap_save_question( $args, $wp_error = false ) {
 	if ( $post_id ) {
 		$qameta_args = [ 'last_updated' => current_time( 'mysql' ) ];
 
-		if ( isset( $args['anonymous_name'] ) ) {
+		if ( isset( $args['anonymous_name'] ) && ap_opt( 'allow_anonymous' ) ) {
 			$qameta_args['fields'] = [ 'anonymous_name' => $args['anonymous_name'] ];
 		}
 

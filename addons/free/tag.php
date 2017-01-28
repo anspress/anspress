@@ -96,12 +96,12 @@ class AnsPress_Tag {
 		$tag_id = sanitize_title( get_query_var( 'q_tag' ) );
 
 		$question_args = array(
-			'paged' => max( 1, get_query_var( 'paged' ) ),
-			'tax_query' => array(
+			'paged'      => max( 1, get_query_var( 'paged' ) ),
+			'tax_query'  => array(
 				array(
 					'taxonomy' => 'question_tag',
-					'field' => 'slug',
-					'terms' => array( $tag_id ),
+					'field'    => 'slug',
+					'terms'    => array( $tag_id ),
 				),
 			),
 		);

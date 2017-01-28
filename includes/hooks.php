@@ -566,13 +566,14 @@ class AnsPress_Hooks {
 	 * @since 2.2
 	 */
 	public static function wp_insert_post_data( $data, $args ) {
-			if ( 'question' == $args['post_type'] || 'answer' == $args['post_type'] ) {
-					if ( '0' == $args['post_author'] ) {
-							$data['post_author'] = '0';
-					}
+		if ( in_array( $args['post_type'], [ 'question', 'answer' ], true ) ) {
+			$fields = ap_get_post_field( 'fields', $args['ID'] );
+			if ( !empty( $fields ) && !empty( $fields['anonymous_name'] ) ) {
+				$data['post_author'] = '0';
 			}
+		}
 
-			return $data;
+		return $data;
 	}
 
 	/**
