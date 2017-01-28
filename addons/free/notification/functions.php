@@ -53,7 +53,7 @@ function ap_insert_notification( $args = [] ) {
 		$wpdb->prefix . 'ap_notifications',
 		array(
 			'noti_user_id'  => $args['user_id'],
-			'noti_actor'    => $args['user_id'],
+			'noti_actor'    => $args['actor'],
 			'noti_ref_id'   => $args['ref_id'],
 			'noti_ref_type' => $args['ref_type'],
 			'noti_verb'     => $args['verb'],
@@ -142,33 +142,45 @@ function ap_delete_notifications( $args = [] ) {
 	$where = [];
 
 	if ( isset( $args['user_id'] ) ) {
-		$where['noti_user_id'] = (int) $args['user_id'];
+		$where['noti_user_id'] = 'AND noti_user_id = ' . (int) $args['user_id'];
 	}
 
 	if ( isset( $args['actor'] ) ) {
-		$where['noti_actor'] = (int) $args['actor'];
+		$where['noti_actor'] = 'AND noti_actor = ' . (int) $args['actor'];
 	}
 
 	if ( isset( $args['ref_id'] ) ) {
-		$where['noti_ref_id'] = (int) $args['ref_id'];
+		$where['noti_ref_id'] = 'AND noti_ref_id = ' . (int) $args['ref_id'];
 	}
 
 	if ( isset( $args['ref_type'] ) ) {
-		$where['noti_ref_type'] = $args['ref_type'];
+		$where['noti_ref_type'] = 'AND noti_ref_type';
+		if ( is_array( $args['ref_type'] ) ) {
+			$args['ref_type'] = array_map( 'sanitize_text_field', $args['ref_type'] );
+			$args['ref_type'] = esc_sql( $args['ref_type'] );
+
+			if ( ! empty( $where['noti_ref_type'] ) ) {
+				$where['noti_ref_type'] .= ' IN(' . sanitize_comma_delimited( $args['ref_type'], 'str' ) . ')';
+			}
+		} else {
+			$where['noti_ref_type'] .= '= "' . esc_sql( sanitize_text_field( $args['ref_type'] ) ) . '"';
+		}
 	}
 
 	if ( isset( $args['verb'] ) ) {
-		$where['noti_verb'] = $args['verb'];
+		$where['noti_verb'] = 'AND noti_verb = "' . esc_sql( sanitize_text_field( $args['verb'] ) ) . '"';
 	}
 
 	if ( isset( $args['seen'] ) ) {
-		$where['noti_seen'] = $args['seen'];
+		$where['noti_seen'] = 'AND noti_verb = "' . esc_sql( sanitize_text_field( $args['seen'] ) ) . '"';
 	}
 
-	$delete = $wpdb->delete(
-		$wpdb->prefix . 'ap_notifications',
-		$where
-	); // WPCS: db call okay, cache okay.
+	if ( empty( $where ) ) {
+		return;
+	}
+
+	$where_claue = implode( ' ', $where );
+	$delete = $wpdb->query( "DELETE FROM {$wpdb->prefix}ap_notifications WHERE 1=1 {$where_claue}"	); // WPCS: db call okay, cache okay.
 
 	if ( false === $delete ) {
 		return $delete;

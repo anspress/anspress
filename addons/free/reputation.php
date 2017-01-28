@@ -71,6 +71,15 @@ class AnsPress_Reputation_Hooks {
 	 * Register default reputation events.
 	 */
 	public static function register_default_events() {
+		ap_register_reputation_event( 'register', array(
+			'points'      => 10,
+			'label'       => __( 'Registration', 'anspress-question-answer' ),
+			'description' => __( 'Points awarded when user account is created', 'anspress-question-answer' ),
+			'icon'        => 'apicon-question',
+			'activity'    => __( 'Registered', 'anspress-question-answer' ),
+			'parent' 			=> 'question',
+		) );
+
 		ap_register_reputation_event( 'ask', array(
 			'points'      => 2,
 			'label'       => __( 'Asking', 'anspress-question-answer' ),

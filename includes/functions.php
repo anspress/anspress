@@ -352,15 +352,24 @@ function ap_short_num( $num, $precision = 2 ) {
  * @return string
  */
 function sanitize_comma_delimited( $str, $pieces_type = 'int' ) {
-	$str = is_array( $str ) ? implode( ',', $str ) : $str;
+	$str = ! is_array( $str ) ? explode( ',', $str ) : $str;
+
 	if ( ! empty( $str ) ) {
 		$str = wp_unslash( $str );
-		$sanitize = 'int' === $pieces_type ? 'intval' : 'sanitize_text_field';
 		$glue = 'int' !== $pieces_type ? '","' : ',';
-		$new_str = implode( $glue, array_map( $sanitize, explode( ',', $str ) ) );
+		$sanitized = [];
+		foreach ( $str as $s ) {
+			if ( '0' == $s || ! empty ( $s ) ) {
+				$sanitized[] = 'int' === $pieces_type ? intval( $s ) : sanitize_text_field( $s );
+			}
+		}
+
+		$new_str = implode( $glue, esc_sql( $sanitized ) );
+
 		if ( 'int' !== $pieces_type ) {
 			return '"' . $new_str . '"';
 		}
+
 		return $new_str;
 	}
 }

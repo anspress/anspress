@@ -47,12 +47,17 @@ class AnsPress_Notification_Hook {
 		anspress()->add_filter( 'ap_user_tab', __CLASS__, 'ap_author_tab' );
 		anspress()->add_filter( 'ap_user_content', __CLASS__, 'ap_author_content' );
 		anspress()->add_action( 'ap_after_new_answer', __CLASS__, 'new_answer', 10, 2 );
+		anspress()->add_action( 'ap_trash_question', __CLASS__, 'trash_question', 10, 2 );
 		anspress()->add_action( 'ap_trash_answer', __CLASS__, 'trash_answer', 10, 2 );
 		anspress()->add_action( 'ap_untrash_answer', __CLASS__, 'new_answer', 10, 2 );
 		anspress()->add_action( 'ap_select_answer', __CLASS__, 'select_answer' );
 		anspress()->add_action( 'ap_unselect_answer', __CLASS__, 'unselect_answer' );
 		anspress()->add_action( 'ap_publish_comment', __CLASS__, 'new_comment' );
 		anspress()->add_action( 'ap_unpublish_comment', __CLASS__, 'delete_comment' );
+		anspress()->add_action( 'ap_vote_up', __CLASS__, 'vote_up' );
+		anspress()->add_action( 'ap_vote_down', __CLASS__, 'vote_down' );
+		anspress()->add_action( 'ap_undo_vote_up', __CLASS__, 'undo_vote_up' );
+		anspress()->add_action( 'ap_undo_vote_down', __CLASS__, 'undo_vote_down' );
 	}
 
 	/**
@@ -98,6 +103,19 @@ class AnsPress_Notification_Hook {
 	}
 
 	/**
+	 * Remove all notifications related to question when its get deleted.
+	 *
+	 * @param integer $post_id Post ID.
+	 * @param object  $_post Post object.
+	 */
+	public static function trash_question( $post_id, $_post ) {
+		ap_delete_notifications( array(
+			'ref_id'   => $post_id,
+			'ref_type' => [ 'question', 'vote_up', 'vote_down', 'post' ],
+		) );
+	}
+
+	/**
 	 * Add notification for new answer.
 	 *
 	 * @param integer $post_id Post ID.
@@ -115,7 +133,7 @@ class AnsPress_Notification_Hook {
 	}
 
 	/**
-	 * Update reputation when a answer is deleted.
+	 * Remove all notifications related to answer when its get deleted.
 	 *
 	 * @param integer $post_id Post ID.
 	 * @param object  $_post Post object.
@@ -123,7 +141,7 @@ class AnsPress_Notification_Hook {
 	public static function trash_answer( $post_id, $_post ) {
 		ap_delete_notifications( array(
 			'ref_id'   => $post_id,
-			'ref_type' => 'answer',
+			'ref_type' => [ 'answer', 'vote_up', 'vote_down', 'post' ],
 		) );
 	}
 
@@ -188,6 +206,70 @@ class AnsPress_Notification_Hook {
 		ap_delete_notifications( array(
 			'ref_id'   => $comment->comment_ID,
 			'ref_type' => 'comment',
+		) );
+	}
+
+	/**
+	 * Award reputation when user recive an up vote.
+	 *
+	 * @param integer $post_id Post ID.
+	 */
+	public static function vote_up( $post_id ) {
+		$_post = get_post( $post_id );
+
+		if ( get_current_user_id() !== $_post->post_author ) {
+			ap_insert_notification( array(
+				'user_id'  => $_post->post_author,
+				'actor'    => get_current_user_id(),
+				'ref_id'   => $_post->ID,
+				'ref_type' => $_post->post_type,
+				'verb'     => 'vote_up',
+			) );
+		}
+	}
+
+	/**
+	 * Notify when user recive an down vote.
+	 *
+	 * @param integer $post_id Post ID.
+	 */
+	public static function vote_down( $post_id ) {
+		$_post = get_post( $post_id );
+
+		if ( get_current_user_id() !== $_post->post_author ) {
+			ap_insert_notification( array(
+				'user_id'  => $_post->post_author,
+				'actor'    => get_current_user_id(),
+				'ref_id'   => $_post->ID,
+				'ref_type' => $_post->post_type,
+				'verb'     => 'vote_down',
+			) );
+		}
+	}
+
+	/**
+	 * Notify when user recive an up vote.
+	 *
+	 * @param integer $post_id Post ID.
+	 */
+	public static function undo_vote_up( $post_id ) {
+		ap_delete_notifications( array(
+			'ref_id' => $post_id,
+			'actor'  => get_current_user_id(),
+			'verb'   => 'vote_up',
+		) );
+	}
+
+	/**
+	 * Notify when user recive an down vote.
+	 *
+	 * @param integer $post_id Post ID.
+	 */
+	public static function undo_vote_down( $post_id ) {
+		ap_delete_notifications( array(
+			'ref_id' => $post_id,
+			'actor'  => get_current_user_id(),
+			'verb'   => 'vote_down',
 		) );
 	}
 }
