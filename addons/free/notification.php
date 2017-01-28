@@ -38,10 +38,10 @@ class AnsPress_Notification_Hook {
 	 * Initialize the class.
 	 */
 	public static function init() {
-		/*ap_add_default_options([
-			'avatar_font'   => 'Pacifico',
-			'avatar_force'  => true,
-		]);*/
+		ap_add_default_options([
+			'noti_delete_interval' => 3600,
+			'noti_delete_read'     => true,
+		]);
 
 		anspress()->add_action( 'ap_option_groups', __CLASS__, 'load_options' );
 		anspress()->add_filter( 'ap_user_tab', __CLASS__, 'ap_author_tab' );
@@ -49,6 +49,8 @@ class AnsPress_Notification_Hook {
 		anspress()->add_action( 'ap_after_new_answer', __CLASS__, 'new_answer', 10, 2 );
 		anspress()->add_action( 'ap_trash_answer', __CLASS__, 'trash_answer', 10, 2 );
 		anspress()->add_action( 'ap_untrash_answer', __CLASS__, 'new_answer', 10, 2 );
+		anspress()->add_action( 'ap_select_answer', __CLASS__, 'select_answer' );
+		anspress()->add_action( 'ap_unselect_answer', __CLASS__, 'unselect_answer' );
 	}
 
 	/**
@@ -120,6 +122,39 @@ class AnsPress_Notification_Hook {
 		ap_delete_notifications( array(
 			'ref_id'   => $post_id,
 			'ref_type' => 'answer',
+		) );
+	}
+
+	/**
+	 * Notify user when their answer is selected.
+	 *
+	 * @param object $_post Post object.
+	 */
+	public static function select_answer( $_post ) {
+		$question = get_post( $_post->post_parent );
+
+		// Award select answer points to question author only.
+		if ( get_current_user_id() !== $_post->post_author ) {
+			ap_insert_notification( array(
+				'user_id'  => $question->post_author,
+				'actor'    => get_current_user_id(),
+				'ref_id'   => $_post->ID,
+				'ref_type' => 'answer',
+				'verb'     => 'best_answer',
+			) );
+		}
+	}
+
+	/**
+	 * Remove notification when users answer get unselected.
+	 *
+	 * @param object $_post Post object.
+	 */
+	public static function unselect_answer( $_post ) {
+		ap_delete_notifications( array(
+			'ref_id'   => $_post->ID,
+			'ref_type' => 'answer',
+			'verb'     => 'best_answer',
 		) );
 	}
 }
