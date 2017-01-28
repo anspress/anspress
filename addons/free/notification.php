@@ -51,6 +51,8 @@ class AnsPress_Notification_Hook {
 		anspress()->add_action( 'ap_untrash_answer', __CLASS__, 'new_answer', 10, 2 );
 		anspress()->add_action( 'ap_select_answer', __CLASS__, 'select_answer' );
 		anspress()->add_action( 'ap_unselect_answer', __CLASS__, 'unselect_answer' );
+		anspress()->add_action( 'ap_publish_comment', __CLASS__, 'new_comment' );
+		anspress()->add_action( 'ap_unpublish_comment', __CLASS__, 'delete_comment' );
 	}
 
 	/**
@@ -155,6 +157,37 @@ class AnsPress_Notification_Hook {
 			'ref_id'   => $_post->ID,
 			'ref_type' => 'answer',
 			'verb'     => 'best_answer',
+		) );
+	}
+
+	/**
+	 * Notify user on new comment.
+	 *
+	 * @param  object $comment WordPress comment object.
+	 */
+	public static function new_comment( $comment ) {
+		$_post = get_post( $comment->comment_post_ID );
+
+		if ( get_current_user_id() !== $_post->post_author ) {
+			ap_insert_notification( array(
+				'user_id'  => $_post->post_author,
+				'actor'    => $comment->user_id,
+				'ref_id'   => $comment->comment_ID,
+				'ref_type' => 'comment',
+				'verb'     => 'new_comment',
+			) );
+		}
+	}
+
+	/**
+	 * Remove notification on deleting comment.
+	 *
+	 * @param  object $comment Comment object.
+	 */
+	public static function delete_comment( $comment ) {
+		ap_delete_notifications( array(
+			'ref_id'   => $comment->comment_ID,
+			'ref_type' => 'comment',
 		) );
 	}
 }
