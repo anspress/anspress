@@ -2009,51 +2009,51 @@ post-message {
   display: block;
 }
 
-.ap-widget-pos, .widget {
+.ap-widget-pos {
   margin-bottom: 25px;
 }
-.ap-widget-pos .ap-rq-widget .ap-rq-post, .widget .ap-rq-widget .ap-rq-post {
+.ap-widget-pos .ap-rq-widget .ap-rq-post {
   border-bottom: 1px solid #f7f7f7;
   color: #888;
   display: block;
   margin-bottom: 0;
   padding: 10px 0;
 }
-.ap-widget-pos .ap-rq-widget .ap-rq-post a, .widget .ap-rq-widget .ap-rq-post a {
+.ap-widget-pos .ap-rq-widget .ap-rq-post a {
   margin-bottom: 5px;
   display: block;
 }
-.ap-widget-pos .ap-questions-widget .ap-question-item, .widget .ap-questions-widget .ap-question-item {
+.ap-widget-pos .ap-questions-widget .ap-question-item {
   border-bottom: 1px solid #f8f8f8;
   margin-bottom: 10px;
   padding-bottom: 10px;
 }
-.ap-widget-pos .ap-questions-widget .ap-question-title, .widget .ap-questions-widget .ap-question-title {
+.ap-widget-pos .ap-questions-widget .ap-question-title {
   display: block;
   margin-bottom: 5px;
 }
-.ap-widget-pos .ap-followers-widget, .widget .ap-followers-widget {
+.ap-widget-pos .ap-followers-widget {
   border: 1px solid #eee;
   border-radius: 2px;
   padding: 10px;
 }
-.ap-widget-pos .ap-followers-widget ul, .widget .ap-followers-widget ul {
+.ap-widget-pos .ap-followers-widget ul {
   margin: -5px -5px 0;
 }
-.ap-widget-pos .ap-followers-widget li, .widget .ap-followers-widget li {
+.ap-widget-pos .ap-followers-widget li {
   margin: 0;
   width: 20%;
 }
-.ap-widget-pos .ap-followers-widget li a, .widget .ap-followers-widget li a {
+.ap-widget-pos .ap-followers-widget li a {
   display: block;
   padding: 5px;
 }
-.ap-widget-pos .ap-followers-widget img, .widget .ap-followers-widget img {
+.ap-widget-pos .ap-followers-widget img {
   box-shadow: none;
   display: block;
   max-width: 47px;
 }
-.ap-widget-pos .ap-widget-all-link, .widget .ap-widget-all-link {
+.ap-widget-pos .ap-widget-all-link {
   display: block;
   padding: 4px;
 }

@@ -43,9 +43,12 @@ class AnsPress_Notification_Hook {
 			'avatar_force'  => true,
 		]);*/
 
-		add_action( 'ap_option_groups', [ __CLASS__, 'load_options' ] );
-		add_filter( 'ap_user_tab', [ __CLASS__, 'ap_author_tab' ] );
-		add_filter( 'ap_user_content', [ __CLASS__, 'ap_author_content' ] );
+		anspress()->add_action( 'ap_option_groups', __CLASS__, 'load_options' );
+		anspress()->add_filter( 'ap_user_tab', __CLASS__, 'ap_author_tab' );
+		anspress()->add_filter( 'ap_user_content', __CLASS__, 'ap_author_content' );
+		anspress()->add_action( 'ap_after_new_answer', __CLASS__, 'new_answer', 10, 2 );
+		anspress()->add_action( 'ap_trash_answer', __CLASS__, 'trash_answer', 10, 2 );
+		anspress()->add_action( 'ap_untrash_answer', __CLASS__, 'new_answer', 10, 2 );
 	}
 
 	/**
@@ -88,6 +91,36 @@ class AnsPress_Notification_Hook {
 			$notifications = new AnsPress_Notification_Query( [ 'user_id' => $user_id ] );
 			include ap_get_theme_location( 'notifications/index.php' );
 		}
+	}
+
+	/**
+	 * Add notification for new answer.
+	 *
+	 * @param integer $post_id Post ID.
+	 * @param object  $_post Post object.
+	 */
+	public static function new_answer( $post_id, $_post ) {
+		$_question = get_post( $_post->post_parent );
+		ap_insert_notification( array(
+			'user_id'  => $_post->post_author,
+			'actor'    => $_question->post_author,
+			'ref_id'   => $post_id,
+			'ref_type' => 'answer',
+			'verb'     => 'new_answer',
+		) );
+	}
+
+	/**
+	 * Update reputation when a answer is deleted.
+	 *
+	 * @param integer $post_id Post ID.
+	 * @param object  $_post Post object.
+	 */
+	public static function trash_answer( $post_id, $_post ) {
+		ap_delete_notifications( array(
+			'ref_id'   => $post_id,
+			'ref_type' => 'answer',
+		) );
 	}
 }
 

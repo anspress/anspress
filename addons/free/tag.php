@@ -96,6 +96,7 @@ class AnsPress_Tag {
 		$tag_id = sanitize_title( get_query_var( 'q_tag' ) );
 
 		$question_args = array(
+			'paged' => max( 1, get_query_var( 'paged' ) ),
 			'tax_query' => array(
 				array(
 					'taxonomy' => 'question_tag',
@@ -577,13 +578,13 @@ class AnsPress_Tag {
 		global $wp_rewrite;
 
 		$tags_rules = array();
-		$base = 'index.php?page_id='.$base_page_id.'&ap_page=';
+		$base = 'index.php?page_id=' . $base_page_id . '&ap_page=';
 
-		$tags_rules[$slug. ap_get_tag_slug() .'/([^/]+)/?'] = $base . ap_get_tag_slug() .'&q_tag='.$wp_rewrite->preg_index( 1 );
+		$tags_rules[ $slug . ap_get_tag_slug() . '/([^/]+)/page/?([0-9]{1,})/?' ] = $base . ap_get_tag_slug() . '&q_tag=' . $wp_rewrite->preg_index( 1 ) . '&paged=' . $wp_rewrite->preg_index( 2 );
 
-		$tags_rules[$slug. ap_get_tag_slug() . '/([^/]+)/page/?([0-9]{1,})/?$'] = $base . ap_get_tag_slug() .'&q_tag='.$wp_rewrite->preg_index( 1 ).'&paged='.$wp_rewrite->preg_index( 2 );
+		$tags_rules[ $slug . ap_get_tags_slug() . '/([^/]+)/page/?([0-9]{1,})/?' ] = $base . ap_get_tags_slug() .'&q_tag=' . $wp_rewrite->preg_index( 1 ) . '&paged=' . $wp_rewrite->preg_index( 2 );
 
-		$tags_rules[$slug. ap_get_tags_slug() . '/([^/]+)/page/?([0-9]{1,})/?$'] = $base . ap_get_tags_slug() .'&q_tag='.$wp_rewrite->preg_index( 1 ).'&paged='.$wp_rewrite->preg_index( 2 );
+		$tags_rules[ $slug . ap_get_tag_slug() . '/([^/]+)/?' ] = $base . ap_get_tag_slug() . '&q_tag=' . $wp_rewrite->preg_index( 1 );
 
 		return $tags_rules + $rules;
 	}

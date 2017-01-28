@@ -24,6 +24,7 @@ if ( ! defined( 'WPINC' ) ) {
 function ap_insert_notification( $args = [] ) {
 	$args = wp_parse_args( $args, array(
 		'user_id'  => get_current_user_id(),
+		'actor'  	 => 0,
 		'ref_id'   => '',
 		'ref_type' => '',
 		'verb'     => '',
@@ -34,6 +35,7 @@ function ap_insert_notification( $args = [] ) {
 	$noti_args = array(
 		'numbers'  => 1,
 		'user_id'  => $args['user_id'],
+		'actor'    => $args['actor'],
 		'ref_id'   => $args['ref_id'],
 		'ref_type' => $args['ref_type'],
 		'verb'     => $args['verb'],
@@ -51,13 +53,14 @@ function ap_insert_notification( $args = [] ) {
 		$wpdb->prefix . 'ap_notifications',
 		array(
 			'noti_user_id'  => $args['user_id'],
+			'noti_actor'    => $args['user_id'],
 			'noti_ref_id'   => $args['ref_id'],
 			'noti_ref_type' => $args['ref_type'],
 			'noti_verb'     => $args['verb'],
 			'noti_date'     => $args['date'],
 			'noti_seen'     => $args['seen'],
 		),
-		[ '%d', '%d', '%s', '%s', '%s', '%d' ]
+		[ '%d', '%d', '%d', '%s', '%s', '%s', '%d' ]
 	); // WPCS: db call okay.
 
 	if ( false === $insert ) {
@@ -89,6 +92,11 @@ function ap_get_notifications( $args = [] ) {
 	$number = (int) $args['number'];
 	$offset = (int) $args['offset'];
 
+	$actor_q = '';
+	if ( isset( $args['actor'] ) ) {
+		$actor_q = $wpdb->prepare( 'AND noti_actor = %d', $args['actor'] );
+	}
+
 	$ref_id_q = '';
 	if ( isset( $args['ref_id'] ) ) {
 		$ref_id_q = $wpdb->prepare( 'AND noti_ref_id = %d', $args['ref_id'] );
@@ -109,7 +117,7 @@ function ap_get_notifications( $args = [] ) {
 		$seen_q = $wpdb->prepare( 'AND noti_seen = %d', $args['seen'] );
 	}
 
-	$query = $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}ap_notifications WHERE noti_user_id = %d {$ref_id_q} {$ref_type_q} {$verb_q} {$seen_q} LIMIT {$offset},{$number}", $args['user_id'] );
+	$query = $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}ap_notifications WHERE noti_user_id = %d {$actor_q} {$ref_id_q} {$ref_type_q} {$verb_q} {$seen_q} LIMIT {$offset},{$number}", $args['user_id'] );
 
 	$key = md5( $query );
 	$cache = wp_cache_get( $key, 'ap_notifications' );
@@ -135,6 +143,10 @@ function ap_delete_notifications( $args = [] ) {
 
 	if ( isset( $args['user_id'] ) ) {
 		$where['noti_user_id'] = (int) $args['user_id'];
+	}
+
+	if ( isset( $args['actor'] ) ) {
+		$where['noti_actor'] = (int) $args['actor'];
 	}
 
 	if ( isset( $args['ref_id'] ) ) {
