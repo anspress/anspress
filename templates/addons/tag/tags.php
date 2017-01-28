@@ -16,7 +16,7 @@
 <?php dynamic_sidebar( 'ap-top' ); ?>
 
 <div id="ap-tags" class="row">
-	<div class="<?php echo is_active_sidebar( 'ap-tags' ) && is_anspress() ? 'col-md-9' : 'col-md-12' ?>">
+	<div class="<?php echo is_active_sidebar( 'ap-tags' ) && is_anspress() ? 'ap-col-9' : 'ap-col-12' ?>">
 
 		<div class="ap-list-head clearfix">
 			<form id="ap-search-form" class="ap-search-form pull-left" action="<?php echo ap_get_link_to('tags'); ?>?type=tags">
@@ -56,7 +56,7 @@
 	</div><!-- close #ap-tags -->
 
 	<?php if ( is_active_sidebar( 'ap-tags' ) && is_anspress()){ ?>
-		<div class="ap-tags-sidebar col-md-3">
+		<div class="ap-tags-sidebar ap-col-3">
 			<?php dynamic_sidebar( 'ap-tags' ); ?>
 		</div>
 	<?php } ?>
