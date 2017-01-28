@@ -542,12 +542,13 @@
 						return;
 					}
 
+					if(typeof grecaptcha !== 'undefined')
+            grecaptcha.reset(widgetId1);
+
 					AnsPress.trigger('answerFormPosted', data);
 					AnsPress.hideLoading($(e.target).find('.ap-btn-submit'));
-					console.log(AnsPress.uploader);
 					// Clear upload files
 					if(AnsPress.uploader) AnsPress.uploader.splice();
-
 					if(data.success){
 						$('ap-answers-w').show();
 						// Clear editor contents

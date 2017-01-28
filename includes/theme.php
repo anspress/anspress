@@ -617,7 +617,10 @@ function ap_assets() {
 
 	if ( is_ask() || ap_current_page() === 'edit' ) {
 		$assets['js']['ask'] = [ 'dep' => [ 'anspress-common' ] , 'footer' => true ];
-		$assets['js']['upload'] = [ 'dep' => [ 'plupload', 'anspress-common' ] , 'footer' => true ];
+
+		if ( ap_user_can_upload( ) ) {
+			$assets['js']['upload'] = [ 'dep' => [ 'plupload', 'anspress-common' ] , 'footer' => true ];
+		}
 	}
 
 	if ( is_question() || ap_current_page() === 'edit' ) {

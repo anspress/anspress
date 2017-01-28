@@ -21,6 +21,9 @@
 			AnsPress.ajax({
 				data: $(e.target).serialize(),
 				success: function(data){
+					if(typeof grecaptcha !== 'undefined')
+            grecaptcha.reset(widgetId1);
+
 					AnsPress.hideLoading($(e.target).find('.ap-btn-submit'));
 					// Clear upload files
 					if(AnsPress.uploader) AnsPress.uploader.splice();

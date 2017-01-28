@@ -78,32 +78,6 @@ function ap_get_answer_form_fields( $question_id = false, $answer_id = false ) {
 		);
 	}
 
-	if ( ap_show_captcha_to_user() ) {
-		// Show recpatcha if key exists and enabled.
-		if ( ap_opt( 'recaptcha_site_key' ) == '' ) {
-			$reCaptcha_html = '<div class="ap-notice red">'.__( 'reCaptach keys missing, please add keys', 'anspress-question-answer' ).'</div>';
-		} else {
-
-			$reCaptcha_html = '<div class="g-recaptcha" id="recaptcha" data-sitekey="'.ap_opt( 'recaptcha_site_key' ).'"></div>';
-
-			$reCaptcha_html .= '<script type="text/javascript" src="https://www.google.com/recaptcha/api.js?hl='.get_locale().'&onload=onloadCallback&render=explicit" async defer></script>';
-
-			$reCaptcha_html .= '<script type="text/javascript">';
-			$reCaptcha_html .= 'var onloadCallback = function() {';
-			$reCaptcha_html .= 'widgetId1 = grecaptcha.render("recaptcha", {';
-			$reCaptcha_html .= '"sitekey" : "'.ap_opt( 'recaptcha_site_key' ).'"';
-			$reCaptcha_html .= '});';
-			$reCaptcha_html .= '};</script>';
-		}
-
-		$fields[] = array(
-			'name'  => 'captcha',
-			'type'  => 'custom',
-			'order' => 100,
-			'html' 	=> $reCaptcha_html,
-		);
-	}
-
 	$fields[] = array(
 		'name'  => 'ap_upload',
 		'type'  => 'custom',
