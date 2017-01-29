@@ -166,7 +166,7 @@ class AnsPress_Hooks {
 	public static function before_delete( $post_id ) {
 		$post = ap_get_post( $post_id );
 		if ( 'question' === $post->post_type ) {
-			do_action( 'ap_before_delete_question', $post->ID );
+			do_action( 'ap_before_delete_question', $post->ID, $post );
 			$answers = get_posts( [ 'post_parent' => $post->ID, 'post_type' => 'answer' ] ); // @codingStandardsIgnoreLine
 
 			foreach ( (array) $answers as $a ) {
@@ -189,7 +189,7 @@ class AnsPress_Hooks {
 	 * @param	object  $post Post Object.
 	 */
 	public static function delete_answer( $post_id, $post ) {
-		do_action( 'ap_before_delete_answer', $post->ID );
+		do_action( 'ap_before_delete_answer', $post->ID, $post );
 		ap_update_post_activity_meta( $post->post_parent, 'delete_answer', $post->post_author );
 
 		if ( ap_is_selected( $post ) ) {

@@ -48,7 +48,9 @@ class AnsPress_Notification_Hook {
 		anspress()->add_filter( 'ap_user_content', __CLASS__, 'ap_author_content' );
 		anspress()->add_action( 'ap_after_new_answer', __CLASS__, 'new_answer', 10, 2 );
 		anspress()->add_action( 'ap_trash_question', __CLASS__, 'trash_question', 10, 2 );
+		anspress()->add_action( 'ap_before_delete_question', __CLASS__, 'trash_question', 10, 2 );
 		anspress()->add_action( 'ap_trash_answer', __CLASS__, 'trash_answer', 10, 2 );
+		anspress()->add_action( 'ap_before_delete_answer', __CLASS__, 'trash_answer', 10, 2 );
 		anspress()->add_action( 'ap_untrash_answer', __CLASS__, 'new_answer', 10, 2 );
 		anspress()->add_action( 'ap_select_answer', __CLASS__, 'select_answer' );
 		anspress()->add_action( 'ap_unselect_answer', __CLASS__, 'unselect_answer' );
@@ -110,8 +112,8 @@ class AnsPress_Notification_Hook {
 	 */
 	public static function trash_question( $post_id, $_post ) {
 		ap_delete_notifications( array(
-			'ref_id'   => $post_id,
-			'ref_type' => [ 'question', 'vote_up', 'vote_down', 'post' ],
+			'parent'   => $post_id,
+			'ref_type' => [ 'answer', 'vote_up', 'vote_down', 'post' ],
 		) );
 	}
 
@@ -126,7 +128,8 @@ class AnsPress_Notification_Hook {
 		ap_insert_notification( array(
 			'user_id'  => $_post->post_author,
 			'actor'    => $_question->post_author,
-			'ref_id'   => $post_id,
+			'parent'   => $_post->post_parent,
+			'ref_id'   => $_post->ID,
 			'ref_type' => 'answer',
 			'verb'     => 'new_answer',
 		) );
@@ -158,8 +161,8 @@ class AnsPress_Notification_Hook {
 			ap_insert_notification( array(
 				'user_id'  => $question->post_author,
 				'actor'    => get_current_user_id(),
-				'ref_id'   => $_post->ID,
-				'ref_type' => 'answer',
+				'ref_id'   => $_post->post_parent,
+				'ref_type' => 'question',
 				'verb'     => 'best_answer',
 			) );
 		}
@@ -172,8 +175,8 @@ class AnsPress_Notification_Hook {
 	 */
 	public static function unselect_answer( $_post ) {
 		ap_delete_notifications( array(
-			'ref_id'   => $_post->ID,
-			'ref_type' => 'answer',
+			'ref_id'   => $_post->post_parent,
+			'ref_type' => 'question',
 			'verb'     => 'best_answer',
 		) );
 	}
@@ -204,6 +207,7 @@ class AnsPress_Notification_Hook {
 	 */
 	public static function delete_comment( $comment ) {
 		ap_delete_notifications( array(
+			'actor'    => $comment->user_id,
 			'ref_id'   => $comment->comment_ID,
 			'ref_type' => 'comment',
 		) );
@@ -285,6 +289,7 @@ function ap_notification_addon_activation() {
 			`noti_id` bigint(20) NOT NULL AUTO_INCREMENT,
 			`noti_user_id` bigint(20) NOT NULL,
 			`noti_actor` bigint(20) NOT NULL,
+			`noti_parent` bigint(20) NOT NULL,
 			`noti_ref_id` bigint(20) NOT NULL,
 			`noti_ref_type` varchar(100) NOT NULL,
 			`noti_verb` varchar(100) NOT NULL,

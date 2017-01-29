@@ -25,6 +25,7 @@ function ap_insert_notification( $args = [] ) {
 	$args = wp_parse_args( $args, array(
 		'user_id'  => get_current_user_id(),
 		'actor'  	 => 0,
+		'parent'   => '',
 		'ref_id'   => '',
 		'ref_type' => '',
 		'verb'     => '',
@@ -32,35 +33,51 @@ function ap_insert_notification( $args = [] ) {
 		'date'     => current_time( 'mysql' ),
 	) );
 
-	$noti_args = array(
-		'numbers'  => 1,
-		'user_id'  => $args['user_id'],
-		'actor'    => $args['actor'],
-		'ref_id'   => $args['ref_id'],
-		'ref_type' => $args['ref_type'],
-		'verb'     => $args['verb'],
-	);
-	$exists = ap_get_notifications( $noti_args );
-
-	// Do not insert if already exists.
-	if ( ! empty( $exists ) ) {
+	// Return if user_id is empty or 0.
+	if ( empty( $args['user_id'] ) ) {
 		return false;
 	}
 
+	$noti_args = array(
+		'numbers'  => 1,
+		'parent'   => $args['parent'],
+		'ref_type' => $args['ref_type'],
+		'verb'     => $args['verb'],
+	);
+
 	global $wpdb;
+
+	$exists = ap_get_notifications( $noti_args );
+
+	// If already exists then just update date and mark as unread.
+	if ( ! empty( $exists ) ) {
+		return $wpdb->update(
+			$wpdb->prefix . 'ap_notifications',
+			array(
+				'noti_ref_id'   => $args['ref_id'],
+				'noti_actor'    => $args['actor'],
+				'noti_date'     => $args['date'],
+				'noti_seen'     => 0,
+			),
+			array(
+				'noti_id' => $exists[0]->noti_id,
+			)
+		); // WPCS: db call okay, db cache okay.
+	}
 
 	$insert = $wpdb->insert(
 		$wpdb->prefix . 'ap_notifications',
 		array(
 			'noti_user_id'  => $args['user_id'],
 			'noti_actor'    => $args['actor'],
+			'noti_parent'   => $args['parent'],
 			'noti_ref_id'   => $args['ref_id'],
 			'noti_ref_type' => $args['ref_type'],
 			'noti_verb'     => $args['verb'],
 			'noti_date'     => $args['date'],
 			'noti_seen'     => $args['seen'],
 		),
-		[ '%d', '%d', '%d', '%s', '%s', '%s', '%d' ]
+		[ '%d', '%d', '%d', '%d', '%s', '%s', '%s', '%d' ]
 	); // WPCS: db call okay.
 
 	if ( false === $insert ) {
@@ -82,11 +99,6 @@ function ap_get_notifications( $args = [] ) {
 		'number' => 20,
 		'offset' => 0,
 		'user_id'  => get_current_user_id(),
-		//'ref_id'   => '',
-		//'ref_type' => '',
-		//'verb'     => '',
-		//'seen'     => 0,
-		//'date'     => current_time( 'mysql' ),
 	) );
 
 	$number = (int) $args['number'];
@@ -95,6 +107,11 @@ function ap_get_notifications( $args = [] ) {
 	$actor_q = '';
 	if ( isset( $args['actor'] ) ) {
 		$actor_q = $wpdb->prepare( 'AND noti_actor = %d', $args['actor'] );
+	}
+
+	$ref_parent_q = '';
+	if ( isset( $args['parent'] ) ) {
+		$ref_parent_q = $wpdb->prepare( 'AND noti_parent = %d', $args['parent'] );
 	}
 
 	$ref_id_q = '';
@@ -117,7 +134,7 @@ function ap_get_notifications( $args = [] ) {
 		$seen_q = $wpdb->prepare( 'AND noti_seen = %d', $args['seen'] );
 	}
 
-	$query = $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}ap_notifications WHERE noti_user_id = %d {$actor_q} {$ref_id_q} {$ref_type_q} {$verb_q} {$seen_q} LIMIT {$offset},{$number}", $args['user_id'] );
+	$query = $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}ap_notifications WHERE noti_user_id = %d {$actor_q} {$ref_parent_q} {$ref_id_q} {$ref_type_q} {$verb_q} {$seen_q} LIMIT {$offset},{$number}", $args['user_id'] );
 
 	$key = md5( $query );
 	$cache = wp_cache_get( $key, 'ap_notifications' );
@@ -147,6 +164,10 @@ function ap_delete_notifications( $args = [] ) {
 
 	if ( isset( $args['actor'] ) ) {
 		$where['noti_actor'] = 'AND noti_actor = ' . (int) $args['actor'];
+	}
+
+	if ( isset( $args['parent'] ) ) {
+		$where['noti_noti_parent'] = 'AND noti_parent = ' . (int) $args['parent'];
 	}
 
 	if ( isset( $args['ref_id'] ) ) {
