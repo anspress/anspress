@@ -46,7 +46,6 @@ function ap_insert_notification( $args = [] ) {
 	);
 
 	global $wpdb;
-
 	$exists = ap_get_notifications( $noti_args );
 
 	// If already exists then just update date and mark as unread.
@@ -57,6 +56,7 @@ function ap_insert_notification( $args = [] ) {
 				'noti_ref_id'   => $args['ref_id'],
 				'noti_actor'    => $args['actor'],
 				'noti_date'     => $args['date'],
+				'noti_verb'     => $args['verb'],
 				'noti_seen'     => 0,
 			),
 			array(

@@ -161,8 +161,9 @@ class AnsPress_Notification_Hook {
 			ap_insert_notification( array(
 				'user_id'  => $question->post_author,
 				'actor'    => get_current_user_id(),
-				'ref_id'   => $_post->post_parent,
-				'ref_type' => 'question',
+				'parent'   => $_post->post_parent,
+				'ref_id'   => $_post->ID,
+				'ref_type' => 'answer',
 				'verb'     => 'best_answer',
 			) );
 		}
@@ -175,8 +176,8 @@ class AnsPress_Notification_Hook {
 	 */
 	public static function unselect_answer( $_post ) {
 		ap_delete_notifications( array(
-			'ref_id'   => $_post->post_parent,
-			'ref_type' => 'question',
+			'parent'   => $_post->post_parent,
+			'ref_type' => 'answer',
 			'verb'     => 'best_answer',
 		) );
 	}
