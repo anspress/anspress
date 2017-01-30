@@ -26,7 +26,7 @@ function ap_insert_notification( $args = [] ) {
 		'user_id'  => get_current_user_id(),
 		'actor'  	 => 0,
 		'parent'   => '',
-		'ref_id'   => '',
+		'ref_id'   => 0,
 		'ref_type' => '',
 		'verb'     => '',
 		'seen'     => 0,
@@ -43,6 +43,7 @@ function ap_insert_notification( $args = [] ) {
 		'parent'   => $args['parent'],
 		'ref_type' => $args['ref_type'],
 		'verb'     => $args['verb'],
+		'user_id'  => $args['user_id'],
 	);
 
 	global $wpdb;
@@ -210,4 +211,33 @@ function ap_delete_notifications( $args = [] ) {
 	do_action( 'ap_deleted_notifications', $args );
 
 	return $delete;
+}
+
+/**
+ * Register notification verb.
+ *
+ * @param string $key verb key.
+ * @param array  $args Verb arguments.
+ */
+function ap_register_notification_verb( $key, $args = [] ) {
+	global $ap_notification_verbs;
+
+	$args = wp_parse_args( $args, array(
+		'ref_type'   => 'post',
+		'label'      => '',
+		'hide_actor' => false,
+		'icon' 			 => '',
+	) );
+
+	$ap_notification_verbs[ $key ] = $args;
+}
+
+function ap_notification_verbs() {
+	global $ap_notification_verbs;
+
+	if ( empty( $ap_notification_verbs ) ) {
+		do_action( 'ap_notification_verbs' );
+	}
+
+	return $ap_notification_verbs;
 }

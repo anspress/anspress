@@ -44,6 +44,7 @@ class AnsPress_Notification_Hook {
 		]);
 
 		anspress()->add_action( 'ap_option_groups', __CLASS__, 'load_options' );
+		anspress()->add_action( 'ap_notification_verbs', __CLASS__, 'register_verbs' );
 		anspress()->add_filter( 'ap_user_tab', __CLASS__, 'ap_author_tab' );
 		anspress()->add_filter( 'ap_user_content', __CLASS__, 'ap_author_content' );
 		anspress()->add_action( 'ap_after_new_answer', __CLASS__, 'new_answer', 10, 2 );
@@ -60,6 +61,8 @@ class AnsPress_Notification_Hook {
 		anspress()->add_action( 'ap_vote_down', __CLASS__, 'vote_down' );
 		anspress()->add_action( 'ap_undo_vote_up', __CLASS__, 'undo_vote_up' );
 		anspress()->add_action( 'ap_undo_vote_down', __CLASS__, 'undo_vote_down' );
+		anspress()->add_action( 'ap_insert_reputation', __CLASS__, 'insert_reputation', 10, 4 );
+		anspress()->add_action( 'ap_delete_reputation', __CLASS__, 'delete_reputation', 10, 3 );
 	}
 
 	/**
@@ -75,6 +78,44 @@ class AnsPress_Notification_Hook {
 			),
 
 		));
+	}
+
+	public static function register_verbs() {
+		ap_register_notification_verb( 'new_answer', array(
+			'label' => __( 'posted an answer on your question', 'anspress-question-answer' ),
+		) );
+
+		ap_register_notification_verb( 'new_comment', array(
+			'ref_type' => 'comment',
+			'label'    => __( 'commented on your %cpt%', 'anspress-question-answer' ),
+		) );
+
+		ap_register_notification_verb( 'vote_up', array(
+			'ref_type' => 'post',
+			'label'      => __( 'up voted your %cpt%', 'anspress-question-answer' ),
+		) );
+
+		ap_register_notification_verb( 'vote_down', array(
+			'ref_type'   => 'post',
+			'hide_actor' => true,
+			'icon'       => 'apicon-thumb-down',
+			'label'      => __( 'down voted your %cpt%', 'anspress-question-answer' ),
+		) );
+
+		ap_register_notification_verb( 'best_answer', array(
+			'ref_type' => 'post',
+			'label'      => __( 'selected your answer', 'anspress-question-answer' ),
+		) );
+
+		ap_register_notification_verb( 'new_points', array(
+			'ref_type' => 'reputation',
+			'label'    => __( 'You have earned %points% points', 'anspress-question-answer' ),
+		) );
+
+		ap_register_notification_verb( 'lost_points', array(
+			'ref_type' => 'reputation',
+			'label'    => __( 'You lose %points% points', 'anspress-question-answer' ),
+		) );
 	}
 
 	/**
@@ -100,7 +141,7 @@ class AnsPress_Notification_Hook {
 
 		if ( 'notifications' === $current_tab ) {
 			$notifications = new AnsPress_Notification_Query( [ 'user_id' => $user_id ] );
-			include ap_get_theme_location( 'notifications/index.php' );
+			include ap_get_theme_location( 'addons/notification/index.php' );
 		}
 	}
 
@@ -126,8 +167,8 @@ class AnsPress_Notification_Hook {
 	public static function new_answer( $post_id, $_post ) {
 		$_question = get_post( $_post->post_parent );
 		ap_insert_notification( array(
-			'user_id'  => $_post->post_author,
-			'actor'    => $_question->post_author,
+			'user_id'  => $_question->post_author,
+			'actor'    => $_post->post_author,
 			'parent'   => $_post->post_parent,
 			'ref_id'   => $_post->ID,
 			'ref_type' => 'answer',
@@ -154,12 +195,10 @@ class AnsPress_Notification_Hook {
 	 * @param object $_post Post object.
 	 */
 	public static function select_answer( $_post ) {
-		$question = get_post( $_post->post_parent );
-
 		// Award select answer points to question author only.
 		if ( get_current_user_id() !== $_post->post_author ) {
 			ap_insert_notification( array(
-				'user_id'  => $question->post_author,
+				'user_id'  => $_post->post_author,
 				'actor'    => get_current_user_id(),
 				'parent'   => $_post->post_parent,
 				'ref_id'   => $_post->ID,
@@ -194,6 +233,7 @@ class AnsPress_Notification_Hook {
 			ap_insert_notification( array(
 				'user_id'  => $_post->post_author,
 				'actor'    => $comment->user_id,
+				'parent'   => $comment->comment_post_ID,
 				'ref_id'   => $comment->comment_ID,
 				'ref_type' => 'comment',
 				'verb'     => 'new_comment',
@@ -209,7 +249,7 @@ class AnsPress_Notification_Hook {
 	public static function delete_comment( $comment ) {
 		ap_delete_notifications( array(
 			'actor'    => $comment->user_id,
-			'ref_id'   => $comment->comment_ID,
+			'parent'   => $comment->comment_post_ID,
 			'ref_type' => 'comment',
 		) );
 	}
@@ -226,6 +266,7 @@ class AnsPress_Notification_Hook {
 			ap_insert_notification( array(
 				'user_id'  => $_post->post_author,
 				'actor'    => get_current_user_id(),
+				'parent'   => $_post->ID,
 				'ref_id'   => $_post->ID,
 				'ref_type' => $_post->post_type,
 				'verb'     => 'vote_up',
@@ -245,6 +286,7 @@ class AnsPress_Notification_Hook {
 			ap_insert_notification( array(
 				'user_id'  => $_post->post_author,
 				'actor'    => get_current_user_id(),
+				'parent'   => $_post->ID,
 				'ref_id'   => $_post->ID,
 				'ref_type' => $_post->post_type,
 				'verb'     => 'vote_down',
@@ -275,6 +317,37 @@ class AnsPress_Notification_Hook {
 			'ref_id' => $post_id,
 			'actor'  => get_current_user_id(),
 			'verb'   => 'vote_down',
+		) );
+	}
+
+	/**
+	 * Notify user on new reputation.
+	 *
+	 * @param integer $reputation_id Reputation id.
+	 * @param integer $user_id User id.
+	 * @param string  $event Reputation event.
+	 * @param integer $ref_id Reputation reference id.
+	 */
+	public static function insert_reputation( $reputation_id, $user_id, $event, $ref_id ) {
+		ap_insert_notification( array(
+			'user_id'  => $user_id,
+			'ref_id'   => $reputation_id,
+			'ref_type' => 'reputation',
+			'verb'     => ap_get_reputation_event_points( $event ) > 0 ? 'new_points' : 'lost_points',
+		) );
+	}
+
+	/**
+	 * Notify user on new reputation.
+	 *
+	 * @param integer|false $deleted NUmbers of rows deleted.
+	 * @param integer       $user_id User id.
+	 * @param string        $event Reputation event.
+	 */
+	public static function delete_reputation( $deleted, $user_id, $event ) {
+		ap_delete_notifications( array(
+			'ref_type' => 'reputation',
+			'user_id'  => $user_id,
 		) );
 	}
 }

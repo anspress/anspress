@@ -3555,13 +3555,15 @@ post-message {
   width: 40px;
   height: 40px;
   text-align: center;
-  padding: 8px;
+  padding: 9px 0;
   font-weight: bold;
   color: #fff;
-  border-radius: 2px;
+  border-radius: 50%;
 }
 #anspress .ap-noti-inner {
-  margin-left: 50px;
+  color: #333;
+  display: block;
+  margin-left: 60px;
 }
 #anspress .ap-noti-date {
   display: block;

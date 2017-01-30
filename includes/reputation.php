@@ -54,7 +54,7 @@ function ap_insert_reputation( $event, $ref_id, $user_id = false ) {
 	/**
 	 * Trigger action after inserting a reputation.
 	 */
-	do_action( 'ap_insert_reputation', $wpdb->insert_id );
+	do_action( 'ap_insert_reputation', $wpdb->insert_id, $user_id, $event, $ref_id );
 
 	return $wpdb->insert_id;
 }
@@ -104,18 +104,18 @@ function ap_delete_reputation( $event, $ref_id, $user_id = false ) {
 		$user_id = get_current_user_id();
 	}
 
-	$delete = $wpdb->delete( $wpdb->ap_reputations, [ 'rep_user_id' => $user_id, 'rep_event' => sanitize_text_field( $event ), 'rep_ref_id' => $ref_id ], [ '%d', '%s', '%d' ] ); // WPCS: db call okay, db cache okay.
+	$deleted = $wpdb->delete( $wpdb->ap_reputations, [ 'rep_user_id' => $user_id, 'rep_event' => sanitize_text_field( $event ), 'rep_ref_id' => $ref_id ], [ '%d', '%s', '%d' ] ); // WPCS: db call okay, db cache okay.
 
-	if ( false === $delete ) {
+	if ( false === $deleted ) {
 		return false;
 	}
 
 	/**
 	 * Trigger action after deleteing a reputation.
 	 */
-	do_action( 'ap_delete_reputation', $user_id, $event, $delete );
+	do_action( 'ap_delete_reputation', $deleted, $user_id, $event );
 
-	return $delete;
+	return $deleted;
 }
 
 /**

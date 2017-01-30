@@ -183,19 +183,23 @@ class AnsPress_Common_Pages {
 	 * Layout of base page
 	 */
 	public static function user_page() {
-		global $questions;
-		$args['ap_current_user_ignore'] = true;
-		$args['author'] = (int) get_query_var( 'ap_user_id' );
+	 	$current_tab = ap_sanitize_unslash( 'tab', 'r', 'questions' );
 
-		/**
-		 * FILTER: ap_authors_questions_args
-		 * Filter authors question list args
-		 *
-		 * @var array
-		 */
-		$args = apply_filters( 'ap_authors_questions_args', $args );
+		if ( 'questions' === $current_tab ) {
+			global $questions;
+			$args['ap_current_user_ignore'] = true;
+			$args['author'] = (int) get_query_var( 'ap_user_id' );
 
-		anspress()->questions = $questions = new Question_Query( $args );
+			/**
+			* FILTER: ap_authors_questions_args
+			* Filter authors question list args
+			*
+			* @var array
+			*/
+			$args = apply_filters( 'ap_authors_questions_args', $args );
+
+			anspress()->questions = $questions = new Question_Query( $args );
+		}
 		ap_get_template_part( 'user/index' );
 	}
 }

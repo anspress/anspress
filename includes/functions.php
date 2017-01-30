@@ -1738,3 +1738,4 @@ function ap_addon_activation_hook( $addon, $cb ) {
 
 	$ap_addons_activation[ $addon ] = $cb;
 }
+

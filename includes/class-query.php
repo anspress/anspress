@@ -100,7 +100,8 @@ abstract class AnsPress_Query {
 	 *
 	 * @var array
 	 */
-	var $prefetech_ids = [ 'post' => [], 'comment' => [], 'question' => [], 'answer' => [] ];
+	var $prefetech_ids = [ 'post' => [], 'comment' => [], 'question' => [], 'answer' => [], 'user' => [] ];
+	var $pos = [ 'post' => [], 'comment' => [], 'question' => [], 'answer' => [], 'user' => [] ];
 
 	/**
 	 * Initialize the class.
