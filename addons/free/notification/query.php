@@ -95,25 +95,21 @@ class AnsPress_Notification_Query extends AnsPress_Query {
 			if ( ! empty( $noti->noti_ref_id ) ) {
 				$current_verb = $this->verb_args( $noti->noti_verb );
 
-				if ( 'post' === $current_verb['ref_type'] ) {
-					$this->ids['post'][] = $noti->noti_ref_id;
-					$this->pos['post'][ $noti->noti_ref_id ] = $key;
+				if ( in_array( $current_verb['ref_type'], [ 'question', 'answer', 'post' ], true ) ) {
+					$this->add_prefetch_id( 'post', $noti->noti_ref_id, $key );
 				}
 
 				if ( 'comment' === $current_verb['ref_type'] ) {
-					$this->ids['comment'][] = $noti->noti_ref_id;
-					$this->pos['comment'][ $noti->noti_ref_id ] = $key;
+					$this->add_prefetch_id( 'comment', $noti->noti_ref_id, $key );
 				}
 
 				if ( 'reputation' === $current_verb['ref_type'] ) {
-					$this->ids['reputation'][] = $noti->noti_ref_id;
-					$this->pos['reputation'][ $noti->noti_ref_id ] = $key;
+					$this->add_prefetch_id( 'reputation', $noti->noti_ref_id, $key );
 				}
 			}
 
 			if ( ! empty( $noti->noti_actor ) ) {
-				$this->ids['user'][] = $noti->noti_actor;
-				$this->pos['user'][ $noti->noti_actor ] = $key;
+				$this->add_prefetch_id( 'user', $noti->noti_actor );
 			}
 		}
 
@@ -133,7 +129,7 @@ class AnsPress_Notification_Query extends AnsPress_Query {
 		$posts = $wpdb->get_results( "SELECT * FROM {$wpdb->posts} WHERE ID in ({$ids_str})" );
 
 		foreach ( (array) $posts as $_post ) {
-			$this->objects[ $this->pos['post'][ $_post->ID ] ]->ref = $_post;
+			$this->append_ref_data( 'post', $_post->ID, $_post );
 		}
 	}
 

@@ -214,4 +214,75 @@ abstract class AnsPress_Query {
 			do_action( 'ap_loop_start' );
 		}
 	}
+
+	/**
+	 * Add pre fetch ids.
+	 *
+	 * @param string        $type ids type.
+	 * @param integer       $id id.
+	 * @param false|integer $key Object key.
+	 */
+	public function add_prefetch_id( $type, $id, $key = false ) {
+		if ( ! isset( $this->ids[ $type ] ) ) {
+			$this->ids[ $type ] = [];
+		}
+
+		if ( ! in_array( $id, $this->ids[ $type ], true ) ) {
+			$this->ids[ $type ][] = (int) $id;
+		}
+
+		if ( false !== $key ) {
+			$this->add_pos( $type, $id, $key );
+		}
+	}
+
+	/**
+	 * Add position of reference in objects.
+	 *
+	 * @param string  $type ids type.
+	 * @param integer $ref_id Reference ID.
+	 * @param mixed   $key Object key.
+	 */
+	public function add_pos( $type, $ref_id, $key ) {
+		if ( ! isset( $this->pos[ $type ] ) ) {
+			$this->pos[ $type ] = [];
+		}
+
+		if ( ! isset( $this->pos[ $type ][ $ref_id ] ) ) {
+			$this->pos[ $type ][ $ref_id ] = $key;
+			return;
+		}
+
+		$prev_val = $this->pos[ $type ][ $ref_id ];
+
+		if ( ! is_array( $prev_val ) ) {
+			$this->pos[ $type ][ $ref_id ] = [ $prev_val, $key ];
+			return;
+		}
+
+		if ( is_array( $prev_val ) ) {
+			$this->pos[ $type ][ $ref_id ][] = $key;
+		}
+	}
+
+	/**
+	 * Add reference data to obejcts.
+	 *
+	 * @param string  $type ids type.
+	 * @param integer $ref_id Reference ID.
+	 * @param mixed   $data Reference data.
+	 */
+	public function append_ref_data( $type, $ref_id, $data ) {
+		if ( isset( $this->pos[ $type ] ) && ! empty( $this->pos[ $type ][ $ref_id ] ) ) {
+			$pos = $this->pos[ $type ][ $ref_id ];
+
+			if ( is_array( $pos ) ) {
+				foreach ( (array) $pos as $key ) {
+					$this->objects[ $key ]->ref = $data;
+				}
+			} else {
+				$this->objects[ $pos ]->ref = $data;
+			}
+		}
+	}
 }
