@@ -317,4 +317,20 @@ jQuery(document).ready(function($){
 			}
 		})
 	});
+
+	// Ajax button.
+	$('body').delegate( '[ap-ajax-btn]', 'click', function(e){
+		e.preventDefault();
+		var self = $(this);
+		var query = JSON.parse(self.attr('ap-query'));
+
+		AnsPress.ajax({
+			data: query,
+			success: function(data){
+				if(typeof data.btn !== 'undefined'){
+					if(data.btn.hide) self.hide();
+				}
+			}
+		})
+	});
 })

@@ -214,6 +214,48 @@ function ap_delete_notifications( $args = [] ) {
 }
 
 /**
+ * Mark a notification as read.
+ *
+ * @param integer $noti_id Notification id.
+ * @return integer|false
+ */
+function ap_set_notification_as_seen( $noti_id ) {
+	global $wpdb;
+
+	return $wpdb->update(
+		$wpdb->prefix . 'ap_notifications',
+		array(
+			'noti_seen' => 1,
+		),
+		array(
+			'noti_id' => $noti_id,
+		),
+		[ '%d' ],
+		[ '%d' ]
+	); // WPCS: db call okay, db cache okay.
+}
+
+/**
+ * Set user's notifications as seen.
+ *
+ * @param integer $user_id User id.
+ */
+function ap_set_notifications_as_seen( $user_id ) {
+	global $wpdb;
+	return $wpdb->update(
+		$wpdb->prefix . 'ap_notifications',
+		array(
+			'noti_seen' => 1,
+		),
+		array(
+			'noti_user_id' => $user_id,
+		),
+		[ '%d' ],
+		[ '%d' ]
+	); // WPCS: db call okay, db cache okay.
+}
+
+/**
  * Register notification verb.
  *
  * @param string $key verb key.
@@ -240,4 +282,30 @@ function ap_notification_verbs() {
 	}
 
 	return $ap_notification_verbs;
+}
+
+/**
+ * Count total numbers of unread notifiations of a user.
+ *
+ * @param integer $user_id User id.
+ * @return integer
+ */
+function ap_count_unseen_notifications( $user_id = false ) {
+	if ( false === $user_id ) {
+		$user_id = get_current_user_id();
+	}
+
+	$cache = wp_cache_get( $user_id, 'ap_unseen_notification' );
+
+	if ( false !== $cache ) {
+		return $cache;
+	}
+
+	global $wpdb;
+
+	$count = (int) $wpdb->get_var( $wpdb->prepare( "SELECT count(*) FROM {$wpdb->prefix}ap_notifications WHERE noti_user_id = %d AND noti_seen = 0", $user_id ) ); // WPCS: db call okay.
+
+	wp_cache_set( $user_id, $count, 'ap_unseen_notification' );
+
+	return $count;
 }

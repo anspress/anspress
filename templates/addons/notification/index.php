@@ -11,7 +11,19 @@
  */
 
 ?>
-<a href="#" class="ap-btn ap-btn-markall-read ap-btn-small"><?php _e( 'Mark all as read', 'anspress-pro' ); ?></a>
+
+<?php if ( ap_count_unseen_notifications() > 0 ) : ?>
+	<?php
+		$btn_args = wp_json_encode( array(
+			'ap_ajax_action' => 'mark_notifications_seen',
+			'__nonce'        => wp_create_nonce( 'mark_notifications_seen' ),
+		) );
+	?>
+	<a href="#" class="ap-btn ap-btn-markall-read ap-btn-small" ap-ajax-btn ap-query="<?php echo esc_js( $btn_args ); ?>">
+		<?php _e( 'Mark all as read', 'anspress-pro' ); // xss okay. ?>
+	</a>
+<?php endif; ?>
+
 <div class="ap-noti-sub">
 	<a href="#"><?php _e( 'Read', 'anspress-pro' ); ?></a>
 	<a href="#"><?php _e( 'Unread', 'anspress-pro' ); ?></a>
@@ -21,26 +33,6 @@
 	<?php while ( $notifications->have() ) : $notifications->the_notification(); ?>
 		<?php $notifications->item_template(); ?>
 	<?php endwhile; ?>
-
-		<div class="ap-noti-item clearfix">
-				<div class="ap-noti-icon apicon-flag"></div>
-				<div class="ap-noti-inner">
-					You received a flag on your question
-					<strong>How to fix node.js issue?</strong>
-					<time class="ap-noti-date">12 Hours ago</time>
-				</div>
-			</div>
-
-			<div class="ap-noti-item clearfix">
-				<div class="ap-noti-icon apicon-reputation"></div>
-				<div class="ap-noti-inner">
-					You gained <strong>10</strong> reputation points
-					<time class="ap-noti-date">12 Hours ago</time>
-				</div>
-			</div>
-
-
-
 </div>
 
 <?php /*if ( $reputations->total_pages > 1 ) : ?>

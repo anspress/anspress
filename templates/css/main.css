@@ -1885,6 +1885,12 @@ post-message {
   margin-bottom: -1px;
   padding: 7px 15px;
 }
+#anspress .ap-author .ap-tab-nav > li span {
+  background: #ddd;
+  padding: 2px 5px;
+  font-size: 11px;
+  border-radius: 2px;
+}
 #anspress .ap-author .ap-tab-nav > li.active a {
   border-style: solid;
   border-width: 1px 1px 1px 1px;

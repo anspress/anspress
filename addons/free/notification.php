@@ -63,6 +63,7 @@ class AnsPress_Notification_Hook {
 		anspress()->add_action( 'ap_undo_vote_down', __CLASS__, 'undo_vote_down' );
 		anspress()->add_action( 'ap_insert_reputation', __CLASS__, 'insert_reputation', 10, 4 );
 		anspress()->add_action( 'ap_delete_reputation', __CLASS__, 'delete_reputation', 10, 3 );
+		anspress()->add_action( 'ap_ajax_mark_notifications_seen', __CLASS__, 'mark_notifications_seen' );
 	}
 
 	/**
@@ -127,7 +128,10 @@ class AnsPress_Notification_Hook {
 
 		?>
 			<li<?php echo 'notifications' === $current_tab ? ' class="active"' : ''; ?>>
-				<a href="<?php echo ap_user_link( $user_id ) . '?tab=notifications'; ?>"><?php esc_attr_e( 'Notifications', 'anspress-question-answer' ); ?></a>
+				<a href="<?php echo ap_user_link( $user_id ) . '?tab=notifications'; ?>">
+					<?php esc_attr_e( 'Notifications', 'anspress-question-answer' ); ?>
+					<span><?php echo number_format_i18n( ap_count_unseen_notifications() ); ?></span>
+				</a>
 			</li>
 		<?php
 	}
@@ -349,6 +353,30 @@ class AnsPress_Notification_Hook {
 			'ref_type' => 'reputation',
 			'user_id'  => $user_id,
 		) );
+	}
+
+	/**
+	 * Ajax callback for marking all notification of current user
+	 * as seen.
+	 */
+	public static function mark_notifications_seen() {
+		if ( ! is_user_logged_in() || ! ap_verify_nonce( 'mark_notifications_seen' ) ) {
+			ap_ajax_json( array(
+				'success' => false,
+				'snackbar' => [ 'message' => __( 'There was a problem processing your request', 'anspress-question-answer' ) ],
+			) );
+		}
+
+		// Mark all notifications as seen.
+		$update = ap_set_notifications_as_seen( get_current_user_id() );
+
+		ap_ajax_json( array(
+			'success' => true,
+			'btn' => [ 'hide' => true ],
+			'snackbar' => [ 'message' => __( 'Successfully updated all notifications', 'anspress-question-answer' ) ],
+		) );
+
+		wp_die();
 	}
 }
 
