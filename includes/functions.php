@@ -1174,7 +1174,7 @@ function ap_sanitize_unslash( $str, $from = false, $default = '' ) {
 		}
 	}
 
-	if ( empty( $str ) ) {
+	if ( '' === $str ) {
 		return $default;
 	}
 

@@ -142,9 +142,11 @@ class AnsPress_Notification_Hook {
 	public static function ap_author_content() {
 		$user_id = get_query_var( 'ap_user_id' );
 	 	$current_tab = ap_sanitize_unslash( 'tab', 'r', 'notifications' );
+	 	$seen = ap_sanitize_unslash( 'seen', 'r', 'all' );
 
 		if ( 'notifications' === $current_tab ) {
-			$notifications = new AnsPress_Notification_Query( [ 'user_id' => $user_id ] );
+			$seen = 'all' === $seen ? null : (int) $seen;
+			$notifications = new AnsPress_Notification_Query( [ 'user_id' => $user_id, 'seen' => $seen ] );
 			include ap_get_theme_location( 'addons/notification/index.php' );
 		}
 	}

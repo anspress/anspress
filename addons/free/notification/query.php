@@ -123,6 +123,11 @@ class AnsPress_Notification_Query extends AnsPress_Query {
 	 * Pre fetch post contents and append to object.
 	 */
 	public function prefetch_posts() {
+
+		if ( empty( $this->ids['post'] ) ) {
+			return;
+		}
+
 		global $wpdb;
 
 		$ids_str = esc_sql( sanitize_comma_delimited( $this->ids['post'] ) );
@@ -147,7 +152,7 @@ class AnsPress_Notification_Query extends AnsPress_Query {
 		$comments = $wpdb->get_results( "SELECT c.*, p.post_type, p.post_title FROM {$wpdb->comments} c LEFT JOIN $wpdb->posts p ON c.comment_post_ID = p.ID WHERE comment_ID in ({$ids})" );
 
 		foreach ( (array) $comments as $_comment ) {
-			$this->objects[ $this->pos['comment'][ $_comment->comment_ID ] ]->ref = $_comment;
+			$this->append_ref_data( 'comment', $_comment->comment_ID, $_comment );
 		}
 	}
 
@@ -177,7 +182,7 @@ class AnsPress_Notification_Query extends AnsPress_Query {
 
 		foreach ( (array) $reputations as $rep ) {
 			$rep->points = ap_get_reputation_event_points( $rep->rep_event );
-			$this->objects[ $this->pos['reputation'][ $rep->rep_id ] ]->ref = $rep;
+			$this->append_ref_data( 'reputation', $rep->rep_id, $rep );
 		}
 	}
 

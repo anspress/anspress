@@ -273,9 +273,8 @@ abstract class AnsPress_Query {
 	 * @param mixed   $data Reference data.
 	 */
 	public function append_ref_data( $type, $ref_id, $data ) {
-		if ( isset( $this->pos[ $type ] ) && ! empty( $this->pos[ $type ][ $ref_id ] ) ) {
+		if ( isset( $this->pos[ $type ] ) && ( 0 == $this->pos[ $type ][ $ref_id ] || ! empty( $this->pos[ $type ][ $ref_id ] ) ) ) {
 			$pos = $this->pos[ $type ][ $ref_id ];
-
 			if ( is_array( $pos ) ) {
 				foreach ( (array) $pos as $key ) {
 					$this->objects[ $key ]->ref = $data;
