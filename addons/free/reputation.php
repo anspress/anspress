@@ -52,8 +52,7 @@ class AnsPress_Reputation_Hooks {
 		anspress()->add_filter( 'ap_pre_fetch_question_data', __CLASS__, 'pre_fetch_post' );
 		anspress()->add_filter( 'ap_pre_fetch_answer_data', __CLASS__, 'pre_fetch_post' );
 		anspress()->add_filter( 'bp_before_member_header_meta', __CLASS__, 'bp_profile_header_meta' );
-		anspress()->add_filter( 'ap_user_tab', __CLASS__, 'ap_author_tab' );
-		anspress()->add_filter( 'ap_user_content', __CLASS__, 'ap_author_content' );
+		anspress()->add_filter( 'ap_user_pages', __CLASS__, 'ap_user_pages' );
 		anspress()->add_filter( 'ap_ajax_load_more_reputation', __CLASS__, 'load_more_reputation' );
 		anspress()->add_filter( 'ap_bp_nav', __CLASS__, 'ap_bp_nav' );
 		anspress()->add_filter( 'ap_bp_page', __CLASS__, 'ap_bp_page', 10, 2 );
@@ -373,26 +372,24 @@ class AnsPress_Reputation_Hooks {
 	/**
 	 * Adds reputations tab in AnsPress authors page.
 	 */
-	public static function ap_author_tab() {
-		$user_id = get_query_var( 'ap_user_id' );
-	 	$current_tab = ap_sanitize_unslash( 'tab', 'r', 'questions' );
-
-		?>
-			<li<?php echo 'reputations' === $current_tab ? ' class="active"' : ''; ?>><a href="<?php echo ap_user_link( $user_id ) . '?tab=reputations'; ?>"><?php esc_attr_e( 'Reputation', 'anspress-question-answer' ); ?></a></li>
-		<?php
+	public static function ap_user_pages() {
+		anspress()->user_pages[] = array(
+			'slug'  => 'reputations',
+			'label' => __( 'Reputations', 'anspress-question-answer' ),
+			'icon'  => 'apicon-reputation',
+			'cb'    => [ __CLASS__, 'reputation_page' ],
+			'order' => 5,
+		);
 	}
 
 	/**
 	 * Display reputation tab content in AnsPress author page.
 	 */
-	public static function ap_author_content() {
+	public static function reputation_page() {
 		$user_id = get_query_var( 'ap_user_id' );
-	 	$current_tab = ap_sanitize_unslash( 'tab', 'r', 'questions' );
 
-		if ( 'reputations' === $current_tab ) {
-			$reputations = new AnsPress_Reputation_Query( [ 'user_id' => $user_id ] );
-			include ap_get_theme_location( 'addons/reputation/index.php' );
-		}
+		$reputations = new AnsPress_Reputation_Query( [ 'user_id' => $user_id ] );
+		include ap_get_theme_location( 'addons/reputation/index.php' );
 	}
 
 	/**

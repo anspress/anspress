@@ -186,6 +186,14 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		public $reputation_events;
 
 		/**
+		 * AnsPress user pages.
+		 *
+		 * @access public
+		 * @var object
+		 */
+		public $user_pages;
+
+		/**
 		 * Initializes the plugin by setting localization, hooks, filters, and administrative functions.
 		 *
 		 * @access public

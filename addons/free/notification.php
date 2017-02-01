@@ -45,8 +45,7 @@ class AnsPress_Notification_Hook {
 
 		anspress()->add_action( 'ap_option_groups', __CLASS__, 'load_options' );
 		anspress()->add_action( 'ap_notification_verbs', __CLASS__, 'register_verbs' );
-		anspress()->add_filter( 'ap_user_tab', __CLASS__, 'ap_author_tab' );
-		anspress()->add_filter( 'ap_user_content', __CLASS__, 'ap_author_content' );
+		anspress()->add_filter( 'ap_user_pages', __CLASS__, 'ap_user_pages' );
 		anspress()->add_action( 'ap_after_new_answer', __CLASS__, 'new_answer', 10, 2 );
 		anspress()->add_action( 'ap_trash_question', __CLASS__, 'trash_question', 10, 2 );
 		anspress()->add_action( 'ap_before_delete_question', __CLASS__, 'trash_question', 10, 2 );
@@ -123,32 +122,30 @@ class AnsPress_Notification_Hook {
 	/**
 	 * Adds reputations tab in AnsPress authors page.
 	 */
-	public static function ap_author_tab() {
-		$user_id = get_query_var( 'ap_user_id' );
-	 	$current_tab = ap_sanitize_unslash( 'tab', 'r', 'questions' );
-
-		?>
-			<li<?php echo 'notifications' === $current_tab ? ' class="active"' : ''; ?>>
-				<a href="<?php echo ap_user_link( $user_id ) . '?tab=notifications'; ?>">
-					<?php esc_attr_e( 'Notifications', 'anspress-question-answer' ); ?>
-					<span><?php echo number_format_i18n( ap_count_unseen_notifications() ); ?></span>
-				</a>
-			</li>
-		<?php
+	public static function ap_user_pages() {
+		anspress()->user_pages[] = array(
+			'slug'    => 'notifications',
+			'label'   => __( 'Notifications', 'anspress-question-answer' ),
+			'count'   => ap_count_unseen_notifications(),
+			'icon'    => 'apicon-globe',
+			'cb'      => [ __CLASS__, 'notification_page' ],
+			'private' => true,
+		);
 	}
 
 	/**
 	 * Display reputation tab content in AnsPress author page.
 	 */
-	public static function ap_author_content() {
+	public static function notification_page() {
 		$user_id = get_query_var( 'ap_user_id' );
-	 	$current_tab = ap_sanitize_unslash( 'tab', 'r', 'notifications' );
 	 	$seen = ap_sanitize_unslash( 'seen', 'r', 'all' );
 
-		if ( 'notifications' === $current_tab ) {
+		if ( get_current_user_id() === $user_id ) {
 			$seen = 'all' === $seen ? null : (int) $seen;
 			$notifications = new AnsPress_Notification_Query( [ 'user_id' => $user_id, 'seen' => $seen ] );
 			include ap_get_theme_location( 'addons/notification/index.php' );
+		} else {
+			_e( 'You do not have permission to view this page', 'anspress-question-answer' ); // xss okay.
 		}
 	}
 

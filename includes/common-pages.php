@@ -22,7 +22,7 @@ class AnsPress_Common_Pages {
 		ap_register_page( ap_opt( 'ask_page_slug' ), __( 'Ask', 'anspress-question-answer' ), array( __CLASS__, 'ask_page' ) );
 		ap_register_page( 'search', __( 'Search', 'anspress-question-answer' ), array( __CLASS__, 'search_page' ), false );
 		ap_register_page( 'edit', __( 'Edit Answer', 'anspress-question-answer' ), array( __CLASS__, 'edit_page' ), false );
-		ap_register_page( 'user', ap_opt( 'user_page_title' ), array( __CLASS__, 'user_page' ) );
+
 	}
 
 	/**
@@ -177,30 +177,6 @@ class AnsPress_Common_Pages {
 		$wp_query->set_404();
 		status_header( 404 );
 		include ap_get_theme_location( 'not-found.php' );
-	}
-
-	/**
-	 * Layout of base page
-	 */
-	public static function user_page() {
-	 	$current_tab = ap_sanitize_unslash( 'tab', 'r', 'questions' );
-
-		if ( 'questions' === $current_tab ) {
-			global $questions;
-			$args['ap_current_user_ignore'] = true;
-			$args['author'] = (int) get_query_var( 'ap_user_id' );
-
-			/**
-			* FILTER: ap_authors_questions_args
-			* Filter authors question list args
-			*
-			* @var array
-			*/
-			$args = apply_filters( 'ap_authors_questions_args', $args );
-
-			anspress()->questions = $questions = new Question_Query( $args );
-		}
-		ap_get_template_part( 'user/index' );
 	}
 }
 
