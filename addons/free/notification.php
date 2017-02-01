@@ -64,6 +64,7 @@ class AnsPress_Notification_Hook {
 		anspress()->add_action( 'ap_insert_reputation', __CLASS__, 'insert_reputation', 10, 4 );
 		anspress()->add_action( 'ap_delete_reputation', __CLASS__, 'delete_reputation', 10, 3 );
 		anspress()->add_action( 'ap_ajax_mark_notifications_seen', __CLASS__, 'mark_notifications_seen' );
+		anspress()->add_action( 'ap_ajax_load_more_notifications', __CLASS__, 'load_more_notifications' );
 	}
 
 	/**
@@ -380,6 +381,35 @@ class AnsPress_Notification_Hook {
 
 		wp_die();
 	}
+
+	/**
+	 * Ajax callback for loading more notifications.
+	 */
+	public static function load_more_notifications() {
+		check_admin_referer( 'load_more_notifications', '__nonce' );
+
+		$user_id = ap_sanitize_unslash( 'user_id', 'r' );
+		$paged = ap_sanitize_unslash( 'current', 'r', 1 ) + 1;
+
+		ob_start();
+		$notifications = new AnsPress_Notification_Query( [ 'user_id' => $user_id, 'paged' => $paged ] );
+
+		while ( $notifications->have() ) : $notifications->the_notification();
+			$notifications->item_template();
+		endwhile;
+
+		$html = ob_get_clean();
+
+		$paged = $notifications->total_pages > $paged ? $paged : 0;
+
+		ap_ajax_json( array(
+			'success' => true,
+			'args'    => [ 'ap_ajax_action' => 'load_more_notifications', '__nonce' => wp_create_nonce( 'load_more_notifications' ), 'current' => (int) $paged, 'user_id' => $user_id ],
+			'html'    => $html,
+			'element' => '.ap-noti',
+		) );
+	}
+
 }
 
 /**

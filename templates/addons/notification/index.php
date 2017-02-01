@@ -41,6 +41,6 @@
 <?php endif; ?>
 
 
-<?php /*if ( $reputations->total_pages > 1 ) : ?>
-	<a href="#" ap-loadmore="<?php echo esc_js( wp_json_encode( array( 'ap_ajax_action' => 'load_more_reputation', '__nonce' => wp_create_nonce( 'load_more_reputation' ), 'current' => 1, 'user_id' => $reputations->args['user_id'] ) ) ); ?>" class="ap-loadmore ap-btn" ><?php esc_attr_e( 'Load More', 'anspress-question-answer' ); ?></a>
-<?php endif;*/ ?>
+<?php if ( $notifications->total_pages > 1 ) : ?>
+	<a href="#" ap-loadmore="<?php echo esc_js( wp_json_encode( array( 'ap_ajax_action' => 'load_more_notifications', '__nonce' => wp_create_nonce( 'load_more_notifications' ), 'current' => 1, 'user_id' => $notifications->args['user_id'] ) ) ); ?>" class="ap-loadmore ap-btn" ><?php esc_attr_e( 'Load More', 'anspress-question-answer' ); ?></a>
+<?php endif; ?>
