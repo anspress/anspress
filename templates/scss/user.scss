@@ -2,7 +2,7 @@
 // Users styles
 // --------------------------------------------------
 #anspress{
-  .ap-author{
+  .ap-user{
     &-bio{
       margin-bottom: 15px;
       border-top: solid 1px #ddd;
@@ -22,6 +22,7 @@
         vertical-align: middle;
       }
     }
+
     .ap-tab-nav{
       list-style: none;
       margin: 0;

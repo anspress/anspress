@@ -1847,26 +1847,26 @@ post-message {
   border-color: rgba(0, 0, 0, 0.1);
 }
 
-#anspress .ap-author-bio {
+#anspress .ap-user-bio {
   margin-bottom: 15px;
   border-top: solid 1px #ddd;
   padding: 20px 0;
   min-height: 122px;
 }
-#anspress .ap-author-avatar {
+#anspress .ap-user-avatar {
   margin-right: 20px;
 }
-#anspress .ap-author-name {
+#anspress .ap-user-name {
   font-size: 22px;
   font-weight: 600;
 }
-#anspress .ap-author-name .ap-user-reputation {
+#anspress .ap-user-name .ap-user-reputation {
   font-size: 13px;
   padding: 3px 7px;
   margin-left: 10px;
   vertical-align: middle;
 }
-#anspress .ap-author .ap-tab-nav {
+#anspress .ap-user .ap-tab-nav {
   list-style: none;
   margin: 0;
   padding: 0;
@@ -1874,29 +1874,29 @@ post-message {
   padding-left: 10px;
   margin-bottom: 20px;
 }
-#anspress .ap-author .ap-tab-nav > li {
+#anspress .ap-user .ap-tab-nav > li {
   float: left;
   margin-right: 10px;
 }
-#anspress .ap-author .ap-tab-nav > li > a {
+#anspress .ap-user .ap-tab-nav > li > a {
   display: block;
   background: none;
   border: none;
   margin-bottom: -1px;
   padding: 7px 15px;
 }
-#anspress .ap-author .ap-tab-nav > li > a i {
+#anspress .ap-user .ap-tab-nav > li > a i {
   margin-right: 5px;
   font-size: 12px;
 }
-#anspress .ap-author .ap-tab-nav > li > a span {
+#anspress .ap-user .ap-tab-nav > li > a span {
   background: #ddd;
   padding: 1px 5px;
   font-size: 11px;
   border-radius: 2px;
   margin-left: 5px;
 }
-#anspress .ap-author .ap-tab-nav > li.active a {
+#anspress .ap-user .ap-tab-nav > li.active a {
   border-style: solid;
   border-width: 1px 1px 1px 1px;
   border-color: #ddd #ddd #fff #ddd;

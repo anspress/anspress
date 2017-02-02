@@ -43,7 +43,7 @@ class AnsPress_Profile_Hooks {
 		dynamic_sidebar( 'ap-top' );
 
 		echo '<div id="ap-user" class="ap-row">';
-		include ap_get_theme_location( 'user/index.php' );
+		include ap_get_theme_location( 'addons/user/index.php' );
 		echo '</div>';
 	}
 
@@ -108,23 +108,26 @@ class AnsPress_Profile_Hooks {
 
 		echo '<ul class="ap-tab-nav clearfix">';
 		foreach ( (array) anspress()->user_pages as $args ) {
-			echo '<li ' . ( $args['slug'] === $current_tab ? ' class="active"' : '' ) . '>';
-			echo '<a href="' . esc_url( ap_user_link( $user_id, $args['slug'] ) ) . '">';
 
-			// Show icon.
-			if ( ! empty( $args['icon'] ) ) {
-				echo '<i class="' . esc_attr( $args['icon'] ) . '"></i>';
+			if ( empty( $args['private'] ) || ( true === $args['private'] && get_current_user_id() === $user_id ) ) {
+				echo '<li ' . ( $args['slug'] === $current_tab ? ' class="active"' : '' ) . '>';
+				echo '<a href="' . esc_url( ap_user_link( $user_id, $args['slug'] ) ) . '">';
+
+				// Show icon.
+				if ( ! empty( $args['icon'] ) ) {
+					echo '<i class="' . esc_attr( $args['icon'] ) . '"></i>';
+				}
+
+				echo esc_attr( $args['label'] );
+
+				// Show count.
+				if ( ! empty( $args['count'] ) ) {
+					echo '<span>' . esc_attr( number_format_i18n( $args['count'] ) ) . '</span>';
+				}
+
+				echo '</a>';
+				echo '</li>';
 			}
-
-			echo esc_attr( $args['label'] );
-
-			// Show count.
-			if ( ! empty( $args['count'] ) ) {
-				echo '<span>' . esc_attr( number_format_i18n( $args['count'] ) ) . '</span>';
-			}
-
-			echo '</a>';
-			echo '</li>';
 		}
 
 		echo '</ul>';
@@ -167,7 +170,7 @@ class AnsPress_Profile_Hooks {
 
 		anspress()->questions = $questions = new Question_Query( $args );
 
-		include ap_get_theme_location( 'user/questions.php' );
+		include ap_get_theme_location( 'addons/user/questions.php' );
 	}
 
 }
