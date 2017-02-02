@@ -258,14 +258,16 @@ function ap_pagination( $current = false, $total = false, $format = '?paged=%#%'
  * @param string   $page_title   Page title.
  * @param callable $func         Hook to run when shortcode is found.
  * @param bool     $show_in_menu User can add this pages to their WordPress menu from appearance->menu->AnsPress.
+ * @param bool     $private Only show to currently logged in user?
  *
  * @since 2.0.1
  */
-function ap_register_page( $page_slug, $page_title, $func, $show_in_menu = true ) {
+function ap_register_page( $page_slug, $page_title, $func, $show_in_menu = true, $private = false ) {
 	anspress()->pages[ $page_slug ] = array(
 		'title' 		     => $page_title,
 		'func' 			     => $func,
 		'show_in_menu' 	 => $show_in_menu,
+		'private' 	     => $private,
 	);
 }
 

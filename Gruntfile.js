@@ -102,6 +102,7 @@
 						'assets/js/min/ask.min.js': ['assets/js/ask.js'],
 						'assets/js/min/list.min.js': ['assets/js/list.js'],
 						'assets/js/min/tags.min.js': ['assets/js/tags.js'],
+						'assets/js/min/notifications.min.js': ['assets/js/notifications.js'],
 						'templates/js/min/theme.min.js': ['templates/js/theme.js'],
 					}
 				}

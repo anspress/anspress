@@ -43,9 +43,13 @@ class AnsPress_Notification_Hook {
 			'noti_delete_read'     => true,
 		]);
 
+		ap_register_page( 'notifications', __( 'Notifications', 'anspress-question-answer' ), '', true );
+		anspress()->add_filter( 'ap_menu_link', __CLASS__, 'menu_link', 10, 2 );
+
 		anspress()->add_action( 'ap_option_groups', __CLASS__, 'load_options' );
 		anspress()->add_action( 'ap_notification_verbs', __CLASS__, 'register_verbs' );
 		anspress()->add_filter( 'ap_user_pages', __CLASS__, 'ap_user_pages' );
+		anspress()->add_action( 'ap_assets_js', __CLASS__, 'ap_assets_js' );
 		anspress()->add_action( 'ap_after_new_answer', __CLASS__, 'new_answer', 10, 2 );
 		anspress()->add_action( 'ap_trash_question', __CLASS__, 'trash_question', 10, 2 );
 		anspress()->add_action( 'ap_before_delete_question', __CLASS__, 'trash_question', 10, 2 );
@@ -64,6 +68,7 @@ class AnsPress_Notification_Hook {
 		anspress()->add_action( 'ap_delete_reputation', __CLASS__, 'delete_reputation', 10, 3 );
 		anspress()->add_action( 'ap_ajax_mark_notifications_seen', __CLASS__, 'mark_notifications_seen' );
 		anspress()->add_action( 'ap_ajax_load_more_notifications', __CLASS__, 'load_more_notifications' );
+		anspress()->add_action( 'ap_ajax_get_notifications', __CLASS__, 'get_notifications' );
 	}
 
 	/**
@@ -79,6 +84,21 @@ class AnsPress_Notification_Hook {
 			),
 
 		));
+	}
+
+	/**
+	 * Filter user menu links.
+	 *
+	 * @param  string $url Menu url.
+	 * @param  object $item Menu item object.
+	 * @return string
+	 */
+	public static function menu_link( $url, $item ) {
+		if ( 'notifications' === $item->post_name ) {
+			$url = '#apNotifications';
+		}
+
+		return $url;
 	}
 
 	public static function register_verbs() {
@@ -131,6 +151,20 @@ class AnsPress_Notification_Hook {
 			'cb'      => [ __CLASS__, 'notification_page' ],
 			'private' => true,
 		);
+	}
+
+	/**
+	 * Enqueue scripts.
+	 *
+	 * @param array $js Javacript array.
+	 * @return array
+	 */
+	public static function ap_assets_js( $js ) {
+		if ( is_user_logged_in() ) {
+			$js['notifications'] = [ 'dep' => [ 'anspress-common' ], 'footer' => true ];
+		}
+
+		return $js;
 	}
 
 	/**
@@ -404,6 +438,34 @@ class AnsPress_Notification_Hook {
 			'args'    => [ 'ap_ajax_action' => 'load_more_notifications', '__nonce' => wp_create_nonce( 'load_more_notifications' ), 'current' => (int) $paged, 'user_id' => $user_id ],
 			'html'    => $html,
 			'element' => '.ap-noti',
+		) );
+	}
+
+	public static function get_notifications() {
+		$notifications = new AnsPress_Notification_Query( [ 'user_id' => get_current_user_id() ] );
+
+		$items = [];
+		while ( $notifications->have() ) : $notifications->the_notification();
+			$items[] = array(
+				'ID'         => $notifications->object->noti_id,
+				'verb'       => $notifications->object->noti_verb,
+				'verb_label' => $notifications->get_verb(),
+				'icon'       => $notifications->get_icon(),
+				'avatar'     => $notifications->actor_avatar(),
+				'hide_actor' => $notifications->hide_actor(),
+				'actor'      => $notifications->get_actor(),
+				'ref_title'  => $notifications->get_ref_title(),
+				'ref_type'   => $notifications->object->noti_ref_type,
+				'points'     => $notifications->get_reputation_points(),
+				'date'       => ap_human_time( $notifications->get_date(), false ),
+				'permalink'  => $notifications->get_permalink(),
+				'seen'  		 => $notifications->object->noti_seen,
+			);
+		endwhile;
+
+		ap_ajax_json( array(
+			'success'       => true,
+			'notifications' => $items,
 		) );
 	}
 

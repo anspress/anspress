@@ -1,0 +1,26 @@
+<!-- notifications start -->
+<div class="ap-noti-head">
+  {{aplang.notifications}}
+</div>
+<div class="scroll-wrap"></div>
+<!-- notifications end -->
+
+<!-- notification start -->
+<div class="noti-item clearfix {{seen==1 ? 'seen' : 'unseen'}}">
+  <# if(ref_type === 'reputation') { #>
+    <div class="ap-noti-rep">{{points}}</div>
+  <# } else if(hide_actor) { #>
+    <div class="ap-noti-icon {{icon}}"></div>
+  <# } else { #>
+    <div class="ap-noti-avatar">{{{avatar}}}</div>
+  <# } #>
+  <a class="ap-noti-inner" href="{{permalink}}">
+    <# if(ref_type !== 'reputation'){ #>
+    <strong class="ap-not-actor">{{actor}}</strong>
+    <# } #>
+    {{verb_label}}
+    <strong class="ap-not-ref">{{ref_title}}</strong>
+    <time class="ap-noti-date">{{date}}</time>
+  </a>
+</div>
+<!-- notification end -->

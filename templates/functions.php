@@ -55,6 +55,7 @@ function ap_scripts_front() {
 		'cancel' => __( 'Cancel', 'anspress-question-answer' ),
 		'update' => __( 'Update', 'anspress-question-answer' ),
 		'your_comment' => __( 'Write your comment...', 'anspress-question-answer' ),
+		'notifications' => __( 'Notifications', 'anspress-question-answer' ),
 	);
 
 	echo '<script type="text/javascript">';

@@ -246,7 +246,6 @@
 		}
 	});
 
-
 	AnsPress.views.Post = Backbone.View.extend({
 		idAttribute: 'ID',
 		templateId: 'answer',

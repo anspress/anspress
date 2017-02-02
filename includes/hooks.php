@@ -426,7 +426,7 @@ class AnsPress_Hooks {
 		foreach ( (array) $items as $key => $item ) {
 
 			if ( 'anspress-links' === $item->type ) {
-				if ( isset( $pages[ $item->post_name ]['logged_in'] ) && $pages[ $item->post_name ]['logged_in'] && ! is_user_logged_in() ) {
+				if ( isset( $pages[ $item->post_name ]['private'] ) && $pages[ $item->post_name ]['private'] && ! is_user_logged_in() ) {
 					unset( $items[ $key ] );
 				} else {
 					if ( 'questions' === $item->post_name ) {

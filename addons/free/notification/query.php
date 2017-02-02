@@ -249,18 +249,18 @@ class AnsPress_Notification_Query extends AnsPress_Query {
 	 * @return integer
 	 */
 	public function get_actor() {
-		return $this->object->noti_actor;
+		if ( ! $this->hide_actor() ) {
+			return ap_user_display_name( $this->object->noti_actor ); // xss okay.
+		} else {
+			return __( 'Someone', 'anspress-question-answer' );
+		}
 	}
 
 	/**
 	 * Echo actor display name.
 	 */
 	public function the_actor() {
-		if ( ! $this->hide_actor() ) {
-			echo ap_user_display_name( $this->get_actor() ); // xss okay.
-		} else {
-			_e( 'Someone', 'anspress-question-answer' );
-		}
+		echo esc_html( $this->get_actor() );
 	}
 
 	/**
@@ -270,7 +270,9 @@ class AnsPress_Notification_Query extends AnsPress_Query {
 	 * @return string
 	 */
 	public function actor_avatar( $size = 40 ) {
-		return get_avatar( $this->get_actor(), $size );
+		if ( ! $this->hide_actor() ) {
+			return get_avatar( $this->object->noti_actor, $size );
+		}
 	}
 
 	/**
@@ -394,11 +396,20 @@ class AnsPress_Notification_Query extends AnsPress_Query {
 	}
 
 	/**
+	 * Return icon of notification.
+	 *
+	 * @return string
+	 */
+	public function get_icon() {
+		$args = $this->verb_args( $this->object->noti_verb );
+		return $args['icon'];
+	}
+
+	/**
 	 * Print icon of notification if defined.
 	 */
 	public function the_icon() {
-		$args = $this->verb_args( $this->object->noti_verb );
-		echo esc_attr( $args['icon'] );
+		echo esc_attr( $this->get_icon() );
 	}
 
 }
