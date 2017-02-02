@@ -429,7 +429,11 @@ class AnsPress_Hooks {
 				if ( isset( $pages[ $item->post_name ]['logged_in'] ) && $pages[ $item->post_name ]['logged_in'] && ! is_user_logged_in() ) {
 					unset( $items[ $key ] );
 				} else {
-					$item->url = ap_get_link_to( ap_get_page_slug( $item->post_name ) );
+					if ( 'questions' === $item->post_name ) {
+						$item->url = ap_get_link_to( '/' );
+					} else {
+						$item->url = apply_filters( 'ap_menu_link', ap_get_link_to( ap_get_page_slug( $item->post_name ) ), $item );
+					}
 				}
 			}
 		}

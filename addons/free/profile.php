@@ -34,6 +34,7 @@ class AnsPress_Profile_Hooks {
 		ap_register_page( 'user', __( 'User profile', 'anspress-question-answer' ), [ __CLASS__, 'user_page' ] );
 		anspress()->add_action( 'ap_rewrite_rules', __CLASS__, 'rewrite_rules', 10, 3 );
 		anspress()->add_filter( 'ap_page_title', __CLASS__, 'page_title' );
+		anspress()->add_filter( 'ap_menu_link', __CLASS__, 'menu_link', 10, 2 );
 	}
 
 	/**
@@ -80,6 +81,21 @@ class AnsPress_Profile_Hooks {
 		}
 
 		return $title;
+	}
+
+	/**
+	 * Filter user menu links.
+	 *
+	 * @param  string $url Menu url.
+	 * @param  object $item Menu item object.
+	 * @return string
+	 */
+	public static function menu_link( $url, $item ) {
+		if ( 'user-profile' === $item->post_name ) {
+			$url = ap_user_link( get_current_user_id() );
+		}
+
+		return $url;
 	}
 
 	/**
