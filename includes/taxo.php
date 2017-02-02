@@ -277,17 +277,7 @@ function ap_category_icon( $term_id, $attributes = '' ) {
  * @return string
  */
 function ap_get_categories_slug() {
-	$slug = ap_opt( 'categories_page_slug' );
-
-	$slug = sanitize_title_for_query( $slug );
-
-	if ( empty( $slug ) ) {
-		$slug = 'categories';
-	}
-	/**
-	 * FILTER: ap_categories_slug
-	 */
-	return apply_filters( 'ap_categories_slug', $slug );
+	return apply_filters( 'ap_categories_slug', ap_get_page_slug( 'categories' ) );
 }
 
 /**
@@ -296,16 +286,7 @@ function ap_get_categories_slug() {
  * @return string
  */
 function ap_get_category_slug() {
-	$slug = ap_opt( 'category_page_slug' );
-	$slug = sanitize_title( $slug );
-
-	if ( empty( $slug ) ) {
-		$slug = 'category';
-	}
-	/**
-	 * FILTER: ap_category_slug
-	 */
-	return apply_filters( 'ap_category_slug', $slug );
+	return apply_filters( 'ap_category_slug', ap_get_page_slug( 'category' ) );
 }
 
 /**
@@ -488,20 +469,12 @@ function ap_tags_tab() {
 }
 
 /**
- * Slug for tag page
+ * Slug for tag page.
+ *
  * @return string
  */
 function ap_get_tag_slug() {
-	$slug = ap_opt('tag_page_slug');
-	$slug = sanitize_title( $slug );
-
-	if(empty($slug)){
-		$slug = 'tag';
-	}
-	/**
-	 * FILTER: ap_tag_slug
-	 */
-	return apply_filters( 'ap_tag_slug', $slug );
+	return apply_filters( 'ap_tag_slug', ap_get_page_slug( 'tag' ) );
 }
 
 /**
@@ -510,15 +483,5 @@ function ap_get_tag_slug() {
  * @return string
  */
 function ap_get_tags_slug() {
-	$slug = ap_opt( 'tags_page_slug' );
-	$slug = sanitize_title( $slug );
-
-	if ( empty( $slug ) ) {
-		$slug = 'tags';
-	}
-
-	/**
-	 * FILTER: ap_tag_slug
-	 */
-	return apply_filters( 'ap_tags_slug', $slug );
+	return apply_filters( 'ap_tags_slug', ap_get_page_slug( 'tags' ) );
 }

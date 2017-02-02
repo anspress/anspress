@@ -169,23 +169,10 @@ function is_question() {
  * @return boolean
  */
 function is_ask() {
-	if ( is_anspress() && ap_current_page() === ap_get_ask_page_slug() ) {
+	if ( is_anspress() && ap_current_page() === 'ask' ) {
 		return true;
 	}
 	return false;
-}
-
-/**
- * Get ask page slug.
- *
- * @return string
- */
-function ap_get_ask_page_slug() {
-	$opt = ap_opt( 'ask_page_slug' );
-	if ( $opt ) {
-		return esc_attr( $opt );
-	}
-	return 'ask';
 }
 
 /**

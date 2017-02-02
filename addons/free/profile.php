@@ -31,8 +31,9 @@ class AnsPress_Profile_Hooks {
 	 * @since 4.0.0.
 	 */
 	public static function init() {
-		ap_register_page( 'user', ap_opt( 'user_page_title' ), array( __CLASS__, 'user_page' ) );
+		ap_register_page( 'user', __( 'User profile', 'anspress-question-answer' ), [ __CLASS__, 'user_page' ] );
 		anspress()->add_action( 'ap_rewrite_rules', __CLASS__, 'rewrite_rules', 10, 3 );
+		anspress()->add_filter( 'ap_page_title', __CLASS__, 'page_title' );
 	}
 
 	/**
@@ -60,11 +61,25 @@ class AnsPress_Profile_Hooks {
 		$base = 'index.php?page_id=' . $base_page_id . '&ap_page=' ;
 
 		$new_rules = array(
-			$slug . 'user/([^/]+)/([^/]+)/?' => 'index.php?page_id=' . $base_page_id . '&ap_page=user&ap_user=' . $wp_rewrite->preg_index( 1 ) . '&user_page=' . $wp_rewrite->preg_index( 2 ),
-			$slug . 'user/([^/]+)/?' => 'index.php?page_id=' . $base_page_id . '&ap_page=user&ap_user=' . $wp_rewrite->preg_index( 1 ),
+			$slug . ap_get_page_slug( 'user' ) . '/([^/]+)/([^/]+)/?' => 'index.php?page_id=' . $base_page_id . '&ap_page=user&ap_user=' . $wp_rewrite->preg_index( 1 ) . '&user_page=' . $wp_rewrite->preg_index( 2 ),
+			$slug . ap_get_page_slug( 'user' ) . '/([^/]+)/?' => 'index.php?page_id=' . $base_page_id . '&ap_page=user&ap_user=' . $wp_rewrite->preg_index( 1 ),
 		);
 
 		return $new_rules + $rules;
+	}
+
+	/**
+	 * Add user page title.
+	 *
+	 * @param  string $title AnsPress page title.
+	 * @return string
+	 */
+	public static function page_title( $title ) {
+		if ( 'user' === ap_current_page() ) {
+			$title = sprintf( ap_opt( 'user_page_title' ), ap_user_display_name( get_query_var( 'ap_user_id' ) ) );
+		}
+
+		return $title;
 	}
 
 	/**

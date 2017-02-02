@@ -410,19 +410,6 @@ class AnsPress_Hooks {
 	}
 
 	/**
-	 * Build anspress page url constants
-	 *
-	 * @since 2.4
-	 */
-	public static function page_urls( $pages ) {
-		$page_url = array();
-		foreach ( (array) $pages as $slug => $args ) {
-					$page_url[ $slug ] = 'ANSPRESS_PAGE_URL_' . strtoupper( $slug );
-			}
-			return $page_url;
-	}
-
-	/**
 	 * Update AnsPress pages URL dynimacally
 	 *
 	 * @param	array $items Menu item.
@@ -430,52 +417,24 @@ class AnsPress_Hooks {
 	 */
 	public static function update_menu_url( $items ) {
 		// If this is admin then we dont want to update url.
-			if ( is_admin() ) {
-					return $items;
-			}
+		if ( is_admin() ) {
+			return $items;
+		}
 
-			/**
-			 * Define default AnsPress pages
-			 * So that default pages should work properly after
-			 * Changing categories page slug.
-		 *
-			 * @var array
-			 */
-
-			$default_pages	= array(
-				'ask' 		     => array(),
-				'question' 	   => array()
-			);
-
-			/**
-			 * Modify default pages of AnsPress
-		 *
-			 * @param	array $default_pages Default pages of AnsPress.
-			 * @return array
-			 */
-			$pages = array_merge( anspress()->pages, apply_filters( 'ap_default_pages', $default_pages ) );
-
-			$page_url = SELF::page_urls( $pages );
+		$pages = anspress()->pages;
 
 		foreach ( (array) $items as $key => $item ) {
-			$slug = array_search( str_replace( array( 'http://', 'https://' ), '', $item->url ), $page_url );
 
-			if ( false !== $slug ) {
-				if ( isset( $pages[ $slug ]['logged_in'] ) && $pages[ $slug ]['logged_in'] && ! is_user_logged_in() ) {
+			if ( 'anspress-links' === $item->type ) {
+				if ( isset( $pages[ $item->post_name ]['logged_in'] ) && $pages[ $item->post_name ]['logged_in'] && ! is_user_logged_in() ) {
 					unset( $items[ $key ] );
-				}
-
-				$item->url = ap_get_link_to( $slug );
-				$item->classes[] = 'anspress-page-link';
-				$item->classes[] = 'anspress-page-' . $slug;
-
-				if ( get_query_var( 'ap_page' ) == $slug ) {
-					$item->classes[] = 'anspress-active-menu-link';
+				} else {
+					$item->url = ap_get_link_to( ap_get_page_slug( $item->post_name ) );
 				}
 			}
 		}
 
-			return $items;
+		return $items;
 	}
 
 	/**
@@ -487,47 +446,16 @@ class AnsPress_Hooks {
 	 * @since	2.1
 	 */
 	public static function fix_nav_current_class( $class, $item ) {
-		SELF::$menu_class = $class;
-			$pages = anspress()->pages;
-
-			// Return if empty or `$item` is not object.
-			if ( empty( $item ) || ! is_object( $item ) ) {
-				return SELF::$menu_class;
-			}
-
-		foreach ( (array) $pages as $args ) {
-			SELF::add_proper_menu_classes( $item );
+		// Return if empty or `$item` is not object.
+		if ( empty( $item ) || ! is_object( $item ) ) {
+			return $class;
 		}
 
-			return SELF::$menu_class;
-	}
-
-	/**
-	 * Add proper class for AnsPress menu items.
-	 *
-	 * @since 3.0.0
-	 */
-	public static function add_proper_menu_classes( $item ) {
-		// Return if not anspress menu.
-		if ( ! in_array( 'anspress-page-link', SELF::$menu_class ) ) {
-			return;
+		if ( ap_current_page() === $item->post_name ) {
+			$class[] = 'current-menu-item';
 		}
 
-		if ( ap_get_link_to( get_query_var( 'ap_page' ) ) != $item->url ) {
-			$pos = array_search( 'current-menu-item', SELF::$menu_class );
-			unset( SELF::$menu_class[ $pos ] );
-		}
-
-		// Return if already have ap-dropdown.
-		if ( in_array( 'ap-dropdown', SELF::$menu_class ) ) {
-			return;
-		}
-
-		// Add ap-dropdown and ap-userdp-menu class if profile dropdown.
-		if ( in_array( 'anspress-page-profile', SELF::$menu_class ) ) {
-			SELF::$menu_class[] = 'ap-dropdown';
-			SELF::$menu_class[] = 'ap-userdp-menu';
-		}
+		return $class;
 	}
 
 	/**

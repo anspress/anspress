@@ -17,12 +17,11 @@ class AnsPress_Common_Pages {
 	 * Register all pages of AnsPress
 	 */
 	public static function register_common_pages() {
-		ap_register_page( 'base', ap_opt( 'base_page_title' ), array( __CLASS__, 'base_page' ) );
-		ap_register_page( ap_opt( 'question_page_slug' ), __( 'Question', 'anspress-question-answer' ), array( __CLASS__, 'question_page' ), false );
-		ap_register_page( ap_opt( 'ask_page_slug' ), __( 'Ask', 'anspress-question-answer' ), array( __CLASS__, 'ask_page' ) );
-		ap_register_page( 'search', __( 'Search', 'anspress-question-answer' ), array( __CLASS__, 'search_page' ), false );
-		ap_register_page( 'edit', __( 'Edit Answer', 'anspress-question-answer' ), array( __CLASS__, 'edit_page' ), false );
-
+		ap_register_page( 'base', ap_opt( 'base_page_title' ), [ __CLASS__, 'base_page' ] );
+		ap_register_page( 'question', __( 'Question', 'anspress-question-answer' ), [ __CLASS__, 'question_page' ], false );
+		ap_register_page( 'ask', __( 'Ask', 'anspress-question-answer' ), [ __CLASS__, 'ask_page' ] );
+		ap_register_page( 'search', __( 'Search', 'anspress-question-answer' ), [ __CLASS__, 'search_page' ], false );
+		ap_register_page( 'edit', __( 'Edit Answer', 'anspress-question-answer' ), [ __CLASS__, 'edit_page' ], false );
 	}
 
 	/**
@@ -41,7 +40,7 @@ class AnsPress_Common_Pages {
 		$args['tax_query'] = array( 'relation' => $tax_relation );
 
 		if ( false !== $keywords ) {
-			$args['s'] = array( 'relation' => $tax_relation );
+			$args['s'] = $keywords;
 		}
 
 		/**
@@ -56,25 +55,23 @@ class AnsPress_Common_Pages {
 	}
 
 	/**
-	 * Output single question page
-	 * @return void
+	 * Output single question page.
 	 */
 	public static function question_page() {
-
 		// Set Header as 404 if question id is not set.
 		if ( false === get_question_id() ) {
 			SELF::set_404();
 			return;
 		}
 
-		$post = get_post( get_question_id() );
+		$post = get_post( get_question_id() ); // Override okay.
 
 		// Check if user is allowed to read this question.
 		if ( ! ap_user_can_read_question( get_question_id() ) ) {
-			if( 'moderate' == $post->post_status ) {
-				$msg = __('This question is waiting for a moderator and cannot be viewed. Please check back later to see if it has been approved.', 'anspress-question-answer' );
+			if ( 'moderate' === $post->post_status ) {
+				$msg = __( 'This question is waiting for a moderator and cannot be viewed. Please check back later to see if it has been approved.', 'anspress-question-answer' );
 			} else {
-				$msg = __('Sorry! you are not allowed to read this question.', 'anspress-question-answer' );
+				$msg = __( 'Sorry! you are not allowed to read this question.', 'anspress-question-answer' );
 			}
 			echo '<div class="ap-no-permission">' . $msg . '</div>';
 

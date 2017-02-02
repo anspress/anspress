@@ -433,7 +433,7 @@ class AnsPress_Admin {
 	 * @since unknown
 	 */
 	public static function ap_menu_metaboxes() {
-		add_meta_box( 'add-anspress', __( 'AnsPress Pages', 'anspress-question-answer' ), array( __CLASS__, 'wp_nav_menu_item_anspress_meta_box' ), 'nav-menus', 'side', 'high' );
+		add_meta_box( 'anspress-menu-mb', 'AnsPress', [ __CLASS__, 'render_menu' ], 'nav-menus', 'side', 'high' );
 	}
 
 	/**
@@ -442,35 +442,54 @@ class AnsPress_Admin {
 	 * @return void
 	 * @since unknown
 	 */
-	public static function wp_nav_menu_item_anspress_meta_box() {
-		global $_nav_menu_placeholder, $nav_menu_selected_id;
+	public static function render_menu( $object, $args ) {
+		global $nav_menu_selected_id;
 
-		$_nav_menu_placeholder = 0 > $_nav_menu_placeholder ? $_nav_menu_placeholder - 1 : -1; // override ok.
+		$menu_items = ap_menu_obejct();
+		$db_fields = false;
 
-		echo '<div class="aplinks" id="aplinks">';
-		echo '<input type="hidden" value="custom" name="menu-item[' . esc_attr( $_nav_menu_placeholder ) . '][menu-item-type]" />';
-		echo '<ul>';
-
-		$ap_pages = anspress()->pages;
-
-		foreach ( $ap_pages as $k => $args ) {
-			if ( $args['show_in_menu'] ) {
-				echo '<li>';
-				echo '<label class="menu-item-title">';
-				echo '<input type="radio" value="" name="menu-item[' . esc_attr( $_nav_menu_placeholder ) . '][menu-item-url]" class="menu-item-checkbox" data-url="' . esc_attr( strtoupper( 'ANSPRESS_PAGE_URL_' . $k ) ) . '" data-title="' . esc_attr( $args['title'] ) . '"> ' . esc_attr( $args['title'] ) . '</label>';
-				echo '</li>';
-			}
+		if ( false ) {
+			$db_fields = array( 'parent' => 'parent', 'id' => 'post_parent' );
 		}
 
-		// @codingStandardsIgnoreStart
-		echo '</ul><p class="button-controls">
-                    <span class="add-to-menu">
-						<input type="submit"' . wp_nav_menu_disabled_check( $nav_menu_selected_id ) . ' class="button-secondary submit-add-to-menu right" value="' . esc_attr__( 'Add to Menu', 'anspress-question-answer' ) . '" name="add-custom-menu-item" id="submit-aplinks" />
-                        <span class="spinner"></span>
-                    </span>
-				</p>';
-		echo '</div>';
-		// @codingStandardsIgnoreEnd
+		$walker = new Walker_Nav_Menu_Checklist( $db_fields );
+		$removed_args = array(
+			'action',
+			'customlink-tab',
+			'edit-menu-item',
+			'menu-item',
+			'page-tab',
+			'_wpnonce',
+		); ?>
+
+		<div id="anspress-div">
+			<div id="tabs-panel-anspress-all" class="tabs-panel tabs-panel-active">
+			<ul id="anspress-checklist-pop" class="categorychecklist form-no-clear" >
+				<?php
+					echo walk_nav_menu_tree( array_map( 'wp_setup_nav_menu_item', $menu_items ), 0, (object) array( 'walker' => $walker ) );
+				?>
+			</ul>
+
+			<p class="button-controls">
+				<span class="list-controls">
+					<a href="<?php
+						echo esc_url(add_query_arg(
+							array(
+								'anspress-all' => 'all',
+								'selectall'     => 1,
+							),
+							remove_query_arg( $removed_args )
+						));
+					?>#anspress-menu-mb" class="select-all"><?php _e( 'Select All', 'anspress-question-answer' ); ?></a>
+				</span>
+
+				<span class="add-to-menu">
+					<input type="submit"<?php wp_nav_menu_disabled_check( $nav_menu_selected_id ); ?> class="button-secondary submit-add-to-menu right" value="<?php esc_attr_e( 'Add to Menu' ); ?>" name="add-anspress-menu-item" id="submit-anspress-div" />
+					<span class="spinner"></span>
+				</span>
+			</p>
+		</div>
+	<?php
 	}
 
 	/**

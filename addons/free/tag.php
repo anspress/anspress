@@ -70,8 +70,6 @@ class AnsPress_Tag {
 		anspress()->add_action( 'wp_ajax_ap_tags_suggestion', __CLASS__, 'ap_tags_suggestion' );
 		anspress()->add_action( 'wp_ajax_nopriv_ap_tags_suggestion', __CLASS__, 'ap_tags_suggestion' );
 		anspress()->add_action( 'ap_rewrite_rules', __CLASS__, 'rewrite_rules', 10, 3 );
-		anspress()->add_filter( 'ap_default_pages', __CLASS__, 'tags_default_page' );
-		anspress()->add_filter( 'ap_default_page_slugs', __CLASS__, 'default_page_slugs' );
 		anspress()->add_filter( 'ap_current_page_is', __CLASS__, 'ap_current_page_is' );
 		anspress()->add_filter( 'ap_main_questions_args', __CLASS__, 'ap_main_questions_args' );
 
@@ -579,41 +577,11 @@ class AnsPress_Tag {
 
 		$tags_rules = array();
 		$base = 'index.php?page_id=' . $base_page_id . '&ap_page=';
-
-		$tags_rules[ $slug . ap_get_tag_slug() . '/([^/]+)/page/?([0-9]{1,})/?' ] = $base . ap_get_tag_slug() . '&q_tag=' . $wp_rewrite->preg_index( 1 ) . '&paged=' . $wp_rewrite->preg_index( 2 );
-
-		$tags_rules[ $slug . ap_get_tags_slug() . '/([^/]+)/page/?([0-9]{1,})/?' ] = $base . ap_get_tags_slug() .'&q_tag=' . $wp_rewrite->preg_index( 1 ) . '&paged=' . $wp_rewrite->preg_index( 2 );
-
-		$tags_rules[ $slug . ap_get_tag_slug() . '/([^/]+)/?' ] = $base . ap_get_tag_slug() . '&q_tag=' . $wp_rewrite->preg_index( 1 );
+		$tags_rules[ $slug . ap_get_tag_slug() . '/([^/]+)/page/?([0-9]{1,})/?' ] = $base . 'tag&q_tag=' . $wp_rewrite->preg_index( 1 ) . '&paged=' . $wp_rewrite->preg_index( 2 );
+		$tags_rules[ $slug . ap_get_tags_slug() . '/([^/]+)/page/?([0-9]{1,})/?' ] = $base . 'tags&q_tag=' . $wp_rewrite->preg_index( 1 ) . '&paged=' . $wp_rewrite->preg_index( 2 );
+		$tags_rules[ $slug . ap_get_tag_slug() . '/([^/]+)/?' ] = $base . 'tag&q_tag=' . $wp_rewrite->preg_index( 1 );
 
 		return $tags_rules + $rules;
-	}
-
-	/**
-	 * Add default tags page, so that tags page should work properly after
-	 * Changing tags page slug.
-	 *
-	 * @param  array $default_pages AnsPress default pages.
-	 * @return array
-	 */
-	public static function tags_default_page( $default_pages ) {
-		$default_pages['tags'] = array();
-		$default_pages['tag'] = array();
-
-		return $default_pages;
-	}
-
-	/**
-	 * Add default page slug.
-	 *
-	 * @param  array $default_slugs AnsPress pages slug.
-	 * @return array
-	 */
-	public static function default_page_slugs( $default_slugs ) {
-		$default_slugs['tags'] 	= ap_get_tags_slug();
-		$default_slugs['tag'] 	= ap_get_tag_slug();
-
-		return $default_slugs;
 	}
 
 	/**

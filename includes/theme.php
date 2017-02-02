@@ -35,8 +35,6 @@ function ap_page_title() {
 		$new_title = sprintf( ap_opt( 'search_page_title' ), sanitize_text_field( get_query_var( 'ap_s' ) ) );
 	} elseif ( is_ask() ) {
 		$new_title = ap_opt( 'ask_page_title' );
-	} elseif ( 'user' === $current_page ) {
-		$new_title = sprintf( ap_opt( 'user_page_title' ), ap_user_display_name( get_query_var( 'ap_user_id' ) ) );
 	} elseif ( '' === $current_page && ! is_question() && '' === get_query_var( 'question_name' ) ) {
 		$new_title = ap_opt( 'base_page_title' );
 	} elseif ( get_query_var( 'parent' ) !== '' ) {
@@ -265,9 +263,9 @@ function ap_pagination( $current = false, $total = false, $format = '?paged=%#%'
  */
 function ap_register_page( $page_slug, $page_title, $func, $show_in_menu = true ) {
 	anspress()->pages[ $page_slug ] = array(
-		'title' 		=> $page_title,
-		'func' 			=> $func,
-		'show_in_menu' 	=> $show_in_menu,
+		'title' 		     => $page_title,
+		'func' 			     => $func,
+		'show_in_menu' 	 => $show_in_menu,
 	);
 }
 
@@ -281,7 +279,7 @@ function ap_page() {
 	$current_page = ap_current_page();
 
 	if ( is_question() ) {
-		$current_page = ap_opt( 'question_page_slug' );
+		$current_page = 'question';
 	} elseif ( '' === $current_page && ! is_question() ) {
 		$current_page = 'base';
 	}
@@ -901,4 +899,48 @@ function ap_subscribe_btn( $_post = false, $echo = true ) {
 	}
 
 	echo $html; // WPCS: xss okay.
+}
+
+function ap_menu_obejct() {
+	$menu_items = [];
+
+	foreach ( (array) anspress()->pages as $k => $args ) {
+		if ( $args['show_in_menu'] ) {
+			$menu_items[] = (object) array(
+				'ID'               => 1,
+				'db_id'            => 0,
+				'menu_item_parent' => 0,
+				'object_id'        => 1,
+				'post_parent'      => 0,
+				'type'             => 'anspress-links',
+				'object'           => 'anspress-' . $k,
+				'type_label'       => __( 'AnsPress links', 'anspress-question-answer' ),
+				'title'            => $args['title'],
+				'url'              => 'https://xyz.com',
+				'target'           => '',
+				'attr_title'       => '',
+				'description'      => '',
+				'classes'          => [ 'anspress-menu-' . $k ],
+				'xfn'              => '',
+			);
+		}
+	}
+
+	return $menu_items;
+}
+
+/**
+ * Return AnsPress page slug.
+ *
+ * @param string $slug Default page slug.
+ * @return string
+ */
+function ap_get_page_slug( $slug ) {
+	$option = ap_opt( $slug . '_page_slug' );
+
+	if ( ! empty( $option ) ) {
+		$slug = $option;
+	}
+
+	return apply_filters( 'ap_page_slug_' . $slug, $slug );
 }

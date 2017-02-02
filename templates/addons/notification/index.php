@@ -10,6 +10,7 @@
  * @package WordPress/AnsPress-pro
  */
 
+$user_id = get_query_var( 'ap_user_id' );
 ?>
 
 <?php if ( ap_count_unseen_notifications() > 0 ) : ?>
@@ -25,9 +26,9 @@
 <?php endif; ?>
 
 <div class="ap-noti-sub">
-	<a href="?tab=notifications&seen=all"><?php _e( 'All', 'anspress-pro' ); ?></a>
-	<a href="?tab=notifications&seen=0"><?php _e( 'Unseen', 'anspress-pro' ); ?></a>
-	<a href="?tab=notifications&seen=1"><?php _e( 'Seen', 'anspress-pro' ); ?></a>
+	<a href="<?php echo ap_user_link( $user_id, 'notifications' ); ?>?seen=all"><?php _e( 'All', 'anspress-pro' ); ?></a>
+	<a href="<?php echo ap_user_link( $user_id, 'notifications' ); ?>?seen=0"><?php _e( 'Unseen', 'anspress-pro' ); ?></a>
+	<a href="<?php echo ap_user_link( $user_id, 'notifications' ); ?>?seen=1"><?php _e( 'Seen', 'anspress-pro' ); ?></a>
 </div>
 
 <?php if ( $notifications->have() ) : ?>

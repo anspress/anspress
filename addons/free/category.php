@@ -49,9 +49,8 @@ class AnsPress_Category {
 	public static function init() {
 		SELF::includes();
 
-		ap_register_page( ap_get_category_slug(), __( 'Category', 'anspress-question-answer' ), array( __CLASS__, 'category_page' ), false );
-
-		ap_register_page( ap_get_categories_slug(), __( 'Categories', 'anspress-question-answer' ), array( __CLASS__, 'categories_page' ) );
+		ap_register_page( 'category', __( 'Category', 'anspress-question-answer' ), array( __CLASS__, 'category_page' ), false );
+		ap_register_page( 'categories', __( 'Categories', 'anspress-question-answer' ), array( __CLASS__, 'categories_page' ) );
 
 		anspress()->add_action( 'init', __CLASS__, 'register_question_categories', 1 );
 		anspress()->add_action( 'ap_option_groups', __CLASS__, 'load_options' );
@@ -73,8 +72,6 @@ class AnsPress_Category {
 		anspress()->add_action( 'create_question_category', __CLASS__, 'save_image_field' );
 		anspress()->add_action( 'edited_question_category', __CLASS__, 'save_image_field' );
 		anspress()->add_action( 'ap_rewrite_rules', __CLASS__, 'rewrite_rules', 10, 3 );
-		anspress()->add_filter( 'ap_default_pages', __CLASS__, 'category_default_page' );
-		anspress()->add_filter( 'ap_default_page_slugs', __CLASS__, 'default_page_slugs' );
 		anspress()->add_action( 'ap_hover_card_cat', __CLASS__, 'hover_card_category' );
 		anspress()->add_filter( 'ap_main_questions_args', __CLASS__, 'ap_main_questions_args' );
 		anspress()->add_filter( 'ap_question_subscribers_action_id', __CLASS__, 'subscribers_action_id' );
@@ -711,39 +708,13 @@ class AnsPress_Category {
 		global $wp_rewrite;
 		$base = 'index.php?page_id=' . $base_page_id . '&ap_page=' ;
 		$cat_rules = array(
-			$slug . ap_get_categories_slug() . '/page/?([0-9]{1,})/?$' => $base . ap_get_categories_slug() . '&paged=' . $wp_rewrite->preg_index( 1 ),
-			$slug . ap_get_category_slug() . '/([^/]+)/page/?([0-9]{1,})/?$' => $base . ap_get_category_slug() . '&q_cat=' . $wp_rewrite->preg_index( 1 ) . '&paged=' . $wp_rewrite->preg_index( 2 ),
-			$slug . ap_get_category_slug() . '/([^/]+)/?' => $base . ap_get_category_slug() . '&q_cat=' . $wp_rewrite->preg_index( 1 ),
-			$slug . ap_get_categories_slug() . '/?' => $base . ap_get_categories_slug(),
+			$slug . ap_get_categories_slug() . '/page/?([0-9]{1,})/?$' => $base . 'categories&paged=' . $wp_rewrite->preg_index( 1 ),
+			$slug . ap_get_category_slug() . '/([^/]+)/page/?([0-9]{1,})/?$' => $base . 'category&q_cat=' . $wp_rewrite->preg_index( 1 ) . '&paged=' . $wp_rewrite->preg_index( 2 ),
+			$slug . ap_get_category_slug() . '/([^/]+)/?' => $base . 'category&q_cat=' . $wp_rewrite->preg_index( 1 ),
+			$slug . ap_get_categories_slug() . '/?' => $base . 'categories',
 		);
 
 		return $cat_rules + $rules;
-	}
-
-	/**
-	 * Add default categories page, so that categories page should work properly after
-	 * Changing categories page slug.
-	 *
-	 * @param  array $default_pages AnsPress default pages.
-	 * @return array
-	 */
-	public static function category_default_page( $default_pages ) {
-		$default_pages['categories'] = array();
-		$default_pages['category'] = array();
-
-		return $default_pages;
-	}
-
-	/**
-	 * Add default page slug.
-	 *
-	 * @param  array $default_slugs AnsPress pages slug.
-	 * @return array
-	 */
-	public static function default_page_slugs( $default_slugs ) {
-		$default_slugs['categories'] 	= ap_get_categories_slug();
-		$default_slugs['category'] 		= ap_get_category_slug();
-		return $default_slugs;
 	}
 
 	/**
