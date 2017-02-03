@@ -13,11 +13,19 @@
 	AnsPress.models.Notification = Backbone.Model.extend({
 		idAttribute: 'ID',
 		defaults:{
-			ID: '',
-			userID: '',
-			avatar: '',
-			content: '',
-			actions: ''
+			'ID': '',
+			'verb': '',
+			'verb_label': '',
+			'icon': '',
+			'avatar': '',
+			'hide_actor': '',
+			'actor': '',
+			'ref_title': '',
+			'ref_type': '',
+			'points': '',
+			'date': '',
+			'permalink': '',
+			'seen': '',
 		}
 	});
 
@@ -29,26 +37,14 @@
 		id: function(){
 			return 'noti-' + this.model.id;
 		},
-		/*className: function(){
-			var klass = this.model.get('class');
-			if(this.model.get('approved')==='0')
-				klass += ' unapproved';
-			return klass
-		},*/
 		template: AnsPress.getTemplate('notification'),
 		initialize: function(options){
 			this.model = options.model;
-			/*this.postID = options.postID;
-			this.model.on('change', this.render, this);*/
-		},
-		events: {
-			/*'click [ap="comment_action"]': 'actions',
-			'click [ap="edit_comment"]': 'editCommentForm'*/
+			//this.model.on('change', this.render, this);
 		},
 		render: function(){
 			var t = _.template(this.template());
 			this.$el.html(t(this.model.toJSON()));
-			//this.$el.attr('class', this.className());
 			return this;
 		}
 	});
@@ -57,10 +53,11 @@
 		template: AnsPress.getTemplate('notifications'),
 		initialize: function(options){
 			this.model = options.model;
-			/*this.postID = options.postID;
-			AnsPress.on('removeComment', this.removeComment, this);
-			this.listenTo(this.model, 'remove', this.commentRemoved);
-			this.listenTo(this.model, 'add', this.newComment);*/
+			this.mark_args = options.mark_args;
+			this.total = options.total;
+
+			this.listenTo(this.model, 'add', this.newNoti);
+			this.listenTo(AnsPress, 'notificationAllRead', this.allRead);
 		},
 		renderItem: function(notification){
 			this.$el.parent().addClass('have-comments');
@@ -71,7 +68,7 @@
 		render: function(){
 			var self = this;
 			var t = _.template(this.template());
-			this.$el.html(t());
+			this.$el.html(t({'mark_args' : this.mark_args, 'total': this.total}));
 			if(this.model.length > 0){
 				this.model.each(function(notification){
 					self.renderItem(notification);
@@ -80,20 +77,15 @@
 
 			return this;
 		},
-		removeComment: function(notification){
-			this.model.remove(notification);
+		newNoti: function(noti){
+			this.renderItem(noti);
 		},
-		commentRemoved: function(comment){
-			if(this.model.size() === 0)
-				this.$el.parent().removeClass('have-comments');
-			$('#comment-'+comment.id).slideUp(400, function(){
-				$(this).remove();
+		allRead: function(){
+			this.total = 0;
+			this.model.each(function(notification){
+				notification.set('seen', 1);
 			});
-		},
-		newComment: function(comment){
-			var view = this.renderItem(comment);
-			view.$el.hide().slideDown(400);
-			this.$el.apScrollTo('#comment-'+comment.id);
+			this.render();
 		}
 	});
 
@@ -119,10 +111,12 @@
 							var html = $('<div id="noti-dp"></div>');
 							$('body').append(html);
 							self.dpPos(html, anchor);
+						} else {
+							dp.show();
 						}
 
 						var notiModel = new AnsPress.collections.Notifications(data.notifications);
-						var notificationsView = new AnsPress.views.Notifications({model: notiModel});
+						var notificationsView = new AnsPress.views.Notifications({ model: notiModel, mark_args: data.mark_args, total: data.total });
 						$('#noti-dp').html(notificationsView.render().$el);
 					}
 				}
@@ -133,5 +127,24 @@
 	$(document).ready(function(){
 		var notiRouter = new NotiRouter();
 		Backbone.history.start();
+
+		$('.anspress-menu-notifications a').click(function(){
+			if($(this).attr('href') === '#'){
+				$(this).attr('href' , '#apNotifications');
+				$('#noti-dp').hide();
+			}else{
+
+				$(this).attr('href', '#');
+			}
+		})
+
+		$(document).mouseup(function (e){
+			var container = $('#noti-dp');
+			if (!container.is(e.target) && container.has(e.target).length === 0){
+				container.hide();
+				Backbone.history.navigate('', {trigger: true});
+			}
+		});
 	});
+
 })(jQuery);

@@ -95,7 +95,7 @@ class AnsPress_Notification_Hook {
 	 */
 	public static function menu_link( $url, $item ) {
 		if ( 'notifications' === $item->post_name ) {
-			$url = '#apNotifications';
+			$url = '#';
 		}
 
 		return $url;
@@ -405,9 +405,10 @@ class AnsPress_Notification_Hook {
 		$update = ap_set_notifications_as_seen( get_current_user_id() );
 
 		ap_ajax_json( array(
-			'success' => true,
-			'btn' => [ 'hide' => true ],
+			'success'  => true,
+			'btn'      => [ 'hide'    => true ],
 			'snackbar' => [ 'message' => __( 'Successfully updated all notifications', 'anspress-question-answer' ) ],
+			'cb'       => 'notificationAllRead',
 		) );
 
 		wp_die();
@@ -441,7 +442,14 @@ class AnsPress_Notification_Hook {
 		) );
 	}
 
+	/**
+	 * Ajax callback for loading user notifications dropdown.
+	 */
 	public static function get_notifications() {
+		if ( ! is_user_logged_in() ) {
+			wp_die();
+		}
+
 		$notifications = new AnsPress_Notification_Query( [ 'user_id' => get_current_user_id() ] );
 
 		$items = [];
@@ -466,6 +474,11 @@ class AnsPress_Notification_Hook {
 		ap_ajax_json( array(
 			'success'       => true,
 			'notifications' => $items,
+			'total' 				=> ap_count_unseen_notifications(),
+			'mark_args' 		=> array(
+				'ap_ajax_action' => 'mark_notifications_seen',
+				'__nonce'        => wp_create_nonce( 'mark_notifications_seen' ),
+			),
 		) );
 	}
 

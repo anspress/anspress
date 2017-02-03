@@ -327,9 +327,11 @@ jQuery(document).ready(function($){
 		AnsPress.ajax({
 			data: query,
 			success: function(data){
-				if(typeof data.btn !== 'undefined'){
+				if(typeof data.btn !== 'undefined')
 					if(data.btn.hide) self.hide();
-				}
+
+				if(typeof data.cb !== 'undefined')
+					AnsPress.trigger(data.cb);
 			}
 		})
 	});
