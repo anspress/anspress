@@ -228,11 +228,11 @@ class AnsPress_Notification_Query extends AnsPress_Query {
 	 */
 	public function get_permalink() {
 		if ( in_array( $this->get_ref_type(), [ 'question', 'answer', 'post' ], true ) ) {
-			return ap_get_short_link( [ 'p' => $this->get_ref_id() ] );
+			return ap_get_short_link( [ 'ap_p' => $this->get_ref_id() ] );
 		} elseif ( 'comment' === $this->get_ref_type() ) {
-			return ap_get_short_link( [ 'c' => $this->get_ref_id() ] );
+			return ap_get_short_link( [ 'ap_c' => $this->get_ref_id() ] );
 		} elseif ( 'reputation' === $this->get_ref_type() ) {
-			return ap_get_short_link( [ 'my' => 'rep' ] );
+			return ap_get_short_link( [ 'ap_u' => $this->object->noti_user_id, 'sub' => 'reputations' ] );
 		}
 	}
 

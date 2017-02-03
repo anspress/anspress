@@ -38,15 +38,9 @@ class AnsPress_Notification_Hook {
 	 * Initialize the class.
 	 */
 	public static function init() {
-		ap_add_default_options([
-			'noti_delete_interval' => 3600,
-			'noti_delete_read'     => true,
-		]);
-
 		ap_register_page( 'notifications', __( 'Notifications', 'anspress-question-answer' ), '', true );
 		anspress()->add_filter( 'ap_menu_link', __CLASS__, 'menu_link', 10, 2 );
-
-		anspress()->add_action( 'ap_option_groups', __CLASS__, 'load_options' );
+		//anspress()->add_action( 'ap_option_groups', __CLASS__, 'load_options' );
 		anspress()->add_action( 'ap_notification_verbs', __CLASS__, 'register_verbs' );
 		anspress()->add_filter( 'ap_user_pages', __CLASS__, 'ap_user_pages' );
 		anspress()->add_action( 'ap_assets_js', __CLASS__, 'ap_assets_js' );
@@ -78,11 +72,22 @@ class AnsPress_Notification_Hook {
 
 		ap_register_option_section( 'addons', basename( __FILE__ ), __( 'Notification', 'anspress-question-answer' ), array(
 			array(
-				'name'              => 'clear_avatar_cache',
-				'type'              => 'custom',
-				'html' => '<label class="ap-form-label" for="avatar_font">' . __( 'Clear Cache', 'anspress-question-answer' ) . '</label><div class="ap-form-fields-in"><a id="ap-clear-avatar" href="#" class="button">' . __( 'Clear avatar cache', 'anspress-question-answer' ) . '</a></div>',
+				'name'    => 'noti_delete',
+				'label'   => __( 'Auto delete notifications', 'anspress-question-answer' ),
+				'type'    => 'select',
+				'options' => array(
+					'none'   => __( 'Do not auto delete', 'anpress-question-answer' ),
+					'seen'   => __( 'Only seen', 'anpress-question-answer' ),
+					'both'   => __( 'Both seen an unseen', 'anpress-question-answer' ),
+				),
+				'desc'    => __( 'Auto delete user notifications', 'anspress-question-answer' ),
 			),
-
+			array(
+				'name'  => 'noti_delete_interval',
+				'label' => __( 'Auto delete interval', 'anspress-question-answer' ),
+				'type'  => 'number',
+				'desc'  => __( 'Auto delete notifications interval', 'anspress-question-answer' ),
+			),
 		));
 	}
 

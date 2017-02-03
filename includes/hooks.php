@@ -95,6 +95,7 @@ class AnsPress_Hooks {
 			anspress()->add_action( 'generate_rewrite_rules', 'AnsPress_Rewrite', 'rewrites', 1 );
 			anspress()->add_filter( 'paginate_links', 'AnsPress_Rewrite', 'bp_com_paged' );
 			anspress()->add_filter( 'parse_request', 'AnsPress_Rewrite', 'add_query_var' );
+			anspress()->add_action( 'template_redirect', 'AnsPress_Rewrite', 'shortlink' );
 
 			// Upload hooks.
 			anspress()->add_action( 'before_delete_post', 'AnsPress_Uploader', 'before_delete_attachment' );

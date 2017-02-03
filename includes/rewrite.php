@@ -166,4 +166,33 @@ class AnsPress_Rewrite
 			}
 		}
 	}
+
+	/**
+	 * Handles shortlink redirects.
+	 */
+	public static function shortlink() {
+		$page  = get_query_var( 'ap_page' );
+
+		if ( empty( $page ) || 'shortlink' !== $page ) {
+			return;
+		}
+
+		// Post redirect.
+		if ( ap_isset_post_value( 'ap_p', false ) ) {
+			$permalink = get_permalink( ap_isset_post_value( 'ap_p' ) );
+			exit( wp_redirect( $permalink ) ); // xss okay.
+		}
+
+		// Comment redirect.
+		if ( ap_isset_post_value( 'ap_c', false ) ) {
+			$permalink = get_comment_link( ap_isset_post_value( 'ap_c' ) );
+			exit( wp_redirect( $permalink ) ); // xss okay.
+		}
+
+		// User redirect.
+		if ( ap_isset_post_value( 'ap_u', false ) ) {
+			$permalink = ap_user_link( ap_isset_post_value( 'ap_u' ), ap_isset_post_value( 'sub' ) );
+			exit( wp_redirect( $permalink ) ); // xss okay.
+		}
+	}
 }

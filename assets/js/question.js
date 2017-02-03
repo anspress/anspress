@@ -649,7 +649,8 @@
 		singleQuestionView.render();
 
 		var anspressRouter = new AnsPressRouter();
-		Backbone.history.start();
+		if(!Backbone.History.started)
+			Backbone.history.start();
 
 	});
 

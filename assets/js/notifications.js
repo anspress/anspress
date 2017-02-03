@@ -126,7 +126,9 @@
 
 	$(document).ready(function(){
 		var notiRouter = new NotiRouter();
-		Backbone.history.start();
+
+		if(!Backbone.History.started)
+			Backbone.history.start();
 
 		$('.anspress-menu-notifications a').click(function(){
 			if($(this).attr('href') === '#'){
