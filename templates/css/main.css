@@ -3609,6 +3609,14 @@ post-message {
   font-size: 13px;
   font-family: Arial, Helvetica, sans-serif;
   overflow: hidden;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
+}
+#noti-dp .ap-btn-markall-read {
+  float: right;
+  background: none;
+  border: none;
+  font-weight: normal;
+  padding: 0;
 }
 #noti-dp .noti-item {
   padding: 10px 10px;
@@ -3617,6 +3625,14 @@ post-message {
 }
 #noti-dp .noti-item.unseen {
   background: #f5f5f5;
+}
+#noti-dp .ap-noti-unseen {
+  background: #F4AC20;
+  color: #fff;
+  padding: 1px 3px;
+  font-weight: normal;
+  font-style: normal;
+  border-radius: 2px;
 }
 #noti-dp .ap-noti-icon, #noti-dp .ap-noti-avatar, #noti-dp .ap-noti-rep {
   background: #eee;

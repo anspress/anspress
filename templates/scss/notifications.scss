@@ -75,6 +75,15 @@
   font-size: 13px;
   font-family: Arial, Helvetica, sans-serif;
   overflow: hidden;
+  box-shadow: 0 0 6px rgba(0,0,0,0.2);
+
+  .ap-btn-markall-read {
+    float: right;
+    background: none;
+    border: none;
+    font-weight: normal;
+    padding: 0;
+  }
 
   .noti-item{
     padding: 10px 10px;
@@ -85,6 +94,15 @@
     }
   }
   .ap-noti{
+    &-unseen {
+      background: $yellow-color;
+      color: #fff;
+      padding: 1px 3px;
+      font-weight: normal;
+      font-style: normal;
+      border-radius: 2px;
+    }
+
     &-icon, &-avatar, &-rep{
       background: #eee;
       float: left;

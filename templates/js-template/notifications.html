@@ -1,6 +1,10 @@
 <!-- notifications start -->
 <div class="ap-noti-head">
   {{aplang.notifications}}
+  <# if(total > 0) { #>
+    <i class="ap-noti-unseen">{{total}}</i>
+    <a href="#" class="ap-btn ap-btn-markall-read ap-btn-small" ap-ajax-btn ap-query="{{JSON.stringify(mark_args)}}">{{aplang.mark_all_seen}}</a>
+  <# } #>
 </div>
 <div class="scroll-wrap"></div>
 <!-- notifications end -->
