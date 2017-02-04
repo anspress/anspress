@@ -25,6 +25,8 @@ class Question_Query extends WP_Query {
 	 */
 	private $post_type;
 
+	public $count_request;
+
 	/**
 	 * Initialize class.
 	 *
@@ -86,6 +88,7 @@ class Question_Query extends WP_Query {
 		}
 
 		$this->args['post_type'] = 'question';
+		$this->args['no_found_rows'] = true;
 
 		parent::__construct( $this->args );
 	}

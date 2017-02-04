@@ -100,7 +100,7 @@ class AnsPress_Notification_Hook {
 	 */
 	public static function menu_link( $url, $item ) {
 		if ( 'notifications' === $item->post_name ) {
-			$url = '#';
+			$url = '#apNotifications';
 		}
 
 		return $url;

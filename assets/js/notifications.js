@@ -131,11 +131,11 @@
 			Backbone.history.start();
 
 		$('.anspress-menu-notifications a').click(function(){
-			if($(this).attr('href') === '#'){
-				$(this).attr('href' , '#apNotifications');
+			var dp = $('#noti-dp');
+			if(dp.is(':visible')){
 				$('#noti-dp').hide();
 			}else{
-				$(this).attr('href', '#');
+				$('#noti-dp').show();
 			}
 		})
 
@@ -143,7 +143,6 @@
 			var container = $('#noti-dp');
 			if (!container.is(e.target) && container.has(e.target).length === 0){
 				container.hide();
-				Backbone.history.navigate('', {trigger: true});
 			}
 		});
 	});
