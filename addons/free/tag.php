@@ -573,13 +573,11 @@ class AnsPress_Tag {
 	 * @return array
 	 */
 	public static function rewrite_rules( $rules, $slug, $base_page_id ) {
-		global $wp_rewrite;
-
 		$tags_rules = array();
 		$base = 'index.php?page_id=' . $base_page_id . '&ap_page=';
-		$tags_rules[ $slug . ap_get_tag_slug() . '/([^/]+)/page/?([0-9]{1,})/?' ] = $base . 'tag&q_tag=' . $wp_rewrite->preg_index( 1 ) . '&paged=' . $wp_rewrite->preg_index( 2 );
-		$tags_rules[ $slug . ap_get_tags_slug() . '/([^/]+)/page/?([0-9]{1,})/?' ] = $base . 'tags&q_tag=' . $wp_rewrite->preg_index( 1 ) . '&paged=' . $wp_rewrite->preg_index( 2 );
-		$tags_rules[ $slug . ap_get_tag_slug() . '/([^/]+)/?' ] = $base . 'tag&q_tag=' . $wp_rewrite->preg_index( 1 );
+		$tags_rules[ $slug . ap_get_tag_slug() . '/([^/]+)/page/?([0-9]{1,})/?' ] = $base . 'tag&q_tag=$matches[#]&paged=$matches[#]';
+		$tags_rules[ $slug . ap_get_tags_slug() . '/([^/]+)/page/?([0-9]{1,})/?' ] = $base . 'tags&q_tag=$matches[#]&paged=$matches[#]';
+		$tags_rules[ $slug . ap_get_tag_slug() . '/([^/]+)/?' ] = $base . 'tag&q_tag=$matches[#]';
 
 		return $tags_rules + $rules;
 	}

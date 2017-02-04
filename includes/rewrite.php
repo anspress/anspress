@@ -18,8 +18,8 @@ if ( ! defined( 'WPINC' ) ) {
  * This class handle all rewrite rules and define query varibale of anspress
  * @since 2.0.0
  */
-class AnsPress_Rewrite
-{
+class AnsPress_Rewrite {
+	private static $counter = 1;
 	/**
 	 * Register query vars
 	 * @param  array $query_vars Registered query variables.
@@ -63,7 +63,7 @@ class AnsPress_Rewrite
 		unset( $wp_rewrite->extra_permastructs['question'] );
 		unset( $wp_rewrite->extra_permastructs['answer'] );
 
-		$base_page_id 		= ap_opt( 'base_page' );
+		$base_page_id = ap_opt( 'base_page' );
 
 		// Try to create base page if doesn't exists.
 		if ( ! ap_get_post( $base_page_id ) ) {
@@ -72,48 +72,73 @@ class AnsPress_Rewrite
 
 		$slug = ap_base_page_slug() . '/';
 
+		$lang = '';
+		$lang_rule = '';
+		$lang_index = 0;
+
+		// Support polylang permalink.
+		if ( function_exists( 'pll_languages_list' ) ) {
+			if ( ! empty( pll_languages_list() ) ) {
+				$lang = '(' . implode( '|', pll_languages_list() ) . ')/';
+				$lang_rule = '&lang=$matches[#]';
+				$lang_index = 1;
+			}
+		}
+
 		$question_permalink = ap_opt( 'question_page_permalink' );
 		$question_slug = ap_get_page_slug( 'question' );
 
 		if ( 'question_perma_2' === $question_permalink ) {
-			$question_placeholder = $question_slug . '/([^/]+)';
-			$question_perma = '&question_name=' . $wp_rewrite->preg_index( 1 );
+			$question_placeholder = $lang . $question_slug . '/([^/]+)';
+			$question_perma = '&question_name=$matches[#]';
 		} elseif ( 'question_perma_3' === $question_permalink ) {
-			$question_placeholder = $question_slug . '/([^/]+)';
-			$question_perma = '&question_id=' . $wp_rewrite->preg_index( 1 );
+			$question_placeholder = $lang . $question_slug . '/([^/]+)';
+			$question_perma = '&question_id=$matches[#]';
 		} elseif ( 'question_perma_4' === $question_permalink ) {
-			$question_placeholder = $question_slug . '/([^/]+)/([^/]+)';
-			$question_perma = '&question_id=' . $wp_rewrite->preg_index( 1 ) . '&question_name=' . $wp_rewrite->preg_index( 2 );
+			$question_placeholder = $lang . $question_slug . '/([^/]+)/([^/]+)';
+			$question_perma = '&question_id=$matches[#]&question_name=$matches[#]';
 		} else {
-			$question_placeholder = ap_base_page_slug() . '/' .$question_slug . '/([^/]+)';
-			$question_perma = '&question_name=' . $wp_rewrite->preg_index( 1 );
+			$question_placeholder = $lang . ap_base_page_slug() . '/' . $question_slug . '/([^/]+)';
+			$question_perma = '&question_name=$matches[#]';
 		}
 
+		$slug = $lang . $slug;
+		$base_page_id = $base_page_id . $lang_rule;
+
 		$new_rules = array(
-			$slug . 'parent/([^/]+)/?' => 'index.php?page_id=' . $base_page_id . '&parent=' . $wp_rewrite->preg_index( 1 ),
+			$slug . 'parent/([^/]+)/?' => 'index.php?page_id=' . $base_page_id . '&parent=$matches[#]',
 
-			$slug . 'page/?([0-9]{1,})/?$' => 'index.php?page_id=' . $base_page_id . '&paged=' . $wp_rewrite->preg_index( 1 ),
+			$slug . 'page/?([0-9]{1,})/?$' => 'index.php?page_id=' . $base_page_id . '&paged=$matches[#]',
 
-			$slug . '([^/]+)/page/?([0-9]{1,})/?$' => 'index.php?page_id=' . $base_page_id . '&ap_page=' . $wp_rewrite->preg_index( 1 ) . '&paged=' . $wp_rewrite->preg_index( 2 ),
+			$slug . '([^/]+)/page/?([0-9]{1,})/?$' => 'index.php?page_id=' . $base_page_id . '&ap_page=$matches[#]&paged=$matches[#]',
 		);
 
 
-		$new_rules[ $question_placeholder . '/([^/]+)/?$' ] = 'index.php?page_id=' . $base_page_id . '&ap_page=question' . $question_perma . '&answer_id=' . $wp_rewrite->preg_index( 2 );
+		$new_rules[ $question_placeholder . '/([^/]+)/?$' ] = 'index.php?page_id=' . $base_page_id . '&ap_page=question' . $question_perma . '&answer_id=$matches[#]';
 
 		$new_rules[ $question_placeholder . '/?$' ]  = 'index.php?page_id=' . $base_page_id . '&ap_page=question' . $question_perma;
 
-		$new_rules[ $slug . ap_get_page_slug( 'search' ) . '/([^/]+)/?' ] = 'index.php?page_id=' . $base_page_id . '&ap_page=search&ap_s=' . $wp_rewrite->preg_index( 1 );
+		$new_rules[ $slug . ap_get_page_slug( 'search' ) . '/([^/]+)/?' ] = 'index.php?page_id=' . $base_page_id . '&ap_page=search&ap_s=$matches[#]';
 
-		$new_rules[ $slug . ap_get_page_slug( 'ask' ) . '/([^/]+)/?' ] = 'index.php?page_id=' . $base_page_id . '&ap_page=ask&parent=' . $wp_rewrite->preg_index( 1 );
+		$new_rules[ $slug . ap_get_page_slug( 'ask' ) . '/([^/]+)/?' ] = 'index.php?page_id=' . $base_page_id . '&ap_page=ask&parent=$matches[#]';
 
 		$new_rules[ $slug . ap_get_page_slug( 'ask' ) . '/?' ] = 'index.php?page_id=' . $base_page_id . '&ap_page=ask';
 
-		$new_rules[ $slug . '([^/]+)/?' ] = 'index.php?page_id=' . $base_page_id . '&ap_page=' . $wp_rewrite->preg_index( 1 );
+		$new_rules[ $slug . '([^/]+)/?' ] = 'index.php?page_id=' . $base_page_id . '&ap_page=$matches[#]';
 
 		$ap_rules = apply_filters( 'ap_rewrite_rules', $new_rules, $slug, $base_page_id );
 
+		foreach( $ap_rules as $k => $r ) {
+			$ap_rules[ $k] = preg_replace_callback('/\#/', [ __CLASS__, 'incr_hash' ], $r );
+			self::$counter = 1;
+		}
+
 		return $wp_rewrite->rules = $ap_rules + $wp_rewrite->rules;
 	}
+
+	public static function incr_hash( $matches ) {
+		return self::$counter++;
+  }
 
 	public static function bp_com_paged($args) {
 		if ( function_exists( 'bp_current_component' ) ) {
@@ -171,6 +196,7 @@ class AnsPress_Rewrite
 	 * Handles shortlink redirects.
 	 */
 	public static function shortlink() {
+		global $wp_query;
 		$page  = get_query_var( 'ap_page' );
 
 		if ( empty( $page ) || 'shortlink' !== $page ) {

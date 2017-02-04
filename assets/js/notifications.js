@@ -135,7 +135,6 @@
 				$(this).attr('href' , '#apNotifications');
 				$('#noti-dp').hide();
 			}else{
-
 				$(this).attr('href', '#');
 			}
 		})

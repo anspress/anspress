@@ -182,19 +182,26 @@ class AnsPress_PostTypes {
 				$question_slug = 'question_perma_1';
 			}
 
+			$default_lang = '';
+			// Support polylang permalink.
+			if ( function_exists( 'pll_default_language' ) ) {
+				$default_lang = pll_default_language();
+			}
+
 			if ( get_option( 'permalink_structure' ) ) {
 				if ( 'question_perma_1' === $question_slug ) {
-					$link = home_url( ap_base_page_slug() .'/' . ap_opt( 'question_page_slug' ) . '/' . $post->post_name . '/' );
+					$link = home_url( $default_lang . '/' . ap_base_page_slug() . '/' . ap_opt( 'question_page_slug' ) . '/' . $post->post_name . '/' );
 				} elseif ( 'question_perma_2' === $question_slug ) {
-					$link = home_url( '/' . ap_opt( 'question_page_slug' ) . '/' . $post->post_name . '/' );
+					$link = home_url( $default_lang . '/' . ap_opt( 'question_page_slug' ) . '/' . $post->post_name . '/' );
 				} elseif ( 'question_perma_3' === $question_slug ) {
-					$link = home_url( '/' . ap_opt( 'question_page_slug' ) . '/' . $post->ID . '/' );
+					$link = home_url( $default_lang . '/' . ap_opt( 'question_page_slug' ) . '/' . $post->ID . '/' );
 				} elseif ( 'question_perma_4' === $question_slug ) {
-					$link = home_url( '/' . ap_opt( 'question_page_slug' ) . '/' . $post->ID . '/' . $post->post_name . '/' );
+					$link = home_url( $default_lang . '/' . ap_opt( 'question_page_slug' ) . '/' . $post->ID . '/' . $post->post_name . '/' );
 				}
 			} else {
 				$link = add_query_arg( array( 'apq' => false, 'question_id' => $post->ID ), ap_base_page_link() );
 			}
+
 			/**
 			 * FILTER: ap_question_post_type_link
 			 * Allow overriding of question post type permalink

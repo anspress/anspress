@@ -705,12 +705,11 @@ class AnsPress_Category {
 	 * @return array
 	 */
 	public static function rewrite_rules( $rules, $slug, $base_page_id ) {
-		global $wp_rewrite;
 		$base = 'index.php?page_id=' . $base_page_id . '&ap_page=' ;
 		$cat_rules = array(
-			$slug . ap_get_categories_slug() . '/page/?([0-9]{1,})/?$' => $base . 'categories&paged=' . $wp_rewrite->preg_index( 1 ),
-			$slug . ap_get_category_slug() . '/([^/]+)/page/?([0-9]{1,})/?$' => $base . 'category&q_cat=' . $wp_rewrite->preg_index( 1 ) . '&paged=' . $wp_rewrite->preg_index( 2 ),
-			$slug . ap_get_category_slug() . '/([^/]+)/?' => $base . 'category&q_cat=' . $wp_rewrite->preg_index( 1 ),
+			$slug . ap_get_categories_slug() . '/page/?([0-9]{1,})/?$' => $base . 'categories&paged=$matches[#]',
+			$slug . ap_get_category_slug() . '/([^/]+)/page/?([0-9]{1,})/?$' => $base . 'category&q_cat=$matches[#]&paged=$matches[#]',
+			$slug . ap_get_category_slug() . '/([^/]+)/?' => $base . 'category&q_cat=$matches[#]',
 			$slug . ap_get_categories_slug() . '/?' => $base . 'categories',
 		);
 

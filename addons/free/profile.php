@@ -58,12 +58,11 @@ class AnsPress_Profile_Hooks {
 	 * @return array
 	 */
 	public static function rewrite_rules( $rules, $slug, $base_page_id ) {
-		global $wp_rewrite;
 		$base = 'index.php?page_id=' . $base_page_id . '&ap_page=' ;
 
 		$new_rules = array(
-			$slug . ap_get_page_slug( 'user' ) . '/([^/]+)/([^/]+)/?' => 'index.php?page_id=' . $base_page_id . '&ap_page=user&ap_user=' . $wp_rewrite->preg_index( 1 ) . '&user_page=' . $wp_rewrite->preg_index( 2 ),
-			$slug . ap_get_page_slug( 'user' ) . '/([^/]+)/?' => 'index.php?page_id=' . $base_page_id . '&ap_page=user&ap_user=' . $wp_rewrite->preg_index( 1 ),
+			$slug . ap_get_page_slug( 'user' ) . '/([^/]+)/([^/]+)/?' => 'index.php?page_id=' . $base_page_id . '&ap_page=user&ap_user=$matches[#]&user_page=$matches[#]',
+			$slug . ap_get_page_slug( 'user' ) . '/([^/]+)/?' => 'index.php?page_id=' . $base_page_id . '&ap_page=user&ap_user=$matches[#]',
 		);
 
 		return $new_rules + $rules;
