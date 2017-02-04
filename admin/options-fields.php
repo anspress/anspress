@@ -159,6 +159,12 @@ ap_register_option_section( 'general', 'qa', __( 'Question & Answer', 'anspress-
 			'type'  => 'checkbox',
 		),
 		array(
+			'name'  => 'show_comments_default',
+			'label' => __( 'Load comments', 'anspress-question-answer' ),
+			'desc'  => __( 'Show question and answer comments by default', 'anspress-question-answer' ),
+			'type'  => 'checkbox',
+		),
+		array(
 			'name'  => 'default_date_format',
 			'label' => __( 'Show default date format', 'anspress-question-answer' ),
 			'desc'  => __( 'Instead of showing time passed i.e. 1 Hour ago, show default format date.', 'anspress-question-answer' ),

@@ -140,6 +140,7 @@ function ap_default_options() {
 		'default_date_format'						=> false,
 		'anonymous_post_status'					=> 'moderate',
 		'bad_words'											=> '',
+		'show_comments_default'					=> true,
 	);
 
 	/**

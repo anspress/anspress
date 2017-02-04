@@ -335,7 +335,6 @@
 				success: function(data){
 					AnsPress.hideLoading(e.target);
 					$(e.target).addClass('loaded');
-					console.log(data.actions);
 					self.actions.model = new AnsPress.collections.Actions(data.actions);
 					self.actions.view = new AnsPress.views.Actions({ model: self.actions.model, postID: self.model.get('ID') });
 					self.$el.find('post-actions .ap-actions').html(self.actions.view.render().$el);
@@ -376,8 +375,9 @@
 		loadComments: function(e){
 			e.preventDefault();
 			var self = this;
+			var elm = $(e.currentTarget);
 			var commentDiv = '#comments-'+self.model.id;
-			if($(e.currentTarget).is('.loaded')){
+			if(elm.is('.loaded')){
 				if($(commentDiv).is('.have-comments'))
 					$(commentDiv).find('.ap-comments').slideUp(400, function(){
 						$(commentDiv).removeClass('have-comments');
@@ -386,14 +386,14 @@
 					$(commentDiv).addClass('have-comments').find('.ap-comments').slideDown(400);
 				return;
 			}
-			var q = $.parseJSON($(e.currentTarget).attr('ap-query'));
+			var q = $.parseJSON(elm.attr('ap-query'));
 			q.ap_ajax_action = 'load_comments';
-			AnsPress.showLoading(e.currentTarget);
+			AnsPress.showLoading(elm);
 			AnsPress.ajax({
 				data: q,
 				success: function(data){
-					AnsPress.hideLoading(e.currentTarget);
-					$(e.currentTarget).addClass('loaded');
+					AnsPress.hideLoading(elm);
+					elm.addClass('loaded');
 					self.comments = new AnsPress.collections.Comments(data.comments);
 					var view = new AnsPress.views.Comments({ model: self.comments, postID: self.model.id, el: commentDiv+' .ap-comments' });
 					view.render();
@@ -652,6 +652,10 @@
 		if(!Backbone.History.started)
 			Backbone.history.start();
 
+		if(apShowComments)
+			$('[ap="comment_btn"]').each(function(){
+				$(this).click();
+			});
 	});
 
 

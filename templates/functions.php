@@ -66,13 +66,10 @@ function ap_scripts_front() {
 	  echo 'apTemplateUrl = "' . ap_get_theme_url( 'js-template', false, false ) . '";';
 	  echo 'apQuestionID = "' . get_question_id() . '";';
 	  echo 'aplang = ' . wp_json_encode( $aplang ) . ';';
+	  echo 'apShowComments = "' . (bool) ap_opt( 'show_comments_default' ) . '";';
 	echo '</script>';
 
 	ap_upload_js_init();
-
-	wp_localize_script('ap-site-js', 'apoptions', array(
-		'ajaxlogin' => ap_opt( 'ajax_login' ),
-	));
 }
 add_action( 'wp_enqueue_scripts', 'ap_scripts_front', 1 );
 
