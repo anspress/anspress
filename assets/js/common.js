@@ -14,7 +14,8 @@ window.AnsPress = _.extend({
 			jQuery('<script id="apTemplate" type="text/html"></script>').appendTo('body');
 
 		jQuery.get(apTemplateUrl + '/' + id + ".html", function(html){
-			jQuery('#apTemplate').text(html);
+			var tempCont = jQuery('#apTemplate');
+			tempCont.text(html + tempCont.text());
 			AnsPress.trigger('templateLoaded');
 		});
 	},

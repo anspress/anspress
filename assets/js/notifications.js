@@ -25,7 +25,7 @@
 			'points': '',
 			'date': '',
 			'permalink': '',
-			'seen': '',
+			'seen': ''
 		}
 	});
 
@@ -60,7 +60,6 @@
 			this.listenTo(AnsPress, 'notificationAllRead', this.allRead);
 		},
 		renderItem: function(notification){
-			this.$el.parent().addClass('have-comments');
 			var view = new AnsPress.views.Notification({ model: notification });
 			this.$el.find('.scroll-wrap').append(view.render().$el);
 			return view;
