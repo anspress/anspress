@@ -148,6 +148,10 @@ class AP_Update_Helper {
 	 * @since 4.0.0
 	 */
 	public function migrate_votes( $post_id ) {
+		if ( ! isset( $wpdb->ap_meta ) ) {
+			return;
+		}
+
 		global $wpdb;
 
 		$post_id = (int) $post_id;
@@ -184,6 +188,10 @@ class AP_Update_Helper {
 	 * Migrate views data to new table.
 	 */
 	public function migrate_views( $post_id ) {
+		if ( ! isset( $wpdb->ap_meta ) ) {
+			return;
+		}
+
 		global $wpdb;
 		$post_id = (int) $post_id;
 
@@ -241,6 +249,10 @@ class AP_Update_Helper {
 	 * Migrate migration data to new table.
 	 */
 	public function migrate_reputations() {
+		if ( ! isset( $wpdb->ap_meta ) ) {
+			return;
+		}
+
 		$tasks = $this->get_tasks();
 
 		if ( $tasks['reputations'] ) {
