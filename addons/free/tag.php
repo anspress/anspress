@@ -21,22 +21,6 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 /**
- * Prevent loading of previous tag extension.
- *
- * @param boolean $ret Return.
- * @param string  $ext Extension slug.
- */
-function ap_prevent_loading_tag_ext( $ret, $ext ) {
-	if ( 'tags-for-anspress' === $ext ) {
-		return false;
-	}
-
-	return $ret;
-}
-add_filter( 'anspress_load_ext', 'ap_prevent_loading_tag_ext', 10, 2 );
-
-
-/**
  * Tags addon for AnsPress
  */
 class AnsPress_Tag {

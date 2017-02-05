@@ -21,21 +21,6 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 /**
- * Prevent loading of previous email extension.
- *
- * @param boolean $ret Return.
- * @param string  $ext Extension slug.
- */
-function ap_prevent_loading_email_ext( $ret, $ext ) {
-	if ( 'anspress-email' === $ext ) {
-		return false;
-	}
-
-	return $ret;
-}
-add_filter( 'anspress_load_ext', 'ap_prevent_loading_email_ext', 10, 2 );
-
-/**
  * Email handler class.
  */
 class AnsPress_Email {

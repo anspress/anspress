@@ -21,22 +21,6 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 /**
- * Prevent loading of previous category extension.
- *
- * @param boolean $ret Return.
- * @param string  $ext Extension slug.
- */
-function ap_prevent_loading_category_ext( $ret, $ext ) {
-	if ( 'categories-for-anspress' === $ext ) {
-		return false;
-	}
-
-	return $ret;
-}
-add_filter( 'anspress_load_ext', 'ap_prevent_loading_category_ext', 10, 2 );
-
-
-/**
  * Category addon for AnsPress
  */
 class AnsPress_Category {

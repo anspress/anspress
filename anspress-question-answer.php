@@ -559,9 +559,23 @@ if ( ! class_exists( 'AnsPress_Init' ) ) {
 			}
 		}
 
+		/**
+		 * Prevent loading of previous extension.
+		 *
+	 	 * @param boolean $ret Return.
+		 * @param string  $ext Extension slug.
+		 */
+		public static function prevent_ext( $ret, $ext ) {
+			if ( in_array( $ext, [ 'categories-for-anspress', 'tags-for-anspress', 'anspress-email' ] ) ) {
+				return false;
+			}
+
+			return $ret;
+		}
 	}
 }
 
+add_filter( 'anspress_load_ext', [ 'AnsPress_Init', 'prevent_ext' ], 10, 2 );
 add_action( 'plugins_loaded', [ 'AnsPress_Init', 'load_anspress' ] );
 add_action( 'plugins_loaded', [ 'AnsPress_Init', 'load_textdomain' ] );
 add_action( 'activated_plugin', [ 'AnsPress_Init', 'activation_redirect' ] );
