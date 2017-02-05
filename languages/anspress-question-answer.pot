@@ -2,10 +2,10 @@
 # This file is distributed under the GPL-3.0+.
 msgid ""
 msgstr ""
-"Project-Id-Version: AnsPress 4.0.0-beta.2\n"
+"Project-Id-Version: AnsPress 4.0.0-beta.3\n"
 "Report-Msgid-Bugs-To: "
 "https://wordpress.org/support/plugin/anspress-question-answer\n"
-"POT-Creation-Date: 2017-01-17 08:40:31+00:00\n"
+"POT-Creation-Date: 2017-02-05 05:57:25+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -24,6 +24,36 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-Bookmarks: \n"
 "X-Textdomain-Support: yes\n"
+
+#: addons/free/avatar.php:77
+msgid "Dynamic Avatar"
+msgstr ""
+
+#: addons/free/avatar.php:81
+msgid "Clear Cache"
+msgstr ""
+
+#: addons/free/avatar.php:81
+msgid "Clear avatar cache"
+msgstr ""
+
+#: addons/free/avatar.php:85
+msgid "Font family"
+msgstr ""
+
+#: addons/free/avatar.php:86
+msgid "Select font family for avatar letters."
+msgstr ""
+
+#: addons/free/avatar.php:98
+msgid "Force avatar"
+msgstr ""
+
+#: addons/free/avatar.php:99
+msgid ""
+"Show AnsPress avatars by default instead of gravatar fallback. Useful in "
+"localhost development."
+msgstr ""
 
 #: addons/free/bad-words.php:61
 msgid ""
@@ -51,16 +81,17 @@ msgid "Q&A"
 msgstr ""
 
 #: addons/free/buddypress.php:104 addons/free/buddypress.php:185
-#: admin/views/dashboard.php:30 admin/views/dashboard.php:212
-#: includes/functions.php:871 includes/options.php:110
-#: includes/post-types.php:43 includes/taxo.php:78 includes/taxo.php:391
-#: templates/user/index.php:34 widgets/questions.php:55
+#: addons/free/profile.php:108 admin/views/dashboard.php:30
+#: admin/views/dashboard.php:212 includes/functions.php:868
+#: includes/options.php:110 includes/post-types.php:43 includes/taxo.php:78
+#: includes/taxo.php:373 widgets/questions.php:55
 msgid "Questions"
 msgstr ""
 
 #: addons/free/buddypress.php:105 addons/free/buddypress.php:233
-#: admin/views/dashboard.php:226 includes/post-types.php:113
-#: widgets/question_stats.php:49 widgets/questions.php:87
+#: addons/free/profile.php:115 admin/views/dashboard.php:226
+#: includes/post-types.php:113 widgets/question_stats.php:49
+#: widgets/questions.php:87
 msgid "Answers"
 msgstr ""
 
@@ -72,12 +103,12 @@ msgstr ""
 msgid "Load more questions"
 msgstr ""
 
-#: addons/free/buddypress.php:250
+#: addons/free/buddypress.php:250 templates/addons/user/answers.php:29
 msgid "Load more answers"
 msgstr ""
 
 #: addons/free/buddypress.php:267 addons/free/buddypress.php:268
-#: admin/meta-box.php:41 admin/options-fields.php:170
+#: admin/meta-box.php:41 admin/options-fields.php:176
 #: includes/ajax-hooks.php:195 includes/common-pages.php:21
 #: includes/post-status.php:93 includes/post-types.php:65
 msgid "Question"
@@ -92,7 +123,7 @@ msgid "%1$s asked a new <a href=\"AP_CPT_LINK\">question</a>, on the site %3$s"
 msgstr ""
 
 #: addons/free/buddypress.php:277 addons/free/buddypress.php:278
-#: addons/free/buddypress.php:289 admin/options-fields.php:234
+#: addons/free/buddypress.php:289 admin/options-fields.php:240
 #: admin/views/dashboard.php:34 includes/ajax-hooks.php:195
 #: includes/post-status.php:93 includes/post-types.php:135
 msgid "Answer"
@@ -118,13 +149,13 @@ msgstr ""
 msgid "%1$s answered on - %2$s"
 msgstr ""
 
-#: addons/free/buddypress.php:382 includes/comments.php:93
-#: includes/post-types.php:64
+#: addons/free/buddypress.php:382 addons/free/notification/query.php:309
+#: includes/comments.php:93 includes/post-types.php:64
 msgid "question"
 msgstr ""
 
-#: addons/free/buddypress.php:382 includes/comments.php:93
-#: includes/post-types.php:134
+#: addons/free/buddypress.php:382 addons/free/notification/query.php:311
+#: includes/comments.php:93 includes/post-types.php:134
 msgid "answer"
 msgstr ""
 
@@ -140,268 +171,268 @@ msgstr ""
 msgid "Display AnsPress categories"
 msgstr ""
 
-#: addons/free/category/widget.php:62 addons/free/category.php:776
+#: addons/free/category/widget.php:66 addons/free/category.php:745
 #: templates/addons/category/categories.php:27 templates/addons/tag/tags.php:38
 msgid "%d Question"
 msgid_plural "%d Questions"
 msgstr[0] ""
 msgstr[1] ""
 
-#: addons/free/category/widget.php:64
+#: addons/free/category/widget.php:68
 msgid "%d Child"
 msgstr ""
 
-#: addons/free/category/widget.php:76 addons/free/category.php:54
-#: addons/free/category.php:190 addons/free/category.php:246
-#: addons/free/category.php:511 addons/free/category.php:514
+#: addons/free/category/widget.php:80 addons/free/category.php:53
+#: addons/free/category.php:187 addons/free/category.php:243
+#: addons/free/category.php:508 addons/free/category.php:511
 #: includes/taxo.php:29
 msgid "Categories"
 msgstr ""
 
-#: addons/free/category/widget.php:94 widgets/ask-form.php:53
+#: addons/free/category/widget.php:98 widgets/ask-form.php:53
 #: widgets/question_stats.php:68 widgets/questions.php:78 widgets/search.php:68
 msgid "Title:"
 msgstr ""
 
-#: addons/free/category/widget.php:98
+#: addons/free/category/widget.php:102
 msgid "Hide empty:"
 msgstr ""
 
-#: addons/free/category/widget.php:102
+#: addons/free/category/widget.php:106
 msgid "Parent:"
 msgstr ""
 
-#: addons/free/category/widget.php:104
+#: addons/free/category/widget.php:108
 msgid "Top level"
 msgstr ""
 
-#: addons/free/category/widget.php:115
+#: addons/free/category/widget.php:119
 msgid "Number:"
 msgstr ""
 
-#: addons/free/category/widget.php:119
+#: addons/free/category/widget.php:123
 msgid "Order By:"
 msgstr ""
 
-#: addons/free/category/widget.php:121
+#: addons/free/category/widget.php:125
 msgid "None"
 msgstr ""
 
-#: addons/free/category/widget.php:122 addons/free/category.php:256
-#: addons/free/category.php:270
+#: addons/free/category/widget.php:126 addons/free/category.php:253
+#: addons/free/category.php:267
 msgid "Count"
 msgstr ""
 
-#: addons/free/category/widget.php:123 addons/free/category.php:253
-#: addons/free/category.php:267
+#: addons/free/category/widget.php:127 addons/free/category.php:250
+#: addons/free/category.php:264
 msgid "ID"
 msgstr ""
 
-#: addons/free/category/widget.php:124 addons/free/category.php:254
-#: addons/free/category.php:268 includes/answer-form.php:59
-#: includes/ask-form.php:85 includes/taxo.php:477
+#: addons/free/category/widget.php:128 addons/free/category.php:251
+#: addons/free/category.php:265 includes/answer-form.php:59
+#: includes/ask-form.php:85 includes/taxo.php:459
 msgid "Name"
 msgstr ""
 
-#: addons/free/category/widget.php:125 addons/free/category.php:255
-#: addons/free/category.php:269
+#: addons/free/category/widget.php:129 addons/free/category.php:252
+#: addons/free/category.php:266
 msgid "Slug"
 msgstr ""
 
-#: addons/free/category/widget.php:126
+#: addons/free/category/widget.php:130
 msgid "Term group"
 msgstr ""
 
-#: addons/free/category/widget.php:130
+#: addons/free/category/widget.php:134
 msgid "Order:"
 msgstr ""
 
-#: addons/free/category/widget.php:132
+#: addons/free/category/widget.php:136
 msgid "DESC"
 msgstr ""
 
-#: addons/free/category/widget.php:133
+#: addons/free/category/widget.php:137
 msgid "ASC"
 msgstr ""
 
-#: addons/free/category/widget.php:137
+#: addons/free/category/widget.php:141
 msgid "Icon width:"
 msgstr ""
 
-#: addons/free/category/widget.php:141
+#: addons/free/category/widget.php:145
 msgid "Icon height:"
 msgstr ""
 
-#: addons/free/category.php:52 addons/free/category.php:435
-#: addons/free/category.php:552 admin/class-list-table-hooks.php:192
+#: addons/free/category.php:52 addons/free/category.php:432
+#: addons/free/category.php:549 admin/class-list-table-hooks.php:192
 #: includes/taxo.php:203
 msgid "Category"
 msgstr ""
 
-#: addons/free/category.php:198
+#: addons/free/category.php:195
 msgid "Question Categories"
 msgstr ""
 
-#: addons/free/category.php:200
+#: addons/free/category.php:197
 msgid "All Categories"
 msgstr ""
 
-#: addons/free/category.php:202
+#: addons/free/category.php:199
 msgid "Edit Category"
 msgstr ""
 
-#: addons/free/category.php:203
+#: addons/free/category.php:200
 msgid "New Category"
 msgstr ""
 
-#: addons/free/category.php:204
+#: addons/free/category.php:201
 msgid "View Category"
 msgstr ""
 
-#: addons/free/category.php:205
+#: addons/free/category.php:202
 msgid "Search Category"
 msgstr ""
 
-#: addons/free/category.php:206 addons/free/tag.php:210
+#: addons/free/category.php:203 addons/free/tag.php:209
 msgid "Nothing Found"
 msgstr ""
 
-#: addons/free/category.php:207 addons/free/tag.php:211
+#: addons/free/category.php:204 addons/free/tag.php:210
 msgid "Nothing found in Trash"
 msgstr ""
 
-#: addons/free/category.php:249
+#: addons/free/category.php:246
 msgid "Ask form category order"
 msgstr ""
 
-#: addons/free/category.php:250
+#: addons/free/category.php:247
 msgid "Set how you want to order categories in form."
 msgstr ""
 
-#: addons/free/category.php:257 addons/free/category.php:271
+#: addons/free/category.php:254 addons/free/category.php:268
 msgid "Group"
 msgstr ""
 
-#: addons/free/category.php:263
+#: addons/free/category.php:260
 msgid "Categries page order by"
 msgstr ""
 
-#: addons/free/category.php:264 addons/free/category.php:278
+#: addons/free/category.php:261 addons/free/category.php:275
 msgid "Set how you want to order categories in categories page."
 msgstr ""
 
-#: addons/free/category.php:277
+#: addons/free/category.php:274
 msgid "Categries page order"
 msgstr ""
 
-#: addons/free/category.php:281
+#: addons/free/category.php:278
 msgid "Ascending"
 msgstr ""
 
-#: addons/free/category.php:282
+#: addons/free/category.php:279
 msgid "Descending"
 msgstr ""
 
-#: addons/free/category.php:288
+#: addons/free/category.php:285
 msgid "Categories page slug"
 msgstr ""
 
-#: addons/free/category.php:289
+#: addons/free/category.php:286
 msgid "Slug categories page"
 msgstr ""
 
-#: addons/free/category.php:296
+#: addons/free/category.php:293
 msgid "Category page slug"
 msgstr ""
 
-#: addons/free/category.php:297
+#: addons/free/category.php:294
 msgid "Slug for category page"
 msgstr ""
 
-#: addons/free/category.php:304
+#: addons/free/category.php:301
 msgid "Categories title"
 msgstr ""
 
-#: addons/free/category.php:305
+#: addons/free/category.php:302
 msgid "Title of the categories page"
 msgstr ""
 
-#: addons/free/category.php:311
+#: addons/free/category.php:308
 msgid "Category per page"
 msgstr ""
 
-#: addons/free/category.php:312
+#: addons/free/category.php:309
 msgid "Category to show per page"
 msgstr ""
 
-#: addons/free/category.php:318
+#: addons/free/category.php:315
 msgid "Categories image height"
 msgstr ""
 
-#: addons/free/category.php:319
+#: addons/free/category.php:316
 msgid "Image height in categories page"
 msgstr ""
 
-#: addons/free/category.php:440
+#: addons/free/category.php:437
 msgid "Select a topic that best fits your question"
 msgstr ""
 
-#: addons/free/category.php:488
+#: addons/free/category.php:485
 msgid "No matching category found"
 msgstr ""
 
-#: addons/free/category.php:571 addons/free/category.php:614
+#: addons/free/category.php:568 addons/free/category.php:611
 msgid "Image"
 msgstr ""
 
-#: addons/free/category.php:572 addons/free/category.php:617
+#: addons/free/category.php:569 addons/free/category.php:614
 msgid "Upload image"
 msgstr ""
 
-#: addons/free/category.php:576
+#: addons/free/category.php:573
 msgid "Category image"
 msgstr ""
 
-#: addons/free/category.php:580 addons/free/category.php:633
+#: addons/free/category.php:577 addons/free/category.php:630
 msgid "Category icon class"
 msgstr ""
 
-#: addons/free/category.php:582 addons/free/category.php:637
-#: addons/free/category.php:646
+#: addons/free/category.php:579 addons/free/category.php:634
+#: addons/free/category.php:643
 msgid "Font icon class, if image not set"
 msgstr ""
 
-#: addons/free/category.php:586
+#: addons/free/category.php:583
 msgid "Icon background color"
 msgstr ""
 
-#: addons/free/category.php:588
+#: addons/free/category.php:585
 msgid "Set background color to be used with icon"
 msgstr ""
 
-#: addons/free/category.php:626
+#: addons/free/category.php:623
 msgid "Remove image"
 msgstr ""
 
-#: addons/free/category.php:628
+#: addons/free/category.php:625
 msgid "Featured image for category"
 msgstr ""
 
-#: addons/free/category.php:642
+#: addons/free/category.php:639
 msgid "Category icon color"
 msgstr ""
 
-#: addons/free/category.php:779 templates/addons/category/categories.php:42
+#: addons/free/category.php:748 templates/addons/category/categories.php:42
 msgid "%d Sub category"
 msgid_plural "%d Sub categories"
 msgstr[0] ""
 msgstr[1] ""
 
-#: addons/free/category.php:891
+#: addons/free/category.php:860
 msgid "Question category feed"
 msgstr ""
 
-#: addons/free/category.php:939 addons/free/tag.php:726
+#: addons/free/category.php:908 addons/free/tag.php:693
 msgid ", %d+"
 msgstr ""
 
@@ -600,282 +631,394 @@ msgstr ""
 msgid "Select Answer"
 msgstr ""
 
-#: addons/free/recaptcha.php:49
-msgid "reCaptcha"
+#: addons/free/notification/query.php:256
+msgid "Someone"
+msgstr ""
+
+#: addons/free/notification/query.php:302
+msgid "post"
+msgstr ""
+
+#: addons/free/notification.php:41 addons/free/notification.php:153
+#: templates/functions.php:58
+msgid "Notifications"
+msgstr ""
+
+#: addons/free/notification.php:73
+msgid "Notification"
+msgstr ""
+
+#: addons/free/notification.php:76
+msgid "Auto delete notifications"
+msgstr ""
+
+#: addons/free/notification.php:79
+msgid "Do not auto delete"
+msgstr ""
+
+#: addons/free/notification.php:80
+msgid "Only seen"
+msgstr ""
+
+#: addons/free/notification.php:81
+msgid "Both seen an unseen"
+msgstr ""
+
+#: addons/free/notification.php:83
+msgid "Auto delete user notifications"
+msgstr ""
+
+#: addons/free/notification.php:87
+msgid "Auto delete interval"
+msgstr ""
+
+#: addons/free/notification.php:89
+msgid "Auto delete notifications interval"
+msgstr ""
+
+#: addons/free/notification.php:111
+msgid "posted an answer on your question"
+msgstr ""
+
+#: addons/free/notification.php:116
+msgid "commented on your %cpt%"
+msgstr ""
+
+#: addons/free/notification.php:121
+msgid "up voted your %cpt%"
+msgstr ""
+
+#: addons/free/notification.php:128
+msgid "down voted your %cpt%"
+msgstr ""
+
+#: addons/free/notification.php:133
+msgid "selected your answer"
+msgstr ""
+
+#: addons/free/notification.php:138
+msgid "You have earned %points% points"
+msgstr ""
+
+#: addons/free/notification.php:143
+msgid "You lose %points% points"
+msgstr ""
+
+#: addons/free/notification.php:187
+msgid "You do not have permission to view this page"
+msgstr ""
+
+#: addons/free/notification.php:405
+msgid "There was a problem processing your request"
+msgstr ""
+
+#: addons/free/notification.php:415
+msgid "Successfully updated all notifications"
+msgstr ""
+
+#: addons/free/profile.php:34
+msgid "User profile"
+msgstr ""
+
+#: addons/free/profile.php:181
+msgid "Callback function not found for rendering this page"
 msgstr ""
 
 #: addons/free/recaptcha.php:52
+msgid "reCaptcha"
+msgstr ""
+
+#: addons/free/recaptcha.php:55
 msgid "Recaptcha site key"
 msgstr ""
 
-#: addons/free/recaptcha.php:53
+#: addons/free/recaptcha.php:56
 msgid ""
 "Enter your site key, if you dont have it get it from here "
 "https://www.google.com/recaptcha/admin"
 msgstr ""
 
-#: addons/free/recaptcha.php:57
+#: addons/free/recaptcha.php:60
 msgid "Recaptcha secret key"
 msgstr ""
 
-#: addons/free/recaptcha.php:58
+#: addons/free/recaptcha.php:61
 msgid "Enter your secret key"
 msgstr ""
 
-#: addons/free/recaptcha.php:72
+#: addons/free/recaptcha.php:65
+msgid "Recaptcha Method"
+msgstr ""
+
+#: addons/free/recaptcha.php:66
+msgid "Select method to use when verification keeps failing"
+msgstr ""
+
+#: addons/free/recaptcha.php:82
 msgid "Bot verification failed."
 msgstr ""
 
-#: addons/free/recaptcha.php:104 includes/answer-form.php:84
+#: addons/free/recaptcha.php:115
 msgid "reCaptach keys missing, please add keys"
 msgstr ""
 
-#: addons/free/reputation.php:66 addons/free/reputation.php:339
-#: addons/free/reputation.php:372
+#: addons/free/reputation.php:65 addons/free/reputation.php:347
 msgid "Reputation"
 msgstr ""
 
-#: addons/free/reputation.php:67
+#: addons/free/reputation.php:66
 msgid "Events"
 msgstr ""
 
+#: addons/free/reputation.php:75
+msgid "Registration"
+msgstr ""
+
 #: addons/free/reputation.php:76
+msgid "Points awarded when user account is created"
+msgstr ""
+
+#: addons/free/reputation.php:78
+msgid "Registered"
+msgstr ""
+
+#: addons/free/reputation.php:84
 msgid "Asking"
 msgstr ""
 
-#: addons/free/reputation.php:77
+#: addons/free/reputation.php:85
 msgid "Points awarded when user asks a question"
 msgstr ""
 
-#: addons/free/reputation.php:79
+#: addons/free/reputation.php:87
 msgid "Asked a question"
 msgstr ""
 
-#: addons/free/reputation.php:85
+#: addons/free/reputation.php:93
 msgid "Answering"
 msgstr ""
 
-#: addons/free/reputation.php:86
+#: addons/free/reputation.php:94
 msgid "Points awarded when user answer a question"
 msgstr ""
 
-#: addons/free/reputation.php:88
+#: addons/free/reputation.php:96
 msgid "Posted an answer"
 msgstr ""
 
-#: addons/free/reputation.php:94
+#: addons/free/reputation.php:102
 msgid "Commenting"
 msgstr ""
 
-#: addons/free/reputation.php:95
+#: addons/free/reputation.php:103
 msgid "Points awarded when user comment on question or answer"
 msgstr ""
 
-#: addons/free/reputation.php:97
+#: addons/free/reputation.php:105
 msgid "Commented on a post"
 msgstr ""
 
-#: addons/free/reputation.php:103
+#: addons/free/reputation.php:111
 msgid "Selecting an Answer"
 msgstr ""
 
-#: addons/free/reputation.php:104
+#: addons/free/reputation.php:112
 msgid "Points awarded when user select an answer for thier question"
 msgstr ""
 
-#: addons/free/reputation.php:106
+#: addons/free/reputation.php:114
 msgid "Selected an answer as best"
 msgstr ""
 
-#: addons/free/reputation.php:112
+#: addons/free/reputation.php:120
 msgid "Answer selected as best"
 msgstr ""
 
-#: addons/free/reputation.php:113
+#: addons/free/reputation.php:121
 msgid "Points awarded when user's answer selected as best"
 msgstr ""
 
-#: addons/free/reputation.php:115
+#: addons/free/reputation.php:123
 msgid "Answer was selected as best"
 msgstr ""
 
-#: addons/free/reputation.php:121
+#: addons/free/reputation.php:129
 msgid "Received up vote"
 msgstr ""
 
-#: addons/free/reputation.php:122
+#: addons/free/reputation.php:130
 msgid "Points awarded when user receive an upvote"
 msgstr ""
 
-#: addons/free/reputation.php:124
+#: addons/free/reputation.php:132
 msgid "Received an upvote"
 msgstr ""
 
-#: addons/free/reputation.php:129
+#: addons/free/reputation.php:137
 msgid "Received down vote"
 msgstr ""
 
-#: addons/free/reputation.php:130
+#: addons/free/reputation.php:138
 msgid "Points awarded when user receive a down vote"
 msgstr ""
 
-#: addons/free/reputation.php:132
+#: addons/free/reputation.php:140
 msgid "Received a down vote"
 msgstr ""
 
-#: addons/free/reputation.php:137
+#: addons/free/reputation.php:145
 msgid "Gives an up vote"
 msgstr ""
 
-#: addons/free/reputation.php:138
+#: addons/free/reputation.php:146
 msgid "Points taken from user when they give a vote up"
 msgstr ""
 
-#: addons/free/reputation.php:140
+#: addons/free/reputation.php:148
 msgid "Given an up vote"
 msgstr ""
 
-#: addons/free/reputation.php:145
+#: addons/free/reputation.php:153
 msgid "Gives down vote"
 msgstr ""
 
-#: addons/free/reputation.php:146
+#: addons/free/reputation.php:154
 msgid "Points taken from user when user give a down vote"
 msgstr ""
 
-#: addons/free/reputation.php:148
+#: addons/free/reputation.php:156
 msgid "Given a down vote"
 msgstr ""
 
-#: addons/free/reputation.php:173
+#: addons/free/reputation.php:181
 msgid "Successfully updated reputation points!"
 msgstr ""
 
-#: addons/free/reputation.php:361
+#: addons/free/reputation.php:369
 msgid "%s Reputation"
 msgstr ""
 
-#: addons/free/reputation.php:422
+#: addons/free/reputation.php:378 addons/free/reputation.php:428
 msgid "Reputations"
 msgstr ""
 
-#: addons/free/tag.php:50 addons/free/tag.php:249 addons/free/tag.php:674
+#: addons/free/tag.php:50 addons/free/tag.php:248 addons/free/tag.php:641
 #: admin/class-list-table-hooks.php:196
 msgid "Tag"
 msgstr ""
 
-#: addons/free/tag.php:51 addons/free/tag.php:195 addons/free/tag.php:242
-#: addons/free/tag.php:319 addons/free/tag.php:399 addons/free/tag.php:424
-#: addons/free/tag.php:500 addons/free/tag.php:503 includes/form.php:105
+#: addons/free/tag.php:51 addons/free/tag.php:194 addons/free/tag.php:241
+#: addons/free/tag.php:318 addons/free/tag.php:398 addons/free/tag.php:423
+#: addons/free/tag.php:499 addons/free/tag.php:502 includes/form.php:105
 #: includes/form.php:128
 msgid "Tags"
 msgstr ""
 
-#: addons/free/tag.php:175
+#: addons/free/tag.php:174
 msgid "(AnsPress) Tags"
 msgstr ""
 
-#: addons/free/tag.php:179
+#: addons/free/tag.php:178
 msgid "Widgets in this area will be shown in anspress tags page."
 msgstr ""
 
-#: addons/free/tag.php:202 addons/free/tag.php:242
+#: addons/free/tag.php:201 addons/free/tag.php:241
 msgid "Question Tags"
 msgstr ""
 
-#: addons/free/tag.php:204
+#: addons/free/tag.php:203
 msgid "All Tags"
 msgstr ""
 
-#: addons/free/tag.php:206
+#: addons/free/tag.php:205
 msgid "Edit Tag"
 msgstr ""
 
-#: addons/free/tag.php:207
+#: addons/free/tag.php:206
 msgid "New Tag"
 msgstr ""
 
-#: addons/free/tag.php:208
+#: addons/free/tag.php:207
 msgid "View Tag"
 msgstr ""
 
-#: addons/free/tag.php:209
+#: addons/free/tag.php:208
 msgid "Search Tag"
 msgstr ""
 
-#: addons/free/tag.php:252
+#: addons/free/tag.php:251
 msgid "Tags to show"
 msgstr ""
 
-#: addons/free/tag.php:253
+#: addons/free/tag.php:252
 msgid "Numbers of tags to show in tags page."
 msgstr ""
 
-#: addons/free/tag.php:258
+#: addons/free/tag.php:257
 msgid "Maximum tags"
 msgstr ""
 
-#: addons/free/tag.php:259
+#: addons/free/tag.php:258
 msgid "Maximum numbers of tags that user can add when asking."
 msgstr ""
 
-#: addons/free/tag.php:264
+#: addons/free/tag.php:263
 msgid "Minimum tags"
 msgstr ""
 
-#: addons/free/tag.php:265
+#: addons/free/tag.php:264
 msgid "minimum numbers of tags that user must add when asking."
 msgstr ""
 
-#: addons/free/tag.php:270
+#: addons/free/tag.php:269
 msgid "Tags page title"
 msgstr ""
 
-#: addons/free/tag.php:271
+#: addons/free/tag.php:270
 msgid "Title for tags page"
 msgstr ""
 
-#: addons/free/tag.php:277
+#: addons/free/tag.php:276
 msgid "Tags page slug"
 msgstr ""
 
-#: addons/free/tag.php:278
+#: addons/free/tag.php:277
 msgid "Slug tags page"
 msgstr ""
 
-#: addons/free/tag.php:285
+#: addons/free/tag.php:284
 msgid "Tag page slug"
 msgstr ""
 
-#: addons/free/tag.php:286
+#: addons/free/tag.php:285
 msgid "Slug for tag page"
 msgstr ""
 
-#: addons/free/tag.php:347
+#: addons/free/tag.php:346
 msgid "Delete Tag"
 msgstr ""
 
-#: addons/free/tag.php:348
+#: addons/free/tag.php:347
 msgid "Add Tag"
 msgstr ""
 
-#: addons/free/tag.php:349
+#: addons/free/tag.php:348
 msgid "added to the tags list."
 msgstr ""
 
-#: addons/free/tag.php:350
+#: addons/free/tag.php:349
 msgid "removed from the tags list."
 msgstr ""
 
-#: addons/free/tag.php:351
+#: addons/free/tag.php:350
 msgid "Suggestions are available. Use the up and down arrow keys to read it."
 msgstr ""
 
-#: addons/free/tag.php:402
+#: addons/free/tag.php:401
 msgid "Type and hit enter"
 msgstr ""
 
-#: addons/free/tag.php:427
+#: addons/free/tag.php:426
 msgid "Slowly type for suggestions"
 msgstr ""
 
@@ -920,39 +1063,39 @@ msgstr ""
 msgid "About"
 msgstr ""
 
-#: admin/anspress-admin.php:436
-msgid "AnsPress Pages"
+#: admin/anspress-admin.php:483
+msgid "Select All"
 msgstr ""
 
-#: admin/anspress-admin.php:468
+#: admin/anspress-admin.php:487
 msgid "Add to Menu"
 msgstr ""
 
-#: admin/anspress-admin.php:596 admin/anspress-admin.php:605
-#: admin/options-fields.php:363 admin/options-fields.php:371
-#: admin/options-fields.php:381 admin/options-fields.php:391
-#: admin/options-fields.php:401 admin/options-fields.php:411
+#: admin/anspress-admin.php:615 admin/anspress-admin.php:624
+#: admin/options-fields.php:369 admin/options-fields.php:377
+#: admin/options-fields.php:387 admin/options-fields.php:397
+#: admin/options-fields.php:407 admin/options-fields.php:417
 #: includes/post-status.php:24
 msgid "Moderate"
 msgstr ""
 
-#: admin/anspress-admin.php:599 admin/anspress-admin.php:606
+#: admin/anspress-admin.php:618 admin/anspress-admin.php:625
 msgid "Private Post"
 msgstr ""
 
-#: admin/anspress-admin.php:693
+#: admin/anspress-admin.php:712
 msgid "AnsPress database is not updated."
 msgstr ""
 
-#: admin/anspress-admin.php:694
+#: admin/anspress-admin.php:713
 msgid "Update now"
 msgstr ""
 
-#: admin/anspress-admin.php:699
+#: admin/anspress-admin.php:718
 msgid "You must continue to upgrade AnsPress data."
 msgstr ""
 
-#: admin/anspress-admin.php:700
+#: admin/anspress-admin.php:719
 msgid "Upgrade now"
 msgstr ""
 
@@ -1055,7 +1198,7 @@ msgstr ""
 #: admin/class-list-table-hooks.php:272 admin/class-list-table-hooks.php:346
 #: includes/ajax-hooks.php:100 includes/ajax-hooks.php:102
 #: includes/ajax-hooks.php:238 includes/ajax-hooks.php:283
-#: includes/answer-form.php:290 templates/answers.php:20
+#: includes/answer-form.php:263 templates/answers.php:20
 #: templates/buddypress/question-item.php:38
 msgid "%d Answer"
 msgid_plural "%d Answers"
@@ -1119,7 +1262,7 @@ msgstr ""
 msgid "General"
 msgstr ""
 
-#: admin/options-fields.php:15 admin/options-fields.php:287
+#: admin/options-fields.php:15 admin/options-fields.php:293
 msgid "Add-ons"
 msgstr ""
 
@@ -1304,287 +1447,295 @@ msgid "Allow users to create private question and answer."
 msgstr ""
 
 #: admin/options-fields.php:163
-msgid "Show default date format"
+msgid "Load comments"
 msgstr ""
 
 #: admin/options-fields.php:164
+msgid "Show question and answer comments by default"
+msgstr ""
+
+#: admin/options-fields.php:169
+msgid "Show default date format"
+msgstr ""
+
+#: admin/options-fields.php:170
 msgid "Instead of showing time passed i.e. 1 Hour ago, show default format date."
 msgstr ""
 
-#: admin/options-fields.php:174
+#: admin/options-fields.php:180
 msgid "Default question order"
 msgstr ""
 
-#: admin/options-fields.php:175
+#: admin/options-fields.php:181
 msgid "Order question list by default using selected"
 msgstr ""
 
-#: admin/options-fields.php:178 admin/options-fields.php:242
+#: admin/options-fields.php:184 admin/options-fields.php:248
 #: includes/theme.php:455 includes/theme.php:491 widgets/questions.php:86
 msgid "Voted"
 msgstr ""
 
-#: admin/options-fields.php:179 admin/options-fields.php:243
+#: admin/options-fields.php:185 admin/options-fields.php:249
 #: includes/theme.php:450 includes/theme.php:487 widgets/question_stats.php:47
 #: widgets/questions.php:84
 msgid "Active"
 msgstr ""
 
-#: admin/options-fields.php:180 admin/options-fields.php:244
+#: admin/options-fields.php:186 admin/options-fields.php:250
 #: includes/theme.php:451 includes/theme.php:494 widgets/questions.php:85
 msgid "Newest"
 msgstr ""
 
-#: admin/options-fields.php:181 admin/options-fields.php:245
+#: admin/options-fields.php:187 admin/options-fields.php:251
 #: includes/theme.php:495
 msgid "Oldest"
 msgstr ""
 
-#: admin/options-fields.php:186
+#: admin/options-fields.php:192
 msgid "Keep stop words in question slug"
 msgstr ""
 
-#: admin/options-fields.php:187
+#: admin/options-fields.php:193
 msgid "AnsPress will not strip stop words in question slug."
 msgstr ""
 
-#: admin/options-fields.php:192
+#: admin/options-fields.php:198
 msgid "Minimum title length"
 msgstr ""
 
-#: admin/options-fields.php:193
+#: admin/options-fields.php:199
 msgid "Set minimum letters for a question title."
 msgstr ""
 
-#: admin/options-fields.php:198 admin/options-fields.php:256
+#: admin/options-fields.php:204 admin/options-fields.php:262
 msgid "Minimum question content"
 msgstr ""
 
-#: admin/options-fields.php:199
+#: admin/options-fields.php:205
 msgid "Set minimum letters for a question contents."
 msgstr ""
 
-#: admin/options-fields.php:204 admin/options-fields.php:262
+#: admin/options-fields.php:210 admin/options-fields.php:268
 msgid "Use text editor ?"
 msgstr ""
 
-#: admin/options-fields.php:205 admin/options-fields.php:263
+#: admin/options-fields.php:211 admin/options-fields.php:269
 msgid "Text editor as default."
 msgstr ""
 
-#: admin/options-fields.php:210 admin/options-fields.php:268
+#: admin/options-fields.php:216 admin/options-fields.php:274
 msgid "Disable comments"
 msgstr ""
 
-#: admin/options-fields.php:211
+#: admin/options-fields.php:217
 msgid "Disable comments on questions."
 msgstr ""
 
-#: admin/options-fields.php:216 admin/options-fields.php:274
+#: admin/options-fields.php:222 admin/options-fields.php:280
 msgid "Disable voting"
 msgstr ""
 
-#: admin/options-fields.php:217
+#: admin/options-fields.php:223
 msgid "Disable voting on questions."
 msgstr ""
 
-#: admin/options-fields.php:222 admin/options-fields.php:280
+#: admin/options-fields.php:228 admin/options-fields.php:286
 msgid "Disable down voting"
 msgstr ""
 
-#: admin/options-fields.php:223
+#: admin/options-fields.php:229
 msgid "Disable down voting on questions."
 msgstr ""
 
-#: admin/options-fields.php:228
+#: admin/options-fields.php:234
 msgid "Close question after selecting answer"
 msgstr ""
 
-#: admin/options-fields.php:229
+#: admin/options-fields.php:235
 msgid "If enabled this will prevent user to submit answer on solved question."
 msgstr ""
 
-#: admin/options-fields.php:238
+#: admin/options-fields.php:244
 msgid "Default answers order"
 msgstr ""
 
-#: admin/options-fields.php:239
+#: admin/options-fields.php:245
 msgid "Order answers by by default using selected"
 msgstr ""
 
-#: admin/options-fields.php:250
+#: admin/options-fields.php:256
 msgid "Multiple Answers"
 msgstr ""
 
-#: admin/options-fields.php:251
+#: admin/options-fields.php:257
 msgid "Allow an user to submit multiple answers on a single question."
 msgstr ""
 
-#: admin/options-fields.php:257
+#: admin/options-fields.php:263
 msgid "Set minimum letters for a answer contents."
 msgstr ""
 
-#: admin/options-fields.php:269
+#: admin/options-fields.php:275
 msgid "Disable comments on answer."
 msgstr ""
 
-#: admin/options-fields.php:275
+#: admin/options-fields.php:281
 msgid "Disable voting on answers."
 msgstr ""
 
-#: admin/options-fields.php:281
+#: admin/options-fields.php:287
 msgid "Disable down voting on answers."
 msgstr ""
 
-#: admin/options-fields.php:290
+#: admin/options-fields.php:296
 msgid "Permissions"
 msgstr ""
 
-#: admin/options-fields.php:293
+#: admin/options-fields.php:299
 msgid "Only logged in can see questions, answer and comments?"
 msgstr ""
 
-#: admin/options-fields.php:294
+#: admin/options-fields.php:300
 msgid "Require user to login to see AnsPress contents?."
 msgstr ""
 
-#: admin/options-fields.php:299
+#: admin/options-fields.php:305
 msgid "Multiple answers"
 msgstr ""
 
-#: admin/options-fields.php:300
+#: admin/options-fields.php:306
 msgid "Allow user to submit multiple answer per question."
 msgstr ""
 
-#: admin/options-fields.php:305
+#: admin/options-fields.php:311
 msgid "Asker can answer"
 msgstr ""
 
-#: admin/options-fields.php:306
+#: admin/options-fields.php:312
 msgid "Allow asker to answer his own question."
 msgstr ""
 
-#: admin/options-fields.php:311
+#: admin/options-fields.php:317
 msgid "Allow anonymous"
 msgstr ""
 
-#: admin/options-fields.php:312
+#: admin/options-fields.php:318
 msgid "Non-loggedin user can post questions and answers."
 msgstr ""
 
-#: admin/options-fields.php:317
+#: admin/options-fields.php:323
 msgid "Only admin can answer"
 msgstr ""
 
-#: admin/options-fields.php:318
+#: admin/options-fields.php:324
 msgid "Only allow admin to answer question."
 msgstr ""
 
-#: admin/options-fields.php:323
+#: admin/options-fields.php:329
 msgid "Only logged in can see answers"
 msgstr ""
 
-#: admin/options-fields.php:324
+#: admin/options-fields.php:330
 msgid "non-loggedin user cannot see answers."
 msgstr ""
 
-#: admin/options-fields.php:329
+#: admin/options-fields.php:335
 msgid "Only logged in can see comment"
 msgstr ""
 
-#: admin/options-fields.php:330
+#: admin/options-fields.php:336
 msgid "non-loggedin user cannot see comments."
 msgstr ""
 
-#: admin/options-fields.php:335
+#: admin/options-fields.php:341
 msgid "Lock delete action"
 msgstr ""
 
-#: admin/options-fields.php:336
+#: admin/options-fields.php:342
 msgid ""
 "Lock comment or post after a period so that user cannot delete it. Set the "
 "time in epoch i.e. 86400 = 1 day."
 msgstr ""
 
-#: admin/options-fields.php:341
+#: admin/options-fields.php:347
 msgid "Upload"
 msgstr ""
 
-#: admin/options-fields.php:345
+#: admin/options-fields.php:351
 msgid "Allow image upload"
 msgstr ""
 
-#: admin/options-fields.php:346
+#: admin/options-fields.php:352
 msgid "Allow logged-in users to upload image."
 msgstr ""
 
-#: admin/options-fields.php:351
+#: admin/options-fields.php:357
 msgid "Max uploads per post"
 msgstr ""
 
-#: admin/options-fields.php:352
+#: admin/options-fields.php:358
 msgid "Set numbers of media user can upload for each post."
 msgstr ""
 
-#: admin/options-fields.php:357
+#: admin/options-fields.php:363
 msgid "Max upload size"
 msgstr ""
 
-#: admin/options-fields.php:358
+#: admin/options-fields.php:364
 msgid "Set maximum upload size."
 msgstr ""
 
-#: admin/options-fields.php:366
+#: admin/options-fields.php:372
 msgid "Status of new question"
 msgstr ""
 
-#: admin/options-fields.php:367
+#: admin/options-fields.php:373
 msgid "Set post status of new question."
 msgstr ""
 
-#: admin/options-fields.php:370 admin/options-fields.php:380
-#: admin/options-fields.php:390 admin/options-fields.php:400
-#: admin/options-fields.php:410
+#: admin/options-fields.php:376 admin/options-fields.php:386
+#: admin/options-fields.php:396 admin/options-fields.php:406
+#: admin/options-fields.php:416
 msgid "Publish"
 msgstr ""
 
-#: admin/options-fields.php:376
+#: admin/options-fields.php:382
 msgid "Status of edited question"
 msgstr ""
 
-#: admin/options-fields.php:377
+#: admin/options-fields.php:383
 msgid "Set post status of edited question."
 msgstr ""
 
-#: admin/options-fields.php:386
+#: admin/options-fields.php:392
 msgid "Status of new answer"
 msgstr ""
 
-#: admin/options-fields.php:387
+#: admin/options-fields.php:393
 msgid "Set post status of new answer."
 msgstr ""
 
-#: admin/options-fields.php:396
+#: admin/options-fields.php:402
 msgid "Status of edited answer"
 msgstr ""
 
-#: admin/options-fields.php:397
+#: admin/options-fields.php:403
 msgid "Set post status of edited answer."
 msgstr ""
 
-#: admin/options-fields.php:406
+#: admin/options-fields.php:412
 msgid "Status of anonymous post"
 msgstr ""
 
-#: admin/options-fields.php:407
+#: admin/options-fields.php:413
 msgid "Set post status post submitted by anonymous user."
 msgstr ""
 
-#: admin/options-fields.php:416
+#: admin/options-fields.php:422
 msgid "User roles"
 msgstr ""
 
-#: admin/options-fields.php:417
+#: admin/options-fields.php:423
 msgid "Uninstall - clear all AnsPress data"
 msgstr ""
 
@@ -1990,7 +2141,7 @@ msgid ""
 msgstr ""
 
 #: includes/ajax-hooks.php:100 includes/ajax-hooks.php:136
-#: includes/theme.php:782
+#: includes/theme.php:785
 msgid "Select"
 msgstr ""
 
@@ -2012,7 +2163,7 @@ msgstr ""
 msgid "Best answer is selected for your question."
 msgstr ""
 
-#: includes/ajax-hooks.php:174 includes/theme.php:790
+#: includes/ajax-hooks.php:174 includes/theme.php:793
 msgid "Unselect"
 msgstr ""
 
@@ -2069,11 +2220,11 @@ msgstr ""
 msgid "Only question can be set as featured"
 msgstr ""
 
-#: includes/ajax-hooks.php:321 includes/theme.php:865
+#: includes/ajax-hooks.php:321 includes/theme.php:868
 msgid "Mark this question as featured"
 msgstr ""
 
-#: includes/ajax-hooks.php:321 includes/theme.php:866
+#: includes/ajax-hooks.php:321 includes/theme.php:869
 msgid "Feature"
 msgstr ""
 
@@ -2081,11 +2232,11 @@ msgstr ""
 msgid "Question is unmarked as featured."
 msgstr ""
 
-#: includes/ajax-hooks.php:329 includes/theme.php:862
+#: includes/ajax-hooks.php:329 includes/theme.php:865
 msgid "Unmark this question as featured"
 msgstr ""
 
-#: includes/ajax-hooks.php:329 includes/theme.php:863
+#: includes/ajax-hooks.php:329 includes/theme.php:866
 msgid "Unfeature"
 msgstr ""
 
@@ -2141,7 +2292,7 @@ msgstr ""
 msgid "Successfully unsubscribed from question"
 msgstr ""
 
-#: includes/ajax-hooks.php:509 includes/theme.php:892
+#: includes/ajax-hooks.php:509 includes/theme.php:895
 msgid "Subscribe"
 msgstr ""
 
@@ -2149,7 +2300,7 @@ msgstr ""
 msgid "Successfully subscribed to question"
 msgstr ""
 
-#: includes/ajax-hooks.php:527 includes/theme.php:892
+#: includes/ajax-hooks.php:527 includes/theme.php:895
 msgid "Unsubscribe"
 msgstr ""
 
@@ -2165,15 +2316,15 @@ msgstr ""
 msgid "Only visible to admin and moderator."
 msgstr ""
 
-#: includes/answer-form.php:166
+#: includes/answer-form.php:140
 msgid "Update answer"
 msgstr ""
 
-#: includes/answer-form.php:166
+#: includes/answer-form.php:140
 msgid "Post answer"
 msgstr ""
 
-#: includes/answer-form.php:299
+#: includes/answer-form.php:272
 msgid "Answer submitted successfully"
 msgstr ""
 
@@ -2381,31 +2532,31 @@ msgstr ""
 msgid "Edit Answer"
 msgstr ""
 
-#: includes/common-pages.php:75
+#: includes/common-pages.php:72
 msgid ""
 "This question is waiting for a moderator and cannot be viewed. Please check "
 "back later to see if it has been approved."
 msgstr ""
 
-#: includes/common-pages.php:77
+#: includes/common-pages.php:74
 msgid "Sorry! you are not allowed to read this question."
 msgstr ""
 
-#: includes/common-pages.php:113
+#: includes/common-pages.php:110
 msgid "Question will be publish in %s"
 msgstr ""
 
-#: includes/common-pages.php:114
+#: includes/common-pages.php:111
 msgid ""
 "This question is in waiting queue and is not accessible by anyone until it "
 "get published."
 msgstr ""
 
-#: includes/common-pages.php:140
+#: includes/common-pages.php:137
 msgid "Something went wrong, please try again"
 msgstr ""
 
-#: includes/common-pages.php:162
+#: includes/common-pages.php:159
 msgid "Sorry, you cannot edit this answer."
 msgstr ""
 
@@ -2489,180 +2640,180 @@ msgstr ""
 msgid "Create tag"
 msgstr ""
 
-#: includes/functions.php:249
+#: includes/functions.php:236
 #. translators: %s: human-readable time difference
 msgid "%s ago"
 msgstr ""
 
-#: includes/functions.php:473
+#: includes/functions.php:470
 msgid "Success"
 msgstr ""
 
-#: includes/functions.php:475
+#: includes/functions.php:472
 msgid "Something went wrong, last action failed."
 msgstr ""
 
-#: includes/functions.php:477
+#: includes/functions.php:474
 msgid "Comment updated successfully."
 msgstr ""
 
-#: includes/functions.php:478
+#: includes/functions.php:475
 msgid "You cannot vote on your own question or answer."
 msgstr ""
 
-#: includes/functions.php:479
+#: includes/functions.php:476
 msgid "You do not have permission to view private posts."
 msgstr ""
 
-#: includes/functions.php:480
+#: includes/functions.php:477
 msgid "Please check captcha field and resubmit it again."
 msgstr ""
 
-#: includes/functions.php:481
+#: includes/functions.php:478
 msgid "Image uploaded successfully"
 msgstr ""
 
-#: includes/functions.php:482
+#: includes/functions.php:479
 msgid "Answer has been deleted permanently"
 msgstr ""
 
-#: includes/functions.php:483
+#: includes/functions.php:480
 msgid "You have already attached maximum numbers of allowed uploads."
 msgstr ""
 
-#: includes/functions.php:484
+#: includes/functions.php:481
 msgid "Your profile has been updated successfully."
 msgstr ""
 
-#: includes/functions.php:485
+#: includes/functions.php:482
 msgid "Voting down is disabled."
 msgstr ""
 
-#: includes/functions.php:486
+#: includes/functions.php:483
 msgid "You cannot vote on restricted posts"
 msgstr ""
 
-#: includes/functions.php:906
+#: includes/functions.php:903
 msgid "[Solved] "
 msgstr ""
 
-#: includes/functions.php:1283
+#: includes/functions.php:1280
 msgid "asked"
 msgstr ""
 
-#: includes/functions.php:1284 includes/functions.php:1285
+#: includes/functions.php:1281 includes/functions.php:1282
 msgid "approved"
 msgstr ""
 
-#: includes/functions.php:1286
+#: includes/functions.php:1283
 msgid "answered"
 msgstr ""
 
-#: includes/functions.php:1287
+#: includes/functions.php:1284
 msgid "deleted answer"
 msgstr ""
 
-#: includes/functions.php:1288
+#: includes/functions.php:1285
 msgid "restored answer"
 msgstr ""
 
-#: includes/functions.php:1289 templates/functions.php:53
+#: includes/functions.php:1286 templates/functions.php:53
 msgid "commented"
 msgstr ""
 
-#: includes/functions.php:1290
+#: includes/functions.php:1287
 msgid "deleted comment"
 msgstr ""
 
-#: includes/functions.php:1291
+#: includes/functions.php:1288
 msgid "commented on answer"
 msgstr ""
 
-#: includes/functions.php:1292
+#: includes/functions.php:1289
 msgid "edited question"
 msgstr ""
 
-#: includes/functions.php:1293
+#: includes/functions.php:1290
 msgid "edited answer"
 msgstr ""
 
-#: includes/functions.php:1294
+#: includes/functions.php:1291
 msgid "edited comment"
 msgstr ""
 
-#: includes/functions.php:1295
+#: includes/functions.php:1292
 msgid "edited comment on answer"
 msgstr ""
 
-#: includes/functions.php:1296
+#: includes/functions.php:1293
 msgid "selected answer"
 msgstr ""
 
-#: includes/functions.php:1297
+#: includes/functions.php:1294
 msgid "unselected answer"
 msgstr ""
 
-#: includes/functions.php:1298
+#: includes/functions.php:1295
 msgid "updated status"
 msgstr ""
 
-#: includes/functions.php:1299
+#: includes/functions.php:1296
 msgid "selected as best answer"
 msgstr ""
 
-#: includes/functions.php:1300
+#: includes/functions.php:1297
 msgid "unselected as best answer"
 msgstr ""
 
-#: includes/functions.php:1301
+#: includes/functions.php:1298
 msgid "changed status"
 msgstr ""
 
-#: includes/functions.php:1353
+#: includes/functions.php:1350
 msgid "Anonymous"
 msgstr ""
 
-#: includes/functions.php:1380
+#: includes/functions.php:1377
 msgid " (anonymous)"
 msgstr ""
 
-#: includes/hooks.php:740
+#: includes/hooks.php:676
 msgid "minute"
 msgstr ""
 
-#: includes/hooks.php:741
+#: includes/hooks.php:677
 msgid "minutes"
 msgstr ""
 
-#: includes/hooks.php:742
+#: includes/hooks.php:678
 msgid "hour"
 msgstr ""
 
-#: includes/hooks.php:743
+#: includes/hooks.php:679
 msgid "hours"
 msgstr ""
 
-#: includes/hooks.php:744
+#: includes/hooks.php:680
 msgid "day"
 msgstr ""
 
-#: includes/hooks.php:745
+#: includes/hooks.php:681
 msgid "days"
 msgstr ""
 
-#: includes/hooks.php:746
+#: includes/hooks.php:682
 msgid "week"
 msgstr ""
 
-#: includes/hooks.php:747
+#: includes/hooks.php:683
 msgid "weeks"
 msgstr ""
 
-#: includes/hooks.php:748
+#: includes/hooks.php:684
 msgid "year"
 msgstr ""
 
-#: includes/hooks.php:749
+#: includes/hooks.php:685
 msgid "years"
 msgstr ""
 
@@ -2734,7 +2885,8 @@ msgstr ""
 msgid "Parent Question:"
 msgstr ""
 
-#: includes/post-types.php:46 templates/buddypress/answer-item.php:39
+#: includes/post-types.php:46 templates/addons/user/answer-item.php:39
+#: templates/buddypress/answer-item.php:39
 #: templates/buddypress/question-item.php:41
 msgid "View Question"
 msgstr ""
@@ -2827,19 +2979,19 @@ msgstr ""
 msgid "Check missing fields and then re-submit."
 msgstr ""
 
-#: includes/qaquery-hooks.php:141
+#: includes/qaquery-hooks.php:143
 msgid "Restricted content"
 msgstr ""
 
-#: includes/qaquery.php:435
+#: includes/qaquery.php:438
 msgid "Featured"
 msgstr ""
 
-#: includes/qaquery.php:439
+#: includes/qaquery.php:442
 msgid "Solved"
 msgstr ""
 
-#: includes/qaquery.php:443
+#: includes/qaquery.php:446
 msgid "%d views"
 msgstr ""
 
@@ -2851,15 +3003,15 @@ msgstr ""
 msgid "Question and answer is powered by"
 msgstr ""
 
-#: includes/taxo.php:341
+#: includes/taxo.php:323
 msgid "Tagged"
 msgstr ""
 
-#: includes/taxo.php:475
+#: includes/taxo.php:457
 msgid "Popular"
 msgstr ""
 
-#: includes/taxo.php:476
+#: includes/taxo.php:458
 msgid "New"
 msgstr ""
 
@@ -2867,11 +3019,11 @@ msgstr ""
 msgid "No permission"
 msgstr ""
 
-#: includes/theme.php:43
+#: includes/theme.php:41
 msgid "Discussion on \"%s\""
 msgstr ""
 
-#: includes/theme.php:47 templates/not-found.php:1
+#: includes/theme.php:45 templates/not-found.php:1
 msgid "Error 404"
 msgstr ""
 
@@ -2907,24 +3059,28 @@ msgstr ""
 msgid "Best answer"
 msgstr ""
 
-#: includes/theme.php:699
+#: includes/theme.php:702
 msgid "Order By"
 msgstr ""
 
-#: includes/theme.php:754
+#: includes/theme.php:757
 msgid "Reset sorting and filter"
 msgstr ""
 
-#: includes/theme.php:754
+#: includes/theme.php:757
 msgid "Clear Filter"
 msgstr ""
 
-#: includes/theme.php:781
+#: includes/theme.php:784
 msgid "Select this answer as best"
 msgstr ""
 
-#: includes/theme.php:789
+#: includes/theme.php:792
 msgid "Unselect this answer"
+msgstr ""
+
+#: includes/theme.php:919
+msgid "AnsPress links"
 msgstr ""
 
 #: includes/upload.php:28
@@ -2998,6 +3154,31 @@ msgstr ""
 msgid "No category is set!"
 msgstr ""
 
+#: templates/addons/notification/index.php:24 templates/functions.php:59
+msgid "Mark all as seen"
+msgstr ""
+
+#: templates/addons/notification/index.php:29
+msgid "All"
+msgstr ""
+
+#: templates/addons/notification/index.php:30
+msgid "Unseen"
+msgstr ""
+
+#: templates/addons/notification/index.php:31
+msgid "Seen"
+msgstr ""
+
+#: templates/addons/notification/index.php:41
+msgid "No notification"
+msgstr ""
+
+#: templates/addons/notification/index.php:46
+#: templates/addons/reputation/index.php:23
+msgid "Load More"
+msgstr ""
+
 #: templates/addons/tag/no-tags-found.php:15
 msgid "No tags is set!"
 msgstr ""
@@ -3014,6 +3195,24 @@ msgstr ""
 msgid "No description."
 msgstr ""
 
+#: templates/addons/user/answer-item.php:44
+#: templates/buddypress/answer-item.php:44
+#: templates/buddypress/question-item.php:47
+msgid "%d Vote"
+msgid_plural "%d Votes"
+msgstr[0] ""
+msgstr[1] ""
+
+#: templates/addons/user/answer-item.php:46
+#: templates/buddypress/answer-item.php:46
+msgid "This answer is selected as best"
+msgstr ""
+
+#: templates/addons/user/answer-item.php:46
+#: templates/buddypress/answer-item.php:46
+msgid "Selected"
+msgstr ""
+
 #: templates/answer-form.php:24
 msgid "Write your answer.."
 msgstr ""
@@ -3028,21 +3227,6 @@ msgstr ""
 
 #: templates/attachments.php:17
 msgid "Download file"
-msgstr ""
-
-#: templates/buddypress/answer-item.php:44
-#: templates/buddypress/question-item.php:47
-msgid "%d Vote"
-msgid_plural "%d Votes"
-msgstr[0] ""
-msgstr[1] ""
-
-#: templates/buddypress/answer-item.php:46
-msgid "This answer is selected as best"
-msgstr ""
-
-#: templates/buddypress/answer-item.php:46
-msgid "Selected"
 msgstr ""
 
 #: templates/content-answer.php:18
@@ -3117,61 +3301,61 @@ msgstr ""
 msgid "Write your comment..."
 msgstr ""
 
-#: templates/functions.php:82
+#: templates/functions.php:81
 msgid "(AnsPress) Before"
 msgstr ""
 
-#: templates/functions.php:86
+#: templates/functions.php:85
 msgid "Widgets in this area will be shown before anspress body."
 msgstr ""
 
-#: templates/functions.php:92
+#: templates/functions.php:91
 msgid "(AnsPress) Question List Top"
 msgstr ""
 
-#: templates/functions.php:96
+#: templates/functions.php:95
 msgid "Widgets in this area will be shown before questions list."
 msgstr ""
 
-#: templates/functions.php:102
+#: templates/functions.php:101
 msgid "(AnsPress) Sidebar"
 msgstr ""
 
-#: templates/functions.php:106
+#: templates/functions.php:105
 msgid ""
 "Widgets in this area will be shown in AnsPress sidebar except single "
 "question page."
 msgstr ""
 
-#: templates/functions.php:112
+#: templates/functions.php:111
 msgid "(AnsPress) Question Sidebar"
 msgstr ""
 
-#: templates/functions.php:116
+#: templates/functions.php:115
 msgid "Widgets in this area will be shown in single question page sidebar."
 msgstr ""
 
-#: templates/functions.php:122
+#: templates/functions.php:121
 msgid "(AnsPress) Category Page"
 msgstr ""
 
-#: templates/functions.php:126
+#: templates/functions.php:125
 msgid "Widgets in this area will be shown in category listing page."
 msgstr ""
 
-#: templates/functions.php:132
+#: templates/functions.php:131
 msgid "(AnsPress) Tag page"
 msgstr ""
 
-#: templates/functions.php:136
+#: templates/functions.php:135
 msgid "Widgets in this area will be shown in tag listing page."
 msgstr ""
 
-#: templates/functions.php:142
+#: templates/functions.php:141
 msgid "(AnsPress) Author page"
 msgstr ""
 
-#: templates/functions.php:146
+#: templates/functions.php:145
 msgid "Widgets in this area will be shown in authors page."
 msgstr ""
 
@@ -3201,10 +3385,6 @@ msgstr ""
 
 #: templates/question.php:46 templates/shortcode/question.php:42
 msgid "Posted %s"
-msgstr ""
-
-#: templates/reputations/index.php:23
-msgid "Load More"
 msgstr ""
 
 #: templates/search-form.php:14
@@ -3331,22 +3511,22 @@ msgstr ""
 msgid "Rahul Aryan"
 msgstr ""
 
-#: addons/free/category.php:199
+#: addons/free/category.php:196
 msgctxt "anspress-question-answer"
 msgid "Category"
 msgstr ""
 
-#: addons/free/category.php:201
+#: addons/free/category.php:198
 msgctxt "anspress-question-answer"
 msgid "Add New Category"
 msgstr ""
 
-#: addons/free/tag.php:203
+#: addons/free/tag.php:202
 msgctxt "anspress-question-answer"
 msgid "Tag"
 msgstr ""
 
-#: addons/free/tag.php:205
+#: addons/free/tag.php:204
 msgctxt "anspress-question-answer"
 msgid "Add New Tag"
 msgstr ""

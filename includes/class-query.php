@@ -1,6 +1,6 @@
 <?php
 /**
- * Question class
+ * Custom abstract class for peroming query.
  *
  * @package   WordPress/AnsPress
  * @author    Rahul Aryan <support@anspress.io>
@@ -283,5 +283,14 @@ abstract class AnsPress_Query {
 				$this->objects[ $pos ]->ref = $data;
 			}
 		}
+	}
+
+	/**
+	 * Include a template file.
+	 *
+	 * @param string $template Path to template file without .php extension.
+	 */
+	public function template( $template ) {
+		include ap_get_theme_location( $template . '.php' );
 	}
 }
