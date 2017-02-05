@@ -717,7 +717,7 @@ class AnsPress_Admin {
 				'type'    => 'error',
 				'message' => __( 'You must continue to upgrade AnsPress data.', 'anspress-question-answer' ),
 				'button'  => ' <a class="button" href="' . admin_url( 'admin.php?page=anspress_upgrade' ) . '">' . __( 'Upgrade now', 'anspress-question-answer' ) . '</a>',
-				'show'    => ( get_option( 'anspress_using_previous') !== '' && 'admin_page_anspress_upgrade' !== $page->base && $have_updates ),
+				'show'    => ( get_option( 'ap_update_helper', false ) && 'admin_page_anspress_upgrade' !== $page->base && $have_updates ),
 			],
 		);
 

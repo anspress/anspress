@@ -16,6 +16,10 @@ class AP_Update_Helper {
 	 * @param boolean $init Should send initial response.
 	 */
 	public function __construct( $init = false ) {
+		if ( ! get_option( 'ap_update_helper', false ) ) {
+			return;
+		}
+
 		// Disable sending email while upgrading.
 		define( 'AP_DISABLE_EMAIL', true );
 
@@ -70,6 +74,12 @@ class AP_Update_Helper {
 	 * @param string  $message Response message.
 	 */
 	public function send( $success, $active, $message, $continue = false ) {
+		$tasks = $this->get_tasks();
+
+		if ( ! in_array( false, $tasks ) ) {
+			update_option( 'ap_update_helper', false );
+		}
+
 		ap_ajax_json( array(
 			'success' => $success ? true: false,
 			'active'  => $active,
@@ -88,7 +98,7 @@ class AP_Update_Helper {
 
 		global $wpdb;
 		$done = (int) get_option( 'anspress_updated_q_offset', 0 );
-		$ids = $wpdb->get_results( "SELECT SQL_CALC_FOUND_ROWS ID, post_type, post_parent, post_status FROM {$wpdb->posts} WHERE post_type='question' OR post_type='answer' LIMIT {$done},50" );
+		$ids = $wpdb->get_results( "SELECT SQL_CALC_FOUND_ROWS ID, post_type, post_parent, post_status FROM {$wpdb->posts} LEFT JOIN {$wpdb->ap_qameta} ON post_id = ID WHERE ptype IS NULL post_type IN ('question', 'answer') LIMIT {$done},50" );
 		$total_ids = $wpdb->get_var( 'SELECT FOUND_ROWS()' ); // DB call okay, Db cache okay.
 
 		if ( empty( $ids ) ) {
@@ -250,7 +260,10 @@ class AP_Update_Helper {
 	 */
 	public function migrate_reputations() {
 		if ( ! isset( $wpdb->ap_meta ) ) {
-			return;
+			$options = get_option( 'anspress_updates', [] );
+			$options['reputations'] = true;
+			update_option( 'anspress_updates', $options );
+			$this->send( true, 'reputations', __( 'Successfully migrated all reputations', 'anspress-question-answer' ), true );
 		}
 
 		$tasks = $this->get_tasks();

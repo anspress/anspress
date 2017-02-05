@@ -211,7 +211,7 @@ class AP_Activate {
 
 		ap_create_base_page();
 
-		if (  in_array( ap_opt( 'ap_version' ), [ '2.3.8', '3.0.0' ], true )  ) {
+		if ( true === version_compare( ap_opt( 'ap_version' ), '4.0.0-alpha.1', '<' )  ) {
 			update_option( 'ap_update_helper', true );
 		}
 
