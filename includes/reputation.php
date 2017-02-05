@@ -674,7 +674,7 @@ class AnsPress_Reputation_Query {
 	 */
 	public function the_ref_content() {
 		if ( in_array( $this->reputation->parent, [ 'post', 'question', 'answer' ], true ) ) {
-			echo '<a class="ap-reputation-ref" href="' . esc_url( ap_get_short_link( [ 'id' => $this->reputation->rep_ref_id, 'type' => 'post' ] ) ) . '">';
+			echo '<a class="ap-reputation-ref" href="' . esc_url( ap_get_short_link( [ 'ap_p' => $this->reputation->rep_ref_id ] ) ) . '">';
 
 			if ( ! empty( $this->reputation->ref->post_title ) ) {
 				echo '<strong>' . esc_html( $this->reputation->ref->post_title ) . '</strong>';
@@ -686,7 +686,7 @@ class AnsPress_Reputation_Query {
 
 			echo '</a>';
 		} elseif ( 'comment' === $this->reputation->parent ) {
-			echo '<a class="ap-reputation-ref" href="' . esc_url( ap_get_short_link( [ 'id' => $this->reputation->rep_ref_id, 'type' => 'comment' ] ) ) . '">';
+			echo '<a class="ap-reputation-ref" href="' . esc_url( ap_get_short_link( [ 'ap_c' => $this->reputation->rep_ref_id ] ) ) . '">';
 			if ( ! empty( $this->reputation->ref->comment_content ) ) {
 				echo '<p>' . esc_html( ap_truncate_chars( strip_tags( $this->reputation->ref->comment_content ), 200 ) ) . '</p>';
 			}
