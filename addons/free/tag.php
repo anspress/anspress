@@ -104,6 +104,8 @@ class AnsPress_Tag {
 			),
 		);
 
+		$question_args = apply_filters( 'ap_tag_question_query_args', $question_args );
+
 		$question_tag = get_term_by( 'slug', $tag_id, 'question_tag' ); // @codingStandardsIgnoreLine.
 
 		if ( $question_tag ) {
