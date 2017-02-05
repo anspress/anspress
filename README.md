@@ -98,7 +98,57 @@ Read full FAQ here https://anspress.io/docs/?topic=faq
 ## Changelog ##
 
 ### 4.0.0 ###
+
+** Beta 4 **
+
+* Added filter to modify tag question query
+* Added user answers page
+* Load comments by default
+* Fixed JS template not loading properly
+* Prevent question query to use SQL_CALC_FOUND_ROWS which is relatively slow in big site
+* Added support for polylang
+* Fixed short link
+* Improved notification dropdown toggle
+* Improved notification dropdown menu
+* Added notification dropdown
+* Improved user menu
+* Improved anspress pages, menu and slugs
+* Improved user menu
+* User profile as an addon
+* Added load more button in notification
+* Improved notification sorting
+* Added notification count and mark all notification read button
+* Improved notification ref prefetch
+* Improved notification query
+* Improved best answer notification
+* Improved notification flush on post delete
+* Delete corresponding notification when a post gets deleted
+* Notify user on comment
+* Notification for best answer
+* Reload reCaptcha after form submission
+* Fixed: while editing anonymous user's post author changes
+* FIXED: wrong classes for columns in tags and categories
+* Fixed tags pagination
+* Added recaptcha methods
+* Added notifications addon
+* Added base query class
+* Fixed addons loading
+* Improved addons functions
+* Added add-on activation hook
+* CREATE TABLE IF NOT EXISTS to CREATE TABLE
+* Fixed reputation template file location
+* Improved category style
+* Fixed: strpos(): Offset not contained in string
+* Fixed: x-index of snackbar
+* Improved category icon
+* Store reputation in meta for sorting purpose
+* Removed debug code
+* Fixed: AP_Roles::remove_roles() should not be called statically
+* Added improved version of dynamic avatar addon
+* Fixed: private check box not working in form
+
 ** Beta 3 **
+
 * Normalize addons path
 * Added subscribe button
 * Check if user can access post before sending email
