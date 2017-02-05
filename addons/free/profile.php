@@ -35,6 +35,7 @@ class AnsPress_Profile_Hooks {
 		anspress()->add_action( 'ap_rewrite_rules', __CLASS__, 'rewrite_rules', 10, 3 );
 		anspress()->add_filter( 'ap_page_title', __CLASS__, 'page_title' );
 		anspress()->add_filter( 'ap_menu_link', __CLASS__, 'menu_link', 10, 2 );
+		anspress()->add_action( 'ap_ajax_user_more_answers', __CLASS__, 'load_more_answers', 10, 2 );
 	}
 
 	/**
@@ -201,6 +202,71 @@ class AnsPress_Profile_Hooks {
 		anspress()->questions = $questions = new Question_Query( $args );
 
 		include ap_get_theme_location( 'addons/user/questions.php' );
+	}
+
+	/**
+	 * Display user questions page.
+	 */
+	public static function answer_page() {
+		global $answers;
+		$args['ap_current_user_ignore'] = true;
+		$args['ignore_selected_answer'] = true;
+		$args['showposts'] = 10;
+		$args['author'] = (int) get_query_var( 'ap_user_id' );
+
+		/*if ( false !== $paged ) {
+			$args['paged'] = $paged;
+		}*/
+
+		/**
+		 * FILTER: ap_authors_questions_args
+		 * Filter authors question list args
+		 *
+		 * @var array
+		 */
+		$args = apply_filters( 'ap_user_answers_args', $args );
+		anspress()->answers = $answers = new Answers_Query( $args );
+
+		ap_get_template_part( 'addons/user/answers' );
+	}
+
+	public static function load_more_answers() {
+		global $answers;
+		$user_id = ap_sanitize_unslash( 'user_id', 'r' );
+		$paged = ap_sanitize_unslash( 'current', 'r', 1 ) + 1;
+		$args['ap_current_user_ignore'] = true;
+		$args['ignore_selected_answer'] = true;
+		$args['showposts'] = 10;
+		$args['author'] = (int) $user_id;
+
+		if ( false !== $paged ) {
+			$args['paged'] = $paged;
+		}
+
+		/**
+		 * FILTER: ap_authors_questions_args
+		 * Filter authors question list args
+		 *
+		 * @var array
+		 */
+		$args = apply_filters( 'ap_user_answers_args', $args );
+		anspress()->answers = $answers = new Answers_Query( $args );
+
+		ob_start();
+		if ( ap_have_answers() ) {
+			/* Start the Loop */
+			while ( ap_have_answers() ) : ap_the_answer();
+				ap_get_template_part( 'addons/user/answer-item' );
+			endwhile;
+		}
+		$html = ob_get_clean();
+
+		ap_ajax_json(array(
+			'success'  => true,
+			'element'  => '#ap-bp-answers',
+			'args'  => [ 'ap_ajax_action' => 'user_more_answers', '__nonce' => wp_create_nonce( 'loadmore-answers' ), 'type' => 'answers', 'current' => $paged, 'user_id' => $user_id ],
+			'html'   	 => $html,
+		));
 	}
 
 }

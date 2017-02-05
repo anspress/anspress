@@ -41,6 +41,7 @@
             data: args,
             success: function(data){
                 AnsPress.hideLoading(self);
+                console.log(data.element);
                 if(data.success){
                     $(data.element).append(data.html);
                     $(self).attr('ap-loadmore', JSON.stringify(data.args));
