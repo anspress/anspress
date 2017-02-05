@@ -16,6 +16,13 @@ class AP_Update_Helper {
 	 * @param boolean $init Should send initial response.
 	 */
 	public function __construct( $init = false ) {
+		// Disable sending email while upgrading.
+		define( 'AP_DISABLE_EMAIL', true );
+
+		// Also disable inserting of reputations and notifications.
+		define( 'AP_DISABLE_INSERT_NOTI', true );
+		define( 'AP_DISABLE_INSERT_REP', true );
+
 		if ( $init ) {
 			$active = '';
 

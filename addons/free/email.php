@@ -458,7 +458,9 @@ class AnsPress_Email_Hooks {
 	 * @param string $message Email body.
 	 */
 	public static function send_mail( $email, $subject, $message ) {
-		wp_mail( $email, $subject, $message, SELF::header() );
+		if ( defined( 'AP_DISABLE_EMAIL' ) && AP_DISABLE_EMAIL ) {
+			wp_mail( $email, $subject, $message, SELF::header() );
+		}
 	}
 
 	/**

@@ -22,6 +22,12 @@ if ( ! defined( 'WPINC' ) ) {
  * @return false|integer
  */
 function ap_insert_notification( $args = [] ) {
+
+	// Dont do insert notification if defined.
+	if ( defined( 'AP_DISABLE_INSERT_NOTI' ) && AP_DISABLE_INSERT_NOTI ) {
+		return;
+	}
+
 	$args = wp_parse_args( $args, array(
 		'user_id'  => get_current_user_id(),
 		'actor'  	 => 0,

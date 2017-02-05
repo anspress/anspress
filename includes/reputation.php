@@ -25,6 +25,12 @@ if ( ! defined( 'WPINC' ) ) {
  * @since 4.0.0
  */
 function ap_insert_reputation( $event, $ref_id, $user_id = false ) {
+
+	// Dont do insert notification if defined.
+	if ( defined( 'AP_DISABLE_INSERT_REP' ) && AP_DISABLE_INSERT_REP ) {
+		return;
+	}
+
 	global $wpdb;
 
 	if ( false === $user_id ) {
