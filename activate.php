@@ -70,6 +70,7 @@ class AP_Activate {
 	public function __construct() {
 		global $network_wide;
 		$this->network_wide = $network_wide;
+		$this->disable_ext();
 
 		// Append table names in $wpdb.
 		ap_append_table_names();
@@ -81,6 +82,12 @@ class AP_Activate {
 		}
 	}
 
+	/**
+	 * Disable old AnsPress extensions.
+	 */
+	public function disable_ext() {
+		deactivate_plugins( [ 'categories-for-anspress/categories-for-anspress.php', 'tags-for-anspress/tags-for-anspress.php', 'anspress-email/anspress-email.php' ] );
+	}
 	/**
 	 * Ap_qameta table.
 	 */
