@@ -131,7 +131,8 @@
 				files: {
 					'templates/css/min/main.min.css': 'templates/css/main.css',
 					'templates/css/min/RTL.min.css': 'templates/css/RTL.css',
-					'templates/css/min/fonts.min.css': 'templates/css/fonts.css'
+					'templates/css/min/fonts.min.css': 'templates/css/fonts.css',
+					'assets/ap-admin.min.css': 'assets/ap-admin.css'
 				}
 			}
 		},

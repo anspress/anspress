@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: AnsPress 4.0.0-beta.3\n"
 "Report-Msgid-Bugs-To: "
 "https://wordpress.org/support/plugin/anspress-question-answer\n"
-"POT-Creation-Date: 2017-02-05 05:57:25+00:00\n"
+"POT-Creation-Date: 2017-02-06 13:25:50+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -171,7 +171,7 @@ msgstr ""
 msgid "Display AnsPress categories"
 msgstr ""
 
-#: addons/free/category/widget.php:66 addons/free/category.php:745
+#: addons/free/category/widget.php:66 addons/free/category.php:729
 #: templates/addons/category/categories.php:27 templates/addons/tag/tags.php:38
 msgid "%d Question"
 msgid_plural "%d Questions"
@@ -182,9 +182,9 @@ msgstr[1] ""
 msgid "%d Child"
 msgstr ""
 
-#: addons/free/category/widget.php:80 addons/free/category.php:53
-#: addons/free/category.php:187 addons/free/category.php:243
-#: addons/free/category.php:508 addons/free/category.php:511
+#: addons/free/category/widget.php:80 addons/free/category.php:37
+#: addons/free/category.php:171 addons/free/category.php:227
+#: addons/free/category.php:492 addons/free/category.php:495
 #: includes/taxo.php:29
 msgid "Categories"
 msgstr ""
@@ -218,24 +218,24 @@ msgstr ""
 msgid "None"
 msgstr ""
 
-#: addons/free/category/widget.php:126 addons/free/category.php:253
-#: addons/free/category.php:267
+#: addons/free/category/widget.php:126 addons/free/category.php:237
+#: addons/free/category.php:251
 msgid "Count"
 msgstr ""
 
-#: addons/free/category/widget.php:127 addons/free/category.php:250
-#: addons/free/category.php:264
+#: addons/free/category/widget.php:127 addons/free/category.php:234
+#: addons/free/category.php:248
 msgid "ID"
 msgstr ""
 
-#: addons/free/category/widget.php:128 addons/free/category.php:251
-#: addons/free/category.php:265 includes/answer-form.php:59
+#: addons/free/category/widget.php:128 addons/free/category.php:235
+#: addons/free/category.php:249 includes/answer-form.php:59
 #: includes/ask-form.php:85 includes/taxo.php:459
 msgid "Name"
 msgstr ""
 
-#: addons/free/category/widget.php:129 addons/free/category.php:252
-#: addons/free/category.php:266
+#: addons/free/category/widget.php:129 addons/free/category.php:236
+#: addons/free/category.php:250
 msgid "Slug"
 msgstr ""
 
@@ -263,184 +263,184 @@ msgstr ""
 msgid "Icon height:"
 msgstr ""
 
-#: addons/free/category.php:52 addons/free/category.php:432
-#: addons/free/category.php:549 admin/class-list-table-hooks.php:192
+#: addons/free/category.php:36 addons/free/category.php:416
+#: addons/free/category.php:533 admin/class-list-table-hooks.php:192
 #: includes/taxo.php:203
 msgid "Category"
 msgstr ""
 
-#: addons/free/category.php:195
+#: addons/free/category.php:179
 msgid "Question Categories"
 msgstr ""
 
-#: addons/free/category.php:197
+#: addons/free/category.php:181
 msgid "All Categories"
 msgstr ""
 
-#: addons/free/category.php:199
+#: addons/free/category.php:183
 msgid "Edit Category"
 msgstr ""
 
-#: addons/free/category.php:200
+#: addons/free/category.php:184
 msgid "New Category"
 msgstr ""
 
-#: addons/free/category.php:201
+#: addons/free/category.php:185
 msgid "View Category"
 msgstr ""
 
-#: addons/free/category.php:202
+#: addons/free/category.php:186
 msgid "Search Category"
 msgstr ""
 
-#: addons/free/category.php:203 addons/free/tag.php:209
+#: addons/free/category.php:187 addons/free/tag.php:195
 msgid "Nothing Found"
 msgstr ""
 
-#: addons/free/category.php:204 addons/free/tag.php:210
+#: addons/free/category.php:188 addons/free/tag.php:196
 msgid "Nothing found in Trash"
 msgstr ""
 
-#: addons/free/category.php:246
+#: addons/free/category.php:230
 msgid "Ask form category order"
 msgstr ""
 
-#: addons/free/category.php:247
+#: addons/free/category.php:231
 msgid "Set how you want to order categories in form."
 msgstr ""
 
-#: addons/free/category.php:254 addons/free/category.php:268
+#: addons/free/category.php:238 addons/free/category.php:252
 msgid "Group"
 msgstr ""
 
-#: addons/free/category.php:260
+#: addons/free/category.php:244
 msgid "Categries page order by"
 msgstr ""
 
-#: addons/free/category.php:261 addons/free/category.php:275
+#: addons/free/category.php:245 addons/free/category.php:259
 msgid "Set how you want to order categories in categories page."
 msgstr ""
 
-#: addons/free/category.php:274
+#: addons/free/category.php:258
 msgid "Categries page order"
 msgstr ""
 
-#: addons/free/category.php:278
+#: addons/free/category.php:262
 msgid "Ascending"
 msgstr ""
 
-#: addons/free/category.php:279
+#: addons/free/category.php:263
 msgid "Descending"
 msgstr ""
 
-#: addons/free/category.php:285
+#: addons/free/category.php:269
 msgid "Categories page slug"
 msgstr ""
 
-#: addons/free/category.php:286
+#: addons/free/category.php:270
 msgid "Slug categories page"
 msgstr ""
 
-#: addons/free/category.php:293
+#: addons/free/category.php:277
 msgid "Category page slug"
 msgstr ""
 
-#: addons/free/category.php:294
+#: addons/free/category.php:278
 msgid "Slug for category page"
 msgstr ""
 
-#: addons/free/category.php:301
+#: addons/free/category.php:285
 msgid "Categories title"
 msgstr ""
 
-#: addons/free/category.php:302
+#: addons/free/category.php:286
 msgid "Title of the categories page"
 msgstr ""
 
-#: addons/free/category.php:308
+#: addons/free/category.php:292
 msgid "Category per page"
 msgstr ""
 
-#: addons/free/category.php:309
+#: addons/free/category.php:293
 msgid "Category to show per page"
 msgstr ""
 
-#: addons/free/category.php:315
+#: addons/free/category.php:299
 msgid "Categories image height"
 msgstr ""
 
-#: addons/free/category.php:316
+#: addons/free/category.php:300
 msgid "Image height in categories page"
 msgstr ""
 
-#: addons/free/category.php:437
+#: addons/free/category.php:421
 msgid "Select a topic that best fits your question"
 msgstr ""
 
-#: addons/free/category.php:485
+#: addons/free/category.php:469
 msgid "No matching category found"
 msgstr ""
 
-#: addons/free/category.php:568 addons/free/category.php:611
+#: addons/free/category.php:552 addons/free/category.php:595
 msgid "Image"
 msgstr ""
 
-#: addons/free/category.php:569 addons/free/category.php:614
+#: addons/free/category.php:553 addons/free/category.php:598
 msgid "Upload image"
 msgstr ""
 
-#: addons/free/category.php:573
+#: addons/free/category.php:557
 msgid "Category image"
 msgstr ""
 
-#: addons/free/category.php:577 addons/free/category.php:630
+#: addons/free/category.php:561 addons/free/category.php:614
 msgid "Category icon class"
 msgstr ""
 
-#: addons/free/category.php:579 addons/free/category.php:634
-#: addons/free/category.php:643
+#: addons/free/category.php:563 addons/free/category.php:618
+#: addons/free/category.php:627
 msgid "Font icon class, if image not set"
 msgstr ""
 
-#: addons/free/category.php:583
+#: addons/free/category.php:567
 msgid "Icon background color"
 msgstr ""
 
-#: addons/free/category.php:585
+#: addons/free/category.php:569
 msgid "Set background color to be used with icon"
 msgstr ""
 
-#: addons/free/category.php:623
+#: addons/free/category.php:607
 msgid "Remove image"
 msgstr ""
 
-#: addons/free/category.php:625
+#: addons/free/category.php:609
 msgid "Featured image for category"
 msgstr ""
 
-#: addons/free/category.php:639
+#: addons/free/category.php:623
 msgid "Category icon color"
 msgstr ""
 
-#: addons/free/category.php:748 templates/addons/category/categories.php:42
+#: addons/free/category.php:732 templates/addons/category/categories.php:42
 msgid "%d Sub category"
 msgid_plural "%d Sub categories"
 msgstr[0] ""
 msgstr[1] ""
 
-#: addons/free/category.php:860
+#: addons/free/category.php:844
 msgid "Question category feed"
 msgstr ""
 
-#: addons/free/category.php:908 addons/free/tag.php:693
+#: addons/free/category.php:892 addons/free/tag.php:679
 msgid ", %d+"
 msgstr ""
 
-#: addons/free/email.php:214
+#: addons/free/email.php:199
 msgid "New question posted by {asker}"
 msgstr ""
 
-#: addons/free/email.php:215
+#: addons/free/email.php:200
 msgid ""
 "Hello!\r\n"
 "A new question is posted by {asker}\r\n"
@@ -452,11 +452,11 @@ msgid ""
 "Link: {question_link}"
 msgstr ""
 
-#: addons/free/email.php:217
+#: addons/free/email.php:202
 msgid "New answer posted by {answerer}"
 msgstr ""
 
-#: addons/free/email.php:218
+#: addons/free/email.php:203
 msgid ""
 "Hello!\r\n"
 "A new answer is posted by {answerer} on {question_title}\r\n"
@@ -466,11 +466,11 @@ msgid ""
 "Link: {answer_link}"
 msgstr ""
 
-#: addons/free/email.php:220
+#: addons/free/email.php:205
 msgid "Your answer is selected as best"
 msgstr ""
 
-#: addons/free/email.php:221
+#: addons/free/email.php:206
 msgid ""
 "Hello!\r\n"
 "Your answer on '{question_title}' is selected as best.\r\n"
@@ -478,11 +478,11 @@ msgid ""
 "Link: {answer_link}"
 msgstr ""
 
-#: addons/free/email.php:223
+#: addons/free/email.php:208
 msgid "New comment by {commenter}"
 msgstr ""
 
-#: addons/free/email.php:224
+#: addons/free/email.php:209
 msgid ""
 "Hello!\r\n"
 "A new comment posted on '{question_title}' by {commenter}.\r\n"
@@ -490,11 +490,11 @@ msgid ""
 "Link: {comment_link}"
 msgstr ""
 
-#: addons/free/email.php:226
+#: addons/free/email.php:211
 msgid "A question is edited by {editor}"
 msgstr ""
 
-#: addons/free/email.php:227
+#: addons/free/email.php:212
 msgid ""
 "Hello!\r\n"
 "Question '{question_title}' is edited by {editor}.\r\n"
@@ -502,11 +502,11 @@ msgid ""
 "Link: {question_link}"
 msgstr ""
 
-#: addons/free/email.php:229
+#: addons/free/email.php:214
 msgid "An answer is edited by {editor}"
 msgstr ""
 
-#: addons/free/email.php:230
+#: addons/free/email.php:215
 msgid ""
 "Hello!\r\n"
 "Answer on '{question_title}' is edited by {editor}.\r\n"
@@ -514,120 +514,120 @@ msgid ""
 "Link: {question_link}"
 msgstr ""
 
-#: addons/free/email.php:232
+#: addons/free/email.php:217
 msgid "A question is trashed by {user}"
 msgstr ""
 
-#: addons/free/email.php:233
+#: addons/free/email.php:218
 msgid ""
 "Hello!\r\n"
 "Question '{question_title}' is trashed by {user}.\r\n"
 msgstr ""
 
-#: addons/free/email.php:235
+#: addons/free/email.php:220
 msgid "An answer is trashed by {user}"
 msgstr ""
 
-#: addons/free/email.php:236
+#: addons/free/email.php:221
 msgid ""
 "Hello!\r\n"
 "Answer on '{question_title}' is trashed by {user}.\r\n"
 msgstr ""
 
-#: addons/free/email.php:260
+#: addons/free/email.php:245
 msgid "Email"
 msgstr ""
 
-#: addons/free/email.php:262
+#: addons/free/email.php:247
 msgid "Notify admin(s)"
 msgstr ""
 
-#: addons/free/email.php:265
+#: addons/free/email.php:250
 msgid "Admin email"
 msgstr ""
 
-#: addons/free/email.php:266
+#: addons/free/email.php:251
 msgid "Enter email where admin notification should be sent"
 msgstr ""
 
-#: addons/free/email.php:272 addons/free/email.php:325
+#: addons/free/email.php:257 addons/free/email.php:310
 msgid "New question"
 msgstr ""
 
-#: addons/free/email.php:273
+#: addons/free/email.php:258
 msgid "Send email to admin for every new question."
 msgstr ""
 
-#: addons/free/email.php:279
+#: addons/free/email.php:264
 msgid "New answer"
 msgstr ""
 
-#: addons/free/email.php:280
+#: addons/free/email.php:265
 msgid "Send email to admin for every new answer."
 msgstr ""
 
-#: addons/free/email.php:286 addons/free/email.php:376
+#: addons/free/email.php:271 addons/free/email.php:361
 msgid "New comment"
 msgstr ""
 
-#: addons/free/email.php:287
+#: addons/free/email.php:272
 msgid "Send email to admin for every new comment."
 msgstr ""
 
-#: addons/free/email.php:293 addons/free/email.php:393
+#: addons/free/email.php:278 addons/free/email.php:378
 #: admin/class-list-table-hooks.php:350
 msgid "Edit question"
 msgstr ""
 
-#: addons/free/email.php:294
+#: addons/free/email.php:279
 msgid "Send email to admin when question is edited"
 msgstr ""
 
-#: addons/free/email.php:300 addons/free/email.php:410
+#: addons/free/email.php:285 addons/free/email.php:395
 msgid "Edit answer"
 msgstr ""
 
-#: addons/free/email.php:301
+#: addons/free/email.php:286
 msgid "Send email to admin when answer is edited"
 msgstr ""
 
-#: addons/free/email.php:307
+#: addons/free/email.php:292
 msgid "Delete question"
 msgstr ""
 
-#: addons/free/email.php:308
+#: addons/free/email.php:293
 msgid "Send email to admin when question is trashed"
 msgstr ""
 
-#: addons/free/email.php:314
+#: addons/free/email.php:299
 msgid "Delete answer"
 msgstr ""
 
-#: addons/free/email.php:315
+#: addons/free/email.php:300
 msgid "Send email to admin when asnwer is trashed"
 msgstr ""
 
-#: addons/free/email.php:321
+#: addons/free/email.php:306
 msgid "Templates"
 msgstr ""
 
-#: addons/free/email.php:329 addons/free/email.php:346
-#: addons/free/email.php:363 addons/free/email.php:380
-#: addons/free/email.php:397 addons/free/email.php:414
+#: addons/free/email.php:314 addons/free/email.php:331
+#: addons/free/email.php:348 addons/free/email.php:365
+#: addons/free/email.php:382 addons/free/email.php:399
 msgid "Subject"
 msgstr ""
 
-#: addons/free/email.php:335 addons/free/email.php:352
-#: addons/free/email.php:369 addons/free/email.php:386
-#: addons/free/email.php:403 addons/free/email.php:420
+#: addons/free/email.php:320 addons/free/email.php:337
+#: addons/free/email.php:354 addons/free/email.php:371
+#: addons/free/email.php:388 addons/free/email.php:405
 msgid "Body"
 msgstr ""
 
-#: addons/free/email.php:342 includes/post-types.php:118
+#: addons/free/email.php:327 includes/post-types.php:118
 msgid "New Answer"
 msgstr ""
 
-#: addons/free/email.php:359
+#: addons/free/email.php:344
 msgid "Select Answer"
 msgstr ""
 
@@ -902,123 +902,123 @@ msgstr ""
 msgid "Reputations"
 msgstr ""
 
-#: addons/free/tag.php:50 addons/free/tag.php:248 addons/free/tag.php:641
+#: addons/free/tag.php:34 addons/free/tag.php:234 addons/free/tag.php:627
 #: admin/class-list-table-hooks.php:196
 msgid "Tag"
 msgstr ""
 
-#: addons/free/tag.php:51 addons/free/tag.php:194 addons/free/tag.php:241
-#: addons/free/tag.php:318 addons/free/tag.php:398 addons/free/tag.php:423
-#: addons/free/tag.php:499 addons/free/tag.php:502 includes/form.php:105
+#: addons/free/tag.php:35 addons/free/tag.php:180 addons/free/tag.php:227
+#: addons/free/tag.php:304 addons/free/tag.php:384 addons/free/tag.php:409
+#: addons/free/tag.php:485 addons/free/tag.php:488 includes/form.php:105
 #: includes/form.php:128
 msgid "Tags"
 msgstr ""
 
-#: addons/free/tag.php:174
+#: addons/free/tag.php:160
 msgid "(AnsPress) Tags"
 msgstr ""
 
-#: addons/free/tag.php:178
+#: addons/free/tag.php:164
 msgid "Widgets in this area will be shown in anspress tags page."
 msgstr ""
 
-#: addons/free/tag.php:201 addons/free/tag.php:241
+#: addons/free/tag.php:187 addons/free/tag.php:227
 msgid "Question Tags"
 msgstr ""
 
-#: addons/free/tag.php:203
+#: addons/free/tag.php:189
 msgid "All Tags"
 msgstr ""
 
-#: addons/free/tag.php:205
+#: addons/free/tag.php:191
 msgid "Edit Tag"
 msgstr ""
 
-#: addons/free/tag.php:206
+#: addons/free/tag.php:192
 msgid "New Tag"
 msgstr ""
 
-#: addons/free/tag.php:207
+#: addons/free/tag.php:193
 msgid "View Tag"
 msgstr ""
 
-#: addons/free/tag.php:208
+#: addons/free/tag.php:194
 msgid "Search Tag"
 msgstr ""
 
-#: addons/free/tag.php:251
+#: addons/free/tag.php:237
 msgid "Tags to show"
 msgstr ""
 
-#: addons/free/tag.php:252
+#: addons/free/tag.php:238
 msgid "Numbers of tags to show in tags page."
 msgstr ""
 
-#: addons/free/tag.php:257
+#: addons/free/tag.php:243
 msgid "Maximum tags"
 msgstr ""
 
-#: addons/free/tag.php:258
+#: addons/free/tag.php:244
 msgid "Maximum numbers of tags that user can add when asking."
 msgstr ""
 
-#: addons/free/tag.php:263
+#: addons/free/tag.php:249
 msgid "Minimum tags"
 msgstr ""
 
-#: addons/free/tag.php:264
+#: addons/free/tag.php:250
 msgid "minimum numbers of tags that user must add when asking."
 msgstr ""
 
-#: addons/free/tag.php:269
+#: addons/free/tag.php:255
 msgid "Tags page title"
 msgstr ""
 
-#: addons/free/tag.php:270
+#: addons/free/tag.php:256
 msgid "Title for tags page"
 msgstr ""
 
-#: addons/free/tag.php:276
+#: addons/free/tag.php:262
 msgid "Tags page slug"
 msgstr ""
 
-#: addons/free/tag.php:277
+#: addons/free/tag.php:263
 msgid "Slug tags page"
 msgstr ""
 
-#: addons/free/tag.php:284
+#: addons/free/tag.php:270
 msgid "Tag page slug"
 msgstr ""
 
-#: addons/free/tag.php:285
+#: addons/free/tag.php:271
 msgid "Slug for tag page"
 msgstr ""
 
-#: addons/free/tag.php:346
+#: addons/free/tag.php:332
 msgid "Delete Tag"
 msgstr ""
 
-#: addons/free/tag.php:347
+#: addons/free/tag.php:333
 msgid "Add Tag"
 msgstr ""
 
-#: addons/free/tag.php:348
+#: addons/free/tag.php:334
 msgid "added to the tags list."
 msgstr ""
 
-#: addons/free/tag.php:349
+#: addons/free/tag.php:335
 msgid "removed from the tags list."
 msgstr ""
 
-#: addons/free/tag.php:350
+#: addons/free/tag.php:336
 msgid "Suggestions are available. Use the up and down arrow keys to read it."
 msgstr ""
 
-#: addons/free/tag.php:401
+#: addons/free/tag.php:387
 msgid "Type and hit enter"
 msgstr ""
 
-#: addons/free/tag.php:426
+#: addons/free/tag.php:412
 msgid "Slowly type for suggestions"
 msgstr ""
 
@@ -1739,23 +1739,23 @@ msgstr ""
 msgid "Uninstall - clear all AnsPress data"
 msgstr ""
 
-#: admin/update.php:91
+#: admin/update.php:108
 msgid "Post data updated successfully"
 msgstr ""
 
-#: admin/update.php:120
+#: admin/update.php:137
 msgid "Updated %1$d posts out of %2$d"
 msgstr ""
 
-#: admin/update.php:253
+#: admin/update.php:274 admin/update.php:287
 msgid "Successfully migrated all reputations"
 msgstr ""
 
-#: admin/update.php:312
+#: admin/update.php:346
 msgid "Migrated reputation... %1$d out of %2$d"
 msgstr ""
 
-#: admin/update.php:377
+#: admin/update.php:411
 msgid "Migrated categories data... %1$d out of %2$d"
 msgstr ""
 
@@ -1996,7 +1996,7 @@ msgstr ""
 
 #: admin/views/uninstall.php:21
 msgid ""
-"If you are unsure about this section please do use any of these options "
+"If you are unsure about this section please do not use any of these options "
 "below."
 msgstr ""
 
@@ -2404,15 +2404,15 @@ msgstr ""
 msgid "AnsPress Banned"
 msgstr ""
 
-#: includes/class/roles-cap.php:1240
+#: includes/class/roles-cap.php:1239
 msgid "Voting on own post is not allowed"
 msgstr ""
 
-#: includes/class/roles-cap.php:1248
+#: includes/class/roles-cap.php:1247
 msgid "Voting on restricted posts are not allowed."
 msgstr ""
 
-#: includes/class/roles-cap.php:1258
+#: includes/class/roles-cap.php:1257
 msgid "You do not have permission to vote."
 msgstr ""
 
@@ -3511,22 +3511,22 @@ msgstr ""
 msgid "Rahul Aryan"
 msgstr ""
 
-#: addons/free/category.php:196
+#: addons/free/category.php:180
 msgctxt "anspress-question-answer"
 msgid "Category"
 msgstr ""
 
-#: addons/free/category.php:198
+#: addons/free/category.php:182
 msgctxt "anspress-question-answer"
 msgid "Add New Category"
 msgstr ""
 
-#: addons/free/tag.php:202
+#: addons/free/tag.php:188
 msgctxt "anspress-question-answer"
 msgid "Tag"
 msgstr ""
 
-#: addons/free/tag.php:204
+#: addons/free/tag.php:190
 msgctxt "anspress-question-answer"
 msgid "Add New Tag"
 msgstr ""
