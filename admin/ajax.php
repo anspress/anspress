@@ -222,7 +222,7 @@ class AnsPress_Admin_Ajax {
 				wp_send_json( [ 'done' => 1, 'total' => 0 ] );
 			} elseif ( 'tables' === $data_type ) {
 
-				$tables = [ $wpdb->ap_qameta, $wpdb->ap_votes, $wpdb->ap_views, $wpdb->ap_reputations, $wpdb->ap_subscribers ];
+				$tables = [ $wpdb->ap_qameta, $wpdb->ap_votes, $wpdb->ap_views, $wpdb->ap_reputations, $wpdb->ap_subscribers, $wpdb->prefix . 'ap_notifications' ];
 
 				foreach ( $tables as $table ) {
 					$wpdb->query( "DROP TABLE IF EXISTS {$table}" );

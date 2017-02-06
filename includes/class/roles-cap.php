@@ -96,7 +96,6 @@ class AP_Roles {
 				}
 			}
 		}
-
 	}
 
 	/**
