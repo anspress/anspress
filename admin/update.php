@@ -259,17 +259,19 @@ class AP_Update_Helper {
 	 * Migrate migration data to new table.
 	 */
 	public function migrate_reputations() {
+		$tasks = $this->get_tasks();
+
+		if ( $tasks['reputations'] ) {
+			return;
+		}
+
+		global $wpdb;
+
 		if ( ! isset( $wpdb->ap_meta ) ) {
 			$options = get_option( 'anspress_updates', [] );
 			$options['reputations'] = true;
 			update_option( 'anspress_updates', $options );
 			$this->send( true, 'reputations', __( 'Successfully migrated all reputations', 'anspress-question-answer' ), true );
-		}
-
-		$tasks = $this->get_tasks();
-
-		if ( $tasks['reputations'] ) {
-			return;
 		}
 
 		global $wpdb;
