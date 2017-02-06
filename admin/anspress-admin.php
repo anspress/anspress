@@ -402,7 +402,7 @@ class AnsPress_Admin {
 		if ( 'post.php' === $pagenow && 'answer' === $data['post_type'] ) {
 			$parent_q = ap_sanitize_unslash( 'ap_q', 'p' );
 
-			$parent_q = ! empty( parent_q ) ? $parent_q : $data['post_parent'];
+			$parent_q = ! empty( 'parent_q' ) ? $parent_q : $data['post_parent'];
 
 			if ( ! empty( $parent_q ) ) {
 				add_filter( 'redirect_post_location', [ __CLASS__, 'custom_post_location' ], 99 );
