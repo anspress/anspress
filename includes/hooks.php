@@ -278,7 +278,7 @@ class AnsPress_Hooks {
 
 			foreach ( (array) $ans as $p ) {
 				//do_action( 'ap_untrash_answer', $p->ID, $p );
-				wp_untrash_post( $_post->ID );
+				wp_untrash_post( $p->ID );
 			}
 
 			ap_update_post_activity_meta( $_post->post_parent, 'restore_question', get_current_user_id() );

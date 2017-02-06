@@ -53,7 +53,7 @@ function ap_insert_qameta( $post_id, $args, $wp_error = false ) {
 
 	$_post = get_post( $post_id );
 
-	if ( ! $_post ) {
+	if ( ! $_post && ! in_array( $_post->post_type, [ 'question', 'answer' ], true ) ) {
 		return false;
 	}
 
