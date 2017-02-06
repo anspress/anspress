@@ -263,10 +263,10 @@ class AnsPress_Hooks {
 	 * @since 2.0.0
 	 */
 	public static function untrash_ans_on_question_untrash( $post_id ) {
-		$post = ap_get_post( $post_id );
+		$_post = ap_get_post( $post_id );
 
-		if ( 'question' === $post->post_type ) {
-			do_action( 'ap_untrash_question', $post->ID, $post );
+		if ( 'question' === $_post->post_type ) {
+			do_action( 'ap_untrash_question', $_post->ID, $_post );
 			//@codingStandardsIgnoreStart
 			$ans = get_posts( array(
 				'post_type'   => 'answer',
@@ -278,17 +278,19 @@ class AnsPress_Hooks {
 
 			foreach ( (array) $ans as $p ) {
 				//do_action( 'ap_untrash_answer', $p->ID, $p );
-				wp_untrash_post( $p->ID );
+				wp_untrash_post( $_post->ID );
 			}
-			ap_update_post_activity_meta( $p->post_parent, 'restore_question', get_current_user_id() );
+
+			ap_update_post_activity_meta( $_post->post_parent, 'restore_question', get_current_user_id() );
 		}
 
-		if ( 'answer' === $post->post_type ) {
-			$ans = ap_count_published_answers( $post->post_parent );
-			ap_update_post_activity_meta( $post->post_parent, 'restore_answer', get_current_user_id(), true );
-			do_action( 'ap_untrash_answer', $post->ID, $post );
+		if ( 'answer' === $_post->post_type ) {
+			$ans = ap_count_published_answers( $_post->post_parent );
+			ap_update_post_activity_meta( $_post->post_parent, 'restore_answer', get_current_user_id(), true );
+			do_action( 'ap_untrash_answer', $_post->ID, $post );
+
 			// Update answer count.
-			ap_update_answers_count( $post->post_parent, $ans + 1 );
+			ap_update_answers_count( $_post->post_parent, $ans + 1 );
 		}
 	}
 

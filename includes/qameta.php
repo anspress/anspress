@@ -459,12 +459,16 @@ function ap_update_post_activities( $post_id, $activities = array() ) {
  * @since  2.4.7
  */
 function ap_update_post_activity_meta( $post, $type, $user_id, $append_to_question = false, $date = false ) {
+
+	if ( empty( $post ) ) {
+		return false;
+	}
+
 	if ( false === $date ) {
 		$date = current_time( 'mysql' );
 	}
 
 	$post_o = ap_get_post( $post );
-
 	$meta_val = compact( 'type', 'user_id', 'date' );
 
 	// Append to question activity meta. So that it can shown in question list.

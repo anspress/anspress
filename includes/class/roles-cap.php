@@ -691,7 +691,7 @@ function ap_user_can_permanent_delete( $post = null, $user_id = false ) {
  * @return boolean
  * @since  3.0.0
  */
-function ap_user_can_restore( $post = null, $user_id = false ) {
+function ap_user_can_restore( $_post = null, $user_id = false ) {
 	if ( false === $user_id ) {
 		$user_id = get_current_user_id();
 	}
@@ -701,7 +701,7 @@ function ap_user_can_restore( $post = null, $user_id = false ) {
 		return true;
 	}
 
-	$post_o = is_object( $post_id ) ? $post_id : ap_get_post( $post_id );
+	$post_o = is_object( $_post ) ? $_post : ap_get_post( $_post );
 
 	if ( user_can( $user_id, 'ap_restore_posts' ) || (int) $_post->post_author === $user_id ) {
 		return true;
