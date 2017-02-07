@@ -1218,6 +1218,10 @@ function ap_new_edit_post_status( $user_id = false, $post_type = 'question', $ed
  * @since  3.0.0
  */
 function ap_find_duplicate_post( $content, $post_type = 'question', $question_id = false ) {
+	if ( ! ap_opt( 'duplicate_check' ) ) {
+		return;
+	}
+
 	global $wpdb;
 	$content = ap_sanitize_description_field( $content );
 

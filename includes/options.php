@@ -141,6 +141,7 @@ function ap_default_options() {
 		'anonymous_post_status'					=> 'moderate',
 		'bad_words'											=> '',
 		'show_comments_default'					=> true,
+		'duplicate_check'								=> true,
 	);
 
 	/**

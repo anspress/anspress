@@ -165,6 +165,12 @@ ap_register_option_section( 'general', 'qa', __( 'Question & Answer', 'anspress-
 			'type'  => 'checkbox',
 		),
 		array(
+			'name'  => 'duplicate_check',
+			'label' => __( 'Check duplicate', 'anspress-question-answer' ),
+			'desc'  => __( 'Check for duplicate posts before posting', 'anspress-question-answer' ),
+			'type'  => 'checkbox',
+		),
+		array(
 			'name'  => 'default_date_format',
 			'label' => __( 'Show default date format', 'anspress-question-answer' ),
 			'desc'  => __( 'Instead of showing time passed i.e. 1 Hour ago, show default format date.', 'anspress-question-answer' ),
