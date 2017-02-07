@@ -431,13 +431,13 @@ class AnsPress_Hooks {
 		foreach ( (array) $items as $key => $item ) {
 
 			if ( 'anspress-links' === $item->type ) {
-				if ( isset( $pages[ $item->post_name ]['private'] ) && $pages[ $item->post_name ]['private'] && ! is_user_logged_in() ) {
+				if ( isset( $pages[ $item->object ]['private'] ) && $pages[ $item->object ]['private'] && ! is_user_logged_in() ) {
 					unset( $items[ $key ] );
 				} else {
-					if ( 'questions' === $item->post_name ) {
+					if ( 'base' === $item->object ) {
 						$item->url = ap_get_link_to( '/' );
 					} else {
-						$item->url = apply_filters( 'ap_menu_link', ap_get_link_to( ap_get_page_slug( $item->post_name ) ), $item );
+						$item->url = apply_filters( 'ap_menu_link', ap_get_link_to( ap_get_page_slug( $item->object ) ), $item );
 					}
 				}
 			}
@@ -460,7 +460,7 @@ class AnsPress_Hooks {
 			return $class;
 		}
 
-		if ( ap_current_page() === $item->post_name ) {
+		if ( ap_current_page() === $item->object ) {
 			$class[] = 'current-menu-item';
 		}
 

@@ -915,7 +915,7 @@ function ap_menu_obejct() {
 				'object_id'        => 1,
 				'post_parent'      => 0,
 				'type'             => 'anspress-links',
-				'object'           => 'anspress-' . $k,
+				'object'           => $k,
 				'type_label'       => __( 'AnsPress links', 'anspress-question-answer' ),
 				'title'            => $args['title'],
 				'url'              => 'https://xyz.com',
