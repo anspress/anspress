@@ -52,7 +52,7 @@ function ap_insert_qameta( $post_id, $args, $wp_error = false ) {
 	}
 
 	$_post = get_post( $post_id );
-	if ( ! is_object( $_post ) && isset( $_post->post_type ) && ! in_array( $_post->post_type, [ 'question', 'answer' ], true ) ) {
+	if ( ! is_object( $_post ) || ! isset( $_post->post_type ) || ! in_array( $_post->post_type, [ 'question', 'answer' ], true ) ) {
 		return false;
 	}
 
