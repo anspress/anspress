@@ -1219,7 +1219,7 @@ function ap_new_edit_post_status( $user_id = false, $post_type = 'question', $ed
  */
 function ap_find_duplicate_post( $content, $post_type = 'question', $question_id = false ) {
 	if ( ! ap_opt( 'duplicate_check' ) ) {
-		return;
+		return false;
 	}
 
 	global $wpdb;
