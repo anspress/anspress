@@ -33,9 +33,9 @@ class AnsPress_Profile_Hooks {
 	public static function init() {
 		ap_register_page( 'user', __( 'User profile', 'anspress-question-answer' ), [ __CLASS__, 'user_page' ] );
 		anspress()->add_action( 'ap_rewrite_rules', __CLASS__, 'rewrite_rules', 10, 3 );
-		anspress()->add_filter( 'ap_page_title', __CLASS__, 'page_title' );
 		anspress()->add_filter( 'ap_menu_link', __CLASS__, 'menu_link', 10, 2 );
 		anspress()->add_action( 'ap_ajax_user_more_answers', __CLASS__, 'load_more_answers', 10, 2 );
+		anspress()->add_filter( 'ap_page_title', __CLASS__, 'page_title' );
 	}
 
 	/**
@@ -70,20 +70,6 @@ class AnsPress_Profile_Hooks {
 	}
 
 	/**
-	 * Add user page title.
-	 *
-	 * @param  string $title AnsPress page title.
-	 * @return string
-	 */
-	public static function page_title( $title ) {
-		if ( 'user' === ap_current_page() ) {
-			$title = sprintf( ap_opt( 'user_page_title' ), ap_user_display_name( get_query_var( 'ap_user_id' ) ) );
-		}
-
-		return $title;
-	}
-
-	/**
 	 * Filter user menu links.
 	 *
 	 * @param  string $url Menu url.
@@ -102,6 +88,10 @@ class AnsPress_Profile_Hooks {
 	 * Register user profile pages.
 	 */
 	public static function user_pages() {
+		if ( ! empty( anspress()->user_pages ) ) {
+			return;
+		}
+
 		anspress()->user_pages = array(
 			array(
 				'slug'  => 'questions',
@@ -162,6 +152,29 @@ class AnsPress_Profile_Hooks {
 		}
 
 		echo '</ul>';
+	}
+
+	/**
+	 * Add user page title.
+	 *
+	 * @param  string $title AnsPress page title.
+	 * @return string
+	 */
+	public static function page_title( $title ) {
+		if ( 'user' === ap_current_page() ) {
+			SELF::user_pages();
+			$title = sprintf( ap_opt( 'user_page_title' ), ap_user_display_name( get_query_var( 'ap_user_id' ) ) );
+			$current_tab = ap_sanitize_unslash( 'user_page', 'query_var', 'questions' );			
+			$page = ap_search_array( anspress()->user_pages, 'slug', $current_tab );		
+			
+			if ( empty( $page ) ) {
+				return $title;
+			}
+
+			return $title . ' | ' . $page[0]['label'];
+		}
+
+		return $title;
 	}
 
 	/**
