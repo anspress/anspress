@@ -156,9 +156,9 @@ class AnsPress_Process_Form {
 		// Check if duplicate.
 		if ( false !== ap_find_duplicate_post( $fields['description'], 'question' ) ) {
 			ap_ajax_json( array(
-				'form' 			=> $_POST['ap_form_action'],
-				'message_type' 	=> 'error',
-				'message'		=> __( 'This seems to be a duplicate question. A question with same content already exists.', 'anspress-question-answer' ),
+				'success' 	=> false,
+				'form' 	 	=> $_POST['ap_form_action'],
+				'snackbar' 	=> [ 'message' => __( 'This seems to be a duplicate question. A question with same content already exists.', 'anspress-question-answer' ) ],
 			) );
 		}
 
