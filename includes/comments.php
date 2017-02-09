@@ -129,9 +129,9 @@ class AnsPress_Comment_Hooks {
 		$commentdata = apply_filters( 'ap_pre_insert_comment', $commentdata );
 
 		// Insert new comment and get the comment ID.
-		$comment_id = wp_new_comment( $commentdata );
+		$comment_id = wp_new_comment( $commentdata, true );
 
-		if ( false !== $comment_id ) {
+		if ( ! is_wp_error( $comment_id ) && false !== $comment_id ) {
 			$c = get_comment( $comment_id );
 			do_action( 'ap_after_new_comment', $c );
 
@@ -147,6 +147,12 @@ class AnsPress_Comment_Hooks {
 
 			ap_ajax_json( $result );
 		}
+
+		// Lastly output error message.
+		ap_ajax_json( array(
+			'success' => false,
+			'snackbar' => [ 'message' => $comment_id->get_error_message() ],
+		) );
 	}
 
 	/**
