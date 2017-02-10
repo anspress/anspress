@@ -124,8 +124,8 @@ class AnsPress_Theme {
 	 */
 	public static function wpseo_title( $title ) {
 		if ( is_anspress() ) {
-			remove_filter('wpseo_title', array(
-				$this,
+			remove_filter( 'wpseo_title', array(
+				__CLASS__,
 				'wpseo_title',
 			));
 
