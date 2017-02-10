@@ -190,6 +190,8 @@ class AnsPress_Profile_Hooks {
 			// Callback.
 			if ( isset( $current_page['cb'] ) && method_exists( $current_page['cb'][0], $current_page['cb'][1] ) ) {
 				call_user_func( $current_page['cb'] );
+			} elseif ( ! is_array( $current_page['cb'] ) && function_exists( $current_page['cb'] ) ) {
+				call_user_func( $current_page['cb'] );
 			} else {
 				_e( 'Callback function not found for rendering this page', 'anspress-question-answer' ); // xss okay.
 			}
