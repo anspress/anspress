@@ -342,7 +342,7 @@ function ap_author_avatar( $size = 45, $_post = null ) {
 /**
  * Return hover card attributes.
  *
- * @param  object|integer|null $_post Post ID, Object or null.
+ * @param  mixed $_post Post ID, Object or null.
  * @return string
  */
 function ap_get_hover_card_attr( $_post = null ) {
@@ -358,7 +358,7 @@ function ap_get_hover_card_attr( $_post = null ) {
 /**
  * Echo hover card attributes.
  *
- * @param  object|integer|null $_post Post ID, Object or null.
+ * @param  mixed $_post Post ID, Object or null.
  */
 function ap_hover_card_attr( $_post = null ) {
 	echo ap_get_hover_card_attr( $_post ); // xss ok.
@@ -367,7 +367,7 @@ function ap_hover_card_attr( $_post = null ) {
 /**
  * Return total published answer count.
  *
- * @param  object|integer|null $_post Post ID, Object or null.
+ * @param  mixed $_post Post ID, Object or null.
  * @return integer
  */
 function ap_get_answers_count( $_post = null ) {
@@ -378,7 +378,7 @@ function ap_get_answers_count( $_post = null ) {
 /**
  * Echo total votes count of a post.
  *
- * @param  object|integer|null $_post Post ID, Object or null.
+ * @param  mixed $_post Post ID, Object or null.
  */
 function ap_answers_count( $_post = null ) {
 	echo ap_get_answers_count( $_post ); // xss ok.
@@ -387,7 +387,7 @@ function ap_answers_count( $_post = null ) {
 /**
  * Return count of net vote of a question.
  *
- * @param  object|integer|null $_post Post ID, Object or null.
+ * @param  mixed $_post Post ID, Object or null.
  * @return integer
  */
 function ap_get_votes_net( $_post = null ) {
@@ -398,7 +398,7 @@ function ap_get_votes_net( $_post = null ) {
 /**
  * Echo count of net vote of a question.
  *
- * @param  object|integer|null $_post Post ID, Object or null.
+ * @param  mixed $_post Post ID, Object or null.
  */
 function ap_votes_net( $_post = null ) {
 	echo ap_get_votes_net( $_post ); // xss ok.
@@ -408,7 +408,7 @@ function ap_votes_net( $_post = null ) {
 /**
  * Echo post status of a question.
  *
- * @param  object|integer|null $_post Post ID, Object or null.
+ * @param  mixed $_post Post ID, Object or null.
  */
 function ap_question_status( $_post = null ) {
 	$_post = ap_get_post( $_post );
@@ -473,7 +473,7 @@ function ap_question_metas( $question_id = false ) {
 /**
  * Get recent activity of a post.
  *
- * @param  object|integer|null $_post Post ID, Object or null.
+ * @param  mixed $_post Post ID, Object or null.
  * @return string
  */
 function ap_get_recent_post_activity( $_post = null ) {

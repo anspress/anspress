@@ -141,7 +141,7 @@ class AnsPress_Uploader {
  * @param array   $file           $_FILE variable.
  * @param boolean $temp           Is temproary image? If so it will be deleted if no post parent.
  * @param boolean $parent_post    Attachment parent post ID.
- * @return integer|boolean
+ * @return integer|boolean|object
  * @since  3.0.0 Added new argument `$post_parent`.
  */
 function ap_upload_user_file( $file = array(), $temp = true, $parent_post = '' ) {
@@ -166,7 +166,6 @@ function ap_upload_user_file( $file = array(), $temp = true, $parent_post = '' )
 		return new WP_Error( 'upload_error', $file_return['error'], $file_return );
 	}
 
-	$filename = $file_return['file'];
 	$attachment = array(
 		'post_parent'    => $parent_post,
 		'post_mime_type' => $file_return['type'],
@@ -281,8 +280,6 @@ function ap_post_upload_form( $post_id = false ) {
 
 	$label = sprintf( __( 'Insert images and attach media by %1$sselecting them%2$s', 'anspress-question-answer' ), '<a id="pickfiles" href="javascript:;">', '</a>' );
 	$html = '<div id="ap-upload" class="ap-upload"><div class="ap-upload-anchor">' . $label . '</div>';
-
-	$__nonce = wp_create_nonce( 'ap_ajax_nonce' );
 
 	$uploads = [];
 	foreach ( (array) $media as $m ) {

@@ -24,10 +24,6 @@ class AnsPress_Comment_Hooks {
 	 * @return array
 	 */
 	public static function comments_data( $post_id, $editing = false ) {
-		$data = array(
-			'current_user_avatar' => get_avatar( get_current_user_id(), 30 ),
-		);
-
 		$comments = get_comments( [ 'post_id' => $post_id, 'order' => 'ASC' ] );
 		$comments_arr = array();
 		foreach ( (array) $comments as $c ) {
@@ -162,7 +158,6 @@ class AnsPress_Comment_Hooks {
 	 */
 	public static function edit_comment() {
 		$comment_id = ap_sanitize_unslash( 'comment_ID', 'r' );
-		$post_id = ap_sanitize_unslash( 'post_id', 'r' );
 		$content = ap_sanitize_unslash( 'content', 'r' );
 
 		if ( ! is_user_logged_in() || ! ap_verify_nonce( 'edit-comment-' . $comment_id ) || ! ap_user_can_edit_comment( $comment_id ) ) {
@@ -203,7 +198,6 @@ class AnsPress_Comment_Hooks {
 		ap_ajax_json( array(
 			'success'  => false,
 			'snackbar' => [ 'message' => __( 'Unable to update comment', 'anspress-question-answer' ) ],
-
 		) );
 	}
 
@@ -282,10 +276,11 @@ class AnsPress_Comment_Hooks {
 		$count = get_comment_count( $_comment->comment_post_ID );
 
 		if ( $success ) {
+			$_comment  = get_comment( $comment_id );
 			ap_ajax_json( array(
 				'success'      => true,
 				'action' 		   => 'comment_approved',
-				'model'      	 => [ 'approved' => '1', 'actions' => ap_comment_actions( $c ) ],
+				'model'      	 => [ 'approved' => '1', 'actions' => ap_comment_actions( $_comment ) ],
 				'comment_ID' 	 => $comment_id,
 				'commentsCount' => [ 'text' => sprintf( _n( '%d Comment', '%d Comments', $count['all'], 'anspress-question-answer' ), $count['all'] ), 'number' => $count['all'], 'unapproved' => $count['awaiting_moderation'] ],
 				'snackbar'     => [ 'message' => __( 'Comment approved successfully.', 'anspress-question-answer' ) ],

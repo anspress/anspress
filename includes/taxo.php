@@ -29,6 +29,7 @@ function ap_question_categories_html( $args = [] ) {
 		'label'         => __( 'Categories', 'categories-for-anspress' ),
 		'echo'          => false,
 	);
+
 	if ( ! is_array( $args ) ) {
 		$defaults['question_id'] = $args;
 		$args = $defaults;
@@ -41,14 +42,14 @@ function ap_question_categories_html( $args = [] ) {
 	if ( $cats ) {
 		$o = '';
 		if ( $args['list'] ) {
-			$o = '<ul class="' . $args['class'] . '">';
+			$o .= '<ul class="' . $args['class'] . '">';
 			foreach ( $cats as $c ) {
 				$o .= '<li><a href="' . esc_url( get_term_link( $c ) ) . '" data-catid="' . $c->term_id . '" title="' . $c->description . '">' . $c->name . '</a></li>';
 			}
 			$o .= '</ul>';
 
 		} else {
-			$o = $args['label'];
+			$o .= $args['label'];
 			$o .= '<' . $args['tag'] . ' class="' . $args['class'] . '">';
 			foreach ( $cats as $c ) {
 				$o .= '<a data-catid="' . $c->term_id . '" href="' . esc_url( get_term_link( $c ) ) . '" title="' . $c->description . '">' . $c->name . '</a>';
@@ -163,8 +164,6 @@ function ap_get_category_filter( $search = false ) {
 		'hide_if_empty'     => true,
 		'number'            => 10,
 	);
-
-	$current_filters = ap_get_current_list_filters( 'category' );
 
 	if ( false !== $search ) {
 		$args['search'] = $search;
@@ -337,13 +336,13 @@ function ap_question_tags_html( $args = [] ) {
 	if ( $tags && count( $tags ) > 0 ) {
 		$o = '';
 		if ( $args['list'] ) {
-			$o = '<ul class="' . $args['class'] . '">';
+			$o .= '<ul class="' . $args['class'] . '">';
 			foreach ( $tags as $t ) {
 				$o .= '<li><a href="' . esc_url( get_term_link( $t ) ) . '" title="' . $t->description . '">' . $t->name . ' &times; <i class="tax-count">' . $t->count . '</i></a></li>';
 			}
 			$o .= '</ul>';
 		} else {
-			$o = $args['label'];
+			$o .= $args['label'];
 			$o .= '<' . $args['tag'] . ' class="' . $args['class'] . '">';
 			$i = 1;
 			foreach ( $tags as $t ) {

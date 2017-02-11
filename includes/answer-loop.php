@@ -164,8 +164,14 @@ class Answers_Query extends WP_Query {
 		foreach ( (array) $this->posts as $_post ) {
 			$this->ap_ids['post_ids'][] = $_post->ID;
 			$this->ap_ids['attach_ids'] = array_filter( array_merge( explode( ',', $_post->attach ), $this->ap_ids['attach_ids'] ) );
+
 			if ( ! empty( $_post->post_author ) ) {
 				$this->ap_ids['user_ids'][] = $_post->post_author;
+			}
+
+			// Add activities user_id to array.
+			if ( ! empty( $_post->activities ) && ! empty( $_post->activities['user_id'] ) ) {
+				$this->ap_ids['user_ids'][] = $_post->activities['user_id'];
 			}
 		}
 
@@ -187,11 +193,6 @@ class Answers_Query extends WP_Query {
 
 		if ( ! empty( $this->ap_ids['user_ids'] ) ) {
 			ap_post_author_pre_fetch( $this->ap_ids['user_ids'] );
-		}
-
-		// Add activities user_id to array.
-		if ( ! empty( $_post->activities ) && ! empty( $_post->activities['user_id'] ) ) {
-			$this->ap_ids['user_ids'][] = $_post->activities['user_id'];
 		}
 
 		do_action( 'ap_pre_fetch_answer_data', $this->ap_ids );
