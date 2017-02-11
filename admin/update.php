@@ -10,6 +10,8 @@
 
 class AP_Update_Helper {
 
+	public $this->event;
+
 	/**
 	 * Init class.
 	 *
@@ -286,52 +288,51 @@ class AP_Update_Helper {
 		}
 
 		$apmeta_to_delete = [];
-		$event = $rep->apmeta_param;
 
 		foreach ( (array) $old_reputations as $rep ) {
 			switch ( $rep->apmeta_param ) {
 				case 'new_question' :
 				case 'question' :
-					$event = 'ask';
+					$this->event = 'ask';
 
 				case 'new_answer' :
 				case 'answer' :
-					$event = 'answer';
+					$this->event = 'answer';
 
 				case 'new_comment' :
-					$event = 'comment';
+					$this->event = 'comment';
 
 				case 'vote_up' :
 				case 'question_upvote' :
 				case 'answer_upvote' :
-					$event = 'received_vote_up';
+					$this->event = 'received_vote_up';
 
 				case 'vote_down' :
 				case 'question_downvote' :
 				case 'answer_downvote' :
-					$event = 'received_vote_down';
+					$this->event = 'received_vote_down';
 
 				case 'voted_up' :
 				case 'question_upvoted' :
 				case 'answer_upvoted' :
-					$event = 'given_vote_up';
+					$this->event = 'given_vote_up';
 
 				case 'voted_down' :
 				case 'question_downvoted' :
 				case 'answer_downvoted' :
-					$event = 'given_vote_down';
+					$this->event = 'given_vote_down';
 
 				case 'selecting_answer' :
-					$event = 'select_answer';
+					$this->event = 'select_answer';
 
 				case 'select_answer' :
-					$event = 'best_answer';
+					$this->event = 'best_answer';
 
 				default:
-					$event = $rep->apmeta_param;
+					$this->event = $rep->apmeta_param;
 			}
 
-			ap_insert_reputation( $event, $rep->apmeta_actionid, $rep->apmeta_userid );
+			ap_insert_reputation( $this->event, $rep->apmeta_actionid, $rep->apmeta_userid );
 			$apmeta_to_delete[] = $rep->apmeta_id;
 
 			// Delete user meta.
