@@ -122,7 +122,7 @@ function ap_get_answer_form_fields( $question_id = false, $answer_id = false ) {
 /**
  * Generate answer form.
  *
- * @param  integer $question_id  Question iD.
+ * @param  mixed   $question_id  Question iD.
  * @param  boolean $editing      true if post is being edited.
  * @return void
  */

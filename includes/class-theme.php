@@ -98,7 +98,7 @@ class AnsPress_Theme {
 	 */
 	public static function ap_title( $title ) {
 		if ( is_anspress() ) {
-			remove_filter( 'wp_title', [ $this, 'ap_title' ] );
+			remove_filter( 'wp_title', [ __CLASS__, 'ap_title' ] );
 
 			$new_title = ap_page_title();
 
@@ -154,8 +154,8 @@ class AnsPress_Theme {
 	 */
 	public static function the_title( $title, $id = null ) {
 
-		if ( ap_opt( 'base_page' ) == $id  ) {
-			remove_filter( 'the_title', [ $this, 'the_title' ] );
+		if ( ap_opt( 'base_page' ) == $id  ) { // WPCS: loose comparison ok.
+			remove_filter( 'the_title', [ __CLASS__, 'the_title' ] );
 			return ap_page_title();
 		}
 

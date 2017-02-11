@@ -433,10 +433,6 @@ function ap_post_actions_buttons() {
  * @since  3.0.0 Moved from `ap_question_sorting()`.
  */
 function ap_get_questions_orderby( $current_url = '' ) {
-	if ( is_home() || is_front_page() ) {
-		$current_url = home_url( '/' );
-	}
-
 	$param = array();
 	$search_q = get_query_var( 'ap_s' );
 
@@ -679,10 +675,6 @@ function ap_enqueue_scripts() {
  * @param string $current_url Current URL.
  */
 function ap_get_list_filters( $current_url = '' ) {
-	if ( is_home() || is_front_page() ) {
-		$current_url = home_url( '/' );
-	}
-
 	$param = array();
 	$search_q = get_query_var( 'ap_s' );
 

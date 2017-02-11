@@ -96,11 +96,18 @@ abstract class AnsPress_Query {
 	var $offset;
 
 	/**
+	 * Arguments.
+	 *
+	 * @var array
+	 */
+	var $args;
+
+	/**
 	 * Ids to be prefetched.
 	 *
 	 * @var array
 	 */
-	var $prefetech_ids = [ 'post' => [], 'comment' => [], 'question' => [], 'answer' => [], 'user' => [] ];
+	var $ids = [ 'post' => [], 'comment' => [], 'question' => [], 'answer' => [], 'user' => [] ];
 	var $pos = [ 'post' => [], 'comment' => [], 'question' => [], 'answer' => [], 'user' => [] ];
 
 	/**
@@ -132,7 +139,7 @@ abstract class AnsPress_Query {
 		global $wpdb;
 		$this->total_count = wp_cache_get( $key . '_count', 'ap_total_count' );
 
-		if ( false === $result ) {
+		if ( false === $this->total_count ) {
 			$this->total_count = $wpdb->get_var( apply_filters( 'ap_found_rows', 'SELECT FOUND_ROWS()', $this ) ); // WPCS: db call okay.
 			wp_cache_set( $key . '_count', $this->total_count, 'ap_total_count' );
 		}

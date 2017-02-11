@@ -67,13 +67,17 @@ class AnsPress_Views {
 /**
  * Insert view data in ap_meta table and update qameta.
  *
- * @param  integer       $ref_id Reference ID.
- * @param  string        $type View type, default is question.
- * @param  integer|false $user_id User ID.
- * @return boolean
+ * @param  integer|boolean $ref_id Reference ID.
+ * @param  string          $type View type, default is question.
+ * @param  integer|false   $user_id User ID.
+ * @return boolean|integer
  */
 function ap_insert_views( $ref_id, $type = 'question', $user_id = false, $ip = false ) {
 	global $wpdb;
+
+	if ( empty( $ref_id ) ) {
+		return false;
+	}
 
 	if ( false === $user_id ) {
 		$user_id = get_current_user_id();
@@ -115,13 +119,18 @@ function ap_insert_views( $ref_id, $type = 'question', $user_id = false, $ip = f
 /**
  * Check if user already viewd post or user profile.
  *
- * @param integer $ref_id Reference ID.
- * @param integer $user_id User ID.
- * @param string  $type View type.
- * @param string  $ip IP address.
+ * @param integer|false  $ref_id Reference ID.
+ * @param integer        $user_id User ID.
+ * @param string         $type View type.
+ * @param string|boolean $ip IP address.
  * @return boolean
  */
 function ap_is_viewed( $ref_id, $user_id, $type = 'question', $ip = false ) {
+
+	if ( empty( $ref_id ) ) {
+		return false;
+	}
+
 	global $wpdb;
 	$ip_clue = '';
 

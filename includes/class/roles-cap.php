@@ -157,7 +157,7 @@ function ap_user_can_ask( $user_id = false ) {
 /**
  * Check if a user can answer on a question.
  *
- * @param  integer|object  $question_id    Question id or object.
+ * @param  mixed           $question_id    Question id or object.
  * @param  boolean|integer $user_id        User ID.
  * @return boolean
  * @since  2.4.6 Added new argument `$user_id`.

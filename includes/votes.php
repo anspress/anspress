@@ -78,9 +78,8 @@ class AnsPress_Vote {
 					'message' => __( 'Undo your vote first.', 'anspress-question-answer' ),
 				],
 				'voteData' => [
-					'net' => $counts['votes_net'],
 					'active' => $type,
-					'nonce' => wp_create_nonce( 'vote' ),
+					'nonce'  => wp_create_nonce( 'vote' ),
 				],
 			] );
 		}
@@ -410,10 +409,10 @@ function ap_is_user_voted( $post_id, $type = 'vote', $user_id = false ) {
 /**
  * Delete vote from database.
  *
- * @param  integer      $post_id Post ID.
- * @param  integer      $user_id User ID.
- * @param  string|array $type    Vote type.
- * @param  string       $value   Vote value.
+ * @param  integer         $post_id Post ID.
+ * @param  integer|boolean $user_id User ID.
+ * @param  string|array    $type    Vote type.
+ * @param  string          $value   Vote value.
  * @return boolean
  * @since  4.0.0
  */

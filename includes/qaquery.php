@@ -228,8 +228,8 @@ function ap_get_post( $post = null ) { // @codingStandardsIgnoreLine
 
 	if ( $post instanceof WP_Post || is_object( $post ) ) {
 		$_post = $post;
-	} elseif ( false !== $_post = wp_cache_get( $post, 'posts' ) ) {
-		$_post = $_post;
+	} elseif ( false !== $post_o = wp_cache_get( $post, 'posts' ) ) {
+		$_post = $post_o;
 	} else {
 		$_post = WP_Post::get_instance( $post );
 	}
@@ -655,8 +655,8 @@ function ap_get_attach( $_post = null ) {
 /**
  * Get latest activity of question or answer.
  *
- * @param  integer $post_id Question or answer ID.
- * @param  integer $answer_activities Show answers activities as well.
+ * @param  mixed           $post_id Question or answer ID.
+ * @param  integer|boolean $answer_activities Show answers activities as well.
  * @return string
  */
 function ap_latest_post_activity_html( $post_id = false, $answer_activities = false ) {
@@ -667,7 +667,7 @@ function ap_latest_post_activity_html( $post_id = false, $answer_activities = fa
 	$_post = ap_get_post( $post_id );
 	$activity = $_post->activities;
 
-	if ( $answer_activities && ! empty( $_post->activities['child'] ) ) {
+	if ( false !== $answer_activities && ! empty( $_post->activities['child'] ) ) {
 		$activity = $_post->activities['child'];
 	}
 
