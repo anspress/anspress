@@ -327,7 +327,6 @@ class AnsPress_Avatar {
 
 		// Random background Colors.
 		$color_key = array_rand( $this->colors );
-		$color = $this->colors[ $color_key ];
 
 		$bg_color = $this->hex_to_rgb( $this->colors[ $color_key ] );
 		$bg_color = imagecolorallocate( $im, $bg_color['r'], $bg_color['g'], $bg_color['b'] );

@@ -409,13 +409,13 @@ class AnsPress_Category {
 			$catgeory = $category[0]->term_id;
 		}
 
-		$category_post = ap_sanitize_unslash( 'category', 'request' );
+		$catgeory = ap_sanitize_unslash( 'category', 'request' );
 
 		$args['fields'][] = array(
 			'name' 		    => 'category',
 			'label' 	    => __( 'Category', 'anspress-question-answer' ),
 			'type'  	    => 'taxonomy_select',
-			'value' 	    => ( $editing ? $catgeory: $category_post ),
+			'value' 	    => ( ! empty( $catgeory ) ? $catgeory: '' ),
 			'taxonomy' 	  => 'question_category',
 			'orderby' 	  => ap_opt( 'form_category_orderby' ),
 			'desc' 		    => __( 'Select a topic that best fits your question', 'anspress-question-answer' ),
@@ -445,7 +445,7 @@ class AnsPress_Category {
 		$fields = $validate->get_sanitized_fields();
 
 		if ( isset( $fields['category'] ) ) {
-			$category = wp_set_post_terms( $post_id, $fields['category'], 'question_category' );
+			wp_set_post_terms( $post_id, $fields['category'], 'question_category' );
 		}
 
 	}
