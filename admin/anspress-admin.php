@@ -444,13 +444,12 @@ class AnsPress_Admin {
 	 */
 	public static function render_menu( $object, $args ) {
 		global $nav_menu_selected_id;
-
 		$menu_items = ap_menu_obejct();
 		$db_fields = false;
 
-		if ( false ) {
+		/*if ( false ) {
 			$db_fields = array( 'parent' => 'parent', 'id' => 'post_parent' );
-		}
+		}*/
 
 		$walker = new Walker_Nav_Menu_Checklist( $db_fields );
 		$removed_args = array(
@@ -636,7 +635,6 @@ class AnsPress_Admin {
 	 * @since 4.0.0
 	 */
 	public static function process_option_form() {
-		$updated = '';
 		$redirect = admin_url( 'admin.php?page=anspress_options' );
 
 		if ( ap_isset_post_value( '__nonce' ) && ap_verify_nonce( 'nonce_option_form' ) && current_user_can( 'manage_options' ) ) {
