@@ -73,15 +73,6 @@ class AnsPress_Email {
 	}
 
 	/**
-	 * Set subject.
-	 *
-	 * @param string $template Subject template.
-	 */
-	public function set_subject( $template ) {
-		$this->subject = $this->parse_template( $content );
-	}
-
-	/**
 	 * Replace tags in template.
 	 *
 	 * @param string $content Template.
@@ -838,7 +829,6 @@ class AnsPress_Email_Hooks {
 	 */
 	public static function comment_subscription( $comment ) {
 		if ( $comment->user_id > 0 ) {
-			$_post = get_post( $comment->comment_post_ID );
 			ap_new_subscriber( $comment->user_id, 'comment_' . $comment->comment_post_ID, $comment->comment_ID );
 		}
 	}

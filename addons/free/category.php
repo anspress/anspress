@@ -404,12 +404,12 @@ class AnsPress_Category {
 
 		global $editing_post;
 
+		$catgeory = ap_sanitize_unslash( 'category', 'request' );
+
 		if ( $editing ) {
 			$category = get_the_terms( $editing_post->ID, 'question_category' );
 			$catgeory = $category[0]->term_id;
 		}
-
-		$catgeory = ap_sanitize_unslash( 'category', 'request' );
 
 		$args['fields'][] = array(
 			'name' 		    => 'category',
