@@ -433,7 +433,6 @@ function ap_form_allowed_tags() {
 function ap_send_json( $result = array() ) {
 	header( 'Content-Type: text/html; charset=' . get_option( 'blog_charset' ) );
 	$result['is_ap_ajax'] = true;
-	$message_type = isset( $result['message_type'] ) ? $result['message_type'] : 'success';
 	$json = '<div id="ap-response">' . wp_json_encode( $result, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP ) . '</div>';
 	wp_die( $json ); // xss ok.
 }
@@ -876,10 +875,6 @@ function ap_create_base_page() {
 			$page = ap_get_post( $new_page_id );
 			ap_opt( 'base_page', $page->ID );
 			ap_opt( 'base_page_id', $page->post_name );
-		}
-	} else {
-		if ( 'ANSPRESS_TITLE' === $_post->post_title ) {
-			wp_update_post( array( 'ID' => $page->ID, 'post_title' => ap_opt( 'base_page_title' ) ) );
 		}
 	}
 }
@@ -1416,6 +1411,7 @@ function ap_user_display_name( $args = array() ) {
  * @since  unknown
  */
 function ap_user_link( $user_id = false, $sub = false ) {
+	$link = '';
 
 	if ( false === $user_id ) {
 		$user_id = get_the_author_meta( 'ID' );
@@ -1423,7 +1419,7 @@ function ap_user_link( $user_id = false, $sub = false ) {
 
 	if ( $user_id < 1 ) {
 		$link = ap_get_link_to( array( 'ap_page' => 'user', 'ap_user' => 0 ) );
-	} else{
+	} else {
 
 		if ( function_exists( 'bp_core_get_userlink' ) ) {
 			return bp_core_get_userlink( $user_id, false, true );
