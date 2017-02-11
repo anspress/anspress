@@ -370,13 +370,7 @@ class AnsPress_Tag {
 	 */
 	public static function ask_from_tag_field( $args, $editing ) {
 		global $editing_post;
-
-		if ( $editing ) {
-			$tags = get_the_terms( $editing_post->ID, 'question_tag' );
-		}
-
-		$tags_post = ap_sanitize_unslash( 'tags', 'r', '' );
-		$tag_val = $editing ? $tags : $tags_post;
+		$tag_val = $editing ? get_the_terms( $editing_post->ID, 'question_tag' ) : ap_sanitize_unslash( 'tags', 'r', [] ) ;
 
 		ob_start();
 		?>
@@ -576,9 +570,9 @@ class AnsPress_Tag {
 	 */
 	public static function ap_current_page_is( $page ) {
 		if ( is_question_tags() ) {
-			$template = 'tags';
+			$page = 'tags';
 		} elseif ( is_question_tag() ) {
-			$template = 'tag';
+			$page = 'tag';
 		}
 
 		return $page;

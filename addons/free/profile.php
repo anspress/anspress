@@ -59,8 +59,6 @@ class AnsPress_Profile_Hooks {
 	 * @return array
 	 */
 	public static function rewrite_rules( $rules, $slug, $base_page_id ) {
-		$base = 'index.php?page_id=' . $base_page_id . '&ap_page=' ;
-
 		$new_rules = array(
 			$slug . ap_get_page_slug( 'user' ) . '/([^/]+)/([^/]+)/?' => 'index.php?page_id=' . $base_page_id . '&ap_page=user&ap_user=$matches[#]&user_page=$matches[#]',
 			$slug . ap_get_page_slug( 'user' ) . '/([^/]+)/?' => 'index.php?page_id=' . $base_page_id . '&ap_page=user&ap_user=$matches[#]',
@@ -164,9 +162,9 @@ class AnsPress_Profile_Hooks {
 		if ( 'user' === ap_current_page() ) {
 			SELF::user_pages();
 			$title = sprintf( ap_opt( 'user_page_title' ), ap_user_display_name( get_query_var( 'ap_user_id' ) ) );
-			$current_tab = ap_sanitize_unslash( 'user_page', 'query_var', 'questions' );			
-			$page = ap_search_array( anspress()->user_pages, 'slug', $current_tab );		
-			
+			$current_tab = ap_sanitize_unslash( 'user_page', 'query_var', 'questions' );
+			$page = ap_search_array( anspress()->user_pages, 'slug', $current_tab );
+
 			if ( empty( $page ) ) {
 				return $title;
 			}
