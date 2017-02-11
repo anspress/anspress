@@ -114,7 +114,6 @@ function ap_option_group_fields() {
 	}
 
 	$group = $groups[ $active ];
-	$ap_active_section = ap_isset_post_value( 'ap_active_section', '' );
 
 	foreach ( (array) $group['sections'] as $section_slug => $section ) {
 		$fields = $section['fields'];

@@ -28,8 +28,6 @@ class AP_Update_Helper {
 		define( 'AP_DISABLE_INSERT_REP', true );
 
 		if ( $init ) {
-			$active = '';
-
 			foreach ( $this->get_tasks() as $slug => $status ) {
 				if ( ! $status ) {
 					$this->send( true, $slug, '' );
@@ -158,14 +156,13 @@ class AP_Update_Helper {
 	 * @since 4.0.0
 	 */
 	public function migrate_votes( $post_id ) {
+		global $wpdb;
+
 		if ( ! isset( $wpdb->ap_meta ) ) {
 			return;
 		}
 
-		global $wpdb;
-
 		$post_id = (int) $post_id;
-
 		$old_votes = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}ap_meta WHERE apmeta_type IN ('vote_up', 'vote_down') AND apmeta_actionid = {$post_id}" ); // @codingStandardsIgnoreLine
 
 		$apmeta_to_delete = [];
@@ -198,11 +195,12 @@ class AP_Update_Helper {
 	 * Migrate views data to new table.
 	 */
 	public function migrate_views( $post_id ) {
+		global $wpdb;
+
 		if ( ! isset( $wpdb->ap_meta ) ) {
 			return;
 		}
 
-		global $wpdb;
 		$post_id = (int) $post_id;
 
 		$old_views = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}ap_meta WHERE apmeta_type = 'post_view' AND apmeta_actionid = {$post_id}" ); // DB call okay, Db cache okay.
@@ -288,8 +286,9 @@ class AP_Update_Helper {
 		}
 
 		$apmeta_to_delete = [];
-		foreach ( (array) $old_reputations as $rep ) {
+		$event = $rep->apmeta_param;
 
+		foreach ( (array) $old_reputations as $rep ) {
 			switch ( $rep->apmeta_param ) {
 				case 'new_question' :
 				case 'question' :
@@ -336,7 +335,7 @@ class AP_Update_Helper {
 			$apmeta_to_delete[] = $rep->apmeta_id;
 
 			// Delete user meta.
-			delete_user_meta( $rep->apmeta_userid, 'ap_reputation' );
+			delete_user_meta( $rep->apmeta_userid, 'ap_reputation' ); // @codingStandardsIgnoreLine.
 		}
 
 		// Delete all migrated data.
