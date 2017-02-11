@@ -207,6 +207,13 @@ class AnsPress_Avatar {
 	public $font_size = 25;
 
 	/**
+	 * Colors
+	 *
+	 * @var array
+	 */
+	public $colors = [];
+
+	/**
 	 * Initialize the class.
 	 *
 	 * @param integer|string $user User ID or name if anonymous.
@@ -402,7 +409,7 @@ function ap_is_avatar_exists( $user_id ) {
 /**
  * Generate avatar.
  *
- * @param integer $user_id User ID or name.
+ * @param integer|string $user_id User ID or name.
  * @return string Link to generated avatar.
  */
 function ap_generate_avatar( $user_id ) {
