@@ -216,7 +216,7 @@ function ap_user_can_answer( $question_id, $user_id = false ) {
 
 	// Check if user already answered and if multiple answer disabled then down't allow them to answer.
 	if ( user_can( $user_id, 'ap_new_answer' ) ) {
-		if ( ! ap_opt( 'multiple_answers' ) && ap_is_user_answered( $question_id, $user_id ) ) {
+		if ( ! ap_opt( 'multiple_answers' ) && ap_is_user_answered( $question->ID, $user_id ) ) {
 			return false;
 		} else {
 			return true;
@@ -579,7 +579,7 @@ function ap_user_can_delete_comment( $comment_id, $user_id = false ) {
 /**
  * Check if user can delete AnsPress posts.
  *
- * @param  integer       $post_id    Question or answer ID.
+ * @param  mixed         $post_id    Question or answer ID.
  * @param  integer|false $user_id    User ID.
  * @return boolean
  * @since  2.4.7 Renamed function name from `ap_user_can_delete`.
@@ -701,7 +701,7 @@ function ap_user_can_restore( $_post = null, $user_id = false ) {
 		return true;
 	}
 
-	$post_o = is_object( $_post ) ? $_post : ap_get_post( $_post );
+	$_post = is_object( $_post ) ? $_post : ap_get_post( $_post );
 
 	if ( user_can( $user_id, 'ap_restore_posts' ) || (int) $_post->post_author === $user_id ) {
 		return true;
@@ -1076,20 +1076,20 @@ function ap_role_caps( $role ) {
 /**
  * Check if a user can read post.
  *
- * @param  integer|object $post 	Post ID.
- * @param  false|integer  $user_id   User ID.
- * @param  string|integer $post_type Post type.
+ * @param  integer|object  $_post 	Post ID.
+ * @param  boolean|integer $user_id   User ID.
+ * @param  string|integer  $post_type Post type.
  * @return boolean
  * @since  2.4.6
  */
-function ap_user_can_read_post( $post = null, $user_id = false, $post_type = false ) {
+function ap_user_can_read_post( $_post = null, $user_id = false, $post_type = false ) {
 	if ( false === $user_id ) {
 		$user_id = get_current_user_id();
 	}
 
-	$post_o = ap_get_post( $post );
+	$post_o = ap_get_post( $_post );
 
-	if ( ! $post_o ){
+	if ( ! $post_o ) {
 		return false;
 	}
 
