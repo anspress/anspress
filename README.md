@@ -4,7 +4,7 @@
 **Tags:** question, answer, q&a, forum, profile, stackoverflow, quora, buddypress  
 **Requires at least:** 4.0  
 **Tested up to:** 4.7  
-**Stable tag:** 3.0.7  
+**Stable tag:** 4.0.0  
 **License:** GPLv2 or later  
 **License URI:** http://www.gnu.org/licenses/gpl-2.0.html  
 
@@ -101,6 +101,34 @@ Read full FAQ here https://anspress.io/docs/?topic=faq
 
 ** Beta 4 **
 
+* Fixed bugs in files
+* Fixed buddypress.php bugs
+* Fixed avatar.php issues
+* Fixed: Author is not able to view their own private posts
+* Fixed fatal error
+* Allow user page callback without class
+* Show WP_Error message for comments in snackbar
+* Fixed: unable to submit form when duplicate check is disabled
+* Fixed: duplicate post error snackbar message not showing
+* Improved user page title
+* Fixed php notice
+* Fixed menu
+* fixed warning
+* Added option to disable duplicate check
+* Do not insert qameta if post is not question or answer
+* Fixed trash question
+* Added misisng assets in wp-admin
+* Fixed parent_q warning
+* Fixed typo
+* Added notification table in uninstaller
+* Fixed reputation migrator
+* Deactivate old AnsPress extensions
+* Disable old AnsPress extensions while initializing AnsPress
+* Improved migrator
+* Add 302 status in shortlink redirect
+* Fixed shrotlink in reputation
+* Check ap_meta table exists while migrating
+* Do not insert reputations, notifications and prevent sending emails while updating
 * Added filter to modify tag question query
 * Added user answers page
 * Load comments by default
@@ -175,7 +203,9 @@ Read full FAQ here https://anspress.io/docs/?topic=faq
 * Fixed static method warning
 * Fixed best answer migrate bug
 * Do not show upgrade message to new installs
+
 ** Beta 2 **
+
 * Improved upgrader script
 * Added post activity migrator
 * Restore dates of question/answer after migration

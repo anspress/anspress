@@ -8,6 +8,9 @@
  * @package AnsPress
  */
 
+/**
+ * AnsPress migrator
+ */
 class AP_Update_Helper {
 
 	/**
