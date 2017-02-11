@@ -10,7 +10,12 @@
 
 class AP_Update_Helper {
 
-	public $this->event;
+	/**
+	 * Current event in foreach.
+	 *
+	 * @var string
+	 */
+	private $event;
 
 	/**
 	 * Init class.
