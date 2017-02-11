@@ -359,12 +359,14 @@ class AnsPress_BP_Hooks {
 	 */
 	public static function ap_notifier_format( $action, $activity_id, $secondary_item_id, $total_items, $format = 'string' ) {
 		$amount = 'single';
+		$notification_link = '';
+		$text = '';
 
 		if ( strrpos( $action, 'new_answer' ) !== false ) {
-		 		$answer = get_post( $activity_id );
+		 	$answer = get_post( $activity_id );
 
 			if ( $answer ) {
-				$notification_link  = get_permalink( $answer->ID );
+				$notification_link = get_permalink( $answer->ID );
 				$title = substr( strip_tags( $answer->post_title ), 0, 35 ) . (strlen( $answer->post_title ) > 35 ? '...' : '') ;
 
 				if ( (int) $total_items > 1 ) {
@@ -396,9 +398,9 @@ class AnsPress_BP_Hooks {
 			$return = apply_filters( 'ap_notifier_' . $amount . '_at_mentions_notification', '<a href="' . esc_url( $notification_link ) . '">' . esc_html( $text ) . '</a>', $notification_link, (int) $total_items, $activity_id, $secondary_item_id );
 		} else {
 			$return = apply_filters( 'ap_notifier_' . $amount . '_at_mentions_notification', array(
-				'text' => @$text,
-				'link' => @$notification_link,
-			), @$notification_link, (int) $total_items, $activity_id, $secondary_item_id );
+				'text' => $text,
+				'link' => $notification_link,
+			), $notification_link, (int) $total_items, $activity_id, $secondary_item_id );
 		}
 
 		do_action( 'ap_notifier_format_notifications', $action, $activity_id, $secondary_item_id, $total_items );
@@ -448,6 +450,8 @@ class AnsPress_BP_Hooks {
 		if ( ! bp_is_active( 'notifications' ) ) {
 			return;
 		}
+
+		global $bp;
 
 		$comment = (object) $comment;
 		$post = get_post( $comment->comment_post_ID );
