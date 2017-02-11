@@ -1140,9 +1140,9 @@ function ap_user_can_read_post( $post = null, $user_id = false, $post_type = fal
 		}
 	}
 
-	if ( 'private_post' === $post_o->post_status && ! ap_user_can_view_private_post( $post_id, $user_id ) ) {
+	if ( 'private_post' === $post_o->post_status && ! ap_user_can_view_private_post( $post_o->ID, $user_id ) ) {
 		return false;
-	} elseif ( 'moderate' === $post_o->post_status && ! ap_user_can_view_moderate_post( $post_id, $user_id ) ) {
+	} elseif ( 'moderate' === $post_o->post_status && ! ap_user_can_view_moderate_post( $post_o->ID, $user_id ) ) {
 		return false;
 	}
 
