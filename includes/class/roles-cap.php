@@ -1169,7 +1169,7 @@ function ap_user_can_read_post( $post = null, $user_id = false, $post_type = fal
 /**
  * Check if a user can read question.
  *
- * @param  integer|object  $question_id   Question ID.
+ * @param  mixed           $question_id   Question ID.
  * @param  boolean|integer $user_id     User ID.
  * @return boolean
  * @uses   ap_user_can_read_post

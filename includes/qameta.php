@@ -498,15 +498,17 @@ function ap_toggle_close_question( $post_id ) {
 /**
  * Get a specific post field.
  *
- * @param  string              $field Post field name.
- * @param  object|integer|null $_post Post ID, Object or null.
+ * @param  string $field Post field name.
+ * @param  mixed  $_post Post ID, Object or null.
  * @return mixed
  */
 function ap_get_post_field( $field, $_post = null ) {
 	$_post = ap_get_post( $_post );
+
 	if ( isset( $_post->$field ) ) {
 		return $_post->$field;
 	}
+
 	return '';
 }
 

@@ -444,8 +444,6 @@ function ap_get_questions_orderby( $current_url = '' ) {
 		$param['ap_s'] = $search_q;
 	}
 
-	$link = add_query_arg( $param, $current_url );
-
 	$navs = array(
 		[ 'key' => 'order_by', 'value' => 'active', 'label' => __( 'Active', 'anspress-question-answer' ) ],
 		[ 'key' => 'order_by', 'value' => 'newest', 'label' => __( 'Newest', 'anspress-question-answer' ) ],
@@ -601,9 +599,6 @@ function ap_current_page() {
  * @return array
  */
 function ap_assets() {
-	$dir = ap_env_dev() ? 'js' : 'min';
-	$min = ap_env_dev() ? '' : '.min';
-
 	$assets = array(
 		'js' => array(
 			'common' => [ 'dep' => [ 'jquery', 'jquery-form', 'underscore', 'backbone' ], 'footer' => true ],
@@ -694,8 +689,6 @@ function ap_get_list_filters( $current_url = '' ) {
 	if ( ! empty( $search_q ) ) {
 		$param['ap_s'] = $search_q;
 	}
-
-	$link = add_query_arg( $param, $current_url );
 
 	$filters = array(
 		'order_by' => array(
@@ -810,6 +803,7 @@ function ap_select_answer_btn_html( $_post = null ) {
  */
 function ap_post_status_btn_args( $_post = null ) {
 	$_post = ap_get_post( $_post );
+	$args = [];
 
 	if ( ap_user_can_change_status( $_post->ID ) ) {
 		global $wp_post_statuses;

@@ -218,7 +218,7 @@ class Question_Query extends WP_Query {
 /**
  * Get posts with qameta fields.
  *
- * @param  object|integer|null $post Post object.
+ * @param  mixed $post Post object.
  * @return object
  */
 function ap_get_post( $post = null ) { // @codingStandardsIgnoreLine
