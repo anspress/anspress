@@ -166,7 +166,6 @@ class AnsPress_Ajax {
 			ap_insert_qameta( $_post->post_parent, [ 'closed' => 1 ] );
 		}
 
-		$html = ap_select_answer_btn_html( $answer_id );
 		ap_ajax_json( array(
 			'success'  => true,
 			'action'   => 'selected',
@@ -233,9 +232,6 @@ class AnsPress_Ajax {
 			'newStatus'    => 'trash',
 			'postMessage' => ap_get_post_status_message( $post_id ),
 		) );
-
-		$current_ans = ap_count_published_answers( $post->post_parent );
-		$count_label = sprintf( _n( '%d Answer', '%d Answers', $current_ans, 'anspress-question-answer' ), $current_ans );
 	}
 
 	/**
@@ -449,7 +445,7 @@ class AnsPress_Ajax {
 			global $wpdb;
 
 			// Get IDs of all answer.
-			$answer_ids = $wpdb->get_col( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_parent = %d and post_type = 'answer' ", (int) $args[0] ) ); // db call okay, cache ok.
+			$answer_ids = $wpdb->get_col( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_parent = %d and post_type = 'answer' ", (int) $post_id ) ); // db call okay, cache ok.
 
 			foreach ( (array) $answer_ids as $id ) {
 				wp_delete_post( $id );

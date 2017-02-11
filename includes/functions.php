@@ -505,7 +505,7 @@ function ap_responce_message( $id, $only_message = false ) {
 /**
  * Format an array as valid AnsPress ajax response.
  *
- * @param  array $results Response to send.
+ * @param  array|string $results Response to send.
  * @return array
  */
 function ap_ajax_responce( $results ) {
