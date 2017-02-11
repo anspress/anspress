@@ -110,8 +110,6 @@ class AnsPress_Post_Table_Hooks {
 			return;
 		}
 
-		$question = ap_get_post( $post->post_parent );
-
 		$content = ap_truncate_chars( esc_html( get_the_excerpt() ), 90 );
 
 		// Pregmatch will return an array and the first 80 chars will be in the first element.
