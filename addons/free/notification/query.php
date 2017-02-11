@@ -37,10 +37,10 @@ class AnsPress_Notification_Query extends AnsPress_Query {
 	 * @param array $args Arguments.
 	 */
 	public function __construct( $args = [] ) {
+		parent::__construct( $args );
 		$this->ids['reputation'] = [];
 		$this->pos['reputation'] = [];
 		$this->verbs = ap_notification_verbs();
-		parent::__construct( $args );
 	}
 
 	/**

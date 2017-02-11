@@ -407,7 +407,7 @@ class AnsPress_Notification_Hook {
 		}
 
 		// Mark all notifications as seen.
-		$update = ap_set_notifications_as_seen( get_current_user_id() );
+		ap_set_notifications_as_seen( get_current_user_id() );
 
 		ap_ajax_json( array(
 			'success'  => true,
