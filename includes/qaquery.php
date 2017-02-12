@@ -442,8 +442,10 @@ function ap_question_metas( $question_id = false ) {
 		$metas['solved'] = '<i class="apicon-check"></i><i>' . __( 'Solved', 'anspress-question-answer' ) . '</i>';
 	}
 
-	$view_count = ap_get_post_field( 'views' );
-	$metas['views'] = '<i class="apicon-eye"></i><i>' . sprintf( __( '%d views', 'anspress-question-answer' ), $view_count ) . '</i>';
+	if ( ! ap_opt( 'disable_views' ) ) {
+		$view_count = ap_get_post_field( 'views' );
+		$metas['views'] = '<i class="apicon-eye"></i><i>' . sprintf( __( '%d views', 'anspress-question-answer' ), $view_count ) . '</i>';
+	}
 
 	if ( is_question() ) {
 		$last_active 	= ap_get_last_active( get_question_id() );
