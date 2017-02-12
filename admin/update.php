@@ -106,7 +106,7 @@ class AP_Update_Helper {
 
 		global $wpdb;
 		$done = (int) get_option( 'anspress_updated_q_offset', 0 );
-		$ids = $wpdb->get_results( "SELECT SQL_CALC_FOUND_ROWS ID, post_type, post_parent, post_status FROM {$wpdb->posts} LEFT JOIN {$wpdb->ap_qameta} ON post_id = ID WHERE ptype IS NULL post_type IN ('question', 'answer') LIMIT {$done},50" );
+		$ids = $wpdb->get_results( "SELECT SQL_CALC_FOUND_ROWS ID, post_type, post_parent, post_status FROM {$wpdb->posts} LEFT JOIN {$wpdb->ap_qameta} ON post_id = ID WHERE ptype IS NULL AND post_type IN ('question', 'answer') LIMIT {$done},50" );
 		$total_ids = $wpdb->get_var( 'SELECT FOUND_ROWS()' ); // DB call okay, Db cache okay.
 
 		if ( empty( $ids ) ) {
