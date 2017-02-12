@@ -1418,9 +1418,8 @@ function ap_user_link( $user_id = false, $sub = false ) {
 	}
 
 	if ( $user_id < 1 ) {
-		$link = ap_get_link_to( array( 'ap_page' => 'user', 'ap_user' => 0 ) );
+		$link = '#anonymousUser';
 	} else {
-
 		if ( function_exists( 'bp_core_get_userlink' ) ) {
 			return bp_core_get_userlink( $user_id, false, true );
 		} elseif ( function_exists( 'userpro' ) ) {
@@ -1432,24 +1431,10 @@ function ap_user_link( $user_id = false, $sub = false ) {
 			return false;
 		}
 
-		$user = get_user_by( 'id', $user_id );
-
-		// If permalink is enabled.
-		if ( get_option( 'permalink_structure' ) !== '' ) {
-			if ( false === $sub ) {
-				$sub = array( 'ap_page' => 'user', 'ap_user' => $user->user_login );
-			} elseif ( is_array( $sub ) ) {
-				$sub['ap_page']  = 'user';
-				$sub['ap_user']     = $user->user_login;
-			} elseif ( ! is_array( $sub ) ) {
-				$sub = array( 'ap_page' => 'user', 'ap_user' => $user->user_login, 'user_page' => $sub );
-			}
-
-			$link = ap_get_link_to( $sub );
-		}
+		$link = get_author_posts_url( $user_id );
 	}
 
-	return apply_filters( 'ap_user_link', $link, $user_id );
+	return apply_filters( 'ap_user_link', $link, $user_id, $sub );
 }
 
 /**

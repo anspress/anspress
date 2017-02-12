@@ -36,6 +36,7 @@ class AnsPress_Profile_Hooks {
 		anspress()->add_filter( 'ap_menu_link', __CLASS__, 'menu_link', 10, 2 );
 		anspress()->add_action( 'ap_ajax_user_more_answers', __CLASS__, 'load_more_answers', 10, 2 );
 		anspress()->add_filter( 'ap_page_title', __CLASS__, 'page_title' );
+		anspress()->add_filter( 'ap_user_link', __CLASS__, 'ap_user_link', 10, 3 );
 	}
 
 	/**
@@ -173,6 +174,34 @@ class AnsPress_Profile_Hooks {
 		}
 
 		return $title;
+	}
+
+	/**
+	 * Filter ap_user_link function.
+	 *
+	 * @param string       $link Link.
+	 * @param integer      $user_id User id.
+	 * @param array|string $sub Sub page.
+	 * @return string
+	 */
+	public static function ap_user_link( $link, $user_id, $sub ) {
+		$user = get_user_by( 'id', $user_id );
+
+		// If permalink is enabled.
+		if ( $user_id > 0 && get_option( 'permalink_structure' ) !== '' ) {
+			if ( false === $sub ) {
+				$sub = array( 'ap_page' => 'user', 'ap_user' => $user->user_login );
+			} elseif ( is_array( $sub ) ) {
+				$sub['ap_page']  = 'user';
+				$sub['ap_user']  = $user->user_login;
+			} elseif ( ! is_array( $sub ) ) {
+				$sub = array( 'ap_page' => 'user', 'ap_user' => $user->user_login, 'user_page' => $sub );
+			}
+
+			$link = ap_get_link_to( $sub );
+		}
+
+		return $link;
 	}
 
 	/**
