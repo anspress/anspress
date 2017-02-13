@@ -134,7 +134,7 @@ function ap_get_theme_url( $file, $plugin = false, $ver = true ) {
  * @return boolean
  */
 function is_anspress() {
-	$queried_object = get_queried_object();
+
 	// If buddypress installed.
 	if ( function_exists( 'bp_current_component' ) ) {
 	    $bp_com = bp_current_component();
@@ -142,12 +142,21 @@ function is_anspress() {
 	        return true;
 	    }
 	}
+
+	$queried_object = get_queried_object();
+
+	if ( empty( $queried_object ) || ! is_object( $queried_object ) ) {
+		return false;
+	}
+
 	if ( ! isset( $queried_object->ID ) ) {
 		return false;
 	}
+
 	if ( (int) ap_opt( 'base_page' ) === $queried_object->ID ) {
 		return true;
 	}
+
 	return false;
 }
 
