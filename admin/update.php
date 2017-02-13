@@ -14,11 +14,11 @@
 class AP_Update_Helper {
 
 	/**
-	 * Current event in foreach.
+	 * Checks if old meta table exists.
 	 *
-	 * @var string
+	 * @var boolean
 	 */
-	private $event;
+	private $meta_table_exists = false;
 
 	/**
 	 * Init class.
@@ -35,7 +35,6 @@ class AP_Update_Helper {
 
 		// Also disable inserting of reputations and notifications.
 		define( 'AP_DISABLE_INSERT_NOTI', true );
-		define( 'AP_DISABLE_INSERT_REP', true );
 
 		if ( $init ) {
 			foreach ( $this->get_tasks() as $slug => $status ) {
@@ -44,10 +43,22 @@ class AP_Update_Helper {
 				}
 			}
 		}
+
+		$this->check_old_meta_table_exists();
 		$this->check_tables();
 		$this->migrate_post_data();
 		$this->migrate_reputations();
 		$this->migrate_category_data();
+	}
+
+	/**
+	 * Check if old ap_meta table exists.
+	 */
+	public function check_old_meta_table_exists() {
+		global $wpdb;
+		if ( $wpdb->prefix . 'ap_meta' === $wpdb->get_var( "SHOW TABLES LIKE '{$wpdb->prefix}ap_meta'" ) ) {
+			$this->meta_table_exists = true;
+		}
 	}
 
 	/**
@@ -80,6 +91,7 @@ class AP_Update_Helper {
 	 * @param boolean $success Is success.
 	 * @param string  $active  Active task slug.
 	 * @param string  $message Response message.
+	 * @param boolean $continue Continue oparation.
 	 */
 	public function send( $success, $active, $message, $continue = false ) {
 		$tasks = $this->get_tasks();
@@ -97,6 +109,9 @@ class AP_Update_Helper {
 		) );
 	}
 
+	/**
+	 * Migrate question and answer.
+	 */
 	public function migrate_post_data() {
 		$tasks = $this->get_tasks();
 
@@ -191,6 +206,8 @@ class AP_Update_Helper {
 
 	/**
 	 * Re-count answers.
+	 *
+	 * @param mixed $_post Post object.
 	 */
 	public function update_answers_count( $_post ) {
 
@@ -203,11 +220,13 @@ class AP_Update_Helper {
 
 	/**
 	 * Migrate views data to new table.
+	 *
+	 * @param integer $post_id Post id.
 	 */
 	public function migrate_views( $post_id ) {
 		global $wpdb;
 
-		if ( ! isset( $wpdb->ap_meta ) ) {
+		if ( ! $this->meta_table_exists ) {
 			return;
 		}
 
@@ -264,6 +283,44 @@ class AP_Update_Helper {
 	}
 
 	/**
+	 * Return new reputation event alternative.
+	 *
+	 * @param  string $old_event Old event.
+	 * @return string
+	 */
+	public function replace_old_reputation_event( $old_event ) {
+		$events = array(
+			'ask'                => [ 'new_question', 'question' ],
+			'answer'             => [ 'new_answer', 'answer' ],
+			'received_vote_up'   => [ 'vote_up', 'question_upvote', 'answer_upvote' ],
+			'received_vote_down' => [ 'vote_down', 'question_downvote', 'answer_downvote' ],
+			'given_vote_up'      => [ 'voted_up', 'question_upvoted', 'answer_upvoted' ],
+			'given_vote_down'    => [ 'voted_down', 'question_downvoted', 'answer_downvoted' ],
+			'selecting_answer'   => 'select_answer',
+			'select_answer'      => 'best_answer',
+			'comment'            => 'new_comment',
+		);
+
+		$found = false;
+
+		foreach ( $events as $new_event => $olds ) {
+			if ( is_array( $olds ) && in_array( $old_event, $olds, true ) ) {
+				$found = $new_event;
+				break;
+			} elseif ( $old_event === $olds ) {
+				$found = $new_event;
+				break;
+			}
+		}
+
+		if ( false !== $found ) {
+			return $found;
+		}
+
+		return  $old_event;
+	}
+
+	/**
 	 * Migrate migration data to new table.
 	 */
 	public function migrate_reputations() {
@@ -275,7 +332,7 @@ class AP_Update_Helper {
 
 		global $wpdb;
 
-		if ( ! isset( $wpdb->ap_meta ) ) {
+		if ( ! $this->meta_table_exists ) {
 			$options = get_option( 'anspress_updates', [] );
 			$options['reputations'] = true;
 			update_option( 'anspress_updates', $options );
@@ -283,7 +340,7 @@ class AP_Update_Helper {
 		}
 
 		global $wpdb;
-		$old_reputations = $wpdb->get_results( "SELECT SQL_CALC_FOUND_ROWS * FROM {$wpdb->prefix}ap_meta WHERE apmeta_type = 'reputation' LIMIT 50" ); // DB call okay, Db cache okay.
+		$old_reputations = $wpdb->get_results( "SELECT SQL_CALC_FOUND_ROWS * FROM {$wpdb->prefix}ap_meta WHERE apmeta_type = 'reputation' LIMIT 200" ); // DB call okay, Db cache okay.
 
 		$total_reputations = $wpdb->get_var( 'SELECT FOUND_ROWS()' ); // DB call okay, Db cache okay.
 		$fetched = $wpdb->num_rows;
@@ -298,49 +355,8 @@ class AP_Update_Helper {
 		$apmeta_to_delete = [];
 
 		foreach ( (array) $old_reputations as $rep ) {
-			switch ( $rep->apmeta_param ) {
-				case 'new_question' :
-				case 'question' :
-					$this->event = 'ask';
-
-				case 'new_answer' :
-				case 'answer' :
-					$this->event = 'answer';
-
-				case 'new_comment' :
-					$this->event = 'comment';
-
-				case 'vote_up' :
-				case 'question_upvote' :
-				case 'answer_upvote' :
-					$this->event = 'received_vote_up';
-
-				case 'vote_down' :
-				case 'question_downvote' :
-				case 'answer_downvote' :
-					$this->event = 'received_vote_down';
-
-				case 'voted_up' :
-				case 'question_upvoted' :
-				case 'answer_upvoted' :
-					$this->event = 'given_vote_up';
-
-				case 'voted_down' :
-				case 'question_downvoted' :
-				case 'answer_downvoted' :
-					$this->event = 'given_vote_down';
-
-				case 'selecting_answer' :
-					$this->event = 'select_answer';
-
-				case 'select_answer' :
-					$this->event = 'best_answer';
-
-				default:
-					$this->event = $rep->apmeta_param;
-			}
-
-			ap_insert_reputation( $this->event, $rep->apmeta_actionid, $rep->apmeta_userid );
+			$event = $this->replace_old_reputation_event( $rep->apmeta_param );
+			ap_insert_reputation( $event, $rep->apmeta_actionid, $rep->apmeta_userid );
 			$apmeta_to_delete[] = $rep->apmeta_id;
 
 			// Delete user meta.

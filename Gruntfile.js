@@ -52,7 +52,7 @@
 			copy: {
 				main: {
 					files: [
-					{nonull:true, expand: true, cwd: 'M:\\xampp\\htdocs\\anspress\\wp-content\\plugins\\anspress-question-answer', src: ['**/*', '!**/.git/**', '!**/.svn/**', '!**/node_modules/**', '!**/bin/**', '!**/docs/**', '!**/tests/**'], dest: 'M:\\wamp\\www\\aptest\\wp-content\\plugins\\anspress-question-answer'},
+					{nonull:true, expand: true, cwd: 'M:\\xampp\\htdocs\\anspress\\wp-content\\plugins\\anspress-question-answer', src: ['**/*', '!**/.git/**', '!**/.svn/**', '!**/node_modules/**', '!**/bin/**', '!**/docs/**', '!**/tests/**'], dest: 'M:\\xampp\\htdocs\\ap3\\wp-content\\plugins\\anspress-question-answer'},
 					{nonull:true, expand: true, cwd: 'M:\\xampp\\htdocs\\anspress\\wp-content\\plugins\\anspress-question-answer', src: ['**/*', '!**/.git/**', '!**/.svn/**', '!**/node_modules/**', '!**/bin/**', '!**/docs/**', '!**/tests/**'], dest: 'M:\\xampp\\htdocs\\askbug\\wp-content\\plugins\\anspress-question-answer'}
 					]
 				}
