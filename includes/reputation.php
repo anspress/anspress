@@ -496,10 +496,13 @@ class AnsPress_Reputation_Query {
 		$ids = array_merge( $this->ids['post'], $this->ids['answer'], $this->ids['question'] );
 
 		$ids = esc_sql( sanitize_comma_delimited( $ids ) );
-		$posts = $wpdb->get_results( "SELECT * FROM {$wpdb->posts} WHERE ID in ({$ids})" );
 
-		foreach ( (array) $posts as $_post ) {
-			$this->reputations[ $this->pos[ $_post->ID ] ]->ref = $_post;
+		if ( ! empty( $ids ) ) {
+			$posts = $wpdb->get_results( "SELECT * FROM {$wpdb->posts} WHERE ID in ({$ids})" ); // WPCS: db call okay.
+
+			foreach ( (array) $posts as $_post ) {
+				$this->reputations[ $this->pos[ $_post->ID ] ]->ref = $_post;
+			}
 		}
 	}
 
