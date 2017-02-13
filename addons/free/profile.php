@@ -76,7 +76,7 @@ class AnsPress_Profile_Hooks {
 	 * @return string
 	 */
 	public static function menu_link( $url, $item ) {
-		if ( 'user-profile' === $item->post_name ) {
+		if ( 'user' === $item->object ) {
 			$url = ap_user_link( get_current_user_id() );
 		}
 
