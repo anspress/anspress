@@ -116,6 +116,9 @@ function ap_delete_reputation( $event, $ref_id, $user_id = false ) {
 		return false;
 	}
 
+	// Update user meta.
+	ap_update_user_reputation_meta( $user_id );
+
 	/**
 	 * Trigger action after deleteing a reputation.
 	 */

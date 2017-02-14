@@ -287,7 +287,7 @@ class AnsPress_Hooks {
 		if ( 'answer' === $_post->post_type ) {
 			$ans = ap_count_published_answers( $_post->post_parent );
 			ap_update_post_activity_meta( $_post->post_parent, 'restore_answer', get_current_user_id(), true );
-			do_action( 'ap_untrash_answer', $_post->ID, $post );
+			do_action( 'ap_untrash_answer', $_post->ID, $_post );
 
 			// Update answer count.
 			ap_update_answers_count( $_post->post_parent, $ans + 1 );

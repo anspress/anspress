@@ -36,8 +36,10 @@ class AnsPress_Reputation_Hooks {
 		anspress()->add_action( 'ap_after_new_answer', __CLASS__, 'new_answer', 10, 2 );
 		anspress()->add_action( 'ap_untrash_question', __CLASS__, 'new_question', 10, 2 );
 		anspress()->add_action( 'ap_trash_question', __CLASS__, 'trash_question', 10, 2 );
+		anspress()->add_action( 'ap_before_delete_question', __CLASS__, 'trash_question', 10, 2 );
 		anspress()->add_action( 'ap_untrash_answer', __CLASS__, 'new_answer', 10, 2 );
 		anspress()->add_action( 'ap_trash_answer', __CLASS__, 'trash_answer', 10, 2 );
+		anspress()->add_action( 'ap_before_delete_answer', __CLASS__, 'trash_answer', 10, 2 );
 		anspress()->add_action( 'ap_select_answer', __CLASS__, 'select_answer' );
 		anspress()->add_action( 'ap_unselect_answer', __CLASS__, 'unselect_answer' );
 		anspress()->add_action( 'ap_vote_up', __CLASS__, 'vote_up' );
