@@ -204,7 +204,11 @@ class AnsPress_Notification_Query extends AnsPress_Query {
 	 */
 	public function item_template() {
 		$verb = $this->verb_args( $this->object->noti_verb );
-		include ap_get_theme_location( 'addons/notification/' . sanitize_file_name( $verb['ref_type'] . '.php' ) );
+		$file = ap_get_theme_location( 'addons/notification/' . sanitize_file_name( $verb['ref_type'] . '.php' ) );
+
+		if ( file_exists( $file ) ) {
+			include $file;
+		}
 	}
 
 	/**
