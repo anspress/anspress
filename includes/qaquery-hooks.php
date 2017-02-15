@@ -100,6 +100,9 @@ class AP_QA_Query_Hooks {
 				$sql['orderby'] = 'qameta.selected <> 1 , ' . $sql['orderby'];
 			}
 
+			// Allow filtering sql query.
+			$sql = apply_filters( 'ap_qa_sql', $sql );
+
 			$args->count_request = $sql;
 		}
 

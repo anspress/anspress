@@ -18,24 +18,6 @@
 					}
 				}
 			},
-
-			addtextdomain: {
-				options: {
-							textdomain: 'anspress-question-answer',    // Project text domain.
-							updateDomains: ['ap']  // List of text domains to replace.
-					},
-					target: {
-							files: {
-									src: [
-											'*.php',
-											'**/*.php',
-											'!node_modules/**',
-											'!tests/**',
-											'!.git/.*', '!.svn/.*', '!.vendor/.*'
-									]
-							}
-					}
-			},
 			phpdocumentor: {
 				dist: {
 					options: {
@@ -47,15 +29,6 @@
 			csscomb: {
 				files: ['**/*.css', '!**/node_modules/**'],
 				tasks: ['csscomb'],
-			},
-
-			copy: {
-				main: {
-					files: [
-					{nonull:true, expand: true, cwd: 'M:\\xampp\\htdocs\\anspress\\wp-content\\plugins\\anspress-question-answer', src: ['**/*', '!**/.git/**', '!**/.svn/**', '!**/node_modules/**', '!**/bin/**', '!**/docs/**', '!**/tests/**'], dest: 'M:\\xampp\\htdocs\\ap3\\wp-content\\plugins\\anspress-question-answer'},
-					{nonull:true, expand: true, cwd: 'M:\\xampp\\htdocs\\anspress\\wp-content\\plugins\\anspress-question-answer', src: ['**/*', '!**/.git/**', '!**/.svn/**', '!**/node_modules/**', '!**/bin/**', '!**/docs/**', '!**/tests/**'], dest: 'M:\\xampp\\htdocs\\askbug\\wp-content\\plugins\\anspress-question-answer'}
-					]
-				}
 			},
 			version: {
 				css: {
