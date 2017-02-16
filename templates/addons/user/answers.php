@@ -32,6 +32,6 @@ global $answers;
 
 		<?php
 		else :
-			ap_get_template_part( 'content-none' );
+			_e( 'No answer posted by this user.', 'anspress-question-answer' );
 		endif;
 	?>
