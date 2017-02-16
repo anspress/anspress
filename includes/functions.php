@@ -715,7 +715,7 @@ function ap_get_link_to( $sub ) {
  * @since  2.0.0
  * @TODO use new qameta table.
  */
-function ap_total_posts_count( $post_type = 'question', $ap_type = false ) {
+function ap_total_posts_count( $post_type = 'question', $ap_type = false, $user_id = false ) {
 	global $wpdb;
 
 	if ( 'question' === $post_type ) {
@@ -732,9 +732,20 @@ function ap_total_posts_count( $post_type = 'question', $ap_type = false ) {
 	if ( 'flag' === $ap_type ) {
 		$meta = 'AND qameta.flags > 0';
 		$join = "INNER JOIN {$wpdb->ap_qameta} qameta ON p.ID = qameta.post_id";
+	} elseif ( 'unanswered' === $ap_type ) {
+		$meta = 'AND qameta.answers = 0';
+		$join = "INNER JOIN {$wpdb->ap_qameta} qameta ON p.ID = qameta.post_id";
+	} elseif ( 'best_answer' === $ap_type ) {
+		$meta = 'AND qameta.selected > 0';
+		$join = "INNER JOIN {$wpdb->ap_qameta} qameta ON p.ID = qameta.post_id";
 	}
 
 	$where = "WHERE p.post_status NOT IN ('trash', 'draft') AND $type $meta";
+
+	if ( false !== $user_id && (int) $user_id > 0 ) {
+		$where .= ' AND p.post_author = ' . (int) $user_id;
+	}
+
 	$where = apply_filters( 'ap_total_posts_count', $where );
 	$query = "SELECT count(*) as count, p.post_status FROM $wpdb->posts p $join $where GROUP BY p.post_status";
 	$cache_key = md5( $query );
