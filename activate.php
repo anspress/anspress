@@ -71,6 +71,7 @@ class AP_Activate {
 		global $network_wide;
 		$this->network_wide = $network_wide;
 		$this->disable_ext();
+		$this->enable_addons();
 
 		// Append table names in $wpdb.
 		ap_append_table_names();
@@ -88,6 +89,14 @@ class AP_Activate {
 	public function disable_ext() {
 		deactivate_plugins( [ 'categories-for-anspress/categories-for-anspress.php', 'tags-for-anspress/tags-for-anspress.php', 'anspress-email/anspress-email.php' ] );
 	}
+
+	/**
+	 * Enable default addons.
+	 */
+	public function enable_addons() {
+		ap_activate_addon( 'free/reputation.php' );
+	}
+
 	/**
 	 * Ap_qameta table.
 	 */
