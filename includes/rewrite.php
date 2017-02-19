@@ -42,11 +42,10 @@ class AnsPress_Rewrite {
 		$query_vars[] = 'q_tag';
 		$query_vars[] = 'q_cat';
 		$query_vars[] = 'ap_s';
-		$query_vars[] = 'message_id';
 		$query_vars[] = 'parent';
 		$query_vars[] = 'ap_user';
 		$query_vars[] = 'user_page';
-		$query_vars[] = 'ap_paged';
+		//$query_vars[] = 'ap_paged';
 
 		return $query_vars;
 	}
