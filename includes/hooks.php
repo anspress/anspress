@@ -56,6 +56,7 @@ class AnsPress_Hooks {
 			anspress()->add_action( 'ap_new_subscriber', __CLASS__, 'new_subscriber', 10, 4 );
 			anspress()->add_action( 'ap_delete_subscribers', __CLASS__, 'delete_subscriber', 10, 4 );
 			anspress()->add_action( 'ap_display_question_metas', __CLASS__, 'display_question_metas', 100, 2 );
+			anspress()->add_action( 'widget_comments_args', __CLASS__, 'widget_comments_args' );
 
 			anspress()->add_filter( 'posts_clauses', 'AP_QA_Query_Hooks', 'sql_filter', 1, 2 );
 			anspress()->add_filter( 'posts_results', 'AP_QA_Query_Hooks', 'posts_results', 1, 2 );
@@ -97,7 +98,6 @@ class AnsPress_Hooks {
 			anspress()->add_filter( 'paginate_links', 'AnsPress_Rewrite', 'bp_com_paged' );
 			anspress()->add_filter( 'parse_request', 'AnsPress_Rewrite', 'add_query_var' );
 			anspress()->add_action( 'template_redirect', 'AnsPress_Rewrite', 'shortlink' );
-
 
 			// Upload hooks.
 			anspress()->add_action( 'before_delete_post', 'AnsPress_Uploader', 'before_delete_attachment' );
@@ -688,5 +688,17 @@ class AnsPress_Hooks {
 		);
 
 		return strtr( $since, $replace );
+	}
+
+	/**
+	 * Filter recent comments widget args.
+	 * Exclude AnsPress comments from recent commenst widget.
+	 *
+	 * @param array $args Comments arguments.
+	 * @return array
+	 */
+	public static function widget_comments_args( $args ) {
+		$args['type__not_in'] = [ 'anspress' ];
+		return $args;
 	}
 }
