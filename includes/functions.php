@@ -1650,6 +1650,67 @@ function ap_get_active_addons() {
 }
 
 /**
+ * Activate an addon and trigger addon activation hook.
+ *
+ * @param string $addon_name Addon file name.
+ * @return boolean
+ */
+function ap_activate_addon( $addon_name ) {
+	if ( ap_is_addon_active( $addon_name ) ) {
+		return false;
+	}
+
+	global $ap_addons_activation;
+
+	$opt = get_option( 'anspress_addons', [] );
+	$all_addons = ap_get_addons();
+	$addon_name = wp_normalize_path( $addon_name );
+
+	if ( isset( $all_addons[ $addon_name ] ) ) {
+		$opt[ $addon_name ] = true;
+		update_option( 'anspress_addons', $opt );
+
+		require_once $all_addons[ $addon_name ]['path'];
+
+		if ( isset( $ap_addons_activation[ $addon_name ] ) ) {
+			call_user_func( $ap_addons_activation[ $addon_name ] );
+		}
+
+		do_action( 'ap_addon_activated', $addon_name );
+
+		return true;
+	}
+
+	return false;
+}
+
+/**
+ * Deactivate addons.
+ *
+ * @param string $addon_name Addons file name.
+ * @return boolean
+ */
+function ap_deactivate_addon( $addon_name ) {
+	if ( ! ap_is_addon_active( $addon_name ) ) {
+		return false;
+	}
+
+	$opt = get_option( 'anspress_addons', [] );
+	$all_addons = ap_get_addons();
+	$addon_name = wp_normalize_path( $addon_name );
+
+	if ( isset( $all_addons[ $addon_name ] ) ) {
+		unset( $opt[ $addon_name ] );
+		update_option( 'anspress_addons', $opt );
+		do_action( 'ap_addon_deactivated', $addon_name );
+
+		return true;
+	}
+
+	return false;
+}
+
+/**
  * Check if addon is active.
  *
  * @param string $addon Addon file name without path.
