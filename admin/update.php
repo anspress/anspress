@@ -183,7 +183,7 @@ class AP_Update_Helper {
 	public function migrate_votes( $post_id ) {
 		global $wpdb;
 
-		if ( ! isset( $wpdb->ap_meta ) ) {
+		if ( ! $this->meta_table_exists ) {
 			return;
 		}
 
@@ -192,7 +192,7 @@ class AP_Update_Helper {
 
 		$apmeta_to_delete = [];
 		foreach ( (array) $old_votes as $vote ) {
-			ap_add_post_vote( $post_id, $vote->apmeta_userid, 'vote_up' === $vote->apmeta_type );
+			ap_add_post_vote( $post_id, $vote->apmeta_userid, 'vote_up' === $vote->apmeta_type, $vote->apmeta_value );
 			$apmeta_to_delete[] = $vote->apmeta_id;
 
 			// Delete post meta.

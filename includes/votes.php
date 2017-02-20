@@ -120,33 +120,34 @@ class AnsPress_Vote {
  * Insert vote in ap_votes table.
  *
  * @param  integer       $post_id Post ID.
- * @param  integer       $user_id ID of user voting.
+ * @param  integer       $user_id ID of user casting voting.
  * @param  string        $type Type of vote.
- * @param  integer|false $actor Type of vote.
+ * @param  integer|false $rec_user_id Id of user receiving vote.
  * @param  string        $value Value of vote.
  * @param  string|false  $date Date of vote, default is current time.
  * @return boolean
  * @since  4.0.0
  */
-function ap_vote_insert( $post_id, $user_id, $type = 'vote', $actor = false, $value = '', $date = false ) {
+function ap_vote_insert( $post_id, $user_id, $type = 'vote', $rec_user_id = 0, $value = '', $date = false ) {
 
 	if ( false === $date ) {
 		$date = current_time( 'mysql' );
 	}
 
-	if ( false === $actor ) {
-		$actor = get_current_user_id();
+	if ( false === $user_id ) {
+		$user_id = get_current_user_id();
 	}
 
 	global $wpdb;
 	$args = array(
 		'vote_post_id' 	  => $post_id,
 		'vote_user_id' 	  => $user_id,
-		'vote_actor_id' 	=> $actor,
+		'vote_rec_user' 	=> $rec_user_id,
 		'vote_type' 	    => $type,
 		'vote_value' 	    => $value,
 		'vote_date' 	    => $date,
 	);
+
 	$inserted = $wpdb->insert( $wpdb->ap_votes, $args, [ '%d', '%d', '%d', '%s', '%s', '%s' ] );
 
 	if ( false !== $inserted ) {
@@ -465,17 +466,18 @@ function ap_delete_vote( $post_id, $user_id = false, $type = 'vote', $value = fa
  * @param  integer         $post_id Post ID.
  * @param  boolean|integer $user_id ID of user casting vote.
  * @param  string          $up_vote Is up vote.
+ * @param  integer|false   $actor Id of user receiving vote.
  * @return boolean
  * @since  4.0.0
  */
-function ap_add_post_vote( $post_id, $user_id = false, $up_vote = true ) {
+function ap_add_post_vote( $post_id, $user_id = 0, $up_vote = true, $rec_user_id = 0 ) {
 
 	if ( false === $user_id ) {
 		$user_id = get_current_user_id();
 	}
 
 	$value = $up_vote ? '1' : '-1';
-	$row = ap_vote_insert( $post_id, $user_id, 'vote', false, $value );
+	$row = ap_vote_insert( $post_id, $user_id, 'vote', $rec_user_id, $value );
 
 	if ( false !== $row ) {
 		// Update qameta.
