@@ -119,29 +119,35 @@ class AnsPress_Vote {
 /**
  * Insert vote in ap_votes table.
  *
- * @param  integer $post_id Post ID.
- * @param  integer $user_id ID of user voting.
- * @param  string  $type Type of vote.
- * @param  string  $value Value of vote.
- * @param  string  $date Date of vote, default is current time.
+ * @param  integer       $post_id Post ID.
+ * @param  integer       $user_id ID of user voting.
+ * @param  string        $type Type of vote.
+ * @param  integer|false $actor Type of vote.
+ * @param  string        $value Value of vote.
+ * @param  string|false  $date Date of vote, default is current time.
  * @return boolean
  * @since  4.0.0
  */
-function ap_vote_insert( $post_id, $user_id, $type = 'vote', $value = '', $date = false ) {
+function ap_vote_insert( $post_id, $user_id, $type = 'vote', $actor = false, $value = '', $date = false ) {
 
 	if ( false === $date ) {
 		$date = current_time( 'mysql' );
 	}
 
+	if ( false === $actor ) {
+		$actor = get_current_user_id();
+	}
+
 	global $wpdb;
 	$args = array(
-		'vote_post_id' 	=> $post_id,
-		'vote_user_id' 	=> $user_id,
-		'vote_type' 	=> $type,
-		'vote_value' 	=> $value,
-		'vote_date' 	=> $date,
+		'vote_post_id' 	  => $post_id,
+		'vote_user_id' 	  => $user_id,
+		'vote_actor_id' 	=> $actor,
+		'vote_type' 	    => $type,
+		'vote_value' 	    => $value,
+		'vote_date' 	    => $date,
 	);
-	$inserted = $wpdb->insert( $wpdb->ap_votes, $args, [ '%d', '%d', '%s', '%s', '%s' ] );
+	$inserted = $wpdb->insert( $wpdb->ap_votes, $args, [ '%d', '%d', '%d', '%s', '%s', '%s' ] );
 
 	if ( false !== $inserted ) {
 		/**
@@ -188,6 +194,15 @@ function ap_get_votes( $args = array() ) {
 			$where .= ' AND vote_user_id IN (' . sanitize_comma_delimited( $args['vote_user_id'] ) . ')';
 		} else {
 			$where .= ' AND vote_user_id = ' . (int) $args['vote_user_id'];
+		}
+	}
+
+	// Vote actors.
+	if ( isset( $args['vote_actor_id'] ) && ! empty( $args['vote_actor_id'] ) ) {
+		if ( is_array( $args['vote_actor_id'] ) ) {
+			$where .= ' AND vote_actor_id IN (' . sanitize_comma_delimited( $args['vote_actor_id'] ) . ')';
+		} else {
+			$where .= ' AND vote_actor_id = ' . (int) $args['vote_actor_id'];
 		}
 	}
 
@@ -258,6 +273,7 @@ function ap_count_votes( $args ) {
 		}
 	}
 
+	// Vote user id.
 	if ( isset( $args['vote_user_id'] ) ) {
 
 		if ( is_array( $args['vote_user_id'] ) ) {
@@ -267,8 +283,17 @@ function ap_count_votes( $args ) {
 		}
 	}
 
-	if ( isset( $args['vote_value'] ) ) {
+	// Vote actor id.
+	if ( isset( $args['vote_actor_id'] ) ) {
+		if ( is_array( $args['vote_actor_id'] ) ) {
+			$where .= ' AND vote_actor_id IN (' . sanitize_comma_delimited( $args['vote_actor_id'] ) . ')';
+		} else {
+			$where .= " AND vote_actor_id = '" . (int) $args['vote_actor_id'] . "'";
+		}
+	}
 
+	// Vote value.
+	if ( isset( $args['vote_value'] ) ) {
 		if ( is_array( $args['vote_value'] ) ) {
 			$where .= ' AND vote_value IN (' . sanitize_comma_delimited( $args['vote_value'], 'str' ) . ')';
 		} else {
@@ -307,7 +332,7 @@ function ap_count_votes( $args ) {
  * @uses   ap_count_votes
  */
 function ap_count_post_votes_by( $by, $value ) {
-	$bys = [ 'post_id', 'user_id' ];
+	$bys = [ 'post_id', 'user_id', 'actor_id' ];
 
 	if ( ! in_array( $by, $bys, true ) ) {
 		return false;
@@ -320,6 +345,8 @@ function ap_count_post_votes_by( $by, $value ) {
 		$args['vote_post_id'] = $value;
 	} elseif ( 'user_id' === $by ) {
 		$args['vote_user_id'] = $value;
+	} elseif ( 'actor_id' === $by ) {
+		$args['vote_actor_id'] = $value;
 	}
 
 	$rows = ap_count_votes( $args );
@@ -448,7 +475,7 @@ function ap_add_post_vote( $post_id, $user_id = false, $up_vote = true ) {
 	}
 
 	$value = $up_vote ? '1' : '-1';
-	$row = ap_vote_insert( $post_id, $user_id, 'vote', $value );
+	$row = ap_vote_insert( $post_id, $user_id, 'vote', false, $value );
 
 	if ( false !== $row ) {
 		// Update qameta.

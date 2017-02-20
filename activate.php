@@ -137,7 +137,8 @@ class AP_Activate {
 		$this->tables[] = 'CREATE TABLE `' . $wpdb->ap_votes . '` (
 				`vote_id` bigint(20) NOT NULL AUTO_INCREMENT,
 				`vote_post_id` bigint(20) NOT NULL,
-				`vote_user_id` bigint(20) DEFAULT NULL,
+				`vote_user_id` bigint(20) NOT NULL,
+				`vote_actor_id` bigint(20) NOT NULL,
 				`vote_type` varchar(100) DEFAULT NULL,
 				`vote_value` varchar(100) DEFAULT NULL,
 				`vote_date` timestamp NULL DEFAULT NULL,
