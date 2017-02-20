@@ -470,11 +470,14 @@ function ap_delete_vote( $post_id, $user_id = false, $type = 'vote', $value = fa
  * @return boolean
  * @since  4.0.0
  */
-function ap_add_post_vote( $post_id, $user_id = 0, $up_vote = true, $rec_user_id = 0 ) {
+function ap_add_post_vote( $post_id, $user_id = 0, $up_vote = true ) {
 
 	if ( false === $user_id ) {
 		$user_id = get_current_user_id();
 	}
+
+	$_post = get_post( $post_id );
+	$rec_user_id = $_post->post_author;
 
 	$value = $up_vote ? '1' : '-1';
 	$row = ap_vote_insert( $post_id, $user_id, 'vote', $rec_user_id, $value );
