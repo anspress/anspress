@@ -95,6 +95,7 @@ class AP_Activate {
 	 */
 	public function enable_addons() {
 		ap_activate_addon( 'free/reputation.php' );
+		ap_activate_addon( 'free/email.php' );
 	}
 
 	/**
