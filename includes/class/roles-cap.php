@@ -248,6 +248,22 @@ function ap_user_can_select_answer( $_post = null, $user_id = false ) {
 		return true;
 	}
 
+	/**
+	 * Filter to hijack ap_user_can_select_answer. This filter will be applied if filter
+	 * returns a boolean value. To baypass return an empty string.
+	 *
+	 * @param string|boolean 	$filter 		Apply this filter.
+	 * @param mixed   $_post Question ID.
+	 * @param integer $user_id User ID.
+	 */
+	$filter = apply_filters( 'ap_user_can_select_answer', '', $_post, $user_id );
+
+	if ( true === $filter ) {
+		return true;
+	} elseif ( false === $filter ) {
+		return false;
+	}
+
 	$answer 	= ap_get_post( $_post );
 
 	// If not answer then return false.
