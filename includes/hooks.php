@@ -443,7 +443,7 @@ class AnsPress_Hooks {
 			}
 		}
 
-		return $items;
+		return apply_filters( 'ap_menu_items', $items );
 	}
 
 	/**

@@ -88,60 +88,61 @@
 		}
 	});
 
-	var NotiRouter = Backbone.Router.extend({
-		routes: {
-			'apNotifications': 'notiRoute'
+	AnsPress.views.NotiDropdown = Backbone.View.extend({
+		id: 'noti-dp',
+		initialize: function(options){
+			//this.model = options.model;
+			this.anchor = options.anchor;
+			this.fetched = false;
 		},
-		dpPos: function(html, anchor){
-			var pos = anchor.offset();
-			pos.top = pos.top + anchor.height();
-			pos.left = pos.left - html.width() + anchor.width()
-			html.css(pos);
+		dpPos: function(){
+			var pos = this.anchor.offset();
+			pos.top = pos.top + this.anchor.height();
+			pos.left = pos.left - this.$el.width() + this.anchor.width()
+			this.$el.css(pos);
 		},
-		notiRoute: function (query, page) {
+		fetchNoti: function (query, page) {
+			if( this.fetched ){
+				this.dpPos();
+				return;
+			}
+
 			var self = this;
 			AnsPress.ajax({
 				data: ajaxurl + '?action=ap_ajax&ap_ajax_action=get_notifications',
 				success: function(data){
-					var anchor = $('.anspress-menu-notifications');
-					var dp = $('#noti-dp');
+					self.fetched = true;
 					if(data.success){
-						if(dp.length == 0) {
-							var html = $('<div id="noti-dp"></div>');
-							$('body').append(html);
-							self.dpPos(html, anchor);
-						} else {
-							dp.show();
-						}
-
 						var notiModel = new AnsPress.collections.Notifications(data.notifications);
 						var notificationsView = new AnsPress.views.Notifications({ model: notiModel, mark_args: data.mark_args, total: data.total });
-						$('#noti-dp').html(notificationsView.render().$el);
+						self.$el.html(notificationsView.render().$el);
+						self.dpPos();
+						self.$el.show();
 					}
 				}
 			});
+		},
+		render: function(){
+			this.$el.hide();
+			return this;
 		}
   });
 
 	$(document).ready(function(){
-		var notiRouter = new NotiRouter();
+		var anchor = $('a[href="#apNotifications"]');
+		var dpView = new AnsPress.views.NotiDropdown({anchor: anchor});
+		$('body').append(dpView.render().$el);
 
-		if(!Backbone.History.started)
-			Backbone.history.start();
-
-		$('.anspress-menu-notifications a').click(function(){
-			var dp = $('#noti-dp');
-			if(dp.is(':visible')){
-				$('#noti-dp').hide();
-			}else{
-				$('#noti-dp').show();
-			}
-		})
+		anchor.click(function(e){
+			e.preventDefault();
+			dpView.fetchNoti();
+			if(dpView.fetched)
+				dpView.$el.toggle();
+		});
 
 		$(document).mouseup(function (e){
-			var container = $('#noti-dp');
-			if (!container.is(e.target) && container.has(e.target).length === 0){
-				container.hide();
+			if (!anchor.is(e.target) && !dpView.$el.is(e.target) && dpView.$el.has(e.target).length === 0){
+				dpView.$el.hide();
 			}
 		});
 	});

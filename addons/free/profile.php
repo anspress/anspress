@@ -122,16 +122,20 @@ class AnsPress_Profile_Hooks {
 	/**
 	 * Output user profile menu.
 	 */
-	public static function user_menu() {
-		$user_id = (int) get_query_var( 'ap_user_id' );
+	public static function user_menu( $user_id = false, $class = '' ) {
+		$user_id = false !== $user_id ? $user_id : (int) get_query_var( 'ap_user_id' );
 		$current_tab = ap_sanitize_unslash( 'user_page', 'query_var', 'questions' );
-
-		echo '<ul class="ap-tab-nav clearfix">';
-		foreach ( (array) anspress()->user_pages as $args ) {
+		$ap_menu = apply_filters( 'ap_menu_items', anspress()->user_pages, $user_id );
+		
+		echo '<ul class="ap-tab-nav clearfix ' . esc_attr( $class ) . '">';
+		
+		foreach ( (array) $ap_menu as $args ) {
 
 			if ( empty( $args['private'] ) || ( true === $args['private'] && get_current_user_id() === $user_id ) ) {
-				echo '<li ' . ( $args['slug'] === $current_tab ? ' class="active"' : '' ) . '>';
-				echo '<a href="' . esc_url( ap_user_link( $user_id, $args['slug'] ) ) . '">';
+				echo '<li class="ap-menu-' . esc_attr( $args['slug'] ) . ( $args['slug'] === $current_tab ? ' active' : '' ) . '">';
+
+				$url = isset( $args['url'] ) ? $args['url'] : ap_user_link( $user_id, $args['slug'] );
+				echo '<a href="' . esc_url( $url ) . '">';
 
 				// Show icon.
 				if ( ! empty( $args['icon'] ) ) {

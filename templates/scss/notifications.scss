@@ -76,6 +76,7 @@
   font-family: Arial, Helvetica, sans-serif;
   overflow: hidden;
   box-shadow: 0 0 6px rgba(0,0,0,0.2);
+  z-index: 9999;
 
   .ap-btn-markall-read {
     float: right;
@@ -145,4 +146,18 @@
     overflow-y: auto;
     //margin-right: -18px;
   }
+}
+i.noti-count {
+  font-style: normal;
+  background: #F44336;
+  color: #fff;
+  width: 10px;
+  display: inline-block;
+  margin-left: 4px;
+  padding: 2px;
+  width: 20px;
+  text-align: center;
+  height: 20px;
+  line-height: 20px;
+  border-radius: 2px;
 }

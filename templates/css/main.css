@@ -3610,6 +3610,7 @@ post-message {
   font-family: Arial, Helvetica, sans-serif;
   overflow: hidden;
   box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
+  z-index: 9999;
 }
 #noti-dp .ap-btn-markall-read {
   float: right;
@@ -3673,6 +3674,21 @@ post-message {
 #noti-dp .scroll-wrap {
   max-height: 300px;
   overflow-y: auto;
+}
+
+i.noti-count {
+  font-style: normal;
+  background: #F44336;
+  color: #fff;
+  width: 10px;
+  display: inline-block;
+  margin-left: 4px;
+  padding: 2px;
+  width: 20px;
+  text-align: center;
+  height: 20px;
+  line-height: 20px;
+  border-radius: 2px;
 }
 
 /*# sourceMappingURL=main.css.map */

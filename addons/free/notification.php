@@ -40,6 +40,7 @@ class AnsPress_Notification_Hook {
 	public static function init() {
 		ap_register_page( 'notifications', __( 'Notifications', 'anspress-question-answer' ), '', true );
 		anspress()->add_filter( 'ap_menu_link', __CLASS__, 'menu_link', 10, 2 );
+		anspress()->add_filter( 'ap_menu_items', __CLASS__, 'ap_menu_items' );
 		//anspress()->add_action( 'ap_option_groups', __CLASS__, 'load_options' );
 		anspress()->add_action( 'ap_notification_verbs', __CLASS__, 'register_verbs' );
 		anspress()->add_filter( 'ap_user_pages', __CLASS__, 'ap_user_pages' );
@@ -104,6 +105,25 @@ class AnsPress_Notification_Hook {
 		}
 
 		return $url;
+	}
+
+	/**
+	 * Filter notification menu title.
+	 *
+	 * @param  object $items Menu item object.
+	 * @return array
+	 */
+	public static function ap_menu_items( $items ) {
+		foreach ( $items as $k => $i ) {
+			if ( 'notifications' === $i->post_name ) {
+				$count = ap_count_unseen_notifications();
+				if ( $count > 0 ) {
+					$items[ $k ]->title = $i->title . '<i class="noti-count">' . esc_attr( number_format_i18n( $count ) ) . '</i>';
+				}
+			}
+		}
+
+		return $items;
 	}
 
 	public static function register_verbs() {
