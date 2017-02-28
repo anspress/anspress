@@ -70,10 +70,10 @@ class AnsPress_Admin_Ajax {
 	 * @since 2.4.6
 	 */
 	public static function clear_flag() {
-		$args = ap_sanitize_unslash( 'args', 'p' );
+		$post_id = ap_sanitize_unslash( 'post_id', 'p' );
 
-		if ( current_user_can( 'manage_options' ) && ap_verify_nonce( 'clear_flag_' . $args[0] ) ) {
-			ap_set_flag_count( $args[0], 0 );
+		if ( current_user_can( 'manage_options' ) && ap_verify_nonce( 'clear_flag_' . $post_id ) ) {
+			ap_delete_flags( $post_id, 'flag' );
 			echo 0;
 		}
 

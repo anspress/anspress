@@ -253,11 +253,6 @@
 
 						});
 			},
-			afterFlagClear : function(data, elm){
-				$(elm).closest('tr').find('.column-flag .flag-count').text('0');
-				$(elm).closest('tr').find('.column-flag .flag-count').removeClass('flagged');
-				$(elm).remove();
-			},
 			replaceText: function(data, elm){
 				$(elm).closest('li').find('strong').text(data);
 			}

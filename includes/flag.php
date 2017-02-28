@@ -126,3 +126,13 @@ function ap_flag_btn_args( $post = null ) {
 		'active' => $flagged,
 	);
 }
+
+/**
+ * Delete multiple posts flags.
+ *
+ * @param integer $post_id Post id.
+ * @return boolean
+ */
+function ap_delete_flags( $post_id ) {
+	return ap_delete_votes( $post_id, 'flag' );
+}

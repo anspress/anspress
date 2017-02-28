@@ -114,6 +114,21 @@ class AnsPress_Vote {
 			ap_delete_post_vote( $vote->vote_post_id, $vote->vote_user_id );
 		}
 	}
+
+	/**
+	 * Update votes count when multiple votes get deleted.
+	 *
+	 * @param integer $post_id Post ID.
+	 * @since 4.0.0
+	 */
+	public static function ap_deleted_votes( $post_id, $type ) {
+		if ( 'vote' === $type ) {
+			ap_update_votes_count( $post_id );
+		} elseif ( 'flag' === $type ){
+			ap_update_flags_count( $post_id );
+		}
+
+	}
 }
 
 /**
@@ -607,4 +622,24 @@ function ap_user_votes_pre_fetch( $ids ) {
 	}
 }
 
+/**
+ * Delete multiple post voets.
+ *
+ * @param integer $post_id Post id.
+ * @param string  $type Vote type.
+ * @return boolean
+ */
+function ap_delete_votes( $post_id, $type = 'vote' ) {
+	global $wpdb;
+	$where = [ 'vote_post_id' => $post_id, 'vote_type' => $type ];
+
+	$rows = $wpdb->delete( $wpdb->ap_votes, $where ); // db call okay, db cache okay.
+
+	if ( false !== $rows ) {
+		do_action( 'ap_deleted_votes', $post_id, $type );
+		return true;
+	}
+
+	return false;
+}
 

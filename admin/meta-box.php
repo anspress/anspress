@@ -117,10 +117,38 @@ class AP_Question_Meta_Box {
 	 * @param object $post Post.
 	 */
 	public function flag_meta_box( $post ) {
+		$args = array(
+			'action'         => 'ap_ajax',
+			'ap_ajax_action' => 'ap_clear_flag',
+			'__nonce'        => wp_create_nonce( 'clear_flag_' . $post->ID ),
+			'post_id'        => $post->ID,
+		);
+
 		?>
 			<i class="apicon-flag"></i>
-			<strong><?php ap_post_field( 'flags', $post ); ?></strong> <?php esc_attr_e( 'Flag', 'anspress-question-answer' ); ?>
-			<a id="ap-clear-flag" href="#" data-query="ap_clear_flag::<?php echo esc_attr( wp_create_nonce( 'clear_flag_' . $post->ID ) ) . '::' . esc_attr( $post->ID ); ?>" class="ap-ajax-btn flag-clear" data-cb="afterFlagClear"><?php esc_attr_e( 'Clear flag', 'anspress-question-answer' ); ?></a>
+			<strong class="ap-question-flag-count"><?php ap_post_field( 'flags', $post ); ?></strong> <?php esc_attr_e( 'Flag', 'anspress-question-answer' ); ?>
+			<a id="ap-clear-flag" href="#" data-query="<?php echo esc_js( wp_json_encode( $args ) ); ?>" class="flag-clear" data-cb="afterFlagClear"><?php esc_attr_e( 'Clear flag', 'anspress-question-answer' ); ?></a>
+
+			<script type="text/javascript">
+				jQuery(document).ready(function($){
+					$('#ap-clear-flag').click(function(e){
+						e.preventDefault();
+						var self = this;
+						var q = JSON.parse($(self).attr('data-query'));
+
+						$.ajax({
+							url: ajaxurl,
+							data: q,
+							type: 'POST',
+							success: function(data){
+								$('.ap-question-flag-count').text('0');
+								$('.column-flag .flag-count').removeClass('flagged');
+								$(self).remove();
+							}
+						});
+					})
+				});
+			</script>
 		<?php
 	}
 }
