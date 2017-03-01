@@ -316,7 +316,6 @@ class AnsPress_Avatar {
 			$text .= strtoupper( $w[0] );
 		}
 
-		$text = mb_convert_encoding( $text, 'HTML-ENTITIES', 'UTF-8' );
 		$text = preg_replace( '~^(&([a-zA-Z0-9]);)~', htmlentities( '${1}' ), $text );
 
 		// Convert hex code to RGB.
