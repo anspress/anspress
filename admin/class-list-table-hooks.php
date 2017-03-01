@@ -149,10 +149,6 @@ class AnsPress_Post_Table_Hooks {
 			$actions['view'] = '<a href="' . get_permalink( $post->ID ) . '" title="' . esc_attr( __( 'View &#8220;%s&#8221; question', 'anspress-question-answer' ) ) . '" rel="permalink">' . __( 'View', 'anspress-question-answer' ) . '</a>';
 		}
 
-		if ( ap_get_post_field( 'flags', $post ) ) {
-			$actions['flag'] = '<a href="#" data-query="ap_clear_flag::' . wp_create_nonce( 'clear_flag_' . $post->ID ) . '::' . $post->ID . '" class="ap-ajax-btn flag-clear" data-cb="afterFlagClear">' . __( 'Clear flag', 'anspress-question-answer' ) . '</a>';
-		}
-
 		// Echo the 'actions' HTML, let WP_List_Table do the hard work.
 		$WP_List_Table = new WP_List_Table(); // @codingStandardsIgnoreLine
 		echo $WP_List_Table->row_actions( $actions );
