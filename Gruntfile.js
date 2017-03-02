@@ -50,7 +50,7 @@
 					src: [ 'anspress-question-answer.php' ],
 				},
 				project: {
-					src: ['plugin.json']
+					src: ['package.json']
 				}
 			},
 			sass: {
