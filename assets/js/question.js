@@ -541,7 +541,7 @@
 						return;
 					}
 
-					if(typeof grecaptcha !== 'undefined')
+					if(typeof grecaptcha !== 'undefined' && typeof widgetId1 !== 'undefined')
             grecaptcha.reset(widgetId1);
 
 					AnsPress.trigger('answerFormPosted', data);
