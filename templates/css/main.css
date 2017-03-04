@@ -1886,6 +1886,7 @@ post-message {
 #anspress .ap-user .ap-tab-nav > li {
   float: left;
   margin-right: 10px;
+  margin-left: 0;
 }
 #anspress .ap-user .ap-tab-nav > li > a {
   display: block;
@@ -2809,6 +2810,63 @@ post-message {
   }
   #anspress .ap-comments .ap-comment-actions > a:first-child {
     margin-left: 0;
+  }
+  #anspress .ap-user .ap-tab-nav {
+    border: solid 1px #ddd;
+  }
+  #anspress .ap-user .ap-tab-nav li {
+    float: none;
+    border-bottom: solid 1px #eee;
+  }
+  #anspress .ap-user .ap-tab-nav li:last-child {
+    border-bottom: none;
+  }
+  #anspress .ap-user .ap-tab-nav li a {
+    padding: 10px 5px;
+  }
+  #anspress .ap-user .ap-tab-nav li.active a {
+    border: none;
+    font-weight: bold;
+  }
+  #anspress .ap-reputation-item {
+    display: block;
+    border-bottom: solid 1px #eee;
+    line-height: 1.5;
+    padding: 10px 0;
+  }
+  #anspress .ap-reputation-item > td {
+    display: block;
+    border: none;
+    padding: 0;
+  }
+  #anspress .ap-reputation-item .col-icon {
+    float: left;
+  }
+  #anspress .ap-reputation-item .ap-reputation-ref p {
+    display: none;
+  }
+  #anspress .ap-reputation-item .col-event {
+    margin-left: 50px;
+  }
+  #anspress .ap-reputation-item .ap-reputation-ref {
+    margin: 0;
+  }
+  #anspress .ap-reputation-item .ap-reputation-ref strong {
+    font-weight: normal;
+  }
+  #anspress .ap-reputation-item .col-date {
+    width: auto;
+    margin-left: 50px;
+  }
+  #anspress .ap-reputation-item .col-points {
+    width: auto;
+  }
+  #anspress .ap-reputation-item .col-points span {
+    margin-left: 50px;
+    float: none;
+    margin-top: 8px;
+    padding: 0px;
+    width: 30px;
   }
 }
 .ap-snackbar {

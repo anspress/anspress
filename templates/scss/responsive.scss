@@ -156,5 +156,62 @@
 				}
 			}
 		}
+		.ap-user .ap-tab-nav{
+			border: solid 1px #ddd;
+			li{
+				float: none;
+				border-bottom: solid 1px #eee;
+				&:last-child{
+					border-bottom: none;
+				}
+				a{
+					padding: 10px 5px;
+				}
+				&.active a{
+					border: none;
+					font-weight: bold;
+				}
+			}
+		}
+		.ap-reputation-item{
+			display: block;
+			border-bottom: solid 1px #eee;
+			line-height: 1.5;
+			padding: 10px 0;
+			> td{
+				display: block;
+				border: none;
+				padding: 0;
+			}
+			.col-icon{
+				float: left;
+			}
+			.ap-reputation-ref p{
+				display: none;
+			}
+			.col-event{
+				margin-left: 50px;
+			}
+			.ap-reputation-ref{
+				margin: 0;
+				strong{
+					font-weight: normal;
+				}
+			}
+			.col-date{
+				width: auto;
+				margin-left: 50px;
+			}
+			.col-points{
+				width: auto;
+				span{
+					margin-left: 50px;
+					float: none;
+					margin-top: 8px;
+					padding: 0px;
+					width: 30px;
+				}
+			}
+		}
 	}
 }

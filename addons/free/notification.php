@@ -115,7 +115,7 @@ class AnsPress_Notification_Hook {
 	 */
 	public static function ap_menu_items( $items ) {
 		foreach ( $items as $k => $i ) {
-			if ( 'notifications' === $i->post_name ) {
+			if ( isset( $i->post_name ) && 'notifications' === $i->post_name ) {
 				$count = ap_count_unseen_notifications();
 				if ( $count > 0 ) {
 					$items[ $k ]->title = $i->title . '<i class="noti-count">' . esc_attr( number_format_i18n( $count ) ) . '</i>';
