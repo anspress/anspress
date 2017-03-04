@@ -38,7 +38,6 @@ class AnsPress_Views {
 	public static function insert_views( $template ) {
 
 		if ( is_question() ) {
-
 			// By default do not store views in ap_views table.
 			if ( apply_filters( 'ap_insert_view_to_db', false ) ) {
 				ap_insert_views( get_question_id(), 'question' );

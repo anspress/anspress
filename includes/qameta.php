@@ -111,7 +111,17 @@ function ap_insert_qameta( $post_id, $args, $wp_error = false ) {
 	}
 
 	if ( false !== $inserted ) {
-		clean_post_cache( $post_id );
+
+		$cache = wp_cache_get( $post_id, 'posts' );
+
+		if ( false !== $cache  ) {
+			foreach ( (array) $sanitized_values as $key => $val ) {
+				$cache->$key = $val;
+			}
+
+			wp_cache_set( $post_id, $cache, 'posts' );
+		}
+
 		wp_cache_delete( $post_id, 'ap_qameta' );
 		return $post_id;
 	}
