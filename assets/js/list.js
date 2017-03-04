@@ -79,7 +79,7 @@
     //tagName: 'div',
     className: 'ap-dropdown-menu',
     searchTemplate: '<div class="ap-filter-search"><input type="text" search-filter placeholder="Search" /></div>',
-    template: '<button class="ap-filter-droptogg apicon-x"></button><filter-items></filter-items>',
+    template: '<button class="ap-droptogg apicon-x"></button><filter-items></filter-items>',
     initialize: function(options){
       this.model = options.model;
       this.multiple = options.multiple;

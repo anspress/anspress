@@ -618,15 +618,6 @@ ul li.anspress-page-link {
 #anspress .ap-filters .ap-dropdown-menu {
   min-width: 140px;
 }
-#anspress .ap-filter-droptogg {
-  float: right;
-  background: #eee;
-  border: none;
-  color: #777;
-  margin-right: 8px;
-  padding: 4px 8px;
-  display: none;
-}
 #anspress .ap-filter-toggle {
   color: #8bc34a;
   text-decoration: none;
@@ -696,6 +687,16 @@ ul li.anspress-page-link {
   float: left;
   font-size: 12px;
   margin-right: 4px;
+}
+
+.ap-droptogg {
+  float: right;
+  background: #eee;
+  border: none;
+  color: #777;
+  margin-right: 8px;
+  padding: 4px 8px;
+  display: none;
 }
 
 .ap-tooltip {
@@ -2685,9 +2686,6 @@ post-message {
   #anspress #ap-filter-reset span {
     display: none;
   }
-  #anspress .ap-filter-droptogg {
-    display: block;
-  }
   #anspress .ap-filters .ap-dropdown-menu {
     width: 90%;
     left: 5%;
@@ -2867,6 +2865,28 @@ post-message {
     margin-top: 8px;
     padding: 0px;
     width: 30px;
+  }
+
+  body #noti-dp {
+    position: fixed;
+    left: 2.5% !important;
+    top: 2.5vh !important;
+    width: 95%;
+    height: 95vh;
+    overflow-y: auto;
+  }
+  body #noti-dp .scroll-wrap {
+    max-height: 100%;
+    overflow-y: visible;
+  }
+  body #noti-dp .ap-droptogg {
+    display: block;
+    float: none;
+    margin: 7px 7px 7px auto;
+  }
+
+  .ap-droptogg {
+    display: block;
   }
 }
 .ap-snackbar {
@@ -3778,9 +3798,10 @@ post-message {
 #noti-dp .ap-noti-inner {
   margin-left: 50px;
   display: table;
-  font-size: 11px;
+  font-size: 12px;
   line-height: 1.4;
   color: #333;
+  text-decoration: none;
 }
 #noti-dp .ap-noti-date {
   display: block;

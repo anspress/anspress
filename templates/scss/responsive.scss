@@ -25,9 +25,6 @@
 			}
 		}
 		.ap-filter{
-			&-droptogg{
-				display: block;
-			}
 			&s .ap-dropdown-menu {
 				width: 90%;
 				left: 5%;
@@ -213,5 +210,26 @@
 				}
 			}
 		}
+	}
+
+	body #noti-dp {
+		position: fixed;
+		left: 2.5% !important;
+		top: 2.5vh !important;
+		width: 95%;
+		height: 95vh;
+		overflow-y: auto;
+		.scroll-wrap {
+			max-height: 100%;
+			overflow-y: visible;
+		}
+		.ap-droptogg{
+			display: block;
+    	float: none;
+    	margin: 7px 7px 7px auto;
+		}
+	}
+	.ap-droptogg{
+		display: block;
 	}
 }

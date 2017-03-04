@@ -161,15 +161,6 @@
 				min-width: 140px;
 			}
 		}
-		&-droptogg{
-			float: right;
-			background: #eee;
-			border: none;
-			color: #777;
-			margin-right: 8px;
-			padding: 4px 8px;
-			display: none;
-		}
 		&-toggle{
 			color: $main-color;
 			text-decoration: none;
@@ -244,4 +235,14 @@
 		}
 	}
 
+}
+
+.ap-droptogg{
+	float: right;
+	background: #eee;
+	border: none;
+	color: #777;
+	margin-right: 8px;
+	padding: 4px 8px;
+	display: none;
 }
