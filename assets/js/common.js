@@ -319,6 +319,11 @@ jQuery(document).ready(function($){
 		})
 	});
 
+	$('body').delegate( '.ap-filter-droptogg', 'click', function(e){
+		e.preventDefault();
+		$(this).closest('.ap-dropdown').removeClass('open');
+	});
+
 	// Ajax button.
 	$('body').delegate( '[ap-ajax-btn]', 'click', function(e){
 		e.preventDefault();

@@ -739,7 +739,7 @@ function ap_list_filters( $current_url = '' ) {
 		}
 	}
 
-	echo '<button id="ap-filter-reset" type="submit" name="reset-filter" title="' . esc_attr__( 'Reset sorting and filter', 'anspress-question-answer' ) . '"><i class="apicon-x"></i>' . esc_attr__( 'Clear Filter', 'anspress-question-answer' ) . '</button>';
+	echo '<button id="ap-filter-reset" type="submit" name="reset-filter" title="' . esc_attr__( 'Reset sorting and filter', 'anspress-question-answer' ) . '"><i class="apicon-x"></i><span>' . esc_attr__( 'Clear Filter', 'anspress-question-answer' ) . '</span></button>';
 
 	echo '</form>';
 

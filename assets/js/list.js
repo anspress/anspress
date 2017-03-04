@@ -15,7 +15,7 @@
 
   AnsPress.activeListFilters = $('#ap_current_filters').length > 0 ? JSON.parse($('#ap_current_filters').html()) : {};
   AnsPress.views.Filter = Backbone.View.extend({
-    tagName: 'li',
+    //tagName: 'li',
     id: function(){
       return this.model.id;
     },
@@ -76,10 +76,10 @@
   });
 
   AnsPress.views.Filters = Backbone.View.extend({
-    tagName: 'ul',
+    //tagName: 'div',
     className: 'ap-dropdown-menu',
     searchTemplate: '<div class="ap-filter-search"><input type="text" search-filter placeholder="Search" /></div>',
-    template: '<filter-items></filter-items>',
+    template: '<button class="ap-filter-droptogg apicon-x"></button><filter-items></filter-items>',
     initialize: function(options){
       this.model = options.model;
       this.multiple = options.multiple;
