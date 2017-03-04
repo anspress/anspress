@@ -2734,10 +2734,8 @@ post-message {
     float: none;
     position: static;
   }
-  #anspress .ap-q-cells,
-  #anspress .ap-a-cells {
-    font-size: 12px;
-    margin-left: 0 !important;
+  #anspress .ap-cell {
+    margin-left: 0;
   }
   #anspress .ap-q-content {
     font-size: 12px;
@@ -2760,6 +2758,30 @@ post-message {
   #anspress .ap-questions-summery {
     margin-right: 10px;
     margin-left: 10px;
+  }
+  #anspress #answer-form-c {
+    margin-right: 0;
+  }
+  #anspress .ap-q-metas {
+    font-size: 11px;
+  }
+  #anspress .ap-q-metas > .ap-post-history {
+    margin-left: 0;
+    padding-left: 0;
+    border-left: none;
+    display: block;
+  }
+  #anspress ap-comment {
+    font-size: 12px;
+  }
+  #anspress .ap-comments .ap-avatar {
+    display: none;
+  }
+  #anspress .ap-comments .ap-comment-actions {
+    float: none;
+  }
+  #anspress .ap-comments .ap-comment-actions > a:first-child {
+    margin-left: 0;
   }
 }
 .ap-snackbar {

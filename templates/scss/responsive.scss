@@ -76,10 +76,8 @@
 			float: none;
 			position: static;
 		}
-		.ap-q-cells,
-		.ap-a-cells {
-			font-size: 12px;
-			margin-left: 0 !important;
+		.ap-cell{
+			margin-left: 0;
 		}
 		.ap-q-content {
 			font-size: 12px;
@@ -102,6 +100,32 @@
 		.ap-questions-summery {
 			margin-right: 10px;
 			margin-left: 10px;
+		}
+		#answer-form-c{
+			margin-right: 0;
+		}
+		.ap-q-metas{
+			font-size: 11px;
+			> .ap-post-history{
+				margin-left: 0;
+				padding-left: 0;
+				border-left: none;
+				display: block;
+			}
+		}
+		ap-comment{
+			font-size: 12px;
+		}
+		.ap-comments{
+			.ap-avatar{
+				display: none;
+			}
+			.ap-comment-actions{
+				float: none;
+				> a:first-child{
+					margin-left: 0;
+				}
+			}
 		}
 	}
 }
