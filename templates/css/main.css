@@ -2771,6 +2771,33 @@ post-message {
     border-left: none;
     display: block;
   }
+  #anspress #ap-answers-c .ap-answers-tab {
+    float: none;
+    margin-bottom: 10px;
+  }
+  #anspress #ap-answers-c .ap-answers-tab li {
+    float: none;
+    display: inline-block;
+    margin-left: 0;
+    margin-right: 10px;
+  }
+  #anspress #ap-answers-c .ap-answers-tab li a {
+    padding: 0;
+    border: none;
+  }
+  #anspress .ap-post-footer .ap-dropdown {
+    display: block;
+  }
+  #anspress .ap-post-footer > * {
+    float: none !important;
+    display: block;
+    text-align: center;
+    font-size: 11px;
+    border-bottom: solid 1px #eee;
+  }
+  #anspress .ap-post-footer .ap-btn {
+    border-right: none;
+  }
   #anspress ap-comment {
     font-size: 12px;
   }

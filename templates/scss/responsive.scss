@@ -113,6 +113,35 @@
 				display: block;
 			}
 		}
+		#ap-answers-c .ap-answers-tab{
+			float: none;
+			margin-bottom: 10px;
+			li{
+				float: none;
+				display: inline-block;
+				margin-left: 0;
+				margin-right: 10px;
+				a{
+					padding: 0;
+					border: none;
+				}
+			}
+		}
+		.ap-post-footer{
+			.ap-dropdown{
+				display: block;
+			}
+			> * {
+				float: none !important;
+				display: block;
+				text-align: center;
+				font-size: 11px;
+				border-bottom: solid 1px #eee;
+			}
+			.ap-btn{
+				border-right: none;
+			}
+		}
 		ap-comment{
 			font-size: 12px;
 		}
