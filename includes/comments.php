@@ -24,7 +24,24 @@ class AnsPress_Comment_Hooks {
 	 * @return array
 	 */
 	public static function comments_data( $post_id, $editing = false ) {
-		$comments = get_comments( [ 'post_id' => $post_id, 'order' => 'ASC' ] );
+		$user_id = get_current_user_id();
+		$args = array(
+			'post_id' => $post_id,
+			'order'   => 'ASC',
+			'status'  => 'approve',
+		);
+
+		// Always include current user comments.
+		if ( ! empty( $user_id ) && $user_id > 0 ) {
+			$args['include_unapproved'] = [ $user_id ];
+		}
+
+		if ( ap_user_can_approve_comment( ) ) {
+			$args['status'] = 'all';
+		}
+
+		$comments = get_comments( $args );
+
 		$comments_arr = array();
 		foreach ( (array) $comments as $c ) {
 			$comments_arr[] = ap_comment_ajax_data( $c );
