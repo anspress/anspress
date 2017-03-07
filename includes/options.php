@@ -142,6 +142,7 @@ function ap_default_options() {
 		'bad_words'											=> '',
 		'show_comments_default'					=> true,
 		'duplicate_check'								=> true,
+		'disable_q_suggestion'					=> false,
 	);
 
 	/**

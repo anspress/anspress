@@ -171,6 +171,12 @@ ap_register_option_section( 'general', 'qa', __( 'Question & Answer', 'anspress-
 			'type'  => 'checkbox',
 		),
 		array(
+			'name'  => 'disable_q_suggestion',
+			'label' => __( 'Disable question suggestion', 'anspress-question-answer' ),
+			'desc'  => __( 'Checking this will disable question suggestion in ask form', 'anspress-question-answer' ),
+			'type'  => 'checkbox',
+		),
+		array(
 			'name'  => 'default_date_format',
 			'label' => __( 'Show default date format', 'anspress-question-answer' ),
 			'desc'  => __( 'Instead of showing time passed i.e. 1 Hour ago, show default format date.', 'anspress-question-answer' ),

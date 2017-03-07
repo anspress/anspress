@@ -125,7 +125,7 @@ class AnsPress_Profile_Hooks {
 	public static function user_menu( $user_id = false, $class = '' ) {
 		$user_id = false !== $user_id ? $user_id : (int) get_query_var( 'ap_user_id' );
 		$current_tab = ap_sanitize_unslash( 'user_page', 'query_var', 'questions' );
-		$ap_menu = apply_filters( 'ap_menu_items', anspress()->user_pages, $user_id );
+		$ap_menu = apply_filters( 'ap_user_menu_items', anspress()->user_pages, $user_id );
 		
 		echo '<ul class="ap-tab-nav clearfix ' . esc_attr( $class ) . '">';
 		
@@ -219,9 +219,9 @@ class AnsPress_Profile_Hooks {
 			$current_page = $current_page[0];
 
 			// Callback.
-			if ( isset( $current_page['cb'] ) && method_exists( $current_page['cb'][0], $current_page['cb'][1] ) ) {
+			if ( isset( $current_page['cb'] ) && is_array( $current_page['cb'] ) && method_exists( $current_page['cb'][0], $current_page['cb'][1] ) ) {
 				call_user_func( $current_page['cb'] );
-			} elseif ( ! is_array( $current_page['cb'] ) && function_exists( $current_page['cb'] ) ) {
+			} elseif ( function_exists( $current_page['cb'] ) ) {
 				call_user_func( $current_page['cb'] );
 			} else {
 				_e( 'Callback function not found for rendering this page', 'anspress-question-answer' ); // xss okay.

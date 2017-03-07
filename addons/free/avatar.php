@@ -109,7 +109,15 @@ class AnsPress_Avatar_Hook {
 	 * @param  integar|string $id_or_email 	User id or email.
 	 * @return string
 	 */
-	public static function get_avatar( $args, $id_or_email ) {
+	public static function get_avatar( $args, $id_or_email ) {		
+
+		$override = apply_filters( 'ap_pre_avatar_url', false, $args, $id_or_email );
+		
+		// Return if override is not false.
+		if ( false !== $override ) {
+			return $override;
+		}
+
 		$args['default'] = ap_generate_avatar( $id_or_email );
 
 		// Set default avatar url.
