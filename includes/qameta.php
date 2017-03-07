@@ -52,6 +52,8 @@ function ap_insert_qameta( $post_id, $args, $wp_error = false ) {
 	}
 
 	$_post = get_post( $post_id );
+	$exists = ap_get_qameta( $post_id );
+
 	if ( ! is_object( $_post ) || ! isset( $_post->post_type ) || ! in_array( $_post->post_type, [ 'question', 'answer' ], true ) ) {
 		return false;
 	}
@@ -68,7 +70,10 @@ function ap_insert_qameta( $post_id, $args, $wp_error = false ) {
 		if ( isset( $args[ $field ] ) ) {
 			$value = $args[ $field ];
 
-			if ( 'activities' === $field || 'fields' === $field ) {
+			if ( 'fields' === $field ) {
+				$value = maybe_serialize( (array) $exists->$field + (array) $value );
+				$formats[] = '%s';
+			} elseif ( 'activities' === $field ) {
 				$value = maybe_serialize( $value );
 				$formats[] = '%s';
 			} elseif ( 'terms' === $field || 'attach' === $field ) {
@@ -90,7 +95,6 @@ function ap_insert_qameta( $post_id, $args, $wp_error = false ) {
 	}
 
 	global $wpdb;
-	$exists = ap_get_qameta( $post_id );
 
 	// Dont insert or update if not AnsPress CPT.
 	// This check will also prevent inserting qameta for deleetd post.
