@@ -317,6 +317,7 @@ class AnsPress_Tag {
 	 */
 	public static function ap_assets_js( $js ) {
 		if ( ap_current_page() === 'tag' ) {
+			$js['list'] = [ 'dep' => [ 'anspress-common' ], 'footer' => true ];
 			$js['tags'] = [ 'dep' => [ 'anspress-common' ], 'footer' => true ];
 		}
 
