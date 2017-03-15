@@ -124,10 +124,12 @@ class AnsPress_Tag {
 			'order'         => 'DESC',
 		);
 
-		if ( $_GET['ap_sort'] == 'new' ) {
+		$ap_sort = ap_isset_post_value( 'ap_sort', 'count' );
+
+		if ( 'new' === $ap_sort ) {
 			$tag_args['orderby'] = 'id';
 			$tag_args['order']      = 'ASC';
-		} elseif ( @$_GET['ap_sort'] == 'name' ) {
+		} elseif ( 'name' === $ap_sort ) {
 			$tag_args['orderby']    = 'name';
 			$tag_args['order']      = 'ASC';
 		} else {
@@ -141,6 +143,7 @@ class AnsPress_Tag {
 		/**
 		 * FILTER: ap_tags_shortcode_args
 		 * Filter applied before getting categories.
+		 *
 		 * @var array
 		 */
 		$tag_args = apply_filters( 'ap_tags_shortcode_args', $tag_args );
@@ -487,7 +490,6 @@ class AnsPress_Tag {
 			}
 		} elseif ( is_question_tags() ) {
 			$navs['page'] = array( 'title' => __( 'Tags', 'anspress-question-answer' ), 'link' => ap_get_link_to( 'tags' ), 'order' => 8 );
-
 		}
 
 		return $navs;
