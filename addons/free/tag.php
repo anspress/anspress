@@ -31,8 +31,8 @@ class AnsPress_Tag {
 	public static function init() {
 		SELF::includes();
 
-		ap_register_page( ap_get_tag_slug(), __( 'Tag', 'anspress-question-answer' ), [ __CLASS__, 'tag_page' ], false );
-		ap_register_page( ap_get_tags_slug(), __( 'Tags', 'anspress-question-answer' ), [ __CLASS__, 'tags_page' ] );
+		ap_register_page( 'tag', __( 'Tag', 'anspress-question-answer' ), [ __CLASS__, 'tag_page' ], false );
+		ap_register_page( 'tags', __( 'Tags', 'anspress-question-answer' ), [ __CLASS__, 'tags_page' ] );
 
 		anspress()->add_action( 'ap_option_groups', __CLASS__, 'option_fields', 20 );
 		anspress()->add_action( 'widgets_init', __CLASS__, 'widget_positions' );
@@ -477,7 +477,14 @@ class AnsPress_Tag {
 			$tag_id = sanitize_title( get_query_var( 'q_tag' ) );
 			$tag = get_term_by( 'slug', $tag_id, 'question_tag' ); // @codingStandardsIgnoreLine.
 			$navs['page'] = array( 'title' => __( 'Tags', 'anspress-question-answer' ), 'link' => ap_get_link_to( 'tags' ), 'order' => 8 );
-			$navs['tag'] = array( 'title' => $tag->name, 'link' => get_term_link( $tag, 'question_tag' ), 'order' => 8 ); // @codingStandardsIgnoreLine.
+
+			if ( $tag ) {
+				$navs['tag'] = array(
+					'title' => $tag->name,
+					'link'  => get_term_link( $tag, 'question_tag' ), // @codingStandardsIgnoreLine.
+					'order' => 8,
+				);
+			}
 		} elseif ( is_question_tags() ) {
 			$navs['page'] = array( 'title' => __( 'Tags', 'anspress-question-answer' ), 'link' => ap_get_link_to( 'tags' ), 'order' => 8 );
 
