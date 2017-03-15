@@ -208,7 +208,7 @@ class AnsPress_Theme {
 			remove_action( 'wp_head', 'rsd_link' );
 			remove_action( 'wp_head', 'wlwmanifest_link' );
 			remove_action( 'wp_head', 'adjacent_posts_rel_link_wp_head', 10, 0 );
-			//remove_action( 'wp_head', 'rel_canonical' );
+			remove_action( 'wp_head', 'rel_canonical' );
 			remove_action( 'wp_head', 'wp_shortlink_wp_head', 10, 0 );
 			remove_action( 'wp_head', 'feed_links_extra', 3 );
 			remove_action( 'wp_head', 'feed_links', 2 );
@@ -225,7 +225,9 @@ class AnsPress_Theme {
 			echo '<link rel="alternate" type="application/rss+xml" title="' . esc_attr__( 'Question Feed', 'anspress-question-answer' ) . '" href="' . esc_url( $q_feed ) . '" />';
 			echo '<link rel="alternate" type="application/rss+xml" title="' . esc_attr__( 'Answers Feed', 'anspress-question-answer' ) . '" href="' . esc_url( $a_feed ) . '" />';
 
-			echo '<link rel="canonical" href="' . ap_canonical_url() . '">'; // xss okay.
+			if ( ! defined( 'WPSEO_VERSION' ) ) {
+				echo '<link rel="canonical" href="' . ap_canonical_url() . '">'; // xss okay.
+			}
 
 			if ( is_question() ) {
 				echo '<link rel="shortlink" href="' . esc_url( wp_get_shortlink( get_question_id() ) ) . '" />';
@@ -238,10 +240,12 @@ class AnsPress_Theme {
 	 *
 	 * @return string
 	 */
-	public static function wpseo_canonical() {
+	public static function wpseo_canonical( $url ) {
 		if ( is_question() ) {
 			return get_permalink( get_question_id() );
 		}
+
+		return $url;
 	}
 
 	/**
