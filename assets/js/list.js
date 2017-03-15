@@ -78,7 +78,7 @@
   AnsPress.views.Filters = Backbone.View.extend({
     //tagName: 'div',
     className: 'ap-dropdown-menu',
-    searchTemplate: '<div class="ap-filter-search"><input type="text" search-filter placeholder="Search" /></div>',
+    searchTemplate: '<div class="ap-filter-search"><input type="text" search-filter placeholder="'+aplang.search+'" /></div>',
     template: '<button class="ap-droptogg apicon-x"></button><filter-items></filter-items>',
     initialize: function(options){
       this.model = options.model;

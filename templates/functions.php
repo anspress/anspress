@@ -57,6 +57,7 @@ function ap_scripts_front() {
 		'your_comment' => __( 'Write your comment...', 'anspress-question-answer' ),
 		'notifications' => __( 'Notifications', 'anspress-question-answer' ),
 		'mark_all_seen' => __( 'Mark all as seen', 'anspress-question-answer' ),
+		'search' => __( 'Search', 'anspress-question-answer' ),
 	);
 
 	echo '<script type="text/javascript">';
