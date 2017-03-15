@@ -790,10 +790,6 @@ ul li.anspress-page-link {
 #anspress .ap-q-metas .ap-posted {
   font-weight: normal;
 }
-#anspress .ap-q-content img {
-  max-width: 100%;
-  height: auto;
-}
 #anspress .ap-q-content p {
   margin-bottom: 10px;
 }
