@@ -567,7 +567,9 @@ class AnsPress_Tag {
 		$base = 'index.php?page_id=' . $base_page_id . '&ap_page=';
 		$tags_rules[ $slug . ap_get_tag_slug() . '/([^/]+)/page/?([0-9]{1,})/?' ] = $base . 'tag&q_tag=$matches[#]&paged=$matches[#]';
 		$tags_rules[ $slug . ap_get_tags_slug() . '/([^/]+)/page/?([0-9]{1,})/?' ] = $base . 'tags&q_tag=$matches[#]&paged=$matches[#]';
+		
 		$tags_rules[ $slug . ap_get_tag_slug() . '/([^/]+)/?' ] = $base . 'tag&q_tag=$matches[#]';
+		$tags_rules[ $slug . ap_get_tags_slug() . '/?' ] = $base . 'tags';
 
 		return $tags_rules + $rules;
 	}
