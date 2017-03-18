@@ -316,13 +316,15 @@ class AnsPress_Tag {
 	 * @return array
 	 */
 	public static function ap_assets_js( $js ) {
+		$js['tags'] = [ 'dep' => [ 'anspress-common' ], 'footer' => true ];
+
 		if ( ap_current_page() === 'tag' ) {
-			$js['list'] = [ 'dep' => [ 'anspress-common' ], 'footer' => true ];
-			$js['tags'] = [ 'dep' => [ 'anspress-common' ], 'footer' => true ];
+			$js['list']['active'] = true;
+			$js['tags']['active'] = true;
 		}
 
 		if ( is_ask() ) {
-			$js['tags'] = [ 'dep' => [ 'anspress-common' ], 'footer' => true ];
+			$js['tags']['active'] = true;
 		}
 
 		return $js;
@@ -567,7 +569,7 @@ class AnsPress_Tag {
 		$base = 'index.php?page_id=' . $base_page_id . '&ap_page=';
 		$tags_rules[ $slug . ap_get_tag_slug() . '/([^/]+)/page/?([0-9]{1,})/?' ] = $base . 'tag&q_tag=$matches[#]&paged=$matches[#]';
 		$tags_rules[ $slug . ap_get_tags_slug() . '/([^/]+)/page/?([0-9]{1,})/?' ] = $base . 'tags&q_tag=$matches[#]&paged=$matches[#]';
-		
+
 		$tags_rules[ $slug . ap_get_tag_slug() . '/([^/]+)/?' ] = $base . 'tag&q_tag=$matches[#]';
 		$tags_rules[ $slug . ap_get_tags_slug() . '/?' ] = $base . 'tags';
 

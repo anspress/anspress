@@ -186,7 +186,7 @@ class AnsPress_Notification_Hook {
 	 */
 	public static function ap_assets_js( $js ) {
 		if ( is_user_logged_in() ) {
-			$js['notifications'] = [ 'dep' => [ 'anspress-common' ], 'footer' => true ];
+			$js['notifications']['active'] = true;
 		}
 
 		return $js;

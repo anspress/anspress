@@ -14,6 +14,9 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
+/**
+ * Ask from widget.
+ */
 class AP_Askform_Widget extends WP_Widget {
 
 	/**
@@ -31,11 +34,13 @@ class AP_Askform_Widget extends WP_Widget {
 		$title = apply_filters( 'widget_title', $instance['title'] );
 
 		echo $args['before_widget'];
+
 		if ( ! empty( $title ) ) {
 			echo $args['before_title'] . $title . $args['after_title'];
 		}
+		wp_enqueue_script( 'anspress-ask' );
 		?>
-    	<div class="ap-widget-inner">
+    	<div id="ap-ask-page" class="ap-widget-inner">
 				<?php ap_ask_form(); ?>
       </div>
 		<?php
@@ -71,8 +76,10 @@ class AP_Askform_Widget extends WP_Widget {
 	}
 }
 
+/**
+ * Register ask form widget.
+ */
 function ap_quickask_register_widgets() {
 	register_widget( 'AP_Askform_Widget' );
 }
-
 add_action( 'widgets_init', 'ap_quickask_register_widgets' );

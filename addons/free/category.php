@@ -365,7 +365,7 @@ class AnsPress_Category {
 	 */
 	public static function ap_assets_js( $js ) {
 		if ( ap_current_page() === 'category' ) {
-			$js['list'] = [ 'dep' => [ 'anspress-common' ], 'footer' => true ];
+			$js['list']['active'] = true;
 		}
 		return $js;
 	}

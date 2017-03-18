@@ -80,7 +80,7 @@ class AnsPress_BP_Hooks {
 		}
 
 		if ( bp_current_component() === 'qa' && bp_current_action() === 'questions' ) {
-			$js['list'] = [ 'dep' => [ 'anspress-common' ], 'footer' => true ];
+			$js['list']['active'] = true;
 		}
 
 		return $js;

@@ -599,31 +599,37 @@ function ap_assets() {
 		'js' => array(
 			'common' => [ 'dep' => [ 'jquery', 'jquery-form', 'underscore', 'backbone' ], 'footer' => true ],
 			'theme' => [ 'dep' => [ 'jquery', 'anspress-common' ], 'footer' => true, 'theme' => true ],
+			'ask' => [ 'dep' => [ 'anspress-common' ], 'footer' => true ],
+			'upload' => [ 'dep' => [ 'plupload', 'anspress-common' ], 'footer' => true ],
+			'question' => [ 'dep' => [ 'anspress-common' ], 'footer' => true ],
+			'list' => [ 'dep' => [ 'anspress-common' ], 'footer' => true ],
+			'notifications' => [ 'dep' => [ 'anspress-common' ], 'footer' => true ],
 		),
 		'css' => array(
-			'main' => array( 'theme' => true ),
+			'main' => array( 'theme' => true, 'dep' => [ 'anspress-fonts' ] ),
 			'fonts' => array( 'theme' => true ),
+			'rtl' => array( 'theme' => true ),
 		),
 	);
 
 	if ( is_ask() || ap_current_page() === 'edit' ) {
-		$assets['js']['ask'] = [ 'dep' => [ 'anspress-common' ] , 'footer' => true ];
+		$assets['js']['ask']['active'] = true;
 
 		if ( ap_user_can_upload( ) ) {
-			$assets['js']['upload'] = [ 'dep' => [ 'plupload', 'anspress-common' ] , 'footer' => true ];
+			$assets['js']['upload']['active'] = true;
 		}
 	}
 
 	if ( is_question() || ap_current_page() === 'edit' ) {
-		$assets['js']['question'] = [ 'dep' => [ 'anspress-common' ], 'footer' => true ];
+		$assets['js']['question']['active'] = true;
 	}
 
-	if ( ap_current_page() === 'base' || ap_current_page() === 'search' ) {
-		$assets['js']['list'] = [ 'dep' => [ 'anspress-common' ], 'footer' => true ];
+	if ( is_anspress() && ( ap_current_page() === 'base' || ap_current_page() === 'search' ) ) {
+		$assets['js']['list']['active'] = true;
 	}
 
 	if ( is_rtl() ) {
-		$assets['css']['rtl'] = array( 'theme' => true );
+		$assets['css']['rtl']['active'] = true;
 	}
 
 	$assets['js'] = apply_filters( 'ap_assets_js', $assets['js'] );
@@ -651,7 +657,11 @@ function ap_enqueue_scripts() {
 
 		$dep = isset( $js['dep'] ) ? $js['dep'] : array();
 		$footer = isset( $js['footer'] ) ? $js['footer'] : false;
-		wp_enqueue_script( 'anspress-' . $k, $src, $dep, AP_VERSION, $footer );
+		wp_register_script( 'anspress-' . $k, $src, $dep, AP_VERSION, $footer );
+
+		if ( isset( $js['active'] ) && $js['active'] ) {
+			wp_enqueue_script( 'anspress-' . $k );
+		}
 	}
 
 	foreach ( (array) $assets['css'] as $k => $css ) {
@@ -665,7 +675,11 @@ function ap_enqueue_scripts() {
 		$src = ! empty( $css['theme'] ) ? ap_get_theme_url( 'css' . $src, false, false ) : ANSPRESS_URL . 'assets/css' . $src;
 
 		$dep = isset( $css['dep'] ) ? $css['dep'] : array();
-		wp_enqueue_style( 'anspress-' . $k, $src, $dep, AP_VERSION );
+		wp_register_style( 'anspress-' . $k, $src, $dep, AP_VERSION );
+
+		if ( isset( $css['active'] ) && $css['active'] ) {
+			wp_enqueue_style( 'anspress-' . $k );
+		}
 	}
 }
 
