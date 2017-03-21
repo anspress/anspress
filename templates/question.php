@@ -79,9 +79,10 @@
 
 							</div>
 
-							<div class="ap-post-footer clearfix">
+							<div class="ap-post-footer clearfix">								
 								<?php ap_post_actions_buttons() ?>
-								<?php echo ap_comment_btn_html( ); ?>
+								<?php do_action( 'ap_post_footer' ); ?>
+								<?php echo ap_comment_btn_html(); ?>
 							</div>
 						</div>
 

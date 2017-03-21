@@ -141,15 +141,19 @@ class AnsPress_Admin {
 	 * @since 2.4.6
 	 */
 	public static function menu_counts() {
-		$q_flagged_count = ap_total_posts_count( 'question', 'flag' );
-		$a_flagged_count = ap_total_posts_count( 'answer', 'flag' );
+		$flagged = ap_total_flagged_count();
+
+		$q_flagged = $flagged['questions'];
+		$a_flagged = $flagged['answers'];
+
 		$question_count = wp_count_posts( 'question', 'readable' );
 		$answer_count = wp_count_posts( 'answer', 'readable' );
 		$types = array(
-			'question' 	=> ( ! empty( $question_count->moderate ) ? $question_count->moderate : 0 ) + $q_flagged_count->total,
-			'answer' 	=> ( ! empty( $answer_count->moderate ) ? $answer_count->moderate : 0 ) + $a_flagged_count->total,
-			'flagged' 	=> $q_flagged_count->total + $a_flagged_count->total,
+			'question' 	=> ( ! empty( $question_count->moderate ) ? $question_count->moderate : 0 ) + $q_flagged->total,
+			'answer' 	=> ( ! empty( $answer_count->moderate ) ? $answer_count->moderate : 0 ) + $a_flagged->total,
+			'flagged' 	=> $q_flagged->total + $a_flagged->total,
 		);
+
 		$types['total'] = array_sum( $types );
 		$types_html = array();
 

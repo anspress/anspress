@@ -49,7 +49,9 @@ class AnsPress_Post_Table_Hooks {
 	 */
 	public static function flag_view( $views ) {
 		global $post_type_object;
-		$flagged_count = ap_total_posts_count( $post_type_object->name, 'flag' );
+		$flagged = ap_total_flagged_count();
+
+		$flagged_count = $flagged[ 'answer' === $post_type_object->name ? 'answers' : 'questions' ];
 		$class = ap_sanitize_unslash( 'flagged', 'p' ) ? 'class="current" ' : '';
 	    $views['flagged'] = '<a ' . $class . 'href="edit.php?flagged=true&#038;post_type=' . $post_type_object->name . '">' . __( 'Flagged', 'anspress-question-answer' ) . ' <span class="count">(' . $flagged_count->total . ')</span></a>';
 

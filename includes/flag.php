@@ -62,7 +62,13 @@ function ap_add_flag( $post_id, $user_id = false ) {
 		$user_id = get_current_user_id();
 	}
 
-	return ap_vote_insert( $post_id, $user_id, 'flag' );
+	$inserted = ap_vote_insert( $post_id, $user_id, 'flag' );
+
+	if ( $inserted ) {
+		ap_update_total_flags_count();
+	}
+
+	return $inserted;
 }
 
 /**
@@ -135,4 +141,47 @@ function ap_flag_btn_args( $post = null ) {
  */
 function ap_delete_flags( $post_id ) {
 	return ap_delete_votes( $post_id, 'flag' );
+}
+
+/**
+ * Update total flagged question and answer count.
+ *
+ * @since 4.0.0
+ */
+function ap_update_total_flags_count() {
+	$opt = get_option( 'anspress_global', [] );
+	$opt['flagged_questions'] = ap_total_posts_count( 'question', 'flag' );
+	$opt['flagged_answers'] = ap_total_posts_count( 'answer', 'flag' );
+
+	update_option( 'anspress_global', $opt );
+}
+
+/**
+ * Return total flagged post count.
+ *
+ * @return array
+ * @since 4.0.0
+ */
+function ap_total_flagged_count() {
+	$opt = get_option( 'anspress_global', [] );
+	$updated = false;
+
+	if ( empty( $opt['flagged_questions'] ) ) {
+		$opt['flagged_questions'] = ap_total_posts_count( 'question', 'flag' );
+		$updated = true;
+	}
+
+	if ( empty( $opt['flagged_answers'] ) ) {
+		$opt['flagged_answers'] = ap_total_posts_count( 'answer', 'flag' );
+		$updated = true;
+	}
+
+	if ( $updated ) {
+		update_option( 'anspress_global', $opt );
+	}
+
+	return array(
+		'questions' => $opt['flagged_questions'],
+		'answers'   => $opt['flagged_answers'],
+	);
 }
