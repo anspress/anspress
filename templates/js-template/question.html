@@ -1,4 +1,4 @@
-<!-- comment start -->
+#START BLOCK comment #
   <div class="ap-avatar">{{{avatar}}}</div>
   <div class="comment-inner">
     <div class="comment-header"><a href="{{user_link}}" class="ap-comment-author">{{user_name}}</a> {{aplang.commented}}
@@ -18,9 +18,9 @@
     </div>
     <div class="comment-content">{{content}}</div>
   </div>
-<!-- comment end -->
+#END BLOCK comment #
 
-<!-- comment-form start -->
+#START BLOCK comment-form #
 <form class="ap-comment-form clearfix" method="POST" id="ap-commentform" comment-form>
   <div class="ap-comment-inner">
     <textarea placeholder="{{aplang.your_comment}}" class="ap-form-control autogrow" id="ap-comment-textarea" aria-required="true" rows="4" name="content"></textarea>
@@ -37,17 +37,17 @@
   <input type="hidden" name="action" value="ap_ajax" />
   <input type="hidden" name="ap_ajax_action" value="{{ap_ajax_action}}" />
 </form>
-<!-- comment-form end -->
+#END BLOCK comment-form #
 
-<!-- action start -->
+#START BLOCK action #
   <# if(!header){ #>
-    <a href="{{href}}" title="{{title}}">{{label}}<# if(count){ #><b>{{count}}</b><# } #></a>
+    <a href="{{href}}" title="{{title}}">{{{prefix}}}{{label}}<# if(count){ #><b>{{count}}</b><# } #></a>
   <# } else { #>
     {{label}}
   <# } #>
-<!-- action end -->
+#END BLOCK action #
 
-<!-- modal start -->
+#START BLOCK modal #
 <div class="ap-modal-body<# if(typeof size !== 'undefined'){ #> ap-modal-{{size}}<# } #>">
   <# if(typeof title !== 'undefined' ){ #>
     <div class="ap-modal-header">
@@ -69,4 +69,4 @@
   </div>
 </div>
 <div class="ap-modal-backdrop"></div>
-<!-- modal end -->
+#END BLOCK modal #

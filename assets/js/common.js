@@ -24,7 +24,7 @@ window.AnsPress = _.extend({
 			if(jQuery('#apTemplate').length==0)
 				return '';
 
-			var regex = new RegExp("<!-- "+templateId+" start -->([\\S\\s]*?)<!-- "+templateId+" end -->", "g");
+			var regex = new RegExp("#START BLOCK "+templateId+" #([\\S\\s]*?)#END BLOCK "+templateId+" #", "g");
 			var match = regex.exec(jQuery('#apTemplate').text());
 
 			if(match == null)

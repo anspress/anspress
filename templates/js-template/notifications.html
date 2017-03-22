@@ -1,4 +1,4 @@
-<!-- notifications start -->
+#START BLOCK notifications #
 <button class="ap-droptogg apicon-x"></button>
 <div class="ap-noti-head">
   {{aplang.notifications}}
@@ -8,9 +8,9 @@
   <# } #>
 </div>
 <div class="scroll-wrap"></div>
-<!-- notifications end -->
+#END BLOCK notifications #
 
-<!-- notification start -->
+#START BLOCK notification #
 <div class="noti-item clearfix {{seen==1 ? 'seen' : 'unseen'}}">
   <# if(ref_type === 'reputation') { #>
     <div class="ap-noti-rep">{{points}}</div>
@@ -28,4 +28,4 @@
     <time class="ap-noti-date">{{date}}</time>
   </a>
 </div>
-<!-- notification end -->
+#END BLOCK notification #

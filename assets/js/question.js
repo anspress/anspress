@@ -19,7 +19,8 @@
 			active: false,
 			header: false,
 			href: '#',
-			count: ''
+			count: '',
+			prefix: ''
 		}
 	});
 
