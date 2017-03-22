@@ -788,11 +788,10 @@ function ap_total_published_questions() {
  *
  * @param string $type Valid values are int or object.
  * @return int|object
- * @TODO Use new qameta table.
  */
 function ap_total_solved_questions( $type = 'int' ) {
 	global $wpdb;
-	$query = "SELECT count(*) as count, p.post_status FROM $wpdb->posts p INNER JOIN " . $wpdb->prefix . "postmeta m ON p.ID = m.post_id WHERE m.meta_key = '_ap_selected' AND m.meta_value !='' GROUP BY p.post_status";
+	$query = "SELECT count(*) as count, p.post_status FROM $wpdb->posts p INNER JOIN $wpdb->ap_qameta qameta ON p.ID = qameta.post_id WHERE p.post_type = 'question' AND qameta.selected_id IS NOT NULL AND qameta.selected_id > 0 GROUP BY p.post_status";
 	$cache_key = md5( $query );
 	$count = wp_cache_get( $cache_key, 'counts' );
 
@@ -808,13 +807,12 @@ function ap_total_solved_questions( $type = 'int' ) {
 	}
 
 	foreach ( (array) $count as $row ) {
-		$counts[ $row['post_status'] ] = $row['count'];
-		$counts['total'] += $row['count'];
+		$counts[ $row['post_status'] ] = (int) $row['count'];
+		$counts['total'] += (int) $row['count'];
 	}
 
 	wp_cache_set( $cache_key, (object) $counts, 'counts' );
 	$counts = (object) $counts;
-
 	if ( 'int' === $type ) {
 		return $counts->publish + $counts->private_post;
 	}
