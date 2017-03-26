@@ -38,7 +38,7 @@ class Answers_Query extends WP_Query {
 	 */
 	public function __construct( $args = array() ) {
 		global $answers;
-		$paged = get_query_var( 'ap_paged', 1 );
+		$paged = (int) ap_isset_post_value( 'ap_paged', 1 );
 		set_query_var( 'ap_paged', $paged );
 
 		$defaults = array(
@@ -59,7 +59,6 @@ class Answers_Query extends WP_Query {
 		}
 
 		$this->args = wp_parse_args( $args, $defaults );
-
 		$this->args['ap_order_by'] = sanitize_title( $this->args['ap_order_by'] );
 
 		// Check if user can read private post.
