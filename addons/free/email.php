@@ -193,8 +193,8 @@ class AnsPress_Email_Hooks {
 		$defaults['new_answer_email_subject'] = __( 'New answer posted by {answerer}', 'anspress-question-answer' );
 		$defaults['new_answer_email_body']    = __( "Hello!\r\nA new answer is posted by {answerer} on {question_title}\r\nAnswer:\r\n{answer_excerpt}\r\n\r\nLink: {answer_link}", 'anspress-question-answer' );
 
-		$defaults['select_answer_email_subject'] = __( 'Your answer is selected as best', 'anspress-question-answer' );
-		$defaults['select_answer_email_body']    = __( "Hello!\r\nYour answer on '{question_title}' is selected as best.\r\n\r\nLink: {answer_link}", 'anspress-question-answer' );
+		$defaults['select_answer_email_subject'] = __( 'Your answer was selected as best', 'anspress-question-answer' );
+		$defaults['select_answer_email_body']    = __( "Hello!\r\nYour answer on '{question_title}' was selected as best.\r\n\r\nLink: {answer_link}", 'anspress-question-answer' );
 
 		$defaults['new_comment_email_subject'] = __( 'New comment by {commenter}', 'anspress-question-answer' );
 		$defaults['new_comment_email_body']    = __( "Hello!\r\nA new comment posted on '{question_title}' by {commenter}.\r\n\r\nLink: {comment_link}", 'anspress-question-answer' );
