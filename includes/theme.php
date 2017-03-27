@@ -597,13 +597,9 @@ function ap_current_page() {
 function ap_assets() {
 	$assets = array(
 		'js' => array(
-			'common' => [ 'dep' => [ 'jquery', 'jquery-form', 'underscore', 'backbone' ], 'footer' => true ],
-			'theme' => [ 'dep' => [ 'jquery', 'anspress-common' ], 'footer' => true, 'theme' => true ],
-			'ask' => [ 'dep' => [ 'anspress-common' ], 'footer' => true ],
-			'upload' => [ 'dep' => [ 'plupload', 'anspress-common' ], 'footer' => true ],
-			'question' => [ 'dep' => [ 'anspress-common' ], 'footer' => true ],
-			'list' => [ 'dep' => [ 'anspress-common' ], 'footer' => true ],
-			'notifications' => [ 'dep' => [ 'anspress-common' ], 'footer' => true ],
+			'main' => [ 'dep' => [ 'jquery', 'jquery-form', 'underscore', 'backbone' ], 'footer' => true ],
+			'upload' => [ 'dep' => [ 'plupload', 'anspress-main' ], 'footer' => true ],
+			'notifications' => [ 'dep' => [ 'anspress-main' ], 'footer' => true ],
 		),
 		'css' => array(
 			'main' => array( 'theme' => true, 'dep' => [ 'anspress-fonts' ] ),
@@ -613,7 +609,7 @@ function ap_assets() {
 	);
 
 	if ( is_ask() || ap_current_page() === 'edit' ) {
-		$assets['js']['ask']['active'] = true;
+		$assets['js']['main']['active'] = true;
 
 		if ( ap_user_can_upload( ) ) {
 			$assets['js']['upload']['active'] = true;
@@ -621,11 +617,11 @@ function ap_assets() {
 	}
 
 	if ( is_question() || ap_current_page() === 'edit' ) {
-		$assets['js']['question']['active'] = true;
+		$assets['js']['main']['active'] = true;
 	}
 
 	if ( is_anspress() && ( ap_current_page() === 'base' || ap_current_page() === 'search' ) ) {
-		$assets['js']['list']['active'] = true;
+		$assets['js']['main']['active'] = true;
 	}
 
 	if ( is_rtl() ) {
@@ -647,11 +643,7 @@ function ap_enqueue_scripts() {
 	$assets = ap_assets();
 
 	foreach ( (array) $assets['js'] as $k => $js ) {
-		if ( ap_env_dev() ) {
-			$src = '/' . $k . '.js';
-		} else {
-			$src = '/min/' . $k . '.min.js';
-		}
+		$src = '/min/' . $k . '.min.js';
 
 		$src = ! empty( $js['theme'] ) ? ap_get_theme_url( 'js' . $src, false, false ) : ANSPRESS_URL . 'assets/js' . $src;
 
@@ -665,12 +657,7 @@ function ap_enqueue_scripts() {
 	}
 
 	foreach ( (array) $assets['css'] as $k => $css ) {
-
-		if ( ap_env_dev() ) {
-			$src = '/' . $k . '.css';
-		} else {
-			$src = '/min/' . $k . '.min.css';
-		}
+		$src = '/min/' . $k . '.min.css';
 
 		$src = ! empty( $css['theme'] ) ? ap_get_theme_url( 'css' . $src, false, false ) : ANSPRESS_URL . 'assets/css' . $src;
 

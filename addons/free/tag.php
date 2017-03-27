@@ -316,12 +316,7 @@ class AnsPress_Tag {
 	 * @return array
 	 */
 	public static function ap_assets_js( $js ) {
-		$js['tags'] = [ 'dep' => [ 'anspress-common' ], 'footer' => true ];
-
-		if ( ap_current_page() === 'tag' ) {
-			$js['list']['active'] = true;
-			$js['tags']['active'] = true;
-		}
+		$js['tags'] = [ 'dep' => [ 'anspress-main' ], 'footer' => true ];
 
 		if ( is_ask() ) {
 			$js['tags']['active'] = true;

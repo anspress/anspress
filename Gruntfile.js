@@ -66,14 +66,13 @@
 				}
 			},
 			uglify: {
+				options: {
+					sourceMap: true
+				},
 				my_target: {
 					files: {
-						'assets/js/min/question.min.js': ['assets/js/question.js'],
-						'assets/js/min/common.min.js': ['assets/js/common.js'],
-						'assets/js/min/upload.min.js': ['assets/js/upload.js'],
+						'assets/js/min/main.min.js': ['assets/js/common.js', 'assets/js/question.js', 'assets/js/ask.js', 'assets/js/list.js'],
 						'assets/js/min/ap-admin.min.js': ['assets/js/ap-admin.js'],
-						'assets/js/min/ask.min.js': ['assets/js/ask.js'],
-						'assets/js/min/list.min.js': ['assets/js/list.js'],
 						'assets/js/min/tags.min.js': ['assets/js/tags.js'],
 						'assets/js/min/notifications.min.js': ['assets/js/notifications.js'],
 						'templates/js/min/theme.min.js': ['templates/js/theme.js'],

@@ -137,82 +137,82 @@ var uploadsModel;
       jQuery('.wp-editor-area').val(jQuery('.wp-editor-area').val() + html);
   };
 
-  uploadsModel = new AnsPress.collections.Uploads(JSON.parse($('#ap-uploads-data').html()));
-  var uploadsView = new AnsPress.views.Uploads({ model: uploadsModel });
-  uploadsView.render();
+  if($('#ap-uploads-data').length> 0){
+    uploadsModel = new AnsPress.collections.Uploads(JSON.parse($('#ap-uploads-data').html()));
+    var uploadsView = new AnsPress.views.Uploads({ model: uploadsModel });
+    uploadsView.render();
 
-  wpUploaderInit.browse_button = 'pickfiles';
-  wpUploaderInit.container = 'ap-upload';
-  wpUploaderInit.init = {
-    FilesAdded: function(up, files) {
-      var self = this,
-        warningShown = false;
+    wpUploaderInit.browse_button = 'pickfiles';
+    wpUploaderInit.container = 'ap-upload';
+    wpUploaderInit.init = {
+      FilesAdded: function(up, files) {
+        var self = this,
+          warningShown = false;
 
-      var template = $('#ap-upload-template').html();
-      plupload.each(files, function(file) {
-        if (up.files.length > up.settings.maxfiles) {
-          if(!warningShown)
-            alert(aplang.attached_max);
-          up.removeFile(file);
-          warningShown = true;
-          return;
-        }
+        var template = $('#ap-upload-template').html();
+        plupload.each(files, function(file) {
+          if (up.files.length > up.settings.maxfiles) {
+            if(!warningShown)
+              alert(aplang.attached_max);
+            up.removeFile(file);
+            warningShown = true;
+            return;
+          }
 
-        uploadsModel.add({
-          id: file.id,
-          oldId: file.id,
-          fileName: file.name,
-          type: file.type,
-          fileSize: plupload.formatSize(file.size),
-          url: '',
-          nonce: '',
-          uploaded: false
+          uploadsModel.add({
+            id: file.id,
+            oldId: file.id,
+            fileName: file.name,
+            type: file.type,
+            fileSize: plupload.formatSize(file.size),
+            url: '',
+            nonce: '',
+            uploaded: false
+          });
+
+          AnsPress.uploader.start();
         });
 
-        AnsPress.uploader.start();
-      });
+      },
+      UploadProgress: function(up, file) {
+        AnsPress.trigger('apUploadProgress', {id: file.id, per: file.percent});
+      },
+      FileUploaded: function(up, file, info) {
+        var prevId = file.id;
+        var data = AnsPress.ajaxResponse(info.response);
+        if(data.success){
+          uploadsModel.get(prevId).set({'id': data.attachment_id, 'nonce': data.delete_nonce, done: data.success, isImage: data.is_image, url: data.attachment_url, uploaded: true });
 
-    },
-    UploadProgress: function(up, file) {
-      AnsPress.trigger('apUploadProgress', {id: file.id, per: file.percent});
-    },
-    FileUploaded: function(up, file, info) {
-      var prevId = file.id;
-      var data = AnsPress.ajaxResponse(info.response);
-      if(data.success){
-        uploadsModel.get(prevId).set({'id': data.attachment_id, 'nonce': data.delete_nonce, done: data.success, isImage: data.is_image, url: data.attachment_url, uploaded: true });
-
-        if(data.is_image){
-          addImageToEditor(data.attachment_url, data.attachment_id);
+          if(data.is_image){
+            addImageToEditor(data.attachment_url, data.attachment_id);
+          }
         }
+
+        if(!data.success){
+          AnsPress.trigger('snackbar', data);
+          uploadsModel.get(file.id).set({'failed': true});
+          up.removeFile(file);
+        }
+      },
+      Error: function(up, args) {
+        if(args.code === -600){
+          AnsPress.trigger('snackbar', { success: false, snackbar : { message: aplang.file_size_error }});
+        }
+      },
+      FilesRemoved: function(){
+        AnsPress.trigger('uploadsRemoved');
       }
+    };
 
-      if(!data.success){
-        AnsPress.trigger('snackbar', data);
-        uploadsModel.get(file.id).set({'failed': true});
-        up.removeFile(file);
-      }
-    },
-    Error: function(up, args) {
-      if(args.code === -600){
-        AnsPress.trigger('snackbar', { success: false, snackbar : { message: aplang.file_size_error }});
-      }
-    },
-    FilesRemoved: function(){
-      AnsPress.trigger('uploadsRemoved');
-    }
-  };
+    AnsPress.uploader = new plupload.Uploader(wpUploaderInit);
+    AnsPress.uploader.init();
 
-  AnsPress.uploader = new plupload.Uploader(wpUploaderInit);
-  AnsPress.uploader.init();
+    $('.ap-field-description').on('drag dragstart dragenter dragover', function(e) {
+      $(this).addClass('dragging');
+    });
 
-
-
-  $('.ap-field-description').on('drag dragstart dragenter dragover', function(e) {
-    $(this).addClass('dragging');
-  });
-
-  $('.ap-field-description').on('dragend  dragleave drop', function(e) {
-    $(this).removeClass('dragging');
-  })
+    $('.ap-field-description').on('dragend  dragleave drop', function(e) {
+      $(this).removeClass('dragging');
+    })
+  }
 })(jQuery);
