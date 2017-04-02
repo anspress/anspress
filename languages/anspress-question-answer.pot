@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: AnsPress 4.0.0\n"
 "Report-Msgid-Bugs-To: "
 "https://wordpress.org/support/plugin/anspress-question-answer\n"
-"POT-Creation-Date: 2017-03-27 15:46:27+00:00\n"
+"POT-Creation-Date: 2017-04-02 12:23:34+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -189,7 +189,7 @@ msgstr ""
 msgid "Categories"
 msgstr ""
 
-#: addons/free/category/widget.php:97 widgets/ask-form.php:58
+#: addons/free/category/widget.php:97 widgets/ask-form.php:74
 #: widgets/question_stats.php:68 widgets/questions.php:78 widgets/search.php:68
 msgid "Title:"
 msgstr ""
@@ -3438,7 +3438,7 @@ msgstr ""
 msgid "AnsPress ask form widget"
 msgstr ""
 
-#: widgets/ask-form.php:54
+#: widgets/ask-form.php:68
 msgid "Ask questions"
 msgstr ""
 

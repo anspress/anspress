@@ -121,10 +121,10 @@
 		}
 	});
 
-	grunt.registerTask('prepush', function() {
+	grunt.registerTask('precommit', function() {
 		grunt.task.run('build');
 	});
 
-	grunt.registerTask( 'build', [ 'phplint', 'makepot', 'version', 'sass', 'uglify', 'compress' ]);
+	grunt.registerTask( 'build', [ 'phplint', 'makepot', 'version', 'sass', 'uglify' ]);
 
 }
