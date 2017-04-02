@@ -121,6 +121,7 @@
 		},
 	});
 
-	grunt.registerTask( 'build', [ 'phplint', 'makepot', 'version', 'sass', 'uglify', 'compress' ]);
+	grunt.registerTask( 'build-without-php', [ 'makepot', 'version', 'sass', 'uglify', 'compress' ]);
+	grunt.registerTask( 'build', [ 'phplint', 'build-without-php' ]);
 
 }
