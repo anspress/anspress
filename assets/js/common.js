@@ -297,7 +297,7 @@ jQuery(document).ready(function($){
 	});
 
 	// Dropdown toggle
-	$('body').delegate('.ap-dropdown-toggle, .ap-dropdown-menu > a', 'click', function(e){
+	$('body').on('click', '.ap-dropdown-toggle, .ap-dropdown-menu > a', function(e){
 		e.preventDefault();
 		$('.ap-dropdown').not($(this).closest('.ap-dropdown')).removeClass('open');
 		$(this).closest('.ap-dropdown').toggleClass('open');
@@ -319,14 +319,14 @@ jQuery(document).ready(function($){
 		})
 	});
 
-	$('body').delegate( '.ap-droptogg', 'click', function(e){
+	$('body').on('click', '.ap-droptogg', function(e){
 		e.preventDefault();
 		$(this).closest('.ap-dropdown').removeClass('open');
 		$(this).closest('#noti-dp').hide();
 	});
 
 	// Ajax button.
-	$('body').delegate( '[ap-ajax-btn]', 'click', function(e){
+	$('body').on('click', '[ap-ajax-btn]', function(e){
 		e.preventDefault();
 		var self = $(this);
 		var query = JSON.parse(self.attr('ap-query'));

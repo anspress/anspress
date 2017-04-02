@@ -189,7 +189,7 @@
 			}
 		});
 		
-		$('#ap-tags-suggestion').delegate('.ap-tagssugg-item', 'click', function(e) {
+		$('#ap-tags-suggestion').on('click', '.ap-tagssugg-item', function(e) {
 			apAddTag($(this).find('.ap-tag-item-value').text());
 			$(this).remove();
 		});
@@ -199,7 +199,7 @@
 			  	$('#ap-tags-suggestion').hide();
 		});
 		
-		$('body').delegate('.ap-tagssugg-item', 'click', function(event) {
+		$('body').on('click', '.ap-tagssugg-item', function(event) {
 			var itemValue = $(this).find('.ap-tag-item-value').text();
 			
 			// Message for screen reader
