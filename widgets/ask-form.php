@@ -30,34 +30,52 @@ class AP_Askform_Widget extends WP_Widget {
 		);
 	}
 
+	/**
+	 * Render widget.
+	 *
+	 * @param array $args Arhuments.
+	 * @param array $instance Instance.
+	 * @return void
+	 */
 	public function widget( $args, $instance ) {
 		$title = apply_filters( 'widget_title', $instance['title'] );
 
-		echo $args['before_widget'];
+		echo $args['before_widget']; // xss okay.
 
 		if ( ! empty( $title ) ) {
-			echo $args['before_title'] . $title . $args['after_title'];
+			echo $args['before_title'] . esc_html( $title ) . $args['after_title']; // xss okay.
 		}
-		wp_enqueue_script( 'anspress-ask' );
+
+		wp_enqueue_script( 'anspress-main' );
 		?>
-    	<div id="ap-ask-page" class="ap-widget-inner">
-				<?php ap_ask_form(); ?>
-      </div>
+		<div id="ap-ask-page" class="ap-widget-inner">
+			<?php ap_ask_form(); ?>
+		</div>
 		<?php
-		echo $args['after_widget'];
+		echo $args['after_widget']; // xss okay.
 	}
 
+	/**
+	 * Form.
+	 *
+	 * @param array $instance Instacne.
+	 * @return void
+	 */
 	public function form( $instance ) {
-		if ( isset( $instance[ 'title' ] ) ) {
-			$title = $instance[ 'title' ];
+		if ( isset( $instance['title'] ) ) {
+			$title = $instance['title'];
 		} else {
 			$title = __( 'Ask questions', 'anspress-question-answer' );
 		}
 		?>
-    <p>
-			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:', 'anspress-question-answer' ); ?></label>
-			<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>">
-    </p>
+
+		<p>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>">
+				<?php _e( 'Title:', 'anspress-question-answer' ); ?>
+			</label>
+			<input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>">
+		</p>
+
 		<?php
 	}
 
@@ -65,7 +83,9 @@ class AP_Askform_Widget extends WP_Widget {
 	 * Sanitize widget form values as they are saved.
 	 *
 	 * @see WP_Widget::update()
-	 * @param array $new_instance Values just sent to be saved.	 *
+	 * @param array $new_instance Values just sent to be saved.
+	 * @param array $old_instance Old widget values.
+	 *
 	 * @return array Updated safe values to be saved.
 	 */
 	public function update( $new_instance, $old_instance ) {

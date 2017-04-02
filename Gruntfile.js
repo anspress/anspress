@@ -118,7 +118,11 @@
 				files: ['templates/js/*.js','assets/js/*.js'],
 				tasks: ['uglify'],
 			}
-		},
+		}
+	});
+
+	grunt.registerTask('prepush', function() {
+		grunt.task.run('build');
 	});
 
 	grunt.registerTask( 'build', [ 'phplint', 'makepot', 'version', 'sass', 'uglify', 'compress' ]);
