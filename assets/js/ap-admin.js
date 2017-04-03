@@ -45,7 +45,7 @@
 				});
 			},
 			editPoints:function(){
-				jQuery('.wp-admin').delegate('[data-action="ap-edit-reputation"]', 'click', function(e){
+				jQuery('.wp-admin').on('click', '[data-action="ap-edit-reputation"]', function(e){
 					e.preventDefault();
 					var id = jQuery(this).attr('href');
 					jQuery.ajax({
@@ -68,7 +68,7 @@
 				});
 			},
 			savePoints:function(){
-				jQuery('.wp-admin').delegate('[data-action="ap-save-reputation"]', 'submit', function(e){
+				jQuery('.wp-admin').on('submit', '[data-action="ap-save-reputation"]', function(e){
 					e.preventDefault();
 					jQuery('.button-primary', this).attr('disabled', 'disabled');
 					var id = jQuery(this).attr('href');
@@ -90,7 +90,7 @@
 				});
 			},
 			newPointForm:function(){
-				jQuery('.wp-admin').delegate('[data-button="ap-new-reputation"]', 'click', function(e){
+				jQuery('.wp-admin').on('click', '[data-button="ap-new-reputation"]', function(e){
 					e.preventDefault();
 					jQuery.ajax({
 						type: 'POST',
@@ -111,7 +111,7 @@
 				});
 			},
 			deletePoint:function(){
-				jQuery('.wp-admin').delegate('[data-button="ap-delete-reputation"]', 'click', function(e){
+				jQuery('.wp-admin').on('click', '[data-button="ap-delete-reputation"]', function(e){
 					e.preventDefault();
 					var id = jQuery(this).attr('href');
 					var args = jQuery(this).data('args');

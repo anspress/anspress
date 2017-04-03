@@ -108,6 +108,25 @@
 				}
 			}
 		},
+		compress: {
+			plugin: {
+				options: {
+					archive: 'build/anspress.zip'
+				},
+				files: [
+					{
+						expand: true,
+						src: [
+							'**/*',
+							'!.',
+							'!build/**',
+							'!node_modules/**',
+						],
+						dot: false,
+					},
+				],
+			},
+		},
 
 		watch: {
 			sass: {
