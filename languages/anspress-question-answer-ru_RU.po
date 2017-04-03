@@ -62,7 +62,7 @@ msgstr "Все ответы"
 
 #: admin/anspress-admin.php:183
 msgid "Moderate question & answer"
-msgstr "Управление вопрос & ответами"
+msgstr "Управление вопросами & ответами"
 
 #: admin/anspress-admin.php:183 admin/flagged.php:100 admin/moderate.php:80
 #: admin/options-page.php:606 admin/options-page.php:615
@@ -2447,7 +2447,7 @@ msgstr ""
 
 #: includes/theme.php:713
 msgid "Ask question"
-msgstr "Спросить вопрос"
+msgstr "Задать вопрос"
 
 #: includes/theme.php:826 includes/theme.php:830 includes/theme.php:832
 msgid ".."
@@ -3131,7 +3131,7 @@ msgstr ""
 
 #: widgets/ask-form.php:34 widgets/quick-ask.php:29
 msgid "Ask questions"
-msgstr "Спросить вопрос"
+msgstr "Задать вопрос"
 
 #: widgets/ask-form.php:38 widgets/followers.php:73
 #: widgets/participants.php:48 widgets/question_stats.php:69

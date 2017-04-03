@@ -108,6 +108,25 @@
 				}
 			}
 		},
+		compress: {
+			plugin: {
+				options: {
+					archive: 'build/anspress.zip'
+				},
+				files: [
+					{
+						expand: true,
+						src: [
+							'**/*',
+							'!.',
+							'!build/**',
+							'!node_modules/**',
+						],
+						dot: false,
+					},
+				],
+			},
+		},
 
 		watch: {
 			sass: {
@@ -121,6 +140,7 @@
 		},
 	});
 
-	grunt.registerTask( 'build', [ 'phplint', 'makepot', 'version', 'sass', 'uglify', 'compress' ]);
+	grunt.registerTask( 'build-without-php', [ 'makepot', 'version', 'sass', 'uglify', 'compress' ]);
+	grunt.registerTask( 'build', [ 'phplint', 'build-without-php' ]);
 
 }
