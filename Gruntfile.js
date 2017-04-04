@@ -31,6 +31,9 @@
 				tasks: ['csscomb'],
 			},
 			version: {
+				options: {
+					release: 'prerelease'
+				},
 				css: {
 					options: {
 						prefix: 'Version\\:\\s'
