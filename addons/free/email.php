@@ -188,28 +188,28 @@ class AnsPress_Email_Hooks {
 		$defaults['notify_admin_trash_answer']  = true;
 
 		$defaults['new_question_email_subject'] = __( 'New question posted by {asker}', 'anspress-question-answer' );
-		$defaults['new_question_email_body']    = __( "Hello!\r\nA new question is posted by {asker}\r\n\r\nTitle: {question_title}\r\nDescription:\r\n{question_excerpt}\r\n\r\nLink: {question_link}", 'anspress-question-answer' );
+		$defaults['new_question_email_body']    = __( "Hello!\nA new question is posted by {asker}\n\nTitle: {question_title}\nDescription:\n{question_excerpt}\n\nLink: {question_link}", 'anspress-question-answer' );
 
 		$defaults['new_answer_email_subject'] = __( 'New answer posted by {answerer}', 'anspress-question-answer' );
-		$defaults['new_answer_email_body']    = __( "Hello!\r\nA new answer is posted by {answerer} on {question_title}\r\nAnswer:\r\n{answer_excerpt}\r\n\r\nLink: {answer_link}", 'anspress-question-answer' );
+		$defaults['new_answer_email_body']    = __( "Hello!\nA new answer is posted by {answerer} on {question_title}\nAnswer:\n{answer_excerpt}\n\nLink: {answer_link}", 'anspress-question-answer' );
 
 		$defaults['select_answer_email_subject'] = __( 'Your answer was selected as best', 'anspress-question-answer' );
-		$defaults['select_answer_email_body']    = __( "Hello!\r\nYour answer on '{question_title}' was selected as best.\r\n\r\nLink: {answer_link}", 'anspress-question-answer' );
+		$defaults['select_answer_email_body']    = __( "Hello!\nYour answer on '{question_title}' was selected as best.\n\nLink: {answer_link}", 'anspress-question-answer' );
 
 		$defaults['new_comment_email_subject'] = __( 'New comment by {commenter}', 'anspress-question-answer' );
-		$defaults['new_comment_email_body']    = __( "Hello!\r\nA new comment posted on '{question_title}' by {commenter}.\r\n\r\nLink: {comment_link}", 'anspress-question-answer' );
+		$defaults['new_comment_email_body']    = __( "Hello!\nA new comment posted on '{question_title}' by {commenter}.\n\nLink: {comment_link}", 'anspress-question-answer' );
 
 		$defaults['edit_question_email_subject'] = __( 'A question is edited by {editor}', 'anspress-question-answer' );
-		$defaults['edit_question_email_body']    = __( "Hello!\r\nQuestion '{question_title}' is edited by {editor}.\r\n\r\nLink: {question_link}", 'anspress-question-answer' );
+		$defaults['edit_question_email_body']    = __( "Hello!\nQuestion '{question_title}' is edited by {editor}.\n\nLink: {question_link}", 'anspress-question-answer' );
 
 		$defaults['edit_answer_email_subject'] = __( 'An answer is edited by {editor}', 'anspress-question-answer' );
-		$defaults['edit_answer_email_body']    = __( "Hello!\r\nAnswer on '{question_title}' is edited by {editor}.\r\n\r\nLink: {question_link}", 'anspress-question-answer' );
+		$defaults['edit_answer_email_body']    = __( "Hello!\nAnswer on '{question_title}' is edited by {editor}.\n\nLink: {question_link}", 'anspress-question-answer' );
 
 		$defaults['trash_question_email_subject'] = __( 'A question is trashed by {user}', 'anspress-question-answer' );
-		$defaults['trash_question_email_body']    = __( "Hello!\r\nQuestion '{question_title}' is trashed by {user}.\r\n", 'anspress-question-answer' );
+		$defaults['trash_question_email_body']    = __( "Hello!\nQuestion '{question_title}' is trashed by {user}.\n", 'anspress-question-answer' );
 
 		$defaults['trash_answer_email_subject'] = __( 'An answer is trashed by {user}', 'anspress-question-answer' );
-		$defaults['trash_answer_email_body']    = __( "Hello!\r\nAnswer on '{question_title}' is trashed by {user}.\r\n", 'anspress-question-answer' );
+		$defaults['trash_answer_email_body']    = __( "Hello!\nAnswer on '{question_title}' is trashed by {user}.\n", 'anspress-question-answer' );
 
 		ap_add_default_options( $defaults );
 	}
@@ -471,6 +471,8 @@ class AnsPress_Email_Hooks {
 	 */
 	public static function initiate_send_email() {
 		SELF::$emails = array_unique( SELF::$emails );
+
+		SELF::$emails = apply_filters( 'ap_emails_to_notify', SELF::$emails );
 
 		foreach ( (array) SELF::$emails as $email ) {
 			SELF::send_mail( $email, SELF::$subject, SELF::$message );
