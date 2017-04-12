@@ -41,7 +41,16 @@
 
 #START BLOCK action #
   <# if(!header){ #>
-    <a href="{{href}}" title="{{title}}">{{{prefix}}}{{label}}<# if(count){ #><b>{{count}}</b><# } #></a>
+    <# if(checkbox){ #>
+      <label>
+        <input type="checkbox" class="ap-action-checkbox" value="1" <# if(active){ #>checked="checked"<# } #> />
+        {{{prefix}}}{{label}}<# if(count){ #><b>{{count}}</b><# } #>
+      </label>
+    <# } else { #>
+      <a href="{{href}}" title="{{title}}">
+        {{{prefix}}}{{label}}<# if(count){ #><b>{{count}}</b><# } #>
+      </a>
+    <# } #>
   <# } else { #>
     {{label}}
   <# } #>

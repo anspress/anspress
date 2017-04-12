@@ -338,7 +338,7 @@ class AnsPress_Category {
 	 * @since 2.0
 	 */
 	public static function admin_category_menu() {
-		add_submenu_page( 'anspress', 'Questions Category', 'Category', 'manage_options', 'edit-tags.php?taxonomy=question_category' );
+		add_submenu_page( 'anspress', __( 'Questions Category', 'anspress-question-answer' ), __( 'Category', 'anspress-question-answer' ), 'manage_options', 'edit-tags.php?taxonomy=question_category' );
 	}
 
 	/**

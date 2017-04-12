@@ -905,7 +905,7 @@ function ap_menu_obejct() {
 				'object'           => $k,
 				'type_label'       => __( 'AnsPress links', 'anspress-question-answer' ),
 				'title'            => $args['title'],
-				'url'              => 'https://xyz.com',
+				'url'              => home_url( '/' ),
 				'target'           => '',
 				'attr_title'       => '',
 				'description'      => '',

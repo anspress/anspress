@@ -202,6 +202,9 @@ class AnsPress_Notification_Hook {
 		if ( get_current_user_id() === $user_id ) {
 			$seen = 'all' === $seen ? null : (int) $seen;
 			$notifications = new AnsPress_Notification_Query( [ 'user_id' => $user_id, 'seen' => $seen ] );
+
+			do_action( 'ap_before_notification_page', $notifications );
+
 			include ap_get_theme_location( 'addons/notification/index.php' );
 		} else {
 			_e( 'You do not have permission to view this page', 'anspress-question-answer' ); // xss okay.

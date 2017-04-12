@@ -20,7 +20,9 @@
 			header: false,
 			href: '#',
 			count: '',
-			prefix: ''
+			prefix: '',
+			checkbox: '',
+			multiple: false
 		}
 	});
 
@@ -44,6 +46,7 @@
 			this.model = options.model;
 			this.postID = options.postID;
 			this.model.on('change', this.render, this);
+			this.listenTo(this.model, 'remove', this.removed);
 		},
 		events: {
 			'click a': 'triggerAction'
@@ -89,19 +92,32 @@
 				$('#post-'+this.postID).find('post-message').html(message);
 			else
 				$('#post-'+this.postID).find('post-message').html('');
-		}
+		},
+		removed: function(){
+      this.remove();
+    }
 	});
+
 
 	AnsPress.views.Actions = Backbone.View.extend({
 		id: function(){
 			return this.postID;
 		},
+		searchTemplate: '<div class="ap-filter-search"><input type="text" search-filter placeholder="'+aplang.search+'" /></div>',
 		tagName: 'ul',
 		className: 'ap-actions',
+		events: {
+			'keyup [search-filter]': 'searchInput'
+		},
 		initialize: function(options){
 			this.model = options.model;
 			this.postID = options.postID;
+			this.multiple = options.multiple;
+			this.action = options.action;
+			this.nonce = options.nonce;
+
 			AnsPress.on('changedPostStatus', this.postStatusChanged, this);
+			this.listenTo(this.model, 'add', this.added);
 		},
 		renderItem: function(action){
 			var view = new AnsPress.views.Action({ model: action, postID: this.postID });
@@ -109,6 +125,9 @@
 		},
 		render: function(){
 			var self = this;
+			if(this.multiple)
+        this.$el.append(this.searchTemplate);
+
 			this.model.each(function(action){
 				self.renderItem(action);
 			});
@@ -127,7 +146,38 @@
 			activeStatus.forEach(function(status){
 				status.set({active: false});
 			});
-		}
+		},
+		searchInput: function(e){
+      var self = this;
+
+      clearTimeout(this.searchTO);
+      this.searchTO = setTimeout(function(){
+        self.search($(e.target).val(), e.target);
+      }, 600);
+    },
+		search: function(q, e){
+      var self = this;
+
+      var args = { nonce: this.nonce, ap_ajax_action: this.action, search: q, filter: this.filter, post_id: this.postID };
+
+      AnsPress.showLoading(e);
+			AnsPress.ajax({
+				data: args,
+				success: function(data){
+          AnsPress.hideLoading(e);
+          if(data.success){
+            self.nonce = data.nonce;
+            while (model = self.model.first()) {
+              model.destroy();
+            }
+            self.model.add(data.actions);
+          }
+				}
+			});
+    },
+		added: function(model){
+      this.renderItem(model);
+    }
 	});
 
 	AnsPress.models.Post = Backbone.Model.extend({
