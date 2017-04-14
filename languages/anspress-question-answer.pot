@@ -2,10 +2,10 @@
 # This file is distributed under the GPL-3.0+.
 msgid ""
 msgstr ""
-"Project-Id-Version: AnsPress 4.0.1-0\n"
+"Project-Id-Version: AnsPress 4.0.1-1\n"
 "Report-Msgid-Bugs-To: "
 "https://wordpress.org/support/plugin/anspress-question-answer\n"
-"POT-Creation-Date: 2017-04-12 04:56:12+00:00\n"
+"POT-Creation-Date: 2017-04-14 01:48:30+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -766,7 +766,7 @@ msgstr ""
 msgid "reCaptach keys missing, please add keys"
 msgstr ""
 
-#: addons/free/reputation.php:67 addons/free/reputation.php:349
+#: addons/free/reputation.php:67 addons/free/reputation.php:350
 msgid "Reputation"
 msgstr ""
 
@@ -898,11 +898,11 @@ msgstr ""
 msgid "Successfully updated reputation points!"
 msgstr ""
 
-#: addons/free/reputation.php:371
+#: addons/free/reputation.php:372
 msgid "%s Reputation"
 msgstr ""
 
-#: addons/free/reputation.php:380 addons/free/reputation.php:430
+#: addons/free/reputation.php:381 addons/free/reputation.php:431
 msgid "Reputations"
 msgstr ""
 
@@ -2796,43 +2796,43 @@ msgstr ""
 msgid " (anonymous)"
 msgstr ""
 
-#: includes/hooks.php:679
+#: includes/hooks.php:680
 msgid "minute"
 msgstr ""
 
-#: includes/hooks.php:680
+#: includes/hooks.php:681
 msgid "minutes"
 msgstr ""
 
-#: includes/hooks.php:681
+#: includes/hooks.php:682
 msgid "hour"
 msgstr ""
 
-#: includes/hooks.php:682
+#: includes/hooks.php:683
 msgid "hours"
 msgstr ""
 
-#: includes/hooks.php:683
+#: includes/hooks.php:684
 msgid "day"
 msgstr ""
 
-#: includes/hooks.php:684
+#: includes/hooks.php:685
 msgid "days"
 msgstr ""
 
-#: includes/hooks.php:685
+#: includes/hooks.php:686
 msgid "week"
 msgstr ""
 
-#: includes/hooks.php:686
+#: includes/hooks.php:687
 msgid "weeks"
 msgstr ""
 
-#: includes/hooks.php:687
+#: includes/hooks.php:688
 msgid "year"
 msgstr ""
 
-#: includes/hooks.php:688
+#: includes/hooks.php:689
 msgid "years"
 msgstr ""
 
