@@ -2,10 +2,10 @@
 # This file is distributed under the GPL-3.0+.
 msgid ""
 msgstr ""
-"Project-Id-Version: AnsPress 4.0.1-1\n"
+"Project-Id-Version: AnsPress 4.0.1-2\n"
 "Report-Msgid-Bugs-To: "
 "https://wordpress.org/support/plugin/anspress-question-answer\n"
-"POT-Creation-Date: 2017-04-14 01:48:30+00:00\n"
+"POT-Creation-Date: 2017-04-14 08:51:06+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -643,80 +643,80 @@ msgstr ""
 msgid "post"
 msgstr ""
 
-#: addons/free/notification.php:41 addons/free/notification.php:173
+#: addons/free/notification.php:40 addons/free/notification.php:172
 #: templates/functions.php:58
 msgid "Notifications"
 msgstr ""
 
-#: addons/free/notification.php:74
+#: addons/free/notification.php:73
 msgid "Notification"
 msgstr ""
 
-#: addons/free/notification.php:77
+#: addons/free/notification.php:76
 msgid "Auto delete notifications"
 msgstr ""
 
-#: addons/free/notification.php:80
+#: addons/free/notification.php:79
 msgid "Do not auto delete"
 msgstr ""
 
-#: addons/free/notification.php:81
+#: addons/free/notification.php:80
 msgid "Only seen"
 msgstr ""
 
-#: addons/free/notification.php:82
+#: addons/free/notification.php:81
 msgid "Both seen an unseen"
 msgstr ""
 
-#: addons/free/notification.php:84
+#: addons/free/notification.php:83
 msgid "Auto delete user notifications"
 msgstr ""
 
-#: addons/free/notification.php:88
+#: addons/free/notification.php:87
 msgid "Auto delete interval"
 msgstr ""
 
-#: addons/free/notification.php:90
+#: addons/free/notification.php:89
 msgid "Auto delete notifications interval"
 msgstr ""
 
-#: addons/free/notification.php:131
+#: addons/free/notification.php:130
 msgid "posted an answer on your question"
 msgstr ""
 
-#: addons/free/notification.php:136
+#: addons/free/notification.php:135
 msgid "commented on your %cpt%"
 msgstr ""
 
-#: addons/free/notification.php:141
+#: addons/free/notification.php:140
 msgid "up voted your %cpt%"
 msgstr ""
 
-#: addons/free/notification.php:148
+#: addons/free/notification.php:147
 msgid "down voted your %cpt%"
 msgstr ""
 
-#: addons/free/notification.php:153
+#: addons/free/notification.php:152
 msgid "selected your answer"
 msgstr ""
 
-#: addons/free/notification.php:158
+#: addons/free/notification.php:157
 msgid "You have earned %points% points"
 msgstr ""
 
-#: addons/free/notification.php:163
+#: addons/free/notification.php:162
 msgid "You lose %points% points"
 msgstr ""
 
-#: addons/free/notification.php:210
+#: addons/free/notification.php:209
 msgid "You do not have permission to view this page"
 msgstr ""
 
-#: addons/free/notification.php:428
+#: addons/free/notification.php:427
 msgid "There was a problem processing your request"
 msgstr ""
 
-#: addons/free/notification.php:438
+#: addons/free/notification.php:437
 msgid "Successfully updated all notifications"
 msgstr ""
 

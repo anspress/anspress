@@ -13,7 +13,6 @@
  * Description:   User notifications.
  * Author:        Rahul Aryan
  * Author URI:    https://anspress.io
- * Pro:    				Yes
  */
 
 // If this file is called directly, abort.

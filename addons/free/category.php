@@ -365,7 +365,7 @@ class AnsPress_Category {
 	 */
 	public static function ap_assets_js( $js ) {
 		if ( ap_current_page() === 'category' ) {
-			$js['list']['active'] = true;
+			$js['main']['active'] = true;
 		}
 		return $js;
 	}
