@@ -168,6 +168,7 @@ class AnsPress_Hooks {
 	 * @param	integer $post_id Question or answer ID.
 	 */
 	public static function before_delete( $post_id ) {
+		PC::debug('deleted question' . $post_id);
 		$post = ap_get_post( $post_id );
 		if ( 'question' === $post->post_type ) {
 			do_action( 'ap_before_delete_question', $post->ID, $post );

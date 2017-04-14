@@ -131,6 +131,7 @@
 			this.model.each(function(action){
 				self.renderItem(action);
 			});
+
 			return this;
 		},
 		postStatusChanged: function(args){
@@ -164,11 +165,13 @@
 			AnsPress.ajax({
 				data: args,
 				success: function(data){
+					console.log(data);
           AnsPress.hideLoading(e);
           if(data.success){
             self.nonce = data.nonce;
-            while (model = self.model.first()) {
-              model.destroy();
+						//self.model.reset();
+            while (m = self.model.first()) {
+               self.model.remove(m);
             }
             self.model.add(data.actions);
           }
