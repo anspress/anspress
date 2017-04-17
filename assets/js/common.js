@@ -327,13 +327,17 @@ jQuery(document).ready(function($){
 
 	// Ajax button.
 	$('body').on('click', '[ap-ajax-btn]', function(e){
+		var self = this;
 		e.preventDefault();
+		if($(this).is('.loaded'))
+			return;
 		var self = $(this);
 		var query = JSON.parse(self.attr('ap-query'));
 		AnsPress.showLoading(self);
 		AnsPress.ajax({
 			data: query,
 			success: function(data){
+				$(self).addClass('loaded');
 				AnsPress.hideLoading(e.target);
 				if(typeof data.btn !== 'undefined')
 					if(data.btn.hide) self.hide();

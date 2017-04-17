@@ -383,7 +383,9 @@
 		postActions: function(e){
 			var self = this;
 			var q = $.parseJSON($(e.target).attr('ap-query'));
-			q.ap_ajax_action = 'post_actions';
+			if(typeof q.ap_ajax_action === 'undefined')
+				q.ap_ajax_action = 'post_actions';
+
 			AnsPress.ajax({
 				data: q,
 				success: function(data){
