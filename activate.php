@@ -87,7 +87,13 @@ class AP_Activate {
 	 * Disable old AnsPress extensions.
 	 */
 	public function disable_ext() {
-		deactivate_plugins( [ 'categories-for-anspress/categories-for-anspress.php', 'tags-for-anspress/tags-for-anspress.php', 'anspress-email/anspress-email.php' ] );
+		deactivate_plugins( [
+			'categories-for-anspress/categories-for-anspress.php',
+			'tags-for-anspress/tags-for-anspress.php',
+			'anspress-email/anspress-email.php',
+			'question-labels/question-labels.php',
+			'anspress-paid-membership/anspress-paid-membership.php',
+		] );
 	}
 
 	/**
