@@ -237,10 +237,10 @@ class AnsPress_Email_Hooks {
 
 		ap_register_option_section( 'email', 'admin_notify', __( 'Notify admin(s)', 'anspress-question-answer' ) , array(
 			array(
-				'name' => 'notify_admin_email',
-				'label' => __( 'Admin email', 'anspress-question-answer' ),
-				'desc' => __( 'Enter email where admin notification should be sent', 'anspress-question-answer' ),
-				'type' => 'text',
+				'name'          => 'notify_admin_email',
+				'label'         => __( 'Admin email', 'anspress-question-answer' ),
+				'desc'          => __( 'Enter email where admin notification should be sent', 'anspress-question-answer' ),
+				'type'          => 'text',
 				'show_desc_tip' => false,
 			),
 			array(

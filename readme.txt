@@ -4,7 +4,7 @@ Donate link: https://www.paypal.me/nerdaryan
 Tags: question, answer, q&a, forum, profile, stackoverflow, quora, buddypress
 Requires at least: 4.0
 Tested up to: 4.7
-Stable tag: 4.0.0
+Stable tag: 4.0.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
