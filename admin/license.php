@@ -1,7 +1,7 @@
 <?php
 /**
  * AnsPress product license *
- * Handle licences of AnsPress products.
+ * Handle licence of AnsPress products.
  *
  * @link https://anspress.io
  * @since 2.4.5
@@ -9,9 +9,9 @@
  * @package AnsPress/AP_License
  */
 
-if ( ! class_exists( 'EDD_SL_Plugin_Updater' ) ) {
+if ( ! class_exists( 'AnsPress_Prod_Updater' ) ) {
 	// Load updater.
-	include( dirname( __FILE__ ) . '/updater.php' );
+	require_once( dirname( __FILE__ ) . '/updater.php' );
 }
 
 /**
@@ -49,8 +49,7 @@ class AP_License {
 	 * AnsPress license form.
 	 */
 	public static function ap_product_license() {
-
-		if ( ! current_user_can( 'manage_options' ) || ! wp_verify_nonce( ap_sanitize_unslash( 'ap_licenses_nonce', 'p' ), 'ap_licenses_nonce' ) ) {
+		if ( ! current_user_can( 'manage_options' ) || ! ap_verify_nonce( 'ap_licenses_nonce' ) ) {
 			return;
 		}
 
@@ -63,11 +62,10 @@ class AP_License {
 
 		if ( ap_isset_post_value( 'save_licenses' ) ) {
 			foreach ( (array) $fields as $slug => $prod ) {
-				if ( ap_isset_post_value( 'ap_license_' . $slug ) &&
-					ap_sanitize_unslash( 'ap_license_' . $slug ) !== $licenses[ $slug ]['key'] ) {
-
+				$prod_license = ap_isset_post_value( 'ap_license_' . $slug, '' );
+				if ( ! empty( $prod_license ) && ! isset( $licenses[ $slug ] ) || $prod_license !== $licenses[ $slug ]['key'] ) {
 					$licenses[ $slug ] = array(
-						'key'    => trim( ap_sanitize_unslash( 'ap_license_' . $slug ) ),
+						'key'    => trim( ap_sanitize_unslash( 'ap_license_' . $slug, 'g', '' ) ),
 						'status' => false,
 					);
 
@@ -83,6 +81,7 @@ class AP_License {
 				'license' 	=> $licenses[ $slug ]['key'],
 				'item_name' => rawurlencode( $prod['name'] ),
 				'url'       => home_url(),
+				'anspress_ver' => AP_VERSION,
 			);
 
 			// Check if activate is clicked.
@@ -130,12 +129,14 @@ class AP_License {
 		if ( ! empty( $fields ) ) {
 			foreach ( $fields as $slug => $prod ) {
 				if ( isset( $licenses[ $slug ] ) && ! empty( $licenses[ $slug ]['key'] ) ) {
-					new EDD_SL_Plugin_Updater( 'https://anspress.io', $prod['file'], array(
-							'version' 	=> ! empty( $prod['version'] ) ? $prod['version'] : '',
+					new AnsPress_Prod_Updater( $prod['file'], array(
+							'version' 	=> ! empty( $prod['version'] ) ? $prod['version']: '',
 							'license' 	=> $licenses[ $slug ]['key'],
-							'item_name' => ! empty( $prod['name'] ) ? $prod['name'] : '',
-							'author' 	=> ! empty( $prod['author'] ) ? $prod['author'] : '',
-						)
+							'item_name' => ! empty( $prod['name'] ) ? $prod['name']:       '',
+							'author' 	  => ! empty( $prod['author'] ) ? $prod['author']:   '',
+							'slug' 	    => $slug,
+						),
+						isset( $prod['is_plugin'] ) ? $prod['is_plugin'] : true
 					);
 				}
 			}

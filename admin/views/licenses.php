@@ -8,9 +8,8 @@
  */
 
 // Save license key if form is submitted.
-if ( current_user_can( 'manage_options' ) && ap_verify_nonce( 'ap_licenses_nonce' ) ) {
-	AP_License::ap_product_license();
-}
+AP_License::ap_product_license();
+
 
 $fields = ap_product_license_fields();
 $licenses = get_option( 'anspress_license' );
@@ -47,7 +46,7 @@ $licenses = get_option( 'anspress_license' );
 						</table>
 						<input type="hidden" name="action" value="ap_product_license">
 						<input type="submit" name="save_licenses" class="button button-primary" value="<?php _e('Save', 'anspress-question-answer' ); ?>" />
-						<?php wp_nonce_field( 'ap_licenses_nonce', 'ap_licenses_nonce' ); ?>
+						<?php wp_nonce_field( 'ap_licenses_nonce', '__nonce' ); ?>
 				</form>
 	<?php else : ?>
 		<?php _e('No license yet.' ); ?>

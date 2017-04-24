@@ -1,6 +1,6 @@
 <?php
 /**
- * Notifiy admin and users by email.
+ * Notify admin and users by email.
  *
  * @author    Rahul Aryan <support@anspress.io>
  * @copyright 2014 AnsPress.io & Rahul Aryan
@@ -10,7 +10,7 @@
  *
  * Addon Name:    Email
  * Addon URI:     https://anspress.io
- * Description:   Notifiy admin and users by email.
+ * Description:   Notify admin and users by email.
  * Author:        Rahul Aryan
  * Author URI:    https://anspress.io
  */
@@ -19,6 +19,7 @@
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
+
 
 /**
  * Email handler class.

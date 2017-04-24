@@ -1,8 +1,14 @@
 <?php
+/**
+ * AnsPress product updater.
+ *
+ * @package WordPress/AnsPress
+ */
 
 // uncomment this line for testing
-// set_site_transient( 'update_plugins', null );
-// Exit if accessed directly
+//set_site_transient( 'update_plugins', null );
+
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
 /**
@@ -11,12 +17,15 @@ if ( ! defined( 'ABSPATH' ) ) { exit; }
  * @author Pippin Williamson
  * @version 1.6.3
  */
-class EDD_SL_Plugin_Updater {
+class AnsPress_Prod_Updater {
 	private $api_url   = '';
 	private $api_data  = array();
 	private $name      = '';
 	private $slug      = '';
 	private $version   = '';
+	private $response_key   = '';
+	private $license   = '';
+	private $strings   = '';
 
 	/**
 	 * Class constructor.
@@ -28,15 +37,18 @@ class EDD_SL_Plugin_Updater {
 	 * @param string $_plugin_file Path to the plugin file.
 	 * @param array  $_api_data    Optional data to send with API calls.
 	 */
-	public function __construct( $_api_url, $_plugin_file, $_api_data = null ) {
+	public function __construct( $_plugin_file, $_api_data = null, $is_plugin = true ) {
 
 		global $edd_plugin_data;
 
-		$this->api_url  = trailingslashit( $_api_url );
+		$this->is_plugin = $is_plugin;
+		$this->api_url  = trailingslashit( 'https://anspress.io' );
 		$this->api_data = $_api_data;
 		$this->name     = plugin_basename( $_plugin_file );
-		$this->slug     = basename( $_plugin_file, '.php' );
+		$this->slug     = isset( $this->api_data['slug'] ) ? $this->api_data['slug'] : basename( $_plugin_file, '.php' );
 		$this->version  = $_api_data['version'];
+
+		$this->response_key = $this->slug . '-update-response';
 
 		$edd_plugin_data[ $this->slug ] = $this->api_data;
 
@@ -54,11 +66,44 @@ class EDD_SL_Plugin_Updater {
 	 */
 	public function init() {
 
-		add_filter( 'pre_set_site_transient_update_plugins', array( $this, 'check_update' ) );
-		add_filter( 'plugins_api', array( $this, 'plugins_api_filter' ), 10, 3 );
-		remove_action( 'after_plugin_row_' . $this->name, 'wp_plugin_update_row', 10, 2 );
-		add_action( 'after_plugin_row_' . $this->name, array( $this, 'show_update_notification' ), 10, 2 );
-		add_action( 'admin_init', array( $this, 'show_changelog' ) );
+		if ( $this->is_plugin ) {
+			add_filter( 'pre_set_site_transient_update_plugins', array( $this, 'check_update' ) );
+			add_filter( 'plugins_api', array( $this, 'plugins_api_filter' ), 10, 3 );
+			remove_action( 'after_plugin_row_' . $this->name, 'wp_plugin_update_row', 10, 2 );
+			add_action( 'after_plugin_row_' . $this->name, array( $this, 'show_update_notification' ), 10, 2 );
+			add_action( 'admin_init', array( $this, 'show_changelog' ) );
+
+		}	else {
+			$this->strings = array(
+				'theme-license' => __( 'Theme License', 'edd-theme-updater' ),
+				'enter-key' => __( 'Enter your theme license key.', 'edd-theme-updater' ),
+				'license-key' => __( 'License Key', 'edd-theme-updater' ),
+				'license-action' => __( 'License Action', 'edd-theme-updater' ),
+				'deactivate-license' => __( 'Deactivate License', 'edd-theme-updater' ),
+				'activate-license' => __( 'Activate License', 'edd-theme-updater' ),
+				'status-unknown' => __( 'License status is unknown.', 'edd-theme-updater' ),
+				'renew' => __( 'Renew?', 'edd-theme-updater' ),
+				'unlimited' => __( 'unlimited', 'edd-theme-updater' ),
+				'license-key-is-active' => __( 'License key is active.', 'edd-theme-updater' ),
+				'expires%s' => __( 'Expires %s.', 'edd-theme-updater' ),
+				'%1$s/%2$-sites' => __( 'You have %1$s / %2$s sites activated.', 'edd-theme-updater' ),
+				'license-key-expired-%s' => __( 'License key expired %s.', 'edd-theme-updater' ),
+				'license-key-expired' => __( 'License key has expired.', 'edd-theme-updater' ),
+				'license-keys-do-not-match' => __( 'License keys do not match.', 'edd-theme-updater' ),
+				'license-is-inactive' => __( 'License is inactive.', 'edd-theme-updater' ),
+				'license-key-is-disabled' => __( 'License key is disabled.', 'edd-theme-updater' ),
+				'site-is-inactive' => __( 'Site is inactive.', 'edd-theme-updater' ),
+				'license-status-unknown' => __( 'License status is unknown.', 'edd-theme-updater' ),
+				'update-notice' => __( "Updating this theme will lose any customizations you have made. 'Cancel' to stop, 'OK' to update.", 'edd-theme-updater' ),
+				'update-available' => __('<strong>%1$s %2$s</strong> is available. <a href="%3$s" class="thickbox" title="%4s">Check out what\'s new</a> or <a href="%5$s"%6$s>update now</a>.', 'edd-theme-updater' )
+			);
+
+			add_filter( 'site_transient_update_themes', [ $this, 'theme_update_transient' ] );
+			add_filter( 'delete_site_transient_update_themes', [ $this, 'delete_theme_update_transient' ] );
+			add_action( 'load-update-core.php', [ $this, 'delete_theme_update_transient' ] );
+			add_action( 'load-themes.php', [ $this, 'delete_theme_update_transient' ] );
+			add_action( 'load-themes.php', [ $this, 'load_themes_screen' ] );
+		}
 
 	}
 
@@ -88,20 +133,15 @@ class EDD_SL_Plugin_Updater {
 		}
 
 		if ( empty( $_transient_data->response ) || empty( $_transient_data->response[ $this->name ] ) ) {
-
 			$version_info = $this->api_request( 'plugin_latest_version', array( 'slug' => $this->slug ) );
 
 			if ( false !== $version_info && is_object( $version_info ) && isset( $version_info->new_version ) ) {
-
 				if ( version_compare( $this->version, $version_info->new_version, '<' ) ) {
-
 					$_transient_data->response[ $this->name ] = $version_info;
-
 				}
 
 				$_transient_data->last_checked = time();
 				$_transient_data->checked[ $this->name ] = $this->version;
-
 			}
 		}
 
@@ -128,11 +168,10 @@ class EDD_SL_Plugin_Updater {
 			return;
 		}
 
-		// Remove our filter on the site transient
+		// Remove our filter on the site transient.
 		remove_filter( 'pre_set_site_transient_update_plugins', array( $this, 'check_update' ), 10 );
 
 		$update_cache = get_site_transient( 'update_plugins' );
-
 		$update_cache = is_object( $update_cache ) ? $update_cache : new stdClass();
 
 		if ( empty( $update_cache->response ) || empty( $update_cache->response[ $this->name ] ) ) {
@@ -141,9 +180,7 @@ class EDD_SL_Plugin_Updater {
 			$version_info = get_transient( $cache_key );
 
 			if ( false === $version_info ) {
-
 				$version_info = $this->api_request( 'plugin_latest_version', array( 'slug' => $this->slug ) );
-
 				set_transient( $cache_key, $version_info, 3600 );
 			}
 
@@ -152,9 +189,7 @@ class EDD_SL_Plugin_Updater {
 			}
 
 			if ( version_compare( $this->version, $version_info->new_version, '<' ) ) {
-
 				$update_cache->response[ $this->name ] = $version_info;
-
 			}
 
 			$update_cache->last_checked = time();
@@ -168,12 +203,12 @@ class EDD_SL_Plugin_Updater {
 
 		}
 
-		// Restore our filter
+		// Restore our filter.
 		add_filter( 'pre_set_site_transient_update_plugins', array( $this, 'check_update' ) );
 
 		if ( ! empty( $update_cache->response[ $this->name ] ) && version_compare( $this->version, $version_info->new_version, '<' ) ) {
 
-			// build a plugin list row, with update notification
+			// Build a plugin list row, with update notification.
 			$wp_list_table = _get_list_table( 'WP_Plugins_List_Table' );
 			echo '<tr class="plugin-update-tr"><td colspan="' . $wp_list_table->get_column_count() . '" class="plugin-update colspanchange"><div class="update-message">';
 
@@ -214,17 +249,12 @@ class EDD_SL_Plugin_Updater {
 	 * @return object $_data
 	 */
 	public function plugins_api_filter( $_data, $_action = '', $_args = null ) {
-
 		if ( $_action != 'plugin_information' ) {
-
 			return $_data;
-
 		}
 
 		if ( ! isset( $_args->slug ) || ( $_args->slug != $this->slug ) ) {
-
 			return $_data;
-
 		}
 
 		$to_send = array(
@@ -297,7 +327,7 @@ class EDD_SL_Plugin_Updater {
 			'anspress_ver' => AP_VERSION,
 		);
 
-		$request = wp_remote_post( $this->api_url, array( 'timeout' => 15, 'sslverify' => false, 'body' => $api_params ) );
+		$request = wp_remote_post( $this->api_url, array( 'timeout' => 15, 'sslverify' => true, 'body' => $api_params ) );
 
 		if ( ! is_wp_error( $request ) ) {
 			$request = json_decode( wp_remote_retrieve_body( $request ) );
@@ -368,6 +398,107 @@ class EDD_SL_Plugin_Updater {
 		}
 
 		wp_die();
+	}
+
+	public function theme_update_transient( $value ) {
+		$update_data = $this->check_theme_update();
+		if ( $update_data ) {
+			$value->response[ $this->slug ] = $update_data;
+		}
+		return $value;
+	}
+
+	public function delete_theme_update_transient() {
+		delete_transient( $this->response_key );
+	}
+
+	function load_themes_screen() {
+		add_thickbox();
+		add_action( 'admin_notices', [ $this, 'update_nag' ] );
+	}
+
+	function update_nag() {
+
+		$strings = $this->strings;
+
+		$theme = wp_get_theme( $this->slug );
+
+		$api_response = get_transient( $this->response_key );
+
+		if ( false === $api_response ) {
+			return;
+		}
+
+
+		$update_url = wp_nonce_url( 'update.php?action=upgrade-theme&amp;theme=' . urlencode( $this->slug ), 'upgrade-theme_' . $this->slug );
+		$update_onclick = ' onclick="if ( confirm(\'' . esc_js( $strings['update-notice'] ) . '\') ) {return true;}return false;"';
+
+		if ( version_compare( $this->version, $api_response->new_version, '<' ) ) {
+
+			echo '<div id="update-nag">';
+			printf(
+				$strings['update-available'],
+				$theme->get( 'Name' ),
+				$api_response->new_version,
+				'#TB_inline?width=640&amp;inlineId=' . $this->slug . '_changelog',
+				$theme->get( 'Name' ),
+				$update_url,
+				$update_onclick
+			);
+			echo '</div>';
+			echo '<div id="' . $this->slug . '_' . 'changelog" style="display:none;">';
+			echo wpautop( $api_response->sections['changelog'] );
+			echo '</div>';
+		}
+	}
+
+	function check_theme_update() {
+
+		$update_data = get_transient( $this->response_key );
+		if ( false === $update_data ) {
+			$failed = false;
+
+			$api_params = array(
+				'edd_action' 	=> 'get_version',
+				'license' 		=> $this->api_data['license'],
+				'name' 			=> $this->api_data['item_name'],
+				'slug' 			=> $this->slug,
+				'author'		=> $this->api_data['author'],
+			);
+
+			$response = wp_remote_post( $this->api_url, [ 'timeout' => 15, 'body' => $api_params ] );
+
+			// Make sure the response was successful
+			if ( is_wp_error( $response ) || 200 != wp_remote_retrieve_response_code( $response ) ) {
+				$failed = true;
+			}
+
+			$update_data = json_decode( wp_remote_retrieve_body( $response ) );
+
+			if ( ! is_object( $update_data ) ) {
+				$failed = true;
+			}
+
+			// If the response failed, try again in 30 minutes
+			if ( $failed ) {
+				$data = new stdClass;
+				$data->new_version = $this->version;
+				set_transient( $this->response_key, $data, strtotime( '+30 minutes' ) );
+				return false;
+			}
+
+			// If the status is 'ok', return the update arguments
+			if ( ! $failed ) {
+				$update_data->sections = maybe_unserialize( $update_data->sections );
+				set_transient( $this->response_key, $update_data, strtotime( '+12 hours' ) );
+			}
+		}
+
+		if ( version_compare( $this->version, $update_data->new_version, '>=' ) ) {
+			return false;
+		}
+
+		return (array) $update_data;
 	}
 
 }
