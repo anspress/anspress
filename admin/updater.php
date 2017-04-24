@@ -26,6 +26,7 @@ class AnsPress_Prod_Updater {
 	private $response_key   = '';
 	private $license   = '';
 	private $strings   = '';
+	private $update_checked   = false;
 
 	/**
 	 * Class constructor.
@@ -121,6 +122,11 @@ class AnsPress_Prod_Updater {
 	 * @return stdClass Modified update array with custom plugin data.
 	 */
 	function check_update( $_transient_data ) {
+		if ( $this->update_checked ) {
+			return $_transient_data;
+		}
+
+		$this->update_checked = true;
 
 		global $pagenow;
 

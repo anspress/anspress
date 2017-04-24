@@ -9,10 +9,10 @@
  * @package AnsPress/AP_License
  */
 
-if ( ! class_exists( 'AnsPress_Prod_Updater' ) ) {
-	// Load updater.
-	require_once( dirname( __FILE__ ) . '/updater.php' );
-}
+
+// Load updater.
+require_once( dirname( __FILE__ ) . '/updater.php' );
+
 
 /**
  * AnsPress license
