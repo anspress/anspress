@@ -210,7 +210,6 @@ class AnsPress_Reputation_Hooks {
 	 * @param object  $_post Post object.
 	 */
 	public static function trash_question( $post_id, $_post ) {
-		PC::debug('deleted question' . $post_id);
 		ap_delete_reputation( 'ask', $post_id, $_post->post_author );
 	}
 
