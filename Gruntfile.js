@@ -32,7 +32,7 @@
 			},
 			version: {
 				options: {
-					release: 'prerelease'
+					release: 'patch'
 				},
 				css: {
 					options: {
@@ -147,6 +147,6 @@
 		grunt.task.run('build');
 	});
 
-	grunt.registerTask( 'build', [ 'phplint', 'makepot', 'version', 'sass', 'uglify' ]);
+	grunt.registerTask( 'build', [ 'phplint', 'makepot', 'sass', 'uglify' ]);
 
 }

@@ -33,9 +33,9 @@ class AnsPress_Prod_Updater {
 	 * @uses plugin_basename()
 	 * @uses hook()
 	 *
-	 * @param string $_api_url     The URL pointing to the custom API endpoint.
 	 * @param string $_plugin_file Path to the plugin file.
 	 * @param array  $_api_data    Optional data to send with API calls.
+	 * @param boolean  $is_plugin  Is plugin.
 	 */
 	public function __construct( $_plugin_file, $_api_data = null, $is_plugin = true ) {
 
@@ -327,7 +327,7 @@ class AnsPress_Prod_Updater {
 			'anspress_ver' => AP_VERSION,
 		);
 
-		$request = wp_remote_post( $this->api_url, array( 'timeout' => 15, 'sslverify' => true, 'body' => $api_params ) );
+		$request = wp_remote_post( $this->api_url, array( 'timeout' => 15, 'sslverify' => false, 'body' => $api_params ) );
 
 		if ( ! is_wp_error( $request ) ) {
 			$request = json_decode( wp_remote_retrieve_body( $request ) );
