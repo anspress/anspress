@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: AnsPress 2.3.5\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/anspress-question-"
 "answer\n"
-"POT-Creation-Date: 2017-04-25 14:42:39+00:00\n"
+"POT-Creation-Date: 2017-04-25 15:10:43+00:00\n"
 "PO-Revision-Date: 2016-07-12 16:29+0530\n"
 "Last-Translator: Niyazi Saral <nsaral@cizgi.com.tr>\n"
 "Language-Team: AnsPress Türkçe <anspress@mertskaplan.com>\n"
@@ -3459,12 +3459,12 @@ msgstr "Bu gönderiyi olumsuz oyla"
 msgid "View all questions"
 msgstr "Yeni sorular"
 
-#: templates/addons/category/category.php:27 templates/addons/tag/tag.php:12
+#: templates/addons/category/category.php:29 templates/addons/tag/tag.php:12
 msgid "1 Question"
 msgid_plural "%s Questions"
 msgstr[0] "1 Soru"
 
-#: templates/addons/category/category.php:41
+#: templates/addons/category/category.php:48
 msgid "Sub Categories"
 msgstr "Alt Kategoriler"
 

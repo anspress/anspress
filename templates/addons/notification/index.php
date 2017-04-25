@@ -21,14 +21,14 @@ $user_id = get_query_var( 'ap_user_id' );
 		) );
 	?>
 	<a href="#" class="ap-btn ap-btn-markall-read ap-btn-small" ap-ajax-btn ap-query="<?php echo esc_js( $btn_args ); ?>">
-		<?php _e( 'Mark all as seen', 'anspress-pro' ); // xss okay. ?>
+		<?php _e( 'Mark all as seen', 'anspress-question-answer' ); // xss okay. ?>
 	</a>
 <?php endif; ?>
 
 <div class="ap-noti-sub">
-	<a href="<?php echo ap_user_link( $user_id, 'notifications' ); ?>?seen=all"><?php _e( 'All', 'anspress-pro' ); ?></a>
-	<a href="<?php echo ap_user_link( $user_id, 'notifications' ); ?>?seen=0"><?php _e( 'Unseen', 'anspress-pro' ); ?></a>
-	<a href="<?php echo ap_user_link( $user_id, 'notifications' ); ?>?seen=1"><?php _e( 'Seen', 'anspress-pro' ); ?></a>
+	<a href="<?php echo ap_user_link( $user_id, 'notifications' ); ?>?seen=all"><?php _e( 'All', 'anspress-question-answer' ); ?></a>
+	<a href="<?php echo ap_user_link( $user_id, 'notifications' ); ?>?seen=0"><?php _e( 'Unseen', 'anspress-question-answer' ); ?></a>
+	<a href="<?php echo ap_user_link( $user_id, 'notifications' ); ?>?seen=1"><?php _e( 'Seen', 'anspress-question-answer' ); ?></a>
 </div>
 
 <?php if ( $notifications->have() ) : ?>

@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: AnsPress 3.0.7\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/anspress-question-"
 "answer\n"
-"POT-Creation-Date: 2017-04-25 14:42:39+00:00\n"
+"POT-Creation-Date: 2017-04-25 15:10:43+00:00\n"
 "PO-Revision-Date: 2016-10-09 06:44+0530\n"
 "Last-Translator: Łukasz Ładecki <priart@gmail.com>\n"
 "Language-Team: priard <priart@gmail.com>\n"
@@ -3521,7 +3521,7 @@ msgstr "Oddaj głos przeciw"
 msgid "View all questions"
 msgstr "Wyświetl pytania"
 
-#: templates/addons/category/category.php:27 templates/addons/tag/tag.php:12
+#: templates/addons/category/category.php:29 templates/addons/tag/tag.php:12
 #, fuzzy
 msgid "1 Question"
 msgid_plural "%s Questions"
@@ -3529,7 +3529,7 @@ msgstr[0] "Pytanie"
 msgstr[1] "Pytanie"
 msgstr[2] "Pytanie"
 
-#: templates/addons/category/category.php:41
+#: templates/addons/category/category.php:48
 #, fuzzy
 msgid "Sub Categories"
 msgstr "Kategorie"
