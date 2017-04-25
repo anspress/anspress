@@ -3,19 +3,39 @@
 
 		grunt.initConfig({
 			pkg: grunt.file.readJSON( 'package.json' ),
+			dirs: {
+				lang: 'languages',
+			},
 			makepot: {
 				target: {
 					options: {
-						domainPath: '/languages',                   // Where to save the POT file.
+						domainPath: '/languages',
 						exclude: ['.git/.*', '.svn/.*', '.node_modules/.*', '.vendor/.*'],
 						mainFile: 'anspress-question-answer.php',
 						potHeaders: {
-								poedit: true,                 // Includes common Poedit headers.
-								'x-poedit-keywordslist': true // Include a list of all possible gettext functions.
-						},                                // Headers to add to the generated POT file.
-						type: 'wp-plugin',                // Type of project (wp-plugin or wp-theme).
-						updateTimestamp: true             // Whether the POT-Creation-Date should be updated without other changes.
+								poedit: true,
+								'x-poedit-keywordslist': true
+						},
+						type: 'wp-plugin',
+						updateTimestamp: true,
+						updatePoFiles: true
 					}
+				}
+			},
+
+			potomo: {
+				dist: {
+					options: {
+						poDel: false
+					},
+					files: [{
+						expand: true,
+						cwd: '<%= dirs.lang %>',
+						src: ['*.po'],
+						dest: '<%= dirs.lang %>',
+						ext: '.mo',
+						nonull: true
+					}]
 				}
 			},
 			phpdocumentor: {
@@ -147,6 +167,7 @@
 		grunt.task.run('build');
 	});
 
-	grunt.registerTask( 'build', [ 'phplint', 'makepot', 'sass', 'uglify' ]);
+	grunt.registerTask( 'translate', [ 'makepot', 'potomo' ]);
+	grunt.registerTask( 'build', [ 'phplint', 'sass', 'uglify', 'translate' ]);
 
 }

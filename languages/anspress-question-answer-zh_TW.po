@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: AnsPress 2.3.6\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/anspress-question-"
 "answer\n"
-"POT-Creation-Date: 2015-12-14 08:41:30+00:00\n"
+"POT-Creation-Date: 2017-04-25 14:42:39+00:00\n"
 "PO-Revision-Date: 2015-12-15 09:21+0530\n"
 "Last-Translator: Tunghua Tai <tunghua@me.com>\n"
 "Language-Team: \n"
@@ -23,1018 +23,2236 @@ msgstr ""
 "X-Textdomain-Support: yes\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: admin/ajax.php:54 admin/ajax.php:139 admin/flagged.php:116
-#: admin/moderate.php:93 admin/reputation.php:51 includes/ask-form.php:35
-#: includes/post_types.php:226
-msgid "Title"
-msgstr "抬頭"
-
-#: admin/ajax.php:60 admin/ajax.php:145 includes/ask-form.php:52
-#: includes/user-fields.php:109
-msgid "Description"
-msgstr "描述"
-
-#: admin/ajax.php:66 admin/ajax.php:151 admin/reputation.php:52
-#: theme/default/content-user.php:17
-msgid "Points"
-msgstr "點數"
-
-#: admin/ajax.php:72 admin/ajax.php:157 admin/reputation.php:53
-msgid "Event"
-msgstr "活動"
-
-#: admin/ajax.php:78 admin/ajax.php:163
-msgid "Save Point"
-msgstr "儲存點數"
-
-#: admin/anspress-admin.php:177 includes/post_types.php:51
-msgid "All Questions"
-msgstr "所有提問"
-
-#: admin/anspress-admin.php:179 includes/post_types.php:54
-msgid "New Question"
-msgstr "新提問"
-
-#: admin/anspress-admin.php:181 includes/post_types.php:121
-msgid "All Answers"
-msgstr "所有回答"
-
-#: admin/anspress-admin.php:183
-msgid "Moderate question & answer"
-msgstr "管理提問與回答"
-
-#: admin/anspress-admin.php:183 admin/flagged.php:100 admin/moderate.php:80
-#: admin/options-page.php:606 admin/options-page.php:615
-#: admin/options-page.php:627 admin/options-page.php:639
-#: admin/options-page.php:651 admin/views/dashboard.php:46
-#: includes/functions.php:697 includes/post_status.php:30
-#: includes/post_types.php:266 includes/query_filter.php:89
-#: includes/query_filter.php:102 includes/question-loop.php:380
-msgid "Moderate"
-msgstr "管理審查"
-
-#: admin/anspress-admin.php:185 admin/views/flagged.php:18
-msgid "Flagged question & answer"
-msgstr "被檢舉的提問與回答"
-
-#: admin/anspress-admin.php:185 admin/anspress-admin.php:660
-#: admin/views/dashboard.php:52
-msgid "Flagged"
-msgstr "檢舉"
-
-#: admin/anspress-admin.php:187 includes/bp.php:50 includes/bp.php:82
-#: includes/reputation.php:25 includes/reputation.php:290
-#: includes/user.php:436 theme/default/user/about.php:65
-#: theme/default/user/user-card.php:26
-msgid "Reputation"
-msgstr "聲望"
-
-#: admin/anspress-admin.php:189 admin/views/post_flag.php:35
-msgid "Post flag"
-msgstr "貼出檢舉"
-
-#: admin/anspress-admin.php:191
-msgid "Select question"
-msgstr "選擇提問"
-
-#: admin/anspress-admin.php:199 admin/anspress-admin.php:392
-#: admin/views/admin.php:26
-msgid "AnsPress Options"
-msgstr "AnsPress 選項"
-
-#: admin/anspress-admin.php:199
-msgid "Options"
-msgstr "選項"
-
-#: admin/anspress-admin.php:203 admin/views/about.php:117
-#: admin/views/sidebar.php:4
-msgid "About AnsPress"
-msgstr "關於 AnsPress"
-
-#: admin/anspress-admin.php:330
-msgid "Settings"
-msgstr "設定"
-
-#: admin/anspress-admin.php:396
-msgid "AnsPress Role"
-msgstr "AnsPress 角色"
-
-#: admin/anspress-admin.php:406
-msgid "Role and permission for AnsPress"
-msgstr "AnsPress 的角色與權限"
-
-#: admin/anspress-admin.php:441
-msgid "This question is orphan, no question is selected for this answer"
-msgstr "這個回答沒有對應到任何的提問"
-
-#: admin/anspress-admin.php:446 includes/ajax.php:85 includes/ajax.php:87
-#: includes/ajax.php:331 includes/ajax.php:377 includes/process-form.php:525
+#: addons/free/avatar.php:77
 #, fuzzy
-msgid "1 Answer"
-msgid_plural "%d Answer"
-msgstr[0] "一個回答"
-msgstr[1] "一個回答"
+msgid "Dynamic Avatar"
+msgstr "大頭貼"
 
-#: admin/anspress-admin.php:446
-msgid "Edit question"
-msgstr "編輯提問"
-
-#: admin/anspress-admin.php:521
-msgid "AnsPress Pages"
-msgstr "AnsPress 頁面"
-
-#: admin/anspress-admin.php:541 admin/options-page.php:432
-msgid "User profile"
-msgstr "使用者個人檔案"
-
-#: admin/anspress-admin.php:542
-msgid "User notification"
-msgstr "使用者通知"
-
-#: admin/anspress-admin.php:555
-msgid "Add to Menu"
-msgstr "新增到目錄"
-
-#: admin/anspress-admin.php:569
-msgid "AnsPress update is not complete yet! click %shere%s to continue."
+#: addons/free/avatar.php:81
+msgid "Clear Cache"
 msgstr ""
 
-#: admin/anspress-admin.php:582
+#: addons/free/avatar.php:81
+#, fuzzy
+msgid "Clear avatar cache"
+msgstr "回答的頭像大小"
+
+#: addons/free/avatar.php:85
+msgid "Font family"
+msgstr ""
+
+#: addons/free/avatar.php:86
+msgid "Select font family for avatar letters."
+msgstr ""
+
+#: addons/free/avatar.php:98
+#, fuzzy
+msgid "Force avatar"
+msgstr "上傳大頭貼"
+
+#: addons/free/avatar.php:99
 msgid ""
-"Is your existing question tags are not appearing ? click here to fix it %s"
-msgstr "提問的標籤沒有正確顯示？點擊來修正他 %s"
+"Show AnsPress avatars by default instead of gravatar fallback. Useful in "
+"localhost development."
+msgstr ""
 
-#: admin/anspress-admin.php:582
-msgid "Fix question tags"
-msgstr "修正提問標籤"
+#: addons/free/bad-words.php:61
+msgid ""
+"Don’t use foul or abusive language. Let everything you say be good and "
+"helpful."
+msgstr ""
 
-#: admin/anspress-admin.php:583
-msgid "Hide message %s"
-msgstr "隱藏訊息 %s"
+#: addons/free/bad-words.php:71
+msgid "Bad Words"
+msgstr ""
 
-#: admin/anspress-admin.php:583
-msgid "dismiss"
-msgstr "解散"
+#: addons/free/bad-words.php:74
+msgid "Add comma separted bad words"
+msgstr ""
 
-#: admin/anspress-admin.php:632 admin/flagged.php:117 admin/moderate.php:94
-#: includes/flag.php:148 includes/post_types.php:238
-#: includes/post_types.php:359
-msgid "Flag"
-msgstr "檢舉"
+#: addons/free/bad-words.php:75
+msgid ""
+"Enter words separted by comma. This option can be overriden by placing a "
+"<small>badwords.txt</small> in AnsPress override folder. While using bad "
+"word from file, add one word per line rather then comma separted."
+msgstr ""
 
-#: admin/extensions.php:69
-msgid "Download"
-msgstr "下載"
+#: addons/free/buddypress.php:96
+msgid "Q&A"
+msgstr ""
 
-#: admin/extensions.php:74
-msgid "By %s"
-msgstr "被 %s"
+#: addons/free/buddypress.php:104 addons/free/buddypress.php:185
+#: addons/free/profile.php:97 admin/views/dashboard.php:30
+#: admin/views/dashboard.php:212 includes/functions.php:885
+#: includes/options.php:110 includes/post-types.php:43 includes/taxo.php:79
+#: includes/taxo.php:372 widgets/questions.php:55
+msgid "Questions"
+msgstr "問題討論"
 
-#: admin/extensions.php:79
-msgid "Last Updated:"
-msgstr "最後更新："
-
-#: admin/extensions.php:83
-msgid "Untested with your version of WordPress"
-msgstr "在你的 WordPress 版本上未測試"
-
-#: admin/extensions.php:85
-msgid "<strong>Compatible</strong> with your version of WordPress"
-msgstr "與你的 WordPress 版本相容"
-
-#: admin/flagged.php:70 admin/moderate.php:61 includes/common-pages.php:40
-#: widgets/search.php:42
-msgid "Search"
-msgstr "搜尋"
-
-#: admin/flagged.php:97
-msgid "All"
-msgstr "全部"
-
-#: admin/flagged.php:98 admin/options-page.php:614 admin/options-page.php:626
-#: admin/options-page.php:638 admin/options-page.php:650
-msgid "Publish"
-msgstr "發行"
-
-#: admin/flagged.php:99 admin/flagged.php:234 admin/moderate.php:209
-#: includes/post_types.php:275
-msgid "Pending"
-msgstr "等待中"
-
-#: admin/flagged.php:101 includes/post_status.php:22
-#: includes/post_types.php:263 includes/query_filter.php:95
-#: includes/query_filter.php:104 includes/question-loop.php:382
-msgid "Closed"
-msgstr "關閉的"
-
-#: admin/flagged.php:102 includes/post_types.php:272
-msgid "Draft"
-msgstr "草稿"
-
-#: admin/flagged.php:103 admin/flagged.php:183 admin/meta_box.php:59
-#: admin/moderate.php:157 includes/post_types.php:278
-#: includes/post_types.php:394
-msgid "Trash"
-msgstr "垃圾"
-
-#: admin/flagged.php:115
-msgid "Type"
-msgstr "類型"
-
-#: admin/flagged.php:162 admin/meta_box.php:20 admin/options-page.php:309
-#: includes/bp.php:145 includes/bp.php:146 includes/common-pages.php:37
-#: includes/functions.php:1347 includes/post_types.php:71
-#: includes/reputation.php:834
-msgid "Question"
-msgstr "提問"
-
-#: admin/flagged.php:164 admin/options-page.php:369 includes/bp.php:155
-#: includes/bp.php:156 includes/bp.php:165 includes/functions.php:1347
-#: includes/post_types.php:141 includes/reputation.php:841
-#: includes/user.php:440
-msgid "Answer"
-msgstr "回答"
-
-#: admin/flagged.php:175
-msgid "Edit flags"
-msgstr "編輯檢舉"
-
-#: admin/flagged.php:178 admin/flagged.php:228 admin/moderate.php:151
-#: admin/moderate.php:203 includes/post_types.php:391
-msgid "Restore"
-msgstr "回朔"
-
-#: admin/flagged.php:179 admin/flagged.php:229 admin/moderate.php:152
-#: admin/moderate.php:204 includes/functions.php:672
-msgid "Delete permanently"
-msgstr "永遠刪除"
-
-#: admin/flagged.php:182 admin/meta_box.php:58 admin/moderate.php:156
-#: admin/reputation.php:152 includes/class-form.php:550
-#: includes/common-pages.php:39 includes/functions.php:456
-#: includes/functions.php:458 includes/functions.php:477
-#: includes/post_types.php:400 includes/theme.php:672
-#: theme/default/part/question.php:46
-msgid "Edit"
-msgstr "編輯"
-
-#: admin/flagged.php:184 admin/moderate.php:158 includes/post_types.php:411
-msgid "View"
-msgstr "檢視"
-
-#: admin/flagged.php:233 admin/moderate.php:208
-msgid "Published"
-msgstr "已發行"
-
-#: admin/flagged.php:235 admin/moderate.php:210
-msgid "Move to trash"
-msgstr "移到垃圾桶"
-
-#: admin/functions.php:94
-msgid "Save options"
-msgstr "儲存選項"
-
-#: admin/meta_box.php:19 admin/views/dashboard.php:40
-#: admin/views/dashboard.php:66 includes/bp.php:122 includes/class-user.php:51
-#: includes/post_types.php:119 includes/user.php:511
-#: theme/default/user/list-question.php:4 widgets/question_stats.php:49
-#: widgets/questions.php:85
+#: addons/free/buddypress.php:105 addons/free/buddypress.php:233
+#: addons/free/profile.php:104 admin/views/dashboard.php:226
+#: includes/post-types.php:113 widgets/question_stats.php:49
+#: widgets/questions.php:87
 msgid "Answers"
 msgstr "回答數"
 
-#: admin/meta_box.php:70
-msgid "Add answer"
+#: addons/free/buddypress.php:150
+msgid "No AnsPress template found for rendering this page."
 msgstr ""
 
-#: admin/meta_box.php:71
-msgid "No answers yet"
-msgstr "未有回答"
-
-#: admin/meta_box.php:84
+#: addons/free/buddypress.php:201
 #, fuzzy
-msgid "<strong>1</strong> Answer"
-msgid_plural "<strong>%d</strong> Answers"
-msgstr[0] "1 個回答"
-msgstr[1] "1 個回答"
+msgid "Load more questions"
+msgstr "載入更多對話"
 
-#: admin/meta_box.php:85
+#: addons/free/buddypress.php:250 templates/addons/user/answers.php:29
 #, fuzzy
-msgid "<strong>1</strong> Vote"
-msgid_plural "<strong>%d</strong> Votes"
-msgstr[0] "1 票"
-msgstr[1] "1 票"
+msgid "Load more answers"
+msgstr "對這個回答扣票"
 
-#: admin/moderate.php:92 includes/functions.php:701
-#: includes/post_types.php:234 includes/post_types.php:356
-msgid "Status"
-msgstr "狀態"
+#: addons/free/buddypress.php:267 addons/free/buddypress.php:268
+#: admin/meta-box.php:41 admin/options-fields.php:188
+#: includes/ajax-hooks.php:194 includes/common-pages.php:21
+#: includes/post-status.php:93 includes/post-types.php:65
+msgid "Question"
+msgstr "提問"
 
-#: admin/moderate.php:95 includes/post_types.php:229
+#: addons/free/buddypress.php:269
+msgid "%1$s asked a new <a href=\"AP_CPT_LINK\">question</a>"
+msgstr "%1$s 提出了一個新<a href=\"AP_CPT_LINK\">問題</a>"
+
+#: addons/free/buddypress.php:270
+msgid "%1$s asked a new <a href=\"AP_CPT_LINK\">question</a>, on the site %3$s"
+msgstr "%1$s 發了一個新<a href=\"AP_CPT_LINK\">問題</a>, 在%3$s"
+
+#: addons/free/buddypress.php:277 addons/free/buddypress.php:278
+#: addons/free/buddypress.php:289 admin/options-fields.php:252
+#: admin/views/dashboard.php:34 includes/ajax-hooks.php:194
+#: includes/post-status.php:93 includes/post-types.php:135
+msgid "Answer"
+msgstr "回答"
+
+#: addons/free/buddypress.php:279
+msgid "%1$s <a href=\"AP_CPT_LINK\">answered</a> a question"
+msgstr "%1$s <a href=\"AP_CPT_LINK\">回答了</a> 問題"
+
+#: addons/free/buddypress.php:280
+msgid "%1$s <a href=\"AP_CPT_LINK\">answered</a> a question, on the site %3$s"
+msgstr "%1$s <a href=\"AP_CPT_LINK\">回答</a>了問題, 在%3$s"
+
+#: addons/free/buddypress.php:289
+msgid "Answer this question"
+msgstr "回答這個問題"
+
+#: addons/free/buddypress.php:373
+msgid "%1$d answers on - %2$s"
+msgstr "%1$d個回答在 - %2$s"
+
+#: addons/free/buddypress.php:377
+msgid "%1$s answered on - %2$s"
+msgstr "%1$s個回答在 - %2$s"
+
+#: addons/free/buddypress.php:384 addons/free/notification/query.php:313
+#: includes/comments.php:106 includes/post-types.php:64
+msgid "question"
+msgstr "提問"
+
+#: addons/free/buddypress.php:384 addons/free/notification/query.php:315
+#: includes/comments.php:106 includes/post-types.php:134
+msgid "answer"
+msgstr "回答"
+
+#: addons/free/buddypress.php:389
+msgid "%1$d comments on your %3$s - %2$s"
+msgstr "%1$d個回應在你的 %3$s - %2$s"
+
+#: addons/free/buddypress.php:393
+msgid "%1$s commented on your %3$s - %2$s"
+msgstr "%1$s回應了你的 %3$s - %2$s"
+
+#: addons/free/category/widget.php:25
+#, fuzzy
+msgid "Display AnsPress categories"
+msgstr "列出逗點區隔的 AnsPress 分類 ID"
+
+#: addons/free/category/widget.php:66 addons/free/category.php:729
+#: templates/addons/category/categories.php:27 templates/addons/tag/tags.php:38
+#, fuzzy
+msgid "%d Question"
+msgid_plural "%d Questions"
+msgstr[0] "%d 則提問"
+msgstr[1] "%d 則提問"
+
+#: addons/free/category/widget.php:68
+msgid "%d Child"
+msgstr ""
+
+#: addons/free/category/widget.php:79 addons/free/category.php:37
+#: addons/free/category.php:171 addons/free/category.php:227
+#: addons/free/category.php:492 addons/free/category.php:495
+#: includes/taxo.php:29
+#, fuzzy
+msgid "Categories"
+msgstr "討論版"
+
+#: addons/free/category/widget.php:97 widgets/ask-form.php:74
+#: widgets/question_stats.php:68 widgets/questions.php:78 widgets/search.php:68
+msgid "Title:"
+msgstr "標題："
+
+#: addons/free/category/widget.php:102
+msgid "Hide empty:"
+msgstr ""
+
+#: addons/free/category/widget.php:107
+#, fuzzy
+msgid "Parent:"
+msgstr "父項回答"
+
+#: addons/free/category/widget.php:109
+msgid "Top level"
+msgstr ""
+
+#: addons/free/category/widget.php:120
+msgid "Number:"
+msgstr ""
+
+#: addons/free/category/widget.php:125
+#, fuzzy
+msgid "Order By:"
+msgstr "排序:"
+
+#: addons/free/category/widget.php:127
+msgid "None"
+msgstr ""
+
+#: addons/free/category/widget.php:128 addons/free/category.php:237
+#: addons/free/category.php:251
+#, fuzzy
+msgid "Count"
+msgstr "帳號資料"
+
+#: addons/free/category/widget.php:129 addons/free/category.php:234
+#: addons/free/category.php:248
+msgid "ID"
+msgstr ""
+
+#: addons/free/category/widget.php:130 addons/free/category.php:235
+#: addons/free/category.php:249 includes/answer-form.php:59
+#: includes/ask-form.php:85 includes/taxo.php:458
+msgid "Name"
+msgstr "名"
+
+#: addons/free/category/widget.php:131 addons/free/category.php:236
+#: addons/free/category.php:250
+msgid "Slug"
+msgstr ""
+
+#: addons/free/category/widget.php:132
+msgid "Term group"
+msgstr ""
+
+#: addons/free/category/widget.php:136
+#, fuzzy
+msgid "Order:"
+msgstr "排序:"
+
+#: addons/free/category/widget.php:138
+msgid "DESC"
+msgstr ""
+
+#: addons/free/category/widget.php:139
+msgid "ASC"
+msgstr ""
+
+#: addons/free/category/widget.php:143
+#, fuzzy
+msgid "Icon width:"
+msgstr "封面圖寬度"
+
+#: addons/free/category/widget.php:148
+#, fuzzy
+msgid "Icon height:"
+msgstr "封面高度"
+
+#: addons/free/category.php:36 addons/free/category.php:341
+#: addons/free/category.php:416 addons/free/category.php:533
+#: admin/class-list-table-hooks.php:188 includes/taxo.php:202
 msgid "Category"
 msgstr "討論版"
 
-#: admin/moderate.php:190 includes/post_types.php:297
-#: includes/post_types.php:315
-msgid "--"
-msgstr "--"
+#: addons/free/category.php:179
+#, fuzzy
+msgid "Question Categories"
+msgstr "問題狀態"
 
-#: admin/options-page.php:14
-msgid "General"
-msgstr "一般"
+#: addons/free/category.php:181
+#, fuzzy
+msgid "All Categories"
+msgstr "AP 分類頁面"
 
-#: admin/options-page.php:17
-msgid "Base page"
-msgstr "基礎頁面"
+#: addons/free/category.php:183
+#, fuzzy
+msgid "Edit Category"
+msgstr "討論版"
 
-#: admin/options-page.php:18
-msgid "Select page for displaying anspress."
-msgstr "選一個頁面來展示 anspress"
+#: addons/free/category.php:184
+#, fuzzy
+msgid "New Category"
+msgstr "討論版"
 
-#: admin/options-page.php:25
-msgid "Question Help page"
-msgstr "提問的幫助頁面"
+#: addons/free/category.php:185
+#, fuzzy
+msgid "View Category"
+msgstr "討論版"
 
-#: admin/options-page.php:26
-msgid "Direction for asking a question."
-msgstr "提問的方向"
+#: addons/free/category.php:186
+#, fuzzy
+msgid "Search Category"
+msgstr "搜尋回答"
 
-#: admin/options-page.php:33
-msgid "Answer Help page"
-msgstr "回答的幫助頁面"
+#: addons/free/category.php:187 addons/free/tag.php:198
+#, fuzzy
+msgid "Nothing Found"
+msgstr "找不到問題"
 
-#: admin/options-page.php:34
-msgid "Direction for answring a question."
-msgstr "提問的方法"
+#: addons/free/category.php:188 addons/free/tag.php:199
+#, fuzzy
+msgid "Nothing found in Trash"
+msgstr "回收桶內找不到問題"
 
-#: admin/options-page.php:41
-msgid "Hide author credits"
-msgstr "隱藏外掛作者連結"
-
-#: admin/options-page.php:42
-msgid "Hide link to AnsPress project site."
+#: addons/free/category.php:230
+msgid "Ask form category order"
 msgstr ""
 
-#: admin/options-page.php:50
-msgid "Allow private posts"
-msgstr "允許私密貼文"
-
-#: admin/options-page.php:51
-msgid "Allow users to create private question and answer."
-msgstr "允許使用者建立私密提問與回答"
-
-#: admin/options-page.php:59
-msgid "Clean DB"
-msgstr "清除資料庫"
-
-#: admin/options-page.php:60
-msgid ""
-"check this to remove all anspress data including posts on deactivating "
-"plugin."
-msgstr "選這選項, 會在停用Anspress插件時， 刪除Anspress相關的資料，包含問題。"
-
-#: admin/options-page.php:67
-msgid "Base page slug before question permalink"
-msgstr "基礎頁面代稱放在提問固定網址之前"
-
-#: admin/options-page.php:75
-msgid "Base page slug before user page permalink"
-msgstr "基礎頁面代稱放在使用者頁面固定網址之前"
-
-#: admin/options-page.php:83
-msgid "Disable hover card"
-msgstr "停止用名卡"
-
-#: admin/options-page.php:84
-msgid "Dont show user hover card on mouseover."
-msgstr "鼠標停留在用戶名上時， 不要顯示名卡。"
-
-#: admin/options-page.php:93
-msgid "Layout"
-msgstr "版面"
-
-#: admin/options-page.php:97
-msgid "Avatar"
-msgstr "大頭貼"
-
-#: admin/options-page.php:101
-msgid "List avatar size"
-msgstr "清單頭像大小"
-
-#: admin/options-page.php:102
-msgid "User avatar size for questions list."
-msgstr "在提問清單的使用者頭像大小"
-
-#: admin/options-page.php:109
-msgid "Question avatar size"
-msgstr "在提問處的頭像大小"
-
-#: admin/options-page.php:110
-msgid "User avatar size for question."
-msgstr "在問題上的使用者頭像大小"
-
-#: admin/options-page.php:117 admin/options-page.php:125
-msgid "Answer avatar size"
-msgstr "回答的頭像大小"
-
-#: admin/options-page.php:118 admin/options-page.php:126
-msgid "User avatar size for answer."
-msgstr "在回答處的使用者頭像大小"
-
-#: admin/options-page.php:133
-msgid "Comment avatar size"
-msgstr "在回應上的頭像大小"
-
-#: admin/options-page.php:134
-msgid "User avatar size for comments."
-msgstr "在回應處的使用者頭像大小"
-
-#: admin/options-page.php:142
-msgid "Items to show per page"
-msgstr "每頁顯示幾個項目"
-
-#: admin/options-page.php:146
-msgid "Questions per page"
-msgstr "每頁幾則問題"
-
-#: admin/options-page.php:147
-msgid "Questions to show per page."
-msgstr "每頁顯示幾則問題"
-
-#: admin/options-page.php:154
-msgid "Answers per page"
-msgstr "每頁幾個回答"
-
-#: admin/options-page.php:155
-msgid "Answers to show per page."
-msgstr "每頁顯示幾個回答"
-
-#: admin/options-page.php:162
-msgid "Users per page"
-msgstr "每頁幾個使用者"
-
-#: admin/options-page.php:163
-msgid "Users to show per page."
-msgstr "每頁顯示幾個使用者"
-
-#: admin/options-page.php:170
-msgid "Sorting"
-msgstr "排列"
-
-#: admin/options-page.php:174
-msgid "Default answer sort"
-msgstr "預設回答排列方式"
-
-#: admin/options-page.php:175
-msgid "Sort answers by default."
-msgstr "使用預設的回答排序"
-
-#: admin/options-page.php:178 includes/functions.php:572
-#: includes/theme.php:566 includes/theme.php:609 widgets/questions.php:84
-msgid "Voted"
-msgstr "投票"
-
-#: admin/options-page.php:179 includes/theme.php:561 includes/theme.php:605
-#: includes/user.php:438 widgets/question_stats.php:47
-#: widgets/questions.php:82
-msgid "Active"
-msgstr "活躍"
-
-#: admin/options-page.php:180 includes/functions.php:564
-#: includes/theme.php:562 includes/theme.php:612 includes/user.php:441
-#: widgets/questions.php:83
-msgid "Newest"
-msgstr "最新"
-
-#: admin/options-page.php:181 includes/functions.php:568
-#: includes/theme.php:613
-msgid "Oldest"
-msgstr "最舊"
-
-#: admin/options-page.php:189
-msgid "Toggle"
-msgstr "切換"
-
-#: admin/options-page.php:193
-msgid "Show comments"
-msgstr "顯示回應"
-
-#: admin/options-page.php:194
-msgid "Show comments by default."
-msgstr "預設顯示回應"
-
-#: admin/options-page.php:201
-msgid "Show question sidebar"
-msgstr "顯示問題側邊欄"
-
-#: admin/options-page.php:202
-msgid "Subscribe and Stats widgets will be shown on question page."
+#: addons/free/category.php:231
+msgid "Set how you want to order categories in form."
 msgstr ""
 
-#: admin/options-page.php:209
-msgid "Show notification sidebar"
+#: addons/free/category.php:238 addons/free/category.php:252
+msgid "Group"
 msgstr ""
 
-#: admin/options-page.php:210
-msgid "Show dropdown notification as sidebar"
+#: addons/free/category.php:244
+msgid "Categries page order by"
 msgstr ""
 
-#: admin/options-page.php:218
-msgid "Pages"
-msgstr "頁面"
+#: addons/free/category.php:245 addons/free/category.php:259
+msgid "Set how you want to order categories in categories page."
+msgstr ""
 
-#: admin/options-page.php:223
-msgid "Page slug"
-msgstr "頁面代稱"
+#: addons/free/category.php:258
+msgid "Categries page order"
+msgstr ""
 
-#: admin/options-page.php:227
-msgid "Ask page slug"
-msgstr "提問頁面代稱"
+#: addons/free/category.php:262
+#, fuzzy
+msgid "Ascending"
+msgstr "等待中"
 
-#: admin/options-page.php:228
-msgid "Enter slug for ask page."
-msgstr "輸入提問頁面代稱"
+#: addons/free/category.php:263
+#, fuzzy
+msgid "Descending"
+msgstr "等待中"
 
-#: admin/options-page.php:236
-msgid "Question page slug"
-msgstr "問題頁面代稱"
-
-#: admin/options-page.php:237
-msgid "Enter slug for question page."
-msgstr "輸入問題頁面代稱"
-
-#: admin/options-page.php:245
-msgid "Users page slug"
+#: addons/free/category.php:269
+#, fuzzy
+msgid "Categories page slug"
 msgstr "使用者頁面代稱"
 
-#: admin/options-page.php:246
-msgid "Enter slug for users page."
-msgstr "輸入使用者頁面代稱"
+#: addons/free/category.php:270
+#, fuzzy
+msgid "Slug categories page"
+msgstr "AP 分類頁面"
 
-#: admin/options-page.php:254
-msgid "User page slug"
+#: addons/free/category.php:277
+#, fuzzy
+msgid "Category page slug"
 msgstr "使用者頁面代稱"
 
-#: admin/options-page.php:255
-msgid ""
-"Enter slug for user page, make sure no page or post exists with same slug."
-msgstr "輸入使用者頁面的代稱，請注意代稱不能跟其他頁面或文章的代稱相衝突"
+#: addons/free/category.php:278
+#, fuzzy
+msgid "Slug for category page"
+msgstr "AP 分類頁面"
 
-#: admin/options-page.php:264
-msgid "Page titles"
+#: addons/free/category.php:285
+#, fuzzy
+msgid "Categories title"
 msgstr "頁面標題"
 
-#: admin/options-page.php:268
-msgid "Show question title"
-msgstr "顯示問題討論標題"
-
-#: admin/options-page.php:269
-msgid "Show question title in single question page."
-msgstr "在問題單頁中，顯示問題標題。"
-
-#: admin/options-page.php:276
-msgid "Show solved prefix"
-msgstr "顯示【已解決】字首"
-
-#: admin/options-page.php:277
-msgid ""
-"If an answer is selected for question then [solved] prefix will be added in "
-"title."
-msgstr "如果問題已經有最佳回答了，【已解決】字頭就會加到問題標題上去。"
-
-#: admin/options-page.php:284
-msgid "Base page title"
-msgstr "基本頁面標題"
-
-#: admin/options-page.php:285
-msgid "Main questions list page title"
-msgstr "問題主列表標題"
-
-#: admin/options-page.php:292
-msgid "Ask page title"
-msgstr "提問頁面標題"
-
-#: admin/options-page.php:293
-msgid "Title of the ask page"
-msgstr "提問頁面的標題"
-
-#: admin/options-page.php:300
-msgid "Users page title"
-msgstr "使用者頁面標題"
-
-#: admin/options-page.php:301
-msgid "Title of the users page"
+#: addons/free/category.php:286
+#, fuzzy
+msgid "Title of the categories page"
 msgstr "使用者頁面的標題"
 
-#: admin/options-page.php:312
-msgid "Minimum title length"
-msgstr "標題最短長度"
+#: addons/free/category.php:292
+#, fuzzy
+msgid "Category per page"
+msgstr "AP 分類頁面"
 
-#: admin/options-page.php:313
-msgid "Set minimum letters for a question title."
-msgstr "設定提問標題最少需要字數"
+#: addons/free/category.php:293
+#, fuzzy
+msgid "Category to show per page"
+msgstr "每頁顯示幾個項目"
 
-#: admin/options-page.php:320 admin/options-page.php:380
-msgid "Minimum question content"
-msgstr "提問內容最少字數"
-
-#: admin/options-page.php:321
-msgid "Set minimum letters for a question contents."
-msgstr "提問內容最少要幾個字？"
-
-#: admin/options-page.php:328 admin/options-page.php:388
-msgid "Use text editor ?"
-msgstr "使用文字編輯器？"
-
-#: admin/options-page.php:329 admin/options-page.php:389
-msgid "Text editor as default."
-msgstr "預設的文字編輯器"
-
-#: admin/options-page.php:336 admin/options-page.php:396
-msgid "Disable comments"
-msgstr "關閉回應功能"
-
-#: admin/options-page.php:337
-msgid "Disable comments on questions."
-msgstr "在問題上關閉回應功能"
-
-#: admin/options-page.php:344 admin/options-page.php:404
-msgid "Disable voting"
-msgstr "關閉投票功能"
-
-#: admin/options-page.php:345
-msgid "Disable voting on questions."
-msgstr "在問題上關閉投票功能"
-
-#: admin/options-page.php:352 admin/options-page.php:412
-msgid "Disable down voting"
-msgstr "關閉扣票功能"
-
-#: admin/options-page.php:353
-msgid "Disable down voting on questions."
-msgstr "在問題上關閉投票功能"
-
-#: admin/options-page.php:360
-msgid "Close question after selecting answer"
-msgstr "選取回答後關閉問題"
-
-#: admin/options-page.php:361
-msgid "If enabled this will prevent user to submit answer on solved question."
-msgstr "已解答的問題不能再回答"
-
-#: admin/options-page.php:372
-msgid "Multiple Answers"
-msgstr "多個回答"
-
-#: admin/options-page.php:373
-msgid "Allow an user to submit multiple answers on a single question."
-msgstr "允許使用者對一個問題多次回答"
-
-#: admin/options-page.php:381
-msgid "Set minimum letters for a answer contents."
-msgstr "設定答案內容最少要幾個字"
-
-#: admin/options-page.php:397
-msgid "Disable comments on answer."
-msgstr "在回答上關閉意見功能"
-
-#: admin/options-page.php:405
-msgid "Disable voting on answers."
-msgstr "在回答上關閉投票功能"
-
-#: admin/options-page.php:413
-msgid "Disable down voting on answers."
-msgstr "在回答上關閉扣票功能"
-
-#: admin/options-page.php:420
-msgid "Disable navigation"
-msgstr "停用導航欄"
-
-#: admin/options-page.php:421
-msgid "Disable answer navigation."
-msgstr "停用答案導航欄。"
-
-#: admin/options-page.php:429 includes/class-user.php:43
-#: includes/options.php:143 widgets/users.php:48
-msgid "Users"
-msgstr "使用者"
-
-#: admin/options-page.php:433
-msgid "Select which user profile you'd like to use."
+#: addons/free/category.php:299
+msgid "Categories image height"
 msgstr ""
 
-#: admin/options-page.php:441
-msgid "Show users directory"
-msgstr "顯示使用者目錄"
+#: addons/free/category.php:300
+msgid "Image height in categories page"
+msgstr ""
 
-#: admin/options-page.php:442
-msgid "When enabled public can see directory of users."
-msgstr "公開使用者目錄"
+#: addons/free/category.php:341
+#, fuzzy
+msgid "Questions Category"
+msgstr "問題狀態"
 
-#: admin/options-page.php:450
-msgid "Features"
-msgstr "推薦"
+#: addons/free/category.php:421
+msgid "Select a topic that best fits your question"
+msgstr ""
 
-#: admin/options-page.php:454
-msgid "Disable reputation"
-msgstr "關閉聲望"
+#: addons/free/category.php:469
+#, fuzzy
+msgid "No matching category found"
+msgstr "沒有找到回答"
 
-#: admin/options-page.php:455
-msgid "Disable reputation for user"
-msgstr "關閉使用者聲望功能"
+#: addons/free/category.php:552 addons/free/category.php:595
+msgid "Image"
+msgstr ""
 
-#: admin/options-page.php:463
-msgid "Users page avatar size"
-msgstr "使用者頁面頭像大小"
+#: addons/free/category.php:553 addons/free/category.php:598
+#, fuzzy
+msgid "Upload image"
+msgstr "上傳中"
 
-#: admin/options-page.php:464
-msgid "Set user avatar size for users page item."
-msgstr "對使用者頁面項目設定使用者頭像大小"
+#: addons/free/category.php:557
+#, fuzzy
+msgid "Category image"
+msgstr "AP 分類頁面"
 
-#: admin/options-page.php:472
-msgid "Cover width"
-msgstr "封面圖寬度"
+#: addons/free/category.php:561 addons/free/category.php:614
+#, fuzzy
+msgid "Category icon class"
+msgstr "討論板 ID:"
 
-#: admin/options-page.php:473
-msgid "Set width of user cover photo."
-msgstr "設定封面圖片寬度"
+#: addons/free/category.php:563 addons/free/category.php:618
+#: addons/free/category.php:627
+msgid "Font icon class, if image not set"
+msgstr ""
 
-#: admin/options-page.php:480
-msgid "Cover height"
-msgstr "封面高度"
+#: addons/free/category.php:567
+msgid "Icon background color"
+msgstr ""
 
-#: admin/options-page.php:481
-msgid "Set height of user cover photo."
-msgstr "設定封面圖片高度"
+#: addons/free/category.php:569
+msgid "Set background color to be used with icon"
+msgstr ""
 
-#: admin/options-page.php:488
-msgid "Cover thumb width"
-msgstr "封面圖縮圖寬度"
+#: addons/free/category.php:607
+#, fuzzy
+msgid "Remove image"
+msgstr "移除"
 
-#: admin/options-page.php:489
-msgid "Set width of user cover photo thumbnail."
-msgstr "對封面縮圖設定寬度"
+#: addons/free/category.php:609
+msgid "Featured image for category"
+msgstr ""
 
-#: admin/options-page.php:496
-msgid "Small cover height"
-msgstr "小封面高度"
+#: addons/free/category.php:623
+msgid "Category icon color"
+msgstr ""
 
-#: admin/options-page.php:497
-msgid "Set height of user cover photo thumbnail."
-msgstr "對封面縮圖設定高度"
+#: addons/free/category.php:732 templates/addons/category/categories.php:42
+#, fuzzy
+msgid "%d Sub category"
+msgid_plural "%d Sub categories"
+msgstr[0] "討論版"
+msgstr[1] "討論版"
 
-#: admin/options-page.php:504
-msgid "Default rank"
-msgstr "預設排名"
+#: addons/free/category.php:844
+#, fuzzy
+msgid "Question category feed"
+msgstr "問題饋送"
 
-#: admin/options-page.php:505
-msgid "Assign a default rank for newly registered user."
-msgstr "對新註冊的使用者派定預設的等級"
+#: addons/free/category.php:892 addons/free/tag.php:682
+msgid ", %d+"
+msgstr ""
 
-#: admin/options-page.php:517
-msgid "Permission"
-msgstr "權限"
+#: addons/free/email.php:191
+#, fuzzy
+msgid "New question posted by {asker}"
+msgstr "尚無提問"
 
-#: admin/options-page.php:520
-msgid "Multiple answers"
-msgstr "多個回答"
+#: addons/free/email.php:192
+msgid ""
+"Hello!\n"
+"A new question is posted by {asker}\n"
+"\n"
+"Title: {question_title}\n"
+"Description:\n"
+"{question_excerpt}\n"
+"\n"
+"Link: {question_link}"
+msgstr ""
 
-#: admin/options-page.php:521
-msgid "Allow user to submit multiple answer per question."
-msgstr "允許使用者在一個提問提出多個回答"
+#: addons/free/email.php:194
+#, fuzzy
+msgid "New answer posted by {answerer}"
+msgstr "尚無回答"
 
-#: admin/options-page.php:528
-msgid "Asker can answer"
-msgstr "提問者可以回答"
+#: addons/free/email.php:195
+msgid ""
+"Hello!\n"
+"A new answer is posted by {answerer} on {question_title}\n"
+"Answer:\n"
+"{answer_excerpt}\n"
+"\n"
+"Link: {answer_link}"
+msgstr ""
 
-#: admin/options-page.php:529
-msgid "Allow asker to answer his own question."
-msgstr "提問者可以自問自答"
+#: addons/free/email.php:197
+#, fuzzy
+msgid "Your answer was selected as best"
+msgstr "當使用者的\"回答\"被選為\"最佳\""
 
-#: admin/options-page.php:536
-msgid "Allow anonymous"
-msgstr "允許匿名"
+#: addons/free/email.php:198
+#, fuzzy
+msgid ""
+"Hello!\n"
+"Your answer on '{question_title}' was selected as best.\n"
+"\n"
+"Link: {answer_link}"
+msgstr "你的回答 ##post_title 已被選為最佳答案"
 
-#: admin/options-page.php:537
-msgid "Non-loggedin user can post questions and answers."
-msgstr "沒有登入的使用者也可以發起問題討論與回答。"
+#: addons/free/email.php:200
+msgid "New comment by {commenter}"
+msgstr ""
 
-#: admin/options-page.php:544
-msgid "Only admin can answer"
-msgstr "只有管理者可以回答"
+#: addons/free/email.php:201
+msgid ""
+"Hello!\n"
+"A new comment posted on '{question_title}' by {commenter}.\n"
+"\n"
+"Link: {comment_link}"
+msgstr ""
 
-#: admin/options-page.php:545
-msgid "Only allow admin to answer question."
+#: addons/free/email.php:203
+#, fuzzy
+msgid "A question is edited by {editor}"
+msgstr "尚無提問"
+
+#: addons/free/email.php:204
+msgid ""
+"Hello!\n"
+"Question '{question_title}' is edited by {editor}.\n"
+"\n"
+"Link: {question_link}"
+msgstr ""
+
+#: addons/free/email.php:206
+#, fuzzy
+msgid "An answer is edited by {editor}"
+msgstr "尚無回答"
+
+#: addons/free/email.php:207
+msgid ""
+"Hello!\n"
+"Answer on '{question_title}' is edited by {editor}.\n"
+"\n"
+"Link: {question_link}"
+msgstr ""
+
+#: addons/free/email.php:209
+#, fuzzy
+msgid "A question is trashed by {user}"
+msgstr "問題被問了 %s"
+
+#: addons/free/email.php:210
+msgid ""
+"Hello!\n"
+"Question '{question_title}' is trashed by {user}.\n"
+msgstr ""
+
+#: addons/free/email.php:212
+msgid "An answer is trashed by {user}"
+msgstr ""
+
+#: addons/free/email.php:213
+msgid ""
+"Hello!\n"
+"Answer on '{question_title}' is trashed by {user}.\n"
+msgstr ""
+
+#: addons/free/email.php:237
+msgid "Email"
+msgstr "Email"
+
+#: addons/free/email.php:239
+#, fuzzy
+msgid "Notify admin(s)"
+msgstr "通知"
+
+#: addons/free/email.php:242
+msgid "Admin email"
+msgstr ""
+
+#: addons/free/email.php:243
+msgid "Enter email where admin notification should be sent"
+msgstr ""
+
+#: addons/free/email.php:249 addons/free/email.php:302
+#: includes/post-types.php:48
+#, fuzzy
+msgid "New question"
+msgstr "新提問"
+
+#: addons/free/email.php:250
+#, fuzzy
+msgid "Send email to admin for every new question."
 msgstr "只允許管理者回答"
 
-#: admin/options-page.php:552
-msgid "Only logged in can see answers"
-msgstr "只有登入才能看到回答"
+#: addons/free/email.php:256 includes/post-types.php:118
+msgid "New answer"
+msgstr "新的回答"
 
-#: admin/options-page.php:553
-msgid "non-loggedin user cannot see answers."
-msgstr "未登入使用者不能看到回答"
+#: addons/free/email.php:257
+#, fuzzy
+msgid "Send email to admin for every new answer."
+msgstr "選擇一個問題來回答"
 
-#: admin/options-page.php:560
-msgid "Only logged in can see comment"
-msgstr "只有登入才能看到回應"
+#: addons/free/email.php:263 addons/free/email.php:353
+#, fuzzy
+msgid "New comment"
+msgstr "一個回應"
 
-#: admin/options-page.php:561
-msgid "non-loggedin user cannot see comments."
-msgstr "未登入的使用者不能看到回應"
+#: addons/free/email.php:264
+msgid "Send email to admin for every new comment."
+msgstr ""
 
-#: admin/options-page.php:568
-msgid "Lock delete action"
-msgstr "鎖住防止刪除"
+#: addons/free/email.php:270 addons/free/email.php:370
+#: admin/class-list-table-hooks.php:346 includes/post-types.php:49
+msgid "Edit question"
+msgstr "編輯提問"
 
-#: admin/options-page.php:569
-msgid ""
-"Lock comment or post after a period so that user cannot delete it. Set the "
-"time in epoch i.e. 86400 = 1 day."
-msgstr "在多少秒之後使用者就不能刪除這個貼文，86400 秒 = 1天"
+#: addons/free/email.php:271
+msgid "Send email to admin when question is edited"
+msgstr ""
 
-#: admin/options-page.php:577
-msgid "Upload"
-msgstr "上傳"
+#: addons/free/email.php:277 addons/free/email.php:387
+#: includes/post-types.php:119
+msgid "Edit answer"
+msgstr "編輯回答"
 
-#: admin/options-page.php:581
-msgid "Allow image upload"
-msgstr "允許上傳圖片"
+#: addons/free/email.php:278
+msgid "Send email to admin when answer is edited"
+msgstr ""
 
-#: admin/options-page.php:582
-msgid "Allow logged-in users to upload image."
-msgstr "允許已登入使用者上傳圖片"
+#: addons/free/email.php:284
+#, fuzzy
+msgid "Delete question"
+msgstr "選擇提問"
 
-#: admin/options-page.php:589
-msgid "Max images per post"
-msgstr "每個貼文最多可有多少圖片"
+#: addons/free/email.php:285
+msgid "Send email to admin when question is trashed"
+msgstr ""
 
-#: admin/options-page.php:590
-msgid "Set how many images user can upload for each post."
-msgstr "每則貼文允許上傳多少圖片"
+#: addons/free/email.php:291
+#, fuzzy
+msgid "Delete answer"
+msgstr "選取回答"
 
-#: admin/options-page.php:597
-msgid "Max upload size"
-msgstr "允許最大上傳"
+#: addons/free/email.php:292
+msgid "Send email to admin when asnwer is trashed"
+msgstr ""
 
-#: admin/options-page.php:598
-msgid "Set maximum upload size."
-msgstr "設定可上傳資料大小"
+#: addons/free/email.php:298
+msgid "Templates"
+msgstr ""
 
-#: admin/options-page.php:609
-msgid "Status of new question"
-msgstr "新提問的狀態"
+#: addons/free/email.php:306 addons/free/email.php:323
+#: addons/free/email.php:340 addons/free/email.php:357
+#: addons/free/email.php:374 addons/free/email.php:391
+msgid "Subject"
+msgstr ""
 
-#: admin/options-page.php:610
-msgid "Set post status of new question."
-msgstr "對新問題設定文章狀態"
+#: addons/free/email.php:312 addons/free/email.php:329
+#: addons/free/email.php:346 addons/free/email.php:363
+#: addons/free/email.php:380 addons/free/email.php:397
+msgid "Body"
+msgstr ""
 
-#: admin/options-page.php:621
-msgid "Status of edited question"
-msgstr "編輯問題的狀態"
+#: addons/free/email.php:319
+#, fuzzy
+msgid "New Answer"
+msgstr "新的回答"
 
-#: admin/options-page.php:622
-msgid "Set post status of edited question."
-msgstr "對編輯問題設定文章狀態"
+#: addons/free/email.php:336
+#, fuzzy
+msgid "Select Answer"
+msgstr "選取回答"
 
-#: admin/options-page.php:633
-msgid "Status of new answer"
-msgstr "新答案的狀態"
+#: addons/free/notification/query.php:260
+msgid "Someone"
+msgstr ""
 
-#: admin/options-page.php:634
-msgid "Set post status of new answer."
-msgstr "對新回答設定文章狀態"
+#: addons/free/notification/query.php:306
+#, fuzzy
+msgid "post"
+msgstr "編輯貼文"
 
-#: admin/options-page.php:645
-msgid "Status of edited answer"
-msgstr "編輯答案的狀態"
+#: addons/free/notification.php:40 addons/free/notification.php:172
+#: templates/functions.php:58
+msgid "Notifications"
+msgstr "通知"
 
-#: admin/options-page.php:646
-msgid "Set post status of edited answer."
-msgstr "對編輯回答設定文章狀態"
+#: addons/free/notification.php:73
+msgid "Notification"
+msgstr "通知"
 
-#: admin/options-page.php:658
-msgid "reCaptacha"
+#: addons/free/notification.php:76
+#, fuzzy
+msgid "Auto delete notifications"
+msgstr "刪除通知"
+
+#: addons/free/notification.php:79
+msgid "Do not auto delete"
+msgstr ""
+
+#: addons/free/notification.php:80
+msgid "Only seen"
+msgstr ""
+
+#: addons/free/notification.php:81
+msgid "Both seen an unseen"
+msgstr ""
+
+#: addons/free/notification.php:83
+#, fuzzy
+msgid "Auto delete user notifications"
+msgstr "刪除通知"
+
+#: addons/free/notification.php:87
+msgid "Auto delete interval"
+msgstr ""
+
+#: addons/free/notification.php:89
+#, fuzzy
+msgid "Auto delete notifications interval"
+msgstr "刪除通知"
+
+#: addons/free/notification.php:130
+#, fuzzy
+msgid "posted an answer on your question"
+msgstr "在這個提問中你的回答已被選為最佳回答"
+
+#: addons/free/notification.php:135
+#, fuzzy
+msgid "commented on your %cpt%"
+msgstr "%1$s回應了你的 %3$s - %2$s"
+
+#: addons/free/notification.php:140
+msgid "up voted your %cpt%"
+msgstr ""
+
+#: addons/free/notification.php:147
+#, fuzzy
+msgid "down voted your %cpt%"
+msgstr "%s扣票 %s"
+
+#: addons/free/notification.php:152
+#, fuzzy
+msgid "selected your answer"
+msgstr "選取回答"
+
+#: addons/free/notification.php:157
+#, fuzzy
+msgid "You have earned %points% points"
+msgstr "你已經檢舉這個文章了"
+
+#: addons/free/notification.php:162
+msgid "You lose %points% points"
+msgstr ""
+
+#: addons/free/notification.php:209
+#, fuzzy
+msgid "You do not have permission to view this page"
+msgstr "你沒有權限存取這個頁面"
+
+#: addons/free/notification.php:427
+msgid "There was a problem processing your request"
+msgstr ""
+
+#: addons/free/notification.php:437
+#, fuzzy
+msgid "Successfully updated all notifications"
+msgstr "成功建立標籤"
+
+#: addons/free/profile.php:34
+msgid "User profile"
+msgstr "使用者個人檔案"
+
+#: addons/free/profile.php:227
+msgid "Callback function not found for rendering this page"
+msgstr ""
+
+#: addons/free/recaptcha.php:52
+#, fuzzy
+msgid "reCaptcha"
 msgstr "reCaptacha"
 
-#: admin/options-page.php:662
-msgid "Enable reCaptcha"
-msgstr "啓用 reCaptacha"
-
-#: admin/options-page.php:663
-msgid "Use this for preventing spam posts."
-msgstr "用這個來防止惡意貼文"
-
-#: admin/options-page.php:670
+#: addons/free/recaptcha.php:55
 msgid "Recaptcha site key"
 msgstr "重新產生網站驗證碼"
 
-#: admin/options-page.php:671
+#: addons/free/recaptcha.php:56
 msgid ""
 "Enter your site key, if you dont have it get it from here https://www.google."
 "com/recaptcha/admin"
 msgstr ""
 "輸入網站驗證碼，如果沒有驗證碼請到這裡申請：www.google.com/recaptcha/admin"
 
-#: admin/options-page.php:678
+#: addons/free/recaptcha.php:60
 msgid "Recaptcha secret key"
 msgstr "重新產生 secret key"
 
-#: admin/options-page.php:679
+#: addons/free/recaptcha.php:61
 msgid "Enter your secret key"
 msgstr "輸入你的密鑰"
 
-#: admin/options-page.php:686
-msgid "Tools"
+#: addons/free/recaptcha.php:65
+#, fuzzy
+msgid "Recaptcha Method"
+msgstr "重新產生 secret key"
+
+#: addons/free/recaptcha.php:66
+msgid "Select method to use when verification keeps failing"
 msgstr ""
 
-#: admin/reputation.php:152 admin/reputation.php:153
-msgid "Delete this reputation"
-msgstr "刪除這個聲譽"
+#: addons/free/recaptcha.php:82
+msgid "Bot verification failed."
+msgstr "驗證失敗"
 
-#: admin/reputation.php:153 includes/activity.php:1131
-#: includes/class-form.php:277 includes/class-form.php:284
-#: includes/functions.php:653 includes/theme.php:677
-msgid "Delete"
-msgstr "刪除"
+#: addons/free/recaptcha.php:115
+msgid "reCaptach keys missing, please add keys"
+msgstr "沒有 reCaptach keys, 請輸入"
 
-#: admin/views/about.php:118 admin/views/sidebar.php:5
-msgid "Support Q&A"
-msgstr "支援 Q&A"
+#: addons/free/reputation.php:67 addons/free/reputation.php:349
+msgid "Reputation"
+msgstr "聲望"
 
-#: admin/views/about.php:119 admin/views/sidebar.php:6
-msgid "AnsPress Themes"
-msgstr "AnsPress 主題"
+#: addons/free/reputation.php:68
+#, fuzzy
+msgid "Events"
+msgstr "活動"
 
-#: admin/views/about.php:120 admin/views/sidebar.php:7
-msgid "Github Repo"
-msgstr "Github Repo"
+#: addons/free/reputation.php:77
+#, fuzzy
+msgid "Registration"
+msgstr "新的註冊"
 
-#: admin/views/addons.php:18
-msgid "AnsPress Extensions"
-msgstr "AnsPress 外掛"
+#: addons/free/reputation.php:78
+msgid "Points awarded when user account is created"
+msgstr ""
 
-#: admin/views/admin.php:34
-msgid "AnsPress options updated"
-msgstr "AnsPress 選項已更新"
+#: addons/free/reputation.php:80
+msgid "Registered"
+msgstr ""
 
-#: admin/views/dashboard.php:25
-msgid "AnsPress Dashboard"
-msgstr "AnsPress 儀表板"
+#: addons/free/reputation.php:86
+msgid "Asking"
+msgstr ""
 
-#: admin/views/dashboard.php:34 includes/bp.php:102 includes/class-user.php:50
-#: includes/functions.php:1602 includes/post_types.php:49
-#: includes/user.php:512 includes/user.php:539 widgets/questions.php:53
-msgid "Questions"
+#: addons/free/reputation.php:87
+msgid "Points awarded when user asks a question"
+msgstr ""
+
+#: addons/free/reputation.php:89
+#, fuzzy
+msgid "Asked a question"
+msgstr "提出問題"
+
+#: addons/free/reputation.php:95
+#, fuzzy
+msgid "Answering"
+msgstr "回答"
+
+#: addons/free/reputation.php:96
+#, fuzzy
+msgid "Points awarded when user answer a question"
+msgstr "只允許管理者回答"
+
+#: addons/free/reputation.php:98
+#, fuzzy
+msgid "Posted an answer"
+msgstr "張貼回答"
+
+#: addons/free/reputation.php:104
+#, fuzzy
+msgid "Commenting"
+msgstr "回應"
+
+#: addons/free/reputation.php:105
+#, fuzzy
+msgid "Points awarded when user comment on question or answer"
+msgstr "你不能對自己的提問或回答進行投票"
+
+#: addons/free/reputation.php:107
+#, fuzzy
+msgid "Commented on a post"
+msgstr "在回答上回應"
+
+#: addons/free/reputation.php:113
+#, fuzzy
+msgid "Selecting an Answer"
+msgstr "選取回答"
+
+#: addons/free/reputation.php:114
+msgid "Points awarded when user select an answer for thier question"
+msgstr ""
+
+#: addons/free/reputation.php:116
+#, fuzzy
+msgid "Selected an answer as best"
+msgstr "將這個回答選為最佳回答"
+
+#: addons/free/reputation.php:122
+#, fuzzy
+msgid "Answer selected as best"
+msgstr "當使用者的\"回答\"被選為\"最佳\""
+
+#: addons/free/reputation.php:123
+#, fuzzy
+msgid "Points awarded when user's answer selected as best"
+msgstr "當使用者的\"回答\"被選為\"最佳\""
+
+#: addons/free/reputation.php:125
+#, fuzzy
+msgid "Answer was selected as best"
+msgstr "當使用者的\"回答\"被選為\"最佳\""
+
+#: addons/free/reputation.php:131
+#, fuzzy
+msgid "Received up vote"
+msgstr "回答被投票"
+
+#: addons/free/reputation.php:132
+#, fuzzy
+msgid "Points awarded when user receive an upvote"
+msgstr "當答案被投票"
+
+#: addons/free/reputation.php:134
+#, fuzzy
+msgid "Received an upvote"
+msgstr "回答被投票"
+
+#: addons/free/reputation.php:139
+#, fuzzy
+msgid "Received down vote"
+msgstr "\"回答\" 被扣票"
+
+#: addons/free/reputation.php:140
+#, fuzzy
+msgid "Points awarded when user receive a down vote"
+msgstr "當使用者在一個回答上面被扣票"
+
+#: addons/free/reputation.php:142
+#, fuzzy
+msgid "Received a down vote"
+msgstr "\"回答\" 被扣票"
+
+#: addons/free/reputation.php:147
+msgid "Gives an up vote"
+msgstr ""
+
+#: addons/free/reputation.php:148
+msgid "Points taken from user when they give a vote up"
+msgstr ""
+
+#: addons/free/reputation.php:150
+#, fuzzy
+msgid "Given an up vote"
+msgstr "正在發送你的投票"
+
+#: addons/free/reputation.php:155
+#, fuzzy
+msgid "Gives down vote"
+msgstr "關閉扣票功能"
+
+#: addons/free/reputation.php:156
+msgid "Points taken from user when user give a down vote"
+msgstr ""
+
+#: addons/free/reputation.php:158
+#, fuzzy
+msgid "Given a down vote"
+msgstr "關閉扣票功能"
+
+#: addons/free/reputation.php:183
+#, fuzzy
+msgid "Successfully updated reputation points!"
+msgstr "成功建立標籤"
+
+#: addons/free/reputation.php:371
+msgid "%s Reputation"
+msgstr "% 的聲譽"
+
+#: addons/free/reputation.php:380 addons/free/reputation.php:430
+#, fuzzy
+msgid "Reputations"
+msgstr "聲望"
+
+#: addons/free/tag.php:34 addons/free/tag.php:237 addons/free/tag.php:630
+#: admin/class-list-table-hooks.php:192
+msgid "Tag"
+msgstr "標籤"
+
+#: addons/free/tag.php:35 addons/free/tag.php:183 addons/free/tag.php:230
+#: addons/free/tag.php:307 addons/free/tag.php:379 addons/free/tag.php:404
+#: addons/free/tag.php:480 addons/free/tag.php:490 includes/form.php:105
+#: includes/form.php:128
+msgid "Tags"
+msgstr "標籤"
+
+#: addons/free/tag.php:163
+#, fuzzy
+msgid "(AnsPress) Tags"
+msgstr "AnsPress 頁面"
+
+#: addons/free/tag.php:167
+#, fuzzy
+msgid "Widgets in this area will be shown in anspress tags page."
+msgstr "這個小工具將會出現在標籤清單頁面"
+
+#: addons/free/tag.php:190 addons/free/tag.php:230
+#, fuzzy
+msgid "Question Tags"
 msgstr "問題討論"
 
-#: admin/views/dashboard.php:58
-msgid "Latest Questions"
-msgstr "最新問題"
+#: addons/free/tag.php:192
+#, fuzzy
+msgid "All Tags"
+msgstr "標籤"
 
-#: admin/views/dashboard.php:68 includes/functions.php:399
-#: includes/post_types.php:236 includes/post_types.php:357
+#: addons/free/tag.php:194
+#, fuzzy
+msgid "Edit Tag"
+msgstr "編輯檢舉"
+
+#: addons/free/tag.php:195
+#, fuzzy
+msgid "New Tag"
+msgstr "新臂章"
+
+#: addons/free/tag.php:196
+#, fuzzy
+msgid "View Tag"
+msgstr "檢視"
+
+#: addons/free/tag.php:197
+#, fuzzy
+msgid "Search Tag"
+msgstr "搜尋"
+
+#: addons/free/tag.php:240
+msgid "Tags to show"
+msgstr ""
+
+#: addons/free/tag.php:241
+#, fuzzy
+msgid "Numbers of tags to show in tags page."
+msgstr "顯示使用者的數量:"
+
+#: addons/free/tag.php:246
+msgid "Maximum tags"
+msgstr ""
+
+#: addons/free/tag.php:247
+msgid "Maximum numbers of tags that user can add when asking."
+msgstr ""
+
+#: addons/free/tag.php:252
+#, fuzzy
+msgid "Minimum tags"
+msgstr "標題最短長度"
+
+#: addons/free/tag.php:253
+msgid "minimum numbers of tags that user must add when asking."
+msgstr ""
+
+#: addons/free/tag.php:258
+#, fuzzy
+msgid "Tags page title"
+msgstr "基本頁面標題"
+
+#: addons/free/tag.php:259
+#, fuzzy
+msgid "Title for tags page"
+msgstr "提問頁面的標題"
+
+#: addons/free/tag.php:265
+#, fuzzy
+msgid "Tags page slug"
+msgstr "提問頁面代稱"
+
+#: addons/free/tag.php:266
+#, fuzzy
+msgid "Slug tags page"
+msgstr "選擇一個頁面"
+
+#: addons/free/tag.php:273
+#, fuzzy
+msgid "Tag page slug"
+msgstr "提問頁面代稱"
+
+#: addons/free/tag.php:274
+#, fuzzy
+msgid "Slug for tag page"
+msgstr "輸入提問頁面代稱"
+
+#: addons/free/tag.php:333
+#, fuzzy
+msgid "Delete Tag"
+msgstr "刪除"
+
+#: addons/free/tag.php:334
+msgid "Add Tag"
+msgstr ""
+
+#: addons/free/tag.php:335
+#, fuzzy
+msgid "added to the tags list."
+msgstr "回復貼文"
+
+#: addons/free/tag.php:336
+msgid "removed from the tags list."
+msgstr ""
+
+#: addons/free/tag.php:337
+msgid "Suggestions are available. Use the up and down arrow keys to read it."
+msgstr ""
+
+#: addons/free/tag.php:382
+msgid "Type and hit enter"
+msgstr ""
+
+#: addons/free/tag.php:407
+msgid "Slowly type for suggestions"
+msgstr ""
+
+#: admin/anspress-admin.php:186
+msgid "All Questions"
+msgstr "所有提問"
+
+#: admin/anspress-admin.php:188
+msgid "New Question"
+msgstr "新提問"
+
+#: admin/anspress-admin.php:190
+msgid "All Answers"
+msgstr "所有回答"
+
+#: admin/anspress-admin.php:192
+msgid "Select question"
+msgstr "選擇提問"
+
+#: admin/anspress-admin.php:201 admin/views/admin.php:27
+#: admin/views/dashboard.php:352
+msgid "AnsPress Options"
+msgstr "AnsPress 選項"
+
+#: admin/anspress-admin.php:201
+msgid "Options & Add-ons"
+msgstr ""
+
+#: admin/anspress-admin.php:205 admin/views/sidebar.php:4
+msgid "About AnsPress"
+msgstr "關於 AnsPress"
+
+#: admin/anspress-admin.php:207
+#, fuzzy
+msgid "Upgrade AnsPress"
+msgstr "AnsPress"
+
+#: admin/anspress-admin.php:306
+msgid "Settings"
+msgstr "設定"
+
+#: admin/anspress-admin.php:307
+msgid "About"
+msgstr "關於"
+
+#: admin/anspress-admin.php:486
+#, fuzzy
+msgid "Select All"
+msgstr "選取"
+
+#: admin/anspress-admin.php:490
+msgid "Add to Menu"
+msgstr "新增到目錄"
+
+#: admin/anspress-admin.php:618 admin/anspress-admin.php:627
+#: admin/options-fields.php:381 admin/options-fields.php:389
+#: admin/options-fields.php:399 admin/options-fields.php:409
+#: admin/options-fields.php:419 admin/options-fields.php:429
+#: includes/post-status.php:24
+msgid "Moderate"
+msgstr "管理審查"
+
+#: admin/anspress-admin.php:621 admin/anspress-admin.php:628
+msgid "Private Post"
+msgstr "私密文章"
+
+#: admin/anspress-admin.php:714
+#, fuzzy
+msgid "AnsPress database is not updated."
+msgstr "AnsPress 選項已更新"
+
+#: admin/anspress-admin.php:715
+#, fuzzy
+msgid "Update now"
+msgstr "更新回答"
+
+#: admin/anspress-admin.php:720
+msgid "You must continue to upgrade AnsPress data."
+msgstr ""
+
+#: admin/anspress-admin.php:721
+msgid "Upgrade now"
+msgstr ""
+
+#: admin/class-list-table-hooks.php:56 admin/class-list-table-hooks.php:396
+msgid "Flagged"
+msgstr "檢舉"
+
+#: admin/class-list-table-hooks.php:130
+msgid "Restore this item from the Trash"
+msgstr "將這個項目從垃圾桶裏撿回來"
+
+#: admin/class-list-table-hooks.php:130
+msgid "Restore"
+msgstr "回朔"
+
+#: admin/class-list-table-hooks.php:133
+msgid "Move this item to the Trash"
+msgstr "丟到垃圾桶"
+
+#: admin/class-list-table-hooks.php:133 admin/meta-box.php:70
+msgid "Trash"
+msgstr "垃圾"
+
+#: admin/class-list-table-hooks.php:137
+msgid "Delete this item permanently"
+msgstr "永遠刪除這個項目"
+
+#: admin/class-list-table-hooks.php:137 includes/theme.php:382
+msgid "Delete Permanently"
+msgstr "永遠刪除"
+
+#: admin/class-list-table-hooks.php:142
+#, fuzzy
+msgid "Edit &#8220;%s&#8221;"
+msgstr "預覽 “%s”"
+
+#: admin/class-list-table-hooks.php:142 admin/meta-box.php:69
+#: includes/comments.php:400 includes/theme.php:339
+msgid "Edit"
+msgstr "編輯"
+
+#: admin/class-list-table-hooks.php:148
+msgid "Preview &#8220;%s&#8221;"
+msgstr "預覽 “%s”"
+
+#: admin/class-list-table-hooks.php:148
+msgid "Preview"
+msgstr "預覽"
+
+#: admin/class-list-table-hooks.php:151
+msgid "View &#8220;%s&#8221; question"
+msgstr "檢視 “%s” 問題"
+
+#: admin/class-list-table-hooks.php:151
+msgid "View"
+msgstr "檢視"
+
+#: admin/class-list-table-hooks.php:168 admin/meta-box.php:130
+msgid "Clear flag"
+msgstr ""
+
+#: admin/class-list-table-hooks.php:184 admin/class-list-table-hooks.php:291
+msgid "Author"
+msgstr "作者"
+
+#: admin/class-list-table-hooks.php:185 includes/ask-form.php:41
+msgid "Title"
+msgstr "抬頭"
+
+#: admin/class-list-table-hooks.php:195 admin/class-list-table-hooks.php:293
+#: includes/theme.php:351
+msgid "Status"
+msgstr "狀態"
+
+#: admin/class-list-table-hooks.php:196 templates/question-list-item.php:37
+msgid "Ans"
+msgstr "回答"
+
+#: admin/class-list-table-hooks.php:197 admin/class-list-table-hooks.php:294
 msgid "Comments"
 msgstr "回應"
 
-#: admin/views/dashboard.php:79
-msgid "There is no question yet."
-msgstr "尚無問題"
+#: admin/class-list-table-hooks.php:198 admin/class-list-table-hooks.php:295
+#: templates/content-answer.php:20 templates/question-list-item.php:30
+msgid "Votes"
+msgstr "投票"
 
-#: admin/views/moderate.php:18
-msgid "Posts awaiting moderation"
+#: admin/class-list-table-hooks.php:199 admin/class-list-table-hooks.php:296
+#, fuzzy
+msgid "Flags"
+msgstr "檢舉"
+
+#: admin/class-list-table-hooks.php:200 admin/class-list-table-hooks.php:297
+msgid "Date"
+msgstr "日期"
+
+#: admin/class-list-table-hooks.php:247 admin/class-list-table-hooks.php:263
+msgid "--"
+msgstr "--"
+
+#: admin/class-list-table-hooks.php:268 admin/class-list-table-hooks.php:342
+#: includes/ajax-hooks.php:100 includes/ajax-hooks.php:102
+#: includes/ajax-hooks.php:279 includes/answer-form.php:263
+#: templates/answers.php:20 templates/buddypress/question-item.php:38
+#, fuzzy
+msgid "%d Answer"
+msgid_plural "%d Answers"
+msgstr[0] "%d 回答"
+msgstr[1] "%d 回答"
+
+#: admin/class-list-table-hooks.php:292
+msgid "Content"
+msgstr "內容"
+
+#: admin/class-list-table-hooks.php:331
+msgid "This question is orphan, no question is selected for this answer"
+msgstr "這個回答沒有對應到任何的提問"
+
+#: admin/class-list-table-hooks.php:366 admin/meta-box.php:129
+#: includes/flag.php:129
+msgid "Flag"
+msgstr "檢舉"
+
+#: admin/class-list-table-hooks.php:437
+msgid "Please fill parent question field, Answer was not saved!"
+msgstr "請填寫對應的問題，這個回答尚未被儲存。"
+
+#: admin/functions.php:143
+msgid "Save options"
+msgstr "儲存選項"
+
+#: admin/license.php:37 admin/views/licenses.php:20
+msgid "Licenses"
 msgstr ""
 
-#: admin/views/post_flag.php:41
-msgid "Total <b>%d flag</b>"
-msgstr "共<b>%d 個檢舉</b>"
+#: admin/meta-box.php:37
+#, fuzzy
+msgid " %d Answers"
+msgstr "%d 回答"
 
-#: admin/views/post_flag.php:42 includes/theme.php:33
-msgid "Edit post"
-msgstr "編輯貼文"
+#: admin/meta-box.php:55 admin/meta-box.php:92
+#, fuzzy
+msgid "Add an answer"
+msgstr "提問者可以回答"
 
-#: admin/views/post_flag.php:43
-msgid "Trash post"
-msgstr "刪除貼文"
+#: admin/meta-box.php:91
+#, fuzzy
+msgid "<strong>%d</strong> Answer"
+msgid_plural "<strong>%d</strong> Answers"
+msgstr[0] "1 個回答"
+msgstr[1] "1 個回答"
 
-#: admin/views/post_flag.php:55
-msgid "%s flagged this post %s"
+#: admin/meta-box.php:99
+#, fuzzy
+msgid "<strong>%d</strong> Vote"
+msgid_plural "<strong>%d</strong> Votes"
+msgstr[0] "1 票"
+msgstr[1] "1 票"
+
+#: admin/meta-box.php:102
+#, fuzzy
+msgid "-"
+msgstr "--"
+
+#: admin/meta-box.php:106
+#, fuzzy
+msgid "+"
+msgstr "9+"
+
+#: admin/options-fields.php:14
+msgid "General"
+msgstr "一般"
+
+#: admin/options-fields.php:15 admin/options-fields.php:305
+msgid "Add-ons"
 msgstr ""
 
-#: admin/views/post_flag.php:56
-msgid "Remove"
-msgstr "移除"
+#: admin/options-fields.php:16
+#, fuzzy
+msgid "Access"
+msgstr "成功"
 
-#: admin/views/post_flag.php:61
-msgid "No one flagged this post yet"
-msgstr "沒有人檢舉這個貼文"
-
-#: admin/views/reputation.php:19
-msgid "AnsPress Reputation"
+#: admin/options-fields.php:17
+msgid "Tools"
 msgstr ""
 
-#: admin/views/reputation.php:20
-msgid "New reputation"
-msgstr "新的聲望"
+#: admin/options-fields.php:20
+msgid "Pages and permalinks"
+msgstr ""
+
+#: admin/options-fields.php:23
+#, fuzzy
+msgid "Questions page"
+msgstr "每頁幾則問題"
+
+#: admin/options-fields.php:24
+msgid "Select page for displaying anspress."
+msgstr "選一個頁面來展示 anspress"
+
+#: admin/options-fields.php:29
+#, fuzzy
+msgid "Ask question page slug"
+msgstr "問題頁面代稱"
+
+#: admin/options-fields.php:30
+#, fuzzy
+msgid "Set a slug for ask question page."
+msgstr "輸入問題頁面代稱"
+
+#: admin/options-fields.php:35
+#, fuzzy
+msgid "Question slug"
+msgstr "問題頁面代稱"
+
+#: admin/options-fields.php:36
+#, fuzzy
+msgid "Slug for single question page."
+msgstr "輸入問題頁面代稱"
+
+#: admin/options-fields.php:41
+#, fuzzy
+msgid "Question permalink"
+msgstr "每頁幾則問題"
+
+#: admin/options-fields.php:42
+#, fuzzy
+msgid "Select single question permalink structure."
+msgstr "基礎頁面代稱放在提問固定網址之前"
+
+#: admin/options-fields.php:53
+msgid "Hide author credits"
+msgstr "隱藏外掛作者連結"
+
+#: admin/options-fields.php:54
+msgid "Hide link to AnsPress project site."
+msgstr ""
+
+#: admin/options-fields.php:60
+#, fuzzy
+msgid "Page Titles"
+msgstr "頁面標題"
+
+#: admin/options-fields.php:64
+msgid "Base page title"
+msgstr "基本頁面標題"
+
+#: admin/options-fields.php:65
+msgid "Main questions list page title"
+msgstr "問題主列表標題"
+
+#: admin/options-fields.php:69
+msgid "Ask page title"
+msgstr "提問頁面標題"
+
+#: admin/options-fields.php:70
+msgid "Title of the ask page"
+msgstr "提問頁面的標題"
+
+#: admin/options-fields.php:74
+#, fuzzy
+msgid "Search page title"
+msgstr "使用者頁面標題"
+
+#: admin/options-fields.php:75
+#, fuzzy
+msgid "Title of the search page"
+msgstr "使用者頁面的標題"
+
+#: admin/options-fields.php:79
+#, fuzzy
+msgid "Author page title"
+msgstr "提問頁面標題"
+
+#: admin/options-fields.php:80
+#, fuzzy
+msgid "Title of the author page"
+msgstr "使用者頁面的標題"
+
+#: admin/options-fields.php:84
+msgid "Show solved prefix"
+msgstr "顯示【已解決】字首"
+
+#: admin/options-fields.php:85
+msgid ""
+"If an answer is selected for question then [solved] prefix will be added in "
+"title."
+msgstr "如果問題已經有最佳回答了，【已解決】字頭就會加到問題標題上去。"
+
+#: admin/options-fields.php:91
+msgid "Layout"
+msgstr "版面"
+
+#: admin/options-fields.php:94
+msgid "Load assets in AnsPress page only?"
+msgstr ""
+
+#: admin/options-fields.php:95
+msgid ""
+"Check this to load AnsPress JS and CSS on the AnsPress page only. Be "
+"careful, this might break layout."
+msgstr ""
+
+#: admin/options-fields.php:101
+msgid "Avatar"
+msgstr "大頭貼"
+
+#: admin/options-fields.php:106
+msgid "List avatar size"
+msgstr "清單頭像大小"
+
+#: admin/options-fields.php:107
+msgid "User avatar size for questions list."
+msgstr "在提問清單的使用者頭像大小"
+
+#: admin/options-fields.php:112
+msgid "Question avatar size"
+msgstr "在提問處的頭像大小"
+
+#: admin/options-fields.php:113
+msgid "User avatar size for question."
+msgstr "在問題上的使用者頭像大小"
+
+#: admin/options-fields.php:118 admin/options-fields.php:124
+msgid "Answer avatar size"
+msgstr "回答的頭像大小"
+
+#: admin/options-fields.php:119 admin/options-fields.php:125
+msgid "User avatar size for answer."
+msgstr "在回答處的使用者頭像大小"
+
+#: admin/options-fields.php:130
+msgid "Comment avatar size"
+msgstr "在回應上的頭像大小"
+
+#: admin/options-fields.php:131
+msgid "User avatar size for comments."
+msgstr "在回應處的使用者頭像大小"
+
+#: admin/options-fields.php:137
+msgid "Items to show per page"
+msgstr "每頁顯示幾個項目"
+
+#: admin/options-fields.php:141
+msgid "Questions per page"
+msgstr "每頁幾則問題"
+
+#: admin/options-fields.php:142
+msgid "Questions to show per page."
+msgstr "每頁顯示幾則問題"
+
+#: admin/options-fields.php:147
+msgid "Answers per page"
+msgstr "每頁幾個回答"
+
+#: admin/options-fields.php:148
+msgid "Answers to show per page."
+msgstr "每頁顯示幾個回答"
+
+#: admin/options-fields.php:154
+#, fuzzy
+msgid "Question & Answer"
+msgstr "被檢舉的提問與回答"
+
+#: admin/options-fields.php:157
+msgid "Allow private posts"
+msgstr "允許私密貼文"
+
+#: admin/options-fields.php:158
+msgid "Allow users to create private question and answer."
+msgstr "允許使用者建立私密提問與回答"
+
+#: admin/options-fields.php:163
+#, fuzzy
+msgid "Load comments"
+msgstr "顯示回應"
+
+#: admin/options-fields.php:164
+#, fuzzy
+msgid "Show question and answer comments by default"
+msgstr "預設顯示回應"
+
+#: admin/options-fields.php:169
+msgid "Check duplicate"
+msgstr ""
+
+#: admin/options-fields.php:170
+msgid "Check for duplicate posts before posting"
+msgstr ""
+
+#: admin/options-fields.php:175
+#, fuzzy
+msgid "Disable question suggestion"
+msgstr "在問題上關閉投票功能"
+
+#: admin/options-fields.php:176
+msgid "Checking this will disable question suggestion in ask form"
+msgstr ""
+
+#: admin/options-fields.php:181
+#, fuzzy
+msgid "Show default date format"
+msgstr "預設回答排列方式"
+
+#: admin/options-fields.php:182
+msgid ""
+"Instead of showing time passed i.e. 1 Hour ago, show default format date."
+msgstr ""
+
+#: admin/options-fields.php:192
+#, fuzzy
+msgid "Default question order"
+msgstr "選擇提問"
+
+#: admin/options-fields.php:193
+msgid "Order question list by default using selected"
+msgstr ""
+
+#: admin/options-fields.php:196 admin/options-fields.php:260
+#: includes/theme.php:449 includes/theme.php:485 widgets/questions.php:86
+msgid "Voted"
+msgstr "投票"
+
+#: admin/options-fields.php:197 admin/options-fields.php:261
+#: includes/theme.php:444 includes/theme.php:481 widgets/question_stats.php:47
+#: widgets/questions.php:84
+msgid "Active"
+msgstr "活躍"
+
+#: admin/options-fields.php:198 admin/options-fields.php:262
+#: includes/theme.php:445 includes/theme.php:488 widgets/questions.php:85
+msgid "Newest"
+msgstr "最新"
+
+#: admin/options-fields.php:199 admin/options-fields.php:263
+#: includes/theme.php:489
+msgid "Oldest"
+msgstr "最舊"
+
+#: admin/options-fields.php:204
+msgid "Keep stop words in question slug"
+msgstr ""
+
+#: admin/options-fields.php:205
+msgid "AnsPress will not strip stop words in question slug."
+msgstr ""
+
+#: admin/options-fields.php:210
+msgid "Minimum title length"
+msgstr "標題最短長度"
+
+#: admin/options-fields.php:211
+msgid "Set minimum letters for a question title."
+msgstr "設定提問標題最少需要字數"
+
+#: admin/options-fields.php:216 admin/options-fields.php:274
+msgid "Minimum question content"
+msgstr "提問內容最少字數"
+
+#: admin/options-fields.php:217
+msgid "Set minimum letters for a question contents."
+msgstr "提問內容最少要幾個字？"
+
+#: admin/options-fields.php:222 admin/options-fields.php:280
+msgid "Use text editor ?"
+msgstr "使用文字編輯器？"
+
+#: admin/options-fields.php:223 admin/options-fields.php:281
+msgid "Text editor as default."
+msgstr "預設的文字編輯器"
+
+#: admin/options-fields.php:228 admin/options-fields.php:286
+msgid "Disable comments"
+msgstr "關閉回應功能"
+
+#: admin/options-fields.php:229
+msgid "Disable comments on questions."
+msgstr "在問題上關閉回應功能"
+
+#: admin/options-fields.php:234 admin/options-fields.php:292
+msgid "Disable voting"
+msgstr "關閉投票功能"
+
+#: admin/options-fields.php:235
+msgid "Disable voting on questions."
+msgstr "在問題上關閉投票功能"
+
+#: admin/options-fields.php:240 admin/options-fields.php:298
+msgid "Disable down voting"
+msgstr "關閉扣票功能"
+
+#: admin/options-fields.php:241
+msgid "Disable down voting on questions."
+msgstr "在問題上關閉投票功能"
+
+#: admin/options-fields.php:246
+msgid "Close question after selecting answer"
+msgstr "選取回答後關閉問題"
+
+#: admin/options-fields.php:247
+msgid "If enabled this will prevent user to submit answer on solved question."
+msgstr "已解答的問題不能再回答"
+
+#: admin/options-fields.php:256
+#, fuzzy
+msgid "Default answers order"
+msgstr "預設回答排列方式"
+
+#: admin/options-fields.php:257
+#, fuzzy
+msgid "Order answers by by default using selected"
+msgstr "%d 則回答, %d 則選取"
+
+#: admin/options-fields.php:268
+msgid "Multiple Answers"
+msgstr "多個回答"
+
+#: admin/options-fields.php:269
+msgid "Allow an user to submit multiple answers on a single question."
+msgstr "允許使用者對一個問題多次回答"
+
+#: admin/options-fields.php:275
+msgid "Set minimum letters for a answer contents."
+msgstr "設定答案內容最少要幾個字"
+
+#: admin/options-fields.php:287
+msgid "Disable comments on answer."
+msgstr "在回答上關閉意見功能"
+
+#: admin/options-fields.php:293
+msgid "Disable voting on answers."
+msgstr "在回答上關閉投票功能"
+
+#: admin/options-fields.php:299
+msgid "Disable down voting on answers."
+msgstr "在回答上關閉扣票功能"
+
+#: admin/options-fields.php:308
+#, fuzzy
+msgid "Permissions"
+msgstr "權限"
+
+#: admin/options-fields.php:311
+#, fuzzy
+msgid "Only logged in can see questions, answer and comments?"
+msgstr "只有登入才能看到回應"
+
+#: admin/options-fields.php:312
+msgid "Require user to login to see AnsPress contents?."
+msgstr ""
+
+#: admin/options-fields.php:317
+msgid "Multiple answers"
+msgstr "多個回答"
+
+#: admin/options-fields.php:318
+msgid "Allow user to submit multiple answer per question."
+msgstr "允許使用者在一個提問提出多個回答"
+
+#: admin/options-fields.php:323
+msgid "Asker can answer"
+msgstr "提問者可以回答"
+
+#: admin/options-fields.php:324
+msgid "Allow asker to answer his own question."
+msgstr "提問者可以自問自答"
+
+#: admin/options-fields.php:329
+msgid "Allow anonymous"
+msgstr "允許匿名"
+
+#: admin/options-fields.php:330
+msgid "Non-loggedin user can post questions and answers."
+msgstr "沒有登入的使用者也可以發起問題討論與回答。"
+
+#: admin/options-fields.php:335
+msgid "Only admin can answer"
+msgstr "只有管理者可以回答"
+
+#: admin/options-fields.php:336
+msgid "Only allow admin to answer question."
+msgstr "只允許管理者回答"
+
+#: admin/options-fields.php:341
+msgid "Only logged in can see answers"
+msgstr "只有登入才能看到回答"
+
+#: admin/options-fields.php:342
+msgid "non-loggedin user cannot see answers."
+msgstr "未登入使用者不能看到回答"
+
+#: admin/options-fields.php:347
+msgid "Only logged in can see comment"
+msgstr "只有登入才能看到回應"
+
+#: admin/options-fields.php:348
+msgid "non-loggedin user cannot see comments."
+msgstr "未登入的使用者不能看到回應"
+
+#: admin/options-fields.php:353
+msgid "Lock delete action"
+msgstr "鎖住防止刪除"
+
+#: admin/options-fields.php:354
+msgid ""
+"Lock comment or post after a period so that user cannot delete it. Set the "
+"time in epoch i.e. 86400 = 1 day."
+msgstr "在多少秒之後使用者就不能刪除這個貼文，86400 秒 = 1天"
+
+#: admin/options-fields.php:359
+msgid "Upload"
+msgstr "上傳"
+
+#: admin/options-fields.php:363
+msgid "Allow image upload"
+msgstr "允許上傳圖片"
+
+#: admin/options-fields.php:364
+msgid "Allow logged-in users to upload image."
+msgstr "允許已登入使用者上傳圖片"
+
+#: admin/options-fields.php:369
+#, fuzzy
+msgid "Max uploads per post"
+msgstr "每個貼文最多可有多少圖片"
+
+#: admin/options-fields.php:370
+#, fuzzy
+msgid "Set numbers of media user can upload for each post."
+msgstr "每則貼文允許上傳多少圖片"
+
+#: admin/options-fields.php:375
+msgid "Max upload size"
+msgstr "允許最大上傳"
+
+#: admin/options-fields.php:376
+msgid "Set maximum upload size."
+msgstr "設定可上傳資料大小"
+
+#: admin/options-fields.php:384
+msgid "Status of new question"
+msgstr "新提問的狀態"
+
+#: admin/options-fields.php:385
+msgid "Set post status of new question."
+msgstr "對新問題設定文章狀態"
+
+#: admin/options-fields.php:388 admin/options-fields.php:398
+#: admin/options-fields.php:408 admin/options-fields.php:418
+#: admin/options-fields.php:428
+msgid "Publish"
+msgstr "發行"
+
+#: admin/options-fields.php:394
+msgid "Status of edited question"
+msgstr "編輯問題的狀態"
+
+#: admin/options-fields.php:395
+msgid "Set post status of edited question."
+msgstr "對編輯問題設定文章狀態"
+
+#: admin/options-fields.php:404
+msgid "Status of new answer"
+msgstr "新答案的狀態"
+
+#: admin/options-fields.php:405
+msgid "Set post status of new answer."
+msgstr "對新回答設定文章狀態"
+
+#: admin/options-fields.php:414
+msgid "Status of edited answer"
+msgstr "編輯答案的狀態"
+
+#: admin/options-fields.php:415
+msgid "Set post status of edited answer."
+msgstr "對編輯回答設定文章狀態"
+
+#: admin/options-fields.php:424
+#, fuzzy
+msgid "Status of anonymous post"
+msgstr "新提問的狀態"
+
+#: admin/options-fields.php:425
+#, fuzzy
+msgid "Set post status post submitted by anonymous user."
+msgstr "對編輯回答設定文章狀態"
+
+#: admin/options-fields.php:434
+#, fuzzy
+msgid "User roles"
+msgstr "使用者個人檔案"
+
+#: admin/options-fields.php:435
+msgid "Uninstall - clear all AnsPress data"
+msgstr ""
+
+#: admin/update.php:131
+#, fuzzy
+msgid "Post data updated successfully"
+msgstr "發文狀態修改成功"
+
+#: admin/update.php:160
+msgid "Updated %1$d posts out of %2$d"
+msgstr ""
+
+#: admin/update.php:339 admin/update.php:352
+#, fuzzy
+msgid "Successfully migrated all reputations"
+msgstr "成功建立標籤"
+
+#: admin/update.php:370
+msgid "Migrated reputation... %1$d out of %2$d"
+msgstr ""
+
+#: admin/update.php:435
+msgid "Migrated categories data... %1$d out of %2$d"
+msgstr ""
+
+#: admin/updater.php:79
+msgid "Theme License"
+msgstr ""
+
+#: admin/updater.php:80
+#, fuzzy
+msgid "Enter your theme license key."
+msgstr "輸入你的密鑰"
+
+#: admin/updater.php:81
+msgid "License Key"
+msgstr ""
+
+#: admin/updater.php:82
+#, fuzzy
+msgid "License Action"
+msgstr "鎖住防止刪除"
+
+#: admin/updater.php:83 admin/views/licenses.php:37
+msgid "Deactivate License"
+msgstr ""
+
+#: admin/updater.php:84 admin/views/licenses.php:39
+#, fuzzy
+msgid "Activate License"
+msgstr "私密回答"
+
+#: admin/updater.php:85 admin/updater.php:97
+msgid "License status is unknown."
+msgstr ""
+
+#: admin/updater.php:86
+msgid "Renew?"
+msgstr ""
+
+#: admin/updater.php:87
+msgid "unlimited"
+msgstr ""
+
+#: admin/updater.php:88
+msgid "License key is active."
+msgstr ""
+
+#: admin/updater.php:89
+msgid "Expires %s."
+msgstr ""
+
+#: admin/updater.php:90
+msgid "You have %1$s / %2$s sites activated."
+msgstr ""
+
+#: admin/updater.php:91
+msgid "License key expired %s."
+msgstr ""
+
+#: admin/updater.php:92
+msgid "License key has expired."
+msgstr ""
+
+#: admin/updater.php:93
+msgid "License keys do not match."
+msgstr ""
+
+#: admin/updater.php:94
+msgid "License is inactive."
+msgstr ""
+
+#: admin/updater.php:95
+#, fuzzy
+msgid "License key is disabled."
+msgstr "使用者分類功能未開啟"
+
+#: admin/updater.php:96
+msgid "Site is inactive."
+msgstr ""
+
+#: admin/updater.php:98
+msgid ""
+"Updating this theme will lose any customizations you have made. 'Cancel' to "
+"stop, 'OK' to update."
+msgstr ""
+
+#: admin/updater.php:99
+msgid ""
+"<strong>%1$s %2$s</strong> is available. <a href=\"%3$s\" class=\"thickbox\" "
+"title=\"%4s\">Check out what's new</a> or <a href=\"%5$s\"%6$s>update now</"
+"a>."
+msgstr ""
+
+#: admin/updater.php:225
+msgid ""
+"There is a new version of %1$s available. <a target=\"_blank\" class="
+"\"thickbox\" href=\"%2$s\">View version %3$s details</a>."
+msgstr ""
+
+#: admin/updater.php:232
+msgid ""
+"There is a new version of %1$s available. <a target=\"_blank\" class="
+"\"thickbox\" href=\"%2$s\">View version %3$s details</a> or <a href=\"%4$s"
+"\">update now</a>."
+msgstr ""
+
+#: admin/updater.php:368
+#, fuzzy
+msgid "You do not have permission to install plugin updates"
+msgstr "你沒有權限編輯這個提問"
+
+#: admin/updater.php:368
+#, fuzzy
+msgid "Error"
+msgstr "404 錯誤"
+
+#: admin/views/admin.php:21
+#, fuzzy
+msgid "AnsPress option updated!"
+msgstr "AnsPress 選項已更新"
+
+#: admin/views/dashboard.php:26
+msgid "Require Attention"
+msgstr ""
+
+#: admin/views/dashboard.php:32
+msgid "Latest Questions"
+msgstr "最新問題"
+
+#: admin/views/dashboard.php:36
+#, fuzzy
+msgid "Latest Answers"
+msgstr "更新回答"
+
+#: admin/views/dashboard.php:86 admin/views/dashboard.php:275
+#, fuzzy
+msgid "%d Published"
+msgstr "已發行"
+
+#: admin/views/dashboard.php:91 admin/views/dashboard.php:278
+#, fuzzy
+msgid "%d Private"
+msgstr "私密"
+
+#: admin/views/dashboard.php:95 admin/views/dashboard.php:281
+#, fuzzy
+msgid "%d Moderate"
+msgstr "管理審查"
+
+#: admin/views/dashboard.php:215
+#, fuzzy
+msgid "%d Flagged questions"
+msgstr "被檢舉的提問與回答"
+
+#: admin/views/dashboard.php:218
+#, fuzzy
+msgid "%d questions awaiting moderation"
+msgstr "文章正在等待審核"
+
+#: admin/views/dashboard.php:222
+msgid "All looks fine"
+msgstr ""
+
+#: admin/views/dashboard.php:231
+#, fuzzy
+msgid "%d Flagged answers"
+msgstr "%d 回答"
+
+#: admin/views/dashboard.php:237
+#, fuzzy
+msgid "%d answers awaiting moderation"
+msgstr "文章正在等待審核"
+
+#: admin/views/dashboard.php:299
+msgid "Apparently, there are no updates to show!"
+msgstr ""
+
+#: admin/views/dashboard.php:344
+#, fuzzy
+msgid "Welcome to AnsPress!"
+msgstr "歡迎使用 AnsPress 2.2"
+
+#: admin/views/dashboard.php:346
+msgid "We’ve assembled some links to get you started:"
+msgstr ""
+
+#: admin/views/dashboard.php:350
+msgid "Get Started"
+msgstr ""
+
+#: admin/views/dashboard.php:357
+msgid "Next Steps"
+msgstr ""
+
+#: admin/views/dashboard.php:359
+#, fuzzy
+msgid "Write your first question"
+msgstr "描述此提問"
+
+#: admin/views/dashboard.php:360
+#, fuzzy
+msgid "Post an answer"
+msgstr "張貼回答"
+
+#: admin/views/dashboard.php:361
+#, fuzzy
+msgid "View questions"
+msgstr "新提問"
+
+#: admin/views/dashboard.php:365
+#, fuzzy
+msgid "More actions"
+msgstr "更多動作"
+
+#: admin/views/dashboard.php:371
+#, fuzzy
+msgid "Get %1$s or %2$s"
+msgstr "請 %s 或 %s"
+
+#: admin/views/dashboard.php:375
+msgid "Themes"
+msgstr ""
+
+#: admin/views/dashboard.php:380
+#, fuzzy
+msgid "Extensions"
+msgstr "AnsPress 外掛"
+
+#: admin/views/dashboard.php:386
+msgid "Help and Support!"
+msgstr ""
+
+#: admin/views/dashboard.php:387
+msgid "Documents and FAQ"
+msgstr ""
+
+#: admin/views/licenses.php:22
+msgid "License keys for AnsPress products, i.e. extensions and themes."
+msgstr ""
+
+#: admin/views/licenses.php:32
+msgid "Enter license key for %s"
+msgstr ""
+
+#: admin/views/licenses.php:36
+#, fuzzy
+msgid "active"
+msgstr "活躍"
+
+#: admin/views/licenses.php:48
+msgid "Save"
+msgstr ""
+
+#: admin/views/licenses.php:52
+#, fuzzy
+msgid "No license yet."
+msgstr "未有回答"
+
+#: admin/views/reputation-events.php:34
+#, fuzzy
+msgid "Save Events Points"
+msgstr "儲存點數"
+
+#: admin/views/roles.php:37
+#, fuzzy
+msgid "New role %s added successfully ."
+msgstr "圖片上傳成功"
+
+#: admin/views/roles.php:40
+msgid "Its look like %s role already exists ."
+msgstr ""
+
+#: admin/views/roles.php:53
+#, fuzzy
+msgid "Permission and role"
+msgstr "權限"
+
+#: admin/views/roles.php:59
+#, fuzzy
+msgid "Add new role"
+msgstr "新增回答"
+
+#: admin/views/roles.php:62
+msgid "Add a new user role."
+msgstr ""
+
+#: admin/views/roles.php:65
+msgid "Role name"
+msgstr ""
+
+#: admin/views/roles.php:66
+msgid "Role slug, without any space"
+msgstr ""
+
+#: admin/views/roles.php:71 admin/views/roles.php:108
+msgid "Basic Capabilities"
+msgstr ""
+
+#: admin/views/roles.php:76 admin/views/roles.php:117
+msgid "Moderator Capabilities"
+msgstr ""
+
+#: admin/views/roles.php:81
+#, fuzzy
+msgid "Add role"
+msgstr "添加更多"
+
+#: admin/views/roles.php:88
+msgid "AnsPress capabilities"
+msgstr ""
+
+#: admin/views/roles.php:89
+msgid "Add AnsPress capabilities to 3rd party roles."
+msgstr ""
+
+#: admin/views/roles.php:94
+msgid "Select user role"
+msgstr ""
+
+#: admin/views/roles.php:129
+#, fuzzy
+msgid "Save Role"
+msgstr "儲存點數"
 
 #: admin/views/select_question.php:20
 msgid "Select a question for new answer"
@@ -1046,2121 +2264,1583 @@ msgid ""
 "question title."
 msgstr "慢慢輸入問題建議，然後在問題抬頭右邊點擊\"選取\""
 
-#: admin/views/tools.php:21
-msgid "AnsPress capabilities"
-msgstr ""
+#: admin/views/sidebar.php:5
+msgid "Support Q&A"
+msgstr "支援 Q&A"
 
-#: admin/views/tools.php:22
-msgid "Add AnsPress capabilities to 3rd party roles"
-msgstr ""
+#: admin/views/sidebar.php:6
+msgid "AnsPress Themes"
+msgstr "AnsPress 主題"
 
-#: admin/views/tools.php:25
-msgid "Select user role"
-msgstr ""
+#: admin/views/sidebar.php:7
+msgid "Github Repo"
+msgstr "Github Repo"
 
-#: admin/views/tools.php:38
-msgid "Basic Capabilities"
-msgstr ""
-
-#: admin/views/tools.php:47
-msgid "Moderator Capabilities"
-msgstr ""
-
-#: admin/views/updates.php:6
-msgid "Actions"
-msgstr ""
-
-#: admin/views/updates.php:15 admin/views/updates.php:26
-msgid "Move old subscribers"
-msgstr ""
-
-#: admin/views/updates.php:16 admin/views/updates.php:27
+#: admin/views/uninstall.php:21
 msgid ""
-"Since 2.4 subscribers are stored in diffrent table, so move all subscribers "
-"data to new table."
+"If you are unsure about this section please do not use any of these options "
+"below."
 msgstr ""
 
-#: admin/views/updates.php:20 admin/views/updates.php:31
-msgid "Start"
+#: admin/views/uninstall.php:28
+#, fuzzy
+msgid "Permanently delete all questions and answers?"
+msgstr "選擇一個問題來回答"
+
+#: admin/views/uninstall.php:34
+#, fuzzy
+msgid "Delete %d Q&A"
+msgstr "刪除"
+
+#: admin/views/uninstall.php:35
+msgid ""
+"Clicking this button will delete all questions and answers data from database"
 msgstr ""
 
-#: includes/activity-hooks.php:81
-msgid "%s asked question %s"
+#: admin/views/uninstall.php:40
+msgid "Permanently delete all answers?"
 msgstr ""
 
-#: includes/activity-hooks.php:90 includes/activity.php:587
-#: includes/bp.php:239 includes/post_types.php:70
-msgid "question"
-msgstr "提問"
-
-#: includes/activity-hooks.php:113
-msgid "%s answered on %s"
-msgstr ""
-
-#: includes/activity-hooks.php:132 includes/activity.php:587
-#: includes/bp.php:239 includes/post_types.php:140
-#: theme/default/answers.php:18
-msgid "answer"
-msgstr "回答"
-
-#: includes/activity-hooks.php:149
-msgid "%s edited question %s"
-msgstr ""
-
-#: includes/activity-hooks.php:181
-msgid "%s edited answer %s"
-msgstr ""
-
-#: includes/activity-hooks.php:224 includes/activity-hooks.php:491
-msgid "%s commented on question %s %s"
-msgstr ""
-
-#: includes/activity-hooks.php:229 includes/activity-hooks.php:496
-msgid "%s commented on answer %s %s"
-msgstr ""
-
-#: includes/activity-hooks.php:268
-msgid "%s selected best answer for %s"
-msgstr ""
-
-#: includes/activity-hooks.php:303
-msgid "%s unselected best answer for question %s"
-msgstr ""
-
-#: includes/activity-hooks.php:410
-msgid "%s started following %s"
-msgstr ""
-
-#: includes/activity-hooks.php:530
-msgid "%s mentioned you in %s %s"
-msgstr ""
-
-#: includes/activity.php:572
-msgid "%s edited comment on %s %s"
-msgstr ""
-
-#: includes/activity.php:577
-msgid "%s updated status of question %s"
-msgstr ""
-
-#: includes/activity.php:582
-msgid "%s updated status of answer %s"
-msgstr ""
-
-#: includes/activity.php:589
-msgid "%s voted up on %s %s"
-msgstr ""
-
-#: includes/activity.php:595
-msgid "%s received %d reputation on %s"
-msgstr ""
-
-#: includes/activity.php:678
-msgid "asked"
-msgstr "提出討論"
-
-#: includes/activity.php:679
-msgid "answered"
-msgstr "回答了"
-
-#: includes/activity.php:680
-msgid "commented"
-msgstr "已回應"
-
-#: includes/activity.php:681
-msgid "commented on answer"
-msgstr "在回答上回應"
-
-#: includes/activity.php:682
-msgid "edited question"
-msgstr "編輯了提問"
-
-#: includes/activity.php:683
-msgid "edited answer"
-msgstr "編輯了回答"
-
-#: includes/activity.php:684
-msgid "edited comment"
-msgstr "編輯了回應"
-
-#: includes/activity.php:685
-msgid "selected answer"
+#: admin/views/uninstall.php:46
+#, fuzzy
+msgid "Delete %d answers"
 msgstr "選取回答"
 
-#: includes/activity.php:686
-msgid "unselected answer"
-msgstr "未選取的回答"
-
-#: includes/activity.php:687
-msgid "updated status"
-msgstr "更新狀態"
-
-#: includes/activity.php:688
-msgid "selected as best answer"
+#: admin/views/uninstall.php:47
+msgid ""
+"Clicking this button will delete all answers and its related data from "
+"database"
 msgstr ""
 
-#: includes/activity.php:689
-msgid "unselected as best answer"
+#: admin/views/uninstall.php:52
+msgid "Permanently delete all AnsPress user data?"
 msgstr ""
 
-#: includes/activity.php:728
-msgid "%s %s %s"
+#: admin/views/uninstall.php:55
+msgid "Delete all user data"
 msgstr ""
 
-#: includes/activity.php:730
-msgid "Active %s"
+#: admin/views/uninstall.php:56
+msgid "Clicking this button will delete all user data added by AnsPress"
 msgstr ""
 
-#: includes/activity.php:764
-msgid " %s %s %s"
+#: admin/views/uninstall.php:61
+msgid "Permanently delete all AnsPress options?"
 msgstr ""
 
-#: includes/ajax.php:75
+#: admin/views/uninstall.php:64
+#, fuzzy
+msgid "Delete all options"
+msgstr "刪除通知"
+
+#: admin/views/uninstall.php:65
+msgid "Clicking this button will delete all AnsPress options"
+msgstr ""
+
+#: admin/views/uninstall.php:70
+msgid "Permanently delete all AnsPress terms?"
+msgstr ""
+
+#: admin/views/uninstall.php:73
+msgid "Delete all terms"
+msgstr ""
+
+#: admin/views/uninstall.php:74
+msgid "Clicking this button will delete all AnsPress terms data"
+msgstr ""
+
+#: admin/views/uninstall.php:79
+msgid "Permanently delete all AnsPress tables?"
+msgstr ""
+
+#: admin/views/uninstall.php:82
+msgid "Delete all database tables"
+msgstr ""
+
+#: admin/views/uninstall.php:83
+msgid "Clicking this button will remove all AnsPress DB tables"
+msgstr ""
+
+#: admin/views/uninstall.php:115
+msgid "Do you wish to proceed? This cannot be undone."
+msgstr ""
+
+#: admin/views/upgrade.php:19
+#, fuzzy
+msgid "Questions and Answers"
+msgstr "搜尋問題與回答"
+
+#: admin/views/upgrade.php:20
+#, fuzzy
+msgid "Migrate reputation data"
+msgstr "關閉聲望"
+
+#: admin/views/upgrade.php:21
+msgid "Migrate category data"
+msgstr ""
+
+#: admin/views/upgrade.php:27
+#, fuzzy
+msgid "Thank you for choosing AnsPress"
+msgstr "謝謝你的投票"
+
+#: admin/views/upgrade.php:28
+msgid ""
+"This page will help you with automatically migrating AnsPress 3.x data to 4."
+"x. Please make sure to create a backup of site before starting upgrade."
+msgstr ""
+
+#: admin/views/upgrade.php:29
+msgid "Start Upgrade"
+msgstr ""
+
+#: admin/views/upgrade.php:31
+msgid ""
+"Aaiyaa! Something went wrong. Please click above button again or report "
+"issue to us."
+msgstr ""
+
+#: admin/views/upgrade.php:42
+msgid "Having trouble upgrading? We are available 12x7"
+msgstr ""
+
+#: admin/views/upgrade.php:43
+msgid "Get help now"
+msgstr ""
+
+#: anspress-question-answer.php:44
+#, fuzzy
+msgid "AnsPress is not running!"
+msgstr "AnsPress 點數"
+
+#: anspress-question-answer.php:45
+msgid ""
+"Irks! At least PHP version 5.5 is required to run AnsPress. Current PHP "
+"version is %s. Please ask hosting provider to update your PHP version."
+msgstr ""
+
+#: includes/ajax-hooks.php:89
 msgid "%d similar questions found"
 msgstr "找到 %d 則類似問題"
 
-#: includes/ajax.php:76
+#: includes/ajax-hooks.php:90
 msgid ""
 "We've found similar questions that have already been asked, click to read "
 "them."
 msgstr ""
 
-#: includes/ajax.php:85 includes/functions.php:630
+#: includes/ajax-hooks.php:100 includes/ajax-hooks.php:136
+#: includes/theme.php:771
 msgid "Select"
 msgstr "選取"
 
-#: includes/ajax.php:95
-msgid "No related questions found"
-msgstr "找不到相關提問"
-
-#: includes/ajax.php:123 includes/ajax.php:145
-msgid "Update comment"
-msgstr "更新回應"
-
-#: includes/ajax.php:182 includes/ajax.php:221 includes/process-form.php:682
-#, fuzzy
-msgid "One comment"
-msgid_plural "%d comments"
-msgstr[0] "一個回應"
-msgstr[1] "一個回應"
-
-#: includes/ajax.php:203 includes/ajax.php:315
-msgid "This post was created %s, its locked hence you cannot delete it."
-msgstr ""
-
-#: includes/ajax.php:468
-msgid "Update"
-msgstr "更新"
-
-#: includes/ajax.php:510 includes/functions.php:1503
-msgid "Set as featured"
-msgstr "設為推薦"
-
-#: includes/ajax.php:525 includes/functions.php:1503
-msgid "Unset as featured"
-msgstr "取消推薦"
-
-#: includes/ajax.php:560 includes/ajax.php:779 includes/follow.php:36
-#: includes/subscriber.php:286
-msgid "Follow"
-msgstr "追蹤"
-
-#: includes/ajax.php:568 includes/ajax.php:794 includes/follow.php:36
-#: includes/subscriber.php:286
-msgid "Unfollow"
-msgstr "取消追蹤"
-
-#: includes/ajax.php:881
-msgid "Please login for adding question to your subscribe"
-msgstr "需要先登入才能把問題加入你的訂閱"
-
-#: includes/answer-form.php:40 includes/post_types.php:126
-msgid "Update answer"
-msgstr "更新回答"
-
-#: includes/answer-form.php:40
-msgid "Post answer"
-msgstr "張貼回答"
-
-#: includes/answer-form.php:53
-msgid "Your answer.."
-msgstr "你的回答"
-
-#: includes/answer-form.php:67 includes/ask-form.php:82
-msgid "Name"
-msgstr "名"
-
-#: includes/answer-form.php:69 includes/ask-form.php:84
-msgid "Enter your name to display"
-msgstr "輸入你的顯示名"
-
-#: includes/answer-form.php:80 includes/ask-form.php:95
-msgid "Only visible to admin and moderator."
-msgstr "僅發給站長及管理員"
-
-#: includes/answer-form.php:90 includes/ask-form.php:105
-msgid "reCaptach keys missing, please add keys"
-msgstr "沒有 reCaptach keys, 請輸入"
-
-#: includes/answer-loop.php:415 includes/question-loop.php:322
-#: theme/default/answer-list.php:35
-msgid "votes"
-msgstr "投票"
-
-#: includes/ask-form.php:31
-msgid "Update question"
-msgstr "更新提問"
-
-#: includes/ask-form.php:31
-msgid "Post question"
-msgstr "張貼提問"
-
-#: includes/ask-form.php:37
-msgid "Question in one sentence"
-msgstr "用一句話概括提問"
-
-#: includes/ask-form.php:38
-msgid "Write a meaningful title for the question."
-msgstr "為提問寫下有意義的抬頭"
-
-#: includes/ask-form.php:54
-msgid "Write description for the question."
-msgstr "描述此提問"
-
-#: includes/bp.php:58
-msgid "Questions %s"
-msgstr "提問 %s"
-
-#: includes/bp.php:66
-msgid "Answers %s"
-msgstr "回答 %s"
-
-#: includes/bp.php:147
-msgid "%1$s asked a new <a href=\"AP_CPT_LINK\">question</a>"
-msgstr "%1$s 提出了一個新<a href=\"AP_CPT_LINK\">問題</a>"
-
-#: includes/bp.php:148
-msgid "%1$s asked a new <a href=\"AP_CPT_LINK\">question</a>, on the site %3$s"
-msgstr "%1$s 發了一個新<a href=\"AP_CPT_LINK\">問題</a>, 在%3$s"
-
-#: includes/bp.php:157
-msgid "%1$s <a href=\"AP_CPT_LINK\">answered</a> a question"
-msgstr "%1$s <a href=\"AP_CPT_LINK\">回答了</a> 問題"
-
-#: includes/bp.php:158
-msgid "%1$s <a href=\"AP_CPT_LINK\">answered</a> a question, on the site %3$s"
-msgstr "%1$s <a href=\"AP_CPT_LINK\">回答</a>了問題, 在%3$s"
-
-#: includes/bp.php:165
-msgid "Answer this question"
-msgstr "回答這個問題"
-
-#: includes/bp.php:180
-msgid "%s Reputation"
-msgstr "% 的聲譽"
-
-#: includes/bp.php:227
-msgid "%1$d answers on - %2$s"
-msgstr "%1$d個回答在 - %2$s"
-
-#: includes/bp.php:231
-msgid "%1$s answered on - %2$s"
-msgstr "%1$s個回答在 - %2$s"
-
-#: includes/bp.php:245
-msgid "%1$d comments on your %3$s - %2$s"
-msgstr "%1$d個回應在你的 %3$s - %2$s"
-
-#: includes/bp.php:249
-msgid "%1$s commented on your %3$s - %2$s"
-msgstr "%1$s回應了你的 %3$s - %2$s"
-
-#: includes/class-form.php:59
-msgid "Submit"
-msgstr "提交"
-
-#: includes/class-form.php:186 theme/default/comment-form.php:11
-msgid "Cancel"
-msgstr "取消"
-
-#: includes/class-form.php:271
-msgid "Repeat your password"
-msgstr "再次輸入密碼"
-
-#: includes/class-form.php:286
-msgid "Add more"
-msgstr "添加更多"
-
-#: includes/class-form.php:419
-msgid "Select a page"
-msgstr "選擇一個頁面"
-
-#: includes/class-form.php:640
-msgid "No fields found"
-msgstr "沒有找到欄位"
-
-#: includes/class-roles-cap.php:93
-msgid "AnsPress Moderator"
-msgstr "AnsPress 管理員"
-
-#: includes/class-roles-cap.php:97
-msgid "AnsPress Participants"
-msgstr "AndPress 貢獻者"
-
-#: includes/class-roles-cap.php:98
-msgid "AnsPress Banned"
-msgstr ""
-
-#: includes/class-theme.php:206
-msgid "Question Feed"
-msgstr "問題饋送"
-
-#: includes/class-theme.php:241
-msgid "Question feed"
-msgstr "問題饋送"
-
-#: includes/class-theme.php:242
-msgid "Answers feed"
-msgstr "解答饋送"
-
-#: includes/class-user.php:45 includes/theme.php:829
-msgid "User"
-msgstr "使用者"
-
-#: includes/class-user.php:46
-msgid "About"
-msgstr "關於"
-
-#: includes/class-user.php:47
-msgid "Activity Feed"
-msgstr ""
-
-#: includes/class-user.php:48
-msgid "Notification"
-msgstr "通知"
-
-#: includes/class-user.php:49
-msgid "Profile"
-msgstr "個人檔案"
-
-#: includes/class-user.php:52 theme/default/content-user.php:15
-#: widgets/followers.php:60 widgets/question_stats.php:50
-msgid "Followers"
-msgstr "追蹤者"
-
-#: includes/class-user.php:53 includes/class-user.php:243
-#: theme/default/content-user.php:16
-msgid "Following"
-msgstr "正在追蹤"
-
-#: includes/class-user.php:68
-msgid "User directory is disabled."
-msgstr "使用者分類功能未開啟"
-
-#: includes/class-user.php:93
-msgid "No user found"
-msgstr "沒有找到使用者"
-
-#: includes/class-user.php:189
-msgid "No followers found"
-msgstr "沒找到追蹤者"
-
-#: includes/class-user.php:203
-msgid "You are not following anyone."
-msgstr "你沒有追蹤任何人"
-
-#: includes/class-user.php:223
-msgid "My activity"
-msgstr "我的動態"
-
-#: includes/class-user.php:223
-msgid "%s's activity"
-msgstr "%s 的動態"
-
-#: includes/class-user.php:225 includes/hooks.php:386 widgets/user.php:48
-msgid "My profile"
-msgstr "我的個人檔案"
-
-#: includes/class-user.php:225
-msgid "%s's profile"
-msgstr "%s 的個人檔案"
-
-#: includes/class-user.php:228
-msgid "My questions"
-msgstr "我的提問"
-
-#: includes/class-user.php:228
-msgid "%s's questions"
-msgstr "%s 的提問"
-
-#: includes/class-user.php:231
-msgid "My answers"
-msgstr "我的回答"
-
-#: includes/class-user.php:231
-msgid "%s's answers"
-msgstr "%s 的回答"
-
-#: includes/class-user.php:234
-msgid "My reputation"
-msgstr "我的聲望"
-
-#: includes/class-user.php:234
-msgid "%s's reputation"
-msgstr "%s 的聲望"
-
-#: includes/class-user.php:237
-msgid "About me"
-msgstr "關於我"
-
-#: includes/class-user.php:237
-msgid "%s"
-msgstr "%s"
-
-#: includes/class-user.php:240
-msgid "My followers"
-msgstr "我的追蹤者"
-
-#: includes/class-user.php:240
-msgid "%s's followers"
-msgstr "%s 的追蹤者"
-
-#: includes/class-user.php:246 includes/user.php:535
-msgid "My subscriptions"
-msgstr "我的訂閱"
-
-#: includes/class-user.php:249 includes/hooks.php:387
-msgid "My notification"
-msgstr "我的通知"
-
-#: includes/class-user.php:346 includes/process-form.php:801
-msgid "File cannot be uploaded, size is bigger then %d Byte"
-msgstr "無法上傳文件，文件大於 %d Byte"
-
-#: includes/class-user.php:369 includes/class-user.php:505
-msgid "There was an error while uploading avatar, please check your image"
-msgstr "大頭貼上傳失敗，請確認您的圖片。"
-
-#: includes/class-user.php:431
-msgid "Cover photo uploaded successfully."
-msgstr "封面圖片上傳成功"
-
-#: includes/class-user.php:438
-msgid ""
-"There was an error while uploading cover photo, please check your image and "
-"try again."
-msgstr "圖片上傳失敗，請確認您的圖片。"
-
-#: includes/class-user.php:497
-msgid "Avatar uploaded successfully."
-msgstr "大頭貼上傳成功"
-
-#: includes/class-validation.php:56
-msgid "This field is required"
-msgstr "必填"
-
-#: includes/class-validation.php:82
-msgid "Its too short, it must be minimum %d characters"
-msgstr "太短，至少要%d字"
-
-#: includes/class-validation.php:101 includes/class-validation.php:104
-msgid "It must be minimum %d characters"
-msgstr "至少要%d字"
-
-#: includes/class-validation.php:113
-msgid "Not a valid email address"
-msgstr "無效的 Email 地址"
-
-#: includes/common-pages.php:38
-msgid "Ask"
-msgstr "提問"
-
-#: includes/common-pages.php:41
-msgid "Activity feed"
-msgstr ""
-
-#: includes/common-pages.php:154
-msgid "You don't have permission to access this page."
-msgstr "你沒有權限存取這個頁面"
-
-#: includes/flag.php:92
-msgid "Flag this post"
-msgstr "檢舉這個文章"
-
-#: includes/flag.php:92
-msgid "You have flagged this post"
-msgstr "你已經檢舉這個文章了"
-
-#: includes/flag.php:94
-msgid "Flag "
-msgstr "檢舉"
-
-#: includes/flag.php:161
-msgid "Report this comment to moderaor"
-msgstr ""
-
-#: includes/form.php:66
-msgid "You do not have permission to delete this comment"
-msgstr "你沒有權限刪除這個回應"
-
-#: includes/form.php:83
-msgid "Comment deleted successfully"
-msgstr "成功刪除回應"
-
-#: includes/form.php:130 includes/form.php:153 includes/theme.php:824
-msgid "Tags"
-msgstr "標籤"
-
-#: includes/form.php:174 includes/form.php:180
-msgid "Form loaded."
-msgstr "表格已載入"
-
-#: includes/form.php:182
-msgid "You do not have permission to edit this question."
-msgstr "你沒有權限編輯這個提問"
-
-#: includes/form.php:185
-msgid "Something went wrong, please try again."
-msgstr "哪裡出錯了，請再試一次。"
-
-#: includes/form.php:217
-msgid "Don't have a user account? %sRegister now%s."
-msgstr "還沒有帳號？%s馬上註冊%s"
-
-#: includes/form.php:235
-msgid "Unable to create tag, please try again."
-msgstr "無法建立標籤，請重新嘗試。"
-
-#: includes/form.php:238
-msgid "Successfully created a tag."
-msgstr "成功建立標籤"
-
-#: includes/form.php:245
-msgid "Unable to load form, please try again."
-msgstr "無法載入表格，請再試一次"
-
-#: includes/form.php:247
-msgid "Successfully loaded form."
-msgstr "成功載入表格"
-
-#: includes/form.php:289
-msgid "Update Answer"
-msgstr "更新回答"
-
-#: includes/form.php:296
-msgid "Create new tag"
-msgstr "建立新標籤"
-
-#: includes/form.php:297
-msgid "Enter tag"
-msgstr "輸入標籤"
-
-#: includes/form.php:298
-msgid "Description of tag."
-msgstr "標籤說明"
-
-#: includes/form.php:299
-msgid "Create tag"
-msgstr "建立標籤"
-
-#: includes/functions.php:268
-msgid "ago"
-msgstr "前"
-
-#: includes/functions.php:279
-msgid "Please login or register to continue this action."
-msgstr "請登入或註冊後才能繼續這個動作"
-
-#: includes/functions.php:399 includes/reputation.php:848
-#: theme/default/comment-form.php:10
-msgid "Comment"
-msgstr "回應"
-
-#: includes/functions.php:456
-msgid "Edit this question"
-msgstr "編輯這個提問"
-
-#: includes/functions.php:458
-msgid "Edit this answer"
-msgstr "編輯這個回答"
-
-#: includes/functions.php:477
-msgid "Edit Answer"
-msgstr "編輯回答"
-
-#: includes/functions.php:490
-msgid "Edited on"
-msgstr "編輯在"
-
-#: includes/functions.php:630
-msgid "Select this answer as best"
-msgstr "將這個回答選為最佳回答"
-
-#: includes/functions.php:632
-msgid "Unselect this answer"
-msgstr "反選取這個回答"
-
-#: includes/functions.php:632
-msgid "Unselect"
-msgstr "取消選擇"
-
-#: includes/functions.php:697
-msgid "Close"
-msgstr "關閉"
-
-#: includes/functions.php:697 includes/post_types.php:281
-msgid "Open"
-msgstr "公開"
-
-#: includes/functions.php:697 includes/post_types.php:262
-#: includes/post_types.php:269 includes/question-loop.php:379
-msgid "Private"
-msgstr "私密"
-
-#: includes/functions.php:700
-msgid "Change status of post"
-msgstr "修改發文狀態"
-
-#: includes/functions.php:920
-msgid "Success"
-msgstr "成功"
-
-#: includes/functions.php:921
-msgid "You need to login before doing this action."
-msgstr "你要登入才能繼續"
-
-#: includes/functions.php:922
-msgid "Something went wrong, last action failed."
-msgstr "錯誤，上一個動作失敗"
-
-#: includes/functions.php:923
-msgid "You do not have permission to do this action."
-msgstr "你沒有權限進行這個操作"
-
-#: includes/functions.php:924
-msgid "You are commenting on a draft post."
-msgstr "你正在回應一個草稿"
-
-#: includes/functions.php:925
-msgid "Comment successfully posted."
-msgstr "回應發表成功"
-
-#: includes/functions.php:926
-msgid "Comment updated successfully."
-msgstr "回應上傳成功"
-
-#: includes/functions.php:927
-msgid "Comment deleted successfully."
-msgstr "回應刪除成功"
-
-#: includes/functions.php:928
-msgid "You are following this question."
-msgstr "你正在追蹤這個提問"
-
-#: includes/functions.php:929 includes/functions.php:955
-msgid "Successfully unfollowed."
-msgstr "成功取消追蹤"
-
-#: includes/functions.php:930
-msgid "Question submitted successfully"
-msgstr "提問已成功送出"
-
-#: includes/functions.php:931
-msgid "Question updated successfully"
-msgstr "提問已成功更新"
-
-#: includes/functions.php:932
-msgid "Answer submitted successfully"
-msgstr "回答已成功送出"
-
-#: includes/functions.php:933
-msgid "Answer updated successfully"
-msgstr "回答已成功更新"
-
-#: includes/functions.php:934
-msgid "Thank you for voting."
-msgstr "謝謝你的投票"
-
-#: includes/functions.php:935
-msgid "Your vote has been removed."
-msgstr "你的投票已被取消"
-
-#: includes/functions.php:936
-msgid "Undo your vote first."
-msgstr "先取消你的投票"
-
-#: includes/functions.php:937
-msgid "You cannot vote on your own question or answer."
-msgstr "你不能對自己的提問或回答進行投票"
-
-#: includes/functions.php:938
+#: includes/ajax-hooks.php:109
+msgid "No related questions found."
+msgstr "找不到相關問題"
+
+#: includes/ajax-hooks.php:135
 msgid "Best answer is unselected for your question."
 msgstr "你的提問尚未選擇最佳回答"
 
-#: includes/functions.php:939
+#: includes/ajax-hooks.php:144
+msgid ""
+"This answer cannot be selected as best, update status to select as best "
+"answer."
+msgstr ""
+
+#: includes/ajax-hooks.php:172
 msgid "Best answer is selected for your question."
 msgstr "在這個提問中你的回答已被選為最佳回答"
 
-#: includes/functions.php:940
-msgid "Question moved to trash."
-msgstr "提問已被搬移到垃圾桶"
+#: includes/ajax-hooks.php:173 includes/theme.php:779
+msgid "Unselect"
+msgstr "取消選擇"
 
-#: includes/functions.php:941
-msgid "Answer moved to trash."
-msgstr "回答已搬移到垃圾桶"
+#: includes/ajax-hooks.php:185
+#, fuzzy
+msgid "Unable to trash this post"
+msgstr "投一票"
 
-#: includes/functions.php:942
-msgid "You dont have permission to view private posts."
-msgstr "你沒有權限檢視私密貼文"
+#: includes/ajax-hooks.php:206 includes/class/form.php:298
+#: includes/class/form.php:306 includes/comments.php:404 includes/theme.php:365
+msgid "Delete"
+msgstr "刪除"
 
-#: includes/functions.php:943
-msgid "Thank you for reporting this post."
-msgstr "謝謝你對這個文章檢舉"
+#: includes/ajax-hooks.php:206 includes/theme.php:366
+msgid "Delete this post (can be restored again)"
+msgstr ""
 
-#: includes/functions.php:944
-msgid "You have already reported this post."
-msgstr "你已經檢舉了這個文章"
+#: includes/ajax-hooks.php:207
+msgid "%s is restored"
+msgstr ""
 
-#: includes/functions.php:945
-msgid "Please check captcha field and resubmit it again."
-msgstr "請確認驗證碼欄位後重新送出"
+#: includes/ajax-hooks.php:222
+#, fuzzy
+msgid "This post was created %s, hence you cannot trash it"
+msgstr "這個貼文在 %s 之前建立，因為已經上鎖以致無法刪除。"
 
-#: includes/functions.php:946
-msgid "Comment content is empty."
-msgstr "回應的內容是空的"
+#: includes/ajax-hooks.php:230 includes/theme.php:362
+#, fuzzy
+msgid "Undelete"
+msgstr "刪除"
 
-#: includes/functions.php:947
-msgid "Post status updated successfully"
-msgstr "發文狀態修改成功"
+#: includes/ajax-hooks.php:230 includes/theme.php:363
+#, fuzzy
+msgid "Restore this post"
+msgstr "投一票"
 
-#: includes/functions.php:948
-msgid "Image uploaded successfully"
-msgstr "圖片上傳成功"
+#: includes/ajax-hooks.php:231
+msgid "%s is trashed"
+msgstr ""
 
-#: includes/functions.php:949
-msgid "Question has been deleted permanently"
+#: includes/ajax-hooks.php:246
+msgid "Sorry, unable to delete post"
+msgstr ""
+
+#: includes/ajax-hooks.php:274
+#, fuzzy
+msgid "Question is deleted permanently"
 msgstr "提問已經被永久刪除"
 
-#: includes/functions.php:950
-msgid "Answer has been deleted permanently"
+#: includes/ajax-hooks.php:283
+#, fuzzy
+msgid "Answer is deleted permanently"
 msgstr "回答已經被永久刪除"
 
-#: includes/functions.php:951
-msgid "Question is marked as featured."
+#: includes/ajax-hooks.php:298
+msgid "Sorry, you cannot toggle a featured question"
+msgstr ""
+
+#: includes/ajax-hooks.php:308
+#, fuzzy
+msgid "Only question can be set as featured"
 msgstr "提問已經被標為推薦"
 
-#: includes/functions.php:952
+#: includes/ajax-hooks.php:317 includes/theme.php:855
+#, fuzzy
+msgid "Mark this question as featured"
+msgstr "推薦這個提問"
+
+#: includes/ajax-hooks.php:317 includes/theme.php:856
+#, fuzzy
+msgid "Feature"
+msgstr "推薦"
+
+#: includes/ajax-hooks.php:318
 msgid "Question is unmarked as featured."
 msgstr "提問已被標為\"推薦\""
 
-#: includes/functions.php:953
+#: includes/ajax-hooks.php:325 includes/theme.php:852
+#, fuzzy
+msgid "Unmark this question as featured"
+msgstr "推薦這個提問"
+
+#: includes/ajax-hooks.php:325 includes/theme.php:853
+#, fuzzy
+msgid "Unfeature"
+msgstr "推薦"
+
+#: includes/ajax-hooks.php:326
+msgid "Question is marked as featured."
+msgstr "提問已經被標為推薦"
+
+#: includes/ajax-hooks.php:364
+#, fuzzy
+msgid "You cannot close a question"
+msgstr "當回答問題"
+
+#: includes/ajax-hooks.php:370 includes/theme.php:323
+msgid "Close"
+msgstr "關閉"
+
+#: includes/ajax-hooks.php:370 includes/theme.php:323
+msgid "Open"
+msgstr "公開"
+
+#: includes/ajax-hooks.php:371 includes/theme.php:324
+#, fuzzy
+msgid "Close this question for new answer."
+msgstr "選擇一個問題來回答"
+
+#: includes/ajax-hooks.php:371 includes/theme.php:324
+#, fuzzy
+msgid "Open this question for new answers"
+msgstr "選擇一個問題來回答"
+
+#: includes/ajax-hooks.php:373
+#, fuzzy
+msgid "Question closed"
+msgstr "問題饋送"
+
+#: includes/ajax-hooks.php:373
+#, fuzzy
+msgid "Question is opened"
+msgstr "問題饋送"
+
+#: includes/ajax-hooks.php:437
+msgid "Sorry, you are not allowed to convert this question to post"
+msgstr ""
+
+#: includes/ajax-hooks.php:456
+msgid " Question \"%s\" is converted to post and its answers are trashed"
+msgstr ""
+
+#: includes/ajax-hooks.php:483
+#, fuzzy
+msgid "You must be logged in to subscribe to a question"
+msgstr "沒有人訂閱這個問題"
+
+#: includes/ajax-hooks.php:492 includes/ajax-hooks.php:515
+msgid "Sorry, unable to subscribe"
+msgstr ""
+
+#: includes/ajax-hooks.php:503
+#, fuzzy
+msgid "Successfully unsubscribed from question"
+msgstr "只有你訂閱這個提問"
+
+#: includes/ajax-hooks.php:505 includes/theme.php:882
+msgid "Subscribe"
+msgstr "訂閱"
+
+#: includes/ajax-hooks.php:521
+#, fuzzy
+msgid "Successfully subscribed to question"
+msgstr "沒有人訂閱這個問題"
+
+#: includes/ajax-hooks.php:523 includes/theme.php:882
+#, fuzzy
+msgid "Unsubscribe"
+msgstr "訂閱"
+
+#: includes/answer-form.php:42
+msgid "Your answer.."
+msgstr "你的回答"
+
+#: includes/answer-form.php:61 includes/ask-form.php:87
+msgid "Enter your name to display"
+msgstr "輸入你的顯示名"
+
+#: includes/answer-form.php:73 includes/ask-form.php:99
+msgid "Only visible to admin and moderator."
+msgstr "僅發給站長及管理員"
+
+#: includes/answer-form.php:140 includes/post-types.php:120
+msgid "Update answer"
+msgstr "更新回答"
+
+#: includes/answer-form.php:140
+msgid "Post answer"
+msgstr "張貼回答"
+
+#: includes/answer-form.php:272
+msgid "Answer submitted successfully"
+msgstr "回答已成功送出"
+
+#: includes/answer-loop.php:303
+msgid "You are viewing 1 out of %d answers, click here to view all answers."
+msgstr ""
+
+#: includes/api.php:15
+msgid "Wrong data supplied"
+msgstr ""
+
+#: includes/ask-form.php:43
+msgid "Question in one sentence"
+msgstr "用一句話概括提問"
+
+#: includes/ask-form.php:59
+msgid "Description"
+msgstr "描述"
+
+#: includes/ask-form.php:156
+#, fuzzy
+msgid "You cannot edit this question."
+msgstr "你正在追蹤這個提問"
+
+#: includes/ask-form.php:164
+#, fuzzy
+msgid "Post you are trying to edit is not a question."
+msgstr "你沒有權限編輯這個提問"
+
+#: includes/ask-form.php:172 includes/post-types.php:50
+msgid "Update question"
+msgstr "更新提問"
+
+#: includes/ask-form.php:172
+msgid "Post question"
+msgstr "張貼提問"
+
+#: includes/ask-form.php:240
+msgid "Question title cannot be blank"
+msgstr ""
+
+#: includes/class/form.php:66
+msgid "Submit"
+msgstr "提交"
+
+#: includes/class/form.php:199
+msgid "Reset"
+msgstr ""
+
+#: includes/class/form.php:203 templates/functions.php:55
+msgid "Cancel"
+msgstr "取消"
+
+#: includes/class/form.php:290
+msgid "Repeat your password"
+msgstr "再次輸入密碼"
+
+#: includes/class/form.php:308
+msgid "Add more"
+msgstr "添加更多"
+
+#: includes/class/form.php:474
+msgid "Select a page"
+msgstr "選擇一個頁面"
+
+#: includes/class/form.php:718
+msgid "No fields found"
+msgstr "沒有找到欄位"
+
+#: includes/class/roles-cap.php:58
+msgid "AnsPress Moderator"
+msgstr "AnsPress 管理員"
+
+#: includes/class/roles-cap.php:62
+msgid "AnsPress Participants"
+msgstr "AndPress 貢獻者"
+
+#: includes/class/roles-cap.php:63
+msgid "AnsPress Banned"
+msgstr ""
+
+#: includes/class/roles-cap.php:1255
+#, fuzzy
+msgid "Voting on own post is not allowed"
+msgstr "扣票功能已被關閉"
+
+#: includes/class/roles-cap.php:1263
+msgid "Voting on restricted posts are not allowed."
+msgstr ""
+
+#: includes/class/roles-cap.php:1273
+#, fuzzy
+msgid "You do not have permission to vote."
+msgstr "你沒有權限進行這個操作"
+
+#: includes/class/validation.php:70
+msgid "This field is required"
+msgstr "必填"
+
+#: includes/class/validation.php:100
+msgid "Field value should be at least %d characters"
+msgstr ""
+
+#: includes/class/validation.php:120 includes/class/validation.php:123
+msgid "It must be minimum %d characters"
+msgstr "至少要%d字"
+
+#: includes/class/validation.php:135
+msgid "Not a valid email address"
+msgstr "無效的 Email 地址"
+
+#: includes/class-theme.php:170 includes/class-theme.php:225
+msgid "Question Feed"
+msgstr "問題饋送"
+
+#: includes/class-theme.php:226
+#, fuzzy
+msgid "Answers Feed"
+msgstr "解答饋送"
+
+#: includes/comments.php:68
+#, fuzzy
+msgid "Unable to load comments"
+msgstr "關閉回應功能"
+
+#: includes/comments.php:92
+#, fuzzy
+msgid "Unable to post comment"
+msgstr "關閉回應功能"
+
+#: includes/comments.php:100
+msgid "Sorry, you cannot post a blank comment"
+msgstr ""
+
+#: includes/comments.php:112
+msgid "Commenting is not allowed on draft, pending or deleted %s"
+msgstr ""
+
+#: includes/comments.php:121
+msgid "Sorry, you cannot post a comment"
+msgstr ""
+
+#: includes/comments.php:157 includes/comments.php:209
+#: includes/comments.php:259 includes/comments.php:302
+#: includes/comments.php:383
+#, fuzzy
+msgid "%d Comment"
+msgid_plural "%d Comments"
+msgstr[0] "回應"
+msgstr[1] "回應"
+
+#: includes/comments.php:158
+#, fuzzy
+msgid "Comment successfully posted"
+msgstr "回應發表成功"
+
+#: includes/comments.php:183
+msgid "Sorry, you cannot edit this comment"
+msgstr ""
+
+#: includes/comments.php:193
+msgid "No change detected, edit comment and then try"
+msgstr ""
+
+#: includes/comments.php:210
+#, fuzzy
+msgid "Comment updated successfully"
+msgstr "回應上傳成功"
+
+#: includes/comments.php:217
+#, fuzzy
+msgid "Unable to update comment"
+msgstr "更新回應"
+
+#: includes/comments.php:233
+#, fuzzy
+msgid "Failed to delete comment"
+msgstr "編輯了回應"
+
+#: includes/comments.php:243
+#, fuzzy
+msgid "This comment was created %s. Its locked hence you cannot delete it."
+msgstr "這個貼文在 %s 之前建立，因為已經上鎖以致無法刪除。"
+
+#: includes/comments.php:257
+#, fuzzy
+msgid "Comment successfully deleted"
+msgstr "回應發表成功"
+
+#: includes/comments.php:287
+msgid "Sorry, unable to approve comment"
+msgstr ""
+
+#: includes/comments.php:303
+#, fuzzy
+msgid "Comment approved successfully."
+msgstr "回應上傳成功"
+
+#: includes/comments.php:380
+#, fuzzy
+msgid "Comments awaiting moderation"
+msgstr "文章正在等待審核"
+
+#: includes/comments.php:383
+#, fuzzy
+msgid "Add a Comment"
+msgstr "回應"
+
+#: includes/comments.php:408
+msgid "Approve"
+msgstr ""
+
+#: includes/common-pages.php:22
+msgid "Ask"
+msgstr "提問"
+
+#: includes/common-pages.php:23 templates/functions.php:60
+#: templates/search-form.php:12
+msgid "Search"
+msgstr "搜尋"
+
+#: includes/common-pages.php:24
+msgid "Edit Answer"
+msgstr "編輯回答"
+
+#: includes/common-pages.php:70
+msgid ""
+"This question is waiting for a moderator and cannot be viewed. Please check "
+"back later to see if it has been approved."
+msgstr ""
+
+#: includes/common-pages.php:72
+#, fuzzy
+msgid "Sorry! you are not allowed to read this question."
+msgstr "只有你訂閱這個提問"
+
+#: includes/common-pages.php:108
+msgid "Question will be publish in %s"
+msgstr ""
+
+#: includes/common-pages.php:109
+msgid ""
+"This question is in waiting queue and is not accessible by anyone until it "
+"get published."
+msgstr ""
+
+#: includes/common-pages.php:135
+#, fuzzy
+msgid "Something went wrong, please try again"
+msgstr "哪裡出錯了，請再試一次。"
+
+#: includes/common-pages.php:157
+msgid "Sorry, you cannot edit this answer."
+msgstr ""
+
+#: includes/flag.php:36
+msgid "You have already reported this post."
+msgstr "你已經檢舉了這個文章"
+
+#: includes/flag.php:46
+msgid "Thank you for reporting this post."
+msgstr "謝謝你對這個文章檢舉"
+
+#: includes/flag.php:123
+msgid "Flag this post"
+msgstr "檢舉這個文章"
+
+#: includes/flag.php:123
+msgid "You have flagged this post"
+msgstr "你已經檢舉這個文章了"
+
+#: includes/form.php:54
+msgid "You do not have permission to delete this comment"
+msgstr "你沒有權限刪除這個回應"
+
+#: includes/form.php:72
+msgid "Comment deleted successfully."
+msgstr "回應刪除成功"
+
+#: includes/form.php:149 includes/form.php:155
+msgid "Form loaded."
+msgstr "表格已載入"
+
+#: includes/form.php:157
+msgid "You do not have permission to edit this question."
+msgstr "你沒有權限編輯這個提問"
+
+#: includes/form.php:160
+msgid "Something went wrong, please try again."
+msgstr "哪裡出錯了，請再試一次。"
+
+#: includes/form.php:194
+#, fuzzy
+msgid "Don't have a user account?."
+msgstr "還沒有帳號？%s馬上註冊%s"
+
+#: includes/form.php:195
+msgid "Register now"
+msgstr ""
+
+#: includes/form.php:214
+msgid "Unable to create tag, please try again."
+msgstr "無法建立標籤，請重新嘗試。"
+
+#: includes/form.php:217
+msgid "Successfully created a tag."
+msgstr "成功建立標籤"
+
+#: includes/form.php:224
+msgid "Unable to load form, please try again."
+msgstr "無法載入表格，請再試一次"
+
+#: includes/form.php:226
+msgid "Successfully loaded form."
+msgstr "成功載入表格"
+
+#: includes/form.php:238
+msgid "Update Answer"
+msgstr "更新回答"
+
+#: includes/form.php:245
+msgid "Create new tag"
+msgstr "建立新標籤"
+
+#: includes/form.php:246
+msgid "Enter tag"
+msgstr "輸入標籤"
+
+#: includes/form.php:247
+msgid "Description of tag."
+msgstr "標籤說明"
+
+#: includes/form.php:248
+msgid "Create tag"
+msgstr "建立標籤"
+
+#. translators: %s: human-readable time difference
+#: includes/functions.php:245
+msgid "%s ago"
+msgstr "%s 前"
+
+#: includes/functions.php:478
+msgid "Success"
+msgstr "成功"
+
+#: includes/functions.php:480
+msgid "Something went wrong, last action failed."
+msgstr "錯誤，上一個動作失敗"
+
+#: includes/functions.php:482
+msgid "Comment updated successfully."
+msgstr "回應上傳成功"
+
+#: includes/functions.php:483
+msgid "You cannot vote on your own question or answer."
+msgstr "你不能對自己的提問或回答進行投票"
+
+#: includes/functions.php:484
+#, fuzzy
+msgid "You do not have permission to view private posts."
+msgstr "你沒有權限檢視私密貼文"
+
+#: includes/functions.php:485
+msgid "Please check captcha field and resubmit it again."
+msgstr "請確認驗證碼欄位後重新送出"
+
+#: includes/functions.php:486
+msgid "Image uploaded successfully"
+msgstr "圖片上傳成功"
+
+#: includes/functions.php:487
+msgid "Answer has been deleted permanently"
+msgstr "回答已經被永久刪除"
+
+#: includes/functions.php:488
 msgid "You have already attached maximum numbers of allowed uploads."
 msgstr "您已經到達最大可上傳數量"
 
-#: includes/functions.php:954
+#: includes/functions.php:489
 msgid "Your profile has been updated successfully."
 msgstr "您的個人檔案已成功更新。"
 
-#: includes/functions.php:956
-msgid "Successfully followed."
-msgstr "追蹤成功"
-
-#: includes/functions.php:957
-msgid "You cannot follow yourself."
-msgstr "你不能追蹤自己"
-
-#: includes/functions.php:958
-msgid "Notification deleted successfully."
-msgstr "已成功刪除通知"
-
-#: includes/functions.php:959
-msgid "Notification is marked as read."
-msgstr "已將通知標示為”已閱讀”"
-
-#: includes/functions.php:960
+#: includes/functions.php:490
 msgid "Voting down is disabled."
 msgstr "扣票功能已被關閉"
 
-#: includes/functions.php:961
-msgid "This comment has been reported to site moderator"
-msgstr ""
+#: includes/functions.php:491
+#, fuzzy
+msgid "You cannot vote on restricted posts"
+msgstr "你不能對自己的提問或回答進行投票"
 
-#: includes/functions.php:962
-msgid "You have already reported this comment"
-msgstr ""
-
-#: includes/functions.php:1353
-msgid "Question is asked for %s."
-msgstr "問題被問了 %s"
-
-#: includes/functions.php:1361
-msgid "%s is marked as a private, only admin and post author can see."
-msgstr "%s 被標為私密訊息，只有管理者及文章作者可以看見。"
-
-#: includes/functions.php:1369
-msgid "%s is waiting for approval by moderator."
-msgstr "%s 正在等候板主認可"
-
-#: includes/functions.php:1377
-msgid "%s is closed, new answer are not accepted."
-msgstr "%s 已經關閉，不能再接收新的回答"
-
-#: includes/functions.php:1385
-msgid "%s has been trashed, you can delete it permanently from wp-admin."
-msgstr "%s 已被丟到垃圾桶，你可以從 wp-admin 來永久刪除他。"
-
-#: includes/functions.php:1396
-msgid "Add image to editor"
-msgstr "新增圖片"
-
-#: includes/functions.php:1400
-msgid "upload"
-msgstr "上傳"
-
-#: includes/functions.php:1402
-msgid "or"
-msgstr "或"
-
-#: includes/functions.php:1406
-msgid "add image from link"
-msgstr "新增圖片連結"
-
-#: includes/functions.php:1409
-msgid "Enter images link"
-msgstr "輸入圖片連結"
-
-#: includes/functions.php:1503
-msgid "Make this question featured"
-msgstr "推薦這個提問"
-
-#: includes/functions.php:1672
+#: includes/functions.php:916
 msgid "[Solved] "
 msgstr "[已解決]"
 
-#: includes/notification.php:201
-msgid "$activity_id is not a valid integer."
+#: includes/functions.php:1297
+msgid "asked"
+msgstr "提出討論"
+
+#: includes/functions.php:1298 includes/functions.php:1299
+msgid "approved"
 msgstr ""
 
-#: includes/notification.php:300
-msgid "9+"
-msgstr "9+"
+#: includes/functions.php:1300
+msgid "answered"
+msgstr "回答了"
 
-#: includes/participants.php:82
+#: includes/functions.php:1301
 #, fuzzy
-msgid "<span>1</span> Participant"
-msgid_plural "<span>%d</span> Participants"
-msgstr[0] "1 貢獻者"
-msgstr[1] "1 貢獻者"
+msgid "deleted answer"
+msgstr "選取回答"
 
-#: includes/post_status.php:26
+#: includes/functions.php:1302
 #, fuzzy
-msgid "Closed <span class=\"count\">(%s)</span>"
-msgid_plural "Moderate <span class=\"count\">(%s)</span>"
-msgstr[0] "已關閉"
-msgstr[1] "已關閉"
+msgid "restored answer"
+msgstr "編輯了回答"
 
-#: includes/post_status.php:34
+#: includes/functions.php:1303 templates/functions.php:53
+msgid "commented"
+msgstr "已回應"
+
+#: includes/functions.php:1304
+#, fuzzy
+msgid "deleted comment"
+msgstr "編輯了回應"
+
+#: includes/functions.php:1305
+msgid "commented on answer"
+msgstr "在回答上回應"
+
+#: includes/functions.php:1306
+msgid "edited question"
+msgstr "編輯了提問"
+
+#: includes/functions.php:1307
+msgid "edited answer"
+msgstr "編輯了回答"
+
+#: includes/functions.php:1308
+msgid "edited comment"
+msgstr "編輯了回應"
+
+#: includes/functions.php:1309
+#, fuzzy
+msgid "edited comment on answer"
+msgstr "在回答上回應"
+
+#: includes/functions.php:1310
+msgid "selected answer"
+msgstr "選取回答"
+
+#: includes/functions.php:1311
+msgid "unselected answer"
+msgstr "未選取的回答"
+
+#: includes/functions.php:1312
+msgid "updated status"
+msgstr "更新狀態"
+
+#: includes/functions.php:1313
+msgid "selected as best answer"
+msgstr ""
+
+#: includes/functions.php:1314
+msgid "unselected as best answer"
+msgstr ""
+
+#: includes/functions.php:1315
+#, fuzzy
+msgid "changed status"
+msgstr "更新狀態"
+
+#: includes/functions.php:1367
+msgid "Anonymous"
+msgstr "匿名"
+
+#: includes/functions.php:1394
+msgid " (anonymous)"
+msgstr "(匿名)"
+
+#: includes/hooks.php:680
+msgid "minute"
+msgstr ""
+
+#: includes/hooks.php:681
+msgid "minutes"
+msgstr ""
+
+#: includes/hooks.php:682
+msgid "hour"
+msgstr ""
+
+#: includes/hooks.php:683
+msgid "hours"
+msgstr ""
+
+#: includes/hooks.php:684
+#, fuzzy
+msgid "day"
+msgstr "%d 天"
+
+#: includes/hooks.php:685
+#, fuzzy
+msgid "days"
+msgstr "%d 天"
+
+#: includes/hooks.php:686
+msgid "week"
+msgstr ""
+
+#: includes/hooks.php:687
+msgid "weeks"
+msgstr ""
+
+#: includes/hooks.php:688
+msgid "year"
+msgstr ""
+
+#: includes/hooks.php:689
+#, fuzzy
+msgid "years"
+msgstr "%d 年，"
+
+#: includes/options.php:111 includes/theme.php:560
+msgid "Ask question"
+msgstr "提出問題"
+
+#: includes/options.php:112
+#, fuzzy
+msgid "Search \"%s\""
+msgstr "搜尋"
+
+#: includes/options.php:113
+msgid "%s"
+msgstr "%s"
+
+#: includes/post-status.php:28
 #, fuzzy
 msgid "Moderate <span class=\"count\">(%s)</span>"
 msgid_plural "Moderate <span class=\"count\">(%s)</span>"
 msgstr[0] "審核 (%s)"
 msgstr[1] "審核 (%s)"
 
-#: includes/post_status.php:38 includes/query_filter.php:92
-#: includes/query_filter.php:103
-msgid "Private Post"
-msgstr "私密文章"
+#: includes/post-status.php:32 includes/post-status.php:98
+msgid "Private"
+msgstr "私密"
 
-#: includes/post_status.php:42
+#: includes/post-status.php:36
 #, fuzzy
 msgid "Private Post <span class=\"count\">(%s)</span>"
 msgid_plural "Private Post <span class=\"count\">(%s)</span>"
 msgstr[0] "私密文章 (%s)"
 msgstr[1] "私密文章 (%s)"
 
-#: includes/post_types.php:50
-msgid "Parent Question:"
+#: includes/post-status.php:53
+msgid "You are not allowed to change post status"
+msgstr ""
+
+#: includes/post-status.php:76
+msgid "Post status updated successfully"
+msgstr "發文狀態修改成功"
+
+#: includes/post-status.php:98
+#, fuzzy
+msgid "This %s is marked as a private, only admin and post author can see."
+msgstr "%s 被標為私密訊息，只有管理者及文章作者可以看見。"
+
+#: includes/post-status.php:100
+msgid "Awaiting approval"
+msgstr ""
+
+#: includes/post-status.php:100
+#, fuzzy
+msgid "This %s is awaiting for approval by moderator."
+msgstr "%s 正在等候板主認可"
+
+#: includes/post-status.php:102
+msgid "Closed"
+msgstr "關閉的"
+
+#: includes/post-status.php:102
+#, fuzzy
+msgid "Question is closed for new answers"
+msgstr "問題被問了 %s"
+
+#: includes/post-status.php:104
+#, fuzzy
+msgid "Trashed"
+msgstr "垃圾"
+
+#: includes/post-status.php:104
+#, fuzzy
+msgid "This %s has been trashed, you can delete it permanently from wp-admin."
+msgstr "%s 已被丟到垃圾桶，你可以從 wp-admin 來永久刪除他。"
+
+#: includes/post-types.php:44
+#, fuzzy
+msgid "Parent question:"
 msgstr "父項提問"
 
-#: includes/post_types.php:52
-msgid "View Question"
+#: includes/post-types.php:45
+#, fuzzy
+msgid "All questions"
+msgstr "所有提問"
+
+#: includes/post-types.php:46
+#, fuzzy
+msgid "View question"
 msgstr "檢視提問"
 
-#: includes/post_types.php:53
-msgid "Add New Question"
+#: includes/post-types.php:47
+#, fuzzy
+msgid "Add new question"
 msgstr "新增問題"
 
-#: includes/post_types.php:55
-msgid "Edit Question"
-msgstr "編輯問題"
-
-#: includes/post_types.php:56
-msgid "Update Question"
-msgstr "更新問題"
-
-#: includes/post_types.php:57
-msgid "Search question"
+#: includes/post-types.php:51 widgets/search.php:60
+msgid "Search questions"
 msgstr "搜尋問題"
 
-#: includes/post_types.php:58
+#: includes/post-types.php:52
 msgid "No question found"
 msgstr "找不到問題"
 
-#: includes/post_types.php:59
-msgid "No questions found in Trash"
+#: includes/post-types.php:53
+#, fuzzy
+msgid "No questions found in trash"
 msgstr "回收桶內找不到問題"
 
-#: includes/post_types.php:120
-msgid "Parent Answer:"
+#: includes/post-types.php:114
+#, fuzzy
+msgid "Parent answer:"
 msgstr "父項回答"
 
-#: includes/post_types.php:122
-msgid "View Answer"
+#: includes/post-types.php:115
+#, fuzzy
+msgid "All answers"
+msgstr "所有回答"
+
+#: includes/post-types.php:116
+#, fuzzy
+msgid "View answer"
 msgstr "檢視回答"
 
-#: includes/post_types.php:123
-msgid "Add New Answer"
+#: includes/post-types.php:117
+#, fuzzy
+msgid "Add new answer"
 msgstr "新增回答"
 
-#: includes/post_types.php:124
-msgid "New answer"
-msgstr "新的回答"
-
-#: includes/post_types.php:125
-msgid "Edit answer"
-msgstr "編輯回答"
-
-#: includes/post_types.php:127
-msgid "Search answer"
+#: includes/post-types.php:121
+#, fuzzy
+msgid "Search answers"
 msgstr "搜尋回答"
 
-#: includes/post_types.php:128
+#: includes/post-types.php:122
 msgid "No answer found"
 msgstr "沒有找到回答"
 
-#: includes/post_types.php:129
-msgid "No answer found in Trash"
+#: includes/post-types.php:123
+#, fuzzy
+msgid "No answer found in trash"
 msgstr "回收桶內沒有找到回答"
 
-#: includes/post_types.php:225 includes/post_types.php:354
-msgid "Author"
-msgstr "作者"
+#: includes/process-form.php:121
+#, fuzzy
+msgid "Sorry, unable to post new question"
+msgstr "新提問的狀態"
 
-#: includes/post_types.php:232
-msgid "Tag"
-msgstr "標籤"
+#: includes/process-form.php:161
+msgid ""
+"This seems to be a duplicate question. A question with same content already "
+"exists."
+msgstr ""
 
-#: includes/post_types.php:235
-msgid "Ans"
-msgstr "回答"
+#: includes/process-form.php:207
+#, fuzzy
+msgid "Question posted successfully. Redirecting to question"
+msgstr "提問已成功更新"
 
-#: includes/post_types.php:237 includes/post_types.php:358
-msgid "Vote"
-msgstr "投票"
+#: includes/process-form.php:271
+msgid "Question updated successfully"
+msgstr "提問已成功更新"
 
-#: includes/post_types.php:239 includes/post_types.php:360
-msgid "Date"
-msgstr "日期"
+#: includes/process-form.php:287
+#, fuzzy
+msgid "Sorry, you cannot asnwer on this question"
+msgstr "只有你訂閱這個提問"
 
-#: includes/post_types.php:323 includes/post_types.php:329
-msgid "answers"
-msgstr "回答"
+#: includes/process-form.php:331
+msgid ""
+"This seems to be a duplicate answer. An answer with same content already "
+"exists."
+msgstr ""
 
-#: includes/post_types.php:355
-msgid "Content"
-msgstr "內容"
+#: includes/process-form.php:383
+#, fuzzy
+msgid "Sorry, you cannot edit this answer"
+msgstr "編輯這個回答"
 
-#: includes/post_types.php:391
-msgid "Restore this item from the Trash"
-msgstr "將這個項目從垃圾桶裏撿回來"
+#: includes/process-form.php:420
+msgid "Answer updated successfully"
+msgstr "回答已成功更新"
 
-#: includes/post_types.php:394
-msgid "Move this item to the Trash"
-msgstr "丟到垃圾桶"
-
-#: includes/post_types.php:397
-msgid "Delete this item permanently"
-msgstr "永遠刪除這個項目"
-
-#: includes/post_types.php:397
-msgid "Delete Permanently"
-msgstr "永遠刪除"
-
-#: includes/post_types.php:400 includes/post_types.php:409
-msgid "Preview &#8220;%s&#8221;"
-msgstr "預覽 “%s”"
-
-#: includes/post_types.php:409
-msgid "Preview"
-msgstr "預覽"
-
-#: includes/post_types.php:411
-msgid "View &#8220;%s&#8221; question"
-msgstr "檢視 “%s” 問題"
-
-#: includes/process-form.php:167 includes/process-form.php:397
-msgid "Bot verification failed."
-msgstr "驗證失敗"
-
-#: includes/process-form.php:216 includes/process-form.php:440
-#: includes/process-form.php:752
+#: includes/process-form.php:439
 msgid "Check missing fields and then re-submit."
 msgstr "請檢查缺的欄位然後重新送出"
 
-#: includes/query_filter.php:50
-msgid "Please fill parent question field, Answer was not saved!"
-msgstr "請填寫對應的問題，這個回答尚未被儲存。"
-
-#: includes/question-loop.php:300
+#: includes/qaquery-hooks.php:146
 #, fuzzy
-msgid "%s ans"
-msgid_plural "%s ans"
-msgstr[0] "%s 回應"
-msgstr[1] "%s 回應"
+msgid "Restricted content"
+msgstr "編輯了回應"
 
-#: includes/question-loop.php:499
-msgid "%s %s"
-msgstr ""
-
-#: includes/reputation.php:290 theme/default/user/user.php:27
-#: theme/default/user/user.php:59 theme/default/users/loop-item.php:29
-#: theme/default/widgets/user.php:13
-msgid "%s Rep."
-msgstr "%s 聲譽"
-
-#: includes/reputation.php:551
-msgid "+%d"
-msgstr "+%d"
-
-#: includes/reputation.php:594
-msgid "%sAsked %s"
-msgstr "%s提出討論 %s"
-
-#: includes/reputation.php:598
-msgid "%sAnswered %s"
-msgstr "%s 回應了 %s"
-
-#: includes/reputation.php:602
-msgid "%sCommented %s"
-msgstr "%s回應了 %s"
-
-#: includes/reputation.php:606
-msgid "%sSelected answer %s"
-msgstr "%s選取解答 %s"
-
-#: includes/reputation.php:610
-msgid "%sUp vote %s %s"
-msgstr "%s投票 %s %s"
-
-#: includes/reputation.php:614
-msgid "%sDown vote %s %s"
-msgstr "%s扣票 %s %s"
-
-#: includes/reputation.php:618
-msgid "%sDown voted %s"
-msgstr "%s扣票 %s"
-
-#: includes/reputation.php:622
-msgid "%sBest answer %s"
-msgstr "%s 最佳回答 %s"
-
-#: includes/reputation.php:813
-msgid "New Registration"
-msgstr "新的註冊"
-
-#: includes/reputation.php:814
-msgid "Points given to newly registered user."
-msgstr "給新註冊使用者多少點數"
-
-#: includes/reputation.php:820
-msgid "Uploading avatar"
-msgstr "大頭貼上傳中"
-
-#: includes/reputation.php:821
-msgid "Awarded for uploading an profile picture."
-msgstr "得到上傳照片的獎勵"
-
-#: includes/reputation.php:827
-msgid "Completing profile"
-msgstr "完成個人檔案"
-
-#: includes/reputation.php:828
-msgid "Awarded for completing profile fields."
-msgstr "得到完成使用者檔案的獎勵"
-
-#: includes/reputation.php:835
-msgid "For asking a question."
-msgstr "當提出問題"
-
-#: includes/reputation.php:842
-msgid "For answering a question."
-msgstr "當回答問題"
-
-#: includes/reputation.php:849
-msgid "For new comment."
-msgstr "對新回應"
-
-#: includes/reputation.php:855
-msgid "Receive upvote on question"
-msgstr "問題得到投票"
-
-#: includes/reputation.php:856
-msgid "When user receive an upvote on question"
-msgstr "當使用者得到一個問題的投票"
-
-#: includes/reputation.php:862
-msgid "Receive upvote on answer"
-msgstr "回答被投票"
-
-#: includes/reputation.php:863
-msgid "When user receive an upvote on answer"
-msgstr "當答案被投票"
-
-#: includes/reputation.php:869
-msgid "Receive down vote on question"
-msgstr "提問被扣票了"
-
-#: includes/reputation.php:870
-msgid "When user receive an down vote on question"
-msgstr "當使用者得到一個問題的扣票"
-
-#: includes/reputation.php:876
-msgid "Receive down vote on answer"
-msgstr "\"回答\" 被扣票"
-
-#: includes/reputation.php:877
-msgid "When user receive an down vote on answer"
-msgstr "當使用者在一個回答上面被扣票"
-
-#: includes/reputation.php:883
-msgid "Up voted questions"
-msgstr "被投票的提問"
-
-#: includes/reputation.php:884
-msgid "When user upvote others question"
-msgstr "當使用者對其他提問投票"
-
-#: includes/reputation.php:890
-msgid "Up voted answers"
-msgstr "對回答投票"
-
-#: includes/reputation.php:891
-msgid "When user upvote others answer"
-msgstr "當使用者對其他回答投票"
-
-#: includes/reputation.php:897
-msgid "Down voted questions"
-msgstr "被扣票的提問"
-
-#: includes/reputation.php:898
-msgid "When user down vote others question"
-msgstr "當使用者對其他提問扣票"
-
-#: includes/reputation.php:904
-msgid "Down voted answers"
-msgstr "對這個回答扣票"
-
-#: includes/reputation.php:905
-msgid "When user down vote others answers"
-msgstr "當使用者對其他回答扣票"
-
-#: includes/reputation.php:912 includes/theme.php:635 includes/user.php:439
-#: theme/default/best_answer.php:17
-msgid "Best answer"
-msgstr "最佳回答"
-
-#: includes/reputation.php:913
-msgid "When user's answer get selected as best"
-msgstr "當使用者的\"回答\"被選為\"最佳\""
-
-#: includes/reputation.php:919
-msgid "Selecting answer"
-msgstr "選取回答"
-
-#: includes/reputation.php:920
-msgid "When user user select an answer."
-msgstr "當使用者選了一個回答"
-
-#: includes/requirements.php:75
-msgid "Install Required Plugins"
-msgstr "安裝所需的外掛"
-
-#: includes/requirements.php:76
-msgid "Install Plugins"
-msgstr "安裝外掛"
-
-#: includes/requirements.php:77
-msgid "Installing Plugin: %s"
-msgstr "安裝外掛：%s"
-
-#: includes/requirements.php:78
-msgid "Something went wrong with the plugin API."
-msgstr "外掛 API 發生錯誤"
-
-#: includes/requirements.php:79
+#: includes/qaquery.php:438
 #, fuzzy
-msgid "AnsPress requires the following plugin: %1$s."
-msgid_plural "AnsPress requires the following plugins: %1$s."
-msgstr[0] "AnsPress 需要以下外掛 %1$s"
-msgstr[1] "AnsPress 需要以下外掛 %1$s"
+msgid "Featured"
+msgstr "推薦"
 
-#: includes/requirements.php:80
-#, fuzzy
-msgid "AnsPress recommends the following plugin: %1$s."
-msgid_plural "AnsPress recommends the following plugins: %1$s."
-msgstr[0] "AnsPress 推薦以下外掛 %1$s"
-msgstr[1] "AnsPress 推薦以下外掛 %1$s"
-
-#: includes/requirements.php:81
-#, fuzzy
-msgid ""
-"Sorry, but you do not have the correct permissions to install the %s plugin. "
-"Contact the administrator of this site for help on getting the plugin "
-"installed."
-msgid_plural ""
-"Sorry, but you do not have the correct permissions to install the %s "
-"plugins. Contact the administrator of this site for help on getting the "
-"plugins installed."
-msgstr[0] "抱歉，你沒有足夠的權限來安裝 %s 外掛，請與網站管理員聯絡安裝外掛。"
-msgstr[1] "抱歉，你沒有足夠的權限來安裝 %s 外掛，請與網站管理員聯絡安裝外掛。"
-
-#: includes/requirements.php:82
-#, fuzzy
-msgid "The following required plugin is currently inactive: %1$s."
-msgid_plural "The following required plugins are currently inactive: %1$s."
-msgstr[0] "需要的外掛沒啟用：%1$s"
-msgstr[1] "需要的外掛沒啟用：%1$s"
-
-#: includes/requirements.php:83
-#, fuzzy
-msgid "The following recommended plugin is currently inactive: %1$s."
-msgid_plural "The following recommended plugins are currently inactive: %1$s."
-msgstr[0] "建議使用的外掛目前沒啟用：%1$s"
-msgstr[1] "建議使用的外掛目前沒啟用：%1$s"
-
-#: includes/requirements.php:84
-#, fuzzy
-msgid ""
-"Sorry, but you do not have the correct permissions to activate the %s "
-"plugin. Contact the administrator of this site for help on getting the "
-"plugin activated."
-msgid_plural ""
-"Sorry, but you do not have the correct permissions to activate the %s "
-"plugins. Contact the administrator of this site for help on getting the "
-"plugins activated."
-msgstr[0] "抱歉，你沒有足夠的權限開啟 %s 外掛，請與網站管理員聯絡開啟外掛。"
-msgstr[1] "抱歉，你沒有足夠的權限開啟 %s 外掛，請與網站管理員聯絡開啟外掛。"
-
-#: includes/requirements.php:85
-#, fuzzy
-msgid ""
-"The following plugin needs to be updated to its latest version to ensure "
-"maximum compatibility with this theme: %1$s."
-msgid_plural ""
-"The following plugins need to be updated to their latest version to ensure "
-"maximum compatibility with this theme: %1$s."
-msgstr[0] "以下的外掛需要更新到最新版本以確保與主題版型相容：%1$s"
-msgstr[1] "以下的外掛需要更新到最新版本以確保與主題版型相容：%1$s"
-
-#: includes/requirements.php:86
-#, fuzzy
-msgid ""
-"Sorry, but you do not have the correct permissions to update the %s plugin. "
-"Contact the administrator of this site for help on getting the plugin "
-"updated."
-msgid_plural ""
-"Sorry, but you do not have the correct permissions to update the %s plugins. "
-"Contact the administrator of this site for help on getting the plugins "
-"updated."
-msgstr[0] "抱歉，你沒有足夠的權限更新 %s 外掛，請與網站管理員聯絡更新外掛。"
-msgstr[1] "抱歉，你沒有足夠的權限更新 %s 外掛，請與網站管理員聯絡更新外掛。"
-
-#: includes/requirements.php:87
-#, fuzzy
-msgid "Begin installing plugin"
-msgid_plural "Begin installing plugins"
-msgstr[0] "開始安裝外掛"
-msgstr[1] "開始安裝外掛"
-
-#: includes/requirements.php:88
-#, fuzzy
-msgid "Begin activating plugin"
-msgid_plural "Begin activating plugins"
-msgstr[0] "開始啟動外掛"
-msgstr[1] "開始啟動外掛"
-
-#: includes/requirements.php:89
-msgid "Return to Required Plugins Installer"
-msgstr "回到請求的外掛安裝器"
-
-#: includes/requirements.php:90
-msgid "Plugin activated successfully."
-msgstr "外掛啟動成功"
-
-#: includes/requirements.php:91
-msgid "All plugins installed and activated successfully. %s"
-msgstr "所有外掛啟動成功 %s"
-
-#: includes/shortcode-basepage.php:91
-msgid ""
-"Question and answer is powered by <a href=\"http://anspress.io\" traget="
-"\"_blank\">AnsPress</a>"
-msgstr "問答系統由 AnsPress 驅動"
-
-#: includes/subscriber.php:189
-msgid "Only you are subscribed to this question."
-msgstr "只有你訂閱這個提問"
-
-#: includes/subscriber.php:190
-msgid "You and <strong>%s people</strong> subscribed to this question."
-msgstr "你跟 %s 人都訂閱了這個問題"
-
-#: includes/subscriber.php:192
-msgid "No one is subscribed to this question."
-msgstr "沒有人訂閱這個問題"
-
-#: includes/subscriber.php:194
-msgid "<strong>%d people</strong> subscribed to this question."
-msgstr "%d 人訂閱了這個問題"
-
-#: includes/theme.php:43 theme/default/on-post.php:4
-msgid "Discussion on \"%s\""
-msgstr "\"%s\" 上的討論"
-
-#: includes/theme.php:47 theme/default/no-user-found.php:1
-#: theme/default/not-found.php:1
-msgid "Error 404"
-msgstr "404 錯誤"
-
-#: includes/theme.php:317
-msgid "answer accepted"
-msgstr "提問被接受了"
-
-#: includes/theme.php:317
+#: includes/qaquery.php:442
 msgid "Solved"
 msgstr "已解決"
 
-#: includes/theme.php:321
-msgid "<i>%d views</i>"
+#: includes/qaquery.php:446
+#, fuzzy
+msgid "%d views"
 msgstr "<i>%d 個閱讀</i>"
 
-#: includes/theme.php:522
-msgid "More action"
-msgstr "更多動作"
+#: includes/shortcode-basepage.php:58
+msgid "AnsPress shortcode cannot be nested."
+msgstr ""
 
-#: includes/theme.php:569
+#: includes/shortcode-basepage.php:79
+msgid "Question and answer is powered by"
+msgstr ""
+
+#: includes/taxo.php:322
+#, fuzzy
+msgid "Tagged"
+msgstr "檢舉"
+
+#: includes/taxo.php:456
+msgid "Popular"
+msgstr ""
+
+#: includes/taxo.php:457
+#, fuzzy
+msgid "New"
+msgstr "最新"
+
+#: includes/theme.php:30
+#, fuzzy
+msgid "No permission"
+msgstr "權限"
+
+#: includes/theme.php:41
+msgid "Discussion on \"%s\""
+msgstr "\"%s\" 上的討論"
+
+#: includes/theme.php:45 templates/not-found.php:1
+msgid "Error 404"
+msgstr "404 錯誤"
+
+#: includes/theme.php:383
+msgid "Delete post permanently (cannot be restored again)"
+msgstr ""
+
+#: includes/theme.php:393
+#, fuzzy
+msgid "Convert to post"
+msgstr "扣一票"
+
+#: includes/theme.php:394
+#, fuzzy
+msgid "Convert this question to blog post"
+msgstr "回答這個問題"
+
+#: includes/theme.php:452
 msgid "Answered"
 msgstr "已回答"
 
-#: includes/theme.php:570 widgets/questions.php:86
+#: includes/theme.php:453 widgets/questions.php:88
 msgid "Unanswered"
 msgstr "未回應"
 
-#: includes/theme.php:571
+#: includes/theme.php:454
 msgid "Unsolved"
 msgstr "未結論"
 
-#: includes/theme.php:581 widgets/users.php:80
-msgid "Sort by"
-msgstr "排序"
-
-#: includes/theme.php:713
-msgid "Ask question"
-msgstr "提出問題"
-
-#: includes/theme.php:826 includes/theme.php:830 includes/theme.php:832
-msgid ".."
-msgstr ".."
-
-#: includes/user-fields.php:58
-msgid "Hide my profile"
-msgstr ""
-
-#: includes/user-fields.php:60
-msgid "Hide your profile from public"
-msgstr ""
-
-#: includes/user-fields.php:69
-msgid "First name"
-msgstr "名"
-
-#: includes/user-fields.php:71
-msgid "Your first name"
-msgstr "你的名字"
-
-#: includes/user-fields.php:79
-msgid "Last name"
-msgstr "姓"
-
-#: includes/user-fields.php:81
-msgid "Your surname"
-msgstr "你的姓"
-
-#: includes/user-fields.php:89
-msgid "Nickname"
-msgstr "匿稱"
-
-#: includes/user-fields.php:91
-msgid "Your nickname"
-msgstr "你的匿稱"
-
-#: includes/user-fields.php:99
-msgid "Display name"
-msgstr "顯示名稱"
-
-#: includes/user-fields.php:112
-msgid "Write something about yourself"
-msgstr "寫點自我介紹吧"
-
-#: includes/user-fields.php:122
-msgid "Username"
-msgstr "使用者名稱"
-
-#: includes/user-fields.php:124
-msgid "Your username"
-msgstr "你的使用者名稱"
-
-#: includes/user-fields.php:125
-msgid "This cannot be changed."
-msgstr "這不能更改"
-
-#: includes/user-fields.php:135
-msgid "Email"
-msgstr "Email"
-
-#: includes/user-fields.php:137
-msgid "Your contact email"
-msgstr "你的聯絡 Email"
-
-#: includes/user-fields.php:138
-msgid ""
-"NOTICE: If you update email then you need to re-verify your email and "
-"account."
-msgstr ""
-
-#: includes/user-fields.php:150
-msgid "Password"
-msgstr "密碼"
-
-#: includes/user-fields.php:152
-msgid "Update your password"
-msgstr "更新你的密碼"
-
-#: includes/user.php:123
-msgid "Anonymous"
-msgstr "匿名"
-
-#: includes/user.php:154
-msgid " (anonymous)"
-msgstr "(匿名)"
-
-#: includes/user.php:358
-msgid "Page not found or registered."
-msgstr "找不到頁面或已註冊"
-
-#: includes/user.php:509
-msgid "Top %s"
-msgstr "前 %s"
-
-#: includes/user.php:602
-msgid "Upload an avatar"
-msgstr "上傳大頭貼"
-
-#: includes/user.php:603
-msgid "Upload avatar"
-msgstr "上傳大頭貼"
-
-#: includes/user.php:625
-msgid "Basic"
-msgstr "基本資料"
-
-#: includes/user.php:626
-msgid "Account"
-msgstr "帳號資料"
-
-#: includes/user.php:654
-msgid ""
-"Passing user_id in ap_is_my_profile is deprecated, function will check again "
-"currently logged in user."
-msgstr ""
-
-#: includes/user.php:779
-msgid "Upload a cover photo"
-msgstr "上傳封面圖片"
-
-#: includes/user.php:780
-msgid "Upload cover"
-msgstr "上傳封面圖片"
-
-#: includes/users-loop.php:516
-msgid "%d years, "
-msgstr "%d 年，"
-
-#: includes/users-loop.php:519
-msgid "%d months, "
-msgstr "%d 月,"
-
-#: includes/users-loop.php:522
-msgid "%d days"
-msgstr "%d 天"
-
-#: includes/vote.php:207
-msgid "Up vote this post"
-msgstr "投一票"
-
-#: includes/vote.php:213
-msgid "Down vote this post"
-msgstr "扣一票"
-
-#: includes/vote.php:265
-msgid "Vote for closing"
-msgstr "投票關閉"
-
-#: includes/vote.php:265
-msgid "Undo your vote"
-msgstr "取消投票"
-
-#: includes/vote.php:272
-msgid "Close "
-msgstr "關閉"
-
-#: theme/default/answer-form.php:10 theme/default/ask.php:22
-msgid "Toggle fullscreen"
-msgstr "切換全螢幕檢視"
-
-#: theme/default/answer-form.php:12 theme/default/ask.php:24
-msgid "Write"
-msgstr "撰寫"
-
-#: theme/default/answer-form.php:14
-msgid "How to answer"
-msgstr "如何回答"
-
-#: theme/default/answer-list.php:21
-msgid "Private Answer"
-msgstr "私密回答"
-
-#: theme/default/answers.php:37
-msgid "Please %s or %s to view answers and comments"
-msgstr "請 %s 或 %s 以檢視答案或回應"
-
-#: theme/default/ask.php:26
-msgid "How to ask"
-msgstr "如何提問"
-
-#: theme/default/ask.php:44
-msgid "You don't have permission to ask question."
-msgstr ""
-
-#: theme/default/comment-form.php:14
-msgid "Respond to the post."
-msgstr "回復貼文"
-
-#: theme/default/comment.php:48
-msgid "Your comment is awaiting moderation."
-msgstr "你的回應正在等候審核"
-
-#: theme/default/comments.php:22
-msgid "Comment navigation"
-msgstr "瀏覽回應"
-
-#: theme/default/comments.php:23
-msgid "&larr; Older Comments"
-msgstr "← 更舊的回應"
-
-#: theme/default/comments.php:24
-msgid "Newer Comments &rarr;"
-msgstr "更新的回應 →"
-
-#: theme/default/content-answer.php:18
-msgid "Total votes"
-msgstr "總票數"
-
-#: theme/default/content-answer.php:18 theme/default/user/about.php:96
-#: theme/default/user/list-answer.php:2 theme/default/user/list-question.php:2
-msgid "Votes"
-msgstr "投票"
-
-#: theme/default/content-list.php:19
-msgid "Featured question"
-msgstr "推薦的提問"
-
-#: theme/default/content-none.php:9
-msgid "No question asked yet!, be the first to ask a question."
-msgstr "尚無提問，第一個提出問題吧。"
-
-#: theme/default/functions.php:56
-msgid "Password not matching"
-msgstr "密碼不符"
-
-#: theme/default/functions.php:57
-msgid "Password length must be 6 or higher"
-msgstr "密碼最少需要六位數長度"
-
-#: theme/default/functions.php:58
-msgid "Not a valid email"
-msgstr "不是正確的信箱"
-
-#: theme/default/functions.php:59
-msgid "Username length must be 4 or higher"
-msgstr "使用者名稱至少要四個字母或以上"
-
-#: theme/default/functions.php:60
-msgid "Username not available"
-msgstr "使用者名稱不可使用"
-
-#: theme/default/functions.php:61
-msgid "Email already in use. %sDo you want to reset your password?%s"
-msgstr "Email 已存在，你要重設密碼嗎？"
-
-#: theme/default/functions.php:62
-msgid "Loading"
-msgstr "載入中"
-
-#: theme/default/functions.php:63
-msgid "Sending request"
-msgstr "送出請求"
-
-#: theme/default/functions.php:64
-msgid "Adding question to your favorites"
-msgstr "把這個問題加到我的最愛"
-
-#: theme/default/functions.php:65
-msgid "Sending your vote"
-msgstr "正在發送你的投票"
-
-#: theme/default/functions.php:66
-msgid "Requesting for closing this question"
-msgstr "請求關閉這個問題"
-
-#: theme/default/functions.php:67
-msgid "Submitting request"
-msgstr "正在發送請求"
-
-#: theme/default/functions.php:68
-msgid "Loading comment form"
-msgstr "載入回應表單"
-
-#: theme/default/functions.php:69
-msgid "Sending your question"
-msgstr "正在發送你的問題"
-
-#: theme/default/functions.php:70
-msgid "Sending your answer"
-msgstr "正在發送你的回答"
-
-#: theme/default/functions.php:71
-msgid "Sending your comment"
-msgstr "送出你的回應"
-
-#: theme/default/functions.php:72
-msgid "Deleting comment"
-msgstr "刪除回應"
-
-#: theme/default/functions.php:73
-msgid "Updating comment"
-msgstr "正在更新回應"
-
-#: theme/default/functions.php:74
-msgid "Loading form"
-msgstr "表單載入中"
-
-#: theme/default/functions.php:75
-msgid "Saving labels"
-msgstr "儲存 label"
-
-#: theme/default/functions.php:76
-msgid "Loading suggestions"
-msgstr "建議載入中"
-
-#: theme/default/functions.php:77
-msgid "Uploading cover"
-msgstr "封面圖片上傳中"
-
-#: theme/default/functions.php:78
-msgid "Saving profile"
-msgstr "儲存個人檔案"
-
-#: theme/default/functions.php:79
-msgid "Sending message"
-msgstr "訊息發送中"
-
-#: theme/default/functions.php:80
-msgid "Loading conversation"
-msgstr "載入對話"
-
-#: theme/default/functions.php:81
-msgid "Loading new message form"
-msgstr "載入新訊息表單"
-
-#: theme/default/functions.php:82
-msgid "Loading more conversations"
-msgstr "載入更多對話"
-
-#: theme/default/functions.php:83
-msgid "Searching conversations"
-msgstr "搜尋對話"
-
-#: theme/default/functions.php:84
-msgid "Loading message form"
-msgstr "載入訊息表單"
-
-#: theme/default/functions.php:85
-msgid "Updating message"
-msgstr "更新訊息"
-
-#: theme/default/functions.php:86
-msgid "Deleting message"
-msgstr "刪除訊息"
-
-#: theme/default/functions.php:87
-msgid "Uploading"
-msgstr "上傳中"
-
-#: theme/default/functions.php:91
-msgid "Something went wrong in server side, not a valid response."
-msgstr ""
-
-#: theme/default/functions.php:113
-msgid "AP Before"
-msgstr "AP Before"
-
-#: theme/default/functions.php:117
-msgid "Widgets in this area will be shown before anspress body."
-msgstr "這個小工具會出現在 anspress body 之前"
-
-#: theme/default/functions.php:123
-msgid "AP Lists Top"
-msgstr "AP 清單上面"
-
-#: theme/default/functions.php:127
-msgid "Widgets in this area will be shown before questions list."
-msgstr "這個小工具會出現在問題清單之前"
-
-#: theme/default/functions.php:133
-msgid "AP Sidebar"
-msgstr "AP 側邊欄"
-
-#: theme/default/functions.php:137
-msgid "Widgets in this area will be shown in AnsPress sidebar."
-msgstr "這個小工具會出現在 AnsPress 側邊欄"
-
-#: theme/default/functions.php:143
-msgid "AP Question Sidebar"
-msgstr "AP 問題側邊欄"
-
-#: theme/default/functions.php:147
-msgid "Widgets in this area will be shown in question page sidebar."
-msgstr "這個小工具會出現在問題頁面側邊欄"
-
-#: theme/default/functions.php:153
-msgid "AP Category Page"
-msgstr "AP 分類頁面"
-
-#: theme/default/functions.php:157
-msgid "Widgets in this area will be shown in category listing page."
-msgstr "這個小工具會出現在分類清單頁面"
-
-#: theme/default/functions.php:163
-msgid "AP Tag page"
-msgstr "AP 標籤頁面"
-
-#: theme/default/functions.php:167
-msgid "Widgets in this area will be shown in tag listing page."
-msgstr "這個小工具將會出現在標籤清單頁面"
-
-#: theme/default/functions.php:173
-msgid "AP User"
-msgstr ""
-
-#: theme/default/functions.php:177
-msgid "Widgets in this area will be shown in user page."
-msgstr ""
-
-#: theme/default/functions.php:182
-msgid "AP Activity"
-msgstr ""
-
-#: theme/default/functions.php:186
-msgid "Widgets in this area will be shown AnsPress activity page."
-msgstr ""
-
-#: theme/default/list-head.php:13
-msgid "Search questions..."
-msgstr "搜尋問題..."
-
-#: theme/default/list-head.php:24
+#: includes/theme.php:455 widgets/question_stats.php:48
+msgid "Views"
+msgstr "閱讀"
+
+#: includes/theme.php:513
+msgid "Best answer"
+msgstr "最佳回答"
+
+#: includes/theme.php:688
+#, fuzzy
+msgid "Order By"
+msgstr "排序:"
+
+#: includes/theme.php:743
 msgid "Reset sorting and filter"
 msgstr "重設排序與過濾"
 
-#: theme/default/login-signup.php:3
-msgid "Please %s or %s."
-msgstr "請 %s 或 %s"
-
-#: theme/default/login-signup.php:3 theme/default/login-signup.php:11
-msgid "Login"
-msgstr "登入"
-
-#: theme/default/login-signup.php:3
-msgid "Sign up"
-msgstr "註冊"
-
-#: theme/default/modal-image-upload.php:17
-msgid "Upload from computer"
+#: includes/theme.php:743
+msgid "Clear Filter"
 msgstr ""
 
-#: theme/default/modal-image-upload.php:21
-msgid "Image from link"
+#: includes/theme.php:770
+msgid "Select this answer as best"
+msgstr "將這個回答選為最佳回答"
+
+#: includes/theme.php:778
+msgid "Unselect this answer"
+msgstr "反選取這個回答"
+
+#: includes/theme.php:906
+#, fuzzy
+msgid "AnsPress links"
+msgstr "AnsPress 點數"
+
+#: includes/upload.php:28
+msgid "You are not allowed to upload attachments."
 msgstr ""
 
-#: theme/default/no-permission-post.php:5
-msgid "This is a private %s."
-msgstr "這是私密的 %s"
-
-#: theme/default/no-permission-post.php:7
-msgid "This %s waiting for moderation."
-msgstr "這個 %s 正在等候審核"
-
-#: theme/default/no-permission-post.php:9
-msgid "This has been trashed or waiting for approval."
-msgstr "這正在等候核可或是已被丟到垃圾桶"
-
-#: theme/default/part/question.php:14
-msgid "Featured post"
-msgstr "推薦的貼文"
-
-#: theme/default/part/question.php:28
-msgid "Leave a reply"
-msgstr "留下你的回復"
-
-#: theme/default/part/question.php:28
-msgid "1 Reply"
-msgstr "一個回復"
-
-#: theme/default/part/question.php:28
-msgid "% Replies"
-msgstr "% 個回復"
-
-#: theme/default/part/question.php:39
-msgid "Continue reading <span class=\"meta-nav\">&rarr;</span>"
-msgstr "繼續閱讀 →"
-
-#: theme/default/part/question.php:40
-msgid "Pages:"
-msgstr "頁面："
-
-#: theme/default/part/question.php:53
-msgid "About %s"
-msgstr "關於 %s"
-
-#: theme/default/part/question.php:57
-msgid "View all posts by %s <span class=\"meta-nav\">&rarr;</span>"
-msgstr "檢視所有文章以 %s <span class=\"meta-nav\">&rarr;</span>"
-
-#: theme/default/question.php:97 widgets/question_stats.php:65
-msgid "Question stats"
-msgstr "問題狀態"
-
-#: theme/default/shortcode/question.php:68
-msgid "View all answers"
+#: includes/upload.php:84
+msgid "Unable to delete attachment"
 msgstr ""
 
-#: theme/default/user/about.php:17
-msgid "Stats"
+#: includes/upload.php:150
+#, fuzzy
+msgid "You have already uploaded maximum numbers of allowed attachments"
+msgstr "您已經到達最大可上傳數量"
+
+#: includes/upload.php:157
+#, fuzzy
+msgid "File cannot be uploaded, size is bigger then %s MB"
+msgstr "無法上傳文件，文件大於 %d Byte"
+
+#: includes/upload.php:225
+#, fuzzy
+msgid "Uploaded"
+msgstr "上傳"
+
+#: includes/upload.php:226
+msgid "Failed"
 msgstr ""
 
-#: theme/default/user/about.php:25 theme/default/user/user-card.php:28
-msgid "%d answers, %d selected"
-msgstr "%d 則回答, %d 則選取"
-
-#: theme/default/user/about.php:30 theme/default/user/user-card.php:29
-msgid "%d questions, %d solved"
-msgstr "%d 則提問, %d 則已解答"
-
-#: theme/default/user/about.php:35
-msgid "Member for %s"
-msgstr "會員資歷 %s"
-
-#: theme/default/user/about.php:40
-msgid "%d profile views"
-msgstr "個人檔案有 %d 個閱讀"
-
-#: theme/default/user/about.php:49
-msgid "Last seen %s"
+#: includes/upload.php:228
+msgid "Insert to post"
 msgstr ""
 
-#: theme/default/user/about.php:51
-msgid "Never logged in"
+#: includes/upload.php:281
+msgid "Insert images and attach media by %1$sselecting them%2$s"
 msgstr ""
 
-#: theme/default/user/about.php:72 theme/default/user/reputation.php:22
-msgid "Total"
-msgstr "總計"
+#: includes/votes.php:64
+msgid "Your vote has been removed."
+msgstr "你的投票已被取消"
 
-#: theme/default/user/about.php:103
-msgid "%d votes received"
-msgstr "%d 取得票數"
+#: includes/votes.php:78
+msgid "Undo your vote first."
+msgstr "先取消你的投票"
 
-#: theme/default/user/about.php:105 theme/default/user/about.php:112
-msgid "up"
-msgstr "投票"
+#: includes/votes.php:94
+msgid "Thank you for voting."
+msgstr "謝謝你的投票"
 
-#: theme/default/user/about.php:106 theme/default/user/about.php:113
-msgid "down"
-msgstr ""
+#: includes/votes.php:581
+msgid "Up vote this post"
+msgstr "投一票"
 
-#: theme/default/user/about.php:110
-msgid "%d votes casted"
-msgstr "%d 更改票數"
+#: includes/votes.php:587
+msgid "Down vote this post"
+msgstr "扣一票"
 
-#: theme/default/user/about.php:123
-msgid "Top Answers"
-msgstr "最佳回答"
-
-#: theme/default/user/about.php:137
-msgid "More answers by %s"
-msgstr "%s 的更多回答"
-
-#: theme/default/user/about.php:138 theme/default/user/about.php:159
-msgid "view"
-msgstr "讀取"
-
-#: theme/default/user/about.php:141
-msgid "No answer posted yet!"
-msgstr "尚無回答"
-
-#: theme/default/user/about.php:147
-msgid "New questions"
+#: templates/addons/category/categories-question-list.php:22
+#: templates/addons/tag/tags-question-list.php:22
+#, fuzzy
+msgid "View all questions"
 msgstr "新提問"
 
-#: theme/default/user/about.php:158
-msgid "More questions by %s"
-msgstr "%s 的更多問題"
+#: templates/addons/category/category.php:27 templates/addons/tag/tag.php:12
+#, fuzzy
+msgid "1 Question"
+msgid_plural "%s Questions"
+msgstr[0] "提問"
+msgstr[1] "提問"
 
-#: theme/default/user/about.php:163
-msgid "No question asked yet!"
-msgstr "尚無提問"
+#: templates/addons/category/category.php:41
+#, fuzzy
+msgid "Sub Categories"
+msgstr "討論版"
 
-#: theme/default/user/list-question.php:4
-msgid "%d answers"
-msgstr "%d 回答"
+#: templates/addons/category/no-category-found.php:15
+msgid "No category is set!"
+msgstr ""
 
-#: theme/default/user/notification-dropdown.php:20
-#: theme/default/widgets/notifications.php:14
-msgid "Notifications"
-msgstr "通知"
-
-#: theme/default/user/notification-dropdown.php:21
-#: theme/default/widgets/notifications.php:15
-msgid "Mark all as read"
+#: templates/addons/notification/index.php:24 templates/functions.php:59
+#, fuzzy
+msgid "Mark all as seen"
 msgstr "全部標示為已閱讀"
 
-#: theme/default/user/notification-dropdown.php:43
-#: theme/default/widgets/notifications.php:37
-msgid "View all notifications"
-msgstr "閱讀所有通知"
+#: templates/addons/notification/index.php:29
+msgid "All"
+msgstr "全部"
 
-#: theme/default/user/notification-dropdown.php:47
-#: theme/default/user/notification.php:46
-#: theme/default/widgets/notifications.php:41
+#: templates/addons/notification/index.php:30
+#, fuzzy
+msgid "Unseen"
+msgstr "取消選擇"
+
+#: templates/addons/notification/index.php:31
+msgid "Seen"
+msgstr ""
+
+#: templates/addons/notification/index.php:41
 msgid "No notification"
 msgstr "沒有通知"
 
-#: theme/default/user/notification.php:27
-msgid "Mark as read"
-msgstr "顯示為已閱讀"
+#: templates/addons/notification/index.php:46
+#: templates/addons/reputation/index.php:23
+#, fuzzy
+msgid "Load More"
+msgstr "表單載入中"
 
-#: theme/default/user/notification.php:29
-msgid "Delete notificaton"
-msgstr "刪除通知"
+#: templates/addons/tag/no-tags-found.php:15
+msgid "No tags is set!"
+msgstr ""
 
-#: theme/default/user/reputation.php:43
-msgid "No reputation earned yet."
-msgstr "尚未取得聲譽"
+#: templates/addons/tag/tag.php:12
+#, fuzzy
+msgid "Question tag: %s"
+msgstr "問題狀態"
 
-#: theme/default/user/subscription.php:32
-msgid "Not following any question yet!"
-msgstr "尚未追蹤任何提問"
-
-#: theme/default/user/user-card.php:30
-msgid "%d Followers, %d following"
-msgstr "%d 個追蹤者, 正追蹤 %d 人"
-
-#: theme/default/user/user.php:60 theme/default/users/loop-item.php:31
-msgid "%d Answers"
-msgstr "%d 回答"
-
-#: theme/default/user/user.php:61 theme/default/users/loop-item.php:32
-msgid "%d Questions"
-msgstr "%d 則提問"
-
-#: theme/default/user/user.php:62
-msgid "%d Followers"
-msgstr "%d 個追蹤者"
-
-#: theme/default/user/user.php:63
-msgid "%d Following"
-msgstr "%d 個追蹤"
-
-#: theme/default/users/loop-item.php:30
-msgid "%d Best"
-msgstr "%d 最佳"
-
-#: theme/default/users/users.php:5
-msgid "Search users..."
+#: templates/addons/tag/tags.php:23
+#, fuzzy
+msgid "Search tags..."
 msgstr "搜尋使用者..."
 
-#: theme/default/users-widget.php:21 theme/default/widgets/users-widget.php:21
-msgid "No users found."
-msgstr "沒有找到使用者"
-
-#: theme/default/widget-questions.php:11
-#: theme/default/widget-related_questions.php:11
+#: templates/addons/tag/tags.php:47
 #, fuzzy
-msgid "1 answer"
-msgid_plural "%d answers"
-msgstr[0] "1 個回答"
-msgstr[1] "1 個回答"
+msgid "No description."
+msgstr "描述"
 
-#: theme/default/widget-questions.php:12
-#: theme/default/widget-related_questions.php:12
+#: templates/addons/user/answer-item.php:39
+#: templates/buddypress/answer-item.php:39
+#: templates/buddypress/question-item.php:41
+msgid "View Question"
+msgstr "檢視提問"
+
+#: templates/addons/user/answer-item.php:44
+#: templates/buddypress/answer-item.php:44
+#: templates/buddypress/question-item.php:47
 #, fuzzy
-msgid "1 vote"
-msgid_plural "%d votes"
-msgstr[0] "1 個投票"
-msgstr[1] "1 個投票"
+msgid "%d Vote"
+msgid_plural "%d Votes"
+msgstr[0] "投票"
+msgstr[1] "投票"
 
-#: theme/default/widget-questions.php:17
+#: templates/addons/user/answer-item.php:46
+#: templates/buddypress/answer-item.php:46
+#, fuzzy
+msgid "This answer is selected as best"
+msgstr "當使用者的\"回答\"被選為\"最佳\""
+
+#: templates/addons/user/answer-item.php:46
+#: templates/buddypress/answer-item.php:46
+#, fuzzy
+msgid "Selected"
+msgstr "選取"
+
+#: templates/addons/user/answers.php:35
+#, fuzzy
+msgid "No answer posted by this user."
+msgstr "尚無回答"
+
+#: templates/answer-form.php:24
+#, fuzzy
+msgid "Write your answer.."
+msgstr "你的回答"
+
+#: templates/ask.php:17
+#, fuzzy
+msgid "You do not have permission to ask question."
+msgstr "你沒有權限提出問題"
+
+#: templates/attachments.php:14
+msgid "Attachments"
+msgstr ""
+
+#: templates/attachments.php:17
+#, fuzzy
+msgid "Download file"
+msgstr "下載"
+
+#: templates/content-answer.php:18
+msgid "Total votes"
+msgstr "總票數"
+
+#: templates/content-none.php:9
+#, fuzzy
+msgid "Sorry! No question found."
+msgstr "找不到問題"
+
+#: templates/functions.php:36
+msgid "Password not matching"
+msgstr "密碼不符"
+
+#: templates/functions.php:37
+msgid "Password length must be 6 or higher"
+msgstr "密碼最少需要六位數長度"
+
+#: templates/functions.php:38
+msgid "Not a valid email"
+msgstr "不是正確的信箱"
+
+#: templates/functions.php:39
+msgid "Username length must be 4 or higher"
+msgstr "使用者名稱至少要四個字母或以上"
+
+#: templates/functions.php:40
+msgid "Username not available"
+msgstr "使用者名稱不可使用"
+
+#: templates/functions.php:43
+msgid "Email already in use."
+msgstr ""
+
+#: templates/functions.php:45
+#, fuzzy
+msgid "Do you want to reset your password?"
+msgstr "Email 已存在，你要重設密碼嗎？"
+
+#: templates/functions.php:47
+msgid "Loading"
+msgstr "載入中"
+
+#: templates/functions.php:48
+msgid "Sending request"
+msgstr "送出請求"
+
+#: templates/functions.php:49
+msgid "Uploading"
+msgstr "上傳中"
+
+#: templates/functions.php:50
+msgid "Something went wrong in server side, not a valid response."
+msgstr ""
+
+#: templates/functions.php:51
+#, fuzzy
+msgid "File size is bigger then %s MB"
+msgstr "無法上傳文件，文件大於 %d Byte"
+
+#: templates/functions.php:52
+#, fuzzy
+msgid "You have already attached maximum numbers of allowed attachments"
+msgstr "您已經到達最大可上傳數量"
+
+#: templates/functions.php:54
+msgid "Comment"
+msgstr "回應"
+
+#: templates/functions.php:56
+msgid "Update"
+msgstr "更新"
+
+#: templates/functions.php:57
+#, fuzzy
+msgid "Write your comment..."
+msgstr "送出你的回應"
+
+#: templates/functions.php:83
+#, fuzzy
+msgid "(AnsPress) Before"
+msgstr "AnsPress 角色"
+
+#: templates/functions.php:87
+msgid "Widgets in this area will be shown before anspress body."
+msgstr "這個小工具會出現在 anspress body 之前"
+
+#: templates/functions.php:93
+#, fuzzy
+msgid "(AnsPress) Question List Top"
+msgstr "AnsPress 問題追蹤"
+
+#: templates/functions.php:97
+msgid "Widgets in this area will be shown before questions list."
+msgstr "這個小工具會出現在問題清單之前"
+
+#: templates/functions.php:103
+#, fuzzy
+msgid "(AnsPress) Sidebar"
+msgstr "AnsPress 管理員"
+
+#: templates/functions.php:107
+#, fuzzy
+msgid ""
+"Widgets in this area will be shown in AnsPress sidebar except single "
+"question page."
+msgstr "這個小工具會出現在 AnsPress 側邊欄"
+
+#: templates/functions.php:113
+#, fuzzy
+msgid "(AnsPress) Question Sidebar"
+msgstr "AP 問題側邊欄"
+
+#: templates/functions.php:117
+#, fuzzy
+msgid "Widgets in this area will be shown in single question page sidebar."
+msgstr "這個小工具會出現在問題頁面側邊欄"
+
+#: templates/functions.php:123
+#, fuzzy
+msgid "(AnsPress) Category Page"
+msgstr "AP 分類頁面"
+
+#: templates/functions.php:127
+msgid "Widgets in this area will be shown in category listing page."
+msgstr "這個小工具會出現在分類清單頁面"
+
+#: templates/functions.php:133
+#, fuzzy
+msgid "(AnsPress) Tag page"
+msgstr "AP 標籤頁面"
+
+#: templates/functions.php:137
+msgid "Widgets in this area will be shown in tag listing page."
+msgstr "這個小工具將會出現在標籤清單頁面"
+
+#: templates/functions.php:143
+#, fuzzy
+msgid "(AnsPress) Author page"
+msgstr "AnsPress 頁面"
+
+#: templates/functions.php:147
+#, fuzzy
+msgid "Widgets in this area will be shown in authors page."
+msgstr "這個小工具將會出現在 \"關於使用者頁面\""
+
+#: templates/login-signup.php:17
+msgid "Register"
+msgstr ""
+
+#: templates/login-signup.php:18
+msgid "or"
+msgstr "或"
+
+#: templates/login-signup.php:19
+msgid "Login"
+msgstr "登入"
+
+#: templates/no-permission-post.php:5
+msgid "This is a private %s."
+msgstr "這是私密的 %s"
+
+#: templates/no-permission-post.php:7
+msgid "This %s waiting for moderation."
+msgstr "這個 %s 正在等候審核"
+
+#: templates/no-permission-post.php:9
+msgid "This has been trashed or waiting for approval."
+msgstr "這正在等候核可或是已被丟到垃圾桶"
+
+#: templates/question.php:46 templates/shortcode/question.php:42
+#, fuzzy
+msgid "Posted %s"
+msgstr "%s提出討論 %s"
+
+#: templates/search-form.php:14
+msgid "Search questions..."
+msgstr "搜尋問題..."
+
+#: templates/shortcode/question.php:79
+msgid "View all answers"
+msgstr ""
+
+#: templates/widgets/widget-questions.php:17
+#, fuzzy
+msgid "1 Answer"
+msgid_plural "%d Answers"
+msgstr[0] "一個回答"
+msgstr[1] "一個回答"
+
+#: templates/widgets/widget-questions.php:19
+#, fuzzy
+msgid "1 Vote"
+msgid_plural "%d Votes"
+msgstr[0] "投票"
+msgstr[1] "投票"
+
+#: templates/widgets/widget-questions.php:23
 msgid "No questions found."
 msgstr "找不到問題"
 
-#: theme/default/widget-related_questions.php:17
-msgid "No related questions found."
-msgstr "找不到相關問題"
-
-#: theme/default/widgets/followers.php:11
-msgid "View all followers &rarr;"
-msgstr "檢視所有追蹤者 &rarr;"
-
-#: widgets/ask-form.php:10
+#: widgets/ask-form.php:28
 msgid "(AnsPress) Ask form"
 msgstr ""
 
-#: widgets/ask-form.php:11
-msgid "Shows ask form."
-msgstr ""
+#: widgets/ask-form.php:29
+#, fuzzy
+msgid "AnsPress ask form widget"
+msgstr "AnsPress 儀表板"
 
-#: widgets/ask-form.php:34 widgets/quick-ask.php:29
+#: widgets/ask-form.php:68
 msgid "Ask questions"
 msgstr "提出問題"
-
-#: widgets/ask-form.php:38 widgets/followers.php:73
-#: widgets/participants.php:48 widgets/question_stats.php:69
-#: widgets/questions.php:76 widgets/quick-ask.php:33
-#: widgets/related_questions.php:78 widgets/search.php:58
-#: widgets/subscribe.php:58 widgets/user.php:52 widgets/users.php:68
-msgid "Title:"
-msgstr "標題："
 
 #: widgets/breadcrumbs.php:28
 msgid "(AnsPress) Breadcrumbs"
@@ -3170,42 +3850,6 @@ msgstr "(AnsPress)麵包削導覽列"
 msgid "Show current anspress page navigation"
 msgstr ""
 
-#: widgets/followers.php:23
-msgid "(AnsPress) Followers"
-msgstr ""
-
-#: widgets/followers.php:24
-msgid "Show followers of currently displayed user."
-msgstr ""
-
-#: widgets/followers.php:45
-msgid "No followers yet"
-msgstr "未有追蹤者"
-
-#: widgets/followers.php:48
-msgid "This widget can only be used in user page."
-msgstr "這個小工具只能夠用在使用者頁面"
-
-#: widgets/followers.php:77 widgets/participants.php:52
-msgid "Avatar size:"
-msgstr "大頭貼尺寸"
-
-#: widgets/followers.php:81
-msgid "Numbers of user to show:"
-msgstr "顯示使用者的數量:"
-
-#: widgets/participants.php:24
-msgid "(AnsPress) Participants"
-msgstr ""
-
-#: widgets/participants.php:25
-msgid "Show question participants"
-msgstr ""
-
-#: widgets/post_discussion.php:19
-msgid "No options"
-msgstr "沒有選項"
-
 #: widgets/question_stats.php:25
 msgid "(AnsPress) Question Stats"
 msgstr ""
@@ -3213,10 +3857,6 @@ msgstr ""
 #: widgets/question_stats.php:26
 msgid "Shows question stats in single question page."
 msgstr ""
-
-#: widgets/question_stats.php:48
-msgid "Views"
-msgstr "閱讀"
 
 #: widgets/question_stats.php:48
 #, fuzzy
@@ -3232,16 +3872,13 @@ msgid_plural "%2$s%1$d%3$s answers"
 msgstr[0] "%2$s%1$d%3$s 個回答"
 msgstr[1] "%2$s%1$d%3$s 個回答"
 
-#: widgets/question_stats.php:50
-#, fuzzy
-msgid "1 follower"
-msgid_plural "%d followers"
-msgstr[0] "追蹤者"
-msgstr[1] "追蹤者"
-
-#: widgets/question_stats.php:53
+#: widgets/question_stats.php:52
 msgid "This widget can only be used in single question page"
 msgstr "這個小工具只能用在\"單一問題頁面\""
+
+#: widgets/question_stats.php:64
+msgid "Question stats"
+msgstr "問題狀態"
 
 #: widgets/questions.php:10
 msgid "(AnsPress) Questions"
@@ -3251,105 +3888,37 @@ msgstr ""
 msgid "Shows list of question shorted by option."
 msgstr ""
 
-#: widgets/questions.php:80
-msgid "Sort by:"
-msgstr ""
+#: widgets/questions.php:82
+msgid "Order by:"
+msgstr "排序:"
 
-#: widgets/questions.php:91
+#: widgets/questions.php:93
 msgid "Category IDs:"
 msgstr "討論板 ID:"
 
-#: widgets/questions.php:93
+#: widgets/questions.php:95
 msgid "Comma separted AnsPress category ids"
 msgstr "列出逗點區隔的 AnsPress 分類 ID"
 
-#: widgets/questions.php:97
+#: widgets/questions.php:99
 msgid "Limit:"
 msgstr "限制："
 
-#: widgets/related_questions.php:23
-msgid "(AnsPress) Related Questions"
-msgstr ""
-
-#: widgets/related_questions.php:24
-msgid ""
-"For showing related question. This widget will only work in question page."
-msgstr ""
-
-#: widgets/related_questions.php:72
-msgid "Related Questions"
-msgstr "相關問題"
-
-#: widgets/search.php:26
+#: widgets/search.php:29
 msgid "(AnsPress) Search"
 msgstr ""
 
-#: widgets/search.php:27
+#: widgets/search.php:30
 msgid "Question and answer search form."
 msgstr ""
-
-#: widgets/search.php:41
-msgid "Search questions & answers"
-msgstr "搜尋問題與回答"
-
-#: widgets/search.php:54
-msgid "Search questions"
-msgstr "搜尋問題"
-
-#: widgets/subscribe.php:26
-msgid "(AnsPress) Subscribe"
-msgstr ""
-
-#: widgets/subscribe.php:27
-msgid "Subscribe button for single question and terms page."
-msgstr ""
-
-#: widgets/subscribe.php:54
-msgid "Subscribe"
-msgstr "訂閱"
-
-#: widgets/user.php:10
-msgid "(AnsPress) User menu and profile"
-msgstr ""
-
-#: widgets/user.php:11
-msgid "Display current logged in users detail and menu."
-msgstr ""
-
-#: widgets/user.php:36
-msgid "Login to see your profile links"
-msgstr "登入才能看到你的檔案連結"
-
-#: widgets/user_notification.php:28
-msgid "(AnsPress) User Notifications"
-msgstr ""
-
-#: widgets/user_notification.php:29
-msgid "Show logged in user notifications"
-msgstr ""
-
-#: widgets/users.php:10
-msgid "(AnsPress) Users"
-msgstr ""
-
-#: widgets/users.php:11
-msgid "Shows users based on selected order."
-msgstr ""
-
-#: widgets/users.php:72
-msgid "Avatar:"
-msgstr "大頭貼:"
-
-#: widgets/users.php:76
-msgid "Show"
-msgstr "顯示"
 
 #. Plugin Name of the plugin/theme
 msgid "AnsPress"
 msgstr "AnsPress"
 
 #. Author URI of the plugin/theme
-msgid "http://anspress.io"
+#, fuzzy
+msgid "https://anspress.io"
 msgstr "http://anspress.io"
 
 #. Description of the plugin/theme
@@ -3360,25 +3929,968 @@ msgstr "Wordpress 上最先進的社群問答系統"
 msgid "Rahul Aryan"
 msgstr "Rahul Aryan"
 
-#: includes/post_types.php:47
+#: addons/free/category.php:180
+#, fuzzy
+msgctxt "anspress-question-answer"
+msgid "Category"
+msgstr "討論版"
+
+#: addons/free/category.php:182
+#, fuzzy
+msgctxt "anspress-question-answer"
+msgid "Add New Category"
+msgstr "討論版"
+
+#: addons/free/tag.php:191
+#, fuzzy
+msgctxt "anspress-question-answer"
+msgid "Tag"
+msgstr "標籤"
+
+#: addons/free/tag.php:193
+#, fuzzy
+msgctxt "anspress-question-answer"
+msgid "Add New Tag"
+msgstr "新增回答"
+
+#: includes/post-types.php:41
 msgctxt "Post Type General Name"
 msgid "Questions"
 msgstr "提問"
 
-#: includes/post_types.php:117
+#: includes/post-types.php:111
 msgctxt "Post Type General Name"
 msgid "Answers"
 msgstr "解答"
 
-#: includes/post_types.php:48
+#: includes/post-types.php:42
 msgctxt "Post Type Singular Name"
 msgid "Question"
 msgstr "提問"
 
-#: includes/post_types.php:118
+#: includes/post-types.php:112
 msgctxt "Post Type Singular Name"
 msgid "Answer"
 msgstr "解答"
+
+#~ msgid "Points"
+#~ msgstr "點數"
+
+#~ msgid "Moderate question & answer"
+#~ msgstr "管理提問與回答"
+
+#~ msgid "Post flag"
+#~ msgstr "貼出檢舉"
+
+#~ msgid "Options"
+#~ msgstr "選項"
+
+#~ msgid "Role and permission for AnsPress"
+#~ msgstr "AnsPress 的角色與權限"
+
+#~ msgid "User notification"
+#~ msgstr "使用者通知"
+
+#~ msgid ""
+#~ "Is your existing question tags are not appearing ? click here to fix it %s"
+#~ msgstr "提問的標籤沒有正確顯示？點擊來修正他 %s"
+
+#~ msgid "Fix question tags"
+#~ msgstr "修正提問標籤"
+
+#~ msgid "Hide message %s"
+#~ msgstr "隱藏訊息 %s"
+
+#~ msgid "dismiss"
+#~ msgstr "解散"
+
+#~ msgid "By %s"
+#~ msgstr "被 %s"
+
+#~ msgid "Last Updated:"
+#~ msgstr "最後更新："
+
+#~ msgid "Untested with your version of WordPress"
+#~ msgstr "在你的 WordPress 版本上未測試"
+
+#~ msgid "<strong>Compatible</strong> with your version of WordPress"
+#~ msgstr "與你的 WordPress 版本相容"
+
+#~ msgid "Draft"
+#~ msgstr "草稿"
+
+#~ msgid "Type"
+#~ msgstr "類型"
+
+#~ msgid "Delete permanently"
+#~ msgstr "永遠刪除"
+
+#~ msgid "Move to trash"
+#~ msgstr "移到垃圾桶"
+
+#~ msgid "Base page"
+#~ msgstr "基礎頁面"
+
+#~ msgid "Question Help page"
+#~ msgstr "提問的幫助頁面"
+
+#~ msgid "Direction for asking a question."
+#~ msgstr "提問的方向"
+
+#~ msgid "Answer Help page"
+#~ msgstr "回答的幫助頁面"
+
+#~ msgid "Direction for answring a question."
+#~ msgstr "提問的方法"
+
+#~ msgid "Clean DB"
+#~ msgstr "清除資料庫"
+
+#~ msgid ""
+#~ "check this to remove all anspress data including posts on deactivating "
+#~ "plugin."
+#~ msgstr ""
+#~ "選這選項, 會在停用Anspress插件時， 刪除Anspress相關的資料，包含問題。"
+
+#~ msgid "Base page slug before user page permalink"
+#~ msgstr "基礎頁面代稱放在使用者頁面固定網址之前"
+
+#~ msgid "Disable hover card"
+#~ msgstr "停止用名卡"
+
+#~ msgid "Dont show user hover card on mouseover."
+#~ msgstr "鼠標停留在用戶名上時， 不要顯示名卡。"
+
+#~ msgid "Users per page"
+#~ msgstr "每頁幾個使用者"
+
+#~ msgid "Users to show per page."
+#~ msgstr "每頁顯示幾個使用者"
+
+#~ msgid "Sorting"
+#~ msgstr "排列"
+
+#~ msgid "Sort answers by default."
+#~ msgstr "使用預設的回答排序"
+
+#~ msgid "Toggle"
+#~ msgstr "切換"
+
+#~ msgid "Show question sidebar"
+#~ msgstr "顯示問題側邊欄"
+
+#~ msgid "Pages"
+#~ msgstr "頁面"
+
+#~ msgid "Page slug"
+#~ msgstr "頁面代稱"
+
+#~ msgid "Enter slug for users page."
+#~ msgstr "輸入使用者頁面代稱"
+
+#~ msgid ""
+#~ "Enter slug for user page, make sure no page or post exists with same slug."
+#~ msgstr "輸入使用者頁面的代稱，請注意代稱不能跟其他頁面或文章的代稱相衝突"
+
+#~ msgid "Show question title"
+#~ msgstr "顯示問題討論標題"
+
+#~ msgid "Show question title in single question page."
+#~ msgstr "在問題單頁中，顯示問題標題。"
+
+#~ msgid "Disable navigation"
+#~ msgstr "停用導航欄"
+
+#~ msgid "Disable answer navigation."
+#~ msgstr "停用答案導航欄。"
+
+#~ msgid "Users"
+#~ msgstr "使用者"
+
+#~ msgid "Show users directory"
+#~ msgstr "顯示使用者目錄"
+
+#~ msgid "When enabled public can see directory of users."
+#~ msgstr "公開使用者目錄"
+
+#~ msgid "Disable reputation for user"
+#~ msgstr "關閉使用者聲望功能"
+
+#~ msgid "Users page avatar size"
+#~ msgstr "使用者頁面頭像大小"
+
+#~ msgid "Set user avatar size for users page item."
+#~ msgstr "對使用者頁面項目設定使用者頭像大小"
+
+#~ msgid "Set width of user cover photo."
+#~ msgstr "設定封面圖片寬度"
+
+#~ msgid "Set height of user cover photo."
+#~ msgstr "設定封面圖片高度"
+
+#~ msgid "Cover thumb width"
+#~ msgstr "封面圖縮圖寬度"
+
+#~ msgid "Set width of user cover photo thumbnail."
+#~ msgstr "對封面縮圖設定寬度"
+
+#~ msgid "Small cover height"
+#~ msgstr "小封面高度"
+
+#~ msgid "Set height of user cover photo thumbnail."
+#~ msgstr "對封面縮圖設定高度"
+
+#~ msgid "Default rank"
+#~ msgstr "預設排名"
+
+#~ msgid "Assign a default rank for newly registered user."
+#~ msgstr "對新註冊的使用者派定預設的等級"
+
+#~ msgid "Enable reCaptcha"
+#~ msgstr "啓用 reCaptacha"
+
+#~ msgid "Use this for preventing spam posts."
+#~ msgstr "用這個來防止惡意貼文"
+
+#~ msgid "Delete this reputation"
+#~ msgstr "刪除這個聲譽"
+
+#~ msgid "There is no question yet."
+#~ msgstr "尚無問題"
+
+#~ msgid "Total <b>%d flag</b>"
+#~ msgstr "共<b>%d 個檢舉</b>"
+
+#~ msgid "Trash post"
+#~ msgstr "刪除貼文"
+
+#~ msgid "No one flagged this post yet"
+#~ msgstr "沒有人檢舉這個貼文"
+
+#~ msgid "New reputation"
+#~ msgstr "新的聲望"
+
+#~ msgid "No related questions found"
+#~ msgstr "找不到相關提問"
+
+#~ msgid "Set as featured"
+#~ msgstr "設為推薦"
+
+#~ msgid "Unset as featured"
+#~ msgstr "取消推薦"
+
+#~ msgid "Follow"
+#~ msgstr "追蹤"
+
+#~ msgid "Unfollow"
+#~ msgstr "取消追蹤"
+
+#~ msgid "Please login for adding question to your subscribe"
+#~ msgstr "需要先登入才能把問題加入你的訂閱"
+
+#~ msgid "votes"
+#~ msgstr "投票"
+
+#~ msgid "Write a meaningful title for the question."
+#~ msgstr "為提問寫下有意義的抬頭"
+
+#~ msgid "Questions %s"
+#~ msgstr "提問 %s"
+
+#~ msgid "Answers %s"
+#~ msgstr "回答 %s"
+
+#~ msgid "User"
+#~ msgstr "使用者"
+
+#~ msgid "Profile"
+#~ msgstr "個人檔案"
+
+#~ msgid "Followers"
+#~ msgstr "追蹤者"
+
+#~ msgid "Following"
+#~ msgstr "正在追蹤"
+
+#~ msgid "No user found"
+#~ msgstr "沒有找到使用者"
+
+#~ msgid "No followers found"
+#~ msgstr "沒找到追蹤者"
+
+#~ msgid "You are not following anyone."
+#~ msgstr "你沒有追蹤任何人"
+
+#~ msgid "My activity"
+#~ msgstr "我的動態"
+
+#~ msgid "%s's activity"
+#~ msgstr "%s 的動態"
+
+#~ msgid "My profile"
+#~ msgstr "我的個人檔案"
+
+#~ msgid "%s's profile"
+#~ msgstr "%s 的個人檔案"
+
+#~ msgid "My questions"
+#~ msgstr "我的提問"
+
+#~ msgid "%s's questions"
+#~ msgstr "%s 的提問"
+
+#~ msgid "My answers"
+#~ msgstr "我的回答"
+
+#~ msgid "%s's answers"
+#~ msgstr "%s 的回答"
+
+#~ msgid "My reputation"
+#~ msgstr "我的聲望"
+
+#~ msgid "%s's reputation"
+#~ msgstr "%s 的聲望"
+
+#~ msgid "About me"
+#~ msgstr "關於我"
+
+#~ msgid "My followers"
+#~ msgstr "我的追蹤者"
+
+#~ msgid "%s's followers"
+#~ msgstr "%s 的追蹤者"
+
+#~ msgid "My subscriptions"
+#~ msgstr "我的訂閱"
+
+#~ msgid "My notification"
+#~ msgstr "我的通知"
+
+#~ msgid "There was an error while uploading avatar, please check your image"
+#~ msgstr "大頭貼上傳失敗，請確認您的圖片。"
+
+#~ msgid "Cover photo uploaded successfully."
+#~ msgstr "封面圖片上傳成功"
+
+#~ msgid ""
+#~ "There was an error while uploading cover photo, please check your image "
+#~ "and try again."
+#~ msgstr "圖片上傳失敗，請確認您的圖片。"
+
+#~ msgid "Avatar uploaded successfully."
+#~ msgstr "大頭貼上傳成功"
+
+#~ msgid "Its too short, it must be minimum %d characters"
+#~ msgstr "太短，至少要%d字"
+
+#~ msgid "Flag "
+#~ msgstr "檢舉"
+
+#~ msgid "Comment deleted successfully"
+#~ msgstr "成功刪除回應"
+
+#~ msgid "ago"
+#~ msgstr "前"
+
+#~ msgid "Please login or register to continue this action."
+#~ msgstr "請登入或註冊後才能繼續這個動作"
+
+#~ msgid "Edit this question"
+#~ msgstr "編輯這個提問"
+
+#~ msgid "Edited on"
+#~ msgstr "編輯在"
+
+#~ msgid "Change status of post"
+#~ msgstr "修改發文狀態"
+
+#~ msgid "You need to login before doing this action."
+#~ msgstr "你要登入才能繼續"
+
+#~ msgid "You are commenting on a draft post."
+#~ msgstr "你正在回應一個草稿"
+
+#~ msgid "Successfully unfollowed."
+#~ msgstr "成功取消追蹤"
+
+#~ msgid "Question submitted successfully"
+#~ msgstr "提問已成功送出"
+
+#~ msgid "Question moved to trash."
+#~ msgstr "提問已被搬移到垃圾桶"
+
+#~ msgid "Answer moved to trash."
+#~ msgstr "回答已搬移到垃圾桶"
+
+#~ msgid "Comment content is empty."
+#~ msgstr "回應的內容是空的"
+
+#~ msgid "Successfully followed."
+#~ msgstr "追蹤成功"
+
+#~ msgid "You cannot follow yourself."
+#~ msgstr "你不能追蹤自己"
+
+#~ msgid "Notification deleted successfully."
+#~ msgstr "已成功刪除通知"
+
+#~ msgid "Notification is marked as read."
+#~ msgstr "已將通知標示為”已閱讀”"
+
+#~ msgid "%s is closed, new answer are not accepted."
+#~ msgstr "%s 已經關閉，不能再接收新的回答"
+
+#~ msgid "Add image to editor"
+#~ msgstr "新增圖片"
+
+#~ msgid "upload"
+#~ msgstr "上傳"
+
+#~ msgid "add image from link"
+#~ msgstr "新增圖片連結"
+
+#~ msgid "Enter images link"
+#~ msgstr "輸入圖片連結"
+
+#, fuzzy
+#~ msgid "<span>1</span> Participant"
+#~ msgid_plural "<span>%d</span> Participants"
+#~ msgstr[0] "1 貢獻者"
+#~ msgstr[1] "1 貢獻者"
+
+#, fuzzy
+#~ msgid "Closed <span class=\"count\">(%s)</span>"
+#~ msgid_plural "Moderate <span class=\"count\">(%s)</span>"
+#~ msgstr[0] "已關閉"
+#~ msgstr[1] "已關閉"
+
+#~ msgid "Edit Question"
+#~ msgstr "編輯問題"
+
+#~ msgid "Update Question"
+#~ msgstr "更新問題"
+
+#~ msgid "Search question"
+#~ msgstr "搜尋問題"
+
+#~ msgid "answers"
+#~ msgstr "回答"
+
+#, fuzzy
+#~ msgid "%s ans"
+#~ msgid_plural "%s ans"
+#~ msgstr[0] "%s 回應"
+#~ msgstr[1] "%s 回應"
+
+#~ msgid "%s Rep."
+#~ msgstr "%s 聲譽"
+
+#~ msgid "+%d"
+#~ msgstr "+%d"
+
+#~ msgid "%sAnswered %s"
+#~ msgstr "%s 回應了 %s"
+
+#~ msgid "%sCommented %s"
+#~ msgstr "%s回應了 %s"
+
+#~ msgid "%sSelected answer %s"
+#~ msgstr "%s選取解答 %s"
+
+#~ msgid "%sUp vote %s %s"
+#~ msgstr "%s投票 %s %s"
+
+#~ msgid "%sDown vote %s %s"
+#~ msgstr "%s扣票 %s %s"
+
+#~ msgid "%sBest answer %s"
+#~ msgstr "%s 最佳回答 %s"
+
+#~ msgid "Points given to newly registered user."
+#~ msgstr "給新註冊使用者多少點數"
+
+#~ msgid "Uploading avatar"
+#~ msgstr "大頭貼上傳中"
+
+#~ msgid "Awarded for uploading an profile picture."
+#~ msgstr "得到上傳照片的獎勵"
+
+#~ msgid "Completing profile"
+#~ msgstr "完成個人檔案"
+
+#~ msgid "Awarded for completing profile fields."
+#~ msgstr "得到完成使用者檔案的獎勵"
+
+#~ msgid "For asking a question."
+#~ msgstr "當提出問題"
+
+#~ msgid "For new comment."
+#~ msgstr "對新回應"
+
+#~ msgid "Receive upvote on question"
+#~ msgstr "問題得到投票"
+
+#~ msgid "When user receive an upvote on question"
+#~ msgstr "當使用者得到一個問題的投票"
+
+#~ msgid "Receive down vote on question"
+#~ msgstr "提問被扣票了"
+
+#~ msgid "When user receive an down vote on question"
+#~ msgstr "當使用者得到一個問題的扣票"
+
+#~ msgid "Up voted questions"
+#~ msgstr "被投票的提問"
+
+#~ msgid "When user upvote others question"
+#~ msgstr "當使用者對其他提問投票"
+
+#~ msgid "Up voted answers"
+#~ msgstr "對回答投票"
+
+#~ msgid "When user upvote others answer"
+#~ msgstr "當使用者對其他回答投票"
+
+#~ msgid "Down voted questions"
+#~ msgstr "被扣票的提問"
+
+#~ msgid "When user down vote others question"
+#~ msgstr "當使用者對其他提問扣票"
+
+#~ msgid "When user down vote others answers"
+#~ msgstr "當使用者對其他回答扣票"
+
+#~ msgid "When user user select an answer."
+#~ msgstr "當使用者選了一個回答"
+
+#~ msgid "Install Required Plugins"
+#~ msgstr "安裝所需的外掛"
+
+#~ msgid "Install Plugins"
+#~ msgstr "安裝外掛"
+
+#~ msgid "Installing Plugin: %s"
+#~ msgstr "安裝外掛：%s"
+
+#~ msgid "Something went wrong with the plugin API."
+#~ msgstr "外掛 API 發生錯誤"
+
+#, fuzzy
+#~ msgid "AnsPress requires the following plugin: %1$s."
+#~ msgid_plural "AnsPress requires the following plugins: %1$s."
+#~ msgstr[0] "AnsPress 需要以下外掛 %1$s"
+#~ msgstr[1] "AnsPress 需要以下外掛 %1$s"
+
+#, fuzzy
+#~ msgid "AnsPress recommends the following plugin: %1$s."
+#~ msgid_plural "AnsPress recommends the following plugins: %1$s."
+#~ msgstr[0] "AnsPress 推薦以下外掛 %1$s"
+#~ msgstr[1] "AnsPress 推薦以下外掛 %1$s"
+
+#, fuzzy
+#~ msgid ""
+#~ "Sorry, but you do not have the correct permissions to install the %s "
+#~ "plugin. Contact the administrator of this site for help on getting the "
+#~ "plugin installed."
+#~ msgid_plural ""
+#~ "Sorry, but you do not have the correct permissions to install the %s "
+#~ "plugins. Contact the administrator of this site for help on getting the "
+#~ "plugins installed."
+#~ msgstr[0] ""
+#~ "抱歉，你沒有足夠的權限來安裝 %s 外掛，請與網站管理員聯絡安裝外掛。"
+#~ msgstr[1] ""
+#~ "抱歉，你沒有足夠的權限來安裝 %s 外掛，請與網站管理員聯絡安裝外掛。"
+
+#, fuzzy
+#~ msgid "The following required plugin is currently inactive: %1$s."
+#~ msgid_plural "The following required plugins are currently inactive: %1$s."
+#~ msgstr[0] "需要的外掛沒啟用：%1$s"
+#~ msgstr[1] "需要的外掛沒啟用：%1$s"
+
+#, fuzzy
+#~ msgid "The following recommended plugin is currently inactive: %1$s."
+#~ msgid_plural ""
+#~ "The following recommended plugins are currently inactive: %1$s."
+#~ msgstr[0] "建議使用的外掛目前沒啟用：%1$s"
+#~ msgstr[1] "建議使用的外掛目前沒啟用：%1$s"
+
+#, fuzzy
+#~ msgid ""
+#~ "Sorry, but you do not have the correct permissions to activate the %s "
+#~ "plugin. Contact the administrator of this site for help on getting the "
+#~ "plugin activated."
+#~ msgid_plural ""
+#~ "Sorry, but you do not have the correct permissions to activate the %s "
+#~ "plugins. Contact the administrator of this site for help on getting the "
+#~ "plugins activated."
+#~ msgstr[0] "抱歉，你沒有足夠的權限開啟 %s 外掛，請與網站管理員聯絡開啟外掛。"
+#~ msgstr[1] "抱歉，你沒有足夠的權限開啟 %s 外掛，請與網站管理員聯絡開啟外掛。"
+
+#, fuzzy
+#~ msgid ""
+#~ "The following plugin needs to be updated to its latest version to ensure "
+#~ "maximum compatibility with this theme: %1$s."
+#~ msgid_plural ""
+#~ "The following plugins need to be updated to their latest version to "
+#~ "ensure maximum compatibility with this theme: %1$s."
+#~ msgstr[0] "以下的外掛需要更新到最新版本以確保與主題版型相容：%1$s"
+#~ msgstr[1] "以下的外掛需要更新到最新版本以確保與主題版型相容：%1$s"
+
+#, fuzzy
+#~ msgid ""
+#~ "Sorry, but you do not have the correct permissions to update the %s "
+#~ "plugin. Contact the administrator of this site for help on getting the "
+#~ "plugin updated."
+#~ msgid_plural ""
+#~ "Sorry, but you do not have the correct permissions to update the %s "
+#~ "plugins. Contact the administrator of this site for help on getting the "
+#~ "plugins updated."
+#~ msgstr[0] "抱歉，你沒有足夠的權限更新 %s 外掛，請與網站管理員聯絡更新外掛。"
+#~ msgstr[1] "抱歉，你沒有足夠的權限更新 %s 外掛，請與網站管理員聯絡更新外掛。"
+
+#, fuzzy
+#~ msgid "Begin installing plugin"
+#~ msgid_plural "Begin installing plugins"
+#~ msgstr[0] "開始安裝外掛"
+#~ msgstr[1] "開始安裝外掛"
+
+#, fuzzy
+#~ msgid "Begin activating plugin"
+#~ msgid_plural "Begin activating plugins"
+#~ msgstr[0] "開始啟動外掛"
+#~ msgstr[1] "開始啟動外掛"
+
+#~ msgid "Return to Required Plugins Installer"
+#~ msgstr "回到請求的外掛安裝器"
+
+#~ msgid "Plugin activated successfully."
+#~ msgstr "外掛啟動成功"
+
+#~ msgid "All plugins installed and activated successfully. %s"
+#~ msgstr "所有外掛啟動成功 %s"
+
+#~ msgid ""
+#~ "Question and answer is powered by <a href=\"http://anspress.io\" traget="
+#~ "\"_blank\">AnsPress</a>"
+#~ msgstr "問答系統由 AnsPress 驅動"
+
+#~ msgid "You and <strong>%s people</strong> subscribed to this question."
+#~ msgstr "你跟 %s 人都訂閱了這個問題"
+
+#~ msgid "<strong>%d people</strong> subscribed to this question."
+#~ msgstr "%d 人訂閱了這個問題"
+
+#~ msgid "answer accepted"
+#~ msgstr "提問被接受了"
+
+#~ msgid "Sort by"
+#~ msgstr "排序"
+
+#~ msgid ".."
+#~ msgstr ".."
+
+#~ msgid "First name"
+#~ msgstr "名"
+
+#~ msgid "Your first name"
+#~ msgstr "你的名字"
+
+#~ msgid "Last name"
+#~ msgstr "姓"
+
+#~ msgid "Your surname"
+#~ msgstr "你的姓"
+
+#~ msgid "Nickname"
+#~ msgstr "匿稱"
+
+#~ msgid "Your nickname"
+#~ msgstr "你的匿稱"
+
+#~ msgid "Display name"
+#~ msgstr "顯示名稱"
+
+#~ msgid "Write something about yourself"
+#~ msgstr "寫點自我介紹吧"
+
+#~ msgid "Username"
+#~ msgstr "使用者名稱"
+
+#~ msgid "Your username"
+#~ msgstr "你的使用者名稱"
+
+#~ msgid "This cannot be changed."
+#~ msgstr "這不能更改"
+
+#~ msgid "Your contact email"
+#~ msgstr "你的聯絡 Email"
+
+#~ msgid "Password"
+#~ msgstr "密碼"
+
+#~ msgid "Update your password"
+#~ msgstr "更新你的密碼"
+
+#~ msgid "Page not found or registered."
+#~ msgstr "找不到頁面或已註冊"
+
+#~ msgid "Top %s"
+#~ msgstr "前 %s"
+
+#~ msgid "Upload an avatar"
+#~ msgstr "上傳大頭貼"
+
+#~ msgid "Basic"
+#~ msgstr "基本資料"
+
+#~ msgid "Upload a cover photo"
+#~ msgstr "上傳封面圖片"
+
+#~ msgid "Upload cover"
+#~ msgstr "上傳封面圖片"
+
+#~ msgid "%d months, "
+#~ msgstr "%d 月,"
+
+#~ msgid "Vote for closing"
+#~ msgstr "投票關閉"
+
+#~ msgid "Undo your vote"
+#~ msgstr "取消投票"
+
+#~ msgid "Close "
+#~ msgstr "關閉"
+
+#~ msgid "Toggle fullscreen"
+#~ msgstr "切換全螢幕檢視"
+
+#~ msgid "Write"
+#~ msgstr "撰寫"
+
+#~ msgid "How to answer"
+#~ msgstr "如何回答"
+
+#~ msgid "Please %s or %s to view answers and comments"
+#~ msgstr "請 %s 或 %s 以檢視答案或回應"
+
+#~ msgid "How to ask"
+#~ msgstr "如何提問"
+
+#~ msgid "Your comment is awaiting moderation."
+#~ msgstr "你的回應正在等候審核"
+
+#~ msgid "Comment navigation"
+#~ msgstr "瀏覽回應"
+
+#~ msgid "&larr; Older Comments"
+#~ msgstr "← 更舊的回應"
+
+#~ msgid "Newer Comments &rarr;"
+#~ msgstr "更新的回應 →"
+
+#~ msgid "Featured question"
+#~ msgstr "推薦的提問"
+
+#~ msgid "No question asked yet!, be the first to ask a question."
+#~ msgstr "尚無提問，第一個提出問題吧。"
+
+#~ msgid "Adding question to your favorites"
+#~ msgstr "把這個問題加到我的最愛"
+
+#~ msgid "Requesting for closing this question"
+#~ msgstr "請求關閉這個問題"
+
+#~ msgid "Submitting request"
+#~ msgstr "正在發送請求"
+
+#~ msgid "Loading comment form"
+#~ msgstr "載入回應表單"
+
+#~ msgid "Sending your question"
+#~ msgstr "正在發送你的問題"
+
+#~ msgid "Sending your answer"
+#~ msgstr "正在發送你的回答"
+
+#~ msgid "Deleting comment"
+#~ msgstr "刪除回應"
+
+#~ msgid "Updating comment"
+#~ msgstr "正在更新回應"
+
+#~ msgid "Saving labels"
+#~ msgstr "儲存 label"
+
+#~ msgid "Loading suggestions"
+#~ msgstr "建議載入中"
+
+#~ msgid "Uploading cover"
+#~ msgstr "封面圖片上傳中"
+
+#~ msgid "Saving profile"
+#~ msgstr "儲存個人檔案"
+
+#~ msgid "Sending message"
+#~ msgstr "訊息發送中"
+
+#~ msgid "Loading conversation"
+#~ msgstr "載入對話"
+
+#~ msgid "Loading new message form"
+#~ msgstr "載入新訊息表單"
+
+#~ msgid "Searching conversations"
+#~ msgstr "搜尋對話"
+
+#~ msgid "Loading message form"
+#~ msgstr "載入訊息表單"
+
+#~ msgid "Updating message"
+#~ msgstr "更新訊息"
+
+#~ msgid "Deleting message"
+#~ msgstr "刪除訊息"
+
+#~ msgid "AP Before"
+#~ msgstr "AP Before"
+
+#~ msgid "AP Lists Top"
+#~ msgstr "AP 清單上面"
+
+#~ msgid "AP Sidebar"
+#~ msgstr "AP 側邊欄"
+
+#~ msgid "Sign up"
+#~ msgstr "註冊"
+
+#~ msgid "Featured post"
+#~ msgstr "推薦的貼文"
+
+#~ msgid "Leave a reply"
+#~ msgstr "留下你的回復"
+
+#~ msgid "1 Reply"
+#~ msgstr "一個回復"
+
+#~ msgid "% Replies"
+#~ msgstr "% 個回復"
+
+#~ msgid "Continue reading <span class=\"meta-nav\">&rarr;</span>"
+#~ msgstr "繼續閱讀 →"
+
+#~ msgid "Pages:"
+#~ msgstr "頁面："
+
+#~ msgid "About %s"
+#~ msgstr "關於 %s"
+
+#~ msgid "View all posts by %s <span class=\"meta-nav\">&rarr;</span>"
+#~ msgstr "檢視所有文章以 %s <span class=\"meta-nav\">&rarr;</span>"
+
+#~ msgid "%d questions, %d solved"
+#~ msgstr "%d 則提問, %d 則已解答"
+
+#~ msgid "Member for %s"
+#~ msgstr "會員資歷 %s"
+
+#~ msgid "%d profile views"
+#~ msgstr "個人檔案有 %d 個閱讀"
+
+#~ msgid "Total"
+#~ msgstr "總計"
+
+#~ msgid "%d votes received"
+#~ msgstr "%d 取得票數"
+
+#~ msgid "up"
+#~ msgstr "投票"
+
+#~ msgid "%d votes casted"
+#~ msgstr "%d 更改票數"
+
+#~ msgid "Top Answers"
+#~ msgstr "最佳回答"
+
+#~ msgid "More answers by %s"
+#~ msgstr "%s 的更多回答"
+
+#~ msgid "view"
+#~ msgstr "讀取"
+
+#~ msgid "More questions by %s"
+#~ msgstr "%s 的更多問題"
+
+#~ msgid "View all notifications"
+#~ msgstr "閱讀所有通知"
+
+#~ msgid "Mark as read"
+#~ msgstr "顯示為已閱讀"
+
+#~ msgid "No reputation earned yet."
+#~ msgstr "尚未取得聲譽"
+
+#~ msgid "Not following any question yet!"
+#~ msgstr "尚未追蹤任何提問"
+
+#~ msgid "%d Followers, %d following"
+#~ msgstr "%d 個追蹤者, 正追蹤 %d 人"
+
+#~ msgid "%d Followers"
+#~ msgstr "%d 個追蹤者"
+
+#~ msgid "%d Following"
+#~ msgstr "%d 個追蹤"
+
+#~ msgid "%d Best"
+#~ msgstr "%d 最佳"
+
+#~ msgid "No users found."
+#~ msgstr "沒有找到使用者"
+
+#, fuzzy
+#~ msgid "1 answer"
+#~ msgid_plural "%d answers"
+#~ msgstr[0] "1 個回答"
+#~ msgstr[1] "1 個回答"
+
+#, fuzzy
+#~ msgid "1 vote"
+#~ msgid_plural "%d votes"
+#~ msgstr[0] "1 個投票"
+#~ msgstr[1] "1 個投票"
+
+#~ msgid "View all followers &rarr;"
+#~ msgstr "檢視所有追蹤者 &rarr;"
+
+#~ msgid "No followers yet"
+#~ msgstr "未有追蹤者"
+
+#~ msgid "This widget can only be used in user page."
+#~ msgstr "這個小工具只能夠用在使用者頁面"
+
+#~ msgid "Avatar size:"
+#~ msgstr "大頭貼尺寸"
+
+#~ msgid "No options"
+#~ msgstr "沒有選項"
+
+#, fuzzy
+#~ msgid "1 follower"
+#~ msgid_plural "%d followers"
+#~ msgstr[0] "追蹤者"
+#~ msgstr[1] "追蹤者"
+
+#~ msgid "Related Questions"
+#~ msgstr "相關問題"
+
+#~ msgid "Login to see your profile links"
+#~ msgstr "登入才能看到你的檔案連結"
+
+#~ msgid "Avatar:"
+#~ msgstr "大頭貼:"
+
+#~ msgid "Show"
+#~ msgstr "顯示"
 
 #~ msgid ""
 #~ "Please update all AnsPress extensions before activating. <a target="
@@ -3388,17 +4900,8 @@ msgstr "解答"
 #~ msgid "Please update all AnsPress extensions before activating."
 #~ msgstr "在啟動前請更新所有的 AnsPress extensions"
 
-#~ msgid "AnsPress Points"
-#~ msgstr "AnsPress 點數"
-
 #~ msgid "AnsPress Badges"
 #~ msgstr "AnsPress 臂章"
-
-#~ msgid "New badge"
-#~ msgstr "新臂章"
-
-#~ msgid "Posts waiting moderation"
-#~ msgstr "文章正在等待審核"
 
 #~ msgid "Min. Points"
 #~ msgstr "最少點數"
@@ -3421,9 +4924,6 @@ msgstr "解答"
 #~ msgid "Subbscribe and and stats widget will shown in question page."
 #~ msgstr "在提問頁面側邊欄顯示\"訂閱\"與\"狀態\""
 
-#~ msgid "Welcome to AnsPress 2.2"
-#~ msgstr "歡迎使用 AnsPress 2.2"
-
 #~ msgid "%s flagged this post %s ago"
 #~ msgstr "%s 個檢舉這個貼文在 %s 前"
 
@@ -3431,9 +4931,6 @@ msgstr "解答"
 #~ "We found similar questions that have already been asked, click to read "
 #~ "them. Avoid creating duplicate questions, it will be deleted."
 #~ msgstr "我們發現類似的提問，請先爬文後發文。"
-
-#~ msgid "This post was created %s ago, its locked hence you cannot delete it."
-#~ msgstr "這個貼文在 %s 之前建立，因為已經上鎖以致無法刪除。"
 
 #~ msgid "%s Ago"
 #~ msgstr "%s 前"
@@ -3449,9 +4946,6 @@ msgstr "解答"
 
 #~ msgid " %s %s %s ago"
 #~ msgstr " %s %s %s 前"
-
-#~ msgid "%s ago"
-#~ msgstr "%s 前"
 
 #~ msgid "New question <b>##post_title</b>"
 #~ msgstr "新提問 <b>##post_title</b>"
@@ -3476,9 +4970,6 @@ msgstr "解答"
 
 #~ msgid "%s up voted on your post <b>##post_title</b>"
 #~ msgstr "%s 對你的文章 <b>##post_title</b> 投票"
-
-#~ msgid "Your answer on <b>##post_title</b> has been selected as best"
-#~ msgstr "你的回答 ##post_title 已被選為最佳答案"
 
 #~ msgid "You have received <b>##reputation</b> reputation points"
 #~ msgstr "你得到了 ##reputation 聲望點數"
@@ -3513,14 +5004,8 @@ msgstr "解答"
 #~ msgid "Please login for requesting closing this question."
 #~ msgstr "要登入才能關閉問題"
 
-#~ msgid "You dont have permission to ask question."
-#~ msgstr "你沒有權限提出問題"
-
 #~ msgid "AP about user"
 #~ msgstr "AP 關於使用者"
-
-#~ msgid "Widgets in this area will be shown in about user page."
-#~ msgstr "這個小工具將會出現在 \"關於使用者頁面\""
 
 #~ msgid "扣票"
 #~ msgstr "降"
@@ -3536,12 +5021,6 @@ msgstr "解答"
 
 #~ msgid "Shows list of question shorted by option"
 #~ msgstr "根據選項排序問題"
-
-#~ msgid "Order by:"
-#~ msgstr "排序:"
-
-#~ msgid "AnsPress Question follow"
-#~ msgstr "AnsPress 問題追蹤"
 
 #~ msgid "Display current logged in users detail and links."
 #~ msgstr " 顯示目前登入使用者的詳細資料及連結"

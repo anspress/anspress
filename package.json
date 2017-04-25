@@ -18,6 +18,7 @@
     "grunt-exec": "^2.0.0",
     "grunt-git": "",
     "grunt-phplint": "",
+    "grunt-potomo": "^3.5.0",
     "grunt-replace": "",
     "grunt-version": "",
     "grunt-wp-i18n": "",
