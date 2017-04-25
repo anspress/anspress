@@ -18,7 +18,6 @@
     "grunt-exec": "^2.0.0",
     "grunt-git": "",
     "grunt-phplint": "",
-    "grunt-phpunit": "",
     "grunt-replace": "",
     "grunt-version": "",
     "grunt-wp-i18n": "",
@@ -30,5 +29,6 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Rahul Aryan",
-  "license": "GPL 3+"
+  "license": "GPL 3+",
+  "dependencies": {}
 }
