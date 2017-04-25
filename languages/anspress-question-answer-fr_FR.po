@@ -6,14 +6,14 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/anspress-question-"
 "answer\n"
 "POT-Creation-Date: 2015-12-14 08:41:30+00:00\n"
-"PO-Revision-Date: 2015-12-15 09:17+0530\n"
+"PO-Revision-Date: 2017-04-25 17:08+0200\n"
 "Last-Translator: \n"
 "Language-Team: Romain <bbig86@gmail.com>\n"
 "Language: fr_FR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.7.3\n"
+"X-Generator: Poedit 1.8.11\n"
 "X-Poedit-KeywordsList: __;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;"
 "_nx_noop:1,2,3c;esc_attr__;esc_html__;esc_attr_e;esc_html_e;esc_attr_x:1,2c;"
 "esc_html_x:1,2c\n"
@@ -83,9 +83,8 @@ msgid "Flagged"
 msgstr "Signalé"
 
 #: admin/anspress-admin.php:187 includes/bp.php:50 includes/bp.php:82
-#: includes/reputation.php:25 includes/reputation.php:290
-#: includes/user.php:436 theme/default/user/about.php:65
-#: theme/default/user/user-card.php:26
+#: includes/reputation.php:25 includes/reputation.php:290 includes/user.php:436
+#: theme/default/user/about.php:65 theme/default/user/user-card.php:26
 msgid "Reputation"
 msgstr "Réputation"
 
@@ -323,8 +322,8 @@ msgid_plural "<strong>%d</strong> Votes"
 msgstr[0] "<strong>1</strong> Vote"
 msgstr[1] "<strong>%d</strong> Votes"
 
-#: admin/moderate.php:92 includes/functions.php:701
-#: includes/post_types.php:234 includes/post_types.php:356
+#: admin/moderate.php:92 includes/functions.php:701 includes/post_types.php:234
+#: includes/post_types.php:356
 msgid "Status"
 msgstr "Statut"
 
@@ -491,25 +490,22 @@ msgstr "Tri par défaut"
 msgid "Sort answers by default."
 msgstr "Ordre de tri par defaut"
 
-#: admin/options-page.php:178 includes/functions.php:572
-#: includes/theme.php:566 includes/theme.php:609 widgets/questions.php:84
+#: admin/options-page.php:178 includes/functions.php:572 includes/theme.php:566
+#: includes/theme.php:609 widgets/questions.php:84
 msgid "Voted"
 msgstr "Votées"
 
 #: admin/options-page.php:179 includes/theme.php:561 includes/theme.php:605
-#: includes/user.php:438 widgets/question_stats.php:47
-#: widgets/questions.php:82
+#: includes/user.php:438 widgets/question_stats.php:47 widgets/questions.php:82
 msgid "Active"
 msgstr "En cours"
 
-#: admin/options-page.php:180 includes/functions.php:564
-#: includes/theme.php:562 includes/theme.php:612 includes/user.php:441
-#: widgets/questions.php:83
+#: admin/options-page.php:180 includes/functions.php:564 includes/theme.php:562
+#: includes/theme.php:612 includes/user.php:441 widgets/questions.php:83
 msgid "Newest"
 msgstr "Nouvelles"
 
-#: admin/options-page.php:181 includes/functions.php:568
-#: includes/theme.php:613
+#: admin/options-page.php:181 includes/functions.php:568 includes/theme.php:613
 msgid "Oldest"
 msgstr "Anciens"
 
@@ -997,8 +993,8 @@ msgid "AnsPress Dashboard"
 msgstr "Tableau de bord AnsPress"
 
 #: admin/views/dashboard.php:34 includes/bp.php:102 includes/class-user.php:50
-#: includes/functions.php:1602 includes/post_types.php:49
-#: includes/user.php:512 includes/user.php:539 widgets/questions.php:53
+#: includes/functions.php:1602 includes/post_types.php:49 includes/user.php:512
+#: includes/user.php:539 widgets/questions.php:53
 msgid "Questions"
 msgstr "Questions"
 
@@ -1105,8 +1101,8 @@ msgstr ""
 msgid "%s asked question %s"
 msgstr ""
 
-#: includes/activity-hooks.php:90 includes/activity.php:587
-#: includes/bp.php:239 includes/post_types.php:70
+#: includes/activity-hooks.php:90 includes/activity.php:587 includes/bp.php:239
+#: includes/post_types.php:70
 msgid "question"
 msgstr "question"
 
@@ -1115,8 +1111,7 @@ msgid "%s answered on %s"
 msgstr ""
 
 #: includes/activity-hooks.php:132 includes/activity.php:587
-#: includes/bp.php:239 includes/post_types.php:140
-#: theme/default/answers.php:18
+#: includes/bp.php:239 includes/post_types.php:140 theme/default/answers.php:18
 msgid "answer"
 msgstr "réponse"
 
@@ -2467,7 +2462,7 @@ msgstr "réponse acceptée"
 
 #: includes/theme.php:317
 msgid "Solved"
-msgstr "Non résolues"
+msgstr "Résolue"
 
 #: includes/theme.php:321
 msgid "<i>%d views</i>"
@@ -2479,15 +2474,15 @@ msgstr "Plus d'actions"
 
 #: includes/theme.php:569
 msgid "Answered"
-msgstr "Répondues"
+msgstr "Répondue"
 
 #: includes/theme.php:570 widgets/questions.php:86
 msgid "Unanswered"
-msgstr "Non répondues"
+msgstr "Non répondue"
 
 #: includes/theme.php:571
 msgid "Unsolved"
-msgstr "Non résolues"
+msgstr "Non résolue"
 
 #: includes/theme.php:581 widgets/users.php:80
 msgid "Sort by"
@@ -3187,11 +3182,11 @@ msgstr ""
 msgid "Ask questions"
 msgstr "Question posées"
 
-#: widgets/ask-form.php:38 widgets/followers.php:73
-#: widgets/participants.php:48 widgets/question_stats.php:69
-#: widgets/questions.php:76 widgets/quick-ask.php:33
-#: widgets/related_questions.php:78 widgets/search.php:58
-#: widgets/subscribe.php:58 widgets/user.php:52 widgets/users.php:68
+#: widgets/ask-form.php:38 widgets/followers.php:73 widgets/participants.php:48
+#: widgets/question_stats.php:69 widgets/questions.php:76
+#: widgets/quick-ask.php:33 widgets/related_questions.php:78
+#: widgets/search.php:58 widgets/subscribe.php:58 widgets/user.php:52
+#: widgets/users.php:68
 msgid "Title:"
 msgstr "Titre :"
 
