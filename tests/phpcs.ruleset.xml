@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<ruleset name="Axelerant">
+	<description>
+		Custom PHPCS rules
+	</description>
+
+	<exclude-pattern>includes/libraries/</exclude-pattern>
+	<exclude-pattern>tests/</exclude-pattern>
+
+	<rule ref="WordPress-Core">
+		<exclude name="Generic.WhiteSpace.ScopeIndent.Incorrect" />
+		<exclude name="PEAR.Functions.FunctionCallSignature.Indent" />
+	</rule>
+
+	<!-- Extras -->
+	<rule ref="WordPress.PHP.DiscouragedFunctions"/>
+
+	<!-- VIP -->
+	<rule ref="WordPress.Arrays.ArrayAssignmentRestrictions"/>
+	<rule ref="WordPress.Functions.FunctionRestrictions"/>
+	<rule ref="WordPress.Variables.VariableRestrictions"/>
+</ruleset>

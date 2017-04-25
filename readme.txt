@@ -97,6 +97,19 @@ Read full FAQ here https://anspress.io/docs/?topic=faq
 
 == Changelog ==
 
+= 4.0.3 =
+
+ * Improved updater
+ * Fixed: fatal error while deleting a question
+
+= 4.0.2 =
+
+ * Minor fixes
+
+= 4.0.1 =
+
+ * Minor fixes
+
 = 4.0.0 =
 
 ** Beta 4 **
