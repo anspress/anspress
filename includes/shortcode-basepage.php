@@ -59,9 +59,9 @@ class AnsPress_BasePage_Shortcode {
 		}
 
 		wp_enqueue_script( 'anspress-main' );
+		wp_enqueue_script( 'anspress-theme' );
 		wp_enqueue_style( 'anspress-main' );
 		wp_enqueue_style( 'anspress-fonts' );
-		wp_enqueue_style( 'anspress-rtl' );
 
 		$ap_shortcode_loaded = true;
 

@@ -600,6 +600,7 @@ function ap_assets() {
 			'main'          => [ 'dep' => [ 'jquery', 'jquery-form', 'underscore', 'backbone' ], 'footer' => true ],
 			'upload'        => [ 'dep' => [ 'plupload', 'anspress-main' ], 'footer' => true ],
 			'notifications' => [ 'dep' => [ 'anspress-main' ], 'footer' => true ],
+			'theme' 				=> [ 'theme' => true, 'dep' => [ 'anspress-main' ], 'footer' => true ],
 		),
 		'css' => array(
 			'main'  => array( 'theme' => true, 'dep' => [ 'anspress-fonts' ] ),
