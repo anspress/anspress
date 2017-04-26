@@ -3,12 +3,13 @@
  * Display single question category page.
  */
 ?>
+
 <div class="ap-category">
 	<?php dynamic_sidebar( 'ap-top' ); ?>
 	<div class="row">
 		<div id="ap-lists" class="<?php echo is_active_sidebar( 'ap-category' ) && is_anspress() ? 'ap-col-9' : 'ap-col-12' ?>">
 
-			<?php if( ap_category_have_image( $question_category->term_id ) ): ?>
+			<?php if ( ap_category_have_image( $question_category->term_id ) ) : ?>
 				<div class="ap-category-feat" style="height: 300px;">
 					<?php ap_category_image( $question_category->term_id, 300 ); ?>
 				</div>
@@ -21,13 +22,14 @@
 				<div class="no-overflow">
 					<div>
 						<a class="entry-title" href="<?php echo get_category_link( $question_category );?>">
-							<?php echo $question_category->name;?>
+							<?php echo esc_html( $question_category->name ); ?>
 						</a>
 						<span class="ap-tax-count">
 							<?php
+
 								printf(
-									_n( '1 Question', '%s Questions', $question_category->count, 'anspress-question-answer' ),
-									$question_category->count
+									_n( '%d Question', '%d Questions', (int) $question_category->count, 'anspress-question-answer' ),
+									(int) $question_category->count
 								);
 							?>
 						</span>

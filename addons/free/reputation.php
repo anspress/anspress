@@ -30,6 +30,7 @@ class AnsPress_Reputation_Hooks {
 	 */
 	public static function init() {
 		SELF::register_default_events();
+		
 		anspress()->add_action( 'ap_option_groups', __CLASS__, 'load_options' );
 		anspress()->add_action( 'wp_ajax_ap_save_events', __CLASS__, 'ap_save_events' );
 		anspress()->add_action( 'ap_after_new_question', __CLASS__, 'new_question', 10, 2 );

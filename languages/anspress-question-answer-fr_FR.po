@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: AnsPress 2.2\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/anspress-question-"
 "answer\n"
-"POT-Creation-Date: 2017-04-25 15:10:43+00:00\n"
+"POT-Creation-Date: 2017-04-26 09:25:07+00:00\n"
 "PO-Revision-Date: 2015-12-15 09:17+0530\n"
 "Last-Translator: \n"
 "Language-Team: Romain <bbig86@gmail.com>\n"
@@ -179,7 +179,8 @@ msgid "Display AnsPress categories"
 msgstr "Anspress catégories séparées par des virgules"
 
 #: addons/free/category/widget.php:66 addons/free/category.php:729
-#: templates/addons/category/categories.php:27 templates/addons/tag/tags.php:38
+#: templates/addons/category/categories.php:29
+#: templates/addons/category/category.php:31 templates/addons/tag/tags.php:38
 #, fuzzy
 msgid "%d Question"
 msgid_plural "%d Questions"
@@ -458,14 +459,16 @@ msgid "Remove image"
 msgstr "Enlever"
 
 #: addons/free/category.php:609
+#, fuzzy
 msgid "Featured image for category"
-msgstr ""
+msgstr "Catégorie"
 
 #: addons/free/category.php:623
+#, fuzzy
 msgid "Category icon color"
-msgstr ""
+msgstr "Catégorie"
 
-#: addons/free/category.php:732 templates/addons/category/categories.php:42
+#: addons/free/category.php:732 templates/addons/category/categories.php:47
 #, fuzzy
 msgid "%d Sub category"
 msgid_plural "%d Sub categories"
@@ -841,168 +844,168 @@ msgstr "Echec de la vérification du robot."
 msgid "reCaptach keys missing, please add keys"
 msgstr "clefs reCaptach manquantes, merci de vérifier"
 
-#: addons/free/reputation.php:67 addons/free/reputation.php:349
+#: addons/free/reputation.php:68 addons/free/reputation.php:350
 msgid "Reputation"
 msgstr "Réputation"
 
-#: addons/free/reputation.php:68
+#: addons/free/reputation.php:69
 #, fuzzy
 msgid "Events"
 msgstr "Evenement"
 
-#: addons/free/reputation.php:77
+#: addons/free/reputation.php:78
 #, fuzzy
 msgid "Registration"
 msgstr "Créer un compte"
 
-#: addons/free/reputation.php:78
+#: addons/free/reputation.php:79
 msgid "Points awarded when user account is created"
 msgstr ""
 
-#: addons/free/reputation.php:80
+#: addons/free/reputation.php:81
 #, fuzzy
 msgid "Registered"
 msgstr "S'inscrire"
 
-#: addons/free/reputation.php:86
+#: addons/free/reputation.php:87
 msgid "Asking"
 msgstr ""
 
-#: addons/free/reputation.php:87
+#: addons/free/reputation.php:88
 msgid "Points awarded when user asks a question"
 msgstr ""
 
-#: addons/free/reputation.php:89
+#: addons/free/reputation.php:90
 #, fuzzy
 msgid "Asked a question"
 msgstr "Poser une question"
 
-#: addons/free/reputation.php:95
+#: addons/free/reputation.php:96
 #, fuzzy
 msgid "Answering"
 msgstr "Réponse"
 
-#: addons/free/reputation.php:96
+#: addons/free/reputation.php:97
 #, fuzzy
 msgid "Points awarded when user answer a question"
 msgstr "Seulement l'administrateur peut répondre aux questions."
 
-#: addons/free/reputation.php:98
+#: addons/free/reputation.php:99
 #, fuzzy
 msgid "Posted an answer"
 msgstr "Soumettre la réponse"
 
-#: addons/free/reputation.php:104
+#: addons/free/reputation.php:105
 #, fuzzy
 msgid "Commenting"
 msgstr "Commenter"
 
-#: addons/free/reputation.php:105
+#: addons/free/reputation.php:106
 #, fuzzy
 msgid "Points awarded when user comment on question or answer"
 msgstr "Vous ne pouvez pas voter sur votre propre question ou réponse."
 
-#: addons/free/reputation.php:107
+#: addons/free/reputation.php:108
 #, fuzzy
 msgid "Commented on a post"
 msgstr "Interdire les commentaire sur une réponse."
 
-#: addons/free/reputation.php:113
+#: addons/free/reputation.php:114
 #, fuzzy
 msgid "Selecting an Answer"
 msgstr "Sélection d'une réponse"
 
-#: addons/free/reputation.php:114
+#: addons/free/reputation.php:115
 msgid "Points awarded when user select an answer for thier question"
 msgstr ""
 
-#: addons/free/reputation.php:116
+#: addons/free/reputation.php:117
 #, fuzzy
 msgid "Selected an answer as best"
 msgstr "Sélectionner cette réponse comme la meilleure"
 
-#: addons/free/reputation.php:122
+#: addons/free/reputation.php:123
 #, fuzzy
 msgid "Answer selected as best"
 msgstr "Lorsqu'un utilisateur selectionne la meilleure réponse."
 
-#: addons/free/reputation.php:123
+#: addons/free/reputation.php:124
 #, fuzzy
 msgid "Points awarded when user's answer selected as best"
 msgstr "Lorsqu'un utilisateur selectionne la meilleure réponse."
 
-#: addons/free/reputation.php:125
+#: addons/free/reputation.php:126
 #, fuzzy
 msgid "Answer was selected as best"
 msgstr "Lorsqu'un utilisateur selectionne la meilleure réponse."
 
-#: addons/free/reputation.php:131
+#: addons/free/reputation.php:132
 #, fuzzy
 msgid "Received up vote"
 msgstr "+1 sur sa réponse"
 
-#: addons/free/reputation.php:132
+#: addons/free/reputation.php:133
 #, fuzzy
 msgid "Points awarded when user receive an upvote"
 msgstr "Lorsqu'un utilisateur recoit un +1 sur une sa réponse"
 
-#: addons/free/reputation.php:134
+#: addons/free/reputation.php:135
 #, fuzzy
 msgid "Received an upvote"
 msgstr "-1 sur %s %s"
 
-#: addons/free/reputation.php:139
+#: addons/free/reputation.php:140
 #, fuzzy
 msgid "Received down vote"
 msgstr "-1 sur %s %s"
 
-#: addons/free/reputation.php:140
+#: addons/free/reputation.php:141
 #, fuzzy
 msgid "Points awarded when user receive a down vote"
 msgstr "Lorsqu'un utilisateur recoit un +1 sur une sa réponse"
 
-#: addons/free/reputation.php:142
+#: addons/free/reputation.php:143
 #, fuzzy
 msgid "Received a down vote"
 msgstr "-1 sur %s %s"
 
-#: addons/free/reputation.php:147
+#: addons/free/reputation.php:148
 msgid "Gives an up vote"
 msgstr ""
 
-#: addons/free/reputation.php:148
+#: addons/free/reputation.php:149
 msgid "Points taken from user when they give a vote up"
 msgstr ""
 
-#: addons/free/reputation.php:150
+#: addons/free/reputation.php:151
 #, fuzzy
 msgid "Given an up vote"
 msgstr "Envoi de votre vote en cours"
 
-#: addons/free/reputation.php:155
+#: addons/free/reputation.php:156
 #, fuzzy
 msgid "Gives down vote"
 msgstr "Désactiver les votes négatifs"
 
-#: addons/free/reputation.php:156
+#: addons/free/reputation.php:157
 msgid "Points taken from user when user give a down vote"
 msgstr ""
 
-#: addons/free/reputation.php:158
+#: addons/free/reputation.php:159
 #, fuzzy
 msgid "Given a down vote"
 msgstr "-1 sur %s %s"
 
-#: addons/free/reputation.php:183
+#: addons/free/reputation.php:184
 #, fuzzy
 msgid "Successfully updated reputation points!"
 msgstr "Mot clé créé avec succès."
 
-#: addons/free/reputation.php:371
+#: addons/free/reputation.php:372
 msgid "%s Reputation"
 msgstr "%s Points"
 
-#: addons/free/reputation.php:380 addons/free/reputation.php:430
+#: addons/free/reputation.php:381 addons/free/reputation.php:431
 #, fuzzy
 msgid "Reputations"
 msgstr "Réputation"
@@ -1374,14 +1377,14 @@ msgstr "L'auteur de la question peut répondre"
 msgid "<strong>%d</strong> Answer"
 msgid_plural "<strong>%d</strong> Answers"
 msgstr[0] "<strong>1</strong> Réponse"
-msgstr[1] "<strong>%d</strong> Réponses"
+msgstr[1] "<strong>1</strong> Réponse"
 
 #: admin/meta-box.php:99
 #, fuzzy
 msgid "<strong>%d</strong> Vote"
 msgid_plural "<strong>%d</strong> Votes"
 msgstr[0] "<strong>1</strong> Vote"
-msgstr[1] "<strong>%d</strong> Votes"
+msgstr[1] "<strong>1</strong> Vote"
 
 #: admin/meta-box.php:102
 #, fuzzy
@@ -2318,8 +2321,9 @@ msgid ""
 msgstr ""
 
 #: admin/views/uninstall.php:40
+#, fuzzy
 msgid "Permanently delete all answers?"
-msgstr ""
+msgstr "Selectionner une question pour faire une réponse"
 
 #: admin/views/uninstall.php:46
 #, fuzzy
@@ -2333,20 +2337,23 @@ msgid ""
 msgstr ""
 
 #: admin/views/uninstall.php:52
+#, fuzzy
 msgid "Permanently delete all AnsPress user data?"
-msgstr ""
+msgstr "Selectionner une question pour faire une réponse"
 
 #: admin/views/uninstall.php:55
+#, fuzzy
 msgid "Delete all user data"
-msgstr ""
+msgstr "a selectionné une reponse"
 
 #: admin/views/uninstall.php:56
 msgid "Clicking this button will delete all user data added by AnsPress"
 msgstr ""
 
 #: admin/views/uninstall.php:61
+#, fuzzy
 msgid "Permanently delete all AnsPress options?"
-msgstr ""
+msgstr "Selectionner une question pour faire une réponse"
 
 #: admin/views/uninstall.php:64
 #, fuzzy
@@ -2358,20 +2365,23 @@ msgid "Clicking this button will delete all AnsPress options"
 msgstr ""
 
 #: admin/views/uninstall.php:70
+#, fuzzy
 msgid "Permanently delete all AnsPress terms?"
-msgstr ""
+msgstr "Selectionner une question pour faire une réponse"
 
 #: admin/views/uninstall.php:73
+#, fuzzy
 msgid "Delete all terms"
-msgstr ""
+msgstr "Supprimer cette notification"
 
 #: admin/views/uninstall.php:74
 msgid "Clicking this button will delete all AnsPress terms data"
 msgstr ""
 
 #: admin/views/uninstall.php:79
+#, fuzzy
 msgid "Permanently delete all AnsPress tables?"
-msgstr ""
+msgstr "Selectionner une question pour faire une réponse"
 
 #: admin/views/uninstall.php:82
 msgid "Delete all database tables"
@@ -2908,8 +2918,9 @@ msgid "Something went wrong, please try again"
 msgstr "Quelque chose ne va pas, veuillez réessayer."
 
 #: includes/common-pages.php:157
+#, fuzzy
 msgid "Sorry, you cannot edit this answer."
-msgstr ""
+msgstr "Editer cette réponse"
 
 #: includes/flag.php:36
 msgid "You have already reported this post."
@@ -3388,8 +3399,9 @@ msgid "AnsPress shortcode cannot be nested."
 msgstr ""
 
 #: includes/shortcode-basepage.php:79
+#, fuzzy
 msgid "Question and answer is powered by"
-msgstr ""
+msgstr "Chercher dans les questions/réponses"
 
 #: includes/taxo.php:322
 #, fuzzy
@@ -3506,8 +3518,9 @@ msgid "Failed"
 msgstr ""
 
 #: includes/upload.php:228
+#, fuzzy
 msgid "Insert to post"
-msgstr ""
+msgstr "-1"
 
 #: includes/upload.php:281
 msgid "Insert images and attach media by %1$sselecting them%2$s"
@@ -3539,19 +3552,12 @@ msgstr "-1"
 msgid "View all questions"
 msgstr "Nouvelles questions"
 
-#: templates/addons/category/category.php:29 templates/addons/tag/tag.php:12
-#, fuzzy
-msgid "1 Question"
-msgid_plural "%s Questions"
-msgstr[0] "Question"
-msgstr[1] "Question"
-
-#: templates/addons/category/category.php:48
+#: templates/addons/category/category.php:50
 #, fuzzy
 msgid "Sub Categories"
 msgstr "Catégorie"
 
-#: templates/addons/category/no-category-found.php:15
+#: templates/addons/category/no-category-found.php:14
 msgid "No category is set!"
 msgstr ""
 
@@ -3591,6 +3597,13 @@ msgstr ""
 #, fuzzy
 msgid "Question tag: %s"
 msgstr "Statistiques de la question"
+
+#: templates/addons/tag/tag.php:12
+#, fuzzy
+msgid "1 Question"
+msgid_plural "%s Questions"
+msgstr[0] "Question"
+msgstr[1] "Question"
 
 #: templates/addons/tag/tags.php:23
 #, fuzzy
@@ -3843,7 +3856,7 @@ msgstr ""
 msgid "1 Answer"
 msgid_plural "%d Answers"
 msgstr[0] "1 Réponse"
-msgstr[1] "%d Réponses"
+msgstr[1] "1 Réponse"
 
 #: templates/widgets/widget-questions.php:19
 #, fuzzy
@@ -3886,16 +3899,18 @@ msgid "Shows question stats in single question page."
 msgstr ""
 
 #: widgets/question_stats.php:48
+#, fuzzy
 msgid "One time"
 msgid_plural "%d times"
 msgstr[0] "Une fois"
-msgstr[1] "%d fois"
+msgstr[1] "Une fois"
 
 #: widgets/question_stats.php:49
+#, fuzzy
 msgid "%2$s1%3$s answer"
 msgid_plural "%2$s%1$d%3$s answers"
 msgstr[0] "%2$s1%3$s réponse"
-msgstr[1] "%2$s%1$d%3$s réponses"
+msgstr[1] "%2$s1%3$s réponse"
 
 #: widgets/question_stats.php:52
 msgid "This widget can only be used in single question page"
@@ -3938,8 +3953,9 @@ msgid "Question and answer search form."
 msgstr ""
 
 #. Plugin Name of the plugin/theme
+#, fuzzy
 msgid "AnsPress"
-msgstr ""
+msgstr "A propos"
 
 #. Author URI of the plugin/theme
 msgid "https://anspress.io"
@@ -3996,6 +4012,12 @@ msgstr "Question"
 msgctxt "Post Type Singular Name"
 msgid "Answer"
 msgstr "Réponse"
+
+#, fuzzy
+#~ msgid "%s comment approved"
+#~ msgid_plural "%s comments approved"
+#~ msgstr[0] "commenté"
+#~ msgstr[1] "commenté"
 
 #~ msgid "Points"
 #~ msgstr "Points"

@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: AnsPress 4.0.3\n"
 "Report-Msgid-Bugs-To: "
 "https://wordpress.org/support/plugin/anspress-question-answer\n"
-"POT-Creation-Date: 2017-04-25 15:19:21+00:00\n"
+"POT-Creation-Date: 2017-04-26 09:25:07+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -172,7 +172,8 @@ msgid "Display AnsPress categories"
 msgstr ""
 
 #: addons/free/category/widget.php:66 addons/free/category.php:729
-#: templates/addons/category/categories.php:27 templates/addons/tag/tags.php:38
+#: templates/addons/category/categories.php:29
+#: templates/addons/category/category.php:31 templates/addons/tag/tags.php:38
 msgid "%d Question"
 msgid_plural "%d Questions"
 msgstr[0] ""
@@ -426,7 +427,7 @@ msgstr ""
 msgid "Category icon color"
 msgstr ""
 
-#: addons/free/category.php:732 templates/addons/category/categories.php:42
+#: addons/free/category.php:732 templates/addons/category/categories.php:47
 msgid "%d Sub category"
 msgid_plural "%d Sub categories"
 msgstr[0] ""
@@ -768,143 +769,143 @@ msgstr ""
 msgid "reCaptach keys missing, please add keys"
 msgstr ""
 
-#: addons/free/reputation.php:67 addons/free/reputation.php:349
+#: addons/free/reputation.php:68 addons/free/reputation.php:350
 msgid "Reputation"
 msgstr ""
 
-#: addons/free/reputation.php:68
+#: addons/free/reputation.php:69
 msgid "Events"
 msgstr ""
 
-#: addons/free/reputation.php:77
+#: addons/free/reputation.php:78
 msgid "Registration"
 msgstr ""
 
-#: addons/free/reputation.php:78
+#: addons/free/reputation.php:79
 msgid "Points awarded when user account is created"
 msgstr ""
 
-#: addons/free/reputation.php:80
+#: addons/free/reputation.php:81
 msgid "Registered"
 msgstr ""
 
-#: addons/free/reputation.php:86
+#: addons/free/reputation.php:87
 msgid "Asking"
 msgstr ""
 
-#: addons/free/reputation.php:87
+#: addons/free/reputation.php:88
 msgid "Points awarded when user asks a question"
 msgstr ""
 
-#: addons/free/reputation.php:89
+#: addons/free/reputation.php:90
 msgid "Asked a question"
 msgstr ""
 
-#: addons/free/reputation.php:95
+#: addons/free/reputation.php:96
 msgid "Answering"
 msgstr ""
 
-#: addons/free/reputation.php:96
+#: addons/free/reputation.php:97
 msgid "Points awarded when user answer a question"
 msgstr ""
 
-#: addons/free/reputation.php:98
+#: addons/free/reputation.php:99
 msgid "Posted an answer"
 msgstr ""
 
-#: addons/free/reputation.php:104
+#: addons/free/reputation.php:105
 msgid "Commenting"
 msgstr ""
 
-#: addons/free/reputation.php:105
+#: addons/free/reputation.php:106
 msgid "Points awarded when user comment on question or answer"
 msgstr ""
 
-#: addons/free/reputation.php:107
+#: addons/free/reputation.php:108
 msgid "Commented on a post"
 msgstr ""
 
-#: addons/free/reputation.php:113
+#: addons/free/reputation.php:114
 msgid "Selecting an Answer"
 msgstr ""
 
-#: addons/free/reputation.php:114
+#: addons/free/reputation.php:115
 msgid "Points awarded when user select an answer for thier question"
 msgstr ""
 
-#: addons/free/reputation.php:116
+#: addons/free/reputation.php:117
 msgid "Selected an answer as best"
 msgstr ""
 
-#: addons/free/reputation.php:122
+#: addons/free/reputation.php:123
 msgid "Answer selected as best"
 msgstr ""
 
-#: addons/free/reputation.php:123
+#: addons/free/reputation.php:124
 msgid "Points awarded when user's answer selected as best"
 msgstr ""
 
-#: addons/free/reputation.php:125
+#: addons/free/reputation.php:126
 msgid "Answer was selected as best"
 msgstr ""
 
-#: addons/free/reputation.php:131
+#: addons/free/reputation.php:132
 msgid "Received up vote"
 msgstr ""
 
-#: addons/free/reputation.php:132
+#: addons/free/reputation.php:133
 msgid "Points awarded when user receive an upvote"
 msgstr ""
 
-#: addons/free/reputation.php:134
+#: addons/free/reputation.php:135
 msgid "Received an upvote"
 msgstr ""
 
-#: addons/free/reputation.php:139
+#: addons/free/reputation.php:140
 msgid "Received down vote"
 msgstr ""
 
-#: addons/free/reputation.php:140
+#: addons/free/reputation.php:141
 msgid "Points awarded when user receive a down vote"
 msgstr ""
 
-#: addons/free/reputation.php:142
+#: addons/free/reputation.php:143
 msgid "Received a down vote"
 msgstr ""
 
-#: addons/free/reputation.php:147
+#: addons/free/reputation.php:148
 msgid "Gives an up vote"
 msgstr ""
 
-#: addons/free/reputation.php:148
+#: addons/free/reputation.php:149
 msgid "Points taken from user when they give a vote up"
 msgstr ""
 
-#: addons/free/reputation.php:150
+#: addons/free/reputation.php:151
 msgid "Given an up vote"
 msgstr ""
 
-#: addons/free/reputation.php:155
+#: addons/free/reputation.php:156
 msgid "Gives down vote"
 msgstr ""
 
-#: addons/free/reputation.php:156
+#: addons/free/reputation.php:157
 msgid "Points taken from user when user give a down vote"
 msgstr ""
 
-#: addons/free/reputation.php:158
+#: addons/free/reputation.php:159
 msgid "Given a down vote"
 msgstr ""
 
-#: addons/free/reputation.php:183
+#: addons/free/reputation.php:184
 msgid "Successfully updated reputation points!"
 msgstr ""
 
-#: addons/free/reputation.php:371
+#: addons/free/reputation.php:372
 msgid "%s Reputation"
 msgstr ""
 
-#: addons/free/reputation.php:380 addons/free/reputation.php:430
+#: addons/free/reputation.php:381 addons/free/reputation.php:431
 msgid "Reputations"
 msgstr ""
 
@@ -3236,17 +3237,11 @@ msgstr ""
 msgid "View all questions"
 msgstr ""
 
-#: templates/addons/category/category.php:29 templates/addons/tag/tag.php:12
-msgid "1 Question"
-msgid_plural "%s Questions"
-msgstr[0] ""
-msgstr[1] ""
-
-#: templates/addons/category/category.php:48
+#: templates/addons/category/category.php:50
 msgid "Sub Categories"
 msgstr ""
 
-#: templates/addons/category/no-category-found.php:15
+#: templates/addons/category/no-category-found.php:14
 msgid "No category is set!"
 msgstr ""
 
@@ -3282,6 +3277,12 @@ msgstr ""
 #: templates/addons/tag/tag.php:12
 msgid "Question tag: %s"
 msgstr ""
+
+#: templates/addons/tag/tag.php:12
+msgid "1 Question"
+msgid_plural "%s Questions"
+msgstr[0] ""
+msgstr[1] ""
 
 #: templates/addons/tag/tags.php:23
 msgid "Search tags..."

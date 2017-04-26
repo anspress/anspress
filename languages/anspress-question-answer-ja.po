@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: AnsPress 2.3.3\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/anspress-question-"
 "answer\n"
-"POT-Creation-Date: 2017-04-25 15:10:43+00:00\n"
+"POT-Creation-Date: 2017-04-26 09:25:07+00:00\n"
 "PO-Revision-Date: 2015-12-15 09:19+0530\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -177,7 +177,8 @@ msgid "Display AnsPress categories"
 msgstr "カテゴリはコンマで分けます"
 
 #: addons/free/category/widget.php:66 addons/free/category.php:729
-#: templates/addons/category/categories.php:27 templates/addons/tag/tags.php:38
+#: templates/addons/category/categories.php:29
+#: templates/addons/category/category.php:31 templates/addons/tag/tags.php:38
 #, fuzzy
 msgid "%d Question"
 msgid_plural "%d Questions"
@@ -455,14 +456,16 @@ msgid "Remove image"
 msgstr "移動"
 
 #: addons/free/category.php:609
+#, fuzzy
 msgid "Featured image for category"
-msgstr ""
+msgstr "AnsPress カテゴリページ"
 
 #: addons/free/category.php:623
+#, fuzzy
 msgid "Category icon color"
-msgstr ""
+msgstr "カテゴリ IDs:"
 
-#: addons/free/category.php:732 templates/addons/category/categories.php:42
+#: addons/free/category.php:732 templates/addons/category/categories.php:47
 #, fuzzy
 msgid "%d Sub category"
 msgid_plural "%d Sub categories"
@@ -836,167 +839,167 @@ msgstr "Botの検証が失敗しました。"
 msgid "reCaptach keys missing, please add keys"
 msgstr "reCaptachキーが見つかりません、再度キーを追加してください。"
 
-#: addons/free/reputation.php:67 addons/free/reputation.php:349
+#: addons/free/reputation.php:68 addons/free/reputation.php:350
 msgid "Reputation"
 msgstr "ポイント"
 
-#: addons/free/reputation.php:68
+#: addons/free/reputation.php:69
 #, fuzzy
 msgid "Events"
 msgstr "イベント"
 
-#: addons/free/reputation.php:77
+#: addons/free/reputation.php:78
 #, fuzzy
 msgid "Registration"
 msgstr "新規登録"
 
-#: addons/free/reputation.php:78
+#: addons/free/reputation.php:79
 msgid "Points awarded when user account is created"
 msgstr ""
 
-#: addons/free/reputation.php:80
+#: addons/free/reputation.php:81
 msgid "Registered"
 msgstr ""
 
-#: addons/free/reputation.php:86
+#: addons/free/reputation.php:87
 msgid "Asking"
 msgstr ""
 
-#: addons/free/reputation.php:87
+#: addons/free/reputation.php:88
 msgid "Points awarded when user asks a question"
 msgstr ""
 
-#: addons/free/reputation.php:89
+#: addons/free/reputation.php:90
 #, fuzzy
 msgid "Asked a question"
 msgstr "質問する"
 
-#: addons/free/reputation.php:95
+#: addons/free/reputation.php:96
 #, fuzzy
 msgid "Answering"
 msgstr "回答"
 
-#: addons/free/reputation.php:96
+#: addons/free/reputation.php:97
 #, fuzzy
 msgid "Points awarded when user answer a question"
 msgstr "管理者のみが質問に答えることができます。"
 
-#: addons/free/reputation.php:98
+#: addons/free/reputation.php:99
 #, fuzzy
 msgid "Posted an answer"
 msgstr "回答を投稿"
 
-#: addons/free/reputation.php:104
+#: addons/free/reputation.php:105
 #, fuzzy
 msgid "Commenting"
 msgstr "コメント"
 
-#: addons/free/reputation.php:105
+#: addons/free/reputation.php:106
 #, fuzzy
 msgid "Points awarded when user comment on question or answer"
 msgstr "自分の質問回答には投票できません。"
 
-#: addons/free/reputation.php:107
+#: addons/free/reputation.php:108
 #, fuzzy
 msgid "Commented on a post"
 msgstr "回答へコメントされました"
 
-#: addons/free/reputation.php:113
+#: addons/free/reputation.php:114
 #, fuzzy
 msgid "Selecting an Answer"
 msgstr "回答を選択"
 
-#: addons/free/reputation.php:114
+#: addons/free/reputation.php:115
 msgid "Points awarded when user select an answer for thier question"
 msgstr ""
 
-#: addons/free/reputation.php:116
+#: addons/free/reputation.php:117
 #, fuzzy
 msgid "Selected an answer as best"
 msgstr "ベストアンサーに選ぶ"
 
-#: addons/free/reputation.php:122
+#: addons/free/reputation.php:123
 #, fuzzy
 msgid "Answer selected as best"
 msgstr "ユーザーの回答がベストアンサーに選ばれたとき"
 
-#: addons/free/reputation.php:123
+#: addons/free/reputation.php:124
 #, fuzzy
 msgid "Points awarded when user's answer selected as best"
 msgstr "ユーザーの回答がベストアンサーに選ばれたとき"
 
-#: addons/free/reputation.php:125
+#: addons/free/reputation.php:126
 #, fuzzy
 msgid "Answer was selected as best"
 msgstr "ユーザーの回答がベストアンサーに選ばれたとき"
 
-#: addons/free/reputation.php:131
+#: addons/free/reputation.php:132
 #, fuzzy
 msgid "Received up vote"
 msgstr "回答に投票されました"
 
-#: addons/free/reputation.php:132
+#: addons/free/reputation.php:133
 #, fuzzy
 msgid "Points awarded when user receive an upvote"
 msgstr "ユーザーが回答に投票をもらったとき"
 
-#: addons/free/reputation.php:134
+#: addons/free/reputation.php:135
 #, fuzzy
 msgid "Received an upvote"
 msgstr "回答に投票されました"
 
-#: addons/free/reputation.php:139
+#: addons/free/reputation.php:140
 #, fuzzy
 msgid "Received down vote"
 msgstr "回答が下げ票されました"
 
-#: addons/free/reputation.php:140
+#: addons/free/reputation.php:141
 #, fuzzy
 msgid "Points awarded when user receive a down vote"
 msgstr "ユーザーが回答に下げ票をもらったとき"
 
-#: addons/free/reputation.php:142
+#: addons/free/reputation.php:143
 #, fuzzy
 msgid "Received a down vote"
 msgstr "回答が下げ票されました"
 
-#: addons/free/reputation.php:147
+#: addons/free/reputation.php:148
 msgid "Gives an up vote"
 msgstr ""
 
-#: addons/free/reputation.php:148
+#: addons/free/reputation.php:149
 msgid "Points taken from user when they give a vote up"
 msgstr ""
 
-#: addons/free/reputation.php:150
+#: addons/free/reputation.php:151
 #, fuzzy
 msgid "Given an up vote"
 msgstr "あなたの投票を送信中"
 
-#: addons/free/reputation.php:155
+#: addons/free/reputation.php:156
 #, fuzzy
 msgid "Gives down vote"
 msgstr "下げ投票の無効"
 
-#: addons/free/reputation.php:156
+#: addons/free/reputation.php:157
 msgid "Points taken from user when user give a down vote"
 msgstr ""
 
-#: addons/free/reputation.php:158
+#: addons/free/reputation.php:159
 #, fuzzy
 msgid "Given a down vote"
 msgstr "下げ投票の無効"
 
-#: addons/free/reputation.php:183
+#: addons/free/reputation.php:184
 #, fuzzy
 msgid "Successfully updated reputation points!"
 msgstr "タグが作成されました。"
 
-#: addons/free/reputation.php:371
+#: addons/free/reputation.php:372
 msgid "%s Reputation"
 msgstr "%s ポイント"
 
-#: addons/free/reputation.php:380 addons/free/reputation.php:430
+#: addons/free/reputation.php:381 addons/free/reputation.php:431
 #, fuzzy
 msgid "Reputations"
 msgstr "ポイント"
@@ -2299,8 +2302,9 @@ msgid ""
 msgstr ""
 
 #: admin/views/uninstall.php:40
+#, fuzzy
 msgid "Permanently delete all answers?"
-msgstr ""
+msgstr "新しく回答すつ質問を選んでください"
 
 #: admin/views/uninstall.php:46
 #, fuzzy
@@ -2314,20 +2318,23 @@ msgid ""
 msgstr ""
 
 #: admin/views/uninstall.php:52
+#, fuzzy
 msgid "Permanently delete all AnsPress user data?"
-msgstr ""
+msgstr "新しく回答すつ質問を選んでください"
 
 #: admin/views/uninstall.php:55
+#, fuzzy
 msgid "Delete all user data"
-msgstr ""
+msgstr "回答が選択されました"
 
 #: admin/views/uninstall.php:56
 msgid "Clicking this button will delete all user data added by AnsPress"
 msgstr ""
 
 #: admin/views/uninstall.php:61
+#, fuzzy
 msgid "Permanently delete all AnsPress options?"
-msgstr ""
+msgstr "新しく回答すつ質問を選んでください"
 
 #: admin/views/uninstall.php:64
 #, fuzzy
@@ -2339,20 +2346,23 @@ msgid "Clicking this button will delete all AnsPress options"
 msgstr ""
 
 #: admin/views/uninstall.php:70
+#, fuzzy
 msgid "Permanently delete all AnsPress terms?"
-msgstr ""
+msgstr "新しく回答すつ質問を選んでください"
 
 #: admin/views/uninstall.php:73
+#, fuzzy
 msgid "Delete all terms"
-msgstr ""
+msgstr "通知を削除"
 
 #: admin/views/uninstall.php:74
 msgid "Clicking this button will delete all AnsPress terms data"
 msgstr ""
 
 #: admin/views/uninstall.php:79
+#, fuzzy
 msgid "Permanently delete all AnsPress tables?"
-msgstr ""
+msgstr "新しく回答すつ質問を選んでください"
 
 #: admin/views/uninstall.php:82
 msgid "Delete all database tables"
@@ -2886,8 +2896,9 @@ msgid "Something went wrong, please try again"
 msgstr "エラーです。再度お試しください。"
 
 #: includes/common-pages.php:157
+#, fuzzy
 msgid "Sorry, you cannot edit this answer."
-msgstr ""
+msgstr "この回答を編集する"
 
 #: includes/flag.php:36
 msgid "You have already reported this post."
@@ -3361,8 +3372,9 @@ msgid "AnsPress shortcode cannot be nested."
 msgstr ""
 
 #: includes/shortcode-basepage.php:79
+#, fuzzy
 msgid "Question and answer is powered by"
-msgstr ""
+msgstr "質問と回答を検索"
 
 #: includes/taxo.php:322
 #, fuzzy
@@ -3479,8 +3491,9 @@ msgid "Failed"
 msgstr ""
 
 #: includes/upload.php:228
+#, fuzzy
 msgid "Insert to post"
-msgstr ""
+msgstr "この投稿を下げ票"
 
 #: includes/upload.php:281
 msgid "Insert images and attach media by %1$sselecting them%2$s"
@@ -3512,18 +3525,12 @@ msgstr "この投稿を下げ票"
 msgid "View all questions"
 msgstr "新しい質問"
 
-#: templates/addons/category/category.php:29 templates/addons/tag/tag.php:12
-#, fuzzy
-msgid "1 Question"
-msgid_plural "%s Questions"
-msgstr[0] "質問"
-
-#: templates/addons/category/category.php:48
+#: templates/addons/category/category.php:50
 #, fuzzy
 msgid "Sub Categories"
 msgstr "カテゴリ"
 
-#: templates/addons/category/no-category-found.php:15
+#: templates/addons/category/no-category-found.php:14
 msgid "No category is set!"
 msgstr ""
 
@@ -3563,6 +3570,12 @@ msgstr ""
 #, fuzzy
 msgid "Question tag: %s"
 msgstr "質問の統計"
+
+#: templates/addons/tag/tag.php:12
+#, fuzzy
+msgid "1 Question"
+msgid_plural "%s Questions"
+msgstr[0] "質問"
 
 #: templates/addons/tag/tags.php:23
 #, fuzzy
@@ -3770,8 +3783,9 @@ msgid "Widgets in this area will be shown in authors page."
 msgstr "このエリアのウィジェットはユーザーページに表示されます。"
 
 #: templates/login-signup.php:17
+#, fuzzy
 msgid "Register"
-msgstr ""
+msgstr "新規登録"
 
 #: templates/login-signup.php:18
 msgid "or"
@@ -3852,11 +3866,13 @@ msgid "Shows question stats in single question page."
 msgstr ""
 
 #: widgets/question_stats.php:48
+#, fuzzy
 msgid "One time"
 msgid_plural "%d times"
 msgstr[0] "%d 回"
 
 #: widgets/question_stats.php:49
+#, fuzzy
 msgid "%2$s1%3$s answer"
 msgid_plural "%2$s%1$d%3$s answers"
 msgstr[0] "%2$s%1$d%3$s 回答"
@@ -3902,8 +3918,9 @@ msgid "Question and answer search form."
 msgstr ""
 
 #. Plugin Name of the plugin/theme
+#, fuzzy
 msgid "AnsPress"
-msgstr ""
+msgstr "AnsPressについて"
 
 #. Author URI of the plugin/theme
 msgid "https://anspress.io"
@@ -3960,6 +3977,11 @@ msgstr "Question"
 msgctxt "Post Type Singular Name"
 msgid "Answer"
 msgstr "Answer"
+
+#, fuzzy
+#~ msgid "%s comment approved"
+#~ msgid_plural "%s comments approved"
+#~ msgstr[0] "コメント済"
 
 #~ msgid "Points"
 #~ msgstr "ポイント"

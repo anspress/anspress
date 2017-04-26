@@ -21,7 +21,7 @@
     "grunt-potomo": "^3.5.0",
     "grunt-replace": "",
     "grunt-version": "",
-    "grunt-wp-i18n": "",
+    "grunt-wp-i18n": "^1.0.0",
     "grunt-wp-readme-to-markdown": "",
     "load-grunt-tasks": "",
     "time-grunt": ""

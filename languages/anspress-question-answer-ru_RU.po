@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: AnsPress 2.1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/anspress-question-"
 "answer\n"
-"POT-Creation-Date: 2017-04-25 15:10:43+00:00\n"
+"POT-Creation-Date: 2017-04-26 09:25:07+00:00\n"
 "PO-Revision-Date: 2015-12-15 09:20+0530\n"
 "Last-Translator: Zhandos Ulan <jandosul@mono.kz>\n"
 "Language-Team: \n"
@@ -175,7 +175,8 @@ msgid "Display AnsPress categories"
 msgstr "Страницы AnsPress"
 
 #: addons/free/category/widget.php:66 addons/free/category.php:729
-#: templates/addons/category/categories.php:27 templates/addons/tag/tags.php:38
+#: templates/addons/category/categories.php:29
+#: templates/addons/category/category.php:31 templates/addons/tag/tags.php:38
 #, fuzzy
 msgid "%d Question"
 msgid_plural "%d Questions"
@@ -454,10 +455,11 @@ msgid "Featured image for category"
 msgstr ""
 
 #: addons/free/category.php:623
+#, fuzzy
 msgid "Category icon color"
-msgstr ""
+msgstr "Категории"
 
-#: addons/free/category.php:732 templates/addons/category/categories.php:42
+#: addons/free/category.php:732 templates/addons/category/categories.php:47
 #, fuzzy
 msgid "%d Sub category"
 msgid_plural "%d Sub categories"
@@ -817,158 +819,158 @@ msgstr ""
 msgid "reCaptach keys missing, please add keys"
 msgstr ""
 
-#: addons/free/reputation.php:67 addons/free/reputation.php:349
+#: addons/free/reputation.php:68 addons/free/reputation.php:350
 msgid "Reputation"
 msgstr "Репутация"
 
-#: addons/free/reputation.php:68
+#: addons/free/reputation.php:69
 #, fuzzy
 msgid "Events"
 msgstr "Событие"
 
-#: addons/free/reputation.php:77
+#: addons/free/reputation.php:78
 #, fuzzy
 msgid "Registration"
 msgstr "Новая регистрация"
 
-#: addons/free/reputation.php:78
+#: addons/free/reputation.php:79
 msgid "Points awarded when user account is created"
 msgstr ""
 
-#: addons/free/reputation.php:80
+#: addons/free/reputation.php:81
 #, fuzzy
 msgid "Registered"
 msgstr "Зарегистрируйтесь"
 
-#: addons/free/reputation.php:86
+#: addons/free/reputation.php:87
 msgid "Asking"
 msgstr ""
 
-#: addons/free/reputation.php:87
+#: addons/free/reputation.php:88
 msgid "Points awarded when user asks a question"
 msgstr ""
 
-#: addons/free/reputation.php:89
+#: addons/free/reputation.php:90
 #, fuzzy
 msgid "Asked a question"
 msgstr "Задать вопрос"
 
-#: addons/free/reputation.php:95
+#: addons/free/reputation.php:96
 #, fuzzy
 msgid "Answering"
 msgstr "Ответ"
 
-#: addons/free/reputation.php:96
+#: addons/free/reputation.php:97
 #, fuzzy
 msgid "Points awarded when user answer a question"
 msgstr "Разрешить только админу отвечать на вопросы"
 
-#: addons/free/reputation.php:98
+#: addons/free/reputation.php:99
 #, fuzzy
 msgid "Posted an answer"
 msgstr "Отправить ответ"
 
-#: addons/free/reputation.php:104
+#: addons/free/reputation.php:105
 #, fuzzy
 msgid "Commenting"
 msgstr "Комментировать"
 
-#: addons/free/reputation.php:105
+#: addons/free/reputation.php:106
 #, fuzzy
 msgid "Points awarded when user comment on question or answer"
 msgstr "Вы не можете голосовать за свой вопрос или ответ."
 
-#: addons/free/reputation.php:107
+#: addons/free/reputation.php:108
 #, fuzzy
 msgid "Commented on a post"
 msgstr "Прокомментировал %s"
 
-#: addons/free/reputation.php:113
+#: addons/free/reputation.php:114
 #, fuzzy
 msgid "Selecting an Answer"
 msgstr "выбрал ответ"
 
-#: addons/free/reputation.php:114
+#: addons/free/reputation.php:115
 msgid "Points awarded when user select an answer for thier question"
 msgstr ""
 
-#: addons/free/reputation.php:116
+#: addons/free/reputation.php:117
 #, fuzzy
 msgid "Selected an answer as best"
 msgstr "Выбрать этот ответ как лучший"
 
-#: addons/free/reputation.php:122
+#: addons/free/reputation.php:123
 #, fuzzy
 msgid "Answer selected as best"
 msgstr "Когда ответ пользователя выбран как лучший"
 
-#: addons/free/reputation.php:123
+#: addons/free/reputation.php:124
 #, fuzzy
 msgid "Points awarded when user's answer selected as best"
 msgstr "Когда ответ пользователя выбран как лучший"
 
-#: addons/free/reputation.php:125
+#: addons/free/reputation.php:126
 #, fuzzy
 msgid "Answer was selected as best"
 msgstr "Когда ответ пользователя выбран как лучший"
 
-#: addons/free/reputation.php:131
+#: addons/free/reputation.php:132
 msgid "Received up vote"
 msgstr ""
 
-#: addons/free/reputation.php:132
+#: addons/free/reputation.php:133
 msgid "Points awarded when user receive an upvote"
 msgstr ""
 
-#: addons/free/reputation.php:134
+#: addons/free/reputation.php:135
 msgid "Received an upvote"
 msgstr ""
 
-#: addons/free/reputation.php:139
+#: addons/free/reputation.php:140
 msgid "Received down vote"
 msgstr ""
 
-#: addons/free/reputation.php:140
+#: addons/free/reputation.php:141
 msgid "Points awarded when user receive a down vote"
 msgstr ""
 
-#: addons/free/reputation.php:142
+#: addons/free/reputation.php:143
 msgid "Received a down vote"
 msgstr ""
 
-#: addons/free/reputation.php:147
+#: addons/free/reputation.php:148
 msgid "Gives an up vote"
 msgstr ""
 
-#: addons/free/reputation.php:148
+#: addons/free/reputation.php:149
 msgid "Points taken from user when they give a vote up"
 msgstr ""
 
-#: addons/free/reputation.php:150
+#: addons/free/reputation.php:151
 msgid "Given an up vote"
 msgstr ""
 
-#: addons/free/reputation.php:155
+#: addons/free/reputation.php:156
 msgid "Gives down vote"
 msgstr ""
 
-#: addons/free/reputation.php:156
+#: addons/free/reputation.php:157
 msgid "Points taken from user when user give a down vote"
 msgstr ""
 
-#: addons/free/reputation.php:158
+#: addons/free/reputation.php:159
 msgid "Given a down vote"
 msgstr ""
 
-#: addons/free/reputation.php:183
+#: addons/free/reputation.php:184
 msgid "Successfully updated reputation points!"
 msgstr ""
 
-#: addons/free/reputation.php:371
+#: addons/free/reputation.php:372
 msgid "%s Reputation"
 msgstr ""
 
-#: addons/free/reputation.php:380 addons/free/reputation.php:430
+#: addons/free/reputation.php:381 addons/free/reputation.php:431
 #, fuzzy
 msgid "Reputations"
 msgstr "Репутация"
@@ -1167,8 +1169,9 @@ msgid "Moderate"
 msgstr "Модерация"
 
 #: admin/anspress-admin.php:621 admin/anspress-admin.php:628
+#, fuzzy
 msgid "Private Post"
-msgstr ""
+msgstr "Разрешить частные вопросы"
 
 #: admin/anspress-admin.php:714
 #, fuzzy
@@ -2259,8 +2262,9 @@ msgid ""
 msgstr ""
 
 #: admin/views/uninstall.php:40
+#, fuzzy
 msgid "Permanently delete all answers?"
-msgstr ""
+msgstr "Выберите вопрос для нового ответа"
 
 #: admin/views/uninstall.php:46
 #, fuzzy
@@ -2274,20 +2278,23 @@ msgid ""
 msgstr ""
 
 #: admin/views/uninstall.php:52
+#, fuzzy
 msgid "Permanently delete all AnsPress user data?"
-msgstr ""
+msgstr "Выберите вопрос для нового ответа"
 
 #: admin/views/uninstall.php:55
+#, fuzzy
 msgid "Delete all user data"
-msgstr ""
+msgstr "выбрал ответ"
 
 #: admin/views/uninstall.php:56
 msgid "Clicking this button will delete all user data added by AnsPress"
 msgstr ""
 
 #: admin/views/uninstall.php:61
+#, fuzzy
 msgid "Permanently delete all AnsPress options?"
-msgstr ""
+msgstr "Выберите вопрос для нового ответа"
 
 #: admin/views/uninstall.php:64
 #, fuzzy
@@ -2299,20 +2306,23 @@ msgid "Clicking this button will delete all AnsPress options"
 msgstr ""
 
 #: admin/views/uninstall.php:70
+#, fuzzy
 msgid "Permanently delete all AnsPress terms?"
-msgstr ""
+msgstr "Выберите вопрос для нового ответа"
 
 #: admin/views/uninstall.php:73
+#, fuzzy
 msgid "Delete all terms"
-msgstr ""
+msgstr "Запретить удаление через"
 
 #: admin/views/uninstall.php:74
 msgid "Clicking this button will delete all AnsPress terms data"
 msgstr ""
 
 #: admin/views/uninstall.php:79
+#, fuzzy
 msgid "Permanently delete all AnsPress tables?"
-msgstr ""
+msgstr "Выберите вопрос для нового ответа"
 
 #: admin/views/uninstall.php:82
 msgid "Delete all database tables"
@@ -2616,8 +2626,9 @@ msgid "You cannot edit this question."
 msgstr "Редактировать этот вопрос"
 
 #: includes/ask-form.php:164
+#, fuzzy
 msgid "Post you are trying to edit is not a question."
-msgstr ""
+msgstr "Редактировать этот вопрос"
 
 #: includes/ask-form.php:172 includes/post-types.php:50
 msgid "Update question"
@@ -2700,8 +2711,9 @@ msgid "Not a valid email address"
 msgstr ""
 
 #: includes/class-theme.php:170 includes/class-theme.php:225
+#, fuzzy
 msgid "Question Feed"
-msgstr ""
+msgstr "Вопросы"
 
 #: includes/class-theme.php:226
 #, fuzzy
@@ -2837,8 +2849,9 @@ msgid "Something went wrong, please try again"
 msgstr "Что то пошло не так, попробуйте ещё."
 
 #: includes/common-pages.php:157
+#, fuzzy
 msgid "Sorry, you cannot edit this answer."
-msgstr ""
+msgstr "Редактировать этот ответ"
 
 #: includes/flag.php:36
 msgid "You have already reported this post."
@@ -3117,10 +3130,12 @@ msgid "%s"
 msgstr ""
 
 #: includes/post-status.php:28
+#, fuzzy
 msgid "Moderate <span class=\"count\">(%s)</span>"
 msgid_plural "Moderate <span class=\"count\">(%s)</span>"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Продолжить чтение <span class=\"meta-nav\">&rarr;</span>"
+msgstr[1] "Продолжить чтение <span class=\"meta-nav\">&rarr;</span>"
+msgstr[2] "Продолжить чтение <span class=\"meta-nav\">&rarr;</span>"
 
 #: includes/post-status.php:32 includes/post-status.php:98
 msgid "Private"
@@ -3131,6 +3146,7 @@ msgid "Private Post <span class=\"count\">(%s)</span>"
 msgid_plural "Private Post <span class=\"count\">(%s)</span>"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
 
 #: includes/post-status.php:53
 msgid "You are not allowed to change post status"
@@ -3304,8 +3320,9 @@ msgid "AnsPress shortcode cannot be nested."
 msgstr ""
 
 #: includes/shortcode-basepage.php:79
+#, fuzzy
 msgid "Question and answer is powered by"
-msgstr ""
+msgstr "Вопросов %s"
 
 #: includes/taxo.php:322
 #, fuzzy
@@ -3452,20 +3469,12 @@ msgstr ""
 msgid "View all questions"
 msgstr "Просмотр вопроса"
 
-#: templates/addons/category/category.php:29 templates/addons/tag/tag.php:12
-#, fuzzy
-msgid "1 Question"
-msgid_plural "%s Questions"
-msgstr[0] "Вопрос"
-msgstr[1] "Вопрос"
-msgstr[2] "Вопрос"
-
-#: templates/addons/category/category.php:48
+#: templates/addons/category/category.php:50
 #, fuzzy
 msgid "Sub Categories"
 msgstr "Категории"
 
-#: templates/addons/category/no-category-found.php:15
+#: templates/addons/category/no-category-found.php:14
 msgid "No category is set!"
 msgstr ""
 
@@ -3492,8 +3501,9 @@ msgstr ""
 
 #: templates/addons/notification/index.php:46
 #: templates/addons/reputation/index.php:23
+#, fuzzy
 msgid "Load More"
-msgstr ""
+msgstr "Показать комментарии"
 
 #: templates/addons/tag/no-tags-found.php:15
 msgid "No tags is set!"
@@ -3503,6 +3513,14 @@ msgstr ""
 #, fuzzy
 msgid "Question tag: %s"
 msgstr "Статистика вопроса"
+
+#: templates/addons/tag/tag.php:12
+#, fuzzy
+msgid "1 Question"
+msgid_plural "%s Questions"
+msgstr[0] "Вопрос"
+msgstr[1] "Вопрос"
+msgstr[2] "Вопрос"
 
 #: templates/addons/tag/tags.php:23
 #, fuzzy
@@ -3746,6 +3764,7 @@ msgid "1 Answer"
 msgid_plural "%d Answers"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
 
 #: templates/widgets/widget-questions.php:19
 #, fuzzy
@@ -3793,12 +3812,14 @@ msgid "One time"
 msgid_plural "%d times"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
 
 #: widgets/question_stats.php:49
 msgid "%2$s1%3$s answer"
 msgid_plural "%2$s%1$d%3$s answers"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
 
 #: widgets/question_stats.php:52
 msgid "This widget can only be used in single question page"
@@ -3900,6 +3921,13 @@ msgstr "Вопрос"
 msgctxt "Post Type Singular Name"
 msgid "Answer"
 msgstr "Ответ"
+
+#, fuzzy
+#~ msgid "%s comment approved"
+#~ msgid_plural "%s comments approved"
+#~ msgstr[0] "прокомментировал"
+#~ msgstr[1] "прокомментировал"
+#~ msgstr[2] "прокомментировал"
 
 #~ msgid "Points"
 #~ msgstr "Очки"
@@ -4068,9 +4096,6 @@ msgstr "Ответ"
 
 #~ msgid "1 Reply"
 #~ msgstr "1 ответ"
-
-#~ msgid "Continue reading <span class=\"meta-nav\">&rarr;</span>"
-#~ msgstr "Продолжить чтение <span class=\"meta-nav\">&rarr;</span>"
 
 #~ msgid "Pages:"
 #~ msgstr "Страниц:"

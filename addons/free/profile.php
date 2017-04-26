@@ -10,7 +10,7 @@
  *
  * Addon Name:    User Profile
  * Addon URI:     https://anspress.io
- * Description:   Dipslay user profile.
+ * Description:   Display user profile.
  * Author:        Rahul Aryan
  * Author URI:    https://anspress.io
  */

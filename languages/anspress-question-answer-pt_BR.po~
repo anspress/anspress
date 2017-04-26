@@ -1,38 +1,39 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: AnsPress 2.4\n"
+"Project-Id-Version: AnsPress\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/anspress-question-"
 "answer\n"
-"POT-Creation-Date: 2017-04-26 09:25:07+00:00\n"
-"PO-Revision-Date: 2017-04-26 08:49+0000\n"
-"Last-Translator: Rahul Aryan <rah12@live.com>\n"
-"Language-Team: Hindi\n"
-"Language: hi-IN\n"
+"POT-Creation-Date: 2017-04-26 06:58:43+00:00\n"
+"PO-Revision-Date: 2015-12-15 09:19+0530\n"
+"Last-Translator: \n"
+"Language-Team: Wp3.in <rah12@live.com>\n"
+"Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Loco - https://localise.biz/\n"
-"X-Poedit-KeywordsList: __;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;"
-"_nx_noop:1,2,3c;esc_attr__;esc_html__;esc_attr_e;esc_html_e;esc_attr_x:1,2c;"
-"esc_html_x:1,2c\n"
-"Plural-Forms: nplurals=2; plural=n != 1\n"
-"X-Poedit-SourceCharset: UTF-8\n"
+"X-Generator: Poedit 1.7.3\n"
 "X-Poedit-Basepath: ..\n"
-"X-Textdomain-Support: yes\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
+"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.js\n"
 
 #: addons/free/avatar.php:77
 #, fuzzy
 msgid "Dynamic Avatar"
-msgstr "अवतार"
+msgstr "Avatar"
 
 #: addons/free/avatar.php:81
 msgid "Clear Cache"
 msgstr ""
 
 #: addons/free/avatar.php:81
+#, fuzzy
 msgid "Clear avatar cache"
-msgstr ""
+msgstr "Tamanho de avatar do usuário"
 
 #: addons/free/avatar.php:85
 msgid "Font family"
@@ -45,7 +46,7 @@ msgstr ""
 #: addons/free/avatar.php:98
 #, fuzzy
 msgid "Force avatar"
-msgstr "अवतार भेजे"
+msgstr "Carregar avatar"
 
 #: addons/free/avatar.php:99
 msgid ""
@@ -84,14 +85,14 @@ msgstr ""
 #: includes/options.php:110 includes/post-types.php:43 includes/taxo.php:79
 #: includes/taxo.php:372 widgets/questions.php:55
 msgid "Questions"
-msgstr "सवाल"
+msgstr "Perguntas"
 
 #: addons/free/buddypress.php:105 addons/free/buddypress.php:233
 #: addons/free/profile.php:104 admin/views/dashboard.php:226
 #: includes/post-types.php:113 widgets/question_stats.php:49
 #: widgets/questions.php:87
 msgid "Answers"
-msgstr "जवाब"
+msgstr "Respostas"
 
 #: addons/free/buddypress.php:150
 msgid "No AnsPress template found for rendering this page."
@@ -100,84 +101,85 @@ msgstr ""
 #: addons/free/buddypress.php:201
 #, fuzzy
 msgid "Load more questions"
-msgstr "अधिक बातचीत ला रहे है"
+msgstr "Carregando ais conversas"
 
 #: addons/free/buddypress.php:250 templates/addons/user/answers.php:29
 #, fuzzy
 msgid "Load more answers"
-msgstr "निचे मत प्राप्त जवाब"
+msgstr "Votado a favor nas respostas"
 
 #: addons/free/buddypress.php:267 addons/free/buddypress.php:268
 #: admin/meta-box.php:41 admin/options-fields.php:188
 #: includes/ajax-hooks.php:194 includes/common-pages.php:21
 #: includes/post-status.php:93 includes/post-types.php:65
 msgid "Question"
-msgstr "सवाल"
+msgstr "Pergunta"
 
 #: addons/free/buddypress.php:269
 msgid "%1$s asked a new <a href=\"AP_CPT_LINK\">question</a>"
-msgstr "%1$s ने नया <a href=\"AP_CPT_LINK\">सवाल</a> किया हैं"
+msgstr "%1$s fazer uma nova <a href=\"AP_CPT_LINK\">pergunta</a>"
 
 #: addons/free/buddypress.php:270
 msgid "%1$s asked a new <a href=\"AP_CPT_LINK\">question</a>, on the site %3$s"
-msgstr "%1$s ने साईट पर नया <a href=\"AP_CPT_LINK\">सवाल</a> किया हैं"
+msgstr "%1$s fazer um anova<a href=\"AP_CPT_LINK\">pergunta</a>, no site %3$s"
 
 #: addons/free/buddypress.php:277 addons/free/buddypress.php:278
 #: addons/free/buddypress.php:289 admin/options-fields.php:252
 #: admin/views/dashboard.php:34 includes/ajax-hooks.php:194
 #: includes/post-status.php:93 includes/post-types.php:135
 msgid "Answer"
-msgstr "जवाब"
+msgstr "Resposta"
 
 #: addons/free/buddypress.php:279
 msgid "%1$s <a href=\"AP_CPT_LINK\">answered</a> a question"
-msgstr "%1$s ने सवाल का <a href=\"AP_CPT_LINK\">जवाब</a> दिया है"
+msgstr "%1$s <a href=\"AP_CPT_LINK\">respondeu</a> uma pergunta"
 
 #: addons/free/buddypress.php:280
 msgid "%1$s <a href=\"AP_CPT_LINK\">answered</a> a question, on the site %3$s"
-msgstr "%1$s ने साईट पर सवाल का <a href=\"AP_CPT_LINK\">जवाब</a> दिया है"
+msgstr "%1$s <a href=\"AP_CPT_LINK\">resondeu</a> uma pergunta, no site %3$s"
 
 #: addons/free/buddypress.php:289
 msgid "Answer this question"
-msgstr "इस सवाल का जवाब दे"
+msgstr "Responda esta pergunta"
 
 #: addons/free/buddypress.php:373
 msgid "%1$d answers on - %2$s"
-msgstr "%1$d  जवाब  %2$s पर"
+msgstr "%1$d respondidas em - %2$s"
 
 #: addons/free/buddypress.php:377
 msgid "%1$s answered on - %2$s"
-msgstr "%1$s ने जवाब दिया %2$s पर"
+msgstr "%1$s respondida em - %2$s"
 
 #: addons/free/buddypress.php:384 addons/free/notification/query.php:313
 #: includes/comments.php:106 includes/post-types.php:64
 msgid "question"
-msgstr "सवाल"
+msgstr "Pergunta"
 
 #: addons/free/buddypress.php:384 addons/free/notification/query.php:315
 #: includes/comments.php:106 includes/post-types.php:134
 msgid "answer"
-msgstr "जवाब"
+msgstr "resposta"
 
 #: addons/free/buddypress.php:389
 msgid "%1$d comments on your %3$s - %2$s"
-msgstr "%1$d टिप्पणियाँ आपके %3$s - %2$s पर है"
+msgstr "%1$d comentários sobre você %3$s - %2$s"
 
 #: addons/free/buddypress.php:393
 msgid "%1$s commented on your %3$s - %2$s"
-msgstr "%1$s ने आपके %3$s - %2$s पर टिप्पणी की है"
+msgstr "%1$s comentado sobre você %3$s - %2$s"
 
 #: addons/free/category/widget.php:25
+#, fuzzy
 msgid "Display AnsPress categories"
-msgstr ""
+msgstr "Páginas Anspress"
 
 #: addons/free/category/widget.php:66 addons/free/category.php:729
-#: templates/addons/category/categories.php:29
-#: templates/addons/category/category.php:31 templates/addons/tag/tags.php:38
+#: templates/addons/category/categories.php:29 templates/addons/tag/tags.php:38
+#, fuzzy
 msgid "%d Question"
 msgid_plural "%d Questions"
-msgstr[0] "%d सवाल"
-msgstr[1] "%d सवाल"
+msgstr[0] "Pergunta"
+msgstr[1] "Pergunta"
 
 #: addons/free/category/widget.php:68
 msgid "%d Child"
@@ -187,56 +189,54 @@ msgstr ""
 #: addons/free/category.php:171 addons/free/category.php:227
 #: addons/free/category.php:492 addons/free/category.php:495
 #: includes/taxo.php:29
-#, fuzzy
 msgid "Categories"
-msgstr "वर्ग"
+msgstr "Categorias"
 
 #: addons/free/category/widget.php:97 widgets/ask-form.php:74
 #: widgets/question_stats.php:68 widgets/questions.php:78 widgets/search.php:68
 msgid "Title:"
-msgstr "शीर्शक:"
+msgstr "Título"
 
 #: addons/free/category/widget.php:102
+#, fuzzy
 msgid "Hide empty:"
-msgstr ""
+msgstr "Esconder detalhes"
 
 #: addons/free/category/widget.php:107
-#, fuzzy
 msgid "Parent:"
-msgstr "जनक जवाब:"
+msgstr "Pai:"
 
 #: addons/free/category/widget.php:109
 msgid "Top level"
-msgstr ""
+msgstr "Nível superior"
 
 #: addons/free/category/widget.php:120
 msgid "Number:"
-msgstr ""
+msgstr "Número:"
 
 #: addons/free/category/widget.php:125
 msgid "Order By:"
-msgstr ""
+msgstr "Ordenar por"
 
 #: addons/free/category/widget.php:127
 msgid "None"
-msgstr ""
+msgstr "Nenhum"
 
 #: addons/free/category/widget.php:128 addons/free/category.php:237
 #: addons/free/category.php:251
-#, fuzzy
 msgid "Count"
-msgstr "खाता"
+msgstr "Contagem"
 
 #: addons/free/category/widget.php:129 addons/free/category.php:234
 #: addons/free/category.php:248
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #: addons/free/category/widget.php:130 addons/free/category.php:235
 #: addons/free/category.php:249 includes/answer-form.php:59
 #: includes/ask-form.php:85 includes/taxo.php:458
 msgid "Name"
-msgstr "नाम"
+msgstr "Nome"
 
 #: addons/free/category/widget.php:131 addons/free/category.php:236
 #: addons/free/category.php:250
@@ -249,71 +249,71 @@ msgstr ""
 
 #: addons/free/category/widget.php:136
 msgid "Order:"
-msgstr ""
+msgstr "Ordem:"
 
 #: addons/free/category/widget.php:138
 msgid "DESC"
-msgstr ""
+msgstr "DESC"
 
 #: addons/free/category/widget.php:139
 msgid "ASC"
-msgstr ""
+msgstr "ASC"
 
 #: addons/free/category/widget.php:143
 #, fuzzy
 msgid "Icon width:"
-msgstr "कवर चौड़ाई"
+msgstr "Largura da capa"
 
 #: addons/free/category/widget.php:148
 #, fuzzy
 msgid "Icon height:"
-msgstr "कवर उचाई"
+msgstr "Altura da capa"
 
 #: addons/free/category.php:36 addons/free/category.php:341
 #: addons/free/category.php:416 addons/free/category.php:533
 #: admin/class-list-table-hooks.php:188 includes/taxo.php:202
 msgid "Category"
-msgstr "वर्ग"
+msgstr "Categoria"
 
 #: addons/free/category.php:179
 #, fuzzy
 msgid "Question Categories"
-msgstr "सवाल के आंकड़े"
+msgstr "Estatísticas de perguntas"
 
 #: addons/free/category.php:181
 #, fuzzy
 msgid "All Categories"
-msgstr "वर्ग"
+msgstr "Categorias"
 
 #: addons/free/category.php:183
 #, fuzzy
 msgid "Edit Category"
-msgstr "वर्ग"
+msgstr "Categoria"
 
 #: addons/free/category.php:184
 #, fuzzy
 msgid "New Category"
-msgstr "वर्ग"
+msgstr "Categoria"
 
 #: addons/free/category.php:185
 #, fuzzy
 msgid "View Category"
-msgstr "वर्ग"
+msgstr "Categoria"
 
 #: addons/free/category.php:186
 #, fuzzy
 msgid "Search Category"
-msgstr "जवाब खोजें"
+msgstr "Encontrar resposta"
 
 #: addons/free/category.php:187 addons/free/tag.php:198
 #, fuzzy
 msgid "Nothing Found"
-msgstr "कोई सवाल नहीं पाया गया"
+msgstr "Pergunta não encontrada"
 
 #: addons/free/category.php:188 addons/free/tag.php:199
 #, fuzzy
 msgid "Nothing found in Trash"
-msgstr "कोई सवाल कचरे नहीं पाया गया"
+msgstr "Pergunta não encontrada na lixeira"
 
 #: addons/free/category.php:230
 msgid "Ask form category order"
@@ -336,57 +336,64 @@ msgid "Set how you want to order categories in categories page."
 msgstr ""
 
 #: addons/free/category.php:258
+#, fuzzy
 msgid "Categries page order"
-msgstr ""
+msgstr "Categorias"
 
 #: addons/free/category.php:262
 #, fuzzy
 msgid "Ascending"
-msgstr "बाकी"
+msgstr "Pendente"
 
 #: addons/free/category.php:263
 #, fuzzy
 msgid "Descending"
-msgstr "बाकी"
+msgstr "Pendente"
 
 #: addons/free/category.php:269
+#, fuzzy
 msgid "Categories page slug"
-msgstr ""
+msgstr "Categorias"
 
 #: addons/free/category.php:270
+#, fuzzy
 msgid "Slug categories page"
-msgstr ""
+msgstr "%d sub categorias"
 
 #: addons/free/category.php:277
 #, fuzzy
 msgid "Category page slug"
-msgstr "वर्ग"
+msgstr "Ap Página de categoria"
 
 #: addons/free/category.php:278
+#, fuzzy
 msgid "Slug for category page"
-msgstr ""
+msgstr "Ap Página de categoria"
 
 #: addons/free/category.php:285
+#, fuzzy
 msgid "Categories title"
-msgstr ""
+msgstr "Categorias"
 
 #: addons/free/category.php:286
+#, fuzzy
 msgid "Title of the categories page"
-msgstr ""
+msgstr "Título da página de pergunta"
 
 #: addons/free/category.php:292
 #, fuzzy
 msgid "Category per page"
-msgstr "एक पेज पर दिखाए उपयोगकर्ता"
+msgstr "Ap Página de categoria"
 
 #: addons/free/category.php:293
 #, fuzzy
 msgid "Category to show per page"
-msgstr "एक पेज पर दिखाए उपयोगकर्ता"
+msgstr "Itens para mostrar por página"
 
 #: addons/free/category.php:299
+#, fuzzy
 msgid "Categories image height"
-msgstr ""
+msgstr "Categorias"
 
 #: addons/free/category.php:300
 msgid "Image height in categories page"
@@ -395,7 +402,7 @@ msgstr ""
 #: addons/free/category.php:341
 #, fuzzy
 msgid "Questions Category"
-msgstr "सवाल के आंकड़े"
+msgstr "Página de pergunta"
 
 #: addons/free/category.php:421
 msgid "Select a topic that best fits your question"
@@ -404,7 +411,7 @@ msgstr ""
 #: addons/free/category.php:469
 #, fuzzy
 msgid "No matching category found"
-msgstr "कोई जवाब नहीं मिला"
+msgstr "Resposta não encontrada"
 
 #: addons/free/category.php:552 addons/free/category.php:595
 msgid "Image"
@@ -413,17 +420,17 @@ msgstr ""
 #: addons/free/category.php:553 addons/free/category.php:598
 #, fuzzy
 msgid "Upload image"
-msgstr "भेज  रहे है"
+msgstr "Carregando"
 
 #: addons/free/category.php:557
 #, fuzzy
 msgid "Category image"
-msgstr "वर्ग"
+msgstr "Ap Página de categoria"
 
 #: addons/free/category.php:561 addons/free/category.php:614
 #, fuzzy
 msgid "Category icon class"
-msgstr "वर्ग"
+msgstr "Categorias"
 
 #: addons/free/category.php:563 addons/free/category.php:618
 #: addons/free/category.php:627
@@ -441,27 +448,27 @@ msgstr ""
 #: addons/free/category.php:607
 #, fuzzy
 msgid "Remove image"
-msgstr "हटाइये"
+msgstr "Remover"
 
 #: addons/free/category.php:609
 msgid "Featured image for category"
 msgstr ""
 
 #: addons/free/category.php:623
-#, fuzzy
 msgid "Category icon color"
-msgstr "वर्ग"
+msgstr ""
 
 #: addons/free/category.php:732 templates/addons/category/categories.php:47
+#, fuzzy
 msgid "%d Sub category"
 msgid_plural "%d Sub categories"
-msgstr[0] "वर्ग"
-msgstr[1] "वर्ग"
+msgstr[0] "%d sub categorias"
+msgstr[1] "%d sub categorias"
 
 #: addons/free/category.php:844
 #, fuzzy
 msgid "Question category feed"
-msgstr "सवाल सूचि "
+msgstr "Perguntas Feed"
 
 #: addons/free/category.php:892 addons/free/tag.php:682
 msgid ", %d+"
@@ -470,7 +477,7 @@ msgstr ""
 #: addons/free/email.php:191
 #, fuzzy
 msgid "New question posted by {asker}"
-msgstr "कोई सवाल नहीं!"
+msgstr "Não há perguntas ainda"
 
 #: addons/free/email.php:192
 msgid ""
@@ -487,7 +494,7 @@ msgstr ""
 #: addons/free/email.php:194
 #, fuzzy
 msgid "New answer posted by {answerer}"
-msgstr "कोई जवाब नहीं है"
+msgstr "Sem resposta ainda!"
 
 #: addons/free/email.php:195
 msgid ""
@@ -502,7 +509,7 @@ msgstr ""
 #: addons/free/email.php:197
 #, fuzzy
 msgid "Your answer was selected as best"
-msgstr "जब साथी का जवाब सर्वोत्तम चुना जाता है"
+msgstr "Quando a resposta de usuário for marcado como a melhor"
 
 #: addons/free/email.php:198
 msgid ""
@@ -527,7 +534,7 @@ msgstr ""
 #: addons/free/email.php:203
 #, fuzzy
 msgid "A question is edited by {editor}"
-msgstr "कोई सवाल नहीं!"
+msgstr "Não há perguntas ainda"
 
 #: addons/free/email.php:204
 msgid ""
@@ -540,7 +547,7 @@ msgstr ""
 #: addons/free/email.php:206
 #, fuzzy
 msgid "An answer is edited by {editor}"
-msgstr "कोई जवाब नहीं है"
+msgstr "Sem resposta ainda!"
 
 #: addons/free/email.php:207
 msgid ""
@@ -553,7 +560,7 @@ msgstr ""
 #: addons/free/email.php:209
 #, fuzzy
 msgid "A question is trashed by {user}"
-msgstr "सवाल %s को पूछा गया है"
+msgstr "Perguntado por by %s"
 
 #: addons/free/email.php:210
 msgid ""
@@ -562,8 +569,9 @@ msgid ""
 msgstr ""
 
 #: addons/free/email.php:212
+#, fuzzy
 msgid "An answer is trashed by {user}"
-msgstr ""
+msgstr "Respondido por %s"
 
 #: addons/free/email.php:213
 msgid ""
@@ -573,12 +581,11 @@ msgstr ""
 
 #: addons/free/email.php:237
 msgid "Email"
-msgstr "ईमेल"
+msgstr "Email"
 
 #: addons/free/email.php:239
-#, fuzzy
 msgid "Notify admin(s)"
-msgstr "सूचनाएं"
+msgstr ""
 
 #: addons/free/email.php:242
 msgid "Admin email"
@@ -592,26 +599,26 @@ msgstr ""
 #: includes/post-types.php:48
 #, fuzzy
 msgid "New question"
-msgstr "नए सवाल"
+msgstr "Novas Perguntas"
 
 #: addons/free/email.php:250
 #, fuzzy
 msgid "Send email to admin for every new question."
-msgstr "केवल एडमिन ही जवाब देने की अनुमति दे"
+msgstr "Permitir apenas admin para responder perguntas"
 
 #: addons/free/email.php:256 includes/post-types.php:118
 msgid "New answer"
-msgstr "नया जवाब"
+msgstr "Responder"
 
 #: addons/free/email.php:257
 #, fuzzy
 msgid "Send email to admin for every new answer."
-msgstr "नए जवाब के लिए एक सवाल चुनिए"
+msgstr "Selecionar a pergunta para a nova resposta"
 
 #: addons/free/email.php:263 addons/free/email.php:353
 #, fuzzy
 msgid "New comment"
-msgstr "१ टिप्पणी"
+msgstr "Um comentário"
 
 #: addons/free/email.php:264
 msgid "Send email to admin for every new comment."
@@ -620,7 +627,7 @@ msgstr ""
 #: addons/free/email.php:270 addons/free/email.php:370
 #: admin/class-list-table-hooks.php:346 includes/post-types.php:49
 msgid "Edit question"
-msgstr "सवाल को बदलिये"
+msgstr "Editar pergunta"
 
 #: addons/free/email.php:271
 msgid "Send email to admin when question is edited"
@@ -629,7 +636,7 @@ msgstr ""
 #: addons/free/email.php:277 addons/free/email.php:387
 #: includes/post-types.php:119
 msgid "Edit answer"
-msgstr "जवाब बदलिये"
+msgstr "Editar resposta"
 
 #: addons/free/email.php:278
 msgid "Send email to admin when answer is edited"
@@ -638,7 +645,7 @@ msgstr ""
 #: addons/free/email.php:284
 #, fuzzy
 msgid "Delete question"
-msgstr "सवाल चुने"
+msgstr "Selecionar Pergunta"
 
 #: addons/free/email.php:285
 msgid "Send email to admin when question is trashed"
@@ -647,7 +654,7 @@ msgstr ""
 #: addons/free/email.php:291
 #, fuzzy
 msgid "Delete answer"
-msgstr "चुना सवाल"
+msgstr "resposta selecionada"
 
 #: addons/free/email.php:292
 msgid "Send email to admin when asnwer is trashed"
@@ -672,12 +679,12 @@ msgstr ""
 #: addons/free/email.php:319
 #, fuzzy
 msgid "New Answer"
-msgstr "नया जवाब"
+msgstr "Responder"
 
 #: addons/free/email.php:336
 #, fuzzy
 msgid "Select Answer"
-msgstr "जवाब का चुनाव"
+msgstr "Selecionando resposta"
 
 #: addons/free/notification/query.php:260
 msgid "Someone"
@@ -686,21 +693,21 @@ msgstr ""
 #: addons/free/notification/query.php:306
 #, fuzzy
 msgid "post"
-msgstr "पोस्ट बदलिये"
+msgstr "Editar postagem"
 
 #: addons/free/notification.php:40 addons/free/notification.php:172
 #: templates/functions.php:58
 msgid "Notifications"
-msgstr "सूचनाएं"
+msgstr ""
 
 #: addons/free/notification.php:73
 msgid "Notification"
-msgstr "सूचना"
+msgstr ""
 
 #: addons/free/notification.php:76
 #, fuzzy
 msgid "Auto delete notifications"
-msgstr "सूचनाएँ हटाये"
+msgstr "Desabilitar ação de apagar"
 
 #: addons/free/notification.php:79
 msgid "Do not auto delete"
@@ -715,28 +722,26 @@ msgid "Both seen an unseen"
 msgstr ""
 
 #: addons/free/notification.php:83
-#, fuzzy
 msgid "Auto delete user notifications"
-msgstr "सूचनाएँ हटाये"
+msgstr ""
 
 #: addons/free/notification.php:87
 msgid "Auto delete interval"
 msgstr ""
 
 #: addons/free/notification.php:89
-#, fuzzy
 msgid "Auto delete notifications interval"
-msgstr "सूचनाएँ हटाये"
+msgstr ""
 
 #: addons/free/notification.php:130
 #, fuzzy
 msgid "posted an answer on your question"
-msgstr "आपके सवाल का सर्वोत्तम उत्तर चुना गया है"
+msgstr "Melhor resposta foi selecionada para sua pergunta"
 
 #: addons/free/notification.php:135
 #, fuzzy
 msgid "commented on your %cpt%"
-msgstr "%1$s ने आपके %3$s - %2$s पर टिप्पणी की है"
+msgstr "%1$s comentado sobre você %3$s - %2$s"
 
 #: addons/free/notification.php:140
 msgid "up voted your %cpt%"
@@ -745,17 +750,17 @@ msgstr ""
 #: addons/free/notification.php:147
 #, fuzzy
 msgid "down voted your %cpt%"
-msgstr "%sनिचे मत दिया  %s"
+msgstr "Votar contra "
 
 #: addons/free/notification.php:152
 #, fuzzy
 msgid "selected your answer"
-msgstr "चुना सवाल"
+msgstr "resposta selecionada"
 
 #: addons/free/notification.php:157
 #, fuzzy
 msgid "You have earned %points% points"
-msgstr "आपने इस पोस्ट को अलग किया है"
+msgstr "Você já marcou este post"
 
 #: addons/free/notification.php:162
 msgid "You lose %points% points"
@@ -764,7 +769,7 @@ msgstr ""
 #: addons/free/notification.php:209
 #, fuzzy
 msgid "You do not have permission to view this page"
-msgstr "इस पेज को देखने की आपको अनुमति नहीं"
+msgstr "Você não tem permissão para salvar esta página"
 
 #: addons/free/notification.php:427
 msgid "There was a problem processing your request"
@@ -773,41 +778,45 @@ msgstr ""
 #: addons/free/notification.php:437
 #, fuzzy
 msgid "Successfully updated all notifications"
-msgstr "सफलता पूर्वक बिल्ला बना दिया"
+msgstr "Tag criada com sucesso"
 
 #: addons/free/profile.php:34
 msgid "User profile"
-msgstr "दोस्त परिचय"
+msgstr ""
 
 #: addons/free/profile.php:227
 msgid "Callback function not found for rendering this page"
 msgstr ""
 
 #: addons/free/recaptcha.php:52
+#, fuzzy
 msgid "reCaptcha"
-msgstr ""
+msgstr "reCaptacha"
 
 #: addons/free/recaptcha.php:55
 msgid "Recaptcha site key"
-msgstr ""
+msgstr "Chave do site Recaptcha "
 
 #: addons/free/recaptcha.php:56
 msgid ""
 "Enter your site key, if you dont have it get it from here https://www.google."
 "com/recaptcha/admin"
 msgstr ""
+"Digite a chave do site, se você não tem, obtenha aqui https://www.google.com/"
+"recaptcha/admin/"
 
 #: addons/free/recaptcha.php:60
 msgid "Recaptcha secret key"
-msgstr ""
+msgstr "Chave secreta Recaptcha"
 
 #: addons/free/recaptcha.php:61
 msgid "Enter your secret key"
-msgstr ""
+msgstr "Digite sua chave secreta"
 
 #: addons/free/recaptcha.php:65
+#, fuzzy
 msgid "Recaptcha Method"
-msgstr ""
+msgstr "Chave secreta Recaptcha"
 
 #: addons/free/recaptcha.php:66
 msgid "Select method to use when verification keeps failing"
@@ -815,7 +824,7 @@ msgstr ""
 
 #: addons/free/recaptcha.php:82
 msgid "Bot verification failed."
-msgstr "सुरक्षा विशेषज्ञ जाँच असफल "
+msgstr "Verificação Bot  falhou"
 
 #: addons/free/recaptcha.php:115
 msgid "reCaptach keys missing, please add keys"
@@ -823,25 +832,26 @@ msgstr ""
 
 #: addons/free/reputation.php:68 addons/free/reputation.php:350
 msgid "Reputation"
-msgstr "ख्याति"
+msgstr "Reputação"
 
 #: addons/free/reputation.php:69
 #, fuzzy
 msgid "Events"
-msgstr "घटना"
+msgstr "Eventos"
 
 #: addons/free/reputation.php:78
 #, fuzzy
 msgid "Registration"
-msgstr "नया पंजीकरण"
+msgstr "Novo Registro"
 
 #: addons/free/reputation.php:79
 msgid "Points awarded when user account is created"
 msgstr ""
 
 #: addons/free/reputation.php:81
+#, fuzzy
 msgid "Registered"
-msgstr ""
+msgstr "Registrar"
 
 #: addons/free/reputation.php:87
 msgid "Asking"
@@ -854,42 +864,42 @@ msgstr ""
 #: addons/free/reputation.php:90
 #, fuzzy
 msgid "Asked a question"
-msgstr "सवाल पूछे"
+msgstr "Fazer pergunta"
 
 #: addons/free/reputation.php:96
 #, fuzzy
 msgid "Answering"
-msgstr "जवाब"
+msgstr "Resposta"
 
 #: addons/free/reputation.php:97
 #, fuzzy
 msgid "Points awarded when user answer a question"
-msgstr "केवल एडमिन ही जवाब देने की अनुमति दे"
+msgstr "Permitir apenas admin para responder perguntas"
 
 #: addons/free/reputation.php:99
 #, fuzzy
 msgid "Posted an answer"
-msgstr "जवाब भेजिए"
+msgstr "Enviar resposta"
 
 #: addons/free/reputation.php:105
 #, fuzzy
 msgid "Commenting"
-msgstr "टिप्पणी"
+msgstr "Comentário"
 
 #: addons/free/reputation.php:106
 #, fuzzy
 msgid "Points awarded when user comment on question or answer"
-msgstr "आपके सवाल या जवाब को आप मत नहीं दे सकते."
+msgstr "Você não pode votar em sua pergunta ou resposta"
 
 #: addons/free/reputation.php:108
 #, fuzzy
 msgid "Commented on a post"
-msgstr "ने जवाब पर टिप्पणी की"
+msgstr "Comentou %s"
 
 #: addons/free/reputation.php:114
 #, fuzzy
 msgid "Selecting an Answer"
-msgstr "जवाब का चुनाव"
+msgstr "Selecionando resposta"
 
 #: addons/free/reputation.php:115
 msgid "Points awarded when user select an answer for thier question"
@@ -898,52 +908,52 @@ msgstr ""
 #: addons/free/reputation.php:117
 #, fuzzy
 msgid "Selected an answer as best"
-msgstr "इस जवाब को सर्वोत्तम चुने"
+msgstr "Selecionar a melhor resposta"
 
 #: addons/free/reputation.php:123
 #, fuzzy
 msgid "Answer selected as best"
-msgstr "जब साथी का जवाब सर्वोत्तम चुना जाता है"
+msgstr "Quando a resposta de usuário for marcado como a melhor"
 
 #: addons/free/reputation.php:124
 #, fuzzy
 msgid "Points awarded when user's answer selected as best"
-msgstr "जब साथी का जवाब सर्वोत्तम चुना जाता है"
+msgstr "Quando a resposta de usuário for marcado como a melhor"
 
 #: addons/free/reputation.php:126
 #, fuzzy
 msgid "Answer was selected as best"
-msgstr "जब साथी का जवाब सर्वोत्तम चुना जाता है"
+msgstr "Uma resposta em uma pergunta foi selecionada como a melhor, %s"
 
 #: addons/free/reputation.php:132
 #, fuzzy
 msgid "Received up vote"
-msgstr "जवाब पर ऊपर मत प्राप्त करे"
+msgstr "Receba voto a favor na resposta"
 
 #: addons/free/reputation.php:133
 #, fuzzy
 msgid "Points awarded when user receive an upvote"
-msgstr "जब साथी जवाब पर ऊपर मत प्राप्त करता है."
+msgstr "Quando usuário recebe um voto a favor na resposta"
 
 #: addons/free/reputation.php:135
 #, fuzzy
 msgid "Received an upvote"
-msgstr "जवाब पर ऊपर मत प्राप्त करे"
+msgstr "Recebido um voto contra em %s %s"
 
 #: addons/free/reputation.php:140
 #, fuzzy
 msgid "Received down vote"
-msgstr "जवाब पर निचे मत प्राप्त करे."
+msgstr "Recebido um voto contra em %s %s"
 
 #: addons/free/reputation.php:141
 #, fuzzy
 msgid "Points awarded when user receive a down vote"
-msgstr "जब साथी जवाब पर निचे मत प्राप्त करता है."
+msgstr "Quando usuário recebe voto contra na resposta"
 
 #: addons/free/reputation.php:143
 #, fuzzy
 msgid "Received a down vote"
-msgstr "जवाब पर निचे मत प्राप्त करे."
+msgstr "Recebido um voto contra em %s %s"
 
 #: addons/free/reputation.php:148
 msgid "Gives an up vote"
@@ -956,84 +966,87 @@ msgstr ""
 #: addons/free/reputation.php:151
 #, fuzzy
 msgid "Given an up vote"
-msgstr "आपका मत भेज रहे है"
+msgstr "Enviando seu voto"
 
 #: addons/free/reputation.php:156
 #, fuzzy
 msgid "Gives down vote"
-msgstr "जवाब पर निचे मत प्राप्त करे."
+msgstr "Receba voto contra na resposta"
 
 #: addons/free/reputation.php:157
 msgid "Points taken from user when user give a down vote"
 msgstr ""
 
 #: addons/free/reputation.php:159
+#, fuzzy
 msgid "Given a down vote"
-msgstr ""
+msgstr "Recebido um voto contra em %s %s"
 
 #: addons/free/reputation.php:184
 #, fuzzy
 msgid "Successfully updated reputation points!"
-msgstr "सफलता पूर्वक बिल्ला बना दिया"
+msgstr "Tag criada com sucesso"
 
 #: addons/free/reputation.php:372
 msgid "%s Reputation"
-msgstr "%d ख्याति"
+msgstr "%s Reputação"
 
 #: addons/free/reputation.php:381 addons/free/reputation.php:431
 #, fuzzy
 msgid "Reputations"
-msgstr "ख्याति"
+msgstr "Reputação"
 
 #: addons/free/tag.php:34 addons/free/tag.php:237 addons/free/tag.php:630
 #: admin/class-list-table-hooks.php:192
 msgid "Tag"
-msgstr "बिल्ला"
+msgstr "Tags"
 
 #: addons/free/tag.php:35 addons/free/tag.php:183 addons/free/tag.php:230
 #: addons/free/tag.php:307 addons/free/tag.php:379 addons/free/tag.php:404
 #: addons/free/tag.php:480 addons/free/tag.php:490 includes/form.php:105
 #: includes/form.php:128
 msgid "Tags"
-msgstr "बिल्ले"
+msgstr "Tags"
 
 #: addons/free/tag.php:163
 #, fuzzy
 msgid "(AnsPress) Tags"
-msgstr "AnsPress विकल्प"
+msgstr "Páginas Anspress"
 
 #: addons/free/tag.php:167
+#, fuzzy
 msgid "Widgets in this area will be shown in anspress tags page."
-msgstr ""
+msgstr "Widgets nesta área será mostrada na página de listagem de tags"
 
 #: addons/free/tag.php:190 addons/free/tag.php:230
 #, fuzzy
 msgid "Question Tags"
-msgstr "सवाल"
+msgstr "Perguntas"
 
 #: addons/free/tag.php:192
 #, fuzzy
 msgid "All Tags"
-msgstr "बिल्ले"
+msgstr "Tags"
 
 #: addons/free/tag.php:194
 #, fuzzy
 msgid "Edit Tag"
-msgstr "अलग सूचक को बदलिये"
+msgstr "Editar página"
 
 #: addons/free/tag.php:195
+#, fuzzy
 msgid "New Tag"
-msgstr ""
+msgstr "Novo distintivo"
 
 #: addons/free/tag.php:196
 #, fuzzy
 msgid "View Tag"
-msgstr "देखिए"
+msgstr "Visualizar"
 
 #: addons/free/tag.php:197
 #, fuzzy
 msgid "Search Tag"
-msgstr "खोजें"
+msgstr "Encontrar"
 
 #: addons/free/tag.php:240
 msgid "Tags to show"
@@ -1042,7 +1055,7 @@ msgstr ""
 #: addons/free/tag.php:241
 #, fuzzy
 msgid "Numbers of tags to show in tags page."
-msgstr "कितने साथी दिखाई दे:"
+msgstr "Perguntas para mostrar por página"
 
 #: addons/free/tag.php:246
 msgid "Maximum tags"
@@ -1053,44 +1066,47 @@ msgid "Maximum numbers of tags that user can add when asking."
 msgstr ""
 
 #: addons/free/tag.php:252
+#, fuzzy
 msgid "Minimum tags"
-msgstr ""
+msgstr "Comprimento mínimo do título"
 
 #: addons/free/tag.php:253
 msgid "minimum numbers of tags that user must add when asking."
 msgstr ""
 
 #: addons/free/tag.php:258
+#, fuzzy
 msgid "Tags page title"
-msgstr ""
+msgstr "Título da página base"
 
 #: addons/free/tag.php:259
+#, fuzzy
 msgid "Title for tags page"
-msgstr ""
+msgstr "Título da página de pergunta"
 
 #: addons/free/tag.php:265
 #, fuzzy
 msgid "Tags page slug"
-msgstr "आधार पेज"
+msgstr "AP Tag page"
 
 #: addons/free/tag.php:266
 #, fuzzy
 msgid "Slug tags page"
-msgstr "पेज चुनिए"
+msgstr "AP Tag page"
 
 #: addons/free/tag.php:273
+#, fuzzy
 msgid "Tag page slug"
-msgstr ""
+msgstr "AP Tag page"
 
 #: addons/free/tag.php:274
-#, fuzzy
 msgid "Slug for tag page"
-msgstr "पेज चुनिए"
+msgstr ""
 
 #: addons/free/tag.php:333
 #, fuzzy
 msgid "Delete Tag"
-msgstr "हटाइये"
+msgstr "Apagar"
 
 #: addons/free/tag.php:334
 msgid "Add Tag"
@@ -1099,7 +1115,7 @@ msgstr ""
 #: addons/free/tag.php:335
 #, fuzzy
 msgid "added to the tags list."
-msgstr "पोस्ट का जवाब दे"
+msgstr "Responder à postagem"
 
 #: addons/free/tag.php:336
 msgid "removed from the tags list."
@@ -1119,54 +1135,55 @@ msgstr ""
 
 #: admin/anspress-admin.php:186
 msgid "All Questions"
-msgstr "सभी सवाल"
+msgstr "Todas as Perguntas"
 
 #: admin/anspress-admin.php:188
 msgid "New Question"
-msgstr "नया सवाल"
+msgstr "Novas Perguntas"
 
 #: admin/anspress-admin.php:190
 msgid "All Answers"
-msgstr "सभी जवाब"
+msgstr "Todas as Respostas"
 
 #: admin/anspress-admin.php:192
 msgid "Select question"
-msgstr "सवाल चुने"
+msgstr "Selecionar Pergunta"
 
 #: admin/anspress-admin.php:201 admin/views/admin.php:27
 #: admin/views/dashboard.php:352
 msgid "AnsPress Options"
-msgstr "AnsPress विकल्प"
+msgstr "AnsPress Opções"
 
 #: admin/anspress-admin.php:201
+#, fuzzy
 msgid "Options & Add-ons"
-msgstr ""
+msgstr "Salva opções"
 
 #: admin/anspress-admin.php:205 admin/views/sidebar.php:4
 msgid "About AnsPress"
-msgstr "AnsPress के बारेमें"
+msgstr "Sobre AnsPress"
 
 #: admin/anspress-admin.php:207
 #, fuzzy
 msgid "Upgrade AnsPress"
-msgstr "जवाब बदलिये"
+msgstr "Atualizar resposta"
 
 #: admin/anspress-admin.php:306
 msgid "Settings"
-msgstr "व्यवस्थापन"
+msgstr "Configurações"
 
 #: admin/anspress-admin.php:307
 msgid "About"
-msgstr "के बारेमें"
+msgstr ""
 
 #: admin/anspress-admin.php:486
 #, fuzzy
 msgid "Select All"
-msgstr "चुने"
+msgstr "Selecione"
 
 #: admin/anspress-admin.php:490
 msgid "Add to Menu"
-msgstr "सूचि में जोड़िए"
+msgstr "Adicionar ao Menu"
 
 #: admin/anspress-admin.php:618 admin/anspress-admin.php:627
 #: admin/options-fields.php:381 admin/options-fields.php:389
@@ -1174,20 +1191,21 @@ msgstr "सूचि में जोड़िए"
 #: admin/options-fields.php:419 admin/options-fields.php:429
 #: includes/post-status.php:24
 msgid "Moderate"
-msgstr "संयमित करे"
+msgstr "Moderar"
 
 #: admin/anspress-admin.php:621 admin/anspress-admin.php:628
 msgid "Private Post"
-msgstr "निजी पोस्ट"
+msgstr "Postagem Privada"
 
 #: admin/anspress-admin.php:714
+#, fuzzy
 msgid "AnsPress database is not updated."
-msgstr ""
+msgstr "Opções de atualizações AnsPress"
 
 #: admin/anspress-admin.php:715
 #, fuzzy
 msgid "Update now"
-msgstr "जवाब बदलिये"
+msgstr "Atualizar resposta"
 
 #: admin/anspress-admin.php:720
 msgid "You must continue to upgrade AnsPress data."
@@ -1199,56 +1217,57 @@ msgstr ""
 
 #: admin/class-list-table-hooks.php:56 admin/class-list-table-hooks.php:396
 msgid "Flagged"
-msgstr "अलग"
+msgstr "Marcado"
 
 #: admin/class-list-table-hooks.php:130
 msgid "Restore this item from the Trash"
-msgstr "  इस सामग्री को कचरे से बहार निकले"
+msgstr "Restaurar item da lixeira"
 
 #: admin/class-list-table-hooks.php:130
 msgid "Restore"
-msgstr "बहाल करे"
+msgstr "Restaurar"
 
 #: admin/class-list-table-hooks.php:133
 msgid "Move this item to the Trash"
-msgstr "  इस सामग्री को कचरे में दाल दे"
+msgstr "Mover este item para a lixeira"
 
 #: admin/class-list-table-hooks.php:133 admin/meta-box.php:70
 msgid "Trash"
-msgstr "कचरे में"
+msgstr "Lixo"
 
 #: admin/class-list-table-hooks.php:137
 msgid "Delete this item permanently"
-msgstr "इस सामग्री को हमेशा के लिए हटाइये"
+msgstr "Apagar este item permanentemente"
 
 #: admin/class-list-table-hooks.php:137 includes/theme.php:382
 msgid "Delete Permanently"
-msgstr "हमेशा के लिए हटाइये"
+msgstr "Apagar Permanentemente"
 
 #: admin/class-list-table-hooks.php:142
+#, fuzzy
 msgid "Edit &#8220;%s&#8221;"
-msgstr "पूर्व दर्शन &#8220;%s&#8221;"
+msgstr "Pré visualizar &#8220;%s&#8221;"
 
 #: admin/class-list-table-hooks.php:142 admin/meta-box.php:69
 #: includes/comments.php:400 includes/theme.php:339
 msgid "Edit"
-msgstr "बदलिये"
+msgstr "Editar"
 
 #: admin/class-list-table-hooks.php:148
 msgid "Preview &#8220;%s&#8221;"
-msgstr "पूर्व दर्शन &#8220;%s&#8221;"
+msgstr "Pré visualizar &#8220;%s&#8221;"
 
 #: admin/class-list-table-hooks.php:148
 msgid "Preview"
-msgstr "पूर्व दर्शन"
+msgstr "Pré visualizar"
 
 #: admin/class-list-table-hooks.php:151
 msgid "View &#8220;%s&#8221; question"
-msgstr "&#8220;%s&#8221; सवाल देखे "
+msgstr "Ver &#8220;%s&#8221; pergunta"
 
 #: admin/class-list-table-hooks.php:151
 msgid "View"
-msgstr "देखिए"
+msgstr "Visualizar"
 
 #: admin/class-list-table-hooks.php:168 admin/meta-box.php:130
 msgid "Clear flag"
@@ -1256,38 +1275,38 @@ msgstr ""
 
 #: admin/class-list-table-hooks.php:184 admin/class-list-table-hooks.php:291
 msgid "Author"
-msgstr "लेखक"
+msgstr "Autor"
 
 #: admin/class-list-table-hooks.php:185 includes/ask-form.php:41
 msgid "Title"
-msgstr "शीर्शक"
+msgstr "Título"
 
 #: admin/class-list-table-hooks.php:195 admin/class-list-table-hooks.php:293
 #: includes/theme.php:351
 msgid "Status"
-msgstr "स्थिति"
+msgstr "Estado"
 
 #: admin/class-list-table-hooks.php:196 templates/question-list-item.php:37
 msgid "Ans"
-msgstr "जवाब"
+msgstr "Res"
 
 #: admin/class-list-table-hooks.php:197 admin/class-list-table-hooks.php:294
 msgid "Comments"
-msgstr "टिप्पणियाँ"
+msgstr "Comentários"
 
 #: admin/class-list-table-hooks.php:198 admin/class-list-table-hooks.php:295
 #: templates/content-answer.php:20 templates/question-list-item.php:30
 msgid "Votes"
-msgstr "मत"
+msgstr "Votos"
 
 #: admin/class-list-table-hooks.php:199 admin/class-list-table-hooks.php:296
 #, fuzzy
 msgid "Flags"
-msgstr "अलग करे"
+msgstr "Marca"
 
 #: admin/class-list-table-hooks.php:200 admin/class-list-table-hooks.php:297
 msgid "Date"
-msgstr "दिनांक"
+msgstr "Data"
 
 #: admin/class-list-table-hooks.php:247 admin/class-list-table-hooks.php:263
 msgid "--"
@@ -1297,56 +1316,60 @@ msgstr "--"
 #: includes/ajax-hooks.php:100 includes/ajax-hooks.php:102
 #: includes/ajax-hooks.php:279 includes/answer-form.php:263
 #: templates/answers.php:20 templates/buddypress/question-item.php:38
+#, fuzzy
 msgid "%d Answer"
 msgid_plural "%d Answers"
-msgstr[0] "%d जवाब"
-msgstr[1] "%d जवाब"
+msgstr[0] "1 Resposta"
+msgstr[1] "%d Respostas"
 
 #: admin/class-list-table-hooks.php:292
 msgid "Content"
-msgstr "जानकारी"
+msgstr "Conteúdo"
 
 #: admin/class-list-table-hooks.php:331
 msgid "This question is orphan, no question is selected for this answer"
-msgstr "ये सवाल लावारिस है, इस जवाब के लिए किसी सवाल का चुनाव नहीं है"
+msgstr "Esta pergunta é órfã, pergunta não selecionada para esta resposta"
 
 #: admin/class-list-table-hooks.php:366 admin/meta-box.php:129
 #: includes/flag.php:129
 msgid "Flag"
-msgstr "अलग करे"
+msgstr "Marca"
 
 #: admin/class-list-table-hooks.php:437
 msgid "Please fill parent question field, Answer was not saved!"
-msgstr "जनक सवाल क्षेत्र भरे, जवाब इकट्ठा नहीं हो पाया"
+msgstr "Por favor preencha o campo da pergunta pai, A resposta não foi salva!"
 
 #: admin/functions.php:143
 msgid "Save options"
-msgstr "विकल्प जमा करे"
+msgstr "Salvar opções"
 
 #: admin/license.php:37 admin/views/licenses.php:20
 msgid "Licenses"
 msgstr ""
 
 #: admin/meta-box.php:37
+#, fuzzy
 msgid " %d Answers"
-msgstr "%d जवाब"
+msgstr "Respostas"
 
 #: admin/meta-box.php:55 admin/meta-box.php:92
 #, fuzzy
 msgid "Add an answer"
-msgstr "जवाब जोड़िए"
+msgstr "Quem pergunta pode responder"
 
 #: admin/meta-box.php:91
+#, fuzzy
 msgid "<strong>%d</strong> Answer"
 msgid_plural "<strong>%d</strong> Answers"
-msgstr[0] "<strong>1</strong>जवाब"
-msgstr[1] "<strong>1</strong>जवाब"
+msgstr[0] "<strong>1</strong> Resposta"
+msgstr[1] "<strong>%d</strong> Respostas"
 
 #: admin/meta-box.php:99
+#, fuzzy
 msgid "<strong>%d</strong> Vote"
 msgid_plural "<strong>%d</strong> Votes"
-msgstr[0] "<strong>1</strong> मतदान"
-msgstr[1] "<strong>1</strong> मतदान"
+msgstr[0] "<strong>1</strong> Voto"
+msgstr[1] "<strong>%d</strong> Votos"
 
 #: admin/meta-box.php:102
 #, fuzzy
@@ -1359,7 +1382,7 @@ msgstr ""
 
 #: admin/options-fields.php:14
 msgid "General"
-msgstr "सामान्य"
+msgstr "Geral"
 
 #: admin/options-fields.php:15 admin/options-fields.php:305
 msgid "Add-ons"
@@ -1368,7 +1391,7 @@ msgstr ""
 #: admin/options-fields.php:16
 #, fuzzy
 msgid "Access"
-msgstr "सफलता"
+msgstr "Sucesso"
 
 #: admin/options-fields.php:17
 msgid "Tools"
@@ -1379,46 +1402,46 @@ msgid "Pages and permalinks"
 msgstr ""
 
 #: admin/options-fields.php:23
-#, fuzzy
 msgid "Questions page"
-msgstr "एक पेज पर दिखाए सवाल"
+msgstr "Página de pergunta"
 
 #: admin/options-fields.php:24
 msgid "Select page for displaying anspress."
-msgstr ""
+msgstr "Selecione a página para mostrar anspress"
 
 #: admin/options-fields.php:29
 #, fuzzy
 msgid "Ask question page slug"
-msgstr "सवाल पूछे"
+msgstr "Faça perguntas"
 
 #: admin/options-fields.php:30
 #, fuzzy
 msgid "Set a slug for ask question page."
-msgstr "सवाल पूछने के लिए मार्गदर्शन"
+msgstr "Defina o mínimo de letras para o título da pergunta"
 
 #: admin/options-fields.php:35
 #, fuzzy
 msgid "Question slug"
-msgstr "सवाल"
+msgstr "Perguntas"
 
 #: admin/options-fields.php:36
 #, fuzzy
 msgid "Slug for single question page."
-msgstr "सवाल आंकड़े एक सवाल पेज माइन दिखाए"
+msgstr "Mostrar título da pergunta na página da pergunta"
 
 #: admin/options-fields.php:41
 #, fuzzy
 msgid "Question permalink"
-msgstr "एक पेज पर दिखाए सवाल"
+msgstr "Perguntas por página"
 
 #: admin/options-fields.php:42
+#, fuzzy
 msgid "Select single question permalink structure."
-msgstr ""
+msgstr "Selecione a página para ver uma lista de perguntas"
 
 #: admin/options-fields.php:53
 msgid "Hide author credits"
-msgstr "लेखक की पहचान छुपइए"
+msgstr "Esconder créditos do autor"
 
 #: admin/options-fields.php:54
 msgid "Hide link to AnsPress project site."
@@ -1427,40 +1450,43 @@ msgstr ""
 #: admin/options-fields.php:60
 #, fuzzy
 msgid "Page Titles"
-msgstr "शीर्शक"
+msgstr "Títulos de Página"
 
 #: admin/options-fields.php:64
 msgid "Base page title"
-msgstr ""
+msgstr "Título da página base"
 
 #: admin/options-fields.php:65
 msgid "Main questions list page title"
-msgstr ""
+msgstr "Principais perguntas"
 
 #: admin/options-fields.php:69
 msgid "Ask page title"
-msgstr ""
+msgstr "Perguntar título de página"
 
 #: admin/options-fields.php:70
 msgid "Title of the ask page"
-msgstr ""
+msgstr "Título da página de pergunta"
 
 #: admin/options-fields.php:74
 #, fuzzy
 msgid "Search page title"
-msgstr "सवाल खोजें"
+msgstr "Título da página base"
 
 #: admin/options-fields.php:75
+#, fuzzy
 msgid "Title of the search page"
-msgstr ""
+msgstr "Título da página de pergunta"
 
 #: admin/options-fields.php:79
+#, fuzzy
 msgid "Author page title"
-msgstr ""
+msgstr "Perguntar título de página"
 
 #: admin/options-fields.php:80
+#, fuzzy
 msgid "Title of the author page"
-msgstr ""
+msgstr "Título da página de pergunta"
 
 #: admin/options-fields.php:84
 msgid "Show solved prefix"
@@ -1474,7 +1500,7 @@ msgstr ""
 
 #: admin/options-fields.php:91
 msgid "Layout"
-msgstr "नक़्शा"
+msgstr "Esboço"
 
 #: admin/options-fields.php:94
 msgid "Load assets in AnsPress page only?"
@@ -1488,82 +1514,82 @@ msgstr ""
 
 #: admin/options-fields.php:101
 msgid "Avatar"
-msgstr "अवतार"
+msgstr "Avatar"
 
 #: admin/options-fields.php:106
 msgid "List avatar size"
-msgstr ""
+msgstr "Lista de tamanho de avatar"
 
 #: admin/options-fields.php:107
 msgid "User avatar size for questions list."
-msgstr ""
+msgstr "Tamanho de avatar de usuário para lista de perguntas."
 
 #: admin/options-fields.php:112
 msgid "Question avatar size"
-msgstr ""
+msgstr "Tamanho de avatar de pergunta"
 
 #: admin/options-fields.php:113
 msgid "User avatar size for question."
-msgstr ""
+msgstr "Tamanho de avatar de Usuário para pergunta"
 
 #: admin/options-fields.php:118 admin/options-fields.php:124
 msgid "Answer avatar size"
-msgstr ""
+msgstr "Tamanho de avatar para Resposta"
 
 #: admin/options-fields.php:119 admin/options-fields.php:125
 msgid "User avatar size for answer."
-msgstr ""
+msgstr "Tamanho de avatar de Usuário para resposta"
 
 #: admin/options-fields.php:130
 msgid "Comment avatar size"
-msgstr ""
+msgstr "Tamanho de avatar para comentário"
 
 #: admin/options-fields.php:131
 msgid "User avatar size for comments."
-msgstr ""
+msgstr "Tamanho de avatar de usuário para comentário"
 
 #: admin/options-fields.php:137
 msgid "Items to show per page"
-msgstr ""
+msgstr "Itens para mostrar por página"
 
 #: admin/options-fields.php:141
 msgid "Questions per page"
-msgstr "एक पेज पर दिखाए सवाल"
+msgstr "Perguntas por página"
 
 #: admin/options-fields.php:142
 msgid "Questions to show per page."
-msgstr "एक पेज पर दिखाए सवाल"
+msgstr "Perguntas para mostrar por página"
 
 #: admin/options-fields.php:147
 msgid "Answers per page"
-msgstr "एक पेज पर दिखाए जवाब"
+msgstr "Resposta por página"
 
 #: admin/options-fields.php:148
 msgid "Answers to show per page."
-msgstr "एक पेज पर दिखाए जवाब"
+msgstr "Resposta para mostrar por página"
 
 #: admin/options-fields.php:154
 #, fuzzy
 msgid "Question & Answer"
-msgstr "अलग किये सवाल जवाब"
+msgstr "Marcado perguntas & respostas"
 
 #: admin/options-fields.php:157
 msgid "Allow private posts"
-msgstr "निजी पोस्ट करने दे"
+msgstr "Permitir postagem privada"
 
 #: admin/options-fields.php:158
 msgid "Allow users to create private question and answer."
-msgstr ""
+msgstr "Permitir que usuários criem perguntas e respostas privadas"
 
 #: admin/options-fields.php:163
 #, fuzzy
 msgid "Load comments"
-msgstr "टिप्पणियाँ दिखाइए"
+msgstr "Mostrar comentários"
 
 #: admin/options-fields.php:164
 #, fuzzy
 msgid "Show question and answer comments by default"
-msgstr "मुख्य तरीके से टिप्पणियाँ दिखाइए"
+msgstr "Mostrar comentários por padrão"
 
 #: admin/options-fields.php:169
 msgid "Check duplicate"
@@ -1576,7 +1602,7 @@ msgstr ""
 #: admin/options-fields.php:175
 #, fuzzy
 msgid "Disable question suggestion"
-msgstr "ख्याति रोके"
+msgstr "Desabilitar votação nas perguntas"
 
 #: admin/options-fields.php:176
 msgid "Checking this will disable question suggestion in ask form"
@@ -1585,7 +1611,7 @@ msgstr ""
 #: admin/options-fields.php:181
 #, fuzzy
 msgid "Show default date format"
-msgstr "मुख्य जबाब छटाई"
+msgstr "Sortear resposta padrão"
 
 #: admin/options-fields.php:182
 msgid ""
@@ -1595,7 +1621,7 @@ msgstr ""
 #: admin/options-fields.php:192
 #, fuzzy
 msgid "Default question order"
-msgstr "सवाल चुने"
+msgstr "Selecionar Pergunta"
 
 #: admin/options-fields.php:193
 msgid "Order question list by default using selected"
@@ -1604,23 +1630,23 @@ msgstr ""
 #: admin/options-fields.php:196 admin/options-fields.php:260
 #: includes/theme.php:449 includes/theme.php:485 widgets/questions.php:86
 msgid "Voted"
-msgstr "मतदान किया"
+msgstr "Votado"
 
 #: admin/options-fields.php:197 admin/options-fields.php:261
 #: includes/theme.php:444 includes/theme.php:481 widgets/question_stats.php:47
 #: widgets/questions.php:84
 msgid "Active"
-msgstr "सक्रिय"
+msgstr "Ativo"
 
 #: admin/options-fields.php:198 admin/options-fields.php:262
 #: includes/theme.php:445 includes/theme.php:488 widgets/questions.php:85
 msgid "Newest"
-msgstr "सबसे नया"
+msgstr "O mais novo"
 
 #: admin/options-fields.php:199 admin/options-fields.php:263
 #: includes/theme.php:489
 msgid "Oldest"
-msgstr "सबसे पुराना"
+msgstr "O mais antigo"
 
 #: admin/options-fields.php:204
 msgid "Keep stop words in question slug"
@@ -1632,43 +1658,43 @@ msgstr ""
 
 #: admin/options-fields.php:210
 msgid "Minimum title length"
-msgstr ""
+msgstr "Comprimento mínimo do título"
 
 #: admin/options-fields.php:211
 msgid "Set minimum letters for a question title."
-msgstr ""
+msgstr "Defina o mínimo de letras para o título da pergunta"
 
 #: admin/options-fields.php:216 admin/options-fields.php:274
 msgid "Minimum question content"
-msgstr ""
+msgstr "Conteúdo mínimo da pergunta"
 
 #: admin/options-fields.php:217
 msgid "Set minimum letters for a question contents."
-msgstr ""
+msgstr "Defina o mínimo de letra para o conteúdo da pergunta"
 
 #: admin/options-fields.php:222 admin/options-fields.php:280
 msgid "Use text editor ?"
-msgstr ""
+msgstr "Usar editor de texto"
 
 #: admin/options-fields.php:223 admin/options-fields.php:281
 msgid "Text editor as default."
-msgstr ""
+msgstr "Editor de texto como padrão"
 
 #: admin/options-fields.php:228 admin/options-fields.php:286
 msgid "Disable comments"
-msgstr ""
+msgstr "Desabilitar comentários"
 
 #: admin/options-fields.php:229
 msgid "Disable comments on questions."
-msgstr ""
+msgstr "Desabilitar comentários em perguntas"
 
 #: admin/options-fields.php:234 admin/options-fields.php:292
 msgid "Disable voting"
-msgstr ""
+msgstr "Desabilitar votação"
 
 #: admin/options-fields.php:235
 msgid "Disable voting on questions."
-msgstr ""
+msgstr "Desabilitar votação nas perguntas"
 
 #: admin/options-fields.php:240 admin/options-fields.php:298
 msgid "Disable down voting"
@@ -1689,32 +1715,33 @@ msgstr ""
 #: admin/options-fields.php:256
 #, fuzzy
 msgid "Default answers order"
-msgstr "मुख्य जबाब छटाई"
+msgstr "Sortear resposta padrão"
 
 #: admin/options-fields.php:257
 #, fuzzy
 msgid "Order answers by by default using selected"
-msgstr "%d जवाब, %d चुने गए "
+msgstr "Sortear respostas por padrão"
 
 #: admin/options-fields.php:268
 msgid "Multiple Answers"
-msgstr ""
+msgstr "Múltiplas respostas"
 
 #: admin/options-fields.php:269
 msgid "Allow an user to submit multiple answers on a single question."
 msgstr ""
+"Permitir que o usuário envie múltiplas respostas para uma única pergunta"
 
 #: admin/options-fields.php:275
 msgid "Set minimum letters for a answer contents."
-msgstr ""
+msgstr "Defina o mínimo de letras para o conteúdo da resposta"
 
 #: admin/options-fields.php:287
 msgid "Disable comments on answer."
-msgstr ""
+msgstr "Desabilitar comentários na resposta"
 
 #: admin/options-fields.php:293
 msgid "Disable voting on answers."
-msgstr ""
+msgstr "Desabilitar votação nas respostas"
 
 #: admin/options-fields.php:299
 msgid "Disable down voting on answers."
@@ -1723,12 +1750,12 @@ msgstr ""
 #: admin/options-fields.php:308
 #, fuzzy
 msgid "Permissions"
-msgstr "अनुमति"
+msgstr "Permissões"
 
 #: admin/options-fields.php:311
 #, fuzzy
 msgid "Only logged in can see questions, answer and comments?"
-msgstr "लॉगिन करने पर ही टिप्पणियाँ देख सकते हैं"
+msgstr "Somente logados podem ver comentários"
 
 #: admin/options-fields.php:312
 msgid "Require user to login to see AnsPress contents?."
@@ -1736,87 +1763,87 @@ msgstr ""
 
 #: admin/options-fields.php:317
 msgid "Multiple answers"
-msgstr "एकाधिक सवाल"
+msgstr "Múltiplas respostas"
 
 #: admin/options-fields.php:318
 msgid "Allow user to submit multiple answer per question."
-msgstr ""
+msgstr "Permitir que o usuário envie múltiplas respostas por pergunta."
 
 #: admin/options-fields.php:323
 msgid "Asker can answer"
-msgstr ""
+msgstr "Quem pergunta pode responder"
 
 #: admin/options-fields.php:324
 msgid "Allow asker to answer his own question."
-msgstr ""
+msgstr "Questionador pode responder sua própria pergunta."
 
 #: admin/options-fields.php:329
 msgid "Allow anonymous"
-msgstr ""
+msgstr "Permitir anônimo"
 
 #: admin/options-fields.php:330
 msgid "Non-loggedin user can post questions and answers."
-msgstr ""
+msgstr "Usuários não logados podem fazer perguntas e respostas"
 
 #: admin/options-fields.php:335
 msgid "Only admin can answer"
-msgstr "केवल एडमिन ही जवाब दे सकता है"
+msgstr "Somente Admin pode responder"
 
 #: admin/options-fields.php:336
 msgid "Only allow admin to answer question."
-msgstr "केवल एडमिन ही जवाब देने की अनुमति दे"
+msgstr "Permitir apenas admin para responder perguntas"
 
 #: admin/options-fields.php:341
 msgid "Only logged in can see answers"
-msgstr "लॉगिन करने पर ही सवाल देख सकते हैं"
+msgstr "Somente usuários logados podem ver respostas"
 
 #: admin/options-fields.php:342
 msgid "non-loggedin user cannot see answers."
-msgstr "जब तक लॉगिन नहीं करते, तब तक सवाल दिखाई नहीं देंगे"
+msgstr "Usuário não logados podem ver respostas"
 
 #: admin/options-fields.php:347
 msgid "Only logged in can see comment"
-msgstr "लॉगिन करने पर ही टिप्पणियाँ देख सकते हैं"
+msgstr "Somente logados podem ver comentários"
 
 #: admin/options-fields.php:348
 msgid "non-loggedin user cannot see comments."
-msgstr "जब तक लॉगिन नहीं करते, तब तक टिप्पणियाँ दिखाई नहीं देंगे"
+msgstr "Usuários não logados não podem ver comentários"
 
 #: admin/options-fields.php:353
 msgid "Lock delete action"
-msgstr "हटाने की गतिविधि बंद करे"
+msgstr "Desabilitar ação de apagar"
 
 #: admin/options-fields.php:354
 msgid ""
 "Lock comment or post after a period so that user cannot delete it. Set the "
 "time in epoch i.e. 86400 = 1 day."
 msgstr ""
+"Desabilitar o comentário após um período para que o usuário não possa deletá-"
+"lo. Define o tempo em época i.e. 86400 = 1 dia."
 
 #: admin/options-fields.php:359
 msgid "Upload"
-msgstr "उपलोड"
+msgstr "Subindo"
 
 #: admin/options-fields.php:363
 msgid "Allow image upload"
-msgstr ""
+msgstr "Permitir subir imagem"
 
 #: admin/options-fields.php:364
 msgid "Allow logged-in users to upload image."
-msgstr ""
+msgstr "Permitir que usuários registrados subam imagem"
 
 #: admin/options-fields.php:369
-#, fuzzy
 msgid "Max uploads per post"
-msgstr "पोस्ट पर के सर्वाधिक इमेजेस"
+msgstr ""
 
 #: admin/options-fields.php:370
-#, fuzzy
 msgid "Set numbers of media user can upload for each post."
-msgstr "हटाइये"
+msgstr ""
 
 #: admin/options-fields.php:375
 msgid "Max upload size"
-msgstr "अधिकतम अपलोड आकार"
+msgstr ""
 
 #: admin/options-fields.php:376
 msgid "Set maximum upload size."
@@ -1824,54 +1851,56 @@ msgstr ""
 
 #: admin/options-fields.php:384
 msgid "Status of new question"
-msgstr ""
+msgstr "Estado da nova pergunta"
 
 #: admin/options-fields.php:385
 msgid "Set post status of new question."
-msgstr ""
+msgstr "Define o estado do post de nova pergunta"
 
 #: admin/options-fields.php:388 admin/options-fields.php:398
 #: admin/options-fields.php:408 admin/options-fields.php:418
 #: admin/options-fields.php:428
 msgid "Publish"
-msgstr "प्रकाशित करे"
+msgstr "Publicar"
 
 #: admin/options-fields.php:394
 msgid "Status of edited question"
-msgstr ""
+msgstr "Estado de pergunta editada"
 
 #: admin/options-fields.php:395
 msgid "Set post status of edited question."
-msgstr ""
+msgstr "Define o estado de pergunta editada"
 
 #: admin/options-fields.php:404
 msgid "Status of new answer"
-msgstr ""
+msgstr "Estado de nova resposta"
 
 #: admin/options-fields.php:405
 msgid "Set post status of new answer."
-msgstr ""
+msgstr "Define o estado de nova resposta"
 
 #: admin/options-fields.php:414
 msgid "Status of edited answer"
-msgstr ""
+msgstr "Estado de resposta editada"
 
 #: admin/options-fields.php:415
 msgid "Set post status of edited answer."
-msgstr ""
+msgstr "Define o estado de resposta editada"
 
 #: admin/options-fields.php:424
+#, fuzzy
 msgid "Status of anonymous post"
-msgstr ""
+msgstr "Estado da nova pergunta"
 
 #: admin/options-fields.php:425
+#, fuzzy
 msgid "Set post status post submitted by anonymous user."
-msgstr ""
+msgstr "Define o estado de resposta editada"
 
 #: admin/options-fields.php:434
 #, fuzzy
 msgid "User roles"
-msgstr "दोस्त परिचय"
+msgstr "Usuários"
 
 #: admin/options-fields.php:435
 msgid "Uninstall - clear all AnsPress data"
@@ -1880,7 +1909,7 @@ msgstr ""
 #: admin/update.php:131
 #, fuzzy
 msgid "Post data updated successfully"
-msgstr "पोस्ट स्थिति सफलता पूर्वक बदल दी गयी है."
+msgstr "Estado do post atualizado com sucesso"
 
 #: admin/update.php:160
 msgid "Updated %1$d posts out of %2$d"
@@ -1889,7 +1918,7 @@ msgstr ""
 #: admin/update.php:339 admin/update.php:352
 #, fuzzy
 msgid "Successfully migrated all reputations"
-msgstr "सफलता पूर्वक बिल्ला बना दिया"
+msgstr "Tag criada com sucesso"
 
 #: admin/update.php:370
 msgid "Migrated reputation... %1$d out of %2$d"
@@ -1906,7 +1935,7 @@ msgstr ""
 #: admin/updater.php:80
 #, fuzzy
 msgid "Enter your theme license key."
-msgstr "प्रदर्शित किया जानेवाला  नाम लिखिए"
+msgstr "Digite sua chave secreta"
 
 #: admin/updater.php:81
 msgid "License Key"
@@ -1915,7 +1944,7 @@ msgstr ""
 #: admin/updater.php:82
 #, fuzzy
 msgid "License Action"
-msgstr "हटाने की गतिविधि बंद करे"
+msgstr "Desabilitar ação de apagar"
 
 #: admin/updater.php:83 admin/views/licenses.php:37
 msgid "Deactivate License"
@@ -1924,7 +1953,7 @@ msgstr ""
 #: admin/updater.php:84 admin/views/licenses.php:39
 #, fuzzy
 msgid "Activate License"
-msgstr "सक्रिय %s"
+msgstr "Ativado"
 
 #: admin/updater.php:85 admin/updater.php:97
 msgid "License status is unknown."
@@ -1969,7 +1998,7 @@ msgstr ""
 #: admin/updater.php:95
 #, fuzzy
 msgid "License key is disabled."
-msgstr "साथी सूचि उपलभ्ध नहीं"
+msgstr "Diretório de usuário desabilitaddo"
 
 #: admin/updater.php:96
 msgid "Site is inactive."
@@ -2004,17 +2033,17 @@ msgstr ""
 #: admin/updater.php:368
 #, fuzzy
 msgid "You do not have permission to install plugin updates"
-msgstr "आपको ये सवाल बदलने की अनुमति नहीं"
+msgstr "Você não tem permissão para editar esta pergunta"
 
 #: admin/updater.php:368
 #, fuzzy
 msgid "Error"
-msgstr "गलती ४०४"
+msgstr "Error 404"
 
 #: admin/views/admin.php:21
 #, fuzzy
 msgid "AnsPress option updated!"
-msgstr "AnsPress विकल्प"
+msgstr "Opções de atualizações AnsPress"
 
 #: admin/views/dashboard.php:26
 msgid "Require Attention"
@@ -2022,44 +2051,51 @@ msgstr ""
 
 #: admin/views/dashboard.php:32
 msgid "Latest Questions"
-msgstr "नवीनतम सवाल"
+msgstr "Últimas perguntas"
 
 #: admin/views/dashboard.php:36
 #, fuzzy
 msgid "Latest Answers"
-msgstr "जवाब बदलिये"
+msgstr "Atualizar resposta"
 
 #: admin/views/dashboard.php:86 admin/views/dashboard.php:275
+#, fuzzy
 msgid "%d Published"
-msgstr "प्रकाशित"
+msgstr "Publicado"
 
 #: admin/views/dashboard.php:91 admin/views/dashboard.php:278
+#, fuzzy
 msgid "%d Private"
-msgstr "निजी"
+msgstr "Privado"
 
 #: admin/views/dashboard.php:95 admin/views/dashboard.php:281
+#, fuzzy
 msgid "%d Moderate"
-msgstr "संयमित करे"
+msgstr "Moderar"
 
 #: admin/views/dashboard.php:215
+#, fuzzy
 msgid "%d Flagged questions"
-msgstr "अलग किये सवाल जवाब"
+msgstr "Marcado perguntas & respostas"
 
 #: admin/views/dashboard.php:218
+#, fuzzy
 msgid "%d questions awaiting moderation"
-msgstr "पोस्ट सभापति के अनुमति के लिए रुके है"
+msgstr "Postagem aguardando moderação"
 
 #: admin/views/dashboard.php:222
 msgid "All looks fine"
 msgstr ""
 
 #: admin/views/dashboard.php:231
+#, fuzzy
 msgid "%d Flagged answers"
-msgstr "%d जवाब"
+msgstr "Marcado perguntas & respostas"
 
 #: admin/views/dashboard.php:237
+#, fuzzy
 msgid "%d answers awaiting moderation"
-msgstr "पोस्ट सभापति के अनुमति के लिए रुके है"
+msgstr "Postagem aguardando moderação"
 
 #: admin/views/dashboard.php:299
 msgid "Apparently, there are no updates to show!"
@@ -2068,16 +2104,15 @@ msgstr ""
 #: admin/views/dashboard.php:344
 #, fuzzy
 msgid "Welcome to AnsPress!"
-msgstr "AnsPress के बारेमें"
+msgstr "Bem vindo ao Anspress 2.2"
 
 #: admin/views/dashboard.php:346
 msgid "We’ve assembled some links to get you started:"
 msgstr ""
 
 #: admin/views/dashboard.php:350
-#, fuzzy
 msgid "Get Started"
-msgstr "सुरु करे"
+msgstr ""
 
 #: admin/views/dashboard.php:357
 msgid "Next Steps"
@@ -2086,35 +2121,35 @@ msgstr ""
 #: admin/views/dashboard.php:359
 #, fuzzy
 msgid "Write your first question"
-msgstr "सवाल का विवरण लिखिए"
+msgstr "Escreva a descrição para a pergunta"
 
 #: admin/views/dashboard.php:360
 #, fuzzy
 msgid "Post an answer"
-msgstr "जवाब भेजिए"
+msgstr "Enviar resposta"
 
 #: admin/views/dashboard.php:361
 #, fuzzy
 msgid "View questions"
-msgstr "नए सवाल"
+msgstr "Ver pergunta"
 
 #: admin/views/dashboard.php:365
 #, fuzzy
 msgid "More actions"
-msgstr "और कार्रवाई"
+msgstr "Mais ação"
 
 #: admin/views/dashboard.php:371
 msgid "Get %1$s or %2$s"
-msgstr "कृपया %s या %s."
-
-#: admin/views/dashboard.php:375
-msgid "Themes"
 msgstr ""
 
-#: admin/views/dashboard.php:380
+#: admin/views/dashboard.php:375
 #, fuzzy
+msgid "Themes"
+msgstr "Tema"
+
+#: admin/views/dashboard.php:380
 msgid "Extensions"
-msgstr "सवाल"
+msgstr "Extensões"
 
 #: admin/views/dashboard.php:386
 msgid "Help and Support!"
@@ -2135,7 +2170,7 @@ msgstr ""
 #: admin/views/licenses.php:36
 #, fuzzy
 msgid "active"
-msgstr "सक्रिय"
+msgstr "Ativo"
 
 #: admin/views/licenses.php:48
 msgid "Save"
@@ -2144,16 +2179,17 @@ msgstr ""
 #: admin/views/licenses.php:52
 #, fuzzy
 msgid "No license yet."
-msgstr "कोई जवाब नहीं"
+msgstr "Sem respostas ainda"
 
 #: admin/views/reputation-events.php:34
 #, fuzzy
 msgid "Save Events Points"
-msgstr "अंक संचित करे"
+msgstr "Salvar Ponto"
 
 #: admin/views/roles.php:37
+#, fuzzy
 msgid "New role %s added successfully ."
-msgstr "छवि सफलता पूर्वक भेज दी गयी है."
+msgstr "Imagem carregada com sucesso"
 
 #: admin/views/roles.php:40
 msgid "Its look like %s role already exists ."
@@ -2162,17 +2198,16 @@ msgstr ""
 #: admin/views/roles.php:53
 #, fuzzy
 msgid "Permission and role"
-msgstr "अनुमति"
+msgstr "Permissões"
 
 #: admin/views/roles.php:59
 #, fuzzy
 msgid "Add new role"
-msgstr "जवाब जोड़िए"
+msgstr "Responder"
 
 #: admin/views/roles.php:62
-#, fuzzy
 msgid "Add a new user role."
-msgstr "जवाब जोड़िए"
+msgstr ""
 
 #: admin/views/roles.php:65
 msgid "Role name"
@@ -2193,7 +2228,7 @@ msgstr ""
 #: admin/views/roles.php:81
 #, fuzzy
 msgid "Add role"
-msgstr "और जोड़े"
+msgstr "Add mais"
 
 #: admin/views/roles.php:88
 msgid "AnsPress capabilities"
@@ -2210,11 +2245,11 @@ msgstr ""
 #: admin/views/roles.php:129
 #, fuzzy
 msgid "Save Role"
-msgstr "अंक संचित करे"
+msgstr "Salvar Ponto"
 
 #: admin/views/select_question.php:20
 msgid "Select a question for new answer"
-msgstr "नए जवाब के लिए एक सवाल चुनिए"
+msgstr "Selecionar a pergunta para a nova resposta"
 
 #: admin/views/select_question.php:21
 msgid ""
@@ -2224,15 +2259,15 @@ msgstr ""
 
 #: admin/views/sidebar.php:5
 msgid "Support Q&A"
-msgstr ""
+msgstr "Suporte Q&A"
 
 #: admin/views/sidebar.php:6
 msgid "AnsPress Themes"
-msgstr ""
+msgstr "Temas AndsPress"
 
 #: admin/views/sidebar.php:7
 msgid "Github Repo"
-msgstr ""
+msgstr "Rep. Github"
 
 #: admin/views/uninstall.php:21
 msgid ""
@@ -2243,11 +2278,12 @@ msgstr ""
 #: admin/views/uninstall.php:28
 #, fuzzy
 msgid "Permanently delete all questions and answers?"
-msgstr "नए जवाब के लिए एक सवाल चुनिए"
+msgstr "Selecionar a pergunta para a nova resposta"
 
 #: admin/views/uninstall.php:34
+#, fuzzy
 msgid "Delete %d Q&A"
-msgstr "हटाइये"
+msgstr "Apagar"
 
 #: admin/views/uninstall.php:35
 msgid ""
@@ -2255,13 +2291,13 @@ msgid ""
 msgstr ""
 
 #: admin/views/uninstall.php:40
-#, fuzzy
 msgid "Permanently delete all answers?"
-msgstr "नए जवाब के लिए एक सवाल चुनिए"
+msgstr ""
 
 #: admin/views/uninstall.php:46
+#, fuzzy
 msgid "Delete %d answers"
-msgstr "चुना सवाल"
+msgstr "resposta selecionada"
 
 #: admin/views/uninstall.php:47
 msgid ""
@@ -2270,51 +2306,45 @@ msgid ""
 msgstr ""
 
 #: admin/views/uninstall.php:52
-#, fuzzy
 msgid "Permanently delete all AnsPress user data?"
-msgstr "नए जवाब के लिए एक सवाल चुनिए"
+msgstr ""
 
 #: admin/views/uninstall.php:55
-#, fuzzy
 msgid "Delete all user data"
-msgstr "चुना सवाल"
+msgstr ""
 
 #: admin/views/uninstall.php:56
 msgid "Clicking this button will delete all user data added by AnsPress"
 msgstr ""
 
 #: admin/views/uninstall.php:61
-#, fuzzy
 msgid "Permanently delete all AnsPress options?"
-msgstr "नए जवाब के लिए एक सवाल चुनिए"
+msgstr ""
 
 #: admin/views/uninstall.php:64
 #, fuzzy
 msgid "Delete all options"
-msgstr "सूचनाएँ हटाये"
+msgstr "Apagar esta reputação"
 
 #: admin/views/uninstall.php:65
 msgid "Clicking this button will delete all AnsPress options"
 msgstr ""
 
 #: admin/views/uninstall.php:70
-#, fuzzy
 msgid "Permanently delete all AnsPress terms?"
-msgstr "नए जवाब के लिए एक सवाल चुनिए"
+msgstr ""
 
 #: admin/views/uninstall.php:73
-#, fuzzy
 msgid "Delete all terms"
-msgstr "सूचनाएँ हटाये"
+msgstr ""
 
 #: admin/views/uninstall.php:74
 msgid "Clicking this button will delete all AnsPress terms data"
 msgstr ""
 
 #: admin/views/uninstall.php:79
-#, fuzzy
 msgid "Permanently delete all AnsPress tables?"
-msgstr "नए जवाब के लिए एक सवाल चुनिए"
+msgstr ""
 
 #: admin/views/uninstall.php:82
 msgid "Delete all database tables"
@@ -2331,12 +2361,12 @@ msgstr ""
 #: admin/views/upgrade.php:19
 #, fuzzy
 msgid "Questions and Answers"
-msgstr " सवाल जवाब खोज फॉर्म"
+msgstr "Página de pergunta"
 
 #: admin/views/upgrade.php:20
 #, fuzzy
 msgid "Migrate reputation data"
-msgstr "ख्याति रोके"
+msgstr "Desabilitar reputação"
 
 #: admin/views/upgrade.php:21
 msgid "Migrate category data"
@@ -2345,7 +2375,7 @@ msgstr ""
 #: admin/views/upgrade.php:27
 #, fuzzy
 msgid "Thank you for choosing AnsPress"
-msgstr "मतदान के लिए शुक्रिया."
+msgstr "Obrigado por votar"
 
 #: admin/views/upgrade.php:28
 msgid ""
@@ -2374,7 +2404,7 @@ msgstr ""
 #: anspress-question-answer.php:44
 #, fuzzy
 msgid "AnsPress is not running!"
-msgstr "AnsPress विकल्प"
+msgstr "AnsPress Pontos"
 
 #: anspress-question-answer.php:45
 msgid ""
@@ -2384,26 +2414,26 @@ msgstr ""
 
 #: includes/ajax-hooks.php:89
 msgid "%d similar questions found"
-msgstr "%d सामान सवाल पाये गए"
+msgstr "%d perguntas semelhantes encontradas"
 
 #: includes/ajax-hooks.php:90
 msgid ""
 "We've found similar questions that have already been asked, click to read "
 "them."
-msgstr "हमें कुछ सामान सवाल पाये गए है. पढ़ने के लिए क्लिक करे"
+msgstr ""
 
 #: includes/ajax-hooks.php:100 includes/ajax-hooks.php:136
 #: includes/theme.php:771
 msgid "Select"
-msgstr "चुने"
+msgstr "Selecione"
 
 #: includes/ajax-hooks.php:109
 msgid "No related questions found."
-msgstr "कोई समरूप सवाल पाया नहीं गया"
+msgstr "Perguntas relacionadas não encontradas"
 
 #: includes/ajax-hooks.php:135
 msgid "Best answer is unselected for your question."
-msgstr "आपके सवाल का सर्वोत्तम उत्तर बदल दिया गया है."
+msgstr "A melhor resposta foi desselecionado para a pergunta"
 
 #: includes/ajax-hooks.php:144
 msgid ""
@@ -2413,21 +2443,21 @@ msgstr ""
 
 #: includes/ajax-hooks.php:172
 msgid "Best answer is selected for your question."
-msgstr "आपके सवाल का सर्वोत्तम उत्तर चुना गया है"
+msgstr "Melhor resposta foi selecionada para sua pergunta"
 
 #: includes/ajax-hooks.php:173 includes/theme.php:779
 msgid "Unselect"
-msgstr "चुनाव हटाइये"
+msgstr "Cancelar"
 
 #: includes/ajax-hooks.php:185
 #, fuzzy
 msgid "Unable to trash this post"
-msgstr "इस पोस्ट को ऊपर मत करे "
+msgstr "Votar a favor deste post"
 
 #: includes/ajax-hooks.php:206 includes/class/form.php:298
 #: includes/class/form.php:306 includes/comments.php:404 includes/theme.php:365
 msgid "Delete"
-msgstr "हटाइये"
+msgstr "Apagar"
 
 #: includes/ajax-hooks.php:206 includes/theme.php:366
 msgid "Delete this post (can be restored again)"
@@ -2438,18 +2468,19 @@ msgid "%s is restored"
 msgstr ""
 
 #: includes/ajax-hooks.php:222
+#, fuzzy
 msgid "This post was created %s, hence you cannot trash it"
-msgstr "ये पोस्ट %s बनाई गयी थी और इसलिए हटाई नहीं जा सकती"
+msgstr "Post criado há %s atrás, este aqui você não pode apagar."
 
 #: includes/ajax-hooks.php:230 includes/theme.php:362
 #, fuzzy
 msgid "Undelete"
-msgstr "हटाइये"
+msgstr "Apagar"
 
 #: includes/ajax-hooks.php:230 includes/theme.php:363
 #, fuzzy
 msgid "Restore this post"
-msgstr "इस पोस्ट को ऊपर मत करे "
+msgstr "Votar a favor deste post"
 
 #: includes/ajax-hooks.php:231
 msgid "%s is trashed"
@@ -2462,12 +2493,12 @@ msgstr ""
 #: includes/ajax-hooks.php:274
 #, fuzzy
 msgid "Question is deleted permanently"
-msgstr "सवाल हमेशा के लिए हटा दिया गया है"
+msgstr "A pergunta foi apagada permanentemente"
 
 #: includes/ajax-hooks.php:283
 #, fuzzy
 msgid "Answer is deleted permanently"
-msgstr "जवाब हमेशा के लिए हटा दिया गया है."
+msgstr "A resposta foi apagada permanentemente"
 
 #: includes/ajax-hooks.php:298
 msgid "Sorry, you cannot toggle a featured question"
@@ -2476,68 +2507,68 @@ msgstr ""
 #: includes/ajax-hooks.php:308
 #, fuzzy
 msgid "Only question can be set as featured"
-msgstr "सवाल को विशेष चुना गया है."
+msgstr "Pergunta marcada como destaque"
 
 #: includes/ajax-hooks.php:317 includes/theme.php:855
 #, fuzzy
 msgid "Mark this question as featured"
-msgstr "इस सवाल को विशेष चुने."
+msgstr "Marcar esta pergunta como destaque"
 
 #: includes/ajax-hooks.php:317 includes/theme.php:856
 #, fuzzy
 msgid "Feature"
-msgstr "सुविधाऐं"
+msgstr "Características"
 
 #: includes/ajax-hooks.php:318
 msgid "Question is unmarked as featured."
-msgstr "सवाल का विशेष चुनाव हटा दिअय गया है."
+msgstr "Pergunta desmarcada como destaque"
 
 #: includes/ajax-hooks.php:325 includes/theme.php:852
 #, fuzzy
 msgid "Unmark this question as featured"
-msgstr "इस सवाल को विशेष चुने."
+msgstr "Marcar esta pergunta como destaque"
 
 #: includes/ajax-hooks.php:325 includes/theme.php:853
 #, fuzzy
 msgid "Unfeature"
-msgstr "सुविधाऐं"
+msgstr "Características"
 
 #: includes/ajax-hooks.php:326
 msgid "Question is marked as featured."
-msgstr "सवाल को विशेष चुना गया है."
+msgstr "Pergunta marcada como destaque"
 
 #: includes/ajax-hooks.php:364
 #, fuzzy
 msgid "You cannot close a question"
-msgstr "सवाल का जवाब देने के लिए."
+msgstr "Para responder um pergunta"
 
 #: includes/ajax-hooks.php:370 includes/theme.php:323
 msgid "Close"
-msgstr "बंद करे"
+msgstr "Fechar"
 
 #: includes/ajax-hooks.php:370 includes/theme.php:323
 msgid "Open"
-msgstr "खोले"
+msgstr "Abrir"
 
 #: includes/ajax-hooks.php:371 includes/theme.php:324
 #, fuzzy
 msgid "Close this question for new answer."
-msgstr "नए जवाब के लिए एक सवाल चुनिए"
+msgstr "Selecionar a pergunta para a nova resposta"
 
 #: includes/ajax-hooks.php:371 includes/theme.php:324
 #, fuzzy
 msgid "Open this question for new answers"
-msgstr "नए जवाब के लिए एक सवाल चुनिए"
+msgstr "Selecionar a pergunta para a nova resposta"
 
 #: includes/ajax-hooks.php:373
 #, fuzzy
 msgid "Question closed"
-msgstr "सवाल सूचि"
+msgstr "Perguntas Feed"
 
 #: includes/ajax-hooks.php:373
 #, fuzzy
 msgid "Question is opened"
-msgstr "सवाल सूचि"
+msgstr "Perguntas Feed"
 
 #: includes/ajax-hooks.php:437
 msgid "Sorry, you are not allowed to convert this question to post"
@@ -2550,7 +2581,7 @@ msgstr ""
 #: includes/ajax-hooks.php:483
 #, fuzzy
 msgid "You must be logged in to subscribe to a question"
-msgstr "कोई भी इस सवाल का अनुसरण नहीं कर रहा"
+msgstr "Nenhuma inscrição para esta pergunta"
 
 #: includes/ajax-hooks.php:492 includes/ajax-hooks.php:515
 msgid "Sorry, unable to subscribe"
@@ -2559,45 +2590,44 @@ msgstr ""
 #: includes/ajax-hooks.php:503
 #, fuzzy
 msgid "Successfully unsubscribed from question"
-msgstr "केवल आप इस सवाल का अनुसरण कर रहे है"
+msgstr "cancelar subscrição"
 
 #: includes/ajax-hooks.php:505 includes/theme.php:882
 msgid "Subscribe"
-msgstr "अनुसरण करे"
+msgstr "Inscreva-se"
 
 #: includes/ajax-hooks.php:521
 #, fuzzy
 msgid "Successfully subscribed to question"
-msgstr "कोई भी इस सवाल का अनुसरण नहीं कर रहा"
+msgstr "cancelar subscrição"
 
 #: includes/ajax-hooks.php:523 includes/theme.php:882
-#, fuzzy
 msgid "Unsubscribe"
-msgstr "अनुसरण करे"
+msgstr "Cancelar inscrição"
 
 #: includes/answer-form.php:42
 msgid "Your answer.."
-msgstr "आपका जवाब.."
+msgstr "Sua resposta..."
 
 #: includes/answer-form.php:61 includes/ask-form.php:87
 msgid "Enter your name to display"
-msgstr "प्रदर्शित किया जानेवाला  नाम लिखिए"
+msgstr "Digite seu nome para exibir"
 
 #: includes/answer-form.php:73 includes/ask-form.php:99
 msgid "Only visible to admin and moderator."
-msgstr "केवल एडमिन और सभापति देख सकते है."
+msgstr "Visível somente para admin e moderador"
 
 #: includes/answer-form.php:140 includes/post-types.php:120
 msgid "Update answer"
-msgstr "जवाब बदलिये"
+msgstr "Atualizar resposta"
 
 #: includes/answer-form.php:140
 msgid "Post answer"
-msgstr "जवाब भेजिए"
+msgstr "Enviar resposta"
 
 #: includes/answer-form.php:272
 msgid "Answer submitted successfully"
-msgstr "जवाब सफलता पूर्वक चढ़ा दिया गया है"
+msgstr "Resposta enviada com sucesso"
 
 #: includes/answer-loop.php:303
 msgid "You are viewing 1 out of %d answers, click here to view all answers."
@@ -2609,29 +2639,29 @@ msgstr ""
 
 #: includes/ask-form.php:43
 msgid "Question in one sentence"
-msgstr "सवाल केवल एक वाक्य में"
+msgstr "Pergunta em uma frase"
 
 #: includes/ask-form.php:59
 msgid "Description"
-msgstr "ब्यौरा"
+msgstr "Descrição"
 
 #: includes/ask-form.php:156
 #, fuzzy
 msgid "You cannot edit this question."
-msgstr "आप इस सवाल का अनुकरण कर रहे है."
+msgstr "Você esta inscrito nesta pergunta"
 
 #: includes/ask-form.php:164
 #, fuzzy
 msgid "Post you are trying to edit is not a question."
-msgstr "आपको ये सवाल बदलने की अनुमति नहीं"
+msgstr "Você não tem permissão para editar esta pergunta"
 
 #: includes/ask-form.php:172 includes/post-types.php:50
 msgid "Update question"
-msgstr "सवाल बदलिये"
+msgstr "Atualizar pergunta"
 
 #: includes/ask-form.php:172
 msgid "Post question"
-msgstr "सवाल भेजिए"
+msgstr "Enviar perqunta"
 
 #: includes/ask-form.php:240
 msgid "Question title cannot be blank"
@@ -2639,7 +2669,7 @@ msgstr ""
 
 #: includes/class/form.php:66
 msgid "Submit"
-msgstr "प्रस्तुत करे"
+msgstr "Enviar"
 
 #: includes/class/form.php:199
 msgid "Reset"
@@ -2647,40 +2677,39 @@ msgstr ""
 
 #: includes/class/form.php:203 templates/functions.php:55
 msgid "Cancel"
-msgstr "स्थगित करे"
+msgstr "Cancelar"
 
 #: includes/class/form.php:290
 msgid "Repeat your password"
-msgstr "दोबारा पासवर्ड लिखे"
+msgstr "Repita a senha"
 
 #: includes/class/form.php:308
 msgid "Add more"
-msgstr "और जोड़े"
+msgstr "Add mais"
 
 #: includes/class/form.php:474
 msgid "Select a page"
-msgstr "पेज चुनिए"
+msgstr ""
 
 #: includes/class/form.php:718
 msgid "No fields found"
-msgstr "कोई विस्तार नहीं"
+msgstr "Arquivo não encontrado"
 
 #: includes/class/roles-cap.php:58
 msgid "AnsPress Moderator"
-msgstr "सभापति"
+msgstr "Moderar AnsPress"
 
 #: includes/class/roles-cap.php:62
 msgid "AnsPress Participants"
-msgstr "साझीदार"
+msgstr "Participantes AnsPress"
 
 #: includes/class/roles-cap.php:63
 msgid "AnsPress Banned"
 msgstr ""
 
 #: includes/class/roles-cap.php:1255
-#, fuzzy
 msgid "Voting on own post is not allowed"
-msgstr "निचे मत करना उपलब्ध नहीं."
+msgstr ""
 
 #: includes/class/roles-cap.php:1263
 msgid "Voting on restricted posts are not allowed."
@@ -2689,11 +2718,11 @@ msgstr ""
 #: includes/class/roles-cap.php:1273
 #, fuzzy
 msgid "You do not have permission to vote."
-msgstr "आपको ये कार्य करने की अनुमति नहीं"
+msgstr "Você não tem permissão para comentar"
 
 #: includes/class/validation.php:70
 msgid "This field is required"
-msgstr "ये क्षेत्र जरुरी है"
+msgstr "Este campo é obrigatório"
 
 #: includes/class/validation.php:100
 msgid "Field value should be at least %d characters"
@@ -2701,30 +2730,30 @@ msgstr ""
 
 #: includes/class/validation.php:120 includes/class/validation.php:123
 msgid "It must be minimum %d characters"
-msgstr "काम से काम अक्षर होने चाहिए"
+msgstr "Deve conter no mínimo %d caracteres"
 
 #: includes/class/validation.php:135
 msgid "Not a valid email address"
-msgstr "ईमेल अवैध है"
+msgstr "Endereço de email inválido"
 
 #: includes/class-theme.php:170 includes/class-theme.php:225
 msgid "Question Feed"
-msgstr "सवाल सूचि"
+msgstr "Perguntas Feed"
 
 #: includes/class-theme.php:226
 #, fuzzy
 msgid "Answers Feed"
-msgstr "जवाब सूचि"
+msgstr "Respondeu"
 
 #: includes/comments.php:68
 #, fuzzy
 msgid "Unable to load comments"
-msgstr "फार्म नहीं जोड़ पाये, फिर से प्रयास करे"
+msgstr "Desabilitar comentários"
 
 #: includes/comments.php:92
 #, fuzzy
 msgid "Unable to post comment"
-msgstr "टिप्पणी बदलिये"
+msgstr "Desabilitar comentários"
 
 #: includes/comments.php:100
 msgid "Sorry, you cannot post a blank comment"
@@ -2741,15 +2770,16 @@ msgstr ""
 #: includes/comments.php:157 includes/comments.php:209
 #: includes/comments.php:259 includes/comments.php:302
 #: includes/comments.php:383
+#, fuzzy
 msgid "%d Comment"
 msgid_plural "%d Comments"
-msgstr[0] "टिप्पणी"
-msgstr[1] "टिप्पणी"
+msgstr[0] "Comentário"
+msgstr[1] "Comentário"
 
 #: includes/comments.php:158
 #, fuzzy
 msgid "Comment successfully posted"
-msgstr "टिप्पणी सफ़लता पूर्वक भर दी गयी है"
+msgstr "Comentário enviado com sucesso"
 
 #: includes/comments.php:183
 msgid "Sorry, you cannot edit this comment"
@@ -2762,26 +2792,27 @@ msgstr ""
 #: includes/comments.php:210
 #, fuzzy
 msgid "Comment updated successfully"
-msgstr "टिप्पणी सफ़लता पूर्वक बदल  दी गयी है"
+msgstr "Comentário atualizado com sucesso"
 
 #: includes/comments.php:217
 #, fuzzy
 msgid "Unable to update comment"
-msgstr "टिप्पणी बदलिये"
+msgstr "Atualizar comentários"
 
 #: includes/comments.php:233
 #, fuzzy
 msgid "Failed to delete comment"
-msgstr "ने टीप्पणी बदली"
+msgstr "comentário editado"
 
 #: includes/comments.php:243
+#, fuzzy
 msgid "This comment was created %s. Its locked hence you cannot delete it."
-msgstr "ये पोस्ट %s बनाई गयी थी और इसलिए हटाई नहीं जा सकती"
+msgstr "Post criado há %s atrás, este aqui você não pode apagar."
 
 #: includes/comments.php:257
 #, fuzzy
 msgid "Comment successfully deleted"
-msgstr "टिप्पणी सफ़लता पूर्वक भर दी गयी है"
+msgstr "Comentário enviado com sucesso"
 
 #: includes/comments.php:287
 msgid "Sorry, unable to approve comment"
@@ -2790,17 +2821,17 @@ msgstr ""
 #: includes/comments.php:303
 #, fuzzy
 msgid "Comment approved successfully."
-msgstr "टिप्पणी सफ़लता पूर्वक बदल  दी गयी है"
+msgstr "Comentário atualizado com sucesso"
 
 #: includes/comments.php:380
 #, fuzzy
 msgid "Comments awaiting moderation"
-msgstr "पोस्ट सभापति के अनुमति के लिए रुके है"
+msgstr "Postagem aguardando moderação"
 
 #: includes/comments.php:383
 #, fuzzy
 msgid "Add a Comment"
-msgstr "टिप्पणी"
+msgstr "Comentário"
 
 #: includes/comments.php:408
 msgid "Approve"
@@ -2808,16 +2839,16 @@ msgstr ""
 
 #: includes/common-pages.php:22
 msgid "Ask"
-msgstr "पूछिये"
+msgstr "Perguntar"
 
 #: includes/common-pages.php:23 templates/functions.php:60
 #: templates/search-form.php:12
 msgid "Search"
-msgstr "खोजें"
+msgstr "Encontrar"
 
 #: includes/common-pages.php:24
 msgid "Edit Answer"
-msgstr "जवाब बदलिये"
+msgstr "Editar resposta"
 
 #: includes/common-pages.php:70
 msgid ""
@@ -2828,7 +2859,7 @@ msgstr ""
 #: includes/common-pages.php:72
 #, fuzzy
 msgid "Sorry! you are not allowed to read this question."
-msgstr "केवल आप इस सवाल का अनुसरण कर रहे है"
+msgstr "Somente você está inscrito nesta pergunta"
 
 #: includes/common-pages.php:108
 msgid "Question will be publish in %s"
@@ -2843,156 +2874,156 @@ msgstr ""
 #: includes/common-pages.php:135
 #, fuzzy
 msgid "Something went wrong, please try again"
-msgstr "कुछ तो गलत हो गया, कृपा पूनः प्रयास करे"
+msgstr "Algo deu errado, por favor tente novamente."
 
 #: includes/common-pages.php:157
-#, fuzzy
 msgid "Sorry, you cannot edit this answer."
-msgstr "ये जवाब बदलिये"
+msgstr ""
 
 #: includes/flag.php:36
 msgid "You have already reported this post."
-msgstr "आपने इस पोस्ट को पेहेले ही सूचित किया है."
+msgstr "Você já relatou esta postagem"
 
 #: includes/flag.php:46
 msgid "Thank you for reporting this post."
-msgstr "इस पोस्ट को सूचित करने के लिए धन्यवाद."
+msgstr "Obrigado por reportar esta postagem"
 
 #: includes/flag.php:123
 msgid "Flag this post"
-msgstr "इस पोस्ट को अलग करे"
+msgstr "Marque este post"
 
 #: includes/flag.php:123
 msgid "You have flagged this post"
-msgstr "आपने इस पोस्ट को अलग किया है"
+msgstr "Você já marcou este post"
 
 #: includes/form.php:54
 msgid "You do not have permission to delete this comment"
-msgstr "आपको ये टिप्पणी हटाने की अनुमति नहीं"
+msgstr "Você não tem permissão para apagar este comentários"
 
 #: includes/form.php:72
 msgid "Comment deleted successfully."
-msgstr "टिप्पणी सफ़लता पूर्वक हटा दी गयी है"
+msgstr "Comentário apagado com sucesso"
 
 #: includes/form.php:149 includes/form.php:155
 msgid "Form loaded."
-msgstr "फ़ार्म भर दिया गया है"
+msgstr "Formulário carregado"
 
 #: includes/form.php:157
 msgid "You do not have permission to edit this question."
-msgstr "आपको ये सवाल बदलने की अनुमति नहीं"
+msgstr "Você não tem permissão para editar esta pergunta"
 
 #: includes/form.php:160
 msgid "Something went wrong, please try again."
-msgstr "कुछ तो गलत हो गया, कृपा पूनः प्रयास करे"
+msgstr "Algo deu errado, por favor tente novamente."
 
 #: includes/form.php:194
 #, fuzzy
 msgid "Don't have a user account?."
-msgstr "आपका साथी खता नहीं, कृपया %रजिस्टर करे%s."
+msgstr "Não tem uma conta de usuário? %sRegistre-se agora%s."
 
 #: includes/form.php:195
+#, fuzzy
 msgid "Register now"
-msgstr ""
+msgstr "Registrar"
 
 #: includes/form.php:214
 msgid "Unable to create tag, please try again."
-msgstr "बल्ला नहीं बना पाये, फिर से प्रयास करे"
+msgstr "Não foi possível criar a tag, por favor tente novamente"
 
 #: includes/form.php:217
 msgid "Successfully created a tag."
-msgstr "सफलता पूर्वक बिल्ला बना दिया"
+msgstr "Tag criada com sucesso"
 
 #: includes/form.php:224
 msgid "Unable to load form, please try again."
-msgstr "फार्म नहीं जोड़ पाये, फिर से प्रयास करे"
+msgstr "Não foi possível carregar o formulário, por favor tente novamente"
 
 #: includes/form.php:226
 msgid "Successfully loaded form."
-msgstr "फार्म लोड हो गया"
+msgstr "Formulário carregado com sucesso"
 
 #: includes/form.php:238
 msgid "Update Answer"
-msgstr "जवाब बदलिये"
+msgstr "Atualizar resposta"
 
 #: includes/form.php:245
 msgid "Create new tag"
-msgstr "नया बिल्ला बनाये"
+msgstr "Criar nova tag"
 
 #: includes/form.php:246
 msgid "Enter tag"
-msgstr "बिल्ला लिखे"
+msgstr "Digite a tag"
 
 #: includes/form.php:247
 msgid "Description of tag."
-msgstr "बिल्ले का विस्तार"
+msgstr "Descrição da tag"
 
 #: includes/form.php:248
 msgid "Create tag"
-msgstr "नया बिल्ला बनाये"
+msgstr "Criar tag"
 
 #. translators: %s: human-readable time difference
 #: includes/functions.php:245
 msgid "%s ago"
-msgstr "%s जवाब"
+msgstr "%s ago"
 
 #: includes/functions.php:478
 msgid "Success"
-msgstr "सफलता"
+msgstr "Sucesso"
 
 #: includes/functions.php:480
 msgid "Something went wrong, last action failed."
-msgstr "कुछ तो गलत हुआ है, पिछला कार्य नहीं हो पाया"
+msgstr "Algo de errado ocorreu, última ação falhou"
 
 #: includes/functions.php:482
 msgid "Comment updated successfully."
-msgstr "टिप्पणी सफ़लता पूर्वक बदल  दी गयी है"
+msgstr "Comentário atualizado com sucesso"
 
 #: includes/functions.php:483
 msgid "You cannot vote on your own question or answer."
-msgstr "आपके सवाल या जवाब को आप मत नहीं दे सकते."
+msgstr "Você não pode votar em sua pergunta ou resposta"
 
 #: includes/functions.php:484
 #, fuzzy
 msgid "You do not have permission to view private posts."
-msgstr "निजी पोस्ट देखने की आपको अनुमति नहीं."
+msgstr "Você não tem permissão para ver postagens privadas"
 
 #: includes/functions.php:485
 msgid "Please check captcha field and resubmit it again."
-msgstr "पहले captcha क्षेत्र जाँचिए और फिर से भेजिए"
+msgstr "Por favor verifique o campo de captcha e reenvie."
 
 #: includes/functions.php:486
 msgid "Image uploaded successfully"
-msgstr "छवि सफलता पूर्वक भेज दी गयी है."
+msgstr "Imagem carregada com sucesso"
 
 #: includes/functions.php:487
 msgid "Answer has been deleted permanently"
-msgstr "जवाब हमेशा के लिए हटा दिया गया है."
+msgstr "A resposta foi apagada permanentemente"
 
 #: includes/functions.php:488
 msgid "You have already attached maximum numbers of allowed uploads."
-msgstr "अधिकतम वैध अपलोड आप कर चुके है."
+msgstr ""
 
 #: includes/functions.php:489
 msgid "Your profile has been updated successfully."
-msgstr "आपका परिचय बदल दिया गया है."
+msgstr ""
 
 #: includes/functions.php:490
 msgid "Voting down is disabled."
-msgstr "निचे मत करना उपलब्ध नहीं."
+msgstr ""
 
 #: includes/functions.php:491
 #, fuzzy
 msgid "You cannot vote on restricted posts"
-msgstr "आपके सवाल या जवाब को आप मत नहीं दे सकते."
+msgstr "Você não pode votar em sua pergunta ou resposta"
 
 #: includes/functions.php:916
 msgid "[Solved] "
-msgstr "[सुलझा गया "
+msgstr ""
 
 #: includes/functions.php:1297
 msgid "asked"
-msgstr "ने पूछा की"
+msgstr "perguntou"
 
 #: includes/functions.php:1298 includes/functions.php:1299
 msgid "approved"
@@ -3000,80 +3031,80 @@ msgstr ""
 
 #: includes/functions.php:1300
 msgid "answered"
-msgstr "ने जवाब दिया"
+msgstr "respondeu"
 
 #: includes/functions.php:1301
 #, fuzzy
 msgid "deleted answer"
-msgstr "चुना सवाल"
+msgstr "resposta selecionada"
 
 #: includes/functions.php:1302
 #, fuzzy
 msgid "restored answer"
-msgstr "ने जवाब बदला "
+msgstr "resposta editada"
 
 #: includes/functions.php:1303 templates/functions.php:53
 msgid "commented"
-msgstr "ने टिप्पणी की"
+msgstr "comentado"
 
 #: includes/functions.php:1304
 #, fuzzy
 msgid "deleted comment"
-msgstr "ने टीप्पणी बदली"
+msgstr "comentário editado"
 
 #: includes/functions.php:1305
 msgid "commented on answer"
-msgstr "ने जवाब पर टिप्पणी की"
+msgstr ""
 
 #: includes/functions.php:1306
 msgid "edited question"
-msgstr "ने सवाल बदला"
+msgstr "pergunta editada"
 
 #: includes/functions.php:1307
 msgid "edited answer"
-msgstr "ने जवाब बदला "
+msgstr "resposta editada"
 
 #: includes/functions.php:1308
 msgid "edited comment"
-msgstr "ने टीप्पणी बदली"
+msgstr "comentário editado"
 
 #: includes/functions.php:1309
 #, fuzzy
 msgid "edited comment on answer"
-msgstr "ने जवाब पर टिप्पणी की"
+msgstr "comentário na resposta"
 
 #: includes/functions.php:1310
 msgid "selected answer"
-msgstr "चुना सवाल"
+msgstr "resposta selecionada"
 
 #: includes/functions.php:1311
 msgid "unselected answer"
-msgstr "अनचुना सवाल"
+msgstr "resposta desselecionada"
 
 #: includes/functions.php:1312
 msgid "updated status"
-msgstr "बदली स्थिति"
+msgstr "Estado atualizado"
 
 #: includes/functions.php:1313
 msgid "selected as best answer"
-msgstr "सबसे अच्छे जवाब के रूप में स्वीकृत"
+msgstr ""
 
 #: includes/functions.php:1314
 msgid "unselected as best answer"
-msgstr "सबसे अच्छे जवाब के रूप में अस्वीकृत"
+msgstr ""
 
 #: includes/functions.php:1315
 #, fuzzy
 msgid "changed status"
-msgstr "बदली स्थिति"
+msgstr "Estado atualizado"
 
 #: includes/functions.php:1367
 msgid "Anonymous"
-msgstr "बेनाम"
+msgstr "Anônimo"
 
 #: includes/functions.php:1394
 msgid " (anonymous)"
-msgstr "(बेनाम)"
+msgstr "(anônimo)"
 
 #: includes/hooks.php:680
 msgid "minute"
@@ -3092,14 +3123,12 @@ msgid "hours"
 msgstr ""
 
 #: includes/hooks.php:684
-#, fuzzy
 msgid "day"
-msgstr "%d दिन. "
+msgstr ""
 
 #: includes/hooks.php:685
-#, fuzzy
 msgid "days"
-msgstr "%d दिन. "
+msgstr ""
 
 #: includes/hooks.php:686
 msgid "week"
@@ -3114,37 +3143,36 @@ msgid "year"
 msgstr ""
 
 #: includes/hooks.php:689
-#, fuzzy
 msgid "years"
-msgstr "%d साल, "
+msgstr ""
 
 #: includes/options.php:111 includes/theme.php:560
 msgid "Ask question"
-msgstr "सवाल पूछे"
+msgstr "Fazer pergunta"
 
 #: includes/options.php:112
 msgid "Search \"%s\""
-msgstr "खोजें"
+msgstr "Encontrar \"%s\""
 
 #: includes/options.php:113
 msgid "%s"
-msgstr "%w"
+msgstr ""
 
 #: includes/post-status.php:28
 msgid "Moderate <span class=\"count\">(%s)</span>"
 msgid_plural "Moderate <span class=\"count\">(%s)</span>"
-msgstr[0] "निजी पोस्ट <span class=\"count\">(%s)</span>"
-msgstr[1] "निजी पोस्ट <span class=\"count\">(%s)</span>"
+msgstr[0] "Moderar <span class=\"count\">(%s)</span>"
+msgstr[1] "Moderar <span class=\"count\">(%s)</span>"
 
 #: includes/post-status.php:32 includes/post-status.php:98
 msgid "Private"
-msgstr "निजी"
+msgstr "Privado"
 
 #: includes/post-status.php:36
 msgid "Private Post <span class=\"count\">(%s)</span>"
 msgid_plural "Private Post <span class=\"count\">(%s)</span>"
-msgstr[0] "निजी पोस्ट <span class=\"count\">(%s)</span>"
-msgstr[1] "निजी पोस्ट <span class=\"count\">(%s)</span>"
+msgstr[0] "Postagem Privada <span class=\"count\">(%s)</span>"
+msgstr[1] "Postagemns Privadas <span class=\"count\">(%s)</span>"
 
 #: includes/post-status.php:53
 msgid "You are not allowed to change post status"
@@ -3152,108 +3180,111 @@ msgstr ""
 
 #: includes/post-status.php:76
 msgid "Post status updated successfully"
-msgstr "पोस्ट स्थिति सफलता पूर्वक बदल दी गयी है."
+msgstr "Estado do post atualizado com sucesso"
 
 #: includes/post-status.php:98
+#, fuzzy
 msgid "This %s is marked as a private, only admin and post author can see."
-msgstr "%s निजी घोषित किया है, केवल एडमिन एवं सभापति देख सकते है."
+msgstr "%s esta marcado como privado, somente o admin e o autor podem ver."
 
 #: includes/post-status.php:100
 msgid "Awaiting approval"
 msgstr ""
 
 #: includes/post-status.php:100
+#, fuzzy
 msgid "This %s is awaiting for approval by moderator."
-msgstr "%s को सभापति के अनुमति की प्रतीक्षा है."
+msgstr "%s está aguardando aprovação"
 
 #: includes/post-status.php:102
 msgid "Closed"
-msgstr "बंद"
+msgstr "Fechado"
 
 #: includes/post-status.php:102
 #, fuzzy
 msgid "Question is closed for new answers"
-msgstr "सवाल %s को पूछा गया है"
+msgstr "Pergunta feita por %s."
 
 #: includes/post-status.php:104
 #, fuzzy
 msgid "Trashed"
-msgstr "कचरे में"
+msgstr "Lixo"
 
 #: includes/post-status.php:104
+#, fuzzy
 msgid "This %s has been trashed, you can delete it permanently from wp-admin."
-msgstr "%s को कचरे में दाल दिया गया है, हमेशा के लिए हटाने के लिए wp-admin में जाईये."
+msgstr "%s movido para lixeira, você pode deletar permanentemente em wp-admin"
 
 #: includes/post-types.php:44
 #, fuzzy
 msgid "Parent question:"
-msgstr "जनक सवाल:"
+msgstr "Pergunta Pai:"
 
 #: includes/post-types.php:45
 #, fuzzy
 msgid "All questions"
-msgstr "सभी सवाल"
+msgstr "Todas as Perguntas"
 
 #: includes/post-types.php:46
-#, fuzzy
 msgid "View question"
-msgstr "सवाल देखे"
+msgstr "Ver pergunta"
 
 #: includes/post-types.php:47
 #, fuzzy
 msgid "Add new question"
-msgstr "नया सवाल जोड़े"
+msgstr "Perguntar"
 
 #: includes/post-types.php:51 widgets/search.php:60
 msgid "Search questions"
-msgstr "सवाल खोजे"
+msgstr "Pesquisar perguntas"
 
 #: includes/post-types.php:52
 msgid "No question found"
-msgstr "कोई सवाल नहीं पाया गया"
+msgstr "Pergunta não encontrada"
 
 #: includes/post-types.php:53
 #, fuzzy
 msgid "No questions found in trash"
-msgstr "कोई सवाल कचरे नहीं पाया गया"
+msgstr "Pergunta não encontrada na lixeira"
 
 #: includes/post-types.php:114
 #, fuzzy
 msgid "Parent answer:"
-msgstr "जनक जवाब:"
+msgstr "Resposta Pai"
 
 #: includes/post-types.php:115
 #, fuzzy
 msgid "All answers"
-msgstr "सभी जवाब"
+msgstr "Todas as Respostas"
 
 #: includes/post-types.php:116
 #, fuzzy
 msgid "View answer"
-msgstr "जवाब देखिए"
+msgstr "Ver Resposta"
 
 #: includes/post-types.php:117
 #, fuzzy
 msgid "Add new answer"
-msgstr "नया जवाब जोड़िए"
+msgstr "Responder"
 
 #: includes/post-types.php:121
 #, fuzzy
 msgid "Search answers"
-msgstr "जवाब खोजें"
+msgstr "Encontrar resposta"
 
 #: includes/post-types.php:122
 msgid "No answer found"
-msgstr "कोई जवाब नहीं मिला"
+msgstr "Resposta não encontrada"
 
 #: includes/post-types.php:123
 #, fuzzy
 msgid "No answer found in trash"
-msgstr "कचरे में कोई जवाब नहीं मिला"
+msgstr "Resposta não encontrada na lixeira"
 
 #: includes/process-form.php:121
+#, fuzzy
 msgid "Sorry, unable to post new question"
-msgstr ""
+msgstr "Estado da nova pergunta"
 
 #: includes/process-form.php:161
 msgid ""
@@ -3264,16 +3295,16 @@ msgstr ""
 #: includes/process-form.php:207
 #, fuzzy
 msgid "Question posted successfully. Redirecting to question"
-msgstr "सवाल सफलता पूर्वक बदल दिया गया है"
+msgstr "Pergunta atualizada com sucesso"
 
 #: includes/process-form.php:271
 msgid "Question updated successfully"
-msgstr "सवाल सफलता पूर्वक बदल दिया गया है"
+msgstr "Pergunta atualizada com sucesso"
 
 #: includes/process-form.php:287
 #, fuzzy
 msgid "Sorry, you cannot asnwer on this question"
-msgstr "केवल आप इस सवाल का अनुसरण कर रहे है"
+msgstr "Somente você está inscrito nesta pergunta"
 
 #: includes/process-form.php:331
 msgid ""
@@ -3284,47 +3315,47 @@ msgstr ""
 #: includes/process-form.php:383
 #, fuzzy
 msgid "Sorry, you cannot edit this answer"
-msgstr "ये जवाब बदलिये"
+msgstr "Editar esta resposta"
 
 #: includes/process-form.php:420
 msgid "Answer updated successfully"
-msgstr "जवाब सफलता पूर्वक बदल दिया गया है"
+msgstr "Resposta atualizada com sucesso"
 
 #: includes/process-form.php:439
 msgid "Check missing fields and then re-submit."
-msgstr "खाली क्षेत्र जाँचे और फिर से भेजे"
+msgstr "Verifique os campos que estão faltando e reenvie"
 
 #: includes/qaquery-hooks.php:146
 #, fuzzy
 msgid "Restricted content"
-msgstr "ने टीप्पणी बदली"
+msgstr "comentário editado"
 
 #: includes/qaquery.php:438
 #, fuzzy
 msgid "Featured"
-msgstr "सुविधाऐं"
+msgstr "Características"
 
 #: includes/qaquery.php:442
 msgid "Solved"
-msgstr "सुलझा गया"
+msgstr ""
 
 #: includes/qaquery.php:446
+#, fuzzy
 msgid "%d views"
-msgstr "<i>%d ने देखा</i>"
+msgstr "1 visualização"
 
 #: includes/shortcode-basepage.php:58
 msgid "AnsPress shortcode cannot be nested."
 msgstr ""
 
 #: includes/shortcode-basepage.php:79
-#, fuzzy
 msgid "Question and answer is powered by"
-msgstr " सवाल जवाब खोज फॉर्म"
+msgstr ""
 
 #: includes/taxo.php:322
 #, fuzzy
 msgid "Tagged"
-msgstr "अलग"
+msgstr "Marcado"
 
 #: includes/taxo.php:456
 msgid "Popular"
@@ -3333,20 +3364,20 @@ msgstr ""
 #: includes/taxo.php:457
 #, fuzzy
 msgid "New"
-msgstr "सबसे नया"
+msgstr "O mais novo"
 
 #: includes/theme.php:30
 #, fuzzy
 msgid "No permission"
-msgstr "अनुमति"
+msgstr "Permissões"
 
 #: includes/theme.php:41
 msgid "Discussion on \"%s\""
-msgstr "\"%s\" पर बातचीत"
+msgstr "Discussão em \"%s\""
 
 #: includes/theme.php:45 templates/not-found.php:1
 msgid "Error 404"
-msgstr "गलती ४०४"
+msgstr "Error 404"
 
 #: includes/theme.php:383
 msgid "Delete post permanently (cannot be restored again)"
@@ -3355,40 +3386,41 @@ msgstr ""
 #: includes/theme.php:393
 #, fuzzy
 msgid "Convert to post"
-msgstr "इस पोस्ट को निचे मत करे"
+msgstr "Votar contra "
 
 #: includes/theme.php:394
 #, fuzzy
 msgid "Convert this question to blog post"
-msgstr "इस सवाल का जवाब दे"
+msgstr "Responda esta pergunta"
 
 #: includes/theme.php:452
 msgid "Answered"
-msgstr "जवाब दिया गया"
+msgstr "Respondeu"
 
 #: includes/theme.php:453 widgets/questions.php:88
 msgid "Unanswered"
-msgstr "जवाब नहीं दिया गया"
+msgstr "Sem reposta"
 
 #: includes/theme.php:454
 msgid "Unsolved"
-msgstr "अनसुलझा"
+msgstr "Sem solução"
 
 #: includes/theme.php:455 widgets/question_stats.php:48
 msgid "Views"
-msgstr "दर्शन"
+msgstr "Visualizações"
 
 #: includes/theme.php:513
 msgid "Best answer"
-msgstr "सर्वोत्तम जवाब"
+msgstr "Melhor resposta"
 
 #: includes/theme.php:688
+#, fuzzy
 msgid "Order By"
-msgstr ""
+msgstr "Ordenar por"
 
 #: includes/theme.php:743
 msgid "Reset sorting and filter"
-msgstr "भेद व छटाई पुनर्स्थापित करे"
+msgstr ""
 
 #: includes/theme.php:743
 msgid "Clear Filter"
@@ -3396,16 +3428,16 @@ msgstr ""
 
 #: includes/theme.php:770
 msgid "Select this answer as best"
-msgstr "इस जवाब को सर्वोत्तम चुने"
+msgstr "Selecionar a melhor resposta"
 
 #: includes/theme.php:778
 msgid "Unselect this answer"
-msgstr "इस जवाब का चुनाव हटाइये"
+msgstr "Desmarcar esta resposta"
 
 #: includes/theme.php:906
 #, fuzzy
 msgid "AnsPress links"
-msgstr "AnsPress विकल्प"
+msgstr "AnsPress Pontos"
 
 #: includes/upload.php:28
 msgid "You are not allowed to upload attachments."
@@ -3416,27 +3448,25 @@ msgid "Unable to delete attachment"
 msgstr ""
 
 #: includes/upload.php:150
-#, fuzzy
 msgid "You have already uploaded maximum numbers of allowed attachments"
-msgstr "अधिकतम वैध अपलोड आप कर चुके है."
+msgstr ""
 
 #: includes/upload.php:157
 msgid "File cannot be uploaded, size is bigger then %s MB"
-msgstr "फाइल अपलोड नहीं हूँ सकती, आकार % बाईट से बड़ा है"
+msgstr ""
 
 #: includes/upload.php:225
 #, fuzzy
 msgid "Uploaded"
-msgstr "उपलोड"
+msgstr "Subindo"
 
 #: includes/upload.php:226
 msgid "Failed"
 msgstr ""
 
 #: includes/upload.php:228
-#, fuzzy
 msgid "Insert to post"
-msgstr "इस पोस्ट को निचे मत करे"
+msgstr ""
 
 #: includes/upload.php:281
 msgid "Insert images and attach media by %1$sselecting them%2$s"
@@ -3444,52 +3474,58 @@ msgstr ""
 
 #: includes/votes.php:64
 msgid "Your vote has been removed."
-msgstr "आपका मत हटा दिया गया है."
+msgstr "Seu voto foi removido"
 
 #: includes/votes.php:78
 msgid "Undo your vote first."
-msgstr "पहले आपका मत बदलिये."
+msgstr "Desfazer sua votação primeiro"
 
 #: includes/votes.php:94
 msgid "Thank you for voting."
-msgstr "मतदान के लिए शुक्रिया."
+msgstr "Obrigado por votar"
 
 #: includes/votes.php:581
 msgid "Up vote this post"
-msgstr "इस पोस्ट को ऊपर मत करे"
+msgstr "Votar a favor deste post"
 
 #: includes/votes.php:587
 msgid "Down vote this post"
-msgstr "इस पोस्ट को निचे मत करे"
+msgstr "Votar contra "
 
 #: templates/addons/category/categories-question-list.php:22
 #: templates/addons/tag/tags-question-list.php:22
 #, fuzzy
 msgid "View all questions"
-msgstr "नए सवाल"
+msgstr "Ver pergunta"
 
-#: templates/addons/category/category.php:50
+#: templates/addons/category/category.php:29 templates/addons/tag/tag.php:12
+#, fuzzy
+msgid "1 Question"
+msgid_plural "%s Questions"
+msgstr[0] "Pergunta"
+msgstr[1] "Pergunta"
+
+#: templates/addons/category/category.php:48
 #, fuzzy
 msgid "Sub Categories"
-msgstr "वर्ग"
+msgstr "Categorias"
 
 #: templates/addons/category/no-category-found.php:14
 msgid "No category is set!"
 msgstr ""
 
 #: templates/addons/notification/index.php:24 templates/functions.php:59
-#, fuzzy
 msgid "Mark all as seen"
-msgstr "सभी कोई पढ़ा घोषित करे"
+msgstr ""
 
 #: templates/addons/notification/index.php:29
 msgid "All"
-msgstr "सभी"
+msgstr "Todos"
 
 #: templates/addons/notification/index.php:30
 #, fuzzy
 msgid "Unseen"
-msgstr "चुनाव हटाइये"
+msgstr "Cancelar"
 
 #: templates/addons/notification/index.php:31
 msgid "Seen"
@@ -3497,78 +3533,73 @@ msgstr ""
 
 #: templates/addons/notification/index.php:41
 msgid "No notification"
-msgstr "कोई सूचनाएँ नहीं"
+msgstr ""
 
 #: templates/addons/notification/index.php:46
 #: templates/addons/reputation/index.php:23
 #, fuzzy
 msgid "Load More"
-msgstr "फार्म ल रहे है "
+msgstr "Carregando formulário"
 
 #: templates/addons/tag/no-tags-found.php:15
 msgid "No tags is set!"
 msgstr ""
 
 #: templates/addons/tag/tag.php:12
+#, fuzzy
 msgid "Question tag: %s"
-msgstr "सवाल के आंकड़े"
-
-#: templates/addons/tag/tag.php:12
-msgid "1 Question"
-msgid_plural "%s Questions"
-msgstr[0] "सवाल"
-msgstr[1] "सवाल"
+msgstr "Estatísticas de perguntas"
 
 #: templates/addons/tag/tags.php:23
 #, fuzzy
 msgid "Search tags..."
-msgstr "साथी खोजे"
+msgstr "Pesquisa perguntas..."
 
 #: templates/addons/tag/tags.php:47
 #, fuzzy
 msgid "No description."
-msgstr "ब्यौरा"
+msgstr "Descrição"
 
 #: templates/addons/user/answer-item.php:39
 #: templates/buddypress/answer-item.php:39
 #: templates/buddypress/question-item.php:41
 msgid "View Question"
-msgstr "सवाल देखे"
+msgstr "Ver Pergunta"
 
 #: templates/addons/user/answer-item.php:44
 #: templates/buddypress/answer-item.php:44
 #: templates/buddypress/question-item.php:47
+#, fuzzy
 msgid "%d Vote"
 msgid_plural "%d Votes"
-msgstr[0] "मत"
-msgstr[1] "मत"
+msgstr[0] "Vote"
+msgstr[1] "Vote"
 
 #: templates/addons/user/answer-item.php:46
 #: templates/buddypress/answer-item.php:46
 #, fuzzy
 msgid "This answer is selected as best"
-msgstr "जब साथी का जवाब सर्वोत्तम चुना जाता है"
+msgstr "Quando a resposta de usuário for marcado como a melhor"
 
 #: templates/addons/user/answer-item.php:46
 #: templates/buddypress/answer-item.php:46
-#, fuzzy
 msgid "Selected"
-msgstr "चुने"
+msgstr "Selecionado"
 
 #: templates/addons/user/answers.php:35
 #, fuzzy
 msgid "No answer posted by this user."
-msgstr "कोई जवाब नहीं है"
+msgstr "Sem resposta ainda!"
 
 #: templates/answer-form.php:24
 #, fuzzy
 msgid "Write your answer.."
-msgstr "आपका जवाब.."
+msgstr "Sua resposta..."
 
 #: templates/ask.php:17
 #, fuzzy
 msgid "You do not have permission to ask question."
-msgstr "आपको सवाल पूछने की अनुमति नहीं."
+msgstr "Você não tem permissões para responder perguntas"
 
 #: templates/attachments.php:14
 msgid "Attachments"
@@ -3577,36 +3608,36 @@ msgstr ""
 #: templates/attachments.php:17
 #, fuzzy
 msgid "Download file"
-msgstr "डाउनलोड"
+msgstr "Baixar"
 
 #: templates/content-answer.php:18
 msgid "Total votes"
-msgstr "कुल मत"
+msgstr "Total de votos"
 
 #: templates/content-none.php:9
 #, fuzzy
 msgid "Sorry! No question found."
-msgstr "कोई सवाल पाया नहीं गया"
+msgstr "Perguntas não encontradas"
 
 #: templates/functions.php:36
 msgid "Password not matching"
-msgstr "पासवर्ड नहीं जुड़ रहा"
+msgstr "A senha não corresponde"
 
 #: templates/functions.php:37
 msgid "Password length must be 6 or higher"
-msgstr "पासवर्ड की लम्बाई ६ या ज्यादा अक्षर होनी चाहिए"
+msgstr "O comprimento da senha deve ter 6 ou mais caracteres"
 
 #: templates/functions.php:38
 msgid "Not a valid email"
-msgstr "अवैध ईमेल"
+msgstr "Email inválido"
 
 #: templates/functions.php:39
 msgid "Username length must be 4 or higher"
-msgstr "यूज़रनेम / पंजीकृत नाम ४ या ज्यादा अक्षर की होनी चाहिए"
+msgstr "Comprimento para nome de usuário deve ter 4 ou  mais caracteres"
 
 #: templates/functions.php:40
 msgid "Username not available"
-msgstr "पंजीकृत नाम / यूज़रनेम उपलब्ध नहीं "
+msgstr "Nome de usuário não disponível"
 
 #: templates/functions.php:43
 msgid "Email already in use."
@@ -3615,163 +3646,168 @@ msgstr ""
 #: templates/functions.php:45
 #, fuzzy
 msgid "Do you want to reset your password?"
-msgstr "ईमेल इस्तेमाल में है, %s क्या आप अपना पासवर्ड बदलना चाहते है?%s"
+msgstr "Email já esta em uso. %s Você quer recuperar sua senha? %s"
 
 #: templates/functions.php:47
 msgid "Loading"
-msgstr "प्रतीक्षा करे"
+msgstr "Carregando"
 
 #: templates/functions.php:48
 msgid "Sending request"
-msgstr "अनुरोध भेज रहे है"
+msgstr "Enviando pedido"
 
 #: templates/functions.php:49
 msgid "Uploading"
-msgstr "भेज  रहे है"
+msgstr "Carregando"
 
 #: templates/functions.php:50
 msgid "Something went wrong in server side, not a valid response."
-msgstr "सरवर पर कुछ गड़बड़ है, वैध उत्तर नहीं मिल पाया है."
+msgstr ""
 
 #: templates/functions.php:51
 msgid "File size is bigger then %s MB"
-msgstr "फाइल अपलोड नहीं हूँ सकती, आकार % बाईट से बड़ा है"
+msgstr ""
 
 #: templates/functions.php:52
-#, fuzzy
 msgid "You have already attached maximum numbers of allowed attachments"
-msgstr "अधिकतम वैध अपलोड आप कर चुके है."
+msgstr ""
 
 #: templates/functions.php:54
 msgid "Comment"
-msgstr "टिप्पणी"
+msgstr "Comentário"
 
 #: templates/functions.php:56
 msgid "Update"
-msgstr "बदलिये"
+msgstr "Atualizar"
 
 #: templates/functions.php:57
 #, fuzzy
 msgid "Write your comment..."
-msgstr "आपकी टिप्पणी भेज रहे है "
+msgstr "Enviando seu comentário"
 
 #: templates/functions.php:83
 #, fuzzy
 msgid "(AnsPress) Before"
-msgstr "सभापति"
+msgstr "AnsPress Papel"
 
 #: templates/functions.php:87
 msgid "Widgets in this area will be shown before anspress body."
-msgstr ""
+msgstr "Widget nesta área será mostrado antes do corpo anspress"
 
 #: templates/functions.php:93
 #, fuzzy
 msgid "(AnsPress) Question List Top"
-msgstr "AnsPress विकल्प"
+msgstr "AnsPress Extensões"
 
 #: templates/functions.php:97
 msgid "Widgets in this area will be shown before questions list."
-msgstr ""
+msgstr "Widgets nesta área será mostrada antes de lista de perguntas"
 
 #: templates/functions.php:103
 #, fuzzy
 msgid "(AnsPress) Sidebar"
-msgstr "सभापति"
+msgstr "Moderar AnsPress"
 
 #: templates/functions.php:107
+#, fuzzy
 msgid ""
 "Widgets in this area will be shown in AnsPress sidebar except single "
 "question page."
-msgstr ""
+msgstr "Widgets nesta área será mostra na barra lateral AnsPress"
 
 #: templates/functions.php:113
 #, fuzzy
 msgid "(AnsPress) Question Sidebar"
-msgstr "सवाल बगल पट्टी दिखाइए"
+msgstr "AP Barra lateral de perguntas"
 
 #: templates/functions.php:117
+#, fuzzy
 msgid "Widgets in this area will be shown in single question page sidebar."
 msgstr ""
+"Widgets nesta área será mostrado na página de pergunta na barra lateral"
 
 #: templates/functions.php:123
 #, fuzzy
 msgid "(AnsPress) Category Page"
-msgstr "सभापति"
+msgstr "Ap Página de categoria"
 
 #: templates/functions.php:127
 msgid "Widgets in this area will be shown in category listing page."
-msgstr ""
+msgstr "Widgets in this área será mostrado na página de lista de categoria "
 
 #: templates/functions.php:133
 #, fuzzy
 msgid "(AnsPress) Tag page"
-msgstr "एक पेज पर दिखाए जवाब"
+msgstr "AP Tag page"
 
 #: templates/functions.php:137
 msgid "Widgets in this area will be shown in tag listing page."
-msgstr ""
+msgstr "Widgets nesta área será mostrada na página de listagem de tags"
 
 #: templates/functions.php:143
 #, fuzzy
 msgid "(AnsPress) Author page"
-msgstr "एक पेज पर दिखाए जवाब"
+msgstr "Páginas Anspress"
 
 #: templates/functions.php:147
+#, fuzzy
 msgid "Widgets in this area will be shown in authors page."
-msgstr ""
+msgstr "Widgets in this área será mostrado na página de lista de categoria "
 
 #: templates/login-signup.php:17
-#, fuzzy
 msgid "Register"
-msgstr "नया पंजीकरण"
+msgstr "Registrar"
 
 #: templates/login-signup.php:18
 msgid "or"
-msgstr "या"
+msgstr "ou"
 
 #: templates/login-signup.php:19
 msgid "Login"
-msgstr "लॉगिन"
+msgstr "Entre"
 
 #: templates/no-permission-post.php:5
 msgid "This is a private %s."
-msgstr "ये निजी % है."
+msgstr "Isto é privado %s"
 
 #: templates/no-permission-post.php:7
 msgid "This %s waiting for moderation."
-msgstr "ये %s सभापति के अनुमति की प्रतीक्षा  कर रही है."
+msgstr "Isto %s está aguardando moderação."
 
 #: templates/no-permission-post.php:9
 msgid "This has been trashed or waiting for approval."
-msgstr "ये कचरे में है या अनुमति की प्रतीक्षा कर रही है."
+msgstr "Isto foi excluído ou está aguardando aprovação"
 
 #: templates/question.php:46 templates/shortcode/question.php:42
+#, fuzzy
 msgid "Posted %s"
-msgstr "%s ने पूछा %s"
+msgstr "Perguntou %s"
 
 #: templates/search-form.php:14
 msgid "Search questions..."
-msgstr "सवाल खोजें..."
+msgstr "Pesquisa perguntas..."
 
 #: templates/shortcode/question.php:79
 msgid "View all answers"
-msgstr "सभी जवाब देखे"
+msgstr ""
 
 #: templates/widgets/widget-questions.php:17
+#, fuzzy
 msgid "1 Answer"
 msgid_plural "%d Answers"
-msgstr[0] "१ जवाब"
-msgstr[1] "१ जवाब"
+msgstr[0] "1 Resposta"
+msgstr[1] "%d Respostas"
 
 #: templates/widgets/widget-questions.php:19
+#, fuzzy
 msgid "1 Vote"
 msgid_plural "%d Votes"
-msgstr[0] "मत"
-msgstr[1] "मत"
+msgstr[0] "Vote"
+msgstr[1] "Vote"
 
 #: templates/widgets/widget-questions.php:23
 msgid "No questions found."
-msgstr "कोई सवाल पाया नहीं गया"
+msgstr "Perguntas não encontradas"
 
 #: widgets/ask-form.php:28
 msgid "(AnsPress) Ask form"
@@ -3780,11 +3816,11 @@ msgstr ""
 #: widgets/ask-form.php:29
 #, fuzzy
 msgid "AnsPress ask form widget"
-msgstr "सभापति"
+msgstr "Painel AnsPress"
 
 #: widgets/ask-form.php:68
 msgid "Ask questions"
-msgstr "सवाल पूछे"
+msgstr "Faça perguntas"
 
 #: widgets/breadcrumbs.php:28
 msgid "(AnsPress) Breadcrumbs"
@@ -3800,19 +3836,19 @@ msgstr ""
 
 #: widgets/question_stats.php:26
 msgid "Shows question stats in single question page."
-msgstr "सवाल आंकड़े एक सवाल पेज माइन दिखाए"
+msgstr ""
 
 #: widgets/question_stats.php:48
 msgid "One time"
 msgid_plural "%d times"
-msgstr[0] "एक बार "
-msgstr[1] "एक बार "
+msgstr[0] "Uma vez"
+msgstr[1] "%d vezes"
 
 #: widgets/question_stats.php:49
 msgid "%2$s1%3$s answer"
 msgid_plural "%2$s%1$d%3$s answers"
-msgstr[0] "%2$s1%3$s जवाब"
-msgstr[1] "%2$s1%3$s जवाब"
+msgstr[0] "%2$s1%3$s resposta"
+msgstr[1] "%2$s%1$d%3$s respostas"
 
 #: widgets/question_stats.php:52
 msgid "This widget can only be used in single question page"
@@ -3820,7 +3856,7 @@ msgstr ""
 
 #: widgets/question_stats.php:64
 msgid "Question stats"
-msgstr "सवाल के आंकड़े"
+msgstr "Estatísticas de perguntas"
 
 #: widgets/questions.php:10
 msgid "(AnsPress) Questions"
@@ -3832,7 +3868,7 @@ msgstr ""
 
 #: widgets/questions.php:82
 msgid "Order by:"
-msgstr ""
+msgstr "Ordenar por:"
 
 #: widgets/questions.php:93
 msgid "Category IDs:"
@@ -3844,7 +3880,7 @@ msgstr ""
 
 #: widgets/questions.php:99
 msgid "Limit:"
-msgstr ""
+msgstr "Limite:"
 
 #: widgets/search.php:29
 msgid "(AnsPress) Search"
@@ -3852,12 +3888,11 @@ msgstr ""
 
 #: widgets/search.php:30
 msgid "Question and answer search form."
-msgstr " सवाल जवाब खोज फॉर्म"
+msgstr ""
 
 #. Plugin Name of the plugin/theme
-#, fuzzy
 msgid "AnsPress"
-msgstr "AnsPress विकल्प"
+msgstr ""
 
 #. Author URI of the plugin/theme
 msgid "https://anspress.io"
@@ -3875,57 +3910,1133 @@ msgstr ""
 #, fuzzy
 msgctxt "anspress-question-answer"
 msgid "Category"
-msgstr "वर्ग"
+msgstr "Categoria"
 
 #: addons/free/category.php:182
 #, fuzzy
 msgctxt "anspress-question-answer"
 msgid "Add New Category"
-msgstr "वर्ग"
+msgstr "Categoria"
 
 #: addons/free/tag.php:191
 #, fuzzy
 msgctxt "anspress-question-answer"
 msgid "Tag"
-msgstr "बिल्ला"
+msgstr "Tags"
 
 #: addons/free/tag.php:193
 #, fuzzy
 msgctxt "anspress-question-answer"
 msgid "Add New Tag"
-msgstr "नया जवाब जोड़िए"
+msgstr "Responder"
 
 #: includes/post-types.php:41
-#, fuzzy
 msgctxt "Post Type General Name"
 msgid "Questions"
-msgstr "सवाल"
+msgstr "Perguntas"
 
 #: includes/post-types.php:111
-#, fuzzy
 msgctxt "Post Type General Name"
 msgid "Answers"
-msgstr "जवाब"
+msgstr "Respostas"
 
 #: includes/post-types.php:42
-#, fuzzy
 msgctxt "Post Type Singular Name"
 msgid "Question"
-msgstr "सवाल"
+msgstr "Pergunta"
 
 #: includes/post-types.php:112
-#, fuzzy
 msgctxt "Post Type Singular Name"
 msgid "Answer"
-msgstr "जवाब"
+msgstr "Resposta"
 
-#, fuzzy
-#~ msgid "2"
-#~ msgstr "--"
+#~ msgid "Points"
+#~ msgstr "Pontos"
 
-#, fuzzy
-#~ msgid "-2"
-#~ msgstr "--"
+#~ msgid "Moderate question & answer"
+#~ msgstr "Moderar perguntas e respostas"
 
-#~ msgid "This will be translate"
-#~ msgstr "यह अनुवाद किया जाएगा"
+#~ msgid "Post flag"
+#~ msgstr "Etiqueta Postagem"
+
+#~ msgid "Options"
+#~ msgstr "Opções"
+
+#~ msgid "Role and permission for AnsPress"
+#~ msgstr "Papel e permissões para AnsPress"
+
+#~ msgid ""
+#~ "Is your existing question tags are not appearing ? click here to fix it %s"
+#~ msgstr ""
+#~ "Suas tags de perguntas não estão aparecendo? clique aqui para resolver %s"
+
+#~ msgid "Fix question tags"
+#~ msgstr "Resolver tags de perguntas"
+
+#~ msgid "Hide message %s"
+#~ msgstr "Esconder mensagem %s"
+
+#~ msgid "dismiss"
+#~ msgstr "dispensar"
+
+#~ msgid "By %s"
+#~ msgstr "Por %s"
+
+#~ msgid "Last Updated:"
+#~ msgstr "Última atualização"
+
+#~ msgid "Untested with your version of WordPress"
+#~ msgstr "Não testado com sua versão do Wordpress"
+
+#~ msgid "<strong>Compatible</strong> with your version of WordPress"
+#~ msgstr "<strong>Compatível</strong> com sua versão do Wordpress"
+
+#~ msgid "Draft"
+#~ msgstr "Rascunho"
+
+#~ msgid "Type"
+#~ msgstr "TIpo"
+
+#~ msgid "Edit flags"
+#~ msgstr "Editar marca"
+
+#~ msgid "Delete permanently"
+#~ msgstr "Apagar permanentemente"
+
+#~ msgid "Move to trash"
+#~ msgstr "Mover para lixeira"
+
+#~ msgid "Base page"
+#~ msgstr "Página base"
+
+#~ msgid "Question Help page"
+#~ msgstr "Página de ajuda para Pergunta"
+
+#~ msgid "Direction for asking a question."
+#~ msgstr "Direção para fazer uma pergunta"
+
+#~ msgid "Answer Help page"
+#~ msgstr "Página de ajuda para resposta"
+
+#~ msgid "Direction for answring a question."
+#~ msgstr "Direção para responder a pergunta"
+
+#~ msgid "Clean DB"
+#~ msgstr "Limpar DB"
+
+#~ msgid ""
+#~ "check this to remove all anspress data including posts on deactivating "
+#~ "plugin."
+#~ msgstr ""
+#~ "Marque isto para remover todos os dados incluindo posts quando desativar "
+#~ "o plugin."
+
+#~ msgid "Users per page"
+#~ msgstr "Usuários por página"
+
+#~ msgid "Users to show per page."
+#~ msgstr "Usuários para mostrar por página."
+
+#~ msgid "Sorting"
+#~ msgstr "Classificar"
+
+#~ msgid "Toggle"
+#~ msgstr "Alternar"
+
+#~ msgid "Show question sidebar"
+#~ msgstr "Mostrar pergunta na barra lateral"
+
+#~ msgid "Show question title"
+#~ msgstr "Mostrar título de pergunta"
+
+#~ msgid "Disable navigation"
+#~ msgstr "Desabilitar navegação"
+
+#~ msgid "Disable answer navigation."
+#~ msgstr "Desabilitar navegação de resposta"
+
+#~ msgid "Show users directory"
+#~ msgstr "Mostra diretório de usuários"
+
+#~ msgid "When enabled public can see directory of users."
+#~ msgstr "Quando público é habilitado  pode-se ver o diretório de usuários"
+
+#~ msgid "Disable reputation for user"
+#~ msgstr "Desabilitar reputação para usuário"
+
+#~ msgid "Set user avatar size for users page item."
+#~ msgstr "Defina o tamanho de avatar de usuário para o item página de usuário"
+
+#~ msgid "Set width of user cover photo."
+#~ msgstr "Defina a largura da foto de capa do usuário"
+
+#~ msgid "Set height of user cover photo."
+#~ msgstr "Defina a altura da foto de capa do usuário"
+
+#~ msgid "Cover thumb width"
+#~ msgstr "Largura da miniatura da capa"
+
+#~ msgid "Set width of user cover photo thumbnail."
+#~ msgstr "Defina a largura da miniatura da foto de capa do usuário"
+
+#~ msgid "Small cover height"
+#~ msgstr "Altura da capa pequena"
+
+#~ msgid "Set height of user cover photo thumbnail."
+#~ msgstr "Defina a altura da miniatura da capa de foto do usuário"
+
+#~ msgid "Default rank"
+#~ msgstr "Classificação padrão"
+
+#~ msgid "Assign a default rank for newly registered user."
+#~ msgstr "Atribua a classificação padrão para novos usuários registrados"
+
+#~ msgid "Enable reCaptcha"
+#~ msgstr "Habilitar reCaptacha"
+
+#~ msgid "Use this for preventing spam posts."
+#~ msgstr "Use isto para prevenir spam nas postagens"
+
+#~ msgid "There is no question yet."
+#~ msgstr "Não há perguntas ainda"
+
+#~ msgid "Total <b>%d flag</b>"
+#~ msgstr "Total <b>%d flag</b>"
+
+#~ msgid "Trash post"
+#~ msgstr "postagem excluído"
+
+#~ msgid "No one flagged this post yet"
+#~ msgstr "Não há marcações neste post ainda"
+
+#~ msgid "New reputation"
+#~ msgstr "Nova reputação"
+
+#~ msgid "No related questions found"
+#~ msgstr "Não foi encontrado perguntas relacionadas"
+
+#~ msgid "Set as featured"
+#~ msgstr "Defina como destaque"
+
+#~ msgid "Unset as featured"
+#~ msgstr "Retirar como destaque"
+
+#~ msgid "Please login for adding question to your subscribe"
+#~ msgstr "Por favor entre para adicionar uma pergunta ou se inscrever"
+
+#~ msgid "votes"
+#~ msgstr "votos"
+
+#~ msgid "Write a meaningful title for the question."
+#~ msgstr "Escreva um título significativo para a pergunta"
+
+#~ msgid "Questions %s"
+#~ msgstr "Perguntas %s"
+
+#~ msgid "Answers %s"
+#~ msgstr "Respostas %s"
+
+#~ msgid "User"
+#~ msgstr "Usuário"
+
+#~ msgid "Profile"
+#~ msgstr "Perfil"
+
+#~ msgid "Followers"
+#~ msgstr "Seguidores"
+
+#~ msgid "Following"
+#~ msgstr "Seguindo"
+
+#~ msgid "No user found"
+#~ msgstr "Usuário não encontrado"
+
+#~ msgid "%s's activity"
+#~ msgstr "%s's atividade"
+
+#~ msgid "%s's profile"
+#~ msgstr "%s's perfis"
+
+#~ msgid "There was an error while uploading avatar, please check your image"
+#~ msgstr ""
+#~ "Houve um erro enquanto carregava o avatar, por favor verifique sua imagem"
+
+#~ msgid "Avatar uploaded successfully."
+#~ msgstr "Avatar carregado com sucesso"
+
+#~ msgid "Its too short, it must be minimum %d characters"
+#~ msgstr "Está muito curto o mínimo de caracteres é %d"
+
+#~ msgid "Flag "
+#~ msgstr "Marcar"
+
+#~ msgid "Comment deleted successfully"
+#~ msgstr "Comentário apagado com sucesso"
+
+#~ msgid "ago"
+#~ msgstr "atrás"
+
+#~ msgid "Please login or register to continue this action."
+#~ msgstr "Por favor, entre ou registre-se para continuar."
+
+#~ msgid "Edit this question"
+#~ msgstr "Editar esta perguta"
+
+#~ msgid "Edited on"
+#~ msgstr "Editado em"
+
+#~ msgid "Change status of post"
+#~ msgstr "Alterar Estado do post"
+
+#~ msgid "You need to login before doing this action."
+#~ msgstr "Você precisa entrar antes de fazer isto"
+
+#~ msgid "You do not have permission to do this action."
+#~ msgstr "Você não tem permissão para esta ação"
+
+#~ msgid "You are commenting on a draft post."
+#~ msgstr "Você está comentando em uma postagem de rascunho"
+
+#~ msgid "Question submitted successfully"
+#~ msgstr "Pergunta enviada com sucesso"
+
+#~ msgid "Question moved to trash."
+#~ msgstr "Pergunta movida para a lixeira"
+
+#~ msgid "Answer moved to trash."
+#~ msgstr "Resposta movida para a lixeira"
+
+#~ msgid "Comment content is empty."
+#~ msgstr "O comentário está vazio"
+
+#~ msgid "%s is closed, new answer are not accepted."
+#~ msgstr "%s está fechado, novas respostas não são aceitas"
+
+#~ msgid "Add image to editor"
+#~ msgstr "Add imagem para o editor"
+
+#~ msgid "upload"
+#~ msgstr "carregar"
+
+#~ msgid "add image from link"
+#~ msgstr "add link para imagem"
+
+#~ msgid "Enter images link"
+#~ msgstr "Entre com link das imagens"
+
+#~ msgid "<span>1</span> Participant"
+#~ msgid_plural "<span>%d</span> Participants"
+#~ msgstr[0] "<span>1</span> Participante"
+#~ msgstr[1] "<span>%d</span> Participantes"
+
+#~ msgid "Closed <span class=\"count\">(%s)</span>"
+#~ msgid_plural "Moderate <span class=\"count\">(%s)</span>"
+#~ msgstr[0] "Fechar <span class=\"count\">(%s)</span>"
+#~ msgstr[1] "Moderar <span class=\"count\">(%s)</span>"
+
+#~ msgid "Edit Question"
+#~ msgstr "Editar Pergunta"
+
+#~ msgid "Update Question"
+#~ msgstr "Atualizar Pergunta"
+
+#~ msgid "Search question"
+#~ msgstr "Encontrar pergunta"
+
+#~ msgid "answers"
+#~ msgstr "respostas"
+
+#~ msgid "%s Rep."
+#~ msgstr "%s Rep."
+
+#~ msgid "Points given to newly registered user."
+#~ msgstr "Pontos dados para o usuário recém-registrado."
+
+#~ msgid "Uploading avatar"
+#~ msgstr "Carregando avatar"
+
+#~ msgid "Awarded for uploading an profile picture."
+#~ msgstr "Premiado pelo carregamento de uma imagem de perfil"
+
+#~ msgid "Completing profile"
+#~ msgstr "Completando perfil"
+
+#~ msgid "Awarded for completing profile fields."
+#~ msgstr "premiado por completar campos de perfil."
+
+#~ msgid "For asking a question."
+#~ msgstr "Para fazer uma pergunta"
+
+#~ msgid "For new comment."
+#~ msgstr "Para novo comentário"
+
+#~ msgid "Receive upvote on question"
+#~ msgstr "Receba voto a favor na pergunta"
+
+#~ msgid "When user receive an upvote on question"
+#~ msgstr "Quando o usuário recebe um voto a favor na pergunta"
+
+#~ msgid "Receive down vote on question"
+#~ msgstr "Receva voto contra na pergunta"
+
+#~ msgid "When user receive an down vote on question"
+#~ msgstr "Quando usuário recebe voto contra na pergunta"
+
+#~ msgid "Up voted questions"
+#~ msgstr "Votado a favor em perguntas"
+
+#~ msgid "When user upvote others question"
+#~ msgstr "Quando usuário vota outra questões"
+
+#~ msgid "Down voted questions"
+#~ msgstr "Votos contra em perguntas"
+
+#~ msgid "When user user select an answer."
+#~ msgstr "Quando um usuário seleciona uma resposta"
+
+#~ msgid "Install Required Plugins"
+#~ msgstr "Instalar plugin requerido"
+
+#~ msgid "Install Plugins"
+#~ msgstr "Instalar plugin"
+
+#~ msgid "Installing Plugin: %s"
+#~ msgstr "Instalar plugin: %s"
+
+#~ msgid "Something went wrong with the plugin API."
+#~ msgstr "Algo deu errado com  a API do plugin"
+
+#~ msgid "AnsPress requires the following plugin: %1$s."
+#~ msgid_plural "AnsPress requires the following plugins: %1$s."
+#~ msgstr[0] "AnsPress requer o seguinte : %1$s."
+#~ msgstr[1] "AnsPress requer os seguintes : %1$s."
+
+#~ msgid "AnsPress recommends the following plugin: %1$s."
+#~ msgid_plural "AnsPress recommends the following plugins: %1$s."
+#~ msgstr[0] "AnsPress recomenda o seguinte : %1$s."
+#~ msgstr[1] "AnsPress recomenda os seguintes : %1$s."
+
+#~ msgid ""
+#~ "Sorry, but you do not have the correct permissions to install the %s "
+#~ "plugin. Contact the administrator of this site for help on getting the "
+#~ "plugin installed."
+#~ msgid_plural ""
+#~ "Sorry, but you do not have the correct permissions to install the %s "
+#~ "plugins. Contact the administrator of this site for help on getting the "
+#~ "plugins installed."
+#~ msgstr[0] ""
+#~ "Sinto muito, mas você não tem a permissão correta para instalar o plugin "
+#~ "%s. Contate o administrador do deste site para ajudá-lo."
+#~ msgstr[1] ""
+#~ "Sinto muito, mas você não tem a permissão correta para instalar os "
+#~ "plugins %s. Contate o administrador do deste site para ajudá-lo."
+
+#~ msgid "The following required plugin is currently inactive: %1$s."
+#~ msgid_plural "The following required plugins are currently inactive: %1$s."
+#~ msgstr[0] "O seguinte plugin requerido esta inativo %1$s."
+#~ msgstr[1] "Os seguintes plugins requeridos estão inativos %1$s"
+
+#~ msgid "The following recommended plugin is currently inactive: %1$s."
+#~ msgid_plural ""
+#~ "The following recommended plugins are currently inactive: %1$s."
+#~ msgstr[0] "O seguinte plugin recomentado está inativo"
+#~ msgstr[1] "Os seguintes plugins recomentados estão inativos: %1$s."
+
+#~ msgid ""
+#~ "Sorry, but you do not have the correct permissions to activate the %s "
+#~ "plugin. Contact the administrator of this site for help on getting the "
+#~ "plugin activated."
+#~ msgid_plural ""
+#~ "Sorry, but you do not have the correct permissions to activate the %s "
+#~ "plugins. Contact the administrator of this site for help on getting the "
+#~ "plugins activated."
+#~ msgstr[0] ""
+#~ "Sinto muito mas você não tem a permissão correta para ativar o plugin %s. "
+#~ "Contate o administrador do site para ajuda-lo na ativação do plugin."
+#~ msgstr[1] ""
+#~ "Sinto muito mas você não tem a permissão correta para ativar os plugins "
+#~ "%s. Contate o administrador do site para ajuda-lo na ativação dos plugins."
+
+#~ msgid ""
+#~ "The following plugin needs to be updated to its latest version to ensure "
+#~ "maximum compatibility with this theme: %1$s."
+#~ msgid_plural ""
+#~ "The following plugins need to be updated to their latest version to "
+#~ "ensure maximum compatibility with this theme: %1$s."
+#~ msgstr[0] ""
+#~ "O seguinte plugin precisa ser atualizado para a última versão para "
+#~ "garantir á máxima compatibilidade com este tema %1$s."
+#~ msgstr[1] ""
+#~ "Os seguintes plugins precisam ser atualizados para a última versão para "
+#~ "garantir á máxima compatibilidade com este tema %1$s."
+
+#~ msgid ""
+#~ "Sorry, but you do not have the correct permissions to update the %s "
+#~ "plugin. Contact the administrator of this site for help on getting the "
+#~ "plugin updated."
+#~ msgid_plural ""
+#~ "Sorry, but you do not have the correct permissions to update the %s "
+#~ "plugins. Contact the administrator of this site for help on getting the "
+#~ "plugins updated."
+#~ msgstr[0] ""
+#~ "Sinto muito mas você não tem a permissão correta para atualizar o plugin "
+#~ "%s. Contate o administrador do site para ajuda-lo na atualização do "
+#~ "plugin."
+#~ msgstr[1] ""
+#~ "Sinto muito mas você não tem a permissão correta para atualizar os "
+#~ "plugins %s. Contate o administrador do site para ajuda-lo na atualização "
+#~ "dos plugins."
+
+#~ msgid "Begin installing plugin"
+#~ msgid_plural "Begin installing plugins"
+#~ msgstr[0] "Iniciando instalação de plugin"
+#~ msgstr[1] "Iniciando instalações dos plugins"
+
+#~ msgid "Begin activating plugin"
+#~ msgid_plural "Begin activating plugins"
+#~ msgstr[0] "Iniciando ativação do plugin"
+#~ msgstr[1] "Iniciando ativação dos plugins"
+
+#~ msgid "Return to Required Plugins Installer"
+#~ msgstr "Retornar aos plug-ins requeridos"
+
+#~ msgid "Plugin activated successfully."
+#~ msgstr "Plugin instalado com sucesso"
+
+#~ msgid "All plugins installed and activated successfully. %s"
+#~ msgstr "Todos os plugins foram instalados e ativados com sucesso. %s"
+
+#~ msgid "You and <strong>%s people</strong> subscribed to this question."
+#~ msgstr "Você e <strong>%s pessoa(s)</strong> se inscreveram nesta pergunta"
+
+#~ msgid "<strong>%d people</strong> subscribed to this question."
+#~ msgstr "<strong>%d pessoa(s)</strong> inscreveram-se  nesta pergunta."
+
+#~ msgid "answer accepted"
+#~ msgstr "resposta aceita"
+
+#~ msgid "<i>%d views</i>"
+#~ msgstr "<i>%d visualizações</i>"
+
+#~ msgid ".."
+#~ msgstr ".."
+
+#~ msgid "First name"
+#~ msgstr "Primeiro nome"
+
+#~ msgid "Your first name"
+#~ msgstr "Seu primeiro nome"
+
+#~ msgid "Last name"
+#~ msgstr "Último nome"
+
+#~ msgid "Your surname"
+#~ msgstr "Seu sobrenome"
+
+#~ msgid "Nickname"
+#~ msgstr "Apelido"
+
+#~ msgid "Your nickname"
+#~ msgstr "Seu apelido"
+
+#~ msgid "Display name"
+#~ msgstr "Mostrar nome"
+
+#~ msgid "Write something about yourself"
+#~ msgstr "Escreva algo sobre você"
+
+#~ msgid "Username"
+#~ msgstr "Nome de usuário"
+
+#~ msgid "Your username"
+#~ msgstr "Seu nome de usuário"
+
+#~ msgid "This cannot be changed."
+#~ msgstr "Isto não pode ser alterado"
+
+#~ msgid "Your contact email"
+#~ msgstr "Seu email de contato"
+
+#~ msgid "Password"
+#~ msgstr "Senha"
+
+#~ msgid "Update your password"
+#~ msgstr "Atualizar sua senha"
+
+#~ msgid "Page not found or registered."
+#~ msgstr "Página não encontrada ou registrada"
+
+#~ msgid "Top %s"
+#~ msgstr "Top %s"
+
+#~ msgid "Upload an avatar"
+#~ msgstr "Carregar um avatar"
+
+#~ msgid "Account"
+#~ msgstr "Conta"
+
+#~ msgid "Vote for closing"
+#~ msgstr "Vote para fechar"
+
+#~ msgid "Undo your vote"
+#~ msgstr "Desfazer seu voto"
+
+#~ msgid "Close "
+#~ msgstr "Fechar"
+
+#~ msgid "Toggle fullscreen"
+#~ msgstr "Alternar tela cheia"
+
+#~ msgid "Write"
+#~ msgstr "Escreva"
+
+#~ msgid "How to answer"
+#~ msgstr "Como responder"
+
+#~ msgid "Private Answer"
+#~ msgstr "Resposta privada"
+
+#~ msgid "Please %s or %s to view answers and comments"
+#~ msgstr "Por favor %s or %s para ver respostas e comentários"
+
+#~ msgid "Your comment is awaiting moderation."
+#~ msgstr "Seu comentário está aguardando moderação"
+
+#~ msgid "Comment navigation"
+#~ msgstr "Navegação de comentário"
+
+#~ msgid "&larr; Older Comments"
+#~ msgstr "&larr; Comentários antigos"
+
+#~ msgid "Newer Comments &rarr;"
+#~ msgstr "Novos comentários &rarr;"
+
+#~ msgid "Featured question"
+#~ msgstr "Pergunta destaque"
+
+#~ msgid "No question asked yet!, be the first to ask a question."
+#~ msgstr ""
+#~ "Nenhuma pergunta foi feita ainda! Seja o primeiro a fazer uma pergunta."
+
+#~ msgid "Adding question to your favorites"
+#~ msgstr "Adicionando pergunta aos seus favoritos"
+
+#~ msgid "Requesting for closing this question"
+#~ msgstr "Pedindo para fechar esta pergunta"
+
+#~ msgid "Submitting request"
+#~ msgstr "Enviando pedido"
+
+#~ msgid "Loading comment form"
+#~ msgstr "Carregando formulário de comentário"
+
+#~ msgid "Sending your question"
+#~ msgstr "Enviando sua pergunta"
+
+#~ msgid "Sending your answer"
+#~ msgstr "Enviando sua resposta"
+
+#~ msgid "Deleting comment"
+#~ msgstr "Apagando seu comentário"
+
+#~ msgid "Updating comment"
+#~ msgstr "Atualizando comentário"
+
+#~ msgid "Saving labels"
+#~ msgstr "Salvando rótulos"
+
+#~ msgid "Loading suggestions"
+#~ msgstr "Carregando sugestões"
+
+#~ msgid "Uploading cover"
+#~ msgstr "Carregando capa"
+
+#~ msgid "Saving profile"
+#~ msgstr "Salvando mensagem"
+
+#~ msgid "Sending message"
+#~ msgstr "Enviando conversa"
+
+#~ msgid "Loading conversation"
+#~ msgstr "Carregando conversa"
+
+#~ msgid "Loading new message form"
+#~ msgstr "Carregando nova mensagem"
+
+#~ msgid "Searching conversations"
+#~ msgstr "Encontrando conversas"
+
+#~ msgid "Loading message form"
+#~ msgstr "Carregando mensagem"
+
+#~ msgid "Updating message"
+#~ msgstr "Atualizando mensagem"
+
+#~ msgid "Deleting message"
+#~ msgstr "Apagando mensagem"
+
+#~ msgid "AP Before"
+#~ msgstr "AP Antes"
+
+#~ msgid "AP Lists Top"
+#~ msgstr "AP Top Listas"
+
+#~ msgid "AP Sidebar"
+#~ msgstr "AP Barra lateral"
+
+#~ msgid "Featured post"
+#~ msgstr "Destaque post"
+
+#~ msgid "Leave a reply"
+#~ msgstr "Deixe uma resposta"
+
+#~ msgid "1 Reply"
+#~ msgstr "1 Resposta"
+
+#~ msgid "% Replies"
+#~ msgstr "% Respostas"
+
+#~ msgid "Continue reading <span class=\"meta-nav\">&rarr;</span>"
+#~ msgstr "Continue lendo <span class=\"meta-nav\">&rarr;</span>"
+
+#~ msgid "Pages:"
+#~ msgstr "Páginas:"
+
+#~ msgid "About %s"
+#~ msgstr "Sobre %s"
+
+#~ msgid "View all posts by %s <span class=\"meta-nav\">&rarr;</span>"
+#~ msgstr "Ver todos os post por %s <span class=\"meta-nav\">&rarr;</span>"
+
+#~ msgid "More answers by %s"
+#~ msgstr "Mais respostas por %s"
+
+#~ msgid "view"
+#~ msgstr "ver"
+
+#~ msgid "More questions by %s"
+#~ msgstr "Mais perguntas por %s"
+
+#~ msgid "No users found."
+#~ msgstr "Usuários não encontrados"
+
+#~ msgid "1 answer"
+#~ msgid_plural "%d answers"
+#~ msgstr[0] "1 resposta"
+#~ msgstr[1] "%d respostas"
+
+#~ msgid "1 vote"
+#~ msgid_plural "%d votes"
+#~ msgstr[0] "1 voto"
+#~ msgstr[1] "%d votos"
+
+#~ msgid "Avatar size:"
+#~ msgstr "Tamanho Avatar"
+
+#~ msgid "No options"
+#~ msgstr "Sem opções"
+
+#~ msgid "Related Questions"
+#~ msgstr "Perguntas relacionadas"
+
+#~ msgid "Search questions & answers"
+#~ msgstr "Pesquisar perguntas & respostas"
+
+#~ msgid "Avatar:"
+#~ msgstr "Avatar:"
+
+#~ msgid "Show"
+#~ msgstr "Mostrar"
+
+#~ msgid "AnsPress Badges"
+#~ msgstr "AnsPress Distintivo"
+
+#~ msgid "Min. Points"
+#~ msgstr "Min. Ponto"
+
+#~ msgid "Multiple"
+#~ msgstr "mùltiplo"
+
+#~ msgid "Save badge"
+#~ msgstr "Salvar distintivo"
+
+#~ msgid "<span class=\"when\">Answered about %s ago</span>"
+#~ msgstr "<span class=\"when\">Respondeu sobre%s atrás</span>"
+
+#~ msgid "Hide"
+#~ msgstr "Esconder"
+
+#~ msgid "Show your love by showing link to AnsPress project site."
+#~ msgstr "Mostre seu amor mostrando um link para o site do projeto AnsPress"
+
+#~ msgid "Show question permalink under base page"
+#~ msgstr "Mostra permalink de pergunta no rodapé da página base"
+
+#~ msgid "i.e. "
+#~ msgstr "i.e."
+
+#~ msgid "Select theme for AnsPress."
+#~ msgstr "Selecione o tema para AnsPress."
+
+#~ msgid "Subbscribe and and stats widget will shown in question page."
+#~ msgstr ""
+#~ "Widget de Inscrição e de Estatísticas serão mostrados na página de "
+#~ "perguntas"
+
+#~ msgid "%s flagged this post %s ago"
+#~ msgstr "%s flagged this post %s ago"
+
+#~ msgid ""
+#~ "We found similar questions that have already been asked, click to read "
+#~ "them. Avoid creating duplicate questions, it will be deleted."
+#~ msgstr ""
+#~ "Encontramos perguntas semelhantes que já foram feitas, clique para lê-"
+#~ "los. Evite a criação de perguntas duplicadas, ele será excluído."
+
+#~ msgid "<time itemprop=\"datePublished\" datetime=\"%s\">%s Ago</time>"
+#~ msgstr "<time itemprop=\"datePublished\" datetime=\"%s\">%s Atrás</time>"
+
+#~ msgid "Activity"
+#~ msgstr "Atividade"
+
+#~ msgid "%s %s about %s ago"
+#~ msgstr "%s %s sobre %s atrás"
+
+#~ msgid "Active %s ago"
+#~ msgstr "Ativo %s atrás"
+
+#~ msgid " %s %s <time datetime=\""
+#~ msgstr " %s %s <time datetime=\""
+
+#~ msgid "Something went wrong."
+#~ msgstr "Algo deu errado."
+
+#~ msgid "This theme requires the following plugin: %1$s."
+#~ msgid_plural "This theme requires the following plugins: %1$s."
+#~ msgstr[0] "Este tema requer o seguinte plugin %1$s."
+#~ msgstr[1] "Este tema requer os seguintes plugins %1$s."
+
+#~ msgid "This theme recommends the following plugin: %1$s."
+#~ msgid_plural "This theme recommends the following plugins: %1$s."
+#~ msgstr[0] "Este tema recomenda o seguinte plugin %1$s."
+#~ msgstr[1] "Este tema recomenda os seguintes plugins %1$s."
+
+#~ msgid "Return to the dashboard"
+#~ msgstr "Retornar ao painel de cotrole"
+
+#~ msgid "The following plugin was activated successfully:"
+#~ msgid_plural "The following plugins were activated successfully:"
+#~ msgstr[0] "O seguinte plugin foi ativado com sucesso"
+#~ msgstr[1] "Os seguintes plugins foram ativados com sucesso"
+
+#~ msgid "All plugins installed and activated successfully. %1$s"
+#~ msgstr "Todos os plugins foram instalados e ativados com sucesso. %1$s"
+
+#~ msgid "Dismiss this notice"
+#~ msgstr "dispensar"
+
+#~ msgid "Return to the Dashboard"
+#~ msgstr "Retornar ao Painel de controle"
+
+#~ msgid "Private Repository"
+#~ msgstr "Repositorio privado"
+
+#~ msgid "Pre-Packaged"
+#~ msgstr "Pre-Packaged"
+
+#~ msgid "WordPress Repository"
+#~ msgstr "Repositório Wordpress"
+
+#~ msgid "Required"
+#~ msgstr "Requerido"
+
+#~ msgid "Recommended"
+#~ msgstr "Recomendado"
+
+#~ msgid "Not Installed"
+#~ msgstr "Não instalado"
+
+#~ msgid "Installed But Not Activated"
+#~ msgstr "Instalado mas não ativado"
+
+#~ msgid "Install"
+#~ msgstr "Instalar"
+
+#~ msgid ""
+#~ "No plugins to install or activate. <a href=\"%1$s\" title=\"Return to the "
+#~ "Dashboard\">Return to the Dashboard</a>"
+#~ msgstr ""
+#~ "Puginnão instalado ou ativado. <a href=\"%1$s\" title=\"Retornar ao "
+#~ "Painel de controle\">Retornar ao Painel de controle</a>"
+
+#~ msgid "Plugin"
+#~ msgstr "Plugin"
+
+#~ msgid "Source"
+#~ msgstr "Codigo"
+
+#~ msgid "Install package not available."
+#~ msgstr "Instalar pacote não está disponível"
+
+#~ msgid ""
+#~ "Downloading install package from <span class=\"code\">%s</span>&#8230;"
+#~ msgstr ""
+#~ "Baixando instalação de pacote para <span class=\"code\">%s</span>&#8230;"
+
+#~ msgid "Unpacking the package&#8230;"
+#~ msgstr "Desempacotando o pacote &#8230;"
+
+#~ msgid "Installing the plugin&#8230;"
+#~ msgstr "Instalando o plugin &#8230;"
+
+#~ msgid "Plugin install failed."
+#~ msgstr "Instalação de plugin falhou"
+
+#~ msgid "Plugin installed successfully."
+#~ msgstr "Plugin instalado com sucesso"
+
+#~ msgid "Plugin activation failed."
+#~ msgstr "Ativação de plugin falhou"
+
+#~ msgid ""
+#~ "The installation and activation process is starting. This process may "
+#~ "take a while on some hosts, so please be patient."
+#~ msgstr ""
+#~ "O processo de instalação e ativação inicou. Este processo pode demorar em "
+#~ "alguns hosts, por favor tenha paciência."
+
+#~ msgid "%1$s installed and activated successfully."
+#~ msgstr "%1$s Instalação e ativação concluída com sucesso"
+
+#~ msgid "Show Details"
+#~ msgstr "Mostrar detalhes"
+
+#~ msgid "All installations and activations have been completed."
+#~ msgstr "Todas as instalações e ativações foram completadas"
+
+#~ msgid "Installing and Activating Plugin %1$s (%2$d/%3$d)"
+#~ msgstr "Instalando e ativando plugin  %1$s (%2$d/%3$d)"
+
+#~ msgid ""
+#~ "The installation process is starting. This process may take a while on "
+#~ "some hosts, so please be patient."
+#~ msgstr ""
+#~ "O processo de instalação iniciou, Isto pode demorar em alguns hosts. Por "
+#~ "favor tenha paciência"
+
+#~ msgid "An error occurred while installing %1$s: <strong>%2$s</strong>."
+#~ msgstr "Um erro ocorreu enquanto instalava %1$s: <strong>%2$s</strong>."
+
+#~ msgid "The installation of %1$s failed."
+#~ msgstr "A intalação de %1$s  falhou"
+
+#~ msgid "%1$s installed successfully."
+#~ msgstr "%1$s instalado com sucesso."
+
+#~ msgid "All installations have been completed."
+#~ msgstr "Todas as instalações foram concluídas."
+
+#~ msgid "Installing Plugin %1$s (%2$d/%3$d)"
+#~ msgstr "Instalando plugin %1$s (%2$d/%3$d)"
+
+#~ msgid "ans"
+#~ msgstr "res"
+
+#~ msgid " ago"
+#~ msgstr "atrás"
+
+#~ msgid "Answered a question %s"
+#~ msgstr "Respondeu uma pergunta %s"
+
+#~ msgid "Selected a best answer for %s"
+#~ msgstr "Selecionado uma melhor resposta para %s"
+
+#~ msgid "Received a down vote on on %s %s"
+#~ msgstr "Recebido um voto contra em %s %s"
+
+#~ msgid "Voted down on %s"
+#~ msgstr "Votado conta em %s"
+
+#~ msgid "You already flagged this post"
+#~ msgstr "Você já sinalizou este post"
+
+#~ msgid "Your close request has been removed"
+#~ msgstr "Seu pedido de fechamento foi removido"
+
+#~ msgid "Your close request has been sent"
+#~ msgstr "Seu pedido de fechamento foi enviado"
+
+#~ msgid "Something went wrong"
+#~ msgstr "Alfo deu errado"
+
+#~ msgid "Please login for requesting closing this question."
+#~ msgstr "Por favor entre para pedir fechamento desta pergunta"
+
+#~ msgid ""
+#~ "Describe instructions about guidelines to answer a question. You can add "
+#~ "content to this section by creating a new page and then select that page "
+#~ "in AnsPress->options->general \"help page\""
+#~ msgstr ""
+#~ "Descreva instruções sobre orientações para responder a uma pergunta. Você "
+#~ "pode adicionar conteúdo a esta seção, criando uma nova página e, em "
+#~ "seguida, selecionar a página na AnsPress-> Opções> Geral \"página de ajuda"
+#~ "\""
+
+#~ msgid "You dont have permission to answer this question."
+#~ msgstr "Você não tem permissões para responder esta questão"
+
+#~ msgid "Please %s or %s to answer this question."
+#~ msgstr "Por favor %s or %s para responder esta pergunta"
+
+#~ msgid "Prev answer"
+#~ msgstr "Res anterior"
+
+#~ msgid "Please %s or %s to ask a question."
+#~ msgstr "Por favor %s or %s para fazer uma pergunta"
+
+#~ msgid "User does not have any reputation yet"
+#~ msgstr "O usuário ainda não tem reputação"
+
+#~ msgid "Rep"
+#~ msgstr "Rep"
+
+#~ msgid "No users found"
+#~ msgstr "Usuários não encontrados"
+
+#~ msgid "AnsPress Stats"
+#~ msgstr "Estatísticas AnsPress"
+
+#~ msgid "Ago"
+#~ msgstr "Atrás"
+
+#~ msgid "Subscribers"
+#~ msgstr "Inscritos"
+
+#~ msgid "1 Subscriber"
+#~ msgid_plural "%d subscribers"
+#~ msgstr[0] "1 Inscrito"
+#~ msgstr[1] "%d inscritos"
+
+#~ msgid "Shows list of question shorted by option"
+#~ msgstr "Mostrar lista de perguntas ordenadas por opção"
+
+#~ msgid "AnsPress Subscribe"
+#~ msgstr "AnsPress Inscritos"
+
+#~ msgid "New point"
+#~ msgstr "Novo ponto"
+
+#~ msgid "AnsPress options updated successfully"
+#~ msgstr "Opções de AnsPress atualizadas com sucesso"
+
+#~ msgid "Delete this badge"
+#~ msgstr "Apagar distintivo"
+
+#~ msgid "Yes"
+#~ msgstr "Sim"
+
+#~ msgid "No"
+#~ msgstr "Não"
+
+#~ msgid "Ask page"
+#~ msgstr "Página Perguntar"
+
+#~ msgid "Select page for displaying ask form."
+#~ msgstr "Selecione a página para mostrar o formulário de pergunta"
+
+#~ msgid "User page"
+#~ msgstr "Página do usuário"
+
+#~ msgid "Select page for displaying user profile."
+#~ msgstr "Selecione a página para mostrar o perfil do usuário"
+
+#~ msgid "Select page for displaying edit form."
+#~ msgstr "Selecione a página para mostrar a edição do formulário"
+
+#~ msgid "Delete this point"
+#~ msgstr "Apagar este ponto"
+
+#~ msgid "Have any questions ?"
+#~ msgstr "Tem qualquer pergunta?"
+
+#~ msgid "Ask for support"
+#~ msgstr "Pergunta para suporte"
+
+#~ msgid "Post Comment"
+#~ msgstr "Comentários de postagem"
+
+#~ msgid "Question is closed, new answer cannot be submitted."
+#~ msgstr "Pergunta está fechada, novas respostas não serão enviadas"
+
+#~ msgid "Question in once sentence"
+#~ msgstr "Perguntar em uma frase"
+
+#~ msgid "&laquo; Previous"
+#~ msgstr "&laquo; Anterior"
+
+#~ msgid "Next &raquo;"
+#~ msgstr "Anterior &laquo; "
+
+#~ msgid "Page %d of %d"
+#~ msgstr "Página %d de %d"
+
+#~ msgid "Discussion"
+#~ msgstr "Discussão"
+
+#~ msgid "View All"
+#~ msgstr "Ver tudo"
+
+#~ msgid "Ask Question"
+#~ msgstr "Pergunte"
+
+#~ msgid "Asked by %s"
+#~ msgstr "Perguntado por %s"
+
+#~ msgid "Question >> Feed"
+#~ msgstr "Perguntas >> Feed"
+
+#~ msgid "You"
+#~ msgstr "Você"
+
+#~ msgid "Your profile"
+#~ msgstr "Seu perfil"
+
+#~ msgid "Your activity"
+#~ msgstr "Sua atividade"
+
+#~ msgid "Favorites questions of %s"
+#~ msgstr "Perguntas favoritas de %s"
+
+#~ msgid "Users following %s"
+#~ msgstr "%s usuários seguindo "
+
+#~ msgid "Users being followed by %s"
+#~ msgstr "Usuários sendo seguidos por %s"
+
+#~ msgid "Edit your profile"
+#~ msgstr "Editar seu perfil"
+
+#~ msgid "Your settings"
+#~ msgstr "Suas configurações"
+
+#~ msgid "Your messages"
+#~ msgstr "Suas mensagens"
+
+#~ msgid "Your badges"
+#~ msgstr "Suas marcas"
+
+#~ msgid "Message"
+#~ msgstr "Mensagem"
+
+#~ msgid "Page not found"
+#~ msgstr "Página não encontrada"
+
+#~ msgid "<span>1 answer</span>"
+#~ msgid_plural "<span>%d answers</span>"
+#~ msgstr[0] "<span>1 resposta</span>"
+#~ msgstr[1] "<span>%d respostas</span>"
+
+#~ msgid "<span>1 vote</span>"
+#~ msgid_plural "<span>%d votes</span>"
+#~ msgstr[0] "<span>1 voto</span>"
+#~ msgstr[1] "<span>%d votos</span>"
