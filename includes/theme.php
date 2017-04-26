@@ -597,14 +597,14 @@ function ap_current_page() {
 function ap_assets() {
 	$assets = array(
 		'js' => array(
-			'main' => [ 'dep' => [ 'jquery', 'jquery-form', 'underscore', 'backbone' ], 'footer' => true ],
-			'upload' => [ 'dep' => [ 'plupload', 'anspress-main' ], 'footer' => true ],
+			'main'          => [ 'dep' => [ 'jquery', 'jquery-form', 'underscore', 'backbone' ], 'footer' => true ],
+			'upload'        => [ 'dep' => [ 'plupload', 'anspress-main' ], 'footer' => true ],
 			'notifications' => [ 'dep' => [ 'anspress-main' ], 'footer' => true ],
 		),
 		'css' => array(
-			'main' => array( 'theme' => true, 'dep' => [ 'anspress-fonts' ] ),
+			'main'  => array( 'theme' => true, 'dep' => [ 'anspress-fonts' ] ),
 			'fonts' => array( 'theme' => true ),
-			'rtl' => array( 'theme' => true ),
+			'rtl'   => array( 'theme' => true ),
 		),
 	);
 
