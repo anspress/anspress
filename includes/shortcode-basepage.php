@@ -31,7 +31,7 @@ class AnsPress_BasePage_Shortcode {
 	}
 
 	/**
-	 * Control the output of [anspress] shortcode
+	 * Control the output of [anspress] shortcode.
 	 *
 	 * @param  array  $atts  {
 	 *     Attributes of the shortcode.
@@ -39,8 +39,8 @@ class AnsPress_BasePage_Shortcode {
 	 *     $categories 			slug of question_category
 	 *     $tags 				slug of question_tag
 	 *     $tax_relation 		taxonomy relation, see here https://codex.wordpress.org/Taxonomies
-	 *     $tags_operator 		operator for question_tag taxnomomy
-	 *     $categories_operator operator for question_category taxnomomy
+	 *     $tags_operator 		operator for question_tag taxonomy
+	 *     $categories_operator operator for question_category taxonomy
 	 *     $page 				Select a page to display.
 	 *     $hide_list_head 		Hide list head?
 	 *     $order_by 				Sort by.

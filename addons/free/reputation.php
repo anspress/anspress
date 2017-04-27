@@ -30,8 +30,12 @@ class AnsPress_Reputation_Hooks {
 	 */
 	public static function init() {
 		SELF::register_default_events();
-		
-		anspress()->add_action( 'ap_option_groups', __CLASS__, 'load_options' );
+
+		ap_add_default_options([
+			'user_page_slug_reputations'   => 'reputations',
+		]);
+
+		anspress()->add_action( 'ap_option_groups', __CLASS__, 'load_options', 20 );
 		anspress()->add_action( 'wp_ajax_ap_save_events', __CLASS__, 'ap_save_events' );
 		anspress()->add_action( 'ap_after_new_question', __CLASS__, 'new_question', 10, 2 );
 		anspress()->add_action( 'ap_after_new_answer', __CLASS__, 'new_answer', 10, 2 );
@@ -67,6 +71,14 @@ class AnsPress_Reputation_Hooks {
 	public static function load_options() {
 		ap_register_option_group( 'reputation', __( 'Reputation', 'anspress-question-answer' ) );
 		ap_register_option_section( 'reputation', 'events', __( 'Events', 'anspress-question-answer' ), 'ap_option_events_view' );
+
+		global $ap_option_tabs;
+
+		$ap_option_tabs['addons']['sections']['profile.php']['fields'][] = array(
+			'name'  => 'user_page_slug_reputations',
+			'label' => __( 'Reputations page slug', 'anspress-question-answer' ),
+			'desc'  => __( 'Custom slug for user profile reputations page', 'anspress-question-answer' ),
+		);
 	}
 
 	/**
