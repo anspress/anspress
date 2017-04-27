@@ -32,6 +32,7 @@ class AnsPress_Reputation_Hooks {
 		SELF::register_default_events();
 
 		ap_add_default_options([
+			'user_page_title_reputations'  => __( 'Reputations', 'anspress-question-answer' ),
 			'user_page_slug_reputations'   => 'reputations',
 		]);
 
@@ -73,6 +74,12 @@ class AnsPress_Reputation_Hooks {
 		ap_register_option_section( 'reputation', 'events', __( 'Events', 'anspress-question-answer' ), 'ap_option_events_view' );
 
 		global $ap_option_tabs;
+
+		$ap_option_tabs['addons']['sections']['profile.php']['fields'][] = array(
+			'name'  => 'user_page_title_reputations',
+			'label' => __( 'Reputations page title', 'anspress-question-answer' ),
+			'desc'  => __( 'Custom title for user profile reputations page', 'anspress-question-answer' ),
+		);
 
 		$ap_option_tabs['addons']['sections']['profile.php']['fields'][] = array(
 			'name'  => 'user_page_slug_reputations',

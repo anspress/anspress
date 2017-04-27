@@ -2,11 +2,11 @@
 /**
  * An AnsPress add-on to for displaying user profile.
  *
- * @author    Rahul Aryan <support@rahularyan.com>
+ * @author    Rahul Aryan <support@anspress.io>
  * @copyright 2014 AnsPress.io & Rahul Aryan
  * @license   GPL-3.0+ https://www.gnu.org/licenses/gpl-3.0.txt
  * @link      https://anspress.io
- * @package   WordPress/AnsPress/BadWords
+ * @package   WordPress/AnsPress/Profile
  *
  * Addon Name:    User Profile
  * Addon URI:     https://anspress.io
@@ -34,6 +34,8 @@ class AnsPress_Profile_Hooks {
 		ap_add_default_options([
 			'user_page_slug_questions'   => 'questions',
 			'user_page_slug_answers'   => 'answers',
+			'user_page_title_questions'   => __( 'Questions', 'anspress-question-answer' ),
+			'user_page_title_answers'   => __( 'Answers', 'anspress-question-answer' ),
 		]);
 		anspress()->add_action( 'ap_option_groups', __CLASS__, 'options' );
 		ap_register_page( 'user', __( 'User profile', 'anspress-question-answer' ), [ __CLASS__, 'user_page' ] );
@@ -51,9 +53,19 @@ class AnsPress_Profile_Hooks {
 
 		ap_register_option_section( 'addons', basename( __FILE__ ),  __( 'User Profile', 'anspress-question-answer' ), [
 			array(
+				'name'  => 'user_page_title_questions',
+				'label' => __( 'Questions page title', 'anspress-question-answer' ),
+				'desc'  => __( 'Custom title for user profile questions page', 'anspress-question-answer' ),
+			),
+			array(
 				'name'  => 'user_page_slug_questions',
 				'label' => __( 'Questions page slug', 'anspress-question-answer' ),
 				'desc'  => __( 'Custom slug for user profile questions page', 'anspress-question-answer' ),
+			),
+			array(
+				'name'  => 'user_page_title_answers',
+				'label' => __( 'Answers page title', 'anspress-question-answer' ),
+				'desc'  => __( 'Custom title for user profile answers page', 'anspress-question-answer' ),
 			),
 			array(
 				'name'  => 'user_page_slug_answers',
@@ -143,11 +155,19 @@ class AnsPress_Profile_Hooks {
 
 		foreach ( (array) anspress()->user_pages as $key => $args ) {
 			$rewrite = ap_opt( 'user_page_slug_' . $args['slug'] );
+			$title = ap_opt( 'user_page_title_' . $args['slug'] );
 
+			// Override user page slug.
 			if ( empty( $args['rewrite'] ) ) {
 				anspress()->user_pages[ $key ]['rewrite'] = ! empty( $rewrite ) ? sanitize_title( $rewrite ) : $args['slug'];
 			}
 
+			// Override user page title.
+			if ( ! empty( $title ) ) {
+				anspress()->user_pages[ $key ]['label'] = $title;
+			}
+
+			// Add default order.
 			if ( ! isset( $args['order'] ) ) {
 				anspress()->user_pages[ $key ]['order'] = 10;
 			}

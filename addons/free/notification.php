@@ -38,6 +38,7 @@ class AnsPress_Notification_Hook {
 	 */
 	public static function init() {
 		ap_add_default_options([
+			'user_page_title_notifications'  => __( 'Notifications', 'anspress-question-answer' ),
 			'user_page_slug_notifications'   => 'notifications',
 		]);
 
@@ -74,6 +75,12 @@ class AnsPress_Notification_Hook {
 	 */
 	public static function load_options() {
 		global $ap_option_tabs;
+
+		$ap_option_tabs['addons']['sections']['profile.php']['fields'][] = array(
+			'name'  => 'user_page_title_notifications',
+			'label' => __( 'Notifications page title', 'anspress-question-answer' ),
+			'desc'  => __( 'Custom title for user profile notifications page', 'anspress-question-answer' ),
+		);
 
 		$ap_option_tabs['addons']['sections']['profile.php']['fields'][] = array(
 			'name'  => 'user_page_slug_notifications',
