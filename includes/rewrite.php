@@ -63,14 +63,7 @@ class AnsPress_Rewrite {
 		unset( $wp_rewrite->extra_permastructs['answer'] );
 
 		$base_page_id = ap_opt( 'base_page' );
-
-		// Try to create base page if doesn't exists.
-		if ( ! ap_get_post( $base_page_id ) ) {
-			ap_create_base_page();
-		}
-
 		$slug = ap_base_page_slug() . '/';
-
 		$lang = '';
 		$lang_rule = '';
 		$lang_index = 0;

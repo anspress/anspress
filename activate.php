@@ -233,7 +233,7 @@ class AP_Activate {
 		$ap_roles->add_roles();
 		$ap_roles->add_capabilities();
 
-		ap_create_base_page();
+		//ap_create_base_page();
 
 		if ( true === version_compare( ap_opt( 'ap_version' ), '4.0.0-alpha.1', '<' )  ) {
 			update_option( 'ap_update_helper', true );

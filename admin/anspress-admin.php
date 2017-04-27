@@ -73,6 +73,7 @@ class AnsPress_Admin {
 		anspress()->add_action( 'admin_footer-post.php', __CLASS__, 'append_post_status_list' );
 		anspress()->add_action( 'admin_post_anspress_options', __CLASS__, 'process_option_form' );
 		anspress()->add_action( 'admin_post_anspress_update_db', __CLASS__, 'update_db' );
+		anspress()->add_action( 'admin_post_anspress_create_base_page', __CLASS__, 'anspress_create_base_page' );
 		anspress()->add_action( 'admin_notices', __CLASS__, 'anspress_notice' );
 	}
 
@@ -721,6 +722,12 @@ class AnsPress_Admin {
 				'button'  => ' <a class="button" href="' . admin_url( 'admin.php?page=anspress_upgrade' ) . '">' . __( 'Upgrade now', 'anspress-question-answer' ) . '</a>',
 				'show'    => ( get_option( 'ap_update_helper', false ) && 'admin_page_anspress_upgrade' !== $page->base && $have_updates ),
 			],
+			'upgrade' => [
+				'type'    => 'error',
+				'message' => __( 'AnsPress base page does not exists. AnsPress require a base page to work properly.', 'anspress-question-answer' ),
+				'button'  => ' <a href="' . admin_url( 'admin-post.php?action=anspress_create_base_page' ) . '">' . __( 'Set automatically', 'anspress-question-answer' ) . '</a> ' . __( 'Or', 'anspress-question-answer' ) . ' <a href="' . admin_url( 'admin.php?page=anspress_options' ) . '">' . __( 'Set existing page as base page', 'anspress-question-answer' ) . '</a>',
+				'show'    => ( ! ap_get_post( ap_opt( 'base_page' ) ) ),
+			],
 		);
 
 		foreach ( $messages as $msg ) {
@@ -739,6 +746,18 @@ class AnsPress_Admin {
 			$activate = AP_Activate::get_instance();
 			$activate->insert_tables();
 			update_option( 'anspress_db_version', AP_DB_VERSION );
+		}
+
+		wp_redirect( admin_url( 'admin.php?page=anspress_options' ) );
+	}
+
+	/**
+	 * Create a page and set it as base page.
+	 */
+	public static function anspress_create_base_page() {
+		if ( current_user_can( 'manage_options' ) ) {
+			ap_create_base_page();
+			flush_rewrite_rules();
 		}
 
 		wp_redirect( admin_url( 'admin.php?page=anspress_options' ) );
