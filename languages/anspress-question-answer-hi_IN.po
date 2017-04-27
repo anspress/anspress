@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: AnsPress 2.4\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/anspress-question-"
 "answer\n"
-"POT-Creation-Date: 2017-04-26 09:25:07+00:00\n"
+"POT-Creation-Date: 2017-04-27 09:14:37+00:00\n"
 "PO-Revision-Date: 2017-04-26 08:49+0000\n"
 "Last-Translator: Rahul Aryan <rah12@live.com>\n"
 "Language-Team: Hindi\n"
@@ -79,17 +79,18 @@ msgid "Q&A"
 msgstr ""
 
 #: addons/free/buddypress.php:104 addons/free/buddypress.php:185
-#: addons/free/profile.php:97 admin/views/dashboard.php:30
-#: admin/views/dashboard.php:212 includes/functions.php:885
-#: includes/options.php:110 includes/post-types.php:43 includes/taxo.php:79
-#: includes/taxo.php:372 widgets/questions.php:55
+#: addons/free/profile.php:37 addons/free/profile.php:140
+#: admin/views/dashboard.php:30 admin/views/dashboard.php:212
+#: includes/functions.php:885 includes/options.php:110
+#: includes/post-types.php:43 includes/taxo.php:79 includes/taxo.php:372
+#: widgets/questions.php:55
 msgid "Questions"
 msgstr "सवाल"
 
 #: addons/free/buddypress.php:105 addons/free/buddypress.php:233
-#: addons/free/profile.php:104 admin/views/dashboard.php:226
-#: includes/post-types.php:113 widgets/question_stats.php:49
-#: widgets/questions.php:87
+#: addons/free/profile.php:38 addons/free/profile.php:147
+#: admin/views/dashboard.php:226 includes/post-types.php:113
+#: widgets/question_stats.php:49 widgets/questions.php:87
 msgid "Answers"
 msgstr "जवाब"
 
@@ -688,98 +689,126 @@ msgstr ""
 msgid "post"
 msgstr "पोस्ट बदलिये"
 
-#: addons/free/notification.php:40 addons/free/notification.php:172
-#: templates/functions.php:58
+#: addons/free/notification.php:41 addons/free/notification.php:45
+#: addons/free/notification.php:170 templates/functions.php:58
 msgid "Notifications"
 msgstr "सूचनाएं"
 
-#: addons/free/notification.php:73
-msgid "Notification"
-msgstr "सूचना"
-
-#: addons/free/notification.php:76
-#, fuzzy
-msgid "Auto delete notifications"
-msgstr "सूचनाएँ हटाये"
-
-#: addons/free/notification.php:79
-msgid "Do not auto delete"
-msgstr ""
-
-#: addons/free/notification.php:80
-msgid "Only seen"
-msgstr ""
-
 #: addons/free/notification.php:81
-msgid "Both seen an unseen"
-msgstr ""
-
-#: addons/free/notification.php:83
 #, fuzzy
-msgid "Auto delete user notifications"
+msgid "Notifications page title"
+msgstr "सूचनाएं"
+
+#: addons/free/notification.php:82
+#, fuzzy
+msgid "Custom title for user profile notifications page"
 msgstr "सूचनाएँ हटाये"
 
 #: addons/free/notification.php:87
-msgid "Auto delete interval"
-msgstr ""
-
-#: addons/free/notification.php:89
 #, fuzzy
-msgid "Auto delete notifications interval"
+msgid "Notifications page slug"
+msgstr "सूचनाएं"
+
+#: addons/free/notification.php:88
+#, fuzzy
+msgid "Custom slug for user profile notifications page"
 msgstr "सूचनाएँ हटाये"
 
-#: addons/free/notification.php:130
+#: addons/free/notification.php:128
 #, fuzzy
 msgid "posted an answer on your question"
 msgstr "आपके सवाल का सर्वोत्तम उत्तर चुना गया है"
 
-#: addons/free/notification.php:135
+#: addons/free/notification.php:133
 #, fuzzy
 msgid "commented on your %cpt%"
 msgstr "%1$s ने आपके %3$s - %2$s पर टिप्पणी की है"
 
-#: addons/free/notification.php:140
+#: addons/free/notification.php:138
 msgid "up voted your %cpt%"
 msgstr ""
 
-#: addons/free/notification.php:147
+#: addons/free/notification.php:145
 #, fuzzy
 msgid "down voted your %cpt%"
 msgstr "%sनिचे मत दिया  %s"
 
-#: addons/free/notification.php:152
+#: addons/free/notification.php:150
 #, fuzzy
 msgid "selected your answer"
 msgstr "चुना सवाल"
 
-#: addons/free/notification.php:157
+#: addons/free/notification.php:155
 #, fuzzy
 msgid "You have earned %points% points"
 msgstr "आपने इस पोस्ट को अलग किया है"
 
-#: addons/free/notification.php:162
+#: addons/free/notification.php:160
 msgid "You lose %points% points"
 msgstr ""
 
-#: addons/free/notification.php:209
+#: addons/free/notification.php:207
 #, fuzzy
 msgid "You do not have permission to view this page"
 msgstr "इस पेज को देखने की आपको अनुमति नहीं"
 
-#: addons/free/notification.php:427
+#: addons/free/notification.php:425
 msgid "There was a problem processing your request"
 msgstr ""
 
-#: addons/free/notification.php:437
+#: addons/free/notification.php:435
 #, fuzzy
 msgid "Successfully updated all notifications"
 msgstr "सफलता पूर्वक बिल्ला बना दिया"
 
-#: addons/free/profile.php:34
+#: addons/free/profile.php:41
 msgid "User profile"
 msgstr "दोस्त परिचय"
 
-#: addons/free/profile.php:227
+#: addons/free/profile.php:54
+#, fuzzy
+msgid "User Profile"
+msgstr "दोस्त परिचय"
+
+#: addons/free/profile.php:57
+#, fuzzy
+msgid "Questions page title"
+msgstr "एक पेज पर दिखाए सवाल"
+
+#: addons/free/profile.php:58
+#, fuzzy
+msgid "Custom title for user profile questions page"
+msgstr "सवाल आंकड़े एक सवाल पेज माइन दिखाए"
+
+#: addons/free/profile.php:62
+#, fuzzy
+msgid "Questions page slug"
+msgstr "एक पेज पर दिखाए सवाल"
+
+#: addons/free/profile.php:63
+#, fuzzy
+msgid "Custom slug for user profile questions page"
+msgstr "सवाल आंकड़े एक सवाल पेज माइन दिखाए"
+
+#: addons/free/profile.php:67
+#, fuzzy
+msgid "Answers page title"
+msgstr "सवाल खोजें"
+
+#: addons/free/profile.php:68
+msgid "Custom title for user profile answers page"
+msgstr ""
+
+#: addons/free/profile.php:72
+#, fuzzy
+msgid "Answers page slug"
+msgstr "एक पेज पर दिखाए जवाब"
+
+#: addons/free/profile.php:73
+msgid "Custom slug for user profile answers page"
+msgstr ""
+
+#: addons/free/profile.php:284
 msgid "Callback function not found for rendering this page"
 msgstr ""
 
@@ -821,169 +850,189 @@ msgstr "सुरक्षा विशेषज्ञ जाँच असफल
 msgid "reCaptach keys missing, please add keys"
 msgstr ""
 
-#: addons/free/reputation.php:68 addons/free/reputation.php:350
+#: addons/free/reputation.php:35 addons/free/reputation.php:400
+#: addons/free/reputation.php:450
+#, fuzzy
+msgid "Reputations"
+msgstr "ख्याति"
+
+#: addons/free/reputation.php:73 addons/free/reputation.php:369
 msgid "Reputation"
 msgstr "ख्याति"
 
-#: addons/free/reputation.php:69
+#: addons/free/reputation.php:74
 #, fuzzy
 msgid "Events"
 msgstr "घटना"
 
-#: addons/free/reputation.php:78
+#: addons/free/reputation.php:80
+#, fuzzy
+msgid "Reputations page title"
+msgstr "ख्याति"
+
+#: addons/free/reputation.php:81
+msgid "Custom title for user profile reputations page"
+msgstr ""
+
+#: addons/free/reputation.php:86
+#, fuzzy
+msgid "Reputations page slug"
+msgstr "सवाल पूछे"
+
+#: addons/free/reputation.php:87
+#, fuzzy
+msgid "Custom slug for user profile reputations page"
+msgstr "सवाल आंकड़े एक सवाल पेज माइन दिखाए"
+
+#: addons/free/reputation.php:97
 #, fuzzy
 msgid "Registration"
 msgstr "नया पंजीकरण"
 
-#: addons/free/reputation.php:79
+#: addons/free/reputation.php:98
 msgid "Points awarded when user account is created"
 msgstr ""
 
-#: addons/free/reputation.php:81
+#: addons/free/reputation.php:100
 msgid "Registered"
 msgstr ""
 
-#: addons/free/reputation.php:87
+#: addons/free/reputation.php:106
 msgid "Asking"
 msgstr ""
 
-#: addons/free/reputation.php:88
+#: addons/free/reputation.php:107
 msgid "Points awarded when user asks a question"
 msgstr ""
 
-#: addons/free/reputation.php:90
+#: addons/free/reputation.php:109
 #, fuzzy
 msgid "Asked a question"
 msgstr "सवाल पूछे"
 
-#: addons/free/reputation.php:96
+#: addons/free/reputation.php:115
 #, fuzzy
 msgid "Answering"
 msgstr "जवाब"
 
-#: addons/free/reputation.php:97
+#: addons/free/reputation.php:116
 #, fuzzy
 msgid "Points awarded when user answer a question"
 msgstr "केवल एडमिन ही जवाब देने की अनुमति दे"
 
-#: addons/free/reputation.php:99
+#: addons/free/reputation.php:118
 #, fuzzy
 msgid "Posted an answer"
 msgstr "जवाब भेजिए"
 
-#: addons/free/reputation.php:105
+#: addons/free/reputation.php:124
 #, fuzzy
 msgid "Commenting"
 msgstr "टिप्पणी"
 
-#: addons/free/reputation.php:106
+#: addons/free/reputation.php:125
 #, fuzzy
 msgid "Points awarded when user comment on question or answer"
 msgstr "आपके सवाल या जवाब को आप मत नहीं दे सकते."
 
-#: addons/free/reputation.php:108
+#: addons/free/reputation.php:127
 #, fuzzy
 msgid "Commented on a post"
 msgstr "ने जवाब पर टिप्पणी की"
 
-#: addons/free/reputation.php:114
+#: addons/free/reputation.php:133
 #, fuzzy
 msgid "Selecting an Answer"
 msgstr "जवाब का चुनाव"
 
-#: addons/free/reputation.php:115
+#: addons/free/reputation.php:134
 msgid "Points awarded when user select an answer for thier question"
 msgstr ""
 
-#: addons/free/reputation.php:117
+#: addons/free/reputation.php:136
 #, fuzzy
 msgid "Selected an answer as best"
 msgstr "इस जवाब को सर्वोत्तम चुने"
 
-#: addons/free/reputation.php:123
+#: addons/free/reputation.php:142
 #, fuzzy
 msgid "Answer selected as best"
 msgstr "जब साथी का जवाब सर्वोत्तम चुना जाता है"
 
-#: addons/free/reputation.php:124
+#: addons/free/reputation.php:143
 #, fuzzy
 msgid "Points awarded when user's answer selected as best"
 msgstr "जब साथी का जवाब सर्वोत्तम चुना जाता है"
 
-#: addons/free/reputation.php:126
+#: addons/free/reputation.php:145
 #, fuzzy
 msgid "Answer was selected as best"
 msgstr "जब साथी का जवाब सर्वोत्तम चुना जाता है"
 
-#: addons/free/reputation.php:132
+#: addons/free/reputation.php:151
 #, fuzzy
 msgid "Received up vote"
 msgstr "जवाब पर ऊपर मत प्राप्त करे"
 
-#: addons/free/reputation.php:133
+#: addons/free/reputation.php:152
 #, fuzzy
 msgid "Points awarded when user receive an upvote"
 msgstr "जब साथी जवाब पर ऊपर मत प्राप्त करता है."
 
-#: addons/free/reputation.php:135
+#: addons/free/reputation.php:154
 #, fuzzy
 msgid "Received an upvote"
 msgstr "जवाब पर ऊपर मत प्राप्त करे"
 
-#: addons/free/reputation.php:140
+#: addons/free/reputation.php:159
 #, fuzzy
 msgid "Received down vote"
 msgstr "जवाब पर निचे मत प्राप्त करे."
 
-#: addons/free/reputation.php:141
+#: addons/free/reputation.php:160
 #, fuzzy
 msgid "Points awarded when user receive a down vote"
 msgstr "जब साथी जवाब पर निचे मत प्राप्त करता है."
 
-#: addons/free/reputation.php:143
+#: addons/free/reputation.php:162
 #, fuzzy
 msgid "Received a down vote"
 msgstr "जवाब पर निचे मत प्राप्त करे."
 
-#: addons/free/reputation.php:148
+#: addons/free/reputation.php:167
 msgid "Gives an up vote"
 msgstr ""
 
-#: addons/free/reputation.php:149
+#: addons/free/reputation.php:168
 msgid "Points taken from user when they give a vote up"
 msgstr ""
 
-#: addons/free/reputation.php:151
+#: addons/free/reputation.php:170
 #, fuzzy
 msgid "Given an up vote"
 msgstr "आपका मत भेज रहे है"
 
-#: addons/free/reputation.php:156
+#: addons/free/reputation.php:175
 #, fuzzy
 msgid "Gives down vote"
 msgstr "जवाब पर निचे मत प्राप्त करे."
 
-#: addons/free/reputation.php:157
+#: addons/free/reputation.php:176
 msgid "Points taken from user when user give a down vote"
 msgstr ""
 
-#: addons/free/reputation.php:159
+#: addons/free/reputation.php:178
 msgid "Given a down vote"
 msgstr ""
 
-#: addons/free/reputation.php:184
+#: addons/free/reputation.php:203
 #, fuzzy
 msgid "Successfully updated reputation points!"
 msgstr "सफलता पूर्वक बिल्ला बना दिया"
 
-#: addons/free/reputation.php:372
+#: addons/free/reputation.php:391
 msgid "%s Reputation"
 msgstr "%d ख्याति"
-
-#: addons/free/reputation.php:381 addons/free/reputation.php:431
-#, fuzzy
-msgid "Reputations"
-msgstr "ख्याति"
 
 #: addons/free/tag.php:34 addons/free/tag.php:237 addons/free/tag.php:630
 #: admin/class-list-table-hooks.php:192
@@ -2393,7 +2442,7 @@ msgid ""
 msgstr "हमें कुछ सामान सवाल पाये गए है. पढ़ने के लिए क्लिक करे"
 
 #: includes/ajax-hooks.php:100 includes/ajax-hooks.php:136
-#: includes/theme.php:771
+#: includes/theme.php:772
 msgid "Select"
 msgstr "चुने"
 
@@ -2415,7 +2464,7 @@ msgstr ""
 msgid "Best answer is selected for your question."
 msgstr "आपके सवाल का सर्वोत्तम उत्तर चुना गया है"
 
-#: includes/ajax-hooks.php:173 includes/theme.php:779
+#: includes/ajax-hooks.php:173 includes/theme.php:780
 msgid "Unselect"
 msgstr "चुनाव हटाइये"
 
@@ -2478,12 +2527,12 @@ msgstr ""
 msgid "Only question can be set as featured"
 msgstr "सवाल को विशेष चुना गया है."
 
-#: includes/ajax-hooks.php:317 includes/theme.php:855
+#: includes/ajax-hooks.php:317 includes/theme.php:856
 #, fuzzy
 msgid "Mark this question as featured"
 msgstr "इस सवाल को विशेष चुने."
 
-#: includes/ajax-hooks.php:317 includes/theme.php:856
+#: includes/ajax-hooks.php:317 includes/theme.php:857
 #, fuzzy
 msgid "Feature"
 msgstr "सुविधाऐं"
@@ -2492,12 +2541,12 @@ msgstr "सुविधाऐं"
 msgid "Question is unmarked as featured."
 msgstr "सवाल का विशेष चुनाव हटा दिअय गया है."
 
-#: includes/ajax-hooks.php:325 includes/theme.php:852
+#: includes/ajax-hooks.php:325 includes/theme.php:853
 #, fuzzy
 msgid "Unmark this question as featured"
 msgstr "इस सवाल को विशेष चुने."
 
-#: includes/ajax-hooks.php:325 includes/theme.php:853
+#: includes/ajax-hooks.php:325 includes/theme.php:854
 #, fuzzy
 msgid "Unfeature"
 msgstr "सुविधाऐं"
@@ -2561,7 +2610,7 @@ msgstr ""
 msgid "Successfully unsubscribed from question"
 msgstr "केवल आप इस सवाल का अनुसरण कर रहे है"
 
-#: includes/ajax-hooks.php:505 includes/theme.php:882
+#: includes/ajax-hooks.php:505 includes/theme.php:883
 msgid "Subscribe"
 msgstr "अनुसरण करे"
 
@@ -2570,7 +2619,7 @@ msgstr "अनुसरण करे"
 msgid "Successfully subscribed to question"
 msgstr "कोई भी इस सवाल का अनुसरण नहीं कर रहा"
 
-#: includes/ajax-hooks.php:523 includes/theme.php:882
+#: includes/ajax-hooks.php:523 includes/theme.php:883
 #, fuzzy
 msgid "Unsubscribe"
 msgstr "अनुसरण करे"
@@ -3316,7 +3365,7 @@ msgstr "<i>%d ने देखा</i>"
 msgid "AnsPress shortcode cannot be nested."
 msgstr ""
 
-#: includes/shortcode-basepage.php:79
+#: includes/shortcode-basepage.php:84
 #, fuzzy
 msgid "Question and answer is powered by"
 msgstr " सवाल जवाब खोज फॉर्म"
@@ -3382,27 +3431,27 @@ msgstr "दर्शन"
 msgid "Best answer"
 msgstr "सर्वोत्तम जवाब"
 
-#: includes/theme.php:688
+#: includes/theme.php:689
 msgid "Order By"
 msgstr ""
 
-#: includes/theme.php:743
+#: includes/theme.php:744
 msgid "Reset sorting and filter"
 msgstr "भेद व छटाई पुनर्स्थापित करे"
 
-#: includes/theme.php:743
+#: includes/theme.php:744
 msgid "Clear Filter"
 msgstr ""
 
-#: includes/theme.php:770
+#: includes/theme.php:771
 msgid "Select this answer as best"
 msgstr "इस जवाब को सर्वोत्तम चुने"
 
-#: includes/theme.php:778
+#: includes/theme.php:779
 msgid "Unselect this answer"
 msgstr "इस जवाब का चुनाव हटाइये"
 
-#: includes/theme.php:906
+#: includes/theme.php:907
 #, fuzzy
 msgid "AnsPress links"
 msgstr "AnsPress विकल्प"
@@ -3918,6 +3967,17 @@ msgstr "सवाल"
 msgctxt "Post Type Singular Name"
 msgid "Answer"
 msgstr "जवाब"
+
+#~ msgid "Notification"
+#~ msgstr "सूचना"
+
+#, fuzzy
+#~ msgid "Auto delete notifications"
+#~ msgstr "सूचनाएँ हटाये"
+
+#, fuzzy
+#~ msgid "Auto delete notifications interval"
+#~ msgstr "सूचनाएँ हटाये"
 
 #, fuzzy
 #~ msgid "2"

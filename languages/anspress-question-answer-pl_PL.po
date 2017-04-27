@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: AnsPress 3.0.7\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/anspress-question-"
 "answer\n"
-"POT-Creation-Date: 2017-04-26 09:25:07+00:00\n"
+"POT-Creation-Date: 2017-04-27 09:14:37+00:00\n"
 "PO-Revision-Date: 2016-10-09 06:44+0530\n"
 "Last-Translator: Łukasz Ładecki <priart@gmail.com>\n"
 "Language-Team: priard <priart@gmail.com>\n"
@@ -86,17 +86,18 @@ msgid "Q&A"
 msgstr ""
 
 #: addons/free/buddypress.php:104 addons/free/buddypress.php:185
-#: addons/free/profile.php:97 admin/views/dashboard.php:30
-#: admin/views/dashboard.php:212 includes/functions.php:885
-#: includes/options.php:110 includes/post-types.php:43 includes/taxo.php:79
-#: includes/taxo.php:372 widgets/questions.php:55
+#: addons/free/profile.php:37 addons/free/profile.php:140
+#: admin/views/dashboard.php:30 admin/views/dashboard.php:212
+#: includes/functions.php:885 includes/options.php:110
+#: includes/post-types.php:43 includes/taxo.php:79 includes/taxo.php:372
+#: widgets/questions.php:55
 msgid "Questions"
 msgstr "Pytania"
 
 #: addons/free/buddypress.php:105 addons/free/buddypress.php:233
-#: addons/free/profile.php:104 admin/views/dashboard.php:226
-#: includes/post-types.php:113 widgets/question_stats.php:49
-#: widgets/questions.php:87
+#: addons/free/profile.php:38 addons/free/profile.php:147
+#: admin/views/dashboard.php:226 includes/post-types.php:113
+#: widgets/question_stats.php:49 widgets/questions.php:87
 msgid "Answers"
 msgstr "Odpowiedzi"
 
@@ -707,98 +708,127 @@ msgstr ""
 msgid "post"
 msgstr "Edytuj post"
 
-#: addons/free/notification.php:40 addons/free/notification.php:172
-#: templates/functions.php:58
+#: addons/free/notification.php:41 addons/free/notification.php:45
+#: addons/free/notification.php:170 templates/functions.php:58
 msgid "Notifications"
 msgstr "Powiadomienia"
 
-#: addons/free/notification.php:73
-msgid "Notification"
+#: addons/free/notification.php:81
+#, fuzzy
+msgid "Notifications page title"
 msgstr "Powiadomienia"
 
-#: addons/free/notification.php:76
+#: addons/free/notification.php:82
 #, fuzzy
-msgid "Auto delete notifications"
-msgstr "Usuń powiadomienie"
-
-#: addons/free/notification.php:79
-msgid "Do not auto delete"
-msgstr ""
-
-#: addons/free/notification.php:80
-msgid "Only seen"
-msgstr ""
-
-#: addons/free/notification.php:81
-msgid "Both seen an unseen"
-msgstr ""
-
-#: addons/free/notification.php:83
-#, fuzzy
-msgid "Auto delete user notifications"
+msgid "Custom title for user profile notifications page"
 msgstr "Pokaż zalogowanym użytkownikom powiadomienia"
 
 #: addons/free/notification.php:87
-msgid "Auto delete interval"
-msgstr ""
-
-#: addons/free/notification.php:89
 #, fuzzy
-msgid "Auto delete notifications interval"
-msgstr "Usuń powiadomienie"
+msgid "Notifications page slug"
+msgstr "Powiadomienia"
 
-#: addons/free/notification.php:130
+#: addons/free/notification.php:88
+#, fuzzy
+msgid "Custom slug for user profile notifications page"
+msgstr "Pokaż zalogowanym użytkownikom powiadomienia"
+
+#: addons/free/notification.php:128
 #, fuzzy
 msgid "posted an answer on your question"
 msgstr "Wybrano najlepsza odpowiedź na Twoje pytanie."
 
-#: addons/free/notification.php:135
+#: addons/free/notification.php:133
 #, fuzzy
 msgid "commented on your %cpt%"
 msgstr "%1$s  skomentował %3$s - %2$s"
 
-#: addons/free/notification.php:140
+#: addons/free/notification.php:138
 msgid "up voted your %cpt%"
 msgstr ""
 
-#: addons/free/notification.php:147
+#: addons/free/notification.php:145
 #, fuzzy
 msgid "down voted your %cpt%"
 msgstr "%sZostało przegłosowane %s"
 
-#: addons/free/notification.php:152
+#: addons/free/notification.php:150
 #, fuzzy
 msgid "selected your answer"
 msgstr "wybrana odpowiedź"
 
-#: addons/free/notification.php:157
+#: addons/free/notification.php:155
 #, fuzzy
 msgid "You have earned %points% points"
 msgstr "Oznaczyłeś ten post"
 
-#: addons/free/notification.php:162
+#: addons/free/notification.php:160
 msgid "You lose %points% points"
 msgstr ""
 
-#: addons/free/notification.php:209
+#: addons/free/notification.php:207
 #, fuzzy
 msgid "You do not have permission to view this page"
 msgstr "Nie masz uprawnień, by wejść na tę stronę."
 
-#: addons/free/notification.php:427
+#: addons/free/notification.php:425
 msgid "There was a problem processing your request"
 msgstr ""
 
-#: addons/free/notification.php:437
+#: addons/free/notification.php:435
 #, fuzzy
 msgid "Successfully updated all notifications"
 msgstr "Tag został stworzony."
 
-#: addons/free/profile.php:34
+#: addons/free/profile.php:41
 msgid "User profile"
 msgstr "Profil użytkownika"
 
-#: addons/free/profile.php:227
+#: addons/free/profile.php:54
+#, fuzzy
+msgid "User Profile"
+msgstr "Profil użytkownika"
+
+#: addons/free/profile.php:57
+#, fuzzy
+msgid "Questions page title"
+msgstr "Pytań na stronie"
+
+#: addons/free/profile.php:58
+#, fuzzy
+msgid "Custom title for user profile questions page"
+msgstr "Pokaż tytuł pytania na stronach poszczególnych pytań."
+
+#: addons/free/profile.php:62
+#, fuzzy
+msgid "Questions page slug"
+msgstr "Pytań na stronie"
+
+#: addons/free/profile.php:63
+#, fuzzy
+msgid "Custom slug for user profile questions page"
+msgstr "Wprowadź alias strony z odpowiedziami."
+
+#: addons/free/profile.php:67
+#, fuzzy
+msgid "Answers page title"
+msgstr "Tytuł stron użytkowników"
+
+#: addons/free/profile.php:68
+msgid "Custom title for user profile answers page"
+msgstr ""
+
+#: addons/free/profile.php:72
+#, fuzzy
+msgid "Answers page slug"
+msgstr "Odpowiedzi na stronie"
+
+#: addons/free/profile.php:73
+#, fuzzy
+msgid "Custom slug for user profile answers page"
+msgstr "Wprowadź alias dla stron użytkowników."
+
+#: addons/free/profile.php:284
 msgid "Callback function not found for rendering this page"
 msgstr ""
 
@@ -844,171 +874,192 @@ msgstr "Weryfikacja bota zakończyła się niepowodzeniem"
 msgid "reCaptach keys missing, please add keys"
 msgstr "Brakuje kluczy reCaptcha, uzupełnij je"
 
-#: addons/free/reputation.php:68 addons/free/reputation.php:350
+#: addons/free/reputation.php:35 addons/free/reputation.php:400
+#: addons/free/reputation.php:450
+#, fuzzy
+msgid "Reputations"
+msgstr "Reputacja"
+
+#: addons/free/reputation.php:73 addons/free/reputation.php:369
 msgid "Reputation"
 msgstr "Reputacja"
 
-#: addons/free/reputation.php:69
+#: addons/free/reputation.php:74
 #, fuzzy
 msgid "Events"
 msgstr "Zdarzenie"
 
-#: addons/free/reputation.php:78
+#: addons/free/reputation.php:80
+#, fuzzy
+msgid "Reputations page title"
+msgstr "Tytuł strony pytań"
+
+#: addons/free/reputation.php:81
+#, fuzzy
+msgid "Custom title for user profile reputations page"
+msgstr "Pokaż tytuł pytania na stronach poszczególnych pytań."
+
+#: addons/free/reputation.php:86
+#, fuzzy
+msgid "Reputations page slug"
+msgstr "Alias strony odpowiedzi."
+
+#: addons/free/reputation.php:87
+#, fuzzy
+msgid "Custom slug for user profile reputations page"
+msgstr "Wprowadź alias strony z odpowiedziami."
+
+#: addons/free/reputation.php:97
 #, fuzzy
 msgid "Registration"
 msgstr "Nowe konto"
 
-#: addons/free/reputation.php:79
+#: addons/free/reputation.php:98
 msgid "Points awarded when user account is created"
 msgstr ""
 
-#: addons/free/reputation.php:81
+#: addons/free/reputation.php:100
 #, fuzzy
 msgid "Registered"
 msgstr "Zarejestruj się"
 
-#: addons/free/reputation.php:87
+#: addons/free/reputation.php:106
 msgid "Asking"
 msgstr ""
 
-#: addons/free/reputation.php:88
+#: addons/free/reputation.php:107
 msgid "Points awarded when user asks a question"
 msgstr ""
 
-#: addons/free/reputation.php:90
+#: addons/free/reputation.php:109
 #, fuzzy
 msgid "Asked a question"
 msgstr "Zadaj pytanie"
 
-#: addons/free/reputation.php:96
+#: addons/free/reputation.php:115
 #, fuzzy
 msgid "Answering"
 msgstr "Odpowiedź"
 
-#: addons/free/reputation.php:97
+#: addons/free/reputation.php:116
 #, fuzzy
 msgid "Points awarded when user answer a question"
 msgstr "Tylko administrator może udzielać odpowiedzi na pytania."
 
-#: addons/free/reputation.php:99
+#: addons/free/reputation.php:118
 #, fuzzy
 msgid "Posted an answer"
 msgstr "Wyślij odpowiedź"
 
-#: addons/free/reputation.php:105
+#: addons/free/reputation.php:124
 #, fuzzy
 msgid "Commenting"
 msgstr "Skomentuj"
 
-#: addons/free/reputation.php:106
+#: addons/free/reputation.php:125
 #, fuzzy
 msgid "Points awarded when user comment on question or answer"
 msgstr "Nie możesz zagłosować na własne pytanie."
 
-#: addons/free/reputation.php:108
+#: addons/free/reputation.php:127
 #, fuzzy
 msgid "Commented on a post"
 msgstr "skomentował odpowiedź"
 
-#: addons/free/reputation.php:114
+#: addons/free/reputation.php:133
 #, fuzzy
 msgid "Selecting an Answer"
 msgstr "Wybieranie odpowiedzi"
 
-#: addons/free/reputation.php:115
+#: addons/free/reputation.php:134
 msgid "Points awarded when user select an answer for thier question"
 msgstr ""
 
-#: addons/free/reputation.php:117
+#: addons/free/reputation.php:136
 #, fuzzy
 msgid "Selected an answer as best"
 msgstr "Wybierz tą odpowiedź jako najlepszą"
 
-#: addons/free/reputation.php:123
+#: addons/free/reputation.php:142
 #, fuzzy
 msgid "Answer selected as best"
 msgstr "Gdy odpowiedź użytkownika zostanie wybrana za najlepszą"
 
-#: addons/free/reputation.php:124
+#: addons/free/reputation.php:143
 #, fuzzy
 msgid "Points awarded when user's answer selected as best"
 msgstr "Gdy odpowiedź użytkownika zostanie wybrana za najlepszą"
 
-#: addons/free/reputation.php:126
+#: addons/free/reputation.php:145
 #, fuzzy
 msgid "Answer was selected as best"
 msgstr "Gdy odpowiedź użytkownika zostanie wybrana za najlepszą"
 
-#: addons/free/reputation.php:132
+#: addons/free/reputation.php:151
 #, fuzzy
 msgid "Received up vote"
 msgstr "Za otrzymanie głosu poparcia za odpoweidź"
 
-#: addons/free/reputation.php:133
+#: addons/free/reputation.php:152
 #, fuzzy
 msgid "Points awarded when user receive an upvote"
 msgstr "Przyznawane za otrzymanie głosu poparcia przy odpowiedzi"
 
-#: addons/free/reputation.php:135
+#: addons/free/reputation.php:154
 #, fuzzy
 msgid "Received an upvote"
 msgstr "Za otrzymanie głosu poparcia za odpoweidź"
 
-#: addons/free/reputation.php:140
+#: addons/free/reputation.php:159
 #, fuzzy
 msgid "Received down vote"
 msgstr "Za głos sprzeciwu za odpowiedź"
 
-#: addons/free/reputation.php:141
+#: addons/free/reputation.php:160
 #, fuzzy
 msgid "Points awarded when user receive a down vote"
 msgstr "Przyznawane za głos sprzeciwu przy odpowiedzi"
 
-#: addons/free/reputation.php:143
+#: addons/free/reputation.php:162
 #, fuzzy
 msgid "Received a down vote"
 msgstr "Za głos sprzeciwu za odpowiedź"
 
-#: addons/free/reputation.php:148
+#: addons/free/reputation.php:167
 msgid "Gives an up vote"
 msgstr ""
 
-#: addons/free/reputation.php:149
+#: addons/free/reputation.php:168
 msgid "Points taken from user when they give a vote up"
 msgstr ""
 
-#: addons/free/reputation.php:151
+#: addons/free/reputation.php:170
 #, fuzzy
 msgid "Given an up vote"
 msgstr "Wysyłanie głosu"
 
-#: addons/free/reputation.php:156
+#: addons/free/reputation.php:175
 #, fuzzy
 msgid "Gives down vote"
 msgstr "Głos przeciw"
 
-#: addons/free/reputation.php:157
+#: addons/free/reputation.php:176
 msgid "Points taken from user when user give a down vote"
 msgstr ""
 
-#: addons/free/reputation.php:159
+#: addons/free/reputation.php:178
 #, fuzzy
 msgid "Given a down vote"
 msgstr "Głos przeciw"
 
-#: addons/free/reputation.php:184
+#: addons/free/reputation.php:203
 #, fuzzy
 msgid "Successfully updated reputation points!"
 msgstr "Tag został stworzony."
 
-#: addons/free/reputation.php:372
+#: addons/free/reputation.php:391
 msgid "%s Reputation"
 msgstr "Reputacja: %s"
-
-#: addons/free/reputation.php:381 addons/free/reputation.php:431
-#, fuzzy
-msgid "Reputations"
-msgstr "Reputacja"
 
 #: addons/free/tag.php:34 addons/free/tag.php:237 addons/free/tag.php:630
 #: admin/class-list-table-hooks.php:192
@@ -2443,7 +2494,7 @@ msgstr ""
 "Mamy podobne pytania, które już zostały zadane, kliknij, aby je przeczytać."
 
 #: includes/ajax-hooks.php:100 includes/ajax-hooks.php:136
-#: includes/theme.php:771
+#: includes/theme.php:772
 msgid "Select"
 msgstr "Wybierz"
 
@@ -2465,7 +2516,7 @@ msgstr ""
 msgid "Best answer is selected for your question."
 msgstr "Wybrano najlepsza odpowiedź na Twoje pytanie."
 
-#: includes/ajax-hooks.php:173 includes/theme.php:779
+#: includes/ajax-hooks.php:173 includes/theme.php:780
 msgid "Unselect"
 msgstr "Odznacz"
 
@@ -2529,12 +2580,12 @@ msgstr "Przepraszamy! ale nie masz uprawnień, by móc wyświetlić to pytanie."
 msgid "Only question can be set as featured"
 msgstr "Tylko pytanie może zostać wyróżnione"
 
-#: includes/ajax-hooks.php:317 includes/theme.php:855
+#: includes/ajax-hooks.php:317 includes/theme.php:856
 #, fuzzy
 msgid "Mark this question as featured"
 msgstr "Oznacz to pytanie jako wyróżnione"
 
-#: includes/ajax-hooks.php:317 includes/theme.php:856
+#: includes/ajax-hooks.php:317 includes/theme.php:857
 #, fuzzy
 msgid "Feature"
 msgstr "Dodatki"
@@ -2543,12 +2594,12 @@ msgstr "Dodatki"
 msgid "Question is unmarked as featured."
 msgstr "Pytanie zostało oznaczone jako zwykłe."
 
-#: includes/ajax-hooks.php:325 includes/theme.php:852
+#: includes/ajax-hooks.php:325 includes/theme.php:853
 #, fuzzy
 msgid "Unmark this question as featured"
 msgstr "Oznacz to pytanie jako wyróżnione"
 
-#: includes/ajax-hooks.php:325 includes/theme.php:853
+#: includes/ajax-hooks.php:325 includes/theme.php:854
 #, fuzzy
 msgid "Unfeature"
 msgstr "Dodatki"
@@ -2614,7 +2665,7 @@ msgstr "Przenieś starych subskrybentów"
 msgid "Successfully unsubscribed from question"
 msgstr "Pomyślnie wypisano."
 
-#: includes/ajax-hooks.php:505 includes/theme.php:882
+#: includes/ajax-hooks.php:505 includes/theme.php:883
 msgid "Subscribe"
 msgstr "Subskrybuj"
 
@@ -2623,7 +2674,7 @@ msgstr "Subskrybuj"
 msgid "Successfully subscribed to question"
 msgstr "Pomyślnie wypisano."
 
-#: includes/ajax-hooks.php:523 includes/theme.php:882
+#: includes/ajax-hooks.php:523 includes/theme.php:883
 msgid "Unsubscribe"
 msgstr "Wypisz się"
 
@@ -3380,7 +3431,7 @@ msgstr "%d wyświetleń"
 msgid "AnsPress shortcode cannot be nested."
 msgstr "Shortcode Anspressa nie może być zagnieżdżony."
 
-#: includes/shortcode-basepage.php:79
+#: includes/shortcode-basepage.php:84
 msgid "Question and answer is powered by"
 msgstr "Pytania i odpowiedzi napędza"
 
@@ -3443,29 +3494,29 @@ msgstr "Wyświetlenia"
 msgid "Best answer"
 msgstr "Najlepsza odpowiedź"
 
-#: includes/theme.php:688
+#: includes/theme.php:689
 #, fuzzy
 msgid "Order By"
 msgstr "Sortuj po:"
 
-#: includes/theme.php:743
+#: includes/theme.php:744
 msgid "Reset sorting and filter"
 msgstr "Resetuj sortowanie i filtr"
 
-#: includes/theme.php:743
+#: includes/theme.php:744
 #, fuzzy
 msgid "Clear Filter"
 msgstr "Zdejmij zgłoszenie"
 
-#: includes/theme.php:770
+#: includes/theme.php:771
 msgid "Select this answer as best"
 msgstr "Wybierz tą odpowiedź jako najlepszą"
 
-#: includes/theme.php:778
+#: includes/theme.php:779
 msgid "Unselect this answer"
 msgstr "Odznacz odpowiedź"
 
-#: includes/theme.php:906
+#: includes/theme.php:907
 #, fuzzy
 msgid "AnsPress links"
 msgstr "Punkty AnsPress"
@@ -3992,6 +4043,17 @@ msgctxt "Post Type Singular Name"
 msgid "Answer"
 msgstr "Odpowiedź"
 
+#~ msgid "Notification"
+#~ msgstr "Powiadomienia"
+
+#, fuzzy
+#~ msgid "Auto delete notifications"
+#~ msgstr "Usuń powiadomienie"
+
+#, fuzzy
+#~ msgid "Auto delete notifications interval"
+#~ msgstr "Usuń powiadomienie"
+
 #, fuzzy
 #~ msgid "%s comment approved"
 #~ msgid_plural "%s comments approved"
@@ -4106,9 +4168,6 @@ msgstr "Odpowiedź"
 #~ msgid "Page slug"
 #~ msgstr "Alias stryny"
 
-#~ msgid "Enter slug for users page."
-#~ msgstr "Wprowadź alias dla stron użytkowników."
-
 #~ msgid ""
 #~ "Enter slug for user page, make sure no page or post exists with same slug."
 #~ msgstr ""
@@ -4117,12 +4176,6 @@ msgstr "Odpowiedź"
 
 #~ msgid "Show question title"
 #~ msgstr "Pokaż tytuł pytania"
-
-#~ msgid "Show question title in single question page."
-#~ msgstr "Pokaż tytuł pytania na stronach poszczególnych pytań."
-
-#~ msgid "Users page title"
-#~ msgstr "Tytuł stron użytkowników"
 
 #~ msgid "Disable navigation"
 #~ msgstr "Wyłącz nawigację"

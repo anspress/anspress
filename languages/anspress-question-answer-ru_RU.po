@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: AnsPress 2.1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/anspress-question-"
 "answer\n"
-"POT-Creation-Date: 2017-04-26 09:25:07+00:00\n"
+"POT-Creation-Date: 2017-04-27 09:14:37+00:00\n"
 "PO-Revision-Date: 2015-12-15 09:20+0530\n"
 "Last-Translator: Zhandos Ulan <jandosul@mono.kz>\n"
 "Language-Team: \n"
@@ -81,17 +81,18 @@ msgid "Q&A"
 msgstr ""
 
 #: addons/free/buddypress.php:104 addons/free/buddypress.php:185
-#: addons/free/profile.php:97 admin/views/dashboard.php:30
-#: admin/views/dashboard.php:212 includes/functions.php:885
-#: includes/options.php:110 includes/post-types.php:43 includes/taxo.php:79
-#: includes/taxo.php:372 widgets/questions.php:55
+#: addons/free/profile.php:37 addons/free/profile.php:140
+#: admin/views/dashboard.php:30 admin/views/dashboard.php:212
+#: includes/functions.php:885 includes/options.php:110
+#: includes/post-types.php:43 includes/taxo.php:79 includes/taxo.php:372
+#: widgets/questions.php:55
 msgid "Questions"
 msgstr "Вопросы"
 
 #: addons/free/buddypress.php:105 addons/free/buddypress.php:233
-#: addons/free/profile.php:104 admin/views/dashboard.php:226
-#: includes/post-types.php:113 widgets/question_stats.php:49
-#: widgets/questions.php:87
+#: addons/free/profile.php:38 addons/free/profile.php:147
+#: admin/views/dashboard.php:226 includes/post-types.php:113
+#: widgets/question_stats.php:49 widgets/questions.php:87
 msgid "Answers"
 msgstr "Ответы"
 
@@ -691,92 +692,120 @@ msgstr ""
 msgid "post"
 msgstr "Редактировать"
 
-#: addons/free/notification.php:40 addons/free/notification.php:172
-#: templates/functions.php:58
+#: addons/free/notification.php:41 addons/free/notification.php:45
+#: addons/free/notification.php:170 templates/functions.php:58
 msgid "Notifications"
 msgstr ""
 
-#: addons/free/notification.php:73
-msgid "Notification"
-msgstr ""
-
-#: addons/free/notification.php:76
-#, fuzzy
-msgid "Auto delete notifications"
-msgstr "Запретить удаление через"
-
-#: addons/free/notification.php:79
-msgid "Do not auto delete"
-msgstr ""
-
-#: addons/free/notification.php:80
-msgid "Only seen"
-msgstr ""
-
 #: addons/free/notification.php:81
-msgid "Both seen an unseen"
-msgstr ""
+#, fuzzy
+msgid "Notifications page title"
+msgstr "Загловок базовой страницы"
 
-#: addons/free/notification.php:83
-msgid "Auto delete user notifications"
+#: addons/free/notification.php:82
+msgid "Custom title for user profile notifications page"
 msgstr ""
 
 #: addons/free/notification.php:87
-msgid "Auto delete interval"
+#, fuzzy
+msgid "Notifications page slug"
+msgstr "Категории"
+
+#: addons/free/notification.php:88
+msgid "Custom slug for user profile notifications page"
 msgstr ""
 
-#: addons/free/notification.php:89
-msgid "Auto delete notifications interval"
-msgstr ""
-
-#: addons/free/notification.php:130
+#: addons/free/notification.php:128
 #, fuzzy
 msgid "posted an answer on your question"
 msgstr "Лучший ответ выбран для вашего вопроса."
 
-#: addons/free/notification.php:135
+#: addons/free/notification.php:133
 #, fuzzy
 msgid "commented on your %cpt%"
 msgstr "написал на вопрос"
 
-#: addons/free/notification.php:140
+#: addons/free/notification.php:138
 msgid "up voted your %cpt%"
 msgstr ""
 
-#: addons/free/notification.php:147
+#: addons/free/notification.php:145
 msgid "down voted your %cpt%"
 msgstr ""
 
-#: addons/free/notification.php:152
+#: addons/free/notification.php:150
 #, fuzzy
 msgid "selected your answer"
 msgstr "выбрал ответ"
 
-#: addons/free/notification.php:157
+#: addons/free/notification.php:155
 msgid "You have earned %points% points"
 msgstr ""
 
-#: addons/free/notification.php:162
+#: addons/free/notification.php:160
 msgid "You lose %points% points"
 msgstr ""
 
-#: addons/free/notification.php:209
+#: addons/free/notification.php:207
 msgid "You do not have permission to view this page"
 msgstr ""
 
-#: addons/free/notification.php:427
+#: addons/free/notification.php:425
 msgid "There was a problem processing your request"
 msgstr ""
 
-#: addons/free/notification.php:437
+#: addons/free/notification.php:435
 msgid "Successfully updated all notifications"
 msgstr ""
 
-#: addons/free/profile.php:34
+#: addons/free/profile.php:41
 msgid "User profile"
 msgstr ""
 
-#: addons/free/profile.php:227
+#: addons/free/profile.php:54
+#, fuzzy
+msgid "User Profile"
+msgstr "Пользователи"
+
+#: addons/free/profile.php:57
+#, fuzzy
+msgid "Questions page title"
+msgstr "Вопросов на каждой странице"
+
+#: addons/free/profile.php:58
+#, fuzzy
+msgid "Custom title for user profile questions page"
+msgstr "Показать заголовок вопроса на странице вопроса."
+
+#: addons/free/profile.php:62
+#, fuzzy
+msgid "Questions page slug"
+msgstr "Вопросов на каждой странице"
+
+#: addons/free/profile.php:63
+#, fuzzy
+msgid "Custom slug for user profile questions page"
+msgstr "Показать заголовок вопроса на странице вопроса."
+
+#: addons/free/profile.php:67
+#, fuzzy
+msgid "Answers page title"
+msgstr "Заголовок для страницы спросить"
+
+#: addons/free/profile.php:68
+msgid "Custom title for user profile answers page"
+msgstr ""
+
+#: addons/free/profile.php:72
+#, fuzzy
+msgid "Answers page slug"
+msgstr "Ответов на каждой странице"
+
+#: addons/free/profile.php:73
+msgid "Custom slug for user profile answers page"
+msgstr ""
+
+#: addons/free/profile.php:284
 msgid "Callback function not found for rendering this page"
 msgstr ""
 
@@ -819,161 +848,181 @@ msgstr ""
 msgid "reCaptach keys missing, please add keys"
 msgstr ""
 
-#: addons/free/reputation.php:68 addons/free/reputation.php:350
+#: addons/free/reputation.php:35 addons/free/reputation.php:400
+#: addons/free/reputation.php:450
+#, fuzzy
+msgid "Reputations"
+msgstr "Репутация"
+
+#: addons/free/reputation.php:73 addons/free/reputation.php:369
 msgid "Reputation"
 msgstr "Репутация"
 
-#: addons/free/reputation.php:69
+#: addons/free/reputation.php:74
 #, fuzzy
 msgid "Events"
 msgstr "Событие"
 
-#: addons/free/reputation.php:78
+#: addons/free/reputation.php:80
+#, fuzzy
+msgid "Reputations page title"
+msgstr "Заголовок для страницы спросить"
+
+#: addons/free/reputation.php:81
+msgid "Custom title for user profile reputations page"
+msgstr ""
+
+#: addons/free/reputation.php:86
+#, fuzzy
+msgid "Reputations page slug"
+msgstr "Задать вопрос"
+
+#: addons/free/reputation.php:87
+#, fuzzy
+msgid "Custom slug for user profile reputations page"
+msgstr "Показать заголовок вопроса на странице вопроса."
+
+#: addons/free/reputation.php:97
 #, fuzzy
 msgid "Registration"
 msgstr "Новая регистрация"
 
-#: addons/free/reputation.php:79
+#: addons/free/reputation.php:98
 msgid "Points awarded when user account is created"
 msgstr ""
 
-#: addons/free/reputation.php:81
+#: addons/free/reputation.php:100
 #, fuzzy
 msgid "Registered"
 msgstr "Зарегистрируйтесь"
 
-#: addons/free/reputation.php:87
+#: addons/free/reputation.php:106
 msgid "Asking"
 msgstr ""
 
-#: addons/free/reputation.php:88
+#: addons/free/reputation.php:107
 msgid "Points awarded when user asks a question"
 msgstr ""
 
-#: addons/free/reputation.php:90
+#: addons/free/reputation.php:109
 #, fuzzy
 msgid "Asked a question"
 msgstr "Задать вопрос"
 
-#: addons/free/reputation.php:96
+#: addons/free/reputation.php:115
 #, fuzzy
 msgid "Answering"
 msgstr "Ответ"
 
-#: addons/free/reputation.php:97
+#: addons/free/reputation.php:116
 #, fuzzy
 msgid "Points awarded when user answer a question"
 msgstr "Разрешить только админу отвечать на вопросы"
 
-#: addons/free/reputation.php:99
+#: addons/free/reputation.php:118
 #, fuzzy
 msgid "Posted an answer"
 msgstr "Отправить ответ"
 
-#: addons/free/reputation.php:105
+#: addons/free/reputation.php:124
 #, fuzzy
 msgid "Commenting"
 msgstr "Комментировать"
 
-#: addons/free/reputation.php:106
+#: addons/free/reputation.php:125
 #, fuzzy
 msgid "Points awarded when user comment on question or answer"
 msgstr "Вы не можете голосовать за свой вопрос или ответ."
 
-#: addons/free/reputation.php:108
+#: addons/free/reputation.php:127
 #, fuzzy
 msgid "Commented on a post"
 msgstr "Прокомментировал %s"
 
-#: addons/free/reputation.php:114
+#: addons/free/reputation.php:133
 #, fuzzy
 msgid "Selecting an Answer"
 msgstr "выбрал ответ"
 
-#: addons/free/reputation.php:115
+#: addons/free/reputation.php:134
 msgid "Points awarded when user select an answer for thier question"
 msgstr ""
 
-#: addons/free/reputation.php:117
+#: addons/free/reputation.php:136
 #, fuzzy
 msgid "Selected an answer as best"
 msgstr "Выбрать этот ответ как лучший"
 
-#: addons/free/reputation.php:123
+#: addons/free/reputation.php:142
 #, fuzzy
 msgid "Answer selected as best"
 msgstr "Когда ответ пользователя выбран как лучший"
 
-#: addons/free/reputation.php:124
+#: addons/free/reputation.php:143
 #, fuzzy
 msgid "Points awarded when user's answer selected as best"
 msgstr "Когда ответ пользователя выбран как лучший"
 
-#: addons/free/reputation.php:126
+#: addons/free/reputation.php:145
 #, fuzzy
 msgid "Answer was selected as best"
 msgstr "Когда ответ пользователя выбран как лучший"
 
-#: addons/free/reputation.php:132
+#: addons/free/reputation.php:151
 msgid "Received up vote"
 msgstr ""
 
-#: addons/free/reputation.php:133
+#: addons/free/reputation.php:152
 msgid "Points awarded when user receive an upvote"
 msgstr ""
 
-#: addons/free/reputation.php:135
+#: addons/free/reputation.php:154
 msgid "Received an upvote"
 msgstr ""
 
-#: addons/free/reputation.php:140
+#: addons/free/reputation.php:159
 msgid "Received down vote"
 msgstr ""
 
-#: addons/free/reputation.php:141
+#: addons/free/reputation.php:160
 msgid "Points awarded when user receive a down vote"
 msgstr ""
 
-#: addons/free/reputation.php:143
+#: addons/free/reputation.php:162
 msgid "Received a down vote"
 msgstr ""
 
-#: addons/free/reputation.php:148
+#: addons/free/reputation.php:167
 msgid "Gives an up vote"
 msgstr ""
 
-#: addons/free/reputation.php:149
+#: addons/free/reputation.php:168
 msgid "Points taken from user when they give a vote up"
 msgstr ""
 
-#: addons/free/reputation.php:151
+#: addons/free/reputation.php:170
 msgid "Given an up vote"
 msgstr ""
 
-#: addons/free/reputation.php:156
+#: addons/free/reputation.php:175
 msgid "Gives down vote"
 msgstr ""
 
-#: addons/free/reputation.php:157
+#: addons/free/reputation.php:176
 msgid "Points taken from user when user give a down vote"
 msgstr ""
 
-#: addons/free/reputation.php:159
+#: addons/free/reputation.php:178
 msgid "Given a down vote"
 msgstr ""
 
-#: addons/free/reputation.php:184
+#: addons/free/reputation.php:203
 msgid "Successfully updated reputation points!"
 msgstr ""
 
-#: addons/free/reputation.php:372
+#: addons/free/reputation.php:391
 msgid "%s Reputation"
 msgstr ""
-
-#: addons/free/reputation.php:381 addons/free/reputation.php:431
-#, fuzzy
-msgid "Reputations"
-msgstr "Репутация"
 
 #: addons/free/tag.php:34 addons/free/tag.php:237 addons/free/tag.php:630
 #: admin/class-list-table-hooks.php:192
@@ -2401,7 +2450,7 @@ msgid ""
 msgstr ""
 
 #: includes/ajax-hooks.php:100 includes/ajax-hooks.php:136
-#: includes/theme.php:771
+#: includes/theme.php:772
 msgid "Select"
 msgstr "Выбрать"
 
@@ -2423,7 +2472,7 @@ msgstr ""
 msgid "Best answer is selected for your question."
 msgstr "Лучший ответ выбран для вашего вопроса."
 
-#: includes/ajax-hooks.php:173 includes/theme.php:779
+#: includes/ajax-hooks.php:173 includes/theme.php:780
 msgid "Unselect"
 msgstr "Снять"
 
@@ -2484,12 +2533,12 @@ msgstr ""
 msgid "Only question can be set as featured"
 msgstr "Только авторизованные пользователи могут видеть ответы"
 
-#: includes/ajax-hooks.php:317 includes/theme.php:855
+#: includes/ajax-hooks.php:317 includes/theme.php:856
 #, fuzzy
 msgid "Mark this question as featured"
 msgstr "Управление вопросами & ответами"
 
-#: includes/ajax-hooks.php:317 includes/theme.php:856
+#: includes/ajax-hooks.php:317 includes/theme.php:857
 #, fuzzy
 msgid "Feature"
 msgstr "Возможности"
@@ -2498,12 +2547,12 @@ msgstr "Возможности"
 msgid "Question is unmarked as featured."
 msgstr ""
 
-#: includes/ajax-hooks.php:325 includes/theme.php:852
+#: includes/ajax-hooks.php:325 includes/theme.php:853
 #, fuzzy
 msgid "Unmark this question as featured"
 msgstr "Ответить на вопрос"
 
-#: includes/ajax-hooks.php:325 includes/theme.php:853
+#: includes/ajax-hooks.php:325 includes/theme.php:854
 #, fuzzy
 msgid "Unfeature"
 msgstr "Возможности"
@@ -2566,7 +2615,7 @@ msgstr ""
 msgid "Successfully unsubscribed from question"
 msgstr "Успешно отписаны."
 
-#: includes/ajax-hooks.php:505 includes/theme.php:882
+#: includes/ajax-hooks.php:505 includes/theme.php:883
 msgid "Subscribe"
 msgstr ""
 
@@ -2575,7 +2624,7 @@ msgstr ""
 msgid "Successfully subscribed to question"
 msgstr "Успешно отписаны."
 
-#: includes/ajax-hooks.php:523 includes/theme.php:882
+#: includes/ajax-hooks.php:523 includes/theme.php:883
 #, fuzzy
 msgid "Unsubscribe"
 msgstr "отписаться"
@@ -3319,7 +3368,7 @@ msgstr "<i>%d просмотров</i>"
 msgid "AnsPress shortcode cannot be nested."
 msgstr ""
 
-#: includes/shortcode-basepage.php:79
+#: includes/shortcode-basepage.php:84
 #, fuzzy
 msgid "Question and answer is powered by"
 msgstr "Вопросов %s"
@@ -3384,28 +3433,28 @@ msgstr ""
 msgid "Best answer"
 msgstr "Лучший ответ"
 
-#: includes/theme.php:688
+#: includes/theme.php:689
 #, fuzzy
 msgid "Order By"
 msgstr "Сортировать по:"
 
-#: includes/theme.php:743
+#: includes/theme.php:744
 msgid "Reset sorting and filter"
 msgstr ""
 
-#: includes/theme.php:743
+#: includes/theme.php:744
 msgid "Clear Filter"
 msgstr ""
 
-#: includes/theme.php:770
+#: includes/theme.php:771
 msgid "Select this answer as best"
 msgstr "Выбрать этот ответ как лучший"
 
-#: includes/theme.php:778
+#: includes/theme.php:779
 msgid "Unselect this answer"
 msgstr "Удалить выбор"
 
-#: includes/theme.php:906
+#: includes/theme.php:907
 #, fuzzy
 msgid "AnsPress links"
 msgstr "Очки AnsPress"
@@ -3921,6 +3970,10 @@ msgstr "Вопрос"
 msgctxt "Post Type Singular Name"
 msgid "Answer"
 msgstr "Ответ"
+
+#, fuzzy
+#~ msgid "Auto delete notifications"
+#~ msgstr "Запретить удаление через"
 
 #, fuzzy
 #~ msgid "%s comment approved"
