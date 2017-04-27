@@ -1,8 +1,8 @@
-	module.exports = function(grunt) {
+	module.exports = function (grunt) {
 		require('load-grunt-tasks')(grunt);
 
 		grunt.initConfig({
-			pkg: grunt.file.readJSON( 'package.json' ),
+			pkg: grunt.file.readJSON('package.json'),
 
 			dirs: {
 				lang: 'languages',
@@ -14,8 +14,8 @@
 						exclude: ['.git/.*', '.svn/.*', '.node_modules/.*', '.vendor/.*'],
 						mainFile: 'anspress-question-answer.php',
 						potHeaders: {
-								poedit: true,
-								'x-poedit-keywordslist': true
+							poedit: true,
+							'x-poedit-keywordslist': true
 						},
 						type: 'wp-plugin',
 						updateTimestamp: true,
@@ -42,8 +42,8 @@
 			phpdocumentor: {
 				dist: {
 					options: {
-						directory : './',
-						target : 'M:\wamp\www\anspress-docs\\'
+						directory: './',
+						target: 'M:\wamp\www\anspress-docs\\'
 					}
 				}
 			},
@@ -59,19 +59,19 @@
 					options: {
 						prefix: 'Version\\:\\s'
 					},
-					src: [ 'style.css' ],
+					src: ['style.css'],
 				},
 				php: {
 					options: {
 						prefix: 'Version\\:\\s+'
 					},
-					src: [ 'anspress-question-answer.php' ],
+					src: ['anspress-question-answer.php'],
 				},
 				mainplugin: {
 					options: {
 						pattern: '\$_plugin_version = (?:\')(.+)(?:\')/g'
 					},
-					src: [ 'anspress-question-answer.php' ],
+					src: ['anspress-question-answer.php'],
 				},
 				project: {
 					src: ['package.json']
@@ -110,35 +110,27 @@
 					},
 				},
 			},
-
-		phplint : {
-			options : {
-				spawn : false
-			},
-			all: ['**/*.php']
-		},
-		cssmin: {
-			options: {
-				shorthandCompacting: false,
-				roundingPrecision: -1,
-				rebase: true
-			},
-			target: {
-				files: {
-					'templates/css/min/main.min.css': 'templates/css/main.css',
-					'templates/css/min/RTL.min.css': 'templates/css/RTL.css',
-					'templates/css/min/fonts.min.css': 'templates/css/fonts.css',
-					'assets/ap-admin.min.css': 'assets/ap-admin.css'
-				}
-			}
-		},
-		compress: {
-			plugin: {
+			cssmin: {
 				options: {
-					archive: 'build/anspress.zip'
+					shorthandCompacting: false,
+					roundingPrecision: -1,
+					rebase: true
 				},
-				files: [
-					{
+				target: {
+					files: {
+						'templates/css/min/main.min.css': 'templates/css/main.css',
+						'templates/css/min/RTL.min.css': 'templates/css/RTL.css',
+						'templates/css/min/fonts.min.css': 'templates/css/fonts.css',
+						'assets/ap-admin.min.css': 'assets/ap-admin.css'
+					}
+				}
+			},
+			compress: {
+				plugin: {
+					options: {
+						archive: 'build/anspress.zip'
+					},
+					files: [{
 						expand: true,
 						src: [
 							'**/*',
@@ -147,28 +139,27 @@
 							'!node_modules/**',
 						],
 						dot: false,
-					},
-				],
+					}, ],
+				},
 			},
-		},
 
-		watch: {
-			sass: {
-				files: ['**/*.scss'],
-				tasks: ['sass', 'cssmin'],
-			},
-			uglify: {
-				files: ['templates/js/*.js','assets/js/*.js'],
-				tasks: ['uglify'],
+			watch: {
+				sass: {
+					files: ['**/*.scss'],
+					tasks: ['sass', 'cssmin'],
+				},
+				uglify: {
+					files: ['templates/js/*.js', 'assets/js/*.js'],
+					tasks: ['uglify'],
+				}
 			}
-		}
-	});
+		});
 
-	grunt.registerTask('precommit', function() {
-		grunt.task.run('build');
-	});
+		grunt.registerTask('precommit', function () {
+			grunt.task.run('build');
+		});
 
-	grunt.registerTask( 'translate', [ 'makepot', 'potomo' ]);
-	grunt.registerTask( 'build', [ 'phplint', 'sass', 'uglify', 'translate' ]);
+		grunt.registerTask('translate', ['makepot', 'potomo']);
+		grunt.registerTask('build', ['sass', 'uglify', 'translate']);
 
-}
+	}

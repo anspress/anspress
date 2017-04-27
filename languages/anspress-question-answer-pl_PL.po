@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: AnsPress 3.0.7\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/anspress-question-"
 "answer\n"
-"POT-Creation-Date: 2017-04-27 09:14:37+00:00\n"
+"POT-Creation-Date: 2017-04-27 11:24:04+00:00\n"
 "PO-Revision-Date: 2016-10-09 06:44+0530\n"
 "Last-Translator: Łukasz Ładecki <priart@gmail.com>\n"
 "Language-Team: priard <priart@gmail.com>\n"
@@ -1199,58 +1199,58 @@ msgstr ""
 msgid "Slowly type for suggestions"
 msgstr ""
 
-#: admin/anspress-admin.php:186
+#: admin/anspress-admin.php:187
 msgid "All Questions"
 msgstr "Wszystkie pytania"
 
-#: admin/anspress-admin.php:188
+#: admin/anspress-admin.php:189
 msgid "New Question"
 msgstr "Nowe pytania"
 
-#: admin/anspress-admin.php:190
+#: admin/anspress-admin.php:191
 msgid "All Answers"
 msgstr "Wszystkie odpowiedzi"
 
-#: admin/anspress-admin.php:192
+#: admin/anspress-admin.php:193
 msgid "Select question"
 msgstr "Wybierz pytanie"
 
-#: admin/anspress-admin.php:201 admin/views/admin.php:27
+#: admin/anspress-admin.php:202 admin/views/admin.php:27
 #: admin/views/dashboard.php:352
 msgid "AnsPress Options"
 msgstr "Ustawienia AnsPress"
 
-#: admin/anspress-admin.php:201
+#: admin/anspress-admin.php:202
 msgid "Options & Add-ons"
 msgstr ""
 
-#: admin/anspress-admin.php:205 admin/views/sidebar.php:4
+#: admin/anspress-admin.php:206 admin/views/sidebar.php:4
 msgid "About AnsPress"
 msgstr "O AnsPress"
 
-#: admin/anspress-admin.php:207
+#: admin/anspress-admin.php:208
 #, fuzzy
 msgid "Upgrade AnsPress"
 msgstr "AnsPress"
 
-#: admin/anspress-admin.php:306
+#: admin/anspress-admin.php:307
 msgid "Settings"
 msgstr "Ustawienia"
 
-#: admin/anspress-admin.php:307
+#: admin/anspress-admin.php:308
 msgid "About"
 msgstr "O"
 
-#: admin/anspress-admin.php:486
+#: admin/anspress-admin.php:487
 #, fuzzy
 msgid "Select All"
 msgstr "Wybierz"
 
-#: admin/anspress-admin.php:490
+#: admin/anspress-admin.php:491
 msgid "Add to Menu"
 msgstr "Dodaj do menu"
 
-#: admin/anspress-admin.php:618 admin/anspress-admin.php:627
+#: admin/anspress-admin.php:619 admin/anspress-admin.php:628
 #: admin/options-fields.php:381 admin/options-fields.php:389
 #: admin/options-fields.php:399 admin/options-fields.php:409
 #: admin/options-fields.php:419 admin/options-fields.php:429
@@ -1258,26 +1258,44 @@ msgstr "Dodaj do menu"
 msgid "Moderate"
 msgstr "Moderuj"
 
-#: admin/anspress-admin.php:621 admin/anspress-admin.php:628
+#: admin/anspress-admin.php:622 admin/anspress-admin.php:629
 msgid "Private Post"
 msgstr "Post prywanty"
 
-#: admin/anspress-admin.php:714
+#: admin/anspress-admin.php:715
 #, fuzzy
 msgid "AnsPress database is not updated."
 msgstr "Ustawienia zostały zaktualizowane!"
 
-#: admin/anspress-admin.php:715
+#: admin/anspress-admin.php:716
 #, fuzzy
 msgid "Update now"
 msgstr "Zaktualizuj pytanie"
 
-#: admin/anspress-admin.php:720
+#: admin/anspress-admin.php:721
 msgid "You must continue to upgrade AnsPress data."
 msgstr ""
 
-#: admin/anspress-admin.php:721
+#: admin/anspress-admin.php:722
 msgid "Upgrade now"
+msgstr ""
+
+#: admin/anspress-admin.php:727
+msgid ""
+"AnsPress base page does not exists. AnsPress require a base page to work "
+"properly."
+msgstr ""
+
+#: admin/anspress-admin.php:728
+msgid "Set automatically"
+msgstr ""
+
+#: admin/anspress-admin.php:728
+msgid "Or"
+msgstr ""
+
+#: admin/anspress-admin.php:728
+msgid "Set existing page as base page"
 msgstr ""
 
 #: admin/class-list-table-hooks.php:56 admin/class-list-table-hooks.php:396
