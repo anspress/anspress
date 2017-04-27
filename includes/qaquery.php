@@ -682,8 +682,9 @@ function ap_latest_post_activity_html( $post_id = false, $answer_activities = fa
 	$html = '';
 
 	if ( $activity ) {
+		$user_id = ! empty ( $activity['user_id'] ) ? $activity['user_id'] : 0;
 		$html .= '<span class="ap-post-history">';
-		$html .= ap_user_link_anchor( $activity['user_id'], false );
+		$html .= ap_user_link_anchor( $user_id, false );
 		$html .= ' ' . ap_activity_short_title( $activity['type'] );
 
 		if ( ! empty( $activity['date'] ) ) {
