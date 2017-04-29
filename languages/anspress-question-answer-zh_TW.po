@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: AnsPress 2.3.6\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/anspress-question-"
 "answer\n"
-"POT-Creation-Date: 2017-04-27 11:24:04+00:00\n"
+"POT-Creation-Date: 2017-04-29 15:21:34+00:00\n"
 "PO-Revision-Date: 2015-12-15 09:21+0530\n"
 "Last-Translator: Tunghua Tai <tunghua@me.com>\n"
 "Language-Team: \n"
@@ -77,11 +77,11 @@ msgid ""
 "word from file, add one word per line rather then comma separted."
 msgstr ""
 
-#: addons/free/buddypress.php:96
+#: addons/free/buddypress.php:97
 msgid "Q&A"
 msgstr ""
 
-#: addons/free/buddypress.php:104 addons/free/buddypress.php:185
+#: addons/free/buddypress.php:105 addons/free/buddypress.php:186
 #: addons/free/profile.php:37 addons/free/profile.php:140
 #: admin/views/dashboard.php:30 admin/views/dashboard.php:212
 #: includes/functions.php:885 includes/options.php:110
@@ -90,84 +90,85 @@ msgstr ""
 msgid "Questions"
 msgstr "問題討論"
 
-#: addons/free/buddypress.php:105 addons/free/buddypress.php:233
+#: addons/free/buddypress.php:106 addons/free/buddypress.php:234
 #: addons/free/profile.php:38 addons/free/profile.php:147
-#: admin/views/dashboard.php:226 includes/post-types.php:113
-#: widgets/question_stats.php:49 widgets/questions.php:87
+#: admin/views/dashboard.php:226 admin/views/recount.php:71
+#: includes/post-types.php:113 widgets/question_stats.php:49
+#: widgets/questions.php:87
 msgid "Answers"
 msgstr "回答數"
 
-#: addons/free/buddypress.php:150
+#: addons/free/buddypress.php:151
 msgid "No AnsPress template found for rendering this page."
 msgstr ""
 
-#: addons/free/buddypress.php:201
+#: addons/free/buddypress.php:202
 #, fuzzy
 msgid "Load more questions"
 msgstr "載入更多對話"
 
-#: addons/free/buddypress.php:250 templates/addons/user/answers.php:29
+#: addons/free/buddypress.php:251 templates/addons/user/answers.php:29
 #, fuzzy
 msgid "Load more answers"
 msgstr "對這個回答扣票"
 
-#: addons/free/buddypress.php:267 addons/free/buddypress.php:268
+#: addons/free/buddypress.php:268 addons/free/buddypress.php:269
 #: admin/meta-box.php:41 admin/options-fields.php:188
 #: includes/ajax-hooks.php:194 includes/common-pages.php:21
 #: includes/post-status.php:93 includes/post-types.php:65
 msgid "Question"
 msgstr "提問"
 
-#: addons/free/buddypress.php:269
+#: addons/free/buddypress.php:270
 msgid "%1$s asked a new <a href=\"AP_CPT_LINK\">question</a>"
 msgstr "%1$s 提出了一個新<a href=\"AP_CPT_LINK\">問題</a>"
 
-#: addons/free/buddypress.php:270
+#: addons/free/buddypress.php:271
 msgid "%1$s asked a new <a href=\"AP_CPT_LINK\">question</a>, on the site %3$s"
 msgstr "%1$s 發了一個新<a href=\"AP_CPT_LINK\">問題</a>, 在%3$s"
 
-#: addons/free/buddypress.php:277 addons/free/buddypress.php:278
-#: addons/free/buddypress.php:289 admin/options-fields.php:252
+#: addons/free/buddypress.php:278 addons/free/buddypress.php:279
+#: addons/free/buddypress.php:290 admin/options-fields.php:252
 #: admin/views/dashboard.php:34 includes/ajax-hooks.php:194
 #: includes/post-status.php:93 includes/post-types.php:135
 msgid "Answer"
 msgstr "回答"
 
-#: addons/free/buddypress.php:279
+#: addons/free/buddypress.php:280
 msgid "%1$s <a href=\"AP_CPT_LINK\">answered</a> a question"
 msgstr "%1$s <a href=\"AP_CPT_LINK\">回答了</a> 問題"
 
-#: addons/free/buddypress.php:280
+#: addons/free/buddypress.php:281
 msgid "%1$s <a href=\"AP_CPT_LINK\">answered</a> a question, on the site %3$s"
 msgstr "%1$s <a href=\"AP_CPT_LINK\">回答</a>了問題, 在%3$s"
 
-#: addons/free/buddypress.php:289
+#: addons/free/buddypress.php:290
 msgid "Answer this question"
 msgstr "回答這個問題"
 
-#: addons/free/buddypress.php:373
+#: addons/free/buddypress.php:374
 msgid "%1$d answers on - %2$s"
 msgstr "%1$d個回答在 - %2$s"
 
-#: addons/free/buddypress.php:377
+#: addons/free/buddypress.php:378
 msgid "%1$s answered on - %2$s"
 msgstr "%1$s個回答在 - %2$s"
 
-#: addons/free/buddypress.php:384 addons/free/notification/query.php:313
+#: addons/free/buddypress.php:385 addons/free/notification/query.php:313
 #: includes/comments.php:106 includes/post-types.php:64
 msgid "question"
 msgstr "提問"
 
-#: addons/free/buddypress.php:384 addons/free/notification/query.php:315
+#: addons/free/buddypress.php:385 addons/free/notification/query.php:315
 #: includes/comments.php:106 includes/post-types.php:134
 msgid "answer"
 msgstr "回答"
 
-#: addons/free/buddypress.php:389
+#: addons/free/buddypress.php:390
 msgid "%1$d comments on your %3$s - %2$s"
 msgstr "%1$d個回應在你的 %3$s - %2$s"
 
-#: addons/free/buddypress.php:393
+#: addons/free/buddypress.php:394
 msgid "%1$s commented on your %3$s - %2$s"
 msgstr "%1$s回應了你的 %3$s - %2$s"
 
@@ -178,7 +179,7 @@ msgstr "列出逗點區隔的 AnsPress 分類 ID"
 
 #: addons/free/category/widget.php:66 addons/free/category.php:729
 #: templates/addons/category/categories.php:29
-#: templates/addons/category/category.php:31 templates/addons/tag/tags.php:38
+#: templates/addons/category/category.php:31 templates/addons/tag/tags.php:35
 #, fuzzy
 msgid "%d Question"
 msgid_plural "%d Questions"
@@ -870,7 +871,7 @@ msgid "reCaptach keys missing, please add keys"
 msgstr "沒有 reCaptach keys, 請輸入"
 
 #: addons/free/reputation.php:35 addons/free/reputation.php:400
-#: addons/free/reputation.php:450
+#: addons/free/reputation.php:450 admin/views/recount.php:122
 #, fuzzy
 msgid "Reputations"
 msgstr "聲望"
@@ -1373,7 +1374,8 @@ msgid "Comments"
 msgstr "回應"
 
 #: admin/class-list-table-hooks.php:198 admin/class-list-table-hooks.php:295
-#: templates/content-answer.php:20 templates/question-list-item.php:30
+#: admin/views/recount.php:54 templates/content-answer.php:20
+#: templates/question-list-item.php:30
 msgid "Votes"
 msgstr "投票"
 
@@ -1978,10 +1980,15 @@ msgstr "對編輯回答設定文章狀態"
 
 #: admin/options-fields.php:434
 #, fuzzy
+msgid "Re-count"
+msgstr "帳號資料"
+
+#: admin/options-fields.php:435
+#, fuzzy
 msgid "User roles"
 msgstr "使用者個人檔案"
 
-#: admin/options-fields.php:435
+#: admin/options-fields.php:436
 msgid "Uninstall - clear all AnsPress data"
 msgstr ""
 
@@ -2260,6 +2267,152 @@ msgstr ""
 #, fuzzy
 msgid "No license yet."
 msgstr "未有回答"
+
+#: admin/views/recount.php:58
+#, fuzzy
+msgid "Re-count votes"
+msgstr "總票數"
+
+#: admin/views/recount.php:60
+msgid "Re-counting all AnsPress post votes..."
+msgstr ""
+
+#: admin/views/recount.php:61 admin/views/recount.php:95
+msgid "{0} out of {1} posts processed"
+msgstr ""
+
+#: admin/views/recount.php:62
+#, fuzzy
+msgid "Successfully counted all votes!"
+msgstr "成功建立標籤"
+
+#: admin/views/recount.php:63
+msgid "Failed to count all votes, please try again or submit a help request"
+msgstr ""
+
+#: admin/views/recount.php:66
+#, fuzzy
+msgid "Re-count all votes of question and answers."
+msgstr "選擇一個問題來回答"
+
+#: admin/views/recount.php:75
+#, fuzzy
+msgid "Re-count answers"
+msgstr "父項回答"
+
+#: admin/views/recount.php:77
+#, fuzzy
+msgid "Re-counting answers of every question..."
+msgstr "在這個提問中你的回答已被選為最佳回答"
+
+#: admin/views/recount.php:78
+msgid "{0} out of {1} question processed"
+msgstr ""
+
+#: admin/views/recount.php:79
+#, fuzzy
+msgid "Successfully updated answers count!"
+msgstr "成功建立標籤"
+
+#: admin/views/recount.php:80
+msgid "Failed to count answers, please try again or submit a help request"
+msgstr ""
+
+#: admin/views/recount.php:83
+#, fuzzy
+msgid "Re-count answers of all questions."
+msgstr "提問的方法"
+
+#: admin/views/recount.php:88
+#, fuzzy
+msgid "Flagged posts"
+msgstr "檢舉"
+
+#: admin/views/recount.php:92
+#, fuzzy
+msgid "Re-count flagged posts"
+msgstr "你已經檢舉這個文章了"
+
+#: admin/views/recount.php:94
+msgid "Re-counting flagged posts..."
+msgstr ""
+
+#: admin/views/recount.php:96
+#, fuzzy
+msgid "Successfully updated flagged posts count!"
+msgstr "成功建立標籤"
+
+#: admin/views/recount.php:97
+msgid ""
+"Failed to count flagged posts, please try again or submit a help request"
+msgstr ""
+
+#: admin/views/recount.php:100
+#, fuzzy
+msgid "Re-count flagged posts."
+msgstr "你已經檢舉這個文章了"
+
+#: admin/views/recount.php:105
+#, fuzzy
+msgid "Subscribers"
+msgstr "訂閱"
+
+#: admin/views/recount.php:109
+#, fuzzy
+msgid "Re-count question subscribers"
+msgstr "選擇提問"
+
+#: admin/views/recount.php:111
+msgid "Re-counting question subscribers..."
+msgstr ""
+
+#: admin/views/recount.php:112
+msgid "{0} out of {1} questions processed"
+msgstr ""
+
+#: admin/views/recount.php:113
+#, fuzzy
+msgid "Successfully updated subscribers count!"
+msgstr "成功建立標籤"
+
+#: admin/views/recount.php:114
+msgid ""
+"Failed to count question subscribers, please try again or submit a help "
+"request"
+msgstr ""
+
+#: admin/views/recount.php:117
+#, fuzzy
+msgid "Re-count question subscribers."
+msgstr "選擇提問"
+
+#: admin/views/recount.php:126
+#, fuzzy
+msgid "Re-count user reputation"
+msgstr "刪除這個聲譽"
+
+#: admin/views/recount.php:128
+msgid "Re-counting user reputation..."
+msgstr ""
+
+#: admin/views/recount.php:129
+msgid "{0} out of {1} user processed"
+msgstr ""
+
+#: admin/views/recount.php:130
+#, fuzzy
+msgid "Successfully updated users reputation!"
+msgstr "成功建立標籤"
+
+#: admin/views/recount.php:131
+msgid ""
+"Failed to count users reputation, please try again or submit a help request"
+msgstr ""
+
+#: admin/views/recount.php:134
+#, fuzzy
+msgid "Re-count all users reputation points."
+msgstr "成功建立標籤"
 
 #: admin/views/reputation-events.php:34
 #, fuzzy
@@ -3651,12 +3804,12 @@ msgid_plural "%s Questions"
 msgstr[0] "提問"
 msgstr[1] "提問"
 
-#: templates/addons/tag/tags.php:23
+#: templates/addons/tag/tags.php:20
 #, fuzzy
 msgid "Search tags..."
 msgstr "搜尋使用者..."
 
-#: templates/addons/tag/tags.php:47
+#: templates/addons/tag/tags.php:44
 #, fuzzy
 msgid "No description."
 msgstr "描述"
@@ -4141,9 +4294,6 @@ msgstr "解答"
 #~ msgid "Answer Help page"
 #~ msgstr "回答的幫助頁面"
 
-#~ msgid "Direction for answring a question."
-#~ msgstr "提問的方法"
-
 #~ msgid "Clean DB"
 #~ msgstr "清除資料庫"
 
@@ -4246,9 +4396,6 @@ msgstr "解答"
 
 #~ msgid "Use this for preventing spam posts."
 #~ msgstr "用這個來防止惡意貼文"
-
-#~ msgid "Delete this reputation"
-#~ msgstr "刪除這個聲譽"
 
 #~ msgid "There is no question yet."
 #~ msgstr "尚無問題"

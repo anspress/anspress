@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: AnsPress 2.2\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/anspress-question-"
 "answer\n"
-"POT-Creation-Date: 2017-04-27 11:24:04+00:00\n"
+"POT-Creation-Date: 2017-04-29 15:21:34+00:00\n"
 "PO-Revision-Date: 2015-12-15 09:17+0530\n"
 "Last-Translator: \n"
 "Language-Team: Romain <bbig86@gmail.com>\n"
@@ -77,11 +77,11 @@ msgid ""
 "word from file, add one word per line rather then comma separted."
 msgstr ""
 
-#: addons/free/buddypress.php:96
+#: addons/free/buddypress.php:97
 msgid "Q&A"
 msgstr ""
 
-#: addons/free/buddypress.php:104 addons/free/buddypress.php:185
+#: addons/free/buddypress.php:105 addons/free/buddypress.php:186
 #: addons/free/profile.php:37 addons/free/profile.php:140
 #: admin/views/dashboard.php:30 admin/views/dashboard.php:212
 #: includes/functions.php:885 includes/options.php:110
@@ -90,87 +90,88 @@ msgstr ""
 msgid "Questions"
 msgstr "Questions"
 
-#: addons/free/buddypress.php:105 addons/free/buddypress.php:233
+#: addons/free/buddypress.php:106 addons/free/buddypress.php:234
 #: addons/free/profile.php:38 addons/free/profile.php:147
-#: admin/views/dashboard.php:226 includes/post-types.php:113
-#: widgets/question_stats.php:49 widgets/questions.php:87
+#: admin/views/dashboard.php:226 admin/views/recount.php:71
+#: includes/post-types.php:113 widgets/question_stats.php:49
+#: widgets/questions.php:87
 msgid "Answers"
 msgstr "Réponses"
 
-#: addons/free/buddypress.php:150
+#: addons/free/buddypress.php:151
 msgid "No AnsPress template found for rendering this page."
 msgstr ""
 
-#: addons/free/buddypress.php:201
+#: addons/free/buddypress.php:202
 #, fuzzy
 msgid "Load more questions"
 msgstr "Chargement de plus de conversations"
 
-#: addons/free/buddypress.php:250 templates/addons/user/answers.php:29
+#: addons/free/buddypress.php:251 templates/addons/user/answers.php:29
 #, fuzzy
 msgid "Load more answers"
 msgstr "-1 pour une réponse"
 
-#: addons/free/buddypress.php:267 addons/free/buddypress.php:268
+#: addons/free/buddypress.php:268 addons/free/buddypress.php:269
 #: admin/meta-box.php:41 admin/options-fields.php:188
 #: includes/ajax-hooks.php:194 includes/common-pages.php:21
 #: includes/post-status.php:93 includes/post-types.php:65
 msgid "Question"
 msgstr "Question"
 
-#: addons/free/buddypress.php:269
+#: addons/free/buddypress.php:270
 msgid "%1$s asked a new <a href=\"AP_CPT_LINK\">question</a>"
 msgstr "%1$s a posé une nouvelle <a href=\"AP_CPT_LINK\">question</a>"
 
-#: addons/free/buddypress.php:270
+#: addons/free/buddypress.php:271
 msgid "%1$s asked a new <a href=\"AP_CPT_LINK\">question</a>, on the site %3$s"
 msgstr ""
 "%1$s a posé une nouvelle <a href=\"AP_CPT_LINK\">question</a>, sur le site "
 "%3$s"
 
-#: addons/free/buddypress.php:277 addons/free/buddypress.php:278
-#: addons/free/buddypress.php:289 admin/options-fields.php:252
+#: addons/free/buddypress.php:278 addons/free/buddypress.php:279
+#: addons/free/buddypress.php:290 admin/options-fields.php:252
 #: admin/views/dashboard.php:34 includes/ajax-hooks.php:194
 #: includes/post-status.php:93 includes/post-types.php:135
 msgid "Answer"
 msgstr "Réponse"
 
-#: addons/free/buddypress.php:279
+#: addons/free/buddypress.php:280
 msgid "%1$s <a href=\"AP_CPT_LINK\">answered</a> a question"
 msgstr "%1$s à <a href=\"AP_CPT_LINK\">répondu</a> à une question"
 
-#: addons/free/buddypress.php:280
+#: addons/free/buddypress.php:281
 msgid "%1$s <a href=\"AP_CPT_LINK\">answered</a> a question, on the site %3$s"
 msgstr ""
 "%1$s à <a href=\"AP_CPT_LINK\">répondu</a> a une question, sur le site %3$s"
 
-#: addons/free/buddypress.php:289
+#: addons/free/buddypress.php:290
 msgid "Answer this question"
 msgstr "Répondre à la question"
 
-#: addons/free/buddypress.php:373
+#: addons/free/buddypress.php:374
 msgid "%1$d answers on - %2$s"
 msgstr "%1$d réponses sur - %2$s"
 
-#: addons/free/buddypress.php:377
+#: addons/free/buddypress.php:378
 msgid "%1$s answered on - %2$s"
 msgstr "%1$s répondu sur - %2$s"
 
-#: addons/free/buddypress.php:384 addons/free/notification/query.php:313
+#: addons/free/buddypress.php:385 addons/free/notification/query.php:313
 #: includes/comments.php:106 includes/post-types.php:64
 msgid "question"
 msgstr "question"
 
-#: addons/free/buddypress.php:384 addons/free/notification/query.php:315
+#: addons/free/buddypress.php:385 addons/free/notification/query.php:315
 #: includes/comments.php:106 includes/post-types.php:134
 msgid "answer"
 msgstr "réponse"
 
-#: addons/free/buddypress.php:389
+#: addons/free/buddypress.php:390
 msgid "%1$d comments on your %3$s - %2$s"
 msgstr "%1$d commentaires sur %3$s - %2$s"
 
-#: addons/free/buddypress.php:393
+#: addons/free/buddypress.php:394
 msgid "%1$s commented on your %3$s - %2$s"
 msgstr "%1$s commentés sur %3$s - %2$s"
 
@@ -181,7 +182,7 @@ msgstr "Anspress catégories séparées par des virgules"
 
 #: addons/free/category/widget.php:66 addons/free/category.php:729
 #: templates/addons/category/categories.php:29
-#: templates/addons/category/category.php:31 templates/addons/tag/tags.php:38
+#: templates/addons/category/category.php:31 templates/addons/tag/tags.php:35
 #, fuzzy
 msgid "%d Question"
 msgid_plural "%d Questions"
@@ -875,7 +876,7 @@ msgid "reCaptach keys missing, please add keys"
 msgstr "clefs reCaptach manquantes, merci de vérifier"
 
 #: addons/free/reputation.php:35 addons/free/reputation.php:400
-#: addons/free/reputation.php:450
+#: addons/free/reputation.php:450 admin/views/recount.php:122
 #, fuzzy
 msgid "Reputations"
 msgstr "Réputation"
@@ -1379,7 +1380,8 @@ msgid "Comments"
 msgstr "Commentaires"
 
 #: admin/class-list-table-hooks.php:198 admin/class-list-table-hooks.php:295
-#: templates/content-answer.php:20 templates/question-list-item.php:30
+#: admin/views/recount.php:54 templates/content-answer.php:20
+#: templates/question-list-item.php:30
 msgid "Votes"
 msgstr "Votes"
 
@@ -1995,10 +1997,15 @@ msgstr "Statut du post d'une réponse éditée."
 
 #: admin/options-fields.php:434
 #, fuzzy
+msgid "Re-count"
+msgstr "Compte"
+
+#: admin/options-fields.php:435
+#, fuzzy
 msgid "User roles"
 msgstr "Mise à jour du profile"
 
-#: admin/options-fields.php:435
+#: admin/options-fields.php:436
 msgid "Uninstall - clear all AnsPress data"
 msgstr ""
 
@@ -2277,6 +2284,151 @@ msgstr ""
 #, fuzzy
 msgid "No license yet."
 msgstr "Par de réponse pour le moment"
+
+#: admin/views/recount.php:58
+#, fuzzy
+msgid "Re-count votes"
+msgstr "Votes total"
+
+#: admin/views/recount.php:60
+msgid "Re-counting all AnsPress post votes..."
+msgstr ""
+
+#: admin/views/recount.php:61 admin/views/recount.php:95
+msgid "{0} out of {1} posts processed"
+msgstr ""
+
+#: admin/views/recount.php:62
+#, fuzzy
+msgid "Successfully counted all votes!"
+msgstr "Mot clé créé avec succès."
+
+#: admin/views/recount.php:63
+msgid "Failed to count all votes, please try again or submit a help request"
+msgstr ""
+
+#: admin/views/recount.php:66
+#, fuzzy
+msgid "Re-count all votes of question and answers."
+msgstr "Selectionner une question pour faire une réponse"
+
+#: admin/views/recount.php:75
+#, fuzzy
+msgid "Re-count answers"
+msgstr "Réponse parente:"
+
+#: admin/views/recount.php:77
+#, fuzzy
+msgid "Re-counting answers of every question..."
+msgstr "La meilleure réponse a été choisi pour votre question."
+
+#: admin/views/recount.php:78
+msgid "{0} out of {1} question processed"
+msgstr ""
+
+#: admin/views/recount.php:79
+#, fuzzy
+msgid "Successfully updated answers count!"
+msgstr "Mot clé créé avec succès."
+
+#: admin/views/recount.php:80
+msgid "Failed to count answers, please try again or submit a help request"
+msgstr ""
+
+#: admin/views/recount.php:83
+#, fuzzy
+msgid "Re-count answers of all questions."
+msgstr "Notice pour répondre à une question."
+
+#: admin/views/recount.php:88
+#, fuzzy
+msgid "Flagged posts"
+msgstr "Signalé"
+
+#: admin/views/recount.php:92
+#, fuzzy
+msgid "Re-count flagged posts"
+msgstr "Vous avez marqué ce post"
+
+#: admin/views/recount.php:94
+msgid "Re-counting flagged posts..."
+msgstr ""
+
+#: admin/views/recount.php:96
+#, fuzzy
+msgid "Successfully updated flagged posts count!"
+msgstr "Mot clé créé avec succès."
+
+#: admin/views/recount.php:97
+msgid ""
+"Failed to count flagged posts, please try again or submit a help request"
+msgstr ""
+
+#: admin/views/recount.php:100
+#, fuzzy
+msgid "Re-count flagged posts."
+msgstr "Vous avez marqué ce post"
+
+#: admin/views/recount.php:105
+msgid "Subscribers"
+msgstr "Abonnés"
+
+#: admin/views/recount.php:109
+#, fuzzy
+msgid "Re-count question subscribers"
+msgstr "Sélectionner la question"
+
+#: admin/views/recount.php:111
+msgid "Re-counting question subscribers..."
+msgstr ""
+
+#: admin/views/recount.php:112
+msgid "{0} out of {1} questions processed"
+msgstr ""
+
+#: admin/views/recount.php:113
+#, fuzzy
+msgid "Successfully updated subscribers count!"
+msgstr "Mot clé créé avec succès."
+
+#: admin/views/recount.php:114
+msgid ""
+"Failed to count question subscribers, please try again or submit a help "
+"request"
+msgstr ""
+
+#: admin/views/recount.php:117
+#, fuzzy
+msgid "Re-count question subscribers."
+msgstr "Sélectionner la question"
+
+#: admin/views/recount.php:126
+#, fuzzy
+msgid "Re-count user reputation"
+msgstr "Supprimer cette réputation"
+
+#: admin/views/recount.php:128
+msgid "Re-counting user reputation..."
+msgstr ""
+
+#: admin/views/recount.php:129
+msgid "{0} out of {1} user processed"
+msgstr ""
+
+#: admin/views/recount.php:130
+#, fuzzy
+msgid "Successfully updated users reputation!"
+msgstr "Mot clé créé avec succès."
+
+#: admin/views/recount.php:131
+msgid ""
+"Failed to count users reputation, please try again or submit a help request"
+msgstr ""
+
+#: admin/views/recount.php:134
+#, fuzzy
+msgid "Re-count all users reputation points."
+msgstr "Mot clé créé avec succès."
 
 #: admin/views/reputation-events.php:34
 #, fuzzy
@@ -3674,12 +3826,12 @@ msgid_plural "%s Questions"
 msgstr[0] "Question"
 msgstr[1] "Question"
 
-#: templates/addons/tag/tags.php:23
+#: templates/addons/tag/tags.php:20
 #, fuzzy
 msgid "Search tags..."
 msgstr "Chercher un utilisateur..."
 
-#: templates/addons/tag/tags.php:47
+#: templates/addons/tag/tags.php:44
 #, fuzzy
 msgid "No description."
 msgstr "Description"
@@ -4168,9 +4320,6 @@ msgstr "Réponse"
 #~ msgid "Answer Help page"
 #~ msgstr "Page du mode d'emploi des réponses"
 
-#~ msgid "Direction for answring a question."
-#~ msgstr "Notice pour répondre à une question."
-
 #~ msgid "Clean DB"
 #~ msgstr "Effacer les données"
 
@@ -4277,9 +4426,6 @@ msgstr "Réponse"
 
 #~ msgid "Use this for preventing spam posts."
 #~ msgstr "Permet de vous proteger contre les robots spammeur"
-
-#~ msgid "Delete this reputation"
-#~ msgstr "Supprimer cette réputation"
 
 #~ msgid "There is no question yet."
 #~ msgstr "Il n'y a pas de question pour moment !"
@@ -5213,9 +5359,6 @@ msgstr "Réponse"
 
 #~ msgid "ans"
 #~ msgstr "Rép"
-
-#~ msgid "Subscribers"
-#~ msgstr "Abonnés"
 
 #~ msgid "1 Subscriber"
 #~ msgid_plural "%d subscribers"
