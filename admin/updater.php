@@ -465,16 +465,17 @@ class AnsPress_Prod_Updater {
 			$failed = false;
 
 			$api_params = array(
-				'edd_action' 	=> 'get_version',
-				'license' 		=> $this->api_data['license'],
-				'name' 			=> $this->api_data['item_name'],
-				'slug' 			=> $this->slug,
-				'author'		=> $this->api_data['author'],
+				'edd_action' 	 => 'get_version',
+				'license' 		 => $this->api_data['license'],
+				'name' 			   => $this->api_data['item_name'],
+				'slug' 			   => $this->slug,
+				'author'		   => $this->api_data['author'],
+				'anspress_ver' => AP_VERSION,
 			);
 
 			$response = wp_remote_post( $this->api_url, [ 'timeout' => 15, 'body' => $api_params ] );
 
-			// Make sure the response was successful
+			// Make sure the response was successful.
 			if ( is_wp_error( $response ) || 200 != wp_remote_retrieve_response_code( $response ) ) {
 				$failed = true;
 			}
