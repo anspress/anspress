@@ -178,7 +178,7 @@ class AnsPress_Notification_Hook {
 	/**
 	 * Enqueue scripts.
 	 *
-	 * @param array $js Javacript array.
+	 * @param array $js JavaScript array.
 	 * @return array
 	 */
 	public static function ap_assets_js( $js ) {

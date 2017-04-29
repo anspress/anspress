@@ -51,13 +51,13 @@ $class = 'is-dismissible';
 		<tbody>
 			<tr>
 				<th scope="row" valign="top">
-					<label><?php esc_attr_e( 'Re-count votes', 'anspress-question-answer' ); ?></label>
+					<label><?php esc_attr_e( 'Votes', 'anspress-question-answer' ); ?></label>
 				</th>
 				<td>
 					<div class="btn-container">
 						<button class="button ap-recount-btn" data-action="votes"><?php esc_attr_e( 'Re-count votes', 'anspress-question-answer' ); ?></button>
 						<span class="hide"
-							data-start="<?php _e( 'Re-counting all AnsPress post votes', 'anspress-question-answer' ); ?>"
+							data-start="<?php _e( 'Re-counting all AnsPress post votes...', 'anspress-question-answer' ); ?>"
 							data-continue="<?php _e( '{0} out of {1} posts processed', 'anspress-question-answer' ); ?>"
 							data-success="<?php _e( 'Successfully counted all votes!', 'anspress-question-answer' ); ?>"
 							data-failed="<?php _e( 'Failed to count all votes, please try again or submit a help request', 'anspress-question-answer' ); ?>">
@@ -68,13 +68,13 @@ $class = 'is-dismissible';
 			</tr>
 			<tr>
 				<th scope="row" valign="top">
-					<label><?php esc_attr_e( 'Re-count answers', 'anspress-question-answer' ); ?></label>
+					<label><?php esc_attr_e( 'Answers', 'anspress-question-answer' ); ?></label>
 				</th>
 				<td>
 					<div class="btn-container">
 						<button class="button ap-recount-btn" data-action="answers"><?php esc_attr_e( 'Re-count answers', 'anspress-question-answer' ); ?></button>
 						<span class="hide"
-							data-start="<?php _e( 'Re-counting answers of every question', 'anspress-question-answer' ); ?>"
+							data-start="<?php _e( 'Re-counting answers of every question...', 'anspress-question-answer' ); ?>"
 							data-continue="<?php _e( '{0} out of {1} question processed', 'anspress-question-answer' ); ?>"
 							data-success="<?php _e( 'Successfully updated answers count!', 'anspress-question-answer' ); ?>"
 							data-failed="<?php _e( 'Failed to count answers, please try again or submit a help request', 'anspress-question-answer' ); ?>">
@@ -85,19 +85,53 @@ $class = 'is-dismissible';
 			</tr>
 			<tr>
 				<th scope="row" valign="top">
-					<label><?php esc_attr_e( 'Re-count flagged posts', 'anspress-question-answer' ); ?></label>
+					<label><?php esc_attr_e( 'Flagged posts', 'anspress-question-answer' ); ?></label>
 				</th>
 				<td>
 					<div class="btn-container">
 						<button class="button ap-recount-btn" data-action="flags"><?php esc_attr_e( 'Re-count flagged posts', 'anspress-question-answer' ); ?></button>
 						<span class="hide"
-							data-start="<?php _e( 'Re-counting flagged posts', 'anspress-question-answer' ); ?>"
+							data-start="<?php _e( 'Re-counting flagged posts...', 'anspress-question-answer' ); ?>"
 							data-continue="<?php _e( '{0} out of {1} posts processed', 'anspress-question-answer' ); ?>"
 							data-success="<?php _e( 'Successfully updated flagged posts count!', 'anspress-question-answer' ); ?>"
-							data-failed="<?php _e( 'Failed to flagged posts, please try again or submit a help request', 'anspress-question-answer' ); ?>">
+							data-failed="<?php _e( 'Failed to count flagged posts, please try again or submit a help request', 'anspress-question-answer' ); ?>">
 						</span>
 					</div>
 					<p class="description"><?php esc_attr_e( 'Re-count flagged posts.', 'anspress-question-answer' ); ?></p>
+				</td>
+			</tr>
+			<tr>
+				<th scope="row" valign="top">
+					<label><?php esc_attr_e( 'Subscribers', 'anspress-question-answer' ); ?></label>
+				</th>
+				<td>
+					<div class="btn-container">
+						<button class="button ap-recount-btn" data-action="subscribers"><?php esc_attr_e( 'Re-count question subscribers', 'anspress-question-answer' ); ?></button>
+						<span class="hide"
+							data-start="<?php _e( 'Re-counting question subscribers...', 'anspress-question-answer' ); ?>"
+							data-continue="<?php _e( '{0} out of {1} questions processed', 'anspress-question-answer' ); ?>"
+							data-success="<?php _e( 'Successfully updated subscribers count!', 'anspress-question-answer' ); ?>"
+							data-failed="<?php _e( 'Failed to count question subscribers, please try again or submit a help request', 'anspress-question-answer' ); ?>">
+						</span>
+					</div>
+					<p class="description"><?php esc_attr_e( 'Re-count question subscribers.', 'anspress-question-answer' ); ?></p>
+				</td>
+			</tr>
+			<tr>
+				<th scope="row" valign="top">
+					<label><?php esc_attr_e( 'Reputations', 'anspress-question-answer' ); ?></label>
+				</th>
+				<td>
+					<div class="btn-container">
+						<button class="button ap-recount-btn" data-action="reputation"><?php esc_attr_e( 'Re-count user reputation', 'anspress-question-answer' ); ?></button>
+						<span class="hide"
+							data-start="<?php _e( 'Re-counting user reputation...', 'anspress-question-answer' ); ?>"
+							data-continue="<?php _e( '{0} out of {1} user processed', 'anspress-question-answer' ); ?>"
+							data-success="<?php _e( 'Successfully updated users reputation!', 'anspress-question-answer' ); ?>"
+							data-failed="<?php _e( 'Failed to count users reputation, please try again or submit a help request', 'anspress-question-answer' ); ?>">
+						</span>
+					</div>
+					<p class="description"><?php esc_attr_e( 'Re-count all users reputation points.', 'anspress-question-answer' ); ?></p>
 				</td>
 			</tr>
 		</tbody>

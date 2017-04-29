@@ -407,4 +407,68 @@ class AnsPress_Admin_Ajax {
 		] );
 	}
 
+	/**
+	 * Recount question subscribers.
+	 *
+	 * @param integer $current Current index.
+	 * @param integer $offset Current offset.
+	 * @return void
+	 * @since 4.0.5
+	 */
+	public static function recount_subscribers( $current, $offset ) {
+		global $wpdb;
+
+		$ids = $wpdb->get_col( "SELECT SQL_CALC_FOUND_ROWS ID FROM {$wpdb->posts} WHERE post_type = 'question' LIMIT {$offset},50" ); // @codingStandardsIgnoreLine.
+
+		$total_found = $wpdb->get_var( 'SELECT FOUND_ROWS()' ); // DB call okay, Db cache okay.
+
+		foreach ( (array) $ids as $id ) {
+			ap_update_subscribers_count( $id );
+		}
+
+		$action = 'continue';
+
+		if ( count( $ids ) < 50 ) {
+			$action = 'success';
+		}
+
+		wp_send_json( [
+			'action'    => $action,
+			'total'     => $total_found,
+			'processed' => count( $ids ),
+		] );
+	}
+
+	/**
+	 * Recount users reputation.
+	 *
+	 * @param integer $current Current index.
+	 * @param integer $offset Current offset.
+	 * @return void
+	 * @since 4.0.5
+	 */
+	public static function recount_reputation( $current, $offset ) {
+		global $wpdb;
+
+		$ids = $wpdb->get_col( "SELECT SQL_CALC_FOUND_ROWS ID FROM {$wpdb->users} LIMIT {$offset},50" ); // @codingStandardsIgnoreLine.
+
+		$total_found = $wpdb->get_var( 'SELECT FOUND_ROWS()' ); // DB call okay, Db cache okay.
+
+		foreach ( (array) $ids as $id ) {
+			ap_update_user_reputation_meta( $id );
+		}
+
+		$action = 'continue';
+
+		if ( count( $ids ) < 50 ) {
+			$action = 'success';
+		}
+
+		wp_send_json( [
+			'action'    => $action,
+			'total'     => $total_found,
+			'processed' => count( $ids ),
+		] );
+	}
+
 }
