@@ -79,7 +79,7 @@ class AnsPress_BP_Hooks {
 			return $js;
 		}
 
-		if ( bp_current_component() === 'qa' && bp_current_action() === 'questions' ) {
+		if ( bp_current_component() === 'qa' ) {
 			$js['main']['active'] = true;
 			$js['theme']['active'] = true;
 		}
