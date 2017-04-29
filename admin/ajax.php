@@ -34,6 +34,7 @@ class AnsPress_Admin_Ajax {
 		anspress()->add_action( 'wp_ajax_ap_uninstall_data', __CLASS__, 'ap_uninstall_data' );
 		anspress()->add_action( 'wp_ajax_ap_toggle_addons', __CLASS__, 'ap_toggle_addons' );
 		anspress()->add_action( 'wp_ajax_ap_migrator_4x', __CLASS__, 'ap_migrator_4x' );
+		anspress()->add_action( 'wp_ajax_anspress_recount', __CLASS__, 'anspress_recount' );
 	}
 
 	/**
@@ -277,6 +278,48 @@ class AnsPress_Admin_Ajax {
 		}
 
 		wp_die();
+	}
+
+	/**
+	 * Ajax callback for performing votes recount.
+	 *
+	 * @since 4.0.5
+	 * @return void
+	 */
+	public static function anspress_recount() {
+		check_ajax_referer( 'recount', '__nonce' );
+
+		// Check if user have permission to do this action.
+		if ( current_user_can( 'manage_options' ) ) {
+			wp_send_json( [
+				'error' => true,
+			] );
+		}
+
+		$current = (int) ap_sanitize_unslash( 'current', 'r', 0 );
+		$offset = 50 * $current;
+
+		global $wpdb;
+
+		$ids = $wpdb->get_col( "SELECT SQL_CALC_FOUND_ROWS ID FROM {$wpdb->posts} WHERE post_type IN ('question', 'answer') LIMIT {$offset},50" ); // @codingStandardsIgnoreLine.
+
+		$total_found = $wpdb->get_var( 'SELECT FOUND_ROWS()' ); // DB call okay, Db cache okay.
+
+		foreach ( (array) $ids as $id ) {
+			ap_update_votes_count( $id );
+		}
+
+		$action = 'continue';
+
+		if ( count( $ids ) < 50 ) {
+			$action = 'success';
+		}
+
+		wp_send_json( [
+			'action'    => $action,
+			'total'     => $total_found,
+			'processed' => count( $ids ),
+		] );
 	}
 
 }

@@ -431,8 +431,16 @@ ap_register_option_section( 'access', 'moderate',  __( 'Moderate', 'anspress-que
 	) ,
 ]);
 
+ap_register_option_section( 'tools', 'recount', __( 'Re-count', 'anspress-question-answer' ) , 'ap_admin_recount_page' );
 ap_register_option_section( 'tools', 'user_roles', __( 'User roles', 'anspress-question-answer' ) , 'ap_admin_roles_page' );
 ap_register_option_section( 'tools', 'uninstall', __( 'Uninstall - clear all AnsPress data', 'anspress-question-answer' ) , 'ap_admin_uninstall_page' );
+
+/**
+ * Load roles option.
+ */
+function ap_admin_recount_page() {
+	include 'views/recount.php';
+}
 
 /**
  * Load roles option.
