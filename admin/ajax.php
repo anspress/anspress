@@ -281,7 +281,7 @@ class AnsPress_Admin_Ajax {
 	}
 
 	/**
-	 * Ajax callback for performing votes recount.
+	 * Ajax callback for performing recount actions.
 	 *
 	 * @since 4.0.5
 	 * @return void
@@ -290,15 +290,36 @@ class AnsPress_Admin_Ajax {
 		check_ajax_referer( 'recount', '__nonce' );
 
 		// Check if user have permission to do this action.
-		if ( current_user_can( 'manage_options' ) ) {
+		if ( ! current_user_can( 'manage_options' ) ) {
 			wp_send_json( [
 				'error' => true,
 			] );
 		}
 
+		$sub_action = ap_sanitize_unslash( 'sub_action', 'r', '' );
 		$current = (int) ap_sanitize_unslash( 'current', 'r', 0 );
 		$offset = 50 * $current;
 
+		$method_name = 'recount_' . $sub_action;
+
+		if ( ! empty( $sub_action ) && method_exists( __CLASS__, $method_name ) ) {
+			self::$method_name( $current, $offset );
+		}
+
+		wp_send_json( [
+			'error' => true,
+		] );
+	}
+
+	/**
+	 * Recount all votes
+	 *
+	 * @param integer $current Current index.
+	 * @param integer $offset Current offset.
+	 * @return void
+	 * @since 4.0.5
+	 */
+	public static function recount_votes( $current, $offset ) {
 		global $wpdb;
 
 		$ids = $wpdb->get_col( "SELECT SQL_CALC_FOUND_ROWS ID FROM {$wpdb->posts} WHERE post_type IN ('question', 'answer') LIMIT {$offset},50" ); // @codingStandardsIgnoreLine.
@@ -307,6 +328,70 @@ class AnsPress_Admin_Ajax {
 
 		foreach ( (array) $ids as $id ) {
 			ap_update_votes_count( $id );
+		}
+
+		$action = 'continue';
+
+		if ( count( $ids ) < 50 ) {
+			$action = 'success';
+		}
+
+		wp_send_json( [
+			'action'    => $action,
+			'total'     => $total_found,
+			'processed' => count( $ids ),
+		] );
+	}
+
+	/**
+	 * Recount answers of questions.
+	 *
+	 * @param integer $current Current index.
+	 * @param integer $offset Current offset.
+	 * @return void
+	 * @since 4.0.5
+	 */
+	public static function recount_answers( $current, $offset ) {
+		global $wpdb;
+
+		$ids = $wpdb->get_col( "SELECT SQL_CALC_FOUND_ROWS ID FROM {$wpdb->posts} WHERE post_type = 'question' LIMIT {$offset},50" ); // @codingStandardsIgnoreLine.
+
+		$total_found = $wpdb->get_var( 'SELECT FOUND_ROWS()' ); // DB call okay, Db cache okay.
+
+		foreach ( (array) $ids as $id ) {
+			ap_update_answers_count( $id, false, false );
+		}
+
+		$action = 'continue';
+
+		if ( count( $ids ) < 50 ) {
+			$action = 'success';
+		}
+
+		wp_send_json( [
+			'action'    => $action,
+			'total'     => $total_found,
+			'processed' => count( $ids ),
+		] );
+	}
+
+	/**
+	 * Recount flags of posts.
+	 *
+	 * @param integer $current Current index.
+	 * @param integer $offset Current offset.
+	 * @return void
+	 * @since 4.0.5
+	 */
+	public static function recount_flags( $current, $offset ) {
+		global $wpdb;
+
+		$ids = $wpdb->get_col( "SELECT SQL_CALC_FOUND_ROWS ID FROM {$wpdb->posts} WHERE post_type IN ('question', 'answer') LIMIT {$offset},50" ); // @codingStandardsIgnoreLine.
+
+		$total_found = $wpdb->get_var( 'SELECT FOUND_ROWS()' ); // DB call okay, Db cache okay.
+
+		foreach ( (array) $ids as $id ) {
+			ap_update_flags_count( $id );
 		}
 
 		$action = 'continue';

@@ -66,6 +66,40 @@ $class = 'is-dismissible';
 					<p class="description"><?php esc_attr_e( 'Re-count all votes of question and answers.', 'anspress-question-answer' ); ?></p>
 				</td>
 			</tr>
+			<tr>
+				<th scope="row" valign="top">
+					<label><?php esc_attr_e( 'Re-count answers', 'anspress-question-answer' ); ?></label>
+				</th>
+				<td>
+					<div class="btn-container">
+						<button class="button ap-recount-btn" data-action="answers"><?php esc_attr_e( 'Re-count answers', 'anspress-question-answer' ); ?></button>
+						<span class="hide"
+							data-start="<?php _e( 'Re-counting answers of every question', 'anspress-question-answer' ); ?>"
+							data-continue="<?php _e( '{0} out of {1} question processed', 'anspress-question-answer' ); ?>"
+							data-success="<?php _e( 'Successfully updated answers count!', 'anspress-question-answer' ); ?>"
+							data-failed="<?php _e( 'Failed to count answers, please try again or submit a help request', 'anspress-question-answer' ); ?>">
+						</span>
+					</div>
+					<p class="description"><?php esc_attr_e( 'Re-count answers of all questions.', 'anspress-question-answer' ); ?></p>
+				</td>
+			</tr>
+			<tr>
+				<th scope="row" valign="top">
+					<label><?php esc_attr_e( 'Re-count flagged posts', 'anspress-question-answer' ); ?></label>
+				</th>
+				<td>
+					<div class="btn-container">
+						<button class="button ap-recount-btn" data-action="flags"><?php esc_attr_e( 'Re-count flagged posts', 'anspress-question-answer' ); ?></button>
+						<span class="hide"
+							data-start="<?php _e( 'Re-counting flagged posts', 'anspress-question-answer' ); ?>"
+							data-continue="<?php _e( '{0} out of {1} posts processed', 'anspress-question-answer' ); ?>"
+							data-success="<?php _e( 'Successfully updated flagged posts count!', 'anspress-question-answer' ); ?>"
+							data-failed="<?php _e( 'Failed to flagged posts, please try again or submit a help request', 'anspress-question-answer' ); ?>">
+						</span>
+					</div>
+					<p class="description"><?php esc_attr_e( 'Re-count flagged posts.', 'anspress-question-answer' ); ?></p>
+				</td>
+			</tr>
 		</tbody>
 	</table>
 </div>
@@ -91,8 +125,6 @@ $class = 'is-dismissible';
 			if(currentRequest > 5)
 				return;
 
-			currentRequest++;
-
 			$.ajax({
 				url: ajaxurl,
 				data: {
@@ -102,8 +134,14 @@ $class = 'is-dismissible';
 					current: currentRequest
 				},
 				success: function(data){
+					if(typeof data.error !== 'undefined' && data.error)
+						return alert('Error!');
+
+					currentRequest++;
+
 					$el.attr('data-current', currentRequest);
 					showMessage($el.next(), data);
+
 					if(data.action==='continue')
 						apAjaxCountAction($el);
 
