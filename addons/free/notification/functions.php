@@ -291,7 +291,7 @@ function ap_notification_verbs() {
 }
 
 /**
- * Count total numbers of unread notifiations of a user.
+ * Count total numbers of unread notifications of a user.
  *
  * @param integer $user_id User id.
  * @return integer

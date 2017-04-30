@@ -181,7 +181,7 @@ function ap_get_category_filter( $search = false ) {
 	foreach ( (array) $terms as $t ) {
 		$item = [ 'key' => 'category', 'value' => (string) $t->term_id, 'label' => $t->name ];
 		// Check if active.
-		if ( in_array( $t->term_id, $selected, true ) ) {
+		if ( $selected && in_array( $t->term_id, $selected, true ) ) {
 			$item['active'] = true;
 		}
 
@@ -436,7 +436,7 @@ function ap_get_tag_filter( $search = false ) {
 	foreach ( (array) $terms as $t ) {
 		$item = [ 'key' => 'tag', 'value' => (string) $t->term_id, 'label' => $t->name ];
 		// Check if active.
-		if ( in_array( $t->term_id, $selected, true ) ) {
+		if ( $selected && in_array( $t->term_id, $selected, true ) ) {
 			$item['active'] = true;
 		}
 

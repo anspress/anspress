@@ -630,7 +630,7 @@ ul li.anspress-page-link {
   font-weight: normal;
   color: #888;
 }
-#anspress .ap-filter input[type="checkbox"] {
+#anspress .ap-filter input[type="checkbox"], #anspress .ap-filter input[type="radio"] {
   display: none;
 }
 #anspress .ap-filter label {
@@ -655,10 +655,10 @@ ul li.anspress-page-link {
 #anspress .ap-filter li {
   padding: 0 5px;
 }
-#anspress .ap-filter input[type="checkbox"]:checked + .apicon-check {
+#anspress .ap-filter input[type="checkbox"]:checked + .apicon-check, #anspress .ap-filter input[type="radio"]:checked + .apicon-check {
   background: #8bc34a;
 }
-#anspress .ap-filter input[type="checkbox"]:checked + .apicon-check[class^="apicon-"]:before, #anspress .ap-filter input[type="checkbox"]:checked + .apicon-check [class*=" apicon-"]:before {
+#anspress .ap-filter input[type="checkbox"]:checked + .apicon-check[class^="apicon-"]:before, #anspress .ap-filter input[type="checkbox"]:checked + .apicon-check [class*=" apicon-"]:before, #anspress .ap-filter input[type="radio"]:checked + .apicon-check[class^="apicon-"]:before, #anspress .ap-filter input[type="radio"]:checked + .apicon-check [class*=" apicon-"]:before {
   visibility: visible;
 }
 #anspress .ap-filter-search {
@@ -687,6 +687,15 @@ ul li.anspress-page-link {
   float: left;
   font-size: 12px;
   margin-right: 4px;
+}
+#anspress .ap-pagging-warning {
+  background: #FFF8E1;
+  text-align: center;
+  font-size: 11px;
+  border: 1px solid #FFE082;
+  padding: 5px;
+  border-radius: 2px;
+  margin-top: 15px;
 }
 
 .ap-droptogg {

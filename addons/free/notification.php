@@ -37,58 +37,59 @@ class AnsPress_Notification_Hook {
 	 * Initialize the class.
 	 */
 	public static function init() {
-		ap_register_page( 'notifications', __( 'Notifications', 'anspress-question-answer' ), '', true );
-		anspress()->add_filter( 'ap_menu_link', __CLASS__, 'menu_link', 10, 2 );
-		anspress()->add_filter( 'ap_menu_items', __CLASS__, 'ap_menu_items' );
-		//anspress()->add_action( 'ap_option_groups', __CLASS__, 'load_options' );
-		anspress()->add_action( 'ap_notification_verbs', __CLASS__, 'register_verbs' );
-		anspress()->add_filter( 'ap_user_pages', __CLASS__, 'ap_user_pages' );
-		anspress()->add_action( 'ap_assets_js', __CLASS__, 'ap_assets_js' );
-		anspress()->add_action( 'ap_after_new_answer', __CLASS__, 'new_answer', 10, 2 );
-		anspress()->add_action( 'ap_trash_question', __CLASS__, 'trash_question', 10, 2 );
-		anspress()->add_action( 'ap_before_delete_question', __CLASS__, 'trash_question', 10, 2 );
-		anspress()->add_action( 'ap_trash_answer', __CLASS__, 'trash_answer', 10, 2 );
-		anspress()->add_action( 'ap_before_delete_answer', __CLASS__, 'trash_answer', 10, 2 );
-		anspress()->add_action( 'ap_untrash_answer', __CLASS__, 'new_answer', 10, 2 );
-		anspress()->add_action( 'ap_select_answer', __CLASS__, 'select_answer' );
-		anspress()->add_action( 'ap_unselect_answer', __CLASS__, 'unselect_answer' );
-		anspress()->add_action( 'ap_publish_comment', __CLASS__, 'new_comment' );
-		anspress()->add_action( 'ap_unpublish_comment', __CLASS__, 'delete_comment' );
-		anspress()->add_action( 'ap_vote_up', __CLASS__, 'vote_up' );
-		anspress()->add_action( 'ap_vote_down', __CLASS__, 'vote_down' );
-		anspress()->add_action( 'ap_undo_vote_up', __CLASS__, 'undo_vote_up' );
-		anspress()->add_action( 'ap_undo_vote_down', __CLASS__, 'undo_vote_down' );
-		anspress()->add_action( 'ap_insert_reputation', __CLASS__, 'insert_reputation', 10, 4 );
-		anspress()->add_action( 'ap_delete_reputation', __CLASS__, 'delete_reputation', 10, 3 );
-		anspress()->add_action( 'ap_ajax_mark_notifications_seen', __CLASS__, 'mark_notifications_seen' );
-		anspress()->add_action( 'ap_ajax_load_more_notifications', __CLASS__, 'load_more_notifications' );
-		anspress()->add_action( 'ap_ajax_get_notifications', __CLASS__, 'get_notifications' );
+		ap_add_default_options([
+			'user_page_title_notifications'  => __( 'Notifications', 'anspress-question-answer' ),
+			'user_page_slug_notifications'   => 'notifications',
+		]);
+
+		// Activate AnsPress notifications only if buddypress not active.
+		if ( ! ap_is_addon_active( 'free/buddypress.php' ) ) {
+			ap_register_page( 'notifications', __( 'Notifications', 'anspress-question-answer' ), '', true );
+			anspress()->add_filter( 'ap_menu_link', __CLASS__, 'menu_link', 10, 2 );
+			anspress()->add_filter( 'ap_menu_items', __CLASS__, 'ap_menu_items' );
+			anspress()->add_action( 'ap_option_groups', __CLASS__, 'load_options', 20 );
+			anspress()->add_action( 'ap_notification_verbs', __CLASS__, 'register_verbs' );
+			anspress()->add_filter( 'ap_user_pages', __CLASS__, 'ap_user_pages' );
+			anspress()->add_action( 'ap_assets_js', __CLASS__, 'ap_assets_js' );
+			anspress()->add_action( 'ap_after_new_answer', __CLASS__, 'new_answer', 10, 2 );
+			anspress()->add_action( 'ap_trash_question', __CLASS__, 'trash_question', 10, 2 );
+			anspress()->add_action( 'ap_before_delete_question', __CLASS__, 'trash_question', 10, 2 );
+			anspress()->add_action( 'ap_trash_answer', __CLASS__, 'trash_answer', 10, 2 );
+			anspress()->add_action( 'ap_before_delete_answer', __CLASS__, 'trash_answer', 10, 2 );
+			anspress()->add_action( 'ap_untrash_answer', __CLASS__, 'new_answer', 10, 2 );
+			anspress()->add_action( 'ap_select_answer', __CLASS__, 'select_answer' );
+			anspress()->add_action( 'ap_unselect_answer', __CLASS__, 'unselect_answer' );
+			anspress()->add_action( 'ap_publish_comment', __CLASS__, 'new_comment' );
+			anspress()->add_action( 'ap_unpublish_comment', __CLASS__, 'delete_comment' );
+			anspress()->add_action( 'ap_vote_up', __CLASS__, 'vote_up' );
+			anspress()->add_action( 'ap_vote_down', __CLASS__, 'vote_down' );
+			anspress()->add_action( 'ap_undo_vote_up', __CLASS__, 'undo_vote_up' );
+			anspress()->add_action( 'ap_undo_vote_down', __CLASS__, 'undo_vote_down' );
+			anspress()->add_action( 'ap_insert_reputation', __CLASS__, 'insert_reputation', 10, 4 );
+			anspress()->add_action( 'ap_delete_reputation', __CLASS__, 'delete_reputation', 10, 3 );
+			anspress()->add_action( 'ap_ajax_mark_notifications_seen', __CLASS__, 'mark_notifications_seen' );
+			anspress()->add_action( 'ap_ajax_load_more_notifications', __CLASS__, 'load_more_notifications' );
+			anspress()->add_action( 'ap_ajax_get_notifications', __CLASS__, 'get_notifications' );
+		}
 	}
 
 	/**
 	 * Register Avatar options
 	 */
 	public static function load_options() {
+		global $ap_option_tabs;
 
-		ap_register_option_section( 'addons', basename( __FILE__ ), __( 'Notification', 'anspress-question-answer' ), array(
-			array(
-				'name'    => 'noti_delete',
-				'label'   => __( 'Auto delete notifications', 'anspress-question-answer' ),
-				'type'    => 'select',
-				'options' => array(
-					'none'   => __( 'Do not auto delete', 'anpress-question-answer' ),
-					'seen'   => __( 'Only seen', 'anpress-question-answer' ),
-					'both'   => __( 'Both seen an unseen', 'anpress-question-answer' ),
-				),
-				'desc'    => __( 'Auto delete user notifications', 'anspress-question-answer' ),
-			),
-			array(
-				'name'  => 'noti_delete_interval',
-				'label' => __( 'Auto delete interval', 'anspress-question-answer' ),
-				'type'  => 'number',
-				'desc'  => __( 'Auto delete notifications interval', 'anspress-question-answer' ),
-			),
-		));
+		$ap_option_tabs['addons']['sections']['profile.php']['fields'][] = array(
+			'name'  => 'user_page_title_notifications',
+			'label' => __( 'Notifications page title', 'anspress-question-answer' ),
+			'desc'  => __( 'Custom title for user profile notifications page', 'anspress-question-answer' ),
+		);
+
+		$ap_option_tabs['addons']['sections']['profile.php']['fields'][] = array(
+			'name'  => 'user_page_slug_notifications',
+			'label' => __( 'Notifications page slug', 'anspress-question-answer' ),
+			'desc'  => __( 'Custom slug for user profile notifications page', 'anspress-question-answer' ),
+		);
 	}
 
 	/**
@@ -180,7 +181,7 @@ class AnsPress_Notification_Hook {
 	/**
 	 * Enqueue scripts.
 	 *
-	 * @param array $js Javacript array.
+	 * @param array $js JavaScript array.
 	 * @return array
 	 */
 	public static function ap_assets_js( $js ) {

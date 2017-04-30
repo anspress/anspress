@@ -229,12 +229,18 @@ function ap_append_qameta( $post ) {
  * @return boolean|false
  * @since  3.1.0
  */
-function ap_update_answers_count( $question_id, $counts = false ) {
+function ap_update_answers_count( $question_id, $counts = false, $update_time = true ) {
 	if ( false === $counts ) {
 		$counts = ap_count_published_answers( $question_id );
 	}
 
-	return ap_insert_qameta( $question_id, [ 'answers' => $counts, 'last_updated' => current_time( 'mysql' ) ] );
+	$args = [ 'answers' => $counts ];
+
+	if ( $update_time ) {
+		$args['last_updated'] = current_time( 'mysql' );
+	}
+
+	return ap_insert_qameta( $question_id, $args );
 }
 
 /**

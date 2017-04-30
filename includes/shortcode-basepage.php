@@ -31,7 +31,7 @@ class AnsPress_BasePage_Shortcode {
 	}
 
 	/**
-	 * Control the output of [anspress] shortcode
+	 * Control the output of [anspress] shortcode.
 	 *
 	 * @param  array  $atts  {
 	 *     Attributes of the shortcode.
@@ -39,8 +39,8 @@ class AnsPress_BasePage_Shortcode {
 	 *     $categories 			slug of question_category
 	 *     $tags 				slug of question_tag
 	 *     $tax_relation 		taxonomy relation, see here https://codex.wordpress.org/Taxonomies
-	 *     $tags_operator 		operator for question_tag taxnomomy
-	 *     $categories_operator operator for question_category taxnomomy
+	 *     $tags_operator 		operator for question_tag taxonomy
+	 *     $categories_operator operator for question_category taxonomy
 	 *     $page 				Select a page to display.
 	 *     $hide_list_head 		Hide list head?
 	 *     $order_by 				Sort by.
@@ -57,6 +57,11 @@ class AnsPress_BasePage_Shortcode {
 		if ( true === $ap_shortcode_loaded ) {
 			return __( 'AnsPress shortcode cannot be nested.', 'anspress-question-answer' );
 		}
+
+		wp_enqueue_script( 'anspress-main' );
+		wp_enqueue_script( 'anspress-theme' );
+		wp_enqueue_style( 'anspress-main' );
+		wp_enqueue_style( 'anspress-fonts' );
 
 		$ap_shortcode_loaded = true;
 
@@ -133,6 +138,4 @@ class AnsPress_BasePage_Shortcode {
 			$_GET['filters'] = [ 'order_by' => $atts['order_by'] ];
 		}
 	}
-
 }
-

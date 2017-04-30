@@ -3,8 +3,8 @@
  * When visitor try to browse tag page without setting query_var then
  * this is show.
  *
- * 		
- * @link http://wp3.in
+ *
+ * @link http://anspress.io
  * @since 1.0
  * @package AnsPress
  * @subpackage Tags for AnsPress

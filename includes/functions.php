@@ -1126,33 +1126,26 @@ function ap_isset_post_value( $var, $default = '' ) {
  * @since  4.0.0
  */
 function ap_get_current_list_filters( $filter = null ) {
-	$default = [ 'order_by' => ap_opt( 'question_order_by' ) ];
-
-	$filters = wp_unslash( ap_isset_post_value( 'filters' ) );
+	$get_filters = [ 'order_by' => ap_opt( 'question_order_by' ) ];
+	$filters = array_keys( ap_get_list_filters() );
 
 	if ( empty( $filters ) || ! is_array( $filters ) ) {
 		$filters = [];
 	}
 
-	$filters = $filters + $default;
+	foreach ( (array) $filters as $k ) {
+		$val = ap_isset_post_value( $k );
 
-	$filters = array_unique( array_filter( $filters ), SORT_REGULAR );
-
-	foreach ( (array) $filters as $k => $f ) {
-		if ( is_array( $f ) ) {
-			$filters[ $k ] = array_unique( array_filter( $f ), SORT_REGULAR );
+		if ( ! empty( $val ) ) {
+			$get_filters[ $k ] = $val;
 		}
 	}
 
-	if ( null === $filter ) {
-		return $filters;
+	if ( null !== $filter ) {
+		return ! isset( $get_filters[ $filter ] ) ? null : $get_filters[ $filter ];
 	}
 
-	if ( ! empty( $filters[ $filter ] ) ) {
-		return $filters[ $filter ];
-	}
-
-	return [];
+	return $get_filters;
 }
 
 /**

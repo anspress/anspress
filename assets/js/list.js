@@ -20,21 +20,25 @@
       return this.model.id;
     },
     nameAttr: function(){
-      if(this.multiple) return 'filters['+this.model.get('key')+'][]';
-      return 'filters['+this.model.get('key')+']';
+      if(this.multiple) return ''+this.model.get('key')+'[]';
+      return this.model.get('key');
     },
     isActive: function(){
+      if(this.model.get('active'))
+        return this.model.get('active');
+
       if(this.active)
         return this.active;
 
-      if(!_.isEmpty(AnsPress.activeListFilters)){
-        var key = this.model.get('key');
+      var get_value = AnsPress.getUrlParam(this.model.get('key'));
+      if(!_.isEmpty(get_value)){
         var value = this.model.get('value');
-        if(AnsPress.activeListFilters[key] && ((!this.multiple && AnsPress.activeListFilters[key] == value) || (this.multiple && _.contains(AnsPress.activeListFilters[key], value)))){
+        if(!_.isArray(get_value) && get_value === value)
+          return true;
+        if(_.contains(get_value, value)){
           this.active = true;
           return true;
         }
-
       }
 
       this.active = false;
@@ -43,12 +47,15 @@
     className: function(){
       return this.isActive() ? 'active' : '';
     },
-    template: '<label><input type="checkbox" name="{{name}}" value="{{value}}"<# if(active){ #> checked="checked"<# } #>/><i class="apicon-check"></i>{{label}}</label>',
+    inputType: function(){
+      return this.multiple ? 'checkbox' : 'radio';
+    },
     initialize: function(options){
       this.model = options.model;
       this.multiple = options.multiple;
       this.listenTo(this.model, 'remove', this.removed);
     },
+    template: '<label><input type="{{inputType}}" name="{{name}}" value="{{value}}"<# if(active){ #> checked="checked"<# } #>/><i class="apicon-check"></i>{{label}}</label>',
     events: {
       'change input': 'clickFilter'
     },
@@ -57,17 +64,12 @@
       var json = this.model.toJSON();
       json.name = this.nameAttr();
       json.active = this.isActive();
+      json.inputType = this.inputType();
       this.$el.html(t(json));
       return this;
     },
     clickFilter: function(e){
       e.preventDefault();
-
-      if(this.multiple)
-        $('input[name="'+$(e.target).attr('name')+'"][value="'+$(e.target).attr('value')+'"]').not(e.target).remove();
-      else
-        $('input[name="'+$(e.target).attr('name')+'"]').not(e.target).remove();
-
       $(e.target).closest('form').submit();
     },
     removed: function(){
@@ -76,7 +78,6 @@
   });
 
   AnsPress.views.Filters = Backbone.View.extend({
-    //tagName: 'div',
     className: 'ap-dropdown-menu',
     searchTemplate: '<div class="ap-filter-search"><input type="text" search-filter placeholder="'+aplang.search+'" /></div>',
     template: '<button class="ap-droptogg apicon-x"></button><filter-items></filter-items>',

@@ -2,13 +2,10 @@
 	/**
 	 * Tags page layout
 	 *
-	 * [Long Description.]
-	 *
-	 * @link http://wp3.in
+	 * @link http://anspress.io
 	 * @since 1.0
 	 *
-	 * @package AnsPress
-	 * @subpackage Tags for AnsPress
+	 * @package WordPress/AnsPress
 	 */
 
 	global $question_tags;
