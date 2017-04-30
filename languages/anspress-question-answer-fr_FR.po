@@ -1,0 +1,5395 @@
+# Copyright (C) 2015 Rahul Aryan
+# This file is distributed under the GPL-3.0+.
+msgid ""
+msgstr ""
+"Project-Id-Version: AnsPress 2.2\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/anspress-question-"
+"answer\n"
+"POT-Creation-Date: 2017-04-30 09:10:25+00:00\n"
+"PO-Revision-Date: 2015-12-15 09:17+0530\n"
+"Last-Translator: \n"
+"Language-Team: Romain <bbig86@gmail.com>\n"
+"Language: fr_FR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.7.3\n"
+"X-Poedit-KeywordsList: __;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;"
+"_nx_noop:1,2,3c;esc_attr__;esc_html__;esc_attr_e;esc_html_e;esc_attr_x:1,2c;"
+"esc_html_x:1,2c\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-Basepath: ..\n"
+"X-Textdomain-Support: yes\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: addons/free/avatar.php:77
+#, fuzzy
+msgid "Dynamic Avatar"
+msgstr "Avatar"
+
+#: addons/free/avatar.php:81
+msgid "Clear Cache"
+msgstr ""
+
+#: addons/free/avatar.php:81
+#, fuzzy
+msgid "Clear avatar cache"
+msgstr "Taille de l'avatar sur une réponse"
+
+#: addons/free/avatar.php:85
+msgid "Font family"
+msgstr ""
+
+#: addons/free/avatar.php:86
+msgid "Select font family for avatar letters."
+msgstr ""
+
+#: addons/free/avatar.php:98
+#, fuzzy
+msgid "Force avatar"
+msgstr "Envoi de l'avatar"
+
+#: addons/free/avatar.php:99
+msgid ""
+"Show AnsPress avatars by default instead of gravatar fallback. Useful in "
+"localhost development."
+msgstr ""
+
+#: addons/free/bad-words.php:61
+msgid ""
+"Don’t use foul or abusive language. Let everything you say be good and "
+"helpful."
+msgstr ""
+
+#: addons/free/bad-words.php:71
+msgid "Bad Words"
+msgstr ""
+
+#: addons/free/bad-words.php:74
+msgid "Add comma separted bad words"
+msgstr ""
+
+#: addons/free/bad-words.php:75
+msgid ""
+"Enter words separted by comma. This option can be overriden by placing a "
+"<small>badwords.txt</small> in AnsPress override folder. While using bad "
+"word from file, add one word per line rather then comma separted."
+msgstr ""
+
+#: addons/free/buddypress.php:97
+msgid "Q&A"
+msgstr ""
+
+#: addons/free/buddypress.php:105 addons/free/buddypress.php:186
+#: addons/free/profile.php:37 addons/free/profile.php:140
+#: admin/views/dashboard.php:30 admin/views/dashboard.php:212
+#: includes/functions.php:885 includes/options.php:110
+#: includes/post-types.php:43 includes/taxo.php:79 includes/taxo.php:372
+#: widgets/questions.php:55
+msgid "Questions"
+msgstr "Questions"
+
+#: addons/free/buddypress.php:106 addons/free/buddypress.php:234
+#: addons/free/profile.php:38 addons/free/profile.php:147
+#: admin/views/dashboard.php:226 admin/views/recount.php:71
+#: includes/post-types.php:113 widgets/question_stats.php:49
+#: widgets/questions.php:87
+msgid "Answers"
+msgstr "Réponses"
+
+#: addons/free/buddypress.php:151
+msgid "No AnsPress template found for rendering this page."
+msgstr ""
+
+#: addons/free/buddypress.php:202
+#, fuzzy
+msgid "Load more questions"
+msgstr "Chargement de plus de conversations"
+
+#: addons/free/buddypress.php:251 templates/addons/user/answers.php:29
+#, fuzzy
+msgid "Load more answers"
+msgstr "-1 pour une réponse"
+
+#: addons/free/buddypress.php:268 addons/free/buddypress.php:269
+#: admin/meta-box.php:41 admin/options-fields.php:188
+#: includes/ajax-hooks.php:194 includes/common-pages.php:21
+#: includes/post-status.php:93 includes/post-types.php:65
+msgid "Question"
+msgstr "Question"
+
+#: addons/free/buddypress.php:270
+msgid "%1$s asked a new <a href=\"AP_CPT_LINK\">question</a>"
+msgstr "%1$s a posé une nouvelle <a href=\"AP_CPT_LINK\">question</a>"
+
+#: addons/free/buddypress.php:271
+msgid "%1$s asked a new <a href=\"AP_CPT_LINK\">question</a>, on the site %3$s"
+msgstr ""
+"%1$s a posé une nouvelle <a href=\"AP_CPT_LINK\">question</a>, sur le site "
+"%3$s"
+
+#: addons/free/buddypress.php:278 addons/free/buddypress.php:279
+#: addons/free/buddypress.php:290 admin/options-fields.php:252
+#: admin/views/dashboard.php:34 includes/ajax-hooks.php:194
+#: includes/post-status.php:93 includes/post-types.php:135
+msgid "Answer"
+msgstr "Réponse"
+
+#: addons/free/buddypress.php:280
+msgid "%1$s <a href=\"AP_CPT_LINK\">answered</a> a question"
+msgstr "%1$s à <a href=\"AP_CPT_LINK\">répondu</a> à une question"
+
+#: addons/free/buddypress.php:281
+msgid "%1$s <a href=\"AP_CPT_LINK\">answered</a> a question, on the site %3$s"
+msgstr ""
+"%1$s à <a href=\"AP_CPT_LINK\">répondu</a> a une question, sur le site %3$s"
+
+#: addons/free/buddypress.php:290
+msgid "Answer this question"
+msgstr "Répondre à la question"
+
+#: addons/free/buddypress.php:374
+msgid "%1$d answers on - %2$s"
+msgstr "%1$d réponses sur - %2$s"
+
+#: addons/free/buddypress.php:378
+msgid "%1$s answered on - %2$s"
+msgstr "%1$s répondu sur - %2$s"
+
+#: addons/free/buddypress.php:385 addons/free/notification/query.php:313
+#: includes/comments.php:106 includes/post-types.php:64
+msgid "question"
+msgstr "question"
+
+#: addons/free/buddypress.php:385 addons/free/notification/query.php:315
+#: includes/comments.php:106 includes/post-types.php:134
+msgid "answer"
+msgstr "réponse"
+
+#: addons/free/buddypress.php:390
+msgid "%1$d comments on your %3$s - %2$s"
+msgstr "%1$d commentaires sur %3$s - %2$s"
+
+#: addons/free/buddypress.php:394
+msgid "%1$s commented on your %3$s - %2$s"
+msgstr "%1$s commentés sur %3$s - %2$s"
+
+#: addons/free/category/widget.php:25
+#, fuzzy
+msgid "Display AnsPress categories"
+msgstr "Anspress catégories séparées par des virgules"
+
+#: addons/free/category/widget.php:66 addons/free/category.php:729
+#: templates/addons/category/categories.php:29
+#: templates/addons/category/category.php:31 templates/addons/tag/tags.php:35
+#, fuzzy
+msgid "%d Question"
+msgid_plural "%d Questions"
+msgstr[0] "%d questions"
+msgstr[1] "%d questions"
+
+#: addons/free/category/widget.php:68
+msgid "%d Child"
+msgstr ""
+
+#: addons/free/category/widget.php:79 addons/free/category.php:37
+#: addons/free/category.php:171 addons/free/category.php:227
+#: addons/free/category.php:492 addons/free/category.php:495
+#: includes/taxo.php:29
+#, fuzzy
+msgid "Categories"
+msgstr "Catégorie"
+
+#: addons/free/category/widget.php:97 widgets/ask-form.php:74
+#: widgets/question_stats.php:68 widgets/questions.php:78 widgets/search.php:68
+msgid "Title:"
+msgstr "Titre :"
+
+#: addons/free/category/widget.php:102
+msgid "Hide empty:"
+msgstr ""
+
+#: addons/free/category/widget.php:107
+#, fuzzy
+msgid "Parent:"
+msgstr "Réponse parente:"
+
+#: addons/free/category/widget.php:109
+msgid "Top level"
+msgstr ""
+
+#: addons/free/category/widget.php:120
+msgid "Number:"
+msgstr ""
+
+#: addons/free/category/widget.php:125
+#, fuzzy
+msgid "Order By:"
+msgstr "Trier par:"
+
+#: addons/free/category/widget.php:127
+msgid "None"
+msgstr ""
+
+#: addons/free/category/widget.php:128 addons/free/category.php:237
+#: addons/free/category.php:251
+#, fuzzy
+msgid "Count"
+msgstr "Compte"
+
+#: addons/free/category/widget.php:129 addons/free/category.php:234
+#: addons/free/category.php:248
+msgid "ID"
+msgstr ""
+
+#: addons/free/category/widget.php:130 addons/free/category.php:235
+#: addons/free/category.php:249 includes/answer-form.php:59
+#: includes/ask-form.php:85 includes/taxo.php:458
+msgid "Name"
+msgstr "Nom"
+
+#: addons/free/category/widget.php:131 addons/free/category.php:236
+#: addons/free/category.php:250
+msgid "Slug"
+msgstr ""
+
+#: addons/free/category/widget.php:132
+msgid "Term group"
+msgstr ""
+
+#: addons/free/category/widget.php:136
+#, fuzzy
+msgid "Order:"
+msgstr "Trier par:"
+
+#: addons/free/category/widget.php:138
+msgid "DESC"
+msgstr ""
+
+#: addons/free/category/widget.php:139
+msgid "ASC"
+msgstr ""
+
+#: addons/free/category/widget.php:143
+#, fuzzy
+msgid "Icon width:"
+msgstr "Largeur bandeau"
+
+#: addons/free/category/widget.php:148
+#, fuzzy
+msgid "Icon height:"
+msgstr "Hauteur du bandeau"
+
+#: addons/free/category.php:36 addons/free/category.php:341
+#: addons/free/category.php:416 addons/free/category.php:533
+#: admin/class-list-table-hooks.php:188 includes/taxo.php:202
+msgid "Category"
+msgstr "Catégorie"
+
+#: addons/free/category.php:179
+#, fuzzy
+msgid "Question Categories"
+msgstr "Statistiques de la question"
+
+#: addons/free/category.php:181
+#, fuzzy
+msgid "All Categories"
+msgstr "Catégorie"
+
+#: addons/free/category.php:183
+#, fuzzy
+msgid "Edit Category"
+msgstr "Catégorie"
+
+#: addons/free/category.php:184
+#, fuzzy
+msgid "New Category"
+msgstr "Catégorie"
+
+#: addons/free/category.php:185
+#, fuzzy
+msgid "View Category"
+msgstr "Catégorie"
+
+#: addons/free/category.php:186
+#, fuzzy
+msgid "Search Category"
+msgstr "Checher une réponse"
+
+#: addons/free/category.php:187 addons/free/tag.php:198
+#, fuzzy
+msgid "Nothing Found"
+msgstr "Aucune question trouvée"
+
+#: addons/free/category.php:188 addons/free/tag.php:199
+#, fuzzy
+msgid "Nothing found in Trash"
+msgstr "Aucune question trouvée dans la corbeille"
+
+#: addons/free/category.php:230
+msgid "Ask form category order"
+msgstr ""
+
+#: addons/free/category.php:231
+msgid "Set how you want to order categories in form."
+msgstr ""
+
+#: addons/free/category.php:238 addons/free/category.php:252
+msgid "Group"
+msgstr ""
+
+#: addons/free/category.php:244
+msgid "Categries page order by"
+msgstr ""
+
+#: addons/free/category.php:245 addons/free/category.php:259
+msgid "Set how you want to order categories in categories page."
+msgstr ""
+
+#: addons/free/category.php:258
+msgid "Categries page order"
+msgstr ""
+
+#: addons/free/category.php:262
+#, fuzzy
+msgid "Ascending"
+msgstr "En attente"
+
+#: addons/free/category.php:263
+#, fuzzy
+msgid "Descending"
+msgstr "En attente"
+
+#: addons/free/category.php:269
+#, fuzzy
+msgid "Categories page slug"
+msgstr "Slug de la page des utilisateurs"
+
+#: addons/free/category.php:270
+#, fuzzy
+msgid "Slug categories page"
+msgstr "Catégorie"
+
+#: addons/free/category.php:277
+#, fuzzy
+msgid "Category page slug"
+msgstr "Slug de la page utilisateur"
+
+#: addons/free/category.php:278
+#, fuzzy
+msgid "Slug for category page"
+msgstr "Catégorie"
+
+#: addons/free/category.php:285
+#, fuzzy
+msgid "Categories title"
+msgstr "Page titres"
+
+#: addons/free/category.php:286
+#, fuzzy
+msgid "Title of the categories page"
+msgstr "Titre de la page des profiles utilisateur"
+
+#: addons/free/category.php:292
+#, fuzzy
+msgid "Category per page"
+msgstr "Catégorie"
+
+#: addons/free/category.php:293
+#, fuzzy
+msgid "Category to show per page"
+msgstr "Nombre d'éléments par page"
+
+#: addons/free/category.php:299
+msgid "Categories image height"
+msgstr ""
+
+#: addons/free/category.php:300
+msgid "Image height in categories page"
+msgstr ""
+
+#: addons/free/category.php:341
+#, fuzzy
+msgid "Questions Category"
+msgstr "Statistiques de la question"
+
+#: addons/free/category.php:421
+msgid "Select a topic that best fits your question"
+msgstr ""
+
+#: addons/free/category.php:469
+#, fuzzy
+msgid "No matching category found"
+msgstr "Aucune réponse trouvée"
+
+#: addons/free/category.php:552 addons/free/category.php:595
+msgid "Image"
+msgstr ""
+
+#: addons/free/category.php:553 addons/free/category.php:598
+#, fuzzy
+msgid "Upload image"
+msgstr "Envoi en cours"
+
+#: addons/free/category.php:557
+#, fuzzy
+msgid "Category image"
+msgstr "Catégorie"
+
+#: addons/free/category.php:561 addons/free/category.php:614
+#, fuzzy
+msgid "Category icon class"
+msgstr "Catégorie"
+
+#: addons/free/category.php:563 addons/free/category.php:618
+#: addons/free/category.php:627
+msgid "Font icon class, if image not set"
+msgstr ""
+
+#: addons/free/category.php:567
+msgid "Icon background color"
+msgstr ""
+
+#: addons/free/category.php:569
+msgid "Set background color to be used with icon"
+msgstr ""
+
+#: addons/free/category.php:607
+#, fuzzy
+msgid "Remove image"
+msgstr "Enlever"
+
+#: addons/free/category.php:609
+#, fuzzy
+msgid "Featured image for category"
+msgstr "Catégorie"
+
+#: addons/free/category.php:623
+#, fuzzy
+msgid "Category icon color"
+msgstr "Catégorie"
+
+#: addons/free/category.php:732 templates/addons/category/categories.php:47
+#, fuzzy
+msgid "%d Sub category"
+msgid_plural "%d Sub categories"
+msgstr[0] "Catégorie"
+msgstr[1] "Catégorie"
+
+#: addons/free/category.php:844
+#, fuzzy
+msgid "Question category feed"
+msgstr "Fil RSS de la question"
+
+#: addons/free/category.php:892 addons/free/tag.php:682
+msgid ", %d+"
+msgstr ""
+
+#: addons/free/email.php:191
+#, fuzzy
+msgid "New question posted by {asker}"
+msgstr "Pas de question pour le moment !"
+
+#: addons/free/email.php:192
+msgid ""
+"Hello!\n"
+"A new question is posted by {asker}\n"
+"\n"
+"Title: {question_title}\n"
+"Description:\n"
+"{question_excerpt}\n"
+"\n"
+"Link: {question_link}"
+msgstr ""
+
+#: addons/free/email.php:194
+#, fuzzy
+msgid "New answer posted by {answerer}"
+msgstr "Pas de réponses pour le moment !"
+
+#: addons/free/email.php:195
+msgid ""
+"Hello!\n"
+"A new answer is posted by {answerer} on {question_title}\n"
+"Answer:\n"
+"{answer_excerpt}\n"
+"\n"
+"Link: {answer_link}"
+msgstr ""
+
+#: addons/free/email.php:197
+#, fuzzy
+msgid "Your answer was selected as best"
+msgstr "Lorsqu'un utilisateur selectionne la meilleure réponse."
+
+#: addons/free/email.php:198
+#, fuzzy
+msgid ""
+"Hello!\n"
+"Your answer on '{question_title}' was selected as best.\n"
+"\n"
+"Link: {answer_link}"
+msgstr ""
+"Votre réponse sur <b>##post_title</b> a été selectionnée comme la meilleure"
+
+#: addons/free/email.php:200
+msgid "New comment by {commenter}"
+msgstr ""
+
+#: addons/free/email.php:201
+msgid ""
+"Hello!\n"
+"A new comment posted on '{question_title}' by {commenter}.\n"
+"\n"
+"Link: {comment_link}"
+msgstr ""
+
+#: addons/free/email.php:203
+#, fuzzy
+msgid "A question is edited by {editor}"
+msgstr "Pas de question pour le moment !"
+
+#: addons/free/email.php:204
+msgid ""
+"Hello!\n"
+"Question '{question_title}' is edited by {editor}.\n"
+"\n"
+"Link: {question_link}"
+msgstr ""
+
+#: addons/free/email.php:206
+#, fuzzy
+msgid "An answer is edited by {editor}"
+msgstr "Pas de réponses pour le moment !"
+
+#: addons/free/email.php:207
+msgid ""
+"Hello!\n"
+"Answer on '{question_title}' is edited by {editor}.\n"
+"\n"
+"Link: {question_link}"
+msgstr ""
+
+#: addons/free/email.php:209
+#, fuzzy
+msgid "A question is trashed by {user}"
+msgstr "Question posée par %s."
+
+#: addons/free/email.php:210
+msgid ""
+"Hello!\n"
+"Question '{question_title}' is trashed by {user}.\n"
+msgstr ""
+
+#: addons/free/email.php:212
+msgid "An answer is trashed by {user}"
+msgstr ""
+
+#: addons/free/email.php:213
+msgid ""
+"Hello!\n"
+"Answer on '{question_title}' is trashed by {user}.\n"
+msgstr ""
+
+#: addons/free/email.php:237
+msgid "Email"
+msgstr "Email"
+
+#: addons/free/email.php:239
+#, fuzzy
+msgid "Notify admin(s)"
+msgstr "Notifications"
+
+#: addons/free/email.php:242
+msgid "Admin email"
+msgstr ""
+
+#: addons/free/email.php:243
+msgid "Enter email where admin notification should be sent"
+msgstr ""
+
+#: addons/free/email.php:249 addons/free/email.php:302
+#: includes/post-types.php:48
+#, fuzzy
+msgid "New question"
+msgstr "Nouvelles questions"
+
+#: addons/free/email.php:250
+#, fuzzy
+msgid "Send email to admin for every new question."
+msgstr "Seulement l'administrateur peut répondre aux questions."
+
+#: addons/free/email.php:256 includes/post-types.php:118
+msgid "New answer"
+msgstr "Nouvelle réponse"
+
+#: addons/free/email.php:257
+#, fuzzy
+msgid "Send email to admin for every new answer."
+msgstr "Selectionner une question pour faire une réponse"
+
+#: addons/free/email.php:263 addons/free/email.php:353
+#, fuzzy
+msgid "New comment"
+msgstr "1 commentaire"
+
+#: addons/free/email.php:264
+msgid "Send email to admin for every new comment."
+msgstr ""
+
+#: addons/free/email.php:270 addons/free/email.php:370
+#: admin/class-list-table-hooks.php:346 includes/post-types.php:49
+msgid "Edit question"
+msgstr "Modifier la question"
+
+#: addons/free/email.php:271
+msgid "Send email to admin when question is edited"
+msgstr ""
+
+#: addons/free/email.php:277 addons/free/email.php:387
+#: includes/post-types.php:119
+msgid "Edit answer"
+msgstr "Editer la réponse"
+
+#: addons/free/email.php:278
+msgid "Send email to admin when answer is edited"
+msgstr ""
+
+#: addons/free/email.php:284
+#, fuzzy
+msgid "Delete question"
+msgstr "Sélectionner la question"
+
+#: addons/free/email.php:285
+msgid "Send email to admin when question is trashed"
+msgstr ""
+
+#: addons/free/email.php:291
+#, fuzzy
+msgid "Delete answer"
+msgstr "a selectionné une reponse"
+
+#: addons/free/email.php:292
+msgid "Send email to admin when asnwer is trashed"
+msgstr ""
+
+#: addons/free/email.php:298
+msgid "Templates"
+msgstr ""
+
+#: addons/free/email.php:306 addons/free/email.php:323
+#: addons/free/email.php:340 addons/free/email.php:357
+#: addons/free/email.php:374 addons/free/email.php:391
+msgid "Subject"
+msgstr ""
+
+#: addons/free/email.php:312 addons/free/email.php:329
+#: addons/free/email.php:346 addons/free/email.php:363
+#: addons/free/email.php:380 addons/free/email.php:397
+msgid "Body"
+msgstr ""
+
+#: addons/free/email.php:319
+#, fuzzy
+msgid "New Answer"
+msgstr "Nouvelle réponse"
+
+#: addons/free/email.php:336
+#, fuzzy
+msgid "Select Answer"
+msgstr "Sélection d'une réponse"
+
+#: addons/free/notification/query.php:260
+msgid "Someone"
+msgstr ""
+
+#: addons/free/notification/query.php:306
+#, fuzzy
+msgid "post"
+msgstr "Editer le post"
+
+#: addons/free/notification.php:41 addons/free/notification.php:47
+#: addons/free/notification.php:173 templates/functions.php:58
+msgid "Notifications"
+msgstr "Notifications"
+
+#: addons/free/notification.php:84
+#, fuzzy
+msgid "Notifications page title"
+msgstr "Notifications"
+
+#: addons/free/notification.php:85
+#, fuzzy
+msgid "Custom title for user profile notifications page"
+msgstr "Supprimer cette notification"
+
+#: addons/free/notification.php:90
+#, fuzzy
+msgid "Notifications page slug"
+msgstr "Notifications"
+
+#: addons/free/notification.php:91
+#, fuzzy
+msgid "Custom slug for user profile notifications page"
+msgstr "Supprimer cette notification"
+
+#: addons/free/notification.php:131
+#, fuzzy
+msgid "posted an answer on your question"
+msgstr "La meilleure réponse a été choisi pour votre question."
+
+#: addons/free/notification.php:136
+#, fuzzy
+msgid "commented on your %cpt%"
+msgstr "%1$s commentés sur %3$s - %2$s"
+
+#: addons/free/notification.php:141
+msgid "up voted your %cpt%"
+msgstr ""
+
+#: addons/free/notification.php:148
+#, fuzzy
+msgid "down voted your %cpt%"
+msgstr "%s-1 %s"
+
+#: addons/free/notification.php:153
+#, fuzzy
+msgid "selected your answer"
+msgstr "a selectionné une reponse"
+
+#: addons/free/notification.php:158
+#, fuzzy
+msgid "You have earned %points% points"
+msgstr "Vous avez marqué ce post"
+
+#: addons/free/notification.php:163
+msgid "You lose %points% points"
+msgstr ""
+
+#: addons/free/notification.php:210
+#, fuzzy
+msgid "You do not have permission to view this page"
+msgstr "Vous n'avez pas la permission d'acceder à cette page."
+
+#: addons/free/notification.php:428
+msgid "There was a problem processing your request"
+msgstr ""
+
+#: addons/free/notification.php:438
+#, fuzzy
+msgid "Successfully updated all notifications"
+msgstr "Mot clé créé avec succès."
+
+#: addons/free/profile.php:41
+msgid "User profile"
+msgstr "Mise à jour du profile"
+
+#: addons/free/profile.php:54
+#, fuzzy
+msgid "User Profile"
+msgstr "Mise à jour du profile"
+
+#: addons/free/profile.php:57
+#, fuzzy
+msgid "Questions page title"
+msgstr "Nombre de questions par page"
+
+#: addons/free/profile.php:58
+#, fuzzy
+msgid "Custom title for user profile questions page"
+msgstr "Afficher la question dans un titre de la page question."
+
+#: addons/free/profile.php:62
+#, fuzzy
+msgid "Questions page slug"
+msgstr "Nombre de questions par page"
+
+#: addons/free/profile.php:63
+#, fuzzy
+msgid "Custom slug for user profile questions page"
+msgstr "Entrer le slug pour la page des questions"
+
+#: addons/free/profile.php:67
+#, fuzzy
+msgid "Answers page title"
+msgstr "Titre de la page pour poser une question"
+
+#: addons/free/profile.php:68
+msgid "Custom title for user profile answers page"
+msgstr ""
+
+#: addons/free/profile.php:72
+#, fuzzy
+msgid "Answers page slug"
+msgstr "Réponses par page"
+
+#: addons/free/profile.php:73
+#, fuzzy
+msgid "Custom slug for user profile answers page"
+msgstr "Réponses à afficher sur une page"
+
+#: addons/free/profile.php:284
+msgid "Callback function not found for rendering this page"
+msgstr ""
+
+#: addons/free/recaptcha.php:52
+#, fuzzy
+msgid "reCaptcha"
+msgstr "reCaptacha"
+
+#: addons/free/recaptcha.php:55
+msgid "Recaptcha site key"
+msgstr "Clef reCaptcha pour votre site"
+
+#: addons/free/recaptcha.php:56
+msgid ""
+"Enter your site key, if you dont have it get it from here https://www.google."
+"com/recaptcha/admin"
+msgstr ""
+"Entrer la clef reCaptcha pour votre site, voir https://www.google.com/"
+"recaptcha/admin"
+
+#: addons/free/recaptcha.php:60
+msgid "Recaptcha secret key"
+msgstr "Recaptcha clef secrete"
+
+#: addons/free/recaptcha.php:61
+msgid "Enter your secret key"
+msgstr "Entrer votre clef"
+
+#: addons/free/recaptcha.php:65
+#, fuzzy
+msgid "Recaptcha Method"
+msgstr "Recaptcha clef secrete"
+
+#: addons/free/recaptcha.php:66
+msgid "Select method to use when verification keeps failing"
+msgstr ""
+
+#: addons/free/recaptcha.php:82
+msgid "Bot verification failed."
+msgstr "Echec de la vérification du robot."
+
+#: addons/free/recaptcha.php:115
+msgid "reCaptach keys missing, please add keys"
+msgstr "clefs reCaptach manquantes, merci de vérifier"
+
+#: addons/free/reputation.php:35 addons/free/reputation.php:400
+#: addons/free/reputation.php:450 admin/views/recount.php:122
+#, fuzzy
+msgid "Reputations"
+msgstr "Réputation"
+
+#: addons/free/reputation.php:73 addons/free/reputation.php:369
+msgid "Reputation"
+msgstr "Réputation"
+
+#: addons/free/reputation.php:74
+#, fuzzy
+msgid "Events"
+msgstr "Evenement"
+
+#: addons/free/reputation.php:80
+#, fuzzy
+msgid "Reputations page title"
+msgstr "Titre de la page pour poser une question"
+
+#: addons/free/reputation.php:81
+#, fuzzy
+msgid "Custom title for user profile reputations page"
+msgstr "Afficher la question dans un titre de la page question."
+
+#: addons/free/reputation.php:86
+#, fuzzy
+msgid "Reputations page slug"
+msgstr "Page slug d'une question"
+
+#: addons/free/reputation.php:87
+#, fuzzy
+msgid "Custom slug for user profile reputations page"
+msgstr "Entrer le slug pour la page des questions"
+
+#: addons/free/reputation.php:97
+#, fuzzy
+msgid "Registration"
+msgstr "Créer un compte"
+
+#: addons/free/reputation.php:98
+msgid "Points awarded when user account is created"
+msgstr ""
+
+#: addons/free/reputation.php:100
+#, fuzzy
+msgid "Registered"
+msgstr "S'inscrire"
+
+#: addons/free/reputation.php:106
+msgid "Asking"
+msgstr ""
+
+#: addons/free/reputation.php:107
+msgid "Points awarded when user asks a question"
+msgstr ""
+
+#: addons/free/reputation.php:109
+#, fuzzy
+msgid "Asked a question"
+msgstr "Poser une question"
+
+#: addons/free/reputation.php:115
+#, fuzzy
+msgid "Answering"
+msgstr "Réponse"
+
+#: addons/free/reputation.php:116
+#, fuzzy
+msgid "Points awarded when user answer a question"
+msgstr "Seulement l'administrateur peut répondre aux questions."
+
+#: addons/free/reputation.php:118
+#, fuzzy
+msgid "Posted an answer"
+msgstr "Soumettre la réponse"
+
+#: addons/free/reputation.php:124
+#, fuzzy
+msgid "Commenting"
+msgstr "Commenter"
+
+#: addons/free/reputation.php:125
+#, fuzzy
+msgid "Points awarded when user comment on question or answer"
+msgstr "Vous ne pouvez pas voter sur votre propre question ou réponse."
+
+#: addons/free/reputation.php:127
+#, fuzzy
+msgid "Commented on a post"
+msgstr "Interdire les commentaire sur une réponse."
+
+#: addons/free/reputation.php:133
+#, fuzzy
+msgid "Selecting an Answer"
+msgstr "Sélection d'une réponse"
+
+#: addons/free/reputation.php:134
+msgid "Points awarded when user select an answer for thier question"
+msgstr ""
+
+#: addons/free/reputation.php:136
+#, fuzzy
+msgid "Selected an answer as best"
+msgstr "Sélectionner cette réponse comme la meilleure"
+
+#: addons/free/reputation.php:142
+#, fuzzy
+msgid "Answer selected as best"
+msgstr "Lorsqu'un utilisateur selectionne la meilleure réponse."
+
+#: addons/free/reputation.php:143
+#, fuzzy
+msgid "Points awarded when user's answer selected as best"
+msgstr "Lorsqu'un utilisateur selectionne la meilleure réponse."
+
+#: addons/free/reputation.php:145
+#, fuzzy
+msgid "Answer was selected as best"
+msgstr "Lorsqu'un utilisateur selectionne la meilleure réponse."
+
+#: addons/free/reputation.php:151
+#, fuzzy
+msgid "Received up vote"
+msgstr "+1 sur sa réponse"
+
+#: addons/free/reputation.php:152
+#, fuzzy
+msgid "Points awarded when user receive an upvote"
+msgstr "Lorsqu'un utilisateur recoit un +1 sur une sa réponse"
+
+#: addons/free/reputation.php:154
+#, fuzzy
+msgid "Received an upvote"
+msgstr "-1 sur %s %s"
+
+#: addons/free/reputation.php:159
+#, fuzzy
+msgid "Received down vote"
+msgstr "-1 sur %s %s"
+
+#: addons/free/reputation.php:160
+#, fuzzy
+msgid "Points awarded when user receive a down vote"
+msgstr "Lorsqu'un utilisateur recoit un +1 sur une sa réponse"
+
+#: addons/free/reputation.php:162
+#, fuzzy
+msgid "Received a down vote"
+msgstr "-1 sur %s %s"
+
+#: addons/free/reputation.php:167
+msgid "Gives an up vote"
+msgstr ""
+
+#: addons/free/reputation.php:168
+msgid "Points taken from user when they give a vote up"
+msgstr ""
+
+#: addons/free/reputation.php:170
+#, fuzzy
+msgid "Given an up vote"
+msgstr "Envoi de votre vote en cours"
+
+#: addons/free/reputation.php:175
+#, fuzzy
+msgid "Gives down vote"
+msgstr "Désactiver les votes négatifs"
+
+#: addons/free/reputation.php:176
+msgid "Points taken from user when user give a down vote"
+msgstr ""
+
+#: addons/free/reputation.php:178
+#, fuzzy
+msgid "Given a down vote"
+msgstr "-1 sur %s %s"
+
+#: addons/free/reputation.php:203
+#, fuzzy
+msgid "Successfully updated reputation points!"
+msgstr "Mot clé créé avec succès."
+
+#: addons/free/reputation.php:391
+msgid "%s Reputation"
+msgstr "%s Points"
+
+#: addons/free/tag.php:34 addons/free/tag.php:237 addons/free/tag.php:630
+#: admin/class-list-table-hooks.php:192
+msgid "Tag"
+msgstr "Mot clé"
+
+#: addons/free/tag.php:35 addons/free/tag.php:183 addons/free/tag.php:230
+#: addons/free/tag.php:307 addons/free/tag.php:379 addons/free/tag.php:404
+#: addons/free/tag.php:480 addons/free/tag.php:490 includes/form.php:105
+#: includes/form.php:128
+msgid "Tags"
+msgstr "Mots-clés"
+
+#: addons/free/tag.php:163
+#, fuzzy
+msgid "(AnsPress) Tags"
+msgstr "Pages AnsPress"
+
+#: addons/free/tag.php:167
+#, fuzzy
+msgid "Widgets in this area will be shown in anspress tags page."
+msgstr ""
+"Les widgets de cette zone seront affichés dans la page des utilisateurs."
+
+#: addons/free/tag.php:190 addons/free/tag.php:230
+#, fuzzy
+msgid "Question Tags"
+msgstr "Questions"
+
+#: addons/free/tag.php:192
+#, fuzzy
+msgid "All Tags"
+msgstr "Mots-clés"
+
+#: addons/free/tag.php:194
+#, fuzzy
+msgid "Edit Tag"
+msgstr "Modifier les flags"
+
+#: addons/free/tag.php:195
+#, fuzzy
+msgid "New Tag"
+msgstr "Nouveau badge"
+
+#: addons/free/tag.php:196
+#, fuzzy
+msgid "View Tag"
+msgstr "Vu"
+
+#: addons/free/tag.php:197
+#, fuzzy
+msgid "Search Tag"
+msgstr "Rechercher"
+
+#: addons/free/tag.php:240
+msgid "Tags to show"
+msgstr ""
+
+#: addons/free/tag.php:241
+#, fuzzy
+msgid "Numbers of tags to show in tags page."
+msgstr "Nombre d'utilisateur à afficher:"
+
+#: addons/free/tag.php:246
+msgid "Maximum tags"
+msgstr ""
+
+#: addons/free/tag.php:247
+msgid "Maximum numbers of tags that user can add when asking."
+msgstr ""
+
+#: addons/free/tag.php:252
+#, fuzzy
+msgid "Minimum tags"
+msgstr "Taille minimum du titre"
+
+#: addons/free/tag.php:253
+msgid "minimum numbers of tags that user must add when asking."
+msgstr ""
+
+#: addons/free/tag.php:258
+#, fuzzy
+msgid "Tags page title"
+msgstr "Titre de la page de base"
+
+#: addons/free/tag.php:259
+#, fuzzy
+msgid "Title for tags page"
+msgstr "Titre de la page pour poser une question"
+
+#: addons/free/tag.php:265
+#, fuzzy
+msgid "Tags page slug"
+msgstr "Slug de la page Poser une question"
+
+#: addons/free/tag.php:266
+#, fuzzy
+msgid "Slug tags page"
+msgstr "Sélectionner une page"
+
+#: addons/free/tag.php:273
+#, fuzzy
+msgid "Tag page slug"
+msgstr "Slug de la page Poser une question"
+
+#: addons/free/tag.php:274
+#, fuzzy
+msgid "Slug for tag page"
+msgstr "Entrer le slug pour la page Poser une question"
+
+#: addons/free/tag.php:333
+#, fuzzy
+msgid "Delete Tag"
+msgstr "Supprimer"
+
+#: addons/free/tag.php:334
+msgid "Add Tag"
+msgstr ""
+
+#: addons/free/tag.php:335
+#, fuzzy
+msgid "added to the tags list."
+msgstr "Répondre au post."
+
+#: addons/free/tag.php:336
+msgid "removed from the tags list."
+msgstr ""
+
+#: addons/free/tag.php:337
+msgid "Suggestions are available. Use the up and down arrow keys to read it."
+msgstr ""
+
+#: addons/free/tag.php:382
+msgid "Type and hit enter"
+msgstr ""
+
+#: addons/free/tag.php:407
+msgid "Slowly type for suggestions"
+msgstr ""
+
+#: admin/anspress-admin.php:187
+msgid "All Questions"
+msgstr "Toutes les questions"
+
+#: admin/anspress-admin.php:189
+msgid "New Question"
+msgstr "Poser une question"
+
+#: admin/anspress-admin.php:191
+msgid "All Answers"
+msgstr "Toutes les réponses"
+
+#: admin/anspress-admin.php:193
+msgid "Select question"
+msgstr "Sélectionner la question"
+
+#: admin/anspress-admin.php:202 admin/views/admin.php:27
+#: admin/views/dashboard.php:352
+msgid "AnsPress Options"
+msgstr "Options"
+
+#: admin/anspress-admin.php:202
+msgid "Options & Add-ons"
+msgstr ""
+
+#: admin/anspress-admin.php:206 admin/views/sidebar.php:4
+msgid "About AnsPress"
+msgstr "A propos"
+
+#: admin/anspress-admin.php:208
+#, fuzzy
+msgid "Upgrade AnsPress"
+msgstr "Mettre à jour la réponse"
+
+#: admin/anspress-admin.php:307
+msgid "Settings"
+msgstr "Configuration"
+
+#: admin/anspress-admin.php:308
+msgid "About"
+msgstr "À propos"
+
+#: admin/anspress-admin.php:487
+#, fuzzy
+msgid "Select All"
+msgstr "Sélectionner"
+
+#: admin/anspress-admin.php:491
+msgid "Add to Menu"
+msgstr "Ajouter au menu"
+
+#: admin/anspress-admin.php:619 admin/anspress-admin.php:628
+#: admin/options-fields.php:381 admin/options-fields.php:389
+#: admin/options-fields.php:399 admin/options-fields.php:409
+#: admin/options-fields.php:419 admin/options-fields.php:429
+#: includes/post-status.php:24
+msgid "Moderate"
+msgstr "A Modérer"
+
+#: admin/anspress-admin.php:622 admin/anspress-admin.php:629
+msgid "Private Post"
+msgstr "Post privé"
+
+#: admin/anspress-admin.php:715
+#, fuzzy
+msgid "AnsPress database is not updated."
+msgstr "AnsPress options mises à jour."
+
+#: admin/anspress-admin.php:716
+#, fuzzy
+msgid "Update now"
+msgstr "Mettre à jour la réponse"
+
+#: admin/anspress-admin.php:721
+msgid "You must continue to upgrade AnsPress data."
+msgstr ""
+
+#: admin/anspress-admin.php:722
+msgid "Upgrade now"
+msgstr ""
+
+#: admin/anspress-admin.php:727
+msgid ""
+"AnsPress base page does not exists. AnsPress require a base page to work "
+"properly."
+msgstr ""
+
+#: admin/anspress-admin.php:728
+msgid "Set automatically"
+msgstr ""
+
+#: admin/anspress-admin.php:728
+msgid "Or"
+msgstr ""
+
+#: admin/anspress-admin.php:728
+msgid "Set existing page as base page"
+msgstr ""
+
+#: admin/class-list-table-hooks.php:56 admin/class-list-table-hooks.php:396
+msgid "Flagged"
+msgstr "Signalé"
+
+#: admin/class-list-table-hooks.php:130
+msgid "Restore this item from the Trash"
+msgstr "Restaurer cet élément depuis la corbeille"
+
+#: admin/class-list-table-hooks.php:130
+msgid "Restore"
+msgstr "Restaurer"
+
+#: admin/class-list-table-hooks.php:133
+msgid "Move this item to the Trash"
+msgstr "Déplacer cet élément vers la corveille"
+
+#: admin/class-list-table-hooks.php:133 admin/meta-box.php:70
+msgid "Trash"
+msgstr "Corbeille"
+
+#: admin/class-list-table-hooks.php:137
+msgid "Delete this item permanently"
+msgstr "Supprimer cet item définitivement"
+
+#: admin/class-list-table-hooks.php:137 includes/theme.php:382
+msgid "Delete Permanently"
+msgstr "Supprimer définitivement"
+
+#: admin/class-list-table-hooks.php:142
+#, fuzzy
+msgid "Edit &#8220;%s&#8221;"
+msgstr "Apercu &#8220;%s&#8221;"
+
+#: admin/class-list-table-hooks.php:142 admin/meta-box.php:69
+#: includes/comments.php:400 includes/theme.php:339
+msgid "Edit"
+msgstr "Editer"
+
+#: admin/class-list-table-hooks.php:148
+msgid "Preview &#8220;%s&#8221;"
+msgstr "Apercu &#8220;%s&#8221;"
+
+#: admin/class-list-table-hooks.php:148
+msgid "Preview"
+msgstr "Apercu"
+
+#: admin/class-list-table-hooks.php:151
+msgid "View &#8220;%s&#8221; question"
+msgstr "Voir &#8220;%s&#8221; question"
+
+#: admin/class-list-table-hooks.php:151
+msgid "View"
+msgstr "Vu"
+
+#: admin/class-list-table-hooks.php:168 admin/meta-box.php:130
+msgid "Clear flag"
+msgstr ""
+
+#: admin/class-list-table-hooks.php:184 admin/class-list-table-hooks.php:291
+msgid "Author"
+msgstr "Auteur"
+
+#: admin/class-list-table-hooks.php:185 includes/ask-form.php:41
+msgid "Title"
+msgstr "Titre"
+
+#: admin/class-list-table-hooks.php:195 admin/class-list-table-hooks.php:293
+#: includes/theme.php:351
+msgid "Status"
+msgstr "Statut"
+
+#: admin/class-list-table-hooks.php:196 templates/question-list-item.php:37
+msgid "Ans"
+msgstr "Rep"
+
+#: admin/class-list-table-hooks.php:197 admin/class-list-table-hooks.php:294
+msgid "Comments"
+msgstr "Commentaires"
+
+#: admin/class-list-table-hooks.php:198 admin/class-list-table-hooks.php:295
+#: admin/views/recount.php:54 templates/content-answer.php:20
+#: templates/question-list-item.php:30
+msgid "Votes"
+msgstr "Votes"
+
+#: admin/class-list-table-hooks.php:199 admin/class-list-table-hooks.php:296
+#, fuzzy
+msgid "Flags"
+msgstr "Signaler"
+
+#: admin/class-list-table-hooks.php:200 admin/class-list-table-hooks.php:297
+msgid "Date"
+msgstr "Date"
+
+#: admin/class-list-table-hooks.php:247 admin/class-list-table-hooks.php:263
+msgid "--"
+msgstr "--"
+
+#: admin/class-list-table-hooks.php:268 admin/class-list-table-hooks.php:342
+#: includes/ajax-hooks.php:100 includes/ajax-hooks.php:102
+#: includes/ajax-hooks.php:279 includes/answer-form.php:263
+#: templates/answers.php:20 templates/buddypress/question-item.php:38
+#, fuzzy
+msgid "%d Answer"
+msgid_plural "%d Answers"
+msgstr[0] "%d réponses"
+msgstr[1] "%d réponses"
+
+#: admin/class-list-table-hooks.php:292
+msgid "Content"
+msgstr "Contenu"
+
+#: admin/class-list-table-hooks.php:331
+msgid "This question is orphan, no question is selected for this answer"
+msgstr "Cette question n'a pas eu de réponse sélectionnée."
+
+#: admin/class-list-table-hooks.php:366 admin/meta-box.php:129
+#: includes/flag.php:129
+msgid "Flag"
+msgstr "Signaler"
+
+#: admin/class-list-table-hooks.php:437
+msgid "Please fill parent question field, Answer was not saved!"
+msgstr "Merci de renseigner la question parente, réponse non sauvegardée."
+
+#: admin/functions.php:143
+msgid "Save options"
+msgstr "Sauvegarder les options"
+
+#: admin/license.php:37 admin/views/licenses.php:20
+msgid "Licenses"
+msgstr ""
+
+#: admin/meta-box.php:37
+#, fuzzy
+msgid " %d Answers"
+msgstr "%d réponses"
+
+#: admin/meta-box.php:55 admin/meta-box.php:92
+#, fuzzy
+msgid "Add an answer"
+msgstr "L'auteur de la question peut répondre"
+
+#: admin/meta-box.php:91
+#, fuzzy
+msgid "<strong>%d</strong> Answer"
+msgid_plural "<strong>%d</strong> Answers"
+msgstr[0] "<strong>1</strong> Réponse"
+msgstr[1] "<strong>1</strong> Réponse"
+
+#: admin/meta-box.php:99
+#, fuzzy
+msgid "<strong>%d</strong> Vote"
+msgid_plural "<strong>%d</strong> Votes"
+msgstr[0] "<strong>1</strong> Vote"
+msgstr[1] "<strong>1</strong> Vote"
+
+#: admin/meta-box.php:102
+#, fuzzy
+msgid "-"
+msgstr "--"
+
+#: admin/meta-box.php:106
+#, fuzzy
+msgid "+"
+msgstr "9+"
+
+#: admin/options-fields.php:14
+msgid "General"
+msgstr "Général"
+
+#: admin/options-fields.php:15 admin/options-fields.php:305
+msgid "Add-ons"
+msgstr ""
+
+#: admin/options-fields.php:16
+#, fuzzy
+msgid "Access"
+msgstr "Fait"
+
+#: admin/options-fields.php:17
+msgid "Tools"
+msgstr ""
+
+#: admin/options-fields.php:20
+msgid "Pages and permalinks"
+msgstr ""
+
+#: admin/options-fields.php:23
+#, fuzzy
+msgid "Questions page"
+msgstr "Nombre de questions par page"
+
+#: admin/options-fields.php:24
+msgid "Select page for displaying anspress."
+msgstr "Sélectionner la page pour afficher anspress."
+
+#: admin/options-fields.php:29
+#, fuzzy
+msgid "Ask question page slug"
+msgstr "Page slug d'une question"
+
+#: admin/options-fields.php:30
+#, fuzzy
+msgid "Set a slug for ask question page."
+msgstr "Entrer le slug pour la page des questions"
+
+#: admin/options-fields.php:35
+#, fuzzy
+msgid "Question slug"
+msgstr "Page slug d'une question"
+
+#: admin/options-fields.php:36
+#, fuzzy
+msgid "Slug for single question page."
+msgstr "Entrer le slug pour la page des questions"
+
+#: admin/options-fields.php:41
+#, fuzzy
+msgid "Question permalink"
+msgstr "Nombre de questions par page"
+
+#: admin/options-fields.php:42
+#, fuzzy
+msgid "Select single question permalink structure."
+msgstr ""
+"Afficher la taxonomie avant le terme \"question\" pour la page question"
+
+#: admin/options-fields.php:53
+msgid "Hide author credits"
+msgstr "Cacher les informations de l'auteur"
+
+#: admin/options-fields.php:54
+msgid "Hide link to AnsPress project site."
+msgstr ""
+
+#: admin/options-fields.php:60
+#, fuzzy
+msgid "Page Titles"
+msgstr "Page titres"
+
+#: admin/options-fields.php:64
+msgid "Base page title"
+msgstr "Titre de la page de base"
+
+#: admin/options-fields.php:65
+msgid "Main questions list page title"
+msgstr "Titre de la page principale"
+
+#: admin/options-fields.php:69
+msgid "Ask page title"
+msgstr "Titre de la page pour poser une question"
+
+#: admin/options-fields.php:70
+msgid "Title of the ask page"
+msgstr "Titre de la page pour poser une question"
+
+#: admin/options-fields.php:74
+#, fuzzy
+msgid "Search page title"
+msgstr "Titre de la page des utilisateurs"
+
+#: admin/options-fields.php:75
+#, fuzzy
+msgid "Title of the search page"
+msgstr "Titre de la page des profiles utilisateur"
+
+#: admin/options-fields.php:79
+#, fuzzy
+msgid "Author page title"
+msgstr "Titre de la page pour poser une question"
+
+#: admin/options-fields.php:80
+#, fuzzy
+msgid "Title of the author page"
+msgstr "Titre de la page des profiles utilisateur"
+
+#: admin/options-fields.php:84
+msgid "Show solved prefix"
+msgstr "Afficher le préfix [résolu]"
+
+#: admin/options-fields.php:85
+msgid ""
+"If an answer is selected for question then [solved] prefix will be added in "
+"title."
+msgstr ""
+"Si une réponse est sélectionnée pour la question, ajouter le préfixe "
+"[résolu] dans le titre."
+
+#: admin/options-fields.php:91
+msgid "Layout"
+msgstr "Modèle"
+
+#: admin/options-fields.php:94
+msgid "Load assets in AnsPress page only?"
+msgstr ""
+
+#: admin/options-fields.php:95
+msgid ""
+"Check this to load AnsPress JS and CSS on the AnsPress page only. Be "
+"careful, this might break layout."
+msgstr ""
+
+#: admin/options-fields.php:101
+msgid "Avatar"
+msgstr "Avatar"
+
+#: admin/options-fields.php:106
+msgid "List avatar size"
+msgstr "Taille de l'avatar dans la liste"
+
+#: admin/options-fields.php:107
+msgid "User avatar size for questions list."
+msgstr "Taille de l'avatar sur le listing des questions"
+
+#: admin/options-fields.php:112
+msgid "Question avatar size"
+msgstr "Taille de l'avatar sur une question"
+
+#: admin/options-fields.php:113
+msgid "User avatar size for question."
+msgstr "Taille de l'avatar sur une question"
+
+#: admin/options-fields.php:118 admin/options-fields.php:124
+msgid "Answer avatar size"
+msgstr "Taille de l'avatar sur une réponse"
+
+#: admin/options-fields.php:119 admin/options-fields.php:125
+msgid "User avatar size for answer."
+msgstr "Taille de l'avatar sur une réponse"
+
+#: admin/options-fields.php:130
+msgid "Comment avatar size"
+msgstr "Taille de l'avatar sur un commentaire"
+
+#: admin/options-fields.php:131
+msgid "User avatar size for comments."
+msgstr "Taille de l'avatar sur un commentaire"
+
+#: admin/options-fields.php:137
+msgid "Items to show per page"
+msgstr "Nombre d'éléments par page"
+
+#: admin/options-fields.php:141
+msgid "Questions per page"
+msgstr "Nombre de questions par page"
+
+#: admin/options-fields.php:142
+msgid "Questions to show per page."
+msgstr "Questions à afficher sur une page"
+
+#: admin/options-fields.php:147
+msgid "Answers per page"
+msgstr "Réponses par page"
+
+#: admin/options-fields.php:148
+msgid "Answers to show per page."
+msgstr "Réponses à afficher sur une page."
+
+#: admin/options-fields.php:154
+#, fuzzy
+msgid "Question & Answer"
+msgstr "Questions & réponses signalées"
+
+#: admin/options-fields.php:157
+msgid "Allow private posts"
+msgstr "Autoriser les posts privés"
+
+#: admin/options-fields.php:158
+msgid "Allow users to create private question and answer."
+msgstr ""
+"Autoriser les utilisateurs à mettre en privé des questions ou des réponses."
+
+#: admin/options-fields.php:163
+#, fuzzy
+msgid "Load comments"
+msgstr "Voir les commentaires"
+
+#: admin/options-fields.php:164
+#, fuzzy
+msgid "Show question and answer comments by default"
+msgstr "Voir les commentaires par défaut"
+
+#: admin/options-fields.php:169
+msgid "Check duplicate"
+msgstr ""
+
+#: admin/options-fields.php:170
+msgid "Check for duplicate posts before posting"
+msgstr ""
+
+#: admin/options-fields.php:175
+#, fuzzy
+msgid "Disable question suggestion"
+msgstr "Désactiver la possibilité de voter sur les questions."
+
+#: admin/options-fields.php:176
+msgid "Checking this will disable question suggestion in ask form"
+msgstr ""
+
+#: admin/options-fields.php:181
+#, fuzzy
+msgid "Show default date format"
+msgstr "Tri par défaut"
+
+#: admin/options-fields.php:182
+msgid ""
+"Instead of showing time passed i.e. 1 Hour ago, show default format date."
+msgstr ""
+
+#: admin/options-fields.php:192
+#, fuzzy
+msgid "Default question order"
+msgstr "Sélectionner la question"
+
+#: admin/options-fields.php:193
+msgid "Order question list by default using selected"
+msgstr ""
+
+#: admin/options-fields.php:196 admin/options-fields.php:260
+#: includes/theme.php:449 includes/theme.php:493 widgets/questions.php:86
+msgid "Voted"
+msgstr "Votées"
+
+#: admin/options-fields.php:197 admin/options-fields.php:261
+#: includes/theme.php:444 includes/theme.php:489 widgets/question_stats.php:47
+#: widgets/questions.php:84
+msgid "Active"
+msgstr "En cours"
+
+#: admin/options-fields.php:198 admin/options-fields.php:262
+#: includes/theme.php:445 includes/theme.php:496 widgets/questions.php:85
+msgid "Newest"
+msgstr "Nouvelles"
+
+#: admin/options-fields.php:199 admin/options-fields.php:263
+#: includes/theme.php:497
+msgid "Oldest"
+msgstr "Anciens"
+
+#: admin/options-fields.php:204
+msgid "Keep stop words in question slug"
+msgstr ""
+
+#: admin/options-fields.php:205
+msgid "AnsPress will not strip stop words in question slug."
+msgstr ""
+
+#: admin/options-fields.php:210
+msgid "Minimum title length"
+msgstr "Taille minimum du titre"
+
+#: admin/options-fields.php:211
+msgid "Set minimum letters for a question title."
+msgstr "Nombre de caractères minimum pour le titre."
+
+#: admin/options-fields.php:216 admin/options-fields.php:274
+msgid "Minimum question content"
+msgstr "Taille minimum de la question"
+
+#: admin/options-fields.php:217
+msgid "Set minimum letters for a question contents."
+msgstr "Nombre de caractères minimum pour le contenu."
+
+#: admin/options-fields.php:222 admin/options-fields.php:280
+msgid "Use text editor ?"
+msgstr "Utiliser l'éditeur de texte html ?"
+
+#: admin/options-fields.php:223 admin/options-fields.php:281
+msgid "Text editor as default."
+msgstr "Éditeur de texte html comme éditeur par défaut"
+
+#: admin/options-fields.php:228 admin/options-fields.php:286
+msgid "Disable comments"
+msgstr "Désactiver les commentaires"
+
+#: admin/options-fields.php:229
+msgid "Disable comments on questions."
+msgstr "Interdire les commentaire sur une question."
+
+#: admin/options-fields.php:234 admin/options-fields.php:292
+msgid "Disable voting"
+msgstr "Désactiver les votes"
+
+#: admin/options-fields.php:235
+msgid "Disable voting on questions."
+msgstr "Désactiver la possibilité de voter sur les questions."
+
+#: admin/options-fields.php:240 admin/options-fields.php:298
+msgid "Disable down voting"
+msgstr "Désactiver les votes négatifs"
+
+#: admin/options-fields.php:241
+msgid "Disable down voting on questions."
+msgstr "Désactiver les votes négatifs sur les questions."
+
+#: admin/options-fields.php:246
+msgid "Close question after selecting answer"
+msgstr "Fermer les questions lorsqu'une réponse est sélectionnée"
+
+#: admin/options-fields.php:247
+msgid "If enabled this will prevent user to submit answer on solved question."
+msgstr ""
+"Si cette option est cochée, les utilisateurs ne pourront pas répondre à une "
+"question déjà résolue."
+
+#: admin/options-fields.php:256
+#, fuzzy
+msgid "Default answers order"
+msgstr "Tri par défaut"
+
+#: admin/options-fields.php:257
+#, fuzzy
+msgid "Order answers by by default using selected"
+msgstr "%d réponses, %d sélectionnées"
+
+#: admin/options-fields.php:268
+msgid "Multiple Answers"
+msgstr "Plusieurs réponses"
+
+#: admin/options-fields.php:269
+msgid "Allow an user to submit multiple answers on a single question."
+msgstr ""
+"Autoriser la possibiliter d'avoir plusieurs réponses pour une question."
+
+#: admin/options-fields.php:275
+msgid "Set minimum letters for a answer contents."
+msgstr "Nombre de caractère minim pour une réposne."
+
+#: admin/options-fields.php:287
+msgid "Disable comments on answer."
+msgstr "Interdire les commentaire sur une réponse."
+
+#: admin/options-fields.php:293
+msgid "Disable voting on answers."
+msgstr "Désactiver la possibilité de voter sur les réponses."
+
+#: admin/options-fields.php:299
+msgid "Disable down voting on answers."
+msgstr "Désactiver les votes négatifs sur les réponses."
+
+#: admin/options-fields.php:308
+#, fuzzy
+msgid "Permissions"
+msgstr "Permissions"
+
+#: admin/options-fields.php:311
+#, fuzzy
+msgid "Only logged in can see questions, answer and comments?"
+msgstr "Seulement les utilisateurs connectés peuvent voir les commentaires."
+
+#: admin/options-fields.php:312
+msgid "Require user to login to see AnsPress contents?."
+msgstr ""
+
+#: admin/options-fields.php:317
+msgid "Multiple answers"
+msgstr "Plusieurs réponses"
+
+#: admin/options-fields.php:318
+msgid "Allow user to submit multiple answer per question."
+msgstr ""
+"Autoriser un utilisateur à soumettre plusieurs réponses pour une question."
+
+#: admin/options-fields.php:323
+msgid "Asker can answer"
+msgstr "L'auteur de la question peut répondre"
+
+#: admin/options-fields.php:324
+msgid "Allow asker to answer his own question."
+msgstr "Auotiriser les auteurs à répondre à leurs question"
+
+#: admin/options-fields.php:329
+msgid "Allow anonymous"
+msgstr "Autoriser les anonymes"
+
+#: admin/options-fields.php:330
+msgid "Non-loggedin user can post questions and answers."
+msgstr ""
+"Les utilisateurs non connectés peuvent poser des questions et répondre."
+
+#: admin/options-fields.php:335
+msgid "Only admin can answer"
+msgstr "Seulement l'administrateur peut répondre"
+
+#: admin/options-fields.php:336
+msgid "Only allow admin to answer question."
+msgstr "Seulement l'administrateur peut répondre aux questions."
+
+#: admin/options-fields.php:341
+msgid "Only logged in can see answers"
+msgstr "Seulement les utilisateurs connectés peuvent voir les réponses"
+
+#: admin/options-fields.php:342
+msgid "non-loggedin user cannot see answers."
+msgstr "Les utilisateurs non connectés ne peuvent pas voir les réponses."
+
+#: admin/options-fields.php:347
+msgid "Only logged in can see comment"
+msgstr "Seulement les utilisateurs connectés peuvent voir les commentaires."
+
+#: admin/options-fields.php:348
+msgid "non-loggedin user cannot see comments."
+msgstr "Les utilisateurs non connectés ne peuvent pas voir les commentaires."
+
+#: admin/options-fields.php:353
+msgid "Lock delete action"
+msgstr "Bloquer l'action de suppression"
+
+#: admin/options-fields.php:354
+msgid ""
+"Lock comment or post after a period so that user cannot delete it. Set the "
+"time in epoch i.e. 86400 = 1 day."
+msgstr ""
+"Bloquer les commentaires ou les posts après une certaine periode, il ne "
+"pourront plus être supprimés (time limit 86400s = 1day)"
+
+#: admin/options-fields.php:359
+msgid "Upload"
+msgstr "Envoyer"
+
+#: admin/options-fields.php:363
+msgid "Allow image upload"
+msgstr "Autoriser l'envoi d'image(s)"
+
+#: admin/options-fields.php:364
+msgid "Allow logged-in users to upload image."
+msgstr "Autoriser les utilisateurs enregistrer d'envoyer des images(s)"
+
+#: admin/options-fields.php:369
+#, fuzzy
+msgid "Max uploads per post"
+msgstr "Max images par post"
+
+#: admin/options-fields.php:370
+#, fuzzy
+msgid "Set numbers of media user can upload for each post."
+msgstr "Combien d'images un utilisateur peut envoyer pour un post"
+
+#: admin/options-fields.php:375
+msgid "Max upload size"
+msgstr "Taille max d'un upload"
+
+#: admin/options-fields.php:376
+msgid "Set maximum upload size."
+msgstr "Taille maximum lors d'un upload"
+
+#: admin/options-fields.php:384
+msgid "Status of new question"
+msgstr "Statut pour une nouvelle question"
+
+#: admin/options-fields.php:385
+msgid "Set post status of new question."
+msgstr "Statut du post pour une nouvelle question."
+
+#: admin/options-fields.php:388 admin/options-fields.php:398
+#: admin/options-fields.php:408 admin/options-fields.php:418
+#: admin/options-fields.php:428
+msgid "Publish"
+msgstr "Publier"
+
+#: admin/options-fields.php:394
+msgid "Status of edited question"
+msgstr "Statut d'une question éditée"
+
+#: admin/options-fields.php:395
+msgid "Set post status of edited question."
+msgstr "Statut du post, d'une question éditée."
+
+#: admin/options-fields.php:404
+msgid "Status of new answer"
+msgstr "Statut d'une nouvelle réponse."
+
+#: admin/options-fields.php:405
+msgid "Set post status of new answer."
+msgstr "Status du post d'une nouvelle réponse."
+
+#: admin/options-fields.php:414
+msgid "Status of edited answer"
+msgstr "Status d'une réponse éditée"
+
+#: admin/options-fields.php:415
+msgid "Set post status of edited answer."
+msgstr "Statut du post d'une réponse éditée."
+
+#: admin/options-fields.php:424
+#, fuzzy
+msgid "Status of anonymous post"
+msgstr "Statut pour une nouvelle question"
+
+#: admin/options-fields.php:425
+#, fuzzy
+msgid "Set post status post submitted by anonymous user."
+msgstr "Statut du post d'une réponse éditée."
+
+#: admin/options-fields.php:434
+#, fuzzy
+msgid "Re-count"
+msgstr "Compte"
+
+#: admin/options-fields.php:435
+#, fuzzy
+msgid "User roles"
+msgstr "Mise à jour du profile"
+
+#: admin/options-fields.php:436
+msgid "Uninstall - clear all AnsPress data"
+msgstr ""
+
+#: admin/update.php:131
+#, fuzzy
+msgid "Post data updated successfully"
+msgstr "Le statut de ce post à bien été mis à jour"
+
+#: admin/update.php:160
+msgid "Updated %1$d posts out of %2$d"
+msgstr ""
+
+#: admin/update.php:339 admin/update.php:352
+#, fuzzy
+msgid "Successfully migrated all reputations"
+msgstr "Mot clé créé avec succès."
+
+#: admin/update.php:370
+msgid "Migrated reputation... %1$d out of %2$d"
+msgstr ""
+
+#: admin/update.php:435
+msgid "Migrated categories data... %1$d out of %2$d"
+msgstr ""
+
+#: admin/updater.php:79
+msgid "Theme License"
+msgstr ""
+
+#: admin/updater.php:80
+#, fuzzy
+msgid "Enter your theme license key."
+msgstr "Entrer votre clef"
+
+#: admin/updater.php:81
+msgid "License Key"
+msgstr ""
+
+#: admin/updater.php:82
+#, fuzzy
+msgid "License Action"
+msgstr "Bloquer l'action de suppression"
+
+#: admin/updater.php:83 admin/views/licenses.php:37
+msgid "Deactivate License"
+msgstr ""
+
+#: admin/updater.php:84 admin/views/licenses.php:39
+#, fuzzy
+msgid "Activate License"
+msgstr "Réponse privé"
+
+#: admin/updater.php:85 admin/updater.php:97
+msgid "License status is unknown."
+msgstr ""
+
+#: admin/updater.php:86
+msgid "Renew?"
+msgstr ""
+
+#: admin/updater.php:87
+msgid "unlimited"
+msgstr ""
+
+#: admin/updater.php:88
+msgid "License key is active."
+msgstr ""
+
+#: admin/updater.php:89
+msgid "Expires %s."
+msgstr ""
+
+#: admin/updater.php:90
+msgid "You have %1$s / %2$s sites activated."
+msgstr ""
+
+#: admin/updater.php:91
+msgid "License key expired %s."
+msgstr ""
+
+#: admin/updater.php:92
+msgid "License key has expired."
+msgstr ""
+
+#: admin/updater.php:93
+msgid "License keys do not match."
+msgstr ""
+
+#: admin/updater.php:94
+msgid "License is inactive."
+msgstr ""
+
+#: admin/updater.php:95
+#, fuzzy
+msgid "License key is disabled."
+msgstr "Information utilisateurs désactivé."
+
+#: admin/updater.php:96
+msgid "Site is inactive."
+msgstr ""
+
+#: admin/updater.php:98
+msgid ""
+"Updating this theme will lose any customizations you have made. 'Cancel' to "
+"stop, 'OK' to update."
+msgstr ""
+
+#: admin/updater.php:99
+msgid ""
+"<strong>%1$s %2$s</strong> is available. <a href=\"%3$s\" class=\"thickbox\" "
+"title=\"%4s\">Check out what's new</a> or <a href=\"%5$s\"%6$s>update now</"
+"a>."
+msgstr ""
+
+#: admin/updater.php:225
+msgid ""
+"There is a new version of %1$s available. <a target=\"_blank\" class="
+"\"thickbox\" href=\"%2$s\">View version %3$s details</a>."
+msgstr ""
+
+#: admin/updater.php:232
+msgid ""
+"There is a new version of %1$s available. <a target=\"_blank\" class="
+"\"thickbox\" href=\"%2$s\">View version %3$s details</a> or <a href=\"%4$s"
+"\">update now</a>."
+msgstr ""
+
+#: admin/updater.php:368
+#, fuzzy
+msgid "You do not have permission to install plugin updates"
+msgstr "Vous n'avez pas le droit d'éditer cette question."
+
+#: admin/updater.php:368
+#, fuzzy
+msgid "Error"
+msgstr "Page introuvable"
+
+#: admin/views/admin.php:21
+#, fuzzy
+msgid "AnsPress option updated!"
+msgstr "AnsPress options mises à jour."
+
+#: admin/views/dashboard.php:26
+msgid "Require Attention"
+msgstr ""
+
+#: admin/views/dashboard.php:32
+msgid "Latest Questions"
+msgstr "Dernières questions"
+
+#: admin/views/dashboard.php:36
+#, fuzzy
+msgid "Latest Answers"
+msgstr "Mettre à jour la réponse"
+
+#: admin/views/dashboard.php:86 admin/views/dashboard.php:275
+#, fuzzy
+msgid "%d Published"
+msgstr "Publié"
+
+#: admin/views/dashboard.php:91 admin/views/dashboard.php:278
+#, fuzzy
+msgid "%d Private"
+msgstr "Privé"
+
+#: admin/views/dashboard.php:95 admin/views/dashboard.php:281
+#, fuzzy
+msgid "%d Moderate"
+msgstr "A Modérer"
+
+#: admin/views/dashboard.php:215
+#, fuzzy
+msgid "%d Flagged questions"
+msgstr "Questions & réponses signalées"
+
+#: admin/views/dashboard.php:218
+#, fuzzy
+msgid "%d questions awaiting moderation"
+msgstr "Question en attente de modération"
+
+#: admin/views/dashboard.php:222
+msgid "All looks fine"
+msgstr ""
+
+#: admin/views/dashboard.php:231
+#, fuzzy
+msgid "%d Flagged answers"
+msgstr "%d réponses"
+
+#: admin/views/dashboard.php:237
+#, fuzzy
+msgid "%d answers awaiting moderation"
+msgstr "Question en attente de modération"
+
+#: admin/views/dashboard.php:299
+msgid "Apparently, there are no updates to show!"
+msgstr ""
+
+#: admin/views/dashboard.php:344
+#, fuzzy
+msgid "Welcome to AnsPress!"
+msgstr "Bienvenue sur AnsPress 2.2"
+
+#: admin/views/dashboard.php:346
+msgid "We’ve assembled some links to get you started:"
+msgstr ""
+
+#: admin/views/dashboard.php:350
+msgid "Get Started"
+msgstr ""
+
+#: admin/views/dashboard.php:357
+msgid "Next Steps"
+msgstr ""
+
+#: admin/views/dashboard.php:359
+#, fuzzy
+msgid "Write your first question"
+msgstr "Description de votre question."
+
+#: admin/views/dashboard.php:360
+#, fuzzy
+msgid "Post an answer"
+msgstr "Soumettre la réponse"
+
+#: admin/views/dashboard.php:361
+#, fuzzy
+msgid "View questions"
+msgstr "Nouvelles questions"
+
+#: admin/views/dashboard.php:365
+#, fuzzy
+msgid "More actions"
+msgstr "Plus d'actions"
+
+#: admin/views/dashboard.php:371
+#, fuzzy
+msgid "Get %1$s or %2$s"
+msgstr "Merci de %s ou %s."
+
+#: admin/views/dashboard.php:375
+msgid "Themes"
+msgstr ""
+
+#: admin/views/dashboard.php:380
+#, fuzzy
+msgid "Extensions"
+msgstr "Extensions AnsPress"
+
+#: admin/views/dashboard.php:386
+msgid "Help and Support!"
+msgstr ""
+
+#: admin/views/dashboard.php:387
+msgid "Documents and FAQ"
+msgstr ""
+
+#: admin/views/licenses.php:22
+msgid "License keys for AnsPress products, i.e. extensions and themes."
+msgstr ""
+
+#: admin/views/licenses.php:32
+msgid "Enter license key for %s"
+msgstr ""
+
+#: admin/views/licenses.php:36
+#, fuzzy
+msgid "active"
+msgstr "En cours"
+
+#: admin/views/licenses.php:48
+msgid "Save"
+msgstr ""
+
+#: admin/views/licenses.php:52
+#, fuzzy
+msgid "No license yet."
+msgstr "Par de réponse pour le moment"
+
+#: admin/views/recount.php:58
+#, fuzzy
+msgid "Re-count votes"
+msgstr "Votes total"
+
+#: admin/views/recount.php:60
+msgid "Re-counting all AnsPress post votes..."
+msgstr ""
+
+#: admin/views/recount.php:61 admin/views/recount.php:95
+msgid "{0} out of {1} posts processed"
+msgstr ""
+
+#: admin/views/recount.php:62
+#, fuzzy
+msgid "Successfully counted all votes!"
+msgstr "Mot clé créé avec succès."
+
+#: admin/views/recount.php:63
+msgid "Failed to count all votes, please try again or submit a help request"
+msgstr ""
+
+#: admin/views/recount.php:66
+#, fuzzy
+msgid "Re-count all votes of question and answers."
+msgstr "Selectionner une question pour faire une réponse"
+
+#: admin/views/recount.php:75
+#, fuzzy
+msgid "Re-count answers"
+msgstr "Réponse parente:"
+
+#: admin/views/recount.php:77
+#, fuzzy
+msgid "Re-counting answers of every question..."
+msgstr "La meilleure réponse a été choisi pour votre question."
+
+#: admin/views/recount.php:78
+msgid "{0} out of {1} question processed"
+msgstr ""
+
+#: admin/views/recount.php:79
+#, fuzzy
+msgid "Successfully updated answers count!"
+msgstr "Mot clé créé avec succès."
+
+#: admin/views/recount.php:80
+msgid "Failed to count answers, please try again or submit a help request"
+msgstr ""
+
+#: admin/views/recount.php:83
+#, fuzzy
+msgid "Re-count answers of all questions."
+msgstr "Notice pour répondre à une question."
+
+#: admin/views/recount.php:88
+#, fuzzy
+msgid "Flagged posts"
+msgstr "Signalé"
+
+#: admin/views/recount.php:92
+#, fuzzy
+msgid "Re-count flagged posts"
+msgstr "Vous avez marqué ce post"
+
+#: admin/views/recount.php:94
+msgid "Re-counting flagged posts..."
+msgstr ""
+
+#: admin/views/recount.php:96
+#, fuzzy
+msgid "Successfully updated flagged posts count!"
+msgstr "Mot clé créé avec succès."
+
+#: admin/views/recount.php:97
+msgid ""
+"Failed to count flagged posts, please try again or submit a help request"
+msgstr ""
+
+#: admin/views/recount.php:100
+#, fuzzy
+msgid "Re-count flagged posts."
+msgstr "Vous avez marqué ce post"
+
+#: admin/views/recount.php:105
+msgid "Subscribers"
+msgstr "Abonnés"
+
+#: admin/views/recount.php:109
+#, fuzzy
+msgid "Re-count question subscribers"
+msgstr "Sélectionner la question"
+
+#: admin/views/recount.php:111
+msgid "Re-counting question subscribers..."
+msgstr ""
+
+#: admin/views/recount.php:112
+msgid "{0} out of {1} questions processed"
+msgstr ""
+
+#: admin/views/recount.php:113
+#, fuzzy
+msgid "Successfully updated subscribers count!"
+msgstr "Mot clé créé avec succès."
+
+#: admin/views/recount.php:114
+msgid ""
+"Failed to count question subscribers, please try again or submit a help "
+"request"
+msgstr ""
+
+#: admin/views/recount.php:117
+#, fuzzy
+msgid "Re-count question subscribers."
+msgstr "Sélectionner la question"
+
+#: admin/views/recount.php:126
+#, fuzzy
+msgid "Re-count user reputation"
+msgstr "Supprimer cette réputation"
+
+#: admin/views/recount.php:128
+msgid "Re-counting user reputation..."
+msgstr ""
+
+#: admin/views/recount.php:129
+msgid "{0} out of {1} user processed"
+msgstr ""
+
+#: admin/views/recount.php:130
+#, fuzzy
+msgid "Successfully updated users reputation!"
+msgstr "Mot clé créé avec succès."
+
+#: admin/views/recount.php:131
+msgid ""
+"Failed to count users reputation, please try again or submit a help request"
+msgstr ""
+
+#: admin/views/recount.php:134
+#, fuzzy
+msgid "Re-count all users reputation points."
+msgstr "Mot clé créé avec succès."
+
+#: admin/views/reputation-events.php:34
+#, fuzzy
+msgid "Save Events Points"
+msgstr "Sauvegarder le point"
+
+#: admin/views/roles.php:37
+#, fuzzy
+msgid "New role %s added successfully ."
+msgstr "Image enregistrée"
+
+#: admin/views/roles.php:40
+msgid "Its look like %s role already exists ."
+msgstr ""
+
+#: admin/views/roles.php:53
+#, fuzzy
+msgid "Permission and role"
+msgstr "Permissions"
+
+#: admin/views/roles.php:59
+#, fuzzy
+msgid "Add new role"
+msgstr "Ajouter une nouvelle réponse"
+
+#: admin/views/roles.php:62
+msgid "Add a new user role."
+msgstr ""
+
+#: admin/views/roles.php:65
+msgid "Role name"
+msgstr ""
+
+#: admin/views/roles.php:66
+msgid "Role slug, without any space"
+msgstr ""
+
+#: admin/views/roles.php:71 admin/views/roles.php:108
+msgid "Basic Capabilities"
+msgstr ""
+
+#: admin/views/roles.php:76 admin/views/roles.php:117
+msgid "Moderator Capabilities"
+msgstr ""
+
+#: admin/views/roles.php:81
+#, fuzzy
+msgid "Add role"
+msgstr "Ajouter plus"
+
+#: admin/views/roles.php:88
+msgid "AnsPress capabilities"
+msgstr ""
+
+#: admin/views/roles.php:89
+msgid "Add AnsPress capabilities to 3rd party roles."
+msgstr ""
+
+#: admin/views/roles.php:94
+msgid "Select user role"
+msgstr ""
+
+#: admin/views/roles.php:129
+#, fuzzy
+msgid "Save Role"
+msgstr "Sauvegarder le point"
+
+#: admin/views/select_question.php:20
+msgid "Select a question for new answer"
+msgstr "Selectionner une question pour faire une réponse"
+
+#: admin/views/select_question.php:21
+msgid ""
+"Slowly type for question suggestion and then click select button right to "
+"question title."
+msgstr ""
+"Entrez les premiers caractères de votre question puis selectionner la "
+"meilleure suggestion avec le clique droit sur le titre de la question."
+
+#: admin/views/sidebar.php:5
+msgid "Support Q&A"
+msgstr "Support Q&R"
+
+#: admin/views/sidebar.php:6
+msgid "AnsPress Themes"
+msgstr "AnsPress Themes"
+
+#: admin/views/sidebar.php:7
+msgid "Github Repo"
+msgstr "Github Repo"
+
+#: admin/views/uninstall.php:21
+msgid ""
+"If you are unsure about this section please do not use any of these options "
+"below."
+msgstr ""
+
+#: admin/views/uninstall.php:28
+#, fuzzy
+msgid "Permanently delete all questions and answers?"
+msgstr "Selectionner une question pour faire une réponse"
+
+#: admin/views/uninstall.php:34
+#, fuzzy
+msgid "Delete %d Q&A"
+msgstr "Supprimer"
+
+#: admin/views/uninstall.php:35
+msgid ""
+"Clicking this button will delete all questions and answers data from database"
+msgstr ""
+
+#: admin/views/uninstall.php:40
+#, fuzzy
+msgid "Permanently delete all answers?"
+msgstr "Selectionner une question pour faire une réponse"
+
+#: admin/views/uninstall.php:46
+#, fuzzy
+msgid "Delete %d answers"
+msgstr "a selectionné une reponse"
+
+#: admin/views/uninstall.php:47
+msgid ""
+"Clicking this button will delete all answers and its related data from "
+"database"
+msgstr ""
+
+#: admin/views/uninstall.php:52
+#, fuzzy
+msgid "Permanently delete all AnsPress user data?"
+msgstr "Selectionner une question pour faire une réponse"
+
+#: admin/views/uninstall.php:55
+#, fuzzy
+msgid "Delete all user data"
+msgstr "a selectionné une reponse"
+
+#: admin/views/uninstall.php:56
+msgid "Clicking this button will delete all user data added by AnsPress"
+msgstr ""
+
+#: admin/views/uninstall.php:61
+#, fuzzy
+msgid "Permanently delete all AnsPress options?"
+msgstr "Selectionner une question pour faire une réponse"
+
+#: admin/views/uninstall.php:64
+#, fuzzy
+msgid "Delete all options"
+msgstr "Supprimer cette notification"
+
+#: admin/views/uninstall.php:65
+msgid "Clicking this button will delete all AnsPress options"
+msgstr ""
+
+#: admin/views/uninstall.php:70
+#, fuzzy
+msgid "Permanently delete all AnsPress terms?"
+msgstr "Selectionner une question pour faire une réponse"
+
+#: admin/views/uninstall.php:73
+#, fuzzy
+msgid "Delete all terms"
+msgstr "Supprimer cette notification"
+
+#: admin/views/uninstall.php:74
+msgid "Clicking this button will delete all AnsPress terms data"
+msgstr ""
+
+#: admin/views/uninstall.php:79
+#, fuzzy
+msgid "Permanently delete all AnsPress tables?"
+msgstr "Selectionner une question pour faire une réponse"
+
+#: admin/views/uninstall.php:82
+msgid "Delete all database tables"
+msgstr ""
+
+#: admin/views/uninstall.php:83
+msgid "Clicking this button will remove all AnsPress DB tables"
+msgstr ""
+
+#: admin/views/uninstall.php:115
+msgid "Do you wish to proceed? This cannot be undone."
+msgstr ""
+
+#: admin/views/upgrade.php:19
+#, fuzzy
+msgid "Questions and Answers"
+msgstr "Chercher dans les questions/réponses"
+
+#: admin/views/upgrade.php:20
+#, fuzzy
+msgid "Migrate reputation data"
+msgstr "Désactiver les réputations"
+
+#: admin/views/upgrade.php:21
+msgid "Migrate category data"
+msgstr ""
+
+#: admin/views/upgrade.php:27
+#, fuzzy
+msgid "Thank you for choosing AnsPress"
+msgstr "Merci pour votre vote."
+
+#: admin/views/upgrade.php:28
+msgid ""
+"This page will help you with automatically migrating AnsPress 3.x data to 4."
+"x. Please make sure to create a backup of site before starting upgrade."
+msgstr ""
+
+#: admin/views/upgrade.php:29
+msgid "Start Upgrade"
+msgstr ""
+
+#: admin/views/upgrade.php:31
+msgid ""
+"Aaiyaa! Something went wrong. Please click above button again or report "
+"issue to us."
+msgstr ""
+
+#: admin/views/upgrade.php:42
+msgid "Having trouble upgrading? We are available 12x7"
+msgstr ""
+
+#: admin/views/upgrade.php:43
+msgid "Get help now"
+msgstr ""
+
+#: anspress-question-answer.php:44
+#, fuzzy
+msgid "AnsPress is not running!"
+msgstr "AnsPress Points"
+
+#: anspress-question-answer.php:45
+msgid ""
+"Irks! At least PHP version 5.5 is required to run AnsPress. Current PHP "
+"version is %s. Please ask hosting provider to update your PHP version."
+msgstr ""
+
+#: includes/ajax-hooks.php:89
+msgid "%d similar questions found"
+msgstr "%d questions similaires trouvées"
+
+#: includes/ajax-hooks.php:90
+msgid ""
+"We've found similar questions that have already been asked, click to read "
+"them."
+msgstr ""
+
+#: includes/ajax-hooks.php:100 includes/ajax-hooks.php:136
+#: includes/theme.php:770
+msgid "Select"
+msgstr "Sélectionner"
+
+#: includes/ajax-hooks.php:109
+msgid "No related questions found."
+msgstr "Pas de question en rapport trouvées."
+
+#: includes/ajax-hooks.php:135
+msgid "Best answer is unselected for your question."
+msgstr "La meilleure réponse a été supprimé de votre question."
+
+#: includes/ajax-hooks.php:144
+msgid ""
+"This answer cannot be selected as best, update status to select as best "
+"answer."
+msgstr ""
+
+#: includes/ajax-hooks.php:172
+msgid "Best answer is selected for your question."
+msgstr "La meilleure réponse a été choisi pour votre question."
+
+#: includes/ajax-hooks.php:173 includes/theme.php:778
+msgid "Unselect"
+msgstr "Déselectionner"
+
+#: includes/ajax-hooks.php:185
+#, fuzzy
+msgid "Unable to trash this post"
+msgstr "+1"
+
+#: includes/ajax-hooks.php:206 includes/class/form.php:298
+#: includes/class/form.php:306 includes/comments.php:404 includes/theme.php:365
+msgid "Delete"
+msgstr "Supprimer"
+
+#: includes/ajax-hooks.php:206 includes/theme.php:366
+msgid "Delete this post (can be restored again)"
+msgstr ""
+
+#: includes/ajax-hooks.php:207
+msgid "%s is restored"
+msgstr ""
+
+#: includes/ajax-hooks.php:222
+#, fuzzy
+msgid "This post was created %s, hence you cannot trash it"
+msgstr ""
+"Ce post a été créé il y a %s, il est bloqué vous ne pouvez plus le supprimer."
+
+#: includes/ajax-hooks.php:230 includes/theme.php:362
+#, fuzzy
+msgid "Undelete"
+msgstr "Supprimer"
+
+#: includes/ajax-hooks.php:230 includes/theme.php:363
+#, fuzzy
+msgid "Restore this post"
+msgstr "+1"
+
+#: includes/ajax-hooks.php:231
+msgid "%s is trashed"
+msgstr ""
+
+#: includes/ajax-hooks.php:246
+msgid "Sorry, unable to delete post"
+msgstr ""
+
+#: includes/ajax-hooks.php:274
+#, fuzzy
+msgid "Question is deleted permanently"
+msgstr "La question a bien été supprimée"
+
+#: includes/ajax-hooks.php:283
+#, fuzzy
+msgid "Answer is deleted permanently"
+msgstr "Réponse supprimé définitvement"
+
+#: includes/ajax-hooks.php:298
+msgid "Sorry, you cannot toggle a featured question"
+msgstr ""
+
+#: includes/ajax-hooks.php:308
+#, fuzzy
+msgid "Only question can be set as featured"
+msgstr "Question mis en avant."
+
+#: includes/ajax-hooks.php:317 includes/theme.php:854
+#, fuzzy
+msgid "Mark this question as featured"
+msgstr "Mettre cette question en avant."
+
+#: includes/ajax-hooks.php:317 includes/theme.php:855
+#, fuzzy
+msgid "Feature"
+msgstr "Caractéristiques"
+
+#: includes/ajax-hooks.php:318
+msgid "Question is unmarked as featured."
+msgstr "La question n'est plus mise en avant."
+
+#: includes/ajax-hooks.php:325 includes/theme.php:851
+#, fuzzy
+msgid "Unmark this question as featured"
+msgstr "Mettre cette question en avant."
+
+#: includes/ajax-hooks.php:325 includes/theme.php:852
+#, fuzzy
+msgid "Unfeature"
+msgstr "Caractéristiques"
+
+#: includes/ajax-hooks.php:326
+msgid "Question is marked as featured."
+msgstr "Question mis en avant."
+
+#: includes/ajax-hooks.php:364
+#, fuzzy
+msgid "You cannot close a question"
+msgstr "Pour avoir répondu à une question."
+
+#: includes/ajax-hooks.php:370 includes/theme.php:323
+msgid "Close"
+msgstr "Fermé"
+
+#: includes/ajax-hooks.php:370 includes/theme.php:323
+msgid "Open"
+msgstr "Ouvert"
+
+#: includes/ajax-hooks.php:371 includes/theme.php:324
+#, fuzzy
+msgid "Close this question for new answer."
+msgstr "Selectionner une question pour faire une réponse"
+
+#: includes/ajax-hooks.php:371 includes/theme.php:324
+#, fuzzy
+msgid "Open this question for new answers"
+msgstr "Selectionner une question pour faire une réponse"
+
+#: includes/ajax-hooks.php:373
+#, fuzzy
+msgid "Question closed"
+msgstr "Fil RSS de la question"
+
+#: includes/ajax-hooks.php:373
+#, fuzzy
+msgid "Question is opened"
+msgstr "Fil RSS de la question"
+
+#: includes/ajax-hooks.php:437
+msgid "Sorry, you are not allowed to convert this question to post"
+msgstr ""
+
+#: includes/ajax-hooks.php:456
+msgid " Question \"%s\" is converted to post and its answers are trashed"
+msgstr ""
+
+#: includes/ajax-hooks.php:484
+#, fuzzy
+msgid "You must be logged in to subscribe to a question"
+msgstr "Personne ne suit cette question."
+
+#: includes/ajax-hooks.php:493 includes/ajax-hooks.php:516
+#, fuzzy
+msgid "Sorry, unable to subscribe"
+msgstr "Afficher la sidebar"
+
+#: includes/ajax-hooks.php:504
+#, fuzzy
+msgid "Successfully unsubscribed from question"
+msgstr "Vous vous êtes désabonné."
+
+#: includes/ajax-hooks.php:506 includes/theme.php:881
+msgid "Subscribe"
+msgstr "S'inscrire"
+
+#: includes/ajax-hooks.php:522
+#, fuzzy
+msgid "Successfully subscribed to question"
+msgstr "Vous vous êtes désabonné."
+
+#: includes/ajax-hooks.php:524 includes/theme.php:881
+msgid "Unsubscribe"
+msgstr "Se désinscrire"
+
+#: includes/answer-form.php:42
+msgid "Your answer.."
+msgstr "Votre réponse..."
+
+#: includes/answer-form.php:61 includes/ask-form.php:87
+msgid "Enter your name to display"
+msgstr "Entrer le nom à afficher"
+
+#: includes/answer-form.php:73 includes/ask-form.php:99
+msgid "Only visible to admin and moderator."
+msgstr "Seulement visible par l'admin et les modérateurs."
+
+#: includes/answer-form.php:140 includes/post-types.php:120
+msgid "Update answer"
+msgstr "Mettre à jour la réponse"
+
+#: includes/answer-form.php:140
+msgid "Post answer"
+msgstr "Soumettre la réponse"
+
+#: includes/answer-form.php:272
+msgid "Answer submitted successfully"
+msgstr "Réponse envoyée"
+
+#: includes/answer-loop.php:303
+msgid "You are viewing 1 out of %d answers, click here to view all answers."
+msgstr ""
+
+#: includes/api.php:15
+msgid "Wrong data supplied"
+msgstr ""
+
+#: includes/ask-form.php:43
+msgid "Question in one sentence"
+msgstr "Votre question en une phrase"
+
+#: includes/ask-form.php:59
+msgid "Description"
+msgstr "Description"
+
+#: includes/ask-form.php:156
+#, fuzzy
+msgid "You cannot edit this question."
+msgstr "Vous êtes abonné à cette question."
+
+#: includes/ask-form.php:164
+#, fuzzy
+msgid "Post you are trying to edit is not a question."
+msgstr "Vous n'avez pas le droit d'éditer cette question."
+
+#: includes/ask-form.php:172 includes/post-types.php:50
+msgid "Update question"
+msgstr "Mettre à jour la question"
+
+#: includes/ask-form.php:172
+msgid "Post question"
+msgstr "Soumettre la question"
+
+#: includes/ask-form.php:240
+msgid "Question title cannot be blank"
+msgstr ""
+
+#: includes/class/form.php:66
+msgid "Submit"
+msgstr "Soumettre"
+
+#: includes/class/form.php:199
+msgid "Reset"
+msgstr ""
+
+#: includes/class/form.php:203 templates/functions.php:55
+msgid "Cancel"
+msgstr "Annuler"
+
+#: includes/class/form.php:290
+msgid "Repeat your password"
+msgstr "Répéter votre mot de passe"
+
+#: includes/class/form.php:308
+msgid "Add more"
+msgstr "Ajouter plus"
+
+#: includes/class/form.php:474
+msgid "Select a page"
+msgstr "Sélectionner une page"
+
+#: includes/class/form.php:718
+msgid "No fields found"
+msgstr "Pas de champs trouvées"
+
+#: includes/class/roles-cap.php:58
+msgid "AnsPress Moderator"
+msgstr "AnsPress Moderateur"
+
+#: includes/class/roles-cap.php:62
+msgid "AnsPress Participants"
+msgstr "AnsPress Contributeur"
+
+#: includes/class/roles-cap.php:63
+msgid "AnsPress Banned"
+msgstr "AnsPress Banned"
+
+#: includes/class/roles-cap.php:1255
+#, fuzzy
+msgid "Voting on own post is not allowed"
+msgstr "Les votes négatifs sont désactivées"
+
+#: includes/class/roles-cap.php:1263
+msgid "Voting on restricted posts are not allowed."
+msgstr ""
+
+#: includes/class/roles-cap.php:1273
+#, fuzzy
+msgid "You do not have permission to vote."
+msgstr "Vous n'avez pas le droit de faire ça."
+
+#: includes/class/validation.php:70
+msgid "This field is required"
+msgstr "Ce champ est obligatoire"
+
+#: includes/class/validation.php:100
+msgid "Field value should be at least %d characters"
+msgstr ""
+
+#: includes/class/validation.php:120 includes/class/validation.php:123
+msgid "It must be minimum %d characters"
+msgstr "Il faut %d caractères au minimum"
+
+#: includes/class/validation.php:135
+msgid "Not a valid email address"
+msgstr "Adresse email invalide"
+
+#: includes/class-theme.php:170 includes/class-theme.php:225
+msgid "Question Feed"
+msgstr "Fil RSS de la question"
+
+#: includes/class-theme.php:226
+#, fuzzy
+msgid "Answers Feed"
+msgstr "Fil RSS des réponses"
+
+#: includes/comments.php:68
+#, fuzzy
+msgid "Unable to load comments"
+msgstr "Désactiver les commentaires"
+
+#: includes/comments.php:92
+#, fuzzy
+msgid "Unable to post comment"
+msgstr "Désactiver les commentaires"
+
+#: includes/comments.php:100
+msgid "Sorry, you cannot post a blank comment"
+msgstr ""
+
+#: includes/comments.php:112
+msgid "Commenting is not allowed on draft, pending or deleted %s"
+msgstr ""
+
+#: includes/comments.php:121
+msgid "Sorry, you cannot post a comment"
+msgstr ""
+
+#: includes/comments.php:157 includes/comments.php:209
+#: includes/comments.php:259 includes/comments.php:302
+#: includes/comments.php:383
+#, fuzzy
+msgid "%d Comment"
+msgid_plural "%d Comments"
+msgstr[0] "Commenter"
+msgstr[1] "Commenter"
+
+#: includes/comments.php:158
+#, fuzzy
+msgid "Comment successfully posted"
+msgstr "Votre commentaire a bien été posté."
+
+#: includes/comments.php:183
+msgid "Sorry, you cannot edit this comment"
+msgstr ""
+
+#: includes/comments.php:193
+msgid "No change detected, edit comment and then try"
+msgstr ""
+
+#: includes/comments.php:210
+#, fuzzy
+msgid "Comment updated successfully"
+msgstr "Le commentaire a bien été mis à jour."
+
+#: includes/comments.php:217
+#, fuzzy
+msgid "Unable to update comment"
+msgstr "Mettre à jour le commentaire"
+
+#: includes/comments.php:233
+#, fuzzy
+msgid "Failed to delete comment"
+msgstr "a editer le commentaire"
+
+#: includes/comments.php:243
+#, fuzzy
+msgid "This comment was created %s. Its locked hence you cannot delete it."
+msgstr ""
+"Ce post a été créé il y a %s, il est bloqué vous ne pouvez plus le supprimer."
+
+#: includes/comments.php:257
+#, fuzzy
+msgid "Comment successfully deleted"
+msgstr "Votre commentaire a bien été posté."
+
+#: includes/comments.php:287
+msgid "Sorry, unable to approve comment"
+msgstr ""
+
+#: includes/comments.php:303
+#, fuzzy
+msgid "Comment approved successfully."
+msgstr "Le commentaire a bien été mis à jour."
+
+#: includes/comments.php:380
+#, fuzzy
+msgid "Comments awaiting moderation"
+msgstr "Question en attente de modération"
+
+#: includes/comments.php:383
+#, fuzzy
+msgid "Add a Comment"
+msgstr "Commenter"
+
+#: includes/comments.php:408
+msgid "Approve"
+msgstr ""
+
+#: includes/common-pages.php:22
+msgid "Ask"
+msgstr "Poser une question"
+
+#: includes/common-pages.php:23 templates/functions.php:60
+#: templates/search-form.php:12
+msgid "Search"
+msgstr "Rechercher"
+
+#: includes/common-pages.php:24
+msgid "Edit Answer"
+msgstr "Editer les réponses"
+
+#: includes/common-pages.php:70
+msgid ""
+"This question is waiting for a moderator and cannot be viewed. Please check "
+"back later to see if it has been approved."
+msgstr ""
+
+#: includes/common-pages.php:72
+#, fuzzy
+msgid "Sorry! you are not allowed to read this question."
+msgstr "Vous êtes le seul abonné à cette question."
+
+#: includes/common-pages.php:108
+msgid "Question will be publish in %s"
+msgstr ""
+
+#: includes/common-pages.php:109
+msgid ""
+"This question is in waiting queue and is not accessible by anyone until it "
+"get published."
+msgstr ""
+
+#: includes/common-pages.php:135
+#, fuzzy
+msgid "Something went wrong, please try again"
+msgstr "Quelque chose ne va pas, veuillez réessayer."
+
+#: includes/common-pages.php:157
+#, fuzzy
+msgid "Sorry, you cannot edit this answer."
+msgstr "Editer cette réponse"
+
+#: includes/flag.php:36
+msgid "You have already reported this post."
+msgstr "Vous avez déjà signalé ce post."
+
+#: includes/flag.php:46
+msgid "Thank you for reporting this post."
+msgstr "Merci d'avoir signalé ce post."
+
+#: includes/flag.php:123
+msgid "Flag this post"
+msgstr "Signaler cette entrée"
+
+#: includes/flag.php:123
+msgid "You have flagged this post"
+msgstr "Vous avez marqué ce post"
+
+#: includes/form.php:54
+msgid "You do not have permission to delete this comment"
+msgstr "Vous n'avez pas le droit de supprimer ce commentaire"
+
+#: includes/form.php:72
+msgid "Comment deleted successfully."
+msgstr "Le commentaire a bien été supprimé."
+
+#: includes/form.php:149 includes/form.php:155
+msgid "Form loaded."
+msgstr "Formulaire chargé."
+
+#: includes/form.php:157
+msgid "You do not have permission to edit this question."
+msgstr "Vous n'avez pas le droit d'éditer cette question."
+
+#: includes/form.php:160
+msgid "Something went wrong, please try again."
+msgstr "Quelque chose ne va pas, veuillez réessayer."
+
+#: includes/form.php:194
+#, fuzzy
+msgid "Don't have a user account?."
+msgstr "Vous n'avez pas de compte ?  %sEnregistrez vous%s."
+
+#: includes/form.php:195
+#, fuzzy
+msgid "Register now"
+msgstr "S'inscrire"
+
+#: includes/form.php:214
+msgid "Unable to create tag, please try again."
+msgstr "Impossible de créer le mot clé, merci de réessayer."
+
+#: includes/form.php:217
+msgid "Successfully created a tag."
+msgstr "Mot clé créé avec succès."
+
+#: includes/form.php:224
+msgid "Unable to load form, please try again."
+msgstr "Impossible de charger le fomulaire, merci de réessayer."
+
+#: includes/form.php:226
+msgid "Successfully loaded form."
+msgstr "Formulaire chargé correctement."
+
+#: includes/form.php:238
+msgid "Update Answer"
+msgstr "Mettre à jour la réponse"
+
+#: includes/form.php:245
+msgid "Create new tag"
+msgstr "Créer un nouveau tag"
+
+#: includes/form.php:246
+msgid "Enter tag"
+msgstr "Entrez un mot clé"
+
+#: includes/form.php:247
+msgid "Description of tag."
+msgstr "Description du mot clé."
+
+#: includes/form.php:248
+msgid "Create tag"
+msgstr "Créer le mot clé"
+
+#. translators: %s: human-readable time difference
+#: includes/functions.php:245
+msgid "%s ago"
+msgstr "%s"
+
+#: includes/functions.php:478
+msgid "Success"
+msgstr "Fait"
+
+#: includes/functions.php:480
+msgid "Something went wrong, last action failed."
+msgstr "Quelque chose ne va pas, la dernière action n'a pas été effectuée."
+
+#: includes/functions.php:482
+msgid "Comment updated successfully."
+msgstr "Le commentaire a bien été mis à jour."
+
+#: includes/functions.php:483
+msgid "You cannot vote on your own question or answer."
+msgstr "Vous ne pouvez pas voter sur votre propre question ou réponse."
+
+#: includes/functions.php:484
+#, fuzzy
+msgid "You do not have permission to view private posts."
+msgstr "Vous n'avez pas le droit de voir les posts privés."
+
+#: includes/functions.php:485
+msgid "Please check captcha field and resubmit it again."
+msgstr "Merci de véfirer les caractères de contrôle."
+
+#: includes/functions.php:486
+msgid "Image uploaded successfully"
+msgstr "Image enregistrée"
+
+#: includes/functions.php:487
+msgid "Answer has been deleted permanently"
+msgstr "Réponse supprimé définitvement"
+
+#: includes/functions.php:488
+msgid "You have already attached maximum numbers of allowed uploads."
+msgstr "Vous nous ne pouvez plus ajouter de pièces jointes."
+
+#: includes/functions.php:489
+msgid "Your profile has been updated successfully."
+msgstr "Votre profile à bien été mis à jour."
+
+#: includes/functions.php:490
+msgid "Voting down is disabled."
+msgstr "Les votes négatifs sont désactivées"
+
+#: includes/functions.php:491
+#, fuzzy
+msgid "You cannot vote on restricted posts"
+msgstr "Vous ne pouvez pas voter sur votre propre question ou réponse."
+
+#: includes/functions.php:916
+msgid "[Solved] "
+msgstr "[Résolu] "
+
+#: includes/functions.php:1290
+msgid "asked"
+msgstr "a demandé il y a"
+
+#: includes/functions.php:1291 includes/functions.php:1292
+msgid "approved"
+msgstr ""
+
+#: includes/functions.php:1293
+msgid "answered"
+msgstr "a répondu il y a"
+
+#: includes/functions.php:1294
+#, fuzzy
+msgid "deleted answer"
+msgstr "a selectionné une reponse"
+
+#: includes/functions.php:1295
+#, fuzzy
+msgid "restored answer"
+msgstr "a edité la réponse"
+
+#: includes/functions.php:1296 templates/functions.php:53
+msgid "commented"
+msgstr "commenté"
+
+#: includes/functions.php:1297
+#, fuzzy
+msgid "deleted comment"
+msgstr "a editer le commentaire"
+
+#: includes/functions.php:1298
+msgid "commented on answer"
+msgstr "Interdire les commentaire sur une réponse."
+
+#: includes/functions.php:1299
+msgid "edited question"
+msgstr "a édité la question il y a"
+
+#: includes/functions.php:1300
+msgid "edited answer"
+msgstr "a edité la réponse"
+
+#: includes/functions.php:1301
+msgid "edited comment"
+msgstr "a editer le commentaire"
+
+#: includes/functions.php:1302
+#, fuzzy
+msgid "edited comment on answer"
+msgstr "Interdire les commentaire sur une réponse."
+
+#: includes/functions.php:1303
+msgid "selected answer"
+msgstr "a selectionné une reponse"
+
+#: includes/functions.php:1304
+msgid "unselected answer"
+msgstr "a dé-selectionné une reponse"
+
+#: includes/functions.php:1305
+msgid "updated status"
+msgstr "a mis à jour le statut il y a"
+
+#: includes/functions.php:1306
+msgid "selected as best answer"
+msgstr ""
+
+#: includes/functions.php:1307
+msgid "unselected as best answer"
+msgstr ""
+
+#: includes/functions.php:1308
+#, fuzzy
+msgid "changed status"
+msgstr "a mis à jour le statut il y a"
+
+#: includes/functions.php:1360
+msgid "Anonymous"
+msgstr "Annonyme"
+
+#: includes/functions.php:1387
+msgid " (anonymous)"
+msgstr "(annonyme)"
+
+#: includes/hooks.php:680
+msgid "minute"
+msgstr ""
+
+#: includes/hooks.php:681
+msgid "minutes"
+msgstr ""
+
+#: includes/hooks.php:682
+msgid "hour"
+msgstr ""
+
+#: includes/hooks.php:683
+msgid "hours"
+msgstr ""
+
+#: includes/hooks.php:684
+#, fuzzy
+msgid "day"
+msgstr "%d jours"
+
+#: includes/hooks.php:685
+#, fuzzy
+msgid "days"
+msgstr "%d jours"
+
+#: includes/hooks.php:686
+msgid "week"
+msgstr ""
+
+#: includes/hooks.php:687
+msgid "weeks"
+msgstr ""
+
+#: includes/hooks.php:688
+msgid "year"
+msgstr ""
+
+#: includes/hooks.php:689
+#, fuzzy
+msgid "years"
+msgstr "%d ans,"
+
+#: includes/options.php:111 includes/theme.php:568
+msgid "Ask question"
+msgstr "Poser une question"
+
+#: includes/options.php:112
+#, fuzzy
+msgid "Search \"%s\""
+msgstr "Rechercher"
+
+#: includes/options.php:113
+msgid "%s"
+msgstr "%s"
+
+#: includes/post-status.php:28
+msgid "Moderate <span class=\"count\">(%s)</span>"
+msgid_plural "Moderate <span class=\"count\">(%s)</span>"
+msgstr[0] "Modérer <span class=\"count\">(%s)</span>"
+msgstr[1] "Modérer <span class=\"count\">(%s)</span>"
+
+#: includes/post-status.php:32 includes/post-status.php:98
+msgid "Private"
+msgstr "Privé"
+
+#: includes/post-status.php:36
+msgid "Private Post <span class=\"count\">(%s)</span>"
+msgid_plural "Private Post <span class=\"count\">(%s)</span>"
+msgstr[0] "Post privé <span class=\"count\">(%s)</span>"
+msgstr[1] "Posts privés <span class=\"count\">(%s)</span>"
+
+#: includes/post-status.php:53
+msgid "You are not allowed to change post status"
+msgstr ""
+
+#: includes/post-status.php:76
+msgid "Post status updated successfully"
+msgstr "Le statut de ce post à bien été mis à jour"
+
+#: includes/post-status.php:98
+#, fuzzy
+msgid "This %s is marked as a private, only admin and post author can see."
+msgstr ""
+"%s es marqué comme privé, seul l'administrateur et l'auteur peuvent la voir."
+
+#: includes/post-status.php:100
+msgid "Awaiting approval"
+msgstr ""
+
+#: includes/post-status.php:100
+#, fuzzy
+msgid "This %s is awaiting for approval by moderator."
+msgstr "%s est en attente de modération."
+
+#: includes/post-status.php:102
+msgid "Closed"
+msgstr "Fermé"
+
+#: includes/post-status.php:102
+#, fuzzy
+msgid "Question is closed for new answers"
+msgstr "Question posée par %s."
+
+#: includes/post-status.php:104
+#, fuzzy
+msgid "Trashed"
+msgstr "Corbeille"
+
+#: includes/post-status.php:104
+#, fuzzy
+msgid "This %s has been trashed, you can delete it permanently from wp-admin."
+msgstr ""
+"%s a bien été déplacé dans la corbeille vous pouvez la supprimer "
+"définitvement depuis l'admin."
+
+#: includes/post-types.php:44
+#, fuzzy
+msgid "Parent question:"
+msgstr "Question parente:"
+
+#: includes/post-types.php:45
+#, fuzzy
+msgid "All questions"
+msgstr "Toutes les questions"
+
+#: includes/post-types.php:46
+#, fuzzy
+msgid "View question"
+msgstr "Voir la question"
+
+#: includes/post-types.php:47
+#, fuzzy
+msgid "Add new question"
+msgstr "Ajouter une nouvelle question"
+
+#: includes/post-types.php:51 widgets/search.php:60
+msgid "Search questions"
+msgstr "Chercher une question"
+
+#: includes/post-types.php:52
+msgid "No question found"
+msgstr "Aucune question trouvée"
+
+#: includes/post-types.php:53
+#, fuzzy
+msgid "No questions found in trash"
+msgstr "Aucune question trouvée dans la corbeille"
+
+#: includes/post-types.php:114
+#, fuzzy
+msgid "Parent answer:"
+msgstr "Réponse parente:"
+
+#: includes/post-types.php:115
+#, fuzzy
+msgid "All answers"
+msgstr "Toutes les réponses"
+
+#: includes/post-types.php:116
+#, fuzzy
+msgid "View answer"
+msgstr "Voir la réponse"
+
+#: includes/post-types.php:117
+#, fuzzy
+msgid "Add new answer"
+msgstr "Ajouter une nouvelle réponse"
+
+#: includes/post-types.php:121
+#, fuzzy
+msgid "Search answers"
+msgstr "Checher une réponse"
+
+#: includes/post-types.php:122
+msgid "No answer found"
+msgstr "Aucune réponse trouvée"
+
+#: includes/post-types.php:123
+#, fuzzy
+msgid "No answer found in trash"
+msgstr "Aucune réponse trouvée dans la corbeille"
+
+#: includes/process-form.php:121
+#, fuzzy
+msgid "Sorry, unable to post new question"
+msgstr "Statut pour une nouvelle question"
+
+#: includes/process-form.php:161
+msgid ""
+"This seems to be a duplicate question. A question with same content already "
+"exists."
+msgstr ""
+
+#: includes/process-form.php:207
+#, fuzzy
+msgid "Question posted successfully. Redirecting to question"
+msgstr "Question mise à jour"
+
+#: includes/process-form.php:271
+msgid "Question updated successfully"
+msgstr "Question mise à jour"
+
+#: includes/process-form.php:287
+#, fuzzy
+msgid "Sorry, you cannot asnwer on this question"
+msgstr "Vous êtes le seul abonné à cette question."
+
+#: includes/process-form.php:331
+msgid ""
+"This seems to be a duplicate answer. An answer with same content already "
+"exists."
+msgstr ""
+
+#: includes/process-form.php:383
+#, fuzzy
+msgid "Sorry, you cannot edit this answer"
+msgstr "Editer cette réponse"
+
+#: includes/process-form.php:420
+msgid "Answer updated successfully"
+msgstr "Réponse mise à jour"
+
+#: includes/process-form.php:439
+msgid "Check missing fields and then re-submit."
+msgstr "Merci de compléter les champs requis."
+
+#: includes/qaquery-hooks.php:146
+#, fuzzy
+msgid "Restricted content"
+msgstr "a editer le commentaire"
+
+#: includes/qaquery.php:438
+#, fuzzy
+msgid "Featured"
+msgstr "Caractéristiques"
+
+#: includes/qaquery.php:442
+msgid "Solved"
+msgstr "Non résolues"
+
+#: includes/qaquery.php:446
+#, fuzzy
+msgid "%d views"
+msgstr "<i>%d vues</i>"
+
+#: includes/shortcode-basepage.php:58
+msgid "AnsPress shortcode cannot be nested."
+msgstr ""
+
+#: includes/shortcode-basepage.php:84
+#, fuzzy
+msgid "Question and answer is powered by"
+msgstr "Chercher dans les questions/réponses"
+
+#: includes/taxo.php:322
+#, fuzzy
+msgid "Tagged"
+msgstr "Signalé"
+
+#: includes/taxo.php:456
+msgid "Popular"
+msgstr ""
+
+#: includes/taxo.php:457
+#, fuzzy
+msgid "New"
+msgstr "Nouvelles"
+
+#: includes/theme.php:30
+#, fuzzy
+msgid "No permission"
+msgstr "Permissions"
+
+#: includes/theme.php:41
+msgid "Discussion on \"%s\""
+msgstr "Discussion sur %s\""
+
+#: includes/theme.php:45 templates/not-found.php:1
+msgid "Error 404"
+msgstr "Page introuvable"
+
+#: includes/theme.php:383
+msgid "Delete post permanently (cannot be restored again)"
+msgstr ""
+
+#: includes/theme.php:393
+#, fuzzy
+msgid "Convert to post"
+msgstr "-1"
+
+#: includes/theme.php:394
+#, fuzzy
+msgid "Convert this question to blog post"
+msgstr "Répondre à la question"
+
+#: includes/theme.php:452
+msgid "Answered"
+msgstr "Répondues"
+
+#: includes/theme.php:453 widgets/questions.php:88
+msgid "Unanswered"
+msgstr "Non répondues"
+
+#: includes/theme.php:454
+msgid "Unsolved"
+msgstr "Non résolues"
+
+#: includes/theme.php:455 widgets/question_stats.php:48
+msgid "Views"
+msgstr "Vues"
+
+#: includes/theme.php:521
+msgid "Best answer"
+msgstr "Meilleure réponse"
+
+#: includes/theme.php:697
+#, fuzzy
+msgid "Order By"
+msgstr "Trier par:"
+
+#: includes/theme.php:742
+msgid "Reset sorting and filter"
+msgstr "Réinitialiser le tri et le filtre"
+
+#: includes/theme.php:742
+msgid "Clear Filter"
+msgstr ""
+
+#: includes/theme.php:769
+msgid "Select this answer as best"
+msgstr "Sélectionner cette réponse comme la meilleure"
+
+#: includes/theme.php:777
+msgid "Unselect this answer"
+msgstr "Déselectionner cette réponse"
+
+#: includes/theme.php:905
+#, fuzzy
+msgid "AnsPress links"
+msgstr "AnsPress Points"
+
+#: includes/upload.php:28
+msgid "You are not allowed to upload attachments."
+msgstr ""
+
+#: includes/upload.php:84
+msgid "Unable to delete attachment"
+msgstr ""
+
+#: includes/upload.php:150
+#, fuzzy
+msgid "You have already uploaded maximum numbers of allowed attachments"
+msgstr "Vous nous ne pouvez plus ajouter de pièces jointes."
+
+#: includes/upload.php:157
+#, fuzzy
+msgid "File cannot be uploaded, size is bigger then %s MB"
+msgstr "Fichier trop gros ( > %d Byte), upload impossible"
+
+#: includes/upload.php:225
+#, fuzzy
+msgid "Uploaded"
+msgstr "Envoyer"
+
+#: includes/upload.php:226
+msgid "Failed"
+msgstr ""
+
+#: includes/upload.php:228
+#, fuzzy
+msgid "Insert to post"
+msgstr "-1"
+
+#: includes/upload.php:281
+msgid "Insert images and attach media by %1$sselecting them%2$s"
+msgstr ""
+
+#: includes/votes.php:64
+msgid "Your vote has been removed."
+msgstr "Votre vote à bien été supprimé."
+
+#: includes/votes.php:78
+msgid "Undo your vote first."
+msgstr "Annuler votre vote d'abord."
+
+#: includes/votes.php:94
+msgid "Thank you for voting."
+msgstr "Merci pour votre vote."
+
+#: includes/votes.php:581
+msgid "Up vote this post"
+msgstr "+1"
+
+#: includes/votes.php:587
+msgid "Down vote this post"
+msgstr "-1"
+
+#: templates/addons/category/categories-question-list.php:22
+#: templates/addons/tag/tags-question-list.php:22
+#, fuzzy
+msgid "View all questions"
+msgstr "Nouvelles questions"
+
+#: templates/addons/category/category.php:50
+#, fuzzy
+msgid "Sub Categories"
+msgstr "Catégorie"
+
+#: templates/addons/category/no-category-found.php:14
+msgid "No category is set!"
+msgstr ""
+
+#: templates/addons/notification/index.php:24 templates/functions.php:59
+#, fuzzy
+msgid "Mark all as seen"
+msgstr "Marquer tout comme lu"
+
+#: templates/addons/notification/index.php:29
+msgid "All"
+msgstr "Tout"
+
+#: templates/addons/notification/index.php:30
+#, fuzzy
+msgid "Unseen"
+msgstr "Déselectionner"
+
+#: templates/addons/notification/index.php:31
+msgid "Seen"
+msgstr ""
+
+#: templates/addons/notification/index.php:41
+msgid "No notification"
+msgstr "Pas de notification"
+
+#: templates/addons/notification/index.php:46
+#: templates/addons/reputation/index.php:23
+#, fuzzy
+msgid "Load More"
+msgstr "Chargement du formulaire"
+
+#: templates/addons/tag/no-tags-found.php:15
+msgid "No tags is set!"
+msgstr ""
+
+#: templates/addons/tag/tag.php:12
+#, fuzzy
+msgid "Question tag: %s"
+msgstr "Statistiques de la question"
+
+#: templates/addons/tag/tag.php:12
+#, fuzzy
+msgid "1 Question"
+msgid_plural "%s Questions"
+msgstr[0] "Question"
+msgstr[1] "Question"
+
+#: templates/addons/tag/tags.php:20
+#, fuzzy
+msgid "Search tags..."
+msgstr "Chercher un utilisateur..."
+
+#: templates/addons/tag/tags.php:44
+#, fuzzy
+msgid "No description."
+msgstr "Description"
+
+#: templates/addons/user/answer-item.php:39
+#: templates/buddypress/answer-item.php:39
+#: templates/buddypress/question-item.php:41
+msgid "View Question"
+msgstr "Voir la question"
+
+#: templates/addons/user/answer-item.php:44
+#: templates/buddypress/answer-item.php:44
+#: templates/buddypress/question-item.php:47
+#, fuzzy
+msgid "%d Vote"
+msgid_plural "%d Votes"
+msgstr[0] "Vote"
+msgstr[1] "Vote"
+
+#: templates/addons/user/answer-item.php:46
+#: templates/buddypress/answer-item.php:46
+#, fuzzy
+msgid "This answer is selected as best"
+msgstr "Lorsqu'un utilisateur selectionne la meilleure réponse."
+
+#: templates/addons/user/answer-item.php:46
+#: templates/buddypress/answer-item.php:46
+#, fuzzy
+msgid "Selected"
+msgstr "Sélectionner"
+
+#: templates/addons/user/answers.php:35
+#, fuzzy
+msgid "No answer posted by this user."
+msgstr "Pas de réponses pour le moment !"
+
+#: templates/answer-form.php:24
+#, fuzzy
+msgid "Write your answer.."
+msgstr "Votre réponse..."
+
+#: templates/ask.php:17
+#, fuzzy
+msgid "You do not have permission to ask question."
+msgstr "Vous n'avez pas le droit de poser une question"
+
+#: templates/attachments.php:14
+msgid "Attachments"
+msgstr ""
+
+#: templates/attachments.php:17
+#, fuzzy
+msgid "Download file"
+msgstr "Télécharger"
+
+#: templates/content-answer.php:18
+msgid "Total votes"
+msgstr "Votes total"
+
+#: templates/content-none.php:14
+#, fuzzy
+msgid "Sorry! No question found."
+msgstr "Pas de questions trouvées."
+
+#: templates/content-none.php:24
+msgid ""
+"Showing results with pagination active, you are currently on page %d. Click "
+"here to return to the initial page"
+msgstr ""
+
+#: templates/content-none.php:27
+#, fuzzy
+msgid "go to page 1"
+msgstr "Entrer le slug pour la page Poser une question"
+
+#: templates/functions.php:36
+msgid "Password not matching"
+msgstr "Les mots de passes ne sont pas identiques"
+
+#: templates/functions.php:37
+msgid "Password length must be 6 or higher"
+msgstr "Le mot de passe doit faire minimum 6 caractères"
+
+#: templates/functions.php:38
+msgid "Not a valid email"
+msgstr "Email invalide"
+
+#: templates/functions.php:39
+msgid "Username length must be 4 or higher"
+msgstr "Le nom d'utilisateur doit faire minimum 4 caractères"
+
+#: templates/functions.php:40
+msgid "Username not available"
+msgstr "Login non disponible"
+
+#: templates/functions.php:43
+msgid "Email already in use."
+msgstr ""
+
+#: templates/functions.php:45
+#, fuzzy
+msgid "Do you want to reset your password?"
+msgstr "Email déjà utilisée. %s Voulez vous retrouver votre mot de passe ? %s"
+
+#: templates/functions.php:47
+msgid "Loading"
+msgstr "Chargement"
+
+#: templates/functions.php:48
+msgid "Sending request"
+msgstr "Requete en cours"
+
+#: templates/functions.php:49
+msgid "Uploading"
+msgstr "Envoi en cours"
+
+#: templates/functions.php:50
+msgid "Something went wrong in server side, not a valid response."
+msgstr ""
+
+#: templates/functions.php:51
+#, fuzzy
+msgid "File size is bigger then %s MB"
+msgstr "Fichier trop gros ( > %d Byte), upload impossible"
+
+#: templates/functions.php:52
+#, fuzzy
+msgid "You have already attached maximum numbers of allowed attachments"
+msgstr "Vous nous ne pouvez plus ajouter de pièces jointes."
+
+#: templates/functions.php:54
+msgid "Comment"
+msgstr "Commenter"
+
+#: templates/functions.php:56
+msgid "Update"
+msgstr "Mettre à jour"
+
+#: templates/functions.php:57
+#, fuzzy
+msgid "Write your comment..."
+msgstr "Envoi de votre commentaire"
+
+#: templates/functions.php:83
+#, fuzzy
+msgid "(AnsPress) Before"
+msgstr "AnsPress Role"
+
+#: templates/functions.php:87
+msgid "Widgets in this area will be shown before anspress body."
+msgstr "Zone de widget avant le contenu d'AnsPress."
+
+#: templates/functions.php:93
+#, fuzzy
+msgid "(AnsPress) Question List Top"
+msgstr "AnsPress Suivre la question"
+
+#: templates/functions.php:97
+msgid "Widgets in this area will be shown before questions list."
+msgstr "Zone de widget avant la liste des questions."
+
+#: templates/functions.php:103
+#, fuzzy
+msgid "(AnsPress) Sidebar"
+msgstr "AnsPress Moderateur"
+
+#: templates/functions.php:107
+#, fuzzy
+msgid ""
+"Widgets in this area will be shown in AnsPress sidebar except single "
+"question page."
+msgstr "Zone de widget dans la sidebar AnsPress."
+
+#: templates/functions.php:113
+#, fuzzy
+msgid "(AnsPress) Question Sidebar"
+msgstr "AP Question Sidebar"
+
+#: templates/functions.php:117
+#, fuzzy
+msgid "Widgets in this area will be shown in single question page sidebar."
+msgstr "Zone de widget de la sidebar question AnsPress."
+
+#: templates/functions.php:123
+#, fuzzy
+msgid "(AnsPress) Category Page"
+msgstr "Catégorie"
+
+#: templates/functions.php:127
+msgid "Widgets in this area will be shown in category listing page."
+msgstr ""
+"Cette zone de widget est visibile sur la page de listing des catégories."
+
+#: templates/functions.php:133
+#, fuzzy
+msgid "(AnsPress) Tag page"
+msgstr "AP Page des mots-clés"
+
+#: templates/functions.php:137
+msgid "Widgets in this area will be shown in tag listing page."
+msgstr ""
+"Cette zone de widget est visibile sur la page de listing des mots-clés."
+
+#: templates/functions.php:143
+#, fuzzy
+msgid "(AnsPress) Author page"
+msgstr "Pages AnsPress"
+
+#: templates/functions.php:147
+#, fuzzy
+msgid "Widgets in this area will be shown in authors page."
+msgstr ""
+"Les widgets de cette zone seront affichés dans la page des utilisateurs."
+
+#: templates/login-signup.php:17
+msgid "Register"
+msgstr "S'inscrire"
+
+#: templates/login-signup.php:18
+msgid "or"
+msgstr "ou"
+
+#: templates/login-signup.php:19
+msgid "Login"
+msgstr "Login"
+
+#: templates/no-permission-post.php:5
+msgid "This is a private %s."
+msgstr "Ceci est un %s privé."
+
+#: templates/no-permission-post.php:7
+msgid "This %s waiting for moderation."
+msgstr "%s est en attente de modération"
+
+#: templates/no-permission-post.php:9
+msgid "This has been trashed or waiting for approval."
+msgstr "Cet élément est dans la corbeille ou en attente de validation."
+
+#: templates/question.php:46 templates/shortcode/question.php:42
+#, fuzzy
+msgid "Posted %s"
+msgstr "%sDemandé %s"
+
+#: templates/search-form.php:14
+msgid "Search questions..."
+msgstr "Rechercher une question..."
+
+#: templates/shortcode/question.php:79
+msgid "View all answers"
+msgstr ""
+
+#: templates/widgets/widget-questions.php:17
+#, fuzzy
+msgid "1 Answer"
+msgid_plural "%d Answers"
+msgstr[0] "1 Réponse"
+msgstr[1] "1 Réponse"
+
+#: templates/widgets/widget-questions.php:19
+#, fuzzy
+msgid "1 Vote"
+msgid_plural "%d Votes"
+msgstr[0] "Vote"
+msgstr[1] "Vote"
+
+#: templates/widgets/widget-questions.php:23
+msgid "No questions found."
+msgstr "Pas de questions trouvées."
+
+#: widgets/ask-form.php:28
+msgid "(AnsPress) Ask form"
+msgstr ""
+
+#: widgets/ask-form.php:29
+#, fuzzy
+msgid "AnsPress ask form widget"
+msgstr "Tableau de bord AnsPress"
+
+#: widgets/ask-form.php:68
+msgid "Ask questions"
+msgstr "Question posées"
+
+#: widgets/breadcrumbs.php:28
+msgid "(AnsPress) Breadcrumbs"
+msgstr "Fil d'ariane (AnsPress)"
+
+#: widgets/breadcrumbs.php:29
+msgid "Show current anspress page navigation"
+msgstr ""
+
+#: widgets/question_stats.php:25
+msgid "(AnsPress) Question Stats"
+msgstr ""
+
+#: widgets/question_stats.php:26
+msgid "Shows question stats in single question page."
+msgstr ""
+
+#: widgets/question_stats.php:48
+#, fuzzy
+msgid "One time"
+msgid_plural "%d times"
+msgstr[0] "Une fois"
+msgstr[1] "Une fois"
+
+#: widgets/question_stats.php:49
+#, fuzzy
+msgid "%2$s1%3$s answer"
+msgid_plural "%2$s%1$d%3$s answers"
+msgstr[0] "%2$s1%3$s réponse"
+msgstr[1] "%2$s1%3$s réponse"
+
+#: widgets/question_stats.php:52
+msgid "This widget can only be used in single question page"
+msgstr "Ce widget peut être mis uniquement sur une page question"
+
+#: widgets/question_stats.php:64
+msgid "Question stats"
+msgstr "Statistiques de la question"
+
+#: widgets/questions.php:10
+msgid "(AnsPress) Questions"
+msgstr ""
+
+#: widgets/questions.php:11
+msgid "Shows list of question shorted by option."
+msgstr ""
+
+#: widgets/questions.php:82
+msgid "Order by:"
+msgstr "Trier par:"
+
+#: widgets/questions.php:93
+msgid "Category IDs:"
+msgstr "Catégorie"
+
+#: widgets/questions.php:95
+msgid "Comma separted AnsPress category ids"
+msgstr "Anspress catégories séparées par des virgules"
+
+#: widgets/questions.php:99
+msgid "Limit:"
+msgstr "Limite:"
+
+#: widgets/search.php:29
+msgid "(AnsPress) Search"
+msgstr ""
+
+#: widgets/search.php:30
+msgid "Question and answer search form."
+msgstr ""
+
+#. Plugin Name of the plugin/theme
+#, fuzzy
+msgid "AnsPress"
+msgstr "A propos"
+
+#. Author URI of the plugin/theme
+msgid "https://anspress.io"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid "The most advance community question and answer system for WordPress"
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "Rahul Aryan"
+msgstr ""
+
+#: addons/free/category.php:180
+#, fuzzy
+msgctxt "anspress-question-answer"
+msgid "Category"
+msgstr "Catégorie"
+
+#: addons/free/category.php:182
+#, fuzzy
+msgctxt "anspress-question-answer"
+msgid "Add New Category"
+msgstr "Catégorie"
+
+#: addons/free/tag.php:191
+#, fuzzy
+msgctxt "anspress-question-answer"
+msgid "Tag"
+msgstr "Mot clé"
+
+#: addons/free/tag.php:193
+#, fuzzy
+msgctxt "anspress-question-answer"
+msgid "Add New Tag"
+msgstr "Ajouter une nouvelle réponse"
+
+#: includes/post-types.php:41
+msgctxt "Post Type General Name"
+msgid "Questions"
+msgstr "Questions"
+
+#: includes/post-types.php:111
+msgctxt "Post Type General Name"
+msgid "Answers"
+msgstr "Réponses"
+
+#: includes/post-types.php:42
+msgctxt "Post Type Singular Name"
+msgid "Question"
+msgstr "Question"
+
+#: includes/post-types.php:112
+msgctxt "Post Type Singular Name"
+msgid "Answer"
+msgstr "Réponse"
+
+#~ msgid "Notification"
+#~ msgstr "Notification"
+
+#, fuzzy
+#~ msgid "Auto delete notifications"
+#~ msgstr "Supprimer cette notification"
+
+#, fuzzy
+#~ msgid "Auto delete notifications interval"
+#~ msgstr "Supprimer cette notification"
+
+#, fuzzy
+#~ msgid "%s comment approved"
+#~ msgid_plural "%s comments approved"
+#~ msgstr[0] "commenté"
+#~ msgstr[1] "commenté"
+
+#~ msgid "Points"
+#~ msgstr "Points"
+
+#~ msgid "Moderate question & answer"
+#~ msgstr "Modérer les questions & réponses"
+
+#~ msgid "Post flag"
+#~ msgstr "Soumettre le flag"
+
+#~ msgid "Options"
+#~ msgstr "Options"
+
+#~ msgid "Role and permission for AnsPress"
+#~ msgstr "Role et permissions pour AnsPress"
+
+#~ msgid "User notification"
+#~ msgstr "Notification utilisateur"
+
+#~ msgid ""
+#~ "Is your existing question tags are not appearing ? click here to fix it %s"
+#~ msgstr ""
+#~ "Si vos mots-clés de question n'apparaissent pas ? Cliquez ici pour "
+#~ "corriger le problème %s"
+
+#~ msgid "Fix question tags"
+#~ msgstr "Corriger les mots-clés des questions"
+
+#~ msgid "Hide message %s"
+#~ msgstr "Cacher ce message %s"
+
+#~ msgid "dismiss"
+#~ msgstr "annuler"
+
+#~ msgid "By %s"
+#~ msgstr "Par %s"
+
+#~ msgid "Last Updated:"
+#~ msgstr "Dernière mise à jour:"
+
+#~ msgid "Untested with your version of WordPress"
+#~ msgstr "Non tester avec votre version de WordPress"
+
+#~ msgid "<strong>Compatible</strong> with your version of WordPress"
+#~ msgstr "<strong>Compatible</strong> avec votre version de Wordpress"
+
+#~ msgid "Draft"
+#~ msgstr "Brouillon"
+
+#~ msgid "Type"
+#~ msgstr "Type"
+
+#~ msgid "Delete permanently"
+#~ msgstr "Supprimer définitivement"
+
+#~ msgid "Move to trash"
+#~ msgstr "Deplacer vers la corbeille"
+
+#~ msgid "Base page"
+#~ msgstr "Page de base"
+
+#~ msgid "Question Help page"
+#~ msgstr "Page du mode d'emploi des questions"
+
+#~ msgid "Direction for asking a question."
+#~ msgstr "Notice pour poser une question."
+
+#~ msgid "Answer Help page"
+#~ msgstr "Page du mode d'emploi des réponses"
+
+#~ msgid "Clean DB"
+#~ msgstr "Effacer les données"
+
+#~ msgid ""
+#~ "check this to remove all anspress data including posts on deactivating "
+#~ "plugin."
+#~ msgstr ""
+#~ "Si vous cochez cette case toutes les données (y compris les questions / "
+#~ "réponses) seront supprimés lors de la désactivation du plugin"
+
+#~ msgid "Base page slug before user page permalink"
+#~ msgstr ""
+#~ "Afficher la taxonomie avant le terme \"user\" pour la page utilisateur"
+
+#~ msgid "Disable hover card"
+#~ msgstr "Désactiver le survol de la carte."
+
+#~ msgid "Dont show user hover card on mouseover."
+#~ msgstr "Ne pas afficher la carte de l'utilisateur au survol de la souri"
+
+#~ msgid "Users per page"
+#~ msgstr "Utilisateurs par page"
+
+#~ msgid "Users to show per page."
+#~ msgstr "Nombre d'utilisateurs par page"
+
+#~ msgid "Sorting"
+#~ msgstr "Trier par"
+
+#~ msgid "Sort answers by default."
+#~ msgstr "Ordre de tri par defaut"
+
+#~ msgid "Toggle"
+#~ msgstr "Switch"
+
+#~ msgid "Show question sidebar"
+#~ msgstr "Afficher la sidebar"
+
+#~ msgid "Pages"
+#~ msgstr "Pages"
+
+#~ msgid "Page slug"
+#~ msgstr "Page slug"
+
+#~ msgid ""
+#~ "Enter slug for user page, make sure no page or post exists with same slug."
+#~ msgstr ""
+#~ "Mot clé pour la page utilisateur, attention il ne faut qu'aucune autre "
+#~ "page ai le même terme (url)"
+
+#~ msgid "Show question title"
+#~ msgstr "Afficher le titre de la question"
+
+#~ msgid "Disable navigation"
+#~ msgstr "Désactiver la navigation"
+
+#~ msgid "Disable answer navigation."
+#~ msgstr "Désactiver la navigations dans les réponses."
+
+#~ msgid "Users"
+#~ msgstr "Utilisateurs"
+
+#~ msgid "Show users directory"
+#~ msgstr "Afficher les informations de l'utilisateur"
+
+#~ msgid "When enabled public can see directory of users."
+#~ msgstr "Les informations utilisateurs seront publique."
+
+#~ msgid "Disable reputation for user"
+#~ msgstr "Désactiver les réputations utilisateurs"
+
+#~ msgid "Users page avatar size"
+#~ msgstr "Taille de la list des avatars"
+
+#~ msgid "Set user avatar size for users page item."
+#~ msgstr "Taille de l'avatar utilisateur sur le page des items"
+
+#~ msgid "Set width of user cover photo."
+#~ msgstr "Largeur du bandeau utilisateur"
+
+#~ msgid "Set height of user cover photo."
+#~ msgstr "Hauteur du bandeau utilisateur"
+
+#~ msgid "Cover thumb width"
+#~ msgstr "Largeur du bandeau"
+
+#~ msgid "Set width of user cover photo thumbnail."
+#~ msgstr "Largeur de la miniature du bandeau utilisateur"
+
+#~ msgid "Small cover height"
+#~ msgstr "Hauteur du petit bandeau "
+
+#~ msgid "Set height of user cover photo thumbnail."
+#~ msgstr "Hauteur de la photo miniature."
+
+#~ msgid "Default rank"
+#~ msgstr "Rang par défaut"
+
+#~ msgid "Assign a default rank for newly registered user."
+#~ msgstr "Assigner un rang par defaut pour un nouvel utilisateur."
+
+#~ msgid "Enable reCaptcha"
+#~ msgstr "Activer reCaptcha"
+
+#~ msgid "Use this for preventing spam posts."
+#~ msgstr "Permet de vous proteger contre les robots spammeur"
+
+#~ msgid "There is no question yet."
+#~ msgstr "Il n'y a pas de question pour moment !"
+
+#~ msgid "Total <b>%d flag</b>"
+#~ msgstr "<b>%d flag</b> au total"
+
+#~ msgid "Trash post"
+#~ msgstr "Mettre à la corbeille"
+
+#~ msgid "No one flagged this post yet"
+#~ msgstr "Personne n'a flaggé ce post pour le moment"
+
+#~ msgid "New reputation"
+#~ msgstr "Nouvelle réputation"
+
+#~ msgid "No related questions found"
+#~ msgstr "Aucune questions en rapport trouvée."
+
+#~ msgid "Set as featured"
+#~ msgstr "Mettre en avant"
+
+#~ msgid "Unset as featured"
+#~ msgstr "Supprimer la mise en avant"
+
+#~ msgid "Follow"
+#~ msgstr "Suivre"
+
+#~ msgid "Unfollow"
+#~ msgstr "Ne plus suivre"
+
+#~ msgid "Please login for adding question to your subscribe"
+#~ msgstr "Merci de vous connecter pour ajouter cette question"
+
+#~ msgid "votes"
+#~ msgstr "votes"
+
+#~ msgid "Write a meaningful title for the question."
+#~ msgstr "Ecrivez un titre significatif pour votre question."
+
+#~ msgid "Questions %s"
+#~ msgstr "Questions %s"
+
+#~ msgid "Answers %s"
+#~ msgstr "Réponses %s"
+
+#~ msgid "User"
+#~ msgstr "Utilisateur"
+
+#~ msgid "Profile"
+#~ msgstr "Profile"
+
+#~ msgid "Followers"
+#~ msgstr "Abonnés"
+
+#~ msgid "Following"
+#~ msgstr "Abonnements"
+
+#~ msgid "No user found"
+#~ msgstr "Aucun utilisateur trouvé"
+
+#~ msgid "No followers found"
+#~ msgstr "pas de followers trouvé"
+
+#~ msgid "You are not following anyone."
+#~ msgstr "Vous ne suivez personne."
+
+#~ msgid "My activity"
+#~ msgstr "Mon activité"
+
+#~ msgid "%s's activity"
+#~ msgstr "L'activité de %s"
+
+#~ msgid "My profile"
+#~ msgstr "Mon profile"
+
+#~ msgid "%s's profile"
+#~ msgstr "Le profile de %s"
+
+#~ msgid "My questions"
+#~ msgstr "Poser une question"
+
+#~ msgid "%s's questions"
+#~ msgstr "%s questions"
+
+#~ msgid "My answers"
+#~ msgstr "Réponses"
+
+#~ msgid "%s's answers"
+#~ msgstr "%s réponses"
+
+#~ msgid "My reputation"
+#~ msgstr "Nouvelle réputation"
+
+#~ msgid "%s's reputation"
+#~ msgstr "%s réputations"
+
+#~ msgid "About me"
+#~ msgstr "À propos de moi"
+
+#~ msgid "My followers"
+#~ msgstr "Mes followers"
+
+#~ msgid "%s's followers"
+#~ msgstr "Les followers de %s"
+
+#~ msgid "My subscriptions"
+#~ msgstr "Description"
+
+#~ msgid "My notification"
+#~ msgstr "Mes notifications"
+
+#~ msgid "There was an error while uploading avatar, please check your image"
+#~ msgstr ""
+#~ "Il y a eu une erreur lors de l'envoi de l'avatar, vérifiez votre image"
+
+#~ msgid "Cover photo uploaded successfully."
+#~ msgstr "Mise à jour de votre image de couverture OK."
+
+#~ msgid ""
+#~ "There was an error while uploading cover photo, please check your image "
+#~ "and try again."
+#~ msgstr ""
+#~ "Il y a eu une erreur lors de l'envoi de votre bandeau de profile, "
+#~ "vérifiez votre image puis rééssayez."
+
+#~ msgid "Avatar uploaded successfully."
+#~ msgstr "Mise à jour de votre avatar OK."
+
+#~ msgid "Its too short, it must be minimum %d characters"
+#~ msgstr "C'est trop petit, minimum %d caractères"
+
+#~ msgid "Flag "
+#~ msgstr "Signaler "
+
+#~ msgid "Report this comment to moderaor"
+#~ msgstr "Signaler ce commentaire au modérateur"
+
+#~ msgid "Comment deleted successfully"
+#~ msgstr "Commentaire supprimé"
+
+#~ msgid "ago"
+#~ msgstr " "
+
+#~ msgid "Please login or register to continue this action."
+#~ msgstr "Merci de vous connecter ou de vous enregistrer pour continuer."
+
+#~ msgid "Edit this question"
+#~ msgstr "Editer cette question"
+
+#~ msgid "Edited on"
+#~ msgstr "Editer le"
+
+#~ msgid "Change status of post"
+#~ msgstr "Changer le statu du post"
+
+#~ msgid "You need to login before doing this action."
+#~ msgstr "Vous devez être connecter pour faire ça."
+
+#~ msgid "You are commenting on a draft post."
+#~ msgstr "Vous êtes en train de commenter un bouillon."
+
+#~ msgid "You are following this question."
+#~ msgstr "Vous suivez  maintenant ce type de question."
+
+#~ msgid "Successfully unfollowed."
+#~ msgstr "Vous ne suivez plus ce type de question."
+
+#~ msgid "Question submitted successfully"
+#~ msgstr "Question envoyée"
+
+#~ msgid "Question moved to trash."
+#~ msgstr "Question déplacée dans la corbeille."
+
+#~ msgid "Answer moved to trash."
+#~ msgstr "Réponse déplacée dans la corbeille."
+
+#~ msgid "Comment content is empty."
+#~ msgstr "Votre commentaire est vide;"
+
+#~ msgid "Successfully followed."
+#~ msgstr "Votre abonnement a bien été pris en compte."
+
+#~ msgid "You cannot follow yourself."
+#~ msgstr "Vous ne pouvez pas vous suivre vous même."
+
+#~ msgid "Notification deleted successfully."
+#~ msgstr "Notification correctement supprimée."
+
+#~ msgid "Notification is marked as read."
+#~ msgstr "Notification marquée comme lu."
+
+#~ msgid "This comment has been reported to site moderator"
+#~ msgstr "Ce commentaire a été signalé au modérateur du site"
+
+#~ msgid "You have already reported this comment"
+#~ msgstr "Vous avez déjà signalé ce commentaire"
+
+#~ msgid "%s is closed, new answer are not accepted."
+#~ msgstr "%s est cloturé, aucune réponse possible."
+
+#~ msgid "Add image to editor"
+#~ msgstr "Ajouter une image à l'editeur"
+
+#~ msgid "upload"
+#~ msgstr "envoyer"
+
+#~ msgid "add image from link"
+#~ msgstr "ajouter une image depuis un lien"
+
+#~ msgid "Enter images link"
+#~ msgstr "Lien de l'image"
+
+#~ msgid "<span>1</span> Participant"
+#~ msgid_plural "<span>%d</span> Participants"
+#~ msgstr[0] "<span>1</span> Participant"
+#~ msgstr[1] "<span>%d</span> Participants"
+
+#~ msgid "Closed <span class=\"count\">(%s)</span>"
+#~ msgid_plural "Moderate <span class=\"count\">(%s)</span>"
+#~ msgstr[0] "Fermé <span class=\"count\">(%s)</span>"
+#~ msgstr[1] "Modéré <span class=\"count\">(%s)</span>"
+
+#~ msgid "Edit Question"
+#~ msgstr "Editer la question"
+
+#~ msgid "Update Question"
+#~ msgstr "Mettre à jour la question"
+
+#~ msgid "Search question"
+#~ msgstr "Chercher une question"
+
+#~ msgid "answers"
+#~ msgstr "réponses"
+
+#~ msgid "%s ans"
+#~ msgid_plural "%s ans"
+#~ msgstr[0] "%s rép"
+#~ msgstr[1] "%s rép"
+
+#~ msgid "%s Rep."
+#~ msgstr "%s réponses"
+
+#~ msgid "+%d"
+#~ msgstr "+%d"
+
+#~ msgid "%sAnswered %s"
+#~ msgstr "%sRépondu %s"
+
+#, fuzzy
+#~ msgid "%sCommented %s"
+#~ msgstr "Commenté %s"
+
+#~ msgid "%sSelected answer %s"
+#~ msgstr "%sRéponse sélectionnée %s"
+
+#, fuzzy
+#~ msgid "%sUp vote %s %s"
+#~ msgstr "+1"
+
+#~ msgid "%sDown vote %s %s"
+#~ msgstr "%s-1 %s %s"
+
+#~ msgid "%sBest answer %s"
+#~ msgstr "%sMeilleure réponse %s"
+
+#~ msgid "Points given to newly registered user."
+#~ msgstr "Points pour la création d'un compte."
+
+#~ msgid "Uploading avatar"
+#~ msgstr "Envoi de l'avatar en cours"
+
+#~ msgid "Awarded for uploading an profile picture."
+#~ msgstr "Récompensé pour avoir mis un avatar."
+
+#~ msgid "Completing profile"
+#~ msgstr "Mise à jour du profile"
+
+#~ msgid "Awarded for completing profile fields."
+#~ msgstr "Récompensé pour avoir complété le profil."
+
+#~ msgid "For asking a question."
+#~ msgstr "Pour avoir posé une question."
+
+#~ msgid "For new comment."
+#~ msgstr "Pour un nouveau commentaire."
+
+#~ msgid "Receive upvote on question"
+#~ msgstr "+1 sur sa question"
+
+#~ msgid "When user receive an upvote on question"
+#~ msgstr "Lorsqu'un utilisateur recoit un +1 sur une sa question"
+
+#~ msgid "Receive down vote on question"
+#~ msgstr "-1 sur sa question"
+
+#~ msgid "When user receive an down vote on question"
+#~ msgstr "Lorsqu'un utilisateur recoit un -1 sur une sa question"
+
+#~ msgid "Receive down vote on answer"
+#~ msgstr "-1 sur sa réponse"
+
+#~ msgid "Up voted questions"
+#~ msgstr "+1 sur une question"
+
+#~ msgid "When user upvote others question"
+#~ msgstr "Lorsqu'un utilisateur vote +1 sur une question"
+
+#~ msgid "Up voted answers"
+#~ msgstr "+1 sur une réponse"
+
+#~ msgid "When user upvote others answer"
+#~ msgstr "Lorsqu'un utilisateur vote +1 pour une réponse"
+
+#~ msgid "Down voted questions"
+#~ msgstr "-1 pour une question"
+
+#~ msgid "When user down vote others question"
+#~ msgstr "Lorsqu'un utilisateur vote -1 pour une question"
+
+#~ msgid "When user down vote others answers"
+#~ msgstr "Lorsque un utilisateur vote -1 à d'autres réponses"
+
+#~ msgid "When user user select an answer."
+#~ msgstr "Lorsqu'un utilisateur selectionne une réponse."
+
+#~ msgid "Install Required Plugins"
+#~ msgstr "Installer les plugins requis"
+
+#~ msgid "Install Plugins"
+#~ msgstr "Installer des plugins"
+
+#~ msgid "Installing Plugin: %s"
+#~ msgstr "Installation du plugin: %s"
+
+#~ msgid "Something went wrong with the plugin API."
+#~ msgstr "Une erreur est survenu avec l'API du plugin."
+
+#~ msgid "AnsPress requires the following plugin: %1$s."
+#~ msgid_plural "AnsPress requires the following plugins: %1$s."
+#~ msgstr[0] "AnsPress requière le plugin suivant : %1$s"
+#~ msgstr[1] "AnsPress requière les plugins suivants : %1$s"
+
+#~ msgid "AnsPress recommends the following plugin: %1$s."
+#~ msgid_plural "AnsPress recommends the following plugins: %1$s."
+#~ msgstr[0] "AnsPress recommande le plugin suivant: %1$s."
+#~ msgstr[1] "AnsPress recommande les plugins suivants: %1$s."
+
+#~ msgid ""
+#~ "Sorry, but you do not have the correct permissions to install the %s "
+#~ "plugin. Contact the administrator of this site for help on getting the "
+#~ "plugin installed."
+#~ msgid_plural ""
+#~ "Sorry, but you do not have the correct permissions to install the %s "
+#~ "plugins. Contact the administrator of this site for help on getting the "
+#~ "plugins installed."
+#~ msgstr[0] ""
+#~ "Désolé, mais vous n'avez pas le droit d'installer le plugin %s. Merci de "
+#~ "prendre contact avec l'administrateur du site."
+#~ msgstr[1] ""
+#~ "Désolé, mais vous n'avez pas le droit d'installer les plugins %s. Merci "
+#~ "de prendre contact avec l'administrateur du site."
+
+#~ msgid "The following required plugin is currently inactive: %1$s."
+#~ msgid_plural "The following required plugins are currently inactive: %1$s."
+#~ msgstr[0] "Le plugin suivant est requis mais désactivé: %1$s."
+#~ msgstr[1] "Les plugins suivants est requis mais désactivés: %1$s."
+
+#~ msgid "The following recommended plugin is currently inactive: %1$s."
+#~ msgid_plural ""
+#~ "The following recommended plugins are currently inactive: %1$s."
+#~ msgstr[0] "Le plugin recommandé suivant : %1$s, est actuellement désactivé."
+#~ msgstr[1] ""
+#~ "Les plugins recommandés suivants : %1$s, sont actuellements désactivés."
+
+#~ msgid ""
+#~ "Sorry, but you do not have the correct permissions to activate the %s "
+#~ "plugin. Contact the administrator of this site for help on getting the "
+#~ "plugin activated."
+#~ msgid_plural ""
+#~ "Sorry, but you do not have the correct permissions to activate the %s "
+#~ "plugins. Contact the administrator of this site for help on getting the "
+#~ "plugins activated."
+#~ msgstr[0] ""
+#~ "Désolé, mais vous n'avez pas le droit d'activer le plugin %s. Merci de "
+#~ "prendre contact avec l'administrateur du site."
+#~ msgstr[1] ""
+#~ "Désolé, mais vous n'avez pas le droit d'activer les plugins %s. Merci de "
+#~ "prendre contact avec l'administrateur du site."
+
+#~ msgid ""
+#~ "The following plugin needs to be updated to its latest version to ensure "
+#~ "maximum compatibility with this theme: %1$s."
+#~ msgid_plural ""
+#~ "The following plugins need to be updated to their latest version to "
+#~ "ensure maximum compatibility with this theme: %1$s."
+#~ msgstr[0] ""
+#~ "Le plugin suivant a besoin d'être mis à jour afin d'être totalement "
+#~ "compatible avec le theme: %1$s."
+#~ msgstr[1] ""
+#~ "Les plugins suivants ont besoin d'être mis à jour afin d'être totalement "
+#~ "compatible avec le theme: %1$s."
+
+#~ msgid ""
+#~ "Sorry, but you do not have the correct permissions to update the %s "
+#~ "plugin. Contact the administrator of this site for help on getting the "
+#~ "plugin updated."
+#~ msgid_plural ""
+#~ "Sorry, but you do not have the correct permissions to update the %s "
+#~ "plugins. Contact the administrator of this site for help on getting the "
+#~ "plugins updated."
+#~ msgstr[0] ""
+#~ "Désolé, mais vous n'avez pas le droit de mettre à jour le plugin %s. "
+#~ "Merci de prendre contact avec l'administrateur du site."
+#~ msgstr[1] ""
+#~ "Désolé, mais vous n'avez pas le droit de mettre à jour les plugins %s. "
+#~ "Merci de prendre contact avec l'administrateur du site."
+
+#~ msgid "Begin installing plugin"
+#~ msgid_plural "Begin installing plugins"
+#~ msgstr[0] "Demarrage de l'installation du plugin"
+#~ msgstr[1] "Demarrage de l'installation des plugins"
+
+#~ msgid "Begin activating plugin"
+#~ msgid_plural "Begin activating plugins"
+#~ msgstr[0] "Activation du plugin"
+#~ msgstr[1] "Activation des plugins"
+
+#~ msgid "Return to Required Plugins Installer"
+#~ msgstr "Revenir à la liste des plugins requis"
+
+#~ msgid "Plugin activated successfully."
+#~ msgstr "Plugin activé correctement."
+
+#~ msgid "All plugins installed and activated successfully. %s"
+#~ msgstr "Tous les plugins on été installés et activés. %s"
+
+#~ msgid ""
+#~ "Question and answer is powered by <a href=\"http://anspress.io\" traget="
+#~ "\"_blank\">AnsPress</a>"
+#~ msgstr ""
+#~ "powered by <a href=\"http://anspress.io\" traget=\"_blank\">AnsPress</a>"
+
+#~ msgid "You and <strong>%s people</strong> subscribed to this question."
+#~ msgstr "Vous et <strong>%s personnes</strong> suivent cette question."
+
+#~ msgid "<strong>%d people</strong> subscribed to this question."
+#~ msgstr "<strong>%d personnes</strong> sont inscrits à cette question."
+
+#~ msgid "answer accepted"
+#~ msgstr "réponse acceptée"
+
+#~ msgid "Sort by"
+#~ msgstr "Ordonner par"
+
+#~ msgid ".."
+#~ msgstr ".."
+
+#~ msgid "First name"
+#~ msgstr "Prénom"
+
+#~ msgid "Your first name"
+#~ msgstr "Votre prénom"
+
+#~ msgid "Last name"
+#~ msgstr "Nom"
+
+#~ msgid "Your surname"
+#~ msgstr "Votre nom"
+
+#~ msgid "Nickname"
+#~ msgstr "Pseudo"
+
+#~ msgid "Your nickname"
+#~ msgstr "Votre pseudo"
+
+#~ msgid "Display name"
+#~ msgstr "Nom affiché"
+
+#~ msgid "Write something about yourself"
+#~ msgstr "Ecrivez quelque chose à propos de vous"
+
+#~ msgid "Username"
+#~ msgstr "Login"
+
+#~ msgid "Your username"
+#~ msgstr "Votre login"
+
+#~ msgid "This cannot be changed."
+#~ msgstr "Ne peu pas être édité"
+
+#~ msgid "Your contact email"
+#~ msgstr "Votre email de contact"
+
+#~ msgid "Password"
+#~ msgstr "Mot de passe"
+
+#~ msgid "Update your password"
+#~ msgstr "Mettre à jour le mot de passe"
+
+#~ msgid "Page not found or registered."
+#~ msgstr "Page introuvable ou verouillée"
+
+#~ msgid "Top %s"
+#~ msgstr "Top %s"
+
+#~ msgid "Upload an avatar"
+#~ msgstr "Ajouter un avatar"
+
+#~ msgid "Basic"
+#~ msgstr "De base"
+
+#~ msgid ""
+#~ "Passing user_id in ap_is_my_profile is deprecated, function will check "
+#~ "again currently logged in user."
+#~ msgstr ""
+#~ "Passer user_id dans ap_is_my_profile est obsolète, la fonction va "
+#~ "vérifier à nouveau l'utilisateur actuellement connecté."
+
+#~ msgid "Upload a cover photo"
+#~ msgstr "Ajouter un bandeau de couverture"
+
+#~ msgid "Upload cover"
+#~ msgstr "Envoi de l'avatar en cours"
+
+#~ msgid "%d months, "
+#~ msgstr "%d mois"
+
+#~ msgid "Vote for closing"
+#~ msgstr "Les votes sont fermés"
+
+#~ msgid "Undo your vote"
+#~ msgstr "Annuler votre vote"
+
+#~ msgid "Close "
+#~ msgstr "Fermer"
+
+#~ msgid "Toggle fullscreen"
+#~ msgstr "Passer en plein écran"
+
+#~ msgid "Write"
+#~ msgstr "Ecrire"
+
+#~ msgid "How to answer"
+#~ msgstr "Comment répondre ?"
+
+#~ msgid "Please %s or %s to view answers and comments"
+#~ msgstr "Merci de %s ou %s pour voir les réponses et commentaires"
+
+#~ msgid "How to ask"
+#~ msgstr "Comment répondre ?"
+
+#~ msgid "Your comment is awaiting moderation."
+#~ msgstr "Votre commentaire est en attente de modération."
+
+#~ msgid "Comment navigation"
+#~ msgstr "Navigation du commentaire"
+
+#~ msgid "&larr; Older Comments"
+#~ msgstr "&larr;  vieux commentaires"
+
+#~ msgid "Newer Comments &rarr;"
+#~ msgstr "Nouveau commentaires &rarr;"
+
+#~ msgid "Featured question"
+#~ msgstr "Question à la une"
+
+#~ msgid "No question asked yet!, be the first to ask a question."
+#~ msgstr ""
+#~ "Aucune question posée pour le moment! Soyez le premier à poser une "
+#~ "question."
+
+#~ msgid "Adding question to your favorites"
+#~ msgstr "Ajout de la question à vos favoris"
+
+#~ msgid "Requesting for closing this question"
+#~ msgstr "Fermetture en cours de la question"
+
+#~ msgid "Submitting request"
+#~ msgstr "Envoi de votre requete"
+
+#~ msgid "Loading comment form"
+#~ msgstr "Chargement du formulaire des commentaires"
+
+#~ msgid "Sending your question"
+#~ msgstr "Envoi de cotre question"
+
+#~ msgid "Sending your answer"
+#~ msgstr "Envoi de votre réponse"
+
+#~ msgid "Deleting comment"
+#~ msgstr "Suppression du commentaire"
+
+#~ msgid "Updating comment"
+#~ msgstr "Mise à jour du commentaire"
+
+#~ msgid "Saving labels"
+#~ msgstr "Sauvegarder les labels"
+
+#~ msgid "Loading suggestions"
+#~ msgstr "Chargement des suggestions"
+
+#~ msgid "Uploading cover"
+#~ msgstr "Envoi en cours de l'image de couverture"
+
+#~ msgid "Saving profile"
+#~ msgstr "Profile en cours de sauvegarde"
+
+#~ msgid "Sending message"
+#~ msgstr "Envoi du message"
+
+#~ msgid "Loading conversation"
+#~ msgstr "Changement de la conversation"
+
+#~ msgid "Loading new message form"
+#~ msgstr "Chargement du formulaire pour les nouveaux messages"
+
+#~ msgid "Searching conversations"
+#~ msgstr "Recherche les conversations"
+
+#~ msgid "Loading message form"
+#~ msgstr "Chargement du formulaire des messages"
+
+#~ msgid "Updating message"
+#~ msgstr "Mise à jour du message"
+
+#~ msgid "Deleting message"
+#~ msgstr "Suppression du message"
+
+#~ msgid "AP Before"
+#~ msgstr "AP Before"
+
+#~ msgid "AP Lists Top"
+#~ msgstr "AP Lists Top"
+
+#~ msgid "AP Sidebar"
+#~ msgstr "AP Sidebar"
+
+#~ msgid "AP User"
+#~ msgstr "AP Utilisateur"
+
+#~ msgid "Sign up"
+#~ msgstr "s'inscrire"
+
+#~ msgid "Featured post"
+#~ msgstr "Post mis en avant"
+
+#~ msgid "Leave a reply"
+#~ msgstr "Laisser un commentaire"
+
+#~ msgid "1 Reply"
+#~ msgstr "1 Commentaire"
+
+#~ msgid "% Replies"
+#~ msgstr "% Commentaires"
+
+#~ msgid "Continue reading <span class=\"meta-nav\">&rarr;</span>"
+#~ msgstr "Lire plus <span class=\"meta-nav\">&rarr;</span>"
+
+#~ msgid "Pages:"
+#~ msgstr "Pages:"
+
+#~ msgid "About %s"
+#~ msgstr "A propos %s"
+
+#~ msgid "View all posts by %s <span class=\"meta-nav\">&rarr;</span>"
+#~ msgstr "Voir tout les posts de %s <span class=\"meta-nav\">&rarr;</span>"
+
+#~ msgid "Stats"
+#~ msgstr "Statistiques"
+
+#~ msgid "%d questions, %d solved"
+#~ msgstr "%d questions, %d résolues"
+
+#~ msgid "Member for %s"
+#~ msgstr "Membre depuis %s"
+
+#~ msgid "%d profile views"
+#~ msgstr "%d visite sur le profile"
+
+#~ msgid "Never logged in"
+#~ msgstr "Jamais connecté"
+
+#~ msgid "Total"
+#~ msgstr "Total"
+
+#~ msgid "%d votes received"
+#~ msgstr "%d votes recues"
+
+#~ msgid "up"
+#~ msgstr "+1"
+
+#~ msgid "down"
+#~ msgstr "-1"
+
+#~ msgid "%d votes casted"
+#~ msgstr "%d votes ajoutés"
+
+#~ msgid "Top Answers"
+#~ msgstr "Top Réponses"
+
+#~ msgid "More answers by %s"
+#~ msgstr "Plus de réponses de %s"
+
+#~ msgid "view"
+#~ msgstr "voir"
+
+#~ msgid "More questions by %s"
+#~ msgstr "Plus de question de %s"
+
+#~ msgid "View all notifications"
+#~ msgstr "Voir toutes les notifications"
+
+#~ msgid "Mark as read"
+#~ msgstr "Marquer comme lu"
+
+#~ msgid "No reputation earned yet."
+#~ msgstr "Aucune réputation n'a été encore gagné."
+
+#~ msgid "Not following any question yet!"
+#~ msgstr "Vous ne suivez aucune question pour l'instant."
+
+#~ msgid "%d Followers, %d following"
+#~ msgstr "%d Followers, %d abonnements"
+
+#~ msgid "%d Followers"
+#~ msgstr "%d abonnés"
+
+#~ msgid "%d Following"
+#~ msgstr "%d abonnements"
+
+#~ msgid "%d Best"
+#~ msgstr "%d Meilleure"
+
+#~ msgid "No users found."
+#~ msgstr "Aucun utilisteur trouvée."
+
+#~ msgid "1 answer"
+#~ msgid_plural "%d answers"
+#~ msgstr[0] "1 réponse"
+#~ msgstr[1] "%d réponses"
+
+#~ msgid "1 vote"
+#~ msgid_plural "%d votes"
+#~ msgstr[0] "1 vote"
+#~ msgstr[1] "%d votes"
+
+#~ msgid "View all followers &rarr;"
+#~ msgstr "Voir tout les followers &rarr;"
+
+#~ msgid "No followers yet"
+#~ msgstr "Par de réponse pour le moment"
+
+#~ msgid "This widget can only be used in user page."
+#~ msgstr "Ce widget est vu uniquement sur la page utilisateur."
+
+#~ msgid "Avatar size:"
+#~ msgstr "Taille de l'avatar:"
+
+#~ msgid "No options"
+#~ msgstr "Pas d'options"
+
+#~ msgid "1 follower"
+#~ msgid_plural "%d followers"
+#~ msgstr[0] "1 abonné"
+#~ msgstr[1] "%d abonnés"
+
+#~ msgid "Related Questions"
+#~ msgstr "Questions en rapports"
+
+#~ msgid "Login to see your profile links"
+#~ msgstr "Connectez-vous pour voir vos liens de profil"
+
+#~ msgid "Avatar:"
+#~ msgstr "Avatar:"
+
+#~ msgid "Show"
+#~ msgstr "Afficher"
+
+#~ msgid "%sAnswered about %s ago%s"
+#~ msgstr "%sRépondu il y a %s%s"
+
+#~ msgid "Hide"
+#~ msgstr "Masquer"
+
+#~ msgid "Show your love by showing link to AnsPress project site."
+#~ msgstr "Vous aimez anspress affichez le lien vers le projet."
+
+#~ msgid "i.e. "
+#~ msgstr "c'est à dire"
+
+#~ msgid "Subbscribe and and stats widget will shown in question page."
+#~ msgstr ""
+#~ "Les widgets d'inscription et des statistiques seront présent dans la page "
+#~ "des questions."
+
+#~ msgid "%s flagged this post %s ago"
+#~ msgstr "%s à signalé ce post il y a %s"
+
+#~ msgid ""
+#~ "We found similar questions that have already been asked, click to read "
+#~ "them. Avoid creating duplicate questions, it will be deleted."
+#~ msgstr ""
+#~ "Nous avons trouvé des questions similaire qui pourront peut être vous "
+#~ "aider. Les questions en doublons serront supprimées."
+
+#~ msgid "Follow question"
+#~ msgstr "Recevoir des notifications"
+
+#~ msgid "Unfollow question"
+#~ msgstr "Ne plus recevoir des notifications"
+
+#~ msgid "%s Ago"
+#~ msgstr "%s"
+
+#~ msgid "Subscription"
+#~ msgstr "Description"
+
+#~ msgid "%s %s about %s ago"
+#~ msgstr "%s %s il y a %s"
+
+#~ msgid "Active %s ago"
+#~ msgstr "Actif depuis %s"
+
+#~ msgid " %s %s %s ago"
+#~ msgstr " %s %s %s"
+
+#~ msgid "New question <b>##post_title</b>"
+#~ msgstr "Afficher le titre de la question"
+
+#~ msgid "New answer on <b>##post_title</b>"
+#~ msgstr "Nouvelle réponse sur <b>##post_title</b>"
+
+#~ msgid "Your question <b>##post_title</b> has been edited"
+#~ msgstr "Votre question <b>##post_title</b> a bien été éditée"
+
+#~ msgid "Your answer on <b>##post_title</b> has been edited"
+#~ msgstr "Votre réponse <b>##post_title</b> a bien été éditée"
+
+#~ msgid "New comment on question <b>##post_title</b>"
+#~ msgstr "Interdire les commentaire sur une question."
+
+#~ msgid "New comment on answer <b>##post_title</b>"
+#~ msgstr "Nouveau commentaire sur la réponse <b>##post_title</b>"
+
+#~ msgid "<b>%s</b> started following you"
+#~ msgstr "<b>%s</b> est maintenant un nouveau follower"
+
+#~ msgid "%s up voted on your post <b>##post_title</b>"
+#~ msgstr "%s a voté sur votre post <b>##post_title</b>"
+
+#~ msgid "You have received <b>##reputation</b> reputation points"
+#~ msgstr "Vous avez reçu <b>##reputation</b> points"
+
+#~ msgid "%s ago%s"
+#~ msgstr "%s %s"
+
+#~ msgid " ago"
+#~ msgstr " "
+
+#~ msgid "More"
+#~ msgstr "Plus"
+
+#~ msgid "Last seen %s ago"
+#~ msgstr "Vu pour la dernière fois il y a %s"
+
+#~ msgid "AnsPress Stats"
+#~ msgstr "Statistiques Anspress"
+
+#~ msgid "Ago"
+#~ msgstr " "
+
+#~ msgid "Shows list of question shorted by option"
+#~ msgstr "Affiche la liste des questions triée par option"
+
+#~ msgid "Display current logged in users detail and links."
+#~ msgstr ""
+#~ "Affiche le détail et les liens de l'utilisateur actuellement connecté."
+
+#~ msgid ""
+#~ "Please update all AnsPress extensions before activating. <a target="
+#~ "\"_blank\" href=\"http://anspress.io/questions/ask/\">Ask for help</a>"
+#~ msgstr ""
+#~ "Merci de mettre à jour toutes les extensions AnsPress avant d'activer.  "
+#~ "<a target=\"_blank\" href=\"http://anspress.io/questions/ask/\">Aidez "
+#~ "moi</a>"
+
+#~ msgid "Please update all AnsPress extensions before activating."
+#~ msgstr ""
+#~ "Merci de mettre à jour toutes les extensions AnsPress avant d'activer. "
+
+#~ msgid "AnsPress Badges"
+#~ msgstr "AnsPress Badges"
+
+#~ msgid "Min. Points"
+#~ msgstr "Points min."
+
+#~ msgid "Multiple"
+#~ msgstr "Plusieurs"
+
+#~ msgid "Save badge"
+#~ msgstr "Sauvegarder le badge"
+
+#~ msgid "You already flagged this post"
+#~ msgstr "Vous avez marqué ce post"
+
+#~ msgid "Your close request has been removed"
+#~ msgstr "Votre demande de clôture a bien été supprimé"
+
+#~ msgid "Your close request has been sent"
+#~ msgstr "Votre demande de fermeture à bien été envoyé"
+
+#~ msgid "Something went wrong"
+#~ msgstr "Quelque chose ne va pas"
+
+#~ msgid "Please login for requesting closing this question."
+#~ msgstr "Merci de vous connecter pour fermer cette question."
+
+#~ msgid "AP about user"
+#~ msgstr "AP about user"
+
+#~ msgid "Widgets in this area will be shown in about user page."
+#~ msgstr ""
+#~ "Cette zone de widget est visibile sur la page d'informations utilisateur."
+
+#~ msgid "<span class=\"when\">Answered about %s ago</span>"
+#~ msgstr "<span class=\"when\">Répondu il y a %s</span>"
+
+#~ msgid "<time itemprop=\"datePublished\" datetime=\"%s\">%s Ago</time>"
+#~ msgstr "<time itemprop=\"datePublished\" datetime=\"%s\">%s</time>"
+
+#~ msgid "ans"
+#~ msgstr "Rép"
+
+#~ msgid "1 Subscriber"
+#~ msgid_plural "%d subscribers"
+#~ msgstr[0] "1 Abonné"
+#~ msgstr[1] "%d Abonnés"
+
+#~ msgid "AnsPress Subscribe"
+#~ msgstr "S'abonner à Anspress"
+
+#~ msgid "Select theme for AnsPress."
+#~ msgstr "Selectionner le theme pour AnsPress."
+
+#~ msgid "Received a down vote on on %s %s"
+#~ msgstr "-1 sur %s %s"
+
+#~ msgid "Voted down on %s"
+#~ msgstr "Voté -1 sur %s"
+
+#~ msgid "Please %s or %s to answer this question."
+#~ msgstr "Merci de %s ou %s pour répondre à cette question"
+
+#~ msgid "Prev answer"
+#~ msgstr "Réponse précédente"
