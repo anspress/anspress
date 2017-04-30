@@ -173,7 +173,7 @@
 			font-weight: normal;
 			color: $light-color;
 		}
-		input[type="checkbox"]{
+		input[type="checkbox"],input[type="radio"]{
 			display: none;
 		}
 
@@ -199,7 +199,7 @@
 		li{
 			padding: 0 5px;
 		}
-		input[type="checkbox"]:checked + .apicon-check{
+		input[type="checkbox"]:checked + .apicon-check, input[type="radio"]:checked + .apicon-check{
 			background: $main-color;
 			&[class^="apicon-"]:before, [class*=" apicon-"]:before{
 				visibility: visible;
@@ -235,6 +235,15 @@
 		}
 	}
 
+	.ap-pagging-warning {
+    background: #FFF8E1;
+    text-align: center;
+    font-size: 11px;
+    border: 1px solid #FFE082;
+    padding: 5px;
+    border-radius: 2px;
+		margin-top: 15px;
+	}
 }
 
 .ap-droptogg{

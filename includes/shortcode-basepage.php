@@ -138,6 +138,4 @@ class AnsPress_BasePage_Shortcode {
 			$_GET['filters'] = [ 'order_by' => $atts['order_by'] ];
 		}
 	}
-
 }
-

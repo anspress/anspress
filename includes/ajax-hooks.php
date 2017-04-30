@@ -469,8 +469,9 @@ class AnsPress_Ajax {
 		check_ajax_referer( 'filter_' . $filter, '__nonce' );
 
 		ap_ajax_json( array(
-			'success' => true,
-			'items' => ap_get_questions_orderby(),
+			'success'  => true,
+			'multiple' => false,
+			'items'    => ap_get_questions_orderby(),
 		));
 	}
 

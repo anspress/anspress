@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: AnsPress 2.3.3\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/anspress-question-"
 "answer\n"
-"POT-Creation-Date: 2017-04-29 15:21:34+00:00\n"
+"POT-Creation-Date: 2017-04-30 09:10:25+00:00\n"
 "PO-Revision-Date: 2015-12-15 09:19+0530\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -704,74 +704,74 @@ msgstr ""
 msgid "post"
 msgstr "投稿を編集"
 
-#: addons/free/notification.php:41 addons/free/notification.php:45
-#: addons/free/notification.php:170 templates/functions.php:58
+#: addons/free/notification.php:41 addons/free/notification.php:47
+#: addons/free/notification.php:173 templates/functions.php:58
 msgid "Notifications"
 msgstr "通知"
 
-#: addons/free/notification.php:81
+#: addons/free/notification.php:84
 #, fuzzy
 msgid "Notifications page title"
 msgstr "通知"
 
-#: addons/free/notification.php:82
+#: addons/free/notification.php:85
 #, fuzzy
 msgid "Custom title for user profile notifications page"
 msgstr "通知を削除"
 
-#: addons/free/notification.php:87
+#: addons/free/notification.php:90
 #, fuzzy
 msgid "Notifications page slug"
 msgstr "通知"
 
-#: addons/free/notification.php:88
+#: addons/free/notification.php:91
 #, fuzzy
 msgid "Custom slug for user profile notifications page"
 msgstr "通知を削除"
 
-#: addons/free/notification.php:128
+#: addons/free/notification.php:131
 #, fuzzy
 msgid "posted an answer on your question"
 msgstr "ベストアンサーへ選ばれました。"
 
-#: addons/free/notification.php:133
+#: addons/free/notification.php:136
 #, fuzzy
 msgid "commented on your %cpt%"
 msgstr "%1$s が %3$s - %2$s にコメントしました"
 
-#: addons/free/notification.php:138
+#: addons/free/notification.php:141
 msgid "up voted your %cpt%"
 msgstr ""
 
-#: addons/free/notification.php:145
+#: addons/free/notification.php:148
 #, fuzzy
 msgid "down voted your %cpt%"
 msgstr "%s下げ票 %s"
 
-#: addons/free/notification.php:150
+#: addons/free/notification.php:153
 #, fuzzy
 msgid "selected your answer"
 msgstr "回答が選択されました"
 
-#: addons/free/notification.php:155
+#: addons/free/notification.php:158
 #, fuzzy
 msgid "You have earned %points% points"
 msgstr "あなたはこの投稿にフラグを立てています"
 
-#: addons/free/notification.php:160
+#: addons/free/notification.php:163
 msgid "You lose %points% points"
 msgstr ""
 
-#: addons/free/notification.php:207
+#: addons/free/notification.php:210
 #, fuzzy
 msgid "You do not have permission to view this page"
 msgstr "このページへのアクセス権がありません"
 
-#: addons/free/notification.php:425
+#: addons/free/notification.php:428
 msgid "There was a problem processing your request"
 msgstr ""
 
-#: addons/free/notification.php:435
+#: addons/free/notification.php:438
 #, fuzzy
 msgid "Successfully updated all notifications"
 msgstr "タグが作成されました。"
@@ -1706,23 +1706,23 @@ msgid "Order question list by default using selected"
 msgstr ""
 
 #: admin/options-fields.php:196 admin/options-fields.php:260
-#: includes/theme.php:449 includes/theme.php:485 widgets/questions.php:86
+#: includes/theme.php:449 includes/theme.php:493 widgets/questions.php:86
 msgid "Voted"
 msgstr "投票済"
 
 #: admin/options-fields.php:197 admin/options-fields.php:261
-#: includes/theme.php:444 includes/theme.php:481 widgets/question_stats.php:47
+#: includes/theme.php:444 includes/theme.php:489 widgets/question_stats.php:47
 #: widgets/questions.php:84
 msgid "Active"
 msgstr "有効"
 
 #: admin/options-fields.php:198 admin/options-fields.php:262
-#: includes/theme.php:445 includes/theme.php:488 widgets/questions.php:85
+#: includes/theme.php:445 includes/theme.php:496 widgets/questions.php:85
 msgid "Newest"
 msgstr "新しい"
 
 #: admin/options-fields.php:199 admin/options-fields.php:263
-#: includes/theme.php:489
+#: includes/theme.php:497
 msgid "Oldest"
 msgstr "古い"
 
@@ -2663,7 +2663,7 @@ msgid ""
 msgstr ""
 
 #: includes/ajax-hooks.php:100 includes/ajax-hooks.php:136
-#: includes/theme.php:772
+#: includes/theme.php:770
 msgid "Select"
 msgstr "選択"
 
@@ -2685,7 +2685,7 @@ msgstr ""
 msgid "Best answer is selected for your question."
 msgstr "ベストアンサーへ選ばれました。"
 
-#: includes/ajax-hooks.php:173 includes/theme.php:780
+#: includes/ajax-hooks.php:173 includes/theme.php:778
 msgid "Unselect"
 msgstr "解除"
 
@@ -2749,12 +2749,12 @@ msgstr ""
 msgid "Only question can be set as featured"
 msgstr "特色として質問がマークされています。"
 
-#: includes/ajax-hooks.php:317 includes/theme.php:856
+#: includes/ajax-hooks.php:317 includes/theme.php:854
 #, fuzzy
 msgid "Mark this question as featured"
 msgstr "この質問をフューチャーします"
 
-#: includes/ajax-hooks.php:317 includes/theme.php:857
+#: includes/ajax-hooks.php:317 includes/theme.php:855
 #, fuzzy
 msgid "Feature"
 msgstr "主要設定"
@@ -2763,12 +2763,12 @@ msgstr "主要設定"
 msgid "Question is unmarked as featured."
 msgstr "特色としてマークされていない質問です。"
 
-#: includes/ajax-hooks.php:325 includes/theme.php:853
+#: includes/ajax-hooks.php:325 includes/theme.php:851
 #, fuzzy
 msgid "Unmark this question as featured"
 msgstr "この質問をフューチャーします"
 
-#: includes/ajax-hooks.php:325 includes/theme.php:854
+#: includes/ajax-hooks.php:325 includes/theme.php:852
 #, fuzzy
 msgid "Unfeature"
 msgstr "主要設定"
@@ -2818,30 +2818,30 @@ msgstr ""
 msgid " Question \"%s\" is converted to post and its answers are trashed"
 msgstr ""
 
-#: includes/ajax-hooks.php:483
+#: includes/ajax-hooks.php:484
 #, fuzzy
 msgid "You must be logged in to subscribe to a question"
 msgstr "この質問への賛同者はいません。"
 
-#: includes/ajax-hooks.php:492 includes/ajax-hooks.php:515
+#: includes/ajax-hooks.php:493 includes/ajax-hooks.php:516
 msgid "Sorry, unable to subscribe"
 msgstr ""
 
-#: includes/ajax-hooks.php:503
+#: includes/ajax-hooks.php:504
 #, fuzzy
 msgid "Successfully unsubscribed from question"
 msgstr "あなただけが、この質問に賛同しています。"
 
-#: includes/ajax-hooks.php:505 includes/theme.php:883
+#: includes/ajax-hooks.php:506 includes/theme.php:881
 msgid "Subscribe"
 msgstr "賛同"
 
-#: includes/ajax-hooks.php:521
+#: includes/ajax-hooks.php:522
 #, fuzzy
 msgid "Successfully subscribed to question"
 msgstr "この質問への賛同者はいません。"
 
-#: includes/ajax-hooks.php:523 includes/theme.php:883
+#: includes/ajax-hooks.php:524 includes/theme.php:881
 #, fuzzy
 msgid "Unsubscribe"
 msgstr "賛同"
@@ -3262,88 +3262,88 @@ msgstr "自分の質問回答には投票できません。"
 msgid "[Solved] "
 msgstr "[解決済] "
 
-#: includes/functions.php:1297
+#: includes/functions.php:1290
 msgid "asked"
 msgstr "質問済"
 
-#: includes/functions.php:1298 includes/functions.php:1299
+#: includes/functions.php:1291 includes/functions.php:1292
 msgid "approved"
 msgstr ""
 
-#: includes/functions.php:1300
+#: includes/functions.php:1293
 msgid "answered"
 msgstr "回答済"
 
-#: includes/functions.php:1301
+#: includes/functions.php:1294
 #, fuzzy
 msgid "deleted answer"
 msgstr "回答が選択されました"
 
-#: includes/functions.php:1302
+#: includes/functions.php:1295
 #, fuzzy
 msgid "restored answer"
 msgstr "回答が編集されました"
 
-#: includes/functions.php:1303 templates/functions.php:53
+#: includes/functions.php:1296 templates/functions.php:53
 msgid "commented"
 msgstr "コメント済"
 
-#: includes/functions.php:1304
+#: includes/functions.php:1297
 #, fuzzy
 msgid "deleted comment"
 msgstr "コメントが編集されました"
 
-#: includes/functions.php:1305
+#: includes/functions.php:1298
 msgid "commented on answer"
 msgstr "回答へコメントされました"
 
-#: includes/functions.php:1306
+#: includes/functions.php:1299
 msgid "edited question"
 msgstr "質問が編集されました"
 
-#: includes/functions.php:1307
+#: includes/functions.php:1300
 msgid "edited answer"
 msgstr "回答が編集されました"
 
-#: includes/functions.php:1308
+#: includes/functions.php:1301
 msgid "edited comment"
 msgstr "コメントが編集されました"
 
-#: includes/functions.php:1309
+#: includes/functions.php:1302
 #, fuzzy
 msgid "edited comment on answer"
 msgstr "回答へコメントされました"
 
-#: includes/functions.php:1310
+#: includes/functions.php:1303
 msgid "selected answer"
 msgstr "回答が選択されました"
 
-#: includes/functions.php:1311
+#: includes/functions.php:1304
 msgid "unselected answer"
 msgstr "回答が解除されました"
 
-#: includes/functions.php:1312
+#: includes/functions.php:1305
 msgid "updated status"
 msgstr "アップデート状況"
 
-#: includes/functions.php:1313
+#: includes/functions.php:1306
 msgid "selected as best answer"
 msgstr ""
 
-#: includes/functions.php:1314
+#: includes/functions.php:1307
 msgid "unselected as best answer"
 msgstr ""
 
-#: includes/functions.php:1315
+#: includes/functions.php:1308
 #, fuzzy
 msgid "changed status"
 msgstr "アップデート状況"
 
-#: includes/functions.php:1367
+#: includes/functions.php:1360
 msgid "Anonymous"
 msgstr "匿名"
 
-#: includes/functions.php:1394
+#: includes/functions.php:1387
 msgid " (anonymous)"
 msgstr " (匿名)"
 
@@ -3390,7 +3390,7 @@ msgstr ""
 msgid "years"
 msgstr "%d 年, "
 
-#: includes/options.php:111 includes/theme.php:560
+#: includes/options.php:111 includes/theme.php:568
 msgid "Ask question"
 msgstr "質問する"
 
@@ -3655,32 +3655,32 @@ msgstr "未解決"
 msgid "Views"
 msgstr "閲覧"
 
-#: includes/theme.php:513
+#: includes/theme.php:521
 msgid "Best answer"
 msgstr "ベストアンサー"
 
-#: includes/theme.php:689
+#: includes/theme.php:697
 #, fuzzy
 msgid "Order By"
 msgstr "Order by:"
 
-#: includes/theme.php:744
+#: includes/theme.php:742
 msgid "Reset sorting and filter"
 msgstr "ソートとフィルターをリセット"
 
-#: includes/theme.php:744
+#: includes/theme.php:742
 msgid "Clear Filter"
 msgstr ""
 
-#: includes/theme.php:771
+#: includes/theme.php:769
 msgid "Select this answer as best"
 msgstr "ベストアンサーに選ぶ"
 
-#: includes/theme.php:779
+#: includes/theme.php:777
 msgid "Unselect this answer"
 msgstr "この回答の選択を解除"
 
-#: includes/theme.php:907
+#: includes/theme.php:905
 #, fuzzy
 msgid "AnsPress links"
 msgstr "AnsPress ポイント"
@@ -3863,10 +3863,21 @@ msgstr "ダウンロード"
 msgid "Total votes"
 msgstr "総投票数"
 
-#: templates/content-none.php:9
+#: templates/content-none.php:14
 #, fuzzy
 msgid "Sorry! No question found."
 msgstr "質問は見つかりませんでした。"
+
+#: templates/content-none.php:24
+msgid ""
+"Showing results with pagination active, you are currently on page %d. Click "
+"here to return to the initial page"
+msgstr ""
+
+#: templates/content-none.php:27
+#, fuzzy
+msgid "go to page 1"
+msgstr "質問ページのスラッグを入力"
 
 #: templates/functions.php:36
 msgid "Password not matching"

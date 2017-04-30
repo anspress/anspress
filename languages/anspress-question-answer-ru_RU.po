@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: AnsPress 2.1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/anspress-question-"
 "answer\n"
-"POT-Creation-Date: 2017-04-29 15:21:34+00:00\n"
+"POT-Creation-Date: 2017-04-30 09:10:25+00:00\n"
 "PO-Revision-Date: 2015-12-15 09:20+0530\n"
 "Last-Translator: Zhandos Ulan <jandosul@mono.kz>\n"
 "Language-Team: \n"
@@ -693,69 +693,69 @@ msgstr ""
 msgid "post"
 msgstr "Редактировать"
 
-#: addons/free/notification.php:41 addons/free/notification.php:45
-#: addons/free/notification.php:170 templates/functions.php:58
+#: addons/free/notification.php:41 addons/free/notification.php:47
+#: addons/free/notification.php:173 templates/functions.php:58
 msgid "Notifications"
 msgstr ""
 
-#: addons/free/notification.php:81
+#: addons/free/notification.php:84
 #, fuzzy
 msgid "Notifications page title"
 msgstr "Загловок базовой страницы"
 
-#: addons/free/notification.php:82
+#: addons/free/notification.php:85
 msgid "Custom title for user profile notifications page"
 msgstr ""
 
-#: addons/free/notification.php:87
+#: addons/free/notification.php:90
 #, fuzzy
 msgid "Notifications page slug"
 msgstr "Категории"
 
-#: addons/free/notification.php:88
+#: addons/free/notification.php:91
 msgid "Custom slug for user profile notifications page"
 msgstr ""
 
-#: addons/free/notification.php:128
+#: addons/free/notification.php:131
 #, fuzzy
 msgid "posted an answer on your question"
 msgstr "Лучший ответ выбран для вашего вопроса."
 
-#: addons/free/notification.php:133
+#: addons/free/notification.php:136
 #, fuzzy
 msgid "commented on your %cpt%"
 msgstr "написал на вопрос"
 
-#: addons/free/notification.php:138
+#: addons/free/notification.php:141
 msgid "up voted your %cpt%"
 msgstr ""
 
-#: addons/free/notification.php:145
+#: addons/free/notification.php:148
 msgid "down voted your %cpt%"
 msgstr ""
 
-#: addons/free/notification.php:150
+#: addons/free/notification.php:153
 #, fuzzy
 msgid "selected your answer"
 msgstr "выбрал ответ"
 
-#: addons/free/notification.php:155
+#: addons/free/notification.php:158
 msgid "You have earned %points% points"
 msgstr ""
 
-#: addons/free/notification.php:160
+#: addons/free/notification.php:163
 msgid "You lose %points% points"
 msgstr ""
 
-#: addons/free/notification.php:207
+#: addons/free/notification.php:210
 msgid "You do not have permission to view this page"
 msgstr ""
 
-#: addons/free/notification.php:425
+#: addons/free/notification.php:428
 msgid "There was a problem processing your request"
 msgstr ""
 
-#: addons/free/notification.php:435
+#: addons/free/notification.php:438
 msgid "Successfully updated all notifications"
 msgstr ""
 
@@ -1674,23 +1674,23 @@ msgid "Order question list by default using selected"
 msgstr ""
 
 #: admin/options-fields.php:196 admin/options-fields.php:260
-#: includes/theme.php:449 includes/theme.php:485 widgets/questions.php:86
+#: includes/theme.php:449 includes/theme.php:493 widgets/questions.php:86
 msgid "Voted"
 msgstr "Голосовали"
 
 #: admin/options-fields.php:197 admin/options-fields.php:261
-#: includes/theme.php:444 includes/theme.php:481 widgets/question_stats.php:47
+#: includes/theme.php:444 includes/theme.php:489 widgets/question_stats.php:47
 #: widgets/questions.php:84
 msgid "Active"
 msgstr "Активный"
 
 #: admin/options-fields.php:198 admin/options-fields.php:262
-#: includes/theme.php:445 includes/theme.php:488 widgets/questions.php:85
+#: includes/theme.php:445 includes/theme.php:496 widgets/questions.php:85
 msgid "Newest"
 msgstr "Самые свежие"
 
 #: admin/options-fields.php:199 admin/options-fields.php:263
-#: includes/theme.php:489
+#: includes/theme.php:497
 msgid "Oldest"
 msgstr "Самые старые"
 
@@ -2616,7 +2616,7 @@ msgid ""
 msgstr ""
 
 #: includes/ajax-hooks.php:100 includes/ajax-hooks.php:136
-#: includes/theme.php:772
+#: includes/theme.php:770
 msgid "Select"
 msgstr "Выбрать"
 
@@ -2638,7 +2638,7 @@ msgstr ""
 msgid "Best answer is selected for your question."
 msgstr "Лучший ответ выбран для вашего вопроса."
 
-#: includes/ajax-hooks.php:173 includes/theme.php:780
+#: includes/ajax-hooks.php:173 includes/theme.php:778
 msgid "Unselect"
 msgstr "Снять"
 
@@ -2699,12 +2699,12 @@ msgstr ""
 msgid "Only question can be set as featured"
 msgstr "Только авторизованные пользователи могут видеть ответы"
 
-#: includes/ajax-hooks.php:317 includes/theme.php:856
+#: includes/ajax-hooks.php:317 includes/theme.php:854
 #, fuzzy
 msgid "Mark this question as featured"
 msgstr "Управление вопросами & ответами"
 
-#: includes/ajax-hooks.php:317 includes/theme.php:857
+#: includes/ajax-hooks.php:317 includes/theme.php:855
 #, fuzzy
 msgid "Feature"
 msgstr "Возможности"
@@ -2713,12 +2713,12 @@ msgstr "Возможности"
 msgid "Question is unmarked as featured."
 msgstr ""
 
-#: includes/ajax-hooks.php:325 includes/theme.php:853
+#: includes/ajax-hooks.php:325 includes/theme.php:851
 #, fuzzy
 msgid "Unmark this question as featured"
 msgstr "Ответить на вопрос"
 
-#: includes/ajax-hooks.php:325 includes/theme.php:854
+#: includes/ajax-hooks.php:325 includes/theme.php:852
 #, fuzzy
 msgid "Unfeature"
 msgstr "Возможности"
@@ -2768,29 +2768,29 @@ msgstr ""
 msgid " Question \"%s\" is converted to post and its answers are trashed"
 msgstr ""
 
-#: includes/ajax-hooks.php:483
+#: includes/ajax-hooks.php:484
 msgid "You must be logged in to subscribe to a question"
 msgstr ""
 
-#: includes/ajax-hooks.php:492 includes/ajax-hooks.php:515
+#: includes/ajax-hooks.php:493 includes/ajax-hooks.php:516
 msgid "Sorry, unable to subscribe"
 msgstr ""
 
-#: includes/ajax-hooks.php:503
+#: includes/ajax-hooks.php:504
 #, fuzzy
 msgid "Successfully unsubscribed from question"
 msgstr "Успешно отписаны."
 
-#: includes/ajax-hooks.php:505 includes/theme.php:883
+#: includes/ajax-hooks.php:506 includes/theme.php:881
 msgid "Subscribe"
 msgstr ""
 
-#: includes/ajax-hooks.php:521
+#: includes/ajax-hooks.php:522
 #, fuzzy
 msgid "Successfully subscribed to question"
 msgstr "Успешно отписаны."
 
-#: includes/ajax-hooks.php:523 includes/theme.php:883
+#: includes/ajax-hooks.php:524 includes/theme.php:881
 #, fuzzy
 msgid "Unsubscribe"
 msgstr "отписаться"
@@ -3207,87 +3207,87 @@ msgstr "Вы не можете голосовать за свой вопрос �
 msgid "[Solved] "
 msgstr ""
 
-#: includes/functions.php:1297
+#: includes/functions.php:1290
 msgid "asked"
 msgstr "спросил"
 
-#: includes/functions.php:1298 includes/functions.php:1299
+#: includes/functions.php:1291 includes/functions.php:1292
 msgid "approved"
 msgstr ""
 
-#: includes/functions.php:1300
+#: includes/functions.php:1293
 msgid "answered"
 msgstr "ответил"
 
-#: includes/functions.php:1301
+#: includes/functions.php:1294
 #, fuzzy
 msgid "deleted answer"
 msgstr "выбрал ответ"
 
-#: includes/functions.php:1302
+#: includes/functions.php:1295
 #, fuzzy
 msgid "restored answer"
 msgstr "отредактировал ответ"
 
-#: includes/functions.php:1303 templates/functions.php:53
+#: includes/functions.php:1296 templates/functions.php:53
 msgid "commented"
 msgstr "прокомментировал"
 
-#: includes/functions.php:1304
+#: includes/functions.php:1297
 #, fuzzy
 msgid "deleted comment"
 msgstr "изменил комментарий"
 
-#: includes/functions.php:1305
+#: includes/functions.php:1298
 msgid "commented on answer"
 msgstr ""
 
-#: includes/functions.php:1306
+#: includes/functions.php:1299
 msgid "edited question"
 msgstr "отредактировал вопрос"
 
-#: includes/functions.php:1307
+#: includes/functions.php:1300
 msgid "edited answer"
 msgstr "отредактировал ответ"
 
-#: includes/functions.php:1308
+#: includes/functions.php:1301
 msgid "edited comment"
 msgstr "изменил комментарий"
 
-#: includes/functions.php:1309
+#: includes/functions.php:1302
 #, fuzzy
 msgid "edited comment on answer"
 msgstr "написал на вопрос"
 
-#: includes/functions.php:1310
+#: includes/functions.php:1303
 msgid "selected answer"
 msgstr "выбрал ответ"
 
-#: includes/functions.php:1311
+#: includes/functions.php:1304
 msgid "unselected answer"
 msgstr ""
 
-#: includes/functions.php:1312
+#: includes/functions.php:1305
 msgid "updated status"
 msgstr ""
 
-#: includes/functions.php:1313
+#: includes/functions.php:1306
 msgid "selected as best answer"
 msgstr ""
 
-#: includes/functions.php:1314
+#: includes/functions.php:1307
 msgid "unselected as best answer"
 msgstr ""
 
-#: includes/functions.php:1315
+#: includes/functions.php:1308
 msgid "changed status"
 msgstr ""
 
-#: includes/functions.php:1367
+#: includes/functions.php:1360
 msgid "Anonymous"
 msgstr "Аноним"
 
-#: includes/functions.php:1394
+#: includes/functions.php:1387
 msgid " (anonymous)"
 msgstr " (аноним)"
 
@@ -3331,7 +3331,7 @@ msgstr ""
 msgid "years"
 msgstr ""
 
-#: includes/options.php:111 includes/theme.php:560
+#: includes/options.php:111 includes/theme.php:568
 msgid "Ask question"
 msgstr "Задать вопрос"
 
@@ -3595,32 +3595,32 @@ msgstr "Не решено"
 msgid "Views"
 msgstr ""
 
-#: includes/theme.php:513
+#: includes/theme.php:521
 msgid "Best answer"
 msgstr "Лучший ответ"
 
-#: includes/theme.php:689
+#: includes/theme.php:697
 #, fuzzy
 msgid "Order By"
 msgstr "Сортировать по:"
 
-#: includes/theme.php:744
+#: includes/theme.php:742
 msgid "Reset sorting and filter"
 msgstr ""
 
-#: includes/theme.php:744
+#: includes/theme.php:742
 msgid "Clear Filter"
 msgstr ""
 
-#: includes/theme.php:771
+#: includes/theme.php:769
 msgid "Select this answer as best"
 msgstr "Выбрать этот ответ как лучший"
 
-#: includes/theme.php:779
+#: includes/theme.php:777
 msgid "Unselect this answer"
 msgstr "Удалить выбор"
 
-#: includes/theme.php:907
+#: includes/theme.php:905
 #, fuzzy
 msgid "AnsPress links"
 msgstr "Очки AnsPress"
@@ -3800,10 +3800,21 @@ msgstr "Скачать"
 msgid "Total votes"
 msgstr "Всего голосов"
 
-#: templates/content-none.php:9
+#: templates/content-none.php:14
 #, fuzzy
 msgid "Sorry! No question found."
 msgstr "Вопросов нет пока"
+
+#: templates/content-none.php:24
+msgid ""
+"Showing results with pagination active, you are currently on page %d. Click "
+"here to return to the initial page"
+msgstr ""
+
+#: templates/content-none.php:27
+#, fuzzy
+msgid "go to page 1"
+msgstr "Базовая страница"
 
 #: templates/functions.php:36
 msgid "Password not matching"

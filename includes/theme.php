@@ -454,13 +454,21 @@ function ap_get_questions_orderby( $current_url = '' ) {
 	$navs[] = [ 'key' => 'order_by', 'value' => 'unsolved', 'label' => __( 'Unsolved', 'anspress-question-answer' ) ];
 	$navs[] = [ 'key' => 'order_by', 'value' => 'views', 'label' => __( 'Views', 'anspress-question-answer' ) ];
 
+	foreach ( (array) $navs as $k => $args ) {
+		$active = ap_get_current_list_filters( 'order_by' );
+
+		if ( $active === $args['value'] ) {
+			$navs[ $k ]['active'] = true;
+		}
+	}
+
 	/**
 	 * Filter question sorting.
 	 *
-	 * @param array Question sortings.
+	 * @param array $navs Questions orderby list.
 	 * @since 2.3
 	 */
-	return apply_filters( 'ap_question_sorting', $navs );
+	return apply_filters( 'ap_questions_order_by', $navs );
 }
 
 
@@ -676,7 +684,7 @@ function ap_enqueue_scripts() {
  *
  * @param string $current_url Current URL.
  */
-function ap_get_list_filters( $current_url = '' ) {
+function ap_get_list_filters( ) {
 	$param = array();
 	$search_q = get_query_var( 'ap_s' );
 
@@ -706,9 +714,9 @@ function ap_get_list_filters( $current_url = '' ) {
  * @param string $current_url Current Url.
  */
 function ap_list_filters( $current_url = '' ) {
-	$filters = ap_get_list_filters( $current_url );
+	$filters = ap_get_list_filters( );
 
-	echo '<form id="ap-filters" class="ap-filters clearfix" method="POST">';
+	echo '<form id="ap-filters" class="ap-filters clearfix" method="GET">';
 
 	foreach ( (array) $filters as $key => $filter ) {
 		$active = '';
@@ -731,23 +739,13 @@ function ap_list_filters( $current_url = '' ) {
 		echo '</div>';
 	}
 
-	foreach ( (array) ap_get_current_list_filters() as $key => $filter ) {
-		if ( is_array( $filter ) ) {
-			foreach ( (array) $filter as $f ) {
-				echo '<input type="hidden" name="filters[' . esc_attr( $key ) . '][]" value="' . esc_attr( $f ) . '" />';
-			}
-		} else {
-			echo '<input type="hidden" name="filters[' . esc_attr( $key ) . ']" value="' . esc_attr( $filter ) . '" />';
-		}
-	}
-
 	echo '<button id="ap-filter-reset" type="submit" name="reset-filter" title="' . esc_attr__( 'Reset sorting and filter', 'anspress-question-answer' ) . '"><i class="apicon-x"></i><span>' . esc_attr__( 'Clear Filter', 'anspress-question-answer' ) . '</span></button>';
 
 	echo '</form>';
 
 	// Send current GET, so that it can be used by JS templates.
 	if ( ap_get_current_list_filters() ) {
-		echo '<script type="application/json" id="ap_current_filters">' . wp_json_encode( ap_get_current_list_filters() ) . '</script>'; // xss okay.
+		//echo '<script type="application/json" id="ap_current_filters">' . wp_json_encode( ap_get_current_list_filters() ) . '</script>'; // xss okay.
 	}
 }
 /**

@@ -42,6 +42,7 @@ class AnsPress_Notification_Hook {
 			'user_page_slug_notifications'   => 'notifications',
 		]);
 
+		// Activate AnsPress notifications only if buddypress not active.
 		if ( ! ap_is_addon_active( 'free/buddypress.php' ) ) {
 			ap_register_page( 'notifications', __( 'Notifications', 'anspress-question-answer' ), '', true );
 			anspress()->add_filter( 'ap_menu_link', __CLASS__, 'menu_link', 10, 2 );
