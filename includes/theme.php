@@ -442,17 +442,17 @@ function ap_get_questions_orderby( $current_url = '' ) {
 
 	$navs = array(
 		[ 'key' => 'order_by', 'value' => 'active', 'label' => __( 'Active', 'anspress-question-answer' ) ],
-		[ 'key' => 'order_by', 'value' => 'newest', 'label' => __( 'Newest', 'anspress-question-answer' ) ],
+		[ 'key' => 'order_by', 'value' => 'newest', 'label' => __( 'New', 'anspress-question-answer' ) ],
 	);
 
 	if ( ! ap_opt( 'disable_voting_on_question' ) ) {
-		$navs[] = [ 'key' => 'order_by', 'value' => 'voted', 'label' => __( 'Voted', 'anspress-question-answer' ) ];
+		$navs[] = [ 'key' => 'order_by', 'value' => 'voted', 'label' => __( 'Votes', 'anspress-question-answer' ) ];
 	}
 
-	$navs[] = [ 'key' => 'order_by', 'value' => 'answers','label' => __( 'Answered', 'anspress-question-answer' ) ];
+	$navs[] = [ 'key' => 'order_by', 'value' => 'answers','label' => __( 'Answers', 'anspress-question-answer' ) ];
+	$navs[] = [ 'key' => 'order_by', 'value' => 'views', 'label' => __( 'Views', 'anspress-question-answer' ) ];
 	$navs[] = [ 'key' => 'order_by', 'value' => 'unanswered', 'label' => __( 'Unanswered', 'anspress-question-answer' ) ];
 	$navs[] = [ 'key' => 'order_by', 'value' => 'unsolved', 'label' => __( 'Unsolved', 'anspress-question-answer' ) ];
-	$navs[] = [ 'key' => 'order_by', 'value' => 'views', 'label' => __( 'Views', 'anspress-question-answer' ) ];
 
 	foreach ( (array) $navs as $k => $args ) {
 		$active = ap_get_current_list_filters( 'order_by' );
@@ -666,9 +666,8 @@ function ap_enqueue_scripts() {
 	}
 
 	foreach ( (array) $assets['css'] as $k => $css ) {
-		$src = '/min/' . $k . '.min.css';
 
-		$src = ! empty( $css['theme'] ) ? ap_get_theme_url( 'css' . $src, false, false ) : ANSPRESS_URL . 'assets/css' . $src;
+		$src = ! empty( $css['theme'] ) ? ap_get_theme_url( 'css/' . $k . '.css', false, false ) : ANSPRESS_URL . 'assets/css' . $k . '.css';
 
 		$dep = isset( $css['dep'] ) ? $css['dep'] : array();
 		wp_register_style( 'anspress-' . $k, $src, $dep, AP_VERSION );

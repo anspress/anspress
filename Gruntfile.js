@@ -80,10 +80,12 @@
 			sass: {
 				dist: {
 					options: {
-						style: 'expanded'
+						style: 'compressed',
+						sourcemap: 'file'
 					},
 					files: {
 						"templates/css/main.css": "templates/scss/main.scss",
+						"templates/css/fonts.css": "templates/scss/fonts.scss",
 						"templates/css/RTL.css": "templates/scss/RTL.scss",
 						"assets/ap-admin.css": "assets/ap-admin.scss"
 					}
@@ -118,10 +120,7 @@
 				},
 				target: {
 					files: {
-						'templates/css/min/main.min.css': 'templates/css/main.css',
-						'templates/css/min/RTL.min.css': 'templates/css/RTL.css',
-						'templates/css/min/fonts.min.css': 'templates/css/fonts.css',
-						'assets/ap-admin.min.css': 'assets/ap-admin.css'
+						'templates/css/min/fonts.css': 'templates/css/fonts.css',
 					}
 				}
 			},
