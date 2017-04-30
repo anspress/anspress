@@ -37,10 +37,10 @@ class AnsPress_Notification_Query extends AnsPress_Query {
 	 * @param array $args Arguments.
 	 */
 	public function __construct( $args = [] ) {
-		parent::__construct( $args );
 		$this->ids['reputation'] = [];
 		$this->pos['reputation'] = [];
 		$this->verbs = ap_notification_verbs();
+		parent::__construct( $args );
 	}
 
 	/**
@@ -274,7 +274,7 @@ class AnsPress_Notification_Query extends AnsPress_Query {
 	 * @param integer|string $size Size of the avatar.
 	 * @return string
 	 */
-	public function actor_avatar( $size = 40 ) {
+	public function actor_avatar( $size = 35 ) {
 		if ( ! $this->hide_actor() ) {
 			return get_avatar( $this->object->noti_actor, $size );
 		}

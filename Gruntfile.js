@@ -112,18 +112,6 @@
 					},
 				},
 			},
-			cssmin: {
-				options: {
-					shorthandCompacting: false,
-					roundingPrecision: -1,
-					rebase: true
-				},
-				target: {
-					files: {
-						'templates/css/min/fonts.css': 'templates/css/fonts.css',
-					}
-				}
-			},
 			compress: {
 				plugin: {
 					options: {
@@ -145,7 +133,7 @@
 			watch: {
 				sass: {
 					files: ['**/*.scss'],
-					tasks: ['sass', 'cssmin'],
+					tasks: ['sass'],
 				},
 				uglify: {
 					files: ['templates/js/*.js', 'assets/js/*.js'],
