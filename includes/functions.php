@@ -1292,6 +1292,7 @@ function ap_activity_short_title( $type ) {
 		'approved_answer' 		       => __( 'approved', 'anspress-question-answer' ),
 		'new_answer' 		             => __( 'answered', 'anspress-question-answer' ),
 		'delete_answer' 		         => __( 'deleted answer', 'anspress-question-answer' ),
+		'restore_question' 		       => __( 'restored question', 'anspress-question-answer' ),
 		'restore_answer' 		         => __( 'restored answer', 'anspress-question-answer' ),
 		'new_comment' 		           => __( 'commented', 'anspress-question-answer' ),
 		'delete_comment' 		         => __( 'deleted comment', 'anspress-question-answer' ),
