@@ -1,3 +1,6 @@
+/**
+ * AnsPress admin app.
+ */
 'use strict';
 
 (function($) {

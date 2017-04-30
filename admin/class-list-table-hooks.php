@@ -27,7 +27,7 @@ class AnsPress_Post_Table_Hooks {
 		anspress()->add_filter( 'views_edit-answer', __CLASS__, 'flag_view' );
 		anspress()->add_action( 'posts_clauses', __CLASS__, 'posts_clauses', 10, 2 );
 		anspress()->add_action( 'manage_answer_posts_custom_column', __CLASS__, 'answer_row_actions', 10, 2 );
-		anspress()->add_filter( 'post_row_actions', __CLASS__, 'add_question_flag_link', 10, 2 );
+		//anspress()->add_filter( 'post_row_actions', __CLASS__, 'add_question_flag_link', 10, 2 );
 		anspress()->add_filter( 'manage_edit-question_columns', __CLASS__, 'cpt_question_columns' );
 		anspress()->add_action( 'manage_posts_custom_column', __CLASS__, 'custom_columns_value' );
 		anspress()->add_filter( 'manage_edit-answer_columns', __CLASS__, 'cpt_answer_columns' );

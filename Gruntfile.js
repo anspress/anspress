@@ -99,6 +99,7 @@
 					files: {
 						'assets/js/min/main.min.js': ['assets/js/common.js', 'assets/js/question.js', 'assets/js/ask.js', 'assets/js/list.js'],
 						'assets/js/min/ap-admin.min.js': ['assets/js/ap-admin.js'],
+						'assets/js/min/admin-app.min.js': ['assets/js/admin-app.js'],
 						'assets/js/min/tags.min.js': ['assets/js/tags.js'],
 						'assets/js/min/notifications.min.js': ['assets/js/notifications.js'],
 						'templates/js/min/theme.min.js': ['templates/js/theme.js'],
