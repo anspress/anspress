@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: AnsPress 2.3.3\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/anspress-question-"
 "answer\n"
-"POT-Creation-Date: 2017-04-30 09:10:25+00:00\n"
+"POT-Creation-Date: 2017-04-30 14:41:44+00:00\n"
 "PO-Revision-Date: 2015-12-15 09:19+0530\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -93,8 +93,8 @@ msgstr "Questions"
 #: addons/free/buddypress.php:106 addons/free/buddypress.php:234
 #: addons/free/profile.php:38 addons/free/profile.php:147
 #: admin/views/dashboard.php:226 admin/views/recount.php:71
-#: includes/post-types.php:113 widgets/question_stats.php:49
-#: widgets/questions.php:87
+#: includes/post-types.php:113 includes/theme.php:452
+#: widgets/question_stats.php:49 widgets/questions.php:87
 msgid "Answers"
 msgstr "回答"
 
@@ -1373,8 +1373,8 @@ msgid "Comments"
 msgstr "コメント"
 
 #: admin/class-list-table-hooks.php:198 admin/class-list-table-hooks.php:295
-#: admin/views/recount.php:54 templates/content-answer.php:20
-#: templates/question-list-item.php:30
+#: admin/views/recount.php:54 includes/theme.php:449
+#: templates/content-answer.php:20 templates/question-list-item.php:30
 msgid "Votes"
 msgstr "投票数"
 
@@ -1706,7 +1706,7 @@ msgid "Order question list by default using selected"
 msgstr ""
 
 #: admin/options-fields.php:196 admin/options-fields.php:260
-#: includes/theme.php:449 includes/theme.php:493 widgets/questions.php:86
+#: includes/theme.php:493 widgets/questions.php:86
 msgid "Voted"
 msgstr "投票済"
 
@@ -1717,7 +1717,7 @@ msgid "Active"
 msgstr "有効"
 
 #: admin/options-fields.php:198 admin/options-fields.php:262
-#: includes/theme.php:445 includes/theme.php:496 widgets/questions.php:85
+#: includes/theme.php:496 widgets/questions.php:85
 msgid "Newest"
 msgstr "新しい"
 
@@ -2663,7 +2663,7 @@ msgid ""
 msgstr ""
 
 #: includes/ajax-hooks.php:100 includes/ajax-hooks.php:136
-#: includes/theme.php:770
+#: includes/theme.php:769
 msgid "Select"
 msgstr "選択"
 
@@ -2685,7 +2685,7 @@ msgstr ""
 msgid "Best answer is selected for your question."
 msgstr "ベストアンサーへ選ばれました。"
 
-#: includes/ajax-hooks.php:173 includes/theme.php:778
+#: includes/ajax-hooks.php:173 includes/theme.php:777
 msgid "Unselect"
 msgstr "解除"
 
@@ -2749,12 +2749,12 @@ msgstr ""
 msgid "Only question can be set as featured"
 msgstr "特色として質問がマークされています。"
 
-#: includes/ajax-hooks.php:317 includes/theme.php:854
+#: includes/ajax-hooks.php:317 includes/theme.php:853
 #, fuzzy
 msgid "Mark this question as featured"
 msgstr "この質問をフューチャーします"
 
-#: includes/ajax-hooks.php:317 includes/theme.php:855
+#: includes/ajax-hooks.php:317 includes/theme.php:854
 #, fuzzy
 msgid "Feature"
 msgstr "主要設定"
@@ -2763,12 +2763,12 @@ msgstr "主要設定"
 msgid "Question is unmarked as featured."
 msgstr "特色としてマークされていない質問です。"
 
-#: includes/ajax-hooks.php:325 includes/theme.php:851
+#: includes/ajax-hooks.php:325 includes/theme.php:850
 #, fuzzy
 msgid "Unmark this question as featured"
 msgstr "この質問をフューチャーします"
 
-#: includes/ajax-hooks.php:325 includes/theme.php:852
+#: includes/ajax-hooks.php:325 includes/theme.php:851
 #, fuzzy
 msgid "Unfeature"
 msgstr "主要設定"
@@ -2832,7 +2832,7 @@ msgstr ""
 msgid "Successfully unsubscribed from question"
 msgstr "あなただけが、この質問に賛同しています。"
 
-#: includes/ajax-hooks.php:506 includes/theme.php:881
+#: includes/ajax-hooks.php:506 includes/theme.php:880
 msgid "Subscribe"
 msgstr "賛同"
 
@@ -2841,7 +2841,7 @@ msgstr "賛同"
 msgid "Successfully subscribed to question"
 msgstr "この質問への賛同者はいません。"
 
-#: includes/ajax-hooks.php:524 includes/theme.php:881
+#: includes/ajax-hooks.php:524 includes/theme.php:880
 #, fuzzy
 msgid "Unsubscribe"
 msgstr "賛同"
@@ -3281,69 +3281,74 @@ msgstr "回答が選択されました"
 
 #: includes/functions.php:1295
 #, fuzzy
+msgid "restored question"
+msgstr "注目の質問"
+
+#: includes/functions.php:1296
+#, fuzzy
 msgid "restored answer"
 msgstr "回答が編集されました"
 
-#: includes/functions.php:1296 templates/functions.php:53
+#: includes/functions.php:1297 templates/functions.php:53
 msgid "commented"
 msgstr "コメント済"
 
-#: includes/functions.php:1297
+#: includes/functions.php:1298
 #, fuzzy
 msgid "deleted comment"
 msgstr "コメントが編集されました"
 
-#: includes/functions.php:1298
+#: includes/functions.php:1299
 msgid "commented on answer"
 msgstr "回答へコメントされました"
 
-#: includes/functions.php:1299
+#: includes/functions.php:1300
 msgid "edited question"
 msgstr "質問が編集されました"
 
-#: includes/functions.php:1300
+#: includes/functions.php:1301
 msgid "edited answer"
 msgstr "回答が編集されました"
 
-#: includes/functions.php:1301
+#: includes/functions.php:1302
 msgid "edited comment"
 msgstr "コメントが編集されました"
 
-#: includes/functions.php:1302
+#: includes/functions.php:1303
 #, fuzzy
 msgid "edited comment on answer"
 msgstr "回答へコメントされました"
 
-#: includes/functions.php:1303
+#: includes/functions.php:1304
 msgid "selected answer"
 msgstr "回答が選択されました"
 
-#: includes/functions.php:1304
+#: includes/functions.php:1305
 msgid "unselected answer"
 msgstr "回答が解除されました"
 
-#: includes/functions.php:1305
+#: includes/functions.php:1306
 msgid "updated status"
 msgstr "アップデート状況"
 
-#: includes/functions.php:1306
+#: includes/functions.php:1307
 msgid "selected as best answer"
 msgstr ""
 
-#: includes/functions.php:1307
+#: includes/functions.php:1308
 msgid "unselected as best answer"
 msgstr ""
 
-#: includes/functions.php:1308
+#: includes/functions.php:1309
 #, fuzzy
 msgid "changed status"
 msgstr "アップデート状況"
 
-#: includes/functions.php:1360
+#: includes/functions.php:1361
 msgid "Anonymous"
 msgstr "匿名"
 
-#: includes/functions.php:1387
+#: includes/functions.php:1388
 msgid " (anonymous)"
 msgstr " (匿名)"
 
@@ -3607,7 +3612,7 @@ msgstr "フラグ付き"
 msgid "Popular"
 msgstr ""
 
-#: includes/taxo.php:457
+#: includes/taxo.php:457 includes/theme.php:445
 #, fuzzy
 msgid "New"
 msgstr "新しい"
@@ -3639,48 +3644,44 @@ msgstr "この投稿を下げ票"
 msgid "Convert this question to blog post"
 msgstr "この質問に回答する"
 
-#: includes/theme.php:452
-msgid "Answered"
-msgstr "回答済"
+#: includes/theme.php:453 widgets/question_stats.php:48
+msgid "Views"
+msgstr "閲覧"
 
-#: includes/theme.php:453 widgets/questions.php:88
+#: includes/theme.php:454 widgets/questions.php:88
 msgid "Unanswered"
 msgstr "未回答"
 
-#: includes/theme.php:454
+#: includes/theme.php:455
 msgid "Unsolved"
 msgstr "未解決"
-
-#: includes/theme.php:455 widgets/question_stats.php:48
-msgid "Views"
-msgstr "閲覧"
 
 #: includes/theme.php:521
 msgid "Best answer"
 msgstr "ベストアンサー"
 
-#: includes/theme.php:697
+#: includes/theme.php:696
 #, fuzzy
 msgid "Order By"
 msgstr "Order by:"
 
-#: includes/theme.php:742
+#: includes/theme.php:741
 msgid "Reset sorting and filter"
 msgstr "ソートとフィルターをリセット"
 
-#: includes/theme.php:742
+#: includes/theme.php:741
 msgid "Clear Filter"
 msgstr ""
 
-#: includes/theme.php:769
+#: includes/theme.php:768
 msgid "Select this answer as best"
 msgstr "ベストアンサーに選ぶ"
 
-#: includes/theme.php:777
+#: includes/theme.php:776
 msgid "Unselect this answer"
 msgstr "この回答の選択を解除"
 
-#: includes/theme.php:905
+#: includes/theme.php:904
 #, fuzzy
 msgid "AnsPress links"
 msgstr "AnsPress ポイント"
@@ -4210,6 +4211,9 @@ msgstr "Question"
 msgctxt "Post Type Singular Name"
 msgid "Answer"
 msgstr "Answer"
+
+#~ msgid "Answered"
+#~ msgstr "回答済"
 
 #~ msgid "Notification"
 #~ msgstr "通知"
@@ -4916,9 +4920,6 @@ msgstr "Answer"
 
 #~ msgid "Newer Comments &rarr;"
 #~ msgstr "新しいコメント &rarr;"
-
-#~ msgid "Featured question"
-#~ msgstr "注目の質問"
 
 #~ msgid "No question asked yet!, be the first to ask a question."
 #~ msgstr "まだ質問はありません。最初の質問をしてください。"

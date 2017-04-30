@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: AnsPress 2.3.3\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/anspress-question-"
 "answer\n"
-"POT-Creation-Date: 2017-04-30 09:10:25+00:00\n"
+"POT-Creation-Date: 2017-04-30 14:41:44+00:00\n"
 "PO-Revision-Date: 2015-12-15 09:17+0530\n"
 "Last-Translator: &gt;&gt;CoW&lt;&lt; <dennis.wessels@posteo.de>\n"
 "Language-Team: AnsPress <support@anspress.io>\n"
@@ -94,8 +94,8 @@ msgstr "Fragen"
 #: addons/free/buddypress.php:106 addons/free/buddypress.php:234
 #: addons/free/profile.php:38 addons/free/profile.php:147
 #: admin/views/dashboard.php:226 admin/views/recount.php:71
-#: includes/post-types.php:113 widgets/question_stats.php:49
-#: widgets/questions.php:87
+#: includes/post-types.php:113 includes/theme.php:452
+#: widgets/question_stats.php:49 widgets/questions.php:87
 msgid "Answers"
 msgstr "Antworten"
 
@@ -1381,8 +1381,8 @@ msgid "Comments"
 msgstr "Kommentare"
 
 #: admin/class-list-table-hooks.php:198 admin/class-list-table-hooks.php:295
-#: admin/views/recount.php:54 templates/content-answer.php:20
-#: templates/question-list-item.php:30
+#: admin/views/recount.php:54 includes/theme.php:449
+#: templates/content-answer.php:20 templates/question-list-item.php:30
 msgid "Votes"
 msgstr "Abstimmungen"
 
@@ -1723,7 +1723,7 @@ msgid "Order question list by default using selected"
 msgstr ""
 
 #: admin/options-fields.php:196 admin/options-fields.php:260
-#: includes/theme.php:449 includes/theme.php:493 widgets/questions.php:86
+#: includes/theme.php:493 widgets/questions.php:86
 msgid "Voted"
 msgstr "Abgestimmt"
 
@@ -1734,7 +1734,7 @@ msgid "Active"
 msgstr "Offen"
 
 #: admin/options-fields.php:198 admin/options-fields.php:262
-#: includes/theme.php:445 includes/theme.php:496 widgets/questions.php:85
+#: includes/theme.php:496 widgets/questions.php:85
 msgid "Newest"
 msgstr "Neuste"
 
@@ -2684,7 +2684,7 @@ msgid ""
 msgstr ""
 
 #: includes/ajax-hooks.php:100 includes/ajax-hooks.php:136
-#: includes/theme.php:770
+#: includes/theme.php:769
 msgid "Select"
 msgstr "Auswählen"
 
@@ -2706,7 +2706,7 @@ msgstr ""
 msgid "Best answer is selected for your question."
 msgstr "Beste Antwort wurde für deine Frage gewählt."
 
-#: includes/ajax-hooks.php:173 includes/theme.php:778
+#: includes/ajax-hooks.php:173 includes/theme.php:777
 msgid "Unselect"
 msgstr "Auswahl aufheben"
 
@@ -2772,12 +2772,12 @@ msgstr ""
 msgid "Only question can be set as featured"
 msgstr "Frage wurde als \"Besonderes\" markiert"
 
-#: includes/ajax-hooks.php:317 includes/theme.php:854
+#: includes/ajax-hooks.php:317 includes/theme.php:853
 #, fuzzy
 msgid "Mark this question as featured"
 msgstr "Markiere diese Frage als \"Besonders\""
 
-#: includes/ajax-hooks.php:317 includes/theme.php:855
+#: includes/ajax-hooks.php:317 includes/theme.php:854
 #, fuzzy
 msgid "Feature"
 msgstr "Extras"
@@ -2786,12 +2786,12 @@ msgstr "Extras"
 msgid "Question is unmarked as featured."
 msgstr "Markierung als \"besondere Frage\" wurde aufgehoben"
 
-#: includes/ajax-hooks.php:325 includes/theme.php:851
+#: includes/ajax-hooks.php:325 includes/theme.php:850
 #, fuzzy
 msgid "Unmark this question as featured"
 msgstr "Markiere diese Frage als \"Besonders\""
 
-#: includes/ajax-hooks.php:325 includes/theme.php:852
+#: includes/ajax-hooks.php:325 includes/theme.php:851
 #, fuzzy
 msgid "Unfeature"
 msgstr "Extras"
@@ -2855,7 +2855,7 @@ msgstr ""
 msgid "Successfully unsubscribed from question"
 msgstr "Nur du hast diese Frage abonniert."
 
-#: includes/ajax-hooks.php:506 includes/theme.php:881
+#: includes/ajax-hooks.php:506 includes/theme.php:880
 msgid "Subscribe"
 msgstr "Abonieren"
 
@@ -2864,7 +2864,7 @@ msgstr "Abonieren"
 msgid "Successfully subscribed to question"
 msgstr "Niemand hat diese Frage abonniert."
 
-#: includes/ajax-hooks.php:524 includes/theme.php:881
+#: includes/ajax-hooks.php:524 includes/theme.php:880
 #, fuzzy
 msgid "Unsubscribe"
 msgstr "Abonieren"
@@ -3308,69 +3308,74 @@ msgstr "wählte die Antwort"
 
 #: includes/functions.php:1295
 #, fuzzy
+msgid "restored question"
+msgstr "Besondere Frage"
+
+#: includes/functions.php:1296
+#, fuzzy
 msgid "restored answer"
 msgstr "editierte Antwort"
 
-#: includes/functions.php:1296 templates/functions.php:53
+#: includes/functions.php:1297 templates/functions.php:53
 msgid "commented"
 msgstr "kommentierte"
 
-#: includes/functions.php:1297
+#: includes/functions.php:1298
 #, fuzzy
 msgid "deleted comment"
 msgstr "editierter Kommentar"
 
-#: includes/functions.php:1298
+#: includes/functions.php:1299
 msgid "commented on answer"
 msgstr "Kommentiere Antwort"
 
-#: includes/functions.php:1299
+#: includes/functions.php:1300
 msgid "edited question"
 msgstr "editierte Frage"
 
-#: includes/functions.php:1300
+#: includes/functions.php:1301
 msgid "edited answer"
 msgstr "editierte Antwort"
 
-#: includes/functions.php:1301
+#: includes/functions.php:1302
 msgid "edited comment"
 msgstr "editierter Kommentar"
 
-#: includes/functions.php:1302
+#: includes/functions.php:1303
 #, fuzzy
 msgid "edited comment on answer"
 msgstr "Kommentiere Antwort"
 
-#: includes/functions.php:1303
+#: includes/functions.php:1304
 msgid "selected answer"
 msgstr "wählte die Antwort"
 
-#: includes/functions.php:1304
+#: includes/functions.php:1305
 msgid "unselected answer"
 msgstr "wählte Antwort ab"
 
-#: includes/functions.php:1305
+#: includes/functions.php:1306
 msgid "updated status"
 msgstr "Status aktualisieren"
 
-#: includes/functions.php:1306
+#: includes/functions.php:1307
 msgid "selected as best answer"
 msgstr ""
 
-#: includes/functions.php:1307
+#: includes/functions.php:1308
 msgid "unselected as best answer"
 msgstr ""
 
-#: includes/functions.php:1308
+#: includes/functions.php:1309
 #, fuzzy
 msgid "changed status"
 msgstr "Status aktualisieren"
 
-#: includes/functions.php:1360
+#: includes/functions.php:1361
 msgid "Anonymous"
 msgstr "Gast"
 
-#: includes/functions.php:1387
+#: includes/functions.php:1388
 msgid " (anonymous)"
 msgstr " (Gast)"
 
@@ -3637,7 +3642,7 @@ msgstr "Gemeldet"
 msgid "Popular"
 msgstr ""
 
-#: includes/taxo.php:457
+#: includes/taxo.php:457 includes/theme.php:445
 #, fuzzy
 msgid "New"
 msgstr "Neuste"
@@ -3669,48 +3674,44 @@ msgstr "Negative Stimme abgeben"
 msgid "Convert this question to blog post"
 msgstr "Hat auf die Frage geantwortet"
 
-#: includes/theme.php:452
-msgid "Answered"
-msgstr "Beantwortet"
+#: includes/theme.php:453 widgets/question_stats.php:48
+msgid "Views"
+msgstr "Aufrufe"
 
-#: includes/theme.php:453 widgets/questions.php:88
+#: includes/theme.php:454 widgets/questions.php:88
 msgid "Unanswered"
 msgstr "Unbeantwortet"
 
-#: includes/theme.php:454
+#: includes/theme.php:455
 msgid "Unsolved"
 msgstr "Ungelöst"
-
-#: includes/theme.php:455 widgets/question_stats.php:48
-msgid "Views"
-msgstr "Aufrufe"
 
 #: includes/theme.php:521
 msgid "Best answer"
 msgstr "Beste Antwort"
 
-#: includes/theme.php:697
+#: includes/theme.php:696
 #, fuzzy
 msgid "Order By"
 msgstr "Sortieren nach:"
 
-#: includes/theme.php:742
+#: includes/theme.php:741
 msgid "Reset sorting and filter"
 msgstr "Wiederherstellen von Sortieren und Filter"
 
-#: includes/theme.php:742
+#: includes/theme.php:741
 msgid "Clear Filter"
 msgstr ""
 
-#: includes/theme.php:769
+#: includes/theme.php:768
 msgid "Select this answer as best"
 msgstr "Diese Antwort als beste markieren"
 
-#: includes/theme.php:777
+#: includes/theme.php:776
 msgid "Unselect this answer"
 msgstr "Antwort Auswahl aufheben"
 
-#: includes/theme.php:905
+#: includes/theme.php:904
 #, fuzzy
 msgid "AnsPress links"
 msgstr "AnsPress Punkte"
@@ -4251,6 +4252,9 @@ msgstr "Frage"
 msgctxt "Post Type Singular Name"
 msgid "Answer"
 msgstr "Antwort"
+
+#~ msgid "Answered"
+#~ msgstr "Beantwortet"
 
 #~ msgid "Notification"
 #~ msgstr "Benachrichtigung"
@@ -4981,9 +4985,6 @@ msgstr "Antwort"
 
 #~ msgid "Newer Comments &rarr;"
 #~ msgstr "Neuere Kommentare &rarr;"
-
-#~ msgid "Featured question"
-#~ msgstr "Besondere Frage"
 
 #~ msgid "No question asked yet!, be the first to ask a question."
 #~ msgstr ""
