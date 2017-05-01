@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: AnsPress 2.3.5\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/anspress-question-"
 "answer\n"
-"POT-Creation-Date: 2017-04-30 14:41:44+00:00\n"
+"POT-Creation-Date: 2017-05-01 07:35:20+00:00\n"
 "PO-Revision-Date: 2016-07-12 16:29+0530\n"
 "Last-Translator: Niyazi Saral <nsaral@cizgi.com.tr>\n"
 "Language-Team: AnsPress Türkçe <anspress@mertskaplan.com>\n"
@@ -75,7 +75,7 @@ msgid "Q&A"
 msgstr ""
 
 #: addons/free/buddypress.php:105 addons/free/buddypress.php:186
-#: addons/free/profile.php:37 addons/free/profile.php:140
+#: addons/free/profile.php:37 addons/free/profile.php:142
 #: admin/views/dashboard.php:30 admin/views/dashboard.php:212
 #: includes/functions.php:885 includes/options.php:110
 #: includes/post-types.php:43 includes/taxo.php:79 includes/taxo.php:372
@@ -84,7 +84,7 @@ msgid "Questions"
 msgstr "Sorular"
 
 #: addons/free/buddypress.php:106 addons/free/buddypress.php:234
-#: addons/free/profile.php:38 addons/free/profile.php:147
+#: addons/free/profile.php:38 addons/free/profile.php:149
 #: admin/views/dashboard.php:226 admin/views/recount.php:71
 #: includes/post-types.php:113 includes/theme.php:452
 #: widgets/question_stats.php:49 widgets/questions.php:87
@@ -464,7 +464,7 @@ msgstr[0] "Alt Kategoriler"
 msgid "Question category feed"
 msgstr "Soru Kategorileri"
 
-#: addons/free/category.php:892 addons/free/tag.php:682
+#: addons/free/category.php:891 addons/free/tag.php:682
 msgid ", %d+"
 msgstr ""
 
@@ -811,7 +811,7 @@ msgstr "Sayfa başına yanıtlar"
 msgid "Custom slug for user profile answers page"
 msgstr "Kullanıcılar sayfası için gösterge girin."
 
-#: addons/free/profile.php:284
+#: addons/free/profile.php:286
 msgid "Callback function not found for rendering this page"
 msgstr ""
 
@@ -2625,7 +2625,7 @@ msgid ""
 msgstr ""
 
 #: includes/ajax-hooks.php:100 includes/ajax-hooks.php:136
-#: includes/theme.php:769
+#: includes/theme.php:774
 msgid "Select"
 msgstr "Seçin"
 
@@ -2647,7 +2647,7 @@ msgstr ""
 msgid "Best answer is selected for your question."
 msgstr "Sorunuz için en iyi yanıt seçildi."
 
-#: includes/ajax-hooks.php:173 includes/theme.php:777
+#: includes/ajax-hooks.php:173 includes/theme.php:782
 msgid "Unselect"
 msgstr "Seçimi kaldır"
 
@@ -2710,12 +2710,12 @@ msgstr ""
 msgid "Only question can be set as featured"
 msgstr ""
 
-#: includes/ajax-hooks.php:317 includes/theme.php:853
+#: includes/ajax-hooks.php:317 includes/theme.php:858
 #, fuzzy
 msgid "Mark this question as featured"
 msgstr "Bu soruyu öne çıkarılmış yap"
 
-#: includes/ajax-hooks.php:317 includes/theme.php:854
+#: includes/ajax-hooks.php:317 includes/theme.php:859
 #, fuzzy
 msgid "Feature"
 msgstr "Özellikler"
@@ -2724,12 +2724,12 @@ msgstr "Özellikler"
 msgid "Question is unmarked as featured."
 msgstr "Sorunun öne çıkarılmış olarak işaretlenmesi geri alındı."
 
-#: includes/ajax-hooks.php:325 includes/theme.php:850
+#: includes/ajax-hooks.php:325 includes/theme.php:855
 #, fuzzy
 msgid "Unmark this question as featured"
 msgstr "Bu soruyu öne çıkarılmış yap"
 
-#: includes/ajax-hooks.php:325 includes/theme.php:851
+#: includes/ajax-hooks.php:325 includes/theme.php:856
 #, fuzzy
 msgid "Unfeature"
 msgstr "Özellikler"
@@ -2793,7 +2793,7 @@ msgstr ""
 msgid "Successfully unsubscribed from question"
 msgstr "Sadece siz bu soruya kayıt oldunuz."
 
-#: includes/ajax-hooks.php:506 includes/theme.php:880
+#: includes/ajax-hooks.php:506 includes/theme.php:885
 msgid "Subscribe"
 msgstr "Kaydol"
 
@@ -2802,7 +2802,7 @@ msgstr "Kaydol"
 msgid "Successfully subscribed to question"
 msgstr "Bu soruya hiç kimse kayıt olmadı."
 
-#: includes/ajax-hooks.php:524 includes/theme.php:880
+#: includes/ajax-hooks.php:524 includes/theme.php:885
 #, fuzzy
 msgid "Unsubscribe"
 msgstr "Kaydol"
@@ -3222,92 +3222,92 @@ msgstr ""
 msgid "[Solved] "
 msgstr "[Çözüldü]"
 
-#: includes/functions.php:1290
+#: includes/functions.php:1291
 msgid "asked"
 msgstr "soruldu"
 
-#: includes/functions.php:1291 includes/functions.php:1292
+#: includes/functions.php:1292 includes/functions.php:1293
 msgid "approved"
 msgstr ""
 
-#: includes/functions.php:1293
+#: includes/functions.php:1294
 msgid "answered"
 msgstr "yanıtlandı"
 
-#: includes/functions.php:1294
+#: includes/functions.php:1295
 #, fuzzy
 msgid "deleted answer"
 msgstr "seçilmiş yanıt"
 
-#: includes/functions.php:1295
+#: includes/functions.php:1296
 #, fuzzy
 msgid "restored question"
 msgstr "Öne çıkarılmış soru"
 
-#: includes/functions.php:1296
+#: includes/functions.php:1297
 #, fuzzy
 msgid "restored answer"
 msgstr "düzenlenen yanıt"
 
-#: includes/functions.php:1297 templates/functions.php:53
+#: includes/functions.php:1298 templates/functions.php:53
 msgid "commented"
 msgstr "yorumlandı"
 
-#: includes/functions.php:1298
+#: includes/functions.php:1299
 #, fuzzy
 msgid "deleted comment"
 msgstr "düzenlenen yorum"
 
-#: includes/functions.php:1299
+#: includes/functions.php:1300
 msgid "commented on answer"
 msgstr "yanıt üstüne yorum yapıldı"
 
-#: includes/functions.php:1300
+#: includes/functions.php:1301
 msgid "edited question"
 msgstr "düzenlenen soru"
 
-#: includes/functions.php:1301
+#: includes/functions.php:1302
 msgid "edited answer"
 msgstr "düzenlenen yanıt"
 
-#: includes/functions.php:1302
+#: includes/functions.php:1303
 msgid "edited comment"
 msgstr "düzenlenen yorum"
 
-#: includes/functions.php:1303
+#: includes/functions.php:1304
 msgid "edited comment on answer"
 msgstr ""
 
-#: includes/functions.php:1304
+#: includes/functions.php:1305
 msgid "selected answer"
 msgstr "seçilmiş yanıt"
 
-#: includes/functions.php:1305
+#: includes/functions.php:1306
 msgid "unselected answer"
 msgstr "seçilmemiş yanıt"
 
-#: includes/functions.php:1306
+#: includes/functions.php:1307
 msgid "updated status"
 msgstr "güncellenen durum"
 
-#: includes/functions.php:1307
+#: includes/functions.php:1308
 msgid "selected as best answer"
 msgstr ""
 
-#: includes/functions.php:1308
+#: includes/functions.php:1309
 msgid "unselected as best answer"
 msgstr ""
 
-#: includes/functions.php:1309
+#: includes/functions.php:1310
 #, fuzzy
 msgid "changed status"
 msgstr "güncellenen durum"
 
-#: includes/functions.php:1361
+#: includes/functions.php:1362
 msgid "Anonymous"
 msgstr "Anonim"
 
-#: includes/functions.php:1388
+#: includes/functions.php:1389
 msgid " (anonymous)"
 msgstr " (anonim)"
 
@@ -3626,15 +3626,15 @@ msgstr "Sıralama ve Filitreyi ssıfırla"
 msgid "Clear Filter"
 msgstr ""
 
-#: includes/theme.php:768
+#: includes/theme.php:773
 msgid "Select this answer as best"
 msgstr "Bu yanıtı en iyi  cevap olarak belirle"
 
-#: includes/theme.php:776
+#: includes/theme.php:781
 msgid "Unselect this answer"
 msgstr "Bu yanıtı seçme"
 
-#: includes/theme.php:904
+#: includes/theme.php:909
 #, fuzzy
 msgid "AnsPress links"
 msgstr "AsnPress Puanları"

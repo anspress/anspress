@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: AnsPress 3.0.7\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/anspress-question-"
 "answer\n"
-"POT-Creation-Date: 2017-04-30 14:41:44+00:00\n"
+"POT-Creation-Date: 2017-05-01 07:35:20+00:00\n"
 "PO-Revision-Date: 2016-10-09 06:44+0530\n"
 "Last-Translator: Łukasz Ładecki <priart@gmail.com>\n"
 "Language-Team: priard <priart@gmail.com>\n"
@@ -86,7 +86,7 @@ msgid "Q&A"
 msgstr ""
 
 #: addons/free/buddypress.php:105 addons/free/buddypress.php:186
-#: addons/free/profile.php:37 addons/free/profile.php:140
+#: addons/free/profile.php:37 addons/free/profile.php:142
 #: admin/views/dashboard.php:30 admin/views/dashboard.php:212
 #: includes/functions.php:885 includes/options.php:110
 #: includes/post-types.php:43 includes/taxo.php:79 includes/taxo.php:372
@@ -95,7 +95,7 @@ msgid "Questions"
 msgstr "Pytania"
 
 #: addons/free/buddypress.php:106 addons/free/buddypress.php:234
-#: addons/free/profile.php:38 addons/free/profile.php:147
+#: addons/free/profile.php:38 addons/free/profile.php:149
 #: admin/views/dashboard.php:226 admin/views/recount.php:71
 #: includes/post-types.php:113 includes/theme.php:452
 #: widgets/question_stats.php:49 widgets/questions.php:87
@@ -483,7 +483,7 @@ msgstr[2] "%d subkategorii"
 msgid "Question category feed"
 msgstr "Kanał pytań"
 
-#: addons/free/category.php:892 addons/free/tag.php:682
+#: addons/free/category.php:891 addons/free/tag.php:682
 msgid ", %d+"
 msgstr ""
 
@@ -829,7 +829,7 @@ msgstr "Odpowiedzi na stronie"
 msgid "Custom slug for user profile answers page"
 msgstr "Wprowadź alias dla stron użytkowników."
 
-#: addons/free/profile.php:284
+#: addons/free/profile.php:286
 msgid "Callback function not found for rendering this page"
 msgstr ""
 
@@ -2665,7 +2665,7 @@ msgstr ""
 "Mamy podobne pytania, które już zostały zadane, kliknij, aby je przeczytać."
 
 #: includes/ajax-hooks.php:100 includes/ajax-hooks.php:136
-#: includes/theme.php:769
+#: includes/theme.php:774
 msgid "Select"
 msgstr "Wybierz"
 
@@ -2687,7 +2687,7 @@ msgstr ""
 msgid "Best answer is selected for your question."
 msgstr "Wybrano najlepsza odpowiedź na Twoje pytanie."
 
-#: includes/ajax-hooks.php:173 includes/theme.php:777
+#: includes/ajax-hooks.php:173 includes/theme.php:782
 msgid "Unselect"
 msgstr "Odznacz"
 
@@ -2751,12 +2751,12 @@ msgstr "Przepraszamy! ale nie masz uprawnień, by móc wyświetlić to pytanie."
 msgid "Only question can be set as featured"
 msgstr "Tylko pytanie może zostać wyróżnione"
 
-#: includes/ajax-hooks.php:317 includes/theme.php:853
+#: includes/ajax-hooks.php:317 includes/theme.php:858
 #, fuzzy
 msgid "Mark this question as featured"
 msgstr "Oznacz to pytanie jako wyróżnione"
 
-#: includes/ajax-hooks.php:317 includes/theme.php:854
+#: includes/ajax-hooks.php:317 includes/theme.php:859
 #, fuzzy
 msgid "Feature"
 msgstr "Dodatki"
@@ -2765,12 +2765,12 @@ msgstr "Dodatki"
 msgid "Question is unmarked as featured."
 msgstr "Pytanie zostało oznaczone jako zwykłe."
 
-#: includes/ajax-hooks.php:325 includes/theme.php:850
+#: includes/ajax-hooks.php:325 includes/theme.php:855
 #, fuzzy
 msgid "Unmark this question as featured"
 msgstr "Oznacz to pytanie jako wyróżnione"
 
-#: includes/ajax-hooks.php:325 includes/theme.php:851
+#: includes/ajax-hooks.php:325 includes/theme.php:856
 #, fuzzy
 msgid "Unfeature"
 msgstr "Dodatki"
@@ -2836,7 +2836,7 @@ msgstr "Przenieś starych subskrybentów"
 msgid "Successfully unsubscribed from question"
 msgstr "Pomyślnie wypisano."
 
-#: includes/ajax-hooks.php:506 includes/theme.php:880
+#: includes/ajax-hooks.php:506 includes/theme.php:885
 msgid "Subscribe"
 msgstr "Subskrybuj"
 
@@ -2845,7 +2845,7 @@ msgstr "Subskrybuj"
 msgid "Successfully subscribed to question"
 msgstr "Pomyślnie wypisano."
 
-#: includes/ajax-hooks.php:524 includes/theme.php:880
+#: includes/ajax-hooks.php:524 includes/theme.php:885
 msgid "Unsubscribe"
 msgstr "Wypisz się"
 
@@ -3266,93 +3266,93 @@ msgstr "Nie możesz oddać głosu na wpisy z ograniczeniami"
 msgid "[Solved] "
 msgstr "[Rozwiązane] "
 
-#: includes/functions.php:1290
+#: includes/functions.php:1291
 msgid "asked"
 msgstr "zapytał"
 
-#: includes/functions.php:1291 includes/functions.php:1292
+#: includes/functions.php:1292 includes/functions.php:1293
 #, fuzzy
 msgid "approved"
 msgstr "Zatwierdź"
 
-#: includes/functions.php:1293
+#: includes/functions.php:1294
 msgid "answered"
 msgstr "odpowiedział"
 
-#: includes/functions.php:1294
+#: includes/functions.php:1295
 #, fuzzy
 msgid "deleted answer"
 msgstr "wybrana odpowiedź"
 
-#: includes/functions.php:1295
+#: includes/functions.php:1296
 #, fuzzy
 msgid "restored question"
 msgstr "Wyróżnione pytanie"
 
-#: includes/functions.php:1296
+#: includes/functions.php:1297
 #, fuzzy
 msgid "restored answer"
 msgstr "edytował odpowiedź"
 
-#: includes/functions.php:1297 templates/functions.php:53
+#: includes/functions.php:1298 templates/functions.php:53
 msgid "commented"
 msgstr "skomentował"
 
-#: includes/functions.php:1298
+#: includes/functions.php:1299
 #, fuzzy
 msgid "deleted comment"
 msgstr "edytował komentarz"
 
-#: includes/functions.php:1299
+#: includes/functions.php:1300
 msgid "commented on answer"
 msgstr "skomentował odpowiedź"
 
-#: includes/functions.php:1300
+#: includes/functions.php:1301
 msgid "edited question"
 msgstr "edytował pytanie"
 
-#: includes/functions.php:1301
+#: includes/functions.php:1302
 msgid "edited answer"
 msgstr "edytował odpowiedź"
 
-#: includes/functions.php:1302
+#: includes/functions.php:1303
 msgid "edited comment"
 msgstr "edytował komentarz"
 
-#: includes/functions.php:1303
+#: includes/functions.php:1304
 msgid "edited comment on answer"
 msgstr "edytował komentarz dla odpowiedzi"
 
-#: includes/functions.php:1304
+#: includes/functions.php:1305
 msgid "selected answer"
 msgstr "wybrana odpowiedź"
 
-#: includes/functions.php:1305
+#: includes/functions.php:1306
 msgid "unselected answer"
 msgstr "niewybrana odpowiedź"
 
-#: includes/functions.php:1306
+#: includes/functions.php:1307
 msgid "updated status"
 msgstr "zaktualizowano status"
 
-#: includes/functions.php:1307
+#: includes/functions.php:1308
 msgid "selected as best answer"
 msgstr "wybrał odpowiedź"
 
-#: includes/functions.php:1308
+#: includes/functions.php:1309
 msgid "unselected as best answer"
 msgstr "odznaczył odpowiedź"
 
-#: includes/functions.php:1309
+#: includes/functions.php:1310
 #, fuzzy
 msgid "changed status"
 msgstr "zaktualizowano status"
 
-#: includes/functions.php:1361
+#: includes/functions.php:1362
 msgid "Anonymous"
 msgstr "Gość"
 
-#: includes/functions.php:1388
+#: includes/functions.php:1389
 msgid " (anonymous)"
 msgstr " (gość)"
 
@@ -3680,15 +3680,15 @@ msgstr "Resetuj sortowanie i filtr"
 msgid "Clear Filter"
 msgstr "Zdejmij zgłoszenie"
 
-#: includes/theme.php:768
+#: includes/theme.php:773
 msgid "Select this answer as best"
 msgstr "Wybierz tą odpowiedź jako najlepszą"
 
-#: includes/theme.php:776
+#: includes/theme.php:781
 msgid "Unselect this answer"
 msgstr "Odznacz odpowiedź"
 
-#: includes/theme.php:904
+#: includes/theme.php:909
 #, fuzzy
 msgid "AnsPress links"
 msgstr "Punkty AnsPress"

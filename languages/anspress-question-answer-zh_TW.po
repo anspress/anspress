@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: AnsPress 2.3.6\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/anspress-question-"
 "answer\n"
-"POT-Creation-Date: 2017-04-30 14:41:44+00:00\n"
+"POT-Creation-Date: 2017-05-01 07:35:20+00:00\n"
 "PO-Revision-Date: 2015-12-15 09:21+0530\n"
 "Last-Translator: Tunghua Tai <tunghua@me.com>\n"
 "Language-Team: \n"
@@ -82,7 +82,7 @@ msgid "Q&A"
 msgstr ""
 
 #: addons/free/buddypress.php:105 addons/free/buddypress.php:186
-#: addons/free/profile.php:37 addons/free/profile.php:140
+#: addons/free/profile.php:37 addons/free/profile.php:142
 #: admin/views/dashboard.php:30 admin/views/dashboard.php:212
 #: includes/functions.php:885 includes/options.php:110
 #: includes/post-types.php:43 includes/taxo.php:79 includes/taxo.php:372
@@ -91,7 +91,7 @@ msgid "Questions"
 msgstr "問題討論"
 
 #: addons/free/buddypress.php:106 addons/free/buddypress.php:234
-#: addons/free/profile.php:38 addons/free/profile.php:147
+#: addons/free/profile.php:38 addons/free/profile.php:149
 #: admin/views/dashboard.php:226 admin/views/recount.php:71
 #: includes/post-types.php:113 includes/theme.php:452
 #: widgets/question_stats.php:49 widgets/questions.php:87
@@ -479,7 +479,7 @@ msgstr[1] "討論版"
 msgid "Question category feed"
 msgstr "問題饋送"
 
-#: addons/free/category.php:892 addons/free/tag.php:682
+#: addons/free/category.php:891 addons/free/tag.php:682
 msgid ", %d+"
 msgstr ""
 
@@ -825,7 +825,7 @@ msgstr "每頁幾個回答"
 msgid "Custom slug for user profile answers page"
 msgstr "輸入使用者頁面代稱"
 
-#: addons/free/profile.php:284
+#: addons/free/profile.php:286
 msgid "Callback function not found for rendering this page"
 msgstr ""
 
@@ -2663,7 +2663,7 @@ msgid ""
 msgstr ""
 
 #: includes/ajax-hooks.php:100 includes/ajax-hooks.php:136
-#: includes/theme.php:769
+#: includes/theme.php:774
 msgid "Select"
 msgstr "選取"
 
@@ -2685,7 +2685,7 @@ msgstr ""
 msgid "Best answer is selected for your question."
 msgstr "在這個提問中你的回答已被選為最佳回答"
 
-#: includes/ajax-hooks.php:173 includes/theme.php:777
+#: includes/ajax-hooks.php:173 includes/theme.php:782
 msgid "Unselect"
 msgstr "取消選擇"
 
@@ -2749,12 +2749,12 @@ msgstr ""
 msgid "Only question can be set as featured"
 msgstr "提問已經被標為推薦"
 
-#: includes/ajax-hooks.php:317 includes/theme.php:853
+#: includes/ajax-hooks.php:317 includes/theme.php:858
 #, fuzzy
 msgid "Mark this question as featured"
 msgstr "推薦這個提問"
 
-#: includes/ajax-hooks.php:317 includes/theme.php:854
+#: includes/ajax-hooks.php:317 includes/theme.php:859
 #, fuzzy
 msgid "Feature"
 msgstr "推薦"
@@ -2763,12 +2763,12 @@ msgstr "推薦"
 msgid "Question is unmarked as featured."
 msgstr "提問已被標為\"推薦\""
 
-#: includes/ajax-hooks.php:325 includes/theme.php:850
+#: includes/ajax-hooks.php:325 includes/theme.php:855
 #, fuzzy
 msgid "Unmark this question as featured"
 msgstr "推薦這個提問"
 
-#: includes/ajax-hooks.php:325 includes/theme.php:851
+#: includes/ajax-hooks.php:325 includes/theme.php:856
 #, fuzzy
 msgid "Unfeature"
 msgstr "推薦"
@@ -2832,7 +2832,7 @@ msgstr ""
 msgid "Successfully unsubscribed from question"
 msgstr "只有你訂閱這個提問"
 
-#: includes/ajax-hooks.php:506 includes/theme.php:880
+#: includes/ajax-hooks.php:506 includes/theme.php:885
 msgid "Subscribe"
 msgstr "訂閱"
 
@@ -2841,7 +2841,7 @@ msgstr "訂閱"
 msgid "Successfully subscribed to question"
 msgstr "沒有人訂閱這個問題"
 
-#: includes/ajax-hooks.php:524 includes/theme.php:880
+#: includes/ajax-hooks.php:524 includes/theme.php:885
 #, fuzzy
 msgid "Unsubscribe"
 msgstr "訂閱"
@@ -3263,93 +3263,93 @@ msgstr "你不能對自己的提問或回答進行投票"
 msgid "[Solved] "
 msgstr "[已解決]"
 
-#: includes/functions.php:1290
+#: includes/functions.php:1291
 msgid "asked"
 msgstr "提出討論"
 
-#: includes/functions.php:1291 includes/functions.php:1292
+#: includes/functions.php:1292 includes/functions.php:1293
 msgid "approved"
 msgstr ""
 
-#: includes/functions.php:1293
+#: includes/functions.php:1294
 msgid "answered"
 msgstr "回答了"
 
-#: includes/functions.php:1294
+#: includes/functions.php:1295
 #, fuzzy
 msgid "deleted answer"
 msgstr "選取回答"
 
-#: includes/functions.php:1295
+#: includes/functions.php:1296
 #, fuzzy
 msgid "restored question"
 msgstr "推薦的提問"
 
-#: includes/functions.php:1296
+#: includes/functions.php:1297
 #, fuzzy
 msgid "restored answer"
 msgstr "編輯了回答"
 
-#: includes/functions.php:1297 templates/functions.php:53
+#: includes/functions.php:1298 templates/functions.php:53
 msgid "commented"
 msgstr "已回應"
 
-#: includes/functions.php:1298
+#: includes/functions.php:1299
 #, fuzzy
 msgid "deleted comment"
 msgstr "編輯了回應"
 
-#: includes/functions.php:1299
+#: includes/functions.php:1300
 msgid "commented on answer"
 msgstr "在回答上回應"
 
-#: includes/functions.php:1300
+#: includes/functions.php:1301
 msgid "edited question"
 msgstr "編輯了提問"
 
-#: includes/functions.php:1301
+#: includes/functions.php:1302
 msgid "edited answer"
 msgstr "編輯了回答"
 
-#: includes/functions.php:1302
+#: includes/functions.php:1303
 msgid "edited comment"
 msgstr "編輯了回應"
 
-#: includes/functions.php:1303
+#: includes/functions.php:1304
 #, fuzzy
 msgid "edited comment on answer"
 msgstr "在回答上回應"
 
-#: includes/functions.php:1304
+#: includes/functions.php:1305
 msgid "selected answer"
 msgstr "選取回答"
 
-#: includes/functions.php:1305
+#: includes/functions.php:1306
 msgid "unselected answer"
 msgstr "未選取的回答"
 
-#: includes/functions.php:1306
+#: includes/functions.php:1307
 msgid "updated status"
 msgstr "更新狀態"
 
-#: includes/functions.php:1307
+#: includes/functions.php:1308
 msgid "selected as best answer"
 msgstr ""
 
-#: includes/functions.php:1308
+#: includes/functions.php:1309
 msgid "unselected as best answer"
 msgstr ""
 
-#: includes/functions.php:1309
+#: includes/functions.php:1310
 #, fuzzy
 msgid "changed status"
 msgstr "更新狀態"
 
-#: includes/functions.php:1361
+#: includes/functions.php:1362
 msgid "Anonymous"
 msgstr "匿名"
 
-#: includes/functions.php:1388
+#: includes/functions.php:1389
 msgid " (anonymous)"
 msgstr "(匿名)"
 
@@ -3677,15 +3677,15 @@ msgstr "重設排序與過濾"
 msgid "Clear Filter"
 msgstr ""
 
-#: includes/theme.php:768
+#: includes/theme.php:773
 msgid "Select this answer as best"
 msgstr "將這個回答選為最佳回答"
 
-#: includes/theme.php:776
+#: includes/theme.php:781
 msgid "Unselect this answer"
 msgstr "反選取這個回答"
 
-#: includes/theme.php:904
+#: includes/theme.php:909
 #, fuzzy
 msgid "AnsPress links"
 msgstr "AnsPress 點數"

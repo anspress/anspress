@@ -4,7 +4,7 @@ Donate link: https://www.paypal.me/nerdaryan
 Tags: question, answer, q&a, forum, profile, stackoverflow, quora, buddypress
 Requires at least: 4.0
 Tested up to: 4.7
-Stable tag: 4.0.4
+Stable tag: 4.0.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -96,6 +96,25 @@ Read full FAQ here https://anspress.io/docs/?topic=faq
 
 
 == Changelog ==
+
+= 4.0.5 =
+  * Fixed user profile rewrite and reputation query
+  * Fixed: dropdown reputation for reputation count
+  * Addons not toggling on WpEngine
+  * Hide notification and user profile if not logged in
+  * Fixed: filters are not persisting
+  * Language updated
+  * Fixed: restored_question activity string update
+  * Fixed: admin JS errors
+  * Fixed: notification dropdown
+  * Removed CSS minify folder
+  * Improved list filters
+  * Fixed buddypress "load more" issue, disable AnsPress notification if buddypress enabled
+  * Added reputation re-count
+  * Added answer and flags count
+  * Added vote re-count
+  * Fixed theme updater
+  * Fixed: load more not working in BP profile
 
 = 4.0.4 =
 
