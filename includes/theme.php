@@ -744,7 +744,7 @@ function ap_list_filters( $current_url = '' ) {
 		if ( ! is_array( $value ) ) {
 			echo '<input type="hidden" value="' . esc_attr( $value ). '" name="' . esc_attr( $key ) . '" />';
 		} else {
-			foreach( $value as $v ) {
+			foreach ( (array) $value as $v ) {
 				echo '<input type="hidden" value="' . esc_attr( $v ). '" name="' . esc_attr( $key ) . '[]" />';
 			}
 		}

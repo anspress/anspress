@@ -38,7 +38,7 @@ class AnsPress_Profile_Hooks {
 			'user_page_title_answers'   => __( 'Answers', 'anspress-question-answer' ),
 		]);
 		anspress()->add_action( 'ap_option_groups', __CLASS__, 'options' );
-		ap_register_page( 'user', __( 'User profile', 'anspress-question-answer' ), [ __CLASS__, 'user_page' ] );
+		ap_register_page( 'user', __( 'User profile', 'anspress-question-answer' ), [ __CLASS__, 'user_page' ], true, true );
 		anspress()->add_action( 'ap_rewrite_rules', __CLASS__, 'rewrite_rules', 10, 3 );
 		anspress()->add_filter( 'ap_menu_link', __CLASS__, 'menu_link', 10, 2 );
 		anspress()->add_action( 'ap_ajax_user_more_answers', __CLASS__, 'load_more_answers', 10, 2 );

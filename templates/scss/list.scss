@@ -130,9 +130,9 @@
 		}
 	}
 	.ap-list-head{
-    padding: 15px 15px;
-    border: solid 1px #ddd;
-    margin-bottom: 10px;
+		padding: 15px 15px 5px 15px;
+		border: solid 1px #ddd;
+		margin-bottom: 10px;
 		.ap-btn-ask{
 			background: $main-color;
 			border-radius: 2px;
@@ -219,21 +219,18 @@
 	}
 	#ap-filter-reset {
 		background: none;
-    border: none;
-    padding: 0;
-		color: $light-color;
+		border: none;
+		padding: 3px;
+		color: #888;
+		display: block;
 
 		&:focus, &:active{
 			outline: none;
 		}
 		i{
-			background: #ccc;
-			color: #fff;
-			padding: 0px 3px;
 			display: block;
-			border-radius: 2px;
 			float: left;
-			font-size: 12px;
+			font-size: 14px;
 			margin-right: 4px;
 		}
 	}
