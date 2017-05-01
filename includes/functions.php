@@ -1671,6 +1671,13 @@ function ap_activate_addon( $addon_name ) {
 
 		do_action( 'ap_addon_activated', $addon_name );
 
+		// Fix to drop wpengine cache.
+		if ( class_exists( 'WpeCommon' ) ) {
+			WpeCommon::purge_memcached();
+			WpeCommon::clear_maxcdn_cache();
+			WpeCommon::purge_varnish_cache();
+    }
+
 		return true;
 	}
 
