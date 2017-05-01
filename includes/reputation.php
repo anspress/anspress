@@ -452,9 +452,12 @@ class AnsPress_Reputation_Query {
 		$order = 'DESC' === $this->args['order'] ? 'DESC' : 'ASC';
 		$excluded = sanitize_comma_delimited( $this->with_zero_points, 'str' );
 
-		$query = $wpdb->prepare( "SELECT SQL_CALC_FOUND_ROWS * FROM {$wpdb->ap_reputations} WHERE rep_user_id = %d AND rep_event NOT IN({$excluded}) ORDER BY rep_date {$order} LIMIT %d,%d", $this->args['user_id'], $this->offset, $this->per_page );
+		$not_in = '';
+		if ( ! empty( $excluded ) ) {
+			$not_in = " AND rep_event NOT IN({$excluded})";
+		}
 
-
+		$query = $wpdb->prepare( "SELECT SQL_CALC_FOUND_ROWS * FROM {$wpdb->ap_reputations} WHERE rep_user_id = %d{$not_in} ORDER BY rep_date {$order} LIMIT %d,%d", $this->args['user_id'], $this->offset, $this->per_page );
 
 		$key = md5( $query );
 		$result = wp_cache_get( $key, 'ap' );

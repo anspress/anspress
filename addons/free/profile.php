@@ -102,7 +102,9 @@ class AnsPress_Profile_Hooks {
 
 		$new_rules = [];
 
+
 		foreach ( (array) anspress()->user_pages as $page ) {
+			$new_rules[ $base . '/([^/]+)/' . $page['rewrite'] . '/page/?([0-9]{1,})/?$' ] = 'index.php?page_id=' . $base_page_id . '&ap_page=user&ap_user=$matches[#]&user_page=' . $page['slug'] . '&paged=$matches[#]';
 			$new_rules[ $base . '/([^/]+)/' . $page['rewrite'] . '/?' ] = 'index.php?page_id=' . $base_page_id . '&ap_page=user&ap_user=$matches[#]&user_page=' . $page['slug'];
 		}
 
