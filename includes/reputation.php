@@ -171,7 +171,7 @@ function ap_get_reputation_event_points( $event ) {
 	$events = ap_get_reputation_events();
 
 	if ( isset( $events[ $event ] ) ) {
-		return (int) $events[ $event ]['points'];
+		return $events[ $event ]['points'];
 	}
 
 	return 0;

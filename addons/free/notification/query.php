@@ -317,7 +317,7 @@ class AnsPress_Notification_Query extends AnsPress_Query {
 				}
 
 				if ( isset( $this->object->ref->points ) ) {
-					$args['%points%'] = number_format_i18n( abs( $this->object->ref->points ) );
+					$args['%points%'] = number_format_i18n( $this->object->ref->points );
 				}
 			}
 

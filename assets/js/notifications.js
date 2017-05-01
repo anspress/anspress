@@ -40,7 +40,6 @@
 		template: AnsPress.getTemplate('notification'),
 		initialize: function(options){
 			this.model = options.model;
-			//this.model.on('change', this.render, this);
 		},
 		render: function(){
 			var t = _.template(this.template());

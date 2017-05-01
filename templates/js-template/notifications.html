@@ -13,7 +13,7 @@
 #START BLOCK notification #
 <div class="noti-item clearfix {{seen==1 ? 'seen' : 'unseen'}}">
   <# if(ref_type === 'reputation') { #>
-    <div class="ap-noti-rep">{{points}}</div>
+    <div class="ap-noti-rep<# if(points < 1) { #> negative<# } #>">{{points}}</div>
   <# } else if(hide_actor) { #>
     <div class="ap-noti-icon {{icon}}"></div>
   <# } else { #>

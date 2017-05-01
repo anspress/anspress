@@ -32,6 +32,7 @@
       font-weight: bold;
       color: #fff;
       border-radius: 50%;
+
     }
     &-inner{
       color: #333;
@@ -124,6 +125,9 @@
       line-height: 35px;
       font-size: 16px;
       font-weight: bold;
+      &.negative{
+        background: #EF5350;
+      }
     }
     &-icon{
       text-align: center;

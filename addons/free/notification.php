@@ -499,7 +499,6 @@ class AnsPress_Notification_Hook {
 			);
 		endwhile;
 
-
 		ap_ajax_json( array(
 			'success'       => true,
 			'notifications' => $items,
