@@ -649,7 +649,7 @@ class AnsPress_Email_Hooks {
 			SELF::add_email( ap_opt( 'notify_admin_email' ) );
 		}
 
-		$subscribers = ap_get_subscribers( 'question', $question_id );
+		$subscribers = ap_get_subscribers( 'question', $question->ID );
 		$post_author  = get_user_by( 'id', $question->post_author );
 
 		if ( $subscribers && ! ap_in_array_r( $post_author->data->user_email, $subscribers ) &&

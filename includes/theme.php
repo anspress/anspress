@@ -713,7 +713,7 @@ function ap_get_list_filters( ) {
  * @param string $current_url Current Url.
  */
 function ap_list_filters( $current_url = '' ) {
-	$filters = ap_get_list_filters( );
+	$filters = ap_get_list_filters();
 
 	echo '<form id="ap-filters" class="ap-filters clearfix" method="GET">';
 
@@ -740,12 +740,17 @@ function ap_list_filters( $current_url = '' ) {
 
 	echo '<button id="ap-filter-reset" type="submit" name="reset-filter" title="' . esc_attr__( 'Reset sorting and filter', 'anspress-question-answer' ) . '"><i class="apicon-x"></i><span>' . esc_attr__( 'Clear Filter', 'anspress-question-answer' ) . '</span></button>';
 
-	echo '</form>';
-
-	// Send current GET, so that it can be used by JS templates.
-	if ( ap_get_current_list_filters() ) {
-		//echo '<script type="application/json" id="ap_current_filters">' . wp_json_encode( ap_get_current_list_filters() ) . '</script>'; // xss okay.
+	foreach ( (array) ap_get_current_list_filters() as $key => $value ) {
+		if ( ! is_array( $value ) ) {
+			echo '<input type="hidden" value="' . esc_attr( $value ). '" name="' . esc_attr( $key ) . '" />';
+		} else {
+			foreach( $value as $v ) {
+				echo '<input type="hidden" value="' . esc_attr( $v ). '" name="' . esc_attr( $key ) . '[]" />';
+			}
+		}
 	}
+
+	echo '</form>';
 }
 /**
  * Print select anser HTML button.

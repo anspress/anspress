@@ -65,8 +65,12 @@
       json.name = this.nameAttr();
       json.active = this.isActive();
       json.inputType = this.inputType();
+      this.removeHiddenField();
       this.$el.html(t(json));
       return this;
+    },
+    removeHiddenField: function(){
+      $('input[name="'+this.nameAttr()+'"][value="'+this.model.get('value')+'"]').remove();
     },
     clickFilter: function(e){
       e.preventDefault();

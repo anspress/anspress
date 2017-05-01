@@ -155,7 +155,7 @@ function is_question_category() {
 /**
  * Return category for sorting dropdown.
  *
- * @param string|false $search Search value.
+ * @param string|boolean $search Search value.
  * @return array|boolean
  */
 function ap_get_category_filter( $search = false ) {

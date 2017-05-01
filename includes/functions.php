@@ -1167,7 +1167,8 @@ function ap_sanitize_unslash( $str, $from = false, $default = '' ) {
 		}
 	}
 
-	if ( '' === $str ) {
+	// Return default if empty.
+	if ( empty( $str ) ) {
 		return $default;
 	}
 

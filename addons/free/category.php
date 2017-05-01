@@ -854,8 +854,7 @@ class AnsPress_Category {
 		$filter = ap_sanitize_unslash( 'filter', 'r' );
 		check_ajax_referer( 'filter_' . $filter, '__nonce' );
 
-		$search = ap_sanitize_unslash( 'search', 'r', false );
-
+		$search = (string) ap_sanitize_unslash( 'search', 'r', false );
 		ap_ajax_json( array(
 			'success'  => true,
 			'items'    => ap_get_category_filter( $search ),
