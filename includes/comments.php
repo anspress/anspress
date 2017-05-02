@@ -367,12 +367,6 @@ function ap_comment_btn_html( $_post = null ) {
 	$comment_count = get_comments_number( $_post->ID );
 	$args = wp_json_encode( [ 'post_id' => $_post->ID, '__nonce' => wp_create_nonce( 'comment_form_nonce' ) ] );
 
-	$q = wp_json_encode( array(
-		'post_id'        => get_the_ID(),
-		'__nonce'        => wp_create_nonce( 'new-comment' ),
-		'ap_ajax_action' => 'new_comment',
-	) );
-
 	$unapproved = '';
 
 	if ( ap_user_can_approve_comment() ) {
@@ -380,7 +374,30 @@ function ap_comment_btn_html( $_post = null ) {
 		$unapproved = '<b class="unapproved' . ( $unapproved_count > 0 ? ' have' : '' ) . '" ap-un-commentscount title="' . esc_attr__( 'Comments awaiting moderation', 'anspress-question-answer' ) . '">' . $unapproved_count . '</b>';
 	}
 
-	$output = '<a href="#comments-' . $_post->ID . '" class="ap-btn ap-btn-comments" ap="comment_btn" ap-query="' . esc_js( $args ) . '"><span ap-commentscount-text>' . sprintf( _n( '%d Comment', '%d Comments', $comment_count, 'anspress-question-answer' ), $comment_count ) . '</span>' . $unapproved . '</a><a href="#" class="ap-btn-newcomment ap-btn ap-btn-small" ap="new-comment" ap-query="' . esc_js( $q ) . '">' . esc_attr__( 'Add a Comment', 'anspress-question-answer' ) . '</a>';
+	// Show comments button.
+	$output = '<a href="#comments-' . $_post->ID . '" class="ap-btn ap-btn-comments" ap="comment_btn" ap-query="' . esc_js( $args ) . '">';
+	$output .= '<span ap-commentscount-text>' . sprintf( _n( '%d Comment', '%d Comments', $comment_count, 'anspress-question-answer' ), $comment_count ) . '</span>';
+	$output .= $unapproved . '</a>';
+
+	// Add comment button.
+	$q = '';
+	if ( ap_user_can_comment( $_post->ID ) ) {
+		$q = wp_json_encode( array(
+			'post_id'        => get_the_ID(),
+			'__nonce'        => wp_create_nonce( 'new-comment' ),
+			'ap_ajax_action' => 'new_comment',
+		) );
+	}
+
+	$msg = __( 'You do not have permission to comment.', 'anspress-question-answer' );
+
+	if ( ! is_user_logged_in() ) {
+		$msg .= ' ' . sprintf( __( '%sLogin%s to post comment', 'anspress-question-answer' ), '<a href="' . wp_login_url( ) . '">', '</a>' );
+	}
+
+	$output .= '<a href="#" class="ap-btn-newcomment ap-btn ap-btn-small" ap="new-comment" ap-query="' . esc_js( $q ) . '"' . ( empty( $q ) ? ' ap-msg="' . esc_attr( $msg ) . '"' : '' ) . '>';
+	$output .= esc_attr__( 'Add a Comment', 'anspress-question-answer' );
+	$output .= '</a>';
 
 	return $output;
 }

@@ -39,6 +39,12 @@
 </form>
 #END BLOCK comment-form #
 
+#START BLOCK comment-no-permission #
+<div class="ap-comment-no-perm">
+  {{{msg}}}
+</div>
+#END BLOCK comment-no-permission #
+
 #START BLOCK action #
   <# if(!header){ #>
     <a href="{{href}}" title="{{title}}">

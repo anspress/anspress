@@ -459,6 +459,18 @@
 		},
 		loadCommentForm: function(e, comment){
 			e.preventDefault();
+
+			if(_.isEmpty($(e.target).attr('ap-query'))){
+				if(this.$el.find('.ap-comment-no-perm').length === 0){
+					var q = {msg: $(e.target).attr('ap-msg')};
+					var t = _.template(AnsPress.getTemplate('comment-no-permission')());
+					this.$el.find('ap-comments').append(t(q));
+				}else{
+					this.$el.find('.ap-comment-no-perm').remove();
+				}
+				return;
+			}
+
 			if(this.$el.find('[comment-form]').length === 0){
 				var q = $.parseJSON($(e.target).attr('ap-query'));
 				var t = _.template(AnsPress.getTemplate('comment-form')());

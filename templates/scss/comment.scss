@@ -2,6 +2,15 @@
 // Comments
 // --------------------------------------------------
 .anspress{
+	.ap-comment-no-perm {
+		background: #FFF8E1;
+		border: solid 2px #FFE082;
+		padding: 5px;
+		margin-top: 10px;
+		border-radius: 3px;
+		text-align: center;
+		font-size: 12px;
+	}
 	ap-comments{
 		display: block;
 	}
