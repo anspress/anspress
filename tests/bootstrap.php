@@ -35,3 +35,4 @@ function _disable_reqs( $status = false, $args = array(), $url = '') {
 add_filter( 'pre_http_request', '_disable_reqs' );
 
 require_once 'helpers/class-anspress-unittestcase.php';
+require_once 'helpers/class-ap-ajaxtest.php';

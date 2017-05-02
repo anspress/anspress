@@ -66,7 +66,7 @@ class AnsPress_Vote {
 					'voteData' => [
 						'net' => $counts['votes_net'],
 						'active' => '',
-						'nonce' => wp_create_nonce( 'vote' ),
+						'nonce' => wp_create_nonce( 'vote_' . $post_id ),
 					],
 				) );
 			}
@@ -79,7 +79,7 @@ class AnsPress_Vote {
 				],
 				'voteData' => [
 					'active' => $type,
-					'nonce'  => wp_create_nonce( 'vote' ),
+					'nonce'  => wp_create_nonce( 'vote_' . $post_id ),
 				],
 			] );
 		}
@@ -96,7 +96,7 @@ class AnsPress_Vote {
 			'voteData' => [
 					'net' => $counts['votes_net'],
 					'active' => $type,
-					'nonce' => wp_create_nonce( 'vote' ),
+					'nonce' => wp_create_nonce( 'vote_' . $post_id ),
 				],
 		) );
 	}
@@ -166,6 +166,9 @@ function ap_vote_insert( $post_id, $user_id, $type = 'vote', $rec_user_id = 0, $
 	$inserted = $wpdb->insert( $wpdb->ap_votes, $args, [ '%d', '%d', '%d', '%s', '%s', '%s' ] );
 
 	if ( false !== $inserted ) {
+		$cache_key = $post_id . '_' . $user_id . '_' . $type;
+		wp_cache_delete( $cache_key, 'ap_vote' );
+
 		/**
 		 * Action triggred after inserting a vote.
 		 *
@@ -322,14 +325,15 @@ function ap_count_votes( $args ) {
 	}
 
 	$cache_key = md5( $where );
-	$cache = wp_cache_get( $cache_key, 'ap_vote_counts' );
+	wp_cache_set( 'votes', $cache_key, 'ap_count_votes_key' );
+	$cache = wp_cache_get( $cache_key, 'ap_count_votes' );
 
 	if ( false !== $cache ) {
 		return $cache;
 	}
 
 	$rows = $wpdb->get_results( $where ); // db call okay, unprepared SQL okay.
-	wp_cache_set( $cache_key, $rows, 'ap_vote_counts' );
+	wp_cache_set( $cache_key, $rows, 'ap_count_votes' );
 
 	if ( false !== $rows ) {
 		return $rows;
@@ -339,7 +343,7 @@ function ap_count_votes( $args ) {
 }
 
 /**
- * Count votes of a post and propery format.
+ * Count votes of a post and property format.
  *
  * @param  string $by By.
  * @param  string $value Value.
@@ -391,7 +395,7 @@ function ap_count_post_votes_by( $by, $value ) {
  */
 function ap_get_vote( $post_id, $user_id, $type, $value = '' ) {
 	$cache_key = $post_id . '_' . $user_id . '_' . $type;
-	$cache = wp_cache_get( $cache_key, 'ap_votes' );
+	$cache = wp_cache_get( $cache_key, 'ap_vote' );
 
 	if ( false !== $cache ) {
 		return $cache;
@@ -417,7 +421,7 @@ function ap_get_vote( $post_id, $user_id, $type, $value = '' ) {
 	}
 
 	$vote = $wpdb->get_row( $where . $wpdb->prepare( ' AND vote_post_id = %d AND  vote_user_id = %d LIMIT 1', $post_id, $user_id ) ); // db call okay, unprepared SQL okay.
-	wp_cache_set( $cache_key, $vote, 'ap_votes' );
+	wp_cache_set( $cache_key, $vote, 'ap_vote' );
 
 	if ( ! empty( $vote ) ) {
 		return $vote;
@@ -472,7 +476,18 @@ function ap_delete_vote( $post_id, $user_id = false, $type = 'vote', $value = fa
 		$where['vote_value'] = $value;
 	}
 
-	return $wpdb->delete( $wpdb->ap_votes, $where ); // db call okay, db cache okay.
+	$row = $wpdb->delete( $wpdb->ap_votes, $where ); // db call okay, db cache okay.
+
+	if ( false !== $row ) {
+		$cache_key = $post_id . '_' . $user_id . '_' . $type;
+		wp_cache_delete( $cache_key, 'ap_vote' );
+		$count_cache_key = wp_cache_get( 'votes', 'ap_count_votes_key' );
+		wp_cache_delete( $count_cache_key, 'ap_count_votes' );
+
+		do_action( 'ap_delete_vote', $post_id, $user_id, $type, $value );
+	}
+
+	return $row;
 }
 
 /**
