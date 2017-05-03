@@ -1,22 +1,25 @@
 #START BLOCK comment #
-  <div class="ap-avatar">{{{avatar}}}</div>
-  <div class="comment-inner">
-    <div class="comment-header"><a href="{{user_link}}" class="ap-comment-author">{{user_name}}</a> {{aplang.commented}}
-      <a href="{{link}}" class="ap-comment-time">
-        <time datetime="{{iso_date}}">{{time}}</time>
-      </a>
-      <div class="ap-comment-actions">
-        <# if(actions) { _.each(actions, function(action){ #>
-          <a href="#" <# if(action.cb){ #>ap="{{action.cb}}"<# } else { #>ap="comment_action"<# } #> <# if(action.title){ #> title="{{action.title}}"<# } #><# if(action.query){ #> ap-query="{{JSON.stringify(action.query)}}"<# } #><# if(action.active){ #> class="active"<# } #>>
-            {{action.label}}
-            <# if(action.count){ #>
-              <b>{{action.count}}</b>
-            <# } #>
-          </a>
-        <# }); } #>
+  <div itemscope itemtype="http://schema.org/Comment">
+    <div class="ap-avatar">{{{avatar}}}</div>
+    <div class="comment-inner">
+      <div class="comment-header">
+        <a href="{{user_link}}" class="ap-comment-author" itemprop="creator" itemscope itemtype="http://schema.org/Person"><span itemprop="name">{{user_name}}</span></a> {{aplang.commented}}
+        <a href="{{link}}" class="ap-comment-time">
+          <time itemprop="dateCreated" datetime="{{iso_date}}">{{time}}</time>
+        </a>
+        <div class="ap-comment-actions">
+          <# if(actions) { _.each(actions, function(action){ #>
+            <a href="#" <# if(action.cb){ #>ap="{{action.cb}}"<# } else { #>ap="comment_action"<# } #> <# if(action.title){ #> title="{{action.title}}"<# } #><# if(action.query){ #> ap-query="{{JSON.stringify(action.query)}}"<# } #><# if(action.active){ #> class="active"<# } #>>
+              {{action.label}}
+              <# if(action.count){ #>
+                <b>{{action.count}}</b>
+              <# } #>
+            </a>
+          <# }); } #>
+        </div>
       </div>
+      <div class="comment-content" itemprop="text">{{content}}</div>
     </div>
-    <div class="comment-content">{{content}}</div>
   </div>
 #END BLOCK comment #
 
