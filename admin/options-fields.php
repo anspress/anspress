@@ -165,6 +165,12 @@ ap_register_option_section( 'general', 'qa', __( 'Question & Answer', 'anspress-
 			'type'  => 'checkbox',
 		),
 		array(
+			'name'  => 'comment_number',
+			'label' => __( 'Numbers of comments to show', 'anspress-question-answer' ),
+			'desc'  => __( 'Numbers of comments to load in each query?', 'anspress-question-answer' ),
+			'type'  => 'checkbox',
+		),
+		array(
 			'name'  => 'duplicate_check',
 			'label' => __( 'Check duplicate', 'anspress-question-answer' ),
 			'desc'  => __( 'Check for duplicate posts before posting', 'anspress-question-answer' ),

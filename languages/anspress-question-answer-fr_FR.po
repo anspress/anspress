@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: AnsPress 2.2\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/anspress-question-"
 "answer\n"
-"POT-Creation-Date: 2017-05-01 07:35:20+00:00\n"
+"POT-Creation-Date: 2017-05-03 07:28:16+00:00\n"
 "PO-Revision-Date: 2015-12-15 09:17+0530\n"
 "Last-Translator: \n"
 "Language-Team: Romain <bbig86@gmail.com>\n"
@@ -113,7 +113,7 @@ msgid "Load more answers"
 msgstr "-1 pour une réponse"
 
 #: addons/free/buddypress.php:268 addons/free/buddypress.php:269
-#: admin/meta-box.php:41 admin/options-fields.php:188
+#: admin/meta-box.php:41 admin/options-fields.php:194
 #: includes/ajax-hooks.php:194 includes/common-pages.php:21
 #: includes/post-status.php:93 includes/post-types.php:65
 msgid "Question"
@@ -130,7 +130,7 @@ msgstr ""
 "%3$s"
 
 #: addons/free/buddypress.php:278 addons/free/buddypress.php:279
-#: addons/free/buddypress.php:290 admin/options-fields.php:252
+#: addons/free/buddypress.php:290 admin/options-fields.php:258
 #: admin/views/dashboard.php:34 includes/ajax-hooks.php:194
 #: includes/post-status.php:93 includes/post-types.php:135
 msgid "Answer"
@@ -158,12 +158,12 @@ msgid "%1$s answered on - %2$s"
 msgstr "%1$s répondu sur - %2$s"
 
 #: addons/free/buddypress.php:385 addons/free/notification/query.php:313
-#: includes/comments.php:106 includes/post-types.php:64
+#: includes/comments.php:119 includes/post-types.php:64
 msgid "question"
 msgstr "question"
 
 #: addons/free/buddypress.php:385 addons/free/notification/query.php:315
-#: includes/comments.php:106 includes/post-types.php:134
+#: includes/comments.php:119 includes/post-types.php:134
 msgid "answer"
 msgstr "réponse"
 
@@ -1253,9 +1253,9 @@ msgid "Add to Menu"
 msgstr "Ajouter au menu"
 
 #: admin/anspress-admin.php:619 admin/anspress-admin.php:628
-#: admin/options-fields.php:381 admin/options-fields.php:389
-#: admin/options-fields.php:399 admin/options-fields.php:409
-#: admin/options-fields.php:419 admin/options-fields.php:429
+#: admin/options-fields.php:387 admin/options-fields.php:395
+#: admin/options-fields.php:405 admin/options-fields.php:415
+#: admin/options-fields.php:425 admin/options-fields.php:435
 #: includes/post-status.php:24
 msgid "Moderate"
 msgstr "A Modérer"
@@ -1334,7 +1334,7 @@ msgid "Edit &#8220;%s&#8221;"
 msgstr "Apercu &#8220;%s&#8221;"
 
 #: admin/class-list-table-hooks.php:142 admin/meta-box.php:69
-#: includes/comments.php:400 includes/theme.php:339
+#: includes/comments.php:430 includes/theme.php:339
 msgid "Edit"
 msgstr "Editer"
 
@@ -1471,7 +1471,7 @@ msgstr "9+"
 msgid "General"
 msgstr "Général"
 
-#: admin/options-fields.php:15 admin/options-fields.php:305
+#: admin/options-fields.php:15 admin/options-fields.php:311
 msgid "Add-ons"
 msgstr ""
 
@@ -1684,232 +1684,242 @@ msgid "Show question and answer comments by default"
 msgstr "Voir les commentaires par défaut"
 
 #: admin/options-fields.php:169
+#, fuzzy
+msgid "Numbers of comments to show"
+msgstr "Nombre d'utilisateur à afficher:"
+
+#: admin/options-fields.php:170
+#, fuzzy
+msgid "Numbers of comments to load in each query?"
+msgstr "Nombre d'utilisateur à afficher:"
+
+#: admin/options-fields.php:175
 msgid "Check duplicate"
 msgstr ""
 
-#: admin/options-fields.php:170
-msgid "Check for duplicate posts before posting"
-msgstr ""
-
-#: admin/options-fields.php:175
-#, fuzzy
-msgid "Disable question suggestion"
-msgstr "Désactiver la possibilité de voter sur les questions."
-
 #: admin/options-fields.php:176
-msgid "Checking this will disable question suggestion in ask form"
+msgid "Check for duplicate posts before posting"
 msgstr ""
 
 #: admin/options-fields.php:181
 #, fuzzy
+msgid "Disable question suggestion"
+msgstr "Désactiver la possibilité de voter sur les questions."
+
+#: admin/options-fields.php:182
+msgid "Checking this will disable question suggestion in ask form"
+msgstr ""
+
+#: admin/options-fields.php:187
+#, fuzzy
 msgid "Show default date format"
 msgstr "Tri par défaut"
 
-#: admin/options-fields.php:182
+#: admin/options-fields.php:188
 msgid ""
 "Instead of showing time passed i.e. 1 Hour ago, show default format date."
 msgstr ""
 
-#: admin/options-fields.php:192
+#: admin/options-fields.php:198
 #, fuzzy
 msgid "Default question order"
 msgstr "Sélectionner la question"
 
-#: admin/options-fields.php:193
+#: admin/options-fields.php:199
 msgid "Order question list by default using selected"
 msgstr ""
 
-#: admin/options-fields.php:196 admin/options-fields.php:260
+#: admin/options-fields.php:202 admin/options-fields.php:266
 #: includes/theme.php:493 widgets/questions.php:86
 msgid "Voted"
 msgstr "Votées"
 
-#: admin/options-fields.php:197 admin/options-fields.php:261
+#: admin/options-fields.php:203 admin/options-fields.php:267
 #: includes/theme.php:444 includes/theme.php:489 widgets/question_stats.php:47
 #: widgets/questions.php:84
 msgid "Active"
 msgstr "En cours"
 
-#: admin/options-fields.php:198 admin/options-fields.php:262
+#: admin/options-fields.php:204 admin/options-fields.php:268
 #: includes/theme.php:496 widgets/questions.php:85
 msgid "Newest"
 msgstr "Nouvelles"
 
-#: admin/options-fields.php:199 admin/options-fields.php:263
+#: admin/options-fields.php:205 admin/options-fields.php:269
 #: includes/theme.php:497
 msgid "Oldest"
 msgstr "Anciens"
 
-#: admin/options-fields.php:204
+#: admin/options-fields.php:210
 msgid "Keep stop words in question slug"
 msgstr ""
 
-#: admin/options-fields.php:205
+#: admin/options-fields.php:211
 msgid "AnsPress will not strip stop words in question slug."
 msgstr ""
 
-#: admin/options-fields.php:210
+#: admin/options-fields.php:216
 msgid "Minimum title length"
 msgstr "Taille minimum du titre"
 
-#: admin/options-fields.php:211
+#: admin/options-fields.php:217
 msgid "Set minimum letters for a question title."
 msgstr "Nombre de caractères minimum pour le titre."
 
-#: admin/options-fields.php:216 admin/options-fields.php:274
+#: admin/options-fields.php:222 admin/options-fields.php:280
 msgid "Minimum question content"
 msgstr "Taille minimum de la question"
 
-#: admin/options-fields.php:217
+#: admin/options-fields.php:223
 msgid "Set minimum letters for a question contents."
 msgstr "Nombre de caractères minimum pour le contenu."
 
-#: admin/options-fields.php:222 admin/options-fields.php:280
+#: admin/options-fields.php:228 admin/options-fields.php:286
 msgid "Use text editor ?"
 msgstr "Utiliser l'éditeur de texte html ?"
 
-#: admin/options-fields.php:223 admin/options-fields.php:281
+#: admin/options-fields.php:229 admin/options-fields.php:287
 msgid "Text editor as default."
 msgstr "Éditeur de texte html comme éditeur par défaut"
 
-#: admin/options-fields.php:228 admin/options-fields.php:286
+#: admin/options-fields.php:234 admin/options-fields.php:292
 msgid "Disable comments"
 msgstr "Désactiver les commentaires"
 
-#: admin/options-fields.php:229
+#: admin/options-fields.php:235
 msgid "Disable comments on questions."
 msgstr "Interdire les commentaire sur une question."
 
-#: admin/options-fields.php:234 admin/options-fields.php:292
+#: admin/options-fields.php:240 admin/options-fields.php:298
 msgid "Disable voting"
 msgstr "Désactiver les votes"
 
-#: admin/options-fields.php:235
+#: admin/options-fields.php:241
 msgid "Disable voting on questions."
 msgstr "Désactiver la possibilité de voter sur les questions."
 
-#: admin/options-fields.php:240 admin/options-fields.php:298
+#: admin/options-fields.php:246 admin/options-fields.php:304
 msgid "Disable down voting"
 msgstr "Désactiver les votes négatifs"
 
-#: admin/options-fields.php:241
+#: admin/options-fields.php:247
 msgid "Disable down voting on questions."
 msgstr "Désactiver les votes négatifs sur les questions."
 
-#: admin/options-fields.php:246
+#: admin/options-fields.php:252
 msgid "Close question after selecting answer"
 msgstr "Fermer les questions lorsqu'une réponse est sélectionnée"
 
-#: admin/options-fields.php:247
+#: admin/options-fields.php:253
 msgid "If enabled this will prevent user to submit answer on solved question."
 msgstr ""
 "Si cette option est cochée, les utilisateurs ne pourront pas répondre à une "
 "question déjà résolue."
 
-#: admin/options-fields.php:256
+#: admin/options-fields.php:262
 #, fuzzy
 msgid "Default answers order"
 msgstr "Tri par défaut"
 
-#: admin/options-fields.php:257
+#: admin/options-fields.php:263
 #, fuzzy
 msgid "Order answers by by default using selected"
 msgstr "%d réponses, %d sélectionnées"
 
-#: admin/options-fields.php:268
+#: admin/options-fields.php:274
 msgid "Multiple Answers"
 msgstr "Plusieurs réponses"
 
-#: admin/options-fields.php:269
+#: admin/options-fields.php:275
 msgid "Allow an user to submit multiple answers on a single question."
 msgstr ""
 "Autoriser la possibiliter d'avoir plusieurs réponses pour une question."
 
-#: admin/options-fields.php:275
+#: admin/options-fields.php:281
 msgid "Set minimum letters for a answer contents."
 msgstr "Nombre de caractère minim pour une réposne."
 
-#: admin/options-fields.php:287
+#: admin/options-fields.php:293
 msgid "Disable comments on answer."
 msgstr "Interdire les commentaire sur une réponse."
 
-#: admin/options-fields.php:293
+#: admin/options-fields.php:299
 msgid "Disable voting on answers."
 msgstr "Désactiver la possibilité de voter sur les réponses."
 
-#: admin/options-fields.php:299
+#: admin/options-fields.php:305
 msgid "Disable down voting on answers."
 msgstr "Désactiver les votes négatifs sur les réponses."
 
-#: admin/options-fields.php:308
+#: admin/options-fields.php:314
 #, fuzzy
 msgid "Permissions"
 msgstr "Permissions"
 
-#: admin/options-fields.php:311
+#: admin/options-fields.php:317
 #, fuzzy
 msgid "Only logged in can see questions, answer and comments?"
 msgstr "Seulement les utilisateurs connectés peuvent voir les commentaires."
 
-#: admin/options-fields.php:312
+#: admin/options-fields.php:318
 msgid "Require user to login to see AnsPress contents?."
 msgstr ""
 
-#: admin/options-fields.php:317
+#: admin/options-fields.php:323
 msgid "Multiple answers"
 msgstr "Plusieurs réponses"
 
-#: admin/options-fields.php:318
+#: admin/options-fields.php:324
 msgid "Allow user to submit multiple answer per question."
 msgstr ""
 "Autoriser un utilisateur à soumettre plusieurs réponses pour une question."
 
-#: admin/options-fields.php:323
+#: admin/options-fields.php:329
 msgid "Asker can answer"
 msgstr "L'auteur de la question peut répondre"
 
-#: admin/options-fields.php:324
+#: admin/options-fields.php:330
 msgid "Allow asker to answer his own question."
 msgstr "Auotiriser les auteurs à répondre à leurs question"
 
-#: admin/options-fields.php:329
+#: admin/options-fields.php:335
 msgid "Allow anonymous"
 msgstr "Autoriser les anonymes"
 
-#: admin/options-fields.php:330
+#: admin/options-fields.php:336
 msgid "Non-loggedin user can post questions and answers."
 msgstr ""
 "Les utilisateurs non connectés peuvent poser des questions et répondre."
 
-#: admin/options-fields.php:335
+#: admin/options-fields.php:341
 msgid "Only admin can answer"
 msgstr "Seulement l'administrateur peut répondre"
 
-#: admin/options-fields.php:336
+#: admin/options-fields.php:342
 msgid "Only allow admin to answer question."
 msgstr "Seulement l'administrateur peut répondre aux questions."
 
-#: admin/options-fields.php:341
+#: admin/options-fields.php:347
 msgid "Only logged in can see answers"
 msgstr "Seulement les utilisateurs connectés peuvent voir les réponses"
 
-#: admin/options-fields.php:342
+#: admin/options-fields.php:348
 msgid "non-loggedin user cannot see answers."
 msgstr "Les utilisateurs non connectés ne peuvent pas voir les réponses."
 
-#: admin/options-fields.php:347
+#: admin/options-fields.php:353
 msgid "Only logged in can see comment"
 msgstr "Seulement les utilisateurs connectés peuvent voir les commentaires."
 
-#: admin/options-fields.php:348
+#: admin/options-fields.php:354
 msgid "non-loggedin user cannot see comments."
 msgstr "Les utilisateurs non connectés ne peuvent pas voir les commentaires."
 
-#: admin/options-fields.php:353
+#: admin/options-fields.php:359
 msgid "Lock delete action"
 msgstr "Bloquer l'action de suppression"
 
-#: admin/options-fields.php:354
+#: admin/options-fields.php:360
 msgid ""
 "Lock comment or post after a period so that user cannot delete it. Set the "
 "time in epoch i.e. 86400 = 1 day."
@@ -1917,95 +1927,95 @@ msgstr ""
 "Bloquer les commentaires ou les posts après une certaine periode, il ne "
 "pourront plus être supprimés (time limit 86400s = 1day)"
 
-#: admin/options-fields.php:359
+#: admin/options-fields.php:365
 msgid "Upload"
 msgstr "Envoyer"
 
-#: admin/options-fields.php:363
+#: admin/options-fields.php:369
 msgid "Allow image upload"
 msgstr "Autoriser l'envoi d'image(s)"
 
-#: admin/options-fields.php:364
+#: admin/options-fields.php:370
 msgid "Allow logged-in users to upload image."
 msgstr "Autoriser les utilisateurs enregistrer d'envoyer des images(s)"
 
-#: admin/options-fields.php:369
+#: admin/options-fields.php:375
 #, fuzzy
 msgid "Max uploads per post"
 msgstr "Max images par post"
 
-#: admin/options-fields.php:370
+#: admin/options-fields.php:376
 #, fuzzy
 msgid "Set numbers of media user can upload for each post."
 msgstr "Combien d'images un utilisateur peut envoyer pour un post"
 
-#: admin/options-fields.php:375
+#: admin/options-fields.php:381
 msgid "Max upload size"
 msgstr "Taille max d'un upload"
 
-#: admin/options-fields.php:376
+#: admin/options-fields.php:382
 msgid "Set maximum upload size."
 msgstr "Taille maximum lors d'un upload"
 
-#: admin/options-fields.php:384
+#: admin/options-fields.php:390
 msgid "Status of new question"
 msgstr "Statut pour une nouvelle question"
 
-#: admin/options-fields.php:385
+#: admin/options-fields.php:391
 msgid "Set post status of new question."
 msgstr "Statut du post pour une nouvelle question."
 
-#: admin/options-fields.php:388 admin/options-fields.php:398
-#: admin/options-fields.php:408 admin/options-fields.php:418
-#: admin/options-fields.php:428
+#: admin/options-fields.php:394 admin/options-fields.php:404
+#: admin/options-fields.php:414 admin/options-fields.php:424
+#: admin/options-fields.php:434
 msgid "Publish"
 msgstr "Publier"
 
-#: admin/options-fields.php:394
+#: admin/options-fields.php:400
 msgid "Status of edited question"
 msgstr "Statut d'une question éditée"
 
-#: admin/options-fields.php:395
+#: admin/options-fields.php:401
 msgid "Set post status of edited question."
 msgstr "Statut du post, d'une question éditée."
 
-#: admin/options-fields.php:404
+#: admin/options-fields.php:410
 msgid "Status of new answer"
 msgstr "Statut d'une nouvelle réponse."
 
-#: admin/options-fields.php:405
+#: admin/options-fields.php:411
 msgid "Set post status of new answer."
 msgstr "Status du post d'une nouvelle réponse."
 
-#: admin/options-fields.php:414
+#: admin/options-fields.php:420
 msgid "Status of edited answer"
 msgstr "Status d'une réponse éditée"
 
-#: admin/options-fields.php:415
+#: admin/options-fields.php:421
 msgid "Set post status of edited answer."
 msgstr "Statut du post d'une réponse éditée."
 
-#: admin/options-fields.php:424
+#: admin/options-fields.php:430
 #, fuzzy
 msgid "Status of anonymous post"
 msgstr "Statut pour une nouvelle question"
 
-#: admin/options-fields.php:425
+#: admin/options-fields.php:431
 #, fuzzy
 msgid "Set post status post submitted by anonymous user."
 msgstr "Statut du post d'une réponse éditée."
 
-#: admin/options-fields.php:434
+#: admin/options-fields.php:440
 #, fuzzy
 msgid "Re-count"
 msgstr "Compte"
 
-#: admin/options-fields.php:435
+#: admin/options-fields.php:441
 #, fuzzy
 msgid "User roles"
 msgstr "Mise à jour du profile"
 
-#: admin/options-fields.php:436
+#: admin/options-fields.php:442
 msgid "Uninstall - clear all AnsPress data"
 msgstr ""
 
@@ -2713,7 +2723,7 @@ msgid "Unable to trash this post"
 msgstr "+1"
 
 #: includes/ajax-hooks.php:206 includes/class/form.php:298
-#: includes/class/form.php:306 includes/comments.php:404 includes/theme.php:365
+#: includes/class/form.php:306 includes/comments.php:434 includes/theme.php:365
 msgid "Delete"
 msgstr "Supprimer"
 
@@ -3006,96 +3016,111 @@ msgstr "Fil RSS de la question"
 msgid "Answers Feed"
 msgstr "Fil RSS des réponses"
 
-#: includes/comments.php:68
+#: includes/comments.php:72
 #, fuzzy
 msgid "Unable to load comments"
 msgstr "Désactiver les commentaires"
 
-#: includes/comments.php:92
+#: includes/comments.php:85
+#, fuzzy
+msgid "Show %d more comments"
+msgstr "Voir les commentaires"
+
+#: includes/comments.php:105
 #, fuzzy
 msgid "Unable to post comment"
 msgstr "Désactiver les commentaires"
 
-#: includes/comments.php:100
+#: includes/comments.php:113
 msgid "Sorry, you cannot post a blank comment"
 msgstr ""
 
-#: includes/comments.php:112
+#: includes/comments.php:125
 msgid "Commenting is not allowed on draft, pending or deleted %s"
 msgstr ""
 
-#: includes/comments.php:121
+#: includes/comments.php:134
 msgid "Sorry, you cannot post a comment"
 msgstr ""
 
-#: includes/comments.php:157 includes/comments.php:209
-#: includes/comments.php:259 includes/comments.php:302
-#: includes/comments.php:383
+#: includes/comments.php:170 includes/comments.php:222
+#: includes/comments.php:272 includes/comments.php:315
+#: includes/comments.php:392
 #, fuzzy
 msgid "%d Comment"
 msgid_plural "%d Comments"
 msgstr[0] "Commenter"
 msgstr[1] "Commenter"
 
-#: includes/comments.php:158
+#: includes/comments.php:171
 #, fuzzy
 msgid "Comment successfully posted"
 msgstr "Votre commentaire a bien été posté."
 
-#: includes/comments.php:183
+#: includes/comments.php:196
 msgid "Sorry, you cannot edit this comment"
 msgstr ""
 
-#: includes/comments.php:193
+#: includes/comments.php:206
 msgid "No change detected, edit comment and then try"
 msgstr ""
 
-#: includes/comments.php:210
+#: includes/comments.php:223
 #, fuzzy
 msgid "Comment updated successfully"
 msgstr "Le commentaire a bien été mis à jour."
 
-#: includes/comments.php:217
+#: includes/comments.php:230
 #, fuzzy
 msgid "Unable to update comment"
 msgstr "Mettre à jour le commentaire"
 
-#: includes/comments.php:233
+#: includes/comments.php:246
 #, fuzzy
 msgid "Failed to delete comment"
 msgstr "a editer le commentaire"
 
-#: includes/comments.php:243
+#: includes/comments.php:256
 #, fuzzy
 msgid "This comment was created %s. Its locked hence you cannot delete it."
 msgstr ""
 "Ce post a été créé il y a %s, il est bloqué vous ne pouvez plus le supprimer."
 
-#: includes/comments.php:257
+#: includes/comments.php:270
 #, fuzzy
 msgid "Comment successfully deleted"
 msgstr "Votre commentaire a bien été posté."
 
-#: includes/comments.php:287
+#: includes/comments.php:300
 msgid "Sorry, unable to approve comment"
 msgstr ""
 
-#: includes/comments.php:303
+#: includes/comments.php:316
 #, fuzzy
 msgid "Comment approved successfully."
 msgstr "Le commentaire a bien été mis à jour."
 
-#: includes/comments.php:380
+#: includes/comments.php:387
 #, fuzzy
 msgid "Comments awaiting moderation"
 msgstr "Question en attente de modération"
 
-#: includes/comments.php:383
+#: includes/comments.php:405
+#, fuzzy
+msgid "You do not have permission to comment."
+msgstr "Vous n'avez pas le droit de faire ça."
+
+#: includes/comments.php:408
+#, fuzzy
+msgid "%sLogin%s to post comment"
+msgstr "Désactiver les commentaires"
+
+#: includes/comments.php:412
 #, fuzzy
 msgid "Add a Comment"
 msgstr "Commenter"
 
-#: includes/comments.php:408
+#: includes/comments.php:438
 msgid "Approve"
 msgstr ""
 
@@ -3760,11 +3785,11 @@ msgstr "Annuler votre vote d'abord."
 msgid "Thank you for voting."
 msgstr "Merci pour votre vote."
 
-#: includes/votes.php:581
+#: includes/votes.php:596
 msgid "Up vote this post"
 msgstr "+1"
 
-#: includes/votes.php:587
+#: includes/votes.php:602
 msgid "Down vote this post"
 msgstr "-1"
 

@@ -143,6 +143,7 @@ function ap_default_options() {
 		'show_comments_default'					=> true,
 		'duplicate_check'								=> true,
 		'disable_q_suggestion'					=> false,
+		'comment_number'								=> 5,
 	);
 
 	/**

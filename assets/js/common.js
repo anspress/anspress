@@ -233,10 +233,13 @@ _.templateSettings = {
 		return that;
 	};
 
-	jQuery.fn.apScrollTo = function(elem, speed) {
+	jQuery.fn.apScrollTo = function(elem, toBottom, speed) {
+		toBottom = toBottom||false;
 		var parentPos = $(this).scrollTop() - $(this).offset().top;
+		var top = toBottom ? $(this).offset().top + $(this).height() : $(this).offset().top;
+		$('html, body').stop();
 		$('html, body').animate({
-			scrollTop: $(this).offset().top
+			scrollTop: top
 		}, speed == undefined ? 1000 : speed);
 
 		if(elem != undefined)

@@ -263,9 +263,16 @@
 		initialize: function(options){
 			this.model = options.model;
 			this.postID = options.postID;
+			this.collapsed = options.collapsed;
+			this.collapsed_msg = options.collapsed_msg;
+			this.offset = options.offset;
+			this.query = options.query;
 			AnsPress.on('removeComment', this.removeComment, this);
 			this.listenTo(this.model, 'remove', this.commentRemoved);
 			this.listenTo(this.model, 'add', this.newComment);
+		},
+		events: {
+			'click .ap-comments-more': 'loadMore'
 		},
 		renderItem: function(comment){
 			this.$el.parent().addClass('have-comments');
@@ -273,12 +280,20 @@
 			this.$el.append(view.render().$el);
 			return view;
 		},
+		appendLoadMore: function(){
+			this.$el.find('.ap-comments-more').remove();
+			if(this.collapsed){
+				this.$el.append('<a href="#" class="ap-comments-more">'+this.collapsed_msg+'</a>');
+			}
+		},
 		render: function(){
 			var self = this;
 			if(this.model.length > 0){
 				this.model.each(function(comment){
 					self.renderItem(comment);
 				});
+
+				this.appendLoadMore();
 			}
 
 			return this;
@@ -295,8 +310,30 @@
 		},
 		newComment: function(comment){
 			var view = this.renderItem(comment);
+			this.appendLoadMore();
 			view.$el.hide().slideDown(400);
-			this.$el.apScrollTo('#comment-'+comment.id);
+
+			this.$el.apScrollTo(null, true);
+		},
+		loadMore: function(e){
+			e.preventDefault();
+			var self = this;
+			AnsPress.showLoading(e.target);
+			this.query.offset = this.offset;
+			AnsPress.ajax({
+				data: this.query,
+				success: function(data){
+					AnsPress.hideLoading(e.target);
+					self.collapsed = data.collapsed;
+					self.collapsed_msg = data.collapsed_msg;
+					self.offset = data.offset;
+
+					if(data.comments.length>0){
+						self.model.add(data.comments);
+					}
+
+				}
+			});
 		}
 	});
 
@@ -433,6 +470,7 @@
 			var self = this;
 			var elm = $(e.currentTarget);
 			var commentDiv = '#comments-'+self.model.id;
+
 			if(elm.is('.loaded')){
 				if($(commentDiv).is('.have-comments'))
 					$(commentDiv).find('.ap-comments').slideUp(400, function(){
@@ -442,6 +480,7 @@
 					$(commentDiv).addClass('have-comments').find('.ap-comments').slideDown(400);
 				return;
 			}
+
 			var q = $.parseJSON(elm.attr('ap-query'));
 			q.ap_ajax_action = 'load_comments';
 			AnsPress.showLoading(elm);
@@ -451,7 +490,18 @@
 					AnsPress.hideLoading(elm);
 					elm.addClass('loaded');
 					self.comments = new AnsPress.collections.Comments(data.comments);
-					var view = new AnsPress.views.Comments({ model: self.comments, postID: self.model.id, el: commentDiv+' .ap-comments' });
+
+					var options = {
+						model: self.comments,
+						postID: self.model.id,
+						el: commentDiv+' .ap-comments',
+						collapsed: data.collapsed,
+						collapsed_msg: data.collapsed_msg,
+						offset: data.offset,
+						query: q
+					};
+
+					var view = new AnsPress.views.Comments(options);
 					view.render();
 					view.$el.hide().slideDown(400);
 				}

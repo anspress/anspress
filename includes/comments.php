@@ -23,12 +23,15 @@ class AnsPress_Comment_Hooks {
 	 * @param boolean $editing Editing mode.
 	 * @return array
 	 */
-	public static function comments_data( $post_id, $editing = false ) {
+	public static function comments_data( $post_id, $editing = false, $offset = 0 ) {
 		$user_id = get_current_user_id();
+
 		$args = array(
 			'post_id' => $post_id,
 			'order'   => 'ASC',
 			'status'  => 'approve',
+			'number' 	=> ap_opt( 'comment_number' ),
+			'offset' 	=> $offset,
 		);
 
 		// Always include current user comments.
@@ -53,6 +56,7 @@ class AnsPress_Comment_Hooks {
 
 		return [];
 	}
+
 	/**
 	 * Ajax callback for loading comments.
 	 *
@@ -69,11 +73,20 @@ class AnsPress_Comment_Hooks {
 			));
 		}
 
+		$offset = ap_sanitize_unslash( 'offset', 'r', 0 );
+		$shown = $offset + ap_opt( 'comment_number' );
+		$count = get_comment_count( $post_id );
+		$more = floor( (int) $count['all'] - $shown );
+
 		$result = array(
-			'success'  => true,
-			'action'   => 'load_comment_form',
-			'comments' => SELF::comments_data( $post_id ),
+			'success'       => true,
+			'action'        => 'load_comment_form',
+			'collapsed'     => ( $count['all'] > $shown ),
+			'collapsed_msg' => sprintf( __( 'Show %d more comments', 'anspress-question-answer' ), $more ),
+			'offset'        => $shown,
+			'comments'      => SELF::comments_data( $post_id, false, $offset ),
 		);
+
 		ap_ajax_json( $result );
 	}
 

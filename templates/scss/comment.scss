@@ -11,6 +11,18 @@
 		text-align: center;
 		font-size: 12px;
 	}
+	.ap-comments-more {
+		display: block;
+		text-align: center;
+		margin: 0 auto;
+		font-size: 11px;
+		padding: 6px 10px;
+		border-radius: 2px;
+		color: #333;
+		&:hover{
+			border-color: #ef9a9a;
+		}
+	}
 	ap-comments{
 		display: block;
 	}
@@ -36,9 +48,6 @@
 			display: block;
 			margin-top: 15px;
 			position: relative;
-			max-height: 280px;
-			overflow-y: auto;
-			overflow-x: hidden;
 		}
 	}
 	ap-comment{
@@ -65,7 +74,6 @@
 		}
 		.comment-header {
 			font-weight: bold;
-			margin-bottom: 5px;
 			font-size: 12px;
 			color: #666;
 			> a{
