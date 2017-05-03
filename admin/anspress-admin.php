@@ -121,7 +121,8 @@ class AnsPress_Admin {
 		if ( 'toplevel_page_anspress' === $page->base ) {
 			wp_enqueue_script( 'ap-chart-js', '//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.4/Chart.min.js' );
 		}
-		wp_enqueue_script( 'anspress-admin-js', ANSPRESS_URL . 'assets/' . $dir . '/ap-admin' . $min . '.js' , [], AP_VERSION, true );
+
+		wp_enqueue_script( 'anspress-admin-js', ANSPRESS_URL . 'assets/' . $dir . '/ap-admin' . $min . '.js' , [ 'anspress-common' ], AP_VERSION, true );
 		?>
 			<script type="text/javascript">
 				currentQuestionID = '<?php the_ID(); ?>';

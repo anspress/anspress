@@ -2,6 +2,27 @@
 
 	jQuery(function () {
 
+		jQuery.fn.apAjaxQueryString = function () {
+			var query = jQuery(this).data('query').split("::");
+
+			var newQuery = {};
+
+			newQuery['action'] = 'ap_ajax';
+			newQuery['ap_ajax_action'] = query[0];
+			newQuery['__nonce'] = query[1];
+			newQuery['args'] = {};
+
+			var newi = 0;
+			jQuery.each(query,function(i){
+				if(i != 0 && i != 1){
+					newQuery['args'][newi] = query[i];
+					newi++;
+				}
+			});
+
+			return newQuery;
+		};
+
 		/* create document */
 		APjs.admin = new APjs.admin();
 		/* need to call init manually with jQuery */
@@ -110,7 +131,6 @@
 				$('.ap-ajax-btn').on('click', function (e) {
 					e.preventDefault();
 					var q = $(this).apAjaxQueryString();
-
 					$.ajax({
 						url: ajaxurl,
 						data: q,
