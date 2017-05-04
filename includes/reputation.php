@@ -41,12 +41,12 @@ function ap_insert_reputation( $event, $ref_id, $user_id = false ) {
 		return false;
 	}
 
-	$exists = ap_get_reputation( $event, $ref_id, $user_id );
+	// $exists = ap_get_reputation( $event, $ref_id, $user_id );
 
-	// Check if same record already exists.
-	if ( ! empty( $exists ) ) {
-		return false;
-	}
+	// // Check if same record already exists.
+	// if ( ! empty( $exists ) ) {
+	// 	return false;
+	// }
 
 	$insert = $wpdb->insert( $wpdb->ap_reputations, [ 'rep_user_id' => $user_id, 'rep_event' => sanitize_text_field( $event ), 'rep_ref_id' => $ref_id, 'rep_date' => current_time( 'mysql' ) ], [ '%d', '%s', '%d', '%s' ] ); // WPCS: db call okay.
 
