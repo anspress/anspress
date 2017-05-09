@@ -120,7 +120,7 @@ function ap_delete_reputation( $event, $ref_id, $user_id = false ) {
 	ap_update_user_reputation_meta( $user_id );
 
 	/**
-	 * Trigger action after deleteing a reputation.
+	 * Trigger action after deleting a reputation.
 	 */
 	do_action( 'ap_delete_reputation', $deleted, $user_id, $event );
 
@@ -704,3 +704,5 @@ class AnsPress_Reputation_Query {
 	}
 
 }
+
+

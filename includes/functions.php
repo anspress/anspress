@@ -343,8 +343,8 @@ function ap_short_num( $num, $precision = 2 ) {
 /**
  * Sanitize comma delimited strings.
  *
- * @param string|array $str Comma delimited string.
- * @param string       $pieces_type Type of piece, string or number.
+ * @param  string|array $str Comma delimited string.
+ * @param  string       $pieces_type Type of piece, string or number.
  * @return string
  */
 function sanitize_comma_delimited( $str, $pieces_type = 'int' ) {
@@ -1534,11 +1534,11 @@ function ap_remove_stop_words( $str ) {
 /**
  * Search array by key and value.
  *
- * @param array  $array Array to search.
- * @param string $key Array key to search.
- * @param mixed  $value Value of key supplied.
+ * @param  array  $array Array to search.
+ * @param  string $key   Array key to search.
+ * @param  mixed  $value Value of key supplied.
  * @return array
- * @since 4.0.0
+ * @since  4.0.0
  */
 function ap_search_array( $array, $key, $value ) {
 	$results = array();
