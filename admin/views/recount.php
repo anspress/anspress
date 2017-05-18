@@ -134,6 +134,39 @@ $class = 'is-dismissible';
 					<p class="description"><?php esc_attr_e( 'Re-count all users reputation points.', 'anspress-question-answer' ); ?></p>
 				</td>
 			</tr>
+
+			<tr>
+				<th scope="row" valign="top">
+					<label><?php esc_attr_e( 'Views', 'anspress-question-answer' ); ?></label>
+				</th>
+				<td>
+					<div class="btn-container">
+						<button class="button ap-recount-btn" data-action="views"><?php esc_attr_e( 'Re-count question views', 'anspress-question-answer' ); ?></button>
+
+						<span class="hide"
+							data-start="<?php _e( 'Re-counting post views...', 'anspress-question-answer' ); ?>"
+							data-continue="<?php _e( '{0} out of {1} question processed', 'anspress-question-answer' ); ?>"
+							data-success="<?php _e( 'Successfully updated question views!', 'anspress-question-answer' ); ?>"
+							data-failed="<?php _e( 'Failed to count views, please try again or submit a help request', 'anspress-question-answer' ); ?>">
+						</span>
+					</div>
+					<p class="description"><?php esc_attr_e( 'Re-count all questions views.', 'anspress-question-answer' ); ?></p>
+					<br />
+					<br />
+					<form class="counter-args">
+						<p><strong><?php _e( 'Add fake views if views table is empty', 'anspress-question-answer' ); ?></strong></p>
+						<label>
+							<?php _e( 'Add fake views', 'anspress-question-answer' ); ?>
+							<input type="checkbox" name="fake_views" value="1" />
+						</label>
+						<br />
+						<br />
+						<label><?php _e( 'Minimum and maximum views', 'anspress-question-answer' ); ?></label>
+						<input type="text" value="500" name="min_views" placeholder="<?php _e( 'Min. views', 'anspress-question-answer' ); ?>" />
+						<input type="text" value="1000" name="max_views" placeholder="<?php _e( 'Max. views', 'anspress-question-answer' ); ?>" />
+					</form>
+				</td>
+			</tr>
 		</tbody>
 	</table>
 </div>
@@ -159,13 +192,19 @@ $class = 'is-dismissible';
 			if(currentRequest > 5)
 				return;
 
+			var custom_args;
+			var args_form = $el.closest('td').find('.counter-args');
+			if(args_form.length> 0)
+				custom_args = args_form.serialize();
+
 			$.ajax({
 				url: ajaxurl,
 				data: {
 					action: 'anspress_recount',
 					sub_action: $el.data('action'),
 					__nonce: __nonce,
-					current: currentRequest
+					current: currentRequest,
+					args: custom_args
 				},
 				success: function(data){
 					if(typeof data.error !== 'undefined' && data.error)

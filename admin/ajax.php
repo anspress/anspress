@@ -450,12 +450,99 @@ class AnsPress_Admin_Ajax {
 	public static function recount_reputation( $current, $offset ) {
 		global $wpdb;
 
-		$ids = $wpdb->get_col( "SELECT SQL_CALC_FOUND_ROWS ID FROM {$wpdb->users} LIMIT {$offset},50" ); // @codingStandardsIgnoreLine.
+		$ids = $wpdb->get_col( "SELECT SQL_CALC_FOUND_ROWS ID FROM {$wpdb->users} LIMIT {$offset},5" ); // @codingStandardsIgnoreLine.
+
+		$total_found = $wpdb->get_var( 'SELECT FOUND_ROWS()' ); // DB call okay, Db cache okay.
+		$rep_events = ap_get_reputation_events();
+
+		foreach ( (array) $ids as $id ) {
+			foreach( (array) $rep_events as $event => $args ) {
+				if ( 'answer' === $args['parent'] ) {
+					self::recount_answer_reputation( $args );
+				}
+			}
+
+			ap_update_user_reputation_meta( $id );
+		}
+
+		$action = 'continue';
+
+		if ( count( $ids ) < 50 ) {
+			$action = 'success';
+		}
+
+		wp_send_json( [
+			'action'    => $action,
+			'total'     => $total_found,
+			'processed' => count( $ids ),
+		] );
+	}
+
+	/**
+	 * Recount reputation for answering a question.
+	 *
+	 * @param  integer $user_id User id.
+	 * @param  string  $event   Event type.
+	 * @return boolean Returns true on success.
+	 */
+	public function recount_answer_reputation( $user_id, $event ) {
+		global $wpdb;
+
+		$post_ids = $wpdb->get_col(
+			$wpdb->prepare( "SELECT ID FROM {$wpdb->ap_reputation} WHERE post_author = %d AND post_type = 'answer' AND post_status IN ('publish', 'private_post')", $user_id )
+		);
+
+		// Return if no answers found.
+		if ( empty( $post_ids ) ) {
+			return true;
+		}
+
+		$events = ap_search_array( ap_get_reputation_events(), 'parent', 'answer' );
+
+		foreach ( (array) $post_ids as $id ) {
+				$exists = ap_get_reputation( $e, $id, $user_id );
+
+				if ( ! $exists ) {
+
+				}
+		}
+	}
+
+	/**
+	 * Recount question views.
+	 *
+	 * @param integer $current Current index.
+	 * @param integer $offset Current offset.
+	 * @return void
+	 * @since 4.0.5
+	 */
+	public static function recount_views( $current, $offset ) {
+		global $wpdb;
+		$args = wp_parse_args( ap_isset_post_value( 'args' ), array(
+			'fake_views' => false,
+			'min_views'  => 100,
+			'max_views'  => 200,
+		));
+
+		$ids = $wpdb->get_col( "SELECT SQL_CALC_FOUND_ROWS ID FROM {$wpdb->posts} WHERE post_type = 'question' LIMIT {$offset},50" ); // @codingStandardsIgnoreLine.
 
 		$total_found = $wpdb->get_var( 'SELECT FOUND_ROWS()' ); // DB call okay, Db cache okay.
 
 		foreach ( (array) $ids as $id ) {
-			ap_update_user_reputation_meta( $id );
+			$table_views = (int) ap_get_views( $id );
+			$qameta_views = (int) ap_get_post_field( 'views', $id );
+
+			if ( $qameta_views < $table_views ) {
+				$views = $table_views + $qameta_views;
+			} else {
+				$views = $qameta_views;
+			}
+
+			if ( $args['fake_views'] ) {
+				$views = $views + ap_rand( $args['min_views'], $args['max_views'], 0.5 );
+			}
+
+			ap_update_views_count( $id, $views );
 		}
 
 		$action = 'continue';

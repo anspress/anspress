@@ -1810,3 +1810,15 @@ function ap_array_insert_after( $array = [], $key, $new ) {
 	return array_merge( array_slice( $array, 0, $pos ), $new, array_slice( $array, $pos ) );
 }
 
+/**
+ * Utility function for getting random values with weighting.
+ *
+ * @param integer $min Minimum integer.
+ * @param integer $max Maximum integer.
+ * @param weight  $weight Weight of random integer.
+ * @return integer
+ */
+function ap_rand( $min, $max, $weight ) {
+	$offset = $max - $min + 1;
+	return floor( $min + pow( lcg_value(), $weight ) * $offset );
+}
