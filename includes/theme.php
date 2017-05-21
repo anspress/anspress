@@ -78,14 +78,8 @@ function ap_current_page_is() {
 			$template = 'categories';
 		} elseif ( is_question_category() ) {
 			$template = 'category';
-		} elseif ( is_question_edit() ) {
-			$template = 'edit-question';
-		} elseif ( is_answer_edit() ) {
-			$template = 'edit-answer';
 		} elseif ( is_ap_search() ) {
 			$template = 'search';
-		} elseif ( is_ap_revision() ) {
-			$template = 'revision';
 		} elseif ( get_query_var( 'ap_page' ) == '' ) {
 			$template = 'base';
 		} else {
