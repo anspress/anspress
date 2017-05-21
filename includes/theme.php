@@ -76,7 +76,7 @@ function ap_current_page_is() {
 			$template = 'ask';
 		} elseif ( is_question_categories() ) {
 			$template = 'categories';
-		} elseif ( is_question_cat() ) {
+		} elseif ( is_question_category() ) {
 			$template = 'category';
 		} elseif ( is_question_edit() ) {
 			$template = 'edit-question';
