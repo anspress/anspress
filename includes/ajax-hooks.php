@@ -86,7 +86,7 @@ class AnsPress_Ajax {
 
 		if ( $questions ) {
 				$items = '<div class="ap-similar-questions-head">';
-				$items .= '<h3><i class="apicon-check"></i>' . sprintf( __( '%d similar questions found', 'anspress-question-answer' ), count( $questions ) ) . '</h3>';
+				$items .= '<h3><i class="apicon-check"></i>' . sprintf( _n( '%d similar question found', '%d similar questions found', count( $questions ), 'anspress-question-answer' ), count( $questions ) ) . '</h3>';
 				$items .= '<p>' . __( 'We\'ve found similar questions that have already been asked, click to read them.', 'anspress-question-answer' ) . '</p>';
 				$items .= '</div>';
 
