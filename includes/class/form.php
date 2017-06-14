@@ -2,11 +2,12 @@
 /**
  * Form class
  *
- * @package AnsPress
- * @author    Rahul Aryan <support@anspress.io>
- * @license   GPL-3.0+
- * @link      https://anspress.io
- * @copyright 2014 Rahul Aryan
+ * @package      AnsPress
+ * @subpackage   Form
+ * @author       Rahul Aryan <support@anspress.io>
+ * @license      GPL-3.0+
+ * @link         https://anspress.io
+ * @copyright    2014 Rahul Aryan
  */
 
 /**
@@ -323,7 +324,7 @@ class AnsPress_Form {
 	 *
 	 * @param       array $field
 	 * @return      void
-	 * @since       2.0.0-alpha2
+	 * @since       2.0.0
 	 */
 	private function number_field( $field = array() ) {
 
@@ -464,7 +465,7 @@ class AnsPress_Form {
 	 * Page select field
 	 * @param  array $field
 	 * @return void
-	 * @since 2.0.0-alpha2
+	 * @since 2.0.0
 	 */
 	private function page_select_field($field = array()) {
 

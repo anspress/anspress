@@ -3,9 +3,8 @@
  * Common AnsPress admin functions
  *
  * @link https://anspress.io
- * @since unknown
- *
  * @package AnsPress
+ * @author Rahul Aryan <support@anspress.io>
  */
 
 // If this file is called directly, abort.

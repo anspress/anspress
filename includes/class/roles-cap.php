@@ -2,11 +2,12 @@
 /**
  * Roles and Capabilities
  *
- * @package     AnsPress
- * @subpackage  Classes/Roles
- * @copyright   Copyright (c) 2013, Rahul Aryan
- * @license     https://www.gnu.org/licenses/gpl-2.0.txt GNU Public License
- * @since       0.8
+ * @package      AnsPress
+ * @subpackage   Roles and Capabilities
+ * @copyright    Copyright (c) 2013, Rahul Aryan
+ * @author       Rahul Aryan <support@anspress.io>
+ * @license      GPL-3.0+
+ * @since        0.8
  */
 
 /**

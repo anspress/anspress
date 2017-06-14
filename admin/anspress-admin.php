@@ -290,7 +290,7 @@ class AnsPress_Admin {
 	 * Control the ouput of question selection.
 	 *
 	 * @return void
-	 * @since 2.0.0-alpha2
+	 * @since 2.0.0
 	 */
 	public static function display_select_question() {
 		include_once( 'views/select_question.php' );

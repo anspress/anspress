@@ -7,7 +7,7 @@
  * @author  Rahul Aryan <support@anspress.io>
  * @link    https://anspress.io/
  * @since   4.0.0
- * @package WordPress/AnsPress
+ * @package AnsPress
  */
 
 ?>

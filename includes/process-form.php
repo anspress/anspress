@@ -1,11 +1,13 @@
 <?php
 /**
- * AnsPress process form
- * @link https://anspress.io
- * @since 2.0.1
- * @license GPL 2+
- * @package AnsPress
+ * AnsPress process form.
+ *
+ * @link     https://anspress.io
+ * @since    2.0.1
+ * @license  GPL 3+
+ * @package  AnsPress
  */
+
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
 	die;

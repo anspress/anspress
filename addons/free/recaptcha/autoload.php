@@ -3,6 +3,8 @@
 /* An autoloader for ReCaptcha\Foo classes. This should be required()
  * by the user before attempting to instantiate any of the ReCaptcha
  * classes.
+ *
+ * @ignore
  */
 
 spl_autoload_register(function ($class) {

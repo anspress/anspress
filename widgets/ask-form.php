@@ -2,7 +2,7 @@
 /**
  * AnsPress ask widget form.
  *
- * @package WordPress/AnsPress
+ * @package AnsPress
  * @author  Rahul Aryan <support@anspress.io>
  * @license GPL 3+ GNU GPL licence above 3+
  * @link    https://anspress.io

@@ -2,8 +2,10 @@
 /**
  * This is a PHP library that handles calling reCAPTCHA.
  *
+ * @ignore
  * @copyright Copyright (c) 2015, Google Inc.
  * @link      http://www.google.com/recaptcha
+ * @internal
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,6 +30,8 @@ namespace ReCaptcha;
 
 /**
  * Stores and formats the parameters for the request to the reCAPTCHA service.
+ *
+ * @ignore
  */
 class RequestParameters
 {

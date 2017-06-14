@@ -34,11 +34,11 @@ function ap_base_page_slug() {
 }
 
 /**
- * Retrive permalink to base page.
+ * Retrieve permalink to base page.
  *
- * @return string URL to AnsPress base page
- * @since 2.0.0
- * @since 3.0.0 Return link to questions page if base page not selected.
+ * @return  string URL to AnsPress base page
+ * @since   2.0.0
+ * @since   3.0.0 Return link to questions page if base page not selected.
  */
 function ap_base_page_link() {
 	if ( empty( ap_opt( 'base_page' ) ) ) {

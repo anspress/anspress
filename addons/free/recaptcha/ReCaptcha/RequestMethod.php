@@ -2,6 +2,7 @@
 /**
  * This is a PHP library that handles calling reCAPTCHA.
  *
+ * @ignore
  * @copyright Copyright (c) 2015, Google Inc.
  * @link      http://www.google.com/recaptcha
  *
@@ -28,6 +29,8 @@ namespace ReCaptcha;
 
 /**
  * Method used to send the request to the service.
+ *
+ * @ignore
  */
 interface RequestMethod
 {

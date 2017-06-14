@@ -7,7 +7,7 @@
  * @license   GPL-2.0+
  * @link      https://anspress.io
  * @copyright 2014 Rahul Aryan
- * @since 2.0.1
+ * @since     2.0.1
  */
 
 // If this file is called directly, abort.
@@ -16,12 +16,12 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 /**
- * To retrive AnsPress option
- * @param  string $key   Name of option to retrive,
- *                       Keep it blank to get all options of AnsPress
- * @param  string $value Enter value to update existing option
+ * To retrieve AnsPress option.
+ *
+ * @param  string $key   Name of option to retrieve or keep it blank to get all options of AnsPress.
+ * @param  string $value Enter value to update existing option.
  * @return string
- * @since 0.1
+ * @since  0.1
  */
 function ap_opt( $key = false, $value = null ) {
 	$settings = wp_cache_get( 'anspress_opt', 'ap' );

@@ -2,8 +2,10 @@
 /**
  * This is a PHP library that handles calling reCAPTCHA.
  *
+ * @ignore
  * @copyright Copyright (c) 2015, Google Inc.
  * @link      http://www.google.com/recaptcha
+ * @internal
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -33,6 +35,8 @@ use ReCaptcha\RequestParameters;
  * Sends a POST request to the reCAPTCHA service, but makes use of fsockopen()
  * instead of get_file_contents(). This is to account for people who may be on
  * servers where allow_furl_open is disabled.
+ *
+ * @ignore
  */
 class SocketPost implements RequestMethod
 {

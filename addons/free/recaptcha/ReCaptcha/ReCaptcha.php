@@ -28,6 +28,7 @@ namespace ReCaptcha;
 
 /**
  * reCAPTCHA client.
+ * @ignore
  */
 class ReCaptcha
 {
@@ -55,6 +56,7 @@ class ReCaptcha
      * @param string $secret shared secret between site and reCAPTCHA server.
      * @param RequestMethod $requestMethod method used to send the request. Defaults to POST.
      * @throws \RuntimeException if $secret is invalid
+     * @ignore
      */
     public function __construct($secret, RequestMethod $requestMethod = null)
     {
@@ -82,6 +84,7 @@ class ReCaptcha
      * @param string $response The value of 'g-recaptcha-response' in the submitted form.
      * @param string $remoteIp The end user's IP address.
      * @return Response Response from the service.
+     * @ignore
      */
     public function verify($response, $remoteIp = null)
     {

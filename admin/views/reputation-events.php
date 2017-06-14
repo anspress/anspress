@@ -5,7 +5,7 @@
  * @link    https://anspress.io
  * @since   4.0
  * @author  Rahul Aryan <support@anspress.io>
- * @package WordPress/AnsPress
+ * @package AnsPress
  */
 
 // If this file is called directly, abort.

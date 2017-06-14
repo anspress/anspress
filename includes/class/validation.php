@@ -1,10 +1,13 @@
 <?php
 /**
- * AnsPress form validation class
- * @link https://anspress.io
- * @since 2.0.1
- * @license GPL 2+
- * @package AnsPress
+ * AnsPress form validation class.
+ *
+ * @link         https://anspress.io
+ * @since        2.0.1
+ * @author       Rahul Aryan <support@anspress.io>
+ * @license      GPL-3.0+
+ * @package      AnsPress
+ * @subpackage   Validation
  */
 
 class AnsPress_Validation

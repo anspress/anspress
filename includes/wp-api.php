@@ -2,11 +2,17 @@
 /**
  * WP API endpoints.
  *
- * @link https://anspress.io/anspress
- * @since 2.0.1
- * @author Rahul Aryan <support@anspress.io>
- * @package WordPress/AnsPress
+ * @link         https://anspress.io/anspress
+ * @since        2.0.1
+ * @author       Rahul Aryan <support@anspress.io>
+ * @package      AnsPress
+ * @subpackage   API
  */
+
+// If this file is called directly, abort.
+if ( ! defined( 'WPINC' ) ) {
+	die;
+}
 
 class AnsPress_REST_API {
 	protected $namespace = 'anspress/v1';

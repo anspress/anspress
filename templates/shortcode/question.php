@@ -56,7 +56,7 @@
 						<?php
 							/**
 							 * ACTION: ap_after_question_content
-							 * @since 	2.0.0-alpha2
+							 * @since 	2.0.0
 							 */
 							do_action('ap_after_question_content');
 						?>

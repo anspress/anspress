@@ -2,9 +2,9 @@
 /**
  * All Hooks of AnsPress
  *
- * @package	 AnsPress
+ * @package	  AnsPress
  * @author		Rahul Aryan <support@anspress.io>
- * @license	 GPL-2.0+
+ * @license	  GPL-3.0+
  * @link			https://anspress.io
  * @copyright 2014 Rahul Aryan
  */

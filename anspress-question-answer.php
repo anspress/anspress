@@ -297,7 +297,6 @@ if ( ! class_exists( 'AnsPress' ) ) {
 			require_once ANSPRESS_DIR . 'includes/votes.php';
 			require_once ANSPRESS_DIR . 'includes/views.php';
 			require_once ANSPRESS_DIR . 'includes/theme.php';
-			require_once ANSPRESS_DIR . 'includes/form.php';
 			require_once ANSPRESS_DIR . 'includes/shortcode-basepage.php';
 			require_once ANSPRESS_DIR . 'includes/process-form.php';
 			require_once ANSPRESS_DIR . 'includes/ask-form.php';

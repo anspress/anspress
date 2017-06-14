@@ -2,11 +2,12 @@
 /**
  * AnsPress theme and template handling.
  *
- * @author    Rahul Aryan <support@anspress.io>
- * @license   GPL-3.0+
- * @link      https://anspress.io
- * @copyright 2014 Rahul Aryan
- * @package   WordPress/AnsPress
+ * @author       Rahul Aryan <support@anspress.io>
+ * @license      GPL-3.0+
+ * @link         https://anspress.io
+ * @copyright    2014 Rahul Aryan
+ * @package      AnsPress
+ * @subpackage   Theme Functions
  */
 
 // If this file is called directly, abort.
@@ -112,7 +113,7 @@ function ap_get_current_page_template() {
  *
  * @param boolean|integer $post_id question or answer ID.
  * @return string
- * @since 2.0.0-alpha2
+ * @since 2.0.0
  */
 function ap_post_status( $post_id = false ) {
 	if ( false === $post_id ) {
@@ -155,7 +156,7 @@ function is_post_waiting_moderation( $post_id = false ) {
  *
  * @param boolean|integer $post_id question or answer ID.
  * @return boolean
- * @since 2.0.0-alpha2
+ * @since 2.0.0
  */
 function is_post_closed( $post_id = null ) {
 	if ( ap_get_post_field( 'closed', $post_id ) ) {
@@ -170,7 +171,7 @@ function is_post_closed( $post_id = null ) {
  *
  * @param boolean|integer $post_id question or answer ID.
  * @return boolean
- * @since   2.0.0-alpha2
+ * @since   2.0.0
  */
 function ap_have_parent_post( $post_id = false ) {
 	if ( ! $post_id ) {

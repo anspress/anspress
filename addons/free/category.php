@@ -7,7 +7,7 @@
  * @license    GPL-3.0+ https://www.gnu.org/licenses/gpl-3.0.txt
  * @link       https://anspress.io
  * @package    AnsPress
- * @subpackage Category Addon
+ * @subpackage Categories Addon
  *
  * @anspress-addon
  * Addon Name:    Category

@@ -6,7 +6,7 @@
  *
  * @link http://anspress.io
  * @since 4.0
- * @package WordPress/AnsPress
+ * @package AnsPress
  */
 
 global $question_categories;

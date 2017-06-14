@@ -2,20 +2,25 @@
 /**
  * AnsPress product updater.
  *
- * @package WordPress/AnsPress
+ * @package AnsPress
+ * @author Rahul Aryan <support@anspress.io>
  */
 
 // uncomment this line for testing
 //set_site_transient( 'update_plugins', null );
 
 // Exit if accessed directly.
-if ( ! defined( 'ABSPATH' ) ) { exit; }
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * Allows plugins to use their own update API.
  *
  * @author Pippin Williamson
  * @version 1.6.3
+ *
+ * @ignore
  */
 class AnsPress_Prod_Updater {
 	private $api_url   = '';

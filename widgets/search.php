@@ -7,7 +7,7 @@
  * @license GPL 3+ GNU GPL licence above 3+
  * @link https://anspress.io
  * @since 2.0.0
- * @package WordPress/AnsPress
+ * @package AnsPress
  */
 
 // If this file is called directly, abort.

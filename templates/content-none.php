@@ -2,7 +2,7 @@
 /**
  * Template used when no content found.
  *
- * @package WordPress/AnsPress
+ * @package AnsPress
  * @author  Rahul Aryan <support@anspress.io>
  */
 

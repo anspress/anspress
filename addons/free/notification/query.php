@@ -2,12 +2,13 @@
 /**
  * AnsPress notification query class.
  *
- * @package   WordPress/AnsPress-Pro
- * @author    Rahul Aryan <support@anspress.io>
- * @license   GPL-3.0+
- * @link      https://anspress.io
- * @copyright 2014 Rahul Aryan
- * @since 		1.0.0
+ * @package    AnsPress
+ * @subpackage Notifications Addon
+ * @author     Rahul Aryan <support@anspress.io>
+ * @license    GPL-3.0+
+ * @link       https://anspress.io
+ * @copyright  2014 Rahul Aryan
+ * @since 		 4.0.0
  */
 
 // If this file is called directly, abort.

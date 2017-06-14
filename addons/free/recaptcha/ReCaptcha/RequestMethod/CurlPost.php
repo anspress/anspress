@@ -2,8 +2,10 @@
 /**
  * This is a PHP library that handles calling reCAPTCHA.
  *
+ * @ignore
  * @copyright Copyright (c) 2015, Google Inc.
  * @link      http://www.google.com/recaptcha
+ * @internal
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -33,6 +35,8 @@ use ReCaptcha\RequestParameters;
  * Sends cURL request to the reCAPTCHA service.
  * Note: this requires the cURL extension to be enabled in PHP
  * @see http://php.net/manual/en/book.curl.php
+ *
+ * @ignore
  */
 class CurlPost implements RequestMethod
 {

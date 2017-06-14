@@ -2,7 +2,8 @@
 /**
  * AnsPress notification functions.
  *
- * @package   WordPress/AnsPress-Pro
+ * @package   AnsPress
+ * @subpackage   Notifications Addon
  * @author    Rahul Aryan <support@anspress.io>
  * @license   GPL-3.0+
  * @link      https://anspress.io

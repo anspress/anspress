@@ -2,7 +2,7 @@
 /**
  * AnsPress taxonomies and terms functions.
  *
- * @package   WordPress/AnsPress
+ * @package   AnsPress
  * @author    Rahul Aryan <support@anspress.io>
  * @license   GPL-3.0+
  * @link      https://anspress.io

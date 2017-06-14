@@ -1,13 +1,11 @@
 <?php
 /**
  * All functions and classes related to flagging
- *
  * This file keep all function required by flagging system.
  *
- * @link https://anspress.io
- * @since 2.3.4
- *
- * @package AnsPress
+ * @link     https://anspress.io
+ * @since    2.3.4
+ * @package  AnsPress
  **/
 
 /**

@@ -2,7 +2,7 @@
 /**
  * Display login signup form
  *
- * @package WordPress/AnsPress
+ * @package AnsPress
  * @author  Rahul Aryan <support@anspress.io>
  */
 

@@ -5,7 +5,7 @@
 	 * @link http://anspress.io
 	 * @since 1.0
 	 *
-	 * @package WordPress/AnsPress
+	 * @package AnsPress
 	 */
 
 	global $question_tags;

@@ -28,6 +28,8 @@ namespace ReCaptcha;
 
 /**
  * The response returned from the service.
+ *
+ * @ignore
  */
 class Response
 {

@@ -2,14 +2,14 @@
 /**
  * Control the output of AnsPress about page
  *
- * @link https://anspress.io
- * @since 2.2
- * @author Rahul Aryan <support@anspress.io>
- * @package AnsPress
+ * @link     https://anspress.io
+ * @since    2.2
+ * @author   Rahul Aryan <support@anspress.io>
+ * @package  AnsPress
  */
 
 // If this file is called directly, abort.
-if (! defined('WPINC')) {
+if ( ! defined( 'ABSPATH' ) ) {
 	die;
 }
 

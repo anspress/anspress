@@ -2,13 +2,12 @@
 /**
  * AnsPress comments handling.
  *
- * @author    Rahul Aryan <support@anspress.io>
- * @license   GPL-3.0+
- *
- * @link      https://anspress.io
- *
- * @copyright 2014 Rahul Aryan
- * @package AnsPress/theme
+ * @author       Rahul Aryan <support@anspress.io>
+ * @license      GPL-3.0+
+ * @link         https://anspress.io
+ * @copyright    2014 Rahul Aryan
+ * @package      AnsPress
+ * @subpackage   Comments Hooks
  */
 
 /**

@@ -1,12 +1,12 @@
 <?php
 /**
- * AnsPress product license *
+ * AnsPress product license
  * Handle licence of AnsPress products.
  *
  * @link https://anspress.io
  * @since 2.4.5
- *
- * @package AnsPress/AP_License
+ * @author Rahul Aryan <support@anspress.io>
+ * @package AnsPress
  */
 
 
@@ -16,6 +16,8 @@ require_once( dirname( __FILE__ ) . '/updater.php' );
 
 /**
  * AnsPress license
+ *
+ * @ignore
  */
 class AP_License {
 

@@ -7,7 +7,7 @@
  * @author  Rahul Aryan <support@anspress.io>
  * @link    https://anspress.io/
  * @since   1.0.0
- * @package WordPress/AnsPress-pro
+ * @package AnsPress-pro
  */
 
 $user_id = get_query_var( 'ap_user_id' );

@@ -2,10 +2,9 @@
 /**
  * Form and controls of ask form
  *
- * @link https://anspress.io
- * @since 2.0.1
- * @license GPL2+
- * @package AnsPress
+ * @link         https://anspress.io
+ * @license      GPL-3.0+
+ * @package      AnsPress
  */
 
 // If this file is called directly, abort.

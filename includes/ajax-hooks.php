@@ -2,11 +2,12 @@
 /**
  * Register all ajax hooks.
  *
- * @author    Rahul Aryan <support@anspress.io>
- * @license   GPL-2.0+
- * @link      https://anspress.io
- * @copyright 2014 Rahul Aryan
- * @package   AnsPress/ajax
+ * @author       Rahul Aryan <support@anspress.io>
+ * @license      GPL-2.0+
+ * @link         https://anspress.io
+ * @copyright    2014 Rahul Aryan
+ * @package      AnsPress
+ * @subpackage   Ajax Hooks
  */
 
 // If this file is called directly, abort.
