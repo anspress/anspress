@@ -2,12 +2,14 @@
 /**
  * Award reputation to user based on activities.
  *
- * @author    Rahul Aryan <support@anspress.io>
- * @copyright 2014 AnsPress.io & Rahul Aryan
- * @license   GPL-3.0+ https://www.gnu.org/licenses/gpl-3.0.txt
- * @link      https://anspress.io
- * @package   WordPress/AnsPress/Email
+ * @author       Rahul Aryan <support@anspress.io>
+ * @copyright    2014 AnsPress.io & Rahul Aryan
+ * @license      GPL-3.0+ https://www.gnu.org/licenses/gpl-3.0.txt
+ * @link         https://anspress.io
+ * @package      AnsPress
+ * @subpackage   Reputation addon
  *
+ * @anspress-addon
  * Addon Name:    Reputation
  * Addon URI:     https://anspress.io
  * Description:   Award reputation to user based on activities.

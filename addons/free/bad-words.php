@@ -1,15 +1,19 @@
 <?php
 /**
+ * Bad Words Addon.
+ *
  * An AnsPress add-on to check and filter bad words in
  * question, answer and comments. Add restricted words
  * after activating addon.
  *
- * @author    Rahul Aryan <support@rahularyan.com>
- * @copyright 2014 AnsPress.io & Rahul Aryan
- * @license   GPL-3.0+ https://www.gnu.org/licenses/gpl-3.0.txt
- * @link      https://anspress.io
- * @package   WordPress/AnsPress/BadWords
+ * @author     Rahul Aryan <support@anspress.io>
+ * @copyright  2014 AnsPress.io & Rahul Aryan
+ * @license    GPL-3.0+ https://www.gnu.org/licenses/gpl-3.0.txt
+ * @link       https://anspress.io
+ * @package    AnsPress
+ * @subpackage Bad Words Addon
  *
+ * @anspress-addon
  * Addon Name:    Bad Words
  * Addon URI:     https://anspress.io
  * Description:   Check and filter bad words in AnsPress content.

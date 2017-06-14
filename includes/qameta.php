@@ -180,8 +180,6 @@ function ap_get_qameta( $post_id ) {
 	return $qameta;
 }
 
-
-
 /**
  * Append post object with apmeta feilds.
  *

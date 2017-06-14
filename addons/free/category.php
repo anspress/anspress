@@ -2,12 +2,14 @@
 /**
  * Add category support in AnsPress questions.
  *
- * @author    Rahul Aryan <support@anspress.io>
- * @copyright 2014 AnsPress.io & Rahul Aryan
- * @license   GPL-3.0+ https://www.gnu.org/licenses/gpl-3.0.txt
- * @link      https://anspress.io
- * @package   WordPress/AnsPress/Category
+ * @author     Rahul Aryan <support@anspress.io>
+ * @copyright  2014 AnsPress.io & Rahul Aryan
+ * @license    GPL-3.0+ https://www.gnu.org/licenses/gpl-3.0.txt
+ * @link       https://anspress.io
+ * @package    AnsPress
+ * @subpackage Category Addon
  *
+ * @anspress-addon
  * Addon Name:    Category
  * Addon URI:     https://anspress.io
  * Description:   Add category support in AnsPress questions.
