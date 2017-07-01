@@ -21,7 +21,7 @@
 			<div class="ap-cell-inner">
 				<div class="ap-minimal-placeholder">
 					<div class="ap-dummy-editor"></div>
-					<div class="ap-dummy-placeholder"><?php _e( 'Write your answer..', 'anspress-question-answer' ); ?></div>
+					<div class="ap-dummy-placeholder"><?php _e( 'Write your answer.', 'anspress-question-answer' ); ?></div>
 					<div class="ap-editor-fade" ap="loadEditor" ap-query="ap_ajax_action=load_tinymce&post_type=answer"></div>
 				</div>
 				<div id="ap-form-main">
