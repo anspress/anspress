@@ -17,3 +17,5 @@
 /templates/widgets/*.bak
 /widgets/*.bak
 *.bak
+*~
+
