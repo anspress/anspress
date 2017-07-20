@@ -34,7 +34,7 @@ class AnsPress_Bad_words {
 	 * Initialize the plugin by setting localization and loading public scripts
 	 * and styles.
 	 *
-	 * @since 4.0.0.
+	 * @since 4.0.0
 	 */
 	public static function init() {
 		anspress()->add_action( 'ap_before_inserting_question', __CLASS__, 'before_inserting_question', 10, 2 );

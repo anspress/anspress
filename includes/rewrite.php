@@ -105,7 +105,6 @@ class AnsPress_Rewrite {
 			$slug . '([^/]+)/page/?([0-9]{1,})/?$' => 'index.php?page_id=' . $base_page_id . '&ap_page=$matches[#]&paged=$matches[#]',
 		);
 
-
 		$new_rules[ $question_placeholder . '/([^/]+)/?$' ] = 'index.php?page_id=' . $base_page_id . '&ap_page=question' . $question_perma . '&answer_id=$matches[#]';
 
 		$new_rules[ $question_placeholder . '/?$' ]  = 'index.php?page_id=' . $base_page_id . '&ap_page=question' . $question_perma;
@@ -120,8 +119,8 @@ class AnsPress_Rewrite {
 
 		$ap_rules = apply_filters( 'ap_rewrite_rules', $new_rules, $slug, $base_page_id );
 
-		foreach( $ap_rules as $k => $r ) {
-			$ap_rules[ $k] = preg_replace_callback('/\#/', [ __CLASS__, 'incr_hash' ], $r );
+		foreach ( $ap_rules as $k => $r ) {
+			$ap_rules[ $k ] = preg_replace_callback( '/\#/', [ __CLASS__, 'incr_hash' ], $r );
 			self::$counter = 1;
 		}
 

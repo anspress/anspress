@@ -391,7 +391,6 @@ function ap_post_actions( $_post = null ) {
 	}
 
 	/**
-	 * FILTER: ap_post_actions_buttons
 	 * For filtering post actions buttons
 	 *
 	 * @var     string
@@ -519,9 +518,9 @@ function ap_display_answer_metas( $answer_id = false ) {
 	$metas['history'] = ap_last_active_time( $answer_id );
 
 	/*
-     * FILTER: ap_display_answer_meta
-     * Used to filter answer display meta
-     * @since 2.0.1
+	 * Used to filter answer display meta.
+	 *
+	 * @since 2.0.1
 	 */
 	$metas = apply_filters( 'ap_display_answer_metas', $metas, $answer_id );
 
@@ -589,6 +588,11 @@ function ap_current_page() {
 		$query_var = 'base';
 	}
 
+	/**
+	 * Filter AnsPress current page.
+	 *
+	 * @param    string $query_var Current page slug.
+	 */
 	return apply_filters( 'ap_current_page', esc_attr( $query_var ) );
 }
 

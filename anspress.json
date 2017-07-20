@@ -1,0 +1,23 @@
+{
+  "doc_ignore" : [
+    "languages",
+    "templates",
+    "tests"
+  ],
+  "commit_ignore" : [
+    ".gitignore",
+    "Gruntfile.js",
+    "readme.txt",
+    "README.md",
+    "languages/**",
+    "tests/**",
+    "templates/css/fonts-demo/**",
+    "*.woff",
+    "*.ttf",
+    "*.eot",
+    "*.svg",
+    "*.map",
+    "*.json",
+    "*.yml"
+  ]
+}

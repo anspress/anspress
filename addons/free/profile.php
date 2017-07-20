@@ -30,7 +30,7 @@ class AnsPress_Profile_Hooks {
 	 * Initialize the plugin by setting localization and loading public scripts
 	 * and styles.
 	 *
-	 * @since 4.0.0.
+	 * @since 4.0.0
 	 */
 	public static function init() {
 		ap_add_default_options([
