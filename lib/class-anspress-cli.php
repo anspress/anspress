@@ -24,6 +24,23 @@ class AnsPress_Cli extends WP_CLI_Command {
 		WP_CLI::success( 'Currently installed version of AnsPress is ' . AP_VERSION );
 	}
 
+	/**
+	 * Upgrade AnsPress 3.x data to 4.x.
+	 *
+	 * Warning! This will delete/edit/rename lots of mysql rows and
+	 * tables, so make sure to do a full backup before running this command.
+	 *
+	 * ## OPTIONS
+	 *
+	 * [--yes]
+	 * : Passing this will not ask for backup confirm.
+	 *
+	 * ## EXAMPLES
+	 *
+	 *     wp anspress upgrade --yes
+	 *
+	 * @when after_wp_load
+	 */
 	public function upgrade( $args, $assoc_args ) {
 		print( "=== Starting upgrade process ===\n\r" );
 

@@ -59,7 +59,7 @@ class AnsPress_Upgrader {
 
 		foreach ( (array) $this->question_ids as $id ) {
 			// Translators: Question ID in placeholder.
-			print( sprintf( __( 'Migrating question: %d', 'anspress-question-answer' ), $id ) );
+			print( "\n\r" . sprintf( __( 'Migrating question: %d', 'anspress-question-answer' ), $id ) . "\n\r" );
 			$this->question_tasks( $id );
 		}
 
@@ -133,6 +133,7 @@ class AnsPress_Upgrader {
 			'flags'       => (int) get_post_meta( $id, '_ap_flag', true ),
 			'selected_id' => $answer_id,
 			'featured' 		=> in_array( $id, $featured_questions ),
+			'last_updated' => empty( $last_active ) ? $question->post_date : $last_active,
 		) );
 
 		ap_update_qameta_terms( $id );
@@ -206,12 +207,14 @@ class AnsPress_Upgrader {
 	 * @return void
 	 */
 	private function answer_tasks( $answer_id ) {
+		$answer = get_post( $answer_id );
 		$last_active = get_post_meta( $answer_id, '_ap_updated', true );
 		$best_answer = get_post_meta( $answer_id, '_ap_best_answer', true );
 		$flags = (int) get_post_meta( $answer_id, '_ap_flag', true );
 
 		$args = array(
-			'flags' => $flags,
+			'flags'        => $flags,
+			'last_updated' => empty( $last_active ) ? $answer->post_date : $last_active,
 		);
 
 		if ( '1' === $best_answer ) {
@@ -241,7 +244,7 @@ class AnsPress_Upgrader {
 	 */
 	public function restore_last_activity( $post_id ) {
 		$activity = get_post_meta( $post_id, '__ap_activity', true );
-		print_r( $activity );
+
 		// Restore last activity.
 		if ( ! empty( $activity ) ) {
 			ap_insert_qameta( $post_id, [ 'activities' => $activity ] );
