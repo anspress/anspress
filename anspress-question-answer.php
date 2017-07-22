@@ -238,7 +238,11 @@ if ( ! class_exists( 'AnsPress' ) ) {
 				do_action( 'anspress_loaded' );
 
 				self::$instance->setup_hooks();
-			}
+
+				if ( class_exists( 'WP_CLI' ) ) {
+					WP_CLI::add_command( 'anspress', 'AnsPress_Cli' );
+				}
+			} // End if().
 
 			return self::$instance;
 		}
@@ -317,6 +321,12 @@ if ( ! class_exists( 'AnsPress' ) ) {
 			require_once ANSPRESS_DIR . 'includes/reputation.php';
 			require_once ANSPRESS_DIR . 'includes/subscribers.php';
 			require_once ANSPRESS_DIR . 'includes/class-query.php';
+
+			require_once ANSPRESS_DIR . 'lib/class-anspress-upgrader.php';
+
+			if ( class_exists( 'WP_CLI' ) ) {
+				require_once ANSPRESS_DIR . 'lib/class-anspress-cli.php';
+			}
 		}
 
 		/**
