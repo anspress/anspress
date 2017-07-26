@@ -1400,10 +1400,15 @@ function ap_user_display_name( $args = array() ) {
 	}
 
 	/**
-	 * FILTER: ap_user_display_name
-	 * Filter can be used to alter display name
+	 * Filter AnsPress user display name.
 	 *
-	 * @var string
+	 * Filter can be used to alter user display name or
+	 * appending some extra information of user, like: rank, reputation etc.
+	 * Make sure to return plain text when `$args['html']` is true.
+	 *
+	 * @param string $return Name of user to return.
+	 * @param array  $args   Arguments.
+	 *
 	 * @since 2.0.1
 	 */
 	$return = apply_filters( 'ap_user_display_name', $return, $args );
