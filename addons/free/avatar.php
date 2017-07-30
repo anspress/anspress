@@ -45,7 +45,7 @@ class AnsPress_Avatar_Hook {
 	public static function init() {
 		ap_add_default_options([
 			'avatar_font'   => 'Pacifico',
-			'avatar_force'  => true,
+			'avatar_force'  => false,
 		]);
 
 		anspress()->add_action( 'ap_option_groups', __CLASS__, 'load_options' );
