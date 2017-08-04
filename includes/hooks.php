@@ -79,7 +79,7 @@ class AnsPress_Hooks {
 			anspress()->add_filter( 'wp_get_nav_menu_items', __CLASS__, 'update_menu_url' );
 			anspress()->add_filter( 'nav_menu_css_class', __CLASS__, 'fix_nav_current_class', 10, 2 );
 			anspress()->add_filter( 'mce_buttons', __CLASS__, 'editor_buttons', 10, 2 );
-			anspress()->add_filter( 'wp_insert_post_data', __CLASS__, 'wp_insert_post_data', 10, 2 );
+			anspress()->add_filter( 'wp_insert_post_data', __CLASS__, 'wp_insert_post_data', 1000, 2 );
 			anspress()->add_filter( 'ap_form_contents_filter', __CLASS__, 'sanitize_description' );
 			anspress()->add_filter( 'human_time_diff', __CLASS__, 'human_time_diff' );
 			anspress()->add_filter( 'comments_template_query_args', 'AnsPress_Comment_Hooks', 'comments_template_query_args' );
@@ -498,16 +498,23 @@ class AnsPress_Hooks {
 
 	/**
 	 * Filter post so that anonymous author should not be replaced
+	 * by current user approving post.
 	 *
 	 * @param	array $data post data.
 	 * @param	array $args Post arguments.
 	 * @return array
 	 * @since 2.2
+	 * @since 4.1.0 Fixed: `post_author` get replaced if `anonymous_name` is empty.
+	 *
+	 * @global object $post Global post object.
 	 */
 	public static function wp_insert_post_data( $data, $args ) {
+		global $post;
+
 		if ( in_array( $args['post_type'], [ 'question', 'answer' ], true ) ) {
 			$fields = ap_get_post_field( 'fields', $args['ID'] );
-			if ( !empty( $fields ) && !empty( $fields['anonymous_name'] ) ) {
+
+			if ( '0' === $post->post_author || ( !empty( $fields ) && !empty( $fields['anonymous_name'] ) ) ) {
 				$data['post_author'] = '0';
 			}
 		}
