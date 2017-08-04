@@ -450,24 +450,17 @@ class AnsPress_Admin_Ajax {
 	public static function recount_reputation( $current, $offset ) {
 		global $wpdb;
 
-		$ids = $wpdb->get_col( "SELECT SQL_CALC_FOUND_ROWS ID FROM {$wpdb->users} LIMIT {$offset},5" ); // @codingStandardsIgnoreLine.
+		$ids = $wpdb->get_col( "SELECT SQL_CALC_FOUND_ROWS ID FROM {$wpdb->users} LIMIT {$offset},2" ); // @codingStandardsIgnoreLine.
 
 		$total_found = $wpdb->get_var( 'SELECT FOUND_ROWS()' ); // DB call okay, Db cache okay.
-		$rep_events = ap_get_reputation_events();
 
 		foreach ( (array) $ids as $id ) {
-			foreach( (array) $rep_events as $event => $args ) {
-				if ( 'answer' === $args['parent'] ) {
-					self::recount_answer_reputation( $args );
-				}
-			}
-
 			ap_update_user_reputation_meta( $id );
 		}
 
 		$action = 'continue';
 
-		if ( count( $ids ) < 50 ) {
+		if ( count( $ids ) < 3 ) {
 			$action = 'success';
 		}
 
@@ -485,11 +478,11 @@ class AnsPress_Admin_Ajax {
 	 * @param  string  $event   Event type.
 	 * @return boolean Returns true on success.
 	 */
-	public function recount_answer_reputation( $user_id, $event ) {
+	public static function recount_answer_reputation( $user_id, $event ) {
 		global $wpdb;
 
 		$post_ids = $wpdb->get_col(
-			$wpdb->prepare( "SELECT ID FROM {$wpdb->ap_reputation} WHERE post_author = %d AND post_type = 'answer' AND post_status IN ('publish', 'private_post')", $user_id )
+			$wpdb->prepare( "SELECT ID FROM {$wpdb->posts} WHERE post_author = %d AND post_type = 'answer' AND post_status IN ('publish', 'private_post')", $user_id )
 		);
 
 		// Return if no answers found.
@@ -498,6 +491,7 @@ class AnsPress_Admin_Ajax {
 		}
 
 		$events = ap_search_array( ap_get_reputation_events(), 'parent', 'answer' );
+		PC::debug( $events );
 
 		foreach ( (array) $post_ids as $id ) {
 				$exists = ap_get_reputation( $e, $id, $user_id );
