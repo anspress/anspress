@@ -417,7 +417,7 @@ class AnsPress_Email_Hooks {
 				return;
 			}
 
-			$args = array(
+			$tags = array(
 				'{asker}'             => ap_user_display_name( $question->post_author ),
 				'{question_title}'    => $question->post_title,
 				'{question_link}'     => get_permalink( $question->ID ),
@@ -425,10 +425,18 @@ class AnsPress_Email_Hooks {
 				'{question_excerpt}'  => ap_truncate_chars( strip_tags( $question->post_content ), 100 ),
 			);
 
-			$args = apply_filters( 'ap_new_question_email_tags', $args );
+			/**
+			 * Allow adding custom email tags for new question notification.
+			 *
+			 * @param array  $tags     Default email tags.
+			 * @param object $question Question object.
+			 * @since unknown
+			 * @since 4.1.0 Added new argument `$question`.
+			 */
+			$tags = apply_filters( 'ap_new_question_email_tags', $tags, $question );
 
-			SELF::$subject = SELF::replace_tags( ap_opt( 'new_question_email_subject' ), $args );
-			SELF::$message = SELF::replace_tags( ap_opt( 'new_question_email_body' ), $args );
+			SELF::$subject = SELF::replace_tags( ap_opt( 'new_question_email_subject' ), $tags );
+			SELF::$message = SELF::replace_tags( ap_opt( 'new_question_email_body' ), $tags );
 			SELF::$emails[] = ap_opt( 'notify_admin_email' );
 			SELF::initiate_send_email();
 		}
