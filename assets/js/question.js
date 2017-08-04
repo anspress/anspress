@@ -89,9 +89,9 @@
 		},
 		renderPostMessage: function(message){
 			if(!_.isEmpty(message))
-				$('#post-'+this.postID).find('post-message').html(message);
+				$('#post-'+this.postID).find('postMessage').html(message);
 			else
-				$('#post-'+this.postID).find('post-message').html('');
+				$('#post-'+this.postID).find('postMessage').html('');
 		},
 		removed: function(){
       this.remove();

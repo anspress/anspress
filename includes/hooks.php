@@ -514,7 +514,7 @@ class AnsPress_Hooks {
 		if ( in_array( $args['post_type'], [ 'question', 'answer' ], true ) ) {
 			$fields = ap_get_post_field( 'fields', $args['ID'] );
 
-			if ( '0' === $post->post_author || ( !empty( $fields ) && !empty( $fields['anonymous_name'] ) ) ) {
+			if ( ( is_object( $post ) && '0' === $post->post_author ) || ( !empty( $fields ) && !empty( $fields['anonymous_name'] ) ) ) {
 				$data['post_author'] = '0';
 			}
 		}
