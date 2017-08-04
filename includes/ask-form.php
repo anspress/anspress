@@ -123,14 +123,13 @@ function ap_get_ask_form_fields( $post_id = false ) {
 	);
 
 	/**
-	 * FILTER: ap_ask_form_fields
-	 * Filter for modifying $args
+	 * Filter for modifying ask form `$args`.
 	 *
-	 * @param 	array 	$fields 	Ask form fields.
+	 * @param 	array $fields 	Ask form fields.
 	 * @param 	bool 	$editing 	Currently editing form.
 	 * @since  	2.0
 	 */
-	$fields = apply_filters( 'ap_ask_form_fields', array( 'fields' => $fields ), $editing );
+	$fields = apply_filters( 'ap_ask_form_fields', [ 'fields' => $fields ], $editing );
 
 	return $fields['fields'];
 }

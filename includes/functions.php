@@ -381,6 +381,7 @@ function ap_is_ajax() {
 	if ( defined( 'DOING_AJAX' ) && DOING_AJAX && isset( $_REQUEST['ap_ajax_action'] ) ) { // input var ok.
 		return true;
 	}
+
 	return false;
 }
 
@@ -427,9 +428,10 @@ function ap_form_allowed_tags() {
 		'br'         => array(),
 	);
 
-	/*
-	 * FILTER: ap_allowed_tags
-	 * Before passing allowed tags
+	/**
+	 * Filter allowed HTML KSES tags.
+	 *
+	 * @param array $allowed_tags Allowed tags.
 	 */
 	return apply_filters( 'ap_allowed_tags', $allowed_tags );
 }
@@ -443,14 +445,15 @@ function ap_send_json( $result = array() ) {
 	header( 'Content-Type: text/html; charset=' . get_option( 'blog_charset' ) );
 	$result['is_ap_ajax'] = true;
 	$json = '<div id="ap-response">' . wp_json_encode( $result, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP ) . '</div>';
+
 	wp_die( $json ); // xss ok.
 }
 
 /**
  * Highlight matching words.
  *
- * @param string $text String.
- * @param string $words Words need to higlight.
+ * @param string $text  String.
+ * @param string $words Words need to highlight.
  * @return string
  * @since 	2.0
  */
@@ -491,12 +494,12 @@ function ap_responce_message( $id, $only_message = false ) {
 		'you_cannot_vote_on_restricted' => array( 'type' => 'warning', 'message' => __( 'You cannot vote on restricted posts', 'anspress-question-answer' ) ),
 		);
 
-	/*
-	* FILTER: ap_responce_message
-	* Can be used to alter response messages
-	* @var array
-	* @since 2.0.1
-	*/
+	/**
+	 * Filter ajax response message.
+	 *
+	 * @param array $msg Messages.
+	 * @since 2.0.1
+	 */
 	$msg = apply_filters( 'ap_responce_message', $msg );
 
 	if ( isset( $msg[ $id ] ) && $only_message ) {
@@ -548,12 +551,12 @@ function ap_ajax_responce( $results ) {
 		);
 	}
 
-	/*
-	* FILTER: ap_ajax_responce
-	* Can be used to alter ap_ajax_responce
-	* @var array
-	* @since 2.0.1
-	*/
+	/**
+	 * Filter AnsPress ajax response body.
+	 *
+	 * @param array $results Results.
+	 * @since 2.0.1
+	 */
 	$results = apply_filters( 'ap_ajax_responce', $results );
 
 	return $results;

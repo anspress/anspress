@@ -128,8 +128,8 @@ class AnsPress_Process_Form {
 		$editing_post_id = ap_isset_post_value( 'edit_post_id', false );
 
 		/**
-		 * FILTER: ap_ask_fields_validation
-		 * Filter can be used to modify ask question fields.
+		 * Filter to modify ask question fields validation.
+		 *
 		 * @param array $args Ask form validation arguments.
 		 * @since 2.0.1
 		 */
@@ -138,8 +138,7 @@ class AnsPress_Process_Form {
 		$validate = new AnsPress_Validation( $args );
 
 		/**
-		 * ACTION
-		 * ap_process_ask_form
+		 * Action triggered after ask form fields validation.
 		 *
 		 * @since 4.0.0
 		 */
@@ -296,10 +295,9 @@ class AnsPress_Process_Form {
 		$editing_post_id = ap_isset_post_value( 'edit_post_id', false );
 
 		/**
-		 * FILTER: ap_answer_fields_validation
-		 * Filter can be used to modify answer form fields.
+		 * Filter used to modify answer form fields validation.
 		 *
-		 * @var void
+		 * @param array $fields Answer form fields.
 		 * @since 2.0.1
 		 */
 		$args = apply_filters( 'ap_answer_fields_validation', ap_get_answer_form_fields( $question->ID, $editing_post_id ) );
@@ -307,9 +305,9 @@ class AnsPress_Process_Form {
 		$validate = new AnsPress_Validation( $args );
 
 		/**
-		 * ACTION
-		 * ap_process_ask_form
+		 * Action triggered after answer form fields validation.
 		 *
+		 * @param array $validate field validations.
 		 * @since 4.0.0
 		 */
 		do_action( 'ap_process_answer_form', $validate );
