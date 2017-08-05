@@ -450,7 +450,7 @@ class AnsPress_Admin_Ajax {
 	public static function recount_reputation( $current, $offset ) {
 		global $wpdb;
 
-		$ids = $wpdb->get_col( "SELECT SQL_CALC_FOUND_ROWS ID FROM {$wpdb->users} LIMIT {$offset},2" ); // @codingStandardsIgnoreLine.
+		$ids = $wpdb->get_col( "SELECT SQL_CALC_FOUND_ROWS ID FROM {$wpdb->users} LIMIT {$offset},50" ); // @codingStandardsIgnoreLine.
 
 		$total_found = $wpdb->get_var( 'SELECT FOUND_ROWS()' ); // DB call okay, Db cache okay.
 
@@ -460,14 +460,14 @@ class AnsPress_Admin_Ajax {
 
 		$action = 'continue';
 
-		if ( count( $ids ) < 3 ) {
+		if ( count( $ids ) < 50 ) {
 			$action = 'success';
 		}
 
 		wp_send_json( [
 			'action'    => $action,
 			'total'     => $total_found,
-			'processed' => count( $ids ),
+			'processed' => $offset + count( $ids ),
 		] );
 	}
 

@@ -123,6 +123,7 @@ class AnsPress_Admin {
 		}
 
 		wp_enqueue_script( 'anspress-admin-js', ANSPRESS_URL . 'assets/' . $dir . '/ap-admin' . $min . '.js' , [ 'anspress-common' ], AP_VERSION, true );
+
 		?>
 			<script type="text/javascript">
 				currentQuestionID = '<?php the_ID(); ?>';
