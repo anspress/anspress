@@ -154,11 +154,19 @@ class AnsPress_Process_Form {
 			return;
 		}
 
+		if ( ! ap_user_can_ask() ) {
+			ap_ajax_json( array(
+				'success' 	=> false,
+				'form' 	 	  => $_POST['ap_form_action'],
+				'snackbar' 	=> [ 'message' => __( 'You are not allowed to post question.', 'anspress-question-answer' ) ],
+			) );
+		}
+
 		// Check if duplicate.
 		if ( false !== ap_find_duplicate_post( $fields['description'], 'question' ) ) {
 			ap_ajax_json( array(
 				'success' 	=> false,
-				'form' 	 	=> $_POST['ap_form_action'],
+				'form' 	 	  => $_POST['ap_form_action'],
 				'snackbar' 	=> [ 'message' => __( 'This seems to be a duplicate question. A question with same content already exists.', 'anspress-question-answer' ) ],
 			) );
 		}
@@ -171,34 +179,31 @@ class AnsPress_Process_Form {
 			return;
 		}
 
-		$user_id = get_current_user_id();
-
 		$question_array = array(
-			'post_title'		=> $fields['title'],
-			'post_author'		=> $user_id,
-			'post_content' 		=> $fields['description'],
-			'attach_uploads' 	=> true,
+			'post_title'		   => $fields['title'],
+			'post_content' 		 => $fields['description'],
+			'attach_uploads' 	 => true,
+			'is_private' 	     => isset( $this->fields['is_private'] ) && $this->fields['is_private'],
+			'anonymous_name' 	 => ! empty( $fields['anonymous_name'] ) ? $fields['anonymous_name'] : '',
 		);
-
-		$question_array['post_status'] = ap_new_edit_post_status( $user_id, 'question', false );
-
-		if ( isset( $this->fields['is_private'] ) && $this->fields['is_private'] ) {
-			$question_array['is_private'] = true;
-		}
-
-		// Check if anonymous post and have name.
-		if ( ! is_user_logged_in() && ap_opt( 'allow_anonymous' ) && ! empty( $fields['anonymous_name'] ) ) {
-			$question_array['anonymous_name'] = $fields['anonymous_name'];
-		}
 
 		if ( isset( $fields['parent_id'] ) ) {
 			$question_array['post_parent'] = (int) $fields['parent_id'];
 		}
 
-		$post_id = ap_save_question( $question_array, true );
+		$post_id = ap_save_question( $question_array );
+
+		if ( is_wp_error( $post_id ) ) {
+			ap_ajax_json( array(
+				'success'  => false,
+				'action'   => 'new_question',
+				'snackbar' => [
+					'message' => $post_id->get_error_messages(),
+				],
+			) );
+		}
 
 		if ( $post_id ) {
-			ap_clear_unattached_media();
 
 			ap_ajax_json( array(
 				'success'  => true,
@@ -222,7 +227,11 @@ class AnsPress_Process_Form {
 
 		// Return if user do not have permission to edit this question.
 		if ( ! ap_user_can_edit_question( $this->fields['edit_post_id'] ) ) {
-			return;
+			ap_ajax_json( array(
+				'success' 	=> false,
+				'form' 	 	  => $_POST['ap_form_action'],
+				'snackbar' 	=> [ 'message' => __( 'You are not allowed to edit this question.', 'anspress-question-answer' ) ],
+			) );
 		}
 
 		$filter = apply_filters( 'ap_before_updating_question', false, $this->fields['description'] );
@@ -237,28 +246,29 @@ class AnsPress_Process_Form {
 		$user_id = get_current_user_id();
 
 		$question_array = array(
-			'ID'				=> $post->ID,
-			'post_title'		=> $this->fields['title'],
-			'post_content' 		=> $this->fields['description'],
-			'attach_uploads' 	=> true,
-			'post_author' 		=> $post->post_author,
+			'ID'				       => $post->ID,
+			'post_title'		   => $this->fields['title'],
+			'post_content' 		 => $this->fields['description'],
+			'attach_uploads' 	 => true,
+			'post_author' 		 => $post->post_author,
+			'is_private' 	     => isset( $this->fields['is_private'] ) && $this->fields['is_private'],
+			'anonymous_name' 	 => ! empty( $fields['anonymous_name'] ) ? $fields['anonymous_name'] : '',
 		);
-
-		$question_array['post_status'] = ap_new_edit_post_status( $user_id, 'question', true );
-
-		if ( isset( $this->fields['is_private'] ) && $this->fields['is_private'] ) {
-			$question_array['is_private'] = true;
-		}
-
-		// Check if anonymous post and have name.
-		if ( ! is_user_logged_in() && ap_opt( 'allow_anonymous' ) && ! empty( $this->fields['anonymous_name'] ) ) {
-			$question_array['anonymous_name'] = $this->fields['anonymous_name'];
-		}
 
 		$post_id = ap_save_question( $question_array );
 
+		if ( is_wp_error( $post_id ) ) {
+			ap_ajax_json( array(
+				'success'  => false,
+				'action'   => 'edited_question',
+				'snackbar' => [
+					'message' => $post_id->get_error_messages(),
+				],
+			) );
+		}
+
 		if ( $post_id ) {
-			ap_clear_unattached_media();
+
 			$this->redirect = get_permalink( $post_id );
 
 			// Trigger update hook.

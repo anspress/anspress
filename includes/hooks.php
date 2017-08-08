@@ -598,7 +598,7 @@ class AnsPress_Hooks {
 			 * @param object	$post		Inserted post object.
 			 * @since 0.9
 			 */
-			do_action( 'ap_processed_update_' . $post->post_type, $post_id, $post );
+			do_action( "ap_processed_update_{$post->post_type}", $post_id, $post );
 
 		} else {
 			/**
@@ -608,7 +608,7 @@ class AnsPress_Hooks {
 			 * @param object	$post		Inserted post object.
 			 * @since 0.9
 			 */
-			do_action( 'ap_processed_new_' . $post->post_type, $post_id, $post );
+			do_action( "ap_processed_new_{$post->post_type}", $post_id, $post );
 		}
 
 		if ( 'question' === $post->post_type ) {
