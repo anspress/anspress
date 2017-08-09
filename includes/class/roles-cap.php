@@ -966,10 +966,6 @@ function ap_user_can_upload() {
 		return false;
 	}
 
-	if ( is_super_admin() ) {
-		return true;
-	}
-
 	if ( ap_opt( 'allow_upload' ) ) {
 		return true;
 	}
