@@ -33,28 +33,28 @@ abstract class AP_QA {
 	 *
 	 * @codingStandardsIgnoreStart
 	 */
-	private $post_author = 0;
-	private $post_date = '0000-00-00 00:00:00';
-	private $post_date_gmt = '0000-00-00 00:00:00';
-	private $post_content = '';
-	private $post_title = '';
-	private $post_excerpt = '';
-	private $post_status = 'publish';
-	private $comment_status = 'open';
-	private $ping_status = 'open';
-	private $post_password = '';
-	private $post_name = '';
-	private $to_ping = '';
-	private $pinged = '';
-	private $post_modified = '0000-00-00 00:00:00';
-	private $post_modified_gmt = '0000-00-00 00:00:00';
-	private $post_content_filtered = '';
-	private $post_parent = 0;
-	private $guid = '';
-	private $menu_order = 0;
-	private $post_mime_type = '';
-	private $comment_count = 0;
-	private $filter;
+	public $post_author = 0;
+	public $post_date = '0000-00-00 00:00:00';
+	public $post_date_gmt = '0000-00-00 00:00:00';
+	public $post_content = '';
+	public $post_title = '';
+	public $post_excerpt = '';
+	public $post_status = 'publish';
+	public $comment_status = 'open';
+	public $ping_status = 'open';
+	public $post_password = '';
+	public $post_name = '';
+	public $to_ping = '';
+	public $pinged = '';
+	public $post_modified = '0000-00-00 00:00:00';
+	public $post_modified_gmt = '0000-00-00 00:00:00';
+	public $post_content_filtered = '';
+	public $post_parent = 0;
+	public $guid = '';
+	public $menu_order = 0;
+	public $post_mime_type = '';
+	public $comment_count = 0;
+	public $filter;
 
 	/**
 	 * AnsPress properties.
@@ -115,13 +115,24 @@ abstract class AP_QA {
 	 * @param string $key Property name.
 	 */
 	public function __get( $key ) {
-		if ( isset( $this->$key ) ) {
-			return $this->$key;
-		} elseif ( method_exists( $this, 'get_' . $key ) ) {
+		if ( method_exists( $this, 'get_' . $key ) ) {
 			return call_user_func( array( $this, 'get_' . $key ) );
 		} else {
 			// Translators: Placeholder is name of property.
 			return new WP_Error( 'ap-invalid-property', sprintf( __( 'Can\'t get property %s', 'anspress-question-answer' ), $key ) );
+		}
+	}
+
+	public function __call( $method, $args ) {
+		$new_method = str_replace( 'the_', 'get_', $method );
+
+		$echo_methods = [ 'the_ID', 'the_author_link', 'the_author_avatar', 'the_votes_net', 'the_answers_count' ];
+
+		if ( in_array( $method, $echo_methods, true ) && method_exists( $this, $new_method ) ) {
+			echo call_user_func_array( [ $this, $new_method ], $args );
+		} else {
+			// Translators: Placeholder is name of property.
+			throw new Exception( sprintf( __( 'Can\'t get method %s', 'anspress-question-answer' ), $method ) );
 		}
 	}
 
@@ -372,6 +383,140 @@ abstract class AP_QA {
 
 		// If empty then return original without stripping stop words.
 		return sanitize_title( $str );
+	}
+
+	/**
+	 * Return current post ID.
+	 *
+	 * @return integer
+	 */
+	public function get_ID() {
+		return (int) $this->ID;
+	}
+
+	public function get_author_link() {
+		return esc_url( ap_user_link( $this->post_author ) );
+	}
+
+	public function get_author_avatar( $size = 40 ) {
+		$author = $this->post_author;
+		if ( '0' === $author && is_array( $this->fields ) && ! empty( $this->fields['anonymous_name'] ) ) {
+			$author = $this->fields['anonymous_name'];
+		}
+
+		return get_avatar( $author, $size );
+	}
+
+	public function get_votes_net() {
+		return (int) $this->votes_net;
+	}
+
+	public function get_status_object( $key = null ) {
+		$status_obj = get_post_status_object( $this->post_status );
+
+		if ( $key && $status_obj->$key ) {
+			return $status_obj->$key;
+		}
+
+		return $status_obj;
+	}
+
+	public function get_time( $format = '' ) {
+		return get_post_time( $format, true, $this->ID, true );
+	}
+
+	/**
+	 * Get latest activity of question or answer.
+	 *
+	 * @param  boolean $answer_activities Show answers activities as well.
+	 * @return array|null
+	 */
+	public function get_recent_activity( $answer_activities = false ) {
+		$activity = $this->activities;
+		if ( false !== $answer_activities && ! empty( $this->activities['child'] ) ) {
+			$activity = $this->activities['child'];
+		}
+
+		if ( ! empty( $activity ) && ! empty( $activity['date'] ) ) {
+			$activity['date'] = get_gmt_from_date( $activity['date'] );
+		}
+
+		if ( false === $answer_activities && ( ! isset( $activity['type'] ) || in_array( $activity['type'], [ 'new_answer', 'new_question' ], true ) ) ) {
+			return;
+		}
+
+		if ( $activity ) {
+			$formatted = [];
+
+			$user_id = ! empty( $activity['user_id'] ) ? $activity['user_id'] : 0;
+			$activity_type = ! empty( $activity['type'] ) ? $activity['type'] : '';
+
+			$formatted['actor']['id']   = $user_id;
+			$formatted['actor']['name'] = ap_user_display_name( $user_id );
+			$formatted['actor']['url']  = ap_user_link( $user_id );
+			$formatted['verb']          = $activity_type;
+			$formatted['summary']       = ap_activity_short_title( $activity_type );
+			$formatted['url']           = get_permalink();
+			$formatted['published']     = $activity['date'];
+			$formatted['human_time']    = ap_human_time( $activity['date'], false );
+
+			$formatted = (object) $formatted;
+
+			/**
+			 * Filter recent activity of post.
+			 *
+			 * @param object $formatted Formatted activity object.
+			 * @param object $apqa      Current AnsPress post object passed by reference.
+			 * @since 4.1.0
+			 */
+			return apply_filters_ref_array( 'ap_get_recent_activity', [ $formatted, &$this ] );
+		}
+	}
+
+	public function the_recent_activity( $answer_activities = false ) {
+		$activity = $this->get_recent_activity( $answer_activities );
+
+		if ( $activity ) {
+			echo '<span class="ap-post-activity">';
+			echo '<a href="' . esc_url( $activity->actor['url'] ) . '">' . wp_kses_post( $activity->actor['name'] ) . '</a> ';
+			echo '<a href="' . esc_url( $activity->url ) . '">' . esc_html( $activity->summary ) . '</a> ';
+			echo '<time datetime="' . esc_attr( mysql2date( 'c', $activity->published ) ) . '">' . esc_html( $activity->human_time ) . '</time>';
+			echo '</span>';
+		}
+	}
+
+	/**
+	 * Check if post have terms.
+	 *
+	 * @param string $taxonomy Taxonomy name.
+	 * @return boolean
+	 */
+	public function have_terms( $taxonomy = 'question_category' ) {
+		$terms = get_the_terms( $this->ID, $taxonomy );
+
+		if ( ! empty( $terms ) ) {
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Get all terms of current question.
+	 *
+	 * @return array
+	 */
+	public function get_all_terms() {
+		$taxonomies = [ 'question_category', 'question_tag' ];
+		$taxonomies = apply_filters_ref_array( 'ap_object_taxonomies', [ $taxonomies, &$this ] );
+
+		$taxonomies_data = [];
+
+		foreach ( $taxonomies as $taxonomy ) {
+			$taxonomies_data[ $taxonomy ] = get_the_terms( $this->ID, $taxonomy );
+		}
+
+		return $taxonomies_data;
 	}
 
 }

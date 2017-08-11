@@ -332,8 +332,7 @@ class AnsPress_Email_Hooks {
 		}
 
 		$header .= 'Content-type: text/plain; charset=' . $charset . "\r\n";
-
-		return $header;
+		return apply_filters( 'ap_email_header', $header );
 	}
 
 	/**

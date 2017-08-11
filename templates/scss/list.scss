@@ -83,7 +83,8 @@
 		.ap-display-meta-item {
 			font-size: 12px;
 			color: $meta-color;
-			margin-right: 15px;
+			margin-right: 10px;
+			display: inline;
 			a{
 				color: $meta-color;
 			}
@@ -118,17 +119,28 @@
 			background: #f5fdff;
 		}
 	}
+	.ap-display-question-meta {
+		display: inline-block;
+	}
+	.ap-taxonomies {
+		font-size: 13px;
+		display: inline-block;
+		i{
+			font-size: 11px;
+			color: #aaa;
+		}
+	}
+	.ap-terms{
+		display: inline-block;
+		margin-right: 5px;
+		&:last-child{
+			margin-right: 0;
+		}
+	}
 	.ap-list-counts{
 		float: right;
 	}
-	.ap-display-meta-item{
-		i{
-			font-style: normal;
-		}
-		[class^="apicon-"]::before, [class*=" apicon-"]::before{
-			margin-right: 5px;
-		}
-	}
+
 	.ap-list-head{
 		padding: 15px 15px 5px 15px;
 		border: solid 1px #ddd;

@@ -40,7 +40,7 @@ class AnsPress_Tag {
 		anspress()->add_action( 'widgets_init', __CLASS__, 'widget_positions' );
 		anspress()->add_action( 'init', __CLASS__, 'register_question_tag', 1 );
 		anspress()->add_action( 'ap_admin_menu', __CLASS__, 'admin_tags_menu' );
-		anspress()->add_action( 'ap_display_question_metas', __CLASS__, 'ap_display_question_metas', 10, 2 );
+		//anspress()->add_action( 'ap_question_display_meta', __CLASS__, 'question_display_meta', 10, 2 );
 		anspress()->add_action( 'ap_question_info', __CLASS__, 'ap_question_info' );
 		anspress()->add_action( 'ap_assets_js', __CLASS__, 'ap_assets_js' );
 		anspress()->add_action( 'ap_enqueue', __CLASS__, 'ap_localize_scripts' );
@@ -283,14 +283,18 @@ class AnsPress_Tag {
 	/**
 	 * Append meta display.
 	 *
-	 * @param  array $metas Display metas.
-	 * @param  array $question_id Post ID.
+	 * @param  array  $metas    Display metas.
+	 * @param  object $question AP_Question object.
 	 * @return array
 	 * @since 2.0
 	 */
-	public static function ap_display_question_metas( $metas, $question_id ) {
-		if ( ap_post_have_terms( $question_id, 'question_tag' ) && ! is_singular( 'question' ) ) {
-			$metas['tags'] = ap_question_tags_html( array( 'label' => '<i class="apicon-tag"></i>', 'show' => 1 ) ); }
+	public static function question_display_meta( $metas, $question ) {
+		if ( $question->have_terms( 'question_tag' ) && ! is_singular( 'question' ) ) {
+			$metas['taxonomy']['tags'] = array(
+				'items' => $question->get_terms( 'question_tag' ),
+				'icon'  => 'apicon-tag',
+			);
+		}
 
 		return $metas;
 	}

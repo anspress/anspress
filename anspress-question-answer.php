@@ -285,6 +285,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 
 			require_once ANSPRESS_DIR . 'includes/class/class-ap-qa.php';
 			require_once ANSPRESS_DIR . 'includes/class/class-ap-question.php';
+			require_once ANSPRESS_DIR . 'includes/class/class-question-query.php';
 			require_once ANSPRESS_DIR . 'includes/class/form.php';
 			require_once ANSPRESS_DIR . 'includes/class/validation.php';
 			require_once ANSPRESS_DIR . 'includes/class/roles-cap.php';
@@ -296,7 +297,6 @@ if ( ! class_exists( 'AnsPress' ) ) {
 			require_once ANSPRESS_DIR . 'includes/question-loop.php';
 			require_once ANSPRESS_DIR . 'includes/answer-loop.php';
 			require_once ANSPRESS_DIR . 'includes/qameta.php';
-			require_once ANSPRESS_DIR . 'includes/qaquery.php';
 			require_once ANSPRESS_DIR . 'includes/qaquery-hooks.php';
 			require_once ANSPRESS_DIR . 'includes/post-types.php';
 			require_once ANSPRESS_DIR . 'includes/post-status.php';

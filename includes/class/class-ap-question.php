@@ -101,5 +101,66 @@ class AP_Question extends AP_QA {
 		$this->set( 'last_updated', current_time( 'mysql' ) );
 	}
 
+	public function get_answers_count() {
+		return (int) $this->answers;
+	}
+
+	/**
+	 * Return question display meta.
+	 *
+	 * @return array
+	 */
+	public function get_display_meta() {
+		$metas = [];
+
+		// If featured question.
+		if ( $this->featured ) {
+			$metas['featured'] = array(
+				'title' => __( 'Featured', 'anspress-question-answer' ),
+			);
+		}
+
+		if ( $this->selected_id ) {
+			$metas['solved'] = array(
+				'text' => __( 'Solved', 'anspress-question-answer' ),
+				'icon' => 'apicon-check',
+			);
+		}
+
+		$metas['views'] = array(
+			// Translators: placeholder is count of views.
+			'text' => sprintf( __( '%d views', 'anspress-question-answer' ), $this->views ),
+			'icon' => 'apicon-eye',
+		);
+
+		if ( is_question() ) {
+			$last_active = ! empty( $this->last_updated ) ? $this->last_updated : $this->post_modified_gmt;
+			$metas['active'] = array(
+				'text' => ap_human_time( get_gmt_from_date( $last_active ), false ),
+				'icon' => 'apicon-pulse',
+				'date' => $last_active,
+			);
+		}
+
+		if ( ! is_question() ) {
+			$metas['history'] = array(
+				'text' => ap_latest_post_activity_html( $this->ID, ! is_question() ),
+				'icon' => 'apicon-pulse',
+			);
+		}
+
+		/**
+		 * Filter display meta of a question.
+		 *
+		 * @param array  $metas Display metas.
+		 * @param object $ap_qa AP_QA object passed by reference.
+		 * @since 4.1.0
+		 */
+		$metas = apply_filters_ref_array( 'ap_question_display_meta', [ $metas, $this ] );
+		$metas = ap_sort_array_by_order( $metas );
+
+		return $metas;
+	}
+
 
 }

@@ -43,7 +43,7 @@ class AnsPress_Category {
 		anspress()->add_action( 'admin_enqueue_scripts', __CLASS__, 'admin_enqueue_scripts' );
 		anspress()->add_action( 'ap_load_admin_assets', __CLASS__, 'ap_load_admin_assets' );
 		anspress()->add_action( 'ap_admin_menu', __CLASS__, 'admin_category_menu' );
-		anspress()->add_action( 'ap_display_question_metas', __CLASS__, 'ap_display_question_metas', 10, 2 );
+		//anspress()->add_action( 'ap_question_display_meta', __CLASS__, 'question_display_meta', 10, 2 );
 		anspress()->add_action( 'ap_assets_js', __CLASS__, 'ap_assets_js' );
 		anspress()->add_filter( 'term_link', __CLASS__, 'term_link_filter', 10, 3 );
 		anspress()->add_action( 'ap_ask_form_fields', __CLASS__, 'ask_from_category_field', 10, 2 );
@@ -345,14 +345,18 @@ class AnsPress_Category {
 	/**
 	 * Append meta display.
 	 *
-	 * @param  	array   $metas Display meta items.
-	 * @param 	integer $question_id  Question id.
+	 * @param  	array   $metas    Display meta items.
+	 * @param 	integer $question Question id.
+	 *
 	 * @return 	array
 	 * @since 	1.0
 	 */
-	public static function ap_display_question_metas( $metas, $question_id ) {
-		if ( ap_post_have_terms( $question_id ) && ! is_singular( 'question' ) ) {
-			$metas['categories'] = ap_question_categories_html( array( 'label' => '<i class="apicon-category"></i>' ) );
+	public static function question_display_meta( $metas, $question ) {
+		if ( $question->have_terms( 'question_category' ) && ! is_singular( 'question' ) ) {
+			$metas['taxonomy']['categories'] = array(
+				'items' => $question->get_terms( 'question_category' ),
+				'icon'  => 'apicon-folder',
+			);
 		}
 
 		return $metas;

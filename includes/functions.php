@@ -604,26 +604,21 @@ function ap_current_page_url( $args ) {
  */
 function ap_sort_array_by_order( $array ) {
 	$new_array = array();
+
 	if ( ! empty( $array ) && is_array( $array ) ) {
 		$group = array();
+
 		foreach ( (array) $array as $k => $a ) {
+
 			if ( ! is_array( $a ) ) {
 				return;
 			}
-			$order = $a['order'];
-			$group[ $order ][] = $a;
-			$group[ $order ]['order'] = $order;
-		}
-		usort( $group, 'ap_sort_order_callback' );
-		foreach ( (array) $group as $a ) {
-			foreach ( (array) $a as $k => $newa ) {
-				if ( 'order' !== $k ) {
-					$new_array[] = $newa;
-				}
-			}
+
+			$array[ $k ]['order'] = isset( $a['order'] ) ? $a['order'] : 10;
 		}
 
-		return $new_array;
+		uasort( $array, 'ap_sort_order_callback' );
+		return $array;
 	}
 }
 
@@ -635,7 +630,11 @@ function ap_sort_array_by_order( $array ) {
  * @return integer
  */
 function ap_sort_order_callback( $a, $b ) {
-	return $a['order'] - $b['order'];
+	if ( $a['order'] == $b['order'] ) {
+		return 0;
+	}
+
+	return ( $a['order'] < $b['order'] ) ? -1 : 1;
 }
 
 /**
@@ -1829,4 +1828,14 @@ function ap_array_insert_after( $array = [], $key, $new ) {
 function ap_rand( $min, $max, $weight ) {
 	$offset = $max - $min + 1;
 	return floor( $min + pow( lcg_value(), $weight ) * $offset );
+}
+
+/**
+ * Return current question in loop.
+ *
+ * @return object
+ * @since 4.1.0
+ */
+function ap_question() {
+	return new AP_Question( anspress()->current_question );
 }
