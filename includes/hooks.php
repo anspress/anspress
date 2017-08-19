@@ -235,6 +235,14 @@ class AnsPress_Hooks {
 					ap_unset_selected_answer( $p->post_parent );
 				}
 
+				/**
+			 	* Triggered before trashing an answer after its related question has been trashed.
+			 	*
+			 	* @param integer $p->ID Answer ID.
+			 	* @param object $p Post object.
+			 	*/
+				do_action( 'ap_trash_answer_after_question', $p->ID, $p );
+				
 				ap_update_post_activity_meta( $p->ID, 'delete_answer', get_current_user_id(), true );
 				wp_trash_post( $p->ID );
 			}
@@ -279,7 +287,13 @@ class AnsPress_Hooks {
 			//@codingStandardsIgnoreStart
 
 			foreach ( (array) $ans as $p ) {
-				//do_action( 'ap_untrash_answer', $p->ID, $p );
+				/**
+			 	* Triggered before untrashing an answer after its related question has been untrashed.
+			 	*
+			 	* @param integer $p->ID Answer ID.
+			 	* @param object $p Post object.
+			 	*/
+				do_action( 'ap_untrash_answer_after_question', $p->ID, $p );
 				wp_untrash_post( $p->ID );
 			}
 
