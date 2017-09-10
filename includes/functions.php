@@ -601,13 +601,12 @@ function ap_current_page_url( $args ) {
  * @param array $array Array to order.
  * @return array
  * @since 2.0.0
+ * @since 4.1.0 Keeps existing array keys.
  */
 function ap_sort_array_by_order( $array ) {
-	$new_array = array();
+	$new_array = [];
 
 	if ( ! empty( $array ) && is_array( $array ) ) {
-		$group = array();
-
 		foreach ( (array) $array as $k => $a ) {
 
 			if ( ! is_array( $a ) ) {
@@ -1831,11 +1830,32 @@ function ap_rand( $min, $max, $weight ) {
 }
 
 /**
- * Return current question in loop.
+ * Convert array notation (string, not real array) to dot notation.
  *
- * @return object
- * @since 4.1.0
+ * @param boolean|string $path Path name.
+ * @return string Path separated by dot notation.
  */
-function ap_question() {
-	return new AP_Question( anspress()->current_question );
+function ap_to_dot_notation( $path = false ) {
+	$parsed = rtrim( str_replace( '..', '.', str_replace( [ ']', '[' ], '.', $path ) ), '.' );
+	return $parsed;
+}
+
+/**
+ * Set key => value in an array.
+ *
+ * @param array  $arr  Array in which key value need to set.
+ * @param string $path Path of new array item.
+ * @param mixed  $val  Value to set.
+ *
+ * @return array Updated array.
+ */
+function ap_set_in_array( &$arr, $path, $val ) {
+	$path = is_string( $path ) ? explode( '.', $path ) : $path;
+	$loc = &$arr;
+
+	foreach ( (array) $path as $step ) {
+		$loc = &$loc[ $step ];
+	}
+
+	return $loc = $val;
 }

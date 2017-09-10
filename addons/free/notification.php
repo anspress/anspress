@@ -52,7 +52,6 @@ class AnsPress_Notification_Hook {
 			anspress()->add_action( 'ap_option_groups', __CLASS__, 'load_options', 20 );
 			anspress()->add_action( 'ap_notification_verbs', __CLASS__, 'register_verbs' );
 			anspress()->add_filter( 'ap_user_pages', __CLASS__, 'ap_user_pages' );
-			anspress()->add_action( 'ap_assets_js', __CLASS__, 'ap_assets_js' );
 			anspress()->add_action( 'ap_after_new_answer', __CLASS__, 'new_answer', 10, 2 );
 			anspress()->add_action( 'ap_trash_question', __CLASS__, 'trash_question', 10, 2 );
 			anspress()->add_action( 'ap_before_delete_question', __CLASS__, 'trash_question', 10, 2 );
@@ -178,20 +177,6 @@ class AnsPress_Notification_Hook {
 			'cb'      => [ __CLASS__, 'notification_page' ],
 			'private' => true,
 		);
-	}
-
-	/**
-	 * Enqueue scripts.
-	 *
-	 * @param array $js JavaScript array.
-	 * @return array
-	 */
-	public static function ap_assets_js( $js ) {
-		if ( is_user_logged_in() ) {
-			$js['notifications']['active'] = true;
-		}
-
-		return $js;
 	}
 
 	/**

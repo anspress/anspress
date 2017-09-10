@@ -605,8 +605,6 @@ function ap_assets() {
 	$assets = array(
 		'js' => array(
 			'main'          => [ 'dep' => [ 'jquery', 'jquery-form', 'underscore', 'backbone' ], 'footer' => true ],
-			'upload'        => [ 'dep' => [ 'plupload', 'anspress-main' ], 'footer' => true ],
-			'notifications' => [ 'dep' => [ 'anspress-main' ], 'footer' => true ],
 			'theme' 				=> [ 'theme' => true, 'dep' => [ 'anspress-main' ], 'footer' => true ],
 		),
 		'css' => array(
@@ -618,10 +616,6 @@ function ap_assets() {
 
 	if ( is_ask() || ap_current_page() === 'edit' ) {
 		$assets['js']['main']['active'] = true;
-
-		if ( ap_user_can_upload( ) ) {
-			$assets['js']['upload']['active'] = true;
-		}
 	}
 
 	if ( is_question() || ap_current_page() === 'edit' ) {

@@ -142,41 +142,42 @@ function ap_get_ask_form_fields( $post_id = false ) {
  * @return void
  */
 function ap_ask_form( $post_id = false ) {
-	$editing = true;
+	// $editing = true;
 
-	if ( false === $post_id ) {
-		$post_id = ap_sanitize_unslash( 'id', 'r', false );
-	}
+	// if ( false === $post_id ) {
+	// 	$post_id = ap_sanitize_unslash( 'id', 'r', false );
+	// }
 
-	// If post_id is empty then its not editing.
-	if ( empty( $post_id ) ) {
-		$editing = false;
-	}
+	// // If post_id is empty then its not editing.
+	// if ( empty( $post_id ) ) {
+	// 	$editing = false;
+	// }
 
-	if ( $editing && ! ap_user_can_edit_question( $post_id ) ) {
-		echo '<p>' . esc_attr__( 'You cannot edit this question.', 'anspress-question-answer' ) . '</p>';
-		return;
-	}
+	// if ( $editing && ! ap_user_can_edit_question( $post_id ) ) {
+	// 	echo '<p>' . esc_attr__( 'You cannot edit this question.', 'anspress-question-answer' ) . '</p>';
+	// 	return;
+	// }
 
-	$_post = ap_get_post( $post_id );
+	// $_post = ap_get_post( $post_id );
 
-	// Check if valid post type.
-	if ( $editing && 'question' !== $_post->post_type ) {
-		echo '<p>' . esc_attr__( 'Post you are trying to edit is not a question.', 'anspress-question-answer' ) . '</p>';
-		return;
-	}
+	// // Check if valid post type.
+	// if ( $editing && 'question' !== $_post->post_type ) {
+	// 	echo '<p>' . esc_attr__( 'Post you are trying to edit is not a question.', 'anspress-question-answer' ) . '</p>';
+	// 	return;
+	// }
 
-	// Ask form arguments.
-	$args = array(
-		'name'              => 'ask_form',
-		'is_ajaxified'      => true,
-		'submit_button'     => ($editing ? __( 'Update question', 'anspress-question-answer' ) : __( 'Post question', 'anspress-question-answer' )),
-		'fields'            => ap_get_ask_form_fields( $post_id ),
-		'attr'							=> ' ap="questionForm"',
-	);
+	// // Ask form arguments.
+	// $args = array(
+	// 	'name'              => 'ask_form',
+	// 	'is_ajaxified'      => true,
+	// 	'submit_button'     => ($editing ? __( 'Update question', 'anspress-question-answer' ) : __( 'Post question', 'anspress-question-answer' )),
+	// 	'fields'            => ap_get_ask_form_fields( $post_id ),
+	// 	'attr'							=> ' ap="questionForm"',
+	// );
 
-	$form = new AnsPress_Form( $args );
-	echo $form->get_form(); // xss okay.
+	// $form = new AnsPress_Form( $args );
+	// echo $form->get_form(); // xss okay.
+	anspress()->get_form( 'question' )->generate();
 }
 
 /**
