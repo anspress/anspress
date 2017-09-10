@@ -108,6 +108,11 @@ class AnsPress_Hooks {
 			anspress()->add_action( 'ap_before_delete_question', 'AnsPress_Vote', 'delete_votes' );
 			anspress()->add_action( 'ap_before_delete_answer', 'AnsPress_Vote', 'delete_votes' );
 			anspress()->add_action( 'ap_deleted_votes', 'AnsPress_Vote', 'ap_deleted_votes', 10, 2 );
+
+			// Form hooks.
+			anspress()->add_action( 'ap_form_question', 'AP_Form_Hooks', 'question_form', 11 );
+			anspress()->add_action( 'admin_post_ap_forms', 'AP_Form_Hooks', 'init' );
+			anspress()->add_action( 'admin_post_nopriv_ap_forms', 'AP_Form_Hooks', 'init' );
 	}
 
 	/**

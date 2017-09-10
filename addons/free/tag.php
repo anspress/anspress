@@ -45,7 +45,7 @@ class AnsPress_Tag {
 		anspress()->add_action( 'ap_assets_js', __CLASS__, 'ap_assets_js' );
 		anspress()->add_action( 'ap_enqueue', __CLASS__, 'ap_localize_scripts' );
 		anspress()->add_filter( 'term_link', __CLASS__, 'term_link_filter', 10, 3 );
-		anspress()->add_action( 'ap_ask_form_fields', __CLASS__, 'ask_from_tag_field', 10, 2 );
+		anspress()->add_action( 'ap_question_form_fields', __CLASS__, 'ap_question_form_fields' );
 		anspress()->add_action( 'ap_ask_fields_validation', __CLASS__, 'ap_ask_fields_validation' );
 		anspress()->add_action( 'ap_processed_new_question', __CLASS__, 'after_new_question', 0, 2 );
 		anspress()->add_action( 'ap_processed_update_question', __CLASS__, 'after_new_question', 0, 2 );
@@ -320,10 +320,6 @@ class AnsPress_Tag {
 	public static function ap_assets_js( $js ) {
 		$js['tags'] = [ 'dep' => [ 'anspress-main' ], 'footer' => true ];
 
-		if ( is_ask() ) {
-			$js['tags']['active'] = true;
-		}
-
 		return $js;
 	}
 
@@ -366,52 +362,27 @@ class AnsPress_Tag {
 	}
 
 	/**
-	 * Add tag field in ask form.
+	 * Add tag field in question form.
 	 *
-	 * @param  array   $args Arguments.
-	 * @param  boolean $editing Is editing form.
+	 * @param array $form AnsPress form arguments.
+	 * @since 4.1.0
 	 */
-	public static function ask_from_tag_field( $args, $editing ) {
-		global $editing_post;
-		$tag_val = $editing ? get_the_terms( $editing_post->ID, 'question_tag' ) : ap_sanitize_unslash( 'tags', 'r', [] ) ;
+	public static function ap_question_form_fields( $form ) {
 
-		ob_start();
-		?>
-			<div class="ap-field-tags ap-form-fields">
-				<label class="ap-form-label" for="tags"><?php esc_attr_e( 'Tags', 'anspress-question-answer' ); ?></label>
-				<div data-role="ap-tagsinput" class="ap-tags-input">
-					<div id="ap-tags-add">
-						<input id="tags" class="ap-tags-field ap-form-control" placeholder="<?php esc_attr_e( 'Type and hit enter', 'anspress-question-answer' ); ?>" autocomplete="off" />
-						<ul id="ap-tags-suggestion">
-						</ul>
-					</div>
-
-					<ul id="ap-tags-holder" aria-describedby="ap-tags-list-title">
-						<?php foreach ( (array) $tag_val as $tag ) { ?>
-							<?php if ( ! empty( $tag->slug ) ) { ?>
-								<li class="ap-tagssugg-item">
-									<button role="button" class="ap-tag-remove"><span class="sr-only"></span> <span class="ap-tag-item-value"><?php echo esc_attr( $tag->slug ); ?></span><i class="apicon-x"></i></button>
-									<input type="hidden" name="tags[]" value="<?php echo esc_attr( $tag->slug ); ?>" />
-								</li>
-							<?php } ?>
-						<?php } ?>
-					</ul>
-				</div>
-			</div>
-		<?php
-
-		$tag_field = ob_get_clean();
-		$args['fields'][] = array(
-			'name' 		=> 'tag',
-			'label' 	=> __( 'Tags', 'anspress-question-answer' ),
-			'type'  	=> 'custom',
-			'taxonomy' 	=> 'question_tag',
-			'desc' 		=> __( 'Slowly type for suggestions', 'anspress-question-answer' ),
-			'order' 	=> 11,
-			'html' 		=> $tag_field,
+		$form['fields']['tags'] = array(
+			'label'     => __( 'Tags', 'anspress-question-answer' ),
+			'desc' 		  => sprintf(
+				// Translators: %1$d contain minimum tags required and %2$d contain maximum tags allowed.
+				__( 'Tagging will helps others to easily find your question. Minimum %1$d and maximum %2$d tags.', 'anspress-question-answer' ),
+				ap_opt( 'min_tags' ),
+				ap_opt( 'max_tags' )
+			),
+			'type'      => 'tags',
+			'array_max' => ap_opt( 'max_tags' ),
+			'array_min' => ap_opt( 'min_tags' ),
 		);
 
-		return $args;
+		return $form;
 	}
 
 	/**

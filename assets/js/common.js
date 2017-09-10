@@ -60,7 +60,7 @@ window.AnsPress = _.extend({
 			method: 'POST',
 		});
 
-		// COnvert data to query string if object.
+		// Convert data to query string if object.
 		if(_.isObject(options.data))
 			options.data = jQuery.param(options.data);
 
@@ -294,6 +294,242 @@ _.templateSettings = {
 		}
 	});
 
+	$.fn.AnsPressTags = function() {
+		var suggestion, suggTimeOut;
+
+		function sanitizeTag(str) {
+			str = str.replace(/^\s+|\s+$/g, ''); // trim
+			str = str.toLowerCase();
+
+			str = str.replace(/\s+/g, '-') // collapse whitespace and replace by -
+				.replace(/-+/g, '-'); // collapse dashes
+				return str;
+		}
+
+		function sanitizeLabel(str) {
+			var div = document.createElement('div');
+			div.appendChild(document.createTextNode(str));
+			return div.innerHTML;
+		}
+
+		$(document).mouseup(function(e) {
+			if(suggestion)
+				suggestion.dontHide = true;
+
+			var container = $('.ap-tags-suggestion');
+			if (!container.is(e.target) && container.has(e.target).length === 0) {
+				container.remove();
+			}
+		});
+
+		function renderItem(val, tag, fieldName, typeField, opt){
+			if(typeField.parent().find('.ap-tag-item[data-val="'+val+'"]').length > 0 )
+				return;
+
+			// Check max tags allowed.
+			if(typeField.parent().find('.ap-tag-item').length >= opt.max_tags){
+				AnsPress.trigger( 'snackbar', {'success' : false, 'snackbar' : {'message': opt.label_max_tag_added} } );
+				return false;
+			}
+
+			$newFieldName = fieldName + '['+val+']';
+			var html = $('<span class="ap-tag-item" data-val="'+val+'">'+tag+'<input type="hidden" name="'+$newFieldName+'" value="'+tag+'" /></span>');
+
+			if(suggestion)
+				suggestion.find('li[data-val="'+val+'"]').remove();
+
+			$(html).insertBefore(typeField);
+
+			AnsPress.trigger('renderTagItem', html, val, tag, fieldName, typeField);
+		}
+
+		/**
+		 * Filter matching lists in suggestion.
+		 * @param {object} typeField
+		 */
+		function filterMatchingLists(typeField, opt){
+			if(!suggestion) return;
+
+			$allListElements = suggestion.find('li');
+
+			var $matchingListElements = $allListElements.not('.disable').filter(function(i, li){
+				var listItemText = $(li).text().toUpperCase(), searchText = typeField.val().toUpperCase();
+				return ~listItemText.indexOf(searchText);
+			});
+
+			$allListElements.each(function(){
+				var regex = new RegExp('('+typeField.val()+')', 'ig');
+				$(this).html($(this).text().replace(regex, '<b>$1</b>'));
+			});
+
+			$notMatched = $.grep($allListElements, function(element) {
+				return $.inArray(element, $matchingListElements) === -1;
+			});
+
+			$.each($notMatched,function(el){
+				$(this).remove();
+			});
+
+			if ( suggestion.find('li:not(.disable)').length === 0){
+				suggestion.append('<li class="disable">' + opt.label_no_matching + ' ' + ( opt.add_tag ? opt.label_add_new + '<input type="text" placeholder="Type and hit enter" class="new-tag-entry" />' : '') + '</li>');
+			}
+		}
+
+		/**
+		 * Render suggestion dropdown.
+		 * @param {object|array} tags
+		 * @param {object} fieldName
+		 * @param {object} typeField
+		 */
+		function renderSuggestion(tags, fieldName, typeField, opt){
+			var self = this;
+			var list = '';
+			var is_object = typeof tags === 'object';
+
+			if(!$.isEmptyObject(tags)){
+				$.each(tags, function(i, tag){
+					var index_val = is_object ? i : tag;
+					if(typeField.closest('.ap-tag-wrap').find("span.ap-tag-item[data-val='"+index_val+"']").length == 0)
+						list += '<li data-val="'+index_val+'">'+tag+'</li>';
+				});
+			} else if(opt.add_tag) {
+				typeField.allowNewTag = true;
+				list += '<li class="disable">'+opt.label_no_tags+' '+opt.label_add_new+'<input type="text" placeholder="Type and hit enter" class="new-tag-entry" /></li>';
+			} else {
+				list += '<li class="disable">'+opt.label_no_tags+'</li>';
+			}
+
+			var html = $('<ul class="ap-tags-suggestion">'+list+'</ul>').css('left', typeField.position().left);
+			filterMatchingLists(typeField, opt);
+
+			return html;
+		}
+
+		function removeSuggestion(){
+			if(suggestion){
+				suggestion.remove();
+				suggestion = null;
+				clearTimeout(suggTimeOut);
+			}
+		}
+
+		return this.each(function() {
+			var self = $(this);
+
+			var opt = self.data('options');
+			var fieldName = self.data('name');
+			var typeField = $(this).find('#'+self.data('id'));
+			var tags = self.find('script').length>0 ? JSON.parse(self.find('script').html()) : {};
+
+			// Remove tag when its clicked.
+			self.on('click', '.ap-tag-item', function(){
+				$(this).remove();
+			});
+
+			//focus type field when clicked on wrapper.
+			self.on('click', function(e){
+				if(e.target!==this) return;
+				typeField.click().focus();
+			});
+
+			self.on('keydown', '.new-tag-entry', function(e) {
+				if(e.keyCode == 13){ // Prevent submit form on Enter
+					e.preventDefault();
+
+					var val = $(this).val().trim();
+					renderItem(sanitizeTag(val), sanitizeLabel(val), fieldName, typeField, opt);
+					$(this).val('');
+					typeField.val('');
+				}
+			});
+
+			self.on('click', '.ap-tags-suggestion li:not(.disable)', function(e){
+				if(e.target!==this) return;
+
+				renderItem($(this).attr('data-val'), $(this).text(), fieldName, typeField, opt);
+				$(this).remove();
+				typeField.val('');
+			});
+
+			typeField.on('keydown', function(e) {
+				if(e.keyCode == 13) // Prevent submit form on Enter
+					e.preventDefault();
+
+				// Delete on backspace
+				if(e.keyCode == 8){
+					if(typeField.val() === '' && typeField.prev().is('.ap-tag-item'))
+						typeField.prev().remove();
+					removeSuggestion();
+				}
+
+				if(e.keyCode==40 && !suggestion){
+					suggestion = $(renderSuggestion(tags, fieldName, typeField, opt));
+					self.append(suggestion);
+				}
+
+				if(e.keyCode == 38 || e.keyCode == 40) {
+					var inputs = suggestion.find('.ap-tag-item');
+					var index = suggestion.find('li.focus').index();
+					var items = suggestion.find('li').length-1;
+					suggestion.find('li').removeClass('focus');
+
+					if(index == -1)
+						index = 0;
+					else
+						e.keyCode == 40 ? index++ : index--;
+
+					var currentLi = suggestion.find('li').eq(index);
+
+					if(currentLi.length>0){
+						currentLi.addClass('focus');
+						var pos = currentLi.position();
+						$(suggestion).animate({
+							scrollTop: pos.top
+						}, 0);
+					}
+				}
+			});
+
+			typeField.on('keyup', function(e) {
+				if(!suggestion){
+					suggestion = $(renderSuggestion(tags, fieldName, typeField, opt));
+					self.append(suggestion);
+				}
+
+				var focused = suggestion.find('li.focus');
+
+				if(focused.length>0){
+					if(e.keyCode == 13 || e.keyCode == 188){
+						var val = $(this).val().replace(/,\s*$/, '');
+						renderItem(focused.attr('data-val'), focused.text(), fieldName, typeField, opt);
+						$(this).val('');
+						removeSuggestion();
+					}
+				}
+
+				if(e.keyCode != 38 && e.keyCode != 40)
+					filterMatchingLists(typeField, opt);
+
+			});
+
+			typeField.on('click', function(e){
+				removeSuggestion();
+				suggestion = $(renderSuggestion(tags, fieldName, typeField, opt));
+				self.append(suggestion);
+			});
+
+			typeField.on('blur', function(e){
+				if(suggestion && suggestion.find('li input').is('.new-tag-entry'))
+					return;
+
+				clearTimeout(suggTimeOut);
+				suggTimeOut = setTimeout(function(){
+					removeSuggestion();
+				}, 200);
+			});
+		});
+	};
+
 	var re = /([^&=]+)=?([^&]*)/g;
 	var decode = function (str) {
 			return decodeURIComponent(str.replace(/\+/g, ' '));
@@ -432,4 +668,86 @@ jQuery(document).ready(function($){
 			}
 		})
 	});
-})
+
+	$('[data-role="ap-tags"]').AnsPressTags();
+
+	function apAddRepeatField(el, values){
+		values = values||false;
+		var args = $(el).data('args');
+		args['index'] = $(el).find('[data-repeat-id]').length;
+		var template = $('#'+args.key+'-template').text();
+
+		var t = _.template(template);
+		t = t(args);
+		var regex = /(class|id|for)="([^"]+)"/g;
+
+		var t = t.replace(regex, function(match, group) {
+			return match.replace(/[[\]]/g, '');
+		});
+
+		var html = $('<div class="ap-repeatable-item" data-repeat-id="'+args.index+'">'+ t +'<a href="#" class="ap-repeatable-delete">'+args.label_delete+'</a></div>');
+		$.each(values, function(childName, v){
+			html.find('[name="'+args.key+'['+args.index+']['+childName+']"]').val(v);
+		});
+
+		var errors = $('#'+args.key+'-errors');
+
+		if ( errors.length > 0 ) {
+			var errors_json = JSON.parse(errors.html());
+			$.each(errors_json, function(i, err){
+				$.each(err, function(field, messages){
+					var fieldWrap = html.find('[name="'+args.key+'['+i+']['+field+']"]').closest('.ap-form-group');
+					fieldWrap.addClass('ap-have-errors');
+					var errContain = $('<div class="ap-field-errors"></div>');
+					$.each(messages, function(code, msg){
+						errContain.append('<span class="ap-field-error code-'+code+'">'+msg+'</span>');
+					})
+					$(errContain).insertAfter(fieldWrap.find('label'));
+				});
+			});
+		}
+
+		$(el).find('.ap-fieldrepeatable-item').append(html);
+	}
+
+	$('[data-role="ap-repeatable"]').each(function(){
+		var self = this;
+
+
+		$(this).find('.ap-repeatable-add').on('click', function(e){
+			e.preventDefault();
+
+			var self = $(this);
+			var query = JSON.parse(self.attr('ap-query'));
+			AnsPress.showLoading(self);
+
+			$count = $('[name="'+query.id+'-groups"]');
+			query.current_groups = $count.val();
+			$count.val(parseInt(query.current_groups)+1);
+
+			$nonce = $('[name="'+query.id+'-nonce"]');
+			query.current_nonce = $nonce.val();
+
+			AnsPress.ajax({
+				data: query,
+				success: function(data){
+					AnsPress.hideLoading(e.target);
+					$(data.html).insertBefore(self);
+					$nonce.val(data.nonce);
+				}
+			})
+		});
+
+		$(this).on('click', '.ap-repeatable-delete', function(e){
+			e.preventDefault();
+			$(this).closest('.ap-form-group').remove();
+		});
+
+	});
+});
+
+window.AnsPress.Helper = {
+	toggleNextClass: function(el){
+		jQuery(el).closest('.ap-field-type-group').find('.ap-fieldgroup-c').toggleClass('show');
+	}
+}

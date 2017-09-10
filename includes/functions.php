@@ -601,29 +601,22 @@ function ap_current_page_url( $args ) {
  * @param array $array Array to order.
  * @return array
  * @since 2.0.0
+ * @since 4.1.0 Keeps existing array keys.
  */
 function ap_sort_array_by_order( $array ) {
-	$new_array = array();
+	$new_array = [];
+
 	if ( ! empty( $array ) && is_array( $array ) ) {
-		$group = array();
 		foreach ( (array) $array as $k => $a ) {
 			if ( ! is_array( $a ) ) {
 				return;
 			}
-			$order = $a['order'];
-			$group[ $order ][] = $a;
-			$group[ $order ]['order'] = $order;
-		}
-		usort( $group, 'ap_sort_order_callback' );
-		foreach ( (array) $group as $a ) {
-			foreach ( (array) $a as $k => $newa ) {
-				if ( 'order' !== $k ) {
-					$new_array[] = $newa;
-				}
-			}
+
+			$array[ $k ]['order'] = isset( $a['order'] ) ? $a['order'] : 10;
 		}
 
-		return $new_array;
+		uasort( $array, 'ap_sort_order_callback' );
+		return $array;
 	}
 }
 
@@ -635,7 +628,11 @@ function ap_sort_array_by_order( $array ) {
  * @return integer
  */
 function ap_sort_order_callback( $a, $b ) {
-	return $a['order'] - $b['order'];
+	if ( $a['order'] == $b['order'] ) {
+		return 0;
+	}
+
+	return ( $a['order'] < $b['order'] ) ? -1 : 1;
 }
 
 /**
@@ -1829,4 +1826,35 @@ function ap_array_insert_after( $array = [], $key, $new ) {
 function ap_rand( $min, $max, $weight ) {
 	$offset = $max - $min + 1;
 	return floor( $min + pow( lcg_value(), $weight ) * $offset );
+}
+
+/**
+ * Convert array notation (string, not real array) to dot notation.
+ *
+ * @param boolean|string $path Path name.
+ * @return string Path separated by dot notation.
+ */
+function ap_to_dot_notation( $path = false ) {
+	$parsed = rtrim( str_replace( '..', '.', str_replace( [ ']', '[' ], '.', $path ) ), '.' );
+	return $parsed;
+}
+
+/**
+ * Set key => value in an array.
+ *
+ * @param array  $arr  Array in which key value need to set.
+ * @param string $path Path of new array item.
+ * @param mixed  $val  Value to set.
+ *
+ * @return array Updated array.
+ */
+function ap_set_in_array( &$arr, $path, $val ) {
+	$path = is_string( $path ) ? explode( '.', $path ) : $path;
+	$loc = &$arr;
+
+	foreach ( (array) $path as $step ) {
+		$loc = &$loc[ $step ];
+	}
+
+	return $loc = $val;
 }
