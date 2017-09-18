@@ -25,7 +25,7 @@ class AnsPress_Dashboard {
 
 		add_meta_box( 'ap-mb-attn', '<i class="apicon-alert"></i>' . __( 'Require Attention', 'anspress-question-answer' ), array( __CLASS__, 'anspress_attn' ), 'anspress', 'column1', 'core' );
 
-		add_meta_box( 'anspress_feed', 'AnsPress Feed', array( __CLASS__, 'anspress_feed' ), 'anspress', 'column1', 'core' );
+		add_meta_box( 'anspress_feed', __('AnsPress Feed', 'anspress-question-answer' ), array( __CLASS__, 'anspress_feed' ), 'anspress', 'column1', 'core' );
 
 		add_meta_box( 'ap-mb-qstats', '<i class="apicon-question"></i>' . __( 'Questions', 'anspress-question-answer' ), array( __CLASS__, 'anspress_stats' ), 'anspress', 'column2', 'core' );
 
