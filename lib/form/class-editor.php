@@ -14,6 +14,7 @@ namespace AnsPress\Form\Field;
 
 use AnsPress\Form as Form;
 use AnsPress\Form\Field as Field;
+use PC;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -45,11 +46,15 @@ class Editor extends Field {
 
 		$this->args['fields'] = array(
 			'images'          => array(
-				'label'          => __( 'Editor images', 'anspress-question-answer' ),
+				'label'          => sprintf(
+					// Translators: %s contain label of editor field.
+					__( '%s images', 'anspress-question-answer' ),
+					$this->get( 'label' )
+				),
 				'type'           => 'upload',
 				'upload_options' => array(
 					'multiple'  => true,
-					'max_files' => 5,
+					'max_files' => ap_opt( 'uploads_per_post' ),
 				),
 			),
 		);
@@ -103,31 +108,49 @@ class Editor extends Field {
 	}
 
 	/**
-	 * Validate current field.
+	 * Get all attached images from content.
+	 *
+	 * @return array
+	 */
+	private function get_attached_images() {
+		preg_match_all( '/(?:{{apimage "([^"]*)"[^}]*}})/', $this->value(), $matches, PREG_SET_ORDER, 0 );
+
+		$new_matches = [];
+
+		if ( ! empty( $matches ) ) {
+			foreach ( $matches as $index => $m ) {
+				$new_matches[ $index ] = $m[1];
+			}
+		}
+
+		return $new_matches;
+	}
+
+	/**
+	 *
+	 * Replace temporary images with img tags.
 	 *
 	 * @return void
 	 */
-	public function validate() {
-		parent::validate();
+	public function pre_get() {
+		$value = $this->value();
 
-		$image_field = $this->child->find( $this->id( $this->field_name . '-images' ) . '[]' );
+		if ( $this->have_errors() ) {
+			return;
+		}
 
-		if ( $image_field && ! empty( $image_field->value() ) && $image_field->have_errors() ) {
-			// Add child errors to current field as child is invisible.
-			foreach ( $image_field->errors as $code => $message ) {
-				$this->add_error( $code, __( 'Image upload: ', 'anspress-question-answer' ) . $message );
+		$image_field = $this->child->find( 'images' );
+
+		if ( $image_field && ! empty( $image_field->value() ) ) {
+			if ( ! $image_field->have_errors() ) {
+				$this->value = $image_field->replace_temp_image( $value, $this->get_attached_images() );
+			}
+
+			if ( $image_field->have_errors() ) {
+				foreach ( (array) $image_field->errors as $code => $msg ) {
+					$this->add_error( $code, $msg );
+				}
 			}
 		}
 	}
-
-	public function pre_save( $ap_qa ) {
-		$image_field = $this->child->find( $this->id( $this->field_name . '-images' ) . '[]' );
-
-		if ( $image_field && ! empty( $image_field->value() ) ) {
-			$this->value = $image_field->replace_temp_image( $this->value() );
-		}
-
-		parent::pre_save( $ap_qa );
-	}
-
 }

@@ -13,6 +13,7 @@
 namespace AnsPress\Form\Field;
 
 use AnsPress\Form\Field as Field;
+use PC;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -183,29 +184,57 @@ class Upload extends Field {
 	/**
 	 * Replace all dummy images found in editor type field.
 	 *
-	 * @return void
+	 * @param string      $string        Content where to replace images.
+	 * @param array|false $allowed_files Pass array of allowed file names .
+	 * @return string     Replaced string.
 	 */
-	public function replace_temp_image( $string ) {
+	public function replace_temp_image( $string, $allowed_files = false ) {
+		$allowed_files = array_map( 'sanitize_file_name', $allowed_files );
+
+		// Check for allowed files.
+		$new_files = [];
+		if ( false !== $allowed_files && $this->value() ) {
+			foreach ( $this->value() as $k => $file ) {
+				if ( in_array( $file['name'], $allowed_files, true ) ) {
+					$new_files[] = $file;
+				}
+			}
+			$this->value = $new_files;
+		}
+
 		if ( false === $this->uploaded ) {
 			$this->save_uploads();
 		}
 
-		return preg_replace_callback( '/({{apimage (.*?)}})/', function( $m ){
-			preg_match_all( '/"([^"]*)"/', $m[2], $attrs, PREG_SET_ORDER, 0 );
-			$sanitized_filename = sanitize_file_name( $attrs[0][1] );
-
-			if ( ! empty( $this->uploaded_files[ $sanitized_filename ] ) ) {
-				$url = wp_get_attachment_url( $this->uploaded_files[ $sanitized_filename ] );
-				$alt = ! empty( $attrs[1][1] ) ? ' alt="' . esc_attr( $attrs[1][1] ) . '"' : '';
-				return '<img src="' . $url . '"' . $alt . ' />';
-			}
-
-		}, $string );
+		return preg_replace_callback( '/({{apimage (.*?)}})/', [ $this, 'file_name_search_replace' ], $string );
 	}
 
-	private function upload_image( $file ) {
-		$id = ap_upload_user_file( $file );
+	/**
+	 * Callback for preg replace callback for replacing temporary
+	 * images in a string.
+	 *
+	 * @param array $m Matching tags.
+	 * @return string
+	 */
+	private function file_name_search_replace( $m ) {
+		preg_match_all( '/"([^"]*)"/', $m[2], $attrs, PREG_SET_ORDER, 0 );
+		$sanitized_filename = sanitize_file_name( $attrs[0][1] );
 
+		if ( ! empty( $this->uploaded_files[ $sanitized_filename ] ) ) {
+			$url = wp_get_attachment_url( $this->uploaded_files[ $sanitized_filename ] );
+			$alt = ! empty( $attrs[1][1] ) ? ' alt="' . esc_attr( $attrs[1][1] ) . '"' : '';
+			return '<img src="' . $url . '"' . $alt . ' />';
+		}
+	}
+
+	/**
+	 * Upload a file.
+	 *
+	 * @param array $file File array.
+	 * @return void
+	 */
+	private function upload_file( $file ) {
+		$id = ap_upload_user_file( $file );
 		if ( is_wp_error( $id ) ) {
 			$this->add_error( $id->get_error_code(), $id->get_error_message() );
 		} else {
@@ -213,22 +242,47 @@ class Upload extends Field {
 		}
 	}
 
+	/**
+	 * Save all uploads to server.
+	 *
+	 * @return void
+	 */
 	public function save_uploads() {
 		if ( $this->have_errors() || true === $this->uploaded ) {
-			return false;
+			return;
 		}
 
 		$value = $this->value();
 
 		if ( $this->get( 'upload_options.multiple', false ) ) {
 			foreach ( (array) $value as $file ) {
-				$this->upload_image( $file );
+				$this->upload_file( $file );
 			}
 		} else {
-			$this->upload_image( $file );
+			$this->upload_file( $file );
 		}
 
+		$this->value = $this->uploaded_files;
 		$this->uploaded = true;
 	}
 
+	/**
+	 * Set post parent of uploaded files.
+	 *
+	 * @param array $args Array of arguments.
+	 * @return void
+	 */
+	public function after_save( $args = [] ) {
+		parent::after_save();
+
+		if ( empty( $args ) && empty( $args['post_id'] ) ) {
+			return;
+		}
+
+		if ( ! empty( $this->uploaded_files ) ) {
+			foreach ( $this->uploaded_files as $id ) {
+				ap_set_media_post_parent( $id, $args['post_id'] );
+			}
+		}
+	}
 }

@@ -79,6 +79,7 @@ class AnsPress_Hooks {
 			anspress()->add_filter( 'wp_get_nav_menu_items', __CLASS__, 'update_menu_url' );
 			anspress()->add_filter( 'nav_menu_css_class', __CLASS__, 'fix_nav_current_class', 10, 2 );
 			anspress()->add_filter( 'mce_buttons', __CLASS__, 'editor_buttons', 10, 2 );
+			anspress()->add_filter( 'mce_external_plugins', __CLASS__, 'mce_plugins' );
 			anspress()->add_filter( 'wp_insert_post_data', __CLASS__, 'wp_insert_post_data', 1000, 2 );
 			anspress()->add_filter( 'ap_form_contents_filter', __CLASS__, 'sanitize_description' );
 			anspress()->add_filter( 'human_time_diff', __CLASS__, 'human_time_diff' );
@@ -111,8 +112,8 @@ class AnsPress_Hooks {
 
 			// Form hooks.
 			anspress()->add_action( 'ap_form_question', 'AP_Form_Hooks', 'question_form', 11 );
-			anspress()->add_action( 'admin_post_ap_forms', 'AP_Form_Hooks', 'init' );
-			anspress()->add_action( 'admin_post_nopriv_ap_forms', 'AP_Form_Hooks', 'init' );
+			anspress()->add_action( 'ap_form_image_upload', 'AP_Form_Hooks', 'image_upload_form', 11 );
+			anspress()->add_action( 'init', 'AP_Form_Hooks', 'init' );
 	}
 
 	/**
@@ -495,11 +496,23 @@ class AnsPress_Hooks {
 	 */
 	public static function editor_buttons( $buttons, $editor_id ) {
 		if ( is_anspress() || ap_is_ajax() ) {
-			return array( 'bold', 'italic', 'underline', 'strikethrough', 'bullist', 'numlist', 'link', 'unlink', 'blockquote', 'pre' );
+			return array( 'bold', 'italic', 'underline', 'strikethrough', 'bullist', 'numlist', 'link', 'unlink', 'blockquote', 'fullscreen', 'apcode', 'apmedia' );
 		}
 
 		return $buttons;
 	}
+
+	/**
+	 * Include AnsPress tinymce plugin.
+	 *
+	 * @param array $plugin_array Tinymce plugins.
+	 * @return array
+	 * @since 4.1.0
+	 */
+	public static function mce_plugins( $plugin_array ) {
+		$plugin_array[ 'anspress' ] = ANSPRESS_URL . 'assets/js/min/tinymce-plugin.min.js';
+		return $plugin_array;
+ 	}
 
 	/**
 	 * Filter post so that anonymous author should not be replaced

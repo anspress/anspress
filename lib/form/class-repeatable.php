@@ -77,7 +77,7 @@ class Repeatable extends Field {
 			);
 		}
 
-		$this->child = new Form( $this->field_name, $this->args );
+		$this->child = new Form( $this->form_name, $this->args );
 		$this->child->prepare();
 
 		// Call parent prepare().

@@ -290,7 +290,4 @@ class AnsPress_Theme {
 
 		return $template;
 	}
-
-
 }
-

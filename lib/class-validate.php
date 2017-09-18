@@ -273,6 +273,22 @@ class Validate {
 	}
 
 	/**
+	 * Validate if value is not zero.
+	 *
+	 * @param object $field Instance of @see `AP_Field` object.
+	 * @return void
+	 */
+	public static function validate_not_zero( $field ) {
+		if ( '0' == $field->value() ) {
+			$field->add_error( 'is-zero', sprintf(
+				// Translators: placeholder contain field label.
+				__( '%s field is required.', 'anspress-question-answer' ),
+				$field->get( 'label' )
+			) );
+		}
+	}
+
+	/**
 	 * Validate `is_email` field.
 	 *
 	 * @param object $field Instance of @see `AP_Field` object.
@@ -526,7 +542,7 @@ class Validate {
 	 */
 	public static function validate_upload( $field ) {
 		$args  = $field->get( 'upload_options' );
-		$value = $field->value();
+		$value = $field->unsafe_value();
 
 		if ( ! empty( $value ) ) {
 
@@ -536,6 +552,7 @@ class Validate {
 			}
 
 			$is_numeric = wp_is_numeric_array( $value );
+
 			if ( ( false === $args['multiple'] && $is_numeric ) ||
 					 ( true === $args['multiple'] && count( $value ) > $args['max_files'] ) ) {
 				$field->add_error( 'max-uploads', sprintf(

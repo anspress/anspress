@@ -12,6 +12,8 @@
 
 namespace AnsPress\Form;
 
+use PC;
+
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -29,6 +31,7 @@ class Field {
 	 * @var string
 	 */
 	public $field_name = '';
+	public $original_name = '';
 
 	/**
 	 * The field arguments.
@@ -89,9 +92,10 @@ class Field {
 	 * @param array  $args      Field arguments.
 	 */
 	public function __construct( $form_name, $name, $args ) {
-		$this->field_name = $form_name . '[' . $name . ']';
-		$this->form_name  = $form_name;
-		$this->args       = $args;
+		$this->original_name = $name;
+		$this->field_name    = $form_name . '[' . $name . ']';
+		$this->form_name     = $form_name;
+		$this->args          = $args;
 
 		$this->prepare();
 	}
@@ -262,10 +266,12 @@ class Field {
 	 * @return void
 	 */
 	public function add_error( $code, $message = '' ) {
-		// Update parent form property.
-		//anspress()->get_form( ltrim( $this->form_name, 'form_' ) )->have_error = true;
-
 		$this->errors[ $code ] = $message;
+		$name = explode( '.', ap_to_dot_notation( $this->form_name ) );
+
+		if ( is_array( $name ) ) {
+			anspress()->get_form( $name[0] )->add_error( 'fields-error', __( 'Error found in fields, please check and re-submit', 'anspress-question-answer' ) );
+		}
 	}
 
 	/**
@@ -274,6 +280,7 @@ class Field {
 	 * @return void
 	 */
 	public function errors() {
+		$this->add_html( '<div class="ap-field-errorsc">' );
 		if ( $this->have_errors() ) {
 			$this->add_html( '<div class="ap-field-errors">' );
 			foreach ( $this->errors as $code => $err ) {
@@ -281,6 +288,7 @@ class Field {
 			}
 			$this->add_html( '</div>' );
 		}
+		$this->add_html( '</div>' );
 	}
 
 	/**
@@ -320,7 +328,7 @@ class Field {
 		if ( false !== $wrapper ) {
 			$errors = $this->have_errors() ? ' ap-have-errors' : '';
 
-			$this->add_html( '<div class="ap-form-group ap-field-' . sanitize_html_class( $this->field_name ) . ' ap-field-type-' . esc_attr( $this->type ) . $errors . ' ' . esc_attr( $this->get( 'wrapper.class', '' ) ) . '"' . $this->get_attr( $this->get( 'wrapper.attr' ) ) . '>' );
+			$this->add_html( '<div class="ap-form-group ap-field-' . $this->id() . ' ap-field-type-' . esc_attr( $this->type ) . $errors . ' ' . esc_attr( $this->get( 'wrapper.class', '' ) ) . '"' . $this->get_attr( $this->get( 'wrapper.attr' ) ) . '>' );
 		}
 	}
 
@@ -442,33 +450,11 @@ class Field {
 		} // End if().
 	}
 
-	public function pre_save( $ap_qa ) {
-		// Do not save on validation error.
-		if ( $this->have_errors() ) {
-			return;
-		}
+	public function pre_get() {
+	}
 
-		$save_cb = $this->get( 'save' );
-		$value   = $this->value();
-
-		if ( $save_cb ) {
-
-			if ( ! empty( $save_cb['post'] ) && ! is_null( $value ) ) {
-				if ( is_array( $save_cb['post'] ) ) {
-					call_user_func( $save_cb['post'], $this, $ap_qa );
-				} else {
-					$ap_qa->set( $save_cb['post'], $value );
-				}
-			}
-
-			if ( ! empty( $save_cb['terms'] ) && ! is_null( $value ) ) {
-				$ap_qa->set_terms( $value, $save_cb['terms'] );
-			}
-		}
+	public function after_save( $args = [] ) {
 
 	}
 
-	public function post_save() {
-
-	}
 }

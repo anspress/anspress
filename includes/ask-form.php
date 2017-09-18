@@ -232,7 +232,6 @@ function ap_save_question( $args, $wp_error = false ) {
 		'post_status' 		 => 'publish',
 		'post_name' 		   => '',
 		'comment_status' 	 => 'open',
-		'attach_uploads' 	 => false,
 	) );
 
 	// Check if question title is empty.

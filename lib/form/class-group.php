@@ -52,7 +52,7 @@ class Group extends Field {
 			'delete_button' => false, // Used for repeatable fields.
 		) );
 
-		$this->child = new Form( $this->field_name, $this->args );
+		$this->child = new Form( $this->form_name, $this->args );
 		$this->child->prepare();
 
 		// Call parent prepare().

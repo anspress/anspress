@@ -459,7 +459,9 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		 * @return null|object
 		 * @since 4.1.0
 		 */
-		public function get_form( $name ) {
+		public function &get_form( $name ) {
+			$name = ltrim( $name, 'form_' );
+
 			if ( ! isset( $this->forms[ $name ] ) ) {
 				$args = apply_filters( 'ap_form_' . $name, null );
 				$this->forms[ $name ] = new Form( 'form_' . $name, $args );
@@ -468,7 +470,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 			return $this->forms[ $name ];
 		}
 	}
-}
+} // End if().
 
 /**
  * Run AnsPress thingy

@@ -58,6 +58,9 @@ class AnsPress_Ajax {
 
 		// Subscribe
 		anspress()->add_action( 'ap_ajax_subscribe', __CLASS__, 'subscribe_to_question' );
+		anspress()->add_action( 'ap_ajax_get_repeatable_field', __CLASS__, 'get_repeatable_field' );
+
+		anspress()->add_action( 'ap_ajax_form_question', 'AP_Form_Hooks', 'submit_question_form', 11 );
 
 	}
 
@@ -524,5 +527,38 @@ class AnsPress_Ajax {
 			'count'    => ap_get_post_field( 'subscribers', $post_id ),
 			'label'    => __( 'Unsubscribe', 'anspress-question-answer' ),
 		) );
+	}
+
+	/**
+	 * Ajax callback for returning repeatable field group.
+	 *
+	 * @return void
+	 * @since 4.1.0
+	 */
+	public static function get_repeatable_field() {
+		if ( ! ap_verify_nonce( 'get_repeatable_field' ) ) {
+			ap_ajax_json( [ 'success' => false ] );
+		}
+
+		$form_name    = ap_sanitize_unslash( 'form_name', 'r' );
+		$field_name   = ap_sanitize_unslash( 'field_name', 'r' );
+		$count_groups = ap_sanitize_unslash( 'current_groups', 'r' );
+
+		$_REQUEST[ sanitize_title( $field_name ) . '-g' ] = $count_groups;
+		$_REQUEST[ sanitize_title( $field_name ) . '-n' ]  = ap_sanitize_unslash( 'current_nonce', 'r' );
+
+		$form = anspress()->get_form( 'question' );
+		$form->prepare();
+		$field = $form->find( $field_name );
+
+		if ( ! empty( $field ) && is_object( $field ) ) {
+			if ( $field->get_last_field() ) {
+				ap_ajax_json( array(
+					'success' => true,
+					'html'    => $field->get_last_field()->output(),
+					'nonce'    => wp_create_nonce( $field_name . ( $count_groups + 1 ) ),
+				) );
+			}
+		}
 	}
 }

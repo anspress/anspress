@@ -1,8 +1,20 @@
 (function () {
   tinymce.create('tinymce.plugins.anspress', {
     init: function (ed, url) {
+      ed.on('PreProcess', function (e) {
+        $content = jQuery(e.node);
+        $ta_name = jQuery('input[name="'+jQuery(ed.getElement()).attr('id') + '-images[]"]');
+        $ta_name.each(function(){
+          $filename = jQuery(this).attr('data-filename');
+          if($content.find('[data-apimagename="'+$filename+'"]').length === 0)
+            jQuery(this).remove();
+        });
+      });
+
       // Replace blob image src.
       ed.on('SaveContent', function (e) {
+
+        //jQuery(e.content).find('').
         e.content = e.content.replace(/<img([^>]+data-apimagename.*?[\w\W]+?)\/>/g, function(match, t) {
           regex = /data-apimagename\=\"([\S+]*)\"/g;
           apimagename = regex.exec(match);
@@ -57,6 +69,7 @@
                       reader.onload = function (e) {
                         var preview = win.find('#image-preview')[0]['$el']['context'];
                         jQuery(preview).html('<div class="ap-image-prev" style="position: relative"><img style="height: 150px;width: auto;max-width: 100%" src="' + e.target.result + '" data-apimagename="'+self.files[0].name+'" /></div>');
+                        input.attr('data-filename', self.files[0].name);
                       }
                       reader.readAsDataURL(this.files[0]);
                     }

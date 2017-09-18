@@ -744,6 +744,55 @@ jQuery(document).ready(function($){
 		});
 
 	});
+
+	$('body').on('click', '.ap-form-group', function(){
+		$(this).removeClass('ap-have-errors');
+	});
+
+	$('[apform]').each(function(){
+		var self = $(this);
+
+		$(self).ajaxForm({
+			url: ajaxurl,
+			beforeSerialize: function() {
+				if(typeof tinymce !== undefined)
+					tinymce.triggerSave();
+
+				$('.ap-form-errors, .ap-field-errors').remove();
+				$('.ap-have-errors').removeClass('ap-have-errors');
+			},
+			success: function(data) {
+				data = AnsPress.ajaxResponse(data);
+				if(data.snackbar){
+					AnsPress.trigger('snackbar', data)
+				}
+
+				if(typeof data.form_errors !== 'undefined'){
+					$formError = $('<div class="ap-form-errors"></div>').prependTo(self);
+
+					$.each(data.form_errors, function(i, err){
+						$formError.append('<span class="ap-form-error ecode-'+i+'">'+err+'</div>');
+					});
+
+					$.each(data.fields_errors, function(i, errs){
+						$('.ap-field-'+i).addClass('ap-have-errors');
+						$('.ap-field-'+i).find('.ap-field-errorsc').html('<div class="ap-field-errors"></div>');
+
+						$.each(errs.error, function(code, err){
+							$('.ap-field-' + i).find('.ap-field-errors').append('<span class="ap-field-error ecode-'+code+'">'+err+'</span>');
+						});
+					});
+
+					self.apScrollTo();
+				}
+
+				if(typeof data.redirect !== 'undefined'){
+					window.location = data.redirect;
+				}
+			}
+		});
+	});
+
 });
 
 window.AnsPress.Helper = {

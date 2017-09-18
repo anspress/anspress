@@ -11,8 +11,6 @@
  */
 
 namespace AnsPress;
-use AP_Question as Question;
-use PC;
 
 /**
  * The form class.
@@ -48,9 +46,8 @@ class Form {
 	 */
 	public $prepared = false;
 
-	public $ap_qa;
-	public $saved = false;
-	public $have_errors = false;
+	public $errors = [];
+	public $values = null;
 
 	/**
 	 * Initialize the class.
@@ -70,6 +67,7 @@ class Form {
 	 */
 	public function prepare() {
 		$fields = ap_sort_array_by_order( $this->args['fields'] );
+
 		foreach ( (array) $fields as $field_name => $field_args ) {
 
 			if ( empty( $field_args['type'] ) ) {
@@ -80,11 +78,12 @@ class Form {
 			$field_class = 'AnsPress\\Form\\Field\\' . $type_class;
 
 			if ( class_exists( $field_class ) ) {
-				$this->fields[ $field_name ] = new $field_class( $this->form_name, $field_name, $field_args );
+				$this->fields[ $field_name ] = new $field_class( $this->form_name, $field_name, $field_args, $this );
 			}
 		}
 
 		$this->prepared = true;
+		$this->sanitize_validate();
 	}
 
 	/**
@@ -112,10 +111,21 @@ class Form {
 	 * @return void
 	 */
 	public function generate() {
-		echo '<form id="' . $this->form_name . '" name="' . esc_attr( $this->form_name ) . '" method="POST" enctype="multipart/form-data" action="' . esc_url( admin_url( 'admin-post.php' ) ) . '">';
+		echo '<form id="' . $this->form_name . '" name="' . esc_attr( $this->form_name ) . '" method="POST" enctype="multipart/form-data" apform>';
+
+		// Output form errors.
+		if ( $this->have_errors() ) {
+			echo '<div class="ap-form-errors">';
+			foreach ( (array) $this->errors as $code => $msg ) {
+				echo '<span class="ap-form-error ecode-' . esc_attr( $code ) . '">' . esc_html( $msg ) . '</span>';
+			}
+			echo '</div>';
+		}
+
 		echo $this->generate_fields(); // xss okay.
 
-		echo '<input type="hidden" name="action" value="ap_forms">';
+		echo '<input type="hidden" name="action" value="ap_ajax">';
+		echo '<input type="hidden" name="ap_ajax_action" value="' . esc_attr( $this->form_name ) . '">';
 		echo '<input type="hidden" name="ap_form_name" value="' . esc_attr( $this->form_name ) . '" />';
 		echo '<input type="submit" name="' . esc_attr( $this->form_name ) . '_submit" value="Submit" />';
 		echo '<input type="hidden" name="' . esc_attr( $this->form_name ) . '_nonce" value="' . esc_attr( wp_create_nonce( $this->form_name ) ) . '" />';
@@ -146,7 +156,7 @@ class Form {
 	 */
 	public function find( $field_name, $fields = false ) {
 		$fields = false === $fields ? $this->fields : $fields;
-		$found = wp_filter_object_list( $fields, [ 'field_name' => $field_name ] );
+		$found = wp_filter_object_list( $fields, [ 'original_name' => $field_name ] );
 
 		if ( empty( $found ) ) {
 			foreach ( $fields as $field ) {
@@ -161,6 +171,26 @@ class Form {
 			}
 		}
 		return is_array( $found ) ? reset( $found ) : $found;
+	}
+
+	/**
+	 * Add an error to form object.
+	 *
+	 * @param string $code Error code.
+	 * @param string $msg  Error message.
+	 * @return void
+	 */
+	public function add_error( $code, $msg = '' ) {
+		$this->errors[ $code ] = $msg;
+	}
+
+	/**
+	 * Check if form have any error.
+	 *
+	 * @return boolean
+	 */
+	public function have_errors() {
+		return ! empty( $this->errors ) && is_array( $this->errors );
 	}
 
 	/**
@@ -214,7 +244,7 @@ class Form {
 	 * @param boolean|array $fields Fields to process.
 	 * @return void
 	 */
-	public function sanitize_validate( $fields = false ) {
+	private function sanitize_validate( $fields = false ) {
 		if ( ! ap_isset_post_value( $this->form_name . '_submit' ) ) {
 			return;
 		}
@@ -234,77 +264,106 @@ class Form {
 
 			$field->sanitize();
 			$field->validate();
-		}
-	}
 
-	/**
-	 * Callback triggered before saving.
-	 *
-	 * @param boolean $fields
-	 * @return void
-	 */
-	private function pre_save( $fields = false ) {
-		if ( false === $fields ) {
-			$fields = $this->fields;
-		}
-
-		foreach ( (array) $fields as $field ) {
-			if ( ! empty( $field->child ) && ! empty( $field->child->fields ) ) {
-				$this->pre_save( $field->child->fields, true );
+			if ( true === $field->have_errors() ) {
+				$this->add_error( 'fields-error', __( 'Error found in fields, please check and re-submit', 'anspress-question-answer' ) );
 			}
-
-			$field->pre_save( $this->ap_qa );
 		}
 	}
 
-	/**
-	 * Callback triggered after saving a post.
-	 *
-	 * @param boolean $fields
-	 * @return void
-	 */
-	private function post_save( $fields = false ) {
-		if ( false === $fields ) {
-			$fields = $this->fields;
-		}
-
-		foreach ( (array) $fields as $field ) {
-			if ( ! empty( $field->child ) && ! empty( $field->child->fields ) ) {
-				$this->post_save( $field->child->fields );
-			}
-
-			$field->post_save( $this->ap_qa );
-		}
-	}
-
-	/**
-	 * Save all fields.
-	 *
-	 * @param boolean|array $fields Fields to process.
-	 * @return void
-	 */
-	public function save_post( $fields = false ) {
-		if ( true === $this->saved ) {
-			return;
-		}
-
-		if ( ! $this->ap_qa instanceof Question ) {
-			$this->ap_qa = new Question();
-		}
+	public function get_fields_errors( $fields = false ) {
+		$errors = [];
 
 		if ( false === $this->prepared ) {
 			$this->prepare();
 		}
 
-		$this->pre_save();
-		$ret = $this->ap_qa->save();
-
-		if ( ! is_wp_error( $ret ) ) {
-			$this->saved = true;
-			$this->post_save();
+		if ( false === $fields ) {
+			$fields = $this->fields;
 		}
 
-		return $ret;
+		foreach ( (array) $fields as $field ) {
+			if ( $field->have_errors() ) {
+				$errors[ $field->id() ] = [ 'error' => $field->errors ];
+			}
+
+			if ( ! empty( $field->child ) && ! empty( $field->child->fields ) ) {
+				$child_errors = $this->get_fields_errors( $field->child->fields );
+
+				if ( ! empty( $child_errors ) ) {
+					$errors[ $field->id() ]['child'] = $child_errors;
+				}
+			}
+		}
+
+		return $errors;
+	}
+
+	private function field_values( $fields = false ) {
+		$values = [];
+
+		if ( false === $this->prepared ) {
+			$this->prepare();
+		}
+
+		if ( false === $fields ) {
+			$fields = $this->fields;
+		}
+
+		foreach ( (array) $fields as $field ) {
+			$field->pre_get();
+			$values[ $field->original_name ] = [ 'value' => $field->value() ];
+
+			if ( ! empty( $field->child ) && ! empty( $field->child->fields ) ) {
+				$values[ $field->original_name ]['child'] = $this->field_values( $field->child->fields );
+			}
+		}
+
+		return $values;
+	}
+
+	/**
+	 * Get all values of fields.
+	 *
+	 * @return array|false
+	 */
+	public function get_values() {
+		if ( $this->have_errors() ) {
+			return false;
+		}
+
+		if ( ! is_null( $this->values ) ) {
+			return $this->values;
+		}
+
+		$this->values = $this->field_values();
+		return $this->values;
+	}
+
+	/**
+	 * Run all after save methods in fields and child fields.
+	 *
+	 * @param boolean|array $fields Fields.
+	 * @param array         $args   Arguments to be passed to method.
+	 * @return void
+	 */
+	public function after_save( $fields = false, $args = [] ) {
+		if ( false === $this->prepared ) {
+			$this->prepare();
+		}
+
+		if ( false === $fields ) {
+			$fields = $this->fields;
+		}
+
+		foreach ( (array) $fields as $field ) {
+			$field->after_save( $args );
+
+			if ( ! empty( $field->child ) && ! empty( $field->child->fields ) ) {
+				$this->after_save( $field->child->fields, $args );
+			}
+		}
+
 	}
 
 }

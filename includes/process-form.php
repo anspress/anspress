@@ -64,8 +64,8 @@ class AnsPress_Process_Form {
 		$this->request = $_REQUEST;
 
 		if ( isset( $_POST['ap_form_action'] ) ) {
-	    	$this->is_ajax = true;
-	    	$this->process_form();
+			$this->is_ajax = true;
+			$this->process_form();
 			ap_ajax_json( $this->result );
 		} else {
 			$action = ap_sanitize_unslash( 'ap_ajax_action', 'r' );
@@ -107,107 +107,6 @@ class AnsPress_Process_Form {
 				 */
 				do_action( 'ap_process_form_' . $action );
 				break;
-		}
-	}
-
-	/**
-	 * Process ask form.
-	 *
-	 * @since 2.0.1
-	 */
-	public function process_ask_form() {
-		// Do security check, if fails then return.
-		if ( check_ajax_referer( 'ask_form', false, false ) || ! ap_user_can_ask() ) {
-			ap_ajax_json( array(
-				'success' => false,
-				'snackbar' => [ 'message' => __( 'Sorry, unable to post new question', 'anspress-question-answer' ) ],
-			) );
-		}
-
-		global $ap_errors, $validate;
-		$editing_post_id = ap_isset_post_value( 'edit_post_id', false );
-
-		/**
-		 * Filter to modify ask question fields validation.
-		 *
-		 * @param array $args Ask form validation arguments.
-		 * @since 2.0.1
-		 */
-		$args = apply_filters( 'ap_ask_fields_validation', ap_get_ask_form_fields( $editing_post_id ) );
-
-		$validate = new AnsPress_Validation( $args );
-
-		/**
-		 * Action triggered after ask form fields validation.
-		 *
-		 * @since 4.0.0
-		 */
-		do_action( 'ap_process_ask_form', $validate );
-
-		// If error in form then bail.
-		ap_form_validation_error_response( $validate );
-		$fields = $validate->get_sanitized_fields();
-		$this->fields = $fields;
-
-		if ( ! empty( $fields['edit_post_id'] ) ) {
-			$this->edit_question();
-			return;
-		}
-
-		// Check if duplicate.
-		if ( false !== ap_find_duplicate_post( $fields['description'], 'question' ) ) {
-			ap_ajax_json( array(
-				'success' 	=> false,
-				'form' 	 	=> $_POST['ap_form_action'],
-				'snackbar' 	=> [ 'message' => __( 'This seems to be a duplicate question. A question with same content already exists.', 'anspress-question-answer' ) ],
-			) );
-		}
-
-		$filter = apply_filters( 'ap_before_inserting_question', false, $fields['description'] );
-		if ( true === $filter || is_array( $filter ) ) {
-			if ( is_array( $filter ) ) {
-				$this->result = $filter;
-			}
-			return;
-		}
-
-		$user_id = get_current_user_id();
-
-		$question_array = array(
-			'post_title'		=> $fields['title'],
-			'post_author'		=> $user_id,
-			'post_content' 		=> $fields['description'],
-			'attach_uploads' 	=> true,
-		);
-
-		$question_array['post_status'] = ap_new_edit_post_status( $user_id, 'question', false );
-
-		if ( isset( $this->fields['is_private'] ) && $this->fields['is_private'] ) {
-			$question_array['is_private'] = true;
-		}
-
-		// Check if anonymous post and have name.
-		if ( ! is_user_logged_in() && ap_opt( 'allow_anonymous' ) && ! empty( $fields['anonymous_name'] ) ) {
-			$question_array['anonymous_name'] = $fields['anonymous_name'];
-		}
-
-		if ( isset( $fields['parent_id'] ) ) {
-			$question_array['post_parent'] = (int) $fields['parent_id'];
-		}
-
-		$post_id = ap_save_question( $question_array, true );
-
-		if ( $post_id ) {
-			ap_clear_unattached_media();
-
-			ap_ajax_json( array(
-				'success'  => true,
-				'action'   => 'new_question',
-				'redirect' => get_permalink( $post_id ),
-				'snackbar' => [
-					'message' => __( 'Question posted successfully. Redirecting to question', 'anspress-question-answer' ),
-				],
-			) );
 		}
 	}
 
@@ -423,23 +322,3 @@ class AnsPress_Process_Form {
 		}
 	}
 }
-
-/**
- * Send ajax response if there is error in validation class.
- * @param  object $validate Validation class.
- * @since  3.0.0
- */
-function ap_form_validation_error_response( $validate ) {
-	// If error in form then return.
-	if ( $validate->have_error() ) {
-		ap_ajax_json( array(
-			'success' => false,
-			'form' 			=> $_POST['ap_form_action'],
-			'snackbar' => [
-				'message' => __( 'Check missing fields and then re-submit.', 'anspress-question-answer' ),
-			],
-			'errors'		=> $validate->get_errors(),
-		) );
-	}
-}
-

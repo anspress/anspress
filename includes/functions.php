@@ -518,6 +518,8 @@ function ap_responce_message( $id, $only_message = false ) {
  *
  * @param  array|string $results Response to send.
  * @return array
+ * @since  unknown
+ * @since  4.1.0 Removed `template` variable. Send `snackbar` for default message.
  */
 function ap_ajax_responce( $results ) {
 	if ( ! is_array( $results ) ) {
@@ -532,23 +534,11 @@ function ap_ajax_responce( $results ) {
 		$error_message = ap_responce_message( $results['message'] );
 
 		if ( false !== $error_message ) {
-			$results['message']      = $error_message['message'];
-			$results['message_type'] = $error_message['type'];
+			$results['snackbar'] = array(
+				'message'      => $error_message['message'],
+				'message_type' => $error_message['type'],
+			);
 		}
-	}
-
-	// Send requested template.
-	if ( isset( $results['template'] ) ) {
-		$template_file = ap_get_theme_url( 'js-template/' . $results['template'] . '.html' );
-
-		if ( ap_env_dev() ) {
-			$template_file = $template_file . '&time=' . time();
-		}
-
-		$results['apTemplate'] = array(
-			'name'     => $results['template'],
-			'template' => $template_file,
-		);
 	}
 
 	/**
@@ -1223,12 +1213,9 @@ function ap_new_edit_post_status( $user_id = false, $post_type = 'question', $ed
  * @param  integer|false $question_id Question ID.
  * @return boolean|false
  * @since  3.0.0
+ * @since  4.1.0 Removed option check.
  */
 function ap_find_duplicate_post( $content, $post_type = 'question', $question_id = false ) {
-	if ( ! ap_opt( 'duplicate_check' ) ) {
-		return false;
-	}
-
 	global $wpdb;
 	$content = ap_sanitize_description_field( $content );
 

@@ -404,11 +404,12 @@ class AnsPress_Category {
 		}
 
 		$form['fields']['category'] = array(
-			'label'   => __( 'Category', 'anspress-question-answer' ),
-			'desc' 		=> __( 'Select a topic that best fits your question.', 'anspress-question-answer' ),
-			'type'    => 'select',
-			'options' => 'terms',
-			'order'   => 8,
+			'label'    => __( 'Category', 'anspress-question-answer' ),
+			'desc' 		 => __( 'Select a topic that best fits your question.', 'anspress-question-answer' ),
+			'type'     => 'select',
+			'options'  => 'terms',
+			'order'    => 8,
+			'validate' => 'not_zero',
 		);
 
 		return $form;
