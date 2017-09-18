@@ -179,9 +179,9 @@ class AnsPress_Category {
 		 */
 		$categories_labels = array(
 			'name' 				        => __( 'Question Categories', 'anspress-question-answer' ),
-			'singular_name' 	    => _x( 'Category', 'anspress-question-answer' ),
+			'singular_name' 	    => __( 'Category', 'anspress-question-answer' ),
 			'all_items' 		      => __( 'All Categories', 'anspress-question-answer' ),
-			'add_new_item' 		    => _x( 'Add New Category', 'anspress-question-answer' ),
+			'add_new_item' 		    => __( 'Add New Category', 'anspress-question-answer' ),
 			'edit_item' 		      => __( 'Edit Category', 'anspress-question-answer' ),
 			'new_item' 			      => __( 'New Category', 'anspress-question-answer' ),
 			'view_item' 		      => __( 'View Category', 'anspress-question-answer' ),
