@@ -47,8 +47,7 @@ class AnsPress_Category {
 		anspress()->add_action( 'ap_assets_js', __CLASS__, 'ap_assets_js' );
 		anspress()->add_filter( 'term_link', __CLASS__, 'term_link_filter', 10, 3 );
 		anspress()->add_action( 'ap_question_form_fields', __CLASS__, 'ap_question_form_fields' );
-		anspress()->add_action( 'ap_processed_new_question', __CLASS__, 'after_new_question', 0, 2 );
-		anspress()->add_action( 'ap_processed_update_question', __CLASS__, 'after_new_question', 0, 2 );
+		anspress()->add_action( 'save_post_question', __CLASS__, 'after_new_question', 0, 2 );
 		anspress()->add_filter( 'ap_page_title', __CLASS__, 'page_title' );
 		anspress()->add_filter( 'ap_breadcrumbs', __CLASS__, 'ap_breadcrumbs' );
 		anspress()->add_action( 'terms_clauses', __CLASS__, 'terms_clauses', 10, 3 );
@@ -403,6 +402,8 @@ class AnsPress_Category {
 			return $form;
 		}
 
+		$editing_id = ap_sanitize_unslash( 'id', 'r' );
+
 		$form['fields']['category'] = array(
 			'label'    => __( 'Category', 'anspress-question-answer' ),
 			'desc' 		 => __( 'Select a topic that best fits your question.', 'anspress-question-answer' ),
@@ -411,6 +412,15 @@ class AnsPress_Category {
 			'order'    => 8,
 			'validate' => 'not_zero',
 		);
+
+		// Add value when editing post.
+		if ( ! empty( $editing_id ) ) {
+			$categories = get_the_terms( $editing_id, 'question_category' );
+
+			if ( $categories ) {
+				$form['fields']['category']['value'] = $categories[0]->term_id;
+			}
+		}
 
 		return $form;
 	}
@@ -424,18 +434,11 @@ class AnsPress_Category {
 	 * @since 	1.0
 	 */
 	public static function after_new_question( $post_id, $post ) {
-		global $validate;
+		$values = anspress()->get_form( 'question' )->get_values();
 
-		if ( empty( $validate ) ) {
-			return;
+		if ( isset( $values['category']['value'] ) ) {
+			wp_set_post_terms( $post_id, $values['category']['value'], 'question_category' );
 		}
-
-		$fields = $validate->get_sanitized_fields();
-
-		if ( isset( $fields['category'] ) ) {
-			wp_set_post_terms( $post_id, $fields['category'], 'question_category' );
-		}
-
 	}
 
 	/**

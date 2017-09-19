@@ -108,6 +108,19 @@ class Input extends Field {
 	}
 
 	/**
+	 * Order of HTML markup.
+	 *
+	 * @return void
+	 */
+	protected function html_order() {
+		if ( 'hidden' === $this->subtype ) {
+			$this->output_order = [ 'wrapper_start', 'errors', 'field_markup', 'wrapper_end' ];
+		} else {
+			parent::html_order();
+		}
+	}
+
+	/**
 	 * Field markup.
 	 *
 	 * @return void

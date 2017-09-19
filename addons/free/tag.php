@@ -47,8 +47,7 @@ class AnsPress_Tag {
 		anspress()->add_filter( 'term_link', __CLASS__, 'term_link_filter', 10, 3 );
 		anspress()->add_action( 'ap_question_form_fields', __CLASS__, 'ap_question_form_fields' );
 		anspress()->add_action( 'ap_ask_fields_validation', __CLASS__, 'ap_ask_fields_validation' );
-		anspress()->add_action( 'ap_processed_new_question', __CLASS__, 'after_new_question', 0, 2 );
-		anspress()->add_action( 'ap_processed_update_question', __CLASS__, 'after_new_question', 0, 2 );
+		anspress()->add_action( 'save_post_question', __CLASS__, 'after_new_question', 0, 2 );
 		anspress()->add_filter( 'ap_page_title', __CLASS__, 'page_title' );
 		anspress()->add_filter( 'ap_breadcrumbs', __CLASS__, 'ap_breadcrumbs' );
 		anspress()->add_filter( 'terms_clauses', __CLASS__, 'terms_clauses', 10, 3 );
@@ -368,6 +367,7 @@ class AnsPress_Tag {
 	 * @since 4.1.0
 	 */
 	public static function ap_question_form_fields( $form ) {
+		$editing_id = ap_sanitize_unslash( 'id', 'r' );
 
 		$form['fields']['tags'] = array(
 			'label'     => __( 'Tags', 'anspress-question-answer' ),
@@ -381,6 +381,15 @@ class AnsPress_Tag {
 			'array_max' => ap_opt( 'max_tags' ),
 			'array_min' => ap_opt( 'min_tags' ),
 		);
+
+		// Add value when editing post.
+		if ( ! empty( $editing_id ) ) {
+			$tags = get_the_terms( $editing_id, 'question_tag' );
+			if ( $tags ) {
+				$tags = wp_list_pluck( $tags, 'name', 'term_id' );
+				$form['fields']['tags']['value'] = $tags;
+			}
+		}
 
 		return $form;
 	}
@@ -408,16 +417,10 @@ class AnsPress_Tag {
 	 * @since 1.0
 	 */
 	public static function after_new_question( $post_id, $post ) {
-		global $validate;
+		$values = anspress()->get_form( 'question' )->get_values();
 
-		if ( empty( $validate ) ) {
-			return;
-		}
-
-		$fields = $validate->get_sanitized_fields();
-		if ( isset( $fields['tags'] ) ) {
-			$tags = explode( ',', $fields['tags'] );
-			wp_set_object_terms( $post_id, $tags, 'question_tag' );
+		if ( isset( $values['tags'] ) ) {
+			wp_set_object_terms( $post_id, $values['tags']['value'], 'question_tag' );
 		}
 	}
 

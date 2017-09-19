@@ -112,7 +112,7 @@ class Tags extends Field {
 
 		$i = 1;
 		// Populate already selected tags.
-		foreach ( (array) $this->unsafe_value() as $key => $label ) {
+		foreach ( (array) $this->value() as $key => $label ) {
 			$i++;
 			$this->add_html( '<span class="ap-tag-item" data-val="' . esc_attr( $key ) . '">' . esc_attr( $label ) . '<input type="hidden" name="' . esc_attr( $this->field_name ) . '[' . esc_attr( $key ) . ']" value="' . esc_attr( $label ) . '" /></span>' );
 		}

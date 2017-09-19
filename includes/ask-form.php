@@ -180,16 +180,6 @@ function ap_ask_form( $post_id = false ) {
 }
 
 /**
- * Generate edit question form, this is a wrapper of ap_ask_form()
- *
- * @return void
- * @since 2.0.1
- */
-function ap_edit_question_form() {
-	ap_ask_form( true );
-}
-
-/**
  * Remove stop words from post name if option is enabled.
  *
  * @param  string $str Post name to filter.
@@ -215,92 +205,6 @@ function ap_remove_stop_words_post_name( $str ) {
 }
 
 /**
- * Insert and update question.
- *
- * @param  array $args     Question arguments.
- * @param  bool  $wp_error Return wp error.
- * @return bool|object|int
- */
-function ap_save_question( $args, $wp_error = false ) {
-
-	if ( isset( $args['is_private'] ) && $args['is_private'] ) {
-		$args['post_status'] = 'private_post';
-	}
-
-	$args = wp_parse_args( $args, array(
-		'post_author' 		 => -1,
-		'post_status' 		 => 'publish',
-		'post_name' 		   => '',
-		'comment_status' 	 => 'open',
-	) );
-
-	// Check if question title is empty.
-	if ( empty( $args['post_title'] ) ) {
-		if ( true === $wp_error ) {
-			return new WP_Error( 'question_title_empty', __( 'Question title cannot be blank', 'anspress-question-answer' ) );
-		}
-		return false;
-	}
-
-	/**
-	 * Filter question description before saving.
-	 *
-	 * @param string $content Post content.
-	 * @since unknown
-	 * @since @3.0.0 Moved from process-form.php
-	 */
-	$args['post_content'] = apply_filters( 'ap_form_contents_filter', $args['post_content'] );
-
-	$args['post_name'] 	  = ap_remove_stop_words_post_name( $args['post_name'] );
-	$args['post_type'] 	  = 'question';
-
-	if ( isset( $args['ID'] ) ) {
-		/**
-		 * Can be used to modify `$args` before updating question
-		 *
-		 * @param array $args Question arguments.
-		 * @since 2.0.1
-		 */
-		$args = apply_filters( 'ap_pre_update_question', $args );
-	} else {
-		/**
-		 * Can be used to modify args before inserting question
-		 *
-		 * @param array $args Question arguments.
-		 * @since 2.0.1
-		 */
-		$args = apply_filters( 'ap_pre_insert_question', $args );
-	}
-
-	$post_id = wp_insert_post( $args, true );
-
-	if ( true === $wp_error && is_wp_error( $post_id ) ) {
-		return $post_id;
-	}
-
-	if ( $post_id ) {
-		$qameta_args = [ 'last_updated' => current_time( 'mysql' ) ];
-
-		if ( isset( $args['anonymous_name'] ) && ap_opt( 'allow_anonymous' ) ) {
-			$qameta_args['fields'] = [ 'anonymous_name' => $args['anonymous_name'] ];
-		}
-
-		ap_insert_qameta( $post_id, $qameta_args );
-		$activity_type = isset( $args['ID'] ) ? 'edit_question' : 'new_question';
-
-		// Add question activity meta.
-		ap_update_post_activity_meta( $post_id, $activity_type, get_current_user_id() );
-
-		if ( ap_isset_post_value( 'ap-medias' ) ) {
-			$ids = ap_sanitize_unslash( 'ap-medias', 'r' );
-			ap_set_media_post_parent( $ids, $post_id );
-		}
-	}
-
-	return $post_id;
-}
-
-/**
  * TinyMCE editor setting
  *
  * @return array
@@ -309,8 +213,8 @@ function ap_save_question( $args, $wp_error = false ) {
 function ap_tinymce_editor_settings( $type = 'question' ) {
 	$setting = array(
 		'textarea_rows' => 8,
-		'tinymce'   => ap_opt( $type . '_text_editor' ) ? false : true,
-		'quicktags' => ap_opt( $type . '_text_editor' ) ? true : false,
+		'tinymce'       => ap_opt( $type . '_text_editor' ) ? false: true,
+		'quicktags'     => ap_opt( $type . '_text_editor' ) ? true:  false,
 		'media_buttons' => false,
 	);
 

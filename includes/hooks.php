@@ -49,7 +49,8 @@ class AnsPress_Hooks {
 			anspress()->add_action( 'wp_loaded', __CLASS__, 'flush_rules' );
 			anspress()->add_action( 'safe_style_css', __CLASS__, 'safe_style_css', 11 );
 			anspress()->add_action( 'save_post', __CLASS__, 'base_page_update', 10, 2 );
-			anspress()->add_action( 'save_post', __CLASS__, 'question_answer_hooks', 1, 3 );
+			anspress()->add_action( 'save_post_question', __CLASS__, 'question_answer_hooks', 1, 3 );
+			//anspress()->add_action( 'save_post_answer', __CLASS__, 'question_answer_hooks', 1, 3 );
 			anspress()->add_action( 'ap_vote_casted', __CLASS__, 'update_user_vote_casted_count', 10, 4 );
 			anspress()->add_action( 'ap_vote_removed', __CLASS__, 'update_user_vote_casted_count' , 10, 4 );
 			anspress()->add_action( 'the_post', __CLASS__, 'filter_page_title' );
@@ -598,49 +599,72 @@ class AnsPress_Hooks {
 			return;
 		}
 
-		// check if post type is question or answer.
-		if ( ! in_array( $post->post_type, [ 'question', 'answer' ] ) ) {
-			return;
+		$form = anspress()->get_form( 'question' );
+		$values = $form->get_values();
+		$activity_type = ! empty( $values['post_id']['value'] ) ? 'edit_question' : 'new_question';
+
+		$qameta = array(
+			'last_updated' => current_time( 'mysql' ),
+			'answers'      => ap_count_published_answers( $post_id ),
+			'activities'   => array(
+				'type'    => $activity_type,
+				'user_id' => $post->post_author,
+				'date'    => current_time( 'mysql' ),
+			),
+		);
+
+		// Check if anonymous post and have name.
+		if ( ! is_user_logged_in() && ap_opt( 'allow_anonymous' ) && ! empty( $values['anonymous_name']['value'] ) ) {
+			$qameta['fields'] = array(
+				'anonymous_name' => $values['anonymous_name']['value'],
+			);
 		}
 
-		if ( $updated ) {
-			if ( 'answer' === $post->post_type ) {
-				// Update answer count.
-				ap_update_answers_count( $post->post_parent );
-			}
+		/**
+		 * Modify qameta args which will be inserted after inserting
+		 * or updating question.
+		 *
+		 * @param array   $qameta  Qameta arguments.
+		 * @param object  $post    Post object.
+		 * @param boolean $updated Is updated.
+		 * @since 4.1.0
+		 */
+		$qameta = apply_filters( 'ap_insert_question_qameta', $qameta, $post, $updated );
+		ap_insert_qameta( $post_id, $qameta );
 
+		if ( $updated ) {
 			/**
-			 * Action triggered right after updating question/answer.
+			 * Action triggered right after updating question.
 			 *
 			 * @param integer $post_id Inserted post ID.
 			 * @param object	$post		Inserted post object.
 			 * @since 0.9
+			 * @since 4.1.0 Removed `$post->post_type` variable.
 			 */
-			do_action( 'ap_processed_update_' . $post->post_type, $post_id, $post );
+			do_action( 'ap_processed_update_question' , $post_id, $post );
 
 		} else {
 			/**
-			 * Action triggered right after inserting new question/answer.
+			 * Action triggered right after inserting new question.
 			 *
 			 * @param integer $post_id Inserted post ID.
 			 * @param object	$post		Inserted post object.
 			 * @since 0.9
+			 * @since 4.1.0 Removed `$post->post_type` variable.
 			 */
-			do_action( 'ap_processed_new_' . $post->post_type, $post_id, $post );
+			do_action( 'ap_processed_new_question', $post_id, $post );
 		}
 
-		if ( 'question' === $post->post_type ) {
-			// Update qameta terms.
-			ap_update_qameta_terms( $post_id );
-		}
+		// Update qameta terms.
+		ap_update_qameta_terms( $post_id );
 	}
 
 	/**
 	 * Update user meta of vote
 	 *
-	 * @param	integer $userid					 User ID who is voting.
-	 * @param	string	$type						 Vote type.
-	 * @param	integer $actionid				 Post ID.
+	 * @param	integer $userid					  User ID who is voting.
+	 * @param	string	$type						  Vote type.
+	 * @param	integer $actionid				  Post ID.
 	 * @param	integer $receiving_userid User who is receiving vote.
 	 */
 	public static function update_user_vote_casted_count( $userid, $type, $actionid, $receiving_userid ) {

@@ -463,7 +463,6 @@ function ap_update_post_activities( $post_id, $activities = array() ) {
 	return ap_insert_qameta( $post_id, [ 'activities' => $activities, 'last_updated' => current_time( 'mysql' ) ] );
 }
 
-
 /**
  * Update post activity meta.
  *
@@ -476,7 +475,6 @@ function ap_update_post_activities( $post_id, $activities = array() ) {
  * @since  2.4.7
  */
 function ap_update_post_activity_meta( $post, $type, $user_id, $append_to_question = false, $date = false ) {
-
 	if ( empty( $post ) ) {
 		return false;
 	}

@@ -12,8 +12,6 @@
 
 namespace AnsPress\Form;
 
-use PC;
-
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
