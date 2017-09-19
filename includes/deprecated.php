@@ -345,3 +345,45 @@ function ap_get_ask_form_fields( $post_id = false ) {
 
 	return $fields['fields'];
 }
+
+/**
+ * Sanitize AnsPress question and answer description field for database.
+ *
+ * @param  string $content Post content.
+ * @return string Sanitized post content
+ *
+ * @since  3.0.0
+ * @deprecated 4.1.0 This function was replaced by @see `AnsPress\Form\Validate::sanitize_description()`.
+ */
+function ap_sanitize_description_field( $content ) {
+	_deprecated_function( __FUNCTION__, '4.1.0', 'AnsPress\Form\Validate::sanitize_description()' );
+
+	$content = str_replace( '<!--more-->', '', $content );
+	$content = preg_replace_callback( '/<pre.*?>(.*?)<\/pre>/imsu', 'ap_sanitize_description_field_pre_content', $content );
+	$content = preg_replace_callback( '/<code.*?>(.*?)<\/code>/imsu', 'ap_sanitize_description_field_code_content', $content );
+	$content = wp_kses( $content, ap_form_allowed_tags() );
+	$content = sanitize_post_field( 'post_content', $content, 0, 'db' );
+	return $content;
+}
+
+/**
+ * Callback used in @see `ap_sanitize_description_field()`.
+ *
+ * @param array $matches Matched strings.
+ * @return string
+ * @deprecated 4.1.0
+ */
+function ap_sanitize_description_field_pre_content( $matches ) {
+	return '<pre>' . esc_html( $matches[1] ) . '</pre>';
+}
+
+/**
+ * Callback used in @see `ap_sanitize_description_field()`.
+ *
+ * @param array $matches Matched strings.
+ * @return string
+ * @deprecated 4.1.0
+ */
+function ap_sanitize_description_field_code_content( $matches ) {
+	return '<code>' . esc_html( $matches[1] ) . '</code>';
+}

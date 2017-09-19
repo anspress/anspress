@@ -1213,11 +1213,10 @@ function ap_new_edit_post_status( $user_id = false, $post_type = 'question', $ed
  * @param  integer|false $question_id Question ID.
  * @return boolean|false
  * @since  3.0.0
- * @since  4.1.0 Removed option check.
+ * @since  4.1.0 Removed option check. Removed `ap_sanitize_description_field` sanitization.
  */
 function ap_find_duplicate_post( $content, $post_type = 'question', $question_id = false ) {
 	global $wpdb;
-	$content = ap_sanitize_description_field( $content );
 
 	// Return if content is empty. But blank content will be checked.
 	if ( empty( $content ) ) {
@@ -1844,4 +1843,93 @@ function ap_set_in_array( &$arr, $path, $val ) {
 	}
 
 	return $loc = $val;
+}
+
+/**
+ * Output new/edit question form.
+ * Pass post_id to edit existing question.
+ *
+ * @param null $deprecated Deprecated argument.
+ * @return void
+ *
+ * @since unknown
+ * @since 4.1.0 Moved from includes\ask-form.php.
+ */
+function ap_ask_form( $deprecated = null ) {
+	if ( ! is_null( $deprecated ) ) {
+		_deprecated_argument( __FUNCTION__, '4.1.0', 'Use $_GET[id] for currently editing question ID.' );
+	}
+
+	$editing = false;
+	$editing_id = ap_sanitize_unslash( 'id', 'r' );
+
+	// If post_id is empty then its not editing.
+	if ( ! empty( $editing_id ) ) {
+		$editing = true;
+	}
+
+	if ( $editing && ! ap_user_can_edit_question( $editing_id ) ) {
+		echo '<p>' . esc_attr__( 'You cannot edit this question.', 'anspress-question-answer' ) . '</p>';
+		return;
+	}
+
+	if ( ! $editing && ! ap_user_can_ask( $editing_id ) ) {
+		echo '<p>' . esc_attr__( 'You do not have permission to ask a question.', 'anspress-question-answer' ) . '</p>';
+		return;
+	}
+
+	anspress()->get_form( 'question' )->generate();
+}
+
+/**
+ * Remove stop words from post name if option is enabled.
+ *
+ * @param  string $str Post name to filter.
+ * @return string
+ *
+ * @since  3.0.0
+ * @since 4.1.0 Moved from includes\ask-form.php.
+ */
+function ap_remove_stop_words_post_name( $str ) {
+	$str = sanitize_title( $str );
+
+	if ( ap_opt( 'keep_stop_words' ) ) {
+		return $str;
+	}
+
+	$post_name = ap_remove_stop_words( $str );
+
+	// Check if post name is not empty.
+	if ( ! empty( $post_name ) ) {
+		return $post_name;
+	}
+
+	// If empty then return original without stripping stop words.
+	return sanitize_title( $str );
+}
+
+/**
+ * TinyMCE editor setting
+ *
+ * @return array
+ * @since  3.0.0
+ * @since 4.1.0 Moved from includes\ask-form.php.
+ */
+function ap_tinymce_editor_settings( $type = 'question' ) {
+	$setting = array(
+		'textarea_rows' => 8,
+		'tinymce'       => ap_opt( $type . '_text_editor' ) ? false: true,
+		'quicktags'     => ap_opt( $type . '_text_editor' ) ? true:  false,
+		'media_buttons' => false,
+	);
+
+	if ( ap_opt( $type . '_text_editor' )  ) {
+		$settings['tinymce'] = array(
+			'content_css'      => ap_get_theme_url( 'css/editor.css' ),
+			'wp_autoresize_on' => true,
+			'statusbar'        => false
+		);
+	}
+
+	return apply_filters( 'ap_tinymce_editor_settings', $setting, $type );
 }
