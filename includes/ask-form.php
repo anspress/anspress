@@ -15,167 +15,30 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 /**
- * Get all ask form fields.
- *
- * @param  integer|boolean $post_id Post ID.
- * @return array
- * @since  3.0.0
- */
-function ap_get_ask_form_fields( $post_id = false ) {
-	global $editing_post;
-	$editing = false;
-
-	if ( $post_id && ap_user_can_edit_question( (int) $post_id ) ) {
-		$editing = true;
-		$editing_post = ap_get_post( (int) $post_id, 'OBJECT', 'edit' );
-	}
-
-	$is_private = false;
-
-	if ( $editing ) {
-		$is_private = $editing_post->post_status == 'private_post' ? true : false;
-	}
-
-	$fields = array(
-		array(
-			'name' => 'title',
-			'label' => __( 'Title', 'anspress-question-answer' ),
-			'type'  => 'text',
-			'placeholder'  => __( 'Question in one sentence', 'anspress-question-answer' ),
-			'value' => ( $editing ? $editing_post->post_title : ap_isset_post_value( 'title', '' ) ),
-			'order' => 5,
-			'attr' => 'data-action="suggest_similar_questions" data-loadclass="q-title"',
-			'autocomplete' => false,
-			'sanitize' => array( 'sanitize_text_field' ),
-			'validate' => array( 'required' => true, 'length_check' => ap_opt( 'minimum_qtitle_length' ) ),
-		),
-		array(
-			'name' => 'suggestion',
-			'type'  => 'custom',
-			'order' => 5,
-			'html' => '<div id="similar_suggestions"></div>',
-		),
-		array(
-			'name' => 'description',
-			'label' => __( 'Description', 'anspress-question-answer' ),
-			'type'  => 'editor',
-			'value' => ( $editing ? $editing_post->post_content : ap_isset_post_value( 'description', '' )  ),
-			'settings' => ap_tinymce_editor_settings( 'question' ),
-			'sanitize' => array( 'sanitize_description' ),
-			'validate' => array( 'length_check' => ap_opt( 'minimum_question_length' ) ),
-		),
-		array(
-			'name'  => 'ap_upload',
-			'type'  => 'custom',
-			'html' => ap_post_upload_form( $editing? $editing_post->ID : false ),
-			'order' => 10,
-		),
-		array(
-			'name' => 'parent_id',
-			'type'  => 'hidden',
-			'value' => ( $editing ? $editing_post->post_parent : get_query_var( 'parent' )  ),
-			'order' => 20,
-			'sanitize' => array( 'only_int' ),
-		),
-	);
-
-	// Add name fields if anonymous is allowed.
-	if ( ! is_user_logged_in() && ap_opt( 'allow_anonymous' ) ) {
-		$fields[] = array(
-			'name'      => 'anonymous_name',
-			'label'     => __( 'Name', 'anspress-question-answer' ),
-			'type'      => 'text',
-			'placeholder'  => __( 'Enter your name to display', 'anspress-question-answer' ),
-			'value'     => ap_isset_post_value( 'name', '' ),
-			'order'     => 12,
-			'sanitize' => array( 'strip_tags', 'sanitize_text_field' ),
-		);
-	}
-
-	// Add private field checkbox if enabled.
-	if ( ap_opt( 'allow_private_posts' ) ) {
-		$fields[] = array(
-			'name' => 'is_private',
-			'type'  => 'checkbox',
-			'desc'  => __( 'Only visible to admin and moderator.', 'anspress-question-answer' ),
-			'value' => $is_private,
-			'order' => 12,
-			'show_desc_tip' => false,
-			'sanitize' => array( 'only_boolean' ),
-		);
-	}
-
-	if ( $editing ) {
-		$fields[] = array(
-			'name'  => 'edit_post_id',
-			'type'  => 'hidden',
-			'value' => $editing_post->ID,
-			'order' => 20,
-			'sanitize' => array( 'only_int' ),
-		);
-	}
-
-	$fields[] = array(
-		'name'  => 'ap_ajax_action',
-		'type'  => 'hidden',
-		'value' => 'ask_form',
-		'order' => 20,
-	);
-
-	/**
-	 * Filter for modifying ask form `$args`.
-	 *
-	 * @param 	array $fields 	Ask form fields.
-	 * @param 	bool 	$editing 	Currently editing form.
-	 * @since  	2.0
-	 */
-	$fields = apply_filters( 'ap_ask_form_fields', [ 'fields' => $fields ], $editing );
-
-	return $fields['fields'];
-}
-
-/**
  * Output new/edit question form.
  * Pass post_id to edit existing question.
  *
  * @return void
  */
 function ap_ask_form( $post_id = false ) {
-	// $editing = true;
+	$editing = false;
+	$editing_id = ap_sanitize_unslash( 'id', 'r' );
 
-	// if ( false === $post_id ) {
-	// 	$post_id = ap_sanitize_unslash( 'id', 'r', false );
-	// }
+	// If post_id is empty then its not editing.
+	if ( ! empty( $editing_id ) ) {
+		$editing = true;
+	}
 
-	// // If post_id is empty then its not editing.
-	// if ( empty( $post_id ) ) {
-	// 	$editing = false;
-	// }
+	if ( $editing && ! ap_user_can_edit_question( $editing_id ) ) {
+		echo '<p>' . esc_attr__( 'You cannot edit this question.', 'anspress-question-answer' ) . '</p>';
+		return;
+	}
 
-	// if ( $editing && ! ap_user_can_edit_question( $post_id ) ) {
-	// 	echo '<p>' . esc_attr__( 'You cannot edit this question.', 'anspress-question-answer' ) . '</p>';
-	// 	return;
-	// }
+	if ( ! $editing && ! ap_user_can_ask( $editing_id ) ) {
+		echo '<p>' . esc_attr__( 'You do not have permission to ask a question.', 'anspress-question-answer' ) . '</p>';
+		return;
+	}
 
-	// $_post = ap_get_post( $post_id );
-
-	// // Check if valid post type.
-	// if ( $editing && 'question' !== $_post->post_type ) {
-	// 	echo '<p>' . esc_attr__( 'Post you are trying to edit is not a question.', 'anspress-question-answer' ) . '</p>';
-	// 	return;
-	// }
-
-	// // Ask form arguments.
-	// $args = array(
-	// 	'name'              => 'ask_form',
-	// 	'is_ajaxified'      => true,
-	// 	'submit_button'     => ($editing ? __( 'Update question', 'anspress-question-answer' ) : __( 'Post question', 'anspress-question-answer' )),
-	// 	'fields'            => ap_get_ask_form_fields( $post_id ),
-	// 	'attr'							=> ' ap="questionForm"',
-	// );
-
-	// $form = new AnsPress_Form( $args );
-	// echo $form->get_form(); // xss okay.
 	anspress()->get_form( 'question' )->generate();
 }
 

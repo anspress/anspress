@@ -56,6 +56,7 @@ window.AnsPress = _.extend({
 	ajax: function(options){
 		var self = this;
 		options = _.defaults(options, {
+			async: false,
 			url: ajaxurl,
 			method: 'POST',
 		});

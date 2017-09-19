@@ -32,7 +32,7 @@ class AP_Form_Hooks {
 					'label' => __( 'Title', 'anspress-question-answer' ),
 					'desc'  => __( 'Question in one sentence', 'anspress-question-answer' ),
 					'attr'  => array(
-						'autocomplete'   => 'false',
+						'autocomplete'   => 'off',
 						'placeholder'    => __( 'Question title', 'anspress-question-answer' ),
 						'data-action'    => 'suggest_similar_questions',
 						'data-loadclass' => 'q-title',
@@ -100,16 +100,6 @@ class AP_Form_Hooks {
 		$form = apply_filters( 'ap_question_form_fields', $form );
 
 		return $form;
-	}
-
-	public static function init() {
-		self::$form = ltrim( ap_isset_post_value( 'ap_form_name', '' ), 'form_' );
-
-		$form_method = 'process_' . self::$form;
-
-		if ( method_exists( __CLASS__, $form_method ) ) {
-			self::$form_method();
-		}
 	}
 
 	/**
