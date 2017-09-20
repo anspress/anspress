@@ -491,8 +491,6 @@ class AnsPress_Admin_Ajax {
 		}
 
 		$events = ap_search_array( ap_get_reputation_events(), 'parent', 'answer' );
-		PC::debug( $events );
-
 		foreach ( (array) $post_ids as $id ) {
 				$exists = ap_get_reputation( $e, $id, $user_id );
 

@@ -28,7 +28,10 @@
 						value: title
 					},
 					success: function (data) {
-						console.log(data);
+						$("#similar_suggestions").remove();
+						if(data.html && $("#similar_suggestions").length===0)
+							$(e.target).parent().append('<div id="similar_suggestions"></div>');
+
 						$("#similar_suggestions").html(data.html);
 					}
 				});

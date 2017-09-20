@@ -90,8 +90,8 @@ class AnsPress_Ajax {
 
 		if ( $questions ) {
 				$items = '<div class="ap-similar-questions-head">';
-				$items .= '<h3><i class="apicon-check"></i>' . sprintf( _n( '%d similar question found', '%d similar questions found', count( $questions ), 'anspress-question-answer' ), count( $questions ) ) . '</h3>';
-				$items .= '<p>' . __( 'We\'ve found similar questions that have already been asked, click to read them.', 'anspress-question-answer' ) . '</p>';
+				$items .= '<p><strong>' . sprintf( _n( '%d similar question found', '%d similar questions found', count( $questions ), 'anspress-question-answer' ), count( $questions ) ) . '</strong></p>';
+				$items .= '<p>' . __( 'We have found some similar questions that have been asked earlier.', 'anspress-question-answer' ) . '</p>';
 				$items .= '</div>';
 
 			$items .= '<div class="ap-similar-questions">';
@@ -411,7 +411,6 @@ class AnsPress_Ajax {
 		}
 
 		if ( ap_user_can_upload( ) ) {
-			ap_upload_js_init();
 			wp_enqueue_script( 'ap-upload', ANSPRESS_URL . 'assets/js/upload.js', [ 'plupload' ] );
 		}
 

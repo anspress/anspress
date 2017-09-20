@@ -76,6 +76,13 @@ class AnsPress_reCcaptcha {
 		]);
 	}
 
+	/**
+	 * Add captcha field in question and answer form.
+	 *
+	 * @param array $form Form arguments.
+	 * @return array
+	 * @since 4.1.0
+	 */
 	public static function ap_question_form_fields( $form ) {
 		if ( ap_show_captcha_to_user() ) {
 
@@ -89,7 +96,5 @@ class AnsPress_reCcaptcha {
 		return $form;
 	}
 }
-
-
 
 AnsPress_reCcaptcha::init();

@@ -7,18 +7,30 @@
 			margin-bottom: 10px;
 		}
 	}
+	#similar_suggestions {
+		border: solid 2px #eee;
+		padding: 10px;
+		border-radius: 2px;
+		margin-top: 10px;
+		background: #f9f9f9;
+		p{
+			margin-bottom: 0;
+		}
+	}
 	.ap-similar-questions {
 	    border: 1px solid #e7e7e7;
 	    border-radius: 2px;
-	    margin-bottom: 15px;
+	    margin-top: 10px;
 	    max-height: 200px;
-	    overflow-x: auto;
+			overflow-x: auto;
+			background: #fff;
 	    .ap-sqitem{
 		    border-bottom: 1px solid #eee;
-		    color: #5e5e5e;
 		    display: block;
 		    margin: 0 10px;
-		    padding: 10px 5px;
+				padding: 5px;
+				color: $ap-color;
+
 		    &:last-child{
 		    	border-bottom: none;
 		    }
@@ -27,13 +39,12 @@
 		    }
 	    }
 	    .acount{
-	    	float: right;
+				float: right;
+				color: $default-color;
 	    }
 	    .ap-title {
-		    font-weight: bold;
 		    white-space: nowrap;
 		    overflow: hidden;
-		    font-size: 13px;
 		}
 	}
 }
