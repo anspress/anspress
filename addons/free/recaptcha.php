@@ -48,6 +48,7 @@ class AnsPress_reCcaptcha {
 
 		anspress()->add_action( 'ap_option_groups', __CLASS__, 'options' );
 		anspress()->add_action( 'ap_question_form_fields', __CLASS__, 'ap_question_form_fields', 10, 2 );
+		anspress()->add_action( 'ap_answer_form_fields', __CLASS__, 'ap_question_form_fields', 10, 2 );
 	}
 
 	/**
@@ -95,6 +96,7 @@ class AnsPress_reCcaptcha {
 
 		return $form;
 	}
+
 }
 
 AnsPress_reCcaptcha::init();

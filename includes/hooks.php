@@ -49,8 +49,8 @@ class AnsPress_Hooks {
 			anspress()->add_action( 'wp_loaded', __CLASS__, 'flush_rules' );
 			anspress()->add_action( 'safe_style_css', __CLASS__, 'safe_style_css', 11 );
 			anspress()->add_action( 'save_post', __CLASS__, 'base_page_update', 10, 2 );
-			anspress()->add_action( 'save_post_question', __CLASS__, 'question_answer_hooks', 1, 3 );
-			//anspress()->add_action( 'save_post_answer', __CLASS__, 'question_answer_hooks', 1, 3 );
+			anspress()->add_action( 'save_post_question', __CLASS__, 'save_question_hooks', 1, 3 );
+			anspress()->add_action( 'save_post_answer', __CLASS__, 'save_answer_hooks', 1, 3 );
 			anspress()->add_action( 'ap_vote_casted', __CLASS__, 'update_user_vote_casted_count', 10, 4 );
 			anspress()->add_action( 'ap_vote_removed', __CLASS__, 'update_user_vote_casted_count' , 10, 4 );
 			anspress()->add_action( 'the_post', __CLASS__, 'filter_page_title' );
@@ -113,6 +113,7 @@ class AnsPress_Hooks {
 
 			// Form hooks.
 			anspress()->add_action( 'ap_form_question', 'AP_Form_Hooks', 'question_form', 11 );
+			anspress()->add_action( 'ap_form_answer', 'AP_Form_Hooks', 'answer_form', 11 );
 			anspress()->add_action( 'ap_form_image_upload', 'AP_Form_Hooks', 'image_upload_form', 11 );
 	}
 
@@ -586,14 +587,14 @@ class AnsPress_Hooks {
 	}
 
 	/**
-	 * Trigger AnsPress posts hooks right after inserting question/answer
+	 * Trigger posts hooks right after saving question.
 	 *
 	 * @param	integer $post_id Post ID.
 	 * @param	object	$post		Post Object
 	 * @param	boolean $updated Is updating post
-	 * @since 3.0.3
+	 * @since 4.1.0
 	 */
-	public static function question_answer_hooks( $post_id, $post, $updated ) {
+	public static function save_question_hooks( $post_id, $post, $updated ) {
 		if ( wp_is_post_autosave( $post ) || wp_is_post_revision( $post ) ) {
 			return;
 		}
@@ -652,6 +653,81 @@ class AnsPress_Hooks {
 			 * @since 4.1.0 Removed `$post->post_type` variable.
 			 */
 			do_action( 'ap_processed_new_question', $post_id, $post );
+		}
+
+		// Update qameta terms.
+		ap_update_qameta_terms( $post_id );
+	}
+
+	/**
+	 * Trigger posts hooks right after saving answer.
+	 *
+	 * @param	integer $post_id Post ID.
+	 * @param	object	$post		Post Object
+	 * @param	boolean $updated Is updating post
+	 * @since 4.1.0
+	 */
+	public static function save_answer_hooks( $post_id, $post, $updated ) {
+		if ( wp_is_post_autosave( $post ) || wp_is_post_revision( $post ) ) {
+			return;
+		}
+
+		$form = anspress()->get_form( 'answer' );
+		$values = $form->get_values();
+		$activity_type = ! empty( $values['post_id']['value'] ) ? 'edit_answer' : 'new_answer';
+
+		// Update parent question's answer count.
+		ap_update_answers_count( $post->post_parent );
+
+		$qameta = array(
+			'last_updated' => current_time( 'mysql' ),
+			'activities'   => array(
+				'type'    => $activity_type,
+				'user_id' => $post->post_author,
+				'date'    => current_time( 'mysql' ),
+			),
+		);
+
+		// Check if anonymous post and have name.
+		if ( ! is_user_logged_in() && ap_opt( 'allow_anonymous' ) && ! empty( $values['anonymous_name']['value'] ) ) {
+			$qameta['fields'] = array(
+				'anonymous_name' => $values['anonymous_name']['value'],
+			);
+		}
+
+		/**
+		 * Modify qameta args which will be inserted after inserting
+		 * or updating answer.
+		 *
+		 * @param array   $qameta  Qameta arguments.
+		 * @param object  $post    Post object.
+		 * @param boolean $updated Is updated.
+		 * @since 4.1.0
+		 */
+		$qameta = apply_filters( 'ap_insert_answer_qameta', $qameta, $post, $updated );
+		ap_insert_qameta( $post_id, $qameta );
+
+		if ( $updated ) {
+			/**
+			 * Action triggered right after updating answer.
+			 *
+			 * @param integer $post_id Inserted post ID.
+			 * @param object	$post		Inserted post object.
+			 * @since 0.9
+			 * @since 4.1.0 Removed `$post->post_type` variable.
+			 */
+			do_action( 'ap_processed_update_answer' , $post_id, $post );
+
+		} else {
+			/**
+			 * Action triggered right after inserting new answer.
+			 *
+			 * @param integer $post_id Inserted post ID.
+			 * @param object	$post		Inserted post object.
+			 * @since 0.9
+			 * @since 4.1.0 Removed `$post->post_type` variable.
+			 */
+			do_action( 'ap_processed_new_answer', $post_id, $post );
 		}
 
 		// Update qameta terms.

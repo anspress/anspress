@@ -1460,26 +1460,6 @@ function ap_active_user_page() {
 	return apply_filters( 'ap_active_user_page', $page );
 }
 
-
-/**
- * Return or echo hovercard data attribute.
- *
- * @param  integer $user_id User id.
- * @param  boolean $echo    Echo or return? default is true.
- * @return string
- */
-function ap_hover_card_attributes( $user_id, $echo = true ) {
-	if ( $user_id > 0 ) {
-		$attr = ' data-userid="' . $user_id . '"';
-
-		if ( true !== $echo ) {
-			return $attr;
-		}
-
-		echo $attr; // xss okay.
-	}
-}
-
 /**
  * User name and link with anchor tag.
  *

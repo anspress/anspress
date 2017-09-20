@@ -61,6 +61,7 @@ class AnsPress_Ajax {
 		anspress()->add_action( 'ap_ajax_get_repeatable_field', __CLASS__, 'get_repeatable_field' );
 
 		anspress()->add_action( 'ap_ajax_form_question', 'AP_Form_Hooks', 'submit_question_form', 11 );
+		anspress()->add_action( 'ap_ajax_form_answer', 'AP_Form_Hooks', 'submit_answer_form', 11 );
 
 	}
 
@@ -401,29 +402,22 @@ class AnsPress_Ajax {
 	 * @since 3.0.0
 	 */
 	public static function load_tinymce() {
-		$settings = ap_tinymce_editor_settings( 'answer' );
-
-		if ( false !== $settings['tinymce'] ) {
-			$settings['tinymce'] = array(
-				'content_css'      => ap_get_theme_url( 'css/editor.css' ),
-				'wp_autoresize_on' => true,
-			);
+		if ( ! class_exists( '_WP_Editors' ) ) {
+			require( ABSPATH . WPINC . '/class-wp-editor.php' );
 		}
 
-		if ( ap_user_can_upload( ) ) {
-			wp_enqueue_script( 'ap-upload', ANSPRESS_URL . 'assets/js/upload.js', [ 'plupload' ] );
-		}
+		ap_answer_form( ap_sanitize_unslash( 'question_id' ) );
 
-		echo '<div class="ap-editor">';
-	    wp_editor( '', 'description', $settings );
-	    echo '</div>';
-	    \_WP_Editors::enqueue_scripts();
-	    ob_start();
+		\_WP_Editors::enqueue_scripts();
+
+		ob_start();
 		print_footer_scripts();
 		$scripts = ob_get_clean();
+
 		echo str_replace( 'jquery-core,jquery-migrate,', '', $scripts ); // xss okay.
 		\_WP_Editors::editor_js();
-	    wp_die();
+
+		wp_die();
 	}
 
 	/**

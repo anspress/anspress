@@ -337,6 +337,13 @@
 		}
 	}
 
+	#ap-form-main {
+		padding: 15px;
+		.ap-field-form_answer-post_content .ap-form-label{
+			display: none;
+		}
+	}
+
 	.ap-attachment{
 		border: 2px solid #e3e1e1;
 		border-radius: 4px;

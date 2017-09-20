@@ -750,12 +750,14 @@ jQuery(document).ready(function($){
 		$(this).removeClass('ap-have-errors');
 	});
 
-	$('[apform]').each(function(){
+	$('body').on( 'submit', '[apform]', function(e){
+		e.preventDefault();
 		var self = $(this);
 
-		$(self).ajaxForm({
+    $(this).ajaxSubmit({
 			url: ajaxurl,
 			beforeSerialize: function() {
+
 				if(typeof tinymce !== undefined)
 					tinymce.triggerSave();
 
@@ -767,6 +769,11 @@ jQuery(document).ready(function($){
 				if(data.snackbar){
 					AnsPress.trigger('snackbar', data)
 				}
+
+				if(typeof grecaptcha !== 'undefined' && typeof widgetId1 !== 'undefined')
+					grecaptcha.reset(widgetId1);
+
+				AnsPress.trigger('answerFormPosted', data);
 
 				if(typeof data.form_errors !== 'undefined'){
 					$formError = $('<div class="ap-form-errors"></div>').prependTo(self);

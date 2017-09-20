@@ -13,112 +13,6 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 /**
- * Get all answer form fields.
- * @param  integer|boolean $question_id Post ID.
- * @return array
- * @since  3.0.0
- */
-function ap_get_answer_form_fields( $question_id = false, $answer_id = false ) {
-	global $editing_post;
-	$editing = false;
-
-	if ( $answer_id && ap_user_can_edit_answer( (int) $answer_id ) ) {
-		$editing = true;
-		$editing_post = ap_get_post( (int) $answer_id, 'OBJECT', 'edit' );
-	}
-
-	$is_private = false;
-
-	if ( $editing ) {
-		$is_private = $editing_post->post_status == 'private_post' ? true : false;
-	}
-
-	$fields = array(
-		array(
-			'name'          => 'description',
-			'type'          => is_question() ? 'textarea' : 'editor',
-			'value'         => ( $editing ? $editing_post->post_content : wp_kses_post( ap_isset_post_value('description', '' ) ) ),
-			'placeholder'  => __( 'Your answer..', 'anspress-question-answer' ),
-			'settings' => ap_tinymce_editor_settings('answer'),
-			'sanitize' => array( 'sanitize_description' ),
-			'validate' => array( 'required' => true, 'length_check' => ap_opt( 'minimum_ans_length' ) ),
-		),
-		array(
-			'name' => 'form_question_id',
-			'type'  => 'hidden',
-			'value' => ( $editing ? $editing_post->post_parent : $question_id  ),
-			'order' => 20,
-		),
-	);
-
-	// Add name fields if anonymous is allowed.
-	if ( ! is_user_logged_in() && ap_opt( 'allow_anonymous' ) ) {
-		$fields[] = array(
-			'name'      => 'anonymous_name',
-			'label'     => __( 'Name', 'anspress-question-answer' ),
-			'type'      => 'text',
-			'placeholder'  => __( 'Enter your name to display', 'anspress-question-answer' ),
-			'value'     => ap_isset_post_value( 'name', '' ),
-			'order'     => 12,
-			'sanitize' => array( 'strip_tags', 'sanitize_text_field' ),
-		);
-	}
-
-	// Add private field checkbox if enabled.
-	if ( ap_opt( 'allow_private_posts' ) ) {
-		$fields[] = array(
-			'name' => 'is_private',
-			'type'  => 'checkbox',
-			'desc'  => __( 'Only visible to admin and moderator.', 'anspress-question-answer' ),
-			'value' => $is_private,
-			'order' => 12,
-			'show_desc_tip' => false,
-			'sanitize' => array( 'only_boolean' ),
-		);
-	}
-
-	$fields[] = array(
-		'name'  => 'ap_upload',
-		'type'  => 'custom',
-		'html' => ap_post_upload_form( $editing? $editing_post->ID : false ),
-		'order' => 11,
-	);
-
-	$fields[] = array(
-		'name'  => 'action',
-		'type'  => 'hidden',
-		'value' => 'ap_ajax',
-		'order' => 20,
-	);
-
-	$fields[] = array(
-		'name'  => 'ap_ajax_action',
-		'type'  => 'hidden',
-		'value' => 'answer_form',
-		'order' => 20,
-	);
-
-	if ( $editing ) {
-		$fields[] = array(
-			'name'  => 'edit_post_id',
-			'type'  => 'hidden',
-			'value' => $editing_post->ID,
-			'order' => 20,
-			'sanitize' => array( 'only_int' ),
-		);
-	}
-
-	/**
-	 * Modify answer form fields.
-	 * @param 	array 	$fields 	Answer form fields.
-	 * @param 	bool 	$editing 	Currently editing form.
-	 * @since  	2.0
-	 */
-	$fields = apply_filters( 'ap_answer_form_fields', array( 'fields' => $fields ), $editing );
-	return $fields['fields'];
-}
-
-/**
  * Generate answer form.
  *
  * @param  mixed   $question_id  Question iD.
@@ -126,35 +20,11 @@ function ap_get_answer_form_fields( $question_id = false, $answer_id = false ) {
  * @return void
  */
 function ap_answer_form( $question_id, $editing = false ) {
-	if ( ! ap_user_can_answer( $question_id ) && ! $editing ) {
-		return;
-	}
+	// if ( ! ap_user_can_answer( $question_id ) && ! $editing ) {
+	// 	return;
+	// }
 
-	global $editing_post;
-	$answer_id = $editing ? (int) ap_sanitize_unslash( 'id', 'r' ) : false;
-
-	$args = array(
-		'name'              => 'answer_form',
-		'is_ajaxified'      => true,
-		'submit_button'     => ($editing ? __( 'Update answer', 'anspress-question-answer' ) : __( 'Post answer', 'anspress-question-answer' )),
-		'nonce_name'        => 'nonce_answer_' . $question_id,
-		'fields'            => ap_get_answer_form_fields( $question_id, $answer_id ),
-		'attr'							=> ' ap="answerForm"',
-	);
-
-	anspress()->form = new AnsPress_Form( $args );
-
-	echo anspress()->form->get_form(); // xss okay.
-}
-
-/**
- * Generate edit question form, this is a wrapper of ap_answer_form()
- * @param integer $question_id Id of question.
- * @return void
- * @since 2.0.1
- */
-function ap_edit_answer_form( $question_id ) {
-	ap_answer_form( $question_id, true );
+	anspress()->get_form( 'answer' )->generate();
 }
 
 /**
@@ -167,6 +37,7 @@ function ap_edit_answer_form( $question_id ) {
  */
 function ap_save_answer( $question_id, $args, $wp_error = false) {
 	$question = ap_get_post( $question_id );
+
 	if ( isset( $args['is_private'] ) && $args['is_private'] ) {
 		$args['post_status'] = 'private_post';
 	}

@@ -610,7 +610,6 @@
 		},
 		events: {
 			'click [ap="loadEditor"]': 'loadEditor',
-			'submit [ap="answerForm"]': 'answerForm'
 		},
 		renderItem: function(post){
 			var view = new AnsPress.views.Post({ model: post, el: '#post-'+post.get('ID') });
@@ -629,11 +628,12 @@
 		loadEditor: function(e){
 			var self = this;
 			AnsPress.showLoading(e.target);
+
 			AnsPress.ajax({
-				data: $(e.target).attr('ap-query'),
+				data: $(e.target).data('apquery'),
 				success: function(data){
 					AnsPress.hideLoading(e.target);
-					$('.ap-field-description').html(data);
+					$('#ap-form-main').html(data);
 					$(e.target).closest('.ap-minimal-editor').removeClass('ap-minimal-editor');
 				}
 			});

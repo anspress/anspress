@@ -604,7 +604,8 @@ function ap_current_page() {
 function ap_assets() {
 	$assets = array(
 		'js' => array(
-			'main'          => [ 'dep' => [ 'jquery', 'jquery-form', 'underscore', 'backbone' ], 'footer' => true ],
+			'form'          => [ 'dep' => [ 'jquery' ], 'footer' => true ],
+			'main'          => [ 'dep' => [ 'jquery', 'anspress-form', 'underscore', 'backbone' ], 'footer' => true ],
 			'theme' 				=> [ 'theme' => true, 'dep' => [ 'anspress-main' ], 'footer' => true ],
 		),
 		'css' => array(

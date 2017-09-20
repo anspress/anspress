@@ -57,7 +57,9 @@ class Form {
 	 */
 	public function __construct( $form_name, $args ) {
 		$this->form_name = $form_name;
-		$this->args      = $args;
+		$this->args      = wp_parse_args( $args, array(
+			'submit_label' => __( 'Submit', 'anspress-question-answer' ),
+		));
 	}
 
 	/**
@@ -127,8 +129,9 @@ class Form {
 		echo '<input type="hidden" name="action" value="ap_ajax">';
 		echo '<input type="hidden" name="ap_ajax_action" value="' . esc_attr( $this->form_name ) . '">';
 		echo '<input type="hidden" name="ap_form_name" value="' . esc_attr( $this->form_name ) . '" />';
-		echo '<input type="submit" name="' . esc_attr( $this->form_name ) . '_submit" value="Submit" />';
+		echo '<input type="submit" name="' . esc_attr( $this->form_name ) . '_submit" value="' . esc_html( $this->args['submit_label'] ) . '" class="ap-btn ap-btn-submit" />';
 		echo '<input type="hidden" name="' . esc_attr( $this->form_name ) . '_nonce" value="' . esc_attr( wp_create_nonce( $this->form_name ) ) . '" />';
+		echo '<input type="hidden" name="' . esc_attr( $this->form_name ) . '_submit" value="true" />';
 		echo '</form>';
 	}
 
