@@ -599,3 +599,78 @@ function ap_env_dev() {
 
 	return false;
 }
+
+/**
+ * Insert and update answer.
+ *
+ * @param  array $question_id Question ID.
+ * @param  array $args     Answer arguments.
+ * @param  bool  $wp_error Return wp error.
+ * @return bool|object|int
+ *
+ * @deprecated 4.1.0
+ */
+function ap_save_answer( $question_id, $args, $wp_error = false) {
+	_deprecated_function( __FUNCTION__, '4.1.0' );
+
+	$question = ap_get_post( $question_id );
+
+	if ( isset( $args['is_private'] ) && $args['is_private'] ) {
+		$args['post_status'] = 'private_post';
+	}
+
+	$args = wp_parse_args( $args, array(
+		'post_title' 		  => $question->post_title,
+		'post_author' 	  => get_current_user_id(),
+		'post_status' 	  => 'publish',
+		'post_name' 		  => '',
+		'comment_status'  => 'open',
+	) );
+
+	$args['post_content'] = apply_filters( 'ap_form_contents_filter', $args['post_content'] );
+	$args['post_type'] 	  = 'answer';
+	$args['post_parent']  = $question_id;
+
+	if ( isset( $args['ID'] ) ) {
+		/**
+		 * Can be used to modify `$args` before updating answer
+		 * @param array $args Answer arguments.
+		 * @since 2.0.1
+		 */
+		$args = apply_filters( 'ap_pre_update_answer', $args );
+	} else {
+		/**
+		 * Can be used to modify args before inserting answer.
+		 * @param array $args Answer arguments.
+		 * @since 2.0.1
+		 */
+		$args = apply_filters( 'ap_pre_insert_answer', $args );
+	}
+
+	$post_id = wp_insert_post( $args, true );
+
+	if ( true === $wp_error && is_wp_error( $post_id ) ) {
+		return $post_id;
+	}
+
+	if ( $post_id ) {
+		$qameta_args = [ 'last_updated' => current_time( 'mysql' ) ];
+
+		if ( isset( $args['anonymous_name'] ) ) {
+			$qameta_args['fields'] = [ 'anonymous_name' => $args['anonymous_name'] ];
+		}
+
+		ap_insert_qameta( $post_id, $qameta_args );
+		$activity_type = isset( $args['ID'] ) ? 'edit_answer' : 'new_answer';
+
+		// Add answer activity meta.
+		ap_update_post_activity_meta( $post_id, $activity_type, get_current_user_id() );
+		ap_update_post_activity_meta( $question->ID, $activity_type, get_current_user_id() );
+
+		if ( ap_isset_post_value( 'ap-medias' ) ) {
+			$ids = ap_sanitize_unslash( 'ap-medias', 'r' );
+			ap_set_media_post_parent( $ids, $post_id );
+		}
+	}
+	return $post_id;
+}

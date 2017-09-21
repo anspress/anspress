@@ -1852,3 +1852,71 @@ function ap_remove_stop_words_post_name( $str ) {
 	// If empty then return original without stripping stop words.
 	return sanitize_title( $str );
 }
+
+/**
+ * Send ajax response after posting an answer.
+ *
+ * @param integer|object $question_id Question ID or object.
+ * @param integer|object $answer_id   Answer ID or object.
+ * @return void
+ * @since 4.0.0
+ * @since 4.1.0 Moved from includes\answer-form.php.
+ */
+function ap_answer_post_ajax_response( $question_id, $answer_id ) {
+	$question = ap_get_post( $question_id );
+	// Get existing answer count.
+	$current_ans = ap_count_published_answers( $question_id );
+
+	if ( $current_ans == 1 ) {
+		global $post;
+		$post = $question;
+		setup_postdata( $post );
+	} else {
+		global $post;
+		$post = ap_get_post( $answer_id );
+		setup_postdata( $post );
+	}
+
+	ob_start();
+	global $answers;
+	global $withcomments;
+	$withcomments = true;
+
+	$answers = ap_get_answers( array( 'p' => $answer_id ) );
+	while ( ap_have_answers() ) : ap_the_answer();
+		ap_get_template_part( 'answer' );
+	endwhile;
+
+	$html = ob_get_clean();
+	$count_label = sprintf( _n( '%d Answer', '%d Answers', $current_ans, 'anspress-question-answer' ), $current_ans );
+
+	$result = array(
+		'success'       => true,
+		'ID'            => $answer_id,
+		'action'        => 'new_answer',
+		'div_id'        => '#post-' . get_the_ID(),
+		'can_answer'    => ap_user_can_answer( $post->ID ),
+		'html'          => $html,
+		'snackbar'      => [ 'message' => __( 'Answer submitted successfully', 'anspress-question-answer' ) ],
+		'answersCount'  => [ 'text' => $count_label, 'number' => $current_ans ],
+	);
+
+	ap_ajax_json( $result );
+}
+
+/**
+ * Generate answer form.
+ *
+ * @param  mixed   $question_id  Question iD.
+ * @param  boolean $editing      true if post is being edited.
+ * @return void
+ * @since unknown
+ * @since 4.1.0 Moved from includes\answer-form.php.
+ */
+function ap_answer_form( $question_id, $editing = false ) {
+	if ( ! ap_user_can_answer( $question_id ) ) {
+		return;
+	}
+
+	anspress()->get_form( 'answer' )->generate();
+}
