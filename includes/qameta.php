@@ -448,7 +448,7 @@ function ap_update_post_attach_ids( $post_id ) {
 
 	$ids = $wpdb->get_col( $wpdb->prepare( "SELECT ID FROM {$wpdb->posts} where post_type = 'attachment' AND post_parent = %d", $post_id ));
 
-	$insert = ap_insert_qameta( $post_id, [ 'attach' => $ids ] );
+	$insert = ap_insert_qameta( (int) $post_id, [ 'attach' => $ids ] );
 	return $ids;
 }
 

@@ -16,47 +16,6 @@
 class AnsPress_Uploader {
 
 	/**
-	 * Upload an attachment to server.
-	 */
-	public static function image_submission() {
-		$post_id = ap_sanitize_unslash( 'post_id', 'r' );
-
-		if ( ! check_ajax_referer( 'media-upload', false, false ) || ! ap_user_can_upload( ) || empty( $_FILES['async-upload'] ) ) {
-			ap_ajax_json( [
-				'success' => false,
-				'snackbar' => [
-					'message' => __( 'You are not allowed to upload attachments.', 'anspress-question-answer' ),
-				],
-			] );
-		}
-
-		if ( ! empty( $post_id ) && ! ap_user_can_edit_post( $post_id ) ) {
-			ap_ajax_json( [ 'success' => false ] );
-		} else {
-			$post_id = null;
-		}
-
-		$attachment_id = ap_upload_user_file( $_FILES['async-upload'], true, $post_id );
-
-		if ( is_wp_error( $attachment_id ) ) {
-			ap_ajax_json( [
-				'success' => false,
-				'snackbar' => [
-					'message' => $attachment_id->get_error_message(),
-				],
-			] );
-		}
-
-		ap_ajax_json( array(
-			'success'        => true,
-			'attachment_url' => wp_get_attachment_url( $attachment_id ),
-			'attachment_id'  => $attachment_id,
-			'is_image'       => wp_attachment_is_image( $attachment_id ),
-			'delete_nonce'   => wp_create_nonce( 'delete-attachment-' . $attachment_id ),
-		) );
-	}
-
-	/**
 	 * Delete question or answer attachment.
 	 */
 	public static function delete_attachment() {
@@ -90,11 +49,12 @@ class AnsPress_Uploader {
 	 *
 	 * @param integer $post_id Post ID.
 	 */
-	public static function before_delete_attachment( $post_id ) {
+	public static function deleted_attachment( $post_id ) {
 		$_post = get_post( $post_id );
 
 		if ( 'attachment' === $_post->post_type ) {
 			ap_update_user_temp_media_count();
+			ap_update_post_attach_ids( $_post->post_parent );
 		}
 	}
 

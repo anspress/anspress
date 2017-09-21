@@ -152,4 +152,40 @@ class Editor extends Field {
 			}
 		}
 	}
+
+	/**
+	 * Delete attachments if images were not found in content.
+	 *
+	 * @param array $args Array of arguments.
+	 * @return void
+	 */
+	public function after_save( $args = [] ) {
+		parent::after_save();
+
+		if ( empty( $args ) || empty( $args['post_id'] ) ) {
+			return;
+		}
+
+		// Remove deleted images.
+		$args = array(
+			'post_type'   => 'attachment',
+			'post_parent' => $args['post_id'],
+		);
+
+		$uploaded = get_posts( $args );// @codingStandardsIgnoreLine
+
+		if ( $uploaded ) {
+			foreach ( $uploaded as $attach ) {
+				$filename = basename( $attach->guid );
+				$re = '/<img.+?src=[\"\']((?:.*' . preg_quote( $filename ) . '\b).*)[\"\'].*?>/';
+				preg_match( $re, $this->value(), $matches );
+
+				// Delete attachment if user can.
+				if ( empty( $matches ) && ap_user_can_delete_attachment( $attach->ID ) ) {
+					wp_delete_attachment( $attach->ID, true );
+				}
+			}
+		}
+	}
+
 }

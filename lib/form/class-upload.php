@@ -274,7 +274,7 @@ class Upload extends Field {
 	public function after_save( $args = [] ) {
 		parent::after_save();
 
-		if ( empty( $args ) && empty( $args['post_id'] ) ) {
+		if ( empty( $args ) || empty( $args['post_id'] ) ) {
 			return;
 		}
 

@@ -50,7 +50,6 @@ class AnsPress_Ajax {
 		anspress()->add_action( 'ap_ajax_action_flag', 'AnsPress_Flag', 'action_flag' );
 
 		// Uploader hooks.
-		anspress()->add_action( 'wp_ajax_ap_image_submission', 'AnsPress_Uploader', 'image_submission' );
 		anspress()->add_action( 'ap_ajax_delete_attachment', 'AnsPress_Uploader', 'delete_attachment' );
 
 		// List filtering.

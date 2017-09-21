@@ -102,7 +102,7 @@ class AnsPress_Hooks {
 			anspress()->add_action( 'template_redirect', 'AnsPress_Rewrite', 'shortlink' );
 
 			// Upload hooks.
-			anspress()->add_action( 'before_delete_post', 'AnsPress_Uploader', 'before_delete_attachment' );
+			anspress()->add_action( 'deleted_post', 'AnsPress_Uploader', 'deleted_attachment' );
 			anspress()->add_action( 'init', 'AnsPress_Uploader', 'create_single_schedule' );
 			anspress()->add_action( 'ap_delete_temp_attachments', 'AnsPress_Uploader', 'cron_delete_temp_attachments' );
 
