@@ -46,8 +46,33 @@ class Form {
 	 */
 	public $prepared = false;
 
+	/**
+	 * The errors.
+	 *
+	 * @var array
+	 */
 	public $errors = [];
+
+	/**
+	 * The values.
+	 *
+	 * @var null|array
+	 */
 	public $values = null;
+
+	/**
+	 * Is editing.
+	 *
+	 * @var boolean
+	 */
+	public $editing = false;
+
+	/**
+	 * Editing post ID.
+	 *
+	 * @var boolean|integer
+	 */
+	public $editing_id = false;
 
 	/**
 	 * Initialize the class.
@@ -59,7 +84,12 @@ class Form {
 		$this->form_name = $form_name;
 		$this->args      = wp_parse_args( $args, array(
 			'submit_label' => __( 'Submit', 'anspress-question-answer' ),
+			'editing'      => false,
+			'editing_id'   => 0,
 		));
+
+		$this->editing    = $this->args['editing'];
+		$this->editing_id = $this->args['editing_id'];
 	}
 
 	/**

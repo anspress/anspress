@@ -45,14 +45,14 @@ class AP_Form_Hooks {
 					),
 					'min_length' => ap_opt( 'minimum_qtitle_length' ),
 					'max_length' => 100,
-					'validate'   => 'required,min_string_length,max_string_length',
+					'validate'   => 'required,min_string_length,max_string_length,badwords',
 					'order'      => 2,
 				),
 				'post_content' => array(
 					'type'       => 'editor',
 					'label'      => __( 'Description', 'anspress-question-answer' ),
 					'min_length' => ap_opt( 'minimum_question_length' ),
-					'validate'   => 'required,min_string_length',
+					'validate'   => 'required,min_string_length,badwords',
 				),
 			),
 		);
@@ -74,7 +74,7 @@ class AP_Form_Hooks {
 					'placeholder' => __( 'Enter your name to display', 'anspress-question-answer' ),
 				),
 				'order'        => 20,
-				'validate'     => 'max_string_length',
+				'validate'     => 'max_string_length,badwords',
 				'max_length'   => 20,
 			);
 		}
@@ -90,6 +90,8 @@ class AP_Form_Hooks {
 		if ( ! empty( $editing_id ) ) {
 			$question = ap_get_post( $editing_id );
 
+			$form['editing']                         = true;
+			$form['editing_id']                      = $editing_id;
 			$form['submit_label']                    = __( 'Update Question', 'anspress-question-answer' );
 			$form['fields']['post_title']['value']   = $question->post_title;
 			$form['fields']['post_content']['value'] = $question->post_content;
@@ -129,7 +131,7 @@ class AP_Form_Hooks {
 					'type'       => 'editor',
 					'label'      => __( 'Description', 'anspress-question-answer' ),
 					'min_length' => ap_opt( 'minimum_ans_length' ),
-					'validate'   => 'required,min_string_length',
+					'validate'   => 'required,min_string_length,badwords',
 				),
 				'question_id' => array(
 					'label'    => __( 'Question ID', 'anspress-question-answer' ),
@@ -159,7 +161,7 @@ class AP_Form_Hooks {
 					'placeholder' => __( 'Enter your name to display', 'anspress-question-answer' ),
 				),
 				'order'        => 20,
-				'validate'     => 'max_string_length',
+				'validate'     => 'max_string_length,badwords',
 				'max_length'   => 20,
 			);
 		}
@@ -174,7 +176,8 @@ class AP_Form_Hooks {
 		// Add value when editing post.
 		if ( ! empty( $editing_id ) ) {
 			$answer = ap_get_post( $editing_id );
-
+			$form['editing']                         = true;
+			$form['editing_id']                      = $editing_id;
 			$form['submit_label']                    = __( 'Update answer', 'anspress-question-answer' );
 			$form['fields']['post_content']['value'] = $answer->post_content;
 			$form['fields']['is_private']['value']   = 'private_post' === $answer->post_status ? true : false;

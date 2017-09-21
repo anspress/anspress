@@ -441,6 +441,57 @@ class Validate {
 	}
 
 	/**
+	 * Check if checking for bad word is enabled.
+	 *
+	 * @return array
+	 * @since  4.0.0
+	 */
+	public static function get_bad_words() {
+		$bad_word_file = ap_get_theme_location( 'badwords.txt' );
+
+		// Return if badwords.txt file does not exists.
+		if ( file_exists( $bad_word_file ) ) {
+			return  file( $bad_word_file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES );
+		}
+
+		$option = ap_opt( 'bad_words' );
+
+		if ( ! empty( $option ) ) {
+			return explode( ',', $option );
+		}
+
+		return [];
+	}
+
+	/**
+	 * Validate if there are minimum items in an array.
+	 *
+	 * @param object $field Instance of @see `AP_Field` object.
+	 * @return void
+	 */
+	public static function validate_badwords( $field ) {
+		$value = $field->unsafe_value();
+		$found = [];
+
+		foreach ( (array) SELF::get_bad_words() as $w ) {
+			$w = trim( $w );
+			$count = preg_match_all( '/\b' . preg_quote( $w ) . '\b/i', $value );
+
+			if ( $count > 0 ) {
+				$found[ $w ] = $count;
+			}
+		}
+
+		if ( ! empty( $found ) ) {
+			$field->add_error( 'bad-words', sprintf(
+				// Translators: placeholder contain field label.
+				__( 'Found bad words in field %s. Remove them and try again.', 'anspress-question-answer' ),
+				$field->get( 'label' )
+			) );
+		}
+	}
+
+	/**
 	 * Check if a upload field's value array have error.
 	 *
 	 * @param object $field Instance of @see `AP_Field` object.

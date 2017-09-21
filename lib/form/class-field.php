@@ -73,13 +73,60 @@ class Field {
 	 */
 	public $child = [];
 
+	/**
+	 * Is editing.
+	 *
+	 * @var boolean
+	 */
+	public $editing = false;
 
+	/**
+	 * Editing post ID.
+	 *
+	 * @var boolean|integer
+	 */
+	public $editing_id = false;
+
+	/**
+	 * Is validated?
+	 *
+	 * @var boolean
+	 */
 	protected $validated = false;
+
+	/**
+	 * The validation callbacks.
+	 *
+	 * @var array
+	 */
 	protected $validate_cb = [];
+
+	/**
+	 * The sanitization callback.
+	 *
+	 * @var array
+	 */
 	protected $sanitize_cb = [];
 
+	/**
+	 * Is sanitized?
+	 *
+	 * @var boolean
+	 */
 	protected $sanitized = false;
+
+	/**
+	 * The sanitized values.
+	 *
+	 * @var array
+	 */
 	public $sanitized_value;
+
+	/**
+	 * The field value (unsafe).
+	 *
+	 * @var mixed
+	 */
 	public $value = null;
 
 	/**

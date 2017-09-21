@@ -70,7 +70,7 @@ class AnsPress_Uploader {
 	}
 
 	/**
-	 * Delete temproary media which are older then today.
+	 * Delete temporary media which are older then today.
 	 */
 	public static function cron_delete_temp_attachments() {
 		global $wpdb;
@@ -84,7 +84,7 @@ class AnsPress_Uploader {
 			$authors[] = $_post->post_author;
 		}
 
-		// Update temproary attachment counts of a user.
+		// Update temporary attachment counts of a user.
 		foreach ( (array) array_unique( $authors ) as $author ) {
 			ap_update_user_temp_media_count( $author );
 		}
