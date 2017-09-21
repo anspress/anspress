@@ -67,7 +67,7 @@ class AnsPress_Common_Pages {
 		// Check if user is allowed to read this question.
 		if ( ! ap_user_can_read_question( get_question_id() ) ) {
 			if ( 'moderate' === $post->post_status ) {
-				$msg = __( 'This question is waiting for a moderator and cannot be viewed. Please check back later to see if it has been approved.', 'anspress-question-answer' );
+				$msg = __( 'This question is awaiting moderation and cannot be viewed. Please check back later.', 'anspress-question-answer' );
 			} else {
 				$msg = __( 'Sorry! you are not allowed to read this question.', 'anspress-question-answer' );
 			}

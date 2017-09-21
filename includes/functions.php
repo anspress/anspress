@@ -1041,40 +1041,6 @@ function ap_whitelist_array( $master_keys, $array ) {
 }
 
 /**
- * Read env file of AnsPress.
- *
- * @return string
- */
-function ap_read_env() {
-	$file = ANSPRESS_DIR . '/env';
-	$cache = wp_cache_get( 'ap_env', 'ap' );
-	if ( false !== $cache ) {
-		return $cache;
-	}
-
-	if ( file_exists( $file ) ) {
-		// Get the contents of env file.
-		$content = file_get_contents( $file ); // @codingStandardsIgnoreLine.
-		wp_cache_set( 'ap_env', $content, 'ap' );
-		return $content;
-	}
-
-}
-
-/**
- * Check if anspress environment is development.
- *
- * @return boolean
- */
-function ap_env_dev() {
-	if ( 'development' === ap_read_env() ) {
-		return true;
-	}
-
-	return false;
-}
-
-/**
  * Append table name in $wpdb.
  */
 function ap_append_table_names() {
@@ -1827,13 +1793,12 @@ function ap_set_in_array( &$arr, $path, $val ) {
 
 /**
  * Output new/edit question form.
- * Pass post_id to edit existing question.
  *
  * @param null $deprecated Deprecated argument.
  * @return void
  *
  * @since unknown
- * @since 4.1.0 Moved from includes\ask-form.php.
+ * @since 4.1.0 Moved from includes\ask-form.php. Deprecated first argument.
  */
 function ap_ask_form( $deprecated = null ) {
 	if ( ! is_null( $deprecated ) ) {
@@ -1853,7 +1818,7 @@ function ap_ask_form( $deprecated = null ) {
 		return;
 	}
 
-	if ( ! $editing && ! ap_user_can_ask( $editing_id ) ) {
+	if ( ! $editing && ! ap_user_can_ask( ) ) {
 		echo '<p>' . esc_attr__( 'You do not have permission to ask a question.', 'anspress-question-answer' ) . '</p>';
 		return;
 	}
@@ -1886,30 +1851,4 @@ function ap_remove_stop_words_post_name( $str ) {
 
 	// If empty then return original without stripping stop words.
 	return sanitize_title( $str );
-}
-
-/**
- * TinyMCE editor setting
- *
- * @return array
- * @since  3.0.0
- * @since 4.1.0 Moved from includes\ask-form.php.
- */
-function ap_tinymce_editor_settings( $type = 'question' ) {
-	$setting = array(
-		'textarea_rows' => 8,
-		'tinymce'       => ap_opt( $type . '_text_editor' ) ? false: true,
-		'quicktags'     => ap_opt( $type . '_text_editor' ) ? true:  false,
-		'media_buttons' => false,
-	);
-
-	if ( ap_opt( $type . '_text_editor' )  ) {
-		$settings['tinymce'] = array(
-			'content_css'      => ap_get_theme_url( 'css/editor.css' ),
-			'wp_autoresize_on' => true,
-			'statusbar'        => false
-		);
-	}
-
-	return apply_filters( 'ap_tinymce_editor_settings', $setting, $type );
 }

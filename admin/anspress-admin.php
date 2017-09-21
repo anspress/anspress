@@ -95,9 +95,6 @@ class AnsPress_Admin {
 			return;
 		}
 
-		$dir = ap_env_dev() ? 'css' : 'css/min';
-		$min = ap_env_dev() ? '' : '.min';
-
 		wp_enqueue_style( 'ap-admin-css', ANSPRESS_URL . 'assets/ap-admin.css' );
 		wp_enqueue_style( 'wp-color-picker' );
 		wp_enqueue_style( 'anspress-fonts', ap_get_theme_url( 'css/fonts.css' ), array(), AP_VERSION );
@@ -109,20 +106,17 @@ class AnsPress_Admin {
 	public static function enqueue_admin_scripts() {
 		$page = get_current_screen();
 
-		$dir = ap_env_dev() ? 'js' : 'js/min';
-		$min = ap_env_dev() ? '' : '.min';
-
 		if ( ! ap_load_admin_assets() ) {
 			return;
 		}
 
-		wp_enqueue_script( 'anspress-common', ANSPRESS_URL . 'assets/' . $dir . '/common' . $min . '.js', [ 'jquery', 'jquery-form', 'backbone', 'underscore' ], AP_VERSION );
+		wp_enqueue_script( 'anspress-common', ANSPRESS_URL . 'assets/js/min/common.min.js', [ 'jquery', 'jquery-form', 'backbone', 'underscore' ], AP_VERSION );
 
 		if ( 'toplevel_page_anspress' === $page->base ) {
 			wp_enqueue_script( 'ap-chart-js', '//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.4/Chart.min.js' );
 		}
 
-		wp_enqueue_script( 'anspress-admin-js', ANSPRESS_URL . 'assets/' . $dir . '/ap-admin' . $min . '.js' , [ 'anspress-common' ], AP_VERSION, true );
+		wp_enqueue_script( 'anspress-admin-js', ANSPRESS_URL . 'assets/js/min/ap-admin.min.js' , [ 'anspress-common' ], AP_VERSION, true );
 
 		?>
 			<script type="text/javascript">
@@ -131,7 +125,7 @@ class AnsPress_Admin {
 		<?php
 
 		if ( 'post' === $page->base && 'question' === $page->post_type ) {
-			wp_enqueue_script( 'ap-admin-app-js', ANSPRESS_URL . 'assets/' . $dir . '/admin-app' . $min . '.js' , [], AP_VERSION, true );
+			wp_enqueue_script( 'ap-admin-app-js', ANSPRESS_URL . 'assets/js/min/admin-app.min.js' , [], AP_VERSION, true );
 		}
 
 		wp_enqueue_script( 'postbox' );

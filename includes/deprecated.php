@@ -559,3 +559,43 @@ function ap_tinymce_editor_settings( $type = 'question' ) {
 
 	return apply_filters( 'ap_tinymce_editor_settings', $setting, $type );
 }
+
+/**
+ * Read env file of AnsPress.
+ *
+ * @return string
+ * @deprecated 4.1.0
+ */
+function ap_read_env() {
+	_deprecated_function( __FUNCTION__, '4.1.0' );
+
+	$file = ANSPRESS_DIR . '/env';
+	$cache = wp_cache_get( 'ap_env', 'ap' );
+	if ( false !== $cache ) {
+		return $cache;
+	}
+
+	if ( file_exists( $file ) ) {
+		// Get the contents of env file.
+		$content = file_get_contents( $file ); // @codingStandardsIgnoreLine.
+		wp_cache_set( 'ap_env', $content, 'ap' );
+		return $content;
+	}
+
+}
+
+/**
+ * Check if anspress environment is development.
+ *
+ * @return boolean
+ * @deprecated 4.1.0
+ */
+function ap_env_dev() {
+	_deprecated_function( __FUNCTION__, '4.1.0' );
+
+	if ( 'development' === ap_read_env() ) {
+		return true;
+	}
+
+	return false;
+}
