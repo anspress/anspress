@@ -531,3 +531,31 @@ function ap_hover_card_attributes( $user_id, $echo = true ) {
 		echo $attr; // xss okay.
 	}
 }
+
+/**
+ * TinyMCE editor setting
+ *
+ * @return array
+ * @since  3.0.0
+ * @deprecated 4.1.0 This is no longer required as of upload field introduction.
+ */
+function ap_tinymce_editor_settings( $type = 'question' ) {
+	_deprecated_function( __FUNCTION__, '4.1.0', 'This is no longer required as of upload field introduction.' );
+
+	$setting = array(
+		'textarea_rows' => 8,
+		'tinymce'       => ap_opt( $type . '_text_editor' ) ? false: true,
+		'quicktags'     => ap_opt( $type . '_text_editor' ) ? true:  false,
+		'media_buttons' => false,
+	);
+
+	if ( ap_opt( $type . '_text_editor' )  ) {
+		$settings['tinymce'] = array(
+			'content_css'      => ap_get_theme_url( 'css/editor.css' ),
+			'wp_autoresize_on' => true,
+			'statusbar'        => false
+		);
+	}
+
+	return apply_filters( 'ap_tinymce_editor_settings', $setting, $type );
+}
