@@ -667,14 +667,14 @@
 					// Clear upload files
 					if(AnsPress.uploader) AnsPress.uploader.splice();
 					if(data.success){
-						$('ap-answers-w').show();
+						$('apAnswersW').show();
 						// Clear editor contents
 						$('#description').val('');
 						if (typeof tinyMCE !== 'undefined' && data.success)
 							tinyMCE.activeEditor.setContent('');
 
 						// Append anwer to the list.
-						$('ap-answers').append($(data['html']).hide());
+						$('apAnswers').append($(data['html']).hide());
 						$(data.div_id).slideDown(800);
 						self.model.add({'ID': data.ID});
 						AnsPress.trigger('answerCountUpdated', data.answersCount);
@@ -707,7 +707,7 @@
 			});
 		},
 		answerCountUpdated: function(counts){
-			$('[ap-answerscount-text]').text(counts.text);
+			$('[apAnswerscountText]').text(counts.text);
 		}
 	});
 

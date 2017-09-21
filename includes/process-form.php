@@ -84,7 +84,8 @@ class AnsPress_Process_Form {
 
 
 	/**
-	 * Process form based on action value
+	 * Process form based on action value.
+	 *
 	 * @return void
 	 * @since 2.0.1
 	 */
@@ -107,125 +108,6 @@ class AnsPress_Process_Form {
 				 */
 				do_action( 'ap_process_form_' . $action );
 				break;
-		}
-	}
-
-	/**
-	 * Process edit question form.
-	 *
-	 * @return void
-	 * @since 2.0.1
-	 */
-	public function edit_question() {
-		global $ap_errors, $validate;
-
-		// Return if user do not have permission to edit this question.
-		if ( ! ap_user_can_edit_question( $this->fields['edit_post_id'] ) ) {
-			return;
-		}
-
-		$filter = apply_filters( 'ap_before_updating_question', false, $this->fields['description'] );
-		if ( true === $filter || is_array( $filter ) ) {
-			if ( is_array( $filter ) ) {
-				$this->result = $filter;
-			}
-			return;
-		}
-
-		$post = ap_get_post( $this->fields['edit_post_id'] );
-		$user_id = get_current_user_id();
-
-		$question_array = array(
-			'ID'				=> $post->ID,
-			'post_title'		=> $this->fields['title'],
-			'post_content' 		=> $this->fields['description'],
-			'attach_uploads' 	=> true,
-			'post_author' 		=> $post->post_author,
-		);
-
-		$question_array['post_status'] = ap_new_edit_post_status( $user_id, 'question', true );
-
-		if ( isset( $this->fields['is_private'] ) && $this->fields['is_private'] ) {
-			$question_array['is_private'] = true;
-		}
-
-		// Check if anonymous post and have name.
-		if ( ! is_user_logged_in() && ap_opt( 'allow_anonymous' ) && ! empty( $this->fields['anonymous_name'] ) ) {
-			$question_array['anonymous_name'] = $this->fields['anonymous_name'];
-		}
-
-		$post_id = ap_save_question( $question_array );
-
-		if ( $post_id ) {
-			ap_clear_unattached_media();
-			$this->redirect = get_permalink( $post_id );
-
-			// Trigger update hook.
-			ap_trigger_qa_update_hook( $post_id, 'edited' );
-
-			ap_ajax_json( array(
-				'success' => true,
-				'action' 		=> 'edited_question',
-				'redirect' => get_permalink( $post_id ),
-				'snackbar' => [
-					'message' => __( 'Question updated successfully', 'anspress-question-answer' ),
-				],
-			) );
-		}
-	}
-
-	/**
-	 * Process edit answer form.
-	 * @param  object $question Parent question object.
-	 * @return mixed
-	 */
-	public function edit_answer( $question ) {
-		global $ap_errors, $validate;
-
-		// Return if user do not have permission to edit this answer.
-		if ( ! ap_user_can_edit_answer( $this->fields['edit_post_id'] ) ) {
-			ap_ajax_json( array(
-				'success'  => false,
-				'snackbar' => [ 'message' => __( 'Sorry, you cannot edit this answer', 'anspress-question-answer' ) ],
-			) );
-		}
-
-		$filter = apply_filters( 'ap_before_updating_answer', false, $this->fields['description'] );
-		if ( true === $filter || is_array( $filter ) ) {
-			if ( is_array( $filter ) ) {
-				$this->result = $filter;
-			}
-			return;
-		}
-
-		$answer = ap_get_post( $this->fields['edit_post_id'] );
-		$answer_array = array(
-			'ID'				        => $this->fields['edit_post_id'],
-			'post_author'		    => $answer->post_author,
-			'post_content' 		  => $this->fields['description'],
-			'attach_uploads' 	  => true,
-		);
-
-		$answer_array['post_status'] = ap_new_edit_post_status( get_current_user_id(), 'answer', true );
-
-		if ( isset( $this->fields['is_private'] ) && $this->fields['is_private'] ) {
-			$answer_array['is_private'] = true;
-		}
-
-		$answer_id = ap_save_answer( $question->ID, $answer_array );
-
-		if ( $answer_id ) {
-			ap_clear_unattached_media();
-
-			// Trigger update hook.
-			ap_trigger_qa_update_hook( $answer_id, 'edited' );
-
-			ap_ajax_json( array(
-				'success'  => true,
-				'action'   => 'answer_edited',
-				'snackbar' => [ 'message' => __( 'Answer updated successfully', 'anspress-question-answer' ) ],
-				'redirect' => get_permalink( $answer->post_parent ),
-			));
 		}
 	}
 }
