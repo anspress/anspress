@@ -607,6 +607,7 @@
 			AnsPress.on('answerToggle', this.answerToggle, this);
 			AnsPress.on('deletePost', this.deletePost, this);
 			AnsPress.on('answerCountUpdated', this.answerCountUpdated, this);
+			AnsPress.on('formPosted', this.formPosted, this);
 		},
 		events: {
 			'click [ap="loadEditor"]': 'loadEditor',
@@ -641,58 +642,21 @@
 		/**
 		 * Handles answer form submission.
 		 */
-		answerForm: function(e){
-			var self = this;
-			AnsPress.showLoading($(e.target).find('.ap-btn-submit'));
+		formPosted: function(data){
+			if(data.success && data.form === 'answer'){
+				AnsPress.trigger('answerFormPosted', data);
+				$('apAnswersW').show();
 
-			// Clear previous errors
-			$(e.target).find('.have-error').removeClass('have-error');
-			$(e.target).find('.error').remove();
+				// Clear editor contents
+				$('#ap-form-main').html('');
+				$('#answer-form-c').addClass('ap-minimal-editor');
 
-			// Ajax request
-			AnsPress.ajax({
-				data: $(e.target).serialize(),
-				success: function(data){
-					// Redirect if have redirect property.
-					if(data.redirect){
-						window.location = data.redirect;
-						return;
-					}
-
-					if(typeof grecaptcha !== 'undefined' && typeof widgetId1 !== 'undefined')
-            grecaptcha.reset(widgetId1);
-
-					AnsPress.trigger('answerFormPosted', data);
-					AnsPress.hideLoading($(e.target).find('.ap-btn-submit'));
-					// Clear upload files
-					if(AnsPress.uploader) AnsPress.uploader.splice();
-					if(data.success){
-						$('apAnswersW').show();
-						// Clear editor contents
-						$('#description').val('');
-						if (typeof tinyMCE !== 'undefined' && data.success)
-							tinyMCE.activeEditor.setContent('');
-
-						// Append anwer to the list.
-						$('apAnswers').append($(data['html']).hide());
-						$(data.div_id).slideDown(800);
-						self.model.add({'ID': data.ID});
-						AnsPress.trigger('answerCountUpdated', data.answersCount);
-					}
-
-					// If form have errors then show it
-					if(data.errors){
-						_.each(data.errors, function(err, i){
-							$('.ap-field-'+i).addClass('have-error')
-							if(i==='description' && $('.ap-field-ap_upload').length > 0)
-								i = 'ap_upload';
-
-							$('.ap-field-'+i).append('<span class="error">'+err+'</span>');
-						});
-					}
-				}
-			});
-			return false;
+				// Append answer to the list.
+				$('apAnswers').append($(data.html).hide());
+				$(data.div_id).slideDown(300);
+				this.model.add({'ID': data.ID});
+				AnsPress.trigger('answerCountUpdated', data.answersCount);
+			}
 		},
 		answerToggle: function(args){
 			this.model.forEach(function(m, i) {

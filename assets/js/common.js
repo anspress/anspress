@@ -773,7 +773,7 @@ jQuery(document).ready(function($){
 				if(typeof grecaptcha !== 'undefined' && typeof widgetId1 !== 'undefined')
 					grecaptcha.reset(widgetId1);
 
-				AnsPress.trigger('answerFormPosted', data);
+				AnsPress.trigger('formPosted', data);
 
 				if(typeof data.form_errors !== 'undefined'){
 					$formError = $('<div class="ap-form-errors"></div>').prependTo(self);

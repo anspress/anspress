@@ -492,8 +492,12 @@ class AP_Form_Hooks {
 			ap_clear_unattached_media();
 		}
 
+		if ( ! $editing ) {
+			ap_answer_post_ajax_response( $question_id, $post_id );
+		}
+
 		if ( isset( $question_args['ID'] ) ) {
-			$message = __( 'Answer updated successfully, you\'ll be redirected in a moment.', 'anspress-question-answer' );
+			$message = __( 'Answer updated successfully. Redirecting you to question page.', 'anspress-question-answer' );
 		} else {
 			$message = __( 'Your answer is posted successfully.', 'anspress-question-answer' );
 		}
@@ -503,9 +507,8 @@ class AP_Form_Hooks {
 			'snackbar' => [
 				'message' => $message,
 			],
-			'redirect' => get_permalink( $post_id ),
+			'redirect' => get_permalink( $question_id ),
 			'post_id'  => $post_id,
 		) );
-
 	}
 }

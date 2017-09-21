@@ -1893,7 +1893,7 @@ function ap_answer_post_ajax_response( $question_id, $answer_id ) {
 	$result = array(
 		'success'       => true,
 		'ID'            => $answer_id,
-		'action'        => 'new_answer',
+		'form'          => 'answer',
 		'div_id'        => '#post-' . get_the_ID(),
 		'can_answer'    => ap_user_can_answer( $post->ID ),
 		'html'          => $html,
