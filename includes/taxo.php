@@ -425,7 +425,7 @@ function ap_get_tag_filter( $search = false ) {
 	}
 
 	$terms = get_terms( 'question_tag', $args );
-	$selected = ap_get_current_list_filters( 'tag' );
+	$selected = ap_get_current_list_filters( 'qtag' );
 
 	if ( ! $terms ) {
 		return false;
@@ -434,7 +434,7 @@ function ap_get_tag_filter( $search = false ) {
 	$items = array();
 
 	foreach ( (array) $terms as $t ) {
-		$item = [ 'key' => 'tag', 'value' => (string) $t->term_id, 'label' => $t->name ];
+		$item = [ 'key' => 'qtag', 'value' => (string) $t->term_id, 'label' => $t->name ];
 		// Check if active.
 		if ( $selected && in_array( $t->term_id, $selected, true ) ) {
 			$item['active'] = true;

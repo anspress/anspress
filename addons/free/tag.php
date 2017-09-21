@@ -61,8 +61,8 @@ class AnsPress_Tag {
 
 		// List filtering.
 		anspress()->add_filter( 'ap_list_filters', __CLASS__, 'ap_list_filters' );
-		anspress()->add_action( 'ap_ajax_load_filter_tag', __CLASS__, 'load_filter_tag' );
-		anspress()->add_filter( 'ap_list_filter_active_tag', __CLASS__, 'filter_active_tag', 10, 2 );
+		anspress()->add_action( 'ap_ajax_load_filter_qtag', __CLASS__, 'load_filter_tag' );
+		anspress()->add_filter( 'ap_list_filter_active_qtag', __CLASS__, 'filter_active_tag', 10, 2 );
 	}
 
 	/**
@@ -628,7 +628,7 @@ class AnsPress_Tag {
 		global $wp;
 
 		if ( ! isset( $wp->query_vars['ap_tags'] ) ) {
-			$filters['tag'] = array(
+			$filters['qtag'] = array(
 				'title' => __( 'Tag', 'anspress-question-answer' ),
 				'search' => true,
 				'multiple' => true,
@@ -662,7 +662,7 @@ class AnsPress_Tag {
 	 * @since 4.0.0
 	 */
 	public static function filter_active_tag( $active, $filter ) {
-		$current_filters = ap_get_current_list_filters( 'tag' );
+		$current_filters = ap_get_current_list_filters( 'qtag' );
 
 		if ( ! empty( $current_filters ) ) {
 			$args = array(
