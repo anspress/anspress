@@ -1,6 +1,6 @@
 <?php
 /**
- * AnsPress Checkbox type field object.
+ * AnsPress Radio type field object.
  *
  * @package    AnsPress
  * @subpackage Fields
@@ -19,17 +19,17 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * The Checkbox type field object.
+ * The Radio type field object.
  *
  * @since 4.1.0
  */
-class Checkbox extends Field {
+class Radio extends Field {
 	/**
 	 * The field type.
 	 *
 	 * @var string
 	 */
-	public $type = 'checkbox';
+	public $type = 'radio';
 
 	/**
 	 * Prepare field.
@@ -38,7 +38,7 @@ class Checkbox extends Field {
 	 */
 	protected function prepare() {
 		$this->args = wp_parse_args( $this->args, array(
-			'label'   => __( 'AnsPress Checkbox Field', 'anspress-question-answer' ),
+			'label'   => __( 'AnsPress Radio Field', 'anspress-question-answer' ),
 		) );
 
 		// Call parent prepare().
@@ -46,22 +46,9 @@ class Checkbox extends Field {
 
 		// Make sure checkbox value are sanitized.
 		if ( $this->get( 'options' ) ) {
-			$this->sanitize_cb = array_merge( [ 'array_remove_empty, array_map_boolean' ], $this->sanitize_cb );
+			$this->sanitize_cb = array_merge( [ 'array_remove_empty,text_field' ], $this->sanitize_cb );
 		} else {
-			$this->sanitize_cb = array_merge( [ 'boolean' ], $this->sanitize_cb );
-		}
-	}
-
-	/**
-	 * Order of HTML markup.
-	 *
-	 * @return void
-	 */
-	protected function html_order() {
-		parent::html_order();
-
-		if ( ! $this->get( 'options' ) ) {
-			$this->output_order = [ 'wrapper_start', 'label', 'errors', 'field_markup', 'wrapper_end' ];
+			$this->sanitize_cb = array_merge( [ 'text_field' ], $this->sanitize_cb );
 		}
 	}
 
@@ -77,14 +64,12 @@ class Checkbox extends Field {
 			foreach ( $this->get( 'options' ) as $val => $label ) {
 				$checked = checked( isset( $value[ $val ] ), 1, false );
 				$this->add_html( '<label>' );
-				$this->add_html( '<input type="checkbox" value="1" name="' . esc_attr( $this->field_name ) . '[' . $val . ']" id="' . sanitize_html_class( $this->field_name . $val ) . '" class="ap-form-control" ' . $checked . $this->custom_attr() . '/>' );
+				$this->add_html( '<input type="radio" value="1" name="' . esc_attr( $this->field_name ) . '[' . $val . ']" id="' . sanitize_html_class( $this->field_name . $val ) . '" class="ap-form-control" ' . $checked . $this->custom_attr() . '/>' );
 				$this->add_html( $label . '</label>' );
 			}
 		} else {
 			$checked = checked( $this->value(), 1, false );
-			$this->add_html( '<label>' );
-			$this->add_html( '<input type="checkbox" value="1" ' . $checked . $this->common_attr() . $this->custom_attr() . '/>' );
-			$this->add_html( $this->get( 'desc' ) . '</label>' );
+			$this->add_html( '<input type="radio" value="1" ' . $checked . $this->common_attr() . $this->custom_attr() . '/>' );
 		}
 	}
 

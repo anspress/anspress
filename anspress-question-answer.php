@@ -334,6 +334,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 			require_once ANSPRESS_DIR . 'lib/form/class-editor.php';
 			require_once ANSPRESS_DIR . 'lib/form/class-upload.php';
 			require_once ANSPRESS_DIR . 'lib/form/class-tags.php';
+			require_once ANSPRESS_DIR . 'lib/form/class-radio.php';
 			require_once ANSPRESS_DIR . 'lib/class-validate.php';
 
 			if ( defined( 'WP_CLI' ) && WP_CLI ) {
@@ -458,7 +459,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		 * @since 4.1.0
 		 */
 		public function &get_form( $name ) {
-			$name = ltrim( $name, 'form_' );
+			$name = preg_replace( '/^form_/i', '', $name );
 
 			if ( ! isset( $this->forms[ $name ] ) ) {
 				$args = apply_filters( 'ap_form_' . $name, null );
