@@ -12,6 +12,9 @@
 
 /**
  * AnsPress HTML form handler
+ *
+ * @since unknown
+ * @deprecated 4.1.0 Replaced by @see AnsPress\Form().
  */
 class AnsPress_Form {
 
@@ -56,6 +59,8 @@ class AnsPress_Form {
 	 * @param array $args Form arguments.
 	 */
 	public function __construct( $args = array() ) {
+
+		_deprecated_constructor( __CLASS__, '4.1.0', 'Replaced by AnsPress\Form()' );
 
 		// Default form arguments.
 		$defaults = array(

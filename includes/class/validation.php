@@ -10,8 +10,13 @@
  * @subpackage   Validation
  */
 
-class AnsPress_Validation
-{
+/**
+ * The validation class.
+ *
+ * @since unknown
+ * @deprecated 4.1.0 Replaced by @see AnsPress\Form\Validate().
+ */
+class AnsPress_Validation {
 	public $args = array();
 
 	private $errors = array();
@@ -22,7 +27,8 @@ class AnsPress_Validation
 	 * Initialize the class
 	 * @param array $args
 	 */
-	public function __construct($args = array()) {
+	public function __construct( $args = [] ) {
+		_deprecated_constructor( __CLASS__, '4.1.0', 'Replaced by AnsPress\Form\Validate()' );
 
 		if ( empty( $args ) ) {
 			return;
