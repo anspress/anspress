@@ -32,7 +32,7 @@ class Question_Query extends WP_Query {
 	 *
 	 * @param array|string $args Query args.
 	 */
-	public function __construct( $args = '' ) {
+	public function __construct( $args = [] ) {
 		if ( is_front_page() ) {
 			$paged = (isset( $_GET['ap_paged'] )) ? (int) $_GET['ap_paged'] : 1; // input var ok.
 		} else {

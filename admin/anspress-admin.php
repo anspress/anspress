@@ -60,6 +60,7 @@ class AnsPress_Admin {
 		anspress()->add_action( 'admin_enqueue_scripts', __CLASS__, 'enqueue_admin_styles' );
 		anspress()->add_action( 'admin_enqueue_scripts', __CLASS__, 'enqueue_admin_scripts' );
 		anspress()->add_action( 'admin_menu', __CLASS__, 'add_plugin_admin_menu' );
+		anspress()->add_action( 'parent_file', __CLASS__, 'fix_active_admin_menu', 1000 );
 		anspress()->add_action( 'admin_init', __CLASS__, 'init_actions' );
 		anspress()->add_action( 'parent_file', __CLASS__, 'tax_menu_correction' );
 		anspress()->add_action( 'load-post.php', __CLASS__, 'question_meta_box_class' );
@@ -184,10 +185,10 @@ class AnsPress_Admin {
 
 		add_submenu_page( 'anspress', __( 'All Answers', 'anspress-question-answer' ), __( 'All Answers', 'anspress-question-answer' ) . $counts['answer'], 'delete_pages', 'edit.php?post_type=answer', '' );
 
-		add_submenu_page( 'ap_select_question', __( 'Select question', 'anspress-question-answer' ), __( 'Select question', 'anspress-question-answer' ), 'delete_pages', 'ap_select_question', array( __CLASS__, 'display_select_question' ) );
+		add_submenu_page( 'anspress', __( 'New Answer', 'anspress-question-answer' ), __( 'New Answer', 'anspress-question-answer' ), 'delete_pages', 'ap_select_question', array( __CLASS__, 'display_select_question' ) );
 
 		/**
-		 * ACTION: ap_admin_menu
+		 * Action hook for adding custom menu in wp-admin.
 		 *
 		 * @since unknown
 		 */
@@ -201,6 +202,21 @@ class AnsPress_Admin {
 
 		add_submenu_page( 'anspress-hidden', __( 'Upgrade AnsPress', 'anspress-question-answer' ), __( 'Upgrade AnsPress', 'anspress-question-answer' ), 'manage_options', 'anspress_upgrade', array( __CLASS__, 'upgrade_page' ) );
 
+	}
+
+	public static function fix_active_admin_menu( $parent_file ) {
+		global $submenu_file, $current_screen, $plugin_page;
+
+		// Set correct active/current menu and submenu in the WordPress Admin menu for the "example_cpt" Add-New/Edit/List
+		if ( $current_screen->post_type == 'question' ) {
+			$submenu_file = 'edit.php?post_type=question';
+			$parent_file = 'anspress';
+		} elseif ( $current_screen->post_type == 'answer' ) {
+			$submenu_file = 'edit.php?post_type=answer';
+			$parent_file = 'anspress';
+		}
+
+		return $parent_file;
 	}
 
 	/**
@@ -446,9 +462,9 @@ class AnsPress_Admin {
 		$menu_items = ap_menu_obejct();
 		$db_fields = false;
 
-		/*if ( false ) {
-			$db_fields = array( 'parent' => 'parent', 'id' => 'post_parent' );
-		}*/
+		// if ( false ) {
+		// 	$db_fields = array( 'parent' => 'parent', 'id' => 'post_parent' );
+		// }
 
 		$walker = new Walker_Nav_Menu_Checklist( $db_fields );
 		$removed_args = array(
