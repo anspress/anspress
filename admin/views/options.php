@@ -14,6 +14,11 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
+// Check if user have proper rights.
+if ( ! current_user_can( 'manage_options' ) ) {
+	wp_die( esc_attr__( 'Trying to cheat, huh!', 'anspress-question-answer' ) );
+}
+
 /**
  * Action triggered before outputting AnsPress options page.
  *
@@ -405,9 +410,11 @@ function ap_options_postscomments_posts() {
 }
 add_filter( 'ap_form_options_postscomments_posts', 'ap_options_postscomments_posts' );
 
+$form_name = ap_sanitize_unslash( 'ap_form_name', 'r' );
+$updated = false;
+
 // Process submit form.
-if ( ap_isset_post_value( 'ap_form_name', 'r', false ) ) {
-	$form_name = ap_sanitize_unslash( 'ap_form_name', 'r' );
+if ( ! empty( $form_name ) && anspress()->get_form( $form_name )->is_submitted() ) {
 	$values = anspress()->get_form( $form_name )->get_values();
 
 	$options = get_option( 'anspress_opt', [] );
@@ -419,14 +426,14 @@ if ( ap_isset_post_value( 'ap_form_name', 'r', false ) ) {
 	update_option( 'anspress_opt', $options );
 	wp_cache_delete( 'anspress_opt', 'ap' );
 	wp_cache_delete( 'anspress_opt', 'ap' );
+	$updated = true;
 }
 
-$updated = ap_sanitize_unslash( 'updated', 'r', false );
 ?>
 
-<?php if ( 'true' === $updated ) :   ?>
+<?php if ( true === $updated ) :   ?>
 	<div class="notice notice-success is-dismissible">
-		<p><?php esc_html_e( 'AnsPress option updated!', 'anspress-question-answer' ); ?></p>
+		<p><?php esc_html_e( 'AnsPress option updated successfully!', 'anspress-question-answer' ); ?></p>
 	</div>
 <?php endif; ?>
 
@@ -478,6 +485,7 @@ $updated = ap_sanitize_unslash( 'updated', 'r', false );
 
 								/**
 								 * Action triggered right after AnsPress options tab links.
+								 * Can be used to show custom tab links.
 								 *
 								 * @since 4.1.0
 								 */
@@ -573,6 +581,16 @@ $updated = ap_sanitize_unslash( 'updated', 'r', false );
 								</div>
 							</div>
 						<?php endif; ?>
+
+						<?php
+							/**
+							 * Action triggered in AnsPress options page content.
+							 * This action can be used to show custom options fields.
+							 *
+							 * @since 4.1.0
+							 */
+							do_action( 'ap_option_page_content' );
+						?>
 					</div>
 				</div>
 			</div>
